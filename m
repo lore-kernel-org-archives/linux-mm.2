@@ -4,121 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 401D3CA1017
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 01:09:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0C1FCA101F
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 01:34:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3A5328E0007; Sun,  7 Sep 2025 21:09:57 -0400 (EDT)
+	id DC5148E0005; Sun,  7 Sep 2025 21:34:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 37C748E0001; Sun,  7 Sep 2025 21:09:57 -0400 (EDT)
+	id D75FE8E0001; Sun,  7 Sep 2025 21:34:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 26B1E8E0007; Sun,  7 Sep 2025 21:09:57 -0400 (EDT)
+	id C648C8E0005; Sun,  7 Sep 2025 21:34:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B7458E0001
-	for <linux-mm@kvack.org>; Sun,  7 Sep 2025 21:09:57 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B2969BBEF5
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 01:09:56 +0000 (UTC)
-X-FDA: 83864301192.23.0E2AAA6
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	by imf20.hostedemail.com (Postfix) with ESMTP id C9CCE1C0005
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 01:09:54 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=BHpdb0cj;
-	spf=pass (imf20.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id A772D8E0001
+	for <linux-mm@kvack.org>; Sun,  7 Sep 2025 21:34:37 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3E87C1408CC
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 01:34:37 +0000 (UTC)
+X-FDA: 83864363394.27.CC90E5F
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 775CF180003
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 01:34:35 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=3LrofLGz;
+	spf=pass (imf24.hostedemail.com: domain of 3qjK-aAUKCFUGJ1173BB381.zB985AHK-997Ixz7.BE3@flex--tweek.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=3qjK-aAUKCFUGJ1173BB381.zB985AHK-997Ixz7.BE3@flex--tweek.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757293794;
+	s=arc-20220608; t=1757295275;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VAz+B+mOkMm8Do7qT5j52EhZhmc+v/y9ZYB3bwOj5m4=;
-	b=D9U8RElLUpfrHKCTnQwtdszZHwvJK3WlT43ekckpVBqFhG0xq07UDNGo46FiyT1A8Xx0tx
-	kDoZCQHN80eqaDWlpZXx+1QC9OptCSx7e4OIDGVzk5pJubyPYICUBDPgnuQeWj+JX8pvC9
-	5oWb9tZ44t/TVRrtVwiW7fGSlKmnNXU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757293794; a=rsa-sha256;
-	cv=none;
-	b=VlxIGAC+MZELUIdqdmROfaLJGCQgn/OxrRY6VWRHIupq0c7mEzO5xAhYzuDlcHGvYv4ObA
-	Cjan3JTEnci2orSujG9BSn1Vso8Fu7e/MUA2BJc9P2NuEMMiqe2ODwM6SlHtc07AfTWfow
-	bkEKYT6T2GES22b1EI2SLZy7QOUVMpQ=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=3JlhVnol+judhUzzwOogW+HmLUCIc8LS+J6IJKltRJA=;
+	b=ndfTHq1xR5TxiJW4PKWZrleNyAz1cDMQtGX3ucYRCXpLAXa/kMj1WmavlaB5lleGnANyB0
+	oJunF2982QjhHG5Kf5f//LAWqHOOD+udPPhakGVFlxwiOgohjqP0ywP9YKNaBCG4FStPGw
+	FYN9o2RRM2Kwz8tXiTKV3tVeE1cBT1o=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=BHpdb0cj;
-	spf=pass (imf20.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-7725de6b57dso4478176b3a.0
-        for <linux-mm@kvack.org>; Sun, 07 Sep 2025 18:09:54 -0700 (PDT)
+	imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=3LrofLGz;
+	spf=pass (imf24.hostedemail.com: domain of 3qjK-aAUKCFUGJ1173BB381.zB985AHK-997Ixz7.BE3@flex--tweek.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=3qjK-aAUKCFUGJ1173BB381.zB985AHK-997Ixz7.BE3@flex--tweek.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757295275; a=rsa-sha256;
+	cv=none;
+	b=56bVeRUxa4Xx6VWJG53xmdxHQ8tFfFadMwkzST6rqhK4TZOr4CaJWhzwjJdvveRVHE/220
+	EbbYBFAkySeQSHzmPSPVsY1etn5ZPlvf3Ibe56A2nWwPIlHbU8j5as2pX84p0YHxaWZRBu
+	ezPsdTreAMvQEy9oX40VC5/xsHJdBk0=
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-32bc286bc1eso4928313a91.0
+        for <linux-mm@kvack.org>; Sun, 07 Sep 2025 18:34:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757293794; x=1757898594; darn=kvack.org;
-        h=references:to:cc:in-reply-to:date:subject:mime-version:message-id
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=VAz+B+mOkMm8Do7qT5j52EhZhmc+v/y9ZYB3bwOj5m4=;
-        b=BHpdb0cj4yFLC8d13WqdDnkmcb5QqLS7n8JA5g145iEUyRX2Rpc59YOuHYcdDUQBNw
-         h/lWAsxS6jUmmZuZ0d/uCYTseF/wFsQZ134XT/s10hywNJfAXz5BWFjTnlee8qOC49VO
-         4MOY/upIYbi+f2JmXTQgNIhAqI5AcrqXh/ngksuseLmyoOdzFFOylDd6wpFAhbnrbyPw
-         +oG+eXSvrchA6ELdGd06oYq4tOeTiZ23lHLfQra5DylrbIDY05CowUdaEuaPAKx5TzGC
-         9nwI47etuV0LI9/L1Kyq/iFtif9YrUdKvJqMN0wTrJrTTgXhip6mOmN0bzdUC5khZ5Xv
-         UxcA==
+        d=google.com; s=20230601; t=1757295274; x=1757900074; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=3JlhVnol+judhUzzwOogW+HmLUCIc8LS+J6IJKltRJA=;
+        b=3LrofLGz6sskKwhJTcu6ISFftHtNqVlJ6v3PQXip88+QS54zpHtDffmh/N7Yrt2Blf
+         NdLhbtycV0KWZx/4qCJLUkciOU7RqfbWRxGW22bLgs18bLdu6/1W13uaKBZTbHfNDHzx
+         NWIxe2rX7yCkwjbWJBPNbFGdxf5dl6jpLW7+glXounv9ZyXfnWKMaXtbeJf+ZcitDOqf
+         o1EeIaIFf98cgJ07AfrlEDSyhxZm1eQbsUtLS6s5zVKr2XDCNJgUf/bnOJbUdL6P/0aD
+         IylngDTPC+BRle7SpDxh3WzV9rMXYXfN0ZTQOKYph3ecIQyQPWJydWyGIVNouU2UhaK5
+         Px8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757293794; x=1757898594;
-        h=references:to:cc:in-reply-to:date:subject:mime-version:message-id
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=VAz+B+mOkMm8Do7qT5j52EhZhmc+v/y9ZYB3bwOj5m4=;
-        b=ihrKeS6dOshty/wPvl+8wz4zXiTyMVv0gFTU7tZ99D+hHJP+mVp2SJPjSkMk11v1c1
-         I1HnvAOx2qYHLhXUdEBuF2WiZyiEKSBJ8QLyylHmK+iuzSuKDBBzW/sB6S27B5JCtpMi
-         /rU73Moh8RLegiBya49cTDAFSYG3TVQON2RuPMk5bOeCgya50MvaelWK8PjsbvVICQlM
-         Any7x25jWu0phPOQIC2e1cl78rarcLH8T+gd7Lon97/k9hm5cdgfv05XqsiucSTaGOpZ
-         dx7VJDDkTD8V30Pj1uwKC/pjkzeJRwJ2X0ZmlKden3z+Iq3/QakMgXDVOkrURs2YhEqN
-         mPUA==
-X-Forwarded-Encrypted: i=1; AJvYcCXYzGDGRwjwGLnea194qBpBttvknrV19DBGARLN/6e2g1E1xrvv4xP0/cdOGNLSDaG5COSvlkjg5A==@kvack.org
-X-Gm-Message-State: AOJu0Ywk6hluccIR7JFZzy48JJ8KHq0B9yJrVEfEPwUZ0Mpjqb293Lxp
-	SBhu7Cn4uX6Ym9f+J3/XrSCsiiVtDOFS7ZloPXuLEiamVNEB0r/e0EZ/
-X-Gm-Gg: ASbGncsa6Vrg0YpwVKWV/IDPzGxj17gWR4aiqSQbV33VBDklH2XAXgRTcZj56dOdIKH
-	ariMD2QOqUo2tT3fthte29bMTRAVjFddL+iyVKKULhaDg+a6neu3upWSJwrmmXuj+La+pifWlY9
-	/t4sdkW1H67DxMar9AwpZZ/vBumUVgsH78Id+/wfJVpBb1A2S0LHSUnloMa9cdn6sXlwAlAktKq
-	gpcis37IP6AyqTtJNNjBojU0DWvhk4KX87axPsTOVDKKi/GYq6THWqlk/J6dxG+rfHGZhWSDW8I
-	4wEyB9l4q0tvq+E02oLsDqZ0QWWvtMFfcIDh6pyNWS133VY3AwefRF0CPOfj9VowbBzVORNqQtS
-	mPrp2GGK8NHuu4SkJZTdV
-X-Google-Smtp-Source: AGHT+IEyAGBKDmt/fIerkx6WNxaQOMnvOULD42MdqjtAjFxVo1bnHJVQLeBW7q2Q4Rji9ObS/3Sdfg==
-X-Received: by 2002:a05:6a00:2d1d:b0:772:44e8:ce65 with SMTP id d2e1a72fcca58-7742df243damr9065362b3a.32.1757293793487;
-        Sun, 07 Sep 2025 18:09:53 -0700 (PDT)
-Received: from smtpclient.apple ([2407:3640:2276:6693::1])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7722a4e27d1sm27590434b3a.81.2025.09.07.18.09.48
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 07 Sep 2025 18:09:53 -0700 (PDT)
-From: wang lian <lianux.mm@gmail.com>
-Message-Id: <68DCB9F1-9BAB-44B0-826F-63F1708895D3@gmail.com>
-Content-Type: multipart/alternative;
-	boundary="Apple-Mail=_2E9CF73C-BE96-4286-9458-05A853970B80"
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH] tools/mm: Add madvise tool
-Date: Mon, 8 Sep 2025 09:09:36 +0800
-In-Reply-To: <kve7xndhm4hzaglmzrpjiw22ut3yvcyb44n3oxx7cayiglhzh7@wwpgldcgl2p3>
-Cc: Liam.Howlett@oracle.com,
- akpm@linux-foundation.org,
- david@redhat.com,
- linux-mm@kvack.org,
- lorenzo.stoakes@oracle.com,
- mhocko@suse.com,
- rppt@kernel.org,
- surenb@google.com,
- usamaarif642@gmail.com,
- vbabka@suse.cz
-To: Kiryl Shutsemau <kirill@shutemov.name>
-References: <20250904175729.1029735-1-kirill@shutemov.name>
- <20250905032613.76910-1-lianux.mm@gmail.com>
- <kve7xndhm4hzaglmzrpjiw22ut3yvcyb44n3oxx7cayiglhzh7@wwpgldcgl2p3>
-X-Mailer: Apple Mail (2.3826.700.81)
+        d=1e100.net; s=20230601; t=1757295274; x=1757900074;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3JlhVnol+judhUzzwOogW+HmLUCIc8LS+J6IJKltRJA=;
+        b=XMlhk/bpU/qT7mT5mmhVMsvHpjHMuEK7Z6Jq5nqbXqx7CtflhWpOEAUCGxHcaLSN9u
+         EqYN884yT48it2ZgIX2MQYfMoTZ9KGP0a5yygzXUUxezVyVRXUTbK5viVeE5ZAsdzM0U
+         k2kfEi6ABWs2seH7whUy+oMWNPep2/c8x/sDISq89N/VWvq5J7+CWw+ml2E+rvSwc2JC
+         h6FryQkKRdEMnSn5wU5XzU5RAiyGSpZ8nRHuma9MKMp1f3z1qCnMjslvMKruwoo8yYW4
+         Oyz1QPsLxdoVbcUznsmx5biqPKScPEbhbxq0e0vYqtP12X2iAQ1TmaQ3UKmJa8tg8oPd
+         ohhw==
+X-Forwarded-Encrypted: i=1; AJvYcCVt8vAvL4TOCjWStLhqqpl9mUeUalGnbH5lzjsJtBAYoDnFKBuUwMjN6XDcMFhD3MJpoO+Dp73sdA==@kvack.org
+X-Gm-Message-State: AOJu0Yz58Op8SYpTY+EHB/s0eypUHh5vCjkj+94hBFxT9tCV2aj77mbB
+	AVDJsK4cf5rkl4iMADUbfSDyGSxZwgusFbB9ZDLdcH1LyVdqyBe6RhzliIUoJHwfEiMsNW2+Xj7
+	1kA==
+X-Google-Smtp-Source: AGHT+IErnV8Y/Sanjw9YO0m3nEGzcg/9CpvlG17Upovdj3N1XyUdkWC1vRs0c4mbxBDPi5LS5Z2j0ehPGw==
+X-Received: from pjtd14.prod.google.com ([2002:a17:90b:4e:b0:327:50fa:eff9])
+ (user=tweek job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:530b:b0:32b:d502:6ff2
+ with SMTP id 98e67ed59e1d1-32d440d9ef6mr7330684a91.34.1757295274251; Sun, 07
+ Sep 2025 18:34:34 -0700 (PDT)
+Date: Mon,  8 Sep 2025 11:34:19 +1000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.51.0.384.g4c02a37b29-goog
+Message-ID: <20250908013419.4186627-1-tweek@google.com>
+Subject: [PATCH v2] memfd,selinux: call security_inode_init_security_anon
+From: "=?UTF-8?q?Thi=C3=A9baud=20Weksteen?=" <tweek@google.com>
+To: Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+	Stephen Smalley <stephen.smalley.work@gmail.com>, Hugh Dickins <hughd@google.com>, 
+	Jeff Vander Stoep <jeffv@google.com>, Nick Kralevich <nnk@google.com>, Jeff Xu <jeffxu@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Isaac Manjarres <isaacmanjarres@google.com>
+Cc: "=?UTF-8?q?Thi=C3=A9baud=20Weksteen?=" <tweek@google.com>, linux-kernel@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, selinux@vger.kernel.org, 
+	linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 775CF180003
+X-Stat-Signature: ndinkk8sjenwbxrm3rh1ggdqxbzxpkk4
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: C9CCE1C0005
-X-Stat-Signature: 4yzhbfz768k81i1c8rjand5on7nsj34m
-X-HE-Tag: 1757293794-536888
-X-HE-Meta: U2FsdGVkX1/JzldV0Ux8AIvde8kHubEjrQdlcbW0K5wY8gkPHeqH8CCetx4xsXAdlecjwBk8I6CCUHvJ4jETwSt638CMUFYRjZ+OylmFAnr+dQglCvJDEyHk7y416hpKcISVmjvXkYuBvLNRHbqceFYR5aWUTsyyXJsWW390XzGS6+HR9C3nJj6cCFu7sG3jWNZViFHs+BT5i9fAn8BMbqBKnNSp0iP4mXsj9nSB33b4aD8exUVb8gR0KwEPqNW8zEyb1rRVzMD+OzG84L46V9f8kYkUa6IzPk6ZVbO+tgKk10OJHupUkO+xXSfIILUFsszJKm1vwM/kizOsTVFusaCRlYaxhsCjRz2vQLTMCPspB9NeBIh/xEWw+MOeVU2lfyrhFCMznE3af1t7Eu2OIDG45n48JN1wgKqLKGVgI42KiZcoVmr4fsMX7PUS+joVd1uPX1P6dumVDXWX+dFGHRd55NZiKZEdEOYCvsayE7I8UaEMvbLEUootl9Hy3u1BjAV6nRZW3KygnsVnLa/+24puieeHxJN07WjvD2PBZSRZRHRqLWLo81SeyA2BsLx8BZ+9+wKLY1j/ZpEM0ipGdXl21TaazsKSuSBlQA6dOUs5uXb7DVp3dWvzjZPFNmCFv98txyoM0F9RpY3FvEUYP7xp8y1sN30h3/eL67eFs16/j17pzKg5NnLL/OLANMvKteC7ttn6xQ0aAIZWMWh+TfzD5pXhra1A12sMnxCqiFrN1gwZFDImd+V8IJwuehOapZHUql9WVVuTzMdbYxofBg/+SCWUvH7Gfp62U+gCA/VJumhPZyYTdO2vI+cvfVcvawluz9+uHGO4upRsecgJVnjziFrz+u8wHz+qvx0fcMztC145wwBBznNUQTnCgmdaVhLvhEHLNqxuIjEkJruNPTJfcQnZ+pFrepPdn7vVPPsVXzW7IrILMIiyHEMIck40VPLHiuEhMl/MebPRFvy
- j1dSRJ4n
- qLO3O8p7KpqtTCs6BCJSpXkAcm+pxXQ9S7rr/4HPbT/buuT+qZHnXCqsdOG+xVD4NDyVqZmKilf//6+npwJy9JNS68rGJlRFblUKxO6zUHAZD/l0xTY3LuXYidF9zEwy8GxKnm/AxnZeJUvf6kQsVqL/yBO3gcthyjJiSQ9ZG7Lr5fqhHk7azMpJXv1FEzMIkExdL3rl5mNTl6FwuG1VnPjseeYcJeFnmh2I/Bf/4qy5UNfRerpBwzPgsClRH4fRLQt6kNXPSn2o5HAUpDOSU5e64l1paysTsAuvTzzz6FhqSdE3VSk5qyjKwisBKFF2J4J8xfQgA1On40BFOlKvzZmhkZVstLjcSt1OE8LwaAjbZa7XrO3q/oTvzr8yKEyAeJwFxlVurQhEaGc0AbdwUkgAHg7/nzaeSLhayaHA812ASKNJur4h5rVT9hy0CyfuKqSFjTQ0gYt1EBSvpW5YK7OSKZmkyaN/m8H3Fb1Kd218b4zOyu6+0vw36iKMDXqNBBc6JdKEvQyS9hix9dRjcxbS7Ec6F5WxxAuH1UpCazhknppNAVvYrxUMp2Lif+1KKkHN42XC8PsulVi0mxyBE6/Xy3Xy9G7vTbIEcYgJCKb4LdCDVu3ywOD4fqVPFVrzdchFQ/L9ycwbcB13zlu8eTS2X+Q==
+X-HE-Tag: 1757295275-452517
+X-HE-Meta: U2FsdGVkX19fGtIu4mIJTF/F5aHqD/9B1zSnCDjKWKqctwqibGdvCgxkIE/pse4M8F6oFpacB2nC+cO2t0uArlU03FNHbbiOCvLNI/EqiYu7m/UbHdR6UytJMdhC5eSi4lvO8n4vmlCKEY2D1cJHwb8CMD0mEtGX6pHgGN1whjdTk3PZjewDRxpKt5JlQ41O15yx9WeJJhqsbzijHCzdTT85x5wza9JMvVbhIcv6Nsc+pX/VJsiCGHbynFBr/5ID9YIXdNrB7840ExzqPWDnPvKTbaEffqw81U4opTypIRj1zq9kINbNjBFa6p1E3lcV5BUU4lHZY6Jfw0gvn4iXUoPDFO3kJUYRFNnXRSbTRjF03Q0Aqw+r/k8+V0ZHF24dhpOCyqslebB+C9Q6Sp+zaLA4cqx0NEN6K0cftN9j+3vTqNCMC/E+IhyF2ZWjhfkzoniF5HLQBwz++ZrKpq8HYI9K/73wRGENtsTBDJVXlJu+Au6veKU366D+++ye6SbhEPgNAM7zI5n/YXJ8QJ89jZvD0v3dPFiZOQCF9t2+SKnfNkZ7OGkXdWAFkReRfQ0mjb8G7jOqAyiKn4fmkPmplRxqeTfKy8chGNVnKcNBbET7JfH0IPy1OKKMiPJg1Q/51kPDcTDhiE6eagcR4JfJGQ9LiC2rOETKbMwZPInr9Bun+tokLwvKbHYxvm77aevAR0MLr6N5xG9ytuIabkilJo3ML8X4XQz6NWW8D7YNuHAmekG7fIN1O6xR40DAFI7Bi0u049JXsUrC1jhX7Vg5szT23jM4Xi5oopy71wn+XjhL8+twfTj4jFB6tqPYudz1zMMmsKJvg2eVUg6TGzRL0pP7QqJrCzxT51lxu3JVsIfYPaJ1Krj+fnceJXpBFMvg+kU49nDDPG9rv6k/46sowb10OubVaWW4CY5/fToxq9nPNPVDnfMrhTqqlV9RhcpIOxWbhBTPOyzf647i/ek
+ NjYI0pZq
+ MyLdtK2JHFJB8ptqWl/JdQYTVngCs7DvNv+ClUvpVd/fFwHWGKyEk5XBqYnUPSL8KijzwpuEwLImr6yDyztt9rPoEexvnHI/Xwre4XOHADAwsw6+eCb2U6fpmk6qNA8QP+vh3eXVj0Xzzy1G5m0BxzP//c1G8JASwvU4pe51/EZmDY1SDdQW5nYtsfq++1jEf7CQY9kIWcWsosj0ADsq3CPs/8HQzoqcJtg1VtK6N6GUkOM5KHE2crcm2Vii4va961CaOIhcQ90nUt2HnbXU3Zy1quvUniwmMpLCzTZrazRWRcNNo+hV0KUvMAOyGop4N7EXhOdbDWJZXuWyX0iUWrV1yAMjr56GokbJmqUwkyxs0qITWsxhsXsn1K6uBsPagyKP+DXdTQ2h1acxyq8NTyh6azRsIMFEVD6bfmBzMdRZdAi2Pmaikvd6slg6kMHFDkHgjNl3CSAsH2CxbXxRuDwXrWodaCPM80ZeSjD4pwzIULtOIZqzwz48W5eqkWtm3NhbCt2AAV8gGn0MOqNu1y2q+jXbleJc0FGOuyV0B3iwOa9w1KsGXJOjnVpQM10o8A8vFNRk6oYFO/CXobL20h3W4EPVgWiH9dJef7alGGyPj8oUwTg72+xGGOL0fPTOBMHlpjLv4Bvc4oVMDVZ6cEHLFAB49rHnnypHIh163Kbpf16hJg0FyFJaGcqrU3o4LhS6BLb+bfhkXjqqW9LvmbzSe5jL4+G32B1Atefj+qecrIAoG/QyNCcnj/YxNjEzYnPZnlgNPKNx03endD/2jdklcu64wmoVB4I1O8Z7wHSiHZ4j6dkBoe404GW6VN3KVjQx1QBHO7fZDIvbL6+WUsxtNPLAeywY6O9t9iEtjf1m92nc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,261 +113,253 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Prior to this change, no security hooks were called at the creation of a
+memfd file. It means that, for SELinux as an example, it will receive
+the default type of the filesystem that backs the in-memory inode. In
+most cases, that would be tmpfs, but if MFD_HUGETLB is passed, it will
+be hugetlbfs. Both can be considered implementation details of memfd.
 
---Apple-Mail=_2E9CF73C-BE96-4286-9458-05A853970B80
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain;
-	charset=us-ascii
+It also means that it is not possible to differentiate between a file
+coming from memfd_create and a file coming from a standard tmpfs mount
+point.
 
+Additionally, no permission is validated at creation, which differs from
+the similar memfd_secret syscall.
 
+Call security_inode_init_security_anon during creation. This ensures
+that the file is setup similarly to other anonymous inodes. On SELinux,
+it means that the file will receive the security context of its task.
 
-> On Sep 5, 2025, at 18:28, Kiryl Shutsemau <kirill@shutemov.name> =
-wrote:
->=20
-> On Fri, Sep 05, 2025 at 11:26:13AM +0800, wang lian wrote:
->>=20
->>> Add a simple tool that allows to issue an advice on a process or a =
-file.
->>=20
->>> It can be useful to experiment with effects of an advice on a =
-workload
->>> without modifying the workload itself.
->>=20
->>> Only supports advices available for process_madvise().
->>=20
->>> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
->>> ---
->>=20
->> ...
->>> +#define PMD_SIZE_FILE_PATH =
-"/sys/kernel/mm/transparent_hugepage/hpage_pmd_size"
->>=20
->> Hi Kiryl,
->>=20
->> Thanks for this patch, this is a very nice and useful tool.
->>=20
->> I just have some super minor nitpick on coding style:
->> (a) Maybe move the #define PMD_SIZE_FILE_PATH to the top of the file,=20=
+The ability to limit fexecve on memfd has been of interest to avoid
+potential pitfalls where /proc/self/exe or similar would be executed
+[1][2]. Reuse the "execute_no_trans" and "entrypoint" access vectors,
+similarly to the file class. These access vectors may not make sense for
+the existing "anon_inode" class. Therefore, define and assign a new
+class "memfd_file" to support such access vectors.
 
->> right after the #include statements?
->=20
-> Maybe. Will do if v2 is required.
->=20
->> (b) use consistent comment style like this /* */=20
->=20
-> See answer to David.
->=20
->> (c) when i test, when process_madvise test fail it give some message,
->> i think it should add into in the prompt message ,like this=20
->>> printf("madvise TARGET ADVICE START END\n\n");
->> printf("should run as root\n\n");
->> printf("\t\tStart and end addressed for the advice. Must be =
-page-aligned and valid target pid address.\n\n");
->=20
-> It doesn't need root. If your target is PID, it requires the target
-> process to be ptraceable for you. Whether it is or not depending on =
-your
-> setup.
+Guard these changes behind a new policy capability named "memfd_class".
 
-Thanks for your clarify.
->=20
->> Other than that, the patch looks great to me.
->> LGTM!
->> Reviewed-by: wang lian <lianux.mm@gmail.com =
-<mailto:lianux.mm@gmail.com>>
->> Tested-by: wang lian <lianux.mm@gmail.com =
-<mailto:lianux.mm@gmail.com>>
->>=20
->> Best regards,
->> wang lian
->=20
-> --=20
->  Kiryl Shutsemau / Kirill A. Shutemov
+[1] https://crbug.com/1305267
+[2] https://lore.kernel.org/lkml/20221215001205.51969-1-jeffxu@google.com/
 
+Signed-off-by: Thi=C3=A9baud Weksteen <tweek@google.com>
+Acked-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+Tested-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+---
+Changes since v1:
+- Move test of class earlier in selinux_bprm_creds_for_exec
+- Remove duplicate call to security_transition_sid
 
---Apple-Mail=_2E9CF73C-BE96-4286-9458-05A853970B80
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/html;
-	charset=us-ascii
+Changes since RFC:
+- Remove enum argument, simply compare the anon inode name
+- Introduce a policy capability for compatility
+- Add validation of class in selinux_bprm_creds_for_exec
 
-<html><head><meta http-equiv=3D"content-type" content=3D"text/html; =
-charset=3Dus-ascii"></head><body style=3D"overflow-wrap: break-word; =
--webkit-nbsp-mode: space; line-break: after-white-space;"><br =
-id=3D"lineBreakAtBeginningOfMessage"><div><br><blockquote =
-type=3D"cite"><div>On Sep 5, 2025, at 18:28, Kiryl Shutsemau =
-&lt;kirill@shutemov.name&gt; wrote:</div><br =
-class=3D"Apple-interchange-newline"><div><meta charset=3D"UTF-8"><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
-12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline !important;">On Fri, Sep 05, 2025 at 11:26:13AM +0800, =
-wang lian wrote:</span><br style=3D"caret-color: rgb(0, 0, 0); =
-font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;"><blockquote type=3D"cite" style=3D"font-family: =
-Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
-normal; font-weight: 400; letter-spacing: normal; orphans: auto; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; widows: auto; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;"><br><blockquote type=3D"cite">Add a simple tool =
-that allows to issue an advice on a process or a =
-file.<br></blockquote><br><blockquote type=3D"cite">It can be useful to =
-experiment with effects of an advice on a workload<br>without modifying =
-the workload itself.<br></blockquote><br><blockquote type=3D"cite">Only =
-supports advices available for =
-process_madvise().<br></blockquote><br><blockquote =
-type=3D"cite">Signed-off-by: Kiryl Shutsemau =
-&lt;kas@kernel.org&gt;<br>---<br></blockquote><br>...<br><blockquote =
-type=3D"cite">+#define PMD_SIZE_FILE_PATH =
-"/sys/kernel/mm/transparent_hugepage/hpage_pmd_size"<br></blockquote><br>H=
-i Kiryl,<br><br>Thanks for this patch, this is a very nice and useful =
-tool.<br><br>I just have some super minor nitpick on coding =
-style:<br>(a) Maybe move the #define PMD_SIZE_FILE_PATH to the top of =
-the file,<span class=3D"Apple-converted-space">&nbsp;</span><br>right =
-after the #include statements?<br></blockquote><br style=3D"caret-color: =
-rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: =
-normal; font-variant-caps: normal; font-weight: 400; letter-spacing: =
-normal; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;"><span style=3D"caret-color: rgb(0, 0, 0); =
-font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none; float: none; display: inline !important;">Maybe. =
-Will do if v2 is required.</span><br style=3D"caret-color: rgb(0, 0, 0); =
-font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;"><br style=3D"caret-color: rgb(0, 0, 0); =
-font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;"><blockquote type=3D"cite" style=3D"font-family: =
-Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
-normal; font-weight: 400; letter-spacing: normal; orphans: auto; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; widows: auto; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;">(b) use consistent comment style like this /* =
-*/<span class=3D"Apple-converted-space">&nbsp;</span><br></blockquote><br =
-style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
-12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
-12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline !important;">See answer to David.</span><br =
-style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
-12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><br =
-style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
-12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><blockquote =
-type=3D"cite" style=3D"font-family: Helvetica; font-size: 12px; =
-font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; orphans: auto; text-align: start; text-indent: =
-0px; text-transform: none; white-space: normal; widows: auto; =
-word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
-none;">(c) when i test, when process_madvise test fail it give some =
-message,<br>i think it should add into in the prompt message ,like =
-this<span class=3D"Apple-converted-space">&nbsp;</span><br><blockquote =
-type=3D"cite">printf("madvise TARGET ADVICE START =
-END\n\n");<br></blockquote>printf("should run as =
-root\n\n");<br>printf("\t\tStart and end addressed for the advice. Must =
-be page-aligned and valid target pid address.\n\n");<br></blockquote><br =
-style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
-12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
-12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline !important;">It doesn't need root. If your target is =
-PID, it requires the target</span><br style=3D"caret-color: rgb(0, 0, =
-0); font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;"><span style=3D"caret-color: rgb(0, 0, 0); =
-font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none; float: none; display: inline !important;">process =
-to be ptraceable for you. Whether it is or not depending on =
-your</span><br style=3D"caret-color: rgb(0, 0, 0); font-family: =
-Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
-normal; font-weight: 400; letter-spacing: normal; text-align: start; =
-text-indent: 0px; text-transform: none; white-space: normal; =
-word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
-none;"><span style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; =
-font-size: 12px; font-style: normal; font-variant-caps: normal; =
-font-weight: 400; letter-spacing: normal; text-align: start; =
-text-indent: 0px; text-transform: none; white-space: normal; =
-word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
-none; float: none; display: inline !important;">setup.</span><br =
-style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
-12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: =
-none;"></div></blockquote><br>Thanks for your clarify.<br><blockquote =
-type=3D"cite"><div><br style=3D"caret-color: rgb(0, 0, 0); font-family: =
-Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
-normal; font-weight: 400; letter-spacing: normal; text-align: start; =
-text-indent: 0px; text-transform: none; white-space: normal; =
-word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
-none;"><blockquote type=3D"cite" style=3D"font-family: Helvetica; =
-font-size: 12px; font-style: normal; font-variant-caps: normal; =
-font-weight: 400; letter-spacing: normal; orphans: auto; text-align: =
-start; text-indent: 0px; text-transform: none; white-space: normal; =
-widows: auto; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;">Other than that, the patch looks great to =
-me.<br>LGTM!<br>Reviewed-by: wang lian &lt;<a =
-href=3D"mailto:lianux.mm@gmail.com">lianux.mm@gmail.com</a>&gt;<br>Tested-=
-by: wang lian &lt;<a =
-href=3D"mailto:lianux.mm@gmail.com">lianux.mm@gmail.com</a>&gt;<br><br>Bes=
-t regards,<br>wang lian<br></blockquote><br style=3D"caret-color: rgb(0, =
-0, 0); font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;"><span style=3D"caret-color: rgb(0, 0, 0); =
-font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none; float: none; display: inline !important;">--<span =
-class=3D"Apple-converted-space">&nbsp;</span></span><br =
-style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
-12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
-12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline !important;">&nbsp;Kiryl Shutsemau / Kirill A. =
-Shutemov</span></div></blockquote></div><br></body></html>=
+ include/linux/memfd.h                      |  2 ++
+ mm/memfd.c                                 | 14 ++++++++++--
+ security/selinux/hooks.c                   | 26 +++++++++++++++++-----
+ security/selinux/include/classmap.h        |  2 ++
+ security/selinux/include/policycap.h       |  1 +
+ security/selinux/include/policycap_names.h |  1 +
+ security/selinux/include/security.h        |  5 +++++
+ 7 files changed, 44 insertions(+), 7 deletions(-)
 
---Apple-Mail=_2E9CF73C-BE96-4286-9458-05A853970B80--
+diff --git a/include/linux/memfd.h b/include/linux/memfd.h
+index 6f606d9573c3..cc74de3dbcfe 100644
+--- a/include/linux/memfd.h
++++ b/include/linux/memfd.h
+@@ -4,6 +4,8 @@
+=20
+ #include <linux/file.h>
+=20
++#define MEMFD_ANON_NAME "[memfd]"
++
+ #ifdef CONFIG_MEMFD_CREATE
+ extern long memfd_fcntl(struct file *file, unsigned int cmd, unsigned int =
+arg);
+ struct folio *memfd_alloc_folio(struct file *memfd, pgoff_t idx);
+diff --git a/mm/memfd.c b/mm/memfd.c
+index bbe679895ef6..63b439eb402a 100644
+--- a/mm/memfd.c
++++ b/mm/memfd.c
+@@ -433,6 +433,8 @@ static struct file *alloc_file(const char *name, unsign=
+ed int flags)
+ {
+ 	unsigned int *file_seals;
+ 	struct file *file;
++	struct inode *inode;
++	int err =3D 0;
+=20
+ 	if (flags & MFD_HUGETLB) {
+ 		file =3D hugetlb_file_setup(name, 0, VM_NORESERVE,
+@@ -444,12 +446,20 @@ static struct file *alloc_file(const char *name, unsi=
+gned int flags)
+ 	}
+ 	if (IS_ERR(file))
+ 		return file;
++
++	inode =3D file_inode(file);
++	err =3D security_inode_init_security_anon(inode,
++			&QSTR(MEMFD_ANON_NAME), NULL);
++	if (err) {
++		fput(file);
++		file =3D ERR_PTR(err);
++		return file;
++	}
++
+ 	file->f_mode |=3D FMODE_LSEEK | FMODE_PREAD | FMODE_PWRITE;
+ 	file->f_flags |=3D O_LARGEFILE;
+=20
+ 	if (flags & MFD_NOEXEC_SEAL) {
+-		struct inode *inode =3D file_inode(file);
+-
+ 		inode->i_mode &=3D ~0111;
+ 		file_seals =3D memfd_file_seals_ptr(file);
+ 		if (file_seals) {
+diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+index c95a5874bf7d..6adf2f393ed9 100644
+--- a/security/selinux/hooks.c
++++ b/security/selinux/hooks.c
+@@ -93,6 +93,7 @@
+ #include <linux/fanotify.h>
+ #include <linux/io_uring/cmd.h>
+ #include <uapi/linux/lsm.h>
++#include <linux/memfd.h>
+=20
+ #include "avc.h"
+ #include "objsec.h"
+@@ -2315,6 +2316,9 @@ static int selinux_bprm_creds_for_exec(struct linux_b=
+inprm *bprm)
+ 	new_tsec =3D selinux_cred(bprm->cred);
+ 	isec =3D inode_security(inode);
+=20
++	if (isec->sclass !=3D SECCLASS_FILE && isec->sclass !=3D SECCLASS_MEMFD_F=
+ILE)
++		return -EPERM;
++
+ 	/* Default to the current task SID. */
+ 	new_tsec->sid =3D old_tsec->sid;
+ 	new_tsec->osid =3D old_tsec->sid;
+@@ -2366,9 +2370,10 @@ static int selinux_bprm_creds_for_exec(struct linux_=
+binprm *bprm)
+ 	ad.type =3D LSM_AUDIT_DATA_FILE;
+ 	ad.u.file =3D bprm->file;
+=20
++
+ 	if (new_tsec->sid =3D=3D old_tsec->sid) {
+-		rc =3D avc_has_perm(old_tsec->sid, isec->sid,
+-				  SECCLASS_FILE, FILE__EXECUTE_NO_TRANS, &ad);
++		rc =3D avc_has_perm(old_tsec->sid, isec->sid, isec->sclass,
++				  FILE__EXECUTE_NO_TRANS, &ad);
+ 		if (rc)
+ 			return rc;
+ 	} else {
+@@ -2378,8 +2383,8 @@ static int selinux_bprm_creds_for_exec(struct linux_b=
+inprm *bprm)
+ 		if (rc)
+ 			return rc;
+=20
+-		rc =3D avc_has_perm(new_tsec->sid, isec->sid,
+-				  SECCLASS_FILE, FILE__ENTRYPOINT, &ad);
++		rc =3D avc_has_perm(new_tsec->sid, isec->sid, isec->sclass,
++				  FILE__ENTRYPOINT, &ad);
+ 		if (rc)
+ 			return rc;
+=20
+@@ -2974,10 +2979,18 @@ static int selinux_inode_init_security_anon(struct =
+inode *inode,
+ 	struct common_audit_data ad;
+ 	struct inode_security_struct *isec;
+ 	int rc;
++	bool is_memfd =3D false;
+=20
+ 	if (unlikely(!selinux_initialized()))
+ 		return 0;
+=20
++	if (name !=3D NULL && name->name !=3D NULL &&
++	    !strcmp(name->name, MEMFD_ANON_NAME)) {
++		if (!selinux_policycap_memfd_class())
++			return 0;
++		is_memfd =3D true;
++	}
++
+ 	isec =3D selinux_inode(inode);
+=20
+ 	/*
+@@ -2997,7 +3010,10 @@ static int selinux_inode_init_security_anon(struct i=
+node *inode,
+ 		isec->sclass =3D context_isec->sclass;
+ 		isec->sid =3D context_isec->sid;
+ 	} else {
+-		isec->sclass =3D SECCLASS_ANON_INODE;
++		if (is_memfd)
++			isec->sclass =3D SECCLASS_MEMFD_FILE;
++		else
++			isec->sclass =3D SECCLASS_ANON_INODE;
+ 		rc =3D security_transition_sid(
+ 			sid, sid,
+ 			isec->sclass, name, &isec->sid);
+diff --git a/security/selinux/include/classmap.h b/security/selinux/include=
+/classmap.h
+index 5665aa5e7853..3ec85142771f 100644
+--- a/security/selinux/include/classmap.h
++++ b/security/selinux/include/classmap.h
+@@ -179,6 +179,8 @@ const struct security_class_mapping secclass_map[] =3D =
+{
+ 	{ "anon_inode", { COMMON_FILE_PERMS, NULL } },
+ 	{ "io_uring", { "override_creds", "sqpoll", "cmd", "allowed", NULL } },
+ 	{ "user_namespace", { "create", NULL } },
++	{ "memfd_file",
++	  { COMMON_FILE_PERMS, "execute_no_trans", "entrypoint", NULL } },
+ 	/* last one */ { NULL, {} }
+ };
+=20
+diff --git a/security/selinux/include/policycap.h b/security/selinux/includ=
+e/policycap.h
+index 7405154e6c42..dabcc9f14dde 100644
+--- a/security/selinux/include/policycap.h
++++ b/security/selinux/include/policycap.h
+@@ -17,6 +17,7 @@ enum {
+ 	POLICYDB_CAP_NETLINK_XPERM,
+ 	POLICYDB_CAP_NETIF_WILDCARD,
+ 	POLICYDB_CAP_GENFS_SECLABEL_WILDCARD,
++	POLICYDB_CAP_MEMFD_CLASS,
+ 	__POLICYDB_CAP_MAX
+ };
+ #define POLICYDB_CAP_MAX (__POLICYDB_CAP_MAX - 1)
+diff --git a/security/selinux/include/policycap_names.h b/security/selinux/=
+include/policycap_names.h
+index d8962fcf2ff9..8e96f2a816b6 100644
+--- a/security/selinux/include/policycap_names.h
++++ b/security/selinux/include/policycap_names.h
+@@ -20,6 +20,7 @@ const char *const selinux_policycap_names[__POLICYDB_CAP_=
+MAX] =3D {
+ 	"netlink_xperm",
+ 	"netif_wildcard",
+ 	"genfs_seclabel_wildcard",
++	"memfd_class",
+ };
+ /* clang-format on */
+=20
+diff --git a/security/selinux/include/security.h b/security/selinux/include=
+/security.h
+index 8201e6a3ac0f..72c963f54148 100644
+--- a/security/selinux/include/security.h
++++ b/security/selinux/include/security.h
+@@ -209,6 +209,11 @@ static inline bool selinux_policycap_netif_wildcard(vo=
+id)
+ 		selinux_state.policycap[POLICYDB_CAP_NETIF_WILDCARD]);
+ }
+=20
++static inline bool selinux_policycap_memfd_class(void)
++{
++	return READ_ONCE(selinux_state.policycap[POLICYDB_CAP_MEMFD_CLASS]);
++}
++
+ struct selinux_policy_convert_data;
+=20
+ struct selinux_load_state {
+--=20
+2.51.0.384.g4c02a37b29-goog
+
 
