@@ -4,125 +4,183 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07B25CAC582
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 20:30:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 233C9CA1016
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 20:32:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 661368E0015; Mon,  8 Sep 2025 16:30:11 -0400 (EDT)
+	id 814018E0014; Mon,  8 Sep 2025 16:32:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5EABE8E0014; Mon,  8 Sep 2025 16:30:11 -0400 (EDT)
+	id 79D638E0005; Mon,  8 Sep 2025 16:32:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D9B08E0015; Mon,  8 Sep 2025 16:30:11 -0400 (EDT)
+	id 665888E0014; Mon,  8 Sep 2025 16:32:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 376B68E0014
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 16:30:11 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B27321DB8D1
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 20:30:10 +0000 (UTC)
-X-FDA: 83867224980.06.7853991
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	by imf22.hostedemail.com (Postfix) with ESMTP id C1AA1C0011
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 20:30:08 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=wV5Ktmdv;
-	spf=pass (imf22.hostedemail.com: domain of yepeilin@google.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=yepeilin@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 53D588E0005
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 16:32:32 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0B0F9B6ED0
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 20:32:32 +0000 (UTC)
+X-FDA: 83867230944.15.A4B6938
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf18.hostedemail.com (Postfix) with ESMTP id A3B7F1C000F
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 20:32:29 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=S6KWrXwD;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf18.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757363549; a=rsa-sha256;
+	cv=none;
+	b=bvEnalfO3xjoe8AwrSw6A0pWofvQXrSw3cGGzGY8dCzJgNWqmBIaWZTkfRIh80RxVTl5KI
+	vSxqJH1Z15a+ALTRZSyvHo0R0lSamlKPRA6y2l+B7x6CHr5r+/meBgKan4x592yfOTCxR/
+	aXumHI8QphIWDnU1xpb4ZeURqQSpcmM=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=S6KWrXwD;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf18.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757363408;
+	s=arc-20220608; t=1757363549;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2Xh08NSX4A9iDLxHadhJ28F/iw7t67A2KAZWkf6OgAY=;
-	b=5prOCc3xfP1F18NpeUhBUB26q5ohUOPbG5YURDJvGG3e0SRtyohGSmACqm8taNF3GHQRGG
-	C7S2430zJXeOB0UrM1tKMEcu+uYmLghmCWa/IyNxE3T4/zcZqaN1B3YxUSRMOkR/0YJy8v
-	3RxQaAZPxIdFMc38AcaiOMi6/7TawXs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757363408; a=rsa-sha256;
-	cv=none;
-	b=pHXdAkbwtt5d8HBS9JyqXKlD4ccbaUN4BeoSEnOtrtVkgOw7qGyfYLHlx2T1eb+O4gBnnM
-	tAAOvi9aUjr3bIbZxEn8pqREbKKrjwb7r8OVStKiWNLc5RKMXv65rlAg57dr/gt8tBUACt
-	hswqD5eUnxlJOpEwt2zKWQjs/p0kojQ=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=wV5Ktmdv;
-	spf=pass (imf22.hostedemail.com: domain of yepeilin@google.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=yepeilin@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-24b2d018f92so488865ad.1
-        for <linux-mm@kvack.org>; Mon, 08 Sep 2025 13:30:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757363407; x=1757968207; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2Xh08NSX4A9iDLxHadhJ28F/iw7t67A2KAZWkf6OgAY=;
-        b=wV5KtmdvgGg12dULy2jNs6YuKKMGi4L7E7tSdNng3ycOLZ3vUVQxLgMNlPDMOuZVri
-         +g4OQrjN1WagHSjJlfuMNTXfhe00tMnqv8LfqwurDUiBBiB7BSmbVcNkexrbuy0Y2mbb
-         grG2lHUQJVHBYEMjl08WPefJlv97RiznWjbIoNPPcbDdin1q1KSLupwoRexPsP6qGpkv
-         4yOLiBNJiE7/6j2HJX8mQ7OelJ2NeP3cW48QFHVmVOYOqMC89F8JmqV3az04OTYT8AkP
-         xwKKU+1ILNubqRuhPwO6ToWo+fSDgl/o0Nb5RuSftWakxOGP5O9YionqNZrFE2WSGC4v
-         z7uw==
+	bh=1ybgcdEsM9ns8A+Pl8rfnblzohG3wZoz4Ud/GugpTAQ=;
+	b=jOIsGyDMJJQlhGClTPIwuESVDfqwVwMlM3kkm4aBeW9kzZRk4sBPscJoCtnSWCsm5DyJfi
+	RzbGo3xGbLLPpABJwvFybGrHZycFBmXJ6LWY0pfrjdVbFwrUtPDO9rrN47/XDn2SlGa2g1
+	xmhZp5JvXIPNaRPRQCpfGVobm8dJztM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1757363549;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=1ybgcdEsM9ns8A+Pl8rfnblzohG3wZoz4Ud/GugpTAQ=;
+	b=S6KWrXwDHCRMNk7D1LNBvI0bKLRCREWwZKxOJ6Nlz+jg8kpRJhukoV4WFW4LJlxXN1XfhT
+	FUT1Y9aGUkDf9rmN62IVVIUFhdeT6wXS/Kx6I7gzAtIFl397gkz9qJkTIVcx+nO1O3Ef8r
+	9GzeEHpBW4zPGHI+hrV4Z3JM+XGBuS8=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-606-WKA-K-SjN_CGNsl0bJB-aQ-1; Mon, 08 Sep 2025 16:32:27 -0400
+X-MC-Unique: WKA-K-SjN_CGNsl0bJB-aQ-1
+X-Mimecast-MFC-AGG-ID: WKA-K-SjN_CGNsl0bJB-aQ_1757363546
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3db4cfcc23eso2503164f8f.3
+        for <linux-mm@kvack.org>; Mon, 08 Sep 2025 13:32:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757363407; x=1757968207;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2Xh08NSX4A9iDLxHadhJ28F/iw7t67A2KAZWkf6OgAY=;
-        b=IZG82v7cPgXgwUhmlaw1j5xtKTjhjtGateWpDDayned1oCGD+9KP9823x0KC7nXMMA
-         /atrj6KWLPTdMDm6nmLT00RlqVTcjb2n1MC5/PAN8ZddpSzhpQqDpXtPOwPQr+HItgfh
-         a8cdPLemsovXIZeHaoJgFlwhFdT6jwjDGtyK2Zt/96WkGfvLPnkl+gnNpm3M1uPAcULG
-         oqTmx8/YK5Ja2hn5wZqax4yZEy/hK/Z8UPDHWs+O5mGA+56FX+GKljmlpxUv02MCX/rm
-         myQ/2bf4nTkapeo1qVPW0Ij7niphSXDzccRhgPTtjjSceXiDVFv5lP62pMWLkIsc8Fuq
-         MYlA==
-X-Forwarded-Encrypted: i=1; AJvYcCXteEBzrohQCz4nqZCETTY4K4hq6pzOFwha6qaPMljolO3er9Jhfn24Pwd5beOA4S7TlX3yY/27cQ==@kvack.org
-X-Gm-Message-State: AOJu0YyY0mocjK9P1d2tdgji3gDQJAcMsgjKWAHqpwmqr7oMC4UdfykF
-	qbKL69N/IDHCl2CRkrzbWHfUflcKJOex+9CEe9sidtKW9efqUD5eFX1MVUqpWo1ByA==
-X-Gm-Gg: ASbGncusS5dkRKR+vmJy3+nW+0bbkjBZRarEjIaF+vS9ilqeQHvESdQpP6GkgdC3fke
-	qkYoulPzAsJ2xO2Su73jRUWUQegdTTnsU5dxGwYwPSHmsfaa46KdAA2EoDc5dR0R1W3ls6oXKWU
-	+lgIPbAsUthBPcx9bVBigbYAH8uq4lfS4vGM14Mp1mHyMuvv4j2Hn3/xUUq+Jyn1XGJDPu/VBTr
-	F4I7jZijGeVrjevVJKwwzYMez5oean7KcQM43/1Z1jfCEaQ1UndJtYID2p8T+hFams3v21sxlRS
-	Yc4iU6m21/sfhiOqx0rRbifDPrSoWE6O1TTy8h3Z8xBLzHG0dl2QP76e7BYK3l0vORr/rYRXD3S
-	eyZbCheMidY7/Ywb5Fgp4C9gZpbflMLrTk+KY45jKKTRnxRpyK8s4zsGU44YX
-X-Google-Smtp-Source: AGHT+IGAWt4InVNzIi+WTQd6F+c7wQ1SHfRY8vuJuaoIGxDjMz6TdxO28y6tB5fzmWEprBGtBzvINA==
-X-Received: by 2002:a17:903:186:b0:24c:863a:4ccc with SMTP id d9443c01a7336-25114efbaaamr7841185ad.4.1757363407285;
-        Mon, 08 Sep 2025 13:30:07 -0700 (PDT)
-Received: from google.com (132.192.16.34.bc.googleusercontent.com. [34.16.192.132])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-32b9be55c1esm13070183a91.9.2025.09.08.13.30.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Sep 2025 13:30:06 -0700 (PDT)
-Date: Mon, 8 Sep 2025 20:30:01 +0000
-From: Peilin Ye <yepeilin@google.com>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: bpf@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>, Tejun Heo <tj@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>,
-	Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Josh Don <joshdon@google.com>, Barret Rhoden <brho@google.com>,
-	linux-mm@kvack.org
-Subject: Re: [PATCH bpf] bpf/helpers: Use __GFP_HIGH instead of GFP_ATOMIC in
- __bpf_async_init()
-Message-ID: <aL88ydkqeVpLKeRz@google.com>
-References: <20250905234547.862249-1-yepeilin@google.com>
- <b634rejnvxqu6knjqlijosxrcnxbbpagt4de4pl6env6dwldz2@hoofqufparh5>
+        d=1e100.net; s=20230601; t=1757363546; x=1757968346;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1ybgcdEsM9ns8A+Pl8rfnblzohG3wZoz4Ud/GugpTAQ=;
+        b=MvDxquamQ0i24RYiPkJYsm5ZWjTZ+nA0ZtKKWr3+vkyf4FJU5kDq7p8kH8FUT3luQA
+         O1hw39nPsPp6ZIZ1v74934s/fMWv7IwRy0lNVc6i/0qYuZUsYbzkuzn7m3RPu4VxVJat
+         Xau0eiZSoEkvn5i0wIQX8sC2erG6rm13z2llBD3gVxecCOfffEY+b0TeIJ0sqrHiNaUh
+         iBInaBq8HjFaQ+Xgw//Q70iOpQHgsmseeNhodnuWW1zVt9Z8JSh+5cB0goPFEmH36eXX
+         ybqUgx6dxwOTqgEPMZQ/xs16+y5yT7OJIKmtI3arErtfwUfT2MGEYErGMlVbl9Km8qUe
+         dJzA==
+X-Forwarded-Encrypted: i=1; AJvYcCWVHPsRxi/7PamifTYyQKPJmSjatB8Qtb3eDiSUOw7I6Fab99EHKljjaONOI4zUOaV3RJnpS9Wf2Q==@kvack.org
+X-Gm-Message-State: AOJu0YwQdsNlUeGnkclkLoZCgbArwnzjV16dtCdpphS+W/D8USpPdS6+
+	cwgCsBa7KnpJ8emvmQWPCvSlNfNZEiRSLsDDuQHV2REF8sanmfcooX0O8iCC+KWXafM+W2YuKiZ
+	6zds9MOb0X1/gwxi4dTO5p7Vl58dvnijD5wYnYDwJ0erPfveCwPGy
+X-Gm-Gg: ASbGnctXOEwVBybx2caECLUQjhxK0+nh1fuYdP6JEhyxzj8sCYAhfbFkWOmicDdA1Cm
+	XG3gIz3bwIzca0VPRJiLAd1Z3jhscZeBjFyN4hFpQWuRQcFE2nzm4vOdQXNUrqpMHxLPVtEd1JB
+	swml1YV1QHdYx0A5XZv1rowU40Rf2dsLaVR7x4NTTm8+sU3fkw9dW4n233QD0adMvlhERNHA//l
+	ArCKQTiSvsR3cU49IlT7wH4RqAuEFnysE9Ewc12DiAxTLYk8JXQugwhUO7PWo4Ep3g7Az0/8o6C
+	OhMB8hnUBv0GTZ9fdLGMbi1Tta/YXfW5tMWfKOqFa3iiSyL+AaQBYkIrz0RjsxL3qbeKsRY=
+X-Received: by 2002:a05:6000:40da:b0:3e2:b2f0:6e57 with SMTP id ffacd0b85a97d-3e642f91589mr8254883f8f.36.1757363546354;
+        Mon, 08 Sep 2025 13:32:26 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGuDegDqgJ6N0gGE/Lb3UGdgK1piEs+PdHsr5oQcTDbsibAuF1ZyiUHJADT2Pc11YvmZEdCvw==
+X-Received: by 2002:a05:6000:40da:b0:3e2:b2f0:6e57 with SMTP id ffacd0b85a97d-3e642f91589mr8254820f8f.36.1757363545827;
+        Mon, 08 Sep 2025 13:32:25 -0700 (PDT)
+Received: from [192.168.3.141] (p57a1ae98.dip0.t-ipconnect.de. [87.161.174.152])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3d701622b92sm31349052f8f.58.2025.09.08.13.32.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 08 Sep 2025 13:32:25 -0700 (PDT)
+Message-ID: <5b7e71e8-4e31-4699-b656-c35dce678a80@redhat.com>
+Date: Mon, 8 Sep 2025 22:32:22 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b634rejnvxqu6knjqlijosxrcnxbbpagt4de4pl6env6dwldz2@hoofqufparh5>
-X-Stat-Signature: dr84hrtnbygxa7bbdru79w999bdowpus
-X-Rspamd-Queue-Id: C1AA1C0011
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 00/22] Add support for shared PTEs across processes
+To: Anthony Yznaga <anthony.yznaga@oracle.com>, linux-mm@kvack.org
+Cc: akpm@linux-foundation.org, andreyknvl@gmail.com, arnd@arndb.de,
+ bp@alien8.de, brauner@kernel.org, bsegall@google.com, corbet@lwn.net,
+ dave.hansen@linux.intel.com, dietmar.eggemann@arm.com,
+ ebiederm@xmission.com, hpa@zytor.com, jakub.wartak@mailbox.org,
+ jannh@google.com, juri.lelli@redhat.com, khalid@kernel.org,
+ liam.howlett@oracle.com, linyongting@bytedance.com,
+ lorenzo.stoakes@oracle.com, luto@kernel.org, markhemm@googlemail.com,
+ maz@kernel.org, mhiramat@kernel.org, mgorman@suse.de, mhocko@suse.com,
+ mingo@redhat.com, muchun.song@linux.dev, neilb@suse.de, osalvador@suse.de,
+ pcc@google.com, peterz@infradead.org, pfalcato@suse.de, rostedt@goodmis.org,
+ rppt@kernel.org, shakeel.butt@linux.dev, surenb@google.com,
+ tglx@linutronix.de, vasily.averin@linux.dev, vbabka@suse.cz,
+ vincent.guittot@linaro.org, viro@zeniv.linux.org.uk, vschneid@redhat.com,
+ willy@infradead.org, x86@kernel.org, xhao@linux.alibaba.com,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arch@vger.kernel.org
+References: <20250820010415.699353-1-anthony.yznaga@oracle.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20250820010415.699353-1-anthony.yznaga@oracle.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 5EHM8RhV5FCydCoJ5yHLFC8W4KrKO8semI-Im9J5qOg_1757363546
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: A3B7F1C000F
+X-Stat-Signature: 6yqa3pnpwkeibc8t8to8kjtr8zzsp1zo
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1757363408-784733
-X-HE-Meta: U2FsdGVkX19Q5yRdgRVScc3qUo/q/CV4jHyBWkPXyUBUidnTYuAynk+LXk/RqLj+XVHoMMM4nDv385b9J6b9/JcFE9CVanuoxmuKfyJE1dAnN7gxYB0NcjYN0gwhiVArTruhBkdqmhyA9PsxJGeUno6viMD8ay+f8e/wy9Lm7D2MKXdrK7+MPz8i3vYSVzOXJ1D5ANOFcHE/UVdwB9h6OFIApZmsP8yIjhYK0f8d2MtVOgLGdW9hk0sZFoJDlvtMA2CkwaIivdOQapf33heB68f7r47OvJXRlQSEyUtGgTLcIW87aTc2fBsD1GKKorCbvEYYm/AVTrkVYV2IsvmLRchXCTKnbQ1Bigsda3LGcF7xq/0YfLtin13db+s/vP6ITuvCxiS+MqU2obnLi9akYMlQIzrsr9r0WchWkrU2Svg0R/82nWPf1cgRB+KTuV+fRDFiKVVVogqc3cm1HK1PHBDxZYxCRga6I4OkLeRCnx410c/377+r83JJM0hUYPzmtlaxIOasqkdRTPvaQ4vkyxTZ9wcmjYStCnGYlBJwY1N2wSuOD4/2U20lFVCv4PTtg956I4a8+3G+UCFjXEBweRS8VAalz7XEsT0SiseI6PvpoB7I/uuGxaWOE9zbaG6hj/eDiM9dZBE8vN6GY5wC4JW+JSCLe4uNdleAI7jc5d9neqDQwqqPJfaOm3z62bDml+WwVkfI9CPssu+x4t2wdaFwsMUQmo6aG1yEq5ECQiuX62122i/5A1m9e5ntjEYInr3SR0OBf3vf0waT1b43vnDaSEBsxgiZ6JkaUq+KLAVrnguyJ5aDSdnlr8ErlzFS1TqddnRIMQxGNC/obnyjkjtBw1pxIfdLMabmXxHNh6F7IMul8Ptuo6eXSbTzrkkeJ/3M5ld55NzHM9rR1CL4rgqKsPdfJQQA1BGWcIEs/kN8XngzvFNuc5VoRvg1iVmrLfzPfhrxQRyz+i/B+Od
- 3CxeZCet
- 2RZv2l8jY+Kra6nqe9yRkFIPjCq2UUE2Ps5g8V0mE6/ErlSh+Z2nXsD/nHm2OFHnkcAyRnFiIRD8sOhbRxcbzZoUCfUgu3JYCWHOSplLmdQSLrRpctGetuRy0iNSgsQnBA20mXwcpSCPBobtWf/SP/kyo2+wtTy6jR1ubc1ilVvPfvcLGhbEhED487PrDfBnMtiL/VNDv0YzQ0HhdRZan2CdwLfE59iLPBurPaN/DYMBl8sBKVeqV57KRchLaTHh69q84VcVUIYC7hmDPxKViTzeuN7jnfubmm07GxEsgOFYCr0yZP5h4lReLQXXifPjjal3PuSrL91J313Ahi7V1ZYMWgCY8ubge1IFVXv54BM/YyCUPY9pcfL2JW5+cPsvOc+aUR+MojknLR6qyIFgrX9cs/kx4E2shLMWNaqDI8kz7nIOmacw7qT1taUTV2a3tl6novfCykqp4DglH8PY+JHu46JcEyxMdK3Qy
+X-HE-Tag: 1757363549-971624
+X-HE-Meta: U2FsdGVkX18L/nPgotC/ZlCP6+RqIC8hr3moAJHmwQReQAc/GBuU50A/nGqiEf6drKhdHtnBWrzFozM2VP38hexpK7GRA1CYUg4tbP0x+62Kc3MWsVwUi/dG1nC0eywW5CIHpCDJE3VGfgZbTYDiUT14yMJPwo2d1lAQ1tmBt5djaiLt0RjsiHs1tvFpIFzmotGZMq/ZcL/+f7uZTjEDgeZdS+rX3Wchfd8/UvS0V3NuZf8UkVaPY+DMHRWSNCM6xCVbTurmiWccsGL5Rbu6u3znSX1G78gHaw1NlLV1uGZgJlEmgVY0/lTa4eiIiBdzTPghZBOkToiuNDfStPGA/3LGe9Mt8jxo5iDATZdViwYBgr3eNMG0nBNqWhu4iWamWaspusBmMPjFckrvn3BDkdZCdQLLiUiDd9QmNkCfXMC7V4OnKSAfAOBzJbHeq9Xn1FenjuwSQIWK4N+SvqVSRhg0/62H+bxAoLt5BTdvo7XJulNNUGsQ8/60NhtBGo0UXrddNqC826ZrKkYRCYeDO4nAPBRN9rQva/n4orBa1CAIcXOChtgW70AOT9eNIuZdiuOPbksWsdYf5AX4qO2Mraud63I4Is0SqvG+tIaPs3EbVyOW+XsXdSNl/NmHeUtB9z7goOj0+6DFaujz+vWXVF/YK/mCDS+aGT3cKft2rRfXZIApEuW8rDkO2Y3BhJlzj1nfjsD+LvWZzdgqDSYzjh6DQ2kR7XhOOFqWZ4VXhCCBq2CKKLmE1gyVo3EtbAw4qoPmC04VYcAUqj1IrlJ9uVVGtalDUaxYOGmnFwdRhN1yQHFgKf6AfjV3iZFdi5U9La71vEoNGdMaHXA2iAV+pgIOhzl0ya+3BrMRd3jtAd/3ujbQ1B8uzz5yq9aqXe3d1PVSaRN8V2J5adCrm3Y0MSY4IO4PZUmy/OUAI90T2UNwse+vu0kU1pz2RBrE7RX4okOAs6ZQKS0EmYnGWzj
+ rCD6vXgR
+ Xkq1l8B0xrPRRbKrS5+bdcRCNE0naA/zn/5CYOcxlRzfKhGzadw0K/pALj1uOwAdG3auzemSywOS4xbn52KMsbPSGDw0k2wGKCv8Jm4j2JrzqWMEunbRdW2orCYAPjtVJY/jKwCCyDHEJBrbPt0/CMyrCN27smTURIFVzI43CIjXrT31kAn/yiiM6wgzHyVVuroF1b23e4coZ1I6ywEQ+CGSDcClN75XoXMVYzyWdJijrOzkY/RkU0+8QFcpRC0lB2yYkNqv0wRhmIRfGL3xfGXErDrzec61CiigOmT3G6VXayqhGfpkT1brWmyjgPm0En4T1krOEps2pIGzEoiGZgrflwz6BDQssOjlEsDR1spfS7JeeNaLM+w/+7pe9FqeZdXhP
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,32 +189,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 08, 2025 at 10:32:29AM -0700, Shakeel Butt wrote:
-> On Fri, Sep 05, 2025 at 11:45:46PM +0000, Peilin Ye wrote:
-> > diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
-> > index b9b0c5fe33f6..508b13c24778 100644
-> > --- a/kernel/bpf/helpers.c
-> > +++ b/kernel/bpf/helpers.c
-> > @@ -1274,8 +1274,14 @@ static int __bpf_async_init(struct bpf_async_kern *async, struct bpf_map *map, u
-> >  		goto out;
-> >  	}
-> >  
-> > -	/* allocate hrtimer via map_kmalloc to use memcg accounting */
-> > -	cb = bpf_map_kmalloc_node(map, size, GFP_ATOMIC, map->numa_node);
-> > +	/* Allocate via bpf_map_kmalloc_node() for memcg accounting. Use
-> > +	 * __GFP_HIGH instead of GFP_ATOMIC to avoid calling
-> > +	 * cgroup_file_notify() if an MEMCG_MAX event is raised by
-> > +	 * try_charge_memcg(). This prevents various locking issues, including
-> > +	 * double-acquiring locks that may already be held here (e.g.,
-> > +	 * cgroup_file_kn_lock, rq_lock).
+On 20.08.25 03:03, Anthony Yznaga wrote:
+> Memory pages shared between processes require page table entries
+> (PTEs) for each process. Each of these PTEs consume some of
+> the memory and as long as the number of mappings being maintained
+> is small enough, this space consumed by page tables is not
+> objectionable. When very few memory pages are shared between
+> processes, the number of PTEs to maintain is mostly constrained by
+> the number of pages of memory on the system. As the number of shared
+> pages and the number of times pages are shared goes up, amount of
+> memory consumed by page tables starts to become significant. This
+> issue does not apply to threads. Any number of threads can share the
+> same pages inside a process while sharing the same PTEs. Extending
+> this same model to sharing pages across processes can eliminate this
+> issue for sharing across processes as well.
 > 
-> Too much unnecessary information in the comment. Just mention that we
-> want nolock allocations and for that we need to remove __GFP_RECLAIM
-> flags until nolock allocation interfaces are available.
+> Some of the field deployments commonly see memory pages shared
+> across 1000s of processes. On x86_64, each page requires a PTE that
+> is 8 bytes long which is very small compared to the 4K page
+> size. When 2000 processes map the same page in their address space,
+> each one of them requires 8 bytes for its PTE and together that adds
+> up to 8K of memory just to hold the PTEs for one 4K page. On a
+> database server with 300GB SGA, a system crash was seen with
+> out-of-memory condition when 1500+ clients tried to share this SGA
+> even though the system had 512GB of memory. On this server, in the
+> worst case scenario of all 1500 processes mapping every page from
+> SGA would have required 878GB+ for just the PTEs. If these PTEs
+> could be shared, the a substantial amount of memory saved.
+> 
+> This patch series implements a mechanism that allows userspace
+> processes to opt into sharing PTEs. It adds a new in-memory
+> filesystem - msharefs. A file created on msharefs represents a
+> shared region where all processes mapping that region will map
+> objects within it with shared PTEs. When the file is created,
+> a new host mm struct is created to hold the shared page tables
+> and vmas for objects later mapped into the shared region. This
+> host mm struct is associated with the file and not with a task.
+> When a process mmap's the shared region, a vm flag VM_MSHARE
+> is added to the vma. On page fault the vma is checked for the
+> presence of the VM_MSHARE flag. If found, the host mm is
+> searched for a vma that covers the fault address. Fault handling
+> then continues using that host vma which establishes PTEs in the
+> host mm. Fault handling in a shared region also links the shared
+> page table to the process page table if the shared page table
+> already exists.
 
-Got it - I'll reword in v2.
+Regarding the overall design, two important questions:
 
-Thanks,
-Peilin Ye
+In the context of this series, how do we handle VMA-modifying functions 
+like mprotect/some madvise/mlock/mempolicy/...? Are they currently 
+blocked when applied to a mshare VMA?
+
+And how are we handling other page table walkers that don't modify VMAs 
+like MADV_DONTNEED, smaps, migrate_pages, ... etc?
+
+
+-- 
+Cheers
+
+David / dhildenb
 
 
