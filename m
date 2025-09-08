@@ -4,186 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00673CA1016
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 20:17:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D24FFCAC582
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 20:19:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 336C86B0008; Mon,  8 Sep 2025 16:17:31 -0400 (EDT)
+	id 3892E8E0011; Mon,  8 Sep 2025 16:19:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E6B66B000D; Mon,  8 Sep 2025 16:17:31 -0400 (EDT)
+	id 360F08E0001; Mon,  8 Sep 2025 16:19:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 187C06B0010; Mon,  8 Sep 2025 16:17:31 -0400 (EDT)
+	id 276258E0011; Mon,  8 Sep 2025 16:19:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 0298A6B0008
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 16:17:30 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 960B1B6ED0
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 20:17:30 +0000 (UTC)
-X-FDA: 83867193060.22.F474140
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 41FFA80009
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 20:17:28 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gsu8tWZi;
-	spf=pass (imf02.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 164C58E0001
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 16:19:21 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D2EDEB637C
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 20:19:20 +0000 (UTC)
+X-FDA: 83867197680.19.B6479F8
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	by imf18.hostedemail.com (Postfix) with ESMTP id DBBA31C0003
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 20:19:18 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=iU3RwdRw;
+	spf=pass (imf18.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757362648;
+	s=arc-20220608; t=1757362759;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uIdc2B3/3kj+ymcwj5i/pUFxxLC6d1gkotCHsH6YjzU=;
-	b=zwyWF+ULQ3e8lURp8I8bblHDC612jZKNKipWSGcJyUlTpNHkjGIoW/rCAHqejGbLhoVt0n
-	Mlbu0GasTT/PgMFhmZZmxmGotTBjeboOj1NALPqJU4kWYsrVNcu/LtGrdfB1yLka/JGUOd
-	gGwsOa8tnl+EGeGsuErtLP9pctCdQEQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757362648; a=rsa-sha256;
+	bh=vT09vTia8SgQBO+FiegSxuy3xNGmzzHUSLwcepL1OEI=;
+	b=VJEC6gvdD3rhK5vBaBtKZehf0K0TsndOyf6rWRB9YxSQE5W3PbpqOm+V1FYd8g0aqwUadK
+	s+Vvex0R39uTBN9p4vKP5sSa9OEpSbuSjUk8D4vM31tOJ33cvZ6HWCXczi1LmDWAsGWC1w
+	qeWZpvH3pXPrs8zym7F5mh7M0HE6lmc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757362759; a=rsa-sha256;
 	cv=none;
-	b=dOEA1A3XVvgOSfmS1U/oBnNx08yz7oXIJzgGmkA4+VDAntpbvpaR1CcS8KliJ7UeRZ5JuL
-	NPmoh3UYDo+7cdv8sAkgzHinUxjlUgv4hw5HlCNYeP02NwxJ9vXBqNoPX6KTFVm+vVfHcm
-	EN+qyiGTguk2zeP5xT5SXAuVBbgDF+A=
+	b=3UqeZQUYKA4/xk2sYfHY9g4SVGOCufRLqf0/9AyDskKsK0hEYDvjlDeAdFLbZuQiWkZrur
+	RPKpAaz0ycPUCOA3Vrm+xqPknwkagAyUthhhU/ATsJQXu/v97MpTVpub9gKeMOWQuyq7U+
+	aYS+KozFaPuVJ93t3B6galpN3vdAsB8=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gsu8tWZi;
-	spf=pass (imf02.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757362647;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=uIdc2B3/3kj+ymcwj5i/pUFxxLC6d1gkotCHsH6YjzU=;
-	b=gsu8tWZiteZZXWX3NRkAEnGaKOQJ4OL48JTLaKj8TbYPiBlJ29RZ2E91DgysYvFAgbT3mF
-	pxmiIm3cyVc9tVFYNeaT3HlMKJIljk/37XkeaUvWIn+eWYGFIGDK5K8/mhi4a+1sbVTrLi
-	i7F5GcNodatOkY+j/wR5KRDDjE8sjS8=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-17-AqlYg5H-Nbq2obVJ5KkJ6Q-1; Mon, 08 Sep 2025 16:17:26 -0400
-X-MC-Unique: AqlYg5H-Nbq2obVJ5KkJ6Q-1
-X-Mimecast-MFC-AGG-ID: AqlYg5H-Nbq2obVJ5KkJ6Q_1757362645
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-45cb4f23156so26166545e9.2
-        for <linux-mm@kvack.org>; Mon, 08 Sep 2025 13:17:25 -0700 (PDT)
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=iU3RwdRw;
+	spf=pass (imf18.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3da9ad0c1f4so3377759f8f.3
+        for <linux-mm@kvack.org>; Mon, 08 Sep 2025 13:19:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757362757; x=1757967557; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vT09vTia8SgQBO+FiegSxuy3xNGmzzHUSLwcepL1OEI=;
+        b=iU3RwdRwQTFyppVvl0c19EUYtVxf7GBO3Fe5C2qo+l9uMeKs8j1pdY+bbCScS88EH9
+         SSwOylkCnxVjC/mVCUDH/mkHvYAB3XTmHcfFoEEdSNucMcUHzMozcrkD5FrGyzjauMaz
+         RHrGaDRuRBu60fUzjkZ1FC7SZMuqwFQADDweJXgsVx3X2cFU0aIGsnDSKniXSgEzTySO
+         S/MeXKXC0ynO7CKUzIHxpWrObeDwoSY47OjmJc6HbI0FUz7aFDcrQuJ/L1Qmz4LAYiiT
+         p7ZFGz0A8YpKNlCGPB83U2Wrt8eY78bGv04I+4WhQfWb3LFW1p6dTzE0caChkVBxcYE0
+         GW7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757362645; x=1757967445;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=uIdc2B3/3kj+ymcwj5i/pUFxxLC6d1gkotCHsH6YjzU=;
-        b=sFl8qnucQPQ2CIk0C+GNntJ0G33+P8h2kozcO3M/AsgG1tqsoDAkSy0VF2dojJ42OX
-         hpVl12Wo7kn4pcuYJ6qfwoYviZ3xF88Ntd253hQcp4+mYsvyn+fhkDOvdpekskTX/Ite
-         zjwlT2t2bEpeCjGCGPsW0b/84jW0fjHpfoO/P/eQVNu/QRqpkzPRJveKIqW3MsPlt5wh
-         YLALoKxzRo1PHxATIPHf7nwKqVr/zxh31LcLTd2m9pxI88eittNcurStNyafAmbp9uc5
-         6jBDTA6Am0XhfF3JHDJsLTwWVBWPG8h5XS947LLENjEFfOuOnrDxYVC/axH9de3vuJE/
-         AJdQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVvH+gLDBeABUOWKnZ0l57L+52AjYgqtlnb7pTw7SNMUuvev6wafCbCzWME1ofH1nFehIoxfE7CuQ==@kvack.org
-X-Gm-Message-State: AOJu0YxlxYb4Fau2xxR2ZTxgzGLcEPwNhciV/mnpmQBTQLsI0aK2Bh8L
-	S3/BbNUigcRs1XpjpMoX0HE5fE13BSh2Hhtx6TvB/tIu6N9zMmePm5KX2dB74gcuOWUj3VKy15T
-	oTPM76nMVMPjDXo9iBWFThHu6DsBjwRaPRcQGp54fjZZAmJDDvCL3
-X-Gm-Gg: ASbGnctLbjoIQCfcgB0zlXTX+kgtSygr9MLrOmcSt6IAG/KEB08M1Kka5HBeYbOv+ZX
-	ln5AykX+2oBRpIpIOd0HLPnLKnXB/INBvdW/ilV7y4sWmGJ5OLgnDgx9pLbXPbWgXF5WTc1m8Wh
-	J3sNab9Sc0RFsH2kfa/zPnaovX4gwVjt0aNYDtrO7wj/cDmzirMNALLuQ3qQF40GQSV08jfpjJU
-	jDDN29RlL6q2f3EcSz6RfeGS+KTw21gwHjv7ovZ3YVAgAf7+3yUh5T/lhRcl9ynTB1V7UFD+E1O
-	TlT4LiB5w7GbHeaLn6gKDBzj/FBIExYVogOtKeOjzy0ERs1kMfaDZWu6SztU9qko+0J4KLw=
-X-Received: by 2002:a05:600c:1c04:b0:45d:db2a:ce37 with SMTP id 5b1f17b1804b1-45dec615a1bmr11841585e9.0.1757362644751;
-        Mon, 08 Sep 2025 13:17:24 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF7VTWXL8MTAyDz7RkkeZe8eMmnkRUN5PlJ90kWk1wvnC5CLCcvu1WLdP9XdvnFdls022qPbA==
-X-Received: by 2002:a05:600c:1c04:b0:45d:db2a:ce37 with SMTP id 5b1f17b1804b1-45dec615a1bmr11841315e9.0.1757362644276;
-        Mon, 08 Sep 2025 13:17:24 -0700 (PDT)
-Received: from [192.168.3.141] (p57a1ae98.dip0.t-ipconnect.de. [87.161.174.152])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45decf817efsm6223815e9.18.2025.09.08.13.17.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Sep 2025 13:17:23 -0700 (PDT)
-Message-ID: <919ab2ee-6493-4415-a75b-e1a2b08c0d3e@redhat.com>
-Date: Mon, 8 Sep 2025 22:17:21 +0200
+        d=1e100.net; s=20230601; t=1757362757; x=1757967557;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vT09vTia8SgQBO+FiegSxuy3xNGmzzHUSLwcepL1OEI=;
+        b=O7xwPL5hD02E5BtzjdKxXl/kKlEixqB4/AidM3iQDo0EOZ/kFZkmep1oJutZ/uPOHC
+         A+ZJcZIm5ZJ6x3ayfeGjz4yy/FoTmrsWx0WqoQS3udPoMXmEl8G8YmVCNX7Zzrx/tls3
+         xQ1wI0/EbmzShMhNtr9xVeLzeEGqR4zhPBigH/X35YnJTESAx3dWckY4IjRMKVSc8mjO
+         rSFSRR5UPPINqDH83pFI2fwYtK+obte8xJnL7lysZdGS1UoLj44waB0UH0BbLd63Nxu9
+         ik6L4/a5K4GIiUyFZs+rHg+jTxELgR3C0/eyPWHivmYf/O+9THLSflKMMGJda7gu4uPr
+         5NmA==
+X-Forwarded-Encrypted: i=1; AJvYcCUPQhd+0fHrHScvyY9klcTVtgjhh/mEkvJ7xqY1XI617Vt9NFLXbZGRIAMmqgTEbrWV8HUW8GJ2+w==@kvack.org
+X-Gm-Message-State: AOJu0Yz3D52m1mpsVL7eFuNX/tOp4WMV0wquOlVvKumOspWgfKJrB8qj
+	1dtLDnRUtsaJuSzOtuItT0vYGilToXLz098A8SBca/28YqSpsiUJVBtKsiziY7UbEaT/noFrTgu
+	FKWYHtkO9OPDwgdpLu/0szcXBxDkz1f0=
+X-Gm-Gg: ASbGncvmL30a6BEy6BKmfZF/CVIpH+Z8DaZxhK46Qcz5xMOA4jECF22U4Q0G5VhEDjM
+	eKaRdOEQVf47O/883w0DTCeVgdBanR0a+xr2ld+ttamhDoIoVyXARjGSAGystJKz5A5G8VIuo8a
+	/Rdqw/qkN/YwXrxoJRkJCsEnYBuqmRtxyluzmEvA2E7YZWvliIilFoU2WnY2nMSeH0QKRnvrYBz
+	iUPw2yT
+X-Google-Smtp-Source: AGHT+IGh6YqUFpx+JIdu/8YkqL5G1rRgnTznoIse4KvphEDHD6OBcCQt7Euav83er+DtfxdiEo+7p+GtKQrhaaETdWA=
+X-Received: by 2002:a05:6000:2f86:b0:3d2:6129:5505 with SMTP id
+ ffacd0b85a97d-3e64bde66c0mr9404161f8f.36.1757362756927; Mon, 08 Sep 2025
+ 13:19:16 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/7] mm/gup: check ref_count instead of lru before
- migration
-To: Hugh Dickins <hughd@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Will Deacon <will@kernel.org>,
- Shivank Garg <shivankg@amd.com>, Matthew Wilcox <willy@infradead.org>,
- Christoph Hellwig <hch@infradead.org>, Keir Fraser <keirf@google.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Frederick Mayle <fmayle@google.com>, Peter Xu <peterx@redhat.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Vlastimil Babka <vbabka@suse.cz>,
- Alexander Krabler <Alexander.Krabler@kuka.com>, Ge Yang
- <yangge1116@126.com>, Li Zhe <lizhe.67@bytedance.com>,
- Chris Li <chrisl@kernel.org>, Yu Zhao <yuzhao@google.com>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Konstantin Khlebnikov <koct9i@gmail.com>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <a28b44f7-cdb4-8b81-4982-758ae774fbf7@google.com>
- <47c51c9a-140f-1ea1-b692-c4bae5d1fa58@google.com>
- <e54b1d8c-ad63-4c7a-8b1b-b7c3d76446f2@redhat.com>
- <b008aef2-f69f-e2fb-d4d7-71a42d308529@google.com>
- <1f714ba0-cdda-4122-b6a1-e1e0ea44b1f2@redhat.com>
- <d5333648-7b88-9293-dc1f-e080dff65d1a@google.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <d5333648-7b88-9293-dc1f-e080dff65d1a@google.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: iahwUVYVK7mjsU1uP2sjL6tj4QQJSTesnzsymCepmSw_1757362645
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 41FFA80009
-X-Stat-Signature: bdaent5poppy4pycogsrontd3kkpjn6o
+References: <cover.1756151769.git.maciej.wieczor-retman@intel.com>
+ <36c0e5e9d875addc42a73168b8090144c327ec9f.1756151769.git.maciej.wieczor-retman@intel.com>
+ <CA+fCnZcMV0BOJyvx2nciCK2jvht-Hx0HnFtRzcc=zu+pQSOdVw@mail.gmail.com>
+ <couuy2aawztipvnlmaloadkbceewcekur5qbtzktr7ovneduvf@l47rxycy65aa>
+ <hw7xa2ooqeyjo5ypc5jluuyjlgyzimxtylj5sh6igyffsxtyaf@qajqp37h6v2n> <epbqhjyfdt3daudp2wx54jsw6d7jf6ifbr3yknlfuqptz7b4uq@73n5k6b2jrrl>
+In-Reply-To: <epbqhjyfdt3daudp2wx54jsw6d7jf6ifbr3yknlfuqptz7b4uq@73n5k6b2jrrl>
+From: Andrey Konovalov <andreyknvl@gmail.com>
+Date: Mon, 8 Sep 2025 22:19:05 +0200
+X-Gm-Features: AS18NWBlgrNec5HQDqXuFdTg0l1auT_Opy5K148gspXva4oeYyeCVxabENuTdwg
+Message-ID: <CA+fCnZdJckDC4AKYxLS1MLBXir4wWqNddrD0o+mY4MXt0CYhcQ@mail.gmail.com>
+Subject: Re: [PATCH v5 13/19] kasan: x86: Handle int3 for inline KASAN reports
+To: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+Cc: sohil.mehta@intel.com, baohua@kernel.org, david@redhat.com, 
+	kbingham@kernel.org, weixugc@google.com, Liam.Howlett@oracle.com, 
+	alexandre.chartre@oracle.com, kas@kernel.org, mark.rutland@arm.com, 
+	trintaeoitogc@gmail.com, axelrasmussen@google.com, yuanchu@google.com, 
+	joey.gouly@arm.com, samitolvanen@google.com, joel.granados@kernel.org, 
+	graf@amazon.com, vincenzo.frascino@arm.com, kees@kernel.org, ardb@kernel.org, 
+	thiago.bauermann@linaro.org, glider@google.com, thuth@redhat.com, 
+	kuan-ying.lee@canonical.com, pasha.tatashin@soleen.com, 
+	nick.desaulniers+lkml@gmail.com, vbabka@suse.cz, kaleshsingh@google.com, 
+	justinstitt@google.com, catalin.marinas@arm.com, 
+	alexander.shishkin@linux.intel.com, samuel.holland@sifive.com, 
+	dave.hansen@linux.intel.com, corbet@lwn.net, xin@zytor.com, 
+	dvyukov@google.com, tglx@linutronix.de, scott@os.amperecomputing.com, 
+	jason.andryuk@amd.com, morbo@google.com, nathan@kernel.org, 
+	lorenzo.stoakes@oracle.com, mingo@redhat.com, brgerst@gmail.com, 
+	kristina.martsenko@arm.com, bigeasy@linutronix.de, luto@kernel.org, 
+	jgross@suse.com, jpoimboe@kernel.org, urezki@gmail.com, mhocko@suse.com, 
+	ada.coupriediaz@arm.com, hpa@zytor.com, leitao@debian.org, 
+	peterz@infradead.org, wangkefeng.wang@huawei.com, surenb@google.com, 
+	ziy@nvidia.com, smostafa@google.com, ryabinin.a.a@gmail.com, 
+	ubizjak@gmail.com, jbohac@suse.cz, broonie@kernel.org, 
+	akpm@linux-foundation.org, guoweikang.kernel@gmail.com, rppt@kernel.org, 
+	pcc@google.com, jan.kiszka@siemens.com, nicolas.schier@linux.dev, 
+	will@kernel.org, jhubbard@nvidia.com, bp@alien8.de, x86@kernel.org, 
+	linux-doc@vger.kernel.org, linux-mm@kvack.org, llvm@lists.linux.dev, 
+	linux-kbuild@vger.kernel.org, kasan-dev@googlegroups.com, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 386wdkpxf9bcskfshq48p9y6wscnrq6g
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1757362648-375280
-X-HE-Meta: U2FsdGVkX1+Q6IyW/v7povlHyWxYPlvfIF0POBLbZtRAi7z8tuPdNcwcRkmchBZFkIHGk8mmhUQyR/stPxb4EXqhHGHU6fLDFgecInaHGCl2V5ALxESNsYpEdzq6Vdhp/gGc12Fi0E8bB7EEiuFGw2qB2+2rUpm0NFKj5VqFRBUZRJPMxJESeDIOJ5jbOC1G7oW+bIZhxSpOmSzOSJDa/esYszH8xUyF3VaJvZi6oVUvH/pXOK6pyglgMzxUKK8Fmnp0V3DpD7GfOtTjj/uh1iSKKeJvty8woJPBXPzbdC3uaY6vYiVoAGV6olEQJ4WVl4IWb9iMnoXcKZEU01y6I+8qvubvTbU1nVKFSoppmPA4jyFbV7CHZPCkIUMDqi31LUyJl+fVDwO1XKBbw8llwyHeDwsCNYhGUXyu1nOxsOyYottI4xKgmBW13mK3Tmg1iflAQ4fTrPdl4vz8IrgWpC2NOw6S1daMfiEuksaZmQdaanwNz5LpBO9CIacaZZcNMyjd4O0k+hR28EUXQSBg4cgXFOq7+mdROOo7LyuEq+UXEBd/0d8GuRwQPJn38w6LEF6iqr+1uSC/nxTDdZ6hurbj3bW5TuzNHCppQhjzN8f0zG7xppELrESXKRPTT5nwdDwgYSrRjRvvZd9k5Zz6BSjqSsmtyzwTHYYgL+1O0xk5DRaWWnCaSuy/QEn5mfeJgrsPQWFxi+o3cMP5g+4QPf+daYtXTYmBqHLV+GcsmijUE+QuXOiQvjonUbrXgVNf+vNUgKPrmCnrvzVoOo8N9PBYk2sC5jYRliL3s6UcrwFl3O20DbeWZcvm6Qs70Dn/nJWpRH27bp/bLW+WM8VWEX9kZw5USzYPeB3SmI8pFZVnXUsifY38twigPWN9n0DfHOMVj0SJM/jDzlKVKl5/hWCibvsIdiTgCKywQMXmSrGoNqesaoD/9yTaeAQNOoimS4D+TOpJehmA3P/956Z
- CgbbRZby
- 0+5qhylkZUNL0BLSp3rnndZ5m55RYSfrlOWKBafKAClDDelS7v1AfmhgxzNxZQalOBJVMiD/KHd7Kpx6c9hITkvgU+ZQH3Og6J1Rak09Iq+FwFTvKRECVbL74Ci0Vv/Yx2+iR2LKmNu3yDARSA9JEC/vaf4VLAb3VAQmKy3Uf7xZAxi0HxrQnWQvdSSSU2EnXz68ccqoM6eAXnRIZhPoX8LZETr1NvkLlPeYU5rxWm+V/YBgLdl6VgDhssxK6oRIACudanbRCZx9MNsbPk1cly2RTUGWD8hJ6eMvKha2GOIZ72MH5GWUm8Pe4VXvf+je79CQhZi/eYq5iYkJCHRFyTlh4lGhiTsEbjfguUnE79/tW4pB9b3xh1EJScQNWAmGTrhKRwVqZBksa1voWB0C2Kj6SPIRDgJBmNvFcrO8JhSudzuqDdMYAITrCNLwaNDQCuWm1KR/PAWdp26U=
+X-Rspamd-Queue-Id: DBBA31C0003
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1757362758-866551
+X-HE-Meta: U2FsdGVkX1/v7CBAGHwD3zqUGHYN/yIsOxRflnojirmkvq1iYkXae39OGSvKkMVogUha9TlDV/6CJHLvbBGIC2iGhaBXtRIlMWeqAG1R2gysUPrYuH3BbeUZOiqbnJ6wB/CFaDV5e+H8Ers9Luj3YBE/0KWxR6ReIVtccE+3PFGyFqVrVfshvsGrb2rpjAr3x6pJmDQmp2BJVK0UWQnCu3O8ggQxkxpQiiYSVSBj3DC3jSL0Hxrnm2v0C3fWTnipQjbYO3jI6Iw5+X2JlKTzAVlIAO41SYM+mFOgGhB17rz9zCEFnd2kinodZatOzU4arLBtmABsO9RBShw7VQxwYwNMpLsAcf+TVTg0BeEFkWe9nCfO6uY7y43RJ0V1d20Uj1sYFmjL9aR/Jh+4902H20QbE6nMmTBNNcTLXKJAs2t+H9DeymLsKPqWaqbCyZzIbaBo4q+s7Y6ReSYBE5xpOtorTJkVKzhqEknyTBa27bkpkK1bTDQ6BGDB1ulFV/lnoQUrArYEUMm69CUICgYe+aZzKEQ0Zpyp3BRkAOX9WM1YEnNbmsQ4Wn6aN1PwnwjcbZMoFlAkkyf1/SNyI57mGz7IG+1BhBwaPe+aByEw7FNQ8sVjW4B201W7w/LGTamCUDy9zl5CbC2riiF/OoRkeKAF86IDi8tU6f4sWLcWNOcydjo1m0px1ydfD7UOEPeTDnmpwKTHVfQAuK09xUAqDSv48999IU9/nCGMRqBI6L7sLGSSG9GsCRwBjm8hLVTF46zzoJ5H8lmdQINMUaSsfUTKp7TAVhOKqRr6CMiaE9ZKOksLRn34gpQk5zl08ADl2jVD3JFI87bCdt3W4sy8eQNciLwUzjlvVBHgWB6VRF/ONr1KWkg1yu6j5iTyQ6TDmibpzfGXg3B5BLoBfc/oMN9T0f3tAb6MPSikhgb1O3uhm4ZnCCNc9VLFwFx4CuQyIvJnoI+px9BuDvRx/8R
+ +TxSOYSt
+ GQFAsRUISmWcsWx8UFXtGtaV7lr+TKR+yIfF5NO+8KjhPLP8rs14BLkCCxLL3hV6kRJ3LzHk5xp4BpfDmrV8KvwTdQ91j41jCpamSIs/bfGTqHq8wAhdjAoWanRBqxVi26TqtXFHG/CcCIEJ1OtfrjO/Lazlwy99QZBlVsH0XuPOSOPz+/58YY3yfAPTuoL5lXsnUyHQfxxhdvfZIkqg2t0EqZ/e8hyVxH2GUyle0Aqk5GA/2MyDxIDdXzKd853YKo+U0Ui2p+uUvOE0Rwy1M/JDOgV0ncL/dPhmRre10FwvRUGdwRsQIbLBzQUoXnVCMyXLpVdz4mRF+Og1Ba3KnF1YJfoAu7aV6Y5JQ0GFaEY5f4L0qQlfvAuFyqCSC1DeMYtkJJ6A6pFWocAbcN1J7G/3YC4stLOFr++o8MXCYPt/K9RiZSBDkPNBjSoxsGx7ZalsxPZfNU8ZJ6Bk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -192,74 +145,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 08.09.25 21:57, Hugh Dickins wrote:
-> On Mon, 8 Sep 2025, David Hildenbrand wrote:
->> On 08.09.25 12:40, Hugh Dickins wrote:
->>> On Mon, 1 Sep 2025, David Hildenbrand wrote:
->>>> On 31.08.25 11:05, Hugh Dickins wrote:
->>>>> diff --git a/mm/gup.c b/mm/gup.c
->>>>> index adffe663594d..82aec6443c0a 100644
->>>>> --- a/mm/gup.c
->>>>> +++ b/mm/gup.c
->>>>> @@ -2307,7 +2307,8 @@ static unsigned long
->>>>> collect_longterm_unpinnable_folios(
->>>>>       	continue;
->>>>>       }
->>>>>     -		if (!folio_test_lru(folio) && drain_allow) {
->>>>> +		if (drain_allow && folio_ref_count(folio) !=
->>>>> +				   folio_expected_ref_count(folio) + 1) {
->>>>>        lru_add_drain_all();
->>>>>        drain_allow = false;
->>>>>       }
->>>>
->>>> In general, to the fix idea
->>>>
->>>>   Acked-by: David Hildenbrand <david@redhat.com>
->>>
->>> Thanks, but I'd better not assume that in v2, even though code the same.
->>> Will depend on how you feel about added paragraph in v2 commit message.
->>>
->>>>
->>>> But as raised in reply to patch #1, we have to be a bit careful about
->>>> including private_2 in folio_expected_ref_count() at this point.
->>>>
->>>> If we cannot include it in folio_expected_ref_count(), it's all going to be
->>>> a
->>>> mess until PG_private_2 is removed for good.
->>>>
->>>> So that part still needs to be figured out.
->>>
->>> Here's that added paragraph:
->>>
->>> Note on PG_private_2: ceph and nfs are still using the deprecated
->>> PG_private_2 flag, with the aid of netfs and filemap support functions.
->>> Although it is consistently matched by an increment of folio ref_count,
->>> folio_expected_ref_count() intentionally does not recognize it, and ceph
->>> folio migration currently depends on that for PG_private_2 folios to be
->>> rejected.  New references to the deprecated flag are discouraged, so do
->>> not add it into the collect_longterm_unpinnable_folios() calculation:
->>> but longterm pinning of transiently PG_private_2 ceph and nfs folios
->>> (an uncommon case) may invoke a redundant lru_add_drain_all().
->>
->> Would we also loop forever trying to migrate these folios if they reside on
->> ZONE_MOVABLE? I would assume that is already the case, that migration will
->> always fail due to the raised reference.
-> 
-> Loop around forever?  That would be unfortunate (but I presume killable).
-> But when I looked, it appeared that any failure of migrate_pages() there
-> gets reported as -ENOMEM, which would end up as an OOM?  But you know
-> mm/gup.c very much better than I do.
+On Mon, Sep 8, 2025 at 3:09=E2=80=AFPM Maciej Wieczor-Retman
+<maciej.wieczor-retman@intel.com> wrote:
+>
+> >>I recall there were some corner cases where this code path got called i=
+n outline
+> >>mode, didn't have a mismatch but still died due to the die() below. But=
+ I'll
+> >>recheck and either apply what you wrote above or get add a better expla=
+nation
+> >>to the patch message.
+> >
+> >Okay, so the int3_selftest_ip() is causing a problem in outline mode.
+> >
+> >I tried disabling kasan with kasan_disable_current() but thinking of it =
+now it
+> >won't work because int3 handler will still be called and die() will happ=
+en.
+>
+> Sorry, I meant to write that kasan_disable_current() works together with
+> if(!kasan_report()). Because without checking kasan_report()' return
+> value, if kasan is disabled through kasan_disable_current() it will have =
+no
+> effect in both inline mode, and if int3 is called in outline mode - the
+> kasan_inline_handler will lead to die().
 
-Yes, like I expected, we just bail out. __gup_longterm_locked() will not 
-retry in that case. It's interesting that any migration failure is 
-treated as -ENOMEM, but well, that's certainly material for a completely 
-different discussion.
+So do I understand correctly, that we have no way to distinguish
+whether the int3 was inserted by the KASAN instrumentation or natively
+called (like in int3_selftest_ip())?
 
-Thanks Hugh!
+If so, I think that we need to fix/change the compiler first so that
+we can distinguish these cases. And only then introduce
+kasan_inline_handler(). (Without kasan_inline_handler(), the outline
+instrumentation would then just work, right?)
 
--- 
-Cheers
+If we can distinguish them, then we should only call
+kasan_inline_handler() for the KASAN-inserted int3's. This is what we
+do on arm64 (via brk and KASAN_BRK_IMM). And then int3_selftest_ip()
+should not be affected.
 
-David / dhildenb
+> >
+> >What did you mean by "return the same value regardless of kasan_report()=
+"? Then
+> >it will never reach the kasan_inline_recover() which I assume is needed =
+for
+> >inline mode (once recover will work).
 
+I meant that with the recovery always enabled, it should not matter
+whether the report is suppressed (kasan_report() returns false) or
+printed (returns true). We should always skip over the int3
+instruction and continue the execution.
 
