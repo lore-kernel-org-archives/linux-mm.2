@@ -4,106 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C6D5CA1016
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 21:25:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6D60CAC582
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 21:47:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C82FB8E000C; Mon,  8 Sep 2025 17:25:57 -0400 (EDT)
+	id 0CB368E0002; Mon,  8 Sep 2025 17:47:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C5A6A8E0001; Mon,  8 Sep 2025 17:25:57 -0400 (EDT)
+	id 054988E0001; Mon,  8 Sep 2025 17:47:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B97B08E000C; Mon,  8 Sep 2025 17:25:57 -0400 (EDT)
+	id E5E098E0002; Mon,  8 Sep 2025 17:47:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A54E78E0001
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 17:25:57 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 56780138B8F
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 21:25:57 +0000 (UTC)
-X-FDA: 83867365554.29.9171E27
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	by imf25.hostedemail.com (Postfix) with ESMTP id CCAD4A0008
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 21:25:54 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=iF+NJUta;
-	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CDD1A8E0001
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 17:47:35 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4DBBC13A82D
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 21:47:35 +0000 (UTC)
+X-FDA: 83867420070.13.20C367F
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 71C9FC000A
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 21:47:33 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Ydu8buzd;
+	spf=pass (imf28.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757366755;
+	s=arc-20220608; t=1757368053;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mZnvajWuIphnkOKjBnp0sF7qUJwZiX+WZVB1irJu2mI=;
-	b=eknTV/xQqsXWJhXgEm0+cldBWFWnL3jtSF/byubkJUl1baFjreU9HURFiaOoTHn+Xz3zKf
-	hbi6Wys0ZWWAxY2zWNwIInwy8HJfOHd3XRimi578/V0Nl8TciCM/V0doBUyFQhYoOMmElr
-	H1GQ+UO5wGXc7663rxZewUBDcr+i5uQ=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=iF+NJUta;
-	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757366755; a=rsa-sha256;
+	bh=+BLaFovz61dlh7ow4ijqIn2/yM4F9mqJ6CyX42AuzX4=;
+	b=UsSLwg8myUEF59oQ5YfgflokOHlti0/UvZ7pmHByFCqqnl3rU9K2OWxDvb9+5aj3L1e0Bn
+	CbACjoB9WuH97+2GLyzPG/ecFYtHP6RHLzLfV7XeVjsPhXvZp2K0TL9P8zhA2yxBaVfICt
+	iCErokKDXjtvp3tOaKrJqDnCy7zdpSY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757368053; a=rsa-sha256;
 	cv=none;
-	b=RsTkQWYa/LrZ5lUsfJvVbQ8QoXkIKzK3kg44PXoU7RxApPt0tPpdXde3Pe14I+jk9TiFSR
-	8hzfbuC4X1vyZZnq+ZJ8kzqDktCgPCo2FFDj4dt4xsIP+gn19TAMolDSaec326knAgUr/M
-	a/9EQaRVIPx3GDXPuI12fW7iHIDabD8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757366755; x=1788902755;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Fu8+aayxVNZCT/oRSmjlPZbESme4v7nIzu2hac/jq2E=;
-  b=iF+NJUtadMVvOZ356nUD1Ppsj7y4ndObEAX/j2XvZzLNGrGzFF6TrjKe
-   jq7naXbBaLnJpSKNFVldBqMQzT/I8mt38HKiBx0vsvjYB7De312JO8ZlZ
-   ua+L8iDbR7XGkJk+HqRbL9WgfO4rcuGHVN9UsRrc3e8PnanBVzeLbdrK+
-   p4iTgP+ASqQN4D6Zfsl/Ql3KFvMu8Ygd4z1kFPi9zJOlgVSbsz6pI9HwJ
-   URVl7yaB7bejIJNNWEbCbEaGjVs70szo07Wo2wqH+fH3mojTYd1s0B93o
-   cKYTPz56z0uNpkZrZP8rqZ2WFLbbBrEzVQm++kBNummWXPhJYjLmh1nW7
-   g==;
-X-CSE-ConnectionGUID: UAD2EMFzR+K5e5wF6ycapA==
-X-CSE-MsgGUID: QWG4p1QSQyyfrPkcRnnWoQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11547"; a="70337126"
-X-IronPort-AV: E=Sophos;i="6.18,249,1751266800"; 
-   d="scan'208";a="70337126"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2025 14:25:53 -0700
-X-CSE-ConnectionGUID: HtjZveYrRG2X2LOIsBwwEg==
-X-CSE-MsgGUID: 2TFM5I92RN2w0wCE+oqhEQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,249,1751266800"; 
-   d="scan'208";a="203884073"
-Received: from lkp-server01.sh.intel.com (HELO 114d98da2b6c) ([10.239.97.150])
-  by fmviesa001.fm.intel.com with ESMTP; 08 Sep 2025 14:25:51 -0700
-Received: from kbuild by 114d98da2b6c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uvjMy-0004Ad-30;
-	Mon, 08 Sep 2025 21:25:48 +0000
-Date: Tue, 9 Sep 2025 05:25:17 +0800
-From: kernel test robot <lkp@intel.com>
-To: Coiby Xu <coxu@redhat.com>, kexec@lists.infradead.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	fuqiang wang <fuqiang.wang@easystack.cn>, x86@kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Baoquan He <bhe@redhat.com>, Vivek Goyal <vgoyal@redhat.com>,
-	Dave Young <dyoung@redhat.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 2/2] crash: Add KUnit tests for crash_exclude_mem_range
-Message-ID: <202509090415.cOytgte4-lkp@intel.com>
-References: <20250904093855.1180154-2-coxu@redhat.com>
+	b=iyJM3p2V9TbBpwEaO2wfy2cBZGvH158V6wYxekdm+LGE7ssByFdY04GS1P/gaYE3h9G0Ah
+	nJOgxLrxJOF/lB0zj0qEM+yY934z03lp+oYFc9B/XfPLtZBeaz0Ie8CtbTVvONh1ar+qyD
+	abQzKjRMrG3MQ4p+Uadxz2ebwLR4+VM=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Ydu8buzd;
+	spf=pass (imf28.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4b340966720so33052331cf.2
+        for <linux-mm@kvack.org>; Mon, 08 Sep 2025 14:47:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757368052; x=1757972852; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+BLaFovz61dlh7ow4ijqIn2/yM4F9mqJ6CyX42AuzX4=;
+        b=Ydu8buzdpkKrzP8+nUxp7DoNawZafN20HALalUO3xHNLwA3ZrkgZRrYq0pRZMonnFk
+         SUxQ80W9mkAx+PgbvfHEtpaF4OXOG3Naz1CHKJ0W8CY/rw1tfhfmF0EUJoPqJOXJs8jl
+         N+7EeeTYjd89zLeXAnJTshE0NPL+NvKWkoGuSsi2Byf8ub0duDGKN9V9OOMLu5L7AHIn
+         W/HFoz2mJN6ZqSYSEQeQ5UXfItc2ErUUDWUQpP/TWKphiqK0TBNxL77kTMYvCRnxfDNC
+         lD5ep4dT+nqzdRtc9AaxPsVPbaCTvMTR0mv0yWB0Ji8kPR1GiyPJpe4wT5Y+IAz/rn6q
+         KKGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757368052; x=1757972852;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+BLaFovz61dlh7ow4ijqIn2/yM4F9mqJ6CyX42AuzX4=;
+        b=spbx3nRnoVgfXhbW+uKUv4PKYen15cyYtVZ1GmEFero/70oE+prahSR5yJ9TLKzx+/
+         h4Cy4WKkrHOa7KpSGF8lval02R4DwzgbkQkymldtS7Es6fa739ORYsjElnK5YtzgcOym
+         QCC30dj839NpHiDLwdL+fEJsSwx7xyIS1CmIYbCMQeE1WwFBXuu4d4a7bM6pCI1/17Ip
+         aVNA3pod8E+huoGTfE5VhrWGbw6I7HNhAxpnGeK/5FuJz2m681Yp6khnrTpnm4mJwT2I
+         uQHI9YVn++qTTNygkYMZeqd95ROuO9CDP2g6iNp9FDtrzcpE62RVVTcl3E+x90b/9mnS
+         m39w==
+X-Forwarded-Encrypted: i=1; AJvYcCWjWnK1L7n7VWpj/+iG8AbXvg8N3ToJqAl/4kCNQtLOARNdcJx7boO/luKncVRfUN5rm2MzWtEkPQ==@kvack.org
+X-Gm-Message-State: AOJu0YwU44m+Lss1vTQ+5rn8q5k0gdoEhVHnuH+IoXG/EJh391pC6Pc5
+	v6ucH+TxzgdEzxIwMgkSyHu10v0em/b8CrkC2s/+wtxL+5wQ3mbjexkF0TO5OSF+XIPIZBy37+i
+	cA6+KuPvbAATP/lKOFfmTuEJfLR0ai8y0ce5Nl+g=
+X-Gm-Gg: ASbGncssWVA/n1+fUMz2BGYRvqlnzodzqqdoIwF0PR/IFDwdvmTWZDfLaLGMOcTME4I
+	LFYdvzLSZMSZ7rHHlT3vV9k35URwZHY7Gw4aUdoXMQS7hRlRjXbwcRPfGxWoe1dcSQtzXSgT72r
+	4apVlRN/w1jmuMR2lvCKn76Dx/qmocA2NqyENiNv9kuD5D86Q9llYmy6c/2BsTHF3ZorDHReZS5
+	sXONkcGGA7TL93+gw==
+X-Google-Smtp-Source: AGHT+IGMgxXpEJKdA0/VaYBjW7wne3u+Z/bvfTs93jSMLlnrdYdvJ8H/cjOy+DRjQYS0XvGXWWTS8+MVP4tCJ8K80BQ=
+X-Received: by 2002:ac8:5fd1:0:b0:4b5:e8df:f21c with SMTP id
+ d75a77b69052e-4b5f8382945mr91893031cf.30.1757368052321; Mon, 08 Sep 2025
+ 14:47:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250904093855.1180154-2-coxu@redhat.com>
-X-Stat-Signature: qjdqyoc15393zqtf5gpmpbyyqqnnfaat
+References: <20250908044950.311548-1-lokeshgidra@google.com>
+In-Reply-To: <20250908044950.311548-1-lokeshgidra@google.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Tue, 9 Sep 2025 05:47:21 +0800
+X-Gm-Features: Ac12FXyqytdm6LTd_S9oLQ5lEaWENBoTtlX28nASjMqbh1MB1XvaVuuBvojMNAw
+Message-ID: <CAGsJ_4zuj1nNpS0Ap=x-_dqERTU_NiCZAiHD=JULY1FQn+NwMw@mail.gmail.com>
+Subject: Re: [RFC PATCH 1/2] mm: always call rmap_walk() on locked folios
+To: Lokesh Gidra <lokeshgidra@google.com>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, kaleshsingh@google.com, 
+	ngeoffray@google.com, David Hildenbrand <david@redhat.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Harry Yoo <harry.yoo@oracle.com>, 
+	Peter Xu <peterx@redhat.com>, Suren Baghdasaryan <surenb@google.com>, SeongJae Park <sj@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 71C9FC000A
+X-Stat-Signature: oreqyqqadkrmt4azpougwcnmdccxmpcp
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CCAD4A0008
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1757366754-286809
-X-HE-Meta: U2FsdGVkX19FL3zDWnUbwb+Yfe6sENcUHPX30myEipmRP611GXVdb9JFqPeVovxEQw9ve7Ii6hj4Tg5nHx1ahJyXs7kAHbgGPvHdvom0b9KmiubOi36H6M4mBenq/LUW2oAGd3urzMVD/JmIpexsDZBbcb5SXoujPsyBHElKOLXmnyZ75XLHPHMAdxAlRZAO5gX3MrJKBbAtZeGws8iXYT1TSvVEx5FfbczBsM8g6rn4Jg+VlnVPtmrjZjPWPtMyvUWzw19NEoQbeaGsCV2Idclyyz+3tgt90SjJP7TdDa4QS1wl85vd6CphwwMaHc7abHMKEyCHizQur3hmVoISu4+/N+4759b2TndcQ6ucyJF+RsiUjYgv44/h9Jss0Mie8rHogUD4eVq8W/6g3uhyiFtiIzAwVNU+SGiG+w7kv/FXS0yob4AAZLhCzwxN9P3bc5OX0P5o3s6a1fnZKMQFM0srblxbASMMqNZAMzF41ThB0r6NGluoG9kFa7STpU3gsrv1M8fbHCey99VqkW72z8rKAsPMX7JKAnKWn2Je4ds7PIy9QT4aLu7hQrZsznb9cVjzHBDsEoa/XpdgZ0g9O4gN+qEEwCOkSvs1B9EOSHjlOPPgEfDjm9UpWtdtEYyrXAk6VjMXijk7ZmCtkeG6ij7NrT6CUaJqi/rWjaMgyEPthJUq10MmjC34MleFfx3xFAw/0krzHg8mMWcEwCqFk+fFY+LK233wfa7olXvSBp+Z3cSdcEt74OTS2UkufHPmOuwwQ53rLl1iqn0sEyuWcU7ZV4YJOjnst6Dds82OPVnf9zKgVZSK1wJXTMULYcxdGWrXePguCqfYXtcpumjBiMyKxPpEnVA5p2kv6uSxACXQHxmefNaVDOvpYStgrf/jbt9kogi5PVih+FFrKWwvdD4N7gkKj4KJGsHnGsR/x6lFrfscWDgCoiuldPIqKnxoPzrMZ9YYccAwALMR1Lg
- fNy5td8D
- 0xCjEr4QdE3VX5u8r7WA+YyFkVSlQw7tuqJN9vlT7iHFsMh5roeJnaHDEW4hPqoNNDh3hXUSDZtk5kwNTt3/W0XdJFM7j/HH7pQTc27eD1kcBD9wh/ejiHsHyiAP3YyaofPTFmZyMI9fvADeOB4R2oQW50AS9DPCzLxNjpKLUJiCOSOL8A0PeWE0ATBn8UXFfxN39ObCKz9BKR6KUO4aH1d7+YHFYF/lw8KO/W3f6H/67NPBx4iVNU8AdoX3pxv2HDbGT9Q0HMMSyCystdsvA5lw/ddtCJfcURN08o1wl6zoe7/Nw/9DORv9rOSVoS/KA/rXdgy7Fn2XbSWJC8Ow5wzBSZzZBriQprlcgb9CUTWjWyHWMSywF5ER5RzZHs4WwC9W9D5biNJL4tuVSsjpp2iE0sQ==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-HE-Tag: 1757368053-476572
+X-HE-Meta: U2FsdGVkX19UtZvdl4es0pNXEWEuQX4kG0BGaoDLsfwyU2mfK7LkEpRZAl0OpF9jp1cTgTnWtFEnGfZD8JEOaW+scHy8ONAYodrsHRrcUAfHpLBTIKfkme32qqZ65W2G7WIcgQx79UaLLsYcg8ifpYWdryICIQnvHLO83ecqObGgNi73FgB1G3l+4QJIEudsW0BVPcM8yjMnuoByQEzqXgHvETQWkFp9v8ub8wghY8ozcCQUb46VqsxbL7IJ39b3pUwDhZ38GhZsWwh8eMLfmlz/aNJWZlMW0cJDRzgst3/riTFM8+VZ2vDusU4hApUD1BU3Nl8E2ocgqrb5u2uEze92cV8GYFte6lwdCGem68F8aCVVbO2D/3eId2W2lx2J6mie+NyCngD5EvdSLzMlmwqL8Ie0JUwq+NS7ihz62nJFwdLwinDlfQxJh86zUOM3wxoog6We2uLaGciQOtT2d8Skt2Jwa3HHEETJ4FvAOTHBi3tSoOTDpIWU1idawpwdKMMjrdmnTCF+KYgSmG9vuMEJ0GS/IMeikyaJKLxiNutDINr/vDvkfo7gBFrgWvhwfo9mhtb7SjREVubW9of3Tz/RqK8kCHeLX//ZjeYf4wyFluSDNsZ3esAR/+QdKNrdFqFYbzUt3L8SFscD4aDCuOOdi9Gf9t2pnt3UFmsm0IpchDljo16I63PiYayTLF8wcCyvPTy/f3DN80f4WSP/Wr5y5N0cFH/BQjkIVllzd+1gL0amHdoMtkrz1oRaM3+X4XiY5+2E2F9mRd+sg/gZZK3ApNuQ/lHhwfDbjz3oyOgO/bg/7cHHwSTwL8RKznkn1C4c/aKgaIdgqpczHx/ZV1aQZCbnRMU91aWcMhS9PiczMJ8T+xJWf/jqg0B70YFoU+M0Q2+bZDeBBndulyQQAvzoy1cFZu4LeYF3ZF07/fTlidWFx617ocsqCY9E1CtwC05tBvngc0oqQB/ysCh
+ rsIpBwMJ
+ lyx3J0wauSJ3AwP54iETQHrfbnBsP4m7NSPKJVu1lOs7A2K38h3gDhjQvlXPDHU+W8VKlWci33Zmx55nyubPzvj5IIp/PNNX0BEKYqyL98VnbXLHdZ9NyzsxNzuxgCYVh4Bq/tp74LslWmtwyOuNhYLAn52enVDDDJS2ziQaG+QyY9W0rSFgvrSxA1ajlfiD/eL8h1W/Va4YE23UUYK0eklNAACDNw1FZVEfxSIyAlyIETf8cX8GO7hIBY0JOk683GJ8kJOOnNJzs/6BCrnUtMOqBm/JelX8uFcZTTvkHkbCzqNBuho0L+moG0rW4mxMxDbbhhmDafsqkPdbQ0PpILYtYtGwk2ifPzN4B5MO5xcSXEbtQv/mwvR175ll+3dw6FUd1m4qZ4/M+jlU82/yLhMFVlDt11mehcFwGNf3flAGjDIrkpJPNLoX/f8kJcPKDUcR+YwDeXFSb1GLa16JvlvS6jZuDfRx/c4nB
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000007, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,30 +118,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Coiby,
+On Mon, Sep 8, 2025 at 12:50=E2=80=AFPM Lokesh Gidra <lokeshgidra@google.co=
+m> wrote:
+>
+> Prior discussion about this can be found at [1].
+>
+> rmap_walk() requires all folios, except non-KSM anon, to be locked. This
+> implies that when threads update folio->mapping to an anon_vma with
+> different root (currently only done by UFFDIO MOVE), they have to
+> serialize against rmap_walk() with write-lock on the anon_vma, hurting
+> scalability. Furthermore, this necessitates rechecking anon_vma when
+> pinning/locking an anon_vma (like in folio_lock_anon_vma_read()).
+>
+> This can be simplified quite a bit by ensuring that rmap_walk() is
+> always called on locked folios. Among the few callers of rmap_walk() on
+> unlocked anon folios, shrink_active_list()->folio_referenced() is the
+> only performance critical one.
 
-kernel test robot noticed the following build errors:
+As I understand it, shrink_inactive_list() also invokes folio_referenced().
+Shouldn=E2=80=99t it be called just as often as shrink_active_list()?
 
-[auto build test ERROR on b320789d6883cc00ac78ce83bccbfe7ed58afcf0]
+>
+> shrink_active_list() doesn't act differently depending on what
+> folio_referenced() returns for an anon folio. So returning 1 when it
+> is contended, like in case of other folio types, wouldn't have any
+> negative impact.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Coiby-Xu/crash-Add-KUnit-tests-for-crash_exclude_mem_range/20250904-174105
-base:   b320789d6883cc00ac78ce83bccbfe7ed58afcf0
-patch link:    https://lore.kernel.org/r/20250904093855.1180154-2-coxu%40redhat.com
-patch subject: [PATCH v6 2/2] crash: Add KUnit tests for crash_exclude_mem_range
-config: x86_64-randconfig-073-20250908 (https://download.01.org/0day-ci/archive/20250909/202509090415.cOytgte4-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250909/202509090415.cOytgte4-lkp@intel.com/reproduce)
+A complaint was raised that the LRU could become slightly disordered:
+https://lore.kernel.org/linux-mm/20240219141703.3851-1-lipeifeng@oppo.com/
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202509090415.cOytgte4-lkp@intel.com/
+We can re-test to confirm if this is the case.
 
-All errors (new ones prefixed by >>, old ones prefixed by <<):
-
->> ERROR: modpost: "crash_exclude_mem_range" [kernel/crash_core_test.ko] undefined!
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thanks
+Barry
 
