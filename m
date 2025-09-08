@@ -4,124 +4,251 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA238CA1013
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 10:41:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B007CAC581
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 10:44:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4D2608E000E; Mon,  8 Sep 2025 06:41:09 -0400 (EDT)
+	id CEFD28E000C; Mon,  8 Sep 2025 06:44:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4AA2E8E0001; Mon,  8 Sep 2025 06:41:09 -0400 (EDT)
+	id CC7058E0001; Mon,  8 Sep 2025 06:44:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E6F98E000E; Mon,  8 Sep 2025 06:41:09 -0400 (EDT)
+	id B8EC38E000C; Mon,  8 Sep 2025 06:44:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 29CBB8E0001
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 06:41:09 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 01574C0AD1
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 10:41:08 +0000 (UTC)
-X-FDA: 83865740658.17.DEAC0B4
-Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 0225B180004
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 10:41:06 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=cFpe2Jdy;
-	spf=pass (imf06.hostedemail.com: domain of hughd@google.com designates 209.85.219.170 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757328067;
+	by kanga.kvack.org (Postfix) with ESMTP id A0D728E0001
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 06:44:00 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 481A6160AE0
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 10:44:00 +0000 (UTC)
+X-FDA: 83865747840.18.7FC1084
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 024E814000A
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 10:43:55 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=aS04Sp9l;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	spf=pass (imf09.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1757328236;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PgQX2wVjrXWCDgPEti9JrRCjB/uTC6KZSt3aT19EMWA=;
-	b=NU5EM9x3YEpGAvZfiZNfWif8xKIUZtkz1s0kta8ux3/YC+O7waQJGgwNHqEr4OjkIpxCQ+
-	3h9h57ZWq6oROhtGyYl1aveRwjkt+Zw+VeCx8O/vAKn2ENeslBWEeIzII2SLBrWc+LBHvi
-	NKSbH5YK0FP+0ajCfVTO+2ffPB8N39Q=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=cFpe2Jdy;
-	spf=pass (imf06.hostedemail.com: domain of hughd@google.com designates 209.85.219.170 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757328067; a=rsa-sha256;
-	cv=none;
-	b=geXY5HYnT2kAJ5DaepR1jTdsE8FprVd3JsEJuPTfy2cpES6wHC0+73g6sEfQjxNXYjUykA
-	zAfdcEhGmhYFlSenEGtOwOMF9rL9qXto8kXj2VtEZZs7DqkqEf/Xmr2xb+8XtMTFzXRONb
-	RQyHjmAM0l/UpotGrMVl1UckGxUdZGs=
-Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-e9d5e41c670so3962707276.0
-        for <linux-mm@kvack.org>; Mon, 08 Sep 2025 03:41:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757328066; x=1757932866; darn=kvack.org;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=PgQX2wVjrXWCDgPEti9JrRCjB/uTC6KZSt3aT19EMWA=;
-        b=cFpe2JdyeTi5htGppIvD5z+1ChESP6IphNWPn00k9Mw7CXmy6K+Wk+35324VGz8zy3
-         RCV0L7biIJkwcp5vJssjdGxREXbLB0WpuZBd9NsG/Te3YRIan3SC6Kp8yAKS/ECxeyBY
-         j5zLLLgF6LEEm3fcjhCx0AsMGTttEqnWBZUA4yYq+7GQw9qA7TbWnmvqPx+VyiF3OnAA
-         s4d+38kASxT+ZW9RzWliGJDcGjtZzWYcTP0HYcxgK1gZOMEygqeKdSMrkpBHg4Xx+L7D
-         hTq/BQzVYsbSqqboGHAAOyZpwaFO/Kl2j+NHLYmCD1rTv3EQMFMWDeVCdHJfLbuSEvnA
-         DRxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757328066; x=1757932866;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PgQX2wVjrXWCDgPEti9JrRCjB/uTC6KZSt3aT19EMWA=;
-        b=f0TWVQ3t0VuN3AvqvN6vXTiBlmzm1m53gPHf+JlEjAxgPCFRZ1AGbNXRQQi05Zin31
-         lxnd4+QZjYef2xOcn9ZAiCcmDwdRGopr/j7xLLVAuZeRXGAj3Pbr57abd1B2NcLaBKJK
-         p6MHe6UQmsokSo0VfVT2G0l/58kCa2BXqklG4nhhY1RebqO2W8Cil4qMcrwnGon4rvhu
-         THxxt8bjnSVnGiowtzD3ZfsdvCkoWicpyp+Q/srlvawQaZnhkUvTxCOVZzeqKXJOkM1a
-         lOzBtGR57uAoP4ioJxZtFowKGZCzqthEVq6Ym9Iil3NrZveNI1HrnUhiQIAkz3gLnoZW
-         Yq2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWP4UqZ/vC98JoimBlI6DcCF8+OzhWchQwCIdm3XhRx5XGHw8wkMy1aaQ3TdLynLqKFFJ4jz57JPw==@kvack.org
-X-Gm-Message-State: AOJu0YyMBbs+PHjM/EoHot89CuKu21r6VzrOG7XzM7tUW30zWsWOmCMz
-	zLXtS19pXB8TqMaB5pAIyuw37+iXv5E/yPLLgaKoaF9IOzrA1hKSJrxEhp4OndPghg==
-X-Gm-Gg: ASbGncsm/TijB6YVAPA9cdIi1ilhcl++4gCujzQTiA5oq2QyoJYIHwCILu6GdJtw4rN
-	USiXqE8fAw5N8ZNswy06M93+u2mWv0wpMMpoKQxcLNle2kdpZhyVp3buPZ+fKtItO+xf0HqENtP
-	jrLe3jIZ2yHCIln6bc9ECeiuRWywMFfTBY0/HnIN8VTtOcvdD7LW15oQv99lrl2rDvgCZpXl14V
-	4FTgqZhTdC47xUgy7c3Gk+Z+tH91I7REfvTWsbQ4CzMtIZu3BJ2F9eKVzvD8j+VImNs6P9DmkRH
-	AUBogE+lhNtD7ZNgNNLfHKpYvtdcy9eJbAbK+ZGjes3mdoJ7e5TKwic9fRekWcfcAIoEP5cu53S
-	vV7FURY9E66c62uziZZ/F1ZfSQw2hgCHV1or9vC6wPT90Rz+YgU2QU/IbJG3uxDcuEw07dw9B5r
-	eyDlwEJi2BlqmmBu2CBKRK9/sd
-X-Google-Smtp-Source: AGHT+IFPUzPrmMuGqYymtA/EsR5L9cPsDdw3hltvchIp0nKAJ6ffXeCZG+zbzSfw+JCOtbL6FoAJJQ==
-X-Received: by 2002:a05:6902:6317:b0:e98:8b69:f437 with SMTP id 3f1490d57ef6-e9f67ea5375mr4369860276.43.1757328065893;
-        Mon, 08 Sep 2025 03:41:05 -0700 (PDT)
-Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e9bbe08a7b4sm5448785276.25.2025.09.08.03.41.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Sep 2025 03:41:04 -0700 (PDT)
-Date: Mon, 8 Sep 2025 03:40:47 -0700 (PDT)
-From: Hugh Dickins <hughd@google.com>
-To: David Hildenbrand <david@redhat.com>
-cc: Hugh Dickins <hughd@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-    Will Deacon <will@kernel.org>, Shivank Garg <shivankg@amd.com>, 
-    Matthew Wilcox <willy@infradead.org>, 
-    Christoph Hellwig <hch@infradead.org>, Keir Fraser <keirf@google.com>, 
-    Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, 
-    Frederick Mayle <fmayle@google.com>, Peter Xu <peterx@redhat.com>, 
-    "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
-    Johannes Weiner <hannes@cmpxchg.org>, Vlastimil Babka <vbabka@suse.cz>, 
-    Alexander Krabler <Alexander.Krabler@kuka.com>, 
-    Ge Yang <yangge1116@126.com>, Li Zhe <lizhe.67@bytedance.com>, 
-    Chris Li <chrisl@kernel.org>, Yu Zhao <yuzhao@google.com>, 
-    Axel Rasmussen <axelrasmussen@google.com>, 
-    Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-    Konstantin Khlebnikov <koct9i@gmail.com>, linux-kernel@vger.kernel.org, 
-    linux-mm@kvack.org
-Subject: Re: [PATCH 2/7] mm/gup: check ref_count instead of lru before
- migration
-In-Reply-To: <e54b1d8c-ad63-4c7a-8b1b-b7c3d76446f2@redhat.com>
-Message-ID: <b008aef2-f69f-e2fb-d4d7-71a42d308529@google.com>
-References: <a28b44f7-cdb4-8b81-4982-758ae774fbf7@google.com> <47c51c9a-140f-1ea1-b692-c4bae5d1fa58@google.com> <e54b1d8c-ad63-4c7a-8b1b-b7c3d76446f2@redhat.com>
+	bh=ukCHEWV+nF3IKYMgKGgJX0f25AeGcGOru1biajbzXJo=;
+	b=pOiUhvhI0ERNzlf1IO/6HP/cVkFCIU8tN1Zc/EyELpFoUjktPY7LQiqjDcHgkTlABqNfsU
+	Qy7+0/9nDHE9PTFS8AboTQjhLZWzi3ViOTawZwexKb3sSx5mw3q5Vox/KpsLC6Z3WmjhN5
+	koGgm+8GbQd3ilQ1XAnEJAvf/ktVj24=
+ARC-Authentication-Results: i=2;
+	imf09.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=aS04Sp9l;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	spf=pass (imf09.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1757328236; a=rsa-sha256;
+	cv=fail;
+	b=gTkn1nHVyg/qYLDpNFPJ4zCzpLTk9OB/AsS4g9H+d5TNf7gx9GEEBP6TK6mzMm/SvGqKux
+	ohFg0XLrXWX7rwlkbkdkvbmrCZ4Z+P6bsUa0YSMIafXIm/+koGGbdw4rn/PxGvqK7WrH6e
+	iToSYEF34lAVEC6ai20jKXi29DUvrJo=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1757328236; x=1788864236;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=Qr9LjMjAMgh+P+/phPwGo8HVP4rHmAw7fWDcZ5PQdXk=;
+  b=aS04Sp9lwEB9JI+5Aiit5PIYLL+uyshTlB8Qseu/nrGqzI0FQFf3E9XL
+   Oz9heOWdTix/Pyq8IU+l8WNI/Poh7jexiRY9zPJUtRNutmnlvrbsVzPwK
+   zJoVJEmJ/jS2HCLuF0Q63KJwLG8CMBrex3mUtqrOl/3HC1Zouf09Barh2
+   0zzht5m/BIAfy3bVdUaVNgN+khuD/lORzM2q7WKIDWY/ukGaYqJvat+WS
+   0qL5IE8Cxm3eBuomjI6n4IllHIhA6+HeLFsWDYW5fBdLLUCB8XV9wYDBJ
+   L8dmGAHHPNRLU7P6sWvI2XmneMYhAi3+YGE0IjrTKQS/ymTSfPhCIR5Vt
+   Q==;
+X-CSE-ConnectionGUID: URNT2lNTTCqKGMR3gn04aw==
+X-CSE-MsgGUID: VLMsHDgXTSuIKVc9o4jQ7Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="63408564"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="63408564"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2025 03:43:54 -0700
+X-CSE-ConnectionGUID: x4IWr07FSCeJJCccMe+Yxg==
+X-CSE-MsgGUID: +3cpMTneSFi+TuhhcihYng==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,248,1751266800"; 
+   d="scan'208";a="173120243"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2025 03:43:53 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Mon, 8 Sep 2025 03:43:53 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17 via Frontend Transport; Mon, 8 Sep 2025 03:43:53 -0700
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (40.107.92.83) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Mon, 8 Sep 2025 03:43:53 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=OjQZKqHL9CuBO8Omqebbn78d58+hvNGyEO3HKzesJ8nP4uBkZiEIl36KWbND68oLI4tpavl11nHBnzQKo+j2A1EW4l7KHzk/YQPWaTesJ3+a4l9OG/y0hp0LfjbnS5JBtlruFHo9vKcPaKXNuQNqF4638hquWJktLJKzlD4CPG3yABBIX3qTKXJbM977mRcw99wrVQgKPzwcpkQ3VJ8hsG8aPMbkqooFqwkrjfybwLURM/0TCA18zpfy9Mc0awPminXUXvSOP/RAXaNJH+YkVJMuDitEfTXoLMW9G6lsMqhv0ckcqjMvogylpC5gJwjYxPRUYyiUlld9LqJohSOdLg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ukCHEWV+nF3IKYMgKGgJX0f25AeGcGOru1biajbzXJo=;
+ b=c3I4bTy2xqgx+KfYMmpNEnINC1NEy5W54Y8diOSvD2qIPNQZWOphXy+B17Rk9+MMvAldQjEaR9GFIWV1EWWJdhpww4vNFWF2FEbwa8HsJolG6vmizy93LAgmW5YS2CsXK7IfSKiDUl3wOLhusnS3HX0EJgmKRV4z2+Vt/QgK5gnuoYknM/8gFYjucOszcpr0/pkbiGK4uSeAFHNPiyPn18mI5VH9ciBMHNSvg98+t3MgMrxiTvhBIfNKqNf944Yj8sqkeJC7QiwY+VQVPrjFniODQU+vsK+QG6Y8f4PjlcOVElvo0PKCmZErq3Fi5B3SYvf2tL4BocRW1Z4OkOQsJw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from MN2PR11MB3934.namprd11.prod.outlook.com (2603:10b6:208:152::20)
+ by SJ5PPF035FE4CB7.namprd11.prod.outlook.com (2603:10b6:a0f:fc02::805) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.19; Mon, 8 Sep
+ 2025 10:43:50 +0000
+Received: from MN2PR11MB3934.namprd11.prod.outlook.com
+ ([fe80::45fd:d835:38c1:f5c2]) by MN2PR11MB3934.namprd11.prod.outlook.com
+ ([fe80::45fd:d835:38c1:f5c2%3]) with mapi id 15.20.9094.018; Mon, 8 Sep 2025
+ 10:43:50 +0000
+Date: Mon, 8 Sep 2025 12:38:57 +0200
+From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+To: Andrey Konovalov <andreyknvl@gmail.com>
+CC: <sohil.mehta@intel.com>, <baohua@kernel.org>, <david@redhat.com>,
+	<kbingham@kernel.org>, <weixugc@google.com>, <Liam.Howlett@oracle.com>,
+	<alexandre.chartre@oracle.com>, <kas@kernel.org>, <mark.rutland@arm.com>,
+	<trintaeoitogc@gmail.com>, <axelrasmussen@google.com>, <yuanchu@google.com>,
+	<joey.gouly@arm.com>, <samitolvanen@google.com>, <joel.granados@kernel.org>,
+	<graf@amazon.com>, <vincenzo.frascino@arm.com>, <kees@kernel.org>,
+	<ardb@kernel.org>, <thiago.bauermann@linaro.org>, <glider@google.com>,
+	<thuth@redhat.com>, <kuan-ying.lee@canonical.com>,
+	<pasha.tatashin@soleen.com>, <nick.desaulniers+lkml@gmail.com>,
+	<vbabka@suse.cz>, <kaleshsingh@google.com>, <justinstitt@google.com>,
+	<catalin.marinas@arm.com>, <alexander.shishkin@linux.intel.com>,
+	<samuel.holland@sifive.com>, <dave.hansen@linux.intel.com>, <corbet@lwn.net>,
+	<xin@zytor.com>, <dvyukov@google.com>, <tglx@linutronix.de>,
+	<scott@os.amperecomputing.com>, <jason.andryuk@amd.com>, <morbo@google.com>,
+	<nathan@kernel.org>, <lorenzo.stoakes@oracle.com>, <mingo@redhat.com>,
+	<brgerst@gmail.com>, <kristina.martsenko@arm.com>, <bigeasy@linutronix.de>,
+	<luto@kernel.org>, <jgross@suse.com>, <jpoimboe@kernel.org>,
+	<urezki@gmail.com>, <mhocko@suse.com>, <ada.coupriediaz@arm.com>,
+	<hpa@zytor.com>, <leitao@debian.org>, <peterz@infradead.org>,
+	<wangkefeng.wang@huawei.com>, <surenb@google.com>, <ziy@nvidia.com>,
+	<smostafa@google.com>, <ryabinin.a.a@gmail.com>, <ubizjak@gmail.com>,
+	<jbohac@suse.cz>, <broonie@kernel.org>, <akpm@linux-foundation.org>,
+	<guoweikang.kernel@gmail.com>, <rppt@kernel.org>, <pcc@google.com>,
+	<jan.kiszka@siemens.com>, <nicolas.schier@linux.dev>, <will@kernel.org>,
+	<jhubbard@nvidia.com>, <bp@alien8.de>, <x86@kernel.org>,
+	<linux-doc@vger.kernel.org>, <linux-mm@kvack.org>, <llvm@lists.linux.dev>,
+	<linux-kbuild@vger.kernel.org>, <kasan-dev@googlegroups.com>,
+	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH v5 13/19] kasan: x86: Handle int3 for inline KASAN reports
+Message-ID: <couuy2aawztipvnlmaloadkbceewcekur5qbtzktr7ovneduvf@l47rxycy65aa>
+References: <cover.1756151769.git.maciej.wieczor-retman@intel.com>
+ <36c0e5e9d875addc42a73168b8090144c327ec9f.1756151769.git.maciej.wieczor-retman@intel.com>
+ <CA+fCnZcMV0BOJyvx2nciCK2jvht-Hx0HnFtRzcc=zu+pQSOdVw@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CA+fCnZcMV0BOJyvx2nciCK2jvht-Hx0HnFtRzcc=zu+pQSOdVw@mail.gmail.com>
+X-ClientProxiedBy: DUZPR01CA0126.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:4bc::20) To MN2PR11MB3934.namprd11.prod.outlook.com
+ (2603:10b6:208:152::20)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 0225B180004
-X-Stat-Signature: 3t5a7iph95t8jxp1j7atc5xar5zwdh5j
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN2PR11MB3934:EE_|SJ5PPF035FE4CB7:EE_
+X-MS-Office365-Filtering-Correlation-Id: 93340e04-db99-4ca9-b959-08ddeec498a4
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?VmpvSktiS2RTQ0w4QWxxRkRQVnBlbHJCUGQ0N0JWUFdCczNnbUhPSjd3QnM4?=
+ =?utf-8?B?ajhLQTBjcUFadlJZQUVWa29yNVdsdGdPQnRFUENFTTN6cWZRcHR6R2V6NENF?=
+ =?utf-8?B?aHZBUkx3ZDJvSVAvc3VYU1gzUENad0hXZ3JDUjhlSGZwZVVCZVNIOFV6SjhI?=
+ =?utf-8?B?RTZweG9RVTBQTWw4M2JiSGhZVC9YRkVxb0tsWm5LTDJ3ZStxc2o5NitGWUFE?=
+ =?utf-8?B?dkQxRGVyNEhjZ0h2NEEzUVh3NWlGZ0wzdjFVZU9jUFpXM1REQjBmcVNEMjQ0?=
+ =?utf-8?B?Rk9XaGkwdDgwb2E4NzdETnp5NW5mUmVGcitMVkxqbEN0OTVuMGp2NzVhVENQ?=
+ =?utf-8?B?RHdLVWxidFRINHRvQVE1cVhabjFzYjdlZTd4NnJtVytPS0dkaDl0bE9YWmVo?=
+ =?utf-8?B?VGdUUHFKUE16RmZNN3FwWXE1RGJocDVsNFRmb1FQeFpYVld0cVRmSUE1QkNY?=
+ =?utf-8?B?NFoyZWQrWW1iWU1VNXRiMUpkcDdDZmI4RUhqQ0YwYTkwdGtYd3BMWEdIQkc1?=
+ =?utf-8?B?SHA5ZGRNTFZVWEFzbCsyb1UxQTF6TnJGd2VLRXN3NW5xQi9jSE1IVHBqTlZk?=
+ =?utf-8?B?elB1UTBXekxRNGUxTy9EaVBmVDBKaDhaZTVhdkxKTnkvclJrZEY3QUpzcGhh?=
+ =?utf-8?B?VTlXWFFVZWdxOGd3NlNYaSthZ2p2RGJpdGZ0ZDJyMEVMSG5Tdm5VOXRXNW9C?=
+ =?utf-8?B?QXkwWXJPeXpCV25Ed2YrR0Z4em5hR21rQ0dZbEdjSjJxL2lKcmhuZEMzcE4x?=
+ =?utf-8?B?dUZMT1ZvMWJJQmhnWTB2M04zbDUvNWJQZGl6b1lXZlAvWXI2YXpoeU03MHBO?=
+ =?utf-8?B?cG1rTDdneUx2UEF3VWF4U3BoZzhST0FldG9RWlZoUUJzdXlTZklPVXc3VXlu?=
+ =?utf-8?B?eEVrcUdsMCttWnh4bDNIS0VJQ0FVNzd2ak1jTzV1OVVhUFNaMFlTM1hmM0la?=
+ =?utf-8?B?Zm1SdnluWk9CRlphSXhlU2dCa1g0allvckRMNjRVYjdyaVR1L1dNc2RJTzhI?=
+ =?utf-8?B?dzFjaEh2UnF3Q3M2c2pNb1A4ZVRzMFZWSEJRaGNmNlJpTEFjMGhNS0lBb21R?=
+ =?utf-8?B?VGRpRDdEcGhPMmkyQnJ2WkVhYVJEZXI2eVE1UE5YbGdwYU52Y2ZOZVFLSWto?=
+ =?utf-8?B?cDBVc3BCbkR1YmxpSlhoeHZnYVl6ZVduOHVNQVZrdmNVTUZHTmVDQitYajF5?=
+ =?utf-8?B?ck9MSW0vSnN3Z2hEV3JBWktzWVlZdXZnRTI2ZHlYNkJvK3JvQmlJbXlhcVlD?=
+ =?utf-8?B?ZDFTak9TNWxGWXhQK2NYNDRsR2xxVW0vUGo0ZzY5ODBXSm9UUFdZSk9aUnRu?=
+ =?utf-8?B?MFgwYjhjME5lTnVETXNkRW5hZjJKZFpBWVN3elI2aUtBWWJweDhkRVpyQkdj?=
+ =?utf-8?B?R1J6NE5Pa0pzaWttRjBKaCtwMEVTY2c0c2kvQVpaWXBBMjZrT21WeXd5MGtH?=
+ =?utf-8?B?SFBQRmVrZVd2YXBVQ0VMbWEzMmJUV3NKUGhSTklEOTExZ3lVYjlCd1FHV3F6?=
+ =?utf-8?B?UGRKeXhFTjQ2M2g0U1dvZ0d4blN5RXR4VHRwUEpDZU1zNys1blZ2NkJyZGRO?=
+ =?utf-8?B?RFBmSjlhUWVyemdtS3J6ckhDWURqVnhPZHhvU2t5bU1ubTExVkNXcDB2VjdI?=
+ =?utf-8?B?d3hzaDcvem1XTm5XK0pzMVB4a2ZhenVVelRSa0tXS3RaUlArWlEwNWJHVjVm?=
+ =?utf-8?B?YnMwT3dsZ0hSU0lselgvRDVtSnAvYWNqSDU4aTNQVDJLUWJ3Z0NwNVNuS0F1?=
+ =?utf-8?B?Y0JBWURSTDZzQUFaSzUwRDdWb2k4VnlTV1JFc0xqUTNQLzRiTnFXbDU3VlB2?=
+ =?utf-8?Q?JmXQs5asPFhgeQBlSL3JbtMDvBAcaJPKLfK2E=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR11MB3934.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UjBKbEpzWnk0cDBVR21IQ2pGMTdMOUhQdVcxdGNrU2RnRWorYjFFcUFEVXdN?=
+ =?utf-8?B?THlmWFZJZUVHOUI3TUk3RDgvbk5NOWlMK1RZUVR0TmU0REtIdkltN2owK1lH?=
+ =?utf-8?B?M2hpR0ZSTXQ3Nm5TSDRodi9ZQXMzN2t6S0lPVlI3L1doOXp1b2lGVXpwVUdR?=
+ =?utf-8?B?cVNRSUhzRUJ6bTgweHpuSmkxOUcrck5JY3FwSllPUEo2OXdraC9naWpJZy9p?=
+ =?utf-8?B?M0JEenVkOUxlcFkvSmUvZklLR3B6eVAwVU9HVEtzMHNSMlZ4QlZxeGxQUXgz?=
+ =?utf-8?B?R011UFhjUGxjYzIxcEF1MjN3UENJTnYyYTQxdUdkUzkwUUQ4WFZaRFo2b04x?=
+ =?utf-8?B?eHVNWHlySmt1TmR3Vm9KcVdlWXM1Qk1WNUxkQmQvTkc4NitqT2Q5TzZjK0tv?=
+ =?utf-8?B?OGQvRjdsWi9aZ2h6cW85TmZnYnFqUUxvMTFGZnN5NnY3N2NlZUZMUWQyMmFT?=
+ =?utf-8?B?SC9DWFpmbS9TdVdJcWRIajZIUWxyb2JWekI5VVMrTXZXclhLSGRVa1cyREJm?=
+ =?utf-8?B?WkJvbmFXTE9KQjlkclF1VC8ya0t2aUx0eW91Y01oWDFzNzFtS2pLdkEzZDgy?=
+ =?utf-8?B?V3ZIL3NBZFpkNW0rdUdsUXVpMzdqdjY3NjQxbGFFT2NrRGlMai90dVYweXBF?=
+ =?utf-8?B?SGsza3l6SmVDL1cwcS9kL2ZZVHZ6S1FWbnNDbXM4U1FNYkdaVGhrWktBd2xw?=
+ =?utf-8?B?SVFneEk3dmptbFAxZlYvUEdienNyQ2N0RmdGK3FZZkdhM29aMjliVEVnV3lH?=
+ =?utf-8?B?RVd3bVRnV3duZDVuSEpvUEhlY0MvRTBxY2ROandmSjZVemRvMW51OHI1cDZk?=
+ =?utf-8?B?ZmU4bGM3SldUbklscTg4NElLS1ZQYmlTVFJjVUl0L1VGYkRmZ25QTHhkaTBr?=
+ =?utf-8?B?SmczYkl1MCtpaG1tL2NhQkxWNUhQd0s2UnkxY3ByN2Z2OTJucGN3VFJ2UWJn?=
+ =?utf-8?B?NkpkUGZ3OXAwRmhaZXI1dXRoc3lhbWRKQVQwakhVL0tOK1kzTFhNaklMaEZ0?=
+ =?utf-8?B?L09aTjI3MlVSV3p2a25YV2FoUnpwajRPU08rNUxFN1FMY0ZSV0tQSXpMb1Rl?=
+ =?utf-8?B?L2FpTEM5bGg5UitqYlpxTFZjUXN6d0YralVKNUEvKzMyQ1c3YktGZmIyMDV0?=
+ =?utf-8?B?Q1BRY2FtaDltWUpSb0JRTU02ZjRucVRNMU5aL0tuVFUrMi8rTkQvRURxeksv?=
+ =?utf-8?B?NGxsTk0vNkpEQ2NZa1NYMGZmbG9Fd0hqTzZ1dGJBeVZrelJGSjl0QVR1d0tp?=
+ =?utf-8?B?RjNpWldnbndkL3FjcWk5Um9oZWp4Y00zK2hLM3krL09rTGltNmFSMVBmYmRl?=
+ =?utf-8?B?cnVmOTcxOVlDM0hyWUppZGJ4VlhKMmwrSnhpY1g2NUJGbG5qNTgyOWlmYTZM?=
+ =?utf-8?B?MjBieTNtNjkzODVMV3NlaTR4a3NEdGlkcGx0K0RHVGVzU2svakYyOFlTbzdz?=
+ =?utf-8?B?bk0yTGVXUk9uTGlVZEtQeTl3a1U0ZHk3aldSZlJsZUVLR1J0VzQ1TWVFbENi?=
+ =?utf-8?B?NFFqS0NweXdIeS9SamxHZ3o4ZlIwY3FLU054TldwNnZ6S21PdnB1cEFqaUty?=
+ =?utf-8?B?aUwwNll6ckdHV3lvdTF0Y0RZYnROTG55SWZqckg2KzFKMnowRnJvZElXWFpQ?=
+ =?utf-8?B?Mit1dzJPQnk4Y2MzOXdMLzZDaGVVcVJnVVZ6NHdKbWJodEdrUVNWT0I5aXor?=
+ =?utf-8?B?ZUxOWGpZWm9KTzdmdmpDTmZoZENmdzdCeE45UEJXdDZqSnZJVmJ1R3BoQWdj?=
+ =?utf-8?B?Mjh5MStFaWVHdHZWNk9HaEF0a0huaDZGYjhmcWlUeW9aSUtMOE1tazZHdjV0?=
+ =?utf-8?B?MlVkcXIvdEhHV1pqSUR2dmJ4RnB0bE5yK25rZ0E0UWYrMWtUeVZoY2xFcnNv?=
+ =?utf-8?B?c21FY2VhTERGaDBuRk5sK3NoUlRjNzhENVN1ampwblhjRmMrbitZOWx3cXND?=
+ =?utf-8?B?Z0QrbTFaYSt2c2gwaHJwUk1BaFFiSytKc0NRbmgxaTNManUwbXdhL0NKQWFn?=
+ =?utf-8?B?NHBwWHpSdXNORXlDTVU5MDVaWXBJWXFyYlJsR3BzTUlMS3BxZ213Wm85Wm1U?=
+ =?utf-8?B?MG1GMTlFRlpoNGFZQUh3OC9EZ2FMR1gxUWdKd2FMSmp4WW52M3lUSDhTTXNx?=
+ =?utf-8?B?elVjRUdPN2pycVRrVUtNcCt2Z2hiK1NWcTRqSFYwZ3dObGliTi9YNmZIaWp0?=
+ =?utf-8?Q?yd9mmuZkhvAP4XUoKi4DkRY=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 93340e04-db99-4ca9-b959-08ddeec498a4
+X-MS-Exchange-CrossTenant-AuthSource: MN2PR11MB3934.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Sep 2025 10:43:50.0485
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: y9cTDkTAA5L6GyRW58lfREpKHBsmgNie33/CvPUwZT7hmuVJbWjlLsdSm4HewB7eN9g9iOetJPASSCXQmd4b+Ldh1DdLdhxDpNJjtGgfPSw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPF035FE4CB7
+X-OriginatorOrg: intel.com
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 024E814000A
+X-Stat-Signature: z8qoeuya4fa9frp8rumgzkwiuawamap9
 X-Rspam-User: 
-X-HE-Tag: 1757328066-339811
-X-HE-Meta: U2FsdGVkX1+YujVtxMdC/pUgTJj6c6n1q8ZLLw77sPtnsddxdfwPd4E4HcshXRKOQ1WFGAePhJ4VzgCR7n14HNG3UDc8vC2b5EkOjjDnS8bo8CLxk0g4vic3eV7Hc9tLemveivCii0msWuT8bSYDfceMRPTL24kH+ksGbhLgV4qTCRRiIc7eZXxN42w36RLPuD8JjwWDLWSZKKl0p2rATDNdBzuHN6XaiY62NSO6uVqhBOZbtmGwHwhOkOUag0vpwShUFqSgTXshbvuhuNxKU6oEUIsWX0fkSmEDvrXEo2vEKTUrvdDh2THSzyTxk6Jim37VFMcPe6szwwWc4M0EEHYCMScK8bc9c50GcLtIradyt3+e+IyPcmgJqsKhSpCGqZXlalu0dkaDX0PuvQdFlw4fFu10YYnUR8ignaZSddLN2Nv0g74a4HHEIPtVpxN4imZoHlmLA1nISZTPpotvllbCWwUIgFtmODDhAl3S3cGByJr2qIuXzF3DO5ePGHcy/HpqW6PzNVzTkFEBzxlftgJ4XyZR2+wos4KwFyIhuyWhCOxeUcgfvmufGyQot/fvjYWpQTEk9x5aO+IEo+4LWQwkPSfMlxh6VumR8akEZj88lERzG1VYzJ1yBrVe939DSQ1UsyfyZf5J/jbU8Dx3MFvERc7RvOW5bbNWfjnZy/RCeZ4v+7AnVwk8i0I9eXpAJHjBkwVLGO8GVtsk0oblWmAZDPkTuWaOUIZsZLuYqSeArGpyJZsEQGOpA/arH92UvDdEdG80+5wv8LATkXw1UO9FBE5waL3yC34Mf5jLoaY9avgUCMJP4ANLMkwpQnNXZT1SBAg/XB8C4k3jw3sYCgbPwASlYssBIpBZ63+moNLHgvooxhp9WAQKtnLKOoKeqLn+dNG/JDJHq/rVOOoxcA0pEDV8OP5AsETSvF5KEFHIxtrUb+g393luRbs5KVlZW7cxM/1XpYbCuU5JrVm
- vWORD5/4
- tm3hRzFBRtPDoeLX4WAntZA6Z1IbVumSI0VrnzlB0uLLJ1iPad6oEjGpQCBeO7ic1jH8/DEKdqHO7Ltmi9fevjzXtOkGtMocYO+vmXyM0mm/Gh/HWstlyq6/XRPchN4tmg/g+CALICLlDu0EXh4Qinu6ZflGsl6AnliXdYO0ABm58oSpc5FVOQplBpfIK0MOLtkcjYQ4z5o2YyD1UBqfGIR/iDOIH7UGe51eCyOuzs0qgYQjcyWWMSHaBI1tlyme0K6lg8bB2+Zbmtux8Kv5tMZaN6z2SLCEYeeglBUDm6DeERioa/OeHP8c2PER4NBu+Nwg3KN84c/NCLYKgRaJMpNiUMP9acsmVfOELNbVEkzbgOS5fum5NI0qAnkOU1FvzL2m5npp7C8FHh6llDGLyodAyAizzunzQ4UBYqv+SbOqBr2UaMhm+Fxxyjw==
+X-HE-Tag: 1757328235-714079
+X-HE-Meta: U2FsdGVkX1+77d5cp56MClU0szR8fSevWlJNOSAAsHYchQqNOdeVOkB4pds9dC4eh37QSFRi9sV1IW340+4WL5F/OK9IsfwEg0X2Rmn5W38D2C+HRSzqMBM18l2fG+0xqygWOXm1bQL1GyAe7OeLlzUk7XcJ5IKkY/qsm+uWaG+TXwAi6cAgsqAt4TMYOsq/3Ar8ud6m/9R9g5t6v4s0dXS9LXXpYq/gM6sbMGbgF+55pjkdO9Uccsxv35T2uoC/hfLp8JNDxDkYAcCCzlLrvrKbhu9USGCDDip5fLdUr1ShcceaVJiCgedqxEEuamQH1Wnutl0ABhlpQM6o3olAFt1ooib9aH9ykhGvZ7HQ4WidBNtHDzPUZUb4+L08DTLiXnWHfXJygmdC/1je29dgtpSHh/nzYWqQZKoh4nXWHqbTutzQzCMwhhtWfIQEVhBI79RoQm04BlRZed0otjx+24y7m3U0mxpNA5TerB8nCMF5O30jKyGgAoR8JC14yCHOB56yxwTW/TKjMZMicf27gTIFf86gFI3VJxbN56IBxQK4IT2gnSkVURu3a/2OJIsFKpT9jTiaH/e6hJXFxbX/EDFpwGi2CxzR7Y2AWZicJhTs2mYYMWU6TToqNvSBtyEbGY39nCzjTrp35j48ef+3667uJL5DstQTGQpiE86v9lT6sfh9Z1FF/QkTzG7b0EzP1sNOEIoJUMntzlQX/Wt7KMoDGqiNuipU6r5cY2BpT5QoxaCnXrKbB1RzLH4AZe5grb3RlNkli+swRhwBf6zbA/qLilldVhUqF/UGpYFyhFXQ7ZyShVYRNChphuCiu5FpayV8RvZq80bMsUHn2QWNZ68Ur8qX3PkZhH7YLFic2SPr5DupKzTsSAS68mvZ8X4AbWys2rwkv68u4luHJX+wIIivfudsZI0fiQRSGH1DzRnOEmoJvETkmxo8vQv8PRtzqo3VdhUk84g2Iqs/lOL
+ PxyUF+Ld
+ d6xgKf3Ioigjzgw+cF88ZzXrpt5yLFpXCiYDN0WMe+PktkJyjcJEohV7k7OD100QN2rhjDswWaHphA7dqdQgFuP0c+DsDRgvDYNEKQ8M+U+DCwnd9ENssiEzD6GDE+nMrIEQ9zvCanWL6bg4DhiaWFii0QFKgaAyyyWWwxx70t4e2AA0VUhGFyyWVJMmXvok/cyBYJO3DQM6X0zHD9cCzDs6ArCzZy4dTMaZxfPRENGcNgQZOB8Iq8U6WS1zpynmjtRhqOzESgnwG4kKt02NF38L3xh5aJtpCERlkBD8EmVD8deJEgIw/aF5yCo2wpNqdewSJ/PnVHnbc8bc8TKE3zLl1VuEd+ax+PyWKT6M1g6jj+1ivDlltZYZILqIGlIeEhi2Ztm/anB5qX1o8PBzh70ab+q29H5maHp7r3CG2wUTr0w+j5zzgheUEhu27CiQSQi26zqHTteUAuhbCalCoKdbmM2wV1iRoJFKvvMqgJZR66iLxWBaPsbCy6MIqjirPaiL7U1Qtwagivk25sk6C0KTuCsF/LXpcqVogwC5c9vI2Pg4MswJGhtAjziAR/LqxvMSpT7WX1sI4yfB5L5exZgVK+Vdp9ia6MO/zzSXi/Y9fva0lEIMGz+JlMTu064+K72RhcVZF4xkpFbddRjYpDG7TghoW0bM0PBCH74wufaZgQ5jmAsGzhApz3r1KyxxIpRh9wl2K/O73qn30WT1vwq1h1A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,52 +257,262 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 1 Sep 2025, David Hildenbrand wrote:
-> On 31.08.25 11:05, Hugh Dickins wrote:
-> > diff --git a/mm/gup.c b/mm/gup.c
-> > index adffe663594d..82aec6443c0a 100644
-> > --- a/mm/gup.c
-> > +++ b/mm/gup.c
-> > @@ -2307,7 +2307,8 @@ static unsigned long
-> > collect_longterm_unpinnable_folios(
-> >     	continue;
-> >     }
-> >   -		if (!folio_test_lru(folio) && drain_allow) {
-> > +		if (drain_allow && folio_ref_count(folio) !=
-> > +				   folio_expected_ref_count(folio) + 1) {
-> >      lru_add_drain_all();
-> >      drain_allow = false;
-> >     }
-> 
-> In general, to the fix idea
-> 
-> 	Acked-by: David Hildenbrand <david@redhat.com>
+On 2025-09-06 at 19:19:01 +0200, Andrey Konovalov wrote:
+>On Mon, Aug 25, 2025 at 10:30 PM Maciej Wieczor-Retman
+><maciej.wieczor-retman@intel.com> wrote:
+>>
+>> Inline KASAN on x86 does tag mismatch reports by passing the faulty
+>> address and metadata through the INT3 instruction - scheme that's setup
+>> in the LLVM's compiler code (specifically HWAddressSanitizer.cpp).
+>>
+>> Add a kasan hook to the INT3 handling function.
+>>
+>> Disable KASAN in an INT3 core kernel selftest function since it can raise
+>> a false tag mismatch report and potentially panic the kernel.
+>>
+>> Make part of that hook - which decides whether to die or recover from a
+>> tag mismatch - arch independent to avoid duplicating a long comment on
+>> both x86 and arm64 architectures.
+>>
+>> Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+>> ---
+>> Changelog v5:
+>> - Add die to argument list of kasan_inline_recover() in
+>>   arch/arm64/kernel/traps.c.
+>>
+>> Changelog v4:
+>> - Make kasan_handler() a stub in a header file. Remove #ifdef from
+>>   traps.c.
+>> - Consolidate the "recover" comment into one place.
+>> - Make small changes to the patch message.
+>>
+>>  MAINTAINERS                   |  2 +-
+>>  arch/x86/include/asm/kasan.h  | 26 ++++++++++++++++++++++++++
+>>  arch/x86/kernel/alternative.c |  4 +++-
+>>  arch/x86/kernel/traps.c       |  4 ++++
+>>  arch/x86/mm/Makefile          |  2 ++
+>>  arch/x86/mm/kasan_inline.c    | 23 +++++++++++++++++++++++
+>>  include/linux/kasan.h         | 24 ++++++++++++++++++++++++
+>>  7 files changed, 83 insertions(+), 2 deletions(-)
+>>  create mode 100644 arch/x86/mm/kasan_inline.c
+>>
+>> diff --git a/MAINTAINERS b/MAINTAINERS
+>> index 788532771832..f5b1ce242002 100644
+>> --- a/MAINTAINERS
+>> +++ b/MAINTAINERS
+>> @@ -13177,7 +13177,7 @@ S:      Maintained
+>>  B:     https://bugzilla.kernel.org/buglist.cgi?component=Sanitizers&product=Memory%20Management
+>>  F:     Documentation/dev-tools/kasan.rst
+>>  F:     arch/*/include/asm/*kasan*.h
+>> -F:     arch/*/mm/kasan_init*
+>> +F:     arch/*/mm/kasan_*
+>>  F:     include/linux/kasan*.h
+>>  F:     lib/Kconfig.kasan
+>>  F:     mm/kasan/
+>> diff --git a/arch/x86/include/asm/kasan.h b/arch/x86/include/asm/kasan.h
+>> index 1963eb2fcff3..5bf38bb836e1 100644
+>> --- a/arch/x86/include/asm/kasan.h
+>> +++ b/arch/x86/include/asm/kasan.h
+>> @@ -6,7 +6,28 @@
+>>  #include <linux/kasan-tags.h>
+>>  #include <linux/types.h>
+>>  #define KASAN_SHADOW_OFFSET _AC(CONFIG_KASAN_SHADOW_OFFSET, UL)
+>> +#ifdef CONFIG_KASAN_SW_TAGS
+>> +
+>> +/*
+>> + * LLVM ABI for reporting tag mismatches in inline KASAN mode.
+>> + * On x86 the INT3 instruction is used to carry metadata in RAX
+>> + * to the KASAN report.
+>> + *
+>> + * SIZE refers to how many bytes the faulty memory access
+>> + * requested.
+>> + * WRITE bit, when set, indicates the access was a write, otherwise
+>> + * it was a read.
+>> + * RECOVER bit, when set, should allow the kernel to carry on after
+>> + * a tag mismatch. Otherwise die() is called.
+>> + */
+>> +#define KASAN_RAX_RECOVER      0x20
+>> +#define KASAN_RAX_WRITE                0x10
+>> +#define KASAN_RAX_SIZE_MASK    0x0f
+>> +#define KASAN_RAX_SIZE(rax)    (1 << ((rax) & KASAN_RAX_SIZE_MASK))
+>> +
+>> +#else
+>>  #define KASAN_SHADOW_SCALE_SHIFT 3
+>
+>Putting this under else in this patch looks odd, we can move this part
+>to "x86: Make software tag-based kasan available".
 
-Thanks, but I'd better not assume that in v2, even though code the same.
-Will depend on how you feel about added paragraph in v2 commit message.
+Sure, will do!
 
-> 
-> But as raised in reply to patch #1, we have to be a bit careful about
-> including private_2 in folio_expected_ref_count() at this point.
-> 
-> If we cannot include it in folio_expected_ref_count(), it's all going to be a
-> mess until PG_private_2 is removed for good.
-> 
-> So that part still needs to be figured out.
+>
+>> +#endif
+>>
+>>  /*
+>>   * Compiler uses shadow offset assuming that addresses start
+>> @@ -35,10 +56,15 @@
+>>  #define __tag_shifted(tag)             FIELD_PREP(GENMASK_ULL(60, 57), tag)
+>>  #define __tag_reset(addr)              (sign_extend64((u64)(addr), 56))
+>>  #define __tag_get(addr)                        ((u8)FIELD_GET(GENMASK_ULL(60, 57), (u64)addr))
+>> +bool kasan_inline_handler(struct pt_regs *regs);
+>>  #else
+>>  #define __tag_shifted(tag)             0UL
+>>  #define __tag_reset(addr)              (addr)
+>>  #define __tag_get(addr)                        0
+>> +static inline bool kasan_inline_handler(struct pt_regs *regs)
+>> +{
+>> +       return false;
+>> +}
+>>  #endif /* CONFIG_KASAN_SW_TAGS */
+>>
+>>  static inline void *__tag_set(const void *__addr, u8 tag)
+>> diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
+>> index 2a330566e62b..4cb085daad31 100644
+>> --- a/arch/x86/kernel/alternative.c
+>> +++ b/arch/x86/kernel/alternative.c
+>> @@ -2228,7 +2228,7 @@ int3_exception_notify(struct notifier_block *self, unsigned long val, void *data
+>>  }
+>>
+>>  /* Must be noinline to ensure uniqueness of int3_selftest_ip. */
+>> -static noinline void __init int3_selftest(void)
+>> +static noinline __no_sanitize_address void __init int3_selftest(void)
+>>  {
+>>         static __initdata struct notifier_block int3_exception_nb = {
+>>                 .notifier_call  = int3_exception_notify,
+>> @@ -2236,6 +2236,7 @@ static noinline void __init int3_selftest(void)
+>>         };
+>>         unsigned int val = 0;
+>>
+>> +       kasan_disable_current();
+>>         BUG_ON(register_die_notifier(&int3_exception_nb));
+>>
+>>         /*
+>> @@ -2253,6 +2254,7 @@ static noinline void __init int3_selftest(void)
+>>
+>>         BUG_ON(val != 1);
+>>
+>> +       kasan_enable_current();
+>>         unregister_die_notifier(&int3_exception_nb);
+>>  }
+>>
+>> diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
+>> index 0f6f187b1a9e..2a119279980f 100644
+>> --- a/arch/x86/kernel/traps.c
+>> +++ b/arch/x86/kernel/traps.c
+>> @@ -912,6 +912,10 @@ static bool do_int3(struct pt_regs *regs)
+>>         if (kprobe_int3_handler(regs))
+>>                 return true;
+>>  #endif
+>> +
+>> +       if (kasan_inline_handler(regs))
+>> +               return true;
+>> +
+>>         res = notify_die(DIE_INT3, "int3", regs, 0, X86_TRAP_BP, SIGTRAP);
+>>
+>>         return res == NOTIFY_STOP;
+>> diff --git a/arch/x86/mm/Makefile b/arch/x86/mm/Makefile
+>> index 5b9908f13dcf..1dc18090cbe7 100644
+>> --- a/arch/x86/mm/Makefile
+>> +++ b/arch/x86/mm/Makefile
+>> @@ -36,7 +36,9 @@ obj-$(CONFIG_PTDUMP)          += dump_pagetables.o
+>>  obj-$(CONFIG_PTDUMP_DEBUGFS)   += debug_pagetables.o
+>>
+>>  KASAN_SANITIZE_kasan_init_$(BITS).o := n
+>> +KASAN_SANITIZE_kasan_inline.o := n
+>>  obj-$(CONFIG_KASAN)            += kasan_init_$(BITS).o
+>> +obj-$(CONFIG_KASAN_SW_TAGS)    += kasan_inline.o
+>>
+>>  KMSAN_SANITIZE_kmsan_shadow.o  := n
+>>  obj-$(CONFIG_KMSAN)            += kmsan_shadow.o
+>> diff --git a/arch/x86/mm/kasan_inline.c b/arch/x86/mm/kasan_inline.c
+>> new file mode 100644
+>> index 000000000000..9f85dfd1c38b
+>> --- /dev/null
+>> +++ b/arch/x86/mm/kasan_inline.c
+>> @@ -0,0 +1,23 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +#include <linux/kasan.h>
+>> +#include <linux/kdebug.h>
+>> +
+>> +bool kasan_inline_handler(struct pt_regs *regs)
+>> +{
+>> +       int metadata = regs->ax;
+>> +       u64 addr = regs->di;
+>> +       u64 pc = regs->ip;
+>> +       bool recover = metadata & KASAN_RAX_RECOVER;
+>> +       bool write = metadata & KASAN_RAX_WRITE;
+>> +       size_t size = KASAN_RAX_SIZE(metadata);
+>> +
+>> +       if (user_mode(regs))
+>> +               return false;
+>> +
+>> +       if (!kasan_report((void *)addr, size, write, pc))
+>> +               return false;
+>
+>Hm, this part is different than on arm64: there, we don't check the
+>return value.
+>
+>Do I understand correctly that the return value from this function
+>controls whether we skip over the int3 instruction and continue the
+>execution? If so, we should return the same value regardless of
+>whether the report is suppressed or not. And then you should not need
+>to explicitly check for KASAN_BIT_MULTI_SHOT in the latter patch.
 
-Here's that added paragraph:
+I recall there were some corner cases where this code path got called in outline
+mode, didn't have a mismatch but still died due to the die() below. But I'll
+recheck and either apply what you wrote above or get add a better explanation
+to the patch message.
 
-Note on PG_private_2: ceph and nfs are still using the deprecated
-PG_private_2 flag, with the aid of netfs and filemap support functions.
-Although it is consistently matched by an increment of folio ref_count,
-folio_expected_ref_count() intentionally does not recognize it, and ceph
-folio migration currently depends on that for PG_private_2 folios to be
-rejected.  New references to the deprecated flag are discouraged, so do
-not add it into the collect_longterm_unpinnable_folios() calculation:
-but longterm pinning of transiently PG_private_2 ceph and nfs folios
-(an uncommon case) may invoke a redundant lru_add_drain_all().  And
-this makes easy the backport to earlier releases: up to and including
-6.12, btrfs also used PG_private_2, but without a ref_count increment.
+>
+>> +
+>> +       kasan_inline_recover(recover, "Oops - KASAN", regs, metadata, die);
+>
+>Maybe name this is as kasan_die_unless_recover()?
 
-Hugh
+Sure, sounds good
+
+>
+>
+>> +
+>> +       return true;
+>> +}
+>> diff --git a/include/linux/kasan.h b/include/linux/kasan.h
+>> index 54481f8c30c5..8691ad870f3b 100644
+>> --- a/include/linux/kasan.h
+>> +++ b/include/linux/kasan.h
+>> @@ -663,4 +663,28 @@ void kasan_non_canonical_hook(unsigned long addr);
+>>  static inline void kasan_non_canonical_hook(unsigned long addr) { }
+>>  #endif /* CONFIG_KASAN_GENERIC || CONFIG_KASAN_SW_TAGS */
+>>
+>> +#ifdef CONFIG_KASAN_SW_TAGS
+>> +/*
+>> + * The instrumentation allows to control whether we can proceed after
+>> + * a crash was detected. This is done by passing the -recover flag to
+>> + * the compiler. Disabling recovery allows to generate more compact
+>> + * code.
+>> + *
+>> + * Unfortunately disabling recovery doesn't work for the kernel right
+>> + * now. KASAN reporting is disabled in some contexts (for example when
+>> + * the allocator accesses slab object metadata; this is controlled by
+>> + * current->kasan_depth). All these accesses are detected by the tool,
+>> + * even though the reports for them are not printed.
+>> + *
+>> + * This is something that might be fixed at some point in the future.
+>> + */
+>> +static inline void kasan_inline_recover(
+>> +       bool recover, char *msg, struct pt_regs *regs, unsigned long err,
+>> +       void die_fn(const char *str, struct pt_regs *regs, long err))
+>> +{
+>> +       if (!recover)
+>> +               die_fn(msg, regs, err);
+>> +}
+>> +#endif
+>> +
+>>  #endif /* LINUX_KASAN_H */
+>> --
+>> 2.50.1
+>>
+
+-- 
+Kind regards
+Maciej Wieczór-Retman
 
