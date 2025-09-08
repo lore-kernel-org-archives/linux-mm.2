@@ -4,116 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAF86CAC586
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 13:09:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7CA6CAC586
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 13:10:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 381E28E0010; Mon,  8 Sep 2025 09:09:33 -0400 (EDT)
+	id 13A718E0019; Mon,  8 Sep 2025 09:10:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 331F48E000E; Mon,  8 Sep 2025 09:09:33 -0400 (EDT)
+	id 112848E000E; Mon,  8 Sep 2025 09:10:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 221178E0010; Mon,  8 Sep 2025 09:09:33 -0400 (EDT)
+	id 000D98E0019; Mon,  8 Sep 2025 09:10:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 0E1758E000E
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 09:09:33 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C5E38138B08
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 13:09:32 +0000 (UTC)
-X-FDA: 83866114584.16.1E3F0E7
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E362F8E000E
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 09:10:54 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9B53EC015E
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 13:10:54 +0000 (UTC)
+X-FDA: 83866118028.07.6932716
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 3D4FDA0016
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 13:09:30 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gILwwbE3;
-	spf=pass (imf15.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by imf30.hostedemail.com (Postfix) with ESMTP id 45DCA80002
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 13:10:52 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=SAjjTxDt;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf30.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757336970;
+	s=arc-20220608; t=1757337052;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eB7yatq5EqoBSnA27Lv1hI77502SZNq+gzJVQ8jsFR0=;
-	b=P86GfaGgN472RGg8m5giHdXMM+Wammdg4K0vuLTzx3ZWMaVe6qMeLgSyq3wFnJB8cp74NJ
-	svW2VQ6m6Y5bIas50XTsp0bmmYde0cXpJY3OyAk+OGqSdlCkCSWIpcDR7i4wnCEBjy400y
-	OaYXUWyR1coIHR1eWHq9emcCq27fgVY=
+	bh=loJMYNcnC3UXNhu0/YTM881QqRZegT4h0IooruNXOxI=;
+	b=uLcP35VZrqhkBHyT25qJ04RojiOUP+ItiOthU0bWz6RN8kY8LWQ9b5dwLObH0DhHdNt/u1
+	v1UgDOvzUH8nRLrtxOLXYYypAi1si7uedEeXUVyvdaOAJTN+YZ0zxVkYpJ+AOZlC0PkBs4
+	m5iTc8RkqbPfDRffxed5GJIG5zHqHPI=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gILwwbE3;
-	spf=pass (imf15.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757336970; a=rsa-sha256;
+	imf30.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=SAjjTxDt;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf30.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757337052; a=rsa-sha256;
 	cv=none;
-	b=8iqae894Tj5galK7eH18+beOD37B/te5DnvADqg/xiW6veSjUnidfzLIseiRZYLM92Fy/C
-	jl8EEpQdYLkyl7ZHFSYK7sBhVLsJ3CHsH40RGgwWEED559dCfwL1PaM5UXrqidsjcloFmX
-	8fWpN2MtauCFtBcb3Fu87e8twrFI+pA=
+	b=52WpzhAoSDVZ72b3q3thg7qJcH/AkRw+inm8ECIgrW9H4+ZvOW/yQglfiqjXfOVaG3M4xv
+	TSTmxxdJlqwPKVUwHLwMyuQjcd0g//OribPnkIUCFOlGwkd1z06VLnNLwnIx869gkso1lz
+	DsN1oJOKPiSQDiRdi3FgeTtoaDlHFfE=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757336969;
+	s=mimecast20190719; t=1757337051;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=eB7yatq5EqoBSnA27Lv1hI77502SZNq+gzJVQ8jsFR0=;
-	b=gILwwbE3vcdy8EpcyTeGdnFYXjErP4fOzNk7INBvOABHzOI9vJK58a8JmxKMvfrG3Bh5PK
-	qURFqzZnlhz8CFj30MuBDL+AvgjxXhu+QgzLfCQ9FTAli/Fcosq2IKfLw8b331SMNDuVgw
-	DBGEcJ/KVv9E6BB/KU4if5yBl5DJ1lk=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=loJMYNcnC3UXNhu0/YTM881QqRZegT4h0IooruNXOxI=;
+	b=SAjjTxDtOZMArKMzC7Q4lP9cNe2j92TfFok/qcLu+zOyII9Fj8wzbjKnKbnWzFBbpCUmQf
+	O93Lwc38wjF6TZd8KKwIVUxqB2xqCsyTRbz4d5ofWpYAFwWHu2/Clmz/RnMR4HwnmXHWjt
+	MrpddwDaQGQaop3jEGSCG7lk8RmND/0=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-498-orXerZTTOqqPVB1-PwA3EQ-1; Mon, 08 Sep 2025 09:09:28 -0400
-X-MC-Unique: orXerZTTOqqPVB1-PwA3EQ-1
-X-Mimecast-MFC-AGG-ID: orXerZTTOqqPVB1-PwA3EQ_1757336967
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3e61deaf253so1398442f8f.1
-        for <linux-mm@kvack.org>; Mon, 08 Sep 2025 06:09:28 -0700 (PDT)
+ us-mta-426-rnL0LOaqMa2kwfoIO3ES7A-1; Mon, 08 Sep 2025 09:10:50 -0400
+X-MC-Unique: rnL0LOaqMa2kwfoIO3ES7A-1
+X-Mimecast-MFC-AGG-ID: rnL0LOaqMa2kwfoIO3ES7A_1757337049
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-45dcf5f1239so17027295e9.2
+        for <linux-mm@kvack.org>; Mon, 08 Sep 2025 06:10:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757336967; x=1757941767;
+        d=1e100.net; s=20230601; t=1757337049; x=1757941849;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=eB7yatq5EqoBSnA27Lv1hI77502SZNq+gzJVQ8jsFR0=;
-        b=Wfts7QeiGgYWFP4e5AkMsz58sEvXGitDAV08GSNMsbvN7FvHlnQn1Z4rZzSSEPjKNG
-         7RzbWm/IywnBq6DaU52N8QV7mK4hh2AP/2BCzhw/VYNqpobXlQPVgl47PtgZ40XVSqJA
-         OZJ24GljBchLWvBGOeSkp/whflmJWuvndjSVqm02MhtsX5Ty2zeIuG2liOUX0uM+Nast
-         Qr3kTvL5udj9ht8QkLgydyu5MEuUxla881Ng+iMcV06Rzp0OPRzXa2GEx1SIvgXVhSwx
-         UpjBlexy6nII3HUWI2xpEt44ACeM0UFSRdknkTait2jv2w0kz0+HeEfKtdnSV7yUSpBN
-         +yRw==
-X-Forwarded-Encrypted: i=1; AJvYcCUl1UrDmOLIy4d7U0M7bPKimFzWbmSbqrdV7trd1vskkqjhs7QcxJaK9embeCqiUJSStsDiM56QrA==@kvack.org
-X-Gm-Message-State: AOJu0YxbwG508VCw4jN+eyzFWyOZ2TIS6ZTY6wQ85QwkBdePB+GMcxTb
-	aoJ8LKZTnhJ2L6fVlEUU8UbMwuUFbQ4EkaBFhwiWgp7kR4aGf8jw8OnSbwL+mG3EIpBWE0Ho38R
-	Pt7NJ8k4qOm4w13or+sGPcUPu2Ys3xVBhzJzYZMUSRZyPdYw+uwas
-X-Gm-Gg: ASbGnctfJvT3zcS/qYwdsV+mu94ukUMy+Lzu3CQvU5/jXngExmj2xRM8gnrA3B7VV1k
-	VlINQ7khvVQC5bvbNIRIsacxYOsqvsQas01cUHho84KFmj2rPt4zSXzmJOxlMBk9rNI7Nnd83D6
-	gT5hJGz1kX3kFaT/DFnGbqRYlSApL54w2m9+0P3hPPMyyY9d+5dFKZiDMWm8xzkT05ERIsi3hq0
-	Ry2GI3U9pIb9U3IjuDck4XPU9y2VgiEG+6M4K47gLt4jECtaHXppcfkcKsIGwb4f9Jc+y3Ml99N
-	gJ2cowDwYViC0nrwkv6LICIHmebC51P8dONRavbeLihzEn+inABaq+1jaY+RrwGz4cBxh62NpRk
-	Et3wv/7w6KqpNYrqFRzACfhsw460Vl7KFSzt0ehDintLQiq3A4m7NVLZztKtSwKCA
-X-Received: by 2002:a5d:5d82:0:b0:3e3:5166:e098 with SMTP id ffacd0b85a97d-3e63736f7e7mr5576550f8f.17.1757336967060;
-        Mon, 08 Sep 2025 06:09:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEiYFgngxAXgT4Go5511IJKu0xHmBuhnWeb/Br+tBYfFuPdCYNIOJjBBUAXrdUS1YwoE0FAWA==
-X-Received: by 2002:a5d:5d82:0:b0:3e3:5166:e098 with SMTP id ffacd0b85a97d-3e63736f7e7mr5576494f8f.17.1757336966470;
-        Mon, 08 Sep 2025 06:09:26 -0700 (PDT)
+        bh=loJMYNcnC3UXNhu0/YTM881QqRZegT4h0IooruNXOxI=;
+        b=w6P2QBQlLpLkZEDRJZ2HoV/xNSZ4u/kMpC027TpOYuCRUikvih3HBhi5oK8k+i4zYX
+         LxLz/XmmpiIM1Moc9f6fyIaBZ9p24fhjv6gGsaTCzK0NyN/rugyJGRB7gLY3aT+jYxLY
+         8xczoMzypNikMpXe4mlJdd8bwsAfkWp0UvwLVGBSGR3QeFW6xbSrMr6Qtd8QW0WOV9oz
+         zM0JadDC4S6LB8NlXiZ30K9p4uqCYHv+oig08WIDd37smC+W74qEqFcvTbAne0eWtVNq
+         Xe0rG6fveA+2PEH5iv6zBzsC4JKmwllpVeVA4S2UtwVnFFwNImcGbOwoXZRFcXotUi3I
+         zXwg==
+X-Forwarded-Encrypted: i=1; AJvYcCX6j3NGxc1fGyakjVgl1+4IEn2nyL5GfT8J7RzsIIbrFkTjhFWltxJlCT0HxCJmQXZNXO86NjG36g==@kvack.org
+X-Gm-Message-State: AOJu0YzGzmOYT04Fe8ZK7kPyHE4s2qy0dg4BhOTSPP4pPPNsZ1d5ZP8p
+	nt07BURq9tehkn76WUVXy1nwa42RggHeN9TCffFP4ntN12vkEeguVb3L0r+VhwyG0CVACVM94Hs
+	jNMWjitlMaF6Im4wnFDPoET/QNbp1g6q3hc7KJipD5A3Vv1XNASwq
+X-Gm-Gg: ASbGncuMRJF2Ke4S4nBlkxi6DIgN8Ilru2+p51lUst3K2mRE7H1Iflj0MZ87r+PPfgL
+	lzJGojpv/1+iZKla+4UaCVTv3y7kRegNdU5op05sXduwrgYsAJ2xTCo4gJniw0Mqzkib9stXEks
+	KXdkTlYzgbZoz0juYh++Ec/ZVGtaMoRk+5omPPwAB9weP7ixYwkmri8G5J/kdmNlNAAaSebt7Iw
+	ZmuJrRgePW/LbfdL08LUN4dvewV4LtIY7kbIUJ/h839OWNcpC/k3CNtPyvZMQfUhM0KvFWAboKh
+	xrrHVrSnxYZkJGDrIkIYvEG5Y5KGMvpAIFU6YtVnbfDNfBqyvJgr4ZhNM95NjNiVLNgDTysaWNE
+	iqU6ILSyUMY6bPj/IxI9njj6/7Q9oAdujBmhNbTlCwimQ+WGfC+Gn/5+HgKdRBN4g
+X-Received: by 2002:a05:600c:3510:b0:45b:7e86:7378 with SMTP id 5b1f17b1804b1-45dddee37d0mr61268635e9.34.1757337048810;
+        Mon, 08 Sep 2025 06:10:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFnvX+mXw/WhUtUVKCZ8AgS4ltIqbm4k/KPBzWsR+F/Kc2Tkki3XHXvg2DRwx3L5bWSTsPPIw==
+X-Received: by 2002:a05:600c:3510:b0:45b:7e86:7378 with SMTP id 5b1f17b1804b1-45dddee37d0mr61268315e9.34.1757337048374;
+        Mon, 08 Sep 2025 06:10:48 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f25:700:d846:15f3:6ca0:8029? (p200300d82f250700d84615f36ca08029.dip0.t-ipconnect.de. [2003:d8:2f25:700:d846:15f3:6ca0:8029])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3cf34494776sm41332226f8f.61.2025.09.08.06.09.25
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45dda4f2a0dsm138726295e9.2.2025.09.08.06.10.46
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Sep 2025 06:09:26 -0700 (PDT)
-Message-ID: <22a9dd3e-0755-4f7f-a59c-a79a52871f56@redhat.com>
-Date: Mon, 8 Sep 2025 15:09:24 +0200
+        Mon, 08 Sep 2025 06:10:47 -0700 (PDT)
+Message-ID: <55d54fd4-5360-457d-9da3-f5b14916c65b@redhat.com>
+Date: Mon, 8 Sep 2025 15:10:46 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] selftests/mm: fix va_high_addr_switch.sh failure
- on x86_64
-To: Chunyu Hu <chuhu@redhat.com>, akpm@linux-foundation.org,
- shuah@kernel.org, linux-mm@kvack.org
-Cc: linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com
-References: <20250908124740.2946005-1-chuhu@redhat.com>
- <20250908124740.2946005-2-chuhu@redhat.com>
- <20250908124740.2946005-3-chuhu@redhat.com>
- <20250908124740.2946005-4-chuhu@redhat.com>
+Subject: Re: [PATCH v2 12/15] mm, swap: mark swap address space ro and add
+ context debug check
+To: Kairui Song <kasong@tencent.com>, linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>,
+ Chris Li <chrisl@kernel.org>, Barry Song <baohua@kernel.org>,
+ Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>,
+ Kemeng Shi <shikemeng@huaweicloud.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosryahmed@google.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ linux-kernel@vger.kernel.org
+References: <20250905191357.78298-1-ryncsn@gmail.com>
+ <20250905191357.78298-13-ryncsn@gmail.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -159,21 +163,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20250908124740.2946005-4-chuhu@redhat.com>
+In-Reply-To: <20250905191357.78298-13-ryncsn@gmail.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: PtNaTqGHInYh0WBWimlYK17_jc7K5LRxRd-jlpAjDnY_1757336967
+X-Mimecast-MFC-PROC-ID: 9vsV3e5CTjHhQxtO4wyrYFgxpCduUmacJyD6aL_Qyxc_1757337049
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: o9jf4kdrw5pdnp41o4ch4d8bbs4q5r48
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 45DCA80002
+X-Stat-Signature: jp4atspdmzm9xcszjdwsc7k91hiua6k7
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3D4FDA0016
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1757336970-554962
-X-HE-Meta: U2FsdGVkX1/ovgmaxVMvRljKocVsbo5yN1UIOAFC53OPP61CIWiQdjQqbnVkF/Xc2vVfQw5JdNR+MozSJHk9FAvcvtjZ393d9XSc/35g6ellzaD+C4mZBM7AvG2G1x2sXIaIompA0Mo1vBvKgzaimEWSonQm2Hl11kOLSYKa8dlztufTWXvyXeA5ySc6jq4mt88U4XiH8utkZuw3vRdaCMQqjSlCYycggT8t797mkzqdBEHS2mIHScOpXKAb1rbW6MmMzNLmQ+7YfavSjhuB5NA4U8BTT5hMMeIvf58ibTgAzX/e+1XKwOkxog8Ww0zgwqsEV4upvRtxPf/sBFEjOTQaoguAm5pZ+6wB0jKUHrao6g1fW7BXW5yMFvbveW4dY+I7PI84ma0Ur5gmjDDcr23IPqku6wNTmcXz6RsIui+5V/Eo5rgP4+EeopBVmhZEdjXHF6t/RrM72unw4WpIUdgYRvBdRn5Ek7WuZdDBW8l0sbkt/2zHlGxxwWvvbV92t7Uxd5BPATh8QiioGWUzJpazRCkEzeXGFs+V8h0qbIKsIj16aFy9PWH9biCISIDV3n4DSsmnj88ptqFX70logedtCK9Fiugc0R0XanzH2UfwL2QS7m2pzsh2LxQgHTy3DRWHUNOyFETNfigaF8yRlM4DLBfIXhu2bxhb0qu22lFsWjIfRlJ+UHJfNUhPIloVSS9SsMLP+voCg2DE/XJ1GHZLIoury5jwZh15rJPQOMeWHfFPeN6OzCirZPUOsirHyUs4DShOyz0Czo42veNPHL2bxztoVprGRmD/V0xW1XOyAXapZ6EXQ7UUH6meV/gh9HxEsWJLI5ToYrtjwUJWgdoUndU37rzaHb/Hl+nNEmhaYjs3VuMfGtgW2LXvzW6RZL858/uzPgQ6Cez+43kCpavcSC2yTuIYQiazCf6GhNgwU8jfxDy1BMFRzAknNSVSruuwtxFcPLzoFxszs/0
- dhIAP6Kb
- sgja32bd4wQfnHLGx4PWstU0NXO0qaY8AhLWnAkXPiEFR4BWtV99fk7GbymGunGndkc5SumxxaiDQxNPtpAgdtqDnPzJQCkXZrBoH/i1JnPlQ69D45+Mtzi9aiAavOonSD2w8izb51S2gZKupFi/lF6hgL8CCqZdADlqJuMra8yaYTa3lhOUSUpBdZWosq1DXqBFxwVJ7S7/qZ8pDkO12bpFGD0MeDkhI6NSqdAxf2HfDhnsTbQxbZNZATfyH6VAhu16cNvAMecPe9bpnU0NqouZQKaeBBlFGZX+58WRsg5XU18PwWRI3Q/+4O/MBcUUWHcRyR9d7pAlIaMt1KBIY7uH+pU0G6h7mBrVX8nSLxS61tt3nwiKB35nzbLAqJttnhO6RSmH7Ei86b43qP/BBM65p9w5jFTYJY84UmWY9Bxde93r/YSHMmRBbJAR/E2PzeqKDpPiX4CfFWbN/1LRGcw6Fxg==
+X-HE-Tag: 1757337052-673944
+X-HE-Meta: U2FsdGVkX19M7vq0UE5gBm2ZCpKrLkebhD8UPUsCbUqdAYRQtrdHeK3w4UQF3Vc1ZrC17kMOJYsVkZ6WD1ZIslTMRxVUA9jtnkRJXBsGr/UJAEi3/qzgPz9QEeSTScWPVXSusBVtX7PLYEMmi6yBdCGD0/y78xIBKOTsSlF32Sc2dQkfOLeIIO80gRWPkF1y8PqijX+cItGGBEX/p659M0BBMkqAij8XiXeSfGSiWu6RSb0l9AQMSq87JnZtod+z8KwphciVVpxFR9O18s4f4whSZ9nSBLjDwHu1Gof1Tyjtfa6GOfQW2ws2BUyuxdRfKqxyOt0BAp6kJuU6Q5ars/HnBjmeMRJBmVRjnrA1ioITDJbFUlE8D7ljBd+bHnEWZMWY54C4HIU1lm+HdTpWFtTWJlnzWWnAVQLeeOdX/ZNCHWJdWlQQGwus0zyaqBec5gryQY9mAs1ZL374PmFieMt3e6Wm0Db1CtJlHs8BW+0Oqz7nR4E0uPMNj3ZZSMIpudt9Izn4g79HkHQW1Tin47zH3dUX4JJIYH5xg2LHixa+Zp/nVp4yT4oe3k5El41lFjB9+Qfo63hUYgMDzHH2YpUMV8FMXLR/3A94fAu78w4KlGhQAuqnrIEWoy26RL7GkmgFqpR+ZVZ7CARhoNMQQqCjaAq0XRrwh5T24GMBAHgYT5PWalWSerIuwBnerExMHwUMpSsdQEo7ZBZf+oL4Up5E4kzD9y46JWuh7SDa2f3AlpNZk/ItTTnqYtA+4rDMWSB3RZVMQAhfKhUHig40FR3NXUAzpIbbNKkk2UZfu2yYnZt1V/V0+ibTHOWIKvcdf+jKdENEKveak+BokSQ4JFIJChntXOU4toKp0EgZY4GKcQ+N4uzEG8WtOCvW5pHuYVo9iLeoAll+ks8rxr/Am9QOH68wiQk5E0BH9nlPXXhIrvQp5sME2ZdW/hcuPY2LfiB8mUXQDmR9flKoZQi
+ An1pzE8h
+ V47ZtI0RJy06MkQUSR+naUnxsXMNbra3oqA0nCPRDDXAIBBJtigrvjOAmiDfCZAvtzop0N8QrxmOxO4B4e+X9TTHmsasKVQn5AGBFFFdd3Tgik8N7PhzkwRRKVj94iInO1Gf5YF3NUqMTMNOZaHD1/gY4Tq6oJXHI+Wz06P42bjLUs4xOjtluqrFjfXJm5HwsXQDN+LPB5MYpfwBeiVVr7hcpKjXfEwDezCF/dh5HC1aXfxMwMCswAnwrxCkN2Fxj6redIq7heU+A3j9lFjglYZgDnG9Y0XqhEh75ETEUsXp/Kh8VpBK1iGv39OlFBwFVDgp9duLe5EWo4S7NTsZWvnfXbjBM1UGOxCRnCvd2a3Qh8AjT04jWY5gOHQKT7PJkA4Z5/v/LOh2C/+jd6uIyBKsM10mjIK88ySJnrHjf1YQ63xKI35zKJw60Vu0TKwNSj9XR
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -182,96 +186,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 08.09.25 14:47, Chunyu Hu wrote:
-> The test will fail as below on x86_64 with cpu la57 support (will skip if
-> no la57 support). Note, the test requries nr_hugepages to be set first.
+On 05.09.25 21:13, Kairui Song wrote:
+> From: Kairui Song <kasong@tencent.com>
 > 
->    # running bash ./va_high_addr_switch.sh
->    # -------------------------------------
->    # mmap(addr_switch_hint - pagesize, pagesize): 0x7f55b60fa000 - OK
->    # mmap(addr_switch_hint - pagesize, (2 * pagesize)): 0x7f55b60f9000 - OK
->    # mmap(addr_switch_hint, pagesize): 0x800000000000 - OK
->    # mmap(addr_switch_hint, 2 * pagesize, MAP_FIXED): 0x800000000000 - OK
->    # mmap(NULL): 0x7f55b60f9000 - OK
->    # mmap(low_addr): 0x40000000 - OK
->    # mmap(high_addr): 0x1000000000000 - OK
->    # mmap(high_addr) again: 0xffff55b6136000 - OK
->    # mmap(high_addr, MAP_FIXED): 0x1000000000000 - OK
->    # mmap(-1): 0xffff55b6134000 - OK
->    # mmap(-1) again: 0xffff55b6132000 - OK
->    # mmap(addr_switch_hint - pagesize, pagesize): 0x7f55b60fa000 - OK
->    # mmap(addr_switch_hint - pagesize, 2 * pagesize): 0x7f55b60f9000 - OK
->    # mmap(addr_switch_hint - pagesize/2 , 2 * pagesize): 0x7f55b60f7000 - OK
->    # mmap(addr_switch_hint, pagesize): 0x800000000000 - OK
->    # mmap(addr_switch_hint, 2 * pagesize, MAP_FIXED): 0x800000000000 - OK
->    # mmap(NULL, MAP_HUGETLB): 0x7f55b5c00000 - OK
->    # mmap(low_addr, MAP_HUGETLB): 0x40000000 - OK
->    # mmap(high_addr, MAP_HUGETLB): 0x1000000000000 - OK
->    # mmap(high_addr, MAP_HUGETLB) again: 0xffff55b5e00000 - OK
->    # mmap(high_addr, MAP_FIXED | MAP_HUGETLB): 0x1000000000000 - OK
->    # mmap(-1, MAP_HUGETLB): 0x7f55b5c00000 - OK
->    # mmap(-1, MAP_HUGETLB) again: 0x7f55b5a00000 - OK
->    # mmap(addr_switch_hint - pagesize, 2*hugepagesize, MAP_HUGETLB): 0x800000000000 - FAILED
->    # mmap(addr_switch_hint , 2*hugepagesize, MAP_FIXED | MAP_HUGETLB): 0x800000000000 - OK
->    # [FAIL]
+> Swap cache is now backed by swap table, and the address space is not
+> holding any mutable data anymore. And swap cache is now protected by
+> the swap cluster lock, instead of the XArray lock. All access to swap
+> cache are wrapped by swap cache helpers. Locking is mostly handled
+> internally by swap cache helpers, only a few __swap_cache_* helpers
+> require the caller to lock the cluster by themselves.
 > 
-> addr_switch_hint is defined as DFEFAULT_MAP_WINDOW in the failed test (for
-> x86_64, DFEFAULT_MAP_WINDOW is defined as (1UL<<47) - pagesize) in 64 bit.
+> Worth noting that, unlike XArray, the cluster lock is not IRQ safe.
+> The swap cache was very different compared to filemap, and now it's
+> completely separated from filemap. Nothing wants to mark or change
+> anything or do a writeback callback in IRQ.
 > 
-> Before commit cc92882ee218 ("mm: drop hugetlb_get_unmapped_area{_*}
-> functions"), for x86_64 hugetlb_get_unmapped_area() is handled in arch code
-> arch/x86/mm/hugetlbpage.c and addr is checked with map_address_hint_valid()
-> after align with 'addr &= huge_page_mask(h)' which is a round down way, and
-> it will fail the check because the addr is within the DEFAULT_MAP_WINDOW but
-> (addr + len) is above the DFEFAULT_MAP_WINDOW. So it wil go through the
-> hugetlb_get_unmmaped_area_top_down() to find an area within the
-> DFEFAULT_MAP_WINDOW.
+> So explicitly document this and add a debug check to avoid further
+> potential misuse. And mark the swap cache space as read-only to avoid
+> any user wrongly mixing unexpected filemap helpers with swap cache.
 > 
-> After commit cc92882ee218 ("mm: drop hugetlb_get_unmapped_area{_*}
-> functions").  The addr hint for hugetlb_get_unmmaped_area() will be rounded
-> up and aligned to hugepage size with ALIGN() for all arches.  And after the
-> align, the addr will be above the default MAP_DEFAULT_WINDOW, and the
-> map_addresshint_valid() check will pass because both aligned addr (addr0)
-> and (addr + len) are above the DEFAULT_MAP_WINDOW, and the aligned hint
-> address (0x800000000000) is returned as an suitable gap is found there,
-> in arch_get_unmapped_area_topdown().
-> 
-> To still cover the case that addr is within the DEFAULT_MAP_WINDOW, and
-> addr + len is above the DFEFAULT_MAP_WINDOW, make the addr hint one
-> hugepage lower, so that after the align it's still within DEFAULT_MAP_WINDOW,
-> and the addr + len (2 hugepages) will be above DEFAULT_MAP_WINDOW.
-> 
-> Fixes: cc92882ee218 ("mm: drop hugetlb_get_unmapped_area{_*} functions")
-> Signed-off-by: Chunyu Hu <chuhu@redhat.com>
+> Signed-off-by: Kairui Song <kasong@tencent.com>
 > ---
->   tools/testing/selftests/mm/va_high_addr_switch.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/mm/va_high_addr_switch.c b/tools/testing/selftests/mm/va_high_addr_switch.c
-> index 896b3f73fc53..bd96dc3b5931 100644
-> --- a/tools/testing/selftests/mm/va_high_addr_switch.c
-> +++ b/tools/testing/selftests/mm/va_high_addr_switch.c
-> @@ -230,10 +230,10 @@ void testcases_init(void)
->   			.msg = "mmap(-1, MAP_HUGETLB) again",
->   		},
->   		{
-> -			.addr = (void *)(addr_switch_hint - pagesize),
-> +			.addr = (void *)(addr_switch_hint - pagesize - hugepagesize),
 
-Wouldn't it be more deterministic to do the alignment/rounding ourselves?
-
-(void *)(ALIGN_DOWN(addr_switch_hint - pagesize), hugepagesize)
-
-Unfortunately we don't have an ALIGN_DOWN helper available yet.
-
-We could just move the one in pkey-helpers.h into vm_util.h
-
-
-But now I realize that, likely,
-
-	.addr = (void *)(addr_switch_hint - hugepagesize),
-
-would just work and be aligned?
+Acked-by: David Hildenbrand <david@redhat.com>
 
 -- 
 Cheers
