@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1949BCA101F
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 03:08:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C86DCCA101F
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 03:17:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 54A7F8E0005; Sun,  7 Sep 2025 23:08:55 -0400 (EDT)
+	id 18CD28E0006; Sun,  7 Sep 2025 23:17:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5226A8E0001; Sun,  7 Sep 2025 23:08:55 -0400 (EDT)
+	id 116F38E0001; Sun,  7 Sep 2025 23:17:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 45EA88E0005; Sun,  7 Sep 2025 23:08:55 -0400 (EDT)
+	id F20238E0006; Sun,  7 Sep 2025 23:17:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 36EF18E0001
-	for <linux-mm@kvack.org>; Sun,  7 Sep 2025 23:08:55 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E62621A0932
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 03:08:54 +0000 (UTC)
-X-FDA: 83864600988.03.1BFEEEE
-Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
-	by imf04.hostedemail.com (Postfix) with ESMTP id C7E4240008
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 03:08:52 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=rTzwgXpu;
-	spf=pass (imf04.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757300933; a=rsa-sha256;
-	cv=none;
-	b=sQYje1StS0RIRValspQxxck+ewATbfIak+SovIMLkFwB6O7b7uPYpY7OULoyjRXMVNhJoZ
-	T1vfKdG4bXsDHk37rbJODxuYTJceAOyQkkodLT2HWiS2XwO92mh8WPWG8a0J/pQGFHsBH8
-	P+AmLxfa8+ujmXHNlS9UrXR3nRRoswA=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=rTzwgXpu;
-	spf=pass (imf04.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	by kanga.kvack.org (Postfix) with ESMTP id DA1E08E0001
+	for <linux-mm@kvack.org>; Sun,  7 Sep 2025 23:17:16 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 932CE16093D
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 03:17:16 +0000 (UTC)
+X-FDA: 83864622072.13.4C7B1D0
+Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 286B81A0008
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 03:17:12 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=CYv9zcAP;
+	spf=pass (imf19.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757300933;
+	s=arc-20220608; t=1757301434;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EKxx/lX3Bp4VW+ItJ7z/ma4EcEpYpmczHseAhd+atyg=;
-	b=pq6aD+yl1kxYpO702B2NIbKvPJc7AjhN/anOkknKjeGyAn5gkXg3cHrr0DcnY7joM/c5xO
-	Shnj3ewY4UrpOuguqXDp9nm+u/SP0fCj00qOvhEDesFhkXlZbhDgBZPsrfVZPVcZ0WPoS+
-	dWd1xluTtyvCotWQSkvV7PYdqR/UZ3k=
+	bh=F27m7s5BT5f1gDzt8fNIBCug1ivyD0DMViJPGFeUZ+0=;
+	b=EILiaSkPZurr8XAi5wEHkZwwmNhZr6xNzmFV6WUv8i62Dcedh0ggJ2fieUTYrO515hYW06
+	iabA9+gJ0dp2X9sykzAeEb+lXq0pxxIkWbB+VSrxtWXLMNVPHJ18SI//uXhdk/XC2n0OAA
+	+wQBIqbCv6j2nb5nRrZtnd2Zy2sfbT0=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=CYv9zcAP;
+	spf=pass (imf19.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757301434; a=rsa-sha256;
+	cv=none;
+	b=eVEJHrmAc9a/ztDg0cBJ0owDaczjUAChzHU1TKS4fFDeQAiY8gpPM6yoXbActrbiK9V8kQ
+	S8K3KCHTUF5DS2RWAl1g+Jf7c8wPSNP75UWPHJQUQ/Uk4sBhYLxPvbywODq8dIyw3GqiA3
+	AB28SX0duKWK/BRFVnVkydrUBJvGpYM=
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1757300929; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=EKxx/lX3Bp4VW+ItJ7z/ma4EcEpYpmczHseAhd+atyg=;
-	b=rTzwgXpuF6wQ6jCQ7lvKPIPDg2fLAGyHaXZFUNv6JipJz5CzRhPf6kq4goHKupdG6G396MxwFY1fccJMq/gc8djTZubrVpBUka+/G31Ii+LH1DkuMiTb2aWcvS7TKh76uN5y+27oxtSQezDob1jQCW64PVhJ4Z1DFw6mroqTdwc=
-Received: from 30.74.144.132(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WnQW09W_1757300926 cluster:ay36)
+	t=1757301428; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=F27m7s5BT5f1gDzt8fNIBCug1ivyD0DMViJPGFeUZ+0=;
+	b=CYv9zcAPvLJ3tVEAOVnYyfnGz8lrLJbO0n2KKjPbp8ew64JxAiTKadphD2gMApFuPMqVd+ccgbB4edT/sdbkqyjENACbR4pwXWjysSNdNbqQ3fPC4hZfi5VRmpvmxAp5lxTWq/f+p680PMWK6MHR1HNfRkG0Fz0eNPf76nf2wGs=
+Received: from 30.74.144.132(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WnQYL4N_1757301426 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Mon, 08 Sep 2025 11:08:47 +0800
-Message-ID: <f963d067-f64c-4891-b32f-31449748ace6@linux.alibaba.com>
-Date: Mon, 8 Sep 2025 11:08:46 +0800
+          Mon, 08 Sep 2025 11:17:07 +0800
+Message-ID: <1ee09786-ed3c-485e-99e4-48c4d2b92ced@linux.alibaba.com>
+Date: Mon, 8 Sep 2025 11:17:06 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 03/15] mm, swap: fix swap cahe index error when
- retrying reclaim
+Subject: Re: [PATCH v2 08/15] mm/shmem, swap: remove redundant error handling
+ for replacing folio
 To: Kairui Song <kasong@tencent.com>, linux-mm@kvack.org
 Cc: Andrew Morton <akpm@linux-foundation.org>,
  Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>,
@@ -75,19 +75,19 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
  linux-kernel@vger.kernel.org
 References: <20250905191357.78298-1-ryncsn@gmail.com>
- <20250905191357.78298-4-ryncsn@gmail.com>
+ <20250905191357.78298-9-ryncsn@gmail.com>
 From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20250905191357.78298-4-ryncsn@gmail.com>
+In-Reply-To: <20250905191357.78298-9-ryncsn@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: C7E4240008
-X-Stat-Signature: gbx73qs4istebqjkhyjsa4nifupb7pbh
+X-Stat-Signature: sapifb1xajxemrqgsytpgq5hag1x931x
 X-Rspam-User: 
-X-HE-Tag: 1757300932-29647
-X-HE-Meta: U2FsdGVkX1+fw50rSSIKzW5nR/IKBzAzcAeFl9tCIiOByD4RR0YH4cH0GkXurvrmsqBqRfRAu8tIxSziVAgRbIHhTwfisPFLquNYNqfeJ0DTSA4W1BJgPd34hvNiHAVZqlj3DGkihKVi3cntNZlqZNW9o711N1FNLSQNJpUxvqQB/wUcrxPy+KEPmVESpGmpQRyDLHDUvBDgz+GkmKNriitKX7DZXlUgpU8P/oA5CKjGtC0HR+fM/nyZi5NRame9tCAO38Us1VNfWKlQ6nBtqoZSkh2U5hzjnZ5GMkkl5Qn0+kzN7r0v7NFQubjkxcQq6LaRQFUcHp6Fluj6b2zsLFtrWca3JymC+NRgB6KBvvH3BjV41rciedBkNCv0LyHMEnCwJWqZ2OgB9rJJaMM0H4HvXjPhyBg3cTubM+1aF604S3U2YSwoqzOtLbLmJ4un9bHWFCLCLwovbRhZxsdk4HFC+Dy37XB9/in22NqNQcsLGy2ZnNuTjGxOVFjvh62WawzcKxMRoTpPZPUnMi7QKZWJ132GlMmeppr5L/F+xpAGoP7hpMMirrXEKRcpTMgyOrZaOxXOjHkmgDz++QZOtfNTjUJMaagGesmcMzVWHZR7OWKUjojpi6aNc7xSuEfdrCJz9nT87ivsO2XaZJDA3sYJFWT0ZXLBEZ7hrwMPRxAMEgq5PRUULMZxu0LaJLTMN4oLovI76zdeKSDx+Rx8Lc0DB3BlwRC62JPw5HvL1uF9/vAyFyRnPzv4+Y7T6mO3jIhBZ2Fvra7cycIh1eRY/pCkBG0DBwvwF6vs/SbGzD/neTfjxmt++nIGWNpHSTv5mveGpyfiXlRgK273BQix30aL1K6FN3Kp3Few5erQiWwwa59nyB2GNcCZp1SNYuOHQgryYnlbraT/CLgomAuErI4ORHVxJx9urZaTv/mVZpBdhAVQuf7olrWUkMaZOKla2nScURpkyP8toTEcnpv
- ElMA0toL
- NaUJm2wgkRA4qmfmlbpAtv0QjHYvZFEyscNMGL/yQTvcmC2xehTc5B9O2Nib4r+ytXTK1YPBcrt54wOchYL+PsYcsd+aFAR/r1rKIcQjnjnPyxWNdMUIsha0Cyt40s9ZuTZl33U7CKYJ1qg+sTYKy2+ml4R7sB4jR4lt2B7RORVtGG9+oUTYInF4d8XBZ48ZdySAJd1lD8KHFvoQu2+gPZJJfttX0mIzmjCqjCzUb9xRgPJ5ELBZOMmTAFRi42IdP1qAiJiUR3RFUeLaSB7Xq3lVyHuh/1aG0Icdn5iG2FY83XGt2hVZ/L25uHa9nVTwhKMBKEBLxcNuGSek=
+X-Rspamd-Queue-Id: 286B81A0008
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1757301432-928066
+X-HE-Meta: U2FsdGVkX19szRdePEChdBP0tsDUM03FYBuhkRM9mPmanL8OMFYBOrh6Ys5xpOSwHjyeL5AK2tluIMxXTT3uAMTWQ9MOQMC990uX0Byquhsw9BY8MZ7WF81Ri0tfRyS/vzHrDH10l5UQJ8H8Rc/Ezn7XXbIQTsLUu2bfEfGWqPScifOcM/wGLqb8fEAeap7+cUzWuurroHMHjADV9G5yPi0yKKjT7nn9TOUcHNXJrGruwspyWDRqu7RSjpVHM3m7r0uxBLlojv4bV4KitsylxqNZiQ1JRMRt8vJG7NWiy/NY149IrjZvdcR/p1J60IO7aANjAcr+GCYdnxIDb6C6DOBzisuJYAYFigyTXr8VLvF5Hv+sbMVbZW27o1j3uJx51i1fEw4I39nyPQ6mDugc9+f77ND/txT9ly8WTNmRTlOL2DlL+CT8Q+569n7bQfJUpODX9fMVIdrNa8TfjxbpQhP/iVa4D3ytJaU7P1F9w9EwFLoazGZxz2BwSFUlAyGydegW1yr93LB4VKdRg5s9Vc9NCjhJZBFrFG8zjcdbo+l/uWbAb0Ke9UApXfXdHss5KuzS2Ej4TzQm9uI3TJ/MDrWUhu0LQcx5h/DFolf42KS2uV1Jh/3Ijeu0b5qXK3QJCqdo8TZv0Q62xUM9MQWJc2V9i+Dg9JxPfTH4ZJqV0jyQM206f4IfzKPbA5xQ8HWtaGZUPlUjQ1gfxEomKG5j7DhG04hjrYfJ7r7teHaFOSiBa3tSL4u9b8l4Kz3O3qBxLgI8kbbDQZadr6Z45e8s1EdsUUiEM+r28M2VKnM3Z69KfHa6yar+itHERCwSuF0s5aZAZtqFvcdWApXxudph9RIyV4X+zlekcNjM3q2VxTYKJ4B+sRh6eWMIUqAGZq8Lq+HS09azjfuOHLw8T/w6ZpaTrMSjcVAqAqeVsMEXQ/ZxxFKe3FUQOj02SBjj2wQq56Bfzsxa/ewlKuWuUfs
+ xBCwNee/
+ LBmDX0bsgmfX+Y1qsMfqt0swAVGKvz1XJRP6yETDC9dTXqIspKxxVrXybtYUDewCHtFkxA7lJVr6US+XbKgAShRrzU7A7OpK6t1/ma2NHqoU+g9lDoC0mt2AZx35OfZ5cC549Oh4e2eJwh8T/r9pnE7xJSoSBlRQHwejz/C3lwHrPRujOYAZuKPl+drIFAW0N34oRTAcC6yqVsLHACeuM0oDKRcHBafbXVP/HkFO7FCrSoiboP2SsexEBJMBkCq4LwG7xKojff+057peUt4Trr5bvKqvBpOqrOD2ISQ/+Fi2k9DZxHdz9zYAR52HngnGGJ7TcEhHQSLUkZz5hVmLp7Dkme9/PL+J8LlakjHAKdai8UAg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,45 +101,118 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On 2025/9/6 03:13, Kairui Song wrote:
 > From: Kairui Song <kasong@tencent.com>
 > 
-> The allocator will reclaim cached slots while scanning. Currently, it
-> will try again if the reclaim found a folio that is already removed from
-> the swap cache due to a race. But the following lookup will be using the
-> wrong index. It won't cause any OOB issue since the swap cache index is
-> truncated upon lookup, but it may lead to reclaiming of an irrelevant
-> folio.
+> Shmem may replace a folio in the swap cache if the cached one doesn't
+> fit the swapin's GFP zone. When doing so, shmem has already double
+> checked that the swap cache folio is locked, still has the swap cache
+> flag set, and contains the wanted swap entry. So it is impossible to
+> fail due to an Xarray mismatch. There is even a comment for that.
 > 
-> This should not cause a measurable issue, but we should fix it.
+> Delete the defensive error handling path, and add a WARN_ON instead:
+> if that happened, something has broken the basic principle of how the
+> swap cache works, we should catch and fix that.
 > 
-> Fixes: fae8595505313 ("mm, swap: avoid reclaiming irrelevant swap cache")
 > Signed-off-by: Kairui Song <kasong@tencent.com>
+> Reviewed-by: David Hildenbrand <david@redhat.com>
 > ---
-
-Good catch. LGTM.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-
->   mm/swapfile.c | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
+>   mm/shmem.c | 42 ++++++++++++------------------------------
+>   1 file changed, 12 insertions(+), 30 deletions(-)
 > 
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 4b8ab2cb49ca..4c63fc62f4cb 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -240,13 +240,13 @@ static int __try_to_reclaim_swap(struct swap_info_struct *si,
->   	 * Offset could point to the middle of a large folio, or folio
->   	 * may no longer point to the expected offset before it's locked.
->   	 */
-> -	entry = folio->swap;
-> -	if (offset < swp_offset(entry) || offset >= swp_offset(entry) + nr_pages) {
-> +	if (offset < swp_offset(folio->swap) ||
-> +	    offset >= swp_offset(folio->swap) + nr_pages) {
->   		folio_unlock(folio);
->   		folio_put(folio);
->   		goto again;
->   	}
-> -	offset = swp_offset(entry);
-> +	offset = swp_offset(folio->swap);
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index 4e27e8e5da3b..cc6a0007c7a6 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -1698,13 +1698,13 @@ int shmem_writeout(struct folio *folio, struct swap_iocb **plug,
+>   		}
 >   
->   	need_reclaim = ((flags & TTRS_ANYWAY) ||
->   			((flags & TTRS_UNMAPPED) && !folio_mapped(folio)) ||
+>   		/*
+> -		 * The delete_from_swap_cache() below could be left for
+> +		 * The swap_cache_del_folio() below could be left for
+>   		 * shrink_folio_list()'s folio_free_swap() to dispose of;
+>   		 * but I'm a little nervous about letting this folio out of
+>   		 * shmem_writeout() in a hybrid half-tmpfs-half-swap state
+>   		 * e.g. folio_mapping(folio) might give an unexpected answer.
+>   		 */
+> -		delete_from_swap_cache(folio);
+> +		swap_cache_del_folio(folio);
+>   		goto redirty;
+>   	}
+
+You should reorganize your patch set, as the swap_cache_del_folio() 
+function is introduced in patch 9.
+
+>   	if (nr_pages > 1)
+> @@ -2082,7 +2082,7 @@ static struct folio *shmem_swap_alloc_folio(struct inode *inode,
+>   	new->swap = entry;
+>   
+>   	memcg1_swapin(entry, nr_pages);
+> -	shadow = get_shadow_from_swap_cache(entry);
+> +	shadow = swap_cache_get_shadow(entry);
+
+Ditto.
+
+>   	if (shadow)
+>   		workingset_refault(new, shadow);
+>   	folio_add_lru(new);
+> @@ -2158,35 +2158,17 @@ static int shmem_replace_folio(struct folio **foliop, gfp_t gfp,
+>   	/* Swap cache still stores N entries instead of a high-order entry */
+>   	xa_lock_irq(&swap_mapping->i_pages);
+>   	for (i = 0; i < nr_pages; i++) {
+> -		void *item = xas_load(&xas);
+> -
+> -		if (item != old) {
+> -			error = -ENOENT;
+> -			break;
+> -		}
+> -
+> -		xas_store(&xas, new);
+> +		WARN_ON_ONCE(xas_store(&xas, new));
+>   		xas_next(&xas);
+>   	}
+> -	if (!error) {
+> -		mem_cgroup_replace_folio(old, new);
+> -		shmem_update_stats(new, nr_pages);
+> -		shmem_update_stats(old, -nr_pages);
+> -	}
+>   	xa_unlock_irq(&swap_mapping->i_pages);
+>   
+> -	if (unlikely(error)) {
+> -		/*
+> -		 * Is this possible?  I think not, now that our callers
+> -		 * check both the swapcache flag and folio->private
+> -		 * after getting the folio lock; but be defensive.
+> -		 * Reverse old to newpage for clear and free.
+> -		 */
+> -		old = new;
+> -	} else {
+> -		folio_add_lru(new);
+> -		*foliop = new;
+> -	}
+> +	mem_cgroup_replace_folio(old, new);
+> +	shmem_update_stats(new, nr_pages);
+> +	shmem_update_stats(old, -nr_pages);
+> +
+> +	folio_add_lru(new);
+> +	*foliop = new;
+>   
+>   	folio_clear_swapcache(old);
+>   	old->private = NULL;
+> @@ -2220,7 +2202,7 @@ static void shmem_set_folio_swapin_error(struct inode *inode, pgoff_t index,
+>   	nr_pages = folio_nr_pages(folio);
+>   	folio_wait_writeback(folio);
+>   	if (!skip_swapcache)
+> -		delete_from_swap_cache(folio);
+> +		swap_cache_del_folio(folio);
+>   	/*
+>   	 * Don't treat swapin error folio as alloced. Otherwise inode->i_blocks
+>   	 * won't be 0 when inode is released and thus trigger WARN_ON(i_blocks)
+> @@ -2459,7 +2441,7 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
+>   		folio->swap.val = 0;
+>   		swapcache_clear(si, swap, nr_pages);
+>   	} else {
+> -		delete_from_swap_cache(folio);
+> +		swap_cache_del_folio(folio);
+>   	}
+>   	folio_mark_dirty(folio);
+>   	swap_free_nr(swap, nr_pages);
 
 
