@@ -4,110 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 889B2CA0FED
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 22:39:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70D77CA0FED
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 22:40:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C387B8E0007; Tue,  9 Sep 2025 18:39:34 -0400 (EDT)
+	id CD75E8E0011; Tue,  9 Sep 2025 18:40:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BEA028E0001; Tue,  9 Sep 2025 18:39:34 -0400 (EDT)
+	id CAD3D8E0001; Tue,  9 Sep 2025 18:40:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AD79A8E0007; Tue,  9 Sep 2025 18:39:34 -0400 (EDT)
+	id BC3CE8E0011; Tue,  9 Sep 2025 18:40:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9ADE48E0001
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 18:39:34 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2C64D13B31C
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 22:39:34 +0000 (UTC)
-X-FDA: 83871179868.21.6D3141C
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	by imf27.hostedemail.com (Postfix) with ESMTP id E015140011
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 22:39:31 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=zytor.com header.s=2025082201 header.b="TvOUc/rv";
-	spf=pass (imf27.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
-	dmarc=pass (policy=none) header.from=zytor.com
+	by kanga.kvack.org (Postfix) with ESMTP id A7E7B8E0001
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 18:40:06 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 72D18B9CD0
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 22:40:06 +0000 (UTC)
+X-FDA: 83871181212.06.DD80159
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id A3C2D140014
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 22:40:04 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GhKtnfYh;
+	spf=pass (imf26.hostedemail.com: domain of patchwork-bot+netdevbpf@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=patchwork-bot+netdevbpf@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757457572;
+	s=arc-20220608; t=1757457604;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o4pJzl4BWqncjRLwqdCVSmCaOJCq8m9Ifms3vJmzKBM=;
-	b=FBt+P+X/ljfyxdpajQos5MwZHWNLhskVQKO2ETTVTEbvfW/oPJSdPB0lfr2Len163SGB6p
-	eX8VL6+NJrl1d3bIJjtnyExeJ61tXBk/S0rm9cBZiCbSFm7h8KM/thNfBVjWe59jQXZmhP
-	xX79qvmGpTiamv0XM68++xijoO7BEnY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757457572; a=rsa-sha256;
-	cv=none;
-	b=vo98K0wxM4wF1UjhfeZxjH5hYDX5YFBgvr1jNZeCZUrIBNSpdAjUNvtimyxTxN+iBXGD7j
-	e/p6AttmIu6lByWk0z/JH1Hnw9y8lDPIDVAt4sPwjyxTSxZssvbWZcAZZA04qtQySNI4dK
-	q17NqI//63rzSehjpH3zMNXeE1p5fcI=
+	bh=n1GHlORojKuHhY1MSxjHkY19dr9A8tnZbG7+/tCDdG0=;
+	b=wSEwPMQp3FhntEHR5q4LW0qdwdJKDxobjSuELC4mEL1O185LVwufcq1VXpLzvYt5HJSn85
+	2gNdsPp4NMeioy6Dlg+kEHCMD5Un4yTMe5tDJ6AFhxL+Y+UT5LEhjo8z50MQHlx3TUobop
+	U6dmYcVkhxF+cerJ0IOWDWoP1BBMZLU=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=zytor.com header.s=2025082201 header.b="TvOUc/rv";
-	spf=pass (imf27.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
-	dmarc=pass (policy=none) header.from=zytor.com
-Received: from ehlo.thunderbird.net (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 589Md5a71810392
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Tue, 9 Sep 2025 15:39:05 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 589Md5a71810392
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025082201; t=1757457547;
-	bh=o4pJzl4BWqncjRLwqdCVSmCaOJCq8m9Ifms3vJmzKBM=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=TvOUc/rvPHuoAgZik4kP6Jrk/1+TPY9+I66slCEYRMAAVaJliSrzt+2sOFL7uxfep
-	 TkUyZI254fJRZ0lrODF9atINh0A8S4jLrAmCkJHU6JXLFZKZC0KSUVdi0tmre9KWKN
-	 XbKdciAhvqcaNOwc7fFmyUBOA5BxnpqIS4Eb0rGthQiBgS5HHj+CzVzQJOWVF0iflT
-	 tgpvUETHe9/40V2F6BCYuDmvwT7GfqNk48CbFXskPApkAJTXDi/C8HYPbnObeJPLQM
-	 4VGzdB3lbm4UCWwMufH5gTZgR2KMO3DzwNg9CgZkrpc9Dml+J/eRl9RSkkGtbvpN2l
-	 PQy3pTIde+vBg==
-Date: Tue, 09 Sep 2025 15:39:05 -0700
-From: "H. Peter Anvin" <hpa@zytor.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-CC: Arnd Bergmann <arnd@arndb.de>, ksummit@lists.linux.dev,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
-        linux-mm@kvack.org, imx@lists.linux.dev,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Richard Weinberger <richard@nod.at>,
-        Lucas Stach <l.stach@pengutronix.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Ankur Arora <ankur.a.arora@oracle.com>,
-        David Hildenbrand <david@redhat.com>, Mike Rapoport <rppt@kernel.org>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Ira Weiny <ira.weiny@intel.com>, Nishanth Menon <nm@ti.com>,
-        =?ISO-8859-1?Q?Heiko_St=FCbner?= <heiko@sntech.de>,
-        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-        "Chester A. Unal" <chester.a.unal@arinc9.com>,
-        Sergio Paracuellos <sergio.paracuellos@gmail.com>,
-        Andreas Larsson <andreas@gaisler.com>
-Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
-User-Agent: K-9 Mail for Android
-In-Reply-To: <CAHk-=wg0bp-_kqmfaDYQLRJO30LYxEsMu3EKi65sKoi83EUZ3Q@mail.gmail.com>
-References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com> <C85C32F4-BD58-460B-ACCF-F0569ED0941A@zytor.com> <CAHk-=wg0bp-_kqmfaDYQLRJO30LYxEsMu3EKi65sKoi83EUZ3Q@mail.gmail.com>
-Message-ID: <F6A7C7F9-54F0-4E97-B21D-FD0EE023B986@zytor.com>
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GhKtnfYh;
+	spf=pass (imf26.hostedemail.com: domain of patchwork-bot+netdevbpf@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=patchwork-bot+netdevbpf@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757457604; a=rsa-sha256;
+	cv=none;
+	b=mREu1Bu9PLRkeWzA2EhAAUS2ilGEC3lwnT8lG0IizhMJD/u+c62lraCHzs9H5JDlyXIh7z
+	DGfM2Y1cI6Lmy6uqrk3sOdQufMBNsvdtgoxbP11qkNeyGaBGuEpidvBdUBXqubinJjsMN8
+	3WbW+QN9yP9gO6REuL3oYLFbu2pmAk8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 44DC94086C;
+	Tue,  9 Sep 2025 22:40:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1897CC4CEF4;
+	Tue,  9 Sep 2025 22:40:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757457603;
+	bh=hRjhnxUm0trj1HOY3MfMFjeHMWSzbkL2aSDIg0le0lQ=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=GhKtnfYhpKBtZR0b1nh3HbaUzJ9RJbpRBUjJM9RincgI48FyVqvSl7QA6e0IKqtMB
+	 IXbAeiSX9pWRfQ7vu5GsbHUxcw9C2Kq4wSgJKLnGrNpRRlzBp5Tecyezh+wDoE7Woq
+	 Pj/akrdRZbE3BrGIdsDLgk71l+0KGov4SJm70NZnKGQKARcC02p/al6bvlY2syJExX
+	 GnTd/AyrHOG3V7eOM50B5Tk4deQNhFe+biWHJrDBAdrpQppR0LN+0lRc0IYPDw0gev
+	 yjwPLrNsOVpG5vZow3JtYUaaOsIuLJlHkK6Ei26MIAnE76efBsmAmPmspJS4+lGdIs
+	 syLvfWi9Jvoqg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70FAC383BF69;
+	Tue,  9 Sep 2025 22:40:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: E015140011
-X-Stat-Signature: f1napkjgofz3ugcxxeuerc8ot91yxg8j
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH bpf v2] bpf/helpers: Use __GFP_HIGH instead of GFP_ATOMIC
+ in
+ __bpf_async_init()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <175745760626.837268.10273222616654949199.git-patchwork-notify@kernel.org>
+Date: Tue, 09 Sep 2025 22:40:06 +0000
+References: <20250909095222.2121438-1-yepeilin@google.com>
+In-Reply-To: <20250909095222.2121438-1-yepeilin@google.com>
+To: Peilin Ye <yepeilin@google.com>
+Cc: bpf@vger.kernel.org, ast@kernel.org, shakeel.butt@linux.dev,
+ hannes@cmpxchg.org, tj@kernel.org, roman.gushchin@linux.dev,
+ daniel@iogearbox.net, andrii@kernel.org, martin.lau@linux.dev,
+ eddyz87@gmail.com, song@kernel.org, yonghong.song@linux.dev,
+ john.fastabend@gmail.com, kpsingh@kernel.org, sdf@fomichev.me,
+ haoluo@google.com, jolsa@kernel.org, memxor@gmail.com, joshdon@google.com,
+ brho@google.com, linux-mm@kvack.org, leon.hwang@linux.dev
+X-Rspamd-Queue-Id: A3C2D140014
+X-Stat-Signature: 4zwqb3om3p9ynfu3e6oqkzitquqcw7rp
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1757457571-527578
-X-HE-Meta: U2FsdGVkX19AGLdNdzRlhCxfcvTOKBcFkV4uWaZ0acf77uSQRv4HznhEPbdYa9Zjhjt/b+ntCCrBIbmlhMN3C6HoALuXMJ4UkW1RZb17hRAUfp1p9qSFUQrmkvj5JBnQdurZvIA9KSjbQ22gKJmVi7ASRtvxMVFNDq9IgOAw+eIHKlvVKnJiFdZQ8zAv1BlQ9EWb/4lUY2Zg9FFcrc0w8nZTHYD8jpP4BYdU/+Ewjp9U83dLGk8m5FJw/QpVVAuLT2ofaSQZf6cDeL6tn5Vz8GHzPFpgwFO7ECQ5yXBi8wjl+ZOKjsNWI62TkSU8/wofoG6trCtuzBzzahYY5xCbXVdwKivnzh0eFmrciw6VFeNv6iKs7/ZO1bnDRwiOdqKSJMiQBTpLnBzvnotdtuPoY22iiw9RKm5wkUUp7xZVIkZAOmfXPMv4FhlXwaBa2tCGdU0wXT+bS9TU9kQdoTKZTdVdQLpUOhwTLFUrD7x1j+HInOIEVmMpYocNkyy1AH5+crvtuGK+xVdtvmcyPdaSQ21hB56NsE2qs5t+iwTDo5Jahax2jJPU+9EvLh6Ih5cMlblgBuny3YjcdmoO3ZxO342BMme6GvxchTY0TXIxSKd0kpj/0zSGioQS2zaUIEgM1MhIbFrBQxBP0fR8YkwfqMzutc2P2d5att9MTZvve6AHTx9UG6Lu+T4KgcyPQ9XoVzVI5jZ6b35g7YmGaG+2Ij63YZUGeVOwLHUj4GhNZQzxe0RTDK8TZexviZUD/DgRPnzjdypj1nyMugjb2Q+cSotM9jxVh65Ii15kWE3elxEjMlqle3QTBxyr3X/ypn9jrOe+3ApCu4A9nASKuOtXy5DeOapdlybqwi2qmvplnjcGBUy4pcwBlcC7+XSRIrjVBgypAwr/BWfiAfO4846qZZ2MFwqySLCyTkPj6tqo2u1thUaM4x76h2WAHndPmEVESdwNuqov9zMK+u3uDv+
- f8XCf4Md
- kY/xvXo8PbZHRJi0YoM3RWCkYFIeg9taZsAH6+C4nKYA6PpmB/IOazMewZJ2Ls5K8D00FXOPNFZ0zMqvZ1fa8GoX15G1QDVZ52rNGGdW/WYAKt2fH/Lp5j38pY5gVCj4YHLUNtYxoSDNg+B2Giqw9BK2PGR2yrQ1YNxQ3/3iSYTYeRMRONuLN7rNwBTwWNJY+7x2mZ9y2Mz6eZBhOLPEgjnfheWBb1rUeZ1+pasHvgjrK/XVjpLuQEvjJP1EHQXiFRYNX4W+YYEpLzjXkPZRGvp3RKimb4jGV5J4kaHpiupwEn2u2mfpbE+EzydKUnFkWctUOvath8t0DYSQzKfYsIyM1WN4e1kqBwsC3DApKqBSeSR9yVVqhxc7LEzk8wtwQ5TsIRx0d6y3Cu1gG+k9NRJa6lvjVbkRpAZRuZaDkWKsv2GTFa0yrqIoowAVi3erGvbERwU/PfkqCdT91BLi5IVoTsM4bhtpSjcQBHlBXp4OexeU=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1757457604-313854
+X-HE-Meta: U2FsdGVkX1+nueAL2im78quN/d5Nj1AeY00GvSsrzbWlIktSS0zzi5jDi+EGZ+9EeG8Hog22gODiZ5HLlpav/X+2Hsspu/bHlSaS0wB70CGMsHVqGJm9T2JWzdxUwqVYAJGxm2UKgkgkxCsdzVJYSBsQQuR+DHgx4AW6MX2r2zY2R1yeiEPZNJQoReOiO1lE329qIno+ZCv7VazK1PlvxYZsACHCFssWq8B8OpApKzKef7mriU8ntY1US7A0+F+kZ9KkSQDPvJTLHBCbN5ZnyIQoldlyk5CVBxaxwg0SSIabN429Wo0S3ffgMoTT/w6VDS9JRU+EQEL2/Oe+HB5wPO/zjSuxasqx1DClBqZEtOiAnHwLlkXFDMHBFhn0JFWg1es6CpbjOU3k2TMG3UFXCLaE+ZRhT8MuAkjb7FGg5FaNfaoYDe/ooMMJsIpjekq1/cu6KcpI1P1JJ0G9D+gAvg1EYZnJwDaM9LXP4FTjpZBNrPdvwN8W9GmhhqTXYBq4dyKXoIlJJEqdiH6omVePTP5oyli2O0bn41KL6elBz0oPVCn+AA27yDbN410NK6DNWzv8fwm43/zFz5EtdAKuMvqsas0ZXVwwHfd5rbwWOQ2dsyOlnd1uitdKqITkDKDO5vPk9NmXPVGTX+jXaJZcGYeuG86+kqWarmos4fLRVkHcQHPyEuFrbjQ/BpMfGShssEqO/lifIXL2NlJhUDIsvd/zErha3TcQnSrxlM2WE8fpgCrjn4FJ+H0K0fjzLGxhs7PGcVQcs9oKCN7Mq5dC2zkzF+pGDXSLMT0LpeCkse2a7TC1fv3OFnTQG1dTlNss6cIMKfhKmIWYO+Jsmwyz9BD1DSVor5nAZAqASR2qVGOpODkRxw3Bm1FQntP8AaCsETOvKNtDdGZ+Z7n9Oeg3e6hd2vPXVyalFYfrmiaMRKbYyyofc8/Pt0/ICin5DqhjER3EvTM5A7gtJT0Hhzr
+ BpQN1zBu
+ wCch1BPJaVstlLM7yiNYFi/8H8uwjhHP8/2GTragJl3NjU0NbYUwresqszkPOZhvnYffpXWlOP5cm4GfX4vcXs0RYQQ2+mui+AYjo/GmpAT02geH7oYV4maGU+YgQVlgPwbRr2Qd2fx6CUSjrIIu8W9BZWRdf4Afr232E22XLrn8UT7IQW+MLMLVuEvf79+xBIxVULSRX7EXCGU5CM12Eh1/GB7ihKRKOCZGyC7GI4FPQWv9AYegxqbaXKdR9NFWDTuhnhpdBJwhUCLHVQQk2wE2DetxsIa+f1IAl7IwZHRzZq1N5hLBMjSVWeI8Ar4mTTgqffMc/8i4p2vmnx4gycYwuw4e4TXvl0fwqJVtzpQszbVqZdBbe3iCR62yduU5hJ2gtiuM7daUv9d8iyJU89k7Df6wo9nCxWai4c+E1k6wFSYiVw82KORTWm/pDe7zBieUBFfd+70+P4Q9Nf7l5CJ/Z0KzgS2GLngexXdi6fNEyOek=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,30 +103,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On September 9, 2025 3:24:29 PM PDT, Linus Torvalds <torvalds@linux-foundat=
-ion=2Eorg> wrote:
->On Tue, 9 Sept 2025 at 14:39, H=2E Peter Anvin <hpa@zytor=2Ecom> wrote:
->>
->> 1 GB systems used highmem too, sadly=2E And 1 GB was the norm for a big=
- chuck of the late 32-bit era=2E
->
->Well, while on x86 1GB systems did use highmem, they'd typically not
->use very much of it=2E
->
->IOW, they'd have about 900MB as lowmem (ok, I think it was 896MB to be
->exact), with something like 120MB highmem=2E
->
->So they'd either lose a bit of memory, or they'd use the 2G:2G split=2E
->
->Or - and I think this is the main point - they'd stay on old kernels
->like the ancient museum pieces they are=2E
->
->I'm not convinced it makes sense to have a modern kernel on a museum piec=
-e=2E
->
->         Linus
->
+Hello:
 
-Certainly=2E And the 2:2 split is probably the right thing for the old mac=
-hines anyway=2E
+This patch was applied to bpf/bpf.git (master)
+by Alexei Starovoitov <ast@kernel.org>:
+
+On Tue,  9 Sep 2025 09:52:20 +0000 you wrote:
+> Currently, calling bpf_map_kmalloc_node() from __bpf_async_init() can
+> cause various locking issues; see the following stack trace (edited for
+> style) as one example:
+> 
+> ...
+>  [10.011566]  do_raw_spin_lock.cold
+>  [10.011570]  try_to_wake_up             (5) double-acquiring the same
+>  [10.011575]  kick_pool                      rq_lock, causing a hardlockup
+>  [10.011579]  __queue_work
+>  [10.011582]  queue_work_on
+>  [10.011585]  kernfs_notify
+>  [10.011589]  cgroup_file_notify
+>  [10.011593]  try_charge_memcg           (4) memcg accounting raises an
+>  [10.011597]  obj_cgroup_charge_pages        MEMCG_MAX event
+>  [10.011599]  obj_cgroup_charge_account
+>  [10.011600]  __memcg_slab_post_alloc_hook
+>  [10.011603]  __kmalloc_node_noprof
+> ...
+>  [10.011611]  bpf_map_kmalloc_node
+>  [10.011612]  __bpf_async_init
+>  [10.011615]  bpf_timer_init             (3) BPF calls bpf_timer_init()
+>  [10.011617]  bpf_prog_xxxxxxxxxxxxxxxx_fcg_runnable
+>  [10.011619]  bpf__sched_ext_ops_runnable
+>  [10.011620]  enqueue_task_scx           (2) BPF runs with rq_lock held
+>  [10.011622]  enqueue_task
+>  [10.011626]  ttwu_do_activate
+>  [10.011629]  sched_ttwu_pending         (1) grabs rq_lock
+> ...
+> 
+> [...]
+
+Here is the summary with links:
+  - [bpf,v2] bpf/helpers: Use __GFP_HIGH instead of GFP_ATOMIC in __bpf_async_init()
+    https://git.kernel.org/bpf/bpf/c/6d78b4473cdb
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
 
