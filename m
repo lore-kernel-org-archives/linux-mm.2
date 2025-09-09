@@ -4,97 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96098CAC582
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 22:16:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AD30CA0FED
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 22:27:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A9D08E0002; Tue,  9 Sep 2025 18:16:31 -0400 (EDT)
+	id A48A48E0003; Tue,  9 Sep 2025 18:27:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 881468E0001; Tue,  9 Sep 2025 18:16:31 -0400 (EDT)
+	id 9D27C8E0001; Tue,  9 Sep 2025 18:27:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 796E88E0002; Tue,  9 Sep 2025 18:16:31 -0400 (EDT)
+	id 89A0F8E0003; Tue,  9 Sep 2025 18:27:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6848E8E0001
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 18:16:31 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0B462BA7C6
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 22:16:31 +0000 (UTC)
-X-FDA: 83871121782.14.257C890
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 717678E0001
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 18:27:30 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E913111A79A
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 22:27:29 +0000 (UTC)
+X-FDA: 83871149418.20.445C8DF
 Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 2248B16000B
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 22:16:28 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=LSfT86pC;
-	spf=pass (imf08.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
+	by imf11.hostedemail.com (Postfix) with ESMTP id 170324000E
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 22:27:27 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=z9N6Cqci;
+	spf=pass (imf11.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757456189;
+	s=arc-20220608; t=1757456848;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8UED7BejBHlF/77adf0K9Lgcj4lQwJd8bxj9aaOqzio=;
-	b=PcKjc13kM9VH+OYuWJK7hJ79mXKpaBWmcPNiOi/Tc6ktscE7rq73WB1fAlRxsohnjAwWFx
-	qz9GyIE70jbkA79XQMGraT+QS/orsaj0XqN7vUKKhwHXbw2u9tKgDw3u8pxu26NUC1LCjk
-	tSbaopWvABL+a0fIbRIJJLvYLdsq8EM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757456189; a=rsa-sha256;
-	cv=none;
-	b=cOQGjAWY3NKYIJS1rDJ8KqLwgmA/9MSAggJCx4DjUqyKSD5iaf6fsR0IpiaJZfhPQrWyow
-	ZcGGJpX8xgDtLjIgcffncSqAHfTz4qaYmD5w0gqoys3aaN1XYqHZ7hExB3hyZoTzT57WzL
-	RzuH003uf37bO8H2fIpQvaDdwZBF4Yg=
+	bh=G8BzVWhX0R5cEUCY7Xkosw1VZPrvaUx+cbbGdJLdaNY=;
+	b=NLk39KNYx83Yb74LTO6kkKQmBt9Fh2gx7AgQS1MsS6tKQoNHTJf5wQ5B1oFNpfn9NDAVCM
+	h1qHXwLnOPVu8WzUzXZYYPHx6ur2cql/C19ZF2aHg2U+vNkVcAlprZ2e7YCTf8Nn19RJLA
+	FiaJ1yw+Y8DWBPT9gtqnCADnnUma3CU=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=LSfT86pC;
-	spf=pass (imf08.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
+	imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=z9N6Cqci;
+	spf=pass (imf11.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-4b5d6ce4ed7so159101cf.0
-        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 15:16:28 -0700 (PDT)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757456848; a=rsa-sha256;
+	cv=none;
+	b=HFVqBVZnu8a2YlgVr2VFcBCAAsPGZEAUlo5eWkzXHu1HJjoXeUEGrqF1KHo+XAgB/Uk/5W
+	qHGQOfyAle57u8ZF3UCrOJMwAgYKC14arrGXyqUIvwypP6zkVANzNEVwpKEkIt+PutHRkW
+	ATlbilkerMMiwRSApUkTwxJA0y75eFc=
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-4b350971a2eso39891cf.1
+        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 15:27:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757456188; x=1758060988; darn=kvack.org;
+        d=google.com; s=20230601; t=1757456847; x=1758061647; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=8UED7BejBHlF/77adf0K9Lgcj4lQwJd8bxj9aaOqzio=;
-        b=LSfT86pChREvW8iJ061nfdTcEhe0o8+bPNSQIaMeOosXSEuq0tr2jgSLUx1W+SpNFd
-         mJ5HwjCqI5ibWwGwZX+SgadOnClCGXgOsl5h8J3zlZkCNFlBVi7/q8Dlxi3h6km0sRiN
-         /7YzMz+NJFh8nKL2d3+aImvYEZSIUvkWlNSR0d/MvuMWqAaFmMk8R+X/kT+lnDh0Y904
-         WjkdDvtRZbKQURTeNqsmXOk+pRaqJHn3yR/1TKmCS4CyPMGavDXKeo9v4JqEpP8aYs2/
-         bMpHdFi7XoLCcph0JQUTUAsjlh9GalximKkdNhm6dQYESkQLoA6dQA4F/tKkwQALStNj
-         ORdA==
+        bh=G8BzVWhX0R5cEUCY7Xkosw1VZPrvaUx+cbbGdJLdaNY=;
+        b=z9N6CqciMDLGSYbzMQ8HtacDw//7byqZiN8Qb1Pq8llJ2k2l67hlwcd+FC6mPc7fGh
+         T4N9HfPimIYqkz9cpLHhH1UPJsCpmgKyAuTVerYbfkg0mRsh9XhbC9g8eErUiX91ZvnX
+         GY5x6jNnLpRvpx59JPtA2u5KJWNsKplgSAYzHiKA54tqw07SnYwiYQIzAkAhidq65SSi
+         AEcohJbJT/jf7nB0TPNVMEg8JWqD+0ypkDzaiDOd5/8HaBrVtrTh/YHAeuwERS0Uerpz
+         ioBQn9d8imdR4v02c02Cs1LH4jaE85ELZPQUtnKj68TadghFkuARwlAveBPclmA7pJir
+         nzhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757456188; x=1758060988;
+        d=1e100.net; s=20230601; t=1757456847; x=1758061647;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=8UED7BejBHlF/77adf0K9Lgcj4lQwJd8bxj9aaOqzio=;
-        b=k0a8p4SI4QL33NzYehPPVPyW3/TmiHVkj3iIzOpmA74JcYC3G0omUoSunyv2FhymI4
-         cAk3GzD+F1OzqMRApf0VoNvwyH25aPykBYTCmjxdMt6fl1I6GQPddtEqiJ5aaRLYPZtG
-         J83XrvcxPiCeLnas5XxSM3I4iLvJWnF5VY9pEN0n6U83mt2IitcYwA3I6l+YPupMJNbL
-         /osifCHp27aKkzizFjCX4ILANI4Zo5A7R9EEYFmjMwCyZqxIUUiWFos8bfFqu1wAXXrN
-         CmLFlgqxleg/L9j5FJVOuzFBXQRxJObdlS1QoRjzLjszETlaas4SH4Y+UbB4kKPM0FR9
-         AvSg==
-X-Forwarded-Encrypted: i=1; AJvYcCUuYJiYeQWXeucBqpgfz4waQYohXovbhs8CySuDf14plPhIc8pFP0xkirTH6WPPy+DJ+pCDfCLZ0A==@kvack.org
-X-Gm-Message-State: AOJu0Ywc2kYaqUsSyCecrMQPcV4p1eafX7otOET982lGjSBpAyRAHiHs
-	G0z2aF50cv1kjw+pFG3LKQWSvpZjVbcyZPDRTJ2QixTBlS+oRYW25uobOnQGgi/yoFb/U6iq4+e
-	XNzbxprFuGUcWQd8/HMCgd4kIU0FPalEp08r9JNll
-X-Gm-Gg: ASbGncubyB9xx1pHXXnzZ3GvRor555Emq6IJIA2OigawYJI89NmcdqM5ATBLFZ6sr4x
-	pB5LJW6aaXmfTM6C4kwVNE5RNgzXABSSwdr5ZZ1e4fMw2Txcv0z8s5jvewVUQOLT6mJGOED3fF3
-	Nxc3AXjkp+nQm5GA2IUn4QgdsmUQtXJRoWlWBHuQUbMRGi4RZLdjQoBIFZ4stasw6/Og+SPi58Q
-	Au/YyU1Pridu3vhuRpkCOHg/muesTDMHiJGltDppNi0
-X-Google-Smtp-Source: AGHT+IEcXgBXlv8XPNCxv6BkbMGmnKO+vkjF7bIJRkUFgM/Y8hmvK9zA4Y0Tpy1PvYPFWYUJApeFEFOuOBn4s9kvME8=
-X-Received: by 2002:ac8:5fc4:0:b0:4b4:9590:e091 with SMTP id
- d75a77b69052e-4b626eb8d89mr803731cf.5.1757456187636; Tue, 09 Sep 2025
- 15:16:27 -0700 (PDT)
+        bh=G8BzVWhX0R5cEUCY7Xkosw1VZPrvaUx+cbbGdJLdaNY=;
+        b=X6wbXLriSh6oJ4B3hjUM7s4lkw+vtwBSXcOGeUeslnDWDYNrbA6wj4++xJZeHHwHyY
+         vqvboTZ99GcSkU1XL8sQqpzihGrsHfLd0cQPag1x52baMb7cU7vowIUmfu9iypDhSqxk
+         tPXS9mFFvmCZiM38Q0hnVawO7ErcEmHhLMi2k41FTAKp8rcn7peJay3O+ODVKJuMAl4V
+         /ELX6L9H1uA7KoLQG8Bq+RiFPZYkuXyZkZcNnCDptFEREEF9GSGZ2s3Ei1LJuFepBP6l
+         b97DSZIOsBG7H0JsxfSPnnkxI5rA+KumaGtd/ca3RGV4sl/5JX9SL3x70mGYvWiEN3cS
+         q4DA==
+X-Forwarded-Encrypted: i=1; AJvYcCVXZ2acIwmzBydZMydw5PVmQPcDct6wcGHaW2sDkwPK2tL6eKtUO/zz1Yd5TZ9Z/ByPi5rUkhYHgg==@kvack.org
+X-Gm-Message-State: AOJu0YwscUvuHHTKZ2957LePbUAz3sUDGCJl20jEIIDNsMlpPtA4sQUX
+	KthEznQhFa0EOl6swy1UFcGjNc38Mu4zVSNoXgfMwmn5T0J6XSECCssKE31o2x6Pz4/lnr7n6BG
+	mMDM0fgQ/opP2IVao/cyJKqw1zqqfuF7DdkpH/j14
+X-Gm-Gg: ASbGnct/6KdYjOMToHQMiqTLf2od0JjW1yABcOBNR0Ks7YJRD14e1T2YZosm12H1UlE
+	HZLg6Arj2B25lu5BfZ4baYVqeBXDY4wevXQe4nObSC6Gy2DetpiYJ9HWIAhqSlVMjVACVqqwhk+
+	DSzHK67o4EiMcULE30s63RucKlWcotF7i7Aab83kqFoT6wIja3NVSxGoLiFguzLl4IqqlJcBWDD
+	qWD5TljMB0Q1T2oNEp4lNwbK+enahpmeutJVUDprRJJ9Knry/e10o8=
+X-Google-Smtp-Source: AGHT+IEdGi/d24y72Sxmx6WAkfXK/iDy1MEOtaD5CvEAQeQEYkSu881knGHU9baU8fe1W1ZSjLG2XGRiAndq5H5katk=
+X-Received: by 2002:ac8:5d09:0:b0:4b3:46e4:38ee with SMTP id
+ d75a77b69052e-4b625174b03mr1814331cf.6.1757456846670; Tue, 09 Sep 2025
+ 15:27:26 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250909190945.1030905-1-Liam.Howlett@oracle.com> <20250909190945.1030905-9-Liam.Howlett@oracle.com>
-In-Reply-To: <20250909190945.1030905-9-Liam.Howlett@oracle.com>
+References: <20250909190945.1030905-1-Liam.Howlett@oracle.com> <20250909190945.1030905-10-Liam.Howlett@oracle.com>
+In-Reply-To: <20250909190945.1030905-10-Liam.Howlett@oracle.com>
 From: Suren Baghdasaryan <surenb@google.com>
-Date: Tue, 9 Sep 2025 15:16:16 -0700
-X-Gm-Features: AS18NWCg20zYnHtLpwe4CYG1V6SoxxfcPtcH39dZBp2f7xr11kxNoKhH3k65OYs
-Message-ID: <CAJuCfpFGo4JXQQGECFdCgNNVaQc5MDLghdmnVXEK8Zfag7KHiw@mail.gmail.com>
-Subject: Re: [PATCH v1 8/9] mm/vma: Use unmap_desc in vms_clear_ptes() and exit_mmap()
+Date: Tue, 9 Sep 2025 15:27:15 -0700
+X-Gm-Features: AS18NWDFXXcz2H0b4WCBtGCngTAlRviZ_OVajr-POu4PX9407-Nsa_TiEj-HyIA
+Message-ID: <CAJuCfpHp2sgKBqrfyn+xfCJTA-AFGFUTdhSz4dxNff=SNYLJgg@mail.gmail.com>
+Subject: Re: [PATCH v1 9/9] mm: Use unmap_desc struct for freeing page tables.
 To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, maple-tree@lists.infradead.org, 
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
@@ -105,14 +105,14 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, maple-tree@lists.infradead.org,
 	chrisl@kernel.org, Matthew Wilcox <willy@infradead.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 2248B16000B
-X-Stat-Signature: i1uqrczo368pptawrqaby4p974mgxoq3
+X-Rspamd-Queue-Id: 170324000E
+X-Stat-Signature: dtpcp8d3s9ucw8gsb8moaijuwp1bm8ei
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1757456188-326358
-X-HE-Meta: U2FsdGVkX18KoU97hJySHNurwlKyHV3vrqTNtV2WIr6wuIPugNhBt5oacq6PVDSo2cwl1WTslYuxbLH2Pq6KPwbfDmGsRWkAKZUGIdXdSfD1Z4NPiUUyCVS+7lTxGEfpAi8lFcjs6TYNdfnbc+BOj/t8RmoHvJW2kNU1bpbDgC31je71hNiJtrtiEXi2eYHBSMkPx5/SemTOuar8yeHPPXU+tGQswYvy1tzgK16Af/IfK0Tgbq/Xoo2GJzgkem1SFLeJK3sa1S5Eb4rVk81Ots/ZGB0OS8Cbn2Yg/J/3tc1p1/mqKa12ribvE9NdplK6ue5Jzt2LAaCicaHItEA/CpEeCuQhlzZNiZvtGsWYFEpJd+YhMj0DneK+6za8yw6CWLRl7zoTVlY+np/B3tgPt7uHSQbNBTnRSjIhe0+4WIQOVKDEgwfDa5tzFX+UPRDK3HYb4xWstnONm9s4XVd6CwXkmdzVwvz8SLYEmE3OsBMvHDQoRajBcVngEZ4Een1dexUttStNygJ4+lz8fXx/BgKZI1r5uqk76SU05yOLzMeGqy66enhCDUG78Y58IaBeWfR5L1zp6X+NZkRE5XGXbQQGwS2CGA+/hA3++s531GVDA4WlKqkqW76JZPW7cV+R0/wPNf2i/XzXDlIu1i36zzp6O/2UZsc2PaCajVfs897mKmS27/83UgXLmHrefhNTsENe43RbI+2XlU5nPau7x//cM4MlsPr38ZO/5NThuhhSzyFcaIXtkvUFWtI0iBB2yq1fbXkgKQM2AibeP1kO0q92rv6gmt0kqbRgmssrgrrWYPocTpbsHwlaShbEX72imHeQ0bbpfs1sycO1qVzWa7/7GFbnsGjc48xVxj+LaexPj3qh+UWpPdzEPVHbGFwqdXZOe6yZx2V0OluQ8k0qwWkGWRt7fWTtQuR3hdBIjjFiISUDhwdJyHXnA5vFu6dyLSreHvKo8GWrQQG4967
- 61lJ2sgy
- dOBqYnKHxLaB07j4eY21uN4QMU2vi91thG/Z+UyjM4v4K8JvOBlhc0vsh2JT47lpz5c70qfD0G5sbGTL3kiTzEjwMb+A1XpqZN19+04wk0Pvy4L/IAOYBBl9uRvsoX9Z9uJSLjQVBoxXocCUzhsTYh82jUIxI1c061adtw89ivlt/NYul5J0BB2+OM3RUclS15wrS+flVXNWU9VoS+/YmstOD/LUhng7Ko/UOgDLw6hvYa0v3TmhFc9Z1RXrgSMduCDak/AEOKO6pW2HSuLdTBShnXCeB7tSO1q5HYTweNZ3Xi3U=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1757456847-139116
+X-HE-Meta: U2FsdGVkX1+9Krt5wgdoTJilGW7zZ+7NXLlNQvmmmaXo2QvMgzcQHlpVpD2FX8uCVDsMVrMAOMy36fjF4/lP1omAdFjxWa5O7dhzyEqLFsqIF9+pnk9x6CWyaOh11v8yG+CQ031NBYwbJ0kTa9kIvyU2SO4r/ImqaTBLtFPDpKbcSYrjicvMZ/ywS0CAmcBh2BwqzYd538+iSRDlUrZgsYdk4dUbEQ9JLf3G7S9YREMUDUv9jPR0yGDxldjpipMahLiBuTH/UeSPKg72sCJ3Yv6eVNr/Vh0YcilzsK+rcjXwhFQzgYL193s3NczS6vHlFJr3yP4gFpmcFiPAb+sw52G2P37F64vwhAXwuewhYFdoZ0PHuU07TdbWwLkfIWErjszZXP/2c+OUhUibFwd2lAppPpIB35SO2aElpqsqwNOKzf/Bsvc2Cu4ryS6LiX59pn/sWVDPwq3K08Sdrr2PB9C7AyZYW05yQRST2B8mdEeGONShBKbGXPD2qYO/tcxuKuiPfYhPngq43Btj4L9h5+49FGKOk8H6F4qn4SRTKH2pcjJFx5wOHZMdkVeT+EdIrhgHU/4k4sUKYCLIimNaYJuRCzFeVN9p74PnaHymdIMlmlZOb/5/npVjdeTHmwGGo/Ebhv7YD74U2g7JMb79C0h+O+UYLz7YvZ52wDabEYgLp4M2EDtDpEjyoJnOUjXOz45MS8rW8minwqxCzlhTTEbJpja3qMxhvBcPZXRO9KXyb28RkzrKPIfqgpOVPOFYoA0RpAcHb7v4iQMCzzAhRFwAaOOJy8ZREmy/ntwRhvTIRjtFJtputrrRkrECe1CT4kQpWrOvP3CuC++ovg0I4vhi8HVl5JUhcjEkoseowzDuFda7ny5/hU6pgXm4z9E8ablSfQk6mSxoI3caGsLXKWBDzSbn4poaqs0aNdvJsouSAAdUvFiELHnGGAr0NVAFC++hVfVHmuGAjPuvgu/
+ tdRYmTrB
+ j2uLVxoSfT35YX859mxNPg9h4E/JwvYnH4be2g3snUFDXOkJ5U0vkE0fTf63HL2+HZYPkpd6TDF9tUABXgnu9IGVVu+cEEatJwxisaCsWe5NcrGKqxaHvqXsB1/rHx1QLWfnbjlKEEh+TOo7/j5UQMK9iqlDOmQGSTruVwgqtnNLmqjdXNZ9ummFNyXHiWxaX08ZUUBF+5k6FIHSv2hC4j3BP+7sWXC1jog2GUnZ7NQzbJx9kAbXDHQisVLnzRTjWdG8ZM/7YpTCj5i9iEf4qR5I5usmoXLIZ4QX63KCMR/l4LdIgacILodKPgmysuTgo/vF5
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,291 +124,186 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On Tue, Sep 9, 2025 at 12:10=E2=80=AFPM Liam R. Howlett <Liam.Howlett@oracl=
 e.com> wrote:
 >
-> vms_clear_ptes() is slightly different than other callers to
-> unmap_region() and so had the unmapping open-coded.  Using the new
-> structure it is now possible to special-case the struct setup instead of
-> having the open-coded function.
+> Pass through the unmap_desc to free_pgtables() because it almost has
+> everything necessary and is already on the stack.
 >
-> exit_mmap() also calls unmap_vmas() with many arguemnts.  Using the
-> unmap_all_init() function to set the unmap descriptor for all vmas makes
-> this a bit easier to read.
->
-> Update to the vma test code is necessary to ensure testing continues to
-> function.
+> Updates testing code as necessary.
 >
 > No functional changes intended.
 >
 > Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+
 > ---
->  include/linux/mm.h               |  3 ---
->  mm/internal.h                    |  3 +++
->  mm/memory.c                      | 24 ++++++++------------
->  mm/mmap.c                        |  5 +++-
->  mm/vma.c                         | 39 ++++++++++++++++++--------------
->  mm/vma.h                         | 14 ++++++++++++
->  tools/testing/vma/vma_internal.h | 14 ++++--------
->  7 files changed, 56 insertions(+), 46 deletions(-)
->
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 892fe5dbf9de0..23eb59d543390 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -2450,9 +2450,6 @@ static inline void zap_vma_pages(struct vm_area_str=
-uct *vma)
->         zap_page_range_single(vma, vma->vm_start,
->                               vma->vm_end - vma->vm_start, NULL);
->  }
-> -void unmap_vmas(struct mmu_gather *tlb, struct ma_state *mas,
-> -               struct vm_area_struct *start_vma, unsigned long start,
-> -               unsigned long end, unsigned long tree_end, bool mm_wr_loc=
-ked);
->
->  struct mmu_notifier_range;
+>  mm/internal.h                    |  5 +----
+>  mm/memory.c                      | 21 ++++++++++-----------
+>  mm/mmap.c                        |  6 +++---
+>  mm/vma.c                         |  7 ++-----
+>  tools/testing/vma/vma_internal.h | 11 ++---------
+>  5 files changed, 18 insertions(+), 32 deletions(-)
 >
 > diff --git a/mm/internal.h b/mm/internal.h
-> index d295252407fee..1239944f2830a 100644
+> index 1239944f2830a..f22329967e908 100644
 > --- a/mm/internal.h
 > +++ b/mm/internal.h
-> @@ -197,6 +197,9 @@ static inline void vma_close(struct vm_area_struct *v=
-ma)
->         }
->  }
+> @@ -445,10 +445,7 @@ bool __folio_end_writeback(struct folio *folio);
+>  void deactivate_file_folio(struct folio *folio);
+>  void folio_activate(struct folio *folio);
 >
-> +/* unmap_vmas is in mm/memory.c */
-> +void unmap_vmas(struct mmu_gather *tlb, struct unmap_desc *unmap);
-> +
->  #ifdef CONFIG_MMU
+> -void free_pgtables(struct mmu_gather *tlb, struct ma_state *mas,
+> -                  struct vm_area_struct *start_vma, unsigned long floor,
+> -                  unsigned long ceiling, unsigned long tree_max,
+> -                  bool mm_wr_locked);
+> +void free_pgtables(struct mmu_gather *tlb, struct unmap_desc *desc);
 >
->  /* Flags for folio_pte_batch(). */
+>  void pmd_install(struct mm_struct *mm, pmd_t *pmd, pgtable_t *pte);
+>
 > diff --git a/mm/memory.c b/mm/memory.c
-> index 829cd94950182..8d4d976311037 100644
+> index 8d4d976311037..98c5ffd28a109 100644
 > --- a/mm/memory.c
 > +++ b/mm/memory.c
-> @@ -2084,12 +2084,7 @@ static void unmap_single_vma(struct mmu_gather *tl=
-b,
->  /**
->   * unmap_vmas - unmap a range of memory covered by a list of vma's
->   * @tlb: address of the caller's struct mmu_gather
-> - * @mas: the maple state
-> - * @vma: the starting vma
-> - * @start_addr: virtual address at which to start unmapping
-> - * @end_addr: virtual address at which to end unmapping
-> - * @tree_end: The maximum index to check
-> - * @mm_wr_locked: lock flag
-> + * @unmap: The unmap_desc
->   *
->   * Unmap all pages in the vma list.
->   *
-> @@ -2102,11 +2097,9 @@ static void unmap_single_vma(struct mmu_gather *tl=
-b,
->   * ensure that any thus-far unmapped pages are flushed before unmap_vmas=
-()
->   * drops the lock and schedules.
+> @@ -387,15 +387,14 @@ void free_pgd_range(struct mmu_gather *tlb,
+>   * The tree_max differs from the ceiling when a dup_mmap() failed and th=
+e tree
+
+"ceiling" is not a parameter anymore, so the comments should also change.
+
+>   * has unrelated data to the mm_struct being torn down.
 >   */
-> -void unmap_vmas(struct mmu_gather *tlb, struct ma_state *mas,
-> -               struct vm_area_struct *vma, unsigned long start_addr,
-> -               unsigned long end_addr, unsigned long tree_end,
-> -               bool mm_wr_locked)
-> +void unmap_vmas(struct mmu_gather *tlb, struct unmap_desc *unmap)
+> -void free_pgtables(struct mmu_gather *tlb, struct ma_state *mas,
+> -                  struct vm_area_struct *vma, unsigned long floor,
+> -                  unsigned long ceiling, unsigned long tree_max,
+> -                  bool mm_wr_locked)
+> +void free_pgtables(struct mmu_gather *tlb, struct unmap_desc *desc)
 >  {
-> +       struct vm_area_struct *vma;
->         struct mmu_notifier_range range;
->         struct zap_details details =3D {
->                 .zap_flags =3D ZAP_FLAG_DROP_MARKER | ZAP_FLAG_UNMAP,
-> @@ -2114,17 +2107,18 @@ void unmap_vmas(struct mmu_gather *tlb, struct ma=
-_state *mas,
->                 .even_cows =3D true,
->         };
+>         struct unlink_vma_file_batch vb;
+> +       struct ma_state *mas =3D desc->mas;
+> +       struct vm_area_struct *vma =3D desc->first;
 >
-> +       vma =3D unmap->first;
->         mmu_notifier_range_init(&range, MMU_NOTIFY_UNMAP, 0, vma->vm_mm,
-> -                               start_addr, end_addr);
-> +                               unmap->vma_min, unmap->vma_max);
->         mmu_notifier_invalidate_range_start(&range);
->         do {
-> -               unsigned long start =3D start_addr;
-> -               unsigned long end =3D end_addr;
-> +               unsigned long start =3D unmap->vma_min;
-> +               unsigned long end =3D unmap->vma_max;
->                 hugetlb_zap_begin(vma, &start, &end);
->                 unmap_single_vma(tlb, vma, start, end, &details,
-> -                                mm_wr_locked);
-> +                                unmap->mm_wr_locked);
->                 hugetlb_zap_end(vma, &details);
-> -               vma =3D mas_find(mas, tree_end - 1);
-> +               vma =3D mas_find(unmap->mas, unmap->tree_max - 1);
+>         /* underflow can happen and is fine */
+> -       WARN_ON_ONCE(tree_max - 1 > ceiling - 1);
+> +       WARN_ON_ONCE(desc->tree_max - 1 > desc->last_pgaddr - 1);
+>
+>         tlb_free_vmas(tlb);
+>
+> @@ -407,13 +406,13 @@ void free_pgtables(struct mmu_gather *tlb, struct m=
+a_state *mas,
+>                  * Note: USER_PGTABLES_CEILING may be passed as ceiling a=
+nd may
+>                  * be 0.  This will underflow and is okay.
+>                  */
+> -               next =3D mas_find(mas, tree_max - 1);
+> +               next =3D mas_find(mas, desc->tree_max - 1);
+>
+>                 /*
+>                  * Hide vma from rmap and truncate_pagecache before freei=
+ng
+>                  * pgtables
+>                  */
+> -               if (mm_wr_locked)
+> +               if (desc->mm_wr_locked)
+>                         vma_start_write(vma);
+>                 unlink_anon_vmas(vma);
+>
+> @@ -425,16 +424,16 @@ void free_pgtables(struct mmu_gather *tlb, struct m=
+a_state *mas,
+>                  */
+>                 while (next && next->vm_start <=3D vma->vm_end + PMD_SIZE=
+) {
+>                         vma =3D next;
+> -                       next =3D mas_find(mas, tree_max - 1);
+> -                       if (mm_wr_locked)
+> +                       next =3D mas_find(mas, desc->tree_max - 1);
+> +                       if (desc->mm_wr_locked)
+>                                 vma_start_write(vma);
+>                         unlink_anon_vmas(vma);
+>                         unlink_file_vma_batch_add(&vb, vma);
+>                 }
+>                 unlink_file_vma_batch_final(&vb);
+>
+> -               free_pgd_range(tlb, addr, vma->vm_end,
+> -                       floor, next ? next->vm_start : ceiling);
+> +               free_pgd_range(tlb, addr, vma->vm_end, desc->first_pgaddr=
+,
+> +                              next ? next->vm_start : desc->last_pgaddr)=
+;
+
+Much better names IMO. Thank you!
+
+>                 vma =3D next;
 >         } while (vma);
->         mmu_notifier_invalidate_range_end(&range);
 >  }
 > diff --git a/mm/mmap.c b/mm/mmap.c
-> index 5c9bd3f20e53f..6011f62b0a294 100644
+> index 6011f62b0a294..9908481452780 100644
 > --- a/mm/mmap.c
 > +++ b/mm/mmap.c
-> @@ -1280,10 +1280,12 @@ void exit_mmap(struct mm_struct *mm)
->         struct vm_area_struct *vma;
->         unsigned long nr_accounted =3D 0;
->         VMA_ITERATOR(vmi, mm, 0);
-> +       struct unmap_desc unmap;
->
->         /* mm's last user has gone, and its about to be pulled down */
->         mmu_notifier_release(mm);
->
-> +       unmap.mm_wr_locked =3D false;
-
-This will be reset by unmap_all_init() anyway, right?
-
->         mmap_read_lock(mm);
->         arch_exit_mmap(mm);
->
-> @@ -1295,11 +1297,12 @@ void exit_mmap(struct mm_struct *mm)
->                 goto destroy;
->         }
->
-> +       unmap_all_init(&unmap, &vmi, vma);
-
-Can we use a macro, something like DEFINE_UNMAP_ALL_REGIONS() instead
-of unmap_all_init()?
-
->         flush_cache_mm(mm);
->         tlb_gather_mmu_fullmm(&tlb, mm);
->         /* update_hiwater_rss(mm) here? but nobody should be looking */
->         /* Use ULONG_MAX here to ensure all VMAs in the mm are unmapped *=
-/
-> -       unmap_vmas(&tlb, &vmi.mas, vma, 0, ULONG_MAX, ULONG_MAX, false);
-> +       unmap_vmas(&tlb, &unmap);
->         mmap_read_unlock(mm);
+> @@ -1311,10 +1311,10 @@ void exit_mmap(struct mm_struct *mm)
+>          */
+>         mm_flags_set(MMF_OOM_SKIP, mm);
+>         mmap_write_lock(mm);
+> +       unmap.mm_wr_locked =3D true;
+>         mt_clear_in_rcu(&mm->mm_mt);
+> -       vma_iter_set(&vmi, vma->vm_end);
+> -       free_pgtables(&tlb, &vmi.mas, vma, FIRST_USER_ADDRESS,
+> -                     USER_PGTABLES_CEILING, USER_PGTABLES_CEILING, true)=
+;
+> +       vma_iter_set(&vmi, unmap.tree_reset);
+> +       free_pgtables(&tlb, &unmap);
+>         tlb_finish_mmu(&tlb);
 >
 >         /*
 > diff --git a/mm/vma.c b/mm/vma.c
-> index c92384975cbb2..ad64cd9795ef3 100644
+> index ad64cd9795ef3..ba155a539d160 100644
 > --- a/mm/vma.c
 > +++ b/mm/vma.c
-> @@ -481,8 +481,7 @@ void unmap_region(struct unmap_desc *desc)
+> @@ -476,16 +476,13 @@ void remove_vma(struct vm_area_struct *vma)
+>  void unmap_region(struct unmap_desc *desc)
+>  {
+>         struct mm_struct *mm =3D desc->first->vm_mm;
+> -       struct ma_state *mas =3D desc->mas;
+>         struct mmu_gather tlb;
 >
 >         tlb_gather_mmu(&tlb, mm);
 >         update_hiwater_rss(mm);
-> -       unmap_vmas(&tlb, mas, desc->first, desc->vma_min, desc->vma_max,
-> -                  desc->vma_max, desc->mm_wr_locked);
-> +       unmap_vmas(&tlb, desc);
->         mas_set(mas, desc->tree_reset);
->         free_pgtables(&tlb, mas, desc->first, desc->first_pgaddr,
->                       desc->last_pgaddr, desc->tree_max,
-> @@ -1213,26 +1212,32 @@ int vma_shrink(struct vma_iterator *vmi, struct v=
-m_area_struct *vma,
->  static inline void vms_clear_ptes(struct vma_munmap_struct *vms,
->                     struct ma_state *mas_detach, bool mm_wr_locked)
->  {
-> -       struct mmu_gather tlb;
-> +       struct unmap_desc unmap =3D {
-> +               .mas =3D mas_detach,
-> +               .first =3D vms->vma,
-> +               /* start and end may be different if there is no prev or =
-next vma. */
-> +               .first_pgaddr =3D vms->unmap_start,
-> +               .last_pgaddr =3D vms->unmap_end,
-> +               .vma_min =3D vms->start,
-> +               .vma_max =3D vms->end,
-> +               /*
-> +                * The tree limits and reset differ from the normal case =
-since it's a
-> +                * side-tree
-> +                */
-> +               .tree_reset =3D 1,
-> +               .tree_max =3D vms->vma_count,
-> +               /*
-> +                * We can free page tables without write-locking mmap_loc=
-k because VMAs
-> +                * were isolated before we downgraded mmap_lock.
-> +                */
-> +               .mm_wr_locked =3D mm_wr_locked,
-> +       };
->
->         if (!vms->clear_ptes) /* Nothing to do */
->                 return;
->
-> -       /*
-> -        * We can free page tables without write-locking mmap_lock becaus=
-e VMAs
-> -        * were isolated before we downgraded mmap_lock.
-> -        */
->         mas_set(mas_detach, 1);
-> -       tlb_gather_mmu(&tlb, vms->vma->vm_mm);
-> -       update_hiwater_rss(vms->vma->vm_mm);
-> -       unmap_vmas(&tlb, mas_detach, vms->vma, vms->start, vms->end,
-> -                  vms->vma_count, mm_wr_locked);
-> -
-> -       mas_set(mas_detach, 1);
-> -       /* start and end may be different if there is no prev or next vma=
-. */
-> -       free_pgtables(&tlb, mas_detach, vms->vma, vms->unmap_start,
-> -                     vms->unmap_end, vms->unmap_end, mm_wr_locked);
-> -       tlb_finish_mmu(&tlb);
-> +       unmap_region(&unmap);
->         vms->clear_ptes =3D false;
+>         unmap_vmas(&tlb, desc);
+> -       mas_set(mas, desc->tree_reset);
+> -       free_pgtables(&tlb, mas, desc->first, desc->first_pgaddr,
+> -                     desc->last_pgaddr, desc->tree_max,
+> -                     desc->mm_wr_locked);
+> +       mas_set(desc->mas, desc->tree_reset);
+> +       free_pgtables(&tlb, desc);
+>         tlb_finish_mmu(&tlb);
 >  }
 >
-> diff --git a/mm/vma.h b/mm/vma.h
-> index 4edd5d26ffcfc..8b55a0c73d097 100644
-> --- a/mm/vma.h
-> +++ b/mm/vma.h
-> @@ -164,6 +164,20 @@ struct unmap_desc {
->         bool mm_wr_locked;            /* If the mmap write lock is held *=
-/
->  };
->
-> +static inline void unmap_all_init(struct unmap_desc *desc,
-> +               struct vma_iterator *vmi, struct vm_area_struct *vma)
-> +{
-> +       desc->mas =3D &vmi->mas;
-> +       desc->first =3D vma;
-> +       desc->first_pgaddr =3D FIRST_USER_ADDRESS;
-> +       desc->last_pgaddr =3D USER_PGTABLES_CEILING;
-> +       desc->vma_min =3D 0;
-> +       desc->vma_max =3D ULONG_MAX;
-> +       desc->tree_max =3D ULONG_MAX;
-> +       desc->tree_reset =3D vma->vm_end;
-> +       desc->mm_wr_locked =3D false;
-> +}
-> +
->  #define UNMAP_REGION(name, _vmi, _vma, _vma_min, _vma_max, _prev, _next)=
-      \
->         struct unmap_desc name =3D {                                     =
-     \
->                 .mas =3D &(_vmi)->mas,                                   =
-       \
 > diff --git a/tools/testing/vma/vma_internal.h b/tools/testing/vma/vma_int=
 ernal.h
-> index 823d379e1fac2..d73ad4747d40a 100644
+> index d73ad4747d40a..435c5a24480bc 100644
 > --- a/tools/testing/vma/vma_internal.h
 > +++ b/tools/testing/vma/vma_internal.h
-> @@ -884,18 +884,12 @@ static inline void update_hiwater_vm(struct mm_stru=
-ct *)
->  {
+> @@ -892,17 +892,10 @@ static inline void unmap_vmas(struct mmu_gather *tl=
+b, struct unmap_desc *unmap)
+>         (void)unmap;
 >  }
 >
-> -static inline void unmap_vmas(struct mmu_gather *tlb, struct ma_state *m=
-as,
-> -                     struct vm_area_struct *vma, unsigned long start_add=
-r,
-> -                     unsigned long end_addr, unsigned long tree_end,
-> -                     bool mm_wr_locked)
-> +struct unmap_desc;
-> +
-> +static inline void unmap_vmas(struct mmu_gather *tlb, struct unmap_desc =
-*unmap)
+> -static inline void free_pgtables(struct mmu_gather *tlb, struct ma_state=
+ *mas,
+> -                  struct vm_area_struct *vma, unsigned long floor,
+> -                  unsigned long ceiling, unsigned long tree_max,
+> -                  bool mm_wr_locked)
+> +static inline void free_pgtables(struct mmu_gather *tlb, struct unmap_de=
+sc *desc)
 >  {
 >         (void)tlb;
 > -       (void)mas;
 > -       (void)vma;
-> -       (void)start_addr;
-> -       (void)end_addr;
-> -       (void)tree_end;
+> -       (void)floor;
+> -       (void)ceiling;
 > -       (void)mm_wr_locked;
-> +       (void)unmap;
+> +       (void)desc;
 >  }
 >
->  static inline void free_pgtables(struct mmu_gather *tlb, struct ma_state=
- *mas,
+>  static inline void mapping_unmap_writable(struct address_space *)
 > --
 > 2.47.2
 >
