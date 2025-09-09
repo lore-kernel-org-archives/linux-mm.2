@@ -4,98 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65A38CA0FED
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 18:50:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 890FCCAC582
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 18:52:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B4BE58E0005; Tue,  9 Sep 2025 14:50:20 -0400 (EDT)
+	id CAFAC8E0006; Tue,  9 Sep 2025 14:52:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AFC2C8E0001; Tue,  9 Sep 2025 14:50:20 -0400 (EDT)
+	id C87D48E0001; Tue,  9 Sep 2025 14:52:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A12BC8E0005; Tue,  9 Sep 2025 14:50:20 -0400 (EDT)
+	id BC4628E0006; Tue,  9 Sep 2025 14:52:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8B41F8E0001
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 14:50:20 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2B59C13BA68
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 18:50:20 +0000 (UTC)
-X-FDA: 83870602200.01.3B9BFAF
-Received: from mail-il1-f175.google.com (mail-il1-f175.google.com [209.85.166.175])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 500211C0010
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 18:50:18 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=w2FGC4oE;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf21.hostedemail.com: domain of zokeefe@google.com designates 209.85.166.175 as permitted sender) smtp.mailfrom=zokeefe@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757443818; a=rsa-sha256;
-	cv=none;
-	b=HhiGDP17s12KA70zjCFJlozbjLSA46Xd0Yw81QzKpvswML7sPsgDskT21z7nfbV6JUPHsX
-	Nkh2/P8ldrSyET3XPwMc0GVHVEyB1HecDwQcH65nqbztFbdnHbWCfwuUcMt54H1BcSZDef
-	GO33qp3Rq1yd6ORuuhk+pc4t3g7i74E=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=w2FGC4oE;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf21.hostedemail.com: domain of zokeefe@google.com designates 209.85.166.175 as permitted sender) smtp.mailfrom=zokeefe@google.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id A88A68E0001
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 14:52:04 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6D24511ABAD
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 18:52:04 +0000 (UTC)
+X-FDA: 83870606568.04.FCF2727
+Received: from mail-il1-f179.google.com (mail-il1-f179.google.com [209.85.166.179])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 7404A40002
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 18:52:02 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=qp+3Kndu;
+	spf=pass (imf04.hostedemail.com: domain of zokeefe@google.com designates 209.85.166.179 as permitted sender) smtp.mailfrom=zokeefe@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757443818;
+	s=arc-20220608; t=1757443922;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eC3mUBzIF335HxcW34dFQJ7jnn4NSV7DuTmu23IsQDA=;
-	b=NnV0jdsD36/aI39ppVQ8/Qq7tIvFVU/Rcw3CwZbfvDreu/54tyYEGyax0ztw0fdGQqyNAt
-	rKz7UvoM7IkeHjgTyd8SJNfjr55keev2oWfBs3fv+Gg7Ix2R1Z5vGzlZFhPBFrdcFIASRh
-	vMvXqS3/X2LxLwBY8KendY/OQIsGPLo=
-Received: by mail-il1-f175.google.com with SMTP id e9e14a558f8ab-408c236c500so32705ab.1
-        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 11:50:18 -0700 (PDT)
+	bh=dAwDhU2WUoYnohm20pg+eapTEZHSXIxK7W5ZKC0ZArg=;
+	b=P8YhztID9QlD04Fp+qKYJJPOxqQATstvy3zFQ840Ll7vJxrAGxtPSd77G5P1KBXv3DDxIk
+	wyqWruBxfINSAXbJO4calZUFAk7Ed3qzSKAhLzPHMLSdzOW5RIM45333vq3D9H5Eos0ZD2
+	D66EonwsQsud/5REkeKxR4GTNLueW5E=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=qp+3Kndu;
+	spf=pass (imf04.hostedemail.com: domain of zokeefe@google.com designates 209.85.166.179 as permitted sender) smtp.mailfrom=zokeefe@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757443922; a=rsa-sha256;
+	cv=none;
+	b=lPu/FggRThYajx5NNVdvVV0uoHElrosTWJddvm61c64P8v0Ay9fPa7n1CoVELTjjAYlZNA
+	KHRPjkffH+ddvQGjGNzZocnak+LAd35BTHAcfWFd4N0rA+9+3Vo+6iKg42SB9zWUfjQQtX
+	4Oe/iQoPP5hr4igQFJjA8AgZQuXl/KI=
+Received: by mail-il1-f179.google.com with SMTP id e9e14a558f8ab-412a2fe2f36so22775ab.0
+        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 11:52:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757443817; x=1758048617; darn=kvack.org;
+        d=google.com; s=20230601; t=1757443921; x=1758048721; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=eC3mUBzIF335HxcW34dFQJ7jnn4NSV7DuTmu23IsQDA=;
-        b=w2FGC4oE0fsVWUKL0JXna1fljIWPPhD5u4ULyLFIoG5VQDaikjBs/6Kz3LqNZqEOwC
-         Y5ptNnewUhNFqzwBx0yCctWsOJa5yvVhano4NCOXgB8AYLcn5LIq/fg9Ojk68NimRCYt
-         MutsLfUlgbSr4efpDd4Heak0Yi4NWHMIaXuLrnMfr6Chu7Uf37sC6hFT1U1dbGitlz3y
-         cWl4HzjEHWrP0KQpZ4xYwMfHeqv7+2BKPKr3NLxfHYRP9kC8j0k57tvOma6qI2Dz9kig
-         88O0AKhuH5Cfd9xoSQmM7fJRc+fsPAnsxYH+epFyx+qLrS/lQ9vO2J5C/E9r4iNvvBKy
-         IHIA==
+        bh=dAwDhU2WUoYnohm20pg+eapTEZHSXIxK7W5ZKC0ZArg=;
+        b=qp+3KndufH9ltnH7OD2frdwKnJAB1h6SZj8wCRxtQU2SeZyMLsc3dXfb9nSkRJUPZl
+         DjWwR2UECrK5LLbuDgjmt3soKMkNz46NkQeYgjQHAZt5EhUmJ5YbbUz9XzhGMIcPA9Is
+         Gc41mX0t+ThU4r+yuOGpIlwsqG0GujQe5Dk3wHAUnoTu5EBDvm+xBM+XUdwitneVsxvn
+         v/Bog8s4//bxsx9SvNmWg1WALwKKsvOB76XrFcivVhwV8mO+7MNE1nvWC+f2i+fIkVTc
+         zPFe/zbIMe/S6NMC8bzP3nr++SqMhUi+6y0xvlYnRSXRfWeudooYmI5tvnIyu5YTLZzb
+         ca+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757443817; x=1758048617;
+        d=1e100.net; s=20230601; t=1757443921; x=1758048721;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=eC3mUBzIF335HxcW34dFQJ7jnn4NSV7DuTmu23IsQDA=;
-        b=xJQf5/qpZd7+KE1rH7afQj1hXJe2w3D2aSlfeSdyAC29Ye7ZOcyMCIp1MGozdQHagb
-         gdsRo5zh9r/sqPL2bntEc9b2berSy5RdrHXMdu++qPSATVzP/skZknA/aQ76ayA5lGJK
-         ecjNU8sIHBHF2Fhh3zNkhITjqebqlqMidkDaKnPXVwMcGFjSZmFE3ba78L8YbedGTcF9
-         wAjFAJZRzWEZLT9rFLTUxbZrBTZb4WmEogdxxUT4x44K0Y2euRgUvb9Ktyz+gBQD41D7
-         whBSCXa0TwcF+WcA+Qn8pkGUr+u7OKIeH6LU/FR3RFb5DoGyUVfQHF3TM8pI1MjUXL70
-         zp9A==
-X-Forwarded-Encrypted: i=1; AJvYcCXe1qki3dX9PTFfglVxsR+AP2JsLoyDY9etQBm50jWvrCZJogiEuhFKvh3dPuY5xRy2lNGfuHEm8Q==@kvack.org
-X-Gm-Message-State: AOJu0YwW+YtjCFRo4aLZWG3XPACBySm0RSRpVnEMKlONk2qfUeWFDz8j
-	G2Zls/xq2WKvGCs18GJvw40vOTanf8gil23XMRJemJGtW2HOJoQ3vctpwfyEmhdL0PBpmhUp0rm
-	gSnyeC75NPJY3OXEVA6Ijq5WFpwq5noEWsBli60Mi
-X-Gm-Gg: ASbGncvWow/f4d2dC/LFloIQE6451LGZvcvvnbivCX7d9VFppvNDngnBCPo3frvbeMc
-	S5652aAIsWlAerQQSeFanxhX1nzzZpx9SOlXjd535P80zgEBld+YO/2OUHmweoD0i8ansrfyZvj
-	O8+QA+HKJbX3JSMAE5Dhe8AAmsDYVOT+W+HEpus3qYYEfvnjtoZYtVBpOVslaRrvZdK+7r5Aecz
-	aeqY4MvbLBdPfs=
-X-Google-Smtp-Source: AGHT+IG6p9OBV2LHpHJ2dnCTdEF/QlDlw3uEMnpPINTz7IGwtNn9XHfXL0nT5x0TVBBY4V1jajlMi/f/7FwLhI4UYXw=
-X-Received: by 2002:a05:6e02:190e:b0:40b:e7e1:cfb5 with SMTP id
- e9e14a558f8ab-4164d86db7fmr699395ab.2.1757443816692; Tue, 09 Sep 2025
- 11:50:16 -0700 (PDT)
+        bh=dAwDhU2WUoYnohm20pg+eapTEZHSXIxK7W5ZKC0ZArg=;
+        b=p+McTISPd6ZnPt/HiAIhInI4LFKS6rnktM810mmnFThM6542odF3i6WgojVMZDDB8Z
+         SJGgDAIAnNcGC+dFnP9jOuPahAbOx6NI0F7185xJaYcTKJ03RaIUqMzZeJRJBxMl3FDZ
+         IUfjBA5XMn6rYxPFJcJxNyUmJm4dKmr12C3a16dLCxXrY42vV+H1/1uYPda7UNq6vuQO
+         wf7rvRvHJtz+tzXMCVrYBXmTweySEVRqmetApcGKevLTe11uDvZa7JSmcuVxNUdXGVUM
+         KRXnOiAx50OSs20xJlJWgG+lEvoC8AoYd0I4sPyRzV9WXTgRhx9ElkWWr3zdZTSSq2QY
+         56FA==
+X-Forwarded-Encrypted: i=1; AJvYcCWtdma1iOSMRKZKH5V6tVkQhyZoBiy4tducPCkdydk+z10HS51A5bEW0lgXDfNWFJGd06RF65KsNA==@kvack.org
+X-Gm-Message-State: AOJu0YxBktFjcT+udW/d+7H+NQb/z4Kh7AOpKF6KKPrK7srU7h3N0Oyo
+	ntN1tjCeJnT+5kJ/pgKeUIMBYg93GcfPX5CkQTzxy6xF/wBR4KcpyPtcG61rA/k7CQYiIsydQWj
+	EPnoydT1s0g3sFsh2wcluX1S/PCIADBI1PDmBeYJe
+X-Gm-Gg: ASbGncs+WKfI62EBoLGgv3pCbT9DzTkJJ38W7VO4LROUjIeFxGp1mqAyDCEL1VDkhoL
+	ASZuJNjPX+QMnCBDlJnDiikl6MA/RZ7K0VYYik9lQvhKs8iDpYBYn2j3l2CRpEuLbtJuuTMM2Kv
+	VCCFSzzcU5CPtbe79AHpYawaY2utqSi3hCfVKcs1gRWlZ75/jtjQF3SgH48XDey5tD8xginuF+F
+	zKm9eH26sw1G8s=
+X-Google-Smtp-Source: AGHT+IEKNjxibAxv1AfgJxTvJn5B0kzJMG6nPy7yfiMaYwP6fvdKYN5v/N8vavDSij2H8a/O9KlZs6Vgz5lU92981k4=
+X-Received: by 2002:a05:6e02:250d:b0:400:7d06:dd68 with SMTP id
+ e9e14a558f8ab-41655b596admr576495ab.14.1757443921008; Tue, 09 Sep 2025
+ 11:52:01 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250908075028.38431-1-dev.jain@arm.com> <20250908075028.38431-2-dev.jain@arm.com>
-In-Reply-To: <20250908075028.38431-2-dev.jain@arm.com>
+References: <20250908075028.38431-1-dev.jain@arm.com> <20250908075028.38431-3-dev.jain@arm.com>
+In-Reply-To: <20250908075028.38431-3-dev.jain@arm.com>
 From: "Zach O'Keefe" <zokeefe@google.com>
-Date: Tue, 9 Sep 2025 11:49:39 -0700
-X-Gm-Features: Ac12FXypQR8Ban_kXoWF6-UtTEU_BSzjrhtVgpc1eMzOq3TH_kElX763QBqhNKo
-Message-ID: <CAAa6QmRtP9T8SVCVXkgLDtzZYYujh89R_FYzUanSckfe5znyyg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] mm: Enable khugepaged anonymous collapse on
- non-writable regions
+Date: Tue, 9 Sep 2025 11:51:23 -0700
+X-Gm-Features: Ac12FXwgKz23RzNrJlXWoPmYg-m3zmsRje2pwnne6Wug2tegfeiTYXWBxKPK1qs
+Message-ID: <CAAa6QmSf4yFMXrCLNgrk6jYGyceox_DtZ0uOOA5OgqOpmR7Ljg@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] mm: Drop all references of writable and SCAN_PAGE_RO
 To: Dev Jain <dev.jain@arm.com>
 Cc: akpm@linux-foundation.org, david@redhat.com, kas@kernel.org, 
 	willy@infradead.org, hughd@google.com, ziy@nvidia.com, 
@@ -105,14 +104,14 @@ Cc: akpm@linux-foundation.org, david@redhat.com, kas@kernel.org,
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 500211C0010
-X-Stat-Signature: hmgm1gphuse1t9y1msoh79gtz5wimjyd
+X-Stat-Signature: qngg3tgsufe89ni3wrfp5yd7n35ksx5m
 X-Rspam-User: 
-X-HE-Tag: 1757443818-88853
-X-HE-Meta: U2FsdGVkX19BGABkuaTX/mC28PxDLZi5a3vR+pHmfh4XFowDPIle14e/Owwq1Wd3tZw9DMUeLEKx9MRaCHV+ij31JXYTfSGfI/sCkDM5I0vk0vfwsFEpewdW1+UPJF3QiJAVX/QU/SNvAsI5KY6SVgWFtXYtseTVic0liefcjiApK2Kw0t4o58z4FBYQTIJsh8zP6+0fm3Re41QkJ2ueHCYlN83UgeiXcUBYVXL/kUvuD6uRk4Qp7wsRXSQ2ZCzkFqrwfm3ATJi5p5RlMCG3ZMx3Zt6fhJtjhfMnVQgSAN/vHpEqrdAOKemzNk6dkuqj67hRAq0tr5BrZBUffIGtCKBwDo3ycl1+/TeyeLcktdquCvn+/qS8YV4j81Li+Jsk80Vq9QmEVtka0HAgMDAEDZ3YvgBjvZaAjFuCfFaz+UXC0mre4Moxt3QaB9gHmPMnEtiqVes0KsspJl8g49HjFqGkZq9bktWlmovfhfKWTxNUqwFIzox3ROn2DzuSFXPeVztSlQnkYDTfgtL0IL5tkFheUc22WJlLN4YtRY9SzOYvtSTCbqgsIla2AGiEm4500BQJGoyvX/G4RIV+GmNlPEQYywOpL+/58g7tB0a7u0bAeqmXRp0/l/alofOENp7taIs4BPCknt4F33AufIl9UIil8jbYWLCgY+nU+D5OgaLMhru/5D4oWEcPDk+Zx4xI+t3QQuB2PLMy+wjagIs9dWwLqh0YWgO7UNXzCcdVBTaT3B0Iu7qXzh2cJ+hUdInjj6HpF7gnRHmcdu47/Sp5f9ghhRutrR+nOm3LqHVWIIaYvoOCpcdFAaomCLITZZNCjJ19fohRefgfh95jj5Hn/1z6+A2vWrhowXlMTqyEl9v0F4LgAlWtrASggqi0yYI5HGKVu7oI1CHZVCIU7GmeFep8wfaItlWt05GxSVURLsVFAcDDTAsRgg+UUZQUwlIOxqHx5obDMB0kyeyJEQF
- 1ZPSRX2S
- PUryQGfNwRw3r4ft/hGT+dm7gBTfka2GIbU4pJ0rTN6ZKT/d3c3BCj9FVGXbvAsno84htMVccUBoSN3i9dFRScjz+7+yUgTt1H4QFW5mh5bblj2FCp8C7fbnLv5sTWoM79wbbuoxw/jy0bUGTkoddthRnBf9yjndyvQuskj8BIYnzOGFSUS/vdQeB0/j4NCezoj0bATR94GZVJ/JEsxaZacLvFLtG+I+m6lJgBE3Ln3r5y/Cbg/ejAZly6Udm5IXhtnB5aU60Psfx8SptFbKiji0B/CzxnzRHXPr4PEVT2hj1VF1cQC05La7IXL4H2qRX/uno7AgV/NyJ2zCJpKLIY2wV3ou0cLBYPSM4lkcfMw9LAwvD1fwqTXHS7oclZ284IsaBxC40q+l2Z0DW5wplAzCKfvfoo+fSfzYavOjqKeXjntucnS7PY12E6hbzZwAGMJhV
+X-Rspamd-Queue-Id: 7404A40002
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1757443922-271984
+X-HE-Meta: U2FsdGVkX1/F7Nob8uaxNLdqWz52tMiI0Mf+x0n5xkF3yIzClXR/22Jd1MwCMfFtkA9bGxshFSaBUh26hzbPkgJEfwFYOUdgLbNW2ZpwL24m1Tac160nlmTwrkL16gTy76Rp1Tg7owAjjujT9yfCsw1R0o9hXyCcj4LsqkcyYYvuVYulf/QTXES7KlGb5QcfOsTIH+tX0nOjtPIoYwrPRcTxrDJQRwXBZKfNC4OZBvjVBGHxaxtUXjchCD/VANwV8TVn/2pktHcsJYC2d7Nh4LeJCB1rqNaM8MMdu7Caf5yvDiD4mgWsXirVEoywvyDHMOrl+GexYsRbfjOojLVBlPktqPCFbYA/ZUlLVzNqE+D7WlBIBNbr8nGnZuEvx+l5a8++mTANVccyNHWzmoMHbIA5Saf92k/IHoMe6nq7eCDy6bkiCjRZ+t3JKtLKItvnvAjIk/j0IrJnwoFh9sxjpbCO05W20p/Z3vq8FoGUioy9FG20vYW/el9ZC1abJh3ISqbWR3AdFB7WT1wwQHpbWqwdTVumOSdn461nTGOsSLh2rEoBC8N1VHON4+2vHxpcFrmlaBQ7k9QtBQKFSXL3txVzcCJcaUs8eF+bGWFUHCNemSihFeIImearpaOqkdWgG5VIMu27WyqzO977Sp08yWe+1JpsHkB9H95JvAMvGrwIR59PCoZe9aK257KJbG/9+pE1Pr0GwE1LEX7wH0V1ECGtP8fIrhg5AWXlq30CchmLCC615rkQBoKj5OqEosFKuCbqiRfeb4kctVxdZ+Ho2Tr+LjA4eyWdM+2UlZL+93kRSf9fFyoVIZbdTlF1Ay0pJddzion1dEfxFTAzczNWiABS8i2FKy1ZWev69zqjMCzpCArBAlDfNacAh00LrhAcJzISY/p6m1PbQLDBXR+Sc2LbvFM1H4S4eYWyxNeq66uopnProBQ13lN+N33k34gWcMnsPdP830sEFR6ugST
+ r3dSpf2T
+ rDzZBIJFkR3s8KGbMmtj3i9oG81vh/kwYpOa33Sih6XsGplj4wrdUu1Rw7Qq5tt6wHGrgbJ3sY6LNZkwRSFsRhpVYU/jjyR82YsQcfg7DE9Kxz8U8RhKaL7ks3fww4srKD73RHkMxJtjlNlqW9tkRvHbaVHEKqK6uprhd1PWqvo9JU8yWSFDQ4vyvkzTcY2xPJwslg9GHPQjp22ZWIm1b1/iuSqz/buUxR89vGq03F8fdj1VF6WoVGSZvhbee+eMbBmN+Mx2rOsr1lEebSwMNw7UmQUgty/dWIgqzS09IxpB/zdnqljxDF1JJC25s0PPmMAXjVpP97VQR/YrKkTAQsWHAS3DWmitT9s3uJbgs6mO2RPwLFojElXs6Fp6z9KcekkgqT2R65QrbccL8sdsOGhh4hC6S2znDI9MA2yeAk+Qv8ALCdAjP4ZT+VSLnVJCffAG+OpL7RA87sjoD0jyZRi7OP0k6vG6M3NnpEf91H0jaaew4hGau7F3248cF/L7bdhtYMue1Hpn2ZxgsrazSODpN3hoPOQIFlaFG
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,81 +120,204 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Thanks, Dev.
+
 On Mon, Sep 8, 2025 at 12:51=E2=80=AFAM Dev Jain <dev.jain@arm.com> wrote:
 >
-> Currently khugepaged does not collapse an anonymous region which does not
-> have a single writable pte. This is wasteful since a region mapped with
-> non-writable ptes, for example, non-writable VMAs mapped by the
-> application, won't benefit from THP collapse.
+> Now that all actionable outcomes from checking pte_write() are gone,
+> drop the related references.
 >
-> An additional consequence of this constraint is that MADV_COLLAPSE does n=
-ot
-> perform a collapse on a non-writable VMA, and this restriction is nowhere
-> to be found on the manpage - the restriction itself sounds wrong to me
-> since the user knows the protection of the memory it has mapped, so
-> collapsing read-only memory via madvise() should be a choice of the
-> user which shouldn't be overridden by the kernel.
-
-Sorry ; late to the party. Certainly agree wrt MADV_COLLAPSE.
-
-Ditto for khugepaged as well. Check added when support for
-non-writable pages were added to khugepaged, though retaining
-heuristic that at least one pte should be writable;  10359213d05a
-("mm: incorporate read-only pages into transparent huge pages"), which
-predates max_ptes_swap.
-
-> Therefore, remove this restriction by not honouring SCAN_PAGE_RO.>
 > Acked-by: David Hildenbrand <david@redhat.com>
 > Acked-by: Zi Yan <ziy@nvidia.com>
-> Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
 > Reviewed-by: Kiryl Shutsemau <kas@kernel.org>
 > Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 > Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
 Reviewed-by: Zach O'Keefe <zokeefe@google.com>
 
+
 > Signed-off-by: Dev Jain <dev.jain@arm.com>
 > ---
->  mm/khugepaged.c | 9 ++-------
->  1 file changed, 2 insertions(+), 7 deletions(-)
+>  include/trace/events/huge_memory.h | 19 ++++++-------------
+>  mm/khugepaged.c                    | 14 +++-----------
+>  2 files changed, 9 insertions(+), 24 deletions(-)
+>
+> diff --git a/include/trace/events/huge_memory.h b/include/trace/events/hu=
+ge_memory.h
+> index 2305df6cb485..dd94d14a2427 100644
+> --- a/include/trace/events/huge_memory.h
+> +++ b/include/trace/events/huge_memory.h
+> @@ -19,7 +19,6 @@
+>         EM( SCAN_PTE_NON_PRESENT,       "pte_non_present")              \
+>         EM( SCAN_PTE_UFFD_WP,           "pte_uffd_wp")                  \
+>         EM( SCAN_PTE_MAPPED_HUGEPAGE,   "pte_mapped_hugepage")          \
+> -       EM( SCAN_PAGE_RO,               "no_writable_page")             \
+>         EM( SCAN_LACK_REFERENCED_PAGE,  "lack_referenced_page")         \
+>         EM( SCAN_PAGE_NULL,             "page_null")                    \
+>         EM( SCAN_SCAN_ABORT,            "scan_aborted")                 \
+> @@ -55,15 +54,14 @@ SCAN_STATUS
+>
+>  TRACE_EVENT(mm_khugepaged_scan_pmd,
+>
+> -       TP_PROTO(struct mm_struct *mm, struct folio *folio, bool writable=
+,
+> +       TP_PROTO(struct mm_struct *mm, struct folio *folio,
+>                  int referenced, int none_or_zero, int status, int unmapp=
+ed),
+>
+> -       TP_ARGS(mm, folio, writable, referenced, none_or_zero, status, un=
+mapped),
+> +       TP_ARGS(mm, folio, referenced, none_or_zero, status, unmapped),
+>
+>         TP_STRUCT__entry(
+>                 __field(struct mm_struct *, mm)
+>                 __field(unsigned long, pfn)
+> -               __field(bool, writable)
+>                 __field(int, referenced)
+>                 __field(int, none_or_zero)
+>                 __field(int, status)
+> @@ -73,17 +71,15 @@ TRACE_EVENT(mm_khugepaged_scan_pmd,
+>         TP_fast_assign(
+>                 __entry->mm =3D mm;
+>                 __entry->pfn =3D folio ? folio_pfn(folio) : -1;
+> -               __entry->writable =3D writable;
+>                 __entry->referenced =3D referenced;
+>                 __entry->none_or_zero =3D none_or_zero;
+>                 __entry->status =3D status;
+>                 __entry->unmapped =3D unmapped;
+>         ),
+>
+> -       TP_printk("mm=3D%p, scan_pfn=3D0x%lx, writable=3D%d, referenced=
+=3D%d, none_or_zero=3D%d, status=3D%s, unmapped=3D%d",
+> +       TP_printk("mm=3D%p, scan_pfn=3D0x%lx, referenced=3D%d, none_or_ze=
+ro=3D%d, status=3D%s, unmapped=3D%d",
+>                 __entry->mm,
+>                 __entry->pfn,
+> -               __entry->writable,
+>                 __entry->referenced,
+>                 __entry->none_or_zero,
+>                 __print_symbolic(__entry->status, SCAN_STATUS),
+> @@ -117,15 +113,14 @@ TRACE_EVENT(mm_collapse_huge_page,
+>  TRACE_EVENT(mm_collapse_huge_page_isolate,
+>
+>         TP_PROTO(struct folio *folio, int none_or_zero,
+> -                int referenced, bool  writable, int status),
+> +                int referenced, int status),
+>
+> -       TP_ARGS(folio, none_or_zero, referenced, writable, status),
+> +       TP_ARGS(folio, none_or_zero, referenced, status),
+>
+>         TP_STRUCT__entry(
+>                 __field(unsigned long, pfn)
+>                 __field(int, none_or_zero)
+>                 __field(int, referenced)
+> -               __field(bool, writable)
+>                 __field(int, status)
+>         ),
+>
+> @@ -133,15 +128,13 @@ TRACE_EVENT(mm_collapse_huge_page_isolate,
+>                 __entry->pfn =3D folio ? folio_pfn(folio) : -1;
+>                 __entry->none_or_zero =3D none_or_zero;
+>                 __entry->referenced =3D referenced;
+> -               __entry->writable =3D writable;
+>                 __entry->status =3D status;
+>         ),
+>
+> -       TP_printk("scan_pfn=3D0x%lx, none_or_zero=3D%d, referenced=3D%d, =
+writable=3D%d, status=3D%s",
+> +       TP_printk("scan_pfn=3D0x%lx, none_or_zero=3D%d, referenced=3D%d, =
+status=3D%s",
+>                 __entry->pfn,
+>                 __entry->none_or_zero,
+>                 __entry->referenced,
+> -               __entry->writable,
+>                 __print_symbolic(__entry->status, SCAN_STATUS))
+>  );
 >
 > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 4ec324a4c1fe..a0f1df2a7ae6 100644
+> index a0f1df2a7ae6..af5f5c80fe4e 100644
 > --- a/mm/khugepaged.c
 > +++ b/mm/khugepaged.c
-> @@ -676,9 +676,7 @@ static int __collapse_huge_page_isolate(struct vm_are=
+> @@ -39,7 +39,6 @@ enum scan_result {
+>         SCAN_PTE_NON_PRESENT,
+>         SCAN_PTE_UFFD_WP,
+>         SCAN_PTE_MAPPED_HUGEPAGE,
+> -       SCAN_PAGE_RO,
+>         SCAN_LACK_REFERENCED_PAGE,
+>         SCAN_PAGE_NULL,
+>         SCAN_SCAN_ABORT,
+> @@ -557,7 +556,6 @@ static int __collapse_huge_page_isolate(struct vm_are=
 a_struct *vma,
->                         writable =3D true;
+>         struct folio *folio =3D NULL;
+>         pte_t *_pte;
+>         int none_or_zero =3D 0, shared =3D 0, result =3D SCAN_FAIL, refer=
+enced =3D 0;
+> -       bool writable =3D false;
+>
+>         for (_pte =3D pte; _pte < pte + HPAGE_PMD_NR;
+>              _pte++, address +=3D PAGE_SIZE) {
+> @@ -671,9 +669,6 @@ static int __collapse_huge_page_isolate(struct vm_are=
+a_struct *vma,
+>                      folio_test_referenced(folio) || mmu_notifier_test_yo=
+ung(vma->vm_mm,
+>                                                                      addr=
+ess)))
+>                         referenced++;
+> -
+> -               if (pte_write(pteval))
+> -                       writable =3D true;
 >         }
 >
-> -       if (unlikely(!writable)) {
-> -               result =3D SCAN_PAGE_RO;
-> -       } else if (unlikely(cc->is_khugepaged && !referenced)) {
-> +       if (unlikely(cc->is_khugepaged && !referenced)) {
->                 result =3D SCAN_LACK_REFERENCED_PAGE;
+>         if (unlikely(cc->is_khugepaged && !referenced)) {
+> @@ -681,13 +676,13 @@ static int __collapse_huge_page_isolate(struct vm_a=
+rea_struct *vma,
 >         } else {
 >                 result =3D SCAN_SUCCEED;
-> @@ -1421,9 +1419,7 @@ static int hpage_collapse_scan_pmd(struct mm_struct=
- *mm,
->                      mmu_notifier_test_young(vma->vm_mm, _address)))
->                         referenced++;
+>                 trace_mm_collapse_huge_page_isolate(folio, none_or_zero,
+> -                                                   referenced, writable,=
+ result);
+> +                                                   referenced, result);
+>                 return result;
 >         }
-> -       if (!writable) {
-> -               result =3D SCAN_PAGE_RO;
-> -       } else if (cc->is_khugepaged &&
-> +       if (cc->is_khugepaged &&
->                    (!referenced ||
->                     (unmapped && referenced < HPAGE_PMD_NR / 2))) {
->                 result =3D SCAN_LACK_REFERENCED_PAGE;
-> @@ -2830,7 +2826,6 @@ int madvise_collapse(struct vm_area_struct *vma, un=
-signed long start,
->                 case SCAN_PMD_NULL:
->                 case SCAN_PTE_NON_PRESENT:
->                 case SCAN_PTE_UFFD_WP:
-> -               case SCAN_PAGE_RO:
->                 case SCAN_LACK_REFERENCED_PAGE:
->                 case SCAN_PAGE_NULL:
->                 case SCAN_PAGE_COUNT:
+>  out:
+>         release_pte_pages(pte, _pte, compound_pagelist);
+>         trace_mm_collapse_huge_page_isolate(folio, none_or_zero,
+> -                                           referenced, writable, result)=
+;
+> +                                           referenced, result);
+>         return result;
+>  }
+>
+> @@ -1280,7 +1275,6 @@ static int hpage_collapse_scan_pmd(struct mm_struct=
+ *mm,
+>         unsigned long _address;
+>         spinlock_t *ptl;
+>         int node =3D NUMA_NO_NODE, unmapped =3D 0;
+> -       bool writable =3D false;
+>
+>         VM_BUG_ON(address & ~HPAGE_PMD_MASK);
+>
+> @@ -1344,8 +1338,6 @@ static int hpage_collapse_scan_pmd(struct mm_struct=
+ *mm,
+>                         result =3D SCAN_PTE_UFFD_WP;
+>                         goto out_unmap;
+>                 }
+> -               if (pte_write(pteval))
+> -                       writable =3D true;
+>
+>                 page =3D vm_normal_page(vma, _address, pteval);
+>                 if (unlikely(!page) || unlikely(is_zone_device_page(page)=
+)) {
+> @@ -1435,7 +1427,7 @@ static int hpage_collapse_scan_pmd(struct mm_struct=
+ *mm,
+>                 *mmap_locked =3D false;
+>         }
+>  out:
+> -       trace_mm_khugepaged_scan_pmd(mm, folio, writable, referenced,
+> +       trace_mm_khugepaged_scan_pmd(mm, folio, referenced,
+>                                      none_or_zero, result, unmapped);
+>         return result;
+>  }
 > --
 > 2.30.2
 >
