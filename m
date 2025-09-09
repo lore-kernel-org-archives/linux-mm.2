@@ -4,91 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92322CA0FED
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 07:29:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0C94CA0FED
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 07:31:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A12D28E0009; Tue,  9 Sep 2025 03:29:33 -0400 (EDT)
+	id F07A98E000C; Tue,  9 Sep 2025 03:30:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9AC048E0001; Tue,  9 Sep 2025 03:29:33 -0400 (EDT)
+	id EB76C8E0001; Tue,  9 Sep 2025 03:30:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 89B2F8E0009; Tue,  9 Sep 2025 03:29:33 -0400 (EDT)
+	id DA6A08E000C; Tue,  9 Sep 2025 03:30:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A54D8E0001
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 03:29:33 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0D72AC03D8
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 07:29:33 +0000 (UTC)
-X-FDA: 83868886626.06.3F66C05
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 3AF3C40004
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 07:29:28 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=none;
-	spf=pass (imf17.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.187 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C2A408E0001
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 03:30:59 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6160E13AC30
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 07:30:59 +0000 (UTC)
+X-FDA: 83868890238.07.4775B50
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 9F23440015
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 07:30:57 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=dR+A8Ocu;
+	spf=pass (imf11.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757402971;
+	s=arc-20220608; t=1757403057;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=g/wRsGBT0QM1bX+hT3VQTZF2wxQX1HuM3In+J/kYUUI=;
-	b=0SWemgyBR0e7fhCtmySeBCNWyw4uYW4R9IYLBkc3dQZYhdIMEpBVw5o36yGGnDgvhG6/r4
-	eQlBcZzdzMheJMF3uiGIW6vU+vAebUG25LC1P/ZEfleIvWieTaaQ21KOXMy+E3FmbAxWRW
-	iOJx4ORnnNocFHS7fs33twP3K1NmQ9o=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Z3+Kk/XPyaoPFAGQbNe7IovKooJsmlYdWhO37WXBxdc=;
+	b=dY0jCE6tKTKeFzKeAhYSpy5mj5cWsYJCFTLLv89Ws2DBtP+uX2gjepm/TD2RZnbAvT1ZNc
+	avUez5NXb3Q07IUk39G/aFWZ1XeAct8hnnHdSACp+oZfEIcgTSb/UNgfIotcDMkx0ZpRmy
+	nh/aNTawrs9GAZo18gJMREeFntDDCu4=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=none;
-	spf=pass (imf17.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.187 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757402971; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=dR+A8Ocu;
+	spf=pass (imf11.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757403057; a=rsa-sha256;
 	cv=none;
-	b=PxHxz3PExBNfJeDVesWjTmpJsqMkHZ0WxjYuc21/rWHDD2nPGCobym7RKrKUKhXL3NVLWx
-	AJgDAcXTQfBt33HP3izexBjnw5sV6qD4tGCN2+Cgsg27eEvEm/uRaPm515F0089F6KVb9Z
-	QlV30q40FIZcDFDtYt1uBVMswoPu3s0=
-Received: from mail.maildlp.com (unknown [172.19.162.254])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4cLb6b1gYlz14Mpx;
-	Tue,  9 Sep 2025 15:29:11 +0800 (CST)
-Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id F24A7180485;
-	Tue,  9 Sep 2025 15:29:23 +0800 (CST)
-Received: from [10.174.177.243] (10.174.177.243) by
- dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 9 Sep 2025 15:29:22 +0800
-Message-ID: <d23b0e37-2f67-46dc-badc-fc6807512c2e@huawei.com>
-Date: Tue, 9 Sep 2025 15:29:21 +0800
+	b=w4fpsHRfo7Oju/7/aTsEwCF/1+QZS1RuOvSE8WJmC0lcS8UyWkg+exZ1ILiFAOQyYSTRnA
+	VY3gB5dXsD/alrO5Ek/Ws5S2J0PkOyy3w7lyDdJeYXQJ3MCLatgd8oD7T0+8zIT/HwzqPl
+	Otnt1BMFlsFn3oADwTnQsxZxFY/9JOA=
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6188b6f7f15so5848693a12.2
+        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 00:30:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757403056; x=1758007856; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Z3+Kk/XPyaoPFAGQbNe7IovKooJsmlYdWhO37WXBxdc=;
+        b=dR+A8Ocu3um6Yds8JGCu7lljxk18c1s1GVOEHlfcJMAiCYUhDbbb6lniqA+x5+xi9t
+         Tm6PmqOLSnlkD1JvTxAU2dTyY3Yl9MeXFEcFNgh1KcIXltFRIuik9yrfakya2CVv7050
+         sj6gMvju1r0tuhL/0udCr5yRS9vPg9Rys8OCo3yqQDHWuKZ38qFp42GxdETNDW0dVo/s
+         Ml/rgPaJbQfCt/adS9klJ65vmchdWqeSDiUDPgUIOFz78E5j4e/KcIjBv2eBIT16v6gx
+         cs5lLu7UAk65C3PZJVHMqK4nkOAgNDWYq9DDn8dL6fL34ZOkFYuwSB6rFl1WZszuZE6m
+         5vwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757403056; x=1758007856;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Z3+Kk/XPyaoPFAGQbNe7IovKooJsmlYdWhO37WXBxdc=;
+        b=w7A3/V8SyMYVUzZ6Dr/yrATbQXLmX7T7IM8t/WQudTPNJtFuJLJP11N1/FHLx08b+x
+         wJmd5qQneMY4OWC/dDlud0AT/rgdDY6k8Q8RAs27MvAT2fvBbkjJeR1kV3GtUjMT1ymI
+         0TJj8A1jpSBZ39wiiS8Sh2rFu/s9994mkJakqqUWljeZWy6qPkhIYLcsTDOEvvYYeAom
+         ZmcCRVv+oirwdywAwFUhK+hS0mJNALdVzjPG8tshiNtjhXTg4GFwcwKDDXbqHt8aiepN
+         Qd1lf60s4yrTK27vfhYpuiWDLXABxgRELWto+J+kHWAYzaZBSXYdgYVUnh53HYFqJJu7
+         wgwA==
+X-Forwarded-Encrypted: i=1; AJvYcCWOJtOlDKrZCcXGwk2T5zksdN/Q32zrNILL5yrlxwyCCv2lhU4mVOKm0iUDl3K8r06wHo6Pn1vNrQ==@kvack.org
+X-Gm-Message-State: AOJu0Yz2NEsJ7YxiY8frxvtjsz0zP6Gxz8zX/+zNvBGWMpHtONd3X3Y6
+	1ZKWz/tUfhMwhGRZOhfyYWkp1vWmde6gIiD8bxqXjoXhe2zlbT0Jstp8j9eHB4Wq9LcmfTWE4W7
+	ITnp2rGVvIJ6YIIBRAwSO20fO6AkwDGM=
+X-Gm-Gg: ASbGncsXcrrBdX0VBqDZTgfOfNXaD112chu7vwIaAzE17hg3gyFoGy06wgVapC/xJm/
+	gBXJMIO8f0PlkHVnEPESIXEekgrnQAb9cngsgCPRKdbTvVIn5gtgg9azL5abljXrIZmX13Sj85q
+	p4yg6QKQHFWxiJpColuuVS47TkjmHYuqh3xrfFkMooYn3sokaHWG9uQd0zpoUiriHzLcxQ4gm3a
+	ZFXbKOmzt8=
+X-Google-Smtp-Source: AGHT+IGjr2QZ8D0kU0BkyVOPs2gj5QrOqZDajV1M594DAyIble/NtY0CSQ0leCeRkPIN8ags32/XQWc6jRZA9F0e5sU=
+X-Received: by 2002:a05:6402:2343:b0:61e:ca25:3502 with SMTP id
+ 4fb4d7f45d1cf-623771096b8mr10416425a12.17.1757403055674; Tue, 09 Sep 2025
+ 00:30:55 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 6/9] mm: page_alloc: add alloc_contig_frozen_pages()
-To: Zi Yan <ziy@nvidia.com>
-CC: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
-	<david@redhat.com>, Oscar Salvador <osalvador@suse.de>, Muchun Song
-	<muchun.song@linux.dev>, <sidhartha.kumar@oracle.com>, <jane.chu@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, <linux-mm@kvack.org>
-References: <20250902124820.3081488-1-wangkefeng.wang@huawei.com>
- <20250902124820.3081488-7-wangkefeng.wang@huawei.com>
- <298B40E0-8EA5-4667-86EF-22F88B832839@nvidia.com>
-Content-Language: en-US
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <298B40E0-8EA5-4667-86EF-22F88B832839@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- dggpemf100008.china.huawei.com (7.185.36.138)
-X-Rspamd-Queue-Id: 3AF3C40004
-X-Stat-Signature: jr1qjr8d9w3qqybhgrhggkc11ixa7h74
+References: <20250909065349.574894-1-liulei.rjpt@vivo.com>
+In-Reply-To: <20250909065349.574894-1-liulei.rjpt@vivo.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Tue, 9 Sep 2025 15:30:19 +0800
+X-Gm-Features: AS18NWAz3XTJvUfnFn8DaSWQ-_PUj4IEFkaKqEP-Sn1HvdPmymYZeK_WshKPDek
+Message-ID: <CAMgjq7Ca6zOozixPot3j5FP_6A8h=DFc7yjHKp2Lg+qu7gNwMA@mail.gmail.com>
+Subject: Re: [PATCH v0 0/2] mm: swap: Gather swap entries and batch async release
+To: Lei Liu <liulei.rjpt@vivo.com>
+Cc: Michal Hocko <mhocko@suse.com>, David Rientjes <rientjes@google.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, Chris Li <chrisl@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, David Hildenbrand <david@redhat.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>, 
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>, Chen Yu <yu.c.chen@intel.com>, 
+	Hao Jia <jiahao1@lixiang.com>, "Kirill A. Shutemov" <kas@kernel.org>, 
+	Usama Arif <usamaarif642@gmail.com>, Oleg Nesterov <oleg@redhat.com>, 
+	Christian Brauner <brauner@kernel.org>, Mateusz Guzik <mjguzik@gmail.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Andrii Nakryiko <andrii@kernel.org>, 
+	Al Viro <viro@zeniv.linux.org.uk>, Fushuai Wang <wangfushuai@baidu.com>, 
+	"open list:MEMORY MANAGEMENT - OOM KILLER" <linux-mm@kvack.org>, open list <linux-kernel@vger.kernel.org>, 
+	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1757402968-995439
-X-HE-Meta: U2FsdGVkX1/pf/5q16b5lw6h35f/9ALViFIp+r62Bg8sWpf18fCsIeGI2dNB3GatWRcX+YG1Ot/W5/wnJrnqvKEj+EPtCrjJPponoIQ77lewF4tF3UKYMj/TY6bPZI/HR+YoDzfwVR2gjwO3u42hI9BFyqpihhk3ZbujMjrjl8Kwd1nn69Q4PmrKBInGAdacRxzCeY39/9QfBpYl55O1Yvu/uSSPzvbrCWecOXaZy1dutYzokaTgJhRMADvzh2wy/d6lY9ceOLorWAxF3vDZ1wlGCNRVDm79gRha5YJ+dAqIThQltR9FtuEDfK/7E5asGwMk8zJxBbe/m6w1ECNdpO0fnuSjSoGVtD0oCIdHPijO90SLAbvWbYGPUbnpayBmzmDv0xdw/b+OYtuGhTlMKOP960sHaITWgsXtPB9/acScFfX0tUqyx+9jT9r0zeZt3EOD1zm+J6Tp9DmUtwFq2bkCyoAK6nhtcjz1DOKqewuQneqhF1Y4Due0Db7/Ef0EpuaGqyhdknxffZz79xBIFVZIOh954vkqHRmb3EQnTi7GZJkpD2iIE5l/6TeH5FKgQL+/SsUpyWP/MdaKLXBowIsIpRuAJspdJsaFyO1iiUeKycRNsT9JRUlKvu9By96g9hCNIwcps3Dg1On7iIhcOxlIm2B1IcT8KgC6UBoEjHcP71bIoYpA8DtPSMG90E67NgIkbdl6Zb8wPO5egPpTHqCx7XA/stv6pTRa9ubUZoIYRHVIH51/QdD4JkGRyaUKl4HXNQUIzzXF0yjM0eaZrhmgnw04e2NejvhM1NGY0jNA9om8y0LfQr2f5JZMo7X23FHVTl4ZcNJBjI3O4K8+zv3laT9KH0BLhHKkZ+Hh8gMG3Z6rWEnD3NrrhPmdD2KH3bdI6v59nYzcIkcy7E8kJVuT6rDsht1pEtp2VLZYDCPfakzEBvnknzXdGVYM8xba9tnKxOQ3xxAn0QdAifP
- j2kDg5D2
- 8LtQp98PiOznEdD/Ia5QNRCOXPzeFZaaRWy6rJ9SgbmZ+mfNco8jfb4JGLuJfB8l/28T2r0Ath+fpvW/JunOEmwUylKs4Ugsju1HCPKYxEvl7vfwTl7UbTlNLIaws09MasXUNrtbdqa9GxSHZixsjGZjQ3D73NC64X7orcrnYHLZhbeC+YmRWXw/8wFcUcQGu0CJeHfb2Hea/LA1fdJOrO+wMCGr1PUlqN5eBp0GTCIMsZW13Dy/90ESSsrTL37eTGEPq+SEEjNYPmr6uaym5PDK1Yy+gpeHbN1UzR+3uEko/iq7o3QPKTYqIUYsDNcyoU1CrV1/L2UewH91/a9LAgjpuhA==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 9F23440015
+X-Stat-Signature: bi8yjgr79gs6r5ep6sa1uz1esb8d3sng
+X-HE-Tag: 1757403057-322096
+X-HE-Meta: U2FsdGVkX1+pSanr181Yh4Q5HdhwP78q28hOOsHTBOFLYycA+XBSC1lv21D8SFQ8WcvZEH08TPT03hqYjg6mb2G0cKuGbWc2RABTKlTO+05iNdeAuLt7TTg3fuz/TER5yXpWrU/Ngh+YV5snZXjQD4xiza6Ob14NsgEtWRA1bmACPhZH8gNxoKQI/Yq/kb2tOYlYoWYruHItI5wt9K75efxFpJ6pCoBrq4KjxAFvgikQEsjnvL+yGia5BPauNETVt5F1hVz0rUa8bq8dGZfaR9nsLgL4L9W9lVjwRjxXv8G1JG8LtMCkvU9qMm4EbWPtZfKfV/I2j56BphcDzUt8UOriBkFffvKvEbucqrKg/MSu/VxZDIo9Mb5UcbFkSTiwFyXRGwKnk+tdrJ3bGDgT7NOQPdWRj+5Dt2EbAscV4oyBzqNrOVzzfVaZUcIfRNpjh/o/0OvZV1RCKlFdMBABSfxYdLW84j3eZivGSMkAyQnTOo/mEepVI7dxAvyFm0rwXQrrQ9OUemmk+c8o/gxqR0rI28Cjv7mAjbATX5eC/CPGr2zq07jmbwGZAHwfvWLMZaP98FPQyLQBR78uIq8poBsp65EvC0ekMM6GHzVYvsxxqRQIcT4Ga4N+UGJ9kK5MXNagfeB0G8Vfj13LaCOxjPHofHObo1HEAd9+na8NyQe2UQ9lmqoWDWklv3LKahZAgFHy6m8SfmqYQebMcW356FAjMMlYPWtMLA26WCrEeVSIZWwht9m9y5GDb6l3EePYp9x0kmr8lP+Sc3ogDpp4uOZccdk19fzqOpGqihswHvz7hsUh1sKxTMPJO3GitrQ/H+fL3f5IqqHJdLEGqrM8HwY6cf+UO75BOg6UxthUhT86NC9P6dFnWkjs7uig1HSjUEkDAeLQ6U6t2TjFFKbWeOy0C2MkZpBLD5bviV03vc8NNHT/4bD3t/0TGtLdR92AmrZCt8a52ArMJBmMxsn
+ zNy8Xfq6
+ 4trH/htK37WQ3CLg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,237 +131,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Sep 9, 2025 at 3:04=E2=80=AFPM Lei Liu <liulei.rjpt@vivo.com> wrote=
+:
+>
+
+Hi Lei,
+
+> 1. Problem Scenario
+> On systems with ZRAM and swap enabled, simultaneous process exits create
+> contention. The primary bottleneck occurs during swap entry release
+> operations, causing exiting processes to monopolize CPU resources. This
+> leads to scheduling delays for high-priority processes.
+>
+> 2. Android Use Case
+> During camera launch, LMKD terminates background processes to free memory=
+.
+> Exiting processes compete for CPU cycles, delaying the camera preview
+> thread and causing visible stuttering - directly impacting user
+> experience.
+>
+> 3. Root Cause Analysis
+> When background applications heavily utilize swap space, process exit
+> profiling reveals 55% of time spent in free_swap_and_cache_nr():
+>
+> Function              Duration (ms)   Percentage
+> do_signal               791.813     **********100%
+> do_group_exit           791.813     **********100%
+> do_exit                 791.813     **********100%
+> exit_mm                 577.859        *******73%
+> exit_mmap               577.497        *******73%
+> zap_pte_range           558.645        *******71%
+> free_swap_and_cache_nr  433.381          *****55%
+> free_swap_slot          403.568          *****51%
+
+Thanks for sharing this case.
+
+One problem is that now the free_swap_slot function no longer exists
+after 0ff67f990bd4. Have you tested the latest kernel? Or what is the
+actual overhead here?
+
+Some batch freeing optimizations are introduced. And we have reworked
+the whole locking mechanism for swap, so even on a system with 96t the
+contention seems barely observable with common workloads.
+
+And another series is further reducing the contention and the overall
+overhead (24% faster freeing for phase 1):
+https://lore.kernel.org/linux-mm/20250905191357.78298-1-ryncsn@gmail.com/
+
+Will these be helpful for you? I think optimizing the root problem is
+better than just deferring the overhead with async workers, which may
+increase the overall overhead and complexity.
 
 
-On 2025/9/9 9:44, Zi Yan wrote:
-> On 2 Sep 2025, at 8:48, Kefeng Wang wrote:
-> 
->> Introduce a ACR_FLAGS_FROZEN flags to indicate that we want to
->> allocate a frozen compound pages by alloc_contig_range(), also
->> provide alloc_contig_frozen_pages() to allocate pages without
->> incrementing their refcount, which may be beneficial to some
->> users (eg hugetlb).
->>
->> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
->> ---
->>   include/linux/gfp.h |  6 ++++
->>   mm/page_alloc.c     | 85 +++++++++++++++++++++++++--------------------
->>   2 files changed, 54 insertions(+), 37 deletions(-)
->>
->> diff --git a/include/linux/gfp.h b/include/linux/gfp.h
->> index 5ebf26fcdcfa..d0047b85fe34 100644
->> --- a/include/linux/gfp.h
->> +++ b/include/linux/gfp.h
->> @@ -427,6 +427,7 @@ extern gfp_t vma_thp_gfp_mask(struct vm_area_struct *vma);
->>   typedef unsigned int __bitwise acr_flags_t;
->>   #define ACR_FLAGS_NONE ((__force acr_flags_t)0) // ordinary allocation request
->>   #define ACR_FLAGS_CMA ((__force acr_flags_t)BIT(0)) // allocate for CMA
->> +#define ACR_FLAGS_FROZEN ((__force acr_flags_t)BIT(1)) // allocate for frozen compound pages
-> 
-> ACR_FLAGS_FROZEN_COMP might be better based on your comment.
-> But maybe in the future, we might want to convert non compound part
-> to use frozen page too. In that case, it might be better to
-> remove “compound” in the comment and then
-
-Will drop compound.
-
-> 
->>
->>   /* The below functions must be run on a range from a single zone. */
->>   extern int alloc_contig_range_noprof(unsigned long start, unsigned long end,
->> @@ -437,6 +438,11 @@ extern struct page *alloc_contig_pages_noprof(unsigned long nr_pages, gfp_t gfp_
->>   					      int nid, nodemask_t *nodemask);
->>   #define alloc_contig_pages(...)			alloc_hooks(alloc_contig_pages_noprof(__VA_ARGS__))
->>
->> +struct page *alloc_contig_frozen_pages_noprof(unsigned long nr_pages,
->> +		gfp_t gfp_mask, int nid, nodemask_t *nodemask);
->> +#define alloc_contig_frozen_pages(...) \
->> +	alloc_hooks(alloc_contig_frozen_pages_noprof(__VA_ARGS__))
->> +
->>   #endif
->>   void free_contig_range(unsigned long pfn, unsigned long nr_pages);
->>
->> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
->> index baead29b3e67..0677c49fdff1 100644
->> --- a/mm/page_alloc.c
->> +++ b/mm/page_alloc.c
->> @@ -6854,6 +6854,9 @@ int alloc_contig_range_noprof(unsigned long start, unsigned long end,
->>   	if (__alloc_contig_verify_gfp_mask(gfp_mask, (gfp_t *)&cc.gfp_mask))
->>   		return -EINVAL;
->>
->> +	if ((alloc_flags & ACR_FLAGS_FROZEN) && !(gfp_mask & __GFP_COMP))
->> +		return -EINVAL;
->> +
-> 
-> ... add a comment above this to say only frozen compound pages are supported.
-
-Sure.
-
-> 
->>   	/*
->>   	 * What we do here is we mark all pageblocks in range as
->>   	 * MIGRATE_ISOLATE.  Because pageblock and max order pages may
->> @@ -6951,7 +6954,8 @@ int alloc_contig_range_noprof(unsigned long start, unsigned long end,
->>
->>   		check_new_pages(head, order);
->>   		prep_new_page(head, order, gfp_mask, 0);
->> -		set_page_refcounted(head);
->> +		if (!(alloc_flags & ACR_FLAGS_FROZEN))
->> +			set_page_refcounted(head);
->>   	} else {
->>   		ret = -EINVAL;
->>   		WARN(true, "PFN range: requested [%lu, %lu), allocated [%lu, %lu)\n",
->> @@ -6963,15 +6967,6 @@ int alloc_contig_range_noprof(unsigned long start, unsigned long end,
->>   }
->>   EXPORT_SYMBOL(alloc_contig_range_noprof);
->>
->> -static int __alloc_contig_pages(unsigned long start_pfn,
->> -				unsigned long nr_pages, gfp_t gfp_mask)
->> -{
->> -	unsigned long end_pfn = start_pfn + nr_pages;
->> -
->> -	return alloc_contig_range_noprof(start_pfn, end_pfn, ACR_FLAGS_NONE,
->> -					 gfp_mask);
->> -}
->> -
->>   static bool pfn_range_valid_contig(struct zone *z, unsigned long start_pfn,
->>   				   unsigned long nr_pages)
->>   {
->> @@ -7003,31 +6998,8 @@ static bool zone_spans_last_pfn(const struct zone *zone,
->>   	return zone_spans_pfn(zone, last_pfn);
->>   }
->>
->> -/**
->> - * alloc_contig_pages() -- tries to find and allocate contiguous range of pages
->> - * @nr_pages:	Number of contiguous pages to allocate
->> - * @gfp_mask:	GFP mask. Node/zone/placement hints limit the search; only some
->> - *		action and reclaim modifiers are supported. Reclaim modifiers
->> - *		control allocation behavior during compaction/migration/reclaim.
->> - * @nid:	Target node
->> - * @nodemask:	Mask for other possible nodes
->> - *
->> - * This routine is a wrapper around alloc_contig_range(). It scans over zones
->> - * on an applicable zonelist to find a contiguous pfn range which can then be
->> - * tried for allocation with alloc_contig_range(). This routine is intended
->> - * for allocation requests which can not be fulfilled with the buddy allocator.
->> - *
->> - * The allocated memory is always aligned to a page boundary. If nr_pages is a
->> - * power of two, then allocated range is also guaranteed to be aligned to same
->> - * nr_pages (e.g. 1GB request would be aligned to 1GB).
->> - *
->> - * Allocated pages can be freed with free_contig_range() or by manually calling
->> - * __free_page() on each allocated page.
->> - *
->> - * Return: pointer to contiguous pages on success, or NULL if not successful.
->> - */
->> -struct page *alloc_contig_pages_noprof(unsigned long nr_pages, gfp_t gfp_mask,
->> -				 int nid, nodemask_t *nodemask)
->> +static struct page *__alloc_contig_pages(unsigned long nr_pages, gfp_t gfp_mask,
->> +		acr_flags_t alloc_flags, int nid, nodemask_t *nodemask)
->>   {
->>   	unsigned long ret, pfn, flags;
->>   	struct zonelist *zonelist;
->> @@ -7050,8 +7022,8 @@ struct page *alloc_contig_pages_noprof(unsigned long nr_pages, gfp_t gfp_mask,
->>   				 * and cause alloc_contig_range() to fail...
->>   				 */
->>   				spin_unlock_irqrestore(&zone->lock, flags);
->> -				ret = __alloc_contig_pages(pfn, nr_pages,
->> -							gfp_mask);
->> +				ret = alloc_contig_range_noprof(pfn, pfn + nr_pages,
->> +							alloc_flags, gfp_mask);
->>   				if (!ret)
->>   					return pfn_to_page(pfn);
->>   				spin_lock_irqsave(&zone->lock, flags);
->> @@ -7062,6 +7034,45 @@ struct page *alloc_contig_pages_noprof(unsigned long nr_pages, gfp_t gfp_mask,
->>   	}
->>   	return NULL;
->>   }
->> +
->> +/**
->> + * alloc_contig_pages() -- tries to find and allocate contiguous range of pages
->> + * @nr_pages:	Number of contiguous pages to allocate
->> + * @gfp_mask:	GFP mask. Node/zone/placement hints limit the search; only some
->> + *		action and reclaim modifiers are supported. Reclaim modifiers
->> + *		control allocation behavior during compaction/migration/reclaim.
->> + * @nid:	Target node
->> + * @nodemask:	Mask for other possible nodes
->> + *
->> + * This routine is a wrapper around alloc_contig_range(). It scans over zones
->> + * on an applicable zonelist to find a contiguous pfn range which can then be
->> + * tried for allocation with alloc_contig_range(). This routine is intended
->> + * for allocation requests which can not be fulfilled with the buddy allocator.
->> + *
->> + * The allocated memory is always aligned to a page boundary. If nr_pages is a
->> + * power of two, then allocated range is also guaranteed to be aligned to same
->> + * nr_pages (e.g. 1GB request would be aligned to 1GB).
->> + *
->> + * Allocated pages can be freed with free_contig_range() or by manually calling
->> + * __free_page() on each allocated page.
->> + *
->> + * Return: pointer to contiguous pages on success, or NULL if not successful.
->> + */
->> +struct page *alloc_contig_pages_noprof(unsigned long nr_pages, gfp_t gfp_mask,
->> +		int nid, nodemask_t *nodemask)
->> +{
->> +	return __alloc_contig_pages(nr_pages, gfp_mask, ACR_FLAGS_NONE,
->> +				    nid, nodemask);
->> +}
->> +
->> +struct page *alloc_contig_frozen_pages_noprof(unsigned long nr_pages,
->> +		gfp_t gfp_mask, int nid, nodemask_t *nodemask)
->> +{
->> +	/* always allocate compound pages without refcount increased */
->> +	return __alloc_contig_pages(nr_pages, gfp_mask | __GFP_COMP,
->> +				    ACR_FLAGS_FROZEN, nid, nodemask);
->> +}
->> +
-> 
-> When all contig page allocations are converted to use frozen page,
-> alloc_contig_pages_noprof() can do similar things as __alloc_pages_noprof():
-> 
-> struct page *alloc_contig_pages_noprof(unsigned long nr_pages, gfp_t gfp_mask,
-> 		int nid, nodemask_t *nodemask)
-> {
-> 	struct page *page = __alloc_frozen_contig_pages_noprof(...);
-> 	if (gfp_mask & __GFP_COMP)
-> 		set_page_refcounted(page);
-> 	else {
-> 		unsigned long i;
-> 
-> 		for (i = 0; i < nr_pages; i++)
-> 			set_page_refcounted(page + i);
-> 	}
-> 	return page;
-> }
-> 
-> And ACR_FLAGS_FROZEN will be no longer needed.
-> 
-> I looked at the code briefly, it seems that we need:
-> 
-> 1. remove set_page_refcounted() in split_free_pages();
-> 2. a new split_frozen_page() to do split_page() work without
->     set_page_refcounted() and split_page() can just call it;
-> 3. a new free_frozen_contig_range() and free_contig_range()
->     calls it.
-> 
-
-Yes, I think this way before, but no users for !compound for now, let's
-keep it simple.
-
-> Anyway, with the comment change mentioned above,
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-
-Thanks.
-
-> 
->>   #endif /* CONFIG_CONTIG_ALLOC */
->>
->>   void free_contig_range(unsigned long pfn, unsigned long nr_pages)
->> -- 
->> 2.27.0
-> 
-> 
-> Best Regards,
-> Yan, Zi
-
+> swap_entry_free         393.863          *****50%
+> swap_range_free         372.602           ****47%
+>
+> 4. Optimization Approach
+> a) For processes exceeding swap entry threshold: aggregate and isolate
+> swap entries to enable fast exit
+> b) Asynchronously release batched entries when isolation reaches
+> configured threshold
+>
+> 5. Performance Gains (User Scenario: Camera Cold Launch)
+> a) 74% reduction in process exit latency (>500ms cases)
+> b) ~4% lower peak CPU load during concurrent process exits
+> c) ~70MB additional free memory during camera preview initialization
+> d) 40% reduction in camera preview stuttering probability
+>
+> 6. Prior Art & Improvements
+> Reference: Zhiguo Jiang's patch
+> (https://lore.kernel.org/all/20240805153639.1057-1-justinjiang@vivo.com/)
+>
+> Key enhancements:
+> a) Reimplemented logic moved from mmu_gather.c to swapfile.c for clarity
+> b) Async release delegated to workqueue kworkers with configurable
+> max_active for NUMA-optimized concurrency
+>
+> Lei Liu (2):
+>   mm: swap: Gather swap entries and batch async release core
+>   mm: swap: Forced swap entries release under memory pressure
+>
+>  include/linux/oom.h           |  23 ++++++
+>  include/linux/swapfile.h      |   2 +
+>  include/linux/vm_event_item.h |   1 +
+>  kernel/exit.c                 |   2 +
+>  mm/memcontrol.c               |   6 --
+>  mm/memory.c                   |   4 +-
+>  mm/page_alloc.c               |   4 +
+>  mm/swapfile.c                 | 134 ++++++++++++++++++++++++++++++++++
+>  mm/vmstat.c                   |   1 +
+>  9 files changed, 170 insertions(+), 7 deletions(-)
+>
+> --
+> 2.34.1
+>
+>
 
