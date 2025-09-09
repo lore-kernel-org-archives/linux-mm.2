@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08735CAC583
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 20:15:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 343CACA0FED
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 20:15:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 52D498E001F; Tue,  9 Sep 2025 16:15:45 -0400 (EDT)
+	id 8D60F8E0020; Tue,  9 Sep 2025 16:15:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B7888E0019; Tue,  9 Sep 2025 16:15:45 -0400 (EDT)
+	id 839128E0019; Tue,  9 Sep 2025 16:15:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3589C8E001F; Tue,  9 Sep 2025 16:15:45 -0400 (EDT)
+	id 6D9D18E0020; Tue,  9 Sep 2025 16:15:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1A6C18E0019
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 16:15:45 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CCE07140574
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 20:15:44 +0000 (UTC)
-X-FDA: 83870817408.15.01D6474
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5778A8E0019
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 16:15:49 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0C503C072D
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 20:15:49 +0000 (UTC)
+X-FDA: 83870817618.08.6ACC3F9
 Received: from forwardcorp1a.mail.yandex.net (forwardcorp1a.mail.yandex.net [178.154.239.72])
-	by imf16.hostedemail.com (Postfix) with ESMTP id DF58018000F
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 20:15:42 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=yandex-team.com header.s=default header.b=uEzS3uie;
-	spf=pass (imf16.hostedemail.com: domain of arbn@yandex-team.com designates 178.154.239.72 as permitted sender) smtp.mailfrom=arbn@yandex-team.com;
+	by imf28.hostedemail.com (Postfix) with ESMTP id 0E2D9C0013
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 20:15:46 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=yandex-team.com header.s=default header.b=Ow3+Zk7L;
+	spf=pass (imf28.hostedemail.com: domain of arbn@yandex-team.com designates 178.154.239.72 as permitted sender) smtp.mailfrom=arbn@yandex-team.com;
 	dmarc=pass (policy=none) header.from=yandex-team.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757448943;
+	s=arc-20220608; t=1757448947;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zCmAQ9E1zzf2oww3L+0ScmydA57h//TWKN5Ptw1aNtc=;
-	b=EGsJaIqw7yRbir2ZTnxlZ889jogxZp7zwtqyKa71XPEQSoNQObA6CfAngbD7ykA0SnAD0p
-	PP9xpwYVVMo4GMrtP4zLe4pa6vUNqdPCC9U0o35U7tgHH/LxOPdt+fLUmY0HLmvmld5NnW
-	UFV2HcDvmoLygH7oq60P4MHEqU8HyAc=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=yandex-team.com header.s=default header.b=uEzS3uie;
-	spf=pass (imf16.hostedemail.com: domain of arbn@yandex-team.com designates 178.154.239.72 as permitted sender) smtp.mailfrom=arbn@yandex-team.com;
-	dmarc=pass (policy=none) header.from=yandex-team.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757448943; a=rsa-sha256;
+	bh=SlubtQeQpBHXlVAu20qfBqsbGkV3gCqQjvicv97NAqE=;
+	b=Ve1OSv4GnqTH41zrBK9uZReOaYNLytfdXWSuY4T7g9TxR8R98uEsOTCaoDe0/uaXHMXjK3
+	d3v4uIoduSdw6cPIX4KvYZkk6nBPYuKqm3Oc/I+J73DuE0PL6e49vQMwHbIkdaKh3K0XAv
+	p68DK6cG13vHoYVNAtLT4xpGmFLVz/c=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757448947; a=rsa-sha256;
 	cv=none;
-	b=6fiQiEkVrPTysMhgVWF+9ie0ZUpqpA4TLcOHSb3Ys7/QuxTaQ0L0wcfpr+Zj0Q+QkV02cS
-	n/o6LSWHk5/iiCl4ErMeIVx0oJd7P06yYOEAB38EG1N1+IUXByuEvLKJITbwxH6BQM+Yk4
-	dJqoJb2Sab66TT0wMtdOZN0BVOVpzG4=
+	b=xM+AJo5dy7Fcqws1s+rfrVp68uQPlIY7B+d8t4eyFcCATYHikSZwKIeNwHxirtldiixPEO
+	9CrZpPkTqGEuRmKfkmmBXfqq7ILGRwmUvKENi/Ah8jETMkCMYKZoywgzaqtVqPbjvcPJkO
+	EbHHgBvYIeJBdq0Pflz8+quwmLfvWnk=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=yandex-team.com header.s=default header.b=Ow3+Zk7L;
+	spf=pass (imf28.hostedemail.com: domain of arbn@yandex-team.com designates 178.154.239.72 as permitted sender) smtp.mailfrom=arbn@yandex-team.com;
+	dmarc=pass (policy=none) header.from=yandex-team.com
 Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net [IPv6:2a02:6b8:c1f:3a87:0:640:845c:0])
-	by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 7FC46C01A1;
-	Tue, 09 Sep 2025 23:15:41 +0300 (MSK)
+	by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 817A1C01A8;
+	Tue, 09 Sep 2025 23:15:45 +0300 (MSK)
 Received: from localhost.localdomain (172.31.115.73-vpn.dhcp.yndx.net [172.31.115.73])
-	by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with ESMTPSA id IFQqlX5GteA0-KRuqVmhs;
-	Tue, 09 Sep 2025 23:15:40 +0300
+	by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with ESMTPSA id IFQqlX5GteA0-fGTTr1hW;
+	Tue, 09 Sep 2025 23:15:44 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.com;
-	s=default; t=1757448940;
-	bh=zCmAQ9E1zzf2oww3L+0ScmydA57h//TWKN5Ptw1aNtc=;
+	s=default; t=1757448945;
+	bh=SlubtQeQpBHXlVAu20qfBqsbGkV3gCqQjvicv97NAqE=;
 	h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
-	b=uEzS3uievKUGgVzVo0XM3CO7O2ofI0YqYncCVzgEakehhvnc4qFhCFRVQGZevHwi7
-	 CsQOMPEcV3YUF+z629p8DXGKYRKMBn5aPJVuffYv3pT3WEedSZtyRhs7RNlM2tFIQO
-	 Rai9V/CC6os2Ibdv73XbRLEYv8Q0/+Dnk2oRckgk=
+	b=Ow3+Zk7LzrqdqvKvZDbmFyysZMtA7DN68cVIb+B3JSmGFhVLFAPCiOp0Wj9AxagDy
+	 ChCIy5Wz0HngB7CVKrHaa2WeO2/0cYVyStkQFIrSE81CIlPTYWzzUhwHU8HNNv6Ivj
+	 Ib9YHJbY8VPMhFXHrGvwikRHwrHctRkIYIv49A+A=
 From: Andrey Ryabinin <arbn@yandex-team.com>
 To: linux-kernel@vger.kernel.org
 Cc: Alexander Graf <graf@amazon.com>,
@@ -90,26 +90,23 @@ Cc: Alexander Graf <graf@amazon.com>,
 	Ashish.Kalra@amd.com,
 	William Tu <witu@nvidia.com>,
 	David Matlack <dmatlack@google.com>,
-	Andrey Ryabinin <arbn@yandex-team.com>,
-	Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	devicetree@vger.kernel.org
-Subject: [PATCH v3 4/7] kho: replace KHO FDT with kstate metadata
-Date: Tue,  9 Sep 2025 22:14:39 +0200
-Message-ID: <20250909201446.13138-5-arbn@yandex-team.com>
+	Andrey Ryabinin <arbn@yandex-team.com>
+Subject: [PATCH v3 5/7] kstate, test: add test module for testing kstate subsystem.
+Date: Tue,  9 Sep 2025 22:14:40 +0200
+Message-ID: <20250909201446.13138-6-arbn@yandex-team.com>
 X-Mailer: git-send-email 2.49.1
 In-Reply-To: <20250909201446.13138-1-arbn@yandex-team.com>
 References: <20250909201446.13138-1-arbn@yandex-team.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: DF58018000F
-X-Stat-Signature: scj5qx7ymd1rmngbc5fdz4ecskrk1sio
+X-Stat-Signature: jjh7jfn66moa7xijtwiob8a6hza8s5ns
+X-Rspamd-Queue-Id: 0E2D9C0013
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1757448942-454915
-X-HE-Meta: U2FsdGVkX196EMtemZBvcSgtaFrUdJQVYrz2xFaU5wzKwYVzW6+wchlBLlTbGEAKT0sR37K3rR5hqPwT0CIvXcQ5NvfnJnfv+KfTW4h+z/Wm1XCeGWa0gZq9uOVkulLCAYq/F3VM9y+FCB4SJ6vorzUE2zg235Ozu0fYVpltVVuaKwQ8PSwO97mUvWfARZ4u4LdDOobDvdA5ksgggWSvdUHg1L6sz+fixy6r/u/9dkW5OlR28SqIgfwnOd3DfuvoTE4SfyQ6ZRT6JXKvvHPokGjKtPAQiQ0OptWSC9k4nzqC1UPkTCYOW7iEw4uW/kA5AZDrU6YDwEcYqSiroxymXUeGkBXr/EvMnIJ3Q13OSM04mBTAnf8HsP6BOkawJC5i/rHbpeYhx4ANVi5ETXZ4BG2kjQDNub9i2kOli3owNKNJAcrqrMXE8CnmP1DiA/h2SXzPJceH7Wj3ufmhTKIH4kphPe37HfO/Zp5O28IEeWipiniDGk97dgSRhGPxZKeEJY7WaLGlDpG13hKB9K8g1enhzG633KRjk7Y4Q3fvwC9xN920NxuZMYXIx2yb3TyPtK190hLX7UIt9elDIaXwuXPEevzDHhjXqRhlbm5VJHeoL5UWwInAS5pFjckhoqJdqjlVggiIjRINOElYT/L6iYEuOw0U/ttVG4nS1LSqBa0bOBsxrfHrVGHMRghS7LcNfGnaFXIYqR1T9RGga2ZrVo8FbLJHIktAcN4kYU8zgIarT5pSmuBBVdFOdn2voJIA2QZi2aLZS6cCxUTT7pqArMn8Th7oGZvLSQZGxM6dc0lEcovpes8dxG/+zzA5gbbdZMt+axKYUpUaUQAHsTEO2tLRu/ttHX4bvU1DlGfW02ndWXGpBFZ886rX98kRmYwprzEK0MY3A8DNmvGoxLSWSk9nLxjGoGwDktm7TpVGGUYqBYeC0g/mScTq3atR7Dzzgnns7NQFbq0zbfawFMg
- O2kHXMiI
- urni+BoCmZ38j08AHuWBs80F//XuoJVlPe2Ght3QdmbU6qkpiSBScK0p64MboKCt78zgpO6lOYLv9R666TybSLuISokCHpqqPUQfAkfYCGL+yrT3OegXPCexTwAvevTLuwfOHZ34au9QoamHyKrQTBgVLtd/VMs8tGayQdheWkeMZ/CJ3Te5yNxih3OnikEMOZZ9AEFmmSn8Uc47bVdWsjJurMzmhPC6h0kekZ8NDB3C7pNLqIxhP05n0ezEwL4xb5phPbGxRzlsWz+2sKBxxGkg4uV/7Q5ABCRQhPudBXHEhszmMXip9o5znJ9JXJm45szEZEJcHeOcv3o1Uw9htIpM4puP4q5Mxaes4ZHqLBriYpqSvqh/04EYg4AlJgnWndCMf5UXtgz9FyflkwfnvzATSX6LRDxdwty2Rmi0Dt9fvJEg=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1757448946-53573
+X-HE-Meta: U2FsdGVkX1/P63qdayk+JZIeLAnrSFvRpH999HTf99TXJDeFyf+YKWGo2V3vCykGDNJAZ27M8/wL8qky9l33Hnk4nL8b8CfQuXQE7rU9mmK4YzBu8v8z/jvOT1FyqdMs6SE9lXz1jshsrHc4oRtg5ZWrJJ7SL/7SLE8Llart4QqScb7fiyM38IDuoNqOVZLyuVYAZZYtVvUCJo5f5QgZe8/mIiyWuZZRXJw8vkskgYtlCwHrJIwdQrPG/fUypo5UP4goL61w2W7wKcof+m0tdgqTAYM3O8g0knN5qoPg8o2H2R5iwqoCqklBcZdIz3MQIHnR8vMbg3p35t1nzwh2YWAX8nL751dSo8VAQO6HLwMb7jC5LbIralj9ZzY0qN3qYHZCp4Q0UQm/vTPs3q1LuLCzcIHlo8eJUULBC0LTPurRm5dUGZhkFswzOXMyEjEz4vwJG/p5WcxGhcUyvJtGkeRdS8LJQj7U6+o8blK67ZjQYVAOyHrqkTPcIwI22HBDvV3R/Lsd+nIN+1riLLpHBRjsVA593LNJb6xrh5eaod5ceiqxvnLs1ke5/z2GFXHCZBSDVBaXnxG1ZKA4ojoxlhPZsJHQCEhmv9YgrFp+KtlNlSBcA39vRAvsWjV99UBzgLRaAdxuAkACjzDGBXamLBdcAvFbFO0IXuCmd0Y+gouUiKNytZLeoN60ErZSu0esi09WtXW6O3FPZZ/iyHlQVTnv7pWHxYjBTp00NGYwACW7Zha1w8UmD+pZhuMGUDB15/awZ4jSjiBmFUs0UHW0NyHDVg3EcF59XN82v76LKDAhho5de7XKiNTqAueKzCivyvmezTMgQsB1R902w6v+M1EHSU4o4bK4P5BYY64R1RjVHlQS3ce8S050TDL82BDLtE0un0KqPLDBWPwQ9n24GRfHSiFcjFwRdsGkLyagZzHm9yiI111xh14IqI5rMvpuxr+UA/Rpcxsx2uc+Fia
+ 74D57n9C
+ gTf5ELaApVyI5FE2u8RDfppt3W3PKj9537TJdbY4PT2MGgbAY2IroJkj9Qqmy3Egfzvwn3FWfB0UGQxz1LlqC4XoU3TUnHbCnD3MCJRlBF8NlOCnMGETDiT8HFnOlClJnxcurNo6ZEDyvN1i0Cg4XxfqPNnRoIf6VPfJOVU/gCJ/gyXxdiAkmCl3K/h4xuCbkeE6ouWbAo+BkvQyRb11rw4FuXezBfnfZRewHCz1xaJjYebhKaJSRk+wYd8cGydhcOwyHWFLgtLsIHZw08Sw+xKj3Wy5I9BNZu7g8UjFXjUA5DvkAPDC2TuIATwWE/4bLb2tJBjmK8raAl6eNZxODkYGtKgDDjX6TGTkFByEVS708sXoa88VfuJ+gsLCZ/lM77rYX39LPWafQ+kY+Rz9YCp5nzYsEsf1gZ3mgiDB91Frmcz90G02XDiM/nldtvh8Itl1VNCGcYyRcwEomrOvBIOelB5HU1ZdIeN5gt4N0qbcdnuWQJb+heWD0pXj37uX7veAJ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,243 +115,199 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Store KSTATE physical address & size instead of FDT in kho_data.
-and initialize KSTATE from kho_populate().
-To be able to use FDT in parallel with KSTATE place FDT
-address&size into 'struct kho_fdt' and save/restore it using KSTATE.
-
-This finishes wiring KSTATE with KHO, making it fully functional.
+This is simple test and playground useful kstate subsystem development.
+It contains some structure with different kind of data which migrated
+across kexec to the new kernel using kstate.
 
 Signed-off-by: Andrey Ryabinin <arbn@yandex-team.com>
 ---
- arch/x86/include/uapi/asm/setup_data.h |  4 +-
- arch/x86/kernel/kexec-bzimage64.c      |  6 +--
- arch/x86/kernel/setup.c                |  3 +-
- drivers/of/fdt.c                       |  6 +--
- include/linux/kexec.h                  |  2 +-
- include/linux/kstate.h                 |  1 +
- kernel/liveupdate/kexec_handover.c     | 60 +++++++++++++++++++++-----
- 7 files changed, 61 insertions(+), 21 deletions(-)
+ MAINTAINERS               |   1 +
+ include/linux/kstate.h    |   2 +
+ kernel/liveupdate/Kconfig |   8 +++
+ lib/Makefile              |   2 +
+ lib/test_kstate.c         | 116 ++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 129 insertions(+)
+ create mode 100644 lib/test_kstate.c
 
-diff --git a/arch/x86/include/uapi/asm/setup_data.h b/arch/x86/include/uapi/asm/setup_data.h
-index 2671c4e1b3a0..844f5b93473f 100644
---- a/arch/x86/include/uapi/asm/setup_data.h
-+++ b/arch/x86/include/uapi/asm/setup_data.h
-@@ -83,8 +83,8 @@ struct ima_setup_data {
-  * Locations of kexec handover metadata
-  */
- struct kho_data {
--	__u64 fdt_addr;
--	__u64 fdt_size;
-+	__u64 kstate_addr;
-+	__u64 kstate_size;
- 	__u64 scratch_addr;
- 	__u64 scratch_size;
- } __attribute__((packed));
-diff --git a/arch/x86/kernel/kexec-bzimage64.c b/arch/x86/kernel/kexec-bzimage64.c
-index 24a41f0e0cf1..1bf9474d4286 100644
---- a/arch/x86/kernel/kexec-bzimage64.c
-+++ b/arch/x86/kernel/kexec-bzimage64.c
-@@ -253,12 +253,12 @@ static void setup_kho(const struct kimage *image, struct boot_params *params,
- 	sd->len = sizeof(struct kho_data);
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 2cd9e49abee5..e96da6d97e75 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -13723,6 +13723,7 @@ M:	Andrey Ryabinin <ryabinin.a.a@gmail.com>
+ S:	Maintained
+ F:	include/linux/kstate.h
+ F:	kernel/livupdate/kstate.c
++F:	lib/test_kstate.c
  
- 	/* Only add if we have all KHO images in place */
--	if (!image->kho.fdt || !image->kho.scratch)
-+	if (!image->kho.kstate || !image->kho.scratch)
- 		return;
- 
- 	/* Add setup data */
--	kho->fdt_addr = image->kho.fdt;
--	kho->fdt_size = PAGE_SIZE;
-+	kho->kstate_addr = image->kho.kstate;
-+	kho->kstate_size = PAGE_SIZE;
- 	kho->scratch_addr = image->kho.scratch->mem;
- 	kho->scratch_size = image->kho.scratch->bufsz;
- 	sd->next = params->hdr.setup_data;
-diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
-index 1b2edd07a3e1..eedcf4be8985 100644
---- a/arch/x86/kernel/setup.c
-+++ b/arch/x86/kernel/setup.c
-@@ -467,7 +467,8 @@ static void __init add_kho(u64 phys_addr, u32 data_len)
- 		return;
- 	}
- 
--	kho_populate(kho->fdt_addr, kho->fdt_size, kho->scratch_addr, kho->scratch_size);
-+	kho_populate(kho->kstate_addr, kho->kstate_size, kho->scratch_addr,
-+		kho->scratch_size);
- 
- 	early_memunmap(kho, size);
- }
-diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
-index 0edd639898a6..f682ef6a1187 100644
---- a/drivers/of/fdt.c
-+++ b/drivers/of/fdt.c
-@@ -893,8 +893,8 @@ static void __init early_init_dt_check_kho(void)
- 	if (l != (dt_root_addr_cells + dt_root_size_cells) * sizeof(__be32))
- 		return;
- 
--	fdt_start = dt_mem_next_cell(dt_root_addr_cells, &p);
--	fdt_size = dt_mem_next_cell(dt_root_addr_cells, &p);
-+	kstate_start = dt_mem_next_cell(dt_root_addr_cells, &p);
-+	kstate_size = dt_mem_next_cell(dt_root_addr_cells, &p);
- 
- 	p = of_get_flat_dt_prop(node, "linux,kho-scratch", &l);
- 	if (l != (dt_root_addr_cells + dt_root_size_cells) * sizeof(__be32))
-@@ -903,7 +903,7 @@ static void __init early_init_dt_check_kho(void)
- 	scratch_start = dt_mem_next_cell(dt_root_addr_cells, &p);
- 	scratch_size = dt_mem_next_cell(dt_root_addr_cells, &p);
- 
--	kho_populate(fdt_start, fdt_size, scratch_start, scratch_size);
-+	kho_populate(kstate_addr, kstate_size, scratch_start, scratch_size);
- }
- 
- #ifdef CONFIG_SERIAL_EARLYCON
-diff --git a/include/linux/kexec.h b/include/linux/kexec.h
-index 39fe3e6cd282..ebf70361269f 100644
---- a/include/linux/kexec.h
-+++ b/include/linux/kexec.h
-@@ -416,7 +416,7 @@ struct kimage {
- 
- 	struct {
- 		struct kexec_segment *scratch;
--		phys_addr_t fdt;
-+		phys_addr_t kstate;
- 	} kho;
- 
- 	/* Core ELF header buffer */
+ KTD253 BACKLIGHT DRIVER
+ M:	Linus Walleij <linus.walleij@linaro.org>
 diff --git a/include/linux/kstate.h b/include/linux/kstate.h
-index 53992593cb19..5a95960e5b03 100644
+index 5a95960e5b03..0ced0da37c8f 100644
 --- a/include/linux/kstate.h
 +++ b/include/linux/kstate.h
-@@ -94,6 +94,7 @@ struct kstate_field {
- 
+@@ -95,6 +95,8 @@ struct kstate_field {
  enum kstate_ids {
  	KSTATE_FOLIO_ID = 1,
-+	KSTATE_KHO_FDT_ID,
+ 	KSTATE_KHO_FDT_ID,
++	KSTATE_TEST_ID,
++	KSTATE_TEST_ID_V2,
  	KSTATE_LAST_ID = -1,
  };
  
-diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index f1c6378b2657..216cb58553d6 100644
---- a/kernel/liveupdate/kexec_handover.c
-+++ b/kernel/liveupdate/kexec_handover.c
-@@ -806,6 +806,10 @@ int kho_abort(void)
- 		goto unlock;
- 	}
+diff --git a/kernel/liveupdate/Kconfig b/kernel/liveupdate/Kconfig
+index b6ea861006bf..af9a25bdcd6e 100644
+--- a/kernel/liveupdate/Kconfig
++++ b/kernel/liveupdate/Kconfig
+@@ -69,6 +69,14 @@ config KSTATE
+ 	  state, save it into the memory and restore the state after kexec
+ 	  in new kernel.
  
-+	ret = kstate_abort();
-+	if (ret)
-+		goto unlock;
++config KSTATE_TEST
++	bool "KSTATE test code"
++	help
++	  Build a simple test/playground code that is useful for kstate
++	  subsystem development. It contains some structure with different
++	  kind of data which migrated across kexec to the new kernel
++	  using KSTATE.
 +
- 	ret = __kho_abort();
- 	if (ret)
- 		goto unlock;
-@@ -984,6 +988,25 @@ int kho_retrieve_subtree(const char *name, phys_addr_t *phys)
- }
- EXPORT_SYMBOL_GPL(kho_retrieve_subtree);
+ config KEXEC_HANDOVER
+ 	bool "kexec handover"
+ 	depends on ARCH_SUPPORTS_KEXEC_HANDOVER && ARCH_SUPPORTS_KEXEC_FILE
+diff --git a/lib/Makefile b/lib/Makefile
+index 392ff808c9b9..46616577caf3 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -316,6 +316,8 @@ obj-$(CONFIG_PARMAN) += parman.o
  
+ obj-y += group_cpus.o
+ 
++obj-$(CONFIG_KSTATE_TEST) += test_kstate.o
 +
-+#define KHO_FDT_INSTANCE_ID 1
+ # GCC library routines
+ obj-$(CONFIG_GENERIC_LIB_ASHLDI3) += ashldi3.o
+ obj-$(CONFIG_GENERIC_LIB_ASHRDI3) += ashrdi3.o
+diff --git a/lib/test_kstate.c b/lib/test_kstate.c
+new file mode 100644
+index 000000000000..70534e8c718f
+--- /dev/null
++++ b/lib/test_kstate.c
+@@ -0,0 +1,116 @@
++// SPDX-License-Identifier: GPL-2.0
++#define pr_fmt(fmt) "kstate test: " fmt
++#include <linux/io.h>
++#include <linux/kexec_handover.h>
++#include <linux/kstate.h>
++#include <linux/mm.h>
++#include <linux/module.h>
 +
-+static struct kho_fdt {
-+	phys_addr_t fdt_phys;
-+	u64 fdt_len;
-+} kho_fdt;
++static unsigned long ulong_val;
++struct kstate_test_data {
++	int i;
++	unsigned long *p_ulong;
++	char s[10];
++	struct folio *folio;
++};
 +
-+struct kstate_description kho_fdt_state = {
-+	.name = "kho_fdt",
++#define KSTATE_TEST_DATA_ID 123
++
++struct kstate_description test_state_v2 = {
++	.name = "test_v2",
 +	.version_id = 1,
-+	.id = KSTATE_KHO_FDT_ID,
++	.id = KSTATE_TEST_ID_V2,
 +	.fields = (const struct kstate_field[]) {
-+		KSTATE_BASE_TYPE(fdt_phys, struct kho_fdt, phys_addr_t),
-+		KSTATE_BASE_TYPE(fdt_len, struct kho_fdt, u64),
++		KSTATE_BASE_TYPE(i, struct kstate_test_data, int),
 +		KSTATE_END_OF_LIST()
 +	},
 +};
 +
- static __init int kho_init(void)
- {
- 	int err = 0;
-@@ -1000,13 +1023,20 @@ static __init int kho_init(void)
- 	}
- 	kho_out.fdt = page_to_virt(fdt_page);
- 
--	err = kho_debugfs_init();
-+	err = kstate_register(&kho_fdt_state, &kho_fdt, KHO_FDT_INSTANCE_ID);
- 	if (err)
- 		goto err_free_fdt;
- 
-+	kho_fdt.fdt_phys = page_to_phys(fdt_page);
-+	kho_fdt.fdt_len = PAGE_SIZE;
++struct kstate_description test_state = {
++	.name = "test",
++	.version_id = 2,
++	.id = KSTATE_TEST_ID,
++	.fields = (const struct kstate_field[]) {
++		KSTATE_BASE_TYPE(s, struct kstate_test_data, char [10]),
++		KSTATE_POINTER(p_ulong, struct kstate_test_data),
++		KSTATE_FOLIO(folio, struct kstate_test_data),
++		KSTATE_BASE_TYPE_DEPRECATED(k, u16, 1),
++		KSTATE_END_OF_LIST()
++	},
++	.subsections = (const struct kstate_description *[]){
++		&test_state_v2,
++		NULL
++	},
++};
 +
-+	err = kho_debugfs_init();
-+	if (err)
-+		goto err_free_kstate;
++static struct kstate_test_data test_data;
 +
- 	err = kho_out_debugfs_init(&kho_out.dbg);
- 	if (err)
--		goto err_free_fdt;
-+		goto err_free_kstate;
- 
- 	if (fdt) {
- 		kho_in_debugfs_init(&kho_in.dbg, fdt);
-@@ -1025,6 +1055,8 @@ static __init int kho_init(void)
- 
- 	return 0;
- 
-+err_free_kstate:
-+	kstate_unregister(&kho_fdt_state, &kho_fdt, KHO_FDT_INSTANCE_ID);
- err_free_fdt:
- 	put_page(fdt_page);
- 	kho_out.fdt = NULL;
-@@ -1165,24 +1197,30 @@ static int __init kho_scratch_init(phys_addr_t scratch_phys, u64 scratch_len)
- 	return err;
- }
- 
--void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
--			 phys_addr_t scratch_phys, u64 scratch_len)
-+void __init kho_populate(phys_addr_t kstate_phys, u64 kstate_len,
-+			phys_addr_t scratch_phys, u64 scratch_len)
- {
--
- 	int err = 0;
--	unsigned int scratch_cnt = scratch_len / sizeof(*kho_scratch);
- 
--	err = kho_fdt_init(fdt_phys, fdt_len);
-+	err = kho_scratch_init(scratch_phys, scratch_len);
- 	if (err)
- 		goto out;
- 
--	err = kho_scratch_init(scratch_phys, scratch_len);
-+	err = kstate_early_init(kstate_phys, kstate_len);
-+	if (err)
++static int init_test_data(void)
++{
++	struct folio *folio;
++	int i;
++
++	test_data.i = 10;
++	ulong_val = 20;
++	memcpy(test_data.s, "abcdefghk", sizeof(test_data.s));
++	folio = folio_alloc(GFP_KERNEL, 0);
++	if (!folio)
++		return -ENOMEM;
++
++	for (i = 0; i < folio_size(folio)/sizeof(u32); i += 4)
++		*((u32 *)folio_address(folio) + i) = 0xdeadbeef;
++	test_data.folio = folio;
++	return 0;
++}
++
++static void validate_test_data(void)
++{
++	int i;
++
++	if (WARN_ON(test_data.i != 10))
++		return;
++	if (WARN_ON(*test_data.p_ulong != 20))
++		return;
++	if (WARN_ON(strcmp(test_data.s, "abcdefghk") != 0))
++		return;
++
++	for (i = 0; i < folio_size(test_data.folio)/4; i += 4) {
++		u32 val = *((u32 *)folio_address(test_data.folio) + i);
++
++		if (WARN_ON_ONCE(val != 0xdeadbeef))
++			return;
++	}
++}
++
++static int __init test_kstate_init(void)
++{
++	int ret = 0;
++
++	test_data.p_ulong = &ulong_val;
++
++	ret = kstate_register(&test_state, &test_data, KSTATE_TEST_DATA_ID);
++	if (ret) {
++		pr_err("register failed %d\n", ret);
 +		goto out;
++	}
 +
-+	err = kstate_restore(&kho_fdt_state, &kho_fdt, KHO_FDT_INSTANCE_ID);
-+	if (err)
-+		goto out;
++	if (!is_kho_boot()) {
++		ret = init_test_data();
++		if (ret)
++			goto out;
++	} else {
++		pr_info("restoring data\n");
++		ret = kstate_restore(&test_state, &test_data, KSTATE_TEST_DATA_ID);
++		if (ret) {
++			pr_err("restore failed %d\n", ret);
++			goto out;
++		}
 +
-+	err = kho_fdt_init(kho_fdt.fdt_phys, kho_fdt.fdt_len);
- 	if (err)
- 		goto out;
- 
--	kho_in.fdt_phys = fdt_phys;
-+	kho_in.fdt_phys = kho_fdt.fdt_phys;
- 	kho_in.scratch_phys = scratch_phys;
--	kho_scratch_cnt = scratch_cnt;
-+	kho_scratch_cnt = scratch_len / sizeof(*kho_scratch);
- 	pr_info("found kexec handover data. Will skip init for some devices\n");
- 
- out:
-@@ -1201,7 +1239,7 @@ int kho_fill_kimage(struct kimage *image)
- 	if (!kho_enable)
- 		return 0;
- 
--	image->kho.fdt = virt_to_phys(kho_out.fdt);
-+	image->kho.kstate = kstate_out_paddr;
- 
- 	scratch_size = sizeof(*kho_scratch) * kho_scratch_cnt;
- 	scratch = (struct kexec_buf){
++	}
++
++	validate_test_data();
++
++out:
++	return ret;
++}
++late_initcall(test_kstate_init);
 -- 
 2.49.1
 
