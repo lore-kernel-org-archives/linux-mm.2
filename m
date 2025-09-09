@@ -4,89 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CE68CAC582
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 20:12:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B6F7CA0FED
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 20:14:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6D2C98E0001; Tue,  9 Sep 2025 16:12:33 -0400 (EDT)
+	id B6C558E001A; Tue,  9 Sep 2025 16:14:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 65C836B0007; Tue,  9 Sep 2025 16:12:33 -0400 (EDT)
+	id AA7888E0019; Tue,  9 Sep 2025 16:14:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 572888E0001; Tue,  9 Sep 2025 16:12:33 -0400 (EDT)
+	id 9BD5A8E001A; Tue,  9 Sep 2025 16:14:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 47E5E6B0005
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 16:12:33 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1910B11ABCA
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 20:12:33 +0000 (UTC)
-X-FDA: 83870809386.10.95ED8A2
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 472C71C0007
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 20:12:31 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 84E218E0019
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 16:14:57 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 28AC31DF132
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 20:14:57 +0000 (UTC)
+X-FDA: 83870815434.15.458B0C2
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 4F3081C0007
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 20:14:55 +0000 (UTC)
 Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=woqRKFBx;
-	spf=pass (imf18.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	dkim=pass header.d=chromium.org header.s=google header.b=QhSt1wd8;
+	spf=pass (imf18.hostedemail.com: domain of briannorris@chromium.org designates 209.85.214.169 as permitted sender) smtp.mailfrom=briannorris@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757448751;
+	s=arc-20220608; t=1757448895;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pBn9GjXNrzDpJNrr5pBWBsTy/Gh6alb/avcjcidp4mE=;
-	b=rhLSDtqvoCF1tCl3fL07CoF1u9bSSlGtBs8KHYwPq9bfO8qpDB18kYtfhLCERzcPtlaY94
-	nJSM77zVslFAUeOgRC20nMRTWpBlInZ3wAd9RvmsAzYtG1t7VEzBqQJvwtZkhpyn/pknXs
-	6Q9ZRiL/1dd9gaWOTqrVYwJtUMGl2gA=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=QQ1ukxZBrHz0fiIU3WpENCsazmLFih83mtFDbzGAzqs=;
+	b=GDQU89vuMZreE2a+mM5Xy3VYDKInSIJj9Vo80e2c/Su5VvibgiGtsJ1elWeLTrsGKNNTbh
+	JGs+nVF6TNWbNxb5FrYbktntrXlvkPDwundCFqdlzdNh/bPEKZq9UkNnygFLcVG+lNU7p3
+	kQ+RhhGX1ET9KHfQYTaFvrDOiLwqhBA=
 ARC-Authentication-Results: i=1;
 	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=woqRKFBx;
-	spf=pass (imf18.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757448751; a=rsa-sha256;
+	dkim=pass header.d=chromium.org header.s=google header.b=QhSt1wd8;
+	spf=pass (imf18.hostedemail.com: domain of briannorris@chromium.org designates 209.85.214.169 as permitted sender) smtp.mailfrom=briannorris@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757448895; a=rsa-sha256;
 	cv=none;
-	b=VHj/uJd3T8XvsAknJV7hyb7gDbJyApBwI0s976tlARgfGkEZWnhP3+5LGWjVKGFWqBi32u
-	bAvpb06npZOzCub+JG+9TGsTBbiZGq9zwYPbEFYK6tiBt0/UIekruRPrSSO6gvUxtN0SJn
-	UnP9Wp64UBv9xJh/B/s74V74M9yCqxA=
-Date: Tue, 9 Sep 2025 20:12:25 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1757448749;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pBn9GjXNrzDpJNrr5pBWBsTy/Gh6alb/avcjcidp4mE=;
-	b=woqRKFBxcgHj7ikhJEUFQZ84FxwkgwaMweAFV0Eia1mMfVN50fpFnj32IE7GzPmF/d0yDX
-	kFxoj4mNHUTJEZ5Lj2s7V2DlG4YV8XWARpnBTkxED/5ef0oWOB29Jrgsyx1KDoKfSPGUe5
-	uIVw0vQ1QV+5OhPRqR7RHzOCA/82erU=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Vitaly Wool <vitaly.wool@konsulko.se>, 
-	Vlastimil Babka <vbabka@suse.cz>, hannes@cmpxchg.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Christoph Hellwig <hch@infradead.org>
-Subject: Re: [PATCH 0/3] mm: remove zpool
-Message-ID: <f3ufcsjvvxhi5gzw2wglkpedgyyi6tiaje7em3tbxkzhklphvh@sv3dbo4yba5p>
-References: <20250829162212.208258-1-hannes@cmpxchg.org>
- <20250904093325.2768507-1-vitaly.wool@konsulko.se>
- <7b1ca42d-1b89-44f4-bffb-e6b09f86fdc5@suse.cz>
- <1d42c513-cc83-4f08-a10c-cbd6206070f4@konsulko.se>
- <girukcvvzgbtkxt4aftfz3lw3glvf2qsof4mx6wf5perolck5n@vaxlrtaeuzw7>
- <dh74mr7bjtpzk7frviv6iqqno2u2b27p7jiagp2dtnsz2wrfhr@wlb5vqg4majs>
- <tbvushbdn7nzitey3uy6humdndd6247r4544ngqkds3cr447e6@prnla4edwxmk>
+	b=yKUkUZZnLQZHCPTZfW/PvgV29l4lFTL2pCK0N82C9MJbSjD5somwJPBBgdWVgr3jCgp9Ol
+	yy5Plhwvz6PMFuE4SUKnalfIJ/gC1vRb81J2GsJphUMdGOWLtkDu4r6qxfj9SXa3WGpSdp
+	OC4D1PSdONyphJvOUyaudloDyTSOMX4=
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-25634c5ebdeso28958575ad.0
+        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 13:14:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1757448894; x=1758053694; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=QQ1ukxZBrHz0fiIU3WpENCsazmLFih83mtFDbzGAzqs=;
+        b=QhSt1wd82256MvCmqeterdgI8DxIDnIACos1/iBPaf+BC9LQnvM+72VXvrb2X65W2r
+         /IntIGopgRTmUtCmSOLn5uCJiPsgI+vHL1CGFl1zTOyLhyjAKBvB/R/LLDRjzvrGVBw/
+         L675fh7O/LRS7t6tumVZ8VYFeY7uDns3hp2pw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757448894; x=1758053694;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=QQ1ukxZBrHz0fiIU3WpENCsazmLFih83mtFDbzGAzqs=;
+        b=A6Prj7gcZH4P8Ie5v5gAEEfmkFXth62472hdk1xrVLutBkflnzyZVkbVpVDYTTTwxe
+         kVU535rGFPgDR3Y6U6jqpY/uzKqVddqh/RnRQQW4MTzmeel7NNls2b2cd2gyZ5M0Cm/V
+         yj0SPBohla5WdrJ6XFwVAkgnp3Oo3hdF+WDeg1bsFSrBfiQhNApYjohBlGbPPzARfyHw
+         x3G2IqzRwmZamgBFIODkxrKnJCkSBZ7/urJjovlVjauV6FPxeGd21uXOd7UM7dGu6HYa
+         vdtovWrMCzTqIoVACzconYkDf3AT5RWY8wuC3PoVUdc2N2IRYGIBjcx0ULrn9NsgCVoq
+         02mA==
+X-Forwarded-Encrypted: i=1; AJvYcCUC4DYNyIJm0eZGWR597CxcQlucS+zI7Ofdw8tsmWLn9VTCeIp+AqX47dOuDtN4WJSYDPF78w9p6w==@kvack.org
+X-Gm-Message-State: AOJu0YxadFowRObQBrzxAH2h5IyfZaTidE9WcbOr0UrSSZZDUWWinqp4
+	KGISBwM0UX7VPnOQmtvlxj3DNL/AyB0iKCtX7n5/QmIE5MQBA0yG7hZ589aDoOtsRQ==
+X-Gm-Gg: ASbGncumYaXQoN87cmN1mtMUWzcmAarWNREJlbROlwacN3sTil7nxTlBBhqlTz6MlUX
+	nf0xwlxo13YMeqborLhKyfYh0CYcD7STyOb504imBIAh4zve4lkQZnBfwrx2t1A/OIcMRx+Wh6a
+	dYpw5ZNfP0TrVf4gLAWx+2Ev7JI+WHkJaCL4/r2pTLHFpKHkXGbUhX58EKK727yJaTIFZQ0/czy
+	FotL2c0KOah7ptZXO1plvTy2wjePh1Byjq0tqlw+C3ye4igu1lutjjyAnrzAyO0MheTxJka91n/
+	j1H0zKzR1aNZ8Y7C+uW/vN67wfgjxsP7bnEF282Miwg3ZaOmloEO9hN0OhoEumtEZvDUv+NbwgR
+	dGV37d3yepN4srC4FoWymhdwY7ObEawLfAy47cYmPMd/1JhKX0qgGgwluuR9n
+X-Google-Smtp-Source: AGHT+IFEleK9CYT5OprURH4ClV01NhslkBf07R1vis/dfiqBOF2RSxBhZBCjvJDlnuv1Znedibnn6g==
+X-Received: by 2002:a17:902:e78b:b0:246:bcf4:c82d with SMTP id d9443c01a7336-2517285be28mr152752915ad.52.1757448893884;
+        Tue, 09 Sep 2025 13:14:53 -0700 (PDT)
+Received: from localhost ([2a00:79e0:2e14:7:e1f7:9c44:893a:3857])
+        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-25a27422eb0sm6162145ad.22.2025.09.09.13.14.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 09 Sep 2025 13:14:53 -0700 (PDT)
+From: Brian Norris <briannorris@chromium.org>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>
+Cc: linux-kernel@vger.kernel.org,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	linux-mm@kvack.org,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Brian Norris <briannorris@chromium.org>
+Subject: [PATCH] mm: vm_event_item: Explicit #include for THREAD_SIZE
+Date: Tue,  9 Sep 2025 13:13:57 -0700
+Message-ID: <20250909201419.827638-1-briannorris@chromium.org>
+X-Mailer: git-send-email 2.51.0.384.g4c02a37b29-goog
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <tbvushbdn7nzitey3uy6humdndd6247r4544ngqkds3cr447e6@prnla4edwxmk>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 472C71C0007
-X-Rspamd-Server: rspam05
-X-Stat-Signature: caku3kiouor4czuaqye67py1byb6pxqt
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 4F3081C0007
+X-Stat-Signature: 8dppbn76sx7i1ghxbtmzjbz7yoyxtpip
 X-Rspam-User: 
-X-HE-Tag: 1757448751-269303
-X-HE-Meta: U2FsdGVkX1815b0s12M3LMPWJa0brE5a95J6cv2lX6+v/yxce+9pqkPk2C9A5goB3OlLjaP5n+6NmaKD7ryfm3pbIEj7Yur6TSpBd2IMv5KGWAC4jJ47OEvhd0CUxihOntY2Fmcn7dYhy7cJWReYD+EEBDIDZDffAZMD+/VWHwPStQZep25hrS9o/Dzi9z2JdS+yjeTMg3Qc7PRZY+fHTVGnp0jPOou7ULsnMPwPsqPP2+NHI36VxJv2bPAcEwILA4fIR4ex5f16XUeFm6gkxPKp9rsDrrb7uYjSwfFYGK16jrXY0tP+4n8AMkKEG6fPJpWGBuj93JlavpT6R9ayCHbVcQNot330jeg+2IElLhcJ6r3YK1n91nLHHAR+KqKFUrk4PAO2W+R1HWGZj3fW6kc7UDF5ohRRIudPjWEz4pHE4i72iW8dTca3WdHKscUIq4kyJQGz+OjJUWFy0lH4SVF7pXb9e2gQaSsqOFs/LFS3RQnu3p0bCuq0wl0zg4FhpHTjoQhK3yx6yqgGsbAcVVAZ3gZeMRo43iumxibE+iy5ny0lTiRdeeixZiQi5CZ+dGct0Vizz/i1rkmF7GzYooJjk4sLuhwQvV5aGDH9OWFVF9KOmnhr+6GebQfe72pIfpc9R/0OLf3JxrFqirnubfAy+fAP6xLbSHjddaUre7Vdboas5MnrsUzNr+vdmcVAAu7Bt/rsb6+erIMXdbAMOtQ5tc2Uioeup4eh8rlvxSgpnHwFGbjywLDPAy5wbTQTZR92T/uVFgeocQiB1bfUUJvshMhdDIM4giOkcR00OqJ2P8IslOcNBmxk6ro+HpyeRN7QM8v5gtJrQ3p0ukbRS8mYilHm+DmQijwBEhzzyrd46L9hCxUWL6fLb1ogiF/csn5YLanGo9J2UwDImyWi0sJe9IOMdGfIiNbRdPvBYLzHzBPdI/EKiPHS0uNf9ESL8skMNc6RTVicZYU6qtZ
- rNpghJtV
- WZwUTwBKsL6mWLtN/P05wM8D3Faclog2Tw3yazHoLb9QxD/sH8tVbv24DexE2EjFfJpRtE87bdvzD8F4qaZxheQRqWl+ZwgpQTZVtWsXQTGvOFxXTup6QOHkUfJVn8ApK5f4GDYSnAXGu+yqWLOsjIM8omYLVa3fvV2uYE25/AOludg06g3I9WipYErVu4u1NbzcsWLyG3obRBoo=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1757448895-662196
+X-HE-Meta: U2FsdGVkX19MFQdGFsZiIjryA/OW4KoCL+tdAeBuUOZW9xlc/o2zvQ9E85W9I8h7UyLc5bkalsz1AJ2y3BzT3Vm85aVFH70wZ22mAKwTbj+xl633Y8IINAK1P3MZP0hHKhruukW4VflqXclmGzTHkaibJ/MaAOcdd3MGCe6npi1Ym58rJ0IwCzgZtS7axfk/NRKX/RcW/duy9vhz/JEXiCkydvdXhQcn/h/H6ZuKJv5wCXTN+KDGMrsWe4wVf1+pKgo2+CuRz7vGMKEi+Sxd7AQfVn6/9xQflhhzrKYRUryqa/5Cc6R+vbG5rkO0VW/NZeYtmrk9j2J4wSClvbztdcdi5dEsw2qs2c2yDInlRFiLiYMlJtYIRa1WmT65iTECRmZGGzeOjlGyYSsHL1PzxVgUlewyv8f2a+RL5rOr28jebg5xetSjbM9LF6Zy7WI/ZF6Zr9RIIck/CKBGI0UBnKPP9YZZt88fbN2QHXiWMazJFG8tTRzSwoHqdPTkpujNtR6dDffCwXYLz1XL36l/T7s1QeZBdD6GFMvdAA3G/igGaoss3QNoor9uEtsTt3w69+gNbx07EjWFdXInBsGWZ9IIUzwyj8MDT6JfGdwLxPme05TaO/dlESi/We9ir4BjXRwCzYBePxo8f/MJ4LBVsQj/wuP/+L9FGQRtLi1mIaGamKf10FTrey3X0s/6MueOwQWT3LGAe143Tx4dj7puqUk+96KrvZGctDNLBIAG7wRutibZXHOoN5j2U+KiKchgZdsHMrWOGd0T2TUUSyzHv8P8lMZhCKdpQQ0baCAogxQFWtwEbyUK42xyGSIgPnxz77DB9SnewBzCazDhCuo685CFlG/Ypwgx1utaZRAm52+JzaVSGYRiP25n5FQlB0d7kUNefcIMn9hfSTF7eZSUTcNcq8/yWe/rf0s0wHtdEjV8NikrdyYndRScmMfOuVyv0raUtBQCRscFEJ/G+Ot
+ S+vNhfeE
+ RoNvug13kNISz9a8WYk1pkdzd1uXlv6UeqnS3X3dMmQ3WnKg6flXvTUlBsQFVVSGLzWgsJKhpm6gt/p2iswQrPZqpuPa+pvCsBFbC2/NewYknlEwMioblswKLK4ax/sSX3BI8vpnGdlalCQpGNOdlf4P5Q3lnRAXNMq9F+7q78ljlcEYzWrRqfyCCrq2yMx37GapUKrv+xkA55akEXTN4OMYu7CyZVLNJn7hUkcqWdNMhvaKYFiEo28BodoAhX4zSZ/EcRNnhVywu3Ekoka3DQxv3K1ZXSF7CPeHB/zHIZ4yxAjr56yaJ+N+fYF0Mhw0E27BjQYoM7hiSgdQGTTIeN/PLR1qGf9brtExLYtEA1sKr4oMrOqu4KIGBq0hffktk+m9Hdlk7bWwv958=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,25 +120,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 08, 2025 at 09:18:01PM +0900, Sergey Senozhatsky wrote:
-> On (25/09/06 14:25), Sergey Senozhatsky wrote:
-> > On (25/09/05 19:57), Yosry Ahmed wrote:
-> > > I think Android uses zram+zsmalloc with 16K pages. Perhaps Sergey could
-> > > confirm.
-> > 
-> > I'm not working on android directly,
-> > 
-> > I can confirm that android uses zram+zsmalloc.  As of 16K pages, there
-> > was a way to toggle 16k pages on android (via system settings), I don't
-> > know if this is the default now.
-> 
-> While I don't know what zsmalloc struggles Vitaly is referring to in
-> particular, off the top of my head, zsmalloc does memcpy()'s for objects
-> that span multiple pages, when zsmalloc kmap()'s both physical pages and
-> memcpy()'s chunks of the object into a provided buffer. With 16K pages
-> we can have rather larger compressed objects, so those memcpy() are likely
-> more visible.  Attacking this would be a good idea, I guess.
+This header uses THREAD_SIZE, which is provided by the thread_info.h
+header but is not included in this header. Depending on the #include
+ordering in other files, this can produce preprocessor errors.
 
-Yeah I personally think attacking whatever problems zsmalloc has with
-16K pages is the way to go.
+Signed-off-by: Brian Norris <briannorris@chromium.org>
+---
+
+ include/linux/vm_event_item.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/include/linux/vm_event_item.h b/include/linux/vm_event_item.h
+index 9e15a088ba38..92f80b4d69a6 100644
+--- a/include/linux/vm_event_item.h
++++ b/include/linux/vm_event_item.h
+@@ -2,6 +2,8 @@
+ #ifndef VM_EVENT_ITEM_H_INCLUDED
+ #define VM_EVENT_ITEM_H_INCLUDED
+ 
++#include <linux/thread_info.h>
++
+ #ifdef CONFIG_ZONE_DMA
+ #define DMA_ZONE(xx) xx##_DMA,
+ #else
+-- 
+2.51.0.384.g4c02a37b29-goog
+
 
