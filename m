@@ -4,86 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30263CAC582
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 20:09:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3311ECA0FED
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 20:09:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C8218E000B; Tue,  9 Sep 2025 16:09:30 -0400 (EDT)
+	id 8A13B8E0011; Tue,  9 Sep 2025 16:09:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 89F7E8E0001; Tue,  9 Sep 2025 16:09:30 -0400 (EDT)
+	id 851628E0001; Tue,  9 Sep 2025 16:09:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 78EC88E000B; Tue,  9 Sep 2025 16:09:30 -0400 (EDT)
+	id 740DE8E0011; Tue,  9 Sep 2025 16:09:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 66C438E0001
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 16:09:30 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0E9BB16059D
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 20:09:30 +0000 (UTC)
-X-FDA: 83870801700.02.06A008D
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 4B03A140002
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 20:09:28 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=gioA9rPF;
-	spf=pass (imf23.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 600688E0001
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 16:09:39 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 185EC1A0604
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 20:09:39 +0000 (UTC)
+X-FDA: 83870802078.10.9B2F7DC
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 40D3E40019
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 20:09:37 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=AQk7cmcZ;
+	spf=pass (imf17.hostedemail.com: domain of surenb@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757448568;
+	s=arc-20220608; t=1757448577;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RIavL6Q3Ip2q2nE3QhJWaekN9zisbFp9u0xqsk2O2kg=;
-	b=u0OMvQPLCk5uLG7xDvlmAWWjA9n0ZekBFK2zyVGZsG7hRRLyG+9mhE0xKhdyiUspHzA59L
-	UUoZ5t+8YSYmSyt4JiZdhcYLAkHBbFm+N8P0uLQAC0k5JsUkFkoksk4Rsj/Jope7yAlml7
-	LJMn8QHNAKxnFoLSTx0+Gk1xISS/wuU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757448568; a=rsa-sha256;
-	cv=none;
-	b=gwymLCtE7r83Z3K9ddvOJtcaD+qfU/paKcj9nAAqu28D+8Z7DLOr56e3dQ/FBkLEcoChTD
-	GIeuUs8nH/ib/pClrIlCI63GiHeZPrAz94K8znGHn7l+sCI8D46xxGBBUT4IMksKZUU0fk
-	TlO4W8L2CfFKGX4HhuyK7pEOdXE27CA=
+	bh=k2iEu3UkPnmUFQcRlFrbHDvxDgSjAEfpS4soOoNd4oI=;
+	b=tL3//hKKKHCJD5YqOe9edeybJmII1aw+OVyfu9uMZ9E8dX9LAoFFI9tpxHPXZmWt0N73op
+	0ZzprdlD45jYbIm+iiP2ZR8azZIwSfk/DLs049FQs22K+cvPlUP/wbm5Yk9Efohm6600nU
+	oOGOqHHDRBwGiov8YZPuMG8kgXT5OzU=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=gioA9rPF;
-	spf=pass (imf23.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Date: Tue, 9 Sep 2025 20:09:22 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1757448566;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RIavL6Q3Ip2q2nE3QhJWaekN9zisbFp9u0xqsk2O2kg=;
-	b=gioA9rPFWSH+UvL5/HKK3p882rmySyZ73qJxY4LAfrVtdm+uLI4RtfrBdAlAk7vmV3Gc0S
-	odZGM7JFeGt80eex4fZHx8JfEL8lcq7TPkBRvcBcD9Vrl/9SHoDBMu554+u+7iGwmw8C+Q
-	m0VN4ynzZi3IqVJ6VpHzseIWk5dkHhQ=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Nhat Pham <nphamcs@gmail.com>, Chengming Zhou <zhouchengming@bytedance.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/3] mm: remove unused zpool layer
-Message-ID: <3dmy2gxowbmq5wmpjtsb26d25k5fjev2geykik3du2ltmhrj7z@nfkwjjhndet5>
-References: <20250829162212.208258-1-hannes@cmpxchg.org>
- <20250829162212.208258-3-hannes@cmpxchg.org>
- <rcxmemdxbxuvtag2qv4sjxoh7ho4z3bz3od6i76rc5yholx2rc@vncn6iuuee7b>
- <20250909151639.GF1474@cmpxchg.org>
- <pmpmejmw4swnconhf3u5uzzhwtki2fdnwvt73vf7lzkigrhwmb@sarxlksng7nb>
+	imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=AQk7cmcZ;
+	spf=pass (imf17.hostedemail.com: domain of surenb@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757448577; a=rsa-sha256;
+	cv=none;
+	b=C0dlmDdLi18PGSbThlHwxjWHILBsE5ift2GH4xlVxQTXkWGwwrV+gERm2+fdu8PrKgb+Nx
+	60GYZcfqo2oLfONBacrF9511V8RM1Az8GLwmV05KhUm7wB6qPs/XzSLrs/GE986lIP7/rJ
+	dkfW+iGaAnRmFp55rzuhO2mnPSlH2D0=
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-4b48fc1d998so14141cf.1
+        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 13:09:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1757448576; x=1758053376; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=k2iEu3UkPnmUFQcRlFrbHDvxDgSjAEfpS4soOoNd4oI=;
+        b=AQk7cmcZPglAtqO2yh3ps9hhJFXNe/V7u6be8QyXsDpkASfGK51sfP5jlUNL0Y4Pk0
+         NoGdMLZhbqiR6zArW8vSxOaBDUswySXUT/4g34OjvFdRoYCUbEgD51lS17Gn6O6bHGK0
+         QvikmXReLr6bOAjP5r5H8bBUJDU5+af8IXkiPgJFRhQ10RjObcIwzKsfhBoBObZQDA15
+         NW5eTbNqIk/aGmCnAbq2DU7I+fRodEuzATgoS8fkvbVhoE37BG7BCSAUmIldnxlCiBkz
+         8VoPvR98uKdbK2kvj5Afn0YAVXY8GG2Fcz1LMySlJ2DInyZnFY2IuGV5oYWBpgCuPZOO
+         myUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757448576; x=1758053376;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=k2iEu3UkPnmUFQcRlFrbHDvxDgSjAEfpS4soOoNd4oI=;
+        b=FokiEpZ6hWC09QqSoDhhZ+7uxsMcwgwXytet5vRTTUAAA14OumyEJ9kaSAuRxA+S2Y
+         AsUyySzpyHpnaY9gy/NjYbFZLk5YWTDpZMGBSzyjygsKyFkT4cMI05WkvuPF59rz+DZ8
+         Njqk/K0A7PRm95g/lkwnjlBurkI/or84uv22kuIjaO/SxRgW5QX80uRR+k5+SLedjxrx
+         SQiBLXmEIoZdF0xvyMvLdjDQMt1Lh1XsZUVT4nlBnqC957oSB2jBuNG+hR5tIzP1K/nE
+         R2p5VuWLiQl6Whwkns088UxEswrmvoWH9NpAlg5K2zihmJXdT+Q0hcOsg8c+ptmozUXr
+         gsZw==
+X-Forwarded-Encrypted: i=1; AJvYcCVF47+WgWZCSZcmr8ZX6JIzph86XW2VosNR5dIAtPY3gEPCvfOWfNa5oaY+K9YMzHa4l9lMmrKKuA==@kvack.org
+X-Gm-Message-State: AOJu0Yyl7PaAAtVDqpNkJOejy6laVy29mwloMV3UwcE+Aw84OsfQKlIB
+	/I9lElqVlO+5WhB6S9haNjOCVdwpV+lCPzakncaFdHcGo8bl7tcN0pJ+8FNzwZcxTEeATwbKw/D
+	Q54oD3Tnl2YDNrWpFA69LLVzcC572j1QR9lRceBva
+X-Gm-Gg: ASbGncuaYss2P33CF8ul3M3DHWl5qUQczVqD56P+qZYYFR0XxCONo2TPaA2MPtxJo9r
+	eHxffZWjMRQzXEkf9SEXqgheNAll7UqdkVp01W546qnP9Gbwdr6jxD9CZLEIWjrP90HIVtf4qv8
+	hG4jBY5cZkwNxklQq+AtGRCTfAH6uTy1CPMXHI/g9GUU62z39Ni8xOBBQlBF4qTnUSHUhS+vuZV
+	O0gkOAQy1dpQx3GDpop9iV5Yw3INdIwEbiQJtFrLNi/yO1nyg1bE+0=
+X-Google-Smtp-Source: AGHT+IGTNwq+7MViYUlFJ2vyU1cgy8m+5k5wmGXsJgTGt3s4JBmennrId+EoWqDbJIEA0d2+A3uYjG/h63nRoBrR2lo=
+X-Received: by 2002:ac8:5a95:0:b0:4b0:82e5:946b with SMTP id
+ d75a77b69052e-4b625102754mr1224361cf.4.1757448575785; Tue, 09 Sep 2025
+ 13:09:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <pmpmejmw4swnconhf3u5uzzhwtki2fdnwvt73vf7lzkigrhwmb@sarxlksng7nb>
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: bswwghipok3mawg3jtnzkrgxx4wh635n
-X-Rspamd-Queue-Id: 4B03A140002
+References: <20250909190945.1030905-1-Liam.Howlett@oracle.com> <20250909190945.1030905-3-Liam.Howlett@oracle.com>
+In-Reply-To: <20250909190945.1030905-3-Liam.Howlett@oracle.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 9 Sep 2025 13:09:24 -0700
+X-Gm-Features: AS18NWDlSEXaT8xC9-9GCN6E5E8NjDo0Ac393Cnh_Tc5RiGu5Zt4J6irQLdxDmI
+Message-ID: <CAJuCfpFOt3_W+YQNy+xPzY_R6JUM3EOsbaZh+uznSNpF1RKX0Q@mail.gmail.com>
+Subject: Re: [PATCH v1 2/9] mm/mmap: Abstract vma clean up from exit_mmap()
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, maple-tree@lists.infradead.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
+	Pedro Falcato <pfalcato@suse.de>, Charan Teja Kalla <quic_charante@quicinc.com>, shikemeng@huaweicloud.com, 
+	kasong@tencent.com, nphamcs@gmail.com, bhe@redhat.com, baohua@kernel.org, 
+	chrisl@kernel.org, Matthew Wilcox <willy@infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1757448568-963287
-X-HE-Meta: U2FsdGVkX18AflszehBWwZbHDJ8GrwDJ7xdV848jLwNAgXAdHDNhvnO8Cf8VOBxX4JGUNOVJNzt3rNeDk907FbD2ZSaT4q5dm8kKX/xcxd/vRCwdxN7Utnx/CWOZIcvymwMvYKlkegIPWb9/NW7uxy91dlAtIS7L4B+Z8yL0nQAJ2XhTCXgWG4ZgTG0892gkYofSwyB8slOyQEnD7UvIjemD1GPeOc6P0x4dTRI2xH4RRc3+0AS3cX85Wsh+sXYvc/yXkBnkDSRuXNyBlLVRF9D/dmAr8fWprdu7WugB3qWkFe5nj3Jt/R3RXzUne9g286Wr81CbLLDdsQvIpk/1PiZK+D3jsaNyQs1Xmv3o6BY99jVbE4l/k31DHZTEm6FZbsBORyAzDVJt6B28UVss9bsTPnWiN0O+2mtIig01g+QojDjJG3r0kY27bFopj+1xZ4UloP7uOtvM7yQrB2y5GGFMH2BxrCwBdQsfhzOyvuKkFBg0W2c0hJP2kfijt17CLdvS16woQfp+osakVSepU8MSOF42XRAZMbNUEi6G1uJXU0kYwQpjXVDg487qS/e7ScSOezLQJcBNZWstY8/iibdt9kxBF3EAGmOcHBMi2F8h30qVE1jExLQeDwfwjHSzBdQyIqzaxyf13zSkmpP2Tg4a8tKOohfr5lLM3JwMxHKdZuizNPSrNst5TK6LAn7axugMkBQlNU0Fn2++wecE3v8ulUneK6H3yZuKLsX1CzzW4k9E1p/Kw4ADgblyfUBr11ztHo1isQ8uX/gM+9dB5qnqtJ99TWFqE+ImE+DMLFbe+7iDRDD6C2SGAjuaRW2CajrDWnI34jkN3qaiH/k5m/p3VBNGgW0rPztj5ZZ94sC1QLkdgft3TPgrsLevXeDiczHJFtQm6cXhs9YPDsm6ZACbaNusuBRd77kV8aCrLtib7DSNGw0ZcghprkdAzBQ5LG+pOvDQnVABLbIfPEs
- ZSsZ/Gl0
- VMfc8XLsR7lSIcdRT2AexyqoO1BxNvmb9WEa8rWAJngSB/vzOXxyZL6JaDc5WqXbjgqxQiGv7HN88gpDzBXzIrn4UbrZSdhmDHQbY+f68YHcyOcFPCscxiY/lPrEeqHHwbuvwUpb2qla1oxXbk7vZF4jWBncrmAwhYJIOOPDTdzRCfF6qDkv9K0mZSdxGS3F3i4NuaWcyWgu2iu7riawa5gKzkBvz3h1xLWhrcEMPkpMew2uccMThgM+ngj+JDAQdwImyQlvlMF0h8Y8=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 40D3E40019
+X-Stat-Signature: j67tyzetco5ort6h7zq3oidkmt5obpxr
+X-HE-Tag: 1757448577-32078
+X-HE-Meta: U2FsdGVkX1+dINfPdNUMXPsIbotNaX1mEYOTmbBsE6YLVdSOrLzbiRGcIeijeyGnPeDDdUWokNQY++QEGKCUfOfRFyW3JNlPliJkXyzLZ6/DAly/KozpeFqlCPwAi72vIURH2r79Tdycu9ISr8B4L5boFoagITWiHAucXaop6KPrVWCXqfy0R3Lsm+eoMrj4pBU3fzkuALBpje9S+uX50vai76UuRaHOwzsLvEEZ6uHT05Ov6+FQoF/Qg53XJ2kcZnWuScL3iFlviicYDyr7Q/WSOIcMJSNWEx5I8cMx4EwChTDp6QS0IozsvKicP5TvGvWy+jzWQ1PRYJANC7o5ZywWYCgpT1/6wWKtlKAj0rFcc2A552wkcidQM+4+w2Wcg4GCkylJSisa12miM8qwlXT6/akmI9l/Z5mehW/geOQigMZf8PFHm3mkxdauNk+tmd02zTkYNnKkd50HmZvAp0ybmhQMPm/XkKoqQPTQ4jslay02YXhy+mrdxD/6qoCGjyp++959jwbdhxFetlhZ40yV0qEUoge0iSf3gnJAT+KtZL9gi0ih9iZ7VxlkWYqNDWWVyLCLgaRmG40g9kkFelCOEJ4A4UOzz7sT/nwve81M/QFLHJP2FYntk/9W33dT0YQtTQ7iKpkXz+igFFhTiuMXy7AN4TucsQAA7xBJkvdRgtHT+iiB2IldV3whsAtcKvBR9ZmRtAPgUZ6DqgDq85LZ1LEmpRgLs/XSDjY7+8pUBLySwwXO4C9wViR5LGYul5ZjKhEVRRIy7rfWHqp8+ym0aQVUTqxj/X5HE9IG7CX8uJX5J3qRIDn2HwpXj3NIK4en8ztF97og8ze69tgH4z1yYwUs9bt4JaJR/KdRP4CuUIn/oaq8KjFL8vxUhgSW7/aiBc7VZaLHU7wptzK1h5eRyHiiaDMzFPdhrhv+4Qc0/4qA23uft5abFgaPTR800pBUsZTsumbA4HO/blx
+ p/WyKBEr
+ ZDGlh4k3+SiFMQc3eTP8hWZEHG2uUUJUz+nMh04qR8TtyRi8sRfMKPh/fbfTPR6pekgtkqcatt5i2dlpseMGEcbKVveIc9g3+nU5PfGAMMZF0H1fbb5T+VObovwTUfI8hKjHhjqlsP/ejZZJZG+uZdghP/YsBBivCcRdybHbnS/IThVmPokPTsfxS8C746LnAirPGkf/BwptL3CWQFnCT67hWsdRO6d1nNzQ77c5sJQ5i0q881TjPSK4E28dGU5iRZnoQTA1Rf0XN7Grnm3JwCPhL6Y5xFWd5vRhr5MxChy0pnUqLaOOZjm14YJ/JdPZ40et8
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,70 +121,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 09, 2025 at 08:08:12PM +0000, Yosry Ahmed wrote:
-> On Tue, Sep 09, 2025 at 04:16:39PM +0100, Johannes Weiner wrote:
-> > On Fri, Sep 05, 2025 at 06:58:47PM +0000, Yosry Ahmed wrote:
-> > > On Fri, Aug 29, 2025 at 05:15:27PM +0100, Johannes Weiner wrote:
-> > > > With zswap using zsmalloc directly, there are no more in-tree users of
-> > > > this code. Remove it.
-> > > > 
-> > > > Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
-> > > > ---
-> > > [..]
-> > > > @@ -125,45 +122,18 @@ config ZSWAP_COMPRESSOR_DEFAULT
-> > > >         default "zstd" if ZSWAP_COMPRESSOR_DEFAULT_ZSTD
-> > > >         default ""
-> > > >  
-> > > > -choice
-> > > > -	prompt "Default allocator"
-> > > > -	depends on ZSWAP
-> > > > -	default ZSWAP_ZPOOL_DEFAULT_ZSMALLOC if MMU
-> > > > -	help
-> > > > -	  Selects the default allocator for the compressed cache for
-> > > > -	  swap pages.
-> > > > -	  The default is 'zbud' for compatibility, however please do
-> > > > -	  read the description of each of the allocators below before
-> > > > -	  making a right choice.
-> > > > -
-> > > > -	  The selection made here can be overridden by using the kernel
-> > > > -	  command line 'zswap.zpool=' option.
-> > > > +config ZSMALLOC
-> > > > +	tristate
-> > > >  
-> > > > -config ZSWAP_ZPOOL_DEFAULT_ZSMALLOC
-> > > > -	bool "zsmalloc"
-> > > > -	select ZSMALLOC
-> > > > -	help
-> > > > -	  Use the zsmalloc allocator as the default allocator.
-> > > > -endchoice
-> > > > +if ZSMALLOC
-> > > >  
-> > > > -config ZSWAP_ZPOOL_DEFAULT
-> > > > -       string
-> > > > -       depends on ZSWAP
-> > > > -       default "zsmalloc" if ZSWAP_ZPOOL_DEFAULT_ZSMALLOC
-> > > > -       default ""
-> > > > +menu "Zsmalloc allocator options"
-> > > > +	depends on ZSMALLOC
-> > > >  
-> > > > -config ZSMALLOC
-> > > > -	tristate
-> > > > -	prompt "N:1 compression allocator (zsmalloc)" if (ZSWAP || ZRAM)
-> > > > -	depends on MMU
-> > > > -	help
-> > > > -	  zsmalloc is a slab-based memory allocator designed to store
-> > > > -	  pages of various compression levels efficiently. It achieves
-> > > > -	  the highest storage density with the least amount of fragmentation.
-> > > 
-> > > Why remove the prompt and help text here?
-> > 
-> > We shouldn't ask users unnecessary questions. Zswap and zram are the
-> > user-visible kernel options; if one of them is selected, they should
-> > just quietly pull in the zsmalloc code.
-> 
-> That's fair, although ideally we should call it out in the commit log :P
+On Tue, Sep 9, 2025 at 12:09=E2=80=AFPM Liam R. Howlett <Liam.Howlett@oracl=
+e.com> wrote:
+>
+> Create the new function tear_down_vmas() to remove a range of vmas.
+> exit_mmap() will be removing all the vmas.
+>
+> This is necessary for future patches.
+>
+> No functional changes intended.
+>
+> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
 
-With the commit log amended:
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 
-Acked-by: Yosry Ahmed <yosry.ahmed@linux.dev> 
+> ---
+>  mm/mmap.c | 37 ++++++++++++++++++++++++-------------
+>  1 file changed, 24 insertions(+), 13 deletions(-)
+>
+> diff --git a/mm/mmap.c b/mm/mmap.c
+> index b07b3ec5e28f5..a290448a53bb2 100644
+> --- a/mm/mmap.c
+> +++ b/mm/mmap.c
+> @@ -1250,6 +1250,29 @@ int vm_brk_flags(unsigned long addr, unsigned long=
+ request, vm_flags_t vm_flags)
+>  }
+>  EXPORT_SYMBOL(vm_brk_flags);
+>
+> +static inline
+
+nit: Maybe let the compiler decide whether to inline this one?
+
+> +unsigned long tear_down_vmas(struct mm_struct *mm, struct vma_iterator *=
+vmi,
+> +               struct vm_area_struct *vma, unsigned long max)
+> +{
+> +       unsigned long nr_accounted =3D 0;
+> +       int count =3D 0;
+> +
+> +       mmap_assert_write_locked(mm);
+> +       vma_iter_set(vmi, vma->vm_end);
+> +       do {
+> +               if (vma->vm_flags & VM_ACCOUNT)
+> +                       nr_accounted +=3D vma_pages(vma);
+> +               vma_mark_detached(vma);
+> +               remove_vma(vma);
+> +               count++;
+> +               cond_resched();
+> +               vma =3D vma_next(vmi);
+> +       } while (vma && vma->vm_end <=3D max);
+> +
+> +       WARN_ON_ONCE(count !=3D mm->map_count);
+> +       return nr_accounted;
+> +}
+> +
+>  /* Release all mmaps. */
+>  void exit_mmap(struct mm_struct *mm)
+>  {
+> @@ -1257,7 +1280,6 @@ void exit_mmap(struct mm_struct *mm)
+>         struct vm_area_struct *vma;
+>         unsigned long nr_accounted =3D 0;
+>         VMA_ITERATOR(vmi, mm, 0);
+> -       int count =3D 0;
+>
+>         /* mm's last user has gone, and its about to be pulled down */
+>         mmu_notifier_release(mm);
+> @@ -1297,18 +1319,7 @@ void exit_mmap(struct mm_struct *mm)
+>          * enabled, without holding any MM locks besides the unreachable
+>          * mmap_write_lock.
+>          */
+> -       vma_iter_set(&vmi, vma->vm_end);
+> -       do {
+> -               if (vma->vm_flags & VM_ACCOUNT)
+> -                       nr_accounted +=3D vma_pages(vma);
+> -               vma_mark_detached(vma);
+> -               remove_vma(vma);
+> -               count++;
+> -               cond_resched();
+> -               vma =3D vma_next(&vmi);
+> -       } while (vma && likely(!xa_is_zero(vma)));
+> -
+> -       BUG_ON(count !=3D mm->map_count);
+> +       nr_accounted =3D tear_down_vmas(mm, &vmi, vma, ULONG_MAX);
+>
+>  destroy:
+>         __mt_destroy(&mm->mm_mt);
+> --
+> 2.47.2
+>
 
