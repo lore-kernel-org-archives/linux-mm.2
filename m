@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D88D4CA0FED
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 12:14:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0059CA0FED
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 12:17:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3EE078E000F; Tue,  9 Sep 2025 08:14:04 -0400 (EDT)
+	id 13A2A8E0010; Tue,  9 Sep 2025 08:17:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C5BE8E0001; Tue,  9 Sep 2025 08:14:04 -0400 (EDT)
+	id 1117B8E0001; Tue,  9 Sep 2025 08:17:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 303038E000F; Tue,  9 Sep 2025 08:14:04 -0400 (EDT)
+	id 04E9E8E0010; Tue,  9 Sep 2025 08:17:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 20D9A8E0001
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 08:14:04 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B5F1B11A28B
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 12:14:03 +0000 (UTC)
-X-FDA: 83869603566.08.DFA469E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 3419540013
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 12:14:02 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CuzrSo2w;
-	spf=pass (imf11.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E9BC48E0001
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 08:17:41 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B4307B9B86
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 12:17:41 +0000 (UTC)
+X-FDA: 83869612722.14.096CEA6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id EBA0F1A000A
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 12:17:39 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IFg7XF5C;
+	spf=pass (imf19.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757420042;
+	s=arc-20220608; t=1757420260;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Tt9cZvyCH1e69uk1ra9K12GwG7NHIEkl8OmCsIymvgw=;
-	b=ESqoYMJrjlgF7puq7oRCr6DC0j29+2vIYg7c8D01Nt8CLL09E3e6jNf5u+vnIEjG5cpaWl
-	xKiQfol1lQRNuFCu9auG3SKyPqRXjfu1SVHDT9n9sHE88kcQ5LyGGf0Nu2ngF/o/3SzmtL
-	J3gaq6EhZ0QAaM8ikoZlpIHCqsg1WQU=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CuzrSo2w;
-	spf=pass (imf11.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757420042; a=rsa-sha256;
+	bh=UNqNdIyyKvlQsffc32Vo1vye5nnPAB3Xttji1HxWmGo=;
+	b=pjgqluq0XxXO4znC57pCXRdgRAlvlrTArxbF37e6zUvV5Yzpbbeq+C4CAYpvjpoOkV5Rlq
+	IooZuqfWFNOB1P0TxUOxABpxhn1KjyNSxacAlH/DrRM5XnNqFEVdWyoek3voydMAsce91T
+	olAaEWw8OMP2P6d52whCH9p35+X7ReE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757420260; a=rsa-sha256;
 	cv=none;
-	b=tZS6rkT9LKDzig9cqaz7cswq8yctl4Brv7ZwHO7XegDJHR4WpaaVk2GL0kXCBp2onjw0Dr
-	5gJXsgxa1SeyN3oy7DuWXjWbAvCQg68MJwg1aGwQw2n/RkNBDQbZD/tJ3wpf9Gbs5kn6Te
-	wmoGZSzGFEj6MuRYfuvJ6vQnsC5Lfto=
+	b=PEwEjxtI+IcQeEuUya4fsH+ebMQyaCoEYtsoqJZF6KSA2YtnNkN6oOwZS1Vo2H1wH0p3fp
+	c0M9LWduF13DjQTXXhM6zi9p2+Q6zYX7cWoAQAdp1apQSLPrLbqPDE4RSF45WPXl3hRJUL
+	UDvQolHP+68EnYEU6v9SwKT7jz+WcUc=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IFg7XF5C;
+	spf=pass (imf19.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A4A6C6021E;
-	Tue,  9 Sep 2025 12:14:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F938C4CEF4;
-	Tue,  9 Sep 2025 12:13:59 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8A41D4045D;
+	Tue,  9 Sep 2025 12:17:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1F2BC4CEF4;
+	Tue,  9 Sep 2025 12:17:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757420041;
-	bh=tMruF9j+G2L1N4zuR4KW/thijoi3DgRD3fEIsvtunMI=;
+	s=k20201202; t=1757420258;
+	bh=CINqC1yuoC6EN3JTqav2e34BO45tJWHN4hfmBhvxPS0=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=CuzrSo2wC8/+3xPSVkuL28/fLvs9z4VJpLDFlrUXZ9QxiUGZDvez1QEhrB8XqYimj
-	 fKwvYQVXCm9wRitIRSPiL/qlnuM7XUwUnU4c/0qtwyqJOfv2HKela5PjaLj6vZQ9NO
-	 iAFuNP2nZ+O8FTxe3FH2XmZGMJED34JrwSPdAMQDeQ6/Lil+VBaI8Bd9U44Pkysx+A
-	 Ib6wrhmrBV1nEtPBDWRL8WlJP18Z4x0QyfHsHTEvgiQgITLatG+f31/iTaMSKMOluJ
-	 KF+40oysRCqEyp2iNF1E4WvSlF21xGRkW/L7Rm0ZCdf1+vBw7KShria3xnXpbaPKz+
-	 ki1J91Mqyr//w==
+	b=IFg7XF5CNMe84ZyievChiP1ILlqSCeMTZctwDIz45qv4ppTlVwgySeVsyMhey4TIZ
+	 HPJB087o01tclncA+qQFNTwJ+5slt7Neo2Ybi2YKxfpNMdUjskKBEt70norm4UjrH8
+	 6xmeU6/C2nzTUxrOhKxG3ByoMFqgvx952HpSIbGXXfTmFgJso6E0a1/lVzLCYMWtTI
+	 ME4x1Cd0o187Z3d/Zf38O/NHoGJcQdNd/hyaop6xvqBnIM9TF9AK/XGFJ4kMoWPo/h
+	 J2N8U1CU5gqWbDwUKKQ/p8B40uXxaPCKMaK1kHMk7QJ/CmfhaVq1oq2tTWLKRBm3hw
+	 9A3L+M93ZW1dA==
 From: Pratyush Yadav <pratyush@kernel.org>
 To: Evangelos Petrongonas <epetron@amazon.de>
 Cc: Ard Biesheuvel <ardb@kernel.org>,  Mike Rapoport <rppt@kernel.org>,
@@ -71,23 +71,23 @@ Cc: Ard Biesheuvel <ardb@kernel.org>,  Mike Rapoport <rppt@kernel.org>,
   <kexec@lists.infradead.org>,  <linux-mm@kvack.org>,
   <linux-efi@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
   <nh-open-source@amazon.com>
-Subject: Re: [PATCH v3 1/2] kexec: introduce is_kho_boot()
-In-Reply-To: <7dc6674a76bf6e68cca0222ccff32427699cc02e.1755721529.git.epetron@amazon.de>
+Subject: Re: [PATCH v3 2/2] efi: Support booting with kexec handover (KHO)
+In-Reply-To: <b34da9fd50c89644cd4204136cfa6f5533445c56.1755721529.git.epetron@amazon.de>
 References: <cover.1755721529.git.epetron@amazon.de>
-	<7dc6674a76bf6e68cca0222ccff32427699cc02e.1755721529.git.epetron@amazon.de>
-Date: Tue, 09 Sep 2025 14:13:58 +0200
-Message-ID: <mafs0wm67lt6h.fsf@kernel.org>
+	<b34da9fd50c89644cd4204136cfa6f5533445c56.1755721529.git.epetron@amazon.de>
+Date: Tue, 09 Sep 2025 14:17:35 +0200
+Message-ID: <mafs0segvlt0g.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Rspamd-Queue-Id: 3419540013
+X-Stat-Signature: gtgcktrnuird6jj5kxr4nxxzqmdwe6wr
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: mixjmgy556r7dcfcm7s4ibzadzo4c4gk
-X-HE-Tag: 1757420042-595545
-X-HE-Meta: U2FsdGVkX186xHbaJ3pnxjygqkcfQODBbQA4epq+Vdkgm4hyxMqCysztOLdif/rRT69D99tDNSVwFeD6ThjEp04ffR3ms/tNim+30xTxXEp6x35eM+cNW6U22UZji2leXZwlEqAzuv9H4a6za11dNwAjjYdd8Wk/yA9ygHwCviAWGakx4rNHp3ppxE2ZxxsuGrI7tFVZ+BUrlo/zZKuBTsJAMDrSJGiKJlERJ5Ll4of813Eu6ypXsG0bEeZ6RIPlSKrUC0r3DayPlf1bq47cmBUBN95XUXdYFW3KMQGhEgM+0+MNk+x1yWMdZFs24FGlhs18kPmSoskLUr47x0QQRdQXYnny84hV6WrqkPS5A4jYfHXDPbq+P6OaW+MXkvQ4hyUzD+EC07Y5MzUd3VKTwGjP7mScYNXYNaSIz+4qaZC3HaovRDls1B7r/Nnjck1cF0x3i6QtBLJx0ShQ5+bfgNivSHGClPFCq2GudnJVlHqgpeCSd2RKZm33g5HDgY3oY+vpPtJeD71cek/d9PcUMwA3XE94Tx+JUPsyvqlBAdVpc7Pc4R+hg78YvUiwMNZUC1O/XK3ZEIG0hun32/OL8560XjLAXwXCjOydXVFX+3GOh0hTw4pBuL6d6iCAkuqLPFAXk8rXT3J3jk+SaOqaom8HGt/wEhsvsbmVCQZ6F3dyP5HMZLXM/WYrp0qlsMo47u8BfJNq+iRGVBXfMzPpmLrBPQU7nTsQHTXWY/3tfIazlSPtdwvEbbM0fXyTXTY6g4dLGYoAYjYe3FcVMLrt0v68/cyKiqoXyoyCO9D3latEHzDbCna1ob7kr9/U13oesTHm4FMcZ/hv7frR+flsZx3vEEsIbhh7+3jp6jQ4T+35c7Nl/QBAo7wEOIX4NRuX1pmwsz72td8oj6GONd2PlFNxmzYafAS3aJZzcvzgDT0/9Z0hforInn4le50v25QNeP/Ow1fy0nZX85Ynh3c
- 737gnpg7
- m5+CCjZ0bs9ZlcSxJS6zfh6+Z7QDK+t+5igGDYa/Pgnn0L2BUI8s7ibY3gqjZrswvnhSd7CKa0jQCgbBVMLWRTozfOf9JnojDxgBkyh4v+jT7yO0kcro69xpZlk2Qk3tUNvHQ0bmCvdqDcQLYXO+CUwWw8nDPGgCowkBq9GoLDtn8gJnmf7Dja2NghdRktQHo3KJ0JTvR3HrKMyLj8UKY3rXbLEcMwRww4s+pbk6iSIWGQ8qTdHp9f86Uug==
+X-Rspamd-Queue-Id: EBA0F1A000A
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1757420259-878655
+X-HE-Meta: U2FsdGVkX18QzPh2pTFH/pecLkid/G3HRIvcbN5+lyBdvAuEwWnQoh4I7GPZvfk/DqViL5IvgWf49k0kq7fffuIvVqhIXsFsG4MrUDvlfeWMqzG+KsgctdrxnkQS7FHCz/iG42SPLDs/RsMnAlE8DlbYwoKxglo5Kf4UpGreM1gUA07wV7C+59uW7/hnlBJPDNGC6Ible/VgLOCRnn0eIlRm8DLytKKKZrsoWEKUURGaCGEqDC3VMYnm0JCf9AaKpq+KjAY6Yqg1vyXtB5cGKl1vCW92vr5EiJwAfpOdwKOdlp58Twb3wh8wh6yByU/FIJjQGj6SaI/bPk459NL8jJ1e5cR+mXhPItXFGXaVVZ2/6VZ/y3zZAeWtlzu9M+2xnToUs09ZQn9UvvQDG3eotddRGudhn7FZXWvkE8CiIW8I9JUfQApc4kJcSBkMOn6g/GyF8VbZVmZrXQkrLSiWiyBH0TzR38S0xFXLERdVVkTaha+IqQvwXhLtJBM1GSbJkftqS6U3dL1EscA5jnNJl6ZnPJkuJnnclR2SMu1nfCxRIcxCBq5ShNe6BJw05HSaWwbkQmtslK8EbvtdF+myoI5xyfB31w3apxwgl/CjOi+fpRR/5Bs+Gu5M/OU0D1ojHHhG/nvEJrPNTx11wpHeB++kmH5s6tg2AZmTB9NqCdFyp0eKX7m9txPjhUEoapQ6fYMO4/JIGYHlLXvES9GQDTZyy3TzBzi7OTmqLp7kTLsfHzYO9cqvPm5Ssk+uwz1E5ghE3dqO+ovfxFMxBTIzpupBLNHaB3BZ/gdcVCiXNviO/dayzRIqWETwBwb3oZ7UZGccWdQ/xdIr7BDqwQQj80agbRZBbzcoBX72MVBLWJjon77plQPOUaoHTx+G3s/yAPz6iGYiXNF/6b0C+I0ZPKKmgx5QpzfZVs8fBP3fLnMTLp69wUqiSGDv9Y4NVc83MTvn3ymFxOxqnzYEg5x
+ gXHmSW8v
+ +Rv79ZN3txgK8c0p10QQPrJYjl41LtBOnL6Lqa9KXymOoLAiahn9UZ/so+0heeblyarKvcUNbPAVJP6ebwwoAOXjp/dsIMs7jsMrW4QtueiyWE1VW+acCKsJnZWeZx/o7hyizT5Afu/CCx7+2HVJKQ9mXN8VOxvtbxTEJyv9SKjBJBP5lMOa0I2fh+DcRd/u+rSmaO8kpypXy4XJUKmeWCry1KBylPOrb+gWoNbSXZtOHzIA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,19 +98,97 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On Thu, Aug 21 2025, Evangelos Petrongonas wrote:
 
-> During early initialisation, after a kexec, other components, like EFI
-> need to know if a KHO enabled kexec is performed. The `kho_is_enabled`
-> function is not enough as in the early stages, it only reflects
-> whether the cmdline has KHO enabled, not if an actual KHO FDT exists.
+> When KHO (Kexec HandOver) is enabled, it sets up scratch memory regions
+> early during device tree scanning. After kexec, the new kernel
+> exclusively uses this region for memory allocations during boot up to
+> the initialization of the page allocator
 >
-> Extend the KHO API with `is_kho_boot()` to provide a way for components
-> to check if a KHO enabled kexec is performed.
+> However, when booting with EFI, EFI's reserve_regions() uses
+> memblock_remove(0, PHYS_ADDR_MAX) to clear all memory regions before
+> rebuilding them from EFI data. This destroys KHO scratch regions and
+> their flags, thus causing a kernel panic, as there are no scratch
+> memory regions.
+>
+> Instead of wholesale removal, iterate through memory regions and only
+> remove non-KHO ones. This preserves KHO scratch regions, which are
+> good known memory, while still allowing EFI to rebuild its memory map.
+>
+> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Signed-off-by: Evangelos Petrongonas <epetron@amazon.de>
+> ---
+> Changes in v3:
+> 	- Improve the code comments, by stating that the scratch regions are
+> 	good known memory
+>
+> Changes in v2:
+> 	- Replace the for loop with for_each_mem_region
+> 	- Fix comment indentation
+> 	- Amend commit message to specify that scratch regions
+> 	are known good regions
+>
+>  drivers/firmware/efi/efi-init.c | 29 +++++++++++++++++++++++++----
+>  1 file changed, 25 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/firmware/efi/efi-init.c b/drivers/firmware/efi/efi-init.c
+> index a00e07b853f2..a65c2d5b9e7b 100644
+> --- a/drivers/firmware/efi/efi-init.c
+> +++ b/drivers/firmware/efi/efi-init.c
+> @@ -12,6 +12,7 @@
+>  #include <linux/efi.h>
+>  #include <linux/fwnode.h>
+>  #include <linux/init.h>
+> +#include <linux/kexec_handover.h>
+>  #include <linux/memblock.h>
+>  #include <linux/mm_types.h>
+>  #include <linux/of.h>
+> @@ -164,12 +165,32 @@ static __init void reserve_regions(void)
+>  		pr_info("Processing EFI memory map:\n");
+>  
+>  	/*
+> -	 * Discard memblocks discovered so far: if there are any at this
+> -	 * point, they originate from memory nodes in the DT, and UEFI
+> -	 * uses its own memory map instead.
+> +	 * Discard memblocks discovered so far except for KHO scratch
+> +	 * regions. Most memblocks at this point originate from memory nodes
+> +	 * in the DT and UEFI uses its own memory map instead. However, if
+> +	 * KHO is enabled, scratch regions, which are good known memory
+> +	 * must be preserved.
+>  	 */
+>  	memblock_dump_all();
+> -	memblock_remove(0, PHYS_ADDR_MAX);
+> +
+> +	if (is_kho_boot()) {
+> +		struct memblock_region *r;
+> +
+> +		/* Remove all non-KHO regions */
+> +		for_each_mem_region(r) {
+> +			if (!memblock_is_kho_scratch(r)) {
+> +				memblock_remove(r->base, r->size);
+> +				r--;
 
-Neat! I have always found doing if (kho_get_fdt()) a bit awkward.
+Hmm, this caught me off-guard. I had to do a double take to realize that
+memblock_remove() would decrease memblock.memory.cnt and move the whole
+regions array back. A comment would have been nice here.
 
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+But then, I wouldn't want you to do a full resend of the series for this
+minor nitpick. So perhaps whoever is taking this patch can add one when
+applying? Either way is fine though...
 
-[...]
+Acked-by: Pratyush Yadav <pratyush@kernel.org>
+
+> +			}
+> +		}
+> +	} else {
+> +		/*
+> +		 * KHO is disabled. Discard memblocks discovered so far:
+> +		 * if there are any at this point, they originate from memory
+> +		 * nodes in the DT, and UEFI uses its own memory map instead.
+> +		 */
+> +		memblock_remove(0, PHYS_ADDR_MAX);
+> +	}
+>  
+>  	for_each_efi_memory_desc(md) {
+>  		paddr = md->phys_addr;
 
 -- 
 Regards,
