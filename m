@@ -4,140 +4,174 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3423BCAC583
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 16:08:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66F77CAC583
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 16:15:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 611028E0005; Tue,  9 Sep 2025 12:08:08 -0400 (EDT)
+	id B02A88E0007; Tue,  9 Sep 2025 12:15:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5E8388E0003; Tue,  9 Sep 2025 12:08:08 -0400 (EDT)
+	id ADACC8E0003; Tue,  9 Sep 2025 12:15:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D6868E0005; Tue,  9 Sep 2025 12:08:08 -0400 (EDT)
+	id 9A25C8E0007; Tue,  9 Sep 2025 12:15:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3BA158E0003
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 12:08:08 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C3BB8C0675
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 16:08:07 +0000 (UTC)
-X-FDA: 83870193414.10.6AFA866
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 6DD18140002
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 16:08:05 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=RMUDHvIY;
-	spf=pass (imf23.hostedemail.com: domain of imbrenda@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=imbrenda@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8ABC18E0003
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 12:15:26 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 36ED01DECB2
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 16:15:26 +0000 (UTC)
+X-FDA: 83870211852.13.A86A5A2
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 0716D4000F
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 16:15:23 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VQAbuCKX;
+	spf=pass (imf04.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757434085;
+	s=arc-20220608; t=1757434524;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yCzij3lwPXWu6sDllPHsxlKV1DFXRLK5f2LdkRAekRk=;
-	b=RHDo6/ABOhQHoYxuVbKB9YodTadIgcDhR8imWpj2pYoO5Cc+sbO79/4Fmq0QCDxk0GIDu/
-	WRxMkTSR24BD4jROnjphQeNx353mPOf3CyEszOYDgy5m4Tjo7mxlH7PWIIyf8n9/dIAiVK
-	AsPjCZbnKdbiDNoRb2osQiC66XH0F0g=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757434085; a=rsa-sha256;
+	bh=DULaN8FQ4FQ8+JpWrIkbkq8ORxl+FvcAutXuAs4Q8P0=;
+	b=KUfEmTDDByLnq/7MNsnOlDT9CEo7SauIeh7fAabN7QNkigJBaKHnbGyONpUgRxaanDzSlj
+	PwdCV5HHes4OwcfEI9Vj7pQHhjnrfUtZS8MtzkQ6pSzlMW1pRpcRBXOZBSpuHsHyoLrBfP
+	ttBnrZWPKA6EoFpQarDG2MF77xK08xo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757434524; a=rsa-sha256;
 	cv=none;
-	b=Fg7MZ+HC0aEu8WbvnYaA5mjEGgKBbteg2ar+DvKEdf/G4LdKfsWUWsaPys1IM9CzwE18LL
-	q2Y9Ukfw4ajksU5OG7JZ8geEKKpsGd2qmZ6E0sOlzuVwiZOKQU+iuy75J9n5ZQMVdsfp4m
-	fxyG8wuxyciotuRKP27wk7TOZ9UchgM=
+	b=QaVP2S05n1R5SlFSCO/1YQr2+edLLuTena+IZh1zQ7pvcEjgSXOL9eTAepmuL8KRAuGf/6
+	QbiCZ/mimxnVR8bP7wFwThIV5o0BTwbDPeydVKpXYXctbqmcn/OI6+7Golhp4OW/kZP8Yo
+	PBC1HexOwNnh5cYgCY5PlVd+Tri0RYE=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=RMUDHvIY;
-	spf=pass (imf23.hostedemail.com: domain of imbrenda@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=imbrenda@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 589G3Fq8028539;
-	Tue, 9 Sep 2025 16:08:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=yCzij3
-	lwPXWu6sDllPHsxlKV1DFXRLK5f2LdkRAekRk=; b=RMUDHvIYarO1NPovxTczAe
-	k5kcMSb813GbwXwDV6i4ZK6LkfrpQy9OPMQNkzLid/8iOJ6UFiFTB4v662KJj/Dd
-	58SKurn/jRaW9EbkWjd9mvj/oL3ZGkWTdv+F9AdhVcOdqo/Imn0V379zX6kGhInN
-	KQFzFw3Y26OWLJ7o+VadH3+AiWiIWFLwNOzEwZCgrAhljE3ADExSzJvwl7KmSDYw
-	Fwa5plZVDKk3OKh/MWTFoUZfTSyVwKrHnu5upR4CqRtOBsGoeqjh97OR+9ZUWk7H
-	JDeAyo5z0C7YZvO+lfYx3MaH6X5fDTu+DuamWysIUvPbfo/my5hNE1zNthV3lImw
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490ukee3pa-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 09 Sep 2025 16:08:04 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 589F1qF6001188;
-	Tue, 9 Sep 2025 16:08:03 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 491203bpx7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 09 Sep 2025 16:08:03 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 589G81EU33817068
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 9 Sep 2025 16:08:01 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6E31020040;
-	Tue,  9 Sep 2025 16:08:01 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EB0812004B;
-	Tue,  9 Sep 2025 16:08:00 +0000 (GMT)
-Received: from p-imbrenda (unknown [9.87.128.215])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Tue,  9 Sep 2025 16:08:00 +0000 (GMT)
-Date: Tue, 9 Sep 2025 18:07:57 +0200
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        Andrew Morton
- <akpm@linux-foundation.org>,
-        Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard
- <jhubbard@nvidia.com>,
-        Peter Xu <peterx@redhat.com>,
-        Christian Borntraeger
- <borntraeger@de.ibm.com>
+	imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VQAbuCKX;
+	spf=pass (imf04.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1757434523;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=DULaN8FQ4FQ8+JpWrIkbkq8ORxl+FvcAutXuAs4Q8P0=;
+	b=VQAbuCKX/tgMK16qLWSSMq29QigsYDDcppFRYikco27+TZMcIXfGVlxRb2w6jXP+F23du7
+	0HcAb/Gw1qya9f6O9VHtinzNmuz+sCiPQ5+UCjrMAwKlbGhpEpNh7QEgMuwOdU634/nLxr
+	r4JzFzXG/IU91nm7cGsigFL5MZyiv6U=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-587-UIjbAHIhMHOLdOj9fLzZzA-1; Tue, 09 Sep 2025 12:15:21 -0400
+X-MC-Unique: UIjbAHIhMHOLdOj9fLzZzA-1
+X-Mimecast-MFC-AGG-ID: UIjbAHIhMHOLdOj9fLzZzA_1757434520
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3e40057d90aso2295794f8f.0
+        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 09:15:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757434520; x=1758039320;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DULaN8FQ4FQ8+JpWrIkbkq8ORxl+FvcAutXuAs4Q8P0=;
+        b=vTdwm3OoA3DUA7itrrHeLhfFgBrMmxGMS3Rc0PQ+oBlASbO9ZoGgfkfZNmtdYLyY4h
+         j2hKgnR6bCRiAEWBzGV1EXz80kZSN5KwGCrD5G3hSZScf54xA7PPHtgGUU5Gvvb+woDB
+         BWCHy4hVjSPeXFiEpBeIZUMjjhsaBSjHyj2DpQEAbbP4x0L2yMVzl3tZVbnpWnksZ8BW
+         KIS54zo4A+Yf16daMdsVa3hH0GAYjyJAnIw9pDRFWlCDOck1DxFLt2/9L8z1UMi8IRHu
+         /wtDD6vG+1TvkRP183yh08zjfTkYcjk1c4ph2OKDDd4zKD/rJbqM0dMptPXj9621SwrX
+         /28A==
+X-Forwarded-Encrypted: i=1; AJvYcCV1Py/lFMv2HBim+8m4NCXmER6CIdR2LZSVF+dM5L632u9ov66+lByjMC2tAtqxiuxEh2s5GoGhRA==@kvack.org
+X-Gm-Message-State: AOJu0YxIYBRabDCQPpDmmnwrDIBX23GZToqEbtgEpc6Qspv5jV8SGWUG
+	jv8dEQ+95oajwFPJTIN3qjEqTVyLEaiLjNHrDLyjgIFVVKD+pJ+RHRdgFfoh0y1fONkVGjwl80Q
+	AX+rMtIiwyAeZj9a1noiux8m0IUl15nTpE5DaU+4xseSOAyFNU15T
+X-Gm-Gg: ASbGncui12pPrJHmH++sbg/U8xd+Af9rYHsE70WoYJbeYBeb9QzHvaOdcRyuMBQOtva
+	yY7AL/vMgcbHkTazjij+vL+dxv17t2cxgKutC9MV4ex3qR5i+awIHeo7ud7Bx/Sn2sZinETSFGX
+	zQ5i3tySkobqiIBs7M7PpUkyddunLfxbFzzkFHDSxqWHvMqIic0lRdeCdueCoht1XY4M7fOwf4Y
+	A/540L5/bXmvn5hg9KA6Fo/OJuV5GX2MRkWClo2AGAbfYz+CarWCWEDeZcfp+dq995WpioOsRcr
+	aL+cbOusKgtCjHYLuF/xBZTllY2IAikxQFoFZyBqD0KP9XZPllBOrlSNGSaAmFtidaiOmSv6NJi
+	eb46dWoQQa3AInhk15MnsBTUTCyoyIT33As+OkFfXKKUJDRJmFXe2377DGG8YHZloA00=
+X-Received: by 2002:a05:6000:4410:b0:3e6:f91e:fa51 with SMTP id ffacd0b85a97d-3e6f91efeecmr4995394f8f.8.1757434519692;
+        Tue, 09 Sep 2025 09:15:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG9InWvJAwy9lkxysPqm4Le0o1CsvWdRiHnZwm16w1dhVKD+GnoSIETjUZea0fauM3ALyDmAQ==
+X-Received: by 2002:a05:6000:4410:b0:3e6:f91e:fa51 with SMTP id ffacd0b85a97d-3e6f91efeecmr4995382f8f.8.1757434519270;
+        Tue, 09 Sep 2025 09:15:19 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f23:9c00:d1f6:f7fe:8f14:7e34? (p200300d82f239c00d1f6f7fe8f147e34.dip0.t-ipconnect.de. [2003:d8:2f23:9c00:d1f6:f7fe:8f14:7e34])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e752238755sm3139523f8f.32.2025.09.09.09.15.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 09 Sep 2025 09:15:18 -0700 (PDT)
+Message-ID: <1228a0a7-660e-4993-887d-66bc2c37b8f4@redhat.com>
+Date: Tue, 9 Sep 2025 18:15:17 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v1] mm/gup: fix handling of errors from
  arch_make_folio_accessible() in follow_page_pte()
-Message-ID: <20250909180757.1114d727@p-imbrenda>
-In-Reply-To: <20250908094517.303409-1-david@redhat.com>
+To: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>
 References: <20250908094517.303409-1-david@redhat.com>
-Organization: IBM
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+ <20250909180757.1114d727@p-imbrenda>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20250909180757.1114d727@p-imbrenda>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: SXISUjftW2PBYI7zcxGGc0hC88ErjW7NlsHaxTLdoa4_1757434520
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA2MDE5NSBTYWx0ZWRfX0lWyfEZGUS5w
- LXY1c5sfuf2PvmgsPHWuzkS83RGsrAWpM95nq+N1tKo5UF9U1zi/qyS98B9Hrdtgd1vd4oX+MDw
- 6T2KHaGz34IVzW2xyMI/VgeytPjmtz/W1yF0ZnuXiMeUho0dUtN+zS/YAwgpqrTs7YdjO+tT24t
- yAdj5SMIAFUOcJvRoThf7tu33NkqVNw/wY3iIc/DXVjYak9T9G0zxVgnvWup4U89NMJU8XID02F
- SRy8zxIXVOoCZbA9ncIax4x19FS1Zjl9EAxURUNtvQY/I/fnoNp2xTgIZqGkRjmQSpgzTRNdxAE
- 1acb1XLGrt1uWX+Km/KDVO831wf7CYoG4gRzGAHNbMzX5PO6sn+wPJ61we+6JaY2RJoHEZVIc3b
- zY4ew97r
-X-Proofpoint-ORIG-GUID: vj4YCukf9maoZjMYBKZeshE7HQm4n5R6
-X-Proofpoint-GUID: vj4YCukf9maoZjMYBKZeshE7HQm4n5R6
-X-Authority-Analysis: v=2.4 cv=StCQ6OO0 c=1 sm=1 tr=0 ts=68c050e4 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=kj9zAlcOel0A:10 a=yJojWOMRYYMA:10 a=20KFwNOVAAAA:8 a=VnNF1IyMAAAA:8
- a=Z4Rwk6OoAAAA:8 a=9jRdOu3wAAAA:8 a=Ikd4Dj_1AAAA:8 a=FgLdBiW5u0QFqUhnriMA:9
- a=CjuIK1q_8ugA:10 a=HkZW87K1Qel5hWWM3VKY:22 a=ZE6KLimJVUuLrTuGpvhn:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-09_02,2025-09-08_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 malwarescore=0 bulkscore=0 clxscore=1011 adultscore=0
- suspectscore=0 priorityscore=1501 impostorscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509060195
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 6DD18140002
-X-Stat-Signature: 1jxryheh7bh35q7ewk1uac19ryckps4y
+X-Rspamd-Queue-Id: 0716D4000F
+X-Stat-Signature: uk7nm3mhwk8ik4cwt4gytbqmeotzp13s
 X-Rspam-User: 
-X-HE-Tag: 1757434085-733658
-X-HE-Meta: U2FsdGVkX1/Xqxzm1KVNof46sttO/5Q6dzz7GGF6PREaye7oXAYbeHkP0J5vIFIvn2yrQctWo7xRJsX5vaTRO/4XEAH2LfSiCD/tod50mqMGT+LnPKYWd41kQrBZBv16HuLCARfaMqOWD1hbuU0fmzu5e+WkM4mBOPRa5AiGAcd36TMGF7tBBNMnfSEYCdaX26Ru5CQgXB7+Qvj35qXX2hsaeOWMFv4ga4eGkTwPw2GBqRcqu0+WYUY2G4RsqegngBLRs+Z3OERdt4F06WHM+jstby/R2MSiyAi8H8Q303WDgWYe4jcyqVsONiUqEFuobQyoij+l/GT+ABhw8mYul5K4wCgLkVFssXenanUuwKdLWP+7I+zUKWw9mzP/pAsfKeHni+dUwxpikSXeczvwLPHD+o9gzhJHAhonCGonNEmdVMouB+BDsGaLcNwFrdb6Tf10MVuNrz+PheOCF2Wjzx9w0P50Dn0tv7HLc65bQeizxt8cQAo0ueLhjufbolyT66WLslOEXEPA28slKUfIHKIlTos4X0mtLx4arogNfJAoRAPhJQg0UyKkEFd/nwgc6uN7pMvTyeh10HRwyxOpqKTbnmXgVLdyE/aGk+/tlwejTCBSn2MRVbGHvgEYVkTavCvkoCmfD9WzCK0khxof4B6bHbVvoG4MBubfyBRt14TxCqBFKl2Co+MS+v34trdv88ytkN+seC0rdA+jx4a/mZpIXRsuvCZ8Y0pwPj7qPFDPISy7gbxghEDdg5oz6BctiYx9+OH7U0RpiBWBw3pqlpxxs+p+L6V3xGfiTsVw8VYuD75ZJ/PXriR8enPPBqwZOm2cQpSD38YcMSutj02KtGSnjBWzGvlvC+spyn0HUPjVl6jgDJIaYkfYOggM56OSbPMyMQtpx7vFdqRFiHxPfIYVQ36XOqi/zQjaAb7hSFIolUrBzAXido1Ha8XGvtd0RfIIvzCevM8Puw1KOEr
- XLAwgS5T
- 5DW/HXcoXpmG4F/oOzOkAEFw6okOENqQ3AXo4QtXZPOKTs0+PBDkogxFq5Gsg8VHYKGRcc7o5KTUh7YAHGkQGaEYL0t/ZRhDnUIQXCna9xKtpUSXjDDDallHsA1ijp84e4SQGVTFlgVweENUi8AweyyaUEi9ENbJlZaQV2fAPkxpfA2V4m0z213GkU3hqkMQMGiFvf4xdXe6QxTd4+3E4YBS7/sDrY9uxcCdRIwlWxBhJ4kX5BN7R737BddMjGB+x1Nm5QSjs4dRybx6Dtvax6Zxem8JY7SSLo9u2FZ/YAC5tP2l6cQW/romMJys9OcUl3ojzlYR3VyI7kxumKtQndCYhEI1HEN4y1f0oiBvxNLHnV1YGklCoJCe/ugCSEP8FZHcNUR66LNyMBt1rpEcFzVetYgpzT3OfrVn3W5NgYMdjnQRim0xv+i/D0dvoX20nM1dfDHRnEoN5d5P7ENNhrlDYqxAdmPJTE+jEBU16FcTkByjZyg0TfqFAhHZ364V5k5DOK5yFwUdOeBiu47oeT1wrmbRaw54p4CCIh8cR4fkJXzPwccEcvbQQCll+9MjU4ox/4ymWUgPiIMQ=
+X-HE-Tag: 1757434523-495166
+X-HE-Meta: U2FsdGVkX1//8g4uHWhafRBIRW0UK/1VkXtex0UVaXG/1f6drYQQI+qa6F/0SJR+7uLGJKJXlXuQhn3KUe6T/R11B0t/AhBkWa0+HgBY+GO1Um5mwDMjLsRvJ8f9MJjtyYMg9dPpCmdlNqFaB/Cre4haDYrBEMEqm4AruOvbyFBa3zfkq/R0vGjkTLqFqX0yVkx/MCpdfDvwyTxPUoe9foa8/SJxPcGi10MoIvXWH619Bzzd7qXcczMCM5Fy5d5Lk9Rhf9mEMR2F+L57Dkd3lkcCxxXFyflhPyu0Ijq7BEjO7wXK9FaCyEs5G7xIxluB54S97P8c3VuLOhTJI7xv172LfYTW7FR0to/LkWvxOOtZaxWJGA5j0VNmStRlo0K+0B4BISv5StpTTgB/V9PBmzNPbIXHnwYLHEh6aY6fAlD9NYFdUQQ304jHmuj1kTcA5eekS7Xao7Adqyi6Z6qJ4JZG02c3+MpmKWZDYGadBdvbvyLT3kFcqmBrZ19l3wdxw7+csgVs2Nt7arU1Ov6metI58dfqFdeR/XejHl8NRcoSLFlNsM8hAtyuJOSGz0tkY3TQYZ+wKNPhnQeeub1WzWPMZY9+eZaekSA28QYc42RAxacN7i1mBRmH0usSBgOZ12SiHFm75IFsDq1q2g7gKDZ/nubma0anRmo+lQj6dGLTHt+s1kBPR2pXH0Mxu543KIo4FN17a1HPPvieKpAIJh3cua4JnN22TqP+2IOKddvKZY784pi4M6jeSCZLW23IyeiI6u4kO+RxIqkp5r+VBT42eiQ8r4nS8La0wQRkJV/Njv9d9dgCZ7pjCzlLFFsDc7p8+vq7wxznZUZJkWQixt68SuFBEjmn0COXeu+CNymcDyK3YmcLDFNENjfUIDdj901mH6sakBIJZ1JJLYu1WK+BBVR7Bvnd/oVCbbPBcVxw2/W5BYWV/1qAj6UWGPpfKZhKtuyTV3VM67n2izI
+ rjZ/wKrt
+ 4d9VyPMB7dqC0QODGZ74dmIav2YnCXXvQfcGK8OcKOraff5KMBvx8nJtkr1O1/QyNunbkFoi7TZAsjh90E/ZB6AN+hw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -146,66 +180,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon,  8 Sep 2025 11:45:17 +0200
-David Hildenbrand <david@redhat.com> wrote:
+On 09.09.25 18:07, Claudio Imbrenda wrote:
+> On Mon,  8 Sep 2025 11:45:17 +0200
+> David Hildenbrand <david@redhat.com> wrote:
+> 
+>> In case we call arch_make_folio_accessible() and it fails, we would
+>> incorrectly return a value that is "!= 0" to the caller, indicating that
+>> we pinned all requested pages and that the caller can keep going.
+>>
+>> follow_page_pte() is not supposed to return error values, but instead
+>> "0" on failure and "1" on success -- we'll clean that up separately.
+>>
+>> In case we return "!= 0", the caller will just keep going pinning
+>> more pages. If we happen to pin a page afterwards, we're in trouble,
+>> because we essentially skipped some pages in the requested range.
+>>
+>> Staring at the arch_make_folio_accessible() implementation on s390x, I
+>> assume it should actually never really fail unless something unexpected
+>> happens (BUG?). So let's not CC stable and just fix common code to do
+>> the right thing.
+>>
+>> Clean up the code a bit now that there is no reason to store the
+>> return value of arch_make_folio_accessible().
+>>
+>> Fixes: f28d43636d6f ("mm/gup/writeback: add callbacks for inaccessible pages")
+> 
+> Ooops!
+> 
+> thanks for finding and fixing this
 
-> In case we call arch_make_folio_accessible() and it fails, we would
-> incorrectly return a value that is "!= 0" to the caller, indicating that
-> we pinned all requested pages and that the caller can keep going.
-> 
-> follow_page_pte() is not supposed to return error values, but instead
-> "0" on failure and "1" on success -- we'll clean that up separately.
-> 
-> In case we return "!= 0", the caller will just keep going pinning
-> more pages. If we happen to pin a page afterwards, we're in trouble,
-> because we essentially skipped some pages in the requested range.
-> 
-> Staring at the arch_make_folio_accessible() implementation on s390x, I
-> assume it should actually never really fail unless something unexpected
-> happens (BUG?). So let's not CC stable and just fix common code to do
-> the right thing.
-> 
-> Clean up the code a bit now that there is no reason to store the
-> return value of arch_make_folio_accessible().
-> 
-> Fixes: f28d43636d6f ("mm/gup/writeback: add callbacks for inaccessible pages")
+Thanks! Is my assumption correct that this is not stable material?
 
-Ooops!
+-- 
+Cheers
 
-thanks for finding and fixing this
-
-Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Claudio Imbrenda <imbrenda@linux.ibm.com>
-> Cc: Jason Gunthorpe <jgg@ziepe.ca>
-> Cc: John Hubbard <jhubbard@nvidia.com>
-> Cc: Peter Xu <peterx@redhat.com>
-> Cc: Christian Borntraeger <borntraeger@de.ibm.com>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-> ---
->  mm/gup.c | 9 +++------
->  1 file changed, 3 insertions(+), 6 deletions(-)
-> 
-> diff --git a/mm/gup.c b/mm/gup.c
-> index d27b6b9818a18..c969259d095c9 100644
-> --- a/mm/gup.c
-> +++ b/mm/gup.c
-> @@ -2920,12 +2920,9 @@ static int gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp, unsigned long addr,
->  		 * see Documentation/core-api/pin_user_pages.rst for
->  		 * details.
->  		 */
-> -		if (flags & FOLL_PIN) {
-> -			ret = arch_make_folio_accessible(folio);
-> -			if (ret) {
-> -				gup_put_folio(folio, 1, flags);
-> -				goto pte_unmap;
-> -			}
-> +		if ((flags & FOLL_PIN) && arch_make_folio_accessible(folio)) {
-> +			gup_put_folio(folio, 1, flags);
-> +			goto pte_unmap;
->  		}
->  		folio_set_referenced(folio);
->  		pages[*nr] = page;
+David / dhildenb
 
 
