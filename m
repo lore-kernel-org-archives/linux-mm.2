@@ -4,115 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 063C1CAC583
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 15:02:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 930D5CAC583
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 15:03:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 526658E0012; Tue,  9 Sep 2025 11:02:12 -0400 (EDT)
+	id F17796B000D; Tue,  9 Sep 2025 11:03:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4FD3B8E0003; Tue,  9 Sep 2025 11:02:12 -0400 (EDT)
+	id EEB9B6B000E; Tue,  9 Sep 2025 11:03:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F15D8E0012; Tue,  9 Sep 2025 11:02:12 -0400 (EDT)
+	id DB2DC6B0011; Tue,  9 Sep 2025 11:03:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 28B468E0003
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 11:02:12 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BE779BA386
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 15:02:11 +0000 (UTC)
-X-FDA: 83870027262.08.29CE913
-Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 5EDC9100027
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 15:02:09 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b=IyTyO4Ax;
-	spf=pass (imf05.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.49 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C696A6B000D
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 11:03:32 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7A7A61D9ECB
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 15:03:32 +0000 (UTC)
+X-FDA: 83870030664.06.80F08EA
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 7F53E18001C
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 15:03:30 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b=ewX7nL6f;
+	spf=pass (imf16.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.53 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
 	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757430129;
+	s=arc-20220608; t=1757430210;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Yh0fjNDYqjzdJxYcthmflSzVU8lAPQ437Tv8jqJmBNM=;
-	b=VuORPQFc9L6VHNEQPPYBaxK+L0K5x0axaE5hrmZiXNTrntl5/WlsKbechdC7vnr94R4w/L
-	mEn0MqGW31Cz2kdipuXGy9t6Kjvc7a6TLMGNApioWTju0lh8MjWrPy/oF1KtrqoT4kzVAS
-	vLPzegmWZ43qD8n8NCUrOPGgTphlv+0=
+	bh=Mu/1i0QY1lAahv44Zab7jGfKcHqDQqbZccixOVrtOOw=;
+	b=ueiYjlCycifO+xwB6uvYUjL2QLErZO0JroxW58FIUsp9eZHKB9vqkUgdvSW9n9DuTnuZ3y
+	TtMsdCze84pLSng6ZndJMwa5eOtZdgEdDKrOveGjJkPIh/9dXL2XtE+HWA3eMXB0EVT3l1
+	kaJUH/rM+kB4QNLABvaqYKufteQeMNo=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b=IyTyO4Ax;
-	spf=pass (imf05.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.49 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	imf16.hostedemail.com;
+	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b=ewX7nL6f;
+	spf=pass (imf16.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.53 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
 	dmarc=pass (policy=none) header.from=cmpxchg.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757430129; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757430210; a=rsa-sha256;
 	cv=none;
-	b=TQOWQehx9VLLprAub2WcS7Fdu56wsMnoFiDHFpJEY4+okcw6+JFu7ZZIsmQxFcjmV6qApf
-	Fmv7V98LJSt0lhz3wK/ummvWr0d2JXYrPDZRb6uQrS4bftSIxaQdLR8KNlGRETy66yYTg8
-	2gZ7eq9AI48zzqQegIo6zXkGfEzX9N0=
-Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-726dec342bbso52663446d6.1
-        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 08:02:08 -0700 (PDT)
+	b=5Mz89BxktP0KG9qTRhJWOTHxH1K1IgtbtHOwBLNW2kXcHKOWPsmP4SrYH4d9vc0jetpCA5
+	bTRx2QOHEVT8ys5lE9BmWVi2NUC8hoSsyv/IjvzC/jcEfIxo2ZAhlTbk8wqcfKv8Q49Bin
+	U9CIUzdlSbUjU+ckWFJE1uN/QqAFZ4s=
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-72816012c5cso47462186d6.0
+        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 08:03:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg-org.20230601.gappssmtp.com; s=20230601; t=1757430128; x=1758034928; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Yh0fjNDYqjzdJxYcthmflSzVU8lAPQ437Tv8jqJmBNM=;
-        b=IyTyO4AxZcy2OlkOPT6Amgiq3WOpQ0WfhXNF3fwsVqhE74TBMqGx5ZlPJYAq2o+Bgt
-         JNipymOuJIZEWNZAB7HMhNiP0WVsPtogxnGBjAReLbg1GzPaTn+uametJ63GPoZUDWZR
-         ylOiVfVx5wBdExBL2FTQXtHbUcgjQT63DbicOpBY9TwVhcjOAwcaOJwD3AnBZSZqMLCp
-         K8IjJIG+aaL7sQQ+mqhtLnD6IqcRdYntY3w4giJSdujTDEbA1Ut1xY0xsN4Gz0P8FM9O
-         8o01vofGnb3MTYlm24VONy3/0b4OPSE7nEAXjq8yytlEeNatwHR5J1qXulyIyUnhXm2F
-         +9ZA==
+        d=cmpxchg-org.20230601.gappssmtp.com; s=20230601; t=1757430209; x=1758035009; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Mu/1i0QY1lAahv44Zab7jGfKcHqDQqbZccixOVrtOOw=;
+        b=ewX7nL6fgaayp/DlOHcu+M8o/zge5wIFkTZqeC2n1i3XZryOc8S1VJAWyhi5ebKb1s
+         jVTxVDw9t6pPQASFEyRhpUbRyfB3a6lKga/YfIkFcTLMW25THH1MEpZzQ1h5UHzYrWkz
+         yAzUGiIH2NzZqCQBqodzzIn64UAGECCkZj42OApa+WxPOquN5TDVMcPtGqLa9zZPEAt4
+         WAnE8On/LkCx07ZO/axKml8Gv144+XIt+0Iplej/NZbvA/VCnZYrO1wog6C976hqmYZr
+         yiynMXxWq0gzen6/XKVUleTC+PZyLUrhFWEeTvB1euBPijxMFYRy+MrGuTBcKg4SNYBT
+         AnFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757430128; x=1758034928;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Yh0fjNDYqjzdJxYcthmflSzVU8lAPQ437Tv8jqJmBNM=;
-        b=fQV1i22yyVMypXpKD9lSbXDwBdUIQerwKLrnl1zSUcT0c1TiVLErrJw6oeFviMuuu9
-         Ij3SUn+hWgg42vg2btDcjN3J2h+x1zubizW+DwLe1WYL9F8sN8ha7waEGJalvS4fz8uD
-         /H44gq22dyC/Ikt9FC3ByGaJ+9MaC+wMvHj2GOf6K9RC67GxK10OkZZVYbGq7qhB51xK
-         5v227IqTt2/aTZxT/3PyECYJzJRQc7ymkas5aX5Xjpu/7RwsCJifWySTYFOlMYHc6Z5Z
-         wPohLuKc1lJ5YxN1RVOq8nd308is4ly/8mOpOc92zssybppTjDTSe7c8BpKodkn2L1FA
-         JFOA==
-X-Forwarded-Encrypted: i=1; AJvYcCVgAU/dBMSZFn1EZh4vZJAMlHX6O0vUWcW3W858SPdXmNi7fw+P8waMONS+UV5mtzwzrTwK6/8H5w==@kvack.org
-X-Gm-Message-State: AOJu0YyFt0hxoYUbLVdj1BMUYOk0tWqeqBW/6kwEnIhsAnG3bUDNboAb
-	Nm+M1H38NvhG+K/AAVCbs4KSVdDb+6nAWmlNVTZ3igdU16ah/XavleYe6S7qBrO3SRw=
-X-Gm-Gg: ASbGncsR7zyqekZVIghG32a/lOWaWknlAdgi6x2nVA9TL1RECPsc8zWhi9yFAc8gAZU
-	++WV3fNHkhotOJm5EkU2s6hIAtgbmPTcshHNXagy4ZLO6GTU2CgEdnl+Wp72zUSmO9immMo/mM0
-	oyQqcXUNSczAPwiK4H9cg7f+K2cyx4ZfVAxbdXDpgtayajBKIIUBltKZkJKCzpCLx7hEweZSFoA
-	sQRPADrNkY41lsmWBwZzgYsa50knaogZtEkQqPSjW0qDOizzVioic3nMt/awhjppZCY6CqJOuIe
-	A/UrHjT0C01M+N+tJXluEfFyXZB+kjd2uVU7NzfKD1gZR26fQ/EI0vpQ9itzLuOaAboKUI4PM7A
-	kdg==
-X-Google-Smtp-Source: AGHT+IFOGeEWrEyaAhZ9HLZ8ljGlKxieYtI7L7qfboXpXt08DoBi9j/dcjK8l0X0zckOHyw5S1Wt3g==
-X-Received: by 2002:ad4:5aa7:0:b0:729:4be4:7fdb with SMTP id 6a1803df08f44-739435d4633mr118482876d6.52.1757430127822;
-        Tue, 09 Sep 2025 08:02:07 -0700 (PDT)
-Received: from localhost ([2620:10d:c091:600::1ad8])
-        by smtp.gmail.com with UTF8SMTPSA id 6a1803df08f44-727b2c047dcsm112542926d6.59.2025.09.09.08.02.06
+        d=1e100.net; s=20230601; t=1757430209; x=1758035009;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Mu/1i0QY1lAahv44Zab7jGfKcHqDQqbZccixOVrtOOw=;
+        b=JJVmHpPIprlzRyzVWpJsnn2+KaE9YjaAz8Aug8smdRBdd5Kuihy6QwRaieMo2nQZ23
+         rXswNn4ZBYvSss/p69Z7ewTTz5pW6x1fxxAXa6yAlBVMpVErE6jnVBp+X2JuTUC/h+dG
+         QpcLytewn1iEcwMVlMiPb97jkHNUcyTwGOH2zYLnLENHxJPR0cph5CEUK9X1wfnt8ush
+         r+Qvm+uAKETHeF70SXenyi8RkAiFqvhSt0BR9+yDVXDyesdO2RXrUEFPkR0sV+PX8C/Z
+         L1AiJ09NNdh8reNX3e+3MPSTWheM9CctUJ9fuon3IlYhiis+uea8OvzpEbccRiuvArxL
+         jbLA==
+X-Forwarded-Encrypted: i=1; AJvYcCVaQH08tw4+06TRfN3GixZTzwtK/DIawzR5M4EjQZqdp3RUAZojqv175BhcYyb4mxBFMz/yrjrdpw==@kvack.org
+X-Gm-Message-State: AOJu0YyCVhU89Xkk00Rt2s7EoebzDYAZRDnqWoojyompAX+iBBY2CuYB
+	J3VaCDSLkcrHY34zuIAC1vvYqZ2zN6n0xFJ6PJtn/rfrPJuLqEldaBcw8nT5SZP9KbA=
+X-Gm-Gg: ASbGnctNcqHiHXioo5imc3WVk1Q9SAnSRy+lcUJHLHpcr+hoK3LVdxuae7bs+yiZ19s
+	aiyF1Z7xlZE1AXrKts/CTxAjjKokjyAMPozjOVdaHGmSIR71JOdgvmwKV64e+GgqrJqea0lsctC
+	cH4of7MEiMACOgwilQYkTGFHVY3foCi7NTAZsOVnI6VCBa8ZIC3bYUk84CDKPEDl38SXjkaLyqQ
+	18d+PvzG4Vkf6Feekq9wbtFvKQAcHXYVWt1r3+9b6zmpWsygUlxs4CopbkXrsyHYQKuuCxgKepY
+	t41pi/AqcJhMI0TuxGLh+C/4jGBb63Ba54USAh+j5jYoUYaFXTIovVq5rG39HZ/mrC2qzLWiqnJ
+	mpLoOyzAtES3R
+X-Google-Smtp-Source: AGHT+IEjOrf2aDiDBedKoPEPVw6yfvKoqORxFwFZL8tpRk7gQlzrwvc8I4YBCMey02oIsQCUL6PFJw==
+X-Received: by 2002:a05:6214:c4f:b0:734:4ca1:1d97 with SMTP id 6a1803df08f44-7391c8e0647mr128950756d6.16.1757430208186;
+        Tue, 09 Sep 2025 08:03:28 -0700 (PDT)
+Received: from localhost ([2620:10d:c091:600::43c9])
+        by smtp.gmail.com with UTF8SMTPSA id 6a1803df08f44-720ac16de47sm141863736d6.15.2025.09.09.08.03.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Sep 2025 08:02:06 -0700 (PDT)
-Date: Tue, 9 Sep 2025 16:01:56 +0100
+        Tue, 09 Sep 2025 08:03:27 -0700 (PDT)
+Date: Tue, 9 Sep 2025 16:03:26 +0100
 From: Johannes Weiner <hannes@cmpxchg.org>
-To: Yosry Ahmed <yosry.ahmed@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Nhat Pham <nphamcs@gmail.com>,
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Chengming Zhou <zhouchengming@bytedance.com>, linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/3] mm: zswap: interact directly with zsmalloc
-Message-ID: <20250909150156.GB1474@cmpxchg.org>
+Subject: Re: [PATCH 0/3] mm: remove zpool
+Message-ID: <20250909150326.GC1474@cmpxchg.org>
 References: <20250829162212.208258-1-hannes@cmpxchg.org>
- <20250829162212.208258-2-hannes@cmpxchg.org>
- <r3dzlbqyvhaho5zuac7eba6pxz47zy3cz4lopxza3ls3ibadlh@6evm5aryyuxp>
+ <CAKEwX=M8ccnsOUc4_ZcFrg-8MSwDDF250=LCFKctvTrL5vJZ6g@mail.gmail.com>
+ <4vpqew3bfs74kesmgd6kaafgm6nr6zbtt2t3hl2khkc6ds4zep@hllgy77hdumf>
+ <CAKEwX=P=2cm7X4VMGO==xqmcFfBj4tq_YU9DqCSbyAmCioDccg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <r3dzlbqyvhaho5zuac7eba6pxz47zy3cz4lopxza3ls3ibadlh@6evm5aryyuxp>
-X-Rspamd-Queue-Id: 5EDC9100027
-X-Rspamd-Server: rspam05
-X-Stat-Signature: zp96gukhydoi41znntzhwwbs4sq6ix4n
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAKEwX=P=2cm7X4VMGO==xqmcFfBj4tq_YU9DqCSbyAmCioDccg@mail.gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1757430129-292794
-X-HE-Meta: U2FsdGVkX18CoSdKzcpJEzl8iQFc0TvV+pscOb49bNcPrWiCJSxq3chDkRcJCaRh7ePjdBAPt1jOlatfUfFVoXR2hsQKoSSThAVxogFd4Ku5MebsM+Qlj+V79+ycVbTgT3HCuIVI0p8WvceOBqm5od2R+NLwTjq/p6cKM4IcbVLPP5pxzGg3ocbjJ+bYks/GyBfUPDq+L5n0t7Yi+CrOEWloNj4/MexShFg4j0p6JLQ2a/Vrkji6rF19TFIKtvihzA1C8c2mgmov5FcFea4P3kjpE2me++gI96NTzmwOUTz61wqtKT4v08Twt1qnSMZFSARkRLyls6f1niXx+Z4M6UqiFprzXdG+pfP7GpdNCe/1/83BMuttsZtT6XxMjdhziirtCCtl8VT4oEuXMSt+HOK236qzz8b1HwSmeUl2TLL/O5Qa5q9g85vdlYoM6Ym374Ps/9Ok3NMnSJToSxeiiGCRkMh+4vtbQwxFlJV6JbgQUyTNLU/hN2KJB8r4EdBLsAJjLdg+MTBjeRsRuGuhwMkGHmvL160g2YwC97s0hDTnxWeqfRuEYeoOZHHJwHkrQSIyToR8yjBO8s1aaTGxuM1WS/N29qbNggRRDwEEZ8ji0E3JIu0B2kZbUyXrPTSQEkd0RyOS5hLsVOifxitx1UxPazCsnpw9eCx1XzO6FEh5nGH/bZgY1wPcXAU6jLB4t2+iaBpeEYscGa3Jslzej3hBPI+M9iufJ0J40ROZ3q+rPoOV2rLH/Ys2BXFkD3xnXISC4OgxbZJz4lD4Bb2FBMaAE0MwMo1kx1ME+ThufWLdowy5Dv9CkUjFZQn2DWJe3tzGobWEjHoipQDJATdbC5t+IwpfWT6YbkSe/21zib1qUiNTTvEGqlQxTB47GULyx5POyLGWqCBXFj/XT/0KjBw2Ny3zVQNpFKkytnGJ9CAVmeqxxcCfkJK6udUA4r0+08ttKLEBP+Kp5IRDpbW
- zEpqwbmL
- 8De1w6XWxr+4ZDZYkcg4gQCbZIgyihjp+1P1/Inwc7JL3DFukLAy9+e7gqcCUElineOharTJ9CrIelBm452yPSJMKmS7SE9K+ljg4PeUXUNDKIXVbFnEUTT1csrWJrCpIgnfL2Ij/pYG+aLIuDuw41HsZVYlc4srIG3dozctLyQzXpDYfYIH6ZLT7OmCb/FbfCW67vH2/HRU6CIPhsk3GHJGm0b9bnEK6+mEpJXieazfhZ3wbmsxwLq+mDTZtjb6SqifPXIMzLb5Odk2tiPbfbWunjGqVCI0yy+E7GhtzOcg6iGw46HYiK2OJcHig8cPiYEpqlayITi75u/3mU0IBgPV2XZ/HahaWmrSJOMMbp9e5/OkXH4YYZOWnrvQmtZShr1eePUDJ2CvquozcikhZpDcqMVUg3Rn8SCmC7+lDwol+BHp/ILYlVWmlP2DeEy1bCpew0vOz4oeq8E6rPcJ47Vtj3ub0AzavMQ2qLA02y2uJObIqqd1VDRpgMu7SMZmUq67gaSo+0YW71Hc=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 7F53E18001C
+X-Stat-Signature: j1h5t97usboeesw4g5g565hdctmqawk7
+X-HE-Tag: 1757430210-346090
+X-HE-Meta: U2FsdGVkX1+0QEIhQPo1kIVk5RtHDoldU/1+ecRq2gMqzRiibBj8QZiB5yzdG5YL9TvuiGj3ddWBgwOXMH5kHELD6bUxUhLPnjHXUhk8n4y2d8UDb18v+hrc6ckcIevLEyVg9NZNIeocrjTsVMh1NOTRgpkCgWeFCPjNYItbmCJRpEgZDPT4t8P7yxRsskW9mOZiFnZ0zPVsO/SaY0fRtO4TTBxJSXJ3w+en95Y8MaNBSkG8+HPdob2M0TWQ1PWhYPJorGsTR6PWm9LzZ1cp8a5NbJ810rpgpFTupyUdRbttaK04Wt7BbV2te68kfdVDT0cQnla2+k2tWX4GCZxqf0+IMmxul8SN1mhgf33eygBfuBaHmChbzek4kmJVob6/uhfbmIlOdlBKlkoGk9uoTIsGUTzLXbLCYl9PyoWRu64AlruYfVtFvFD9/XD4DN8k5WP34iSuxHtubaGM6uK2EkfFHMJSSgERT2grnTUpC8mi/xeMiEiZCBimoYT+OK1LgnpPrVdPlgjtNLsRNkaRnm3SGieddbspD+T6mhjStmwX6rofND2FnrcgLm9e3vWWxhAYcS6P7fuSuXbtxkVmvO9rJfxAuPu0EkYdyRcitmECYKqMowzUfiEEHIgyMidQD5A8Xr7ivEM2PcODqVL9NTpvv1S9Atu2ipkfDSPMzRRr/LvjXLEUCjqY7xnpFgMhcHuutzO8dlkMEjcm9SmDXQEu605Lvb8WFM9ZAVWENN0kbwEnpGptprQ0kyR5ANnDsitC2NqHBXm9AqJUW0wLQRmHH3qoplanelYOOnAxi95/m/7SyFMcvBr8MF467E8twkKmvJAVRz8jCNDJuB7/NlASwd0C5Lihc9sMdarlqlXAoM5SkEVceG2dSqudHEqojXfUMH7hAESrPtSP8+u3VmMywMugOefxJq++EWvDHxp6dGzEcGCLTWR5krowGmsxeLcDnrMKcKI7b2Euz2J
+ 8ATlCZ8W
+ +XcPkgmZSUoGYKEx/Fy7jsEbzPERT/Tg/M9ep7DGyCsPbDGP6vSmQnTJ57yEVTD7TMtTyyRvD/dbEb+NY225gVu9q6GZzKhhLUAPi1BjqVo+bstZ6+n8FI0xHi3ZFz6kpAredR9N27Rgxgs73hdzKSpPKPooK4vUB9NpPJVdBQXoSrq1z+RdYNgW8SHELhKzc0OQ1CA96q9DPgDoNIjYs8UBWoVge9LnuYu2HJTNJNTjQzo2npEpVAB0pJ+tb87oWMfCvMrCFrRKcLVtVL923qm/CSzlFw0XoJkTj/z0ky/ZhYlurD1hTo5oBiHfGn9vmqueuO/jPHDvyflYnd5J6UwtFK5cTjDG2ePlCTIpKdRyQx8AB8rDrnetT6TT0HSOvyEZBboI2PcaTpaQGc0tVooPJg70AdUioa18AkkP3D7B/yDaOlg/mxuuL6l+at6Ozg6lLpDA8uyszHxwSmUxfR3wT9h24tUw7Ua4cE+Gy7ONK3Vr4xdpYnuZOtuDbGPmlBL0aY+E5V9JRizrsZCVyZy3+PMaeTUFpyr+3MSnfr1PUp1U=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,96 +125,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 05, 2025 at 06:53:15PM +0000, Yosry Ahmed wrote:
-> On Fri, Aug 29, 2025 at 05:15:26PM +0100, Johannes Weiner wrote:
-> > zswap goes through the zpool layer to enable runtime-switching of
-> > allocator backends for compressed data. However, since zbud and z3fold
-> > were removed in 6.15, zsmalloc has been the only option available.
-> > 
-> > As such, the zpool indirection is unnecessary. Make zswap deal with
-> > zsmalloc directly. This is comparable to zram, which also directly
-> > interacts with zsmalloc and has never supported a different backend.
-> > 
-> > Note that this does not preclude future improvements and experiments
-> > with different allocation strategies. Should it become necessary, it's
-> > possible to provide an alternate implementation for the zsmalloc API,
-> > selectable at compile time. However, zsmalloc is also rather mature
-> > and feature rich, with years of widespread production exposure; it's
-> > encouraged to make incremental improvements rather than fork it.
-> > 
-> > In any case, the complexity of runtime pluggability seems excessive
-> > and unjustified at this time. Switch zswap to zsmalloc to remove the
-> > last user of the zpool API.
-> > 
-> > Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
-> > ---
-> [..]
-> > @@ -315,52 +292,29 @@ static struct zswap_pool *zswap_pool_create(char *type, char *compressor)
-> >  error:
-> >  	if (pool->acomp_ctx)
-> >  		free_percpu(pool->acomp_ctx);
-> > -	if (pool->zpool)
-> > -		zpool_destroy_pool(pool->zpool);
-> > +	if (pool->zs_pool)
-> > +		zs_destroy_pool(pool->zs_pool);
-> >  	kfree(pool);
-> >  	return NULL;
-> >  }
-> >  
-> >  static struct zswap_pool *__zswap_pool_create_fallback(void)
-> >  {
-> > -	bool has_comp, has_zpool;
-> > -
-> > -	has_comp = crypto_has_acomp(zswap_compressor, 0, 0);
-> > -	if (!has_comp && strcmp(zswap_compressor,
-> > -				CONFIG_ZSWAP_COMPRESSOR_DEFAULT)) {
-> > +	if (!crypto_has_acomp(zswap_compressor, 0, 0) &&
-> > +	    strcmp(zswap_compressor, CONFIG_ZSWAP_COMPRESSOR_DEFAULT)) {
-> >  		pr_err("compressor %s not available, using default %s\n",
-> >  		       zswap_compressor, CONFIG_ZSWAP_COMPRESSOR_DEFAULT);
-> >  		param_free_charp(&zswap_compressor);
-> >  		zswap_compressor = CONFIG_ZSWAP_COMPRESSOR_DEFAULT;
-> > -		has_comp = crypto_has_acomp(zswap_compressor, 0, 0);
-> > -	}
-> > -	if (!has_comp) {
-> > -		pr_err("default compressor %s not available\n",
-> > -		       zswap_compressor);
-> > -		param_free_charp(&zswap_compressor);
-> > -		zswap_compressor = ZSWAP_PARAM_UNSET;
-> > -	}
-> > -
-> > -	has_zpool = zpool_has_pool(zswap_zpool_type);
-> > -	if (!has_zpool && strcmp(zswap_zpool_type,
-> > -				 CONFIG_ZSWAP_ZPOOL_DEFAULT)) {
-> > -		pr_err("zpool %s not available, using default %s\n",
-> > -		       zswap_zpool_type, CONFIG_ZSWAP_ZPOOL_DEFAULT);
-> > -		param_free_charp(&zswap_zpool_type);
-> > -		zswap_zpool_type = CONFIG_ZSWAP_ZPOOL_DEFAULT;
-> > -		has_zpool = zpool_has_pool(zswap_zpool_type);
-> > -	}
-> > -	if (!has_zpool) {
-> > -		pr_err("default zpool %s not available\n",
-> > -		       zswap_zpool_type);
-> > -		param_free_charp(&zswap_zpool_type);
-> > -		zswap_zpool_type = ZSWAP_PARAM_UNSET;
-> > +		if (!crypto_has_acomp(zswap_compressor, 0, 0)) {
-> > +			pr_err("default compressor %s not available\n",
-> > +			       zswap_compressor);
-> > +			zswap_compressor = ZSWAP_PARAM_UNSET;
-> > +			return NULL;
-> > +		}
+On Fri, Sep 05, 2025 at 02:35:12PM -0700, Nhat Pham wrote:
+> On Fri, Sep 5, 2025 at 12:45 PM Yosry Ahmed <yosry.ahmed@linux.dev> wrote:
+> >
+> > On Fri, Sep 05, 2025 at 10:52:18AM -0700, Nhat Pham wrote:
+> > > On Fri, Aug 29, 2025 at 9:22 AM Johannes Weiner <hannes@cmpxchg.org> wrote:
+> > > >
+> > > > zpool is an indirection layer for zswap to switch between multiple
+> > > > allocator backends at runtime. Since 6.15, zsmalloc is the only
+> > > > allocator left in-tree, so there is no point in keeping zpool around.
+> > > >
+> > >
+> > > Taking a step back, even if we do have needs for multiple allocators
+> > > for different setups, having it runtime-selectable makes no sense.
+> >
+> > Honestly I think we should take it a step further and make the
+> > compressor selection only at build/boot time and completely get rid of
+> > supporting having multiple pools. We'd create one pool at initilization
+> > and that would be it.
+> >
+> > I believe this will simplify things considerably, and I doubt changing
+> > the compressor at runtime has a valid use case beyond experimentation.
 > 
-> Hmm it seems like there may be a change of behavior here. If
-> zswap_compressor == CONFIG_ZSWAP_COMPRESSOR_DEFAULT at the beginning and
-> crypto_has_acomp() returns false, the old code will go into the second
-> if (!has_comp) block, printing an error, freeing the string, and setting
-> zswap_compressor to ZSWAP_PARAM_UNSET, then we eventually return NULL.
+> You are completely right.
 > 
-> It seems like the new code will just call zswap_pool_create() anyway.
+> And, even if there's a setup where we benefit from multiple
+> compressors, the current setup is definitely not it. How are we
+> realistically going to use these sysfs knobs? Change to one
+> compressor, then quickly change it back? How is this remotely useful?
 > 
-> Am I missing something here?
+> Let's remove it all. In the future, if we want to do multiple
+> compression tiers, or per-cgroup compression algorithm, we will need a
+> completely different architecture anyway.
 
-I don't think that scenario is possible, due to the way the Kconfig
-works. Whatever backend I select for CONFIG_ZSWAP_COMPRESSOR_DEFAULT
-pulls in the crypto module as built-in/=y. It should always be there.
++1 Completely agreed, it's not worth all this fragile code in zswap.c.
+
+I'll send follow-up patches.
 
