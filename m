@@ -4,100 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9366ECAC587
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 09:05:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26BE2CAC587
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 09:07:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EEE508E0015; Tue,  9 Sep 2025 05:05:57 -0400 (EDT)
+	id 8608A8E0018; Tue,  9 Sep 2025 05:07:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC5EA8E0003; Tue,  9 Sep 2025 05:05:57 -0400 (EDT)
+	id 811B78E0003; Tue,  9 Sep 2025 05:07:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E02CA8E0015; Tue,  9 Sep 2025 05:05:57 -0400 (EDT)
+	id 74EF98E0018; Tue,  9 Sep 2025 05:07:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id CC7898E0003
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 05:05:57 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0C82814041E
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 09:05:56 +0000 (UTC)
-X-FDA: 83869129554.14.7D281CD
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf13.hostedemail.com (Postfix) with ESMTP id DFEDA20011
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 09:05:54 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5FE4A8E0003
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 05:07:10 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 390AA140420
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 09:07:10 +0000 (UTC)
+X-FDA: 83869132620.28.35816CB
+Received: from mta20.hihonor.com (mta20.hihonor.com [81.70.206.69])
+	by imf26.hostedemail.com (Postfix) with ESMTP id B3EF2140008
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 09:07:07 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
 	dkim=none;
-	spf=pass (imf13.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	spf=pass (imf26.hostedemail.com: domain of zhongjinji@honor.com designates 81.70.206.69 as permitted sender) smtp.mailfrom=zhongjinji@honor.com;
+	dmarc=pass (policy=none) header.from=honor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757408755;
+	s=arc-20220608; t=1757408828;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ujoZwN7+39kxKbECl/cd7bSlB0kLqKwYgSZlv4ws8T4=;
-	b=BR7SmV/b3z5DwkUN+WttYu7SB4Ok0ZnRNQn3NCbpcSaaCSFCNm8uhZJYBBELdJPee/JQr7
-	bPZnsdvOThd543RZIj4UedBmb513IS40YxeBYfeFmFWTd1JEpqCzR5t2GPxcHSsaH5bEFO
-	KS0gPvHE/JvUTkoaAHrV3hyjkAtjZBI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757408755; a=rsa-sha256;
-	cv=none;
-	b=KZBqJq6XT5ZrQZ8a1jPgUg6ieIaTMWLZ9Du4o929uhdqQmAyEbRgUm8fCngRoLpYdNOZSL
-	HxS6HFb1QCZNP4DJmj9w6b/BAkWtDVnf4nZHnJ5GAW5xAgNoPByPMGoeu2JdS9IF0j7ZH6
-	WNgA54OfygzxN8/+Mwj0PIwLz6MFidk=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=EXv88COtDaAhz40DpOLvYvNrw8zgCGqnXrvpci+wSw8=;
+	b=RDQY0zZmwXe3dFap5mpB59x8z+xl4lBrfOiJhaa6OsQ5ReRAoGyzpKA3pNVmHzoksGHcsa
+	PA8f+35z52nHjmZbzxAYfudKjntHni9C95KKBZYf/Zml96NVkzkZeQCAy4xeJoCqJifq75
+	v21SJP7nMItCT7gPy7nHF3P1x3zwWIs=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
+	imf26.hostedemail.com;
 	dkim=none;
-	spf=pass (imf13.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E25F015A1;
-	Tue,  9 Sep 2025 02:05:44 -0700 (PDT)
-Received: from [10.57.60.124] (unknown [10.57.60.124])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A7EF13F63F;
-	Tue,  9 Sep 2025 02:05:39 -0700 (PDT)
-Message-ID: <bd3958cc-f069-40a6-b201-7cab338e0cd9@arm.com>
-Date: Tue, 9 Sep 2025 11:05:35 +0200
+	spf=pass (imf26.hostedemail.com: domain of zhongjinji@honor.com designates 81.70.206.69 as permitted sender) smtp.mailfrom=zhongjinji@honor.com;
+	dmarc=pass (policy=none) header.from=honor.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757408828; a=rsa-sha256;
+	cv=none;
+	b=KwMgPYj1+rTdY2jgPMvabfUlWBoKLlDWhTg+/TJdTO0jiSTffJVITS2CT6oxCLa1l1LdLS
+	Nv1eAaybH9UqQVuc5vjK0g9M+1hM7lBfAB2Vmju/91Ly3OfdUzrM5HZjYuP31IGYDmr27i
+	1GcB8exQ2WjHLBTGefxPOB9m4NSjdSM=
+Received: from w002.hihonor.com (unknown [10.68.28.120])
+	by mta20.hihonor.com (SkyGuard) with ESMTPS id 4cLdH210r7zYl3P3;
+	Tue,  9 Sep 2025 17:06:38 +0800 (CST)
+Received: from a018.hihonor.com (10.68.17.250) by w002.hihonor.com
+ (10.68.28.120) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 9 Sep
+ 2025 17:07:03 +0800
+Received: from localhost.localdomain (10.144.20.219) by a018.hihonor.com
+ (10.68.17.250) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 9 Sep
+ 2025 17:07:03 +0800
+From: zhongjinji <zhongjinji@honor.com>
+To: <mhocko@suse.com>
+CC: <rientjes@google.com>, <shakeel.butt@linux.dev>,
+	<akpm@linux-foundation.org>, <tglx@linutronix.de>, <liam.howlett@oracle.com>,
+	<lorenzo.stoakes@oracle.com>, <surenb@google.com>, <lenb@kernel.org>,
+	<rafael@kernel.org>, <pavel@kernel.org>, <linux-mm@kvack.org>,
+	<linux-pm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<liulu.liu@honor.com>, <feng.han@honor.com>, <zhongjinji@honor.com>
+Subject: [PATCH v8 0/3] Improvements to Victim Process Thawing and OOM Reaper Traversal Order
+Date: Tue, 9 Sep 2025 17:06:56 +0800
+Message-ID: <20250909090659.26400-1-zhongjinji@honor.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/7] mm: introduce local state for lazy_mmu sections
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Andreas Larsson <andreas@gaisler.com>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
- <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- David Hildenbrand <david@redhat.com>, "David S. Miller"
- <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>,
- Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
- Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
- <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
- Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org
-References: <20250908073931.4159362-1-kevin.brodsky@arm.com>
- <20250908073931.4159362-3-kevin.brodsky@arm.com>
- <20250908224054.0a1969b493d8a837addd782e@linux-foundation.org>
-Content-Language: en-GB
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-In-Reply-To: <20250908224054.0a1969b493d8a837addd782e@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: fc19fjewdh8nuoxmheqkf1pd8dkwbasu
-X-Rspamd-Queue-Id: DFEDA20011
+Content-Type: text/plain
+X-Originating-IP: [10.144.20.219]
+X-ClientProxiedBy: w003.hihonor.com (10.68.17.88) To a018.hihonor.com
+ (10.68.17.250)
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1757408754-230136
-X-HE-Meta: U2FsdGVkX1+eDRce6OiD1P+jXff6itKKEzbZCsYnei0FIlkyIzRMs0yD5PBYgE9M0CgwFrt4fE7Sb8FQjcZRSUIbQJrTaeAjlKP+xJ+ovlhe9wAskF9aTqng+T1NfsxoqoSzPQUhXsYO2uJgSaEf4H/7E8gLHI4lhKdYQavGwEtxBx/w8OY/em4MPnLKSmHuU78dkKoBWEcu1rCa0iJ6QCpCJn4N4YiKNcPAxawzWF8H5huobzDUbj4qs43Be1ZtxZoEYjweCn6j0acAct2hXSWdReF6EbxLSdxnYrar8OqnBXCFHlJvMdS2kuU7g9KOVPHAk+fgUng5MuKufPejCiut4vqXeWwNQXb6KvvJfQBJNqI9HDyLQDxShQ34t8910tuzN+1+cVoBEClMMESzv/iHMocSyGnn7qmIzJ0kz3iT0ClekZmx500roeKY4tJ+F4veVVxkoZIGuKlwJstQg6/8li+vh2bkk8CENd3diteB39cvtGJj2egoCOIEkioC9dyYseWQwcOG/C9scb4eZAbs2Q0736fBcYGPhT4nNEMl3PCWFsteNbEWiMzxKTh9WuDQ+aXgyNpmc4TfUP4YWc7xcIXoZJJZjE6bWSclIz4ygTdVtAjhmdmPhBgZlUQ9bUTDiDSmbB0cMY1iIZ0KwsOEXWNJDJA5FaeUx/stiyYYA3yT0k23f0jSeY/ZHGUKu0JpElpMvazHNCls565pdu6Qtz0F6QyAkaYyjVC8pAw6kFGltYiAs6RvQxdOS3w71N+dL/bafAj6q+hYB28lsjWuABOqq8g0gPEA1aqNLwEs8qAnPlss6HuvEAbvQHQlzfhlgEcAI8VrFF/0Pj81f91V8dcdOUXWnFfC8Y6khm7GamVQK/17cezP8THNIGmsHCFwdHIU0UOlXxgMqVY+MS0I8dm5QNLvaEGtWmYbF3gSSlXL8iCpDQzx5E9VkqLX5bY7FsjgDB7/UgjtI48
- mLwXP+Yj
- wrVNG8JIfL2ORtXOmU2Aa77p+ROkr3KYQOOphUksEWHkydcaFxA2fnE07uA5i4bD1S46EroZSK08yF6NbmrpWOoaNt7W8Ryfa1muycnkxs3WDFTtkczDsbVfSCgQC7J1qANvZhHs4OKf2Z+v5xgVhLRmv6krA3yu5yTbx4vqwfW1/nNX7viuHwtBc7ftcAduf4sB+YHLYAxre61pqPFSNNkce1uTfvM6Gw6tNaOv30r1a/ietl+n8qW6FK6oLh9CMCXRVzJ3v/UeAb8bTj5StyM4m2w==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: B3EF2140008
+X-Stat-Signature: 6686e1ktkrih5bfhjcoz7e6opqp6dsz4
+X-HE-Tag: 1757408827-571370
+X-HE-Meta: U2FsdGVkX19QVbqlNo51Bmy6TL11YhQ70Igx3r/O1r6YRn8/qly7lun+u6hjzxeQdexSWI99lje71N3x07Ki5PgiW+Mj72orvZ/kxkw9lQXqxgoA5Gl6hdAWrlm4G/Wv3w5RMnATUnxc+cgiTIm1L3u27GljviKgbyCiU6qojaMj1/cGPyqKda462+7huo64iRdtW2reHk1eV3rfbOxUIBaaEGIQ8S6q4fPIMtd7Az5vmO+vKVuizboLpv6wiQvn/K1xPtgCNmFTOffp+E47mfnrkilKfjcPy8GRoLvrVDZJXXfNSxHIpl0mv7WhcqGHzqxOyJ/jsrskZimwX0TRhkh1ZaSQETVLjEZfmSmERY7dWwF5Fb0wo4hRaBE3Zvh3mz6GG9/s0F/MlwQTEixMHfqDwWJ6QxpB4Y6JbiuAwKxF361n4VpU9300BLQzjMPYfofk7/onMzRffRoX6kgvXESOsMNeYSeX1IRDnfTZIJq78qa54dwXMHB43DTDrCcD9cVWD1yK6UgWSYNS0wbZvYOJT9mVcE+ZC+CJpL6ASo1eqFhfk38dLc2UFHQB/8q/socW+kCMtgcIvFCwCOm1NuAaM7pUZaMAZfrs1bqQupDDdC5Lmouf5IY9tmFzQ7Irmytw/lCLto2e8+bI1Bq67nqXCs5HLZy8TYDcUuGkU0fKTQjZnmTkrDKomiubbJJ3HHAz+vZylkvRxv6DTkUN0XoDBsq9h92ZcAt6L8EsxB5ZkT/wp3n38sjg2gAM1uh9NOkpSRCmFlPWHJTVZKPPZQ6qEFozijBWdSXJLGdedKj00MbWwGv+o//cW3YWK8RmzloROaVfIZuDrRYYpMHt1XxiXiq4t3HvVPx7W+RPOzu7XdAh+rbpKJ2WI2XQ/t2G58RvOD4YwmY8ANj7dsfQc+CEAImuvgaa13DLG0QU/j+T+UEHz6sK+uuISsK+6mzzIOl9gzC3GK2CxTo+0xc
+ 4re8MVDD
+ wAbOgv+B7Gub7w2uDZW/OaRlw14SgKQygn+uUwvzATJNXvBoMcKaumTd9rj/HSz63pguqQ419vloadszRNnFytqKsKtGgop6deIJywMFCqNsPxsPGlYkYZ4E1G3qr0FDqD9KusdiK7bGvVqPhEdrlKas4L32KDFtJ1jpnzh02Ork6dM+8yBZeeMtDtc8daF5SADXD
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,70 +91,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 09/09/2025 07:40, Andrew Morton wrote:
-> On Mon,  8 Sep 2025 08:39:26 +0100 Kevin Brodsky <kevin.brodsky@arm.com> wrote:
->
->> arch_{enter,leave}_lazy_mmu_mode() currently have a stateless API
->> (taking and returning no value). This is proving problematic in
->> situations where leave() needs to restore some context back to its
->> original state (before enter() was called). In particular, this
->> makes it difficult to support the nesting of lazy_mmu sections -
->> leave() does not know whether the matching enter() call occurred
->> while lazy_mmu was already enabled, and whether to disable it or
->> not.
->>
->> This patch gives all architectures the chance to store local state
->> while inside a lazy_mmu section by making enter() return some value,
->> storing it in a local variable, and having leave() take that value.
->> That value is typed lazy_mmu_state_t - each architecture defining
->> __HAVE_ARCH_ENTER_LAZY_MMU_MODE is free to define it as it sees fit.
->> For now we define it as int everywhere, which is sufficient to
->> support nesting.
->>
->> The diff is unfortunately rather large as all the API changes need
->> to be done atomically. Main parts:
-> This has a build error:
->
->   CC      arch/x86/kernel/asm-offsets.s
-> In file included from ./arch/x86/include/asm/irqflags.h:102,
->                  from ./include/linux/irqflags.h:18,
->                  from ./include/linux/spinlock.h:59,
->                  from ./include/linux/swait.h:7,
->                  from ./include/linux/completion.h:12,
->                  from ./include/linux/crypto.h:15,
->                  from arch/x86/kernel/asm-offsets.c:9:
-> ./arch/x86/include/asm/paravirt.h: In function 'arch_enter_lazy_mmu_mode':
-> ./arch/x86/include/asm/paravirt.h:534:16: error: 'LAZY_MMU_DEFAULT' undeclared (first use in this function)
->   534 |         return LAZY_MMU_DEFAULT;
->       |                ^~~~~~~~~~~~~~~~
-> ./arch/x86/include/asm/paravirt.h:534:16: note: each undeclared identifier is re
->
-> which gets fixed up later in the series.
+This patch series focuses on optimizing victim process thawing and refining
+the traversal order of the OOM reaper. Since __thaw_task is used to thaw a
+single thread of the victim, thawing only one thread cannot guarantee the
+exit of the OOM victim when it is frozen. Patch 1 and patch 2 thaw the entire
+process of the OOM victim to ensure that OOM victims are able to terminate
+themselves. Even if the oom_reaper is delayed, patch 3 is still beneficial
+for reaping processes with a large address space footprint, and it also
+greatly improves process_mrelease.
 
-Oh indeed good catch! I don't think there's an easy way to fix this
-cleanly due to the header soup. Since it's just a temporary change, I
-suggest:
+---
+v7 -> v8:
+- Introduce thaw_oom_process() for thawing OOM victims. [12]
+- Use RCU protection for thread traversal in thaw_oom_process.
 
-diff --git a/arch/x86/include/asm/paravirt.h
-b/arch/x86/include/asm/paravirt.h
-index 65a0d394fba1..67b9549b4255 100644
---- a/arch/x86/include/asm/paravirt.h
-+++ b/arch/x86/include/asm/paravirt.h
-@@ -531,7 +531,7 @@ static inline lazy_mmu_state_t
-arch_enter_lazy_mmu_mode(void)
- {
-     PVOP_VCALL0(mmu.lazy_mode.enter);
- 
--    return LAZY_MMU_DEFAULT;
-+    return 0; /* LAZY_MMU_DEFAULT */
- }
- 
- static inline void arch_leave_lazy_mmu_mode(lazy_mmu_state_t state)
+v6 -> v7:
+- Thawing the victim process to ensure that it can terminate on its own. [10]
+- Since the delay reaper is no longer skipped, I'm not sure whether patch 2
+  will still be accepted. Revise the Changelog for patch 2. [11]
+- Remove report tags
 
+v5 -> v6:
+- Use mas_for_each_rev() for VMA traversal [6]
+- Simplify the judgment of whether to delay in queue_oom_reaper() [7]
+- Refine changelog to better capture the essence of the changes [8]
+- Use READ_ONCE(tsk->frozen) instead of checking mm and additional
+  checks inside for_each_process(), as it is sufficient [9]
+- Add report tags because fengbaopeng and tianxiaobin reported the
+  high load issue of the reaper
 
-That will generate a trivial conflict with patch 4, naturally.
+v4 -> v5:
+- Detect frozen state directly, avoid special futex handling. [3]
+- Use mas_find_rev() for VMA traversal to avoid skipping entries. [4]
+- Only check should_delay_oom_reap() in queue_oom_reaper(). [5]
 
-Should I send a v3 with that change?
+v3 -> v4:
+- Renamed functions and parameters for clarity. [2]
+- Added should_delay_oom_reap() for OOM reap decisions.
+- Traverse maple tree in reverse for improved behavior.
 
-- Kevin
+v2 -> v3:
+- Fixed Subject prefix error.
+
+v1 -> v2:
+- Check robust_list for all threads, not just one. [1]
+
+Reference:
+[1] https://lore.kernel.org/linux-mm/u3mepw3oxj7cywezna4v72y2hvyc7bafkmsbirsbfuf34zpa7c@b23sc3rvp2gp/
+[2] https://lore.kernel.org/linux-mm/87cy99g3k6.ffs@tglx/
+[3] https://lore.kernel.org/linux-mm/aKRWtjRhE_HgFlp2@tiehlicka/
+[4] https://lore.kernel.org/linux-mm/26larxehoe3a627s4fxsqghriwctays4opm4hhme3uk7ybjc5r@pmwh4s4yv7lm/
+[5] https://lore.kernel.org/linux-mm/d5013a33-c08a-44c5-a67f-9dc8fd73c969@lucifer.local/
+[6] https://lore.kernel.org/linux-mm/nwh7gegmvoisbxlsfwslobpbqku376uxdj2z32owkbftvozt3x@4dfet73fh2yy/
+[7] https://lore.kernel.org/linux-mm/af4edeaf-d3c9-46a9-a300-dbaf5936e7d6@lucifer.local/
+[8] https://lore.kernel.org/linux-mm/aK71W1ITmC_4I_RY@tiehlicka/
+[9] https://lore.kernel.org/linux-mm/jzzdeczuyraup2zrspl6b74muf3bly2a3acejfftcldfmz4ekk@s5mcbeim34my/
+[10] https://lore.kernel.org/linux-mm/aLWmf6qZHTA0hMpU@tiehlicka/
+[11] https://lore.kernel.org/linux-mm/aLVOICSkyvVRKD94@tiehlicka/
+[12] https://lore.kernel.org/linux-mm/aLg0QZQ5kXNJgDMF@tiehlicka/
+
+The earlier post:
+v7: https://lore.kernel.org/linux-mm/20250903092729.10611-1-zhongjinji@honor.com/
+v6: https://lore.kernel.org/linux-mm/20250829065550.29571-1-zhongjinji@honor.com/
+v5: https://lore.kernel.org/linux-mm/20250825133855.30229-1-zhongjinji@honor.com/
+v4: https://lore.kernel.org/linux-mm/20250814135555.17493-1-zhongjinji@honor.com/
+v3: https://lore.kernel.org/linux-mm/20250804030341.18619-1-zhongjinji@honor.com/
+v2: https://lore.kernel.org/linux-mm/20250801153649.23244-1-zhongjinji@honor.com/
+v1: https://lore.kernel.org/linux-mm/20250731102904.8615-1-zhongjinji@honor.com/
+
+zhongjinji (3):
+  mm/oom_kill: Introduce thaw_oom_process() for thawing OOM victims
+  mm/oom_kill: Thaw the entire OOM victim process
+  mm/oom_kill: OOM reaper walks VMA maple tree in reverse order
+
+ include/linux/freezer.h |  2 ++
+ kernel/freezer.c        | 19 +++++++++++++++++++
+ mm/oom_kill.c           | 16 +++++++++++-----
+ 3 files changed, 32 insertions(+), 5 deletions(-)
+
+-- 
+2.17.1
+
 
