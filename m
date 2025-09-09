@@ -4,119 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 930D5CAC583
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 15:03:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9987FCA0FED
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 15:11:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F17796B000D; Tue,  9 Sep 2025 11:03:32 -0400 (EDT)
+	id 032E76B0011; Tue,  9 Sep 2025 11:11:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EEB9B6B000E; Tue,  9 Sep 2025 11:03:32 -0400 (EDT)
+	id F25958E0003; Tue,  9 Sep 2025 11:11:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB2DC6B0011; Tue,  9 Sep 2025 11:03:32 -0400 (EDT)
+	id E3B246B0029; Tue,  9 Sep 2025 11:11:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C696A6B000D
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 11:03:32 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7A7A61D9ECB
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 15:03:32 +0000 (UTC)
-X-FDA: 83870030664.06.80F08EA
-Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 7F53E18001C
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 15:03:30 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b=ewX7nL6f;
-	spf=pass (imf16.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.53 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	by kanga.kvack.org (Postfix) with ESMTP id CF75B6B0011
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 11:11:19 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 81C66140564
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 15:11:19 +0000 (UTC)
+X-FDA: 83870050278.15.3B01817
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 4FF2A20016
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 15:11:17 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b=B+JXdkr5;
+	spf=pass (imf03.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.180 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
 	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757430210;
+	s=arc-20220608; t=1757430677;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Mu/1i0QY1lAahv44Zab7jGfKcHqDQqbZccixOVrtOOw=;
-	b=ueiYjlCycifO+xwB6uvYUjL2QLErZO0JroxW58FIUsp9eZHKB9vqkUgdvSW9n9DuTnuZ3y
-	TtMsdCze84pLSng6ZndJMwa5eOtZdgEdDKrOveGjJkPIh/9dXL2XtE+HWA3eMXB0EVT3l1
-	kaJUH/rM+kB4QNLABvaqYKufteQeMNo=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b=ewX7nL6f;
-	spf=pass (imf16.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.53 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757430210; a=rsa-sha256;
+	bh=tURBG8J8o/qd06zK5K8bYxIL4Qoo/SPoLEPuSdcyLLo=;
+	b=QNQXuyoQgNWmh7nZqTu2K4toNgY3WUuA8rquh6o72wels7vZtHXVo63jXrX1uiBY8335p9
+	+AiJ38h8DcioDT3GaHZLevFoeA8WaAVQLkwbNGhGhazLFO6Fuqqi3e7sX7dZBZlyyUAaYs
+	BiSRoMJIiAXf0epU1ou1HO3ow9l04gw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757430677; a=rsa-sha256;
 	cv=none;
-	b=5Mz89BxktP0KG9qTRhJWOTHxH1K1IgtbtHOwBLNW2kXcHKOWPsmP4SrYH4d9vc0jetpCA5
-	bTRx2QOHEVT8ys5lE9BmWVi2NUC8hoSsyv/IjvzC/jcEfIxo2ZAhlTbk8wqcfKv8Q49Bin
-	U9CIUzdlSbUjU+ckWFJE1uN/QqAFZ4s=
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-72816012c5cso47462186d6.0
-        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 08:03:30 -0700 (PDT)
+	b=WeCc0Gd7K31g25+XikLfKLBCnE+jaGbLy9YiM7/8EMw/nq3Oy8hgeFijrtkxPOe/K5wx1/
+	nhcCpK2B1jWPe8aQzf2Lhh6nu1c/hoKoz4Yu3kwRVB10DMP3VFb9B7bYjhxKs9Elk7koDh
+	yeZAY8ReQtbxjrNuAaNg/vyEzSltfC0=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b=B+JXdkr5;
+	spf=pass (imf03.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.180 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4b490287648so93550901cf.2
+        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 08:11:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg-org.20230601.gappssmtp.com; s=20230601; t=1757430209; x=1758035009; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Mu/1i0QY1lAahv44Zab7jGfKcHqDQqbZccixOVrtOOw=;
-        b=ewX7nL6fgaayp/DlOHcu+M8o/zge5wIFkTZqeC2n1i3XZryOc8S1VJAWyhi5ebKb1s
-         jVTxVDw9t6pPQASFEyRhpUbRyfB3a6lKga/YfIkFcTLMW25THH1MEpZzQ1h5UHzYrWkz
-         yAzUGiIH2NzZqCQBqodzzIn64UAGECCkZj42OApa+WxPOquN5TDVMcPtGqLa9zZPEAt4
-         WAnE8On/LkCx07ZO/axKml8Gv144+XIt+0Iplej/NZbvA/VCnZYrO1wog6C976hqmYZr
-         yiynMXxWq0gzen6/XKVUleTC+PZyLUrhFWEeTvB1euBPijxMFYRy+MrGuTBcKg4SNYBT
-         AnFA==
+        d=cmpxchg-org.20230601.gappssmtp.com; s=20230601; t=1757430676; x=1758035476; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=tURBG8J8o/qd06zK5K8bYxIL4Qoo/SPoLEPuSdcyLLo=;
+        b=B+JXdkr5Nds/2204lf3+HA/aQnYsDsQ4PTXNRsaJVOpVd+994dlpRfD7+bdGJrtAXT
+         u8+g6l2/3DFCVvbgWnk18HTQRovhvD7Pz0T6H9Q8K/9VxD71fOeL1A/513glkLOT6IFu
+         OPWQLGHwPlczYqGRxLiPsxb06oRzUCZhPryxCJF2xa4C2Tl6ParD07JIxKznmdzXmk4M
+         SFFman5HumeQ2gVyetio1jm05Y0XPUci4EA8zq9Bk6XRIQbYBZP+Brtjydkr6s+QnVlb
+         tUOK82KVKm5urO/4p9unMaDX8yfZK7LGA51iJd79bf7b9uBZwQeJCJTMRkVQSuWesN2i
+         Av+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757430209; x=1758035009;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Mu/1i0QY1lAahv44Zab7jGfKcHqDQqbZccixOVrtOOw=;
-        b=JJVmHpPIprlzRyzVWpJsnn2+KaE9YjaAz8Aug8smdRBdd5Kuihy6QwRaieMo2nQZ23
-         rXswNn4ZBYvSss/p69Z7ewTTz5pW6x1fxxAXa6yAlBVMpVErE6jnVBp+X2JuTUC/h+dG
-         QpcLytewn1iEcwMVlMiPb97jkHNUcyTwGOH2zYLnLENHxJPR0cph5CEUK9X1wfnt8ush
-         r+Qvm+uAKETHeF70SXenyi8RkAiFqvhSt0BR9+yDVXDyesdO2RXrUEFPkR0sV+PX8C/Z
-         L1AiJ09NNdh8reNX3e+3MPSTWheM9CctUJ9fuon3IlYhiis+uea8OvzpEbccRiuvArxL
-         jbLA==
-X-Forwarded-Encrypted: i=1; AJvYcCVaQH08tw4+06TRfN3GixZTzwtK/DIawzR5M4EjQZqdp3RUAZojqv175BhcYyb4mxBFMz/yrjrdpw==@kvack.org
-X-Gm-Message-State: AOJu0YyCVhU89Xkk00Rt2s7EoebzDYAZRDnqWoojyompAX+iBBY2CuYB
-	J3VaCDSLkcrHY34zuIAC1vvYqZ2zN6n0xFJ6PJtn/rfrPJuLqEldaBcw8nT5SZP9KbA=
-X-Gm-Gg: ASbGnctNcqHiHXioo5imc3WVk1Q9SAnSRy+lcUJHLHpcr+hoK3LVdxuae7bs+yiZ19s
-	aiyF1Z7xlZE1AXrKts/CTxAjjKokjyAMPozjOVdaHGmSIR71JOdgvmwKV64e+GgqrJqea0lsctC
-	cH4of7MEiMACOgwilQYkTGFHVY3foCi7NTAZsOVnI6VCBa8ZIC3bYUk84CDKPEDl38SXjkaLyqQ
-	18d+PvzG4Vkf6Feekq9wbtFvKQAcHXYVWt1r3+9b6zmpWsygUlxs4CopbkXrsyHYQKuuCxgKepY
-	t41pi/AqcJhMI0TuxGLh+C/4jGBb63Ba54USAh+j5jYoUYaFXTIovVq5rG39HZ/mrC2qzLWiqnJ
-	mpLoOyzAtES3R
-X-Google-Smtp-Source: AGHT+IEjOrf2aDiDBedKoPEPVw6yfvKoqORxFwFZL8tpRk7gQlzrwvc8I4YBCMey02oIsQCUL6PFJw==
-X-Received: by 2002:a05:6214:c4f:b0:734:4ca1:1d97 with SMTP id 6a1803df08f44-7391c8e0647mr128950756d6.16.1757430208186;
-        Tue, 09 Sep 2025 08:03:28 -0700 (PDT)
-Received: from localhost ([2620:10d:c091:600::43c9])
-        by smtp.gmail.com with UTF8SMTPSA id 6a1803df08f44-720ac16de47sm141863736d6.15.2025.09.09.08.03.26
+        d=1e100.net; s=20230601; t=1757430676; x=1758035476;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tURBG8J8o/qd06zK5K8bYxIL4Qoo/SPoLEPuSdcyLLo=;
+        b=ij0lA/w1dbbj4tW2ipEnE4fHy5yJko3u+pgkB/gn35dknVhykHWdOBlZF0tdIhR42E
+         qHbyXAewMRkhU+xqKvpUQ8fYowPES0uuPDRXSvzzN63xjSmPxM+HEHpTi6on/tQioq8b
+         YaWkMDt4sRIXrFTYvweVAzaOvfXt7HG/XNbAGHmrxl0H59A2XpKCmtSKa/KS8zrhoQV2
+         SzN0pgDUEGqvOg4jiiiNC0t5Z6Szh0e44o/vCZdOqbjyo5nwpXMfDm57cLmVRhwuhb0/
+         XV1ZNKjuX3FMTIs35n6W67IV8bG4CsjrMoV5qUy7OcxZduCYd6A+gB4jtpZiDgVTB65j
+         ZSAg==
+X-Forwarded-Encrypted: i=1; AJvYcCWqJ14Eyo3LbWK+YbFkDlz3rONT4BVLmO/1GYvCFS2BuFK9p9Tl4TvyHPFzKCQNE9+oCJwOvuXEsQ==@kvack.org
+X-Gm-Message-State: AOJu0YwWdJVvPdbuvyoBfgEJAyRAo8yQW0LocrTSWt2SINaA7igGKaas
+	8SAw/AbXdvfhMs4rlW1cM95BASwn9D7SCG926SVZ55OOgQnNQpT3HxYDX74PWtW6a70=
+X-Gm-Gg: ASbGnctLuHBZlgdCZtv6CXxs449QW1+lTRWS/0R7G+pf47y/b9JxgvDqmYdxwvWFC+C
+	tpgTt5W/27FKUu1b6sA8N9J6xqlS0xVS9A63kD1nN4MW0e4C1RPC6dcTYV1RUD1o4d5FZydpCcS
+	TfzXp/QcaFHRtlGCdVVuEETuIxC56IA7NKyrQ9BGGi6M3pu/xQu/0kMIIzujnd88Y0fmDDJ9J+U
+	wLyWdZ2VfJBZAjok5ZOX+8Oif1wFzdDApJYupjYxsLkL9IQZ8HBr06LvY5p6oFIO+FQFhGCm3+R
+	GurbPMEZo568hETQhZhPaL5CLrqpeowViI00sX5nIY6jmB8VtJ81ySxH8e0sH5sbhu8IeIn2vmS
+	zkMu+VsNsD73O
+X-Google-Smtp-Source: AGHT+IFKTzUCRKvQlrS8Ai0m7e/x5mKMWEsbS7AmLloMhvq2/uude/1VNVPNgbAgTYRvG0gKhgh+LQ==
+X-Received: by 2002:a05:622a:1482:b0:4b3:bd5:e1c with SMTP id d75a77b69052e-4b5f84474f2mr123084661cf.53.1757430675099;
+        Tue, 09 Sep 2025 08:11:15 -0700 (PDT)
+Received: from localhost ([2620:10d:c091:600::c6db])
+        by smtp.gmail.com with UTF8SMTPSA id d75a77b69052e-4b61ba8719csm10336371cf.13.2025.09.09.08.11.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Sep 2025 08:03:27 -0700 (PDT)
-Date: Tue, 9 Sep 2025 16:03:26 +0100
+        Tue, 09 Sep 2025 08:11:14 -0700 (PDT)
+Date: Tue, 9 Sep 2025 16:11:13 +0100
 From: Johannes Weiner <hannes@cmpxchg.org>
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: Yosry Ahmed <yosry.ahmed@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
+To: Yosry Ahmed <yosry.ahmed@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Nhat Pham <nphamcs@gmail.com>,
 	Chengming Zhou <zhouchengming@bytedance.com>, linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/3] mm: remove zpool
-Message-ID: <20250909150326.GC1474@cmpxchg.org>
+Subject: Re: [PATCH 3/3] mm: zpdesc: minor naming and comment corrections
+Message-ID: <20250909151113.GD1474@cmpxchg.org>
 References: <20250829162212.208258-1-hannes@cmpxchg.org>
- <CAKEwX=M8ccnsOUc4_ZcFrg-8MSwDDF250=LCFKctvTrL5vJZ6g@mail.gmail.com>
- <4vpqew3bfs74kesmgd6kaafgm6nr6zbtt2t3hl2khkc6ds4zep@hllgy77hdumf>
- <CAKEwX=P=2cm7X4VMGO==xqmcFfBj4tq_YU9DqCSbyAmCioDccg@mail.gmail.com>
+ <20250829162212.208258-4-hannes@cmpxchg.org>
+ <mgt4ejjyz64ehnyskv24nzjllxxie4jvxb6i2dzlq43yev5dtu@sfltngevykts>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAKEwX=P=2cm7X4VMGO==xqmcFfBj4tq_YU9DqCSbyAmCioDccg@mail.gmail.com>
+In-Reply-To: <mgt4ejjyz64ehnyskv24nzjllxxie4jvxb6i2dzlq43yev5dtu@sfltngevykts>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 4FF2A20016
+X-Stat-Signature: n4rgjb8my1eprqqgicdftcahfuja1q6c
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 7F53E18001C
-X-Stat-Signature: j1h5t97usboeesw4g5g565hdctmqawk7
-X-HE-Tag: 1757430210-346090
-X-HE-Meta: U2FsdGVkX1+0QEIhQPo1kIVk5RtHDoldU/1+ecRq2gMqzRiibBj8QZiB5yzdG5YL9TvuiGj3ddWBgwOXMH5kHELD6bUxUhLPnjHXUhk8n4y2d8UDb18v+hrc6ckcIevLEyVg9NZNIeocrjTsVMh1NOTRgpkCgWeFCPjNYItbmCJRpEgZDPT4t8P7yxRsskW9mOZiFnZ0zPVsO/SaY0fRtO4TTBxJSXJ3w+en95Y8MaNBSkG8+HPdob2M0TWQ1PWhYPJorGsTR6PWm9LzZ1cp8a5NbJ810rpgpFTupyUdRbttaK04Wt7BbV2te68kfdVDT0cQnla2+k2tWX4GCZxqf0+IMmxul8SN1mhgf33eygBfuBaHmChbzek4kmJVob6/uhfbmIlOdlBKlkoGk9uoTIsGUTzLXbLCYl9PyoWRu64AlruYfVtFvFD9/XD4DN8k5WP34iSuxHtubaGM6uK2EkfFHMJSSgERT2grnTUpC8mi/xeMiEiZCBimoYT+OK1LgnpPrVdPlgjtNLsRNkaRnm3SGieddbspD+T6mhjStmwX6rofND2FnrcgLm9e3vWWxhAYcS6P7fuSuXbtxkVmvO9rJfxAuPu0EkYdyRcitmECYKqMowzUfiEEHIgyMidQD5A8Xr7ivEM2PcODqVL9NTpvv1S9Atu2ipkfDSPMzRRr/LvjXLEUCjqY7xnpFgMhcHuutzO8dlkMEjcm9SmDXQEu605Lvb8WFM9ZAVWENN0kbwEnpGptprQ0kyR5ANnDsitC2NqHBXm9AqJUW0wLQRmHH3qoplanelYOOnAxi95/m/7SyFMcvBr8MF467E8twkKmvJAVRz8jCNDJuB7/NlASwd0C5Lihc9sMdarlqlXAoM5SkEVceG2dSqudHEqojXfUMH7hAESrPtSP8+u3VmMywMugOefxJq++EWvDHxp6dGzEcGCLTWR5krowGmsxeLcDnrMKcKI7b2Euz2J
- 8ATlCZ8W
- +XcPkgmZSUoGYKEx/Fy7jsEbzPERT/Tg/M9ep7DGyCsPbDGP6vSmQnTJ57yEVTD7TMtTyyRvD/dbEb+NY225gVu9q6GZzKhhLUAPi1BjqVo+bstZ6+n8FI0xHi3ZFz6kpAredR9N27Rgxgs73hdzKSpPKPooK4vUB9NpPJVdBQXoSrq1z+RdYNgW8SHELhKzc0OQ1CA96q9DPgDoNIjYs8UBWoVge9LnuYu2HJTNJNTjQzo2npEpVAB0pJ+tb87oWMfCvMrCFrRKcLVtVL923qm/CSzlFw0XoJkTj/z0ky/ZhYlurD1hTo5oBiHfGn9vmqueuO/jPHDvyflYnd5J6UwtFK5cTjDG2ePlCTIpKdRyQx8AB8rDrnetT6TT0HSOvyEZBboI2PcaTpaQGc0tVooPJg70AdUioa18AkkP3D7B/yDaOlg/mxuuL6l+at6Ozg6lLpDA8uyszHxwSmUxfR3wT9h24tUw7Ua4cE+Gy7ONK3Vr4xdpYnuZOtuDbGPmlBL0aY+E5V9JRizrsZCVyZy3+PMaeTUFpyr+3MSnfr1PUp1U=
+X-HE-Tag: 1757430677-332513
+X-HE-Meta: U2FsdGVkX18GxPjsgdoXaX7MfoSNshbt3jiOplwZHn2AUykA0UICofUgyv45v/Vdjcnwa/a9HtMzUIhM5aBSaKK8M/6OhF3lucj7UgiMLy4lzTM7tis1kR0vLbAKMPliqGVLxU2DtSKCS9WByOPAFs6fpmIqm+aXkGzjv+nyOUAuOgi+G3KLK/q+SxVx++kj28xPEhU5jyvwy+F+IMaofLHCUj4yVtrcajqgsZl8WineChRp7UsmuY4dsYZRb/qZitMBZgIFqmBSI5YrUYM93WLHFHCRWXr+/2xTzBJ1jOiILc1r8Epy/uVqinPoMKBbEUcFAl1YSj0TqFLmykYmNYlf+IsKhe/M1RvyW2dXxt5/n1+brmonovYOKaGyEGGU/9TH8MehvV6GrdyBTNQJDoDqI11XqvW+xteE5sqdiZOIS0+UPmtzdgRh9cRQf1KKVo+RaVwyZb9J/5siNMtgdXWcO5B7JzKLGcb0ilSzxgjwZeIwOvrj7wNsM1RkAFhDScFnbeLIC2isaFrkNK0Gt9x1ziCvMbCkznFFHGShRoTv5KRgudfS6psSbuH5AxRgHjcqHUr8kgv/YSu6obDmbC3FkEPioWO9PqIaTzBa4ZM8iEQivV2Qft+lM2F3JhvnboN9zaeBVORHOdekDWAR+e8PJubNQaeYgbUXN+AvVgm2Depc1p+9mNGYc1zGeAbynp4wmgH8nEc6x7LehWqKOv0HydAgi2zyGJGDMFVY6troK2Z9mglrONsZS29XVaRJY5xt5jSN6AzBNpygQ9N90HV+J7hpuv00pwtHOh6eAcn6EDOo9jR244G08BBF9RCh+NFcmNuBOmPBogFk69ioPysR2aZiODLsV8o1bfLooXvruO43OcxDpggrfy2ofqTJJMZsxem0PDVjhj5NXo+UoFJJFdbpLFHfB5qz/hhELlKLbF0ozm6MEsHEu+EI624cT71aZsHEQd0ipiZ64jM
+ WE4DKOBW
+ 1HSoXrD0aRdqQ7KMlPMC3a+kq96XDNZB3GojIalqvTOMiH0jfz0H5VAOY/dYTDZJgfKglDBxtoRu4uFnkCS7uex2SAdmZ6DJQVgH/+cJkJiGOv8jmfNi+2eOY+oYMrdAsvAzfrGz8fIjgt6sDNskaqsyZFuZhb/lAfcdTDmxFCQdd9zO8hnyby4CSvKhHLuLy9nDz1sXKEEipHIDLOl5yA9Js3XYhD9CnvJcJeHh4JgiF3rH7s5qrNR264bPgWxzivMDCSdCaXu1O2vNLmkpbGOZNV3qr24eYPhlKsJJqjgfJxIbF93qthHtMfayynWpfDE205IJlGn415NTmprgvyiLbPalWbBRmyeeydRGPmsSmRsLweTySYa+Fsucj4oY5pQqLklyaABF46ZAyVqkhon+q6r2f+ka60VtkWASTbYECBg6JkxemxU+xTk1dwDtqpx/jcQBc8GH2VDab2fXK6zbexan3zLJgH7sBoVbVnPbnR9Wyu2vHH3ECm3sALOrdoOhe5dTNbytHmF0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,40 +121,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 05, 2025 at 02:35:12PM -0700, Nhat Pham wrote:
-> On Fri, Sep 5, 2025 at 12:45 PM Yosry Ahmed <yosry.ahmed@linux.dev> wrote:
-> >
-> > On Fri, Sep 05, 2025 at 10:52:18AM -0700, Nhat Pham wrote:
-> > > On Fri, Aug 29, 2025 at 9:22 AM Johannes Weiner <hannes@cmpxchg.org> wrote:
-> > > >
-> > > > zpool is an indirection layer for zswap to switch between multiple
-> > > > allocator backends at runtime. Since 6.15, zsmalloc is the only
-> > > > allocator left in-tree, so there is no point in keeping zpool around.
-> > > >
-> > >
-> > > Taking a step back, even if we do have needs for multiple allocators
-> > > for different setups, having it runtime-selectable makes no sense.
-> >
-> > Honestly I think we should take it a step further and make the
-> > compressor selection only at build/boot time and completely get rid of
-> > supporting having multiple pools. We'd create one pool at initilization
-> > and that would be it.
-> >
-> > I believe this will simplify things considerably, and I doubt changing
-> > the compressor at runtime has a valid use case beyond experimentation.
+On Fri, Sep 05, 2025 at 07:05:22PM +0000, Yosry Ahmed wrote:
+> On Fri, Aug 29, 2025 at 05:15:28PM +0100, Johannes Weiner wrote:
+> > zpdesc is the page descriptor used by the zsmalloc backend allocator,
+> > which in turn is used by zswap and zram. The zpool layer is gone.
+> > 
+> > Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+> > ---
 > 
-> You are completely right.
-> 
-> And, even if there's a setup where we benefit from multiple
-> compressors, the current setup is definitely not it. How are we
-> realistically going to use these sysfs knobs? Change to one
-> compressor, then quickly change it back? How is this remotely useful?
-> 
-> Let's remove it all. In the future, if we want to do multiple
-> compression tiers, or per-cgroup compression algorithm, we will need a
-> completely different architecture anyway.
+> Why not rename zpdesc to zsdesc or zdesc while we're at it? It's a lot
+> of noise but it's just this file and zsmalloc.c IIUC. Up to you.
 
-+1 Completely agreed, it's not worth all this fragile code in zswap.c.
+I'm kind of fine with zpdesc and not sure the other names are this
+much better to warrant the churn. So if you don't mind, I'd just leave
+it alone for now.
 
-I'll send follow-up patches.
+> If it's just the comment changes I would squash it into the second
+> patch, but not a big deal. Either way:
+> 
+> Acked-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+
+Thanks for your review!
 
