@@ -4,109 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2351BCAC582
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 21:39:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20264CAC582
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 21:44:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 549CE8E000B; Tue,  9 Sep 2025 17:39:25 -0400 (EDT)
+	id 642B58E000C; Tue,  9 Sep 2025 17:44:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F96F8E0002; Tue,  9 Sep 2025 17:39:25 -0400 (EDT)
+	id 616008E0002; Tue,  9 Sep 2025 17:44:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E8788E000B; Tue,  9 Sep 2025 17:39:25 -0400 (EDT)
+	id 504F68E000C; Tue,  9 Sep 2025 17:44:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 25A6A8E0002
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 17:39:25 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CDED7C06FB
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 21:39:24 +0000 (UTC)
-X-FDA: 83871028248.05.D9948A8
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 70F4640005
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 21:39:22 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=zytor.com header.s=2025082201 header.b=iLlu0zmi;
-	spf=pass (imf07.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
-	dmarc=pass (policy=none) header.from=zytor.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 3CD4E8E0002
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 17:44:23 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4C0C4160763
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 21:44:22 +0000 (UTC)
+X-FDA: 83871040764.15.7E0297C
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 721C44000A
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 21:44:20 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=KmFnVsyA;
+	spf=pass (imf11.hostedemail.com: domain of surenb@google.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757453963;
+	s=arc-20220608; t=1757454260;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=d35wP3Cgy69ResBPuaBSz/HcVF3uFe2H17r48V0f8EM=;
-	b=GUADjnZ5t2Yu4HhUrJ/Zz3+7U5Dkr8WnW15QwQ44hgPoeVaiQCuzGjrbRTfy4odg0QSWY/
-	g1O49Fdeuk/R58F7gP/kgpJr4Owx/8NuSp86OmSDAItboNJawJH6Vc8zDjyPN+VsZ8NdMk
-	d5NVktVzQ0PmZy/Wurr8pU+WgpVrl0o=
+	bh=cORFDYgvyY2ZoZSCiHszBh/KszgVx6wKBPF6YytGcNM=;
+	b=cVaBZYTkA9G0dSFSHU3XJ+Bl7cdjLE6kpJVMvskhs+/6Axy5xbmBmRW7KD9lgHZygiBcNa
+	NUHQYA3pc9FVD1S5EjxiVj/XKfgzm4ZwZJQ3GIu0/sm8L3z9+7zMlOvxmGQjn0Hk3wRRNd
+	bOcqTIvR3u1HOiqFLXY6/xM7OHpozU0=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=zytor.com header.s=2025082201 header.b=iLlu0zmi;
-	spf=pass (imf07.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
-	dmarc=pass (policy=none) header.from=zytor.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757453963; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=KmFnVsyA;
+	spf=pass (imf11.hostedemail.com: domain of surenb@google.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757454260; a=rsa-sha256;
 	cv=none;
-	b=b9o4uS5rvzHWTPKOxVjwFVIFoBZaPC+3Pk9CLlzwqsAfaudEG5V+HY9b99Fh67pz8SJyll
-	Lp1NM9s2j9vs/+i99M+6/lICI2uitsnz5dijatvimehhIOT2rmF64r7m7LPRFnlkP/Lqfm
-	UWkl3UgoCPeHLWoVFxKBpQUFijfT0o0=
-Received: from ehlo.thunderbird.net ([172.59.161.83])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 589LcmAf1745963
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Tue, 9 Sep 2025 14:38:49 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 589LcmAf1745963
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025082201; t=1757453930;
-	bh=d35wP3Cgy69ResBPuaBSz/HcVF3uFe2H17r48V0f8EM=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=iLlu0zmirgiX0pTGzUb54KHRqrVLR14BLuI3IIHYMRvzodvhGUHYQJxvyBBAh2zMx
-	 rJBg+/ijGWNS/iiRIuOVMWtzyVDp3uwwlXjZaePALbSCZp3Wm1SYLf+o9+e0KkreG8
-	 60rBPVI4lfP9py1MvyVLbRZ1g3lqUK9nt7ZB6NARfDrOLqb0DXfiKPD/egwa7b1RAq
-	 pJ7ckPFsMlrho0F6vzsw7uXIktWTJ6vQddjyYxOLtu56BAN2NGZD8QxYpYTODUg9ld
-	 26t/cf2rSkp4iVMPrhAZ5a1JTSRZhKsilx9oNgR/W76XC/iyYNDjoLDkTj1H+wnX+K
-	 NncRWZvJVVp7Q==
-Date: Tue, 09 Sep 2025 14:38:42 -0700
-From: "H. Peter Anvin" <hpa@zytor.com>
-To: Arnd Bergmann <arnd@arndb.de>, ksummit@lists.linux.dev
-CC: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
-        linux-mm@kvack.org, imx@lists.linux.dev,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Richard Weinberger <richard@nod.at>,
-        Lucas Stach <l.stach@pengutronix.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Ankur Arora <ankur.a.arora@oracle.com>,
-        David Hildenbrand <david@redhat.com>, Mike Rapoport <rppt@kernel.org>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Ira Weiny <ira.weiny@intel.com>, Nishanth Menon <nm@ti.com>,
-        =?ISO-8859-1?Q?Heiko_St=FCbner?= <heiko@sntech.de>,
-        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-        "Chester A. Unal" <chester.a.unal@arinc9.com>,
-        Sergio Paracuellos <sergio.paracuellos@gmail.com>,
-        Andreas Larsson <andreas@gaisler.com>
-Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
-User-Agent: K-9 Mail for Android
-In-Reply-To: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
-References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
-Message-ID: <C85C32F4-BD58-460B-ACCF-F0569ED0941A@zytor.com>
+	b=R6mSBVeB9n9jGtsi9gGmyGD2MtFLZ7F0wjCZCEnXdZr7Skc4zSb4K3DUn0NMy0OUG+YlTW
+	hdk73iCJteL/O0IxNmdRqnBRJYlydHBWAGZLSLmnP9BgiXyOCo/6+x0E5Oa5A+ua+VqWz9
+	5qpm/u8pfs1epEyL+jM3qPVS8wV1SFM=
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-61cfbb21fd1so3907a12.0
+        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 14:44:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1757454259; x=1758059059; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cORFDYgvyY2ZoZSCiHszBh/KszgVx6wKBPF6YytGcNM=;
+        b=KmFnVsyAMdDv1KNH9chJ8g98ra9OPtrFVRIpIYEGLATsybMM9nvO9IdBxUkk6w6jFO
+         Rr87Eh53s51leNPEEDacU/8aDKcr9WKLF11oxd1ywBLAclJKuk/vXXGqWHo7P92J4FvD
+         BqSofqwyNbScvTXmWNrTY2qXcCFolywFA3Enb8+iJsnEnFlBoP6Ti9MhCRfCyRh8HzKC
+         MECoFXZvTUircE28JIgh32C5l0vm6i8zAjBqVBUxkAOEfo2gHG2coc85FaDn3XPWBUuS
+         6KAkrnsHShh5r3C+t8MQf/vlN5yxUkvaDOo6gkloDEcrX1foEwbjbnG/XrTR/3+lOKhm
+         FW5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757454259; x=1758059059;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cORFDYgvyY2ZoZSCiHszBh/KszgVx6wKBPF6YytGcNM=;
+        b=H/+G9aqrwPN5Z0UJXL6dQFhkHlIqA8/UwjUu4kOKppFXqrqkpIsvgNnvgAaBcCQpk/
+         kvOj4NJHteL+rnxHglbn+isQMx13fNaByUd+fyaVoTQYrQUMJdqwl///HdTSRJiRG+Te
+         hbodipkzIZMkSD6gKN8xytTXo/w6PpyAq0yaJd9DtzhnM/HQiEcrA3cOP1gKef161H97
+         hWd8WrPnIyFHQTSjyo6rgyLrYsHZ4I7VfNF3E//hcG75/kA9CPSL6aVqrludDxm7QhT/
+         QofZ0OcDSb0aqRWcFi3xA3p+uH2dyhlUlOaUE43hTsA5FTug642R2jIs4m2/qx7AH3Jt
+         71JQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW9/SJTuqEQXjKFA/q1k79RCjDUA4a0HXnWycWn4L44D8I58uxA+WC/mWrXoHZWQy3fsqSJnAWJzw==@kvack.org
+X-Gm-Message-State: AOJu0YxO49udCAIXjr0F+TKlddL7y8tdix+Xbaf2iAFFLiSaBKnVGhev
+	HGAgZle956rFknT4bTWetdRKkbZs1LvN1BE6oSwGF2jTRrPBIDJrsUyIwoeWbl3cvcbyi0dHAQc
+	Q/oUbrwcjiN01rWeYTUHafB30AYFX0ASSMICdjt0D
+X-Gm-Gg: ASbGnctr14pRI79LwuxuZJuXqGMZywyckc74cWMAFRMQKSNe3ewXOPX/g3+NjXUPCb4
+	URJuV9+Tb33FttQngRqpRtumk+3I18+Ymxold90XGASLTiNZIxPsEiXusxIXkndzM+OuDIlDopL
+	mDu/j66JUiPkzekwhXyOPCTVvziScSA9AlnBZH10gZo8c65JSOpcQiaVuW3y5RkzbsPsxspQv9Y
+	unvfAiSibWZUlugokma/SKpinVkQ6aeXsQTd2vGWBD7
+X-Google-Smtp-Source: AGHT+IHHjSzf3NV2oNZ+4jCL+Q3CGiZLU++ghIuFZUaAwP39HPwBNCyTkdmKOXeri3KEzlLXlrupijbAwtkieYahwpc=
+X-Received: by 2002:aa7:d392:0:b0:623:27a7:25fc with SMTP id
+ 4fb4d7f45d1cf-62d4e6c02d0mr6933a12.5.1757454258460; Tue, 09 Sep 2025 14:44:18
+ -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+References: <20250909190945.1030905-1-Liam.Howlett@oracle.com> <20250909190945.1030905-8-Liam.Howlett@oracle.com>
+In-Reply-To: <20250909190945.1030905-8-Liam.Howlett@oracle.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 9 Sep 2025 14:44:05 -0700
+X-Gm-Features: AS18NWDp7h4tRRYW9-ZNijDGSt7aO40ogQOfSscUNHcKVszsllLYH7lJ_PsLcVQ
+Message-ID: <CAJuCfpG4D4ikZO1c8zN7HNgLTAco1ggk21rg9AUFwoztA95qSA@mail.gmail.com>
+Subject: Re: [PATCH v1 7/9] mm: Introduce unmap_desc struct to reduce function arguments
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, maple-tree@lists.infradead.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
+	Pedro Falcato <pfalcato@suse.de>, Charan Teja Kalla <quic_charante@quicinc.com>, shikemeng@huaweicloud.com, 
+	kasong@tencent.com, nphamcs@gmail.com, bhe@redhat.com, baohua@kernel.org, 
+	chrisl@kernel.org, Matthew Wilcox <willy@infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 70F4640005
-X-Stat-Signature: gtmuwgyn9q5yk31stz9hq11bjh9kbbb9
+X-Rspamd-Queue-Id: 721C44000A
+X-Rspamd-Server: rspam05
+X-Stat-Signature: d3hzwrq1oq9mr43ikrtxnirb898nqc3d
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1757453962-611675
-X-HE-Meta: U2FsdGVkX1+I34MreDtoH+6Vs/tStVxBuTpIb00mHYS5kSWu5+oh56Mzs5hyZC84Jtg92LtiUlLerXjsNd1oepKmWdbjFxkH9x+/jQECv6Mm2Q1oHDfW4i6EGjEE2NSaG8R4yv7Pzrm5rYxkYmgP+5B8vjUpeW0h6qzemcvEuKA4crl/VA931+lT3EnkCLvi0zQyXICyKFbbZyQnENXfALw0JeDieyzlNxYqzz8aRF9hpRKhczfq4ObVPFR2BoCl4MVKOPFLr1W864Y4XV8FNa8+O3Ms3Y+mOzEGMMKmeOobbtSexG8MRLHWQAds0Ax/vRO8bKK8MeIuseM23BSR9DRc+8pTaR11dmWaXDRvNr/32SXewWmVhcx91dcmVyV6cNkvHpPSjZLhWSUWgum01EICRRT1J3V6s/sfxwtWAduPytWD2j6JWoFdicpoGc+MMldheOOsXRUotUQq0urM+0KmgGlYjSl7K4/iO1gl2dU/HVWNEJmq8fBZufjpTxVtXd+9NIgIPXIUkOvIfCp3ZctULF4qs/zN/erXrz6R2IyV08/WYOsT9/2Xzgozu5qcthD70tdbd6ccYCvGBT3F3BZoN24Jwa9pkpuT7f3MkyMX0Xnfy/9ULXemfWUlKktYGLKyy7q78TY4phkZvqT3cboKsMYvckuX9x28mJQV6Xkc5PyhgedX4bZkaenUMU/LXVODbvLZjmwzBtRTbgJFeYM8SMh4KVlhADV8n1+qIygL6IDRP5AG+gav8rSTFg3WbVOYjiN6UoPWt+QoX9HZNG0UwJLeI6U2OBjuqYyymxkvrFg6gnhEi+ALyWTiShW+Aj9Xoyyyn7EjGPeIh6C/Hyu6qThp9FqB2qlZOxmXwqqG0vNdl408zw2BvTwzEkVNsJttSDr9j0Gf6iPPfyB6S8ZqeC0eqVHB6yq8fvW0t3XYrE27fZ/DjjfB97a3mkGcCYEB3Gkq2+cTWnk+F2X
- 3BmGKoET
- iIFvhO5VASv3nHqoAxQQ5w6Rfd3V9CdkLYaxIIEJeLNTVFu2J40EIvry4rx34PbVGEmq1pqG+Pw8EeKNosMBczf9/Y6slhDy/cFptAbuhls7H0YWT94c2mnQOqnF2tW7upwSV/2bXPD20uY+CvPbDUphPRhc6UFHFgVvWI8EY8nJnV5Ps+1yS8IKfPraU9Ug+K35acuX8X1gyamNM29ivLFslH0miQdeTJfIhBJhjLaVOyPCMbaT/LwCDMEiL8wAWVbe4NFAe9/IzpMgQrnjMOJEuJY6VBktwNvd28ftTexbLFg0g/ELl5Y6QIMRIBFiJCDYK0Vbm2BTLbRNGdDN62YoCvwMrDN12dX6IMLFP7C/VMwxJD7O5K6AqoTiFXTwikAf44c0JRt9OvIo9ZpKgSGZHNHZqA2si74MNCpmIy1giQAMdnJawkKrpdJRs8df8ddNWRe9TweVYQJj2pVVvSnwynJFSDaTydGHMfxmNI1luFgd2XjEs9nLn2MHMDbt7+SPcbfJFL9vn/lc2yWb80PZGz74RQ2O2e5eGEfjEWSa2blUtMHfsx8Iebr3qNCjVjbV4gcycg0xWWvgQFWgQH6E2ladeRaUrr9ZPn2ziff4OZtx9Wx8K/0twu0G8q8+upBwmGhxfKo8JzudeQ0b2c+gbGDMwmqgxHpb2x3tBxYgsr+KYkBypIocbbVpGOSQnEfba/lbunA0LxUE=
+X-HE-Tag: 1757454260-582719
+X-HE-Meta: U2FsdGVkX1+Q4/EtiGlApRFPFS8e9cYal8KBxprHPea00uP+h+z0gb5F/rcoOfRXZ5kTijmSjW/5yafbjaU9s14vax5TZAQUIyfm7ZYr/fCSNGE31jw8Dm8TjrPtmCluBOllF38Ax+3nwDT8eQhdw6EXxOErYgcfG3Wn/cgJcYlltEwpKG1+sc/or4dnXdBEVoEMYxV1AvoPs8+AdwAmHyPwyk5cTVE7ekrpU0NJ4tHRaGspsJ5IImmN/0UZe0vto5guXm8T83uz/EtcuBiG47KfIQrKlx9XrgU/78157SxZzkFKfHJr7h00FgInGJzQWbutHFT3SrCMnsN22Q0fbSDFF8BVEk1Qt2ubvdSRItJVz27I25CRmAeVtDEfkx8o2NaL6nykbdvkoup5X+dsS+GEKzqtiLFPOyv1xXVoLmTQpwG1QA+blm0i1swjAsoFfCJDZFC+XHGCW1Tq5ss9DvxMhX289cWwDFscuiVhtowoVBh6x9t2HmOsLXOfdvK5LbT0kaiXQ+AUPExGF85d+iDNSRc9l3Rn3Zbo9Sm5r+s76Lx9antkND8sXWIaUzIaBLWz5GzG4tTq/zz4l8G344D1PoKSHp0Jj87czYlb0v5K85TmrTtGewusqpHD6S7JImq+l/MrCxHWgMhtM0kppO/370o30+96EWRqlNJiZaIwRqmbm8OgEDxIVJMwEHLXYUjCaI1QlYuIzzAA0in0IGN7piuwsTG3nE5DiQQ16BuNz+RtTTQqBRMeZnVZHQNNOmPdvDVsN95plhw2yoQp+Poz1QzJJ89mLMvLt4gvfds38z6qVyeiBtjsrPwFgKnzIN5JsKNZSxxgHKlhjJb/Kr4n0LwxDmIeAZ3cgHm3u7FAfvDJnakSSn7RxpraZ236mzmRzDwv0we5KEkoy4rM6AIc569OB3ynFT/pWr6GrKuWq9BonhR3CVaEVE+7qFwyRBZyNhe8XZNytASdXHt
+ eYRC+/oW
+ KYiTKa7PWsblDAk8bZcjAmd41Og==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,169 +121,201 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On September 9, 2025 2:23:37 PM PDT, Arnd Bergmann <arnd@arndb=2Ede> wrote:
->High memory is one of the least popular features of the Linux kernel=2E
->Added in 1999 for linux-2=2E3=2E16 to support large x86 machines, there
->are very few systems that still need it=2E I talked about about this
->recently at the Embedded Linux Conference on 32-bit systems [1][2][3]
->and there were a few older discussions before[4][5][6]=2E
+On Tue, Sep 9, 2025 at 12:11=E2=80=AFPM Liam R. Howlett <Liam.Howlett@oracl=
+e.com> wrote:
 >
->While removing a feature that is actively used is clearly a regression
->and not normally done, I expect removing highmem is going to happen
->at some point anyway when there are few enough users, but the question
->is when that time will be=2E
+> The unmap_region code uses a number of arguments that could use better
+> documentation.  With the addition of a descriptor for unmap (called
+> unmap_desc), the arguments can be more self-documenting and increase the
+> descriptions within the declaration.
 >
->I'm still collecting information about which of the remaining highmem
->users plan to keep updating their kernels and for what reason=2E Some
->users obviously are alarmed about potentially losing this ability,
->so I hope to get a broad consensus on a specific timeline for how long
->we plan to support highmem in the page cache and to give every user
->sufficient time to migrate to a well-tested alternative setup if that
->is possible, or stay on a highmem-enabled LTS kernel for as long
->as necessary=2E
+> No functional change intended
 >
->These are the assumptions I'm making, based on both what I have
->presented in my talk and feedback I have received so far, let me
->know if something is missing here:
+> Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+> ---
+>  mm/mmap.c | 12 ++++++++----
+>  mm/vma.c  | 27 ++++++++++++---------------
+>  mm/vma.h  | 35 ++++++++++++++++++++++++++++++++---
+>  3 files changed, 52 insertions(+), 22 deletions(-)
 >
->- Highmem in new kernels is almost exclusively an embedded Linux
->  topic=2E While there were a few late 32-bit desktop and laptop
->  systems that had more than 2GB of RAM, these were fairly short
->  lived and have long been unsupported by both the originally
->  shipping operating systems and most Linux distros=2E Notable
->  Examples include Pentium 4 "Northwood" desktops (sold 2003-2004),
->  Core Duo laptops (2006-2007), and Arm Chromebooks (rk3288,
->  Tegra k1, Exynos 5800, sold 2014-2017)=2E Some PowerPC G4 Macs
->  and Atom Netbooks could be upgraded to 2GB=2E
->  There are a small number of users, but they really love these
->  devices and want to keep them alive, especially since they
->  mark the peak of the respective 32-bit product lines=2E
->
->- Within the embedded market, highmem is mostly used on ARMv7
->  based SoCs, but a few others also need it and still get kernel
->  updates:
->  PowerPC 85xx, 86xx and QoriQ P1/P2/P3/P4 (produced 2003-2021)
->  were used in some long-lived embedded systems with 2GB of RAM
->  or more=2E Mediatek MT7621 (MIPS32r3, introduced 2014 but still
->  sold) needs highmem to reach the upper 64MB of the 512MB physical
->  memory=2E Ingenic JZ4780 (MIPS32, released 2012) was used in the
->  short-lived MIPS Creator CI20 with 1GB of RAM (256MB lowmem)
->  and probably othes=2E Sparc32/LEON seems to be limited to 192MB of
->  lowmem as a kernel design choice=2E Vortex86DX3 supports 2GB
->  DDR3 memory=2E
->  The kernel also supports highmem on ARMv4, ARMv5, ARMv6,
->  PPC4xx, PPC82xx, PPC83xx, ARC, CSKY, Microblaze and Xtensa,
->  as well as additional MIPS SoCs,  but so far I could not find
->  any indication of any such machine with more than 1GB that
->  keeps getting kernel updates=2E
->
->- The vast majority of new embedded ARMv7 machines have 1GB of
->  RAM or less, which on many SoCs is a physical limitation
->  a narrow DDR3 memory interface, as well as a cost tradeoff=2E
->  The 1GB case is interesting because that usually means having
->  only 768MB of lowmem plus 256MB of highmem, as well as 3GB
->  of virtual addressing=2E I expect that almost all applications
->  on these work just as well with CONFIG_VMSPLIT_3G_OPT, changing
->  the limit to 1GB of lowmem and 2816MB of user address space=2E
->  The same thing should work on x86 and powerpc (CONFIG_LOWMEM_SIZE)
->  but not on mips and sparc where the limit is not configurable=2E
->
->- A few Arm SoCs have sparse physical address ranges for
->  their RAM, e=2Eg=2E range per memory controllers like the Renesas
->  R-Car Gen 2 or Broadcom BCM4708=2E These currently require highmem
->  even on configurations with less than 1GB RAM, until we change
->  the way that sparsemem is handled to support rearranging the
->  linear map to fill all of lowmem=2E This still needs more work=2E
->
->- ARMv7 machines with 2GB remain in production, in particular
->  with the popular i=2EMX6Dual/Quad chip that has a 64-bit wide DDR3
->  interface and guaranteed manufacturer support until 2035=2E
->  This is the configuration I expect to see struggle the most=2E
->  Setting CONFIG_VMSPLIT_2G or CONFIG_VMSPLIT_2G_OPT should work
->  for most of the users but can break if an application runs out
->  of virtual address space, so this does require extensive testing,
->  and possibly user space changes=2E An example of possibly affected
->  userspace is Firefox, which needs more address space than other
->  applications but can perhaps be replaced with another embedded
->  browser=2E
-> =20
->- ARMv7 machines with 4GB and more exist and keep getting
->  kernel upgrades, but to my knowledge are not in production any
->  more=2E These are mainly 2010-2015 era chips based on rare
->  out-of-order cores like A15, A17 or PJ4 that were designed for
->  low-end servers, chromebooks and network equipment but replaced
->  with 64-bit chips shortly after=2E We had planned to bring a
->  CONFIG_VMSPLIT_4G_4G option to ARMv7VE to keep supporting the full
->  memory at a performance penalty, but currently have no plan to
->  finish this (volunteers welcome)=2E
->  There is still some hope to keep them working with a combination
->  of CONFIG_VMSPLIT_2G and a modified ZRAM that can use high
->  pages without CONFIG_HIGHMEM, but whether this works depends
->  a lot on the application=2E I expect most of these products to
->  stop getting kernel updates in the next few years due to aging
->  hardware and increasing cost for updating out-of-tree patches
->  on platforms that are not fully upstream=2E I do not remember any
->  such devices with official support beyond 2030=2E
->
->My proposal based on the above assumptions is to gradually phase
->out highmem over the next 2 years for mainline kernels, obviously
->both the individual items and the timeline are completely up for
->debate:
->
->1=2E mark CONFIG_HIGHMEM as 'depends on EXPERT', updating the
->   Kconfig description to point to the kernel summit discussion
->   any any decisions made here=2E
->
->2=2E Change the ARMv7 Kconfig defaults to CONFIG_VMSPLIT_3G_OPT
->   and HIGHMEM=3Dn, to make it more likely to find possible
->   regressions with that, without changing much for users=2E
->   Possibly do the same for x86 and powerpc=2E
->
->3=2E Start removing __GFP_HIGHMEM from in-kernel allocations
->   other than the page cache, in particular from individual
->   device drivers and filesystem metadata where there is
->   already little benefit=2E
->
->4=2E Remove HIGHMEM as an option from platforms that are thought
->   to no longer need it (arc, armv5, ppc4xx, ppc82xx, ppc83xx,
->   csky, microblaze, xtensa), mainly to validate the
->   assertion that these use only lowmem=2E
->
->5=2E Split highmem on zram out into a separate Kconfig option
->   that can be enabled without CONFIG_HIGHMEM or CONFIG_EXPERT
->
->6=2E Finish the "densemem" replacement for sparsemem, ideally
->   allowing both very sparse lowmem areas and a boot-time
->   vmsplit selection instead of the compile-time one=2E
->
->7=2E Finally, remove the highmem pagecache option, leaving only
->   zram and custom device drivers as a way to access high
->   pages=2E
->
->That last step should wait for an LTS kernel, ideally a version
->that the CIP project's SLTS kernel is planning to keep supporting
->for 10 years=2E The newest SLTS kernel was 6=2E12 last year, and the
->phb-crytal-ball suggests that the next one in December 2026 may
->be linux-7=2E4, the one after that in December 2028 (linux-7=2E15?)
->seems too far out to plan for but would be another option=2E
->
->Unless there is an easy consensus on this on the mailing list,
->I would like to lead a discussion session at the kernel summit
->in order to get closer to a decision=2E
->
->     Arnd=20
->
->[1] https://osseu2025=2Esched=2Ecom/event/25VmZ/32-bit-linux-support-now-=
-and-in-the-future-arnd-bergmann-linaro
->[2] https://www=2Eyoutube=2Ecom/watch?v=3DQiOMiyGCoTw
->[3] https://lwn=2Enet/Articles/1035727/
->[4] https://lore=2Ekernel=2Eorg/all/0047f565-ada4-491a-b157-f2d8dfde0ac0@=
-app=2Efastmail=2Ecom/
->[5] https://lwn=2Enet/Articles/813201/
->[6] https://lpc=2Eevents/event/16/contributions/1183/attachments/1062/202=
-8/highmem-api-2022-09-12=2Epdf
->
+> diff --git a/mm/mmap.c b/mm/mmap.c
+> index aa4770b8d7f1e..5c9bd3f20e53f 100644
+> --- a/mm/mmap.c
+> +++ b/mm/mmap.c
+> @@ -1883,11 +1883,15 @@ __latent_entropy int dup_mmap(struct mm_struct *m=
+m, struct mm_struct *oldmm)
+>                 if (max) {
+>                         vma_iter_set(&vmi, 0);
+>                         tmp =3D vma_next(&vmi);
+> +                       UNMAP_REGION(unmap, &vmi, /* first vma =3D */ tmp=
+,
+> +                                    /* min vma addr =3D */ 0,
+> +                                    /* max vma addr =3D */ max,
+> +                                    /* prev =3D */ NULL, /* next =3D */ =
+NULL);
+> +
+> +                       /* Don't free the pgtables higher than the failur=
+e */
+> +                       unmap.tree_max =3D max;
 
-1 GB systems used highmem too, sadly=2E And 1 GB was the norm for a big ch=
-uck of the late 32-bit era=2E
+Sorry, the naming still feels confusing... tree_max is described as /*
+Maximum for the vma tree search */ and here we set it to /* Don't free
+the pgtables higher than the failure */.
+
+>                         flush_cache_mm(mm);
+> -                       unmap_region(&vmi.mas, /* vma =3D */ tmp,
+> -                                    /*vma_min =3D */ 0, /* vma_max =3D *=
+/ max,
+> -                                    /* pg_max =3D */ max, /* prev =3D */=
+ NULL,
+> -                                    /* next =3D */ NULL);
+> +                       unmap_region(&unmap);
+>                         charge =3D tear_down_vmas(mm, &vmi, tmp, max);
+>                         vm_unacct_memory(charge);
+>                 }
+> diff --git a/mm/vma.c b/mm/vma.c
+> index 4c850ffd83a4b..c92384975cbb2 100644
+> --- a/mm/vma.c
+> +++ b/mm/vma.c
+> @@ -473,22 +473,20 @@ void remove_vma(struct vm_area_struct *vma)
+>   *
+>   * Called with the mm semaphore held.
+>   */
+> -void unmap_region(struct ma_state *mas, struct vm_area_struct *vma,
+> -               unsigned long vma_min, unsigned long vma_max, unsigned lo=
+ng pg_max,
+> -               struct vm_area_struct *prev, struct vm_area_struct *next)
+> +void unmap_region(struct unmap_desc *desc)
+>  {
+> -       struct mm_struct *mm =3D vma->vm_mm;
+> +       struct mm_struct *mm =3D desc->first->vm_mm;
+> +       struct ma_state *mas =3D desc->mas;
+>         struct mmu_gather tlb;
+>
+>         tlb_gather_mmu(&tlb, mm);
+>         update_hiwater_rss(mm);
+> -       unmap_vmas(&tlb, mas, vma, vma_min, vma_max, vma_max,
+> -                  /* mm_wr_locked =3D */ true);
+> -       mas_set(mas, vma->vm_end);
+> -       free_pgtables(&tlb, mas, vma, prev ? prev->vm_end : FIRST_USER_AD=
+DRESS,
+> -                     next ? next->vm_start : USER_PGTABLES_CEILING,
+> -                     pg_max,
+> -                     /* mm_wr_locked =3D */ true);
+> +       unmap_vmas(&tlb, mas, desc->first, desc->vma_min, desc->vma_max,
+> +                  desc->vma_max, desc->mm_wr_locked);
+> +       mas_set(mas, desc->tree_reset);
+> +       free_pgtables(&tlb, mas, desc->first, desc->first_pgaddr,
+> +                     desc->last_pgaddr, desc->tree_max,
+> +                     desc->mm_wr_locked);
+>         tlb_finish_mmu(&tlb);
+>  }
+>
+> @@ -2414,15 +2412,14 @@ static int __mmap_new_file_vma(struct mmap_state =
+*map,
+>
+>         error =3D mmap_file(vma->vm_file, vma);
+>         if (error) {
+> +               UNMAP_REGION(unmap, vmi, vma, vma->vm_start, vma->vm_end,
+> +                            map->prev, map->next);
+>                 fput(vma->vm_file);
+>                 vma->vm_file =3D NULL;
+>
+>                 vma_iter_set(vmi, vma->vm_end);
+>                 /* Undo any partial mapping done by a device driver. */
+> -               unmap_region(&vmi->mas, vma, vma->vm_start, vma->vm_end,
+> -                            map->next ? map->next->vm_start : USER_PGTAB=
+LES_CEILING,
+> -                            map->prev, map->next);
+> -
+> +               unmap_region(&unmap);
+>                 return error;
+>         }
+>
+> diff --git a/mm/vma.h b/mm/vma.h
+> index b0ebc81d5862e..4edd5d26ffcfc 100644
+> --- a/mm/vma.h
+> +++ b/mm/vma.h
+> @@ -152,6 +152,37 @@ struct vma_merge_struct {
+>
+>  };
+>
+> +struct unmap_desc {
+> +       struct  ma_state *mas;        /* the maple state point to the fir=
+st vma */
+> +       struct vm_area_struct *first; /* The first vma */
+> +       unsigned long first_pgaddr;   /* The first pagetable address to f=
+ree */
+> +       unsigned long last_pgaddr;    /* The last pagetable address to fr=
+ee */
+> +       unsigned long vma_min;        /* The min vma address */
+> +       unsigned long vma_max;        /* The max vma address */
+> +       unsigned long tree_max;       /* Maximum for the vma tree search =
+*/
+> +       unsigned long tree_reset;     /* Where to reset the vma tree walk=
+ */
+> +       bool mm_wr_locked;            /* If the mmap write lock is held *=
+/
+> +};
+> +
+> +#define UNMAP_REGION(name, _vmi, _vma, _vma_min, _vma_max, _prev, _next)=
+      \
+
+Maybe DEFINE_UNMAP_REGION() similar to DEFINE_PER_CPU() or DEFINE_SPINLOCK(=
+)?
+
+> +       struct unmap_desc name =3D {                                     =
+     \
+> +               .mas =3D &(_vmi)->mas,                                   =
+       \
+> +               .first =3D _vma,                                         =
+       \
+> +               .first_pgaddr =3D _prev ?                                =
+       \
+> +                       ((struct vm_area_struct *)_prev)->vm_end :       =
+     \
+> +                       FIRST_USER_ADDRESS,                              =
+     \
+> +               .last_pgaddr =3D _next ?                                 =
+       \
+> +                       ((struct vm_area_struct *)_next)->vm_start :     =
+     \
+> +                       USER_PGTABLES_CEILING,                           =
+     \
+> +               .vma_min =3D _vma_min,                                   =
+       \
+> +               .vma_max =3D _vma_max,                                   =
+       \
+> +               .tree_max =3D _next ?                                    =
+       \
+> +                       ((struct vm_area_struct *)_next)->vm_start :     =
+     \
+> +                       USER_PGTABLES_CEILING,                           =
+     \
+> +               .tree_reset =3D _vma->vm_end,                            =
+       \
+> +               .mm_wr_locked =3D true,                                  =
+       \
+> +       }
+> +
+>  static inline bool vmg_nomem(struct vma_merge_struct *vmg)
+>  {
+>         return vmg->state =3D=3D VMA_MERGE_ERROR_NOMEM;
+> @@ -260,9 +291,7 @@ int do_vmi_munmap(struct vma_iterator *vmi, struct mm=
+_struct *mm,
+>
+>  void remove_vma(struct vm_area_struct *vma);
+>
+> -void unmap_region(struct ma_state *mas, struct vm_area_struct *vma,
+> -               unsigned long min, unsigned long max, unsigned long pg_ma=
+x,
+> -               struct vm_area_struct *prev, struct vm_area_struct *next)=
+;
+> +void unmap_region(struct unmap_desc *desc);
+>
+>  /* We are about to modify the VMA's flags. */
+>  __must_check struct vm_area_struct
+> --
+> 2.47.2
+>
 
