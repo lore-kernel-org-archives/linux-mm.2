@@ -4,89 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02A06CAC581
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 03:51:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47463CA0FED
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 04:09:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 357B38E0008; Mon,  8 Sep 2025 23:51:48 -0400 (EDT)
+	id 7F0738E0008; Tue,  9 Sep 2025 00:09:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 308258E0001; Mon,  8 Sep 2025 23:51:48 -0400 (EDT)
+	id 7C80F8E0001; Tue,  9 Sep 2025 00:09:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 244FC8E0008; Mon,  8 Sep 2025 23:51:48 -0400 (EDT)
+	id 6DD338E0008; Tue,  9 Sep 2025 00:09:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 168548E0001
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 23:51:48 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CC82E119A2B
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 03:51:47 +0000 (UTC)
-X-FDA: 83868337854.28.56C5BC5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 4A0D040003
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 03:51:46 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eBxgxzOE;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D7C38E0001
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 00:09:50 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E11291602D0
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 04:09:49 +0000 (UTC)
+X-FDA: 83868383298.29.2DEFBF6
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	by imf13.hostedemail.com (Postfix) with ESMTP id AB40520009
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 04:09:46 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Z6XXRBI6;
+	spf=pass (imf13.hostedemail.com: domain of lkp@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757389906;
+	s=arc-20220608; t=1757390987;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K6mm++LCTNwLVmu78sqfeA8i/2S8k2baRVY2lU1scII=;
-	b=MtLa2VKmJtfRD5A9qjsRrNM/rELr4ITifHDTMeHxXb6i5j413yJtKLffV3M8YpYfgnwNrd
-	CUxboE+kOEoReMsdjJGR0PyCvup9G6mcMrmzvx1MgcgCst+SnpzeD6oOePYLJAwv3FNbnL
-	rvbAxHAUuUMGQ8J3XbcKQ2lNYszv67o=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eBxgxzOE;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757389906; a=rsa-sha256;
+	bh=Wju6uFp32k8CFEigsDiOdik+ko8zEsrQxT/YvBe62hg=;
+	b=MuoRgv1Jl3Xm4dUuC9FKaOYqFL5+HqGVbKo23R/i1/Je6GjkSYS4bIHsvb+6RiNZ4jk1Mb
+	EQ2QnqFj8H1AlUBIAb4FaAIgbApJhLNurA0lvwvLUMAvKcONE93zwwvRQ2zMi8O4ub3ZMr
+	coqO/wGgSfphLIMqSMWzc+1P5kRSVTc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757390987; a=rsa-sha256;
 	cv=none;
-	b=mYbxthvQpoMuZpO5JBxIfD24xRoDixFTEkjYOV8QcB948i/P64Xu+pIM5DUGrBbMGBIepP
-	9W1F6gxyrmZrVmxrc6ag5xzc8KqfgzG2Io7spFNde2evsGKbS2eVrrZ3PPZq/hN70jkkox
-	XNXfb2oYP2ByOu1JCesv7t4H68IeZ2k=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6497760097;
-	Tue,  9 Sep 2025 03:51:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6069C4CEF4;
-	Tue,  9 Sep 2025 03:51:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757389905;
-	bh=hDFSqIoDGm+oeOAZ9q443ZWBkCIE3hQkRhHMZyq47fQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eBxgxzOEa8Ac6u4NfIJZg7uvYs9srT6Cy6snFEvxalwi+d2+6suPkVf9VfqXgfDcc
-	 JlcT0Q2YpAFnYky/zbHUDTmhp4KPF5M/taeWvmOUGamiJuPnnxVp7A7ydYwx6Ze8Z3
-	 BFTHiDwU/RdL3NfWk9uT3DMra1l/NgC50To6cwWVdqfyEO+jEwKlSEIsZvz7qvo7PR
-	 +P+WMi8LelFiKdOv04IW/kXl50UZsCYPBmiTg+jaKTruDc4//pRE6p6OZ0aoTz1eky
-	 K+xL55w8cQw6Pvkk95z9e69KgSjNLDJEWHMcRI1opEaT5utpHCwFqL/biZlW8AeBlz
-	 HCctCpmAXk01Q==
-From: SeongJae Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	"# 6 . 17-rc1" <stable@vger.kernel.org>,
-	damon@lists.linux.dev,
-	kernel-team@meta.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 0/3] samples/damon: fix boot time enable handling fixup merge mistakes
-Date: Mon,  8 Sep 2025 20:51:41 -0700
-Message-Id: <20250909035141.7545-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250908193548.a153ef39d85cc54816950f71@linux-foundation.org>
-References: 
+	b=sSFgt6Od1rR+U8WvXlPC4lB6Ba8QFlE29QNTE8eTldWgTr3/7eHliwSiMiNww7ZuQxLgzX
+	k1MphwJ06dqQq3tQZj7xFgVJhHWrIXaUQUTuSKMTuy4+GpNmBSwvINA65sPs42dYGgOe91
+	PcyyOjQWErvajC3z4o23p7wTp68jiK0=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Z6XXRBI6;
+	spf=pass (imf13.hostedemail.com: domain of lkp@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1757390987; x=1788926987;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=jhYZYCBzrdRs97Lp5NHmjYhyow4hwuVi+HJ47Uu6hEY=;
+  b=Z6XXRBI6AH8vgZpeymhDRqIBNZCTfhcbNoZX8zGFxqW7AseYgoWwEgN1
+   dFCi31h9dqbRFoJXCzqj3EI1zZNseU4ap8qddRfxdFPdZfN18RWLXJ4dw
+   XhHcRka8LTMkDCB3fW/EkTp+mKIzN+voSBYC3h7OrnTw1daPdFLTPLuGX
+   gOpa6r2KO8+D2q6KQ1QrLOs512U57PNZ+HnFIA6r+3XfOzNOYUNnsDmQI
+   ALM1qIwFOCO6mi+iSdPkSkYuMZ0Fx9AgNIynz42d9i3hknEhy2tTrsRum
+   b4MF27HZSiOAMrHVXxqn6Uh96bhIPTUmWfHyx6XizuJxyc/6zHlwgXJQj
+   A==;
+X-CSE-ConnectionGUID: aZbQiW5HRLqSshm8q+TwoQ==
+X-CSE-MsgGUID: iKswY3AOQYy8esVkCJ1YpA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11547"; a="47239521"
+X-IronPort-AV: E=Sophos;i="6.18,250,1751266800"; 
+   d="scan'208";a="47239521"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2025 21:09:45 -0700
+X-CSE-ConnectionGUID: KZ/2k0LqTpC8WVCYgqnxaA==
+X-CSE-MsgGUID: 8I5xC4gsSpiBDJf3Eq8iug==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,250,1751266800"; 
+   d="scan'208";a="172150183"
+Received: from lkp-server01.sh.intel.com (HELO 114d98da2b6c) ([10.239.97.150])
+  by orviesa006.jf.intel.com with ESMTP; 08 Sep 2025 21:09:37 -0700
+Received: from kbuild by 114d98da2b6c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uvpfi-0004Q3-2X;
+	Tue, 09 Sep 2025 04:09:34 +0000
+Date: Tue, 9 Sep 2025 12:09:20 +0800
+From: kernel test robot <lkp@intel.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Matthew Wilcox <willy@infradead.org>, Guo Ren <guoren@kernel.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>, Nicolas Pitre <nico@fluxnic.net>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@redhat.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Baoquan He <bhe@redhat.com>, Vivek Goyal <vgoyal@redhat.com>,
+	Dave Young <dyoung@redhat.com>, Tony Luck <tony.luck@intel.com>,
+	Reinette Chatre <reinette.chatre@intel.com>,
+	Dave Martin <Dave.Martin@arm.com>,
+	James Morse <james.morse@arm.com>
+Subject: Re: [PATCH 04/16] relay: update relay to use mmap_prepare
+Message-ID: <202509091137.FMoksKmh-lkp@intel.com>
+References: <9cfe531c6d250665dfae940afdb54c9bd2e9ba37.1757329751.git.lorenzo.stoakes@oracle.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9cfe531c6d250665dfae940afdb54c9bd2e9ba37.1757329751.git.lorenzo.stoakes@oracle.com>
+X-Stat-Signature: hbp8y76ex7guyxk9nsa7ee8x97rqb3ur
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 4A0D040003
-X-Stat-Signature: 7cw35pgx9zirk65gdjdreg1338crugic
-X-HE-Tag: 1757389906-637756
-X-HE-Meta: U2FsdGVkX1/M4PC2thtCV4gRbVrkn7+toPNljdLttDHWoif7mVw/AcYxw+cMH8Jg+rZsmCF4cl+HP75YkjgOrnZ+KED20FNrxD6n3o99lRXFMieJiEiH2ccnPmDvypdJGaUt3QW0EWZO9BVxf+4riO/V5chXRAYKI1gwf478QxzapU87nVfrOZvNvmXaB/PWT4whKa+8YFtxKWuqevclaBcqQhVls1rZ5UEhdA8LlSJVUxc5EwcOYUs4MEyDzsor2vvTRxzRVxpwi/2thqyJ5gFZH/VTvb4HmBoduxOf40Ojwa9d9OBD4dg0IBSPFKK71O1QySnWTJ1cf30fXXWVoT2lEwH4bRq2T/02pqz9uLnyCknJBv6j+UsCTvwIrLwid9JgKOS1iKmov6D54OPu19Z/rtzF0yKINPuLszsSOBDsjjn91vopit3f+yu6QcZIgGwhYCM1MWZY0+xjWyC1vangSZmhdWteRR5Og07TEk8r7gOBs0MMbuDgui/8r/71TShJm3xAXuAvil4X8YO/tuZpD0dMBOq6ejqzUaQiPZUwnx67oVla2KR7eAvy+bCVW31vDOX+i0zNjkeRS/jfbc0beIxhUnbS5unr/SF3ITHf9qlGqBivACXIybSJud/bAcwhFB6WeMngZk8F/AM5A8ui/KRcpDCsSs9oODDxwXPyYsw+hRpGgazDsYSop2yVxT+t6twTd60udmSzpTxFy6R04l7x0wBx0peNes3se05oi2yFO9PsDz1ibYajuCv+fVFmLXKnPqvt4ccmOBaAGh3uMhPWGS5ApfT2xeIeB7XogCdOpjSJW0rIcNT8sgS4HEsLOs5GWcCnfIts06Cj/d2GuOWmzvsmnkknal1TG22lPD200u1Eb4Ivgc5vxtWNnECXC8oBgvtOYm7GSloz5rbFbxo/q7Yse58j5/leFQzcMdd0IkXsZ8XmWH1RquxN2RoCf8PY35gOz0Io/Sc
- lH9v0wTd
- anQfKmNL25fRSsrB8MD8OtjPGOlArfuBmifg+MHFXpKgJbrwHZgwkksQ9UP9kWg8SlyETZQDkIkkNtFzn8Sx10AOjhhIXEOTxQ2kC5HDu5++GWPOgpeUBeqiQO40+QT76ru1qWWqe2sJbJc12wLQaxn+1sLATse3tBCf+nBAuru+n9vTpAITIpam3a0V0ATA4rf3qw3uL1VJ706IXY9KJDgFsMVbstLkuvRPGpRe2emD/G+iJj4+FJCSV5PzWzjQ9vBF5cnt2ETofr2zO3R8K9KWhrOMe1Z+9X9tv
+X-Rspamd-Queue-Id: AB40520009
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1757390986-488827
+X-HE-Meta: U2FsdGVkX19kgfFtrdm8rjX84bhEaeRo6jZ4TOyOKcbcaLhwUt6yvFZgPUBP9DynG8qOtv19qM2JGCK8mKqt33wgex/CQM6FsPPUbnbdEdKUJWhIYmEwcmw2nQMxp7EDapm0jstNhONaeVDFBoNIZhyGNosMp60tfJH/YQKkp5g65NLzsDl4qqYIiiXVPmpYNDgmrvwZiA7tBjKp3GZV1SLIF35FIx3skzRWCbWKw+ohxhKtLMykOIsi4mg9+SmX05ai3udRtTPNtRpTRbEza+rn8okt41D64xm9hcGzUlrOnkT/DElam+2N2a1SoIxvw2uNZSeTY19F3CuNIgHKLLwHxrk78ow8Ssnbi+5d36pJMUHcmwdvJtF3SNbTUpLtFVGa/e3MaUXMkSz/AF6Zj6brbDjFoCmKRoJMq5gawlYxWobdUPRyle/wonZNYCurDnVK6xWVVdER7GHotNtnfOEnt9IV7Qkmqt0fPHPNP01kEdM4KBGh2NcI38UE/6fv68WySvq2TlzSNvm/Nxp8/yJ5w0rZLZRNLlEMyuS2gEv3pHP1wJMk3og3FYPW4G3dmCqtFcxdAn8P2C7GhMy5y4GGnfM8hOs6GM5hl9onSSQPaECwGiMMYvZbI6jezK1Gb43Fl7t+aLFiJv3yHpRBkZj1lxLY0kuG5ekpNCIq+YOUm4QGlvg+W5V4rSj+j7gfrGQ9iQaRloSSCuum9jalRh4sS1b8AIsVry0HXYf2P+QNG3lHyM3S22uSDUkA5X06kScpNtKDyx6cA6t4rGyWvzzjTYWQFEiqPQHi5BjIWNgfRSi4iY3JM1f5d3+VnYw5XC209CIzucCY6p5HR9Ynk1cpaqfRl+rPnbRkLBpFs5SPnzqdynGFtnIlns4uWe75gjAA4f4s2fVRRkSjaQ/KzL43wL0ImCv3NH5nrcw1cLExdoJuAGseaR5uyQIk7VVBhazQ7Qw4/ev0aN+/PDF
+ VDKsTOOB
+ vnI+9Vi5yHgm7tyEPvQs6UxrJ1Ma4UzyC8j16J/9voWMMluiaBHMHidZmMYIjRSD1yAXVFEaKWmuXwMJt96DkFHAOVPaFU8doN+a3OByxsCMQKqjswaZBCW7QmTCJ94azyyxkphZbJ1dTT9Ff0d0WkFo5UXScU+VfjAMzcyY9AiAp3SLFrHHXd8hq4eAxjECpdNdCJGySaAekaAeO3DzSaMhvEGQ+CYqx7KevgxtM2QmgWgfry3cE4QbHVRTI0jLx1kQCqBS5axmQR2Z7f2o475odlmv3OHLn73KQ1RBgOxB5xKeGpuWgymAZ1MSGRU4smHv7Ium9Jf3+Xsfp/dzbykNDbXqL4H3p0DBCGut8m3v4F5cdnubAeHmYB91A3xRD2jvxuEN/vKHJca8n9VLqytflgCUndTf/cdt/RaTD9+3/BAk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,43 +132,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 8 Sep 2025 19:35:48 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
+Hi Lorenzo,
 
-> On Mon,  8 Sep 2025 19:22:35 -0700 SeongJae Park <sj@kernel.org> wrote:
-> 
-> > First three patches of the patch series "mm/damon: fix misc bugs in
-> > DAMON modules" [1] was trying to fix boot time DAMON sample modules
-> > enabling issues by avoiding starting DAMON before the module
-> > initialization phase.  However, probably by a mistake during a merge,
-> > only half of the change is merged, and the part for avoiding the
-> > starting of DAMON before the module initialized is missed.  So the
-> > problem is not solved.  Fix those.
-> > 
-> > Note that the broken commits are merged into 6.17-rc1, but also
-> > backported to relevant stable kernels.  So this series also need to be
-> > merged into the stable kernels.  Hence Cc-ing stable@.
-> 
-> That's unfortunate, but the about doesn't actually tell us what this
-> series does.  
+kernel test robot noticed the following build warnings:
 
-Good point.  The issue is that the sample modules can crash if those are
-enabled at boot time before DAMON is initialized, via kernel command line.
+[auto build test WARNING on akpm-mm/mm-everything]
+[also build test WARNING on brauner-vfs/vfs.all char-misc/char-misc-testing char-misc/char-misc-next char-misc/char-misc-linus s390/features lwn/docs-next linus/master v6.17-rc5 next-20250908]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Would you prefer me sending another version of this patch series with an
-elaborated cover letter?
+url:    https://github.com/intel-lab-lkp/linux/commits/Lorenzo-Stoakes/mm-shmem-update-shmem-to-use-mmap_prepare/20250908-191516
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/9cfe531c6d250665dfae940afdb54c9bd2e9ba37.1757329751.git.lorenzo.stoakes%40oracle.com
+patch subject: [PATCH 04/16] relay: update relay to use mmap_prepare
+config: i386-buildonly-randconfig-002-20250909 (https://download.01.org/0day-ci/archive/20250909/202509091137.FMoksKmh-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250909/202509091137.FMoksKmh-lkp@intel.com/reproduce)
 
-> 
-> > [1] https://lore.kernel.org/20250706193207.39810-1-sj@kernel.org
-> 
-> Presumably it's in there somewhere?
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202509091137.FMoksKmh-lkp@intel.com/
 
-You're right.  Both the cover letter and the individual fix patches (first
-three of the series) describes the issue and origin broken commit.
+All warnings (new ones prefixed by >>):
 
-Please let me know if there is anything I can help for this patch series from
-my side :)
+>> Warning: kernel/relay.c:83 function parameter 'buf' not described in 'relay_mmap_prepare_buf'
 
-
-Thanks,
-SJ
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
