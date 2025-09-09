@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 371AFCAC583
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 13:28:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1193CA0FED
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 13:28:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 731C88E0001; Tue,  9 Sep 2025 09:28:34 -0400 (EDT)
+	id 0C8B68E0010; Tue,  9 Sep 2025 09:28:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E1068E000F; Tue,  9 Sep 2025 09:28:34 -0400 (EDT)
+	id 0796B8E000F; Tue,  9 Sep 2025 09:28:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A7D78E0001; Tue,  9 Sep 2025 09:28:34 -0400 (EDT)
+	id EA9C08E0010; Tue,  9 Sep 2025 09:28:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 401468E0001
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 09:28:34 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0273859476
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 13:28:33 +0000 (UTC)
-X-FDA: 83869791348.21.1121374
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D6C638E000F
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 09:28:37 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B31C61604FD
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 13:28:37 +0000 (UTC)
+X-FDA: 83869791474.27.6932688
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 5417F4000B
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 13:28:32 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tCpUTcP9;
-	spf=pass (imf04.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf03.hostedemail.com (Postfix) with ESMTP id 2078420004
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 13:28:36 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Wi8yN8n2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757424516; a=rsa-sha256;
+	cv=none;
+	b=51STtf9UpJOTFIp/4nQMjKQROZlW8JIKdbpPyq6CcDgXy00WGltYmfrl61Ojuiru4ggC7s
+	XZmmqn2UoHrOQl8Cjtzo3hHpc9blh74mUkPok+R9hnEc8vIVwAv9bXZLTSiZwCWS+b3KRr
+	PyvgF2NkP8JFk4VQFy9oBPnrQVu1Yx4=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Wi8yN8n2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757424512;
+	s=arc-20220608; t=1757424516;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1jDbBJ37dc+Sn0sIm6dEeCMOCCyfIxOldox5rGsCCSk=;
-	b=ysMFizpUzSpaRfr4CQBJPs3B7op95E6mAX97h+0KHEoprfG2a5rHz6knF3E0TE2sVLbaeZ
-	0FIvZYKToSuXBDvTKPaytl/eTJcuuxoHliBmPOt/knqxucdwqqBzKFfV3ebk792T/i+iX2
-	d3fsnebIA69Opa2jTO61UKn8kFjNPXs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757424512; a=rsa-sha256;
-	cv=none;
-	b=xWoqykuNekBS6FjPOFC/+dlPptUwhNn6m3SfzFdflZ9eoxcbYzWnN7lL3DVSJ1fZZJB0kP
-	Gx0/ZSQSLSflek553hLmWjXFDmfI5XVvda/A1yWxc1OpON/91ORhZOkR9REutSZGjH6iJQ
-	L37CQHEDNCswQjddWM735ZZVVuHE/jc=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tCpUTcP9;
-	spf=pass (imf04.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=RXCiWDrz08Ry9Yhr+EUVani0x1mu5TIrqAP93p3Vkfg=;
+	b=TwVD+QchYiwH2ILsyGg6h13IzNOb3+DY1/NuxBv6r4VrsN52T19NK4X3AUd9AhVWuZ0LLr
+	Eu1aD+ced+ctWKrth48UYzaqReNZqaEmNvUlsi7cTEMul4EeRS/a/w2Y42xO8bL9I2kDbm
+	7R4qzHLWGqPLmV+k7NpKKqbV/S3dAc8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D46A36022B;
-	Tue,  9 Sep 2025 13:28:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE634C4CEF4;
-	Tue,  9 Sep 2025 13:28:30 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9A8146021E;
+	Tue,  9 Sep 2025 13:28:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9385AC4CEF4;
+	Tue,  9 Sep 2025 13:28:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757424511;
-	bh=4mltAvyMabIGEImaWuSSJtalttkzAHCWh/Fw+6N32DY=;
+	s=k20201202; t=1757424515;
+	bh=A63sCU1us486CfnvbybDoy2DvC4mWvbNv9XH5e8Grdg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tCpUTcP9jO+9dsDDMtGfIjYcTNxitYgY+NyJLSaMvdcTJcdQ0eSFy/DQmzBDm2ZFR
-	 GrUGVtXFkVPPjioBPZdc4zSec+IoGRCm/dW6ymp6AA5RlfNqRUUd7ZH9DBIlr6R4W7
-	 IEsUYyFc07xgmZuhDfMQHV+BCte69Vi5MSizfFKTtm+tTWXqLb0Ui3bSWuWJ45Iw2Q
-	 6f/ensYXk8TsYGeyrMrF0qcfNbx2ZHeDWJZMokK2P3cpAWKpMuXdcKrrY8UcJjMM7s
-	 uks/fzjkj7BLsj+kh+MxLEhV2XiEu6To6Ul4To3CgbdtkzwXIwBZNHKVr8p0u6r5LE
-	 ifao53nreLEHQ==
+	b=Wi8yN8n22gc8EHttTIy6nTDZdyyXoXQ/Pldkc75H1b6hLRfWF7W91QongjbmQvASx
+	 sv6rDJHl2MJSbLxPwGa3dmCMbrX9j01Em95NpNXM4cIDH7UJTEwX83geF/iBTaLFuP
+	 z9936grIMWYOudFZFyWQaaATwNqlVd7G9UV/xV6GFF/aAOUbPO06Q/ST7pKHRaUbg7
+	 zvG59sLnQHkzA0x5NeN55UQGwo5PwCywmKPSo//7gII1NKJ57XsBVOqW3xGebHV5Ho
+	 GeffiYBcLO2jLid5aJ6HsuI1v5dL0okkwlGaoFgMfg5DtNWLYRKj5r9JHHMSD8Ink5
+	 CRsGJPvVMTubA==
 From: Leon Romanovsky <leon@kernel.org>
 To: Marek Szyprowski <m.szyprowski@samsung.com>
 Cc: Leon Romanovsky <leonro@nvidia.com>,
@@ -102,22 +102,22 @@ Cc: Leon Romanovsky <leonro@nvidia.com>,
 	virtualization@lists.linux.dev,
 	Will Deacon <will@kernel.org>,
 	xen-devel@lists.xenproject.org
-Subject: [PATCH v6 02/16] iommu/dma: implement DMA_ATTR_MMIO for dma_iova_link().
-Date: Tue,  9 Sep 2025 16:27:30 +0300
-Message-ID: <17ba63991aeaf8a80d5aca9ba5d028f1daa58f62.1757423202.git.leonro@nvidia.com>
+Subject: [PATCH v6 06/16] iommu/dma: implement DMA_ATTR_MMIO for iommu_dma_(un)map_phys()
+Date: Tue,  9 Sep 2025 16:27:34 +0300
+Message-ID: <acc255bee358fec9c7da6b2a5904ee50abcd09f1.1757423202.git.leonro@nvidia.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <cover.1757423202.git.leonro@nvidia.com>
 References: <cover.1757423202.git.leonro@nvidia.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: d9sfpjkgnkjux89h6my9zfx9oem7jc1q
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 2078420004
+X-Stat-Signature: r53dqinx8r874q7ton3qriqaeet9qgxj
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5417F4000B
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1757424512-325661
-X-HE-Meta: U2FsdGVkX1/irDyQ/v9O8Us/mDuSwEOmkpd+I4lu/m7z3+4CkYS1sExDGQdlHjwuJJqo9yY9xN6L3nDXoaiGOuJzrewzWOXv5Tu1FpzLTMfxzm+fBeEcjn/BScG1FIYL7Wo41jQH3UDHcYgdrUzNWHcZ1nzNGwzXk77yrzLW1jRHzEpjLIm9ellG44NjNJUbgguEG9wFUDK1UvHwsuSPbd+mt0kLDrgZf28ZJ5nOhQovVJEuhllpBJX6JcOxwBuTmCIusUEJVWj6V9oimlLCdjHqBey1j8KovPiOgpoFC5UgE2/OcEXdZIkRAZ3IXEhT9bqiGxencBssJG7HZXMXxu6Pzux5dXTvJRDAKhFdFrEqoJ1xAmFzM2sW5SykVUFIwwuYQ+yseDgJpmzxlItcZjPxf3IBfqrXZYPsS6vZFh3Pc6jWQh3F6iJ0YXjs0lItVQJmsfuY97dRT+2mJItedGOIyUErn6gBOPhrdd9io7J7Q3/zpiJCLaeNAz4iY6pVp06tJ5J4uDD5q6+z7JQ8G3AJOERefZGRn3m1Y4jFNUBA21YBxrNgWwQU/fNDYE5wTFH0WzVBuJir4h70EROqkUxLt6+mqSda3iCLlbV/601P9nEigzSLPTspgla8oeLDN7DWX+SET9TIhcjsgIFqW0RktgnTlDqZ5UAMefBCepVA0ESgb8wRuVIAKYkCrW4CedgVflu4DGZDoZoSuUvRLDIKq1QdSV5VYSMOAndwhOg4gTinzWfIiuX4ESxgrh0T4Q/+g5sin5xF8Emioie0wK7s0JqAb2wvStTnxNiZ6wPFKt2dALf83ooSicHJBgK51riUdyle1oakr5bEgR+GNcBEoxjW3kQ0VDwbFwPw/o+NCedlQu7t3Yhn1lWgfZ+ETmrUo278tpegCTLjTUtssL5ull7LV9GyhHf0t0yknq0+e9hHAFP7eF09RYNFMV/9iSbG+b0d3JnTAfMO3pc
- tyvPK321
- BzDZCDyAX1xS2mFClklY6eIQDo0P+7HSKyRxnCFHXAH4WgPKI1FlFtQzBqZzc+xzPFFl8ljZW0w03noCY6zq33fBVTzzqJSJ5IEcZSckmKl3st6BqvC0Etylll6OeS/SJNX5F+QYaqHgj/wkXy5wXiJ1+CfbKOYRRAWsiHxdDFS/noCtIcLhkJcAhK8uT7rroyfPJr/mKlOacx4RiQUX1DiyTQMcIw5fn6XpCZmDZymPUIn6ZeFu3N+5vo49PLXYNP3wEZJ/7SnxAJ4ZwhUHthCO+ibTfAgHvljgtL/Rib6udgjZm/i6ZhKcz8w==
+X-HE-Tag: 1757424516-561831
+X-HE-Meta: U2FsdGVkX19W4CTybPkeXEnX9MgvWuppO2wV8emtVCsrxcZxCyQhHTsZ6SakJwQtl+u9MyzB8KWSxMfkcIfFwuiVHqM65x4tOhKOYh2T6wtfOfmtrgYAlNonPpifFOUbzWZaAmE89+qeyGgqw3jsPo1+P8tr5wzEQK7a9bfBZqk8DlmfcHsW23iGrGsJMTxsYtf4l3d6yjNEMRtSvVq0BS+g/VP59mE980dXq//oK40HwL6wvQcTZvog9y3TIvt+Xmu/eI+4Mu6P7hxSZflu0Dl2VvM+z5j0DySrNu4/6mK04Mug4TCO4oqBJwJTRituuDcOYROujPq0g3nLDEAARqj+EnKCaMjCI5OrhpXJxb+ARdPM7vzdy8Cex3oNlxbupyY9ZEh7AzYDUibByQyT/LHHIOWfs8nmP0M95S9KkDf5+9fwXyLVcX53sklHpB5xD0HAlXyx4o6Y3MiX5D6LbuBcdJSkkCZLWYcZvejsycOdQwHJBYWpPLuKjoSw/wnKRafJrv0mvxBLRV5R21RSUTxMD/vNh6Hb+Dss6Ugc/RXY7Uetcsk+p0qPzsSEjFUbF9almvFmjBqlrY3WJyW9hvEigeMIEYHUt71j6zVelmTU11OM9l70bJLBddu/PaexaTFWD40B7CQBBheSrEUPyA+5sTkDmX/QHqPyC1WtPX2i7AH2SamryPUbJVsrtGrYYwk/1ucqkWBCHfDHgLv53fjMIMkwDkvEsgWj7n3vhMD2xPPcMUe3m7P5mBv2vhtIHcJkqgcZzsNk4SxP+VDndpeWfdQ+r/sEKlKtc/wyqggEaS2xtMW91tyhQypdzcGoAxrTvk4Wpwwc9l/T1wuq8p1FqnYyYEOKmYmVYU/F94IN21pdxot5QlZE16BdDjRPgpg0wnx5dfOXpLYYEm/i9FSqKZxq1P4JdoRnFgOr7nfEHQRBbkMKSMmK1UM1WCf5LCvzSjNOY5FNeF86Xkf
+ 6toCPGgf
+ f5q8o+3qQ+O+2s+hVq8Ur90csOXdf00cGMyBVSa8AkCAgt+6saE/69E0SoSC61YYVYEi92wGywoCtPa1yCDp0u24pEDkin/DqLS6ir15++QCnRriJCrx1Vc7BRz2MEwbffpYiWxcWKe2QWD0jFgT+9dZrcRJlCmkYoB/e2qGPgo1MSplac/On0CsRbIb/a9hbUDTzFIzlO42boPDwaJYijzbflnc3V/7tHXcJzjP/13lFY82AX1HDxgVRA52lO+V9rEMr4VjDo72S9JAWuK+3rs6RZqzCP+q808nnjqNkuTPiIqFdwlnx0WfGdw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,68 +128,68 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Leon Romanovsky <leonro@nvidia.com>
 
-This will replace the hacky use of DMA_ATTR_SKIP_CPU_SYNC to avoid
-touching the possibly non-KVA MMIO memory.
+Make iommu_dma_map_phys() and iommu_dma_unmap_phys() respect
+DMA_ATTR_MMIO.
 
-Also correct the incorrect caching attribute for the IOMMU, MMIO
-memory should not be cachable inside the IOMMU mapping or it can
-possibly create system problems. Set IOMMU_MMIO for DMA_ATTR_MMIO.
+DMA_ATTR_MMIO makes the functions behave the same as
+iommu_dma_(un)map_resource():
+ - No swiotlb is possible
+ - No cache flushing is done (ATTR_MMIO should not be cached memory)
+ - prot for iommu_map() has IOMMU_MMIO not IOMMU_CACHE
+
+This is preparation for replacing iommu_dma_map_resource() callers
+with iommu_dma_map_phys(DMA_ATTR_MMIO) and removing
+iommu_dma_(un)map_resource().
 
 Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 ---
- drivers/iommu/dma-iommu.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ drivers/iommu/dma-iommu.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
-index ea2ef53bd4fef..e1185ba73e23a 100644
+index aea119f32f965..6804aaf034a16 100644
 --- a/drivers/iommu/dma-iommu.c
 +++ b/drivers/iommu/dma-iommu.c
-@@ -724,7 +724,12 @@ static int iommu_dma_init_domain(struct iommu_domain *domain, struct device *dev
- static int dma_info_to_prot(enum dma_data_direction dir, bool coherent,
- 		     unsigned long attrs)
- {
--	int prot = coherent ? IOMMU_CACHE : 0;
-+	int prot;
+@@ -1211,16 +1211,19 @@ dma_addr_t iommu_dma_map_phys(struct device *dev, phys_addr_t phys, size_t size,
+ 	 */
+ 	if (dev_use_swiotlb(dev, size, dir) &&
+ 	    iova_unaligned(iovad, phys, size)) {
++		if (attrs & DMA_ATTR_MMIO)
++			return DMA_MAPPING_ERROR;
 +
-+	if (attrs & DMA_ATTR_MMIO)
-+		prot = IOMMU_MMIO;
-+	else
-+		prot = coherent ? IOMMU_CACHE : 0;
- 
- 	if (attrs & DMA_ATTR_PRIVILEGED)
- 		prot |= IOMMU_PRIV;
-@@ -1838,12 +1843,13 @@ static int __dma_iova_link(struct device *dev, dma_addr_t addr,
- 		unsigned long attrs)
- {
- 	bool coherent = dev_is_dma_coherent(dev);
-+	int prot = dma_info_to_prot(dir, coherent, attrs);
+ 		phys = iommu_dma_map_swiotlb(dev, phys, size, dir, attrs);
+ 		if (phys == (phys_addr_t)DMA_MAPPING_ERROR)
+ 			return DMA_MAPPING_ERROR;
+ 	}
  
 -	if (!coherent && !(attrs & DMA_ATTR_SKIP_CPU_SYNC))
 +	if (!coherent && !(attrs & (DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_MMIO)))
  		arch_sync_dma_for_device(phys, size, dir);
  
- 	return iommu_map_nosync(iommu_get_dma_domain(dev), addr, phys, size,
--			dma_info_to_prot(dir, coherent, attrs), GFP_ATOMIC);
-+			prot, GFP_ATOMIC);
+ 	iova = __iommu_dma_map(dev, phys, size, prot, dma_mask);
+-	if (iova == DMA_MAPPING_ERROR)
++	if (iova == DMA_MAPPING_ERROR && !(attrs & DMA_ATTR_MMIO))
+ 		swiotlb_tbl_unmap_single(dev, phys, size, dir, attrs);
+ 	return iova;
  }
+@@ -1228,10 +1231,14 @@ dma_addr_t iommu_dma_map_phys(struct device *dev, phys_addr_t phys, size_t size,
+ void iommu_dma_unmap_phys(struct device *dev, dma_addr_t dma_handle,
+ 		size_t size, enum dma_data_direction dir, unsigned long attrs)
+ {
+-	struct iommu_domain *domain = iommu_get_dma_domain(dev);
+ 	phys_addr_t phys;
  
- static int iommu_dma_iova_bounce_and_link(struct device *dev, dma_addr_t addr,
-@@ -1949,9 +1955,13 @@ int dma_iova_link(struct device *dev, struct dma_iova_state *state,
- 		return -EIO;
- 
- 	if (dev_use_swiotlb(dev, size, dir) &&
--	    iova_unaligned(iovad, phys, size))
-+	    iova_unaligned(iovad, phys, size)) {
-+		if (attrs & DMA_ATTR_MMIO)
-+			return -EPERM;
-+
- 		return iommu_dma_iova_link_swiotlb(dev, state, phys, offset,
- 				size, dir, attrs);
+-	phys = iommu_iova_to_phys(domain, dma_handle);
++	if (attrs & DMA_ATTR_MMIO) {
++		__iommu_dma_unmap(dev, dma_handle, size);
++		return;
 +	}
++
++	phys = iommu_iova_to_phys(iommu_get_dma_domain(dev), dma_handle);
+ 	if (WARN_ON(!phys))
+ 		return;
  
- 	return __dma_iova_link(dev, state->addr + offset - iova_start_pad,
- 			phys - iova_start_pad,
 -- 
 2.51.0
 
