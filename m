@@ -4,88 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71EFECAC587
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 07:11:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81DB0CAC587
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 07:11:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B140D8E0009; Tue,  9 Sep 2025 03:11:31 -0400 (EDT)
+	id C4E2A8E0011; Tue,  9 Sep 2025 03:11:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC4E78E0001; Tue,  9 Sep 2025 03:11:31 -0400 (EDT)
+	id C26038E0001; Tue,  9 Sep 2025 03:11:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B4028E0009; Tue,  9 Sep 2025 03:11:31 -0400 (EDT)
+	id B62D38E0011; Tue,  9 Sep 2025 03:11:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8899F8E0001
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 03:11:31 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 12C6AC03DC
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 07:11:31 +0000 (UTC)
-X-FDA: 83868841182.07.1EFD71B
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 342C0180009
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 07:11:29 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A50898E0001
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 03:11:54 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4DB101A03C6
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 07:11:54 +0000 (UTC)
+X-FDA: 83868842148.22.3524448
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 9B4CB1C0003
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 07:11:51 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
 	dkim=none;
-	spf=pass (imf16.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf18.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757401889;
+	s=arc-20220608; t=1757401912;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=L6HnATaFlMZkWcAgUi9w8ZPO3zGuvEjZorSsRUWMnac=;
-	b=wzkszQt1fscZ0BmA3HX4c990/hExb0CDIltUecq8Cp/s1NMocXIKwxrF9KHml5NkrfHhds
-	Vj9oGCkXiw+laVBnUhxX8DsxV+rDhyhCs5f5zIFDiA1olGZQfB1bvdVdfe/1/AT5G60A+1
-	jZ/gUMUIj+gIRlOT4GeCevsejqe+NmM=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=none;
-	spf=pass (imf16.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757401889; a=rsa-sha256;
+	bh=cdwHXxAo4JdWBobprc3yzb+PmylxJS5l+Pf7X7HvL0M=;
+	b=EoropI6Mn17QIk5zORuW7DSSluvGnKsPC4O0ZX6Si/coWZh1MhmWIJW6e5c/WaowHAwZLd
+	IaTqF5UMf8c9rFpxA1tlpRilo6nnaNSK+1m2daz/198LU2S0gZlQMZhK583WcyJNt66s5r
+	iGsiuM/wOnD6ExYktcXayl2/FTYKP/Y=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757401912; a=rsa-sha256;
 	cv=none;
-	b=h4niPZdf8Sa5lw1TVqPYL4Z0i5rf4SmphHoOUVpWpJTUAVJZaUsPVp/mDVXZvconPidIet
-	wN5jZ5wZSL4tNG4okRIbCJ0CS6A6G36n6813G3SsuueiWs52hNl/pBS3n3Y9YGHzLshnyb
-	mKIPat90vee9z37lOeKzYn/qRBupJrw=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EC68815A1;
-	Tue,  9 Sep 2025 00:11:19 -0700 (PDT)
-Received: from [10.163.72.34] (unknown [10.163.72.34])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4AF733F63F;
-	Tue,  9 Sep 2025 00:11:20 -0700 (PDT)
-Message-ID: <949a4c77-06d8-4975-b81b-ea7df2babcb9@arm.com>
-Date: Tue, 9 Sep 2025 12:41:17 +0530
+	b=jFylZ/TkUHDSk5F7OcgNqYsb0ArBmpFwcM8OVyOnHQoSgEWP7jOdkPqLWkCu7qTNShQDTi
+	WMkrEwNycIW2oBouEdnwp6o8SQgueYZW51+SM5opsmm2O8Mkxp9o08oKYUXoQwrVkc62Ni
+	1i/1KlGQeLc4TE6LhQ+M1tzDsgMO7YY=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf18.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.214])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4cLZfl32n5z24hrN;
+	Tue,  9 Sep 2025 15:08:31 +0800 (CST)
+Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
+	by mail.maildlp.com (Postfix) with ESMTPS id 783491A016C;
+	Tue,  9 Sep 2025 15:11:45 +0800 (CST)
+Received: from [10.174.177.243] (10.174.177.243) by
+ dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 9 Sep 2025 15:11:44 +0800
+Message-ID: <6fc277ef-81b5-4aa3-b6a2-64da1d645231@huawei.com>
+Date: Tue, 9 Sep 2025 15:11:43 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] huge_memory: return -EINVAL in folio split functions
- when THP is disabled
-To: "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>,
- Zi Yan <ziy@nvidia.com>, Ryan Roberts <ryan.roberts@arm.com>,
- David Hildenbrand <david@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Nico Pache <npache@redhat.com>,
- Dev Jain <dev.jain@arm.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>
-Cc: linux-kernel@vger.kernel.org, willy@infradead.org, linux-mm@kvack.org,
- mcgrof@kernel.org, gost.dev@samsung.com, Pankaj Raghav
- <p.raghav@samsung.com>, Kiryl Shutsemau <kas@kernel.org>,
- kernel test robot <lkp@intel.com>
-References: <20250905150012.93714-1-kernel@pankajraghav.com>
+Subject: Re: [PATCH v2 3/9] mm: hugetlb: directly pass order when allocate a
+ hugetlb folio
+To: Zi Yan <ziy@nvidia.com>
+CC: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
+	<david@redhat.com>, Oscar Salvador <osalvador@suse.de>, Muchun Song
+	<muchun.song@linux.dev>, <sidhartha.kumar@oracle.com>, <jane.chu@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, <linux-mm@kvack.org>
+References: <20250902124820.3081488-1-wangkefeng.wang@huawei.com>
+ <20250902124820.3081488-4-wangkefeng.wang@huawei.com>
+ <64DE9265-7B31-4128-9949-84AF050CBFF4@nvidia.com>
 Content-Language: en-US
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <20250905150012.93714-1-kernel@pankajraghav.com>
-Content-Type: text/plain; charset=UTF-8
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+In-Reply-To: <64DE9265-7B31-4128-9949-84AF050CBFF4@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 342C0180009
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 9ppi8819wetb47rmiujkd8jd73o3fm69
+X-Originating-IP: [10.174.177.243]
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ dggpemf100008.china.huawei.com (7.185.36.138)
+X-Stat-Signature: wfnampwbdjk18rg9fsd777xo1a5uhsos
 X-Rspam-User: 
-X-HE-Tag: 1757401889-782516
-X-HE-Meta: U2FsdGVkX1/xXu4NwagZAKl1eEB/F1sptCA2P8FClGgP5UR/s2oWqSURzv+smK8gISsp+VZ+E5/zP9ZSAy9Fu2XrxAfSrLmhuJzI0BokVJNXo8iOhHJWZ8XZODFbi305UM18zvChBiadDcRFyHQg+gDi4iS+3X93uiZsKw87K8y30RjP9y8DUY5kLs3odURV7NyC6qRhuxL+VRa/gfvZfkg/mh0Hf5YnyX8HrrNULwzqD4JcX6kZ6E4dO52teOpac5z5uqelPtVN1diPvAqbtt0+Gr/XPs5WGt/6xiLMy8F17OkYKX45dtmQysGpLus5KgFzFejA9yPkY/SB9qDWeWTDddj2ejaA0EaEiwaex1a5PqAajdM7U0Thnzwj3Uin2p2+PyiAG1eiYrsfqAzQjSLWnT2m/Lnekk98Ims8msPqTOaSyazAZhxEyHbmi/WxM3eQ7JlzCoumZaHkZHPH6XEaGLupKdfDDoQkH1h3fH/41muJQVTA/Wnjnoe/6kcyhKQr3Hq1LIb8CZuKYWf6qvsfKK9VowMe3kow0ce0DBbkf1YX17Oa/W2N4En6zFAZiC5CW5yXp3vx7NIdaymr/9z+xA1smfXZuWaHPkzyC9+9hALPguKZWOzTDp9iqRvSnrtpT0qsYtHdVtp6ErOMsFhj/c7C/6gvq3W3ETvx2QvjxbHFsIICcdWPGqvenyzTrrME1J4uIOAJFDhLTOI/kebOvXw3EJ/bVcl6iQX2sxfUyL2LpYHQz60YK78ald8c0LR8jX8aS9dWo+qX6dYwlcqfQy2alhmSLSphJtJwdHa6ohVHvrF6+D1otdmqSCFsV0GUMJJd2e8UtFuZzJW6zuDFv+eSJbysPyCxPPjs4A5di7MpX3NzRy36jgxn4MmOW05t4kLQVnVOz8WXdUHjcNfw22496+kffkPlr1e7izyjHdVdTs3o6ZEr2bgR6iZRt6PU/7TFZooa1x2KnfJ
- ZuT/tctA
- pK2a3l1CoGPLLR8XGQY8fsDBYguskmVsLadig8jkPAHUJlpJ2EtQl6DUGvRre90Shp/WydLH5uRYaA7+ER+G0l4GbvcFjyNQtwirIcT9/2a7lpZNL1td/PhyzR+7jWShnX6phrsbtj1XvRLl3RCjKBr+NxYwzwBUSejFa3j4vasFzZgbpGX3aQWlrFyjK0vccwtRWufXCrjXoE0Cyg1vMux2d/Sk7OY9vLj6Y0sykygK3MwD9Xi7LmxP23ts6lLH75n16EopLqlL01r9PD8XOv37XF4973zf6pr+px0V/Q0225T8IelxqJbJwJ4kNcX+z2Hrnepm1ow6bwqttNAEVqxwcORFa8loDQAMAy1YB3pNQLwWnsL/QtxcXH9JbEtqB18NIfWYVFIWY1pTxIMGV8IhxERbn+pyQ9xNnw88BGSxKISw=
+X-Rspamd-Queue-Id: 9B4CB1C0003
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1757401911-798564
+X-HE-Meta: U2FsdGVkX1+l/rOQnvkAJGlVFGPcU81ycj+aqNslkrKJxoZmAZjCvHjnyNETsEIlFIW6rh6OikEEFiGDlRMTZry7xhjATyCComGb/oN5AfQWj/eQ88taKGaYOopzP5mcNV+19ImiVesqKLzJecrZ8K8ArPC1UBPjPW2TmzeqPiyQn2xzs5D3w63WuvImeR9v8ndkQ4MPrYhndF/hebuX7mlizqql96SsSose6K+rARxYYIUPamglFp7WlUGbDTHkQVFgzgJDyihqIWJQCIpkdSlh0ccoMCatMa7YQpKKTZI7QJ61dMrh2ENbFYfcBevbX4uGGxrkR70eDn1mNXj+4FL9l35pKqufROb7NCzHjeJH9dQmg8jxTR47yrsPlBPKFVbhccKmhteDoFQmvNF+rp9wg7cYgzjflJY1i3hxHSBEBxI0qxuwN4mRNrmyMGjIYQTrpeCEqXNcL22hpl4mz4ZbAKmPJBuphHQU+UUYm9s4wtql8aVk8aIzU/H5DofVlsD1RwLJMXd1cX9PSdN0t43iT0z3UILN6bzIJd+QJ0noiMDQi0KliF8dFBeOfpXoabtnLAu4ts5sqa2hDDScNMY/QCoimp53xCNEBt1MB/Wwcca0IklH2axmc1mNRJWKsQ3lA/9QCc80KV1fh9+fPQiTs4Bwbk4DAVXRRT5l7RY5FqKmONJogx3UQRkVJXkKcOQJrs8L0Rh8JURZQQ1ZS+blYTxf1jXN4A60FNAUOX/MuaYikIFrqjdLiejQNxHk3V//p4aDeaqIlFVYVFhFFHZ0OhbRLb7AKSjh5+tAx4fVTLU12piNNMZ04CVO+EBZp0sKgMZVS6oaEbBitfHVVoY5kMcIuHzCI/o7jZrAIaQfKfTgvI+ZhpGw27BwNvJcpZC3RbC1uiYZGZThuiIsnYEvv8AjOawbuQeHjvT4XwUQBKUZJLstHnLKRKhpWi/Al3NO0XLrxDw374Wa6um
+ npjZX7nr
+ OTSPSle900dVJFXEiKd1GLRBGO2VJx0k7yWuZjTWejGT3C7Y6fS1ef9gafigg4Lw4USnIQulJ4taO0pXD0Q468zlW9K69se4h7c19ojDhX/BwyegG4prW2u3mx3wSmH9gQI6wLaOq8O5Nmr7dDbuVVE5jknSbXBBR44w1tgvlyaC/zkWklpTVa+qrXITqBxnMRMb7tnummxqPXF6MqeQirvCNGC1QHMvOI13RXaEn362h/Ds4wj1WKVbkBD5fjJ68gD6YdmcatSF6TxOtrzD1xxMTJTlynaD25vOc
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,75 +98,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 05/09/25 8:30 PM, Pankaj Raghav (Samsung) wrote:
-> From: Pankaj Raghav <p.raghav@samsung.com>
-> 
-> split_huge_page_to_list_[to_order](), split_huge_page() and
-> try_folio_split() return 0 on success and error codes on failure.
-> 
-> When THP is disabled, these functions return 0 indicating success even
-> though an error code should be returned as it is not possible to split a
-> folio when THP is disabled.
-> 
-> Make all these functions return -EINVAL to indicate failure instead of
-> 0. As large folios depend on CONFIG_THP, issue warning as this function
-> should not be called without a large folio.
-> 
-> Acked-by: David Hildenbrand <david@redhat.com>
-> Acked-by: Zi Yan <ziy@nvidia.com>
-> Acked-by: Kiryl Shutsemau <kas@kernel.org>
-> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202509051753.riCeG7LC-lkp@intel.com/
-> Signed-off-by: Pankaj Raghav <p.raghav@samsung.com>
-> ---
-> Changes since v3:
->   - use VM_WARN_ON_ONCE_PAGE instead of the folio version in functions
->     that take a page.
-> 
-> Changes since v2:
->   - use page_folio(page) directly in VM_WARN_ON_ONCE_FOLIO
-> 
->  include/linux/huge_mm.h | 12 ++++++++----
->  1 file changed, 8 insertions(+), 4 deletions(-)
-> 
-> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-> index 7748489fde1b..cd61d2b789ec 100644
-> --- a/include/linux/huge_mm.h
-> +++ b/include/linux/huge_mm.h
-> @@ -553,22 +553,26 @@ static inline int
->  split_huge_page_to_list_to_order(struct page *page, struct list_head *list,
->  		unsigned int new_order)
->  {
-> -	return 0;
-> +	VM_WARN_ON_ONCE_PAGE(1, page);
-> +	return -EINVAL;
->  }
->  static inline int split_huge_page(struct page *page)
->  {
-> -	return 0;
-> +	VM_WARN_ON_ONCE_PAGE(1, page);
-> +	return -EINVAL;
->  }
->  
->  static inline int split_folio_to_list(struct folio *folio, struct list_head *list)
->  {
-> -	return 0;
-> +	VM_WARN_ON_ONCE_FOLIO(1, folio);
-> +	return -EINVAL;
->  }
->  
->  static inline int try_folio_split(struct folio *folio, struct page *page,
->  		struct list_head *list)
->  {
-> -	return 0;
-> +	VM_WARN_ON_ONCE_FOLIO(1, folio);
-> +	return -EINVAL;
->  }
->  
->  static inline void deferred_split_folio(struct folio *folio, bool partially_mapped) {}
-> 
-> base-commit: e6b9dce0aeeb91dfc0974ab87f02454e24566182
 
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+
+On 2025/9/9 9:11, Zi Yan wrote:
+> On 2 Sep 2025, at 8:48, Kefeng Wang wrote:
+> 
+>> Use order instead of struct hstate to remove huge_page_order() call
+>> from all hugetlb folio allocation.
+>>
+>> Reviewed-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+>> Reviewed-by: Jane Chu <jane.chu@oracle.com>
+>> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+>> ---
+>>   mm/hugetlb.c     | 27 +++++++++++++--------------
+>>   mm/hugetlb_cma.c |  3 +--
+>>   mm/hugetlb_cma.h |  6 +++---
+>>   3 files changed, 17 insertions(+), 19 deletions(-)
+>>
+>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+>> index 4131467fc1cd..5c93faf82674 100644
+>> --- a/mm/hugetlb.c
+>> +++ b/mm/hugetlb.c
+>> @@ -1473,17 +1473,16 @@ static int hstate_next_node_to_free(struct hstate *h, nodemask_t *nodes_allowed)
+>>
+>>   #ifdef CONFIG_ARCH_HAS_GIGANTIC_PAGE
+>>   #ifdef CONFIG_CONTIG_ALLOC
+>> -static struct folio *alloc_gigantic_folio(struct hstate *h, gfp_t gfp_mask,
+>> +static struct folio *alloc_gigantic_folio(int order, gfp_t gfp_mask,
+>>   		int nid, nodemask_t *nodemask)
+>>   {
+>>   	struct folio *folio;
+>> -	int order = huge_page_order(h);
+>>   	bool retried = false;
+>>
+>>   	if (nid == NUMA_NO_NODE)
+>>   		nid = numa_mem_id();
+>>   retry:
+>> -	folio = hugetlb_cma_alloc_folio(h, gfp_mask, nid, nodemask);
+>> +	folio = hugetlb_cma_alloc_folio(order, gfp_mask, nid, nodemask);
+>>   	if (!folio) {
+>>   		if (hugetlb_cma_exclusive_alloc())
+>>   			return NULL;
+>> @@ -1506,16 +1505,16 @@ static struct folio *alloc_gigantic_folio(struct hstate *h, gfp_t gfp_mask,
+>>   }
+>>
+>>   #else /* !CONFIG_CONTIG_ALLOC */
+>> -static struct folio *alloc_gigantic_folio(struct hstate *h, gfp_t gfp_mask,
+>> -					int nid, nodemask_t *nodemask)
+>> +static struct folio *alloc_gigantic_folio(int order, gfp_t gfp_mask, int nid,
+>> +					  nodemask_t *nodemask)
+>>   {
+>>   	return NULL;
+>>   }
+>>   #endif /* CONFIG_CONTIG_ALLOC */
+>>
+>>   #else /* !CONFIG_ARCH_HAS_GIGANTIC_PAGE */
+>> -static struct folio *alloc_gigantic_folio(struct hstate *h, gfp_t gfp_mask,
+>> -					int nid, nodemask_t *nodemask)
+>> +static struct folio *alloc_gigantic_folio(int order, gfp_t gfp_mask, int nid,
+>> +					  nodemask_t *nodemask)
+>>   {
+>>   	return NULL;
+>>   }
+>> @@ -1926,11 +1925,9 @@ struct address_space *hugetlb_folio_mapping_lock_write(struct folio *folio)
+>>   	return NULL;
+>>   }
+>>
+>> -static struct folio *alloc_buddy_hugetlb_folio(struct hstate *h,
+>> -		gfp_t gfp_mask, int nid, nodemask_t *nmask,
+>> -		nodemask_t *node_alloc_noretry)
+>> +static struct folio *alloc_buddy_hugetlb_folio(int order, gfp_t gfp_mask,
+>> +		int nid, nodemask_t *nmask, nodemask_t *node_alloc_noretry)
+>>   {
+>> -	int order = huge_page_order(h);
+>>   	struct folio *folio;
+>>   	bool alloc_try_hard = true;
+>>
+>> @@ -1980,11 +1977,13 @@ static struct folio *only_alloc_fresh_hugetlb_folio(struct hstate *h,
+>>   		nodemask_t *node_alloc_noretry)
+>>   {
+>>   	struct folio *folio;
+>> +	int order = huge_page_order(h);
+>>
+>> -	if (hstate_is_gigantic(h))
+>> -		folio = alloc_gigantic_folio(h, gfp_mask, nid, nmask);
+>> +	if (order > MAX_PAGE_ORDER)
+> 
+> Would it be better to add
+> 
+> bool order_is_gigantic(unsigned int order)
+> {
+> 	return order > MAX_PAGE_ORDER;
+> }
+> 
+> for this check? And change hstate_is_gigantic() to
+> 
+> return order_is_gigantic(huge_page_order(h));
+> 
+> To make _is_gigantic() check more consistent.
+> BTW, isolate_or_dissolve_huge_folio() can use order_is_gigantic() too.
+
+
+It may not be very valuable, but I could do it in the next.
+
+> 
+> Otherwise, Reviewed-by: Zi Yan <ziy@nvidia.com>
+> 
+
+Thanks.
 
