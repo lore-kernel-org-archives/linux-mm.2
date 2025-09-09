@@ -4,90 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28A0DCAC585
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 06:15:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 226FBCAC585
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 06:16:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 820B08E000D; Tue,  9 Sep 2025 02:15:57 -0400 (EDT)
+	id 7D2D48E000F; Tue,  9 Sep 2025 02:16:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D15E8E0001; Tue,  9 Sep 2025 02:15:57 -0400 (EDT)
+	id 7832F8E000E; Tue,  9 Sep 2025 02:16:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6BFFB8E000D; Tue,  9 Sep 2025 02:15:57 -0400 (EDT)
+	id 64C6A8E000F; Tue,  9 Sep 2025 02:16:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 549CC8E0001
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 02:15:57 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1743458AE2
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 06:15:57 +0000 (UTC)
-X-FDA: 83868701154.30.C531D1B
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 0CC91180004
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 06:15:54 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="v/0Z4cgL";
-	spf=pass (imf24.hostedemail.com: domain of youling.tang@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=youling.tang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 50F428E000E
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 02:16:02 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1121DC03A9
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 06:16:02 +0000 (UTC)
+X-FDA: 83868701364.14.DE5030C
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 86179A0012
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 06:16:00 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=none;
+	spf=pass (imf15.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757398555;
+	s=arc-20220608; t=1757398560;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h0f43r2+G2MTHogFG4Kd662rlFkqbAoJ3O2gzPVjJRQ=;
-	b=a3WaBhbYdJG2KmqAPUyPG6cn+wresIGiV3nSDPCUqZtD2RladS8bH31HjFO02RXI7aOmU4
-	wo26iC61YvtQiTIvKanvyl62DtQr0FFwLBfBEm4pYGl0bO3o706K4S+ym3sujKZL43uXL7
-	3B0WPvDFRuYFpsXlSYxh9YUp4ciEnwA=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="v/0Z4cgL";
-	spf=pass (imf24.hostedemail.com: domain of youling.tang@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=youling.tang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757398555; a=rsa-sha256;
-	cv=none;
-	b=DIDqlNQNFDI+ntdO+yee6FArlKXhH0LoWlZI5qMmVY6Z94FRlcrE5FFMwfFgbq3QCj4tl9
-	XNBHW9SO6EEnFaZ+hIC3sl39DEPT+biEIeIH+ytPkYjOxQbxwf4QKUD46WQb/IGw51KRMi
-	iSMwlC6M6JBKPWtx6qSCxOeLSitIK1A=
-Message-ID: <953544be-1be5-4745-a027-e8c0be7b027d@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1757398552;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=h0f43r2+G2MTHogFG4Kd662rlFkqbAoJ3O2gzPVjJRQ=;
-	b=v/0Z4cgLTAbFBMK9eHbRTNRLDbMjpP60H7zKA6Q57i6tasGunFc/NqIxB/E12TX5vQVQb/
-	m/mePYPQKEr7k4wEd/CqZ/q+Iv2Cu2FNCCyaansMscAHTa76fdURJcg9Tw7t22rpe9VojX
-	mM6MFetCDy5tJdJFa9u3JU3wDMfFSQw=
-Date: Tue, 9 Sep 2025 14:15:12 +0800
+	bh=RwX4fAJkTt9sLeZk71RnTxTl3BiNMkS7kiEs3tBnt2Q=;
+	b=jyT1fAyXEo/RHD5lRlKOtTATpSnVZUv84RKnuxDlQbl+YyvXbnAoSS2cJal+/NC/ja6c0i
+	RNwQ6aLd+trhK798/r0fghNo2vLCyWoB47Fz853GzV23c24Ie26aPDH9+rGQc9EfO4vcA3
+	hwyg9vLvhpFT1PhlB90ZiwjiWD91uZs=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=none;
+	spf=pass (imf15.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757398560; a=rsa-sha256;
+	cv=none;
+	b=zhA8+woKqQiin54/viRhSCdrU1jSHRH+nNKNZIRJ7zZUK/jEnW/qvyufCeEkZfAI5GbmZu
+	AXO7T1ddhF4A3CoqJ9gJ+HhdJ8ipuNHZ31dKaDRccvzihtaSJNR5noOVzH4RjSXMQVpdZT
+	NBRNSWiVkj0sZ97mpMGK7kmuEVvdeik=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 32773168F;
+	Mon,  8 Sep 2025 23:15:51 -0700 (PDT)
+Received: from MacBook-Pro.blr.arm.com (MacBook-Pro.blr.arm.com [10.164.18.52])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 6B1CE3F66E;
+	Mon,  8 Sep 2025 23:15:55 -0700 (PDT)
+From: Dev Jain <dev.jain@arm.com>
+To: akpm@linux-foundation.org,
+	david@redhat.com,
+	shuah@kernel.org
+Cc: lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Dev Jain <dev.jain@arm.com>
+Subject: [PATCH v2 2/2] selftests/mm/uffd-stress: stricten constraint on free hugepages needed before the test
+Date: Tue,  9 Sep 2025 11:45:30 +0530
+Message-Id: <20250909061531.57272-3-dev.jain@arm.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <20250909061531.57272-1-dev.jain@arm.com>
+References: <20250909061531.57272-1-dev.jain@arm.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH] mm/filemap: Align last_index to folio size
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Jan Kara <jack@suse.cz>, Matthew Wilcox <willy@infradead.org>,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, chizhiling@163.com,
- Youling Tang <tangyouling@kylinos.cn>, Chi Zhiling <chizhiling@kylinos.cn>
-References: <20250711055509.91587-1-youling.tang@linux.dev>
- <jk3sbqrkfmtvrzgant74jfm2n3yn6hzd7tefjhjys42yt2trnp@avx5stdnkfsc>
- <afff8170-eed3-4c5c-8cc7-1595ccd32052@linux.dev>
- <20250903155046.bd82ae87ab9d30fe32ace2a6@linux-foundation.org>
- <bv4t7a6boxh4dmjl7zsmhd74wm5hyfpdivypmrqerlpn23betz@tw52mlf4xf3s>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Youling Tang <youling.tang@linux.dev>
-In-Reply-To: <bv4t7a6boxh4dmjl7zsmhd74wm5hyfpdivypmrqerlpn23betz@tw52mlf4xf3s>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 0CC91180004
-X-Stat-Signature: 3rsk6srnhnt74cfj1zug7phw5f84u5oh
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 86179A0012
+X-Rspamd-Server: rspam05
+X-Stat-Signature: akcb58gyqw6ua77he3n74ntksdqa4fnx
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1757398554-94786
-X-HE-Meta: U2FsdGVkX1/E4bck51r8IxpgTl40TsmsxYYkLknTdOgzigM9Z+sMteqNFps8RI4vZEKnMR0me5/nM8Xlz+upfHx5kwAUagUTW+J0yJ5aAIe2D9dI86upLKEEC9ivOiNRVshCqtxpIuYf3RhgBkCctOab/0jqw1t68KZszrWN6Xmb+cPvIgkD7fI7hY8PS5F/zChz1Z7PpeEgDuZW9qNPx2VECj/8KuET6Cn/lfVJSNqOSZncR/bDpICAYFvTRNGXFz0QEki0LRKP3aXLd2LC7gD7hWRYu0NKz9z7BqXi6lTpC78H4VceWD8FLou8yp8QH5vtVTwcSGycyZHBnZE2+0bpGluoLQH879geT9Py5M0qCN/uLBmzz4WRZH1YIv3a9zsALlNpJ81dcVqjJ6+AYKAKYTcMTPog0p47CvfYtCxuw42URsORTw0Z5G9zm3IzLTUinnuv4uLMae8aNg96cVuVfL0VJzFYXJMLsBg/BIOpcZ37z4qnCjpOZXlPQsBvp2OQprxHpf1R0QgUSkDv4RTf4CJ7qJLnhhpdAG5fVmVrbOXJnlRzlMpaCC5lPmPdDlDEyy8Fd7pWWWopqZZ5Mwsf3zHQ+/pvarvtWTld/Wp90DM265IoSEnymnIpx8UHqfy3obeaXITsVxiiNYqsO0El80G+0737eGd0251WXqXNDA7Q/CIQ5a2x1Euq/BWIXW/bGAmjIQowsSNsMJFFOBuaDPkNu/G3K8OdFNOV9ZkqYx3lrgfLWZziMv45m/3RBMgGlC60g0YqpkOpx4eE/VQMZvFr4dcBwmuvOODjCqvB1irm5NujB/No6w8aPXXfeVc7Rzruef8vcvXaVd+23xO1QNbYig5bsMJd4r8vDpa75hAUk1OzyaW8vocUJ0uaNDeF9Ps1Sg1NYan2gmOXx+BWQ4pfO0+oxMlaeCFdbbB6HiPHRzV42iIj/1DLrRBQpSSYbCmCd/ZR8LftM+P
- X6HB85PJ
- hYvCO43CKUJobssv4C8h0M0sGdVLsjn7yNRyJvtGnf+YuLq/7RVfDQHOzpbU4Hp0kB+xZ14j/YBwX8oUog7nBicPPDzhvprcdf7yqKq/upsnlMm4nzHqxtxhA34aV3HnHqNdEnOIg/lfxXz/YSfWWRKzSwDWDDL3FFy+Z0SorO6XSsocbmmGFQi+go4ppc5cm028YQZs14iTh9d2sipFJ80CyMv4uaHP6HmY7LzNcVU1gBCKThtbQsE8gnBQHoWMsh4OU
+X-HE-Tag: 1757398560-166256
+X-HE-Meta: U2FsdGVkX19/ZpQF13fLquivT2f268bu+YEJQ9wjvpq7C7PrOBU5vBoVJAwhU6IPwniuAGgh13iPDvWVRkeFgIrMivnDowf2eE2NKcytwUeZtyHcmZ6NehV6sk6oEUBYlKrj4kZP2NpyM8tRkIhEa5uiPNm/hLoQ+Knp+IbXqkQzL2BchIk0bLfaS26eXPoQ7eUSErzjdd/GxBZRX4A0anhDjIgR/ZPcRrJKpnf/Bg+AKYESFvsvwO3Turq2S/F1LVo83eNByNDtS7TOiwPgVNw6qsLFDWxGvvHFQGtLnX4N54d8OvRNpJhkFeRCscTC0hhjnsykWh+9je89NUTkYnN3UdzDcdw/frD3KK0PHnGrZEDy3y7YSnLFKefZVcNxDx/8C0v9qLSzvoGbo9t4Rv8Wz/RhG7EZkLTP9+OVP4CEZSrjB8QSIYR9wDQ/lBUvDql+lA3CqjZJIZ3ZVce6vEDG3d3qwbW7YB4myoyjL2x3O0zqxyLdEWZT4yOWNNvKRC+s7CMTpwqsIeUa7akjTQsUXSc4wb9twvnVGHyA9pVXl/q8sWyYeBAHikrA/0KXuFRajlbTaH0pYT64yT1eqG6xvsQnDfx2i9XZq/GhSQ4mtrd+65lkNTWMILyALCHdrfQiHmEuHv8aClgFkrxwdCgLMXpKKnmu9JI7cEIk4C0cir0ZRcfbi8bJeoruXwagpsO1MUu9j7xj/vQKdhh3njSJKJmK3Oxy5T3vJ1N8crXi/7ir3RJsduaQZwES6C+ksaBxmxk1hEfC8AmScEfbZVM1zyfVT5Xg4+IJBqqygh9W7nkvW03u4PyoFJdCUl1uMZ6wexXmaiHLwQpBJ83KKA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,74 +92,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi, Andrew
+The test requires at least 2 * (bytes/page_size) hugetlb memory, since
+we require identical number of hugepages for src and dst location. Fix
+this.
 
-I see there are two fix patches for my patch in the mm-unstable
-branch, should I send a v2 that incorporates these fixes, or is
-it not necessary?
-Thanks,
-Youling.
-On 2025/9/5 20:50, Jan Kara wrote:
-> On Wed 03-09-25 15:50:46, Andrew Morton wrote:
->> On Tue, 12 Aug 2025 17:08:53 +0800 Youling Tang <youling.tang@linux.dev> wrote:
->>
->>> Hi, Jan
->>> On 2025/7/14 17:33, Jan Kara wrote:
->>>> On Fri 11-07-25 13:55:09, Youling Tang wrote:
->>>>> From: Youling Tang <tangyouling@kylinos.cn>
->>> ...
->>>
->>>>> --- a/mm/filemap.c
->>>>> +++ b/mm/filemap.c
->>>>> @@ -2584,8 +2584,9 @@ static int filemap_get_pages(struct kiocb *iocb, size_t count,
->>>>>    	unsigned int flags;
->>>>>    	int err = 0;
->>>>>    
->>>>> -	/* "last_index" is the index of the page beyond the end of the read */
->>>>> -	last_index = DIV_ROUND_UP(iocb->ki_pos + count, PAGE_SIZE);
->>>>> +	/* "last_index" is the index of the folio beyond the end of the read */
->>>>> +	last_index = round_up(iocb->ki_pos + count, mapping_min_folio_nrbytes(mapping));
->>>>> +	last_index >>= PAGE_SHIFT;
->>>> I think that filemap_get_pages() shouldn't be really trying to guess what
->>>> readahead code needs and round last_index based on min folio order. After
->>>> all the situation isn't special for LBS filesystems. It can also happen
->>>> that the readahead mark ends up in the middle of large folio for other
->>>> reasons. In fact, we already do have code in page_cache_ra_order() ->
->>>> ra_alloc_folio() that handles rounding of index where mark should be placed
->>>> so your changes essentially try to outsmart that code which is not good. I
->>>> think the solution should really be placed in page_cache_ra_order() +
->>>> ra_alloc_folio() instead.
->>>>
->>>> In fact the problem you are trying to solve was kind of introduced (or at
->>>> least made more visible) by my commit ab4443fe3ca62 ("readahead: avoid
->>>> multiple marked readahead pages"). There I've changed the code to round the
->>>> index down because I've convinced myself it doesn't matter and rounding
->>>> down is easier to handle in that place. But your example shows there are
->>>> cases where rounding down has weird consequences and rounding up would have
->>>> been better. So I think we need to come up with a method how to round up
->>>> the index of marked folio to fix your case without reintroducing problems
->>>> mentioned in commit ab4443fe3ca62.
->>> Yes, I simply replaced round_up() in ra_alloc_folio() with round_down()
->>> to avoid this phenomenon before submitting this patch.
->>>
->>> But at present, I haven't found a suitable way to solve both of these
->>> problems
->>> simultaneously. Do you have a better solution on your side?
->>>
->> fyi, this patch remains stuck in mm.git awaiting resolution.
->>
->> Do we have any information regarding its importance?  Which means do we
->> have any measurement of its effect upon any real-world workload?
-> OK, after experimenting with the code some more and with rounding the
-> readahead mark index up, I've found out we need something like Youling
-> proposed anyway because otherwise it could happen that the whole readahead
-> area fits into a single min-order folio and thus with rounding up we
-> wouldn't have a folio to place readahead mark on. So with that I'm
-> withdrawing my objections and feel free to add:
->
-> Reviewed-by: Jan Kara <jack@suse.cz>
->
-> to Youling's patch.
->
-> 								Honza
+Along with the above, as explained in patch "selftests/mm/uffd-stress:
+Make test operate on less hugetlb memory", the racy nature of the test
+requires that we have some extra number of hugepages left beyond what is
+required. Therefore, stricten this constraint.
+
+Fixes: 5a6aa60d1823 ("selftests/mm: skip uffd hugetlb tests with insufficient hugepages")
+Signed-off-by: Dev Jain <dev.jain@arm.com>
+---
+ tools/testing/selftests/mm/uffd-stress.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
+
+diff --git a/tools/testing/selftests/mm/uffd-stress.c b/tools/testing/selftests/mm/uffd-stress.c
+index 40af7f67c407..3f6213ae0dd5 100644
+--- a/tools/testing/selftests/mm/uffd-stress.c
++++ b/tools/testing/selftests/mm/uffd-stress.c
+@@ -448,12 +448,6 @@ int main(int argc, char **argv)
+ 	parse_test_type_arg(argv[1]);
+ 	bytes = atol(argv[2]) * 1024 * 1024;
+ 
+-	if (test_type == TEST_HUGETLB &&
+-	   get_free_hugepages() < bytes / page_size) {
+-		printf("skip: Skipping userfaultfd... not enough hugepages\n");
+-		return KSFT_SKIP;
+-	}
+-
+ 	nr_cpus = sysconf(_SC_NPROCESSORS_ONLN);
+ 	if (nr_cpus > 32) {
+ 		/* Don't let calculation below go to zero. */
+@@ -464,6 +458,17 @@ int main(int argc, char **argv)
+ 		nr_parallel = nr_cpus;
+ 	}
+ 
++	/*
++	 * src and dst each require bytes / page_size number of hugepages.
++	 * Ensure nr_parallel - 1 hugepages on top of that to account
++	 * for racy extra reservation of hugepages.
++	 */
++	if (test_type == TEST_HUGETLB &&
++	   get_free_hugepages() < 2 * (bytes / page_size) + nr_parallel - 1) {
++		printf("skip: Skipping userfaultfd... not enough hugepages\n");
++		return KSFT_SKIP;
++	}
++
+ 	nr_pages_per_cpu = bytes / page_size / nr_parallel;
+ 	if (!nr_pages_per_cpu) {
+ 		_err("pages_per_cpu = 0, cannot test (%lu / %lu / %lu)",
+-- 
+2.30.2
+
 
