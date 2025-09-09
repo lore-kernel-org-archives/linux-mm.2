@@ -4,136 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EDCECAC589
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 08:39:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B017CA0FED
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 08:40:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B6F58E000D; Tue,  9 Sep 2025 04:39:28 -0400 (EDT)
+	id 659F78E0014; Tue,  9 Sep 2025 04:40:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 78E0B8E0001; Tue,  9 Sep 2025 04:39:28 -0400 (EDT)
+	id 631788E0001; Tue,  9 Sep 2025 04:40:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A3788E000D; Tue,  9 Sep 2025 04:39:28 -0400 (EDT)
+	id 56E648E0014; Tue,  9 Sep 2025 04:40:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C1D58E0001
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 04:39:28 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id EEF0813AEA3
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 08:39:27 +0000 (UTC)
-X-FDA: 83869062774.23.0B19A72
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 0100AC0007
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 08:39:25 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=UTmseW+H;
-	spf=pass (imf10.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 46AEE8E0001
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 04:40:45 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1F33A1403F7
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 08:40:45 +0000 (UTC)
+X-FDA: 83869066050.13.2C55EF2
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 4C179C000A
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 08:40:43 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=MBHVmkYE
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757407166;
+	s=arc-20220608; t=1757407243;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cCEi5TXqHrjB+a+Qnvw/4IXVrSNxPFGRspDA4CqFOK8=;
-	b=49fiGipfAUNrs63D/oLbw4bH84DVZU6lYikUFeYe9xjcE5IJq6497GYZoA4Wx6YM3pI1ge
-	BC9ToBsH3Vx87QwClwpI9CcDPxSukPedYQUpb2wh3QdCpLGPQP8HfoyasneUhNC3fHBdQ4
-	17EKzx8wVaNEcw+aMoLulzYvQnqtTlA=
+	bh=EoUcqt6OXqlU+JdoRus3vWmyIypwXpaqFZjRiXTD7KI=;
+	b=nMCK/LY2xD5X2zuhfjvTvtlN73BKLYKM42o4s35l7J0Jktm6Ix/mGVJt5knxRkWrBQjCyd
+	umZHMqlw9DtNcbG8+mAsqtZp09QR/nAkh57vrjovcqv8/nyPVUb9JObmwiYKzs62/IqaOr
+	h6UpaRT6J57Aib+mBYhE/or/Wj13tmw=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=UTmseW+H;
-	spf=pass (imf10.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757407166; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=MBHVmkYE;
+	spf=none (imf28.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757407243; a=rsa-sha256;
 	cv=none;
-	b=Xvq14aQoDNvOHDc7fcB9JLKxwBHq3x7HRsG3KojGKiRFkOfrts0M2I4oKnffBQ8grk8AuP
-	RyMmVsXTe+djCb1tVkkM6N88TAEGvA5n4ZB0JGdXR8AGRT3uBg7kAxmlOt8bD+c4DQ8sfa
-	BZz+i5hFoowAneImk0ahlUIjtbDk3BM=
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-772488c78bcso5266336b3a.1
-        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 01:39:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757407165; x=1758011965; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=cCEi5TXqHrjB+a+Qnvw/4IXVrSNxPFGRspDA4CqFOK8=;
-        b=UTmseW+HSOIoRDYwiy3SZKV5EUAR3q5TPmJsActAIul6Was4wtRExX+/pjdMj2HUAZ
-         Lqv0jRlSJ+5L18ZQZUH713aDBhXTQOVW8F0hMzbfMbHCLLmRCM5TOkh6goVi0Dzfih6P
-         3s8HSJ53AlMmFgkzObEiqKAP/+sNWXtdBAe0iwNJ645o5+fCNn2vaUaxl9RdBpRdnbjg
-         E9IPE+0SJaUvK+AiaUs7lJ8zaKEou/EAkCJNPHsCDNgyp7EXrcD0oLarpZ+aJACNGPqG
-         c4myxXomRKpel5iIKI9UeNWRQU/U/vziDpSY+ACvOhTOyNsyTyenyLP5QN0/r7sCKm4H
-         g66Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757407165; x=1758011965;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cCEi5TXqHrjB+a+Qnvw/4IXVrSNxPFGRspDA4CqFOK8=;
-        b=SZIQP9+5ByamU1UZmSlruMJz5SyeTM95Zm4lcwtU0ZUi2mHPxhpno/XRDrNjXOPt0f
-         Eq0DmBkBn6Bw3OPMir/orvlJ2EhoYABjdfLWDKtSYVzGBYUYEZT7fk2HJlOpsZdoU+w3
-         wsK55POUcgkwldeMBd6iHslFp2wWTTC7vburo7OsmAbvHT/nbbeDUKazMjdNwc6n5LvG
-         ElEcwkinODzWoUeclp8hcpvSKi7SwAA8zHfxV3Bt5W1aOcduTv5uKAJO1R76YXxsVCkP
-         yS72hrp0ADjFSs2nQrgiMjGX6c//sfApqZdSoDRldPirlwDY1S3Wvzm/h4WDj6GmlBu+
-         tvPw==
-X-Forwarded-Encrypted: i=1; AJvYcCXuTg9Wp5kqUO5fY+uU5rUJz7kD48HRrT6bVrjEfJbVYIE7VvnLJEd5TBSs9eTWKf1Mhz8+Vpyu+g==@kvack.org
-X-Gm-Message-State: AOJu0YybcY1xxqnkn1rdnzdNXJ3O+ejEikKoyfdn4CgXBSSJHb+OkpwR
-	SdsH5eybPm4+MGh6dWA2/6I6ppntDM66Q/n+lE7lVQPjo7iCHhEw23KN
-X-Gm-Gg: ASbGncte+wVmMmzN/nZA260u6/ROPcYEf7qopB31p1tzobRrjMXi/rD+4OgHxwCs7uD
-	uqNGhVt/UimyiYg43FKeHZVj0N9CBdLK1QJobjjGV4im3h/+yaEyWBaeqyiOlHcfXQxBNeD8emH
-	0h4YefXw+k0YJH/9BemSp9g2FVwju8vRtMFXKdeU7pxqGSMx69tfE4CFwNzT+bEHyprP5TRNKnm
-	hqVpBCDn/WUsNjDLAkRcj7KDg8WU2IzA6G6B5dyP2G3LI0Xqy4flTZLJP7lXlQNfkR2udzZGFfO
-	fse/tD0uCxRUZMk6eEGiYI4MYZ5jTj+0W8PS7G4cgM0vwsd0jM5zVMTP5s/EJyrzJQiukbPNBDq
-	qsk9f3+rm+zKqIPjPCgY=
-X-Google-Smtp-Source: AGHT+IEqDdTDuoBLWzTwJjBUZvu7QFNnG2+UEDgnZAiaxek/ZB8pmRsjGPRE1NnETcQe5FjLxfbPGg==
-X-Received: by 2002:a05:6300:8806:b0:245:fbee:52ec with SMTP id adf61e73a8af0-253444159bamr15811368637.36.1757407164725;
-        Tue, 09 Sep 2025 01:39:24 -0700 (PDT)
-Received: from [127.0.0.1] ([2604:a840:3::10f3])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b4cd3095df7sm28092073a12.36.2025.09.09.01.39.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 09 Sep 2025 01:39:24 -0700 (PDT)
-Message-ID: <f73e6e8c-282e-4d3d-9dc9-49f13b20a255@gmail.com>
-Date: Tue, 9 Sep 2025 16:39:15 +0800
+	b=aYq8FNm8rJYX81NBuXKLNz11hrKC8GjRZcb3qRo5f24ZvyU30sBVBng5nKVP3eh6Pz258b
+	nNPg8InXdwMAr3THsqJ/e/Ik2PCjpv28IG8Xe59gcde3eozoxqIlN9ITk3bkeKffB7mfIs
+	BD0g76hOsvCObfTFsEnQPsUnVHwpfYc=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=EoUcqt6OXqlU+JdoRus3vWmyIypwXpaqFZjRiXTD7KI=; b=MBHVmkYEd0s33w4HDnRrScBGWK
+	7ka0nv6T/lMA7WcFajL8j5eR/F1lEPT3HHe0/qQaXKg6cu+eOZY3VMYML9R7GsnwMKwjavuiK3rm3
+	w9eA2cXuoey9UoNeDuRcsl67SFXaLXiPCH/9QEkPoLgLkPhbh/xGqtRKb0GYPPmIv0K1QC/4mg7QI
+	wK/jTHDDRQm19IVoiiqhU8DjydiZypghHgXG/fm8pn2NuTS1br9FO8BFOCYpMaPkv9eYcjIbfpQD0
+	LeAOVtWlB1+JDmWlHcFU1zdERFUa2j/r3IMUho/bpoKJ5GRAHGstaCri0szq+tx3hy+wDFGNr+sFY
+	DW942Gaw==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uvttu-00000005G3f-3VLf;
+	Tue, 09 Sep 2025 08:40:31 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id D4F4F300579; Tue, 09 Sep 2025 10:40:29 +0200 (CEST)
+Date: Tue, 9 Sep 2025 10:40:29 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>, sohil.mehta@intel.com,
+	baohua@kernel.org, david@redhat.com, kbingham@kernel.org,
+	weixugc@google.com, Liam.Howlett@oracle.com,
+	alexandre.chartre@oracle.com, kas@kernel.org, mark.rutland@arm.com,
+	trintaeoitogc@gmail.com, axelrasmussen@google.com,
+	yuanchu@google.com, joey.gouly@arm.com, samitolvanen@google.com,
+	joel.granados@kernel.org, graf@amazon.com,
+	vincenzo.frascino@arm.com, kees@kernel.org, ardb@kernel.org,
+	thiago.bauermann@linaro.org, glider@google.com, thuth@redhat.com,
+	kuan-ying.lee@canonical.com, pasha.tatashin@soleen.com,
+	nick.desaulniers+lkml@gmail.com, vbabka@suse.cz,
+	kaleshsingh@google.com, justinstitt@google.com,
+	catalin.marinas@arm.com, alexander.shishkin@linux.intel.com,
+	samuel.holland@sifive.com, dave.hansen@linux.intel.com,
+	corbet@lwn.net, xin@zytor.com, dvyukov@google.com,
+	tglx@linutronix.de, scott@os.amperecomputing.com,
+	jason.andryuk@amd.com, morbo@google.com, nathan@kernel.org,
+	lorenzo.stoakes@oracle.com, mingo@redhat.com, brgerst@gmail.com,
+	kristina.martsenko@arm.com, bigeasy@linutronix.de, luto@kernel.org,
+	jgross@suse.com, jpoimboe@kernel.org, urezki@gmail.com,
+	mhocko@suse.com, ada.coupriediaz@arm.com, hpa@zytor.com,
+	leitao@debian.org, wangkefeng.wang@huawei.com, surenb@google.com,
+	ziy@nvidia.com, smostafa@google.com, ryabinin.a.a@gmail.com,
+	ubizjak@gmail.com, jbohac@suse.cz, broonie@kernel.org,
+	akpm@linux-foundation.org, guoweikang.kernel@gmail.com,
+	rppt@kernel.org, pcc@google.com, jan.kiszka@siemens.com,
+	nicolas.schier@linux.dev, will@kernel.org, jhubbard@nvidia.com,
+	bp@alien8.de, x86@kernel.org, linux-doc@vger.kernel.org,
+	linux-mm@kvack.org, llvm@lists.linux.dev,
+	linux-kbuild@vger.kernel.org, kasan-dev@googlegroups.com,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v5 13/19] kasan: x86: Handle int3 for inline KASAN reports
+Message-ID: <20250909084029.GI4067720@noisy.programming.kicks-ass.net>
+References: <cover.1756151769.git.maciej.wieczor-retman@intel.com>
+ <36c0e5e9d875addc42a73168b8090144c327ec9f.1756151769.git.maciej.wieczor-retman@intel.com>
+ <CA+fCnZcMV0BOJyvx2nciCK2jvht-Hx0HnFtRzcc=zu+pQSOdVw@mail.gmail.com>
+ <couuy2aawztipvnlmaloadkbceewcekur5qbtzktr7ovneduvf@l47rxycy65aa>
+ <hw7xa2ooqeyjo5ypc5jluuyjlgyzimxtylj5sh6igyffsxtyaf@qajqp37h6v2n>
+ <epbqhjyfdt3daudp2wx54jsw6d7jf6ifbr3yknlfuqptz7b4uq@73n5k6b2jrrl>
+ <CA+fCnZdJckDC4AKYxLS1MLBXir4wWqNddrD0o+mY4MXt0CYhcQ@mail.gmail.com>
+ <ra5s3u5ha6mveijzwkoe2437ged5k5kacs5nqvkf4o7c2lcfzd@fishogqlatjb>
+ <20250909083425.GH4067720@noisy.programming.kicks-ass.net>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 05/18] x86/hw_breakpoint: introduce
- arch_reinstall_hw_breakpoint() for atomic context
-Content-Language: en-US
-To: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>, "Naveen N . Rao"
- <naveen@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Arnaldo Carvalho de Melo
- <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
- Adrian Hunter <adrian.hunter@intel.com>,
- "Liang, Kan" <kan.liang@linux.intel.com>,
- David Hildenbrand <david@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- linux-perf-users@vger.kernel.org, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250904002126.1514566-1-wangjinchao600@gmail.com>
- <20250904002126.1514566-6-wangjinchao600@gmail.com>
- <20250904063832.GT4067720@noisy.programming.kicks-ass.net>
- <aL5ns7h1NaoD9LPg@mdev> <20250909170017.dae27d8be77f9ec634e0d56c@kernel.org>
-From: Jinchao Wang <wangjinchao600@gmail.com>
-In-Reply-To: <20250909170017.dae27d8be77f9ec634e0d56c@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 0100AC0007
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250909083425.GH4067720@noisy.programming.kicks-ass.net>
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: dgmtfwo8ftzi14m87saet86cpk677t5o
-X-HE-Tag: 1757407165-272396
-X-HE-Meta: U2FsdGVkX18HwXJknzXNhbN4mDGwo1sVKS2KVO0DvnVf6jbxQwiPpGNA6QANJVKnfYmWkzx81gJzN+zXlw+DNsC25haCItt1dly+JBfbwG5WwARXv1HU0zKn2vx8Dxxa1T1HtP5j9xi26CJb3YZTnYd16+4NJyTW+fVxUWlgG3qyjpupVxBKn1y6P1agkSGkflvRA+XzhyRYwQLoqm+SlciFs95pfpFr5MCKQ7MLe6tOD9Pg1OjgpLi+WMfaegbNRA2lDgx1ocHWp5bifUz6LpNnXRopHmqP1J4/dOyLGUbWLFrzX1DlxYJLnzEsZJ5Ynm/Cj9eyCe9WnmS34Uh/uc6BuzVoMVkm3SBTXZOD9XqtpaiT51EZPckiioUawzCognM+wRXtQEMrw+vr3I1YP5/M/noWzk6CavWAvU6fClCa07JtlVg/Kim7KveGxrkyQjtd/SdKwusSWBIckFA/F+xFBywoq3VOc1vmVMeabVcQ1Kg4SbPG9UvW+D1RpwqWet0n2QHYswhELkZCw0rvolwFBW9Pj6GKtnyEb2ukX3eNNpNVOArsiUZjyeDM9K0ski7lzt9KlzxMjg8C9Q26ztNh3CGlN0LRwEo/ZrAE1D+HDJ/8ZRyRnprnMJrQ3sZsyZSPBnpVMWVk2/ehtTK2p/SZP+7V1z9gYqgl8uTmZ+jRgKaLky0rrKTsLk3YqYNNS7P6mqg3JFyQQGZ4LTINP6iwwM2FxQNsPOPFHQQdJ2t84gYwTkhXiF+92VUHzBwbl8ffB/pQKnTu/8JzFNixTVXd1NaP/RQtZ2vkbJUS90n6x8ynxqLG0detwH+Bk2ldWI9GAOIlnAMAbRfYwVSeNEvIDJ84/0mpErePDaji1xmCgo/L7VM8kxXnLZSTlvqP6fmARwXe/FHUvU3VzK6jZwbAakDZ56iTlZGIkWldlC+5a+nnPOyZhKtiw1ewlsjHn3yZfD8KsNXQnET25+X
- GhIJFblN
- wK1tz331PTsPFykDjRIrv8SswrCMkxQ78o9llrcDpFDcQtwtD9MLeLbJ5mGiMECGshU0R9ue2ICl4si+80iqCDBl+yVeTJ57bAhP9R9t54EOxBb/rd6lMjbs4BY92sC9yCUag1miA7Beg7gOo8uDEdsZrweDwEzhxA5qIj+euoyag0g+EfuGGLPWCg5oZyCmcYbLMmXpNIBOPdVnFbsSHXa3I2yucLTp7jSF2vY1iZqjNzDTC7WrEqXRg28m+mKFkjzUxhU32AN47jy+4oh5APmLCpWYC1DWZ3dQELHfeAyGLHRjHEs3ziMqkLeOOMkC0gFpSf6xClbvz3Au1vFX9dnAv2TEX0BcFc0HhXlD9r2EisT1BpTk8ToLujo1DKXF0d1qwEcYmeo6f0+MIG0WPdf/UKHW9LuHDAQoEghLUYSsRWokdeqMQJ8lgMplY+4zBjpzZasZbMnLZtB85Fpbj5/wlPS7lWl1xoTSiWjfe8Hxo8Zs81l88CpJMyEf8j2N72nmBasvegI/BMNobU+h/Mmev+2tB6ssFX3sBeZz5ShZAGplFg6u8yPyyAjOtNJbadVbuIdPeP62yfr7ffVkf8TTRLw==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 4C179C000A
+X-Stat-Signature: 9rqu4kg66n9qp6ghm5zfuro3bkjg3btd
+X-HE-Tag: 1757407243-454614
+X-HE-Meta: U2FsdGVkX1/6hiJm+fabC9+B61ZNTskETcR92710Jld5TLt0X8z4J2pjGpFgZ8rA5JEksY+eHADVMVlmNY3FlVwg7z+4vvs0KU+L9bUs3EBc4b+eyYf5vdVJFgnT7Ju6UEe03r3KSWd5xt9m95Y1t55nvf7uGbd3JjHOttc1d9iBC3QWlv1IgAZEfgPSmmHjU3v9dh+zph72WMDRnjT28KitouSpPYj2IGX+is8Sem1BiPdywYNlsGoFYVpvb3Gsnc301PU3VGHDw/7NNHnTp9GuRZe/mX0TdkJileH4BUDbDHuus7zJLusAnDUrT1TNr26cYYHGBokI8/OCv9MOMZfUH4XkT/xDKd5UdQrnjktBSEKnZSZE0R4E3upqEFgNkr8nprpaETacm0j+2GTSV2pwQ8GE4YnrGdy8UdA46U/uC9NMgYgeC10t3bBggLquz0TvMf+5zRe+nANyZbHqdLcf1O9LBz2X9Hj2+50qibmrvqlVJOgsNrCFVxtD3IWGh+gGNJogtX0a6W7MCaxpvNKi2QCwaaMgTaQWpV2hKUWUBwqQGPR+2ARvIBHWxuJECnHs+qmrKIsGLFYJrPJrb+8ee5C86LQeEw2qgKlhrhjAvb4uXVZpN7n6BfB4OLQ1eI5SVDn1EEcu0yI6Cel1McIfOse/kaxZ8j+cENdZx8rfcQ9xRMcktB4LfwcYSQhgqE7Z5oRyz3eecKZrlZmxqJYeDRAEGCIeqW121AJk0RSjbw+pe3rkEIOzji+EFJdhczigZSz+HixbSsMKPa5lcXc6kqdXGlXpWKZW1SRmA17xBk1XH1R7/MPLl7PTLJqnsTmGGjyltdiAFut5MrxN95BlkLxlw+Tjhx7LZZM0KSkivEEoyF3L4LkO3EE637bEoIa4Dg8zWIKotTfpL4BKiSX0Urm2syIgTNyKD1XnzldbFcokf2s7Gx/KXGyCpNlN8GkWw3AEw0ZOrkNhxyN
+ wxg3AkII
+ KVBZmXkL696mEgs8lp9Jos3/YQ2XEfY+Om/YgtW0wwtFgY03p4uKewUGe1ishfp6me1euhcvehAqALPt/CgwVIqtogdO9mNMdlGTL07Jt+lv6Wx1n1pkOQJFqjfcXgdt5gWzm8CxxAbYemYikqfjAj9lrsDScoRfGuWHni+9TZAx5Y4iqaEHTG/PbHBtj3ekeGTuqXJOZeDDXB+H7px2VM88IexIV9F7oj+7urznrOZ4CxeaJFiBqpSBryDerQOMGNuyCyR26gMWSBE0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,117 +129,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Sep 09, 2025 at 10:34:25AM +0200, Peter Zijlstra wrote:
+> On Tue, Sep 09, 2025 at 10:24:22AM +0200, Maciej Wieczor-Retman wrote:
+> > On 2025-09-08 at 22:19:05 +0200, Andrey Konovalov wrote:
+> > >On Mon, Sep 8, 2025 at 3:09 PM Maciej Wieczor-Retman
+> > ><maciej.wieczor-retman@intel.com> wrote:
+> > >>
+> > >> >>I recall there were some corner cases where this code path got called in outline
+> > >> >>mode, didn't have a mismatch but still died due to the die() below. But I'll
+> > >> >>recheck and either apply what you wrote above or get add a better explanation
+> > >> >>to the patch message.
+> > >> >
+> > >> >Okay, so the int3_selftest_ip() is causing a problem in outline mode.
+> > >> >
+> > >> >I tried disabling kasan with kasan_disable_current() but thinking of it now it
+> > >> >won't work because int3 handler will still be called and die() will happen.
+> > >>
+> > >> Sorry, I meant to write that kasan_disable_current() works together with
+> > >> if(!kasan_report()). Because without checking kasan_report()' return
+> > >> value, if kasan is disabled through kasan_disable_current() it will have no
+> > >> effect in both inline mode, and if int3 is called in outline mode - the
+> > >> kasan_inline_handler will lead to die().
+> > >
+> > >So do I understand correctly, that we have no way to distinguish
+> > >whether the int3 was inserted by the KASAN instrumentation or natively
+> > >called (like in int3_selftest_ip())?
+> > >
+> > >If so, I think that we need to fix/change the compiler first so that
+> > >we can distinguish these cases. And only then introduce
+> > >kasan_inline_handler(). (Without kasan_inline_handler(), the outline
+> > >instrumentation would then just work, right?)
+> > >
+> > >If we can distinguish them, then we should only call
+> > >kasan_inline_handler() for the KASAN-inserted int3's. This is what we
+> > >do on arm64 (via brk and KASAN_BRK_IMM). And then int3_selftest_ip()
+> > >should not be affected.
+> > 
+> > Looking at it again I suppose LLVM does pass a number along metadata to the
+> > int3. I didn't notice because no other function checks anything in the x86 int3
+> > handler, compared to how it's done on arm64 with brk.
+> > 
+> > So right, thanks, after fixing it up it shouldn't affect the int3_selftest_ip().
+> 
+> Seriously guys, stop using int3 for this. UBSAN uses UD1, why the heck
+> would KASAN not do the same?
 
-On 9/9/25 16:00, Masami Hiramatsu (Google) wrote:
-> On Mon, 8 Sep 2025 13:20:51 +0800
-> Jinchao Wang <wangjinchao600@gmail.com> wrote:
->
->> On Thu, Sep 04, 2025 at 08:38:32AM +0200, Peter Zijlstra wrote:
->>> On Thu, Sep 04, 2025 at 08:21:02AM +0800, Jinchao Wang wrote:
->>>> Introduce arch_reinstall_hw_breakpoint() to update hardware breakpoint
->>>> parameters (address, length, type) without freeing and reallocating the
->>>> debug register slot.
->>>>
->>>> This allows atomic updates in contexts where memory allocation is not
->>>> permitted, such as kprobe handlers.
->>>>
->>>> Signed-off-by: Jinchao Wang <wangjinchao600@gmail.com>
->>>> ---
->>>>   arch/x86/include/asm/hw_breakpoint.h |  1 +
->>>>   arch/x86/kernel/hw_breakpoint.c      | 50 ++++++++++++++++++++++++++++
->>>>   2 files changed, 51 insertions(+)
->>>>
->>>> diff --git a/arch/x86/include/asm/hw_breakpoint.h b/arch/x86/include/asm/hw_breakpoint.h
->>>> index 0bc931cd0698..bb7c70ad22fe 100644
->>>> --- a/arch/x86/include/asm/hw_breakpoint.h
->>>> +++ b/arch/x86/include/asm/hw_breakpoint.h
->>>> @@ -59,6 +59,7 @@ extern int hw_breakpoint_exceptions_notify(struct notifier_block *unused,
->>>>   
->>>>   
->>>>   int arch_install_hw_breakpoint(struct perf_event *bp);
->>>> +int arch_reinstall_hw_breakpoint(struct perf_event *bp);
->>>>   void arch_uninstall_hw_breakpoint(struct perf_event *bp);
->>>>   void hw_breakpoint_pmu_read(struct perf_event *bp);
->>>>   void hw_breakpoint_pmu_unthrottle(struct perf_event *bp);
->>>> diff --git a/arch/x86/kernel/hw_breakpoint.c b/arch/x86/kernel/hw_breakpoint.c
->>>> index b01644c949b2..89135229ed21 100644
->>>> --- a/arch/x86/kernel/hw_breakpoint.c
->>>> +++ b/arch/x86/kernel/hw_breakpoint.c
->>>> @@ -132,6 +132,56 @@ int arch_install_hw_breakpoint(struct perf_event *bp)
->>>>   	return 0;
->>>>   }
->>>>   
->>>> +/*
->>>> + * Reinstall a hardware breakpoint on the current CPU.
->>>> + *
->>>> + * This function is used to re-establish a perf counter hardware breakpoint.
->>>> + * It finds the debug address register slot previously allocated for the
->>>> + * breakpoint and re-enables it by writing the address to the debug register
->>>> + * and setting the corresponding bits in the debug control register (DR7).
->>>> + *
->>>> + * It is expected that the breakpoint's event context lock is already held
->>>> + * and interrupts are disabled, ensuring atomicity and safety from other
->>>> + * event handlers.
->>>> + */
->>>> +int arch_reinstall_hw_breakpoint(struct perf_event *bp)
->>>> +{
->>>> +	struct arch_hw_breakpoint *info = counter_arch_bp(bp);
->>>> +	unsigned long *dr7;
->>>> +	int i;
->>>> +
->>>> +	lockdep_assert_irqs_disabled();
->>>> +
->>>> +	for (i = 0; i < HBP_NUM; i++) {
->>>> +		struct perf_event **slot = this_cpu_ptr(&bp_per_reg[i]);
->>>> +
->>>> +		if (*slot == bp)
->>>> +			break;
->>>> +	}
->>>> +
->>>> +	if (WARN_ONCE(i == HBP_NUM, "Can't find a matching breakpoint slot"))
->>>> +		return -EINVAL;
->>>> +
->>>> +	set_debugreg(info->address, i);
->>>> +	__this_cpu_write(cpu_debugreg[i], info->address);
->>>> +
->>>> +	dr7 = this_cpu_ptr(&cpu_dr7);
->>>> +	*dr7 |= encode_dr7(i, info->len, info->type);
->>>> +
->>>> +	/*
->>>> +	 * Ensure we first write cpu_dr7 before we set the DR7 register.
->>>> +	 * This ensures an NMI never see cpu_dr7 0 when DR7 is not.
->>>> +	 */
->>>> +	barrier();
->>>> +
->>>> +	set_debugreg(*dr7, 7);
->>>> +	if (info->mask)
->>>> +		amd_set_dr_addr_mask(info->mask, i);
->>>> +
->>>> +	return 0;
->>>> +}
->>>> +EXPORT_SYMBOL_GPL(arch_reinstall_hw_breakpoint);
->>> Yeah, I think not. For one this is an almost verbatim copy of
->>> arch_install_hw_breakpoint() with zero re-use. Surely you've been taught
->>> better?
->> I introduced this to modify bp_addr in atomic context in my RFC series.
->> I thought it was clearer to split the introduction and refactor.
->> And then It was used in the wprobe series, so I left it as introduced
->> in the RFC series.
->>
->> I agree your suggestion is right. I am willing to refactor after wprobe.
-> I'm OK to refactor it to reuse arch_install_hw_breakpoint().
-> My point is to have CONFIG_HAVE_REINSTALL_HW_BREAKPOINT so that
-> we can easily implement the dependency for other features which
-> requires this feature in Kconfig level.
->
->>> And why would we want to export guts like this?
->> I wanted to introduce a real-time stack corruption debugging tool,
->> which needs a helper to change bp_addr in atomic context (kprobe handler).
->> And wprobe needs it also.
-> I agree with Peter, it should not expose the architecture
-> dependent code directly. Instead, we need a wrapper.
->
-> Thank you,
-Understood, I will use the wrapper instead.
-
+Specifically, look at arch/x86/kernel/traps.h:decode_bug(), UBSan uses
+UD1 /0, I would suggest KASAN to use UD1 /1.
 
