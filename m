@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37111CA1016
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 01:00:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21B69CAC582
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 01:00:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8BCB08E000F; Mon,  8 Sep 2025 21:00:13 -0400 (EDT)
+	id 7FA188E0010; Mon,  8 Sep 2025 21:00:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 893E18E0002; Mon,  8 Sep 2025 21:00:13 -0400 (EDT)
+	id 7AA258E0002; Mon,  8 Sep 2025 21:00:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A9B68E000F; Mon,  8 Sep 2025 21:00:13 -0400 (EDT)
+	id 6BF838E0010; Mon,  8 Sep 2025 21:00:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 669968E0002
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 21:00:13 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 17CB513AA9B
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A0F68E0002
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 21:00:16 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 091641DD55F
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 01:00:16 +0000 (UTC)
+X-FDA: 83867905632.28.F1C4F5A
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 03176C0014
 	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 01:00:13 +0000 (UTC)
-X-FDA: 83867905506.11.CF3899E
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 2E7D520004
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 01:00:10 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=TORna6B2;
-	spf=pass (imf03.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Ea8XsFki;
+	spf=pass (imf28.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757379611;
+	s=arc-20220608; t=1757379614;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=3I0VmGs2kpEbMcr5q5JKcZdoO9Oa/TvNmRGysVtq0no=;
-	b=7pmbkP9MU5pGezRsuZ4HLUWS+mqLhsQdWQM9bYvGEJ8Odi7KjwPBcFvSWZye7QE6pc16fi
-	DDb9+zfY47kOXu/I6++kQjm/cEMrKPfBGWEsQx4PokUfRSXOSyPjxIQPAeILq5G8LQcrW8
-	/n8znxWGE2ZZmoLKl9WMFFk4b8MsBJM=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=LQaXiO7Rj6JeUoLNyDKccCslPjkrNZKqfhPqinjWMVs=;
+	b=seUkv6JH2RsK63OXWIA34awxcga99RCYsMWnBWsYvLfpvGVmDwc7WSplBHn8QfnUms6jYr
+	u5bU5HYggsQWQD9X0ohoXBxc5h9ugRTdD3V82ujg4u2M9gv6VtVExlBFNaVevDGiosqQ17
+	yL2QHfKqvT99osp2lz5epBKSBqY2j7Y=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=TORna6B2;
-	spf=pass (imf03.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Ea8XsFki;
+	spf=pass (imf28.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757379611; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757379614; a=rsa-sha256;
 	cv=none;
-	b=io5P3YnEefCrUoqjRQAPhj6FurC57jjmBrqlRJcCmuZrrXDuPKVwLc0aBFYM+WEyoHMtJT
-	uwD4UQLWGTa4Bp8K7pz9Y1DfuDg/CGda8w3H1vYU9wo+fc0ds6zqLEEh4c0sQvsOeLiesz
-	pdfbCOxbVYUZfnbWnMjE/7tyNuah0SU=
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-24c784130e6so55841705ad.3
-        for <linux-mm@kvack.org>; Mon, 08 Sep 2025 18:00:10 -0700 (PDT)
+	b=BTd9hPGmzLcnbirqMjDzaNROCp4zpqFzMCNoGxu4J0YJqLMW8iMr0Ss/JSvLxFlZwNAhKV
+	dO8hvK2yGK7SNylo7ErxUr88D1MfXcQ5RkM7oKspb8l+CWBoXAHV0XPB+MJ8qmYgkCt1Xl
+	K/N7tMme2dJ0qk4wihqqVI+/ZNTgpD4=
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-772488c78bcso4988838b3a.1
+        for <linux-mm@kvack.org>; Mon, 08 Sep 2025 18:00:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757379610; x=1757984410; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=3I0VmGs2kpEbMcr5q5JKcZdoO9Oa/TvNmRGysVtq0no=;
-        b=TORna6B2hw4WZo0NFwXLWgFs+JEfG0dvja4kED14WlZMWXlbszpiS1CpX9II72XgM1
-         D67LJEjRLe0xxsx1s9r42xYm6MCHO7VKGJnq4oQasTwfovaCTTQ9yFBnC84+a36Xn06x
-         EFtJiNNHeJgiVloywZpw44tYfG+ARhz5Aaju071bxqnoVmpqHMpSiDJIBhwtjVObllFK
-         e2L+fEPmZyjQHpyru9O88f1T7gOpFkU28m+kCOU1sWigdX3qL2d81chJCE4qxjPr4cuN
-         Y3MvTpxmZveCZCFC7R8PNpyLjoZU+gPmL2AoNZ4fgpWMz5+igIrwBOlxeOtFkuumlXy/
-         qxjQ==
+        d=gmail.com; s=20230601; t=1757379613; x=1757984413; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LQaXiO7Rj6JeUoLNyDKccCslPjkrNZKqfhPqinjWMVs=;
+        b=Ea8XsFkiSj39meY3ZUIrhhra/ddUVEkJFxQzjr9RPYNEkHiHyzwFkAsGRdRgWTVXou
+         jQOZ8IZVc9ylPjZSpo3rkQhVg3kbh+uskafeRfBDmWT6nmTBBNsoZq+D/BJIC8X5aWqt
+         XPd+jLIAwIfMlzcSys65MyFZzH6MEqoTkxjdvtV3VPfrPZcoQlJ/nRww+I/KYbevwclR
+         tfFBKCnOOylDyuvPP4khWBdltBB698KlQ5anlPlNsmhRwJB9v9hmljwS1ozYKQiDOsAN
+         rAC0jktyf9Y8pk/rx2MWt5srR0jTT1TIdO6Wbmr9dDO/YUXmTgkdjxp+YHo2Vb5r2ulS
+         b7bw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757379610; x=1757984410;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3I0VmGs2kpEbMcr5q5JKcZdoO9Oa/TvNmRGysVtq0no=;
-        b=SoduR5HmK0tyaVbAbG3ZiA0r9kRmFynJWmN5W0EhX03HjIrubm2kSxNG78xWUxX5y9
-         cW6Zm8mWwYdEVBkIy9FrFzzPyEiSAtkUSML3cIf1j88DwRDHfsph2MMIM88FkMLPoACd
-         eX4dsKB6llJ9xPTa3ZbIR5GYtCxC72bAGsfUMXbNIbB7SOSY+cr7kpAHGoiNjrPoU6zO
-         CQFApRIyWkS4N7mmMtdvH23XauAlR5enbUbhnBACW/8F0MJ+zr3iAtDPfPlp41D3FPsx
-         1L5YeSHkbGxhP+NYfAN/w5l09hBju1ic29lOJYG7+2kDDMzU+ZtoLPaKOEBut/98CpJr
-         VMPQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWVd9uWMOhWgP1f9Dd6oRjMYb9CIg/YoZ9BEJFPF1r0ukxMH5gxRYqKeRq3ejrhHnJoSLtP9V1+dA==@kvack.org
-X-Gm-Message-State: AOJu0YyXX40/rcN6YVJlJzLXUNXEfDAUqEywutJCNUBvw9fl671mtRR0
-	C7bQALOp/8I1676siHITnKNJNhDZm0RbcKeUgxJi3RCnHjzvQYoLmDmM
-X-Gm-Gg: ASbGnctarTLJK1Fh4Ik2EyN4Q6v7RfExwkfFcv1N5kcJmwjQPbQDjiOa255EcGtVbrd
-	SsnGGCYvXJUypJ6FgzPex+Dbit8fz47YJLAjI7FeOFlihiz8DdkB4PnELCciY5AbuN5QDfOG0jb
-	3BADyDnofC6WGGYOCuFGAv9vLP871TuGWV0wfgR/CbxxRVCfBIMz8NMAD5RoD4vnnW0EUK/MnwI
-	JHskYwHpwa+At8w5VRzXCjZ5naWJQlGSZ/Jt7lm+/WgotpkBo7tQecdKQByMygSwd/Z2M5qvD6k
-	cul4ZK8oxQ4ScC6xsk9eHaDn8846VHLYabtrlJ4okQEPrjwsEKtNZo58gksB3aoChZMiGesCXlg
-	xosb0YjTmGX0AKRa3Cl/p0M5VDls4xz96VEJv5imRqo6x0XRjidZeCrCJymiha4zoJO5uh1vafR
-	a5N2JzrCT/
-X-Google-Smtp-Source: AGHT+IEM2XoQeUfxViqxHUBGb9ymPiInaAJmBJ0r2R3U73+XlaqvewD+wzVN2Y2P6L12bEYs46pCRg==
-X-Received: by 2002:a17:903:1b64:b0:24b:4a9a:703a with SMTP id d9443c01a7336-2516e4aeb33mr144178765ad.17.1757379609741;
-        Mon, 08 Sep 2025 18:00:09 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1757379613; x=1757984413;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LQaXiO7Rj6JeUoLNyDKccCslPjkrNZKqfhPqinjWMVs=;
+        b=tDGQ7D3aq9hSPRTy4mEhqvnhnlGtp+Vs+SLBsEdDLxzFaoY3AIfgpOnYuKt/8oK3xi
+         8/IIWTsqHeqn3yBKNhV9V0LkVsWZOQd/9RWSefJZxsqR09p3Xc3M+88wA4pPdX9G8Xdv
+         97ugC6eN5ecz+AULsxAwHb2m6b4kh8EqnRloXpS6iXRrS0x/rT0th7ycdctI1comRHeV
+         VAO7EOAAhhp8v2ayVl0DeTW8X4O3vAiUM+S3oRTUzBCnBpkQYi2OCluwwraVEK9GReE6
+         ueRHCzznVKwUcOrNv3SGBMlsik1zFfxscKH74WSzLNCVfiaK+t+8r648E09qmOt9qBgO
+         Mymw==
+X-Forwarded-Encrypted: i=1; AJvYcCU7MN7gx6uP08TcCTU+Ivq7Qd/D80vdSzPH8HV23En0J6aQF7Gs1SqlEvLCMSxSboFtP9jnSfPhug==@kvack.org
+X-Gm-Message-State: AOJu0YyKHppkMLL+XTE9T1v21l/ZWBSrGqOJueNl/u1rNNPfQIB081Od
+	cn4q3j97ibk+Dt0C5E4v86ic0COLQdK5eN6pOOerTGFdPg6j6oN73Yq4
+X-Gm-Gg: ASbGncvMBSv4blm8lmY7FUUbebXTBHct8Mc/deVOAYmL7+VhNuxNNaCUp9xtxQTXtoi
+	zeilfihfJsC1Ys1N1gwwhiawopH9HjfnDHFD23/+RFTNgE/kN0qK7ignhCW5sdLZowR2M7ftsci
+	9leVgL0dQ2WVPXjRH8OGscLKcdShKlZ27GNmy+KgrceWDkB5D/0niNd6qyAHZOdYbJRcDtQI+ff
+	tC7i9bYuU1/dPKcvnRhB7fpcn7RTdYOcMIFELnogU2KIDcmenNAA26odqyYwRK/IlOUL9SemiFd
+	WJepp7CFocfKW4k8t8Pe7wQWq1p3/9nVvI4NvGCvzBFlohdgQHxiYkaXmfsKoHZscEhpc5hhxy3
+	xgE8bi6TaoX1IEfIlHoJrUExAUlHiWRnoe0lwrG+i7z/JRctiELIOGyGfy50hlaQ=
+X-Google-Smtp-Source: AGHT+IEyyyLEKg31IihQi/ou94RxqHeZu017zfwcJX6SGzpwddIuJtEgCWvNWfw0XBs7sZ8NiG6v/g==
+X-Received: by 2002:a05:6a00:1394:b0:771:ef79:9338 with SMTP id d2e1a72fcca58-7742def5d1emr11646157b3a.21.1757379612566;
+        Mon, 08 Sep 2025 18:00:12 -0700 (PDT)
 Received: from localhost.localdomain ([2001:558:600a:7:44e6:767e:cc5a:a060])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-24cb28c30f4sm135606085ad.110.2025.09.08.18.00.08
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7746628fca0sm205235b3a.56.2025.09.08.18.00.11
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 08 Sep 2025 18:00:09 -0700 (PDT)
+        Mon, 08 Sep 2025 18:00:12 -0700 (PDT)
 From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
 To: bpf@vger.kernel.org,
 	linux-mm@kvack.org
@@ -104,20 +104,22 @@ Cc: vbabka@suse.cz,
 	peterz@infradead.org,
 	rostedt@goodmis.org,
 	hannes@cmpxchg.org
-Subject: [PATCH slab v5 0/6] slab: Re-entrant kmalloc_nolock() 
-Date: Mon,  8 Sep 2025 18:00:01 -0700
-Message-Id: <20250909010007.1660-1-alexei.starovoitov@gmail.com>
+Subject: [PATCH slab v5 1/6] locking/local_lock: Introduce local_lock_is_locked().
+Date: Mon,  8 Sep 2025 18:00:02 -0700
+Message-Id: <20250909010007.1660-2-alexei.starovoitov@gmail.com>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <20250909010007.1660-1-alexei.starovoitov@gmail.com>
+References: <20250909010007.1660-1-alexei.starovoitov@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 03176C0014
+X-Stat-Signature: bqfeqb35h744cu8196kqmfqge56yyyzr
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 2E7D520004
-X-Stat-Signature: iiq6gnnx5bgo1paba9wpdgo4rx6qdx67
-X-HE-Tag: 1757379610-317013
-X-HE-Meta: U2FsdGVkX1+JDCAvfeSwWDUuZkU2n7hEV2kfKIQk/WXZDKsWdc6a2s7YZ0XIiKzy3B5ESv+ERk4Y3NGQ/v+/558ja1rwPURgh2SlBwrzz+xdhCZ+Emm5/jX8rpZegw75hCrQxloKqaQyzwQ9Ay3lrFKDi9XBr5+tLHqyvSQJdHO1xPjXmci8c/zA2b2FEcvQhbOh3Wn+ZXf/ecu4TXNAyiJaJKcSE7YBbF+5SvoKK4vN/2hfLki+kLyr2nQZ5+HSyMeiYCj1SZTw1f1R+u9WVlULilPsJZJiCaDUZPhKjsNJtZr4l8PTyJkU0ugZ6AeiAxG5MnzIa4XdKh5fETI6UCnIz6PfUFFI46lquYqrC8YbgN+HvOphbwhgxAmNdNkL7i9OxCayQ54DzlIqlvxX/O5QDoYQblw/1fJsz80nGHOJVGOH2x+8zAIjO12tk4etokwc+61zjDVGfiUMjxVf+wJjq/X1GF51s68/x7sHlkNgzsoAxemXHAN4xtSDS7+zy2S+k9KsTQhV4xp01uBpiZEuYCTTHYf4pUL4WLW3VmSlPmCuu/ErjR9A2jfnk8UTO6OX65ec5MNX+KZcsoVWzzo7H3YOgvLhQJiT2+v359mcwUi0YOUHy0ril1z3WhWFqDrGTyOWeSQnirBAfoYbP84bGW4pKOVvmGYv2UvIEtP36sYkqmuKsPIqgOS/bqzjocecErOI0dr/HSpX+GIWhyLUNA9J1Knqm38uh5j133UleGtl2uZ7R+C04g5adqePuQwP+e78QRpWPXkNAygfhpJCglo9P5hNoOO8CeICEvYrFmaXTY5Kt0xtQSOaaOYHIhDsPjCkjJPReLbPJm4cVUUf5iLYMc2UBNtWTQIzCmPt6hzpieQyTGHxPTU3fxtZEwtgG/B7GmIrk0sN92+m/2Uy7q2hZbyNPHx1GdxE2NX4DqyB/dCRtHTZPNodD6ANhDejMugVugnR4JhKKM/
- 0C0ts1aF
- ifXQiIxFT1CZJvEHhyIuzBKqpkiHgD6U+muRFUW9ins3e+25VM6rBfJwecz0pRMmauTob2xAkoFJdAGSJ5no2CcxYQjn+w205gY7+BjbYbGG5cQoJwrC0wjD9VUJMhtmHSFzyU4NcRl06cQPonJgs8AYRpbBGaoCViu9qN2Wf7tA+rox4VC+rG8fv3dniP1R2AgokIZfZymQTLQbE/M9W7+AmNg/rtcatXtyLGVU2lPKLV1XltIl3hBFCPacXB+XnOBAbVi2/P4fip8HAkahTSPBY0ed4MiFFdMt80ToZVljpR25WDIfDyqoI0YVXhqMGZhBU4IHuDMBwhWvyNaourDVAj2kg4p9reb3rWwDPULJ11bOlrTAjfbNNs84Xq+0S6VMr4TNSl5hbbOujqekVQKOZTwb017UCldLEfD5REHv+FxLRfXY2JBP9DXpmvzIIHKSyX5dfE02Nl9Fx1sneMHV03UqZ8WNgyxXFaJCcOVwEJCgtHWiqJMjbVnswFRr8PQOrJDhON0gyGhLvdvKIzpCP+g==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1757379613-504065
+X-HE-Meta: U2FsdGVkX18YghlJMXy94GWZlsKhkniGeOHe4MrPqvq6I/ED2vJPPbgtk/rju8V0WS3yAf0st1uihrnbKDdzIvL5NAtqiV3ohYIwM5iMrnZco+M+YL2n6V9R/0xVE9iEQBs+XGiw/THPoCT3OiX5sqaYaJbh+JyTMNxt5yVnDHx5aJ6pzRVowvtGE3PGXeGCwJr8/sZe2XAhyJzj8X/sbLpnqIO24WiThqHFNlxjmYQAtpdcIyvQ+e7Tb60YnkDhWSXX6S0HOTOqIjUKODjk40KXEzOlXbiRUhq0Mex43MiY3mo6W0yS5jm1oZLyO5sukCzu9N19h1wmbFzQzLePl67g5vtn1Nj02nZsPoub1rar2hWvPfj0LUoVaAybS4dNblSWwyUfMxPgKQ9BuosFsAUtFiP2Gj8WYrQVyei8KQh2s3aI31/h0tB60AYNon2LOO79li7x7LH0V/zksK5miptzaYQ/0UnOOtzGkEHm2BULGEzLqJcjy/chwN5sKOm9EStZEhGD8ZOX6ow4Vh67m6ZwgDXvRruB+NNXw+v/H3zHfk2L5pf+Vb6zIwNiPYvpEsXGTqFqzyaHmSMFRn/61iFMT417ADtczheabCEC/OonJgIj2CWEtKqFJAP+tOSuacCMzNJ+5apgt1QcIVfuUZ4BXjIp9bXb/rcw3RDy2QlxGMZUxeEFrf+MH08M9s2GnrqjbW1y7eyjOTLR17Ltw/yqLWC4f6mYidGMx9UBmLKqr2asXjFOUMZUVpILxvDM9W2nPGqMlQXuMzW7zKg6Hq43JHuJgROmnb3MvqzkRWTZlmr7dAM1CtlK/X202gTl7XfybrK+9rCGSLwLxA7LyKkJD+MtN+zsq//WJMmv5L51iu9n1Bnkpv2O6O3U8QAt86sGJvZCY5ZFtVlxf58sjXneD43D4rlY7TdiQ6RttHxa/ZEPw2/RfJuPDxF3wJYmcCSJYOFbx2vR/PnyyYj
+ D27GmO3V
+ gwt4rm8KUt3GgPQXSs8tGxaz5DOgVMjv/QBQhULIXRRfq8Z2ACYmuhuN3pcnL5f+TiaUkTv4O4Yr6zpAV9kLyBD6vW01bxyGwi0j71jALoSc08iBS7zY9LXkogVIEJWw4Ds3OdmXOIRY4NK9eVUhVRhlct/qmQNNsJq94F0jqqRjRZGo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,119 +130,97 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Alexei Starovoitov <ast@kernel.org>
 
-Overview:
+Introduce local_lock_is_locked() that returns true when
+given local_lock is locked by current cpu (in !PREEMPT_RT) or
+by current task (in PREEMPT_RT).
+The goal is to detect a deadlock by the caller.
 
-This patch set introduces kmalloc_nolock() which is the next logical
-step towards any context allocation necessary to remove bpf_mem_alloc
-and get rid of preallocation requirement in BPF infrastructure.
-In production BPF maps grew to gigabytes in size. Preallocation wastes
-memory. Alloc from any context addresses this issue for BPF and
-other subsystems that are forced to preallocate too.
-This long task started with introduction of alloc_pages_nolock(),
-then memcg and objcg were converted to operate from any context
-including NMI, this set completes the task with kmalloc_nolock()
-that builds on top of alloc_pages_nolock() and memcg changes.
-After that BPF subsystem will gradually adopt it everywhere.
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+---
+ include/linux/local_lock.h          |  2 ++
+ include/linux/local_lock_internal.h |  7 +++++++
+ include/linux/rtmutex.h             | 10 ++++++++++
+ kernel/locking/rtmutex_common.h     |  9 ---------
+ 4 files changed, 19 insertions(+), 9 deletions(-)
 
-The patch set is on top of slab/for-next that already has
-pre-patch "locking/local_lock: Expose dep_map in local_trylock_t." applied.
-I think the patch set should be routed via vbabka/slab.git.
-
-v4->v5:
-- New patch "Reuse first bit for OBJEXTS_ALLOC_FAIL" to free up a bit
-  and use it to mark slabobj_ext vector allocated with kmalloc_nolock(),
-  so that freeing of the vector can be done with kfree_nolock()
-- Call kasan_slab_free() directly from kfree_nolock() instead of deferring to
-  do_slab_free() to avoid double poisoning
-- Addressed other minor issues spotted by Harry
-
-v4:
-https://lore.kernel.org/all/20250718021646.73353-1-alexei.starovoitov@gmail.com/
-
-v3->v4:
-- Converted local_lock_cpu_slab() to macro
-- Reordered patches 5 and 6
-- Emphasized that kfree_nolock() shouldn't be used on kmalloc()-ed objects
-- Addressed other comments and improved commit logs
-- Fixed build issues reported by bots
-
-v3:
-https://lore.kernel.org/bpf/20250716022950.69330-1-alexei.starovoitov@gmail.com/
-
-v2->v3:
-- Adopted Sebastian's local_lock_cpu_slab(), but dropped gfpflags
-  to avoid extra branch for performance reasons,
-  and added local_unlock_cpu_slab() for symmetry.
-- Dropped local_lock_lockdep_start/end() pair and switched to
-  per kmem_cache lockdep class on PREEMPT_RT to silence false positive
-  when the same cpu/task acquires two local_lock-s.
-- Refactorred defer_free per Sebastian's suggestion
-- Fixed slab leak when it needs to be deactivated via irq_work and llist
-  as Vlastimil proposed. Including defer_free_barrier().
-- Use kmem_cache->offset for llist_node pointer when linking objects
-  instead of zero offset, since whole object could be used for slabs
-  with ctors and other cases.
-- Fixed "cnt = 1; goto redo;" issue.
-- Fixed slab leak in alloc_single_from_new_slab().
-- Retested with slab_debug, RT, !RT, lockdep, kasan, slab_tiny
-- Added acks to patches 1-4 that should be good to go.
-
-v2:
-https://lore.kernel.org/bpf/20250709015303.8107-1-alexei.starovoitov@gmail.com/
-
-v1->v2:
-Added more comments for this non-trivial logic and addressed earlier comments.
-In particular:
-- Introduce alloc_frozen_pages_nolock() to avoid refcnt race
-- alloc_pages_nolock() defaults to GFP_COMP
-- Support SLUB_TINY
-- Added more variants to stress tester to discover that kfree_nolock() can
-  OOM, because deferred per-slab llist won't be serviced if kfree_nolock()
-  gets unlucky long enough. Scraped previous approach and switched to
-  global per-cpu llist with immediate irq_work_queue() to process all
-  object sizes.
-- Reentrant kmalloc cannot deactivate_slab(). In v1 the node hint was
-  downgraded to NUMA_NO_NODE before calling slab_alloc(). Realized it's not
-  good enough. There are odd cases that can trigger deactivate. Rewrote
-  this part.
-- Struggled with SLAB_NO_CMPXCHG. Thankfully Harry had a great suggestion:
-  https://lore.kernel.org/bpf/aFvfr1KiNrLofavW@hyeyoo/
-  which was adopted. So slab_debug works now.
-- In v1 I had to s/local_lock_irqsave/local_lock_irqsave_check/ in a bunch
-  of places in mm/slub.c to avoid lockdep false positives.
-  Came up with much cleaner approach to silence invalid lockdep reports
-  without sacrificing lockdep coverage. See local_lock_lockdep_start/end().
-
-v1:
-https://lore.kernel.org/bpf/20250501032718.65476-1-alexei.starovoitov@gmail.com/
-
-Alexei Starovoitov (6):
-  locking/local_lock: Introduce local_lock_is_locked().
-  mm: Allow GFP_ACCOUNT to be used in alloc_pages_nolock().
-  mm: Introduce alloc_frozen_pages_nolock()
-  slab: Make slub local_(try)lock more precise for LOCKDEP
-  slab: Reuse first bit for OBJEXTS_ALLOC_FAIL
-  slab: Introduce kmalloc_nolock() and kfree_nolock().
-
- include/linux/gfp.h                 |   2 +-
- include/linux/kasan.h               |  13 +-
- include/linux/local_lock.h          |   2 +
- include/linux/local_lock_internal.h |   7 +
- include/linux/memcontrol.h          |  12 +-
- include/linux/rtmutex.h             |  10 +
- include/linux/slab.h                |   4 +
- kernel/bpf/stream.c                 |   2 +-
- kernel/bpf/syscall.c                |   2 +-
- kernel/locking/rtmutex_common.h     |   9 -
- mm/Kconfig                          |   1 +
- mm/internal.h                       |   4 +
- mm/kasan/common.c                   |   5 +-
- mm/page_alloc.c                     |  55 ++--
- mm/slab.h                           |   7 +
- mm/slab_common.c                    |   3 +
- mm/slub.c                           | 495 +++++++++++++++++++++++++---
- 17 files changed, 541 insertions(+), 92 deletions(-)
-
+diff --git a/include/linux/local_lock.h b/include/linux/local_lock.h
+index 2ba846419524..0d91d060e3e9 100644
+--- a/include/linux/local_lock.h
++++ b/include/linux/local_lock.h
+@@ -66,6 +66,8 @@
+  */
+ #define local_trylock(lock)		__local_trylock(this_cpu_ptr(lock))
+ 
++#define local_lock_is_locked(lock)	__local_lock_is_locked(lock)
++
+ /**
+  * local_trylock_irqsave - Try to acquire a per CPU local lock, save and disable
+  *			   interrupts if acquired
+diff --git a/include/linux/local_lock_internal.h b/include/linux/local_lock_internal.h
+index 949de37700db..a4dc479157b5 100644
+--- a/include/linux/local_lock_internal.h
++++ b/include/linux/local_lock_internal.h
+@@ -165,6 +165,9 @@ do {								\
+ 		!!tl;						\
+ 	})
+ 
++/* preemption or migration must be disabled before calling __local_lock_is_locked */
++#define __local_lock_is_locked(lock) READ_ONCE(this_cpu_ptr(lock)->acquired)
++
+ #define __local_lock_release(lock)					\
+ 	do {								\
+ 		local_trylock_t *tl;					\
+@@ -285,4 +288,8 @@ do {								\
+ 		__local_trylock(lock);				\
+ 	})
+ 
++/* migration must be disabled before calling __local_lock_is_locked */
++#define __local_lock_is_locked(__lock)					\
++	(rt_mutex_owner(&this_cpu_ptr(__lock)->lock) == current)
++
+ #endif /* CONFIG_PREEMPT_RT */
+diff --git a/include/linux/rtmutex.h b/include/linux/rtmutex.h
+index fa9f1021541e..ede4c6bf6f22 100644
+--- a/include/linux/rtmutex.h
++++ b/include/linux/rtmutex.h
+@@ -44,6 +44,16 @@ static inline bool rt_mutex_base_is_locked(struct rt_mutex_base *lock)
+ 	return READ_ONCE(lock->owner) != NULL;
+ }
+ 
++#ifdef CONFIG_RT_MUTEXES
++#define RT_MUTEX_HAS_WAITERS	1UL
++
++static inline struct task_struct *rt_mutex_owner(struct rt_mutex_base *lock)
++{
++	unsigned long owner = (unsigned long) READ_ONCE(lock->owner);
++
++	return (struct task_struct *) (owner & ~RT_MUTEX_HAS_WAITERS);
++}
++#endif
+ extern void rt_mutex_base_init(struct rt_mutex_base *rtb);
+ 
+ /**
+diff --git a/kernel/locking/rtmutex_common.h b/kernel/locking/rtmutex_common.h
+index 78dd3d8c6554..cf6ddd1b23a2 100644
+--- a/kernel/locking/rtmutex_common.h
++++ b/kernel/locking/rtmutex_common.h
+@@ -153,15 +153,6 @@ static inline struct rt_mutex_waiter *task_top_pi_waiter(struct task_struct *p)
+ 			pi_tree.entry);
+ }
+ 
+-#define RT_MUTEX_HAS_WAITERS	1UL
+-
+-static inline struct task_struct *rt_mutex_owner(struct rt_mutex_base *lock)
+-{
+-	unsigned long owner = (unsigned long) READ_ONCE(lock->owner);
+-
+-	return (struct task_struct *) (owner & ~RT_MUTEX_HAS_WAITERS);
+-}
+-
+ /*
+  * Constants for rt mutex functions which have a selectable deadlock
+  * detection.
 -- 
 2.47.3
 
