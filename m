@@ -4,97 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B9D9CA0FED
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 16:32:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13BD4CA0FED
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 16:43:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E5EA48E0013; Tue,  9 Sep 2025 12:32:42 -0400 (EDT)
+	id 4D9158E0015; Tue,  9 Sep 2025 12:43:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E36B88E0001; Tue,  9 Sep 2025 12:32:42 -0400 (EDT)
+	id 488CF8E0001; Tue,  9 Sep 2025 12:43:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D73498E0013; Tue,  9 Sep 2025 12:32:42 -0400 (EDT)
+	id 377658E0015; Tue,  9 Sep 2025 12:43:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C50BE8E0001
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 12:32:42 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 98336BABB1
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 16:32:42 +0000 (UTC)
-X-FDA: 83870255364.29.C61833E
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 67F16A000C
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 16:32:40 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf25.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 1FF428E0001
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 12:43:43 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B31571A06CE
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 16:43:42 +0000 (UTC)
+X-FDA: 83870283084.19.5BDA865
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	by imf21.hostedemail.com (Postfix) with ESMTP id B34341C0008
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 16:43:40 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=odigRXg1;
+	spf=pass (imf21.hostedemail.com: domain of surenb@google.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757435561;
+	s=arc-20220608; t=1757436220;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=d7RuMnOfRLOgqBFzywISUwVsIo2P2e84z86zg3i8x94=;
-	b=p6fO3NyjRshstqPOjBPCa7RZjst6G7pF3gqYDhwTgIo7ZG2Ll7D4q+IYJN0yBSXyK9aGvL
-	7dkX7aNX2uyHVjCer+N2WSDxTucvV50D8cYoBs3fzMegMVGKq0wu+tSFj34UkJsDtMueR0
-	ruwXcqzu4LUm1yRUtmm1ECR5ke6V0tM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757435561; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=X9zR1ns6r4tli6kgpMkZXeVyHg9onE4yZmroH/q5x2E=;
+	b=E0MkX05KiwolFao46WZZpM4QsoFPA62vGSu4/DEgBcy8p0D/M7cIB6CLInkqpfBuHN6MOK
+	6P7QWT1RJ+yJC8n4Gxdvt0Q2qqUkLeVi5bKr8yGGAtWBflM15O2Qdjw+6Ms+IoZRscwl1d
+	UOAcqxV/yJZgg912FicTGFQWBnAL640=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757436220; a=rsa-sha256;
 	cv=none;
-	b=nVkCLIKKh75eKObZXqdan1d9qoZeUkco6IgXH/vWaMIALuSOuyjB9ZRJzympfwE+phwKQz
-	y7yb7oyF3k5UARYIj6YFiKDMvxt+loH9EvrswfCnDIDRuVw/S536w6LHzszwhqzFtQGKnC
-	jAXywofnEV/1F0h0XMM0Y6ZS1P2P9qQ=
+	b=Y+RS7Po/4jeYZpZnRcQa//u3hfIyrQt/YCDZS7dkNqD6pH4ML1w66sQgkUDseHN5j7ybwS
+	cYwQIZnF96de9EXjQX1TZ0mdsgpAaON/kQy3R36udnT8V7novzwDpZ1CPPE2Vy+wuTH9JJ
+	S2p0tcXqiGzlT0xUskibTrYH0NxL/3s=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf25.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E47DF1424;
-	Tue,  9 Sep 2025 09:32:30 -0700 (PDT)
-Received: from [10.1.33.194] (unknown [10.1.33.194])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 70AD03F66E;
-	Tue,  9 Sep 2025 09:32:37 -0700 (PDT)
-Message-ID: <1cfda234-1339-4d83-bd87-b219fbd72664@arm.com>
-Date: Tue, 9 Sep 2025 17:32:36 +0100
+	imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=odigRXg1;
+	spf=pass (imf21.hostedemail.com: domain of surenb@google.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-61cfbb21fd1so219a12.0
+        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 09:43:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1757436219; x=1758041019; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=X9zR1ns6r4tli6kgpMkZXeVyHg9onE4yZmroH/q5x2E=;
+        b=odigRXg1yBseoWdstIm5ivkXwqgtnbTXtMSYXlfTwXiczJHc2h3x8hK22Ngs3ykL/7
+         3W48OmwXz2QGCktKILkVenuajfpttGRw5XiyxQAVx9f7ucU8h9Oz30aCiivOBBCF4CT4
+         2vG2jsy/OFGbcPdf8Od/Otot4Rc6+kxmjo2/diBKCoGnHesvS/vDELTWHrzI4If0MMxD
+         +3RQXXFXS5GmMOku46z2yaz3+EzpCcJu5Kkr+1fnRqMP1u1YmK8yFEA53NlSqNc9fzFm
+         d8JNicATvQ1JycTfEPB2aQDxLB/BP6TKwi58rVQLli4mhhLEORn0SGD+RLFTHUg7K2Fi
+         gGwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757436219; x=1758041019;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=X9zR1ns6r4tli6kgpMkZXeVyHg9onE4yZmroH/q5x2E=;
+        b=RaDWqsQpXhvjGBolqS8j4LBAyIdaE0tBjGknOe7i+QdqIV4aZcEybiKUL7F4gevTic
+         h5gXahI/2ECWRPqV6ZYHJI6k9FljTZnP9YpPjDhxXyyi3OjEGnEkWKcx3l5cdAlhTrAw
+         uhe4jKiJSC9YrgeC8vT1VFMKXQScJ0PExX8TLyPx9k0+JHv/5NvPsAxDhRObxu7Rji0l
+         2n1WCVdWQrtbRp7/4RuQpauAuGSlDpDpsHQQupLv+wfS2YGcnJGBqlthJ/bYWQSIFg0m
+         g8uJMMOMXfj67KidkfQ/CPO6mzskSMTp5SZk9I7XU4BiYa+9HhEP86SsvYvmksLHE+Qu
+         GvzQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUS2PTPNjW9R1oMNw57zOgNbU1Bxkh1yPYXr3d1XawtNT6LoVAAr+O8D7+F4cgCsXHATMNpNS0+4w==@kvack.org
+X-Gm-Message-State: AOJu0YxLTP6uB/Tg++NLdzwoFry5+8sSm6XQ73UGbhYEKvfE9BfS++dX
+	6aPhbq0P1+xFfiVN1TZbsTCu42uRt0a8FvuVQuv9551wpcnC4824bxFRTCXA2enL4rXUv0kQ0HK
+	inRRWGQXnTm9Nu7YDB9X4USfTRjGWvYwTgb4qfVnB
+X-Gm-Gg: ASbGncvkA5eT7Yqh6VhPDLSl56UzMVMqXlKRK2hovNNyC4mSs9N6fEGV3WW9WoyC87a
+	kfNKMmvREw+CUX7WvONGdVFezxqhDETaVDvAhUQDn4IRRLErAbAe+UPH+G2L63yrXfMcFWE9Jx5
+	BTJUPxlXHokh7nmO1zzmEntKKQS/isoOJxlWKaSG4VToTEGx2Yjc36E6hqqhIMIN6btJDwZtkhH
+	zB4ic5hSpbkDNK44uKezkq1hdy5qP8U5FPpD2v5N1E1enL99dwMPdo=
+X-Google-Smtp-Source: AGHT+IELrtj08JXZeKFczydeIaWz+ZDdGREnJhxstnY5vYYsKxfzgQANvCdFJ1mjoGgstj0WHnOScZjfoo2Pzh65Zfk=
+X-Received: by 2002:a05:6402:4024:b0:61c:c9e3:18f9 with SMTP id
+ 4fb4d7f45d1cf-623d2c4dda5mr356673a12.3.1757436218862; Tue, 09 Sep 2025
+ 09:43:38 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 0/6] arm64: support FEAT_BBM level 2 and large block
- mapping when rodata=full
-Content-Language: en-GB
-To: Yang Shi <yang@os.amperecomputing.com>, Dev Jain <dev.jain@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Ard Biesheuvel <ardb@kernel.org>, scott@os.amperecomputing.com, cl@gentwo.org
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-References: <20250829115250.2395585-1-ryan.roberts@arm.com>
- <e722e49a-d982-4b58-98f7-6fef3d0a4468@arm.com>
- <dd242f5b-8bbe-48e8-8d5f-be6a835a8841@arm.com>
- <aeb76956-f980-417f-b4e7-fe0503bb5a2b@os.amperecomputing.com>
- <612940d2-4c8e-459c-8d7d-4ccec08fce0a@os.amperecomputing.com>
- <1471ea27-386d-4950-8eaa-8af7acf3c34a@arm.com>
- <f8cf1823-1ee9-4935-9293-86f58a9e2224@arm.com>
- <bf1aa0a4-08de-443f-a1a3-aa6c05bab38c@os.amperecomputing.com>
- <39c2f841-9043-448d-b644-ac96612d520a@os.amperecomputing.com>
- <d7cd4004-bacf-47b0-9cd8-f99125e02238@arm.com>
- <fe52a1d8-5211-4962-afc8-c3f9caf64119@os.amperecomputing.com>
- <8c363997-7b8d-4b54-b9b0-1a1b6a0e58ed@arm.com>
- <4aa4eedc-550f-4538-a499-504dc925ffc2@os.amperecomputing.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <4aa4eedc-550f-4538-a499-504dc925ffc2@os.amperecomputing.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 6wt8m8coujsbca98m87rcsufscg4ajqi
+References: <cover.1757329751.git.lorenzo.stoakes@oracle.com>
+ <ea1a5ab9fff7330b69f0b97c123ec95308818c98.1757329751.git.lorenzo.stoakes@oracle.com>
+ <ad69e837-b5c7-4e2d-a268-c63c9b4095cf@redhat.com> <c04357f9-795e-4a5d-b762-f140e3d413d8@lucifer.local>
+ <e882bb41-f112-4ec3-a611-0b7fcf51d105@redhat.com> <8994a0f1-1217-49e6-a0db-54ddb5ab8830@lucifer.local>
+In-Reply-To: <8994a0f1-1217-49e6-a0db-54ddb5ab8830@lucifer.local>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 9 Sep 2025 09:43:25 -0700
+X-Gm-Features: AS18NWB56jIrhZDM4c-qSVZLOkH6X6dA_iJA_IjgEAuDFh14nG2Q8lK0Ov1ujjQ
+Message-ID: <CAJuCfpEeUkta7UfN2qzSxHuohHnm7qXe=rEzVjfynhmn2WF0fA@mail.gmail.com>
+Subject: Re: [PATCH 06/16] mm: introduce the f_op->mmap_complete, mmap_abort hooks
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: David Hildenbrand <david@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Matthew Wilcox <willy@infradead.org>, Guo Ren <guoren@kernel.org>, 
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
+	"David S . Miller" <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dan Williams <dan.j.williams@intel.com>, 
+	Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>, 
+	Nicolas Pitre <nico@fluxnic.net>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, 
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, Baoquan He <bhe@redhat.com>, 
+	Vivek Goyal <vgoyal@redhat.com>, Dave Young <dyoung@redhat.com>, Tony Luck <tony.luck@intel.com>, 
+	Reinette Chatre <reinette.chatre@intel.com>, Dave Martin <Dave.Martin@arm.com>, 
+	James Morse <james.morse@arm.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Uladzislau Rezki <urezki@gmail.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, Jann Horn <jannh@google.com>, 
+	Pedro Falcato <pfalcato@suse.de>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-csky@vger.kernel.org, 
+	linux-mips@vger.kernel.org, linux-s390@vger.kernel.org, 
+	sparclinux@vger.kernel.org, nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org, 
+	linux-mm@kvack.org, ntfs3@lists.linux.dev, kexec@lists.infradead.org, 
+	kasan-dev@googlegroups.com, Jason Gunthorpe <jgg@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: B34341C0008
+X-Stat-Signature: 9re9676jazthgz3dakjg1gkfihhzi8w9
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 67F16A000C
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1757435560-149836
-X-HE-Meta: U2FsdGVkX19GBJujb6Sk+SPBUa2MRkZWQGTpW4AvyJbUbyO2hH+24dEc2H8wQ76IA7TCagG9MfFQIjccfpcPdvbQHpiXkdOcQzdwIHj3Dmviac+aPdfHmhJwFZ7eAPNwYqoPLbrxUuzxZjNQMkn3AGzjEn4tyR/po92uegc0/sndzRa6TKa4Cc78Nxsddp54OItUUAtt6IIIGWmVH/MQ1qW0cQr/T+w/ABtGbjWuVvqt6u9Li6cGkQADy2Buyd3vaktdZwAhdImajc9iGc1fzQ9UQ6JDPwWan6BOKN3VQdZOy+qJDntn/kaPliKaBYqd6kV+eQA8QkDnInq5UM+ey6i1glJ1gRNS+Pf+jtxEUCX9vbq9T6ThzXfv4alrpsaAFgRFwQftj1yX8fJlcTlE9SDkw1DfRtkn8TTotNBfSRINWWRx8E1w4+v3E3IV1AiE3VuzASZhKmspnNYUTbZJhTY8x8Y3+hxZY0rz3FEdrrNP+d0PGElBUzfRUNUF/4/Ex3pJ8D+S/LuLN37gWM6MW+LrwpZo+VmRO0+UzYkWJn1XST4oOvpxjMqcVUqitnB8x1n/BK49N1SPNUtkbcZouxptJJbuqx1qkYbm9Fadw+SWug8aIgw2T+f0SD+nezAKtWrTG09d2VGWhX6kKjDzNyhCXq4OiVxuh+FQUcQ16T7uqDwt7KeymuwSREXTNqbsP0HA8PtBibGhcFgn/BEoSLO4UP8i614pe56ppsxKM5lk8nhPCbywVt4Npt5e202/+47WvmChSnsPyNlDWyT+XKv8ckS4oD5Od/xahlpSfX+SWhRZ5igqYQ+a/bW1uipGD/OK83kl/zjJeOjtP9t4nPte+Nnhp0gUgUy144xvT3mzXH8XFxrwgNVpNXGi8gosWur27bxR2DejPbPvqMjGTaZGh80cLVAYQ8ZMXM7adglHD0hqKrdBLMdwM0huFD4d8ig22r59Kzt7JFbVGXF
- OvYaEI3T
- EA+9PxzlheUZKZ/lmZrzHbPA25pBAI9ttSUrKjY7vv/OUQ+yLfoW/Xkg5WFtVtnbEjmCnB/Xwz6kvLqi919U0U29d0nO16yi5EDzC7VE6OkD6J43ft5ITtNxrtxOJocmNm69h9zpa1OdWweB/sgMQT9FxAPuhGX+0pncXRX4ZTT8lgl5SX0+eeCWm5WrQ0rff2z02gii//o3XBokvdP2805ZHrA==
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1757436220-866609
+X-HE-Meta: U2FsdGVkX18PiXrezIOXsDE6/wUIegdbXkmjbc0Pctsm3VaJ6wSytlP/t06bCot97Zrku8B1uHC+NtF+RsFzTj+e4PItIDeCIFoFXl3TCIbHx+8eQi+WNpvb7RejuWBvNPx5w6iN4zuQ78ZyZ+DjK6CLV/jiR4Q3FzuvcCCERV1lwTu9YF8/pEZ4vhUAhTYvZZep/ig8tGunc6BrN2eoXKiUGwxnimMqzIkrSmjqQiVMIeO1Bx8uVTJZ3W8uLSrlxbgGZEwGEsLSKm6d5qHrjM5Ybd1CbXVwqaWGSjHMRGSb9JYd2lcZSLlPx8vGtUU8Gl5WPi3g28My4nlNh3lFlskoSBOXeIekgTG1izkYmeOvcBPbXWzodZGa7/hohpiUj17CZ/DOLvjBPPa/qN6KlEICorumB/306dVxKsmkTDykYcNeDILtExfuKULh16eoSbH5FEZG29b2mEwxMiKC3Wzs8qyL0wTPu210lyL8Px7INCi9XoEZhpRg96NsOye9t6kgpgudPqCqSld0JuGWR3xVGa+Jo+rrx09vus3Ibr5i4UrD61nLoLgZIvW7e3B9xvK3ceYb4BE5Dk+2ss6Zb7m6xIP1mFseSNNyodSmLt9Cx0sa+CaGyZgSajnnhpM3zafxKGaKniQ6LchUJKWljaeghstvmCAIKr9jjarrKwOsRx0Gb+C5a3kJnjM99B2No5YuotGjmA/w26GvGSyQw20O+y4C22CvNDvH/JEqu1RukjztfRTqg2uiPT7XOqXyExJJwfNP1qgRX8ze1hiudp5Hj7nSBJh/ja5JFKvpDH4PoSFbM+tJMwyBZcoV0IWbFPsb8r9Bids4IEk0ZnCrJ6nlCu/idmuvd1EoBJuWpULZxeeXhbx+Kj3ZVP+ByozYrxl8N6YEVlnZlUVtYw0k+B0Jk4ai8lXLGDf2bk1Y/saYjx5BLe/7PtzddEfoe2JXWWiia3Su1rjOBQoLwTz
+ 9zquIfr1
+ xQHmI2yHZ8/9S6YYRIfXPPxWYuRqBH638Q22s275aebulFOJwD/omR/WpV38SEKD+43pazzFkrUJZBy1MDTUn4UjKPXMSLU8HGVxMwHXjPIMTGH+mh+gI6IamQDtVRxWx+P/9xgrvL1ETJChJQAgQ2Xsq3PwENaLaO4ky9pNHnNYmTBPAUMBqFgdOVRsnRtVs+C5+AtfVHAPPej+khtmgB4Z1f8ILF+oU+t4wg0SKiKXj8APFevdI0CNZGh8qGEBSBhu+dvMHc8JWbyJ+oZ8LV9hiXyDMDLHuOu2CIiFM4URs1ux1Ba0SyXP6dg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,307 +142,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 09/09/2025 16:32, Yang Shi wrote:
-> 
-> 
-> On 9/9/25 7:36 AM, Ryan Roberts wrote:
->> On 08/09/2025 19:31, Yang Shi wrote:
->>>
->>> On 9/8/25 9:34 AM, Ryan Roberts wrote:
->>>> On 04/09/2025 22:49, Yang Shi wrote:
->>>>> On 9/4/25 10:47 AM, Yang Shi wrote:
->>>>>> On 9/4/25 6:16 AM, Ryan Roberts wrote:
->>>>>>> On 04/09/2025 14:14, Ryan Roberts wrote:
->>>>>>>> On 03/09/2025 01:50, Yang Shi wrote:
->>>>>>>>>>>> I am wondering whether we can just have a warn_on_once or something
->>>>>>>>>>>> for the
->>>>>>>>>>>> case
->>>>>>>>>>>> when we fail to allocate a pagetable page. Or, Ryan had
->>>>>>>>>>>> suggested in an off-the-list conversation that we can maintain a cache
->>>>>>>>>>>> of PTE
->>>>>>>>>>>> tables for every PMD block mapping, which will give us
->>>>>>>>>>>> the same memory consumption as we do today, but not sure if this is
->>>>>>>>>>>> worth it.
->>>>>>>>>>>> x86 can already handle splitting but due to the callchains
->>>>>>>>>>>> I have described above, it has the same problem, and the code has been
->>>>>>>>>>>> working
->>>>>>>>>>>> for years :)
->>>>>>>>>>> I think it's preferable to avoid having to keep a cache of pgtable
->>>>>>>>>>> memory
->>>>>>>>>>> if we
->>>>>>>>>>> can...
->>>>>>>>>> Yes, I agree. We simply don't know how many pages we need to cache,
->>>>>>>>>> and it
->>>>>>>>>> still can't guarantee 100% allocation success.
->>>>>>>>> This is wrong... We can know how many pages will be needed for splitting
->>>>>>>>> linear
->>>>>>>>> mapping to PTEs for the worst case once linear mapping is finalized.
->>>>>>>>> But it
->>>>>>>>> may
->>>>>>>>> require a few hundred megabytes memory to guarantee allocation success. I
->>>>>>>>> don't
->>>>>>>>> think it is worth for such rare corner case.
->>>>>>>> Indeed, we know exactly how much memory we need for pgtables to map the
->>>>>>>> linear
->>>>>>>> map by pte - that's exactly what we are doing today. So we _could_ keep a
->>>>>>>> cache.
->>>>>>>> We would still get the benefit of improved performance but we would lose
->>>>>>>> the
->>>>>>>> benefit of reduced memory.
->>>>>>>>
->>>>>>>> I think we need to solve the vm_reset_perms() problem somehow, before we
->>>>>>>> can
->>>>>>>> enable this.
->>>>>>> Sorry I realise this was not very clear... I am saying I think we need to
->>>>>>> fix it
->>>>>>> somehow. A cache would likely work. But I'd prefer to avoid it if we can
->>>>>>> find a
->>>>>>> better solution.
->>>>>> Took a deeper look at vm_reset_perms(). It was introduced by commit
->>>>>> 868b104d7379 ("mm/vmalloc: Add flag for freeing of special permsissions").
->>>>>> The
->>>>>> VM_FLUSH_RESET_PERMS flag is supposed to be set if the vmalloc memory is RO
->>>>>> and/or ROX. So set_memory_ro() or set_memory_rox() is supposed to follow up
->>>>>> vmalloc(). So the page table should be already split before reaching vfree().
->>>>>> I think this why vm_reset_perms() doesn't not check return value.
->>>> If vm_reset_perms() is assuming it can't/won't fail, I think it should at least
->>>> output a warning if it does?
->>> It should. Anyway warning will be raised if split fails. We have somehow
->>> mitigation.
->>>
->>>>>> I scrutinized all the callsites with VM_FLUSH_RESET_PERMS flag set.
->>>> Just checking; I think you made a comment before about there only being a few
->>>> sites that set VM_FLUSH_RESET_PERMS. But one of them is the helper,
->>>> set_vm_flush_reset_perms(). So just making sure you also followed to the places
->>>> that use that helper?
->>> Yes, I did.
->>>
->>>>>> The most
->>>>>> of them has set_memory_ro() or set_memory_rox() followed.
->>>> And are all callsites calling set_memory_*() for the entire cell that was
->>>> allocated by vmalloc? If there are cases where it only calls that for a portion
->>>> of it, then it's not gurranteed that the memory is correctly split.
->>> Yes, all callsites call set_memory_*() for the entire range.
->>>
->>>>>> But there are 3
->>>>>> places I don't see set_memory_ro()/set_memory_rox() is called.
->>>>>>
->>>>>> 1. BPF trampoline allocation. The BPF trampoline calls
->>>>>> arch_protect_bpf_trampoline(). The generic implementation does call
->>>>>> set_memory_rox(). But the x86 and arm64 implementation just simply return 0.
->>>>>> For x86, it is because execmem cache is used and it does call
->>>>>> set_memory_rox(). ARM64 doesn't need to split page table before this series,
->>>>>> so it should never fail. I think we just need to use the generic
->>>>>> implementation (remove arm64 implementation) if this series is merged.
->>>> I know zero about BPF. But it looks like the allocation happens in
->>>> arch_alloc_bpf_trampoline(), which for arm64, calls bpf_prog_pack_alloc(). And
->>>> for small sizes, it grabs some memory from a "pack". So doesn't this mean that
->>>> you are calling set_memory_rox() for a sub-region of the cell, so that doesn't
->>>> actually help at vm_reset_perms()-time?
->>> Took a deeper look at bpf pack allocator. The "pack" is allocated by
->>> alloc_new_pack(), which does:
->>> bpf_jit_alloc_exec()
->>> set_vm_flush_reset_perms()
->>> set_memory_rox()
->>>
->>> If the size is greater than the pack size, it calls:
->>> bpf_jit_alloc_exec()
->>> set_vm_flush_reset_perms()
->>> set_memory_rox()
->>>
->>> So it looks like bpf trampoline is good, and we don't need do anything. It
->>> should be removed from the list. I didn't look deep enough for bpf pack
->>> allocator in the first place.
->>>
->>>>>> 2. BPF dispatcher. It calls execmem_alloc which has VM_FLUSH_RESET_PERMS set.
->>>>>> But it is used for rw allocation, so VM_FLUSH_RESET_PERMS should be
->>>>>> unnecessary IIUC. So it doesn't matter even though vm_reset_perms() fails.
->>>>>>
->>>>>> 3. kprobe. S390's alloc_insn_page() does call set_memory_rox(), x86 also
->>>>>> called set_memory_rox() before switching to execmem cache. The execmem cache
->>>>>> calls set_memory_rox(). I don't know why ARM64 doesn't call it.
->>>>>>
->>>>>> So I think we just need to fix #1 and #3 per the above analysis. If this
->>>>>> analysis look correct to you guys, I will prepare two patches to fix them.
->>>> This all seems quite fragile. I find it interesting that vm_reset_perms() is
->>>> doing break-before-make; it sets the PTEs as invalid, then flushes the TLB,
->>>> then
->>>> sets them to default. But for arm64, at least, I think break-before-make is not
->>>> required. We are only changing the permissions so that can be done on live
->>>> mappings; essentially change the sequence to; set default, flush TLB.
->>> Yeah, I agree it is a little bit fragile. I think this is the "contract" for
->>> vmalloc users. You allocate ROX memory via vmalloc, you are required to call
->>> set_memory_*(). But there is nothing to guarantee the "contract" is followed.
->>> But I don't think this is the only case in kernel.
->>>
->>>> If we do that, then if the memory was already default, then there is no need to
->>>> do anything (so no chance of allocation failure). If the memory was not
->>>> default,
->>>> then it must have already been split to make it non-default, in which case we
->>>> can also gurrantee that no allocations are required.
->>>>
->>>> What am I missing?
->>> The comment says:
->>> Set direct map to something invalid so that it won't be cached if there are any
->>> accesses after the TLB flush, then flush the TLB and reset the direct map
->>> permissions to the default.
->>>
->>> IIUC, it guarantees the direct map can't be cached in TLB after TLB flush from
->>> _vm_unmap_aliases() by setting them invalid because TLB never cache invalid
->>> entries. Skipping set direct map to invalid seems break this. Or "changing
->>> permission on live mappings" on ARM64 can achieve the same goal?
->> Here's my understanding of the intent of the code:
->>
->> Let's say we start with some memory that has been mapped RO. Our goal is to
->> reset the memory back to RW and ensure that no TLB entry remains in the TLB for
->> the old RO mapping. There are 2 ways to do that:
-> 
-> 
-> 
->>
->> Approach 1 (used in current code):
->> 1. set PTE to invalid
->> 2. invalidate any TLB entry for the VA
->> 3. set the PTE to RW
->>
->> Approach 2:
->> 1. set the PTE to RW
->> 2. invalidate any TLB entry for the VA
-> 
-> IIUC, the intent of the code is "reset direct map permission *without* leaving a
-> RW+X window". The TLB flush call actually flushes both VA and direct map together.
-> So if this is the intent, approach #2 may have VA with X permission but direct
-> map may be RW at the mean time. It seems break the intent.
+On Tue, Sep 9, 2025 at 2:37=E2=80=AFAM Lorenzo Stoakes
+<lorenzo.stoakes@oracle.com> wrote:
+>
+> On Tue, Sep 09, 2025 at 11:26:21AM +0200, David Hildenbrand wrote:
+> > > >
+> > > > In particular, the mmap_complete() looks like another candidate for=
+ letting
+> > > > a driver just go crazy on the vma? :)
+> > >
+> > > Well there's only so much we can do. In an ideal world we'd treat VMA=
+s as
+> > > entirely internal data structures and pass some sort of opaque thing =
+around, but
+> > > we have to keep things real here :)
+> >
+> > Right, we'd pass something around that cannot be easily abused (like
+> > modifying random vma flags in mmap_complete).
+> >
+> > So I was wondering if most operations that driver would perform during =
+the
+> > mmap_complete() could be be abstracted, and only those then be called w=
+ith
+> > whatever opaque thing we return here.
+>
+> Well there's 2 issues at play:
+>
+> 1. I might end up having to rewrite _large parts_ of kernel functionality=
+ all of
+>    which relies on there being a vma parameter (or might find that to be
+>    intractable).
+>
+> 2. There's always the 'odd ones out' :) so there'll be some drivers that
+>    absolutely do need to have access to this.
+>
+> But as I was writing this I thought of an idea - why don't we have someth=
+ing
+> opaque like this, perhaps with accessor functions, but then _give the abi=
+lity to
+> get the VMA if you REALLY have to_.
+>
+> That way we can handle both problems without too much trouble.
+>
+> Also Jason suggested generic functions that can just be assigned to
+> .mmap_complete for instance, which would obviously eliminate the crazy
+> factor a lot too.
+>
+> I'm going to refactor to try to put ONLY prepopulate logic in
+> .mmap_complete where possible which fits with all of this.
 
-Ahh! Thanks, it's starting to make more sense now.
+Thinking along these lines, do you have a case when mmap_abort() needs
+vm_private_data? I was thinking if VMA mapping failed, why would you
+need vm_private_data to unwind prep work? You already have the context
+pointer for that, no?
 
-Though on first sight it seems a bit mad to me to form a tlb flush range that
-covers all the direct map pages and all the lazy vunmap regions. Is that
-intended to be a perf optimization or something else? It's not clear from the
-history.
-
-
-Could this be split into 2 operations?
-
-1. unmap the aliases (+ tlbi the aliases).
-2. set the direct memory back to default (+ tlbi the direct map region).
-
-The only 2 potential problems I can think of are;
-
- - Performance: 2 tlbis instead of 1, but conversely we probably avoid flushing
-a load of TLB entries that we didn't really need to.
-
- - Given there is now no lock around the tlbis (currently it's under
-vmap_purge_lock) is there a race where a new alias can appear between steps 1
-and 2? I don't think so, because the memory is allocated to the current mapping
-so how is it going to get re-mapped?
-
-
-Could this solve it?
-
-
-
-> 
-> Thanks,
-> Yang
-> 
->>
->> The benefit of approach 1 is that it is guarranteed that it is impossible for
->> different CPUs to have different translations for the same VA in their
->> respective TLB. But for approach 2, it's possible that between steps 1 and 2, 1
->> CPU has a RO entry and another CPU has a RW entry. But that will get fixed once
->> the TLB is flushed - it's not really an issue.
->>
->> (There is probably also an obscure way to end up with 2 TLB entries (one with RO
->> and one with RW) for the same CPU, but the arm64 architecture permits that as
->> long as it's only a permission mismatch).
->>
->> Anyway, approach 2 is used when changing memory permissions on user mappings, so
->> I don't see why we can't take the same approach here. That would solve this
->> whole class of issue for us.
->>
->> Thanks,
->> Ryan
->>
->>
->>> Thanks,
->>> Yang
->>>
->>>> Thanks,
->>>> Ryan
->>>>
->>>>
->>>>> Tested the below patch with bpftrace kfunc (allocate bpf trampoline) and
->>>>> kprobes. It seems work well.
->>>>>
->>>>> diff --git a/arch/arm64/kernel/probes/kprobes.c b/arch/arm64/kernel/probes/
->>>>> kprobes.c
->>>>> index 0c5d408afd95..c4f8c4750f1e 100644
->>>>> --- a/arch/arm64/kernel/probes/kprobes.c
->>>>> +++ b/arch/arm64/kernel/probes/kprobes.c
->>>>> @@ -10,6 +10,7 @@
->>>>>
->>>>>    #define pr_fmt(fmt) "kprobes: " fmt
->>>>>
->>>>> +#include <linux/execmem.h>
->>>>>    #include <linux/extable.h>
->>>>>    #include <linux/kasan.h>
->>>>>    #include <linux/kernel.h>
->>>>> @@ -41,6 +42,17 @@ DEFINE_PER_CPU(struct kprobe_ctlblk, kprobe_ctlblk);
->>>>>    static void __kprobes
->>>>>    post_kprobe_handler(struct kprobe *, struct kprobe_ctlblk *, struct pt_regs
->>>>> *);
->>>>>
->>>>> +void *alloc_insn_page(void)
->>>>> +{
->>>>> +       void *page;
->>>>> +
->>>>> +       page = execmem_alloc(EXECMEM_KPROBES, PAGE_SIZE);
->>>>> +       if (!page)
->>>>> +               return NULL;
->>>>> +       set_memory_rox((unsigned long)page, 1);
->>>>> +       return page;
->>>>> +}
->>>>> +
->>>>>    static void __kprobes arch_prepare_ss_slot(struct kprobe *p)
->>>>>    {
->>>>>           kprobe_opcode_t *addr = p->ainsn.xol_insn;
->>>>> diff --git a/arch/arm64/net/bpf_jit_comp.c b/arch/arm64/net/bpf_jit_comp.c
->>>>> index 52ffe115a8c4..3e301bc2cd66 100644
->>>>> --- a/arch/arm64/net/bpf_jit_comp.c
->>>>> +++ b/arch/arm64/net/bpf_jit_comp.c
->>>>> @@ -2717,11 +2717,6 @@ void arch_free_bpf_trampoline(void *image, unsigned int
->>>>> size)
->>>>>           bpf_prog_pack_free(image, size);
->>>>>    }
->>>>>
->>>>> -int arch_protect_bpf_trampoline(void *image, unsigned int size)
->>>>> -{
->>>>> -       return 0;
->>>>> -}
->>>>> -
->>>>>    int arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *ro_image,
->>>>>                                   void *ro_image_end, const struct
->>>>> btf_func_model *m,
->>>>>                                   u32 flags, struct bpf_tramp_links *tlinks,
->>>>>
->>>>>
->>>>>> Thanks,
->>>>>> Yang
->>>>>>
->>>>>>>> Thanks,
->>>>>>>> Ryan
->>>>>>>>
->>>>>>>>> Thanks,
->>>>>>>>> Yang
->>>>>>>>>
->>>>>>>>>> Thanks,
->>>>>>>>>> Yang
->>>>>>>>>>
->>>>>>>>>>> Thanks,
->>>>>>>>>>> Ryan
->>>>>>>>>>>
->>>>>>>>>>>
-> 
-
+>
+> >
+> > But I have no feeling about what crazy things a driver might do. Just
+> > calling remap_pfn_range() would be easy, for example, and we could abst=
+ract
+> > that.
+>
+> Yeah, I've obviously already added some wrappers for these.
+>
+> BTW I really really hate that STUPID ->vm_pgoff hack, if not for that, li=
+fe
+> would be much simpler.
+>
+> But instead now we need to specify PFN in the damn remap prepare wrapper =
+in
+> case of CoW. God.
+>
+> >
+> > --
+> > Cheers
+> >
+> > David / dhildenb
+> >
+>
+> Cheers, Lorenzo
 
