@@ -4,136 +4,160 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CA05CAC583
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 14:52:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E31ECAC583
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 14:53:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5627B8E000B; Tue,  9 Sep 2025 10:52:15 -0400 (EDT)
+	id DC3F26B0010; Tue,  9 Sep 2025 10:53:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 50C268E0003; Tue,  9 Sep 2025 10:52:15 -0400 (EDT)
+	id D73BB6B0011; Tue,  9 Sep 2025 10:53:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3FB1A8E000B; Tue,  9 Sep 2025 10:52:15 -0400 (EDT)
+	id C8A556B0022; Tue,  9 Sep 2025 10:53:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3055E8E0003
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 10:52:15 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CE85C14054B
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 14:52:14 +0000 (UTC)
-X-FDA: 83870002188.24.558D120
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 945BE20008
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 14:52:12 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ZfE+0tUM;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=wbeIJSBx;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ZfE+0tUM;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=wbeIJSBx;
-	spf=pass (imf03.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B693C6B0010
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 10:53:43 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6A4AB13B48C
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 14:53:43 +0000 (UTC)
+X-FDA: 83870005926.28.AE47225
+Received: from flow-b7-smtp.messagingengine.com (flow-b7-smtp.messagingengine.com [202.12.124.142])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 7580480005
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 14:53:41 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=yadavpratyush.com header.s=fm2 header.b=PVLNzr83;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=RPHTJ88t;
+	spf=pass (imf02.hostedemail.com: domain of me@yadavpratyush.com designates 202.12.124.142 as permitted sender) smtp.mailfrom=me@yadavpratyush.com;
+	dmarc=pass (policy=none) header.from=yadavpratyush.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757429532;
+	s=arc-20220608; t=1757429621;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NQ9jOGPJtYrY9ZT/iPA3+VnBwmwNfrm2jKRpSJXGpz4=;
-	b=1jAK9l+hVCIMImlBM5GnyuFpdeXYr/lLzoXb7VSSCY75LJv+x9akBnOr7iFFrV1qrv+zkj
-	/b+sFCSBAhLbrduiJ9j+ImCvtUA5fla00APMXq6ru6lhADfqV/DGAIeSAXbPqmnR7pSR0u
-	GBZD2Nx8cqq++4RtA9XcMNHcthWSICw=
+	bh=9vTFWiJaKer1MtO0gxs+KTAg+ts1od540agigmt9RZk=;
+	b=0EG58u2TNtvxLNqdcoU90qiK7qi/2OVYspWhYzHrhiILGWJOKF1gAkWvZWoKZVyoLb1Vll
+	qGxrFqhNNyVV2/IQe6X2R268VMPhM7GR3alXW0v0PA0O5qNYseZlI+sM3FZa2IaUeyl7WV
+	6VrJ1M/ZrQ1WmEfA2fE00R09gLYCKhw=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ZfE+0tUM;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=wbeIJSBx;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ZfE+0tUM;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=wbeIJSBx;
-	spf=pass (imf03.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757429532; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=yadavpratyush.com header.s=fm2 header.b=PVLNzr83;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=RPHTJ88t;
+	spf=pass (imf02.hostedemail.com: domain of me@yadavpratyush.com designates 202.12.124.142 as permitted sender) smtp.mailfrom=me@yadavpratyush.com;
+	dmarc=pass (policy=none) header.from=yadavpratyush.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757429621; a=rsa-sha256;
 	cv=none;
-	b=qows+KyxkdRRvGkYth9gin9s0/7dC4zsSrGK2ieyDB9pfdABEwM6+iNFHhxjI5vMBVPdfu
-	1i/ik+cU1y/hat6YIG/ivm9062o+dj3sf2/AigPLJ76Y0JCOLW+CYd4qOO+C5FqvdiZHna
-	cXdkqiDJ40jNDBS5ZVyjm9epp9izWXY=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id B785E349B6;
-	Tue,  9 Sep 2025 14:52:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1757429529; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NQ9jOGPJtYrY9ZT/iPA3+VnBwmwNfrm2jKRpSJXGpz4=;
-	b=ZfE+0tUMsHAOco1NIWu8fVqQaGI6druBSVAQrNpFrq6GYE1GsF+Udp5KqRyDfP7iBuL1/7
-	HpFdBnAZVICwXSpjQ5LLFHlnktiuturDngqWJ9qIkWz2ZO8URb17hjXYk+2ERSvBYw6vVc
-	1d8uu/HvuxJhWzwjy6BfM8j9eSmzQpM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1757429529;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NQ9jOGPJtYrY9ZT/iPA3+VnBwmwNfrm2jKRpSJXGpz4=;
-	b=wbeIJSBx/54P1Q/wpoSdLd2ROsQIe/zviVK2jxgdre3zTexjK3w4waMkpSFeljpu0grEjo
-	52CgLZKl7e8qc3Cg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1757429529; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NQ9jOGPJtYrY9ZT/iPA3+VnBwmwNfrm2jKRpSJXGpz4=;
-	b=ZfE+0tUMsHAOco1NIWu8fVqQaGI6druBSVAQrNpFrq6GYE1GsF+Udp5KqRyDfP7iBuL1/7
-	HpFdBnAZVICwXSpjQ5LLFHlnktiuturDngqWJ9qIkWz2ZO8URb17hjXYk+2ERSvBYw6vVc
-	1d8uu/HvuxJhWzwjy6BfM8j9eSmzQpM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1757429529;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NQ9jOGPJtYrY9ZT/iPA3+VnBwmwNfrm2jKRpSJXGpz4=;
-	b=wbeIJSBx/54P1Q/wpoSdLd2ROsQIe/zviVK2jxgdre3zTexjK3w4waMkpSFeljpu0grEjo
-	52CgLZKl7e8qc3Cg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 06D851388C;
-	Tue,  9 Sep 2025 14:52:08 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id U4LpORg/wGgzegAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Tue, 09 Sep 2025 14:52:08 +0000
-Date: Tue, 9 Sep 2025 15:52:03 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Ye Liu <ye.liu@linux.dev>
-Cc: Dev Jain <dev.jain@arm.com>, Hu Song <husong@kylinos.cn>, 
-	Vlastimil Babka <vbabka@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/slub: Use folio_nr_pages() in __free_slab()
-Message-ID: <v5jeb6pbpkikzhjuno6pq65y6cdq76ucj5ebotakwpvzbmjl5h@7dtdjmqjxmp5>
-References: <20250909074812.599030-1-husong@kylinos.cn>
- <c880df01-3041-4af0-b4d1-167193e8e6af@arm.com>
- <e058c588-2fa3-4763-bcc2-06b6fb6eddab@linux.dev>
+	b=JXYP/ZPcceOk7gKEeD63/NQUXaW+dDnNzC/xclzI5VK55MO1FZL5jJGZYXpkvLrY7zy2Hv
+	HK580sug0tMtq7J7VgFQTDtEH5wUtqJJFe3yrP/Yz5SITvHQYZnAvlQpLSAwdqfMql9GNq
+	TMM2pbalLW550thinyrRDnkXf1T7B00=
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailflow.stl.internal (Postfix) with ESMTP id E6CCF13002B3;
+	Tue,  9 Sep 2025 10:53:38 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Tue, 09 Sep 2025 10:53:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	yadavpratyush.com; h=cc:cc:content-type:content-type:date:date
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1757429618;
+	 x=1757436818; bh=9vTFWiJaKer1MtO0gxs+KTAg+ts1od540agigmt9RZk=; b=
+	PVLNzr83AOuPAbQA6PutuJ9cfvPUgNk9gZTKpOav/OHE6gnqQB8XLzSLciBhouE/
+	g14exyw6HKeORy8Xg39Va/zTqoAg8M9zsvg4ZhXo8houc1zuFGZOmkC56W9z6TfL
+	S7kXvC75aIelWB/EojYnJUHjtXDlWBcMczR2kWtp7JDDtqNL2AJZSi4AU3/FirkW
+	YJniEso/G515p2mA8HO7l/V0nEaSNDaKY3jiANeWU1U+TO+RgG7rehGP43LnLDJ1
+	vxezXWw1Ij0BuB93MxNO/XruLfscjVqhwTCnAupvdIneQnydiDJ2A4TlM+dbzsqG
+	xscdVhExnfHrVCGVgMgHfQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1757429618; x=1757436818; bh=9vTFWiJaKer1MtO0gxs+KTAg+ts1od540ag
+	igmt9RZk=; b=RPHTJ88tr3HtCMWPHsH+Vg6vfQMw/agxuAasMnT8aNfG9Y51wed
+	SdirQMtazlCgsPf6J/QpzsT05mVuI0mbrkfHqgMpXbNLsWyqUbQc1Gri9+tptIxZ
+	0ofhsUFwVV2/u0oG9emCp6uStXny1zwFBZSR931ISZBPAyLHsriBWAd5fyo/BMr/
+	Wm8MZqwre/JwiqFKSL/m4UsR0K0auEnMXyrpGIqS4XSpxCkgC6TBY1AUfTvIJeB/
+	CjsihFWH+UIH2LyNZUSprin4wPRmg2WcHwHdZRzGPfDTdvPZtfRZxhzvMuaZW3PJ
+	lzqDIajddXA3rEr3iDoTVOsKSNK+O/7GPrQ==
+X-ME-Sender: <xms:cD_AaEqmIdej0ZAmmfgojN6UQbH-J7JnVRUGk9t96_l3z5XsA_RIww>
+    <xme:cD_AaEcOUnmHmFiX1aoQbhn-kRtzW7PlPTEFS1dS7435PRnFlo1G_XAIkXrFkYsDF
+    Aazlh7-WaBF1WhDp4o>
+X-ME-Received: <xmr:cD_AaFxmmSh2Zc0IFhUcNkXHtaRF6-GzmQsKGiN1XoFgWLKoiVrazyPNcRzCQTtg2HesxixxM6e8U5Wo5osLUIOPN2_lUqXX4KL3nBjhpump5a7gz2mU1yuV_HFtLA0oFUWdPhun>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvtdejtdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefhvfevufgjfhffkfgfgggtsehttdertddtredtnecuhfhrohhmpefrrhgrthihuhhs
+    hhcujggruggrvhcuoehmvgeshigruggrvhhprhgrthihuhhshhdrtghomheqnecuggftrf
+    grthhtvghrnhepvefgffeuffelffeiveeghfffffeikeeivefhvdeuueetfeekkeegtdeh
+    heeuueeknecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiii
+    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehmvgeshigruggrvhhprhgrthihuhhs
+    hhdrtghomhdpnhgspghrtghpthhtohepjedupdhmohguvgepshhmthhpohhuthdprhgtph
+    htthhopeifihhtuhesnhhvihguihgrrdgtohhmpdhrtghpthhtoheplhgvohhnrhhosehn
+    vhhiughirgdrtghomhdprhgtphhtthhopehprghrrghvsehnvhhiughirgdrtghomhdprh
+    gtphhtthhopegrjhgrhigrtghhrghnughrrgesnhhvihguihgrrdgtohhmpdhrtghpthht
+    ohepshgrvggvughmsehnvhhiughirgdrtghomhdprhgtphhtthhopehlihhnuhigqdhfsh
+    guvghvvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidq
+    rghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegsrhgruhhnvghrse
+    hkvghrnhgvlhdrohhrghdprhgtphhtthhopehlvghnnhgrrhhtsehpohgvthhtvghrihhn
+    ghdrnhgvth
+X-ME-Proxy: <xmx:cD_AaJS3X1iuruHlhRal1MjI7SwwlmenRNgzpsxu0uphebQaf1bgnA>
+    <xmx:cD_AaOZYQTEeOZO9Np9v7Ox6KletTiI1mBM_ne9NDd_GmOUL-4XVEw>
+    <xmx:cD_AaJT0m7Hf7fcl9TyCOikCMZcjA9SHNRkl65FWT_tpp3awHX8wXg>
+    <xmx:cD_AaO4zA_Fab2hyHjLbyYq_4oTdGBP4_dfx5nld-0LuHploXCzuHw>
+    <xmx:cj_AaD3mvRkuJqSP1mvg6o1X3FMPMw_MptR473P_OKvDuKMGfrA9i56r>
+Feedback-ID: i93f149c1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 9 Sep 2025 10:53:29 -0400 (EDT)
+From: Pratyush Yadav <me@yadavpratyush.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Pratyush Yadav <pratyush@kernel.org>,
+  Pasha Tatashin <pasha.tatashin@soleen.com>,  jasonmiu@google.com,
+  graf@amazon.com,  changyuanl@google.com,  rppt@kernel.org,
+  dmatlack@google.com,  rientjes@google.com,  corbet@lwn.net,
+  rdunlap@infradead.org,  ilpo.jarvinen@linux.intel.com,
+  kanie@linux.alibaba.com,  ojeda@kernel.org,  aliceryhl@google.com,
+  masahiroy@kernel.org,  akpm@linux-foundation.org,  tj@kernel.org,
+  yoann.congal@smile.fr,  mmaurer@google.com,  roman.gushchin@linux.dev,
+  chenridong@huawei.com,  axboe@kernel.dk,  mark.rutland@arm.com,
+  jannh@google.com,  vincent.guittot@linaro.org,  hannes@cmpxchg.org,
+  dan.j.williams@intel.com,  david@redhat.com,  joel.granados@kernel.org,
+  rostedt@goodmis.org,  anna.schumaker@oracle.com,  song@kernel.org,
+  zhangguopeng@kylinos.cn,  linux@weissschuh.net,
+  linux-kernel@vger.kernel.org,  linux-doc@vger.kernel.org,
+  linux-mm@kvack.org,  gregkh@linuxfoundation.org,  tglx@linutronix.de,
+  mingo@redhat.com,  bp@alien8.de,  dave.hansen@linux.intel.com,
+  x86@kernel.org,  hpa@zytor.com,  rafael@kernel.org,  dakr@kernel.org,
+  bartosz.golaszewski@linaro.org,  cw00.choi@samsung.com,
+  myungjoo.ham@samsung.com,  yesanishhere@gmail.com,
+  Jonathan.Cameron@huawei.com,  quic_zijuhu@quicinc.com,
+  aleksander.lobakin@intel.com,  ira.weiny@intel.com,
+  andriy.shevchenko@linux.intel.com,  leon@kernel.org,  lukas@wunner.de,
+  bhelgaas@google.com,  wagi@kernel.org,  djeffery@redhat.com,
+  stuart.w.hayes@gmail.com,  lennart@poettering.net,  brauner@kernel.org,
+  linux-api@vger.kernel.org,  linux-fsdevel@vger.kernel.org,
+  saeedm@nvidia.com,  ajayachandra@nvidia.com,  parav@nvidia.com,
+  leonro@nvidia.com,  witu@nvidia.com
+Subject: Re: [PATCH v3 29/30] luo: allow preserving memfd
+In-Reply-To: <20250904144240.GO470103@nvidia.com>
+References: <20250807014442.3829950-1-pasha.tatashin@soleen.com>
+	<20250807014442.3829950-30-pasha.tatashin@soleen.com>
+	<20250826162019.GD2130239@nvidia.com> <mafs0bjo0yffo.fsf@kernel.org>
+	<20250828124320.GB7333@nvidia.com> <mafs0h5xmw12a.fsf@kernel.org>
+	<20250902134846.GN186519@nvidia.com> <mafs0v7lzvd7m.fsf@kernel.org>
+	<20250903150157.GH470103@nvidia.com> <mafs0a53av0hs.fsf@kernel.org>
+	<20250904144240.GO470103@nvidia.com>
+Date: Tue, 09 Sep 2025 16:53:28 +0200
+Message-ID: <mafs0cy7zllsn.fsf@yadavpratyush.com>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <e058c588-2fa3-4763-bcc2-06b6fb6eddab@linux.dev>
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 945BE20008
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 4y1ac1dyk5m9nira8bdbecjru1e7ux1z
+Content-Type: text/plain
 X-Rspam-User: 
-X-HE-Tag: 1757429532-608439
-X-HE-Meta: U2FsdGVkX1+Th/w4BJCTUzzRjtz171ieHpxI2FOrpJg0heZfYa3C47KFGDn1bHnnJ09Wmx0X77vPuWnSDOYCWcUiQoDzSCCF3392mYokVKW01H3YZVAQi57L+3ugwT75vQRjc/tywPymNIpqExsAqZUnDVCgkUHGYILqdFrsfZPUaA3NJf1G6oprXA2TdgyRKcCmKcphjJ8ADTZIIY8/ys5sxDMIIx7y8hV4kJZvrYW1oFaQ7ECA8HlhEu5x8Zw19StniaG0LjCK7ROkVJzgEPtwGRgEhp+juKVoSR8RONU4PZHuF5bYx+q84dAvVOwN/qo3U/zmc8FrSKK9M/dtRHe6BX2tEPx0Hr7Le8uXJgGhhQvwmChwuMdl9f4UhYExsBH63UCybf24BKD/sXAyGgkOzMdatUGOwelmdPr6yNjEvzVcxFofL30P61j2p0+cdz0SpaBw0u9rc9LWThvgn1FSfP6OBffKCXxFMqAVCkvaQj1bVK9aSbhEP9SlQWue3cvh9Nl0hcjiuZPUkefNeTArttyepBu728pxXZhtEkf5l8yVi1wzGPw2+33G4a2O+QUPb9DmOBfXTmMyYck1ouSl/HfI/f+aH92ik/mIB5ipdCzLUM/xOk2d/XqDUVlBnuRDYGmct77stUvItX7oFJUsT69N73yXDD3yoG2XjAXXn0c0EAUgM6Swf5OwnVYHt1a6SJNvq0z2ei90kN8RoDEyE5YqecfRdhmiX+v9ziiO1hdv9PB9ULkSznIyH1QFs7oZXEkoIw41ktcDt4L/+eDPnkSpYx8CxosL0DTkDtQCyHernP2NP2rgPmF3PcURWEDnmGmGCvnnORuHB5bb1gskc6ofTCNYl4sMgOHkP4KjKWmNZiqC8ZF9i4gBNI7putwSsRNU+QH4ZmcMcXpeM/GCnJRBHUd/QoXoh3GtdbHmNaYytCRd6Su34isS54CWQRkqf+bi7dCNiPEg1tU
- 6UMqWnos
- XSIGohrmw+A5Fe9OBrEMx8ZJ7UoTsx7SVrrqIBcp6iP4FxHwsQgi8KlelL18WziOvUPzYj3/YucfYcupXyg4iJ8c5jnAARJebvJRrl3chEBxjcm60xI9FEJdd0/VupibvxyT8lPC81r8RefobwRgIMkBdSDNs5S1EoPLL+XpPHCkMmrGJSvJKV32mJWSkrsTO94CCPaZWSDN+VKsR/N946yxFm2uDzHyj9egxjl7eajCwhiRB9n1ZwQ0QsQt/FyPiM1PvZZeNo6k8db8+u4xsqHOU43AecqpSXiUQw/crLOLV/IUNacG5Phjx8iiiZUh6XQ8YTUFXtciLCkGh9TtIt67sW9JMKR9KFS6qJRiev9suJV2wOwpBkqDT5rIe8W+fruwF/CzRlg01waCZKdP/zTTRvA==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 7580480005
+X-Stat-Signature: f13wf6x3ws6ahn7ekyxoei3n9i1gg9u1
+X-HE-Tag: 1757429621-661688
+X-HE-Meta: U2FsdGVkX19r9Qvslo9piHS+fFoKsKqGgV4Sf3MElh1okDAv6naafS9RZNHGNPbKSdD77zfJ48JKPBQ6ijOB3fTkhmTakhqorUzi07ii0EYgWaMhA7Mgic1tY+RIdE5wq+8ooL7Sr0VIW7g3pdco43v2Ws7ufteXiq9PnBpDGfG8555mBTypZuMKJjBH5BkJAmj0ImlLpHUIFOyuLKVCHELjcWiLAL8QC+EfZAQMdd/Hav2CfpsXv1sy8aVz8KLVxlf4vCkHeJKfGmIZQovRUMzfEGg0Rpmu+5D0fJW/T365govO9obHunu9zJyafXglec2DQD3nFMcdeVhrekE6LA4qhnuWlOZzxmvbTuyfD7r8ax6MNUVKDghcLQbvtufojNDAd0lURGbpTcoUAsMLgTvzrGCeh1XPuBqOY7WhR/F0I1EZjtzyuybG4t7Wgg32h13blGjNXcXy2lzqw4vkGPGiTxcP6gg24iYSrBCQdnRBLCBus5V3e6R2AUais2rXTl5HFPoabyrLDUTokzSLoVEpbvyslxk1nX2e12VUbdvvZiia//mlTgNXT8yQeYbr8NU5Vzm37Xt3FweqaDjJ5xBC34k38XX1ot7U0k9DqX1SFNl4OBkQl58ex6pC8xesmfk6LwMWbxj9Y1P7GgzEmXeElVZLLm4n6dYFGu/z2WvvHd3/QzVpJ3utlA+GhVmCYNAxlyk/5qXWR7p4AbsGqnjFz1A82grkg4YEDu774WlHWDB/mkwSzWsAqbs6Kl4I6bH8Pvso7KqHlTF7tez1fYCaJViKUEKPdYS/lvKgFoFa098DmTIbjazZf1oTXRLgr/ByPqW/x7i+6vebgEmQmyPP94Sc1X04B3pUpRRVIdlv+2UnjIADuQh3xOkZKFKVpKuyrshe2d9ldQEtN+z9bqdKCnbkdlxD8OUXXCtlGR0AqGPmGgWpLW/1rAYPeofqnM/5oRC+OOu7phmQ2+Z
+ F0j2jguh
+ F9hELRwmME7Td3K5XMrNJRl27NPe9n6chPm5zgX8wALK9cv+79Faf9wT0LNq79LbZaouqOAKqfZZN82Ltil150yfKVRUKZANAVary5aEJO5ubtl/oBOlEcLdIk+Ipxs24k8CIN9HuMme9oRNY3oy/oBqNq1GEkHwRD12Qhlvi3s04pUwWTyp0AtHbwC9Br5InmZ1Y9UwsE6iKTy63Geyp4cuZJOIZwUGkQ06IgWHr9fOSMKwmbJY9zUdqmuFR3v2ETGTDXSYyPmHWf2YkMCf5rDGPhmtR845Gc0UUi3mrPkAXgax4EXWOnK/6NXVNaVPiz+uGZxPrvFLx3MOJYlRuNnR0ErQox7LXPP/a+N2bBJjAriCob4yruUiP3qYt+5F+gE/TxaWLcuVtAXM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,41 +166,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 09, 2025 at 04:59:37PM +0800, Ye Liu wrote:
-> 
-> 在 2025/9/9 16:46, Dev Jain 写道:
-> >
-> > On 09/09/25 1:18 pm, Hu Song wrote:
-> >> Use folio_nr_pages() helper instead of manual calculation (1 << order)
-> >> for better code readability and maintainability.
-> >>
-> >> Signed-off-by: Hu Song <husong@kylinos.cn>
-> >> ---
-> >>   mm/slub.c | 2 +-
-> >>   1 file changed, 1 insertion(+), 1 deletion(-)
-> >>
-> >> diff --git a/mm/slub.c b/mm/slub.c
-> >> index d257141896c9..eba25461641a 100644
-> >> --- a/mm/slub.c
-> >> +++ b/mm/slub.c
-> >> @@ -2719,7 +2719,7 @@ static void __free_slab(struct kmem_cache *s, struct slab *slab)
-> >>   {
-> >>       struct folio *folio = slab_folio(slab);
-> >>       int order = folio_order(folio);
-> >> -    int pages = 1 << order;
-> >> +    int pages = folio_nr_pages(folio);
-> >>         __slab_clear_pfmemalloc(slab);
-> >>       folio->mapping = NULL;
-> >
-> > I don't know, the current version is more readable to me. We literally
-> > compute the order before, so we do a simple 1 << order. I'll leave it
-> > to the rest.
-> >
-> >
-> Is the reason for calculating 'order' first because it's needed later.
+On Thu, Sep 04 2025, Jason Gunthorpe wrote:
 
-Yes, we use it 6 lines down.
+> On Thu, Sep 04, 2025 at 02:57:35PM +0200, Pratyush Yadav wrote:
+>
+>> I don't think it matters if they are preserved or not. The serialization
+>> and deserialization is independent of that. You can very well create a
+>> KHO array that you don't KHO-preserve. On next boot, you can still use
+>> it, you just have to be careful of doing it while scratch-only. Same as
+>> we do now.
+>
+> The KHO array machinery itself can't preserve its own memory
+> either.
+
+It can. Maybe it couldn't in the version I showed you, but now it can.
+See kho_array_preserve() in
+https://lore.kernel.org/linux-mm/20250909144426.33274-2-pratyush@kernel.org/
+
+>
+>> For the _hypervisor_ live update case, sure. Though even there, I have a
+>> feeling we will start seeing userspace components on the hypervisor use
+>> memfd for stashing some of their state. 
+>
+> Sure, but don't make excessively sparse memfds for kexec use, why
+> should that be hard?
+
+Sure, I don't think they should be excessively sparse. But _some_ level
+of sparseness can be there.
+
+>
+>> applications. Think big storage nodes with memory in order of TiB. Those
+>> can use a memfd to back their caches so on a kernel upgrade the caches
+>> don't have to be re-fetched. Sparseness is to be expected for such use
+>> cases.
+>
+> Oh? I'm surpised you'd have sparseness there. sparseness seems like
+> such a weird feature to want to rely on :\
+>
+>> But perhaps it might be a better idea to come up with a mechanism for
+>> the kernel to discover which formats the "next" kernel speaks so it can
+>> for one decide whether it can do the live update at all, and for another
+>> which formats it should use. Maybe we give a way for luod to choose
+>> formats, and give it the responsibility for doing these checks?
+>
+> I have felt that we should catalog the formats&versions the kernel can
+> read/write in some way during kbuild.
+>
+> Maybe this turns into a sysfs directory of all the data with an
+> 'enable_write' flag that luod could set to 0 to optimize.
+>
+> And maybe this could be a kbuild report that luod could parse to do
+> this optimization.
+
+Or maybe we put that information in a ELF section in the kernel image?
+Not sure how feasible it would be for tooling to read but I think that
+would very closely associate the versions info with the kernel. The
+other option might be to put it somewhere with modules I guess.
+
+>
+> And maybe distro/csps use this information mechanically to check if
+> version pairs are kexec compatible.
+>
+> Which re-enforces my feeling that the formats/version should be first
+> class concepts, every version should be registered and luo should
+> sequence calling the code for the right version at the right time.
+>
+> Jason
 
 -- 
-Pedro
+Regards,
+Pratyush Yadav
 
