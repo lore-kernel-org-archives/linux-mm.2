@@ -4,115 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9987FCA0FED
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 15:11:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BED2CA0FED
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 15:13:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 032E76B0011; Tue,  9 Sep 2025 11:11:20 -0400 (EDT)
+	id A71A76B0006; Tue,  9 Sep 2025 11:13:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F25958E0003; Tue,  9 Sep 2025 11:11:19 -0400 (EDT)
+	id A22526B000C; Tue,  9 Sep 2025 11:13:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E3B246B0029; Tue,  9 Sep 2025 11:11:19 -0400 (EDT)
+	id 937E76B0029; Tue,  9 Sep 2025 11:13:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CF75B6B0011
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 11:11:19 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 81C66140564
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 15:11:19 +0000 (UTC)
-X-FDA: 83870050278.15.3B01817
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 4FF2A20016
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 15:11:17 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b=B+JXdkr5;
-	spf=pass (imf03.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.180 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 82E086B0006
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 11:13:50 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 331DEB9CD0
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 15:13:50 +0000 (UTC)
+X-FDA: 83870056620.14.0112788
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 558CDA001F
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 15:13:48 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b="RheUw/Hj";
+	spf=pass (imf15.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.172 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
 	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757430677;
+	s=arc-20220608; t=1757430828;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tURBG8J8o/qd06zK5K8bYxIL4Qoo/SPoLEPuSdcyLLo=;
-	b=QNQXuyoQgNWmh7nZqTu2K4toNgY3WUuA8rquh6o72wels7vZtHXVo63jXrX1uiBY8335p9
-	+AiJ38h8DcioDT3GaHZLevFoeA8WaAVQLkwbNGhGhazLFO6Fuqqi3e7sX7dZBZlyyUAaYs
-	BiSRoMJIiAXf0epU1ou1HO3ow9l04gw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757430677; a=rsa-sha256;
-	cv=none;
-	b=WeCc0Gd7K31g25+XikLfKLBCnE+jaGbLy9YiM7/8EMw/nq3Oy8hgeFijrtkxPOe/K5wx1/
-	nhcCpK2B1jWPe8aQzf2Lhh6nu1c/hoKoz4Yu3kwRVB10DMP3VFb9B7bYjhxKs9Elk7koDh
-	yeZAY8ReQtbxjrNuAaNg/vyEzSltfC0=
+	bh=uf+yTceGU5JGkt+Uo/sIFQ6JanTGXEu2guYeVg+ECaw=;
+	b=1LgxYZMDVkjQNR3owsksWDw9Pg/Gsd3eQIc+73fgYY0GDdZOzRyzdsE5VuehHaN2FTLUsM
+	c9dZm+q5C2ys8NU2TUf0L6iXFsRjKg6ZH2UWDFn8+YEZ/HqTs+nU3KsU/0SNe9jBDl29/4
+	YhjFgcro+/1GfSHBcBCiN7wYwarMxMQ=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b=B+JXdkr5;
-	spf=pass (imf03.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.180 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b="RheUw/Hj";
+	spf=pass (imf15.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.172 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
 	dmarc=pass (policy=none) header.from=cmpxchg.org
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4b490287648so93550901cf.2
-        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 08:11:17 -0700 (PDT)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757430828; a=rsa-sha256;
+	cv=none;
+	b=0YkybaCfrAccLkVXj6WYd+BF3Zyn84vhbGNVqkqdWG+nrTyYckc/u4XU6XXirzoTUXg+Ub
+	4QD451RADfNNNeJnlferoTU+vb7b1K92hJPyPYNcJA9/hxeYvvyYtuE/Z+HgSvtsymXL7i
+	vtNNRLDhi8PSR9zn+nnTn30MmMk4R4Y=
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-7e872c3a0d5so516450385a.2
+        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 08:13:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg-org.20230601.gappssmtp.com; s=20230601; t=1757430676; x=1758035476; darn=kvack.org;
+        d=cmpxchg-org.20230601.gappssmtp.com; s=20230601; t=1757430827; x=1758035627; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=tURBG8J8o/qd06zK5K8bYxIL4Qoo/SPoLEPuSdcyLLo=;
-        b=B+JXdkr5Nds/2204lf3+HA/aQnYsDsQ4PTXNRsaJVOpVd+994dlpRfD7+bdGJrtAXT
-         u8+g6l2/3DFCVvbgWnk18HTQRovhvD7Pz0T6H9Q8K/9VxD71fOeL1A/513glkLOT6IFu
-         OPWQLGHwPlczYqGRxLiPsxb06oRzUCZhPryxCJF2xa4C2Tl6ParD07JIxKznmdzXmk4M
-         SFFman5HumeQ2gVyetio1jm05Y0XPUci4EA8zq9Bk6XRIQbYBZP+Brtjydkr6s+QnVlb
-         tUOK82KVKm5urO/4p9unMaDX8yfZK7LGA51iJd79bf7b9uBZwQeJCJTMRkVQSuWesN2i
-         Av+g==
+        bh=uf+yTceGU5JGkt+Uo/sIFQ6JanTGXEu2guYeVg+ECaw=;
+        b=RheUw/HjqhGaG2Qr0TFybt/7IXDlSBr6yHIwzbrfwmmqLLs0TEt8/JJ+nZlRNkyFUv
+         oa/RyQAv8Hc29jrzDzCFVt2bE4QdSWzCfYP+eoSf8VVng3jvzaGHVuU7Dbz3WNShq+Q2
+         hW/0b1VKK9bydc5RqKbWWjZB8lZAo6vJLJhwWGAzkn1o730KMZsQm/x2s0jOeKsckG4q
+         xisB/ejHLEHE8OuurVLonWEzE8QCtGIat17nVddl4rUkLstfd9Nk52NxXdpHh2MsZBKF
+         LUXZBF0Ukr+TywPJ1SE8LWq3iTPpetfn8ocXbNVOWUiRqOGjMh+ecPRE1AlucseY8rGk
+         bWiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757430676; x=1758035476;
+        d=1e100.net; s=20230601; t=1757430827; x=1758035627;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=tURBG8J8o/qd06zK5K8bYxIL4Qoo/SPoLEPuSdcyLLo=;
-        b=ij0lA/w1dbbj4tW2ipEnE4fHy5yJko3u+pgkB/gn35dknVhykHWdOBlZF0tdIhR42E
-         qHbyXAewMRkhU+xqKvpUQ8fYowPES0uuPDRXSvzzN63xjSmPxM+HEHpTi6on/tQioq8b
-         YaWkMDt4sRIXrFTYvweVAzaOvfXt7HG/XNbAGHmrxl0H59A2XpKCmtSKa/KS8zrhoQV2
-         SzN0pgDUEGqvOg4jiiiNC0t5Z6Szh0e44o/vCZdOqbjyo5nwpXMfDm57cLmVRhwuhb0/
-         XV1ZNKjuX3FMTIs35n6W67IV8bG4CsjrMoV5qUy7OcxZduCYd6A+gB4jtpZiDgVTB65j
-         ZSAg==
-X-Forwarded-Encrypted: i=1; AJvYcCWqJ14Eyo3LbWK+YbFkDlz3rONT4BVLmO/1GYvCFS2BuFK9p9Tl4TvyHPFzKCQNE9+oCJwOvuXEsQ==@kvack.org
-X-Gm-Message-State: AOJu0YwWdJVvPdbuvyoBfgEJAyRAo8yQW0LocrTSWt2SINaA7igGKaas
-	8SAw/AbXdvfhMs4rlW1cM95BASwn9D7SCG926SVZ55OOgQnNQpT3HxYDX74PWtW6a70=
-X-Gm-Gg: ASbGnctLuHBZlgdCZtv6CXxs449QW1+lTRWS/0R7G+pf47y/b9JxgvDqmYdxwvWFC+C
-	tpgTt5W/27FKUu1b6sA8N9J6xqlS0xVS9A63kD1nN4MW0e4C1RPC6dcTYV1RUD1o4d5FZydpCcS
-	TfzXp/QcaFHRtlGCdVVuEETuIxC56IA7NKyrQ9BGGi6M3pu/xQu/0kMIIzujnd88Y0fmDDJ9J+U
-	wLyWdZ2VfJBZAjok5ZOX+8Oif1wFzdDApJYupjYxsLkL9IQZ8HBr06LvY5p6oFIO+FQFhGCm3+R
-	GurbPMEZo568hETQhZhPaL5CLrqpeowViI00sX5nIY6jmB8VtJ81ySxH8e0sH5sbhu8IeIn2vmS
-	zkMu+VsNsD73O
-X-Google-Smtp-Source: AGHT+IFKTzUCRKvQlrS8Ai0m7e/x5mKMWEsbS7AmLloMhvq2/uude/1VNVPNgbAgTYRvG0gKhgh+LQ==
-X-Received: by 2002:a05:622a:1482:b0:4b3:bd5:e1c with SMTP id d75a77b69052e-4b5f84474f2mr123084661cf.53.1757430675099;
-        Tue, 09 Sep 2025 08:11:15 -0700 (PDT)
-Received: from localhost ([2620:10d:c091:600::c6db])
-        by smtp.gmail.com with UTF8SMTPSA id d75a77b69052e-4b61ba8719csm10336371cf.13.2025.09.09.08.11.14
+        bh=uf+yTceGU5JGkt+Uo/sIFQ6JanTGXEu2guYeVg+ECaw=;
+        b=OXo/89eu4pbxVi0Or2DPsKwBvbHAzPFMMIH7zTcNxTIGIxPvFugu9XLdtYohTQDeYg
+         cmqxAcAEMB2kHVT/x7jVxe6njTfGRWYPvSuB1F1pu8GIwnn/9lcinXfbmEFm0BUQ+YGg
+         ao8jFZxpPOUkQhLYMSzeOW8pchLkDUC2xLQxim+eRGh79AXb88tNJqXveG2KABgD65+c
+         KVezl7apPuyIVS4+M+6F0JNZWkY+hpE1+PY+JkTxHryAXuP9sMGI8MFYEiEequAwzB9F
+         Yg6laBezoHHDB8IAmG7qXXhaEGB2sIHz05S5hB1s1z1FsaBNfhA5PdCK8VmMFKBXJGQF
+         mXkw==
+X-Forwarded-Encrypted: i=1; AJvYcCVaU+cXBOzb5aacO3thyLYmrb9gMqkbfI+OaetqHgBaypFtR4URE2SvIBitX7Xoq3LAWMcXDdyOVw==@kvack.org
+X-Gm-Message-State: AOJu0YwJzB2aulbP7URM+TdjSturEUoZLty88pDVbQkMbfu0J0wvFgyI
+	/tuD7mLPiACMPaiHdPPhFCVhKI/e2y2W4Qafuie+MGbmKQ5l3yEG6StEGjH/Go0h9KY=
+X-Gm-Gg: ASbGncs7pJO4SBbCFXtImGsy0jdExWklglp4y8WEmuGSAGVP0VtzxklPcKa4F9cmzym
+	9n5i76Ms5oz36jEcroGXM9u7SSPecj+6fqg5ASJSmdHiRbczG3NXdcbtjx2EnZJ7UqzF9+G4zgk
+	2h/iNy/RuhGw5bxjtWTMuKDOBM/SCSU3KScKG8Vei0VTv1MwjTodOn9xdqYbB/HFMcILPnMIRGL
+	oW1pf6O2BEWC++ZjqoTEFKvsAAxLrjp3txoJIlviw1ehhpCsI0iB+a8kQudF+qTfCEpik0TPDRv
+	YD9ZzvH3qQfMEgziVKcEoa1ygYpu0Ox1FxsYZrPZrCXPzlxzosH94mNMFTyXnVB8hOpkS88oMzI
+	jRnr1+43Y7Yv5
+X-Google-Smtp-Source: AGHT+IFk1mNsRoXg6pueACyEECW6Z59QmlqnpPcT14EM2tD1B0zWQIgkHrVzU+oQQccJBi9dAKzUgQ==
+X-Received: by 2002:a05:620a:c44:b0:803:7023:36b5 with SMTP id af79cd13be357-813c2efc949mr1318765985a.59.1757430827104;
+        Tue, 09 Sep 2025 08:13:47 -0700 (PDT)
+Received: from localhost ([2620:10d:c091:600::1463])
+        by smtp.gmail.com with UTF8SMTPSA id af79cd13be357-81b5f8fff60sm132842285a.60.2025.09.09.08.13.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Sep 2025 08:11:14 -0700 (PDT)
-Date: Tue, 9 Sep 2025 16:11:13 +0100
+        Tue, 09 Sep 2025 08:13:46 -0700 (PDT)
+Date: Tue, 9 Sep 2025 16:13:45 +0100
 From: Johannes Weiner <hannes@cmpxchg.org>
-To: Yosry Ahmed <yosry.ahmed@linux.dev>
+To: SeongJae Park <sj@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Nhat Pham <nphamcs@gmail.com>,
+	Yosry Ahmed <yosryahmed@google.com>, Nhat Pham <nphamcs@gmail.com>,
 	Chengming Zhou <zhouchengming@bytedance.com>, linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/3] mm: zpdesc: minor naming and comment corrections
-Message-ID: <20250909151113.GD1474@cmpxchg.org>
-References: <20250829162212.208258-1-hannes@cmpxchg.org>
- <20250829162212.208258-4-hannes@cmpxchg.org>
- <mgt4ejjyz64ehnyskv24nzjllxxie4jvxb6i2dzlq43yev5dtu@sfltngevykts>
+Subject: Re: [PATCH 2/3] mm: remove unused zpool layer
+Message-ID: <20250909151345.GE1474@cmpxchg.org>
+References: <20250829162212.208258-3-hannes@cmpxchg.org>
+ <20250829190728.60675-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <mgt4ejjyz64ehnyskv24nzjllxxie4jvxb6i2dzlq43yev5dtu@sfltngevykts>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 4FF2A20016
-X-Stat-Signature: n4rgjb8my1eprqqgicdftcahfuja1q6c
+In-Reply-To: <20250829190728.60675-1-sj@kernel.org>
+X-Rspamd-Queue-Id: 558CDA001F
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 7fzrcggkj9xznsxnjwxjmgpdor3u6pp6
 X-Rspam-User: 
-X-HE-Tag: 1757430677-332513
-X-HE-Meta: U2FsdGVkX18GxPjsgdoXaX7MfoSNshbt3jiOplwZHn2AUykA0UICofUgyv45v/Vdjcnwa/a9HtMzUIhM5aBSaKK8M/6OhF3lucj7UgiMLy4lzTM7tis1kR0vLbAKMPliqGVLxU2DtSKCS9WByOPAFs6fpmIqm+aXkGzjv+nyOUAuOgi+G3KLK/q+SxVx++kj28xPEhU5jyvwy+F+IMaofLHCUj4yVtrcajqgsZl8WineChRp7UsmuY4dsYZRb/qZitMBZgIFqmBSI5YrUYM93WLHFHCRWXr+/2xTzBJ1jOiILc1r8Epy/uVqinPoMKBbEUcFAl1YSj0TqFLmykYmNYlf+IsKhe/M1RvyW2dXxt5/n1+brmonovYOKaGyEGGU/9TH8MehvV6GrdyBTNQJDoDqI11XqvW+xteE5sqdiZOIS0+UPmtzdgRh9cRQf1KKVo+RaVwyZb9J/5siNMtgdXWcO5B7JzKLGcb0ilSzxgjwZeIwOvrj7wNsM1RkAFhDScFnbeLIC2isaFrkNK0Gt9x1ziCvMbCkznFFHGShRoTv5KRgudfS6psSbuH5AxRgHjcqHUr8kgv/YSu6obDmbC3FkEPioWO9PqIaTzBa4ZM8iEQivV2Qft+lM2F3JhvnboN9zaeBVORHOdekDWAR+e8PJubNQaeYgbUXN+AvVgm2Depc1p+9mNGYc1zGeAbynp4wmgH8nEc6x7LehWqKOv0HydAgi2zyGJGDMFVY6troK2Z9mglrONsZS29XVaRJY5xt5jSN6AzBNpygQ9N90HV+J7hpuv00pwtHOh6eAcn6EDOo9jR244G08BBF9RCh+NFcmNuBOmPBogFk69ioPysR2aZiODLsV8o1bfLooXvruO43OcxDpggrfy2ofqTJJMZsxem0PDVjhj5NXo+UoFJJFdbpLFHfB5qz/hhELlKLbF0ozm6MEsHEu+EI624cT71aZsHEQd0ipiZ64jM
- WE4DKOBW
- 1HSoXrD0aRdqQ7KMlPMC3a+kq96XDNZB3GojIalqvTOMiH0jfz0H5VAOY/dYTDZJgfKglDBxtoRu4uFnkCS7uex2SAdmZ6DJQVgH/+cJkJiGOv8jmfNi+2eOY+oYMrdAsvAzfrGz8fIjgt6sDNskaqsyZFuZhb/lAfcdTDmxFCQdd9zO8hnyby4CSvKhHLuLy9nDz1sXKEEipHIDLOl5yA9Js3XYhD9CnvJcJeHh4JgiF3rH7s5qrNR264bPgWxzivMDCSdCaXu1O2vNLmkpbGOZNV3qr24eYPhlKsJJqjgfJxIbF93qthHtMfayynWpfDE205IJlGn415NTmprgvyiLbPalWbBRmyeeydRGPmsSmRsLweTySYa+Fsucj4oY5pQqLklyaABF46ZAyVqkhon+q6r2f+ka60VtkWASTbYECBg6JkxemxU+xTk1dwDtqpx/jcQBc8GH2VDab2fXK6zbexan3zLJgH7sBoVbVnPbnR9Wyu2vHH3ECm3sALOrdoOhe5dTNbytHmF0=
+X-HE-Tag: 1757430828-28714
+X-HE-Meta: U2FsdGVkX18JZNuz+1+iSp/vrMrtvwkS2W9V+pNHMkB0QO+KK/3KhAL/j6DbolxPfneuzuz8q+TwsYXqwbuWSYl3+woBzIYp/Sfqewt2q4o0WUQ/6DPzdX5xO4eb5cTOYNL0N+tt2r3Vkq8+XDVVsYERUVRRPUphyFbWQwk9hah8+BG3c1oCrI8RpkwXaewl/i55EzOzlSpFgYaWGOLclwhDpn2jm5OswIGtuvS/PbNe4J7+jJLu5gQOlj/pllKa8cMaef30MMYIbPRgtydGu0zRj/KL4GzoXcTnLmH8u9IaCufrdByZDY7XFdKntLnbzucpDkMtCkYMpQvBtIpn7E1gY/LJUvflvA5qN8ApLSwBx8Fi0wEDA1qlyIrebIzDBMl9o0tbBCtDY5gg+grmj/gK6VbOYiZXfOvG4neBWy7L/45odmZrBO/fwgY66W527XB/DIr6cbBOeRByjJga/RTGAKu2S0+XSQasuuoi850w7S/gAR64enYWtOJSc7UN2d+t3eSyHd/ztN+3JZ8f0PGYjRqLn9Pk4fK5/nbiv8WzYoqo44xLaILGmmq4cKbzUnwEsFzjGtDkeURtMLD+DAwfF4MlymlSWWfCl1MCGEKvqxDcTZuayYbftQQaITPoV30mOtxbG1f65eQXrFTzcDZx/U6cw5fmLYq3j9RmCzKdIgFlPklb7zmwIZBdTT8E4BR5TzOTVF49yMt3CQDK77EUe97udtdCX+8FkGG7LGIGGt1j0/Wq5iCgCL7lE+0dV+AnqdgTEInRLt7wE9scif+Dm723HkcRnzmw+nk+0UvWa2qsz31hCJZmh99Sg2v/VCTp9EXOmHhmLeBXyMw5wiJtjk8BCdEUCH7vdMBX9IvkDIV/i5XjyNLfMmLGwdDz3aXIdrnPyQxNzDuTVerRJl3UqlRToU3Z/tdr5tf1L8rB7ESyRn5xhoA6eo9G8M/hCQfAW1FeLJoOsWUhAJm
+ yEayi4GV
+ /mD13zvrx2m+pZ8Y9527o0MCiZl5ZgZ7o3QE9SEsP1o5ZlOnBjVUhu4HEAlSXEZzlfAeoeca4cr1/z9ga7KaGVtzjG4W6JJUnryznlV36j4fEqb+Mi1DHN1kGfH9x41oVxJsIRvT1PAyKIF3N/LWKjkFWklmtW7RbYxU3bieIIw3vOmG+mVUb0L46pEiENYKgv+NvH9rNuv9enbPCNOgGU6oXujB2TePf6DnfAYQ/yE6nCx9NS2HZhd5iAHZmfiYI/RpnCb2XLmDU374aOHIaYNxpA7tLWRm3uDc7Ohj11VmG+2lJj2UKCbXm8/3eXoK4qZ7iMWMS9MHAM4ZS4Kmo9iKCtzKVs0m2867L3lszL9renjkOtt6Z1nAAiayA/ojPCSPi8Za+kxNHVtHIVUFGIlyKElPitJrz0ZjxkZCK3Jnve5ODgDLPhKVsFWdBLnu+MI3GeYK4mDKLoWJ3NwNudPBINoqWR8NMLmBmRzJG7+MLM+BZNZB/OYdAZWEFEdWpHQiH3Zd+zuh0jP8nKGsUpcQlewfN3aiHqtEOqzv2dIurbws=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,25 +120,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 05, 2025 at 07:05:22PM +0000, Yosry Ahmed wrote:
-> On Fri, Aug 29, 2025 at 05:15:28PM +0100, Johannes Weiner wrote:
-> > zpdesc is the page descriptor used by the zsmalloc backend allocator,
-> > which in turn is used by zswap and zram. The zpool layer is gone.
+On Fri, Aug 29, 2025 at 12:07:28PM -0700, SeongJae Park wrote:
+> On Fri, 29 Aug 2025 17:15:27 +0100 Johannes Weiner <hannes@cmpxchg.org> wrote:
+> 
+> > With zswap using zsmalloc directly, there are no more in-tree users of
+> > this code. Remove it.
 > > 
 > > Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
-> > ---
+> [...]
+> > --- a/Documentation/admin-guide/mm/zswap.rst
+> > +++ b/Documentation/admin-guide/mm/zswap.rst
+> [...]
+> >  When a swap page is passed from swapout to zswap, zswap maintains a mapping
+> > -of the swap entry, a combination of the swap type and swap offset, to the zpool
+> > -handle that references that compressed swap page.  This mapping is achieved
+> > -with a red-black tree per swap type.  The swap offset is the search key for the
+> > -tree nodes.
 > 
-> Why not rename zpdesc to zsdesc or zdesc while we're at it? It's a lot
-> of noise but it's just this file and zsmalloc.c IIUC. Up to you.
+> Nit.  s/red-black tree/xarray/ ?
 
-I'm kind of fine with zpdesc and not sure the other names are this
-much better to warrant the churn. So if you don't mind, I'd just leave
-it alone for now.
+Yeah, I just kept the changes scoped to the removal of zpool.
 
-> If it's just the comment changes I would squash it into the second
-> patch, but not a big deal. Either way:
-> 
-> Acked-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+But this file indeed needs a general update beyond the changes in this
+series. I'll send a separate patch to clean this up.
 
-Thanks for your review!
+> Acked-by: SeongJae Park <sj@kernel.org>
+
+Thanks SJ
 
