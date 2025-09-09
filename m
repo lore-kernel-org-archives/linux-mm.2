@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27E4BCA0FED
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 23:34:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A4EFCA0FED
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 23:34:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4537C8E0005; Tue,  9 Sep 2025 19:34:21 -0400 (EDT)
+	id C41928E000D; Tue,  9 Sep 2025 19:34:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3DB108E0001; Tue,  9 Sep 2025 19:34:21 -0400 (EDT)
+	id BA4E08E0001; Tue,  9 Sep 2025 19:34:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2CAA58E0005; Tue,  9 Sep 2025 19:34:21 -0400 (EDT)
+	id A916E8E000D; Tue,  9 Sep 2025 19:34:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1BAA98E0001
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 19:34:21 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DAAAF1406E7
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 23:34:20 +0000 (UTC)
-X-FDA: 83871317880.29.67ECE39
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 922018E0001
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 19:34:23 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 094C859F2C
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 23:34:23 +0000 (UTC)
+X-FDA: 83871318006.15.312A3CC
 Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 147B016000B
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 23:34:18 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=R8zdWi01;
-	spf=pass (imf08.hostedemail.com: domain of 3ebnAaAYKCDwqspclZemmejc.amkjglsv-kkitYai.mpe@flex--surenb.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3ebnAaAYKCDwqspclZemmejc.amkjglsv-kkitYai.mpe@flex--surenb.bounces.google.com;
+	by imf27.hostedemail.com (Postfix) with ESMTP id 38D6A4000C
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 23:34:21 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=4phQ6+y2;
+	spf=pass (imf27.hostedemail.com: domain of 3e7nAaAYKCD4xzwjsglttlqj.htrqnsz2-rrp0fhp.twl@flex--surenb.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3e7nAaAYKCD4xzwjsglttlqj.htrqnsz2-rrp0fhp.twl@flex--surenb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757460859;
+	s=arc-20220608; t=1757460861;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K6OH97ZpoRzs/QnK0sVtwK1+CTMH7EfEmnF9tlYLf0g=;
-	b=6UoH1NkAi2Gpa3y43v/HZytkvQbkPzXTzoKcH0QkD/nE0YzKZUbW3Ssm/cpCN9rqxQfXcd
-	LERUpYLEpTIP2tI+SXCXfzPRcm77jcjUJjRyU6qs/ecBUPdkOqzXmqeHOwc7k3814Ipx0Q
-	g+S54LlGH+C6tJx0qwAZk3+a6ObGRi0=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=R8zdWi01;
-	spf=pass (imf08.hostedemail.com: domain of 3ebnAaAYKCDwqspclZemmejc.amkjglsv-kkitYai.mpe@flex--surenb.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3ebnAaAYKCDwqspclZemmejc.amkjglsv-kkitYai.mpe@flex--surenb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757460859; a=rsa-sha256;
+	bh=9D+kUp+8/PWIFjKllG6CENhJfl0f54OgddsYmF4lYnY=;
+	b=BNnB1urfAKUnhquKPV1UN1IUDUekstsq91WYqk3NURINK4sj/CtILpRpHEau4Wgp4AaV5w
+	mTDBU4cAeG/h4pGTlcNwpzr3Bt4ORLlcDiippnQVEaETgFoW+lZ0ZUcY6/ugx0+4ZkJk5v
+	DCTGJe+TJZwXA5gUQlexXN5c0siZ7D8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757460861; a=rsa-sha256;
 	cv=none;
-	b=7qfsGI7pCwa60yBr7Kf8Mb4N9ev76H3UDpL5u4SALq1Qk6Hqfk7+UMIYnp+LAmTsJcKyHA
-	cl5NTDuq0kNBsuHnVe53psSk33rxzXITHBhjJ41ywj3G+n25pZgbcwjhVVxSFvSzw4v65b
-	dk2gPwgG6bKFMmzuYFFNrtzrylDJ9iA=
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-76e2ea9366aso6658201b3a.2
-        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 16:34:18 -0700 (PDT)
+	b=zmcXUdQgPWct8I64SN9MqnrWT/NIOh1YELpPBh9WBmUquO4ATPCZGScZ9kMKpnqC7LYZf9
+	OjHwUWdmSUsAheolb+KJTWpl6a7sCMBZLoQSEKaCde2imtJdcdjbOzU8D6P2Qog8P4u+V+
+	AhVmg5Xpm4EErO3CKEi3CZb2VPEt874=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=4phQ6+y2;
+	spf=pass (imf27.hostedemail.com: domain of 3e7nAaAYKCD4xzwjsglttlqj.htrqnsz2-rrp0fhp.twl@flex--surenb.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3e7nAaAYKCD4xzwjsglttlqj.htrqnsz2-rrp0fhp.twl@flex--surenb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-77253535b2cso5996649b3a.3
+        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 16:34:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757460858; x=1758065658; darn=kvack.org;
+        d=google.com; s=20230601; t=1757460860; x=1758065660; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=K6OH97ZpoRzs/QnK0sVtwK1+CTMH7EfEmnF9tlYLf0g=;
-        b=R8zdWi010nmdl8GRxZuYpMgjKD71fFKqep4UejOAJm5eR3Fu17jXWSmjL8jrzgrXyV
-         ySoDj8nnKMgGDMUi9OCpaYCKY6ditBtTY7qizVHbtsTLNBkxcouL5oHRYOdtOvzAzI5s
-         gjw7mYJ76ZoIj+1tvYuUooxJNvfYHIVqtQzSE4mpLs4Lo7IN/Fnq/tyEcjuJVFaJJVOF
-         tf0G3j/kEA2SWmbxe2IIZsjbyBNRdS5deo/18C+GbHNv99boah0noXoIhW+EVCr/KeEu
-         Z4FYXaTU6Gi5e2Bj+jourx7e1CRQ2EnpN4c70GoJC4n/v6h/msjndLImlWliUsfPbUfu
-         oHKQ==
+        bh=9D+kUp+8/PWIFjKllG6CENhJfl0f54OgddsYmF4lYnY=;
+        b=4phQ6+y2vyxZEdwj4vsIGMKoYILwlP7f0ZrhB3Fc22gvss2vDS0340IjbmUwbLWL/v
+         Vrj7RE3D+mCpmOczUoncMdLuX1WMWMRcK+ou78qGQHJ165skRtvj84OVFS7Rg7+9CeVx
+         AKgKdRM8rZOysZUaqVnLUSwF0rciY1XS7BaIDu2tYE0iEnJd3PyBWHJrJ1f5r2VgplRr
+         ZK3nALvRtANgCrHQnXlCfJPIYfw/MslOZVccziMQz2rJ8fI8w0mGWJ7bKNXnLolF0J9Q
+         NGAtguPgSGmVxT23my0DqR5MDpHEZmeRJNyqbu53h4KrgIRdRlVt8YUS+CHEC75IO7U3
+         5+RA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757460858; x=1758065658;
+        d=1e100.net; s=20230601; t=1757460860; x=1758065660;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=K6OH97ZpoRzs/QnK0sVtwK1+CTMH7EfEmnF9tlYLf0g=;
-        b=EIq44ZEzYJjhdu3jAQZ99T8epX2YqIYbD7Qzaw76AZQuAsNXO1P7JvUkoM32JfgHno
-         8CpFvJswJ9BEPGmdDm7xXaUZbJe4iBjcIHoi9njdng8XVvyHOrF9ywK0h6IUUCkFW50Y
-         n4epjnkF7vl/GWp1sa6afeuLJf/Wu1neRKGVFoZmG7JbFSf6movG3ew1ts3vdm7rJeig
-         JPEIXqnHHmYBcT38QPEBwkC1qK6x2p3/XDRVWCqAyQ4Q45q+/8Nk34YgN3ULtsQVffBA
-         /KJAQjjE/+sIvqHyFtdVi9neFc6AeR9/I2a7tsX1rVrz7oZLFRuE7VBu3OhwPB922dfx
-         XRjg==
-X-Forwarded-Encrypted: i=1; AJvYcCX3kOo20WSbia2LElk6SGbXUpH2/4coLS+YVdcjEL19g5QVqGXwmJSKWV7Fh6FPjjsGcTKUylo7pw==@kvack.org
-X-Gm-Message-State: AOJu0YxFAP5ZTYwfk4oeqHA9V57zmpTs5saNcHECulOchuEDWtdWxyrh
-	EhNKEJxn+DpZkEbLop1xB3IC1E5I3/fUL7hDfypS2c1O8tLJZjBQt/xu7YPA1e/hBamG+UUZQQm
-	tLp4xGg==
-X-Google-Smtp-Source: AGHT+IFIst4jd2D334Y2PkPuCO/Ean4Ij3IT9elqE1huVfZrndSK+83KyXPa67AggUAs4pMR4FIui+Zixgs=
-X-Received: from pfmm1.prod.google.com ([2002:a05:6a00:2481:b0:746:3244:f1e6])
- (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3e14:b0:771:d7b0:6944
- with SMTP id d2e1a72fcca58-7742dca536dmr15166038b3a.3.1757460857845; Tue, 09
- Sep 2025 16:34:17 -0700 (PDT)
-Date: Tue,  9 Sep 2025 16:34:08 -0700
+        bh=9D+kUp+8/PWIFjKllG6CENhJfl0f54OgddsYmF4lYnY=;
+        b=XwhT0y4s/vxWd+3xotmO9O/QKXzO0Xry+ka7SkawjevTDWHereyO6TKEm2hq+WdLDP
+         kGNyjBZWR04CpHaoKZCcJuMi0QaXtY/JYkpbxg7RsvTKZJPh/ZYYqOxOiAC9maaZc3Kf
+         O4pLqoSWvPG02wclr1S8fZdIHfhO+VlKAUtT58zsdBUX8kpbjruvHFjCqzuqLOcMr3qq
+         AeJWQa5l78y+YXTOIPbWId7KXRpL0zpmIC1I7MUd2Fn3paiwk0/+r/kX4pwUw4I+X/L4
+         8sU9FZAoqoEt6F3WVBBlfBFoYPmaNLBJ9CoaLKf4T4lvG+NBCmIS7f/2Iv2k0kkoWOBV
+         jzOA==
+X-Forwarded-Encrypted: i=1; AJvYcCUmFWGRYnL6znh4XFPawRi5pB9DLN921lHOOFgY5V6ob2piw2sxHi/sFKWUCoATLNwqwEruGI3VVA==@kvack.org
+X-Gm-Message-State: AOJu0YzoktcUkV1UF+s6eBMVrGJtm7YBxrk26kWRNDGiMUhozcQjIxti
+	fIXlOnzli1fPm2DRVnWEAm9vRdVzpAAE2yIM8WbEbxqCx4QzCbcByyiY5f+7i+o6mLK6rA+9t80
+	boAKZSw==
+X-Google-Smtp-Source: AGHT+IH21M6CEVT6I4cbVbLFhLsLvsvyph9LaEsNMJBlcaaK/bkq0Ym1zULWMNoZDsLFG63V/okgQHCwDiw=
+X-Received: from pfbcj20.prod.google.com ([2002:a05:6a00:2994:b0:772:701:dfa4])
+ (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:14c2:b0:772:80d3:b684
+ with SMTP id d2e1a72fcca58-7742de925bemr16942717b3a.22.1757460859886; Tue, 09
+ Sep 2025 16:34:19 -0700 (PDT)
+Date: Tue,  9 Sep 2025 16:34:09 -0700
 In-Reply-To: <20250909233409.1013367-1-surenb@google.com>
 Mime-Version: 1.0
 References: <20250909233409.1013367-1-surenb@google.com>
 X-Mailer: git-send-email 2.51.0.384.g4c02a37b29-goog
-Message-ID: <20250909233409.1013367-3-surenb@google.com>
-Subject: [PATCH 2/3] alloc_tag: prevent enabling memory profiling if it was
- shut down
+Message-ID: <20250909233409.1013367-4-surenb@google.com>
+Subject: [PATCH 3/3] alloc_tag: avoid warnings when freeing non-compound
+ "tail" pages
 From: Suren Baghdasaryan <surenb@google.com>
 To: akpm@linux-foundation.org
 Cc: kent.overstreet@linux.dev, vbabka@suse.cz, mhocko@suse.com, 
@@ -97,14 +97,14 @@ Cc: kent.overstreet@linux.dev, vbabka@suse.cz, mhocko@suse.com,
 	pasha.tatashin@soleen.com, souravpanda@google.com, surenb@google.com, 
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 147B016000B
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 8bmzmqpfnj96mogqu4u7sqqminby8gwk
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 38D6A4000C
+X-Stat-Signature: xrhwz31sudwkxisxy4hgfdmuukhqf5dp
 X-Rspam-User: 
-X-HE-Tag: 1757460858-255885
-X-HE-Meta: U2FsdGVkX1+i0f78olfedJHYFgwdfnkVMJdA+jXDOs0mA6NkkR7hVsYAUQwSddlkI+0wRQT1hhY+l23IE14huQMwwbwhXC6xwpCYsxae4NYC+J2nHI9rkD9uW1dnXkKsWQMGTHKbgwaIfdc1YdqKcqul5feuCCjvah+h1g1yMunxfEYxXepdObIP6bvJ2hDJQTkVlrk3Jfumfx2Dogs9I6a2CrPcVfTy0bYZ2XQhk715jorYhLbP9vqhnX1nc2yzqxHuYK7MPnrJbfvKq5F/1VXejp1Tow+sk3+CohnSPwR1AKpqSJd36ZSNnDgPjvPotmybLJwvOZd80XY1o5RBP6/hHZ3w8Ki+O4KgPc9oMjGxCQIsSroOMHuKj6XFiRxlUpqAtYLr6AesESrLWxZIMZSbcmR1PFmbFajPWv6IK8DXlDHb2sTQVRUBqip2Hh7evKFt2pen5+z4WR5Ldz8F1phmsszoqi6iLkkirekgQuWGf/KHGgcvxvi9atSvb5NbPD/rxO97+dH8io+ebtxoo7Bs6wqhxnWNK6E+fCfCCjGssA/vV7o91xhWdSTfb1dXu8s7PNe+x57oxnIf/1bHk00DtXqXcAgW84cL/QduXfy5AM1GjpDFY+B7dZ+Rc1PIwGA8XtYc9WzeK3vvS+rCJmkJH9/VRzMlh6kz2BpozYzYngwnLlEWECdjmZMkOQzCaabv/wY3cfhe0u/mJXfI+W7uf90IBvSbO/UV2ytBG3YILQNav/brpWzDjD0FjHqE5JOa9jDZKh5/Of2CcPvur34mwXFvZisPZXyS0T9ANXAqzyL2QMIynhxAmt+ZO+k6bFHhuonJTGW6bTKwtJ9ijiabe37Lq8cf0qnoIfpfAiXk5qIinl6ie8x5tRJxSXuhFHBJDo+f9qF2XnRIT5qZrYCN0Uf3+XO3xV6oLvmj0mWOkzPPLu87Rdbl9oIFL/w6Z4EEpbvLqw9bZHAhPpy
- VTLA0Gmr
- TOTJJRt/g/yHxOF+gPcrZvGL3mggKItZ6XafTHbY4EhglJZL7VUY4QCSozoytlkwsQxI4+jpeYBg/vDOji/rYORbOmKxW/wNvmccIk3p+preGF3iu5BTMieiWddtnDekuPpJgVVPoHWsVJU7LUorcIzIdAdM4F2MRBKSu+k89xe9H5tICgLifQ2Bi2arYcNvb1bTLTJ+eAt6pUzv+z2+h0U/IR+5HnmCklCb5jKmKK49jh6jvXuWuBK/psolIlbXWlzCHNUYY6SnMolPXyQ2n6a/a3AA8pmHlYRY6cqK0Iu8lQdPnu3squeBBiLJ7X140mH/Su09chC+rJ/6uEYkZtlEtrnYp6QdGfuCngsy+AGc1GE+6ldMw44BCfOYm9aFqbp0rSlG/YO/zvJoXveoZ79BB6SuMZXfb3ebQGkpuNp0yOBbARMXlU5iMYO5NFe8gyRY3ioQ8i8KIusqd88n3c3oWXCR7/epQ/0Uyp17nY7+hSi8VDNOh1TfbXjoNNyoIgimZgiFx59h+OK7fHyclam72+FYQYAaMzgF0Bne7oX3iyu+0CrQWCDwQ+t4uEqz5A90G/44gr/Kx/GHFKS+OdIfxZQ==
+X-HE-Tag: 1757460861-321348
+X-HE-Meta: U2FsdGVkX1/+Ws6UUSVs5onzzm8ONL1VaCw3LdTx7Td0wIuUEZViLoYs8LyKFupgoIGcNubmjKNtItZH2NvM0hMIbsfkK+g6YtXH0Rt2YCXLqvWgNO2qXZdY+A1JkNYECiG6bdZCPJOvQqbtEfJX9+l9GiiWcLqK3DgrlCSDU0EKJ37TTXQNhHayOlJihyfKgXPBTxxMNk1kFuQglatSHUchCwLku57kjqqffJD3L4Ixs/to6ave5YUvzsMoY6q4L2wOtqk6qMOhF8x8tcMQGgLK8JhktOvTkgCbH/mlN5mK9mmcKYRzH3lFxqYpwUZg1gXQyCOPHcCTvhKvVuSrGvpFDPBqMvtLvAUQ1W6fkmwb/SCe0jFriZluVfu6JsgLMBqZrcJUrJKLyuQscTYw67Sxy7chtgZurDyAGGNfJuz9GKMWkAc3BLBRPPybvij8T2Z/BI8VnNF1f+0QcPCBDv6eYZxdJw67H6ARjRPGf3GcjjxXtKSQpnUTkNneZHm+UUpvKAI2559W0wBozQRHgfJrYxhZcUNESOYKndoaZW5pXoajqdpZUrsrb/HbmNjI3Hn7sm4bxKhJreH03GpQxxeRvn+eyL0H5dBBQ6q5QA3xgPH1CfV/yUD7SsEFOC1diAnt61WPdcvVJDJpCzO385hppE6bemxnKicA/7FL2YsfRrnMi65FhYX4A8ZFkXwNa5wxJ/c0st6oDRUCE/368E5vDy7VrRKXH6HdvmkbVkYlWEp/5RO+zxx2cuVji8En5PLHcPlhFS+MmrzjXdy85bxXkSdNvhzWg+G80wjq5ufbENixlQ/jqFMVPfTqmL7PRDN8IisK8M+/dHQkvT982NJkRtEBVnUY9PDCyS2PM4nh93Rjgepv3vE2awLUqq6qitwiaXu+cyo+PogtYC2l2JuM/MlP8mk9ApOnCciO9vcYSBAcnkIJmTvbhwa4B8iq7HAIOhCw/d5Z/ZpRvhx
+ a1tEWUlC
+ Zbw1dkZSz4+5+dySOyVZtW9otUR0r9Ff2No3CYKUqAgdO+GB5+WqPewd1aAhnseXmQgb4sbB6sc2Z0S+Fu5Pn8hLoQkpcLsjVmHPG7KGI+cLsIYg5xVbkXx1bwQu5pCGz0GsgK6rZVHtpEYdzu4ABiVgs5+/jY8WvSCKxPZAxHxF0UgzgKkt6FjR+T2r9sWrVDgOnOpgB/c3b/yMVUnX1QyE0TBrW7haqP58cNQ5XHimHmicceYoScFio6qPfMeYqEPLUfVjc5iBAYtEOZjM5UetxS1J587Js9n2xQDQJrLe96cno7rmN/ww3qYZDA1TrKtLTkhsqhzNAKZD72+uUmlHssjnlI788f/i+rZ8vMNwig6+mAAI8W4CcV2dqOK9wH+vqCM0H6ud1xK0a0fXtc1eGW1y9F0+KNCJGoDRqVcUo+VG1oYcHSMu2SaEdq2AbdPSGAvkCwUkze2a/VIl2i5O/eOoq3LrAoglQC667FFfV5Sxya+/ztI7DoBtIzGcFkOconXW4SfZdiScINWfIxfK6P39Vq3yjXcBgVXxClekfp1aLK2Aw5QT8PRJBQP6K5oIsvaMh/hVjcJBod1oPguYl5cjXTW6EjGXrpXbksXAdLQPkMvQgUXSBgDlEHD/pJ4+u
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,46 +113,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Memory profiling can be shut down due to reasons like a failure during
-initialization. When this happens, the user should not be able to
-re-enable it. Current sysctrl interface does not handle this properly
-and will allow re-enabling memory profiling. Fix this by checking for
-this condition during sysctrl write operation.
+When freeing "tail" pages of a non-compount high-order page, we properly
+subtract the allocation tag counters, however later when these pages are
+released, alloc_tag_sub() will issue warnings because tags for these pages
+are NULL.
+This issue was originally anticipated by Vlastimil in his review [1] and
+then recently reported by David.
+Prevent warnings by marking the tags empty.
 
+[1] https://lore.kernel.org/all/6db0f0c8-81cb-4d04-9560-ba73d63db4b8@suse.cz/
+
+Suggested-by: David Wang <00107082@163.com>
 Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 ---
- lib/alloc_tag.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ mm/page_alloc.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
-index 95688c4cba7a..79891528e7b6 100644
---- a/lib/alloc_tag.c
-+++ b/lib/alloc_tag.c
-@@ -767,6 +767,16 @@ struct page_ext_operations page_alloc_tagging_ops = {
- EXPORT_SYMBOL(page_alloc_tagging_ops);
- 
- #ifdef CONFIG_SYSCTL
-+static int proc_mem_profiling_handler(const struct ctl_table *table, int write,
-+				      void *buffer, size_t *lenp, loff_t *ppos)
-+{
-+	if (!mem_profiling_support && write)
-+		return -EINVAL;
-+
-+	return proc_do_static_key(table, write, buffer, lenp, ppos);
-+}
-+
-+
- static struct ctl_table memory_allocation_profiling_sysctls[] = {
- 	{
- 		.procname	= "mem_profiling",
-@@ -776,7 +786,7 @@ static struct ctl_table memory_allocation_profiling_sysctls[] = {
- #else
- 		.mode		= 0644,
- #endif
--		.proc_handler	= proc_do_static_key,
-+		.proc_handler	= proc_mem_profiling_handler,
- 	},
- };
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 1760346bbd24..d21a411e807e 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -5240,9 +5240,16 @@ static void ___free_pages(struct page *page, unsigned int order,
+ 		__free_frozen_pages(page, order, fpi_flags);
+ 	else if (!head) {
+ 		pgalloc_tag_sub_pages(tag, (1 << order) - 1);
+-		while (order-- > 0)
++		while (order-- > 0) {
++			/*
++			 * The "tail" pages of this non-compound high-order
++			 * page will have no code tags, so to avoid warnings
++			 * mark them as empty.
++			 */
++			clear_page_tag_ref(page + (1 << order));
+ 			__free_frozen_pages(page + (1 << order), order,
+ 					    fpi_flags);
++		}
+ 	}
+ }
  
 -- 
 2.51.0.384.g4c02a37b29-goog
