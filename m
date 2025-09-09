@@ -4,179 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D50F3CAC582
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 00:59:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37111CA1016
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 01:00:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2A1168E000E; Mon,  8 Sep 2025 20:59:40 -0400 (EDT)
+	id 8BCB08E000F; Mon,  8 Sep 2025 21:00:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 278948E0002; Mon,  8 Sep 2025 20:59:40 -0400 (EDT)
+	id 893E18E0002; Mon,  8 Sep 2025 21:00:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 16DC18E000E; Mon,  8 Sep 2025 20:59:40 -0400 (EDT)
+	id 7A9B68E000F; Mon,  8 Sep 2025 21:00:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 038FD8E0002
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 20:59:40 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 99D6FC0364
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 00:59:39 +0000 (UTC)
-X-FDA: 83867904078.08.B913838
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2084.outbound.protection.outlook.com [40.107.95.84])
-	by imf06.hostedemail.com (Postfix) with ESMTP id F17FF180007
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 00:59:36 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=ASVUBexl;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf06.hostedemail.com: domain of ziy@nvidia.com designates 40.107.95.84 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757379577;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 669968E0002
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 21:00:13 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 17CB513AA9B
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 01:00:13 +0000 (UTC)
+X-FDA: 83867905506.11.CF3899E
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 2E7D520004
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 01:00:10 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=TORna6B2;
+	spf=pass (imf03.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1757379611;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eUjGcPl8eDy7DtF15L+5aNei6pzDbHKP3JcnOuIaH0Q=;
-	b=T0QSeXop3RsRwqtf70mAb8CvzDOz1KBf9d7uVX9JfXPSbxdEnQc0UUJQdf02Pn+5sCQV+i
-	TTb7jIvHz2cmVdhdD9x7WQuJ+WEXU58k+hxLptCl9IUZbax0sx/SQN6KvcFKiPGpO9aAav
-	NgTvrvlvR0nxLNlGtyaB4ooET6lXiVE=
-ARC-Authentication-Results: i=2;
-	imf06.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=ASVUBexl;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf06.hostedemail.com: domain of ziy@nvidia.com designates 40.107.95.84 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1757379577; a=rsa-sha256;
-	cv=pass;
-	b=dXd0SzeEwOO41asCo91LjGFF561fCQQHxwuI4XLUqyBJDSg93DCCoIwl9ws9Sh9OTvXEnh
-	NlmrHxW8u+J9+H8fEy3gndJ+aOCvnafmVwADo8EHx1UxUja0uT6KayThJKdxjvsyPkIn25
-	6ehliQHeUAFmsezoaWnnj4ltFx18QeE=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XmmGQuAO3Y4Rq8zYimCyqZMBn0U8BPo2sBrbznlt+bWORkyiEF8CV+nLjYIkTgRcD7fxzkrpRsE3sGk3iW1SVQ+Fv2ZkJUgppuFcpYre8ElzWS7tE1JO5oJkE6zO065A2ML8fu7cKMc8MTBslcTmtDaHrp9P/GC6Cds/c9E+MjtAQX8hBV/WVC76eDbYjF3z8SZrwzV4p9sUWqurMwqXkl0+g+fxkKxuaZTTpG1/7a/0NmuJExCsgQl0CAOnwgNfJCIvM7rRqhPhUarthyqpwqPT2WwRG30TTfa5cvjVhVtRavhw6C4LxgHjGxQcJp4RYxfU/nNHpGpfLc+LZ99YKA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eUjGcPl8eDy7DtF15L+5aNei6pzDbHKP3JcnOuIaH0Q=;
- b=MPebiKOZmb+JXInHeLqOUKYcKOgybIEr+OC3hNtuS2/gLGr2u0VtbAgk0o0yiP8Ol1KijBysGf6spS7NfFVQZhnwZ2ZxsV/INAR4pd+/pwLWe8O1NrLOIi7UIoA2wrq8/VFUPrSE2LpdoWI/DtYIuYONURaPvuo7As3J8uaSbYSL0d+W3z6uTMtpvtx+qXtKxXOViKC1sm1b3SWiBWuuUFJdm4F4iUHIuzOaqY9b3JcZchkWNxb56bzME8lzzHt0Rr0MTRn0HcN1Y9pjyLGyhO5X6/6QQzjZXzqM7E0XKW1V7Bd+SBAROOQsgkucEuGweEdIRQ4mb9ysnt1lfatAZQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eUjGcPl8eDy7DtF15L+5aNei6pzDbHKP3JcnOuIaH0Q=;
- b=ASVUBexlqTQYvHRxgGhI5jFVFmER7U3xpIEUoLr1UOZ/DFw7R87iBBORcgI4qWfxychkAEtKQT+VnlYsTRc3wW37Bkn+B9l3c6xD+DOKlmE11BtUHh1rk22w2RLAhoWyW3heZOV+CAhVC5Ith2RK9pI6jfgERTC3r8GOQv3P/iUiVOOSsdsOwBsutjLn0SM9qMhr7TD4oRSsv04qAwmSbcxgA77UC5ZNfMrF7JI9e/dAcP60m2zVn24gw4rZJKYkgqLKFnUlUlDAM+CEz5KoLSkRliEzq2+glA3qUj87tiB9fUyqfDVG1DtcG/LOC0IoiHBJ9xbE4AjhI9ox6w5/dg==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- DS4PR12MB9611.namprd12.prod.outlook.com (2603:10b6:8:277::6) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9094.22; Tue, 9 Sep 2025 00:59:34 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a%6]) with mapi id 15.20.9094.021; Tue, 9 Sep 2025
- 00:59:34 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>, Oscar Salvador <osalvador@suse.de>,
- Muchun Song <muchun.song@linux.dev>, sidhartha.kumar@oracle.com,
- jane.chu@oracle.com, Vlastimil Babka <vbabka@suse.cz>,
- Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- linux-mm@kvack.org
-Subject: Re: [PATCH v2 2/9] mm: hugetlb: convert to
- account_new_hugetlb_folio()
-Date: Mon, 08 Sep 2025 20:59:31 -0400
-X-Mailer: MailMate (2.0r6272)
-Message-ID: <6AC39123-7AA8-4B06-8D6F-A2EC084B371F@nvidia.com>
-In-Reply-To: <20250902124820.3081488-3-wangkefeng.wang@huawei.com>
-References: <20250902124820.3081488-1-wangkefeng.wang@huawei.com>
- <20250902124820.3081488-3-wangkefeng.wang@huawei.com>
-Content-Type: text/plain
-X-ClientProxiedBy: BN1PR14CA0019.namprd14.prod.outlook.com
- (2603:10b6:408:e3::24) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=3I0VmGs2kpEbMcr5q5JKcZdoO9Oa/TvNmRGysVtq0no=;
+	b=7pmbkP9MU5pGezRsuZ4HLUWS+mqLhsQdWQM9bYvGEJ8Odi7KjwPBcFvSWZye7QE6pc16fi
+	DDb9+zfY47kOXu/I6++kQjm/cEMrKPfBGWEsQx4PokUfRSXOSyPjxIQPAeILq5G8LQcrW8
+	/n8znxWGE2ZZmoLKl9WMFFk4b8MsBJM=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=TORna6B2;
+	spf=pass (imf03.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757379611; a=rsa-sha256;
+	cv=none;
+	b=io5P3YnEefCrUoqjRQAPhj6FurC57jjmBrqlRJcCmuZrrXDuPKVwLc0aBFYM+WEyoHMtJT
+	uwD4UQLWGTa4Bp8K7pz9Y1DfuDg/CGda8w3H1vYU9wo+fc0ds6zqLEEh4c0sQvsOeLiesz
+	pdfbCOxbVYUZfnbWnMjE/7tyNuah0SU=
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-24c784130e6so55841705ad.3
+        for <linux-mm@kvack.org>; Mon, 08 Sep 2025 18:00:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757379610; x=1757984410; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=3I0VmGs2kpEbMcr5q5JKcZdoO9Oa/TvNmRGysVtq0no=;
+        b=TORna6B2hw4WZo0NFwXLWgFs+JEfG0dvja4kED14WlZMWXlbszpiS1CpX9II72XgM1
+         D67LJEjRLe0xxsx1s9r42xYm6MCHO7VKGJnq4oQasTwfovaCTTQ9yFBnC84+a36Xn06x
+         EFtJiNNHeJgiVloywZpw44tYfG+ARhz5Aaju071bxqnoVmpqHMpSiDJIBhwtjVObllFK
+         e2L+fEPmZyjQHpyru9O88f1T7gOpFkU28m+kCOU1sWigdX3qL2d81chJCE4qxjPr4cuN
+         Y3MvTpxmZveCZCFC7R8PNpyLjoZU+gPmL2AoNZ4fgpWMz5+igIrwBOlxeOtFkuumlXy/
+         qxjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757379610; x=1757984410;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3I0VmGs2kpEbMcr5q5JKcZdoO9Oa/TvNmRGysVtq0no=;
+        b=SoduR5HmK0tyaVbAbG3ZiA0r9kRmFynJWmN5W0EhX03HjIrubm2kSxNG78xWUxX5y9
+         cW6Zm8mWwYdEVBkIy9FrFzzPyEiSAtkUSML3cIf1j88DwRDHfsph2MMIM88FkMLPoACd
+         eX4dsKB6llJ9xPTa3ZbIR5GYtCxC72bAGsfUMXbNIbB7SOSY+cr7kpAHGoiNjrPoU6zO
+         CQFApRIyWkS4N7mmMtdvH23XauAlR5enbUbhnBACW/8F0MJ+zr3iAtDPfPlp41D3FPsx
+         1L5YeSHkbGxhP+NYfAN/w5l09hBju1ic29lOJYG7+2kDDMzU+ZtoLPaKOEBut/98CpJr
+         VMPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWVd9uWMOhWgP1f9Dd6oRjMYb9CIg/YoZ9BEJFPF1r0ukxMH5gxRYqKeRq3ejrhHnJoSLtP9V1+dA==@kvack.org
+X-Gm-Message-State: AOJu0YyXX40/rcN6YVJlJzLXUNXEfDAUqEywutJCNUBvw9fl671mtRR0
+	C7bQALOp/8I1676siHITnKNJNhDZm0RbcKeUgxJi3RCnHjzvQYoLmDmM
+X-Gm-Gg: ASbGnctarTLJK1Fh4Ik2EyN4Q6v7RfExwkfFcv1N5kcJmwjQPbQDjiOa255EcGtVbrd
+	SsnGGCYvXJUypJ6FgzPex+Dbit8fz47YJLAjI7FeOFlihiz8DdkB4PnELCciY5AbuN5QDfOG0jb
+	3BADyDnofC6WGGYOCuFGAv9vLP871TuGWV0wfgR/CbxxRVCfBIMz8NMAD5RoD4vnnW0EUK/MnwI
+	JHskYwHpwa+At8w5VRzXCjZ5naWJQlGSZ/Jt7lm+/WgotpkBo7tQecdKQByMygSwd/Z2M5qvD6k
+	cul4ZK8oxQ4ScC6xsk9eHaDn8846VHLYabtrlJ4okQEPrjwsEKtNZo58gksB3aoChZMiGesCXlg
+	xosb0YjTmGX0AKRa3Cl/p0M5VDls4xz96VEJv5imRqo6x0XRjidZeCrCJymiha4zoJO5uh1vafR
+	a5N2JzrCT/
+X-Google-Smtp-Source: AGHT+IEM2XoQeUfxViqxHUBGb9ymPiInaAJmBJ0r2R3U73+XlaqvewD+wzVN2Y2P6L12bEYs46pCRg==
+X-Received: by 2002:a17:903:1b64:b0:24b:4a9a:703a with SMTP id d9443c01a7336-2516e4aeb33mr144178765ad.17.1757379609741;
+        Mon, 08 Sep 2025 18:00:09 -0700 (PDT)
+Received: from localhost.localdomain ([2001:558:600a:7:44e6:767e:cc5a:a060])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-24cb28c30f4sm135606085ad.110.2025.09.08.18.00.08
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 08 Sep 2025 18:00:09 -0700 (PDT)
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+To: bpf@vger.kernel.org,
+	linux-mm@kvack.org
+Cc: vbabka@suse.cz,
+	harry.yoo@oracle.com,
+	shakeel.butt@linux.dev,
+	mhocko@suse.com,
+	bigeasy@linutronix.de,
+	andrii@kernel.org,
+	memxor@gmail.com,
+	akpm@linux-foundation.org,
+	peterz@infradead.org,
+	rostedt@goodmis.org,
+	hannes@cmpxchg.org
+Subject: [PATCH slab v5 0/6] slab: Re-entrant kmalloc_nolock() 
+Date: Mon,  8 Sep 2025 18:00:01 -0700
+Message-Id: <20250909010007.1660-1-alexei.starovoitov@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|DS4PR12MB9611:EE_
-X-MS-Office365-Filtering-Correlation-Id: f3f2ffc1-e94d-4d1d-6264-08ddef3c2426
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?/NJXFsHrKNHKxBS5ag+vs8Uv4/lXzj9xIqIWp6nl67YCS0vXurmMdUkAHgW3?=
- =?us-ascii?Q?Yp3qkd311l1MdJmrCxQXHQhNTJSkXAtNYDfgNNmljzNFDqVz58vjtAMnZy8G?=
- =?us-ascii?Q?dDXe0vQ4phcycpdn8SlzNypkgrJ6jl46+zdA7A0fuMTBVsbpVfCoVVTziLVh?=
- =?us-ascii?Q?pF7w0Vq0lSmbLdf1y0FvzfdhVMQKNvi166bPJF2f2fwAlIp/jRh+P12ibTBZ?=
- =?us-ascii?Q?sDvnMiV2pBJ7CbqIw9FV/KzMxKfz1luTD1/BQi2CpgqMLxf9Ape3TIAVk2NI?=
- =?us-ascii?Q?UYSToLtkydMW6o1mtReD8NbypBXZck+sjfgy+O1zsGSakz6GS477vs+88WkC?=
- =?us-ascii?Q?d2Om0J3X4n9FZ+ZcoT/hMUOFr3Xw0lmoVkXVZdsgKLDtuBJNtdHWGAcBkCu+?=
- =?us-ascii?Q?KwUj4bAu1PQQhEdPCX2coE5t/mNQQkYYvTv63NQ+3WRWnRSj4iQGt2pDedQZ?=
- =?us-ascii?Q?K6b+aDZ7qwMoLIpakx/Y26w4dnZzIcCmG8f5WpGRH7z13/ABEdF1BnbLTHOq?=
- =?us-ascii?Q?o/UFhUsI7LPaY48gbjiw5nqwmLLt4tOzTqd2Hz0amVA/cxw24KtnR4oatM31?=
- =?us-ascii?Q?A7XcfpPEZNM3lnkSK6H++zHAfAMXuA+Yc6fX7bmr94P8r+IDL53iaGrYhN5D?=
- =?us-ascii?Q?E2ZBIJtgAB2FX50NO29XaClMWIPW1xPuJcukFVxmTUrtbMhAhJIK40QBx/P+?=
- =?us-ascii?Q?R7HaS+1RwRSi6XCaTFu/le9p7lljGi+BRtpfNMq1QXgAxUybohedtNqizRr7?=
- =?us-ascii?Q?hdJ7yaQkMOgaf69io+xmyAyF1YKpFC47Tyxv0nF2hyWn3CKSorf9QUTgu2jt?=
- =?us-ascii?Q?VP5lfHEwLPA0Uh5REAfHTiAn+4DRCV81EviiJ2+3lmDq4rSHaFZUjB8pAOyJ?=
- =?us-ascii?Q?nRhn6I0FOnQeprpJngnOwlCgI/hx+ezmpBfApTuca3Aa5NckLsOmN98Ujm73?=
- =?us-ascii?Q?6J+ugQxjdA9GkOFx3UUNwFBxFbzrVWWzsg4m3/bfEGSdbCE35juCLhCL+5na?=
- =?us-ascii?Q?dTpZcVxdfpLvjeoi9ssph84/tBlDYgMHekR2WHbDxO5I7lNG5PF3zauXKiCX?=
- =?us-ascii?Q?2nDivugIsfkc9FQe/2rHIjYRY2guhjK4noTEw4eP7at5/eapJBbvDq6W74zQ?=
- =?us-ascii?Q?kDk0dNUVFL2n+2D4nVxKO/z6vA/YEqa51DbvqkIDI2XKwxqzbOzVQpIf2Z9r?=
- =?us-ascii?Q?3ppTqxdelRxqG8VsV6lymzzhqpprUY18gHv96ezzw1XvuBBmlNKIiz+o5e/v?=
- =?us-ascii?Q?azMAryWMwI9FZ4wMJ8zvIizD1cFnyEoTTT9mzZGbxKU5RiM1a+NMediC5V6Y?=
- =?us-ascii?Q?unVOKliCWeD92lC3Mzt0gPYnIJ2a2+63QVkCuCEzx4grLildAu+ubWa9qznD?=
- =?us-ascii?Q?CvxTsI3GT/T/Bm3g22QpYzdC5tCq1XK/yhpoGJAG6cE1PNCuHsTk2iEGUSh3?=
- =?us-ascii?Q?Bn0XtWj5wzA=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?eQyqCMwTKr1V4sKDkrBSCirfxokvOPqNLu3KF5sowdvFA9H36bgnLObbN0NF?=
- =?us-ascii?Q?nZ6XbDlr7fQNhMU0zPeCaEIHLroC0qtUI65GESOntvtW6n7MkAR7MRGiG1ZO?=
- =?us-ascii?Q?tPbpMw7n/3zQHiy5Vx8F2cC5ZZt5/SZ5JOTC+ifHSAJL2wITCE/8ypU/6aQs?=
- =?us-ascii?Q?Rd/Y/C8YZsYPH6vrvsxkUWC0GQSiFx8SlKV6R4HaMN7b8WwY2Z7r3zrTYlCu?=
- =?us-ascii?Q?u3waAT/Hlquo+SpoBXQG5c7oGWnwPNBklHk/Q0w7y/vb/+9N2nWUjDHwK5/x?=
- =?us-ascii?Q?5ucFNDydJKfn6J5fI87bUAgWndslBnDRTNmxu9HNNH1gQkERZSfWFCgf2j7s?=
- =?us-ascii?Q?lUg8Ho/ERRcmv+w1NkMqZvcFwnYXCW3HtMFynx+2T+MAVOvWraph8Jl0bJCX?=
- =?us-ascii?Q?nNtAXA4QrnYCkPOTBut2Qaj/RgkXDNIYptapNWdurHImMKfyjQ0W6CC8KvhL?=
- =?us-ascii?Q?CicJOl0c2RClqL35XCOmPsPoNNsFB1DIap80YouxsZn23od00udw5d1WYD+g?=
- =?us-ascii?Q?V/lay3t5uSshBWC3r5I3HpIl15sM7FucFW/9nrUD5x6UpHpdKE0rYjpZ4dgV?=
- =?us-ascii?Q?MhBcEdHxBHpHubur8J5keY9QcsovqTB01/aTQ+E9kG8BW8YCIuzJggvLPVJx?=
- =?us-ascii?Q?HZtQVJW9D60XZ4DjOyxwLIGrCaqEYKcJwA3Y3GakaO//A/R+/IF4hM+24irk?=
- =?us-ascii?Q?F+ar73JBuLyXrPo7WF1Tzna8Mg60be8uAOyG76k/YZbWZPDx/fzph3cr17ul?=
- =?us-ascii?Q?bcBP8HT6/7QR4pYOI76RFtk22hfxZLyMemRTwO4eFTSHIKFkDkBFpCrYT+8t?=
- =?us-ascii?Q?AxjXMminOQM4DH9yOPSSJlUphxwa9FbP2vxOJdyJseKT0kU/gaRapp0ITgN5?=
- =?us-ascii?Q?ZvermpMY5Z0n8vL4ggmikJKjSJUWMk0u3LD6O7AwVUEOuifByawKPjIDL0j8?=
- =?us-ascii?Q?bjIoF+qdfJfyon+NQO7G9PqYg8s2D55/27mWbEOM0A3T7PoiEmQwjDXs+zzF?=
- =?us-ascii?Q?b5epwtttJJ3fF3eyBXDRXMliSuhDRBUFj2aUZdYVTmpSM2d9P51JhPgqK6W7?=
- =?us-ascii?Q?2nLDgNTCwsV0Fv0wFNwEIa1bX5sTaVICn94yHkWmnpNHVWyVyZIGdOCjgsRG?=
- =?us-ascii?Q?PImjxRQik046TTfxLdFQ6ROkWT3jwMnTmfXRNPtH1h/VzUtIlB4/3654mhrz?=
- =?us-ascii?Q?gAW5SDlFvShofZdzSVBUmQUb8QVa9+sKELf4dJe1kN8DZ4RSFM4sMDPrksrV?=
- =?us-ascii?Q?M15iCuVm2VO8hy/f4WTh3yJMG8jEK/pw1s9Fh/Rqq+h0GNc4y+jiN7lxcJ5q?=
- =?us-ascii?Q?Os+Mlm+ZuOf7RyU7S7+KAi57eljSa8lzRDEVQw9IJff7QB+UFysbn+gJMCu+?=
- =?us-ascii?Q?vebnoZxBfXltNUjH9zztW8BUwIYYVYweNfE6tWeAATAvEnFm0L1McpCt3KMY?=
- =?us-ascii?Q?EMrsr2B0+AoMMsoOiibbeYg9WDIT/WTn458/W+LnwWiZQATvTGCzJMd+b4/l?=
- =?us-ascii?Q?2QHTZXX5GnyLvpEq9E4VzfGGgBm9DpohYuXVR95FM7ZAzAqQtxnZ8cVUgF3v?=
- =?us-ascii?Q?/RyNeRemctMitU6xLG2fCGf0FVC55f3BcxizLf6G?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f3f2ffc1-e94d-4d1d-6264-08ddef3c2426
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Sep 2025 00:59:34.1446
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: R//ElCWvu71C5wcT/Y8Xz8IuGHBC0zkI1A+Yp3Zy0LJafkhn8C7bVcEcyodAtghI
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PR12MB9611
-X-Rspamd-Queue-Id: F17FF180007
-X-Rspamd-Server: rspam05
-X-Stat-Signature: yisnncqm63rf55xfxyfjki43b7chps61
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1757379576-368854
-X-HE-Meta: U2FsdGVkX1+Jge4DA1RgQkjSQ2xyPuo2vT4JTGbpTP121iigPVJh3VuDDN2Q26yR4/4vaCbbm2q18Gux5DRvYFfuTQvk5tAA1R8EyjC7vM8cXbl+OFVOxpt8RnEVs/u28ltpVt0VOHIQjD7HMISMscR867mPYUoO/VX/ga4VYB+yQCNZzsIuDOv8L06EHX/Vzp1H+NlMvIA9rrOehrPZno+f/7uS7tZ1tRW73J18WeLSqmhGtBhoT3B+Tb1bhlfEPPr2aCdxAwxu3diTTvxBmRyV0vIwlSCXr2xUW3L7+KdoPKEb0WP20dwDNcM848Zxivh5LksnX0iEFzScMbbGiEtwLhhQPBzyzuzkmHucYv1Zo+YQyUwMlcKYNcvquN/rVRHRPYLIcKIjXPf8ie4se13PKFUE8NIJYoQ+fv31kXs1SQ53QG17WdJ1aNfyoAIlIrnsWa0H5wfVHOz9dnUr7ZGArgdrNbahKgaOMwfkw2Hw5+g8nO33mDVbRhhFLrizHP7/euWpCwWwVvTbFNTqySJ3Tl0fiWYPUgWJEIRatXRDYIYOAdw766KR7xYk6NdzuD+Tj5ZrW9gwxb+SkGdNg+AexiedWfoCr9f8LE+CffRPvjs0zhzl2NNRvhazKigXQFOA6tg5tK822ZEXc/aqrFkXTv7WubTVp7OY1gTc0RJH8v7+gjpqTlyIRyS4h8znKIWNE0UTsu1ZuoV8WCar0p2zhnoemTlVavIWVJbD+PEXjs4AoFMS8Wai0aJOLdAfF/8p/4Q5zou14BZ1e9d1EFffWDpMEhcXpOpjlsbfpEQlz/GuzA1N5SVVuI5wamLtnw/p86fBuuYNAbP2XdBA2+WPnCtk7DaPkR3zce24J8B/PfpFy/AbIH4kzHftbLW1z0Hcha/SB6C/mXwRyx1k1vOsfAxcnOQEIU+ceAbNEHP5Evs4hMt7XgtrBj9O/2KtCoX6naVVwmllo02WJjo
- wptPKOQ8
- wW+iRpNTBwRIJF9VQpz4swzc691d2Lu00/CJr0xYPbfHrB5SX2gaGAFVjFbpQeEsBap+1t1RnZ4nox1yxxKKytXXHQxnw6AdHHzx351eziHIFqk4vfv4E5iP2pdZPdflec7KtC7rJxJ1wAnRHRmh9BvhLLmzQs6YaWUNdCzCedVlG4wYjX23gtiGq3P4XMMOYfxdRsGOGAROvzRIrwgOAx29yiwR5cvOasS9DFsLOU29foXqLhNnaqHszTSYcneYGGi/5COUfYDSO2rqonPVDSCKpZlctfRvk5oCixgiqpNvzECnYWJbAYn89oWXnz7JOxCtT+z06XIyW+tAq8Fvals9zy2+c1yHSwHAlCRClqnvsh2n1YqwHz6DC6EFocb8VeDoLCqBiRD3A1jQ9HIJT3VIuaJapEN3nhODDTvKG00pYLcxRg0NF2gGCnugIhIfhh/i32fE7VoM3B7nhz00xdE5Q9tlR5tCrrUxJvjfT2t3JOu2A42iuYeNFrnanHjO24O+D5a+B181HACiwX3OHZzoVBVb+uGfyUto4Yku0cUoceQ0ucnK0k0fxtaZrkJuZtPS6qOLRAOeZ+0Q=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 2E7D520004
+X-Stat-Signature: iiq6gnnx5bgo1paba9wpdgo4rx6qdx67
+X-HE-Tag: 1757379610-317013
+X-HE-Meta: U2FsdGVkX1+JDCAvfeSwWDUuZkU2n7hEV2kfKIQk/WXZDKsWdc6a2s7YZ0XIiKzy3B5ESv+ERk4Y3NGQ/v+/558ja1rwPURgh2SlBwrzz+xdhCZ+Emm5/jX8rpZegw75hCrQxloKqaQyzwQ9Ay3lrFKDi9XBr5+tLHqyvSQJdHO1xPjXmci8c/zA2b2FEcvQhbOh3Wn+ZXf/ecu4TXNAyiJaJKcSE7YBbF+5SvoKK4vN/2hfLki+kLyr2nQZ5+HSyMeiYCj1SZTw1f1R+u9WVlULilPsJZJiCaDUZPhKjsNJtZr4l8PTyJkU0ugZ6AeiAxG5MnzIa4XdKh5fETI6UCnIz6PfUFFI46lquYqrC8YbgN+HvOphbwhgxAmNdNkL7i9OxCayQ54DzlIqlvxX/O5QDoYQblw/1fJsz80nGHOJVGOH2x+8zAIjO12tk4etokwc+61zjDVGfiUMjxVf+wJjq/X1GF51s68/x7sHlkNgzsoAxemXHAN4xtSDS7+zy2S+k9KsTQhV4xp01uBpiZEuYCTTHYf4pUL4WLW3VmSlPmCuu/ErjR9A2jfnk8UTO6OX65ec5MNX+KZcsoVWzzo7H3YOgvLhQJiT2+v359mcwUi0YOUHy0ril1z3WhWFqDrGTyOWeSQnirBAfoYbP84bGW4pKOVvmGYv2UvIEtP36sYkqmuKsPIqgOS/bqzjocecErOI0dr/HSpX+GIWhyLUNA9J1Knqm38uh5j133UleGtl2uZ7R+C04g5adqePuQwP+e78QRpWPXkNAygfhpJCglo9P5hNoOO8CeICEvYrFmaXTY5Kt0xtQSOaaOYHIhDsPjCkjJPReLbPJm4cVUUf5iLYMc2UBNtWTQIzCmPt6hzpieQyTGHxPTU3fxtZEwtgG/B7GmIrk0sN92+m/2Uy7q2hZbyNPHx1GdxE2NX4DqyB/dCRtHTZPNodD6ANhDejMugVugnR4JhKKM/
+ 0C0ts1aF
+ ifXQiIxFT1CZJvEHhyIuzBKqpkiHgD6U+muRFUW9ins3e+25VM6rBfJwecz0pRMmauTob2xAkoFJdAGSJ5no2CcxYQjn+w205gY7+BjbYbGG5cQoJwrC0wjD9VUJMhtmHSFzyU4NcRl06cQPonJgs8AYRpbBGaoCViu9qN2Wf7tA+rox4VC+rG8fv3dniP1R2AgokIZfZymQTLQbE/M9W7+AmNg/rtcatXtyLGVU2lPKLV1XltIl3hBFCPacXB+XnOBAbVi2/P4fip8HAkahTSPBY0ed4MiFFdMt80ToZVljpR25WDIfDyqoI0YVXhqMGZhBU4IHuDMBwhWvyNaourDVAj2kg4p9reb3rWwDPULJ11bOlrTAjfbNNs84Xq+0S6VMr4TNSl5hbbOujqekVQKOZTwb017UCldLEfD5REHv+FxLRfXY2JBP9DXpmvzIIHKSyX5dfE02Nl9Fx1sneMHV03UqZ8WNgyxXFaJCcOVwEJCgtHWiqJMjbVnswFRr8PQOrJDhON0gyGhLvdvKIzpCP+g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -185,20 +126,122 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2 Sep 2025, at 8:48, Kefeng Wang wrote:
+From: Alexei Starovoitov <ast@kernel.org>
 
-> In order to avoid the wrong nid passed into the account, it's better
-> to move folio_nid() into account_new_hugetlb_folio().
->
-> Reviewed-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
-> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-> ---
->  mm/hugetlb.c | 16 ++++++++--------
->  1 file changed, 8 insertions(+), 8 deletions(-)
->
+Overview:
 
-LGTM. Reviewed-by: Zi Yan <ziy@nvidia.com>
+This patch set introduces kmalloc_nolock() which is the next logical
+step towards any context allocation necessary to remove bpf_mem_alloc
+and get rid of preallocation requirement in BPF infrastructure.
+In production BPF maps grew to gigabytes in size. Preallocation wastes
+memory. Alloc from any context addresses this issue for BPF and
+other subsystems that are forced to preallocate too.
+This long task started with introduction of alloc_pages_nolock(),
+then memcg and objcg were converted to operate from any context
+including NMI, this set completes the task with kmalloc_nolock()
+that builds on top of alloc_pages_nolock() and memcg changes.
+After that BPF subsystem will gradually adopt it everywhere.
 
-Best Regards,
-Yan, Zi
+The patch set is on top of slab/for-next that already has
+pre-patch "locking/local_lock: Expose dep_map in local_trylock_t." applied.
+I think the patch set should be routed via vbabka/slab.git.
+
+v4->v5:
+- New patch "Reuse first bit for OBJEXTS_ALLOC_FAIL" to free up a bit
+  and use it to mark slabobj_ext vector allocated with kmalloc_nolock(),
+  so that freeing of the vector can be done with kfree_nolock()
+- Call kasan_slab_free() directly from kfree_nolock() instead of deferring to
+  do_slab_free() to avoid double poisoning
+- Addressed other minor issues spotted by Harry
+
+v4:
+https://lore.kernel.org/all/20250718021646.73353-1-alexei.starovoitov@gmail.com/
+
+v3->v4:
+- Converted local_lock_cpu_slab() to macro
+- Reordered patches 5 and 6
+- Emphasized that kfree_nolock() shouldn't be used on kmalloc()-ed objects
+- Addressed other comments and improved commit logs
+- Fixed build issues reported by bots
+
+v3:
+https://lore.kernel.org/bpf/20250716022950.69330-1-alexei.starovoitov@gmail.com/
+
+v2->v3:
+- Adopted Sebastian's local_lock_cpu_slab(), but dropped gfpflags
+  to avoid extra branch for performance reasons,
+  and added local_unlock_cpu_slab() for symmetry.
+- Dropped local_lock_lockdep_start/end() pair and switched to
+  per kmem_cache lockdep class on PREEMPT_RT to silence false positive
+  when the same cpu/task acquires two local_lock-s.
+- Refactorred defer_free per Sebastian's suggestion
+- Fixed slab leak when it needs to be deactivated via irq_work and llist
+  as Vlastimil proposed. Including defer_free_barrier().
+- Use kmem_cache->offset for llist_node pointer when linking objects
+  instead of zero offset, since whole object could be used for slabs
+  with ctors and other cases.
+- Fixed "cnt = 1; goto redo;" issue.
+- Fixed slab leak in alloc_single_from_new_slab().
+- Retested with slab_debug, RT, !RT, lockdep, kasan, slab_tiny
+- Added acks to patches 1-4 that should be good to go.
+
+v2:
+https://lore.kernel.org/bpf/20250709015303.8107-1-alexei.starovoitov@gmail.com/
+
+v1->v2:
+Added more comments for this non-trivial logic and addressed earlier comments.
+In particular:
+- Introduce alloc_frozen_pages_nolock() to avoid refcnt race
+- alloc_pages_nolock() defaults to GFP_COMP
+- Support SLUB_TINY
+- Added more variants to stress tester to discover that kfree_nolock() can
+  OOM, because deferred per-slab llist won't be serviced if kfree_nolock()
+  gets unlucky long enough. Scraped previous approach and switched to
+  global per-cpu llist with immediate irq_work_queue() to process all
+  object sizes.
+- Reentrant kmalloc cannot deactivate_slab(). In v1 the node hint was
+  downgraded to NUMA_NO_NODE before calling slab_alloc(). Realized it's not
+  good enough. There are odd cases that can trigger deactivate. Rewrote
+  this part.
+- Struggled with SLAB_NO_CMPXCHG. Thankfully Harry had a great suggestion:
+  https://lore.kernel.org/bpf/aFvfr1KiNrLofavW@hyeyoo/
+  which was adopted. So slab_debug works now.
+- In v1 I had to s/local_lock_irqsave/local_lock_irqsave_check/ in a bunch
+  of places in mm/slub.c to avoid lockdep false positives.
+  Came up with much cleaner approach to silence invalid lockdep reports
+  without sacrificing lockdep coverage. See local_lock_lockdep_start/end().
+
+v1:
+https://lore.kernel.org/bpf/20250501032718.65476-1-alexei.starovoitov@gmail.com/
+
+Alexei Starovoitov (6):
+  locking/local_lock: Introduce local_lock_is_locked().
+  mm: Allow GFP_ACCOUNT to be used in alloc_pages_nolock().
+  mm: Introduce alloc_frozen_pages_nolock()
+  slab: Make slub local_(try)lock more precise for LOCKDEP
+  slab: Reuse first bit for OBJEXTS_ALLOC_FAIL
+  slab: Introduce kmalloc_nolock() and kfree_nolock().
+
+ include/linux/gfp.h                 |   2 +-
+ include/linux/kasan.h               |  13 +-
+ include/linux/local_lock.h          |   2 +
+ include/linux/local_lock_internal.h |   7 +
+ include/linux/memcontrol.h          |  12 +-
+ include/linux/rtmutex.h             |  10 +
+ include/linux/slab.h                |   4 +
+ kernel/bpf/stream.c                 |   2 +-
+ kernel/bpf/syscall.c                |   2 +-
+ kernel/locking/rtmutex_common.h     |   9 -
+ mm/Kconfig                          |   1 +
+ mm/internal.h                       |   4 +
+ mm/kasan/common.c                   |   5 +-
+ mm/page_alloc.c                     |  55 ++--
+ mm/slab.h                           |   7 +
+ mm/slab_common.c                    |   3 +
+ mm/slub.c                           | 495 +++++++++++++++++++++++++---
+ 17 files changed, 541 insertions(+), 92 deletions(-)
+
+-- 
+2.47.3
+
 
