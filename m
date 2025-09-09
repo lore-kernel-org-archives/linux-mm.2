@@ -4,97 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70D77CA0FED
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 22:40:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA500CA0FED
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 23:34:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CD75E8E0011; Tue,  9 Sep 2025 18:40:06 -0400 (EDT)
+	id DED978E0002; Tue,  9 Sep 2025 19:34:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CAD3D8E0001; Tue,  9 Sep 2025 18:40:06 -0400 (EDT)
+	id DC57C8E0001; Tue,  9 Sep 2025 19:34:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC3CE8E0011; Tue,  9 Sep 2025 18:40:06 -0400 (EDT)
+	id D024F8E0002; Tue,  9 Sep 2025 19:34:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A7E7B8E0001
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 18:40:06 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 72D18B9CD0
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 22:40:06 +0000 (UTC)
-X-FDA: 83871181212.06.DD80159
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id A3C2D140014
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 22:40:04 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GhKtnfYh;
-	spf=pass (imf26.hostedemail.com: domain of patchwork-bot+netdevbpf@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=patchwork-bot+netdevbpf@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BF4CB8E0001
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 19:34:16 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8CC74140676
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 23:34:16 +0000 (UTC)
+X-FDA: 83871317712.03.BF0283A
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	by imf17.hostedemail.com (Postfix) with ESMTP id D6A8B4000D
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 23:34:14 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=mhEcrDBJ;
+	spf=pass (imf17.hostedemail.com: domain of 3dbnAaAYKCDgmolYhVaiiafY.Wigfchor-ggepUWe.ila@flex--surenb.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3dbnAaAYKCDgmolYhVaiiafY.Wigfchor-ggepUWe.ila@flex--surenb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757457604;
+	s=arc-20220608; t=1757460854;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n1GHlORojKuHhY1MSxjHkY19dr9A8tnZbG7+/tCDdG0=;
-	b=wSEwPMQp3FhntEHR5q4LW0qdwdJKDxobjSuELC4mEL1O185LVwufcq1VXpLzvYt5HJSn85
-	2gNdsPp4NMeioy6Dlg+kEHCMD5Un4yTMe5tDJ6AFhxL+Y+UT5LEhjo8z50MQHlx3TUobop
-	U6dmYcVkhxF+cerJ0IOWDWoP1BBMZLU=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=BXSTG2Hw61qjXt22u9sHybV2+YxgWVuc3hF7N60zsf0=;
+	b=7ZLJlnni8Fu8mZ6jmu4iIWcWafOogN7NmMUFqmrrUYJbhcGT+Rx3CSzeewn6YnKGrinPhv
+	9ZH2gq2fR+Skzaqb/tTzOnSed1V1f2UAdeeubvp63eYXoifYEWvPk2tKiXGn6/9BAYFy9s
+	OHWpfzY+6jz7+Jmywg77ssFE+lTObyY=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GhKtnfYh;
-	spf=pass (imf26.hostedemail.com: domain of patchwork-bot+netdevbpf@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=patchwork-bot+netdevbpf@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757457604; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=mhEcrDBJ;
+	spf=pass (imf17.hostedemail.com: domain of 3dbnAaAYKCDgmolYhVaiiafY.Wigfchor-ggepUWe.ila@flex--surenb.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3dbnAaAYKCDgmolYhVaiiafY.Wigfchor-ggepUWe.ila@flex--surenb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757460854; a=rsa-sha256;
 	cv=none;
-	b=mREu1Bu9PLRkeWzA2EhAAUS2ilGEC3lwnT8lG0IizhMJD/u+c62lraCHzs9H5JDlyXIh7z
-	DGfM2Y1cI6Lmy6uqrk3sOdQufMBNsvdtgoxbP11qkNeyGaBGuEpidvBdUBXqubinJjsMN8
-	3WbW+QN9yP9gO6REuL3oYLFbu2pmAk8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 44DC94086C;
-	Tue,  9 Sep 2025 22:40:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1897CC4CEF4;
-	Tue,  9 Sep 2025 22:40:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757457603;
-	bh=hRjhnxUm0trj1HOY3MfMFjeHMWSzbkL2aSDIg0le0lQ=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=GhKtnfYhpKBtZR0b1nh3HbaUzJ9RJbpRBUjJM9RincgI48FyVqvSl7QA6e0IKqtMB
-	 IXbAeiSX9pWRfQ7vu5GsbHUxcw9C2Kq4wSgJKLnGrNpRRlzBp5Tecyezh+wDoE7Woq
-	 Pj/akrdRZbE3BrGIdsDLgk71l+0KGov4SJm70NZnKGQKARcC02p/al6bvlY2syJExX
-	 GnTd/AyrHOG3V7eOM50B5Tk4deQNhFe+biWHJrDBAdrpQppR0LN+0lRc0IYPDw0gev
-	 yjwPLrNsOVpG5vZow3JtYUaaOsIuLJlHkK6Ei26MIAnE76efBsmAmPmspJS4+lGdIs
-	 syLvfWi9Jvoqg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70FAC383BF69;
-	Tue,  9 Sep 2025 22:40:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH bpf v2] bpf/helpers: Use __GFP_HIGH instead of GFP_ATOMIC
- in
- __bpf_async_init()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <175745760626.837268.10273222616654949199.git-patchwork-notify@kernel.org>
-Date: Tue, 09 Sep 2025 22:40:06 +0000
-References: <20250909095222.2121438-1-yepeilin@google.com>
-In-Reply-To: <20250909095222.2121438-1-yepeilin@google.com>
-To: Peilin Ye <yepeilin@google.com>
-Cc: bpf@vger.kernel.org, ast@kernel.org, shakeel.butt@linux.dev,
- hannes@cmpxchg.org, tj@kernel.org, roman.gushchin@linux.dev,
- daniel@iogearbox.net, andrii@kernel.org, martin.lau@linux.dev,
- eddyz87@gmail.com, song@kernel.org, yonghong.song@linux.dev,
- john.fastabend@gmail.com, kpsingh@kernel.org, sdf@fomichev.me,
- haoluo@google.com, jolsa@kernel.org, memxor@gmail.com, joshdon@google.com,
- brho@google.com, linux-mm@kvack.org, leon.hwang@linux.dev
-X-Rspamd-Queue-Id: A3C2D140014
-X-Stat-Signature: 4zwqb3om3p9ynfu3e6oqkzitquqcw7rp
+	b=8esPuN91KH2WQ459bR6SuOwUm9wuwsydBWdhgQ7TRXqaJNqAYSptIoED7OLQfmfsQmBiKY
+	cXkWs6CY3IQ7cyeUA6iS/rqxe2X5VLTNH+VCEamPaW8hGMuqVDf+zpbKfVnYIXcrJym49a
+	7CCdmLTC1Tgpl61JwxfB1tCPY4vkazI=
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-24afab6d4a7so128468405ad.1
+        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 16:34:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1757460853; x=1758065653; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=BXSTG2Hw61qjXt22u9sHybV2+YxgWVuc3hF7N60zsf0=;
+        b=mhEcrDBJQTvGK+xfuAOxL7P3ScRBaJUQPVUITrSVPkQ1y1fmIjXshmuMerK1CVZA19
+         K/ktSPnMk1FkVw7P1s8+aIgEWeNsjoUAG3mNEIMT4cBmGvp/j+34Jeo7mS9YTkc3IjAD
+         melTeM9QU561soITtf14kwUKQYLsWrGKHFM7H5tp9SDP0BuRYFBkQvUXUaRdZvm/N5v4
+         IQgMAdx8hmL5tDNcPwkET3AQCrN3qA7UUlfqENWEIfnjifXmMz7im4XyUUg0tXIUxBp9
+         fhJBAl2wK19ec53M3fszovNvVgqmAWCa10F3oo+RbCTq0ikUJSGSloF/LViIrsxF0UrI
+         1aVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757460853; x=1758065653;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=BXSTG2Hw61qjXt22u9sHybV2+YxgWVuc3hF7N60zsf0=;
+        b=L2cH5G8f9CgH+gmK81J8YRhgXRxR9SLUYDfLEhpuYyUieLJwgz49eyDa2EvIcFAKa/
+         aIdqRUWiu1+uiyc9M8erU6ngRbyrd6R5CcpjRZ7dYCHS5UH94LBXh6maQTX4yuoj9Wc8
+         PBVfQVkmAw0kfIbo55DA5TiBS1OptwW9L1+sjDof/ZuHzz5QrdZrCnspkimYnvwFzgJc
+         FK0yE7i5+OJmvI7PfPEpRIy2f8KJ6kjJmAWdRBhyX9tMAH7xCscWVG0lQE2GdsDTLiNt
+         oD1GancVGvtzaI3QxOAJFeBVIp/rCgq9vM4K2QjAlwR/2SHaij/6bL6NqFaHEEJ9Fpd4
+         aD8A==
+X-Forwarded-Encrypted: i=1; AJvYcCUh+zgYtjh7BLTuXhd9HFZhTc/W8ydkOaEEKYlYO+pOEo9/NvWRveRiKCji0nKHZhsjHVylMG5pNw==@kvack.org
+X-Gm-Message-State: AOJu0YzM/yOBbHmklD1B2/PRTJW7vd60zQpOpAs+N1qSvQe4N48eJrTZ
+	RMGQhVmDi+OVQ7YZZUzPi5ybODvxOVYNU/B/F/8WwcCnf6aYt9IaGYobPqrRLHkVuLAMaPSFUqI
+	uGw2Uig==
+X-Google-Smtp-Source: AGHT+IFJgHZa3+zvruFKL+nbXgevHIEGRIktfPiZlMC9mp0yCbO3eiifrGu9e5eBy2AJJ5ymyuaa+Bx3oq4=
+X-Received: from pjyd16.prod.google.com ([2002:a17:90a:dfd0:b0:32d:851f:b1f0])
+ (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e848:b0:246:d70e:ea82
+ with SMTP id d9443c01a7336-2516ef591e9mr226436865ad.5.1757460853523; Tue, 09
+ Sep 2025 16:34:13 -0700 (PDT)
+Date: Tue,  9 Sep 2025 16:34:06 -0700
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.51.0.384.g4c02a37b29-goog
+Message-ID: <20250909233409.1013367-1-surenb@google.com>
+Subject: [PATCH 0/3] Minor fixes for memory allocation profiling
+From: Suren Baghdasaryan <surenb@google.com>
+To: akpm@linux-foundation.org
+Cc: kent.overstreet@linux.dev, vbabka@suse.cz, mhocko@suse.com, 
+	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com, 
+	usamaarif642@gmail.com, shakeel.butt@linux.dev, 00107082@163.com, 
+	pasha.tatashin@soleen.com, souravpanda@google.com, surenb@google.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: D6A8B4000D
+X-Rspamd-Server: rspam05
+X-Stat-Signature: xcub74bi94r451i1qn3gxpgtzodo4hws
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1757457604-313854
-X-HE-Meta: U2FsdGVkX1+nueAL2im78quN/d5Nj1AeY00GvSsrzbWlIktSS0zzi5jDi+EGZ+9EeG8Hog22gODiZ5HLlpav/X+2Hsspu/bHlSaS0wB70CGMsHVqGJm9T2JWzdxUwqVYAJGxm2UKgkgkxCsdzVJYSBsQQuR+DHgx4AW6MX2r2zY2R1yeiEPZNJQoReOiO1lE329qIno+ZCv7VazK1PlvxYZsACHCFssWq8B8OpApKzKef7mriU8ntY1US7A0+F+kZ9KkSQDPvJTLHBCbN5ZnyIQoldlyk5CVBxaxwg0SSIabN429Wo0S3ffgMoTT/w6VDS9JRU+EQEL2/Oe+HB5wPO/zjSuxasqx1DClBqZEtOiAnHwLlkXFDMHBFhn0JFWg1es6CpbjOU3k2TMG3UFXCLaE+ZRhT8MuAkjb7FGg5FaNfaoYDe/ooMMJsIpjekq1/cu6KcpI1P1JJ0G9D+gAvg1EYZnJwDaM9LXP4FTjpZBNrPdvwN8W9GmhhqTXYBq4dyKXoIlJJEqdiH6omVePTP5oyli2O0bn41KL6elBz0oPVCn+AA27yDbN410NK6DNWzv8fwm43/zFz5EtdAKuMvqsas0ZXVwwHfd5rbwWOQ2dsyOlnd1uitdKqITkDKDO5vPk9NmXPVGTX+jXaJZcGYeuG86+kqWarmos4fLRVkHcQHPyEuFrbjQ/BpMfGShssEqO/lifIXL2NlJhUDIsvd/zErha3TcQnSrxlM2WE8fpgCrjn4FJ+H0K0fjzLGxhs7PGcVQcs9oKCN7Mq5dC2zkzF+pGDXSLMT0LpeCkse2a7TC1fv3OFnTQG1dTlNss6cIMKfhKmIWYO+Jsmwyz9BD1DSVor5nAZAqASR2qVGOpODkRxw3Bm1FQntP8AaCsETOvKNtDdGZ+Z7n9Oeg3e6hd2vPXVyalFYfrmiaMRKbYyyofc8/Pt0/ICin5DqhjER3EvTM5A7gtJT0Hhzr
- BpQN1zBu
- wCch1BPJaVstlLM7yiNYFi/8H8uwjhHP8/2GTragJl3NjU0NbYUwresqszkPOZhvnYffpXWlOP5cm4GfX4vcXs0RYQQ2+mui+AYjo/GmpAT02geH7oYV4maGU+YgQVlgPwbRr2Qd2fx6CUSjrIIu8W9BZWRdf4Afr232E22XLrn8UT7IQW+MLMLVuEvf79+xBIxVULSRX7EXCGU5CM12Eh1/GB7ihKRKOCZGyC7GI4FPQWv9AYegxqbaXKdR9NFWDTuhnhpdBJwhUCLHVQQk2wE2DetxsIa+f1IAl7IwZHRzZq1N5hLBMjSVWeI8Ar4mTTgqffMc/8i4p2vmnx4gycYwuw4e4TXvl0fwqJVtzpQszbVqZdBbe3iCR62yduU5hJ2gtiuM7daUv9d8iyJU89k7Df6wo9nCxWai4c+E1k6wFSYiVw82KORTWm/pDe7zBieUBFfd+70+P4Q9Nf7l5CJ/Z0KzgS2GLngexXdi6fNEyOek=
+X-HE-Tag: 1757460854-254784
+X-HE-Meta: U2FsdGVkX1/qEZ8AfsADAM20jKmhLK+COPKDX30DjbUqJVwR10zfjrPOV+0qwQRP0eoScovwsjj+P1DfqSFvnMvvJh80hE89isWqngQudBf/C0fr6mKpwirfhohHL2yRxAvxCwHG/jqVUuGsRFo8HqrM744Ix5gyrEhf/H3yO2+79jHmYaBl8LjNRcHvZ4KRr1AUVXEoesyYFWroGEjUyGpV6XEmtsnI2iiwyBzcL2sk2ikeys8b3bOfiQzl1nTxFz94mVZ5/Igyfa68TaN4ToL6ZndhEtJDtsDWMIPI9xmqwNdvQsxJEbsBAwf0AcwEvyK31KjIJFSQjm4x5Qg3Nrjoo7O3rhVZq0kNKtUrQCbKTbNyzuC3ZOJbJ676l0sgqGZ2idOb48i/775Z239pH9Cv1IRQCRFOlx4z45Jr7h60UVaPhB/jlYjolC0WINPw7uIeyFqs5PflJjZdRcV6bqahJUwjOc8X/ojMKfahZeFkH8afueaiJlfaB8+zGnCBW8oc0qUmPndZOJuS9Xfexvfza1vva2DIlHWFm2LiWPTAFB24+0UQfkTJF0Ud7S5QdcJohwpqb4srUfIwizLhFY4JeV27567dv2P5q60MJafiaiiFmGUxBgWGJG02+XeKTfK4Cb5HNYjDLMy9fduyURFhKj6O2wTsjFURCcZlEgqULQXzLv7R8u4t1ngjnxji/IRRfaCmjpjlSPd8Hf7u/YySE8DSP97mihkX5/IFYtvnM7H0hkE+M4uFoefIhrNzg5etswqrWInM4jy/iCxkDDT4mvUuqCBt73gDmhjccRY7lYqGO9fHZU0u2pnNqEdyerXj4fALF8wZQE0MQfRQNjxlVDR4WciThdEkC85uFyZRJGTzvExUrTIvMghQCzilK1pJAkwjY1QWk7nKPAYVO+0MWTOfiVxHAs3q904YNnR86zTJklDKN6W19BzBVTSrOvBRDAwPK4kh3GKPoE2
+ jSjfYsTC
+ g+jm/eOAbUmA+MfLqfcd+0hZU5LcYOJHDhqG5CTeRk/uFj4VHmkD7t7LPBPLVR68JCO/C5+mutfYssLWkMT6eipbRldGsCRq7LIyIRX+y49Baqms1Nypf47G4jI8jIPA8RcBzNgamEZiXqUP05+vBGI5f8cAV7aK2d8mZu8J5irjz93a13Ili/Pi1SNtYmhn1goCaRjscwK6ZxCqM+azzM7ONMZKNM6BOBRorfAX3jryaCiVj0wVwF775chCgXryQvKP3pT8X2jXO4M+k0BoH2d6N7QH92mFDmJ27HUzemxGlxUSQsn9POva7bTKYIpzpiGmcMYgyYQUHwQrQgVIlOtp3ycNFNa1D+/SnVMvECM71Qq+22vgoWKtmKXFunnfgRWmneSM7rChp3QyZM4ICosMZ71MXzfL3QDIDa+nxe0qkdrnDBBr5/rmipoTyBKzX0E9xJkg+GV2hL1HFlAxIVsE1q4c56G9DWzLmcex4YYzlMqsMVtdnQnhphQG9G5cMKGLc/S0vCRTF9sFqz2l18n8/Hk6XYEGwsZ9YzouwBrzkSjxkqFnqVXu99ySsmWRFzdlCzAzW5aYU6HU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,51 +109,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello:
+Over the last couple months I gathered a few reports of minor issues
+in memory allocation profiling which are addressed in this patchset.
 
-This patch was applied to bpf/bpf.git (master)
-by Alexei Starovoitov <ast@kernel.org>:
+Patchset is based on mm-new.
 
-On Tue,  9 Sep 2025 09:52:20 +0000 you wrote:
-> Currently, calling bpf_map_kmalloc_node() from __bpf_async_init() can
-> cause various locking issues; see the following stack trace (edited for
-> style) as one example:
-> 
-> ...
->  [10.011566]  do_raw_spin_lock.cold
->  [10.011570]  try_to_wake_up             (5) double-acquiring the same
->  [10.011575]  kick_pool                      rq_lock, causing a hardlockup
->  [10.011579]  __queue_work
->  [10.011582]  queue_work_on
->  [10.011585]  kernfs_notify
->  [10.011589]  cgroup_file_notify
->  [10.011593]  try_charge_memcg           (4) memcg accounting raises an
->  [10.011597]  obj_cgroup_charge_pages        MEMCG_MAX event
->  [10.011599]  obj_cgroup_charge_account
->  [10.011600]  __memcg_slab_post_alloc_hook
->  [10.011603]  __kmalloc_node_noprof
-> ...
->  [10.011611]  bpf_map_kmalloc_node
->  [10.011612]  __bpf_async_init
->  [10.011615]  bpf_timer_init             (3) BPF calls bpf_timer_init()
->  [10.011617]  bpf_prog_xxxxxxxxxxxxxxxx_fcg_runnable
->  [10.011619]  bpf__sched_ext_ops_runnable
->  [10.011620]  enqueue_task_scx           (2) BPF runs with rq_lock held
->  [10.011622]  enqueue_task
->  [10.011626]  ttwu_do_activate
->  [10.011629]  sched_ttwu_pending         (1) grabs rq_lock
-> ...
-> 
-> [...]
+Suren Baghdasaryan (3):
+  alloc_tag: use release_pages() in the cleanup path
+  alloc_tag: prevent enabling memory profiling if it was shut down
+  alloc_tag: avoid warnings when freeing non-compound "tail" pages
 
-Here is the summary with links:
-  - [bpf,v2] bpf/helpers: Use __GFP_HIGH instead of GFP_ATOMIC in __bpf_async_init()
-    https://git.kernel.org/bpf/bpf/c/6d78b4473cdb
+ lib/alloc_tag.c | 17 ++++++++++++++---
+ mm/page_alloc.c |  9 ++++++++-
+ 2 files changed, 22 insertions(+), 4 deletions(-)
 
-You are awesome, thank you!
+
+base-commit: f4e8f46973fe0c0f579944a37e96ba9efbe00cca
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.51.0.384.g4c02a37b29-goog
 
 
