@@ -4,127 +4,173 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1142ECA0FED
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 09:42:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4182CA0FED
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 09:47:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 731CC8E0006; Tue,  9 Sep 2025 05:42:53 -0400 (EDT)
+	id 0ACCB6B00A8; Tue,  9 Sep 2025 05:47:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E2778E0016; Tue,  9 Sep 2025 05:42:53 -0400 (EDT)
+	id 05D986B00AA; Tue,  9 Sep 2025 05:47:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D6C58E0006; Tue,  9 Sep 2025 05:42:53 -0400 (EDT)
+	id E67796B00AB; Tue,  9 Sep 2025 05:47:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 462438E0006
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 05:42:53 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 12F0E86516
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 09:42:53 +0000 (UTC)
-X-FDA: 83869222626.09.B00EB53
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	by imf18.hostedemail.com (Postfix) with ESMTP id C21851C000B
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 09:42:50 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=GoQX0d99;
-	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id CE5356B00A8
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 05:47:14 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 76E41C0458
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 09:47:14 +0000 (UTC)
+X-FDA: 83869233588.27.E6239EC
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 29D5580003
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 09:47:12 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Yq8oJR+9;
+	spf=pass (imf02.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757410971;
+	s=arc-20220608; t=1757411232;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KaFrG6MURRheP1iaCzdkRdC0EMVQnkZvYVhe3PMdgvk=;
-	b=2y3gxm8vASLxUEoJ7GEPtZ14sYcm2ALznQ74rVl6uEi3x9xXUxgn8nWWWEIhsSKWdZ7jYu
-	uOCuHQNl2sJq2xOn1mTdxdZZxdjEoNMdWri+DSXqAmQ7Ut+tVvu53INsHWVdDPqr55NuLN
-	YMJNTHYLrdEJ3E+YifVToOKqG/mHHwI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757410971; a=rsa-sha256;
+	bh=SKiiv6JCU2xJOp3QwKpH5ri794nlOX8D39yyZK9KigY=;
+	b=OsAEcZuzYat69UNFR6Qg+bxrXpQiZcGunJosAyXuirnUgI2IP06o3CVXNWWPLg8xXGk31c
+	NYWPkP+EFxzj3hXbyl8ScGlj/UDawJqEVbP0JdWdwu4/NeC0+Y3+Qzp0zw4VYk4tx5zmkQ
+	b2cWMdONGecXFIeAxWbHQ6WXodK2+5w=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757411232; a=rsa-sha256;
 	cv=none;
-	b=P34tpuppYpTUPC+h3ErlT+fdrbFyZNRmvV/hEI89RyKDd8VLQa36MIuLKaGGzVtaZGmehc
-	ibtFd18lozU2jWRspoeXsbG8Jx3X/NbKTk74v41vmWOtsTqJyp0iXyaLh1rHhFTAuuV1Xh
-	tu1Ud5qcPjZS1MPuX4qRvSZlumXf5r4=
+	b=ugTcktfvQzXiKRG780sDhJrJUG05f9LyPN2quNqHVY394zcUZdOkcYqlVX23YkrbDfCR9n
+	7gGo/oUxkLwbyCfMvZJr+JFPltpPDoQBfS+d7B4aM63EPg9fWL/QKPqT+ddS2RuGFqnpY0
+	A/NLTZ7BrJ78DefZ74O9SZ4Jfz/2pDk=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=GoQX0d99;
-	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757410971; x=1788946971;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=YhIsuyT32WR9UdRetO0vSva6rEWQWAdkx7fjgtPvQZQ=;
-  b=GoQX0d99KflbutI9dsIWkN+gtKmFx/HmGd8Ypxh8CN5jMEogXvFDuBgf
-   Q4+GCkQUy6cgaECB1D15ktaopqOrk8EsZ7CsKz7JRVY0g9L2AQ7oEp6Bz
-   cBEoE1QZxLu54M86ZFYaeJ8zQ0QVBrZNUzscfHkOHYrOawvRePdkp+6tX
-   9fNNgacSlRHgoyU4IqrSooVlOFkxDSEXH1zOfKeAAmR5qZs2FJ6iztD5u
-   Ul5pGXA43htRhxj1k6g+IZ7wuIp6pv4sXFomaJ4otY65yb9aA5W6z+CW+
-   T6wNj1j/zuawKcvS3s58V18K2qizBcWqg7dKMZXMTGKHGGI/wG5erJ3Jb
-   w==;
-X-CSE-ConnectionGUID: AujPBYhyTLO5Zm+9DpgCyQ==
-X-CSE-MsgGUID: uNYrREnCT4+gIU2j9ngwzg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11547"; a="59795912"
-X-IronPort-AV: E=Sophos;i="6.18,251,1751266800"; 
-   d="scan'208";a="59795912"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2025 02:42:49 -0700
-X-CSE-ConnectionGUID: H9s4sHoTTPmrV+J0WIt+rg==
-X-CSE-MsgGUID: rOUG1w+VTQOnr2+LE0peRQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,251,1751266800"; 
-   d="scan'208";a="177337465"
-Received: from lkp-server01.sh.intel.com (HELO 114d98da2b6c) ([10.239.97.150])
-  by orviesa004.jf.intel.com with ESMTP; 09 Sep 2025 02:42:41 -0700
-Received: from kbuild by 114d98da2b6c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uvus1-0004iZ-33;
-	Tue, 09 Sep 2025 09:42:37 +0000
-Date: Tue, 9 Sep 2025 17:41:44 +0800
-From: kernel test robot <lkp@intel.com>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Matthew Wilcox <willy@infradead.org>, Guo Ren <guoren@kernel.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>, Nicolas Pitre <nico@fluxnic.net>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@redhat.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Baoquan He <bhe@redhat.com>, Vivek Goyal <vgoyal@redhat.com>,
-	Dave Young <dyoung@redhat.com>, Tony Luck <tony.luck@intel.com>,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Dave Martin <Dave.Martin@arm.com>,
-	James Morse <james.morse@arm.com>
-Subject: Re: [PATCH 13/16] mm: update cramfs to use mmap_prepare,
- mmap_complete
-Message-ID: <202509091758.mKPE6Hs0-lkp@intel.com>
-References: <e2fb74b295b60bcb591aba5cc521cbe1b7901cd3.1757329751.git.lorenzo.stoakes@oracle.com>
+	imf02.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Yq8oJR+9;
+	spf=pass (imf02.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1757411231;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=SKiiv6JCU2xJOp3QwKpH5ri794nlOX8D39yyZK9KigY=;
+	b=Yq8oJR+9VrtIhMgpn+VVEaCwborHRrDBPeGvl1sZR4MKqSWz9sTlXMGFCPKGq98MKr+32+
+	AJzZDaQh98J4FESkPNfJ7EOLwpZmyP7zcbyahPjlAM6WpLtksYBt3fvc1NJLa9SLyHhe/Y
+	iy/la22ClG27lRU0H8KtZXMjazv1B1s=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-141-d2Eo-GkwOUS2Dg2DvDn-qg-1; Tue, 09 Sep 2025 05:47:09 -0400
+X-MC-Unique: d2Eo-GkwOUS2Dg2DvDn-qg-1
+X-Mimecast-MFC-AGG-ID: d2Eo-GkwOUS2Dg2DvDn-qg_1757411229
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-45cb4f23156so29873985e9.2
+        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 02:47:09 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757411228; x=1758016028;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=SKiiv6JCU2xJOp3QwKpH5ri794nlOX8D39yyZK9KigY=;
+        b=vOKT7Y0qC+CaNTWPCoGkKIPwKTPJQlgY/Fze+c/OrDQOD4rCsKF2Y79GaUOnJvnoU9
+         +nncj4J2YWpNWW/7pxIQMTgooOjX9UiJDGjp3V9VQ4xO9ULpH0iDcRnXQLUzxHVdyR4M
+         etKHJrUBpqv2D+QfXZ0azt7EkIn1RjXXk4nz2mDVK22QzEkTzHw6rRhwHiOmJwSm2Nwo
+         X1YdjOxhZws7b2kNOLH12me7LUmM6H7iEzgxVjRWnTwuRMrT856SPMyYbDSGZIppE+gg
+         AOPVZy8lYPnBxqol3xPY2oFZcuVwpSqcNhp1Xwz0KLriRgGOKvzq9mJ+8D7xy5CIw/4y
+         HNow==
+X-Forwarded-Encrypted: i=1; AJvYcCXdJRTBq26vQ1/opKjpzP5LHdTZr5CX4NGiNHUWYalto1QNETGJhNqdSgODjWT+9xjyjcqmjSR0og==@kvack.org
+X-Gm-Message-State: AOJu0YzApLJrcaFtC0ctb0HLD8iaYMWF+zy30nLWtR9+MR0CGjCzk3Hv
+	t2fuKEnzmgGIoDoRkKlSU/w1GLefx/yqVuOpYUvkqa/6wBQstbbj+uDXMyuKQ3AeRTybn9BTxpt
+	LQFjSG9+sXxXcM2NBBAVZmNeOlDMdkBNRYdbDw7DUCeFnWUWn33fV
+X-Gm-Gg: ASbGncsXQ3fpf21aSsnGvB8Uz5d1xW/FZsPisCzUCO+zI/yn2alrhUs2hVP/sPBsAvd
+	n1bPxjas/uah4z+kz8eoS8NM2NEP2QRNFtNt0uGV0NfRo30wHhlbaft19UIZCwp1686h2vqBrGu
+	2xZ6r1g4aMKjBi7gj4IyOvhMUYZlxjt3OrnnXndWdNoSmDzLTp5yQznJNH9t9EEyew/xnUipLyi
+	+hRVPML+5JQfuKOoF8nKr/VG6ptWcSghRwM9VPiCUe7w7TwTPbkMTQ/tcFGbQeqChNuVAzGQOSw
+	xiZQOPMilijrdVDXe0GGSUXbR8K3UbcyWnDcnpz+RS/tSluRqZy2ZPlGk8Drqch7Kb4CMzZcN/Q
+	a9gIjlFu4tWs3P0nNAmulrtDvB7b7C09mt8STPumEU3TF3oaLljHOHKHTzDiHGhoxzKw=
+X-Received: by 2002:a05:600c:1993:b0:45c:b5eb:b0c6 with SMTP id 5b1f17b1804b1-45ddde80fd3mr102080925e9.5.1757411228582;
+        Tue, 09 Sep 2025 02:47:08 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGI1+DChPACtKX63ACmNUkDbz+brz6ApvDkQYyqmH7m2P3PUb3SzMq80PuogArkKrAlYYqt8w==
+X-Received: by 2002:a05:600c:1993:b0:45c:b5eb:b0c6 with SMTP id 5b1f17b1804b1-45ddde80fd3mr102080655e9.5.1757411228082;
+        Tue, 09 Sep 2025 02:47:08 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f23:9c00:d1f6:f7fe:8f14:7e34? (p200300d82f239c00d1f6f7fe8f147e34.dip0.t-ipconnect.de. [2003:d8:2f23:9c00:d1f6:f7fe:8f14:7e34])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45dda202112sm183745345e9.5.2025.09.09.02.47.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 09 Sep 2025 02:47:07 -0700 (PDT)
+Message-ID: <d3c68577-131f-48e0-84be-cb4424e3fa9e@redhat.com>
+Date: Tue, 9 Sep 2025 11:47:06 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e2fb74b295b60bcb591aba5cc521cbe1b7901cd3.1757329751.git.lorenzo.stoakes@oracle.com>
-X-Stat-Signature: cd1fu6pi9ssa98qndt48qzq4edzp1bhg
-X-Rspamd-Queue-Id: C21851C000B
+User-Agent: Mozilla Thunderbird
+Subject: Re: [linux-next:master 6034/7427]
+ arch/sh/include/asm/atomic-irq.h:69:undefined reference to
+ `page_range_contiguous'
+To: kernel test robot <lkp@intel.com>
+Cc: oe-kbuild-all@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+References: <202509100708.5mJZ2cLm-lkp@intel.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <202509100708.5mJZ2cLm-lkp@intel.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: vMqTI_8SbTekFYClLOTVh4847m59n1y-TwsjS-wj0U0_1757411229
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: kmychoody3peppe4rzi4tca6m97mhn8j
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1757410970-768390
-X-HE-Meta: U2FsdGVkX1/3h6sTlFh6W/y2TRdSxyrsFtM3onqSyFH9sZsL3S0v95oflHitjAuL/fpCtslYU31NOepCRrlra8TdVhvsIZnqxo30FjRw3eS9CenWSHDN+eqfYOvWJIUhtmiLR6o2oMb6Gs2+7hIfnFCY0vj7R1yz6sXcy3wS9PxJCIHxCjkOOcfljPp5l3hQP/03R2mMxPj/9Lqz1GDSS/u1WMXOjj8CgSlg5Opuw/WU5KwwTvAC8APWIcJHgsKlhdqSAls+agY57GxSPJlZhMF7cOMuID+hS96mjYECMiIglWOZNcBVhvcAj1txwTatA9+1T0D2P+A+Ms4VX0jJ1waW5vDKB1m/gOAvLtbARPHy1Oy2fEkwoQzy0d6PHhHnjpn6aXOrwn45Wt0w9oAZM0s+8/tFMYknyWx4wuV95R/u7HG2EStwpUNHgHv5LBWLuOKH1F/n6FriVBDDrI8/4yXyP3RVgQcGDhhgktvRokUqj92D8f4KUMWahcd1sO1FVtBBOsA3a65wYcnF0kv4UdMw3CSa2zQjsrb5Fx3B8Pl8A00v13yEFh4ILn3Z3bIHx2uLQ2nk7eWBhMDLIyH7N5DbADm6L8tJGYOf9Y09rbDAqbGA1QnxSGte8X6PoYpcz9A/NpMFU+HVWSJS2EX568IISGRfy0ENceuxZnPkVfxtM5WSlSy6dLSfqUgKotNor4kF2AWa9zfJb3r4wGix+0cbQaT9r6O6cU56OOcOzVEC20tNWy5IV3qadaboUr+uaUMdpGJTLXiBvZhqmwDt5vKZpnaZuYJeJ481qhCDGfiiUsM9nlJFlaTRMiSb1zELDmG+WbmI24bB/yWTNakYJngpxRnorVq1GjAGwVKnqKQ1/aF1DyhAKHYRf6m2gDg4ztR96jLDk0COaaNnqHH8BIuxwdIjEh0bb/jRl+SE3XQL10C24Zp10QHnixj1S9broClDnA+T/QAtBUmOAQW
- ZeKM4j8I
- oHznmsw6xoxLqg+gSdU6saL4RLAVf+fWwkbLGH6l84x+jaXhwCD/EYcTVk876LYBI8is99HE8tGM2g/bYvU2XVaCt9nak8LLgGhf2FtUbiERmJj2Jjg3OmG3s/4cFIb3A1aEUi6q1/xLhy+6Je6+ENPikK4FWt1Wd7Y8/iP1fX4o2lK4HfmnsoBZzV68i93K1wb2JwYwxiawhVcNupUv49rkqMYYKOmfxTs+DQ4B3sTfaxS1+GFWEeqjoAL/y0AuTejpZwaJuGm+V4dV9OulJZy0kPQ0FFM7QmdbUTPE+6AEPfZI1VDbsbt68IY2pguO4KRNITbYBf/a1/jdTM6i6kUsIqOt8O3UOObkqltcbMJUOPK6b7LPG1R36SebONFMks7WuN3prKHWTU+wF7R6jzJfEjC2tg5NOpab6N/iMww+Jrao=
+X-Rspamd-Queue-Id: 29D5580003
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1757411231-391788
+X-HE-Meta: U2FsdGVkX1+BQe9uQYK6HnmMXAr/KEJExzdIV9YMAdPut02qXAX7nOOSVsx5yDgSbwJBq+RNiYUaarQsmnAvJZv4P4/ujlbvYu5HHCdzMtQ6yRjLbr9Df9+M9LHhGbJVfqO3wi94AhsZUZ45Soup2Tj8bGsIO1GdtPkgakRmh85RoIRPMfEP0lRLiw57Y7S5gqyyrAKyD0LoW6PGrUR0N06lQ0i0E6oewI6BcpC1UD57WoZUAHuSvmuXiC8GAZtY4fb5GYHdxHqbK2S80EgK5PD3XwYy8BEz3E0+b7v/SBVWqjlg5FBgu2mE1NLttZSwAnFIEq9D96m7R5n+H6I2WmGMrj3oKJl1G4WAI0nZuXf3p9V+mrcCoTCULTq5hzP3a6g4MEwjKctd4xtPt0urh62lMJDCEyEOu2vMX0qlLycdN3GOlYkzO5iPVrox1wAd4Z1RdmV3wyRR9pDr479mXFW/K3HsxGQLMa/jhWF3c/R2+nmCvfXjVkzsNI2WNXqfaMmygS9thfJeHlL0h9w7F968lTAfqETTlcFBLjZ6BgqYvCToao9XJQDXVLV8daLzQFXyoiuIWeNtDjw+pB/K/wZF8bypAmjnHAt6gRhpeDRfGO5BtP3oJR6wqsAtfIZMN6wlVsZ5QvHpnGzptO2oi6NLTsFY4uT7qV+DVhx5AnDxdspyUX+Udd+OJwA82OEutbthXp91monjcBwW5Q9CopnzboPjhJuUEXi/ULWnBcEsUdTx2AjdbYuHLkPCCC2KrE2FpcHojNePUX5fp5X6p/ZZdTzTt9AE6xwMG1reiMf0SRwliugbMWKlnXRFQDz66uT5e3TEMR1kQ6LEBMmafLAc+9n5PVVXWYvlNHcQgjqz1QAG5vob/o24ojPS2YhPvULDs2lVg1f8qy8N5GwX5hv4aEG2v8lUuzEG1jNT4ENa2CkRQd74cM+jhKyvGA2LUkAbOMfV0nnyje6pZpH
+ UguS/eVR
+ OASg6r3eSNn28N/GlDwZtlg3dO2+EI6qFuJTCNakXDIzOEx/Nl8n8c0XpIC/tpgximnxVRhmyowUyVDGju3oQaT4sO9HKLJhrVt44wwrf1AEn+BHcJOTA8MP0atkW6+M6+QnGTqElKDyozVv63/45u9N85EWFQHGWPcdK+E/DjQP2tfjIawvkHM+t30nV93p9SaZl5Qj9k1Wj4HjJsixwuGywztvNqadIODnKGB/08PSKmsID3zrsDH/ZJQhSD1t0mQK1L2uFFPW4y7WuTqq95fwJkmEtHo4QXjPFAtL/5tNFeBUjKcDj4Y/MFfTnH6NTqAY3+33DaqRQO7qSXrPhk2WM2jZMEeqfuCLZSfpVmCbAwMnz0bGhCQrK31g1+wpOo8YrBL3PyYkiwyUmQY1noVb5cglkk7z0Yo9fO6JK/IY/gT+xlp4XAvUOXlrxEhDPr4jX9ujbKd3sCsHNtolO+r/eXsHNgOcC6ODgF2gvluQb+JL76qVa5DmClgGBdq3W4HBfTB+grSs4SaGLtmqDFRSg+ZSp/1d9IYuB9rwWkyZ44U2Vzu5dh7fPua+uJvALUUAjM9OzduoHfXpY5qPhV9BnSWGhE80K/TWX4+ghbr4/qF0nX8cL5on0n+hFH242hjz2VkS8tPM2UCS3I07PpTxpIGbKeduRsmfCniK4Uylk2eOPDm6cxoGjtXYLJIXn6qhE
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,108 +179,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Lorenzo,
+On 09.09.25 11:31, kernel test robot wrote:
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+> head:   65dd046ef55861190ecde44c6d9fcde54b9fb77d
+> commit: 73f5c4c5c6a36a130ccba6809337e42ccf8350fa [6034/7427] mm/gup: drop nth_page() usage in unpin_user_page_range_dirty_lock()
+> config: sh-randconfig-r121-20250908 (https://download.01.org/0day-ci/archive/20250910/202509100708.5mJZ2cLm-lkp@intel.com/config)
+> compiler: sh4-linux-gcc (GCC) 15.1.0
+> reproduce: (https://download.01.org/0day-ci/archive/20250910/202509100708.5mJZ2cLm-lkp@intel.com/reproduce)
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202509100708.5mJZ2cLm-lkp@intel.com/
+> 
+> All errors (new ones prefixed by >>):
+> 
+>     sh4-linux-ld: crypto/testmgr.o: in function `sg_set_buf':
+>     testmgr.c:(.text+0x8fc): undefined reference to `page_range_contiguous'
+>     sh4-linux-ld: drivers/usb/core/devio.o: in function `sg_set_buf':
+>     devio.c:(.text+0xd54): undefined reference to `page_range_contiguous'
+>     sh4-linux-ld: drivers/media/common/videobuf2/videobuf2-dma-contig.o: in function `vb2_dc_dmabuf_ops_attach':
+>     videobuf2-dma-contig.c:(.text+0x920): undefined reference to `page_range_contiguous'
+>     sh4-linux-ld: net/core/skbuff.o: in function `__skb_to_sgvec':
+>     skbuff.c:(.text+0x2180): undefined reference to `page_range_contiguous'
+>     sh4-linux-ld: mm/gup.o: in function `unpin_user_page_range_dirty_lock':
+>>> arch/sh/include/asm/atomic-irq.h:69:(.text+0xe34): undefined reference to `page_range_contiguous'
+>     sh4-linux-ld: fs/ecryptfs/crypto.o:crypto.c:(.text+0x954): more undefined references to `page_range_contiguous' follow
+> 
 
-kernel test robot noticed the following build warnings:
+Yes, can reproduce that. The config has CONFIG_SPARSEMEM without VMEMMAP and:
 
-[auto build test WARNING on akpm-mm/mm-everything]
-[cannot apply to brauner-vfs/vfs.all char-misc/char-misc-testing char-misc/char-misc-next char-misc/char-misc-linus s390/features lwn/docs-next linus/master v6.17-rc5 next-20250909]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+# CONFIG_MMU is not set
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Lorenzo-Stoakes/mm-shmem-update-shmem-to-use-mmap_prepare/20250908-191516
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/e2fb74b295b60bcb591aba5cc521cbe1b7901cd3.1757329751.git.lorenzo.stoakes%40oracle.com
-patch subject: [PATCH 13/16] mm: update cramfs to use mmap_prepare, mmap_complete
-config: arm64-randconfig-001-20250909 (https://download.01.org/0day-ci/archive/20250909/202509091758.mKPE6Hs0-lkp@intel.com/config)
-compiler: clang version 16.0.6 (https://github.com/llvm/llvm-project 7cbf1a2591520c2491aa35339f227775f4d3adf6)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250909/202509091758.mKPE6Hs0-lkp@intel.com/reproduce)
+I'm surprised that we can have SPARSEMEM with NOMMU. What a time to be alive.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202509091758.mKPE6Hs0-lkp@intel.com/
+The following seems to fix it:
 
-All warnings (new ones prefixed by >>):
+diff --git a/mm/util.c b/mm/util.c
+index 248f877f629b..6c1d64ed0221 100644
+--- a/mm/util.c
++++ b/mm/util.c
+@@ -1306,6 +1306,7 @@ unsigned int folio_pte_batch(struct folio *folio, pte_t *ptep, pte_t pte,
+  {
+         return folio_pte_batch_flags(folio, NULL, ptep, &pte, max_nr, 0);
+  }
++#endif /* CONFIG_MMU */
+  
+  #if defined(CONFIG_SPARSEMEM) && !defined(CONFIG_SPARSEMEM_VMEMMAP)
+  /**
+@@ -1342,4 +1343,3 @@ bool page_range_contiguous(const struct page *page, unsigned long nr_pages)
+  }
+  EXPORT_SYMBOL(page_range_contiguous);
+  #endif
+-#endif /* CONFIG_MMU */
 
-   In file included from fs/cramfs/inode.c:19:
-   In file included from include/linux/pagemap.h:8:
-   In file included from include/linux/mm.h:1096:
-   include/linux/huge_mm.h:591:16: warning: unused variable 'folio' [-Wunused-variable]
-           struct folio *folio = page_folio(page);
-                         ^
-   include/linux/huge_mm.h:598:16: warning: unused variable 'folio' [-Wunused-variable]
-           struct folio *folio = page_folio(page);
-                         ^
->> fs/cramfs/inode.c:358:38: warning: cast to smaller integer type 'enum cramfs_mmap_state' from 'const void *' [-Wvoid-pointer-to-enum-cast]
-           enum cramfs_mmap_state mmap_state = (enum cramfs_mmap_state)context;
-                                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   3 warnings generated.
-
-
-vim +358 fs/cramfs/inode.c
-
-   350	
-   351	static int cramfs_physmem_mmap_complete(struct file *file, struct vm_area_struct *vma,
-   352						const void *context)
-   353	{
-   354		struct inode *inode = file_inode(file);
-   355		struct cramfs_sb_info *sbi = CRAMFS_SB(inode->i_sb);
-   356		unsigned long address, pgoff = vma->vm_pgoff;
-   357		unsigned int pages, offset;
- > 358		enum cramfs_mmap_state mmap_state = (enum cramfs_mmap_state)context;
-   359		int ret = 0;
-   360	
-   361		if (mmap_state == NO_PREPOPULATE)
-   362			return 0;
-   363	
-   364		offset = cramfs_get_block_range(inode, pgoff, &pages);
-   365		address = sbi->linear_phys_addr + offset;
-   366	
-   367		/*
-   368		 * Now try to pre-populate ptes for this vma with a direct
-   369		 * mapping avoiding memory allocation when possible.
-   370		 */
-   371	
-   372		if (mmap_state == PREPOPULATE_PFNMAP) {
-   373			/*
-   374			 * The entire vma is mappable. remap_pfn_range() will
-   375			 * make it distinguishable from a non-direct mapping
-   376			 * in /proc/<pid>/maps by substituting the file offset
-   377			 * with the actual physical address.
-   378			 */
-   379			ret = remap_pfn_range_complete(vma, vma->vm_start, address >> PAGE_SHIFT,
-   380					pages * PAGE_SIZE, vma->vm_page_prot);
-   381		} else {
-   382			/*
-   383			 * Let's create a mixed map if we can't map it all.
-   384			 * The normal paging machinery will take care of the
-   385			 * unpopulated ptes via cramfs_read_folio().
-   386			 */
-   387			int i;
-   388	
-   389			for (i = 0; i < pages && !ret; i++) {
-   390				vm_fault_t vmf;
-   391				unsigned long off = i * PAGE_SIZE;
-   392	
-   393				vmf = vmf_insert_mixed(vma, vma->vm_start + off,
-   394						address + off);
-   395				if (vmf & VM_FAULT_ERROR)
-   396					ret = vm_fault_to_errno(vmf, 0);
-   397			}
-   398		}
-   399	
-   400		if (!ret)
-   401			pr_debug("mapped %pD[%lu] at 0x%08lx (%u/%lu pages) "
-   402				 "to vma 0x%08lx, page_prot 0x%llx\n", file,
-   403				 pgoff, address, pages, vma_pages(vma), vma->vm_start,
-   404				 (unsigned long long)pgprot_val(vma->vm_page_prot));
-   405		return ret;
-   406	}
-   407	
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Cheers
+
+David / dhildenb
+
 
