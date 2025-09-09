@@ -4,158 +4,159 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7096DCAC587
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 09:41:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AA79CA0FED
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 09:42:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CD2796B00B1; Tue,  9 Sep 2025 05:41:11 -0400 (EDT)
+	id B9C958E000F; Tue,  9 Sep 2025 05:42:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C831E6B00B2; Tue,  9 Sep 2025 05:41:11 -0400 (EDT)
+	id B4D018E0006; Tue,  9 Sep 2025 05:42:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B4AAF6B00B3; Tue,  9 Sep 2025 05:41:11 -0400 (EDT)
+	id A15CC8E000F; Tue,  9 Sep 2025 05:42:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C7E36B00B1
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 05:41:11 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4BFEA160452
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 09:41:11 +0000 (UTC)
-X-FDA: 83869218342.06.05D9C25
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf04.hostedemail.com (Postfix) with ESMTP id F131840006
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 09:41:08 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b="ERAKr2/0";
-	spf=pass (imf04.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 86EB58E0006
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 05:42:07 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3D2FD1A03C2
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 09:42:07 +0000 (UTC)
+X-FDA: 83869220694.16.9C4E5E7
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 36C86A0011
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 09:42:05 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=c4buSedH;
+	spf=pass (imf15.hostedemail.com: domain of jgross@suse.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=jgross@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757410869;
+	s=arc-20220608; t=1757410925;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zWcQIXAgSZE3jCftx8qMBMf1VpUurIYqH9HodqEjE0k=;
-	b=lRfSx8EbzR7tZX6aYg+OTr1trjGHzHkgqyEDvty8+cFLVpUHrV49EUPUR4q/7rK01u1lGc
-	k0b/hAB0mcB+VZRHRzb479Ob2fklueGBnhi+/vZWeL5w80nfCtSChtXTcI8YLKHtCJvyjg
-	ifiuXeYfe0TW6FKX9LaajQgxSGbja00=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b="ERAKr2/0";
-	spf=pass (imf04.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757410869; a=rsa-sha256;
+	bh=SjRoDXFIQA5duWfB2MZCu0jToXiY+NtBhO/biBCm3yY=;
+	b=SAfF5WwhdHEgEyze786LMmcHpeTA9V9TyBTkR9onPe+Uic4bjfTCmIoWnQ9U9it6ixCHwl
+	Pqxkzv01+b0+jMECcl7VR8ODE8LQ4jZjaQ8Sh+bNvGUPly62tK9BiclDnqTruN8795Xivw
+	nfbOQJzd+NTGfRYQ/PbVHfrpCG3L98E=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757410925; a=rsa-sha256;
 	cv=none;
-	b=8P2wi1aiYeKsuYjVypTcM13dM//r1HCxQHFJzn+Ba3GOwX8yKBREMPhoNmaHH6QyZUWuGy
-	shS0Qs65s76Mf/xloCHYEvX+ClqnzLE767LHBDC2E61R+x22zjHnnATVgDBDoMHeG9WMUX
-	uIx82ZZfKu4Wj7tiEd5lvlCL5BfTFsI=
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58983LO1017978;
-	Tue, 9 Sep 2025 09:40:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=zWcQIXAgSZE3jCftx8qMBMf1VpUurI
-	YqH9HodqEjE0k=; b=ERAKr2/0b+85Gl0gJGPChBwQF66LW3Oi2PTpVHT0S9O3cT
-	Ogh6Obsb22mSDB6RKtFvicQxQH7Em5A8oD0I5nxAwaNb8/uo3nlQzflgWHoDaI73
-	HJYbO2EM++BmL63dYswiKyf3DCl4sC43LQKUJvgYSzJoqo9flhIr4HpJX5FgSugx
-	nxkpTZzhMCKXzjU82MrRkLPjYDbZe873Vx7Wql1XT2f1I7N0MW1XZjVRPa59K2LD
-	VV7jPCPICsB1PgyR4Skp/kJKJN0V5UfeoBSNtFq2eg9a3cWAGVbhYaW2tp1HOhpP
-	+lYn2f2O6UcFcD/48WOX69CsC02e71Jd9O9OLeiA==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490acqxs3x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 09 Sep 2025 09:40:44 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5899HIXj021030;
-	Tue, 9 Sep 2025 09:40:43 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490acqxs3v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 09 Sep 2025 09:40:43 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5896bOAX008428;
-	Tue, 9 Sep 2025 09:40:42 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49109pjf7r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 09 Sep 2025 09:40:42 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5899eexO52167112
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 9 Sep 2025 09:40:40 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 604B32004D;
-	Tue,  9 Sep 2025 09:40:40 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8D98620043;
-	Tue,  9 Sep 2025 09:40:38 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.87.149.210])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue,  9 Sep 2025 09:40:38 +0000 (GMT)
-Date: Tue, 9 Sep 2025 11:40:37 +0200
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, Andreas Larsson <andreas@gaisler.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
-        Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ryan Roberts <ryan.roberts@arm.com>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
-        Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
-        linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-        sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v2 2/7] mm: introduce local state for lazy_mmu sections
-Message-ID: <ca2054ad-b163-4e61-8ec4-6f2e36461628-agordeev@linux.ibm.com>
-References: <20250908073931.4159362-1-kevin.brodsky@arm.com>
- <20250908073931.4159362-3-kevin.brodsky@arm.com>
- <d23ea683-cca4-4973-88b1-4f6fd9b22314@redhat.com>
+	b=UwqKpxB99QrihuUpvfOVB1zNMeg/ehe3ZDO33mrl7ys8XHPi9Ny73suMxH0DmnZRpWt5iM
+	8dthhvemQ0wXd1SLmj3jK8TOIMpds5I6Vhzbts0BbBYeKgqp6XqhyQXU89PRQmFQX9ZDTo
+	0UUHhQEqF6eT5+NbYlS+wYKgR2cW3VI=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=c4buSedH;
+	spf=pass (imf15.hostedemail.com: domain of jgross@suse.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=jgross@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-45ddddbe31fso18397735e9.1
+        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 02:42:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1757410924; x=1758015724; darn=kvack.org;
+        h=in-reply-to:autocrypt:from:content-language:references:cc:to
+         :subject:user-agent:mime-version:date:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=SjRoDXFIQA5duWfB2MZCu0jToXiY+NtBhO/biBCm3yY=;
+        b=c4buSedHz2lpuw5lMVpk70kDmB6eMIj1Wn3QMWkAhSNDRAhkOeDaB7713PCaNq/7iM
+         29qzhL7C1TWjOZoEXBpQkMRoC5QYy0bKDdjnHkJvJAUcP4bqsdaxcyGmSSnzYdEwZPhV
+         FTbLmfkP2WWU7sn28CvP7HgS+HOOBlQFvEr2EleFkdHMjQcr5im3YhwwPZE19tRhYwTQ
+         NPLPs5a5LnUQJEMlWj5T+K/xIu/gJXu/RJfRflicKy+B0n0zkdqusNjC+IHabzqMLUOo
+         2KutDc/YwH8pNNTlmkg0swtq0KafAK6vWDMHN5kg2VfliTx3CdwcfYWJQfCHADXEB/Kh
+         tbcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757410924; x=1758015724;
+        h=in-reply-to:autocrypt:from:content-language:references:cc:to
+         :subject:user-agent:mime-version:date:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=SjRoDXFIQA5duWfB2MZCu0jToXiY+NtBhO/biBCm3yY=;
+        b=pYZInvb5naBFoJJ3kPw99UViN5jUVKIKs5N5mTFIc10wW9/vAPBpx/26AD98xKqHe2
+         irdcuQT31AKTXPyyTtQyTXKuVeoL/mzewmvnh4aKB0nNez0Y3gdSP/SyTLUoSK+yTqrM
+         ltazyjO2KEQqln9yIoHi0iTItXe7KjhX53+JgXd8XYNjvCtaP1EPu4sk7SiOIm2RCi6j
+         Hk66OyOAvFEtyBPlkbLmTVPT3a9LtXq6Nz8jlcJdbQhTkxuOOtCnQ6do/zTMF3Y7W23A
+         UJt0Bpsf7e0+NHIVZpMneMc2s23LaLmxFhOoaNwsIJc9Dg9nfvbxbZv86D/l5fgxR8Yh
+         67Tg==
+X-Forwarded-Encrypted: i=1; AJvYcCV7t+w5dM8LeWmY13heOFQh9MgYe9nf1lgJi97s5Ih7pr7nLb699Y/F8SYcnNuwoJBCZKaCkxpM2g==@kvack.org
+X-Gm-Message-State: AOJu0Yw1P2ZzWQdxk8424Lhbl+qSrbu5q7JRpQ+CRoFnF/rKMlz+vNz+
+	v4BB4XNNt9A1nE2aQKqHhIcPnMiANYui7Fr7U4cT1VepnMspf/rWVk9rzKBMknOZjak=
+X-Gm-Gg: ASbGncvXpn5fQocS6RqZbjV6S+gHoduIzpmE7UZN94vRWc2cSQ+asaNOi4g+sMOevUg
+	dOymcJeFwOgpZS0b87QtIR6Dq6bayCisOBduX3MNzfFFLc8mPvZuBgSugdVdMnTrIABF0U+zkhH
+	eXjo8hhQefJ53KuXdduI0iPOxAOlq4wglUEinRRSiBv1g7/eelc7kr0NKUEwY0D4ipdNH/MLnNh
+	pl4Wp1YeBEI7qsSKGF08fDu537bss9V0C/EIeF8vzbTq0cIVOvZC6SbRtiKOl3tfenSiT1cTjTg
+	HcZCUpjIwEs4QuUWZ2aSuPAElTpQQomDJltWKctqgiu3Ub1n6R1BeUaXp1wmJkONE2znW6DZjCq
+	kX4DB+BSilOzv867mE9XNFGZ2dF3YhP/yMUxjqI2B0D0wU1gZHgATsXjuDUXT/JA4mF8so+X5TP
+	O3TPNTaEqCGSRL7P9/nKivzMLqWL2O0XD6eeWNy0g2AS/7SznRFWybZrw=
+X-Google-Smtp-Source: AGHT+IENj+1E2T8r/gDXDQF+CsCcmRvQT/1w4yxsS7gi6iQW38MFrgfpZ1CxcgavO4g+sqDlHTXLsg==
+X-Received: by 2002:a05:6000:2c0d:b0:3e7:441e:c9e1 with SMTP id ffacd0b85a97d-3e7441ecde8mr6021132f8f.18.1757410923604;
+        Tue, 09 Sep 2025 02:42:03 -0700 (PDT)
+Received: from ?IPV6:2003:e5:873d:be00:c26:b971:1ba7:9d8b? (p200300e5873dbe000c26b9711ba79d8b.dip0.t-ipconnect.de. [2003:e5:873d:be00:c26:b971:1ba7:9d8b])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e752238832sm1864553f8f.31.2025.09.09.02.42.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 09 Sep 2025 02:42:03 -0700 (PDT)
+Message-ID: <a23237ea-5b29-402f-850c-743e106e5f7c@suse.com>
+Date: Tue, 9 Sep 2025 11:42:01 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d23ea683-cca4-4973-88b1-4f6fd9b22314@redhat.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: CdA-H8SVNxdbZ5nTnrwiW_1I0UR-iy8D
-X-Authority-Analysis: v=2.4 cv=Mp1S63ae c=1 sm=1 tr=0 ts=68bff61c cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=kj9zAlcOel0A:10 a=yJojWOMRYYMA:10 a=xmnICLmBNk8AszDsb_MA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: uTrJRk-Nt5us74ILiXCJ7SL_HOQZhnLx
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA2MDAwMCBTYWx0ZWRfXy71df+5jjUw/
- ntr+yICfUeQPRObSlyN3Yh1y4xhRnHGHhZFfRZCcvuRAacCykIbiLJkHQ30eUBJKOGl10TSIS42
- +3nIeLTG23/y6JszEVZ1Ed+b1iNk9DDxZsvwkIfCXfzVoNJXgV1cawSe1+N/vBFlEkK7ENOmW+P
- 5QFev+/ePpqxVRniHssrBkwoaFfvkZZLW/2f9hVQyEtzMR8VsnBMkGYw6WFkufIgIXN5VkhAYVQ
- X+97jjddjBhYGKbSAHhaXMbOCL2qCKM7v5sv/V5bw5Wl8DJ9XDeAuCQ/41VgYzOkHMOtqD+ztQw
- 0x/7e9psYHEV7vlYlvzJw+aRJnWLrm5gVwmA8e51Z46BZm3hlJcuLkZtLVQrCNNUZn7EXpW7Hgp
- /9u+P9X3
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-08_06,2025-09-08_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 malwarescore=0 clxscore=1011 phishscore=0 spamscore=0
- adultscore=0 priorityscore=1501 bulkscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509060000
-X-Rspamd-Queue-Id: F131840006
-X-Rspamd-Server: rspam05
-X-Stat-Signature: xee57yadkqbryzyh1mfp5y3kgq9rqwkj
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 4/7] x86/xen: support nested lazy_mmu sections (again)
+To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
+ <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ David Hildenbrand <david@redhat.com>, "David S. Miller"
+ <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>,
+ Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
+ Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
+ Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org
+References: <20250908073931.4159362-1-kevin.brodsky@arm.com>
+ <20250908073931.4159362-5-kevin.brodsky@arm.com>
+Content-Language: en-US
+From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
+Autocrypt: addr=jgross@suse.com; keydata=
+ xsBNBFOMcBYBCACgGjqjoGvbEouQZw/ToiBg9W98AlM2QHV+iNHsEs7kxWhKMjrioyspZKOB
+ ycWxw3ie3j9uvg9EOB3aN4xiTv4qbnGiTr3oJhkB1gsb6ToJQZ8uxGq2kaV2KL9650I1SJve
+ dYm8Of8Zd621lSmoKOwlNClALZNew72NjJLEzTalU1OdT7/i1TXkH09XSSI8mEQ/ouNcMvIJ
+ NwQpd369y9bfIhWUiVXEK7MlRgUG6MvIj6Y3Am/BBLUVbDa4+gmzDC9ezlZkTZG2t14zWPvx
+ XP3FAp2pkW0xqG7/377qptDmrk42GlSKN4z76ELnLxussxc7I2hx18NUcbP8+uty4bMxABEB
+ AAHNH0p1ZXJnZW4gR3Jvc3MgPGpncm9zc0BzdXNlLmNvbT7CwHkEEwECACMFAlOMcK8CGwMH
+ CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRCw3p3WKL8TL8eZB/9G0juS/kDY9LhEXseh
+ mE9U+iA1VsLhgDqVbsOtZ/S14LRFHczNd/Lqkn7souCSoyWsBs3/wO+OjPvxf7m+Ef+sMtr0
+ G5lCWEWa9wa0IXx5HRPW/ScL+e4AVUbL7rurYMfwCzco+7TfjhMEOkC+va5gzi1KrErgNRHH
+ kg3PhlnRY0Udyqx++UYkAsN4TQuEhNN32MvN0Np3WlBJOgKcuXpIElmMM5f1BBzJSKBkW0Jc
+ Wy3h2Wy912vHKpPV/Xv7ZwVJ27v7KcuZcErtptDevAljxJtE7aJG6WiBzm+v9EswyWxwMCIO
+ RoVBYuiocc51872tRGywc03xaQydB+9R7BHPzsBNBFOMcBYBCADLMfoA44MwGOB9YT1V4KCy
+ vAfd7E0BTfaAurbG+Olacciz3yd09QOmejFZC6AnoykydyvTFLAWYcSCdISMr88COmmCbJzn
+ sHAogjexXiif6ANUUlHpjxlHCCcELmZUzomNDnEOTxZFeWMTFF9Rf2k2F0Tl4E5kmsNGgtSa
+ aMO0rNZoOEiD/7UfPP3dfh8JCQ1VtUUsQtT1sxos8Eb/HmriJhnaTZ7Hp3jtgTVkV0ybpgFg
+ w6WMaRkrBh17mV0z2ajjmabB7SJxcouSkR0hcpNl4oM74d2/VqoW4BxxxOD1FcNCObCELfIS
+ auZx+XT6s+CE7Qi/c44ibBMR7hyjdzWbABEBAAHCwF8EGAECAAkFAlOMcBYCGwwACgkQsN6d
+ 1ii/Ey9D+Af/WFr3q+bg/8v5tCknCtn92d5lyYTBNt7xgWzDZX8G6/pngzKyWfedArllp0Pn
+ fgIXtMNV+3t8Li1Tg843EXkP7+2+CQ98MB8XvvPLYAfW8nNDV85TyVgWlldNcgdv7nn1Sq8g
+ HwB2BHdIAkYce3hEoDQXt/mKlgEGsLpzJcnLKimtPXQQy9TxUaLBe9PInPd+Ohix0XOlY+Uk
+ QFEx50Ki3rSDl2Zt2tnkNYKUCvTJq7jvOlaPd6d/W0tZqpyy7KVay+K4aMobDsodB3dvEAs6
+ ScCnh03dDAFgIq5nsB11j3KPKdVoPlfucX2c7kGNH+LUMbzqV6beIENfNexkOfxHfw==
+In-Reply-To: <20250908073931.4159362-5-kevin.brodsky@arm.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------6t70nAkYkpQ5fhIc00dD9qVa"
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 36C86A0011
+X-Stat-Signature: znp6jqoqmhtib8uzjg8bq9ium93pop9e
 X-Rspam-User: 
-X-HE-Tag: 1757410868-663596
-X-HE-Meta: U2FsdGVkX1/B+Et4OK167pIr0S9HLMN5CS4fkH1+JELQC8FxEjsG//IJ1nkbrqXQnSZ2GnFwlAyVnZiRR0N3l+MhOKuvG/PJv1yAlpstMLTMTuJzE7y/JlHt1tB2dZiRyFpV7JHohfej07suG8Gqh8ZlQpy4rESw+rtiSoZXqZVDJpZotU284lSNCUZ3JJH/Y7j37zDy41EOemkZ+p+AzWWFdiakGB+C9Hh5FxMoWgdd9PiGHIWf+V+C9zyD1KFkOfpVPEFItR0yFwH/CiOQOwtxoFwdM3l/omh2k5166PBEhwtbGHFMqI+7Qy5ogYN4WFPJZ1eBDTRrof30szmKkfFgWAfaO9QHTE3RPoMVeUYZwIdkx4X5CWJyRcCv1p7d1NhQWWhOw2LuDeXt11O9fppJw5QUVZsTk+qF2mtCLyKBTucdr7fWMCUYYWi+numX+VQDTm+KAPO3M1HkIGReIzW8iLofBOi36/3lTaqXfQ4yv9k25D4DSSblG2xWNw4nz2C3Hk1SDHf/6caoUfMv/WJM78cYMTrlhd0tNSAbKdurJy7n98Z2NApGUvWshQIEFkJbhf8sQYs9hi+k1OfieTdem++V4Kg7kKhcowdfNM5PJxE8eWwzYad90+gjDTi5na1x3VScc+4XH9sGd/0MH6RdLt2JHHYyIR8jbqH1dAnH4MV5BfEWUv362nGT9MDNNXq4uwqSY/b7lhIKvX2rDWQTigexI1OpQtJJmoxek8Von5qM2ejx5c1w6NPVDm9wAo9kJZC5ibYSjcCct/gauZunx8G30qBSU3xi4y1rPkyCDuKoTKbJuQrIkgd92ECoCKROFukAiccaQjaQyvBsejgW+8mPzlJb5V4SSn4cLOtpfrU+eqFw6B0lIKWxmtU7K3BHDtfTAQfnvy3N5iwlWK0EVV3GIFvtlu1XKOORYth7XM0yPkd8yrpw7E6ZHDkqDIdyKXkf3Yam3/oYWxy
- GW6WtzS1
- 7oKwlAICLWuWnjHs7t+EnFxemm8Up3vMif5fqLTJWMpJlbItpgUUAbtVerybU0/KBqkKDdckaG75ZF3lrt+21oeU9T7s+NwGxqRKxGYFMDYHyoNRA33Z83db6qNkpsAUmcusf8gfSkZaLEg0DMrhQeuI/gWA1FAUkwo9feJxRJ3MvMJ/puo2hsPVp3V5A2QmWUZTt+tu2PAOtdvLTCbws1maeLyZ8mtygWE7fxuecycJn2ng+8wjERPMWnJ9PIb/rCM9zF1R06/omEnA=
+X-HE-Tag: 1757410925-874644
+X-HE-Meta: U2FsdGVkX1+vi1kTOMfCqTvgiXbyePcKP2Xvb7pFGdcSOg8H6krhfDFedNK3E4xMwgJJUYGNEwVlDTy/8mLXG4PapSFdbIddLY8GfN+VN60zzPEJ4qzOzapjina4mEjW1WzogU6D4iTBHMVLXPRtQKOOpMDrPDst01mdku4Dg5O9dCgDkbO85uHWlScyAh1S8obHJQmiR8SBwYrgyifREks6zjeWkXNYHIANDlytwwW7kVGeQuU0TqAyljtzCbqKmEEAfa7fAIh2uEvHZLaYVXoXk3dbojfgUAHlN9E1u3Gmc6k6+sD2K66UFPm8FaH2ZXiqtNW6Di1ibXuP7Mtmfkdd0wdYrVQBldFnIK3IjnisIh6RxJu/BJfpi7eDKnzMovFi8g6oF9P+Qv+F93pVKqSJPzTt2FkJC8PC6RCKCRRgnBueWkJtLKHGxRsDv39X6jiFRbV03XJZNWnENVhRfgrNT6200ndu1qNQT80JfrdvTn1QfW5HX/87Ian+nPvzEOeM/9FAosYOH7TUhR0VqfsIKZo+omvFg0DXvgq8uy7+CI29UreWkSsgl+7NZR+/0fvP5gTLhi/nEzUgLg7a7Fo9FzF2Ew23ahjP81DoK3dyMxpDgzLfzVNLHlg0mdLghg07AtXHUQWdE2rcVuQJIyzJpn/HYvq4/rDX3IFFCqe5BCjKs8jUciURJXz9it10nAMLuqVL5lX8I4zdbwAh7jYoMvU+vH5j3/X7Mgmi+L4M/WtflzPQsw9ct2HwNdeYZQ3V+UN+7Opz8zSyHVVNMsfF6vSr/qDNdL9EKx8bQgj300CuyEgjiVnEJYSSddA0H+L1dMcUxN+pfB7ctRJYovVdRNzC+focyVoi+tqibPcgOLw0nkqzSqmer1q3nU70YdSSa1gaVkCA2swnqZhVN4ctySaOjTtDqEY4a1VA3PQQG+Z/tXLrGz1KjLRgmMwnbpwGaU3ysCXiFJIuxwv
+ vR5t0QEx
+ 7o57MXg83oTUH6kgy/8b418VkrF57J3F48ADUH8HG0GwvZP0NbBUWmpIS0JMQthf30OToQN8LA6wd6tScEiLbbGb+g2TCDFhHiCQbdTmSydcqBriNnJ24YSCVtryxH6om8Z6mfD6MPxpWrtdr+Y552CUUCHb98ayKTsG4hKioX5wwk7NxpyHN4CsIu94L7fbRE+VgVhGNTQMYaTVvjVDltxw4jX1Gg+//7INlsFXkVbZQ/0D0EE4tvzKF+y8YnuD7va5/F8pkhDUczyJWx/TSRkkH05dIjETFeTWKhc89fDs/UzanuAdXm5r1NDFm8zappUjqQs+Sm4PC/WCxW45OL9EHNFq26pv6FpydiHtDGQ2UO4XmCCk3nrhSrJ0dSr49PfFdfJVxQtvkOBQqRYqSoaWm2n/0TO1ApEya4LmjUC7wJGHuv2bGIzp9mTCxzmSiXNaAfEZ9yk4NJNk6tLOQRDCauGI8S1Qs8U+S6VF5fAGGeZULAwtGqTlqnxT6Nk/c7nyGNP3mbbwsANBE1pYkYhs5vWWfh0VyMGFNhk4BwyLhEip7mQpAl0KKAWWUy3LAnKM4R1XekGKgAfTZHTDQ0AloTUfuipRjG2Q2jFXvKD+VQOJQs4+L2NGPt6BM8o7uoa4RXVYiLgFuGwv4I+1LVERvMXZ+bHuYClpp7B3BZEBl5uW+OhjY4W9w8MAohoPoKzLve4qq2e7+50ucBLGbJPDW44qUcK8o/b+WKm6OfAS7bk9TCy0XafMOmKkOU8dCkwK6NFsFhj3WWN5MrzW4ClW5OXiQeqgUioR9aMVc5vHVXzXpdu1LvJd2NCkgpbwGGPajWBkTv0+7qEOvHXxwAaBK968EbAM3igQEzPKnwWwD58MSYncYtgJtEESryVvW5OnTqZnM1ZYPqrSeHWjFYqXrzInaQvD8YzEprCnh3pr2QAB4Enu/kfaltPYwpW94Z6cD
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -164,68 +165,153 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 09, 2025 at 11:07:36AM +0200, David Hildenbrand wrote:
-> On 08.09.25 09:39, Kevin Brodsky wrote:
-> > arch_{enter,leave}_lazy_mmu_mode() currently have a stateless API
-> > (taking and returning no value). This is proving problematic in
-> > situations where leave() needs to restore some context back to its
-> > original state (before enter() was called). In particular, this
-> > makes it difficult to support the nesting of lazy_mmu sections -
-> > leave() does not know whether the matching enter() call occurred
-> > while lazy_mmu was already enabled, and whether to disable it or
-> > not.
-> > 
-> > This patch gives all architectures the chance to store local state
-> > while inside a lazy_mmu section by making enter() return some value,
-> > storing it in a local variable, and having leave() take that value.
-> > That value is typed lazy_mmu_state_t - each architecture defining
-> > __HAVE_ARCH_ENTER_LAZY_MMU_MODE is free to define it as it sees fit.
-> > For now we define it as int everywhere, which is sufficient to
-> > support nesting.
-...
-> > {
-> > + lazy_mmu_state_t lazy_mmu_state;
-> > ...
-> > - arch_enter_lazy_mmu_mode();
-> > + lazy_mmu_state = arch_enter_lazy_mmu_mode();
-> > ...
-> > - arch_leave_lazy_mmu_mode();
-> > + arch_leave_lazy_mmu_mode(lazy_mmu_state);
-> > ...
-> > }
-> > 
-> > * In a few cases (e.g. xen_flush_lazy_mmu()), a function knows that
-> >    lazy_mmu is already enabled, and it temporarily disables it by
-> >    calling leave() and then enter() again. Here we want to ensure
-> >    that any operation between the leave() and enter() calls is
-> >    completed immediately; for that reason we pass LAZY_MMU_DEFAULT to
-> >    leave() to fully disable lazy_mmu. enter() will then re-enable it
-> >    - this achieves the expected behaviour, whether nesting occurred
-> >    before that function was called or not.
-> > 
-> > Note: it is difficult to provide a default definition of
-> > lazy_mmu_state_t for architectures implementing lazy_mmu, because
-> > that definition would need to be available in
-> > arch/x86/include/asm/paravirt_types.h and adding a new generic
-> >   #include there is very tricky due to the existing header soup.
-> 
-> Yeah, I was wondering about exactly that.
-> 
-> In particular because LAZY_MMU_DEFAULT etc resides somewehere compeltely
-> different.
-> 
-> Which raises the question: is using a new type really of any benefit here?
-> 
-> Can't we just use an "enum lazy_mmu_state" and call it a day?
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------6t70nAkYkpQ5fhIc00dD9qVa
+Content-Type: multipart/mixed; boundary="------------0NiQUpv1CWC70bbdwQmMvvwT";
+ protected-headers="v1"
+From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
+To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
+ <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ David Hildenbrand <david@redhat.com>, "David S. Miller"
+ <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>,
+ Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
+ Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
+ Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org
+Message-ID: <a23237ea-5b29-402f-850c-743e106e5f7c@suse.com>
+Subject: Re: [PATCH v2 4/7] x86/xen: support nested lazy_mmu sections (again)
+References: <20250908073931.4159362-1-kevin.brodsky@arm.com>
+ <20250908073931.4159362-5-kevin.brodsky@arm.com>
+In-Reply-To: <20250908073931.4159362-5-kevin.brodsky@arm.com>
 
-I could envision something completely different for this type on s390,
-e.g. a pointer to a per-cpu structure. So I would really ask to stick
-with the current approach.
+--------------0NiQUpv1CWC70bbdwQmMvvwT
+Content-Type: multipart/mixed; boundary="------------4l0ODE8pZhEM8pbolfSSghyw"
 
-> -- 
-> Cheers
-> 
-> David / dhildenb
+--------------4l0ODE8pZhEM8pbolfSSghyw
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-Thanks!
+T24gMDguMDkuMjUgMDk6MzksIEtldmluIEJyb2Rza3kgd3JvdGU6DQo+IENvbW1pdCA0OTE0
+N2JlYjBjY2IgKCJ4ODYveGVuOiBhbGxvdyBuZXN0aW5nIG9mIHNhbWUgbGF6eSBtb2RlIikN
+Cj4gb3JpZ2luYWxseSBpbnRyb2R1Y2VkIHN1cHBvcnQgZm9yIG5lc3RlZCBsYXp5IHNlY3Rp
+b25zIChMQVpZX01NVSBhbmQNCj4gTEFaWV9DUFUpLiBJdCBsYXRlciBnb3QgcmV2ZXJ0ZWQg
+YnkgY29tbWl0IGMzNjU0OWZmOGQ4NCBhcyBpdHMNCj4gaW1wbGVtZW50YXRpb24gdHVybmVk
+IG91dCB0byBiZSBpbnRvbGVyYW50IHRvIHByZWVtcHRpb24uDQo+IA0KPiBOb3cgdGhhdCB0
+aGUgbGF6eV9tbXUgQVBJIGFsbG93cyBlbnRlcigpIHRvIHBhc3MgdGhyb3VnaCBhIHN0YXRl
+IHRvDQo+IHRoZSBtYXRjaGluZyBsZWF2ZSgpIGNhbGwsIHdlIGNhbiBzdXBwb3J0IG5lc3Rp
+bmcgYWdhaW4gZm9yIHRoZQ0KPiBMQVpZX01NVSBtb2RlIGluIGEgcHJlZW1wdGlvbi1zYWZl
+IG1hbm5lci4gSWYgeGVuX2VudGVyX2xhenlfbW11KCkgaXMNCj4gY2FsbGVkIGluc2lkZSBh
+biBhY3RpdmUgbGF6eV9tbXUgc2VjdGlvbiwgeGVuX2xhenlfbW9kZSB3aWxsIGFscmVhZHkN
+Cj4gYmUgc2V0IHRvIFhFTl9MQVpZX01NVSBhbmQgd2UgY2FuIHRoZW4gcmV0dXJuIExBWllf
+TU1VX05FU1RFRCB0bw0KPiBpbnN0cnVjdCB0aGUgbWF0Y2hpbmcgeGVuX2xlYXZlX2xhenlf
+bW11KCkgY2FsbCB0byBsZWF2ZQ0KPiB4ZW5fbGF6eV9tb2RlIHVuY2hhbmdlZC4NCj4gDQo+
+IFRoZSBvbmx5IGVmZmVjdCBvZiB0aGlzIHBhdGNoIGlzIHRvIGVuc3VyZSB0aGF0IHhlbl9s
+YXp5X21vZGUNCj4gcmVtYWlucyBzZXQgdG8gWEVOX0xBWllfTU1VIHVudGlsIHRoZSBvdXRl
+cm1vc3QgbGF6eV9tbXUgc2VjdGlvbg0KPiBlbmRzLiB4ZW5fbGVhdmVfbGF6eV9tbXUoKSBz
+dGlsbCBjYWxscyB4ZW5fbWNfZmx1c2goKQ0KPiB1bmNvbmRpdGlvbmFsbHkuDQo+IA0KPiBT
+aWduZWQtb2ZmLWJ5OiBLZXZpbiBCcm9kc2t5IDxrZXZpbi5icm9kc2t5QGFybS5jb20+DQoN
+ClJldmlld2VkLWJ5OiBKdWVyZ2VuIEdyb3NzIDxqZ3Jvc3NAc3VzZS5jb20+DQoNCg0KSnVl
+cmdlbg0K
+--------------4l0ODE8pZhEM8pbolfSSghyw
+Content-Type: application/pgp-keys; name="OpenPGP_0xB0DE9DD628BF132F.asc"
+Content-Disposition: attachment; filename="OpenPGP_0xB0DE9DD628BF132F.asc"
+Content-Description: OpenPGP public key
+Content-Transfer-Encoding: quoted-printable
+
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+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
+kt+z4drzFUyEjLM1vVvIMjkUoJs=3D
+=3DeeAB
+-----END PGP PUBLIC KEY BLOCK-----
+
+--------------4l0ODE8pZhEM8pbolfSSghyw--
+
+--------------0NiQUpv1CWC70bbdwQmMvvwT--
+
+--------------6t70nAkYkpQ5fhIc00dD9qVa
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmi/9mkFAwAAAAAACgkQsN6d1ii/Ey80
+SAgAiJl65x111bqE27qLDXwGxB+GHINdgm+I0ml8OZ3XtcdZfY5Bn8HD+AFRa9lSJsdUCcklLH88
+S/XTNIYun/KfdgyVrC8qkhA6upKCQ0rpmnpVnLRbhGIAfdA1IzOEVv2DasQOSUIW2FrnDMHnIM5j
+9+GsXLikB0D+M5Sev7kMHqH0v6VpecDZxbEu6/sLpb/M/HFFLElALOu7Hyc50kf9HcdEFGeRGWGS
+zeCAhFKiMqstJpK5XcvR/Gt9WVh9pNNhIyYYHfDfImt28tyiC90MYW+bnoykmn4S2v3yVQOo5qbZ
+Ejwt4zi2ksSSuPgsa0AerARvR/6wjZwPfi35XC3Gfw==
+=Ew/s
+-----END PGP SIGNATURE-----
+
+--------------6t70nAkYkpQ5fhIc00dD9qVa--
 
