@@ -4,84 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A983ACAC581
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 01:33:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A962CAC581
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 01:36:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0A3D18E000C; Mon,  8 Sep 2025 21:33:45 -0400 (EDT)
+	id C90518E0003; Mon,  8 Sep 2025 21:36:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 07B418E0002; Mon,  8 Sep 2025 21:33:45 -0400 (EDT)
+	id C40CB8E0002; Mon,  8 Sep 2025 21:36:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED2DE8E000C; Mon,  8 Sep 2025 21:33:44 -0400 (EDT)
+	id B7DCB8E0003; Mon,  8 Sep 2025 21:36:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DAAFE8E0002
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 21:33:44 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 807771402B4
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 01:33:44 +0000 (UTC)
-X-FDA: 83867989968.25.2A82368
-Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
-	by imf17.hostedemail.com (Postfix) with ESMTP id B85D740008
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 01:33:42 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=L8zBqe75;
-	spf=pass (imf17.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A8E748E0002
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 21:36:53 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5499213A741
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 01:36:53 +0000 (UTC)
+X-FDA: 83867997906.03.5452E78
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 9316FA000E
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 01:36:51 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=fTItJmwp;
+	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757381623;
+	s=arc-20220608; t=1757381811;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=nPrjw+yWiXA2jqCjKp2szrgMz+ikmLfEyUEqqnW3/tE=;
-	b=rTrfgs1RhniyOcFeX0P9CNicrPuUXx9QvI9tzc+lbCNTxz76/1QGb5WD3h7sb6gtj1y30n
-	4Vihrp29u3XVdwrqoa5MosEAA/CBhyUicVW815nr2flMJizuwXqC1+ST0uRih6mEGuSv+e
-	Ss6wNpt/H4J5U9ynChn5dBm9ipHErpw=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=4RWMSJDI0AGIuEQlQMddbkjap4URwIV5DOLNEO0/AsY=;
+	b=iZey3fXyhC8ajRKdsFR/caOFII0xpnSuF3NjeOtoWJ3qyenUaD3P2b+yr4NGuR/yF20vyT
+	oxqfv2NbedIYyQQE+M65BzrctKPNusphrAsrBdJWz4pb+tdXomnroqgEV5SxEZC78unvjq
+	UIyFPoMMo8qiXCXADjRlbEJmNPNe9bE=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=L8zBqe75;
-	spf=pass (imf17.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757381623; a=rsa-sha256;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=fTItJmwp;
+	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757381811; a=rsa-sha256;
 	cv=none;
-	b=n8FRG2Gnd2RbPD8zEpct6diaGdkC8DH3CV1ZiYcmF56M0WUJ7R2id/EAawM8gMLvXfs8Iv
-	H0c3bGbBVoFappzCicPmoNOTr/Hy2R/zJl+xx90lqiYQ5wUmcgVsqshgNfvYPOvfoM+ybk
-	rOib2FZ5F/ohvOfNaJXC9BmqZ8qmVrY=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1757381620;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=nPrjw+yWiXA2jqCjKp2szrgMz+ikmLfEyUEqqnW3/tE=;
-	b=L8zBqe75u9e+H42HHeKY6T2Xwg7oPo48e7HJ+tmXqGyegccyNdeIUHbnv+c7e/lfv1NSl2
-	0Iwpr81cLe1xbJNMZtZzOghSfPH7oZCicCS76tyQBpVa2UophFUmZzGsoNSZfu/7gAtk7M
-	8cOeNjOQt7tBTLCpujbAllSc6PBSRjw=
-From: Ye Liu <ye.liu@linux.dev>
-To: Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Ye Liu <liuye@kylinos.cn>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3] mm/slub: Refactor note_cmpxchg_failure for better readability
-Date: Tue,  9 Sep 2025 09:33:07 +0800
-Message-ID: <20250909013307.1093853-1-ye.liu@linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+	b=VeA0LjV3wC45ngV7yEVNgk2b1QeWlrEn+l8MTaEGYG1shraAm1GDNr/LSyx8pLSRgqZDr9
+	t36IhCAALPS4FAlJ6RygBcEsUbkP2XlfhKWSkSPMIUf9RJ7FEAd01kR8kiaLczJ/cYf1Hf
+	VJHxJkx+h3oovBZynMWmI0S8Xph+kgA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3612A409BE;
+	Tue,  9 Sep 2025 01:36:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBE12C4CEF1;
+	Tue,  9 Sep 2025 01:36:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1757381810;
+	bh=Z1rOYyBYisrEgpjxg5axvCiSam4Xo1at+Aqmwaue7MU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=fTItJmwphkdiwuwpmzrhAuNOpxlnTraGAELtElgAj72BfU7Ufj/C03C3qzZrcU7rO
+	 zO9UrfXTgGE9oucR2CVHiLGDU9bnuU9wrUFhC0oXDyaaiHcTl4fKQKP2pXQcgvMvee
+	 pwuj8ycqWx855HfKpZKql8pT5Zdn38r0Rpz6alnc=
+Date: Mon, 8 Sep 2025 18:36:49 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: cuishiwei <cuishw@inspur.com>
+Cc: <axelrasmussen@google.com>, <yuanchu@google.com>, <hannes@cmpxchg.org>,
+ <weixugc@google.com>, <david@redhat.com>, <zhengqi.arch@bytedance.com>,
+ <shakeel.butt@linux.dev>, <lorenzo.stoakes@oracle.com>,
+ <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] disable demotion during memory reclamation
+Message-Id: <20250908183649.da6b77d15c1076e5b69064af@linux-foundation.org>
+In-Reply-To: <20250909012141.1467-1-cuishw@inspur.com>
+References: <20250909012141.1467-1-cuishw@inspur.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 9316FA000E
+X-Rspamd-Server: rspam05
+X-Stat-Signature: tnhx9qbtj7yiwfyrh5q3jzatd6hosose
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: B85D740008
-X-Stat-Signature: w9ddmhb1jd7o7z3z6kdst8ujzy9qkfku
-X-HE-Tag: 1757381622-195841
-X-HE-Meta: U2FsdGVkX1/YbjboidPbTfakCXhdh16kFdPEBKqo9tq1AU8uf73mjL+8ZVjZGnXQOMhAzB1bZWu8FOd95SYoknlidlw6i5clZFesY7SY4MB5XM6TlTmn5eVC8KbJRVtwoD3hchBVbUPyO4P5s6SeMNQkKa7wg5sdUWTlu8Ge6xvpYHf2OmAb1bfsglwd8C+zIivXNi/7fCJP4ERU4+FlV3rP1wKbrvLTEZ1tjOAbUEFPCSuyqMzgj8jJhqy3nq1zZ503f2y04n7DhbzggAuBzrTlOER2NAjQevtIV+DhLR9E40stJxm9z9yMSaWvpQwn0MoEy89y81BgMXezaVHVNw/xY9nXT03Gh/UKXtSUcYrlDAMpkpyG7u5vAVR/jI52AM6MtIHrmwFziZ9lcs58wtogYijBV9yOScY8Uv9/nWKa/CacOWC60/DQ1Q/ku7uTpESeDbV4jMEQhmcVpDUHjp5iP99rZzNiN6kY9Bq1993ZubaS9Cugim1QtztrzsQTi/f5q+iRFIjkgm9txOikpYg6BQ98NZtuTQaatMjANluqpYRhXjoprMwMgp26xsZa3cSAcWYDjJwLUVyPHVfKHEEL7YeQp5IQEaGir3d2OP/QOWGnkIycOKG5xhT0sg1N9iHAB85G0xPcNZMnPMBzBjxmgsQQzxYt6oRvdoFA5wKhlvSswUrmxpuGzmfuP0wueSA7+DRM2inTsWSI81F//Md1htyqv5Y8r9UlRMp4wUON9em+aCWYrITVZycf+TU/ohIaa0ajgShTWdlZS5zm68QOAhPsFU4wlbPry9Fc0LegkTC4Hkzjlo1lzI0SiBH3mikukxY2yzhdxrUlDUftCh9jkm1YakPq6TW5620fGIEo5H9GRxqSh92iwu0RkHigq9+nvxOyi11ZVVovLjcJsnDju/xskOqwNByQPbW6aFcnFD5gV+x5NB+NvnsS77EZizeLFNAkhZKLJquyJw4
- 6fFLBYOj
- i5OG1YW96WnIkapc/22HFShPA0LFvSIJaVh/9KwQd4i9nn1Vh2ob65tr1uGvGP7DJEiS6yoeH7Hbr8QAbbQ84z11YP0kBTlf+u09tVTtq0mzyzOFEYyLy6EXEtxLGhkoQek064EXjfjl0CQrFWHrlF+2g3Kvgm9BIsDanmpouRVyrPy0gUpsNxl4NWjGr5GezzYpDGM8BUN3N97ZPinLIQnY7GeLW4pGaWzSfPISnIG1k8LHNSfSoOx0srbmdzwYBhvEIMGEzOo1zpbh1IIApfjZzM2zdLaamevpBuElm8ndbwx/9KKNLj5zdY27wWm34WYh1SMtBYh6lpJ4=
+X-HE-Tag: 1757381811-814289
+X-HE-Meta: U2FsdGVkX19+XONghO4TFGKrA34UVcgzyJh0eviJFyo4qgLfmw0uH11b9zxUwgPwjY9apcfQLL6gwjxcBDPaPJZnpcJzJg4v1KNIz+3xmZIm9jtlbXsYpmSwftc5fkHH66LBesbaddvbR7IE3F7hsFJ8O37r3NSPmsu9u/sSMBkxFSZWdMEG4MVYzveN0uWOFCUoTEzZ1MXAXtxXP31OppJFXKvt1jSJvD87Gd+gQ5dXJ8X+kyYKab8a/qlPBtoF5iOaXiAtNuQsFxD88/fHWwaGgZivihMvoLovN5VqBMRbdfE13npUJFfqI3a6UD7HqEwS+A45e91kaCyeNLA5qCPJOLkBXancOZyH7jReVVsMG6tjmKzk3dtlTcdtX1Dxg0KEpiax9jx4r3zj/POiVAycezOMWG7NzTdLWUrnbRPpWRNdTg0p4kXntbldxhoERBokzMdPOhQXX3OTKRVHESQ94dEoFq7KmWQ7rNi3RFIIA72vbObbcGyYWlvWI7Ga4+gb7yZ/8cNbUEzK1DdyD9eEeSZAIiW3y10mXhKO7pimoHUteccWh4Yan1Ba8nO0afGMi9LWZPe4SuBBgtO78NWJhGRAY2LfKUAaCq0SKkhHfhF/i6Ap0pAh2Ssw45df+rhPy1Hdq2chZ3Q3or4vQFWSy3B26uW15dwHnn7ZJfP2H7f/9HCMF2yfuib9eMr2D5dxRBnquuqdSOR1ivmmEg1WFTD2g9GFhphfnIY+gTZmOeNK35ezc37LsP+a4boTzlwDskY2M2N8kCOb/nYi1ijGpRI1yRNCsYuhIwrkaX8iJl2yk0iEsone9wGUqKO+kB9FdQFbrCgAu8s6DmeiKvSHGcyHZeTTXLGLzOMcGLJqJiDgz9gmfiDzV1aczwYa99kfUjIAnIzZI1cBYPJcx5eQ2tpuCDwZxjjqYxdYKo4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,52 +90,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ye Liu <liuye@kylinos.cn>
+On Tue, 9 Sep 2025 09:21:41 +0800 cuishiwei <cuishw@inspur.com> wrote:
 
-Use IS_ENABLED() and standard if-else to make the code clearer.
+> When a memory cgroup exceeds its memory limit, the system reclaims
+> its cold memory.However, if /sys/kernel/mm/numa/demotion_enabled is
+> set to 1, memory on fast memory nodes will also be demoted to slow 
+> memory nodes.
+> 
+> This demotion contradicts the goal of reclaiming cold memory within
+> the memcg.At this point, demoting cold memory from fast to slow nodes
+> is pointless;it doesn't reduce the memcg's memory usage. Therefore, 
+> we should set no_demotion when reclaiming memory in a memcg.
 
-Signed-off-by: Ye Liu <liuye@kylinos.cn>
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-Reviewed-by: Christoph Lameter (Ampere) <cl@gentwo.org>
+Is this from code inspection?  Or is there some workload which benefits
+from this change?  If the latter, please tell us all about it.
 
----
-Changes in v3:
-- Add "---" in front of the change log.
-Changes in v2:
-- Insert newline after && as it's more than 80 columns.
----
- mm/slub.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
-
-diff --git a/mm/slub.c b/mm/slub.c
-index 30003763d224..5711d6d29a3f 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -3064,18 +3064,17 @@ static inline void note_cmpxchg_failure(const char *n,
- 
- 	pr_info("%s %s: cmpxchg redo ", n, s->name);
- 
--#ifdef CONFIG_PREEMPTION
--	if (tid_to_cpu(tid) != tid_to_cpu(actual_tid))
-+	if (IS_ENABLED(CONFIG_PREEMPTION) &&
-+	    tid_to_cpu(tid) != tid_to_cpu(actual_tid)) {
- 		pr_warn("due to cpu change %d -> %d\n",
- 			tid_to_cpu(tid), tid_to_cpu(actual_tid));
--	else
--#endif
--	if (tid_to_event(tid) != tid_to_event(actual_tid))
-+	} else if (tid_to_event(tid) != tid_to_event(actual_tid)) {
- 		pr_warn("due to cpu running other code. Event %ld->%ld\n",
- 			tid_to_event(tid), tid_to_event(actual_tid));
--	else
-+	} else {
- 		pr_warn("for unknown reason: actual=%lx was=%lx target=%lx\n",
- 			actual_tid, tid, next_tid(tid));
-+	}
- #endif
- 	stat(s, CMPXCHG_DOUBLE_CPU_FAIL);
- }
--- 
-2.43.0
-
+>
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -6706,6 +6706,7 @@ unsigned long try_to_free_mem_cgroup_pages(struct mem_cgroup *memcg,
+>  		.may_unmap = 1,
+>  		.may_swap = !!(reclaim_options & MEMCG_RECLAIM_MAY_SWAP),
+>  		.proactive = !!(reclaim_options & MEMCG_RECLAIM_PROACTIVE),
+> +		.no_demotion = 1,
+>  	};
+>  	/*
+>  	 * Traverse the ZONELIST_FALLBACK zonelist of the current node to put
+> -- 
+> 2.43.0
 
