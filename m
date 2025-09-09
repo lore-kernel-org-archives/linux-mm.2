@@ -4,173 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBA6DCA0FED
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 10:29:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DB6FCA0FED
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 10:48:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EBD6A8E0006; Tue,  9 Sep 2025 06:29:01 -0400 (EDT)
+	id 74B798E0001; Tue,  9 Sep 2025 06:48:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E6CE48E0001; Tue,  9 Sep 2025 06:29:01 -0400 (EDT)
+	id 6FBDC6B0028; Tue,  9 Sep 2025 06:48:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D34BF8E0006; Tue,  9 Sep 2025 06:29:01 -0400 (EDT)
+	id 5C4558E0001; Tue,  9 Sep 2025 06:48:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BE7748E0001
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 06:29:01 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5B4EC1DC5C4
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 10:29:01 +0000 (UTC)
-X-FDA: 83869338882.17.3DCF0A5
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 0514140005
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 10:28:58 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="rjEiP/Yi";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=OhYsL34V;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="rjEiP/Yi";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=OhYsL34V;
-	spf=pass (imf04.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 441C96B000E
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 06:48:09 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E31D38661C
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 10:48:08 +0000 (UTC)
+X-FDA: 83869387056.16.1EAC154
+Received: from flow-b6-smtp.messagingengine.com (flow-b6-smtp.messagingengine.com [202.12.124.141])
+	by imf18.hostedemail.com (Postfix) with ESMTP id D292E1C000E
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 10:48:06 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="I RjGDNL";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=LJWV1kGW;
+	spf=pass (imf18.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.141 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757413739;
+	s=arc-20220608; t=1757414887;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tcgiYgKLCsMivPEp8vQa3zuszqAcHvhjqkBQVa8PslQ=;
-	b=r1Jd7wuttBoPK5KFLAnZoQggWfMHCv4V78sus3n2u4BX0gBl97yBy02vcr8DV3t9LAMthu
-	uEMVgNELOHeTWi5af3NY3PPqhLaKgtySp0lTw4gHXq0v2ghNtgQGvr7XZYRVrDd38+y3o6
-	JWBdh/dFJPRNeKEanfUyd2/ysKtF8Vw=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="rjEiP/Yi";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=OhYsL34V;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="rjEiP/Yi";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=OhYsL34V;
-	spf=pass (imf04.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757413739; a=rsa-sha256;
+	bh=rNoH5fa/opO+WTmOJxSo7bt81WHvwxJBdsDyJBfGjpI=;
+	b=FTMPnxRMrCB6xrGh5YNGa76HYyKQRx0qXlyGmg7SUrXwJLECBVXJSK/ufoGe1vcp0/2G1Y
+	i/HJRY9r8Rf42rbqW4WNd4mVd4DfUUh6PSn6ZrkkvopvomYlzbsArE098IMjUve5qM/4xY
+	MXrI8Q7uPO034IvgkSnRZ24KVtwZYEY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757414887; a=rsa-sha256;
 	cv=none;
-	b=c8HS05QfxqSsUtyM0/h/0C8kU6/rPdgtvY+tbXPgCYf5fhRKb4zb8m0mlhXTEOojlqWxLr
-	niJMTnaHQLxF8Yf1atdqq6lqL0wPicDdRQRTHaOp3OHqRy4iiLxwhNK5oSx1vNXd4qX0YH
-	RwWRE8EfqV7WbT601i3huSJLNewQMBo=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 491801FF91;
-	Tue,  9 Sep 2025 10:28:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1757413736; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=tcgiYgKLCsMivPEp8vQa3zuszqAcHvhjqkBQVa8PslQ=;
-	b=rjEiP/YisA8kF6hude9EUnMla1b66DZ0gvo71Ie4ej3yC//ZrA8Lcg5ruCpXn3opyIXIRC
-	L3cq2BAqyFjbrsRWilyt4GEpWVTU7Nr2xzFo4JRhU+dB45NDiJv38OSim2QYurtssWt5lf
-	IJ3X8k0Ul0fzdgAW5LeGmtypTfLlotg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1757413736;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=tcgiYgKLCsMivPEp8vQa3zuszqAcHvhjqkBQVa8PslQ=;
-	b=OhYsL34VnkU9EBucq3ZvVFpG3YR4QYW7NMVjD0uvvBVnXnajxcs1F/NDtC2+zLG99gX7Pv
-	ASVa0S5V8VRWeHAQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1757413736; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=tcgiYgKLCsMivPEp8vQa3zuszqAcHvhjqkBQVa8PslQ=;
-	b=rjEiP/YisA8kF6hude9EUnMla1b66DZ0gvo71Ie4ej3yC//ZrA8Lcg5ruCpXn3opyIXIRC
-	L3cq2BAqyFjbrsRWilyt4GEpWVTU7Nr2xzFo4JRhU+dB45NDiJv38OSim2QYurtssWt5lf
-	IJ3X8k0Ul0fzdgAW5LeGmtypTfLlotg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1757413736;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=tcgiYgKLCsMivPEp8vQa3zuszqAcHvhjqkBQVa8PslQ=;
-	b=OhYsL34VnkU9EBucq3ZvVFpG3YR4QYW7NMVjD0uvvBVnXnajxcs1F/NDtC2+zLG99gX7Pv
-	ASVa0S5V8VRWeHAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 29C3E13ABA;
-	Tue,  9 Sep 2025 10:28:56 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id LlEFCWgBwGjHIQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Tue, 09 Sep 2025 10:28:56 +0000
-Message-ID: <e19ebca0-8327-4bd9-8952-c2ec1e57f75f@suse.cz>
-Date: Tue, 9 Sep 2025 12:28:55 +0200
+	b=heGrhL5CABS3yYIwRJwVRN0IVGNCSpxQuU0SyU60CfEzN6ppGmNk9Bvy7AbeXIDjHp0X60
+	LbWS+Oj4rp8HP5ClvjvsRK2VI1sT6sIDdMSrqIQc/7FrdltOrgUB7LEoNs+7p2OvwTrYyA
+	Jx3jE5BnES+Bu8CUzQ6jpIhvNUiv1Qc=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="I RjGDNL";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=LJWV1kGW;
+	spf=pass (imf18.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.141 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailflow.stl.internal (Postfix) with ESMTP id ACC591300944;
+	Tue,  9 Sep 2025 06:48:04 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Tue, 09 Sep 2025 06:48:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1757414884; x=
+	1757422084; bh=rNoH5fa/opO+WTmOJxSo7bt81WHvwxJBdsDyJBfGjpI=; b=I
+	RjGDNLB/RvSdGLCqb3j+4cvPg9x83RzGw4YfoxuMzxhnbrV5imieTZMRic/GszNq
+	Gu1964qdV57thuLyTgetKVQ6HJxfgbEv3UMuC8h1Vs5Nt90xP40FkdLIKQt+TRSp
+	OYv2f72B7OeOpQYN+QG4Wd/KEL5IM3wD9lkLeXFTuRyr6J0Fok88qUdapRzRceiT
+	YNzXr9PBg1acj5d0jXVsxbYQHtEKmc7Yxw0ZbKZOj3aTebd22IAoYD0UXdgPCLqN
+	OQFcTJubPTv7lbquF065Wsmup36e4D+UU/96S4PbUuQ72h2MkHT2UtHrAIGuDZ4d
+	6i8Sv+W1IjotUYlCk/yEg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1757414884; x=1757422084; bh=rNoH5fa/opO+WTmOJxSo7bt81WHvwxJBdsD
+	yJBfGjpI=; b=LJWV1kGWhYibguXeTgcDjb+fFkP+m0K8wKlA9or7VmvDoMIFxoU
+	aCi3tx2mmkmTX1mshqZhRyc/y0EzH548Pbv17VCsDn4IFXRfieq+0hq/+v39Ha1z
+	oCzYQYQjv9GVs9zhQsRQYC22h8EdxHwHxeJfbj/zRJGMEY7iE5FPTKzF5A8jDL0S
+	8RNjlNxSOopw+S74tESDKvmiXz/oDtBEGaavl+C2TLcbhOVq0+P+4B7+ILMLWkwS
+	G7cIwVinr89cH9O2yiviIAKP6Din/4IxBzCHg2vs0FMg7MmBmGpQVeJq/sYruYuf
+	arWXSeIvpeMGwcBul3FDWtvlMW7y+FPwmzw==
+X-ME-Sender: <xms:4wXAaIcOxZi6MXDqaZPIMlJR5zG4ACk08EQzc-U3BBu5BW46SgISZg>
+    <xme:4wXAaK7gX7yfoqo-9U4Azoba1S2mciOcfJKCZT-72w3ZI84zOzS6KTbZSMEYs2OiU
+    Yc63AndtE-CqI5bBB0>
+X-ME-Received: <xmr:4wXAaODP57_RB-SuXqQxv_XDLB54bYX1E6XbwE0Ue-2JhJe7zYqklBZn42zgXQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvtddvudcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdfstddttddvnecuhfhrohhmpefmihhrhihlucfu
+    hhhuthhsvghmrghuuceokhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvqeenucggtf
+    frrghtthgvrhhnpeegfeehleevvdetffeluefftdffledvgfetheegieevtefgfefhieej
+    heevkeeigeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuih
+    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirhhilhhlsehshhhuthgvmhho
+    vhdrnhgrmhgvpdhnsggprhgtphhtthhopeehgedpmhhouggvpehsmhhtphhouhhtpdhrtg
+    hpthhtohephhhughhhugesghhoohhglhgvrdgtohhmpdhrtghpthhtoheprghkphhmsehl
+    ihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopegrlhgvgigrnhguvg
+    hrrdhkrhgrsghlvghrsehkuhhkrgdrtghomhdprhgtphhtthhopegrnhgvvghshhdrkhhu
+    mhgrrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprgigvghlrhgrshhmuhhsshgvnh
+    esghhoohhglhgvrdgtohhmpdhrtghpthhtoheptghhrhhishhlsehkvghrnhgvlhdrohhr
+    ghdprhgtphhtthhopehhtghhsehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepug
+    grvhhiugesrhgvughhrghtrdgtohhmpdhrtghpthhtohepfhhmrgihlhgvsehgohhoghhl
+    vgdrtghomh
+X-ME-Proxy: <xmx:4wXAaOdLSe-xaKiD5TO0AqzQ9XC39lKIU-xgGJla6Y30gOXlvP5hAg>
+    <xmx:4wXAaLTmnw6yxOwdmb84zM7NERF65vJI1kb3Cp1Mc5Jc0oZtvBhU1Q>
+    <xmx:4wXAaNkWZ5wi5tbkrHF-riz_nNfw22LQY6lAtojPGT-2SVrn_1Hj2A>
+    <xmx:4wXAaPbwvxo-jaFdVewfjDSZGvsVouF90dv5sf2ZfI9XDq4NP6Vupw>
+    <xmx:5AXAaDy7XY-XTU-fy23f5joErztRzUXdTLdiBZeqv2mg0pnGDXgjwb6E>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 9 Sep 2025 06:48:02 -0400 (EDT)
+Date: Tue, 9 Sep 2025 11:48:00 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: Hugh Dickins <hughd@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Alexander Krabler <Alexander.Krabler@kuka.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Chris Li <chrisl@kernel.org>, 
+	Christoph Hellwig <hch@infradead.org>, David Hildenbrand <david@redhat.com>, 
+	Frederick Mayle <fmayle@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Johannes Weiner <hannes@cmpxchg.org>, John Hubbard <jhubbard@nvidia.com>, 
+	Keir Fraser <keirf@google.com>, Konstantin Khlebnikov <koct9i@gmail.com>, 
+	Li Zhe <lizhe.67@bytedance.com>, Matthew Wilcox <willy@infradead.org>, 
+	Peter Xu <peterx@redhat.com>, Rik van Riel <riel@surriel.com>, Shivank Garg <shivankg@amd.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Wei Xu <weixugc@google.com>, Will Deacon <will@kernel.org>, 
+	yangge <yangge1116@126.com>, Yuanchu Xie <yuanchu@google.com>, Yu Zhao <yuzhao@google.com>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2 1/6] mm/gup: check ref_count instead of lru before
+ migration
+Message-ID: <qsaofruq3r6ffvcutn4rx23rhgc6dg42t6yvnmwpimqk3loz56@d3j24wa3hho7>
+References: <41395944-b0e3-c3ac-d648-8ddd70451d28@google.com>
+ <bd1f314a-fca1-8f19-cac0-b936c9614557@google.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] MAINTAINERS: add Jann Horn as rmap reviewer
-Content-Language: en-US
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@redhat.com>, Rik van Riel <riel@surriel.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Harry Yoo <harry.yoo@oracle.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20250908194959.820913-1-lorenzo.stoakes@oracle.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20250908194959.820913-1-lorenzo.stoakes@oracle.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 0514140005
-X-Stat-Signature: w8fkbaiw9s3gj45oi1bq9z7eykiaupjc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <bd1f314a-fca1-8f19-cac0-b936c9614557@google.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: D292E1C000E
+X-Stat-Signature: zh6ctum3cocx6rqq354epxp7nehefqzh
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1757413738-221761
-X-HE-Meta: U2FsdGVkX1+A++2a7giiHdsV5DazmxVL+uSivzuMTEMHNVs06n18bFEJ3z6PXysZH/8bLaS8wScYhveGoJvocwRKrI8+BYQVGwXqheBUQTW53qCK9ozf5L7Eullsi9klGMgf1m9Rjzq5wJP0t9K5hmpDtq7JML9UtJHt39980RZ1BQlP5EqCsks9MFjG9yRET/8GpbmbpqHWf84dUU4wcsH6YzNP+2CORCullABY/l3nzGS2VgDIO6DW/qdvuEe1Uu3HQxbJ45FNRnGBPfUf07h2MTn8b2r8hbNprNPbhdiGcBFtB4bNpSdvkDNvr2eHJKDrUjNhQ2/FgE4F2Ws8R5CIDRb9bXM0oh0oPTqViY8Q7UkeJfs43+UQz8tnstncCU4fDZqxJ22UXMj8h5I87nJM3dwfvS+8w9VkBPBJ41nD7RUVzEfgTLhLiv9pl0zy0kux+6wz+RzAr8hKqi5QN3TkkpyJbb9bhYjbFZtnx+oLTpKuudjkEvmEicK8s1nwPLSNog8Gz8YqKnTfmJShrPLtBx+63ryPNgT55h/aYwNlJEB9duV73YMqjnOO5xLTQ89YNU6Qav4khFhqGETrTdzfHxnuGvONr6eOE113qw5WMuYtmOCrWYVZVR0neYWteKMTG0SPk7UQDiVqTHLDZ6B4kg/fq8saN3mV2jGVoMTdymX7Pk4tkUuVpxaIH+7qrpb9HaXY1pMOwUsLNl3MHMwBzAiUcRj9egkNylIlOaqmj0ZOyk4uJ5M9FDK8wGb2DHbkaUXKffBH9OeCp2ozNTWpVbFcoHCv48qSRVXO6i4OIUF39t/XiNd/uPk0HigrU50B0Ne0k+hM19EIJGpVoD+KoUCKOpLymevRmlzLtKOJ+eIX+sJcNqT2SK6UNg52QUpXHlK1ug1A0RQqJLMJZEv3Y7E/qapG0yuBAMmh3r80PWBpWP9OFhwJlnM0BgZNTCyk/mXvfDqT506IBAY
- 5bpZtseJ
- J7J08Fst8+ruYbczzItM8fPb6H6U4UVbNT9urxPWUtlw2M/4gZoTC5QMCsk4ZQe1KQZ3PQzcz1WpsjRmHm1GRYr8X8DZnwLPCmzgmF8FrH6YVZwpKOVX4JG6KyyRB8IQchpNK7Kwy1vmKXE7e6I9c1shDDP7N1MD2F26zlYmBdquiLotsfzac2zuXSniOLv5Xe2IqB/9mx2OqMvVXoJc0xTOQH6fiXIdIMulpw/iy+354IusJz+JATj+5DwAaYJaTWvY8zZr46RweDjyBmJAjANqOYhWjCOMhL9acyLjL6PvwfM4RCVrX3y8jsyFjpbw6BQYQ/P9tNb7mIw3L/qqQZIi/vDiJXR+IXonubu1352xOBR/tVCyJUEmCsu0iAc5JYRjulYhLCdzfthi4VVJGXPuDUFeG1MlWUQ0DvzWmH1jspcHaIMxiibwbi53fSYZ3dHK8
+X-HE-Tag: 1757414886-475886
+X-HE-Meta: U2FsdGVkX18zrSYdcEm8PEn0W4+l8AS5OaO7hbxBjZ0XqF+t8xHwL2IFvs+GJk7dLVFOz/dAPd/3UpbfhZXWz22Rp0n/lrDFxNUiSPihmJvY3D11T7XkjAjbf9eCRHpP9NDY1fcR8VRycPKZ0qSyC4G+bVduROUDvA9aGyFVlWwcRzcUaQ6WUOo3jb1c0HaYnbl5Xqe6fPk0VoH7Eu3jmy/A+/hELeuHrPDiiK2+uKz88RH+QgP3MNf5Ij8bnlfAc3CQWEYRwOsFiWhBcP3dCmz7ivZ2nKThN60NK2SGMaR700dWV1eR742jIaue2mdUZ/WsNjDbzSvX5WKzPU0Tzbn+qsAvzUjgCBSYXYDw4iDwx4qKqw2TP3/tuyFIc73NQI1fx5hmlH2LXPUgpF1N3+KdfZ7Q/ug5Im6r0nKmrsVgVaPQO0US5vYg3uQ01O8HHDlWSZaJm8d3o4BUcZHj0TrpGqWmgS5EsEUQgoAdR+G5jOZT1Yo9vQZj1GMGqQDmWq0/XvnzHc7FH+CVA2guNB/J0VPOqsFik2zGloxGmebJM1yAeIJ3wRyPHZghznMRRUP1FtIo89Rkz0yoDOMtdlcfBce9XKJ2rmJkmhgQFbNfcQZnKwHF78v5z2pyJRSgpqZSPEhQZH7Goz69ohMc1FM+yL7pPUKWaCn2J5BJL1qhEaste79qv2Xo0lK65PCq7x8TGprgK8pXFiNTIGY/yh4H7r6J4natfBtWYWIGqWc3DfnN5zp+BaeRGPp04riAOrVGkSJGxPwVdTi7DfhVLYfciklo4j8z5g5/YgMziq0T64gyZCmgr0YAFHBOIlz95F7FLfKa0bg5ZGqchb4h4xg38pC2z8a9lkU06RDiuDXl5aeowrfPEh6CcUcFv2f25M4TWIOuf6swenZCx3DgUMfbHRsrYiKnNloF3V8FsIjgHGVdvnJlIcOaa5oAU9dwbs2yz3WKZc+5h+qRVBP
+ KeJyIDdT
+ y0ra+Gbtm3z9kkFOUbxfDzdaPeenvmpYz15Yswo7p88g0kNYN8WmVPRxPEf9Zw1I56eOUa1z88gWwsFVXcmueK/eUwSQNtYI3iLOFFcRNX284XIpBZ1lxkoOddZx90+etkjg1OkECW7U+Uj57OiDPIk4F7iwbZoGtvlEL+FbN/UCUkfBFfyno4c0kJni7BtjrMe20JgmzYCdPPE0zPO6P8tD5P+TKD+jQUjZaBvUgdKeG+PRqcgpotgdKPmJsYgF3cYnAi5bb7R/m5C9NPEIPDwfpIwAxO9J7vSNNaHn7WdJn+kX/ZtYsfCwucgDA1z5+1DIPWOO6NhtvWxkz85f5IOq66c8oQXh6/S5FUlH9uLaKXBW5QNBDCaQ9EZE+igeGyLMtSFGcRaj5ReuBCe6TrhOPo/OmbuzIJNR48LYg/C32ch5wb5zSkctRYLxSTr0mppG95eNxw8v33XcG0NrWK3MPXD2TmoyleS8aTUMtjbl8NsVLRFVF9Jcmdw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -179,35 +147,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/8/25 21:49, Lorenzo Stoakes wrote:
-> Jann has been an excellent contributor in all areas of memory management,
-> and has demonstrated great expertise in the reverse mapping.
+On Mon, Sep 08, 2025 at 03:15:03PM -0700, Hugh Dickins wrote:
+> Will Deacon reports:-
 > 
-> It's therefore appropriate for him to become a reviewer.
+> When taking a longterm GUP pin via pin_user_pages(),
+> __gup_longterm_locked() tries to migrate target folios that should not
+> be longterm pinned, for example because they reside in a CMA region or
+> movable zone. This is done by first pinning all of the target folios
+> anyway, collecting all of the longterm-unpinnable target folios into a
+> list, dropping the pins that were just taken and finally handing the
+> list off to migrate_pages() for the actual migration.
 > 
-> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> It is critically important that no unexpected references are held on the
+> folios being migrated, otherwise the migration will fail and
+> pin_user_pages() will return -ENOMEM to its caller. Unfortunately, it is
+> relatively easy to observe migration failures when running pKVM (which
+> uses pin_user_pages() on crosvm's virtual address space to resolve
+> stage-2 page faults from the guest) on a 6.15-based Pixel 6 device and
+> this results in the VM terminating prematurely.
+> 
+> In the failure case, 'crosvm' has called mlock(MLOCK_ONFAULT) on its
+> mapping of guest memory prior to the pinning. Subsequently, when
+> pin_user_pages() walks the page-table, the relevant 'pte' is not
+> present and so the faulting logic allocates a new folio, mlocks it
+> with mlock_folio() and maps it in the page-table.
+> 
+> Since commit 2fbb0c10d1e8 ("mm/munlock: mlock_page() munlock_page()
+> batch by pagevec"), mlock/munlock operations on a folio (formerly page),
+> are deferred. For example, mlock_folio() takes an additional reference
+> on the target folio before placing it into a per-cpu 'folio_batch' for
+> later processing by mlock_folio_batch(), which drops the refcount once
+> the operation is complete. Processing of the batches is coupled with
+> the LRU batch logic and can be forcefully drained with
+> lru_add_drain_all() but as long as a folio remains unprocessed on the
+> batch, its refcount will be elevated.
+> 
+> This deferred batching therefore interacts poorly with the pKVM pinning
+> scenario as we can find ourselves in a situation where the migration
+> code fails to migrate a folio due to the elevated refcount from the
+> pending mlock operation.
+> 
+> Hugh Dickins adds:-
+> 
+> !folio_test_lru() has never been a very reliable way to tell if an
+> lru_add_drain_all() is worth calling, to remove LRU cache references
+> to make the folio migratable: the LRU flag may be set even while the
+> folio is held with an extra reference in a per-CPU LRU cache.
+> 
+> 5.18 commit 2fbb0c10d1e8 may have made it more unreliable.  Then 6.11
+> commit 33dfe9204f29 ("mm/gup: clear the LRU flag of a page before adding
+> to LRU batch") tried to make it reliable, by moving LRU flag clearing;
+> but missed the mlock/munlock batches, so still unreliable as reported.
+> 
+> And it turns out to be difficult to extend 33dfe9204f29's LRU flag
+> clearing to the mlock/munlock batches: if they do benefit from batching,
+> mlock/munlock cannot be so effective when easily suppressed while !LRU.
+> 
+> Instead, switch to an expected ref_count check, which was more reliable
+> all along: some more false positives (unhelpful drains) than before, and
+> never a guarantee that the folio will prove migratable, but better.
+> 
+> Note on PG_private_2: ceph and nfs are still using the deprecated
+> PG_private_2 flag, with the aid of netfs and filemap support functions.
+> Although it is consistently matched by an increment of folio ref_count,
+> folio_expected_ref_count() intentionally does not recognize it, and ceph
+> folio migration currently depends on that for PG_private_2 folios to be
+> rejected.  New references to the deprecated flag are discouraged, so do
+> not add it into the collect_longterm_unpinnable_folios() calculation:
+> but longterm pinning of transiently PG_private_2 ceph and nfs folios
+> (an uncommon case) may invoke a redundant lru_add_drain_all().  And
+> this makes easy the backport to earlier releases: up to and including
+> 6.12, btrfs also used PG_private_2, but without a ref_count increment.
+> 
+> Note for stable backports: requires 6.16 commit 86ebd50224c0 ("mm:
+> add folio_expected_ref_count() for reference count calculation").
+> 
+> Reported-by: Will Deacon <will@kernel.org>
+> Closes: https://lore.kernel.org/linux-mm/20250815101858.24352-1-will@kernel.org/
+> Fixes: 9a4e9f3b2d73 ("mm: update get_user_pages_longterm to migrate pages allocated from CMA region")
+> Signed-off-by: Hugh Dickins <hughd@google.com>
+> Cc: <stable@vger.kernel.org>
 
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Acked-by: Kiryl Shutsemau <kas@kernel.org>
 
-> ---
-> I spoke to Jann off-list and he kindly agreed to become rmap reviewer :)
-> 
->  MAINTAINERS | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 8fef05bc2224..ededb2cf8f9c 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -16198,6 +16198,7 @@ R:	Rik van Riel <riel@surriel.com>
->  R:	Liam R. Howlett <Liam.Howlett@oracle.com>
->  R:	Vlastimil Babka <vbabka@suse.cz>
->  R:	Harry Yoo <harry.yoo@oracle.com>
-> +R:	Jann Horn <jannh@google.com>
->  L:	linux-mm@kvack.org
->  S:	Maintained
->  F:	include/linux/rmap.h
-> --
-> 2.51.0
-
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
