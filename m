@@ -4,92 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75C6ACA1016
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 01:18:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E2DBCAC581
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 01:22:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CDE108E0008; Mon,  8 Sep 2025 21:18:51 -0400 (EDT)
+	id 963458E000C; Mon,  8 Sep 2025 21:22:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C8E9F8E0002; Mon,  8 Sep 2025 21:18:51 -0400 (EDT)
+	id 93A858E0002; Mon,  8 Sep 2025 21:22:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B56088E0008; Mon,  8 Sep 2025 21:18:51 -0400 (EDT)
+	id 877448E000C; Mon,  8 Sep 2025 21:22:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F5DF8E0002
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 21:18:51 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6ECBBB7FAB
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 01:18:51 +0000 (UTC)
-X-FDA: 83867952462.21.2BAC3DD
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 6D57A1C0004
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 01:18:48 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Ox6dc2GX;
-	spf=pass (imf21.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 744678E0002
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 21:22:05 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0843B119AD9
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 01:22:05 +0000 (UTC)
+X-FDA: 83867960610.26.AEDA3AE
+Received: from ssh248.corpemail.net (ssh248.corpemail.net [210.51.61.248])
+	by imf23.hostedemail.com (Postfix) with ESMTP id BF132140004
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 01:22:00 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	spf=pass (imf23.hostedemail.com: domain of cuishw@inspur.com designates 210.51.61.248 as permitted sender) smtp.mailfrom=cuishw@inspur.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757380729;
+	s=arc-20220608; t=1757380923;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BCOMaIA3bRDs5y9C8OpoEHGFUb9T7qWgqZAgYrwfhIo=;
-	b=Ue5TWWG5cDPi6kBGwvJrmsl4S1fomY/Y1Y5E0enr9Rd8/gulirtWIXMbjxpUe6GMTEMd0T
-	aTey/bCu0VBxuRB/Qis0HPSnbqHheMEg5BT/EgGdkmS913PxPRcoamD/3ZIAoaVgu9RO9H
-	lRFtEDsGFDP9kfS46+hMQiEYL1LhXmA=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=lEAnNHWc7di92xg3ck6FyVdL7D2jEGkH+Bev+hPUfgw=;
+	b=CmMeDa7/W7WGNzXAsbMiQV4GTLNpFyrNbEKdHzjm20mpLIEOJO3nRsgC2QepQonjftfIKK
+	puyYMEmPwjBbH9iUrkmpB60vZVY1mNeyd8IksaS0EeQ6POzu+ig3X0MiRL2nx39W0DQS+B
+	a8LcciNYHf9UEYx9p5kSgE9VmRXMX4I=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Ox6dc2GX;
-	spf=pass (imf21.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757380729; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=none;
+	spf=pass (imf23.hostedemail.com: domain of cuishw@inspur.com designates 210.51.61.248 as permitted sender) smtp.mailfrom=cuishw@inspur.com;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757380923; a=rsa-sha256;
 	cv=none;
-	b=U5i5VV0hE22wST8mXZqDu6iWRS/B3OYhK8APg9gUuMCGtCIZrXsB4xBanDwK7JRRlpl1od
-	4mB43Pq4kq/nKuDrEWlkh0EysHEkm1qEd5rZyMHpZYG5AY67yBzc5lFlqnd4dVsZQi7rU0
-	Ng1dQ73MNRvjV7XsCCABfUZ4RbTJJ3Y=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1757380725; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=BCOMaIA3bRDs5y9C8OpoEHGFUb9T7qWgqZAgYrwfhIo=;
-	b=Ox6dc2GXlsKo2AA2uBmPJq9/S45uRa+BuyTmvIcsejWtOevSLfatJ8ITFxKbBoyXK3uSJb0p8vRiW8H1HDJYFKa+8i52a81vH3W/sYrM/fpQ2cOWimJIVT83JZmVV2gcfLAoNH/X/2bK+oyMGFNQaVeoSzRPEiyEbwjwSdirHxA=
-Received: from 30.74.144.127(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WnbpUQR_1757380722 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 09 Sep 2025 09:18:43 +0800
-Message-ID: <8f4aa09b-f005-4def-baed-a905a99aa19f@linux.alibaba.com>
-Date: Tue, 9 Sep 2025 09:18:42 +0800
+	b=HAgr6PwAzuaxGKO0jpD0pOPaj/mRdEWBiG43m+nZdz7CvxK2wI1aiQdQyjaN7cjV07opjo
+	GvoQlCBLMuLWqiTNYUIz80xSt+Oq7JYF9a9jXJxaC8HSbv20x/E5FjYZ57sI03fQOtOb9N
+	wyomRJCVIZg/9pUhAuAFbrYYeRfYbR8=
+Received: from jtjnmail201610.home.langchao.com
+        by ssh248.corpemail.net ((D)) with ASMTP (SSL) id 202509090921522911;
+        Tue, 09 Sep 2025 09:21:52 +0800
+Received: from PC00024056.home.langchao.com (10.94.13.207) by
+ jtjnmail201610.home.langchao.com (10.100.2.10) with Microsoft SMTP Server id
+ 15.1.2507.57; Tue, 9 Sep 2025 09:21:52 +0800
+From: cuishiwei <cuishw@inspur.com>
+To: <akpm@linux-foundation.org>, <axelrasmussen@google.com>,
+	<yuanchu@google.com>, <hannes@cmpxchg.org>
+CC: <weixugc@google.com>, <david@redhat.com>, <zhengqi.arch@bytedance.com>,
+	<shakeel.butt@linux.dev>, <lorenzo.stoakes@oracle.com>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, cuishiwei <cuishw@inspur.com>
+Subject: [PATCH] disable demotion during memory reclamation
+Date: Tue, 9 Sep 2025 09:21:41 +0800
+Message-ID: <20250909012141.1467-1-cuishw@inspur.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 10/15] mm, swap: wrap swap cache replacement with a
- helper
-To: Kairui Song <ryncsn@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
- Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>,
- Chris Li <chrisl@kernel.org>, Barry Song <baohua@kernel.org>,
- Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>,
- Kemeng Shi <shikemeng@huaweicloud.com>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@redhat.com>,
- Yosry Ahmed <yosryahmed@google.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- linux-kernel@vger.kernel.org
-References: <20250905191357.78298-1-ryncsn@gmail.com>
- <20250905191357.78298-11-ryncsn@gmail.com>
- <f8051ae4-1b9d-42dc-8272-24a05741d86e@linux.alibaba.com>
- <CAMgjq7CQSGAhah8xwzJJUOLYEEQer63ZERsP6W-JVDCt4mSFMw@mail.gmail.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <CAMgjq7CQSGAhah8xwzJJUOLYEEQer63ZERsP6W-JVDCt4mSFMw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ak5yic4eg7wb5m6croz5x7y8o65g4tpm
+Content-Type: text/plain
+X-Originating-IP: [10.94.13.207]
+tUid: 202590909215269e944241ffdc39a63df3b45123fc775
+X-Abuse-Reports-To: service@corp-email.com
+Abuse-Reports-To: service@corp-email.com
+X-Complaints-To: service@corp-email.com
+X-Report-Abuse-To: service@corp-email.com
+X-Rspamd-Queue-Id: BF132140004
+X-Rspamd-Server: rspam05
+X-Stat-Signature: yu8f4ocuzpoy4crjojp3b7ki9xy553g1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6D57A1C0004
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1757380728-231453
-X-HE-Meta: U2FsdGVkX18bjyY8oC3+EoL+kezGNS7MjIF8R1hLiPufElItS2d9Wn/0fJk6ps7oHACkf4cRSu3ASCGQiUJJLdk4nAOJdsOnnD68k6uEuMZUR24rKiyR+HiSMOe5lHZuxIXFE9cFaPG1JHEw0ifDh3fERQ+OyDx8NfwBCkWmMqGS+pKsbnvyDH7bYCQsAW9IT3xJrpEAvaqVptDtCXhopa2mMUj7wVSDyKUzdV4EhXsa9XKCfxm+8s5xqWKqK73/JwbAC1rNlDyYfAlc5Hwfk3a93necdXaUDxG44xnpmUQRX1ZwUQLECo3+pzqTZUZxV4ZvrELz7bp1rOtCzwbhTogABHKlsvwg3vEFwB0ML5AdCgGCjQ1WkJsP3dQ0U6+cWSZSkbS6OcfnznFB1vYHe+xgM3eWCPDL1Lr6Z5GoKIcd2Egd9zm6zuFnVDjrShJqoQwTmTnwty2ShV8/ti0E8XACQOUW26ROcX8tRiAdM8ceE6F7hFCX6SdGHa1WgdDfScv6uCunqWhKt20OHiIKRlrjrqe5rjl20OjE/17wIwPAmZNZ/gt0MoEGYx7iz56Cc7rsofRNqdN0vYAhLoDswn6/X8jYckWEbSPrltf+KMq9JeuPlCP9WXlnlK7ruLnbhpcAEnSzTAHeW93XRZDRWiahK1l6UCKW72V5LKtyVeN8AAjJc28JV/A+/wLTyTMmxeEit2J7LQb8t0J0KHuPaclJynvQ7HqUyCm1Jv2tEBCYfd0720q7qa8D8k9MXvcX90Y4wLHatdGF215ec67QLeFQFLbXPAC0Qy/HisnP07944IikLibujohakN6NYVtITqbwe2Rk0jqHXFcyDPBZ7pP137VCp/PxImveYoukiEcYhvgtp6clT1Tlg8QrUQdKNeVdt3A+pAnhoYmC6V8c9Xrlm/mGh2VZEK1DaR4HxcHiHWW/ma1k0i81jQgMpj2XA76O9JKkukHrmKMvjw9
- kQyQae2r
- ngOe0dqmk/LDSKDOdXGPo2TTkLy7rcCZsqOM8qpAWFVjmNAHdw4DI+xxmWpPhct4DSJ8IAQUwiFtourgqcBNnRx+SI3MGm1HMLig/knoW9m+jwkebRXrX8sJOoXmMgz40Ih5m7JXRjliXc1+pQWJX8LLakJyJTqwfXPPn91TN61fuKF1Bsr8lduN8dmrwuTG9QpISg18cxKQpcpWp0IldHhnmbuL3+917O0gq58sJVYoTwvRdq1DfenoIsTIi9u+OaaR1OMG3/a/2RsxulTxlPrzxapMswO+jb4tkdbK0wcLfRo1vQ4VyXhn/Xg==
+X-HE-Tag: 1757380920-746643
+X-HE-Meta: U2FsdGVkX19SfJ7uITCuKZFq9Kx63mMJo9aep9YybliqfgZKBFYcukZAYPzpKyVSurttBfuMxQyXg+fYq8a2gNLOFw3Jey3xtJZfyzsErmXZKOYKcie3UKShloWzKpoQVsBRShyU8IMbhSlgVPzLt+XpZLFs98H7VJARCJYRT5Gonh2/pLfoEAqhO1XElByfp5JhrKmKmQZwhofXxq6mZ2ymVlQPLqelcsHGgXjWfdyxPZmwDewWRyJbWnwgPIyZ2L9oHrsovnqL5H3HTFZ2fZrMfV9rjg5xPM5Vhhtahvqu6YFeG/m2IPMWK0NvQJ1qL909QtuirMd//0fHP63gDzG/CXnAYSzHHWLQFWIn1vv03MZMi3ZM5uOK2niwXz2oDps58N7zMZekhJtCt8FTZsi+n8exYT7v9LpmcP1OdEf32gXOD1wHlr3j+fViCW9BmnVqNq047VV+isOUP/+2/mLiSfB8NDK2tViP1zqufTL3qw7DbpfHF/qUleJsUpBs0N/Hoq4eIeYu1D7mUnVVmGS97YWcDEn7qTfSTQi5gMP8ByUhOpIIUfNZd/6Th7BEzuJl5bDsGw/Gnt61XTwHwOn5BauwG6fJIlBsBW4IeBjA2lyPZ7H6IIABYCbJa6H3eUS4ctz6i0E1sfQzPU5rcpc+PoxzqJW+LXv8rcNG0wtowplw6TMqlEKlIXS9v5tOB5s337YcBq5omJjGbe0wWXaQN4i77Jz1HxvCggpdKLwr+JFVkhiW8f5E55bfXRWlGZ4eWQrQPVD27G1lL3fNn32YXNeAuL5WwyGotuxHEXyF6BK9GlisFVa+A0pVgF6k9OF00MWKSqHsY2LEPFUn+GuqqgiLDw7lyfpBonrpgU3i5gWEbwdj+8kVWAssLEYoBHNytjdW1Tmq2QAFJUTqHSlX5vrKpt1aYuwP5rMhFseuQqyfMgeTSa0YmgG2RFlqRfSmdXp8APN+PWZ76Rn
+ XQ3B6jGa
+ B5neSWGMoGjeYLliPta+qFPMzlz00v0uS87q9gTU2+2Bd/xYYTUBgw3GqubmVxYSiViR86x14isINoq0LUziYE/3VwWsACj3B5aoN6e3g2Ndm7tJ5wWme9sBF0SEJwkSm1sUh
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,73 +87,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+When a memory cgroup exceeds its memory limit, the system reclaims
+its cold memory.However, if /sys/kernel/mm/numa/demotion_enabled is
+set to 1, memory on fast memory nodes will also be demoted to slow 
+memory nodes.
 
+This demotion contradicts the goal of reclaiming cold memory within
+the memcg.At this point, demoting cold memory from fast to slow nodes
+is pointless;it doesn't reduce the memcg's memory usage. Therefore, 
+we should set no_demotion when reclaiming memory in a memcg.
 
-On 2025/9/8 18:44, Kairui Song wrote:
-> On Mon, Sep 8, 2025 at 11:52 AM Baolin Wang
-> <baolin.wang@linux.alibaba.com> wrote:
->>
->>
->>
->> On 2025/9/6 03:13, Kairui Song wrote:
->>> From: Kairui Song <kasong@tencent.com>
->>>
->>> There are currently three swap cache users that are trying to replace an
->>> existing folio with a new one: huge memory splitting, migration, and
->>> shmem replacement. What they are doing is quite similar.
->>>
->>> Introduce a common helper for this. In later commits, they can be easily
->>> switched to use the swap table by updating this helper.
->>>
->>> The newly added helper also makes the swap cache API better defined, and
->>> debugging is easier.
->>>
->>> Signed-off-by: Kairui Song <kasong@tencent.com>
->>> ---
->>>    mm/huge_memory.c |  5 ++---
->>>    mm/migrate.c     | 11 +++--------
->>>    mm/shmem.c       | 10 ++--------
->>>    mm/swap.h        |  3 +++
->>>    mm/swap_state.c  | 32 ++++++++++++++++++++++++++++++++
->>>    5 files changed, 42 insertions(+), 19 deletions(-)
->>>
->>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->>> index 26cedfcd7418..a4d192c8d794 100644
->>> --- a/mm/huge_memory.c
->>> +++ b/mm/huge_memory.c
->>> @@ -3798,9 +3798,8 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->>>                         * NOTE: shmem in swap cache is not supported yet.
->>>                         */
->>>                        if (swap_cache) {
->>> -                             __xa_store(&swap_cache->i_pages,
->>> -                                        swap_cache_index(new_folio->swap),
->>> -                                        new_folio, 0);
->>> +                             __swap_cache_replace_folio(swap_cache, new_folio->swap,
->>> +                                                        folio, new_folio);
->>>                                continue;
->>>                        }
->>
->> IIUC, it doesn't seem like a simple function replacement here. It
->> appears that the original code has a bug: if the 'new_folio' is a large
->> folio after split, we need to iterate over each swap entry of the large
->> swapcache folio and then restore the new 'new_folio'.
->>
-> 
-> That should be OK. We have a check in uniform_split_supported and
-> non_uniform_split_supported that swapcache folio can only be splitted
-> into order0. And it seems there is no support for splitting pure
-> swapcache folio now.
+Signed-off-by: cuishiwei <cuishw@inspur.com>
+---
+ mm/vmscan.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Ah, yes. Better to mention that in the commit message, otherwise, it 
-will make people (at least for me) doubt whether this is a 
-non-functional change.
-
-With David's comments addressed, feel free to add:
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-
-> Maybe we can try to enable and make use of higher order split
-> after this series for swapcache. I just had a try to use some hackish
-> code to split random folios in the swap cache to larger order, it seems
-> fine after this series.
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index ca9e1cd3cd68..1edf618a3604 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -6706,6 +6706,7 @@ unsigned long try_to_free_mem_cgroup_pages(struct mem_cgroup *memcg,
+ 		.may_unmap = 1,
+ 		.may_swap = !!(reclaim_options & MEMCG_RECLAIM_MAY_SWAP),
+ 		.proactive = !!(reclaim_options & MEMCG_RECLAIM_PROACTIVE),
++		.no_demotion = 1,
+ 	};
+ 	/*
+ 	 * Traverse the ZONELIST_FALLBACK zonelist of the current node to put
+-- 
+2.43.0
 
 
