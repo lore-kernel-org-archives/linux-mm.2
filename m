@@ -4,88 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1E23CA1016
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 02:30:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C0FECAC581
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 02:33:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1BDDB6B000C; Mon,  8 Sep 2025 22:30:44 -0400 (EDT)
+	id 93CEF8E0009; Mon,  8 Sep 2025 22:32:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 16DFF6B000E; Mon,  8 Sep 2025 22:30:44 -0400 (EDT)
+	id 8ED698E0001; Mon,  8 Sep 2025 22:32:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 084046B0023; Mon,  8 Sep 2025 22:30:44 -0400 (EDT)
+	id 7DC0C8E0009; Mon,  8 Sep 2025 22:32:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id EC6136B000C
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 22:30:43 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 95D1A58941
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 02:30:43 +0000 (UTC)
-X-FDA: 83868133566.16.A5F429D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id E968920008
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 02:30:41 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=qIzlBMzQ;
-	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 67C128E0001
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 22:32:59 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 100A614036D
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 02:32:59 +0000 (UTC)
+X-FDA: 83868139278.04.8D7C251
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 0B7CC40003
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 02:32:56 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=VF07VNeb;
+	spf=pass (imf01.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757385041;
+	s=arc-20220608; t=1757385177;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oVMrnfjPjhw5cPnx+0JLW7lU/NWv6cLPOhQYU4FTcuA=;
-	b=XPVuLep/Nw1bymDhuzzRWMGij/42mavqmVxPwKupMWEdV4v6mg01GkB0F+i26Znjyi9sY2
-	9Ys6ozn8XGRVsBfnoxRehC6i2BLIn6lDT7JQF0AOSYPUYqCMhEEVAoSZUI9zSaCOw2Iynh
-	Eol83us+01l7qc8pe4T+31ZIBN/TSo0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757385041; a=rsa-sha256;
-	cv=none;
-	b=kZ4TYf7dYOaffd8zocI3OumuDTxtH4+hj9DKbwGsEdpHNYsHc4sAm0DwOcT37m42bPsRaj
-	yhkuvH7ps0arF4LVRL9HP7HFJvmQXxpMrnTMWKT76PArayijP6MDQlnQ2DJv33W/d15xfu
-	HV5pmdAQtRiZ8F4zrdPlyrt8wA6AFo0=
+	bh=kqGZLA2OX1lVz766/XmCg7OsOS1a4ZDVYW0b4KhD9ps=;
+	b=lbtbFipMehIDLndnqtJXkayWfDkrEhbUtzt+8V1tO87DH/Er4Ts+pwoyQP1TnwxVIPA080
+	CXYVZHInFTxoccbeDnld6Es+tBymqE3Vda810IJVF27umpfbdquex2D6WHGjpiCSefjOYZ
+	UWbwp2fwbnngoA56psp406eop6ouYwI=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=qIzlBMzQ;
-	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5434260140;
-	Tue,  9 Sep 2025 02:30:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDE8FC4CEF1;
-	Tue,  9 Sep 2025 02:30:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1757385041;
-	bh=xnOLbYMGoywA58IwPQcrin2gfn9hbtMOOqyLDQfKno4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=qIzlBMzQoreDfbkp+ywx7O5GwWyrc3X34JEXFnprc9N2wl/glmiwdDJlD87YXCgII
-	 wXHRJ3VrRL7DlrE08tdkW2ygDGbyh4ZgJ9yHnzZWR7G/E5JcIRJZg+gM4KG4qQ0apj
-	 64dslt4SZOjOXzlKQ5qqC3IPrfDXjFgmIXvmBbV4=
-Date: Mon, 8 Sep 2025 19:30:40 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Changhui Zhong <czhong@redhat.com>
-Cc: Linux Block Devices <linux-block@vger.kernel.org>, linux-mm@kvack.org,
- Minchan Kim <minchan@kernel.org>, Sergey Senozhatsky
- <senozhatsky@chromium.org>
-Subject: Re: [bug report] BUG zs_handle-zram0 (Tainted: G S ): Objects
- remaining on __kmem_cache_shutdown()
-Message-Id: <20250908193040.935144f444ab0e14c2cdde60@linux-foundation.org>
-In-Reply-To: <CAGVVp+WN0YvN182wCxTWVY19YQGmUJbDS8t3gOZ-=R8+rEfrhw@mail.gmail.com>
-References: <CAGVVp+UtpGoW5WEdEU7uVTtsSCjPN=ksN6EcvyypAtFDOUf30A@mail.gmail.com>
-	<CAGVVp+U7Sx+pf5ChXHhyWzT_WuyuOKsEtebo8_GjDkut5a0gXg@mail.gmail.com>
-	<CAGVVp+WN0YvN182wCxTWVY19YQGmUJbDS8t3gOZ-=R8+rEfrhw@mail.gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: E968920008
-X-Stat-Signature: 7uuoqyww4454ctf83gosakr58d7sapqo
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=VF07VNeb;
+	spf=pass (imf01.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757385177; a=rsa-sha256;
+	cv=none;
+	b=xsMIn70CTXKq+mgd7STvA9gZkImSNZJRS75hqa7eFfs9WrGcGWbDQArEl812F/wFkl1v0i
+	W3Jx3EMXWKXxXjr5XP16A0qyD6Xaq0YSoTHPXBam6e0IgV+kz+Vvrw30+suG18dm83Db0l
+	xDmJZq3/nRpfFKygu9NwWi7YWxO5zxs=
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-3e34dbc38easo2092840f8f.1
+        for <linux-mm@kvack.org>; Mon, 08 Sep 2025 19:32:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757385175; x=1757989975; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kqGZLA2OX1lVz766/XmCg7OsOS1a4ZDVYW0b4KhD9ps=;
+        b=VF07VNebg8ihZp354RXPeTl7x3Z1+fgZbrSQqakHuSIxlQFkqd1Ai00k2APJfv6wmS
+         25IQOGpWl9pZ2T2OIeHEMbPV17n51gk9vNJdObOlPVQoM/GnAHEXWq9KeMyrJmjolNcy
+         SRJtwfTPqzTGYkrp3+d2pjUu13i3eesURxwUtB9NARXrlm6so11Pzq+6Q2IsOnicEBtg
+         jJ2Zu3vbQ8MwmeQZ+1OlBIrTeztE9Gnraqvv7ICNHOv1Ed0rkgsC6mNAct0tsI1QPqZo
+         0VsS3o5wqFkBHXS/gOavChuzgsw/Rq5aSs81q7N/0Nstk8paI4Lmg8g5SQsBHn7R1FmT
+         YZSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757385175; x=1757989975;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kqGZLA2OX1lVz766/XmCg7OsOS1a4ZDVYW0b4KhD9ps=;
+        b=UDGBuKPUcwbk8hi48FkO7HqdwyjiHdJ48yYSjf/jZjvC7FE3cmsscQlujETnXTeeK7
+         oWLsnWhkRwdoF4b0OhhshnIzpzqlgDjNTHSePxBY64LLqLFUQavMtAIjjCCjRdC/qu6E
+         fGCE0bp4q+rN5awnyoiPgvvzRFrz1dVafAXJRoeCOY9DbTg9xrJoSUXX29wlqHjpiEcI
+         ywwdgPvZW3wJiPEUV8emLZKSRpEGcp2SjhpPhjVsCpEutO2s7iOsMvhJShKgFMCmYoWm
+         L4akBe32WhC8e1FddFKV1QlLHTJAIcXLuYig1QhrUipOO0iXUIOrX9s9LbFfLCW9osel
+         yeZg==
+X-Forwarded-Encrypted: i=1; AJvYcCUUVlVGFpraSPxyt3v2DVxD6ypZyaIohM65xp+pNyC0H2kLKIuWvc3fW6uzflJddSLxCPQ5ljsYCA==@kvack.org
+X-Gm-Message-State: AOJu0YwDOt65KUs6U229SCw/sW9dcDyDJycWSNSLxSmlHXObgS7Ecbed
+	Z8f4NSxlYop/E4rYYmTVIyvxIEhHlflpwB5Wt1BmeggFQZQwrMUHplhxvQZtIKSr1U3+sgDOh1K
+	zKZJVp9WxUF21xpW8rQmuupJ7giBi91I=
+X-Gm-Gg: ASbGncutc7sbSpi4SiIJR2EunILJ/NKQO8VlotKr1n6tmnlQ8mrMJivJGW5C6YG09F0
+	HZFIpUpbr2t6K2zUSFEO/ZzK1SbIQ4C7580KwxUvRChi+mVqgAHj6y5cstsq/eJPk5kut01OfF0
+	a7L+t6KsdSFV6/b9QRF4EIX6fNlJ1A7puVnlqntxMCC/VYidtppSMTgi5MQgfqDcZ7jC2e5BJC7
+	MWvskAeVk7v8FoLqhqHuClV+PkK8E/BMZev
+X-Google-Smtp-Source: AGHT+IHyp/eLGeencmv3HRpkvDDMa5A9j/c/TphmUA+AbFrRCmfjZE4eqMeGKGIODZDGB4NvJj/IdnoieMNsDy+ELOY=
+X-Received: by 2002:a05:6000:3101:b0:3e4:f194:2886 with SMTP id
+ ffacd0b85a97d-3e642cadca2mr8416382f8f.19.1757385175131; Mon, 08 Sep 2025
+ 19:32:55 -0700 (PDT)
+MIME-Version: 1.0
+References: <20250718021646.73353-1-alexei.starovoitov@gmail.com>
+ <20250718021646.73353-7-alexei.starovoitov@gmail.com> <aH-ztTONTcgjU7xl@hyeyoo>
+ <CAADnVQLrTJ7hu0Au-XzBu9=GUKHeobnvULsjZtYO3JHHd75MTA@mail.gmail.com>
+ <aJtZrgcylnWgfR9r@hyeyoo> <aJt1FHnavjRv5CzI@hyeyoo> <CAADnVQ+aLojadnDgnOwJCTAE319can=rW7ELh2Xy5M-d2TWcHQ@mail.gmail.com>
+ <aL-LX7JI6KLcB-dp@hyeyoo>
+In-Reply-To: <aL-LX7JI6KLcB-dp@hyeyoo>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Mon, 8 Sep 2025 19:32:43 -0700
+X-Gm-Features: AS18NWD2ijOkR7C_EFgiM3P_wPzb5yEZ3i8W9mhM8tIKd0KmklGpXA5KL5Y2Y3o
+Message-ID: <CAADnVQKQLEEJ4hj4dd0Br7R6tCSvO7EuccxLTL7LjHW3pXC+mQ@mail.gmail.com>
+Subject: Re: [PATCH v4 6/6] slab: Introduce kmalloc_nolock() and kfree_nolock().
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: bpf <bpf@vger.kernel.org>, linux-mm <linux-mm@kvack.org>, 
+	Vlastimil Babka <vbabka@suse.cz>, Shakeel Butt <shakeel.butt@linux.dev>, Michal Hocko <mhocko@suse.com>, 
+	Sebastian Sewior <bigeasy@linutronix.de>, Andrii Nakryiko <andrii@kernel.org>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Steven Rostedt <rostedt@goodmis.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 0B7CC40003
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 333wh3uf8ymhci3n8ujcipxzhrizbphx
 X-Rspam-User: 
-X-HE-Tag: 1757385041-355650
-X-HE-Meta: U2FsdGVkX19cirlzmvpzCsQ/8I6nY+PbH/1YN5XCcADA/wHO5FlaR5X9ypgj2BQP7QyhnWK6bzrcDbgUggt0lvdK+l9J1EUMBUXXw4wewB1bNM1z3BPBQCtux6TMX56NrduotaJ/49rS+0M/FbhN9sH8B9aCWj+JxYtF+oMP5RLO+W/E61paxQZI9oRKpKK+1ABeirxEOLhcEGqmpjosR8ejak7G98a/VUX6NCzeVuxSKXgncTg8Na10aKpARFADKroELEQ4WutAHPZS5c/6SQG9bTgmYyo1h6Mw+czPw4ZaRJmErhQ8pDtmsypPl71IRftsB6aTBugqa7C+uGci9pGAAV4p4Zkr5v9bgrU25EtD3upgJeVnE/haiKdFkt3Vrqh4ezcPQP7rd20aWLhLUqkb61qzo4lObCExNN+0T9+DKOVZd/9yBSYOZK2vjFyLpQEcBSeOCp15kQnoACgxYxJz5Y6iHjmS6Mh1SmcGqdgy/JgOvVLJ4qut5H0SBmimkhTCKlPLPM+5W5fSEtyb2loyG8RjpvClCbjVAYhDOAUu9UL+IcsvjQ0SACoHIwNiezDDVC3g1AqvLLUDXggJLvjxoVHENYnwloKjnkYF+Gzl3CRN6hAk69ARbJ3V/X58qkcim2/nnuIxCyJoLuJysQSdOkaKURNW5hqjU2Gb1+KwrCYVdEZLUumn3pWC8F8HEmTCa8oxzEy5TP9eQ4oE3S9ZVsr0akTqnPVNms6ebzsbaMP378vEZ/pNHDBvMeG14ASmrggsRvEJuWJWosqIk8QxSyFwbTj1vow0m+YJgcV4QpSz2/j5DHI0tSwENieeKn0VFKrrCGcjBMHTrMDnMX9OjMzxalvhDn/VWXukpdpLMvjcTKabAwinR4zheVvVSpQcWNtg/xQdyt6yBolnufqFevZoPbCtEH/8K4wdpMWN7QyEhF1qx7Ohsv/rs2CFypVqqGmNDFktVkIGFmH
- 3t2HwFLT
- lbnCQtjC23TZqz2wsq3SheqRBYILWmOprLc2KOu7pdJGkwzqIMpd9VxkFxqRK8yLvu5t7LCGn2kV0aIYFyle/nXyQQxFGvfWRgNL9plz5llFJKzPDLvrR/1RU14jwEbYDLaa5rl8dxsYlMeHELXA0cJDmz7wDEXx8GbAo1wsvzWnjF7oWm2J1cEMy30LAWAqDfX/XhlVwfoaBaLOvQEc0+egyW9eWYZ4ZY4IhhnD9uLDXMtsd0z54YPu7ZRuynP6cgodoFxIXgaR5wM6KdQ+sSmHhlMjAZ6XyOYmr41nTa8ia8/pXJhnBFVcXXvvqdOMyhsfB
+X-HE-Tag: 1757385176-570793
+X-HE-Meta: U2FsdGVkX1/5N5JNpI1r58wbB20WYK0EWSOTqGKmKOgClcBx8ZBGXdG53PwsvrPr1v1xoc16LhcP3GR+OvsRiuISg6gWsoJy8kvZwi4AHXOqN61eql6O9iuaRQpFrCa7Sb6kTEQQI22Rj679zqJKROR9aju2DiXQ3Kc1KwMZmYVr9HQqWq3JIQfP2D52eNyZfNvYbjXILe2QUjR++ClRY7aVA/NXibuQ1VKb+5N5CYHbJCWq2gDh5GZDU523MY5NueT8WutsBhdNQU1+T3SOqFx/sQt6JzQR/L02RlnxmWWCyt75WmuhnognTSNc11B71bZXN/gkswpBWbcREhSGteMdm0vKYwF3m3dwN/93i7CauJfk4rAVIaM7CTU9G6nMYmjCyLs9hGGzYBE4D86sVT9vp+XPdTOTqlQ5X0uLTlBaKE9E6+3WYf8JXSl29SBwcS3b0vorylEofinQNIDxaLzWGepd1D0a+uVXGU/YCM/6RPY+O03KZRXbc4xw0XhqrSTLDPO2fWNGMxDc/hOru9BkY+hS6n/GgAe8h29J7sSgQZM2gwq8hOslb7eheGsGwJnXuEQ+PBEEGgJ2ZsAIzBTP/FczWZ/7kCAUBWlB2IUv/zOuiBmDv9/NLU8wOqX2wMaWwBmKNxtMdZMGApJ3fKhLOKoGKYZdwpmwpW6lBCX+JSddbS8Ur5N6A0hCbLEZb6u0TesRD9eIL39TjF4zjVmyqryx1vbNNS7RL3WNxH0095I1O9BW9G+MI5alRZTCX945AehwWCQpXHCog9ZCKKFuQCYR9f/7dvSnvIDA9zO9bRiBTBprQewZgf++5SXVymN+zKcwD8hNQW5X05Prh03RLZyXcTuL0MgDx9Ygqa+59rS9LuUoLmTCdKHsDhnfgRoMxBLxorTYoH91InluMnFHNnbCdKIv5LH9q6ZyDxQd6xc39+wr/GoNqZ3VEZzgvjxmMphYpE5hT4cx+tf
+ Q0KEdVHH
+ W1tku5Ag48sEWNnjAkBDB7V50IzrjuMv5ILkcEogNcEAdHl1iSmrsmhQb6NtsmoS/8+cAHhK/e/L89O0PsXtp9LwP/nK9u+9JkOTnmsgAxF28x9rWXGgLBaL8h2vEbThQTBwqDDiMr+qz+bKSMPv99AVtQu+WK2s9At5lXnWuox+qJjlIIX1eESV01DwbCLAJ/SYExA3jkSL5d31oB9YMSocSvq/ZVsv0mYzkatk8zAWLIDaLVUTIKEZv7x+aNpUkm9YBUzZQqhOC59gmcecN29hzFxJWQSYdxX4yb4uoU/y3jrgJE8GH/Vd/FcHMJnL82CXCqgfkde9hvPNCODxGWmXWsLkQ0H5XYgFnVoomAE4KY0WPLuCJweHK0cW0EoJnUNhbv1piRFkpnpru3zT8coWAkLG/gHRfU3XkzX+BkpfxaK2IkhiEV57aYlKHTrEkzMKLPPiYTiX+Mtk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,121 +124,137 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 9 Sep 2025 10:17:17 +0800 Changhui Zhong <czhong@redhat.com> wrote:
-
-> I still see this issue on v6.17.0-rc5, please take a look if you have a chance
-
-Well it might be related to zram, although we haven't done much at all
-with zram or zsmalloc in this cycle.
-
-> [ 6915.287305] BUG zs_handle-zram0 (Tainted: G S                 ):
-> Objects remaining on __kmem_cache_shutdown()
-> [ 6915.298379] -----------------------------------------------------------------------------
-> [ 6915.298379]
-> [ 6915.309166] Object 0x0000000023ce3ee6 @offset=960
-> [ 6915.314421] Slab 0x00000000913eaa62 objects=128 used=1
-> fp=0x0000000064bf6df4
-> flags=0x17ffffc0000200(workingset|node=0|zone=2|lastcpupid=0x1fffff)
-> [ 6915.329002] ------------[ cut here ]------------
-> [ 6915.334159] WARNING: CPU: 2 PID: 7198 at mm/slub.c:1176
-> __slab_err.part.0+0x19/0x20
-> [ 6915.342713] Modules linked in: zram 842_decompress lz4hc_compress
-> 842_compress lz4_compress zstd_compress tls rpcsec_gss_krb5
-> auth_rpcgss nfsv4 dns_resolver nfs lockd grace nfs_localio netfs
-> intel_rapl_msr intel_rapl_common intel_uncore_frequency
-> intel_uncore_frequency_common i10nm_edac skx_edac_common nfit
-> libnvdimm x86_pkg_temp_thermal intel_powerclamp rfkill coretemp
-> kvm_intel kvm dax_hmem cxl_acpi cxl_port irqbypass cxl_core iTCO_wdt
-> cdc_ether rapl iTCO_vendor_support usbnet intel_cstate mii
-> intel_uncore mgag200 intel_th_gth isst_if_mbox_pci einj i2c_i801
-> i2c_algo_bit isst_if_mmio pcspkr mei_me isst_if_common intel_th_pci
-> ioatdma i2c_smbus mei intel_vsec acpi_power_meter ipmi_ssif
-> intel_pch_thermal intel_th dca ipmi_si acpi_ipmi ipmi_devintf
-> ipmi_msghandler acpi_pad sg fuse loop xfs sd_mod ghash_clmulni_intel
-> ahci libahci tg3 libata wmi sunrpc dm_mirror dm_region_hash dm_log
-> dm_multipath dm_mod nfnetlink [last unloaded: brd]
-> [ 6915.434755] CPU: 2 UID: 0 PID: 7198 Comm: bash Kdump: loaded
-> Tainted: G S  B               6.17.0-rc5 #1 PREEMPT(voluntary)
-> [ 6915.447281] Tainted: [S]=CPU_OUT_OF_SPEC, [B]=BAD_PAGE
-> [ 6915.453016] Hardware name: Lenovo ThinkSystem SR650 V2/7Z73CTO1WW,
-> BIOS AFE118M-1.32 06/29/2022
-> [ 6915.462728] RIP: 0010:__slab_err.part.0+0x19/0x20
-> [ 6915.467981] Code: 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90
-> 90 0f 1f 44 00 00 e8 f6 fc ff ff be 01 00 00 00 bf 05 00 00 00 e8 77
-> bf 29 00 <0f> 0b c3 cc cc cc cc 48 89 ee 48 c7 c7 eb a2 86 ab c6 05 10
-> 13 c4
-> [ 6915.488939] RSP: 0018:ffa0000002fcf918 EFLAGS: 00010046
-> [ 6915.494773] RAX: 0000000000000000 RBX: ffd400000b6c3b80 RCX: ffffffffa80d3a9a
-> [ 6915.502740] RDX: 0000000000000001 RSI: 0000000000000008 RDI: ffffffffadd3f180
-> [ 6915.510706] RBP: ff11000149c51140 R08: 0000000000000001 R09: fffffbfff5ba7e30
-> [ 6915.518672] R10: ffffffffadd3f187 R11: 0000000062616c53 R12: ff11000285ff0000
-> [ 6915.526640] R13: ff11000285ff1000 R14: ff11000149c4f040 R15: ffd400000a17fc00
-> [ 6915.534605] FS:  00007f9aa117a740(0000) GS:ff1100043db3d000(0000)
-> knlGS:0000000000000000
-> [ 6915.543637] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [ 6915.550051] CR2: 000056332051e698 CR3: 00000001485c1002 CR4: 0000000000773ef0
-> [ 6915.558017] PKRU: 55555554
-> [ 6915.561037] Call Trace:
-> [ 6915.563766]  <TASK>
-> [ 6915.566108]  __kmem_cache_shutdown.cold+0x1c/0x43
-> [ 6915.571364]  kmem_cache_destroy+0x68/0x170
-> [ 6915.575938]  zs_destroy_pool+0x18b/0x250
-> [ 6915.580319]  zram_reset_device+0x233/0x600 [zram]
-> [ 6915.585576]  reset_store+0x20b/0x300 [zram]
-> [ 6915.590252]  ? __pfx_reset_store+0x10/0x10 [zram]
-> [ 6915.595506]  ? sysfs_file_kobj+0xb3/0x1c0
-> [ 6915.599982]  ? sysfs_file_kobj+0xbd/0x1c0
-> [ 6915.604449]  ? __pfx_sysfs_kf_write+0x10/0x10
-> [ 6915.609315]  kernfs_fop_write_iter+0x3a3/0x5a0
-> [ 6915.614278]  vfs_write+0x522/0xfd0
-> [ 6915.618078]  ? __pfx_vfs_write+0x10/0x10
-> [ 6915.622459]  ? local_clock_noinstr+0xd/0xe0
-> [ 6915.627130]  ? __lock_release.isra.0+0x1a4/0x2c0
-> [ 6915.632287]  ksys_write+0xf9/0x1d0
-> [ 6915.636086]  ? __pfx_ksys_write+0x10/0x10
-> [ 6915.640561]  ? lockdep_hardirqs_on+0x78/0x100
-> [ 6915.645426]  do_syscall_64+0x94/0x8d0
-> [ 6915.649515]  ? ktime_get_coarse_real_ts64+0x121/0x180
-> [ 6915.655155]  ? lockdep_hardirqs_on+0x78/0x100
-> [ 6915.660022]  ? entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> [ 6915.665855]  ? lockdep_hardirqs_on+0x78/0x100
-> [ 6915.670719]  ? do_syscall_64+0x139/0x8d0
-> [ 6915.675089]  ? __x64_sys_openat+0x108/0x1d0
-> [ 6915.679762]  ? __pfx___x64_sys_openat+0x10/0x10
-> [ 6915.684819]  ? lockdep_hardirqs_on+0x78/0x100
-> [ 6915.689684]  ? syscall_trace_enter+0x13e/0x240
-> [ 6915.694648]  ? entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> [ 6915.700481]  ? lockdep_hardirqs_on+0x78/0x100
-> [ 6915.705347]  ? do_syscall_64+0x139/0x8d0
-> [ 6915.709726]  ? rcu_is_watching+0x15/0xb0
-> [ 6915.714106]  ? clear_bhb_loop+0x50/0xa0
+On Mon, Sep 8, 2025 at 7:05=E2=80=AFPM Harry Yoo <harry.yoo@oracle.com> wro=
+te:
 >
-> ...
+> On Mon, Sep 08, 2025 at 05:08:43PM -0700, Alexei Starovoitov wrote:
+> > On Tue, Aug 12, 2025 at 10:08=E2=80=AFAM Harry Yoo <harry.yoo@oracle.co=
+m> wrote:
+> >
+> > Sorry for the delay. I addressed all other comments
+> > and will respin soon.
 >
-> > > reproducer:
-> > > # modprobe zram
-> > > # zramctl --find --size 4G --algorithm zstd
-> > > # fio --name=test \
-> > >         --filename=/dev/zram0 \
-> > >         --rw=randrw \
-> > >         --bs=4k \
-> > >         --ioengine=libaio \
-> > >         --iodepth=16 \
-> > >         --numjobs=4 \
-> > >         --runtime=60 \
-> > >         --time_based \
-> > >         --group_reporting \
-> > >         --direct=1
-> > > # echo 1 > /sys/block/zram0/reset
+> No worries! Welcome back.
+>
+> > Only below question remains..
+> >
+> > > > > > >  {
+> > > > > > > @@ -3732,9 +3808,13 @@ static void *___slab_alloc(struct kmem=
+_cache *s, gfp_t gfpflags, int node,
+> > > > > > >       if (unlikely(!node_match(slab, node))) {
+> > > > > > >               /*
+> > > > > > >                * same as above but node_match() being false a=
+lready
+> > > > > > > -              * implies node !=3D NUMA_NO_NODE
+> > > > > > > +              * implies node !=3D NUMA_NO_NODE.
+> > > > > > > +              * Reentrant slub cannot take locks necessary t=
+o
+> > > > > > > +              * deactivate_slab, hence ignore node preferenc=
+e.
+> > > > > >
+> > > > > > Now that we have defer_deactivate_slab(), we need to either upd=
+ate the
+> > > > > > code or comment?
+> > > > > >
+> > > > > > 1. Deactivate slabs when node / pfmemalloc mismatches
+> > > > > > or 2. Update comments to explain why it's still undesirable
+> > > > >
+> > > > > Well, defer_deactivate_slab() is a heavy hammer.
+> > > > > In !SLUB_TINY it pretty much never happens.
+> > > > >
+> > > > > This bit:
+> > > > >
+> > > > > retry_load_slab:
+> > > > >
+> > > > >         local_lock_cpu_slab(s, flags);
+> > > > >         if (unlikely(c->slab)) {
+> > > > >
+> > > > > is very rare. I couldn't trigger it at all in my stress test.
+> > > > >
+> > > > > But in this hunk the node mismatch is not rare, so ignoring node =
+preference
+> > > > > for kmalloc_nolock() is a much better trade off.
 > > >
-> > > dmesg log:
-> > > [ 4861.143371] zsmalloc: Class-80 fullness group 1 is not empty
-> > > [ 4861.149696] zsmalloc: Class-112 fullness group 1 is not empty
-> > > [ 4861.156121] zsmalloc: Class-144 fullness group 1 is not empty
-> > > [ 4861.162541] zsmalloc: Class-160 fullness group 1 is not empty
-> > > [ 4861.168963] zsmalloc: Class-176 fullness group 1 is not empty
-> > > [ 4861.175379] zsmalloc: Class-192 fullness group 1 is not empty
-> > > [ 4861.181797] zsmalloc: Class-224 fullness group 1 is not empty
+> > > But users would have requested that specific node instead of
+> > > NUMA_NO_NODE because (at least) they think it's worth it.
+> > > (e.g., allocating kernel data structures tied to specified node)
+> > >
+> > > I don't understand why kmalloc()/kmem_cache_alloc() try harder
+> > > (by deactivating cpu slab) to respect the node parameter,
+> > > but kmalloc_nolock() does not.
+> >
+> > Because kmalloc_nolock() tries to be as least intrusive as possible
+> > to kmalloc slabs that the rest of the kernel is using.
+> >
+> > There won't be kmem_cache_alloc _nolock() version, because
+> > the algorithm retries from a different bucket when the primary one
+> > is locked. So it's only kmalloc_nolock() flavor and it takes
+> > from generic kmalloc slab buckets with or without memcg.
+> >
+> > My understanding that c->slab is effectively a cache and in the long
+> > run all c->slab-s should be stable.
+>
+> You're right and that's what makes it inefficient when users call
+> kmalloc_node() or kmem_cache_alloc_node() every time with different
+> node id because c->slab will be deactivated too often.
 
-Minchan & Sergey, could you please give this a try?
+Exactly.
+
+> > A given cpu should be kmalloc-ing the memory suitable for this local cp=
+u.
+> > In that sense deactivate_slab is a heavy hammer. kmalloc_nolock()
+> > is for users who cannot control their running context. imo such
+> > users shouldn't affect the cache property of c->slab hence ignoring
+> > node preference for !allow_spin is not great, but imo it's a better
+> > trade off than defer_deactivate_slab.
+>
+> The assumption here is that calling kmalloc_node() with a specific
+> node other than the local node is a pretty niche case. And thus
+> kmalloc_nolock() does not want to affect existing kmalloc() users.
+
+yes.
+
+> But given that assumption and your reasoning, even normal kmalloc_node()
+> (perhaps even kmem_cache_alloc_node()) users shouldn't fill c->slab with
+> a slab from a remote node then? Since most of users should be allocating
+> memory from the local node anyway.
+
+Hard to say. I think kmem_cache_alloc_node() users created
+kmem_cache for their specific needs and node is more likely
+an actual node id that comes all the way from user space.
+At least this is how bpf maps are operating. node id is provided
+at map creation time, then all map elements are preallocated
+from that node, and in run-time elements are recycled through
+the prealloc area. numa id is critical for performance for
+some bpf map use cases like networking, but such strict numa
+hurts tracing use cases where elements should be local to cpu.
+So I'd keep deactivate_slab behavior for kmem_cache_alloc_node()
+and try hard to allocate from specified numa id,
+but I would do an audit of kmalloc_node() users (they aren't many)
+and see whether "ignore node id when c->slab is different" approach
+is a good thing. On a quick glance net/core/skbuff.c might prefer
+to allocate from local cpu instead of deactivate and allocating
+the whole new slab which might fail.
+
+>
+> > defer_deactivate_slab() is there for a rare race in retry_load_slab.
+> > It can be done for !node_match(c->slab, node) too,
+> > but it feels like a worse-r evil. Especially since kmalloc_nolock()
+> > doesn't support __GFP_THISNODE.
+>
+> ...maybe it is fair to ignore node preference for kmalloc_node()
+> in a sense that it isn't great to trylock n->list_lock and fail, then
+> allocate new slabs (even when there are partial slabs available for the
+> node).
+
+Yep. Exactly my thinking. At least that's my preference for kmalloc_nolock(=
+)
+and it is arguably a better choice for generic kmalloc(),
+but probably not for kmem_cache_alloc_node().
+To make such a decision for kmalloc we'd need to collect a ton
+of data. It's hard to optimize for all possible cases.
+While for kmalloc_nolock() BPF will be the main user initially
+and we have a better understanding of trade offs.
+We can change all that in the future, of course, if intuition turns
+out to be incorrect.
 
