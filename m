@@ -4,81 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E2DBCAC581
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 01:22:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A983ACAC581
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 01:33:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 963458E000C; Mon,  8 Sep 2025 21:22:05 -0400 (EDT)
+	id 0A3D18E000C; Mon,  8 Sep 2025 21:33:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 93A858E0002; Mon,  8 Sep 2025 21:22:05 -0400 (EDT)
+	id 07B418E0002; Mon,  8 Sep 2025 21:33:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 877448E000C; Mon,  8 Sep 2025 21:22:05 -0400 (EDT)
+	id ED2DE8E000C; Mon,  8 Sep 2025 21:33:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 744678E0002
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 21:22:05 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0843B119AD9
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 01:22:05 +0000 (UTC)
-X-FDA: 83867960610.26.AEDA3AE
-Received: from ssh248.corpemail.net (ssh248.corpemail.net [210.51.61.248])
-	by imf23.hostedemail.com (Postfix) with ESMTP id BF132140004
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 01:22:00 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	spf=pass (imf23.hostedemail.com: domain of cuishw@inspur.com designates 210.51.61.248 as permitted sender) smtp.mailfrom=cuishw@inspur.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DAAFE8E0002
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 21:33:44 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 807771402B4
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 01:33:44 +0000 (UTC)
+X-FDA: 83867989968.25.2A82368
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+	by imf17.hostedemail.com (Postfix) with ESMTP id B85D740008
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 01:33:42 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=L8zBqe75;
+	spf=pass (imf17.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757380923;
+	s=arc-20220608; t=1757381623;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=lEAnNHWc7di92xg3ck6FyVdL7D2jEGkH+Bev+hPUfgw=;
-	b=CmMeDa7/W7WGNzXAsbMiQV4GTLNpFyrNbEKdHzjm20mpLIEOJO3nRsgC2QepQonjftfIKK
-	puyYMEmPwjBbH9iUrkmpB60vZVY1mNeyd8IksaS0EeQ6POzu+ig3X0MiRL2nx39W0DQS+B
-	a8LcciNYHf9UEYx9p5kSgE9VmRXMX4I=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=nPrjw+yWiXA2jqCjKp2szrgMz+ikmLfEyUEqqnW3/tE=;
+	b=rTrfgs1RhniyOcFeX0P9CNicrPuUXx9QvI9tzc+lbCNTxz76/1QGb5WD3h7sb6gtj1y30n
+	4Vihrp29u3XVdwrqoa5MosEAA/CBhyUicVW815nr2flMJizuwXqC1+ST0uRih6mEGuSv+e
+	Ss6wNpt/H4J5U9ynChn5dBm9ipHErpw=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=none;
-	spf=pass (imf23.hostedemail.com: domain of cuishw@inspur.com designates 210.51.61.248 as permitted sender) smtp.mailfrom=cuishw@inspur.com;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757380923; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=L8zBqe75;
+	spf=pass (imf17.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757381623; a=rsa-sha256;
 	cv=none;
-	b=HAgr6PwAzuaxGKO0jpD0pOPaj/mRdEWBiG43m+nZdz7CvxK2wI1aiQdQyjaN7cjV07opjo
-	GvoQlCBLMuLWqiTNYUIz80xSt+Oq7JYF9a9jXJxaC8HSbv20x/E5FjYZ57sI03fQOtOb9N
-	wyomRJCVIZg/9pUhAuAFbrYYeRfYbR8=
-Received: from jtjnmail201610.home.langchao.com
-        by ssh248.corpemail.net ((D)) with ASMTP (SSL) id 202509090921522911;
-        Tue, 09 Sep 2025 09:21:52 +0800
-Received: from PC00024056.home.langchao.com (10.94.13.207) by
- jtjnmail201610.home.langchao.com (10.100.2.10) with Microsoft SMTP Server id
- 15.1.2507.57; Tue, 9 Sep 2025 09:21:52 +0800
-From: cuishiwei <cuishw@inspur.com>
-To: <akpm@linux-foundation.org>, <axelrasmussen@google.com>,
-	<yuanchu@google.com>, <hannes@cmpxchg.org>
-CC: <weixugc@google.com>, <david@redhat.com>, <zhengqi.arch@bytedance.com>,
-	<shakeel.butt@linux.dev>, <lorenzo.stoakes@oracle.com>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, cuishiwei <cuishw@inspur.com>
-Subject: [PATCH] disable demotion during memory reclamation
-Date: Tue, 9 Sep 2025 09:21:41 +0800
-Message-ID: <20250909012141.1467-1-cuishw@inspur.com>
-X-Mailer: git-send-email 2.43.0
+	b=n8FRG2Gnd2RbPD8zEpct6diaGdkC8DH3CV1ZiYcmF56M0WUJ7R2id/EAawM8gMLvXfs8Iv
+	H0c3bGbBVoFappzCicPmoNOTr/Hy2R/zJl+xx90lqiYQ5wUmcgVsqshgNfvYPOvfoM+ybk
+	rOib2FZ5F/ohvOfNaJXC9BmqZ8qmVrY=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1757381620;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=nPrjw+yWiXA2jqCjKp2szrgMz+ikmLfEyUEqqnW3/tE=;
+	b=L8zBqe75u9e+H42HHeKY6T2Xwg7oPo48e7HJ+tmXqGyegccyNdeIUHbnv+c7e/lfv1NSl2
+	0Iwpr81cLe1xbJNMZtZzOghSfPH7oZCicCS76tyQBpVa2UophFUmZzGsoNSZfu/7gAtk7M
+	8cOeNjOQt7tBTLCpujbAllSc6PBSRjw=
+From: Ye Liu <ye.liu@linux.dev>
+To: Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Ye Liu <liuye@kylinos.cn>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3] mm/slub: Refactor note_cmpxchg_failure for better readability
+Date: Tue,  9 Sep 2025 09:33:07 +0800
+Message-ID: <20250909013307.1093853-1-ye.liu@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.94.13.207]
-tUid: 202590909215269e944241ffdc39a63df3b45123fc775
-X-Abuse-Reports-To: service@corp-email.com
-Abuse-Reports-To: service@corp-email.com
-X-Complaints-To: service@corp-email.com
-X-Report-Abuse-To: service@corp-email.com
-X-Rspamd-Queue-Id: BF132140004
-X-Rspamd-Server: rspam05
-X-Stat-Signature: yu8f4ocuzpoy4crjojp3b7ki9xy553g1
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1757380920-746643
-X-HE-Meta: U2FsdGVkX19SfJ7uITCuKZFq9Kx63mMJo9aep9YybliqfgZKBFYcukZAYPzpKyVSurttBfuMxQyXg+fYq8a2gNLOFw3Jey3xtJZfyzsErmXZKOYKcie3UKShloWzKpoQVsBRShyU8IMbhSlgVPzLt+XpZLFs98H7VJARCJYRT5Gonh2/pLfoEAqhO1XElByfp5JhrKmKmQZwhofXxq6mZ2ymVlQPLqelcsHGgXjWfdyxPZmwDewWRyJbWnwgPIyZ2L9oHrsovnqL5H3HTFZ2fZrMfV9rjg5xPM5Vhhtahvqu6YFeG/m2IPMWK0NvQJ1qL909QtuirMd//0fHP63gDzG/CXnAYSzHHWLQFWIn1vv03MZMi3ZM5uOK2niwXz2oDps58N7zMZekhJtCt8FTZsi+n8exYT7v9LpmcP1OdEf32gXOD1wHlr3j+fViCW9BmnVqNq047VV+isOUP/+2/mLiSfB8NDK2tViP1zqufTL3qw7DbpfHF/qUleJsUpBs0N/Hoq4eIeYu1D7mUnVVmGS97YWcDEn7qTfSTQi5gMP8ByUhOpIIUfNZd/6Th7BEzuJl5bDsGw/Gnt61XTwHwOn5BauwG6fJIlBsBW4IeBjA2lyPZ7H6IIABYCbJa6H3eUS4ctz6i0E1sfQzPU5rcpc+PoxzqJW+LXv8rcNG0wtowplw6TMqlEKlIXS9v5tOB5s337YcBq5omJjGbe0wWXaQN4i77Jz1HxvCggpdKLwr+JFVkhiW8f5E55bfXRWlGZ4eWQrQPVD27G1lL3fNn32YXNeAuL5WwyGotuxHEXyF6BK9GlisFVa+A0pVgF6k9OF00MWKSqHsY2LEPFUn+GuqqgiLDw7lyfpBonrpgU3i5gWEbwdj+8kVWAssLEYoBHNytjdW1Tmq2QAFJUTqHSlX5vrKpt1aYuwP5rMhFseuQqyfMgeTSa0YmgG2RFlqRfSmdXp8APN+PWZ76Rn
- XQ3B6jGa
- B5neSWGMoGjeYLliPta+qFPMzlz00v0uS87q9gTU2+2Bd/xYYTUBgw3GqubmVxYSiViR86x14isINoq0LUziYE/3VwWsACj3B5aoN6e3g2Ndm7tJ5wWme9sBF0SEJwkSm1sUh
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: B85D740008
+X-Stat-Signature: w9ddmhb1jd7o7z3z6kdst8ujzy9qkfku
+X-HE-Tag: 1757381622-195841
+X-HE-Meta: U2FsdGVkX1/YbjboidPbTfakCXhdh16kFdPEBKqo9tq1AU8uf73mjL+8ZVjZGnXQOMhAzB1bZWu8FOd95SYoknlidlw6i5clZFesY7SY4MB5XM6TlTmn5eVC8KbJRVtwoD3hchBVbUPyO4P5s6SeMNQkKa7wg5sdUWTlu8Ge6xvpYHf2OmAb1bfsglwd8C+zIivXNi/7fCJP4ERU4+FlV3rP1wKbrvLTEZ1tjOAbUEFPCSuyqMzgj8jJhqy3nq1zZ503f2y04n7DhbzggAuBzrTlOER2NAjQevtIV+DhLR9E40stJxm9z9yMSaWvpQwn0MoEy89y81BgMXezaVHVNw/xY9nXT03Gh/UKXtSUcYrlDAMpkpyG7u5vAVR/jI52AM6MtIHrmwFziZ9lcs58wtogYijBV9yOScY8Uv9/nWKa/CacOWC60/DQ1Q/ku7uTpESeDbV4jMEQhmcVpDUHjp5iP99rZzNiN6kY9Bq1993ZubaS9Cugim1QtztrzsQTi/f5q+iRFIjkgm9txOikpYg6BQ98NZtuTQaatMjANluqpYRhXjoprMwMgp26xsZa3cSAcWYDjJwLUVyPHVfKHEEL7YeQp5IQEaGir3d2OP/QOWGnkIycOKG5xhT0sg1N9iHAB85G0xPcNZMnPMBzBjxmgsQQzxYt6oRvdoFA5wKhlvSswUrmxpuGzmfuP0wueSA7+DRM2inTsWSI81F//Md1htyqv5Y8r9UlRMp4wUON9em+aCWYrITVZycf+TU/ohIaa0ajgShTWdlZS5zm68QOAhPsFU4wlbPry9Fc0LegkTC4Hkzjlo1lzI0SiBH3mikukxY2yzhdxrUlDUftCh9jkm1YakPq6TW5620fGIEo5H9GRxqSh92iwu0RkHigq9+nvxOyi11ZVVovLjcJsnDju/xskOqwNByQPbW6aFcnFD5gV+x5NB+NvnsS77EZizeLFNAkhZKLJquyJw4
+ 6fFLBYOj
+ i5OG1YW96WnIkapc/22HFShPA0LFvSIJaVh/9KwQd4i9nn1Vh2ob65tr1uGvGP7DJEiS6yoeH7Hbr8QAbbQ84z11YP0kBTlf+u09tVTtq0mzyzOFEYyLy6EXEtxLGhkoQek064EXjfjl0CQrFWHrlF+2g3Kvgm9BIsDanmpouRVyrPy0gUpsNxl4NWjGr5GezzYpDGM8BUN3N97ZPinLIQnY7GeLW4pGaWzSfPISnIG1k8LHNSfSoOx0srbmdzwYBhvEIMGEzOo1zpbh1IIApfjZzM2zdLaamevpBuElm8ndbwx/9KKNLj5zdY27wWm34WYh1SMtBYh6lpJ4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -87,33 +90,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When a memory cgroup exceeds its memory limit, the system reclaims
-its cold memory.However, if /sys/kernel/mm/numa/demotion_enabled is
-set to 1, memory on fast memory nodes will also be demoted to slow 
-memory nodes.
+From: Ye Liu <liuye@kylinos.cn>
 
-This demotion contradicts the goal of reclaiming cold memory within
-the memcg.At this point, demoting cold memory from fast to slow nodes
-is pointless;it doesn't reduce the memcg's memory usage. Therefore, 
-we should set no_demotion when reclaiming memory in a memcg.
+Use IS_ENABLED() and standard if-else to make the code clearer.
 
-Signed-off-by: cuishiwei <cuishw@inspur.com>
+Signed-off-by: Ye Liu <liuye@kylinos.cn>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Reviewed-by: Christoph Lameter (Ampere) <cl@gentwo.org>
+
 ---
- mm/vmscan.c | 1 +
- 1 file changed, 1 insertion(+)
+Changes in v3:
+- Add "---" in front of the change log.
+Changes in v2:
+- Insert newline after && as it's more than 80 columns.
+---
+ mm/slub.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index ca9e1cd3cd68..1edf618a3604 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -6706,6 +6706,7 @@ unsigned long try_to_free_mem_cgroup_pages(struct mem_cgroup *memcg,
- 		.may_unmap = 1,
- 		.may_swap = !!(reclaim_options & MEMCG_RECLAIM_MAY_SWAP),
- 		.proactive = !!(reclaim_options & MEMCG_RECLAIM_PROACTIVE),
-+		.no_demotion = 1,
- 	};
- 	/*
- 	 * Traverse the ZONELIST_FALLBACK zonelist of the current node to put
+diff --git a/mm/slub.c b/mm/slub.c
+index 30003763d224..5711d6d29a3f 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -3064,18 +3064,17 @@ static inline void note_cmpxchg_failure(const char *n,
+ 
+ 	pr_info("%s %s: cmpxchg redo ", n, s->name);
+ 
+-#ifdef CONFIG_PREEMPTION
+-	if (tid_to_cpu(tid) != tid_to_cpu(actual_tid))
++	if (IS_ENABLED(CONFIG_PREEMPTION) &&
++	    tid_to_cpu(tid) != tid_to_cpu(actual_tid)) {
+ 		pr_warn("due to cpu change %d -> %d\n",
+ 			tid_to_cpu(tid), tid_to_cpu(actual_tid));
+-	else
+-#endif
+-	if (tid_to_event(tid) != tid_to_event(actual_tid))
++	} else if (tid_to_event(tid) != tid_to_event(actual_tid)) {
+ 		pr_warn("due to cpu running other code. Event %ld->%ld\n",
+ 			tid_to_event(tid), tid_to_event(actual_tid));
+-	else
++	} else {
+ 		pr_warn("for unknown reason: actual=%lx was=%lx target=%lx\n",
+ 			actual_tid, tid, next_tid(tid));
++	}
+ #endif
+ 	stat(s, CMPXCHG_DOUBLE_CPU_FAIL);
+ }
 -- 
 2.43.0
 
