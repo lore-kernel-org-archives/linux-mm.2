@@ -4,128 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5623CCA0FED
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 10:20:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBA6DCA0FED
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 10:29:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 97E068E0007; Tue,  9 Sep 2025 06:20:43 -0400 (EDT)
+	id EBD6A8E0006; Tue,  9 Sep 2025 06:29:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 955008E0001; Tue,  9 Sep 2025 06:20:43 -0400 (EDT)
+	id E6CE48E0001; Tue,  9 Sep 2025 06:29:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 843D28E0007; Tue,  9 Sep 2025 06:20:43 -0400 (EDT)
+	id D34BF8E0006; Tue,  9 Sep 2025 06:29:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 725FA8E0001
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 06:20:43 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2C20D1A047C
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 10:20:43 +0000 (UTC)
-X-FDA: 83869317966.18.44FFE12
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BE7748E0001
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 06:29:01 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5B4EC1DC5C4
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 10:29:01 +0000 (UTC)
+X-FDA: 83869338882.17.3DCF0A5
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf20.hostedemail.com (Postfix) with ESMTP id B19911C0006
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 10:20:40 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=kcwvpzYP;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ADnymnd8;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=kcwvpzYP;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ADnymnd8;
-	spf=pass (imf20.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	by imf04.hostedemail.com (Postfix) with ESMTP id 0514140005
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 10:28:58 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="rjEiP/Yi";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=OhYsL34V;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="rjEiP/Yi";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=OhYsL34V;
+	spf=pass (imf04.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757413241;
+	s=arc-20220608; t=1757413739;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FofwgkEH/ndJprbxKcQdL9DEqXKQgVqiXCCgr+G4LRU=;
-	b=sbt3walW7P+ZhAPLZq8tFdadFm5TFymY6WvIAJO+imozOGzhzd14Yzk54bDbG8VB5UdgXB
-	tQjumodd/zPj6T3oDaUf49dv8cNkSSsZJaHm0n/ITXxJnwYYpOSlV+52s4wvllrmUmJIgF
-	2NE1KUrSuphJsEqDekYz+6IDz7RSs64=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757413241; a=rsa-sha256;
-	cv=none;
-	b=UTp2dwNO3Bk46jkXynI9Hf1uibBdtmrjDmzcimq33xP6mVmE0VyZ3iF92W47l0Ar6PJ2/3
-	2eMLWnl0fCAqDSlx3ZIvb3OfHH9t37ujzRPczQcaNKRGJkkv3k3ZuTHC3ELNnNSZuOMTtr
-	PMap9plWyCODB5QfD9Nu9tkBZ3BTCfY=
+	bh=tcgiYgKLCsMivPEp8vQa3zuszqAcHvhjqkBQVa8PslQ=;
+	b=r1Jd7wuttBoPK5KFLAnZoQggWfMHCv4V78sus3n2u4BX0gBl97yBy02vcr8DV3t9LAMthu
+	uEMVgNELOHeTWi5af3NY3PPqhLaKgtySp0lTw4gHXq0v2ghNtgQGvr7XZYRVrDd38+y3o6
+	JWBdh/dFJPRNeKEanfUyd2/ysKtF8Vw=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=kcwvpzYP;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ADnymnd8;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=kcwvpzYP;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ADnymnd8;
-	spf=pass (imf20.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	imf04.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="rjEiP/Yi";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=OhYsL34V;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="rjEiP/Yi";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=OhYsL34V;
+	spf=pass (imf04.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757413739; a=rsa-sha256;
+	cv=none;
+	b=c8HS05QfxqSsUtyM0/h/0C8kU6/rPdgtvY+tbXPgCYf5fhRKb4zb8m0mlhXTEOojlqWxLr
+	niJMTnaHQLxF8Yf1atdqq6lqL0wPicDdRQRTHaOp3OHqRy4iiLxwhNK5oSx1vNXd4qX0YH
+	RwWRE8EfqV7WbT601i3huSJLNewQMBo=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 1AD992988F;
-	Tue,  9 Sep 2025 10:20:37 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 491801FF91;
+	Tue,  9 Sep 2025 10:28:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1757413237; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1757413736; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=FofwgkEH/ndJprbxKcQdL9DEqXKQgVqiXCCgr+G4LRU=;
-	b=kcwvpzYPMBRvdYWhs1cy/ENpdvVLW42t7A8KgKKCGhy7AhotgFKfoaNuXzfi7teAv7oG15
-	Mmc8g8bI7kDbEneBF7x0tGJhpBhrH1jAUvq9Z92IumUEm2Ad5cxK6je2Zh8I5jJSz2tzTc
-	C8y1Pd3Ovm/VagAMIIYn0CP7vn7tik4=
+	bh=tcgiYgKLCsMivPEp8vQa3zuszqAcHvhjqkBQVa8PslQ=;
+	b=rjEiP/YisA8kF6hude9EUnMla1b66DZ0gvo71Ie4ej3yC//ZrA8Lcg5ruCpXn3opyIXIRC
+	L3cq2BAqyFjbrsRWilyt4GEpWVTU7Nr2xzFo4JRhU+dB45NDiJv38OSim2QYurtssWt5lf
+	IJ3X8k0Ul0fzdgAW5LeGmtypTfLlotg=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1757413237;
+	s=susede2_ed25519; t=1757413736;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=FofwgkEH/ndJprbxKcQdL9DEqXKQgVqiXCCgr+G4LRU=;
-	b=ADnymnd8JYjPpkAG5Ov03tkDGdE5vh4VQARDV4/kTux1JEBkQj1MF9KHkpk28+47Vlubhk
-	P+bemwf9CBJFdsAg==
+	bh=tcgiYgKLCsMivPEp8vQa3zuszqAcHvhjqkBQVa8PslQ=;
+	b=OhYsL34VnkU9EBucq3ZvVFpG3YR4QYW7NMVjD0uvvBVnXnajxcs1F/NDtC2+zLG99gX7Pv
+	ASVa0S5V8VRWeHAQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1757413237; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1757413736; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=FofwgkEH/ndJprbxKcQdL9DEqXKQgVqiXCCgr+G4LRU=;
-	b=kcwvpzYPMBRvdYWhs1cy/ENpdvVLW42t7A8KgKKCGhy7AhotgFKfoaNuXzfi7teAv7oG15
-	Mmc8g8bI7kDbEneBF7x0tGJhpBhrH1jAUvq9Z92IumUEm2Ad5cxK6je2Zh8I5jJSz2tzTc
-	C8y1Pd3Ovm/VagAMIIYn0CP7vn7tik4=
+	bh=tcgiYgKLCsMivPEp8vQa3zuszqAcHvhjqkBQVa8PslQ=;
+	b=rjEiP/YisA8kF6hude9EUnMla1b66DZ0gvo71Ie4ej3yC//ZrA8Lcg5ruCpXn3opyIXIRC
+	L3cq2BAqyFjbrsRWilyt4GEpWVTU7Nr2xzFo4JRhU+dB45NDiJv38OSim2QYurtssWt5lf
+	IJ3X8k0Ul0fzdgAW5LeGmtypTfLlotg=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1757413237;
+	s=susede2_ed25519; t=1757413736;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=FofwgkEH/ndJprbxKcQdL9DEqXKQgVqiXCCgr+G4LRU=;
-	b=ADnymnd8JYjPpkAG5Ov03tkDGdE5vh4VQARDV4/kTux1JEBkQj1MF9KHkpk28+47Vlubhk
-	P+bemwf9CBJFdsAg==
+	bh=tcgiYgKLCsMivPEp8vQa3zuszqAcHvhjqkBQVa8PslQ=;
+	b=OhYsL34VnkU9EBucq3ZvVFpG3YR4QYW7NMVjD0uvvBVnXnajxcs1F/NDtC2+zLG99gX7Pv
+	ASVa0S5V8VRWeHAQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id F1C1D1388C;
-	Tue,  9 Sep 2025 10:20:36 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 29C3E13ABA;
+	Tue,  9 Sep 2025 10:28:56 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id p9sQOXT/v2g6HwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Tue, 09 Sep 2025 10:20:36 +0000
-Message-ID: <838888f2-7a0f-49f0-9e33-592f13b14ad3@suse.cz>
-Date: Tue, 9 Sep 2025 12:20:36 +0200
+	id LlEFCWgBwGjHIQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Tue, 09 Sep 2025 10:28:56 +0000
+Message-ID: <e19ebca0-8327-4bd9-8952-c2ec1e57f75f@suse.cz>
+Date: Tue, 9 Sep 2025 12:28:55 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 04/21] slab: add sheaf support for batching kfree_rcu()
- operations
+Subject: Re: [PATCH] MAINTAINERS: add Jann Horn as rmap reviewer
 Content-Language: en-US
-To: Uladzislau Rezki <urezki@gmail.com>
-Cc: Suren Baghdasaryan <surenb@google.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
- Sidhartha Kumar <sidhartha.kumar@oracle.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, rcu@vger.kernel.org,
- maple-tree@lists.infradead.org
-References: <20250903-slub-percpu-caches-v7-0-71c114cdefef@suse.cz>
- <20250903-slub-percpu-caches-v7-4-71c114cdefef@suse.cz>
- <aL7FFpIMmXtzzSL1@pc638.lan> <6f8274da-a010-4bb3-b3d6-690481b5ace0@suse.cz>
- <aL_uhPtztx7Ef0T2@pc636>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@redhat.com>, Rik van Riel <riel@surriel.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Harry Yoo <harry.yoo@oracle.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20250908194959.820913-1-lorenzo.stoakes@oracle.com>
 From: Vlastimil Babka <vbabka@suse.cz>
 Autocrypt: addr=vbabka@suse.cz; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -166,18 +160,17 @@ Autocrypt: addr=vbabka@suse.cz; keydata=
  rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
  dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
  m6M14QORSWTLRg==
-In-Reply-To: <aL_uhPtztx7Ef0T2@pc636>
+In-Reply-To: <20250908194959.820913-1-lorenzo.stoakes@oracle.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
-X-Stat-Signature: iejc1o4x77urt8ndbc6chg46atfcomtj
-X-Rspamd-Queue-Id: B19911C0006
+X-Rspamd-Queue-Id: 0514140005
+X-Stat-Signature: w8fkbaiw9s3gj45oi1bq9z7eykiaupjc
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1757413240-584142
-X-HE-Meta: U2FsdGVkX19XX3yahH1nxqvjlIC6hIV4lQ4IZx38us7cZMHHps5dAue0UWNTIoecE0uTaJJN2zKhoffh8aWHbqmqF+R6fATkuAGf33J6r5McJFh4KBMU2XTnz9Ldv0BkAKLCKnocSmLqyj3uboiFmAevWf+lsslz77srZTU63Dw5IzYXQYr34HLgNt9pvt7oJvQh+k6006O/m6ukdwLI/fSnmmUeUnyXfVIZPcZRIecBH+qK+vY9DQl6tPThN+whhMcbKKVW54FUc8gPkv27+G/a3kKTBf4GeLNgLxUXlW+glF1vOBocC3+kRG6kltlE2HUJmb71w4BfLu1ZOgr/WGb4stlpgVEmSb9CGDZp9z57BZKVt6JUoZGH8OdB3kDQBmBKQ6tlmwbp5llfywkmCP3RYQP4XOhiAHutXmyNc6A56m5pD/crxlhKZ2jkg/03ae0o89zim//z7YXY5q6CSfMDe11oc61OahjJUbUocwC02mi+973nkpgalDYhIMW4CFCGTXeQJVj1DfP6yOTux1jWTgcW3t3Mdi8KnZvLoYcDGoEQio3G3P4Eq49Ylhl5hLCEH57wMDJXY4qXqZR6N1cDr2hGn8axTP1lbQqJdC+cw9goi+WNJDDki0NVuuk3rYjzfGirKjY7IkUCNFnw51dHu7mFTZHFOT2nP6YAepxo0/hJqo8x9Uk1EUn1ETKmhOKCg7WZ9hxN627pst4yiATa+WQs52OVU/nBewqzHKTz6057boA7/Piho4cBLTJIcy0knKGdBE0ATmSLTiJbnBdaOV+N662VijHIuY3/lPkqdq+uxlEf32pwiW39sKej9TwLCwcdvSXBZpA2z6ObQAXZE+cT/CPIGrz8jzZW2eRpfSVr1TFxCc45Jzj2PAgnc0i6WeW3s5hDTqRsFkuI/D1UWq0z6loxPKjC42Mw450I7fiJ1pK9wRZ5NT8XQY7LIt/fkisSgBgEuES0gIY
- lmA8rLwW
- k/RNRQ/QlQoEHf76j+3PzR6BU9jgVI89FnRE4K8WSJA4FO5NywwYCkiJN95eSmfGqbkCKRsrAPZyt9HVOxU5ZAZCwTHk7tiZtSsVrZ43phEKyEFgHSJzgqRl15LnpQXnUWVn7n7KGC2gN98chN1XT4INe2z47kWcRqDDyYzlJxjS/gjiQDKkqlHMo4vKDH9/+sg4jngaSw+N9YHzAnuBOw2pvxkcWaiMgxroyPYwKPY/BvRKeOi+TueJr8CfGHlrbzRR6Havmv3l5ageKIzoVF18xuCfIql6Lmydne8Yo5ISsHZs=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1757413738-221761
+X-HE-Meta: U2FsdGVkX1+A++2a7giiHdsV5DazmxVL+uSivzuMTEMHNVs06n18bFEJ3z6PXysZH/8bLaS8wScYhveGoJvocwRKrI8+BYQVGwXqheBUQTW53qCK9ozf5L7Eullsi9klGMgf1m9Rjzq5wJP0t9K5hmpDtq7JML9UtJHt39980RZ1BQlP5EqCsks9MFjG9yRET/8GpbmbpqHWf84dUU4wcsH6YzNP+2CORCullABY/l3nzGS2VgDIO6DW/qdvuEe1Uu3HQxbJ45FNRnGBPfUf07h2MTn8b2r8hbNprNPbhdiGcBFtB4bNpSdvkDNvr2eHJKDrUjNhQ2/FgE4F2Ws8R5CIDRb9bXM0oh0oPTqViY8Q7UkeJfs43+UQz8tnstncCU4fDZqxJ22UXMj8h5I87nJM3dwfvS+8w9VkBPBJ41nD7RUVzEfgTLhLiv9pl0zy0kux+6wz+RzAr8hKqi5QN3TkkpyJbb9bhYjbFZtnx+oLTpKuudjkEvmEicK8s1nwPLSNog8Gz8YqKnTfmJShrPLtBx+63ryPNgT55h/aYwNlJEB9duV73YMqjnOO5xLTQ89YNU6Qav4khFhqGETrTdzfHxnuGvONr6eOE113qw5WMuYtmOCrWYVZVR0neYWteKMTG0SPk7UQDiVqTHLDZ6B4kg/fq8saN3mV2jGVoMTdymX7Pk4tkUuVpxaIH+7qrpb9HaXY1pMOwUsLNl3MHMwBzAiUcRj9egkNylIlOaqmj0ZOyk4uJ5M9FDK8wGb2DHbkaUXKffBH9OeCp2ozNTWpVbFcoHCv48qSRVXO6i4OIUF39t/XiNd/uPk0HigrU50B0Ne0k+hM19EIJGpVoD+KoUCKOpLymevRmlzLtKOJ+eIX+sJcNqT2SK6UNg52QUpXHlK1ug1A0RQqJLMJZEv3Y7E/qapG0yuBAMmh3r80PWBpWP9OFhwJlnM0BgZNTCyk/mXvfDqT506IBAY
+ 5bpZtseJ
+ J7J08Fst8+ruYbczzItM8fPb6H6U4UVbNT9urxPWUtlw2M/4gZoTC5QMCsk4ZQe1KQZ3PQzcz1WpsjRmHm1GRYr8X8DZnwLPCmzgmF8FrH6YVZwpKOVX4JG6KyyRB8IQchpNK7Kwy1vmKXE7e6I9c1shDDP7N1MD2F26zlYmBdquiLotsfzac2zuXSniOLv5Xe2IqB/9mx2OqMvVXoJc0xTOQH6fiXIdIMulpw/iy+354IusJz+JATj+5DwAaYJaTWvY8zZr46RweDjyBmJAjANqOYhWjCOMhL9acyLjL6PvwfM4RCVrX3y8jsyFjpbw6BQYQ/P9tNb7mIw3L/qqQZIi/vDiJXR+IXonubu1352xOBR/tVCyJUEmCsu0iAc5JYRjulYhLCdzfthi4VVJGXPuDUFeG1MlWUQ0DvzWmH1jspcHaIMxiibwbi53fSYZ3dHK8
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -186,47 +179,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/9/25 11:08, Uladzislau Rezki wrote:
-> On Mon, Sep 08, 2025 at 02:45:11PM +0200, Vlastimil Babka wrote:
->> 
->> Hm I could not find where that distinction is in the code, can you give a
->> hint please. In __kfree_rcu_sheaf() I do only have a GFP_NOWAIT attempt.
->> 
-> For PREEMPT_RT a regular spin-lock is an rt-mutex which can sleep. We
-> made kvfree_rcu() to make it possible to invoke it from non-sleep contexts:
-
-Oh you mean it's not allocating even on !RT so there's no RT-specific code.
-
-> CONFIG_PREEMPT_RT
+On 9/8/25 21:49, Lorenzo Stoakes wrote:
+> Jann has been an excellent contributor in all areas of memory management,
+> and has demonstrated great expertise in the reverse mapping.
 > 
-> preempt_disable() or something similar;
->  kvfree_rcu();
->   GFP_NOWAIT - lock rt-mutex
+> It's therefore appropriate for him to become a reviewer.
 > 
-> If GFP_NOWAIT semantic does not access any spin-locks then we are safe
-> or if it uses raw_spin_locks.
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-It does access spinlocks so it's not safe. Thanks, I didn't realize that
-aspect of kfree_rcu(). We'll need to solve this before making sheaves
-enabled everywhere. I don't think the vma or maple tree code would
-kfree_rcu() vma or maple_node in such a restricted context. But to be safe
-I'll just disable the kfree rcu sheaves for PREEMPT_RT for now.
->> > - call_rcu() can be slow, therefore we do not use it in the kvfree_rcu().
->> 
->> If call_rcu() is called once per 32 kfree_rcu() filling up the rcu sheaf, is
->> it still too slow?
->>
-> You do not know where in a queue this callback lands, in the beginning,
-> in the end, etc. It is part of generic list which is processed one by
-> one. It can contain thousands of callbacks.
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+
+> ---
+> I spoke to Jann off-list and he kindly agreed to become rmap reviewer :)
 > 
-> If performance is not needed then it is not an issue. But in
-> kvfree_rcu() we do not use it, because of we want to offload
-> fast.
-
-So IIUC one could call_rcu(obj, some_callback_accessing_obj) and then do a
-kfree_rcu(obj) and the latter can be processed first?
+>  MAINTAINERS | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 8fef05bc2224..ededb2cf8f9c 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -16198,6 +16198,7 @@ R:	Rik van Riel <riel@surriel.com>
+>  R:	Liam R. Howlett <Liam.Howlett@oracle.com>
+>  R:	Vlastimil Babka <vbabka@suse.cz>
+>  R:	Harry Yoo <harry.yoo@oracle.com>
+> +R:	Jann Horn <jannh@google.com>
+>  L:	linux-mm@kvack.org
+>  S:	Maintained
+>  F:	include/linux/rmap.h
 > --
-> Uladzislau Rezki
+> 2.51.0
 
 
