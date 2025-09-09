@@ -4,113 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BD0ACA0FED
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 21:29:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4F87CA0FED
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 21:32:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 951778E0003; Tue,  9 Sep 2025 17:29:40 -0400 (EDT)
+	id 27A4E8E000A; Tue,  9 Sep 2025 17:32:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 929518E0002; Tue,  9 Sep 2025 17:29:40 -0400 (EDT)
+	id 252288E0002; Tue,  9 Sep 2025 17:32:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 83F068E0003; Tue,  9 Sep 2025 17:29:40 -0400 (EDT)
+	id 1679A8E000A; Tue,  9 Sep 2025 17:32:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 717458E0002
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 17:29:40 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 068818E0002
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 17:32:38 -0400 (EDT)
 Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0F9AE1DE51D
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 21:29:40 +0000 (UTC)
-X-FDA: 83871003720.22.EC264E4
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 3B597A0006
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 21:29:37 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=GoBujIvk;
-	spf=pass (imf25.hostedemail.com: domain of surenb@google.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 99B6913B9D6
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 21:32:37 +0000 (UTC)
+X-FDA: 83871011154.22.2967E66
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 90EA340003
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 21:32:35 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=paul-moore.com header.s=google header.b=LmBN2UjM;
+	spf=pass (imf07.hostedemail.com: domain of paul@paul-moore.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=paul@paul-moore.com;
+	dmarc=pass (policy=none) header.from=paul-moore.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757453378;
+	s=arc-20220608; t=1757453555;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OzshIuP25Lf/LgUwHvyQlavyLmps1lc6Uyl+gXnRofA=;
-	b=SI+QpWQsXHEcNuDfjXs3VtEHZVTs4/WvLJZAwoG3g0JDHD39RD+Oqp2ibWe9jkvmkU4kbm
-	eViyj5zki15L/Ge33UuL7iCvJo2d1SDWLbxvc5ude6grPjVuPCv4jkIOa+rDlHiqsS7Rrk
-	TfA7epc2abU1Jso5ZEPfNQJHdxTNsSE=
+	bh=asYCnis4mSt6CdqmJGzu+Uw5kUXiEII09UvJhb2qu+8=;
+	b=YeHxdBskrpCr7KtR7evRFB192zLggAAU4FOO00A01efSYlKNGQ6Ch+Ns1LwKKGHE1gr9js
+	o0UU1TpWoPoZp8JakLVOMjZ4HmlaCdo+G0zYcZmsWYAo5izrT49KxDHSdK+dBPcfPZwEoz
+	kfpKu/kZy8gdzok5FW0+IGCz0FXiYjM=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=GoBujIvk;
-	spf=pass (imf25.hostedemail.com: domain of surenb@google.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757453378; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=paul-moore.com header.s=google header.b=LmBN2UjM;
+	spf=pass (imf07.hostedemail.com: domain of paul@paul-moore.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=paul@paul-moore.com;
+	dmarc=pass (policy=none) header.from=paul-moore.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757453555; a=rsa-sha256;
 	cv=none;
-	b=jyi3GSoOi5PQB+e+o252HsjpRwGxwJvoYUg1vR/oTCYFyZhzzqn4GAKSTh/KBGzEpd7ZAR
-	8j1+OpTc3z2l0h1KO1Lfu4dXgdJ+eoVYgLjoo8GdI+zy5YbMmUl5OwCxdTE3zGj9nuJxsS
-	Nh4LC5w69LXtU6fLiKpYd/3V04jT9q8=
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-621c6ae39b5so5072a12.0
-        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 14:29:37 -0700 (PDT)
+	b=roATeOul1sPLXIWm3in/Ao4BK91NPPV8uXFrskw6XbZKs+s4Ofu7RDJBiueauWwdreckGk
+	As7cqc0lnnhgqOabkwOb7S4aUGBn/H3GS0Ru5qxPw3U+cA9JSHaDTPSTGH2N3X/DxA2+6t
+	uVRD43F+adJhaZKUq7DVWSJ8tkkR/Wk=
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-b523af71683so1868240a12.3
+        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 14:32:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757453376; x=1758058176; darn=kvack.org;
+        d=paul-moore.com; s=google; t=1757453554; x=1758058354; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=OzshIuP25Lf/LgUwHvyQlavyLmps1lc6Uyl+gXnRofA=;
-        b=GoBujIvkUcJYjkoceG1A2tSXOiTZ7yp4c4se9Qf14aFJFUdWIClxlbHRTczls7kvnp
-         XPJOGNW/GC4wwlCyQNrdrhgntP+zxEzikwdxlx4fyMsu89QeaLuryxaiANBYmycDo83a
-         c4ofXkPJqA7FY7v5mSILn5hSLdJvn1mYS628Hr92YZTs8bdZoHsb9jINMyiBaIV6vUrz
-         qxa3tkolLhL94aAgbNexLpDs/S5KcZDo/AI8O+9hu0XujBpe9z5dH+tMFCBMmqEOGyPd
-         UCH6v5ybJpM62TU1fnragMll94BYmSKFNisJEjBsjxuLtXNnRCzB41lDwSbJjOwdkyLS
-         8Kfg==
+        bh=asYCnis4mSt6CdqmJGzu+Uw5kUXiEII09UvJhb2qu+8=;
+        b=LmBN2UjMIlGCx1VS/1H3K1QFfhJ2ycSoRiAFHbtvMayJ7Cqic39lw4NKfnBeu30LYA
+         xCJRV7wiAFJJqWAe4YNlIdPMLRoRPSodLlOvTSKkFIjH/xkk7ZkGcPllnwzZwsgRUQ7O
+         MZfPZqGL62qDObD8ODOhLglUWIxjMUfzoe9yeXDs4KXRtyzmo4Gu6uxRjCJOo1aS5ZsS
+         FcYuJDvRcbdA5cC4fY/cuNIB6ytHnBok4cDmImScr98ULiVp4HVbhIqV5a+DScPlQfE3
+         t54Ldh/B+rUwvTSzNRJpLKZk0qJF54vkJwgIpaWWimQOqNr3V9cyErKtDQvX12kWylyC
+         jsiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757453376; x=1758058176;
+        d=1e100.net; s=20230601; t=1757453554; x=1758058354;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=OzshIuP25Lf/LgUwHvyQlavyLmps1lc6Uyl+gXnRofA=;
-        b=pT4+MxglLq/Lhn+PGvi/RSlazYSkYB7ZOtM5XK47SwX/nQVTwYgtO0nsijcs9ssREH
-         bo9hEACrki/UooMEKBHig+kuVufm/hWNGNqqs2EuhaicQc1DY7vSaFdGc3GTczZNXYGL
-         JhwWO/Oju4En1wMXMfNRFDSQca1rJlNJ5UTaTT3TYtWfh8UuRpvDenz438+GYJpqZHcI
-         DTM57ETZCA1fiIfgm+7d0E49xDJujfF/reV976JKLMA7seoNSHAxsevIV1hIDDHYtg2d
-         21FwxjAX0xkbyQCaSPkXOW0tZtJhLPUK5lxqqBKsU1E4FSZNkY18JlWewjiZFOg6pLEM
-         GWtg==
-X-Forwarded-Encrypted: i=1; AJvYcCV58GwQAbmIYQRsaXapDvEOlxyNzNG+MfuxGqkBcS5FFlSDHsr94t5693pyQLyP8PZN75mbL0Pn3w==@kvack.org
-X-Gm-Message-State: AOJu0YwFm0SvEjVil3XY/a21zyRDWdkG8I5z9TRQ204D4PbGjaO8AXmO
-	x2bRVoVnjBzW9h3qq2TJR3PP6y5NK+83Drr4pxk0Ysl4aGRsywh4NJXc/O6dmiJ4CgK9yqIPi77
-	C1ssLiNZhIDdvPscEjaP4yekSc5YZyzSJVqjrAaY9
-X-Gm-Gg: ASbGncudumAbIqilHc5hTyINTTnLBegcL2PG2rN/CLvUFipWBh2nW1f4KzMNfGNKiqi
-	gHWIBbeGC0V3z8s5Y0XSfXjXpYDsqVTdVC8O3wNL+qZmScTt5FJ56Aseg5NE19VQPE6jJhAESfs
-	IQ4nMt8uWJ1I7BP2D6Vq9TdVcpdREDnxgRvbjFsSZg27rwX0NWlFqWEeMPj3RnwhbhEF1klvAq6
-	LfC5vW1BpThNGbFb3Zz3Gx5Hml5QXcoDEKcULILTBP0
-X-Google-Smtp-Source: AGHT+IG3Bk5jtrADtC8DToS6oiX6FI8o3Fb6PEL11mpb8Jwou6oOmQTziCZTSqNNrEujN8hDJXcpLR1UXiFaeVgmlUA=
-X-Received: by 2002:aa7:d7cb:0:b0:61e:c6ae:7a58 with SMTP id
- 4fb4d7f45d1cf-62d22df05d0mr26258a12.0.1757453376378; Tue, 09 Sep 2025
- 14:29:36 -0700 (PDT)
+        bh=asYCnis4mSt6CdqmJGzu+Uw5kUXiEII09UvJhb2qu+8=;
+        b=j1lSrmnAKqzr9vm/+ZVKKs8ffUISLZW4FHm6mVk4/cgrDb5ylYvvFITYky+77SIuAY
+         MYhJ3vT27mRrw76D+F7P/ly5O4aa3v2WSDAQ1xDm2z/qz0sK7IMF32DbIklwZIMwEuSX
+         ALuk7NN/gqln8CKFv9HhBBoNRtNUsB4gxXwFKzdHdZRrdzL8SKZmYsV42RIzC6zK7azB
+         HVbpteFXRp7r0d+gxztfzi4FPwexRWd6FcMoxJaUnk5ed7WQW3TNvD+ihO4JB5rqBI8z
+         gsqjhFVp0RxdXb5hvSAbd+vcPhPHHQmDwvsqedBMm9npIPQ3cTDTY6zaz6+FocfH7sO2
+         wxjg==
+X-Forwarded-Encrypted: i=1; AJvYcCXeY3TEKlEIJe29OsT+GvEFsmsethW00/jByDsawQwwmrKTdRNBmm6ueHG/B4StFabh0JIscV2gNA==@kvack.org
+X-Gm-Message-State: AOJu0YwxTWkYamy8PdtkKE2rPdSQD0cPOjvFa6/h7EiaAVMNFrRNpxVM
+	pbS76V+kOqM7A27b7zcwDZKhZCX+JMP34orXlDpYYbtQjAc4Ovb8QZSxcKxShaITJbcBYJHG/Dk
+	o5er1n4Hgp9e7/13oiwZRstUFoDhyPV8MHN+ibNyr
+X-Gm-Gg: ASbGncsEnO5c2+aqVYQYq/gg+pH37TUUZCDEvhoWCb08Eq0xMtc1CW7p/dKq/2cOw4Q
+	+FRb490fwfY3gbdJdNeDxIQ096BQ0xAYWmdIwEasu1GQhZ9BOodo7vRdJKTZFjXMtsHcXj/gh4I
+	gKRpzNSSnyuIcv8LJMGBgw41pUb5u2MHYozA2u3lO+kHdkMi3MoYmw3ias+ID9XLeFFhxeYIUGi
+	n1TSZHep8WBHBzs4A==
+X-Google-Smtp-Source: AGHT+IFpFxNo6dxCBm0dGcRZj8ObBT0pFbtG/sSiVCHxphai4thKxc4JU3AVtrF10UeYjdGdH9PqFYTQ3Uv4NlDmlp8=
+X-Received: by 2002:a17:90b:1d0b:b0:32b:df0e:9284 with SMTP id
+ 98e67ed59e1d1-32d43f45856mr17772256a91.10.1757453554206; Tue, 09 Sep 2025
+ 14:32:34 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250909190945.1030905-1-Liam.Howlett@oracle.com> <20250909190945.1030905-6-Liam.Howlett@oracle.com>
-In-Reply-To: <20250909190945.1030905-6-Liam.Howlett@oracle.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Tue, 9 Sep 2025 14:29:23 -0700
-X-Gm-Features: AS18NWCtVVHoJovdoA_YZXVgLcM8he286fzD9VywAnIKmyeEKVWRIu_7WPtm7FA
-Message-ID: <CAJuCfpG6US+wPA7V5-0Dkho+BRs6uNUCYCV1GyRrbvpzC1N=sg@mail.gmail.com>
-Subject: Re: [PATCH v1 5/9] mm/vma: Add page table limit to unmap_region()
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, maple-tree@lists.infradead.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
-	Pedro Falcato <pfalcato@suse.de>, Charan Teja Kalla <quic_charante@quicinc.com>, shikemeng@huaweicloud.com, 
-	kasong@tencent.com, nphamcs@gmail.com, bhe@redhat.com, baohua@kernel.org, 
-	chrisl@kernel.org, Matthew Wilcox <willy@infradead.org>
+References: <20250908013419.4186627-1-tweek@google.com> <CAEjxPJ5q0eriGjo1tdfN+pzBBN5OeyfMaYp_sNQcOg-rDaXVCA@mail.gmail.com>
+ <CAHC9VhR1pEFYzSFaqqWsU8C6vDaH_E8uZZ5g=KyK6TJvA7a8MQ@mail.gmail.com>
+In-Reply-To: <CAHC9VhR1pEFYzSFaqqWsU8C6vDaH_E8uZZ5g=KyK6TJvA7a8MQ@mail.gmail.com>
+From: Paul Moore <paul@paul-moore.com>
+Date: Tue, 9 Sep 2025 17:32:22 -0400
+X-Gm-Features: Ac12FXyL7eL3X_jCKFwoxMjKs2tue0NW6-1wqyMzPYDoAVXjw8OY2Gb7ih30uV4
+Message-ID: <CAHC9VhQLZ+mWS77OG6cDddXYfJy+eTqkKSZ28PJNEjLigsNGhg@mail.gmail.com>
+Subject: Re: [PATCH v2] memfd,selinux: call security_inode_init_security_anon
+To: Stephen Smalley <stephen.smalley.work@gmail.com>
+Cc: =?UTF-8?Q?Thi=C3=A9baud_Weksteen?= <tweek@google.com>, 
+	James Morris <jmorris@namei.org>, Hugh Dickins <hughd@google.com>, 
+	Jeff Vander Stoep <jeffv@google.com>, Nick Kralevich <nnk@google.com>, Jeff Xu <jeffxu@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Isaac Manjarres <isaacmanjarres@google.com>, 
+	linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org, 
+	selinux@vger.kernel.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 3B597A0006
-X-Rspamd-Server: rspam05
-X-Stat-Signature: pdy9zeau1bc5j6aynn9xpn596pjohek4
+X-Rspamd-Queue-Id: 90EA340003
 X-Rspam-User: 
-X-HE-Tag: 1757453377-282352
-X-HE-Meta: U2FsdGVkX1+V6RQyTvNKNDudrCAQfKLk8HE77GHgLDOEsiCu0XN2bXCpnoYvL5OKBRuOaz8xJRa++iIZkXQnaRbGbl1c9pekhwQuA5+6tBZ70ZIBnVN9r/Z7EJUKhWbn8qyOMGSfGrCqnbyvoXIjhpt7V8jnEE0ARP1m8ba8JsxsGvte9ADlfu/ErKgPXavDl7KanSgFsKRk2bH9aVAk3p2gTDYtRR9Tg23td8CSPsPVao9/X6FdHOdjPZCgU74raWTgoygIEPfM0NjwzlmdkiQaqBleLPDdmCFI/+WNWO/rqfh+mNZgabjk7Jkj5qJ1NCO6NJRtBCyVRVEDwGMyLXks8Aja3CSs9D/rrYM502zdOFBklpoURH0NXaGxNeSKiSmdFUYHAPPgPethQ50dwHNRBLkWGlq8k6gvdyyYQuHZgyhvKR4rw2AZG8Im3dYG3bxDZz2uFZVbWYY1pho5ChGPEfdBi0r2uinR0DZrJTWkp2c8U0yRuppwt2JhY+L8ghGG8NwmEyXsA/HgUavhDrhDZqgqa+Etu5IaQXGafQbN9o+fsy6VRuXAdPBB/mVezTjgdwsXJMvuKwKoiYENxEZKQPRn5+7dZ6J2Enw7NRTPrqqs/r4Lnr0p0VJd4yB6yo2MnNnU0BoBM5c4+7+5I2OlnC/2QMjVLEx0j/a+iCr8tizHLi1FQS3GEW9/h75Xfi1cFEjmQ6/BsvYnGId+7uLVOJoyQBPjJZXBSbz4vJacFXI6S55V/Po2A93wwjR2jPLXrYLh45tV24dm4Ir8N3siAiuQOzJ4lsIX9t3Z+aVPJo2zKhLG/GHidRYfsqt+ntEfT+sVhvDnR60uQxYUQd5Nbxz8tB4ZSJ/0qlICpZu7ho7LxWBX9vtGTthJGyWyp9AnU2W2AQoGQnFWgxgdk/zI+GC8mlV6AOJM0snCKOmYvpZKaJ/z9hvwF9i4YLylJPJwJzi4kaM=
+X-Rspamd-Server: rspam07
+X-Stat-Signature: tyzqzn3etww6syhja9kka5nm3b3wbcar
+X-HE-Tag: 1757453555-595628
+X-HE-Meta: U2FsdGVkX19uJRv4Pz/FNgN9OoHb6kJ75ly7ouzDFUOgCJ9kPlCbynOeG/n9/oZQjtvxDkpcYQjSqAPedNsw9SrHMuATmBtV7Pu14I0AyuKmF0X3GPTpxkcKPjy7DDtByJwruUwrOV2mVopZfi90IGAZjMBMxsOiwqiLw/pY+w1cmo2fErMJwh6GVDT78lA2xh7qWBKkL/1eJyjDxFdZG+MrmNfhhVLfnhHd35800uH0GbyI5hjuM6MzuiDpr/IdPjZFXg3DAfekO6W5LmNR78Gof3je76WgnjAayuYrIznD56iFxOG2XxKfsBRIZLlGmB22tVvq9POZnktDjooc1EL/6x70YdUwoHJSaz7rgHY0GPBJICdOgQPZsuR2IMNoeKpKf2EcDV1kpi/Ly51xJjR6UhjVK7JohiorxJ2kDUzTZlzz7p8wTCQqEUuSQZj81tu8BLJoQ6RLSeBYxTp86Wa6KUxIw+hTOnnd9G0TLKZoiQpMRZlX2i/dy0C1LD//fAdkbsgcdfB+nGE1IVFTnTzDfPDdMN/lugbLRsnHXhlQGjWIl+QEpMvr5ac5L0P3cH6DUEAPkj9dY151iRF6goH/KEQlL5GrJppdJmYNJfHY70XedXTy63NoeOHWBr4uqMGcWLwkY4D6y61kySAkVi+cfwEBS+Uy+9BSpbN2CDsfJusM2KEjBUxfZliDKhsDnFyy9IHRyScR0przsNIyT7cNaSsV45+hg5iJZAlilpbY5O1G882n3nOdou/zYYtElVyM/5pj27MbLyJlq8Vbq+yGhMPv9LTQtWzvSYDnh17UGooCm3SEAFUjWgeuPrhQ/gFO4/iE0Wvij3Fa9ihxWcHz3MwbOuB6fzLEs2S7KFsNyF67lvgWb1SjAalsyNB9GWZDd/KG7E678sLV8NU3cCT2do8FoSCtNz0Reh+QqPUs+PXKYCaQpzb2tjgFg5Pp+2EmMREBdPHOTthk+8f
+ eaIDn741
+ 0wpO+mKAEX3us2vUoRiwSEoCBLOl+bRjNyw6PpVdMaeQ/yUF4t97l8Iox26jWd5/Uc2VaVGUGf8OENGI+qpyU0aSoBp1AVi8GMpTPMDOAllkqGZ7NJF7gTDsfAPHbPA71hLb8I6UpMSBBwepGplEyQ4Jo85kjGVpn79WpLCfA9vH46zE7agCk3JpjgsBHP6OTaeIZ6csa0ZOWRvJti1BiQxPdB0UEkGqJTkv/ClObXle0b+HHsw582XdfAYE/FPfNgrJRnf9eIZpITa04D6AsZv3/mmcZmq2hu15m5h0v9ebmmJV+rs7+Sye2CEK9Hu+HiKs0IqDFKz6YhGrP6kg2FMZAkjHWTS447HXpQRz/DzmCZLFP9g1TvJHGp/PpXL+Lr+KKPgYQ6Oe2v5ojgEVnE3lV4g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,87 +121,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 9, 2025 at 12:10=E2=80=AFPM Liam R. Howlett <Liam.Howlett@oracl=
-e.com> wrote:
+On Tue, Sep 9, 2025 at 5:10=E2=80=AFPM Paul Moore <paul@paul-moore.com> wro=
+te:
 >
-> The unmap_region() calls need to pass through the page table limit for a
-> future patch.
->
-> No functional changes intended.
->
-> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-> ---
->  mm/vma.c | 5 +++--
->  mm/vma.h | 2 +-
->  2 files changed, 4 insertions(+), 3 deletions(-)
->
-> diff --git a/mm/vma.c b/mm/vma.c
-> index 1bae142bbc0f1..4c850ffd83a4b 100644
-> --- a/mm/vma.c
-> +++ b/mm/vma.c
-> @@ -474,7 +474,7 @@ void remove_vma(struct vm_area_struct *vma)
->   * Called with the mm semaphore held.
->   */
->  void unmap_region(struct ma_state *mas, struct vm_area_struct *vma,
-> -               unsigned long vma_min, unsigned long vma_max,
-> +               unsigned long vma_min, unsigned long vma_max, unsigned lo=
-ng pg_max,
->                 struct vm_area_struct *prev, struct vm_area_struct *next)
->  {
->         struct mm_struct *mm =3D vma->vm_mm;
-> @@ -487,7 +487,7 @@ void unmap_region(struct ma_state *mas, struct vm_are=
-a_struct *vma,
->         mas_set(mas, vma->vm_end);
->         free_pgtables(&tlb, mas, vma, prev ? prev->vm_end : FIRST_USER_AD=
-DRESS,
->                       next ? next->vm_start : USER_PGTABLES_CEILING,
-> -                     next ? next->vm_start : USER_PGTABLES_CEILING,
-> +                     pg_max,
+> Considering that we are at -rc5 right now, we only have a few more
+> days left in the current dev cycle, I'm going to merge this now (with
+> a subject line tweak and some unnecessary vertical whitespace
+> removed), and I'll put together a quick little patch to do the
+> WARN_ON()/EACCES conversion which you'll see on list shortly ...
 
-Hmm. The free_pgtables() parameters were advertised as:
+The patch can be found at the link below.
 
-@floor: The lowest page table address
-@ceiling: The highest page table address
-@tree_max: The highest tree search address
+https://lore.kernel.org/selinux/20250909213020.343501-2-paul@paul-moore.com=
+/
 
-but here tree_max=3Dpg_max. I would expect pg_max to mean "The highest
-page table address", IOW we should have ceiling=3Dpg_max. Either the
-order of the parameters is wrong here or the names are misleading.
-I also think in the previous patch we should have renamed
-free_pgtables() parameters to vma_min, vma_max and pg_max like here
-for consistency and to avoid confusion.
-
->                       /* mm_wr_locked =3D */ true);
->         tlb_finish_mmu(&tlb);
->  }
-> @@ -2420,6 +2420,7 @@ static int __mmap_new_file_vma(struct mmap_state *m=
-ap,
->                 vma_iter_set(vmi, vma->vm_end);
->                 /* Undo any partial mapping done by a device driver. */
->                 unmap_region(&vmi->mas, vma, vma->vm_start, vma->vm_end,
-> +                            map->next ? map->next->vm_start : USER_PGTAB=
-LES_CEILING,
->                              map->prev, map->next);
->
->                 return error;
-> diff --git a/mm/vma.h b/mm/vma.h
-> index a9d0cef684ddb..b0ebc81d5862e 100644
-> --- a/mm/vma.h
-> +++ b/mm/vma.h
-> @@ -261,7 +261,7 @@ int do_vmi_munmap(struct vma_iterator *vmi, struct mm=
-_struct *mm,
->  void remove_vma(struct vm_area_struct *vma);
->
->  void unmap_region(struct ma_state *mas, struct vm_area_struct *vma,
-> -               unsigned long min, unsigned long max,
-> +               unsigned long min, unsigned long max, unsigned long pg_ma=
-x,
->                 struct vm_area_struct *prev, struct vm_area_struct *next)=
-;
->
->  /* We are about to modify the VMA's flags. */
-> --
-> 2.47.2
->
+--=20
+paul-moore.com
 
