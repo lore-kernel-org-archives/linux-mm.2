@@ -4,86 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 231D3CA1016
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 00:06:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C06ACAC582
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 00:08:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 44DB96B0008; Mon,  8 Sep 2025 20:06:55 -0400 (EDT)
+	id CB6CC8E0002; Mon,  8 Sep 2025 20:08:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 425A06B000D; Mon,  8 Sep 2025 20:06:55 -0400 (EDT)
+	id C8EE68E0001; Mon,  8 Sep 2025 20:08:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 363076B000E; Mon,  8 Sep 2025 20:06:55 -0400 (EDT)
+	id BA4978E0002; Mon,  8 Sep 2025 20:08:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 23E606B0008
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 20:06:55 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E15F8C0365
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 00:06:54 +0000 (UTC)
-X-FDA: 83867771148.28.CB3E201
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 2C22840004
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 00:06:52 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=I2nSe9qC;
-	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A58268E0001
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 20:08:58 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 439551195C7
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 00:08:58 +0000 (UTC)
+X-FDA: 83867776356.20.F9DB4DC
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 7FDA0140007
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 00:08:56 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=kkZfIhxT;
+	spf=pass (imf26.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757376413;
+	s=arc-20220608; t=1757376536;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L1dN8mhUwncXUbZoBXV/zInq23pbUrWI2fWcuhmdYLg=;
-	b=R7DbNJIG4x3SCV1nG3GY6jrOwYKjVaOplwMDwh5mNjRgXsy/2PlQkm3guaTuf4Hri2PVMs
-	H0d+ZDhPkQ32qU+Aa/b0CSrN8ZoP53/MHXXONfqtrzworscZA1hbpsR1L4MGXvsHeTLEG7
-	S/m6VogBK6to+qntzb5hXI+54VH+qZc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757376413; a=rsa-sha256;
+	bh=Fp4mwjrOklNOXxTbWmC667rfKJrZM5GjA02GKAs4tfE=;
+	b=7NMJZjggCVYFDpJyz4euTyNlYWcgOYtoyi3Btx+zPWriw9XT3kVP8IXodZ66tL+V2T+qSL
+	grFymkU8Wr7OUIN4MXpQvmz3rX7N0/rrIDhKVsPjAtGt6mNLl10rD1maoKhiwVKE39gvQf
+	PUpHe1xssaRM2jqpC/EXfV75MO1mGns=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757376536; a=rsa-sha256;
 	cv=none;
-	b=dkGdTq6jQ1k+VrcC6fmw02yrf52L+aEwX9Q7nvejRBCeysTzmJO9yAAhkkgxlHBlP15Ns3
-	vZYJLsAz88uaY4Ys9B9zIr774AyjV4VHiwuS8rXTItUneee5QmnKQ8voRflR0xd8JkjKLO
-	VIXWjZxO528MkmtRlxsY0vrm+LXN9Mc=
+	b=e6PRWmlItPoBLZvEre7Jq0pvN0IJTDUPiAh0VIxuxq2ziRXy58oXxTfTTiyH3hwClqVm0D
+	a1YR6FLA2ORYprOc8ju9wyECpby1Si2YfjsegEsjQIDMxVxiHz3+ZIdqU0ZVnvmD6AxKDz
+	YqOsKLeVe54Ac1KksvXyH4rS8agxtnw=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=I2nSe9qC;
-	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D29A644590;
-	Tue,  9 Sep 2025 00:06:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C258C4CEF1;
-	Tue,  9 Sep 2025 00:06:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1757376411;
-	bh=W7ol01lPQCi9U0PzekdKliJMNYlWPZdelv3Gv7IpeyA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=I2nSe9qC01GSe7mwpS8oGS/2GQ+9h7D00mXiH8V25ANgBEAEGCtWHot8cAkGokvqR
-	 kHLnjUasBBPh8aAIHEpcikfsMgnu2NGhSP3CD8uL0sieEDCbQluja2GF8D5AA82mHI
-	 JQKFiUzQ5KhIHpbuiaklwqgYqYvJh/AcKtcEvo2U=
-Date: Mon, 8 Sep 2025 17:06:50 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Chanwon Park <flyinrm@gmail.com>
-Cc: vbabka@suse.cz, surenb@google.com, mhocko@suse.com, jackmanb@google.com,
- hannes@cmpxchg.org, ziy@nvidia.com, david@redhat.com,
- zhengqi.arch@bytedance.com, shakeel.butt@linux.dev,
- lorenzo.stoakes@oracle.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: re-enable kswapd when memory pressure subsides or
- demotion is toggled
-Message-Id: <20250908170650.8ede03581f38392a34d0d1f7@linux-foundation.org>
-In-Reply-To: <aL6qGi69jWXfPc4D@pcw-MS-7D22>
-References: <aL6qGi69jWXfPc4D@pcw-MS-7D22>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 2C22840004
-X-Stat-Signature: nrqc1rbzeby6x6c47w6rc9qifb9cyfqj
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=kkZfIhxT;
+	spf=pass (imf26.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-45dd513f4ecso30037665e9.3
+        for <linux-mm@kvack.org>; Mon, 08 Sep 2025 17:08:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757376535; x=1757981335; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Fp4mwjrOklNOXxTbWmC667rfKJrZM5GjA02GKAs4tfE=;
+        b=kkZfIhxTa3M21yReb0HVO53KL6ZoFeZBgi3w1y1IerSd8sr+fKKmNKH0ngldpohI+6
+         vVXmPGalJ5sb09D8LJfIMGKDcuUvadmgmVFgJd+Q8NTJHL67iFT9KGCsNZNL6IWmE1VF
+         I9Xievkq9hKCgHKQOrVOEkFOD/dnYDWRe9yTcsIXF9H8m+W+cwkBCyp+LTWaxjXcakTf
+         ObqFsQ6FESrJeVqB+GzzS7GWHXnDyeWeZxcXk0+DpeCdNZgxCwgovXZcEwDC9hr0IWht
+         Ng4x1LKl2lYIyGMuHCZXiQOjcNxQ9vHZH3TDLZi+jta+VC0kF06b6eolcEBOc1WIGVaf
+         4XkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757376535; x=1757981335;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Fp4mwjrOklNOXxTbWmC667rfKJrZM5GjA02GKAs4tfE=;
+        b=ED0IfBDzqftY3gaNIH65JkcDQkrcaOJV9xJniF1GTULbaudV/tZTiBamY3ZyeqEn6D
+         opn7j8O+iTb94pkT9v7PcNWB+nwAhBC1K6PjmtRMQjQmhidhIxE7lsX5laon03ZXjPwB
+         mCbE3Rx7mC0o1/Wj/bl7RgVKJsZVpxoffYehhp2mX9wkxZPGz2svICkvWvyeXlo9gmBJ
+         agtwWbvT0raGeSRyb1kOUZpW3hFEER4rVnSl5dEcG01Npt5JWWAX6Zxq8fwUTcnweOuu
+         ICMppGS2Bp9AmWAxEmeEC79SXiD40fEmZw/MgmlLvfd0HisFS9MS3DR1y9F4YK1o7VeP
+         sxdw==
+X-Forwarded-Encrypted: i=1; AJvYcCX7aZK4a2RNfE3aT90zw0HoPD6X8TBAYHvOSwGBeNfsCJIGvyJ+1oZXszycvBqENxfvzYqiV9VGXQ==@kvack.org
+X-Gm-Message-State: AOJu0YycE7hoG9YoyJYO+9eyVImr3bpYSCmkZeyBf6QsK3rA82CQ1EF5
+	AL67gPrGRBs4dTC8acx0OId0zGRXlvHRh45oWoYmucpBgZ9pOoRLEjdDmtLzW4xN/p0Cha+w8QA
+	uQQvM2ALLnu7egGXaoSQM3Qpu4c5WVBg=
+X-Gm-Gg: ASbGncv+sjEkTykJScWReuq1yzg9XGBH+0XATAmNr0RoMV8AZkUew+DKS7x0rVu/tsi
+	5xwEds8FuucQZfPuyZ0Dxwqsi2BEbMzYqcx5xjlktg5hKylSDZ1NzW+nXJ2KLnvvIgMAhr6lva6
+	jIOMxKEREf1Cxkhl4hGmmuvpnlAGubeDd9mjzrGfImaLLlDVYnzCIc6A3gLi/q4D0ThXySakDxN
+	VwfXxVW8aKSzU7/gINjr+kDH/FW58FaTJg3
+X-Google-Smtp-Source: AGHT+IHxcybvED+0BOKpyGhQK1ngiooddpmdIAtYBYZ4h7rBKcRvSR3lUyUjbfCnGSsSCqWOtR69wvcRqmSlMZdACho=
+X-Received: by 2002:a05:600c:310e:b0:45d:98be:ee8f with SMTP id
+ 5b1f17b1804b1-45de1ad26aemr73438205e9.26.1757376534649; Mon, 08 Sep 2025
+ 17:08:54 -0700 (PDT)
+MIME-Version: 1.0
+References: <20250718021646.73353-1-alexei.starovoitov@gmail.com>
+ <20250718021646.73353-7-alexei.starovoitov@gmail.com> <aH-ztTONTcgjU7xl@hyeyoo>
+ <CAADnVQLrTJ7hu0Au-XzBu9=GUKHeobnvULsjZtYO3JHHd75MTA@mail.gmail.com>
+ <aJtZrgcylnWgfR9r@hyeyoo> <aJt1FHnavjRv5CzI@hyeyoo>
+In-Reply-To: <aJt1FHnavjRv5CzI@hyeyoo>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Mon, 8 Sep 2025 17:08:43 -0700
+X-Gm-Features: AS18NWAcrURD6cSs8YFhK6At7ukKcp3fduqIT5t_3BqXOqyQ9qXPkH9La4LpcMU
+Message-ID: <CAADnVQ+aLojadnDgnOwJCTAE319can=rW7ELh2Xy5M-d2TWcHQ@mail.gmail.com>
+Subject: Re: [PATCH v4 6/6] slab: Introduce kmalloc_nolock() and kfree_nolock().
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: bpf <bpf@vger.kernel.org>, linux-mm <linux-mm@kvack.org>, 
+	Vlastimil Babka <vbabka@suse.cz>, Shakeel Butt <shakeel.butt@linux.dev>, Michal Hocko <mhocko@suse.com>, 
+	Sebastian Sewior <bigeasy@linutronix.de>, Andrii Nakryiko <andrii@kernel.org>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Steven Rostedt <rostedt@goodmis.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 7FDA0140007
+X-Stat-Signature: nmj7akiyq1qakw1oxeycinff6qzyswaj
 X-Rspam-User: 
-X-HE-Tag: 1757376412-13216
-X-HE-Meta: U2FsdGVkX19cb6DlIhUyaK40ntqk60tynC65lx7eyjXjwS8EG5w8EpGZ1SLAdupjl3IaH3klN41OC9J6Q9dzHP6fFO3+DhAJWYM/DJA2UncpDQkmqGzXOTEY8LvoKBlo8GqPfvdPtGGNX8+0ZkarK1ql7QgnS4fN0I9Q37zhJmsTZASeZQJE72k5U0Q3n7P4b11LQCQc66cUpXeT/F8s9JRGS4lzKV3tiBz43WRQnqcomRA4zMb5pFWNMbg+/m5K4d/DU0b69auz5dUZ6ALnz9zp/G9UQIi6i0+Zx9fE6LqCU7BFwbdkB4Qj7+zHc8uuu8q+yUO/Kdo/bOJp98XdecpIHCtdM1RYVGHCOPhH0ciWaKpl6BOHQwPp4OqtC2rdSr66qYOKBT2MEqdWlp7huQtbM8KAIiUm/BhwoCsgnepUpFh4AR/rKszbdFPY2PTlPzcqF47Vr0BPpAUymC4R9E6wVSERpxQL5xxUayaA1bgKw9Mc24awKUlJ8mbVhbXSPXGUBEOFgmUawm0PNSPj6GG/GHRMeIhwNbUZU8+xqT7j3y/suxXhBFNzyr4G9POyJNwyl9s7g7kHS/6LDD/mTuVbAH1tRYiN1dI4pkRhAqu1IRsfs4Ihd1X36cNrIsaZpUwudrImnnne39iPHKxE9matw/qV1z+qcAp7BasQBkKc7M/3PFPI4VsLXZnWZ2jdInZHQyaiCrqeNL0ZwXNqYBKlSk3g0J2R6B0wrIJ27R4obrK9OIWKN6P1RQ9mUXr5xAcIaRR+KZOG/bIikw7JMuHg3vWSCtmp/Qzm1uJJdPnsc5tdAzYMFl8RSDQFLnruCiAeEIaVuJdMNJy9cY43uek3LlVDHiJpTRl9fBSiZmPfGOTMPEi1Kc4GuGCqWYDV5z3kuafqarjdUmNAAuGCZ9jn7B7zqXRj6fWwo84ZMi4=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1757376536-429311
+X-HE-Meta: U2FsdGVkX1+saU5Jeu2sVEYEsrK9dZ4hWdLYYwzQqUDT6uJoG+tx5R7Mxo5UTEQ5W9vRFls6RquPiu7oYBxIUGgDWAqzHxBDRuYBx1F3j6Tn/5RDs1u9tmnAxKD8zEdViDmMrJ4groEGE1vXRTDHOG+8t3upO0U7luMEqOw8SLb07DikwcEqul3hAppx7JtSM5AYME2kn1E7trkXuXspPcz4Tq/1KYHIMVMfiovoONe7l03r8KeRJYvBWzoNqWksKOs7Bz/B0L2r8cbFTBOjMdGqMk+b4QL9494QhgrjXlvFMXQ8lIF5QiqUuxV+uOj/gPTfnAK6rEbhBfAcImjPBL+GqRcCD5Y88Ve+ZE9yenUOuWazpjLRJ+VGAg6c1wYwMtcpLsDf/7Xw5b63y/FFcfjktrVjCpLFaxooOyNaEaCnhVNxSLqTlVfd11MncitZ1K9x+f+hx0dYOAZacQ9Kr+mGcwWvn+0iP14RbPHoTE2Mhhinrw2cvsv4XuZZ/0NXiIqzUqu9SDfF4qZ9GfFQRUUzk9LKi8THW96CjhVyAR0PiFfvyiYJhb4NJ6wUC3G1Co2WbOYbuYdOkSlmobl3x9LyXFYBBEh6YG/fpCG51jGhp7f6Y/U4QG1ZY0crOsdAJAMZyp25TILBsUrCzeAtOmBrTGcmDRRuZq3uzgh01BAET8eONDKQLFWkuDMDhcME4Sz4f9+V9owErG8sezMBUMB+SwglFBe+KQuswzPx9H6ZFiR90jzIJeP45FjWSEuSp5mBm73dpoTYi+du5lPptz6V5fnFClXAgUz4z08Bll5o0UbtOjY0MxjAWhJvUw80mLgzkP9WWbmnFmLYalCFJ/I/VeC8NkfclWMPfFxA5YDMocI7Sz1JgOtJgzotQFaWRjZEW1gr/rm2IljBmSF67CpyuayQnbjMx10iIWgzHcydAabRLMD8VREoMNvix5/3P7JwRuf1lKjFC7OcS5X
+ Y+oeQ1rd
+ LOW2xAGuauwVw3DfvCB44toEDPCLaXbH/E9gdbWnvqWvbyyRMbe9PHRpUG9phKBi+Q42GCNrGzKegGKkaxT21/8TD7Lhuyo9ZmsnQ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,117 +123,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 8 Sep 2025 19:04:10 +0900 Chanwon Park <flyinrm@gmail.com> wrote:
+On Tue, Aug 12, 2025 at 10:08=E2=80=AFAM Harry Yoo <harry.yoo@oracle.com> w=
+rote:
+>
 
-> If kswapd fails to reclaim pages from a node MAX_RECLAIM_RETRIES in a
-> row, kswapd on that node gets disabled. That is, the system won't wakeup
-> kswapd for that node until page reclamation is observed at least once.
-> That reclamation is mostly done by direct reclaim, which in turn enables
-> kswapd back.
-> 
-> However, on systems with CXL memory nodes, workloads with high anon page
-> usage can disable kswapd indefinitely, without triggering direct
-> reclaim. This can be reproduced with following steps:
-> 
->    numa node 0   (32GB memory, 48 CPUs)
->    numa node 2~5 (512GB CXL memory, 128GB each)
->    (numa node 1 is disabled)
->    swap space 8GB
-> 
->    1) Set /sys/kernel/mm/demotion_enabled to 0.
->    2) Set /proc/sys/kernel/numa_balancing to 0.
->    3) Run a process that allocates and random accesses 500GB of anon
->       pages.
->    4) Let the process exit normally.
+Sorry for the delay. I addressed all other comments
+and will respin soon.
+Only below question remains..
 
-hm, OK, I guess this is longstanding misbehavior?
+> > > > >  {
+> > > > > @@ -3732,9 +3808,13 @@ static void *___slab_alloc(struct kmem_cac=
+he *s, gfp_t gfpflags, int node,
+> > > > >       if (unlikely(!node_match(slab, node))) {
+> > > > >               /*
+> > > > >                * same as above but node_match() being false alrea=
+dy
+> > > > > -              * implies node !=3D NUMA_NO_NODE
+> > > > > +              * implies node !=3D NUMA_NO_NODE.
+> > > > > +              * Reentrant slub cannot take locks necessary to
+> > > > > +              * deactivate_slab, hence ignore node preference.
+> > > >
+> > > > Now that we have defer_deactivate_slab(), we need to either update =
+the
+> > > > code or comment?
+> > > >
+> > > > 1. Deactivate slabs when node / pfmemalloc mismatches
+> > > > or 2. Update comments to explain why it's still undesirable
+> > >
+> > > Well, defer_deactivate_slab() is a heavy hammer.
+> > > In !SLUB_TINY it pretty much never happens.
+> > >
+> > > This bit:
+> > >
+> > > retry_load_slab:
+> > >
+> > >         local_lock_cpu_slab(s, flags);
+> > >         if (unlikely(c->slab)) {
+> > >
+> > > is very rare. I couldn't trigger it at all in my stress test.
+> > >
+> > > But in this hunk the node mismatch is not rare, so ignoring node pref=
+erence
+> > > for kmalloc_nolock() is a much better trade off.
+>
+> But users would have requested that specific node instead of
+> NUMA_NO_NODE because (at least) they think it's worth it.
+> (e.g., allocating kernel data structures tied to specified node)
+>
+> I don't understand why kmalloc()/kmem_cache_alloc() try harder
+> (by deactivating cpu slab) to respect the node parameter,
+> but kmalloc_nolock() does not.
 
-> 
-> Since kswapd_failures resets may be missed by ++ operation, it is
-> changed from int to atomic_t.
-
-Possibly this should have been a separate (earlier) patch.  But I
-assume the need for this conversion was inroduced by this patch, so
-it's debatable.
-
-> --- a/include/linux/mmzone.h
-> +++ b/include/linux/mmzone.h
-> @@ -1411,7 +1411,7 @@ typedef struct pglist_data {
->  	int kswapd_order;
->  	enum zone_type kswapd_highest_zoneidx;
->  
-> -	int kswapd_failures;		/* Number of 'reclaimed == 0' runs */
-> +	atomic_t kswapd_failures;	/* Number of 'reclaimed == 0' runs */
-
-This caused a number of 80-column horrors!  I had a fiddle, what do you
-think?
-
---- a/mm/page_alloc.c~mm-re-enable-kswapd-when-memory-pressure-subsides-or-demotion-is-toggled-fix
-+++ a/mm/page_alloc.c
-@@ -2860,29 +2860,29 @@ static void free_frozen_page_commit(stru
- 		 */
- 		return;
- 	}
-+
- 	high = nr_pcp_high(pcp, zone, batch, free_high);
--	if (pcp->count >= high) {
--		free_pcppages_bulk(zone, nr_pcp_free(pcp, batch, high, free_high),
--				   pcp, pindex);
--		if (test_bit(ZONE_BELOW_HIGH, &zone->flags) &&
--		    zone_watermark_ok(zone, 0, high_wmark_pages(zone),
--				      ZONE_MOVABLE, 0)) {
--			struct pglist_data *pgdat = zone->zone_pgdat;
--			clear_bit(ZONE_BELOW_HIGH, &zone->flags);
-+	if (pcp->count < high)
-+		return;
- 
--			/*
--			 * Assume that memory pressure on this node is gone
--			 * and may be in a reclaimable state. If a memory
--			 * fallback node exists, direct reclaim may not have
--			 * been triggered, leaving 'hopeless node' stay in
--			 * that state for a while. Let kswapd work again by
--			 * resetting kswapd_failures.
--			 */
--			if (atomic_read(&pgdat->kswapd_failures)
--			    >= MAX_RECLAIM_RETRIES &&
--			    next_memory_node(pgdat->node_id) < MAX_NUMNODES)
--				atomic_set(&pgdat->kswapd_failures, 0);
--		}
-+	free_pcppages_bulk(zone, nr_pcp_free(pcp, batch, high, free_high),
-+			   pcp, pindex);
-+	if (test_bit(ZONE_BELOW_HIGH, &zone->flags) &&
-+	    zone_watermark_ok(zone, 0, high_wmark_pages(zone),
-+			      ZONE_MOVABLE, 0)) {
-+		struct pglist_data *pgdat = zone->zone_pgdat;
-+		clear_bit(ZONE_BELOW_HIGH, &zone->flags);
-+
-+		/*
-+		 * Assume that memory pressure on this node is gone and may be
-+		 * in a reclaimable state. If a memory fallback node exists,
-+		 * direct reclaim may not have been triggered, causing a
-+		 * 'hopeless node' to stay in that state for a while.  Let
-+		 * kswapd work again by resetting kswapd_failures.
-+		 */
-+		if (atomic_read(&pgdat->kswapd_failures) >= MAX_RECLAIM_RETRIES &&
-+		    next_memory_node(pgdat->node_id) < MAX_NUMNODES)
-+			atomic_set(&pgdat->kswapd_failures, 0);
- 	}
- }
- 
---- a/mm/show_mem.c~mm-re-enable-kswapd-when-memory-pressure-subsides-or-demotion-is-toggled-fix
-+++ a/mm/show_mem.c
-@@ -278,8 +278,8 @@ static void show_free_areas(unsigned int
- #endif
- 			K(node_page_state(pgdat, NR_PAGETABLE)),
- 			K(node_page_state(pgdat, NR_SECONDARY_PAGETABLE)),
--			str_yes_no(atomic_read(&pgdat->kswapd_failures)
--				   >= MAX_RECLAIM_RETRIES),
-+			str_yes_no(atomic_read(&pgdat->kswapd_failures) >=
-+				   MAX_RECLAIM_RETRIES),
- 			K(node_page_state(pgdat, NR_BALLOON_PAGES)));
- 	}
- 
-_
-
+Because kmalloc_nolock() tries to be as least intrusive as possible
+to kmalloc slabs that the rest of the kernel is using.
+There won't be kmem_cache_alloc _nolock() version, because
+the algorithm retries from a different bucket when the primary one
+is locked. So it's only kmalloc_nolock() flavor and it takes
+from generic kmalloc slab buckets with or without memcg.
+My understanding that c->slab is effectively a cache and in the long
+run all c->slab-s should be stable. A given cpu should be kmalloc-ing
+the memory suitable for this local cpu.
+In that sense deactivate_slab is a heavy hammer. kmalloc_nolock()
+is for users who cannot control their running context. imo such
+users shouldn't affect the cache property of c->slab hence ignoring
+node preference for !allow_spin is not great, but imo it's a better
+trade off than defer_deactivate_slab.
+defer_deactivate_slab() is there for a rare race in retry_load_slab.
+It can be done for !node_match(c->slab, node) too,
+but it feels like a worse-r evil. Especially since kmalloc_nolock()
+doesn't support __GFP_THISNODE.
 
