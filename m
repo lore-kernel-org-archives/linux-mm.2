@@ -4,228 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E4DFCA0FED
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 16:57:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7596DCA0FED
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 17:13:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 98EEB8E0011; Tue,  9 Sep 2025 12:57:27 -0400 (EDT)
+	id B86EE8E0001; Tue,  9 Sep 2025 13:13:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 95E158E0001; Tue,  9 Sep 2025 12:57:27 -0400 (EDT)
+	id B30008E000E; Tue,  9 Sep 2025 13:13:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 825B48E0011; Tue,  9 Sep 2025 12:57:27 -0400 (EDT)
+	id A1EA98E0001; Tue,  9 Sep 2025 13:13:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 693268E0001
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 12:57:27 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1A0AF160318
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 16:57:27 +0000 (UTC)
-X-FDA: 83870317734.28.DB9A010
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2047.outbound.protection.outlook.com [40.107.93.47])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 471BAA0008
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 16:57:24 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=muDBt03w;
-	spf=pass (imf25.hostedemail.com: domain of jgg@nvidia.com designates 40.107.93.47 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757437044;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 926928E000E
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 13:13:07 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3FBB98658A
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 17:13:07 +0000 (UTC)
+X-FDA: 83870357214.17.05076C8
+Received: from mail-il1-f182.google.com (mail-il1-f182.google.com [209.85.166.182])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 5889D180008
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 17:13:05 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=ventanamicro.com header.s=google header.b=LUYRDn2V;
+	spf=pass (imf16.hostedemail.com: domain of ajones@ventanamicro.com designates 209.85.166.182 as permitted sender) smtp.mailfrom=ajones@ventanamicro.com;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1757437985;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tiv8b8JW/C8fSv6p3sqTIkZ+otzb5HuYbQxddjVliGo=;
-	b=vC6NyJFIxEyEmQf1u+7Ybgc0Hsv5AmXi6dzpGM3I8p2SgR5P0EVtPoCKxlm1G2OMwl+H4X
-	cTrvjtUzj33NS5f1+Bn2m1DkQk8drk69BRjDiijUu4xGbBfEr6EWRxloYMQf8nCwyVrioF
-	ELKaVTcUGp9gLykPXweDpgZcOeZBRn4=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=muDBt03w;
-	spf=pass (imf25.hostedemail.com: domain of jgg@nvidia.com designates 40.107.93.47 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1757437044; a=rsa-sha256;
-	cv=pass;
-	b=3oIWi4dDD1vti0nlhPcyhPhwuMQVj2gQh6mIH+d5gcNjv3joUL4aEsVnpEl3Pk8glmM2Zy
-	KqtcxHC+ehEfkpCWhzh4CxijkC0k4y8MuyeNLt4l8aPla9aWNkip8gUXVc/L/WI8Rp7oxj
-	iiiyN/IhJQCDGxc6njNVTxCYxAB+2Dg=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tlo3WmcjtA6JWdMI8/JgwtmcUy2TW5feFDz5EnHNZwxodE7R25MXNg7t00SNa3U5BX08sOSjnJHnoIFnuUpA9/xLFS+8GxGI80VmUdPa9u2bu+qWd9A9N7lwaruwG7OCgZ49fAVRW4JjDxcUmfPXwJ0JiWMqR/FC+MwU4Fr5gja7N4ttfY9taAq79MXJHEgvqRElbVtlmP4OAF4Fzovtj/QMqGp4e9J05zUMwOENkXZDBmo7ha1Y7UIwQf3xL8aL1z+gzNopZgbGQHQ5pnJfKcionhTHW9wzJ16BcHrhDMvbHQHBz6I81o6NB57YfSN2vgUdUe0JgJ5iLcz46+pwLw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tiv8b8JW/C8fSv6p3sqTIkZ+otzb5HuYbQxddjVliGo=;
- b=Uaw73C5p7QNAbRpQ3UQ97PKY/jYmekJnq6fmFrk9cyykjp9FQG65UM/21cbQ/oHU0fQkhVCAB84jjdaquulO8m+RDHeh54HaV8pvR1DGxrCGjQIuo2ZmPMhpbCrFQ4fZrHrri+OhPmDSB8gNp7Jqu7SrI5odkML2gDaWW8CPaMYeVveuAWAqaPEmoah/57d+rfuW+39Uas2ZqDiV/RPpUE/sOKlN+qBUXzwuL2lutWapJXBRe9waVFYYJbUX1F+aUkD9x2UtopAbHRG0pzNhZqufV8cfq9ZDWQNp8e1MRkujGgdZ9YgPmnmr07t8MX5CR6p+QygZDSJTMYJeSjVZeA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tiv8b8JW/C8fSv6p3sqTIkZ+otzb5HuYbQxddjVliGo=;
- b=muDBt03wgvVws2K1SdXJftOvrgh61D7V+TIX1dFQb/jPDFXQj6spEXrAecrY7YdRQHuVt20Gac2ZDqwgsTjPG8w9X00qN6Lh8l6/ugHn84uCPJ6OMJw6gOCTMt1KwyuRcew+mQwAd0JySocSg6XWlXvEVSiGox5SseQcd2inHdYie+GYWeMqWRDYzzcQHBOXBRb9u+zs8kcxS6yam45ovIuP9ZwmC/mCJPsr8cCrpwdqEAXsIyAi+M6sEI6atTHZZUhk5R3wVjHXPEpjkCjfh2OzNt1a2NSfIcUMNCuKEjX+kIn23sFyXOz6dPBZ68qmgUfjqdp06nQuIPt4Tr0xfw==
-Received: from PH7PR12MB5757.namprd12.prod.outlook.com (2603:10b6:510:1d0::13)
- by CH3PR12MB8185.namprd12.prod.outlook.com (2603:10b6:610:123::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Tue, 9 Sep
- 2025 16:57:20 +0000
-Received: from PH7PR12MB5757.namprd12.prod.outlook.com
- ([fe80::f012:300c:6bf4:7632]) by PH7PR12MB5757.namprd12.prod.outlook.com
- ([fe80::f012:300c:6bf4:7632%2]) with mapi id 15.20.9094.021; Tue, 9 Sep 2025
- 16:57:20 +0000
-Date: Tue, 9 Sep 2025 13:57:18 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Pratyush Yadav <me@yadavpratyush.com>,
-	Pratyush Yadav <pratyush@kernel.org>, jasonmiu@google.com,
-	graf@amazon.com, changyuanl@google.com, rppt@kernel.org,
-	dmatlack@google.com, rientjes@google.com, corbet@lwn.net,
-	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com,
-	kanie@linux.alibaba.com, ojeda@kernel.org, aliceryhl@google.com,
-	masahiroy@kernel.org, akpm@linux-foundation.org, tj@kernel.org,
-	yoann.congal@smile.fr, mmaurer@google.com, roman.gushchin@linux.dev,
-	chenridong@huawei.com, axboe@kernel.dk, mark.rutland@arm.com,
-	jannh@google.com, vincent.guittot@linaro.org, hannes@cmpxchg.org,
-	dan.j.williams@intel.com, david@redhat.com,
-	joel.granados@kernel.org, rostedt@goodmis.org,
-	anna.schumaker@oracle.com, song@kernel.org, zhangguopeng@kylinos.cn,
-	linux@weissschuh.net, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-mm@kvack.org,
-	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com,
-	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
-	hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
-	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
-	myungjoo.ham@samsung.com, yesanishhere@gmail.com,
-	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
-	aleksander.lobakin@intel.com, ira.weiny@intel.com,
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
-	stuart.w.hayes@gmail.com, lennart@poettering.net,
-	brauner@kernel.org, linux-api@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
-	ajayachandra@nvidia.com, parav@nvidia.com, leonro@nvidia.com,
-	witu@nvidia.com
-Subject: Re: [PATCH v3 29/30] luo: allow preserving memfd
-Message-ID: <20250909165718.GP789684@nvidia.com>
-References: <mafs0h5xmw12a.fsf@kernel.org>
- <20250902134846.GN186519@nvidia.com>
- <mafs0v7lzvd7m.fsf@kernel.org>
- <20250903150157.GH470103@nvidia.com>
- <mafs0a53av0hs.fsf@kernel.org>
- <20250904144240.GO470103@nvidia.com>
- <mafs0cy7zllsn.fsf@yadavpratyush.com>
- <CA+CK2bAKL-gyER2abOV-f4M6HOx9=xDE+=jtcDL6YFbQf1-6og@mail.gmail.com>
- <20250909155407.GO789684@nvidia.com>
- <CA+CK2bAvxvXKKanKzMZYrknBnVBUGBwYmgXppdiPbotbXRkGeQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+CK2bAvxvXKKanKzMZYrknBnVBUGBwYmgXppdiPbotbXRkGeQ@mail.gmail.com>
-X-ClientProxiedBy: YT4PR01CA0190.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:110::15) To PH7PR12MB5757.namprd12.prod.outlook.com
- (2603:10b6:510:1d0::13)
+	bh=CLUjg7yNG/ewQNg8kcK05UeNpGcVlJZKIKA/TtV5FkM=;
+	b=NHxoI3XSGe7j9zJIFraSCVP2Bt4jKHbz4ydEUwSaDDd2wGf3uOQmJqn4aOIgsNyojx0bUL
+	L2pYCMhwWPE4TgQhB3/tQL3gxAPBOZoP0BlYlwXWF/WDffhE6iI1Y391pzlvh1oHpEFQpw
+	DZcBQDORfNOlMZ8EZZuz5dGKW/0MZFs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757437985; a=rsa-sha256;
+	cv=none;
+	b=QQbb3fw7DTIhApfhMyubANSTlvHSfD2YGmVJ/2lboU2qEkB/JfCjD5ojfkSQadtCfeu5Oz
+	xeAxwN/h6B+4jVVwiOsb3MfO0wDaQRSPKeM+0oCZPpHNpGzdvNPZ/F1FxRkvL+1jbZpXTp
+	QBFa94qPIwM0amXaZCVrGHO0//XePtE=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=ventanamicro.com header.s=google header.b=LUYRDn2V;
+	spf=pass (imf16.hostedemail.com: domain of ajones@ventanamicro.com designates 209.85.166.182 as permitted sender) smtp.mailfrom=ajones@ventanamicro.com;
+	dmarc=none
+Received: by mail-il1-f182.google.com with SMTP id e9e14a558f8ab-3f66ad3fcf4so59619495ab.3
+        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 10:13:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google; t=1757437984; x=1758042784; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=CLUjg7yNG/ewQNg8kcK05UeNpGcVlJZKIKA/TtV5FkM=;
+        b=LUYRDn2VAumwYn9i//49mFPnawNw9sTzJCuHhqI4ElytRu0cOhPyajQM3JxMhnvCj1
+         DOFzL7BVzL5clymVp1YD1LPd2aC6l6GdsRliS+2yhu6AzsAC61gVyHwJVoVZeuLT5EmY
+         fvsuAemgEz4AEx9rEKdOPxszclSaAjz9Hzn9dIBvnrPpGaAvt4AvzDLVNigyMJks5k3R
+         K4PreGJSth2qwMgHoAQiJB5DiHKtM6+KQ7/gYK2HAzz4cCpPDt758MndkyNPwA7Nm3sD
+         HxRgrwydxjt5c6vzrZrufxIePA2cuR/DUsvfiST8V8V7C22vN/yYfHpYqjLAk0SPAAMp
+         SysA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757437984; x=1758042784;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CLUjg7yNG/ewQNg8kcK05UeNpGcVlJZKIKA/TtV5FkM=;
+        b=DmX7LdnLqPaNadmYNFVBJtTsMYx90MxSrhBbOZUmz7ZHAZSMrqtAkdasa5cnpKQByV
+         p9vWQQeafb31vSJsVcCj7hWYJ/OcdDxajcH5An9qWnuqoR2NcKEaSx1zol/38oLSMCE9
+         b2/o+2sG7hoesoLahrNZYO+sOYP3DnFc4JubZPZFAeqGBUBexRF/d/XBoc18giZSIH4c
+         FCGrpJpuWHcfIVRUCIMtfaBSeTpcWOELw8phV3CPUAohDulvgmyzoD3jht0Zxp0r38KU
+         Nwit8tB6rp47vZEvCeZfEJoLPYOCLQUl0zMwJHzYvjeTr2SQt1MUTYmyIfJUBR/SoxZ/
+         vmNw==
+X-Forwarded-Encrypted: i=1; AJvYcCWFo8a8eRNA7XgTTpReFQfJ7w3Cepy+MwAhgx1nrdnWtI7AIrMjiXi2oi8rRx1GAWITzD8L3L4yDw==@kvack.org
+X-Gm-Message-State: AOJu0YyVVC029xsO13U2PRgR0CHHpCtocIJEmTubgifZ8//uKO1gjiqg
+	cpG5bQ30rjtBulgbgJtOaQjQLmvM7knSKyESNg/+aLzTtGMBMLABRxIpmqBSm5JsfKk=
+X-Gm-Gg: ASbGncsISAOHqcTfcDvZmCqqaxu963+kEjc4/GLvsX7CtTI6R4rfK2F2bQMPG3cnJsD
+	O/10jfX2Fbx/eaDy8nDxNX3H8skV/iANpg+BO3cgXPZOyM8Bd0VpauU9xQy0lLqLIkeTifqZowL
+	YffJ8sGOvvEMwJXGRXu+UCW5KAWiHzS1Rv1b46jK77gOy1MefM+Am5WhNZal72YoZ/tAofU+FDj
+	dK/Z7UqU4GjNHgQop9CGLhe3z2OUXDRNitufATy20Rig2X8tsNf3MvOqOL9XhDvJXohWuyLi8LE
+	kzUo+azYywq0nwgivQLbtFhoVc30+mAOPR7KmFM2JrQKa0tFFYR4Q9e3p1iArJOuGwistGv48Nu
+	K/iPY4336dVH2Y1A6iadIUVad/o1csHCy6VI=
+X-Google-Smtp-Source: AGHT+IEMFpaj8bMLzDHV4JtX7+vWxYaXCZCBKZ479bbfT1RoejNAOJVpK28JUe1NbmGtyLq/mXgp8A==
+X-Received: by 2002:a05:6e02:1a0c:b0:40a:e839:a2e4 with SMTP id e9e14a558f8ab-40ae839a49bmr96540285ab.30.1757437980965;
+        Tue, 09 Sep 2025 10:13:00 -0700 (PDT)
+Received: from localhost ([140.82.166.162])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-5104c5a4d0dsm5507495173.0.2025.09.09.10.13.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Sep 2025 10:13:00 -0700 (PDT)
+Date: Tue, 9 Sep 2025 12:12:59 -0500
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Chunyan Zhang <zhangchunyan@iscas.ac.cn>
+Cc: linux-riscv@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+	Deepak Gupta <debug@rivosinc.com>, Ved Shanbhogue <ved@rivosinc.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>, Arnd Bergmann <arnd@arndb.de>, 
+	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Chunyan Zhang <zhang.lyra@gmail.com>
+Subject: Re: [PATCH V10 3/5] riscv: Add RISC-V Svrsw60t59b extension support
+Message-ID: <20250909-2130daabd7f57a8a357c677f@orel>
+References: <20250909095611.803898-1-zhangchunyan@iscas.ac.cn>
+ <20250909095611.803898-4-zhangchunyan@iscas.ac.cn>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5757:EE_|CH3PR12MB8185:EE_
-X-MS-Office365-Filtering-Correlation-Id: c72f8c09-fde0-4d3e-e81c-08ddefc1f0c5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?MWFqUGJJb3FoYk5iZVMvaXRlMFdsSTlSMk5oM2dhRTBtTUFzM1ZYOFBmRVdq?=
- =?utf-8?B?elEvWnVZd3FVcWtFeEtacVVObUZYWmFFSUNwWlByRGRsNlZ4T2xlN2c1KzRQ?=
- =?utf-8?B?cXQzY2p1S1BXMFZlR2VnTHVPQk5HWXV0cS9pY1YyUXF1MlZ6T0p5dlJGakZO?=
- =?utf-8?B?SmQxRnJobWhyQjZjOGJxOGFoNHVFV0E0Q3JVYUxKbXlObkRWLy90cktqYmdi?=
- =?utf-8?B?ZVdVdm0wN25ORENFWmVNRCt0bW12MVBJclk4T0lkMFNsT3RRNkFSYk81UEZ0?=
- =?utf-8?B?Y3pkZGlqcHpaQno5RXd5KzEwYzlwNFhIcXhPRFA2eTRKTnJ0RWlWc0pVWTFX?=
- =?utf-8?B?UFFKYkRJUWVkS0JGVVJMckFnc3l2bkFtcDNPSGowYmZQVVUzZmt1Ym81OHBm?=
- =?utf-8?B?Q3VCTHZvUXpweFoxQzlFNWRGYzVpdzVSWFErZG93QW9hcklIYUZLMytENlR5?=
- =?utf-8?B?Y0wvL3lrWjJuUlp5dStnbW5aOCtCUGxxbndNZ0dTbHU4dEtVMmxoUGFiN3Bk?=
- =?utf-8?B?L0VETHA0YXIxaXpSSTJDeDk0T1JNZUFaWno0cG9KcTVRMGROVFRzak5xRXNl?=
- =?utf-8?B?aGVFWithK1JjeWd5UGtIOFdoZjFBSmRDaHFuSHFkR1U2cGxJaGF0OUFTT0Jx?=
- =?utf-8?B?Y3ZoOVphbG9McVBNOFcxOXpqVUpoejQzc2dla0FTZUIzdXQrNEt3Wkx4RWpC?=
- =?utf-8?B?clhORi9Tay8vbkFsOXo1QlJYYjltVmY0eWF2MGhvMmR4Y1dwTTk5Y3g2eFBr?=
- =?utf-8?B?R2tFcGt6ZURwRGFBczBYMnAxR09LTjcyRmJUWko0NWpnaTkzbE1id3hLTElX?=
- =?utf-8?B?UG9LMkNKMzFpdm9hM3p4S0srak1DZUFVaEhQTUFLRkdDem5nNmlnK2dyZE1L?=
- =?utf-8?B?VjF5R0x2VVp5a3I2WmFKbzRlQ0pteGJZUjl5OHFiOWkyWHNpZ2VVSWxscjhk?=
- =?utf-8?B?ZG1tM0pnTXB6R25LNFQxa2hZZVhFcEpjbzFDVThKZ2ZyMy8vblRrNWZLUnRa?=
- =?utf-8?B?M0REcE9UNGU2bVdMcGZBaVoxa2w4bU8xRVhsaDYvbmd6d0d2RGU3ODg5MDFi?=
- =?utf-8?B?bW12VkhqQjhGUFVZR3NDNWlkbkh0N2JkTkVnbHFLcXUrZkVxSVVldUNuS2VG?=
- =?utf-8?B?V0JVd0M3VWVWTDJacnlsSmptUFFYcmxEY0YwWEhjV2VjaERpVFNiQ2VESEdp?=
- =?utf-8?B?b0RGN3hRamNOeTM2SlYyTGZJYzNDSk1JUFVsallHTEtpbUEyM3Z5L1MrSDF2?=
- =?utf-8?B?RGpib1Myb0JPeThGbzkySTFJSDNzYjR1dm01dGtpbmNHazBPallpa3dUN21t?=
- =?utf-8?B?dWU2VWE1bTdib3dadllUckxlQllkdWs1eW1ZMDNFZnpPWnlBNUpOVzhVaXlV?=
- =?utf-8?B?dUoxTEY1WDl6dHY2SjZGb25jTW0zUzBRcFQ3K0FvZDdSbnh6RUxxNUFySmUz?=
- =?utf-8?B?RzE2cTQ4R2IvLzR0T0xtYm5QK3U3N2JKTjlieEJ3LzRpNFhyRU1iUEdveGFz?=
- =?utf-8?B?cGpSTVpFQ0pUYnJvN3Bmb2ZaOXZZaVY1MEdLS3pqQ2VUa3J3ZGFxcnhPRmdP?=
- =?utf-8?B?TytaTFhId1gybGFpZXlqVWJlM0xtRDVlNjRlVW8vWGpsd2ZRam9GWWtEOUQ3?=
- =?utf-8?B?YWRUNGJvVW5xbHRjSUFOOGt2Unk4OHJtaFB2Wkx5dmV3MEc2QjF6ZXloYmdV?=
- =?utf-8?B?SDlQRmYwd2J6NHkvb0IxVVdLN1VZalhET08zaHJPYkQrM2xvaFNYT0xicUdC?=
- =?utf-8?B?MXJ6c3N6YnZEQnVGWm5UTXJCNTBta1ZlYk1QblpPVVhUbHFNcG1WU2lMVTRR?=
- =?utf-8?B?RFZHL0tIK1F1VXlVbWFLTmhFeE81TG0vUmh2RWQwRHkxVmNkc1dXVGNJSDFQ?=
- =?utf-8?B?Y0NnN21RRTM2RC9CZjdSKzhNV0RMdFdYNmEvc2FqVDNlVXRXcVBOMVZQRm1B?=
- =?utf-8?Q?4QHgLL+PkPc=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5757.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cnlhdUhibi9rMUl5a1E5TVVUT1dxang3YkxIL045cEhrUzdyWTBkS0J6NStt?=
- =?utf-8?B?V01DNVl3RWxUejJFWXNmSURWRDAvY0R0cU5DYm43OEhSMURJcm1GYjhURDNF?=
- =?utf-8?B?VnFGbHo0UGowL0xlWkt4Z2NOT3l3TjRscEVObmpKTTAxY1BoZlBkQVN0SVdm?=
- =?utf-8?B?OEJxa2ZldnBQWkZ4TkttcVpqUTdSVTVlOXhZUUhrZ1Iva1ZMMGVNNXhOS29a?=
- =?utf-8?B?OTdVK2h3NlBiWXBwbEFRSVZvUDVIdXNPUHA4a2RHNGZhdDV1MnVReVdha29k?=
- =?utf-8?B?REtFUVRLU21ZK3J1VkE3UEIwdlFGYkh1N3J3TkM3QWtLOWZUWDhxZ2JtaERv?=
- =?utf-8?B?SEQ2NE0yOUY3bCt0NnlKMGY0aGtqa0xsdzRMenB0MUcrMHBNRTR4cWJZZ2tT?=
- =?utf-8?B?NmpDN3BhQWllZ2JTcGJ6VjFBQVVaYTVGTU42YmhyOEdXWkNRU2g4NVVhUklp?=
- =?utf-8?B?MjFZc0RqMjhsaFJ3V2o5QS9QNE45YzhScThLNThETS9qdkdVZUJ1RlZLVmhU?=
- =?utf-8?B?MUpFQkRvWUNzRzJpT0NmdnNVaDV5aWVnQ3dsRXU5d3hVMzdyLzhLc3RTTjBz?=
- =?utf-8?B?VHJNTHhvRjBlTkVBWThHTDJKbmdFRGtJcHBnc1RyV1pURjNQekU2TUdHblA2?=
- =?utf-8?B?Zlc5TFVRTlRsdUxoaGdhWS83bG5adExQWm9ZdGpFRWR0aHFlT2EyQ3ZsZWVY?=
- =?utf-8?B?NGdJYTJIUG1aUEdINXJNZXZKbGtZcTNJVmQrUmlRUHNzMkRsRXl6VXYrVjNx?=
- =?utf-8?B?MlBuSXBmbmgzRmE0VW8wWU4raDY0WTh5SnhrZ1orWXJZWHlReGczTEI2WlJB?=
- =?utf-8?B?blQyaDRuY2ZYb3hKSFZ3Vkk1aUVLOW5EUWRrQzJGVS9veFZmZ1hYSFR4OVV1?=
- =?utf-8?B?N1Rjd3ZDNzN1NzFqcFFNUWUycUJETCtXOVRrZFF3YURjTmF4ajk3S21vbk9x?=
- =?utf-8?B?dXZ0SmZ6ZjdXWXQ0aWxMeHZnV2h3eTV0bmxqa2RMZVFpbUdmcDRSVXhaUDBM?=
- =?utf-8?B?V2xaTjhRVnIvWWwrc3NUL2lqQ2tlZzZTcFQ5M0R2TDRNeVY4NlVFMFl6NWdB?=
- =?utf-8?B?VmVqenlLdzBRRzRvRXNJcCtXYUwvckx1ZW55b3RGZ2JYeGFCVWJ2QitMUWxt?=
- =?utf-8?B?UVRKVm1zdkc0ZVhNSDVUeXVCeXdlVUFnK2NyMDVRbVJuU2dsN2VFQzdGb2tK?=
- =?utf-8?B?K1htc3RlenlpaFdzSENGbmV6cHJ2YU9YQVNNd0ZvK3VDUVV6UHVDOW1Jdms0?=
- =?utf-8?B?VS9XbitxTENnbDREN0E5bHVQcHh1RittY2MwTWZzUXBLajdJbVprOFlwVlUx?=
- =?utf-8?B?b3pnZHNNQUc1YUg1UThuc2ROYTJHZ2xvUHNvcGVKeEU0MUtyUWtCdVZxSnB2?=
- =?utf-8?B?U1cySmQ0M3NEU2ZETlBVWE0vNnNXVWhnRE5tc0I4ZVZxd1lFT09QRFhBWk9t?=
- =?utf-8?B?UUl1S1U3akxaQjBMKyswbWZJZUJVcHZrUHRUZVoyRjRMWUlhYzJLb05aR2wv?=
- =?utf-8?B?ckVhcndkZEkrK1h4czg2VzRIZURWMzdPaVZKbDUreHBlaXM1VUJWRWpvbDVt?=
- =?utf-8?B?YWVZNFM0TlJzeGJHR1hYN2J1Y0Q2SEFxeXBVR21HUDNVb2oxbS9JZUZXbTg5?=
- =?utf-8?B?dkxpSEhuU3FYcnFNWnVEOWozYnlCMGRZdlNEVUhleHpDM0pjb0h6MVcvNTdN?=
- =?utf-8?B?SERwQ1NPOGRxQ0RPcVZNY0tlUU1wRnhhU3pBRTdIWlBMU3h3NGNvUFMzZVBu?=
- =?utf-8?B?THE4bU5oeG05Q0d2c2xSZWJVc044OVFYb1ppTE5kdnVsM3l5Z0pHb0xRamRa?=
- =?utf-8?B?UThuMkRDZDRuZzBaWXZsUitzSCtWMkNCTjJJY3g0c05GbHlRS1lLRmhUL052?=
- =?utf-8?B?S1ZjaTIwWUVwMXVTWHhNNGRGNjZCWTBudDdFdkJCS1pkMW8yWmRjT1VxY0l0?=
- =?utf-8?B?eUJ3c0M3akVxWC9FcXVIYWlXdVRFZDZtdVhCSjhKZWpybFZraW04NXJua1VF?=
- =?utf-8?B?V2FFVHYxSFVSQmhJcTUyVTZuRFdmOFUyaGlvRGRaeFZOUjBncmFBOTJ4NW8r?=
- =?utf-8?B?REFQQW13U0xrRkNEenpOV09jZnBNRktxbUxzVlNTbE9YSlcwUkRnazJQMnVt?=
- =?utf-8?Q?E3kE=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c72f8c09-fde0-4d3e-e81c-08ddefc1f0c5
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5757.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Sep 2025 16:57:20.6095
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: pz66KfYckKIB1wNqnlz8/ywMueESonGm6zO0NzOiv1peWc3iVxm4gat7GQr4me35
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8185
-X-Rspamd-Queue-Id: 471BAA0008
-X-Stat-Signature: e4wm1ubejdg1px56c4n3t9pc8ukpcafs
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250909095611.803898-4-zhangchunyan@iscas.ac.cn>
+X-Rspamd-Queue-Id: 5889D180008
+X-Stat-Signature: wit99tjoi99j16tdh7drtga68jafg53b
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1757437044-891467
-X-HE-Meta: U2FsdGVkX1/YrqmAQ+coi54ykFBZyCmoMLbj8xS9oUeKwVoZWM1ionDJKSg14eoWC71sheeBUvnnvt5ufjgihlqiKm/+VyWITXfk8QgTgzk1atVYVvkShBB4DEc+LkKQgiDPvTD4wp3tgno9lmgHnW3f7F4wbagpjLRhRRUJ0SfmA4GWlVHzFTraXtEwJwoBVnQuMWy8a5+E8lY7JSmzK6CFSkeDzpQSBGvNn2FF1fkwH/ymfbY8o5P7XOP4nKWqXlVmQuwHttMiE1HUudf6McFuWb3NfBnfTCtVPmaP77jGoZrWPRccb65EpUfr9jDti7PY+9RKZ3gkmyPk5xVSbbjQSwRRPmp2kHbIoni28Q2w/WMjL+IT8ur+uw43FmxvspRf88s3SChqUnN3XTDdpvfTRry/3R7i1iG25dlqNIkZdXvj/xMmy6AHoYYOoNM9S+uAjWamavHCAkWJm/CB7wMgdkRgfsMX0wk851D8iOABsqEh/nIIpssXCVkU1jIfV0pkRdme+Yz+j3clFa2S/ymFuvQv57JUZt2TuwGCuznZvTsSpHyv4x0KJmYM7QNeQv2Uej0/f92aZGpMH2NEIRVino2QcAe8Vj3YNX6y0+JKiWhrJMxYhKl9V4WNnSb0EQKQYE6tXztUmFxsnLhYYmzj7egMnVIThhA2THBZiMNKd6nAp+6IT3UUoAbPuP8IBE88FdWBTxFxU6ESx7b/pArVX+YyIgHw5Fqvp2aGTm2m1CUeOJDZzUqmDnSIRtMIomfbbunXsiuavH9CeZRbXVmC43dTv3jqMWjNTPsIuCmiLf+FNGUz0QMog6zyoEdr+0iXjZl3shUjipF7iUID/hc0XHcgR2YMq/qdLoENuOQ5HthGwHXXztL7NUmyUqda3yhExEJsLLSSdqXn0Pz2RgsbzJlkU2QpNrt1lelXdZ3LdzDGucWe7g7VVaTdKcSpSNqPKgQxKK2Izr+Vsg/
- eemhSyxC
- TIcgc17Ebg11wmung0/re19KA8sW15RkPoxmlXXXT+nIU2OJvcxY3Nx94ALW8Qw6k8cEoMOSC8GmuVUktDaJLo2aXSXcRtP/AbXd2xjB2SHwiU8+ofxnc4QEwkT68fNcKaylbI/oDzduoR2tRl/cxB6+jeeN0TTjytVekUeczcgm4BUI9BLUQGDPUtgqQiOEGln7gkomNKuEg/3RqlFZz5O+QWvWx+Hz+MyCfTxC4Cgh6Qut8e/BS4UJoYIa7oMT+8MolZEoJId4LgOnKTHLmapB3z2EeRMSTuWKzkhFbGW7oC5O6ZRCJAnd+/4gj0ONTfz6JOO5JZpwG2gXf0KQxe0o6r/rFstXTWCNRV+OjpmVF9m87HhPFTvYclS1lBioZtMpuzlA9/xqqMbYIfkohJEtHQR/vfcyRLKWh8+VTk1UUbvRZkbhanZoIv9cWiDr+1gRe0Kllz+fNg2sY0BpvmU6GjcCDrUVZq0pAsWh0pl0QISooN7zjtnkB+ShepyjIQsZMMGXDiaVr81OHHvqknUe058m6DAVUqtj5D0s8bx6qUPdSb5/rDIQWw9lQzWifENodgg3EPPw8s9b+Y3UoSwZl1ReTOHjo5IewB9gbXTml0ofvV3X0ZgpV/Q==
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1757437985-819873
+X-HE-Meta: U2FsdGVkX1/ZfeEsjr2alT9fliF+o+61aGucDwbSEvgeb2Q0cFqXtnhKmmKk/p6LDZwayIx59ZiLbyF1W8aAta98kImlsrV8aBMwx314k0JK6e1+ylrsE4IBsuH09AeLSBaB+22qNLvYI6ciL4HXiZmmV+HxBh3eGGk1cYfxsHZsRno+XmNQ+dh1nsvXcVOOr9S9NVVKmTbjdRNGCzkafCEp2AeDS1GvHOk5tCgBo0QTNX+gvB9Xmjfdqd6qRo/QQ/eAADAhkR/JvQ2IIkcKqWOJ6FbPqP1Apl/sknB9DiN8Us5fSE011Nd4uhn6li7CbisyoXOcAQgyjirs+hspbvpLAE2DamMSUG19JzyKMtqArTj39h1vxCSoZehHIYe0Xt3fyoplMiyoFqJKHbEowUjyISKl3ROV6z9OHo9+AsY+ummATffYm46oUhtvsDPYDtF+UyRubGZmO3ar5bDskEHjqebylZ2HPqQ9/HukMr9WSxM4gyQvuE9ErfhM89v7UIDa3qx6eWdy8AeH2kkvvgU4jfOJglEkTAp95d/ocM5yrsUYpooaHdN1c3/X+wKsiP2QgYbz3Mp+/Si0zYx9L9FASk1bNlmNEDBandBeMMoT0mB8/nyzN68J1lgkp1/otcqjtJ+TXGH8ZvtyvsjATBUfgIlBS/W2JvoEKl9769VJz4mqpTuCX7B/6JKj4Hc6r08k9MdMSErXxdO84XyXFhK0cLcBUUKWRWmyRLsGTRYv5gnPpF7wo2s9oKz7sN+cVKb/kwX0aUYFRZfU+FAY7dayyG9O3ghdcJzVPrIInNOh8PkWj562UlmJGVy/Jkgo2DXkuy9/IlMSWfyik6wNeT4C7ldNFjVmin7RV48VCynlXaJjxQkNNcnRp6KgXJpxNc+ZpyLg0DSpa0DWOcCbUTkjodhuz7igHuSDff8Kfp+ZeMLHZTsiQY8Wzr/jL5UGDUYWYUXxEkIHbeZmpbA
+ fXnX6etS
+ e1ZR4IUzev5JNmZTJlliO2Zaycnfwct7PTJOgoZesXgJz6HBt1+4hlVxrBNa80Q/BN0SOpMqBNbAgNaVxbdpY0Jx+BrpeAPkCAsPcWGQCGqKsVkuohJtbuh8rYQ9Snj7lP2Ij+Tquu5V0bwSSXuHFkh9zPUqe+hb5hdFiepR+p31WZmUTklXfzGk6ePdZTzsQmXqVKIRUQKv8h1JpW1abcm1qZJV+ytvTLxLuoYMyzZhh0RK2EjTrspSikRNxRlD3Dcj9nNtsps8mvibnshSlgjxCWkInpUAfxZ8IQ8p+x16lc6PLFtZYoRk2T6QgdnhGxPGX1KhkB2JdmNYdhWtTTkKQOKw4beFtYu+o/2MMzTJGUTlXT/44kboCtdOf4avrO+7YVMC5ET/l80o5mD9cvoFAIOdNABa3JFj9y0uXx1FKcncZ2CavrG3YRFiITf5rQUspe6LiM5QgcTT+UjPor0EiPqTZJeYDoe0oaQsEK9UP44z9tqrBt8FdBa8MX8X9JaKVo2Bo2OFKrqf5g/zSU1UeCMP1mheDLvl2JnTx0zmcNaljZNYYwQCN9AxotH6Nnojy9OsOEVj/lIfaUdYZVMdl/R2vsNA1cET1Dhx1MBzJSFKkW48bOUHXbYCTnhvRqPX15IG3jEdnHq4TiBLwg85uJRJJh9W7M/ix
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -234,34 +128,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 09, 2025 at 12:30:35PM -0400, Pasha Tatashin wrote:
-> On Tue, Sep 9, 2025 at 11:54 AM Jason Gunthorpe <jgg@nvidia.com> wrote:
-> >
-> > On Tue, Sep 09, 2025 at 11:40:18AM -0400, Pasha Tatashin wrote:
-> > > In reality, this is not something that is high priority for cloud
-> > > providers, because these kinds of incompatibilities would be found
-> > > during qualification; the kernel will fail to update by detecting a
-> > > version mismatch during boot instead of during shutdown.
-> >
-> > Given I expect CSPs will have to add-in specific version support for
-> > their own special version-pair needs, I think it would be helpful in
-> > the long run to have a tool that reported what versions a kernel build
-> > wrote and parsed. Test-to-learn the same information sounds a bit too
-> > difficult.
+On Tue, Sep 09, 2025 at 05:56:09PM +0800, Chunyan Zhang wrote:
+> The Svrsw60t59b extension allows to free the PTE reserved bits 60
+> and 59 for software to use.
 > 
-> Yes, I agree. My point was only about the near term: it's just not a
-> priority at the moment. This won't block us in the future, as we can
-> always add a tooling later to inject the required ELF segments for
-> pre-live update checks.
+> Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+> Signed-off-by: Chunyan Zhang <zhangchunyan@iscas.ac.cn>
+> ---
+>  arch/riscv/Kconfig             | 14 ++++++++++++++
+>  arch/riscv/include/asm/hwcap.h |  1 +
+>  arch/riscv/kernel/cpufeature.c |  1 +
+>  3 files changed, 16 insertions(+)
+> 
+> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+> index a4b233a0659e..d99df67cc7a4 100644
+> --- a/arch/riscv/Kconfig
+> +++ b/arch/riscv/Kconfig
+> @@ -862,6 +862,20 @@ config RISCV_ISA_ZICBOP
+>  
+>  	  If you don't know what to do here, say Y.
+>  
+> +config RISCV_ISA_SVRSW60T59B
+> +	bool "Svrsw60t59b extension support for using PTE bits 60 and 59"
+> +	depends on MMU && 64BIT
+> +	depends on RISCV_ALTERNATIVE
+> +	default y
+> +	help
+> +	  Adds support to dynamically detect the presence of the Svrsw60t59b
+> +	  extension and enable its usage.
+> +
+> +	  The Svrsw60t59b extension allows to free the PTE reserved bits 60
+> +	  and 59 for software to use.
+> +
+> +	  If you don't know what to do here, say Y.
+> +
+>  config TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
+>  	def_bool y
+>  	# https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=aed44286efa8ae8717a77d94b51ac3614e2ca6dc
+> diff --git a/arch/riscv/include/asm/hwcap.h b/arch/riscv/include/asm/hwcap.h
+> index affd63e11b0a..f98fcb5c17d5 100644
+> --- a/arch/riscv/include/asm/hwcap.h
+> +++ b/arch/riscv/include/asm/hwcap.h
+> @@ -106,6 +106,7 @@
+>  #define RISCV_ISA_EXT_ZAAMO		97
+>  #define RISCV_ISA_EXT_ZALRSC		98
+>  #define RISCV_ISA_EXT_ZICBOP		99
+> +#define RISCV_ISA_EXT_SVRSW60T59B	100
+>  
+>  #define RISCV_ISA_EXT_XLINUXENVCFG	127
+>  
+> diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeature.c
+> index 743d53415572..de29562096ff 100644
+> --- a/arch/riscv/kernel/cpufeature.c
+> +++ b/arch/riscv/kernel/cpufeature.c
+> @@ -540,6 +540,7 @@ const struct riscv_isa_ext_data riscv_isa_ext[] = {
+>  	__RISCV_ISA_EXT_DATA(svnapot, RISCV_ISA_EXT_SVNAPOT),
+>  	__RISCV_ISA_EXT_DATA(svpbmt, RISCV_ISA_EXT_SVPBMT),
+>  	__RISCV_ISA_EXT_DATA(svvptc, RISCV_ISA_EXT_SVVPTC),
+> +	__RISCV_ISA_EXT_DATA(svrsw60t59b, RISCV_ISA_EXT_SVRSW60T59B),
 
-Yes, but lets design things to have this kind of logical code model
-where there are specific serializations, with specific versions that
-are at least discoverably by greping for some struct luo_xxx_ops or
-whatever.
+svrsw60t59b should come before svvptc. See the ordering rule comment at
+the top of the array.
 
-Let's avoid open coding versioning stuff where it is hard to find and
-hard to later make a manifest out of
+Otherwise,
 
-Jason
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 
+>  };
+>  
+>  const size_t riscv_isa_ext_count = ARRAY_SIZE(riscv_isa_ext);
+> -- 
+> 2.34.1
+> 
+> 
+> _______________________________________________
+> linux-riscv mailing list
+> linux-riscv@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-riscv
 
