@@ -4,121 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74219CA0FED
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 11:51:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0C95CA0FED
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 11:55:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B7F0A8E0010; Tue,  9 Sep 2025 07:51:00 -0400 (EDT)
+	id 0D9368E0011; Tue,  9 Sep 2025 07:55:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B56978E0001; Tue,  9 Sep 2025 07:51:00 -0400 (EDT)
+	id 0899A8E0001; Tue,  9 Sep 2025 07:55:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A6CB98E0010; Tue,  9 Sep 2025 07:51:00 -0400 (EDT)
+	id E6C4B8E0011; Tue,  9 Sep 2025 07:55:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 924D78E0001
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 07:51:00 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 28E84C04A1
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 11:51:00 +0000 (UTC)
-X-FDA: 83869545480.19.590F0CC
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf07.hostedemail.com (Postfix) with ESMTP id D4D0440002
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 11:50:57 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="d7k/BFNq";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf07.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757418657; a=rsa-sha256;
-	cv=none;
-	b=Kj8qDGIEeLmfegWJckhnw8PytFmCDqrf5e9FK+wxizaGO1qFiwnEwnX71m3OdlFCt8erou
-	A9MSEN/FrHRwQ8u0FiBsgF8AEp+WviVE+CimgQxe/U6Ay40Jc/3YFMPo4DBOYyayDdMG6Q
-	inpOnqKeFJDJVYXsgfHw191ZWKK32yY=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="d7k/BFNq";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf07.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D0D3D8E0001
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 07:55:10 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5162B1A049C
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 11:55:10 +0000 (UTC)
+X-FDA: 83869555980.08.7F10F8D
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 618CA1C0006
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 11:55:06 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TeG50QHd;
+	spf=pass (imf20.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757418657;
+	s=arc-20220608; t=1757418908;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dKhIp6hIrUR6EZQSai8TLK9KbdoogTZRgdnHTmgwxEY=;
-	b=h5Li4NC5xcKQzeb+7NIKrN4mg5vRsYcIz0Q1kocjhe8br6Cvt+w4SFsuH8pRZbO6eXu9fy
-	pBp4dAILw5Z568bRj7B1HEtecODAfdEkQDrcQeShfe8A36B6K67tnmIVsTHqDBJQ01vYcm
-	t/AAn1O8eY64XvMWzSOuRn6KLNRtb8c=
+	bh=wOh5IdHecYmXNJFyfTY+5ofA8ReFnlDB1RFePKgZiG8=;
+	b=TbzdGIm911rKIgl926IaWtrxABXv3JzDWsSlO6pEwMz1/snX1NleY8RihVcxdA0RRIP08E
+	VVMNDQIIxSajmvtjSB2BjVJ2tKVwqGzpHP+jGjSkWy3VQ639RqnMFNMzr+Ay/vOtJrolUr
+	Z+RokdTMzA6iYXYmc5IPMx5FCOAMtQQ=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TeG50QHd;
+	spf=pass (imf20.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757418908; a=rsa-sha256;
+	cv=none;
+	b=YMtIa6qgCvn/H9KEQokJrv5rxZSNVV3kF9fKuot/Dnqn9MExK45793z4FQF3emrx+bdEWL
+	w4UpBY0Jm3VwEwEF13TOUhFW0XLUJ+vFVw8m8/4w36B2QrQ2cGM2IrVA1b8mPEZdwUha/J
+	jumBiOQHcHTxvFQZkv0MK8EEYBmDs/E=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757418657;
+	s=mimecast20190719; t=1757418905;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=dKhIp6hIrUR6EZQSai8TLK9KbdoogTZRgdnHTmgwxEY=;
-	b=d7k/BFNqQppX5tiZfe2iZco3oDPTIwgHml7ME7igHZdbN2NjFkJ06j1PuCxuqNbooMwAVX
-	EyIXa3BGEI7d5AIdjIzokgMV5jAJRCicOVncgixegd3jbL5zhF+8WhQc4p7QE+CTgh7i1J
-	2JYAS1SUX1hP7sO+jih5r3JzbE7aVRs=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=wOh5IdHecYmXNJFyfTY+5ofA8ReFnlDB1RFePKgZiG8=;
+	b=TeG50QHdfQmlrDtNV7kIrTfhhxbITLcjscvi0ij4ixwB4EIZGcFrProR6cw9fQfpGzPy7e
+	UTXEvKHWmGFtbOB5wXCKC+wmkrJhWXErmYdF+1BTY5B40LJv6CAvYZ0a+kTLsAr72z13Nb
+	tMDDazEBrc3AzL2EyIYSYXp0Pn9EOEM=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-240-jv93eWL2N4aIeQM82atL2A-1; Tue, 09 Sep 2025 07:50:55 -0400
-X-MC-Unique: jv93eWL2N4aIeQM82atL2A-1
-X-Mimecast-MFC-AGG-ID: jv93eWL2N4aIeQM82atL2A_1757418654
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-45de14da365so23408595e9.3
-        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 04:50:54 -0700 (PDT)
+ us-mta-551-YZ2cRulrM4OHMh_wp8Wqtg-1; Tue, 09 Sep 2025 07:55:04 -0400
+X-MC-Unique: YZ2cRulrM4OHMh_wp8Wqtg-1
+X-Mimecast-MFC-AGG-ID: YZ2cRulrM4OHMh_wp8Wqtg_1757418903
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3e067ef24aaso2834835f8f.3
+        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 04:55:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757418654; x=1758023454;
+        d=1e100.net; s=20230601; t=1757418903; x=1758023703;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=dKhIp6hIrUR6EZQSai8TLK9KbdoogTZRgdnHTmgwxEY=;
-        b=DfsmDislYB0hVMwi9pYnsUBmLzPl7HBvoMZXCPGgeVeSMPpQJlv1bvyJ5j8S+odTZJ
-         7fkMt1Vq4CmL85qafxbn+PqGj5CwBdpRE4P3mpndoYx4Fs5PbVLnHsPPlh0+pFbNSiWX
-         jLLJd4XIp3tHPOPjjP5vQmp+8TnYN+xGjkgIrRRqusAMR1V8UDSqkyoV9U0W/lJr5JQ1
-         Fk4Hfzdnk/Li2COSkhrkqy1YbZZHEfLkVv4WX4meqYNg0mIO54Yo3/tyJVbhm5fYSp15
-         tlRebKNMhqUPkamFfCMBj+YBgZ9faZDKLobm1xmG8c5IamjgayKz3I30+xypDlOMz/yH
-         ZNGQ==
-X-Gm-Message-State: AOJu0Yyi0T1J0xIf3k4oKQOdlSC8ybk8ZAJzbth87YL3bdZ+KtFTAvCV
-	RMnh7Q9PslQrgVjUDZmLOITLOHba0FMG7Uird/PTnTZbRP8vTE0eGPjnC19whI7lYs0SGEchfwr
-	u4iLNEksZdAQ8zSQ3brOYBbt3xX42v+mHo6Itufgatuy2nWJ0GTiJ
-X-Gm-Gg: ASbGncsHXGfFbWzjunMkAPKCKjMsBROwFxdMnvMVSGMCqyCOe6odPrHC5QJoyAlDC4u
-	m+7A0wJijQB6/u3Ute0WDLvAJIqTY75xYNb/CS2+A9M3JxYzVIuCKOiDe2LkwWGrF+l06lC+15a
-	gooL9XdZ9jFec07SknsVc5F3lfx4I6IDQXYwE8ddYTRrIn7kJym6umykUshitECPajEsjoWhF4j
-	JK5Llzco82x0s/6dLyXqpK016r2e/ZHthNfPnOvNTeQ+RFjkwe6pEsuTjAGmZAwotWkC0A4W5RU
-	BSlcCS2QGFnJx8X+88Hi3Wpo2bjqiMCz7XBcJ9QKftq6RydiV0azuVavYWuhQtjjEQ8juSlFLnI
-	spzn9JxMeNmCaGFg2T8R7SYPGhl35ZikUOguqDuL6mrkxmdOc8AU0v5JNreqyUqK27fw=
-X-Received: by 2002:a05:600c:1390:b0:45a:236a:23ba with SMTP id 5b1f17b1804b1-45ddded76a6mr93179925e9.22.1757418653858;
-        Tue, 09 Sep 2025 04:50:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFLYxXGJ3JeYQUXq3Qs+8TSlviw2rq3zJWOHMDGMzgm5GnZu4lD6nyVRrpMbata0TKkHbHy/g==
-X-Received: by 2002:a05:600c:1390:b0:45a:236a:23ba with SMTP id 5b1f17b1804b1-45ddded76a6mr93179675e9.22.1757418653373;
-        Tue, 09 Sep 2025 04:50:53 -0700 (PDT)
+        bh=wOh5IdHecYmXNJFyfTY+5ofA8ReFnlDB1RFePKgZiG8=;
+        b=g7JYxKP/V+MEcj7xqMwqPSIYEcEtoAK9GScA7+13eQPr1q5fAulE0PCQc/M9sgzsSb
+         uOHikWYZgHquFClGkRvGNMBQqdWlWklXHK+EiucbDb1r+qix+VFgN5t/lVItP5xkJNOA
+         gRxqlijdZcY9AFWIgjnF9taGkoq58hb3F6nwKTRMVtOEfNnoYj5AyAs0BrKBnvy7CQxl
+         G4+ik682OFsrPGMeSy25Y6Va/XLjpCWhCt2uNDkBaBk7Bva9FWt8aLrrVPBGCg90UqBU
+         ttoFULPKlqSrLzsE9uaafQM2Uuknxjm2DWrJzpPjwk8PvY++/+0GE7qPzmJjAc3Cb53A
+         yo6w==
+X-Forwarded-Encrypted: i=1; AJvYcCUUkpCdTHa2T7wJhCEWY//rGkrrM0L860YeEU+x29RBf8D+ZCQ3lFzmqO4CQC2zw29xsWHgDcphJQ==@kvack.org
+X-Gm-Message-State: AOJu0YwfTs3O6pN0BhH0rSGbF2xxZiYcmFLLlRnbmkwdslYBC8D1FCzB
+	JRoU6NPmXwD3khAeWbUTwx3s6yc4ZE8+d+aR3mqVsw2E8P+Iii8IW/xm0mPjV5YZvYeR6wq9oTr
+	2YTXKJZM5GTWc/ywLPnVUxt4lT22Uj4bLSLdEcrptIUbc3hNt0wleUUmzjPcz
+X-Gm-Gg: ASbGnct1f/74FgyJVqm0bnfY391alTT9ReoN4IzAfmceT5xvtdcoid6uggJJOUE7BJ/
+	hkrLtVciw3Lmn6ZgLatXdOYYUAmPceVlREViob/6P97hTBkScjqUXaN23ec4kBTa5QXa7XvF9ZV
+	DQn0nUuHaVlYLE5MOOqSfW2xCaAGlgVx+TSgp1bxxPDhC5GasdSoPM32CNpatgWV/W10AYqWnbE
+	yX2lRJK71KSLBOv/ND1aJtgAJfCV/nC7zT04/7cPgMk0qbVV/w56cn+u3NA3/0emJVecCQiapnq
+	Aj08fPeLv/II41Q80MHIs7Xnxz/EmuKpsGvlhnFNdcihE6A+9aQAyGR4Khi7iQ2nLGu988K0WMN
+	jT/05xt2GXIDb/rysL4P3NSxxQgqJ9+wFuYDtFHtHRTjNfdu00z3WGtdEIsdKVoDTkAw=
+X-Received: by 2002:a5d:5f82:0:b0:3e7:42ae:d3dd with SMTP id ffacd0b85a97d-3e742aed713mr7769530f8f.53.1757418903196;
+        Tue, 09 Sep 2025 04:55:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF+ZfFXrc3J/ZXb10wuImf1IN/WN2zT9Bnd5gvpLTDU+4GYxL8KyTu1AXUf0+6BD7rUQ8++xA==
+X-Received: by 2002:a5d:5f82:0:b0:3e7:42ae:d3dd with SMTP id ffacd0b85a97d-3e742aed713mr7769489f8f.53.1757418902733;
+        Tue, 09 Sep 2025 04:55:02 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f23:9c00:d1f6:f7fe:8f14:7e34? (p200300d82f239c00d1f6f7fe8f147e34.dip0.t-ipconnect.de. [2003:d8:2f23:9c00:d1f6:f7fe:8f14:7e34])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b9a6ecfafsm339135615e9.21.2025.09.09.04.50.51
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e75223898csm2497249f8f.39.2025.09.09.04.55.00
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 09 Sep 2025 04:50:52 -0700 (PDT)
-Message-ID: <655d2d29-8fe6-4684-aba4-4803bed0d4d0@redhat.com>
-Date: Tue, 9 Sep 2025 13:50:51 +0200
+        Tue, 09 Sep 2025 04:55:02 -0700 (PDT)
+Message-ID: <e521b1f4-3f2b-48cd-9568-b9a4cf4c4830@redhat.com>
+Date: Tue, 9 Sep 2025 13:54:59 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/gup: Drain batched mlock folio processing before
- attempting migration
-To: Will Deacon <will@kernel.org>, Hugh Dickins <hughd@google.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Keir Fraser <keirf@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- John Hubbard <jhubbard@nvidia.com>, Frederick Mayle <fmayle@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>,
- Rik van Riel <riel@surriel.com>, Vlastimil Babka <vbabka@suse.cz>,
- Ge Yang <yangge1116@126.com>
-References: <20250815101858.24352-1-will@kernel.org>
- <c5bac539-fd8a-4db7-c21c-cd3e457eee91@google.com>
- <aKMrOHYbTtDhOP6O@willie-the-truck> <aKM5S4oQYmRIbT3j@willie-the-truck>
- <9e7d31b9-1eaf-4599-ce42-b80c0c4bb25d@google.com>
- <8376d8a3-cc36-ae70-0fa8-427e9ca17b9b@google.com>
- <aLGVsXpyUx9-ZRIl@willie-the-truck>
- <7ce169c2-09b7-39e3-d00b-ba1db6dd258c@google.com>
- <aMAR1A1CidQrIFEW@willie-the-truck>
+Subject: Re: [PATCH v2 2/7] mm: introduce local state for lazy_mmu sections
+To: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
+ <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ "David S. Miller" <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>,
+ Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
+ Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
+ Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
+ Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org
+References: <20250908073931.4159362-1-kevin.brodsky@arm.com>
+ <20250908073931.4159362-3-kevin.brodsky@arm.com>
+ <d23ea683-cca4-4973-88b1-4f6fd9b22314@redhat.com>
+ <ca2054ad-b163-4e61-8ec4-6f2e36461628-agordeev@linux.ibm.com>
+ <e7acb889-1fe9-4db3-acf4-39f4960e8ccd@redhat.com>
+ <2fecfae7-1140-4a23-a352-9fd339fcbae5-agordeev@linux.ibm.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -164,21 +176,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aMAR1A1CidQrIFEW@willie-the-truck>
+In-Reply-To: <2fecfae7-1140-4a23-a352-9fd339fcbae5-agordeev@linux.ibm.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: QPqgfnGMp6F2S46JRE0aT-c41SgspEBLlx4r0TCAgZk_1757418654
+X-Mimecast-MFC-PROC-ID: 8QNR8K9M6L85Xp8REoGv-EEDZF_-vUPOrRy3ACJ08I4_1757418903
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: D4D0440002
-X-Stat-Signature: 8c1deeitfxudu7x4uj1mcahj5yy7pfxb
+X-Stat-Signature: ukpxqpx9tukfah8qc5fhfuqfpgnxn9si
 X-Rspam-User: 
-X-HE-Tag: 1757418657-551999
-X-HE-Meta: U2FsdGVkX19LCUvCYLl3jg08kAjbQGqJToWLsHSmnd2mIqdA6bO2S+JyCb4GMFDYTmOaqvMYvwjksGNKjUweRSf1kTrKt686Ilr+jdxTCmripkn3Vx2d1XrY3TQtkE/ikP19Zg0qsVRBAAiTq79Gdl6OIkiGIe1+GcehsU0upE6TaMjwPY4pgXCU/8hQqbm99lSEeaVtoVmY345ZXTrElbvwqR7tbTcyUbnuYMH8v0oeXjlc7wayZnqaaJqvKfUgl715gVTyIEa7o5SBsrpwjg+6DRDrcXQFsSIHD5XyRdDscnXEe9QHqVVxm11oOcwInsU4mUeLR4ZZEwB77pDH6fl9q1f6Ib/ri3zyQAkj/29ht4SkccZbC5KW3zZobTwGTyEb0kZXu3HKF8nLO/ZwARXNtbChOiVqO7TAp3xaadVMmd5v6tBK5GbEKO22L9KHXwLor2A4Rl+d4q6IdCXV2RwkmnjlXjrKcTo+KK+YgZ1no+UsnarCkKxtW8Pxw9Tfko9im8a03EdLNSA9o71hTW0bLJs8Na3zmsGLplFfVEQqz65rIqiGCuaCv0mT/FMI24lHZNTjcI9FbHe2xxyQBiAKbt9CQfPTxwcBy4bWtRtApJwvvFeJIjLcrXkxSrOOxOHKL2b0b2tXyo+W4wDiIeydgCjdrlJgOEQtgzxRY8ZGQjf0rq7PqOz8fJ4xwymOFvBX6EKgIOSpcJf69s1Uhhw4nSoJvQh7WxhfiZWGJlnYNKS99PXaCwOckK4UGWNvM0/tkiu6XmmWRpWQG5/23Cc1XoUKUOdqcuRMgZSoRd6O6JCx8in3mamrt3WMfQIyOYlbkg+s0ntaDPePz4r6+ydnhhrJhGC3l52DGflpiO8PViq1GnG8XmHdgT1RgM2WbuLpUEekj1G9Kckpo430kWYpv4EVrkv6/iiVLPGAmrjKGSUuTJ3PqaC0HigdKbCKsB8wZcCDKh//SnTN/RF
- R63qAFSG
- rrCqpS87fp4exY4pETA3GqNYAb0kfDchmg05hEHyjIL4i/3RL9DYyvFGF8pgJzDWJEt6mK8r6xeYGf8j4C+uUJPchdmR3QFuq79ypoLH5ZPJFkKIXbYb425cbpPy6n/kCBedxf8MmYqGJbvTHY5ahG8o2RMYTHJvYgawtzHufkxMLD37Wjk8pVyqBIXpkxaPj+KZGsx5MVVNBw2xB4LSCBk2URNeVSqITqLzlispGvp4bZi2teY0H1mVtWVtVk3rjjS2SM7zebNqZSz7sPSifGA9vjGZQ+oVxIWppw1dpDlsEPwfOXA2teGAXxJnzPFYQmU/OFNiZD91AxhI944bi+J38Os7bHxkW8+sp+tYXCe9TDpAI+KrCiYP+Rk+1mRDRmuNx3wzHmotHonAlB+vCjSGZwtjt25B+QDXoafR6QFRdNvdms9NZ99j23VYKSHV3sbvh
+X-Rspamd-Queue-Id: 618CA1C0006
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1757418906-465419
+X-HE-Meta: U2FsdGVkX1/5Wi1KqOsBR0LCi/5zg8wnSm7yf/OV8QclDF7d2hh0b7erHLuhBdw7/hf2j3y1uw39Q77SDb4kCd5toQ6TvD9oIfiDKCzc1gRh+C/YOf69Bs1lEOicIiyQgz4oof/OHtTMpLO72n1QKE0qEW8esp/sqVYzxMPcBJsICGjqhEUeoeCmn4BYCQbhf+xyqziBL6LEKZQK7OwPRbKJWvH9d9kr310a4wMGBG9hPubPz4ae9aJ0lyIDmNwLMyTEpGbWt1B1h4GI8WFWzY+jdMhROK52rIF4/kYqOzQUVfA/0jzbDNZXYwQABS6gTDltDDEju+ijITku89x61i3u9rOld3pwrnNLAgqKpN4CuSMLGC0+xCjzNImAQmh858I425Y3rNpVCEpTpElarvT6/PIG73MKdVHwVE8QyXcY1BxmSLc0a/WmWjsUto3m+3kux33SJGZELKPBSPHxC59ls90CbZfDBIpAKsNG0m/301X9XIwmAuR+Nq9ljSmM8uypU/zvsQpd7HIph7QxefzHTrul/Eojaw+xnPzMuKz5R7MyM+ZahBQajPvI6UTnZWCirZhtPjASZm2qIXPZblTp+sGOLdo0NXevjL+5l+OWq2s4nguxnQYOte+mn1NDeDti8oCJbB2dhYtg1c5maK//Jjqz5A0p81pXtk2+auji8O8hL3fu/eUQNo3akoO38jtKiiGxjzNy1nKnaOCiVsUhkiaaE98dGlb1q9gPB3QpGJcOf7ZK//4axCXoASLc2S31zUUxCc/OE1aanzZw1BXmyAyWNpHe+XCKd8ee1Jbd3C+/N/1hqiLxmRcuiOHY5HmL329WH44ldwrCFCWWEha1HoQimDccAyjPTKoYBOFoEYlP/5M8cy4HkVxP11z9AutpiMehkV+HPV9w2KLGUrJT8xF55kAiSKci1R85ZjRBLHU7xkXcAEHWl3vBDKLtBAfQhXlf+4WhneoywpX
+ NDYDI9jP
+ zewW/mhLi+SOcE6hmlf13TEDDqfzfZf8yvjTFBGFrqY56i6iSui0nPGq+SYggwR21hN/hLdfEunLaifXKeZoiOeMssH8BCY9OPYSfEP3qCF91b8qgdK9zJaDSik232WBCpAn5itU9fx9R4r6jrZMsrRZj9YOlHieph5Sz6ARqTXXAM2IjRpeZ9nUVp41qetklj8r8uf/AWo9gSYy+e7/PaHnxrAHac8OQ27/SrvMOqt8hCwhDPUtTskbc4+lkU26vua9eG7tCrOlNuGXzF5I9dYpdo1zhTAr0EjB1Cqod7VSOEfnAWY7URfyRYIoiyWe++XKe7JiSdbr2wf/Aq4ZZIsq9ipQP6LHIi6251v45l7aScwx+yQu0DOO8hwKraa4pM79x2rMH6Asb4gp978H8UET/RnZqIZQDyUf+8HkC9s8FgfipsXRxRGAsaeyQxg08s/rOUnuKWb42iu5wWxSAiGfy4XI//pIvRY0Z
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -187,82 +199,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 09.09.25 13:39, Will Deacon wrote:
-> On Fri, Aug 29, 2025 at 08:46:52AM -0700, Hugh Dickins wrote:
->> On Fri, 29 Aug 2025, Will Deacon wrote:
->>> On Thu, Aug 28, 2025 at 01:47:14AM -0700, Hugh Dickins wrote:
->>>> diff --git a/mm/gup.c b/mm/gup.c
->>>> index adffe663594d..9f7c87f504a9 100644
->>>> --- a/mm/gup.c
->>>> +++ b/mm/gup.c
->>>> @@ -2291,6 +2291,8 @@ static unsigned long collect_longterm_unpinnable_folios(
->>>>   	struct folio *folio;
->>>>   	long i = 0;
->>>>   
->>>> +	lru_add_drain();
->>>> +
->>>>   	for (folio = pofs_get_folio(pofs, i); folio;
->>>>   	     folio = pofs_next_folio(folio, pofs, &i)) {
->>>>   
->>>> @@ -2307,7 +2309,8 @@ static unsigned long collect_longterm_unpinnable_folios(
->>>>   			continue;
->>>>   		}
->>>>   
->>>> -		if (!folio_test_lru(folio) && drain_allow) {
->>>> +		if (drain_allow && folio_ref_count(folio) !=
->>>> +				   folio_expected_ref_count(folio) + 1) {
->>>>   			lru_add_drain_all();
+On 09.09.25 13:45, Alexander Gordeev wrote:
+> On Tue, Sep 09, 2025 at 12:09:48PM +0200, David Hildenbrand wrote:
+>> On 09.09.25 11:40, Alexander Gordeev wrote:
+>>> On Tue, Sep 09, 2025 at 11:07:36AM +0200, David Hildenbrand wrote:
+>>>> On 08.09.25 09:39, Kevin Brodsky wrote:
+>>>>> arch_{enter,leave}_lazy_mmu_mode() currently have a stateless API
+>>>>> (taking and returning no value). This is proving problematic in
+>>>>> situations where leave() needs to restore some context back to its
+>>>>> original state (before enter() was called). In particular, this
+>>>>> makes it difficult to support the nesting of lazy_mmu sections -
+>>>>> leave() does not know whether the matching enter() call occurred
+>>>>> while lazy_mmu was already enabled, and whether to disable it or
+>>>>> not.
+>>>>>
+>>>>> This patch gives all architectures the chance to store local state
+>>>>> while inside a lazy_mmu section by making enter() return some value,
+>>>>> storing it in a local variable, and having leave() take that value.
+>>>>> That value is typed lazy_mmu_state_t - each architecture defining
+>>>>> __HAVE_ARCH_ENTER_LAZY_MMU_MODE is free to define it as it sees fit.
+>>>>> For now we define it as int everywhere, which is sufficient to
+>>>>> support nesting.
+>>> ...
+>>>>> {
+>>>>> + lazy_mmu_state_t lazy_mmu_state;
+>>>>> ...
+>>>>> - arch_enter_lazy_mmu_mode();
+>>>>> + lazy_mmu_state = arch_enter_lazy_mmu_mode();
+>>>>> ...
+>>>>> - arch_leave_lazy_mmu_mode();
+>>>>> + arch_leave_lazy_mmu_mode(lazy_mmu_state);
+>>>>> ...
+>>>>> }
+>>>>>
+>>>>> * In a few cases (e.g. xen_flush_lazy_mmu()), a function knows that
+>>>>>      lazy_mmu is already enabled, and it temporarily disables it by
+>>>>>      calling leave() and then enter() again. Here we want to ensure
+>>>>>      that any operation between the leave() and enter() calls is
+>>>>>      completed immediately; for that reason we pass LAZY_MMU_DEFAULT to
+>>>>>      leave() to fully disable lazy_mmu. enter() will then re-enable it
+>>>>>      - this achieves the expected behaviour, whether nesting occurred
+>>>>>      before that function was called or not.
+>>>>>
+>>>>> Note: it is difficult to provide a default definition of
+>>>>> lazy_mmu_state_t for architectures implementing lazy_mmu, because
+>>>>> that definition would need to be available in
+>>>>> arch/x86/include/asm/paravirt_types.h and adding a new generic
+>>>>>     #include there is very tricky due to the existing header soup.
+>>>>
+>>>> Yeah, I was wondering about exactly that.
+>>>>
+>>>> In particular because LAZY_MMU_DEFAULT etc resides somewehere compeltely
+>>>> different.
+>>>>
+>>>> Which raises the question: is using a new type really of any benefit here?
+>>>>
+>>>> Can't we just use an "enum lazy_mmu_state" and call it a day?
 >>>
->>> How does this synchronise with the folio being added to the mlock batch
->>> on another CPU?
->>>
->>> need_mlock_drain(), which is what I think lru_add_drain_all() ends up
->>> using to figure out which CPU batches to process, just looks at the
->>> 'nr' field in the batch and I can't see anything in mlock_folio() to
->>> ensure any ordering between adding the folio to the batch and
->>> incrementing its refcount.
->>>
->>> Then again, my hack to use folio_test_mlocked() would have a similar
->>> issue because the flag is set (albeit with barrier semantics) before
->>> adding the folio to the batch, meaning the drain could miss the folio.
->>>
->>> I guess there's some higher-level synchronisation making this all work,
->>> but it would be good to understand that as I can't see that
->>> collect_longterm_unpinnable_folios() can rely on much other than the pin.
+>>> I could envision something completely different for this type on s390,
+>>> e.g. a pointer to a per-cpu structure. So I would really ask to stick
+>>> with the current approach.
 >>
->> No such strict synchronization: you've been misled if people have told
->> you that this pinning migration stuff is deterministically successful:
->> it's best effort - or will others on the Cc disagree?
->>
->> Just as there's no synchronization between the calculation inside
->> folio_expected_ref_count() and the reading of folio's refcount.
->>
->> It wouldn't make sense for this unpinnable collection to anguish over
->> such synchronization, when a moment later the migration is liable to
->> fail (on occasion) for other transient reasons.  All ending up reported
->> as -ENOMEM apparently? that looks unhelpful.
+>> Would that integrate well with LAZY_MMU_DEFAULT etc?
 > 
-> I see this was tangentially discussed with David on the patches you sent
-> and I agree that it's a distinct issue from what we're solving here,
-> however, -ENOMEM is a particularly problematic way to report transient
-> errors with migration due to a race. For KVM, the -ENOMEM will bubble
-> back up to userspace and the VMM is likely to destroy the VM altogether
-> whereas -EAGAIN would return back to the guest and retry the faulting
-> instruction.
+> Hmm... I though the idea is to use LAZY_MMU_* by architectures that
+> want to use it - at least that is how I read the description above.
+> 
+> It is only kasan_populate|depopulate_vmalloc_pte() in generic code
+> that do not follow this pattern, and it looks as a problem to me.
 
-Migration code itself will retry multiple times, which usually takes 
-care of most races.
+Yes, that's why I am asking.
 
-Not all of course.
-
-Now, I recall John was working on that at some point (I recall an RFC 
-patch, but I might be daydreaming), and I recall discussions at LSF/MM 
-around improving handling when we are mixing a flood of short-therm gup 
-with a single long-term gup that wants to migrate these (short-term 
-pinned) pages.
-
-Essentially, we would have to temporarily prevent new short-term GUP 
-pins in order to make the long-term GUP-pin succeed in migrating the folio.
+What kind of information (pointer to a per-cpu structure) would you want 
+to return, and would handling it similar to how 
+pagefault_disable()/pagefault_enable() e.g., using a variable in 
+"current" to track the nesting level avoid having s390x to do that?
 
 -- 
 Cheers
