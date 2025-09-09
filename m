@@ -4,114 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EF74CAC589
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 07:40:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45C1CCAC589
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 07:48:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AAB956B000E; Tue,  9 Sep 2025 03:40:56 -0400 (EDT)
+	id 78ACF6B000D; Tue,  9 Sep 2025 03:48:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A83556B0010; Tue,  9 Sep 2025 03:40:56 -0400 (EDT)
+	id 7627B6B0010; Tue,  9 Sep 2025 03:48:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 998E26B0011; Tue,  9 Sep 2025 03:40:56 -0400 (EDT)
+	id 6780D6B0011; Tue,  9 Sep 2025 03:48:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 892436B000E
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 03:40:56 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 29F851A03F2
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 07:40:56 +0000 (UTC)
-X-FDA: 83868915312.22.942BFE6
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 3689B140010
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 07:40:54 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=E91I0yrD;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf09.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=mhocko@suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757403654; a=rsa-sha256;
-	cv=none;
-	b=IUTAqXTnMflRKtrjpYKfwoC+JqjYpTpI+zpltTPqwBhnKD3tIr8yUI7yr7Z99FwdbJ3RnT
-	wZ/zhIJYE7EB9c3dYdb7BIw1v476WNLQgrUUlP0KW97PEzkDGTmjKTJGpr4xS7a0JGEiHR
-	WkR0cDcj3pBLmrl/Zs7r7bg156FkpLI=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=E91I0yrD;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf09.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=mhocko@suse.com
+	by kanga.kvack.org (Postfix) with ESMTP id 56C176B000D
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 03:48:44 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 00172B942C
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 07:48:43 +0000 (UTC)
+X-FDA: 83868934926.29.C50DDD3
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf25.hostedemail.com (Postfix) with ESMTP id A45B3A0003
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 07:48:39 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	spf=pass (imf25.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757403654;
+	s=arc-20220608; t=1757404121;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u22boo28UvFDQfs2oEw/hxJdzWFKv2Wia7rhjSS9eNo=;
-	b=5DXMJF+apPN3dlYJ7vyasRyh73avlJhey81aLRxV6Gxzg6W1K5l2ZXXZy8HIhXntUV/DKS
-	pvCJHZXtww6PJYpATHOVjgXKq/JKQtzcBki33aLWilWNN+cMOZui9bazkbZ7qiNIixabDg
-	pg1FaFz1F+l7/pDilH2ESOO4XV0TOzo=
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b04163fe08dso898461266b.3
-        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 00:40:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1757403652; x=1758008452; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=u22boo28UvFDQfs2oEw/hxJdzWFKv2Wia7rhjSS9eNo=;
-        b=E91I0yrDbcu48Yq65g4shdImQlxfN73AII4X+4jAYZCHwwarOHyDCajDqlUkl8CbMo
-         JRrY2rZxWjAm43lVAhV5C8fvvt1tknmQCxSuSeUBtlArsFpBlEeaMYfHobJN71RtvLhM
-         PrCvImgFMhxKJBiifbImQIZVbrP27fjKIknYKrjy5WBdk12WzO28n/PLVspYa2dFNdy6
-         fWZXzZ6qNGEDYyFC5QU0AXIQqz2V6Mz0i/MM2Pg8WOBKQL2fdB4VqRZBaaFlyivRJVza
-         jL31IxuXyci++Ydd3KBPWpNMKA/amR7MAHyr82rA1BFVmLPYSvxWnnovmImL3b02QJdv
-         ZKVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757403652; x=1758008452;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=u22boo28UvFDQfs2oEw/hxJdzWFKv2Wia7rhjSS9eNo=;
-        b=qk1K1kIZIGCe7BcSe64LXJQE2MUuPwA3E9LMjcUqkunh4+NeKnOmBPXZAvUes675/P
-         Epv3VixGLZr5XHOUeUqhf4z3IuPNlzVeM+Ixh32QSNFOI1Xw2TNOry1mJTt7S4GWV2x9
-         ZDL5HVN0EqoVWWTezvf8F0zy2eUW/0T/sF0SBDjAURJUsVv1ymnmV7YqsZNY8HcitrUM
-         Sp5fsGcJltNd9vKotA5V5zhMW0iApyE6KVXoY1mbbWX2OB2BP+reCM89T8O6PT3sgaIp
-         z5lUFWviNQrIpp8v82K0AcrmsOhgixzCCqMNZn9e39+QzrdUIeL1/Ur60u9UV7Iu5zZp
-         w30g==
-X-Forwarded-Encrypted: i=1; AJvYcCVbGnFI4u/k2CrQxip9dCD0lHpPIGOL2XoMy0/isGqpZ0cwcCFnwKov4I4CtF3CMtrewD6XkTGadw==@kvack.org
-X-Gm-Message-State: AOJu0Yyt6X6bbyYwOusvERwcStZMIzsnUarzHumn4q+FatnK5I3edhOR
-	pDq5SZuz1JvOYvA95JcPXKA/Evt6og0kjfwm3ib5w+8zMOn0kBoTcnecBoqHx2FRKIc=
-X-Gm-Gg: ASbGnctQ/BNDmnAqLctNhCxM5lr+wu8IXFKxUqaEBvi1CEpUwv82tTQK9AvUCwiY6cz
-	mV3/8sad5k4ClKe+I4dC4NTaifNQcZzUOeXhA5s1zBw2MPiGbG1DGDy+QdpQV4LqH4uvqciiO5+
-	HkcvJJw+EJPq3TMLFtPiWRu2Rq94viehjVlmgqtCimEumtI68vroi1KTOu8HNBmOSJkiupaBjrf
-	V3MP8mjZKNMnVY2nmQub2SCzSkLo+e6fnGb0u+9TJoY+3+OA4Stnyp8LaaMeVkEGEydvhTCxNJU
-	WtSuYBAQmvB3zy75TnqpIq0ACo0bj3mZAjFQKeZskVCVu3eaWCYOf5ABh/iv71ZNkGt0npXhGWo
-	22MOcYgzjwC4v66q65WU/jPx0F52KjYCNaAzlfVlJ7p9e
-X-Google-Smtp-Source: AGHT+IHDPUSJwJ09FmuKcRHCbVb4TRocjJO5VHcQQhngEcihEY5pYVTneb2uR9H+cbvN0Kp9WTpARw==
-X-Received: by 2002:a17:907:d2a:b0:afa:1a67:e012 with SMTP id a640c23a62f3a-b04b13c1530mr865161366b.8.1757403652476;
-        Tue, 09 Sep 2025 00:40:52 -0700 (PDT)
-Received: from localhost (109-81-31-43.rct.o2.cz. [109.81.31.43])
-        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-aff0ed6ffebsm2543940966b.32.2025.09.09.00.40.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Sep 2025 00:40:52 -0700 (PDT)
-Date: Tue, 9 Sep 2025 09:40:51 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: cuishiwei <cuishw@inspur.com>
-Cc: akpm@linux-foundation.org, axelrasmussen@google.com, yuanchu@google.com,
-	hannes@cmpxchg.org, weixugc@google.com, david@redhat.com,
-	zhengqi.arch@bytedance.com, shakeel.butt@linux.dev,
-	lorenzo.stoakes@oracle.com, linux-mm@kvack.org,
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=uPQPQW0jcMfrooDwDYyPUhxkeqWLLcrqs1cbiarOzBM=;
+	b=4tq3pHD/JCV15pzg0ogbMOOEjKGkToxjDKuu9OAS3ZkrQRB00kDubZ30PlaiDcUgCtbhxb
+	aAKfmF8R4yFMOo/exirfOj4qdwiV8RKEDUXIoH+ixKt6T83QTnqZ1w1TitFlhB9CQXQ404
+	q3rdNNrd9czSlo8dkkU8oxKx8NpBoP4=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=none;
+	spf=pass (imf25.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757404121; a=rsa-sha256;
+	cv=none;
+	b=TNBxD5AxAon8BMvKWb8JfPt977G0zKahcIOyxb16PQcsQUrp+DvDZJK2VDmklOR56e4nXA
+	Mf4iMZbFFHPldvVwyQtB4fHI0zCL7/pdjCEvc8gridSN8AxtLA1FOhug3aSAK3ZdrnWDLV
+	1fqNKgh/T1H2T+99lA43aqctn171x4s=
+X-UUID: 603b27588d5111f0b29709d653e92f7d-20250909
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
+	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
+	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
+	HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NAME
+	IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_EXISTED, SN_EXISTED
+	SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:c9d64b59-8547-4850-8971-4da55c312d9f,IP:10,
+	URL:0,TC:0,Content:0,EDM:25,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTI
+	ON:release,TS:30
+X-CID-INFO: VERSION:1.1.45,REQID:c9d64b59-8547-4850-8971-4da55c312d9f,IP:10,UR
+	L:0,TC:0,Content:0,EDM:25,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:30
+X-CID-META: VersionHash:6493067,CLOUDID:de6a38db08b61df599d118a345fe75fa,BulkI
+	D:250909154831ZXY1HHMU,BulkQuantity:0,Recheck:0,SF:19|24|38|44|66|72|78|10
+	2|850,TC:nil,Content:0|50,EDM:5,IP:-2,URL:0,File:nil,RT:nil,Bulk:nil,QS:ni
+	l,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:
+	0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FSD,TF_CID_SPAM_FSI
+X-UUID: 603b27588d5111f0b29709d653e92f7d-20250909
+X-User: husong@kylinos.cn
+Received: from localhost.localdomain [(223.70.159.239)] by mailgw.kylinos.cn
+	(envelope-from <husong@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1128407; Tue, 09 Sep 2025 15:48:29 +0800
+From: Hu Song <husong@kylinos.cn>
+To: Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Hu Song <husong@kylinos.cn>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] disable demotion during memory reclamation
-Message-ID: <aL_aA2HKjfmwBaJ-@tiehlicka>
-References: <20250909012141.1467-1-cuishw@inspur.com>
+Subject: [PATCH] mm/slub: Use folio_nr_pages() in __free_slab()
+Date: Tue,  9 Sep 2025 15:48:11 +0800
+Message-Id: <20250909074812.599030-1-husong@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250909012141.1467-1-cuishw@inspur.com>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 3689B140010
-X-Stat-Signature: h37uhk6yojahdhcuxmaq99kor65eygck
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: A45B3A0003
+X-Stat-Signature: msr9wsqas5op8yo8jpgpwno48nky1ozc
 X-Rspam-User: 
-X-HE-Tag: 1757403654-156395
-X-HE-Meta: U2FsdGVkX1+8Wqq8YWdCCFgnRD+NMeXyiWwbmT9s1rFCExx3/Zx9EOh1PCHpNid4XzHO/73H0wHktT1XQYcao/1fDfYDjxOKZ3X9BtDzskeJSObgs3LrOpOSlSty/pnKudeCZbSAN8xFH4JIRaAdvOmdggDsyLcAFlcer8npkiFwFl9ehPuRYIFTuzkdwrbkwMwIynV9LIF3/ghEr25mnXdxQup8zWoMMm2rvYLrWbqrV6KtxUcNIvmRanp5nuaUK+v2zqD+raFHkX9fa1pw/Bx/jMNZq93G4+2sZEzNHvAI87VKIuUznzT1XPb0oO7ikn+8PCSDm+WnLJOI5FL/OlXtYjRBkainvi2aS8Ua91uz4bMpM6ed6vdvTRvNaM1eG/Fjj92qKCPHztW8bGdRqj8/AnJMA1JwxuXd6jHdlei/71K0Y3ilZBV2zXjT8oWk6xxvd6NggQ9cmd2PpIuNnywAIqhpcIyOPkoiJfe5FHeNaGrTLfulk3rnKaUyOHtC2LzDPuYisDemCAXFYKvOG7gj2pUO4j/l2XktbxVi54lnX8utVOV1Co4hBpTghCOy19rdwTQBlwaIsKLIlA5dqssCGU9RM/B6Xz8NRsfrg6LJSnnaJ74oVE/+j8ABrrDuJSsXEAY/1MDqz0QhsIjmkgHyFYQAwSEkzpMdc4nxRGCRtNHnkgMKtZX/qPKRfVPKI/DZYo2yGFhjMYW1wvsjDbKx7SrTw2wBtf9L0l2dF1EySSY3doLH8U6wyH9XTHh6Ej3/NYrj7nx+Wr5WbIMWCwAynOZP5vgLQmOjusJ6yctPmdtrpFTxC5Bt8DdDxS8UnbYz+Q5rnuA4NGyxUeSMjU3ExXBkej6z0GgzQyupB2ujkM3MHXf/rW2wZPGG3D7BaBQLjc4YtiEBhzrlriEC2NzptrlYzh7qYIio/p+HDZS9THg3NDL7ut1s0wijt14UvBoK1wjDi6FL1nO6TYf
- cNltn6Aw
- PAVEvlUQkdWDUlabC6JgxZfPjNhlMdOShiBw6s4T1Fn85PDLWV1eI7EEAealdbDFCT+GumisEOhLlLpVUV3XXL9yS9RlRvyPP9seVN4ZOHNKnNzG3mINgylSWXoYbUjc3R+HfCotsB7HDBHri5LUitQ2sJqRbl/QnqB9+B1vEqsCM20+ZOAS7pHif5ylwM5MxBVWq4VbBBpa8HPdY2mkqhZAsSn0kjx3pAmmzrenMCmKlqSzMYu4rtRcfptVA0Ffi6XTCStQMiiTeuimO2IevCazeUyJGs+tSi9zU1XeklgzXa0WRHE6Uy9bPnuzRFQRgpnPC9SjeSmiaii2Jz8TacRgKd+YHaLHLWhaxzMNIm9K4SRxMuAYC9bmoUw==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1757404119-889124
+X-HE-Meta: U2FsdGVkX18jK02+heHBnLJM92Rl+z0aG6sh28HvAPczHDw/MriIZ3XXzMGPEKCJcSY3NeKNmOeBt9fjsS/jNu1iPJVz0dCiyUkSXJI2LN59itigOonM2avAGdDnvPamTxm1LjCsjt9dOQ7V1IET/v8l7RVavwkLvH6HUqN+YXkb5PSaV0vPGNkyDTHYgMwmEETaD54rN4fwQ8gsJMYSopxWnWU9tpevCiic26KMOkBo//QL/sssCal6auUDCUYzm1CWF5ONYBWeXylvcCNZAyY7WSIf6F9g4eBcz/06H9bimJhMmHSuB2hbuvSQ/I+iFuOcG4XOqTM9Vr/qE2LcidwhNzbXSBos7DhAAhYmwDIsE+D97lDbJBTXlOKc/Jxo4z5jKpr03UBiZlc24EbUHkcm4ErgwgggU7pugQ2c6uTFSqk9YAEJ3mHhI7keAOiLwe/MimpYn2oNzJQRE9LpU3xBn4Acrledu171RWIMlGyuPSvpYn2LFz4rJAy2soMuM6sQRsJkpT1T1lIpnGh+j+LdPCBc8uCLCaHtdXU6AlT5ufAI6GuSXoQeBUhUG8CVL2cwHxq0c1FtpJxwS8SqxaNIcoyI5ZECxPDniNUcYgCk+aMu+yLhygmU+W+aUdJYg0h9CXQJi2fLT+2sJ+eU1esHLl8pZPAteW7+/rvrjYZT90yvnNN2hwSansVquDgxC7NqarQCTWNAsK+wx6G7KnZO6GrPV6VU4Bh6FlVt2xFJpufhKiIbCTNZdkTv5sIiJvWXav4TjsTCwWeA4wKaPV0zQGZCn0jO6dGJKYYhMjC1ggIynT5RJRQFDX2NnKXBPTjLAVeAGqVeXac0qmFPgsl5EQGArNcWHoFvXmGrhVirTw4XcoxluWecPoLlMVzS/4lbDQbL9vB7HOX85qlhE7+1HMQBbsKb5znFKOPY6SGp5MABvEgfCHSRvr1+7nEYESrgYcjcGZwZRSAhMLe
+ TwvEVwPB
+ iOmlzMT5X5BeD/iG4ABE5kyqQMEXdxKkU6twEGvhCLm9H0zXXlrjTW/8+TyJYnP/gAki1Z45t/CD37+axTjBuDDdHlQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,50 +106,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue 09-09-25 09:21:41, cuishiwei wrote:
-> When a memory cgroup exceeds its memory limit, the system reclaims
-> its cold memory.However, if /sys/kernel/mm/numa/demotion_enabled is
-> set to 1, memory on fast memory nodes will also be demoted to slow 
-> memory nodes.
-> 
-> This demotion contradicts the goal of reclaiming cold memory within
-> the memcg.At this point, demoting cold memory from fast to slow nodes
-> is pointless;it doesn't reduce the memcg's memory usage. Therefore, 
-> we should set no_demotion when reclaiming memory in a memcg.
+Use folio_nr_pages() helper instead of manual calculation (1 << order)
+for better code readability and maintainability.
 
-We have discussed this in the past and it is my recollection that we
-have concluded that demotion is a part of proper aging and therefore it
-should be done during the limit reclaim. Pro active reclaim through
-memcg.memory_reclaim has a slightly different semantic (see
-6b426d071419a).
+Signed-off-by: Hu Song <husong@kylinos.cn>
+---
+ mm/slub.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I can see you have replied with more details to Andrew but in general it
-is always better to describe your usecase and why the current behavior
-is unexpected. Is the memory limit not being enforced? Do you see
-unexpected memcg OOM situations? What is the actual problem?
-
-> Signed-off-by: cuishiwei <cuishw@inspur.com>
-> ---
->  mm/vmscan.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index ca9e1cd3cd68..1edf618a3604 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -6706,6 +6706,7 @@ unsigned long try_to_free_mem_cgroup_pages(struct mem_cgroup *memcg,
->  		.may_unmap = 1,
->  		.may_swap = !!(reclaim_options & MEMCG_RECLAIM_MAY_SWAP),
->  		.proactive = !!(reclaim_options & MEMCG_RECLAIM_PROACTIVE),
-> +		.no_demotion = 1,
->  	};
->  	/*
->  	 * Traverse the ZONELIST_FALLBACK zonelist of the current node to put
-> -- 
-> 2.43.0
-> 
-
+diff --git a/mm/slub.c b/mm/slub.c
+index d257141896c9..eba25461641a 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -2719,7 +2719,7 @@ static void __free_slab(struct kmem_cache *s, struct slab *slab)
+ {
+ 	struct folio *folio = slab_folio(slab);
+ 	int order = folio_order(folio);
+-	int pages = 1 << order;
++	int pages = folio_nr_pages(folio);
+ 
+ 	__slab_clear_pfmemalloc(slab);
+ 	folio->mapping = NULL;
 -- 
-Michal Hocko
-SUSE Labs
+2.25.1
+
 
