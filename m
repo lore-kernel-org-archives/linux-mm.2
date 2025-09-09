@@ -4,86 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 226FBCAC585
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 06:16:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D34BACAC585
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 06:17:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D2D48E000F; Tue,  9 Sep 2025 02:16:02 -0400 (EDT)
+	id 3B7A58E000E; Tue,  9 Sep 2025 02:17:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7832F8E000E; Tue,  9 Sep 2025 02:16:02 -0400 (EDT)
+	id 38ED28E0007; Tue,  9 Sep 2025 02:17:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 64C6A8E000F; Tue,  9 Sep 2025 02:16:02 -0400 (EDT)
+	id 27DCF8E000E; Tue,  9 Sep 2025 02:17:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 50F428E000E
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 02:16:02 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1121DC03A9
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 06:16:02 +0000 (UTC)
-X-FDA: 83868701364.14.DE5030C
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 86179A0012
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 06:16:00 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=none;
-	spf=pass (imf15.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 15ED98E0007
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 02:17:15 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CB64313AAEA
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 06:17:14 +0000 (UTC)
+X-FDA: 83868704388.05.890E7BE
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	by imf04.hostedemail.com (Postfix) with ESMTP id D155C4000B
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 06:17:12 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=KTWVxTou;
+	spf=pass (imf04.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757398560;
+	s=arc-20220608; t=1757398633;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RwX4fAJkTt9sLeZk71RnTxTl3BiNMkS7kiEs3tBnt2Q=;
-	b=jyT1fAyXEo/RHD5lRlKOtTATpSnVZUv84RKnuxDlQbl+YyvXbnAoSS2cJal+/NC/ja6c0i
-	RNwQ6aLd+trhK798/r0fghNo2vLCyWoB47Fz853GzV23c24Ie26aPDH9+rGQc9EfO4vcA3
-	hwyg9vLvhpFT1PhlB90ZiwjiWD91uZs=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=none;
-	spf=pass (imf15.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757398560; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=AUIpY/hUwvUpbS15H++8ZR5q5CpymLW4Dqai3m6j5P8=;
+	b=vk19O6VdMUC/TOLd2W7/Wu7M2JSaLSQ6WXKamFdL20qtZPfL8kcHpv6Iz1s9Yit6jy3wyx
+	rDGoZiAU7VUimCTDwf/xPCZYsPqxEIYqYPJNjPnvC7vWez6yZmoRNfPBw8Ef7oN8oONpJN
+	ppMRUIn1ycHfOclQLxyuEy0nX8HyJ0o=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757398633; a=rsa-sha256;
 	cv=none;
-	b=zhA8+woKqQiin54/viRhSCdrU1jSHRH+nNKNZIRJ7zZUK/jEnW/qvyufCeEkZfAI5GbmZu
-	AXO7T1ddhF4A3CoqJ9gJ+HhdJ8ipuNHZ31dKaDRccvzihtaSJNR5noOVzH4RjSXMQVpdZT
-	NBRNSWiVkj0sZ97mpMGK7kmuEVvdeik=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 32773168F;
-	Mon,  8 Sep 2025 23:15:51 -0700 (PDT)
-Received: from MacBook-Pro.blr.arm.com (MacBook-Pro.blr.arm.com [10.164.18.52])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 6B1CE3F66E;
-	Mon,  8 Sep 2025 23:15:55 -0700 (PDT)
-From: Dev Jain <dev.jain@arm.com>
-To: akpm@linux-foundation.org,
-	david@redhat.com,
-	shuah@kernel.org
-Cc: lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Dev Jain <dev.jain@arm.com>
-Subject: [PATCH v2 2/2] selftests/mm/uffd-stress: stricten constraint on free hugepages needed before the test
-Date: Tue,  9 Sep 2025 11:45:30 +0530
-Message-Id: <20250909061531.57272-3-dev.jain@arm.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20250909061531.57272-1-dev.jain@arm.com>
-References: <20250909061531.57272-1-dev.jain@arm.com>
+	b=Ku3rYzXEeb1qdWA1/TT3AErScaG2WvW5wiuUc7UvNnQMYKAPrxzElyK2I8tyxD+42+/92j
+	NNOnao4KBkgvvGClOsAEOzJaxv6UrqFDevHw0UDiIuRC387Exufvjvspv64WoTJSeEioEq
+	+6KrQWyu+D+IMNZhIwjTB/sIeaRNLe4=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=KTWVxTou;
+	spf=pass (imf04.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-afeec747e60so973737066b.0
+        for <linux-mm@kvack.org>; Mon, 08 Sep 2025 23:17:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1757398631; x=1758003431; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=AUIpY/hUwvUpbS15H++8ZR5q5CpymLW4Dqai3m6j5P8=;
+        b=KTWVxToujlw4tEjhCnbHL2pwzlDRM300Hg9hhU2JHJkkV9GuLjxcXDUP/W+4I5JeZQ
+         T/PEk3Rm6c1Gwmh4xG49kmez/akz1DAXtiLzBCk7mQaFaHL2/WPaLG7bfzI+XyeNHaoM
+         ybAQ/IQi+ZITlkuUOe48M0IZXOVyr6ZruGBEzYETBpfHWU+ztTcJ5IV8uZ5xQ6SsL7y9
+         btk2fqgJZy7VaYausljUVg41w8WYY7kn9v1/CMxdy7jlRj9CDFy4mdbD7CKc2DEyvMQl
+         LQV8BCJRa+x9oXhoRURovkDNPxZ0K7C6IHeMxa35pQFhomjks6vC7VBtvDbLO+TG4Pgp
+         gG7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757398631; x=1758003431;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AUIpY/hUwvUpbS15H++8ZR5q5CpymLW4Dqai3m6j5P8=;
+        b=WfxtRqWStnm2Zz3kqkIX0kogyGEArNedbyZ9ysfG3qDeuJrfWu+OgCEJsoaIcYcCLH
+         n2CUUDFOdJ2pv2BOFN6O2pPMeWPRQjE7f1zOPE3vDXpS2YY3xj0Avvv+r5Zg6oQAARgo
+         h1UUqBKd1S6EebWsERS8H7sD8eYkwEdCrHgJCexZc7hSqv9hyspXaYV3ydFOYMvnf2Wu
+         ci7sXEH3bUtZFzUVoHvGASGMyaB04iJ3GqTY/1U5zKukITZU/QAfj/CwYvAJOXqp0fmz
+         JbCq12XLGWbTbZDahc+0y+0bgVNw3ao8y0J5UwT9SOh/MjsyxfCjHpH/pFC3vWxOKbqB
+         Q6tQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVEPHHNAch+LkROuK/cSglfqfHy5Zo1JIDv0/K7iHORO1lEif5f0YsIr62WGL0uHpiWUtbBSTk85g==@kvack.org
+X-Gm-Message-State: AOJu0YwueTpAE4Kv9Cy2yaJhEdpW9Dc6+kMAq5VCIzVW2eQEsSzXtZ9V
+	X8sXyCKaJ20snnIQypZSq+Gb0DXgDspOSLdOI96b5v3ElbItxSihyAeXl49gyAamirs=
+X-Gm-Gg: ASbGncuOIBD5pCbls1cXUEinBoXSGCOcolDEcLHAJ94ZAMewevlEyGch8S5wmaNhkBp
+	OAb77U3zpEqkAhEtcNVLgkr/afN53MTHGWwtOGkL7pJjquMM41sGN7uqXZDF0cxo3VCzS1QE2jQ
+	6d97v/TPQnATQIfGsUYYLcNbBjtHCEpo5DpGrEkx4bfrtE926efV5rGZFkYDeqMCs2Mm+3T/UhX
+	H8DGrnr/Mm2c9S5YkhxOB3ZNd063ZmHx21u6HfSTeWB/0ceVsddqvaHu1hOTMJ+oGzNXnhWytes
+	gGCN3eNKILCoWHTtBUDLk9RlYogeMx4Yg8FcLeTMQbvm+V9hPWX+MpQo7g1EdfNURD0+uYhF1ZW
+	IMPx3XFgVeiTxmLwOJXK6OdKp+hwDsS2unhjlSDEiOt8vNlXLCVF4rk0=
+X-Google-Smtp-Source: AGHT+IGLA0K5P73dswsNYikfMMmpLlFqC26fbLtRsRpLv9nuaLU8vXgG0Id9f1eI3msFaa2JG7mMMA==
+X-Received: by 2002:a17:907:c14:b0:b04:3513:5138 with SMTP id a640c23a62f3a-b04b154786bmr1150331666b.41.1757398631137;
+        Mon, 08 Sep 2025 23:17:11 -0700 (PDT)
+Received: from localhost (109-81-31-43.rct.o2.cz. [109.81.31.43])
+        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b047041dddasm1412028266b.72.2025.09.08.23.17.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Sep 2025 23:17:10 -0700 (PDT)
+Date: Tue, 9 Sep 2025 08:17:08 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: Suren Baghdasaryan <surenb@google.com>,
+	Yueyang Pan <pyyjason@gmail.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Usama Arif <usamaarif642@gmail.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Sourav Panda <souravpanda@google.com>,
+	Pasha Tatashin <tatashin@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>
+Subject: Re: [RFC 0/1] Try to add memory allocation info for cgroup oom kill
+Message-ID: <aL_GZFkPp525rsfu@tiehlicka>
+References: <cover.1755190013.git.pyyjason@gmail.com>
+ <6qu2uo3d2msctkkz5slhx5piqtt64wsvkgkvjjpd255k7nrds4@qtffskmesivg>
+ <aKdw6Pkj2H4B6QDb@devbig569.cln6.facebook.com>
+ <tiwa6wnkdf6q2pfchxbbqb6r42y7moykqumvnzauckhavyemg2@zc5haja5mlxs>
+ <aK2/Vesgr9Xcl5gy@devbig569.cln6.facebook.com>
+ <CAJuCfpHJMSd16j3ANrtJGVfLieHdeO_Epq=U9OKty3TV362ckQ@mail.gmail.com>
+ <aLFKHGe2loD657fu@tiehlicka>
+ <zerazodfo2uu5az4s6vuwsgnk7esgjptygh5kdgxnb74o2lzjm@fkziy4ggxrxc>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 86179A0012
-X-Rspamd-Server: rspam05
-X-Stat-Signature: akcb58gyqw6ua77he3n74ntksdqa4fnx
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <zerazodfo2uu5az4s6vuwsgnk7esgjptygh5kdgxnb74o2lzjm@fkziy4ggxrxc>
+X-Stat-Signature: trn8pkq16w6e5yn5uzsjjz1gpgaucsud
+X-Rspamd-Queue-Id: D155C4000B
 X-Rspam-User: 
-X-HE-Tag: 1757398560-166256
-X-HE-Meta: U2FsdGVkX19/ZpQF13fLquivT2f268bu+YEJQ9wjvpq7C7PrOBU5vBoVJAwhU6IPwniuAGgh13iPDvWVRkeFgIrMivnDowf2eE2NKcytwUeZtyHcmZ6NehV6sk6oEUBYlKrj4kZP2NpyM8tRkIhEa5uiPNm/hLoQ+Knp+IbXqkQzL2BchIk0bLfaS26eXPoQ7eUSErzjdd/GxBZRX4A0anhDjIgR/ZPcRrJKpnf/Bg+AKYESFvsvwO3Turq2S/F1LVo83eNByNDtS7TOiwPgVNw6qsLFDWxGvvHFQGtLnX4N54d8OvRNpJhkFeRCscTC0hhjnsykWh+9je89NUTkYnN3UdzDcdw/frD3KK0PHnGrZEDy3y7YSnLFKefZVcNxDx/8C0v9qLSzvoGbo9t4Rv8Wz/RhG7EZkLTP9+OVP4CEZSrjB8QSIYR9wDQ/lBUvDql+lA3CqjZJIZ3ZVce6vEDG3d3qwbW7YB4myoyjL2x3O0zqxyLdEWZT4yOWNNvKRC+s7CMTpwqsIeUa7akjTQsUXSc4wb9twvnVGHyA9pVXl/q8sWyYeBAHikrA/0KXuFRajlbTaH0pYT64yT1eqG6xvsQnDfx2i9XZq/GhSQ4mtrd+65lkNTWMILyALCHdrfQiHmEuHv8aClgFkrxwdCgLMXpKKnmu9JI7cEIk4C0cir0ZRcfbi8bJeoruXwagpsO1MUu9j7xj/vQKdhh3njSJKJmK3Oxy5T3vJ1N8crXi/7ir3RJsduaQZwES6C+ksaBxmxk1hEfC8AmScEfbZVM1zyfVT5Xg4+IJBqqygh9W7nkvW03u4PyoFJdCUl1uMZ6wexXmaiHLwQpBJ83KKA==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1757398632-437693
+X-HE-Meta: U2FsdGVkX1/oTcRA8AOVQgS24/qhWO79S9wDH6S/Dvyd7oI2hfCC29tR3ybSJrnly6RJeIAbD+ual9RmFQ7mEe3QS56Jg+VGNCiOfbFkKkXLudfqd+jcUsJlLoiohDKlOwAtZFf8D+97FiisXi/IpiKCdAg16KtS2A14tWAW/xHaQ9VxkvAVBOyoLGuJkflyeIEfXR9FfZJWeOLJ/DZ/Jl/R08xnkW/yIwLOPtoUj5koyr5TFTipwKMRoxVfZQWt/+d93HcgvbeUrw2hy87xdifQ8JIPoM1+OPK+sOXUO3Zwq8nnc/CZ1pi69m0mzBmL293VrKkgp9vGMFo6frV/Ej6pWoCOOfgPDl+a5wnK4J6As8KFan19kZNGMo3w6FHJuowI5SAU1fOCjxMb57Ph/A8HOX2BLhUEK8o0Oc34BHa7kP4picYakCwwlxwNHvKCEPiVSnzHvGHAu6acdbo+ZFbdV2ERmrNZpe2da7uoSqbVxWuyBuvonplq3Mwrv4MtfnMBIpM4wmHTScokokpMxDEiKMAybq7fAq3E/+XwILOfBv95El1XiFdr53j3D8ILhWDK3lEPmr6RSw9xzMEgvqHbS+kKatpfd4fjdVchZ2wdbg4rq5UQYHmnnH4y3Icz+QtPQt6/0ocoxvW04WNlYIBs5thSntPGCVdRZydwPKL1vmd73dXwEgW597dmbdrM4lyEbcPsokT9YACfobNMWp4OBgWjKBb3NqQmsgjJmitMf813RrUa+N1smfsC9AYHpyH2rPY6awSOKMcKF2tN5/BsBgpslKRNl/cKFL54tPPIdewayAHJPrT8DjhmH9iOFn42qLLRiPtzFby8+Hpm/1EduHRf34C4hZsjFv1yCzp+AIEl14irkEBXCdKEVueGlPj/ukza63mlmJnawo8ZmIYe1UmKFH7gr+Uq37kvaCEZWbsmV7gGDrNK6eFSoAotfg3UPri/tsP6h2LVUIT
+ qaplQ0BW
+ bquPOt6ZuwBrpvsm8vh58KvkGe3bZQrFEB8+V5d2cgaHbtiZGPn0yWAkviraVQaQgpfzptmb0lEzKlNG9XDK+XIrzJ97Df6e6EKApvyo8e7A7/d/qngr7hVdgglv6tU9oHjyJPe02/W0GB8m/KsT2lfYltUfjK7uo1j2jRXUxAveIXl/Sm0EoKaOY2C4TkAvCo9Tu1+Rkb+Ku41CQs/jq4UMTqFnf9AlNgukUTSaWOb0La9UVT7ufPVtnTGAwUu5xYriGYlFtyLCyne43OCoBkeVWwfwW5FKtwiitxXbJBO9eTEhwG6a2pEzsgTiceQcCNeeU
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,57 +129,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The test requires at least 2 * (bytes/page_size) hugetlb memory, since
-we require identical number of hugepages for src and dst location. Fix
-this.
+On Mon 08-09-25 13:34:17, Kent Overstreet wrote:
+[...]
+> I'm not sure we do that very well at all now, I'm looking at
+> __show_mem() ad it's not even passed a memcg. !?
 
-Along with the above, as explained in patch "selftests/mm/uffd-stress:
-Make test operate on less hugetlb memory", the racy nature of the test
-requires that we have some extra number of hugepages left beyond what is
-required. Therefore, stricten this constraint.
+__show_mem is not called from memcg oom path. There is
+mem_cgroup_print_oom_meminfo for that purpose as memcg stats are
+sufficiently different to have their own thing.
 
-Fixes: 5a6aa60d1823 ("selftests/mm: skip uffd hugetlb tests with insufficient hugepages")
-Signed-off-by: Dev Jain <dev.jain@arm.com>
----
- tools/testing/selftests/mm/uffd-stress.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+Now, what mem_cgroup_print_oom_meminfo prints is missing more detailed
+slab memory usage break down. This might be useful in some situations.
+If we had memcg aware memory profiling then it could be added to that
+path as well. 
 
-diff --git a/tools/testing/selftests/mm/uffd-stress.c b/tools/testing/selftests/mm/uffd-stress.c
-index 40af7f67c407..3f6213ae0dd5 100644
---- a/tools/testing/selftests/mm/uffd-stress.c
-+++ b/tools/testing/selftests/mm/uffd-stress.c
-@@ -448,12 +448,6 @@ int main(int argc, char **argv)
- 	parse_test_type_arg(argv[1]);
- 	bytes = atol(argv[2]) * 1024 * 1024;
- 
--	if (test_type == TEST_HUGETLB &&
--	   get_free_hugepages() < bytes / page_size) {
--		printf("skip: Skipping userfaultfd... not enough hugepages\n");
--		return KSFT_SKIP;
--	}
--
- 	nr_cpus = sysconf(_SC_NPROCESSORS_ONLN);
- 	if (nr_cpus > 32) {
- 		/* Don't let calculation below go to zero. */
-@@ -464,6 +458,17 @@ int main(int argc, char **argv)
- 		nr_parallel = nr_cpus;
- 	}
- 
-+	/*
-+	 * src and dst each require bytes / page_size number of hugepages.
-+	 * Ensure nr_parallel - 1 hugepages on top of that to account
-+	 * for racy extra reservation of hugepages.
-+	 */
-+	if (test_type == TEST_HUGETLB &&
-+	   get_free_hugepages() < 2 * (bytes / page_size) + nr_parallel - 1) {
-+		printf("skip: Skipping userfaultfd... not enough hugepages\n");
-+		return KSFT_SKIP;
-+	}
-+
- 	nr_pages_per_cpu = bytes / page_size / nr_parallel;
- 	if (!nr_pages_per_cpu) {
- 		_err("pages_per_cpu = 0, cannot test (%lu / %lu / %lu)",
 -- 
-2.30.2
-
+Michal Hocko
+SUSE Labs
 
