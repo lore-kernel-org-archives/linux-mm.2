@@ -4,116 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59FE3CA0FED
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 14:58:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65DA6CAC583
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 14:59:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B86796B0022; Tue,  9 Sep 2025 10:58:48 -0400 (EDT)
+	id B871B6B00A4; Tue,  9 Sep 2025 10:59:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B36BE6B0023; Tue,  9 Sep 2025 10:58:48 -0400 (EDT)
+	id B37756B00A5; Tue,  9 Sep 2025 10:59:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A255B8E0003; Tue,  9 Sep 2025 10:58:48 -0400 (EDT)
+	id A26BD6B00A6; Tue,  9 Sep 2025 10:59:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A51D6B0022
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 10:58:48 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4B5F613B055
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 14:58:48 +0000 (UTC)
-X-FDA: 83870018736.26.64D68AB
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 530BA140011
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 14:58:46 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=gBF2lRsM;
-	spf=pass (imf09.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8B64B6B00A4
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 10:59:12 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 28CE6869DE
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 14:59:12 +0000 (UTC)
+X-FDA: 83870019744.17.3C2DF0E
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf07.hostedemail.com (Postfix) with ESMTP id E6D824000C
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 14:59:09 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=PrXgAtEA;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=flq8Xk8i;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=gsYCtBKS;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="9/CO1aeY";
+	spf=pass (imf07.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757429926;
+	s=arc-20220608; t=1757429950;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6m8UfLRkwYkCoRG9q4AW4F/X1zLc8k+fkHHKjv2oYWI=;
-	b=D59Pal2lOPPeT44CRAPHgM8ZrwA4uy+609+paz8SK0gaf3WG2az4QiDkm59Emky//WQK16
-	72b4wAFShVBHsc6MPLQ19N0vizjv1bThjINDPPy/tX94Q8Th1NuVv4MiSetHAVaj2SFbce
-	OEBcQK6Bz27BnCLnNtBm7jJ4nZyNqVI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757429926; a=rsa-sha256;
-	cv=none;
-	b=1U+hG/tAETyAM9kgUwc1YAMQyqEfrpZ4Q87lkiAU6k9UrP0KT5uD7pg76zRsLFCXe9keoR
-	rxWnYaRG6o8uDzPrMJl8W9GVuY7zu2mEIAGp8G0tuo6nFbbocbe82JMElKAP9nE5BwjLor
-	ORBCa+zecFM2AZSi6oFGUhixE982OwM=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=lnmhDFmtTUNklZKT/bYXY+FmLkPcZdd1+5x3c6aX6AQ=;
+	b=ybD5epciexn2ncFP7hf22jyPmbFDUlcFJre9eBl52D6ZKCFV6zgoINtIj7vsbZN5UMMDbG
+	LYHhdKMlqR1/KUKOgmTVAnGxrHSVyLKzMPEkXJhfGUdNRtQFLepiXp+ARSDodgfdqozcnr
+	LJFHyDi45ie0YlRE8mrHb09V3nKrFck=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=gBF2lRsM;
-	spf=pass (imf09.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b045d56e181so856619066b.2
-        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 07:58:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757429925; x=1758034725; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6m8UfLRkwYkCoRG9q4AW4F/X1zLc8k+fkHHKjv2oYWI=;
-        b=gBF2lRsMpbbvtYRdknD6gcs8MOZPTLqzvtnzhtKDFg3o651hUDiKrsBDCtomhOO8nV
-         Mrn669gLxU29ua/1udv7/0i1PJC3RTCrAFRmVJgYogLqYkdp+r+uHvtWByTavGxDweK5
-         6S7ZLua1eLen5jclDfEnldo19rCj7wDWu96wq8GDZ1hqsX6awI5ngDr3f0tSvFJIRwAn
-         tW0eG90WuS/8OaO5a3iTOilvxRLejI5V6F1oMGJo7dF0kOw+9DEgw8G5GKFt67KFtmtc
-         y9OG5d4PdW2L8g5rPet7yp0c6hAJR27fkP69MJbNzsbHxvMQYNHI5NgqDZPamUxSBxS4
-         YJoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757429925; x=1758034725;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6m8UfLRkwYkCoRG9q4AW4F/X1zLc8k+fkHHKjv2oYWI=;
-        b=D10gwOEZNP7IotXZzuX/KHEbl+kJZav0hSo1/umQdJSBELPl7yShFDiRTmdoPYIhmz
-         3mhKd0sYtri/GD8K3izeU077KMmrm1BVG/CkjcTCJcXa1HQ8BlB9GAfh47gdoip4xpzm
-         WrljznaB3Avxdn57KJf6OT33H162aQl4jWfRLAnKikqjlhqCnxv7Dp0Gu45Qw1BKHVU7
-         xotqLygV2+7VFLK64QO24/2sAS453aLVZBV9DqrX/wmtVpu6R3vSUFTnLe5oB3kU3dOn
-         mDdKPsBtg9aUhD70C+biIhYF/TdB2ZFcMb1cz8bfm1C942cNqO//up7qH2yL1hrZkMge
-         rKNQ==
-X-Gm-Message-State: AOJu0YwWPGiGexudsIop1FQu5bt7Thuvs/tB1yALKxZs8HDSIFEp1ny0
-	KqSSeSq0dTpgtC/YqiwjcRyQkNc0J0a3dtsCRHsSQrju91nvp58Nr2NtaLswAgZYcN4KW0TMSxW
-	R5eII2VZ1gpfG9aMiqClxINVMJvlXpF8=
-X-Gm-Gg: ASbGncv6gCg+hOplGvYG0paMjboenpL3szvbyvTdjHvCfhasj/uw0NAC5rWCJ1E3yeq
-	qSll1BVUEVxC5ikQsDQ3q9EmqJbyfrDr58nWDfLFTwwZ/CsRNSyKSdgeIUevuHMHKfwb6Hz3/il
-	+bJIQXXAAp+DYGj4Crezl0fWs0n03mwpMMF73TJN6ZoQ50gx5EeunXcSLiw2C7TmQmF34J1uQ9w
-	1k4cUONmuqcWkVWtKqw3A==
-X-Google-Smtp-Source: AGHT+IFWy3IZpvbKMW0rMWL9k3GfHz9yi8+0YGLSFX8InBG0mqrVOBpoQPrpe/jA576SWjVAzPg+gM9DAa/5Tc1gW4U=
-X-Received: by 2002:a17:907:d2a:b0:ae1:a6a0:f2fe with SMTP id
- a640c23a62f3a-b04b1542faemr1056559566b.36.1757429924635; Tue, 09 Sep 2025
- 07:58:44 -0700 (PDT)
+	imf07.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=PrXgAtEA;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=flq8Xk8i;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=gsYCtBKS;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="9/CO1aeY";
+	spf=pass (imf07.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757429950; a=rsa-sha256;
+	cv=none;
+	b=2cQXlBNUhzSPzt7qJGJesO7bA9BY1AgTPvNwpvL436Cc9RQ+jhkndxbqyL3Icst8kGK22i
+	bFBp1Dib4W1+Wkfw7yWNmWOp6j406h4nt9Z5dHCNth4b/+pfBtpTZAjJaYmMcahqT4XrcG
+	7CgD8mEW0DmeWT3qqAEkfa/SyEe1NOU=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id DF23129968;
+	Tue,  9 Sep 2025 14:59:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1757429948; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=lnmhDFmtTUNklZKT/bYXY+FmLkPcZdd1+5x3c6aX6AQ=;
+	b=PrXgAtEAzSYtfqggMOBLcb66fXiCXG/4InJmPSzvu8JNN4FBMp5QJX87Vkmiyl09Xsna6s
+	s9ubkRW8M/BsVKc+ieIXbOoXdcTD9uMdErO4t/oX3OQLcpOzmuvtQJ3MhKy+2/j4U5/eHP
+	9XO5HPKCcvfsJONSQRHvDdNKd54HfXU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1757429948;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=lnmhDFmtTUNklZKT/bYXY+FmLkPcZdd1+5x3c6aX6AQ=;
+	b=flq8Xk8imKLid5PFSCp9aezXvwRdua8+Sw7vGt9cP4O1siAcoOYpRT+euO8JTA5pVvu6NL
+	MNK+NDSnAMZ/G0BA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1757429947; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=lnmhDFmtTUNklZKT/bYXY+FmLkPcZdd1+5x3c6aX6AQ=;
+	b=gsYCtBKSWWno2wNT6L/s6XYzU3dPGTqJcUZlIEaG8I4m3FEUkATMI5+fSqS7fXvEXPJRq6
+	jtEm/Tx9R4f6GXTeTzHiFVZFZIl5S/y0o/YFJXV4YtUV6bvBy1pXXbm6wr2X9/sqm2unmT
+	n98gxz92/4jn+zE2itAwskHaRRZedfw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1757429947;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=lnmhDFmtTUNklZKT/bYXY+FmLkPcZdd1+5x3c6aX6AQ=;
+	b=9/CO1aeY4F7D1VsH9KipkP0hoWiZgaDjX+DHHBW49rKyKbzsKdyxeBVe8AvoL7s+kS4UiR
+	YOwPiqLyhbT6TlAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CC2E61388C;
+	Tue,  9 Sep 2025 14:59:07 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id /kJ+MbtAwGhyfAAAD6G6ig
+	(envelope-from <jack@suse.cz>); Tue, 09 Sep 2025 14:59:07 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 85909A0A2D; Tue,  9 Sep 2025 16:59:07 +0200 (CEST)
+From: Jan Kara <jack@suse.cz>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: <linux-mm@kvack.org>,
+	<linux-fsdevel@vger.kernel.org>,
+	"Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>,
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH v2] readahead: Add trace points
+Date: Tue,  9 Sep 2025 16:58:50 +0200
+Message-ID: <20250909145849.5090-2-jack@suse.cz>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-References: <20250905191357.78298-1-ryncsn@gmail.com> <20250905191357.78298-6-ryncsn@gmail.com>
- <0bbda135-068a-45bd-afd6-3f5cdf4e570d@redhat.com>
-In-Reply-To: <0bbda135-068a-45bd-afd6-3f5cdf4e570d@redhat.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Tue, 9 Sep 2025 22:58:07 +0800
-X-Gm-Features: AS18NWDGLlwdkrvwzMJL7zTY0JXDCsXG30VSD6e-dpjxVCyt6CGtodppdyFsSnU
-Message-ID: <CAMgjq7CsKYWzAD0Ev7q0cocQO8kOYLmhgLD0wk6AX-HUzWFJZQ@mail.gmail.com>
-Subject: Re: [PATCH v2 05/15] mm, swap: always lock and check the swap cache
- folio before use
-To: David Hildenbrand <david@redhat.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>, Chris Li <chrisl@kernel.org>, 
-	Barry Song <baohua@kernel.org>, Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Yosry Ahmed <yosryahmed@google.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Zi Yan <ziy@nvidia.com>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 530BA140011
-X-Stat-Signature: wbpb35oa84gahcpoa5tduixgathtsyjf
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6249; i=jack@suse.cz; h=from:subject; bh=hD1kfrGcVCzDZQIqP0Yp7aWTNgu351fNfU/0J6KfY9I=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBowECpU3aXE6Sd1IwPZLCHlVPvAWxwL7n3gxv+d qaX7h2xpLuJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCaMBAqQAKCRCcnaoHP2RA 2fI/CAC6/M28K6eSp9AL4fHjXwojLDQU4T7Ta+vb0Q5BsyCPRpp5KQhI9lHbzUHxmIF8RZdAoxV qZWMMR9gk/roKK7i5FMLeqfrgAFID5dti6i7mytgbuNr57NbupmwxsUmsQiKKDVLCRG1CrU4ups e3FaRKwt2Oe4c3PMXeeexWPBbBjN0Nl84nd/Ack5XifX3QB0SJklikBFWAHEN1SNNB7sg4cumRj UsTo4Y+2oXhspVevBUMphBITAID1IwVhrbbCniEMJP+HMe5IlnadVUroYgEeYD7CrKakDeEZl4j mbl8T3P5faCKTdSrLtyG0tmmAGI0brjM1kkKrOGp1XfafSRU
+X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: E6D824000C
+X-Stat-Signature: q5wkt47wxxfjtw9jaifbc8qsre7i1f55
 X-Rspam-User: 
-X-HE-Tag: 1757429926-307743
-X-HE-Meta: U2FsdGVkX1+qulhojZo6Womg3vpgu9vEz4IMHI1qoEi/7cVd+ziqa7rfVn79cgVuBrYcYjYLdxM2M6FP8n/K473aqfsKY6xh/diQEkQfcYM7SSLmTo7WEpN71rhp11TdCdxf6agKcEzdg2XPr4DbGL2DW3GaoWvpEiiA5EPm2zV27CezJC3zLYXMqnvdpv9CXnj/aXiGz5mnSYDWh6syOV71caYWwNV0YjNh3so0W2j6Z8RrG0n6NAs7X3a1gcojlKh9Y8lhY0nlrj50Y1Jpt5s3p6LPk7Zrrftvh/gC6EIwuMSJQSAXWVVFOG7WnaoYjGtF1qnVD407RL4BKgjdfhJxBETUNdprWvT7HxouXgRz2mKPiR8vGLZN8C8UESvMyIPzXyzGUT8nxVRKo9ysKLKY16ieL81HqFoKg9NqfgLCjkLpRmR2cX5sWSkwK7em6oLQ/aYZzl9LG0iWtSxIpr7A21MWlRGN06HalCczZp2WEuKSsWVsVaScJPWBbhdVWaUQ1n1ci5b8PTaGvz8UKdLm9sHAQMTR7+RK09seu3I0v3bKbI4WCMlHsSGv1JkVyKt+2PcvyqY8BQH5Zb4xnsDl73zC0SMXX3e/e1KwTpBfnuNWgWs85Jxq3yrmv3mmaiEAJ2x0OInvTuJE9yKPCJkqRi0aK4Ir/yZ8jXp2YeS3aiHJimTsHf8hQ+27gdda2O8h5ni6bo3rXtq8QPX4dpERz5EgmDG9pcOx7cfYkkreVoWNpfSlLBv8K0KqmlgKNulDigHjHBKIwSMHFOQ+A7L8Jq13n1q4iEcpQIwUFdD/70UqrZYv8yAwBcgT5fEIpkP+YTTXOjOq5SHFObs/LBGWEmD48wj4/m+AagqUYci5IDHeSLb03WzdDAn8v/yYpHbD6zfpZY6wuIZpVRuo9coY5GR22ejN47w8q6qmWWche3CPUv2SyP87zDgjfdjYTj0oL6Ck/ZygIsx71kv
- paY2ZjmE
- Mz4wq4RxfNxr0YUG6+8aCK1t27Vkw/3DiUO2kWLC5+oULSsuN30MmMGoIVrsLoFCfezfMS4/nfDUX67Kvc+hBdygKYjX2DCBpEihPanJ0QmjDfLvf999i24ktF4/ZInS9ujPkTQJ24Npmo1hbloBIql7Vv58KDOvge76NDscGu4IQMH2n8sPbEW5qM5CCiEN5n9CoJ98/EJlCa/DmtakgTffDdacZtmPgeSq28439SaAVgnwsk7Ff8VRQVuT2/oJMZpflEdTi3cGkrDWNwMmemR9Pm10n5rYBUYJzpwWmR8SPUjQslagMto8R2cC5XJrPIr+Ok/EdbFQJlRKKOFelp0aEyxpkQSZwOFKFU/UwAFvez/PQUHC3styXqzUlCXt8sgItiG+ImmC+dDmn3SW9EN/tIHvxRNUT3pGLx+xWNwIqbsVMoCGWaYyGZw==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1757429949-999937
+X-HE-Meta: U2FsdGVkX1/LkB4wCEEloJQcekQneHGCYyfNZHCtN3lHZxFcXHmgZhSXcf51kH7pBN+0VZP5es892I8uf1XugQHYHZqoTggdsF4c5vxccS/H2Pe16E7nMrC7nCqNKSiCKq8GnVnZowF7e0GT9OBPOfYX+p0E33uNTiVjmf/2Ex3K10uja7ZsR5NfTQfcJo+EWx5d0Cc0OOn061/QP3cwdo6By6U6Av2DeJ03ej1fMZ8L3h1arCU64YT+g0IyU6r8/wj8S+56Fy66Ie0D1q3/l/h/9TX3ABpb705HD9mzDdQwt4+0j1i1AsrhRHpu9fm11ZywcP/m14SY4Hj/17hVedYg6XXuzBjor5OjLDmD9y7cAVeA/58x4X3FkVHjdpnGUUnr9dwxk1vZhtgfW4vYqtYp6+MdmE5bvF22MRERxdZ5gfVAX8csJdhdhL73N4a8Qob8WZ1VtYMT3WIxpAze2vBNVRa20+JAaAnU7E30d4OHjDjUr7liBTzWV2id0WMATLZWGziAAU+TR38bKAsrcyWjJP65bpub8XLqgNQxLcgwWBPN2EioV0cxd98vgpvshiiZyAkzJgXhVW1hRMsAxMvpJPsUs/Kor4sRFTVm+PagFdt7DIgVrvLtexqHqlfc57gWmKkKrX5UHa0uV8xW/9Rq0jKwousad3zKHOHWV7ku61Csxc/b0+6z2c58Keh7ZOWIkmuUeEjvRzgxgW9QTPkTEXtrD1D1HKPjqfJAqsbHJqJObkDlXrkCjhoSkHBEa2dGhm3pUf+GlSi+hQEVvjefVA9Hx+6ekJsWXp7xEux1nnbqByJym1rEawGxQgioMPtWmlOqDbSpaCWZ9WO3arcPEWrnFXqJ/ZCmVz2cD2/OI66Ry9xyMNAqrEa7VRhaO+4s+E9C8qqWqHFOvfJt28PlPV/HXhKcVoi3Up8joqeU/KyhkSgUGhIVno7UIa+FZQoIHwQXaG9zLoESkJT
+ OX2YTzcX
+ maQC+YTJ0Zqh0PcYKjRQ1rqQBI+pJgqClTwBl166ETYjLpg3yaxelLwGEo26slzluxNxxOchoh06S/BoNBPpONgCNCETt6OJqtTEqACOcQUoDiCtcSApwdZ1fQ+xwBj2RfaPWOydcZcaftGRIPpPq8KFufR/J1GJEPisUDBGLpW4uzHLdoy14G9vbQwl1uCmkLN6WzKzDuXZeI7/FK1gVjMhZ1PsxqYMCf7p8rBqJAKKjwZ0S+3W6AVX5WwaD2jiAjPSLIC1ype4FMT7EHb/G+kSozw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,33 +130,205 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 8, 2025 at 10:08=E2=80=AFPM David Hildenbrand <david@redhat.com=
-> wrote:
->
->
-> >
-> >               folio_lock(folio);
-> > +             if (!folio_matches_swap_entry(folio, entry)) {
-> > +                     folio_unlock(folio);
-> > +                     folio_put(folio);
-> > +                     continue;
-> > +             }
-> > +
->
-> I wonder if we should put that into unuse_pte() instead. It checks for
-> other types of races (like the page table entry getting modified) already=
-.
+Add a couple of trace points to make debugging readahead logic easier.
 
-Doing this earlier here might help to avoid the folio_wait_writeback
-below? And checking the folio right after locking seems to follow the
-convention more strictly.
+Signed-off-by: Jan Kara <jack@suse.cz>
+---
+ include/trace/events/readahead.h | 132 +++++++++++++++++++++++++++++++
+ mm/readahead.c                   |   8 ++
+ 2 files changed, 140 insertions(+)
+ create mode 100644 include/trace/events/readahead.h
 
-I'm fine either way though as there should be almost no difference.
+Changes since v1:
+- moved tracepoint from do_page_cache_ra() to page_cache_ra_unbounded() as
+  that is a more standard function.
 
-> --
-> Cheers
->
-> David / dhildenb
->
->
+diff --git a/include/trace/events/readahead.h b/include/trace/events/readahead.h
+new file mode 100644
+index 000000000000..0997ac5eceab
+--- /dev/null
++++ b/include/trace/events/readahead.h
+@@ -0,0 +1,132 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#undef TRACE_SYSTEM
++#define TRACE_SYSTEM readahead
++
++#if !defined(_TRACE_FILEMAP_H) || defined(TRACE_HEADER_MULTI_READ)
++#define _TRACE_READAHEAD_H
++
++#include <linux/types.h>
++#include <linux/tracepoint.h>
++#include <linux/mm.h>
++#include <linux/fs.h>
++#include <linux/pagemap.h>
++
++TRACE_EVENT(page_cache_ra_unbounded,
++	TP_PROTO(struct inode *inode, pgoff_t index, unsigned long nr_to_read,
++		 unsigned long lookahead_size),
++
++	TP_ARGS(inode, index, nr_to_read, lookahead_size),
++
++	TP_STRUCT__entry(
++		__field(unsigned long, i_ino)
++		__field(dev_t, s_dev)
++		__field(pgoff_t, index)
++		__field(unsigned long, nr_to_read)
++		__field(unsigned long, lookahead_size)
++	),
++
++	TP_fast_assign(
++		__entry->i_ino = inode->i_ino;
++		__entry->s_dev = inode->i_sb->s_dev;
++		__entry->index = index;
++		__entry->nr_to_read = nr_to_read;
++		__entry->lookahead_size = lookahead_size;
++	),
++
++	TP_printk(
++		"dev=%d:%d ino=%lx index=%lu nr_to_read=%lu lookahead_size=%lu",
++		MAJOR(__entry->s_dev), MINOR(__entry->s_dev), __entry->i_ino,
++		__entry->index, __entry->nr_to_read, __entry->lookahead_size
++	)
++);
++
++TRACE_EVENT(page_cache_ra_order,
++	TP_PROTO(struct inode *inode, pgoff_t index, struct file_ra_state *ra),
++
++	TP_ARGS(inode, index, ra),
++
++	TP_STRUCT__entry(
++		__field(unsigned long, i_ino)
++		__field(dev_t, s_dev)
++		__field(pgoff_t, index)
++		__field(unsigned int, order)
++		__field(unsigned int, size)
++		__field(unsigned int, async_size)
++		__field(unsigned int, ra_pages)
++	),
++
++	TP_fast_assign(
++		__entry->i_ino = inode->i_ino;
++		__entry->s_dev = inode->i_sb->s_dev;
++		__entry->index = index;
++		__entry->order = ra->order;
++		__entry->size = ra->size;
++		__entry->async_size = ra->async_size;
++		__entry->ra_pages = ra->ra_pages;
++	),
++
++	TP_printk(
++		"dev=%d:%d ino=%lx index=%lu order=%u size=%u async_size=%u ra_pages=%u",
++		MAJOR(__entry->s_dev), MINOR(__entry->s_dev), __entry->i_ino,
++		__entry->index, __entry->order, __entry->size,
++		__entry->async_size, __entry->ra_pages
++	)
++);
++
++DECLARE_EVENT_CLASS(page_cache_ra_op,
++	TP_PROTO(struct inode *inode, pgoff_t index, struct file_ra_state *ra,
++		 unsigned long req_count),
++
++	TP_ARGS(inode, index, ra, req_count),
++
++	TP_STRUCT__entry(
++		__field(unsigned long, i_ino)
++		__field(dev_t, s_dev)
++		__field(pgoff_t, index)
++		__field(unsigned int, order)
++		__field(unsigned int, size)
++		__field(unsigned int, async_size)
++		__field(unsigned int, ra_pages)
++		__field(unsigned int, mmap_miss)
++		__field(loff_t, prev_pos)
++		__field(unsigned long, req_count)
++	),
++
++	TP_fast_assign(
++		__entry->i_ino = inode->i_ino;
++		__entry->s_dev = inode->i_sb->s_dev;
++		__entry->index = index;
++		__entry->order = ra->order;
++		__entry->size = ra->size;
++		__entry->async_size = ra->async_size;
++		__entry->ra_pages = ra->ra_pages;
++		__entry->mmap_miss = ra->mmap_miss;
++		__entry->prev_pos = ra->prev_pos;
++		__entry->req_count = req_count;
++	),
++
++	TP_printk(
++		"dev=%d:%d ino=%lx index=%lu req_count=%lu order=%u size=%u async_size=%u ra_pages=%u mmap_miss=%u prev_pos=%lld",
++		MAJOR(__entry->s_dev), MINOR(__entry->s_dev), __entry->i_ino,
++		__entry->index, __entry->req_count, __entry->order,
++		__entry->size, __entry->async_size, __entry->ra_pages,
++		__entry->mmap_miss, __entry->prev_pos
++	)
++);
++
++DEFINE_EVENT(page_cache_ra_op, page_cache_sync_ra,
++	TP_PROTO(struct inode *inode, pgoff_t index, struct file_ra_state *ra,
++		 unsigned long req_count),
++	TP_ARGS(inode, index, ra, req_count)
++);
++
++DEFINE_EVENT(page_cache_ra_op, page_cache_async_ra,
++	TP_PROTO(struct inode *inode, pgoff_t index, struct file_ra_state *ra,
++		 unsigned long req_count),
++	TP_ARGS(inode, index, ra, req_count)
++);
++
++#endif /* _TRACE_FILEMAP_H */
++
++/* This part must be outside protection */
++#include <trace/define_trace.h>
+diff --git a/mm/readahead.c b/mm/readahead.c
+index 406756d34309..3a4b5d58eeb6 100644
+--- a/mm/readahead.c
++++ b/mm/readahead.c
+@@ -129,6 +129,9 @@
+ #include <linux/fadvise.h>
+ #include <linux/sched/mm.h>
+ 
++#define CREATE_TRACE_POINTS
++#include <trace/events/readahead.h>
++
+ #include "internal.h"
+ 
+ /*
+@@ -225,6 +228,8 @@ void page_cache_ra_unbounded(struct readahead_control *ractl,
+ 	 */
+ 	unsigned int nofs = memalloc_nofs_save();
+ 
++	trace_page_cache_ra_unbounded(mapping->host, index, nr_to_read,
++				      lookahead_size);
+ 	filemap_invalidate_lock_shared(mapping);
+ 	index = mapping_align_index(mapping, index);
+ 
+@@ -470,6 +475,7 @@ void page_cache_ra_order(struct readahead_control *ractl,
+ 	gfp_t gfp = readahead_gfp_mask(mapping);
+ 	unsigned int new_order = ra->order;
+ 
++	trace_page_cache_ra_order(mapping->host, start, ra);
+ 	if (!mapping_large_folio_support(mapping)) {
+ 		ra->order = 0;
+ 		goto fallback;
+@@ -554,6 +560,7 @@ void page_cache_sync_ra(struct readahead_control *ractl,
+ 	unsigned long max_pages, contig_count;
+ 	pgoff_t prev_index, miss;
+ 
++	trace_page_cache_sync_ra(ractl->mapping->host, index, ra, req_count);
+ 	/*
+ 	 * Even if readahead is disabled, issue this request as readahead
+ 	 * as we'll need it to satisfy the requested range. The forced
+@@ -638,6 +645,7 @@ void page_cache_async_ra(struct readahead_control *ractl,
+ 	if (folio_test_writeback(folio))
+ 		return;
+ 
++	trace_page_cache_async_ra(ractl->mapping->host, index, ra, req_count);
+ 	folio_clear_readahead(folio);
+ 
+ 	if (blk_cgroup_congested())
+-- 
+2.51.0
+
 
