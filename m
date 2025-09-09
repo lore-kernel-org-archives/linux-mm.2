@@ -4,115 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AD30CA0FED
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 22:27:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 056AFCAC582
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 22:30:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A48A48E0003; Tue,  9 Sep 2025 18:27:30 -0400 (EDT)
+	id 482EF6B0007; Tue,  9 Sep 2025 18:30:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9D27C8E0001; Tue,  9 Sep 2025 18:27:30 -0400 (EDT)
+	id 40C5B6B0008; Tue,  9 Sep 2025 18:30:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 89A0F8E0003; Tue,  9 Sep 2025 18:27:30 -0400 (EDT)
+	id 2D4F36B000C; Tue,  9 Sep 2025 18:30:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 717678E0001
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 18:27:30 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E913111A79A
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 22:27:29 +0000 (UTC)
-X-FDA: 83871149418.20.445C8DF
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 170324000E
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 22:27:27 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=z9N6Cqci;
-	spf=pass (imf11.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 1708F6B0007
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 18:30:27 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B8AF7140700
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 22:30:26 +0000 (UTC)
+X-FDA: 83871156852.04.852FE8C
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 927EC140011
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 22:30:24 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b="X2bWMj9/";
+	spf=pass (imf09.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.54 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757456848;
+	s=arc-20220608; t=1757457024;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G8BzVWhX0R5cEUCY7Xkosw1VZPrvaUx+cbbGdJLdaNY=;
-	b=NLk39KNYx83Yb74LTO6kkKQmBt9Fh2gx7AgQS1MsS6tKQoNHTJf5wQ5B1oFNpfn9NDAVCM
-	h1qHXwLnOPVu8WzUzXZYYPHx6ur2cql/C19ZF2aHg2U+vNkVcAlprZ2e7YCTf8Nn19RJLA
-	FiaJ1yw+Y8DWBPT9gtqnCADnnUma3CU=
+	bh=fEQiOQ22rYAZhHJ5F5hChKykmBsdSQ9Mr5OeL3gCArg=;
+	b=uMkLVhNzdaHJpPPRt1JO+ftJdeQqhZSeMGNNeaxF7UxicKiynf1z5jC66BjCdw3Q4RIQke
+	ODJlI2zUNFmCLEp0YsaT3RTp8OMrBXnM8nV1clYwwTlOUXDsNCfsmLtjYL2WiUsjpZapER
+	AstDkKQJ4gekIDzwCzpClOG5uvZZMYM=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=z9N6Cqci;
-	spf=pass (imf11.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757456848; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b="X2bWMj9/";
+	spf=pass (imf09.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.54 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757457024; a=rsa-sha256;
 	cv=none;
-	b=HFVqBVZnu8a2YlgVr2VFcBCAAsPGZEAUlo5eWkzXHu1HJjoXeUEGrqF1KHo+XAgB/Uk/5W
-	qHGQOfyAle57u8ZF3UCrOJMwAgYKC14arrGXyqUIvwypP6zkVANzNEVwpKEkIt+PutHRkW
-	ATlbilkerMMiwRSApUkTwxJA0y75eFc=
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-4b350971a2eso39891cf.1
-        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 15:27:27 -0700 (PDT)
+	b=DVGtxW+txs3jTYtTUrlm9WZYlSfwymJ0LvSXo2J7bOerS/GynUdRxAsQUeZtwvfL7s2Wq1
+	dn+MMonN7Mzv3ua7l7Jy7mIAsj2s5B3QUvNvqwZJNOWgekkUUGnyYC89DmXGNPZh6epKEZ
+	Ne+8V24r6LpKy1PxpyRjMM12Q2xVd1g=
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b0428b537e5so989490966b.3
+        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 15:30:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757456847; x=1758061647; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=G8BzVWhX0R5cEUCY7Xkosw1VZPrvaUx+cbbGdJLdaNY=;
-        b=z9N6CqciMDLGSYbzMQ8HtacDw//7byqZiN8Qb1Pq8llJ2k2l67hlwcd+FC6mPc7fGh
-         T4N9HfPimIYqkz9cpLHhH1UPJsCpmgKyAuTVerYbfkg0mRsh9XhbC9g8eErUiX91ZvnX
-         GY5x6jNnLpRvpx59JPtA2u5KJWNsKplgSAYzHiKA54tqw07SnYwiYQIzAkAhidq65SSi
-         AEcohJbJT/jf7nB0TPNVMEg8JWqD+0ypkDzaiDOd5/8HaBrVtrTh/YHAeuwERS0Uerpz
-         ioBQn9d8imdR4v02c02Cs1LH4jaE85ELZPQUtnKj68TadghFkuARwlAveBPclmA7pJir
-         nzhw==
+        d=linux-foundation.org; s=google; t=1757457023; x=1758061823; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=fEQiOQ22rYAZhHJ5F5hChKykmBsdSQ9Mr5OeL3gCArg=;
+        b=X2bWMj9/fRwT1tEDSEGwiC+3vvz9LTPD7SFbZuN/M4Tyz0Z45adSUUssNxU3oOAdVs
+         FUJCRC6hHf5Co47wrePG/TI35dCf1CxP4JvTklARCmpOTbPEk6xUdGczlP0qZQQ5di+c
+         u0WKuV+wPPG0nhK2P7JDAgYcMs1zD/OoQrxJM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757456847; x=1758061647;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=G8BzVWhX0R5cEUCY7Xkosw1VZPrvaUx+cbbGdJLdaNY=;
-        b=X6wbXLriSh6oJ4B3hjUM7s4lkw+vtwBSXcOGeUeslnDWDYNrbA6wj4++xJZeHHwHyY
-         vqvboTZ99GcSkU1XL8sQqpzihGrsHfLd0cQPag1x52baMb7cU7vowIUmfu9iypDhSqxk
-         tPXS9mFFvmCZiM38Q0hnVawO7ErcEmHhLMi2k41FTAKp8rcn7peJay3O+ODVKJuMAl4V
-         /ELX6L9H1uA7KoLQG8Bq+RiFPZYkuXyZkZcNnCDptFEREEF9GSGZ2s3Ei1LJuFepBP6l
-         b97DSZIOsBG7H0JsxfSPnnkxI5rA+KumaGtd/ca3RGV4sl/5JX9SL3x70mGYvWiEN3cS
-         q4DA==
-X-Forwarded-Encrypted: i=1; AJvYcCVXZ2acIwmzBydZMydw5PVmQPcDct6wcGHaW2sDkwPK2tL6eKtUO/zz1Yd5TZ9Z/ByPi5rUkhYHgg==@kvack.org
-X-Gm-Message-State: AOJu0YwscUvuHHTKZ2957LePbUAz3sUDGCJl20jEIIDNsMlpPtA4sQUX
-	KthEznQhFa0EOl6swy1UFcGjNc38Mu4zVSNoXgfMwmn5T0J6XSECCssKE31o2x6Pz4/lnr7n6BG
-	mMDM0fgQ/opP2IVao/cyJKqw1zqqfuF7DdkpH/j14
-X-Gm-Gg: ASbGnct/6KdYjOMToHQMiqTLf2od0JjW1yABcOBNR0Ks7YJRD14e1T2YZosm12H1UlE
-	HZLg6Arj2B25lu5BfZ4baYVqeBXDY4wevXQe4nObSC6Gy2DetpiYJ9HWIAhqSlVMjVACVqqwhk+
-	DSzHK67o4EiMcULE30s63RucKlWcotF7i7Aab83kqFoT6wIja3NVSxGoLiFguzLl4IqqlJcBWDD
-	qWD5TljMB0Q1T2oNEp4lNwbK+enahpmeutJVUDprRJJ9Knry/e10o8=
-X-Google-Smtp-Source: AGHT+IEdGi/d24y72Sxmx6WAkfXK/iDy1MEOtaD5CvEAQeQEYkSu881knGHU9baU8fe1W1ZSjLG2XGRiAndq5H5katk=
-X-Received: by 2002:ac8:5d09:0:b0:4b3:46e4:38ee with SMTP id
- d75a77b69052e-4b625174b03mr1814331cf.6.1757456846670; Tue, 09 Sep 2025
- 15:27:26 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1757457023; x=1758061823;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fEQiOQ22rYAZhHJ5F5hChKykmBsdSQ9Mr5OeL3gCArg=;
+        b=XkK9FTg54voB4FhGwRj1TKaVLWDAYWToLKgfjJCARahUeltzFFDNXVSpH4aq4KqywZ
+         R8yxs7eO2McIisbxP2wECKhQiZc4O5jYyij8NlTvIjrtn6L+INvz902Y+qo/Yvesv4kF
+         75HYT5NKuMz/V3OhhyPZP34y7qlhpJ472I75B9P3P1JYbuIE5eaAe5HyD+KtUUuI4vTt
+         MYraRoCrtDhpGIgNk0Zjn9FgGOCEaxeyEQkMoKTknAEsQXUEWCG8mPFfT/sPiJWqJvQe
+         LS3aaEtudJWiyVt9j4D+bpuPufHMqjsQFaHhPLbzxIc1ylpsZsDeOv/XTj28zlQPCMm0
+         FC0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCV7+CXnSROllr2kV7w/YZviafYpzwspjo5ZXXk3mw2LWZoNwFRXVhfdb7ZIIH38o48iATsPvYxERA==@kvack.org
+X-Gm-Message-State: AOJu0YzB2xO35z4CTAHJ+YJGTWSdX04+BJ8D6UgYvVeL8bLGo6dMZEsh
+	1K22Hv273E6adVpVkbDYWUe/ti9K7bLWxJOxdG3l2NrElFD1VBY/lXhi/fRu3oY5QPY+p1tAzry
+	IztCSzrg=
+X-Gm-Gg: ASbGncvuMuP8BSy+Qduf4NmKU70MTYxvNoHskaveXgGWL6VNCXW1gOvvFUIIU7QpMaO
+	+reUT8pGRiM5yeewD1WdElYkE6iZYnrEM5jDgbh1RYR4wbfzFrklRBZgweNhFDproDZKyZZpAT2
+	ELVENACABgi9BuE8+eo8YriqXlwDT21xdyi+q9Wz6deC3dtZt950qN2aEmDRQWYs8XhVg4PzG2F
+	bMXv7657VBMV50wjqVyHVq7RvHwKmY3vs8Lf1Bn0QcWrqusupXrYksAxV/Y8lIkDN0knazn3WuE
+	GQwS+93eFgCKrRpjOVUeMml3a/RZOqaJfXXwPrNzSXpjKs+3v+fYTUnBizGtFopWMdugZb6ai+w
+	zY27L7T47vRc7/yob5mTsQGRJPdM7EqibWOrb4ZIhCAJGIIxq05fbB4Zsq2NRMMK0XVSww46qEi
+	Cx9oyntOs=
+X-Google-Smtp-Source: AGHT+IEhpU61MNTBtpL4hSxz4QuhrWFXfU3/A8c/OHaJZExSZyrv+zUuNHK1ZowPWKGeMgHhjjWeFg==
+X-Received: by 2002:a17:907:9623:b0:afe:a2c7:78c with SMTP id a640c23a62f3a-b04b13cd697mr1133323766b.6.1757457022490;
+        Tue, 09 Sep 2025 15:30:22 -0700 (PDT)
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com. [209.85.128.48])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b078304516fsm63029566b.4.2025.09.09.15.30.21
+        for <linux-mm@kvack.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 09 Sep 2025 15:30:22 -0700 (PDT)
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-45cb6428c46so57007095e9.1
+        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 15:30:21 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCW+sjcTn9kL+GAjJG/RDSk9d0UoZgo4EI9/17nF6bOPj//cv3bzm4xyArZ6fN9FO4Mh1QepR6KwNA==@kvack.org
+X-Received: by 2002:a05:6402:4412:b0:61e:a13a:27b8 with SMTP id
+ 4fb4d7f45d1cf-623729cb58cmr11071027a12.1.1757456686093; Tue, 09 Sep 2025
+ 15:24:46 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250909190945.1030905-1-Liam.Howlett@oracle.com> <20250909190945.1030905-10-Liam.Howlett@oracle.com>
-In-Reply-To: <20250909190945.1030905-10-Liam.Howlett@oracle.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Tue, 9 Sep 2025 15:27:15 -0700
-X-Gm-Features: AS18NWDFXXcz2H0b4WCBtGCngTAlRviZ_OVajr-POu4PX9407-Nsa_TiEj-HyIA
-Message-ID: <CAJuCfpHp2sgKBqrfyn+xfCJTA-AFGFUTdhSz4dxNff=SNYLJgg@mail.gmail.com>
-Subject: Re: [PATCH v1 9/9] mm: Use unmap_desc struct for freeing page tables.
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, maple-tree@lists.infradead.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
-	Pedro Falcato <pfalcato@suse.de>, Charan Teja Kalla <quic_charante@quicinc.com>, shikemeng@huaweicloud.com, 
-	kasong@tencent.com, nphamcs@gmail.com, bhe@redhat.com, baohua@kernel.org, 
-	chrisl@kernel.org, Matthew Wilcox <willy@infradead.org>
+References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com> <C85C32F4-BD58-460B-ACCF-F0569ED0941A@zytor.com>
+In-Reply-To: <C85C32F4-BD58-460B-ACCF-F0569ED0941A@zytor.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Tue, 9 Sep 2025 15:24:29 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wg0bp-_kqmfaDYQLRJO30LYxEsMu3EKi65sKoi83EUZ3Q@mail.gmail.com>
+X-Gm-Features: Ac12FXyoXbbHUJtrfKhAFeDlVJsB9IiUaRxuYQBQJQyqpHDKK1GQ8JtkX5zx-HA
+Message-ID: <CAHk-=wg0bp-_kqmfaDYQLRJO30LYxEsMu3EKi65sKoi83EUZ3Q@mail.gmail.com>
+Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
+To: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Arnd Bergmann <arnd@arndb.de>, ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-mips@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Richard Weinberger <richard@nod.at>, 
+	Lucas Stach <l.stach@pengutronix.de>, Linus Walleij <linus.walleij@linaro.org>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Ankur Arora <ankur.a.arora@oracle.com>, 
+	David Hildenbrand <david@redhat.com>, Mike Rapoport <rppt@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Matthew Wilcox <willy@infradead.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, Ira Weiny <ira.weiny@intel.com>, 
+	Nishanth Menon <nm@ti.com>, =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, 
+	Alexander Sverdlin <alexander.sverdlin@gmail.com>, 
+	"Chester A. Unal" <chester.a.unal@arinc9.com>, 
+	Sergio Paracuellos <sergio.paracuellos@gmail.com>, Andreas Larsson <andreas@gaisler.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 170324000E
-X-Stat-Signature: dtpcp8d3s9ucw8gsb8moaijuwp1bm8ei
+X-Stat-Signature: kp69ymncs5sybigo7e85doz5rad7rfhj
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1757456847-139116
-X-HE-Meta: U2FsdGVkX1+9Krt5wgdoTJilGW7zZ+7NXLlNQvmmmaXo2QvMgzcQHlpVpD2FX8uCVDsMVrMAOMy36fjF4/lP1omAdFjxWa5O7dhzyEqLFsqIF9+pnk9x6CWyaOh11v8yG+CQ031NBYwbJ0kTa9kIvyU2SO4r/ImqaTBLtFPDpKbcSYrjicvMZ/ywS0CAmcBh2BwqzYd538+iSRDlUrZgsYdk4dUbEQ9JLf3G7S9YREMUDUv9jPR0yGDxldjpipMahLiBuTH/UeSPKg72sCJ3Yv6eVNr/Vh0YcilzsK+rcjXwhFQzgYL193s3NczS6vHlFJr3yP4gFpmcFiPAb+sw52G2P37F64vwhAXwuewhYFdoZ0PHuU07TdbWwLkfIWErjszZXP/2c+OUhUibFwd2lAppPpIB35SO2aElpqsqwNOKzf/Bsvc2Cu4ryS6LiX59pn/sWVDPwq3K08Sdrr2PB9C7AyZYW05yQRST2B8mdEeGONShBKbGXPD2qYO/tcxuKuiPfYhPngq43Btj4L9h5+49FGKOk8H6F4qn4SRTKH2pcjJFx5wOHZMdkVeT+EdIrhgHU/4k4sUKYCLIimNaYJuRCzFeVN9p74PnaHymdIMlmlZOb/5/npVjdeTHmwGGo/Ebhv7YD74U2g7JMb79C0h+O+UYLz7YvZ52wDabEYgLp4M2EDtDpEjyoJnOUjXOz45MS8rW8minwqxCzlhTTEbJpja3qMxhvBcPZXRO9KXyb28RkzrKPIfqgpOVPOFYoA0RpAcHb7v4iQMCzzAhRFwAaOOJy8ZREmy/ntwRhvTIRjtFJtputrrRkrECe1CT4kQpWrOvP3CuC++ovg0I4vhi8HVl5JUhcjEkoseowzDuFda7ny5/hU6pgXm4z9E8ablSfQk6mSxoI3caGsLXKWBDzSbn4poaqs0aNdvJsouSAAdUvFiELHnGGAr0NVAFC++hVfVHmuGAjPuvgu/
- tdRYmTrB
- j2uLVxoSfT35YX859mxNPg9h4E/JwvYnH4be2g3snUFDXOkJ5U0vkE0fTf63HL2+HZYPkpd6TDF9tUABXgnu9IGVVu+cEEatJwxisaCsWe5NcrGKqxaHvqXsB1/rHx1QLWfnbjlKEEh+TOo7/j5UQMK9iqlDOmQGSTruVwgqtnNLmqjdXNZ9ummFNyXHiWxaX08ZUUBF+5k6FIHSv2hC4j3BP+7sWXC1jog2GUnZ7NQzbJx9kAbXDHQisVLnzRTjWdG8ZM/7YpTCj5i9iEf4qR5I5usmoXLIZ4QX63KCMR/l4LdIgacILodKPgmysuTgo/vF5
+X-Rspamd-Queue-Id: 927EC140011
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1757457024-987735
+X-HE-Meta: U2FsdGVkX1+8LFj+qwytusL9V9dDOyJnXRBE6b0x/EBTKZam4PRaA605ZkASdq1YiZYTfZf/gJ2PIkGqqr6MqaBabeLSNy72TSrMoxE5309j+wRnIgf+9dEla4OU1tpmKqEH5fWl2akT7Wo6j3x7cfJituXB5PbE6Bjf5L5RcVFqcIPZfnQ/f6/wa+9Kw3NqqFC+FVpNxSfMVMbmkmT7y+mpAJ5smMYeVuJ1/AX0xC1ZSlLH9GxgKR6EPX6DqrdP76Qa4DO2JzKpMfvbiUExty12YCSVk9iV9uEiGWHr9DA6HqI7QKA5pZfAuVyxsDto9i7AI4k4EyXX2eN0DhdrQ+GVDsN96McsBfNXsMKxcyV2lyuoYObEwC1DjSAe0CXuesRsegcWwI9GxLv9t8t8Cq9UnglykOF0DOVG3/c3ZQfAvR1WGp1HG8t4AfjQXi4QRyvQNQaP9yq41gMe65GF9fZMk7SeqHVAwqmHhIYnXEjh+AP7JrOiEu5g1ptDuAToRWellkwDShr4xnl9WasfLVtykf2Djrtio15uGVANPKlq0k2p5cRsUxxBWP/IN3EsQDP6rj20AEESx51GsIwdCqeQINVs7pbzPDXrQ6Ael5bhZ0VGW/IP67sP3cUUaAbEFGqcz3UgC2CGyNLJFDGEgwPsEEhaxCuKLz0b6yzBTfq1J7h5jnN/9yN0kjVBnhCH9nmi0lQbBIPAJWgAsBuIOAYckQbHCgWInab7C2+cSyYKBHJqEiWRmOLw5J8MI2Taw53pMuatgtFPO0ahabDoocFjj34XDB5tbotCLuetx5Hhsu8joaejNoMZA7MCtNf5pk7QQFcVe/lXhBbtOeRX0RifX1v4o/MTRb/KwcwSya1iruK0Pe+I0OvhaH8oiyhHIT/cPWxAvqUfONCleZZmZxbgLB1yYgPn3efRbqUEFwK4HkwTKv52ck+EEurn1+iaMBVuVAGi78INTb1A6O8
+ e7UE3B7A
+ gJvsUhJBjIBOxbmNDdN8kDBBJcoCRT6A2B2cLcEgkk5Y85YqNxPZxBOeDBE6GEF56cHCYMlH1r+UCx3wurNQcZmY4+RSOprsGBO+6YC1DJchBRq4vvPvZ//prPcP/9MJBFcyLOaGoCjbKinBaUkum6yKVU2qtSAQ5yjABNtYmMLZIVYzwBUt801OGpAS7vKGR3diOC4JgWJKa3l2f49E+ZRUWh3fJmm6MQnFc80V5QZDEmYI9lmrNGuGbaai9bBtg1IMeeuvnKAgCCubOQEABtOBuxeFWOwayXKoCLvVQgE0XavuNsjpeyyyc6+2uH9h0rMjtIf1ds8bL+uZxpfEVSnLL7nMe3b7mJceZYxxhg+pkheE2N2D67RenQGxFHJDGS7TZWjOKeT4jYrN34omU6/DN8gDjeSIo5evGbWirpnp6FA8Skw8S9k5ZmPXhuuDfM72q0l8uOjLyiBQf3fTZdR8rOEE89N9QI2WOQ+cBFb9X4nCRajsRadTKocdBN0I6SoStPe+7FVwZi1qkxtNZxQbGfi4N6ipmSVc3ioOvFCM0ufwwYamdmzEoZqWhMFlByoa3qCOFYSdKHJjChlHKVwNQ4UomEe2ZJem/pIKR0i2hV8RvbrkYkpqwDw5hCATgddQaaEvr0lpUlRgQAb6k/pwoHc2VhYKPDCW41AbxvVGKcgPDC/Uy+uWFT9Le8HuPFQ68
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,190 +136,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 9, 2025 at 12:10=E2=80=AFPM Liam R. Howlett <Liam.Howlett@oracl=
-e.com> wrote:
+On Tue, 9 Sept 2025 at 14:39, H. Peter Anvin <hpa@zytor.com> wrote:
 >
-> Pass through the unmap_desc to free_pgtables() because it almost has
-> everything necessary and is already on the stack.
->
-> Updates testing code as necessary.
->
-> No functional changes intended.
->
-> Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+> 1 GB systems used highmem too, sadly. And 1 GB was the norm for a big chuck of the late 32-bit era.
 
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+Well, while on x86 1GB systems did use highmem, they'd typically not
+use very much of it.
 
-> ---
->  mm/internal.h                    |  5 +----
->  mm/memory.c                      | 21 ++++++++++-----------
->  mm/mmap.c                        |  6 +++---
->  mm/vma.c                         |  7 ++-----
->  tools/testing/vma/vma_internal.h | 11 ++---------
->  5 files changed, 18 insertions(+), 32 deletions(-)
->
-> diff --git a/mm/internal.h b/mm/internal.h
-> index 1239944f2830a..f22329967e908 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -445,10 +445,7 @@ bool __folio_end_writeback(struct folio *folio);
->  void deactivate_file_folio(struct folio *folio);
->  void folio_activate(struct folio *folio);
->
-> -void free_pgtables(struct mmu_gather *tlb, struct ma_state *mas,
-> -                  struct vm_area_struct *start_vma, unsigned long floor,
-> -                  unsigned long ceiling, unsigned long tree_max,
-> -                  bool mm_wr_locked);
-> +void free_pgtables(struct mmu_gather *tlb, struct unmap_desc *desc);
->
->  void pmd_install(struct mm_struct *mm, pmd_t *pmd, pgtable_t *pte);
->
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 8d4d976311037..98c5ffd28a109 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -387,15 +387,14 @@ void free_pgd_range(struct mmu_gather *tlb,
->   * The tree_max differs from the ceiling when a dup_mmap() failed and th=
-e tree
+IOW, they'd have about 900MB as lowmem (ok, I think it was 896MB to be
+exact), with something like 120MB highmem.
 
-"ceiling" is not a parameter anymore, so the comments should also change.
+So they'd either lose a bit of memory, or they'd use the 2G:2G split.
 
->   * has unrelated data to the mm_struct being torn down.
->   */
-> -void free_pgtables(struct mmu_gather *tlb, struct ma_state *mas,
-> -                  struct vm_area_struct *vma, unsigned long floor,
-> -                  unsigned long ceiling, unsigned long tree_max,
-> -                  bool mm_wr_locked)
-> +void free_pgtables(struct mmu_gather *tlb, struct unmap_desc *desc)
->  {
->         struct unlink_vma_file_batch vb;
-> +       struct ma_state *mas =3D desc->mas;
-> +       struct vm_area_struct *vma =3D desc->first;
->
->         /* underflow can happen and is fine */
-> -       WARN_ON_ONCE(tree_max - 1 > ceiling - 1);
-> +       WARN_ON_ONCE(desc->tree_max - 1 > desc->last_pgaddr - 1);
->
->         tlb_free_vmas(tlb);
->
-> @@ -407,13 +406,13 @@ void free_pgtables(struct mmu_gather *tlb, struct m=
-a_state *mas,
->                  * Note: USER_PGTABLES_CEILING may be passed as ceiling a=
-nd may
->                  * be 0.  This will underflow and is okay.
->                  */
-> -               next =3D mas_find(mas, tree_max - 1);
-> +               next =3D mas_find(mas, desc->tree_max - 1);
->
->                 /*
->                  * Hide vma from rmap and truncate_pagecache before freei=
-ng
->                  * pgtables
->                  */
-> -               if (mm_wr_locked)
-> +               if (desc->mm_wr_locked)
->                         vma_start_write(vma);
->                 unlink_anon_vmas(vma);
->
-> @@ -425,16 +424,16 @@ void free_pgtables(struct mmu_gather *tlb, struct m=
-a_state *mas,
->                  */
->                 while (next && next->vm_start <=3D vma->vm_end + PMD_SIZE=
-) {
->                         vma =3D next;
-> -                       next =3D mas_find(mas, tree_max - 1);
-> -                       if (mm_wr_locked)
-> +                       next =3D mas_find(mas, desc->tree_max - 1);
-> +                       if (desc->mm_wr_locked)
->                                 vma_start_write(vma);
->                         unlink_anon_vmas(vma);
->                         unlink_file_vma_batch_add(&vb, vma);
->                 }
->                 unlink_file_vma_batch_final(&vb);
->
-> -               free_pgd_range(tlb, addr, vma->vm_end,
-> -                       floor, next ? next->vm_start : ceiling);
-> +               free_pgd_range(tlb, addr, vma->vm_end, desc->first_pgaddr=
-,
-> +                              next ? next->vm_start : desc->last_pgaddr)=
-;
+Or - and I think this is the main point - they'd stay on old kernels
+like the ancient museum pieces they are.
 
-Much better names IMO. Thank you!
+I'm not convinced it makes sense to have a modern kernel on a museum piece.
 
->                 vma =3D next;
->         } while (vma);
->  }
-> diff --git a/mm/mmap.c b/mm/mmap.c
-> index 6011f62b0a294..9908481452780 100644
-> --- a/mm/mmap.c
-> +++ b/mm/mmap.c
-> @@ -1311,10 +1311,10 @@ void exit_mmap(struct mm_struct *mm)
->          */
->         mm_flags_set(MMF_OOM_SKIP, mm);
->         mmap_write_lock(mm);
-> +       unmap.mm_wr_locked =3D true;
->         mt_clear_in_rcu(&mm->mm_mt);
-> -       vma_iter_set(&vmi, vma->vm_end);
-> -       free_pgtables(&tlb, &vmi.mas, vma, FIRST_USER_ADDRESS,
-> -                     USER_PGTABLES_CEILING, USER_PGTABLES_CEILING, true)=
-;
-> +       vma_iter_set(&vmi, unmap.tree_reset);
-> +       free_pgtables(&tlb, &unmap);
->         tlb_finish_mmu(&tlb);
->
->         /*
-> diff --git a/mm/vma.c b/mm/vma.c
-> index ad64cd9795ef3..ba155a539d160 100644
-> --- a/mm/vma.c
-> +++ b/mm/vma.c
-> @@ -476,16 +476,13 @@ void remove_vma(struct vm_area_struct *vma)
->  void unmap_region(struct unmap_desc *desc)
->  {
->         struct mm_struct *mm =3D desc->first->vm_mm;
-> -       struct ma_state *mas =3D desc->mas;
->         struct mmu_gather tlb;
->
->         tlb_gather_mmu(&tlb, mm);
->         update_hiwater_rss(mm);
->         unmap_vmas(&tlb, desc);
-> -       mas_set(mas, desc->tree_reset);
-> -       free_pgtables(&tlb, mas, desc->first, desc->first_pgaddr,
-> -                     desc->last_pgaddr, desc->tree_max,
-> -                     desc->mm_wr_locked);
-> +       mas_set(desc->mas, desc->tree_reset);
-> +       free_pgtables(&tlb, desc);
->         tlb_finish_mmu(&tlb);
->  }
->
-> diff --git a/tools/testing/vma/vma_internal.h b/tools/testing/vma/vma_int=
-ernal.h
-> index d73ad4747d40a..435c5a24480bc 100644
-> --- a/tools/testing/vma/vma_internal.h
-> +++ b/tools/testing/vma/vma_internal.h
-> @@ -892,17 +892,10 @@ static inline void unmap_vmas(struct mmu_gather *tl=
-b, struct unmap_desc *unmap)
->         (void)unmap;
->  }
->
-> -static inline void free_pgtables(struct mmu_gather *tlb, struct ma_state=
- *mas,
-> -                  struct vm_area_struct *vma, unsigned long floor,
-> -                  unsigned long ceiling, unsigned long tree_max,
-> -                  bool mm_wr_locked)
-> +static inline void free_pgtables(struct mmu_gather *tlb, struct unmap_de=
-sc *desc)
->  {
->         (void)tlb;
-> -       (void)mas;
-> -       (void)vma;
-> -       (void)floor;
-> -       (void)ceiling;
-> -       (void)mm_wr_locked;
-> +       (void)desc;
->  }
->
->  static inline void mapping_unmap_writable(struct address_space *)
-> --
-> 2.47.2
->
+         Linus
 
