@@ -4,114 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A671ACAC585
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 05:38:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4933CA0FED
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 05:40:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A0ABE8E0007; Tue,  9 Sep 2025 01:37:59 -0400 (EDT)
+	id 1FDD46B0008; Tue,  9 Sep 2025 01:40:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9BB658E0001; Tue,  9 Sep 2025 01:37:59 -0400 (EDT)
+	id 1AEEF6B000E; Tue,  9 Sep 2025 01:40:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D15D8E0007; Tue,  9 Sep 2025 01:37:59 -0400 (EDT)
+	id 0C4806B0010; Tue,  9 Sep 2025 01:40:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C1888E0001
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 01:37:59 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 19764B8455
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 05:37:59 +0000 (UTC)
-X-FDA: 83868605478.20.2A9663F
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 2BE1D160005
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 05:37:56 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=pQYxEt81;
-	spf=pass (imf08.hostedemail.com: domain of lokeshgidra@google.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=lokeshgidra@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EF39D6B0008
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 01:40:58 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8FD04589BD
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 05:40:58 +0000 (UTC)
+X-FDA: 83868612996.29.218EF06
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 11C8CC0009
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 05:40:56 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ac3AtU0M;
+	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757396277;
+	s=arc-20220608; t=1757396457;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2aj6uuVr6aMDl/ncUa1LpZm4V0lxyD4WCQfrETfV8VE=;
-	b=4bxRn8kojmCClxGWexjB8hj9mvX/QoAbFEPY9rHjhdj2AEETJQo/HTz/j6MUYfHU38qMrV
-	KjXz+wRXpvSK9+gQqIDBFRyxu1FU56o1WM2sPpAY4YcHoWgBjqyMv4Pg+MVskT8BIKkq9P
-	oYsK6u96LfPnZdVwkKz9iyVDUkQny7w=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757396277; a=rsa-sha256;
-	cv=none;
-	b=I+aelDbemoqwHrR+Ml1c7Vl0zXnJ/P5JuJnnMZQ3BOCFsdkUQnCCMb12sjWvFucwCJA7EP
-	PrTedX9+Gpnzem4FQT209Tnto7I0kNC58l0xiU1WTU2QBuIO8JUA2ldct8qcv0sHDyt/Gu
-	koXC5g/nyGXE+2ozxlvHcH2QD0W3ums=
+	bh=8KmKkYBxC3+WkfQjTVbcdSGXS2QmvvZ1sudg0GtusV0=;
+	b=OnAIVSiRCx9dRR2OqrnC6tX4m8t2f2JGY94S13ycjc5FD3fducPNrtV3SBRwQ+xR2IZcp9
+	aQBWGFpGbnMWH8EiF2keyl2afwaF3MPIoyZW679yQYo5UBXU0Gq3Y8MqMa5BVqBEmHvxio
+	c1gz1k0VdIvpu8UStSb9iWZj2Afytok=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=pQYxEt81;
-	spf=pass (imf08.hostedemail.com: domain of lokeshgidra@google.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=lokeshgidra@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-61cfbb21fd1so21440a12.0
-        for <linux-mm@kvack.org>; Mon, 08 Sep 2025 22:37:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757396275; x=1758001075; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2aj6uuVr6aMDl/ncUa1LpZm4V0lxyD4WCQfrETfV8VE=;
-        b=pQYxEt81KjgJS6emS4UzloyAUWvEfXqRzka/R635u3gF1CaeG6ZDi4gXkpNJkT2Kub
-         QpYcZIvzfYDGDGVAPvgVkz/pSauw6nIYimqeahpumRcwald+nz6N4SHeBH8F/Vk5G99r
-         0Ixc/w2GcOXb031xWFvY0uCQptiSh16vE+QHP4xSkVAW30UF6+YbH9OOG3lR2rFaVXYe
-         cUROOypiyFoFjord1u+3wbhrcdNq5m9rg9XnqLnCKhy+KmRVr1q6FoXkKz8oMvQExcDK
-         /uSMXweCrmjibQr7RnGIqhky2fyegHwMS6Ch7y6VZ84ceGHvQYojQ00TgMoYLcHgwIu4
-         PfJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757396275; x=1758001075;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2aj6uuVr6aMDl/ncUa1LpZm4V0lxyD4WCQfrETfV8VE=;
-        b=fot844cCDFTpil3F/ANrAK6mHSzLLoAT9puU32kXtQ21ofguT6s5ZcxDTksKmZftzv
-         311JmRyODNJvRHfWGmzXbbKUYiWquIZHMPUezRC8IhJmhz7tiWRdp/Tap0ohQkvMojyY
-         ZjCXHHsG0Te8PG0FG2wlqQcotFSc5ZgYVC5mWDBh4u3ATMdE+AJEb1Q4N4qXuzSkWZrq
-         p3dROiLy3f+hInA+HB4Tk6/vLEHLS4C/rAHLMU8DA13dt1dOf/MZIlxflBPw7sLkEDCe
-         fu6eBBTOS7Bcz2ipkzcvnDvNBhEVNORE2WDrn69E7tuHuMllx2Ar8y4+rMd3FoKFEUAb
-         l0kg==
-X-Forwarded-Encrypted: i=1; AJvYcCU22T/sd6TYy51H/Gom/LNxoL6LtnwMHy7GFSS/AG8x4AVcvkHNdVIaMz3BZvMS7RBxWGa2ng1HWQ==@kvack.org
-X-Gm-Message-State: AOJu0Yw5yW1uzXVKpnVvIjnDMkm76bkz75o3u55cLDaIvzH7F+tVTKjB
-	J+rZe1uz+N1xnHqFtZRImaOWrBwn0Q7OxoecLf6mbquSOuhDnpsJ+OViue6CgINmpXU+T/NJZsr
-	Tx6UMPMjs6nEZry5wwqtt4uyQrrEvwsecoA4GVfsM
-X-Gm-Gg: ASbGncun1sB9KRsp/fgIvdhFQD5Iwt1iE3NUhP6gohkLorkToK6ocxOw9ZQad0W/0Wl
-	Pg74XrInH2tSSYNSACLi5X6nBjZgagUezbj0CpYUJzgPrrk1FFR6b6e/FRop5jJx1sh65da+jeK
-	hxjz+qeQSJHPYrvcrhsKDtPaq0Tkgff/0hOg4gGWhNqP/VaV8Kvy+JkFmf/cBOfecLMED2enufI
-	+eJCTgwQ618x1nrpIaO2uyCWIIgB7MrQchOLfCxALgYNecaaHRf90ZSFA==
-X-Google-Smtp-Source: AGHT+IE2h8TSu1f2xlTHQNzRe2M4cO1d9LN+if2AzP4uw/DfT+W19/p6yOk0Sqok9Hqo2w25G9KQAq/6ayg8a1nUC9k=
-X-Received: by 2002:a50:875a:0:b0:621:dc0f:6b2c with SMTP id
- 4fb4d7f45d1cf-623d2c48760mr196588a12.1.1757396275344; Mon, 08 Sep 2025
- 22:37:55 -0700 (PDT)
-MIME-Version: 1.0
-References: <20250908044950.311548-1-lokeshgidra@google.com>
- <CAGsJ_4zuj1nNpS0Ap=x-_dqERTU_NiCZAiHD=JULY1FQn+NwMw@mail.gmail.com>
- <CA+EESO6H7zkgEOnmDEZoPL8+5EBD6UrJOBAvcU_gXyxCNZSOZw@mail.gmail.com> <CAGsJ_4zi6kb3fBC9e8GkjR2JTpiAN9rTCpb2HmRV3ri_kDWE6w@mail.gmail.com>
-In-Reply-To: <CAGsJ_4zi6kb3fBC9e8GkjR2JTpiAN9rTCpb2HmRV3ri_kDWE6w@mail.gmail.com>
-From: Lokesh Gidra <lokeshgidra@google.com>
-Date: Mon, 8 Sep 2025 22:37:43 -0700
-X-Gm-Features: Ac12FXyVeaDucZMYToF6VX-RqpdE93vDIHjv1pimD0yo8dr-BsQ83JAnCHeowxs
-Message-ID: <CA+EESO6bQRLkHWWEMu5-1QbwKptQDRkkEK4vf8oi1dH6mSz3OA@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/2] mm: always call rmap_walk() on locked folios
-To: Barry Song <21cnbao@gmail.com>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, kaleshsingh@google.com, 
-	ngeoffray@google.com, David Hildenbrand <david@redhat.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Harry Yoo <harry.yoo@oracle.com>, 
-	Peter Xu <peterx@redhat.com>, Suren Baghdasaryan <surenb@google.com>, SeongJae Park <sj@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 2BE1D160005
-X-Stat-Signature: nqq8a4nd8p67d675pzq5crpa6a3hpkej
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ac3AtU0M;
+	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757396457; a=rsa-sha256;
+	cv=none;
+	b=8qehmjCnWE1jYT7bsKx3tjEmq3RKRc1Our3aAc0xJJ/OC4Z3mnXZpaU3Q/xz9ATTGPJuQb
+	N/wNQ0BmbkjDCQ7hVr7DqRiYOeROWmJYqcoPIjLphaw3LLtq+OfPL6leK2cLOmz20iRFm3
+	4lLRddJ+EghPrUTv6iGyXY0QPUl9o5g=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0BE5E601EF;
+	Tue,  9 Sep 2025 05:40:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA0D0C4CEF4;
+	Tue,  9 Sep 2025 05:40:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1757396455;
+	bh=fLT6sZq3hOuocdqB+Er3MIxGIa7A226lDCyWybWeKb0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ac3AtU0MqGUoC9Eky+9KyLtx9biLH0jbhomUAhOb9ruR7c2j0fSSNnyF7J5pqgv3k
+	 foKu3tqX/cVrmmALEDgQok2HJxXlYlCuqYu52g6qJkaq/U2HxlfxN2JIs/wIPe9xj/
+	 lJgOpn+VQzJMFZkYputFzcFbXsTrbwF4GLqtj+KE=
+Date: Mon, 8 Sep 2025 22:40:54 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, Alexander Gordeev
+ <agordeev@linux.ibm.com>, Andreas Larsson <andreas@gaisler.com>, Boris
+ Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov <bp@alien8.de>,
+ Catalin Marinas <catalin.marinas@arm.com>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Dave Hansen <dave.hansen@linux.intel.com>,
+ David Hildenbrand <david@redhat.com>, "David S. Miller"
+ <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar
+ <mingo@redhat.com>, Jann Horn <jannh@google.com>, Juergen Gross
+ <jgross@suse.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo
+ Stoakes <lorenzo.stoakes@oracle.com>, Madhavan Srinivasan
+ <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko
+ <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, Nicholas Piggin
+ <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>, Ryan Roberts
+ <ryan.roberts@arm.com>, Suren Baghdasaryan <surenb@google.com>, Thomas
+ Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>, Will
+ Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org
+Subject: Re: [PATCH v2 2/7] mm: introduce local state for lazy_mmu sections
+Message-Id: <20250908224054.0a1969b493d8a837addd782e@linux-foundation.org>
+In-Reply-To: <20250908073931.4159362-3-kevin.brodsky@arm.com>
+References: <20250908073931.4159362-1-kevin.brodsky@arm.com>
+	<20250908073931.4159362-3-kevin.brodsky@arm.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 11C8CC0009
+X-Rspamd-Server: rspam05
+X-Stat-Signature: wfxigxy4uc5spobb6rqhmm5yk9ep93b7
 X-Rspam-User: 
-X-HE-Tag: 1757396276-793669
-X-HE-Meta: U2FsdGVkX18finPiDQvn3qJAFrIDRVvif+cEc79w/f9FJxK2wnDuMG8ohZy9A2pAFU4lucdoKdowaNN92dIakL+GktIOY0kRGs3TC8Fti2S04xDkEZmoUfp3gWAhbI2N74Uv/kNbC1nxcWaqW50miDUw/sVeY+RwmWGaSuNAZ1uBmNDamAYS8sYLsvE8DXp8ZUKMWfWzSEyV8Pf3kduCQ/lRKV4ON0Z5bePgHxK98Ozr5GjOL24/pEa3jWWU4b6ABxm5cSe+EZJ+Pq7W2I2/O3/Pmy9Q8K9HviljiVMk2Y0KqtH08H4DdXNvSZzx4WobVgPNtddaONu5lm0I8YK3ZcKJ0K9zPALPPWqmHchzWHO3xrW6ljSBTKPTcXX4bym7Nkx3joErsxcEf0EW/JoVK7nerXIqAwME41EzSCO+Ku5eXZnwmsVpA4XkEz3PvnbJnUQ+0Ywxj6fxUK/LKE016/WrPD1FOdPIRTpi3FJAMPY8SaUBVOOLs2H/keiAsQ0vK6v372y2o0Y1S3mnUPm7JOv+ivvjBt0x4QWHWxh2hVjZYRZAOn68CCQSaK2mQdljXo3UQA4qvES/hizccyYV1zYPEdmKwnSzTCjGKl6YaPw2/p5T2/kq4vla9k3K9X55y6qFmD+sOP1EQmghIq36I/mlonMXJALUw4iRenQ/p/f/6Tapv2W2ghtsBcxzNBom/xbeVmH//B8Cd2M6b2aNdjtvkiHdfEk7IWS95VM7IhGKmMpn/9bfWIsNnMxcxP0djidY9CCLLbVFoZiI6SL7tOt8d591m5LiyU1O6DPZodgkAe6cqZ6zixpxaXw3QFpFYARW0LVxljfsnjtNoJYd0Ccx5BAsTGVw+B4ubi1c5+kUNzez60OzXGY1E2hNxyIg3siTzTSVP++67TqodXyfheHmmn2EAxoIS7jt/3HHuZP5Bmf6kQ4eehgVRwku7U1WanPU5oo5C5Np8RiiPxt
- xQkOGTs1
- JspSsJftf9rKi2XSLtpB7sY4zZ4NPvPfbh5ea+NhHvgie0ghsDH+WF7NPd9ohkXH+8Rd02Ee0j+io6SwXsIEvU9CuU18S/P9xE/z+/kuk6EoYvLlXa3qnA4Zb145suIZG652DcM2P6jlDy9SWRydP1KmtmcEdVQnftmNx6rRpav6hNMJ9WF+ApJnuMJyfCVSyZR5EA68DI+phsN2X+Rq3N1U+63m232WDzst6seD6gLvL02hHFWbhUlbyK1CjzTUHKzq5LbW+3C81f6H7Ea25mhK6ES0prlcoi7GgL8QOyoPAmxjz7lGoEVFXfby8lkIgm8U1MswzlIzHs7g=
+X-HE-Tag: 1757396456-602281
+X-HE-Meta: U2FsdGVkX1+eKDvkGE0Icf5lBCEtek0CuCS5Na4cwgKeuzGqOntBurAMwe0wpm22HXzL/k0vIv5mnDs/SOh/cEN8vBYM7SvoWb7fetIvjpxk3QAXuD4pM9BdtGNg6YA+/hZ6Fq3aDB2AvJwWkV/q4/wHtBKHtsxl+52o86cMFwp6YCetcjpVT6pZU6KcwJckZf2+kBDcY+w+1NTwqeKzVUUmS9lY15BHyaQjSBkFuo/h1DZE36JrIEGF+D6AdYqP8yedHzieqOPtTmeMYrahyjaVTxP4xOaFNZOsjYT/KfpnDagnh8n569JvuZ4bybHCvoqGpNOQgM9wQ17Xr8KG+VcfZJ9ZuuCnpYxq+Y+l97hE8K6cjjrYxEqKWky7RyjXxWtlQ/Z5XX9qvPjmNHiI88q1O86RHy3TSB0p0UP//45Cn7nElUocWAyVTQK8RnbpXtlGKw3KVVuWXLu7en+X+BZsi+LQtdQZEp4/COJvIS0H36nJmuqF8tA0UkOOlmoZMNQ664accXTIgF2o2mjwH8f3ufGc0t1/wZdCtZWYDPW6EWRnik8qkQ9N0CUoNMGxVrZUK5cLwXA7RY4C/BlLzFGXNmsR0VVwyqy63gLYtsUXT8LAppWdlQYiCvDRkfr84b3H4c4Gjl6DDn/RRO2AJxhtYgddnVXdB8bTJaWhhRcFtOVlGDWDrLPdpOglNWxjei0tSQy2n/M8vtuo1MilHR3EtasJ7skqWLIexCqdKJ/5+hdT2CNnPCbE/Cs1c/yXR18e4iM5UTwIMCGaObPbeOyaaZCqzdfbKbE/e20Nc9ZxCJVcvq8g0Md1h7f2uaWo1ug7orGZxyTGIY34+zarR1jRuiP7zmqXTexW9iQmwBdzzwRmFsHmy4NVz30Bk+p1n41rVMsimOQ3Rqs9S7mA0NC0L4fe6TAH65Pq2OO1UhDP/1JFimwNntZifBhwaOLBUMSLRCJ2E3RfsM7htk2
+ HXHWYiuf
+ XgN6b
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,78 +107,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 8, 2025 at 5:40=E2=80=AFPM Barry Song <21cnbao@gmail.com> wrote=
-:
->
-> On Tue, Sep 9, 2025 at 6:12=E2=80=AFAM Lokesh Gidra <lokeshgidra@google.c=
-om> wrote:
-> >
-> > On Mon, Sep 8, 2025 at 2:47=E2=80=AFPM Barry Song <21cnbao@gmail.com> w=
-rote:
-> > >
-> > > On Mon, Sep 8, 2025 at 12:50=E2=80=AFPM Lokesh Gidra <lokeshgidra@goo=
-gle.com> wrote:
-> > > >
-> > > > Prior discussion about this can be found at [1].
-> > > >
-> > > > rmap_walk() requires all folios, except non-KSM anon, to be locked.=
- This
-> > > > implies that when threads update folio->mapping to an anon_vma with
-> > > > different root (currently only done by UFFDIO MOVE), they have to
-> > > > serialize against rmap_walk() with write-lock on the anon_vma, hurt=
-ing
-> > > > scalability. Furthermore, this necessitates rechecking anon_vma whe=
-n
-> > > > pinning/locking an anon_vma (like in folio_lock_anon_vma_read()).
-> > > >
-> > > > This can be simplified quite a bit by ensuring that rmap_walk() is
-> > > > always called on locked folios. Among the few callers of rmap_walk(=
-) on
-> > > > unlocked anon folios, shrink_active_list()->folio_referenced() is t=
-he
-> > > > only performance critical one.
-> > >
-> > > As I understand it, shrink_inactive_list() also invokes folio_referen=
-ced().
-> > > Shouldn=E2=80=99t it be called just as often as shrink_active_list()?
-> >
-> > I'm only talking about those callers which call rmap_walk() without
-> > locking anon folio. The
-> > shrink_inactive_list()->folio_check_references()->folio_referenced()
-> > path that you are talking about always locks the folio. So the
-> > behavior in that case wouldn't change.
->
-> Thanks for the clarification. Could you add a note about this if there
-> is a v2?
->
-Certainly, will do.
-> > >
-> > > >
-> > > > shrink_active_list() doesn't act differently depending on what
-> > > > folio_referenced() returns for an anon folio. So returning 1 when i=
-t
-> > > > is contended, like in case of other folio types, wouldn't have any
-> > > > negative impact.
-> > >
-> > > A complaint was raised that the LRU could become slightly disordered:
-> > > https://lore.kernel.org/linux-mm/20240219141703.3851-1-lipeifeng@oppo=
-.com/
-> > >
-> > > We can re-test to confirm if this is the case.
-> > The patch in the link you provided is suggesting to control try-lock
-> > for anon_vma lock. But here we are dealing with folio lock. Not sure
-> > if the ordering issue will be there in this case.
->
-> Right. Not sure what percentage of folios will be contended; I assume
-> it is minor. Maybe you could share some data on this in a v2?
+On Mon,  8 Sep 2025 08:39:26 +0100 Kevin Brodsky <kevin.brodsky@arm.com> wrote:
 
-Any suggestion on how (or which test/benchmark) would be good to
-gather data on this?
+> arch_{enter,leave}_lazy_mmu_mode() currently have a stateless API
+> (taking and returning no value). This is proving problematic in
+> situations where leave() needs to restore some context back to its
+> original state (before enter() was called). In particular, this
+> makes it difficult to support the nesting of lazy_mmu sections -
+> leave() does not know whether the matching enter() call occurred
+> while lazy_mmu was already enabled, and whether to disable it or
+> not.
+> 
+> This patch gives all architectures the chance to store local state
+> while inside a lazy_mmu section by making enter() return some value,
+> storing it in a local variable, and having leave() take that value.
+> That value is typed lazy_mmu_state_t - each architecture defining
+> __HAVE_ARCH_ENTER_LAZY_MMU_MODE is free to define it as it sees fit.
+> For now we define it as int everywhere, which is sufficient to
+> support nesting.
+> 
+> The diff is unfortunately rather large as all the API changes need
+> to be done atomically. Main parts:
 
-IIUC, shink_active_list() doesn't behave any differently whether there
-is contention or not, except when it's an executable file folio. So I
-doubt such data would be any useful. Please correct me if I'm wrong.
->
-> Thanks
-> Barry
+This has a build error:
+
+  CC      arch/x86/kernel/asm-offsets.s
+In file included from ./arch/x86/include/asm/irqflags.h:102,
+                 from ./include/linux/irqflags.h:18,
+                 from ./include/linux/spinlock.h:59,
+                 from ./include/linux/swait.h:7,
+                 from ./include/linux/completion.h:12,
+                 from ./include/linux/crypto.h:15,
+                 from arch/x86/kernel/asm-offsets.c:9:
+./arch/x86/include/asm/paravirt.h: In function 'arch_enter_lazy_mmu_mode':
+./arch/x86/include/asm/paravirt.h:534:16: error: 'LAZY_MMU_DEFAULT' undeclared (first use in this function)
+  534 |         return LAZY_MMU_DEFAULT;
+      |                ^~~~~~~~~~~~~~~~
+./arch/x86/include/asm/paravirt.h:534:16: note: each undeclared identifier is re
+
+which gets fixed up later in the series.
 
