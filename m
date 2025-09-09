@@ -4,117 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9F75CA0FED
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 18:44:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65A38CA0FED
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 18:50:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA1A98E0003; Tue,  9 Sep 2025 14:44:16 -0400 (EDT)
+	id B4BE58E0005; Tue,  9 Sep 2025 14:50:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A2B158E0001; Tue,  9 Sep 2025 14:44:16 -0400 (EDT)
+	id AFC2C8E0001; Tue,  9 Sep 2025 14:50:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 941388E0003; Tue,  9 Sep 2025 14:44:16 -0400 (EDT)
+	id A12BC8E0005; Tue,  9 Sep 2025 14:50:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D34E8E0001
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 14:44:16 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id ECAE986DBE
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 18:44:15 +0000 (UTC)
-X-FDA: 83870586870.16.F0791AE
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf27.hostedemail.com (Postfix) with ESMTP id BDB7340009
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 18:44:13 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=BlJB3gnO;
-	spf=pass (imf27.hostedemail.com: domain of jane.chu@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=jane.chu@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8B41F8E0001
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 14:50:20 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2B59C13BA68
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 18:50:20 +0000 (UTC)
+X-FDA: 83870602200.01.3B9BFAF
+Received: from mail-il1-f175.google.com (mail-il1-f175.google.com [209.85.166.175])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 500211C0010
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 18:50:18 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=w2FGC4oE;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf21.hostedemail.com: domain of zokeefe@google.com designates 209.85.166.175 as permitted sender) smtp.mailfrom=zokeefe@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757443818; a=rsa-sha256;
+	cv=none;
+	b=HhiGDP17s12KA70zjCFJlozbjLSA46Xd0Yw81QzKpvswML7sPsgDskT21z7nfbV6JUPHsX
+	Nkh2/P8ldrSyET3XPwMc0GVHVEyB1HecDwQcH65nqbztFbdnHbWCfwuUcMt54H1BcSZDef
+	GO33qp3Rq1yd6ORuuhk+pc4t3g7i74E=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=w2FGC4oE;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf21.hostedemail.com: domain of zokeefe@google.com designates 209.85.166.175 as permitted sender) smtp.mailfrom=zokeefe@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757443454;
+	s=arc-20220608; t=1757443818;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=IWOZ/MveQGGxyYuOsjNd57QH01BWPX4a/YbbD/2Wk+w=;
-	b=bxHjv4Z1qnirB2rfEvSVJrseYAAUT781Mbi3vRWo/5trJQsUxl7BpO0y9JEieGMJ2HuUs+
-	k2eyuw0Ed6EKW8FKia4mQI/oGfUWxs3mexHr8xnZPh78dqKbR3Vjn530uhF9fb2ZWN56AX
-	34vDvydgMaN+bgiJOYI28MdNqnuFX8M=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=BlJB3gnO;
-	spf=pass (imf27.hostedemail.com: domain of jane.chu@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=jane.chu@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757443454; a=rsa-sha256;
-	cv=none;
-	b=IkQqSBTXgjU7XSEFKTg9rpbLt5kQ++SOxqQj4M7t3Y9Pzdggy/PMqcWTQda2xOwE3vMoYR
-	aKjZvxmoE7UfKUgYdvgmo8qlh7IYpbmG7cHpSjPnteDPQ3YAcEAX1zDPH8lObvwq2Y2EI8
-	bsMpwmhE7XRY+GRz4fD5T8fI0fmgr9g=
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 589FtjZk014532;
-	Tue, 9 Sep 2025 18:44:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=corp-2025-04-25; bh=IWOZ/MveQGGxyYuOsjNd57QH01BWP
-	X4a/YbbD/2Wk+w=; b=BlJB3gnOhm7zcxOUTuC3crwT7IbaExiui/D2JlzUPhk8m
-	N+HzS/As/ZbNy0MU3kft6LekYuOo2zj8OiHonvRMKLalZlCBdhQHRQ0O4b8fKtuC
-	HG6PKf7kJaWG23yydGWKV4cbxRg6lbi82pWm7+TyEDk3qtcFMvx8GDZAdD8bddc3
-	51LdVXsWjJwiE1nq8jAMt90AgfiUaIJZ4eY1TYPw6ZiaVrDU/mEBqp99tA4+5Vrx
-	xw2E9JUN24wh59ahKB4rUx8ihUNErlHTQYYEuwfg5wcJISpmBs0G0L18POAWISAY
-	qZ2VtyH3ziZXfFPvaNV5KrtCJcDTLBnjWwfrxnOSg==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4921d1jse9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 09 Sep 2025 18:44:05 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 589H8kg0033216;
-	Tue, 9 Sep 2025 18:44:05 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 490bdb0db7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 09 Sep 2025 18:44:05 +0000
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 589Ii43G004503;
-	Tue, 9 Sep 2025 18:44:04 GMT
-Received: from brm-x62-16.us.oracle.com (brm-x62-16.us.oracle.com [10.80.150.37])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 490bdb0daf-1;
-	Tue, 09 Sep 2025 18:44:04 +0000
-From: Jane Chu <jane.chu@oracle.com>
-To: harry.yoo@oracle.com, osalvador@suse.de, liushixin2@huawei.com,
-        muchun.song@linux.dev, david@redhat.com, akpm@linux-foundation.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Cc: jane.chu@oracle.com
-Subject: [PATCH] mm/hugetlb: fix copy_hugetlb_page_range() to use ->pt_share_count
-Date: Tue,  9 Sep 2025 12:43:57 -0600
-Message-ID: <20250909184357.569259-1-jane.chu@oracle.com>
-X-Mailer: git-send-email 2.43.5
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=eC3mUBzIF335HxcW34dFQJ7jnn4NSV7DuTmu23IsQDA=;
+	b=NnV0jdsD36/aI39ppVQ8/Qq7tIvFVU/Rcw3CwZbfvDreu/54tyYEGyax0ztw0fdGQqyNAt
+	rKz7UvoM7IkeHjgTyd8SJNfjr55keev2oWfBs3fv+Gg7Ix2R1Z5vGzlZFhPBFrdcFIASRh
+	vMvXqS3/X2LxLwBY8KendY/OQIsGPLo=
+Received: by mail-il1-f175.google.com with SMTP id e9e14a558f8ab-408c236c500so32705ab.1
+        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 11:50:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1757443817; x=1758048617; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eC3mUBzIF335HxcW34dFQJ7jnn4NSV7DuTmu23IsQDA=;
+        b=w2FGC4oE0fsVWUKL0JXna1fljIWPPhD5u4ULyLFIoG5VQDaikjBs/6Kz3LqNZqEOwC
+         Y5ptNnewUhNFqzwBx0yCctWsOJa5yvVhano4NCOXgB8AYLcn5LIq/fg9Ojk68NimRCYt
+         MutsLfUlgbSr4efpDd4Heak0Yi4NWHMIaXuLrnMfr6Chu7Uf37sC6hFT1U1dbGitlz3y
+         cWl4HzjEHWrP0KQpZ4xYwMfHeqv7+2BKPKr3NLxfHYRP9kC8j0k57tvOma6qI2Dz9kig
+         88O0AKhuH5Cfd9xoSQmM7fJRc+fsPAnsxYH+epFyx+qLrS/lQ9vO2J5C/E9r4iNvvBKy
+         IHIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757443817; x=1758048617;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eC3mUBzIF335HxcW34dFQJ7jnn4NSV7DuTmu23IsQDA=;
+        b=xJQf5/qpZd7+KE1rH7afQj1hXJe2w3D2aSlfeSdyAC29Ye7ZOcyMCIp1MGozdQHagb
+         gdsRo5zh9r/sqPL2bntEc9b2berSy5RdrHXMdu++qPSATVzP/skZknA/aQ76ayA5lGJK
+         ecjNU8sIHBHF2Fhh3zNkhITjqebqlqMidkDaKnPXVwMcGFjSZmFE3ba78L8YbedGTcF9
+         wAjFAJZRzWEZLT9rFLTUxbZrBTZb4WmEogdxxUT4x44K0Y2euRgUvb9Ktyz+gBQD41D7
+         whBSCXa0TwcF+WcA+Qn8pkGUr+u7OKIeH6LU/FR3RFb5DoGyUVfQHF3TM8pI1MjUXL70
+         zp9A==
+X-Forwarded-Encrypted: i=1; AJvYcCXe1qki3dX9PTFfglVxsR+AP2JsLoyDY9etQBm50jWvrCZJogiEuhFKvh3dPuY5xRy2lNGfuHEm8Q==@kvack.org
+X-Gm-Message-State: AOJu0YwW+YtjCFRo4aLZWG3XPACBySm0RSRpVnEMKlONk2qfUeWFDz8j
+	G2Zls/xq2WKvGCs18GJvw40vOTanf8gil23XMRJemJGtW2HOJoQ3vctpwfyEmhdL0PBpmhUp0rm
+	gSnyeC75NPJY3OXEVA6Ijq5WFpwq5noEWsBli60Mi
+X-Gm-Gg: ASbGncvWow/f4d2dC/LFloIQE6451LGZvcvvnbivCX7d9VFppvNDngnBCPo3frvbeMc
+	S5652aAIsWlAerQQSeFanxhX1nzzZpx9SOlXjd535P80zgEBld+YO/2OUHmweoD0i8ansrfyZvj
+	O8+QA+HKJbX3JSMAE5Dhe8AAmsDYVOT+W+HEpus3qYYEfvnjtoZYtVBpOVslaRrvZdK+7r5Aecz
+	aeqY4MvbLBdPfs=
+X-Google-Smtp-Source: AGHT+IG6p9OBV2LHpHJ2dnCTdEF/QlDlw3uEMnpPINTz7IGwtNn9XHfXL0nT5x0TVBBY4V1jajlMi/f/7FwLhI4UYXw=
+X-Received: by 2002:a05:6e02:190e:b0:40b:e7e1:cfb5 with SMTP id
+ e9e14a558f8ab-4164d86db7fmr699395ab.2.1757443816692; Tue, 09 Sep 2025
+ 11:50:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-09_03,2025-09-08_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxscore=0 phishscore=0
- bulkscore=0 mlxlogscore=999 malwarescore=0 adultscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2508110000
- definitions=main-2509090184
-X-Proofpoint-ORIG-GUID: WRSfngHTR2VCUKNIEOx5Re1gBizfe0Mp
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA4MDE1MCBTYWx0ZWRfX7xwTxW1qSJZ0
- 0IivqUUG1PWFnEgAEN0RWu1g8KqZhe2NiIx6rz4n7+JJ1aYaUfXuHrRsdAXYxUwp6PzkIv0Qjz0
- NJdsrWRlaEGBt1WhdBfuhYyExr0YuMhwpJFNWHJ3NB8YLfzYk54qsNW5gcEiT8bnxQpws5sQQh7
- ceh4VqxwTYFUa9sItnzOb3luiTwmz3LCABn1nLSgEdLfZYD3eb6WfY6wH0t7+lHb0igL0PluI90
- M0D/yKwUhj0sZ4v5iJ4vFTprw3v/zwA2h1pwq8+X8skhueE9h7AnfNWV0iztMQFS8gDyfYU5zdg
- N05Bk5xIFBtMc0gakmMNqEXYTVm5P1g1TwWDY9jQmhhz5iXEbo1dCNDPF2Dslo3CxS309vDDKsO
- 1tE2oa8z
-X-Authority-Analysis: v=2.4 cv=d6P1yQjE c=1 sm=1 tr=0 ts=68c07575 cx=c_pps
- a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
- a=yJojWOMRYYMA:10 a=yPCof4ZbAAAA:8 a=mG3bTaASnfPRmh1c64YA:9
-X-Proofpoint-GUID: WRSfngHTR2VCUKNIEOx5Re1gBizfe0Mp
-X-Stat-Signature: hof87755rhn4nnxnyjbgifzppzzkc4hh
+References: <20250908075028.38431-1-dev.jain@arm.com> <20250908075028.38431-2-dev.jain@arm.com>
+In-Reply-To: <20250908075028.38431-2-dev.jain@arm.com>
+From: "Zach O'Keefe" <zokeefe@google.com>
+Date: Tue, 9 Sep 2025 11:49:39 -0700
+X-Gm-Features: Ac12FXypQR8Ban_kXoWF6-UtTEU_BSzjrhtVgpc1eMzOq3TH_kElX763QBqhNKo
+Message-ID: <CAAa6QmRtP9T8SVCVXkgLDtzZYYujh89R_FYzUanSckfe5znyyg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] mm: Enable khugepaged anonymous collapse on
+ non-writable regions
+To: Dev Jain <dev.jain@arm.com>
+Cc: akpm@linux-foundation.org, david@redhat.com, kas@kernel.org, 
+	willy@infradead.org, hughd@google.com, ziy@nvidia.com, 
+	baolin.wang@linux.alibaba.com, lorenzo.stoakes@oracle.com, 
+	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, 
+	baohua@kernel.org, richard.weiyang@gmail.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 500211C0010
+X-Stat-Signature: hmgm1gphuse1t9y1msoh79gtz5wimjyd
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BDB7340009
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1757443453-636928
-X-HE-Meta: U2FsdGVkX185ulDE/MPpIWre/fbAr63dVWTqQqAI41AZZoteXMa/+GrRl2kNk8mgOFSXyC3J8MwbqvDSOuclXr/opRnZeJGk2CPZL3zR7Y3/K4Ui7nwt+sA/8Vn9Mlu0bE1scH47N0MwJxnJdYz/0bZvvXvBts5kCpqexhZhkFPaNsj+G+nBDDK70NcQaQMAO3XYXm3i8W9yY1lUKK8UqjNNfjefMpi/dBNxvTwNrx3xfkEoK+CK6oOGx18vUIvp0NX7TzERihxfNJ6dI5kcaraGsE8UVEy3WMGm8/tgdrJfDOf550vp9MaGSBzFo1wCZHuS9J6KjGAiRY+Nj6+TBqDkKvg0n6aQJwTA26lXfuoU/zQ0Rv6ptarqsc0kPGRN/tqQp2aHksRXgQhBEtND6gejCq+oUdNThn4zc1U6/Uo5zuIbNKGZKAhRx1wS42D+ef/nZvC9aXdFfGoWdhxdSPNG2Q8TRRlF2Y3QVuRAVfKVrPT4oj3x7B0lJUzPnTsMUVgU92adVDQzfmkDqnTbZ8BbBXv9KOZcZ+3OGtL+QhyhZyElKnCJYGN5VXpLRGVPVnOxzy9zczYCZfiwJ7/8w3ejPhjnk46PBZP2G4x9cBFXcZv3w7vCILJ9IJWMxHPPjSprid/Pxq8+IGswHJ4ZbzdNFl9fOGZag2g6IPLM9cQiO1/6fypokS2ZmDuThu1SNzDsRwSAHMXdXvLQO2MgneiASa2DlzxHZWqiKeqlkKclZM7mkJKJxgGv2KZmiCBJRbITFRXAmbepIxPGbXlKsRoKHDE/K4dtTK2wOhxah+7/j55MhDCZ9TTgLWOsjrRD13Px4MD1dGOE1DNJklQ08l7kQHND8yoLyVlIElqNwyoFzhA9S6K4ZYol22gb/sw2tm4XKBWW8YjOrnhqATpLvo73xcWi0JVRiOwBnWRQlgTfCvmlMHpEmAXy3ijZSqMfM7z0XU15rPC6bpz5vTx
- DlDUnGUK
- TLfKgUw6B+loqJYnXfoU5LS8hH5QGbw41UHnm3hkVM+edICu/2ic12BzUGbS6xEprNZVhGqbqiHu0PVeCavq7CMDdzeNa2qzw1gfiMNBGNmtWjo1Z01C5g+qzh3M9BrJ0QK/3GMtNqgzj4C7wYeq180pAV8H9pTe77tXnBTmGKGnSa0jYXsCU6862gwShZYxx+mihgJYQe6JazMuKYoe/tJgfLiMm6pM4fk+o1vqif1OglWm64Ae7DG3NQV31H+3a2K0Jp0aMwfVnQh6BUZJ8U+I/1w==
+X-HE-Tag: 1757443818-88853
+X-HE-Meta: U2FsdGVkX19BGABkuaTX/mC28PxDLZi5a3vR+pHmfh4XFowDPIle14e/Owwq1Wd3tZw9DMUeLEKx9MRaCHV+ij31JXYTfSGfI/sCkDM5I0vk0vfwsFEpewdW1+UPJF3QiJAVX/QU/SNvAsI5KY6SVgWFtXYtseTVic0liefcjiApK2Kw0t4o58z4FBYQTIJsh8zP6+0fm3Re41QkJ2ueHCYlN83UgeiXcUBYVXL/kUvuD6uRk4Qp7wsRXSQ2ZCzkFqrwfm3ATJi5p5RlMCG3ZMx3Zt6fhJtjhfMnVQgSAN/vHpEqrdAOKemzNk6dkuqj67hRAq0tr5BrZBUffIGtCKBwDo3ycl1+/TeyeLcktdquCvn+/qS8YV4j81Li+Jsk80Vq9QmEVtka0HAgMDAEDZ3YvgBjvZaAjFuCfFaz+UXC0mre4Moxt3QaB9gHmPMnEtiqVes0KsspJl8g49HjFqGkZq9bktWlmovfhfKWTxNUqwFIzox3ROn2DzuSFXPeVztSlQnkYDTfgtL0IL5tkFheUc22WJlLN4YtRY9SzOYvtSTCbqgsIla2AGiEm4500BQJGoyvX/G4RIV+GmNlPEQYywOpL+/58g7tB0a7u0bAeqmXRp0/l/alofOENp7taIs4BPCknt4F33AufIl9UIil8jbYWLCgY+nU+D5OgaLMhru/5D4oWEcPDk+Zx4xI+t3QQuB2PLMy+wjagIs9dWwLqh0YWgO7UNXzCcdVBTaT3B0Iu7qXzh2cJ+hUdInjj6HpF7gnRHmcdu47/Sp5f9ghhRutrR+nOm3LqHVWIIaYvoOCpcdFAaomCLITZZNCjJ19fohRefgfh95jj5Hn/1z6+A2vWrhowXlMTqyEl9v0F4LgAlWtrASggqi0yYI5HGKVu7oI1CHZVCIU7GmeFep8wfaItlWt05GxSVURLsVFAcDDTAsRgg+UUZQUwlIOxqHx5obDMB0kyeyJEQF
+ 1ZPSRX2S
+ PUryQGfNwRw3r4ft/hGT+dm7gBTfka2GIbU4pJ0rTN6ZKT/d3c3BCj9FVGXbvAsno84htMVccUBoSN3i9dFRScjz+7+yUgTt1H4QFW5mh5bblj2FCp8C7fbnLv5sTWoM79wbbuoxw/jy0bUGTkoddthRnBf9yjndyvQuskj8BIYnzOGFSUS/vdQeB0/j4NCezoj0bATR94GZVJ/JEsxaZacLvFLtG+I+m6lJgBE3Ln3r5y/Cbg/ejAZly6Udm5IXhtnB5aU60Psfx8SptFbKiji0B/CzxnzRHXPr4PEVT2hj1VF1cQC05La7IXL4H2qRX/uno7AgV/NyJ2zCJpKLIY2wV3ou0cLBYPSM4lkcfMw9LAwvD1fwqTXHS7oclZ284IsaBxC40q+l2Z0DW5wplAzCKfvfoo+fSfzYavOjqKeXjntucnS7PY12E6hbzZwAGMJhV
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,76 +121,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-commit 59d9094df3d79 introduced ->pt_share_count dedicated to
-hugetlb PMD share count tracking, but omitted fixing
-copy_hugetlb_page_range(), leaving the function relying on
-page_count() for tracking that no longer works.
+On Mon, Sep 8, 2025 at 12:51=E2=80=AFAM Dev Jain <dev.jain@arm.com> wrote:
+>
+> Currently khugepaged does not collapse an anonymous region which does not
+> have a single writable pte. This is wasteful since a region mapped with
+> non-writable ptes, for example, non-writable VMAs mapped by the
+> application, won't benefit from THP collapse.
+>
+> An additional consequence of this constraint is that MADV_COLLAPSE does n=
+ot
+> perform a collapse on a non-writable VMA, and this restriction is nowhere
+> to be found on the manpage - the restriction itself sounds wrong to me
+> since the user knows the protection of the memory it has mapped, so
+> collapsing read-only memory via madvise() should be a choice of the
+> user which shouldn't be overridden by the kernel.
 
-When lazy page table copy for hugetlb is disabled (commit bcd51a3c679d),
-fork()'ing with hugetlb PMD sharing quickly lockup -
+Sorry ; late to the party. Certainly agree wrt MADV_COLLAPSE.
 
-[  239.446559] watchdog: BUG: soft lockup - CPU#75 stuck for 27s!
-[  239.446611] RIP: 0010:native_queued_spin_lock_slowpath+0x7e/0x2e0
-[  239.446631] Call Trace:
-[  239.446633]  <TASK>
-[  239.446636]  _raw_spin_lock+0x3f/0x60
-[  239.446639]  copy_hugetlb_page_range+0x258/0xb50
-[  239.446645]  copy_page_range+0x22b/0x2c0
-[  239.446651]  dup_mmap+0x3e2/0x770
-[  239.446654]  dup_mm.constprop.0+0x5e/0x230
-[  239.446657]  copy_process+0xd17/0x1760
-[  239.446660]  kernel_clone+0xc0/0x3e0
-[  239.446661]  __do_sys_clone+0x65/0xa0
-[  239.446664]  do_syscall_64+0x82/0x930
-[  239.446668]  ? count_memcg_events+0xd2/0x190
-[  239.446671]  ? syscall_trace_enter+0x14e/0x1f0
-[  239.446676]  ? syscall_exit_work+0x118/0x150
-[  239.446677]  ? arch_exit_to_user_mode_prepare.constprop.0+0x9/0xb0
-[  239.446681]  ? clear_bhb_loop+0x30/0x80
-[  239.446684]  ? clear_bhb_loop+0x30/0x80
-[  239.446686]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+Ditto for khugepaged as well. Check added when support for
+non-writable pages were added to khugepaged, though retaining
+heuristic that at least one pte should be writable;  10359213d05a
+("mm: incorporate read-only pages into transparent huge pages"), which
+predates max_ptes_swap.
 
-There are two options to resolve the potential latent issue:
-  1. remove the PMD sharing awareness from copy_hugetlb_page_range(),
-  2. fix it.
-This patch opts for the second option.
+> Therefore, remove this restriction by not honouring SCAN_PAGE_RO.>
+> Acked-by: David Hildenbrand <david@redhat.com>
+> Acked-by: Zi Yan <ziy@nvidia.com>
+> Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+> Reviewed-by: Kiryl Shutsemau <kas@kernel.org>
+> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
-Fixes: 59d9094df3d79 ("mm: hugetlb: independent PMD page table shared
-count")
+Reviewed-by: Zach O'Keefe <zokeefe@google.com>
 
-Signed-off-by: Jane Chu <jane.chu@oracle.com>
----
- mm/hugetlb.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
-
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 753f99b4c718..8ca5b4f7805f 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -5594,18 +5594,13 @@ int copy_hugetlb_page_range(struct mm_struct *dst, struct mm_struct *src,
- 			break;
- 		}
- 
--		/*
--		 * If the pagetables are shared don't copy or take references.
--		 *
--		 * dst_pte == src_pte is the common case of src/dest sharing.
--		 * However, src could have 'unshared' and dst shares with
--		 * another vma. So page_count of ptep page is checked instead
--		 * to reliably determine whether pte is shared.
--		 */
--		if (page_count(virt_to_page(dst_pte)) > 1) {
-+#ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
-+		/* If the pagetables are shared don't copy or take references. */
-+		if (ptdesc_pmd_pts_count(virt_to_ptdesc(dst_pte)) > 0) {
- 			addr |= last_addr_mask;
- 			continue;
- 		}
-+#endif
- 
- 		dst_ptl = huge_pte_lock(h, dst, dst_pte);
- 		src_ptl = huge_pte_lockptr(h, src, src_pte);
--- 
-2.43.5
-
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
+> ---
+>  mm/khugepaged.c | 9 ++-------
+>  1 file changed, 2 insertions(+), 7 deletions(-)
+>
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 4ec324a4c1fe..a0f1df2a7ae6 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -676,9 +676,7 @@ static int __collapse_huge_page_isolate(struct vm_are=
+a_struct *vma,
+>                         writable =3D true;
+>         }
+>
+> -       if (unlikely(!writable)) {
+> -               result =3D SCAN_PAGE_RO;
+> -       } else if (unlikely(cc->is_khugepaged && !referenced)) {
+> +       if (unlikely(cc->is_khugepaged && !referenced)) {
+>                 result =3D SCAN_LACK_REFERENCED_PAGE;
+>         } else {
+>                 result =3D SCAN_SUCCEED;
+> @@ -1421,9 +1419,7 @@ static int hpage_collapse_scan_pmd(struct mm_struct=
+ *mm,
+>                      mmu_notifier_test_young(vma->vm_mm, _address)))
+>                         referenced++;
+>         }
+> -       if (!writable) {
+> -               result =3D SCAN_PAGE_RO;
+> -       } else if (cc->is_khugepaged &&
+> +       if (cc->is_khugepaged &&
+>                    (!referenced ||
+>                     (unmapped && referenced < HPAGE_PMD_NR / 2))) {
+>                 result =3D SCAN_LACK_REFERENCED_PAGE;
+> @@ -2830,7 +2826,6 @@ int madvise_collapse(struct vm_area_struct *vma, un=
+signed long start,
+>                 case SCAN_PMD_NULL:
+>                 case SCAN_PTE_NON_PRESENT:
+>                 case SCAN_PTE_UFFD_WP:
+> -               case SCAN_PAGE_RO:
+>                 case SCAN_LACK_REFERENCED_PAGE:
+>                 case SCAN_PAGE_NULL:
+>                 case SCAN_PAGE_COUNT:
+> --
+> 2.30.2
+>
+>
 
