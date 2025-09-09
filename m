@@ -4,87 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA500CA0FED
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 23:34:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D06E0CAC582
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 23:34:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DED978E0002; Tue,  9 Sep 2025 19:34:16 -0400 (EDT)
+	id 3675D8E0003; Tue,  9 Sep 2025 19:34:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC57C8E0001; Tue,  9 Sep 2025 19:34:16 -0400 (EDT)
+	id 317998E0001; Tue,  9 Sep 2025 19:34:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D024F8E0002; Tue,  9 Sep 2025 19:34:16 -0400 (EDT)
+	id 2072F8E0003; Tue,  9 Sep 2025 19:34:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BF4CB8E0001
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 19:34:16 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0BF288E0001
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 19:34:19 -0400 (EDT)
 Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8CC74140676
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CC2B1BB2A5
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 23:34:18 +0000 (UTC)
+X-FDA: 83871317796.03.A00E429
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 1259240005
 	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 23:34:16 +0000 (UTC)
-X-FDA: 83871317712.03.BF0283A
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	by imf17.hostedemail.com (Postfix) with ESMTP id D6A8B4000D
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 23:34:14 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=mhEcrDBJ;
-	spf=pass (imf17.hostedemail.com: domain of 3dbnAaAYKCDgmolYhVaiiafY.Wigfchor-ggepUWe.ila@flex--surenb.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3dbnAaAYKCDgmolYhVaiiafY.Wigfchor-ggepUWe.ila@flex--surenb.bounces.google.com;
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=b5bHZ30D;
+	spf=pass (imf07.hostedemail.com: domain of 3d7nAaAYKCDooqnajXckkcha.Ykihejqt-iigrWYg.knc@flex--surenb.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3d7nAaAYKCDooqnajXckkcha.Ykihejqt-iigrWYg.knc@flex--surenb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757460854;
+	s=arc-20220608; t=1757460857;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=BXSTG2Hw61qjXt22u9sHybV2+YxgWVuc3hF7N60zsf0=;
-	b=7ZLJlnni8Fu8mZ6jmu4iIWcWafOogN7NmMUFqmrrUYJbhcGT+Rx3CSzeewn6YnKGrinPhv
-	9ZH2gq2fR+Skzaqb/tTzOnSed1V1f2UAdeeubvp63eYXoifYEWvPk2tKiXGn6/9BAYFy9s
-	OHWpfzY+6jz7+Jmywg77ssFE+lTObyY=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=mhEcrDBJ;
-	spf=pass (imf17.hostedemail.com: domain of 3dbnAaAYKCDgmolYhVaiiafY.Wigfchor-ggepUWe.ila@flex--surenb.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3dbnAaAYKCDgmolYhVaiiafY.Wigfchor-ggepUWe.ila@flex--surenb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757460854; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=p94KfP38ehFFAQzIc4UYzAxhmkH/aHIfMEPOUg/9po0=;
+	b=Sp5/68C1OY3On3tPki/mg8Rb5lBcxtvGp/TraK2K/3JydIVRXWOzb0Qiy71uhnlsTYjKOZ
+	fZqhS7aZkMzwhmLhzxT2lj66/TkqsSp0FKukTW7kSucf92RiUwCNqp/QvQe88gZIv7iIhZ
+	y/aWagilTI6W4BzZvNpY7HoKWQxalG8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757460857; a=rsa-sha256;
 	cv=none;
-	b=8esPuN91KH2WQ459bR6SuOwUm9wuwsydBWdhgQ7TRXqaJNqAYSptIoED7OLQfmfsQmBiKY
-	cXkWs6CY3IQ7cyeUA6iS/rqxe2X5VLTNH+VCEamPaW8hGMuqVDf+zpbKfVnYIXcrJym49a
-	7CCdmLTC1Tgpl61JwxfB1tCPY4vkazI=
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-24afab6d4a7so128468405ad.1
-        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 16:34:14 -0700 (PDT)
+	b=sqzMe4TgAra6IjVnZyZ8gr5FtN6xlRdBTTbVj4bwtXpL1TMYwUyp42OscrIRO5A9qOHo1U
+	lCxk3/CS+SwLXFXFil7w2wlAslgXE+wiWCzbpekvnADFTAktRCkrVxm4RihjYLH8OQjD19
+	p5Gfhg8DwqJEJf+HNwPiMWKt23P+JIo=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=b5bHZ30D;
+	spf=pass (imf07.hostedemail.com: domain of 3d7nAaAYKCDooqnajXckkcha.Ykihejqt-iigrWYg.knc@flex--surenb.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3d7nAaAYKCDooqnajXckkcha.Ykihejqt-iigrWYg.knc@flex--surenb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-77288e1ce43so6314371b3a.1
+        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 16:34:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757460853; x=1758065653; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=BXSTG2Hw61qjXt22u9sHybV2+YxgWVuc3hF7N60zsf0=;
-        b=mhEcrDBJQTvGK+xfuAOxL7P3ScRBaJUQPVUITrSVPkQ1y1fmIjXshmuMerK1CVZA19
-         K/ktSPnMk1FkVw7P1s8+aIgEWeNsjoUAG3mNEIMT4cBmGvp/j+34Jeo7mS9YTkc3IjAD
-         melTeM9QU561soITtf14kwUKQYLsWrGKHFM7H5tp9SDP0BuRYFBkQvUXUaRdZvm/N5v4
-         IQgMAdx8hmL5tDNcPwkET3AQCrN3qA7UUlfqENWEIfnjifXmMz7im4XyUUg0tXIUxBp9
-         fhJBAl2wK19ec53M3fszovNvVgqmAWCa10F3oo+RbCTq0ikUJSGSloF/LViIrsxF0UrI
-         1aVA==
+        d=google.com; s=20230601; t=1757460856; x=1758065656; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=p94KfP38ehFFAQzIc4UYzAxhmkH/aHIfMEPOUg/9po0=;
+        b=b5bHZ30DivcGbema5ZjiBAkj6NTgWsaCjIyr1DOQ1K8ZcMf/qWcuM3SfxLJE0mTRbt
+         ZsZDsRnumYAVLiJ1IjQT9r7eof+yQ4HmmsHfr8r63m/+83oV60mMfJFWEPuU9QKYZ7GO
+         Yo7aQjIhokNQb5Ly5pINC+zWkxGp5gC0LrVlnI079U924RIdEM2nTNF6ZWc1TkX5Jpm/
+         NWfplnZz4M1eLedz9FU5MNIGMAJnRP6xnuQ28ppZJt9btKvt0McLbEdz2SXwC5+RQyGt
+         YNpzljbACEoO1yZG4eGBZOM7ia7wz4ANbSWYe7ejKj4DM7pECiRbZ/8fdGAdSvwvCddD
+         vSNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757460853; x=1758065653;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=BXSTG2Hw61qjXt22u9sHybV2+YxgWVuc3hF7N60zsf0=;
-        b=L2cH5G8f9CgH+gmK81J8YRhgXRxR9SLUYDfLEhpuYyUieLJwgz49eyDa2EvIcFAKa/
-         aIdqRUWiu1+uiyc9M8erU6ngRbyrd6R5CcpjRZ7dYCHS5UH94LBXh6maQTX4yuoj9Wc8
-         PBVfQVkmAw0kfIbo55DA5TiBS1OptwW9L1+sjDof/ZuHzz5QrdZrCnspkimYnvwFzgJc
-         FK0yE7i5+OJmvI7PfPEpRIy2f8KJ6kjJmAWdRBhyX9tMAH7xCscWVG0lQE2GdsDTLiNt
-         oD1GancVGvtzaI3QxOAJFeBVIp/rCgq9vM4K2QjAlwR/2SHaij/6bL6NqFaHEEJ9Fpd4
-         aD8A==
-X-Forwarded-Encrypted: i=1; AJvYcCUh+zgYtjh7BLTuXhd9HFZhTc/W8ydkOaEEKYlYO+pOEo9/NvWRveRiKCji0nKHZhsjHVylMG5pNw==@kvack.org
-X-Gm-Message-State: AOJu0YzM/yOBbHmklD1B2/PRTJW7vd60zQpOpAs+N1qSvQe4N48eJrTZ
-	RMGQhVmDi+OVQ7YZZUzPi5ybODvxOVYNU/B/F/8WwcCnf6aYt9IaGYobPqrRLHkVuLAMaPSFUqI
-	uGw2Uig==
-X-Google-Smtp-Source: AGHT+IFJgHZa3+zvruFKL+nbXgevHIEGRIktfPiZlMC9mp0yCbO3eiifrGu9e5eBy2AJJ5ymyuaa+Bx3oq4=
-X-Received: from pjyd16.prod.google.com ([2002:a17:90a:dfd0:b0:32d:851f:b1f0])
- (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e848:b0:246:d70e:ea82
- with SMTP id d9443c01a7336-2516ef591e9mr226436865ad.5.1757460853523; Tue, 09
- Sep 2025 16:34:13 -0700 (PDT)
-Date: Tue,  9 Sep 2025 16:34:06 -0700
+        d=1e100.net; s=20230601; t=1757460856; x=1758065656;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=p94KfP38ehFFAQzIc4UYzAxhmkH/aHIfMEPOUg/9po0=;
+        b=V3Sa8EvB7iDaoxxYQKl+XI4b9CNIX2DYX+1XxyLB2ogWI1ja739ZCb62NQ5sZGuqUa
+         3qLShBpF/rhe3DfP94HWQRnJIDj++MB/zPIdk326tpPsYxF+Tk22Ep9Leb8s2aHzkINt
+         Y7vY0pSWXx+Zt4mk9MBiBQ7EBiI5l+CUJefEW3QWUM/8YRXWQFEm9c6f2ycllggoAua8
+         NUUUGRBP/LjT9YWqOkOrOowMv2/dsy81whbMNvED7cApb61sr/ONxPPb531WY8EE9EWV
+         KPXZ6c9W/jP/g+DC4YXccaGuzz891bCij8ie68+TbHH30Eg73s/KB31+lIWcRbfqZOm4
+         RtMA==
+X-Forwarded-Encrypted: i=1; AJvYcCX+q28CSaEUCfEr5LF+qE5xwlA+7BrzzswGCKAaiw1xLKnFjDCZh8LEiUBxSPKLOuUGgCK6ZGTRZA==@kvack.org
+X-Gm-Message-State: AOJu0YwFW4JJl4dgIc3t/yJC9dl13BrZ0Cz3sHCQ1WhLO/0xRitBXLqY
+	0AUcP5AXAmq4MtoHp52D0KfkDTW3OQ4WGHeZLCG3EdAKqpAwf/9vV3qsInYxHowpRj/Hcmb20hJ
+	VTSRJTA==
+X-Google-Smtp-Source: AGHT+IHe9jU/ZXDF3VrMHA2zefxE/BkTlf3fesT6KUXKBfH1fEUS5JMtiAufZ6h2wVl/I0nMlsowMm3ygQk=
+X-Received: from pfbbm11.prod.google.com ([2002:a05:6a00:320b:b0:76e:8d8d:6652])
+ (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3c8f:b0:76b:ec81:bcc9
+ with SMTP id d2e1a72fcca58-7742ddf0f22mr17694356b3a.21.1757460855691; Tue, 09
+ Sep 2025 16:34:15 -0700 (PDT)
+Date: Tue,  9 Sep 2025 16:34:07 -0700
+In-Reply-To: <20250909233409.1013367-1-surenb@google.com>
 Mime-Version: 1.0
+References: <20250909233409.1013367-1-surenb@google.com>
 X-Mailer: git-send-email 2.51.0.384.g4c02a37b29-goog
-Message-ID: <20250909233409.1013367-1-surenb@google.com>
-Subject: [PATCH 0/3] Minor fixes for memory allocation profiling
+Message-ID: <20250909233409.1013367-2-surenb@google.com>
+Subject: [PATCH 1/3] alloc_tag: use release_pages() in the cleanup path
 From: Suren Baghdasaryan <surenb@google.com>
 To: akpm@linux-foundation.org
 Cc: kent.overstreet@linux.dev, vbabka@suse.cz, mhocko@suse.com, 
@@ -93,14 +96,14 @@ Cc: kent.overstreet@linux.dev, vbabka@suse.cz, mhocko@suse.com,
 	pasha.tatashin@soleen.com, souravpanda@google.com, surenb@google.com, 
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: D6A8B4000D
-X-Rspamd-Server: rspam05
-X-Stat-Signature: xcub74bi94r451i1qn3gxpgtzodo4hws
+X-Stat-Signature: jranzwzpn7ea1jsym81czgc4ek9yft58
 X-Rspam-User: 
-X-HE-Tag: 1757460854-254784
-X-HE-Meta: U2FsdGVkX1/qEZ8AfsADAM20jKmhLK+COPKDX30DjbUqJVwR10zfjrPOV+0qwQRP0eoScovwsjj+P1DfqSFvnMvvJh80hE89isWqngQudBf/C0fr6mKpwirfhohHL2yRxAvxCwHG/jqVUuGsRFo8HqrM744Ix5gyrEhf/H3yO2+79jHmYaBl8LjNRcHvZ4KRr1AUVXEoesyYFWroGEjUyGpV6XEmtsnI2iiwyBzcL2sk2ikeys8b3bOfiQzl1nTxFz94mVZ5/Igyfa68TaN4ToL6ZndhEtJDtsDWMIPI9xmqwNdvQsxJEbsBAwf0AcwEvyK31KjIJFSQjm4x5Qg3Nrjoo7O3rhVZq0kNKtUrQCbKTbNyzuC3ZOJbJ676l0sgqGZ2idOb48i/775Z239pH9Cv1IRQCRFOlx4z45Jr7h60UVaPhB/jlYjolC0WINPw7uIeyFqs5PflJjZdRcV6bqahJUwjOc8X/ojMKfahZeFkH8afueaiJlfaB8+zGnCBW8oc0qUmPndZOJuS9Xfexvfza1vva2DIlHWFm2LiWPTAFB24+0UQfkTJF0Ud7S5QdcJohwpqb4srUfIwizLhFY4JeV27567dv2P5q60MJafiaiiFmGUxBgWGJG02+XeKTfK4Cb5HNYjDLMy9fduyURFhKj6O2wTsjFURCcZlEgqULQXzLv7R8u4t1ngjnxji/IRRfaCmjpjlSPd8Hf7u/YySE8DSP97mihkX5/IFYtvnM7H0hkE+M4uFoefIhrNzg5etswqrWInM4jy/iCxkDDT4mvUuqCBt73gDmhjccRY7lYqGO9fHZU0u2pnNqEdyerXj4fALF8wZQE0MQfRQNjxlVDR4WciThdEkC85uFyZRJGTzvExUrTIvMghQCzilK1pJAkwjY1QWk7nKPAYVO+0MWTOfiVxHAs3q904YNnR86zTJklDKN6W19BzBVTSrOvBRDAwPK4kh3GKPoE2
- jSjfYsTC
- g+jm/eOAbUmA+MfLqfcd+0hZU5LcYOJHDhqG5CTeRk/uFj4VHmkD7t7LPBPLVR68JCO/C5+mutfYssLWkMT6eipbRldGsCRq7LIyIRX+y49Baqms1Nypf47G4jI8jIPA8RcBzNgamEZiXqUP05+vBGI5f8cAV7aK2d8mZu8J5irjz93a13Ili/Pi1SNtYmhn1goCaRjscwK6ZxCqM+azzM7ONMZKNM6BOBRorfAX3jryaCiVj0wVwF775chCgXryQvKP3pT8X2jXO4M+k0BoH2d6N7QH92mFDmJ27HUzemxGlxUSQsn9POva7bTKYIpzpiGmcMYgyYQUHwQrQgVIlOtp3ycNFNa1D+/SnVMvECM71Qq+22vgoWKtmKXFunnfgRWmneSM7rChp3QyZM4ICosMZ71MXzfL3QDIDa+nxe0qkdrnDBBr5/rmipoTyBKzX0E9xJkg+GV2hL1HFlAxIVsE1q4c56G9DWzLmcex4YYzlMqsMVtdnQnhphQG9G5cMKGLc/S0vCRTF9sFqz2l18n8/Hk6XYEGwsZ9YzouwBrzkSjxkqFnqVXu99ySsmWRFzdlCzAzW5aYU6HU=
+X-Rspamd-Queue-Id: 1259240005
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1757460856-995366
+X-HE-Meta: U2FsdGVkX18cPQ7hlw2jItLFIhF2C3cJeJD+xHpY/i3r/1uLfg8s9D4EqeP2P+raBgWvpRPehqoiN0louF/hVt1G84xTjqdQMWjmOLiI368URljt5jIa3xGXHl7SsHvbp1qOZVPabfx/wHeDDXXTDs3qnSX8eSrfRy87lBDVEadsFuZvYdSwnf+OtobGeH+UOLf/Invtiv8pvR4wvfycCgT4ZRqv9UBHLtCNHi+Ay+/G4sFlK/K+Z+QvPhkCaYl2xXEidR7Lm27meodw1MoGUR3U6Jv0wDPqPx6QyTkcTYYFyPPZjkQtbV2eFnb1Dxdq4J9Zp7OdwPVwmdYXR0DrK51KecedYPOdkbWIdez1LLki70UYPWrJKO4ZlZWdh1uZTe3ARVoqRO59Nl5RifqDTEDWHF765N16vgrNiwiOMSlLPYwjHWlAjnS/UgfTjq7evrqrJX+eUjnL+sELV7eY2D/iw9g9fMW5M/8dejS8YGu2TnstcFDlFEDsKG25WQH2yqkzi9pKhaqyalV+VVXQIapPalkS6gH+vErtYk8bmb3Z7pwAZDtmgYwOFt0FA8YMWWJmVPr8bYznqP70+BHqvI9D19wig6EyqarNAqMW/CFZ2XbJeZy/tdCK4wuwxP2zH90H9XX+Bt/wznDeEmwOjhd87Ax6L5ltszreYEY5pcWXhHuzg5DG9Xo7nfn33yX1ZgvD2FTLERVZVRMBMQhnbCXysKYCiGFpgTQ1VIiZyBN8+WL+qQGsjmrXn2Q7a53dT1s3yTNicLytdhws+q8lcivM++qZb/r1oXvRL8AvbiaTcEYNBqr7f523RwDDuRMbCc/tPLFx4BEStLtuO4vFd7njgEyoJDqGN9irhT9mYhM9lz7BMYDtMGwNOZiZXLdr7VXhOvXbSZ+ch1R2jkYyXOcECRlAuLBbnIwa+JPUXLWCayt39NSMKAdg9i/JJs5VD0QhVFQ680QWi5R4Y5v
+ 5tdIRXuV
+ xK11pTUebv2xDF2ypQ7khSAsL1ROwZAeNZCeviabbF4tznofXduXsVAYcmZxmPFNbXST6qxZt5fIgt9/bh3xAx/y+2x7UWj1+M/vZBzc7MJipYKDb0unT2k4at68bnqrJ4R8IjDCk3jLmquXGg7EdfAhoJXiMcokyhfvejY7sGiVNrGZN/bo1GJ7sxvxYySJfvuiQ5R1UvvvFHa9RSAEOb+Os2c5vAJk6fkQuQpGuFkMFE5ylAeWtzE6Nso5bx2w4sShP4HaHfU16J4T7WX2RrCa3mjigSkoA5GJftdO+P0cYfENfE3Lw0jkXKyyEAd/AJHs2hSbysaEZioa64fKwO7rh66jWSBbflZrzhkmTGEhp8dOy/dCaIhjCSixzPgL/GfPrn4YKKaqRxTVRoZMoQNMrQdTuqITai7ocWjMzf9IUIXguPRjf7LfmZ1X82o6gssUskFELYawVVaycT4HmJSJ7mgpUOTVkMz2keB8ikS/KgUTB5iqbGX+dnHhc+IYRHhvj+xFmAIXV/iYYTWDJ3ULswDogSX7TZox3DArC523d0N9awTArvop/vQ73eFeqWpbMBeKdbeJ9Htl2VRjciN5bOOT+q8+dGXYh+Xs2TKjTgJ0R9oODq9dRUjOIQs7mdu5iRC+FtOGVTZs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,22 +112,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Over the last couple months I gathered a few reports of minor issues
-in memory allocation profiling which are addressed in this patchset.
+When bulk-freeing an array of pages use release_pages() instead of freeing
+them page-by-page:
 
-Patchset is based on mm-new.
+Suggested-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+---
+ lib/alloc_tag.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-Suren Baghdasaryan (3):
-  alloc_tag: use release_pages() in the cleanup path
-  alloc_tag: prevent enabling memory profiling if it was shut down
-  alloc_tag: avoid warnings when freeing non-compound "tail" pages
-
- lib/alloc_tag.c | 17 ++++++++++++++---
- mm/page_alloc.c |  9 ++++++++-
- 2 files changed, 22 insertions(+), 4 deletions(-)
-
-
-base-commit: f4e8f46973fe0c0f579944a37e96ba9efbe00cca
+diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
+index e9b33848700a..95688c4cba7a 100644
+--- a/lib/alloc_tag.c
++++ b/lib/alloc_tag.c
+@@ -438,9 +438,10 @@ static int vm_module_tags_populate(void)
+ 		if (nr < more_pages ||
+ 		    vmap_pages_range(phys_end, phys_end + (nr << PAGE_SHIFT), PAGE_KERNEL,
+ 				     next_page, PAGE_SHIFT) < 0) {
++			release_pages_arg arg = { .pages = next_page };
++
+ 			/* Clean up and error out */
+-			for (int i = 0; i < nr; i++)
+-				__free_page(next_page[i]);
++			release_pages(arg, nr);
+ 			return -ENOMEM;
+ 		}
+ 
 -- 
 2.51.0.384.g4c02a37b29-goog
 
