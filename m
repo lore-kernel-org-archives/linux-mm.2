@@ -4,114 +4,150 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99706CA0FED
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 21:10:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C150CA0FED
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 21:24:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B495F8E0008; Tue,  9 Sep 2025 17:10:24 -0400 (EDT)
+	id 8D1988E0009; Tue,  9 Sep 2025 17:24:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AFACC8E0003; Tue,  9 Sep 2025 17:10:24 -0400 (EDT)
+	id 882548E0003; Tue,  9 Sep 2025 17:24:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C17B8E0008; Tue,  9 Sep 2025 17:10:24 -0400 (EDT)
+	id 749548E0009; Tue,  9 Sep 2025 17:24:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 820EB8E0003
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 17:10:24 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E3B7E85B16
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 21:10:23 +0000 (UTC)
-X-FDA: 83870955126.19.A63B44B
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	by imf01.hostedemail.com (Postfix) with ESMTP id A389E40007
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 21:10:21 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=paul-moore.com header.s=google header.b=fgAvXLeD;
-	spf=pass (imf01.hostedemail.com: domain of paul@paul-moore.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=paul@paul-moore.com;
-	dmarc=pass (policy=none) header.from=paul-moore.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 58C3D8E0003
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 17:24:51 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E6B9513B4E8
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 21:24:50 +0000 (UTC)
+X-FDA: 83870991540.14.9293731
+Received: from fout-b3-smtp.messagingengine.com (fout-b3-smtp.messagingengine.com [202.12.124.146])
+	by imf17.hostedemail.com (Postfix) with ESMTP id E13E440009
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 21:24:48 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm3 header.b=S5wTqYtM;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=CnNoO4VJ;
+	spf=pass (imf17.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.146 as permitted sender) smtp.mailfrom=arnd@arndb.de;
+	dmarc=pass (policy=none) header.from=arndb.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757452222;
+	s=arc-20220608; t=1757453089;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/2cG/mK5wqDybUQGFQEkWBC5lBJfTdv6AvrW8OgR6q8=;
-	b=lmwF7v9gxIeVHXDx4nBKS4ZMsFShwE5NW5ZOenCGRcy+faTHWy5tiyNy2dKdYfKnvD0lNt
-	aQglVjIJxGUXo4ZACUKEluKIJnFnJ4j4HMqUCfK3X0QHRD4KDtVpDZ0+6ZwK4Nh7iJHvJd
-	WAYXyTZjCfQlsijekvvQEI8t7F+V9nc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757452222; a=rsa-sha256;
-	cv=none;
-	b=2tzF7u1zVYcBm3opfNOiQimJybinxGxDOB35W5wNCMab2F/jUiwn2UvHkKNH5OsUCXCC93
-	loWSjIh1PzLNUvDW4aM8uyM8we/is3fNpf02D3rLremIXYjcsTKOHVBATZK/JNP2XIrseo
-	91EUTGhFd3IwMpe8xy7XWLKCAZYDWQY=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=KmAXv5RN4xzWEkkqE7xhCId8sGR0ZDNZp4Q8OwYi4mM=;
+	b=ObzrC4Buhz2FiodtXj21KYW89FtB2Nvn0i5mc3u2O29qtKXu/+Yh1zBgvpv0o8YwfDwJOK
+	7qb9TtpccA06ZzszqqLwNVUhdA/yu7IhMJCjIDN4kbMuCaVWfKh0xrH0gF92PgNAOpc5b2
+	5XIvWRtRqs1oyTyub//gQGkLpy6kr4c=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=paul-moore.com header.s=google header.b=fgAvXLeD;
-	spf=pass (imf01.hostedemail.com: domain of paul@paul-moore.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=paul@paul-moore.com;
-	dmarc=pass (policy=none) header.from=paul-moore.com
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-32da35469f7so1253381a91.1
-        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 14:10:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1757452220; x=1758057020; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/2cG/mK5wqDybUQGFQEkWBC5lBJfTdv6AvrW8OgR6q8=;
-        b=fgAvXLeDGrUeMkVi5r75yJB1J5TEp+iS2X53fpnwQeD6celpYRqxBsRm136h/ZAQic
-         FbnYznuYiIQYHs2nvTQUs8SL+YtWpv4xGKVCzvSSxebAHxuYHZEVy+JRutehp4jrRSAt
-         IBoS9/IOrDCCiPt1yZuUYyjTYTUl+B5DV+0WPdjRUCOG62YUis7RUE3IajJArWx+Hso1
-         bNVl4hZJKTMC+9f0NmwjTMlWlqRIEF2dxSmLVUCJw1oLi7BNpvrCWOkneSkv8QKHUT5J
-         w7hfBFECr2rlTH7WiyUX3t/RRi+qBXMAiR73XnSa5Q5otdMQ1vA8/uvA1gBRYtlIQcV0
-         3Jkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757452220; x=1758057020;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/2cG/mK5wqDybUQGFQEkWBC5lBJfTdv6AvrW8OgR6q8=;
-        b=igi8kMmrse3NlkE2eyUqxhWsLx1v9whUnV7kR8ZJj+R5MIIYgDqVAiAujHxLx+Acj6
-         DYOVCmuSYxsavrGRh3ec5RCSqvSOLjMPi7ZaWyv3uQJEduj7zzHNCK2D1btJQhfaCVBS
-         B+UUVXEsorfzXRko3yjUZQslXBpMHC0RT8WbCfJ1Sx6Yfx1c/gWa0km4AW3QT8Qa/Rm1
-         CpfevjeViwxtbUQ6CHTWQWtbkZvKlXkpcTQQRtzG4Kkczj9H++CoeUOpQB9Ofcpe2TEk
-         VcmKi6B14qKIzznagzz2gyMB+eEIUPq0Wzq1qckBy80IANXK4GsOwlVi7FUWedWcw849
-         ff3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXfDMfcZA5MKT8IObyWhEqLAhIitnUt6W/Vb5IcQ45HPs4p1KyTZu/4iNq9Kvwx7/gBGuCObi5OuQ==@kvack.org
-X-Gm-Message-State: AOJu0YzNa2VSRJiRWg514COoU+tbBY2cMVRHEDjQD13Ol4YNZsIg1eV3
-	pfWi51oFY4Aj2YyJSNORn93hY7PVIh9WY57TQWwekfdBsG0clfqC0LTU+66NKBu1SeCfCysCnCO
-	Ue6CY4sTK+UMZp/lp1jsl+hT8R2tLAQ+CH5yAwwJs
-X-Gm-Gg: ASbGnctMyjqP1G1g1VyAToFhjmZowRXr+NnRofndI9IBFhTlWJeqFVwtEXTeQY6e08S
-	jdTVCklNUCEkvZBsPrb+j7UBbCacBuW9e1J5/zGX9Nga3OzA4G/owtPXlW2tB2Fx9LZw6eE0VPC
-	MZKoFyDzIHSldElv/ZxEcz6HhSViDNiD1ay8cz5K0Fb6iPJmC9OGyPo3LZwpS4R/xmHOX6aF6Qd
-	w90JCo=
-X-Google-Smtp-Source: AGHT+IFG7w3FOCnO7S8iIokZgAsSINZsrpiz3Ys96zLr6kCQRn865YPB71KK71zIy8iQMBZAebWvkkV/MJhLqntWdHY=
-X-Received: by 2002:a17:90b:3c0f:b0:329:f408:1070 with SMTP id
- 98e67ed59e1d1-32d43fcfd9emr20011740a91.33.1757452220060; Tue, 09 Sep 2025
- 14:10:20 -0700 (PDT)
+	imf17.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm3 header.b=S5wTqYtM;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=CnNoO4VJ;
+	spf=pass (imf17.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.146 as permitted sender) smtp.mailfrom=arnd@arndb.de;
+	dmarc=pass (policy=none) header.from=arndb.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757453089; a=rsa-sha256;
+	cv=none;
+	b=sJYJHw7x++i2z0vlQAkqnzN8F+R277LLSlsqH1Xg7s0UlmxpWv5txinTedsNW6BPkg/OVR
+	d9iG7T9L/ZyNoLcQ9/NbJL7kvzwcyGP9YvpvKS/5bkUA0+x2Zncq9zxZP13IsY0hJQMyc7
+	DiSPfjVLJm9f7/9AGdJKswKleKgnhuA=
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfout.stl.internal (Postfix) with ESMTP id 535E01D0009D;
+	Tue,  9 Sep 2025 17:24:47 -0400 (EDT)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-05.internal (MEProxy); Tue, 09 Sep 2025 17:24:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:message-id:mime-version:reply-to
+	:subject:subject:to:to; s=fm3; t=1757453087; x=1757539487; bh=Km
+	AXv5RN4xzWEkkqE7xhCId8sGR0ZDNZp4Q8OwYi4mM=; b=S5wTqYtMjI5GP+ybjz
+	l++URQMVSnvXfm2LVkJwzvT9iWvhlgeNQJIO1R6oZKi2eMjeXdMwltmibDshd7LK
+	T6Hk20+klGPnK9s5abxIINZ/10rB4VuCvLCsjYTDRmdIQcIrGfyp86iMa2X8hffD
+	6BuMe+NT08tZ/eMBVdj1RbSkp3ce+f6jeZKBMwCS0W1Fvo1lV8HKa1j0mdnsGV/I
+	ueKVQHFzmMvq9kZHcCgDoHRKhcutvXF/cnrHqY94Uw25zgRfvEVli4IkNbDnWNl0
+	ZlJM2Fnc0OylwbwC0Qt2Y9VmI6AUTL7VBGHhaizOOrpy051Wr7SaQ9p1ar7gV0iZ
+	a8iw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
+	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm1; t=1757453087; x=1757539487; bh=KmAXv5RN4xzWEkkqE7xhCId8sGR0
+	ZDNZp4Q8OwYi4mM=; b=CnNoO4VJGS6ZHP/Ka7rEdezOyzdrHY8fuAWzu8X37tr6
+	IHHAlPeLFzVY2iuwtEv+RYU3H3SJPMzMETnB+n0JEFhBmGd1zQfI74HQ9WTaPxCV
+	FMKzQDPDf02PjHjCallACsg86j/oJfh/85r7CCDSlRLBBFiKVN29hQBM9SbXJQTe
+	aYS0nyf7cYv8b9R8g8qhf/1kk1gqOgiKmRn6dNL6z35Y9TpuYvrkOIvbPBanx8Xz
+	7Mu9euZ2ULJgmpY4oMyJT3UtflNwnpZ7DvpFKF2SRsU3rpLS6nMJ05mMKsYyTA+b
+	OqRoGf62l2o4h5lDE02G3V1qjkCH6mMBRZCiMUoR4Q==
+X-ME-Sender: <xms:HZvAaOk80-aIzLlc88R-gJ6Dbsr6p-CSisCWsOKNXn-4RU3c_vM0lg>
+    <xme:HZvAaF1hbI34vibTWFPzSWGi4ceFSikwvEhmxaMdzrw7BzZ43MRg_7mxP9P9k_V8R
+    MpoIDHe3Q2LTQ-Fo9g>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvudeglecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefoggffhffvvefkufgtgfesthejredtredttdenucfhrhhomhepfdetrhhnugcuuegv
+    rhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrhhnpe
+    eggeduleellefhteegvdetiefgffejtdfhtdejgfetveekheegtdejfefgteevgfenucff
+    ohhmrghinhepshgthhgvugdrtghomhdphihouhhtuhgsvgdrtghomhdplhifnhdrnhgvth
+    dpkhgvrhhnvghlrdhorhhgpdhlphgtrdgvvhgvnhhtshenucevlhhushhtvghrufhiiigv
+    pedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggvpdhnsg
+    gprhgtphhtthhopedvkedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheptghhvghs
+    thgvrhdrrgdruhhnrghlsegrrhhinhgtledrtghomhdprhgtphhtthhopegthhhrihhsth
+    hophhhvgdrlhgvrhhohiestghsghhrohhuphdrvghupdhrtghpthhtoheprghnughrvggr
+    shesghgrihhslhgvrhdrtghomhdprhgtphhtthhopehgvggvrhhtodhrvghnvghsrghsse
+    hglhhiuggvrhdrsggvpdhrtghpthhtoheprghlvgigrghnuggvrhdrshhvvghrughlihhn
+    sehgmhgrihhlrdgtohhmpdhrtghpthhtohepshgvrhhgihhordhprghrrggtuhgvlhhloh
+    hssehgmhgrihhlrdgtohhmpdhrtghpthhtohepshhurhgvnhgssehgohhoghhlvgdrtgho
+    mhdprhgtphhtthhopeifihhllhihsehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtoh
+    epihhrrgdrfigvihhnhiesihhnthgvlhdrtghomh
+X-ME-Proxy: <xmx:HZvAaFgoo_DfPwniM_Ba_NRbjr-NAjUpEBl2hgLAezwds8DkZdW4qA>
+    <xmx:HZvAaE6lPLn2-QRvMEsIj-X5mf9tu625xuDInoNOznW8W6Zswp5Y8w>
+    <xmx:HZvAaGBWRtHuGb-d6P9akzthHK2lFP4CLOwsn4ylVI-r07KO_rit4Q>
+    <xmx:HZvAaBRl4yfkgjX-QCNs9pE-_5-4j1CMwgBapEaDS1idWbtZYs0nSg>
+    <xmx:H5vAaB_k0psbdKb-XOux5x39l6C7CTGwSMVHGHMsh5hVdXcIdz-BvKYw>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 171AC700065; Tue,  9 Sep 2025 17:24:45 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 MIME-Version: 1.0
-References: <20250908013419.4186627-1-tweek@google.com> <CAEjxPJ5q0eriGjo1tdfN+pzBBN5OeyfMaYp_sNQcOg-rDaXVCA@mail.gmail.com>
-In-Reply-To: <CAEjxPJ5q0eriGjo1tdfN+pzBBN5OeyfMaYp_sNQcOg-rDaXVCA@mail.gmail.com>
-From: Paul Moore <paul@paul-moore.com>
-Date: Tue, 9 Sep 2025 17:10:08 -0400
-X-Gm-Features: Ac12FXwWb3SOwQ7VnHVntpJWLHK5Nv99C1sNZTrun4dRgTex4G1DZb8W4i4WZ_Q
-Message-ID: <CAHC9VhR1pEFYzSFaqqWsU8C6vDaH_E8uZZ5g=KyK6TJvA7a8MQ@mail.gmail.com>
-Subject: Re: [PATCH v2] memfd,selinux: call security_inode_init_security_anon
-To: Stephen Smalley <stephen.smalley.work@gmail.com>
-Cc: =?UTF-8?Q?Thi=C3=A9baud_Weksteen?= <tweek@google.com>, 
-	James Morris <jmorris@namei.org>, Hugh Dickins <hughd@google.com>, 
-	Jeff Vander Stoep <jeffv@google.com>, Nick Kralevich <nnk@google.com>, Jeff Xu <jeffxu@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Isaac Manjarres <isaacmanjarres@google.com>, 
-	linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	selinux@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 513fm1kb6ugapqm4nzkx4t31c5mqdtzh
-X-Rspamd-Queue-Id: A389E40007
+X-ThreadId: AmcCJOTBQ5ho
+Date: Tue, 09 Sep 2025 23:23:37 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: ksummit@lists.linux.dev
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
+ linux-mm@kvack.org, imx@lists.linux.dev,
+ "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+ "Richard Weinberger" <richard@nod.at>,
+ "Lucas Stach" <l.stach@pengutronix.de>,
+ "Linus Walleij" <linus.walleij@linaro.org>,
+ "Geert Uytterhoeven" <geert+renesas@glider.be>,
+ "Ankur Arora" <ankur.a.arora@oracle.com>,
+ "David Hildenbrand" <david@redhat.com>,
+ "Mike Rapoport" <rppt@kernel.org>,
+ "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
+ "Matthew Wilcox" <willy@infradead.org>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ "Vlastimil Babka" <vbabka@suse.cz>,
+ "Suren Baghdasaryan" <surenb@google.com>,
+ "Ira Weiny" <ira.weiny@intel.com>, "Nishanth Menon" <nm@ti.com>,
+ =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
+ "Alexander Sverdlin" <alexander.sverdlin@gmail.com>,
+ "Chester A. Unal" <chester.a.unal@arinc9.com>,
+ "Sergio Paracuellos" <sergio.paracuellos@gmail.com>,
+ "Andreas Larsson" <andreas@gaisler.com>
+Message-Id: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
+Subject: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: E13E440009
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1757452221-576940
-X-HE-Meta: U2FsdGVkX19b2SavEKd/OAeAkfTEuUJQt4SQyccKSE41E5ACKrtoVp3TAFlfG4KLtug0RvtfbnjDNiTLOYx3GLTdARDHIeaF6ETHrh5AaRetsr621IJSZKYoKZQFy6ok2ZGJTpUE4pzLVueITQKYQK6nN7oqPF/ElKBtMD3LYwlAMpvm68RqVqBWt1e7ut8UXLcbeYRvvnsHwbt46JuMR2MxIvKpmOKEnsRaqmGUbGxdDsKUBr5/54quyBeKL3bIpQJ30AECd/qQTkSSapCtgA3alCh7fMt5K2FWbtzHBXTtt1UF1ZCZAjDKhwbF6l4JJ0RC91qjkTOindR1Vtdo0V7XhN3MAYHS1O4FvGbJrUrgjHhGI+YNpL6XxY9FIbwb2mClaE3BY6iTDE4eSY6oVKJdTQRU/ORc6HLNkYthNZigiG51v5TEgzOeSdRHEwqA+iAlUkQQGtat6c+2sMT5qwUqIr2t7xyl6LjkpDge2ZOXeUlqKVm3iKEMKO6g/Z1lVBcaV7trNN0vk5Dny99rZM3CRMHbVkVM7345Cbb6jMLxOpBikYyXzzdIVo/kQppImmeqWgF9WfoUFRv2ar7Vy2Mbf0onJC9s1Y+jqIvVyVqx4iw2mMswSBYNiPZuZoGIShWfuNxkIPRUn7pQkh987hSxrhrJ+X09qtpOGGDFN5WOql2pECNz7KU80zr2+dTHL7C2WQleaq/dCy7t/Zi0QTEyTU+taxq7q++aoHJLCFEN1EZgDl2l04HEv8E+6exNcKdMAcSCNJ7VIRj7dxTWVptGnyfj5rVA3sDY0ay2f3mUhgjZTQPEnDHOo0Kr0fB2PxdqJrl5xzSNetWfHVGxDqUOCwGFaQHgahVRn3mLXLA7g7JQRs8GPfC/judwi/n2Arx4Bl99YRvCLbsrZSuHq+z5jKUi5SyCyCn3QszEvS4U9rkfCz3LhQAyl+Vn71Wrha0saiW8Sr5IAwQChMI
- X1G2x1Ch
- 7vt88DB8hgRbrbvf8zAtgTEsUQTKpnMJcbhOmI/AmzSKrJD3XzH8o6MRspUo5TJ9r/WwWMxKZO0BOcL6LbyLRzN7Qyu6mwacdq+ZCJEgSHllz5+Cha8YXa15uB5OrSI8GgyxnN2r4RqRFt2E6F4zT85cq6sOzTDqzJbfM5xt3r57Q+EikVJrxA0p2o/3KRVDubEExg/RAtHmVbDKHRbYQbDyh7KS60QISxUlOmBQuUFsqGA7d/adzujQeOR6CXEQ5SUHcsIpgRlyltKkZivCIBuRywM0VgXd6K4YvBQZTtb47MygVUBurgG7IXRKlVnSd+JJr2Ws/rMTs8KwCAwUUlacf2/n/5JrGx1JwQCjEVKdRaHYIkAsCDfRg6SLHWSn/u2DwYH7DvDNfT9Ina0E1UUBhVtpIUNcL9Umz6g4qZ6P3q80sIvMW8Dv4KJQShGbavFvbz9F1vbh27QYyx40fdRV/aw==
+X-Rspamd-Server: rspam07
+X-Stat-Signature: y37w4axe8pydhwz5pr88aswe53xjf8uc
+X-HE-Tag: 1757453088-156030
+X-HE-Meta: U2FsdGVkX18/Jv0zU81IDm15cq/rVJfBTT0Td0kk81ny2E/+GEnUuGpX85ZsXbmwjZmza/GwAoqkDUAVxJnzSIb2UMJ6+A4QCZD+sGiyN2mevEgQHR8CmnP01jRZb9HNy/N2wYFQA8zClOXw4hx4rzzoQvRdluxO8RPRU4lllXV4KaYQktC+ZCh6SeJ4gcJxvkYWiNTvUJasyiVHg3JywFmeVoUe1dagREU902ftHPHzjMIy0Ygqmx8fRWnlji5egid8dWzEsodQszwjz3MqMJhXPHJHuNLfuRRgwrzxV4wB5YYYt8EGRZuqn8Y7goLSB/tz4A6zuu9FQCZ2ZgO+/4i/9nWE5GQIKcxF6YHND+ArAQKvJC69/f67VQngtRgsdSZqYZwU+VQkQnVMO65cxptljsfjiUhrk9/WVT4YqMa5PgB7gRDyPuz2i+bkEOLW+9a7+W4BwyZ5du6be2eSQ2agIqui8k9ZLT9/YPVUm+P+mcRdWw2xDXEYL2A7PPOQtkAFPqkS4u/oi8OfOL3dsvyAlKuoRiUII7hWJ1MdxRdlzLM9SRpUNl6iNurao/4NejpedZqG4psOweGVYgo405F2o2rNSUkL6TFeCdRPxTyaRKp6D54w7m5E5jyN7PebCQ5+dfkX0YNf248wT27g9WShUz2CwsofA3RB1vIFUKtQG87dmjQ/VSvwJUQ6VWHRMausdPo2eco3V+pBNf1kzmRW/t/uoWSR+ebnvKXCLQM6W2Gltn+/iZdsspk1Id1j4dY3k47eNE+Cr1pqqxySTomaO0H8j4GIh7aSmyGpX/7CRXG8GUgUQBJvRkEuDhT0aqi8hviKdkwKYtUH2xnDHAGzBoUtPLFmOZMI5Dkf54BsI4zci4lETrNoLiPEjs2GsZo3MkWFSCPlQKLM4R3MNonulacGDjfTYUds2zP2394tdf/o6dh4nQSG6KPoXzuUWjPTANVkdVKkBQlj8H3
+ MdKaoHVk
+ dai74UuAnJi53dtoAPVIoqMiJ5TrVYpgZM16C8l+55aeUaj5qUaV0974bszAMkh6oesADQENeRSDX2zqSxoTxZR9KuqjXuIVxtRZPhEMjP0W4G4shUnLTX4rwEIkbewFQ5PQxE1Xy4xUop3S+blIMlJ8WPEpeY0Q++zp6s9aU7+9EX1N1xOqfnaaCb3j5W72goXvVleP4Ofsre1yj7+bo6SqiCZ6vZiNbLFN2syDna2PyhG88dPXlYkSgi3VdY0mJOpNJ+6e+swdbe1Bq0CigxxLNllZGYc4HTBYMsqCyq3Q6A8vJgmv69jQCPqjru4hTpYZvFPQMSfy9mwspVEJqobDaslKabye5vVOziFrnckk/Sjpfv+P5OF6P5pHnfBaZkUhUNhakc6O2ZuWjIGWaaCr4HKboFluUe2vSNpY1nOF9zj3DygwntJ90Y3xSRrCq/yhx2UPpxDz5HK2Mmtkby57ITfNUqAI+JL+8sjvNoM47kvcci6M1Q6OnbKuFfpS7rZPkOBihLHLlQDmuIzvLm89up7zSsToRjc7ed9/x4Y7RFmFJ5XtOaLnPJEXjybwJY5ltP5am8it2I/KRpCvX4X98ij/L6ffCSB4VyZgGXWtF/FFNV/ty30B2giJVTQZf5197qQ2yk+4l8GhM4c2DhTGO7uFE9aNENi+jmyXpEN+ZAoQHI2FAfwJYPA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,109 +156,161 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 8, 2025 at 12:32=E2=80=AFPM Stephen Smalley
-<stephen.smalley.work@gmail.com> wrote:
-> On Sun, Sep 7, 2025 at 9:34=E2=80=AFPM Thi=C3=A9baud Weksteen <tweek@goog=
-le.com> wrote:
-> >
-> > Prior to this change, no security hooks were called at the creation of =
-a
-> > memfd file. It means that, for SELinux as an example, it will receive
-> > the default type of the filesystem that backs the in-memory inode. In
-> > most cases, that would be tmpfs, but if MFD_HUGETLB is passed, it will
-> > be hugetlbfs. Both can be considered implementation details of memfd.
-> >
-> > It also means that it is not possible to differentiate between a file
-> > coming from memfd_create and a file coming from a standard tmpfs mount
-> > point.
-> >
-> > Additionally, no permission is validated at creation, which differs fro=
-m
-> > the similar memfd_secret syscall.
-> >
-> > Call security_inode_init_security_anon during creation. This ensures
-> > that the file is setup similarly to other anonymous inodes. On SELinux,
-> > it means that the file will receive the security context of its task.
-> >
-> > The ability to limit fexecve on memfd has been of interest to avoid
-> > potential pitfalls where /proc/self/exe or similar would be executed
-> > [1][2]. Reuse the "execute_no_trans" and "entrypoint" access vectors,
-> > similarly to the file class. These access vectors may not make sense fo=
-r
-> > the existing "anon_inode" class. Therefore, define and assign a new
-> > class "memfd_file" to support such access vectors.
-> >
-> > Guard these changes behind a new policy capability named "memfd_class".
-> >
-> > [1] https://crbug.com/1305267
-> > [2] https://lore.kernel.org/lkml/20221215001205.51969-1-jeffxu@google.c=
-om/
-> >
-> > Signed-off-by: Thi=C3=A9baud Weksteen <tweek@google.com>
-> > Acked-by: Stephen Smalley <stephen.smalley.work@gmail.com>
-> > Tested-by: Stephen Smalley <stephen.smalley.work@gmail.com>
-> > ---
-> > Changes since v1:
-> > - Move test of class earlier in selinux_bprm_creds_for_exec
-> > - Remove duplicate call to security_transition_sid
-> >
-> > Changes since RFC:
-> > - Remove enum argument, simply compare the anon inode name
-> > - Introduce a policy capability for compatility
-> > - Add validation of class in selinux_bprm_creds_for_exec
-> >
-> >  include/linux/memfd.h                      |  2 ++
-> >  mm/memfd.c                                 | 14 ++++++++++--
-> >  security/selinux/hooks.c                   | 26 +++++++++++++++++-----
-> >  security/selinux/include/classmap.h        |  2 ++
-> >  security/selinux/include/policycap.h       |  1 +
-> >  security/selinux/include/policycap_names.h |  1 +
-> >  security/selinux/include/security.h        |  5 +++++
-> >  7 files changed, 44 insertions(+), 7 deletions(-)
-> >
->
-> > diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-> > index c95a5874bf7d..6adf2f393ed9 100644
-> > --- a/security/selinux/hooks.c
-> > +++ b/security/selinux/hooks.c
-> > @@ -2315,6 +2316,9 @@ static int selinux_bprm_creds_for_exec(struct lin=
-ux_binprm *bprm)
-> >         new_tsec =3D selinux_cred(bprm->cred);
-> >         isec =3D inode_security(inode);
-> >
-> > +       if (isec->sclass !=3D SECCLASS_FILE && isec->sclass !=3D SECCLA=
-SS_MEMFD_FILE)
-> > +               return -EPERM;
-> > +
->
-> Sorry, I should have mentioned this earlier, but usually we try to
-> avoid triggering silent denials from SELinux since it provides no hint
-> to the user as to what went wrong or how to resolve.
+High memory is one of the least popular features of the Linux kernel.
+Added in 1999 for linux-2.3.16 to support large x86 machines, there
+are very few systems that still need it. I talked about about this
+recently at the Embedded Linux Conference on 32-bit systems [1][2][3]
+and there were a few older discussions before[4][5][6].
 
-Ooof, yeah, I should have noticed that too.
+While removing a feature that is actively used is clearly a regression
+and not normally done, I expect removing highmem is going to happen
+at some point anyway when there are few enough users, but the question
+is when that time will be.
 
-> Arguably reaching this code would be suggestive of a kernel bug but I
-> know that BUG_ON() is frowned upon these days.
-> Maybe we should WARN_ON_ONCE() here or similar?
+I'm still collecting information about which of the remaining highmem
+users plan to keep updating their kernels and for what reason. Some
+users obviously are alarmed about potentially losing this ability,
+so I hope to get a broad consensus on a specific timeline for how long
+we plan to support highmem in the page cache and to give every user
+sufficient time to migrate to a well-tested alternative setup if that
+is possible, or stay on a highmem-enabled LTS kernel for as long
+as necessary.
 
-BUG_ON() is definitely a no-no, but WARN_ON_ONCE()/WARN_ON() is still
-considered okay last I checked (no forced panic).  Of the two I think
-WARN_ON() would be a better choice here.
+These are the assumptions I'm making, based on both what I have
+presented in my talk and feedback I have received so far, let me
+know if something is missing here:
 
-> We also rarely return
-> -EPERM from SELinux outside of capability checks since usually EPERM
-> means a failed capability check
-> (vs -EACCES). Defer to Paul on how/if he wants to handle this and
-> whether it requires re-spinning this patch or just a follow-on one.
+- Highmem in new kernels is almost exclusively an embedded Linux
+  topic. While there were a few late 32-bit desktop and laptop
+  systems that had more than 2GB of RAM, these were fairly short
+  lived and have long been unsupported by both the originally
+  shipping operating systems and most Linux distros. Notable
+  Examples include Pentium 4 "Northwood" desktops (sold 2003-2004),
+  Core Duo laptops (2006-2007), and Arm Chromebooks (rk3288,
+  Tegra k1, Exynos 5800, sold 2014-2017). Some PowerPC G4 Macs
+  and Atom Netbooks could be upgraded to 2GB.
+  There are a small number of users, but they really love these
+  devices and want to keep them alive, especially since they
+  mark the peak of the respective 32-bit product lines.
 
-Another fair point.
+- Within the embedded market, highmem is mostly used on ARMv7
+  based SoCs, but a few others also need it and still get kernel
+  updates:
+  PowerPC 85xx, 86xx and QoriQ P1/P2/P3/P4 (produced 2003-2021)
+  were used in some long-lived embedded systems with 2GB of RAM
+  or more. Mediatek MT7621 (MIPS32r3, introduced 2014 but still
+  sold) needs highmem to reach the upper 64MB of the 512MB physical
+  memory. Ingenic JZ4780 (MIPS32, released 2012) was used in the
+  short-lived MIPS Creator CI20 with 1GB of RAM (256MB lowmem)
+  and probably othes. Sparc32/LEON seems to be limited to 192MB of
+  lowmem as a kernel design choice. Vortex86DX3 supports 2GB
+  DDR3 memory.
+  The kernel also supports highmem on ARMv4, ARMv5, ARMv6,
+  PPC4xx, PPC82xx, PPC83xx, ARC, CSKY, Microblaze and Xtensa,
+  as well as additional MIPS SoCs,  but so far I could not find
+  any indication of any such machine with more than 1GB that
+  keeps getting kernel updates.
 
-Considering that we are at -rc5 right now, we only have a few more
-days left in the current dev cycle, I'm going to merge this now (with
-a subject line tweak and some unnecessary vertical whitespace
-removed), and I'll put together a quick little patch to do the
-WARN_ON()/EACCES conversion which you'll see on list shortly ...
+- The vast majority of new embedded ARMv7 machines have 1GB of
+  RAM or less, which on many SoCs is a physical limitation
+  a narrow DDR3 memory interface, as well as a cost tradeoff.
+  The 1GB case is interesting because that usually means having
+  only 768MB of lowmem plus 256MB of highmem, as well as 3GB
+  of virtual addressing. I expect that almost all applications
+  on these work just as well with CONFIG_VMSPLIT_3G_OPT, changing
+  the limit to 1GB of lowmem and 2816MB of user address space.
+  The same thing should work on x86 and powerpc (CONFIG_LOWMEM_SIZE)
+  but not on mips and sparc where the limit is not configurable.
 
---=20
-paul-moore.com
+- A few Arm SoCs have sparse physical address ranges for
+  their RAM, e.g. range per memory controllers like the Renesas
+  R-Car Gen 2 or Broadcom BCM4708. These currently require highmem
+  even on configurations with less than 1GB RAM, until we change
+  the way that sparsemem is handled to support rearranging the
+  linear map to fill all of lowmem. This still needs more work.
+
+- ARMv7 machines with 2GB remain in production, in particular
+  with the popular i.MX6Dual/Quad chip that has a 64-bit wide DDR3
+  interface and guaranteed manufacturer support until 2035.
+  This is the configuration I expect to see struggle the most.
+  Setting CONFIG_VMSPLIT_2G or CONFIG_VMSPLIT_2G_OPT should work
+  for most of the users but can break if an application runs out
+  of virtual address space, so this does require extensive testing,
+  and possibly user space changes. An example of possibly affected
+  userspace is Firefox, which needs more address space than other
+  applications but can perhaps be replaced with another embedded
+  browser.
+  
+- ARMv7 machines with 4GB and more exist and keep getting
+  kernel upgrades, but to my knowledge are not in production any
+  more. These are mainly 2010-2015 era chips based on rare
+  out-of-order cores like A15, A17 or PJ4 that were designed for
+  low-end servers, chromebooks and network equipment but replaced
+  with 64-bit chips shortly after. We had planned to bring a
+  CONFIG_VMSPLIT_4G_4G option to ARMv7VE to keep supporting the full
+  memory at a performance penalty, but currently have no plan to
+  finish this (volunteers welcome).
+  There is still some hope to keep them working with a combination
+  of CONFIG_VMSPLIT_2G and a modified ZRAM that can use high
+  pages without CONFIG_HIGHMEM, but whether this works depends
+  a lot on the application. I expect most of these products to
+  stop getting kernel updates in the next few years due to aging
+  hardware and increasing cost for updating out-of-tree patches
+  on platforms that are not fully upstream. I do not remember any
+  such devices with official support beyond 2030.
+
+My proposal based on the above assumptions is to gradually phase
+out highmem over the next 2 years for mainline kernels, obviously
+both the individual items and the timeline are completely up for
+debate:
+
+1. mark CONFIG_HIGHMEM as 'depends on EXPERT', updating the
+   Kconfig description to point to the kernel summit discussion
+   any any decisions made here.
+
+2. Change the ARMv7 Kconfig defaults to CONFIG_VMSPLIT_3G_OPT
+   and HIGHMEM=n, to make it more likely to find possible
+   regressions with that, without changing much for users.
+   Possibly do the same for x86 and powerpc.
+
+3. Start removing __GFP_HIGHMEM from in-kernel allocations
+   other than the page cache, in particular from individual
+   device drivers and filesystem metadata where there is
+   already little benefit.
+
+4. Remove HIGHMEM as an option from platforms that are thought
+   to no longer need it (arc, armv5, ppc4xx, ppc82xx, ppc83xx,
+   csky, microblaze, xtensa), mainly to validate the
+   assertion that these use only lowmem.
+
+5. Split highmem on zram out into a separate Kconfig option
+   that can be enabled without CONFIG_HIGHMEM or CONFIG_EXPERT
+
+6. Finish the "densemem" replacement for sparsemem, ideally
+   allowing both very sparse lowmem areas and a boot-time
+   vmsplit selection instead of the compile-time one.
+
+7. Finally, remove the highmem pagecache option, leaving only
+   zram and custom device drivers as a way to access high
+   pages.
+
+That last step should wait for an LTS kernel, ideally a version
+that the CIP project's SLTS kernel is planning to keep supporting
+for 10 years. The newest SLTS kernel was 6.12 last year, and the
+phb-crytal-ball suggests that the next one in December 2026 may
+be linux-7.4, the one after that in December 2028 (linux-7.15?)
+seems too far out to plan for but would be another option.
+
+Unless there is an easy consensus on this on the mailing list,
+I would like to lead a discussion session at the kernel summit
+in order to get closer to a decision.
+
+     Arnd 
+
+[1] https://osseu2025.sched.com/event/25VmZ/32-bit-linux-support-now-and-in-the-future-arnd-bergmann-linaro
+[2] https://www.youtube.com/watch?v=QiOMiyGCoTw
+[3] https://lwn.net/Articles/1035727/
+[4] https://lore.kernel.org/all/0047f565-ada4-491a-b157-f2d8dfde0ac0@app.fastmail.com/
+[5] https://lwn.net/Articles/813201/
+[6] https://lpc.events/event/16/contributions/1183/attachments/1062/2028/highmem-api-2022-09-12.pdf
 
