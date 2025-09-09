@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36A30CA1016
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 02:22:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5D71CAC581
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 02:22:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 926056B0011; Mon,  8 Sep 2025 22:22:46 -0400 (EDT)
+	id 46B366B0012; Mon,  8 Sep 2025 22:22:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D6D36B0012; Mon,  8 Sep 2025 22:22:46 -0400 (EDT)
+	id 41B526B0022; Mon,  8 Sep 2025 22:22:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 79EE56B0022; Mon,  8 Sep 2025 22:22:46 -0400 (EDT)
+	id 30B586B0023; Mon,  8 Sep 2025 22:22:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 5ADE86B0011
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 22:22:46 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 10A401DDC17
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 180216B0012
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 22:22:47 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CD11AB8BF2
 	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 02:22:46 +0000 (UTC)
-X-FDA: 83868113532.30.D62649B
+X-FDA: 83868113532.22.7D22650
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 6602114000C
+	by imf16.hostedemail.com (Postfix) with ESMTP id 2FF21180008
 	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 02:22:44 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mPzDToC6;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oTp3KKAa;
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757384564;
+	s=arc-20220608; t=1757384565;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Fqyd+FhcJicoZicbfrLX49Z9TmXMOIVCzQ6qNOH5W1U=;
-	b=3rEyKGh2xHLv1Gwb8UBEnp8dk7D91R9DzoB4aZbDjbzs9xfm6P4/7sVDm72GLi5g+sCNEH
-	1U1SKgIPVHItayGguXpts/da82qSsNIXJycX3aO+pHDPJUO5Aa7lxWDtD4uAAmam8Cci1y
-	M8XyRNfWVSJMS2L5DFFF2h9Sp+kY7II=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757384564; a=rsa-sha256;
-	cv=none;
-	b=VH6zWLD+YCnQ3DCXhKjouBfZIiEag1z15KA2tI0yoAmeFA0TgMWLp3GXCHIWc1qmmCtEyj
-	80YJdVZ5C0oQy3uQ5Gxkb4i+19MtkbNaKo7AXim2Gpbg4H0C4RUai6CwqD654C0pkSvLwX
-	tL1HgQtu6UDFN/oeMQ1H4F0rqXF/1eg=
+	bh=4nMXGgdypbZGwpyv33IpUsBqhC+V8TPFY6DWKa9xx3g=;
+	b=HV1GT81/HTU3URGCXE8ORXQ/Xnkj53nsXR59fN1Mgzu4A1QZ4Drc+ocYUhvxBgZCC71G8f
+	tIr6UMAE5RmgDNvS75uJfkShHsi+4BWuXkfqVksVOAFL7spoIgFEuAUvaFAYoCyWoWDzno
+	UBJRZNaOXWhHzO/8mAI530cIBQUhjAg=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mPzDToC6;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oTp3KKAa;
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757384565; a=rsa-sha256;
+	cv=none;
+	b=OYaUfG/PKGeoZn67bTuGts4IzVtMFOjmNNHtiEs2lgHVQFWzaP/f4eBiV80UdDELhbGqKa
+	HgZPNa0GC2TC87dJOoiirtpc1FECwQZEGOzQGE+cXi4+ntYb9WbICoBbG3YXMSTXZw5Yut
+	K7aPOA8YuIN6rA+9nFwXCWHuPq+OB3g=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3BE6C44C79;
+	by sea.source.kernel.org (Postfix) with ESMTP id 4081B40678;
+	Tue,  9 Sep 2025 02:22:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9519C4CEF1;
 	Tue,  9 Sep 2025 02:22:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB854C4CEF1;
-	Tue,  9 Sep 2025 02:22:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757384563;
-	bh=DHqTS3AzUjYGHdLzhzK2+dBwRPHotpFoyVLaW4sFFjU=;
+	s=k20201202; t=1757384564;
+	bh=aE3MoR2tQr9P83NDIFS+on/nd9/NuFxzaUakeTNxCms=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mPzDToC691DQi0WMja/yox6GhsLGehAPJrLbU4aKav/K0JwbbVH+XmLecKYHmwJ9y
-	 ZDyHA//PDOfabF57QyqJQfms2JF7VrNzoyw1Nd2ohejk1fHE0ixbGm9APgWU1nJhnP
-	 aYp9nnDwa4yl15YxOJcdsGCXffR3ZJq7Byj/BvNMTXX8FkPF2GClY6UQaqomc+aR3H
-	 sr18Eb26hBMxjlml6lfk8jjHHfFK8L+S7yT7n98qnN93dBKVgZ3gnDO8OEA1Gw2t6+
-	 jKI53vL7ntWYlxipnauHTDBULve+sjnmbtr2kyUfkqwvj0Enjm2FXZ6Ce6Jy9rwEUG
-	 28rHW4+F5VQBQ==
+	b=oTp3KKAa1bHkGzU+GjVolsTd6qVyUDIDYpgAmm9g0iKVAi7FC5+vMLcxjCivtCkaJ
+	 9JfOBCyKVqFvKa5rdFWxeJGhvb3LYkE2spsimlwJFt/QUzhx7a1hcKMOVzn/9hnkzx
+	 IKIbT/Saf2AN6UmhD9hLfgbUp1qxcmsLw1nlIWvtqpy27HzZBtPwGpvEseJWv6HRi/
+	 adjJLYJq5JLCdfeaOa5FEDTp3+eEz8Rs0kZKNf+pHuc0SfHaPBv2hEqOfr+ZSxrHWF
+	 s78MP+bVJlUUzqq9fOs8hyB3By5oE6nTDsBLTmo6PQRufcYu7D9XQCK48bS/M3JanY
+	 oHuuzqJfqubxA==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -71,22 +71,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	kernel-team@meta.com,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 1/3] samples/damon/wsse: avoid starting DAMON before initialization
-Date: Mon,  8 Sep 2025 19:22:36 -0700
-Message-Id: <20250909022238.2989-2-sj@kernel.org>
+Subject: [PATCH 2/3] samples/damon/prcl: avoid starting DAMON before initialization
+Date: Mon,  8 Sep 2025 19:22:37 -0700
+Message-Id: <20250909022238.2989-3-sj@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250909022238.2989-1-sj@kernel.org>
 References: <20250909022238.2989-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6602114000C
-X-Stat-Signature: 7qdx34r4whfxaft31p6gq44hf6yh1t6x
+X-Rspamd-Queue-Id: 2FF21180008
+X-Rspamd-Server: rspam05
+X-Stat-Signature: tc3fm9wpwps6xwodn6oqrno3h11s56cx
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1757384564-488058
-X-HE-Meta: U2FsdGVkX19ql1AbFwstY54Mp4REheomKmOzw0zwW4zRruSUaZ16WxCPRtQD/Cmm09p/iw8KKqKJnKudlhfFV//8k8W+wleKCTuepLwChiAS4Ed1GaJWRU5rzBrIQADfQAsbW6Y7csK+wwYTWSyUMepc3q4ZkpWET/BQpIBzU4VmGsv4NmkjC9UW5xxwShbq9f1nihWzWZQleE6ktYfW7eduBlsc6xSscBkIjkD2/4nwV5BZjQVtFBTMBb8ruHqdA8sgwCh8wd5r4Czy08NTsfoiC7RB1CH0YW7xcM/ex1Vxe4Z6F/DRBUbcCWA+QP2i7cmZuCyzaPPHcDPOaphPz22KVonsVD1UQn3CgILaSkai3REwW3CaPacSSD/BiFeG5LzXVSNcarGKCo6jzgidb+vxFzMFAwzVPHwCkHJ4gc0fe8FUxC8ginAZbzt7HoVr8izeNlxamYism/AOnnNM5san9/33WQCkBpud1c9R5AFLUi9GHY/J4xaCnRwbriXv3WQEmpIlwJ4XGLRrfTAQW/AhCK/tzR1PWhyrXs8dRiAMEsbKFzAl8a5sPJYbssOl24tgQveZzWowoaz9j9ebPoIE/GMyWZyUsSl9lmu0b9qSHHO87LJMin8rqWuWy0alFo7lxInRkk+yGFdeuEDz6TxaWBFd4REU/+tSivmqmLk65oQqb0u0cQRYpNgSkSbw4sMhsSX5uLt3p2J/NrV6Yo2SxYa5LaqgdReCM4Obpz32ZKeIG4AzK0aEOX7j0LW3wwxKsd/eLqVCg6k2pBqZby29azf7wGKYaoj2GXAYW6BCfcn6WQC6duh4Q7BQBMKPymrV2GB7Nb7CNs4utg25ekk1XFmliJ+olXk03sv7DPBsRhSyjzwuM8+L7LjN4gYsSpdD6wud85OuxrVTj2ev6wONM0AH6nv69Jt1UmMQ+o3HgghbQEs0PZtDtUg4xCkmEuPXg+9W7tb6NtEUY6H
- xDhYEhyM
- Rdj3L0Ge1Grye5XGLS27CBafkzc7R9WZ67EJnGJRdZUvFsf0Vp2qCtVbXx9fa85JZvNg7BksumIEBbGZsHarCcmnYt3vGYiZ1BfuR4oJnzEBed0v7P/PkgP9GkSlXNUzXVmegyTm70x7HdaYOkRYxx45SEw0ePKS88gdNUY9sRrOKm80Yxpfo26HlK7gCTdstbLNfVjFccopepBlX5OSkfGOfmXtHhA6Y6OrUFB19CR9a5SM=
+X-HE-Tag: 1757384564-399253
+X-HE-Meta: U2FsdGVkX18BuDyO1ZN/N2MiwK6EBHQPky93vPwP84TBcl4p7CTn+UYl+gZwGEDFTZV4rfiahFerf/WwsUu18G0MTnmkboJC2MwlT40TbIAbzgeymX0bH0cGeGbVJLaH9fpqro1tM6Qk9sKHMJ8OsEwEuNTxVElFLei/klwMr1wqCl9I2/9KB7YyiA6qPuByTFDbk7Mp5jzeXrrpRTHRCGjYZdXCefcQdYza9irdO5OjxusoPS1nxj51nw0YtKG98UDU5zrYH2wSaTmUjo55wT7g/llSsU+Gw9cO8aLkOuvEPZlJqKyetlSrsIp4mUnxQJMn7rXsQpZIXsQ104BFHv+TFzNlaiGUE/+fXp7KNPuEjdF80ccYMXh4nwqie6V2Gy2eaIELW/ReF+wPbD/qa9uV1gLfv8OixqIWYWDFTick1HhOcjW/fVrls14AbLjshGOGVXQVp40ehovGck9MwBjxS/JygKvbUQx+8Um5IFF7XyHCtJxwBRN3a3B5oMDvEE77RsJTzWjHTVHhGEYiZdU/uvgEv/E6YwRgHOaunbjyUuYRzUROgoZo+9zS4YzqBr6yw1DmsmK8JIinzTGYZaMRT+WEig752E87NRQCfc8oc8rZK+G2YnDhbqx7UTghncLIRcCvAHPe1fKJB2XvVQ8UD+hkdWp8MWAy/I/hXr83zOu5f5+lHSCKrmIOF9XuT7GKNCgmaYZHN+u79vmbG9v8Qee6r+JcuuHwSl4ZT8dyH7HRkQr7I4/cc6f2Rz27x5BRzcZD+TQHxpMfRMjP7Xo3q2GRBSwMCsL+8j5arLZQkBxfSzOn9ztb7mxj6oQF3Tal9VIInMNzxOJkfhf95TAdiFs6co+qdOZnK5hx++x2NFMgiOPGsoaCbI+8g4XwJaxb+2jtfeyiNYZ26s9F6YCPZQc+RbqUfS1WWRlenUmjKuKpD2w89KY3foEYdLkUx9u0JsJuQtMx6ZahK15
+ OxJ9pLEp
+ PaQVdyTP1MIMa834LHq/B50zSd228D04X8BK1NS8TI6uxQCpnhWg0JPSAyrZCLNr197DD5dtBEcRlRIRclDiwVa4eJ9l4XT9kTnPnS9qpqB6JmsP2j/0iSzq/eqcXuh3+8rDESBibjRX922/ZSqPoegBn9dU8YnYWhojewYQ5kn6rkrqkaxeMJHoxlgA2N/AxIAIgr18quThL1skmy1/zhXt3WIZozAq1iodM2OlIzsciINw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,35 +95,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit 0ed1165c3727 ("samples/damon/wsse: fix boot time enable
-handling") is somehow incompletely applying the origin patch [1].  It is
-missing the part that avoids starting DAMON before module
-initialization.  Probably a mistake during a merge has happened.  Fix it
-by applying the missed part again.
+Commit 2780505ec2b4 ("samples/damon/prcl: fix boot time enable crash")
+is somehow incompletely applying the origin patch [1].  It is missing
+the part that avoids starting DAMON before module initialization.
+Probably a mistake during a merge has happened.  Fix it by applying the
+missed part again.
 
-[1] https://lore.kernel.org/20250706193207.39810-2-sj@kernel.org
+[1] https://lore.kernel.org/20250706193207.39810-3-sj@kernel.org
 
-Fixes: 0ed1165c3727 ("samples/damon/wsse: fix boot time enable handling")
+Fixes: 2780505ec2b4 ("samples/damon/prcl: fix boot time enable crash")
 Cc: <stable@vger.kernel.org> # 6.17-rc1
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- samples/damon/wsse.c | 3 +++
+ samples/damon/prcl.c | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/samples/damon/wsse.c b/samples/damon/wsse.c
-index da052023b099..21eaf15f987d 100644
---- a/samples/damon/wsse.c
-+++ b/samples/damon/wsse.c
-@@ -118,6 +118,9 @@ static int damon_sample_wsse_enable_store(
+diff --git a/samples/damon/prcl.c b/samples/damon/prcl.c
+index 1b839c06a612..0226652f94d5 100644
+--- a/samples/damon/prcl.c
++++ b/samples/damon/prcl.c
+@@ -137,6 +137,9 @@ static int damon_sample_prcl_enable_store(
+ 	if (enabled == is_enabled)
  		return 0;
  
- 	if (enabled) {
-+		if (!init_called)
-+			return 0;
++	if (!init_called)
++		return 0;
 +
- 		err = damon_sample_wsse_start();
+ 	if (enabled) {
+ 		err = damon_sample_prcl_start();
  		if (err)
- 			enabled = false;
 -- 
 2.39.5
 
