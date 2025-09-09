@@ -4,171 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2482CAC589
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 08:31:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47053CAC589
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 08:34:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5D06A6B0010; Tue,  9 Sep 2025 04:31:54 -0400 (EDT)
+	id 7F9DA8E0013; Tue,  9 Sep 2025 04:34:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A7BE6B0011; Tue,  9 Sep 2025 04:31:54 -0400 (EDT)
+	id 7AAE08E0001; Tue,  9 Sep 2025 04:34:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 46FF16B0012; Tue,  9 Sep 2025 04:31:54 -0400 (EDT)
+	id 6994D8E0013; Tue,  9 Sep 2025 04:34:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C5FD6B0010
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 04:31:54 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 567328E0001
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 04:34:47 -0400 (EDT)
 Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D733DC0427
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 08:31:53 +0000 (UTC)
-X-FDA: 83869043706.13.A15B756
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 80492100012
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 08:31:51 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=MyRChXSO;
-	spf=pass (imf05.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 142A51DE46D
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 08:34:47 +0000 (UTC)
+X-FDA: 83869051014.13.13A2F29
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 27EB14000A
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 08:34:43 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=AkETeRDs
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757406711;
+	s=arc-20220608; t=1757406885;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XRGYRp9IpXgOlM6YrJRhvNTKdkbZq/NQnIfckf3EQjs=;
-	b=LCKnqzSzxqnLJ9Nwi20mtWRCM95idVyFsqaPStd3XkuuRQOYrcXifduoYwyTYiprhr6vAd
-	58fMMHgVgZzYDq87cq+mzC7QQ2voy4hyR9fGSLMQTOAyxtvaHvUTob9N5jYwbyfSq9Nrfk
-	vt0tvT2nE1whfxhxVVNUAXKEfYOnhLw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757406711; a=rsa-sha256;
-	cv=none;
-	b=UzbDyYiwwGjcF2dinmXjMyxLrlFuNl4nDHYB+T8K9TNo5n5PdfPyRHL0DlDbgFCbP3j5EN
-	ZkbFbSrbWmVwZlrieo5nJcLdC70I4OBrWDRFZl0K4b1vFcljxa7CEK6JMU21suKoueqqYI
-	NmS3GoTFvX7NE1NmW5oVf4Bh8tnOOS0=
+	bh=tUi9+YGmuLz8MduOv6pUfelR4HtcHzXR6NiGUZMk3E0=;
+	b=ZhZH3B2J4I//Cg6kUsIeSe+uO7WTkWS+6+E4X2F4sZW2yWKHPWJrNgdCURlxppFSA+csDL
+	g0HL2aCmLF8Jc9g60Q8VjY3N6R3N0aRs1SqGeXkbIeBxhfob8IBed9esmINT4SXPQak1XO
+	ly/x/OYUuU7UsURXBaYzd6vbayQFvcM=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=MyRChXSO;
-	spf=pass (imf05.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 588JcNWG009190;
-	Tue, 9 Sep 2025 08:31:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=XRGYRp9IpXgOlM6YrJRhvNTKdkbZq/
-	NQnIfckf3EQjs=; b=MyRChXSONJ/VpRxUYGEWmZDaEUcUPfmlYMC94Ui/2NpXsW
-	GAUyr1eXibKeDOBJAaM64v+14/xQd77CqidsGprubltQPBWv2P65ZUgh1Coc63qO
-	RJtUvPK0HqZka742VdVR87OekHNVa0pW8eFyREJcPL9iQDumkUOzuZNxU6tKnLvy
-	fCrd7DCOR44/awj4t/q821CuWAs3qWZZ0+bLaKZ2ojmM9vNnNgBy7YCN8v4Q3RO+
-	mODGY6Hx2OmpypY7TPliZST8FLfVSKWF1LM4YBzfKrnLhOVuCn3y9CcyeJ4P2sWk
-	oSoj+Tcgnq4IZvqDV/xeYwy9QoyoiSVDJeNosniQ==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490acqxe1c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 09 Sep 2025 08:31:33 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5898Qk8A011618;
-	Tue, 9 Sep 2025 08:31:32 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490acqxe14-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 09 Sep 2025 08:31:32 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5895lhMj011435;
-	Tue, 9 Sep 2025 08:31:31 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 490y9uacnj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 09 Sep 2025 08:31:31 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5898VSmY44564752
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 9 Sep 2025 08:31:28 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EA9D020043;
-	Tue,  9 Sep 2025 08:31:27 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8E9C720040;
-	Tue,  9 Sep 2025 08:31:25 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.87.149.210])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue,  9 Sep 2025 08:31:25 +0000 (GMT)
-Date: Tue, 9 Sep 2025 10:31:24 +0200
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-        Jonathan Corbet <corbet@lwn.net>, Matthew Wilcox <willy@infradead.org>,
-        Guo Ren <guoren@kernel.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Andreas Larsson <andreas@gaisler.com>, Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>, Nicolas Pitre <nico@fluxnic.net>,
-        Muchun Song <muchun.song@linux.dev>,
-        Oscar Salvador <osalvador@suse.de>,
-        David Hildenbrand <david@redhat.com>,
-        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-        Baoquan He <bhe@redhat.com>, Vivek Goyal <vgoyal@redhat.com>,
-        Dave Young <dyoung@redhat.com>, Tony Luck <tony.luck@intel.com>,
-        Reinette Chatre <reinette.chatre@intel.com>,
-        Dave Martin <Dave.Martin@arm.com>, James Morse <james.morse@arm.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-        "Liam R . Howlett" <Liam.Howlett@oracle.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Hugh Dickins <hughd@google.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Uladzislau Rezki <urezki@gmail.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        Andrey Konovalov <andreyknvl@gmail.com>, Jann Horn <jannh@google.com>,
-        Pedro Falcato <pfalcato@suse.de>, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-csky@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
-        nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org, linux-mm@kvack.org,
-        ntfs3@lists.linux.dev, kexec@lists.infradead.org,
-        kasan-dev@googlegroups.com, Jason Gunthorpe <jgg@nvidia.com>
-Subject: Re: [PATCH 00/16] expand mmap_prepare functionality, port more users
-Message-ID: <4fbe6c51-69f4-455e-922f-acdc613108cb-agordeev@linux.ibm.com>
-References: <cover.1757329751.git.lorenzo.stoakes@oracle.com>
+	imf11.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=AkETeRDs;
+	spf=none (imf11.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757406885; a=rsa-sha256;
+	cv=none;
+	b=UX/xyi/40g/J6iofRYbjjUOT28dSR9v+Q2YjUxAXmuniOgPJtqzayzjus1Kb2xX2DUTCHg
+	KogfQUApPW9uojw5eLXuPqoqCHquBLCelZBUNRwni0w7sRoZ0OjApKDi0XtfRnCtVY5Pmu
+	DuRi+vAYrMFblcDvdnRFUBys0EAOlYQ=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=tUi9+YGmuLz8MduOv6pUfelR4HtcHzXR6NiGUZMk3E0=; b=AkETeRDsJTdI6UKG6HF4BPJb5D
+	NmpsuselVIUxvyqPhp0976Uqa6+dKeCYTKNqrqUG7Sjnyl3KQt6opcecyzSOlcl5t9T+Uw3AJJrBk
+	1rqvkEpCg37RxJNOvsLxEehluqRq9ekIdY6P51muShRZnh0deroS4nBSFcr/BBfE80mU04qK7HM/u
+	0o9/lmKI25eIkyMoGk2/EEpkYkGkaL1xVylA6C/m28W1AYCHKVdU2iGttSdxhKTj73YgpRn0ENU3K
+	m4TGddv9xzMGisnCwgebtxzRqANgkTFu0guFUmTIiqXWU37nrSLJRNPaak1o1oWsNRTCk7rO5BCM+
+	KzlGyozQ==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uvto3-00000005FzH-2299;
+	Tue, 09 Sep 2025 08:34:27 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id D2142300579; Tue, 09 Sep 2025 10:34:25 +0200 (CEST)
+Date: Tue, 9 Sep 2025 10:34:25 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>, sohil.mehta@intel.com,
+	baohua@kernel.org, david@redhat.com, kbingham@kernel.org,
+	weixugc@google.com, Liam.Howlett@oracle.com,
+	alexandre.chartre@oracle.com, kas@kernel.org, mark.rutland@arm.com,
+	trintaeoitogc@gmail.com, axelrasmussen@google.com,
+	yuanchu@google.com, joey.gouly@arm.com, samitolvanen@google.com,
+	joel.granados@kernel.org, graf@amazon.com,
+	vincenzo.frascino@arm.com, kees@kernel.org, ardb@kernel.org,
+	thiago.bauermann@linaro.org, glider@google.com, thuth@redhat.com,
+	kuan-ying.lee@canonical.com, pasha.tatashin@soleen.com,
+	nick.desaulniers+lkml@gmail.com, vbabka@suse.cz,
+	kaleshsingh@google.com, justinstitt@google.com,
+	catalin.marinas@arm.com, alexander.shishkin@linux.intel.com,
+	samuel.holland@sifive.com, dave.hansen@linux.intel.com,
+	corbet@lwn.net, xin@zytor.com, dvyukov@google.com,
+	tglx@linutronix.de, scott@os.amperecomputing.com,
+	jason.andryuk@amd.com, morbo@google.com, nathan@kernel.org,
+	lorenzo.stoakes@oracle.com, mingo@redhat.com, brgerst@gmail.com,
+	kristina.martsenko@arm.com, bigeasy@linutronix.de, luto@kernel.org,
+	jgross@suse.com, jpoimboe@kernel.org, urezki@gmail.com,
+	mhocko@suse.com, ada.coupriediaz@arm.com, hpa@zytor.com,
+	leitao@debian.org, wangkefeng.wang@huawei.com, surenb@google.com,
+	ziy@nvidia.com, smostafa@google.com, ryabinin.a.a@gmail.com,
+	ubizjak@gmail.com, jbohac@suse.cz, broonie@kernel.org,
+	akpm@linux-foundation.org, guoweikang.kernel@gmail.com,
+	rppt@kernel.org, pcc@google.com, jan.kiszka@siemens.com,
+	nicolas.schier@linux.dev, will@kernel.org, jhubbard@nvidia.com,
+	bp@alien8.de, x86@kernel.org, linux-doc@vger.kernel.org,
+	linux-mm@kvack.org, llvm@lists.linux.dev,
+	linux-kbuild@vger.kernel.org, kasan-dev@googlegroups.com,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v5 13/19] kasan: x86: Handle int3 for inline KASAN reports
+Message-ID: <20250909083425.GH4067720@noisy.programming.kicks-ass.net>
+References: <cover.1756151769.git.maciej.wieczor-retman@intel.com>
+ <36c0e5e9d875addc42a73168b8090144c327ec9f.1756151769.git.maciej.wieczor-retman@intel.com>
+ <CA+fCnZcMV0BOJyvx2nciCK2jvht-Hx0HnFtRzcc=zu+pQSOdVw@mail.gmail.com>
+ <couuy2aawztipvnlmaloadkbceewcekur5qbtzktr7ovneduvf@l47rxycy65aa>
+ <hw7xa2ooqeyjo5ypc5jluuyjlgyzimxtylj5sh6igyffsxtyaf@qajqp37h6v2n>
+ <epbqhjyfdt3daudp2wx54jsw6d7jf6ifbr3yknlfuqptz7b4uq@73n5k6b2jrrl>
+ <CA+fCnZdJckDC4AKYxLS1MLBXir4wWqNddrD0o+mY4MXt0CYhcQ@mail.gmail.com>
+ <ra5s3u5ha6mveijzwkoe2437ged5k5kacs5nqvkf4o7c2lcfzd@fishogqlatjb>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <cover.1757329751.git.lorenzo.stoakes@oracle.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 3deOkNqrfHdLIv9wcUPHlUetDtdvUQWz
-X-Authority-Analysis: v=2.4 cv=Mp1S63ae c=1 sm=1 tr=0 ts=68bfe5e5 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=kj9zAlcOel0A:10 a=yJojWOMRYYMA:10 a=rCdDL0ybDgsdDLvqgG0A:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: qA00adzFc2mr4mwvlzTl3c7SVFuwc24W
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA2MDAwMCBTYWx0ZWRfX9DH4SXGK5Ef2
- wejG4c7pX++RhbA1qSy6joL4Dc2oCsCOSPIhrBxt/QLkDiM3oF5S3fnf0a8rvaceAzUOg6WA1gQ
- Ir8I+yPvEyV1Im2S29dkEFwOqpdtLAPsWf2TTp0eyOgmPS+IVsDGdHQRHBjWiZ05r0xpu4su3dr
- m16Ho7NogpEOVcd3h6JEtyn5UfreBb3jlkItkjRqhI4JeeAIMcTnphkaB4l7pHKWbZxIqItt4g7
- VpspaOMhadlzbq6FrrwE54z2UGMx4eYQuRZiUQE2/EtFUQMQbKGs7KhlROQVEQLcoAhtD28WCFQ
- L6pd7Sw8hzkZH/lMoqL2zPGcZXWdwKNG36NITE6JE5TGdgh01ojrh+qdwWmxBmCjCCl7ztPlKTn
- wVjj1P8/
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-08_06,2025-09-08_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 malwarescore=0 clxscore=1011 phishscore=0 spamscore=0
- adultscore=0 priorityscore=1501 bulkscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509060000
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 80492100012
-X-Stat-Signature: x3b76f7qu95us4u6ffe9yga4if9119cg
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ra5s3u5ha6mveijzwkoe2437ged5k5kacs5nqvkf4o7c2lcfzd@fishogqlatjb>
+X-Stat-Signature: wpds3qgd3pss1b6794x8aqqefgdtxtaz
 X-Rspam-User: 
-X-HE-Tag: 1757406711-828598
-X-HE-Meta: U2FsdGVkX1+uIStx617a5sGzrNS2bcY1mh/JxZl13+etXnR5nw7+ZM7jZQgSYAqh11MQ/JwKRHlo3ewgwxGlXyrNzyD1PVkFQHvx2fgs8YzzYYmrCl/OT4gThntql2LtpnnDJkIvfP2MYQL8Upo1Gqc2BJh9eS32VEm12i6B1oAxF7GR/J4E9yiMUDEjBM5IHW6FpbArgGm786H2401to7s29lJmsnsyafXBlx6K5gmmoMps/h4CIOurSfzZCpLtghHVBeAJW+wgGf0AqEnMkkveBp0FoTw4wXjk3y1LCjwdj86Nl2N06Mg4637KidDWskTvY+Mg3EHFMxOQ/XfNdE2qw+4FdWKZ9aCNGME9hZ5QZtT3dK9fFyDz8IlsDYF4yZOxJ7ErV6B0Ex7/Y0kgkZmhHzvStITFu89XR6NdEcxSumVzuJA/E3Ktb7BsaCVmjjrT9Ybxu/HHfRaoFVNf+0Xn1la9C9ZxM1v+IOQtQMVHxCCTU2jvXD+8elM54952sMAZMyNkwiv9o9B02fx+69iaThjCDHrn/jMNL6qjw7rak68ks7zphdLKlyLkUmOGPhKPrVcpUpojNGXPIRuDK12hvRBhySla6ufn7vS7B63DisHkxWoM9N59Iuv9Jg25Xqc2oVlev8VY97rJ100Q9klSNzza2ZBynU5VULHhhDJuy+52Bwr7fAQiT4qJjZz6Y+tMCyIlauLC8MGyagUbj7DZdU99R2+GkVYz4e2Uru5x5C/ESXcTd8HTqbvf+u3S6LW442ns0wmoLAKIheTf79RCFIWYbZCyyXXXFpO9XlvqT/VoAVxy1narFkbHM8JhtDjtS/8GiAWhtSk5T40VeVlZodFcxGWN91Q1XylTpfIuuwykQFiLFGFePGWDnxex654nfGJ5IQ5kUpSrsH/n3rgfiDTlLyhwg1vAmyJ3J9Fu5pRz0NRrfrLroN3zw2SLrIvi2bozS4Qrk4ratdn
- RAwbXqX8
- a+qPktU2UCjZ0ILcm8piGUMg/HsX2vaICxSxEYzEPgV3Y928kQSS5uZOa+x2r43LX6iuyYYJF0emk1lBl1exKdaw9SY1SMcRSf1aneT35LkD6DhFPXe9Jb5Mihm1kLTr4QvZBkqI6x5PdDdCYFeUyLfdhkH3JBk3Kg6uijISzG411qkaLA32vFAm/1S88g+cn1yhQbze3lwVbYNLH+JfdE61oZH32W9H/AGgHjLTfG+L8rw6LkUlWW7VFkiJ56/zgtniSMymg5QmP7aOU3y0Y/0SGRGftW0zBiuNz/49Qen6cY7/XtUYcrEOjcBTAv6a/sjolJi3UqptIYc/zrTat8aHu7tcLlAY6rmrr8U+whUuhULs1BAQVU2N5Hp8FHTwqSj+eBxi6qn9dAvH61/LXf6ZJHDh6fdCGYt0yKkkCClTdhmh+eRpdY8jPkw==
+X-Rspamd-Queue-Id: 27EB14000A
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1757406883-877510
+X-HE-Meta: U2FsdGVkX1+5dMVmcX2Wt3/2EDAKBBQFOw12NKRq5wwBqP6y577v7NkBYSwYpDWALJC08BN2khPPQEoMYolxMoM/hWFiSTrq38DwEFRQ1fYjH5vSRXMWwqrcQtf1gfVEhswEPTcP19egY//7H0xBvhUtERaWlETWfneYIO+YkJSD1c+XXGDL1F9scz94kJqYiFacWt3u6XW6O+o7BRNzcWqu9GUalhPO+rJ/ldvVqSz32nZriorUz8ZQoDPHir32ycNlA4lOSs3VxZfCNUP+nATIfEj1+iFz8fse+wH9KUM7rvToAitjfkQo6Rm3IbOnkSQ6j2+CyWz6JGBFzW0WgQvkDowxvQYyaaVOdAyZRpQIjPYeDYaJOiVw8TGd2KufUt72Y10QjEzZk04ZuC7UWI2ywKocpwd0AvICYUcCs9V1Nm+UAc5MLK2aqs9LWItKxQYFIJJAETN49rSl8kUz//GirLDYx6zN0EvVcrwSFzvGS16zRHW8S3Xl/DX7HnJQzSiCCidJgd+n1ZerN+dJvlyzXS4IziXXORF9XbVzdHqBoleF6ZkilFG9GBjHi+vTdA9I3OJSBXPYnUj7S9b5+XtjpmjX/URRjqtqAHkAgo4TSTRyssSE0mMHv/bg7KoC6GPDsiqt3sbl27zqtt6L43+QSGU2+GA5qqTOYBCXxyx/scfcq754seUROdYRLGaTqvupqEsNj3ohXAL6LQzyfTf1TgPEy7pzUCUzXeEgUTtdj71G/Ew1hTFWujMoJg9DVEd5CQiJAu325vLes/qkKLl3A1frCmRaVrmLeq+74rAMs4DEE9VXH6iHPsXmnEzjimMm0vYoLV6N0xVNBQ4Sfk2sBFeKp+6KntmnnTPqwqwutNZ1DJks1pxRcfFBuNkpZJbNGSoq19SSAyQSBj811NXXG9vxs1pmLhugJwLK3MDaGzkPc5AUf6uhyCxVFEKePH0eJnvJjgtc6A5V41m
+ yVmmPqJl
+ A9vXvQzjg17ORVH4Lq8Ko//OzU4vylEpJAd0sgaTSv0Q6vSjbnOgkE2fYJ/wpc2AC1UrS1OSxWR370gGEkd+8gzSh+YEXfcs9O17iV1oByS1rxkypm3UuhkQ2GhT8ilKqtAxde6ayk2uEB9V8l2M4oy8VQ5cXsSdauRXvYjYege0rLMuk9l9XjkAYNcm4hhtcA3OkemfZ432/gQAeALU3bIdhNfWLZrPvL/Xsey7XtEZ9XaLEPLI/fR4b0sgPzJBYfiQ9sRWsHblQSoU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -177,61 +128,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 08, 2025 at 12:10:31PM +0100, Lorenzo Stoakes wrote:
+On Tue, Sep 09, 2025 at 10:24:22AM +0200, Maciej Wieczor-Retman wrote:
+> On 2025-09-08 at 22:19:05 +0200, Andrey Konovalov wrote:
+> >On Mon, Sep 8, 2025 at 3:09 PM Maciej Wieczor-Retman
+> ><maciej.wieczor-retman@intel.com> wrote:
+> >>
+> >> >>I recall there were some corner cases where this code path got called in outline
+> >> >>mode, didn't have a mismatch but still died due to the die() below. But I'll
+> >> >>recheck and either apply what you wrote above or get add a better explanation
+> >> >>to the patch message.
+> >> >
+> >> >Okay, so the int3_selftest_ip() is causing a problem in outline mode.
+> >> >
+> >> >I tried disabling kasan with kasan_disable_current() but thinking of it now it
+> >> >won't work because int3 handler will still be called and die() will happen.
+> >>
+> >> Sorry, I meant to write that kasan_disable_current() works together with
+> >> if(!kasan_report()). Because without checking kasan_report()' return
+> >> value, if kasan is disabled through kasan_disable_current() it will have no
+> >> effect in both inline mode, and if int3 is called in outline mode - the
+> >> kasan_inline_handler will lead to die().
+> >
+> >So do I understand correctly, that we have no way to distinguish
+> >whether the int3 was inserted by the KASAN instrumentation or natively
+> >called (like in int3_selftest_ip())?
+> >
+> >If so, I think that we need to fix/change the compiler first so that
+> >we can distinguish these cases. And only then introduce
+> >kasan_inline_handler(). (Without kasan_inline_handler(), the outline
+> >instrumentation would then just work, right?)
+> >
+> >If we can distinguish them, then we should only call
+> >kasan_inline_handler() for the KASAN-inserted int3's. This is what we
+> >do on arm64 (via brk and KASAN_BRK_IMM). And then int3_selftest_ip()
+> >should not be affected.
+> 
+> Looking at it again I suppose LLVM does pass a number along metadata to the
+> int3. I didn't notice because no other function checks anything in the x86 int3
+> handler, compared to how it's done on arm64 with brk.
+> 
+> So right, thanks, after fixing it up it shouldn't affect the int3_selftest_ip().
 
-Hi Lorenzo,
-
-I am getting this warning with this series applied:
-
-[Tue Sep  9 10:25:34 2025] ------------[ cut here ]------------
-[Tue Sep  9 10:25:34 2025] WARNING: CPU: 0 PID: 563 at mm/memory.c:2942 remap_pfn_range_internal+0x36e/0x420
-[Tue Sep  9 10:25:34 2025] Modules linked in: diag288_wdt(E) watchdog(E) ghash_s390(E) des_generic(E) prng(E) aes_s390(E) des_s390(E) libdes(E) sha3_512_s390(E) sha3_256_s390(E) sha_common(E) vfio_ccw(E) mdev(E) vfio_iommu_type1(E) vfio(E) pkey(E) autofs4(E) overlay(E) squashfs(E) loop(E)
-[Tue Sep  9 10:25:34 2025] Unloaded tainted modules: hmac_s390(E):1
-[Tue Sep  9 10:25:34 2025] CPU: 0 UID: 0 PID: 563 Comm: makedumpfile Tainted: G            E       6.17.0-rc4-gcc-mmap-00410-g87e982e900f0 #288 PREEMPT 
-[Tue Sep  9 10:25:34 2025] Tainted: [E]=UNSIGNED_MODULE
-[Tue Sep  9 10:25:34 2025] Hardware name: IBM 8561 T01 703 (LPAR)
-[Tue Sep  9 10:25:34 2025] Krnl PSW : 0704d00180000000 00007fffe07f5ef2 (remap_pfn_range_internal+0x372/0x420)
-[Tue Sep  9 10:25:34 2025]            R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:1 PM:0 RI:0 EA:3
-[Tue Sep  9 10:25:34 2025] Krnl GPRS: 0000000004044400 001c0f000188b024 0000000000000000 001c0f000188b022
-[Tue Sep  9 10:25:34 2025]            000078000c458120 000078000a0ca800 00000f000188b022 0000000000000711
-[Tue Sep  9 10:25:34 2025]            000003ffa6e05000 00000f000188b024 000003ffa6a05000 0000000004044400
-[Tue Sep  9 10:25:34 2025]            000003ffa7aadfa8 00007fffe2c35ea0 001c000000000000 00007f7fe0faf000
-[Tue Sep  9 10:25:34 2025] Krnl Code: 00007fffe07f5ee6: 47000700                bc      0,1792
-                                      00007fffe07f5eea: af000000                mc      0,0
-                                     #00007fffe07f5eee: af000000                mc      0,0
-                                     >00007fffe07f5ef2: a7f4ff11                brc     15,00007fffe07f5d14
-                                      00007fffe07f5ef6: b904002b                lgr     %r2,%r11
-                                      00007fffe07f5efa: c0e5000918bb    brasl   %r14,00007fffe0919070
-                                      00007fffe07f5f00: a7f4ff39                brc     15,00007fffe07f5d72
-                                      00007fffe07f5f04: e320f0c80004    lg      %r2,200(%r15)
-[Tue Sep  9 10:25:34 2025] Call Trace:
-[Tue Sep  9 10:25:34 2025]  [<00007fffe07f5ef2>] remap_pfn_range_internal+0x372/0x420 
-[Tue Sep  9 10:25:34 2025]  [<00007fffe07f5fd4>] remap_pfn_range_complete+0x34/0x70 
-[Tue Sep  9 10:25:34 2025]  [<00007fffe019879e>] remap_oldmem_pfn_range+0x13e/0x1a0 
-[Tue Sep  9 10:25:34 2025]  [<00007fffe0bd3550>] mmap_complete_vmcore+0x520/0x7b0 
-[Tue Sep  9 10:25:34 2025]  [<00007fffe077b05a>] __compat_vma_mmap_prepare+0x3ea/0x550 
-[Tue Sep  9 10:25:34 2025]  [<00007fffe0ba27f0>] pde_mmap+0x160/0x1a0 
-[Tue Sep  9 10:25:34 2025]  [<00007fffe0ba3750>] proc_reg_mmap+0xd0/0x180 
-[Tue Sep  9 10:25:34 2025]  [<00007fffe0859904>] __mmap_new_vma+0x444/0x1290 
-[Tue Sep  9 10:25:34 2025]  [<00007fffe085b0b4>] __mmap_region+0x964/0x1090 
-[Tue Sep  9 10:25:34 2025]  [<00007fffe085dc7e>] mmap_region+0xde/0x250 
-[Tue Sep  9 10:25:34 2025]  [<00007fffe08065fc>] do_mmap+0x80c/0xc30 
-[Tue Sep  9 10:25:34 2025]  [<00007fffe077c708>] vm_mmap_pgoff+0x218/0x370 
-[Tue Sep  9 10:25:34 2025]  [<00007fffe080467e>] ksys_mmap_pgoff+0x2ee/0x400 
-[Tue Sep  9 10:25:34 2025]  [<00007fffe0804a3a>] __s390x_sys_old_mmap+0x15a/0x1d0 
-[Tue Sep  9 10:25:34 2025]  [<00007fffe29f1cd6>] __do_syscall+0x146/0x410 
-[Tue Sep  9 10:25:34 2025]  [<00007fffe2a17e1e>] system_call+0x6e/0x90 
-[Tue Sep  9 10:25:34 2025] 2 locks held by makedumpfile/563:
-[Tue Sep  9 10:25:34 2025]  #0: 000078000a0caab0 (&mm->mmap_lock){++++}-{3:3}, at: vm_mmap_pgoff+0x16e/0x370
-[Tue Sep  9 10:25:34 2025]  #1: 00007fffe3864f50 (vmcore_cb_srcu){.+.+}-{0:0}, at: mmap_complete_vmcore+0x20c/0x7b0
-[Tue Sep  9 10:25:34 2025] Last Breaking-Event-Address:
-[Tue Sep  9 10:25:34 2025]  [<00007fffe07f5d0e>] remap_pfn_range_internal+0x18e/0x420
-[Tue Sep  9 10:25:34 2025] irq event stamp: 19113
-[Tue Sep  9 10:25:34 2025] hardirqs last  enabled at (19121): [<00007fffe0391910>] __up_console_sem+0xe0/0x120
-[Tue Sep  9 10:25:34 2025] hardirqs last disabled at (19128): [<00007fffe03918f2>] __up_console_sem+0xc2/0x120
-[Tue Sep  9 10:25:34 2025] softirqs last  enabled at (4934): [<00007fffe021cb8e>] handle_softirqs+0x70e/0xed0
-[Tue Sep  9 10:25:34 2025] softirqs last disabled at (3919): [<00007fffe021b670>] __irq_exit_rcu+0x2e0/0x380
-[Tue Sep  9 10:25:34 2025] ---[ end trace 0000000000000000 ]---
-
-Thanks!
+Seriously guys, stop using int3 for this. UBSAN uses UD1, why the heck
+would KASAN not do the same?
 
