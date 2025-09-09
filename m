@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 343CACA0FED
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 20:15:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59862CAC58C
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 20:15:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8D60F8E0020; Tue,  9 Sep 2025 16:15:49 -0400 (EDT)
+	id A0EB08E0021; Tue,  9 Sep 2025 16:15:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 839128E0019; Tue,  9 Sep 2025 16:15:49 -0400 (EDT)
+	id 997FC8E0019; Tue,  9 Sep 2025 16:15:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6D9D18E0020; Tue,  9 Sep 2025 16:15:49 -0400 (EDT)
+	id 838F88E0021; Tue,  9 Sep 2025 16:15:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5778A8E0019
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 16:15:49 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0C503C072D
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 20:15:49 +0000 (UTC)
-X-FDA: 83870817618.08.6ACC3F9
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 68CA28E0019
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 16:15:52 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3303F140592
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 20:15:52 +0000 (UTC)
+X-FDA: 83870817744.14.5259FE2
 Received: from forwardcorp1a.mail.yandex.net (forwardcorp1a.mail.yandex.net [178.154.239.72])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 0E2D9C0013
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 20:15:46 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=yandex-team.com header.s=default header.b=Ow3+Zk7L;
-	spf=pass (imf28.hostedemail.com: domain of arbn@yandex-team.com designates 178.154.239.72 as permitted sender) smtp.mailfrom=arbn@yandex-team.com;
+	by imf16.hostedemail.com (Postfix) with ESMTP id 5A2D118000D
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 20:15:50 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=yandex-team.com header.s=default header.b=ypBkuNKW;
+	spf=pass (imf16.hostedemail.com: domain of arbn@yandex-team.com designates 178.154.239.72 as permitted sender) smtp.mailfrom=arbn@yandex-team.com;
 	dmarc=pass (policy=none) header.from=yandex-team.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757448947;
+	s=arc-20220608; t=1757448950;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SlubtQeQpBHXlVAu20qfBqsbGkV3gCqQjvicv97NAqE=;
-	b=Ve1OSv4GnqTH41zrBK9uZReOaYNLytfdXWSuY4T7g9TxR8R98uEsOTCaoDe0/uaXHMXjK3
-	d3v4uIoduSdw6cPIX4KvYZkk6nBPYuKqm3Oc/I+J73DuE0PL6e49vQMwHbIkdaKh3K0XAv
-	p68DK6cG13vHoYVNAtLT4xpGmFLVz/c=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757448947; a=rsa-sha256;
-	cv=none;
-	b=xM+AJo5dy7Fcqws1s+rfrVp68uQPlIY7B+d8t4eyFcCATYHikSZwKIeNwHxirtldiixPEO
-	9CrZpPkTqGEuRmKfkmmBXfqq7ILGRwmUvKENi/Ah8jETMkCMYKZoywgzaqtVqPbjvcPJkO
-	EbHHgBvYIeJBdq0Pflz8+quwmLfvWnk=
+	bh=m8A5M9SWZ4FduOae9/W265UdgKKBYKII8mDM46+RgEM=;
+	b=HRdkHorlEBVYFALBeP1pnc1M37E9vk0WLGGszsTNH4uCDnVUGodWSJC6Xh9FMtbXDL1hZ+
+	OttkWbpKI8KSj/sAfYQWjugQuc+EOW50VY2a1knuWHXcZX2oMpOjFxIaw4eldSQfNnKCL6
+	BAwXMb9sG9mR4ryn7NYEHjJ4ivvMwSc=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=yandex-team.com header.s=default header.b=Ow3+Zk7L;
-	spf=pass (imf28.hostedemail.com: domain of arbn@yandex-team.com designates 178.154.239.72 as permitted sender) smtp.mailfrom=arbn@yandex-team.com;
+	imf16.hostedemail.com;
+	dkim=pass header.d=yandex-team.com header.s=default header.b=ypBkuNKW;
+	spf=pass (imf16.hostedemail.com: domain of arbn@yandex-team.com designates 178.154.239.72 as permitted sender) smtp.mailfrom=arbn@yandex-team.com;
 	dmarc=pass (policy=none) header.from=yandex-team.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757448950; a=rsa-sha256;
+	cv=none;
+	b=gsb/IO0JS9fUTwZ7X8I/9qjRKW5QvxrC9fgoh0hrm29xBsneS1xWMkCmz87pL/rEI+c96h
+	3EfrceDim2BBOhJNoL01WNf53F3U5PjTpNxG7w+p8TJrz78cjfSWXjrbBO5F9zL6vjo1sv
+	Tc1gMBnmUQz6lzwm7FBBk1EUgbQdLV4=
 Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net [IPv6:2a02:6b8:c1f:3a87:0:640:845c:0])
-	by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 817A1C01A8;
-	Tue, 09 Sep 2025 23:15:45 +0300 (MSK)
+	by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id EE366C01AB;
+	Tue, 09 Sep 2025 23:15:48 +0300 (MSK)
 Received: from localhost.localdomain (172.31.115.73-vpn.dhcp.yndx.net [172.31.115.73])
-	by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with ESMTPSA id IFQqlX5GteA0-fGTTr1hW;
-	Tue, 09 Sep 2025 23:15:44 +0300
+	by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with ESMTPSA id IFQqlX5GteA0-QszPafCr;
+	Tue, 09 Sep 2025 23:15:48 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.com;
-	s=default; t=1757448945;
-	bh=SlubtQeQpBHXlVAu20qfBqsbGkV3gCqQjvicv97NAqE=;
+	s=default; t=1757448948;
+	bh=m8A5M9SWZ4FduOae9/W265UdgKKBYKII8mDM46+RgEM=;
 	h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
-	b=Ow3+Zk7LzrqdqvKvZDbmFyysZMtA7DN68cVIb+B3JSmGFhVLFAPCiOp0Wj9AxagDy
-	 ChCIy5Wz0HngB7CVKrHaa2WeO2/0cYVyStkQFIrSE81CIlPTYWzzUhwHU8HNNv6Ivj
-	 Ib9YHJbY8VPMhFXHrGvwikRHwrHctRkIYIv49A+A=
+	b=ypBkuNKW+ERXO+vB9wi+MesqhXDJci+Z58snBgpV01YxOdZZSgyD0EiGOS1d6ChRM
+	 hs4mlstpXx3wA2LGBMtVkU4uQU0M8JpfQTx3pK+DQa36tE3REBAz6GdNN58l44rh9q
+	 GyjRrorPLSUoRNijR571xdfTd90C7ZpqX08mC7Vk=
 From: Andrey Ryabinin <arbn@yandex-team.com>
 To: linux-kernel@vger.kernel.org
 Cc: Alexander Graf <graf@amazon.com>,
@@ -91,22 +91,22 @@ Cc: Alexander Graf <graf@amazon.com>,
 	William Tu <witu@nvidia.com>,
 	David Matlack <dmatlack@google.com>,
 	Andrey Ryabinin <arbn@yandex-team.com>
-Subject: [PATCH v3 5/7] kstate, test: add test module for testing kstate subsystem.
-Date: Tue,  9 Sep 2025 22:14:40 +0200
-Message-ID: <20250909201446.13138-6-arbn@yandex-team.com>
+Subject: [PATCH v3 6/7] mm/memblock: Use KSTATE instead of kho to preserve preserved_mem_table
+Date: Tue,  9 Sep 2025 22:14:41 +0200
+Message-ID: <20250909201446.13138-7-arbn@yandex-team.com>
 X-Mailer: git-send-email 2.49.1
 In-Reply-To: <20250909201446.13138-1-arbn@yandex-team.com>
 References: <20250909201446.13138-1-arbn@yandex-team.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: jjh7jfn66moa7xijtwiob8a6hza8s5ns
-X-Rspamd-Queue-Id: 0E2D9C0013
+X-Rspamd-Queue-Id: 5A2D118000D
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 1eoq7tg6mub5g8ipry74j9r3r5b73c5t
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1757448946-53573
-X-HE-Meta: U2FsdGVkX1/P63qdayk+JZIeLAnrSFvRpH999HTf99TXJDeFyf+YKWGo2V3vCykGDNJAZ27M8/wL8qky9l33Hnk4nL8b8CfQuXQE7rU9mmK4YzBu8v8z/jvOT1FyqdMs6SE9lXz1jshsrHc4oRtg5ZWrJJ7SL/7SLE8Llart4QqScb7fiyM38IDuoNqOVZLyuVYAZZYtVvUCJo5f5QgZe8/mIiyWuZZRXJw8vkskgYtlCwHrJIwdQrPG/fUypo5UP4goL61w2W7wKcof+m0tdgqTAYM3O8g0knN5qoPg8o2H2R5iwqoCqklBcZdIz3MQIHnR8vMbg3p35t1nzwh2YWAX8nL751dSo8VAQO6HLwMb7jC5LbIralj9ZzY0qN3qYHZCp4Q0UQm/vTPs3q1LuLCzcIHlo8eJUULBC0LTPurRm5dUGZhkFswzOXMyEjEz4vwJG/p5WcxGhcUyvJtGkeRdS8LJQj7U6+o8blK67ZjQYVAOyHrqkTPcIwI22HBDvV3R/Lsd+nIN+1riLLpHBRjsVA593LNJb6xrh5eaod5ceiqxvnLs1ke5/z2GFXHCZBSDVBaXnxG1ZKA4ojoxlhPZsJHQCEhmv9YgrFp+KtlNlSBcA39vRAvsWjV99UBzgLRaAdxuAkACjzDGBXamLBdcAvFbFO0IXuCmd0Y+gouUiKNytZLeoN60ErZSu0esi09WtXW6O3FPZZ/iyHlQVTnv7pWHxYjBTp00NGYwACW7Zha1w8UmD+pZhuMGUDB15/awZ4jSjiBmFUs0UHW0NyHDVg3EcF59XN82v76LKDAhho5de7XKiNTqAueKzCivyvmezTMgQsB1R902w6v+M1EHSU4o4bK4P5BYY64R1RjVHlQS3ce8S050TDL82BDLtE0un0KqPLDBWPwQ9n24GRfHSiFcjFwRdsGkLyagZzHm9yiI111xh14IqI5rMvpuxr+UA/Rpcxsx2uc+Fia
- 74D57n9C
- gTf5ELaApVyI5FE2u8RDfppt3W3PKj9537TJdbY4PT2MGgbAY2IroJkj9Qqmy3Egfzvwn3FWfB0UGQxz1LlqC4XoU3TUnHbCnD3MCJRlBF8NlOCnMGETDiT8HFnOlClJnxcurNo6ZEDyvN1i0Cg4XxfqPNnRoIf6VPfJOVU/gCJ/gyXxdiAkmCl3K/h4xuCbkeE6ouWbAo+BkvQyRb11rw4FuXezBfnfZRewHCz1xaJjYebhKaJSRk+wYd8cGydhcOwyHWFLgtLsIHZw08Sw+xKj3Wy5I9BNZu7g8UjFXjUA5DvkAPDC2TuIATwWE/4bLb2tJBjmK8raAl6eNZxODkYGtKgDDjX6TGTkFByEVS708sXoa88VfuJ+gsLCZ/lM77rYX39LPWafQ+kY+Rz9YCp5nzYsEsf1gZ3mgiDB91Frmcz90G02XDiM/nldtvh8Itl1VNCGcYyRcwEomrOvBIOelB5HU1ZdIeN5gt4N0qbcdnuWQJb+heWD0pXj37uX7veAJ
+X-HE-Tag: 1757448950-256321
+X-HE-Meta: U2FsdGVkX180EpxRBqCJo2XCFMs82lkXc3KvZIioSxa0wLcots+DU2JLsQANkO83JFsMkL8K9CI78GAku0VZXxUcsIbJj5wMtX8fnA2dTRtTGmhgnPJNZnRJSXw0VSnG1FVB4wuMF8g/kkOO/icrBZteRybDQo3QIgC3z/o73gABxyem3pamYUvYwwT7edvrs9B1NgEI2/mA9Pmrw8d46RjFaEpN/nXJDLKI4/MSe61pd0PMbKjzEsXtQZJskeo6CH8JNqKbiWw/85Ym+94QLNfCpvxTQKZrKfl9z4jojpeT4l2jRU1DTnUlLHYJ41r9F33plRMfQNz+mvxQFRgookqeiyAj0aEqnPuvj/Xcxos/5G2O0Wmmd8zyK3+5bLkqastewxHSVU1w3xwjmiviOk6uMS35h4l+gDdNv2rQKD64L46piYbYAeKVGJ6KHpEsPcwvl7dn2oIqX+1ilmDiEXd18zXbF1wE6WlX+2dqLzy4qlt8AcbQ2OYwQeVUqemhT/OnuG0+/hmd6pMgJl7DZFHyvuEUHtn3JuYGQv5llJt6eXq3qGRQqEUj36Y4f02RjIy4+NbtZyZkyjvDE7iMSEZi8CtDAc19t8DIu2p4y8/TqWfs+yz3SS45XBft18NTc2/bqtiHrPOVb+dM4q1hiFpY80Elu9fH6WmIU+9EKkyAi0hOpUb5VVNfKxcYMScwLuf96jJWboXlqP7idqWQQVErF7G2JmLc7yruxmAqBYsJPpvstTRk1d4st6edilIS84rh7n4iT5C0bGqJ4CMtJMCqKRlDecNaypDMiXx4e/0xqoJgQ/C+uc5CTFOBVrjd0MTvBh3lTwmcsB7bZvYnOBtyqotVBQv4/M9zZDyNAs1JVrqKVReMQ7HJPmCh3lJGkIRUQhL4QLTxTLvi2Py+c/n9AE2dbisl3nr9B6p3d3jkrVmGwFpc7Suia/ySbKlPLNHTYK3XGQCCziZplKd
+ EftUTYpN
+ 1fHQozNfmXg/h6ASZ2CrMqyCOK4ER9dhh4G7NoWYjSkigH6N12PSjwJ8c6IMfSMoyO+TT6vFUYgX4pUCHU31ESI806Z5D1lAAqMG98GYPgJqiEfWhX+USv2ygk/O29sY+velXTPP2hBu9tlNdtuDfwIzJBoEqf+gSnOczEzSUvpI/vZ3eeXnWBXMytm7nwOmeGSTgRP4Pne7+4nDc0eyliX3RgA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,199 +115,232 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is simple test and playground useful kstate subsystem development.
-It contains some structure with different kind of data which migrated
-across kexec to the new kernel using kstate.
+Currently preserved_mem_table serialized/deserialized using fdt. Use KSTATE
+instead as it makes code simpler and more compact.
 
 Signed-off-by: Andrey Ryabinin <arbn@yandex-team.com>
 ---
- MAINTAINERS               |   1 +
- include/linux/kstate.h    |   2 +
- kernel/liveupdate/Kconfig |   8 +++
- lib/Makefile              |   2 +
- lib/test_kstate.c         | 116 ++++++++++++++++++++++++++++++++++++++
- 5 files changed, 129 insertions(+)
- create mode 100644 lib/test_kstate.c
+ include/linux/kstate.h |   1 +
+ mm/memblock.c          | 158 +++++++++++++----------------------------
+ 2 files changed, 49 insertions(+), 110 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 2cd9e49abee5..e96da6d97e75 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -13723,6 +13723,7 @@ M:	Andrey Ryabinin <ryabinin.a.a@gmail.com>
- S:	Maintained
- F:	include/linux/kstate.h
- F:	kernel/livupdate/kstate.c
-+F:	lib/test_kstate.c
- 
- KTD253 BACKLIGHT DRIVER
- M:	Linus Walleij <linus.walleij@linaro.org>
 diff --git a/include/linux/kstate.h b/include/linux/kstate.h
-index 5a95960e5b03..0ced0da37c8f 100644
+index 0ced0da37c8f..db8ba07e2319 100644
 --- a/include/linux/kstate.h
 +++ b/include/linux/kstate.h
-@@ -95,6 +95,8 @@ struct kstate_field {
- enum kstate_ids {
- 	KSTATE_FOLIO_ID = 1,
+@@ -97,6 +97,7 @@ enum kstate_ids {
  	KSTATE_KHO_FDT_ID,
-+	KSTATE_TEST_ID,
-+	KSTATE_TEST_ID_V2,
+ 	KSTATE_TEST_ID,
+ 	KSTATE_TEST_ID_V2,
++	KSTATE_RESERVED_MEM_ID,
  	KSTATE_LAST_ID = -1,
  };
  
-diff --git a/kernel/liveupdate/Kconfig b/kernel/liveupdate/Kconfig
-index b6ea861006bf..af9a25bdcd6e 100644
---- a/kernel/liveupdate/Kconfig
-+++ b/kernel/liveupdate/Kconfig
-@@ -69,6 +69,14 @@ config KSTATE
- 	  state, save it into the memory and restore the state after kexec
- 	  in new kernel.
- 
-+config KSTATE_TEST
-+	bool "KSTATE test code"
-+	help
-+	  Build a simple test/playground code that is useful for kstate
-+	  subsystem development. It contains some structure with different
-+	  kind of data which migrated across kexec to the new kernel
-+	  using KSTATE.
-+
- config KEXEC_HANDOVER
- 	bool "kexec handover"
- 	depends on ARCH_SUPPORTS_KEXEC_HANDOVER && ARCH_SUPPORTS_KEXEC_FILE
-diff --git a/lib/Makefile b/lib/Makefile
-index 392ff808c9b9..46616577caf3 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -316,6 +316,8 @@ obj-$(CONFIG_PARMAN) += parman.o
- 
- obj-y += group_cpus.o
- 
-+obj-$(CONFIG_KSTATE_TEST) += test_kstate.o
-+
- # GCC library routines
- obj-$(CONFIG_GENERIC_LIB_ASHLDI3) += ashldi3.o
- obj-$(CONFIG_GENERIC_LIB_ASHRDI3) += ashrdi3.o
-diff --git a/lib/test_kstate.c b/lib/test_kstate.c
-new file mode 100644
-index 000000000000..70534e8c718f
---- /dev/null
-+++ b/lib/test_kstate.c
-@@ -0,0 +1,116 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#define pr_fmt(fmt) "kstate test: " fmt
-+#include <linux/io.h>
-+#include <linux/kexec_handover.h>
+diff --git a/mm/memblock.c b/mm/memblock.c
+index 6af0b51b1bb7..b9d84d1ffd83 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -14,11 +14,13 @@
+ #include <linux/pfn.h>
+ #include <linux/debugfs.h>
+ #include <linux/kmemleak.h>
 +#include <linux/kstate.h>
-+#include <linux/mm.h>
-+#include <linux/module.h>
-+
-+static unsigned long ulong_val;
-+struct kstate_test_data {
-+	int i;
-+	unsigned long *p_ulong;
-+	char s[10];
-+	struct folio *folio;
-+};
-+
-+#define KSTATE_TEST_DATA_ID 123
-+
-+struct kstate_description test_state_v2 = {
-+	.name = "test_v2",
-+	.version_id = 1,
-+	.id = KSTATE_TEST_ID_V2,
-+	.fields = (const struct kstate_field[]) {
-+		KSTATE_BASE_TYPE(i, struct kstate_test_data, int),
-+		KSTATE_END_OF_LIST()
-+	},
-+};
-+
-+struct kstate_description test_state = {
-+	.name = "test",
-+	.version_id = 2,
-+	.id = KSTATE_TEST_ID,
-+	.fields = (const struct kstate_field[]) {
-+		KSTATE_BASE_TYPE(s, struct kstate_test_data, char [10]),
-+		KSTATE_POINTER(p_ulong, struct kstate_test_data),
-+		KSTATE_FOLIO(folio, struct kstate_test_data),
-+		KSTATE_BASE_TYPE_DEPRECATED(k, u16, 1),
-+		KSTATE_END_OF_LIST()
-+	},
-+	.subsections = (const struct kstate_description *[]){
-+		&test_state_v2,
-+		NULL
-+	},
-+};
-+
-+static struct kstate_test_data test_data;
-+
-+static int init_test_data(void)
+ #include <linux/seq_file.h>
+ #include <linux/memblock.h>
+ #include <linux/mutex.h>
+ 
+ #ifdef CONFIG_KEXEC_HANDOVER
++#include <linux/crc32.h>
+ #include <linux/libfdt.h>
+ #include <linux/kexec_handover.h>
+ #endif /* CONFIG_KEXEC_HANDOVER */
+@@ -2498,140 +2500,76 @@ int reserve_mem_release_by_name(const char *name)
+ }
+ 
+ #ifdef CONFIG_KEXEC_HANDOVER
+-#define MEMBLOCK_KHO_FDT "memblock"
+-#define MEMBLOCK_KHO_NODE_COMPATIBLE "memblock-v1"
+-#define RESERVE_MEM_KHO_NODE_COMPATIBLE "reserve-mem-v1"
+-
+-static int __init prepare_kho_fdt(void)
+-{
+-	int err = 0, i;
+-	struct page *fdt_page;
+-	void *fdt;
+-
+-	fdt_page = alloc_page(GFP_KERNEL);
+-	if (!fdt_page)
+-		return -ENOMEM;
+-
+-	fdt = page_to_virt(fdt_page);
+-
+-	err |= fdt_create(fdt, PAGE_SIZE);
+-	err |= fdt_finish_reservemap(fdt);
+-
+-	err |= fdt_begin_node(fdt, "");
+-	err |= fdt_property_string(fdt, "compatible", MEMBLOCK_KHO_NODE_COMPATIBLE);
+-	for (i = 0; i < reserved_mem_count; i++) {
+-		struct reserve_mem_table *map = &reserved_mem_table[i];
+-
+-		err |= kho_preserve_phys(map->start, map->size);
+-		err |= fdt_begin_node(fdt, map->name);
+-		err |= fdt_property_string(fdt, "compatible", RESERVE_MEM_KHO_NODE_COMPATIBLE);
+-		err |= fdt_property(fdt, "start", &map->start, sizeof(map->start));
+-		err |= fdt_property(fdt, "size", &map->size, sizeof(map->size));
+-		err |= fdt_end_node(fdt);
+-	}
+-	err |= fdt_end_node(fdt);
+-	err |= fdt_finish(fdt);
+-
+-	err |= kho_preserve_folio(page_folio(fdt_page));
+-	err |= kho_add_subtree(MEMBLOCK_KHO_FDT, fdt);
+-
+-	if (err) {
+-		pr_err("failed to prepare memblock FDT for KHO: %d\n", err);
+-		put_page(fdt_page);
+-	}
+-
+-	return err;
+-}
++static int kstate_preserve_phys(struct kstate_stream *stream, void *obj,
++				const struct kstate_field *field)
 +{
-+	struct folio *folio;
-+	int i;
++	struct reserve_mem_table *map = obj;
 +
-+	test_data.i = 10;
-+	ulong_val = 20;
-+	memcpy(test_data.s, "abcdefghk", sizeof(test_data.s));
-+	folio = folio_alloc(GFP_KERNEL, 0);
-+	if (!folio)
-+		return -ENOMEM;
-+
-+	for (i = 0; i < folio_size(folio)/sizeof(u32); i += 4)
-+		*((u32 *)folio_address(folio) + i) = 0xdeadbeef;
-+	test_data.folio = folio;
-+	return 0;
++	return kho_preserve_phys(map->start, map->size);
 +}
 +
-+static void validate_test_data(void)
-+{
++struct kstate_description kstate_reserve_mem = {
++	.name = "reserved_mem",
++	.id = KSTATE_RESERVED_MEM_ID,
++	.fields = (const struct kstate_field[]) {
++		KSTATE_BASE_TYPE(name, struct reserve_mem_table,
++				char[RESERVE_MEM_NAME_SIZE]),
++		KSTATE_BASE_TYPE(start, struct reserve_mem_table, phys_addr_t),
++		KSTATE_BASE_TYPE(size, struct reserve_mem_table, phys_addr_t),
++		{
++			.name = "phys_range",
++			.flags = KS_CUSTOM,
++			.save = kstate_preserve_phys,
++		},
++		KSTATE_END_OF_LIST(),
++	},
++};
+ 
+ static int __init reserve_mem_init(void)
+ {
+ 	int err;
 +	int i;
-+
-+	if (WARN_ON(test_data.i != 10))
-+		return;
-+	if (WARN_ON(*test_data.p_ulong != 20))
-+		return;
-+	if (WARN_ON(strcmp(test_data.s, "abcdefghk") != 0))
-+		return;
-+
-+	for (i = 0; i < folio_size(test_data.folio)/4; i += 4) {
-+		u32 val = *((u32 *)folio_address(test_data.folio) + i);
-+
-+		if (WARN_ON_ONCE(val != 0xdeadbeef))
-+			return;
-+	}
-+}
-+
-+static int __init test_kstate_init(void)
-+{
-+	int ret = 0;
-+
-+	test_data.p_ulong = &ulong_val;
-+
-+	ret = kstate_register(&test_state, &test_data, KSTATE_TEST_DATA_ID);
-+	if (ret) {
-+		pr_err("register failed %d\n", ret);
-+		goto out;
-+	}
-+
-+	if (!is_kho_boot()) {
-+		ret = init_test_data();
-+		if (ret)
+ 
+ 	if (!kho_is_enabled() || !reserved_mem_count)
+ 		return 0;
+ 
+-	err = prepare_kho_fdt();
+-	if (err)
+-		return err;
+-	return err;
+-}
+-late_initcall(reserve_mem_init);
+-
+-static void *__init reserve_mem_kho_retrieve_fdt(void)
+-{
+-	phys_addr_t fdt_phys;
+-	static void *fdt;
+-	int err;
+-
+-	if (fdt)
+-		return fdt;
+-
+-	err = kho_retrieve_subtree(MEMBLOCK_KHO_FDT, &fdt_phys);
+-	if (err) {
+-		if (err != -ENOENT)
+-			pr_warn("failed to retrieve FDT '%s' from KHO: %d\n",
+-				MEMBLOCK_KHO_FDT, err);
+-		return NULL;
+-	}
+-
+-	fdt = phys_to_virt(fdt_phys);
++	for (i = 0; i < reserved_mem_count; i++) {
++		struct reserve_mem_table *map = &reserved_mem_table[i];
+ 
+-	err = fdt_node_check_compatible(fdt, 0, MEMBLOCK_KHO_NODE_COMPATIBLE);
+-	if (err) {
+-		pr_warn("FDT '%s' is incompatible with '%s': %d\n",
+-			MEMBLOCK_KHO_FDT, MEMBLOCK_KHO_NODE_COMPATIBLE, err);
+-		fdt = NULL;
++		err = kstate_register(&kstate_reserve_mem,
++				map, crc32(~0, map->name, RESERVE_MEM_NAME_SIZE));
++		if (err)
 +			goto out;
-+	} else {
-+		pr_info("restoring data\n");
-+		ret = kstate_restore(&test_state, &test_data, KSTATE_TEST_DATA_ID);
-+		if (ret) {
-+			pr_err("restore failed %d\n", ret);
-+			goto out;
-+		}
-+
-+	}
-+
-+	validate_test_data();
-+
+ 	}
+-
+-	return fdt;
 +out:
-+	return ret;
-+}
-+late_initcall(test_kstate_init);
++	return err;
+ }
++late_initcall(reserve_mem_init);
+ 
+ static bool __init reserve_mem_kho_revive(const char *name, phys_addr_t size,
+ 					  phys_addr_t align)
+ {
+-	int err, len_start, len_size, offset;
+-	const phys_addr_t *p_start, *p_size;
+-	const void *fdt;
++	struct reserve_mem_table *map = &reserved_mem_table[reserved_mem_count];
+ 
+-	fdt = reserve_mem_kho_retrieve_fdt();
+-	if (!fdt)
++	if (kstate_restore(&kstate_reserve_mem, map,
++				crc32(~0, name, RESERVE_MEM_NAME_SIZE)))
+ 		return false;
+ 
+-	offset = fdt_subnode_offset(fdt, 0, name);
+-	if (offset < 0) {
+-		pr_warn("FDT '%s' has no child '%s': %d\n",
+-			MEMBLOCK_KHO_FDT, name, offset);
+-		return false;
+-	}
+-	err = fdt_node_check_compatible(fdt, offset, RESERVE_MEM_KHO_NODE_COMPATIBLE);
+-	if (err) {
+-		pr_warn("Node '%s' is incompatible with '%s': %d\n",
+-			name, RESERVE_MEM_KHO_NODE_COMPATIBLE, err);
++	if (map->start & (align - 1)) {
++		pr_warn("KHO reserve-mem '%s' has wrong alignment (0x%pa, 0x%pa)\n",
++			name, &align, &map->start);
+ 		return false;
+ 	}
+ 
+-	p_start = fdt_getprop(fdt, offset, "start", &len_start);
+-	p_size = fdt_getprop(fdt, offset, "size", &len_size);
+-	if (!p_start || len_start != sizeof(*p_start) || !p_size ||
+-	    len_size != sizeof(*p_size)) {
++	if (map->size != size) {
++		pr_warn("KHO reserve-mem '%s' has wrong size (0x%pa != 0x%pa)\n",
++			name, &map->size, &size);
+ 		return false;
+ 	}
+ 
+-	if (*p_start & (align - 1)) {
+-		pr_warn("KHO reserve-mem '%s' has wrong alignment (0x%lx, 0x%lx)\n",
+-			name, (long)align, (long)*p_start);
+-		return false;
+-	}
+-
+-	if (*p_size != size) {
+-		pr_warn("KHO reserve-mem '%s' has wrong size (0x%lx != 0x%lx)\n",
+-			name, (long)*p_size, (long)size);
+-		return false;
+-	}
+-
+-	reserved_mem_add(*p_start, size, name);
+-	pr_info("Revived memory reservation '%s' from KHO\n", name);
+-
++	pr_info("Revived memory reservation '%s' %pa %pa from KHO\n",
++		name, &map->start, &map->size);
++	reserved_mem_count++;
+ 	return true;
+ }
+ #else
 -- 
 2.49.1
 
