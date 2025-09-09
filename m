@@ -4,91 +4,207 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B82BCAC587
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 06:42:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74A2ACA0FED
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 06:54:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C54DB8E0006; Tue,  9 Sep 2025 02:42:03 -0400 (EDT)
+	id A9E5F8E0009; Tue,  9 Sep 2025 02:54:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C04CD8E0001; Tue,  9 Sep 2025 02:42:03 -0400 (EDT)
+	id A75C28E0001; Tue,  9 Sep 2025 02:54:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B41F28E0006; Tue,  9 Sep 2025 02:42:03 -0400 (EDT)
+	id 964BE8E0009; Tue,  9 Sep 2025 02:54:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A03F68E0001
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 02:42:03 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 51757119CE3
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 06:42:03 +0000 (UTC)
-X-FDA: 83868766926.13.DBEC9CF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 9352C2000B
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 06:42:01 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=i6eCdJim;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757400121;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7F34B8E0001
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 02:54:21 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 030501A03DB
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 06:54:20 +0000 (UTC)
+X-FDA: 83868797922.28.9421A6E
+Received: from OS8PR02CU002.outbound.protection.outlook.com (mail-japanwestazon11012024.outbound.protection.outlook.com [40.107.75.24])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 8B15540004
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 06:54:17 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=vivo.com header.s=selector2 header.b=Wdox3k9F;
+	spf=pass (imf27.hostedemail.com: domain of liulei.rjpt@vivo.com designates 40.107.75.24 as permitted sender) smtp.mailfrom=liulei.rjpt@vivo.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=quarantine) header.from=vivo.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1757400858;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WAl5T2uzyYRA0jhvrrnRIAi+v5sD5GASLiZc32IGpkA=;
-	b=usyJhEA49jCj1cZvTwLSeNS+sYVar1NZcCMezsFIUf9XmwOlZMKZAkMBjP0mTu9vcn6ohn
-	WN+Doin8zfQwwCsPoMMcNqkn1SWZNX/ydZFihY+cIkdlT+b6qPB5bJvD/GOT3bPGhjtbjC
-	hD9N7sCccsn5CV1J7mCrvVkn9ov+ytQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757400121; a=rsa-sha256;
-	cv=none;
-	b=inN7JNnOjFtmfd8U0S71aKRXX8umzvtYydGqY/FrCxufSpqXpgZfjhZkxBv7zvr3QlgeVE
-	EoqGJTNKMrLwoAioROi+jmDJ000E6u3h17iRv6NRUkqe6R+7zw1ivkoM49eLOXJaS7JzNL
-	mPAa0PYdS+bzNDsWDjw4ireGNKn0k+M=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=i6eCdJim;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1BECC438EE;
-	Tue,  9 Sep 2025 06:42:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1D94C4CEF4;
-	Tue,  9 Sep 2025 06:41:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1757400120;
-	bh=z9USPhHY+9Jdat5kLEGPJra+nU71S84ypnUOyEpudyU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=i6eCdJimsH7UduTxeneMp12UCWtoA686ChRmjfa2V41DB9KViGwygBjNs2mPN4gYd
-	 xFa6ux6/vPlFwRaAyjcA+Jo20+xRxOkFhdkTj3m1+/GCa77hnN+t7tQCdMNkkyQGrl
-	 dZK0O1Irshrlw0ro5kpeFROad4MAdnzpVg9iTf+Y=
-Date: Mon, 8 Sep 2025 23:41:59 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Youling Tang <youling.tang@linux.dev>
-Cc: Jan Kara <jack@suse.cz>, Matthew Wilcox <willy@infradead.org>,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, chizhiling@163.com, Youling Tang
- <tangyouling@kylinos.cn>, Chi Zhiling <chizhiling@kylinos.cn>
-Subject: Re: [PATCH] mm/filemap: Align last_index to folio size
-Message-Id: <20250908234159.01dcceb3be97d4db541cf686@linux-foundation.org>
-In-Reply-To: <953544be-1be5-4745-a027-e8c0be7b027d@linux.dev>
-References: <20250711055509.91587-1-youling.tang@linux.dev>
-	<jk3sbqrkfmtvrzgant74jfm2n3yn6hzd7tefjhjys42yt2trnp@avx5stdnkfsc>
-	<afff8170-eed3-4c5c-8cc7-1595ccd32052@linux.dev>
-	<20250903155046.bd82ae87ab9d30fe32ace2a6@linux-foundation.org>
-	<bv4t7a6boxh4dmjl7zsmhd74wm5hyfpdivypmrqerlpn23betz@tw52mlf4xf3s>
-	<953544be-1be5-4745-a027-e8c0be7b027d@linux.dev>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ryh63fcsae48xksms7wfr8tzwuw9uyus
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=YVN6pfGfExzXJsY4/vdd6IKwITycJNZ4RE4IZujmAN8=;
+	b=VasK3cC+J9cXxr4YyFoUMtU6rY8kYZESJf81U0WTWQzmgjFqQYPA92FhZ4ovK4TghWJgrE
+	PnyU+71MBTrLd5xndpPsWggF3R/ZZwIZHx94fIJfebPZPAJM84XcyZRfESZCNDDyGzA0k2
+	Mf8Nly2jvOoMuXLknrnHQcQXnf6tfeM=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1757400858; a=rsa-sha256;
+	cv=pass;
+	b=QbuJ5maYjxpaJELxB8zfMf7m8ApG32NwVXqHZ50I1eI3Ve8/7oD1RbxB3ZkpKV1KfsimAP
+	0XmwdSiG2PzKOSHeENx9PXqhtzqmHvt3D9SWPZWDz121eH8sRx9PBoTROiNAP2UMwTAm6m
+	SSjyWvXD4LMO+wgmZ580ESW10peXrGw=
+ARC-Authentication-Results: i=2;
+	imf27.hostedemail.com;
+	dkim=pass header.d=vivo.com header.s=selector2 header.b=Wdox3k9F;
+	spf=pass (imf27.hostedemail.com: domain of liulei.rjpt@vivo.com designates 40.107.75.24 as permitted sender) smtp.mailfrom=liulei.rjpt@vivo.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=quarantine) header.from=vivo.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ReaKPr77YY8p3yQlFzn1x5rx9W3hHFGm5oH+1dpJW817cVde9YPdPiUDKFCoYZn4oFnRIG1a/sZAayWb7V+luwoc2ceXN6AGD73UpcEcaB+sMt7Ru+hR7LUqf7ZB7BtevHRXavGYY4pyVwbylOVTIiPpLyx51sUurboz2yqWUnPt9uGBAzaTKqP7mEhdRB+r/Lz29scLuKFMLZYVr+3/73YzOQY1W0EHGogZKlZ+lL2VctS6VJz3Q1mNmGJ5yFXmXxqOMHypKnUvhD2uce9HQwIsDCoh0YNuDTkuz/M4lDDUOhtmCSwRSpXkuIj/soXWIGX4Dvl4+M/jDKUM6h2C0w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=YVN6pfGfExzXJsY4/vdd6IKwITycJNZ4RE4IZujmAN8=;
+ b=JdxwlD9AXxuwdSr6XBe0CCJ58C15PnGOWYEEPHhzf5PArsY2/814XHjh+Ju17UqadV2kE1V9+S9Ia1GZRZBRZeZyaetY3LvX705zjbcDI3y0tBTgRanI1Hi1CYuYQLlUC4RBDtF2bRWPPpSqmXCw1cZsKUHva1fOIuXxg7wNy/UA01SsUjcC0g0Ry9xcHCgvo5hEN6UkfxVIHb9+e1UI8FJ69HE/xRgub80mA3zJSQqhlm9Lw468riGuhmddfTlr2NtPXPGfmT4Rk3lMhfd3DFAr2l4MliCeM01cK3Q3qg5Y+1K943mJSDw8RMtkElVLGu/8wlyTlE84CIgOI0U0iQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
+ dkim=pass header.d=vivo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=YVN6pfGfExzXJsY4/vdd6IKwITycJNZ4RE4IZujmAN8=;
+ b=Wdox3k9F3iRe25t9KvscdB56F646Un7ouQcvEL64RyWW77LIRGYTYvSWToQ5iJWAIPJlA4+hlu6QU8h0a4lMUwksG6P/uUVQ8ymml8fHK1EecsgSFfwn0L3SNSuXz1jasnvEruORasrkqXxTmdUdJ7I0Pr7HvAGPQ+0fGq7M2ce/UASvzleP6qRCJdLxxws3ngKlFV+VeYPfjQLLUHqxRqfrb84HnwK4fz1JmdTw0JWqzs2Eh2cnzvC3SJfk2jM2MshbyXTVmnMuiXhYRJqAFrWsEFqmXpCa8yZVACiVBgG+dkxia8psvyvqCFeyUHGpa7tnhn1T62T5hQ9dPksbew==
+Received: from SEZPR06MB5624.apcprd06.prod.outlook.com (2603:1096:101:c8::14)
+ by SEZPR06MB5897.apcprd06.prod.outlook.com (2603:1096:101:e6::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Tue, 9 Sep
+ 2025 06:54:09 +0000
+Received: from SEZPR06MB5624.apcprd06.prod.outlook.com
+ ([fe80::e837:10e3:818e:bdfd]) by SEZPR06MB5624.apcprd06.prod.outlook.com
+ ([fe80::e837:10e3:818e:bdfd%4]) with mapi id 15.20.9094.021; Tue, 9 Sep 2025
+ 06:54:09 +0000
+From: Lei Liu <liulei.rjpt@vivo.com>
+To: Michal Hocko <mhocko@suse.com>,
+	David Rientjes <rientjes@google.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Kairui Song <kasong@tencent.com>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Baoquan He <bhe@redhat.com>,
+	Barry Song <baohua@kernel.org>,
+	Chris Li <chrisl@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Zi Yan <ziy@nvidia.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Chen Yu <yu.c.chen@intel.com>,
+	Hao Jia <jiahao1@lixiang.com>,
+	"Kirill A. Shutemov" <kas@kernel.org>,
+	Usama Arif <usamaarif642@gmail.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Fushuai Wang <wangfushuai@baidu.com>,
+	linux-mm@kvack.org (open list:MEMORY MANAGEMENT - OOM KILLER),
+	linux-kernel@vger.kernel.org (open list),
+	cgroups@vger.kernel.org (open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG))
+Cc: Lei Liu <liulei.rjpt@vivo.com>
+Subject: [PATCH v0 0/2] mm: swap: Gather swap entries and batch async release
+Date: Tue,  9 Sep 2025 14:53:39 +0800
+Message-Id: <20250909065349.574894-1-liulei.rjpt@vivo.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG2PR04CA0176.apcprd04.prod.outlook.com
+ (2603:1096:4:14::14) To SEZPR06MB5624.apcprd06.prod.outlook.com
+ (2603:1096:101:c8::14)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SEZPR06MB5624:EE_|SEZPR06MB5897:EE_
+X-MS-Office365-Filtering-Correlation-Id: 896aec90-430d-4561-0ac2-08ddef6dad36
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|42112799006|1800799024|366016|52116014|7416014|921020|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?vm8KWCz6V/O/91BfMTTHkoaklQE5QdVW/LDq5LzrEg+Z0yTlIBGzRqQ6e2W0?=
+ =?us-ascii?Q?fyiFS1zEXL07r4obHWrazDuvZ1079b1FRVgURJ4Jeozd61h+wWqta3SNx1Mi?=
+ =?us-ascii?Q?tMP7l2pJBWQZn4R2AR9qf9EJa+oNnSBoQzGh9LXeB98fQrEVxJi7MYx71/8G?=
+ =?us-ascii?Q?jDanMzALA4RbKnlMD+F1fs5B7Wc18hesSN1eMvUGQInWrg14yTIwXAaZKB8N?=
+ =?us-ascii?Q?3UoQIwp/PAaeNiGMs7iA4MerYDscWjKr9RRnF3p5GzC6A0vSmXhWsi1Ftjqi?=
+ =?us-ascii?Q?kuRlax15nN5T+Am1wQoe83t+coJHOf28k5wMZGusuFdb0xnot6UxI06u/HIg?=
+ =?us-ascii?Q?TKYAAOCPYN1E784M/ypcqrlXr08sxTiODYsNTS+9lbc3iyojuJIhtnml1TH/?=
+ =?us-ascii?Q?mAWP/2Swx0SOtT4Sdt6ZsezVFlskep0fqKhRdb3ubmeDkFN5/X83Ku0EsuUr?=
+ =?us-ascii?Q?wYM0W1xdnmeUdQhiWi421QbwS6v6kTmr1DfPP1WxyfcCSaR54bX6KZY1Kk/d?=
+ =?us-ascii?Q?Mg48EWw9SsxbJRF1ruUqJxdWfozVMPfx/GmKobFLNrDPR0PHrB6EFF+Llr6O?=
+ =?us-ascii?Q?1cjy6zg5Svfzm1e5qp5GWXKWtU689wSe91a6UMJYnMSrjqjQaLCj9CSS322X?=
+ =?us-ascii?Q?Zzlbblo6luaEwxgvAYUxQybzimEuTS3EkuCIin9cOW1UZdxTN6eD6ibm8Zvq?=
+ =?us-ascii?Q?h9edqhFvr47FkX1JXfks+iGbFyD0Vr0HxpYSulagaBTf+b0tAycWRLZyENlL?=
+ =?us-ascii?Q?uaJJuBg88w5cqYuxbU52e0xfcp0njxOfcgrg9jqP5OjR/xQjlSvSZj2RlGEr?=
+ =?us-ascii?Q?ftcTddmosTrfKhYr70YoCqqduLnTvd42/7hBwjs8CRtrvdJxnutdA+2CP8Iq?=
+ =?us-ascii?Q?roc3XGvcLuu+LIRLWtEOiqAatHtN9L3ieNwigRvdwuVC0gG5XTzEDDFJhT3V?=
+ =?us-ascii?Q?BCs64tvEjqX2bYEmqATor9DYghVZCOKPpf8Xuo4HW+ROu+ANynMD+KTkQfVQ?=
+ =?us-ascii?Q?TRUcyNLPsC9S3UlZUP+ZVA90QaeKNfva8VkP8Mr9EN2IpCOK3HHMD74aM86r?=
+ =?us-ascii?Q?KFguQu7vH825iLoO+UH4A1INvUPF0HkCLdWBrw5Bjqr+BCH0qZ+1mjLkPJEY?=
+ =?us-ascii?Q?gEEdIfQs0xjurawWR5cR02TVNyGD4GzMUBJyqMgz5GdRiUta9be6ri0YKhj5?=
+ =?us-ascii?Q?hes6Sls7ix7+OVz7PHyab9tWDxHXGgXP+yV8JYrh4CLTHf4RCC9H2sIbw1jV?=
+ =?us-ascii?Q?imnobMoKEuBghzi8Qgqgz2u8QybQVaxcS7ZwvS4PGEjVeELiXRW9o8Hplooo?=
+ =?us-ascii?Q?yyK+tWhq+k1SD/7okzdCWMjE6zASy+bG84nQN/QSFwFofkmQpaEMHYf0fqwy?=
+ =?us-ascii?Q?Er5BeVJ95jHpF8vsy6PlX8gOBQobgNPb6EV34bsTqUSoRWKeJIu63bg6zTZd?=
+ =?us-ascii?Q?2CCswRcceS/Z9Ku1V03m85KBezlFQHksWmk0Wl8w2r7jwzjX2O9RTBB841BJ?=
+ =?us-ascii?Q?kkRbNKCUzvau8g5bm5W/sG3PG9hLHIOf77bX?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SEZPR06MB5624.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(42112799006)(1800799024)(366016)(52116014)(7416014)(921020)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?+tQ5oOVbA+GZ0hea7yta05TmAJUJeQdBVvrFTzc4TxJnt5oPnHT4Lt9sfhYc?=
+ =?us-ascii?Q?WX+/+MtpZ+YWZbF1ZlI0B8K0FgmhLhwvtuPP/FAMIFfZpLSPFAf5Z2ocL4fY?=
+ =?us-ascii?Q?FnqB0278PBI58GCg3n7F12F7ve9sIyzPFkdmDzUAIV2Knun5c/1tIck45lNx?=
+ =?us-ascii?Q?U6nFtTKUulDc8av7/9zQKzI+41K98rD6JG+qJ0Sxi99CX77mBZr8+DaencGo?=
+ =?us-ascii?Q?qAwTfAJ21SEggqQbStjs+JrasKDv3IiKs8uLNe2HqPuhKgyoUOobqNNHX78R?=
+ =?us-ascii?Q?jzxUN9IM8pG6dMr16OSZDW5Osw59CkJlObi9y8br18f68g7tp/tnkH0DlXa7?=
+ =?us-ascii?Q?8VwcEmzdBLn10d/LZQEoDlBpqMiNvEnqddo0dCqwnBV1Nt2IyA03OZVVbzK4?=
+ =?us-ascii?Q?P+qefcp9wNcmKkrCH4///5tSWSsKAXTGZ4kBrwM3dgVD7FJzr167q4ANOCWI?=
+ =?us-ascii?Q?oMEUYJviGqSzfH3WvmWS1402OEDaJGTxHlB5/AHs7f+GVlBlwvduH5DhXVxD?=
+ =?us-ascii?Q?RCN7Bio4kod11qjXUKNeV+Y7TfLfEFw+3b7g0RON20LicNpL3gjLUrWo3IVd?=
+ =?us-ascii?Q?UvEypJ4Rzi9mMwxC6v4WBWklb8fKpYX1A9Bx6a7gXICQzUpO/Sv//W+I6dZm?=
+ =?us-ascii?Q?Vy59+Q4CVwKcz1ePSVP8EaXhvGtJ1JQ16VTrFafGulRHJ7VFo505D3lHM8bB?=
+ =?us-ascii?Q?GaTNUOMVr2ljMzI1zWVe/pUBBN148IW27FufFi67/wx5PynV86qlfAq5zcGQ?=
+ =?us-ascii?Q?KrttSi9fxt/bud57E8WGaaLMqllZJMlr0STu97q3R+RNTWKrcrCS8ZBE16dF?=
+ =?us-ascii?Q?rvbSjFdM4NXEi/gzqeIsf8CnmqPqLvIK19BKYuszZ9N7xLui8D3GsVc1z9cI?=
+ =?us-ascii?Q?shm//zUoBrUAs6AcpJgheWB7ao6chrq09BMlWGjzi9YzAE6qU1RTbakz+dTk?=
+ =?us-ascii?Q?6WYb8aMRbFk8Zk/uPklf98delG/TL22mmgRR2c5PoFFm+2DIczseKD5sxVfM?=
+ =?us-ascii?Q?wO62g2Fl++pjxDx6Jr3mia4kd2OEugB121smxQ+gbMVGCOO1fmGV07Xr9CTl?=
+ =?us-ascii?Q?DLiKfeS71OMiymdA0XGm26ep8QMdFhnOr8irrdFFgMgJovPqPwxBzZ1/4WXO?=
+ =?us-ascii?Q?q+zbhFzrlGae01Sbl2le76bSW9T3LkVuRVSdtOZcxsmUyydXdijitQvXJzXw?=
+ =?us-ascii?Q?OdUHmBqSgq3OmqM33PsBdw8W8+AklQbFGXsw0XFlfBYWgAkHP330WoF9a9sJ?=
+ =?us-ascii?Q?8XoJXVjR2tSGOBhPrruTzQv9mbj+uReMa9ufcBlG70LN2TzMch+9isyTdyZu?=
+ =?us-ascii?Q?s0V2Logk/D+NWoxCVLgovtbtHqLbN5s6hcZbSQbeyPzp7SvUZSJ5EUO/O1N0?=
+ =?us-ascii?Q?/PbWLn6sQfR8AmSQXZCicXuKk/M4Ts/RXDu7q/8Kv92BM6Kfm/N36PfmWSV/?=
+ =?us-ascii?Q?/v8bT+jBczM8RSt6Wy0QNWYZTyH1fP8JVJ10PCx45omNKX6VEg8M2W2Sy3aM?=
+ =?us-ascii?Q?oaKRM3uTi4futEg5Ba6rkAW0fpPd4zGH0zL8c1mM2P8dO/dw2pdqLfWDGIlO?=
+ =?us-ascii?Q?icDgg0noJWaZZmmRQkTc+NR4dfPNUAdTfez1YbVI?=
+X-OriginatorOrg: vivo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 896aec90-430d-4561-0ac2-08ddef6dad36
+X-MS-Exchange-CrossTenant-AuthSource: SEZPR06MB5624.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Sep 2025 06:54:09.5562
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: xg/JxCx22KwGjpH4trAO0eA7SaOuRZH5sSMtYdbMOyuEKybU1HEm68aKDh636cRnX7NGYfLRq7M6wiB1vojFww==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SEZPR06MB5897
+X-Stat-Signature: a44saagnwx6bdbcud5rk7c5rf13qwrc3
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9352C2000B
+X-Rspamd-Queue-Id: 8B15540004
 X-Rspamd-Server: rspam10
-X-HE-Tag: 1757400121-976940
-X-HE-Meta: U2FsdGVkX1+/h872Y7E4EzIdelyT2NMMuIFP1XR0W8GhQ7KMWJgtl+3AipOtk/IKVvaiysJ+g8L6mgjz0N4ETBvE1dtPx0kHQrYboYEhDhwadkZxTw3CBfIC8a3hUC0XuvaOU7nIFmNpuZV1HpRpZlRt2ZoaGONXO4M8YgszfFyAPMuD4UlKCr+IiJ7kDvvc6sZSzCqN/Usp8HJJsAsYnaMrs5BFYXazCcJTfCU2E1jHqcxkBDpemqzrUn06bUrP55Sq5tiXQKAoUD4b8KICDqNBr+rxVMhHYgI36I9MhA0iRrCf0xwH8mHtaUxd73NE8p6NIMZTmK1i7I54pH1rOgI30JYO0Zj1jPCh+8w5F5ijfPgykKZLOVtfFYCcTKtPfWgOHPb3p80jlyWg+hhRt621k9cmDupflmOTSOOK+wlTfcgL3LwPaNxPQZ6CIdAMIvTIEyrHRD/e16HSfv5uIgRq9s0np/9cGcIJ1L+UvoYuto7IgHNqetiN8OJFv8/LqlPQRDyAAGQPKVvIXp/gy7JnUKw4098J9RMb5/WbGmhd+lMD/Ejox3rbKGVlF1z1ibOrnas3kAOD+f++aDLK/A2hv99s71m1F3i+GejtgF0prGRPjzIVeKBV9IAyww6ecAPD+kaoD0uD7muL4RhL7ad/iB3Zv4lMnWPe9Zbk0R9K2x70tmZVK9weSOinjQXRfONfu70xiSbyPaTERnht34cA5BcYo2u0f7GP0JRaZceDnWMGTFPpW9rEa2BOdf3E1WhjhPcAXH7Y2y/uuOaHKLN1aYtsyDULLdGu2dKYfyMPnYdjniqYCTL5/76QfyJPemfHTc71gQyOu9GlE+TkyheD6z0mW8Xt3SszGby/LFdjqhiivKGUza74jdtg0xs95Eb5zRIhJZbKGpe/+684NloziKXHkfROfF7sj7NQCvwU6WdUE1FHvGUzPoBxgUNDkju5rrOxo7fl6a+TCbO
- cvFpNR5i
- 5A0RgaNNQ4bcrsLHThN6tis5TE2ygZQBXf+JyidpjfQL2oHBRBYiZeD1LvO1/0hKwQpsv2dNM2yL/Y0UGcMLNeMldiftKoCUFSqcjDwsj1kRFkDlQglEmEn+kW/hLAplxpvCLj8VlR7uM7N+7BGxjn7ose1AaTDyAY7VDVL5GnR+2kZwytCDk02AnnVy+WyjicsQNYdUSv7dKwss5WcrTY3eNN5qjWh05fFRv4cCBeso2OUXNMx9lMGjPMbvirIIN/Ie85OqVf26qTcEoQiCNjKSOGWaIBg4A3uw8Ykuidoh6AlY=
+X-HE-Tag: 1757400857-43018
+X-HE-Meta: U2FsdGVkX18HgBsyK/hgaWYJmThmEItjQV9ib0pb9yHnx6nRXUGW9jGWizUBAxrRQ54H8W/I0cu+D2xDysH43vF0lidk7xHsMSOmmXv2NFqV0/OgnSM+IM84MJ/cnAXaiqnIJA9dzYwxMdTzcncQZTZAmnG738on/HttZcFSdrjJLVCRfrAllQHXdQ3yGEZy9zLPtD2YThli1qRpNB8JK+mGVkGQTdsjxyDjNQvlcyzAFOwX+onWoK7PU5DvAKTufNaSk0mxE1loQZwOsHAyfzQH/cstk5eN9JwKfRRJOFFhL9R8dbxrquVAMQYXcHSz+qrdnChqjUngaUI1U06yk7BKqjWCRhygWsHNG6wVLYW/oKAGaWxmjESls2OSZ2vuh2towLebghw50IId9EiQC3qHr6X//xwY0WhEL4HQdCqtxg7h1fLIFyzTNEPJ1ZvXIqK2crXv8MlAoXFZn1ZVWGSTQl4ydXfct6HKzMEVlECjXGeEnXSRiXzx3z0DCvoOebL4eQOIiU+U2X0ltFyRwbAfwOeeyf5vYEWBCLmaHvq8HyhsClycglMcfFLe2xvJIJMm6AwJmZPdGkAUDjVVRx14uT95mBHHw2eXcy05laOtTQS7t5GBgZOORZcJCofc8/bHuXQZ5UcAylImvuUU6Sk9pVaiXKyjj2lj00ta3fy/4ZmIteElILGE/u7FlFMuiTuMZJ0zqVu5RrJ4dTGfS/ZbGt9fEbc6H9dTUVKunsHN3Vx526oXRfZ/Qu5UYHxlhw8upKtm9nkt0bECQKRJjfjCfSiGZ9IiCruMK6Nrh30XcYdXAz+Puv5d1Y2bmyD/ThFF+RrGKv5u1LiJtcnNihuAEZXVzIoZeNOJy6cVBuJls+pc04J2fujainY8KkKXT6d63mdE4ZdzQD/oJMI2w9vD+cZqBq/FfB+Xz+Anf8JHJnUxtGgFH1KK9fnmgKIYfbQ+QWuV7iAI5eBPO4H
+ gMe1hMOu
+ Vtoex0046BHHJteqDSyFYd8qug9Ibnz6Gp2holoOkWSkVgkCZJaagPTVzhhtV0Bwib5OKSR0AuvFLG+8jiitslZtRgxvTLEQ38LVFNnvGkCT6IxtAyF8Gqy2CP54cq8cT9N2+Hetfdoq9VtoecszYyq6gOxVd7oNvNusqF5f9NL5ZB3R9zTU7GgWAvsozzr/0Yn4X+E0MS1/eEbyTsD+grNvZZW+l+/skYhnJ6sqTn+ZdMzNZS6lfGZQ+rYG+mYzHJELj8nnq/g/iiRiVhFFTHT4g59q29n3oBsssXg/zFhjV6UEY3EwbXDDk2gN51AUs3wI04c+HGkDf7iwp9FNP/P8b0uIVCT6fwIlL5dmkoN1TKbMngIxeRKUEbqb1JAiVcPxo5ybB165T/xQaioIAnjyAow66Vf+XolkWLBuRz0J+4lRqNxIwEL7L9hAhVMdFuXC/VWweJegj8oSj8HrA7gELhP7I6eV7J5yZbDxwoOGJlbCiKRx0wF5Iw+IPD7X+oOKDYYCrC9dhIMQPthbLN574saYc/2Scbew7umAOCIKiCpOinljW1weR599IzNoR7TYStgGq72h95VE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,14 +213,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 9 Sep 2025 14:15:12 +0800 Youling Tang <youling.tang@linux.dev> wrote:
+1. Problem Scenario
+On systems with ZRAM and swap enabled, simultaneous process exits create
+contention. The primary bottleneck occurs during swap entry release
+operations, causing exiting processes to monopolize CPU resources. This
+leads to scheduling delays for high-priority processes.
 
-> I see there are two fix patches for my patch in the mm-unstable
-> branch, should I send a v2 that incorporates these fixes, or is
-> it not necessary?
+2. Android Use Case
+During camera launch, LMKD terminates background processes to free memory.
+Exiting processes compete for CPU cycles, delaying the camera preview
+thread and causing visible stuttering - directly impacting user
+experience.
 
-That's OK, thanks.  Before sending upstream those -fix patches will be
-folded into the base patch and appropriate changelog updates will be
-made.  So the end result is as clean as we can make it and the various
-updates are shown.
+3. Root Cause Analysis
+When background applications heavily utilize swap space, process exit
+profiling reveals 55% of time spent in free_swap_and_cache_nr():
+
+Function              Duration (ms)   Percentage
+do_signal               791.813     **********100%
+do_group_exit           791.813     **********100%
+do_exit                 791.813     **********100%
+exit_mm                 577.859        *******73%
+exit_mmap               577.497        *******73%
+zap_pte_range           558.645        *******71%
+free_swap_and_cache_nr  433.381          *****55%
+free_swap_slot          403.568          *****51%
+swap_entry_free         393.863          *****50%
+swap_range_free         372.602           ****47%
+
+4. Optimization Approach
+a) For processes exceeding swap entry threshold: aggregate and isolate
+swap entries to enable fast exit
+b) Asynchronously release batched entries when isolation reaches
+configured threshold
+
+5. Performance Gains (User Scenario: Camera Cold Launch)
+a) 74% reduction in process exit latency (>500ms cases)
+b) ~4% lower peak CPU load during concurrent process exits
+c) ~70MB additional free memory during camera preview initialization
+d) 40% reduction in camera preview stuttering probability
+
+6. Prior Art & Improvements
+Reference: Zhiguo Jiang's patch
+(https://lore.kernel.org/all/20240805153639.1057-1-justinjiang@vivo.com/)
+
+Key enhancements:
+a) Reimplemented logic moved from mmu_gather.c to swapfile.c for clarity
+b) Async release delegated to workqueue kworkers with configurable
+max_active for NUMA-optimized concurrency
+
+Lei Liu (2):
+  mm: swap: Gather swap entries and batch async release core
+  mm: swap: Forced swap entries release under memory pressure
+
+ include/linux/oom.h           |  23 ++++++
+ include/linux/swapfile.h      |   2 +
+ include/linux/vm_event_item.h |   1 +
+ kernel/exit.c                 |   2 +
+ mm/memcontrol.c               |   6 --
+ mm/memory.c                   |   4 +-
+ mm/page_alloc.c               |   4 +
+ mm/swapfile.c                 | 134 ++++++++++++++++++++++++++++++++++
+ mm/vmstat.c                   |   1 +
+ 9 files changed, 170 insertions(+), 7 deletions(-)
+
+-- 
+2.34.1
+
 
