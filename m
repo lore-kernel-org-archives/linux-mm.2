@@ -4,110 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67C21CA0FED
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 04:25:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA07FCA0FED
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 04:30:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A114F8E000C; Tue,  9 Sep 2025 00:25:26 -0400 (EDT)
+	id 539148E0007; Tue,  9 Sep 2025 00:30:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C0B18E0009; Tue,  9 Sep 2025 00:25:26 -0400 (EDT)
+	id 4E9E86B0011; Tue,  9 Sep 2025 00:30:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 889D88E000C; Tue,  9 Sep 2025 00:25:26 -0400 (EDT)
+	id 426AE8E0007; Tue,  9 Sep 2025 00:30:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 753D28E0009
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 00:25:26 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id F1B93140306
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 04:25:25 +0000 (UTC)
-X-FDA: 83868422610.19.1AB4503
+	by kanga.kvack.org (Postfix) with ESMTP id 2EB286B0008
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 00:30:15 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E364F583A2
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 04:30:14 +0000 (UTC)
+X-FDA: 83868434748.16.8EE2B10
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 4E60820005
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 04:25:24 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=i9pJ18PL;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf04.hostedemail.com (Postfix) with ESMTP id 4023B40002
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 04:30:13 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ncqk3Z4A;
+	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757391924;
+	s=arc-20220608; t=1757392213;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xDNbPtcfIaumxIyBJ2RGyPKbViivs7UqJ3a/5CcYXNc=;
-	b=huUyhFHQZ2hvdd9nEHxx2Y4p1uIG6nD8+PFUwVpExcrySspzSX5dCgTZmWZSMCfyLSIWjc
-	ouMxtN4BWvY/m25HbqxtnpmyBpeM0oOIlzIPotYEMZTtXieB8yZqRDj1c7rUesiWJLN5R+
-	WYXmobwqK0cV93JgXwvZ0R1qhlmhkqI=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=i9pJ18PL;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757391924; a=rsa-sha256;
+	bh=2Ux8ek3ct63Y8ZcqYbhJbHNfCiCv8CvaOJ7cl+B3AUg=;
+	b=CPmboqPceBsK4ptMc9kaCvycNdjUHgEkPV758SaDV/mYOkz6TJKba4V5VJrBMuwrHjGtyu
+	/IO8ZI9e4eWKeyLAjEw4MisIIQZhJBSOxs8l4Rr/grOfjtkkkjXGl4PpAQtwClhZwL0YTD
+	WE8ggCsUj0s8kdHoY5RoTW1kOClYw7w=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757392213; a=rsa-sha256;
 	cv=none;
-	b=0qrSC854Lbgu6RlT9Zv+cYoq0F8F/b+VedSq+G1u5t8UsjhBkDf/racI69W0fX4Qp4+6Qs
-	23yJeV3FSS3on4LZxgsLMrewrV5A1/w97Sj8G258LTUDA3sgHQJ0DrUGX2WThH/mjWHcdq
-	7A5FlCpl5EmbynYLxh31mFaqCqDwdmA=
+	b=BxDuS8qoo1HPxfEFZdgMCJAzimy1sfhQIuWBgIXZ1X/7X18UuLnSJ5wtmBIglf/1ZsqmCJ
+	IS1OabGJM2mFOjyOFACNMv40o5hvxvXUr7aF3Lrk+LrTNsWTl7YUPctYtuK1UXGqec0Guo
+	fk/ggV3YcftFoyQr/uSGEGlic0CQaY0=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ncqk3Z4A;
+	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 05467449E2;
-	Tue,  9 Sep 2025 04:25:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F9D2C4CEF4;
-	Tue,  9 Sep 2025 04:25:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1757391922;
-	bh=RrzY4SDc18Ci2TyOyhCgyGYX7hmnnBCU2e/pxbH8zRw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=i9pJ18PLXuxKbzs/Iruw3PpLBgKXy9ssEffV+i7Q9gMAvoRB7kzd+iGGYRZ4Vjd4z
-	 nsdDoX1b8RjqFfB2U020ZMoVgWz32DH/3KHr9yu4W24HNyAdp4ShFmw5Gwb3/8dyxq
-	 YI0F046jfWbWEKO92OxW3X9LzuK+WjtFkn1xH7Gk=
-Date: Mon, 8 Sep 2025 21:25:18 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: David Hildenbrand <david@redhat.com>
-Cc: Eric Biggers <ebiggers@kernel.org>, linux-kernel@vger.kernel.org,
- Alexander Potapenko <glider@google.com>, Brendan Jackman
- <jackmanb@google.com>, Christoph Lameter <cl@gentwo.org>, Dennis Zhou
- <dennis@kernel.org>, Dmitry Vyukov <dvyukov@google.com>,
- dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- iommu@lists.linux.dev, io-uring@vger.kernel.org, Jason Gunthorpe
- <jgg@nvidia.com>, Jens Axboe <axboe@kernel.dk>, Johannes Weiner
- <hannes@cmpxchg.org>, John Hubbard <jhubbard@nvidia.com>,
- kasan-dev@googlegroups.com, kvm@vger.kernel.org, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Linus Torvalds <torvalds@linux-foundation.org>,
- linux-arm-kernel@axis.com, linux-arm-kernel@lists.infradead.org,
- linux-crypto@vger.kernel.org, linux-ide@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mips@vger.kernel.org,
- linux-mmc@vger.kernel.org, linux-mm@kvack.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- linux-scsi@vger.kernel.org, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Marco Elver <elver@google.com>, Marek Szyprowski
- <m.szyprowski@samsung.com>, Michal Hocko <mhocko@suse.com>, Mike Rapoport
- <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>,
- netdev@vger.kernel.org, Oscar Salvador <osalvador@suse.de>, Peter Xu
- <peterx@redhat.com>, Robin Murphy <robin.murphy@arm.com>, Suren
- Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
- virtualization@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>,
- wireguard@lists.zx2c4.com, x86@kernel.org, Zi Yan <ziy@nvidia.com>
-Subject: Re: [PATCH v2 19/37] mm/gup: remove record_subpages()
-Message-Id: <20250908212518.77671b31aaad2832c17eab07@linux-foundation.org>
-In-Reply-To: <64fe4c61-f9cc-4a5a-9c33-07bd0f089e94@redhat.com>
-References: <20250901150359.867252-1-david@redhat.com>
-	<20250901150359.867252-20-david@redhat.com>
-	<5090355d-546a-4d06-99e1-064354d156b5@redhat.com>
-	<20250905230006.GA1776@sol>
-	<64fe4c61-f9cc-4a5a-9c33-07bd0f089e94@redhat.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: rzipjpb6np8uicc3zdetbn4fq6qb4knp
+	by sea.source.kernel.org (Postfix) with ESMTP id 3360240478;
+	Tue,  9 Sep 2025 04:30:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1C88C4CEF4;
+	Tue,  9 Sep 2025 04:30:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757392212;
+	bh=XaDrtfjywtQdCC1M0mnTwMYse4SqpKCgiK0eeh290h8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ncqk3Z4AmlmqjSVH+RnWKfjmcxOmt0Il6EeReuZ2UkrQhoNG95On7Le+Rvyp7HqyU
+	 nnPcmGgsRpnP/b/eej6hbxJ0dq7f0CVBWAgdX+fPc88fYU1MvcIVU84kjLyvYld84I
+	 FZSk1hn4OiSX+gk4AwzjgpMyugqhyTcWEW5wy5uGY08iYZ9xLFNxsX3VgO0qaxGXWX
+	 wMk354AtbW8VjkYR7Zgy2Xw3r2GuYOysRAFs9TXUxLHZtRMye1/QssczFR7YiRD+/A
+	 1hoNBcDWHQTiwzJ+SY9BjtpuhXKago+0rV8pjqjMfY4OcgaEyRUgsDesiegTWLBmAZ
+	 XRVkozjIbD21g==
+From: SeongJae Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	"# 6 . 17-rc1" <stable@vger.kernel.org>,
+	damon@lists.linux.dev,
+	kernel-team@meta.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 0/3] samples/damon: fix boot time enable handling fixup merge mistakes
+Date: Mon,  8 Sep 2025 21:30:08 -0700
+Message-Id: <20250909043008.8651-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250908211845.bfc7299d783c361b10ae810b@linux-foundation.org>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 4023B40002
+X-Stat-Signature: us9umgso7fuynj177b59m4xhfzf3uko6
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4E60820005
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1757391924-412615
-X-HE-Meta: U2FsdGVkX19Iko8Za1bTTOqL2M9yno32XA8d1Olnep7mUm6x224ijohwKT4pEG9zNPh+ef0GWi+nujwLqF3w0tSHDZDzVlzB+pw+zFCDIiCl0oWT4uPjW+DVAuirOd+et+O61uYdZKSz9mV7H9vubfPdhhb7S+CXszMV2J/UPUYFETpfO2Z0EPe0pTbR+sG4czJF666E8KlGjHhdtPVvvbRbEXcLbiGm4Mbl8fdXvAVhKtXe2nA3WXr0/mdOymgYUsypjwlleMSxe6p/wIJSw9rQFkWDw7RFkhij0PPHJkyj/poV1cVo/0znRmClAWO4M7knecucfZCaVinrfkOQKo/VlqqasSUV/HsGP5LbDWL0+CCFJ+RGwuYlvgWPYBfQXsh8IfXIjRg17EEQr5rmAqvRv9kmXgLIVMlmp7D6HuNjjJNScr53/I/6iqaLXPH3E2ktAl5IVtUsplrMW6NtAQ7kcL1qCluMMJ53ySsBIBqtWcX15q5iM3fS3qNlE5lzQzFEhwHnArcqEQSWBSuVmJAJXj0ZUyMYsoPFNnigWegzptApFUoKYG9OGklCOUW3gsEGms/2JJ0ceG38EZ3Ug6/BAUU9FNgGHossgflPSn7A9GOGJo/AufpK7lLMqrypNASnC6htrXm4C+SPv9anqFLjELpNhl9PIWmzc9Xn3RCrqOFIogf5e1P4l4/aq/+zyBLdaMN3oUGSoFqYv5Z9J4BqH1eNGIMI9BTVuT4XnQ+OFr206ot2wjGZHOFguyk8AYhFYtj/gLx9pujKwj+3fKWoFlidvTgJfOh7mx5rlAKwZcfzG1b4YyBmglMQ9u4m/MK0aD4c/pf4izXBfj526UfRrGSY8YtRIQYgsGdrFYL6sKEgX6zrOUTlkJJxjWSGmhGAfVXWro/+QylKykxFMYbsODteIXxIVoK0uMdcCz8WzwC0cXfGkArMgUXh91VlDAJQNOfkZpM4RFI4WNA
- OfsqVICS
- D/u/HySVJB84EP8EtQ3G6TSfsWFiV8V6EN8BoYjwh6luZhcw9xn3Ddk/NSXow2TcLFYUoPl4RUlYgnCYvtzhZ1U3ZQ9xiwg5LTWnUa0EIT8Ad40UdQmh4BpnRLk5kLsmHop3+JxnjtwckPxBUcd1bllYnp3DC1tk03MCKPGeR01aW3lYTzDXn0N/sakXYG6VjgT0tmFBPBBpdguHZi/5QUoZhc6qaBb85evq0okXid27vkHEYDBLHuBdJ5ohQUKYDbJ+Nabac1ojBQzyyLoFuD2ajxuhxIyqLOEZL9QEcW9TthWafVsKJnX8MecKNXvVG5o0J
+X-HE-Tag: 1757392213-336716
+X-HE-Meta: U2FsdGVkX18dv2TKwO4vDH6mUwMBIMJOS2zIo6ukHvSexe5ic+xCtUYL60KD/djep7Jg3Llew0+9zgtoUm8UA+Khyq3KbDV4Z0a7CB1Skuqg+hwD6Zyj3d0z03PWzpdS1Xqn8gzLLurq9blzFInkhI6vuGHLtYfZjipKXLtmzm3J9ee9pdRJbh6mlVI4RCtnolGHODOuO2cZl9c68FUa00wkfNHSHC0Bmt/1GjJRvEpOv0gighzTuOfpiufq+0PYLNPjTxOgxaqUk3p3ZHzlqouXlJjaMsrBtYaYNl3iTgMbLeqi82FpzuDMyhTEk36LM1XvnFAgsb07l74sCin6poVEm6gKw5E7/dETFZqCz8CMg9nr9fJftQ6tQKtW5X3eDK0uNwKeskzU+kIAdTvgXvP3L5ZbzXP4ey0Vx5M0IdsYGTlV8nMMl91FtBzPT4chfLAOG6V38fibRhsOCqCTDBcQbiB/KvVLqZXKhN5b+XYzCHTWrwRbspGzQTT51weAkhkxS7S1ZOGwLZvN0ZkNKTtDrWMAM8hv3MbhfsPKOPCxYUB6RqdBp7xT05PSNtqUgQFS7FEIlQQ75V9dXa45lRcig6uMrPBKFY8rDwaRm5TqA5nnDECnrpfT9BsfyN+9neql14ObB2EmuzeiSSUdVe3k4jxK1cIPU9ldSxQwxIfSI8oUATWbm4FfRLO1kbnCm1aCtz16K/bO3D0ZV0exzXUJ5kyQKPmQov6ots+uG7fGcBdb8mNeYqRWYJccX8hckcdNv+VIPUv229nOraRw7TdcZSS402Eo0ijJPGqypjGME2yCOXLASEzXrvIkJxFXnadem//cTaaCnle04OPobe+NmZztRTRXeXbGgaLh0PB3Rz92REONUy0EOX3RrXzFFSROf6CTX4r7Ckx96Xvdbh83aKI70+FePpCzSrqvSh6wKSfEpBHFYaNp7NG0J7jzcbbjXBScP8pOloHffIX
+ A/MsYcO3
+ 7xJQd/Go/1IClb1h2MdUQJTC9TmV+ktdEa2umMz3uy0eLEIhXwvxhVSRvHWK/TF2JxtOw1Qs+dn7tuMXC+lrvNNu/PgBVKxtw+pIGVZJ0CZ0lwDhWumasNOTYgFQzndjmdkItPEGOPGZTr509C6jQwf1hggw8GfNXJ8ad1OYjs0dSVH1sJdDDuqm3vXE3atUmLaYvrRC6e9r/11+iNy6NJIc74Z1gSV2a9ZEvyMP80RU8M12rS5M/Dyuox2cKWCmqvb56GGESU8wm5tOLyy81DEJuTfRRa7H5jyKB
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,21 +95,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 6 Sep 2025 08:57:37 +0200 David Hildenbrand <david@redhat.com> wrote:
+On Mon, 8 Sep 2025 21:18:45 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
 
-> >> @@ -3024,6 +3025,7 @@ static int gup_fast_pud_leaf(pud_t orig, pud_t *pudp, unsigned long addr,
-> >>                  return 0;
-> >>          }
-> >> +       pages += *nr;
-> >>          *nr += refs;
-> >>          for (; refs; refs--)
-> >>                  *(pages++) = page++;
-> > 
-> > Can this get folded in soon?  This bug is causing crashes in AF_ALG too.
+> On Mon,  8 Sep 2025 20:51:41 -0700 SeongJae Park <sj@kernel.org> wrote:
 > 
-> Andrew immediately dropped the original patch, so it's gone from 
-> mm-unstable and should be gone from next soon (today?).
+> > > > Note that the broken commits are merged into 6.17-rc1, but also
+> > > > backported to relevant stable kernels.  So this series also need to be
+> > > > merged into the stable kernels.  Hence Cc-ing stable@.
+> > > 
+> > > That's unfortunate, but the about doesn't actually tell us what this
+> > > series does.  
+> > 
+> > Good point.  The issue is that the sample modules can crash if those are
+> > enabled at boot time before DAMON is initialized, via kernel command line.
+> > 
+> > Would you prefer me sending another version of this patch series with an
+> > elaborated cover letter?
+> 
+> Please just send out the appropriate words and I'll paste it in.
 
-I restored it once you sent out the fix.  It doesn't seem to be in
-present -next but it should be there in the next one.
+Thank you for the guidance, Andrew.  How about below?
+
+"""
+First three patches of the patch series "mm/damon: fix misc bugs in DAMON
+modules" [1] was trying to fix boot time DAMON sample modules enabling issues.
+The issues are the modules can crash if those are enabled before DAMON is
+enabled, like using boot time parameter options. The three patches were fixing
+the issues by avoiding starting DAMON before the module initialization phase.
+
+However, probably by a mistake during a merge, only half of the change is
+merged, and the part for avoiding the starting of DAMON before the module
+initialized is missed.  So the problem is not solved and thus the modules can
+still crash if enabled before DAMON is initialized.  Fix those by applying the
+unmerged parts again.
+
+Note that the broken commits are merged into 6.17-rc1, but also backported to
+relevant stable kernels.  So this series also needs to be merged into the
+stable kernels.  Hence Cc-ing stable@.
+"""
+
+
+Thanks,
+SJ
 
