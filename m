@@ -4,115 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19F82CAC582
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 20:10:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECB6CCA0FED
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 20:11:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 60B668E000A; Tue,  9 Sep 2025 16:10:05 -0400 (EDT)
+	id 262818E0012; Tue,  9 Sep 2025 16:11:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5BB9E8E0001; Tue,  9 Sep 2025 16:10:05 -0400 (EDT)
+	id 214658E0001; Tue,  9 Sep 2025 16:11:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4AA378E000A; Tue,  9 Sep 2025 16:10:05 -0400 (EDT)
+	id 1505D8E0012; Tue,  9 Sep 2025 16:11:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 30C058E0001
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 16:10:05 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CD52A1A0632
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 20:10:04 +0000 (UTC)
-X-FDA: 83870803128.18.DBD3421
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
-	by imf24.hostedemail.com (Postfix) with ESMTP id F3EFA180004
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 20:10:02 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=MQcs0CyE;
-	spf=pass (imf24.hostedemail.com: domain of surenb@google.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 052A98E0001
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 16:11:07 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9CBAF13B464
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 20:11:06 +0000 (UTC)
+X-FDA: 83870805732.16.C0D5196
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 74999C000D
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 20:11:04 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=OhQBNah4;
+	spf=pass (imf10.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757448603;
+	s=arc-20220608; t=1757448664;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t6moEsQrMOvaJDyHg83dzxwUYK12SAvE5EtoliwNDps=;
-	b=Uh9w7CqAFjzbntjrQBTaDETiGVpEwz76rg4mha/jU6Kxs4PWmSgfkPOWhdjdhT9gDounLB
-	YtKdDA7nBZn/o/LFVGRvmR/JlI0BE4PulTlo+aXbeG4jBSC10ySH/qtyxi2+2d06PIl9zY
-	R+ThuKlCL9C5/xv4x8aLybTRwbVs74g=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757448603; a=rsa-sha256;
+	bh=f4eYRTxjvnA6MW/zv+G899pRJVXBN4zrOcQfsvxM2GA=;
+	b=zGcDPwcHMMHpVcuKnOPV9dt/wp785eRuXucHYZx3DVjNvVsoK9DPXL5qvGeoZ8ZtlgwoPo
+	T8Yn6g/rju6lOh0MoIc/qnanbIIYtXITg+fFAKbeRkYMwVDZVFifn3yhn/m2LYpc2NVGzr
+	+CrjUAho+mhDUmtRJJ4xE0y/6M7OuT4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757448664; a=rsa-sha256;
 	cv=none;
-	b=y816risayM7K/9G+jzvKkMQ71zhuSYI1Wsmf/jLCUXKaNLcb9wBU7C2itHqVU9XhngD9YK
-	94ghf20JX4SBWkj9GZ2FFw/v8kai85N9a07gGJ9ZUPipie2IdbyK52tTpFLmd1+/ot+Kt5
-	uq++AHf3xqPRA+0c7/x02MLWPbymv6o=
+	b=LrorR4n43oGqAhsY9ZBNZYs/vB4izIw75WM5Xa3drCOHg57bTnGjpDIcxplIg+IBaVJW22
+	WRu8bukEc7h/1oPVjgL5IOLYi1amh/V4Q4FZ9YU8Pa4GJypvChLJwHHVTMZSRaAQfzWsla
+	UOxEKozmk9HZ9fcThyRv6y5LBSi81t4=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=MQcs0CyE;
-	spf=pass (imf24.hostedemail.com: domain of surenb@google.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-4b5d6ce4ed7so111811cf.0
-        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 13:10:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757448602; x=1758053402; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=t6moEsQrMOvaJDyHg83dzxwUYK12SAvE5EtoliwNDps=;
-        b=MQcs0CyEh8osRH91KO62SDU4ecvDXJ8Vi5yUhqsBUGWHQUmtrAsv4so5FPljz2UNDj
-         PIIIgxvNtMkMxM768Zb9u10FsE1mczBs9pSl/Ka80fkMjWFBSzkTFKWrff1UPxLGQ/DD
-         mbkkqVKHt3dL+rW1x9niyzuozbLi9H9nuSRXlKBKQA9ubOHGSQTvnf/0YcR/N+mr8Pt5
-         RbBXyIYPOewOfmQGnDvegekTgfvTBqIqKsu6m4V/73aOCbpL32S1Ls87PItfIki7ymRS
-         bFOZCkUSzsY50GtKwxFPUBqQEW4qkcs18roDd72JuiQbIZXvdIElk3urWXn6SuW2mAYl
-         4P0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757448602; x=1758053402;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=t6moEsQrMOvaJDyHg83dzxwUYK12SAvE5EtoliwNDps=;
-        b=RC2Korkasx6CInhc7uOWvEPLRWAsYK0uc08XesQ93G9tny7Rtbk7haxhLiz3p61GO+
-         Hja5ACB3xtl/w7zbTqv997oBfne/4hfuCz0iNvig/GKJskgZI8TAMZAf4Iegf710Ss4I
-         UVoDZyb3xPibjniyhaFng4jK3CuAZ0aJVT3+2uwk3FCij7EpIIkjPKAGhhsG67DHyLvZ
-         bg/jXjgm72AeVKIhVzoD4FnbuRRgLYYpXDtXNk+MQm/0VMHQTwZFSghIc1bBkui9q1My
-         XKMUguNw85Y0w0wmWKYCIzbFs7ExmLI1eBX04HsbumHGBXpuQzqR/gidO6jJXQGXmoVl
-         09YQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVJZQWUpm97vCeO9YFSrXk28AUdbgOOvjKnk0x6AP0E1wF4KIp4SesUKm7F4NJGYfgREW95LoFeww==@kvack.org
-X-Gm-Message-State: AOJu0YysQ5BhYKQk5Cg2UMQ2u82q2oZJD/yA0QupgusnR2OJZDc85DDe
-	6XwZJKtrrZWA4w5hTLdazJfHDhwgwf7OpiCz6y/67F0hY8SSkgC+/glfOJ7wqwu9kBTvNPsD8X4
-	iAaDXTRMu+w0P1GEasWZ8QV+4QPml3GSMO7sR8Bab
-X-Gm-Gg: ASbGncu2x1zMA27uNHyuhu3wRASM+UgCsmJvIaWdsrxTWKZ1xUclfEKlQS0g/atZdcZ
-	WKW01wx+YQTqZMLiwNkg4GB12FxECl6rydHaoUh4zC/vbK10R36f2XFktmhS7f6eOZ0HxYH6oJf
-	+gLA+EZIzcy/AD6R7bWuX6fEVX4GYXdsmLX4c3stAHcB+BihIOBl4JK4vd2696lij1QBtCZ0vSV
-	v6tms6RhfVJqZcG3AKsxCTG6jkMwg4RQ1K3HEtUZeU78/3qHt05xCc=
-X-Google-Smtp-Source: AGHT+IHnHLlgpvqGEl14YzylQSH61T6ExMaMJwPOn7axIYhzTaqY2adH/yufFSZhoXIEb2CxQVDlO/GRoeTM7lDQUWE=
-X-Received: by 2002:a05:622a:14c:b0:4b4:9863:5d76 with SMTP id
- d75a77b69052e-4b6252075bbmr949291cf.8.1757448601620; Tue, 09 Sep 2025
- 13:10:01 -0700 (PDT)
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=OhQBNah4;
+	spf=pass (imf10.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Tue, 9 Sep 2025 20:10:43 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1757448662;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=f4eYRTxjvnA6MW/zv+G899pRJVXBN4zrOcQfsvxM2GA=;
+	b=OhQBNah4OLU8MJa4JvL0i4ShrB+X7l5Tv4/Pfk0Q2htMlWHDzjwUkXCIstGjBDfQ3He6DC
+	Ecg4o9i4CVGY/7MhNbAZYfMxqZ4pKNqbUPZkYkpGMxWWrBdlDibKWkTJ5ceTxZhH5ejSPB
+	RQzbrERB3ahhdPkvzIWJp3QRQXwtUSM=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Nhat Pham <nphamcs@gmail.com>, Chengming Zhou <zhouchengming@bytedance.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/3] mm: zswap: interact directly with zsmalloc
+Message-ID: <46xtfjznexpdlemxjwykin5k74oqomedb2fyli5jrb4xnquuke@ztcmxhmhlkx7>
+References: <20250829162212.208258-1-hannes@cmpxchg.org>
+ <20250829162212.208258-2-hannes@cmpxchg.org>
+ <r3dzlbqyvhaho5zuac7eba6pxz47zy3cz4lopxza3ls3ibadlh@6evm5aryyuxp>
+ <20250909150156.GB1474@cmpxchg.org>
 MIME-Version: 1.0
-References: <20250909190945.1030905-1-Liam.Howlett@oracle.com> <20250909190945.1030905-4-Liam.Howlett@oracle.com>
-In-Reply-To: <20250909190945.1030905-4-Liam.Howlett@oracle.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Tue, 9 Sep 2025 13:09:50 -0700
-X-Gm-Features: AS18NWCLA-Laybgj0BVgoTc0VsNcV6DuM6nWCtOdabz2PeHFWlEO9xtiR7vwsbA
-Message-ID: <CAJuCfpGSX3VMnFH3u67mKZTe1pXOYXoFc92XiU+TVjPs==5mcA@mail.gmail.com>
-Subject: Re: [PATCH v1 3/9] mm/vma: Add limits to unmap_region() for vmas
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, maple-tree@lists.infradead.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
-	Pedro Falcato <pfalcato@suse.de>, Charan Teja Kalla <quic_charante@quicinc.com>, shikemeng@huaweicloud.com, 
-	kasong@tencent.com, nphamcs@gmail.com, bhe@redhat.com, baohua@kernel.org, 
-	chrisl@kernel.org, Matthew Wilcox <willy@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: cfrbhttof3asmgdudd8jwgbfhdoe4a93
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250909150156.GB1474@cmpxchg.org>
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: gd9x64798ww8rjwcpemfksdqx14khoca
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F3EFA180004
+X-Rspamd-Queue-Id: 74999C000D
 X-Rspamd-Server: rspam10
-X-HE-Tag: 1757448602-12053
-X-HE-Meta: U2FsdGVkX19YtPY5ahhFSxzkST8pfISgSgliGJ7HYkjXlXwkZFPscr5xDSDSf3w3cQhZ4OqvUFcHo4c/yk9NCx0r/NMdjgFvpQHIWCaZ9rrYsmMtkajmOl7bZLQoRafLacEsTsKIRsRmHohj6Q/1orFn1Xy1m1roxn8c7p3lyBCJMXPiYLXYlVk4i8v1ZgcMtzr6i4Xi8JGPEw3/FlcU4Toey7dyjKtpSQRNoc700miKg5NLGiV7ulotFPbQo0ShLothAJWau3Fcymj/hzxlHPnKMkzv5w3cR3BDS+L5vJVf2IqtemSbY/LqoeAtmT0N+XXskg/SwK2GzGD54dP9uL6/wnD7aXJ+axmXNFTJocnx9rnTKateLaEnV5F14rZ7NqPbkbnFpburbeErujmXUFnRcc4KpmSrNE3cE2WtneeWNkCoqhZxXaA8+UtbBOUOibJHsZKxAwz0sLYIvmsENq9un7AYCYMlV4ymafvLDt5Otnwb0DOGvj8DiCZo1UGO4Gs0cxW4LPvyTYP0RytNyodU/O2BjjDAzcII3KgWNt2QvDiLNkhzkk8Z/MTH8XQuJn8MdJxScQ/CgoAkEWcIO0J8MnmoVafWtyeZMe/ScBsG5KtUMLqpVwvTMDu5Lxm9rA3cNVt3UdAViAJ13xakLbQMEJCfI22BQ+Skatbf3I3e/r3fihzKhTNwih2YuHpVHXUfXaefC6935ZQUR7JhKc2slHXpW7nUP2YZtz2On0+G/fU9F0z8PsKMinPiMdR1zYBcH5j2SlUjA59VLdlGZQ9ogYrQENZPaVv0Ufho9h6xRJ1pBs1jeCiN+WJ+xt6T2a4sHAuRpqkCKaq89P2gQ/RvK+vZhHHlqIFyb5GU0ndX1L6T8RJo1cdPekRLIl/YTxPSvX+60qxlSLG8qOGWaYsb/SnW2wSrpqGKMc2OhhsbjUWu7SvM1orX3LRsGl2+THFPyrfdeQY/Jyxjtik
- usFVO60w
- HYf0XYd+3qBkFmKvQ6PEHNWD8zyZTsppCW7ZRCcn2djPyDgYHIoTvBNCXP8FdWEets9In2SGtkPPGsf7jZK5RsVLpL9lgXp0qnwuBsw3CIoyTNACGnHm51p2A6VgQcumW1PUcjwDIn9ks3NHfvkgO9USVxww4OFAOWvfo5GRp9w8L9r7RcLX6CJbs21jsAy1Z5SpFoDrfGSMaE6SHTdCy1+0Qt1cbDXQdZdq6f7nVT9J+DtSrxKCTaflZZz+l3gkUXb9GOSBLUJlb56JqBTKh1UQc4A1jGizwotLKzDiXnbUyPCbF18UTBecyHBdPLNz8iy8J
+X-HE-Tag: 1757448664-792600
+X-HE-Meta: U2FsdGVkX1+cTHRRdKc+15RH6XZ0KLVCV0EMfh0rsYZIfS3T8Cm03eJAslzLoksaSWnvsoIB42imJAnjiqY4QqdApBFHogU/qNmqQwLApsoiKyca6TrZDGeflEfeCoxYApY03CdRZorYlD6ZypZZ1lJm7W1JM9vWeFDRZrb2OE2IKxbYV0PtjEF1GVzJaGBXky7L84tuXwfLq/vCJKttO4mTcABgEe72DbVMNsLiyoe8iCXxkTQbsc8REdDAzVGgUbAwvhHAzCghwWHzuWre1v+4rbRJF1l82J5/WYaQ5eUTsJfsZzg8cTt+dqOhe3UtZP194h6eNDlAvtK9A3ecMxtf4r2x7BYe7hmLyOi0Va9eL2LoGAO+Jdcb3G2az+P3lJ/O57DS4VbWqEkBBaNstK0yqg3EnplXMooDlSu00swCn96yizG8JzQxuoDqGhebuGRqJoxsMW73BE+701jLT+J6vG3QUjocRendkDwskP4zJLD03zEUd4zAJU13WAnnfyO444z2mB3iBdWm/sN+1geQSzzSKdSQj/TGZz8h2c9zhp9t8BFwYyplM9ooRnnYoiY8C7+DZ9Gy5O0QTyOE5KxTeWF9Dr6/oSkOezhSpFNH7pnWt54bTnkNsxF+tnri86/1KV+xFyLh0gdGTlJzsVuOsdjUoYXgaJGP/uwyD42PQ67qrUMCSAZtpK8pXpWpH7y0MxFszqsWfDJqtSsWkumYarT02SXmjBRWH0UbT2AkR1eOij+ihTeMW+PfZzroogKhC0FjM9xPmMlcR++CmBDhw6WBaQDzBnvp534RexU6UPcuQlKN0YB9UuG9cBq0OPsybOcrd56F2BpUBeBeOnzqHl8LrY0TioEZ/t4+pH4GgmRws0O8XB/2WPjKfd6nFFxgX6T/dhPqkdgHaL8Wf2VrlPorGZg1YFPhRaFd3h4F3uBjm4zUpuQf/A5ZL2wNDj3ARm+aNok6MtkgLp9
+ M5sjaiwV
+ RJ7GzCPfLaemed15FDM6WW32XZB3pvTJzyQQCE9jrSW66s/jkH9CpJF4E0aKu3VVi2vzLCzrBBIDDtOznCSK85E/IM4+492ZIMMzeMnJHAd/Bg0c9OkK2UK4cAr34ATEgCnlrv0InCdEQYvKLaFIwZ2TzeV7TW+otfErA0e410vzmrEC3k3KNmcr3RNfOkONr/TJ3mU2ZauqVMp9LIDPHb4NKHUxwk/TgfyJ//KgU3Ts1iRW2uL1C3HOupz3idhQuUI32z1NfCZwdh3ljKU/tthT4kcjR67At0YDyXfSJAQRmI7Q=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,78 +91,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 9, 2025 at 12:10=E2=80=AFPM Liam R. Howlett <Liam.Howlett@oracl=
-e.com> wrote:
->
-> Add a limit to the vma search instead of using the start and end of the
-> one passed in.
+On Tue, Sep 09, 2025 at 04:01:56PM +0100, Johannes Weiner wrote:
+> On Fri, Sep 05, 2025 at 06:53:15PM +0000, Yosry Ahmed wrote:
+> > On Fri, Aug 29, 2025 at 05:15:26PM +0100, Johannes Weiner wrote:
+> > > zswap goes through the zpool layer to enable runtime-switching of
+> > > allocator backends for compressed data. However, since zbud and z3fold
+> > > were removed in 6.15, zsmalloc has been the only option available.
+> > > 
+> > > As such, the zpool indirection is unnecessary. Make zswap deal with
+> > > zsmalloc directly. This is comparable to zram, which also directly
+> > > interacts with zsmalloc and has never supported a different backend.
+> > > 
+> > > Note that this does not preclude future improvements and experiments
+> > > with different allocation strategies. Should it become necessary, it's
+> > > possible to provide an alternate implementation for the zsmalloc API,
+> > > selectable at compile time. However, zsmalloc is also rather mature
+> > > and feature rich, with years of widespread production exposure; it's
+> > > encouraged to make incremental improvements rather than fork it.
+> > > 
+> > > In any case, the complexity of runtime pluggability seems excessive
+> > > and unjustified at this time. Switch zswap to zsmalloc to remove the
+> > > last user of the zpool API.
+> > > 
+> > > Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+> > > ---
+> > [..]
+> > > @@ -315,52 +292,29 @@ static struct zswap_pool *zswap_pool_create(char *type, char *compressor)
+> > >  error:
+> > >  	if (pool->acomp_ctx)
+> > >  		free_percpu(pool->acomp_ctx);
+> > > -	if (pool->zpool)
+> > > -		zpool_destroy_pool(pool->zpool);
+> > > +	if (pool->zs_pool)
+> > > +		zs_destroy_pool(pool->zs_pool);
+> > >  	kfree(pool);
+> > >  	return NULL;
+> > >  }
+> > >  
+> > >  static struct zswap_pool *__zswap_pool_create_fallback(void)
+> > >  {
+> > > -	bool has_comp, has_zpool;
+> > > -
+> > > -	has_comp = crypto_has_acomp(zswap_compressor, 0, 0);
+> > > -	if (!has_comp && strcmp(zswap_compressor,
+> > > -				CONFIG_ZSWAP_COMPRESSOR_DEFAULT)) {
+> > > +	if (!crypto_has_acomp(zswap_compressor, 0, 0) &&
+> > > +	    strcmp(zswap_compressor, CONFIG_ZSWAP_COMPRESSOR_DEFAULT)) {
+> > >  		pr_err("compressor %s not available, using default %s\n",
+> > >  		       zswap_compressor, CONFIG_ZSWAP_COMPRESSOR_DEFAULT);
+> > >  		param_free_charp(&zswap_compressor);
+> > >  		zswap_compressor = CONFIG_ZSWAP_COMPRESSOR_DEFAULT;
+> > > -		has_comp = crypto_has_acomp(zswap_compressor, 0, 0);
+> > > -	}
+> > > -	if (!has_comp) {
+> > > -		pr_err("default compressor %s not available\n",
+> > > -		       zswap_compressor);
+> > > -		param_free_charp(&zswap_compressor);
+> > > -		zswap_compressor = ZSWAP_PARAM_UNSET;
+> > > -	}
+> > > -
+> > > -	has_zpool = zpool_has_pool(zswap_zpool_type);
+> > > -	if (!has_zpool && strcmp(zswap_zpool_type,
+> > > -				 CONFIG_ZSWAP_ZPOOL_DEFAULT)) {
+> > > -		pr_err("zpool %s not available, using default %s\n",
+> > > -		       zswap_zpool_type, CONFIG_ZSWAP_ZPOOL_DEFAULT);
+> > > -		param_free_charp(&zswap_zpool_type);
+> > > -		zswap_zpool_type = CONFIG_ZSWAP_ZPOOL_DEFAULT;
+> > > -		has_zpool = zpool_has_pool(zswap_zpool_type);
+> > > -	}
+> > > -	if (!has_zpool) {
+> > > -		pr_err("default zpool %s not available\n",
+> > > -		       zswap_zpool_type);
+> > > -		param_free_charp(&zswap_zpool_type);
+> > > -		zswap_zpool_type = ZSWAP_PARAM_UNSET;
+> > > +		if (!crypto_has_acomp(zswap_compressor, 0, 0)) {
+> > > +			pr_err("default compressor %s not available\n",
+> > > +			       zswap_compressor);
+> > > +			zswap_compressor = ZSWAP_PARAM_UNSET;
+> > > +			return NULL;
+> > > +		}
+> > 
+> > Hmm it seems like there may be a change of behavior here. If
+> > zswap_compressor == CONFIG_ZSWAP_COMPRESSOR_DEFAULT at the beginning and
+> > crypto_has_acomp() returns false, the old code will go into the second
+> > if (!has_comp) block, printing an error, freeing the string, and setting
+> > zswap_compressor to ZSWAP_PARAM_UNSET, then we eventually return NULL.
+> > 
+> > It seems like the new code will just call zswap_pool_create() anyway.
+> > 
+> > Am I missing something here?
+> 
+> I don't think that scenario is possible, due to the way the Kconfig
+> works. Whatever backend I select for CONFIG_ZSWAP_COMPRESSOR_DEFAULT
+> pulls in the crypto module as built-in/=y. It should always be there.
 
-Would be good to explain why this is needed. I'm sure I'll find the
-answer in the later patches though.
+What if none of the CONFIG_ZSWAP_COMPRESSOR_DEFAULT_* options are
+selected (i.e. empty string)? Also, can CONFIG_ZSWAP_COMPRESSOR_DEFAULT
+be set directly to an arbitrary string?
 
-
->
-> No functional changes intended.
->
-> Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-
-> ---
->  mm/vma.c | 6 ++++--
->  mm/vma.h | 1 +
->  2 files changed, 5 insertions(+), 2 deletions(-)
->
-> diff --git a/mm/vma.c b/mm/vma.c
-> index abe0da33c8446..a648e0555c873 100644
-> --- a/mm/vma.c
-> +++ b/mm/vma.c
-> @@ -474,6 +474,7 @@ void remove_vma(struct vm_area_struct *vma)
->   * Called with the mm semaphore held.
->   */
->  void unmap_region(struct ma_state *mas, struct vm_area_struct *vma,
-> +               unsigned long vma_min, unsigned long vma_max,
->                 struct vm_area_struct *prev, struct vm_area_struct *next)
->  {
->         struct mm_struct *mm =3D vma->vm_mm;
-> @@ -481,7 +482,7 @@ void unmap_region(struct ma_state *mas, struct vm_are=
-a_struct *vma,
->
->         tlb_gather_mmu(&tlb, mm);
->         update_hiwater_rss(mm);
-> -       unmap_vmas(&tlb, mas, vma, vma->vm_start, vma->vm_end, vma->vm_en=
-d,
-> +       unmap_vmas(&tlb, mas, vma, vma_min, vma_max, vma_max,
->                    /* mm_wr_locked =3D */ true);
->         mas_set(mas, vma->vm_end);
->         free_pgtables(&tlb, mas, vma, prev ? prev->vm_end : FIRST_USER_AD=
-DRESS,
-> @@ -2417,7 +2418,8 @@ static int __mmap_new_file_vma(struct mmap_state *m=
-ap,
->
->                 vma_iter_set(vmi, vma->vm_end);
->                 /* Undo any partial mapping done by a device driver. */
-> -               unmap_region(&vmi->mas, vma, map->prev, map->next);
-> +               unmap_region(&vmi->mas, vma, vma->vm_start, vma->vm_end,
-> +                            map->prev, map->next);
->
->                 return error;
->         }
-> diff --git a/mm/vma.h b/mm/vma.h
-> index 9183fe5490090..a9d0cef684ddb 100644
-> --- a/mm/vma.h
-> +++ b/mm/vma.h
-> @@ -261,6 +261,7 @@ int do_vmi_munmap(struct vma_iterator *vmi, struct mm=
-_struct *mm,
->  void remove_vma(struct vm_area_struct *vma);
->
->  void unmap_region(struct ma_state *mas, struct vm_area_struct *vma,
-> +               unsigned long min, unsigned long max,
->                 struct vm_area_struct *prev, struct vm_area_struct *next)=
-;
->
->  /* We are about to modify the VMA's flags. */
-> --
-> 2.47.2
->
+I would prefer if the code behavior did not change to rely on the config
+possibilities.
 
