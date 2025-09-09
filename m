@@ -4,116 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECAC3CAC582
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 20:07:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2D46CA0FED
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 20:08:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F060C8E0003; Tue,  9 Sep 2025 16:07:35 -0400 (EDT)
+	id E91936B0008; Tue,  9 Sep 2025 16:08:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EB6418E0001; Tue,  9 Sep 2025 16:07:35 -0400 (EDT)
+	id E69516B000C; Tue,  9 Sep 2025 16:08:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA4708E0003; Tue,  9 Sep 2025 16:07:35 -0400 (EDT)
+	id DA5FE6B000D; Tue,  9 Sep 2025 16:08:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BEFCA8E0001
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 16:07:35 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7A22916075A
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 20:07:35 +0000 (UTC)
-X-FDA: 83870796870.02.8F91EE8
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	by imf27.hostedemail.com (Postfix) with ESMTP id AEB7B40007
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 20:07:33 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="IEY//LHD";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf27.hostedemail.com: domain of jyescas@google.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=jyescas@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757448453; a=rsa-sha256;
-	cv=none;
-	b=FynyvXCnyKIfV+l/Z1MGLARTDGfWTtycQy5Lq+0j/g82j+3a+q9NO2kwPqYUWm6X0VKF4/
-	SI9my6WWkw/dKGXF3GRVziT2HIA3N7Cc3BPHtR09J5auBCGf6lPKggYyuHVaECgavcHeNf
-	2acs0mNhInvKjO3YJzo0uYPmUuAyMaM=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="IEY//LHD";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf27.hostedemail.com: domain of jyescas@google.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=jyescas@google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CAE666B0008
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 16:08:11 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5A6F65984C
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 20:08:11 +0000 (UTC)
+X-FDA: 83870798382.18.E0B890D
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 875BF10000A
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 20:08:09 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=atLsproA;
+	spf=pass (imf05.hostedemail.com: domain of surenb@google.com designates 209.85.160.179 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757448453;
+	s=arc-20220608; t=1757448489;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GJGSId8xZGClXTTL3PjAabP3O/IwmDMLJ48Vb9IC160=;
-	b=E5FaX42o0DDqc6Bp6YCx7AOJ7HL6KRc0+Vl9oFMOIriec74LT9FQTuM9auE9PctMu1of2H
-	gYTQnXxObox1m6yR8BF2pMLuJP6lfbo1RRB30RuzkYgzbixleKqVoVMeyHkAS67fz34bxJ
-	pNpBF+2pG70VvhfmNJSX+WkTSGFVClc=
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-24b2d018f92so8785ad.1
-        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 13:07:33 -0700 (PDT)
+	bh=ktxPXY3FXbFBz5mAoTAioVgA7sscE5zPCw8jojY97cY=;
+	b=5rztajIIXbfuu9smHkmum/ekZMK/LKdGa1HsNmQaOJq2IVG4/+zACUdy5S9pV4lOMlBFOI
+	7Un5YW6KkU9E6qWHkQMuaprVb6NX67UVwFQ42Z8josHwOBdqe1TDUkLnT/Pi8mZKrRD88k
+	ic13c9mB84/BE2z4MTyZv0aDYSvWcmc=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=atLsproA;
+	spf=pass (imf05.hostedemail.com: domain of surenb@google.com designates 209.85.160.179 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757448489; a=rsa-sha256;
+	cv=none;
+	b=unnojW2v8wbY0r0rceW1AcV+5zWpdNDyA9gddaaPavrMwLrcaeYOrhh2s8GRAdIGQ8IxJe
+	rSGpFslpneaRJH/VYj3SlkuIGnu7Tm35pABSa2MEc8KUhxeQdRFQrZaxxOb+8DseH00pub
+	OE0De9j3GHQ+KxRJgSZsKxncFxzK54E=
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-4b4bcb9638aso129271cf.0
+        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 13:08:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757448452; x=1758053252; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=GJGSId8xZGClXTTL3PjAabP3O/IwmDMLJ48Vb9IC160=;
-        b=IEY//LHD+S7D/n+Ykxlo8qzeqMXUirJK5N2iU3rH5lbs+ZQKHSTC6hkU4kCG0onbVj
-         Yqp9TzrCDmpuKGA3p2l5yrd7C1lp6wAukrsbJnZh4ZyWpf+UVe6Ar+eH57Ncmq2cgcEy
-         yW4MLnuK6iNF2f3JkrJcpNFbjNi4WBhvr/y1SNsgW++Mq1pETxB70mPyvI5kNUMFZR0K
-         mX4TMb3D8+rOLkGt+0Z298EpFAejhjY+nHtgKjJZde1XJnaRdxHZBieG/Upa06NXjoQc
-         WNQL1s+2xZnz7rzR2LbOljYo/cFhRmNZrgdWd35wLxVA0eEDmh5xlk4b7JhHM0m5lqaM
-         9biw==
+        d=google.com; s=20230601; t=1757448488; x=1758053288; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ktxPXY3FXbFBz5mAoTAioVgA7sscE5zPCw8jojY97cY=;
+        b=atLsproAuBtmZnk3uaP5RBiq5eCt2w6j7wYgfLjZ546VJiYBK1TN6qCW+DiGePOGGJ
+         c+vfub5AvbGg/mgoraRH+gsSiYwN9pBbEXjfcNLCM5qRhf9Z94/Lh6B0LXDOd0PEGfGG
+         32bR6PuMEyBUGc3Skj/0Ja5fJ78IGS1W4nbYZaMQfivTHgkeHAKa4VjCsqbDIBX32Hru
+         yz9m1nfkpBzImsXST9uOOi7SC3nbTTe18gZNZJroR3PJkyuuIYnV5vDvF0muKxQ3VG5K
+         SiwKALsEn2p6o56eay+esFalXMv6nuIJds7TJXfyApf4w/xBzgzrwQNQ34GbWic/JWve
+         yDcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757448452; x=1758053252;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=GJGSId8xZGClXTTL3PjAabP3O/IwmDMLJ48Vb9IC160=;
-        b=QgOix6tt25RLGjaxU3jAMyETJU8Bk3tCca/E9KTf2gfIpeL969HsYRSYN0ZMsw0Vm4
-         cQmjtdZo0EMIds8luVhZUYXfjSq6vcF2ScqPLp6cilo3xm7XZMJmtsDq+UQRf+7/9+Zt
-         /kFLcHz1RVB4+HjvsGcD3SPoDQW3F5IwLJysU/ix4YwWseU5eZNByBQ5ym5kXdIMobdu
-         IeE7TRbVU2chcRN/3TYUwVJqBfagPxfnHp/DlO18RkVRevZ4h4L6i6uHk1MB2/ByGf3s
-         5KQnCmAeq5Jc1eYjh8lhXPSR+xdaRRsGf94/tS4eJ9JhuqZlD2FRRBgO49qAKPRr0YZL
-         FNPQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUJBhu3rub0nwFqTh5CE8yJxTLeH0mVxoTx8ijoi06jVHHUEoI/DoFTR9X2yDmqytan/vYB7mUX8w==@kvack.org
-X-Gm-Message-State: AOJu0YzHpwR25tguNYUSJYrCz0M1m6Ws0hpsH3kkY6ULk3aKzHqgg465
-	nYHAKjZ2QjV3CCdo2mcdSCP/BpRdi3yEXR5SwhJhN2gNXRQ+MFfZlVLWigyOMW1j5qH1xUrUGj7
-	Uhc5T8uQZ7/jKSSHxojZCxj6OlI9uk0DavvPTgLvh
-X-Gm-Gg: ASbGncuSph/AuLd0bwPk+3OkwQ7PyR5KQN9zfu75WpmmS7F16qs8IGF4b2HeO7QDxuW
-	7KVDNN3EaKHxHz6PvlFu5+yyu7eRJBnvQX8VnbtSYEuqNf/Rh98hN3U/Z3VyxTLNIPeW9d9Tjul
-	Gnu1m6BGAoo9A7TjSMRpMeyL1I38rUAH1KjazgPSbBZ1Mg4+NA8PSwJMqHE6wg8lDsgJRBNbR34
-	41bzFKwtXgaqJ5V2czn/ltSqXEHKFm6guzoRJHsi9g=
-X-Google-Smtp-Source: AGHT+IEhjbN+9tvrD+zszW+/7dIiUSph/hnrO8562d7Hw5weQdGqLDDKswFsLQj+Gdp+QQZb780o7qkHno+U2EtpwOw=
-X-Received: by 2002:a17:902:a715:b0:251:a3b3:1565 with SMTP id
- d9443c01a7336-25a5ae3a71dmr620765ad.11.1757448451998; Tue, 09 Sep 2025
- 13:07:31 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1757448488; x=1758053288;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ktxPXY3FXbFBz5mAoTAioVgA7sscE5zPCw8jojY97cY=;
+        b=VhgYCFWG1C4LNgjc+V4hvfhGPhDHVbce+G6kfTY32NsovpAiwOz7GJZG+j8G1SJCrE
+         4Xt7YR6FV81zTaPQhvAC3Ns2kyfbrvZ5F+Xa3izQJ4J922NZTrLMOKUEEEuHujCrT4Wi
+         DBKytYpdvUdOd7Bk6yBUGHqx+EmQd1jyeppMDBqUJ9/f9zmzdpYeP5XwmpayA24qY7qe
+         CSTyLekAP8wJNMdVhkAFjW6alxaB8yjkaRtO0Q2r4N8dXHoCpTIuUJ4zK1OP4IQG/5x/
+         dayy6QThyZ4Kb2janSsK7HFQVv9Li7KhjYa3PNamJFoaRnANEQf9AyJ/dOhV9A5aBxTF
+         krfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX0NCv5L9kdcUj/c39dPOUpgcJXJ+8Vk3RB7WgZjJ2MqHaklW4De5lRBrHQk4t2ifXfU10+4iVcpw==@kvack.org
+X-Gm-Message-State: AOJu0Yz+QE528HLOGFdt7YrzTyVGF6IjcCsax//rQ/rsFaG9dvdtVkf7
+	uIdu00rVnWDNjOm16YWkYiYv3uXcvCWY1FOEsldQAyMuAF6gZc7Cud+D4ZZjS/qd1BxrmnHV+Sz
+	6fLGuNBvf5+VjylAaMmY3Ad41M/0jHY+1MQyxn1fx
+X-Gm-Gg: ASbGnct44p7WbvoRtOgf+VyG6ImiFhK8pXJETVeez3WHQgnHr2gkFdzsUlKnaV3XXLh
+	Lzd8kgzhRsLSUUY6x6phargXwDoNIvQ0Fzx4Lx16BvN785Wld5ZC9+cS4eYKTDl6m5XBuRH6czb
+	ktHmWmoXGMOzzG0aRw9qYsiD0JGVvBKDZSRWgPgCWedQP4VHVphVr2wj+uecdqZs2YcEIBaPkal
+	zMzFoUYILUH3Bv1UFd6UpSc9AAr4XS+E+DCNcs44fZi
+X-Google-Smtp-Source: AGHT+IEiIDXhAKZ5zA3wuc6dlxMlvsypLMSrwiOmc3D0J6T34wMRv0GdxjHA98Txfmfmy63m+RjNtLqEv7OYeYbVsYA=
+X-Received: by 2002:a05:622a:828b:b0:4b3:4b14:b420 with SMTP id
+ d75a77b69052e-4b625643a28mr813671cf.7.1757448488179; Tue, 09 Sep 2025
+ 13:08:08 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAJDx_rgzkZognxWzOXJ-ZxdTtUaM3FT6bmpkwxMz03XiX3fKAQ@mail.gmail.com>
- <d395b14a-9a84-4f25-b4f0-45e8500fc5fe@redhat.com> <CAJDx_rgrp1TpOt-iDcsSGRTL=qZZsK_dpKL1bSkyunPGcGXt5g@mail.gmail.com>
- <486c5773-c7fa-4e19-b429-90823ed2f7d5@redhat.com> <CAJDx_ri==3SxFcuKXHpNjrtxbp0hLyhM+zXeJ-LQX38rfbUChw@mail.gmail.com>
- <6dee6cd9-c67f-480f-b728-21c3a7b72004@redhat.com>
-In-Reply-To: <6dee6cd9-c67f-480f-b728-21c3a7b72004@redhat.com>
-From: Juan Yescas <jyescas@google.com>
-Date: Tue, 9 Sep 2025 13:07:17 -0700
-X-Gm-Features: Ac12FXyqJk95BzMsBAXQbxuk4y3BxEVHd4SQLHyRVgKfv8bcP2fe-zsqgx1zwvI
-Message-ID: <CAJDx_rjg9LJ6BcgKvLeY+fpPpP41yC=Ru9oEYcXEA8b5AT=E1w@mail.gmail.com>
-Subject: Re: [RFC PATCH] mm/page_alloc: Add PCP list for THP CMA
-To: David Hildenbrand <david@redhat.com>
-Cc: akash.tyagi@mediatek.com, Andrew Morton <akpm@linux-foundation.org>, 
-	angelogioacchino.delregno@collabora.com, hannes@cmpxchg.org, 
-	Brendan Jackman <jackmanb@google.com>, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org, 
-	Linux Memory Management List <linux-mm@kvack.org>, matthias.bgg@gmail.com, Michal Hocko <mhocko@suse.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, wsd_upstream@mediatek.com, 
-	Zi Yan <ziy@nvidia.com>, Kalesh Singh <kaleshsingh@google.com>, 
-	"T.J. Mercier" <tjmercier@google.com>, Isaac Manjarres <isaacmanjarres@google.com>
-Content-Type: multipart/alternative; boundary="000000000000b22515063e63dad7"
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: AEB7B40007
-X-Stat-Signature: 34h5nk6jzasn4re8de5ooagbbdhmdsfi
+References: <20250909190945.1030905-1-Liam.Howlett@oracle.com> <20250909190945.1030905-2-Liam.Howlett@oracle.com>
+In-Reply-To: <20250909190945.1030905-2-Liam.Howlett@oracle.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 9 Sep 2025 13:07:57 -0700
+X-Gm-Features: AS18NWDRFWvZMJ8e1fk4lCTGGRgGWp1CT7Hd0CxGRModRraXwvLx01LRLebKNO0
+Message-ID: <CAJuCfpGsGvYfCQmx1ix86zUM-u8n2EbSATS5bcHMs9=_yEtRzg@mail.gmail.com>
+Subject: Re: [PATCH v1 1/9] mm/mmap: Move exit_mmap() trace point
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, maple-tree@lists.infradead.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
+	Pedro Falcato <pfalcato@suse.de>, Charan Teja Kalla <quic_charante@quicinc.com>, shikemeng@huaweicloud.com, 
+	kasong@tencent.com, nphamcs@gmail.com, bhe@redhat.com, baohua@kernel.org, 
+	chrisl@kernel.org, Matthew Wilcox <willy@infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 875BF10000A
 X-Rspam-User: 
-X-HE-Tag: 1757448453-849877
-X-HE-Meta: U2FsdGVkX19fvx6l0Gwm99yPqVvyaXM7NnjeevawgEnLNDlQB0HI+kKVS4dIca84fdhELQYYiKL4rOvsSpqzmFydYOlftfB4XrgsW5ra3D0zJ5gtlMQ28oESVd1Co1/wX5chbK5Fo6+s1h8GgO9XFA0nPyOGq7qyJP+MtYJJeEt9I/vI5Q8732aadAlKW29Tdw7w+Ek3ne5UIBIBOYPqQVhe1MrvXzAHAbfMInYOBFOJV91svbj4JQL8vntJhldz9Jz2YjCGRgaLV1fGvOWzYVBRyTlpfKhvzw5SilBipf1g/dGnd7eIPJ17eaBAnIzhd1eztuOZI35MCv6VtDP7bH/idZpFVKNUM6rYZj3jYLHaTpzsdGbcNKF7Iv4DstmPLfVNP4nQ7uHS2jwxkKOjky8UypXzPxSZYt8/j+oPU3Y+bKtoyc8LmmfINgTAq0RRbQHb3wBzC9v8x2OSEcWyrpHrkk+DDL6mUVwE8XVuHPSlY2hW1rI06cPkEdKTXLkYOS4VRIxwRGSLKQiM8lCWEq82myvKckJp1dOvgJgkHCAsBpnaLl5YmeTGJN4Drj0eFAZ5Ta4/F3BzOJG5FL8PiILgeBXG/k65avh/h4KMM7GLf0AIAWsh9++XGKdR397/740e/SXnNHKoC4jxaywVHDcrcyTK1LW/TSDCA19FR14ZbxyHx87/FooUkxNrRoiL6JNTQLXxJT/LIvqKDfDrd0qtPCWo9UMwjTE6uvqqKSwKSeeynLhcsY/dQhAAgii1dMm3UP9S+71HWgwDlugul0B5zDt8Yz9WHWyRC6UzzsJ3QEgqxBlHrHC1ct5uwOFKUoKH9MjhWGGfacD+vBMW5DN80HvcuTl1Q6wmZrKkFPQAdQz82lsFOvkFBHI8ttllk9EtI61F0/2FV/guyXdJUWUpSEiGdqzjb5DKJY31ObeaIJAcaif+KJTip2W9rDE8iesaKt8fa5BLHf0dCe7
- D5lbmLSm
- lzw4fq7EDL/aDo7JYuYa846QJPMDiO5H1JN4NhBg2TU5y5f5An6A25893Ywcmw9BajeAotdpXLVNCA3/J5T016yQlEB2uSXrsClug
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 6q7689b5jmiqabpx1apopqqhufez61kr
+X-HE-Tag: 1757448489-855547
+X-HE-Meta: U2FsdGVkX19jlB682pydkV4vIfwSUD7oeAPWVElR9XJ880id8tgVFwMGkPjWbZ/41c3RpBbrwQQuPZmiEFm2jlZtehihATjW5yu7Jqnxacs2g3zyHUhh99nYuKJdvRM9kuRODPUB182nQs7hUITKpACD6Ibk5n25pKsKiu4436NKRQlVL6grttVLmSIiAJr4+3Fkz/BTyFD5iU1SS83X56iQRchkr5IM3ZYTEyOOoaKoKJ4D4W59wWop12lpKW39J67ew0bYfV98F9NIKAv8cwZYZa9AhhZb/slGQyPDU+0ZQ1hMMu0teSolQLB/f+l3RaciLjPaUAVVX+SG1ruQ7BFokYxcmXOiY+Sa29zO08ECBKYMVgFVMAct142YGbPTezMJ22xteq+RlagnwVQ1oYo6ykBfhGnYNSz4xeWLX7FaQRPJ0yOtZQ7v16yGRBUsfkkDgrCmTgMucFbQgCMaEgwm1otnHlvm3EDPzGIzxMtBi7CMkKXDdWiR9C5T6A8VAwhxFXYW+cefENs2SBghLGrwJN/Q76t6HeLXftbfwX8F3CcXCLRiwp05DNvreX8+Jnh8AlgW3loMXOJTRjkcmRBtuQBM6X0cTPkDKPiZBl3NCJD7aokRypOI/YAJzYN6z/AYg7bQ2J7iwvluZnGq3pigpwwOQUX4IYXnpEMR0Vu2cv0DjHHLHfDvppqUVou2tkh8LIv3L5+lXuwXpmKvXG+sQ7b7h0qHxmdhnA1cS96r/t6VuPfCDoLGdV2V3e60tqS1N5YfjMnh7Itppienk51TPIrI7J6837+LqCSLUn43uDjuVBYUYqZU3b+wODF03OloFJ9wmerO5vYHJvYWwOw+lrvyQUbaMtkVRTYYDP0RlR+zPOITmcR7TWMLOvqnhJbmss1iTbivNDOpj9pMZ01euv+vjHFyNHu32SGiPgXMFAiWXc/1NXYoGfgQTMaocHIHWze1/Pyx6AKW4Ei
+ MbO/7/YR
+ h2EqYKyhW5zEHntdXxzUgEA6MVLL83H8D7t+iyW148nhEembzYgVgLI3YH0Ari0BLIpE6PlnfKkSys0ePhCvQtFsfsRQDvA7RPco1YBuioqr6s1m0d0CcmfNi/TypBHRLEDLA3bDqU4FW8ymhsB2/3wdrNiwZ9cAOlE34B/7Qc5GlaHYkUQbcnnkcHj+NA6YL4vJolJFKzrkuhzdNtir8zUIP4dJ+1ADU2OtOJsJD0T109DlegCkZrwipSyiMEQtoh5Nmi0zv4+tSbpbwfJNA562ABsjkDd7eTZtLEKeYl0GG7VvR5Cuxsqp0TQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,315 +121,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---000000000000b22515063e63dad7
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Tue, Aug 5, 2025 at 2:08=E2=80=AFPM David Hildenbrand <david@redhat.com>=
- wrote:
-
-> On 05.08.25 18:57, Juan Yescas wrote:
-> > On Tue, Aug 5, 2025 at 2:58=E2=80=AFAM David Hildenbrand <david@redhat.=
-com>
-> wrote:
-> >>
-> >> On 05.08.25 03:22, Juan Yescas wrote:
-> >>> On Mon, Aug 4, 2025 at 11:50=E2=80=AFAM David Hildenbrand <david@redh=
-at.com>
-> wrote:
-> >>>>
-> >>>> On 04.08.25 20:20, Juan Yescas wrote:
-> >>>>> Hi David/Zi,
-> >>>>>
-> >>>>> Is there any reason why the MIGRATE_CMA pages are not in the PCP
-> lists?
-> >>>>>
-> >>>>> There are many devices that need fast allocation of MIGRATE_CMA
-> pages,
-> >>>>> and they have to get them from the buddy allocator, which is a bit
-> >>>>> slower in comparison to the PCP lists.
-> >>>>>
-> >>>>> We also have cases where the MIGRATE_CMA memory requirements are bi=
-g.
-> >>>>> For example, GPUs need MIGRATE_CMA memory in the ranges of 30MiB to
-> 500MiBs.
-> >>>>> These cases would benefit if we have THPs for CMAs.
-> >>>>>
-> >>>>> Could we add the support for MIGRATE_CMA pages on the PCP and THP
-> lists?
-> >>>>
-> >>>> Remember how CMA memory is used:
-> >>>>
-> >>>> The owner allocates it through cma_alloc() and friends, where the CM=
-A
-> >>>> allocator will try allocating *specific physical memory regions* usi=
-ng
-> >>>> alloc_contig_range(). It doesn't just go ahead and pick a random CMA
-> >>>> page from the buddy (or PCP) lists. Doesn't work (just imagine havin=
-g
-> >>>> different CMA areas etc).
-> >>>>
-> >>>> Anybody else is free to use CMA pages for MOVABLE allocations. So we
-> >>>> treat them as being MOVABLE on the PCP.
-> >>>>
-> >>>> Having a separate CMA PCP list doesn't solve or speedup anything,
-> really.
-> >>>>
-> >>>
-> >>> Thanks David for the quick overview.
-> >>>
-> >>>> I still have no clue what this patch here tried to solve: it doesn't
-> >>>> make any sense.
-> >>>>
-> >>>
-> >>> The story started with this out of tree patch that is part of Android=
-.
-> >>>
-> >>>
-> https://lore.kernel.org/lkml/cover.1604282969.git.cgoldswo@codeaurora.org=
-/T/#u
-> >>>
-> >>> This patch introduced the __GFP_CMA flag that allocates pages from
-> >>> MIGRATE_MOVABLE
-> >>> or MIGRATE_CMA. What it happens then, it is that the MIGRATE_MOVABLE
-> >>> pages in the
-> >>> PCP lists were consumed pretty fast. To solve this issue, the PCP
-> >>> MIGRATE_CMA list was added.
-> >>> This list is initialized by rmqueue_bulk() when it is empty. That's
-> >>> how we end up with the PCP MIGRATE_CMA list
-> >>> in Android. In addition to this, the THP list for MIGRATE_MOVABLE was
-> >>> allowed to contain
-> >>> MIGRATE_CMA pages. This is causing THP MIGRATE_CMA pages to be used
-> >>> for THP MIGRATE_MOVABLE
-> >>> making later allocations from THP MIGRATE_CMA to fail.
-> >>
-> >> Okay, so this patch here really is not suitable for the upstream kerne=
-l
-> >> as is. It's purely targeted at the OOT Android patch.
-> >>
-> > Right, it is a temporary solution for the pinned MIGRATE_CMA pages.
-> >
-> >>>
-> >>> These workarounds are mainly because we need to solve this issue
-> upstream:
-> >>>
-> >>> - When devices reserve big blocks of MIGRATE_CMA pages, the
-> >>> underutilized MIGRATE_CMA
-> >>> can fall back to MIGRATE_MOVABLE and these pages can be pinned, so if
-> >>> we require MIGRATE_CMA
-> >>> pages, the allocations might fail.
-> >>>
-> >>> I remember that you presented the problem in LPC. Were you able to
-> >>> make some progress on that?
-> >>
-> >> There is the problem of CMA pages getting allocated by someone for a
-> >> MOVABLE allocation, to then short-term pin it for DMA. Long-term
-> >> pinnings are disallowed (we just recently fixed a bug where we
-> >> accidentally allowed it).
-> >>
-> > Nice, it is great the issue got caught and fixed upstream :)
-> >
-> >> One concern is that a steady stream of short-term pinnings can turn su=
-ch
-> >> pages unmovable. We discussed ideas on how to handle that, but there i=
-s
-> >> no solution upstream yet.
-> >
-> > Are there any plans to continue the discussion? Is it in the priority
-> > list?
+On Tue, Sep 9, 2025 at 12:09=E2=80=AFPM Liam R. Howlett <Liam.Howlett@oracl=
+e.com> wrote:
 >
-> Ohh, it's somewheeeeeere on the todo list :)
+> Move the trace point later in the function so that it is not skipped in
+> the event of a failed fork.
 >
-> Do you (or one of your colleagues) have capacity to work on that? One
-> idea was to flag folios as "pending on migration" and disallow any
-> further short-term pins until migration is done. IIRC, there were other
-> ideas (e.g., isolated pageblock).
+> Acked-by: Chris Li <chrisl@kernel.org>
+> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+
+> ---
+>  mm/mmap.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> > Maybe
-> > a topic we can discuss in LPC Japan?
+> diff --git a/mm/mmap.c b/mm/mmap.c
+> index 5fd3b80fda1d5..b07b3ec5e28f5 100644
+> --- a/mm/mmap.c
+> +++ b/mm/mmap.c
+> @@ -1310,9 +1310,9 @@ void exit_mmap(struct mm_struct *mm)
 >
-> Sounds good, feel free to propose this as a topic. I wills end out the
-> announcement of the MM MC probably next week.
+>         BUG_ON(count !=3D mm->map_count);
 >
-> The topic has been proposed in the Kernel Memory Management track.
-
-https://lpc.events/event/19/abstracts/2397/
-
-Thanks
-Juan
-
-
+> -       trace_exit_mmap(mm);
+>  destroy:
+>         __mt_destroy(&mm->mm_mt);
+> +       trace_exit_mmap(mm);
+>         mmap_write_unlock(mm);
+>         vm_unacct_memory(nr_accounted);
+>  }
 > --
-> Cheers,
+> 2.47.2
 >
-> David / dhildenb
->
->
-
---000000000000b22515063e63dad7
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><br><div class=3D"gmail_quo=
-te gmail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Tue, Aug=
- 5, 2025 at 2:08=E2=80=AFPM David Hildenbrand &lt;<a href=3D"mailto:david@r=
-edhat.com">david@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gm=
-ail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,=
-204,204);padding-left:1ex">On 05.08.25 18:57, Juan Yescas wrote:<br>
-&gt; On Tue, Aug 5, 2025 at 2:58=E2=80=AFAM David Hildenbrand &lt;<a href=
-=3D"mailto:david@redhat.com" target=3D"_blank">david@redhat.com</a>&gt; wro=
-te:<br>
-&gt;&gt;<br>
-&gt;&gt; On 05.08.25 03:22, Juan Yescas wrote:<br>
-&gt;&gt;&gt; On Mon, Aug 4, 2025 at 11:50=E2=80=AFAM David Hildenbrand &lt;=
-<a href=3D"mailto:david@redhat.com" target=3D"_blank">david@redhat.com</a>&=
-gt; wrote:<br>
-&gt;&gt;&gt;&gt;<br>
-&gt;&gt;&gt;&gt; On 04.08.25 20:20, Juan Yescas wrote:<br>
-&gt;&gt;&gt;&gt;&gt; Hi David/Zi,<br>
-&gt;&gt;&gt;&gt;&gt;<br>
-&gt;&gt;&gt;&gt;&gt; Is there any reason why the MIGRATE_CMA pages are not =
-in the PCP lists?<br>
-&gt;&gt;&gt;&gt;&gt;<br>
-&gt;&gt;&gt;&gt;&gt; There are many devices that need fast allocation of MI=
-GRATE_CMA pages,<br>
-&gt;&gt;&gt;&gt;&gt; and they have to get them from the buddy allocator, wh=
-ich is a bit<br>
-&gt;&gt;&gt;&gt;&gt; slower in comparison to the PCP lists.<br>
-&gt;&gt;&gt;&gt;&gt;<br>
-&gt;&gt;&gt;&gt;&gt; We also have cases where the MIGRATE_CMA memory requir=
-ements are big.<br>
-&gt;&gt;&gt;&gt;&gt; For example, GPUs need MIGRATE_CMA memory in the range=
-s of 30MiB to 500MiBs.<br>
-&gt;&gt;&gt;&gt;&gt; These cases would benefit if we have THPs for CMAs.<br=
->
-&gt;&gt;&gt;&gt;&gt;<br>
-&gt;&gt;&gt;&gt;&gt; Could we add the support for MIGRATE_CMA pages on the =
-PCP and THP lists?<br>
-&gt;&gt;&gt;&gt;<br>
-&gt;&gt;&gt;&gt; Remember how CMA memory is used:<br>
-&gt;&gt;&gt;&gt;<br>
-&gt;&gt;&gt;&gt; The owner allocates it through cma_alloc() and friends, wh=
-ere the CMA<br>
-&gt;&gt;&gt;&gt; allocator will try allocating *specific physical memory re=
-gions* using<br>
-&gt;&gt;&gt;&gt; alloc_contig_range(). It doesn&#39;t just go ahead and pic=
-k a random CMA<br>
-&gt;&gt;&gt;&gt; page from the buddy (or PCP) lists. Doesn&#39;t work (just=
- imagine having<br>
-&gt;&gt;&gt;&gt; different CMA areas etc).<br>
-&gt;&gt;&gt;&gt;<br>
-&gt;&gt;&gt;&gt; Anybody else is free to use CMA pages for MOVABLE allocati=
-ons. So we<br>
-&gt;&gt;&gt;&gt; treat them as being MOVABLE on the PCP.<br>
-&gt;&gt;&gt;&gt;<br>
-&gt;&gt;&gt;&gt; Having a separate CMA PCP list doesn&#39;t solve or speedu=
-p anything, really.<br>
-&gt;&gt;&gt;&gt;<br>
-&gt;&gt;&gt;<br>
-&gt;&gt;&gt; Thanks David for the quick overview.<br>
-&gt;&gt;&gt;<br>
-&gt;&gt;&gt;&gt; I still have no clue what this patch here tried to solve: =
-it doesn&#39;t<br>
-&gt;&gt;&gt;&gt; make any sense.<br>
-&gt;&gt;&gt;&gt;<br>
-&gt;&gt;&gt;<br>
-&gt;&gt;&gt; The story started with this out of tree patch that is part of =
-Android.<br>
-&gt;&gt;&gt;<br>
-&gt;&gt;&gt; <a href=3D"https://lore.kernel.org/lkml/cover.1604282969.git.c=
-goldswo@codeaurora.org/T/#u" rel=3D"noreferrer" target=3D"_blank">https://l=
-ore.kernel.org/lkml/cover.1604282969.git.cgoldswo@codeaurora.org/T/#u</a><b=
-r>
-&gt;&gt;&gt;<br>
-&gt;&gt;&gt; This patch introduced the __GFP_CMA flag that allocates pages =
-from<br>
-&gt;&gt;&gt; MIGRATE_MOVABLE<br>
-&gt;&gt;&gt; or MIGRATE_CMA. What it happens then, it is that the MIGRATE_M=
-OVABLE<br>
-&gt;&gt;&gt; pages in the<br>
-&gt;&gt;&gt; PCP lists were consumed pretty fast. To solve this issue, the =
-PCP<br>
-&gt;&gt;&gt; MIGRATE_CMA list was added.<br>
-&gt;&gt;&gt; This list is initialized by rmqueue_bulk() when it is empty. T=
-hat&#39;s<br>
-&gt;&gt;&gt; how we end up with the PCP MIGRATE_CMA list<br>
-&gt;&gt;&gt; in Android. In addition to this, the THP list for MIGRATE_MOVA=
-BLE was<br>
-&gt;&gt;&gt; allowed to contain<br>
-&gt;&gt;&gt; MIGRATE_CMA pages. This is causing THP MIGRATE_CMA pages to be=
- used<br>
-&gt;&gt;&gt; for THP MIGRATE_MOVABLE<br>
-&gt;&gt;&gt; making later allocations from THP MIGRATE_CMA to fail.<br>
-&gt;&gt;<br>
-&gt;&gt; Okay, so this patch here really is not suitable for the upstream k=
-ernel<br>
-&gt;&gt; as is. It&#39;s purely targeted at the OOT Android patch.<br>
-&gt;&gt;<br>
-&gt; Right, it is a temporary solution for the pinned MIGRATE_CMA pages.<br=
->
-&gt; <br>
-&gt;&gt;&gt;<br>
-&gt;&gt;&gt; These workarounds are mainly because we need to solve this iss=
-ue upstream:<br>
-&gt;&gt;&gt;<br>
-&gt;&gt;&gt; - When devices reserve big blocks of MIGRATE_CMA pages, the<br=
->
-&gt;&gt;&gt; underutilized MIGRATE_CMA<br>
-&gt;&gt;&gt; can fall back to MIGRATE_MOVABLE and these pages can be pinned=
-, so if<br>
-&gt;&gt;&gt; we require MIGRATE_CMA<br>
-&gt;&gt;&gt; pages, the allocations might fail.<br>
-&gt;&gt;&gt;<br>
-&gt;&gt;&gt; I remember that you presented the problem in LPC. Were you abl=
-e to<br>
-&gt;&gt;&gt; make some progress on that?<br>
-&gt;&gt;<br>
-&gt;&gt; There is the problem of CMA pages getting allocated by someone for=
- a<br>
-&gt;&gt; MOVABLE allocation, to then short-term pin it for DMA. Long-term<b=
-r>
-&gt;&gt; pinnings are disallowed (we just recently fixed a bug where we<br>
-&gt;&gt; accidentally allowed it).<br>
-&gt;&gt;<br>
-&gt; Nice, it is great the issue got caught and fixed upstream :)<br>
-&gt; <br>
-&gt;&gt; One concern is that a steady stream of short-term pinnings can tur=
-n such<br>
-&gt;&gt; pages unmovable. We discussed ideas on how to handle that, but the=
-re is<br>
-&gt;&gt; no solution upstream yet.<br>
-&gt; <br>
-&gt; Are there any plans to continue the discussion? Is it in the priority<=
-br>
-&gt; list?<br>
-<br>
-Ohh, it&#39;s somewheeeeeere on the todo list :)<br>
-<br>
-Do you (or one of your colleagues) have capacity to work on that? One <br>
-idea was to flag folios as &quot;pending on migration&quot; and disallow an=
-y <br>
-further short-term pins until migration is done. IIRC, there were other <br=
->
-ideas (e.g., isolated pageblock).<br>
-<br>
-&gt; Maybe<br>
-&gt; a topic we can discuss in LPC Japan?<br>
-<br>
-Sounds good, feel free to propose this as a topic. I wills end out the <br>
-announcement of the MM MC probably next week.<br>
-<br></blockquote><div>The topic has been proposed in the Kernel Memory Mana=
-gement track.</div><div><br></div><div><a href=3D"https://lpc.events/event/=
-19/abstracts/2397/">https://lpc.events/event/19/abstracts/2397/</a></div><d=
-iv><br></div><div>Thanks</div><div>Juan</div><div>=C2=A0</div><blockquote c=
-lass=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px soli=
-d rgb(204,204,204);padding-left:1ex">
--- <br>
-Cheers,<br>
-<br>
-David / dhildenb<br>
-<br>
-</blockquote></div></div>
-
---000000000000b22515063e63dad7--
 
