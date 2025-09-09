@@ -4,86 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AEE0CAC583
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 14:29:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5942CAC583
+	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 14:33:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 59BC26B0010; Tue,  9 Sep 2025 10:29:16 -0400 (EDT)
+	id 001258E0007; Tue,  9 Sep 2025 10:33:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5733E6B0011; Tue,  9 Sep 2025 10:29:16 -0400 (EDT)
+	id ECB8F8E0003; Tue,  9 Sep 2025 10:33:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D75C6B0022; Tue,  9 Sep 2025 10:29:16 -0400 (EDT)
+	id D93488E0007; Tue,  9 Sep 2025 10:33:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E0706B0010
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 10:29:16 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DE3ECC0549
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 14:29:15 +0000 (UTC)
-X-FDA: 83869944270.04.03CCDF7
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 8479DC000B
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 14:29:13 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Cglac5SI
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C25588E0003
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 10:33:33 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7C1B31A0580
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 14:33:33 +0000 (UTC)
+X-FDA: 83869955106.22.445051B
+Received: from fout-b7-smtp.messagingengine.com (fout-b7-smtp.messagingengine.com [202.12.124.150])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 5D596C000A
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 14:33:31 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=yadavpratyush.com header.s=fm2 header.b=gYZCIQqQ;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=lOQZQoR1;
+	spf=pass (imf28.hostedemail.com: domain of me@yadavpratyush.com designates 202.12.124.150 as permitted sender) smtp.mailfrom=me@yadavpratyush.com;
+	dmarc=pass (policy=none) header.from=yadavpratyush.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757428154;
+	s=arc-20220608; t=1757428411;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HSVI0c2MPcfCxfTbX663WL44nUGjRe9XBH0DR/kkG60=;
-	b=wJRvBUZt3JNIVgB2DyVPGi/cW5pgSHWwky1ywaUaHP8c+oTSaNfKyDdhI1tUXaQQTi9IVc
-	aI31uytKuNEAVoIi6ObKLApar8KG3BBmOFcezVC7h3q88OmhLIHjQayXqDsUVwUfH0jfRU
-	3eae6d5U0ABcxXTbLYG3F0ChOk/uTZw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757428154; a=rsa-sha256;
-	cv=none;
-	b=21vHxDHkDJfbS2POlA2/5WO1yVsihI3AZrXck6X9wmN3HzxeC+kVRZTzBsGwv4kAW3/VQm
-	B2rhPUmIBvMNnLugRn3OpN2fEi6GvSUA82VCGx5Pf1YAoG0WJDbTXkJo4aFIg1Xue9uQ6u
-	SjFvK3Og4FC20hf/Q78cR7Dp0i1zrew=
+	bh=1NzgFxHrA/xC71AIYDCeO+Pqbshn14KE8z9hf0hJuEQ=;
+	b=VG7rTu+2NL6laoBq6YfZszHi8cWElmwpHO8KWnBvZkzz/uuj+GrZPrbPX4ze4+pXEqb8PB
+	THFD+B1mwu6fq+3mLi6qGyFHVF9bOOnoWnJSNlCkHByqWhmDTvmHv5X9BCiJjDisyxmrT7
+	5Btqx/RU4POIzZ/tjaR+RkKuBjAM0Uw=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Cglac5SI;
-	spf=none (imf10.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=none
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=HSVI0c2MPcfCxfTbX663WL44nUGjRe9XBH0DR/kkG60=; b=Cglac5SIFR5CjvspnMxpLy1ye8
-	tEKEQ8ttpuZpCBFn+6Lmi8GVjaUOM7oDnrcPldtmZ1qaFUqTK5P7obZzYfPD0ykfi7GECexhqSoYU
-	sNEZArLKw8OFDwl74/Jd5DmrF2850dKOD8Msv1ksESrOoWsNw84tVsITTWsE+PD9i2wVxF+oJM0Tv
-	4iOTlrosfIoPJgrpoiYwMIRdKdb/V563ab4UivgNT1QjAz/2kXipkay2hpXcyR+v6FZDIKXThQwoz
-	B4S/bCPhIgFuZDWEJf/H9B+1qmE2N7B5nE7S/nrycOEVvGPH3KnxChx1aFvDDbNsDsnc8954z6sOI
-	dnAUBDmw==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uvzLH-00000009Efg-0Dh6;
-	Tue, 09 Sep 2025 14:29:07 +0000
-Date: Tue, 9 Sep 2025 15:29:06 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Hu Song <husong@kylinos.cn>
-Cc: Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/slub: Use folio_nr_pages() in __free_slab()
-Message-ID: <aMA5soNyvsEcWvlz@casper.infradead.org>
-References: <20250909074812.599030-1-husong@kylinos.cn>
+	imf28.hostedemail.com;
+	dkim=pass header.d=yadavpratyush.com header.s=fm2 header.b=gYZCIQqQ;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=lOQZQoR1;
+	spf=pass (imf28.hostedemail.com: domain of me@yadavpratyush.com designates 202.12.124.150 as permitted sender) smtp.mailfrom=me@yadavpratyush.com;
+	dmarc=pass (policy=none) header.from=yadavpratyush.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757428411; a=rsa-sha256;
+	cv=none;
+	b=2qO92hydydS4iP9N0+M4s/RxLhlVzua1fNdpd60r46hqIB2/IgahteRxcLWIxkhk1LXfhI
+	jKDuSwSRh+cnLLnTbygpJpSmasiLElJ6+51ZdWd0TZcySlyMhS8z8DAG2x8GBk+xfKcozN
+	cSKtitTKcNJiFJb06SL0xtICP8fDsG8=
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfout.stl.internal (Postfix) with ESMTP id 500031D000CF;
+	Tue,  9 Sep 2025 10:33:30 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Tue, 09 Sep 2025 10:33:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	yadavpratyush.com; h=cc:cc:content-type:content-type:date:date
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1757428410;
+	 x=1757514810; bh=1NzgFxHrA/xC71AIYDCeO+Pqbshn14KE8z9hf0hJuEQ=; b=
+	gYZCIQqQ9d4PrgMN5zGFIkHsS0A9s4f4SeNfE0r2QHgAX8jctq+66NVRK29ga0WB
+	dRHGr6RPflO/o4Hc8CZd/eXFxbIfWL+o0qAJQuHeG/VgDLOxGFEMWr0Ycxliskwg
+	LMFGgcZM9doCALncM1l4KKk7RBNAwatvN+simu9q6YmkXPWoiIUvbbyZzCY5qfjs
+	noWHGRQetv1OcRmfHW9sdbE/oFmlfr7j6uO48Gj9tochGa885ODp2/F7edqPjqyq
+	aMXo1ydh8oZv4DuGeCnS5N6XOtJtn3lsC4ZmFdeq6/ounguR2CHmJtZjDn2nBgcB
+	7ZGzTR0GRt+HV1SRHRSrqQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1757428410; x=1757514810; bh=1NzgFxHrA/xC71AIYDCeO+Pqbshn14KE8z9
+	hf0hJuEQ=; b=lOQZQoR160WuWPE1/Rj8TIXIn++Hd9nc+gISVgCp80x7yccsmV4
+	fnSjOK0rGYdkIj4oxPJrwTgtt1pQ4B1iyWjEyLrlzrqqE59qOzZGFu0OtSGDFehD
+	IwI9KDEnxmiCZ8lD7tsbNPk+CKeqow+92xyUDRf68PFThvBzBG6PHIrylUu6dKtR
+	zWPuu0F5onKhlHT4lGktWLZztsx8GcalxoUAQnawSvpAnhS53xHpRLKZ8Z1qgKUK
+	6ZcQzw/gbpm0iMQ5CVJLb+V8x1W9OKAzQ8/kXLgndl7m2A+NRpJmLlLbH4KEi5Sh
+	FRQyI0QWGFX+HQgyCVreFW4uzEpwWGqWHqA==
+X-ME-Sender: <xms:uTrAaMgumbFSGsL8TJ1JH8Y--kEyS6q1Kzru91ejTrzrW2Qrgpv30A>
+    <xme:uTrAaKgxKxUs8okBTN3GVbWnlAVg-b_ayfYAxiN4wNJuq8MQMpiWpZAiRBbr9OcmS
+    SaYqcIzIUHRnbHkKa0>
+X-ME-Received: <xmr:uTrAaDLm33OLcQUZU3wz-6a9Npr4z6HW0DZhCqc5KR3Wr9lmAkDv5Oc2gqwm4kmfMtTwgmqKIlgaH-rEqrNG-kQB5bhGiI_lNsCfYIFODrSzq79MatOc5imsjKBdaRbocamGXz7Y>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvtdeiiecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefhvfevufgjfhffkfgfgggtsehttdertddtredtnecuhfhrohhmpefrrhgrthihuhhs
+    hhcujggruggrvhcuoehmvgeshigruggrvhhprhgrthihuhhshhdrtghomheqnecuggftrf
+    grthhtvghrnhepleejgfdufeffuefhiefghfdugeegieejudelgedthfeuudffheeugfel
+    hfevvdelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    epmhgvseihrggurghvphhrrghthihushhhrdgtohhmpdhnsggprhgtphhtthhopeduvddp
+    mhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvgh
+    gvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqmhhmsehkvhgrtghk
+    rdhorhhgpdhrtghpthhtohepkhgvgigvtgeslhhishhtshdrihhnfhhrrgguvggrugdroh
+    hrghdprhgtphhtthhopehprghshhgrrdhtrghtrghshhhinhesshholhgvvghnrdgtohhm
+    pdhrtghpthhtohepjhhgghesnhhvihguihgrrdgtohhmpdhrtghpthhtoheptghhrhhish
+    hlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegthhgrnhhghihurghnlhesghhoohhg
+    lhgvrdgtohhmpdhrtghpthhtohepsghhvgesrhgvughhrghtrdgtohhmpdhrtghpthhtoh
+    epghhrrghfsegrmhgriihonhdrtghomh
+X-ME-Proxy: <xmx:uTrAaBn91tp0FOPs0iKIKwxMvsj6Gw8oSN10T7O196LShzArtoCYhg>
+    <xmx:uTrAaDO4ZKh2tYnOwmSw6M1WgjiEslTAydQZrEJLRBIsk9ddTUE8ig>
+    <xmx:uTrAaD5hVLY-F1Zf78ee_mQ8oDL0RInMDnhOhGx4L-qBdFBbM-p0eg>
+    <xmx:uTrAaPa64D-GhZmPSGUvZa5iCOKgsk5a55fy84sik6OI_Zd130Wu0w>
+    <xmx:ujrAaEpC6b8PXPU6ZeBga19Jq2p4wwfEXWGa9tS88NzXP6KdnBAjnqOv>
+Feedback-ID: i93f149c1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 9 Sep 2025 10:33:27 -0400 (EDT)
+From: Pratyush Yadav <me@yadavpratyush.com>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>,  Andrew Morton
+ <akpm@linux-foundation.org>,  Alexander Graf <graf@amazon.com>,  Baoquan
+ He <bhe@redhat.com>,  Changyuan Lyu <changyuanl@google.com>,  Chris Li
+ <chrisl@kernel.org>,  Jason Gunthorpe <jgg@nvidia.com>,  Pasha Tatashin
+ <pasha.tatashin@soleen.com>,  kexec@lists.infradead.org,
+  linux-mm@kvack.org,  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] kho: add support for preserving vmalloc allocations
+In-Reply-To: <mafs0ldmon784.fsf@kernel.org>
+References: <20250908103528.2179934-1-rppt@kernel.org>
+	<20250908103528.2179934-2-rppt@kernel.org> <mafs0ldmon784.fsf@kernel.org>
+Date: Tue, 09 Sep 2025 16:33:27 +0200
+Message-ID: <mafs0ldmnlmq0.fsf@yadavpratyush.com>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250909074812.599030-1-husong@kylinos.cn>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 8479DC000B
-X-Stat-Signature: u49w6bpxj945f79p3ocpff7neo9x7srd
+Content-Type: text/plain
+X-Rspamd-Queue-Id: 5D596C000A
+X-Rspamd-Server: rspam05
+X-Stat-Signature: rrcqtubepduoywdnuxjqsyxddm7dxsj9
 X-Rspam-User: 
-X-HE-Tag: 1757428153-915068
-X-HE-Meta: U2FsdGVkX18E6iI9MlA/Pt7W3gQ99vlo4Jcw8jJYFi+4GvNKcKSm8n9FVpUL/mu127ms6v2QuG/wz5liI+caxjz48HfGR0pN3ST2Bph8kG1De8k3/qo14mAi+Y3wUlgO9H6hYcfWlcLaed2We1Fs+uMhX0K1AQO5wSbGq25eU09wzYfJkzlV6SO0w95BEtqFYZlEdEQmxnvBf3cPrMYRF5x499All8jUnF9z965r7apn6cFS1ADbHmVopAVgKBPwAYZEoZ+vvMntfKKBzWMezRsb3oXjWHxOq3bhftNw0Vj/eaoy84hglNi3S6iIXJZYwBm15SYRaIWOgzn9dcG3FNYifuXXdBtL+PecNP2q2XkcRAifoLb6nOYeTC/Yv/NuL8sGOIDL3etg+hd2pQw0qIL+qy+xSv91cUTyXif//dA6v3DbCSmA0JBpZQsA3duLG4j97BHRCflOk4fgLyzjISe332L6o8YL43zLU8VN944zghPW6HhxWDTcfhyqR4OokITwsa/2nfSjzgRY8KBD98FFnSr0i/MpLJRyaIbtSoTZD2fGRVnQpceOl+U+O8BUzj93ZX/PFG4+22lqww3h1SvFe8fD6G0DPERm2QwEU5H+uZzS+nwRnZwmr7jDycSf/nSrZnrZr5+GakeFb+4LoMx7kS0OJUyccw0CE3OPzHTHmZ7fcnWTSWoV5HOu6FlqgTBvJlpZYsycc9j53bciQxlWHrnfH/zs3MG6iz992W1Z+toX4er4f+F8/cPXs8t1MMscue9MdUP8v/3k01HrA838IYpR/c5wvttZ7OVu0mZg9SIKh99zz9bApcEtkvhl8R7E6hVHKIlZ1pSIpRe6jzfPtoAK+7OVyFuQzw5Ya2tgvD7/N8guYPUQQykH5S4t1Lm30Yns0SWOdd2szgMqn5JR49VtPkqn6N1FomjK7A3rlcxcHpM9PY5AQ1LLUtn0q9HfM/9wVzB6hxMLGrG
- J1gLSbAC
- sojda4CuAdRuvikf2p5jlVZad/SAqbyxaeUuHj1cqbe8bUOC7tupoBZ8C3/J2xvaA9vL9gv8eQ32CTUbWAqSp/VtWfNikkiQKaIolnPPpITqLGgZpSTGO5wHRr9Uil+2n2sWWhfVELvsY9/YI0F9QXt6djPacaQOVUaP6HiDj1WfUkMXlVnybjgsPk2MlI8G3LwNJitJg4s2GAl2BZM7EDFeEErXkx0luls03IWpWWAgqF6UQO9qQ4ULnZEkwGRPJsnGa9IgoFDcFYC7e688mHc6QG5soxXNElvTkwopoclQitEXSI6p/fzkGBVmwjrAbEanVJGR2BGLWKSg=
+X-HE-Tag: 1757428411-832118
+X-HE-Meta: U2FsdGVkX18/r+dBdyF+EaDVlt2/xG2CsDKqvfZ/rs15nUl2hDVeYFbFDejsM5tVUIkDPTVeWjEzby1pG5CiMgOSR7X7s0MTg81hGt/F+CbIMNp3bkPyJBHI/pyRhlFEjym1aFxe5fRJ+7ECVMg6XkA/ZGWQ+VI5lWxRyiUXneQqWxPWEs38us25AG/TfmoaE1hium66gQF34ZFBQSF2iRokf4zDthyV9Nvtt/5lHG8LHa0NYSa1qmdXErKhL88zWfYnPUri3mR7YxhgxmuUlGVuBHEaj4sISIr2+irMYOkD8s1bhTT88s1wzMr6UMV/6K6CqdOOytO9BshQvLMGE3Q3A03xnIPN8EgG0V1/P1WNspzq6RCMk5ipHDAvX+u+MA6PyZ4qaZJizq9PbiMeOgKUtQFbU5HP+opat00e/kFag95jsdHMUaKaYNhneXnTS24IBAMnsYtFqEazn1RDZYRsOD+n6hwgrqyfK0ulifRUyyqFdJ959nvtekZZA4G0wO7UWofv7+BGlb12iq0qorykZrsMXP9ZkoiB6dW5uh+j6l/4EzM+0fkbh25PCTKh/JXvUIu2SWHfq/TXYpMEn+L4tyd6I5+UMn3HmORlKDyrV93pYuuetPflGY+AxPbIslg3CGnFBTH1+yz7VJrCXUdHOoW98ii0hu29w/n3rZUgP++h7e2tL4ATaNDpDEdjBvhRzGy+QpEobFlbUFzSjdlupGi67Qya+5ni2NSIDgzg/UlGZiwqnt8//n+XXSSiob3iJoWvxkyXxLXp9DZKdK3Uv2h+drMJ0mTV9R0UgS3OWq/nTCetc/gxxSkUfg8jtZ3YUvD5E0uVgddyxZm8KMVhHLNoyaRDtkVnh1OnoAofHAArM6GehZfVKSF3JzKoEdx2d48btgLzZah0BVQ0TJplvbxbdxR7Nf/r6dda/JkAcOe2dPHO7WnhFf60vOGDOcF7o6q3HzI04HyZYVF
+ mQAeWYcS
+ CeefOMThD6AhITmL1645Qqs45xtlAwu/1le3aLbhgbgA6SDQELi1o6iQ1gW1JExjDENqWQiQS+tDsqj56zbPpTceRNhDDFozp7kK0VWKA1IYQ8HSdnLLJJ2grkiZ6RDeG6sE2IvdsPwdvGMx8r5IsAku6/DXX+RaNoWIOjI7c+YUNg0yq4LP2sufi+AWLn+t+SoWAD90UWO348ut3Jxq2+0K8V8mnB0XtyOcYrg59ZT7v87eYFA/cffhQi1DtUOiOheFa/PzGSjhwf5L/OBzFj79cz1GAxGUP9Pp7KIQUUgSFUhcaWlX/fzoUd6lJl2ZWRvq7oQbhjEDlpB8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,9 +139,127 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 09, 2025 at 03:48:11PM +0800, Hu Song wrote:
-> Use folio_nr_pages() helper instead of manual calculation (1 << order)
-> for better code readability and maintainability.
+Hi Mike,
 
-https://lore.kernel.org/linux-mm/20250829154728.3397606-10-willy@infradead.org/
+Couple more thoughts.
+
+On Mon, Sep 08 2025, Pratyush Yadav wrote:
+
+> On Mon, Sep 08 2025, Mike Rapoport wrote:
+>
+>> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+>>
+>> A vmalloc allocation is preserved using binary structure similar to
+>> global KHO memory tracker. It's a linked list of pages where each page
+>> is an array of physical address of pages in vmalloc area.
+>>
+>> kho_preserve_vmalloc() hands out the physical address of the head page
+>> to the caller. This address is used as the argument to
+>> kho_vmalloc_restore() to restore the mapping in the vmalloc address
+>> space and populate it with the preserved pages.
+>>
+>> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+[...]
+>> +/**
+>> + * kho_restore_vmalloc - recreates and populates an area in vmalloc address
+>> + * space from the preserved memory.
+>> + * @preservation: physical address of the preservation metadata.
+>> + *
+>> + * Recreates an area in vmalloc address space and populates it with memory that
+>> + * was preserved using kho_preserve_vmalloc().
+>> + *
+>> + * Return: pointer to the area in the vmalloc address space, NULL on failure.
+>> + */
+>> +void *kho_restore_vmalloc(phys_addr_t preservation)
+>> +{
+>> +	struct kho_vmalloc_chunk *chunk = phys_to_virt(preservation);
+>> +	unsigned int align, order, shift, flags;
+>> +	unsigned int idx = 0, nr;
+>> +	unsigned long addr, size;
+>> +	struct vm_struct *area;
+>> +	struct page **pages;
+>> +	int err;
+>> +
+>> +	flags = chunk->hdr.flags;
+>> +	if (flags & ~KHO_VMALLOC_FLAGS_MASK)
+>> +		return NULL;
+>> +
+>> +	nr = chunk->hdr.total_pages;
+>> +	pages = kvmalloc_array(nr, sizeof(*pages), GFP_KERNEL);
+>> +	if (!pages)
+>> +		return NULL;
+>> +	order = chunk->hdr.order;
+>> +	shift = PAGE_SHIFT + order;
+>> +	align = 1 << shift;
+>> +
+>> +	while (chunk) {
+>> +		struct page *page;
+>> +
+>> +		for (int i = 0; i < chunk->hdr.num_elms; i++) {
+>> +			phys_addr_t phys = chunk->phys[i];
+>> +
+>> +			for (int j = 0; j < (1 << order); j++) {
+>> +				page = phys_to_page(phys);
+>> +				kho_restore_page(page, 0);
+>> +				pages[idx++] = page;
+>
+> This can buffer-overflow if the previous kernel was buggy and added too
+> many pages. Perhaps keep check for this?
+
+Thinking about this a bit more, I think this should check that we found
+_exactly_ chunk->hdr.total_pages pages, and should error out otherwise.
+If too few are found, pages array will contain bogus data, if too many,
+buffer overflow.
+
+Also, I am not a fan of using kho_restore_page() directly. I think the
+vmalloc preservation is a layer above core KHO, and it should use the
+public KHO APIs. It really doesn't need to poke into internal APIs. If
+any of the public APIs are insufficient, we should add new ones.
+
+I don't suppose I'd insist on it, but something to consider since you
+are likely going to do another revision anyway.
+
+>
+>> +				phys += PAGE_SIZE;
+>> +			}
+>> +		}
+>> +
+>> +		page = virt_to_page(chunk);
+>> +		chunk = KHOSER_LOAD_PTR(chunk->hdr.next);
+>> +		kho_restore_page(page, 0);
+>> +		__free_page(page);
+>> +	}
+>> +
+>> +	area = __get_vm_area_node(nr * PAGE_SIZE, align, shift, flags,
+>> +				  VMALLOC_START, VMALLOC_END, NUMA_NO_NODE,
+>> +				  GFP_KERNEL, __builtin_return_address(0));
+>> +	if (!area)
+>> +		goto err_free_pages_array;
+>> +
+>> +	addr = (unsigned long)area->addr;
+>> +	size = get_vm_area_size(area);
+>> +	err = vmap_pages_range(addr, addr + size, PAGE_KERNEL, pages, shift);
+>> +	if (err)
+>> +		goto err_free_vm_area;
+>> +
+>> +	return area->addr;
+>
+> You should free the pages array before returning here.
+>
+>> +
+>> +err_free_vm_area:
+>> +	free_vm_area(area);
+>> +err_free_pages_array:
+>> +	kvfree(pages);
+>> +	return NULL;
+>> +}
+>> +EXPORT_SYMBOL_GPL(kho_restore_vmalloc);
+>> +
+>>  /* Handling for debug/kho/out */
+>>  
+>>  static struct dentry *debugfs_root;
+
+-- 
+Regards,
+Pratyush Yadav
 
