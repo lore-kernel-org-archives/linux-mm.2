@@ -4,95 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 079DBCA101F
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 16:34:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FA48CA0FED
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 16:38:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 365E58E000A; Wed, 10 Sep 2025 12:34:51 -0400 (EDT)
+	id 7B17F8E000B; Wed, 10 Sep 2025 12:38:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 316418E0002; Wed, 10 Sep 2025 12:34:51 -0400 (EDT)
+	id 789808E0002; Wed, 10 Sep 2025 12:38:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2049A8E000A; Wed, 10 Sep 2025 12:34:51 -0400 (EDT)
+	id 69FEB8E000B; Wed, 10 Sep 2025 12:38:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0959F8E0002
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 12:34:51 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 945201DA053
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 16:34:50 +0000 (UTC)
-X-FDA: 83873889540.17.7A96DD7
-Received: from blackbird.sr71.net (blackbird.sr71.net [198.145.64.142])
-	by imf19.hostedemail.com (Postfix) with ESMTP id A1EB01A0005
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 16:34:48 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	spf=pass (imf19.hostedemail.com: domain of dave@sr71.net designates 198.145.64.142 as permitted sender) smtp.mailfrom=dave@sr71.net
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 58BB48E0002
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 12:38:05 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EB65A1D6E3E
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 16:38:04 +0000 (UTC)
+X-FDA: 83873897688.10.EF223B2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id EACD214001C
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 16:38:02 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="WIm/Ujgb";
+	spf=pass (imf09.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757522089;
+	s=arc-20220608; t=1757522283;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=G1VGNtTxsSa5nO2Imc+ky+WEMJh0OsY2+KqAjaV/88Q=;
-	b=XWHQdnN0YapS0ILYlOfvF4DSCXIhsC1hxMFDf6Z26xMtG/c7gN5Vys+3egk4GD9+f/Cr0+
-	3HZfMolYV1+jEssFpsSURLuHf3iY+HoUT8+ZTscrH58Jh22xQdJENmT9/idvWVnImcOWMt
-	Sy0feUnsY5LAt9hPDZMjqMXM2Zsa2l0=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=none;
-	spf=pass (imf19.hostedemail.com: domain of dave@sr71.net designates 198.145.64.142 as permitted sender) smtp.mailfrom=dave@sr71.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757522089; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ldXWcdmE13ah6lBxgKqVw4wJH+fE6gBrhvUZKKZw/r4=;
+	b=gLEkhopnzpDEaPe8K/0gd0JprRQHFi1RsU4WAJuCKW2bibVn+H7juj21XCvbnEkPAArCjA
+	z/ZJqyB3cI1b8IF0wFMoZ6NmBYJ2jLypcD+oaRFXysEsDeZRQ5LvNxKram7SEB9DOT3OUv
+	+gVK82tqFbQsrEuWsiSQyDfIz3IlDG0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757522283; a=rsa-sha256;
 	cv=none;
-	b=CmNH9fre3mqlEtSR44/e8DPR1Asb6wsvclH9q4DJiQr0J53eONPwys5N53iYZPTpJi8RJ1
-	VOGGqYQ74VQ9ZsffF4gEsNt5yB3zjjoevZbsS0QhJxVHLCNUWXXTgi2m9M3HE6NPDBrrGk
-	tRtuxrSZSKaDAMYKTuqFD5q84uukvxI=
-Received: from [0.0.0.0] (unknown [134.134.139.69])
-	(Authenticated sender: dave)
-	by blackbird.sr71.net (Postfix) with ESMTPSA id 4234E20193;
-	Wed, 10 Sep 2025 09:34:45 -0700 (PDT)
-Message-ID: <dec53524-97ee-4e56-8795-c7549c295fac@sr71.net>
-Date: Wed, 10 Sep 2025 09:34:43 -0700
+	b=K6Tkrz8khFU9l+aszHxD/6eo5w9TM6Y83XBOllhmvBWMUJnAOKHsnRH0eYzlH2eH7+LFlZ
+	gbibq51UeI/ts+pQ79ZIPD3Q3WFCUbqYEFvNOEEP0uJMIY2XSD6Q3xQJunuG69+fML6Q2I
+	c+CL2FEPkhdn/53C8/etUQgkSAewJvc=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="WIm/Ujgb";
+	spf=pass (imf09.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 85AC8443F9
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 16:38:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6013DC4CEF9
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 16:38:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757522281;
+	bh=ldXWcdmE13ah6lBxgKqVw4wJH+fE6gBrhvUZKKZw/r4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=WIm/Ujgbf718kx21gbL2DeYQbNbSuzmw0RrnMIzAFC7+nIyV6HXBDDkyi56Pp4YWR
+	 TSrinyh/piAyYQCqh2pSE/q/Xz6rYZ0yO5ViM7vVG7pVyVzP0TY4jTUf1N/Pctr1oW
+	 0V2elYdB0RTIfb6kF7AxC982txzB3uGmCPcxl6p1Wmd0cZtyQmJNEwIBxe/mIgCjC8
+	 SBs6K7PxFs4AmqLCkFhSwiLhtPcnSRRJCtQdGJuG7MCcJHbC6hMdHL01BNBOra0v0r
+	 A5H5K6vhIvPUHYnV68FFKNFX20URxA5u3aFuLEZz6bgbihjYb+Vb42jdLCiQjHjYxQ
+	 Ds1+cCxSENLeA==
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-45ddca76f22so67025e9.1
+        for <linux-mm@kvack.org>; Wed, 10 Sep 2025 09:38:01 -0700 (PDT)
+X-Gm-Message-State: AOJu0YxqEMiU53kmwqSWQVkG3IZzKuJ8QEIe4CzEv17G767+rqrE6wBS
+	5ssdsD6qWjvB5z5VfLkZefLIYp9KBjUpTAQIQ64cYdv1miHu/OHtJDa39ZRisPVolEq8i1ggsDs
+	tNvoF1sOzRC2lRPEcLFanme5g7yRzzBys6xQbggAm
+X-Google-Smtp-Source: AGHT+IHIcZSYVf5Ghq8ZCt7fBSe6Jk0JycWud/uY2Ua6Qwb3BTtv2K2VfdajQ80Prrk17CPuEPzgVIj/KEesxMsohO0=
+X-Received: by 2002:a05:600c:4614:b0:45b:9a6e:ceaf with SMTP id
+ 5b1f17b1804b1-45df73f78camr1353545e9.0.1757522280029; Wed, 10 Sep 2025
+ 09:38:00 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
-To: Richard Weinberger <richard@nod.at>, Arnd Bergmann <arnd@arndb.de>
-Cc: ksummit <ksummit@lists.linux.dev>,
- linux-kernel <linux-kernel@vger.kernel.org>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
- linuxppc-dev@lists.ozlabs.org, linux-mips <linux-mips@vger.kernel.org>,
- linux-mm <linux-mm@kvack.org>, imx@lists.linux.dev,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Lucas Stach <l.stach@pengutronix.de>,
- Linus Walleij <linus.walleij@linaro.org>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- Ankur Arora <ankur.a.arora@oracle.com>, David Hildenbrand
- <david@redhat.com>, Mike Rapoport <rppt@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Matthew Wilcox <willy@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, vbabka <vbabka@suse.cz>,
- Suren Baghdasaryan <surenb@google.com>, Ira Weiny <ira.weiny@intel.com>,
- Nishanth Menon <nm@ti.com>, heiko <heiko@sntech.de>,
- Alexander Sverdlin <alexander.sverdlin@gmail.com>,
- "Chester A. Unal" <chester.a.unal@arinc9.com>,
- Sergio Paracuellos <sergio.paracuellos@gmail.com>,
- Andreas Larsson <andreas@gaisler.com>
-References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
- <497308537.21756.1757513073548.JavaMail.zimbra@nod.at>
-From: Dave Hansen <dave@sr71.net>
-Content-Language: en-US
-In-Reply-To: <497308537.21756.1757513073548.JavaMail.zimbra@nod.at>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: A1EB01A0005
-X-Rspamd-Server: rspam05
-X-Stat-Signature: cm4m1a4m8mhpwr4oir1t3hxxsn98ij6i
+References: <20250910160833.3464-1-ryncsn@gmail.com> <20250910160833.3464-2-ryncsn@gmail.com>
+ <CAMgjq7Db_DbZosWrUUAGfObDYA2e34zB=RtUpRZc2u4RJBiSxg@mail.gmail.com>
+In-Reply-To: <CAMgjq7Db_DbZosWrUUAGfObDYA2e34zB=RtUpRZc2u4RJBiSxg@mail.gmail.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Wed, 10 Sep 2025 09:37:48 -0700
+X-Gmail-Original-Message-ID: <CAF8kJuPd10FosK=CQbrw3ZPF+ckJO7-_1eLKY87_MX8sZ5YYUQ@mail.gmail.com>
+X-Gm-Features: AS18NWA9yRquM3BelDzwSg3xc3yiEw69xvVtEIQURHSBoX4G2NvJ0Z9YpOqdPN8
+Message-ID: <CAF8kJuPd10FosK=CQbrw3ZPF+ckJO7-_1eLKY87_MX8sZ5YYUQ@mail.gmail.com>
+Subject: Re: [PATCH v3 01/15] docs/mm: add document for swap table
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>, Barry Song <baohua@kernel.org>, 
+	Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@redhat.com>, Yosry Ahmed <yosryahmed@google.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: EACD214001C
+X-Stat-Signature: x48eo1fbxd69y1uy4a6wc5ss3f9fpkte
 X-Rspam-User: 
-X-HE-Tag: 1757522088-824399
-X-HE-Meta: U2FsdGVkX19507B1LP8PeOtLhE166h4CLWPP5H7rCrq8Mb13UTzZi4FIkMMJK1Cbup1maJovqkz9uWKpvu+tpbk5TGhoxqrhfnGeGd4X26qu/tDT8XuWls9Ft7+jG1FjQEmZT5dJJIdZgqgJTIhtvMPs9Sb6cKuC4CRL0ATeycU9GX4RElhij7hNlYbapFj3Xjs99NrVgaomL065XrDtBuAJ4D40cxTICBh0RryxRUmUtJBYCXTfSqBxZ6kip/EI36rjrizJYAGqWlbwnobpxtOGONgjudcL6QtZ6MDILFuXdSAKaax3nyFCaEP2gCFeQMu18EPLspBfFTXhCNAxuWVoSBCKtqykHhw7sUGy26xLMiRlSvOUClUcAssR6HwVNysgfeAW6qw3BGHRLXSXDN7SSI7vkhnfDCNQPeTBm+srBxFKj17+mvwWG2WFXmtjS3uoam02GIY2B59igRw4cGE1EyFjepLzlc1k81sUNNv2883fDTqGQAa7YGwINBOnR2DMB3bQRVAkTeYiBvEirNdTfzzzCnkA6Rrh2kFdzwSh4vAetc0rhW9MIQsOUJyWVzu/YbyH45QDlSM02DR46u/Xwkq/TBE6ID6B99jHY9qwGGe3OV9r4dU/Iln2FoyP/P/u1YJzBfsmnQ5geMHJNeWjxks5dEuq8oZpHrRFfy93E2oZSY4cnbO5mz7ncAxuRbQcqpvLU285dssPAosIJbK6JV3d1xb5efFhcICblLF1OQ1cr2LAb4EClqGrA01c6zNMbUMSGk9hBURg+WiMHf1Rw+64Atnjk7lsyhnn4Muwyaz2Mgrai9Qf2b7QKL/jaA086kTVatL4+SzBbB/qF+J/fYkiyUbCDQmX39Nci+ws2oXh5qWZpEl1mkQtRYxvYg6YMcBsQuiH/nC0Pb9GL9ZCySLG5ZRwG+qgKD2FPgCILDtsgcQP831WZedDJjv8QMSLDugxQ5q+Y3W0aY5
- 0df4Rkl2
- 4+j8pqyHEaFfcqxUEIzjMluPnR0xc0qXjjUEY3pa/BwmixZWsfenklINQNkodMkHNAZVtnGmmiTsx70pke+XNN3sxzsjnNTxfXoAz9vNXE82cVj++lyJGG9fgbcmaWdyMRbgm2JeIgkbLEw3ainih2rUU/6Ayi0m5pddTZpT9qb9gUud0ss8uOnlkiGSTveIXmzyxT1McAQ6jh3eRFtn8BiMmgjAPCYCARxfppMR7XSSarYs=
+X-HE-Tag: 1757522282-72941
+X-HE-Meta: U2FsdGVkX1/l/4v4s8vwVLMLJmEKF+mIbWmxonnEiE0NPNpOrPbmlUKHwq8mP10Y0iJAAsScKT2Ka5ffGEUEB92laGUnCVt2BKz3uyTiwwnZf92etI1tNxzcOqQSNVDW8LcqCFvlKHONmNQI9nGeljnsTkSv3HzJyiYtTww8Ary0RzyFHFE3ozv8Q4fAjtHK6U3PcrzZnZyuv/ELgyVdJwUrVFIc+5iJw+zdjSm18paPUj8InH6dbvRM7CDUwHf/bP6h6MosM1RrsGkmj5jKGcc8AC8oJDSeiVhfQz9xwh75+m1PDuLg6P4kxsgumK4qnb2DNOTshHxPXepS9W6biy7I3CQKGayU0uMWfHacqPVGvMmVIcGJHaJIXAfuyHeVIE92gTLwcjXu6plO1leUWHRFDv4YZQpjqagX/sLtfhDrDqPyWTxYo8IN7H9nkwvdEmiOjKvh66malco12Cjec4HoiiEtTSHQwa+pWzlWrt1wTsRSngSHfgYFdKIfPtjlBByNht9342DYnclFDyFtrFbL7Y7aK5guFuwa4dPdL8lzgVQUiV4WQTRzQVat4vBriYClFCkjRKOpl75gCmzBM7YSeOTrg5wcWScV86O6sM08dxb7t5rL0mpOzDgbx2KYAbjApohE99m82TDAa3JM6ClV1JQoaTHQdoqsmoRMfTffOt8fFW9t2QVzZ35tO2F2M5BUPUpJrvfDG8EfjLj9CEc4KM8yp5K5+pZsxshe9SSs85QGfZFCoagrfZdQLMF6twKStVrR+4acHKo6eRBynSRu4lXHNso02ofhBLgiWR6kbukYvOvMQyyDKB3GdLkQRa3ubFls84YRKfssOHwcXfHDBSzz2iMvr7KFnsk60yBsbXn2OZl5Cye+QVVJfC366mdbZr5/igdQxHrbOGc0+f9y0qexrTkl4Z7FaSKDILuKyAdmG4A4yEmd5Wxv6lVAroAKVNXx6/mXZFjwoSX
+ S3rnImkR
+ 0R65SSU/W4XcWcwyjP5CYUurEE3PCNMQP+ip71QaMl9IuivBCu18vmhHpfFNwD4RGT/zSrBQ39B7F0o35ZFmOZehp7RDLA6R8K85GGJsZyAIGEEMRxKn7ljqIu5dyVSiPwYYjOYbrNJuKzV1OZFqJE8nVi5MTOZ712pMSOLtbAI8gafosbJFEHWp0n8qskO/6WdKbduPbgEo3D8L4w4zCusbSyNbdG6MyYXZdKa2N8n5ITBmcC/UKsKBSPbd6BaFS4ihnEI60SOJmkI53uQtEEoQqKrs94qQVhaCRmpJG3rIJUlc2GGZ6cLA2haicn8DjloMEZROyHLGPQDeaG0t59ubO9nHrr7qx/wAT7rmKoPPLPMw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,26 +110,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/10/25 07:04, Richard Weinberger wrote:
-> I am part of a team responsible for products based on various 32-bit
-> SoCs, so I'm alarmed. These products, which include ARMv7 and PPC32
-> architectures with up to 2 GiB of RAM, are communication systems
-> with five-figure deployments worldwide.
-> 
-> Removing high memory will have an impact on these systems. The
-> oldest kernel version they run is 4.19 LTS, with upgrades to a more
-> recent LTS release currently in progress. We typically upgrade the
-> kernel every few years and will continue to support these systems
-> for at least the next 10 years.
-> 
-> Even with a new memory split, which could utilize most of the
-> available memory, I expect there to be issues with various
-> applications and FPGA device drivers.
-I'd be really curious what the _actual_ issues would be with a
-non-standard split. There are a lot of "maybe" problems and solutions
-here, but it's hard to move forward without known practical problems to
-tackle.
+On Wed, Sep 10, 2025 at 9:14=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wrot=
+e:
+>
+> On Thu, Sep 11, 2025 at 12:08=E2=80=AFAM Kairui Song <ryncsn@gmail.com> w=
+rote:
+> >
+> > From: Kairui Song <kasong@tencent.com>
+> >
+> > From: Chris Li <chrisl@kernel.org>
+>
+> So sorry about this. I did fix my git config and verified that, but
+> sent the email on another machine that still having a broken config :/
+>
+> Hi Andrew, can you help fix the Author to be Chris here?
+>
+> BTW I saw the current version in mm-new, the author is already Chris,
+> which is correct.
 
-Has anybody run into actual end user visible problems when using one of
-weirdo PAGE_OFFSET configs?
+If the mm-new got it right, you have nothing to worry about. I assume
+Andrew's tooling already takes care of this common issue.
+
+Chris
 
