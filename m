@@ -4,96 +4,185 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85459CA0FED
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 08:39:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0880CAC58C
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 08:51:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CBF5A6B000D; Wed, 10 Sep 2025 04:39:32 -0400 (EDT)
+	id 22CD08E000A; Wed, 10 Sep 2025 04:51:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C6FCD6B000E; Wed, 10 Sep 2025 04:39:32 -0400 (EDT)
+	id 1DD318E0003; Wed, 10 Sep 2025 04:51:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B38086B0011; Wed, 10 Sep 2025 04:39:32 -0400 (EDT)
+	id 07F1C8E000A; Wed, 10 Sep 2025 04:51:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9BF986B000D
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 04:39:32 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3B0FE11AD75
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 08:39:32 +0000 (UTC)
-X-FDA: 83872691784.22.8703F42
-Received: from mail-il1-f198.google.com (mail-il1-f198.google.com [209.85.166.198])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 78CFCC0004
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 08:39:30 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf10.hostedemail.com: domain of 3QTnBaAkbAAYy45qgrrkxgvvoj.muumrk0ykxiutzktz.ius@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.198 as permitted sender) smtp.mailfrom=3QTnBaAkbAAYy45qgrrkxgvvoj.muumrk0ykxiutzktz.ius@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757493570; a=rsa-sha256;
-	cv=none;
-	b=DkyPG0zSyXJQq1hwlMEI2SDhbspXXUJCapEMOIEm2usSC2gQ0SyJBKGoIld6MMDCRjJ8t2
-	vYHdhrg9Tx8jlHSPdrIWmHQgVSzHhDecfDUAgThN/fAYKP+b3lV6xOLaVGwoXLJSVkMyMG
-	4pNzxKWTisUX38zFJUuzHjgntzo4t5U=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf10.hostedemail.com: domain of 3QTnBaAkbAAYy45qgrrkxgvvoj.muumrk0ykxiutzktz.ius@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.198 as permitted sender) smtp.mailfrom=3QTnBaAkbAAYy45qgrrkxgvvoj.muumrk0ykxiutzktz.ius@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E3EF58E0003
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 04:51:18 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8DAB4BB898
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 08:51:18 +0000 (UTC)
+X-FDA: 83872721436.08.1FB1FD2
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 13F1580002
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 08:51:15 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=SmVy4Teo;
+	spf=pass (imf30.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757493570;
+	s=arc-20220608; t=1757494276;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=Wcqwa9UVTgt+vSJ2HOOPjUHsHWgh6bX7b58VAKjfe3Q=;
-	b=Ao5fIDSZ8zP2R+Y2G5q1FX0qdS+0LG3DEqWfvSVb+98k99fJheqFmiDFDiz3tboI3sKVpt
-	9m6VFzmLKbrV7FC3cWQ0DSKXAM4p9joRWOhuo8e6ALYNbtU/uFxtDLSw/5aKFhEnCzKCWb
-	NBxjqBK0++Qk79yPiXOI/+XvkEsKZk0=
-Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-4190d8f16c3so2595245ab.3
-        for <linux-mm@kvack.org>; Wed, 10 Sep 2025 01:39:30 -0700 (PDT)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=YxDchDCxzvL/sWuMLY6CnxonULRA1/iVTZkrVNF77OQ=;
+	b=mTkBzTCzq88ynVeHUcFK2k6bucVLDM+8C5HVo5zBFpfSbk4z3HqEUCS89C7vBOH8QTQ7iP
+	M+irRFqTvjZgeGk2LWxSbRzaWMhw/xvDOwUYwwV9lIAv6qbVqgXQBAc27eOaHegW4MmFAb
+	GaBTHJPeLYAm7SP4zla7khMHw2zmaxU=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=SmVy4Teo;
+	spf=pass (imf30.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757494276; a=rsa-sha256;
+	cv=none;
+	b=CpzCFo0W4NyOyDEeTiSMsoywVjFoicnnGjQCGSTJzcFPVir7fHYQ2s2+QQmX1QmO7fmhNC
+	OUhdSOweaUMM9vqzk1YIqiWxe3ddljwZ7uBiPc/erfCjlnD67BCoovXMEq0jPbxX94EGVK
+	QjPGkK2+8eqWy71CQ3yi3y9AKeOiMII=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1757494275;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=YxDchDCxzvL/sWuMLY6CnxonULRA1/iVTZkrVNF77OQ=;
+	b=SmVy4TeoGAoDx+yv4d2UaWxhS5MoQfq7gEG8jfCyy2iEh5DZpVbjiHKnPPiZluyuwQVCSa
+	X5wuUOCRV1FW26TswQQZb/HGOFWwtu3dvzsKOKhfj1jdEOU5j35X/+dlfQxlGQjBpzhpnJ
+	6CsHito9k4e2IjlIECyqSRl1iGuv3Y0=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-657-D8lldl-pMzKzRrEoP5fmzQ-1; Wed, 10 Sep 2025 04:51:14 -0400
+X-MC-Unique: D8lldl-pMzKzRrEoP5fmzQ-1
+X-Mimecast-MFC-AGG-ID: D8lldl-pMzKzRrEoP5fmzQ_1757494273
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-45ceeae0513so37271375e9.0
+        for <linux-mm@kvack.org>; Wed, 10 Sep 2025 01:51:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757493569; x=1758098369;
-        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Wcqwa9UVTgt+vSJ2HOOPjUHsHWgh6bX7b58VAKjfe3Q=;
-        b=quHJWNLBxPjgnpt4EE2W+09XJNvyTIiS3rUdo0tQq8Fsg7E/CYhIiMgUJXcF/ULwtE
-         UX3EMhckENVzZ7bEJM8ivBQOIAohAZWcqtlyXT9gWoG8OcyFdCnilgDeoJvrOSP1aLIF
-         yqn7tB8KxTr78YCj5vuNDs/L3uFn1x+kmiDJ5tDs7xRNDZgbkaMJgHvws9RXUquZufZb
-         1e4RKMLrP6znSLwbtdYnXkhGP83tUkK3WJhZ5OtwXD2lHpvkep1ubfXuOTDN6LaqvQpD
-         Pe/e7WU6HIa5Ty34Msw/20G6H9amf4/7GW9GaQDXpEy/ZfRzupkAZZt2Dy7dORhfg1gW
-         bNkA==
-X-Forwarded-Encrypted: i=1; AJvYcCV8g8zDhLwTHHcI0IHwZyQxmux/cNobIFsJz7ZPFz8bbeYFtYCvdMSPfYwUVUM7eAqZDB/IbDbW7Q==@kvack.org
-X-Gm-Message-State: AOJu0YzKDgqmLaoBmEbPsLQ1eMAlKyw+f1uwkAOsUjcmlSFgQnZ8JzfU
-	aPTZ3IBX9hUMsUfTRlhxPXj717f/LTQhH4C0Q940LOit7BkMJ7uHkzLV84EPTKrzTg11jWOA80O
-	qNFveHmdFQkm8nTXLNbqPYzw1PLRmOwAKO0kY32aU5w9ag6PLEiY5KuO909Q=
-X-Google-Smtp-Source: AGHT+IF+kkdZuXHRGt39YmgS5WbPtMYJOAMbJ/XGa2whcdg3dnOyi8+jm0FGA1na2rxzdjWkeavI2JXVEsr6LVsp5+Vhp83goTur
+        d=1e100.net; s=20230601; t=1757494273; x=1758099073;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YxDchDCxzvL/sWuMLY6CnxonULRA1/iVTZkrVNF77OQ=;
+        b=Zh/PtVyb/Ur2McsChnilp2iTi9/HMsWQc0/4KdHcxnwlp9CM8t/CLj0oBAvHa3/JAN
+         0ckqD1nkpq3VdQ1+l7Msadkh9TMA46vflTMyX02RWvhmoFUyYJMhXI0Vre82IUKjUQUs
+         ovxWtdBCl2bWrRS+BqypTyOk8+QLDU267lDj1OiigaoedPQKWKkuXDuB9Gt8+Lp2HNbM
+         jfD3xnKRs+r15hv7WiIp9Ra0gyMzBcPlj9bTi23l9Are2Nm9fb54IFkgm+WmnsCIiJZm
+         WcgjE0yQPcJQ4x0cACjnTuqNrwN7gbYW8xwsnsPIcnqTQyXoa1xRlIWw6f8hJ4deIRmW
+         kviA==
+X-Forwarded-Encrypted: i=1; AJvYcCVqxlBC9lUM0aOtkuyJxFbi3waMepUQx8gLB+xiG9aIkdoysze+iSm0xR3h6co2mA6ncio4idtfZg==@kvack.org
+X-Gm-Message-State: AOJu0YzPK7L8AJ3dm2b/qostMEeJS98PPK2qVbUS3ElXAThHUTPNAwt+
+	Vn79e48/nxAo9uMFTeJP2FhV/snbgXKJ1QGEqwRogZrXgD0gyisJ9EAXKJ1BYaEYI8N3mvL0HAW
+	4wbnJiOOrEwi8fY4ZyA2Iz1mTsL0iLnAaxwdjsExFUuz/ChufB2vW
+X-Gm-Gg: ASbGncuDkWvfq+iEpezCMeokgAPrdIJtoS6I1wJisUPfeFt/Vnke4T37/MCAKISoL4b
+	U8tIV/c4Lcs4vW3kW8yPF1i3OOf/EYzW2InnOz8lqmk6cMtAPa1bKVBhdUYmEohesr5pD1fGX3g
+	lhBiGP7rLyGbC5QnU8fLIQivXfZCTxNkZtUndZcRG7SraVCmhZsxH0t/9bkmbJtp9YBOCOtYfQ7
+	XBjmSosQxkXKwRvRQMYlKXrooJT4BkRkK2+HscQFH4vpNGd4LBxKflWHutvk4jBSV3JZRyaY9us
+	hmd/Du5uEdTg9n1i6+SKj61zHSjEVuuIfeBCmYvvlA3pEeMNf1c4qAoTyodEbHMsXqSLzWTwN+N
+	mdxkBHTII8CBn0GhCEfnnmIp3iSXgBBvAh/djPgC7orUNWAp21B3JW0fnTELMTX3cjfQ=
+X-Received: by 2002:a05:600c:154f:b0:45b:7f72:340 with SMTP id 5b1f17b1804b1-45dec73107dmr57540835e9.25.1757494273015;
+        Wed, 10 Sep 2025 01:51:13 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEb4T8T/4bN/izbrmhcz9dw5qzIFBCO9XthnHygK+hqHa7tRGOdKsmmaUtKsFPouf6Ua2AQ5g==
+X-Received: by 2002:a05:600c:154f:b0:45b:7f72:340 with SMTP id 5b1f17b1804b1-45dec73107dmr57540395e9.25.1757494272482;
+        Wed, 10 Sep 2025 01:51:12 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f17:9c00:d650:ab5f:74c2:2175? (p200300d82f179c00d650ab5f74c22175.dip0.t-ipconnect.de. [2003:d8:2f17:9c00:d650:ab5f:74c2:2175])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e7521bfe00sm6230360f8f.5.2025.09.10.01.51.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 10 Sep 2025 01:51:11 -0700 (PDT)
+Message-ID: <8f9a4a13-2881-4baf-ab62-3d0d79e0cd3c@redhat.com>
+Date: Wed, 10 Sep 2025 10:51:10 +0200
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1a2e:b0:412:f7d1:7432 with SMTP id
- e9e14a558f8ab-412f7d17596mr65192215ab.1.1757493569579; Wed, 10 Sep 2025
- 01:39:29 -0700 (PDT)
-Date: Wed, 10 Sep 2025 01:39:29 -0700
-In-Reply-To: <20250910005957.54108-1-rgbi3307@gmail.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68c13941.050a0220.3c6139.001d.GAE@google.com>
-Subject: [syzbot ci] Re: mm/slub: Removing unnecessary variable accesses in
- the get_freelist()
-From: syzbot ci <syzbot+ci49ef42f07c0503e6@syzkaller.appspotmail.com>
-To: 42.hyeyoo@gmail.com, akpm@linux-foundation.org, cl@linux.com, 
-	iamjoonsoo.kim@lge.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	penberg@kernel.org, rgbi3307@gmail.com, rgbi3307@naver.com, 
-	rientjes@google.com, roman.gushchin@linux.dev, vbabka@suse.cz
-Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 78CFCC0004
-X-Stat-Signature: eyajoyurghk944ycs1obp4tf1i9ti7en
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V10 1/5] mm: softdirty: Add pte_soft_dirty_available()
+To: Chunyan Zhang <zhang.lyra@gmail.com>
+Cc: Chunyan Zhang <zhangchunyan@iscas.ac.cn>,
+ linux-riscv@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, Deepak Gupta <debug@rivosinc.com>,
+ Ved Shanbhogue <ved@rivosinc.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>,
+ Arnd Bergmann <arnd@arndb.de>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>
+References: <20250909095611.803898-1-zhangchunyan@iscas.ac.cn>
+ <20250909095611.803898-2-zhangchunyan@iscas.ac.cn>
+ <6b2f12aa-8ed9-476d-a69d-f05ea526f16a@redhat.com>
+ <CAAfSe-vbvGQy9JozQY3vsqrrPrTaWYMcNw+NaDf3nReWz8ynZg@mail.gmail.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzSREYXZpZCBIaWxk
+ ZW5icmFuZCA8ZGF2aWRAcmVkaGF0LmNvbT7CwZoEEwEIAEQCGwMCF4ACGQEFCwkIBwICIgIG
+ FQoJCAsCBBYCAwECHgcWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaJzangUJJlgIpAAKCRBN
+ 3hD3AP+DWhAxD/9wcL0A+2rtaAmutaKTfxhTP0b4AAp1r/eLxjrbfbCCmh4pqzBhmSX/4z11
+ opn2KqcOsueRF1t2ENLOWzQu3Roiny2HOU7DajqB4dm1BVMaXQya5ae2ghzlJN9SIoopTWlR
+ 0Af3hPj5E2PYvQhlcqeoehKlBo9rROJv/rjmr2x0yOM8qeTroH/ZzNlCtJ56AsE6Tvl+r7cW
+ 3x7/Jq5WvWeudKrhFh7/yQ7eRvHCjd9bBrZTlgAfiHmX9AnCCPRPpNGNedV9Yty2Jnxhfmbv
+ Pw37LA/jef8zlCDyUh2KCU1xVEOWqg15o1RtTyGV1nXV2O/mfuQJud5vIgzBvHhypc3p6VZJ
+ lEf8YmT+Ol5P7SfCs5/uGdWUYQEMqOlg6w9R4Pe8d+mk8KGvfE9/zTwGg0nRgKqlQXrWRERv
+ cuEwQbridlPAoQHrFWtwpgYMXx2TaZ3sihcIPo9uU5eBs0rf4mOERY75SK+Ekayv2ucTfjxr
+ Kf014py2aoRJHuvy85ee/zIyLmve5hngZTTe3Wg3TInT9UTFzTPhItam6dZ1xqdTGHZYGU0O
+ otRHcwLGt470grdiob6PfVTXoHlBvkWRadMhSuG4RORCDpq89vu5QralFNIf3EysNohoFy2A
+ LYg2/D53xbU/aa4DDzBb5b1Rkg/udO1gZocVQWrDh6I2K3+cCs7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <CAAfSe-vbvGQy9JozQY3vsqrrPrTaWYMcNw+NaDf3nReWz8ynZg@mail.gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: XnggQ4EAboFnkjSeIu_3KkwZSyl3HwMDPg2UG0nMcNE_1757494273
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 13F1580002
+X-Stat-Signature: utwyqsdnqawrb3azpi4obygxkgik4dkk
 X-Rspam-User: 
-X-HE-Tag: 1757493570-876920
-X-HE-Meta: U2FsdGVkX1/VsA6cW0C+Ep9YUaaV1bhVJ8H7Vpm2vQJEKfw8asQcAce7HYc7wVnVPQVYHfCc0ENwDtIElGMDdKjVgCg9dNmhqtkMlHMNqxFM+I/vL9HGY83p5D8dohQd1X2lWJTsRF7oUvGkdzCNqUSF/5G5BScj+MDlLirJ8J6tQV6iMUUcdGymZStPp0pz9dYcUEOVXZ7092QrnE4ev5pppl0Ng4K6tNxVAkYANmvRjUeAKc2QCjrIQeji9QQ0Be5iG7bR1lluWAkBV1wr5E5mzZyv1lXD37p2lkpwrskIj6PHdqCvXK/iaSgOMG/g3crztoml/pCHn7PMxfyXElZ//5iqexJN5ScAHlOM3VVp72YxC/Jx43yowCXp6+4RgIvBT7RVqsbOhStgHlKEnbcsGo5Z/j8V6MaotAZF8IWxKgfidELRXEZxW1weJTiWbv55+0macuoSfWRdKIlDkbR5yrgOiIsXiCTaUU6GOSJmqYlVmMKAMAauaeLV2W4liChNiDBYLhKX0m2awPlpMqQLH4L1cczOrR/7idE5iwrtcQ9fdzxsh1TDkNvHi70d+Mb4tlLhgFrvwWpGS0Ua2Z+C2D0WvQEh3vM/O6ec5CNeXaImxz7TDo/JF1rEdBmIKhEJmbWNDXqRl5xq8ercw+ouTN8X0kes4R8ea35xcKAR3/7ahcL28XuB7cY4oh6vXu9HQd66h2ySF9bevBalgDs8axuUZg+MhtTXri0Z/KKD/hARg5j72fgMlCEbDAIFcPCxu4Csud/RCa/mJdT70BKrI5wWl1lIRky8qemggrEUQY1wtxPc1iIOk1Sn/geeXSSRRD7j2adhpU7WySAtMof40jmP++AEoQDDJp9e0iLY6QoRTp9pP9IKZwF4zEjKoBBxiVmJyeo74pdriYsR/DwHZQzZ/Zdn9Vb270sLx6bf4IQNDu8boJVI9WxK7lmsI25hDuokpD6jgiIERpk
- N1+WDCxS
- cj0uIUDlUSo/v7zs0Xf6sj2QRzb9J1fgAF8qqfxHlmymrUl+NTbj5Otj7sJoxLlG4m0rFJ2B2zywDOAvFKPBrsytAiO7N+zQksa+Zl8JFs/9P+sjh2ARbYdYDTguEz2aXAVK8qzbBHqZBQSt+QlUJQjq8pUVY7pZj1jU0/T5ODMAfzJ1EuiuXdCll1an3TFrFP82MTgM6ygLQxQgdD7ywx1VIByFUjWIjDBJtH30YR5EqR95/94ZYIGhaiisWKGDWjTNUV8H6kUnxT2ksSx5Yb//Q8afbGBEQqGLUjJYgH10o5TyrXUmoJ0RzxOmQ5G8u8K8bWbZdgKM99Pp1tfXpchbGMjf2jUaowY4A0bpAdNrwvit7Q6USeSuqYoE3cnAAGgRBX36+VUQEL+SwWAEnUyXxbBz7zp28XgBBK6GsG/Obw/5a42P3PuGkooqmMiwPMQoxDrOM0++FmkcksqIc3EwCbxkNryHl/hKOcLx3CFCgu6CW1oBkTse7rTzqzZK12SfDugZFoHAsgZWb6mB3sY8YK+SdlBM9fRFKcYl6aUJ4IHRUrgtJoii4wJ+rrGy+7FjiOXV+JBzdso0xAy16QS+NiJpwTtlANFQSYVtv1dnxy4xAC79sE2vSmxZSw0Gr+mdcTOqWM+yfpPnFx+6q4reehdrXKJApuCe0zgyi1VMNEjXj/uzYnyDsvjQJV6+GRd3Nfc8aQFs2Yrnmsz0qKqrrulH14k3ZiNbM/A7Z8nJhHrnfKBBh9XV0oUY+Cr2AUOjPekY7/epmdRXY/MDkYqpj1o3prYoEQm0QOnivuB9N0YF6NoExdrAtutlPZvjJv5yjyGcnO7H3TpIwwAcqibc3glbYRpTna/OpZJA9sRduVFnZQ2iN0pJuZ5ez2FsIG40H4G6F0QG6KuUkyhF+V/Qt08QcDqhOWW9IqT+BUPyNbSBm3S+yAAaHGJQLNuzf8Jh7EFyB6/rRikIelV26hnK+BkuM
- 3T1xFvA+
- CQ4+3GcV9J/lFcqElNckQldywl0OiqxQnuABv5eWFAiacmL4QmFGu/dPa8IA6dQF
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1757494275-715966
+X-HE-Meta: U2FsdGVkX1/+O81qjEThiLsizcohjzOBINySLozTtMSKFmPEdFIwmohW8HCH719tP2AdrTJoEMlHeE5g5ssd5ZK/WoGblsnaHiLR598N8R9io27Um9ZHCjHZSLODRqLPJBww7ZvQenBFauOFMkIcuswST91PPaY9ch3nS+nRTpNaSxKDZXEgZihlOJhLOV3R3W0lxARpvX/WrgGnLYpeSjkhG1/w8mOqTWP2Rn6ikZ0rl5reAlfFfb3Ev7wJUpOcsfk2sMdShM/IwF1AAvTUhbRqIxxUvkOPFzCDkC+G9F2w5du/7BohLCbMg+pIWgYKXtyNNt3rRuG63ZaQDOkRzm2k2IULlNPwFTxNuJ/hKFBYDY4NHoIXw9yujmRDokOLM4vq9z60vKeugF/tx4IZiB55hdvCplBc+b1NjpEi595JIdGGcRhzFyaBmblv2JpI9mf1d8fj1EnSY5tzYonFdhu4dfohRHw39OY/9wETW6I62A5cyEvnoMko/ed62pI1Adn0Kaxk7ZAAG42sSnKUqqZSFBw9ywllk1gku2VSNWgjPe+YRUKyKc3Lxp1/M//Kpk/4N4kHg03b3atL6X5vKkTxbGFHfQQKmzHV+0AdO0d81xHcVo+byW4etDjUAKaWmmqZ+M3lBP8zmfB0Qj1ydidhfK1qvtxd+kYl8URpd5ZwhvbXjwpNFIPIkFurBBWhhwnunZXptNvyImsrstUByOBUyaB3lv4BMIsRO1bPG0xCIkoF7MgSh8OPxtrXeoKomaufmN4QMo1AdwTfvjBPX/ayJQw1ub0ENrDzBdjNr7Jna5fX3epavjfU8udGUKN+GfEFw2GbJZXmApvWQnmDNs4HIYslQzRAdr6AwgFLg1VdRYMWHo9Yf94DaVEfH0VnhlOngbV6U/CqcPRWjjCfcGFy6QZx4dT5JX4hguJHXLP8o//4Y6tIBugGOuxswitT/IezCBZWn1+WF3fWrKQ
+ Tw72Zqhp
+ 9EmGL2WdjQz3ohJfqXzCsKY/i6S7zaQUoWDFikMyKdzgcoIU5U07Y9u0/H0NokO6Q7tQh1a8HS9ROLyaU9bon0TwjDqnkDkCgRQmhLb1z9ZEzG0tyNenBYNOPe2W9HZXR+wmrRNZvubRnUJAKc+1BuapMqNDKGm2x22j3B2qc3GRXA4T2t0a7VKfVQO8uDF96JSoQLecBOsZAY9LaevRLcpJ/duk0Hgu6xkeu00Gz1PsH/Ljw6DLXRDRuqAMGT1tJLwHW/1BXJT5zKx8O+o5y+PSM02r10tAKyIJds+G/m0ZAaAQwCgoRaU77w9QeLZYpzirI3Gan6ykhnX3PKBPbvMd+Pp/hDaEUfiRG/bqmbkTVSPJXWLG7pVZrBKXnHyB8wjQYIJnlztCPGXiQwnGYq8PgpAZF2szml9yr000J8d8tqnAXZvmEy7cbOIW7d+kvqZsaS/Dwn593lU+4PBTD2lRHFTEUZ19jbDT3/UV4hEkMyGB2pG2tKIhm7R11TUrXi0ZHZ/RvHkQh2ONbYtUlZW8uIkyaq3RW1yfYDL4gJ3HMA+nAIlW4VJl9oABi9FvCxlLc
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,83 +191,162 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-syzbot ci has tested the following series
+On 10.09.25 10:25, Chunyan Zhang wrote:
+> Hi David,
+> 
+> On Tue, 9 Sept 2025 at 19:42, David Hildenbrand <david@redhat.com> wrote:
+>>
+>> On 09.09.25 11:56, Chunyan Zhang wrote:
+>>> Some platforms can customize the PTE soft dirty bit and make it unavailable
+>>> even if the architecture allows providing the PTE resource.
+>>>
+>>> Add an API which architectures can define their specific implementations
+>>> to detect if the PTE soft-dirty bit is available, on which the kernel
+>>> is running.
+>>>
+>>> Signed-off-by: Chunyan Zhang <zhangchunyan@iscas.ac.cn>
+>>> ---
+>>>    fs/proc/task_mmu.c      | 17 ++++++++++++++++-
+>>>    include/linux/pgtable.h | 10 ++++++++++
+>>>    mm/debug_vm_pgtable.c   |  9 +++++----
+>>>    mm/huge_memory.c        | 10 ++++++----
+>>>    mm/internal.h           |  2 +-
+>>>    mm/mremap.c             | 10 ++++++----
+>>>    mm/userfaultfd.c        |  6 ++++--
+>>>    7 files changed, 48 insertions(+), 16 deletions(-)
+>>>
+>>> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+>>> index 29cca0e6d0ff..20a609ec1ba6 100644
+>>> --- a/fs/proc/task_mmu.c
+>>> +++ b/fs/proc/task_mmu.c
+>>> @@ -1058,7 +1058,7 @@ static void show_smap_vma_flags(struct seq_file *m, struct vm_area_struct *vma)
+>>>         * -Werror=unterminated-string-initialization warning
+>>>         *  with GCC 15
+>>>         */
+>>> -     static const char mnemonics[BITS_PER_LONG][3] = {
+>>> +     static char mnemonics[BITS_PER_LONG][3] = {
+>>>                /*
+>>>                 * In case if we meet a flag we don't know about.
+>>>                 */
+>>> @@ -1129,6 +1129,16 @@ static void show_smap_vma_flags(struct seq_file *m, struct vm_area_struct *vma)
+>>>                [ilog2(VM_SEALED)] = "sl",
+>>>    #endif
+>>>        };
+>>> +/*
+>>> + * We should remove the VM_SOFTDIRTY flag if the PTE soft-dirty bit is
+>>> + * unavailable on which the kernel is running, even if the architecture
+>>> + * allows providing the PTE resource and soft-dirty is compiled in.
+>>> + */
+>>> +#ifdef CONFIG_MEM_SOFT_DIRTY
+>>> +     if (!pte_soft_dirty_available())
+>>> +             mnemonics[ilog2(VM_SOFTDIRTY)][0] = 0;
+>>> +#endif
+>>> +
+>>>        size_t i;
+>>>
+>>>        seq_puts(m, "VmFlags: ");
+>>> @@ -1531,6 +1541,8 @@ static inline bool pte_is_pinned(struct vm_area_struct *vma, unsigned long addr,
+>>>    static inline void clear_soft_dirty(struct vm_area_struct *vma,
+>>>                unsigned long addr, pte_t *pte)
+>>>    {
+>>> +     if (!pte_soft_dirty_available())
+>>> +             return;
+>>>        /*
+>>>         * The soft-dirty tracker uses #PF-s to catch writes
+>>>         * to pages, so write-protect the pte as well. See the
+>>> @@ -1566,6 +1578,9 @@ static inline void clear_soft_dirty_pmd(struct vm_area_struct *vma,
+>>>    {
+>>>        pmd_t old, pmd = *pmdp;
+>>>
+>>> +     if (!pte_soft_dirty_available())
+>>> +             return;
+>>> +
+>>>        if (pmd_present(pmd)) {
+>>>                /* See comment in change_huge_pmd() */
+>>>                old = pmdp_invalidate(vma, addr, pmdp);
+>>> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+>>> index 4c035637eeb7..c0e2a6dc69f4 100644
+>>> --- a/include/linux/pgtable.h
+>>> +++ b/include/linux/pgtable.h
+>>> @@ -1538,6 +1538,15 @@ static inline pgprot_t pgprot_modify(pgprot_t oldprot, pgprot_t newprot)
+>>>    #endif
+>>>
+>>>    #ifdef CONFIG_HAVE_ARCH_SOFT_DIRTY
+>>> +
+>>> +/*
+>>> + * Some platforms can customize the PTE soft dirty bit and make it unavailable
+>>> + * even if the architecture allows providing the PTE resource.
+>>> + */
+>>> +#ifndef pte_soft_dirty_available
+>>> +#define pte_soft_dirty_available()   (true)
+>>> +#endif
+>>> +
+>>>    #ifndef CONFIG_ARCH_ENABLE_THP_MIGRATION
+>>>    static inline pmd_t pmd_swp_mksoft_dirty(pmd_t pmd)
+>>>    {
+>>> @@ -1555,6 +1564,7 @@ static inline pmd_t pmd_swp_clear_soft_dirty(pmd_t pmd)
+>>>    }
+>>>    #endif
+>>>    #else /* !CONFIG_HAVE_ARCH_SOFT_DIRTY */
+>>> +#define pte_soft_dirty_available()   (false)
+>>>    static inline int pte_soft_dirty(pte_t pte)
+>>>    {
+>>>        return 0;
+>>> diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
+>>> index 830107b6dd08..98ed7e22ccec 100644
+>>> --- a/mm/debug_vm_pgtable.c
+>>> +++ b/mm/debug_vm_pgtable.c
+>>> @@ -690,7 +690,7 @@ static void __init pte_soft_dirty_tests(struct pgtable_debug_args *args)
+>>>    {
+>>>        pte_t pte = pfn_pte(args->fixed_pte_pfn, args->page_prot);
+>>>
+>>> -     if (!IS_ENABLED(CONFIG_MEM_SOFT_DIRTY))
+>>> +     if (!IS_ENABLED(CONFIG_MEM_SOFT_DIRTY) || !pte_soft_dirty_available())
+>>
+>> I suggest that you instead make pte_soft_dirty_available() be false without CONFIG_MEM_SOFT_DIRTY.
+>>
+>> e.g., for the default implementation
+>>
+>> define pte_soft_dirty_available()       IS_ENABLED(CONFIG_MEM_SOFT_DIRTY)
+>>
+>> That way you can avoid some ifefs and cleanup these checks.
+> 
+> Do you mean something like this:
+> 
+> --- a/include/linux/pgtable.h
+> +++ b/include/linux/pgtable.h
+> @@ -1538,6 +1538,16 @@ static inline pgprot_t pgprot_modify(pgprot_t
+> oldprot, pgprot_t newprot)
+>   #endif
+> 
+>   #ifdef CONFIG_HAVE_ARCH_SOFT_DIRTY
+> +#ifndef arch_soft_dirty_available
+> +#define arch_soft_dirty_available()     (true)
+> +#endif
+> +#define pgtable_soft_dirty_supported()
+> (IS_ENABLED(CONFIG_MEM_SOFT_DIRTY) && arch_soft_dirty_available())
+> +
+>   #ifndef CONFIG_ARCH_ENABLE_THP_MIGRATION
+>   static inline pmd_t pmd_swp_mksoft_dirty(pmd_t pmd)
+>   {
+> @@ -1555,6 +1565,7 @@ static inline pmd_t pmd_swp_clear_soft_dirty(pmd_t pmd)
+>   }
+>   #endif
+>   #else /* !CONFIG_HAVE_ARCH_SOFT_DIRTY */
+> +#define pgtable_soft_dirty_supported() (false)
 
-[v1] mm/slub: Removing unnecessary variable accesses in the get_freelist()
-https://lore.kernel.org/all/20250910005957.54108-1-rgbi3307@gmail.com
-* [PATCH] mm/slub: Removing unnecessary variable accesses in the get_freelist()
+Maybe we can simplify to
 
-and found the following issue:
-kernel BUG in __smpboot_create_thread
+#ifndef pgtable_soft_dirty_supported
+#define pgtable_soft_dirty_supported()	IS_ENABLED(CONFIG_MEM_SOFT_DIRTY)
+#endif
 
-Full report is available here:
-https://ci.syzbot.org/series/832d6128-4556-4bd1-ab18-0676b8e7dbc1
+And then just let the arch that overrides this function just make it
+respect IS_ENABLED(CONFIG_MEM_SOFT_DIRTY).
 
-***
+-- 
+Cheers
 
-kernel BUG in __smpboot_create_thread
+David / dhildenb
 
-tree:      torvalds
-URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/torvalds/linux
-base:      f777d1112ee597d7f7dd3ca232220873a34ad0c8
-arch:      amd64
-compiler:  Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-config:    https://ci.syzbot.org/builds/7bff7792-4edd-4680-a5e7-3cc9d97ac5ed/config
-
-smpboot: CPU0: Intel QEMU Virtual CPU version 2.5+ (family: 0xf, model: 0x6b, stepping: 0x1)
-Performance Events: unsupported Netburst CPU model 107 no PMU driver, software events only.
-signal: max sigframe size: 1440
-------------[ cut here ]------------
-kernel BUG at mm/slub.c:3832!
-Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
-CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-RIP: 0010:___slab_alloc+0x13ab/0x1420
-Code: ff ff 4c 89 e7 48 c7 c6 3a a1 a0 8d e8 3e 4f 0f ff 90 0f 0b 90 0f 0b 48 89 f7 48 c7 c6 3a a1 a0 8d e8 29 4f 0f ff 90 0f 0b 90 <0f> 0b 90 0f 0b 4c 89 e7 48 c7 c6 3a a1 a0 8d e8 11 4f 0f ff 90 0f
-RSP: 0000:ffffc90000047750 EFLAGS: 00010046
-RAX: 0000000000000000 RBX: ffff888100028000 RCX: 0000000000800001
-RDX: 0000000000800001 RSI: ffffffff8dba8965 RDI: ffffffff8be33980
-RBP: 0000000000000000 R08: 0000000000000000 R09: ffffffff82189e55
-R10: dffffc0000000000 R11: fffffbfff1f47407 R12: ffff88804b03e480
-R13: ffff88801a441640 R14: ffff88804b03e460 R15: ffffffff82189e55
-FS:  0000000000000000(0000) GS:ffff8880b8615000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffff88813ffff000 CR3: 000000000df36000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- __kmalloc_cache_node_noprof+0x29a/0x3d0
- __smpboot_create_thread+0x11a/0x3b0
- smpboot_register_percpu_thread+0xc6/0x420
- spawn_ksoftirqd+0x2f/0xc0
- do_one_initcall+0x236/0x820
- do_pre_smp_initcalls+0x4c/0x80
- kernel_init_freeable+0x30c/0x4b0
- kernel_init+0x1d/0x1d0
- ret_from_fork+0x3fc/0x770
- ret_from_fork_asm+0x1a/0x30
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:___slab_alloc+0x13ab/0x1420
-Code: ff ff 4c 89 e7 48 c7 c6 3a a1 a0 8d e8 3e 4f 0f ff 90 0f 0b 90 0f 0b 48 89 f7 48 c7 c6 3a a1 a0 8d e8 29 4f 0f ff 90 0f 0b 90 <0f> 0b 90 0f 0b 4c 89 e7 48 c7 c6 3a a1 a0 8d e8 11 4f 0f ff 90 0f
-RSP: 0000:ffffc90000047750 EFLAGS: 00010046
-RAX: 0000000000000000 RBX: ffff888100028000 RCX: 0000000000800001
-RDX: 0000000000800001 RSI: ffffffff8dba8965 RDI: ffffffff8be33980
-RBP: 0000000000000000 R08: 0000000000000000 R09: ffffffff82189e55
-R10: dffffc0000000000 R11: fffffbfff1f47407 R12: ffff88804b03e480
-R13: ffff88801a441640 R14: ffff88804b03e460 R15: ffffffff82189e55
-FS:  0000000000000000(0000) GS:ffff8880b8615000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffff88813ffff000 CR3: 000000000df36000 CR4: 00000000000006f0
-
-
-***
-
-If these findings have caused you to resend the series or submit a
-separate fix, please add the following tag to your commit message:
-  Tested-by: syzbot@syzkaller.appspotmail.com
-
----
-This report is generated by a bot. It may contain errors.
-syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
