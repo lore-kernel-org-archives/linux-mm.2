@@ -4,110 +4,172 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73515CA101F
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 14:04:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DE2FCA101F
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 14:06:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CB54E8E0015; Wed, 10 Sep 2025 10:04:40 -0400 (EDT)
+	id 90F6D6B000E; Wed, 10 Sep 2025 10:06:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C65F78E000C; Wed, 10 Sep 2025 10:04:40 -0400 (EDT)
+	id 8BED26B0010; Wed, 10 Sep 2025 10:06:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B54A68E0015; Wed, 10 Sep 2025 10:04:40 -0400 (EDT)
+	id 786F98E000C; Wed, 10 Sep 2025 10:06:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A4FA18E000C
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 10:04:40 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4FC291A0900
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 14:04:40 +0000 (UTC)
-X-FDA: 83873511120.19.E9368A1
-Received: from lithops.sigma-star.at (mailout.nod.at [116.203.167.152])
-	by imf18.hostedemail.com (Postfix) with ESMTP id D54FF1C000F
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 14:04:37 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	spf=pass (imf18.hostedemail.com: domain of richard@nod.at designates 116.203.167.152 as permitted sender) smtp.mailfrom=richard@nod.at
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 628D66B000E
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 10:06:01 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1A7D51DEBF0
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 14:06:01 +0000 (UTC)
+X-FDA: 83873514522.21.BA22DE1
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf15.hostedemail.com (Postfix) with ESMTP id B1C2EA0016
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 14:05:58 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=WXxp6nGS;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=JoGezYcE;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=WXxp6nGS;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=JoGezYcE;
+	spf=pass (imf15.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757513078;
+	s=arc-20220608; t=1757513159;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XGf6An9pkuacotas4PAUho44h/2LaY9ZaYpivcI6rZY=;
-	b=3hxY+vDnIzLCeWnLqAC993vqz+FiBX6yP4NQPtpuhEv3dBY9/A2fjyntzfuRXC9DG2BZmq
-	26K4fVOdzSbmYV4zB6y6fEdlBKiZUOldgysO0snbFuoXY+rygfEkbL8d2hrluJ6JOkTok3
-	q9t7CUP3Vx+gUKmWqYt7Eod1KedTpa4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757513078; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=hZEHsKM44S/61xauwqwuUCCyyHuNSS8fLwXg/3sXeN4=;
+	b=0xz41Iu43Co8clfkPdzkUFd4DhB8609CrqbTrJqu6uko+7DOcLWW8ShRuSCd+Cd4tl5Ziz
+	Rp7uJ5mJvhNBytePppdMA//+Q12LsKgxTSroSgHVsGtDLhMgSIDDAq2K5jzuurf6SamXHj
+	+OL6u4jLy0XA/Sn20rz2FKHfNW8NaOE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757513159; a=rsa-sha256;
 	cv=none;
-	b=33U7Bf4P9ojGzCo/gQzdMa/FFKAHAGl8zm69cC/lhWCSE2TLF4Kb+JtNLL9qzSgvTP2UY1
-	m7MQLdWenZqu8NpnruoUFK2rkOF1hB1TTcnHXYe7IZA0NeSa/heviKnlTU8CuKl2mCSbY/
-	HgaNfxWk5dMozlQ0Lmud5mc2Gl91lp0=
+	b=UWTSERp8meokClCzp68ELixxFkNT3LtZcEwJnYvShlykvQkszzmd21lPntMxaqpNbXTqO4
+	RuHs3bGG1SpG9isx4PZ/4t3IcaZDPqq77yRojQle3Hno1xO8I8xQtmiO7FQiWTpCuoYu17
+	sHdB99X3cy/8iFcofvt91iMLpKLCEZI=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf18.hostedemail.com: domain of richard@nod.at designates 116.203.167.152 as permitted sender) smtp.mailfrom=richard@nod.at
-Received: from localhost (localhost [127.0.0.1])
-	by lithops.sigma-star.at (Postfix) with ESMTP id D2E8683E14;
-	Wed, 10 Sep 2025 16:04:34 +0200 (CEST)
-Received: from lithops.sigma-star.at ([127.0.0.1])
-	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10032)
-	with ESMTP id LaIcEPcDfBsv; Wed, 10 Sep 2025 16:04:34 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by lithops.sigma-star.at (Postfix) with ESMTP id 1A4472FFDA5;
-	Wed, 10 Sep 2025 16:04:34 +0200 (CEST)
-Received: from lithops.sigma-star.at ([127.0.0.1])
-	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id X4a51J5LvQXj; Wed, 10 Sep 2025 16:04:33 +0200 (CEST)
-Received: from lithops.sigma-star.at (lithops.sigma-star.at [195.201.40.130])
-	by lithops.sigma-star.at (Postfix) with ESMTP id C16AD83E14;
-	Wed, 10 Sep 2025 16:04:33 +0200 (CEST)
-Date: Wed, 10 Sep 2025 16:04:33 +0200 (CEST)
-From: Richard Weinberger <richard@nod.at>
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: ksummit <ksummit@lists.linux.dev>, 
-	linux-kernel <linux-kernel@vger.kernel.org>, 
-	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, 
-	linuxppc-dev@lists.ozlabs.org, 
-	linux-mips <linux-mips@vger.kernel.org>, 
-	linux-mm <linux-mm@kvack.org>, imx@lists.linux.dev, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Lucas Stach <l.stach@pengutronix.de>, 
-	Linus Walleij <linus.walleij@linaro.org>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Ankur Arora <ankur.a.arora@oracle.com>, 
-	David Hildenbrand <david@redhat.com>, 
-	Mike Rapoport <rppt@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Matthew Wilcox <willy@infradead.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, vbabka <vbabka@suse.cz>, 
-	Suren Baghdasaryan <surenb@google.com>, 
-	Ira Weiny <ira.weiny@intel.com>, Nishanth Menon <nm@ti.com>, 
-	heiko <heiko@sntech.de>, 
-	Alexander Sverdlin <alexander.sverdlin@gmail.com>, 
-	"Chester A. Unal" <chester.a.unal@arinc9.com>, 
-	Sergio Paracuellos <sergio.paracuellos@gmail.com>, 
-	Andreas Larsson <andreas@gaisler.com>
-Message-ID: <497308537.21756.1757513073548.JavaMail.zimbra@nod.at>
-In-Reply-To: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
-References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
-Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
+	imf15.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=WXxp6nGS;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=JoGezYcE;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=WXxp6nGS;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=JoGezYcE;
+	spf=pass (imf15.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id E1490203B9;
+	Wed, 10 Sep 2025 14:05:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1757513156; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=hZEHsKM44S/61xauwqwuUCCyyHuNSS8fLwXg/3sXeN4=;
+	b=WXxp6nGSsBFctSwZFxG1FJU2t2UVKGFCrhIAt+2FeOAO9Q8oQnAeOq5BzGh29kEHac+S8A
+	OU/qZgl/pv/x3LAwBSpnVCAkig7cGEETFWweQO49NUEAopBWrabDSvYqoXH1G7fyHiTNbz
+	xAXdX1B/ISKQrZm0b09BsTj4s1K8ik4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1757513156;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=hZEHsKM44S/61xauwqwuUCCyyHuNSS8fLwXg/3sXeN4=;
+	b=JoGezYcErz9jzLarANV0TtzyjPfah4l6dlOautN1rtvrnaPPmmI2QAKZoRhrSh4NPyZOP9
+	2BhS0neIzZPTWgBg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1757513156; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=hZEHsKM44S/61xauwqwuUCCyyHuNSS8fLwXg/3sXeN4=;
+	b=WXxp6nGSsBFctSwZFxG1FJU2t2UVKGFCrhIAt+2FeOAO9Q8oQnAeOq5BzGh29kEHac+S8A
+	OU/qZgl/pv/x3LAwBSpnVCAkig7cGEETFWweQO49NUEAopBWrabDSvYqoXH1G7fyHiTNbz
+	xAXdX1B/ISKQrZm0b09BsTj4s1K8ik4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1757513156;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=hZEHsKM44S/61xauwqwuUCCyyHuNSS8fLwXg/3sXeN4=;
+	b=JoGezYcErz9jzLarANV0TtzyjPfah4l6dlOautN1rtvrnaPPmmI2QAKZoRhrSh4NPyZOP9
+	2BhS0neIzZPTWgBg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CF0FD13310;
+	Wed, 10 Sep 2025 14:05:56 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id gp93McSFwWhCHAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 10 Sep 2025 14:05:56 +0000
+Message-ID: <a3cec625-1df6-452f-a475-9e49e9aa93ee@suse.cz>
+Date: Wed, 10 Sep 2025 16:05:56 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [195.201.40.130]
-X-Mailer: Zimbra 8.8.12_GA_3807 (ZimbraWebClient - FF141 (Linux)/8.8.12_GA_3809)
-Thread-Topic: Reaching consensus on CONFIG_HIGHMEM phaseout
-Thread-Index: xOQifXk0CYTOSYO4gO/z6lk9BLmNXg==
-X-Stat-Signature: 8wp5cgm6wfwyi8ponxyzci3bzjip3jg8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 00/22] Prepare slab for memdescs
+Content-Language: en-US
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
+ linux-mm@kvack.org
+References: <20250910115507.1991829-1-willy@infradead.org>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20250910115507.1991829-1-willy@infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: B1C2EA0016
+X-Stat-Signature: pwnx8737s8e8nyshsuqhz65arof5duyw
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D54FF1C000F
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1757513077-904625
-X-HE-Meta: U2FsdGVkX1+vGhQW7d7a4PXp2AJ/+GXaeAA6HnGuRRubL8plA/qO9vkckoMBflnqgf3GsDUn4XoOmqSvcljgwIyuJhAq+WUE7c2gp7BBYGTIggLISxL6aOevlLVUGyGNvvAQoYSgrisuQkuvLVtwEeiZVys3/GczdCTU8+G6KT4S/dVP+zDFsmaexP1G4njF0tyzHqu1URRlWYkxGaCA1XphYT2JZbEHO4vnC0+P38qLTy4doU40wopsl76yVhJpQkpH0lyVx+Uye2BNLZC9Kek6H0OOzbEDI+K9Dg7Yaf/5FQMMA0ojwSRf21T3KW0Tw72jT3tivdg7BODLxZ9IGfl6cBTGlwTAoFmR7V2HJ7dI+Cchuq1A9VkAOiwAdz+7IR33Sfc4Su7e7EtMFNZ5wwKo3pzZ+QZyrOkzw06XVhuZgIT9oIdN+3Sro5bjQhG1piQsnxgOSV7KEQyDmT2jiNq4GPml5c2NAUBq5tFs91XXrCbJ78BKt1oi0OUWP03EpiRE8SKKm/c0tjS+Hj5D47WSTNricE94W5U/nEuETK6HXO089/03dAztW/wYBejZ/npbUFzfwar02L0eJwTk1U7Y0aDy4wWpoVE7GWaarC03YgK6QyT8YWVSVEYNJnSeG3EPRaKXw/Gy11d/qqmVomv7EFzOTA1nB+8dAJDBOSCMQJ73ozQvjQWR6/fYSO7WNYg7CyqYJk37Lee1KkzkosTSUJz8cs2Fm01fnFkrcOQQ9p0rRpbsIH/V+r8zLqXUfGc3lP4WlRCdAtshUvFW5t8EZUrovLGog96UZpMIj8CzywV6AceJhNyz+ixovAtnxUe2D8qz4Vqp0YjqusGt78uK29ZyRuHf7qaV9B3YpHy/W0oZhpJj7w0GNdDh40rF7/hW5AllbM0xigZsOIRIb0AShZelGJZFvSbm4MRMD9n1AJRDwu5ZS0zDIioPwL2ZQWVaILvPqxZsjHdohJE
- cSDTeQ/k
- zvjTwfMZGU6Ti5MX72mThV5IDAd0tao29Gc5XZGEbJxOPe4FE2uOh2Uwie+qvY83u1+WUexD6nODQTUS87o6gp4Agp7X6aX7SaAnBOWe6+vjQHelOBpaPiKltJXOOmya7Mz9VVRQopo2xFzt2s8jXSWfJmCILKOquFwMlaJVdOpSusFBbsGkwpaiJC9d9BQbrqT5HqHRp5lUNfi0sx+4esPqC4ISruglkrKnJJ1XUIAS9V/9xa/JCkvPESEDs8CnfVgsbnqbLOKGXy4Q7OagCHmEriVNZwKWcyzZLa88Pe83EigKfaOP1U05LieAqLlfWf3w/GTXR9xoYxGYa6ZRkyVIQqY/4L0zJOsz6
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1757513158-259708
+X-HE-Meta: U2FsdGVkX1/xb9rPARC7wz641Pc0WpP1BktUOkf/p5d7Ye/q8YDQtmhUDeVUgWnntLeaiVqamVgqSBA9mHxt94MoB/RaeBwu1TVgoRRZNTdzZ389LHiSRGblmXwe0BeOnO725WW8CVIPVzwYNqVCRTVHkYDuaI9OAhNGErrSjOkjvoAmvosuLWyjzDDvNHZ2QPV9uwttcytaI+fjh5zCKyjbo6O7A5nPuTLBaVhUtTXj4KW3AR6w3kqXYkp+EAHoolsshRyih+1BSWQrEHIMeLLDjdL6VbWA7zz6ZAD0H6d4sR9Gd0mZ8k2UE3HJe/FBiFiJA7rL98Mni6YzZjZPJr3WMvCi+aMEkF/VzA/YLn+x5lPgU1x20r2xE87cQTLrV83CI0DjJhyVvE+s/WccEcCD+PmiZDojUD5T1pVb3TznG/Os8UNkQqmaWZoTBje3mPUhgkBvfkOh+E50HuUPYF880PndzQ/F6mGAOQ2itS2mKbqbn0OWSH9vJSkP5PIg98rB6cXIL7OJU3A+XWTeB4MLttqqvnwP7mh68t8A5cqOFsnnNVIIQhtBr17MTUFSCMRqDkzKKa28sgHpsfkYFlzdIlkmiKSX+B5lXEYPqoHc9uX27F17zwyfEyD2kg6k4KB6ISNzBHnfkZBzDnSJlsACyVg/iCCIBlPF3dGJwRWx2gsw9lQzcr0QYm6OUJFliiW23cFLqwK3WHZ4rZdSHGOu12IeKV9/T+pN71wUuwiG3axHGuMXzAXNWAZkheghFQG+OMDLgtmmfBI0dNmRIvpEwIuDPiBNR9zPZkkBBiJX8c2hVACJy9/KuoCcji4AXZMKG/Do8iOqA7zM5sHjWM+EQHpL7AFr6LzcStxGnfSQeA+2RxZUx8dhGTM4ziVNm+ZgfrGzM8yK811xb9Ywfq4lC6eDc2NF2nxRiL8d7DDVNnMqsFh4bZaa5r265XQ7RAqRgXEuD6rkTsCzD1y
+ ifDFaXnO
+ T2voX4IzyhdOUA6LliI0HxE5dWtG0a2MFHyHtcwrwpPcVmy7V/W1730XenP7zrQ2jiSN4IWU6yVgiEzlhdSGTuLQW23W1OCC9rfVAhh6dHxfCKnoklDsui7LzE+E0fTGz/gOK3bqIma+OrfKRXhfhZWJl5BwZj1Xu+2ZJaQxr9MAm2adRg6sZynbMeUXrMM20XRYlH227V95p/nYS16P3iqPKEuL0REcjn+ZJslszY46JNreFLPTDXiorNR/FlRJbGx7hmDel5NG/6PEldNZRihQYNynjrKfrLr+y
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,49 +178,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Arnd,
+On 9/10/25 13:54, Matthew Wilcox (Oracle) wrote:
+> When we separate struct folio, struct page and struct slab from each
+> other, converting to folios then to slabs will be nonsense.  It made
+> sense under the 'folio is just a head page' interpretation, but with
+> full separation, page_folio() will return NULL for a page which belongs
+> to a slab.
+> 
+> This patch series removes almost all mentions of folio from slab.
+> There are a few folio_test_slab() invocations left around the tree that
+> I haven't decided how to handle yet.  We're not yet quite at the point
+> of separately allocating struct slab, but that's what I'll be working
+> on next.
+> 
+> This has dependencies on both the memdesc_flags_t conversion and the
+> sheaves work (as well as textual conflicts with nth_page removal and
+> a few other patches).  At this point in the development cycle, I'm not
+> pushing for this to be included in the next merge window.
 
------ Urspr=C3=BCngliche Mail -----
-> Von: "Arnd Bergmann" <arnd@arndb.de>
-> High memory is one of the least popular features of the Linux kernel.
-> Added in 1999 for linux-2.3.16 to support large x86 machines, there
-> are very few systems that still need it. I talked about about this
-> recently at the Embedded Linux Conference on 32-bit systems [1][2][3]
-> and there were a few older discussions before[4][5][6].
->=20
-> While removing a feature that is actively used is clearly a regression
-> and not normally done, I expect removing highmem is going to happen
-> at some point anyway when there are few enough users, but the question
-> is when that time will be.
->=20
-> I'm still collecting information about which of the remaining highmem
-> users plan to keep updating their kernels and for what reason. Some
-> users obviously are alarmed about potentially losing this ability,
-> so I hope to get a broad consensus on a specific timeline for how long
-> we plan to support highmem in the page cache and to give every user
-> sufficient time to migrate to a well-tested alternative setup if that
-> is possible, or stay on a highmem-enabled LTS kernel for as long
-> as necessary.
+Thanks, I agree that next cycle will be easier. However seems some cleanups
+are sufficiently self-contained and small to still be submitted to mm - I
+think patches 5 and 22 (any more?), which would reduce conflict potential.
+Meanwhile I'll look at 01-04 to consider adding to slab tree immediately also.
 
-I am part of a team responsible for products based on various 32-bit SoCs,
-so I'm alarmed.
-These products, which include ARMv7 and PPC32 architectures with up to 2 Gi=
-B of RAM,
-are communication systems with five-figure deployments worldwide.
+> 
+> v2:
+>  - Rebased on next-20250909
+>  - Picked up review tags (thanks!)
+>  - Fixed the bug in ksize()
+> 
+> Matthew Wilcox (Oracle) (22):
+>   slab: Remove unnecessary test from alloc_debug_processing()
+>   slab: Remove unnecessary test from alloc_single_from_partial()
+>   slab: Remove dead code in check_slab()
+>   slab: Remove dead code in free_consistency_checks()
+>   mm: Constify compound_order() and page_size()
+>   slab: Reimplement page_slab()
+>   slab: Remove folio references from __ksize()
+>   slab: Remove folio references in memcg_slab_post_charge()
+>   slab: Remove folio references in slab alloc/free
+>   slab: Remove folio references from ___kmalloc_large_node()
+>   slab: Remove folio references from free_large_kmalloc()
+>   slab: Remove folio references from kvfree_rcu_cb()
+>   slab: Remove folio references from kvfree()
+>   slab: Remove folio references from __do_krealloc()
+>   slab: Remove folio references from build_detached_freelist()
+>   slab: Remove dead code from free_large_kmalloc()
+>   slab: Remove folio references from kfree_rcu_sheaf()
+>   usercopy: Remove folio references from check_heap_object()
+>   memcg: Convert mem_cgroup_from_obj_folio() to
+>     mem_cgroup_from_obj_slab()
+>   kasan: Remove references to folio in __kasan_mempool_poison_object()
+>   slab: Remove references to folios from virt_to_slab()
+>   mm: Remove redundant test in validate_page_before_insert()
+> 
+>  include/linux/mm.h         |   6 +-
+>  include/linux/page-flags.h |  16 +---
+>  mm/kasan/common.c          |  12 +--
+>  mm/kfence/core.c           |  12 ++-
+>  mm/memcontrol.c            |  36 +++-----
+>  mm/memory.c                |   3 +-
+>  mm/slab.h                  |  58 ++++++-------
+>  mm/slab_common.c           |  29 ++++---
+>  mm/slub.c                  | 163 +++++++++++++++++--------------------
+>  mm/usercopy.c              |  21 +++--
+>  10 files changed, 160 insertions(+), 196 deletions(-)
+> 
 
-Removing high memory will have an impact on these systems.
-The oldest kernel version they run is 4.19 LTS, with upgrades to a more rec=
-ent
-LTS release currently in progress.
-We typically upgrade the kernel every few years and will continue to suppor=
-t
-these systems for at least the next 10 years.
-
-Even with a new memory split, which could utilize most of the available mem=
-ory,
-I expect there to be issues with various applications and FPGA device drive=
-rs.
-
-Thanks,
-//richard
 
