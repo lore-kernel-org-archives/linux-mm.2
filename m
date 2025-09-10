@@ -4,132 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C777CA101F
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 13:24:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1182CA101F
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 13:31:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5EC8B6B000D; Wed, 10 Sep 2025 09:24:05 -0400 (EDT)
+	id 27C2D6B000C; Wed, 10 Sep 2025 09:31:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 59DB96B000E; Wed, 10 Sep 2025 09:24:05 -0400 (EDT)
+	id 22C966B000E; Wed, 10 Sep 2025 09:31:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B3838E0001; Wed, 10 Sep 2025 09:24:05 -0400 (EDT)
+	id 169E06B0012; Wed, 10 Sep 2025 09:31:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A7F16B000D
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 09:24:05 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C3764C08FB
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 13:24:04 +0000 (UTC)
-X-FDA: 83873408808.24.810E446
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 6D61020009
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 13:24:02 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=EN3GVk71;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=aUhO4heT;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=EN3GVk71;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=aUhO4heT;
-	spf=pass (imf13.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 04B146B000C
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 09:31:25 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A8EAB86A48
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 13:31:24 +0000 (UTC)
+X-FDA: 83873427288.03.69C0632
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 0A66DC0009
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 13:31:22 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=WqzV5q4e
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757510642;
+	s=arc-20220608; t=1757511083;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UEVkkQ23Tqz5PvZ8ZMjLfQM9v76jgOVMVSW9/pqQol0=;
-	b=IWNXhi1/ua2dBVF9eptQujO92Pxi+OrUB93G9aA5WUFsFfqKtCjKDYq8AJG8xO/BwGiaqO
-	AWZXq6pyTi4zSyPa4/wQ5k/6nvprgpBY3oevRfd4qxeKFevlfqTpphLSnPJaBPPApN0oX4
-	C1qo9a+cU6EtwK5xU2oWAsYIGy6aw6U=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=EN3GVk71;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=aUhO4heT;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=EN3GVk71;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=aUhO4heT;
-	spf=pass (imf13.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757510642; a=rsa-sha256;
+	bh=QFYEXfk1+cEN+TXp0FIDTxyYhH24GG6SmGgomzzqRa4=;
+	b=YYKXKy0bqIFZh/1WuFaT8Q/SJxaExfWewi7m+clq2+zcWVSleyztO7kLLI0lMITf1CNhit
+	k5jGsUeEPrYdVqjkWdOFygUuKqkWrk5muZkZ0Z3XA2ErsvHoFg8hfrRQxA+f6xbj/X2y4w
+	Y4WsQ3s+8BT/U/+875gs+AnTg3QI3GQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757511083; a=rsa-sha256;
 	cv=none;
-	b=OaAAuls+acBkjTkvdZ3ClhmuS3MrENKP5vNKeLx1xB8uvI7GnLDFbsjjb9lP8Zz9zqNjco
-	nKep2VcgVprritErV0LgC0zsQQ0eGCe/NK3+0OA/j4/W8gs+4eqWwOrYDKgbrsHXZMAcuS
-	m0ScuDM1JFLtuAAzON/RRbWQ2VLs19o=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 6BF84207D8;
-	Wed, 10 Sep 2025 13:23:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1757510639; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UEVkkQ23Tqz5PvZ8ZMjLfQM9v76jgOVMVSW9/pqQol0=;
-	b=EN3GVk717n+XCv5zPhcnnCg4H2xglDNEbba7tQxDxb/Re52c8H+m409AaCY97Z4jdaq9Xt
-	w62tbVAyAWv19i3ikyBi1VPwuosqLAJAAYl4F2815G1LTQc3VcisOI1Wz5EsJtWsNHXVmG
-	l6ERSLXqsacaTEtQjKBXO0oGOb0be6k=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1757510639;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UEVkkQ23Tqz5PvZ8ZMjLfQM9v76jgOVMVSW9/pqQol0=;
-	b=aUhO4heTLGa5w1Rrd9iYA2BECWWexmMcuvHvRJdpjDH+OiJG04YF9KZekpV2fe443cnnTc
-	t+AIaPrU+pMCFmDQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1757510639; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UEVkkQ23Tqz5PvZ8ZMjLfQM9v76jgOVMVSW9/pqQol0=;
-	b=EN3GVk717n+XCv5zPhcnnCg4H2xglDNEbba7tQxDxb/Re52c8H+m409AaCY97Z4jdaq9Xt
-	w62tbVAyAWv19i3ikyBi1VPwuosqLAJAAYl4F2815G1LTQc3VcisOI1Wz5EsJtWsNHXVmG
-	l6ERSLXqsacaTEtQjKBXO0oGOb0be6k=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1757510639;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UEVkkQ23Tqz5PvZ8ZMjLfQM9v76jgOVMVSW9/pqQol0=;
-	b=aUhO4heTLGa5w1Rrd9iYA2BECWWexmMcuvHvRJdpjDH+OiJG04YF9KZekpV2fe443cnnTc
-	t+AIaPrU+pMCFmDQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4531813301;
-	Wed, 10 Sep 2025 13:23:58 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id tLSnDe57wWggDgAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Wed, 10 Sep 2025 13:23:58 +0000
-Date: Wed, 10 Sep 2025 14:23:48 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	maple-tree@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
-	Charan Teja Kalla <quic_charante@quicinc.com>, shikemeng@huaweicloud.com, kasong@tencent.com, nphamcs@gmail.com, 
-	bhe@redhat.com, baohua@kernel.org, chrisl@kernel.org, 
-	Matthew Wilcox <willy@infradead.org>
-Subject: Re: [PATCH v1 6/9] mm: Change dup_mmap() recovery
-Message-ID: <fkfi4zldsecyio6xnd6blou27me4nno3v3tnsaxz6xlt63yy2z@nxl7izptm6yx>
-References: <20250909190945.1030905-1-Liam.Howlett@oracle.com>
- <20250909190945.1030905-7-Liam.Howlett@oracle.com>
+	b=dOs4E3yPkMmCJzjz3ZoaGJniRCi6acOGA1bPT93ni8ylXv4uTs2uCaazOcZFqhyChYly+p
+	T5SFqNrylWX/HcNpO3v+fR/5BEQiZhSKxRWWpKZrfEYfChYfSlvlx1TO2wvGXuOlowQ6w4
+	kSUm3p2YFUR8swdFGYU+wdeJi7DYcLY=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=WqzV5q4e;
+	spf=none (imf10.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=none
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description;
+	bh=QFYEXfk1+cEN+TXp0FIDTxyYhH24GG6SmGgomzzqRa4=; b=WqzV5q4e+4kk1e3r1lV4JGd6Cr
+	ZHEItM3JZbHVpu9Yo1Izkz+AJnmgdpzQ1RKWLoH7Ur0kzlgw1s/BkcgVZWy0A1D+aabuIKYYLsBXb
+	F4FsFx8eBdXNoZkhi+JU/lPpZKSM0P29rY2IkZLGTXDQhGCzKfCpcHLq0L9Rp496Q4mDNxWDZK4EF
+	3fa0mmLehsj0m0U6EA51Sw+AS1WTdygL+Gi02SAzvv3LCiMEF2nHEH35jsXJ+DRItKcH92ozeIqty
+	dfXZIF6dZTa1hK6wUAFeKnmXD2NAXI4CAPJ3jdYG3als7BYHtZUZoDRPm7RemM8J7e1bDpSyl6Hsh
+	dh/Fq/sA==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uwJPq-00000008MFd-3I0R;
+	Wed, 10 Sep 2025 11:55:10 +0000
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+To: Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	linux-mm@kvack.org,
+	David Hildenbrand <david@redhat.com>
+Subject: [PATCH v2 20/22] kasan: Remove references to folio in __kasan_mempool_poison_object()
+Date: Wed, 10 Sep 2025 12:55:02 +0100
+Message-ID: <20250910115507.1991829-21-willy@infradead.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20250910115507.1991829-1-willy@infradead.org>
+References: <20250910115507.1991829-1-willy@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250909190945.1030905-7-Liam.Howlett@oracle.com>
-X-Rspamd-Action: no action
-X-Stat-Signature: yh7dy3yjdf8ngqe97u1n9akgg6baus7f
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 0A66DC0009
+X-Stat-Signature: x363p5cmjtkdk7t9nj87uxsxzyb8p5bc
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6D61020009
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1757510642-732999
-X-HE-Meta: U2FsdGVkX18bzMFjCzzd9gKQt87UZC86vn4aEKTxYygetsHMl16LJ337tSHCH5QtcJX8Btbj5WO6PEItwg6AekiISx//TDYLWb/hKwBGbacVR0DB7qkBpvNNm6II2SxEIP5sDS/mljBh+g23xOVuggVdnKufOhYfXAPFOl1oZ8sZqy3GHDda1EZE/Pw4PuXS4XACi31AaU/7AmekIeQPW45CErzL8PWzGNTJsCen9qx6HFV9R7ogS0v9Yyx5EO9mAf1GZkI/YggkeIz860ycGhZHwzMOT27VpckvEP99rY8MC9OmVuHmyeWsoC+yDlXczyDTFi3m06XVW9JqMgKy7nlrLzW+OUpCPhJoIvWGmQvT4Sd3FTJCeN+tohr5BNr9COhbzHEXALbPTl1tcID+aS5+vhzXjxK9dyTu6o4A7GPiaSDS8eQvBvFBtOraRoI8WjURrGJGqHxX1a5u8HaJHMuiXNkmPxxquM3Js8yW6/RfDKKyi2Xn9S0izoceGhyScuiFUE9VM4hDi1yg7aBGBXK4W/zJ0M73Fd+SmnTPOekl/S6Xyty6Oy6yXkLrNjHkWWXzV25EN4Gj28eS6LoAwnhP3JaBS+udznXE7ZMYO0alva5vIas05V+f9YT83kMvM1j9+NHccLuh+3JVwtPixNPErJ8WzSDaHrzyAUByS2u0qeastvN4aeyt271wALIu6z4M51bAZC2Xa+D+j4H60Kn89n6WC6r5S7c2PcflejEPILfudV1+zezXYHvDogRR3lmwZFON/hD2zhenIszNrmkWBY2PJLlxhfG/QJQfv5crVHoZB/oHcTZ1aylbW0rIVB500viYnz0bEQ1puLc1ugJ5QEQmSX7LRhhv3S1lRBGEK16QIPJ4CuNG/TJEIwBJGRzb0OFO6oeICW6CPm5W6SbKsw3fWfW0YDR92ZdXvuB70bp39gqR46N/4geRMVgdfUUekd5dP/LcKGlonhB
- fnGeLklk
- vG7ZK5utCaImDkLi1tiVuFtJxYMFtd+EWSWB5OpiHL/3bylQFT/WHoXYVn4DDmQOTheJZPZZPJ51jPT6pMpmkMChVbfl/0vllPvfBhxoPAPx5a5QRfdAw4w55F3Yq6hNLQuQgv8JT4jwLUTlpm43hKYrCwFRsEMsbUHpksvYC1lWvyI89afaei8DeqPGbBzwmEE47c9OxznaWPIWYC8NxRb/EeO8lS1sfNMJ/uhQe+tCTHQpOK0FaJ2ELOAl455sjcuttrbWitT3msVvXyAxzB7SU5GXNkGC2/v0xSSKul1RDzDjl5fbQ2LLMS+lDz6P4gzESAd7Vz8YkXT0mZEhfU36BRDUQLqWofFTXrNFdEkJPkxuFKDqspOY71Q==
+X-HE-Tag: 1757511082-497268
+X-HE-Meta: U2FsdGVkX1+ibILMySC7M/SAHV/cRWFc5aD5DFKFrUgvee7gwaA/WSQ/WT8SUGzcYd4vFnTg1sJD3ZhVhQXTK6+qqh3CT+OuOI7wsa15tBtQk4CkqhPvi7R7GbUxJi6RPHDY53jP6aArYiOPPZeqLWxqqCbakltOEA/XERH69N7E7/W3oxlYgKLGOgPZGcjlN6++6cngFBcfSjtSnuSwWf5N5Y71eb4aVJvqT8n7Lgm6hKICK527K4V34m6xhnHQZhT/CykRqnW1AoH9aHxFBlFHUKxNDvxUCT960reRJFYBcTD1RkJsJBu5RbgeARkmaiza0l9YaPgHa67LJvcQAosTRy/X9VDPLa2p0WJ63eHj6nNOtgk1xanl7ovvtVGc8+GfhJPi7KHQoH3e1H2cyV/J0v1/MAOVLi/r1/Edig3670jLkXOKCCpcwkF5puLr1BmEkX+pQe9t2byWzuGy5MyvgBwWbzeF62P1HlJcoSRU5312MmN2U2UIGyGXWMAKO2/+oIXO8v1uSChdVc/c0wVTZHYa78lDZoAUuc1I8dwgZuEvjOSQCA9g1W9qK26TKZEVYJL3EDYC6c/JKsQFLu7ze9I4kIyXA7nBQbyLErKH9q9i+e8Os/9yWAaaBePw0LXLiQ4JX0SfRp6dtyk7co4IU/MZ8kFKxejgRGwj2b/hoFJCO2OV8soSQO/oVEnMHx9+UMoiC7j2GoBTZ9ejbllMj55YLtJjtV253IPTtd7ksGNKWdoW/3ceb6a1om3BtwLaOAVQtLxN/XmP+uMEVa9EE9I5hKtfV1V54xC8cwupDSXICLn/8wBPs3KROcYuABQpuwjQKiSjdmgzDyu6sOqbFUz1YOcEWtNP4suLJsCqDbJ6O5wQRD6VnTC2key8MDcku+GUvDVJvmN/33G3zg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,28 +91,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 09, 2025 at 03:09:42PM -0400, Liam R. Howlett wrote:
-> When the dup_mmap() fails during the vma duplication or setup, don't
-> write the XA_ZERO entry in the vma tree.  Instead, destroy the tree and
-> free the new resources, leaving an empty vma tree.
-> 
-> Using XA_ZERO introduced races where the vma could be found between
-> dup_mmap() dropping all locks and exit_mmap() taking the locks.  The
-> race can occur because the mm can be reached through the other trees
-> via successfully copied vmas and other methods such as the swapoff code.
-> 
-> XA_ZERO was marking the location to stop vma removal and pagetable
-> freeing.  The newly created arguments to the unmap_vmas() and
-> free_pgtables() serve this function.
-> 
-> Replacing the XA_ZERO entry use with the new argument list also means
-> the checks for xa_is_zero() are no longer necessary so these are also
-> removed.
-> 
-> Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+In preparation for splitting struct slab from struct page and struct
+folio, remove mentions of struct folio from this function.  We can
+discard the comment as using PageLargeKmalloc() rather than
+!folio_test_slab() makes it obvious.
 
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Acked-by: David Hildenbrand <david@redhat.com>
+---
+ mm/kasan/common.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
+diff --git a/mm/kasan/common.c b/mm/kasan/common.c
+index e3765931a31f..e90f24aa76db 100644
+--- a/mm/kasan/common.c
++++ b/mm/kasan/common.c
+@@ -517,24 +517,20 @@ void __kasan_mempool_unpoison_pages(struct page *page, unsigned int order,
+ 
+ bool __kasan_mempool_poison_object(void *ptr, unsigned long ip)
+ {
+-	struct folio *folio = virt_to_folio(ptr);
++	struct page *page = virt_to_page(ptr);
+ 	struct slab *slab;
+ 
+-	/*
+-	 * This function can be called for large kmalloc allocation that get
+-	 * their memory from page_alloc. Thus, the folio might not be a slab.
+-	 */
+-	if (unlikely(!folio_test_slab(folio))) {
++	if (unlikely(PageLargeKmalloc(page))) {
+ 		if (check_page_allocation(ptr, ip))
+ 			return false;
+-		kasan_poison(ptr, folio_size(folio), KASAN_PAGE_FREE, false);
++		kasan_poison(ptr, page_size(page), KASAN_PAGE_FREE, false);
+ 		return true;
+ 	}
+ 
+ 	if (is_kfence_address(ptr))
+ 		return true;
+ 
+-	slab = folio_slab(folio);
++	slab = page_slab(page);
+ 
+ 	if (check_slab_allocation(slab->slab_cache, ptr, ip))
+ 		return false;
 -- 
-Pedro
+2.47.2
+
 
