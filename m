@@ -4,121 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE011CA0FED
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 09:50:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4153BCA101F
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 09:54:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EE2988E0007; Wed, 10 Sep 2025 05:50:11 -0400 (EDT)
+	id 835178E0008; Wed, 10 Sep 2025 05:54:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EBA7F8E0003; Wed, 10 Sep 2025 05:50:11 -0400 (EDT)
+	id 80C0B8E0003; Wed, 10 Sep 2025 05:54:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF7168E0007; Wed, 10 Sep 2025 05:50:11 -0400 (EDT)
+	id 748F08E0008; Wed, 10 Sep 2025 05:54:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CB88F8E0003
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 05:50:11 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 69A4186F72
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 09:50:11 +0000 (UTC)
-X-FDA: 83872869822.01.14BC92E
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 6980B1C0006
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 09:50:09 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=K5r2sSqh;
-	spf=pass (imf18.hostedemail.com: domain of linus.walleij@linaro.org designates 209.85.167.50 as permitted sender) smtp.mailfrom=linus.walleij@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 65AD08E0003
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 05:54:49 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E0DA11A07E9
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 09:54:48 +0000 (UTC)
+X-FDA: 83872881456.26.979EED0
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 24BFD20008
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 09:54:46 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=QFj1hh5t;
+	spf=pass (imf03.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.215.175 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757497809;
+	s=arc-20220608; t=1757498087;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8Y7rG79FKOI2JeBB22WORiCW6ZRk/F6yyki8GX6i0OY=;
-	b=sD4/l4NUMmuS6BiXh3LxmiUT7jcAEpdO3HH2sCqpOm7aVqlvfp2uMQ6ltO9jUtaQvgKK48
-	PesHjkrb0RuB8cx9Zd+Vo0M61OpYYlchkL4TkGDrR1lzWurK7gpTDRJXA3+vjTKCgbD2QS
-	adskkS+lOZhcR0TtKvFE9GUF20Dgzxw=
+	bh=fjDGSSxl1bgO/LE+E1oRlyEFsW9DteTvLANxRnkvDNs=;
+	b=g0eRDBH06SLKsGjP2mfJIdHwfNquDb5DkJoKJMbnz6DXaQQEoEoqYM6DyniEc34oY0p3aw
+	hP/VU8sY0F00tyF1AFcDP2yq9Qw0yCTRQA/9zgU6VXoHxya0Eh5Dyi8v5MooYW3ptJUCCC
+	drCHanyuNUm6X1ScyDk3tspZZodCzs8=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=K5r2sSqh;
-	spf=pass (imf18.hostedemail.com: domain of linus.walleij@linaro.org designates 209.85.167.50 as permitted sender) smtp.mailfrom=linus.walleij@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757497809; a=rsa-sha256;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=QFj1hh5t;
+	spf=pass (imf03.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.215.175 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757498087; a=rsa-sha256;
 	cv=none;
-	b=JDi0yXgdNux0lQwN3NQTM0OogTQL14xa9G6iLu9pc2JjKVT7Bt+Ifb05g2bRYAdnDGUhRU
-	VyrbParLVKC/GfOtkGolYY68UqVGhd12dxQYfehvKD9hI8w5FNyufTwUObAz1abvpBUZYS
-	BaG38XJ9JafhXq0YrpCveb53stgMBYY=
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5608bfae95eso7521517e87.1
-        for <linux-mm@kvack.org>; Wed, 10 Sep 2025 02:50:08 -0700 (PDT)
+	b=i8Kmfe+L1IQLZLiiLgnQqBjY9nKa8O7q6c5RoGiRWnDyTJ6UfMJ4Xz86sPMuBHR6ubF3j5
+	T6xibIS5LtuibMzcgnV3E0MUp2rI/9D8nSX+tv7Eqm8vPR5wjlQeymv68BsV6uzvicowAp
+	Hm86U7S6RX+GXoNMZ2k0DbuSckezSjM=
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-b5488c409d1so758383a12.1
+        for <linux-mm@kvack.org>; Wed, 10 Sep 2025 02:54:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1757497807; x=1758102607; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8Y7rG79FKOI2JeBB22WORiCW6ZRk/F6yyki8GX6i0OY=;
-        b=K5r2sSqhHjmV5KFlzmAUHADvGEEJWK0NwjI7KGm6cDx+K3djC/AwMpDoCJLJXrFeuW
-         yg95vTkdFy6OhKL6njeXmfgfmL+ouOEJ/VAuLeSBPXz0+OT/UbobG6YJgDAfTlgd6Cxe
-         gOQTn52mZXONnW40VWJyrW23qNIR1tJjs08WO0xoy4bbc/f9M9MViQoGzkGPQaUYcto8
-         Gj/vDdRyB6W9ky8vhuqvjdb+VbR5389wGgy7ZpWWifeFzTneHyKFrSXL0O4bSvep9STr
-         bOh4S+W9WykuoTq26tBWFYWRKGfPUrQWJZPzjOtRjTRQ0r5fjU5RvbWBsKXc7Ze8mPl2
-         CmTQ==
+        d=gmail.com; s=20230601; t=1757498086; x=1758102886; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=fjDGSSxl1bgO/LE+E1oRlyEFsW9DteTvLANxRnkvDNs=;
+        b=QFj1hh5tsk/jVV1qV6CBXzfoqpT11bQRumA3dSgI3Na00b7PbpdDOHGSlOA4Tu3LYn
+         fGTG++IDOVtCx27cjKYB6/ujuSSBEIQQWDv6UquBLzbhH5lnpLlPkGCzg2h8eFKwpyLV
+         xL1lxTh4o5L2tOJ8eh8nBmmmbC/jNoT6oTul+NJALl+P4YMly0FDGe75onK964BM7Eux
+         jfFvFnWVWHlnIP2+IKgFXy/PsymvuPreI2uJybS7Qcxc0ApiV3fmhybiGFcBSQs0yMj6
+         9p7kL+2bP/daIBvJxiZhsqQVHgfkn2asfh3bWdXSoBQV8jgo/k2qh/glFsX583NsVkIr
+         eUgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757497807; x=1758102607;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8Y7rG79FKOI2JeBB22WORiCW6ZRk/F6yyki8GX6i0OY=;
-        b=lKRqT5afP7pwKy/FqEvDu5HD7120q4TE6MasI6H/CGf/uuJJh3BSmIw/OvEVASAUwE
-         pvYhnbYEp3lnhCExPg5DkzO4p1NY0bhtwJqwk544oFMdwll3ZixA5fY6kpdJ5XVx7ZxN
-         aePPfBIbqRfmuhAkH3R+89S8zkiUSFXv1/XgWT2A3EYSorjdDI2NhSmORcnLnkkMFn52
-         poZU0bwZKx3OQCu8nr2oR1MFX4SI91nG9RwMw3MUK/BrDgU9nXpwQZhH2ChfJ4jESnmV
-         sACwzD3disSujYq3pIik4dXxdzCt/2wch+YgoHHVznzd/ifu2nFkf5SWSpuBb2LLyBZi
-         O0bw==
-X-Forwarded-Encrypted: i=1; AJvYcCVPP61InCBXCKEpxl6jORZ0zCzkJZxVgEY0s9A4iiCLjNfXrxEz/nqbx036FsvFp/xGp0VCPHD/UQ==@kvack.org
-X-Gm-Message-State: AOJu0Yy7X7KEUU39SqpK3Tv/ff4X00DnVyiD+YyQYa0LdBCUiZJyIjny
-	QeoNOV6OmYPhP2yLpxiaXK6itR8LPlTk2BLdqOJpsABnm+SKoDnVbDsClH0ZTN791MQLjh019i2
-	KjhPYpcN4fCJalboTNP5pxu7GwQukZ8IWMkqg1frqtQ==
-X-Gm-Gg: ASbGncsxTxYyggDIHEWWbmqDKuiLrWK2vScBB0RBPysKcFKBmmP9uF/MPJ1UXe5vVl7
-	KC+kySDmBWMhKOt/yTyNq6/LJuLHYSHZPok5+FEu75hCAPr+uwhfEVOOY/R3ga7bU3jEn98kvEQ
-	LidoTr3uueH8sqomW1vu9o5JiDAc7N44jwbxWd0zAOE4FX2bMUHWB5DAsDeD3LPnid2NtJsTi8c
-	mNdci4=
-X-Google-Smtp-Source: AGHT+IGq2x91wz7j8DANH/yJwpeO4d/hIy0ABq1WES66C1SeY2aK74/VWAJ5lsiz89NvTXBUTDFt595MC0reZwFBRxA=
-X-Received: by 2002:a2e:a009:0:20b0:336:5e1f:b1ec with SMTP id
- 38308e7fff4ca-33b536f14b1mr41029971fa.31.1757497807337; Wed, 10 Sep 2025
- 02:50:07 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1757498086; x=1758102886;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=fjDGSSxl1bgO/LE+E1oRlyEFsW9DteTvLANxRnkvDNs=;
+        b=cFHB4zW0A4gcqlAOeFppPpCqEKGgpLRaJmAVuGCQM6qAyjObgISBGTjVV6FlFlCC2I
+         w8hMcWnKbwA6RNv+FQVl9SFPdPtmZ3VJznzqWO4SVpsXI6P3u9jtG0rZRmOCjLjqBS9P
+         WMHHmMcMOuWCGLSsquubX6xc0lH7/yJvjvzEt+f5LRxTKCK8BtfhmP07QVnYrAq1eeIT
+         MPlx/QNwWs9Q/hB/PQAcLGTtfMLxjpJgt3IzT++Ivh+F+EzqErxW1jlnJzNLpNls8xEK
+         829aOw2CXbfFvaJdOgGahmoeddO+Brr1K+wx7WcLfS5ssC7QCrb7cfwd3Kv8SUU1OxSJ
+         /xFA==
+X-Forwarded-Encrypted: i=1; AJvYcCUj8bi4PqR2i79G5Tspdv5fUYev7mkuhykPOo5UJe4azfDkqHkpiIcb8wCq6tRY7ED3+Mle/ZPkVA==@kvack.org
+X-Gm-Message-State: AOJu0YxY1H8ImGToHntzMYHOYApniTXix5OLz/GzgJuWY5bVNeJiLGlJ
+	KXkGLXg+t6s6O+Op47eSbc8mhsii2HYnflSKHdw5wixOHlD0wDb1Hm/n
+X-Gm-Gg: ASbGncuO/bJ42IlQI3A4ILDGEayJkYku1quix+FIqqvgG2f0LelV9b0zzlFWIi+3msA
+	pKinErAoIG8ODxggZsfhHlKzsv/0IzVidD0mAXZyBtjwVsMIfvGwXh/GeBMqiSXdTTGsBuKdg9L
+	Z/KwjnSbLUGi7tvWAZi3VI7PM5iljYrVrcNQYyEbzCEVlTRpOywEKzNmdy0SXV+5uj4GNLRPqVb
+	4BZ5Lnr+89XV68mFKQGNIyk8HFctmYVcVziEEt84OYlWpMziL8OR7KGwXpKCGo5EDf4f6KeciMT
+	fxPfUCNyYUtO1INrakkSqyZ7UIyyem7kpqr1gg/Gh+tifo3tyIpxZViPHacxl4rbp4HEnHj7rQk
+	0ugwHWtysh2zYcDcKrmYcyFa/LQ4Gj7JHaK8=
+X-Google-Smtp-Source: AGHT+IEehJ5C2SQUPQ7Bd8LiQM6dU3/TuGbQPJS5Qg6w1+VDRG8A11HZd7aW9ORjaQ+YrxZYqL3kzg==
+X-Received: by 2002:a17:903:3d06:b0:258:2476:77db with SMTP id d9443c01a7336-25824767953mr100948585ad.42.1757498085855;
+        Wed, 10 Sep 2025 02:54:45 -0700 (PDT)
+Received: from [127.0.0.1] ([2403:2c80:17::10:4006])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-25a2a344af8sm21714385ad.78.2025.09.10.02.54.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 10 Sep 2025 02:54:45 -0700 (PDT)
+Message-ID: <e82bc49b-a1fe-419a-8a5e-fda70603d2e3@gmail.com>
+Date: Wed, 10 Sep 2025 17:54:33 +0800
 MIME-Version: 1.0
-References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com> <aMDYdp3H-yOHU1Pm@casper.infradead.org>
-In-Reply-To: <aMDYdp3H-yOHU1Pm@casper.infradead.org>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Wed, 10 Sep 2025 11:49:55 +0200
-X-Gm-Features: Ac12FXxu2Penmvb-ANhZIzZlxEacPcTMGZ42OzvKFfqr5PHU2ajbCjOLxBc-XSU
-Message-ID: <CACRpkdZZZNV5BdNhyXEK__=EJLjDtAEsc2Kv4Tv53+=Mv-8R=w@mail.gmail.com>
-Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
-To: Matthew Wilcox <willy@infradead.org>, Russell King <rmk+kernel@armlinux.org.uk>
-Cc: Arnd Bergmann <arnd@arndb.de>, ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-mips@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Richard Weinberger <richard@nod.at>, 
-	Lucas Stach <l.stach@pengutronix.de>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Ankur Arora <ankur.a.arora@oracle.com>, David Hildenbrand <david@redhat.com>, 
-	Mike Rapoport <rppt@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, Ira Weiny <ira.weiny@intel.com>, 
-	Nishanth Menon <nm@ti.com>, =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, 
-	Alexander Sverdlin <alexander.sverdlin@gmail.com>, 
-	"Chester A. Unal" <chester.a.unal@arinc9.com>, 
-	Sergio Paracuellos <sergio.paracuellos@gmail.com>, Andreas Larsson <andreas@gaisler.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 6980B1C0006
-X-Rspamd-Server: rspam05
-X-Stat-Signature: nmyzfdx6qipwmh7xobbiw7k5x718wnm6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 05/18] x86/hw_breakpoint: introduce
+ arch_reinstall_hw_breakpoint() for atomic context
+From: Jinchao Wang <wangjinchao600@gmail.com>
+To: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>, "Naveen N . Rao"
+ <naveen@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Arnaldo Carvalho de Melo
+ <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+ Adrian Hunter <adrian.hunter@intel.com>,
+ "Liang, Kan" <kan.liang@linux.intel.com>,
+ David Hildenbrand <david@redhat.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ linux-perf-users@vger.kernel.org, linux-mm@kvack.org,
+ linux-trace-kernel@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250904002126.1514566-1-wangjinchao600@gmail.com>
+ <20250904002126.1514566-6-wangjinchao600@gmail.com>
+ <20250904063832.GT4067720@noisy.programming.kicks-ass.net>
+ <aL5ns7h1NaoD9LPg@mdev> <20250909170017.dae27d8be77f9ec634e0d56c@kernel.org>
+ <f73e6e8c-282e-4d3d-9dc9-49f13b20a255@gmail.com>
+Content-Language: en-US
+In-Reply-To: <f73e6e8c-282e-4d3d-9dc9-49f13b20a255@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 24BFD20008
 X-Rspam-User: 
-X-HE-Tag: 1757497809-893758
-X-HE-Meta: U2FsdGVkX1+F9T3yqtLyxr9juqR7GJHR5j2LzxQ2cBIit9f9vPmLtB13+5frLzbKFbstUhWIufq/UeSdmZbRHKyvar9b4ZsB5CiQ7lAEUtTkF7rPDBJ0vqOuEf/ikEo8YuZm2iPjGURDmnVgKwtcsjJAzxg46CfOAl/5IuQk7eZEFebHmTPBXwFxGltcZpTLZOBqo7ZXQDJpO01rO/mch52z+Mzftm9dnuYtb9WZufE4KmI8j48OF+VQA1pAWsibMGOOhLjM2K7UzT9UJCDnlG1B7oOBLvzhoJlbvDqJ6f97jtnbsR5ZF17I6pAflnKMz5sPgJld9dP3a5UJGHkPxJhTEDRJNT9pgfh6OGUOkJwFsCfz+jOtsQp6AEu4E9ZwzW/JeNoumjyRraiqSrtcJGdWdtqpuLARGRveevMT7Und/5BNVH/T6BxSmwbvm0o1PVmydeDuvkk1AyfYrcWOA/qzOTRKGh0mMh+qJ6ydqUr2KCknWbbSX1UxEBCKeBCPTXDeP0C+WtQiGZp+epdnxL0DTucI5RfL0kIx3RmNmPMuNomBor0UvTZESz+Dglsf9rEcqCGozNuXfHgBrC7KUgX6TGnGbJ3HP4V3nzix+aYrX4na+6ApaxBy+GWBIOWcTRS2lr/AbzMH5eEJ6bRZlOVSX6HXhnSsE7xxIWm0i52idZUU/MWajmkILoAMUa7xHY5uqpUwHCppVgwRDMI+VKaKRUad70NwAKi8/3DDJ8OfnZyKKOoY2Rat59LbHLs2igNuCu1w58HxI7AOYsRjCz1CtzZ5oYkzublBLNnCgA/pMA9E68yR9+Zg2wKogKJAE9bmoGB9SninHXgi5eSZoir2n1TDPN4BMACEGpgkZuEQNiV8tH9E26gWfvvXAgj86BLWKTM/2/ebTfSTocOYgE+S9tpOp/K3dvvRJ2OU1mp+3B34R3e0Irsi7XnaonT88OgHmSBFaX0Lz9vrv32
- amD6tZA/
- eJM89Ve6g0pRVwb2LKGNw0a0Cpl2ZCBLvgFaZp7eLDwULmglbNecq8dPq2YW5B9oERAQP8kllsCInYwY19Kpd6BOKr4yDMvZNjhI+wFEIHhD0vsQ9ili6o2IqFrdf1CT+lmyZ2vEjDtwoFeB34NZqgAtcKEs8sqN+/FUBEbFnXMKWdYc9nkrgUop7QHc5ItWj3n1NKRz0p2RlKP+uw93ZaG76fA26g06a3Mqws23Kt11u5uQ2VwRwLkIuh2pJOoz3dX4RfmABau1bJ6gDUt5VYBJPHBs8R267fOm2fXrlVyGDKTwAfs5Xu/yY0860OXkIgJKFK5GrvhJRqY3sT6IZ85CLr92RLeF3pyqcmM6h/j7SM4IUL1mwrA5YTwuVYPmsSV0Q
+X-Rspamd-Server: rspam07
+X-Stat-Signature: be7eeoj5oteb6k8x9ayb4tt6s4w533q9
+X-HE-Tag: 1757498086-763478
+X-HE-Meta: U2FsdGVkX1+TWzFbuxUUwrDqQ1cJ1xR1cODp0t2wDAV+uKl4FXTlHyy+GFW/V0+hXlFRJ6QoTSlHh8dWR0/QC+NZayX+vvok9lkD7knohLRTBQrXh8Spf6U/YMCsqwq430RCS/vfuxr/acLrpzHDtK/7IH+7wzbmqEgB4YdSJOLqnWnubuVeqLZXhtB2n57iehVAhXaBnIBp2qU0EJxoMO7WHmFD8fnr8p4ZKkPl0P+hHvuhYmo/9GJwtO27M2UdXVetCOvYMAttqhtVLhqhW+zzktSx+mZHZDtShyy95WP9JkcupMwfEIEq4rEp04ZlRjqYI/eMhzqwrIUeO+zALv53I7tAbzi/g7pKqNf9BCkeDiTdYMVy+f49Op3wlTmB+5qV80SKbN96xjvZsnKF/0QBPsDOSrBtSbOSNSysSxS0bNuPUbAb4fgzNf+RhWe205x3W1t0x93uCWhLqp/ZhEQR9k6a0H1qt/DPtyOtLL8hQehPjPltas8F9vWtWPKELepO+EnbyAbiJxfdh0fEm0p9YA2RstfpqZFgQpdlGHGDyztr2NXWmtyWjXv3lrOBU6KSEAKwQh/0Di/pBrZ2DVRUrElCWpPT6T2jv1+BzEHAJGT1pR0egaP7G+mWYjz9SrE2hJJQv76Ob1itpmOTzjhTv3mFi9DduJQJHE6+mabieHpbjcfiEes6wqeL9O2tUB3abeNFv9pb5HpxqynI//Ew2NemBs/KvhWwoq1boteO2Lc6cjZsiPik3uDA9Adg79Z7+gUeEw1HOaIYRuFeU3cqjGIJmLVGsL3fREhpwqFOIW88ZIUf9y9O9y2jQ8q191+XdFvOyTfdsESIGMX0tF5YzLtHbnvxXWZTRd9wFx4ka97bThSHgAf+q6zWnj582wg4jhk+nUCXA1eG5FpW6O6MbLXSiG8zqRXkLkGpwVZUUltpVHyB2fVr5x7lW+aQMBTPjs4qTwZFo2wjXwn
+ yq/Vlbg7
+ gB1Zjfzv8jx+7usuAuCFugF+P7i4ZtHWQsMXGtkVtNL5ZPlxmG2E64fx6GoMoatCxd7WXpY/plAtT2Azx9193lsGunV0W3VKXRT+CNITi6+uPOerTXN+m++loYsq+ACN3KZsZw568nWIguiwocGUTw+W38g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,18 +143,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 10, 2025 at 3:46=E2=80=AFAM Matthew Wilcox <willy@infradead.org=
-> wrote:
 
-> I don't mind that the feature remains ... unless it causes us trouble.
-> Which it currently does.  Perhaps we could start by removing HIGHPTE?
-> There was a certain amount of complexity introduced into the page fault
-> path when support for that was introduced.  x86 removed support for it,
-> so it's just ARM left before we can remove the complexity again.
+On 9/9/25 16:39, Jinchao Wang wrote:
+>
+> On 9/9/25 16:00, Masami Hiramatsu (Google) wrote:
+>> On Mon, 8 Sep 2025 13:20:51 +0800
+>> Jinchao Wang <wangjinchao600@gmail.com> wrote:
+>>>> ...
+>>>>
+>>>> Yeah, I think not. For one this is an almost verbatim copy of
+>>>> arch_install_hw_breakpoint() with zero re-use. Surely you've been 
+>>>> taught
+>>>> better?
+>>> I introduced this to modify bp_addr in atomic context in my RFC series.
+>>> I thought it was clearer to split the introduction and refactor.
+>>> And then It was used in the wprobe series, so I left it as introduced
+>>> in the RFC series.
+>>>
+>>> I agree your suggestion is right. I am willing to refactor after 
+>>> wprobe.
+>> I'm OK to refactor it to reuse arch_install_hw_breakpoint().
+>> My point is to have CONFIG_HAVE_REINSTALL_HW_BREAKPOINT so that
+>> we can easily implement the dependency for other features which
+>> requires this feature in Kconfig level.
+>>
+>>>> And why would we want to export guts like this?
+>>> I wanted to introduce a real-time stack corruption debugging tool,
+>>> which needs a helper to change bp_addr in atomic context (kprobe 
+>>> handler).
+>>> And wprobe needs it also.
+>> I agree with Peter, it should not expose the architecture
+>> dependent code directly. Instead, we need a wrapper.
+>>
+>> Thank you,
+> Understood, I will use the wrapper instead.
+>
+>
+Hi Masami,
+I would like to ask for your advice regarding a development workflow issue.
 
-I sent an RFC patch so we can see what Russell has to say about this,
-it is currently only enabled by default on the VT8500 machine.
+I have a patch series that refactors |arch_reinstall_hw_breakpoint|, which
+I know you are using in your |wprobe| series. My new feature, 
+|kstackwatch|, is
+dependent on my patches and also on your wrapper patch for 
+|modify_wide_hw_breakpoint_local|.
 
-Yours,
-Linus Walleij
+Since we are working on different subsystems with different maintainers,
+I am concerned about how to handle the dependencies between our patches 
+to avoid
+introducing trouble.
+
+What is the best practice for this type of cross-subsystem dependency?
+Should one of us carry all the patches until they are merged, or is there a
+standard procedure for this situation?
+
+Thank you for your guidance.
+
+-- 
+Thanks,
+Jinchao
+
 
