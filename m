@@ -4,122 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69405CA101F
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 16:02:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40CBDCA0FED
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 16:05:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AE1DE8E001F; Wed, 10 Sep 2025 12:02:02 -0400 (EDT)
+	id 9B29B8E0023; Wed, 10 Sep 2025 12:05:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ABA0C8E0005; Wed, 10 Sep 2025 12:02:02 -0400 (EDT)
+	id 9888C8E0005; Wed, 10 Sep 2025 12:05:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F6828E001F; Wed, 10 Sep 2025 12:02:02 -0400 (EDT)
+	id 8C5F38E0023; Wed, 10 Sep 2025 12:05:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E1D68E0005
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 12:02:02 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 359C2A5427
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 16:02:02 +0000 (UTC)
-X-FDA: 83873806884.30.6478FFE
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 5B892C0021
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 16:02:00 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=r9+Hfggx;
-	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.172 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 78C2F8E0005
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 12:05:21 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1131514014F
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 16:05:21 +0000 (UTC)
+X-FDA: 83873815242.26.3C2D9EF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id E2C98180021
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 16:05:18 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KRi+0Wwv;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757520319; a=rsa-sha256;
+	cv=none;
+	b=qAG5CZz7PUryC0vzObS5rzykL4FPFj/qqr1yZTPTaS7KfXbWRzwh48ljS+SaTYn6g5Vhrf
+	ygUnib6ORIJkyggo0Fj95VHWiP84MXpy26gz7zzeg8UgTsA3Of/t0fSe0yEeGpm0vrwEy0
+	UdxAjyt+J3EYG1g+CFvEqoCv3BiPMnQ=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KRi+0Wwv;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757520120;
+	s=arc-20220608; t=1757520319;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=j/afnfpJ1dm+2ZpXwedw1BE9/QEgEwYCYpGOT6Wej8o=;
-	b=Jfo08aLaW4fDzQpaSiOtXWjAEfNIjbBR0AwOKEvA1hVzGYSO4mMdTT1Ynzx6bwTy9K+IXr
-	g6xC2CiZxXs+iSrq9Tl2JRL2OwMYgqLPan9hkMAqZAGH/NHXBpFbq/8arm5JeMF6WnHQm7
-	FTrAkOOjzCVvkmuumwvezV8wLz/PdS8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757520120; a=rsa-sha256;
-	cv=none;
-	b=gpwkLFpodGt3PM8n+Zvpw/J8bmsfE4xY+NuV8MFCPr59SZYTtT1bP4g55jaT4+Vxdz48Y8
-	KW8Vln0tUOOBx5/Xe/HVTzSUmi048HxrM6L6aiFWdzuC09BsEItEGuTEYdeV+BTmV939vP
-	8GwL4w1vfx4LLhhGQv7Tim+qfXToQQA=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=r9+Hfggx;
-	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.172 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-4b5fb2f7295so40715181cf.1
-        for <linux-mm@kvack.org>; Wed, 10 Sep 2025 09:02:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1757520119; x=1758124919; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=j/afnfpJ1dm+2ZpXwedw1BE9/QEgEwYCYpGOT6Wej8o=;
-        b=r9+HfggxjlgEfzc67dbgMA3jGiXR05vrwbkx0f0lDPG1JPbBXX2GOAoYokdnPJbjmt
-         fISYug0aA+0kHQUJTpRPo0R2zZDwUKNBjwwq6FPn4sCBECtHjgx9lJdvAzi8zdjhe30k
-         2dT9OVmk7VPkKNdepY1aBv81kb3bDpuJy/O1wTE4gueJimLrSu7YBegBEiHxQL8wGsXs
-         RuhNxE2RfCk7heSuGnPcbwJES/8c7pRjMkkVMakumuIh5Sf9dlVF91Ly2uhnskrMkIBw
-         z7Sm/IhxLjIS5YFUFqJqfzxbEyjvH+mJ2ALdo3/fdke9MdeIl5yWOJqfJAisK33+0NyA
-         alCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757520119; x=1758124919;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=j/afnfpJ1dm+2ZpXwedw1BE9/QEgEwYCYpGOT6Wej8o=;
-        b=LtcvlzU2HIAvsgeei9dyv2YPK9bxUTWMeeN34RoSIBh/t+Ov3JmJ5lJsKtU7xz4noc
-         /swuqn8Cr+dSdtbyx1R/ETQFTY2AA6T5hFR4EQOkuFdShilfUyey3fQxJvDhxgcx23Gv
-         z2otw87UIzri344KIC1uKiHSk/PiFKrqGfKQeDsOhWBuamXmJLsmrdbnbt9SyPukX5WZ
-         zKO/OIN1qQNj+144G/VhJ9imoUhGolwmWmUgIlK7D+SYzU8qB2Sqr2Sz/Mmj2xHFHe4A
-         EO7mIfzWmjj/gZx++PIzzdQBc/R3zC4564OAlYAv4sbAYFtRLjgi8G0SLP6GDf/n3uxF
-         uIZA==
-X-Forwarded-Encrypted: i=1; AJvYcCWBfpHHPfkBtPCULTQ3jEX8iBKHIL+VB2A79d08vsj/q3yuLfs3Eh47PFiqo20pwa+AT6oIXKoWzg==@kvack.org
-X-Gm-Message-State: AOJu0YwkXPlYTRkPrJ1J3k6X9NrjihF4pRLVJUw3dJwdTGix1FoJcdLg
-	lHqHANLKw8zuQ46s7Ww79B365ZCBKHsp8OaD1yPwEp1aaDhQknAqUtxEtoUh7ib5RLw=
-X-Gm-Gg: ASbGncsl/RvsYpOHmyfGxIGPdj1JVDY1Tf3aEmbPKq1FFrQmNDuH9XNk0MgagaF2xir
-	xuKLYwpsJ34TwX+q/gZzAiegQZwiWJHs+FLefpLqEu2s+DNWppKkZlFUJBDsr/Ye0BU9RnTYbvR
-	CypQEeAn6SwSWNwgvE18j202bDYmyHkzlJdjDKAFspnzWmf0MN+ZsPGaSdNoCTBFHYkZV9jFO/v
-	08ykSr3/dLEfpOoePhlvxatse2pQois/XOPgCyMr/I6+AOgZex7qjK3RtREnlXe9VqvGtd3V+A4
-	7R5NNQwWpHACQfkEP4MWHDiWSfb5yxT6J2SCVSZySn3hfkbvkwxo7+QjxjFK5mcd7IHA84ojNgI
-	JelTcAG9/VN1K7FUHA40=
-X-Google-Smtp-Source: AGHT+IFytWxI65pFxb5OOUKBPPF2arzO2Er1TjGaTK1hyE5BuNsItzgl4tbugdmOVSzDn4Aay1Kk8Q==
-X-Received: by 2002:a05:622a:17ce:b0:4b5:f800:49ce with SMTP id d75a77b69052e-4b5f858d84emr193745801cf.71.1757520118956;
-        Wed, 10 Sep 2025 09:01:58 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F ([2620:10d:c091:500::3:1704])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4b61ba6edbesm26958781cf.4.2025.09.10.09.01.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Sep 2025 09:01:58 -0700 (PDT)
-Date: Wed, 10 Sep 2025 12:01:56 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Bharata B Rao <bharata@amd.com>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, Jonathan.Cameron@huawei.com,
-	dave.hansen@intel.com, hannes@cmpxchg.org,
-	mgorman@techsingularity.net, mingo@redhat.com, peterz@infradead.org,
-	raghavendra.kt@amd.com, riel@surriel.com, rientjes@google.com,
-	sj@kernel.org, weixugc@google.com, ying.huang@linux.alibaba.com,
-	ziy@nvidia.com, dave@stgolabs.net, nifan.cxl@gmail.com,
-	xuezhengchu@huawei.com, yiannis@zptcorp.com,
-	akpm@linux-foundation.org, david@redhat.com, byungchul@sk.com,
-	kinseyho@google.com, joshua.hahnjy@gmail.com, yuanchu@google.com,
-	balbirs@nvidia.com, alok.rathore@samsung.com
-Subject: Re: [RFC PATCH v2 0/8] mm: Hot page tracking and promotion
- infrastructure
-Message-ID: <aMGg9AOaCWfxDfqX@gourry-fedora-PF4VCD3F>
-References: <20250910144653.212066-1-bharata@amd.com>
- <aMGbpDJhOx7wHqpo@casper.infradead.org>
+	bh=8WHl/xIk0nqS5I1TpDNZJdY1fN/wk3GEsK4eg0cV/S8=;
+	b=hOdZjUlUCXztOHBdHU527WKezQUbBPFcwRManwRCp8BCMkFBgvusB2oOXOb+XZkH53USJS
+	/7t4e/5uS7OQs0o15XvxjagH+TQjWYNPg0fpyuikVDqfkRk+j7CX0COxKg+0L5WlWYCOwo
+	ibWcq/vtju9nF2DOQ4eSH1H9hCsfcgw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id CAA4844B9A
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 16:05:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 949B4C19422
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 16:05:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757520317;
+	bh=8WHl/xIk0nqS5I1TpDNZJdY1fN/wk3GEsK4eg0cV/S8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=KRi+0WwvygaUhJCBEOTVhyTuslflCWp9uhW8xwngxKn4mR15CCCbVZ9yZzxDdo6zk
+	 8NHXLh5/w7IIgQ866U0CKjI756prCvZaI0vgLNcgVJ0qiHqWngJ8mcWZBTu/tJwl0K
+	 o9BbDPIJkkQaeCA6g1bPj0A8ZhY0SFd6IT9XaqBr1nIiamx6ib+XmS1595Sf8wK0Wu
+	 Hk9SICmEjnaruuBrZbmHQzKiIXBfH7clKvEm4jpYM4Bgh54vpU4rzXI1Ng8XkcWLUD
+	 Yah6wIHTD3kq7PzOUHWg/K0CfVgfM+ugDv5oUyVKIjBhfono0MaJbsJ/VuMfPJOYSo
+	 r4xFFJ2g/C7Sg==
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-45de2856648so78315e9.1
+        for <linux-mm@kvack.org>; Wed, 10 Sep 2025 09:05:17 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVsQQjcJCu4k3+oaxM9JhLlCvNIo3fDlBxg7P23KBFHarebsT0HAOWT5GjN5c6VSQP+E1pAoTSq4w==@kvack.org
+X-Gm-Message-State: AOJu0YyxORg2XKUHqD0/61BI7bgITl4PmIGthDVNZ3rQeE3UqaPfIB0N
+	Ajmh/wNL9QBzQsYsKZ9qFBbQ3AJMo7aAByUcqTQVW1ai5gXj7tk44c3lWftWZmBJdDwgFCFs+tV
+	Dticxn3aa7aRDBLMuyK6ShuM9qDgcwlSEgpVnS7px
+X-Google-Smtp-Source: AGHT+IESOq3n3tIz+SwaQTKfvhmB5ATjB2l2io1gR8G1FJKmUxjLskCRKoulqMeYibuDjpYJTXNcvjM6lLzPh7yScNE=
+X-Received: by 2002:a05:600c:12c9:b0:45d:cfca:a92d with SMTP id
+ 5b1f17b1804b1-45df74af1b6mr1417885e9.2.1757520316107; Wed, 10 Sep 2025
+ 09:05:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aMGbpDJhOx7wHqpo@casper.infradead.org>
-X-Rspamd-Queue-Id: 5B892C0021
-X-Stat-Signature: rtphbzcs5gtky58uh8qm1kxz97zih3gc
+References: <20250909065349.574894-1-liulei.rjpt@vivo.com> <fszpgct7ywqy6qq3qnjflol3theovmgnau2wgdqqdxin4q7ezm@zumgw533hxon>
+ <CAJuCfpFaTj8PsXkoYRQKQ0sOu+mKikUAE8Wbcx+YpZXZ4M7cMA@mail.gmail.com> <b74b1e28-8479-4b14-9210-5b4334d3ce22@vivo.com>
+In-Reply-To: <b74b1e28-8479-4b14-9210-5b4334d3ce22@vivo.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Wed, 10 Sep 2025 09:05:02 -0700
+X-Gmail-Original-Message-ID: <CAF8kJuMJCHJwNtnPiBKz=OJg8L7m7MVWydWRoQMK1HpiFvLDpQ@mail.gmail.com>
+X-Gm-Features: AS18NWAODLU4l_N1iDuC58AkueksUH14mA7pKjigM1COfFIYTDTArxE3zeEj-wg
+Message-ID: <CAF8kJuMJCHJwNtnPiBKz=OJg8L7m7MVWydWRoQMK1HpiFvLDpQ@mail.gmail.com>
+Subject: Re: [PATCH v0 0/2] mm: swap: Gather swap entries and batch async release
+To: Lei Liu <liulei.rjpt@vivo.com>
+Cc: Suren Baghdasaryan <surenb@google.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Michal Hocko <mhocko@suse.com>, David Rientjes <rientjes@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
+	Barry Song <baohua@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>, 
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>, Chen Yu <yu.c.chen@intel.com>, 
+	Hao Jia <jiahao1@lixiang.com>, "Kirill A. Shutemov" <kas@kernel.org>, 
+	Usama Arif <usamaarif642@gmail.com>, Oleg Nesterov <oleg@redhat.com>, 
+	Christian Brauner <brauner@kernel.org>, Mateusz Guzik <mjguzik@gmail.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Andrii Nakryiko <andrii@kernel.org>, 
+	Al Viro <viro@zeniv.linux.org.uk>, Fushuai Wang <wangfushuai@baidu.com>, 
+	"open list:MEMORY MANAGEMENT - OOM KILLER" <linux-mm@kvack.org>, open list <linux-kernel@vger.kernel.org>, 
+	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E2C98180021
+X-Stat-Signature: pk48uif9y8hgffer9fye646e53ormdn7
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1757520120-370971
-X-HE-Meta: U2FsdGVkX18D/BCpAmOV0spZrJ7FEAeLQgts06LC/68gZsjKKYyoMGEfi0luy6841hYiRRCGVdnSrJec3y6H76B52iCjekl96Hs1OBwxGvQ/vQoWNoVd3vqfQnSTTxFBX1fwHwLnOA1txF6qeucfmQfgVVfpRHMu3bzQxVBE8i8uodfVL3fPvz0mKjL1OR0CFwn0CnrmXnPMH7DhP0pZKcP8XjyWmHEa7IW8484lscThf8fnt2XiwoaThdSA8OcP+Syq9bsO1sUcXkL2hl5ntjokyrywFDd8i2fpRvdpS0b9/gmzth8lsrjPcfYaWD7N/VUUVOCWqMvzhdaQjNi5Lug1aIQhMo7ZF7M5ltuaUORXLrJbxUqaBhi2PevBzDvluYljNlOjeSkR0M1SbkR17glzvNcXDJ06LYlWO/XaldJ1T59giITz52rMGxhjFLmASeDdAU94D3x4/kTLnKH+b8hFYyGjluO+YukRNEHDb/d5Yl8Y6q813Guy9WcsZlXPOAGo+qKMiwyp4rv0e9CgRwhiN/EkpKJGGggRdlbz2Y6W+jHd1Dw/fz2nDIAu6NqBEQfs9wSi/6vavx78JJ8tz0gmxe1BSm6bxwvXKENk2JRBjc4Rn6PJI2Z512rM1UCq5XR9UIohRYhHmUavq/wbY/JuZK54VhkN6wIpcWvzmzsxD8kVja1443HnvvGh8rsYCb35u/BxxHUSbGvLKwvrOhb5egkFodXuCruswePrTiGKQVe2oLQ6iJBxcZ7lwtS3QAyCL/4HHpQCYI5Sl2fW8ZRR6pwAspouLqg9FyxU5Va6Ca571hSYpw/TcRfcxAgiFCX97KSTB7ykNHbuxaAf0oNr9Yzyj4QqbNu5LHtRZa75fk1cusCrY0A2JyT1n7wH/3dkbjatCHWK6HmA+oPZxcDCgqSiescEWyl1nOMEiKkfwtm1o9I39rPKgDAKrR+Ervx/zc6jMlrfEW7H9eb
- KSQT4VlW
- MZRZxRfm8PcZYSQbn/9tVzp/22HG/10mrzxmlIqETqK8Kvm2eTJ3n7yjqxYYFq8ghgnX1S8KArP212tIyAFZXJ2H6B8NgRftzcUnw
+X-HE-Tag: 1757520318-69739
+X-HE-Meta: U2FsdGVkX1+R8vmkx55ejJNjulUsBRkZ+1K82E9yJx0CgJ5X3QL9jka+zYGjkGT5k/wRaje14NEmbDCoDgdN6IQwlRE0+Tysj0/HmhmZ08E4D/LMPSRtO/7fh4ycVY3ClwLAHIymQ62UaGnni7M6lsgOCUhlvnPxjE41LI6X+5cs3BpFEW1gmPGd7ToL5TOCkw2ovwOfnMPH+WWXgNVowAxrq6QgvjyAndzGpfSwhmW07AN5iSBE69+3LKfHqEkGrt9tnmnOIgE7Nr4Iqnpw5EfaGqTLMY+KD4ImX2u4FWIlAbBzD/4XKviMQ/7oLccmfI+DXIIS7XbDwr8lanaibF4CnJVGhzh/x0S96VOFREzDF4YSSzJxTYaoCCOACbxuYMZi82ZfAzDI1XlHlvMwsL23m5wX3AbKTe40lWrAg75yImMCvpeRvGaNGJmhSc35xw5CqBvg/gf60DCBRo2wfL3DPQvGbxp3jIw2V0NMzkq9midGQryQu7n+a8F29QFRK0pW7rXNDAj2lD3cnjXC6xirmeBbWO5FJLfAuiF251seEsvj1YeYaqleuLXxuN6TeY5VGNzffKVtKsXCx0ifr5VTU8zmWgCEM/bfoeEsfd0YyyajcYBs8PUIR6BwMSVB0gNRjsoZFM9cl1Qqb2Lv0KKVI7CUHqefwXxrhgcHaFATBBxcvHzuMoB2hW8V5dB/t4Hi7MkpezuiUbSJFXyi7f9ye2nl2DDcKa4F72BWVMlA6RsnsSt0OjP51ashqVRF2RLfG7AFMI52YOPrCvxiMSkDLGBAoSMXHaCn22oWFvbVMMm8dGoqlRjQJDhPgkUNYDKZjN2nClC9VCddJjPh9/80q6j6vW4kakKWbs2wrhfp3wJ3NN1fRq8se7aToxZ53HokP2jLyYJSB0MzO4ksgQGpZh0pLlEbzI6j0gmngz97ynes5bTy2bc+W/fqqnSFCIT7hBUfQbQVRrii6MJ
+ Rt/JgA/l
+ S4F1nHdzIu4kJUOGa1ki4dbZsHalDxuihm7A4YAvtmxIcVTZd7iwKBvEhkOyyW198OPVMyL1YMtk1CEhanWSBCJ7nafKsEherqAuCFfeOHs68zIciYikaON5Gbn4wChEDdPOj73rm1wSJyzUXrbiEVFg4EOTaffE5A5wjvPQXnD4jz1h9l6Ba7IuI20IuJmXgtMLtwwPLdharnEGPOhmjM9GbaJZhMyYSkfCjmJi6vY6RiUQVqiaLvVGZpPsjitaSXldH7loXNmwjgMOzb1Jxq19VJqWdsZij4H1HqMELihQKUSVFn4CdZ8hSj+nLSNZu0KhI83Fb7RwlHDc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,45 +120,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 10, 2025 at 04:39:16PM +0100, Matthew Wilcox wrote:
-> On Wed, Sep 10, 2025 at 08:16:45PM +0530, Bharata B Rao wrote:
-> > This patchset introduces a new subsystem for hot page tracking
-> > and promotion (pghot) that consolidates memory access information
-> > from various sources and enables centralized promotion of hot
-> > pages across memory tiers.
-> 
-> Just to be clear, I continue to believe this is a terrible idea and we
-> should not do this.  If systems will be built with CXL (and given the
-> horrendous performance, I cannot see why they would be), the kernel
-> should not be migrating memory around like this.
+On Wed, Sep 10, 2025 at 7:14=E2=80=AFAM Lei Liu <liulei.rjpt@vivo.com> wrot=
+e:
+> >> On Android, I suppose most of the memory is associated with single or
+> >> small set of processes and parallelizing memory freeing would be
+> >> challenging. BTW is LMKD using process_mrelease() to release the kille=
+d
+> >> process memory?
+> > Yes, LMKD has a reaper thread which wakes up and calls
+> > process_mrelease() after the main LMKD thread issued SIGKILL.
+>
+> Hi Suren
+>
+> our current issue is that after lmkd kills a process,|exit_mm|takes
+> considerable time. The interface you provided might help quickly free
+> memory, potentially allowing us to release some memory from processes
+> before lmkd kills them. This could be a good idea.
+>
+> We will take your suggestion into consideration.
 
-I've been considered this problem from the opposite approach since LSFMM.
+Hi Lei,
 
-Rather than decide how to move stuff around, what if instead we just
-decide not to ever put certain classes of memory on CXL.  Right now, so
-long as CXL is in the page allocator, it's the wild west - any page can
-end up anywhere.
+I do want to help your usage case. With my previous analysis of the
+swap fault time breakdown. The amount of time it spends on batching
+freeing the swap entry is not that much. Yes, it has a long tail, but
+that is on a very small percentage of page faults. It shouldn't have
+such a huge impact on the global average time.
 
-I have enough data now from ZONE_MOVABLE-only CXL deployments on real
-workloads to show local CXL expansion is valuable and performant enough
-to be worth deploying - but the key piece for me is that ZONE_MOVABLE
-disallows GFP_KERNEL.  For example: this keeps SLAB meta-data out of 
-CXL, but allows any given user-driven page allocation (including page
-cache, file, and anon mappings) to land there.
+https://services.google.com/fh/files/misc/zswap-breakdown.png
+https://services.google.com/fh/files/misc/zswap-breakdown-detail.png
 
-I'm hoping to share some of this data in the coming months.
+That is what I am trying to get to, the batch free of swap entry is
+just the surface level. By itself it does not contribute much. Your
+exit latency is largely a different issue.
 
-I've yet to see any strong indication that a complex hotness/movement
-system is warranted (yet) - but that may simply be because we have
-local cards with no switching involved. So far LRU-based promotion and
-demotion has been sufficient.
+However, the approach you take, (I briefly go over your patch) is to
+add another batch layer for the swap entry free. Which impacts not
+only the exit() path, it impacts other non exit() freeing of swap
+entry as well. The swap entry is a resource best managed by the swap
+allocator. The swap allocator knows best when it is the best place to
+cache it vs freeing it under pressure. The extra batch of swap entry
+free (before triggering the threshold) is just swap entry seating in
+the batch queue. The allocator has no internal knowledge of this batch
+behavior and it is interfering with the global view of swap entry
+allocator. You need to address this before your patch can be
+re-considered.
 
-It seems the closer to random-access the access pattern, the less
-valuable ANY movement is. Which should be intuitive.  But, having
-CXL beats touching disk every day of the week.
+It feels like a CFO needs to do a company wide budget and revenue
+projection. The sales department is having a side pocket account to
+defer the revenue and sand bagging the sales number, which can
+jeopardize the CFO's ability to budget and project . BTW, what I
+describe is probably illegal for public companies. Kids, don't try
+this at home.
 
-So I've become conflicted on this work - but only because I haven't seen
-the data to suggest such complexity is warranted.
+I think you can do some of the following:
+1) redo the test with the latest kernel which does not have the swap
+slot caching batching any more. Report back what you got.
+2) try out the process_mrelease().
 
-~Gregory
+Please share your findings, I am happy to work with you to address the
+problem you encounter.
+
+Chris
 
