@@ -4,97 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BCEFCA101F
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 15:59:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69405CA101F
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 16:02:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 055618E0019; Wed, 10 Sep 2025 11:59:38 -0400 (EDT)
+	id AE1DE8E001F; Wed, 10 Sep 2025 12:02:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 005578E0005; Wed, 10 Sep 2025 11:59:37 -0400 (EDT)
+	id ABA0C8E0005; Wed, 10 Sep 2025 12:02:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E0F828E0019; Wed, 10 Sep 2025 11:59:37 -0400 (EDT)
+	id 9F6828E001F; Wed, 10 Sep 2025 12:02:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id CD52E8E0005
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 11:59:37 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 735F955EAC
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 15:59:37 +0000 (UTC)
-X-FDA: 83873800794.23.503EB6C
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 8AE2110000F
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 15:59:35 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=sipsolutions.net header.s=mail header.b=MwOKflHh;
-	dmarc=pass (policy=none) header.from=sipsolutions.net;
-	spf=pass (imf14.hostedemail.com: domain of johannes@sipsolutions.net designates 168.119.38.16 as permitted sender) smtp.mailfrom=johannes@sipsolutions.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757519975; a=rsa-sha256;
-	cv=none;
-	b=dEspLTvxsJHjKXBcQLz2W26RTK5SIkXGN4syr4BTOz6wSTfEDfGK2r8CDQcwtz5Tnx5fci
-	Dmo6KYyuBpLUKhFmoKX6yy1Kk2LDGYcHR19mlnljvxQrBjhpFtUKcx1z2f6/A6S3aWSexx
-	hue70T+kkuV5kQJv1AmlevZk4pnk+iU=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=sipsolutions.net header.s=mail header.b=MwOKflHh;
-	dmarc=pass (policy=none) header.from=sipsolutions.net;
-	spf=pass (imf14.hostedemail.com: domain of johannes@sipsolutions.net designates 168.119.38.16 as permitted sender) smtp.mailfrom=johannes@sipsolutions.net
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E1D68E0005
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 12:02:02 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 359C2A5427
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 16:02:02 +0000 (UTC)
+X-FDA: 83873806884.30.6478FFE
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 5B892C0021
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 16:02:00 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=r9+Hfggx;
+	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.172 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757519975;
+	s=arc-20220608; t=1757520120;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rLlleifu0thdpPhsg3VNchjcqxHN/buCBymoJpUNlHE=;
-	b=UJgpe/shGjc+QDsovEqQ4xtaGmLUUmat+sXJcTH+ci/B+7+Xu+pwbtxY3Am82Lxaw8qhA8
-	ispEiz5ekcryVkiREqZ9CefOYqmLywSplVA/PUTYnPBvoC1iokKCL9SBGKLxgEYtxIOqui
-	CyKZir8q7DC+PGUMykt771faTNjlgBM=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=rLlleifu0thdpPhsg3VNchjcqxHN/buCBymoJpUNlHE=;
-	t=1757519975; x=1758729575; b=MwOKflHhM0aDHPv6hSG5MvV4BlIsAsQM8FfTPbYbLb2dskA
-	9UjDP03+qk5OCForJzOhD/mKnxbsTeqaJrAAG5JM1Vu/tEXV8xATXj7BjSvugUhLbfBLl5m1KOCCR
-	f8sHPMRbOtzJ6BEUwkDytyGb9YCrxQ5bMjUkLKJiyoFR3a+3D7HKdrsp/0rNsYguJTbty1zUQ6/PO
-	zWdWls1BTP5H+Q3hrkoQALBAIPg8FtLCVK547CuE6cwEKEExtickXaO4o83E5PDn2IOzfloO1G7wv
-	K3DfUAFWkRGX4a3eMK+hvFqqp3Xs74mMLwUJlJmz6Jatg2p2PgBwBT1kTLeZu9xw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1uwNEF-0000000D9a5-0csR;
-	Wed, 10 Sep 2025 17:59:27 +0200
-Message-ID: <6eda1208c08130e00cb54e557bc4858ce10a4a94.camel@sipsolutions.net>
-Subject: Re: [PATCH v2 RFC 0/7] KFuzzTest: a new kernel fuzzing framework
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Alexander Potapenko <glider@google.com>
-Cc: Ethan Graham <ethan.w.s.graham@gmail.com>, ethangraham@google.com, 
-	andreyknvl@gmail.com, brendan.higgins@linux.dev, davidgow@google.com, 
-	dvyukov@google.com, jannh@google.com, elver@google.com, rmoar@google.com, 
-	shuah@kernel.org, tarasmadan@google.com, kasan-dev@googlegroups.com, 
-	kunit-dev@googlegroups.com, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, 	dhowells@redhat.com, lukas@wunner.de,
- ignat@cloudflare.com, 	herbert@gondor.apana.org.au, davem@davemloft.net,
- linux-crypto@vger.kernel.org
-Date: Wed, 10 Sep 2025 17:59:26 +0200
-In-Reply-To: <CAG_fn=Vco04b9mUPgA1Du28+P4q4wgKNk6huCzU34XWitCL8iQ@mail.gmail.com> (sfid-20250910_124126_320471_24812999)
-References: <20250901164212.460229-1-ethan.w.s.graham@gmail.com>
-	 <513c854db04a727a20ad1fb01423497b3428eea6.camel@sipsolutions.net>
-	 <CAG_fn=Vco04b9mUPgA1Du28+P4q4wgKNk6huCzU34XWitCL8iQ@mail.gmail.com>
-	 (sfid-20250910_124126_320471_24812999)
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+	bh=j/afnfpJ1dm+2ZpXwedw1BE9/QEgEwYCYpGOT6Wej8o=;
+	b=Jfo08aLaW4fDzQpaSiOtXWjAEfNIjbBR0AwOKEvA1hVzGYSO4mMdTT1Ynzx6bwTy9K+IXr
+	g6xC2CiZxXs+iSrq9Tl2JRL2OwMYgqLPan9hkMAqZAGH/NHXBpFbq/8arm5JeMF6WnHQm7
+	FTrAkOOjzCVvkmuumwvezV8wLz/PdS8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757520120; a=rsa-sha256;
+	cv=none;
+	b=gpwkLFpodGt3PM8n+Zvpw/J8bmsfE4xY+NuV8MFCPr59SZYTtT1bP4g55jaT4+Vxdz48Y8
+	KW8Vln0tUOOBx5/Xe/HVTzSUmi048HxrM6L6aiFWdzuC09BsEItEGuTEYdeV+BTmV939vP
+	8GwL4w1vfx4LLhhGQv7Tim+qfXToQQA=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=r9+Hfggx;
+	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.172 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-4b5fb2f7295so40715181cf.1
+        for <linux-mm@kvack.org>; Wed, 10 Sep 2025 09:02:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1757520119; x=1758124919; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=j/afnfpJ1dm+2ZpXwedw1BE9/QEgEwYCYpGOT6Wej8o=;
+        b=r9+HfggxjlgEfzc67dbgMA3jGiXR05vrwbkx0f0lDPG1JPbBXX2GOAoYokdnPJbjmt
+         fISYug0aA+0kHQUJTpRPo0R2zZDwUKNBjwwq6FPn4sCBECtHjgx9lJdvAzi8zdjhe30k
+         2dT9OVmk7VPkKNdepY1aBv81kb3bDpuJy/O1wTE4gueJimLrSu7YBegBEiHxQL8wGsXs
+         RuhNxE2RfCk7heSuGnPcbwJES/8c7pRjMkkVMakumuIh5Sf9dlVF91Ly2uhnskrMkIBw
+         z7Sm/IhxLjIS5YFUFqJqfzxbEyjvH+mJ2ALdo3/fdke9MdeIl5yWOJqfJAisK33+0NyA
+         alCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757520119; x=1758124919;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=j/afnfpJ1dm+2ZpXwedw1BE9/QEgEwYCYpGOT6Wej8o=;
+        b=LtcvlzU2HIAvsgeei9dyv2YPK9bxUTWMeeN34RoSIBh/t+Ov3JmJ5lJsKtU7xz4noc
+         /swuqn8Cr+dSdtbyx1R/ETQFTY2AA6T5hFR4EQOkuFdShilfUyey3fQxJvDhxgcx23Gv
+         z2otw87UIzri344KIC1uKiHSk/PiFKrqGfKQeDsOhWBuamXmJLsmrdbnbt9SyPukX5WZ
+         zKO/OIN1qQNj+144G/VhJ9imoUhGolwmWmUgIlK7D+SYzU8qB2Sqr2Sz/Mmj2xHFHe4A
+         EO7mIfzWmjj/gZx++PIzzdQBc/R3zC4564OAlYAv4sbAYFtRLjgi8G0SLP6GDf/n3uxF
+         uIZA==
+X-Forwarded-Encrypted: i=1; AJvYcCWBfpHHPfkBtPCULTQ3jEX8iBKHIL+VB2A79d08vsj/q3yuLfs3Eh47PFiqo20pwa+AT6oIXKoWzg==@kvack.org
+X-Gm-Message-State: AOJu0YwkXPlYTRkPrJ1J3k6X9NrjihF4pRLVJUw3dJwdTGix1FoJcdLg
+	lHqHANLKw8zuQ46s7Ww79B365ZCBKHsp8OaD1yPwEp1aaDhQknAqUtxEtoUh7ib5RLw=
+X-Gm-Gg: ASbGncsl/RvsYpOHmyfGxIGPdj1JVDY1Tf3aEmbPKq1FFrQmNDuH9XNk0MgagaF2xir
+	xuKLYwpsJ34TwX+q/gZzAiegQZwiWJHs+FLefpLqEu2s+DNWppKkZlFUJBDsr/Ye0BU9RnTYbvR
+	CypQEeAn6SwSWNwgvE18j202bDYmyHkzlJdjDKAFspnzWmf0MN+ZsPGaSdNoCTBFHYkZV9jFO/v
+	08ykSr3/dLEfpOoePhlvxatse2pQois/XOPgCyMr/I6+AOgZex7qjK3RtREnlXe9VqvGtd3V+A4
+	7R5NNQwWpHACQfkEP4MWHDiWSfb5yxT6J2SCVSZySn3hfkbvkwxo7+QjxjFK5mcd7IHA84ojNgI
+	JelTcAG9/VN1K7FUHA40=
+X-Google-Smtp-Source: AGHT+IFytWxI65pFxb5OOUKBPPF2arzO2Er1TjGaTK1hyE5BuNsItzgl4tbugdmOVSzDn4Aay1Kk8Q==
+X-Received: by 2002:a05:622a:17ce:b0:4b5:f800:49ce with SMTP id d75a77b69052e-4b5f858d84emr193745801cf.71.1757520118956;
+        Wed, 10 Sep 2025 09:01:58 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F ([2620:10d:c091:500::3:1704])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4b61ba6edbesm26958781cf.4.2025.09.10.09.01.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Sep 2025 09:01:58 -0700 (PDT)
+Date: Wed, 10 Sep 2025 12:01:56 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Bharata B Rao <bharata@amd.com>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, Jonathan.Cameron@huawei.com,
+	dave.hansen@intel.com, hannes@cmpxchg.org,
+	mgorman@techsingularity.net, mingo@redhat.com, peterz@infradead.org,
+	raghavendra.kt@amd.com, riel@surriel.com, rientjes@google.com,
+	sj@kernel.org, weixugc@google.com, ying.huang@linux.alibaba.com,
+	ziy@nvidia.com, dave@stgolabs.net, nifan.cxl@gmail.com,
+	xuezhengchu@huawei.com, yiannis@zptcorp.com,
+	akpm@linux-foundation.org, david@redhat.com, byungchul@sk.com,
+	kinseyho@google.com, joshua.hahnjy@gmail.com, yuanchu@google.com,
+	balbirs@nvidia.com, alok.rathore@samsung.com
+Subject: Re: [RFC PATCH v2 0/8] mm: Hot page tracking and promotion
+ infrastructure
+Message-ID: <aMGg9AOaCWfxDfqX@gourry-fedora-PF4VCD3F>
+References: <20250910144653.212066-1-bharata@amd.com>
+ <aMGbpDJhOx7wHqpo@casper.infradead.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 8AE2110000F
-X-Stat-Signature: 4nsc6hi43b63eo8q4dxrsbp97cjz4iqh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aMGbpDJhOx7wHqpo@casper.infradead.org>
+X-Rspamd-Queue-Id: 5B892C0021
+X-Stat-Signature: rtphbzcs5gtky58uh8qm1kxz97zih3gc
 X-Rspam-User: 
-X-HE-Tag: 1757519975-63988
-X-HE-Meta: U2FsdGVkX18ARx90MXA4eY84kclW1oRJQYvoYtlxKbcj08LVZhiSZhhG0To6LlxEjN6Dy7ABN8XYI6PpvajVvGtY5xe7zp5ooZfKiMgqXNeYPXtjXDZSGZf4X0NecfTia0ByOpAN1FQck516/akaVVuUk58Z9pdGIB6ItK5oG3jdVmptOkoETU6SsAvWGfzuJWNwygwGDeBlShbv6tsXxWQFzlah1Nj32cjwLbYzxA3f7zVRaTaHbjrKl88oDTzQqHel+/8A+uZaqU9IBleqQIbrOxKtRYPdpMgso50ce71mqSzrWSN22VoMX8kKUf9cwc/pFQj/0+g4YHHgceLuGwbiVArFITMNJ+4ixArBSK+z8SjNb1CjU2kAI2DAhemUVrWzmVCfCMOY7kEKAeaAYjouAcCWhs5gczx7v7G7Bb29lvCiSis7fS4144HNOuDh7YnK6f6mGEpKj5LLdfbiWBOPscXTORlhq6Nx5S8EzlWip6sPqNt8NjOxQ+Hhtudg0L0QBe/WZXMNOaQ8qRensMXNOWXIOgYWdNquow/JznezaYJP8ZqvgrfWimhOCItPbCyiXYdoHPCTP+zjSfOszfqwxGfwNuB99Ff72D57o+V99dHVSIShwYBBpjzdswGxixarhtguB6HOC9F1t/wCJUaTA0aHC/7VhBhlXUPYBR6j+QxkD+Mqh96p1a3eKUhqtXlL5FRi03DvyyTaK3Pl3Rc2mYeYCJ+OebWVEFIZjfcMFAQaqJ5qsJSpOoK30jvHPu+HKrYviayQ0nQ2J3ZuSX2kNVACWeSxk4WCBErCg9uI8sX1NO6rxRhuHFMq8PEcxXhhdiEAvk8OrV96fA/DF0NkgENdmOD/erkb7Fct94fJ0pbUaHrDEXKW/9VwlJABY+UfqxJs+OeNh4l7dqlA6yHO5rcsIWPhNA29+WGpucLVl4T+vxBCRxnWiQBRKzehACpvmFscesL6O3T26LQ
- UFbmDW7p
- rYIV+Co2UpGM5/5WCE/9R6FtoRy8QNO+vApzHSfRw1kgwJMrUjqqZNW4p7XZUTBaJE+iWAp7smOZHp6H0Q3iIDpxmvaxxHFvpzrV5ojB7FfyCuKYv79p5fSlDCu5MkJ39P6KYk3CA24BWepPMiYer8cZYsFiRaOUmiQlcJJptPEc0MInLX0BzZlkuN/crkh5WRbXxksTgefim+4ls01A0BGC++oexAJFZIqH0KihnxQS+mfX8ZqvJ6MmRL5sGhrd178RrpT3Uq7Q3BmgDawKKKrHr7UzGXZLHXGulHw7IzX91nTX9uq6u++5SwVXcDZBLvX6hrYSE5dcj4P+Wz8O7pbyTeW3jG5hu3YJRAi0BYmCxeSXP1nkLgjDBZ1d2P4tJir/9TpQ6NjjmuT/dGG287EVFgkZAcTU/FyY/oX/v7WnBjj9Ov1YBVr400At0YQqQjh/W6TbDLkep3dc=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1757520120-370971
+X-HE-Meta: U2FsdGVkX18D/BCpAmOV0spZrJ7FEAeLQgts06LC/68gZsjKKYyoMGEfi0luy6841hYiRRCGVdnSrJec3y6H76B52iCjekl96Hs1OBwxGvQ/vQoWNoVd3vqfQnSTTxFBX1fwHwLnOA1txF6qeucfmQfgVVfpRHMu3bzQxVBE8i8uodfVL3fPvz0mKjL1OR0CFwn0CnrmXnPMH7DhP0pZKcP8XjyWmHEa7IW8484lscThf8fnt2XiwoaThdSA8OcP+Syq9bsO1sUcXkL2hl5ntjokyrywFDd8i2fpRvdpS0b9/gmzth8lsrjPcfYaWD7N/VUUVOCWqMvzhdaQjNi5Lug1aIQhMo7ZF7M5ltuaUORXLrJbxUqaBhi2PevBzDvluYljNlOjeSkR0M1SbkR17glzvNcXDJ06LYlWO/XaldJ1T59giITz52rMGxhjFLmASeDdAU94D3x4/kTLnKH+b8hFYyGjluO+YukRNEHDb/d5Yl8Y6q813Guy9WcsZlXPOAGo+qKMiwyp4rv0e9CgRwhiN/EkpKJGGggRdlbz2Y6W+jHd1Dw/fz2nDIAu6NqBEQfs9wSi/6vavx78JJ8tz0gmxe1BSm6bxwvXKENk2JRBjc4Rn6PJI2Z512rM1UCq5XR9UIohRYhHmUavq/wbY/JuZK54VhkN6wIpcWvzmzsxD8kVja1443HnvvGh8rsYCb35u/BxxHUSbGvLKwvrOhb5egkFodXuCruswePrTiGKQVe2oLQ6iJBxcZ7lwtS3QAyCL/4HHpQCYI5Sl2fW8ZRR6pwAspouLqg9FyxU5Va6Ca571hSYpw/TcRfcxAgiFCX97KSTB7ykNHbuxaAf0oNr9Yzyj4QqbNu5LHtRZa75fk1cusCrY0A2JyT1n7wH/3dkbjatCHWK6HmA+oPZxcDCgqSiescEWyl1nOMEiKkfwtm1o9I39rPKgDAKrR+Ervx/zc6jMlrfEW7H9eb
+ KSQT4VlW
+ MZRZxRfm8PcZYSQbn/9tVzp/22HG/10mrzxmlIqETqK8Kvm2eTJ3n7yjqxYYFq8ghgnX1S8KArP212tIyAFZXJ2H6B8NgRftzcUnw
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,223 +128,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On Wed, Sep 10, 2025 at 04:39:16PM +0100, Matthew Wilcox wrote:
+> On Wed, Sep 10, 2025 at 08:16:45PM +0530, Bharata B Rao wrote:
+> > This patchset introduces a new subsystem for hot page tracking
+> > and promotion (pghot) that consolidates memory access information
+> > from various sources and enables centralized promotion of hot
+> > pages across memory tiers.
+> 
+> Just to be clear, I continue to believe this is a terrible idea and we
+> should not do this.  If systems will be built with CXL (and given the
+> horrendous performance, I cannot see why they would be), the kernel
+> should not be migrating memory around like this.
 
-Thanks for your response!
+I've been considered this problem from the opposite approach since LSFMM.
 
-> > > The primary motivation for KFuzzTest is to simplify the fuzzing of
-> > > low-level, relatively stateless functions (e.g., data parsers, format
-> > > converters)
-> >=20
-> > Could you clarify what you mean by "relatively" here? It seems to me
-> > that if you let this fuzz say something like
-> > cfg80211_inform_bss_frame_data(), which parses a frame and registers it
-> > in the global scan list, you might quickly run into the 1000 limit of
-> > the list, etc. since these functions are not stateless. OTOH, it's
-> > obviously possible to just receive a lot of such frames over the air
-> > even, or over simulated air like in syzbot today already.
->=20
-> While it would be very useful to be able to test every single function
-> in the kernel, there are limitations imposed by our approach.
-> To work around these limitations, some code may need to be refactored
-> for better testability, so that global state can be mocked out or
-> easily reset between runs.
+Rather than decide how to move stuff around, what if instead we just
+decide not to ever put certain classes of memory on CXL.  Right now, so
+long as CXL is in the page allocator, it's the wild west - any page can
+end up anywhere.
 
-Sure, I that'd be possible. Perhaps I'm more wondering if it's actually
-desirable, but sounds like at least that's how it was intended to be
-used then.
+I have enough data now from ZONE_MOVABLE-only CXL deployments on real
+workloads to show local CXL expansion is valuable and performant enough
+to be worth deploying - but the key piece for me is that ZONE_MOVABLE
+disallows GFP_KERNEL.  For example: this keeps SLAB meta-data out of 
+CXL, but allows any given user-driven page allocation (including page
+cache, file, and anon mappings) to land there.
 
-> I am not very familiar with the code in
-> cfg80211_inform_bss_frame_data(), but I can imagine that the code
-> doing the actual frame parsing could be untangled from the code that
-> registers it in the global list.
+I'm hoping to share some of this data in the coming months.
 
-It could, but I'm actually less worried about the parsing code (it's
-relatively simple to review) than about the data model in this code, and
-trying to fuzz the data model generally requires the state. See e.g.
-https://syzkaller.appspot.com/bug?extid=3Ddc6f4dce0d707900cdea (which I
-finally reproduced in a kunit test a few years after this was originally
-reported.)
+I've yet to see any strong indication that a complex hotness/movement
+system is warranted (yet) - but that may simply be because we have
+local cards with no switching involved. So far LRU-based promotion and
+demotion has been sufficient.
 
-I mean ... I guess now I'm arguing against myself - having the state
-there is required to find certain classes of bugs, but not having the
-state makes it easier to figure out what's going on :-) A middle ground
-would be to have some isolated state for fuzzing any particular "thing",
-but not necessarily reset between rounds.
+It seems the closer to random-access the access pattern, the less
+valuable ANY movement is. Which should be intuitive.  But, having
+CXL beats touching disk every day of the week.
 
-> The upside of doing so would be the ability to test that parsing logic
-> in modes that real-world syscall invocations may never exercise.
+So I've become conflicted on this work - but only because I haven't seen
+the data to suggest such complexity is warranted.
 
-Sure.
-
-> > > We would like to thank David Gow for his detailed feedback regarding =
-the
-> > > potential integration with KUnit. The v1 discussion highlighted three
-> > > potential paths: making KFuzzTests a special case of KUnit tests, sha=
-ring
-> > > implementation details in a common library, or keeping the frameworks
-> > > separate while ensuring API familiarity.
-> > >=20
-> > > Following a productive conversation with David, we are moving forward
-> > > with the third option for now. While tighter integration is an
-> > > attractive long-term goal, we believe the most practical first step i=
-s
-> > > to establish KFuzzTest as a valuable, standalone framework.
-> >=20
-> > I have been wondering about this from another perspective - with kunit
-> > often running in ARCH=3Dum, and there the kernel being "just" a userspa=
-ce
-> > process, we should be able to do a "classic" afl-style fork approach to
-> > fuzzing.
->=20
-> This approach is quite popular among security researchers, but if I'm
-> understanding correctly, we are yet to see continuous integration of
-> UML-based fuzzers with the kernel development process.
-
-Well, chicken and egg type situation? There are no such fuzzers that are
-actually easy to use and/or integrate, as far as I can tell.
-
-I've been looking also at broader fuzzing tools such as nyx-fuzz and
-related kafl [1] which are cool in theory (and are intended to address
-your "cannot fork VMs quickly enough" issue), but ... while running a
-modified host kernel etc. is sufficient for research, it's practically
-impossible for deploying things since you have to stay on top of
-security etc.
-
-[1] https://intellabs.github.io/kAFL/tutorials/linux/fuzzing_linux_kernel.h=
-tml
-
-That said, it seems to me that upstream kvm code actually has Intel-PT
-support and also dirty page logging (presumably for VM migration), so
-I'm not entirely sure what the nyx/kafl host kernel actually really
-adds. But I have yet to research this in detail, I've now asked some
-folks at Intel who work(ed) on it.
-
-> > That way, state doesn't really (have to) matter at all. This is
-> > of course both an advantage (reproducing any issue found is just the
-> > right test with a single input) and disadvantage (the fuzzer won't
-> > modify state first and then find an issue on a later round.)
->=20
-> From our experience, accumulated state is more of a disadvantage that
-> we'd rather eliminate altogether.
-
-Interesting. I mean, I do somewhat see it that way too from the
-perspective of someone faced with inscrutable bug reports, but it also
-seems that given enough resources/time, accumulated state lets a fuzzer
-find more potential issues.
-
-> syzkaller can chain syscalls and could in theory generate a single
-> program that is elaborate enough to prepare the state and then find an
-> issue.
-
-Right, mostly, the whole "I found a reproducer now" thing, I guess.
-
-> However, because resetting the kernel (rebooting machines or restoring
-> VM snapshots) is costly, we have to run multiple programs on the same
-> kernel instance, which interfere with each other.
-
-(see above for the nyx/kafl reference)
-
-> As a result, some bugs that are tricky to trigger become even trickier
-> to reproduce, because one can't possibly replay all the interleavings
-> of those programs.
-
-Right.
-
-> So, yes, assuming we can build the kernel with ARCH=3Dum and run the
-> function under test in a fork-per-run model, that would speed things
-> up significantly.
-
-Is it really a speed-up vs. resulting in more readable reports? Possibly
-even at the expense of coverage?
-
-But anyway, making that possible was indeed what I was thinking about.
-It requires some special configuration and "magic" in UML, but it seems
-eminently doable. Mapping KCOV to a given fuzzer's feedback might not be
-trivial, but it should be possible too. In theory you could even compile
-the whole UML kernel with say afl-clang, I suppose.
-
-> > I was just looking at what external state (such as the physical memory
-> > mapped) UML has and that would need to be disentangled, and it's not
-> > _that_ much if we can have specific configurations, and maybe mostly
-> > shut down the userspace that's running inside UML (and/or have kunit
-> > execute before init/pid 1 when builtin.)
->=20
-> I looked at UML myself around 2023, and back then my impression was
-> that it didn't quite work with KASAN and KCOV, and adding an AFL
-> dependency on top of that made every fuzzer a one-of-a-kind setup.
-
-I'm not entirely sure about KCOV right now, but KASAN definitely works
-today (not in 2023.) I agree that adding a fuzzer on top makes it a one-
-of-a-kind setup, but I guess from my perspective adding syzbot/syzkaller
-(inside) is really mostly the same, since we don't run that ourselves
-right now.
-
-> > Did you consider such a model at all, and have specific reasons for not
-> > going in this direction, or simply didn't consider because you're comin=
-g
-> > from the syzkaller side anyway?
->=20
-> We did consider such a model, but decided against it, with the
-> maintainability of the fuzzers being the main reason.
-> We want to be sure that every fuzz target written for the kernel is
-> still buildable when the code author turns back on it.
-> We also want every target to be tested continuously and for the bugs
-> to be reported automatically.
-> Coming from the syzkaller side, it was natural to use the existing
-> infrastructure for that instead of reinventing the wheel :)
-
-Fair points, though I'd like to point out that really the only reason
-this is true is the syzkaller availability: that ensures fuzz tests
-would run continuously/automatically, thus ensuring it's buildable
-(since you try that) and thus ensuring it'd be maintained. So it all
-goes back to syzkaller existing already :-)
-
-Which I'm not arguing is bad, quite the opposite, but I'm also close to
-just giving up on the whole UML thing precisely _because_ of it, since
-there's no way anyone can compete with Google's deployment, and adding
-somewhat competing infrastructure to the kernel will just complicate
-matters. Which is maybe unfortunate, because a fork/fuzz model often
-seems more usable in practice, and in particular can also be used more
-easily for regression tests.
-
-Regression, btw, is perhaps something to consider here in this patch
-set? Maybe some side files could be provided with each KFuzzTest that
-something (kunit?) would run to ensure that the code didn't regress when
-asked to parse those files?
-
-> That being said, our current approach doesn't rule out UML.
-> In the future, we could adapt the FUZZ_TEST macro to generate stubs
-> that link against AFL, libFuzzer, or Centipede in UML builds.
-
-That's also true, I guess, in some way this infrastructure would be
-available for any fuzzer to link to, especially if we do something with
-UML as I was thinking about.
-
-Which is also in part why I was asking about the state though, since a
-"reset the whole state" approach is maybe a bit more amenable to
-actually letting the fuzzer modify state than the current approach.
-
-Then again, given that syzbot always modifies state, maybe I'm changing
-my opinion on this and will say that I'm not so sure any more your
-intention of fuzzing "low-level, relatively stateless functions" holds
-that much water? If in practice syzbot is the thing that runs this, then
-that doesn't matter very much apart from having to ensure that it
-doesn't modify state in a way that is completely invalid - but to some
-extent that'd be a bug anyway, and e.g. memory allocations of a function
-can be freed by the fuzztest wrapper code.
-
-
-I guess I'll research the whole nyx thing a bit more, and maybe
-reconsider giving up on the UML-based fork/fuzz model, if I can figure
-out a way to integrate it with KFuzzTest and run those tests, rather
-than my initial intent of integrating it with kunit. Some infrastructure
-could be shared, although I had hoped things like kunit asserts, memory
-allocations, etc. would be available to fuzz test code just to be able
-to share setup/teardown infrastructure - I guess we'll have to see how
-that plays out. :)
-
-Thanks!
-
-johannes
+~Gregory
 
