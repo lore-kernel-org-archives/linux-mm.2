@@ -4,122 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 601BBCA101F
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 13:10:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C401FCA0FED
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 13:10:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE7588E000F; Wed, 10 Sep 2025 09:10:23 -0400 (EDT)
+	id 225558E0011; Wed, 10 Sep 2025 09:10:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BBEBE8E0003; Wed, 10 Sep 2025 09:10:23 -0400 (EDT)
+	id 1F9918E0003; Wed, 10 Sep 2025 09:10:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AD4768E000F; Wed, 10 Sep 2025 09:10:23 -0400 (EDT)
+	id 075098E0011; Wed, 10 Sep 2025 09:10:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9978B8E0003
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 09:10:23 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3774A1A08D1
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 13:10:23 +0000 (UTC)
-X-FDA: 83873374326.17.D07B227
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 36848C0015
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 13:10:20 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b="uZI/wvQJ";
-	spf=pass (imf10.hostedemail.com: domain of linus.walleij@linaro.org designates 209.85.167.50 as permitted sender) smtp.mailfrom=linus.walleij@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id EC1628E0003
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 09:10:24 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id AED4011B03E
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 13:10:24 +0000 (UTC)
+X-FDA: 83873374368.24.988B8C1
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 8C4B640016
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 13:10:22 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="MSd/rdoj";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=cWe8bxX7;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="MSd/rdoj";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=cWe8bxX7;
+	spf=pass (imf07.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757509821;
+	s=arc-20220608; t=1757509822;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1LsnFE1xI0qQhVi+l6O9JAbITiONruUrWb3tpAPA1P4=;
-	b=rxsdIpe0db+U7O85k+1W9kkfXJX9rAgdz6J3g6UXNo7CGSoluaq+UsdC78GRLttSkyjlGd
-	Vl6dzSFVJYZW7bs4LqqA+Vecd8OiPXu5iN0A4aqhyqY5I8pNLvUiCPfa9cnO1kPc5n2RQo
-	YdIgAdmYClRQg0rwMh88L3U6ZlKOB1s=
+	bh=4hwjqp0O6NkHQyzQDGVKaUnlGbWM+Yny9R70phZ0CHc=;
+	b=Tn3RY+rPhf0sq3Y+c2GnPPeZBQdJusFT0LyIyyBdCrqEvc0ABxvXNqYYRY+acfdyHjrf7b
+	vLIy3BtXiHd7YYp2KfeWKPixfRbCmRRrx+kQg7NTYnG/YGDw9qS4GP7qzG4DqzGL8AABPg
+	rB5zWm2kpo6dLn2EryqlyYV3K4qXxUs=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b="uZI/wvQJ";
-	spf=pass (imf10.hostedemail.com: domain of linus.walleij@linaro.org designates 209.85.167.50 as permitted sender) smtp.mailfrom=linus.walleij@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757509821; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="MSd/rdoj";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=cWe8bxX7;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="MSd/rdoj";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=cWe8bxX7;
+	spf=pass (imf07.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757509822; a=rsa-sha256;
 	cv=none;
-	b=sucg3PfVtpmFU+3r8cwBhjBJtwkmwnVTjqNGKsHyPVkmM/gbiFH7syPW1oFMVPsq6PRtbG
-	xNTlJGF0eABJFC9YrqFoMrqFpxqnjzpY37ASkINtHNxn8CeWAhECvUa/SWD9rjurUhIJNO
-	dB6BRaTrc/tW1DcoMcqBhqVk42u+LZ8=
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-55f74c6d316so4222164e87.0
-        for <linux-mm@kvack.org>; Wed, 10 Sep 2025 06:10:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1757509819; x=1758114619; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1LsnFE1xI0qQhVi+l6O9JAbITiONruUrWb3tpAPA1P4=;
-        b=uZI/wvQJlYJegfd5a6atyb0rZVsxBF4N4RnOSXiqiqcuQJXlA51iR0IaSN7CCHjWpA
-         f59MSL/6gVDlYPemvFpOUUIqCEi42Zsri0EBBn1m30/194msz5yhsMYwNv4qm7b8Nkar
-         1ylYibQbUnROBiUtWLRRmcTzpEsuaa/K/B8gtz5Hsp3HoX0MC0NjBOY0Bpezx4+2dGX6
-         V+n9DJfo3d1stAoCrlid6tzzit6+HU2pps5pCQ+1GmfWrb5fhPEduq/NJtbCHRALYGZ0
-         n0OrBnYaJCmoWbV746erk+86l0SP/6B7iYthGaNrw3yDqQiGK/MBLT6SLGpkVy0l3QGi
-         GSLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757509819; x=1758114619;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1LsnFE1xI0qQhVi+l6O9JAbITiONruUrWb3tpAPA1P4=;
-        b=Rd4j+QgqhOLZqDeUjd1zZAXsEPl4P1ozJEKaW/RXTOmns3RJXHo0o+a6c4BkhNNgTy
-         1RvJvMDpnMYtRCuzz+sYigxDceVSlWjtaunyRN5wYbhZWJw45H8jpNSeJ0FGGooH7+42
-         N3nxddsNRLBnkPSXE48J1F15hsNM5BXFBhluYdT4i5W46QFqFp17An+Pnob28o+RgRdA
-         GhRfgfVw0fcBzR4/fF9cDtLpymB1PIBmNkRILJbQMgRPh8uP/zEbpEgHrUouEh1jAPpb
-         fO2TdKLkoYLqAfEXg4euZ1JNC1kndjCavTPDhBLhOGspC391Q33UQa+SMuXnDDbqgwxd
-         /5qg==
-X-Forwarded-Encrypted: i=1; AJvYcCW1Lf/B740EqvULO6LYhtmOaE11uk0v7472YRgVHAz3j8fUIdTAqtYMu5ibX0MzdpcMcLRHzX3Wnw==@kvack.org
-X-Gm-Message-State: AOJu0Yx0LUrnW6ukxZIykQ5Z5UQbCGvfJ98fd+WgeDROIHtqcdNep9sI
-	B5p3Lgjp9Xhbg8+R+nqv9g9fYGEIqjsiRfPTNVgpCnfzre7R8QxSoC32Liw6CkONEJFkPYwioA1
-	BaOPu3BYbJGYXUGM+YIt+BIFt/FN0YQwF5/51hStLmA==
-X-Gm-Gg: ASbGncvNipiDBKgxKWerKmXwf0Y0dm7ZX75kfqORpB+8TbXgEnlUAb1LXsm/Q6OCc6s
-	W1yge1Wn1LlwmZQ5qcEwm8Dnyp+Fvf2RWGo8AsGf64UtoyqUXl86dlyvGgCeGA+VJWY+opfrqFF
-	55RF/3VYBmLPxW9wDkJJ7dEdXocmMt33uXQy0teHRvi4+dESmmfh5na5GaDNg9Lp8PBiJ73sp4w
-	pbCr9w=
-X-Google-Smtp-Source: AGHT+IGgInBj1Ic/f5mZf9DHaSimxT6oABg1gWpLpcYCM/ousRHHwwGjp7S7ZCbmXiMiFXeqAGANnBbsml0uYfwnmj8=
-X-Received: by 2002:a05:6512:39cc:b0:55f:47a9:7d33 with SMTP id
- 2adb3069b0e04-5626425ccd6mr5952206e87.44.1757509818943; Wed, 10 Sep 2025
- 06:10:18 -0700 (PDT)
+	b=J3DM6vpFv5dm4HY0r++ZQrx+kLm1C+wxiJCQIaWsQm/6BMvJdzICuSp/3rVyUfTma9Y3mM
+	/yqUPGtrLWYel3FxWT4ED9Pbt4cs9vWcajELBSDe8T2iZuiQEcnskIyfxsQl5rwzKhXzFO
+	dHTzlYA94JqhoXVw4HA36ZbZcSdbraQ=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id AF33220153;
+	Wed, 10 Sep 2025 13:10:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1757509820; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4hwjqp0O6NkHQyzQDGVKaUnlGbWM+Yny9R70phZ0CHc=;
+	b=MSd/rdojyUhqonn2szGh795WAtRe4vVpNUcM1fnZMfgvyPVY79146G1QvRfqPdYswafanr
+	ocLkbzeHhmo8/AggLo+tS2LfOZ0bIzBxZFu+eUsft9IlYgGi0vvm2yNtKfCfsoKHzea8X+
+	PQ4m2UUceKh/1roujql6Es+gOw6ZFm0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1757509820;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4hwjqp0O6NkHQyzQDGVKaUnlGbWM+Yny9R70phZ0CHc=;
+	b=cWe8bxX7zPngm88WR4JbCxlYYPa8d9d6Y1GpDJdc0ajvH5TCe2wSp5jqOUrdX26xvqLYk0
+	3kdxxMGi/rEEo6DQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1757509820; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4hwjqp0O6NkHQyzQDGVKaUnlGbWM+Yny9R70phZ0CHc=;
+	b=MSd/rdojyUhqonn2szGh795WAtRe4vVpNUcM1fnZMfgvyPVY79146G1QvRfqPdYswafanr
+	ocLkbzeHhmo8/AggLo+tS2LfOZ0bIzBxZFu+eUsft9IlYgGi0vvm2yNtKfCfsoKHzea8X+
+	PQ4m2UUceKh/1roujql6Es+gOw6ZFm0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1757509820;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4hwjqp0O6NkHQyzQDGVKaUnlGbWM+Yny9R70phZ0CHc=;
+	b=cWe8bxX7zPngm88WR4JbCxlYYPa8d9d6Y1GpDJdc0ajvH5TCe2wSp5jqOUrdX26xvqLYk0
+	3kdxxMGi/rEEo6DQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8041013301;
+	Wed, 10 Sep 2025 13:10:19 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id pqsMHLt4wWjWCQAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Wed, 10 Sep 2025 13:10:19 +0000
+Date: Wed, 10 Sep 2025 14:10:17 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	maple-tree@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
+	Charan Teja Kalla <quic_charante@quicinc.com>, shikemeng@huaweicloud.com, kasong@tencent.com, nphamcs@gmail.com, 
+	bhe@redhat.com, baohua@kernel.org, chrisl@kernel.org, 
+	Matthew Wilcox <willy@infradead.org>
+Subject: Re: [PATCH v1 7/9] mm: Introduce unmap_desc struct to reduce
+ function arguments
+Message-ID: <ss4haln3wwk4gv62hhhdmx7tyog4dyd6auogvupm26idludj4k@abasio3iebze>
+References: <20250909190945.1030905-1-Liam.Howlett@oracle.com>
+ <20250909190945.1030905-8-Liam.Howlett@oracle.com>
 MIME-Version: 1.0
-References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
-In-Reply-To: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Wed, 10 Sep 2025 15:10:05 +0200
-X-Gm-Features: Ac12FXx4fqtngzlb3aPI-q1c6xVbomqK3jaNECwBf_yyF7AQZ2ofNJeHmlxFUVw
-Message-ID: <CACRpkdb=E-_6fZ+4mX5FJas9C5Njp3Gwrygs-cAfWNdbP594cw@mail.gmail.com>
-Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-mips@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Richard Weinberger <richard@nod.at>, 
-	Lucas Stach <l.stach@pengutronix.de>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Ankur Arora <ankur.a.arora@oracle.com>, David Hildenbrand <david@redhat.com>, 
-	Mike Rapoport <rppt@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Matthew Wilcox <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Suren Baghdasaryan <surenb@google.com>, Ira Weiny <ira.weiny@intel.com>, Nishanth Menon <nm@ti.com>, 
-	=?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, 
-	Alexander Sverdlin <alexander.sverdlin@gmail.com>, 
-	"Chester A. Unal" <chester.a.unal@arinc9.com>, 
-	Sergio Paracuellos <sergio.paracuellos@gmail.com>, Andreas Larsson <andreas@gaisler.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 36848C0015
-X-Rspamd-Server: rspam05
-X-Stat-Signature: hdncuhsjqw5egif7nis7eqsjusw4eata
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250909190945.1030905-8-Liam.Howlett@oracle.com>
 X-Rspam-User: 
-X-HE-Tag: 1757509820-819580
-X-HE-Meta: U2FsdGVkX1/mPFZdlMriTF9NLiKXKB6q4wC+94N/LgXCAO8VYL5iQGfIUEjZUxLm/l5t1gzUYFkVD1GM8S0T3zkQIvkha2fVr5EfMy08xRRvV6uQzMPsWNgZ1Uv85F+QDz7bLLWuVigsFLd7MzZAM8jNntirhgygNI7x23wwck5B9F70lp8NaV3rpbLJZBA/2anb4HvB5FiodYjVYkGk9KcVCUqgTt5ttv0e10OHWhk1dkj2jfgrzUxpFfKvkzUZMSyX60FZS94Bav+B0wxEmm9YcAVxIJqwf15+h1RCFYyBCySLP+eDSWwjPlRTkZrYwywz5K9u89GbruKLncqxV/2caRxMFDxWfOpM7mwBl6uLsqv26jTQyUtnQFucOn27afpAHEmdLGpxAhmKNeBpGxapiSz1ky37BfivPujvHipPaGXRVtWStXOVIflB6XX8pgO2JfZ8H7ejOziqiWQC5zrQ6UaZsIzbw6VpgAYCeJ3w7s4iwxAKYPfJ+4MVccjgHmh++NMa2c+iq8e1K3HPnnRFkhn+R4WAtQw3Qb0z1Yq71qJtyZReIXLBCmlgqT7EuWkOqvb+cjPVJKVuu+qT7qg7919uFI5fiLVuJWQukofjA9mcwGo2D49O43j+bQDaI0LdmQxG51uJuFpFnuWGmyDcA1jknJ0l5QJO165GMqGVJrBmotazsDFSOfHHZ1WE+UP1ciS1ZkvlpckpLf/1y6XkE4S6j3NFwc/jYmGG1qQ9LdE4/SL6N0AUE5iG3WNvp5VrRSlDz873u3a/ZeelxmzhiKO/CPe+2GfGph2SzC/iURU2f2aq2RnWINwbrxNHEbxeeitmtGFyZnJ7v/TYqd1xm5sK6H+KLfZHERg2sSQnjHgAu0W8vHXror4ug9NjnIp+ftLCu246zBO3xdfoua6ikFN/eaTZpg8rSJFL1DFoOiqjOK9HN3ophDk64Ut+BCCmVD3VQQspVLPUnsZ
- WOgNqKzS
- pKG62rUYqMViBr3ifHsSxIcTkY1wfJITIJnGPk/3Y1U6HLR2ShZMy6xZia0g3XJXTEcq8lEypFwmJEuStW5uW0TdUbQQDQ3/K35pr/IYgVwsog8vwegoGqQB7r2+/CYItYvr+55hjfhQxy/HnLncNs51tZk7d8uvCu3XZZR+rnm4it6HqcRht+X5pOWHmu8KzZ4rmez5DIYATrU2CgWQCue9nUd9zXmprOsF9d00I2+jy/ys1ZsGjvtfsEffhkAecviph50y0XTUvNIgIXUSK64AenPlfXgmX+I8Oq9jNh6MJD8w5PNIDb+OwoR/l/nwnKatvE7R+iyx+H1i304RMRwj1eg==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 8C4B640016
+X-Stat-Signature: 5ybnuzt96m579r7zhxmon9149398j9j8
+X-HE-Tag: 1757509822-890610
+X-HE-Meta: U2FsdGVkX1+oBA7KxAwemdfgS5oNWJcORinD6YAE8+H0p7MNSCqwnhBGIMemQUxbD0b6wUhQ1hr1Ltc/ZERHk8QXeSGTSwgo2VyU6joW0uny75Wsqx0kpfcX4VdqPxpOqThk0sIKUDXVY7krZKeUbgw8vLSPsSvpl4MAoRgK/aw0ot/wwG1FYdxlrFr+UNyMApYqY/KoGc0Arpv9L2mEYmPde0ShFJ+9rjh6vvqAG8582c38TOry5rMXr/cmaNc+rSWbEj6ax2gfe8uYdRaqSMRCkrXfYR6tnaE+7TnJshzWzt2iy07oRy++5UBl4NaykrkoZNu1aUAJ2kT+Tg7s99gMtUTRP8qfy4aQb3wbQinqZQrrLc5xKN708wyCEAiKQMQl/EEwTIpEjBYbxDv6IrNOdR54CGEhbTH76PYk70s5mcUSos/qnmDwJ1zaAWHS3mmBEvutrnKwmW7TgSVle8TCUI6xnIqpeWCWT1ozSUY6sf/v5XxQEJOgj4Ja686PmP7sHUbgEVCKL3iE0ItziNOb9rdKUDrXzJzrYVjtFA0w78tWxTqR63lJzVN6qvmvPcmEdYJ8vLliVrwsTT5oVlo4GejdBxbLAWD+W2tIpinSVm6z6VhFFb5MVlXWeu1WmSSuA0xCroJ81RD0JKbcXuKrxV6t3Ibw0epkZ6/2AcFFkhhwkPgvQVvg2/OXnRLP0jgqPFwwaLs7fAlwmzgtNj878NZiCcKXRVM/gC1cwWkv/NcHNWrYl9rzg82AJO5mK4eKnvR2HPQmrlJuMk/GpuvsBH+1BUZknHfj9yK++ue0OGDB6qiKBiP2AiXhwSktdeQnGRFrQXDyYP/XO/FTaefcaCntDmD3DGZs3N5wZaAPKxLG49EaOZtilZ9qTuS1n6XWyYH90mboHq1Bw42UcDu01oiZf/gHmKUU4Joh4RCY4f5lBngEYz3cRAF5q9cJi+pEDm6cVBnybDaVrib
+ jV8kV+vC
+ EZX7kbnMbAeV0OvsWdxYTe2PkGE3YWlKoRXEu+WMAsaNRFak6fteFLKoobFPEt2ASlKL08wATF0tolrfz95tOSfR047VXDVnRWigvQLLFuUbtp6oLB4hLTxU8brbYsk3XQ/ZW5z6FGrRJjStJjZdLCD6xSNzmNBiQuzGVW1bCzlgFDWE/kZrmMgZvv1f5CRW0DUA1u5e1HSTVxlvHNBMGsLKCQhJpFZyg6H617IN3RMueMk4WKEqvEBUhXsYdoHLrtIso2yrgs86ybiokSlRK0b3CKbEYnqFgTm1pQQ3rQFAWXdVIRmKyHDiGuEqCDFXO6+1ThWn42/GlgZgZw0y1zYeEvt9A9o5CP2APisBIfC6CrXbTyaWhCSB1Dg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,64 +138,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 9, 2025 at 11:24=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> wrote=
-:
+On Tue, Sep 09, 2025 at 03:09:43PM -0400, Liam R. Howlett wrote:
+> The unmap_region code uses a number of arguments that could use better
+> documentation.  With the addition of a descriptor for unmap (called
+> unmap_desc), the arguments can be more self-documenting and increase the
+> descriptions within the declaration.
+> 
+> No functional change intended
+> 
+> Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
 
-> - ARMv7 machines with 4GB and more exist and keep getting
->   kernel upgrades, but to my knowledge are not in production any
->   more. These are mainly 2010-2015 era chips based on rare
->   out-of-order cores like A15, A17 or PJ4 that were designed for
->   low-end servers, chromebooks and network equipment but replaced
->   with 64-bit chips shortly after. We had planned to bring a
->   CONFIG_VMSPLIT_4G_4G option to ARMv7VE to keep supporting the full
->   memory at a performance penalty, but currently have no plan to
->   finish this (volunteers welcome).
+Neat, new helper struct just dropped!
 
-I'll fill in on the details on that, because I tried, to the best of my
-ability to prototype this but I failed, so far.
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 
-Here is what I managed to do:
-
-1. Building on another rough prototype by Afzal Mohammed, I managed
-to compile the ARM32 kernel into the VMALLOC area, this works
-fine and here are the patches:
-https://git.kernel.org/pub/scm/linux/kernel/git/linusw/linux-integrator.git=
-/log/?h=3Dkernel-in-vmalloc-v6.10-rc1
-
-This is is done so that we can unmap *most* of the kernel
-memory but *keep* the VMALLOC area, so that e.g. exceptions
-can still execute and save to stack when they occur, and we can
-call into the kernel to execute said exceptions.
-
-This in practice means the area 0xf1000000-0xffffffff
-which also includes the high exception vectors that must for
-natural reasons also be kept in the mapping.
-What we have mapped today (all of the time) is
-0xc0000000-0xffffffff.
-
-A minimal 256 MB mapping from 0xf0000000-0xffffffff
-should be able to cover this.
-
-So when we are talking about a 4G/4G split we are talking
-about (4G-256MB)/(4GB-256MB) split to be exact,
-we would keep the bottom 256 MB.
-
-2. On top of this I tried to decouple kernelspace and userspace
-allocations, in essence making anything outside vmalloc invisible to
-userspace by unmapping it using the fact that ARM32 (LPAE) has
-two separate translation table base registers: one for kernelspace
-and one for userspace.
-
-Step 2 makes sense because we know the reverse can work:
-PAN (privileged access never) makes userspace memory
-inaccessible from kernelspace unless explicitly requested and
-that works fine already, and we implemented it for LPAE
-with similar trickery, see commit 7af5b901e847.
-
-It's harder than it looks though and I never got it to fly, but
-maybe I will try again. My patches is a mess but I am a bit
-smarter now due to reoccurring MM-related work.
-
-Yours,
-Linus Walleij
+-- 
+Pedro
 
