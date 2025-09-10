@@ -4,98 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 338E6CAC582
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 01:00:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84215CAC582
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 01:06:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 86D4D6B000E; Tue,  9 Sep 2025 21:00:56 -0400 (EDT)
+	id DA9218E0001; Tue,  9 Sep 2025 21:06:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 81DDB6B0010; Tue,  9 Sep 2025 21:00:56 -0400 (EDT)
+	id D33876B0022; Tue,  9 Sep 2025 21:06:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 70CE86B0011; Tue,  9 Sep 2025 21:00:56 -0400 (EDT)
+	id C218F8E0001; Tue,  9 Sep 2025 21:06:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5BCD96B000E
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 21:00:56 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id EC71A867F5
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 01:00:55 +0000 (UTC)
-X-FDA: 83871536070.26.F1179B1
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 418ED100005
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 01:00:54 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=AMFtqSnI
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757466054; a=rsa-sha256;
-	cv=none;
-	b=imv2tzGS52jdyYuPgaornywA8Vbz6ocgThgCVrPeB/RepcnRrCxddoTMzISwUUq2HBqCxu
-	zlLy/FuwWL3UgSHNrbuW+S51bwpflL77WO7KhqLeuI1WFCj1xtmK0IMjIDMpQVfOPV1xrm
-	+TkkxgiF4SiKXStrNTkXdl1ON/lopaA=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=AMFtqSnI;
-	dmarc=none;
-	spf=none (imf14.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id AB5386B0012
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 21:06:08 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 534B9BB341
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 01:06:08 +0000 (UTC)
+X-FDA: 83871549216.17.68980A3
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 5123AA0016
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 01:06:06 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="iK9cil/e";
+	spf=pass (imf15.hostedemail.com: domain of rene.herman@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=rene.herman@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757466054;
+	s=arc-20220608; t=1757466366;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VCovnQiKBqc8KwjIgSafo1ECvn4VKWgvcShqCm4XuY4=;
-	b=6YDPkKUkMi/mEC5eSoMU9wraefdyQRzeIUur/12bRwGYFVqSOLpNhFpXo+crzcWAbB7Gbc
-	bgbIIBTU+jlXbrLosigonHpn9YkwjhvTXYqJNu0RH0a21k+VHPSx87LI6NR6SJpshRUxi2
-	Phm5rCqcQJ4+xQnM3ARM0V/SRNAZPIE=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=VCovnQiKBqc8KwjIgSafo1ECvn4VKWgvcShqCm4XuY4=; b=AMFtqSnIawnRKyNrClfcd16FmN
-	SlVzBqWHt3rvR9TpQ7Z2cu+fFLU3Le2wCXeAad6k+WrECaIO5uGrBSJI9/QGWxzwOGXLd9kgPvulb
-	Y1PO9k1kNuDanrgLG6Ye3buIIMYb/QcO7t+gr7BxhHdC77dmF8OV54NJfIWqwaz7KBFlhNAqKY9nV
-	oYbNSw+qdhrleALXGepsklRWB+c9ZdlDCGP8YlkSFwNbacpXaDdL8z+HWJ/9b2/axreLrdTNir+0Y
-	yW0YK+zDEsavCu6hNmok5zv6QL1Hefpl//X5VqECRL6CZ4Xm0jkV04EsBGdRrMqvkgkyCI0I0xV/F
-	gqaoZuSg==;
-Received: from [50.53.25.54] (helo=[192.168.254.17])
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uw9Cc-0000000BHYY-0xlp;
-	Wed, 10 Sep 2025 01:00:50 +0000
-Message-ID: <4e230009-ed70-4260-ba61-170ddab17a80@infradead.org>
-Date: Tue, 9 Sep 2025 18:00:49 -0700
+	bh=PDZwAXLouP084B9hVHdN4iMIIVS5iU06EyLqPH/Ivgo=;
+	b=LSN0qtWLkDUtWvyK+h9BWkQhaBCrt//JEjtOKRtD5kCfgQ0HU3+sEd4qFMwk88JeT6/gu4
+	rDrfgNA716D2cma786cNr5Ysj+eCjzNe5IIOo7iVyIMRA1Xu26SlsFDT6N0YI7z0FDKfgT
+	RTYEo7i4XVfvkPkMmD2apxx0S+odfCY=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="iK9cil/e";
+	spf=pass (imf15.hostedemail.com: domain of rene.herman@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=rene.herman@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757466366; a=rsa-sha256;
+	cv=none;
+	b=LTp6Y9w5BRcFcL/bIkUifn6Ls4Dj1iPmAIXe2Q/rgtxy7z77cbLzDm+P4fdmBhaFqjGDX+
+	qAgURey5nlA92vjzMtYNZs25mI7cbgmYjMnkgldgP/M7V6GN1g7t0/Anm03n6MBVge2v47
+	wp47RIi5Q2HXvzPysOSQsgbmhUqIy5E=
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-b0787fdb137so32166466b.0
+        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 18:06:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757466365; x=1758071165; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language:subject
+         :references:cc:to:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PDZwAXLouP084B9hVHdN4iMIIVS5iU06EyLqPH/Ivgo=;
+        b=iK9cil/eOObh2TmUeu/hRoU05zXQZDjiW9eG3Ipx34Jf8TgfPwk/GjcW/veOo4gf2v
+         K7YfY4/4cb4u4PH92xWRIHLldsvwQCPc+x8y421AL+bAGD796v5m16yOyCpv26tIreGD
+         8Z1OrezJMDmKZtlniuitItNAdmPjq63FZpZANGBY+oP45tywG+LQcN7sk8jZEVr4UFfv
+         rlZXJzS5aDukTqYKgTwjOfr+py1Rm2oA0dVtV49bj8vAVTzvNHiT4/a65moq3dLxAM9k
+         Xs8rNVBG3SHQqKB3tkGuvo+4BlCOUjgPwqMpTaV5jf0U6Xcd/KC/qWh+EZW5cZrLOJqA
+         Ynkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757466365; x=1758071165;
+        h=content-transfer-encoding:in-reply-to:from:content-language:subject
+         :references:cc:to:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=PDZwAXLouP084B9hVHdN4iMIIVS5iU06EyLqPH/Ivgo=;
+        b=pHMuGi4f1e0QfBNQbCTjMgX/JQkM6uru8/WqpSyZRGHZNCtldYng+We/ceKs2JiAtU
+         BxGATLzaiHmV0QXbzLMpXaQnJKUZebxcqscNwdnGo4rBMaHNktnsgwLO+3y75M+eWz/N
+         JGM7PhAGIrhB8ztCmx4Z4M/QEcxQ+rf4w0Cp1jOWzKHkKCnXkfNW0T/J7lY4P4CdBFiN
+         ZMXefGpdBzdxR3iGkQ3gk/G1TDvYw9YJIEn9RAnMQ5/+4h/fuIvVkvY53jITTbeHosB6
+         1DObmWfPQ8h8elaHiwjsLVFOBlGZbu0a3qWttvqw/QpP8IP47PGTOjzTkOH8K2Hz/c2W
+         Jx+g==
+X-Forwarded-Encrypted: i=1; AJvYcCU3X1e2l6OtYLZCJ5HXzMM/KCtUK2J6arqEp33/mHH6NvT9y6ObfSi742obd+J8vRtTSRqSNmdr/w==@kvack.org
+X-Gm-Message-State: AOJu0YyqKcU8h8swz9xBz82VlKuXfAT4ijKcD2PU/AJSip6cwN2hU5m9
+	LEG0RFkBTLOBpSS4R++JU6q2Y3/2qO0URCuSTieWCRPKLrk5r2ntI8lk
+X-Gm-Gg: ASbGnct415o8zc0CmpAoBYxHJ2ryIT6Kbi8jPm8MH7tocQWl90piJLnovyb2KA//noQ
+	RSIPb7KCyBI9RCklS/ENET6jLBxdHTBgnwNf1S3DPAZpGhVECUlsFlJBATxEoJVx63koCtEGImo
+	3ZqVM0PBjhFvDBk2R7+cGLwtkPktW5ryabdRKOI1eiigxxDZQN0VgwhVKXc5HFgqHg0KOWa+m89
+	LLro/mmxEo882m26bqVfUV7AWnmeVHfF0Kibj9RmtyUlY9bBTqWnpfE6n/pRCV7W4Nt+yjltuzF
+	ovcrHLXXJczjgdkWz5o+e9RatdHl9iTgK3H3J0qxIMgff6sGVnEhu8nnX6Wl6n45XEow2URkzJ+
+	epGfccpQ31ornoQdMcLEPLnvTplRHx9GTCBaUDXWj2ovb4hthttG5qsKqhRvQK/BtaJXvgGDr
+X-Google-Smtp-Source: AGHT+IFjBmxeo0iihWNvQGW9XaPHPBKL/NIGGGOL86gq7iDWLkzDSZTSGw6FlnjUE/qdjGTpbeIhew==
+X-Received: by 2002:a17:907:72c9:b0:b04:4ba7:4e0d with SMTP id a640c23a62f3a-b04b148a54emr1331824166b.26.1757466364453;
+        Tue, 09 Sep 2025 18:06:04 -0700 (PDT)
+Received: from [192.168.0.51] (217-62-96-139.cable.dynamic.v4.ziggo.nl. [217.62.96.139])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b07830464f9sm78316966b.9.2025.09.09.18.06.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 09 Sep 2025 18:06:03 -0700 (PDT)
+Message-ID: <bf46e8f6-221a-40c7-9da5-8003397ff113@gmail.com>
+Date: Wed, 10 Sep 2025 03:06:01 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 7/7] Documentation, kstate: Add KSTATE documentation
-To: Andrey Ryabinin <arbn@yandex-team.com>, linux-kernel@vger.kernel.org
-Cc: Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>,
- James Gowans <jgowans@amazon.com>, Andrew Morton
- <akpm@linux-foundation.org>, linux-mm@kvack.org,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Baoquan He
- <bhe@redhat.com>, kexec@lists.infradead.org,
- Pratyush Yadav <ptyadav@amazon.de>, Jason Gunthorpe <jgg@nvidia.com>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- David Rientjes <rientjes@google.com>, Pratyush Yadav <pratyush@kernel.org>,
- Changyuan Lyu <changyuanl@google.com>, Jonathan Corbet <corbet@lwn.net>,
- linux-doc@vger.kernel.org, Andrey Ryabinin <ryabinin.a.a@gmail.com>,
- Chris Li <chrisl@kernel.org>, Ashish.Kalra@amd.com,
- William Tu <witu@nvidia.com>, David Matlack <dmatlack@google.com>
-References: <20250909201446.13138-1-arbn@yandex-team.com>
- <20250909201446.13138-8-arbn@yandex-team.com>
+To: torvalds@linux-foundation.org
+Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org,
+ alexander.sverdlin@gmail.com, andreas@gaisler.com, ankur.a.arora@oracle.com,
+ arnd@arndb.de, chester.a.unal@arinc9.com, christophe.leroy@csgroup.eu,
+ david@redhat.com, geert+renesas@glider.be, heiko@sntech.de, hpa@zytor.com,
+ imx@lists.linux.dev, ira.weiny@intel.com, ksummit@lists.linux.dev,
+ l.stach@pengutronix.de, linus.walleij@linaro.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, lorenzo.stoakes@oracle.com, nm@ti.com,
+ richard@nod.at, rppt@kernel.org, sergio.paracuellos@gmail.com,
+ surenb@google.com, vbabka@suse.cz, willy@infradead.org
+References: <CAHk-=wg0bp-_kqmfaDYQLRJO30LYxEsMu3EKi65sKoi83EUZ3Q@mail.gmail.com>
+Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
 Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20250909201446.13138-8-arbn@yandex-team.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 418ED100005
-X-Stat-Signature: 5gq5zpt3dc8g6mgojbo45qbsg3rpqdko
+From: =?UTF-8?Q?Ren=C3=A9_Herman?= <rene.herman@gmail.com>
+In-Reply-To: <CAHk-=wg0bp-_kqmfaDYQLRJO30LYxEsMu3EKi65sKoi83EUZ3Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: dungfyx116oaswmurtgbpgtn4osbsakr
 X-Rspam-User: 
-X-HE-Tag: 1757466054-974411
-X-HE-Meta: U2FsdGVkX1+9+A5lGODwgdfVbVikMuGJqcDCSbnVAIX/nvJ6YWIQYvUo22J8vr+ephgkYgHPXLZpMIdIzUakE6siGodmUbtMqerxWIICt/i8yxwByYbAcmvhTvhUGbJAtEun5lvrEFYsIuMp7Sb2Q5CpAKvVPh6Jem0kKHLZJ31J++yd87ZNC8hUS0K99LbNHNFSUOtSFcZcKtJ7jlprIbloXlEwb1Fj+oIUb6jP+QSSacqpMJI46JquRAj6cnefHcYdlloGuEkZlvhl015Qmu9i2l9KVgEQmWsCoAyxQtHV6VxsUv7KidK9cWSclNUyhZ79nSzpmFkTHd+lAo24oUNpOx+o2uimty8gHESpcj5Sf6UJWpEBcGTLpM9i7Jz4mx9N2N8xZDiei3WV+cLm8UVIfPNDXHl1P9ayst3DiLc3te9Ea+umOk3qKGjFBXQVgQuddOk1DLGkKUQZX2FXin/i5Nz588tzIkoA6s+Rup/FIz6s+aHyUflj1igl+Y4Ls5anmNEAJfKDys5UmQ12g1eg2RluTEII6vSG8CtZZcdvxEM2GS18uWrWfQuEKS99j7WS2CXdwo4B+mNAMf55nEc6C93+O5oDwURdiVnKKKGKkTb5Gu1JPaJ8+mmPNBlWfvn94OHXAoCdAOFWgNFfw9u9YkUAFovDb3MUERtSZPchr/TNEJbKjcDmOp6jX9DNJmT/Wa2a/nngDS4+DHqsuQgfv7xNlXvetbqix70ed/svMkHB/nH0kzFrQ6fpKAabtybxLl7G5v2d+/L41pDDthpdd8UjWV/fSQoJ3FOx35rUXkaq3Ai7Amnpu//rxauRx1DgC7nAihKly0syy7UX/3qmUajcH59GyZ1QwHGIR9fswA3+x24eEO3OTNXCTolNKzCb7oC0+QBfAlSsFa1+ZJpzQBANv+hwpu9qQQn2f4D0EIztX0i/8LSQsJeTfpHePcBHXX/YNFroEw3OBB3
- gnAJGcLF
- PuOwwP3YbM19hIEtIC136Zgbk3jIKwEnywYnDo/UseO8tIgkZfg28BHI7Php0eANZdSeC0ePHuZg7X7KWfX6mKW5NQcHqmUOHYThm/f7ScCQ4fiucDuVWHes9/DysWs9axGK3AK3f1GOCzTF1YdSXraHWSv41sNfnGyBD7HJD/7o7HYf/mYVrPxK1NwgIvb9t7DHiCW8e+MuUo9h1zwfT5rxCC8p6yN8alhNGFy5Vp2MY8I6FLEJyygdXfCjmC1Gdmtye6A/hIfXGvg+x6rrQQGXDyEGe7EOYX0k0C4Ru/cSP0bp9Z2OkyHtwmoSC/rM5HV/wDL7kIRT2aKg66UnRRkFOqS7Ban6/zAwu8IQTU9MUgve18WLbn9NNng==
+X-Rspamd-Queue-Id: 5123AA0016
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1757466366-558996
+X-HE-Meta: U2FsdGVkX1+BzHXAqD+6F5tgW4eCzIBgRriz80Cnwuw7jthNAailUgzJlyf6IXjiWzRyFqvKMDfzUAi16UrO8B9a5gfdAb+EnjaPjPFX71xkge0qxunlKOP9+OLsPin67ltO7aYYVDLPX/0Dhv+EGHNlzEdAfVP7vXH4YqqwHahrg0BnvQHtV/bozfmRAeJUCiFeRAXFB+VD6kO+2Yyz1n/nPXKus4OwpDU9GjeNvdSMtGofQbxlyy790dgFd1QN7ZTNoylzgg2AEIjoisrgGU3IPpYK9f1WHswWEGvH6SJ0hAIE3uzZGxmAqsFKYHhYsOEsUtVflrsGdnCn71F1ZJrSqvuytO4WDUcWQvtknFgzIKTjhIH8Dirhj1T/6tmxbCmU6wdvvzvZurHXTpzPS+kYDVz17dbb3UHwES5ic+DW8++9dkz8Elx0b+r9CcO54Du9qF9WJxh82j5owRPvlm51A6sZlav4gIfNLOpG1ljRiXWXImQBbw0UIc7AMa/94cb6c+INCjuBYI+npXQyYjijcc5oo1fXeUYWcpijYdKrBtrLz27wJlh6PsDaz/TjpP9yBuX7IinX+nHhRAWkanQYbfdqBiYu7YZW5lOdHyAwQ5N2jK/V8cBCC+Nn3HtFF3f5cHvjegJjYlAwql5beEiJlphuCpOwYgytgbtLQJCamTN5RphrW2FtSMvWeDlwxat4FdBRRvSSKBoAWuHcJT9xFQZCAycrnNQhywDONowob2NnBMLs1v72HFbbM9TjCLHO1YJvgR0M8/TkQjkKE4kELiaM5rUyAPl3jvSz1lvBQzxormcCDlGyXvqkT1BfHz+2Ypy7awIEQB2nP7etLCmpXW7P+bo8tdqLkVkroar0VAFyO1F66ZwqIQIlNFrCtQb7C0GTs544dXoAIf6dPhzlcIgyph6zjYA2nrHHM8LTwBb24910QpxR8VZeC1Ml/mBRt3Q9W3GGXrxmZxD
+ 4sHpQYB1
+ r7ScstacoKzP0ALMSmP3zuSaA1MCWwSbiuSEVSH8B4a0Ra/RCULNqG+nr03UJDd7P20PqRI3v3z3hvzEjH1ZWMOAXQV2eMLZHWGNVIa0Ehl5C5Q5xH9DQ9hfjy+HP5JumHYo5woEucGP+uObB/qTb1z3RxnYLFrokR2oDsOuDHG+X36NFbjeIchE7/8SGUmaevjM3t6YtJQT3+yBqqJkmwQ0O7I9LjuPE5WVpZllCpEI92tD80qqmnuBcQ5dOn0SqmPEFFUiBWmNjvYLvPJoIajtyK+tddFuZEWXbcmsNXFDR/T/bx3+mooH30DIBjy0a5oPx/KQrX40sRRYOFjdY+rnVx8fNRWUl3st9SrHxkD184o2GQ8K7NJ80TpiktWOw64EQMDjGvezYUZaI8stPPsdgEwEFBz6eRWav3fwkc8o6CAou9pnuePKti3lnsojHge2Mwme/pUBy8+e76fP9UB+pvS5t9hxZXTu4+42Yaio4U7kQ07t6KjS9z8PyQhMhl8iGzHj8SjbjqKGhiTFlVBPjINNtQAsi7H9tN+Y/1U73+ghb3NOCcb3xEPrE5sG8QOOkGsk7ycmE35s=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,188 +130,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 9/9/25 1:14 PM, Andrey Ryabinin wrote:
-> Add KSTATE doc. Describe 'struct kstate_description' and information
-> about versioning fields.
+> Well, while on x86 1GB systems did use highmem, they'd typically not 
+> use very much of it.
 > 
-> Signed-off-by: Andrey Ryabinin <arbn@yandex-team.com>
-> ---
->  Documentation/core-api/index.rst  |   1 +
->  Documentation/core-api/kstate.rst | 117 ++++++++++++++++++++++++++++++
->  MAINTAINERS                       |   1 +
->  3 files changed, 119 insertions(+)
->  create mode 100644 Documentation/core-api/kstate.rst
+> IOW, they'd have about 900MB as lowmem (ok, I think it was 896MB to
+> be exact), with something like 120MB highmem.
 > 
+> So they'd either lose a bit of memory, or they'd use the 2G:2G
+> split.
+Right, 1G-128M of VMALLOC_RESERVE, but they didn't generally use 2G/2G 
+but ever since it was introduced late in the 32-bit era VMSPLIT_3G_OPT, 
+i.e., PAGE_OFFSET = 0xb0000000, i.e., 3G-256M/1G+256M.
 
-> diff --git a/Documentation/core-api/kstate.rst b/Documentation/core-api/kstate.rst
-> new file mode 100644
-> index 000000000000..981ba162109c
-> --- /dev/null
-> +++ b/Documentation/core-api/kstate.rst
-> @@ -0,0 +1,117 @@
-> +.. SPDX-License-Identifier: GPL-2.0
-> +
-> +KSTATE: Kernel state preservation framework
-> +===========================================
-> +
-> +KSTATE (kernel state) is framework to migrate some part of the internal
-> +kernel state (device driver, memory, etc) from one kernel to another across
-> +kexec reboot.
-> +
-> +kstate_description
-> +------------------
-> +
-> +Most kernel's state is in structs and structs could be described by
+Although at the time the patches died an unceremonious death, 4G/4G 
+patches for x86 were also around; I used to be a (conceptual) fan of 
+them: it takes quite a number of TLB-flushes to suck more than highmem.
 
-   Most kernel state
+Not one hint of clue if spectre/meltdown is applicable to these systems 
+and if so, if they in fact do or should already be suffering through 
+those same flushes anyway but maybe it'd be an option to dig those 
+patches out of some archive somewhere.
 
-> +kstate_description. E.g. <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-> +
-> +struct kstate_test_data {
-> +	int i;
-> +	unsigned long *p_ulong;
-> +	char s[10];
-> +	struct folio *folio;
-> +};
-> +
-> +struct kstate_description test_state = {
-> +	.name = "test",
-> +	.version_id = 1,
-> +	.id = KSTATE_TEST_ID,
-> +	.fields = (const struct kstate_field[]) {
-> +		KSTATE_BASE_TYPE(s, struct kstate_test_data, char [10]),
-> +		KSTATE_POINTER(p_ulong, struct kstate_test_data),
-> +		KSTATE_FOLIO(folio, struct kstate_test_data),
-> +		KSTATE_END_OF_LIST()
-> +	},
-> +};
-> +
-> +Changing data structures
-> +------------------------
-> +
-> +KSTATE saves/restores structs as a series of fields. When the kernel structs
-> +are changed we may need to change the state to store more/different information.
-> +
-> +Versions
-> +--------
-> +
-> +Version numbers are intended for major incompatible changes, that are not
+I promise I'll test them on an AMD Duron with 768MB RAM :)
 
-no comma
-Drop "incompatible" since that is implied in the rest of the sentence.
-
-> +backward compatible.
-> +
-> +Each version is associated with a series of fields saved. The state is always
-> +saved as the newest version specified by ->version_id.
-> +But loading state sometimes is able to load state from an older version.
-> +
-> +There are two version fields:
-> +
-> +    - version_id: the maximum version_id supported by kstate_description.
-> +    - min_version_id: the minimum version_id that given kstate_description is able to understand.
-> +
-> +KSTATE is able to read versions from minimum_version_id to version_id.
-> +
-> +There are _V forms of many KSTATE_ macros to load fields for version dependent fields, e.g.
-> +
-> +	KSTATE_BASE_TYPE_V(i, struct kstate_test_data, int, 2),
-> +
-> +only loads that field for versions 2 and newer.
-> +
-> +Saving state will always create a section with the ‘version_id’ value and thus can’t
-> +be loaded by any older kernel.
-> +
-> +Removing field
-> +--------------
-> +If field is no longer needed it could be marked deprecated using
-
-   If a field
-
-> +KSTATE_*_DEPRECATED macro and bumping ->version_id of kstate_description:
-> +
-> +	KSTATE_BASE_TYPE_DEPRECATED(k, u16, 1),
-> +
-> +The last parameter of the macro is the last version number that have this field.
-
-                                                                   has
-
-> +Old kernel will save such field, but new kernel will skip it on load. Also
-
-   An old kernel                        a new kernel
-
-> +the new kernel will not save such field (as there is nothing to save).
-> +Such change is not backward compatible.
-> +
-> +Adding new field
-> +----------------
-> +
-> +Addition of new field can be done as version dependent field by using _V form of
-
-            of a new field           as a version-dependent field by using the _V form of
-
-
-> +KSTATE_ macro:
-> +	KSTATE_BASE_TYPE_V(i, struct kstate_test_data, int, 2),
-> +
-> +This indicates that 'test_state' only from version 2 and above have field '->i'.
-> +If new kernel sees incoming 'test_state' of version 1 it will skip restoring '->i'
-
-   If a new kernel
-or
-   If the new kernel
-
-> +as nothing was saved. This is not backward compatible, as old kernel doesn't
-
-                                                          as an old kernel doesn't
-
-> +understand the new V2 'test_state'.
-> +
-> +Subsections
-> +-----------
-> +Another option is adding subsection to kstate_description. A subsection is
-
-                     adding a subsection
-
-> +additional kstate_description which linked to the main one:
-
-   an additional                 which is linked to the main one:
-
-> +
-> +struct kstate_description test_state_v2 = {
-> +	.name = "test_v2",
-> +	.id = KSTATE_TEST_ID_V2,
-> +	.fields = (const struct kstate_field[]) {
-> +		KSTATE_BASE_TYPE(i, struct kstate_test_data, int),
-> +		KSTATE_END_OF_LIST()
-> +	},
-> +};
-> +
-> +struct kstate_description test_state = {
-> +	......
-> +	.subsections = (const struct kstate_description *[]){
-> +		&test_state_v2,
-> +		NULL
-> +	},
-> +};
-> +
-> +
-> +Subsection must have a unique ->id. If the receiving side finds a subsection
-
-   A subsection
-
-> +with unknown id it will be ignored. This make subsections suitable for backward
-> +compatible changes (migrate from N+1 to N kernel) assuming old kernel is ok without
-
-                                                     assuming the old kernel
-
-> +information in subsection.
-
-               in the subsection.
-
--- 
-~Randy
-
+Rene.
 
