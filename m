@@ -4,86 +4,188 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7162FCA101F
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 12:31:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C952CA0FED
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 12:32:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B909A8E0003; Wed, 10 Sep 2025 08:31:24 -0400 (EDT)
+	id CCC0D8E0005; Wed, 10 Sep 2025 08:32:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B68558E0002; Wed, 10 Sep 2025 08:31:24 -0400 (EDT)
+	id CA3B38E0002; Wed, 10 Sep 2025 08:32:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A7D8E8E0003; Wed, 10 Sep 2025 08:31:24 -0400 (EDT)
+	id BB99A8E0005; Wed, 10 Sep 2025 08:32:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 960D68E0002
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 08:31:24 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 49ED91A08B6
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 12:31:24 +0000 (UTC)
-X-FDA: 83873276088.13.E702398
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 5F78D1A0013
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 12:31:22 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=h+xr8Xl8
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id AA9EE8E0002
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 08:32:56 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4C311BBE6E
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 12:32:56 +0000 (UTC)
+X-FDA: 83873279952.30.19A3846
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf20.hostedemail.com (Postfix) with ESMTP id C05111C0007
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 12:32:53 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="gkU91/lF";
+	spf=pass (imf20.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757507482;
+	s=arc-20220608; t=1757507574;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z28D9iiY/FsctjTG9fO3hTbLrp0EukPX3101AmbRWww=;
-	b=8XvOOJdhPO347zGjjOHbhTzKGZvJXvNyYEF3N+IxoRbgRvsUZQhgK5JfIdhBd6Z25bac+Y
-	5doFp6exfEAcr28mRwgiJQ58xdC+IZJgwitRHK223cBrQK3EnBMGc8CSev8HUM5hh+NPjq
-	AZ/J9e3qlYKO+nxXZCzNijTTM7xmc0s=
+	bh=LViYUFGFqV7wdk7rT7+n+ckEpLRp2oc7FTXBWlnTc1s=;
+	b=lO5YTb0pvrJSlDHcaHmP8GlgL5OdKpfUX4b75XSQKi7ONBO4E0hMTBWPHpHL8nsnxSr0wG
+	TqR63CwaC/6K7qa+PHL+ONP0xkcWXCpN1kM70bG9rymmnqqXvidOU1yAdfCoo9PdX+0yXP
+	67DYKcpObq5I/flvV5bmftYTRCDZkWQ=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=h+xr8Xl8;
-	spf=none (imf19.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757507482; a=rsa-sha256;
+	imf20.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="gkU91/lF";
+	spf=pass (imf20.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757507574; a=rsa-sha256;
 	cv=none;
-	b=6bYsXiBNH+19UBcM8pfyUSM0/lvKPhVex9zYO7PMFZDK0oBSPfe5U53otlfbiqlOCPx4lu
-	jKOgIGjRmya6ViYUrjQsRfembaEjyqpOCaHd5EkvZnT/oifEqo5tSPtkbGB9izzABCKxNB
-	PXPjzYNiB6rYBBIPXCLVqmM88QPKpho=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=Z28D9iiY/FsctjTG9fO3hTbLrp0EukPX3101AmbRWww=; b=h+xr8Xl8NL5B1jPcR+0s0aUg91
-	KOVaBKIEZGQRkUtpKFNIYkVhS2HnwfGYOXeqw5aULyMFzXEl1rUq+Q1x9prlaEB0EA+hZ+c6dQjuK
-	WWpQDIF5VGG32K21VLPvaFUvIgf2kQ/B+lX2w42pSpxFIO2oJUmp93gCmhiU7JquBj9c1WJ2I1Z9l
-	RfjdTjJeZslIBLjUJDW3U/J19bDKy2jn1y6Zx3dbwegKMuL5UU99cPWdFSlXAwP3kK5d99Im9R+nT
-	fY9w8FEaE4uV9CTtQ1WX+PMHEsAilj+HQ7wRI0P7FHHImQIdZ41F4wNGcCdcPPofKyUi5xRcu42p6
-	oAru50uw==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uwJPq-00000008MFO-1Srp;
-	Wed, 10 Sep 2025 11:55:10 +0000
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-To: Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	linux-mm@kvack.org
-Subject: [PATCH v2 16/22] slab: Remove dead code from free_large_kmalloc()
-Date: Wed, 10 Sep 2025 12:54:58 +0100
-Message-ID: <20250910115507.1991829-17-willy@infradead.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250910115507.1991829-1-willy@infradead.org>
-References: <20250910115507.1991829-1-willy@infradead.org>
+	b=CNI17sNCYR1pzAOdnXr7aKUI1WmB9qBad1evSDi5lptMDmPrdxNNQzuNbVk5+v/Gp67591
+	PYXI5WAaUafxEzqOLt/uBtbC+35qM7A8Q8Fo4wTyx7TweDv2Jq6mGIQGy54N+ofmaQnj+S
+	Gy9MyV42lb+gb3w5oMa9evcbZFDXhd8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1757507573;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=LViYUFGFqV7wdk7rT7+n+ckEpLRp2oc7FTXBWlnTc1s=;
+	b=gkU91/lFqFoIbG7MXi/zMQWf1G/KzQ1Kwf5VvIOH/u+LKOyFsPhZUem5QGYa5AiTBE/jGp
+	ROTwX6Z7adZfycOVJnr7h9ND7HDEf/TJ48b7PNVlKOv+ujbH96JXu/GlOa71baRAdkk79m
+	+1n0Qv20n5FqDtodgY613gw67GzcgvU=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-249-mNM7vkROMzeZQ0CXzNRCxw-1; Wed, 10 Sep 2025 08:32:52 -0400
+X-MC-Unique: mNM7vkROMzeZQ0CXzNRCxw-1
+X-Mimecast-MFC-AGG-ID: mNM7vkROMzeZQ0CXzNRCxw_1757507571
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-45a15f10f31so3919125e9.0
+        for <linux-mm@kvack.org>; Wed, 10 Sep 2025 05:32:51 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757507571; x=1758112371;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=LViYUFGFqV7wdk7rT7+n+ckEpLRp2oc7FTXBWlnTc1s=;
+        b=jIa2DuAz6NEqofAPWr5xSiZiyPFezqnc4xhGq4yv1Lx5v/4IecNLGV/nuVSXjSPe9g
+         uHQeTEv95ULGryfVTiWgFxv0a6Y//73rwW+IGjWtQEDVHEJJjTJrIvoDTynW5+pq+Zbc
+         l1JjVoarH4eLmYcrKLo1Jy7gKlszDSl4B3AhYOsDrYzt3ZywT0dmzv2q5fkrYqLmN+1D
+         ndcHAFKuVGS3f3C6EkeX15qdKW+FnH3nqFiAsygPyroAgTqXQiaSNmCLu8JsthlJE1dM
+         UIy4O2i7rSOL/yTM888tXgAON07JQrxPQArJ9rhbO97a9qwxxwhLgOp1YCfGVhhfbDOg
+         O9lg==
+X-Forwarded-Encrypted: i=1; AJvYcCVns7B0ZhXMxIiu0FIPU1Ic3tTis2bQizbg3Y3RGqdFl2771OvXOKOs609ggPdc7z6xPJlEvHsV9w==@kvack.org
+X-Gm-Message-State: AOJu0YxvoNOwg0/yLSAOpD4M9Vguq6kj9VoLn6GPcT6wkdA29Jg5+7Ly
+	wopAk2YpsKQ6Mk0IHw7yS88UFLSelNn5Ayg8ZjM8rjWbxmwMgC2ugI0Wm93P6fD9P/Otq0DeP8X
+	LpvBCFHSXXnufUGWdoF0RaKcRdOt+uUy0umvFCDBsIcneoULPVB8P
+X-Gm-Gg: ASbGncsTIE5J+pFKlknAWBbd5VJ1GKGr+Por2Thz3/3+dIzaeBqOd2vVj18x1ME1lQN
+	7hPAICDvVG0D8FofaDAOtKwrBr5o5omgr7+qbMGG2YwRN0KLPv81W5Ba/tzrhu6fvnYaaP4oaM4
+	7njERKzzSNvPsWkTpIxq5vwqbV0pc3G8Z10vWn7AUD3QYUfQyNEN/e1SRx4T7Ynk4GropgYOHyq
+	TBED4/oe5TMFsjUUH4UxfxOfPpw3FAeMgGu1/J5RO5ZrLbN/ZWkL3EvFaO5r0RafBmJxIKnea/G
+	eNmlJXuYh4OXh+eEawbsmdEKRfM/qwqybZ/Z7MNDwuLUBoPuG2j1DXl4ma5xTHW7YTasEGQMpET
+	8kONXUJqWyAZNRztTAwv+tMT9g9UN3hu/3A1Rocg6ZT8ezMC59zkrc90I2KCHahY2Lcg=
+X-Received: by 2002:a05:600c:3b1d:b0:45b:8ac2:9761 with SMTP id 5b1f17b1804b1-45dde20e5c0mr148260745e9.13.1757507570799;
+        Wed, 10 Sep 2025 05:32:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF/W9Mmo72Y7k0e/5lev9LwiyPK0j0L4lMPmSP/XxC16yAcbXhF14eU/SqL+2U67nqcP2mA5Q==
+X-Received: by 2002:a05:600c:3b1d:b0:45b:8ac2:9761 with SMTP id 5b1f17b1804b1-45dde20e5c0mr148260265e9.13.1757507570271;
+        Wed, 10 Sep 2025 05:32:50 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f17:9c00:d650:ab5f:74c2:2175? (p200300d82f179c00d650ab5f74c22175.dip0.t-ipconnect.de. [2003:d8:2f17:9c00:d650:ab5f:74c2:2175])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e7521bfd08sm6588369f8f.4.2025.09.10.05.32.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 10 Sep 2025 05:32:49 -0700 (PDT)
+Message-ID: <b908b8a9-8860-4464-b86c-467797f1fafd@redhat.com>
+Date: Wed, 10 Sep 2025 14:32:47 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
+To: Arnd Bergmann <arnd@arndb.de>, Matthew Wilcox <willy@infradead.org>
+Cc: ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ linux-mips@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Richard Weinberger <richard@nod.at>, Lucas Stach <l.stach@pengutronix.de>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Ankur Arora <ankur.a.arora@oracle.com>, Mike Rapoport <rppt@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>,
+ Ira Weiny <ira.weiny@intel.com>, Nishanth Menon <nm@ti.com>,
+ =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
+ Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+ "Chester A. Unal" <chester.a.unal@arinc9.com>,
+ Sergio Paracuellos <sergio.paracuellos@gmail.com>,
+ Andreas Larsson <andreas@gaisler.com>
+References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
+ <aMDYdp3H-yOHU1Pm@casper.infradead.org>
+ <b60310f3-25d3-4f2b-88cb-ad65d5f55ec2@app.fastmail.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <b60310f3-25d3-4f2b-88cb-ad65d5f55ec2@app.fastmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: P_Ia4eHPtKkHiwHRKOOTghVVYxx96r5-r3BhHe-aa00_1757507571
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: C05111C0007
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 5F78D1A0013
-X-Stat-Signature: 85e53er1tofhiq31zsmdi7mrex3iqmbp
-X-HE-Tag: 1757507482-4974
-X-HE-Meta: U2FsdGVkX18PW2+tZWTbwL4MvrtOvwk5rdp0PU8zf4NyRakaAOgQFlP1ompFoqrw4NlYCutT5kNvbWnet0847EDC4k1pcSDI3qChHr3uyFtDOlaROYoz0EF+R4JqcJwjm8sFReK+pyQryiis5noqfJtENl/mo6kcRtBvY75MUDv+snsDQeaJ5KinXoj30hT+dTt2shVtm6pdd+/7zEGmTHCW1M/1oB98F6U8FhFPM5shmTrOghJ+Hpno7+mV0Rxhg/8aef0K0c0cYr4m1aURW3aciJKwDLnkzcpgrUvYGVFRKgwwRp9RkJGgi+QUgWbSvTI6w3XFCIOfbz3zBIP7bJ+c8QvHJRJxE/4CuE/imTu689oG8r+5uZ/GRmCdVKQz2gLiMs8MVutCuqBn65UKU96L93+VxeUN+i/2Y63p6BxSRJOSvd4/FL/7N+2yqDsmXrCxQKVdnBYKuNSUnnLDq4lOlIm16e/ovrGx2q4czjlCkKBZHb4fQF/iYnBA63kxAZgsR6cw+3gLV+UADglSI8o/IEnyur3fhyQ4aYODlY1aR6Yf4Hw8tPGJmXem9TQUgAFJS5FCU6T7+DC/6b4WrJJSS+gmWdrWEA4ZldkXxCESm8+3oFbtas600ggshvJh/sZtAtznWKMvHOUbuaxfSXZaXBdbZpd27ELmYa8OMKXRs023B+GWyHX4DekEye76SwAg3gDVGxl+dbqpPfI2Ktu4LIhalieMIhL17fRHCkpA+89UcF7ty74f/w9d1ewfRnsRigUOj3i/dEDmFisvwjmK04qfSAAZ7p6s0ppJz1F4jr2rY0s68r1ORgP4e/FDZTDyueFVrDuWgyQZT/DZdfjJvRfPTWRz/1fzpRL85O5p0p3/dtHkdSAHIJf27L6h3W5anNCH7GNT9m9q46HRCyXq9yT4Af+NI4g6F4nb/W8dUfZS1jQf8+5KPEH7Hx2Jvld4i14cjQlgptZ014d
- k5DpzX4o
- FQvuf5wX+amCMH7YjfG7eRrnhXKFz8Oflr+6LzQHhVJdED9XdELx/hA0JkysW3+mMVXsikfneaYxZHiJCGTJLlc55pANdnZb+F2MeCxoU/eVaETlS/YCuGQBIYe+3qwp8MSiHSdjnsGN6Qsu9q1aT4c71vKDZ3TzAt22LKoS/fEJPv4Uh4umzuC/c2g+RMqVRe8kGOJGIF7W65m3Wt+K5gq9Jp24X5/YNDKowrySAxxpy52851+HnEOh+iadriif/4oz2ahMmvo5pLGA=
+X-Rspamd-Server: rspam07
+X-Stat-Signature: p1ywheysw3ba1urx51x77wiq8rseod14
+X-HE-Tag: 1757507573-263915
+X-HE-Meta: U2FsdGVkX19GcsS6oUO5yoYLtd/Cg/oTZyF6wByelC5xWGm7Dh0M21ot4pdxUkOMGP8LX743+L0BZH7xd6XK1oaAuiAvvBgF0vs8rBvyFHu/UjlXlLXYZAZZDP5mpCil8m2hHSqvLw8CmVxFsboDzg0U+okvL8nvxYHUQKlXwPVwzp1+UvO/bS9yBClvROavfaCnpzBwjMwQHB5gHehviYLC5sNLI3lr/YsyojFbvbBf/6g5EtsjxhQGigrX6iFSuyxJNseWlNwu9rUIh9fUIulhks2J5S89ZNqhYWv6ResM1oYbJl3HhD32O7ZtxdL5FJ3At2E9Kahw6K8eveuzEJS1SC5A6e6mJKtFQO4+sWxH+3+yuPToRepiBz1O4jSF8x8gYtlHLJV6qHlYA9m/95LXdp/bV0+cIzDnvpAmy0fGlNrOWJNZN9dtpHDH/zxcrNPfhtabnsAw7D9jxxdhd4BhqVbcMyrRlQ7jmbOMBFdSpvZQAH28wRtPdl0dUgUmohr1UTbkUpgk3gPcPJq1RTszR19XFwYvriTpIeeGsQAVMQI2Pl/XRov/9nEHW/3ojSNDpLeoU3SWZhrSO1sAgXYdO65T6FS8cajFu6EMMyYYkenl2Cdu7uXWzdfcFdhSA20ycnpR8GYiM9wfZ0ymN3EOtPJgBodlJBCtl4qz3DV9NrUAk7GQlRg5zFUN6x2/WzbxXlj3FPHyd7Kh7p3U4mWCyfwYkZTxtdwDSARTpfG6ZDs5tBGx13JcNkLcP1Iw8W1bPE7ozzsgFQiyRiivx0lIE7ljomr4tnHa9ZXEnlN3YCPoeNMeukOCJiEII3s+VK+CjR2AOx7vqj2UyYo/MYtrhpAOrU3FlRSJ4UP2rSMk3avZiqRg2V6YkUvi3e8qj+XdO/TFpg4ZxliugKFUfJ5iAhjToo0UjWDr6+DIYyzlCcP4yptvAstXqRL2jKI7ANtTtW4JLJeOJBzLxTL
+ I5SNJedM
+ 2EJlbq8+Rzrj5fGINwXuRQjnLV9w8v2584f872rCc3BmDfnBW98my+SVjxBPEEtDUc2+y9s68iX7dQbPEXE/5xo2vxOLuFPph7o0/0qDhcg3cIOufNxfDGzU8sKR32+qwWnbB/8wdihcIVJx7Fl9lgiY32dTqr88Ip0y4EVh1c7Hue6ibBXwqEXv4XkY4UAD7K/GrJIvTCY417F2tWppGjdrRWNyBzKheeApiE8qRYuw+lCi2KmoyvAYLxQvEEqi2eAIjXtvjWIBFT0pcI3NO9Wpb05P1AYGdqylC/+su/NZAhWlyyiEL1hRd8lk8GoEDEu1rkHGGTlb5Lk9DlScem9axv+SvvfKutOSadJt5kyQVDuVJ3s6E8iRwGxb1E4RLZJBqgeNUAqhVo9vTNaEr+Y62rg6zM2RKBEJ11qxL6cFztpDxPl6+6DzjhOxkOdYW8oAMPuWlBy+ATSiyLITBboBU4lwPpqSnFp+slIv2kSiSPQX7oXwTqwSX4VGZ9QGoqVl0NZoYP4EbMvg8dshXRaOsvHBi6idI7XG2prIQAHtzG5e8kbXxBaUXI4oOLhCMq8DigDyr6kKPUSQUVipal28VVr8Yc9UCOcU9
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,31 +194,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-All three callers of free_large_kmalloc() check PageLargeKmalloc
-first so this warning is now unnecessary.
+On 10.09.25 14:17, Arnd Bergmann wrote:
+> On Wed, Sep 10, 2025, at 03:46, Matthew Wilcox wrote:
+>> On Tue, Sep 09, 2025 at 11:23:37PM +0200, Arnd Bergmann wrote:
+>>> While removing a feature that is actively used is clearly a regression
+>>> and not normally done, I expect removing highmem is going to happen
+>>> at some point anyway when there are few enough users, but the question
+>>> is when that time will be.
+>>
+>> I don't mind that the feature remains ... unless it causes us trouble.
+>> Which it currently does.  Perhaps we could start by removing HIGHPTE?
+>> There was a certain amount of complexity introduced into the page fault
+>> path when support for that was introduced.  x86 removed support for it,
+>> so it's just ARM left before we can remove the complexity again.
+>>
+>> Most of the other pain points are around storing metadata (directories,
+>> superblocks, etc) in page cache highmem.  I think we can get rid of that
+>> now too.
+> 
+> Agreed, this is roughly what I meant with the suggestion of removing
+> __GFP_HIGHMEM allocations from as many places as possible, while leaving
+> the pagecache and zram. I already brought up HIGHPTE earlier this year
+> since it already has an separate Kconfig symbol, but Russell was worried
+> about increasing the lowmem usage at all.
+> 
+> Maybe we could go back to the earlier idea of first categorizing
+> the important highmem users better, and make it possible to
+> use Kconfig symbols to enable highpte/highmem-anonymous/highmem-file/
+> highmem-metadata/highmem-zram/... individually as well as count the
+> actual usage for each of them. Having statistics in /proc/meminfo or
+> similar would allow more informed decision about no longer supporting
+> some of the categories later.
 
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
----
- mm/slub.c | 5 -----
- 1 file changed, 5 deletions(-)
+That makes sense.
 
-diff --git a/mm/slub.c b/mm/slub.c
-index 0f4e7a2a5887..523a4551ceb6 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -6227,11 +6227,6 @@ static void free_large_kmalloc(struct page *page, void *object)
- {
- 	unsigned int order = compound_order(page);
- 
--	if (WARN_ON_ONCE(!PageLargeKmalloc(page))) {
--		dump_page(page, "Not a kmalloc allocation");
--		return;
--	}
--
- 	if (WARN_ON_ONCE(order == 0))
- 		pr_warn_once("object pointer: 0x%p\n", object);
- 
+Essentially, let's move out as much of the 
+now-possibly-unnecessary-complexity while still leaving basic highmem 
+support in. To mean that implies removing highpte first.
+
+> 
+> Not sure how many __GFP_ flags we could reasonably spend on categorizing,
+> as we are already up to 26 out of 32 (not counting CONFIG_ASAN_HW_TAGS,
+> which is 64-bit only and uses two more bits), or what alternative
+> would work.
+> 
+>> I don't see any particular need to gt rid of file data stored in highmem,
+>> nor anonymous memory stored in highmem.  And if we're only talking
+>> about hundreds of megabytes of memory, I think anon+ file pagecache is
+>> probably most of the memory in the system already unless you have some
+>> very weird workloads.
+> 
+> The main problem I see with the pagecache itself is that the fewer
+> highmem machines people test on, the harder it gets to spot regressions
+> where new code fails to kmap() the pages correctly.
+
+Yes. Whenever I touch highmem I'm concerned I will silently break 
+something and nobody notices.
+
+Then I find myself booting a x86-pat in a VM and wonder why we are still 
+supporting that and why it is so hard for me to get it tested. If we 
+manage to not have that testing part so annoying, it would already eb a 
+big win.
+
+(did ever anybody look into simulating highmem on 64bit to make it 
+easier to test?)
+
+> 
+> Another concern is the number of memory zones, but it does not appear
+> that we would completely remove ZONE_HIGHMEM as long as ZRAM or pagecache
+> uses it.
+> 
+>> Where we may want to be a bit careful is some people have Plans to
+>> reuse the kmap infrastructure to support things like unmapping the
+>> pagecacheto protect against spectre-eqsue attacks.  I know Intel was
+>> working on this when 3dxp was going to be a Thing, but it's recently
+>> been brought back:
+>>
+>> https://lore.kernel.org/linux-mm/20250812173109.295750-1-jackmanb@google.com/
+> 
+> If that gets merged, it would at least address the concern about
+> testing, since presumably many bugs around missing kmap/kumap then
+> also show up on x86-64 kernels with ASI enabled.
+
+Right. Likely we should at some point cleanup the api to not talk about 
+map/unmap but rather something along the lines of "start access / end 
+access".
+
 -- 
-2.47.2
+Cheers
+
+David / dhildenb
 
 
