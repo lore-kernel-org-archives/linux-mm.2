@@ -4,116 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43E39CA0FED
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 02:57:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8294CAC582
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 03:13:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9E82C8E0019; Tue,  9 Sep 2025 22:56:59 -0400 (EDT)
+	id 10D908E0012; Tue,  9 Sep 2025 23:13:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 971908E000F; Tue,  9 Sep 2025 22:56:59 -0400 (EDT)
+	id 0E3978E000F; Tue,  9 Sep 2025 23:13:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 887108E0019; Tue,  9 Sep 2025 22:56:59 -0400 (EDT)
+	id 020178E0012; Tue,  9 Sep 2025 23:13:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 723AD8E000F
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 22:56:59 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 14CD01DEFD4
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 02:56:59 +0000 (UTC)
-X-FDA: 83871828558.18.C9003D4
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 2DA7640004
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 02:56:56 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=AT1NNayl;
-	spf=pass (imf17.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id E5F3C8E000F
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 23:13:28 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9D0501A0481
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 03:13:28 +0000 (UTC)
+X-FDA: 83871870096.19.F9D0AF2
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	by imf20.hostedemail.com (Postfix) with ESMTP id EE97E1C0006
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 03:13:25 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=kfwTjgji;
+	spf=pass (imf20.hostedemail.com: domain of lkp@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757473017;
+	s=arc-20220608; t=1757474006;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IrGyG66Zz7xTWILpFo3YOH6zYqrmFzQUSQypRWnmJ2Y=;
-	b=UDXshxeNRELbiiZKJVbwDJSfgdzOlfomXCoebkPWrESjOquilrxkzJ6GpGzukU5oXoDk9T
-	B9RGS9xJI1/gH3yucp/+nW0aKtw/8lrBPx4wqjjaEkIf059p+/vvLofW9DwlwKxgJujIEl
-	sfKZwax3dGZ4aNsVnqBhuRu8CHhlW8c=
+	bh=fxEagVF5dsaHkjnhm+CTNNm22a8YhkgPBLuaKAJC9FI=;
+	b=w0zjGWvNWIEIApkgYkHWlWNdzLT9PiTdKVVaX5wpUwESNW+8wbH1DPLtqd1bCtnjA6BI9Y
+	feM06ah0qCK4ECeVdx9BO8BswVlsx0DdUiTtu5FIVAs+ZFCJLnHIN1pLn0qWI6mhGxTk0m
+	n611Aex6cH186i/x96vskqdawMfSlFc=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=AT1NNayl;
-	spf=pass (imf17.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757473017; a=rsa-sha256;
+	imf20.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=kfwTjgji;
+	spf=pass (imf20.hostedemail.com: domain of lkp@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757474006; a=rsa-sha256;
 	cv=none;
-	b=Hj/cCbCMZ49txSx475rslGuB5aSNGk7kVKXf6Chlbwo0vo3nANovDyd0QjbuUQgPVSFwiV
-	CuArGyoRD5/eE5lHfQCp/npJJTKPGRTvekKuLopARJ8P75wQWM5mSFrpOPMSqAvsg6tArR
-	ytg74DJym9BAibRBLQYyULHG+driIos=
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-625e1ef08eeso7285775a12.1
-        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 19:56:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757473015; x=1758077815; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IrGyG66Zz7xTWILpFo3YOH6zYqrmFzQUSQypRWnmJ2Y=;
-        b=AT1NNaylHH+UnGsZ+h2LC2pC8DwEWoTvxjzdrtc4fvTqoxQg7ESXb2OFCt6O8sTUyG
-         iOFfychK+eS6q2dBhZ3Fb0kcghG1mvMiqLtg40tlSCXNVbtIjMX29XCmqp4SQSTBdqt6
-         YaWzQDvEA5fZuGzYroW48fqZ4ev2RtNYD2PgKhcbkiS2xlGhsJtnLw/GyVawbEd22Jg/
-         o3w/HMhrKubStUt+ED4faWasK42mmwLrp4m7fm4a1uF9vPHWTsZ0CvakGKxOVBcG41ZS
-         r19sSHbDgC7tNvP4XN++oQ9s47ubE0z5M0rCgI0qGX6oIKB/ov2bOtPXGrsQCw0jRBGk
-         51bg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757473015; x=1758077815;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IrGyG66Zz7xTWILpFo3YOH6zYqrmFzQUSQypRWnmJ2Y=;
-        b=fp4QgFEUrd0IZxGMJtFn+xWpEtobONYr38pLiZzGoUzMD/83b/JTJSLIBdVscnmPxS
-         dK8Nb1m2pjmz+9VyvrybWiM7S59qOjyAKoWccJLbXCGhOPWflvq7kVCHcQhgS1T5y2zw
-         3OAKNXMHKc3O4+AD/J8HTyvSowkj7Mm/bmO8I42HXxq1oAcIFz3xTD8io3DLgVFsVsZS
-         PfIZwPxw+qtNDD1D5togwD0H3KXFf+IFoyX+E+XeO/VkFonIpLkY6fRYDPOAc2nwWsR+
-         60l3BFE17bUrCmx+/JJd9+mzQBIujvHUSwaYDHcE8MS5hK6ufw38TwsB/ha8SHlGTySD
-         iazg==
-X-Gm-Message-State: AOJu0YwDSHzWD2Gnvv2MSJ+dgZKndPKoWbZ2Dfpw2rex4mNb0u9MgjMx
-	90cYoeJ1EfM9fqtU4NHDQXcPx/ciXen6rRbIBVV61at7+/xZy6Xa5rYwGqVq1no9Fr9Eq1110tB
-	f3912x3FYGOCMnZXeVhScEcw66iWFBfA=
-X-Gm-Gg: ASbGncs1QsqwvK9XIouetUQwaemsESYyaGL+0ekPnYVVgZ5hq7un/JbpARAbLyNwYo8
-	S+UR1RbI0wE9AeX4L8ejcDhbd+6+S1rDkvRDmcXhhTsw54sqRHDwuzgmQ+VbBLut9g1BjC361Tk
-	CvRSt7ESTcv4ZrTbu4pf8vHmwhU04pHBg+ffHUxS/dkM08wPe8OJc+t5idlJok5wKUrkXjRxBLy
-	+gPitg9SSSAhDJsHe0YvQ==
-X-Google-Smtp-Source: AGHT+IHjkD97AbYwgHxhY6BZHaDg/uLduF7f3nRFFMpbDeYSOHPOV6nGvSYKzsNcrHoOkWugUDXE2os2N/uaM92+m78=
-X-Received: by 2002:a05:6402:3589:b0:62c:62e1:8ff4 with SMTP id
- 4fb4d7f45d1cf-62c62e1986amr3286599a12.23.1757473015266; Tue, 09 Sep 2025
- 19:56:55 -0700 (PDT)
+	b=jLmktSeTUJ2oUQ+HmvBKC+HAvFpDi+1aFD6qv1Dr6dT7zAPLjyLfqxnDIVR0aEzCF0jOMT
+	i22kgY+oMV7VT/IoaSqkBsFYnawPuSe5TU/VU26hWqeA2IiXzB0j4sGg6gob5iC++bNrbZ
+	wg6iKPHjtWGTbeeQblfEebPTLfxHSvk=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1757474006; x=1789010006;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=azEefx45TdCa/zkD0xRHe2VIoxx9ubvwiW/L4N+YSNk=;
+  b=kfwTjgjif+MwkOypZbVjfKsLlar81FScE+3WM/C4fEyu3+GdNY+7zL4S
+   A7ElNQWgJSGrb5RKmTYpTWHZ37hOz2+QpAxKCnPMS7GWDioe2REdUhyHC
+   7J1W7G/o37FqkObvPkjfK2fwe+QOV/O47BsEXsVuAViED3vzIIOs06RCw
+   u99RMDSHpSSuRjKEAtWCGZDq3mrhlzL73tiI0DGGyWukAWqRK0lbHHOfD
+   Sx1lrQdYEvfw/9GECUMUoF/DvAZsU0t7lscUwYUC4kUqcNESFKNLGUvz2
+   cRlaxWtiuKRiNh+BUPU83jeOyYFI3B7XFgA7dWs9sMAx1gldfu19E2BGt
+   Q==;
+X-CSE-ConnectionGUID: +j3Km57uTD6CP7o3aXgDrA==
+X-CSE-MsgGUID: tqSly0raTPKHmH715B2VAA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="59724065"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="59724065"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2025 20:13:24 -0700
+X-CSE-ConnectionGUID: wLsWgiNTSWqdjV2TetIDAA==
+X-CSE-MsgGUID: E5jKlrrtSwSIRX/feJzu6w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,253,1751266800"; 
+   d="scan'208";a="196935786"
+Received: from lkp-server01.sh.intel.com (HELO 114d98da2b6c) ([10.239.97.150])
+  by fmviesa002.fm.intel.com with ESMTP; 09 Sep 2025 20:13:17 -0700
+Received: from kbuild by 114d98da2b6c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uwBGl-0005Ur-0q;
+	Wed, 10 Sep 2025 03:13:15 +0000
+Date: Wed, 10 Sep 2025 11:12:38 +0800
+From: kernel test robot <lkp@intel.com>
+To: Lei Liu <liulei.rjpt@vivo.com>, Michal Hocko <mhocko@suse.com>,
+	David Rientjes <rientjes@google.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>,
+	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>,
+	Chris Li <chrisl@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Chen Yu <yu.c.chen@intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Usama Arif <usamaarif642@gmail.com>, Hao Jia <jiahao1@lixiang.com>,
+	"Kirill A. Shutemov" <kas@kernel.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Andrii Nakryiko <andrii@kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>
+Subject: Re: [PATCH v0 1/2] mm: swap: Gather swap entries and batch async
+ release core
+Message-ID: <202509101043.MFfNJgKH-lkp@intel.com>
+References: <20250909065349.574894-2-liulei.rjpt@vivo.com>
 MIME-Version: 1.0
-References: <20250905191357.78298-12-ryncsn@gmail.com> <20250910025315.109884-1-sj@kernel.org>
-In-Reply-To: <20250910025315.109884-1-sj@kernel.org>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Wed, 10 Sep 2025 10:56:18 +0800
-X-Gm-Features: AS18NWC--jKgTPO8qykBZ10aNTJ4ysuxn4mpZh-qs_f-Wo4HnvYwrqhg0W-D4vU
-Message-ID: <CAMgjq7A4j6xCjSw3o=9UDYMUgvqhKscCuPMqcAD_3zKAcQP6ZQ@mail.gmail.com>
-Subject: Re: [PATCH v2 11/15] mm, swap: use the swap table for the swap cache
- and switch API
-To: SeongJae Park <sj@kernel.org>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>, Chris Li <chrisl@kernel.org>, 
-	Barry Song <baohua@kernel.org>, Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@redhat.com>, Yosry Ahmed <yosryahmed@google.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 2DA7640004
-X-Stat-Signature: c5d6b7ouz6ktxn8q76xangyzkqytdrw5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250909065349.574894-2-liulei.rjpt@vivo.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1757473016-18645
-X-HE-Meta: U2FsdGVkX1+UsOMSnH5XxMGv0IsJxLwZR/hkkgWL3cX6Hjso7bc9ZjthSMlKr1ONS/xoDbs2ho8G0VzKtZIjtT+cMsD6do50LbPdEHDIB1Ceh0eXwSXnfkMXhG4GivQc2tkphNYTwsAR3cCdgfqRezuSYJ2kbUA8F1GSS4kbaOxln3cQsgFeDwYIxBw8iiR5BpV68X0HkTXK3Bmz3DojKAbb9lAvk8cfyWq/cu5leSM+tqmNTbeOvAsX5G3lviDOcUnxmfIASb3vkugVVdFWFpkqfKLByVPbJqwa3MRh8/FO7MuPp6vrBavZQFUC/PXC+eNFqVd+QJ6qKueV57bMCeMUVVXatyxxZCTyz+AIDMWahAkp9Z65WVLe9n11Uq87KKlQY6fkRwOHTNoNCyDb0ZR7bHawpNm3j8CoW+RC1rtL3SmFLVBpgtneYrsGmA4m17cNpyONzDsHLVkdWNq52A1BkH4H3yhghRYEO3AdvyOPa1WSdLxlK1roE5jEq7aERxBQEobhVRtPg4mRWhB0KslD0mzl4C1MSf+FQ0I0HxkptaQ9Ck79prEqC5XBrv0Al96YUhYKAjBabhVUahSBFNwoXU7xU+ZQ5GbylA5JlRC+KCRrCLIt9DNzbcqkUzmIyiXkEHfqxdBdqApYRxQWC2wczIYxJvJVQxCkyo65JPBakfqPID4Z7jXqbUX++to2PdHn+Cvl/bpatyXbnfPlOhrKgO8Y92ULyQuIqA7jypK5fcnPOJsV6NIo1b2IJx4eJieVzOT0GwaJimQJ5GavG2vQN8u52iWmtr32NRvYuQBstsAAsY1Xz80pDMgOk59P4rKvmcSGkr1x/MsGUUkMh5bq9dIR8d+IESOAz4GNeP0vTYGz/33kuhtF2ibAt0QzcZGTPZ9ixzjZfqynQNddfSY9DWzHQMdxeRGRvmfRHXmeGbdxrPEYtNbTOQ0f6AtP+QkcUTsmJRfQa4imz3L
- pQ3OSFQO
- K2bF4vgd2eXDzoPhwo++h19aUDBXO100iBTuSFgKTpdhAZGW20OVMXa6aHZx6g4JgdOG+IbnfSFSgvzL5EIbrb064fSFbE2RR8kMfIhxuOpWTMIjltlCDDDJzyYPCeunEO1oBLuEX3yLRP+bt2TMGvOQMBh9urZmzUI7exlS3/nw2goVhEFDBgQ9pTGXDiYkZBru8DOqXMKvpCjRvtTYGHbXNMeuNZxdphs8VGVfaE4tVihDodsgQA8pqbfP2T2VsCw6MTVcasmR/CzQU5V/d3iSedR/AAmuSxPjWvZUDJnjoAQKksOXsUuubcOteEgr/Y2WqrNriVdkC3QD85xnJRaVUFVxR3jVDKnUgQ433dYn2JqmkznIXCzF6eymkhyalQP3LwwYRd0KEsO8PJf9qR0F9UCpFsxFgAITiNdG/xsmD8YZhIfoqToNZsiZdtJUQzA7JzpzcG7AVXVlHkpfjGhQhjv7Wh4R+OMyc
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: EE97E1C0006
+X-Stat-Signature: ecud8ekqz4h5xxdm7myxza94q9qukk6u
+X-HE-Tag: 1757474005-152513
+X-HE-Meta: U2FsdGVkX19jz4rSzD6tAtx/PODzBgsNs+Yx5A+Bs/VwDdfHv4tr+wx+Y5YcIBLKhjzhUkYkKiNwjppk513gR67L8tiYd85g60uQRT2ah2zVv9S9qsHFaFUiuyqjQhw4qeefkuvkOOSKKpkAjdDvypZok1Mp5d7ujch1rLQrDyXcXVeja0TIXAHSeU3v7unMzejh73hjl7Hx/yjwS28jc4hkIHnvqaHyTG8xkJBLbueJMBJXnApTBZPkCa16lilvihjs0vSirh6G4nJHGs2mto26U5qapOul50JomgDeWltIU7P/Cx+pJss4q/BOk0rY7qCuXOAikdA5Z7ocS3JVeERURZpcZOUdisSFmN0w4H2IdgKZ9RILDWZWrrWicpWftWKp4SgC8YgBsG1dePZT3HhRWG3a54kppToj+WdoeVvs+JrYxHxpw9AHcNGrYlU0aFj6/fytZZDYWchkxbjjZpnAJrbpk86Y0vhR+4aJJGv2JvdFDvSowPdShDlRvGqKsmJ4kdTpoEmxC/xisxS7mjTThZ/cR6Hp/N209o92Dj4ofkFATLVmrMGpx9UfkcN3/ARw2/oo59l6l7+GQxrU9abAMQYrPYbZKzs2jRxu46LmPZN/wSq8bIIgiw4epK34J9OWQCkYfEJkao5Ia8CqhiDfzclZMyMcS8UrHLFDjGJKvJYdebxfKQppnJpMCJueO4ZlMMVnsXp2w9799HMe3h90r+kO7zU9ZMJN/rznCCfT7IYsepcJkChvCSeneyOpNa4IUUg8U3tSsU5gL0HBWtHnmxxDlXh8gt2ouG+7porzn1nwd5oldLkLgIhz6RYz9dAUxEzRNCUywzul+waLMsQAPa/OnEsIVgJ1zHktsk2tI7aW2gdHtfMYKFw8A4Iy7Gez/NQES+lbOCBI5COEFP5EZZkaZELlkwxhf3Shvq9N2+n8sXBQ3NvTGCKVT9h8Wz4tLSXeEUleqeEYemM
+ f9/LdEaq
+ i8Q2fvDLInyjg/Eao84yds0qYSRN0/okiwnQ+1kw2K3J8N8tz0gxLmtlf7P8CF9gTQwamnAzLYQPuK++vn9ukxiBm08Kb2lTJ5lA9dZGbXwkFcZiGKrxJinqzRIHc42EU2IURKTHv70Hshjrvknp8CZQMgaLZ19EazhD5DeRaUH0RVgflykg8L2Soy7FWpNPjF/DTCQag6wRkaDXSwTsBwRICRkrvpmlN9VodKBXQDGrRTJ214THqkY6ssUDcOB4gHom8zXnPoGJFb+7AKQynElYcfOh0YbtwtplfadZksBAddJeoPItJqqUkQ8y+GQxvmZi0sBbIXZEstpY6DrhEM+9ezzvbT1uA7dnd
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,121 +131,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 10, 2025 at 10:53=E2=80=AFAM SeongJae Park <sj@kernel.org> wrot=
-e:
->
-> Hi Kairui,
+Hi Lei,
 
-Hi SeongJea,
+kernel test robot noticed the following build errors:
 
->
-> On Sat,  6 Sep 2025 03:13:53 +0800 Kairui Song <ryncsn@gmail.com> wrote:
->
-> > From: Kairui Song <kasong@tencent.com>
-> >
-> > Introduce basic swap table infrastructures, which are now just a
-> > fixed-sized flat array inside each swap cluster, with access wrappers.
-> >
-> > Each cluster contains a swap table of 512 entries. Each table entry is
-> > an opaque atomic long. It could be in 3 types: a shadow type (XA_VALUE)=
-,
-> > a folio type (pointer), or NULL.
-> >
-> > In this first step, it only supports storing a folio or shadow, and it
-> > is a drop-in replacement for the current swap cache. Convert all swap
-> > cache users to use the new sets of APIs. Chris Li has been suggesting
-> > using a new infrastructure for swap cache for better performance, and
-> > that idea combined well with the swap table as the new backing
-> > structure. Now the lock contention range is reduced to 2M clusters,
-> > which is much smaller than the 64M address_space. And we can also drop
-> > the multiple address_space design.
-> >
-> > All the internal works are done with swap_cache_get_* helpers. Swap
-> > cache lookup is still lock-less like before, and the helper's contexts
-> > are same with original swap cache helpers. They still require a pin
-> > on the swap device to prevent the backing data from being freed.
-> >
-> > Swap cache updates are now protected by the swap cluster lock
-> > instead of the Xarray lock. This is mostly handled internally, but new
-> > __swap_cache_* helpers require the caller to lock the cluster. So, a
-> > few new cluster access and locking helpers are also introduced.
-> >
-> > A fully cluster-based unified swap table can be implemented on top
-> > of this to take care of all count tracking and synchronization work,
-> > with dynamic allocation. It should reduce the memory usage while
-> > making the performance even better.
->
-> Thank you for continuing this nice work.  I was unfortunately unable to g=
-et
-> time to review this thoroughly, but found below.
->
-> >
-> > Co-developed-by: Chris Li <chrisl@kernel.org>
-> > Signed-off-by: Chris Li <chrisl@kernel.org>
-> > Signed-off-by: Kairui Song <kasong@tencent.com>
-> > ---
-> [...]
-> > --- a/mm/swap.h
-> > +++ b/mm/swap.h
-> [...]
-> > @@ -367,7 +452,7 @@ static inline int non_swapcache_batch(swp_entry_t e=
-ntry, int max_nr)
-> >  static inline pgoff_t folio_index(struct folio *folio)
-> >  {
-> >       if (unlikely(folio_test_swapcache(folio)))
-> > -             return swap_cache_index(folio->swap);
-> > +             return swp_offset(folio->swap);
-> >       return folio->index;
-> >  }
->
-> This makes i386 build on my setup fails, like below:
->
->     In file included from /mm/shmem.c:44:
->     /mm/swap.h: In function =E2=80=98folio_index=E2=80=99:
->     /mm/swap.h:462:24: error: implicit declaration of function =E2=80=98s=
-wp_offset=E2=80=99; did you mean =E2=80=98pmd_offset=E2=80=99? [-Werror=3Di=
-mplicit-function-declaration]
->       462 |                 return swp_offset(folio->swap);
->           |                        ^~~~~~~~~~
->           |                        pmd_offset
->     In file included from /mm/shmem.c:69:
->     /include/linux/swapops.h: At top level:
->     /include/linux/swapops.h:107:23: error: conflicting types for =E2=80=
-=98swp_offset=E2=80=99; have =E2=80=98long unsigned int(swp_entry_t)=E2=80=
-=99
->       107 | static inline pgoff_t swp_offset(swp_entry_t entry)
->           |                       ^~~~~~~~~~
->     /mm/swap.h:462:24: note: previous implicit declaration of =E2=80=98sw=
-p_offset=E2=80=99 with type =E2=80=98int()=E2=80=99
->       462 |                 return swp_offset(folio->swap);
->           |                        ^~~~~~~~~~
->     cc1: some warnings being treated as errors
->
-> You may be able to reproduce this using my script [1].
->
-> I also found including swapops.h as below fix this on my setup.  I didn't=
- read
-> this code thoroughly, so not really sure if it is the right approach, tho=
-ugh.
->
->     --- a/mm/swap.h
->     +++ b/mm/swap.h
->     @@ -3,6 +3,7 @@
->      #define _MM_SWAP_H
->
->      #include <linux/atomic.h> /* for atomic_long_t */
->     +#include <linux/swapops.h>
->      struct mempolicy;
->      struct swap_iocb;
->
-> [1] https://github.com/damonitor/damon-tests/blob/master/corr/tests/build=
-_i386.sh
+[auto build test ERROR on akpm-mm/mm-everything]
 
-Yes, I also saw a report from the build bot. I tested !SWAP build but
-didn't test !SWAP !SHMEM build.
+url:    https://github.com/intel-lab-lkp/linux/commits/Lei-Liu/mm-swap-Gather-swap-entries-and-batch-async-release-core/20250909-145620
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20250909065349.574894-2-liulei.rjpt%40vivo.com
+patch subject: [PATCH v0 1/2] mm: swap: Gather swap entries and batch async release core
+config: sparc-randconfig-002-20250910 (https://download.01.org/0day-ci/archive/20250910/202509101043.MFfNJgKH-lkp@intel.com/config)
+compiler: sparc64-linux-gcc (GCC) 8.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250910/202509101043.MFfNJgKH-lkp@intel.com/reproduce)
 
-Adjust the include header then the problem is gone, I'll send a V3 soon to
-include this fix.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202509101043.MFfNJgKH-lkp@intel.com/
 
-Thanks!
+All errors (new ones prefixed by >>):
+
+   sparc64-linux-ld: kernel/exit.o: in function `do_exit':
+>> exit.c:(.text+0x19f0): undefined reference to `exiting_task_count'
+>> sparc64-linux-ld: exit.c:(.text+0x1a14): undefined reference to `exiting_task_count'
+   sparc64-linux-ld: exit.c:(.text+0x2124): undefined reference to `exiting_task_count'
+   sparc64-linux-ld: mm/memory.o: in function `unmap_page_range':
+>> memory.c:(.text+0x46a4): undefined reference to `add_to_swap_gather_cache'
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
