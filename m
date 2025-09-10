@@ -4,102 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD781CA101F
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 14:31:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71132CAC583
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 14:31:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 293338E001D; Wed, 10 Sep 2025 10:31:29 -0400 (EDT)
+	id CF3298E001E; Wed, 10 Sep 2025 10:31:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 26A928E0003; Wed, 10 Sep 2025 10:31:29 -0400 (EDT)
+	id CA3678E0003; Wed, 10 Sep 2025 10:31:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A8638E001D; Wed, 10 Sep 2025 10:31:29 -0400 (EDT)
+	id B930A8E001E; Wed, 10 Sep 2025 10:31:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 052338E0003
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 10:31:29 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A1C518E0003
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 10:31:31 -0400 (EDT)
 Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id ADE681A0925
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 14:31:28 +0000 (UTC)
-X-FDA: 83873578656.27.B45B8A2
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4B2431408F0
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 14:31:31 +0000 (UTC)
+X-FDA: 83873578782.27.A33C5FA
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 1D21D1C0005
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 14:31:26 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=dofEW7af
+	by imf21.hostedemail.com (Postfix) with ESMTP id C12DB1C0013
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 14:31:29 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=YgftYcb6
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757514687;
+	s=arc-20220608; t=1757514689;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mKSB+4xL7cCmeYE/ZtEdtCjsvm7CIgVIfr0teJIjFAU=;
-	b=Yc5yPd7I2OYMWAIPSURLNu9fI+wjF8z0fFJ+tMc56uQMX99st6txKrLwxdIXJd0Y9lJu5M
-	jyscO07Q/bJOL1y1ix+pRJNAPjWKJpRcsDXYLoNPNd8TjiQGtzkqGShGJyE5TJH/8/FyXT
-	H9+mnrcSLKj/zxfHskCTkqt1C0DVK88=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757514687; a=rsa-sha256;
-	cv=none;
-	b=1T+Jv6TisEuz63dawoC5Jrx1Ucj6HyEDropvPYPgBLx1iiqeR+NcoIudrTSXu6L7hTqL5u
-	XxFkvkv1AFmI7uZIfbOFu/shkZBn8bC4vDdHaZfHEM/7jBsN7oWTRK0bxj5AldwyFTA7hR
-	o8W4Hyd7W2o2jyJrgEBOqOgh2ZkFlrE=
+	bh=xRUbv5N5R69lNPt0JmQyV0R168xYggDlrA6i1riHX9U=;
+	b=MHZq/nBXvOBXNj7VQsE8HteouqaBVO8X0o5azzRIT0YLEIZVEFkrDS1r1QY9Pw+vyucdMy
+	9t8GlDSv8PRUtvXTQErE2suKBwo+V6jtHBvixtnD+luQSnl0UdiInqZCNJi5MYksMeeyU0
+	oGwgCNwBsvfiYYib8YCYbYLiHKS5lFY=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=dofEW7af;
-	spf=none (imf20.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=YgftYcb6;
+	spf=none (imf21.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
 	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757514689; a=rsa-sha256;
+	cv=none;
+	b=wQH54v1MrCXwIsQQZXiBc09JZ+1BtKanFoPNjA6DJSBoznQI7lSvzbVKoJuM41963i+hyH
+	5d0Lf+88Tz8icO+Vny/J24xtjU1hzeWbavYqaM+cYh34wARmNLTinnA3A0vOAXspaVAZAe
+	03+sl5awm0Ee0RgRGlfG+eZFn2iBSUE=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=mKSB+4xL7cCmeYE/ZtEdtCjsvm7CIgVIfr0teJIjFAU=; b=dofEW7af/ejhmNipPt2aD1zjQc
-	r/T1X53PF0e+BEfGBFGmptVoarxZBEN1Hr7xriD76R1w+M+nvAcyFt2PcHdzuHg+TQmoMQFUdBQaA
-	jm/o6jj1rPqB5i/QW6QVLU4W6O2YAUS0S3TvZPMLDfVQol1YTS76QR+/j8xxBFEpwnMLWAqId4scS
-	bdUpC9Pcr4BH4JRwC/mCjcKWJe0ye/ZaEnL2OllK0B+92NxsmXiDMXLQP/kJYOtEetOYDdThozbzr
-	U+eiVsgCMI71Rea2iE366+z3/3jQiRamjgJEHnieliGZegYbRdaVVmJTC4g6lcXbzYemC7sUUzZ3A
-	gI/iBz2w==;
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description;
+	bh=xRUbv5N5R69lNPt0JmQyV0R168xYggDlrA6i1riHX9U=; b=YgftYcb6yk7o5AREkWcVDGqI9L
+	0SKQxa15UNC+n9uZPCTKmLTOBtxDeKo8iXNRaRLYjqQrb3129bDFZXFrPhBDXxO38+64iNsqj2jI1
+	CvMRPvY6wM+itE6DadDSwkjexdDwdC/bYiBj12w+dGwWuKdlMIA+bgdJLsGGCG/t6IMDVfevgNPiv
+	Se3Cj7HS4olVTTPrNzxHfSX8BeD5wFnZR7JWK7Hg0/PnsiH5La2W+AF3zw5DugvMml1pL4KFiBsSd
+	n/hF2F8HNPCasCsbRLROW/MOHCAjrastygQzsvt6rHI6C5HrmpMxOegdq3FrgwAoqkk1EJon+B3kR
+	fCNsvLxw==;
 Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uwLRO-0000000A1bz-3lAQ;
-	Wed, 10 Sep 2025 14:04:54 +0000
-Date: Wed, 10 Sep 2025 15:04:54 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Linus Walleij <linus.walleij@linaro.org>
-Cc: Arnd Bergmann <arnd@arndb.de>, ksummit@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
-	linux-mm@kvack.org, imx@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Richard Weinberger <richard@nod.at>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Ankur Arora <ankur.a.arora@oracle.com>,
-	David Hildenbrand <david@redhat.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Ira Weiny <ira.weiny@intel.com>, Nishanth Menon <nm@ti.com>,
-	Heiko =?iso-8859-1?Q?St=FCbner?= <heiko@sntech.de>,
-	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-	"Chester A. Unal" <chester.a.unal@arinc9.com>,
-	Sergio Paracuellos <sergio.paracuellos@gmail.com>,
-	Andreas Larsson <andreas@gaisler.com>
-Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
-Message-ID: <aMGFhuHyQwtwyF7B@casper.infradead.org>
-References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
- <CACRpkdb=E-_6fZ+4mX5FJas9C5Njp3Gwrygs-cAfWNdbP594cw@mail.gmail.com>
+	id 1uwJPp-00000008MEj-0taS;
+	Wed, 10 Sep 2025 11:55:09 +0000
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+To: Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	linux-mm@kvack.org,
+	Zi Yan <ziy@nvidia.com>,
+	David Hildenbrand <david@redhat.com>
+Subject: [PATCH v2 05/22] mm: Constify compound_order() and page_size()
+Date: Wed, 10 Sep 2025 12:54:47 +0100
+Message-ID: <20250910115507.1991829-6-willy@infradead.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20250910115507.1991829-1-willy@infradead.org>
+References: <20250910115507.1991829-1-willy@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CACRpkdb=E-_6fZ+4mX5FJas9C5Njp3Gwrygs-cAfWNdbP594cw@mail.gmail.com>
-X-Stat-Signature: 4n8k1b1ysxonawb37tpmwyuiquba7zu4
-X-Rspamd-Queue-Id: 1D21D1C0005
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: C12DB1C0013
+X-Rspamd-Server: rspam05
+X-Stat-Signature: qur81wb59q5fbzqik6k7cwr6rfd5ogu6
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1757514686-818311
-X-HE-Meta: U2FsdGVkX195Mi3Z/HG7JbdDX/FZB3PQ2evXMyWbEfI+MsUFaovNfcl4mDquSJ0nYHdePKeByoBfPp1BdnWa0AWj9CeP8x9zRSAwn0Yjqny1xTmgc/wYKLN/bDUGeU+T+uOLe84LNK5dP5gpZg6GhVw90AijasFABpPdXgoisX8Z11cBl0ehbC4xrjjYv5aQ8LB0CU5qd0Nbq4wKseYfdUdJh8Rb41DypEg+52GmxZBwpjy+SpyNLXEt1qfxa5ZoSWWbfPpfjtctg0GkDPf+8YByySiA0kmTcqd5sTUtmIqslbfXPGNfY+IPeUXkuZScdtWz+wF0A+WH8pYv03UJKlN5Tiun45VNXs8UvjeI653rNw923jO7ItlEbBYuvNIbYF4697N5VeKtlRqgNbhsYDlTlRwvL+orF2PbZOUpkQvqJA3B8KWMwMfCoW3/PIzUGkpSIAuHq+XQwTTqscit+VRCgBI4rwN4fMxyov2D9DLzED+HCYnZFteIw+GnmzggFfDsdaJOvphqwfBTr2DJNtTT98/P3w7pEHGODP6w09cKOxlBG6MztCXZT9xpe+qy8/akfIsnesILZE2iaO8rMBlAeBgK5twk7YOy6bV6pi39UUK64d0GHdZba9hRqFQviOaKWn0hyQnQOBONRzRcbPkXQSfT03BMdZexFFYiJT8DgzkkPrU/Dy79gz2dP9Y/amGMpgVCemKdAv2YV29b1zRPWA9aVcMFEpR5Er/77+S/s7TG1Gox2a+5j4ABVrPfg3yiGakf2tdgu4KyWd2e7iRChIzLP6x6PjWablSdi88k+JhIjHZc9lFZiIXmxcFDFbHY+6Z2h26n2HN7J0AVnT5gIfqog0BbGHvyZ//9JsQkmdz2OUaKPWSU/4wBExQh473vAgtkqUw76aUqpnwbw7U4LM5LK/4F3PeX0wKmPD1Yyvk5uMPguCIM/8dNPhjZWmA9WEaEm66IDfjRykq
- aul2bHO6
- fBgJT7+fG+zIe6AXMH2WLlpWNe9Lban2U/kaawU17Zo9ZHqbCaudT3FBqAvIzU1+dG3JQCbU5mQi5N421s1ZF1QZGDjdV903CB3FgHca8zf2hnP+rOnn9bU0C0UQPfBE76mlKbcSiH0Na/Ug/RBIc1j3EvOZgBAdj9Ps+HrN+l6Y9z4IM9F2dSlHByhes0OvAIzmtarqZoF5CM4gUDLBcCDKiKHh/9GP5I0/U1mpv0VEi9EXBFNcRZWEXvRc9HZD32IjUVjLRvJ2XsBSJ6AE3Y+C35U9ryJy5ofU7cAsirKiovMbrzLtpqVu/3Q==
+X-HE-Tag: 1757514689-160040
+X-HE-Meta: U2FsdGVkX19OFd3UNTPESq+je/9RM3ZtArfPI7NXRO9XhvsjB8G7kxHRnYX/7zcyvN3tbmv1yRNOCjWsTRNQmGaFovk92AuDNFthrEWQ0Ol+2bVir52ydwmSRZ6xXCeQTgTzVSZkdEbnZgvt+6irtcTE8c8eVyZPMTe5S8zjhGfEfp4q2gMhCmXbq++Z71/yZ4KbFQAYrQi3m5q3vDqQfqRPl/3DCGmEBX1lqbzRrlZFLevwKvu0u0j78d/kF5h+1yNyMk4sYRO216E4pDKc9E8nt0Vo+Ypw/FB+4SQ548gyMpQzYZU8RFqqMhBkaw6RZ9XoQ9yLFmLOD8KFKr/pvysM6GDp3UdhbQTE+yD21ZCBj1eeFj6LsCrPyIla0Iv6S/GgZ8wa4IS0sRQ4QPXQIA3hVHKO9sZbD2rTL5NslmU1qHu37e3WCN/cMCcZfqdAAXcgrz8rQky8RscqhbLYbOetTgwDJI43h7IPPxkvfa/w6CNJIo0322Gfi0o7SqeZTqwIJE3nIG8Vr7lt8cZ/c1JereaM3fwZ/vRtRCY39vqmUVZZd88UckT8/CJuvWbf2BN1p32vkK44bBZo2qMJmoNbBtrC3fiA3rnARn+TdsMKpuhv089UzcKMT+J+FAHdrJOY3zA0XWq6/327ptKEcTufCqYCtqBtRR0CseS8QBni5OL7W6icHx7OfIeBjLT83v9+RVCNGg9HRyPtLrtU/5JVaBgCKfcA6BxANyIBJOkZQjUBwUPItNT4UOi71kw1zxp6LO+rgM23GU5GITt1Yf10XCVOO5gj4fO8TTNMhoDoM03gCF0g/Z2YfyILmz4X+kwDq0liyaDXSCbYnGX7lBpOv77gpKyivtdCZK8gAsZvIn8Y7QvUET0W90fUfQFDO9SwFi39J2PAl6qwkXezyK/LzBYJiiNsuLv/mC9w2ieshOX1EpjatQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,20 +92,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 10, 2025 at 03:10:05PM +0200, Linus Walleij wrote:
-> This is is done so that we can unmap *most* of the kernel
-> memory but *keep* the VMALLOC area, so that e.g. exceptions
-> can still execute and save to stack when they occur, and we can
-> call into the kernel to execute said exceptions.
-> 
-> This in practice means the area 0xf1000000-0xffffffff
-> which also includes the high exception vectors that must for
-> natural reasons also be kept in the mapping.
-> What we have mapped today (all of the time) is
-> 0xc0000000-0xffffffff.
-> 
-> A minimal 256 MB mapping from 0xf0000000-0xffffffff
-> should be able to cover this.
+These functions do not modify their arguments.  Telling the compiler
+this may improve code generation, and allows us to pass const arguments
+from other functions.
 
-Can I ask where the MMIO (PCI?) window lives?
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+---
+ include/linux/mm.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index a6bfa46937a8..38b3d7b06d01 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -1036,9 +1036,9 @@ static inline long folio_large_nr_pages(const struct folio *folio)
+  * set before the order is initialised, or this may be a tail page.
+  * See compaction.c for some good examples.
+  */
+-static inline unsigned int compound_order(struct page *page)
++static inline unsigned int compound_order(const struct page *page)
+ {
+-	struct folio *folio = (struct folio *)page;
++	const struct folio *folio = (struct folio *)page;
+ 
+ 	if (!test_bit(PG_head, &folio->flags.f))
+ 		return 0;
+@@ -1256,7 +1256,7 @@ int folio_mc_copy(struct folio *dst, struct folio *src);
+ unsigned long nr_free_buffer_pages(void);
+ 
+ /* Returns the number of bytes in this potentially compound page. */
+-static inline unsigned long page_size(struct page *page)
++static inline unsigned long page_size(const struct page *page)
+ {
+ 	return PAGE_SIZE << compound_order(page);
+ }
+-- 
+2.47.2
+
 
