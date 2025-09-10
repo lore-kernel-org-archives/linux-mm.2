@@ -4,92 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45AC0CA0FED
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 02:05:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28E1ACA0FED
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 02:31:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 88A9C8E000D; Tue,  9 Sep 2025 22:05:57 -0400 (EDT)
+	id 56A238E0005; Tue,  9 Sep 2025 22:31:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 862378E0005; Tue,  9 Sep 2025 22:05:57 -0400 (EDT)
+	id 53FCB8E0002; Tue,  9 Sep 2025 22:31:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 79EA18E000D; Tue,  9 Sep 2025 22:05:57 -0400 (EDT)
+	id 4561D8E0005; Tue,  9 Sep 2025 22:31:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6493B8E0005
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 22:05:57 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 194E413B454
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 02:05:57 +0000 (UTC)
-X-FDA: 83871699954.20.EEC7417
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
-	by imf25.hostedemail.com (Postfix) with ESMTP id E26D3A0008
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 02:05:53 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=none;
-	spf=pass (imf25.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2EEB58E0002
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 22:31:16 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B640786C86
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 02:31:15 +0000 (UTC)
+X-FDA: 83871763710.16.A057560
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
+	by imf04.hostedemail.com (Postfix) with ESMTP id E4F1940002
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 02:31:13 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=AdQq79Yt;
+	spf=pass (imf04.hostedemail.com: domain of rgbi3307@gmail.com designates 209.85.128.181 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757469955;
+	s=arc-20220608; t=1757471473;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FA2zqg6E3njNH4bo2LCqKXDIyZ+LC+Uk67cQvqQNd60=;
-	b=gD6YoVIgfAv1w5zqe9raJOI7EEHsgKduoe9vpzlm5zLNEtanfH/jeA950JOHaPr4Kc4DmT
-	HsT3Jc0RwirFwNMh2UKI3twBwlz5+xROHYXCvXBGtBbo8AfD67Q+uQEpc3GRNmxiOj7L+U
-	4NvmDjV4N6HYQn94JSWW/OQy2jSWUos=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=none;
-	spf=pass (imf25.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757469955; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=gGYOV2JHkr+pmYrSJQK9SOPoU4vgjNE883gSiydCMeY=;
+	b=u80Sms1ahDPj0LvxQ4AUwzHKSW8Rd6BDjvxQMNIjjloHjdybHEyTnA1GLtsRmZOaZEq/Hk
+	o/lVW4Vq3OK+0HCDbw2oeLaaPVX1j/QKSJLEquAMJ/Ly4uR75T6ts0jTXrVzaQSK1osx8J
+	j6dCwvX65gDgmI8HE6i3Akw/T02WU6U=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757471473; a=rsa-sha256;
 	cv=none;
-	b=P34AP7d2+Kn1bh2uMY6qznTbYbWr0sWTqLxMr70EVFck5SoiwuNiBC/v4DoC8gSCtrivLH
-	vnIjuvOpgAR1ra8wBP2UWaFcDZcgupAwHi2+QtdwPZOFkjAzBmUnhBzhphvy8OQGT2m7Nl
-	3BD2289C6YFRS7SLKnwXRB4ACu1yFaI=
-Received: from mail.maildlp.com (unknown [172.19.162.112])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4cM3pt4J8dz24j8p;
-	Wed, 10 Sep 2025 10:02:14 +0800 (CST)
-Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id A7CAC140142;
-	Wed, 10 Sep 2025 10:05:29 +0800 (CST)
-Received: from [10.174.177.243] (10.174.177.243) by
- dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 10 Sep 2025 10:05:28 +0800
-Message-ID: <ce5cbd2b-ccbd-496a-95c0-501b972cd691@huawei.com>
-Date: Wed, 10 Sep 2025 10:05:27 +0800
+	b=3EH6+F5AOWUU+Y8Tw95p8MWZK5zgq2/U9w9GQR7YyibK53DW/TIi690ApYGpIuACIQ+TEy
+	io30B02uLd5DH45JIoR97OLTi72oLlNvPuxDkmX0ZPAMXREeotD60TDzssoQLZyL4RUJyY
+	r2ixnOSffe9bwB2N2nW26i+PfhfuU6o=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=AdQq79Yt;
+	spf=pass (imf04.hostedemail.com: domain of rgbi3307@gmail.com designates 209.85.128.181 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-71d603a9cfaso52722167b3.1
+        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 19:31:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757471473; x=1758076273; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=gGYOV2JHkr+pmYrSJQK9SOPoU4vgjNE883gSiydCMeY=;
+        b=AdQq79YtEkFb4VQCL6uFoclFyefItF7JCL5G4v0UUk/dA6vKfJIiPuyhsJFD23Yhwr
+         qaCOdgFea2/nPLix/RVCBgP92HSmDE0lddaTqhZDaWP/ikgUzcyDwvCyLP0SYUi+Drwy
+         vL5Lgj+gqXVNISBqlnb77G8Fn0zbv9pyJu7G9RqimgzjheWFM/jwdraRvMrblt12Yyms
+         ibDdQd7nWmH3u8yQftGSa8z9N3tZW7ksXGMAvyiCoz5XqwQIG/1+6vJKtZoui6h5UiFi
+         Lj6lrRyNyB6JupUOqnA+stbyrpvFiEKtO+NPBkuuax7t5n9WcFaoF8lCoiAs3PwzAiFr
+         YYCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757471473; x=1758076273;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gGYOV2JHkr+pmYrSJQK9SOPoU4vgjNE883gSiydCMeY=;
+        b=AG6ga39r4D0EBfpJX6IN05OQ/dW5Yn8ELvFnTQ3UPSqwN9fHq4ZB1NxEjIlRPCp3Fj
+         QlG6K7T9qWYDLcYqzPnoVtAXzU4wT94P0z5PSnlQPDGdRn3B+Z+tPiTm5OuooQ6pxMSM
+         2sMShikGtZm03RSaPtGxgNIDPNZ0E177cE/pxOJvuqVl8UnF9vsqki7ZlXPOeH5RBJxF
+         KdQ4M45kED9Z6fcmDkjbMPeBN4ag6FifQHgu0b8Ax+ndqOhT+DMsPjIHb2IycUB/HTkH
+         nnV6rndYeKqMeBRwNP0FR+/+9tXBeFE+f+Fd4TSPJQIP+RFapvhpXXS9A9sTE3pjpJnb
+         8X1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWswkyB/hePTeqX4N+WQROY/fVdFvOj+M2AmdT6wGR+vqNB+n0P4PXjzje98XIwqZH26Ux+WS5bAQ==@kvack.org
+X-Gm-Message-State: AOJu0YxMi2b1mN5Dh5Jd+RugpgpM+yzj/DI/F/GK+FDmFwHUIF0LFURG
+	JVghVVjN855zHVU54C1TkUkHCXWA1eGgpG8onixGdSRumi4fZ1AGVeAlM+fXWF9WybD/Hd4Crou
+	vMkXv0jargBJE0RDaGhTpBJ1idLA2XgU=
+X-Gm-Gg: ASbGncuYdx2YjcQ48sHij0CotsH5/iGo920wnICSTzjIEoIO+48zVQLGcdoUHZxTIJe
+	qK8j9/9mq8PoIc/B4QAz94jPd3zRCf/ItKnQdu3wkb2qVtKYU9/96ccx2Qpe1bZFGjWt+Wma1cZ
+	xxhk1Z6ttDrAjgRY2034vY84WyV3Je6bKBNmUV9MXEICZ87trFdyLoh2jTR647cJlHrt4egINmp
+	6xiZ6h5zB58KjtUx/w=
+X-Google-Smtp-Source: AGHT+IGkuYKbHclUoNcOzVWw7oQ2X7bUKO4dFGcNmQ9KJ9GMuUtVZDutEeAw8KLoj4aY+JeJ03Z9Ze8oC7BtIPAvMTU=
+X-Received: by 2002:a05:690c:9689:b0:720:5db:1220 with SMTP id
+ 00721157ae682-727f27de65cmr110345907b3.8.1757471472702; Tue, 09 Sep 2025
+ 19:31:12 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 6/9] mm: page_alloc: add alloc_contig_frozen_pages()
-To: Zi Yan <ziy@nvidia.com>, Matthew Wilcox <willy@infradead.org>
-CC: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
-	<david@redhat.com>, Oscar Salvador <osalvador@suse.de>, Muchun Song
-	<muchun.song@linux.dev>, <sidhartha.kumar@oracle.com>, <jane.chu@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, <linux-mm@kvack.org>
-References: <20250902124820.3081488-1-wangkefeng.wang@huawei.com>
- <20250902124820.3081488-7-wangkefeng.wang@huawei.com>
- <aMB4KhOX7IeFXaOZ@casper.infradead.org>
- <B41EB8CB-3337-45B3-B952-70359AAFF2D7@nvidia.com>
-Content-Language: en-US
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <B41EB8CB-3337-45B3-B952-70359AAFF2D7@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- dggpemf100008.china.huawei.com (7.185.36.138)
-X-Rspamd-Queue-Id: E26D3A0008
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 3zhqkdijp1nufww4arj65ufishtrs1k6
+References: <20250910005957.54108-1-rgbi3307@gmail.com> <aMDW1urp03myzZFi@hyeyoo>
+In-Reply-To: <aMDW1urp03myzZFi@hyeyoo>
+From: JaeJoon Jung <rgbi3307@gmail.com>
+Date: Wed, 10 Sep 2025 11:31:01 +0900
+X-Gm-Features: AS18NWDwwoRllFR4k3dRG-FUT86xf3SeEZv7mFkYHOI7mhydYUgFVRvyPwSwbbU
+Message-ID: <CAHOvCC695c3fBphYvVz0Gk3H2hR9O2GaQLPvOVSZbUyv5C5rwg@mail.gmail.com>
+Subject: Re: [PATCH] mm/slub: Removing unnecessary variable accesses in the get_freelist()
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: cl@linux.com, penberg@kernel.org, rientjes@google.com, 
+	iamjoonsoo.kim@lge.com, akpm@linux-foundation.org, vbabka@suse.cz, 
+	roman.gushchin@linux.dev, 42.hyeyoo@gmail.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, rgbi3307@naver.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: E4F1940002
+X-Stat-Signature: zkiyyk5p6qakjkwqiiwb3ihea86ex9cj
 X-Rspam-User: 
-X-HE-Tag: 1757469953-773567
-X-HE-Meta: U2FsdGVkX1+geTnTGYfx42gX8hDMtbW4WLMOqbMQUF/LUXSBAP7b5U2m+j2oXRevhlW0RGc+oeni/+ZGB5MnwAQJU28gUl4jGq7xzzxqg6Q7IcHn24x2GD7QTtcprQ6zcQ+ADi3LR1RfVBjaVRaj+wvDL4c+TiVZAlxUWoO5fgA/qBEgGYY1Nh/4H6SMJ6sPsJ/f37ASZVT1ExkZJUzttx7W2jwrw/qFBzQIXoQyPOXLveVZrW8sGQVn0AQAUV5g4u8NKmIG3iIofQkBzG1r6KMgS84Q1os1JyEzAhEXGcWtktf7j7aEfK6nH+K7BpDIIvbEGJNapGr0iAPeicq5tA+J8ZTN5MA9FdDWtZ+uqHxfJ9fl858jDE3UAZDt+jJYN5UDB0x9w5MKToQY7KdKPeEhI7eAH3npNbCcjHUZ15LlV01qXN+s6uMcwg/RyyZgi9Cyo4PmAIfzsq5bXT65Ksy1y9oB6Zmebc20Xr4youLCfvTSuxNva57OINNSjmxvOAx7fKEV1Z21JOtvNbsu+/5p7iqmWiA6pNOiLmlZTp6oE0pI33vivPFgvgREFbNHYZJeYCcF3rAY8CxwDbk6+Ap0VAXHQ/B7Y8fITx+abzFLoiYXv4GBZhmwno+ikA6KZpoEcWK3G8zrj1QHeq5bNunGOJ+WTONkQvRU5GNw3xJJlXT9LcOWN9KyVhrdANSHySbhuwqpWrT6Knm1ad3pGIyg1Sx1e4K2hnqpUYw5UpRb3M54SVNbypCrWOWxL/Flv6N0jayp8A3Z/IxbBUDsu1R0GD4pW5cbTMU62O/dm9Q+sYxzOk3IdHJ1iIcjLIzDEuJ9lLNfhQmt1Wc4Jlp0FDDXXcHUd3rTD7/W/t7WE2z6uLObTUBGkYw5IrWEKIXflCg875r2rMmZxLM5prsn8CXgby9HErvpoqOKRyh4RXvBtNkYeRfkvt8jHswA0QrOfgtVdeFXbOGBKvNBr+d
- WqC3fVv5
- 7KOHb8KsR6lgWmSCYmJQiXfW5t5KGKaBhkG+BqoQFh76Pv5+ICiomUSVM2r6kpNjmaCjSN1+NWDKKw9H09hUpM77fNuhGNhaRFvM5lhprXyvsITIdzNznTSB8WW0zz8LtRWd3EtYFYj3r1KU9qESZZOzLVcL72JfE5vLOMqbhrTa5D7RrESG3Pl/q+JsoCetRHDR2GB2BxEJGRkAwyhbZgAbrmG9a5GE8sqGUKRndBC02YDBygwgKiVzOaWHndVm9mnAs6BCVnAvCbrkrn9UD+ft5lCd0bI9NPNMsU9kz7jYePag0LwCAlV80wQ==
+X-HE-Tag: 1757471473-425512
+X-HE-Meta: U2FsdGVkX1/Wwiqoxv6mAi1/6Up6IhW++56IgAeTkRoD/ALdZxifgcHYR/fhOVmT20pb5b3TDBof/Bh1UpnmReVsbFf5bFBl/uDCgRv42XSKrlksH3hsDWt3l7+XrB2wjDXkc04TcDsnWRLftyWGQdAOVuAbyyLKJkPTTSHdE4S2cJA9fZyGYxzIVKZTETceX69/zwgh9taYSK0P+aCdMURMJeWme1MFw3N7pk+z4uj2INo/xc93W0Ev2n6qYyZR+nB/pcBbST0ikmJY7sG3k1U4v8Cepq9RL553gTLX5NG+YvlDVJt3qp1VyQ0GpFsKE3UtdYIZ2+bXMBiYvF6z3Bv+vCaBt3uWvDzBgSKQ6LcfYkwXjTzIWyXHzdi9gbOLVs2DvTt1MUJWydZXThXvH3VwuL0k/MVnmgpt7I7oubzM2ZAZSRuFLcwvnHR7vTaYnIsM2pO82zkFKL6l93GEc4egigJVd8kq8nSL3Z9eDt5qpE6q/VpPOyhG9UeRY47zCJL43Yckp3VlVeJhCHlG84uFKWGLHow0SOyNN5ztWa4wUcBVZOYJ/FQf8+H0SMb2KFK8wDEgl4Dc2nMQwd8TQfh9BtawoK5jqNhvNpaHpRNZm2lbU+Ws2WqgG2hnN8qlpknqxJQO9cWws1+zAB/NErIyl5sAtM6iPROdIKuEOAB0cbERifCPSqd5NU60oqDZsWxHANbe1EHRyHXMbZbE96htSr/HVdZIB21SYyGSjKSTa22Ckg2xsON6deYgaWzLA24zte5b5sONP5msAEABkZkDGd191TLFnn5/pavMn5U7QCXckUldfOC81Qc86+HpAuw0tEmD2ck77gGwlJDL37NVHVfh5FVm79Ie2woWyM9kn15ZTSqMg/LcHPVYno5vXHPKhNUSTD+vJu/BE8jsBF1tatXXVUtTL4Qe6oUzLMkouDa5Jk/GVm7xGMocaT9Cxx7S2oPgzxCg3jogj6u
+ +gdWKS42
+ 1EpF/xEzyFq4PSAVmC4C1PeoU6vXUI7z/oZrDHkuTNfnJoahHvRY7IkdtfQbPM+/YQtyK+UldRvolmdzpAI9EIajDeapisYEo6XgxYU4PTfYspHeMPstxa5/66mn6g5mfma64c2l+bJP0uoXWpmNT8UBSi+qVq5x7OKpln92ASI66++QDSm3I6uXK2BlTYDx7/Rp15CY/cHnMrQd0+qHDMPoNl0q1yi59AcTAuNaf67BWRWFRa2wbIuwQLmJWIzR3xNDp4Q28Yc8EXmLnqV3CbHMPDdUyftqeqzi5DCkie3aLtfXU8Smr2CAuf8xzc26vi5y3WWrLnR5p4BKrm/UtDvveD+yJrQ5gQYC0EHLp4y+T+YdaYU0bfS0G5WFoTPaSXlX8rOYEQMmGA5xPq93DWfSRRwgo1fdaZYHyvoclTNuoht92ru0+nQw4DBoGSgHim0MFlhVI79aQdYXiladV/MxwwPobhvruSP2XOX4Joj6sf9YOIOW+lTw74YqrcejFeKXcy5GEmwY3d7E=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,76 +115,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi, Harry Hyeonggon Yoo,
 
+Thank you for your kind and detailed reply.
 
-On 2025/9/10 3:08, Zi Yan wrote:
-> On 9 Sep 2025, at 14:55, Matthew Wilcox wrote:
-> 
->> On Tue, Sep 02, 2025 at 08:48:17PM +0800, Kefeng Wang wrote:
->>> Introduce a ACR_FLAGS_FROZEN flags to indicate that we want to
->>> allocate a frozen compound pages by alloc_contig_range(), also
->>> provide alloc_contig_frozen_pages() to allocate pages without
->>> incrementing their refcount, which may be beneficial to some
->>> users (eg hugetlb).
->>
->> No, this is not the way to do it.  We're moving towards a future where
->> pages don't have refcounts (their owning structs eg folios may have a
->> refcount, but struct page does not have a refcount).  So work towards
->> that; if you need to keep compatibility with some users, then by all
->> means keep alloc_contig_range_noprof() as a wrapper that calls
->> alloc_contig_range_frozen_noprof() and then calls set_page_refcounted()
->> if alloc_contig_range_frozen_noprof() does not return NULL.  But I'd
->> be looking to see if alloc_contig_range_noprof() can always return a
->> non-refcounted page.
-> 
+I hadn't thought of the union data type.
 
-Yes, Zi has been comment this shown below, alloc_contig_pages_noprof()
-is called by may driver(directly or indirectly), I originally only hoped
-to minimize the changes, if we follow your plan, we can do a bit more,
-let me try the new way. Also I will separate this patchset to let the 
-cleanup patch could be merged first.
+Since the counters, inuse, and frozen members are unioned within the
+slab structure,
+there is the problem that the above values are not applied to
+__slab_update_freelist() and try_cmpxchg_freelist() if the existing
+code is not followed.
 
-> Something like:
-> 
-> struct page *alloc_contig_pages_noprof(unsigned long nr_pages, gfp_t gfp_mask,
-> 		int nid, nodemask_t *nodemask)
-> {
-> 	struct page *page = __alloc_frozen_contig_pages_noprof(...);
-> 	
-> 	// just added page == NULL check
-> 	if (!page)
-> 		return NULL;
-> 
-> 	if (gfp_mask & __GFP_COMP)
-> 		set_page_refcounted(page);
-> 	else {
-> 		unsigned long i;
-> 
-> 		for (i = 0; i < nr_pages; i++)
-> 			set_page_refcounted(page + i);
-> 	}
-> 	return page;
-> }
-> 
-> as I suggested in another email[1] (of course I forgot to check page == NULL).
-> 
-> And other TODOs:
-> 
-> 1. remove set_page_refcounted() in split_free_pages();
-> 2. a new split_frozen_page() to do split_page() work without
->     set_page_refcounted() and split_page() can just call it;
-> 3. a new free_frozen_contig_range() and free_contig_range()
->     calls it.
-> 
+I canceled my patch request.
+I apologized for my inconvenience.
 
-
-Thanks Matthew/Zi.
-
-
-> 
-> [1] https://lore.kernel.org/linux-mm/298B40E0-8EA5-4667-86EF-22F88B832839@nvidia.com/
-> 
-> Best Regards,
-> Yan, Zi
-
+On Wed, 10 Sept 2025 at 10:39, Harry Yoo <harry.yoo@oracle.com> wrote:
+>
+> Hi Jaejoon,
+>
+> I updated my email from 42.hyeyoo@gmail.com to harry.yoo@oracle.com
+> a while ago. Please check up-to-date MAINTAINERS file when sending a patch.
+>
+> On Wed, Sep 10, 2025 at 09:59:56AM +0900, JaeJoon Jung wrote:
+> > It pass a NULL pointer to the freelist_new variable
+> > in the __slab_update_freelist() function so that it don't have to re-fetch
+> > the variable values inside the while loop.
+>
+> No, it needs to re-fetch values when cmpxchg fails.
+> Otherwise it would fall into an infinite loop, no?
+>
+> at a high level overview, cmpxchg works like this (atomically, of course):
+>
+> retry:
+>     old = var;
+>     // modify some bits in 'old' and store it to 'new'
+>     new = old + something;
+>     if (var == old) { // compare
+>          var = new; // exchange if the value is expected
+>     } else {
+>         // if var != old, someone else updated the variable. retry
+>         goto retry;
+>     }
+>
+> and this retry will certainly fail if you don't you re-fetch the value,
+> modify it, and try cmpxchg again. The 'old' value fetched before failing
+> cmpxchg will not match anymore because other CPUs already updated that
+> variable.
+>
+> > Removing unnecessary variable accesses as shown below
+> > will reduce the code size of the get_freelist() function and make it faster.
+> >
+> > Signed-off-by: JaeJoon Jung <rgbi3307@gmail.com>
+> > ---
+> >  mm/slub.c | 21 ++++-----------------
+> >  1 file changed, 4 insertions(+), 17 deletions(-)
+> >
+> > diff --git a/mm/slub.c b/mm/slub.c
+> > index d257141896c9..2e305a17a9d7 100644
+> > --- a/mm/slub.c
+> > +++ b/mm/slub.c
+> > @@ -3654,27 +3654,14 @@ __update_cpu_freelist_fast(struct kmem_cache *s,
+> >   */
+> >  static inline void *get_freelist(struct kmem_cache *s, struct slab *slab)
+> >  {
+> > -     struct slab new;
+> > -     unsigned long counters;
+> > -     void *freelist;
+> > -
+> >       lockdep_assert_held(this_cpu_ptr(&s->cpu_slab->lock));
+> >
+> > -     do {
+> > -             freelist = slab->freelist;
+> > -             counters = slab->counters;
+> > -
+> > -             new.counters = counters;
+> > -
+> > -             new.inuse = slab->objects;
+> > -             new.frozen = freelist != NULL;
+>
+> ...and the frozen and inuse bits are part of counters field,
+> so they are not updated anymore?
+>
+> > -
+> > -     } while (!__slab_update_freelist(s, slab,
+> > -             freelist, counters,
+> > -             NULL, new.counters,
+> > +     while (!__slab_update_freelist(s, slab,
+> > +             slab->freelist, slab->counters,
+> > +             NULL, slab->counters,
+> >               "get_freelist"));
+> >
+> > -     return freelist;
+> > +     return slab->freelist;
+> >  }
+> >
+> >  /*
+> > --
+> > 2.43.0
+>
+> --
+> Cheers,
+> Harry / Hyeonggon
 
