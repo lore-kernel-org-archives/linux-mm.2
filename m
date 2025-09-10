@@ -4,246 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CA7ECA0FED
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 08:24:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8DABCA0FED
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 08:26:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 595268E0011; Wed, 10 Sep 2025 04:24:02 -0400 (EDT)
+	id 3ECCC8E0013; Wed, 10 Sep 2025 04:26:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 547A48E0003; Wed, 10 Sep 2025 04:24:02 -0400 (EDT)
+	id 3C4278E0003; Wed, 10 Sep 2025 04:26:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3BECD8E0011; Wed, 10 Sep 2025 04:24:02 -0400 (EDT)
+	id 2DFDF8E0013; Wed, 10 Sep 2025 04:26:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 263D68E0003
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 04:24:02 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CD9FC1A07D9
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 08:24:01 +0000 (UTC)
-X-FDA: 83872652682.21.6DFB048
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	by imf02.hostedemail.com (Postfix) with ESMTP id D71A280006
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 08:23:57 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=mNvz5z1N;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	spf=pass (imf02.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757492638;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1B22D8E0003
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 04:26:08 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A89FB86E9A
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 08:26:07 +0000 (UTC)
+X-FDA: 83872657974.22.DC52C30
+Received: from mail-oa1-f54.google.com (mail-oa1-f54.google.com [209.85.160.54])
+	by imf23.hostedemail.com (Postfix) with ESMTP id D35EB140002
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 08:26:05 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="T/wO6psB";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf23.hostedemail.com: domain of zhang.lyra@gmail.com designates 209.85.160.54 as permitted sender) smtp.mailfrom=zhang.lyra@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757492765; a=rsa-sha256;
+	cv=none;
+	b=pQMJCZUHd1YiQi11/3YJLB69ZZ5u3JcJNuh3giNdeVMsH1yeDEQ5rxTSJTdQGOI3CTqSEn
+	W3GP9agV2424FVVSxRmDhDIJ1tK8jz/LgDcZDWkH1xCoW1r5Osm1InZ1DqPEODcHGCqyDs
+	ywOsrsQDRrWeI2GMANtDRPAchAPpThA=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="T/wO6psB";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf23.hostedemail.com: domain of zhang.lyra@gmail.com designates 209.85.160.54 as permitted sender) smtp.mailfrom=zhang.lyra@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1757492765;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8U+Pt1K//jwGdtFwdNoyT+KdjwJhZrb6GsuR2FFSf90=;
-	b=bxvJ6SGK2YS9zDEixD77F61V9qRGVdmd6U1fe6oq6KFG8ZOPOjkHgvOjUqE1Ju4foZ9t7c
-	jd/3mivdZnqj7pGNR0G+jCRj+2+/NZSPieMGixDR8Dxv2w9xrXmO5EjETQjwaa7E2ofPVI
-	wgTZDDZK1Xs6E5QpKWmJF8a2MkLq5I4=
-ARC-Authentication-Results: i=2;
-	imf02.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=mNvz5z1N;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	spf=pass (imf02.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1757492638; a=rsa-sha256;
-	cv=fail;
-	b=ZF29jMH8umc3+cb6ImWXygBXseNXLpcP3QYT4XD5OKjdozQCua5C/YaLvlktzIltxL9tZo
-	lzWjBhweSXQqBRbfJF1GSH07mhZgleP+V09UM8SN5Sx9KjS/qYBf7Mn6giBAfgp5DF2VA5
-	jfiQQH5VKwqZ1SLuYrz0e1/4/P74HDg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757492638; x=1789028638;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=9ATc3NID8XJREDHOudA71wbs04FGbw5KOvS4dpl+r/U=;
-  b=mNvz5z1NxaMTPILeOU79MFH8qlAhhTEV53daa69+ogGx3AQfQGJodcYX
-   3k2s/fJZ2V9r6obcKPU9XTIJqsJO6moEAg3YORDdTr1BWXYWUOakS5Zf4
-   OThxNY+eO0lNC6iabr61NnG8Gllj3qnaC/GYO6jkf4ksAj5p+XsgPQAkg
-   YErfoLY3jzqJXnoliP3Lou0Vg7oUy9d7FBqoyMEzeLgmxXa0Lxg4hD8i6
-   i9D+lPVA/wYXlI0hyRxFtCfFIvcoVBJ77IyPQBKyvxH0A9uiCImtHDV4T
-   pvSgeL36vfZvB+YWgvuismq55arQGqOCyNpOFmD6ZP4D+05VggsZJeitD
-   A==;
-X-CSE-ConnectionGUID: b1NE0msMRFuRCfLFgeedxw==
-X-CSE-MsgGUID: zoMTSw3bTD2DYmWSjqvFXA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11548"; a="70414721"
-X-IronPort-AV: E=Sophos;i="6.18,253,1751266800"; 
-   d="scan'208";a="70414721"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2025 01:23:55 -0700
-X-CSE-ConnectionGUID: vZKvSrNVT0i/+SwV9gVb4g==
-X-CSE-MsgGUID: JEagR3QMQEa8FrBcKPaoeA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,253,1751266800"; 
-   d="scan'208";a="172894434"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2025 01:23:55 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Wed, 10 Sep 2025 01:23:54 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17 via Frontend Transport; Wed, 10 Sep 2025 01:23:54 -0700
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (40.107.244.81)
- by edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Wed, 10 Sep 2025 01:23:54 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OTmeLwTPPmcosKjgbXg7DYO2xCMJ7iyYHsUYH+5fVqfxDFuE8Ji5R4LiTr2XMrWXUb8uCnSwDlgJbMK7FRxJGLZ4Uoa5Yz4+fVnsJFPUaum8XdB3ezj5GdTiDGj5SZXv+SbrjNvb0VYpNOhXNS46N/XIXnWqmqYKYC2lQh8ljggoS1PSIi3kN1VBkZIR3NtORaOJHJDxjsro5UTsWLU9fSyxbiAxIOEng0IU5uGu9unadO9mxxJsh4HiMj47mHgRomFV1bivyiGjOkImDkiEkkar2pE31NAodHud9ZCpXEzrhJMHHRRoYLxVXn5mbRiZN8f1VSE6cgSYD3FeqQnFoA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WAaXSaIVoADjoz6HPGtQzawTt9gV+5J32gfTC4nKTbs=;
- b=ijgKlGmSoN2KW/ZFNMkFbNxf5KSGWSBYZ8GY2ft9IOoj30RF3DVl2JvhROUakaBbUNE9xaXCY3unV17/lN9pBRgixJqbUZg7aRllzlTCkTBvsx8bUaYYhKpqwpwg/UfLC0hdP9J87aNv9vO5748L+q9Hl7CYwVDCmKDZexG1eo/pkpnReEhlq0vzVodH6khhp55BOf41Wvo66rEiNUj+mKT73FUvGMUpNz4pCyEhtn7L6UdiV5XjyNRmScjtMJg+14a6weY9v2p68oDNYqijz8Fz/txg/ckJJMwipVZ2Ix+fS6j41byS96ybEf0xojzNUkGoBrn/GwmTR819rcMy+A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from MN2PR11MB3934.namprd11.prod.outlook.com (2603:10b6:208:152::20)
- by SJ2PR11MB7519.namprd11.prod.outlook.com (2603:10b6:a03:4c0::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Wed, 10 Sep
- 2025 08:23:51 +0000
-Received: from MN2PR11MB3934.namprd11.prod.outlook.com
- ([fe80::45fd:d835:38c1:f5c2]) by MN2PR11MB3934.namprd11.prod.outlook.com
- ([fe80::45fd:d835:38c1:f5c2%3]) with mapi id 15.20.9094.021; Wed, 10 Sep 2025
- 08:23:51 +0000
-Date: Wed, 10 Sep 2025 10:23:37 +0200
-From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
-To: Peter Zijlstra <peterz@infradead.org>
-CC: Andrey Konovalov <andreyknvl@gmail.com>, <sohil.mehta@intel.com>,
-	<baohua@kernel.org>, <david@redhat.com>, <kbingham@kernel.org>,
-	<weixugc@google.com>, <Liam.Howlett@oracle.com>,
-	<alexandre.chartre@oracle.com>, <kas@kernel.org>, <mark.rutland@arm.com>,
-	<trintaeoitogc@gmail.com>, <axelrasmussen@google.com>, <yuanchu@google.com>,
-	<joey.gouly@arm.com>, <samitolvanen@google.com>, <joel.granados@kernel.org>,
-	<graf@amazon.com>, <vincenzo.frascino@arm.com>, <kees@kernel.org>,
-	<ardb@kernel.org>, <thiago.bauermann@linaro.org>, <glider@google.com>,
-	<thuth@redhat.com>, <kuan-ying.lee@canonical.com>,
-	<pasha.tatashin@soleen.com>, <nick.desaulniers+lkml@gmail.com>,
-	<vbabka@suse.cz>, <kaleshsingh@google.com>, <justinstitt@google.com>,
-	<catalin.marinas@arm.com>, <alexander.shishkin@linux.intel.com>,
-	<samuel.holland@sifive.com>, <dave.hansen@linux.intel.com>, <corbet@lwn.net>,
-	<xin@zytor.com>, <dvyukov@google.com>, <tglx@linutronix.de>,
-	<scott@os.amperecomputing.com>, <jason.andryuk@amd.com>, <morbo@google.com>,
-	<nathan@kernel.org>, <lorenzo.stoakes@oracle.com>, <mingo@redhat.com>,
-	<brgerst@gmail.com>, <kristina.martsenko@arm.com>, <bigeasy@linutronix.de>,
-	<luto@kernel.org>, <jgross@suse.com>, <jpoimboe@kernel.org>,
-	<urezki@gmail.com>, <mhocko@suse.com>, <ada.coupriediaz@arm.com>,
-	<hpa@zytor.com>, <leitao@debian.org>, <wangkefeng.wang@huawei.com>,
-	<surenb@google.com>, <ziy@nvidia.com>, <smostafa@google.com>,
-	<ryabinin.a.a@gmail.com>, <ubizjak@gmail.com>, <jbohac@suse.cz>,
-	<broonie@kernel.org>, <akpm@linux-foundation.org>,
-	<guoweikang.kernel@gmail.com>, <rppt@kernel.org>, <pcc@google.com>,
-	<jan.kiszka@siemens.com>, <nicolas.schier@linux.dev>, <will@kernel.org>,
-	<jhubbard@nvidia.com>, <bp@alien8.de>, <x86@kernel.org>,
-	<linux-doc@vger.kernel.org>, <linux-mm@kvack.org>, <llvm@lists.linux.dev>,
-	<linux-kbuild@vger.kernel.org>, <kasan-dev@googlegroups.com>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH v5 13/19] kasan: x86: Handle int3 for inline KASAN reports
-Message-ID: <63ocq6aadqn74e7g57a6p3cqkr3sf4hmejfp6hxmuju2b42iny@2du24bomvk4n>
-References: <CA+fCnZcMV0BOJyvx2nciCK2jvht-Hx0HnFtRzcc=zu+pQSOdVw@mail.gmail.com>
- <couuy2aawztipvnlmaloadkbceewcekur5qbtzktr7ovneduvf@l47rxycy65aa>
- <hw7xa2ooqeyjo5ypc5jluuyjlgyzimxtylj5sh6igyffsxtyaf@qajqp37h6v2n>
- <epbqhjyfdt3daudp2wx54jsw6d7jf6ifbr3yknlfuqptz7b4uq@73n5k6b2jrrl>
- <CA+fCnZdJckDC4AKYxLS1MLBXir4wWqNddrD0o+mY4MXt0CYhcQ@mail.gmail.com>
- <ra5s3u5ha6mveijzwkoe2437ged5k5kacs5nqvkf4o7c2lcfzd@fishogqlatjb>
- <20250909083425.GH4067720@noisy.programming.kicks-ass.net>
- <20250909084029.GI4067720@noisy.programming.kicks-ass.net>
- <xeedvhlav5rwra4pirinqcgqynth2zrixv7aknlsh2rz7lkppq@kubknviwhpfp>
- <20250909090357.GJ4067720@noisy.programming.kicks-ass.net>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250909090357.GJ4067720@noisy.programming.kicks-ass.net>
-X-ClientProxiedBy: DB9PR06CA0016.eurprd06.prod.outlook.com
- (2603:10a6:10:1db::21) To MN2PR11MB3934.namprd11.prod.outlook.com
- (2603:10b6:208:152::20)
+	bh=nQH7snnNQnRZRbg0xLLdaSxYnYx9rFgR1u9eFyrWIv8=;
+	b=HiQXxpJ62IlvJamYBdey+HS2YJaOxLAI4Lk87OMmXN1f2CGSEx2EFl9NGo8IyaPMAbBAZM
+	ut1ru4VXBtdzBBnqvktr6peimneD7/PPzUu6w12wqVOyC9GwILklXKVbNRgHembGdImHnG
+	ROQ2qLoseNUjN1EWJQ9JEx+ZOdHmAtM=
+Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-31db571a432so3401525fac.1
+        for <linux-mm@kvack.org>; Wed, 10 Sep 2025 01:26:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757492765; x=1758097565; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=nQH7snnNQnRZRbg0xLLdaSxYnYx9rFgR1u9eFyrWIv8=;
+        b=T/wO6psBBR3R/JF5jJiE+5awt6+bABYCygtbFz5pxbxd7iBpSEz1nqHupdDVzPrugH
+         5EC6wh/dRvlfsxtc9ImISClWfZtPy5qAwyEdxXNikni6k2wRDDZ4P2mWVttyf6+bBbeC
+         4TO1uczFxlxvkUMKnuo7fQrwPrxDweaePX3jLkxmNSbj1ezJfN65n/U83LQ/NO7BGrZd
+         AxIuHJ3DEr1HcY1OE0R2U6I4kdMSuhzemXD1VCW+EaxOwI9/8GZ4XcOgbU9HziThqjqk
+         C5jCF+D/4OGzIcdMQxuy1WmArCH88hRRiSyc1kFzmJl6R05rBRnU0yinmwpDeqbvzFuz
+         ROLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757492765; x=1758097565;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=nQH7snnNQnRZRbg0xLLdaSxYnYx9rFgR1u9eFyrWIv8=;
+        b=U8gv1Fbe9ZInP3IW8ffW+PaODRBLrVPjE36M9Jb/msiRH1227PahgF8qw9FpWfKkCb
+         CTKf7RxbLPFL9LPvEG0h4Kgnw1KnoymIQbr8i8EJImyYT45Qdx+my+kwc/dDiNL5eoXt
+         qVgLFR+gTmNiugfJg6x4l4bnS/m+seWpbe0vltBlp4AWW5SQ/FpsIlKjl7IbGgAIbpAg
+         bxB0Ck+GDDnlBI8Y3BcZq88jzgG6w5rylVmYozZowsvHz9siuyJ6bssPk1/vLwP3KxdB
+         a/1RQamDXjxdplPYvU6wdlnS2X8C1MhxgsiaqUauFpHv0UUAu4KskpyK2TjQyoRPQtZG
+         JAjQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUZyVWtzg/lh+OXrKz0fwF2FJRIcSBAgLjNesmjPjdPHEOcOEjtdLih1azM6XXd20W/jNjLgwesug==@kvack.org
+X-Gm-Message-State: AOJu0YwfjBLIGppHBUlWz/jZOlYbor6gKMIoDH9gZubY7lW9TjL/3UmJ
+	HH/oqps9i6QD7JlvB+zsRi/aAC1ubmfiK7g5VBXv4pDb/RWlpJr2qrPrG/jwxsKK8v1T5YWAvoQ
+	ge3Pf2ofG38wiGn9JCis3SOZVzzJipR0=
+X-Gm-Gg: ASbGnctCVq1uec4zH22En4uuPhtV6mjrdgvkI0m9B+pcJgiNXLRQNxm6ISdXai7xXqO
+	RXGJdzjT3nzRXzho98lA9k0a+fVi+G6CyML91FSYxbbG7okjXQsnDiABsiNplLB14gn+61+aH5C
+	DSe/2XT9LnQMp5DL3eVSuhkDD2dXKBfGP9REiWmmzKhfz15qdiVB3tkxbxMwLh5db6jTjdEQ2WR
+	etBEQ==
+X-Google-Smtp-Source: AGHT+IG8+X4z7lWHsoiDJ8ey4B9KiZeLoM8QTORaK4x4ttFg5WhTeM8qOcmzY4k1bJV831pksGGd1X5634WxyYNLQpo=
+X-Received: by 2002:a05:6871:4b10:b0:31d:6b5b:6b57 with SMTP id
+ 586e51a60fabf-32264c16755mr7048854fac.30.1757492764639; Wed, 10 Sep 2025
+ 01:26:04 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN2PR11MB3934:EE_|SJ2PR11MB7519:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0d615ce0-7877-4c1f-6a3f-08ddf0435f8b
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?O1j00+Ekys610nz9REzx+VXDlQGjEkDQkGiIRP5HYqYOTbTsyDS5q7jIez?=
- =?iso-8859-1?Q?jRfl7ulWLJgldc9EczPIQTxKQAJYM9bZNPTHT/STZJ85BPvfCoYHqXNi3j?=
- =?iso-8859-1?Q?cKTt0E6iLfJkR11xj0LeTohE2EfWyPkqMZZXQxDuTzR60Y+xJfVYVGs9Da?=
- =?iso-8859-1?Q?Ewx4jWs8scC7TpOkCz4QYh4YR238G9/MLqv7DS2zsnaU102ccnMcjIH841?=
- =?iso-8859-1?Q?vE8dfRZ6rgUvu7/auypVTkymorbBJIsbdq80GmFIUxu/ALRmqVmC4cPcVG?=
- =?iso-8859-1?Q?hty8+CiDaniDUDbFqLeLNjDVv3I7lR1F2otPp2UhoosEgCK4v6W4n57PSp?=
- =?iso-8859-1?Q?8OEdBFJTlqGUvolVD/AfUcEFdGQbvJTqDaQLGrivb/ELik8h5jVXXoiKp2?=
- =?iso-8859-1?Q?U+dchHEahE1HORDx1t7WnaFpq/zfAEy1jrKuJeZJd0GUr3Y1BvKyP3tIfY?=
- =?iso-8859-1?Q?PGdphGOYUoIVR957d3RMYFU8fn8gQxTRWI/GYZbfFc8lgYJP/lOwCVVIz8?=
- =?iso-8859-1?Q?uW3+MJIaABb6m2dWRf1ZIqNKoVdfgtQsXnmnu3kiLPlC66btKvyVLGCiNl?=
- =?iso-8859-1?Q?5vRQB/J+lOhvoww0ZDUfRBm90YERc9ZYVpenK72WGPXQJlwWXrZBmk316i?=
- =?iso-8859-1?Q?Lm2bVo2oytiG0YJ3XZU6sCgNCKBw++b8JWF3WoiC+1fxVZdpxLpk5omik4?=
- =?iso-8859-1?Q?aaEyy4wXUYa2QAYaNX9XJqiiTeQwmh6rbz1FeY7S/6edI0JC6BnQMS+ue+?=
- =?iso-8859-1?Q?jQdWkll+vEdA2r9lVglKDoF/6bHASuF4l7akCc81h9h2RnPk0I3KCukAbW?=
- =?iso-8859-1?Q?fChbpgaMSOQS5aKLE285IU4U183jRj4MGKokDXuSX3b+vlpDf+f+wFdkMv?=
- =?iso-8859-1?Q?AEZRvKIGZxAoWRUbE+ihYm8hg9DVP63r5Gf9CGP3lsnKyUD2R8209aT+x2?=
- =?iso-8859-1?Q?ucROp0pQEJxcG01dQBhtjhl+DiJAvpFmYGVAbR4P6dbrupu5yPYQ1LIMbh?=
- =?iso-8859-1?Q?l7jH+fvBFz8CJ8kb9Ws2RA9HlMU7msKU/GomCYvNwGTh35kZHt25kHCBWd?=
- =?iso-8859-1?Q?6avYhAZtJQpjv7+eqOQgdzr+ZiLLyBvvn1Gixh8deR3jnWqZNY6RXiyKYu?=
- =?iso-8859-1?Q?Frg+rbwapGNACM4WwOOH082XB8LwvuNSqNySxmmoAaEjV3lyTQCN9P8meC?=
- =?iso-8859-1?Q?uMIXGLvy3ZMEMuhzccDNm4xdYogWt7nIpd0x9yUwqmecPwWnw1tW8KHNg1?=
- =?iso-8859-1?Q?XcOpXX1w8sgS8AvqJmxHERQTFJToYieoSlyl2LfjiI2Wbm7qF40BHwBkE7?=
- =?iso-8859-1?Q?H/jQjwmrhdRr2/gCdhRvkvWKF4zJDVrs7v+8sPHKuHpTzR52ho4wxTA8ab?=
- =?iso-8859-1?Q?TXHlsZoarITgH2rn51VF+lP8D7zPbj4YAEFVHCEHGtfJhIXprPwX1fbQE1?=
- =?iso-8859-1?Q?LToKZCIhzA/26DcHVoffptrCAipesoEnzyVR8s3noA6JRbQ9/AUc9i5rOD?=
- =?iso-8859-1?Q?M=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR11MB3934.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?e++uzuqBO2cjbBlUfDsfx5XzXUmH+faLilMr+EIYnrqrfbPmZiOZOPJ+7W?=
- =?iso-8859-1?Q?kQ3/D/H/aHK43WDEFBb3DUhhb545HToI1jyZG3Fm1GjkaU8XnYBpCKyjwU?=
- =?iso-8859-1?Q?kkD/oeO9uNTEWDi7n2IKKaxeYOFcGiKhOrapItCrNtisJ1dkRPsviKECK5?=
- =?iso-8859-1?Q?8AAvKQhJOcgvMhUhnQR6F8KudLDQCLNliWs90/GiPTQ2ytiJk0/blj9RoB?=
- =?iso-8859-1?Q?AZYBBNQbX5z7E7J07s66P52/M5yXlYBdqEonHCCwvly2vPb9X8sNpNrbL/?=
- =?iso-8859-1?Q?u1fYcNEt1qEWUk9shV2CAimTIDHMgRqGzapo1IuFjq57I3Ep68q52Ma3+D?=
- =?iso-8859-1?Q?xkLyoB3EuFATsAASYTdfrSZPydcAPP83mdhcHFYoPzf+7jsHv83XBhhdjg?=
- =?iso-8859-1?Q?14kbL2eCfkSaGS4w4OTUVui37heeZsIZjCgk+Gsh6B0Fv3g5GfM/IQ8fuN?=
- =?iso-8859-1?Q?NSjiEM8bFH4q6WaBuucnm0oN24+oQTt94RuAG0dVm8A3YXFP+zGfH8/RFg?=
- =?iso-8859-1?Q?jrrp4W9DJSs6YsqAYFT2e5ZOIktvDOpSgJLFI6E+1QBsWfE7bmgS9gwS/d?=
- =?iso-8859-1?Q?C+doNSddKOiCNvdfuWPuPzz+hy4qWkBW4bsuA3Mprh+HE9WCIOAyHFyBRs?=
- =?iso-8859-1?Q?18Ava7Gw/hvflMYbK4LGD+y8CQqsuomOmm9ljLHgVRPLxEfOs1KOf0m4mr?=
- =?iso-8859-1?Q?uyChuLsDu8HE5enztKCmgN8JNTXqVZeB7txpSGiSHka1MurFywrPULnRdV?=
- =?iso-8859-1?Q?ZUGZo4mGPzINld3oruplBL5uodz/OFEVzvnbWvGIwDKT6vtuWlxlIC8cN5?=
- =?iso-8859-1?Q?k+HuiOCQ+uR8qu7/scYURmMXtxf9osMOG3QSQKRaJvmHTgRu4Nn+lRyRBE?=
- =?iso-8859-1?Q?S/oj+sk6oaVEtRZljX/4AVoxyA9hMR32Yl+mkmsiLYi5/2gGIMIe03wyK/?=
- =?iso-8859-1?Q?OY0tRJjbzBMoLFL695/02akQYk1TXPD/KyPQvo7ITtpowTX64JNjJ42VAD?=
- =?iso-8859-1?Q?Dmc9+405fmYXTORjJBNQZwWIulJXBfEaMhkg/PTmCrDWVxOK8I9xnOmPyk?=
- =?iso-8859-1?Q?BgCtXHSPlWpm9ixvFdZ5z3cDb0JPjZ3RzcKkaCqwvkPWZmOnbVx0dnyUBx?=
- =?iso-8859-1?Q?CRAQ0Zzr6e3lDxgCMDVOLem4tbWOatn23oFu3/+SU7Yr0rcr542+ylQS8l?=
- =?iso-8859-1?Q?oXwe2G/dclXYaO0hZAJAkA2g/FRdUuUQJ0zQXxifG7p5umfD5/NBFCCqWQ?=
- =?iso-8859-1?Q?3st1iX++AHaz9TuwpAAqoRG/jwHnMyUUfe3xwFPSIMvuPUNX2I21TuVjMF?=
- =?iso-8859-1?Q?bg0j9zJma25eJykcCplO2xMfBYjmVHSdPHfL077VRxsCDRwWdvC5K0S8MK?=
- =?iso-8859-1?Q?9Q5k2i0yAQsua40EENs7SQz5SlpDIbCEaLOgicjKruKLlLAdEfRpTKvWV8?=
- =?iso-8859-1?Q?0zbKRcuQDauxo4LnfajhBqcf5Vqfc8YxN8TXzLKrhvhalOsbDZBFjHRrl7?=
- =?iso-8859-1?Q?08gvXqtwNEMOyJu9qGK1I7H7xoEAMV1Sf7CfLu+rayWI6PRA4x/VDGuQmR?=
- =?iso-8859-1?Q?fwuX034WzVVS4I5pQ/ICKpydxzLj3Lk7S1lUdvyk+DDwNtqkUdoagdlQBn?=
- =?iso-8859-1?Q?+v5ROGw3Yx+f7/Rab3MmJbUBKcZAEFUgXkn0ltrbVXxBWk1vDzXq+0Rs31?=
- =?iso-8859-1?Q?wbWAtWFi0zzIyG16Fwk=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0d615ce0-7877-4c1f-6a3f-08ddf0435f8b
-X-MS-Exchange-CrossTenant-AuthSource: MN2PR11MB3934.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2025 08:23:51.5114
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SWUa+B/zhAfZlX9LY1imQIDvmNagix3F3GeEUAbXvvB7+dXBkkEMWlLRhLfgK6BuEAlxVeB+lxhbflBZCW7IbwIAC1Z3mfGjQE/3W1hRNp0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR11MB7519
-X-OriginatorOrg: intel.com
-X-Rspamd-Queue-Id: D71A280006
-X-Rspamd-Server: rspam05
-X-Stat-Signature: bjmboaxacgbr9jf4yiqkrp3j5ggir1ex
+References: <20250909095611.803898-1-zhangchunyan@iscas.ac.cn>
+ <20250909095611.803898-2-zhangchunyan@iscas.ac.cn> <6b2f12aa-8ed9-476d-a69d-f05ea526f16a@redhat.com>
+In-Reply-To: <6b2f12aa-8ed9-476d-a69d-f05ea526f16a@redhat.com>
+From: Chunyan Zhang <zhang.lyra@gmail.com>
+Date: Wed, 10 Sep 2025 16:25:28 +0800
+X-Gm-Features: Ac12FXx-v6pjQQB1q-gdPDWGiaVNDNxmW_UZ1a0xUB3t-SaqR__1RTrhpm4oqiU
+Message-ID: <CAAfSe-vbvGQy9JozQY3vsqrrPrTaWYMcNw+NaDf3nReWz8ynZg@mail.gmail.com>
+Subject: Re: [PATCH V10 1/5] mm: softdirty: Add pte_soft_dirty_available()
+To: David Hildenbrand <david@redhat.com>
+Cc: Chunyan Zhang <zhangchunyan@iscas.ac.cn>, linux-riscv@lists.infradead.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Alexandre Ghiti <alex@ghiti.fr>, Deepak Gupta <debug@rivosinc.com>, Ved Shanbhogue <ved@rivosinc.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D35EB140002
+X-Stat-Signature: wpauggxe5gmhn8u4u61maxjkxaugy1tw
 X-Rspam-User: 
-X-HE-Tag: 1757492637-187564
-X-HE-Meta: U2FsdGVkX1+0kGaLXhmpNtrR6+M2kEjK3HrGuBYO/zHmUZIDi066EsiOFgt7TwXitV4GZJ7blTb2aLBmeGk6E4fN73124ZUAKVVE+OzttcJe34HZERoRyVYd3pErCVyntQc9csdhIklCh1Fo/F5oV4tIZPULe/9bGJP3zGjlpNGzXMbd9bhUw4rA3gug3QQ0GbW66/Bubd8XVegUvNNVhr5m8baqmfSAOoQROdbTJ3y0ZaIBHSugC1KHHiNt0y2EjPO63tFp4eDJ1I94LIwHDlaOEqI86tTMHzvrc4EJv8GH5+Xdqp/+6ZHmJco4EQmbDSMuiWF1urtHe4XXNUc4BipZxa8C8WVezV0TqvWoHdwf0mHjm+2rAPmIZSpmMilmmVl+2Ut7KkCc5rT0lU4Skxj5gtSOx8fHyoA44DlKhVyLlsDZH8QS2Wlv1PrsZ99xdy5EXWbu/1EZZ8wShCk8vUStcqUmuwodx5WKTBTfNZLKEOC9gxJ1d7d/xuE94QclktuJfkPxy2xBZk83uKf4sfxoLxSnNuhAavVOsCpNNx07eVuavPnhrLMq5ZAUAva+42KaJWGLAfwCpO58yyGebYesnLSpc+iCcICans8rfMeWDD6ygWLKoJKx8wNTIKWgk42zGVPmLmwXQWPBqnelc8OHX1S8GjMZP3J/dCxTc2HC3fdoEq1DI6KNhzD9dCaNO3x62pYk7kYWKzl1bWk3m/lH3A0hKC+ss3Q53hiAUW7NYMWIjzlWt6EEA/GxKfmaWEGXf7KU3NlwFH7TH7yEhupxrpE8vCdRtTsPrcfkKZP4bwYKHkT6uCEpyugrumHMOYAgPzDv/1xtNQVeNiLSFcAdyR/3Oi3IdBkS1bnjrIyi9yOMDBSEADE9l+szq7dClarqk2sdzCIdL7BmzKiPbz+ZaHBax+IxUQQ0apQTcQhGFz25JdwXBJ2MrmwsYGFv97bvSOzNf9h24cpzxAE
- 5PCcaWdx
- /LwcFbDeuDugY/XRKphA0o3qvIldk46jY7t0g82a3ijGrhoRyGmbsR/mgzy2xInO7895x
+X-HE-Tag: 1757492765-289675
+X-HE-Meta: U2FsdGVkX1+K4FWGvHfuBejjsiZ9YEjpt2Sr2NlpQtgIKeq54cs9tsNW0DGz/CDsLCG6vUiEpY/VIVWARL6u1iUD6rRRkwflkwaNE+XLMQQ1ynYcyuD8qzDXFz3owWE+T0LAsi61Q7h7e1cmb8ZK3Mn8HCgN/sYE0UlgsPHQ69tPidhQ7DxZl1jdBonkvi/0u2KaV6af3xt0euXxPRC7rZX+RFCIF0Ph2J29zCqg7aXMaupnVH24cL/diKQ8cTgATdCa2Z4SFeKIH7QLm0BmXjlCFjObPP+16uAQc9fTX8H+fVj37PzrWfuUm7Ayi1foF4opbbNKGJBnA8EhNyd2SP9XlSFrYOlU3KzfMwci/zPHpghlpYDaSs0SiHnl9GtygB3PmKiV/g2uXhLrUdeuHYty8Qi3vLVyAT2FLO88RlqVK7+SYHqMH0JJ/HdfDiIDmMOr1RE5jFVW+YaPyw6udHdUuYqemxxRcXhCKAHkHsnaS1i6F8MWWed3Gf0km3JJcJquNiIb+aUx0r8QGlTm8D4ERn74oOH3cW5d7zryiFqM6QDOyL9BDa3v6ivATZTvGFNEj4/NeBtc15opHX60EROKmJq6pc0G0u7FFODkVAL7csE4QJ9Zn3/MIWC2MVmNvYpjOKPJ0878atqWX0vaEvyUvY5mQ99Rs3EldJaOVUky8NuJeIZBs14i7Eddg3QNcpT23Uf7epdt5GxiDOz1EqyNUIDogBUDiyVDw+brY2XcECIapHO/FbCLbIogXFAKd3NgiyclxHwSBE4RMVjtFnHyM4azhcPyG6YR6S0JH2qfl1QUy7j6NwU9BF9f5Y+12X4fgPgKGMFsKt/cWF2UERz/tuc48wIJRjmaEy+QJc9mg7tXDtHO6V6rL1McwVkDLKZqfHcnQB98Fl/nhgfIFjhPoPW+10X7pttd+SIvdLTI9tR90mhKsIsF8qIh/2avemlGKrHyflCHBrsdBLB
+ O2T9Jkir
+ K+i6bj0soJrmB+Y/hXtzCC7Abl/HedST5p/QSNz72D3RhncVQhbhTLFg1ax2ACnOBGJJA72hm96KLI/a073NauKpoBbc9lDpvKkY/vXU0sJ098oZN/lt6VYNofv9U3Kc8uNsVpZgK7DA0ereLrOzkPrAJHZWfCGmqasphbRThIbRgVOreBD7tJsspUss0Uu4XMv7jjcNJM5TmB84LYWTr2iZXhLeZvjL5DPplPpw9XLdSwGkCnBpamyUpy/s6Ta0PSZZxZWdntVuitcjnHY/qmUhiorErH67bIOnfJm3CozUPpPo4K4CS5ZviC5NVgt0dyV8oAnsHQe+cafg2hhGvGJ5HeU7xv2lbMuB5S/VoU5Ddvjrc+rpQXwshM+JU8jiHn7KETr8GVFcpHP/WtmEz5qp6m+2h9XVIpefMT3a4It3uNR0VIY3pLAPAN5fe3OK2ysLDP/azZ3t6rEr5NaCdXyDNCVus0Qeov1U5fKNA14R5v/E=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -252,30 +123,157 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025-09-09 at 11:03:57 +0200, Peter Zijlstra wrote:
->On Tue, Sep 09, 2025 at 10:49:53AM +0200, Maciej Wieczor-Retman wrote:
->
->> >Specifically, look at arch/x86/kernel/traps.h:decode_bug(), UBSan uses
->> >UD1 /0, I would suggest KASAN to use UD1 /1.
->> 
->> Okay, that sounds great, I'll change it in this patchset and write the LLVM
->> patch later.
->
->Thanks! Also note how UBSAN encodes an immediate in the UD1 instruction.
->You can use that same to pass through your meta-data thing.
->
->MOD=1 gives you a single byte immediate, and MOD=2 gives you 4 bytes,
->eg:
->
->  0f b9 49 xx -- ud1 xx(%rcx), %rcx
->
->When poking at LLVM, try and convince the thing to not emit that
->'operand address size prefix' byte like UBSAN does, that's just a waste
->of bytes.
+Hi David,
 
-Thanks, that's good tip :)
+On Tue, 9 Sept 2025 at 19:42, David Hildenbrand <david@redhat.com> wrote:
+>
+> On 09.09.25 11:56, Chunyan Zhang wrote:
+> > Some platforms can customize the PTE soft dirty bit and make it unavailable
+> > even if the architecture allows providing the PTE resource.
+> >
+> > Add an API which architectures can define their specific implementations
+> > to detect if the PTE soft-dirty bit is available, on which the kernel
+> > is running.
+> >
+> > Signed-off-by: Chunyan Zhang <zhangchunyan@iscas.ac.cn>
+> > ---
+> >   fs/proc/task_mmu.c      | 17 ++++++++++++++++-
+> >   include/linux/pgtable.h | 10 ++++++++++
+> >   mm/debug_vm_pgtable.c   |  9 +++++----
+> >   mm/huge_memory.c        | 10 ++++++----
+> >   mm/internal.h           |  2 +-
+> >   mm/mremap.c             | 10 ++++++----
+> >   mm/userfaultfd.c        |  6 ++++--
+> >   7 files changed, 48 insertions(+), 16 deletions(-)
+> >
+> > diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+> > index 29cca0e6d0ff..20a609ec1ba6 100644
+> > --- a/fs/proc/task_mmu.c
+> > +++ b/fs/proc/task_mmu.c
+> > @@ -1058,7 +1058,7 @@ static void show_smap_vma_flags(struct seq_file *m, struct vm_area_struct *vma)
+> >        * -Werror=unterminated-string-initialization warning
+> >        *  with GCC 15
+> >        */
+> > -     static const char mnemonics[BITS_PER_LONG][3] = {
+> > +     static char mnemonics[BITS_PER_LONG][3] = {
+> >               /*
+> >                * In case if we meet a flag we don't know about.
+> >                */
+> > @@ -1129,6 +1129,16 @@ static void show_smap_vma_flags(struct seq_file *m, struct vm_area_struct *vma)
+> >               [ilog2(VM_SEALED)] = "sl",
+> >   #endif
+> >       };
+> > +/*
+> > + * We should remove the VM_SOFTDIRTY flag if the PTE soft-dirty bit is
+> > + * unavailable on which the kernel is running, even if the architecture
+> > + * allows providing the PTE resource and soft-dirty is compiled in.
+> > + */
+> > +#ifdef CONFIG_MEM_SOFT_DIRTY
+> > +     if (!pte_soft_dirty_available())
+> > +             mnemonics[ilog2(VM_SOFTDIRTY)][0] = 0;
+> > +#endif
+> > +
+> >       size_t i;
+> >
+> >       seq_puts(m, "VmFlags: ");
+> > @@ -1531,6 +1541,8 @@ static inline bool pte_is_pinned(struct vm_area_struct *vma, unsigned long addr,
+> >   static inline void clear_soft_dirty(struct vm_area_struct *vma,
+> >               unsigned long addr, pte_t *pte)
+> >   {
+> > +     if (!pte_soft_dirty_available())
+> > +             return;
+> >       /*
+> >        * The soft-dirty tracker uses #PF-s to catch writes
+> >        * to pages, so write-protect the pte as well. See the
+> > @@ -1566,6 +1578,9 @@ static inline void clear_soft_dirty_pmd(struct vm_area_struct *vma,
+> >   {
+> >       pmd_t old, pmd = *pmdp;
+> >
+> > +     if (!pte_soft_dirty_available())
+> > +             return;
+> > +
+> >       if (pmd_present(pmd)) {
+> >               /* See comment in change_huge_pmd() */
+> >               old = pmdp_invalidate(vma, addr, pmdp);
+> > diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> > index 4c035637eeb7..c0e2a6dc69f4 100644
+> > --- a/include/linux/pgtable.h
+> > +++ b/include/linux/pgtable.h
+> > @@ -1538,6 +1538,15 @@ static inline pgprot_t pgprot_modify(pgprot_t oldprot, pgprot_t newprot)
+> >   #endif
+> >
+> >   #ifdef CONFIG_HAVE_ARCH_SOFT_DIRTY
+> > +
+> > +/*
+> > + * Some platforms can customize the PTE soft dirty bit and make it unavailable
+> > + * even if the architecture allows providing the PTE resource.
+> > + */
+> > +#ifndef pte_soft_dirty_available
+> > +#define pte_soft_dirty_available()   (true)
+> > +#endif
+> > +
+> >   #ifndef CONFIG_ARCH_ENABLE_THP_MIGRATION
+> >   static inline pmd_t pmd_swp_mksoft_dirty(pmd_t pmd)
+> >   {
+> > @@ -1555,6 +1564,7 @@ static inline pmd_t pmd_swp_clear_soft_dirty(pmd_t pmd)
+> >   }
+> >   #endif
+> >   #else /* !CONFIG_HAVE_ARCH_SOFT_DIRTY */
+> > +#define pte_soft_dirty_available()   (false)
+> >   static inline int pte_soft_dirty(pte_t pte)
+> >   {
+> >       return 0;
+> > diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
+> > index 830107b6dd08..98ed7e22ccec 100644
+> > --- a/mm/debug_vm_pgtable.c
+> > +++ b/mm/debug_vm_pgtable.c
+> > @@ -690,7 +690,7 @@ static void __init pte_soft_dirty_tests(struct pgtable_debug_args *args)
+> >   {
+> >       pte_t pte = pfn_pte(args->fixed_pte_pfn, args->page_prot);
+> >
+> > -     if (!IS_ENABLED(CONFIG_MEM_SOFT_DIRTY))
+> > +     if (!IS_ENABLED(CONFIG_MEM_SOFT_DIRTY) || !pte_soft_dirty_available())
+>
+> I suggest that you instead make pte_soft_dirty_available() be false without CONFIG_MEM_SOFT_DIRTY.
+>
+> e.g., for the default implementation
+>
+> define pte_soft_dirty_available()       IS_ENABLED(CONFIG_MEM_SOFT_DIRTY)
+>
+> That way you can avoid some ifefs and cleanup these checks.
 
--- 
-Kind regards
-Maciej Wieczór-Retman
+Do you mean something like this:
+
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -1538,6 +1538,16 @@ static inline pgprot_t pgprot_modify(pgprot_t
+oldprot, pgprot_t newprot)
+ #endif
+
+ #ifdef CONFIG_HAVE_ARCH_SOFT_DIRTY
++#ifndef arch_soft_dirty_available
++#define arch_soft_dirty_available()     (true)
++#endif
++#define pgtable_soft_dirty_supported()
+(IS_ENABLED(CONFIG_MEM_SOFT_DIRTY) && arch_soft_dirty_available())
++
+ #ifndef CONFIG_ARCH_ENABLE_THP_MIGRATION
+ static inline pmd_t pmd_swp_mksoft_dirty(pmd_t pmd)
+ {
+@@ -1555,6 +1565,7 @@ static inline pmd_t pmd_swp_clear_soft_dirty(pmd_t pmd)
+ }
+ #endif
+ #else /* !CONFIG_HAVE_ARCH_SOFT_DIRTY */
++#define pgtable_soft_dirty_supported() (false)
+
+>
+>
+> But as we do also have PMD soft-dirty support, I guess we would want to call this
+> something more abstract "pgtable_soft_dirty_available" or "pgtable_soft_dirty_supported"
+>
+> --
+> Cheers
+>
+> David / dhildenb
+>
 
