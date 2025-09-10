@@ -4,86 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5C2BCA101F
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 14:31:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD781CA101F
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 14:31:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 355E58E000C; Wed, 10 Sep 2025 10:31:24 -0400 (EDT)
+	id 293338E001D; Wed, 10 Sep 2025 10:31:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 306BF8E0003; Wed, 10 Sep 2025 10:31:24 -0400 (EDT)
+	id 26A928E0003; Wed, 10 Sep 2025 10:31:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 243498E000C; Wed, 10 Sep 2025 10:31:24 -0400 (EDT)
+	id 1A8638E001D; Wed, 10 Sep 2025 10:31:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 11FE58E0003
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 10:31:24 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C59731408F9
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 14:31:23 +0000 (UTC)
-X-FDA: 83873578446.26.C53BE97
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 052338E0003
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 10:31:29 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id ADE681A0925
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 14:31:28 +0000 (UTC)
+X-FDA: 83873578656.27.B45B8A2
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 31161120011
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 14:31:21 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=bJzuPBCY
+	by imf20.hostedemail.com (Postfix) with ESMTP id 1D21D1C0005
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 14:31:26 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=dofEW7af
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757514682;
+	s=arc-20220608; t=1757514687;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oY9CpxCuu7VIslyzT8NQtX9cPt/p98lNJlRjbOnmf4s=;
-	b=vfW/oBMW/xHLJywIW2lnPaXNlbWCXVbNFabkzbZnNvgqvxaXd0JDRgLLntrvp+KSCUq2zC
-	jK+YCLk+7nkjYY8bi+xM4babgSRLaEEkQ8MteymnEPrWakUK2fUkJ7M/FwfV5Bdb73FSED
-	dR5UIws1lWvRDX+xRIjKrwBN/diTTvE=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=bJzuPBCY;
-	spf=none (imf29.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757514682; a=rsa-sha256;
+	bh=mKSB+4xL7cCmeYE/ZtEdtCjsvm7CIgVIfr0teJIjFAU=;
+	b=Yc5yPd7I2OYMWAIPSURLNu9fI+wjF8z0fFJ+tMc56uQMX99st6txKrLwxdIXJd0Y9lJu5M
+	jyscO07Q/bJOL1y1ix+pRJNAPjWKJpRcsDXYLoNPNd8TjiQGtzkqGShGJyE5TJH/8/FyXT
+	H9+mnrcSLKj/zxfHskCTkqt1C0DVK88=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757514687; a=rsa-sha256;
 	cv=none;
-	b=Z3l/Xu6HRS3xINtzzkdcsGy4f9+AsqAm2lk6/22jG6K3a4Fggioclj4juvBWV29hzFdWaR
-	1uWenE830SjI+CtBpgWuhi7srZmL742MKCUHgSFD6nnh8WVfGU/nDUjeIo77deDbFFCKlj
-	1bOM/GBLUn9N1vN+b8/xF8EvY3FiseI=
+	b=1T+Jv6TisEuz63dawoC5Jrx1Ucj6HyEDropvPYPgBLx1iiqeR+NcoIudrTSXu6L7hTqL5u
+	XxFkvkv1AFmI7uZIfbOFu/shkZBn8bC4vDdHaZfHEM/7jBsN7oWTRK0bxj5AldwyFTA7hR
+	o8W4Hyd7W2o2jyJrgEBOqOgh2ZkFlrE=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=dofEW7af;
+	spf=none (imf20.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=none
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=oY9CpxCuu7VIslyzT8NQtX9cPt/p98lNJlRjbOnmf4s=; b=bJzuPBCYqjKYFVogbJ3qqi/FIe
-	C0uu1eTHz3OAAkLZ8HAcwj7KCF+BGG3bAghHgisL5QPHWwzNu+oEviIotT1iSdhtqbp2MOkXwCtkP
-	wWgfg5LZ6CwpVekd/oR8cqZa+fpRot6JzIY9Ws4eu3fyGO7mf1pPAoifGJ1SvitP5gDvQPT5r9tQ9
-	761RkRKYv7DyMoNzEraH+O5a5hqyJWOPtkXEc1be88ArmjPYxxYpz8+JZtTkcwpjRFPFJQJDp6TVy
-	jzHt9hp4aoyn9oM6Dk2AZH8P7syFHsaacMbUJfmRogBHHTdoGYkZLIy6iz5KmiLXkhf20+KjaINg5
-	jniOEbKA==;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=mKSB+4xL7cCmeYE/ZtEdtCjsvm7CIgVIfr0teJIjFAU=; b=dofEW7af/ejhmNipPt2aD1zjQc
+	r/T1X53PF0e+BEfGBFGmptVoarxZBEN1Hr7xriD76R1w+M+nvAcyFt2PcHdzuHg+TQmoMQFUdBQaA
+	jm/o6jj1rPqB5i/QW6QVLU4W6O2YAUS0S3TvZPMLDfVQol1YTS76QR+/j8xxBFEpwnMLWAqId4scS
+	bdUpC9Pcr4BH4JRwC/mCjcKWJe0ye/ZaEnL2OllK0B+92NxsmXiDMXLQP/kJYOtEetOYDdThozbzr
+	U+eiVsgCMI71Rea2iE366+z3/3jQiRamjgJEHnieliGZegYbRdaVVmJTC4g6lcXbzYemC7sUUzZ3A
+	gI/iBz2w==;
 Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uwJPq-00000008MFb-2veg;
-	Wed, 10 Sep 2025 11:55:10 +0000
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-To: Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	linux-mm@kvack.org
-Subject: [PATCH v2 19/22] memcg: Convert mem_cgroup_from_obj_folio() to mem_cgroup_from_obj_slab()
-Date: Wed, 10 Sep 2025 12:55:01 +0100
-Message-ID: <20250910115507.1991829-20-willy@infradead.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250910115507.1991829-1-willy@infradead.org>
-References: <20250910115507.1991829-1-willy@infradead.org>
+	id 1uwLRO-0000000A1bz-3lAQ;
+	Wed, 10 Sep 2025 14:04:54 +0000
+Date: Wed, 10 Sep 2025 15:04:54 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Linus Walleij <linus.walleij@linaro.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, ksummit@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
+	linux-mm@kvack.org, imx@lists.linux.dev,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Richard Weinberger <richard@nod.at>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Ankur Arora <ankur.a.arora@oracle.com>,
+	David Hildenbrand <david@redhat.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Ira Weiny <ira.weiny@intel.com>, Nishanth Menon <nm@ti.com>,
+	Heiko =?iso-8859-1?Q?St=FCbner?= <heiko@sntech.de>,
+	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+	"Chester A. Unal" <chester.a.unal@arinc9.com>,
+	Sergio Paracuellos <sergio.paracuellos@gmail.com>,
+	Andreas Larsson <andreas@gaisler.com>
+Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
+Message-ID: <aMGFhuHyQwtwyF7B@casper.infradead.org>
+References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
+ <CACRpkdb=E-_6fZ+4mX5FJas9C5Njp3Gwrygs-cAfWNdbP594cw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CACRpkdb=E-_6fZ+4mX5FJas9C5Njp3Gwrygs-cAfWNdbP594cw@mail.gmail.com>
+X-Stat-Signature: 4n8k1b1ysxonawb37tpmwyuiquba7zu4
+X-Rspamd-Queue-Id: 1D21D1C0005
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 31161120011
-X-Stat-Signature: tik43u3fa7iu4ect639z8h5psj134ox7
-X-HE-Tag: 1757514681-143056
-X-HE-Meta: U2FsdGVkX18bdFzf4PT08lWKsOpkyu/XmoaVux+mtsLnuQod+HOZ9kUPcD6o1rjvcWjyy/pyiUz5IOt3oixgF5NT7oUPImRpzf6Q6jnyh211uszCbpQIuGQqpAfj8lOEwdQQs47Bt0+7rqqpjCEgfr/XMb5BZUOagAstYpbyYKsla8soT0vbHAU2MQ62ve2ti/NNQB64F2kma9ynFd3nI1RPEGPj7qeGWegZUQ7VpwcXI1CwZ1to8ROCQdU9lXH3whx7seyxV6bZ848n9MmDaH5ouvhA9aLFbFaI7/3012TESsjwKj2aOvSWO4SMBcEcsSuTzS57yPTuSjpe/PDUUnUhZiE2RXGapvVYqFOWLU6qjelKFTo5460f4lrWO680DQrR/VG68CqQwQf/kmq5mlffBA/nwsBAjEmCLIngoqHMqX8CDAa4RcBdC5rt0miAkwJPIvoI3tJE70yvXx/hPhYTLemibgruoyN1AJzS/bf5qUCZfJdva36eNeJDQHE7GPt01Jnso48An7FLBEcdToGGzDVY8wcFgYPeV5BCa+Rp9DVBX0oS5DnTnT1hKf2ZMpxRooVIscKHLuiyLn59R0nHAXqXVF08cHnldCwCpYoGZZTyrWRA39rfriKDpxoH7LVEhON/pH8HfX3oy2ISGbu30DAfzba+clOVcuXwho/DSnwf4axwxEk+YhDr1DGdvkkPvGEg3FnLt9UmaO5cE+p/YWXtOqqq7EEVklUlqonEbiIBCCSshTwrSBRNuB/EKjCsy6s9ANu5aqj1kqfPHqDKIIql5TJ9H9VsYA/msvtrxgEqtPGaCQdercIU9TXoXZuu8rAgdauH3F02bkQWBKPdTBnpnOIebRIes8DqlDLz8WiREcfvcMa2Ni92sHYuvbCL9t+Mz9N4HtIi8+/ipHQ2UvTNh+w7UvXYHlpvBINsv+qps8EMkj4zAwWVSe7cK5jNhyPk7IQDYkGHqMz
- /NWnQ58X
- F5wLnfE8uovdWPCvqXBaWp7qwtZJ4UK2G2JjSoVF/CHnhKppFlxbJWTER8v5t+97WDpywq+Y7TwWW9a+M/KYTwR0oGyXmEB/jB+rS8yoGPQRk1SgnEGMS0zsrXLEguXfMShz1AZcao4IjHtN+Qd+L1pz04dWocZVbOBcHvO0/gC2YxMYKvrLoLmF4RVnluD1Xc44rNVNNTqTEATghJJ7F2YSRION06oeu6r6eyOlOBjXCa0Q=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1757514686-818311
+X-HE-Meta: U2FsdGVkX195Mi3Z/HG7JbdDX/FZB3PQ2evXMyWbEfI+MsUFaovNfcl4mDquSJ0nYHdePKeByoBfPp1BdnWa0AWj9CeP8x9zRSAwn0Yjqny1xTmgc/wYKLN/bDUGeU+T+uOLe84LNK5dP5gpZg6GhVw90AijasFABpPdXgoisX8Z11cBl0ehbC4xrjjYv5aQ8LB0CU5qd0Nbq4wKseYfdUdJh8Rb41DypEg+52GmxZBwpjy+SpyNLXEt1qfxa5ZoSWWbfPpfjtctg0GkDPf+8YByySiA0kmTcqd5sTUtmIqslbfXPGNfY+IPeUXkuZScdtWz+wF0A+WH8pYv03UJKlN5Tiun45VNXs8UvjeI653rNw923jO7ItlEbBYuvNIbYF4697N5VeKtlRqgNbhsYDlTlRwvL+orF2PbZOUpkQvqJA3B8KWMwMfCoW3/PIzUGkpSIAuHq+XQwTTqscit+VRCgBI4rwN4fMxyov2D9DLzED+HCYnZFteIw+GnmzggFfDsdaJOvphqwfBTr2DJNtTT98/P3w7pEHGODP6w09cKOxlBG6MztCXZT9xpe+qy8/akfIsnesILZE2iaO8rMBlAeBgK5twk7YOy6bV6pi39UUK64d0GHdZba9hRqFQviOaKWn0hyQnQOBONRzRcbPkXQSfT03BMdZexFFYiJT8DgzkkPrU/Dy79gz2dP9Y/amGMpgVCemKdAv2YV29b1zRPWA9aVcMFEpR5Er/77+S/s7TG1Gox2a+5j4ABVrPfg3yiGakf2tdgu4KyWd2e7iRChIzLP6x6PjWablSdi88k+JhIjHZc9lFZiIXmxcFDFbHY+6Z2h26n2HN7J0AVnT5gIfqog0BbGHvyZ//9JsQkmdz2OUaKPWSU/4wBExQh473vAgtkqUw76aUqpnwbw7U4LM5LK/4F3PeX0wKmPD1Yyvk5uMPguCIM/8dNPhjZWmA9WEaEm66IDfjRykq
+ aul2bHO6
+ fBgJT7+fG+zIe6AXMH2WLlpWNe9Lban2U/kaawU17Zo9ZHqbCaudT3FBqAvIzU1+dG3JQCbU5mQi5N421s1ZF1QZGDjdV903CB3FgHca8zf2hnP+rOnn9bU0C0UQPfBE76mlKbcSiH0Na/Ug/RBIc1j3EvOZgBAdj9Ps+HrN+l6Y9z4IM9F2dSlHByhes0OvAIzmtarqZoF5CM4gUDLBcCDKiKHh/9GP5I0/U1mpv0VEi9EXBFNcRZWEXvRc9HZD32IjUVjLRvJ2XsBSJ6AE3Y+C35U9ryJy5ofU7cAsirKiovMbrzLtpqVu/3Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,82 +108,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In preparation for splitting struct slab from struct page and struct
-folio, convert the pointer to a slab rather than a folio.  This means
-we can end up passing a NULL slab pointer to mem_cgroup_from_obj_slab()
-if the pointer is not to a page allocated to slab, and we handle that
-appropriately by returning NULL.
+On Wed, Sep 10, 2025 at 03:10:05PM +0200, Linus Walleij wrote:
+> This is is done so that we can unmap *most* of the kernel
+> memory but *keep* the VMALLOC area, so that e.g. exceptions
+> can still execute and save to stack when they occur, and we can
+> call into the kernel to execute said exceptions.
+> 
+> This in practice means the area 0xf1000000-0xffffffff
+> which also includes the high exception vectors that must for
+> natural reasons also be kept in the mapping.
+> What we have mapped today (all of the time) is
+> 0xc0000000-0xffffffff.
+> 
+> A minimal 256 MB mapping from 0xf0000000-0xffffffff
+> should be able to cover this.
 
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
----
- mm/memcontrol.c | 36 +++++++++++++-----------------------
- 1 file changed, 13 insertions(+), 23 deletions(-)
-
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 257d2c76b730..f72ec90ea365 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -2555,38 +2555,28 @@ static inline void mod_objcg_mlstate(struct obj_cgroup *objcg,
- }
- 
- static __always_inline
--struct mem_cgroup *mem_cgroup_from_obj_folio(struct folio *folio, void *p)
-+struct mem_cgroup *mem_cgroup_from_obj_slab(struct slab *slab, void *p)
- {
- 	/*
- 	 * Slab objects are accounted individually, not per-page.
- 	 * Memcg membership data for each individual object is saved in
- 	 * slab->obj_exts.
- 	 */
--	if (folio_test_slab(folio)) {
--		struct slabobj_ext *obj_exts;
--		struct slab *slab;
--		unsigned int off;
--
--		slab = folio_slab(folio);
--		obj_exts = slab_obj_exts(slab);
--		if (!obj_exts)
--			return NULL;
-+	struct slabobj_ext *obj_exts;
-+	unsigned int off;
- 
--		off = obj_to_index(slab->slab_cache, slab, p);
--		if (obj_exts[off].objcg)
--			return obj_cgroup_memcg(obj_exts[off].objcg);
-+	if (!slab)
-+		return NULL;
- 
-+	obj_exts = slab_obj_exts(slab);
-+	if (!obj_exts)
- 		return NULL;
--	}
- 
--	/*
--	 * folio_memcg_check() is used here, because in theory we can encounter
--	 * a folio where the slab flag has been cleared already, but
--	 * slab->obj_exts has not been freed yet
--	 * folio_memcg_check() will guarantee that a proper memory
--	 * cgroup pointer or NULL will be returned.
--	 */
--	return folio_memcg_check(folio);
-+	off = obj_to_index(slab->slab_cache, slab, p);
-+	if (obj_exts[off].objcg)
-+		return obj_cgroup_memcg(obj_exts[off].objcg);
-+
-+	return NULL;
- }
- 
- /*
-@@ -2603,7 +2593,7 @@ struct mem_cgroup *mem_cgroup_from_slab_obj(void *p)
- 	if (mem_cgroup_disabled())
- 		return NULL;
- 
--	return mem_cgroup_from_obj_folio(virt_to_folio(p), p);
-+	return mem_cgroup_from_obj_slab(virt_to_slab(p), p);
- }
- 
- static struct obj_cgroup *__get_obj_cgroup_from_memcg(struct mem_cgroup *memcg)
--- 
-2.47.2
-
+Can I ask where the MMIO (PCI?) window lives?
 
