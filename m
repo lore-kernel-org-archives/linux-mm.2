@@ -4,117 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBD07CAC58E
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 08:01:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DAADCAC58E
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 08:01:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E10D08E0001; Wed, 10 Sep 2025 04:01:11 -0400 (EDT)
+	id D74308E0006; Wed, 10 Sep 2025 04:01:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC1538E0002; Wed, 10 Sep 2025 04:01:11 -0400 (EDT)
+	id CD6ED8E0002; Wed, 10 Sep 2025 04:01:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD6E98E0001; Wed, 10 Sep 2025 04:01:11 -0400 (EDT)
+	id B50DC8E0006; Wed, 10 Sep 2025 04:01:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A5ECB8E0002
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 04:01:11 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 579231A078C
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 08:01:11 +0000 (UTC)
-X-FDA: 83872595142.12.83B9C43
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf10.hostedemail.com (Postfix) with ESMTP id D29D7C0005
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 08:01:08 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=k6P7YCNl;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=7L+CBN32;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="d/9eUt6t";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=0VKnQ2OG;
-	spf=pass (imf10.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	by kanga.kvack.org (Postfix) with ESMTP id A255E8E0002
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 04:01:17 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 66A70C07C7
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 08:01:17 +0000 (UTC)
+X-FDA: 83872595394.20.1AD3424
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 277A44001A
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 08:01:14 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=hn2urHv2;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=hH2gs4l0;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=hn2urHv2;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=hH2gs4l0;
+	spf=pass (imf01.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757491269;
+	s=arc-20220608; t=1757491275;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QAwVYE4NG8inGvdEGs4C6XcT1t0ZcCQnS4gQbGvqQfk=;
-	b=NOnoUjakfTiv1YUzUPQmO/TQUuUOy4m66dCqmeKRTXyQbmub0C7mnPcpPNW/HJcAyogcmM
-	M4TJ3VQUVW2TljJ9kcwbth3M7GKm0dYDI7nKowAPU9METBnbvSg2DUAd63RvycQTtIN46n
-	zB79ch15XccTfpYgY0vmi51ptgBC9hs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757491269; a=rsa-sha256;
-	cv=none;
-	b=R83viGbhx55/7Hx/MOhEAXib1AdM+1eD+F+8MNZSuWmVpDRS0PQtQn3JNV5GZnGxBRlqmi
-	6ybTyMDF/wWXi+R2N23i5HlsYaXTnGEbryklx+Y2+xvv7Hk+0MBHVlhusbPy/nzzNGM+Hy
-	nj2lW3RtHGywtksJE8CnN1BT/Ix5u/A=
+	bh=rtSF476Ds9zbd6MrnqNt5+BMzWFkMQ3IyLGQJMUX73s=;
+	b=GhWZxbVWf6kjy162oChyyicszJBKWlEZBqO9F71LKgS5HE57D11F4/2wgCW4RNEGaHrPgQ
+	V5AElovmEVo/IZImxOLizilitTrHGcT5vMDsG3LA+I5xCDVyOOTtrLSvd+7MnAANz8VTsd
+	tQUvvm91m/axErnZlbnWBbyUnDUC7VY=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=k6P7YCNl;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=7L+CBN32;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="d/9eUt6t";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=0VKnQ2OG;
-	spf=pass (imf10.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	imf01.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=hn2urHv2;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=hH2gs4l0;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=hn2urHv2;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=hH2gs4l0;
+	spf=pass (imf01.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757491275; a=rsa-sha256;
+	cv=none;
+	b=DXFEJZ2rjGdurmskFAEviPiO0HDuYGRrpjYKoMV90ahMz6XXuzTJWs1tV84oEodei98Vpt
+	Aw/XttRqHmTyPV9UetYtWE3j5b/o05iZEGMvslDzNVmDYYsdVlgkJDCbuVzgjjK2c2Dw0C
+	70/ODKBmSbC/54ln17B5CPWLnIid6cI=
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id DFB2F34BFD;
-	Wed, 10 Sep 2025 08:01:05 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 4159D5CAF3;
+	Wed, 10 Sep 2025 08:01:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
 	t=1757491267; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=QAwVYE4NG8inGvdEGs4C6XcT1t0ZcCQnS4gQbGvqQfk=;
-	b=k6P7YCNldxNO9tGL0KHyGYqkJ0vwzAF74+VcWsT3RFofiTxwZzTBUpAkMGmtH1z4FctPnL
-	vyUnai1vRS3PQwiZZg1y1WilRUassffb0dcKtMSnBXDt+Ie1WXqSohGfryHOvuZvmx1jJS
-	TThTk+kLrxzKfdAfA3W48Q3KaExlp8c=
+	bh=rtSF476Ds9zbd6MrnqNt5+BMzWFkMQ3IyLGQJMUX73s=;
+	b=hn2urHv2OiGDeG2e77bSB5GER9p4pdJ++ttQNeukFcxzmDTFL1R94/ETAf5iNKiSBwR+6x
+	ZYkrNBrQDTlWBvyTDBzQhNjSR/WOnFyoSj0iyiuRMnsb1wIvmEfvLFUcAYSWx8KUF0+mEr
+	SnI+RpORYz5Ma98hX+6mHa/6FVAo+PY=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
 	s=susede2_ed25519; t=1757491267;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=QAwVYE4NG8inGvdEGs4C6XcT1t0ZcCQnS4gQbGvqQfk=;
-	b=7L+CBN32sCDv4omTTYmqZmhK1iT/Qog6f/sov3U64S3HvAVSsNP5tKfiYxW0d1fhUXBdok
-	StqLHqGqzZHZIIBg==
+	bh=rtSF476Ds9zbd6MrnqNt5+BMzWFkMQ3IyLGQJMUX73s=;
+	b=hH2gs4l0wjzny7y+HOMHTr+laUPULtcUp47P7if3WBPoc92+bHFc6mQ32QvuGbOkqQQk8a
+	9cZ0vzGBTGKnyMBA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1757491265; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1757491267; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=QAwVYE4NG8inGvdEGs4C6XcT1t0ZcCQnS4gQbGvqQfk=;
-	b=d/9eUt6t0sNGla2HbrdNRg8+vqxixCr1e+tbj5lyL1L/HBY+icNr3yQjVJW61hmZTA1NdR
-	8KdTKaEeCBg9Q+5i04Qh5HPwpNOK5CZIquEFgPwQq0E9j47eMeSxwYfZDwX3EiMHLmQHeL
-	4BBofwFAR3xV6JN4QLCfeZRTL/FDdYI=
+	bh=rtSF476Ds9zbd6MrnqNt5+BMzWFkMQ3IyLGQJMUX73s=;
+	b=hn2urHv2OiGDeG2e77bSB5GER9p4pdJ++ttQNeukFcxzmDTFL1R94/ETAf5iNKiSBwR+6x
+	ZYkrNBrQDTlWBvyTDBzQhNjSR/WOnFyoSj0iyiuRMnsb1wIvmEfvLFUcAYSWx8KUF0+mEr
+	SnI+RpORYz5Ma98hX+6mHa/6FVAo+PY=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1757491265;
+	s=susede2_ed25519; t=1757491267;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=QAwVYE4NG8inGvdEGs4C6XcT1t0ZcCQnS4gQbGvqQfk=;
-	b=0VKnQ2OGFAbX/IBUZB2pe+bZpGugEIX1G2uBwV5cQtkrlSQuvQdyxK/ofC19sjQ8Wyn2+X
-	kb30+uZYO/GxtEBA==
+	bh=rtSF476Ds9zbd6MrnqNt5+BMzWFkMQ3IyLGQJMUX73s=;
+	b=hH2gs4l0wjzny7y+HOMHTr+laUPULtcUp47P7if3WBPoc92+bHFc6mQ32QvuGbOkqQQk8a
+	9cZ0vzGBTGKnyMBA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C9DC413ABD;
-	Wed, 10 Sep 2025 08:01:05 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AE4CF13B02;
+	Wed, 10 Sep 2025 08:01:06 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id INX8MEEwwWgGJAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 10 Sep 2025 08:01:05 +0000
+	id 2A5JKkIwwWgGJAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 10 Sep 2025 08:01:06 +0000
 From: Vlastimil Babka <vbabka@suse.cz>
-Date: Wed, 10 Sep 2025 10:01:04 +0200
-Subject: [PATCH v8 02/23] slab: simplify init_kmem_cache_nodes() error
- handling
+Date: Wed, 10 Sep 2025 10:01:14 +0200
+Subject: [PATCH v8 12/23] tools/testing/vma: Implement vm_refcnt reset
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250910-slub-percpu-caches-v8-2-ca3099d8352c@suse.cz>
+Message-Id: <20250910-slub-percpu-caches-v8-12-ca3099d8352c@suse.cz>
 References: <20250910-slub-percpu-caches-v8-0-ca3099d8352c@suse.cz>
 In-Reply-To: <20250910-slub-percpu-caches-v8-0-ca3099d8352c@suse.cz>
 To: Suren Baghdasaryan <surenb@google.com>, 
@@ -127,14 +126,14 @@ Cc: Roman Gushchin <roman.gushchin@linux.dev>,
  maple-tree@lists.infradead.org, vbabka@suse.cz
 X-Mailer: b4 0.14.2
 X-Rspamd-Action: no action
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: D29D7C0005
-X-Stat-Signature: fmxp4shpfsbdr1eatu3ouxwq1pzhrp81
+X-Stat-Signature: xfi9x9h67zjubk6ockfmigt3gp1ys5is
 X-Rspam-User: 
-X-HE-Tag: 1757491268-155447
-X-HE-Meta: U2FsdGVkX1/OKuUBxekprDHKFBDaqGEz5pPpW8c5IBR5AK+KihRXlCGINZ6+sLbJoFzHlxqZWChXSiMiZsMSTBv+yxR20ou5vzvmHFmWWCTyWao5WROJGjgPK4szxup/j8UvuLzVEGYr5Rtd3pNOEX07NxYxP1a4j113y1i0TfvkR04vn0oHD0NkYKih+u6FEmhssnP4u9eiaM1fx87Rg5PWSDQMXJFVWX29VEmJezzkNT+3S9etund/Z0rfpBRtdiddSjGsMKAFcxa+J5g6Ot2+ly2NvJLAvUPmXpukO0jEwUYAyfybe58/fr+IOCkIxJizI3GIJkD72ydzHiRxE58lBIDYIrA4qVwZ9TiLyI+/AsiIHTHrrY7FpZwh2y8Cp2sovXT/zRrqxslFTTWY3sOyvJjVxVmZsl/hYdZxX3FCO6DbJ5LDy99LYllBEFG+QjLfxaiQK+Fg7w6Qt03LcacPhsgcrp3EXyogWBAQGIU0K8sxpYIhJkNT0KoxWZ4V4+GNaebq7BcjObUIrJKdARYXoykEZ3I+WQlbMdFA46Z+bfqn5pJtlXPwPvsbzmnL8M1TfQINTdRKYKgtgw2j+hMpUwQmv4fPp/lEYOGI01bOfmrFk3vChX7BY/LGaovljqlCWcEi1pnuOEZpuqU02t+y7nd+sYZmxDEnO7RpH64NpmSGyzUYqZyd8auu7AGAbv+7E9eW1dEvGa/eXdFjFBlY+/VROncNl5XaNpANW7FD380zJc3AjIzpyspOPp0LtrLGYJY+/i/KeIRTKEiSdHVQiZ9OA0ZIrzruT/WWeGLmn0LpAaj00iyxcPiymZ/TGvHC6z02x2sBiGoAnw7U3rMQGiH6WnaZyaJw5EWtedhnY0KqKSKQ3KAWZ0WcqsNIqQToj3hcMNFj+nmAumxXVrGbM4t/ot1KIp2Ki4Aar5eO7CS5ACgL2buMxgmdsTpw10sxhJWGR3j3NokRr6j
- zaxtsjYK
- nfZ2g6N0HO4ielgiliuzKXQIV+xPzuKIWysl7DODX7h6vmmVVitbLDomWRy+WGNCQNGdAIwYIC5XgGC2rtS6bmsQiMDREown+2HGXcZUWB5ai513UM0MhMzwtGmGTP+h07XmO25YDF6sWTMH9jTegOzTugOO5Y5RkO12gOC4GpA031GDm8Pm8FCGDVvb4WQAa5q7n4KRgrP5qh7v93mfMToWclYlAsTz1aNwH0/17nUc+Q9P1GGPfnKPE4QXxd1vK2aUqZ/Rv6X02hkT10y2qB7SS6++S1RfxJ6iSVlQTsI4pf0PhZXu0ySpWnFnvV25gh0hJXHsmvm/t9C16vKPcOR1XsfDZAcIvzwsl
+X-Rspamd-Queue-Id: 277A44001A
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1757491274-864401
+X-HE-Meta: U2FsdGVkX1/oTqI79/viwjNug+8MPQF7gtvk0YeQeI3oShdfD4KkLDyhbUedEx2djHYH67wtMvtHX1Jyg/2M8vKta5UpZObcW+lG5L0m0iTR0nIm2NKIjJwcV2unFfcT5HDUtEFf5OA555mvDYfr4rF3zGtVmZyqCFEpxen1zn1AJvfQRCqwqM8g21EpLzHKgyiyB5Vwxga1mOdm5oGaPWIcWrZgI84Eaoqzyxs31/Q+HilVyjxIcb+ck7/nEq6+OfHiA86gPPdVAYOTD2+BKhZUMzvn4dvdYGWK1yAUBJRkZu26pcM4j7OpHdzWFVlS7tuOxQtWid+9cPtb2oxsdyiSThserrcMviJstwzkn3OA6UG3k3M9OrsU3vKxFrnN+L66GURTuNwPoBzafHjOh/0JkKuPzirIXT1wS4ZPf0YO8ReA8WakGaHc+J1GFCelR4ydbZFyCxx6c3mcy3SiwoVMLtu+J5uXR9MZjok41KQvJ5i4twqZ6HVhdwz/6NIbWSo6Ltds1t7Bad+vVzqjZEt+eSHf9d1ObjV2tNPVsHqap0D6ut0vimuaU7eGvJm59wIhsIb36mJYKPi4OBNwBsRIRwu9YM7aw8qWEz+yFUlqCqu+T3eRCfNIwGTZZ1VIuonwUq7nChnqLARtynH96w5bUmplPC3/1ssf95KpmR7rvniuXjmI/xk+Q2dJrOBBvWqvAuwedXfLXQRXWLEAUz7APS3MZWMux6WgI2jMDe0+c5kEL7DETTMc5WQTOlVZOq07Ut3aFkLbJbNSLRsOEJQw2z4FM8ZtFc7aVqS3tn42oWNr38Jd34zDGi9unudQ/OL5a+pIKidn7HE6n2/9hOL0O6CItJabthwa1msccw6YMsnE9Zdn3/PBWivAAPy09XUGuVFeiFxSi376X56bOj32eV4DIcdKa3kECfKW3MrsyvONYJLcMHffj3eFVa9hE35LyUxS5eIgDN4E8RB
+ UY5dH9+D
+ /X7cqi/g94Qp74A+eIMSbR3snzSbXp/q7rABkwiO7rE/ZMRYq2DjcE/0ZlX2V1K2D6Ds0Jui/XFbfuf0BI5bHX+Gz/R3NBm4wBLLFReRshu81ocWti0lFhiHSwJMn4Lfm8lfMIJNJKifV96hZoV9MW4hSZHJ6UQhSUfvZTbMeKHsYkKthDhCEMRr33JWudhfKilUjSeomWw0AzDQfZkHQyW/+1dC0D/O6nqoMISbyPD46TLdjYfL9VqPqk7Jbem6y8bN0IYj4mDgLXT7aSNNETDCCBi2Xxn38bZcx5xINFehbNtBK00Z0NpWL8AHI7pm8Kt/yChu6z3+0zSk8y0pVGuHCTv9xUv0fslWz
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,33 +142,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-We don't need to call free_kmem_cache_nodes() immediately when failing
-to allocate a kmem_cache_node, because when we return 0,
-do_kmem_cache_create() calls __kmem_cache_release() which also performs
-free_kmem_cache_nodes().
+From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
 
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Add the reset of the ref count in vma_lock_init().  This is needed if
+the vma memory is not zeroed on allocation.
+
+Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
 Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 ---
- mm/slub.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ tools/testing/vma/vma_internal.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/mm/slub.c b/mm/slub.c
-index 30003763d224c2704a4b93082b8b47af12dcffc5..9f671ec76131c4b0b28d5d568aa45842b5efb6d4 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -5669,10 +5669,8 @@ static int init_kmem_cache_nodes(struct kmem_cache *s)
- 		n = kmem_cache_alloc_node(kmem_cache_node,
- 						GFP_KERNEL, node);
+diff --git a/tools/testing/vma/vma_internal.h b/tools/testing/vma/vma_internal.h
+index f8cf5b184d5b51dd627ff440943a7af3c549f482..6b6e2b05918c9f95b537f26e20a943b34082825a 100644
+--- a/tools/testing/vma/vma_internal.h
++++ b/tools/testing/vma/vma_internal.h
+@@ -1373,6 +1373,8 @@ static inline void ksm_exit(struct mm_struct *mm)
  
--		if (!n) {
--			free_kmem_cache_nodes(s);
-+		if (!n)
- 			return 0;
--		}
+ static inline void vma_lock_init(struct vm_area_struct *vma, bool reset_refcnt)
+ {
++	if (reset_refcnt)
++		refcount_set(&vma->vm_refcnt, 0);
+ }
  
- 		init_kmem_cache_node(n);
- 		s->node[node] = n;
+ static inline void vma_numab_state_init(struct vm_area_struct *vma)
 
 -- 
 2.51.0
