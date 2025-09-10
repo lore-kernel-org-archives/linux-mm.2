@@ -4,117 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25340CA101F
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 08:01:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A64CBCA101F
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 08:01:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 560338E0019; Wed, 10 Sep 2025 04:01:49 -0400 (EDT)
+	id 0304F8E0002; Wed, 10 Sep 2025 04:01:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C2078E0002; Wed, 10 Sep 2025 04:01:49 -0400 (EDT)
+	id EFC4E8E001A; Wed, 10 Sep 2025 04:01:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3635D8E0019; Wed, 10 Sep 2025 04:01:49 -0400 (EDT)
+	id D99E88E0002; Wed, 10 Sep 2025 04:01:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D5C08E0002
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 04:01:49 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D8C5F1A0788
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 08:01:48 +0000 (UTC)
-X-FDA: 83872596696.08.A333601
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf12.hostedemail.com (Postfix) with ESMTP id A15974000B
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 08:01:46 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="pm/ZH8ui";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=39y++7wt;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="pm/ZH8ui";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=39y++7wt;
-	spf=pass (imf12.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	by kanga.kvack.org (Postfix) with ESMTP id B9E4E8E0002
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 04:01:53 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8670011AD36
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 08:01:53 +0000 (UTC)
+X-FDA: 83872596906.11.0EAE82C
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 3F63B20008
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 08:01:51 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ERgfoKTg;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=hozs6Owg;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ERgfoKTg;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=hozs6Owg;
+	spf=pass (imf13.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757491306;
+	s=arc-20220608; t=1757491311;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=svSQV11Yo8FARaPQKORg7oH4qaytNWNITJXkEtgw9mY=;
-	b=faB8VxmynxnU5XpjbUK5u+Ib6SwAFBc97uzLrOu8tWDa5o+IZHF/IaMPB+u3+lDsdWu8Hv
-	K4D8WiOyTbD/Q+SPe9m9GdvevKbsF7qUg8OB74wXVnIr1QGfv+bNTW3MeTQFKsudz1lQEL
-	spFMy2hzwo57ixqB8nWZ738grnvMP28=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757491306; a=rsa-sha256;
+	bh=mzg1TCVobED1/AQhFq++VLVyKBPlbLMYE7LGG7XCRZ0=;
+	b=hi8nAUF5RFjJ0SQyVIXKgRHOvKwx2xpz0ANJaydJe4u4DgycQMi1jQQjhH55t98g8k108H
+	/RnoyKFieu40PWgIcJ53c5EM4UPyKEVRNPX4RWFov+nUU4s+1JS0nbzywcRuaFqk54ZfHp
+	RVdol6GRO64Q4RzPIA4V6mFhCa31d34=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757491311; a=rsa-sha256;
 	cv=none;
-	b=tt1uJr9xhzfYFHwS5XSgP20r2qt/asSysYwK0wDz0txtrttQkR3RRSz6O3o0AiC67QlG5F
-	knLxAWOs+djdRmjqem8Y+ngJZ7Hl+iQS/DsUoVFUYn8XB861Sp41WzVfca80FXHezqNwjS
-	j3JUykBh5gAJ6SYTIPfHmppyU7qKDj0=
+	b=bySUMVkSrqyiDLFmaLHlgZv+pIioTDuDwVmURpfiIKOTgrnnpVuLxjqrPNcyO6SfpD9zr1
+	Mw3cMTGfvMeXRNro7+WTWnnuzNW0SzhC7tAwSJPGcp0FTCObuQchBTbj5pGlIGF4+9KeuT
+	KacnI6iadwvAXDL1YjnyU8wDwNWR3o8=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="pm/ZH8ui";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=39y++7wt;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="pm/ZH8ui";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=39y++7wt;
-	spf=pass (imf12.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	imf13.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ERgfoKTg;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=hozs6Owg;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ERgfoKTg;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=hozs6Owg;
+	spf=pass (imf13.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 4491134C4C;
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 2E91B5CAE9;
 	Wed, 10 Sep 2025 08:01:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
 	t=1757491267; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=svSQV11Yo8FARaPQKORg7oH4qaytNWNITJXkEtgw9mY=;
-	b=pm/ZH8uikXCX3oNciw6mLvEfYz3eXVMZkk0o3oj36hkG6+TJDhwQ9GUbRNwLctIeWsexjz
-	1U1B14wupcf1KhBG+Or+1p6PRHQdP3VUsVt+1X0pFmw/7TBApQLUAZnvAD4LcOgQxgSfjj
-	1mmkcditv/002iyOZkGavHiYoQS54oQ=
+	bh=mzg1TCVobED1/AQhFq++VLVyKBPlbLMYE7LGG7XCRZ0=;
+	b=ERgfoKTgRTLkYNlVw80V9Xg3zPFjP5v5ZJXJWl/GCxHJkIctN0GlQ+AhibmOwcW8GTYPyt
+	KMs6m7EklV8NutCDKoIS3yARG8haYw7l/9erBzjOu6pzQFScB6ntrjGPwcflVZxtwvS2c5
+	UNXkhATnMzJ/IG60X9wTA0KUr9Qu6Og=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
 	s=susede2_ed25519; t=1757491267;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=svSQV11Yo8FARaPQKORg7oH4qaytNWNITJXkEtgw9mY=;
-	b=39y++7wtiRDAmGju397ZjgvNgru4MbxLvr7tiW+mKsihSPL+BSoc5Xms2tVazFPF9+0EGG
-	WG7plpUVmedNWQBQ==
+	bh=mzg1TCVobED1/AQhFq++VLVyKBPlbLMYE7LGG7XCRZ0=;
+	b=hozs6Owg3FUSclY4koxhH7cFPwh4S9FDMp0Cu1baao81SUBfCyAii0DRWzIZFPcwq89/r9
+	1Yt5dsf5SaN6kXDg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
 	t=1757491267; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=svSQV11Yo8FARaPQKORg7oH4qaytNWNITJXkEtgw9mY=;
-	b=pm/ZH8uikXCX3oNciw6mLvEfYz3eXVMZkk0o3oj36hkG6+TJDhwQ9GUbRNwLctIeWsexjz
-	1U1B14wupcf1KhBG+Or+1p6PRHQdP3VUsVt+1X0pFmw/7TBApQLUAZnvAD4LcOgQxgSfjj
-	1mmkcditv/002iyOZkGavHiYoQS54oQ=
+	bh=mzg1TCVobED1/AQhFq++VLVyKBPlbLMYE7LGG7XCRZ0=;
+	b=ERgfoKTgRTLkYNlVw80V9Xg3zPFjP5v5ZJXJWl/GCxHJkIctN0GlQ+AhibmOwcW8GTYPyt
+	KMs6m7EklV8NutCDKoIS3yARG8haYw7l/9erBzjOu6pzQFScB6ntrjGPwcflVZxtwvS2c5
+	UNXkhATnMzJ/IG60X9wTA0KUr9Qu6Og=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
 	s=susede2_ed25519; t=1757491267;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=svSQV11Yo8FARaPQKORg7oH4qaytNWNITJXkEtgw9mY=;
-	b=39y++7wtiRDAmGju397ZjgvNgru4MbxLvr7tiW+mKsihSPL+BSoc5Xms2tVazFPF9+0EGG
-	WG7plpUVmedNWQBQ==
+	bh=mzg1TCVobED1/AQhFq++VLVyKBPlbLMYE7LGG7XCRZ0=;
+	b=hozs6Owg3FUSclY4koxhH7cFPwh4S9FDMp0Cu1baao81SUBfCyAii0DRWzIZFPcwq89/r9
+	1Yt5dsf5SaN6kXDg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C247613B03;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7ED8013AFF;
 	Wed, 10 Sep 2025 08:01:06 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id iOAmL0IwwWgGJAAAD6G6ig
+	id WByuHkIwwWgGJAAAD6G6ig
 	(envelope-from <vbabka@suse.cz>); Wed, 10 Sep 2025 08:01:06 +0000
 From: Vlastimil Babka <vbabka@suse.cz>
-Date: Wed, 10 Sep 2025 10:01:15 +0200
-Subject: [PATCH v8 13/23] tools/testing: Add support for changes to slab
- for sheaves
+Date: Wed, 10 Sep 2025 10:01:12 +0200
+Subject: [PATCH v8 10/23] tools/testing/vma: clean up stubs in
+ vma_internal.h
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250910-slub-percpu-caches-v8-13-ca3099d8352c@suse.cz>
+Message-Id: <20250910-slub-percpu-caches-v8-10-ca3099d8352c@suse.cz>
 References: <20250910-slub-percpu-caches-v8-0-ca3099d8352c@suse.cz>
 In-Reply-To: <20250910-slub-percpu-caches-v8-0-ca3099d8352c@suse.cz>
 To: Suren Baghdasaryan <surenb@google.com>, 
@@ -125,16 +125,19 @@ Cc: Roman Gushchin <roman.gushchin@linux.dev>,
  Sidhartha Kumar <sidhartha.kumar@oracle.com>, linux-mm@kvack.org, 
  linux-kernel@vger.kernel.org, rcu@vger.kernel.org, 
  maple-tree@lists.infradead.org, vbabka@suse.cz, 
- "Liam R. Howlett" <Liam.Howlett@Oracle.com>
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+ WangYuli <wangyuli@uniontech.com>, Jann Horn <jannh@google.com>, 
+ Andrew Morton <akpm@linux-foundation.org>
 X-Mailer: b4 0.14.2
-X-Stat-Signature: x4m9k94j5jf5y9pxp7c93ca8x3ickx8z
+X-Rspamd-Action: no action
+X-Stat-Signature: qoipky5qrn8dsdagsn7c39n77ka5ts1u
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A15974000B
+X-Rspamd-Queue-Id: 3F63B20008
 X-Rspamd-Server: rspam10
-X-HE-Tag: 1757491306-797598
-X-HE-Meta: U2FsdGVkX19Sev516qiUSzLlyk75R9OG9L3+EqOoDLgv0YoBWpckDYwTcat35+h5PAeJkBehD76s+KyJJ7DhLuKsV0B+89wAvizKkwC4GxN3/O+a/gr7HMNiXdXU0mLfU3KHqJPNtXAEw/7XeABYRyGvB5UtPQ8cMz1QliWS9M13Aboz6KK0pQtPrYTm3DuV+w9JID5gcxGohbeUroVy3juiehBezw0NmPvjK4mPv4E6L0n6e4wSGOBPku0+0iFY9wg2rDyluSxlMj3iLZqLgaHWB4YPQhk2ksXHH+V4vEvgBI7XDoFVy2KSvUImw0AlqaKTal+61yqj2PVO04nCKG30EdG29B8scf2Jdcu13MDTA2GSRBOo5mP9V4qYjJPPQ8hA7GhIXspope8KW63ZTsnGLs2opvC7Oyil3+8skPRh0Cm4hullCnDuj3GjK8SkDaoEBEomnrEGGHmdDV0hM1LLM8uej5DmaigXyHWwbmGbs3E+ufFOoWalflBty/pkJuZhiaek2y9O1Er+2eBIaMd6Wg5HIqHn2ccaUXOjqpDa+vwAAjrg7JOMdq6sirX8yHqVG0aw4M8FiLspjQUofmuLQV/RgHKkngzRMDFK97UUzxLxt3V+Pnfo/Lx+2sF+ZKT7nr9GgseZbYyyIrCZL8uZoQJIJ/trrNA+S6SR+y/Cru51dJix588RLGhn5R8vA/FwZ4/3N3BJJuqLik3+Hbcpak9CCHUL8Ev9+Vl1JUETnejvMCfwbk+9xgpeuxwkxPOD3MX7X8qRjGt6pOZll4w5WSvAuJjYZZ6H31TA4TpW+5bckc3AWOESwfcNODVa0wLWnkxVDGWvuhCqVGvJkftnSOMTdmHqTNM1wWP6718P98Yxvp84FUAxijpz/LpTOTZ0WsDe/+ylaFU7Fg6Hb8xnaAyiFw32QRgRN8h5FjUunb8Bqt5c4A3rs6uRvNXYnjToEyQquElb//95KOf
- QvKgmr9E
- MldzISIe7zg0XADM/f7IwXkXazqGRYEv4tSY2bEqXbvUY1VEo69vcW1n+b4jntztJsZp9GLeIFcVF+AKwguQ72C/3OUuzJMaF7x901VTdjWB+ejC5p+MzKV4f4of+Iwy72HUBpHGES446ANGPNwWdu/t1qcSq2cLNcHSNGNB+C3IWw4ZFbRlepjWSDut0Mk9t41FDiUXux9tiaHjLuUSCH+z0wc/el8txob99EZN5+VHl8ihdoa+xC0mBzB2gDdYjZd5iB4EpQZBOF3lvVbDSrjUI6Kib1IDGgKHneUDYZHmvbrewk/HYweYLRw==
+X-HE-Tag: 1757491311-389966
+X-HE-Meta: U2FsdGVkX1+XC5F+ynY6FAUjblSaRVy73a1ViqxwymYqpt3z8Cm+7dHFNPBWJhakBZ+lrkFzp8RZVvqo2pf4zWIRa2JTq56rexn9pudhiDKyn5nb1zSIBskGJoCdbYY/LwiqDu+3IL1fBGXVDxVbYUpFgOShnQxhC2Yph6x6QM4UW1fVKIOtQSJqb/MIUSlVL+4VobZ5pz6ng1/UAyBBe5DLOPMRfLB9Ij7Shru37nOXskVKYqw8vUQQd/mZ9hC146YxlZk2C/hVtKAJ7izQ2BE15bQr9HhVC4lGknec4c/kXhMfsUcOwsygeU7Tczporw2b6cWdkDjVinI6uMyeuVEsQ1PMbW0oMRb/h2Yk1FpaC3iSQzpmq6XNvEeinantMgtwa8zK167NuWPAlObb/dpXyvjDZqHUATtC2rs8IGigAzVrP/MJutW6Cd41gv2zVwJeEPGXfmGjy2joSlKfv2e7SbVDCtrZ1Z2bAFoBGNmDwcwVk50FJIitBabZNwX2dHa8YfrMmvRavw1/plnC+Yc9ir6zZwSH9XcsOMt9Y0mUrQKhzSx2Zuu+oLSHBGGPWIhxE8wZf412hIJZCu1Rzn7EGMdLjg5r06TjzaRfBWKZniiRLqz3pM2ua00Zlipmr3rdAvysmThtmOA8KLB68wkOmJPbwUD8cPKHyghCq6vMb993k0cx/kb44LNFiohfogvB2pE2xFnEjwor/T64CeL2WAPxWkJveZi4Kggvbf3WAcoLAKGmtfOUCa6LtL3VnVI7JHhsbF+cusRBbNIcgHy8YXmkCpVI5h5DOp7neZeQleZFCyDxh8a+0NuZIXOX86HhFy5kr+9WBOycVqItPRAj26Dx1Yd3ooyBtmQav6GcjhoWVpyySv4GqwWH73Y2s9lYyfQ60Di8kb3APTj0+L81j8xcSCllTlIslAy235QMr7E9oBMhYc8BgWPHIegHHF8GTZHye4z6CIInxl7
+ +9eXnIgl
+ /Sz/Ef1evGe8TONA/xCcSIcdxJTwXkkNnt3stvaCO8neF2PrEoFFlDBAtuHEngIXPSjuBuQE/ZTbXf3KWbp/21oG6xVCwXpYNZttIhzZSElgRlbgPWrNmYuTg2ktWtxnJRsHhmNAN5A9YupD5uU3qndsifWPSxN9ThmO6i6sPt1jeZ9E3C87W6Gj5ozxqcfBV7hy5pDKHtjht2ahswFX6GT8eaa00EnHje1a1MOovlY7H+FDxcB+XEgrqo6twv466H7fIgORRikmYZ4L9oDmlXE+MfLSSvEoMAuiZBW88f8y9NCbKz6ufOLBJC7qW9VXC1WpcucPIYFpMlaZa9tLMgCC8eHGAS9NFgAM/27ML6meHHwrPwwwh2wqKhH7GazHhHsjbjhnw+5aQ3aoQ3rFDwVYekvCJCYymIGA9dNkCKZT6i/TjLvfHl0Ph1tknVhmJqLSWtmLbjyXjjLn/qGChQ3NqgtswxBxfAMAuYq4qpPavSaqNTg9uchknImhPzyD6cWmVmBukN5A4WQg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,378 +146,508 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Liam R. Howlett" <Liam.Howlett@Oracle.com>
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-The slab changes for sheaves requires more effort in the testing code.
-Unite all the kmem_cache work into the tools/include slab header for
-both the vma and maple tree testing.
+We do not need to references arguments just to avoid compiler warnings,
+the warning in question does not arise here, so remove all of the
+instances of '(void)xxx' introduced purely to avoid this warning.
 
-The vma test code also requires importing more #defines to allow for
-seamless use of the shared kmem_cache code.
+As reported by WagYuli in the referenced mail, GCC 8.3 and before will
+have issues compiling this file if parameter names are not provided, so
+ensure these are always provided.
 
-This adds the pthread header to the slab header in the tools directory
-to allow for the pthread_mutex in linux.c.
+Finally, perform a trivial fix up of kmem_cache_alloc() which technically
+has parameters in the incorrect order (as reported by Vlastimil Babka
+off-list).
 
-Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Link: https://lkml.kernel.org/r/20250826102824.22730-1-lorenzo.stoakes@oracle.com
+Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Reported-by: WangYuli <wangyuli@uniontech.com>
+Closes: https://lore.kernel.org/linux-mm/EFCEBE7E301589DE+20250729084700.208767-1-wangyuli@uniontech.com/
+Reported-by: Vlastimil Babka <vbabka@suse.cz>
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: WangYuli <wangyuli@uniontech.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 ---
- tools/include/linux/slab.h        | 137 ++++++++++++++++++++++++++++++++++++--
- tools/testing/shared/linux.c      |  26 ++------
- tools/testing/shared/maple-shim.c |   1 +
- tools/testing/vma/vma_internal.h  |  92 +------------------------
- 4 files changed, 142 insertions(+), 114 deletions(-)
+ tools/testing/vma/vma_internal.h | 167 +++++++++++++--------------------------
+ 1 file changed, 57 insertions(+), 110 deletions(-)
 
-diff --git a/tools/include/linux/slab.h b/tools/include/linux/slab.h
-index c87051e2b26f5a7fee0362697fae067076b8e84d..c5c5cc6db5668be2cc94c29065ccfa7ca7b4bb08 100644
---- a/tools/include/linux/slab.h
-+++ b/tools/include/linux/slab.h
-@@ -4,11 +4,31 @@
- 
- #include <linux/types.h>
- #include <linux/gfp.h>
-+#include <pthread.h>
- 
--#define SLAB_PANIC 2
- #define SLAB_RECLAIM_ACCOUNT    0x00020000UL            /* Objects are reclaimable */
- 
- #define kzalloc_node(size, flags, node) kmalloc(size, flags)
-+enum _slab_flag_bits {
-+	_SLAB_KMALLOC,
-+	_SLAB_HWCACHE_ALIGN,
-+	_SLAB_PANIC,
-+	_SLAB_TYPESAFE_BY_RCU,
-+	_SLAB_ACCOUNT,
-+	_SLAB_FLAGS_LAST_BIT
-+};
-+
-+#define __SLAB_FLAG_BIT(nr)	((unsigned int __force)(1U << (nr)))
-+#define __SLAB_FLAG_UNUSED	((unsigned int __force)(0U))
-+
-+#define SLAB_HWCACHE_ALIGN	__SLAB_FLAG_BIT(_SLAB_HWCACHE_ALIGN)
-+#define SLAB_PANIC		__SLAB_FLAG_BIT(_SLAB_PANIC)
-+#define SLAB_TYPESAFE_BY_RCU	__SLAB_FLAG_BIT(_SLAB_TYPESAFE_BY_RCU)
-+#ifdef CONFIG_MEMCG
-+# define SLAB_ACCOUNT		__SLAB_FLAG_BIT(_SLAB_ACCOUNT)
-+#else
-+# define SLAB_ACCOUNT		__SLAB_FLAG_UNUSED
-+#endif
- 
- void *kmalloc(size_t size, gfp_t gfp);
- void kfree(void *p);
-@@ -23,6 +43,86 @@ enum slab_state {
- 	FULL
- };
- 
-+struct kmem_cache {
-+	pthread_mutex_t lock;
-+	unsigned int size;
-+	unsigned int align;
-+	unsigned int sheaf_capacity;
-+	int nr_objs;
-+	void *objs;
-+	void (*ctor)(void *);
-+	bool non_kernel_enabled;
-+	unsigned int non_kernel;
-+	unsigned long nr_allocated;
-+	unsigned long nr_tallocated;
-+	bool exec_callback;
-+	void (*callback)(void *);
-+	void *private;
-+};
-+
-+struct kmem_cache_args {
-+	/**
-+	 * @align: The required alignment for the objects.
-+	 *
-+	 * %0 means no specific alignment is requested.
-+	 */
-+	unsigned int align;
-+	/**
-+	 * @sheaf_capacity: The maximum size of the sheaf.
-+	 */
-+	unsigned int sheaf_capacity;
-+	/**
-+	 * @useroffset: Usercopy region offset.
-+	 *
-+	 * %0 is a valid offset, when @usersize is non-%0
-+	 */
-+	unsigned int useroffset;
-+	/**
-+	 * @usersize: Usercopy region size.
-+	 *
-+	 * %0 means no usercopy region is specified.
-+	 */
-+	unsigned int usersize;
-+	/**
-+	 * @freeptr_offset: Custom offset for the free pointer
-+	 * in &SLAB_TYPESAFE_BY_RCU caches
-+	 *
-+	 * By default &SLAB_TYPESAFE_BY_RCU caches place the free pointer
-+	 * outside of the object. This might cause the object to grow in size.
-+	 * Cache creators that have a reason to avoid this can specify a custom
-+	 * free pointer offset in their struct where the free pointer will be
-+	 * placed.
-+	 *
-+	 * Note that placing the free pointer inside the object requires the
-+	 * caller to ensure that no fields are invalidated that are required to
-+	 * guard against object recycling (See &SLAB_TYPESAFE_BY_RCU for
-+	 * details).
-+	 *
-+	 * Using %0 as a value for @freeptr_offset is valid. If @freeptr_offset
-+	 * is specified, %use_freeptr_offset must be set %true.
-+	 *
-+	 * Note that @ctor currently isn't supported with custom free pointers
-+	 * as a @ctor requires an external free pointer.
-+	 */
-+	unsigned int freeptr_offset;
-+	/**
-+	 * @use_freeptr_offset: Whether a @freeptr_offset is used.
-+	 */
-+	bool use_freeptr_offset;
-+	/**
-+	 * @ctor: A constructor for the objects.
-+	 *
-+	 * The constructor is invoked for each object in a newly allocated slab
-+	 * page. It is the cache user's responsibility to free object in the
-+	 * same state as after calling the constructor, or deal appropriately
-+	 * with any differences between a freshly constructed and a reallocated
-+	 * object.
-+	 *
-+	 * %NULL means no constructor.
-+	 */
-+	void (*ctor)(void *);
-+};
-+
- static inline void *kzalloc(size_t size, gfp_t gfp)
- {
- 	return kmalloc(size, gfp | __GFP_ZERO);
-@@ -37,9 +137,38 @@ static inline void *kmem_cache_alloc(struct kmem_cache *cachep, int flags)
- }
- void kmem_cache_free(struct kmem_cache *cachep, void *objp);
- 
--struct kmem_cache *kmem_cache_create(const char *name, unsigned int size,
--			unsigned int align, unsigned int flags,
--			void (*ctor)(void *));
-+
-+struct kmem_cache *
-+__kmem_cache_create_args(const char *name, unsigned int size,
-+		struct kmem_cache_args *args, unsigned int flags);
-+
-+/* If NULL is passed for @args, use this variant with default arguments. */
-+static inline struct kmem_cache *
-+__kmem_cache_default_args(const char *name, unsigned int size,
-+		struct kmem_cache_args *args, unsigned int flags)
-+{
-+	struct kmem_cache_args kmem_default_args = {};
-+
-+	return __kmem_cache_create_args(name, size, &kmem_default_args, flags);
-+}
-+
-+static inline struct kmem_cache *
-+__kmem_cache_create(const char *name, unsigned int size, unsigned int align,
-+		unsigned int flags, void (*ctor)(void *))
-+{
-+	struct kmem_cache_args kmem_args = {
-+		.align	= align,
-+		.ctor	= ctor,
-+	};
-+
-+	return __kmem_cache_create_args(name, size, &kmem_args, flags);
-+}
-+
-+#define kmem_cache_create(__name, __object_size, __args, ...)           \
-+	_Generic((__args),                                              \
-+		struct kmem_cache_args *: __kmem_cache_create_args,	\
-+		void *: __kmem_cache_default_args,			\
-+		default: __kmem_cache_create)(__name, __object_size, __args, __VA_ARGS__)
- 
- void kmem_cache_free_bulk(struct kmem_cache *cachep, size_t size, void **list);
- int kmem_cache_alloc_bulk(struct kmem_cache *cachep, gfp_t gfp, size_t size,
-diff --git a/tools/testing/shared/linux.c b/tools/testing/shared/linux.c
-index 0f97fb0d19e19c327aa4843a35b45cc086f4f366..97b8412ccbb6d222604c7b397c53c65618d8d51b 100644
---- a/tools/testing/shared/linux.c
-+++ b/tools/testing/shared/linux.c
-@@ -16,21 +16,6 @@ int nr_allocated;
- int preempt_count;
- int test_verbose;
- 
--struct kmem_cache {
--	pthread_mutex_t lock;
--	unsigned int size;
--	unsigned int align;
--	int nr_objs;
--	void *objs;
--	void (*ctor)(void *);
--	unsigned int non_kernel;
--	unsigned long nr_allocated;
--	unsigned long nr_tallocated;
--	bool exec_callback;
--	void (*callback)(void *);
--	void *private;
--};
--
- void kmem_cache_set_callback(struct kmem_cache *cachep, void (*callback)(void *))
- {
- 	cachep->callback = callback;
-@@ -234,23 +219,26 @@ int kmem_cache_alloc_bulk(struct kmem_cache *cachep, gfp_t gfp, size_t size,
- }
- 
- struct kmem_cache *
--kmem_cache_create(const char *name, unsigned int size, unsigned int align,
--		unsigned int flags, void (*ctor)(void *))
-+__kmem_cache_create_args(const char *name, unsigned int size,
-+			  struct kmem_cache_args *args,
-+			  unsigned int flags)
- {
- 	struct kmem_cache *ret = malloc(sizeof(*ret));
- 
- 	pthread_mutex_init(&ret->lock, NULL);
- 	ret->size = size;
--	ret->align = align;
-+	ret->align = args->align;
-+	ret->sheaf_capacity = args->sheaf_capacity;
- 	ret->nr_objs = 0;
- 	ret->nr_allocated = 0;
- 	ret->nr_tallocated = 0;
- 	ret->objs = NULL;
--	ret->ctor = ctor;
-+	ret->ctor = args->ctor;
- 	ret->non_kernel = 0;
- 	ret->exec_callback = false;
- 	ret->callback = NULL;
- 	ret->private = NULL;
-+
- 	return ret;
- }
- 
-diff --git a/tools/testing/shared/maple-shim.c b/tools/testing/shared/maple-shim.c
-index 640df76f483e09f3b6f85612786060dd273e2362..9d7b743415660305416e972fa75b56824211b0eb 100644
---- a/tools/testing/shared/maple-shim.c
-+++ b/tools/testing/shared/maple-shim.c
-@@ -3,5 +3,6 @@
- /* Very simple shim around the maple tree. */
- 
- #include "maple-shared.h"
-+#include <linux/slab.h>
- 
- #include "../../../lib/maple_tree.c"
 diff --git a/tools/testing/vma/vma_internal.h b/tools/testing/vma/vma_internal.h
-index 6b6e2b05918c9f95b537f26e20a943b34082825a..d5b87fa6a133f6d676488de2538c509e0f0e1d54 100644
+index 3639aa8dd2b06ebe5b9cfcfe6669994fd38c482d..f8cf5b184d5b51dd627ff440943a7af3c549f482 100644
 --- a/tools/testing/vma/vma_internal.h
 +++ b/tools/testing/vma/vma_internal.h
-@@ -26,6 +26,7 @@
- #include <linux/mm.h>
- #include <linux/rbtree.h>
- #include <linux/refcount.h>
-+#include <linux/slab.h>
+@@ -676,9 +676,7 @@ static inline struct kmem_cache *__kmem_cache_create(const char *name,
  
- extern unsigned long stack_guard_gap;
- #ifdef CONFIG_MMU
-@@ -509,65 +510,6 @@ struct pagetable_move_control {
- 		.len_in = len_,						\
- 	}
- 
--struct kmem_cache_args {
--	/**
--	 * @align: The required alignment for the objects.
--	 *
--	 * %0 means no specific alignment is requested.
--	 */
--	unsigned int align;
--	/**
--	 * @useroffset: Usercopy region offset.
--	 *
--	 * %0 is a valid offset, when @usersize is non-%0
--	 */
--	unsigned int useroffset;
--	/**
--	 * @usersize: Usercopy region size.
--	 *
--	 * %0 means no usercopy region is specified.
--	 */
--	unsigned int usersize;
--	/**
--	 * @freeptr_offset: Custom offset for the free pointer
--	 * in &SLAB_TYPESAFE_BY_RCU caches
--	 *
--	 * By default &SLAB_TYPESAFE_BY_RCU caches place the free pointer
--	 * outside of the object. This might cause the object to grow in size.
--	 * Cache creators that have a reason to avoid this can specify a custom
--	 * free pointer offset in their struct where the free pointer will be
--	 * placed.
--	 *
--	 * Note that placing the free pointer inside the object requires the
--	 * caller to ensure that no fields are invalidated that are required to
--	 * guard against object recycling (See &SLAB_TYPESAFE_BY_RCU for
--	 * details).
--	 *
--	 * Using %0 as a value for @freeptr_offset is valid. If @freeptr_offset
--	 * is specified, %use_freeptr_offset must be set %true.
--	 *
--	 * Note that @ctor currently isn't supported with custom free pointers
--	 * as a @ctor requires an external free pointer.
--	 */
--	unsigned int freeptr_offset;
--	/**
--	 * @use_freeptr_offset: Whether a @freeptr_offset is used.
--	 */
--	bool use_freeptr_offset;
--	/**
--	 * @ctor: A constructor for the objects.
--	 *
--	 * The constructor is invoked for each object in a newly allocated slab
--	 * page. It is the cache user's responsibility to free object in the
--	 * same state as after calling the constructor, or deal appropriately
--	 * with any differences between a freshly constructed and a reallocated
--	 * object.
--	 *
--	 * %NULL means no constructor.
--	 */
--	void (*ctor)(void *);
--};
--
- static inline void vma_iter_invalidate(struct vma_iterator *vmi)
+ static inline void *kmem_cache_alloc(struct kmem_cache *s, gfp_t gfpflags)
  {
- 	mas_pause(&vmi->mas);
-@@ -652,38 +594,6 @@ static inline void vma_init(struct vm_area_struct *vma, struct mm_struct *mm)
- 	vma->vm_lock_seq = UINT_MAX;
+-	(void)gfpflags;
+-
+-	return calloc(s->object_size, 1);
++	return calloc(1, s->object_size);
  }
  
--struct kmem_cache {
--	const char *name;
--	size_t object_size;
--	struct kmem_cache_args *args;
--};
+ static inline void kmem_cache_free(struct kmem_cache *s, void *x)
+@@ -842,11 +840,11 @@ static inline unsigned long vma_pages(struct vm_area_struct *vma)
+ 	return (vma->vm_end - vma->vm_start) >> PAGE_SHIFT;
+ }
+ 
+-static inline void fput(struct file *)
++static inline void fput(struct file *file)
+ {
+ }
+ 
+-static inline void mpol_put(struct mempolicy *)
++static inline void mpol_put(struct mempolicy *pol)
+ {
+ }
+ 
+@@ -854,15 +852,15 @@ static inline void lru_add_drain(void)
+ {
+ }
+ 
+-static inline void tlb_gather_mmu(struct mmu_gather *, struct mm_struct *)
++static inline void tlb_gather_mmu(struct mmu_gather *tlb, struct mm_struct *mm)
+ {
+ }
+ 
+-static inline void update_hiwater_rss(struct mm_struct *)
++static inline void update_hiwater_rss(struct mm_struct *mm)
+ {
+ }
+ 
+-static inline void update_hiwater_vm(struct mm_struct *)
++static inline void update_hiwater_vm(struct mm_struct *mm)
+ {
+ }
+ 
+@@ -871,36 +869,23 @@ static inline void unmap_vmas(struct mmu_gather *tlb, struct ma_state *mas,
+ 		      unsigned long end_addr, unsigned long tree_end,
+ 		      bool mm_wr_locked)
+ {
+-	(void)tlb;
+-	(void)mas;
+-	(void)vma;
+-	(void)start_addr;
+-	(void)end_addr;
+-	(void)tree_end;
+-	(void)mm_wr_locked;
+ }
+ 
+ static inline void free_pgtables(struct mmu_gather *tlb, struct ma_state *mas,
+ 		   struct vm_area_struct *vma, unsigned long floor,
+ 		   unsigned long ceiling, bool mm_wr_locked)
+ {
+-	(void)tlb;
+-	(void)mas;
+-	(void)vma;
+-	(void)floor;
+-	(void)ceiling;
+-	(void)mm_wr_locked;
+ }
+ 
+-static inline void mapping_unmap_writable(struct address_space *)
++static inline void mapping_unmap_writable(struct address_space *mapping)
+ {
+ }
+ 
+-static inline void flush_dcache_mmap_lock(struct address_space *)
++static inline void flush_dcache_mmap_lock(struct address_space *mapping)
+ {
+ }
+ 
+-static inline void tlb_finish_mmu(struct mmu_gather *)
++static inline void tlb_finish_mmu(struct mmu_gather *tlb)
+ {
+ }
+ 
+@@ -909,7 +894,7 @@ static inline struct file *get_file(struct file *f)
+ 	return f;
+ }
+ 
+-static inline int vma_dup_policy(struct vm_area_struct *, struct vm_area_struct *)
++static inline int vma_dup_policy(struct vm_area_struct *src, struct vm_area_struct *dst)
+ {
+ 	return 0;
+ }
+@@ -936,10 +921,6 @@ static inline void vma_adjust_trans_huge(struct vm_area_struct *vma,
+ 					 unsigned long end,
+ 					 struct vm_area_struct *next)
+ {
+-	(void)vma;
+-	(void)start;
+-	(void)end;
+-	(void)next;
+ }
+ 
+ static inline void hugetlb_split(struct vm_area_struct *, unsigned long) {}
+@@ -959,51 +940,48 @@ static inline void vm_acct_memory(long pages)
+ {
+ }
+ 
+-static inline void vma_interval_tree_insert(struct vm_area_struct *,
+-					    struct rb_root_cached *)
++static inline void vma_interval_tree_insert(struct vm_area_struct *vma,
++					    struct rb_root_cached *rb)
+ {
+ }
+ 
+-static inline void vma_interval_tree_remove(struct vm_area_struct *,
+-					    struct rb_root_cached *)
++static inline void vma_interval_tree_remove(struct vm_area_struct *vma,
++					    struct rb_root_cached *rb)
+ {
+ }
+ 
+-static inline void flush_dcache_mmap_unlock(struct address_space *)
++static inline void flush_dcache_mmap_unlock(struct address_space *mapping)
+ {
+ }
+ 
+-static inline void anon_vma_interval_tree_insert(struct anon_vma_chain*,
+-						 struct rb_root_cached *)
++static inline void anon_vma_interval_tree_insert(struct anon_vma_chain *avc,
++						 struct rb_root_cached *rb)
+ {
+ }
+ 
+-static inline void anon_vma_interval_tree_remove(struct anon_vma_chain*,
+-						 struct rb_root_cached *)
++static inline void anon_vma_interval_tree_remove(struct anon_vma_chain *avc,
++						 struct rb_root_cached *rb)
+ {
+ }
+ 
+-static inline void uprobe_mmap(struct vm_area_struct *)
++static inline void uprobe_mmap(struct vm_area_struct *vma)
+ {
+ }
+ 
+ static inline void uprobe_munmap(struct vm_area_struct *vma,
+ 				 unsigned long start, unsigned long end)
+ {
+-	(void)vma;
+-	(void)start;
+-	(void)end;
+ }
+ 
+-static inline void i_mmap_lock_write(struct address_space *)
++static inline void i_mmap_lock_write(struct address_space *mapping)
+ {
+ }
+ 
+-static inline void anon_vma_lock_write(struct anon_vma *)
++static inline void anon_vma_lock_write(struct anon_vma *anon_vma)
+ {
+ }
+ 
+-static inline void vma_assert_write_locked(struct vm_area_struct *)
++static inline void vma_assert_write_locked(struct vm_area_struct *vma)
+ {
+ }
+ 
+@@ -1013,16 +991,16 @@ static inline void unlink_anon_vmas(struct vm_area_struct *vma)
+ 	vma->anon_vma->was_unlinked = true;
+ }
+ 
+-static inline void anon_vma_unlock_write(struct anon_vma *)
++static inline void anon_vma_unlock_write(struct anon_vma *anon_vma)
+ {
+ }
+ 
+-static inline void i_mmap_unlock_write(struct address_space *)
++static inline void i_mmap_unlock_write(struct address_space *mapping)
+ {
+ }
+ 
+-static inline void anon_vma_merge(struct vm_area_struct *,
+-				  struct vm_area_struct *)
++static inline void anon_vma_merge(struct vm_area_struct *vma,
++				  struct vm_area_struct *next)
+ {
+ }
+ 
+@@ -1031,27 +1009,22 @@ static inline int userfaultfd_unmap_prep(struct vm_area_struct *vma,
+ 					 unsigned long end,
+ 					 struct list_head *unmaps)
+ {
+-	(void)vma;
+-	(void)start;
+-	(void)end;
+-	(void)unmaps;
 -
--static inline struct kmem_cache *__kmem_cache_create(const char *name,
--						     size_t object_size,
--						     struct kmem_cache_args *args)
--{
--	struct kmem_cache *ret = malloc(sizeof(struct kmem_cache));
+ 	return 0;
+ }
+ 
+-static inline void mmap_write_downgrade(struct mm_struct *)
++static inline void mmap_write_downgrade(struct mm_struct *mm)
+ {
+ }
+ 
+-static inline void mmap_read_unlock(struct mm_struct *)
++static inline void mmap_read_unlock(struct mm_struct *mm)
+ {
+ }
+ 
+-static inline void mmap_write_unlock(struct mm_struct *)
++static inline void mmap_write_unlock(struct mm_struct *mm)
+ {
+ }
+ 
+-static inline int mmap_write_lock_killable(struct mm_struct *)
++static inline int mmap_write_lock_killable(struct mm_struct *mm)
+ {
+ 	return 0;
+ }
+@@ -1060,10 +1033,6 @@ static inline bool can_modify_mm(struct mm_struct *mm,
+ 				 unsigned long start,
+ 				 unsigned long end)
+ {
+-	(void)mm;
+-	(void)start;
+-	(void)end;
 -
--	ret->name = name;
--	ret->object_size = object_size;
--	ret->args = args;
+ 	return true;
+ }
+ 
+@@ -1071,16 +1040,13 @@ static inline void arch_unmap(struct mm_struct *mm,
+ 				 unsigned long start,
+ 				 unsigned long end)
+ {
+-	(void)mm;
+-	(void)start;
+-	(void)end;
+ }
+ 
+-static inline void mmap_assert_locked(struct mm_struct *)
++static inline void mmap_assert_locked(struct mm_struct *mm)
+ {
+ }
+ 
+-static inline bool mpol_equal(struct mempolicy *, struct mempolicy *)
++static inline bool mpol_equal(struct mempolicy *a, struct mempolicy *b)
+ {
+ 	return true;
+ }
+@@ -1088,63 +1054,62 @@ static inline bool mpol_equal(struct mempolicy *, struct mempolicy *)
+ static inline void khugepaged_enter_vma(struct vm_area_struct *vma,
+ 			  vm_flags_t vm_flags)
+ {
+-	(void)vma;
+-	(void)vm_flags;
+ }
+ 
+-static inline bool mapping_can_writeback(struct address_space *)
++static inline bool mapping_can_writeback(struct address_space *mapping)
+ {
+ 	return true;
+ }
+ 
+-static inline bool is_vm_hugetlb_page(struct vm_area_struct *)
++static inline bool is_vm_hugetlb_page(struct vm_area_struct *vma)
+ {
+ 	return false;
+ }
+ 
+-static inline bool vma_soft_dirty_enabled(struct vm_area_struct *)
++static inline bool vma_soft_dirty_enabled(struct vm_area_struct *vma)
+ {
+ 	return false;
+ }
+ 
+-static inline bool userfaultfd_wp(struct vm_area_struct *)
++static inline bool userfaultfd_wp(struct vm_area_struct *vma)
+ {
+ 	return false;
+ }
+ 
+-static inline void mmap_assert_write_locked(struct mm_struct *)
++static inline void mmap_assert_write_locked(struct mm_struct *mm)
+ {
+ }
+ 
+-static inline void mutex_lock(struct mutex *)
++static inline void mutex_lock(struct mutex *lock)
+ {
+ }
+ 
+-static inline void mutex_unlock(struct mutex *)
++static inline void mutex_unlock(struct mutex *lock)
+ {
+ }
+ 
+-static inline bool mutex_is_locked(struct mutex *)
++static inline bool mutex_is_locked(struct mutex *lock)
+ {
+ 	return true;
+ }
+ 
+-static inline bool signal_pending(void *)
++static inline bool signal_pending(void *p)
+ {
+ 	return false;
+ }
+ 
+-static inline bool is_file_hugepages(struct file *)
++static inline bool is_file_hugepages(struct file *file)
+ {
+ 	return false;
+ }
+ 
+-static inline int security_vm_enough_memory_mm(struct mm_struct *, long)
++static inline int security_vm_enough_memory_mm(struct mm_struct *mm, long pages)
+ {
+ 	return 0;
+ }
+ 
+-static inline bool may_expand_vm(struct mm_struct *, vm_flags_t, unsigned long)
++static inline bool may_expand_vm(struct mm_struct *mm, vm_flags_t flags,
++				 unsigned long npages)
+ {
+ 	return true;
+ }
+@@ -1169,7 +1134,7 @@ static inline void vm_flags_clear(struct vm_area_struct *vma,
+ 	vma->__vm_flags &= ~flags;
+ }
+ 
+-static inline int shmem_zero_setup(struct vm_area_struct *)
++static inline int shmem_zero_setup(struct vm_area_struct *vma)
+ {
+ 	return 0;
+ }
+@@ -1179,20 +1144,20 @@ static inline void vma_set_anonymous(struct vm_area_struct *vma)
+ 	vma->vm_ops = NULL;
+ }
+ 
+-static inline void ksm_add_vma(struct vm_area_struct *)
++static inline void ksm_add_vma(struct vm_area_struct *vma)
+ {
+ }
+ 
+-static inline void perf_event_mmap(struct vm_area_struct *)
++static inline void perf_event_mmap(struct vm_area_struct *vma)
+ {
+ }
+ 
+-static inline bool vma_is_dax(struct vm_area_struct *)
++static inline bool vma_is_dax(struct vm_area_struct *vma)
+ {
+ 	return false;
+ }
+ 
+-static inline struct vm_area_struct *get_gate_vma(struct mm_struct *)
++static inline struct vm_area_struct *get_gate_vma(struct mm_struct *mm)
+ {
+ 	return NULL;
+ }
+@@ -1217,16 +1182,16 @@ static inline void vma_set_page_prot(struct vm_area_struct *vma)
+ 	WRITE_ONCE(vma->vm_page_prot, vm_page_prot);
+ }
+ 
+-static inline bool arch_validate_flags(vm_flags_t)
++static inline bool arch_validate_flags(vm_flags_t flags)
+ {
+ 	return true;
+ }
+ 
+-static inline void vma_close(struct vm_area_struct *)
++static inline void vma_close(struct vm_area_struct *vma)
+ {
+ }
+ 
+-static inline int mmap_file(struct file *, struct vm_area_struct *)
++static inline int mmap_file(struct file *file, struct vm_area_struct *vma)
+ {
+ 	return 0;
+ }
+@@ -1388,8 +1353,6 @@ static inline int mapping_map_writable(struct address_space *mapping)
+ 
+ static inline unsigned long move_page_tables(struct pagetable_move_control *pmc)
+ {
+-	(void)pmc;
 -
--	return ret;
--}
+ 	return 0;
+ }
+ 
+@@ -1397,51 +1360,36 @@ static inline void free_pgd_range(struct mmu_gather *tlb,
+ 			unsigned long addr, unsigned long end,
+ 			unsigned long floor, unsigned long ceiling)
+ {
+-	(void)tlb;
+-	(void)addr;
+-	(void)end;
+-	(void)floor;
+-	(void)ceiling;
+ }
+ 
+ static inline int ksm_execve(struct mm_struct *mm)
+ {
+-	(void)mm;
 -
--#define kmem_cache_create(__name, __object_size, __args, ...)           \
--	__kmem_cache_create((__name), (__object_size), (__args))
--
--static inline void *kmem_cache_alloc(struct kmem_cache *s, gfp_t gfpflags)
--{
--	return calloc(1, s->object_size);
--}
--
--static inline void kmem_cache_free(struct kmem_cache *s, void *x)
--{
--	free(x);
--}
--
- /*
-  * These are defined in vma.h, but sadly vm_stat_account() is referenced by
-  * kernel/fork.c, so we have to these broadly available there, and temporarily
+ 	return 0;
+ }
+ 
+ static inline void ksm_exit(struct mm_struct *mm)
+ {
+-	(void)mm;
+ }
+ 
+ static inline void vma_lock_init(struct vm_area_struct *vma, bool reset_refcnt)
+ {
+-	(void)vma;
+-	(void)reset_refcnt;
+ }
+ 
+ static inline void vma_numab_state_init(struct vm_area_struct *vma)
+ {
+-	(void)vma;
+ }
+ 
+ static inline void vma_numab_state_free(struct vm_area_struct *vma)
+ {
+-	(void)vma;
+ }
+ 
+ static inline void dup_anon_vma_name(struct vm_area_struct *orig_vma,
+ 				     struct vm_area_struct *new_vma)
+ {
+-	(void)orig_vma;
+-	(void)new_vma;
+ }
+ 
+ static inline void free_anon_vma_name(struct vm_area_struct *vma)
+ {
+-	(void)vma;
+ }
+ 
+ /* Declared in vma.h. */
+@@ -1495,7 +1443,6 @@ static inline int vfs_mmap_prepare(struct file *file, struct vm_area_desc *desc)
+ 
+ static inline void fixup_hugetlb_reservations(struct vm_area_struct *vma)
+ {
+-	(void)vma;
+ }
+ 
+ static inline void vma_set_file(struct vm_area_struct *vma, struct file *file)
+@@ -1506,13 +1453,13 @@ static inline void vma_set_file(struct vm_area_struct *vma, struct file *file)
+ 	fput(file);
+ }
+ 
+-static inline bool shmem_file(struct file *)
++static inline bool shmem_file(struct file *file)
+ {
+ 	return false;
+ }
+ 
+-static inline vm_flags_t ksm_vma_flags(const struct mm_struct *, const struct file *,
+-			 vm_flags_t vm_flags)
++static inline vm_flags_t ksm_vma_flags(const struct mm_struct *mm,
++		const struct file *file, vm_flags_t vm_flags)
+ {
+ 	return vm_flags;
+ }
 
 -- 
 2.51.0
