@@ -4,116 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9EB0FCA0FED
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 15:15:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C113CA0FED
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 15:16:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 06E4C8E0011; Wed, 10 Sep 2025 11:15:22 -0400 (EDT)
+	id A9DD18E0017; Wed, 10 Sep 2025 11:16:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F2D298E0006; Wed, 10 Sep 2025 11:15:21 -0400 (EDT)
+	id A4E3D8E0006; Wed, 10 Sep 2025 11:16:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E1C358E0011; Wed, 10 Sep 2025 11:15:21 -0400 (EDT)
+	id 93D0D8E0017; Wed, 10 Sep 2025 11:16:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C97C88E0006
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 11:15:21 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 90D2711B076
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 15:15:21 +0000 (UTC)
-X-FDA: 83873689242.10.11CE6F9
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 4DDD3C0017
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 15:15:19 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=M030sYAr;
-	spf=pass (imf10.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7DA9B8E0006
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 11:16:30 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 33BB8160957
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 15:16:30 +0000 (UTC)
+X-FDA: 83873692140.11.715BBF1
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 23F0320014
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 15:16:27 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=none;
+	spf=pass (imf13.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757517319;
+	s=arc-20220608; t=1757517388;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mO4BXqgIRoVXuE8zMomfonqu7ftxdJy1svObtMu/mjo=;
-	b=Wr/C7rAgDYsTm0lm32T4TAtOqjIf36+wHhTgOFwbjvNizXuT6zBYg393FuM9GvNHzUsR0R
-	/MG4P87APdgv2DYN5bYH0OiLHaRiV3q6NR2XMQLABSaqqubzMQ/428jvJF/jOEkKUXcs3G
-	UBjNUV8z01M1YtxXM6nVFayZKZFVhiw=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=M030sYAr;
-	spf=pass (imf10.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757517319; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nmKEgDDDv5jHwALQIQWP1dQM1C3WliCJzN4vuebfqtc=;
+	b=Dbxus97IhK91qihJcpxR5+fl55iE1DAzCycKO0ux9JmI8GNI14KMfQchxI7iaWv9eu5YhB
+	oY5kkX5fhg/Khos681YY1AQG45KTT7R1dQgS+3aagYr7ojIVYHEBP0YYj1oiNN9Hto+DNN
+	7emnV9qnx/0+Hw0aN9Sa9JlRnKn0MgQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757517388; a=rsa-sha256;
 	cv=none;
-	b=fsJF+XZUAN/THh6rMGtlF9WHe1lYKVTWP0MuaLCnJy4HSkhybTdLfnolV//8AVX6GiaBIs
-	pty8yNL0Kt9Z3uFv+bI3kAinjqUHD20AtwaONf9+IKldQrSdOrYvFEzQbA2GeMHvUY0klK
-	tg8fbC9JyH/uNv3lOAcb2fEJipNBUQQ=
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b079c13240eso62252266b.1
-        for <linux-mm@kvack.org>; Wed, 10 Sep 2025 08:15:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1757517318; x=1758122118; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mO4BXqgIRoVXuE8zMomfonqu7ftxdJy1svObtMu/mjo=;
-        b=M030sYAr7WGTV12E3seqfJmn6hdRq+VD0tUyoV1CgNXrIGUF+G66UpmJXyzndF1W9+
-         PfVSdb9lb8F8eA7l43T/zYxVE2kykYsjt63eDi3bmY9Qqy0/A6GBfWEpCfKuT1WiXNbr
-         nxRBDiBdElv2AtpnNfu+t54M9d/rraHXibAjWltAiJFbzoaUOVvjP31ZNHrmnAn1X7k6
-         p+xryKIBq93ePvScB7lBI0zS4AOnbDY46vyU9p59LRBcEZadMy6nSZx0nRfj5eqq2Cix
-         KXN+/8faK9xf3GfbfA9Ij/KIxrxMWTOb0a6yLvHYb6mgJ8Q2eh7bYnf8pvTklnd8kv8P
-         fe4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757517318; x=1758122118;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mO4BXqgIRoVXuE8zMomfonqu7ftxdJy1svObtMu/mjo=;
-        b=e+CpacL9VFfRGEpjgmGYfxJ66LASWnQ5WIn9aOkEF6NmTjyuut9EnBlQfliDTE0DDH
-         OLim7mm4DqKh4raNcP2yhZD4ubsxjpGvqGGhk5OMmPtlQzOQ6+t2WHNJ1XVy9D2R/r1A
-         mi2W0Tc5fBhFzuajZh5tnSa/qSznubIe72SHkh+2WpL59bO9iXfGEJRPne5I8I+srwwx
-         dcO2B4PhzEughP5pL+F/GlzT64vpt+4KUJVfSdLlicx+zNwYkxwW+VeQzSoS7g47FHxH
-         PQLmBBW1yZ+kH5XlMQMZdBGQvUvEOtDt+o2qfeRNtCafhUlyNgnqXFX59CEpZcxQTL5P
-         jEPg==
-X-Forwarded-Encrypted: i=1; AJvYcCVZBPOWFWBPLsN0rXjyr5smYaRbiCogOKeG3R0UMgUo8qP3ePEaKoZXtIOJk9BKMZ/X8jHOfT9q6A==@kvack.org
-X-Gm-Message-State: AOJu0YxdpONNGOBI/Qv1BMZvS/v+jJAghYMy6tBwWznmZ5sOw4KbRh+h
-	w6BoFPIFJD6lzrTfY5ANYghLCMgxo5BPWvpNAKF4qluurDl47Bhf47AYbL3++POxyfI=
-X-Gm-Gg: ASbGncuKnXs+rqNtGkF6x4yVreiZrK1pX2o6uLItDgKp1uKyvqD+3qKpCqMfHmDyh/3
-	1+CCBk8rlLWhQSFheyfGbNuszOZ7q2fZa4Qb4ecYnt/HHAPrN0JFiSUEWCUhmZx58cGwsTG2+RF
-	Dn0x6OsgErQgzbyNsXq95jOT303Y4lNnzdIg2UQtFWrG8WWh1NXCetdvdPDon0g7nJhcoRxSN4g
-	MbrYTSK/CAhKAl943hrecHJv3J0yjDWq0q6lQMgde73zF4sh+zq+27tk0HzZJ1SZMO+AMxADdJl
-	CEeVlcC1CI3oRUsmKWvxln/H+mmOySSVeMGhyvaOrUG0zsIi5DBS/0g1UPJ3dpPUNVsfGux31P8
-	MMVLgMeEEpxmnvcMguQ4iY/jdTMdYakpl1Q==
-X-Google-Smtp-Source: AGHT+IFL0J4ew5U+5dXo6aHE9wyYqH4CItTcJJ1lajrP0Q5QwvYyOBbSzJdZxQClKY9ffOUW1Ole4w==
-X-Received: by 2002:a17:907:d91:b0:b04:626e:f43d with SMTP id a640c23a62f3a-b04b167b9f2mr1217252166b.47.1757517317226;
-        Wed, 10 Sep 2025 08:15:17 -0700 (PDT)
-Received: from localhost (109-81-31-43.rct.o2.cz. [109.81.31.43])
-        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b0783047123sm182588966b.14.2025.09.10.08.15.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Sep 2025 08:15:16 -0700 (PDT)
-Date: Wed, 10 Sep 2025 17:15:14 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: zhongjinji <zhongjinji@honor.com>
-Cc: rientjes@google.com, shakeel.butt@linux.dev, akpm@linux-foundation.org,
-	tglx@linutronix.de, liam.howlett@oracle.com,
-	lorenzo.stoakes@oracle.com, surenb@google.com, lenb@kernel.org,
-	rafael@kernel.org, pavel@kernel.org, linux-mm@kvack.org,
-	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	liulu.liu@honor.com, feng.han@honor.com
-Subject: Re: [PATCH v9 1/2] mm/oom_kill: Thaw the entire OOM victim process
-Message-ID: <aMGWAg5jIitYCXdZ@tiehlicka>
-References: <20250910143726.19905-1-zhongjinji@honor.com>
- <20250910143726.19905-2-zhongjinji@honor.com>
+	b=uSnVLQAca6xcQZ4k+SdU9Mv9i1BMrBJ6Q/wtgOBYggiAB1SlBuQ4Czitucl5x9AA8zvT+F
+	jIadOKx7yC1Gx/6MlKMB5DpVwQbP/DCjKse6mio/kr167V1dXaiOji+3M6jsrEy6TlVF2w
+	zMzxFX5HZ/lww/4oa4e2gWyAIf7x3Fw=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=none;
+	spf=pass (imf13.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AD96716F2;
+	Wed, 10 Sep 2025 08:16:18 -0700 (PDT)
+Received: from [10.57.67.148] (unknown [10.57.67.148])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 99AFA3F694;
+	Wed, 10 Sep 2025 08:16:20 -0700 (PDT)
+Message-ID: <9de08024-adfc-421b-8799-62653468cf63@arm.com>
+Date: Wed, 10 Sep 2025 17:16:18 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250910143726.19905-2-zhongjinji@honor.com>
-X-Rspamd-Queue-Id: 4DDD3C0017
-X-Stat-Signature: fgsm9ejaae7si7x8gon7ybwnggpbb1wi
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/7] mm: introduce local state for lazy_mmu sections
+To: David Hildenbrand <david@redhat.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
+ <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ "David S. Miller" <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>,
+ Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
+ Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
+ Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
+ Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org,
+ Mark Rutland <Mark.Rutland@arm.com>
+References: <20250908073931.4159362-1-kevin.brodsky@arm.com>
+ <20250908073931.4159362-3-kevin.brodsky@arm.com>
+ <d23ea683-cca4-4973-88b1-4f6fd9b22314@redhat.com>
+ <ca2054ad-b163-4e61-8ec4-6f2e36461628-agordeev@linux.ibm.com>
+ <e7acb889-1fe9-4db3-acf4-39f4960e8ccd@redhat.com>
+ <2fecfae7-1140-4a23-a352-9fd339fcbae5-agordeev@linux.ibm.com>
+ <e521b1f4-3f2b-48cd-9568-b9a4cf4c4830@redhat.com>
+ <47ee1df7-1602-4200-af94-475f84ca8d80@arm.com>
+ <29383ee2-d6d6-4435-9052-d75a263a5c45@redhat.com>
+Content-Language: en-GB
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+In-Reply-To: <29383ee2-d6d6-4435-9052-d75a263a5c45@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 23F0320014
+X-Stat-Signature: sg1yftd3tc559sfde4t3h9g5dom3qyk1
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1757517319-213745
-X-HE-Meta: U2FsdGVkX18bi5vLJqzp96vMD9JO4tOr/gMc7Sp7iNv8zxbLeum8gTWrg3foCDGHNPQ6iMzHTfSLlM32CHqFfnnEGMhyTt0SmuVVsfE14Mxiaiy0KTSBQvRKbbaLgaNhqsTOS8Is/9Rowh45E+fJIwZMkZm7G5Fi8wcjOuPd3+xjSAFJutwBEoAvYVegQnKFxKdRt5QGWn3P1d4b5/I3j3kbOTnvdstNJfcl3MUS7cJLIqn9NW1ILtbWoZsypyaG+FPpgUP+yBT3/pTktz6dgp+vKIGUjrpJ0PC0WSEkTRAyD5F8KevuQgEfTGrs0GmO4RxMfPVjNA7lZOYiz1kRaib8nLd1CMq0gszyjW8erBgwAHpeAVUGLt4uH+1iMD6JLvcEdsQnSlDuO54L6UI7IqrVlZ3gUaArgVk3ClJ+dZGKm7WB1IaYfwZM4SNIOWp7u+DE2oW3bRXh+uwG2jg4V0R4n99K59AC8G40OOMPWvFUnMrwCox4IVbCarPwOnNxA+5Ngw27J889Bp/BHNR/KyhqsLzsopXL7wFNzBnWswTqYigZar0y/ohOdQY317DqtjrPNPEBJG3UctfSxqhWDG9UYPPegxDgldmLqMz3TJeU3xf4taywwBheOK5qSV3K5UhYjkZQzR0ksRFns4yOvqKepQQAF5L7D6hC+53iiVVDJuNbicH1HPFBweNCIuzrEaF6WPI1hcyLypYXWDlq3qxfLmJAnOzOlIAFQJ6pQivNpoby6uCJoVeisEDf7cJxwuwvUFNeoWG6kL7wDyy+sXAbw1sh10eXOjjYPq5h2fLmH28se0ADJTLqke/qYJNYaZzdIJbi3C7WUAYsJlBEQ22/Dixkc25i9U4fs9m7Ax9RnMCrz+9VqsmbCTZ1MJKueFmJMDRuSCiHRm10RIBuA0FxxnlFWixqk0/YfQ6MqiGD21f3Bc51wGZq17f9Hv2octniBzfMb4lmI6ZEnNz
- EU/m0Aca
- r7aAGcpyLyJfft5jjay2MmfD3OU+/Y5T+qi95JbVezOzunlzzPTt5vRYT/WVY+IFYgzt05cVwuEDBKaryLOFMXt6qWAJ6/DfoD2ksOnfkHnqqcSEA0GbIo/0UF5s9a+gyXeOjaIqaIE+qKQlrbJAMKZKhpODeQOz8II63z7fwIeTZl1zKASR9JP8CsRPK1i19bqkZ4mhKEHyNfLNRDEyfJLG9loO4GSgDQc+JRWFxCTOnuaMZAxoZ9iOTx0dqQkkL6HJb1p0J3MmXiojc/AulcshLzCoKZf9TUXkqWC4ElX3b6gCnny1s5vcT+nRwimSdvboaJOUrjJJckmf8A9fG/YiiIoAQWE7LhVt1lNsenmqzdIw4ARevryV/LDdDgbaacu+o627z1RyawXM7rSJCdpXWovPBCYLr6Eumh879J+HP4s4Slzxc2YW/+SgpuLFMtzNBwRuPbnBst+mg01Uteu54sNodcM4MDcstaTIvtA2Qtoeljg8py8wcKUNFJohxUR57M4RILLUCDpw=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1757517387-970089
+X-HE-Meta: U2FsdGVkX1+9+KxcGd39YF+++gopnqsb5Pxmd7RaL2B5wbnuG/3SZXMaWdRJBywrzaZK0ki9+VNT0u5NCV85iQmRvzQBDouKNDz/GxBobVt2B8e0ktwytImuoC6g/ddqMoMVnqoMVGSUSMbO/x3wZQoO72eMvp40gkMvQZ5a6RbHABLyaViHcyouPZ78NN8sdQZxzGQrWoxMeaK74I48NXYjlOrRRSR44y1Pv0IB6tGvEQT+ieKWyxx97PI1wipFvI1zxtSQXOlZutihUls+0ap+dTMI9fUkwOPcaLepWLgMrVgGMlmpHbT3YmBHw+n7UsYuf80uEFEPn3LuixWkZS/3JXuk84C0E5vJIDXlX910MLQ7d9TkqslG7dpfNagS+kyzZDPR2n9aOGUO1wWfVBUTuQsCPA+FAi0jS1j7YaRbCRw/vIf1znVlXuM4hiBcni7HO5kUoUJurYKo0D5TudfKqiVJMMLO6i2lexpKUros5XcPE15Ko046JcxCWcfcFiJxA/m/eyvDzXsA8F1EOCOQJ8twZKjtB7wtK4UDKWTubFcKlpJAvHshhTgGQ91WoxfKQecOvLRnJdnsjT4tvby5utK0eKCyLsQE1ILkBv+G/eNqS+do/fnAS8lV95033nMH1jFjhY2lWJC5VHWodhwsEjuxGe9JWYVoXnj2RmZe+cizB9pgVitYaPxQhEFKGKN/dsvsbNRO5Vr8oSB5kv0l3vxFe0W7ObCVjZY50N2f+FV4iTDB7s8ZPml6QSVFUpVbuWt+itAvz7caDRIkRYc3I5gicndGO4Ap46uaAJcpQgNjkyOkPnKpjIxwaRW48qfR3nbGgE8wzo0PYrjSMcJz3IHQmLyyOzYTwMm5KeMMmjpl2mlbOAzIVl24m6jGoJb3Qopy7k8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,143 +111,203 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed 10-09-25 22:37:25, zhongjinji wrote:
-> OOM killer is a mechanism that selects and kills processes when the system
-> runs out of memory to reclaim resources and keep the system stable. But the
-> oom victim cannot terminate on its own when it is frozen, even if the OOM
-> victim task is thawed through __thaw_task(). This is because __thaw_task() can
-> only thaw a single OOM victim thread, and cannot thaw the entire OOM victim
-> process.
-> 
-> Also, freezing_slow_path() decides whether a task is an OOM victim by checking
-> the task's TIF_MEMDIE flag. When a task is thawed, the freezer bypasses PM
-> freezing and cgroup freezing states to thaw it. But TIF_MEMDIE is not a thread
-> group shared flag, and only one thread is marked with TIF_MEMDIE. If other
-> threads are thawed, they may still remain frozen due to PM freezing and cgroup
-> freezing states.
-> 
-> To solve this, thaw_process() is introduced to thaw all threads of the victim,
-> ensuring every thread in the victim process can be thawed. The freezer uses
-> tsk_is_oom_victim() to determine whether a task is an OOM victim, because
-> tsk->signal->oom_mm is data shared by all threads. This allows all victim threads
-> to rely on it to be thawed.
++Mark Rutland
 
-A history detour for future reference.
-TIF_MEMDIE was a "this is the oom victim & it has access to memory
-reserves" flag in the past. It has that thread vs. process problems and
-tsk_is_oom_victim was introduced later to get rid of them and other
-issues as well as the guarantee that we can identify the oom victim's mm reliably 
-for other oom_reaper. I recommend reading git log of mm/oom_kill.c to
-get hairy history of that area and how tricky it is due all the subtle
-interaction with process exit paths etc.
+On 09/09/2025 16:28, David Hildenbrand wrote:
+>>>>>>> Can't we just use an "enum lazy_mmu_state" and call it a day?
+>>>>>>
+>>>>>> I could envision something completely different for this type on
+>>>>>> s390,
+>>>>>> e.g. a pointer to a per-cpu structure. So I would really ask to
+>>>>>> stick
+>>>>>> with the current approach.
+>>
+>> This is indeed the motivation - let every arch do whatever it sees fit.
+>> lazy_mmu_state_t is basically an opaque type as far as generic code is
+>> concerned, which also means that this API change is the first and last
+>> one we need (famous last words, I know).
+>
+> It makes the API more complicated, though. :)
 
-> 
-> This change will thaw the entire victim process when OOM occurs,
-> ensuring that the oom victim can terminate on its own.
-> 
-> Signed-off-by: zhongjinji <zhongjinji@honor.com>
+Somewhat, but in the regular case where enter() is called followed by
+leave() there is really no complexity for the caller, just an extra
+local variable.
 
-Acked-by: Michal Hocko <mhocko@suse.com>
-Thanks!
-> 
-> Acked-by: Michal Hocko <mhocko@suse.com>
-> ---
->  include/linux/freezer.h |  2 ++
->  kernel/freezer.c        | 20 +++++++++++++++++++-
->  mm/oom_kill.c           | 10 +++++-----
->  3 files changed, 26 insertions(+), 6 deletions(-)
-> 
-> diff --git a/include/linux/freezer.h b/include/linux/freezer.h
-> index b303472255be..32884c9721e5 100644
-> --- a/include/linux/freezer.h
-> +++ b/include/linux/freezer.h
-> @@ -47,6 +47,7 @@ extern int freeze_processes(void);
->  extern int freeze_kernel_threads(void);
->  extern void thaw_processes(void);
->  extern void thaw_kernel_threads(void);
-> +extern void thaw_process(struct task_struct *p);
->  
->  static inline bool try_to_freeze(void)
->  {
-> @@ -80,6 +81,7 @@ static inline int freeze_processes(void) { return -ENOSYS; }
->  static inline int freeze_kernel_threads(void) { return -ENOSYS; }
->  static inline void thaw_processes(void) {}
->  static inline void thaw_kernel_threads(void) {}
-> +static inline void thaw_process(struct task_struct *p) {}
->  
->  static inline bool try_to_freeze(void) { return false; }
->  
-> diff --git a/kernel/freezer.c b/kernel/freezer.c
-> index 6a96149aede9..ddc11a8bd2ea 100644
-> --- a/kernel/freezer.c
-> +++ b/kernel/freezer.c
-> @@ -10,6 +10,7 @@
->  #include <linux/export.h>
->  #include <linux/syscalls.h>
->  #include <linux/freezer.h>
-> +#include <linux/oom.h>
->  #include <linux/kthread.h>
->  
->  /* total number of freezing conditions in effect */
-> @@ -40,7 +41,7 @@ bool freezing_slow_path(struct task_struct *p)
->  	if (p->flags & (PF_NOFREEZE | PF_SUSPEND_TASK))
->  		return false;
->  
-> -	if (test_tsk_thread_flag(p, TIF_MEMDIE))
-> +	if (tsk_is_oom_victim(p))
->  		return false;
->  
->  	if (pm_nosig_freezing || cgroup_freezing(p))
-> @@ -206,6 +207,23 @@ void __thaw_task(struct task_struct *p)
->  		wake_up_state(p, TASK_FROZEN);
->  }
->  
-> +/*
-> + * thaw_process - Thaw a frozen process
-> + * @p: the process to be thawed
-> + *
-> + * Iterate over all threads of @p and call __thaw_task() on each.
-> + */
-> +void thaw_process(struct task_struct *p)
-> +{
-> +	struct task_struct *t;
-> +
-> +	rcu_read_lock();
-> +	for_each_thread(p, t) {
-> +		__thaw_task(t);
-> +	}
-> +	rcu_read_unlock();
-> +}
-> +
->  /**
->   * set_freezable - make %current freezable
->   *
-> diff --git a/mm/oom_kill.c b/mm/oom_kill.c
-> index 25923cfec9c6..88356b66cc35 100644
-> --- a/mm/oom_kill.c
-> +++ b/mm/oom_kill.c
-> @@ -772,12 +772,12 @@ static void mark_oom_victim(struct task_struct *tsk)
->  		mmgrab(tsk->signal->oom_mm);
->  
->  	/*
-> -	 * Make sure that the task is woken up from uninterruptible sleep
-> -	 * if it is frozen because OOM killer wouldn't be able to free
-> -	 * any memory and livelock. freezing_slow_path will tell the freezer
-> -	 * that TIF_MEMDIE tasks should be ignored.
-> +	 * Make sure that the process is woken up from uninterruptible sleep
-> +	 * if it is frozen because OOM killer wouldn't be able to free any
-> +	 * memory and livelock. The freezer will thaw the tasks that are OOM
-> +	 * victims regardless of the PM freezing and cgroup freezing states.
->  	 */
-> -	__thaw_task(tsk);
-> +	thaw_process(tsk);
->  	atomic_inc(&oom_victims);
->  	cred = get_task_cred(tsk);
->  	trace_mark_victim(tsk, cred->uid.val);
-> -- 
-> 2.17.1
+There are complications where we want to exit lazy_mmu temporarily, as
+in mm/kasan/shadow.c [1k], but this is in fact unavoidable. Chatting
+with Mark Rutland, I realised that to truly support nested sections,
+this must be handled in a special way in any case. To be clear, I am
+referring to this situation:
 
--- 
-Michal Hocko
-SUSE Labs
+__kasan_populate_vmalloc:
+    apply_to_page_range:
+        arch_enter_lazy_mmu_mode() {1}
+
+        kasan_populate_vmalloc_pte:
+            arch_leave_lazy_mmu_mode() {2}
+            arch_enter_lazy_mmu_mode() {3}
+
+        arch_leave_lazy_mmu_mode() {4}
+
+With the approach this series takes, call {2} is made safe by passing a
+special parameter (say LAZY_MMU_FLUSH) that forces lazy_mmu to be fully
+exited - and call {3} will then re-enter lazy_mmu. This works regardless
+of whether __kasan_populate_vmalloc() has been called with lazy_mmu
+already enabled (i.e. calls {1} and {4} can be nested).
+
+On the other hand, with a pagefault_disabled-like approach, there is no
+way to instruct call {3} to fully exit lazy_mmu regardless of the
+nesting level.
+
+It would be possible to make both approaches work by introducing a new
+API, along the lines of:
+- int arch_disable_save_lazy_mmu_mode() (the return value indicates the
+nesting level)
+- void arch_restore_lazy_mmu_mode(int state) (re-enter lazy_mmu at the
+given nesting level)
+
+This is arguably more self-documenting than passing LAZY_MMU_FLUSH in
+call {2}. This API is however no simpler when using a
+pagefault_disabled-like approach (and less consistent than when always
+saving state on the stack).
+
+[1k]
+https://lore.kernel.org/all/0d2efb7ddddbff6b288fbffeeb10166e90771718.1755528662.git.agordeev@linux.ibm.com/
+
+>
+>>
+>> I mentioned in the cover letter that the pkeys-based page table
+>> protection series [1] would have an immediate use for lazy_mmu_state_t.
+>> In that proposal, any helper writing to pgtables needs to modify the
+>> pkey register and then restore it. To reduce the overhead, lazy_mmu is
+>> used to set the pkey register only once in enter(), and then restore it
+>> in leave() [2]. This currently relies on storing the original pkey
+>> register value in thread_struct, which is suboptimal and most
+>
+> Can you elaborate why this is suboptimal? See below regarding the size
+> of task_struct.
+
+Suboptimal in the sense that we're allocating fixed space for each task
+that we are almost never using.
+
+>
+>> importantly doesn't work if lazy_mmu sections nest.
+>
+> Can you elaborate why it would be problematic with nesting (if we
+> would have a count
+> and can handle the transition from 0->1 and 1->0)?
+
+It doesn't work in that specific patch I linked - but yes it can be made
+to work if we have both an extra task_struct member to store the level
+of nesting *and* an extra thread_struct member to store the saved pkey
+register value (both of which are only used while in lazy_mmu).
+
+
+>
+>> With this series, we
+>> could instead store the pkey register value in lazy_mmu_state_t
+>> (enlarging it to 64 bits or more).
+>
+> Yes.
+>
+>>
+>> I also considered going further and making lazy_mmu_state_t a pointer as
+>> Alexander suggested - more complex to manage, but also a lot more
+>> flexible.
+>>
+>>>>> Would that integrate well with LAZY_MMU_DEFAULT etc?
+>>>>
+>>>> Hmm... I though the idea is to use LAZY_MMU_* by architectures that
+>>>> want to use it - at least that is how I read the description above.
+>>>>
+>>>> It is only kasan_populate|depopulate_vmalloc_pte() in generic code
+>>>> that do not follow this pattern, and it looks as a problem to me.
+>>
+>> This discussion also made me realise that this is problematic, as the
+>> LAZY_MMU_{DEFAULT,NESTED} macros were meant only for architectures'
+>> convenience, not for generic code (where lazy_mmu_state_t should ideally
+>> be an opaque type as mentioned above). It almost feels like the kasan
+>> case deserves a different API, because this is not how enter() and
+>> leave() are meant to be used. This would mean quite a bit of churn
+>> though, so maybe just introduce another arch-defined value to pass to
+>> leave() for such a situation - for instance,
+>> arch_leave_lazy_mmu_mode(LAZY_MMU_FLUSH)?
+>
+> The discussion made me realize that it's a bit hack right now :)
+>
+> If LAZY_MMU_DEFAULT etc. are not for common code, then please
+> maintain them for the individual archs as well, just like you do with the
+> opaque type.
+
+I see your point - having them defined in <linux/mm_types.h> could be
+misleading. I just wanted to avoid all 4 architectures defining the same
+macros. Maybe call them __LAZY_MMU_* to suggest they're not supposed to
+be used in generic code?
+
+>
+>>
+>>>
+>>> Yes, that's why I am asking.
+>>>
+>>> What kind of information (pointer to a per-cpu structure) would you
+>>> want to return, and would handling it similar to how
+>>> pagefault_disable()/pagefault_enable() e.g., using a variable in
+>>> "current" to track the nesting level avoid having s390x to do that?
+>>
+>> The pagefault_disabled approach works fine for simple use-cases, but it
+>> doesn't scale well. The space allocated in task_struct/thread_struct to
+>> track that state is wasted (unused) most of the time.
+>
+> I'm not sure that's a concern. Fitting an int into existing holes
+> should work
+> and even another 64bit (8byte )...
+>
+> I just checked with pahole using the Fedora config on current
+> mm-unstable.
+>
+>
+> /* size: 9792, cachelines: 153, members: 276 */
+> /* sum members: 9619, holes: 20, sum holes: 125 */
+> /* sum bitfield members: 85 bits, bit holes: 2, sum bit holes: 43 bits */
+> /* padding: 32 */
+> /* member types with holes: 4, total: 6, bit holes: 2, total: 2 */
+> /* paddings: 6, sum paddings: 49 */
+> /* forced alignments: 12, forced holes: 2, sum forced holes: 60 */
+>
+> Due to some "arch_task_struct_size" we might actually allocate more
+> space.
+>
+>
+> Staring at my live system:
+>
+> $ sudo slabinfo
+> Name                   Objects Objsize           Space Slabs/Part/Cpu 
+> O/S O %Fr %Ef Flg
+> ...
+> task_struct               1491   12376           24.8M     
+> 721/25/37    2 3   3  74
+>
+>
+> I am not sure if even an additional 8byte would move the needle here.
+>
+>
+> Worse, it does not
+>> truly enable states to be nested: it allows the outermost section to
+>> store some state, but nested sections cannot allocate extra space. This
+>> is really what the stack is for.
+>
+> If it's really just 8 bytes I don't really see the problem. So likely
+> there is
+> more to it? 
+
+I suppose 8 extra bytes per task is acceptable, but some architectures
+may want to add more state there.
+
+The one case that is truly problematic (though not required at this
+point) is where each (nested) section needs to store its own state. With
+this series it works just fine as there is a lazy_mmu_state_t for each
+section, however if we use task_struct/thread_struct there can be only
+one member shared by all nested sections.
+
+- Kevin
 
