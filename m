@@ -4,100 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33841CAC582
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 01:29:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3FE5CA0FED
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 01:39:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 79D0D8E000D; Tue,  9 Sep 2025 21:29:12 -0400 (EDT)
+	id 171778E0006; Tue,  9 Sep 2025 21:39:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 74CEA8E0002; Tue,  9 Sep 2025 21:29:12 -0400 (EDT)
+	id 149258E0002; Tue,  9 Sep 2025 21:39:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 662358E000D; Tue,  9 Sep 2025 21:29:12 -0400 (EDT)
+	id 05EAC8E0006; Tue,  9 Sep 2025 21:39:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 55BD28E0002
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 21:29:12 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 09DE25AF37
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 01:29:12 +0000 (UTC)
-X-FDA: 83871607344.05.5AB1588
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 1A73AC0004
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 01:29:08 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=BGYkEiU9;
-	spf=pass (imf28.hostedemail.com: domain of lkp@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	by kanga.kvack.org (Postfix) with ESMTP id E519F8E0002
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 21:39:18 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 90C76BB396
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 01:39:18 +0000 (UTC)
+X-FDA: 83871632796.03.E8A1E4B
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 1D11C40006
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 01:39:15 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=QDSbVQ37;
+	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757467750;
+	s=arc-20220608; t=1757468356;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=ARkTrb8vyNgh7YfzKqGvmW7mJhC0hlibzasTFwHJPWA=;
-	b=i8I5nBBP75G247V2M92zbTqFj8IfF16J1V9baWCa+Ty/N7f3eNlptC4loPNtYdhfMGUy1h
-	iTWb8GwuZVl8cvdreStPCHKKiUTfBoT6oTuMmbjPzPyRiHfdnSgo/S0alrhEH88w4sBioP
-	qLM/jrs5aWl/cCxAo1rvxEvWtoBXlfI=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=BGYkEiU9;
-	spf=pass (imf28.hostedemail.com: domain of lkp@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757467750; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=35stMALT0zaYckbwckUecTZkFG/lHueLFLlqk7gCpgE=;
+	b=DYHsJmdrr+14Lli3yfnJuzneiAmtC/3szI+e+iqXpuPdxinpKrWN7uQteWjJHw3a7o/0BQ
+	WYmDp9ASP9fb5OBplrO0DeuxViJJVHIQdU66+UmIyD118ngM081XUgNgtLYbXACjpeyquX
+	QE62emxdtVPogiv/j3qooythfBuajYQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757468356; a=rsa-sha256;
 	cv=none;
-	b=RuF+xIAICGLjlNfv+zjgE8y8hJwWvf4MncgwFxFKt5voejwlwOPWWOOU9c9itEAE/IXNVF
-	+XJrIDgtM02Xn65jwVRlqwD7pzk8nQXZk9FR6RZq5FNFSlvujTpJWdQR+OJM8fsEMdmqQ3
-	+dCj1Ldl2fusBqU2ub3oXzf8oWxDWQw=
+	b=kxLG9EUFvcrGfii6IUoHGDxqVecBVrJFk2kninx6l2v/uw1OII/7NTnDOKKBpIEadbQnxi
+	mLln8VFbNDliFfmYAAw0hg3mJKZ+NSAqdyMh2+KARPnEo0Rxzanw9fBSikKjSKb3WNFjBn
+	jpImNd2U3mGczzMcYJnrHJgIANDzpz8=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=QDSbVQ37;
+	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757467750; x=1789003750;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=ywE05WToLpUHQO2zkUpWziW2sv/68Hr8hMuL+DQ7vP0=;
-  b=BGYkEiU9isbxkfGWlrBGW6Jeye3q1YujyvV9jbLIOiszfGn/74uUd4VZ
-   tX/L5cv6p/ctEY8oHd4zzCBEbxM3tK8ycRTveMOb2pWLX/hKfbfQh/bwt
-   gFoRojNMOeAfUW0l869nCE1oNUWiGDFImAXXrDbDHo9rJtTBLx/7Ylf2d
-   wPPs72xtPik6sXsZhzHaxdkHQSsxVPHKxNI8qALsxlJzmpdcpUkeKcf4O
-   EjwbLfuTfGJGC688qo4Pleb6z9tYdDQMo/cJGCd/1D+rpic9j8HJ1oUa6
-   arh0USNL9ZU1hcFExQH26mYv7Ez7i2XIY9Z1tL+fJwR1OS1gq89028Wty
-   Q==;
-X-CSE-ConnectionGUID: NAbp5qiHSc21CKE4vbJNXA==
-X-CSE-MsgGUID: +sMLfHEFS/CPPLNFhlzXuQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="59831766"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="59831766"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2025 18:29:08 -0700
-X-CSE-ConnectionGUID: 9dzJTkRvSg6YR09gz7/TPw==
-X-CSE-MsgGUID: xqLUD1v0S42/t1HsCl+Xrw==
+  t=1757468356; x=1789004356;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=GWmdpp0EogrvTC9TsSq61OLSNkyGJ4QAbt4wB/Nj+VA=;
+  b=QDSbVQ37EiJZipmRwdzK8lJXufNZicvgKciaNYHcfv4b/OA3nghyxA7Y
+   k8spDHQM1ao7OEjLloys/+1Qajf58U5ASgrNin3q82KeK5EwBwYJ/pC5x
+   fuMv8UDv4VqyCEJU7yhiB6LmgIUOd70iV27Neyxoenj0ezhaf3ze9eqSp
+   lLGieOaK+7f/5OQkq7v8RJckO4rV18h6GxMHNXGZjeVM9oMngwJHeCMfQ
+   xESDA4BT2rOIH5eHYgJym3jNiWoq1q0+jehzKK9TbhWmm3Ryw1mVq9QvB
+   ZLl/2YO7l+gbJiW1Ch0xIjSCuqlz86m7Xv2rZFUzURqBqndA/GwE4fh9v
+   A==;
+X-CSE-ConnectionGUID: vkEF2dotTYixgI2zRpxAqA==
+X-CSE-MsgGUID: ddYGzPjPTQymnjqRHcSqIw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11548"; a="59842948"
+X-IronPort-AV: E=Sophos;i="6.18,252,1751266800"; 
+   d="scan'208";a="59842948"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2025 18:39:14 -0700
+X-CSE-ConnectionGUID: 8CUqBdplSfO00Pm//sWj7A==
+X-CSE-MsgGUID: GGHTSNawTJ6p1TJCI6d28A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,252,1751266800"; 
-   d="scan'208";a="173156662"
+   d="scan'208";a="172414600"
 Received: from lkp-server01.sh.intel.com (HELO 114d98da2b6c) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 09 Sep 2025 18:29:06 -0700
+  by orviesa006.jf.intel.com with ESMTP; 09 Sep 2025 18:39:08 -0700
 Received: from kbuild by 114d98da2b6c with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1uw9dv-0005Pr-2E;
-	Wed, 10 Sep 2025 01:29:03 +0000
-Date: Wed, 10 Sep 2025 09:28:50 +0800
+	id 1uw9nd-0005QN-0P;
+	Wed, 10 Sep 2025 01:39:05 +0000
+Date: Wed, 10 Sep 2025 09:39:03 +0800
 From: kernel test robot <lkp@intel.com>
-To: Kairui Song <kasong@tencent.com>
-Cc: oe-kbuild-all@lists.linux.dev,
+To: Lei Liu <liulei.rjpt@vivo.com>, Michal Hocko <mhocko@suse.com>,
+	David Rientjes <rientjes@google.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Chris Li <chrisl@kernel.org>
-Subject: [akpm-mm:mm-new 359/411] mm/swap.h:455:24: error: implicit
- declaration of function 'swp_offset'; did you mean 'bh_offset'?
-Message-ID: <202509100956.7q0VPOo2-lkp@intel.com>
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>,
+	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>,
+	Chris Li <chrisl@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Chen Yu <yu.c.chen@intel.com>, Usama Arif <usamaarif642@gmail.com>,
+	Hao Jia <jiahao1@lixiang.com>,
+	"Kirill A. Shutemov" <kas@kernel.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Andrii Nakryiko <andrii@kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>
+Subject: Re: [PATCH v0 1/2] mm: swap: Gather swap entries and batch async
+ release core
+Message-ID: <202509100935.w5zKofdt-lkp@intel.com>
+References: <20250909065349.574894-2-liulei.rjpt@vivo.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Rspamd-Queue-Id: 1A73AC0004
+In-Reply-To: <20250909065349.574894-2-liulei.rjpt@vivo.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 1D11C40006
+X-Stat-Signature: 3znaiam7ekcqr9ej13f6f6mokshrunw5
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 8cuiz1xgxeyzqngkdb8krde7wrs5rauy
-X-HE-Tag: 1757467748-167904
-X-HE-Meta: U2FsdGVkX19/ooMvs+SnEi2Ml0+/Qcn4yi7vwb/tDtHCnZZcBPLuWftIBXbr4M1t8Z1MZYm56n9YLRhdI6cwWVgSPw8uhCjrZ/ZsRmMtBjxgFumaDCqRAZDnx8/5Wva0ECXWuLLhObIUyD6X3qNgiik4zDGm1vd6JOcgrDpcDdPyGPnb2DLLqPzvFPnPlZsN1GjmRoKtpwr5UJFeZFWgYsfGNfJTs0HeIdgriteyZOqBBgX8HLJyF7eMgkOiCjPwKzL+YwYdnjGNdk3amgQteWJhxfdGSMyCE8ZH1lUWz7AoU1lNwGcEMQYhRr7yT5LZv6KG33RopSoFKno0Ub+gqIt8OcWMD4UE9pLt3Ks968QjuxES+rhDY7DB7Ec9mYRj/dZCt84zIOBaIFpdLi5tY5cTdiwyCozWLsHi7k0tnkLHV+3FDMGYWpkrgEcaRBLw3f5p2yvJ0RU+jdGRQfog4K3F9RDpIxVo5WEfeF7aG0rh5Uj+jCHKWXkCkffP2dHGIYyEJDfUqIIHdeUrLhtCmYl2YRzSgIFY1o1bVluDutIHMAs2zBsTr1VBE6zXOSAcgIHpa+rUKdkIHMuM6AgC7KVlZzqKpG77qUJCrnNGCnBxNFGyGDmlIKjy8q5vHQeL1xIpRQwm2ZXrWQyfl6xmTnfvotYQUanPT/DjnWOJEfwUl8vQxYJf8SkKgP9Mqz0kgUfV0s2HHfSWQFi62DFdscfl6+goj+wsEVI0LzNziyFHuk2Qihf3ll+kwWqAgPDrfw042+drA9n/Ts13Atodeiv+QoNmkt3XReMfeng3Qiz5rCw/YQ2sk47wFWLTkzdQtaJmfVYjsjT1PmJS5xjc/YujugW8ibaUcxoTe0NX7gDSSwOoBqFTAahRqIocVHZSK19MCGJVMAgxDoTUwDTutIJgi5ce9dJwPwoMlOQLS0Ow4MjNENUvA17Rtm0EpGBsjeMV2H96VRFJHqavAGF
- x8nD8Zqk
- WF4ARTPmE+ut+KmIFYgZ91PpHukV1XI71qWAYRlrC6mI4cM6+0sNH7KG5xpulD2rsQdYroH6MzyQQODB0LNXTR7zEuad5af7AXEbi6PhCsN/2Ag2OQs79JITPKxOkMw/llQGS9jULxZ5q/R6PGrW3pYod4uuki+ntopwGtlPP7ZEy5cfvQp8nVLMkwVt3co1LZn1QOAfcz+00tNzaqUDBgTvchxu1dIjJkSTz843ezMolT98hhaVy0375pRHf0KfeccVTWaT51/pRxWLEjxhBpnMlvPfLdnNgb2hdTyeYhoimOCQNFMcv+w4IF3LiaepdgjS8SGjNpERatp4w80hwy2YsUvG/Mzlvl++atq0o1c33AvC/T+u7aPDhRcSfgQaLw4RBFZMzqCbf/Ce08qttLXWfW43wXYY0GWrc
+X-HE-Tag: 1757468355-608145
+X-HE-Meta: U2FsdGVkX18sVV5PhtfTo7kcviEp8HLWXrZssZ2w6XG3P+EhDyguyi0UbkLXHgUep2eD68rape7mRUywpJLW/2tdG/5F2Vd5/p2AvGmXA7sK3S4zoFzgF0dF8S3cBFzWEjTUNItsQ3xQqrOgJk2ZEyjUyxn9ZGHMA8qLWit5rnFJ3a+3R5ELgOZgyskPGRdEai05xqFc/2Lg0sMFLht8/wn8nqfavQBU0jSGFIKslFDvpMTDKGVXcOmqqHD8DWDPvuU7OMYDMIZUX3Zj8TVt+RSOb9PphkcgpSqCAtTNgEJsdD3+KSdXtugbyMDTvF3cy4pk9M5r3r403Js3OEPVYelfE6adTCkmeglRVYBXd7we/yhsrnHVWxyoUUOqCV9FKt7HxVwwsYwhIDHNyHKsjpjvYN4ET+IY6BCPh2CM6r8LslXs8avDnVXVIgfo0BRrNeN4GMREWURaATvRzYSlX8ldE33jUlhEMm0u4nBP2LU0T4hGQPZ7PU2myYtlPMJUieGOsQcPyq9Wt0r7tPCvIO/nsXmrtRMMaBLHw5qu9cWYWzx8UkoSelmqreZ61Ix/4mG6NskJDxB2IjuE04UrDgVAD6mJlP05YmmEw3ZYL7Nt5r8SHdC5Joy8EqyiTshngnbbIqJ6ngwI0z1WQk0aqvItLJ+KNOKYJ4EpH+GIuhyFgwkAz/+xtpqGTm40WuDFboxNX1MDPJIVT9EZOn858YTjYqBgqArXULhvK4IK+uiXTC+To4uMk2LbbCwrXgFHyDGn12ckOhF1fPdkhEZerFUd3MOGxqkjUh0BFOEbREQ8ja1kv9lE8sGunyxPdSm0JcCr9j2GZiECKJPRZ5aZpzKy2WPwTea7IUBNFccPbohYuk6w5iOwleongzdEzoCVuTrDnt9h11oNcuj1r0VGdI+Og3FHxxBvaDVlpFsxlI1wqmwEKrqlH7QiEkcCbnKf+r3EX7DDLPUqKFICDgG
+ f9R6nZjg
+ wXav9Jlc4HCuTnbX+LN+t2I4dRO2u2M32al3CIoIImWMk5eq6LeNip3QpmEGEn9oOK+1U/Ppk0MT71DBSU6JrUuNKcAhmOUGbU35CPkbRQnbMfa961cy04PiUbf4D7mWVXPR99VgMaPgVaTdP1bksPIHm1ZlBzdNcaIFg4sHyoaPD+lzVjZBYShZxZjaKcvqWoVyUGGP1p3QmhySgLnadfoscUPNgj+y+Dy0K8JXsuxYb7+KZaodJfKNuk3cZKux9P9b1UYc6tbDXT2Z5XDEj3E4HjdeucS5ixkkaHkpFWelCc1VZ3w+krnIQIl8JiCR64LG8bu6Eesc/7l5NFIkM6E/LPmUFZ5XTOIre
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,49 +130,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-head:   f4e8f46973fe0c0f579944a37e96ba9efbe00cca
-commit: aabe1e0289084317ef7603c14132758fad3a975e [359/411] mm, swap: use the swap table for the swap cache and switch API
-config: m68k-allnoconfig (https://download.01.org/0day-ci/archive/20250910/202509100956.7q0VPOo2-lkp@intel.com/config)
-compiler: m68k-linux-gcc (GCC) 15.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250910/202509100956.7q0VPOo2-lkp@intel.com/reproduce)
+Hi Lei,
+
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on akpm-mm/mm-everything]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Lei-Liu/mm-swap-Gather-swap-entries-and-batch-async-release-core/20250909-145620
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20250909065349.574894-2-liulei.rjpt%40vivo.com
+patch subject: [PATCH v0 1/2] mm: swap: Gather swap entries and batch async release core
+config: x86_64-buildonly-randconfig-003-20250910 (https://download.01.org/0day-ci/archive/20250910/202509100935.w5zKofdt-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250910/202509100935.w5zKofdt-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202509100956.7q0VPOo2-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202509100935.w5zKofdt-lkp@intel.com/
 
-All errors (new ones prefixed by >>):
+All warnings (new ones prefixed by >>):
 
-   In file included from mm/filemap.c:65:
-   mm/swap.h: In function 'folio_index':
->> mm/swap.h:455:24: error: implicit declaration of function 'swp_offset'; did you mean 'bh_offset'? [-Wimplicit-function-declaration]
-     455 |                 return swp_offset(folio->swap);
-         |                        ^~~~~~~~~~
-         |                        bh_offset
+>> mm/swapfile.c:206:12: warning: 'async_swap_free_counts_show' defined but not used [-Wunused-function]
+     206 | static int async_swap_free_counts_show(struct seq_file *m, void *v)
+         |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-vim +455 mm/swap.h
+vim +/async_swap_free_counts_show +206 mm/swapfile.c
 
-   440	
-   441	/**
-   442	 * folio_index - File index of a folio.
-   443	 * @folio: The folio.
-   444	 *
-   445	 * For a folio which is either in the page cache or the swap cache,
-   446	 * return its index within the address_space it belongs to.  If you know
-   447	 * the folio is definitely in the page cache, you can look at the folio's
-   448	 * index directly.
-   449	 *
-   450	 * Return: The index (offset in units of pages) of a folio in its file.
-   451	 */
-   452	static inline pgoff_t folio_index(struct folio *folio)
-   453	{
-   454		if (unlikely(folio_test_swapcache(folio)))
- > 455			return swp_offset(folio->swap);
-   456		return folio->index;
-   457	}
-   458	
+   205	
+ > 206	static int async_swap_free_counts_show(struct seq_file *m, void *v)
+   207	{
+   208		seq_printf(m, "exiting_tasks:%d cache_counts:%d\n",
+   209			   get_exiting_task_count(), cache_count);
+   210		return 0;
+   211	}
+   212	
 
 -- 
 0-DAY CI Kernel Test Service
