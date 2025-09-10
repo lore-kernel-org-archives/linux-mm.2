@@ -4,131 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99A31CA0FED
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 12:54:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4675DCA0FED
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 12:55:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 001A98E0002; Wed, 10 Sep 2025 08:54:41 -0400 (EDT)
+	id 92A1C8E000D; Wed, 10 Sep 2025 08:55:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF3956B0010; Wed, 10 Sep 2025 08:54:40 -0400 (EDT)
+	id 900C08E0003; Wed, 10 Sep 2025 08:55:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E0A258E0002; Wed, 10 Sep 2025 08:54:40 -0400 (EDT)
+	id 83DF28E000D; Wed, 10 Sep 2025 08:55:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CD5426B0006
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 08:54:40 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A066D8709F
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 12:54:40 +0000 (UTC)
-X-FDA: 83873334720.23.D06D62D
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 526D2A0020
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 12:54:38 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=s8CFhKY1;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=YD0KplvS;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=s8CFhKY1;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=YD0KplvS;
-	spf=pass (imf15.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 728D78E0003
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 08:55:04 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1AE6913BEDC
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 12:55:04 +0000 (UTC)
+X-FDA: 83873335728.08.B8CB70E
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 02E7A12000B
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 12:55:01 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Xc21ZO+H;
+	spf=pass (imf29.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757508878;
+	s=arc-20220608; t=1757508902;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sk+37UwWwPALMxUocJnLLKSlfsnWl0NqUyQHiakKMtg=;
-	b=BTfTBsImKbSGroqqrRi0FPx1onR0sKRvUr5neOtK5FUH9S5jR0EIg4Ubp3W7jONmKCcsay
-	HtnyLY+O0DJeKiX6U172RAijzrTGboJaI95/EMYEUW7az+7yZfBmguyltfJ5dr3HPMgmgL
-	sdfrurPnKdeXCM01jvk4b08W74vSjcE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757508878; a=rsa-sha256;
+	bh=UMkFEykw6CDHcCxpRG3Ctye5mxgPw1tmO5woFImiW2w=;
+	b=HVnDXqSK87+GMMPwyiSVeLWnGf4dka9kYkWiubP+m1xQn9tHfaqwXwlWzlR57yeW79+X7l
+	GzfqiwSAl1Ky+sMZlTK9W6g+z400TkN/Z7hND/Xh0X6ZfEQYmB90RGj5H2UCf3rTgIAeLD
+	KM/+EemvW9EEqGgWAiaZaGYPeJfhglM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757508902; a=rsa-sha256;
 	cv=none;
-	b=asxrOWjCk4MY46zGwIE2E0DoM7Vg4LiIRdLz5jlZkxm+k6Erq3QYq3WEMkqFMM/7M/ScPN
-	KcBt1nesLRV2aeo+WErcBap0NDlD7SF/Zi8i8GvaotIeHV70EaGVsMU/1vU1/Crx0cXUkL
-	B42zcHBHc4nDt0EY6M2uVPqu4mJvOcA=
+	b=JAl9Tsvf5C3Oz9q0z9vdaD4dN4S08tECQUWP8xBEZv5q9VLc3TGerTgAqLF/EWMPRcR3Re
+	kdc9yw9ZKTnKb0E8m/O3+4GgD0ieTJPAL7Z7GJiLVUYO8urrvrTYFbadJp+o2kW5cEzO5v
+	s9mDviecbncqtMiI6dpO+sRt7Ye0HXU=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=s8CFhKY1;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=YD0KplvS;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=s8CFhKY1;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=YD0KplvS;
-	spf=pass (imf15.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id AB05720AB9;
-	Wed, 10 Sep 2025 12:54:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1757508876; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Xc21ZO+H;
+	spf=pass (imf29.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Forwarded-Encrypted: i=1; AJvYcCXtu/wj6F9EHah/UEWb8WbsB9PtuykQDPSim+zga2VwsCzODdJcoKCuxKxiMEGtOHRQtc3yHMx8+A==@kvack.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1757508899;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=sk+37UwWwPALMxUocJnLLKSlfsnWl0NqUyQHiakKMtg=;
-	b=s8CFhKY19/NcLq+FjQWJYFX8TDi4dCHLzvXG9cZrHOp+Zg/M/L8q8xCxqijwySBLaniYIC
-	LV3A7vg6iLgr96HKfywgqiOCiHf03hRtI1FxQLRSJeNWaPTmRf7ab5NAm2dQ6kGjQ4Nr3M
-	q1E/KH1qXdiz5tHe4gdA13bib9cJ+As=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1757508876;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sk+37UwWwPALMxUocJnLLKSlfsnWl0NqUyQHiakKMtg=;
-	b=YD0KplvSzl5fxb8wSKECLd6BOo9bH4N5o8VQPAszZLKkLV8X/zLMEGczoKeMQgwKLfNG6y
-	xgoym8sSHwmjctCg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1757508876; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sk+37UwWwPALMxUocJnLLKSlfsnWl0NqUyQHiakKMtg=;
-	b=s8CFhKY19/NcLq+FjQWJYFX8TDi4dCHLzvXG9cZrHOp+Zg/M/L8q8xCxqijwySBLaniYIC
-	LV3A7vg6iLgr96HKfywgqiOCiHf03hRtI1FxQLRSJeNWaPTmRf7ab5NAm2dQ6kGjQ4Nr3M
-	q1E/KH1qXdiz5tHe4gdA13bib9cJ+As=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1757508876;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sk+37UwWwPALMxUocJnLLKSlfsnWl0NqUyQHiakKMtg=;
-	b=YD0KplvSzl5fxb8wSKECLd6BOo9bH4N5o8VQPAszZLKkLV8X/zLMEGczoKeMQgwKLfNG6y
-	xgoym8sSHwmjctCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 85AAB13301;
-	Wed, 10 Sep 2025 12:54:35 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 5wyNHQt1wWgZBAAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Wed, 10 Sep 2025 12:54:35 +0000
-Date: Wed, 10 Sep 2025 13:54:25 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	maple-tree@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
-	Charan Teja Kalla <quic_charante@quicinc.com>, shikemeng@huaweicloud.com, kasong@tencent.com, nphamcs@gmail.com, 
-	bhe@redhat.com, baohua@kernel.org, chrisl@kernel.org, 
-	Matthew Wilcox <willy@infradead.org>
-Subject: Re: [PATCH v1 2/9] mm/mmap: Abstract vma clean up from exit_mmap()
-Message-ID: <lrkxxt3ywknfqudhf4u5kwgegrewqw6laxqonx5ysqmop6flxc@gwbqpadk5btv>
-References: <20250909190945.1030905-1-Liam.Howlett@oracle.com>
- <20250909190945.1030905-3-Liam.Howlett@oracle.com>
+	bh=UMkFEykw6CDHcCxpRG3Ctye5mxgPw1tmO5woFImiW2w=;
+	b=Xc21ZO+HQGMapK8XIOVolZ/zAaLN3PCs40Mh0mZ9gB4wMHm9Q5+eD1Y5IncUnceOZrYfEi
+	Enrrg5W8ZSDlqEW+AQVUxYJXwxEAzyR+mR/zIC0T9oA4WDn1q0XH/VNKviIAd6FcouCwxo
+	onY9kbW474NLDsOWKS2wr5ycghJZhQ4=
+X-Gm-Message-State: AOJu0Yzm79NV2TOBmmGEc70whUDVsExCr9OWAZbqdjbJozmIoRieCWBE
+	pMSe0dAicL2WVgtcPGvUmIFGT1iH0TJOecHQlx2rhkvYfLiFCmQtJMeXRdrIEavKX2Axn9jfuPD
+	+OecFclelY4YaqXU+3SL37qHwpBI61oE=
+X-Google-Smtp-Source: AGHT+IEF3eQ6UlcRwDeEpxd1PL/TBSKLn4agQK0TqsOV7RfLeqWe4bZiUjFZd7iV35M7UX+D6Fe2DO6sCezbXMSn6Vw=
+X-Received: by 2002:a05:6214:20a9:b0:727:e0b5:beaa with SMTP id
+ 6a1803df08f44-7391f3041a4mr162984186d6.6.1757508895553; Wed, 10 Sep 2025
+ 05:54:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250909190945.1030905-3-Liam.Howlett@oracle.com>
-X-Rspamd-Queue-Id: 526D2A0020
-X-Stat-Signature: mma7whh48okztnau98mx1ojoip1xzoaf
+References: <20250910024447.64788-1-laoar.shao@gmail.com> <20250910024447.64788-3-laoar.shao@gmail.com>
+ <CABzRoyZm32HT2fDpSy_PRDxeXZVJD35+9YqRpn9XWix8jG6w8g@mail.gmail.com>
+In-Reply-To: <CABzRoyZm32HT2fDpSy_PRDxeXZVJD35+9YqRpn9XWix8jG6w8g@mail.gmail.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+Date: Wed, 10 Sep 2025 20:54:18 +0800
+X-Gmail-Original-Message-ID: <CABzRoyYqGsABGVgXbH3Sts3yBsk7ED=BsKbcP3Skc-oWeFsN_w@mail.gmail.com>
+X-Gm-Features: AS18NWAsoUIhBQUf1uoUzmIJVtw-dLaFewCMwdt6vFR159yx-71Dyff6aabB_sY
+Message-ID: <CABzRoyYqGsABGVgXbH3Sts3yBsk7ED=BsKbcP3Skc-oWeFsN_w@mail.gmail.com>
+Subject: Re: [PATCH v7 mm-new 02/10] mm: thp: add support for BPF based THP
+ order selection
+To: Yafang Shao <laoar.shao@gmail.com>
+Cc: akpm@linux-foundation.org, david@redhat.com, ziy@nvidia.com, 
+	baolin.wang@linux.alibaba.com, lorenzo.stoakes@oracle.com, 
+	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, 
+	dev.jain@arm.com, hannes@cmpxchg.org, usamaarif642@gmail.com, 
+	gutierrez.asier@huawei-partners.com, willy@infradead.org, ast@kernel.org, 
+	daniel@iogearbox.net, andrii@kernel.org, ameryhung@gmail.com, 
+	rientjes@google.com, corbet@lwn.net, 21cnbao@gmail.com, 
+	shakeel.butt@linux.dev, bpf@vger.kernel.org, linux-mm@kvack.org, 
+	linux-doc@vger.kernel.org, Lance Yang <lance.yang@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 02E7A12000B
+X-Stat-Signature: qgoa6cfshoi6xo179y1zpqobis8sukg9
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1757508878-812588
-X-HE-Meta: U2FsdGVkX1/c2lrWE0wHK+OJz39ihmiuESsezKHEc+sSy1HwbZJ4mpfmOE11AEz1bQSVzOUWYPbs1KQWHB90iAs6SFhpKbUgk4okEuz31Ufd4HdEBd9KCMDBZyjtk9EvhZTBe8Ig5k9EOIE+BepBnZ72btUnKklLKh1sBnHZuduDgBFZ1dXEKDGU1uVRLlfHkN5JfwG3VBsbZYnMn/3o3Iem4pPz+27BJkLym/yhadMsDMF8C3ewQ4bmIacYQNDjmWP0ucc2NuPereUt6iWVSswNLrrFtnps0z3kcbbEauAJSYr38Kr5aUYm1tgC4v/IKLY93n7Y9BPc/OKBJ9HY7oVpISjgwodNhmm089KtG7VZ3uDQ20lhMQJO9YubVQhSlNHoQxkqBWISUY3m55x3luXRlLGhfIOrZSH+6+BP+LMV5Q0ft7nSBAk+5RnaWRq1nsL//MwVCwhZSdrsuHaL++PVyslbIByA1GZietNio4ps+eqDuNXrraaHOX6eekVdu3tLV5e2EwOLijaaHjjdO53WXEixnGYc75QdbGeJyRC1o9444ficKUVFX36xxqvFx8ZDrMaZiukFH+nbj5/X5XSqmX7Ht4hYZLEqUIUnjrar9nQA7UZ/qB7pXFNxdB5+QTucDaYaJJSVmWGTX3ApfJ2GI5g6x69jUGCvLbFLUWEQum+r4omGMz4JwI8p+6Vy/KphdnK9f3x1zgSK2Vvbkw1XtjNw73ExRLc60vLL1WBRX4S3f4RvJoQJ0ll/6eSdAISlpucykAMSW/ujSN/o4LLfoE6M3XfNWofo8szUkuqQeIlxL+maPAiLdCAO8TmekARazZGJiCm/PbA53NqYG3F6YbHbCzI7wn2hI8S2R4tkoLwAZ1tWlprZG0MCVGIJzX1gmh/oZgCFa7Ry9aHnlt9JlGcHRVKAyltFppXkvKR+2mRS6Ev/MUm8Q1TlVaaCr353gjoKctA3kd5zmKk
- eS+JU67E
- eb1o8SCTa203H9C0VJe+FatkW69tIxMW+obQ2c4XCFMQQ5aDvZi09kfT+Y1EVQRjBhF/U/+f8hfW5OmGhCrghZxwE5055YY17S/kQBpV2C808TAZ6mpFZdrd7t2LKO9glSWnDxhixjTBMYzUoNfJUGp+lCZFLZN/grahpfPWUyUEeHxdkcebBDJZI7LwDnZw5yctDkTHqpnYIDtLy3dbPNPd/yEpB7qYcnvi3/Urq2V4GjjSxSaP7nfHoRbt78+/RhtLzQt8r5deBJIvm0qBIYK11JwsfHBjqwl6aE+6AOIgHWGYYNtd+Fa01abljsbRerQN+tdWhLfCMvcs=
+X-HE-Tag: 1757508901-372266
+X-HE-Meta: U2FsdGVkX1+U6rJkdsdOg17WuE/IdsmZKjbzo9acIPyy4lnAWUhL+GbA8Nv7Ady8liVnbdR5rSOI3L9iVtf39ba3ASCGUIlLl6dgti25BFCX239s7TdxaWQOExaf8gQHucelTMIU8C85cZjt0NBr3MZXMjL1kqcLmh1mZh9EDjWlHoZWwwCIvivfUlT5LB3bmjUGdCzd8jnfchQw/uOT8CeetaDxRyfGBUYP1ITP5gV2q9MF4WUcdW07Pxo/9B//ESI/rWi1onVtMDcyKY/Fmqi268hVFz0volTXV3NFvR1FsicbLm+HgYUmyGUSyUrmQbrAS1SgMglF2qB+VVst4VQIAuzUMMF68sEG8UiMKDBUS3CjIjps5wl0T+QyFWoceLglFpN5+DvnuMK+2IcP2wcVHWgPHmEu36B6uXgCdTaU7D1V5vNy18yOsJA6PbLnGBZxMEVNaKtRZtZmE/qGEkMDYUJRCGLqka8YAc7bm9/Vrb4xYcwCZj+nRbcZ4bGr+8dEYNyu4k1RS8YPZ5RsGLBs3LNY3em6KRDp+ikgkGybK0iBpbS6BWI9ZruF3mLizBQYag9VR1xpcWOF2CWEFjAq8U0HTFw6RwlDAD05FICy+fXkIb21kp7MBYnUDrI7KPl4KzVvy3d7/I3vGCZ46wZpeWOM7eIVyeMxglaR1omCGPj8EjpVULpV6hZlFIJsmF1HjD42EYWZp+yLQ+SPwql5ZEdUDfbWipyuNYT2cEiSc62h2PxRHoOFtGaJPV36CMJC27GEGUq9GM+Zvdmu+Y//qvgAvWJFxGDf7/xzltgJjsGDqk+dkmGPB29Y7OZFM7J+AIyHC/qQ+IEp1BEbS3eAlv0h7RESxKvai7gpf//lF/cMHkncRcUHGmRGqc9eU8M6mkWWyxNxAIVSVpKCuQnSQqw4Stxy24wdSIxzAWkO5o4sL7DUI42z8Xr+xSo5/O1oDnyKKK091735No2
+ +cre3E3M
+ uiGC1lHv54E+rSJ3LpbNFa6hApT6b4g/7Xlffh2kceyBywy9u5t6vWVMnaU0F+18YK0WN/7DsJIqI1slIbcxedyQ0TCja1qbybIhvKMwV3C2SFdZl1j4u+/jIOD/x9JSMO1GQkkImHSJUiBYjBcghcyytGtzKSTnoCDzFnkfDaDNfIEUNFVsqmUGiMS8D+WL1T5qGdHSY7VAuVmQ89sTLQs+0OEp27yY0lCA+v+iPIVE6v+FLTftxtJvN6KYZTajpT9C9+ShhXywMofQExK9FrxzbKbKtRFVOONJQxiequZVVCZYRJUYZIv6bv59kVVCczBOT/1DagnZfnbHam1cToHGTXA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,54 +108,168 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 09, 2025 at 03:09:38PM -0400, Liam R. Howlett wrote:
-> Create the new function tear_down_vmas() to remove a range of vmas.
-> exit_mmap() will be removing all the vmas.
-> 
-> This is necessary for future patches.
-> 
-> No functional changes intended.
-> 
-> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-> ---
->  mm/mmap.c | 37 ++++++++++++++++++++++++-------------
->  1 file changed, 24 insertions(+), 13 deletions(-)
-> 
-> diff --git a/mm/mmap.c b/mm/mmap.c
-> index b07b3ec5e28f5..a290448a53bb2 100644
-> --- a/mm/mmap.c
-> +++ b/mm/mmap.c
-> @@ -1250,6 +1250,29 @@ int vm_brk_flags(unsigned long addr, unsigned long request, vm_flags_t vm_flags)
->  }
->  EXPORT_SYMBOL(vm_brk_flags);
->  
-> +static inline
-> +unsigned long tear_down_vmas(struct mm_struct *mm, struct vma_iterator *vmi,
-> +		struct vm_area_struct *vma, unsigned long max)
-> +{
-> +	unsigned long nr_accounted = 0;
-> +	int count = 0;
-> +
-> +	mmap_assert_write_locked(mm);
-> +	vma_iter_set(vmi, vma->vm_end);
-> +	do {
-> +		if (vma->vm_flags & VM_ACCOUNT)
-> +			nr_accounted += vma_pages(vma);
-> +		vma_mark_detached(vma);
-> +		remove_vma(vma);
-> +		count++;
-> +		cond_resched();
-> +		vma = vma_next(vmi);
-> +	} while (vma && vma->vm_end <= max);
+On Wed, Sep 10, 2025 at 8:42=E2=80=AFPM Lance Yang <lance.yang@linux.dev> w=
+rote:
+>
+> Hey Yafang,
+>
+> On Wed, Sep 10, 2025 at 10:53=E2=80=AFAM Yafang Shao <laoar.shao@gmail.co=
+m> wrote:
+> >
+> > This patch introduces a new BPF struct_ops called bpf_thp_ops for dynam=
+ic
+> > THP tuning. It includes a hook bpf_hook_thp_get_order(), allowing BPF
+> > programs to influence THP order selection based on factors such as:
+> > - Workload identity
+> >   For example, workloads running in specific containers or cgroups.
+> > - Allocation context
+> >   Whether the allocation occurs during a page fault, khugepaged, swap o=
+r
+> >   other paths.
+> > - VMA's memory advice settings
+> >   MADV_HUGEPAGE or MADV_NOHUGEPAGE
+> > - Memory pressure
+> >   PSI system data or associated cgroup PSI metrics
+> >
+> > The kernel API of this new BPF hook is as follows,
+> >
+> > /**
+> >  * @thp_order_fn_t: Get the suggested THP orders from a BPF program for=
+ allocation
+> >  * @vma: vm_area_struct associated with the THP allocation
+> >  * @vma_type: The VMA type, such as BPF_THP_VM_HUGEPAGE if VM_HUGEPAGE =
+is set
+> >  *            BPF_THP_VM_NOHUGEPAGE if VM_NOHUGEPAGE is set, or BPF_THP=
+_VM_NONE if
+> >  *            neither is set.
+> >  * @tva_type: TVA type for current @vma
+> >  * @orders: Bitmask of requested THP orders for this allocation
+> >  *          - PMD-mapped allocation if PMD_ORDER is set
+> >  *          - mTHP allocation otherwise
+> >  *
+> >  * Return: The suggested THP order from the BPF program for allocation.=
+ It will
+> >  *         not exceed the highest requested order in @orders. Return -1=
+ to
+> >  *         indicate that the original requested @orders should remain u=
+nchanged.
+> >  */
+> > typedef int thp_order_fn_t(struct vm_area_struct *vma,
+> >                            enum bpf_thp_vma_type vma_type,
+> >                            enum tva_type tva_type,
+> >                            unsigned long orders);
+> >
+> > Only a single BPF program can be attached at any given time, though it =
+can
+> > be dynamically updated to adjust the policy. The implementation support=
+s
+> > anonymous THP, shmem THP, and mTHP, with future extensions planned for
+> > file-backed THP.
+> >
+> > This functionality is only active when system-wide THP is configured to
+> > madvise or always mode. It remains disabled in never mode. Additionally=
+,
+> > if THP is explicitly disabled for a specific task via prctl(), this BPF
+> > functionality will also be unavailable for that task.
+> >
+> > This feature requires CONFIG_BPF_GET_THP_ORDER (marked EXPERIMENTAL) to=
+ be
+> > enabled. Note that this capability is currently unstable and may underg=
+o
+> > significant changes=E2=80=94including potential removal=E2=80=94in futu=
+re kernel versions.
+> >
+> > Suggested-by: David Hildenbrand <david@redhat.com>
+> > Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> > Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+> > ---
+> [...]
+> > diff --git a/mm/huge_memory_bpf.c b/mm/huge_memory_bpf.c
+> > new file mode 100644
+> > index 000000000000..525ee22ab598
+> > --- /dev/null
+> > +++ b/mm/huge_memory_bpf.c
+> > @@ -0,0 +1,243 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +/*
+> > + * BPF-based THP policy management
+> > + *
+> > + * Author: Yafang Shao <laoar.shao@gmail.com>
+> > + */
+> > +
+> > +#include <linux/bpf.h>
+> > +#include <linux/btf.h>
+> > +#include <linux/huge_mm.h>
+> > +#include <linux/khugepaged.h>
+> > +
+> > +enum bpf_thp_vma_type {
+> > +       BPF_THP_VM_NONE =3D 0,
+> > +       BPF_THP_VM_HUGEPAGE,    /* VM_HUGEPAGE */
+> > +       BPF_THP_VM_NOHUGEPAGE,  /* VM_NOHUGEPAGE */
+> > +};
+> > +
+> > +/**
+> > + * @thp_order_fn_t: Get the suggested THP orders from a BPF program fo=
+r allocation
+> > + * @vma: vm_area_struct associated with the THP allocation
+> > + * @vma_type: The VMA type, such as BPF_THP_VM_HUGEPAGE if VM_HUGEPAGE=
+ is set
+> > + *            BPF_THP_VM_NOHUGEPAGE if VM_NOHUGEPAGE is set, or BPF_TH=
+P_VM_NONE if
+> > + *            neither is set.
+> > + * @tva_type: TVA type for current @vma
+> > + * @orders: Bitmask of requested THP orders for this allocation
+> > + *          - PMD-mapped allocation if PMD_ORDER is set
+> > + *          - mTHP allocation otherwise
+> > + *
+> > + * Return: The suggested THP order from the BPF program for allocation=
+. It will
+> > + *         not exceed the highest requested order in @orders. Return -=
+1 to
+> > + *         indicate that the original requested @orders should remain =
+unchanged.
+>
+> A minor documentation nit: the comment says "Return -1 to indicate that t=
+he
+> original requested @orders should remain unchanged". It might be slightly
+> clearer to say "Return a negative value to fall back to the original
+> behavior". This would cover all error codes as well ;)
+>
+> > + */
+> > +typedef int thp_order_fn_t(struct vm_area_struct *vma,
+> > +                          enum bpf_thp_vma_type vma_type,
+> > +                          enum tva_type tva_type,
+> > +                          unsigned long orders);
+>
+> Sorry if I'm missing some context here since I haven't tracked the whole
+> series closely.
+>
+> Regarding the return value for thp_order_fn_t: right now it returns a
+> single int order. I was thinking, what if we let it return an unsigned
+> long bitmask of orders instead? This seems like it would be more flexible
+> down the road, especially if we get more mTHP sizes to choose from. It
+> would also make the API more consistent, as bpf_hook_thp_get_orders()
+> itself returns an unsigned long ;)
 
-By not checking for XA_ZERO_ENTRY, we're technically breaking bisectability
-here.
+I just realized a flaw in my previous suggestion :(
 
-In any case,
+Changing the return type of thp_order_fn_t to unsigned long for consistency
+and flexibility. However, I completely overlooked that this would prevent
+the BPF program from returning negative error codes ...
 
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+Thanks,
+Lance
 
--- 
-Pedro
+>
+> Also, for future extensions, it might be a good idea to add a reserved
+> flags argument to the thp_order_fn_t signature.
+>
+> For example thp_order_fn_t(..., unsigned long flags).
+>
+> This would give us aforward-compatible way to add new semantics later
+> without breaking the ABI and needing a v2. We could just require it to be
+> 0 for now.
+>
+> Thanks for the great work!
+> Lance
 
