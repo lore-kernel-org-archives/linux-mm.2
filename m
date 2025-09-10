@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6471ACA101F
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 16:09:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C840FCA0FED
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 16:09:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B8FD08E002E; Wed, 10 Sep 2025 12:09:34 -0400 (EDT)
+	id 32C9D8E002F; Wed, 10 Sep 2025 12:09:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B19668E0005; Wed, 10 Sep 2025 12:09:34 -0400 (EDT)
+	id 2B61B8E0005; Wed, 10 Sep 2025 12:09:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E1BA8E002E; Wed, 10 Sep 2025 12:09:34 -0400 (EDT)
+	id 1A4BC8E002F; Wed, 10 Sep 2025 12:09:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 876108E0005
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 12:09:34 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5DFAB1A0163
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 16:09:34 +0000 (UTC)
-X-FDA: 83873825868.09.F574CED
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 6E45EC0009
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 16:09:32 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=VbPq1hfa;
-	spf=pass (imf22.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0601D8E0005
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 12:09:41 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BF8C01389E1
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 16:09:40 +0000 (UTC)
+X-FDA: 83873826120.21.5225B12
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	by imf21.hostedemail.com (Postfix) with ESMTP id C15AF1C0009
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 16:09:38 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Z+x02et9;
+	spf=pass (imf21.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757520572;
+	s=arc-20220608; t=1757520578;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=griGxIh9GEE3HF6pE5uHZRdQ9DQCWTXYvIepBVp/qTo=;
-	b=NFUKutFJCJCcbX1BkRrTs+/oJcEJiOppHlk6aEH81MAUvDuN4pxQO7dRe2M6r362p9adM2
-	oZnI6g4nCPrNTIsY4s+uTpmSyKRzt6DnEOoJcSJDZ+zMva0S2aRre1jDGa0vto4NBDtV1g
-	8yb6QvabAgOzoh2GcakM2m1mlBnoiI0=
+	bh=TXr0Gr+eyBH1J2ZOC4B1nLxnwl36iHb/5ARHAVX+lWM=;
+	b=P2Qv0ecQEEybnh0RMuuRsRtJmfKa5W4FM55uvhRTYDDC7Eimz3atHdEiWXtqUVkonNq0YU
+	L0Dns0tEIBoqPxrWvkh1C522bkS1sUdL/xptp5Dg6WPa+YddqxApePGAzre57fTVGxFOQx
+	4kFRXieZmkLAOfv+t2nOvg9Kz6cPdB0=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=VbPq1hfa;
-	spf=pass (imf22.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Z+x02et9;
+	spf=pass (imf21.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757520572; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757520578; a=rsa-sha256;
 	cv=none;
-	b=gMF85EkU5pbDjsp/M8ByetA+ZyyXrFPAjzMXwpAU+j9egLyk3BtP51wTGjj0azxa8kRQZB
-	D3OP03IlOlE4eenty5rXAJh9fIB57l/1L69a3fETpXUGeHKidqNdyIAFVZuRtod2VpOXcL
-	CRBW87QcObgKqPjB25jxyeRg+hC4SMY=
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-7704f3c46ceso6017420b3a.2
-        for <linux-mm@kvack.org>; Wed, 10 Sep 2025 09:09:32 -0700 (PDT)
+	b=CAefJ0DlYV/1oD4+u+iUDtvBs/KTkobVBM/iZ/rsOW+sUShLdP5pjVtkIZ1Lc5diySdWTD
+	UDYSldMG1MfUE33JWVhQ6iYo42snSdACogwFGEVdirYRqVKLuSat2vQeufYPVyp6G7UhMu
+	FVKPLrVjScs5FjYhbmVSYHB6kE1NiSM=
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-77251d7cca6so5959528b3a.3
+        for <linux-mm@kvack.org>; Wed, 10 Sep 2025 09:09:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757520571; x=1758125371; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1757520577; x=1758125377; darn=kvack.org;
         h=content-transfer-encoding:mime-version:reply-to:references
          :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=griGxIh9GEE3HF6pE5uHZRdQ9DQCWTXYvIepBVp/qTo=;
-        b=VbPq1hfa4s8cqup0s7HVhLd9OcT0qfxkkuNhldc0pSwRV0Ij5P4SetaDZNy2F0wThh
-         aFEaCdX1FLOzu+2vcI/ui/OwGub3/VFETx5ek5AXbn7/mIadBAQbG8e2tgZ6ZDUD5cpU
-         TBH6NnvLF5/QKAV4MW+frbTVjZuUrifd+pOmXHs/zN2UY2g/+UlRrys7iGUsRlOJgh8T
-         tMYOca3PHXKQ8TRbyiM622YgfTo5431Z78UHIkRvd7u9BI70N7zhSD+4mqbZwkcFp2bG
-         F6pIqr0sVeKGtqJ+7q4CxKC2b+k7rxodRbPoSsxYbF8PovF0x1D44Zuutzv1GxVG8clY
-         s3DQ==
+        bh=TXr0Gr+eyBH1J2ZOC4B1nLxnwl36iHb/5ARHAVX+lWM=;
+        b=Z+x02et9WmQczyzJxYgEYlOLsBAnPrZUxO8DRoeaSpr1Zzy46HcfTtdVcd+o0KC18c
+         88nlHJAvyQ+LricbOnmQpHU8c9kDP2RItkMLuq8UCzernJ8/7p/WSK3TzzeO4tcDuH9+
+         qGL+7CADxX+eaeG/38zQgDPL1SqcoX3Bl0GdhxFHHYzU4A5alvLB7lUFxDWkxefnFAPd
+         pDUuW7pTNpaAx2fkxB4SVsh4kQJHuj5jFdGa6rJrP6oWvU1gFuhk/7lD/LgDPCn/rnxl
+         zmG4lPbrcGLYHchWfcqIYBbuxY2W7tZlUXTtN60jRxtGkZGvHk/gUSXCN8gVTh+r3pOG
+         7wSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757520571; x=1758125371;
+        d=1e100.net; s=20230601; t=1757520577; x=1758125377;
         h=content-transfer-encoding:mime-version:reply-to:references
          :in-reply-to:message-id:date:subject:cc:to:from:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=griGxIh9GEE3HF6pE5uHZRdQ9DQCWTXYvIepBVp/qTo=;
-        b=G4emAMA78G+93LmXABeuBvTfpwEhhVHawx5dY7V/42lIGmw7kfg0i8a25+W1tnaeik
-         B5qQy1DAE617in6IsQL64DBgE2RKlrjjyKxQeKXj48u7NCp1H/yMHapfixgzskqDlR69
-         NfIjZFiaiEQ91ZArZMtg2zeTahTIXEfIefTlxCAaqs4SkKgiyVgESOFijTEhgtoAJkV1
-         0DJpD24PW7VsNRnomxOExltzx0qJxbBvBgtYCGRTJB69ngj4aYIwPYhLfvmcXXDI6S1I
-         zEqjXA9pp0Nabp/OJU7MVSct7qy8ckZ7XOF3G7c/PI7xx/qpLpxjZO8kR1ZMw0sPDHnv
-         EGwQ==
-X-Gm-Message-State: AOJu0YywifT8F8lBTT4Y+vxcVBXaJjLmZCX7I/L+Vs+eiD/dhKslWwnR
-	yIFaoIIXsajli/eroFeKYLTG5LBtJ6iV0qybgkMv6xZyPmXL437p9n8lmnud9TZ03Fc=
-X-Gm-Gg: ASbGnct6vmFgC1Xtgc40IvDpCgF1BhvA/0fsqXn81+OfAmgzDey7qSzmdAlp04gDe8O
-	03sZGPTkLT43B8HvjEFBEXI/tDiax+KpfaeTM1e1uSAfHb+1Jpq/WLMc/wehnqnfIKcKrCJYFjA
-	6kcD8NzJOyXbh4LKBtCI7dK/g0ZGiHU+ssMc7GTQLW1v9p//PY/eFO4WlE7DjCMiyDFzU94FFft
-	qaI8dahBRNENTNzx5WwQ8U8YC4u2A2pkK7nX4M16YNp7E8xPrJukzli74E48p2/PzkXtZYp6D0j
-	9u+u6BwoKwd699wEC5cFlWcLU15LaFVcea0GLCmQBVHeKT8sn088Uq+EofantYkM6Hu10OaO2hI
-	uJGfe7s9u7znKN/xMBRwcmewihQ9jfMsJVBJk5jKOH989P54=
-X-Google-Smtp-Source: AGHT+IF79Trm+wcbzKOddKHrBqAVQp9c3H0wicsNS7W5K+jd07nVhIvIvzw66BfjwtQW3jqIqjmWZQ==
-X-Received: by 2002:a05:6a20:7484:b0:250:9175:96df with SMTP id adf61e73a8af0-25344415c9bmr25513067637.48.1757520570590;
-        Wed, 10 Sep 2025 09:09:30 -0700 (PDT)
+        bh=TXr0Gr+eyBH1J2ZOC4B1nLxnwl36iHb/5ARHAVX+lWM=;
+        b=hXTe6Ym7ZEKqkZeBAMD+UFg/jWY38tjDs2kmm1hPvfCLEjzYaRgAIxaGu68YwG2MK0
+         j5aYxLAuXSCP0ZqVdxEnDJ4psE/g6HTY+H5QtIYVY5ce63pMM3crRUdek290GC8Hu7kY
+         0kDkam8hf3qA+dDmNx+vVIuCO1JnGPG9bhptZp8kL+4PLMwgY4V06YPQj+t0Td/MQ6uk
+         0TgAvxgs8AzO/gMBUuLtHDbnCbyahpP4vXAJOVJ0bEE2veTrVXhKpxlN7syHxTEvuzGS
+         T0XIQg6IvKLiqT8HVRRM8FJ/kbtr6/OFHHvP2tPSMvabVdNMkTFMRohsTLMPIkHe81Xa
+         4InA==
+X-Gm-Message-State: AOJu0YyVdNn3LYuLU7L4waEQstrLlJ/3dHzG7eWH9/FndhIh32UHgW+Y
+	uonrZXlPOELQ5SRSGbxWNTejFpIEoKN7L0Cc+B1Ufgypf+0D6OJBKnPisDgU0qBkOSQ=
+X-Gm-Gg: ASbGnctbReDyWoS8bEYAyDoxyFYZfWCJDATCyPv8J/8opU5bHqJSbH3HQvml0l2kB6T
+	gk2ND7ltA4QtE9myeUepLQMw3ZVQct7c4nrC2eM1jcCgjnDmIt+HjGcuu4puFGaJiRxcknxi8ij
+	8Op/7uzDS1l6enyui0DQEc9ZmGwtSUWdAmtcneMGZ1GEwblBlXBy34DPt8TH7wPvRaKXD1iyeup
+	aGSRat7LDo+UCDdW8xN9J2rc1sCIziXs53nS3posZPt9mqo5rSdC0YUwaFxAvaLcJNc9jRMqCD3
+	ipYiapHt3ZeCW1YY5R3BeeY5xmn3b2/MniL0wrlYpb4C7hVqUdZJvFdE3LuC4i4jlgqSONhHLI/
+	OpuOTRTwvR7/VsTjLNjyzU5XNpPIYUvfLdi+4WCNLyzp9ewj4awjIroWTKw==
+X-Google-Smtp-Source: AGHT+IGd1fs3d/xLWFIH8x0QD2Wv+0XsIfWldgkL360dAU+YTjAIy2jV9nMZXESeItmlntKEcr6Daw==
+X-Received: by 2002:a05:6a20:3d19:b0:24d:301a:79b1 with SMTP id adf61e73a8af0-2533e94d169mr26623227637.15.1757520575417;
+        Wed, 10 Sep 2025 09:09:35 -0700 (PDT)
 Received: from KASONG-MC4.tencent.com ([101.32.222.185])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b54998a1068sm1000142a12.31.2025.09.10.09.09.26
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b54998a1068sm1000142a12.31.2025.09.10.09.09.30
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 10 Sep 2025 09:09:30 -0700 (PDT)
+        Wed, 10 Sep 2025 09:09:34 -0700 (PDT)
 From: Kairui Song <ryncsn@gmail.com>
 To: linux-mm@kvack.org
 Cc: Kairui Song <ryncsn@gmail.com>,
@@ -109,23 +109,23 @@ Cc: Kairui Song <ryncsn@gmail.com>,
 	Zi Yan <ziy@nvidia.com>,
 	linux-kernel@vger.kernel.org,
 	Kairui Song <kasong@tencent.com>
-Subject: [PATCH v3 09/15] mm/shmem, swap: remove redundant error handling for replacing folio
-Date: Thu, 11 Sep 2025 00:08:27 +0800
-Message-ID: <20250910160833.3464-10-ryncsn@gmail.com>
+Subject: [PATCH v3 10/15] mm, swap: wrap swap cache replacement with a helper
+Date: Thu, 11 Sep 2025 00:08:28 +0800
+Message-ID: <20250910160833.3464-11-ryncsn@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250910160833.3464-1-ryncsn@gmail.com>
 References: <20250910160833.3464-1-ryncsn@gmail.com>
 Reply-To: Kairui Song <ryncsn@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6E45EC0009
-X-Stat-Signature: daofu634qcch5xkzf4qs7xhb4om3z3f5
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1757520572-600708
-X-HE-Meta: U2FsdGVkX1/dWuXivA3LuQvBQxLEGXTOvuD7aG2RZrg2bqTO7zBmkS/FebiORzltKz8Ls/CqooQXxiw3PMK73p2FptjC1UJKTDyMEx3zYQ+iWEyiDC6rG9MR1++WJ6nWZdbjJ55NwDo5beE8b/6NuJlRLc1Zni4RL5AyHF2seQlv3xvIbx1kmU2S6SzZhY9cXj5D0do5VEOekQjVd3y+1CYYi2eU//76at5uMZu7Ia7vJNR0dxfn3izAepe7wwDfVHausBleKDnRhcqVcDaDuyTaG55dl9BtHRm2LJNJI1ZICdbcQOepvsH9kf+Ypb10ENsxEyNWM0bvdzgOQBCOa9wltXegbL1oVOVonjqFYMgjXqG5sN0JaZxZ+fdc6mZf/km+af7HLlHjPPHSuuJ5VWjcqrnaDBZyT33vT0ZSNrmBsGRc+ZE6+d1AMIFhp2kslif7hd6Urca/24I75EoXeX/fOJ0isWo+FpYrusjGwoRd1K1cwh/U5LbWTOHASj1TQ243UI7j4YRFqwsmpi/33ejb8/zkyygC2WFd0lpbGoluceUgAXOR57AmYQSnaxLANyiaypcUbtpOlsUsSrv+VSA0s1Co6dnF6Rc+rW+gy5TShyuO7s4nCbDzUdD9kGSWW93CU6/hzWsIMsrup0L4e2ZeDeGoddKTUe3NseREpGAs1nKIofG4twYfIuT2Es2IrkuFaCZ4j6hEgPaeFvuQBObSnhNI/BtAOVepUux8+1I+n1eUbsjpR2fMYcjlyS/b79t2DeUZ2ItaVR+Zzot8NYzfWG5XzvlxD4jgWFSQSEAGsLiBejMeN04sqL+u6wRj5BYtbKD85SsnJhxC4NehiPVjYYki+CLQ0eV90s/FJZ0iBgoCU7aE6J6bIb9os9h7L0zzFacFrxZDduzx0WTzbs+mcBBjZi+tjon4W9rwaA76ZM8uIxsVH/s4Z+0xPc5rlSIoLGlre8mPDghyr02
- 2P/SIr/k
- 07FrrZl3RdQ8XoVhsW3Dla9NlWoQiEO9PpLVwtySq530YsP75uOgwlmRSxhT9ZwUPz5BOtje1QefNAsvuls0y6hvL4IH+zNRlNr0ja0ugD2WJkZf5BDyN8eHvAf1yxW+HwQAnmuqmoMq/R0q67XtgOqRNtB2Wx1/SYR4EB4u7ZcoDYlAFZYSaNhreqV/EFQuJynrPQt8zXkkM+jTRtXtpu2Hb9cU8yXzEuCsj2mtvje1L8bm/gqca8J7CibNfRiZngny2Fo13vm9LDET4LRVG2JRNlwfdg4NmteLHVhmQfP0hJ0EK7S1h6PLTMl8H8NK6NOwYho9FIcE+q28FEFl9zCbIwWN4ZuoD7b10ozEiPITomeRGXyAoP7ZqemoEKHJzv4CjSrzJI3DZsGu/iVVZTgcREND/HGl54c659pXztxvXq8brmgNowDACzUrvCOZNOWh0XwW03lLWhqNTdIx5ph8QuztUdaixAyebTPw3jLxo3LmWePsBeLRc1q5nZAvnzZCs0PSvNQt+2EWRH9pGVJengn/03b1uW9TXmOV56cfB/reX27OSckeLSnuMuwOpSNwZ7BXzNTMkmUJki+yxsdwbfQ==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: C15AF1C0009
+X-Stat-Signature: 953anhst4ira3ejjd17bao7o34nohc4h
+X-HE-Tag: 1757520578-724687
+X-HE-Meta: U2FsdGVkX18f5QoMM4BnpWNDFwHnrxusxVriXeX0KnR5RkdJw5K71jGPAF1rLBuin15+4zKVY2Jba2L/c3PMKcXTYc35SbcjrTvxav8T6wd4DvWABdYuChZnhQzK1Gm99yHobx4ao7rSt/QOo3NYCxt1Mj4yUgbIVrhr2NbTfcdBccHhhHd2hhcaDWDsT+zp2ZCdg+DS/sKuTMABGIPK3QiuHYzrCiXPocfXzpNomJqKEi47TsnUfUiZAQoxvcNMwuab3UIW9LGBAFeZDkjuMOy7px35ri1IlJtSmLYl5GsyguAoGmEl/eMGOmBy/f1dpLWo+w8Y+cV8O4ojJNeJAq9IDNVoOV86je5AYNjNt4fWHxhjLkI/CU1LnHpZNZfeFQeVyUM67YyTQyFwmeOC2NkNTO02j5hmK9Nj1T5EeEMkAONqq4GtueWC3iBKGGiAK9KPigCDYpRDRr0oj5zkQqkMphpKObODOnofLGncw3s1TfiS8YXWT8bCQuVagpuNdPMI/go7K2QaxWcitlOTpfno8Bv39bm3RiVWQ6dlCgEI+puyhyNE84gWz9+11jYjeBmSPTPDvGNZfgo7zF6hrM2VOtPq+P3E5keY2kMg6Y43zfM5R5mRz6e+i8HXEs3JRlnMLy2wlOKcafE7HIL2ig3gup4DPO5llwvyyUKW07SwOpUfofitHDqSOSQd0QFC6K5HRPIOmoWB+eNwilGY9uOi/yvcDJlbam9dVXqan5ogC0ttVKbMWYoY9r4bzmL/bFetaz1I5VjsE6s5TU7RcDFRgp7VpYC6OJoQXp92bN5M5vVG6EjmQUMbi5ahigOGq3Bs7KcjEiepMFAts9KO4lzaFciWvSMBb/3klItYEBaW38pyGtF9579aHFgZukEYV+YAprx/lVu6NdXFp3bgA5N/yPGDBvRk/bPK2v/a1h+7yKqQKCbO5sDfEkC1//fenjsgqheJSY3KvudAuch
+ cSV/n2tw
+ sfCW1cmS7C543F5vUgpNuwWUWvn/33gIoulmn+ctzD5cHay0lBEY1pVqC1hue5jSDQBi+m5pGW5Qh2Fwtw9oP96+E1ZtLHDS1xk5xAbKhrc7doc2d4u9oJOEeiMVA+XzQXgdeYRsQT7G6e3dLkyRYm1oQsM5JgwJOKRuT1vJy3bfXFsukZWKHWx9/HDfjDlK1R6sB5QQpNcWHHk6rkaqkW6AAqnHGAKYOi6oKIUiD5TIKC7blSRi0Fy39wqd+R9wM5kOJ3HZlohAtRbNQQQ0amTTjG9fzvqK+aBEfELfiTgS4o3nIoNRNIqIvXBnW2Uan94ZkGUFYRk84eG5HKHf4KjfGMp3qDSDoLt9yL2H9kMCsLJVm+Dc1BSqo5bpjuGYcA4fpnIeaAyqPZBnJ1quMJDZ9v+HN2k94qUPfB3LVcAegz3SdvcG6AC+3aDYoHsgkS/vEQdlFVguqFt6bJciPjiYAWye6cacczsUuW+eELGMfAnoQkJSw+yQ7sXzCvj6CLIlxNS0nrjPjeZaQVnphFgak1qLLbxTfcn8NyB6z8XZr4URQeBt7dWmotd5Zw4M4BmQDVu0GmxG00VnSHqTh+p+1fg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,112 +136,186 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Kairui Song <kasong@tencent.com>
 
-Shmem may replace a folio in the swap cache if the cached one doesn't
-fit the swapin's GFP zone. When doing so, shmem has already double
-checked that the swap cache folio is locked, still has the swap cache
-flag set, and contains the wanted swap entry. So it is impossible to
-fail due to an XArray mismatch. There is even a comment for that.
+There are currently three swap cache users that are trying to replace an
+existing folio with a new one: huge memory splitting, migration, and
+shmem replacement. What they are doing is quite similar.
 
-Delete the defensive error handling path, and add a WARN_ON instead:
-if that happened, something has broken the basic principle of how the
-swap cache works, we should catch and fix that.
+Introduce a common helper for this. In later commits, this can be easily
+switched to use the swap table by updating this helper.
+
+The newly added helper also makes the swap cache API better defined, and
+make debugging easier by adding a few more debug checks.
+
+Migration and shmem replace are meant to clone the folio, including
+content, swap entry value, and flags. And splitting will adjust each
+sub folio's swap entry according to order, which could be non-uniform in
+the future. So document it clearly that it's the caller's responsibility
+to set up the new folio's swap entries and flags before calling the helper.
+The helper will just follow the new folio's entry value.
+
+This also prepares for replacing high-order folios in the swap cache.
+Currently, only splitting to order 0 is allowed for swap cache folios.
+Using the new helper, we can handle high-order folio splitting better.
 
 Signed-off-by: Kairui Song <kasong@tencent.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 ---
- mm/shmem.c | 42 ++++++++++++------------------------------
- 1 file changed, 12 insertions(+), 30 deletions(-)
+ mm/huge_memory.c |  4 +---
+ mm/migrate.c     | 11 +++--------
+ mm/shmem.c       | 10 ++--------
+ mm/swap.h        |  5 +++++
+ mm/swap_state.c  | 33 +++++++++++++++++++++++++++++++++
+ 5 files changed, 44 insertions(+), 19 deletions(-)
 
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 26cedfcd7418..4c66e358685b 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -3798,9 +3798,7 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
+ 			 * NOTE: shmem in swap cache is not supported yet.
+ 			 */
+ 			if (swap_cache) {
+-				__xa_store(&swap_cache->i_pages,
+-					   swap_cache_index(new_folio->swap),
+-					   new_folio, 0);
++				__swap_cache_replace_folio(folio, new_folio);
+ 				continue;
+ 			}
+ 
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 8e435a078fc3..c69cc13db692 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -566,7 +566,6 @@ static int __folio_migrate_mapping(struct address_space *mapping,
+ 	struct zone *oldzone, *newzone;
+ 	int dirty;
+ 	long nr = folio_nr_pages(folio);
+-	long entries, i;
+ 
+ 	if (!mapping) {
+ 		/* Take off deferred split queue while frozen and memcg set */
+@@ -615,9 +614,6 @@ static int __folio_migrate_mapping(struct address_space *mapping,
+ 	if (folio_test_swapcache(folio)) {
+ 		folio_set_swapcache(newfolio);
+ 		newfolio->private = folio_get_private(folio);
+-		entries = nr;
+-	} else {
+-		entries = 1;
+ 	}
+ 
+ 	/* Move dirty while folio refs frozen and newfolio not yet exposed */
+@@ -627,11 +623,10 @@ static int __folio_migrate_mapping(struct address_space *mapping,
+ 		folio_set_dirty(newfolio);
+ 	}
+ 
+-	/* Swap cache still stores N entries instead of a high-order entry */
+-	for (i = 0; i < entries; i++) {
++	if (folio_test_swapcache(folio))
++		__swap_cache_replace_folio(folio, newfolio);
++	else
+ 		xas_store(&xas, newfolio);
+-		xas_next(&xas);
+-	}
+ 
+ 	/*
+ 	 * Drop cache reference from old folio by unfreezing
 diff --git a/mm/shmem.c b/mm/shmem.c
-index 410f27bc4752..5f395fab489c 100644
+index 5f395fab489c..8930780325da 100644
 --- a/mm/shmem.c
 +++ b/mm/shmem.c
-@@ -1661,13 +1661,13 @@ int shmem_writeout(struct folio *folio, struct swap_iocb **plug,
- 		}
+@@ -2086,10 +2086,8 @@ static int shmem_replace_folio(struct folio **foliop, gfp_t gfp,
+ 	struct folio *new, *old = *foliop;
+ 	swp_entry_t entry = old->swap;
+ 	struct address_space *swap_mapping = swap_address_space(entry);
+-	pgoff_t swap_index = swap_cache_index(entry);
+-	XA_STATE(xas, &swap_mapping->i_pages, swap_index);
+ 	int nr_pages = folio_nr_pages(old);
+-	int error = 0, i;
++	int error = 0;
  
- 		/*
--		 * The delete_from_swap_cache() below could be left for
-+		 * The swap_cache_del_folio() below could be left for
- 		 * shrink_folio_list()'s folio_free_swap() to dispose of;
- 		 * but I'm a little nervous about letting this folio out of
- 		 * shmem_writeout() in a hybrid half-tmpfs-half-swap state
- 		 * e.g. folio_mapping(folio) might give an unexpected answer.
- 		 */
--		delete_from_swap_cache(folio);
-+		swap_cache_del_folio(folio);
- 		goto redirty;
- 	}
- 	if (nr_pages > 1)
-@@ -2045,7 +2045,7 @@ static struct folio *shmem_swap_alloc_folio(struct inode *inode,
+ 	/*
+ 	 * We have arrived here because our zones are constrained, so don't
+@@ -2118,12 +2116,8 @@ static int shmem_replace_folio(struct folio **foliop, gfp_t gfp,
  	new->swap = entry;
+ 	folio_set_swapcache(new);
  
- 	memcg1_swapin(entry, nr_pages);
--	shadow = get_shadow_from_swap_cache(entry);
-+	shadow = swap_cache_get_shadow(entry);
- 	if (shadow)
- 		workingset_refault(new, shadow);
- 	folio_add_lru(new);
-@@ -2121,35 +2121,17 @@ static int shmem_replace_folio(struct folio **foliop, gfp_t gfp,
- 	/* Swap cache still stores N entries instead of a high-order entry */
+-	/* Swap cache still stores N entries instead of a high-order entry */
  	xa_lock_irq(&swap_mapping->i_pages);
- 	for (i = 0; i < nr_pages; i++) {
--		void *item = xas_load(&xas);
--
--		if (item != old) {
--			error = -ENOENT;
--			break;
--		}
--
--		xas_store(&xas, new);
-+		WARN_ON_ONCE(xas_store(&xas, new));
- 		xas_next(&xas);
- 	}
--	if (!error) {
--		mem_cgroup_replace_folio(old, new);
--		shmem_update_stats(new, nr_pages);
--		shmem_update_stats(old, -nr_pages);
+-	for (i = 0; i < nr_pages; i++) {
+-		WARN_ON_ONCE(xas_store(&xas, new));
+-		xas_next(&xas);
 -	}
++	__swap_cache_replace_folio(old, new);
  	xa_unlock_irq(&swap_mapping->i_pages);
  
--	if (unlikely(error)) {
--		/*
--		 * Is this possible?  I think not, now that our callers
--		 * check both the swapcache flag and folio->private
--		 * after getting the folio lock; but be defensive.
--		 * Reverse old to newpage for clear and free.
--		 */
--		old = new;
--	} else {
--		folio_add_lru(new);
--		*foliop = new;
--	}
-+	mem_cgroup_replace_folio(old, new);
-+	shmem_update_stats(new, nr_pages);
-+	shmem_update_stats(old, -nr_pages);
-+
-+	folio_add_lru(new);
-+	*foliop = new;
+ 	mem_cgroup_replace_folio(old, new);
+diff --git a/mm/swap.h b/mm/swap.h
+index 6c4acb549bec..fe579c81c6c4 100644
+--- a/mm/swap.h
++++ b/mm/swap.h
+@@ -185,6 +185,7 @@ int swap_cache_add_folio(struct folio *folio, swp_entry_t entry,
+ void swap_cache_del_folio(struct folio *folio);
+ void __swap_cache_del_folio(struct folio *folio,
+ 			    swp_entry_t entry, void *shadow);
++void __swap_cache_replace_folio(struct folio *old, struct folio *new);
+ void swap_cache_clear_shadow(int type, unsigned long begin,
+ 			     unsigned long end);
  
- 	folio_clear_swapcache(old);
- 	old->private = NULL;
-@@ -2183,7 +2165,7 @@ static void shmem_set_folio_swapin_error(struct inode *inode, pgoff_t index,
- 	nr_pages = folio_nr_pages(folio);
- 	folio_wait_writeback(folio);
- 	if (!skip_swapcache)
--		delete_from_swap_cache(folio);
-+		swap_cache_del_folio(folio);
- 	/*
- 	 * Don't treat swapin error folio as alloced. Otherwise inode->i_blocks
- 	 * won't be 0 when inode is released and thus trigger WARN_ON(i_blocks)
-@@ -2422,7 +2404,7 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
- 		folio->swap.val = 0;
- 		swapcache_clear(si, swap, nr_pages);
- 	} else {
--		delete_from_swap_cache(folio);
-+		swap_cache_del_folio(folio);
- 	}
- 	folio_mark_dirty(folio);
- 	swap_free_nr(swap, nr_pages);
+@@ -336,6 +337,10 @@ static inline void __swap_cache_del_folio(struct folio *folio, swp_entry_t entry
+ {
+ }
+ 
++static inline void __swap_cache_replace_folio(struct folio *old, struct folio *new)
++{
++}
++
+ static inline unsigned int folio_swap_flags(struct folio *folio)
+ {
+ 	return 0;
+diff --git a/mm/swap_state.c b/mm/swap_state.c
+index f3a32a06a950..d1f5b8fa52fc 100644
+--- a/mm/swap_state.c
++++ b/mm/swap_state.c
+@@ -234,6 +234,39 @@ void swap_cache_del_folio(struct folio *folio)
+ 	folio_ref_sub(folio, folio_nr_pages(folio));
+ }
+ 
++/**
++ * __swap_cache_replace_folio - Replace a folio in the swap cache.
++ * @old: The old folio to be replaced.
++ * @new: The new folio.
++ *
++ * Replace an existing folio in the swap cache with a new folio. The
++ * caller is responsible for setting up the new folio's flag and swap
++ * entries. Replacement will take the new folio's swap entry value as
++ * the starting offset to override all slots covered by the new folio.
++ *
++ * Context: Caller must ensure both folios are locked, also lock the
++ * swap address_space that holds the old folio to avoid races.
++ */
++void __swap_cache_replace_folio(struct folio *old, struct folio *new)
++{
++	swp_entry_t entry = new->swap;
++	unsigned long nr_pages = folio_nr_pages(new);
++	unsigned long offset = swap_cache_index(entry);
++	unsigned long end = offset + nr_pages;
++
++	XA_STATE(xas, &swap_address_space(entry)->i_pages, offset);
++
++	VM_WARN_ON_ONCE(!folio_test_swapcache(old) || !folio_test_swapcache(new));
++	VM_WARN_ON_ONCE(!folio_test_locked(old) || !folio_test_locked(new));
++	VM_WARN_ON_ONCE(!entry.val);
++
++	/* Swap cache still stores N entries instead of a high-order entry */
++	do {
++		WARN_ON_ONCE(xas_store(&xas, new) != old);
++		xas_next(&xas);
++	} while (++offset < end);
++}
++
+ /**
+  * swap_cache_clear_shadow - Clears a set of shadows in the swap cache.
+  * @type: Indicates the swap device.
 -- 
 2.51.0
 
