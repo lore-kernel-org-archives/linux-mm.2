@@ -4,103 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77755CA0FED
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 20:12:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CA4DCA0FED
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 20:17:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D5F278E0005; Wed, 10 Sep 2025 16:12:18 -0400 (EDT)
+	id C0B1D8E0006; Wed, 10 Sep 2025 16:17:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D36FF8E0001; Wed, 10 Sep 2025 16:12:18 -0400 (EDT)
+	id BE29E8E0001; Wed, 10 Sep 2025 16:17:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C4D138E0005; Wed, 10 Sep 2025 16:12:18 -0400 (EDT)
+	id AF7F88E0006; Wed, 10 Sep 2025 16:17:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B142C8E0001
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 16:12:18 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8BB7C1401F7
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 20:12:18 +0000 (UTC)
-X-FDA: 83874437556.13.6F08BAE
-Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
-	by imf21.hostedemail.com (Postfix) with ESMTP id B89A41C0012
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 20:12:16 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=RiMLFgPL;
-	spf=pass (imf21.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9F3058E0001
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 16:17:35 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 197E684F60
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 20:17:35 +0000 (UTC)
+X-FDA: 83874450870.04.D359079
+Received: from relay.hostedemail.com (unirelay08 [10.200.18.71])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 6238340006
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 20:17:33 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757535136;
+	s=arc-20220608; t=1757535453;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gR5yuuzaP05+dnCBzQFX9tuMWKZshj48LMZ7zdf2Gm0=;
-	b=BTJJ5ZEhnH3uh/6AODwWgCrcEGUB2buBNEBrXwkwpbma3rL3U0p0vb0e1lUIIz6AX9BOvF
-	/76PlcTH3OGdHDjU9h1xVpQ0RxbcCj1qfYxLDMeXrly56/Z0WHyQ/MB0S0XOrtkAqX4mZf
-	DVNWlOP3LaWsb/3T2w9VCcIOBUQX8V8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757535136; a=rsa-sha256;
-	cv=none;
-	b=e/n+/60Gh/75Hw7BAC+axAlBo2/IXsM1EZhjOqC/zNPNxuNERn2g/IPINyUgVzGj5okK8f
-	jKoRTLWtKqkkwbzpC4LEeccQeH0Usv2pctzdaDsQ6CUL5pCtVVICVaYUFKPKeKjIBIRitA
-	oVtkQASErGkUzp7e96qFFzzQuLqE/wY=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=IV4SklleQQqW3S6pu5lSNKA915ElsXta/7el5h4wIQs=;
+	b=hYuDidvRAvC1u6oR4W31PCVC+r1hF/2CUBdEsE55yndW42eG22yEGkfCNJF2totFZp5Gqf
+	djhu3tD9W2C3c1u2nNlYWNrYh5WjgC5/F12+F+KTHi2MuTGDshKT3TawfO+Fwr5fUNSMRB
+	cUgeDET8kmn4zIS3DQzcQxnue/KAsh8=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=RiMLFgPL;
-	spf=pass (imf21.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Date: Wed, 10 Sep 2025 13:12:00 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1757535134;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gR5yuuzaP05+dnCBzQFX9tuMWKZshj48LMZ7zdf2Gm0=;
-	b=RiMLFgPL2eLugE3IfLCZDeAqKTtRLfUqMUjt0lINJzqe3IK5Hy+nwR33Xz4+ABuS3RzqR8
-	GdhQ2MZQm0CbXP7aQOJLvOd/mIm7InoprUnNwSnFMbkOjO6IC9TvzAyKmDM0A21EjLA8so
-	kmmOUhrW17f9pHzyHX7FLHPot7il8Oo=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Lei Liu <liulei.rjpt@vivo.com>
-Cc: Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	David Rientjes <rientjes@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, Chris Li <chrisl@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, David Hildenbrand <david@redhat.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
-	Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>, 
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>, Chen Yu <yu.c.chen@intel.com>, Hao Jia <jiahao1@lixiang.com>, 
-	"Kirill A. Shutemov" <kas@kernel.org>, Usama Arif <usamaarif642@gmail.com>, 
-	Oleg Nesterov <oleg@redhat.com>, Christian Brauner <brauner@kernel.org>, 
-	Mateusz Guzik <mjguzik@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Andrii Nakryiko <andrii@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, 
-	Fushuai Wang <wangfushuai@baidu.com>, "open list:MEMORY MANAGEMENT - OOM KILLER" <linux-mm@kvack.org>, 
-	open list <linux-kernel@vger.kernel.org>, 
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>
-Subject: Re: [PATCH v0 0/2] mm: swap: Gather swap entries and batch async
- release
-Message-ID: <uwqrobr5xqtvav73srbe6v2nccgtoy2456vpgzemwex26lwsq7@2g74vl5oomfx>
-References: <20250909065349.574894-1-liulei.rjpt@vivo.com>
- <fszpgct7ywqy6qq3qnjflol3theovmgnau2wgdqqdxin4q7ezm@zumgw533hxon>
- <CAJuCfpFaTj8PsXkoYRQKQ0sOu+mKikUAE8Wbcx+YpZXZ4M7cMA@mail.gmail.com>
- <b74b1e28-8479-4b14-9210-5b4334d3ce22@vivo.com>
+	imf07.hostedemail.com;
+	none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757535453; a=rsa-sha256;
+	cv=none;
+	b=h/SueCz4KhgmmgO0YgJX3h96y36XVZrdHN4TMnBWlOvD2VMJrVLGKzPXY+/EUeifW7SWrQ
+	naieHSpOC7XT8pdrtZB8sOA/XErBu4CY/fXJ32j79Q7fXldAbb7VkO6WqV0MifvQq6T7hL
+	Hqr+MauIMJIDHkDkatBWyeAbL2xQw3c=
+Received: from omf05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 172E81401FC;
+	Wed, 10 Sep 2025 20:17:32 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf05.hostedemail.com (Postfix) with ESMTPA id 232852000D;
+	Wed, 10 Sep 2025 20:17:30 +0000 (UTC)
+Date: Wed, 10 Sep 2025 16:18:20 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: LKML <linux-kernel@vger.kernel.org>
+Cc: Linux Trace Kernel <linux-trace-kernel@vger.kernel.org>, Linus Torvalds
+ <torvalds@linux-foundation.org>, linux-mm@kvack.org, Kees Cook
+ <keescook@chromium.org>, Aleksa Sarai <cyphar@cyphar.com>, Al Viro
+ <viro@ZenIV.linux.org.uk>
+Subject: [PATCH] uaccess: Comment that copy to/from inatomic requires page
+ fault disabled
+Message-ID: <20250910161820.247f526a@gandalf.local.home>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <b74b1e28-8479-4b14-9210-5b4334d3ce22@vivo.com>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: B89A41C0012
-X-Stat-Signature: ueqd9gmrp7qwcnc37zrrozy17chbd179
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX19BBTwwLDsir0hYAEKbj0Aqi5DJnU7TB68=
+X-HE-Meta: U2FsdGVkX1+LXnjBkhITVL/OslgiLeLF3o1a0C4PdpHYfRRE10FTK6MKYR3ixYLqwGUxK/bvqCAQl5HzSryYE/oOxu7vIsusicNrcJUGpUK131VIXs8D7QAvmoy283ZtGnIn+/+mtzcPK6Je5EgKeGZfFmo1LcSs6aQOPniQnwD3qK+Yg/MPqE25toAlQWlDFreyedHFx1LLOA/IsDDCmYdOetFOL34AsfIZjOgXaTs5NC9+Nq/P8PwnByessqsRsKPLbFbKSPgoZgKZyA34a7T9jLCpRYOP3IibmStjVINc94sXs9OTJlhxEur0H59G2HcqtZ8ESbYYHayPUXBON2JJlhMcBrJgcvFxNI5eoxX0fvAwjw3KWMDYee3eYjxsLwW9SKlRq2AOHpjH0As1wOpFsF/hppCBzRvHWhxz1Mw=
+X-Stat-Signature: rbnzs9f9yx5mabma547rjikgyq1g78x8
 X-Rspam-User: 
-X-HE-Tag: 1757535136-359889
-X-HE-Meta: U2FsdGVkX18zOJhfpuoABrDX5V/AxNwtHchvNt3KFRjNlxTaUGkmS4IGK/i+vpCZiKvKsAlC7c0z8DUZo0AtZpfJ9z7m1VCBaSs9iww7NTzuJTCB4bTgz6oAktpnFx1xEO6t0vVW96CwaOY07H/6mnISphnKBIJANKiEYl1xQa+D3duxR1ViHpx61QuUjCmZMXpudYmzEvlnBfbouA0gu35hVvCSbFGmWM4OYjrfPdNDHfq+d/+M6CFuKL7i4Yf7MuxUAoP3eFAD8obupyOGRjQIBLdBP86KXGpQcqrz0ZD4dCoidwsn332/YaUHHuGxHKmb0jCpniM0jzfMGuhM+TfMHA5x3nVQ/bym3tFHfBlyDZp+U7dS/mZxg/GHrALOWJ879zqqG6guXvjvIdSptpubO7VizMCJ26h2cB5Kpo4fvfP3vh/Im2L089TKxbFyGLUm/JJa0CoCkWuZ4371AjIgWxwCVC3Jewg0pHXoUA1DHRXzhcaCsdEZmoyECGLVsWtdUjHvzt+KS/MprHxrZ0vsS+hHsNumAqkvM1NYlSQumb8EbAEtzGZTX9D4pf+0YRBI5WWLS6+AaXluOUPwDhKkax3jCI8e1B2lPkzqKfdQHpC+YNBMDKXZcPoYApgy63CQktV8jONCuVXeJryWpOHqlxTsV0l3TgKaFmIeDbwGC/gptHY1AtVlo2RtB+CikOQY9w6NAbA6F/YdXxbXMawbgExD34F3x4anmiXtUC3FkadJwRUrQZCbU9RyXXP5Z3S5z9vto7cN77hl/63wNf4ZtGb93gMvYtL6PWsKF81vkorWOA3BopcgQoa+HsFJGEzZiHoAyLBZ/7IDiytnWe9h3a9Qc03x2+vY/PUhaP45hNZT0ri1Eb1EychVDIuqh3wSQ6jWe78fX6WzDWZJHBvWUiWEqD9EXkX/W4hiu/hWxe5B5nddw7XM9ZDk+IOQ3fN9rv5PWklmm0rAdr/
- x/DLIUkn
- Jok7dGWVHuPQsmT3iXqzyGhOjXiXv+oSJs1M/0quuvEsjlx5x/Bba7qKe/wNK3oHvo0wYE+TwAFhalrpuYFsmZI50EHDhV/t3ORX1o1qdyYkdfaLLBAiJglGdkJcmVIE3YKur75V9E7IgsgfhjuoBIaNU4TkVOET2qbU6RaUKZiiYwIWczHJCdKJief92ISmi07UgWuiA5Fzl8E6l0X3SyKMupQWm/Zn2e+ImAofZt+Q6iO8=
+X-Rspamd-Queue-Id: 6238340006
+X-HE-Tag-Orig: 1757535450-343880
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1757535453-814988
+X-HE-Meta: U2FsdGVkX1/2lbeZUrSHi6a9Hu9RegkB7zat4ao+DW5GNNKmyNvbGkt2TrqXtSvV+nauZfIB6IoM81wqvNrRWjOy/F828n97NrPCmBGVkdJf46dNX/MtQhQtdvQPMUHEE5F0crP7qwzhzc29ZZdLc01ZDcD4K9jZYPebE8wQbgFZLRAjj3CcxsBXReRdWZrnj+lshsZZEhbFKIKMWb8ia+q/74mAfaKEL/uApOdZNRI1WlTx3iyNgS0SlP6yIMnXcOnHLz4O6Er7M4jEfuscA9EDewplvb7/iqLeRwesh2+QIHtXjtsOa37DW5jfs02CGwAp/9fnXKbKohzZK4fMFP1w0aMb6lfXjFB1VFl4fu387c/81w+i3IyDgl8LlgMHGKUXwhpvb+kPcRtVPfCb/waLFQNcgOJa2FBhy5lKkmuE/LFTsz5bFxvtHQWb9TEW/Z5GepudZXkzm8W9zyUaxeqETxctIZMZeliwQcshAF6VaMC+DS19yoAx7BH03rsKyy0EjNnrTYOdZi/eFvlX9LAQfuAW3HPiEHmZ65wWEh/4Dr3nikILayYpURIK96HzCpDp8j4zesMtL3/cv+PsArcAXeGpgvbemkn3pX5bxDsZZfy1RHjcaWTcNCP5/wLkKD55FrfTF1UsvBb42AfAOtB2BFaTlWhxvOAwPbeRl/L2EhPB9vzLJ416qxh7Ayv7EEdFVtFG9yaX23cvDmfU6FHjdIo2FI5VKwYp58x9DFhYLUGivOcenKaiwJxrlHcI6Vs9BIxnGenjSdR03+z09Jwm3WL27b9efZ0E1k6mRZTUl0/GO/xNYJQHdpkb5xl+Info+ItAsRMtoZItVyGwC6+lqpUxQwv+epHfQWXuy+Ls0wJ1Avuxv9IMV7mS4Wz9hQlmJwyyXWoJ9T5pPDBkgqOZAWNcC2r+YyZLAnBOXt/RE/YMorcKHDn12jLoVCUa+UeWYQbcyTiNHtnFWFE
+ tiKp7EvP
+ 3Gq+YqdiYwptGJHBaf3WY9zH7/LnFW1PnX/jY
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,52 +83,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 10, 2025 at 10:14:04PM +0800, Lei Liu wrote:
-> 
-> On 2025/9/10 3:48, Suren Baghdasaryan wrote:
-> > On Tue, Sep 9, 2025 at 12:21 PM Shakeel Butt <shakeel.butt@linux.dev> wrote:
-> > > On Tue, Sep 09, 2025 at 02:53:39PM +0800, Lei Liu wrote:
-> > > > 1. Problem Scenario
-> > > > On systems with ZRAM and swap enabled, simultaneous process exits create
-> > > > contention. The primary bottleneck occurs during swap entry release
-> > > > operations, causing exiting processes to monopolize CPU resources. This
-> > > > leads to scheduling delays for high-priority processes.
-> > > > 
-> > > > 2. Android Use Case
-> > > > During camera launch, LMKD terminates background processes to free memory.
-> > > How does LMKD trigger the kills? SIGKILL or cgroup.kill?
-> > SIGKILL
-> > 
-> > > > Exiting processes compete for CPU cycles, delaying the camera preview
-> > > > thread and causing visible stuttering - directly impacting user
-> > > > experience.
-> > > Since the exit/kill is due to low memory situation, punting the memory
-> > > freeing to a low priority async mechanism will help in improving user
-> > > experience. Most probably the application (camera preview here) will get
-> > > into global reclaim and will compete for CPU with the async memory
-> > > freeing.
-> > > 
-> > > What we really need is faster memory freeing and we should explore all
-> > > possible ways. As others suggested fix/improve the bottleneck in the
-> > > memory freeing path. In addition I think we should explore parallelizing
-> > > this as well.
-> > > 
-> > > On Android, I suppose most of the memory is associated with single or
-> > > small set of processes and parallelizing memory freeing would be
-> > > challenging. BTW is LMKD using process_mrelease() to release the killed
-> > > process memory?
-> > Yes, LMKD has a reaper thread which wakes up and calls
-> > process_mrelease() after the main LMKD thread issued SIGKILL.
-> 
-> Hi Suren
-> 
-> our current issue is that after lmkd kills a process,|exit_mm|takes
-> considerable time. The interface you provided might help quickly free
-> memory, potentially allowing us to release some memory from processes before
-> lmkd kills them. This could be a good idea.
-> 
-> We will take your suggestion into consideration.
+From: Steven Rostedt <rostedt@goodmis.org>
 
-But LMKD already does the process_mrelease(). Is that not happening on
-your setup?
+The functions __copy_from_user_inatomic() and __copy_to_user_inatomic()
+both require that either the user space memory is pinned, or that page
+faults are disabled when they are called. If page faults are not disabled,
+and the memory is not present, the fault handling of reading or writing to
+that memory may cause the kernel to schedule. That would be bad in an
+atomic context.
+
+Link: https://lore.kernel.org/all/20250819105152.2766363-1-luogengkun@huaweicloud.com/
+
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+---
+ include/linux/uaccess.h | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
+index 1beb5b395d81..add99fa9b656 100644
+--- a/include/linux/uaccess.h
++++ b/include/linux/uaccess.h
+@@ -86,6 +86,12 @@
+  * as usual) and both source and destination can trigger faults.
+  */
+ 
++/*
++ * __copy_from_user_inatomic() is safe to use in an atomic context but
++ * the user space memory must either be pinned in memory, or page faults
++ * must be disabled, otherwise the page fault handling may cause the function
++ * to schedule.
++ */
+ static __always_inline __must_check unsigned long
+ __copy_from_user_inatomic(void *to, const void __user *from, unsigned long n)
+ {
+@@ -124,7 +130,8 @@ __copy_from_user(void *to, const void __user *from, unsigned long n)
+  * Copy data from kernel space to user space.  Caller must check
+  * the specified block with access_ok() before calling this function.
+  * The caller should also make sure he pins the user space address
+- * so that we don't result in page fault and sleep.
++ * or call page_fault_disable() so that we don't result in a page fault
++ * and sleep.
+  */
+ static __always_inline __must_check unsigned long
+ __copy_to_user_inatomic(void __user *to, const void *from, unsigned long n)
+-- 
+2.50.1
+
 
