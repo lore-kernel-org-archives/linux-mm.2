@@ -4,102 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D6BECA0FED
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 16:50:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF16BCA101F
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 17:00:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4E4C38E0014; Wed, 10 Sep 2025 12:50:15 -0400 (EDT)
+	id 399C58E0003; Wed, 10 Sep 2025 13:00:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4BC318E0002; Wed, 10 Sep 2025 12:50:15 -0400 (EDT)
+	id 34AC48E0002; Wed, 10 Sep 2025 13:00:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F8E18E0014; Wed, 10 Sep 2025 12:50:15 -0400 (EDT)
+	id 239188E0003; Wed, 10 Sep 2025 13:00:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B69C8E0002
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 12:50:15 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id CFCA5139107
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 16:50:14 +0000 (UTC)
-X-FDA: 83873928348.07.4C5B4E0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 32D84140012
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 16:50:12 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CPAOgAbm;
-	spf=pass (imf23.hostedemail.com: domain of robh@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=robh@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 13D958E0002
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 13:00:23 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8B182C016F
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 17:00:22 +0000 (UTC)
+X-FDA: 83873953884.04.C55FE22
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 989D21C0006
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 17:00:20 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=OKHw7nnw;
+	spf=pass (imf20.hostedemail.com: domain of gpaoloni@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=gpaoloni@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757523013;
+	s=arc-20220608; t=1757523620;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ssFMi1sJkq3DwLXtFEHozIINPdAKzWOlmS2TKLbZ6EU=;
-	b=XiDJ5lmMVMIsX+1l+t6zexW//6+JsPREuY6k45Qs4852htsLYb5C4q4NMMwXvmwXmvEbXA
-	OtZ6aOIIPHIcomnchLgRCkyA7k3bT+cVEvJHEb2CUhbeShQ7oPtkVStm26lM43NK/2g4xF
-	QJJYKv61CgAuVxaYDaK4kIQl2LDzM9M=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757523013; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=FvizIHu59rp6upCtuZbBawOd7faEij62QkVXwUqHPIc=;
+	b=1aFSxyMEcG23xTGV6C1gM0u+mEmawX5+yYLnWHsAltTcH47f7flxcrJaaFkRV+MFaHfuub
+	JwdeRoD8hZDAxjO6kQpaNr0YU4N0Juwama6G/zuTLFvjwRMc1MwBMZUzkxXTv/v9H3VVj2
+	l5jxUxt0MAcnc3c10wm58uG8pyGH/FQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757523620; a=rsa-sha256;
 	cv=none;
-	b=jCGbGpypz1yMFYBoSN7vvemHaqEg9iNlx27RtETdTOwu/7y4matIT7vi+lfjVzHPvU6IU5
-	K22kZlH9d4ZvsEmczuAu4ZJuWZ6Oz0R0qkNG46g/4qYkk9mQB6cufbhbrGNihnqojYtGyH
-	ZrwLR/L2Y9+d+A89OtxPnVkVTJmU0Ww=
+	b=mXhTMCvvgUjLfdipU74E2PPjtIy/LQGG/vAY/4TCoXdQlFRZIHPSgVwccMqKZl/vIEvVCU
+	DQEfDssxPv1FC3NgW+UUEQZT++DXmFTytWXSgvP4bw4wbrCDuRIa2Rpe8Chsd6bF2DPGsA
+	6AxWUwK5MuMNPKB1Kyy6Q6sypFoA4J8=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CPAOgAbm;
-	spf=pass (imf23.hostedemail.com: domain of robh@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=robh@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D0C2843FCF;
-	Wed, 10 Sep 2025 16:50:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AB16C4CEEB;
-	Wed, 10 Sep 2025 16:50:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757523011;
-	bh=ug5CvfYVPJihh5Zy5QREZIKCevb4x/BKaIGi7u0wAkU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CPAOgAbmybkyYUUePXHpTFbjK4/sSheXD5Cb30bErD6cxup1wf9xVxlmDMRNMwIRT
-	 USv2axQrbQ9wY+QTzUewNNHgDwGIdgP0EjSPGNTVuC9d0QkPOrgMA92s+XiOFek6X1
-	 PGMz9vUOXTxn0jSQ3m8DaC5UtBYLbIJXCJZ0NwZftg6ovmRECwNzzyDuBU0ehgCApW
-	 EEOuiAPzHvdeIAFmWJxQp2PNt2U3wGDVHlH3skZ/ypc4gZkH9N44g0S0cm0zhGw28r
-	 TpE4NPHIm94DswLhRiL/EjL0BtfMRvLWNDtU8OlRbNqE+QNkJW4kvmOlj4D7+u+QnS
-	 LICDXPxSa2YPw==
-Date: Wed, 10 Sep 2025 11:50:10 -0500
-From: Rob Herring <robh@kernel.org>
-To: Andrey Ryabinin <arbn@yandex-team.com>
-Cc: linux-kernel@vger.kernel.org, Alexander Graf <graf@amazon.com>,
-	Mike Rapoport <rppt@kernel.org>, James Gowans <jgowans@amazon.com>,
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Baoquan He <bhe@redhat.com>,
-	kexec@lists.infradead.org, Pratyush Yadav <ptyadav@amazon.de>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	David Rientjes <rientjes@google.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Changyuan Lyu <changyuanl@google.com>,
-	Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Chris Li <chrisl@kernel.org>, Ashish.Kalra@amd.com,
-	William Tu <witu@nvidia.com>, David Matlack <dmatlack@google.com>,
-	Saravana Kannan <saravanak@google.com>, devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 4/7] kho: replace KHO FDT with kstate metadata
-Message-ID: <20250910165010.GA223810-robh@kernel.org>
-References: <20250909201446.13138-1-arbn@yandex-team.com>
- <20250909201446.13138-5-arbn@yandex-team.com>
+	imf20.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=OKHw7nnw;
+	spf=pass (imf20.hostedemail.com: domain of gpaoloni@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=gpaoloni@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1757523620;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=FvizIHu59rp6upCtuZbBawOd7faEij62QkVXwUqHPIc=;
+	b=OKHw7nnwQvOwQDM2iUlsoEaQMDX1vWn240IoVu8WQH5xaKz+HCtvBxCQl44YTSpDE4sZ5J
+	YE4ldSP7In43ogzzOW0EeWfq2uKnm6GpuTIJtOrnE8LUqHyq2sOn9RsJlhmcO8Xy2s0oc6
+	DqYw+HtoaabOLddPSdO+j47O2AanLDo=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-34-qS1aApQlNCaYjZGsIl4Ggg-1; Wed,
+ 10 Sep 2025 13:00:16 -0400
+X-MC-Unique: qS1aApQlNCaYjZGsIl4Ggg-1
+X-Mimecast-MFC-AGG-ID: qS1aApQlNCaYjZGsIl4Ggg_1757523614
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2FB3918002C4;
+	Wed, 10 Sep 2025 17:00:14 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.44.22.10])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6F3D21956095;
+	Wed, 10 Sep 2025 17:00:06 +0000 (UTC)
+From: Gabriele Paoloni <gpaoloni@redhat.com>
+To: shuah@kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	corbet@lwn.net,
+	linux-doc@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: linux-mm@kvack.org,
+	safety-architecture@lists.elisa.tech,
+	acarmina@redhat.com,
+	kstewart@linuxfoundation.org,
+	chuckwolber@gmail.com,
+	Gabriele Paoloni <gpaoloni@redhat.com>
+Subject: [RFC PATCH v2 0/3] Add testable code specifications
+Date: Wed, 10 Sep 2025 18:59:57 +0200
+Message-ID: <20250910170000.6475-1-gpaoloni@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250909201446.13138-5-arbn@yandex-team.com>
-X-Rspamd-Queue-Id: 32D84140012
-X-Stat-Signature: 5h7r61pgxqub3qq3hcyiwriskeb4gas3
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Rspamd-Queue-Id: 989D21C0006
+X-Stat-Signature: yoa1b1rm5jpfbmh63c1xid1jjnawgunj
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-HE-Tag: 1757523012-679380
-X-HE-Meta: U2FsdGVkX1+Vv3pe1eWc6e+cefRz5Z5Yju+qB8a5l3yGNgUirARmEfVKgivotIiUs0b302vPQNsMI2oWkY0bi28p4o4dSK9fk8pjOPkJZswqHcZq4SqO6PFuwhAVURO53rzuJXycsbVtHJsf3LeIYnp8rd+IagGcRpPlpga7hHrU9M28+1f+zIrKGBukwIrfm6EaBVjs2e4IVsazdpXb6nxRpOpVdNnCb+j/+jCIA3bCCmi4JWyOamPfrtNkiOp1UBJOH9N7/wh/Xiy9ugH1fouiVtAMoxrC7wbFM2EifClORm61WRUJr9CzaI8fONzSB7BxqkZRJ0c0YyUmFWDtRQPop5MJDCLoBGAJLSK+6d8+kqjL5njJr3itjVhzSyLEeAoR9NBa07J3F4Z7Qsa07Dr31lUwilnU3GuAvZ0beR4P0zh9CrczsFfASq0gyIgJe8ok8BLIJrPjCGL9YfYWt7caMMSZfbYMOPUgiME5ZoE8d9O+rAOvQ1ZqEDF/DD0ShPv2kx/KwsRsPAhvta7pSr53HRhy1TxT28JeMcsIO3t7ZiVd7XbTm6uT2lmu8ln0e0VEX/Q+fqDN1xxeLxJKVVxghsUKNd/sLkhx7YahmJtOy5LIRTuQK9xwczVF1cmACp/BaLemXYgHBXnI/5GzEqMXHdJ4QpUeBvdJfITK5iiPrc9G/SCYot5c4k1YPIg3qNgJRG4YvxGWQWxrITK1KX3G0F9mf+BNXF+eWjbS6puMXfcObPWD+OyCTq7kbpXd3yXblvkBio2X/chaF3W0vMDfh98Xw/dy46y/UtYL3PecDap2jlOKFaEOnfs/Cpb+vpA2icsr4L5k3HgjHZ4mAJD1sRLBYFHlBmQ0tQx29rChflmguuW0EVxRDo8BEen5knjiZY79CriBojR/TevoLBYigg7eor+pc+uYGWTWa761mL8baZy0VDaVDO3oeTvFdfN/q/P8kP9NRmOARx8
- imVvD3Ai
- B9usf7zt/snGPlhuZcMfxChSGYLONX2wekAe70B1LPg4/3Y/28LYde72jh1bhNQhZ23rmy1/V/g6d3QnqM/TKsZXi0BcNsNS8dD+RWO4LkYnSvqizcnr3CmUGmMjFdSnt8UavTDDIOyGl23pUYRqn/sYV5SJ1xxcC4GVrbNCZeq6C7Pcwt9bWPnWm+S8pRpNIjP7dESMSgPIBJONnpkWsc31vxpxm3O71Yq7sUfVCkKePlRP3yybypQJOznSa6BqSoNBHpZCWwZpHcS+9/eGUKceDnT6B5XnK+Tp9wHiaPoX43dH6Oz/pxzotywQp6HvGitw85nn9RG+orbkfc1fatESREgCelSO8ey2w4NgeWPO40BMMf9vZ6jPfFXUanPwok+1o
+X-HE-Tag: 1757523620-481297
+X-HE-Meta: U2FsdGVkX18v14MLOIaOmxfvC4z7cVYzjX8aMFvZMV/zYDyuFkdaipiWkKYFNZSyf0Grk7H9VwhzXUkw0y1YZdzTsebCgeohSSrJJankyjAf3Sti5jYisoc9t6yOlJw46CV8eSSv0TcaM0eygS7migZEzXYvp7F7E0zHIYWOGUpu2D5e6T1QeXecpt678DVDw5YLZqcp388Ew6TOFgbSzGTGPKCNi2x6c+ZoWjYgeVcZaYH61OqaP9eD873I0Zhv/DHzuiUALL5EIo+Uv1VCiJxa5a1/6xrV9xU4LGei1iA/CY21Q0MuvI2F4IYLQWVlM41+TTik183rZtrIaUBPZ926cxHJgtFH0pFbALUTPdAFKas9oS5RI6hRAsyrZhULyr2cGLHMyLrFicM0eVTFPtbEMp5vZOloeu/3iJke1Vcy0jDrYgswXWJcA7sIVOOp7rd45K0nF2HRYe9ix3ucYR51BrRrWg53gOABdjxxkJaxOAOBNVgVeGB5QLCNJliHDCPyUhLD8C+dnGdA+1WvJcQ/P/X3bn+w2/V6ZSZB6faeSC6CNHxlffDbN0tfUntZB2H0W83Q8wVEnGPGKZvuZ0ajfa6MdN7Pr4O/MzVqtzr1/cSLYHoYbmboJGuGeKX3weaZofuMoj2B4tF/b6qjo4V5b2MIMhJatYUxTCUgxJN/jesuI46tliHVlc3Olr8O1OShWUpOcXLhEvb9LlbBTTXOA8sdbiKAx+NKWd7vnzbigIhP+QDXZR39V6j0c1bUunxM962mJiATFhpyCF9vO0AytDO33pS2l1v8wwleb6xr1xo6QFYOSP5ldSN7PF+OTOn9riO6DzTxG81lRTLJPjLemWfq5Vj2SPtTj8XR4HnepNzSmf7i+WcnCplBg3zJyVIHxrbpNcSCBqnjaSU8OhExZTTkJpiKbejILdl29d783uOGLjFDiZOlgX8uM2TYT/57lF9GjvlnyuGLXwl
+ SjQwNpOv
+ o3aMrnQJwqQ0eU8I9LkmKEb3WEzzgrBuVui14SwzF6TMiQx5kwHrjbCjc7wRH1+hbEj4fMa+KzEKIpVXsKLv+wC2e1/jM1/CUGvxMJYzOeqAdQvYgmp7e7Y1YytGseMHgY+sHkPwpm2X41PEqkNNYw8yaaGx1mSVTGd/vKx2bDZQuRemjZaIz+HxqhOpwaZkFY0/B0dJBMYSEwqOkO+3fQ9wEna7R2v9alA1CTDPj2fKcUSIiSxU8i6wJPQo5ops3uZZ6gzCg2/x2SjaiWT59xXxFWNL29vAoHBkz1q7zOkkGMxoQ6yYo5I/oCIU0P1AtxM8OkLV/wlsJ7PmXpfCP0gXA6WJTh2DIPhH5ZQ1TrxGRFe4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,42 +109,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 09, 2025 at 10:14:39PM +0200, Andrey Ryabinin wrote:
-> Store KSTATE physical address & size instead of FDT in kho_data.
-> and initialize KSTATE from kho_populate().
-> To be able to use FDT in parallel with KSTATE place FDT
-> address&size into 'struct kho_fdt' and save/restore it using KSTATE.
-> 
-> This finishes wiring KSTATE with KHO, making it fully functional.
-> 
-> Signed-off-by: Andrey Ryabinin <arbn@yandex-team.com>
-> ---
->  arch/x86/include/uapi/asm/setup_data.h |  4 +-
->  arch/x86/kernel/kexec-bzimage64.c      |  6 +--
->  arch/x86/kernel/setup.c                |  3 +-
->  drivers/of/fdt.c                       |  6 +--
->  include/linux/kexec.h                  |  2 +-
->  include/linux/kstate.h                 |  1 +
->  kernel/liveupdate/kexec_handover.c     | 60 +++++++++++++++++++++-----
->  7 files changed, 61 insertions(+), 21 deletions(-)
-> 
-> diff --git a/arch/x86/include/uapi/asm/setup_data.h b/arch/x86/include/uapi/asm/setup_data.h
-> index 2671c4e1b3a0..844f5b93473f 100644
-> --- a/arch/x86/include/uapi/asm/setup_data.h
-> +++ b/arch/x86/include/uapi/asm/setup_data.h
-> @@ -83,8 +83,8 @@ struct ima_setup_data {
->   * Locations of kexec handover metadata
->   */
->  struct kho_data {
-> -	__u64 fdt_addr;
-> -	__u64 fdt_size;
-> +	__u64 kstate_addr;
-> +	__u64 kstate_size;
->  	__u64 scratch_addr;
->  	__u64 scratch_size;
->  } __attribute__((packed));
+[1] was an initial proposal defining testable code specifications for
+some functions in /drivers/char/mem.c.
+However a Guideline to write such specifications was missing and test
+cases tracing to such specifications were missing.
+This patchset represents a next step and is organised as follows:
+- patch 1/3 contains the Guideline for writing code specifications
+- patch 2/3 contains examples of code specfications defined for some
+  functions of drivers/char/mem.c
+- patch 3/3 contains examples of selftests that map to some code
+  specifications of patch 2/3
 
-Isn't this part of the ABI which you can't just change.
+[1] https://lore.kernel.org/all/20250821170419.70668-1-gpaoloni@redhat.com/
+---
+Changes from v1:
+1) Added a Guideline to write code specifications in the Linux Kernel
+Documentation
+2) Addressed Greg KH comments in /drivers/char/mem.c
+3) Added example of test cases mapping to the code specifications in
+/drivers/char/mem.c
+---
+Alessandro Carminati (1):
+  selftests/devmem: initial testset
 
-Rob
+Gabriele Paoloni (2):
+  Documentation: add guidelines for writing testable code specifications
+  /dev/mem: Add initial documentation of memory_open() and mem_fops
+
+ .../doc-guide/code-specifications.rst         | 208 +++++++
+ Documentation/doc-guide/index.rst             |   1 +
+ drivers/char/mem.c                            | 231 ++++++-
+ tools/testing/selftests/Makefile              |   1 +
+ tools/testing/selftests/devmem/Makefile       |  13 +
+ tools/testing/selftests/devmem/debug.c        |  25 +
+ tools/testing/selftests/devmem/debug.h        |  14 +
+ tools/testing/selftests/devmem/devmem.c       | 200 ++++++
+ tools/testing/selftests/devmem/ram_map.c      | 250 ++++++++
+ tools/testing/selftests/devmem/ram_map.h      |  38 ++
+ tools/testing/selftests/devmem/secret.c       |  46 ++
+ tools/testing/selftests/devmem/secret.h       |  13 +
+ tools/testing/selftests/devmem/tests.c        | 569 ++++++++++++++++++
+ tools/testing/selftests/devmem/tests.h        |  45 ++
+ tools/testing/selftests/devmem/utils.c        | 379 ++++++++++++
+ tools/testing/selftests/devmem/utils.h        | 119 ++++
+ 16 files changed, 2146 insertions(+), 6 deletions(-)
+ create mode 100644 Documentation/doc-guide/code-specifications.rst
+ create mode 100644 tools/testing/selftests/devmem/Makefile
+ create mode 100644 tools/testing/selftests/devmem/debug.c
+ create mode 100644 tools/testing/selftests/devmem/debug.h
+ create mode 100644 tools/testing/selftests/devmem/devmem.c
+ create mode 100644 tools/testing/selftests/devmem/ram_map.c
+ create mode 100644 tools/testing/selftests/devmem/ram_map.h
+ create mode 100644 tools/testing/selftests/devmem/secret.c
+ create mode 100644 tools/testing/selftests/devmem/secret.h
+ create mode 100644 tools/testing/selftests/devmem/tests.c
+ create mode 100644 tools/testing/selftests/devmem/tests.h
+ create mode 100644 tools/testing/selftests/devmem/utils.c
+ create mode 100644 tools/testing/selftests/devmem/utils.h
+
+-- 
+2.48.1
+
 
