@@ -4,87 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E27C7CA0FED
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 19:49:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FD94CA0FED
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 20:04:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3922A6B0010; Wed, 10 Sep 2025 15:49:26 -0400 (EDT)
+	id D26578E0003; Wed, 10 Sep 2025 16:04:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 367D46B0011; Wed, 10 Sep 2025 15:49:26 -0400 (EDT)
+	id CAFBA8E0001; Wed, 10 Sep 2025 16:04:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 27E026B0012; Wed, 10 Sep 2025 15:49:26 -0400 (EDT)
+	id B77508E0003; Wed, 10 Sep 2025 16:04:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D78C6B0010
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 15:49:26 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 99E28139B45
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 19:49:25 +0000 (UTC)
-X-FDA: 83874379890.07.15A71AF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 182E720010
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 19:49:23 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B2QUeXsF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of ebiggers@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ebiggers@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757533764; a=rsa-sha256;
-	cv=none;
-	b=HmjX8sk5v34phMxVBz7FH2iLzOVsxuK8H0KEaBd1yBjVxXqf7m/NlnuWEl2rDBqlrL5pyx
-	O71O+yYz3eK4Dd+FY7tYaozOIc0mMY9oDWY5tco1NifoqVsAjwrkydJ/TL7GuUcWTAd7nk
-	DoxAtppm7IGTqXhAhUBQ2So8Rx8Q800=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B2QUeXsF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of ebiggers@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ebiggers@kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A31218E0001
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 16:04:04 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5ECD713A091
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 20:04:04 +0000 (UTC)
+X-FDA: 83874416808.20.E5378C3
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 6AE8240012
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 20:04:02 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=VkZ1oX9f;
+	spf=pass (imf01.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757533764;
+	s=arc-20220608; t=1757534642;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JoH38RtYXmoZLN0q81m7nCOC2Xpz+em2/gxxRmxSaNM=;
-	b=pCVRBQ5xYTO9SjpXD59atcKelicZZqcwg7Ui4KoT0DKi0zCCSbbzJcOAUDkOnneCs2eTeX
-	etiIi68MKjvxO77F/iLu1epAMeX3J1SVLZfaiX67yXAFHypbVs/ylVzfyryW3Gcg+htJDk
-	oYTymNvakN0s/6ZBMCkadEHyo5FSa4s=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6CBE9601AB;
-	Wed, 10 Sep 2025 19:49:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C09E9C4CEEB;
-	Wed, 10 Sep 2025 19:49:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757533763;
-	bh=VlR4T7W5WUcCl5jM8ND6VF21jkI4rqDyaEM8DrBDXtg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=B2QUeXsFP/8t9H+uXfCOPC9W7hJbSvaQzKCacm52pDLARWQhOaI6TMggUjJ3hlcOs
-	 +2ffNodYhLpM+Ry8vHv7i/kEUS92UQDOCNEw3cR7q6iPZ9fi7rINNkgfeKAA+9qLL1
-	 +YGHNXz9Jbu6yORdBXPyU+aiKz1zwAUJ9tdV7rlgVlPgvBAB3QdMiyr/dgnlVMi7ub
-	 jfhiSXOt77FKB+biQ8XCc9FFQAET7KoMtskxVOuwO376KJ1ca3Ido85CFZFbkgulub
-	 40SSo2ut9ZJD0mrol+e3Wx21uHB1djpQHebJ2CToEgpTLhWjMRUQbNfvqT+bp9tUOg
-	 iV4HGYvVU1D1g==
-Date: Wed, 10 Sep 2025 19:49:21 +0000
-From: Eric Biggers <ebiggers@kernel.org>
-To: Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
-	kasan-dev@googlegroups.com
-Cc: Dmitry Vyukov <dvyukov@google.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] kmsan: Fix out-of-bounds access to shadow memory
-Message-ID: <20250910194921.GA3153735@google.com>
-References: <20250829164500.324329-1-ebiggers@kernel.org>
+	bh=i1jQiJ3ObLTg319C1JhjfpaeHZ2yabjm8Fny02p0E5k=;
+	b=RlLmPaH+omBuV3fPWPJ4m4HgDVvSwWtTU+fJb4ywLvPzTpOhRpJxanLItqC0wRQBlYJFE6
+	as6BkvTQSzBSRKsnhL9bcs5gamx9iAnkvd0hYiNeeLB7QKN5OHry45AaQFsCb4GeCfMNM+
+	yI5GPA8Ou+3agjzQ+Y3uN7n4MEbaPvE=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=VkZ1oX9f;
+	spf=pass (imf01.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757534642; a=rsa-sha256;
+	cv=none;
+	b=Nvq2rBzfjKUneFW8Ze9aHth7EzqcTyH2JCEj0TUUGkNtmoOjPxE0bGWmYW1KD8Vk79NJMg
+	nJ83jXNd8PIJFqBrgBuxo95xCNTlkaLlG6nq0DmHV+Pou8yFzYhUVyhUBrqtbZzx9vjzRz
+	M+ilzi9ZjSGAKnEsbVo73i0mDafD+oA=
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-45de287cc11so6692685e9.1
+        for <linux-mm@kvack.org>; Wed, 10 Sep 2025 13:04:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757534641; x=1758139441; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=i1jQiJ3ObLTg319C1JhjfpaeHZ2yabjm8Fny02p0E5k=;
+        b=VkZ1oX9fRNjRdETlGvq/TOlmvO7jBWHuSKiHA23eb3l6qaQJpy0v5jNi5jNKXTbGD0
+         Efhf4R/LLgry/bmpbm7e7GrXKreZ9FwgeQqH3JS5yS0QG3FuR/aqB1CS2LC14G75NlhX
+         HZcyaaWNk4LCtqD/H7M7JT54pAGWITyUtAg7t+wgxvRLOBdpEWhCCrC1R5V5Oe6xs67Y
+         4EyMmA5oFRVE1pGFUg6MyZaab3OzA0mpjYkQIHoXBiDnR9A9pWogkapmYdQeEiUjGJ7o
+         5OFVCdlAyxYVVQMtTcu4MMSENhBzwGkXyMGQu07zHdNDTQ6vjA8z7ZCqDJiKLfk3tMM+
+         azgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757534641; x=1758139441;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=i1jQiJ3ObLTg319C1JhjfpaeHZ2yabjm8Fny02p0E5k=;
+        b=jbiZJfF7E9vWo73BLeYFOdtjDIRWHVweZafagLGdLtNU6UqULZ5TON/U7Zdos0a21j
+         xwjD65P0JbeVBu1GATcNcE39cGMNsT68bET8furhIuDvFmC0tl0C3yW8Z8qLqKuXFNW7
+         JQQ7IEHCXAmm14CgHGhGCW8zKjYbzOs1u48udoNUNx9cme46SnMCJR1J3DyWAYfYw6Uc
+         iKMP0b0QHHjsVNPDsdHoE5fuI3x2REoicjchYaviipCG3dftREZbkibWPullOvQhTQ2U
+         GuVoutr/aLjtkStF4kjTsm1rH4NFk8Uh8ZVpsV3hhmeMRq4Mdp1J8AjecHNL36tbIwrb
+         l5SA==
+X-Forwarded-Encrypted: i=1; AJvYcCWvQTI7Pf01nfgBOcN+xUmZAMvE1Pqiehjd9TutSJdkWDUrazmB9vdJxjuKCXZQIugA62XQYkG8cQ==@kvack.org
+X-Gm-Message-State: AOJu0Yxt19brwvb9hv4NzrPmYzVZhRYsx31N4YVK0FFUX1Pq7Gg4L1PM
+	5v09JgavgSLW7oAGBBhxLtfAYu2xIUhmmlI7t7xf4KG5HSMIzgQGpoY3w3ViRqzSwIzR26TQ7iv
+	TXhNtgymYA4YEPMK5c81UtVQplLbhrYs=
+X-Gm-Gg: ASbGnct/PXxWA9TTCnEkgVVuN7D2nhjr6i1B1oim9RsPiNGwCH0Zv3WAYimBsoZ8ybf
+	1gFmbnA51XMtK8mmia0z0YB9F7lmigJb4s17P3YeHMDYMXiJsuh6lgq2XdZFRFggqJQkF0j9ZbO
+	zKyvgekKrTDDNGL2NgOeRewlbIqM0NmlmAzET5ROiDrohhKXgXxqljgNY/5BWV22Zhjd3hK9L6c
+	5uRgUaoqEp+vTg5ZhTSPutb0xbNQqsoW/8w+gOjYiDq8fU=
+X-Google-Smtp-Source: AGHT+IHPrzKh/NCjMb67pAYjeCbaSEqLefsgomfptnL6IFJqFhrI+KNJoephS6rhwpbWZRbU3aUSO9pYYaKzLjPJPUI=
+X-Received: by 2002:a05:6000:144a:b0:3e0:34f4:31f9 with SMTP id
+ ffacd0b85a97d-3e75e0da0dcmr623851f8f.1.1757534640406; Wed, 10 Sep 2025
+ 13:04:00 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250829164500.324329-1-ebiggers@kernel.org>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 182E720010
-X-Stat-Signature: tfbzpdyqhbqsypyp9rodeeghqwwkwz3z
+References: <20250910142923.2465470-1-willy@infradead.org> <20250910142923.2465470-4-willy@infradead.org>
+In-Reply-To: <20250910142923.2465470-4-willy@infradead.org>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Wed, 10 Sep 2025 13:03:48 -0700
+X-Gm-Features: AS18NWBatJeXFdJGu6rcwS7sBR_Pic8cjv0HVbCHkjpnGKgYg7Bg4nvnNOpSi4o
+Message-ID: <CAADnVQLfTDH7UXtRaRhWUupnUiTwgzMqTGEuHuWAVa_x_EWcqQ@mail.gmail.com>
+Subject: Re: [PATCH 3/3] mm: Remove page->order
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm <linux-mm@kvack.org>, 
+	Alexei Starovoitov <ast@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 6AE8240012
 X-Rspam-User: 
-X-HE-Tag: 1757533763-272575
-X-HE-Meta: U2FsdGVkX19woHP8mLdwlV5Zt77TVj/4DJ7kGZcCJSRToVijw+WIGOMOVyqKbstGiZbMfHZZ0EbdqBQAHWIv/kjX/1Pob5zP+Phu+bivQODNyv7B90aw/4dbLpomWO91uzLRdoS3tvmqP+CeJD77v3H2vS+8NakVz3x9Wcpfs0RVvG+uda7p62uJnTSpnNL/1DQlldUie955125obOa/LZo05VLEA2sXih//GJ9Ldh2fj9opo82cV+sLWpk6hch1uiCF0Z6vnBUXwlOwSBXO46aa7JTzUDosb/ZP0xzKjymiBSL+aUWjYpFkLxV8wrceA7GfOUm6JcwF81Kb3gEAqkzP58vIprT/mgiPI2FuHUBej/gEgA6vIhJaa5idqe4wxXDDP70l4pInTBiL+zD4XPTgJR4DGqkway4kAOaEK0BHWdm4HqvMju5yrbw4hE8qUf2vQrCKrAkTTNKDqK57R81tODlYo9Cwg0fhhjwwZyQxqipxYNxnIADJVNYJORiQd46Qpd+F/dnGdxSEfeHusO6eV734vQxCk/Lx1ikW60JtdVP85VR64SB/e3kvYijFIjTTRdPVCV6LYCrEyTLNaeKBcjibhSDJ44dmoDrK+6PRS88kurEVmtfTZcujEyzuoRXF3DnRDkCXTRXBZ3RJr1UkDDOH/MY2BUfMHgxA+oHCe1SPzlauuSZzjRw5HugBlthrRLf+6B0a+XgCeRcy/pmpYzr4C6c+uq6LI7x8WJuk2K/DDlIz7nsvw+o5dkhmVzo9GjJoOnG5m417qkd2v414b2G11Crb8CPyRDODMRg3tIfJH/zkGSiHU3aXr1TEybM55eX2Ap09Ekyjou/iPGbFDojf460sxcxnoHtqTNUdxiyWb86qtdiqdcUKls6AhhXu2TwriRy9L4BUpCiBqtWaN83cyb8RMTxfOP4umMlk6nu8YzTDXM0WuIQVgf5TwIV7y/9tvlp8JqTo1ZG
- 7qxbZyvb
- Xzuo4C8S+yD0AS8C54L7hhjraPzzVRlpT/TpVMkdYHCoHeeG6fsYh9jTP/KILfuS7xu9BnYwyurVjpbUWX7PlEoTlUESyO6L9hNSmXuJso3qUBXMY5gCuFnCYkQNKSO6NKGcTsMpu+40fod1FqQqcjdB4uVD59BurzZoHpvNnlzarb/x8RnblbXeusOjUtwVOA+EbNkEcWqXGO8cu9IBxa1ZSX5fqcwVatN1ljQ+soNpxcdFvrVy+PxUsdbF1Xb0gtqUAWO+00Qedkm+r4e1XtP4Xhnfy//hEqehEo1GoA62oJ0bdvV7rfmLHLRK9BIdRYfX99pjIYa9n7r/H3Tka4evHXjIM6z8reBSPrpKW+oOxB9nyMJXyCjFNYsiH6aFEsHtd
+X-Rspamd-Server: rspam07
+X-Stat-Signature: bnouda497bp84su1wiioinrkp5jmuzir
+X-HE-Tag: 1757534642-807885
+X-HE-Meta: U2FsdGVkX19I4yTdJ7E+KKsFY6WlcTXFs3Lqf7vQtcTvApDaQx/rnP6VigmiNyW3hpUrX4NKEoko12kGIjkY00gt7uuF+GO2wuMg3Xr4ZLj2DYwy+tdDZwtsiTeGrK2MfI+IXU+n1M87J4t1kWsWPEloEUMZCLO5n0Qy3SA1QwGz8/8S7vNqbc4qzIbtcgZn9tG56BLkwLLYxyWDL0EESlcBl8cr6CWlz/PTFUDYC/wr9xMTNbue16pvI845Ee/dvnXnQc99TZlLbQEc9u9XQghzTixsRCa/WXsf+iuhceK5j+FFhjRKpiqT4ln+biTl0nvRbUe0oJ5LEXCZWTnkfFWu5Q2pfVbQcYL1EyGk/JudP+eXvByPQ1bUbwp5lkMcW5IYm7u00uJC9M6cRMaI38j0syyHRdO5JgGGVvjZfaWx8vgCXAsS6SutY4r6S4Cr/mg3Pgspy3RxX/ME1PDVR7ouLO5pEKPWzXUh0mrJ2hcWjF21aPUPic0dtbOV2z2jOnlePbJtUS0lbpPnOem5g9oIE0Gbazs9RfWRjzEKPadjCxKESx+cWS9MDEDFGhFyhXkRkiP5QyXIcKJwqESeooDre1zgVmbSoVZ9QtgoTH4AB3o8S+tC157NJyy+FYnyq+4kDTTz7SQ2ElXschRcvdtP8Awb/CJHXpU5VogdcPyeTHNmKYdvCQFU3Tk93hgV5281wdw8iKdbHgij7osh9rLgN2TsLJbtvSMlgf5mRUu9OH8XTQKv6WDBsd27XSTct4rvTn3R3nHcrrjKSa+AnrgCnDG6JoQ+M4+zE9pzc24BfuWATVPX0KQqP97m9+RovrBhLKceOaIim8FUbOTBGZr9XaALYGjShfqmrOKXIkMI27RKnRlw4gY6mD34bgEITAgiLuwVy3uFqlna84OT7r4JmXFl2ekt1vzg6wh/Rg85pcq2guUSiVyuumiwky5anLoz51jnOom09JJcrg3
+ WMWkK8V9
+ UHshEsWoY+sHbDLjJBIUVOKFzuMxu4nUQXkUg7AV17tdxA09dR6ya3cu+oxvLRmmuVNU+W2yeX8Xo0RUjvzwrqgY/A2QRdBQ4bzuN2sR+8DCwq3ATHzQiTF+7AZbXdjyShe9dNr+/L6yMdzVu2YQ9nbmA+LAKow79IsFB5GHSTmgfwUGdn583nVgvLn5IbsKwn9uP0FC8kGQpD6+UkPvWWtazHc9nCEIP9aONOpX9wtuORdTDrPCJri5frLXbT0YNMD3OHmkkgS4vU8ANDwvEi2PytW/3fVqgOVUx5BjD9qYbjfWKOo9scuIn6oxvE5xgpKgCQ+yN57zJguK6FwvQg61d8KVD2JODoo+1TlzbcQFhvXvJgeMaGxnGz+poLNHiY1Wqa4uqXc/UzQmDOWO3tVm94NUU/NejsQ/LPz33MkH8H6CPyEG8tCPSIAwhx/jZr5SLRjnEL7w8rFoNgq5MUymiKg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,32 +116,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 29, 2025 at 09:45:00AM -0700, Eric Biggers wrote:
-> Running sha224_kunit on a KMSAN-enabled kernel results in a crash in
-> kmsan_internal_set_shadow_origin():
-> 
->     BUG: unable to handle page fault for address: ffffbc3840291000
->     #PF: supervisor read access in kernel mode
->     #PF: error_code(0x0000) - not-present page
->     PGD 1810067 P4D 1810067 PUD 192d067 PMD 3c17067 PTE 0
->     Oops: 0000 [#1] SMP NOPTI
->     CPU: 0 UID: 0 PID: 81 Comm: kunit_try_catch Tainted: G                 N  6.17.0-rc3 #10 PREEMPT(voluntary)
->     Tainted: [N]=TEST
->     Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
->     RIP: 0010:kmsan_internal_set_shadow_origin+0x91/0x100
->     [...]
->     Call Trace:
->     <TASK>
->     __msan_memset+0xee/0x1a0
->     sha224_final+0x9e/0x350
->     test_hash_buffer_overruns+0x46f/0x5f0
->     ? kmsan_get_shadow_origin_ptr+0x46/0xa0
->     ? __pfx_test_hash_buffer_overruns+0x10/0x10
->     kunit_try_run_case+0x198/0xa00
+On Wed, Sep 10, 2025 at 7:29=E2=80=AFAM Matthew Wilcox (Oracle)
+<willy@infradead.org> wrote:
+>
+> We already use page->private for storing the order of a page while it's
+> in the buddy allocator system; extend that to also storing the order
+> while it's in the pcp_llist.
+>
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Cc: Alexei Starovoitov <ast@kernel.org>
 
-Any thoughts on this patch from the KMSAN folks?  I'd love to add
-CONFIG_KMSAN=y to my crypto subsystem testing, but unfortunately the
-kernel crashes due to this bug :-(
-
-- Eric
+Makes sense to me.
+Acked-by: Alexei Starovoitov <ast@kernel.org>
 
