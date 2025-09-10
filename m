@@ -4,229 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30E91CA0FED
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 11:21:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D5FBCA101F
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 11:24:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 43A638E0008; Wed, 10 Sep 2025 07:21:42 -0400 (EDT)
+	id C56AA8E000A; Wed, 10 Sep 2025 07:24:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 411C48E0002; Wed, 10 Sep 2025 07:21:42 -0400 (EDT)
+	id C2E388E0002; Wed, 10 Sep 2025 07:24:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D9E78E0008; Wed, 10 Sep 2025 07:21:42 -0400 (EDT)
+	id B1D4E8E000A; Wed, 10 Sep 2025 07:24:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 153658E0002
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 07:21:42 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B520ABBAB8
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 11:21:41 +0000 (UTC)
-X-FDA: 83873100402.20.DC98006
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 3684E14000A
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 11:21:38 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=rAClAZW3;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=dzCQqfZc;
-	spf=pass (imf09.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757503298;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9ED6B8E0002
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 07:24:15 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6C8BFC089B
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 11:24:15 +0000 (UTC)
+X-FDA: 83873106870.29.A01EBC8
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 592BA40009
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 11:24:13 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b="UtO90H/m";
+	spf=pass (imf17.hostedemail.com: domain of usama.anjum@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=usama.anjum@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1757503453;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f+ScrVNXyz+uvfK6MLckqfaMmlZx7e9qB8zDPTM6XiI=;
-	b=iHauMSYR6EQE/o0dEAJJrInt+b2RxQmWuBlsOH5E32tHx2UcoBIwJF1fHXtaJo6t92Hg1d
-	hC7F11MIFLcrfl8M0kyPbHFDL/tSohFK0dMdCpq6RvHow9KKbCozs3prGdpzQ0SErfFmez
-	/Tezi8aZPaedCLRkkwo9YoyBsN+E550=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1757503298; a=rsa-sha256;
-	cv=pass;
-	b=GgZzivwE1kgZqR4etOzV6ODbXpdDqMd5mSy391r4xp1kJpT94TlQ4qj5HblonXWjmmlJVr
-	xLGcRh3oleI2NB+0K9B6hy7cHj6ak0xpDOqRIJAe0WGPUqignHqVS++LdoYWXXGeqwlqIt
-	K4LwRP+N/6zwsVMBVnPxvoEkDky3ULI=
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=rAClAZW3;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=dzCQqfZc;
-	spf=pass (imf09.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58A9NpvW009291;
-	Wed, 10 Sep 2025 11:21:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=f+ScrVNXyz+uvfK6ML
-	ckqfaMmlZx7e9qB8zDPTM6XiI=; b=rAClAZW3BDyXE3l2rGyczSA2dY9GmY7elF
-	T7Pv/bAXa+XzystCj+n7U0Hxb4uFEDopgIWJJgjzb2j1gFVXP5+txpnmnqRZjFe+
-	88ZSO0CUoaVvRYbXitmThdwq6nq/esf+JOvObNEDo0cB8mwduf5ZmHAApblA90sC
-	+X+j5+3aV35Jg7wrCj5Va1s4xoe4O8uait9KsmJO/VXQKAOh+VL0xb/LkTrbUXwf
-	D4+h9RKRuYnsd4Kez+S7BoxZCqoWrcx0ULSikTzyfT9t1C3W/hMaXiEch0gMnGfO
-	a9vgcqJMAIaoJdR7vA+E3vdbIhCG7pf3zoKRpd+O1Ei3T7yxVIyQ==
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4921m2uxk2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 10 Sep 2025 11:21:32 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 58AAE4b0002972;
-	Wed, 10 Sep 2025 11:21:32 GMT
-Received: from sn4pr2101cu001.outbound.protection.outlook.com (mail-southcentralusazon11012027.outbound.protection.outlook.com [40.93.195.27])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 490bdhd8yt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 10 Sep 2025 11:21:32 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=u+VyJyOJjm37wHXGkyctS1C25vdF2zuVJgLfoathmJSsaJQRNQrXmknMYoaK9a2tvrRycWCtxK4DCMZxdBkt6mEeqKgkLKdMvD4O/KQwEtjSLa/ZfYrNWP03necqPIcgLh5ISq1Wc3gO+wFgqkJXSz31axIdZnONACYhed+YuXmEE+AVwu23oMMhiw8Q5KO+btQbG+Tv8t0jmEvPfl2iteWgAxf+YNwUr2U83isO4iUDZMkYZueKEIQtUk6NkQOretcLQL6OQGomPVaIsC+1VRdac/wFe2yUNUZsO1F8LRk0lUUEyfJB/ymZuCtZ3lrakRAsgT+/JiQOHyZttlJjrg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=f+ScrVNXyz+uvfK6MLckqfaMmlZx7e9qB8zDPTM6XiI=;
- b=dcBVFFENgAqKIR5szekjj8jZrSQlFfkFlDXHYRx3Cv/rcZYNl/J7WLESNwTd5ufS94eYsv0WPwiS3Z6qGCEUImmvmwWZCIuuosp+K8tEvzRpUPcSBcuVQ6c/bURqe4z8hve7fNBpDTlQgUsAUCkBwKustUje32gLfSt4FBNL7I1ZlpNp9PYoao3rMEgouztHuAKlKAEeB2AnkFQ2sXTFyXHy0V5aZu/VvvpoXOjiuJ/OVyVdr2uPkKIIOU4eru5qp5AtEWdmxx1IHzb3QDqvo7QrUCQgJWz6T0V0+cnyDCm2qs0HYvOAcBYQii2IKtxLuFRkkvU2t9YyuoA+lKjM1A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=f+ScrVNXyz+uvfK6MLckqfaMmlZx7e9qB8zDPTM6XiI=;
- b=dzCQqfZc4zit13q3c/R749baQn2XqZDpp6Shy1zOWpdhNLGOJbqlzBMqgTpkAkysdbLUXytXZ5PufPlXoF9YcaAvSPLBnGt27QPCrHuIeeqi3dnHKAdTvWuPhiUIbDrEq4CQ2nGQxKrrWLfghued2pAA4C72PbmEzQvD/qOyzuE=
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
- by MW4PR10MB6486.namprd10.prod.outlook.com (2603:10b6:303:213::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Wed, 10 Sep
- 2025 11:21:29 +0000
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::f238:6143:104c:da23]) by CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::f238:6143:104c:da23%7]) with mapi id 15.20.9094.021; Wed, 10 Sep 2025
- 11:21:29 +0000
-Date: Wed, 10 Sep 2025 20:21:18 +0900
-From: Harry Yoo <harry.yoo@oracle.com>
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Christoph Lameter <cl@gentwo.org>,
-        David Rientjes <rientjes@google.com>,
-        Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org
-Subject: Re: [PATCH 03/22] slab: Remove dead code in check_slab()
-Message-ID: <aMFfLqkXcZTNv_p5@hyeyoo>
-References: <20250829154728.3397606-1-willy@infradead.org>
- <20250829154728.3397606-4-willy@infradead.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250829154728.3397606-4-willy@infradead.org>
-X-ClientProxiedBy: SE2P216CA0207.KORP216.PROD.OUTLOOK.COM
- (2603:1096:101:2c3::13) To CH3PR10MB7329.namprd10.prod.outlook.com
- (2603:10b6:610:12c::16)
+	bh=hrtmH798Erv7GjJYJan1U4WJPrIPUTjb3v/OuLlj2m8=;
+	b=qNFXjUkOV7HvHoU9/eEa7PAtqyWDqSWvw8O6E9DQlXrmA381/Pmt50jZ5cHPGScZ4jbNkk
+	qJ4r46lfknIyCqW7s4qvv6Vj6tPdebc7fFd5lhpmW+dEo4WwqNlb2H4tHAY1ENqZAPSUTg
+	wTfxLEJtd6BiwpLMXB4q1v8iG23JNwU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757503453; a=rsa-sha256;
+	cv=none;
+	b=Z3ljdl4013/lgcThuBvNqZyMCMYMYYoPDp7+0chHRC90EtPiapuzf5CJe9LtkeLkWOFLjL
+	/Z24TH1Naxx03QsYxILivlxGykLPQ6A9VUNl6V44mUjIT0VfAKqZ3dfzLvjBHyDSnUBVQL
+	pfVlfO9/rvN27S700x+/scNZw2RP3dY=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b="UtO90H/m";
+	spf=pass (imf17.hostedemail.com: domain of usama.anjum@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=usama.anjum@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1757503450;
+	bh=P2ESJC29I8UnEhT6Pn7PHdZu3AhPIr9M5gqZd4UMXsY=;
+	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
+	b=UtO90H/meAUnAuODWyWo3Z5NPS7ki/EXV6bucLdaaDj6J7tUVwZrTWSD/J2Xa/eaM
+	 NLo7ZPJ03ZKqCd5MI0x9mMMSEBCFyRyt9EE2L6HZS4/khdEe7kYz+Nig99uf015EVM
+	 2O/83OL/8MpNVBDDnDum7+fib8EnfOwQV7KK6LL8oIfy46Xn5FZWM4Yl4EFo9zftgi
+	 5acqcwwAHl/MApQP09UNjlGl3DuOzdLkoDiDtLzlkincUYQzcmrPzJLSTOpKWmt8NJ
+	 5m6bBTlVwjWH+MKOhuT1rai5sV3QmYZguaWo9vPTUgR7j/0bQbNGNFgSNVFtfCLg3u
+	 Z1crDKqZnXdAw==
+Received: from [192.168.100.50] (unknown [144.48.130.189])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: usama.anjum)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 1B55317E0202;
+	Wed, 10 Sep 2025 13:24:06 +0200 (CEST)
+Message-ID: <9dc9e324-4a39-43d0-8716-be325fae2247@collabora.com>
+Date: Wed, 10 Sep 2025 16:23:37 +0500
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|MW4PR10MB6486:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7ae10cfd-c41e-4efd-28f0-08ddf05c2fd3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?MYVMDCOfGGpC1NvQvWBTe0EKpNuk6o79KM6hiySR2mPTfGWKD2bt63Tm/Ryw?=
- =?us-ascii?Q?Zt6AjtIuMuT48ixNQJNfZXV4Z5uNbZa0vgrhNe+V+9hHQWf3rgw/RJ4ScwVs?=
- =?us-ascii?Q?39zCLuTYeHfvsWw9DsUq4WAPlc80DRurkvv4/ROvvF4mvMwYt8lD2N7nv5WE?=
- =?us-ascii?Q?BDfEDhFyVo1nOTwvPGATXEtehl7dUQtYFVJFZoDLfpMyPwkCSHGtXvtaZ/lj?=
- =?us-ascii?Q?PN3gjBna+Bny6qQx+kurvEjeYE/yOTrOK85tCPVazfPnzoMUG91jUzfeHa0l?=
- =?us-ascii?Q?4tIpMIp1Q9DqBFYpKjSFLAyyPSzOEleH30ZZykBe5DAeIR62AFKi8RaH+TBv?=
- =?us-ascii?Q?cNC1h9DQ01cKlowCFs8XkUNGemAjdW5yUWB0B0YBtZnYGid2faLJKMnVi17X?=
- =?us-ascii?Q?ZJAheZ/FnmRrEcc01BN1kK5CznjbzmAnT9NybBNI1fwxMhvzfkvY3snn4ETq?=
- =?us-ascii?Q?zOX5+tCEBhLDtEtnrdE5NosaYoODMJT/NEbXSByFidM1iSPRKp+kRxxW5TaV?=
- =?us-ascii?Q?6TcUL3phRYAQOXT67Sbvg/ApAdAPOT8gDJ5pOHJDYex8eQntMogF/0gwoEWY?=
- =?us-ascii?Q?R5Fee19ps1w/YYLSYBQXd9QyAOvsWaA43S3HwqdVHebpT2cdRPK2t/8EEoKg?=
- =?us-ascii?Q?86MJ0BB9zqXwl0ePJXFvsMIQDwNFXWcGgCIUaVyDGQWUjaF7Oc17BG0tZg9r?=
- =?us-ascii?Q?FiMVE7TqMj6hr2L2GQQf1jHOwr/eA2ldIxKdXAWrTve/5mfbVcIdo9QAIMA8?=
- =?us-ascii?Q?tlMp0+usnIjuMiSDx5WXPbDM05io/WaBYZea87iq464jytkM1zXqWTmrZDCS?=
- =?us-ascii?Q?/UDULmMQwI1Knh9q1Xv/1LhoVND43Wfpy0x2/2wFzB7n6YccrxQ0FXuCW83B?=
- =?us-ascii?Q?0x7V9fPGh/v4WYC0ju1WAIU/k1OtABkGbpsBe4R+8IAPkzSVxztCUSSXSJ/L?=
- =?us-ascii?Q?943MYoUlohFdPz1t9Z77Zp3J3Q6e0/R2K3K4/ynvxB5LX1ZpVfJdIYmGk6W+?=
- =?us-ascii?Q?sI62tMOyK2ot02pJJC301FAgg9QvJreubuIYDjWyx63UCtZu8FYlnjBbbQIJ?=
- =?us-ascii?Q?phbm9vgHV/G9I3pSDQ5DUdQIF5mvaeiNENZEOAAxtmKDxjowNDdmyiF8BolP?=
- =?us-ascii?Q?YwwLsQaxrv5wqnnCM4dYDxtxn9eB1aBzBkoOSvJxf2LcgfFErebISvqNbVgO?=
- =?us-ascii?Q?ZjTXeVhzRH0ZKRVgRQTMdNfhrHfFDAv/SC6YRcCgPRcgVCP9+fzWO3XgmEZk?=
- =?us-ascii?Q?jghYePacy6Zes+M3f0v3grI9VqgvB+J2x1l2l8cFSUE0/SDGfM9jxsAZvwoO?=
- =?us-ascii?Q?iDPV4gJm8SwGMR3ywQ///RmM5wwzGbybnTWa2qofUCzotOq4DXs6otSQerdV?=
- =?us-ascii?Q?/9njWvsQ1oQ0fvclN61BtwekYpM6HhYghZlCcKBLTcFlWjbMhzj+mavry65I?=
- =?us-ascii?Q?5l8N+vsP+HE=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?1aK2roZMQCWLaQNkHL8CWy+5Yowc5JVbFU0BbYtK4FylIQDhbOfySricNDLK?=
- =?us-ascii?Q?fE1XbLxNrLi7BLGGGBThGKgYAnU5Zk5LJxIQHFGgjyyeB6Z4rPJN4rhaQWze?=
- =?us-ascii?Q?ALdPMB6ZLgLQLtUfc6yK5rejjQe/biSpDT7JcDe0K3ZcqO2/fqMXF9UvPsaV?=
- =?us-ascii?Q?62FP5sQiythKNK3vFJ93n8xWyJ7rfziZZSagY419Qkvrnp7gKsAlXwWUWZMa?=
- =?us-ascii?Q?GZOWCErZKgFMvw5DB9qJnQ4xiVAg+P7hSAhR2QuuvNxW4oHUxeDgpP4w++Lp?=
- =?us-ascii?Q?EAJEQX/lLI9n5dmeGX7IdvKlSSKE3yeMoFE7IPBTIIvXItAkCqlKA0LSzxti?=
- =?us-ascii?Q?H+xf1QtDUVaYlI4c8bhSJ3X/Ywn86LJIp4dfEfyrwazG0PUOofeLgf3o5stv?=
- =?us-ascii?Q?O4GNcBA4ngwuaXKAzAl9G5QE/kB6DEM+EBAOiuebnePavLMeBNLYvTLtJIu7?=
- =?us-ascii?Q?qcxYdvO/AVMQNp5cT5SqN55mvl6chGls3HlxQYN7SOLqxFg/L7sEKpeK9etm?=
- =?us-ascii?Q?000wl8SBBTDdLilhlG9CABLKrIcXgmd4PnFvjgOELbMZfkRo4D7h4YNh38rD?=
- =?us-ascii?Q?7JBNlUfu7vsFbfYlWq2hiELJpmGnvnY8uWuFbWHcxJ7Qabae7qc297ltSe2z?=
- =?us-ascii?Q?Ra2r0sFm9zkuMqOw+x7X145eJBgu88geEHLcFFX3ZdriPYCkPZCas6jjQ6Gu?=
- =?us-ascii?Q?86Aw1IsLrw7MOQC4W9aNC7slHPgcSel7aqKimILL5KQaywwHsQkIv3Y/j/cv?=
- =?us-ascii?Q?Z0jjRVqIrHzfIq7Cbyx2R3xF+zTVeS1r5TUzZSyjiKZdpZjqBo4fPDA1YjZ2?=
- =?us-ascii?Q?8Ygd7kjaVIjXwLC5V8JpvKZxcnQ0PFK5hSynmaZJYlRmJnTj9D3zpaQZ4oZY?=
- =?us-ascii?Q?amYiY9HDDnDv9oAgALFvYiwB/jjNy5sK8+lkae0p8qMstHx7LjuXr2/9/QAf?=
- =?us-ascii?Q?XI8hPkucvUOSitWimSuaTZB80TY7FhpuDQjktAEFQuPNtRWODno1oVwNYrbL?=
- =?us-ascii?Q?G0rr62juf5wfbdgJBKPNs0EWgyh3GvGNGnOvJI126NbK0WFYWl6PzssRY8WS?=
- =?us-ascii?Q?gZxEcXkK+VdTelubghO6W3MlDLSzIlVn/daUgGMH77gof0xY4kwh7YJi2bWV?=
- =?us-ascii?Q?nQnk/o4Fc27S/Ol0iul2iiS9Sj1uhk/0W8PwoCHY6byIEpSgRGcgam8k45bz?=
- =?us-ascii?Q?zYXpmZpBtgRXqE4Nwo8nv/LRShI8ciVZBVz3xDFblOoz+P2y4A/BRd87WiDk?=
- =?us-ascii?Q?5k8KCRVQ3zGvLnV45M7Fcgn5mI+5l3FsjUx01qUH4JezHmTqAstVAfCj1IqZ?=
- =?us-ascii?Q?7UKUmI45dPC12Brco2oQDDDtqttDwVUVWhuOT20c858MnnKXhmJZ8WaDLIGs?=
- =?us-ascii?Q?Zdj9eP0ap91JlXMNVNF5UlY5E+6yM+mCtbd13DoZcmFRChMAtCtSq6TAbYOK?=
- =?us-ascii?Q?vlTmYEVNBeQEDFP7RuRogMjGDXtWyDNjFwpJoVFLjvpUm0tW7jvzgEp0L6iD?=
- =?us-ascii?Q?vqPqigh35SAwUC2EPc6j+99bYVSuXzSxKChFwGndDA9yyHZ7BV4jAlaRcEIF?=
- =?us-ascii?Q?cbOb95LKpc2+EwkXNBHsEutw36e0RgqvRdOBd/Yz?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	2J6HFPElnMA+FO/NJ8pzGXg1qOxuy5QeqI96wLOM03mjdatwpyyj7aesup4Iz/fNmeQFhA2b4NelRepjM1GxY1lgIlGY7eA2dbx2ZDKGgWUrV/mTeiS6ZDAnvh/TIIMdXaN8crk+gGzpltXvTYSdYZdd0ncGTs3QkKIP4R9C6R3mHwI2u3HQl27VhgIo9GN7U1pYfTs3XmtCPSZayBhUkt+/u3P5fbaUJ0wnqG025udHZCNa+FZMRGWmbq58Xb4X80jGZP7aZL+6q3ebcQTnkb28AQUGRuumtCVzDYqy6XckMH9kV0/KQGjwOUTrEKfLVuwTchNDVcC6VWpjrJX17Db/vWyGmjSXcBoRpMJ6qfB/vms9t9zxhmfOyhpJQ0kwxIJsQiN+AIHbr1zwn+zMaFqQd9uLRuIJ3gzaKYqTVXXHfTWD21it/CXGvvcMvxlU/qTxxElDRzG8F/i+2nDqGf3u30nhdjsQtqZZG/4WucIfNIbqq4RV4pBcnjoPG/qEowA1LJzv6814MJLwtUqXxpX5WZrUlg/3Chzu4SzHvA/s0AAmNog3MUu/4w393HzrDOpDwrQlFgNa92HA3j19PIo5FwyUIT23kiUReZ64Dgg=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7ae10cfd-c41e-4efd-28f0-08ddf05c2fd3
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2025 11:21:29.0515
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 009gP7OCXwla5WKykwcBNY5ge68or2117neJiQ6+RgXa4w0xMd82YQEww9jU5u6hJlE957fqvU8Cgg2PUa4CRA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR10MB6486
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-10_01,2025-09-10_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 adultscore=0 suspectscore=0
- bulkscore=0 mlxscore=0 mlxlogscore=999 phishscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2508110000
- definitions=main-2509100103
-X-Proofpoint-GUID: viiaF0u4XjLa30bVNt2PYlXihpL_SZV_
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA4MDE1MSBTYWx0ZWRfX8vCpR+ViLOly
- 6j+kiYmXRCIGwLGh2csP6yGoUH6CkMfM0XP1pOCxO/eJZWJuKgR45vsprhXcwrZPpZNmH4c3skQ
- 0t2qlobs+Ca3feTo5PS/nUPOP/AK6FsV1Lb0ugOgzdZCb3Ifgs4nT7VA57FJo8a/woBAgubOM9x
- BG3Z8gA/2ghHNGnWNb8Zee7MnxEr/3mMtAgwAXspprgiFANv6obWg7NhM9p0G6mS1oxmqb4EtzD
- xOJB0CAC26U+U5cwunbeFCUwNrAi5ol9htvjps12e0FI0k9oms0AD051gpavmgk8Xs258FyhlaW
- 7/XOH+wG43dr7T3DSNECFcaQ2p/23hydTV5RWMbYCDgWO5VZYI52fTOjc5GAtC3ggf0HSUF6L9Z
- wH3RWZnrriEdJKqnjWfsa3lx62EoUQ==
-X-Authority-Analysis: v=2.4 cv=Dp5W+H/+ c=1 sm=1 tr=0 ts=68c15f3c b=1 cx=c_pps
- a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=yJojWOMRYYMA:10 a=GoEa3M9JfhUA:10 a=JfrnYn6hAAAA:8 a=yPCof4ZbAAAA:8
- a=I9KUxH79OwePN8KHRLIA:9 a=CjuIK1q_8ugA:10 a=1CNFftbPRP8L7MoqJWF3:22 cc=ntf
- awl=host:12084
-X-Proofpoint-ORIG-GUID: viiaF0u4XjLa30bVNt2PYlXihpL_SZV_
-X-Rspamd-Queue-Id: 3684E14000A
-X-Stat-Signature: pju9ukmaes1fwfy8fmdw16h1xcsw8zsf
+User-Agent: Mozilla Thunderbird
+Cc: usama.anjum@collabora.com, Matthew Wilcox <willy@infradead.org>,
+ Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+ Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
+ Manivannan Sadhasivam <mani@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
+ Marek Szyprowski <m.szyprowski@samsung.com>, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, kernel@collabora.com,
+ Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
+ iommu@lists.linux.dev, David Hildenbrand <david@redhat.com>,
+ usama.anjum@collabora.com
+Subject: Re: Excessive page cache occupies DMA32 memory
+To: Robin Murphy <robin.murphy@arm.com>, Greg KH <gregkh@linuxfoundation.org>
+References: <766ef20e-7569-46f3-aa3c-b576e4bab4c6@collabora.com>
+ <aH51JnZ8ZAqZ6N5w@casper.infradead.org>
+ <2025072238-unplanted-movable-7dfb@gregkh>
+ <91fc0c41-6d25-4f60-9de3-23d440fc8e00@collabora.com>
+ <2025072234-cork-unadvised-24d3@gregkh>
+ <c93b34ca-1abf-4db0-90f9-3802ac02c25a@arm.com>
+ <bdd1efa8-691c-4e84-8977-cdfd48e7363a@collabora.com>
+Content-Language: en-US
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+In-Reply-To: <bdd1efa8-691c-4e84-8977-cdfd48e7363a@collabora.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ifqe4p84myo4hn8pfp5eycq3zorm8ojm
+X-Rspamd-Queue-Id: 592BA40009
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1757503298-36488
-X-HE-Meta: U2FsdGVkX1+vEZFyhEK+2SqUtgyrgn8DFToSGHvblfHWDhR+7a2fG+w4EjAPNGcVXC6ztg0FXcFnkKjvq2j+5FWFCOgyj2KEpPFTLXYTw9xi0BNHNQwIbc3xLDnxu61bZ0qRIVMUMaPG+LuBuo9bxCh881yavzrXqrRdRIgRbMK7Ps8DiK+CfE1zgkQ3cEwCaPZhtcx87AfzCvIm/WPoFMKkNw2JhzrA25pVvXPCzpqMuGUno/5ZsWkjs+t91UWAiL3jrX/av5/u0KOIzqAh14p63AiO46sZIM1LQGUS9NXxjHJzEDiw4XATrfsVLqkPxbnBLxR/lior+3OiMZHZaM/eNg2zI8hLuVTa1tDmsfEG2FRapiMu+w0mZbqb4zqkQ9FvIhT2JF8Hv9gGdlHa6z1i8sr24hZqiZDSQoj8P+xDJ2yOqwbxHWmVX3RuZKizAUMZlFuGVx6fvY3lqJlPcy+g5d7AawiXcc2sIYkTLIcVXL3xxV+xxi5pMoHxekxw/pBeb7aKf0Wusg5PGjnThjWL/1QUSTJHOAZr+02QxWJTRbEYxGPw1KMQ2c8tW+lEx94q/gLg+hNXsLH5NvVvAf/e9lK39obRLgpShEBlDUnrfgMIMIyD2YaxwE6f/Iw8R+awDajjPvVII2k9k6PxAXS5AFpGILuVDKVKPrcErtbGDaL0e5c4yF4V8oLEA3Mxlj85o8rKFZqc+0Yd/Z4ZuEr8vaAF9J23SlHUiTNGjR2XN6GFqkbciF2IKuiAC1SEbTDimQe7mPTgwgbJgwjrngu6SMdPyIyLoV1qAZCQYZYi472uVVjxzxhbwKEndcIa4ly7aTh0Xg4+OWGw62wh4e3hbCSJvNLaCMgDay9wvjLl1EFI8/aBIi8K9vMpej4Jb44lgUFTqgIFzVoOAQSTFvBVJuDugeLAO9QAnC2FOdEqcc2pMOMHky8tLhMq6ikrpQ53ZNLjDVJWs8JIPja
- 2KE4XRZn
- LchdgzWwxi/87Tgfy83Iag/PPgLVn/IMXpaDmZzbFH9otK+DKCuKxqTrWh5UKDVTZLcEr5oKo0EPawtEleBDhvs0uq7j5yLh0iPTUWipyTyCTYulr5X1Cishxi9OndZEcBKXlxcivIyyhMU6AlaWkogMNQ/v1xj7bi5EPxhG+Jlym9cqd489JQ9+BxwzZI2hJEB3JyLd6Yfh+Uztx17D+MLkmp0VsY4/zoTwI+WZzExVGWin4zrxzaNX/Myk2tQCTVSenq8rNVpXJ3LcYg0qXTJ2q9rg8YKEkAWskIY3OOA+9NRGxcRpMCl3U6XnzoIYaiQGgQ+qxwQqxqp7CIoyZ0FnwMDYoaSWN2Jh/Emv3bYRkT6piF9iCz3Ki12VVscWq/VWqQbI79lryoA4x/WRtO0NRaR3CUgp9vMWeMQSSkz8uV1uJ52RWBStQ5n0//H/hx3xAWeAWLq0i9Inv7s3x1KVsYRI8QrpboodaQfVbIvDf8iX9e565ByCymd7Lkfl7MSqMt7ECJRUJ4zj0KjqsBFQ6EIga5Uto0+ownGCmBB2tDGb11KgD8AWfwSMf5Zv/VDnd+9Z9LlLPTFfuKFd+EuVFustXWXK8sNOXDMwXvGVOGxq+NdwuFzxUuoHMgZrWcASIwd46zwSC1/VdJsJCeKzvp12fvBGZeO+W68CNh/fuRlmkUcz5d90k82TrLupNlncRe47JU0XYqf5iUWmQMKnxFiHub2ZDd+5amZqoP6KM9gMWm38+bjnJHBLlcXniU+OrRXXLRA8tnk08llQH10/3IklsRViUXe2HXpVBz2jdjNS6LDHW0cNt68EyrSMuCCFu3TlGmmzm8q2iHIf3uQ4Dld7ppCx8mLbQo91fdcet7+szrndxlqBZiFcyuBBukWPFrX23cFN/cBqwtQCxV4+Atxwy9ScaABG+
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1757503453-907741
+X-HE-Meta: U2FsdGVkX18+0jBA7JyZO28AlgR8TcimTQZONakGQR1UPc0OcDSchpBa5LcWar08QUtXFOltC2bg46Jhexg032SV0iecRHwguD97/jwdM4ZJVzklK7FZqXVqTC29j1/8+XREDjW9VSn1CieX4kyfFirChaxFBH5dU0bHX24D9ZPUtqsDh7D36MHTemNdOdjI1Ka3IuaW8CDKaOihKgb7ANt6xaDZXAuQJKadWNzRqKtF6+6/KPlQxFBIHBiyxMUrk8DPbSfXfElmiUItBNKBCpxwfj2DzutMZjqe8zB/7AiIw1FVmqw12YpOuyAx9vmQzoL7PKoYB5a9ZQUJOQ5DKYMUZRp+da6TCAMq/snB366Oi/FeT9lpSa5/2Frd1X2uUzcprnrw7PLRu2AT02IhdIbv3zn8pjIpN5PLttZPRr6lshZ2dY6DjfrURg2MwWzDO/GyZ5lX6gBNL/bOhgC37hKJvpvcRouJ3vQ7uem4+qQ1YtskIVMtZLVrOPFa2FYSdfGeZoojDwxoCGEyQU1FkYIO7kUoLjmVJTrREGv7d9jgLT/F59DtoE7QiKn111ecBdXvWid1hUKrFCXhbScFsGB2Wv1ftPceeMHNknZcTLa+ptC6OOsy4uzXUcbFX5Myh2xpe9jP0+3i2dVZv2zTwAAYVsfFwAKCgPutCSUZ9L4NqvQ8PdrmidmoQ3ltTLVaJ0EEGubNIBGuln+lH9BqR12jKpgvZKP8+qazSAf7+RYifWGyAdxCAiWc+AUDgC2/k3byQ6ECM3itK3/gPAIE3rAvyqKB5zbUSRsO/bVCeW8BHIOdwNkWQOsuP4WiWtRJUpQaKPliP7Qxv39HVma3280J7o7QGUH9oagVVXOPyggZs7C//ne6dWgB7ObaiYKANODZzIU/MTN3r3AvHLr2hjx7hv0V9TJLQSVQoU0xrr8IQ84Pd7qkNjOak0xNZqbtQE2ka5QtyZL/RA7g3wZ
+ N67HzmOK
+ bToy5WMmPdEntGEYXoSgCvJvcXoo5VHaLV1LWrrsFCFVQ3CCZ6ltwqXy4WlFfyS3NSFBY3B37O8Z98mJ2p8pTiD1OWOaeCRsvAcFmNq55aCEgIOqBLm0V2hstcOal9EMs0/I1cgKLhn0DRcaEOC4UuI4U2oCA6SuiLdfcM0inKebK4omJTWUmyHOnuxqQxd5MLO/4g/vjI67xHRxWJyJDin2IGV86c9pqPxLdTI+gulFBp2p25GiR/vNo5nYyw3m0GJAtI5fA8uDBIGSbBvyYVQ5Ms5AATRETAwCpbIRSFiZkxnkNJhImkjhr/5UrCpA6O/bW
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -235,45 +109,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 29, 2025 at 04:47:07PM +0100, Matthew Wilcox (Oracle) wrote:
-> We already know the slab passed in is a valid slab.  This looks like a
-> sensible check, but all callers assume or check that the page belongs
-> to slab.
+On 8/21/25 6:39 PM, Muhammad Usama Anjum wrote:
+> Sorry, it took some time to investigate.
 > 
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> ---
-
-Looks good to me,
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-
-Side question: if someone wants to (though I don't see much value in it)
-iterate over n->partial and check whether a slab is corrupted and no
-longer a slab, should they convert it from slab to page and then check
-PageSlab()?
-
->  mm/slub.c | 5 -----
->  1 file changed, 5 deletions(-)
+> On 7/22/25 3:03 PM, Robin Murphy wrote:
+>> On 2025-07-22 8:24 am, Greg KH wrote:
+>>> On Tue, Jul 22, 2025 at 11:05:11AM +0500, Muhammad Usama Anjum wrote:
+>>>> Adding ath/mhi and dma API developers to the discussion.
+>>>>
+>>>> On 7/22/25 10:32 AM, Greg KH wrote:
+>>>>> On Mon, Jul 21, 2025 at 06:13:10PM +0100, Matthew Wilcox wrote:
+>>>>>> On Mon, Jul 21, 2025 at 08:03:12PM +0500, Muhammad Usama Anjum wrote:
+>>>>>>> Hello,
+>>>>>>>
+>>>>>>> When 10-12GB our of total 16GB RAM is being used as page cache
+>>>>>>> (active_file + inactive_file) at suspend time, the drivers fail to allocate
+>>>>>>> dma memory at resume as dma memory is either occupied by the page cache or
+>>>>>>> fragmented. Example:
+>>>>>>>
+>>>>>>> kworker/u33:5: page allocation failure: order:7, mode:0xc04(GFP_NOIO|GFP_DMA32), nodemask=(null),cpuset=/,mems_allowed=0
+>>>>>>
+>>>>>> Just to be clear, this is not a page cache problem.  The driver is asking
+>>>>>> us to do a 512kB allocation without doing I/O!  This is a ridiculous
+>>>>>> request that should be expected to fail.
+>>>>>>
+>>>>>> The solution, whatever it may be, is not related to the page cache.
+>>>>>> I reject your diagnosis.  Almost all of the page cache is clean and
+>>>>>> could be dropped (as far as I can tell from the output below).
+>>>>>>
+>>>>>> Now, I'm not too familiar with how the page allocator chooses to fail
+>>>>>> this request.  Maybe it should be trying harder to drop bits of the page
+>>>>>> cache.  Maybe it should be doing some compaction.
+>>>> That's very thoughtful. I'll look at the page allocator why isn't it dropping
+>>>> cache or doing compaction.
+>>>>
+>>>>>> I am not inclined to
+>>>>>> go digging on your behalf, because frankly I'm offended by the suggestion
+>>>>>> that the page cache is at fault.
+>>>> I apologize—that wasn't my intention.
+>>>>
+>>>>>>
+>>>>>> Perhaps somebody else will help you, or you can dig into this yourself.
+>>>>>
+>>>>> I'm with Matthew, this really looks like a driver bug somehow.  If there
+>>>>> is page cache memory that is "clean", the driver should be able to
+>>>>> access it just fine if really required.
+>>>>>
+>>>>> What exact driver(s) is having this problem?  What is the exact error,
+>>>>> and on what lines of code?
+>>>> The issue occurs on both ath11k and mhi drivers during resume, when
+>>>> dma_alloc_coherent(GFP_KERNEL) fails and returns -ENOMEM. This failure has
+>>>> been observed at multiple points in these drivers.
+>>>>
+>>>> For example, in the mhi driver, the failure is triggered when the
+>>>> MHI's st_worker gets scheduled-in at resume.
+>>>>
+>>>> mhi_pm_st_worker()
+>>>> -> mhi_fw_load_handler()
+>>>>     -> mhi_load_image_bhi()
+>>>>        -> mhi_alloc_bhi_buffer()
+>>>>           -> dma_alloc_coherent(GFP_KERNEL) returns -ENOMEM
+>>>
+>>> And what is the exact size you are asking for here?
+> 512 KB
 > 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 8fde324cd308..6b0ce2677d32 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -1510,11 +1510,6 @@ static int check_slab(struct kmem_cache *s, struct slab *slab)
->  {
->  	int maxobj;
->  
-> -	if (!folio_test_slab(slab_folio(slab))) {
-> -		slab_err(s, slab, "Not a valid slab page");
-> -		return 0;
-> -	}
-> -
->  	maxobj = order_objects(slab_order(slab), s->size);
->  	if (slab->objects > maxobj) {
->  		slab_err(s, slab, "objects %u > max %u",
-> -- 
-> 2.47.2
+>>> What is the dma ops set to for your system?  Are you sure that is
+>>> working properly for your platform?  What platform is this exactly?
+> Its x86_64 device.
+> 
+>>>
+>>> The driver isn't asking for DMA32 here, so that shouldn't be the issue,
+>>> so why do you feel it is?  Have you tried using the tracing stuff for
+>>> dma allocations to see exactly what is going on for this failure?
+>>
+>> I'm guessing the device has a 32-bit DMA mask, and the allocation ends up in __dma_direct_alloc_pages() such that that adds GFP_DMA32 in order to try to satisfy the mask via regular page allocation. How GFP_KERNEL turns into GFP_NOIO, though, given that the DMA layer certainly isn't (knowingly) messing with __GFP_IO or __GFP_FS, is more of a mystery... I suppose "during resume" is the red flag there - is this worker perhaps trying to run too early in some restricted context before the rest of the system has fully woken up?
+> 
+> So GFP_KERNEL gets converted to only GFP_RECLAIM as GFP_IO and GFP_FS
+> are disabled by the pm subsystem at suspend time and they are only enabled
+> after the system has woken up.
+> 
+> GFP_FLAGS
+> 0xcc0		GFP_KERNL = GFP_RECLAIM | GFP_IO | __GFP_FS
+> 0xcc4		GFP_RECLAIM | GFP_IO | __GFP_FS | ___GFP_DMA32
+> 0xc04		GFP_RECLAIM | ___GFP_DMA32
+> 
+> Somewhat debugging log:
+> 
+> [ 1914.214543] mhi_fw_load_handler:
+> [ 1914.220346] [Debug] dma_alloc_coherent cc0
+> [ 1914.220352] [Debug] dma_alloc_attrs cc0
+> [ 1914.220359] [Debug] __dma_direct_alloc_pages cc0
+> [ 1914.220360] [Debug] __dma_direct_alloc_pages cc4
+> [ 1914.220365] [Debug] __alloc_pages_noprof cc4
+> [ 1914.220367] [Debug] __alloc_pages_noprof allowed c04
+> [ 1914.220371] [Debug] prepare_alloc_pages allowed alloc_gfp = c04 alloc_flags = 1
+> [ 1914.220374] [Debug] prepare_alloc_pages allowed alloc_gfp = c04 alloc_flags = 1
+> [ 1914.220379] [Debug] __alloc_pages_slowpath [restart] gfp_mask c04
+> [ 1914.220381] [Debug] __alloc_pages_slowpath alloc_flags 840
+> [ 1914.220384] [Debug] __alloc_pages_slowpath: skipping direct compaction
+> [ 1914.220386] [Debug] __alloc_pages_slowpath [retry]
+> [ 1914.220387] [Debug] __alloc_pages_slowpath wake_all_kswapds
+> [ 1914.220836] [Debug] __alloc_pages_slowpath: [nopage] no page found
+> [ 1914.220839] [Debug] __alloc_pages_slowpath: GFP_NOFAIL not set
+> 
+> Just for experimenting even if I keep GFP_IO and GFP_FS enabled, kswapd's
+> waitqueue show that its already active.
+> 
+> Another hack which I've tested is by adding __GFP_NOFAIL with GFP_KERNEL, the
+> allocation worked this time. But kernel seemed to tried very hard and finally
+> found memory from somewhere.
+> 
+> Its hard to identify the actual issue.
+> 
+> Although its hard to reproduce (I've very strange reproducer), I've tested v6.15.11
+> and I'm not able to  reproduce the same issue there. So something has changed
+> which isn't triggering this issue. I plan to do bisection now. 
+> 
+> Please feel free to share if you think there can be something better to debug/bisect
+> it.
+> 
 
--- 
-Cheers,
-Harry / Hyeonggon
+Another update:
+This issue reproduces on v6.11.11. To summarize, we're unable to reproduce
+this bug in the v6.15.9. We wanted to do bisection and find out which kernel
+change has caused/fixed it, but it's too difficult considering the complex
+reproducer setup (Tekken 8 Demo game + page cache stress). We don't want to
+spend more time on something that is very hard to reproduce and is already
+fixed in later versions.
+
+My debugging has shown in v6.15.9 that the allocation succeeds under the same
+constraints of power management. My hunch is that somehow the dma memory
+doesn't get occupied to the extent that dma allocations start to fail at
+resume in v6.15.9.
+
+---
+Thanks,
+Usama
 
