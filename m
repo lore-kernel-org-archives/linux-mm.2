@@ -4,106 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EE84CA0FED
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 22:33:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38E1ACA101F
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 22:41:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA0778E0005; Wed, 10 Sep 2025 18:33:19 -0400 (EDT)
+	id 61D946B0005; Wed, 10 Sep 2025 18:41:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A78C28E0001; Wed, 10 Sep 2025 18:33:19 -0400 (EDT)
+	id 5F6188E0006; Wed, 10 Sep 2025 18:41:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B4D28E0005; Wed, 10 Sep 2025 18:33:19 -0400 (EDT)
+	id 5329D8E0001; Wed, 10 Sep 2025 18:41:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 8921A8E0001
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 18:33:19 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3108713A879
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 22:33:19 +0000 (UTC)
-X-FDA: 83874792918.07.77AF878
-Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 23045180004
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 22:33:16 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=KWRxDXVt;
-	spf=pass (imf06.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 45F516B0005
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 18:41:03 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id F2F9A140325
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 22:41:02 +0000 (UTC)
+X-FDA: 83874812364.17.78131D4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 5E7A4120003
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 22:41:01 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=MN9wBiof;
+	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757543597;
+	s=arc-20220608; t=1757544061;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3a//xGijpXNAuGudMzhJ5QIbcnpcApxjy+dhMPgQAYk=;
-	b=KGNqd2t1Fh0BEW9A2dn3lQi5RQNEv1jvEqVRlRwKfUeXlCPlHs/KA2JpqxL6Z504DfNkLB
-	MNbSaTTqWhR9qTHZE4NlPQdoo2msUf57xLW+1EqIqi4i6G0KO3lxpmYMmfeGS0UoT7xjDY
-	/eZ6DJ37ErtrVhly7JYma2d72bva5W4=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=KWRxDXVt;
-	spf=pass (imf06.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757543597; a=rsa-sha256;
+	bh=5Dcw9/G0hnRZW8UTi6zVoPrVUotmEJn2Z75ZY2eZcK0=;
+	b=YIiSy/fmc/0rfsG6a89uwsEn+ol8Wbs5bJqxQK/zpmiI1eFyAOqV+VlFYvCc9hxatuvs7E
+	F2q9ZwSvCaldMkuXb0wnpx0GVlzyT5eLEdFK+OYh7+kg8ghJL8xBUNOB4bTcIlLKQtIcFa
+	yotjLGk2L2VlnfNLyVR7OfOKP0M/Wqg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757544061; a=rsa-sha256;
 	cv=none;
-	b=UOtfCriYu90FxA9HVT6c7TBhRc+DexJg+leOb4PnWck+cI7+/sOASHsKRAwxwMRcrowa2b
-	vkbq2MmGSxAjXeT88FZOWO/ZFyPwpcjF6fUaq27emDWMJeoMIPjAoAWSstzTLiHr+15OLz
-	xNFFMGg+DwJfud3KrZ8wzIQu+T7x4Zw=
-Date: Wed, 10 Sep 2025 15:33:04 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1757543594;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3a//xGijpXNAuGudMzhJ5QIbcnpcApxjy+dhMPgQAYk=;
-	b=KWRxDXVt7y9s6wE+N5w0wSQ5Ynzy9bk1e3X8QxXkENMXrCSlAwlUuk55Uxkl7/O4MIj/U6
-	WOOIegzy9yno5PLguEzQTbqb/YbwxIUIgLlP9lb3pIv+4Hi6+YBzVJ8Vagftl5Oea5XNB3
-	z7oywdV/N8xCxnl9VbYwRvcPo0Pr4co=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: "T.J. Mercier" <tjmercier@google.com>
-Cc: Suren Baghdasaryan <surenb@google.com>, Lei Liu <liulei.rjpt@vivo.com>, 
-	Michal Hocko <mhocko@suse.com>, David Rientjes <rientjes@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
-	Barry Song <baohua@kernel.org>, Chris Li <chrisl@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, David Hildenbrand <david@redhat.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
-	Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>, 
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>, Chen Yu <yu.c.chen@intel.com>, Hao Jia <jiahao1@lixiang.com>, 
-	"Kirill A. Shutemov" <kas@kernel.org>, Usama Arif <usamaarif642@gmail.com>, 
-	Oleg Nesterov <oleg@redhat.com>, Christian Brauner <brauner@kernel.org>, 
-	Mateusz Guzik <mjguzik@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Andrii Nakryiko <andrii@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, 
-	Fushuai Wang <wangfushuai@baidu.com>, "open list:MEMORY MANAGEMENT - OOM KILLER" <linux-mm@kvack.org>, 
-	open list <linux-kernel@vger.kernel.org>, 
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>
-Subject: Re: [PATCH v0 0/2] mm: swap: Gather swap entries and batch async
- release
-Message-ID: <lsg5toahtv3odhjslxn5zd6huih7ziaei6vjj3u4wybbesjup4@i6tytlo4uczo>
-References: <20250909065349.574894-1-liulei.rjpt@vivo.com>
- <fszpgct7ywqy6qq3qnjflol3theovmgnau2wgdqqdxin4q7ezm@zumgw533hxon>
- <CAJuCfpFaTj8PsXkoYRQKQ0sOu+mKikUAE8Wbcx+YpZXZ4M7cMA@mail.gmail.com>
- <qisfqncqgkgxh2nj5axafunlfjen6oiciobcrmpus6l3xwrbyj@blxv73pbhzez>
- <CAJuCfpF1deAfZfWQZkAdws9FDNsmZp3KMQap-LqcX1NzOoknhA@mail.gmail.com>
- <CABdmKX2386gYbF5BXzbJ3awybF+edGAfGgFguhAbppejYMKGZA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CABdmKX2386gYbF5BXzbJ3awybF+edGAfGgFguhAbppejYMKGZA@mail.gmail.com>
-X-Migadu-Flow: FLOW_OUT
+	b=28rOleRJU1fN8SNQ47SwChVqZk2YzBBAcoaNOcPGzmtHBzGfgzq8t5ikQjC4hQruoc63BJ
+	iUbwP5PtPF87xRB9+HZf1AtJ5XPdcaOwoi+BHCSk9ci9hT8nFnQcFIzup1ytAAyE43cxkm
+	WcUrxW8wPjRfhBiu5fdVrRj1bWN72TQ=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=MN9wBiof;
+	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 63C66600B0;
+	Wed, 10 Sep 2025 22:41:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B79CC4CEEB;
+	Wed, 10 Sep 2025 22:40:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1757544060;
+	bh=TMJqa8O8IQsauMof+lR/u1sGz9Yy4baUV6tf/oB6K5g=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=MN9wBiof4cTGyl3Cc2xv1mj4goUe6R7u5v+Ite63exIxpE3VTY2FG4t3t1YBSfzI2
+	 OGpPMqUnWkxwZtepa1IrS7MOMT/b8ukY/7RxyH8XKk/GiyJOWoZShrmVrhBM/WwgNl
+	 kP1s8uL1xiEqg5XgPwIS67G6HkJvaCc2GjTaXHU4=
+Date: Wed, 10 Sep 2025 15:40:58 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, Matthew Wilcox <willy@infradead.org>, Hugh Dickins
+ <hughd@google.com>, Chris Li <chrisl@kernel.org>, Barry Song
+ <baohua@kernel.org>, Baoquan He <bhe@redhat.com>, Nhat Pham
+ <nphamcs@gmail.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Ying Huang <ying.huang@linux.alibaba.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@redhat.com>,
+ Yosry Ahmed <yosryahmed@google.com>, Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ linux-kernel@vger.kernel.org, Kairui Song <kasong@tencent.com>
+Subject: Re: [PATCH v3 00/15] mm, swap: introduce swap table as swap cache
+ (phase I)
+Message-Id: <20250910154058.5947c4b4ff6dac6cc4f89007@linux-foundation.org>
+In-Reply-To: <20250910160833.3464-1-ryncsn@gmail.com>
+References: <20250910160833.3464-1-ryncsn@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 5E7A4120003
+X-Stat-Signature: hcki58kpz4e9zpor1ak7ubm845sz9n4r
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 23045180004
-X-Stat-Signature: 4991zhmkc9dypqc6ekwn1kinzcr978mr
-X-HE-Tag: 1757543596-686894
-X-HE-Meta: U2FsdGVkX19B4JJmMItJgAZDOdszExTBlk26wb319xfBJXh3GDk3GQn5T0l/NfxfBtWks1Rd0tNaOl1X+DUVQkdDoN7N9mpJ6oSYylRFs8UPQptK1Ug5ZWcgV01uw34EweF+3D6ZbCdmSxScRT22d2z+de0xnepKAxRjL32C2yhrMwsKFWCztOoX0ODfUZxMhE728m0aCt1DHLlnwz7Z+1o6auMPnimUqGdGaA2J4BTSVyguBbBSS+TQ5DZ+QK/KAiWd/EW49SHWS8zbyqm5vYzpDKyGJ6ZL4r8MuTO5JtePahFurOVPSATJ23p+25lUKmpHAm3/ek2CX0MEKuKL9tsKt6bKljwn2/CLGhGdknFEZfACOzAxKGP9LnLSu9Qdh+aM22IAcjjAGxc8SQkXC5jiV/DEoQWooIw1BuTSsbjMrxBLBSjwe2XFXpCUfA+Pp3mpgxQBNXo+12oAw7gwkTvyNiYo+urPRjQiGBw+F8N/EoallSNB6zBtxEy0lRzGZY+p3thMFubEzgT7W5/EVZFvUSUABIUppPjH1/qGilLJPMCYXUrLn9N60/h1/Oe3hwUTktBril+APo921tEzyRZg92dfRLOCEmii5KTl2DTrqvUEs+gdmGZZmyOYPs2yjTnjYQ0e6VRdSaTBUDMdWCnN4OHwwJfOanQGW7+tEyOgrkNvzRe31vBMhFEH3HQvGLhcZRNTvXD08/OtiVuixLCvixhiIgeVXadSf4EZ+6UOSwlj5TJ7tqFi9SvPeBkeu6X7vDva/pzAG2NxcXs7jS0vR7vY3YsS5v2ktZnwvzUXmdrJqYFoPn4zADYuVuuQzKgBUy5tYnFfRXao80+GRQfajSNv8Nk++ChJ7IGsp3aGiLhNjOTkOlfkJ2G3FJ8iamu0R2MjPp6AL8U7+N24+8X+ycmcK38gGR9f9SqUMz8ngaIqQoijwKEnW05OwQ3El/rteyjXc+6xCPtRntL
- SdW5h9yv
- DiONtWGC6NKOAxpWXyWx8/ahQXVxuiprjidXcqEptdbqQRMaeop+Mg2t7gMCFRQxLA/msBinEs46URrY1gEXh4MNdkFpEuqnyi6r2qz3rvZTkLaeYspkk8cAXO8+uECtxhc37wth5tG2+boAJeLKFr3DKbekhgmPt61kta83NqtPcm2EptvS+PPY8ofKyY3ojOT5J1ynnbjHF3R+QTzn3BAKhq7TR3ZpYT/UAijwgxrbBJhnbI+U6yi5yWhSU7AxBMS4MAxvh2LKaEaN8HPoFOPKadA==
+X-HE-Tag: 1757544061-394999
+X-HE-Meta: U2FsdGVkX18EkjBCsl72rXCQgOd8cIyG4FaqyCXcU60NDo599E6Zr9y9IbT1YxeK3/U1H38ia8s9k3MfS2tFDV4B3WmQkTG7Y/10OnqZ3UULymlk0SgWdxEQGCHO9D3nFeZhjva5OJC5bAHXqRz5cTnYCkBu1dG/PykXON3H/gaOHOF9+kv5XPbBhHHx9OLZSIX9jApG5B7yUSD1E069eBpS9dfHNA/DhQis4sRXsXcFGLbiUCJBkmcli/s6ybnWMSdXganKfWeRgaS0q1+hHezC/oqRrhx3w/7xYkQBw/PO/T86xJm8PHT7+h/MEMfmC5xU600R4ffJdj8Xj0D7qpApH9uGMLZiCINBePV8NGansn46iMDu0XOB8Y95scv9uzgP2hWWW4BSh4UqCifx6AA6L79+nOZCr0qib+MG9eorGHCk6C/xDLUEU/SqtSO93am+I6Wdc9vmthSz64uUlK8lFBbc0AcLAxUJ1wNIXnXbgYexfDapsnPqYuj7JAo8XHzx0uh2qxDzuNvbhtZbansNqyZCfiB+O4qbm3eOl3n6xpKD/bjPvIJ8zZxK0Vsn/QlpEYewFq/p+VkCbwHNMwlbfHqew0mGYFB+3BTNJalV4oK/FR6QHwM+gj6XR8A0b1yTfLE4At/eHigcQN2uI8jbxiW10p0QLdRgyPeh5HXx6MLJasAqIc7tGXMRMhWSDHan0BbmFl/3vAuSV9PqA3VITavPpkYnrp14IFP8UsGu5YW5Y5bPmfjYRG1uQzd7eNPu6pEA4nOQmE6QjIf5S55ImcF4qW3kJdNKE7Klasx8oadzRUyjSKLmumhrQOY7C3xxeS2u6C1ZgCF0cdQ2Qp6rY3FxFIbkbmK2J0u4CVbFxU7LSOAxFIenvlJ1Va8Q/EHQeQwF5Cal9fzfr2BEVRA64Bv/luVMG7+JjhR+pIwD0bxbnB8+zjBnREJBwCYYuGQnvAa+ldMx4Lgzbg4
+ d/JU/aNc
+ c/czjyl2K4PC7P/1UBMDm4/6KBvCwA7gpELnZWQ/fZ3whUhk8iPmB3yFjtt064G49oe6wndN8k56GG2d9sM30/j+wYWS//gqu6lxO8CedrVVVUrSISnwbE45rN3Mq0rT2QvDAyzl1qFfa4qsgKqt67km770pATACDGn+aUcPvg8f9p/H8BBqmorvyxEHw+lXpC69LlbJgqXst9Nc5X81aaFy6wpB6h9xkl07XYtsIut6dbkUvwMDCqpl1YC3WxFzrjYacD5KlVDZ7wjmVahtF4j5Rzw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,92 +98,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 10, 2025 at 03:10:29PM -0700, T.J. Mercier wrote:
-> On Wed, Sep 10, 2025 at 1:41 PM Suren Baghdasaryan <surenb@google.com> wrote:
-> >
-> > On Wed, Sep 10, 2025 at 1:10 PM Shakeel Butt <shakeel.butt@linux.dev> wrote:
-> > >
-> > > On Tue, Sep 09, 2025 at 12:48:02PM -0700, Suren Baghdasaryan wrote:
-> > > > On Tue, Sep 9, 2025 at 12:21 PM Shakeel Butt <shakeel.butt@linux.dev> wrote:
-> > > > >
-> > > > > On Tue, Sep 09, 2025 at 02:53:39PM +0800, Lei Liu wrote:
-> > > > > > 1. Problem Scenario
-> > > > > > On systems with ZRAM and swap enabled, simultaneous process exits create
-> > > > > > contention. The primary bottleneck occurs during swap entry release
-> > > > > > operations, causing exiting processes to monopolize CPU resources. This
-> > > > > > leads to scheduling delays for high-priority processes.
-> > > > > >
-> > > > > > 2. Android Use Case
-> > > > > > During camera launch, LMKD terminates background processes to free memory.
-> > > > >
-> > > > > How does LMKD trigger the kills? SIGKILL or cgroup.kill?
-> > > >
-> > > > SIGKILL
-> > > >
-> > > > >
-> > > > > > Exiting processes compete for CPU cycles, delaying the camera preview
-> > > > > > thread and causing visible stuttering - directly impacting user
-> > > > > > experience.
-> > > > >
-> > > > > Since the exit/kill is due to low memory situation, punting the memory
-> > > > > freeing to a low priority async mechanism will help in improving user
-> > > > > experience. Most probably the application (camera preview here) will get
-> > > > > into global reclaim and will compete for CPU with the async memory
-> > > > > freeing.
-> > > > >
-> > > > > What we really need is faster memory freeing and we should explore all
-> > > > > possible ways. As others suggested fix/improve the bottleneck in the
-> > > > > memory freeing path. In addition I think we should explore parallelizing
-> > > > > this as well.
-> > > > >
-> > > > > On Android, I suppose most of the memory is associated with single or
-> > > > > small set of processes and parallelizing memory freeing would be
-> > > > > challenging. BTW is LMKD using process_mrelease() to release the killed
-> > > > > process memory?
-> > > >
-> > > > Yes, LMKD has a reaper thread which wakes up and calls
-> > > > process_mrelease() after the main LMKD thread issued SIGKILL.
-> > > >
-> > >
-> > > Thanks Suren. I remember Android is planning to use Apps in cgroup. Is
-> > > that still the plan? I am actually looking into cgroup.kill, beside
-> > > sending SIGKILL, putting the processes of the target cgroup in the oom
-> > > reaper list. In addition, making oom reaper able to reap processes in
-> > > parallel. I am hoping that functionality to be useful to Android as
-> > > well.
-> >
-> > Yes, cgroups v2 with per-app hierarchy is already enabled on Android
-> > as of about a year or so ago. The first usecase was the freezer. TJ
-> > (CC'ing him here) also changed how ActivityManager Service (AMS) kills
-> > process groups to use cgroup.kill (think when you force-stop an app
-> > that's what will happen). LMKD has not been changed to use cgroup.kill
-> > but that might be worth doing now. TJ, WDYT?
-> 
-> Sounds like it's worth trying here [1].
-> 
-> One potential downside of cgroup.kill is that it requires taking the
-> cgroup_mutex, which is one of our most heavily contended locks.
+On Thu, 11 Sep 2025 00:08:18 +0800 Kairui Song <ryncsn@gmail.com> wrote:
 
-Oh let me look into that and see if we can remove cgroup_mutex from that
-interface.
+> V3 changes:
+> There is basically no code change, mostly clean up and comment changes.
+> - Renames a few variable and functions [ David Hildenbrand, Chris Li ]
+> - Move the folio_matches_swap_entry check under unuse_pte in patch 5
+>   [ David Hildenbrand ].
+> - Remove two redundant function params for the folio replace helper in
+>   patch 10, and add comment about folio setup [ David Hildenbrand ].
+> - Move the shmem clean up patch after the API rename patch to fix build
+>   error, no code change. [ Baolin Wang ]
+> - Fix build error with !SWAP and !SHMEM config. [ Klara Modin, SeongJae Park ]
+> - Fix a few typo and blank lines [ David Hildenbrand ]
+> - Minor code style change [ Chris Li ].
+> - Fix documentation warning from bot. [ Chris Li ]
 
-> 
-> We already have logic that waits for exits in libprocessgroup's
-> KillProcessGroup [2], but I don't think LMKD needs or wants that from
-> its main thread. I think we'll still want process_mrelease [3] from
-> LMKD's reaper thread.
+Thanks, I updated mm-unstable to this v3 series.
 
-I imagine once kernel oom reaper can work on killed processes
-transparently, it would be much easier to let it do the job instead of
-manual process_mrelease() on all the processes in a cgroup.
 
-> 
-> [1] https://cs.android.com/android/platform/superproject/main/+/main:system/memory/lmkd/reaper.cpp;drc=88ca1a4963004011669da415bc421b846936071f;l=233
-> [2] https://cs.android.com/android/platform/superproject/main/+/main:system/core/libprocessgroup/processgroup.cpp;drc=61197364367c9e404c7da6900658f1b16c42d0da;l=537
-> [3] https://cs.android.com/android/platform/superproject/main/+/main:system/memory/lmkd/reaper.cpp;drc=88ca1a4963004011669da415bc421b846936071f;l=123
-> 
-> Shakeel could we not also invoke the oom reaper's help for regular
-> kill(SIGKILL)s?
-
-I don't see why this can not be done. I will take a look.
 
