@@ -4,86 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97453CAC582
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 01:23:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33841CAC582
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 01:29:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EE25D8E000B; Tue,  9 Sep 2025 21:23:34 -0400 (EDT)
+	id 79D0D8E000D; Tue,  9 Sep 2025 21:29:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EBA0B8E0002; Tue,  9 Sep 2025 21:23:34 -0400 (EDT)
+	id 74CEA8E0002; Tue,  9 Sep 2025 21:29:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DCFF08E000B; Tue,  9 Sep 2025 21:23:34 -0400 (EDT)
+	id 662358E000D; Tue,  9 Sep 2025 21:29:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id CBB8E8E0002
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 21:23:34 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 76A50C0618
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 01:23:34 +0000 (UTC)
-X-FDA: 83871593148.08.74E8AEA
-Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 7AB6120005
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 01:23:31 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=k2L9SdHw;
-	spf=pass (imf03.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	by kanga.kvack.org (Postfix) with ESMTP id 55BD28E0002
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 21:29:12 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 09DE25AF37
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 01:29:12 +0000 (UTC)
+X-FDA: 83871607344.05.5AB1588
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 1A73AC0004
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 01:29:08 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=BGYkEiU9;
+	spf=pass (imf28.hostedemail.com: domain of lkp@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757467412;
+	s=arc-20220608; t=1757467750;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ETfF3nXwktUoBLCMUHpmxOuNXOkjj20h9ToOxP0Cp2M=;
-	b=VLJUoME9NHH9b44ifxNrmfbZePC6splesgdk3kq2OkPxGQV32Vg4Epq/nieIbWuG9Mu61M
-	2vbUuHVnzcBBXn5100g3PLWYczJ2YiUPXl0voulAe9sg0h8mMvLuoima2y4R8VfXU8KL5o
-	hrpHTOgBexbVg1Cr0+WHbcv4DgduTTY=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ARkTrb8vyNgh7YfzKqGvmW7mJhC0hlibzasTFwHJPWA=;
+	b=i8I5nBBP75G247V2M92zbTqFj8IfF16J1V9baWCa+Ty/N7f3eNlptC4loPNtYdhfMGUy1h
+	iTWb8GwuZVl8cvdreStPCHKKiUTfBoT6oTuMmbjPzPyRiHfdnSgo/S0alrhEH88w4sBioP
+	qLM/jrs5aWl/cCxAo1rvxEvWtoBXlfI=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=k2L9SdHw;
-	spf=pass (imf03.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757467412; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=BGYkEiU9;
+	spf=pass (imf28.hostedemail.com: domain of lkp@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757467750; a=rsa-sha256;
 	cv=none;
-	b=61W0zPIhGKSxOlW8Te4vYUXP33AlQ8pObkMNFXVes0ekTx03dEHVOc8JGpZjHJDhS23aIt
-	sSx+1CKq1uJN+0fdFuoQ/Cpu8sK4TyPJcBnT1/IjFhFxcajgVNCE6bzr8iz9dPPHSjo9ol
-	8hWAfpZriNpryBFE3GLF+TiMKyxrv78=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1757467408; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=ETfF3nXwktUoBLCMUHpmxOuNXOkjj20h9ToOxP0Cp2M=;
-	b=k2L9SdHw0IMN0jFH1fPs+cOZ7Yp7gnRrQscdBOBc9Nie5GbkL9bAf33JTVATsWv1T++9lfYzne3PzDx1uopkb/2Wt0TwHmKUuw1vSUdkjEcTMeOiR8M1VT7GgqA+Ldsrx3dXCv6QDITyzDZYgNj3qJcX7y+BmRXYx7wqL/BMStM=
-Received: from 30.74.144.128(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wng1uuh_1757467404 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 10 Sep 2025 09:23:24 +0800
-Message-ID: <b9f26954-fea6-44f8-b71a-44e5b4b070e9@linux.alibaba.com>
-Date: Wed, 10 Sep 2025 09:23:23 +0800
+	b=RuF+xIAICGLjlNfv+zjgE8y8hJwWvf4MncgwFxFKt5voejwlwOPWWOOU9c9itEAE/IXNVF
+	+XJrIDgtM02Xn65jwVRlqwD7pzk8nQXZk9FR6RZq5FNFSlvujTpJWdQR+OJM8fsEMdmqQ3
+	+dCj1Ldl2fusBqU2ub3oXzf8oWxDWQw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1757467750; x=1789003750;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=ywE05WToLpUHQO2zkUpWziW2sv/68Hr8hMuL+DQ7vP0=;
+  b=BGYkEiU9isbxkfGWlrBGW6Jeye3q1YujyvV9jbLIOiszfGn/74uUd4VZ
+   tX/L5cv6p/ctEY8oHd4zzCBEbxM3tK8ycRTveMOb2pWLX/hKfbfQh/bwt
+   gFoRojNMOeAfUW0l869nCE1oNUWiGDFImAXXrDbDHo9rJtTBLx/7Ylf2d
+   wPPs72xtPik6sXsZhzHaxdkHQSsxVPHKxNI8qALsxlJzmpdcpUkeKcf4O
+   EjwbLfuTfGJGC688qo4Pleb6z9tYdDQMo/cJGCd/1D+rpic9j8HJ1oUa6
+   arh0USNL9ZU1hcFExQH26mYv7Ez7i2XIY9Z1tL+fJwR1OS1gq89028Wty
+   Q==;
+X-CSE-ConnectionGUID: NAbp5qiHSc21CKE4vbJNXA==
+X-CSE-MsgGUID: +sMLfHEFS/CPPLNFhlzXuQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="59831766"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="59831766"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2025 18:29:08 -0700
+X-CSE-ConnectionGUID: 9dzJTkRvSg6YR09gz7/TPw==
+X-CSE-MsgGUID: xqLUD1v0S42/t1HsCl+Xrw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,252,1751266800"; 
+   d="scan'208";a="173156662"
+Received: from lkp-server01.sh.intel.com (HELO 114d98da2b6c) ([10.239.97.150])
+  by fmviesa006.fm.intel.com with ESMTP; 09 Sep 2025 18:29:06 -0700
+Received: from kbuild by 114d98da2b6c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uw9dv-0005Pr-2E;
+	Wed, 10 Sep 2025 01:29:03 +0000
+Date: Wed, 10 Sep 2025 09:28:50 +0800
+From: kernel test robot <lkp@intel.com>
+To: Kairui Song <kasong@tencent.com>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Chris Li <chrisl@kernel.org>
+Subject: [akpm-mm:mm-new 359/411] mm/swap.h:455:24: error: implicit
+ declaration of function 'swp_offset'; did you mean 'bh_offset'?
+Message-ID: <202509100956.7q0VPOo2-lkp@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: remove PROT_EXEC req from file-collapse
- tests
-To: Zach O'Keefe <zokeefe@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250909190534.512801-1-zokeefe@google.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20250909190534.512801-1-zokeefe@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: tckxaxta1wkpzxjgfhruu3pa79pji8m5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Queue-Id: 1A73AC0004
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7AB6120005
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1757467411-754330
-X-HE-Meta: U2FsdGVkX19bRdog7gHyaNKS0/GlGrl3lq83j5gm30Yl1js5ERT0MkJbvfHaFD6NQKVA9U/CLTs6lL0OAbR8zX4HXRLYSr/oI+Vc4DCdqJX+gUoQbjZm51mHLRWCxlcOIdllA26FZ047BskpLWnP4kmR3XO2v6OTPim53Bt+AzvIdHH0My985ObP1ZQ/Fgp7R6a7UwwVUOtl7MpEK+PQSP9HChuHCMt00JvWNP7imHiXXs4pyN21jL3J1GMsqznSaLn7gi9KSkO/+ikeEavqQ9EqP4xUiAm+49ZIdMIpMCrjxUQXXRS17d6m8Nza4MCTz1zTGli+AamN4r2Ie7D/BpJC+FgV7iYVwKdpa/8sdjHF5O6xlFTbRk1kFmCVhWBc/GgLWHDB0xMkuTOVP1zXOO0nzhqmzP02FCrlHqQHpKCcnASfZvbuNYCg8r0Cq5S1fk/E0zdPcuPX8XTN6TM2OKe13Deds1zoi2vGUcBhn5Y4TPLYQkANwOnY0qBzjBwl5WKVb6Oe92CSIptQVtogc21fW22HAA0nFbKioNyJdMJTGuhaoFmbKSvAxscnVKY3BwDuuh4K5OPNVOkds9tSl+/pNlmjEHVFAOWm4l/0ocTT4A/Qye/VDJGHUpeVdxVtwNt8PnZWdvZyatbfBpl2+8axgp1xjbwUa83UYGhbYAl+tFS9Qc+39AhKwOEOgeEGno3p9nw1uFVzqf3svghejDrEPIdE7mCZ6bWP72QxVMmca9+gtqNUSTPKyt2ywGtmqkb9TkWyxfp/fxVhkplj9PweRKZM0hHYtCRqL4+CaHcTtCbPdik3RNTZG7ZfkYvr5qHXYVbKc7d+yd3Prfst4vAhNYqClthOmmG0KIZX4OhSCQ4prH6PybC35k2ctHAVZEU0BbFGF5Xqs9HZWf65r2ExlAxXSHEde0F1dFJQATwHDHFD1fzuleNiBbknKMriHqxq9+giUdsVTt5SGCo
- Y3lHf11v
- UjbJTqQ4uKGxW53IoYhOOdAJwFuHzn4Lqrf0jhJap9aDrNJ4LApRx8RwAjir6BO0YMe4RQeVIZBHJPRtmbL0lDM4oxWVRdsOlu9bxuJZ70WQzI30lUYvtNE73pgCLJU+gvE6tpUTfX91qdiTIo/PmLwB1Xbop8nEPzd7GI04mWTnJjn4Qb6u/FLPoZAD7PUUj0tG7GoAhkqAeRlto40dpbx+f3F9FKNyw5yrvmRpHSYL7yeY4b+IIqT3aF1VOSBjQPzw5Hxs1wKK0N+q/PtydNMPzb5M50F4NVGMBSZO0iylqvw3t3ccCWUwcluwlsmWWB1Kv4DRigZg3IVkSDf5Mzi1ML/G57YQZQNuoO1DO2J/4pVORU53IWQufvw==
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 8cuiz1xgxeyzqngkdb8krde7wrs5rauy
+X-HE-Tag: 1757467748-167904
+X-HE-Meta: U2FsdGVkX19/ooMvs+SnEi2Ml0+/Qcn4yi7vwb/tDtHCnZZcBPLuWftIBXbr4M1t8Z1MZYm56n9YLRhdI6cwWVgSPw8uhCjrZ/ZsRmMtBjxgFumaDCqRAZDnx8/5Wva0ECXWuLLhObIUyD6X3qNgiik4zDGm1vd6JOcgrDpcDdPyGPnb2DLLqPzvFPnPlZsN1GjmRoKtpwr5UJFeZFWgYsfGNfJTs0HeIdgriteyZOqBBgX8HLJyF7eMgkOiCjPwKzL+YwYdnjGNdk3amgQteWJhxfdGSMyCE8ZH1lUWz7AoU1lNwGcEMQYhRr7yT5LZv6KG33RopSoFKno0Ub+gqIt8OcWMD4UE9pLt3Ks968QjuxES+rhDY7DB7Ec9mYRj/dZCt84zIOBaIFpdLi5tY5cTdiwyCozWLsHi7k0tnkLHV+3FDMGYWpkrgEcaRBLw3f5p2yvJ0RU+jdGRQfog4K3F9RDpIxVo5WEfeF7aG0rh5Uj+jCHKWXkCkffP2dHGIYyEJDfUqIIHdeUrLhtCmYl2YRzSgIFY1o1bVluDutIHMAs2zBsTr1VBE6zXOSAcgIHpa+rUKdkIHMuM6AgC7KVlZzqKpG77qUJCrnNGCnBxNFGyGDmlIKjy8q5vHQeL1xIpRQwm2ZXrWQyfl6xmTnfvotYQUanPT/DjnWOJEfwUl8vQxYJf8SkKgP9Mqz0kgUfV0s2HHfSWQFi62DFdscfl6+goj+wsEVI0LzNziyFHuk2Qihf3ll+kwWqAgPDrfw042+drA9n/Ts13Atodeiv+QoNmkt3XReMfeng3Qiz5rCw/YQ2sk47wFWLTkzdQtaJmfVYjsjT1PmJS5xjc/YujugW8ibaUcxoTe0NX7gDSSwOoBqFTAahRqIocVHZSK19MCGJVMAgxDoTUwDTutIJgi5ce9dJwPwoMlOQLS0Ow4MjNENUvA17Rtm0EpGBsjeMV2H96VRFJHqavAGF
+ x8nD8Zqk
+ WF4ARTPmE+ut+KmIFYgZ91PpHukV1XI71qWAYRlrC6mI4cM6+0sNH7KG5xpulD2rsQdYroH6MzyQQODB0LNXTR7zEuad5af7AXEbi6PhCsN/2Ag2OQs79JITPKxOkMw/llQGS9jULxZ5q/R6PGrW3pYod4uuki+ntopwGtlPP7ZEy5cfvQp8nVLMkwVt3co1LZn1QOAfcz+00tNzaqUDBgTvchxu1dIjJkSTz843ezMolT98hhaVy0375pRHf0KfeccVTWaT51/pRxWLEjxhBpnMlvPfLdnNgb2hdTyeYhoimOCQNFMcv+w4IF3LiaepdgjS8SGjNpERatp4w80hwy2YsUvG/Mzlvl++atq0o1c33AvC/T+u7aPDhRcSfgQaLw4RBFZMzqCbf/Ce08qttLXWfW43wXYY0GWrc
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,37 +106,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+head:   f4e8f46973fe0c0f579944a37e96ba9efbe00cca
+commit: aabe1e0289084317ef7603c14132758fad3a975e [359/411] mm, swap: use the swap table for the swap cache and switch API
+config: m68k-allnoconfig (https://download.01.org/0day-ci/archive/20250910/202509100956.7q0VPOo2-lkp@intel.com/config)
+compiler: m68k-linux-gcc (GCC) 15.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250910/202509100956.7q0VPOo2-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202509100956.7q0VPOo2-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   In file included from mm/filemap.c:65:
+   mm/swap.h: In function 'folio_index':
+>> mm/swap.h:455:24: error: implicit declaration of function 'swp_offset'; did you mean 'bh_offset'? [-Wimplicit-function-declaration]
+     455 |                 return swp_offset(folio->swap);
+         |                        ^~~~~~~~~~
+         |                        bh_offset
 
 
-On 2025/9/10 03:05, Zach O'Keefe wrote:
-> As of v6.8 commit 7fbb5e188248 ("mm: remove VM_EXEC requirement for THP eligibility")
-> thp collapse no longer requires file-backed mappings be created with
-> PROT_EXEC.
-> 
-> Remove the overly-strict dependency from thp collapse tests so we test
-> the least-strict requirement for success.
-> 
-> Signed-off-by: Zach O'Keefe <zokeefe@google.com>
-> ---
+vim +455 mm/swap.h
 
-LGTM.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+   440	
+   441	/**
+   442	 * folio_index - File index of a folio.
+   443	 * @folio: The folio.
+   444	 *
+   445	 * For a folio which is either in the page cache or the swap cache,
+   446	 * return its index within the address_space it belongs to.  If you know
+   447	 * the folio is definitely in the page cache, you can look at the folio's
+   448	 * index directly.
+   449	 *
+   450	 * Return: The index (offset in units of pages) of a folio in its file.
+   451	 */
+   452	static inline pgoff_t folio_index(struct folio *folio)
+   453	{
+   454		if (unlikely(folio_test_swapcache(folio)))
+ > 455			return swp_offset(folio->swap);
+   456		return folio->index;
+   457	}
+   458	
 
->   tools/testing/selftests/mm/khugepaged.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
-> index a18c50d51141..3fe7ef04ac62 100644
-> --- a/tools/testing/selftests/mm/khugepaged.c
-> +++ b/tools/testing/selftests/mm/khugepaged.c
-> @@ -394,7 +394,7 @@ static void *file_setup_area(int nr_hpages)
->   		perror("open()");
->   		exit(EXIT_FAILURE);
->   	}
-> -	p = mmap(BASE_ADDR, size, PROT_READ | PROT_EXEC,
-> +	p = mmap(BASE_ADDR, size, PROT_READ,
->   		 MAP_PRIVATE, finfo.fd, 0);
->   	if (p == MAP_FAILED || p != BASE_ADDR) {
->   		perror("mmap()");
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
