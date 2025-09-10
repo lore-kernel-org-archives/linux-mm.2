@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 775ECCAC58E
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 02:44:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93A88CAC587
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 02:44:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1DB458E000C; Tue,  9 Sep 2025 22:44:02 -0400 (EDT)
+	id C878E8E000D; Tue,  9 Sep 2025 22:44:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 16C5F8E0002; Tue,  9 Sep 2025 22:44:02 -0400 (EDT)
+	id BCBF38E0002; Tue,  9 Sep 2025 22:44:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EFA378E000C; Tue,  9 Sep 2025 22:44:01 -0400 (EDT)
+	id 9F25E8E000D; Tue,  9 Sep 2025 22:44:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DC62D8E0002
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 22:44:01 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8B51F86E14
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 8553F8E0002
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 22:44:03 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4F69C1603A9
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 02:44:03 +0000 (UTC)
+X-FDA: 83871795966.18.B50D714
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 432CC40003
 	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 02:44:01 +0000 (UTC)
-X-FDA: 83871795882.16.566F4AF
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 886651C0007
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 02:43:59 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=id7PNoeU;
-	spf=pass (imf18.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.210.169 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com;
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=PGZa5P03;
+	spf=pass (imf01.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757472239;
+	s=arc-20220608; t=1757472241;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NJdcHxX57XebbZj4zrMMfWynAEuJyyuoNM4CHXO3dik=;
-	b=LhWgPhNnGCa8B48v8YaGZuEQ4xiNd0fX5y0PCuoolz0v6K/GymDovh5m8TiuPPP4p0c8Zz
-	QhGT4y+jgcETVDJdhomDEy/CY8Z7bOAeQNYCAeJ66SS+LoXeG6SUy8heSxsBBiZ+a+p0sY
-	CMCctKB58t6qx8v4CpICgmLEjRrGMZg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757472239; a=rsa-sha256;
-	cv=none;
-	b=YacpOtSoaQDZEFaSsoUs4vPpDoNBxWZ96oXGmbyiefdt+umMJY4c663TA8aMcDuUeN9DKv
-	sa7SlqUBH3x/RA7LcRuTXO1HT4KNMG3tWTCO8UKiPqoivcbORUSKARd+abf3jcZp3/JODA
-	laXMdXD4cuekKk8sHC6Q4MATcmATUnQ=
+	bh=exY9byyl4etH+4IQEKnm6qXO5lYPceGxvCuurSN7fh0=;
+	b=ZhLIa/CKD4XAcxllPTJEILE6rHoAjL/Tn+/+ZxjdtoX4/sFptRbjyp242pS340OTkowTSB
+	NFhXm/q7YQRG6hYatjtn7F7PERlblVt3oO2MXjV4oK5o1peLN3zzmK+a/NVWh+vzqo++5w
+	+SMDDhFSrKHvvHwOEGjciXituotIBTQ=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=id7PNoeU;
-	spf=pass (imf18.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.210.169 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com;
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=PGZa5P03;
+	spf=pass (imf01.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-7725147ec88so102557b3a.0
-        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 19:43:59 -0700 (PDT)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757472241; a=rsa-sha256;
+	cv=none;
+	b=SnRxDWYwfefPKhXGNiUsFQW7+5OTXzff+sW5BBFJNYGzWR08wCiM91D1dSZuIcA2U8MNns
+	xlTZnfv68zbRIrUhGQI4KfmW1uw28+9xCQykJ/7hVU3rF0Cb91IaZIsuQjvRZu13obTCdQ
+	g+krH9RQ0d5sB0AMWpXiQPOFqWGr0hs=
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-76e4fc419a9so5200832b3a.0
+        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 19:44:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757472238; x=1758077038; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1757472240; x=1758077040; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=NJdcHxX57XebbZj4zrMMfWynAEuJyyuoNM4CHXO3dik=;
-        b=id7PNoeUt2q+KBjKHoxAJYvecFUwyJKsI8525qwcD1PAFAvGfjGVkKDU7WkX87KDQI
-         ysN/uJI6Hezb+toLdGE3C5HvavXf8EWxTupXyJhThaqLPoS1ORZMwjimZYae03LUhR+q
-         XOvNcQgz8J81BYHD21Z7vwv5gEvgLwPJVFqpsFuvl0GpdF+vmRgh70vvm4jTfZIFc52I
-         f9CvNe/NLxQa1nTYo1rACIxUZL1jZEt5psZcr+PdHRzlclPMHGO8YE/k0iJe1+pm497X
-         AYO7Qu7mNdi35xTp35nVF/pY5LVUD+A8UUc/nV8YRI/i5tl6Pd2bCSJf3mRK000Xzjh7
-         LgDw==
+        bh=exY9byyl4etH+4IQEKnm6qXO5lYPceGxvCuurSN7fh0=;
+        b=PGZa5P03HpgQ+GBv9U4vKuBsKh2CQgJgc6QcI0ZHAq2fvTKgKTaIW5l+VxexlNgucg
+         9HGsYBWmFXHrqw+vMTq7Hp/KJnG8Rmk+C7leJiQI+zBx2gzibjl1eMtIuBzBbWKVyxre
+         BfGuLbLhQnin7gfIH5r8SMpNlSNL5M9GjWAvrP97ZmTmswk/Jt57LSE5N4jOPy6mXGKx
+         huyySKuU+RXMA8yMeIz6UOzOFX8+CjxKYydHMgjrzhMJgF5ZYKIOD03DMTonpaN3Ut8A
+         I2WKSx8A0pLxN7GQtBrFGMDHBgXuo4uau2bBkaOwVVkzoVVVo1EN+o2JGp6hQbmTbvHu
+         efCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757472238; x=1758077038;
+        d=1e100.net; s=20230601; t=1757472240; x=1758077040;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=NJdcHxX57XebbZj4zrMMfWynAEuJyyuoNM4CHXO3dik=;
-        b=CtPPGdZh49H7cizhe94mXTAzWZVUAkiGdYuYzz9Vpl5S1ze8+8mfd0bWnGDsOsegmE
-         6usO27B8vJDfMmqEyeFrZMTmQGDmckorp1Z22z8m/98CNudDu/5Jq5RMuNhP/bX6Kf5U
-         qNKE/ypxXlf+fFnKd9zCyJVFZWW0xE4RxgbbwzTyNWjl6tED3nwED4u/anoDrFVLWEGD
-         5iC3KBedNevC6PoLC7lUip7WQY8AtO4ooUWtXVx+SXqWVBXBxHFs1iAP/BbnILx3zpXs
-         iUgvo6dQqrqC59HZL2QkhMk9uxMgChcUwhlF/g+csxaC4xgkJiqhae77+pl7FLJYugGC
-         QQ6g==
-X-Forwarded-Encrypted: i=1; AJvYcCW5qUO/4HuqV3Hu8sZ7mDsQ5T7Q4vW05iyiNAnK4zLtaPjRTpmNOXHjtN4fZ+bdhacLBvvLexqi7A==@kvack.org
-X-Gm-Message-State: AOJu0YxZvwMXttPfNGm/gwrXFLsLfqeRgmtXK6yFneeFSDCrGH2bx8tk
-	pNvHeFToaEh9aIINVNz+af0d+ne5QlyhWmr1Z/1muf6yUlFCdPHzLKb/
-X-Gm-Gg: ASbGncvUkl/WaxltbsD1oR07NyiNBV2xdjMLSpo6SOLPkaDUG/KV1VdKxj7AOg2AKtO
-	ujzaZfyN2w5Rw/HG4wb7VhHYQKOyFwSO0xCeO1HIWpBNi/jKjvEy4Oh8qvyh48E6Dr2OOwohZ9E
-	Pz4VfCTtSi8aCqcIpJLB5eQZgcyptTX4qclLX0/vviA8Lha0s7D1IogP9QIHoT3i4NcyIYs7Yed
-	irZ8+78lp0uKW/6TJpUN5USMRCfpvyHUglRGzUL1kEi2SrnMlH1MTk8BLlLPoYRS63n44TguPWE
-	Rei7M3Ph35n6/JtT39joHXjcxS7LP9pa4sTrXZp0Uux3f5pNCYf7YWiipmLxa/QAnghq0cgizPl
-	CP0AIi7XbLsBLHkZ3oMgPdu3F5tmFufAZZ0hF
-X-Google-Smtp-Source: AGHT+IHlW2FYAtqZ1nBeuiJ0erIdKTHM8TZOiaskQC50mFORCZ7qHar4U4e6n8dIjJOSKpsMSsisCg==
-X-Received: by 2002:a05:6a00:945a:b0:770:4f37:bffb with SMTP id d2e1a72fcca58-7741bebe705mr21095803b3a.3.1757472238265;
-        Tue, 09 Sep 2025 19:43:58 -0700 (PDT)
+        bh=exY9byyl4etH+4IQEKnm6qXO5lYPceGxvCuurSN7fh0=;
+        b=Oud1odkUz5Lj13s4KUGxv0zfwBIfViFu+VyBqXF6FZqVagmhad8/AMddHMcPeDJXd2
+         nsLw4w8ECi8Kgnw7tNqTz9tpJQ437pJcYiPk+eXKc7bJMTIbrQvfFKn3/gmA+mOweAjD
+         Hh5NYpV/wAFp3kVk/hHNXEu+sO1XeKQ3AP2LRR097FZZ/S8jyhDS1nUTULbcDJwfRxmK
+         2vjrkcB1bJJ/6CsjGLvRHUZXoUOg/z4W/8enXPAu00hwdrjfGt4QTormzcpsF+fyXV/k
+         WhJae6NknAXcF4S0jRMsl+3ty7YuOrTQx9Zy8pLP/rXwfY76yFg8aFDJZosTuClQHU66
+         ZavQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWc5/yewtT+t+O+rIGIpBxet09HKLGXabKMyZ0jGMAqIPWrdB4HHXvRl5oYVmCrPyqS6mc9sr4VEQ==@kvack.org
+X-Gm-Message-State: AOJu0YyMoFay+RsKA0w+Cle3JVjmvIPL9Mu6YNN95LeE/XfHZWJ2IjPf
+	Ent2QW3UNznnql0n0z0eM/h9L9mgQcV62wjRArighoaTaETZeJ247JABc59QuxDM01c=
+X-Gm-Gg: ASbGncudG0buKnLT02NsSYtzfSZbE9DikUa29+0Z3tGfKa4Hc6Sy18WdfrniIIJiHBe
+	5jvO2jN/ZkykPZGf3Db2qgRkMhPDdaQeDq9mKuhrNHrQandmyBxAR3zKmH5yVydcak1PiAsVOMF
+	scUDNKEt+JiUvkupxv3Azwu3XAy4IrESeXEshb5eWXN2WbF7QxPn1l8v7Ol893uDoYh5Csxl1Id
+	ut3TO2busodDIIUtz6FgZQtsEZQVujwKwDXoQ6wSNGLeIgTyasoQ9rh3Ow4qsubl+wAG/yQJbPH
+	azJh8/2xk6JKsJYYjEy4sInQYW+VU8y578ubxl+q1KDVNgbMqQvD4jCbgGsE6k11zDB3EXgUeq9
+	AgPCP7DCiXtR4obTfal/lTKEDGBldz5kWVgLGBu6Gr/O1Ujc=
+X-Google-Smtp-Source: AGHT+IF4N06fuW1A2YnqT9YeYfBmdnDVAaiP1zDRDWLaUsyjpra5p/f/1OQFfNYpt7LKVATNwvRwQw==
+X-Received: by 2002:a05:6a21:33a6:b0:252:fbd4:630c with SMTP id adf61e73a8af0-253466f83c8mr21797369637.52.1757472239935;
+        Tue, 09 Sep 2025 19:43:59 -0700 (PDT)
 Received: from archie.me ([103.124.138.155])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-774662c73e0sm3425976b3a.73.2025.09.09.19.43.56
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b548a602e14sm1057772a12.21.2025.09.09.19.43.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Sep 2025 19:43:56 -0700 (PDT)
+        Tue, 09 Sep 2025 19:43:58 -0700 (PDT)
 Received: by archie.me (Postfix, from userid 1000)
-	id 0C94B41FA3A4; Wed, 10 Sep 2025 09:43:51 +0700 (WIB)
+	id 614CF41F3D7B; Wed, 10 Sep 2025 09:43:52 +0700 (WIB)
 From: Bagas Sanjaya <bagasdotme@gmail.com>
 To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
 	Linux Documentation <linux-doc@vger.kernel.org>,
@@ -192,24 +192,24 @@ Cc: Thomas Gleixner <tglx@linutronix.de>,
 	Masahiro Yamada <masahiroy@kernel.org>,
 	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH v2 02/13] Documentation: damon: reclaim: Convert "Free Page Reporting" citation link
-Date: Wed, 10 Sep 2025 09:43:17 +0700
-Message-ID: <20250910024328.17911-3-bagasdotme@gmail.com>
+Subject: [PATCH v2 05/13] Documentation: blk-mq: Convert block layer docs external links
+Date: Wed, 10 Sep 2025 09:43:20 +0700
+Message-ID: <20250910024328.17911-6-bagasdotme@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250910024328.17911-1-bagasdotme@gmail.com>
 References: <20250910024328.17911-1-bagasdotme@gmail.com>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=883; i=bagasdotme@gmail.com; h=from:subject; bh=TM7A3b/55JCgQfCA5kxK7YxN6xbvfSMV2ctBC+dU0+o=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDBkHnih2mgVe6tXtn33sQOG2JKN6npsV2+KuvrWb+KLwo YbPrZOKHaUsDGJcDLJiiiyTEvmaTu8yErnQvtYRZg4rE8gQBi5OAZiIgi7D/1T1Zd+0q3NfXbSR WTM/c6Nt+dI0hVcvJi2QWSN+/Q/fJyVGhivi20SiX0RwBzyI4fPfm+rzyfPWB2YZV73+/5GK7JN 5GAE=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2751; i=bagasdotme@gmail.com; h=from:subject; bh=7QXrNRuCbHeHgCYdGUN3dSXlo+bJ6ZwXyeTt5Kf+8Ys=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDBkHnijp3TFftH6q+kyOiIzsCLYVR/ZOd/GUnnS+Yu6/k 6t6/fl6OkpZGMS4GGTFFFkmJfI1nd5lJHKhfa0jzBxWJpAhDFycAjCRydwM/yu/ZhfqF9YvP7NL t0p2f917xpei8yqP3w+TKtx3xMg27gbDX5mQVefmZ+9qe6G15Ils7rRL855MXJGSeHOCjN6Gx61 PyrkA
 X-Developer-Key: i=bagasdotme@gmail.com; a=openpgp; fpr=701B806FDCA5D3A58FFB8F7D7C276C64A5E44A1D
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 886651C0007
-X-Stat-Signature: 5cb8gcuoryjikwmb4kizr7gwq4jjzahh
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1757472239-414854
-X-HE-Meta: U2FsdGVkX19ZWz0sVDUCoF56jbiMUwjiXiF6oTPbkfIiLIbA+M86vRf3AVehGPTqVEKGTmaLuv45jQqaeudcede88lIv+KndgstYd6Bj4Kt8DF4Cj++bytg2mVCfnHfZi5nY3zI0BoeQc8onxtRxNS7z1iUF4+ZvkbPIjWSiOgVhGiFXGObQ/NlrxpIjuP0DhRM9qJYTspECvsVHf+WM28O4qLz9q9x5xTBwTL6M/douDeoyrqaXDXpbGYDnlTa1Sjz24JOgD+OOZNp080tVQiPPShhQIOGop1/M7QqlP4ROm4joxjHPTpfbuXr4CcHAUfFT9PxuyBefLAWFVkcPs8lGpz2UDHt2b5DzzJZSOZ/t72G0LpW3kZ/mtGGSD7x2TQHMdAnkG+jFa00Py6vhWpNXQ8yI8Y5nchKT54uoYziLjEAH+MmaaI9wVC/GkUK2+oaclUingz1mczSxy1+0c0lXe2BKa7tQpO9v+uUY8Souuf7c90rYqcUM1WaIYFpUgKc4kouXgU970XyuLGv0hpzn7iUSuyPG0sj0ZIq/nSbNCwvAhY6XIobS9lgDB7iUKRNwAQutwlvc9jmlT8ZFE3sWOEJHLyUkqT1CIhwcvqsehk/gX/y7sohnB3gc+kH9qvMoxhakCDsXGzbO77/ymRxiV4wnT2D2qnEwejdtkP0XaaegvN2rklmFoY4CYngYqgaypIOCB6dr32bttrVG5RDBvRNNOu09EPRyZEF0sbVALViH/UDTK5ZKoVLmeN2Knn5xahD0w+hv8VLOoL9XHV7n7anCOn9nWHHG2D02n/FQ0z5O7EnP5SGlpTDMyH3GvRxzkOLQLtaFLF4ADdvxYaJbgE9e6/ZVzDJo+VLAifJSGs18CumFMXNUl4daBkehe7MpW1wTOtRnnKjGv3FaBtzBlDc63gmfBAFBAps6PqV4z9+SGXah68pjQ+yLLevnV8YagYSu17rb5VJGRsG
- 5/CvdaIE
- hkJge/p+2DA9bvgMTM708ZeVwBVBocRq7QfLYraH31/Jmr4YDAGGWVsbWVvSLEBvuSt+Q+jwz3rnbS9n82XQFvAgFhR2+ZAtbXPKmwyhpapD9gVut6dgSjJUn5avhvr2PrI0OM7lvGODk4x8Y/252ARt1baZNknUWupynLz2uCI5WUjqCZKqcQ16s/pGAqd2ft1Y0ai0AxVzaGfYvHjyhMYRp9Zjeh8EbEfmhXZd7WdvhijiDLgRkCW4EB7fnLgVf+doZVNMykkssunPtVnQynZNVswDyfwDWwhnA/I6IGbxec2wI2a/dc+Lt19jSv6U/9joYKHbOif6g88DJER5mQ2NovLYsS730lAlPl8l6Sh5RIWLbwcQBX3OXwprk29OYUDAIagU7ww76Ix5bpkPUazFBjAtwvn0cXI+6y3axA8z+yig/hoYBB1Hv0WhdnESV3UQuzN+EYRQnlZPXA4K7pm3Y28EcKcjmoTBVJHjyr/o7dYoqVeIDph+8Q0+A6AgQhrkCGw+92IIvQ8EhPQkm+6ba64zk64N0Dl00Q3iOUtVOXZvdGM+ZqtyyvnbKqaSbkHAaRYexx1gmu/6eGh6GucMIPZeObckpBNibBRYFXsaubrEacG1FSktJeA4WOLnHc8q1s95KWnkQJjRQ96mvfzdWTwWNWM2NxcQzonpI5jn+SMbtNj7jz0CESw==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 432CC40003
+X-Stat-Signature: ksgfdbo6p55wsbs5yr53frot75ae3r7u
+X-HE-Tag: 1757472241-738763
+X-HE-Meta: U2FsdGVkX1/NCbtj90uf39cbCH8pePHIYppu0nNDykTp6rgYPYxLCMNlSbplsOFAPcz+QaVrUE+FHYty4ALSk2mUIeslSrik+0DwIxpkgKb59Lpfd74dBsXtTBsnGTVTMWJ+72NDKyY+RoFRrjTkWXdteLi1LKchl7DCRsYDs0ms5+VfdU+wE7eWPlTMMcbQhcCQmnG+tNQF4hipIbsP5IfVpCcfhxb08yFrPm1rMtTi6+/442ThqwTSQNv6HXIb5uOOmfmi6ehvc6SHZEVaEcXkRQFoytbl4iAJ+OCX2R3nJyjBgxhPgzBrT+72hiuZCWekPbH6sPuevWcryC4IKNuWkf7AbsS0zrH2OQITQX1PJb7dOC6sKZsEJt1uWOEkjczqLQjY8ONDOZ1WwSjT+mBqMMBcVGUVAO7QeBeYPYOpF6sekLSkdNvPRMBUACjIdcqI47aH5viZ5eW3iPqz278Wflb5Ijhr+0I+CC/f0pcT8MXDjE9zyje0cCTthStxxJVS/LnwGjXLaXSCb1NCxTZcoc14JQECoVxS6l7OVLNd7jZhApj0bHL55LHa92QuT+aSAoiP9/nWftGbsWaR9DG8rXRY+yxdd0kiyMBBHTBljVaYkoDXVcAKO6R0ANcO8whcsFwCiDhm8DeN5S0xfKJ264exUnQxda69YtfwTAeW8SgUvtI7/qTr+2MWKrTSLeiBA/FSlomUGaSewwZTckhXmJ17z1dFpFwEZaJA2eJMAWlpC8sHHpY6OOqnQtCV3hYXLTZ04OUHk3TfbxTWoTjHaX7no9JCt+gF4C4JbXP7KORQDh7RwGrGylizdb2JKVi9xKktNojEc+5fAJkILvhl9md24wh7g6PiC5OpYeHxe3prvykCC8hEdh7F9GKPX/gArj9WBwuOmZwTue1MZGxPHiACf/f7Kl+lqnoDL0QrRre3t/dCcyMJzgNO6sjgloGRTKbbdw29//n5FNO
+ b2BF6Uz0
+ jYjjxjOEmL+Oq8HKOMedS1b/NzNxN1yku+GrzVzni5w9n8IISc+MLAvJmkX+fr7AZ54BTUMGQPNoGVBbVtPua/cYKDV5wmfT6OGXf2S3mFDwo7BnlKlzG6XvXU6ERPg7CJbsoyHm4bMmihXHm0OPg2wDGpSnUyKGjBR+IobziI2N6tYANjECqkUyumH1UWp3ArQ/e0+6oxWcVnnMAVMsb5x3YomBhI/GorgFauJo6cybm+orPrgv2KJkPqbyQlm/eqsfdsZT2oePZp1Y+TIDPoJ7YWdapJ0eGI53cUo/KySWZOuFuRDFBnp0lzbwx7jetnfAfFIP5njmrzkyiyfjRInJvPWU7KKuY3l2+pjZT9Sqe7eja2j1ZpUxyCUH513yE+3GIADUDMo+2B6YZa7c2RBVF5syurDPwF11Hl7Zvji5cOpQy6cqqftXUHbvOQysqLEicdQUrc5SNGCE7axhNuRPS4jGwR9tf5G8GC1vCABfTjC3rWgxJG5it7IAP4u/e6/MuCx6e+PffYK1IG0cQWXWUCLNrSQ5+BeYl6SfxITBqqh1ozsMLguGgVLzfMbH7GwnRUZtPNEnk4C45bwE7wWvw2OEQ8Tc3AiK54K9wunaQvOVoTM+cI8Ti8cXABB2TZ8aAMaOvXmzLgonk8eiaKuK399lWLY03M2pyYOFwH/2Fx/6vBA8Rhr0WL7OBe9LWisVyGn15ClGGdGw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -218,25 +218,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Use internal cross-reference for the citation link to Free Page
-Reporting docs.
+Convert external links to block layer docs to use internal linking.
 
-Reviewed-by: SeongJae Park <sj@kernel.org>
 Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
 ---
- Documentation/admin-guide/mm/damon/reclaim.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/block/blk-mq.rst | 23 +++++++++++------------
+ 1 file changed, 11 insertions(+), 12 deletions(-)
 
-diff --git a/Documentation/admin-guide/mm/damon/reclaim.rst b/Documentation/admin-guide/mm/damon/reclaim.rst
-index af05ae6170184f..92bb7cf1b5587a 100644
---- a/Documentation/admin-guide/mm/damon/reclaim.rst
-+++ b/Documentation/admin-guide/mm/damon/reclaim.rst
-@@ -298,4 +298,4 @@ granularity reclamation. ::
+diff --git a/Documentation/block/blk-mq.rst b/Documentation/block/blk-mq.rst
+index fc06761b6ea906..4d511feda39cfd 100644
+--- a/Documentation/block/blk-mq.rst
++++ b/Documentation/block/blk-mq.rst
+@@ -87,17 +87,16 @@ IO Schedulers
+ There are several schedulers implemented by the block layer, each one following
+ a heuristic to improve the IO performance. They are "pluggable" (as in plug
+ and play), in the sense of they can be selected at run time using sysfs. You
+-can read more about Linux's IO schedulers `here
+-<https://www.kernel.org/doc/html/latest/block/index.html>`_. The scheduling
+-happens only between requests in the same queue, so it is not possible to merge
+-requests from different queues, otherwise there would be cache trashing and a
+-need to have a lock for each queue. After the scheduling, the requests are
+-eligible to be sent to the hardware. One of the possible schedulers to be
+-selected is the NONE scheduler, the most straightforward one. It will just
+-place requests on whatever software queue the process is running on, without
+-any reordering. When the device starts processing requests in the hardware
+-queue (a.k.a. run the hardware queue), the software queues mapped to that
+-hardware queue will be drained in sequence according to their mapping.
++can read more about Linux's IO schedulers at Documentation/block/index.rst.
++The scheduling happens only between requests in the same queue, so it is not
++possible to merge requests from different queues, otherwise there would be
++cache trashing and a need to have a lock for each queue. After the scheduling,
++the requests are eligible to be sent to the hardware. One of the possible
++schedulers to be selected is the NONE scheduler, the most straightforward one.
++It will just place requests on whatever software queue the process is running
++on, without any reordering. When the device starts processing requests in the
++hardware queue (a.k.a. run the hardware queue), the software queues mapped to
++that hardware queue will be drained in sequence according to their mapping.
  
- .. [1] https://research.google/pubs/pub48551/
- .. [2] https://lwn.net/Articles/787611/
--.. [3] https://www.kernel.org/doc/html/latest/mm/free_page_reporting.html
-+.. [3] Documentation/mm/free_page_reporting.rst
+ Hardware dispatch queues
+ ~~~~~~~~~~~~~~~~~~~~~~~~
+@@ -143,7 +142,7 @@ Further reading
+ 
+ - `NOOP scheduler <https://en.wikipedia.org/wiki/Noop_scheduler>`_
+ 
+-- `Null block device driver <https://www.kernel.org/doc/html/latest/block/null_blk.html>`_
++- Documentation/block/null_blk.rst
+ 
+ Source code documentation
+ =========================
 -- 
 An old man doll... just what I always wanted! - Clara
 
