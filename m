@@ -4,84 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 245F2CA101F
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 04:06:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02E60CA0FED
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 05:11:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 79CFD8E001B; Wed, 10 Sep 2025 00:06:33 -0400 (EDT)
+	id E42B78E0002; Wed, 10 Sep 2025 01:11:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 74D8C8E0002; Wed, 10 Sep 2025 00:06:33 -0400 (EDT)
+	id DF1C38E0001; Wed, 10 Sep 2025 01:11:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 63CF88E001B; Wed, 10 Sep 2025 00:06:33 -0400 (EDT)
+	id CE0E08E0002; Wed, 10 Sep 2025 01:11:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 501308E0002
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 00:06:33 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E1771C05C0
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 04:06:32 +0000 (UTC)
-X-FDA: 83872003824.19.8DAB9B8
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 2444B80003
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 04:06:30 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=none;
-	spf=pass (imf02.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BA7D58E0001
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 01:11:44 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 412F211AA51
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 05:11:44 +0000 (UTC)
+X-FDA: 83872168128.25.9DA36DD
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 1D2851C000A
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 05:11:41 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vQVOVsTp;
+	spf=pass (imf21.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757477191;
+	s=arc-20220608; t=1757481102;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yo+PSV8jpUDSpjhwzwQUytnhxZwXp4lN1HGpADvBaxI=;
-	b=MP0spNYQEIZF7FFCFw7G3C4hftIuTiRAnzBYVPN5BXrtO4WdCDlAZ7+cnk7oboUkRyLVgg
-	3nyXsvgkKir0rX293xaTX0PXpwtowT1hmJQ2eq1SwGTqUUe0obqAtG9LZnEUCfQArMwSqi
-	YS8Kv9IxqXwp8Zr5jPDr95R+qKWh7RQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757477191; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=gYMkB0r9HSctXWgIuLRdmWEAYpy9xNa7COuGYriZzdI=;
+	b=N+Q00oIyvjYhvGU3YXe0O/Ic5PGbLQEw2DbW0ud/Y2XGgLkswVYWxN5MpqPfmwDdJgLoMQ
+	MA0xiOcMC/UJ78DhRd/B9BD3Xoy9LPu39Pp+yK//eTLPQ6IY46ir6CVIxhzrqihxcHWUFx
+	7tHkZH5JeSBKtaOwUP8+waKkGwfrSMU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757481102; a=rsa-sha256;
 	cv=none;
-	b=ClT4+ArRJ8r4ZPg1wAWf6bxrDm82udwnu7/9x4U6nyHgmYgxediBOvHKDiGuUsA2DL7kaT
-	goAt/oPRckQCpz4j0xer4VgA5jgSXidhjDJRQ7gi7mBjm4WAuNUt/zrkS0Wcx1yjWGcYd7
-	e8GDuFejaB9bbdeY08MmUJ9F9dPpn9g=
+	b=XYk6qEOoQ55OaUtvJiVvA5Cfqfi86OAvAlBB7kBMVB5ysueJ642DQg/Kk5VHiJLxFVz6QO
+	p7/skV/+uQgaDmd710XA1moGCb8VA1BlhqadVJCnR8iwn/SekONMXUMSSBI1WEJ0lQrk5S
+	1u6ZB/SrrnSrDo4Fgtytp/REb7z9PXE=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=none;
-	spf=pass (imf02.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CD8191596;
-	Tue,  9 Sep 2025 21:06:21 -0700 (PDT)
-Received: from [10.163.41.55] (unknown [10.163.41.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8BDC43F66E;
-	Tue,  9 Sep 2025 21:06:19 -0700 (PDT)
-Message-ID: <8f0cdb97-ea43-4142-993a-17d47762602c@arm.com>
-Date: Wed, 10 Sep 2025 09:36:14 +0530
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vQVOVsTp;
+	spf=pass (imf21.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <7c890b42-610f-42ec-acf2-b5b9f95209b1@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1757481099;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gYMkB0r9HSctXWgIuLRdmWEAYpy9xNa7COuGYriZzdI=;
+	b=vQVOVsTpRUiot61+tU/kEjJNwPcwL94BOyb1LO9rBYYKootbsf3ErKWHagw7o5YWMCv3GG
+	gxSMzJ4L3x6j5MUJpTEmb4xQ6iR1EnT8axrkykWZ5AvA98wiCwjev9tl44lTmp9FnR6/aY
+	itPGUFah10wATaekIMtobALd5RC7sqM=
+Date: Wed, 10 Sep 2025 13:11:27 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] mm: Drop all references of writable and
- SCAN_PAGE_RO
-To: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org, david@redhat.com,
- kas@kernel.org, willy@infradead.org, hughd@google.com
-Cc: ziy@nvidia.com, baolin.wang@linux.alibaba.com,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, npache@redhat.com,
- ryan.roberts@arm.com, baohua@kernel.org, richard.weiyang@gmail.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20250908075028.38431-1-dev.jain@arm.com>
- <20250908075028.38431-3-dev.jain@arm.com>
+Subject: Re: [PATCH v7 mm-new 01/10] mm: thp: remove disabled task from
+ khugepaged_mm_slot
 Content-Language: en-US
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <20250908075028.38431-3-dev.jain@arm.com>
-Content-Type: text/plain; charset=UTF-8
+To: Yafang Shao <laoar.shao@gmail.com>
+Cc: bpf@vger.kernel.org, linux-mm@kvack.org, linux-doc@vger.kernel.org,
+ Lance Yang <ioworker0@gmail.com>, david@redhat.com,
+ akpm@linux-foundation.org, baolin.wang@linux.alibaba.com, ziy@nvidia.com,
+ hannes@cmpxchg.org, corbet@lwn.net, ameryhung@gmail.com, 21cnbao@gmail.com,
+ shakeel.butt@linux.dev, rientjes@google.com, andrii@kernel.org,
+ daniel@iogearbox.net, ast@kernel.org, ryan.roberts@arm.com,
+ gutierrez.asier@huawei-partners.com, willy@infradead.org,
+ usamaarif642@gmail.com, lorenzo.stoakes@oracle.com, npache@redhat.com,
+ dev.jain@arm.com, Liam.Howlett@oracle.com
+References: <20250910024447.64788-1-laoar.shao@gmail.com>
+ <20250910024447.64788-2-laoar.shao@gmail.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <20250910024447.64788-2-laoar.shao@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 1gzw53o1af1wzfuczjrs7cszacegtfgt
-X-Rspamd-Queue-Id: 2444B80003
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: xmtwa8unfsshrtwbgmp1b3mjr6f9kprr
+X-Rspamd-Queue-Id: 1D2851C000A
 X-Rspam-User: 
 X-Rspamd-Server: rspam03
-X-HE-Tag: 1757477190-798193
-X-HE-Meta: U2FsdGVkX19FOeLxQBgS21XWXtNVweWrgzE15xQ/k/J93tAE7mX13CsxzczRqrjWNbmhPQSEaAz2OyqHy2XpdwfTfgBL3jrQYNqOuFo/sdzNqa7D9Iq6ubufBS84NOhdeETHrh/VL7z0vuGUwi4HyllKUCodgrv9cWqMidSiv3x63is8zlupWWrsaRwW8Sfx1p88hf1B9xfZt2o1cU0EKQRzrl35RscOGJvTL8bfCdUD/+l5j+YHA4xiuH9EbMErmkAcEM7KSn4K4vUy8n1MP/XlYWEjaB7u2Z98H1Qa+4t0bDpFnI6IoYH/TKix/WE+7x/raVbRdW52TdMHJC580a5jDljAAXPZbadzgJh6bPFMfhkCnY2RD6r6I3VkftnHxdIm64ofW3twoQKHreBNA/myoiB5cPFJ8ZV42rmQ/xqoMkZuZ6DHHCOuvyDVHtqd+XXyxJZ9eJjkx35x4Ejt0VwTn+ktBLc7Qp0G3rCHDSWTsu4V0BKcc1y4d2tuE21VPCammf1sBqYxSc2ZMbvir+iA5ClE6/FS+wh/wYlE5M1+iE7zEkOdvVXrM5Gzq++BGIJ4NxLTz3Nfv2xHCFusczpLqCPGMWTAZod4NjL4od37mlprZxRGD+Ky0iL19+6+V/HTdAYpoh9dEY39obztjVJhMV1QlI7Oe4/E5jmYpk+k6PYGUN9iMUi4pUQaOsmJ5+TjAsCBTs99GYuxORV1XrSIQLOECTn4R0MtUSW/56Rox6FKxNnBq2E6FMQbFOMPDTnIJukn8lZJjiv6Jbq0VscfO9JiTdkrVSoEZvmnZvlyabDofARqVyvQpu8El1CH1ti2LNWdzEaLB0RmuISyc1obmGak7yPIrpnrhxLNbM4Bf/1663SrMnYBPdf3DzAZmRQx0r9jG5a/vEhqgVyFqUlla/wSOPUmHJo+T1rtVA5Q1SgroLjHzrTtOgjUEdiZGsoDSCBWEMvX4jpBD5X
- zijZtwak
- hkUvMFh6hYZHYvVkAtk9/UffSYEGx5pc91ofgLvqGzuCjZ6b9u7hbY27COwHzJYoIW6rGKgajI7Dbsfq77HbPOL70i5v3gsfWs/izX14MVotX/Aue+HnVJKJU2CfY5I2IVweKEVSnQmopSqkRYgt0+Kep7jb2S9ePqQ8O+Wgnt/m6UKmP76SnNdRjp/9rsl7vOoL24k0UgZpEGL+pmYF4pqww4BJTLG7qoEUqUXqDAE3T0OYGTU75XPuahPDsU9KspK8v8BEjP7ESPs5WCQbs8cC2LGNwWsKGqdsKrR8FEKzLHEOq/dh+FY/iZQ/Kj0tN0hj0FvjLLUuJAmNOUtoH29ohTyWyDTo55BvedlqWkKJzwDMXhlHMqD7mVacO4cA0uv1xBsfdCPrZGXbxJil0D7Lc85x93mwYc74pTnuxXnMrwH36zXxgUxqN9vz4Yxp2DcRX03mAntGOTv91WkORt9qFbA==
+X-HE-Tag: 1757481101-370835
+X-HE-Meta: U2FsdGVkX1+/QRvM0rhOgV179vYrtO5UE8DvGzcDWr3YzPUakJYrNWmdW6FZyezrlNjz8nbqVnyyC2K9oPRz082PRRTsAKFmskp9dkcjncRFnZoe9Sw1RxZlQnflH4rkIM0Ok5zZn3ccXecS/xhOdZScg5UmY2+LHANjwBBufbIzs4q7qnFgItavi67W/RsObgZywfa5mn9bmYUmYFgY1b+hXt4wxQI6Rsr3ehXw6yiGNSJFD5uHWyFkgwKbOOXZQpwF67gf0Zq09IixihU14WxUA1FnfEGioaQLlHQMoCJqlBAIjg5TPo6oLS6PGbPVpo/DZneFSEMTVIWnTVYE+jYGQySMHVNh4CSkNNP/PVFdn19inbDyUUTryPH45IluxvLcKPnXotsl6jfuz0VICyLbc/ccQ739Qz1qDsLUAVjcEFGJacMylBBbN8JanaVg5MHzY3I3bHcjckeoIoMOeibRSZkuHdGTC35p3R4aGPHZFROthKV2J+FqQpn61dGS30qgrm9A4KrTDCeiKREbRv0CeiR4T0BpPksyFbv+C96xeh//BSHYOP0PtXgX+Qc7zlqKEmzYCK9eJy+joSe15PAOPde6wkwMJnwN5Ujjzo7c71Qm8b5H1Kx86K+6O1GFIGZolkx7fscle3CQZQ6zADS7KPcymqCfnpW4sYbm0/e6rkCW1hV9Rj5UxCxXVk3Z8mkeYMQ223Xb6PMYLYnv9x+XXu24pUhzKjDaTWJMPTQ4F7sBr8eqBIHr7qSkD7VAbByIYSc4pPEpfsA9iLwrzon+Io0G5jijQMgulpek830rzY0pYOAJGqMHI7cuDFRmZ/lZGtPkrq33sr6GTWWrim5BAwHYg98GRKVCQ2uJi6rVYckiF+3RVItmfJ9jd5M0dTexNZYm7C8KYBBZ26xQ9Lz/WUbD9lfj+UxJX8qsiqNBSAox6PeMoLjbGE86JGCmsz6wtdDxIT+mPaqZ6Y9
+ 3Pf1z2Go
+ ha+oVZhUQLGYlhq+gIhUI8nSvhgk3F7mX15R1WTL+gUomsFJ9zvlCMhsD1RwioAjMcEFsQWNpmYpZGA9F8oHlJDGdVkroVWpVxcq9+IYOWN64BNEbcY7QnHsaiZtvyGqpJ7wX2gYSi9dDMykyUsyBCaIxc1FK0D1Ey4jCxgZ4rzjjmtCq2zAtn8GZS/dfL4Ju9fNWwhOIT7O3UEp3HcDMda4dUHZpqyOxIAV6YXivVBdnkR9uYhS1GuiQ3y+nLBKClo+q1uPmRbDO8CimRgxHMTuK0gVk1PN8BOgJZSAbpzfr3aHo8T+jjB9UdWwJ2Lze9jXuOun1qtwvn6z034XWSzBUcCbwnFCJkowdWRhZpE9L6nkNIUef9xQCD0x8q50hOA2f
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,181 +99,145 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hey Yafang,
 
-
-On 08/09/25 1:20 PM, Dev Jain wrote:
-> Now that all actionable outcomes from checking pte_write() are gone,
-> drop the related references.
+On 2025/9/10 10:44, Yafang Shao wrote:
+> Since a task with MMF_DISABLE_THP_COMPLETELY cannot use THP, remove it from
+> the khugepaged_mm_slot to stop khugepaged from processing it.
 > 
-> Acked-by: David Hildenbrand <david@redhat.com>
-> Acked-by: Zi Yan <ziy@nvidia.com>
-> Reviewed-by: Kiryl Shutsemau <kas@kernel.org>
-> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Signed-off-by: Dev Jain <dev.jain@arm.com>
-
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-
+> After this change, the following semantic relationship always holds:
+> 
+>    MMF_VM_HUGEPAGE is set     == task is in khugepaged mm_slot
+>    MMF_VM_HUGEPAGE is not set == task is not in khugepaged mm_slot
+> 
+> Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+> Cc: Lance Yang <ioworker0@gmail.com>
 > ---
->  include/trace/events/huge_memory.h | 19 ++++++-------------
->  mm/khugepaged.c                    | 14 +++-----------
->  2 files changed, 9 insertions(+), 24 deletions(-)
+>   include/linux/khugepaged.h |  1 +
+>   kernel/sys.c               |  6 ++++++
+>   mm/khugepaged.c            | 19 +++++++++----------
+>   3 files changed, 16 insertions(+), 10 deletions(-)
 > 
-> diff --git a/include/trace/events/huge_memory.h b/include/trace/events/huge_memory.h
-> index 2305df6cb485..dd94d14a2427 100644
-> --- a/include/trace/events/huge_memory.h
-> +++ b/include/trace/events/huge_memory.h
-> @@ -19,7 +19,6 @@
->  	EM( SCAN_PTE_NON_PRESENT,	"pte_non_present")		\
->  	EM( SCAN_PTE_UFFD_WP,		"pte_uffd_wp")			\
->  	EM( SCAN_PTE_MAPPED_HUGEPAGE,	"pte_mapped_hugepage")		\
-> -	EM( SCAN_PAGE_RO,		"no_writable_page")		\
->  	EM( SCAN_LACK_REFERENCED_PAGE,	"lack_referenced_page")		\
->  	EM( SCAN_PAGE_NULL,		"page_null")			\
->  	EM( SCAN_SCAN_ABORT,		"scan_aborted")			\
-> @@ -55,15 +54,14 @@ SCAN_STATUS
->  
->  TRACE_EVENT(mm_khugepaged_scan_pmd,
->  
-> -	TP_PROTO(struct mm_struct *mm, struct folio *folio, bool writable,
-> +	TP_PROTO(struct mm_struct *mm, struct folio *folio,
->  		 int referenced, int none_or_zero, int status, int unmapped),
->  
-> -	TP_ARGS(mm, folio, writable, referenced, none_or_zero, status, unmapped),
-> +	TP_ARGS(mm, folio, referenced, none_or_zero, status, unmapped),
->  
->  	TP_STRUCT__entry(
->  		__field(struct mm_struct *, mm)
->  		__field(unsigned long, pfn)
-> -		__field(bool, writable)
->  		__field(int, referenced)
->  		__field(int, none_or_zero)
->  		__field(int, status)
-> @@ -73,17 +71,15 @@ TRACE_EVENT(mm_khugepaged_scan_pmd,
->  	TP_fast_assign(
->  		__entry->mm = mm;
->  		__entry->pfn = folio ? folio_pfn(folio) : -1;
-> -		__entry->writable = writable;
->  		__entry->referenced = referenced;
->  		__entry->none_or_zero = none_or_zero;
->  		__entry->status = status;
->  		__entry->unmapped = unmapped;
->  	),
->  
-> -	TP_printk("mm=%p, scan_pfn=0x%lx, writable=%d, referenced=%d, none_or_zero=%d, status=%s, unmapped=%d",
-> +	TP_printk("mm=%p, scan_pfn=0x%lx, referenced=%d, none_or_zero=%d, status=%s, unmapped=%d",
->  		__entry->mm,
->  		__entry->pfn,
-> -		__entry->writable,
->  		__entry->referenced,
->  		__entry->none_or_zero,
->  		__print_symbolic(__entry->status, SCAN_STATUS),
-> @@ -117,15 +113,14 @@ TRACE_EVENT(mm_collapse_huge_page,
->  TRACE_EVENT(mm_collapse_huge_page_isolate,
->  
->  	TP_PROTO(struct folio *folio, int none_or_zero,
-> -		 int referenced, bool  writable, int status),
-> +		 int referenced, int status),
->  
-> -	TP_ARGS(folio, none_or_zero, referenced, writable, status),
-> +	TP_ARGS(folio, none_or_zero, referenced, status),
->  
->  	TP_STRUCT__entry(
->  		__field(unsigned long, pfn)
->  		__field(int, none_or_zero)
->  		__field(int, referenced)
-> -		__field(bool, writable)
->  		__field(int, status)
->  	),
->  
-> @@ -133,15 +128,13 @@ TRACE_EVENT(mm_collapse_huge_page_isolate,
->  		__entry->pfn = folio ? folio_pfn(folio) : -1;
->  		__entry->none_or_zero = none_or_zero;
->  		__entry->referenced = referenced;
-> -		__entry->writable = writable;
->  		__entry->status = status;
->  	),
->  
-> -	TP_printk("scan_pfn=0x%lx, none_or_zero=%d, referenced=%d, writable=%d, status=%s",
-> +	TP_printk("scan_pfn=0x%lx, none_or_zero=%d, referenced=%d, status=%s",
->  		__entry->pfn,
->  		__entry->none_or_zero,
->  		__entry->referenced,
-> -		__entry->writable,
->  		__print_symbolic(__entry->status, SCAN_STATUS))
->  );
->  
+> diff --git a/include/linux/khugepaged.h b/include/linux/khugepaged.h
+> index eb1946a70cff..6cb9107f1006 100644
+> --- a/include/linux/khugepaged.h
+> +++ b/include/linux/khugepaged.h
+> @@ -19,6 +19,7 @@ extern void khugepaged_min_free_kbytes_update(void);
+>   extern bool current_is_khugepaged(void);
+>   extern int collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
+>   				   bool install_pmd);
+> +bool hugepage_pmd_enabled(void);
+>   
+>   static inline void khugepaged_fork(struct mm_struct *mm, struct mm_struct *oldmm)
+>   {
+> diff --git a/kernel/sys.c b/kernel/sys.c
+> index a46d9b75880b..a1c1e8007f2d 100644
+> --- a/kernel/sys.c
+> +++ b/kernel/sys.c
+> @@ -8,6 +8,7 @@
+>   #include <linux/export.h>
+>   #include <linux/mm.h>
+>   #include <linux/mm_inline.h>
+> +#include <linux/khugepaged.h>
+>   #include <linux/utsname.h>
+>   #include <linux/mman.h>
+>   #include <linux/reboot.h>
+> @@ -2493,6 +2494,11 @@ static int prctl_set_thp_disable(bool thp_disable, unsigned long flags,
+>   		mm_flags_clear(MMF_DISABLE_THP_COMPLETELY, mm);
+>   		mm_flags_clear(MMF_DISABLE_THP_EXCEPT_ADVISED, mm);
+>   	}
+> +
+> +	if (!mm_flags_test(MMF_DISABLE_THP_COMPLETELY, mm) &&
+> +	    !mm_flags_test(MMF_VM_HUGEPAGE, mm) &&
+> +	    hugepage_pmd_enabled())
+> +		__khugepaged_enter(mm);
+>   	mmap_write_unlock(current->mm);
+
+One minor style suggestion for prctl_set_thp_disable():
+
+static int prctl_set_thp_disable(bool thp_disable, unsigned long flags,
+				 unsigned long arg4, unsigned long arg5)
+{
+	struct mm_struct *mm = current->mm;
+
+	[...]
+	if (mmap_write_lock_killable(current->mm))
+		return -EINTR;
+	[...]
+	mmap_write_unlock(current->mm);
+	return 0;
+}
+
+It initializes struct mm_struct *mm = current->mm; at the beginning, but 
+then uses both mm and current->mm. Could you change the calls using
+current->mm to use the local mm variable for consistency? Just a nit ;)
+
+Cheers,
+Lance
+>   	return 0;
+>   }
 > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index a0f1df2a7ae6..af5f5c80fe4e 100644
+> index 4ec324a4c1fe..88ac482fb3a0 100644
 > --- a/mm/khugepaged.c
 > +++ b/mm/khugepaged.c
-> @@ -39,7 +39,6 @@ enum scan_result {
->  	SCAN_PTE_NON_PRESENT,
->  	SCAN_PTE_UFFD_WP,
->  	SCAN_PTE_MAPPED_HUGEPAGE,
-> -	SCAN_PAGE_RO,
->  	SCAN_LACK_REFERENCED_PAGE,
->  	SCAN_PAGE_NULL,
->  	SCAN_SCAN_ABORT,
-> @@ -557,7 +556,6 @@ static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
->  	struct folio *folio = NULL;
->  	pte_t *_pte;
->  	int none_or_zero = 0, shared = 0, result = SCAN_FAIL, referenced = 0;
-> -	bool writable = false;
->  
->  	for (_pte = pte; _pte < pte + HPAGE_PMD_NR;
->  	     _pte++, address += PAGE_SIZE) {
-> @@ -671,9 +669,6 @@ static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
->  		     folio_test_referenced(folio) || mmu_notifier_test_young(vma->vm_mm,
->  								     address)))
->  			referenced++;
-> -
-> -		if (pte_write(pteval))
-> -			writable = true;
->  	}
->  
->  	if (unlikely(cc->is_khugepaged && !referenced)) {
-> @@ -681,13 +676,13 @@ static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
->  	} else {
->  		result = SCAN_SUCCEED;
->  		trace_mm_collapse_huge_page_isolate(folio, none_or_zero,
-> -						    referenced, writable, result);
-> +						    referenced, result);
->  		return result;
->  	}
->  out:
->  	release_pte_pages(pte, _pte, compound_pagelist);
->  	trace_mm_collapse_huge_page_isolate(folio, none_or_zero,
-> -					    referenced, writable, result);
-> +					    referenced, result);
->  	return result;
->  }
->  
-> @@ -1280,7 +1275,6 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
->  	unsigned long _address;
->  	spinlock_t *ptl;
->  	int node = NUMA_NO_NODE, unmapped = 0;
-> -	bool writable = false;
->  
->  	VM_BUG_ON(address & ~HPAGE_PMD_MASK);
->  
-> @@ -1344,8 +1338,6 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
->  			result = SCAN_PTE_UFFD_WP;
->  			goto out_unmap;
->  		}
-> -		if (pte_write(pteval))
-> -			writable = true;
->  
->  		page = vm_normal_page(vma, _address, pteval);
->  		if (unlikely(!page) || unlikely(is_zone_device_page(page))) {
-> @@ -1435,7 +1427,7 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
->  		*mmap_locked = false;
->  	}
->  out:
-> -	trace_mm_khugepaged_scan_pmd(mm, folio, writable, referenced,
-> +	trace_mm_khugepaged_scan_pmd(mm, folio, referenced,
->  				     none_or_zero, result, unmapped);
->  	return result;
->  }
+> @@ -413,7 +413,7 @@ static inline int hpage_collapse_test_exit_or_disable(struct mm_struct *mm)
+>   		mm_flags_test(MMF_DISABLE_THP_COMPLETELY, mm);
+>   }
+>   
+> -static bool hugepage_pmd_enabled(void)
+> +bool hugepage_pmd_enabled(void)
+>   {
+>   	/*
+>   	 * We cover the anon, shmem and the file-backed case here; file-backed
+> @@ -445,6 +445,7 @@ void __khugepaged_enter(struct mm_struct *mm)
+>   
+>   	/* __khugepaged_exit() must not run from under us */
+>   	VM_BUG_ON_MM(hpage_collapse_test_exit(mm), mm);
+> +	WARN_ON_ONCE(mm_flags_test(MMF_DISABLE_THP_COMPLETELY, mm));
+>   	if (unlikely(mm_flags_test_and_set(MMF_VM_HUGEPAGE, mm)))
+>   		return;
+>   
+> @@ -472,7 +473,8 @@ void __khugepaged_enter(struct mm_struct *mm)
+>   void khugepaged_enter_vma(struct vm_area_struct *vma,
+>   			  vm_flags_t vm_flags)
+>   {
+> -	if (!mm_flags_test(MMF_VM_HUGEPAGE, vma->vm_mm) &&
+> +	if (!mm_flags_test(MMF_DISABLE_THP_COMPLETELY, vma->vm_mm) &&
+> +	    !mm_flags_test(MMF_VM_HUGEPAGE, vma->vm_mm) &&
+>   	    hugepage_pmd_enabled()) {
+>   		if (thp_vma_allowable_order(vma, vm_flags, TVA_KHUGEPAGED, PMD_ORDER))
+>   			__khugepaged_enter(vma->vm_mm);
+> @@ -1451,16 +1453,13 @@ static void collect_mm_slot(struct khugepaged_mm_slot *mm_slot)
+>   
+>   	lockdep_assert_held(&khugepaged_mm_lock);
+>   
+> -	if (hpage_collapse_test_exit(mm)) {
+> +	if (hpage_collapse_test_exit_or_disable(mm)) {
+>   		/* free mm_slot */
+>   		hash_del(&slot->hash);
+>   		list_del(&slot->mm_node);
+>   
+> -		/*
+> -		 * Not strictly needed because the mm exited already.
+> -		 *
+> -		 * mm_flags_clear(MMF_VM_HUGEPAGE, mm);
+> -		 */
+> +		/* If the mm is disabled, this flag must be cleared. */
+> +		mm_flags_clear(MMF_VM_HUGEPAGE, mm);
+>   
+>   		/* khugepaged_mm_lock actually not necessary for the below */
+>   		mm_slot_free(mm_slot_cache, mm_slot);
+> @@ -2507,9 +2506,9 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
+>   	VM_BUG_ON(khugepaged_scan.mm_slot != mm_slot);
+>   	/*
+>   	 * Release the current mm_slot if this mm is about to die, or
+> -	 * if we scanned all vmas of this mm.
+> +	 * if we scanned all vmas of this mm, or if this mm is disabled.
+>   	 */
+> -	if (hpage_collapse_test_exit(mm) || !vma) {
+> +	if (hpage_collapse_test_exit_or_disable(mm) || !vma) {
+>   		/*
+>   		 * Make sure that if mm_users is reaching zero while
+>   		 * khugepaged runs here, khugepaged_exit will find
 
 
