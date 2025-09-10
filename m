@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C30BACA0FED
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 02:46:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C15A4CAC582
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 02:46:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2CB7F8E001F; Tue,  9 Sep 2025 22:46:39 -0400 (EDT)
+	id 2CBF88E0020; Tue,  9 Sep 2025 22:46:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 27BD78E0016; Tue,  9 Sep 2025 22:46:39 -0400 (EDT)
+	id 2A9B38E0016; Tue,  9 Sep 2025 22:46:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 16A9D8E001F; Tue,  9 Sep 2025 22:46:39 -0400 (EDT)
+	id 1B9788E0020; Tue,  9 Sep 2025 22:46:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 007288E0016
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 22:46:38 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9854B5A37F
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 02:46:38 +0000 (UTC)
-X-FDA: 83871802476.29.B894A30
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	by imf03.hostedemail.com (Postfix) with ESMTP id AC71920004
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 02:46:36 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=JqA4lX0G;
-	spf=pass (imf03.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 081D18E0016
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 22:46:49 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C11711A0724
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 02:46:48 +0000 (UTC)
+X-FDA: 83871802896.11.7FC4DA9
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	by imf26.hostedemail.com (Postfix) with ESMTP id D268614000D
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 02:46:46 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=mT9gjzWL;
+	spf=pass (imf26.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757472396;
+	s=arc-20220608; t=1757472406;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+2gv1wJrgJWMZIsaNiF6AyZaglC2W+vNxpLY5k+pOlY=;
-	b=3QoNroGdo/ihLCph748wRi77Fe8MnN+DhgRnGS47qNFndibOG3qrZShvYCvdK5T9K923UN
-	F12gGqbub5zPJpaOkX+Q4NElrTb8W/iqJ5UPUGJ6Lg6CnrdpPl+viUKrapUOe7WZ7rRT4T
-	vYfXrbmgFS3w6bireVYAMOW41gHkO0s=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=JqA4lX0G;
-	spf=pass (imf03.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757472396; a=rsa-sha256;
+	bh=y5jPTpqPMOi1hpcfswRT5c+4UlwlwSKkHLVyMRU04bc=;
+	b=R5fTaBe6scpGT13clcF0KgSXr5Wmp/di9jk4VVDvL26/YRH3pheHKA77Ihi368NTI3lNcW
+	mUKScI/MSU8LybMkFh24mUYC3go6nKXW3Wh/WbpLm/XKeqoLlb/72k0BXyH7/WiROGdER9
+	mUT7nTOn1qCR9CiuvdFQckMXQoFwPDw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757472406; a=rsa-sha256;
 	cv=none;
-	b=PwAR5R3snNKUoTCHTcpQJXGpSAF0WV+DGAaglj1AVP/9Vhx2bLsBlafy83srBiFqfpSiSf
-	cIANrZy6Ra0tggdbRTvaQ6D29bW5ZfaZkL8+kS+2SAKc6r/xMAvtqf7l/w2zqnVjZGE6B5
-	9oR0/GbuMgvlZZwVnZg2TT1SLVloNZ4=
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-329b76008c6so5229869a91.1
-        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 19:46:36 -0700 (PDT)
+	b=A0mqerqYmgZkLQ3l4GBSCUvy7YsdIkkhXK+o6zsJvGKT7kdCVJWuAfEOCOgNz8PT4UNuW9
+	6ITg+WWOqD8t5DI4OSES9c2iVT9/o0HzJh3uiByG3Ms6gqvwl4pWZaV4XMZT413xpjLHq0
+	R+DOT53KBjdh6wPkxH/8mCb9NExgpDc=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=mT9gjzWL;
+	spf=pass (imf26.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-32b6132e51dso4849271a91.0
+        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 19:46:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757472395; x=1758077195; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1757472406; x=1758077206; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=+2gv1wJrgJWMZIsaNiF6AyZaglC2W+vNxpLY5k+pOlY=;
-        b=JqA4lX0GurBxRSnS9K/I1yncNWREWXeN5VhhmzRmrmybHGr1+XuFmlmDNnW4dvMyHR
-         Dwj2j25PJjavbr5AxxuaGf3oeaGDh8NWGvegLNnmxLg5bhUeOrvQ3ORGbEZ1rmujkdz5
-         C8LsSZ4K/FyjvIgKBO8W8Y/4jP9//b9wM1j7k0To1MdbxtFPecAwVjSKboVcYPkOaeSn
-         gtyFVfdbAwNAgW35fHcB2jyCd6KsifAnXaubjlggGs8yIUI6b7L00UGcovZ6LvKwn8Sf
-         Ql6kxp0TWdnBx/uC+OrslJMVpOqrXArDHCmKEE5z3gDxzaYIRmRbrLgJ80GpQhVPeEgr
-         jbOw==
+        bh=y5jPTpqPMOi1hpcfswRT5c+4UlwlwSKkHLVyMRU04bc=;
+        b=mT9gjzWLcFA9i6pUF9zbVeNFjbIcNiFAdLSmjOL03yXhgGVirhGDHTp5Qrf7x3IeE4
+         uDjDJ5DZhSXdOzibKCKbHoaioh5L8g3VyQMhJl5cXk+vFVZpjw+N6opr5WQm72znFADi
+         nJXlfKPMYNi0T9z4aiE/zSqw65MKnyYnLyct0VhmjBspYkmN7MWZdviDF9KAJsLmRw+X
+         /QTOysBkgcCjp9UgYUEnj/ABu5ZPJmCEtq8UP0vm8G+hBSLOuftMjq/spK471Qh2BHyG
+         izqpAQXm77K1kEE3k5Pb3PFmIHCZ6GdeDXi11CC99DAu/PITYd+/w4IVywk0qG8SSDQi
+         Ep8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757472395; x=1758077195;
+        d=1e100.net; s=20230601; t=1757472406; x=1758077206;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=+2gv1wJrgJWMZIsaNiF6AyZaglC2W+vNxpLY5k+pOlY=;
-        b=CduJkLdlRXuQZAv01k5YBRYCvd6J28KjkdVAJAry2ntR2L8nTvJarpPY5AWz/fyuqF
-         +PMJc/3kvLFoXBkMB0fm2NwXrOC7GWvhwQvV6on1xnuexvAgVlh1vNP62+VFQgjPUIvF
-         5wiRjTEMdhXX8scPLQhVur7qUWQUZ8vEltzII5X39vS4U0ffbCmbiOg+uEzpCC5mzQDy
-         ZTEUu1KtXU9ycSJ8nSvbOcavXF3YK5LbdZh4/Wkd4YTORDKTdQbkTrKQ3jcLBKsmiONW
-         2exyO1t7JlGKSyVRCARXuEJCc6GdObMX6Xq8TShlkrOHWZHOZJvnFtU6PxI20M5qbeYZ
-         QGfA==
-X-Forwarded-Encrypted: i=1; AJvYcCV8w0GZHA87C3fcgiF3S9gtIzlMDw/9z/bN2H3tZUwODHmSZwdGeiSGOAYryWTgZnuMhUY69LGdKg==@kvack.org
-X-Gm-Message-State: AOJu0YyRl2imAV5kRmyrSaWD/nB/1VE9EP4LyGpB8H4V5w4EyrRElJQY
-	RoIkcWhOl//rz4yyjyucMzM2tPsQOSBMKCGypum5I1f0m+ZYzZPgsL7D
-X-Gm-Gg: ASbGncuIBKw43FZwv6AwrqomupBIQSZCs3Z6DnXkQPXZaICS7frF4zJGJuOYqNFB/Uh
-	BQYIiHMPdxJ0XdVNRhorwRt/NJ7ywjt7Lw5W9c9s7pAgq0FxEsYaG8epCMt7oCE/WBzVEySLY6H
-	g7FTrdjm2PrB0tAfQ5B/Mb7T+yAcbcQztBhvwd3TGmfndnUyXurG+U3sueIFEZE5a6x1JKZxOb1
-	bEp/3m9WKnVSm/SNgrUjahWNNIVZ+RcxxF0mArUMp6Qm6EXlsiUpZGGdMB3+CKn0h3zIutgC2lS
-	2/N2CAvnIrBc5HEVrqYWkVp/7NvI64/dATSigvgyobU6Nypwd1LQ/IU9IKsvSK5djg7Gn6nUH+Y
-	mlBxSOEzKlOBtO8g2kh+5p1sssiofMZu9jAqyOQxEl9CFx9jE6yv7mrsNEn+bpKu02Krr0//ipF
-	ofnF8=
-X-Google-Smtp-Source: AGHT+IF7HoYJibvAsuo8aUN7uLmw94uj7XXz4N/ZsFYwAn1QFmBP+rxV+edO5IwAqpFP8zthp2dBaw==
-X-Received: by 2002:a17:90a:e7c1:b0:32b:5f76:9e29 with SMTP id 98e67ed59e1d1-32d43f9a56dmr17489450a91.32.1757472395440;
-        Tue, 09 Sep 2025 19:46:35 -0700 (PDT)
+        bh=y5jPTpqPMOi1hpcfswRT5c+4UlwlwSKkHLVyMRU04bc=;
+        b=p4ntngoebVteAD50+ySbrELDJoWxPxB1G+NurLpIMz8QXIrKT+ESU1dVNpDl/uUMTK
+         rDV4oPHRYrlWpRNFn4cl1mL6jQ3oLO1KZOQot+eZ/yQzxW3QP8PmIu3a5rbYBSCW7BIa
+         qsfPMTcc8NZi8FVSRwlQHHYTyT+XVBcmb/iKld0Jz3a7UEEYHDwKHsU45hhGWoeNt1OW
+         uGoi8y/YgsP81sex25iEG5k0UOnkaV8ne3DKpEqqxT4fNsJR58v1e20nRsbgAXfi77n2
+         sqzliycmk7cvHxA2UFsa2O74Pgi+hgSZQfSyaqBPTqmMCIDgKXmHfsr9Pazx1fibeOwb
+         O6Gw==
+X-Forwarded-Encrypted: i=1; AJvYcCXZNudiJUljP+3lQkOwqfnTwqGW77C+FWf+Mdgs5MpXHqirumbPjPHYrUX3JYc+26lQwthv/gjNsQ==@kvack.org
+X-Gm-Message-State: AOJu0YzEcjXcoTFOurwcGvd7w2ji/PZd7YE2IKxrphz/hiABBbuQuGM2
+	4yAlfvXHVqFAI0G0Cta4eIvKYhkJISt0XKrHGxop1INyGbDjY+dqQLVL
+X-Gm-Gg: ASbGncukSLO+QHzmKdH6o3Y5h4NV5Oh1+B0CVs5XOHGcpOc0PV+QaLgkgOyeKp+N4EC
+	0BCW+Up+/MrZ75gXeeZevQx7dvlbCFbI/kXvR3Glffu3ON9LDdwLqLNPIq349tI1GyiTmrMmccO
+	mwjP68dghADAvgHkiIPwdaFaSCAQEakaF/IQmaB8gCpSYRMlWUce3wz1KH8XWPhdEjLmvKC6Sjj
+	DmyrSSA88fmlhPB7BmzbLRyKwGoyUagHDc3A83IsFdyE62c9ugzI4EhYHMnEu4qxNerA05Fi2xz
+	vS2bS2mM7x4qJks07ECMYpkZdZqhK4KTefNElpP5Igh8vw7V7/F+7+CczgOXbM+Tzv/Zxo/r8L8
+	vsOg12jpONolPwmjUdlzm+7+Hqd3nfybx1OiSZSLjxF4cRLmpsXoLHOsEfPQueNTK7TUKsOCNeV
+	LeyalQOhd0GzRjnxmVLgSL6vR+
+X-Google-Smtp-Source: AGHT+IFZpY3V/uOIGTyZ8BzKdRQSeK3R6TIpn8+CqivqfkEb3qFahG1VblvOigKRq+kSt04Qfxrjgg==
+X-Received: by 2002:a17:90b:2fd0:b0:329:f535:6e3c with SMTP id 98e67ed59e1d1-32d43f9338cmr18153184a91.35.1757472405568;
+        Tue, 09 Sep 2025 19:46:45 -0700 (PDT)
 Received: from localhost.localdomain ([101.82.183.17])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-32dbb314bcesm635831a91.12.2025.09.09.19.46.26
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-32dbb314bcesm635831a91.12.2025.09.09.19.46.35
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 09 Sep 2025 19:46:34 -0700 (PDT)
+        Tue, 09 Sep 2025 19:46:45 -0700 (PDT)
 From: Yafang Shao <laoar.shao@gmail.com>
 To: akpm@linux-foundation.org,
 	david@redhat.com,
@@ -117,22 +117,22 @@ Cc: bpf@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-doc@vger.kernel.org,
 	Yafang Shao <laoar.shao@gmail.com>
-Subject: [PATCH v7 mm-new 09/10] selftests/bpf: add test cases for invalid thp_adjust usage
-Date: Wed, 10 Sep 2025 10:44:46 +0800
-Message-Id: <20250910024447.64788-10-laoar.shao@gmail.com>
+Subject: [PATCH v7 mm-new 10/10] Documentation: add BPF-based THP policy management
+Date: Wed, 10 Sep 2025 10:44:47 +0800
+Message-Id: <20250910024447.64788-11-laoar.shao@gmail.com>
 X-Mailer: git-send-email 2.37.1 (Apple Git-137.1)
 In-Reply-To: <20250910024447.64788-1-laoar.shao@gmail.com>
 References: <20250910024447.64788-1-laoar.shao@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: xentd8agqi19sj4sf64mcrtkpoxiecq7
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: D268614000D
+X-Stat-Signature: xxhxc5zgzxjhx1twjpx6t8ui5zof47y9
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AC71920004
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1757472396-904112
-X-HE-Meta: U2FsdGVkX18wAeYsgv1Yf2d8kkC2vTjGGjw0+JE8bt4mDPwaTiu7U4mXavTx3MdZwftZ0/KoQf7jCjNx8ApQEPvyVMkpfEbNWWY1dz3DZ2gvCrf3zbYpetkI3AmZ8L3YZXYb7lug+ehChZwPTDI7D3zi/tj0JYtlP3AiswjQxZJUDrwqDhCJdqIWIqPnGqkhtgCRpTUFvaFq+nLkcptOH6Oaqcdr4FGuqcoo6dvHPc09HCUTPDlo15+fuIWvoTuBJH2DCDiWq19kYDlfdGEWH0NMN4uErFHv95UBZx3uMF+EUDpPUi57vz0uj03HrM2LIezFKgCKhy5m/0HuuYwZtMuA5v9xLKLnLMEDtARXU0ukZbv8Es+YlGtlQJPTuElv66RujpdKW3eLWnKc4Uc6KSbZ2nvxbaXlE5SUogDVO+G7jC94XJm3jy8Oe4NAyLyLJzj9Ut+orOG5hL0uReI1IdT+jPx3Cv1BtMZIcRmxh30R1WQXx3D3HxexGIiObYoJfm09FKevGc79a4Su3DcEjQx9FczyVQns/A5WDDVwMhpOvT+Tz8s+HBex3NYHM92tyx9X6Sf23EEr2XSBdetOptyVLwzsTntmMkvzSTTjvlxuS4tijozAm5pJ5vmvdqwn1ofAdOqzqjPs/MGZ00QLM/H05Ys93gQ88PVquYGah5VRsdrT7B6aZjA5BeQAMG8Zaa7Z/4Dah5U/CdpNlrk78DJluKnMRwEnQM1JFMFpeBQN0wA4OEmdfNxUPnTMBPSO9XNljTHOcvjGt/47qahl8u8BOS2Mho7JXB3FKrLG7LmyBaIX1yaKsW88TUsW29xufPKzDoztgBwZpt0h0C/I1DjuTaHoRW9FCQqZVFg5roBsIQrONXA49Rd9efrshltGTgVa4AnfI7xIdB8hYHG9RcCWucthVbVDQv0j5vODJs+8HSDXfKDedeLx7tjHJrSXmvRnjvAgLC3dK3dE73j
- eXUdmawC
- wTRmZOFGmXl9lDPABqfPyeB3QC/Fxz1nceUwswGJAEecwsg59OtMJxqFAR1GGwvy43nt78kiZD/k6/FwZ3XB4IeYd0Yt0bhH5cZZ2CtwyEo6CB2CRzAYNDJ4ms0K6Lvd9CXPt46FhVz5XX0XPxKdenzrmiQG3L5/VmrpfKgPZfkUwnxRisWcV5Q70fhxf7MDydQoaJ0yBHS5/bHah8YofCctXTzX7JfETr+A1WdmJNsIjQoYSzb+tUcZiVKc92fY1boFx+FqXFtS7A/bfgq1KP6YdGi59axV04EKfOfAOKZVQ1/qgvhU5aH9uLksnldBdm8rVPa9oV8XAGgpAaITtWAFjqmDsCkJ7ijtYCjxdWGkOWBguDhxOtM/0pPiH4q21J23WcnYwInFaO46R1DiXntzbOtrppBSp1a9ZRpBvGfdwzF0SCTzYi8lgwGHa25B47jZJqowC/b4UYXOKXNjGnSsqcOyZXOHemw3NijKX0fc5ydHgHT7F+98ZwSKb8osybmJBDx8XsZIVncpLvOP7xW9HoVLnmS1Lgd+2ve8tsz11X2SeIsEDPRUUqQ==
+X-HE-Tag: 1757472406-497992
+X-HE-Meta: U2FsdGVkX1+K9LHsS4AbQhLdHZf/WJaxGVFWjiUvIpfLT2MIfkDzfEMRWn6Ba92ZDZbBtjrpWBEI9Zt0eHQgcb1RealdAXiATp8pPgJ3gUctfGtZT1fvgnCsqxs6mLrY8jSrf+S3N206eFoV3hcFYZZoHz4E4ZwK45PriLvuz+YjctzwBYIQlcFpKLvb4/6/N69MZmrPr1fmlcof+QQ7T/IGNEp34MM94MM3pjg3hE6ef6d1XQRJovzOyG3ict3/326VjghcLVXlPGMVD3Iz3bIYsl8GLw3YmJaYkhU6Wmp66JlA//pxCjqHhFAmgO9LAx3p3vLBQW50FUIV2pQh3NwQUS9kLSQznIn95LN2MlwLuXv4nJLn5UVLLWAJwAu8s13HQQV/U4R6o0GGy2uM3N/y2TaJjzzXhV4BJgaUPUK6qv2xLg1ZHhIQGwwA+CsOt+Cfm82I6QXw4LAHfJrO2NrbpkL1ZIfCiuJG1AWrJTFkvGIwy2dP7Py9gG6U+yrkC5oe/56QvJkctg+bghqCh4f8WHW48aT9wrjGQo0kqsOrtMJVDR2UmwVD4dds4ELW+B3KwWgoXMI7/T7AEhn4FJ8ZxuVUa6GHhGe6SZrCqU8Vz3gCxq0AXtFRuVdF0r5rj2S3d0C88uRBP1RJbITXneQAHrrkkTQkutFGOv/Ogk2v1qIayGmqwJ8oML8+yCKX0so8Tem1pX/o//CZF4C0WhX8EGcOk8klXY2uvSOjzRgsyFKUNRTo1XkjA6slq6So9vRmxfwNG8fBolf25dtQI6AzG6yJXdvL/LZizp6p34aJhFLgm3pNWH+LSo2auQp3/SnESkriXa/wtzHdZfNjK6CON7ywLEp+AzRDiIWnK6EN11SPXcv8lXvLkfVMB+oRF4+HEdMc7/MllrmzQOqE8Z/d7D5lo/rRZJxsejnY52dbV5AQs4KJ3KaqSnUlEiYfBenPr+/cmta30OLcRFJ
+ K3aGsZ6B
+ aBPTPShtrdZpZdJYUPNYzVVTB2yyHdENHiNMwkNwBm5/7Ui8s+GVdFXV9AybJOmbu9Tv6bL0oPIiuZ0ld9Qek8DbmYX9uj4a/t8kfofqMc9h7GlCBxCGQjek6LfewDdDk+/0+vJIqPljG4nmZwfEKVQPolGkUINV5QkR4RW6KA4cZt/YpHmaNw0+lyeTVKydZmJYggRMtXAJcB/UsuoiaPPITQHPf3V6KV73uie2j41PaztYn++OIeWtXtiL6hXRfAi2ruTGF6MBQAzl08LIxHZPTyFC930P8yCNYUzYneFGvidjU1a49CHM3YHzIwEOnyo272OI3QU1+QYfkOA6rjlJmVsmAVOFj+ABBLZ5761CLRBJE1zBEIRF/EBbqFMDPQyxcLbpqehUCtNQjpTDj2HPJzSH0v0b/i/Mdd0PVtFayi5pFrdZzPEVeMJN+iLuAd9I/zAs+uCJ5cduYRzcR2GCwczmIBJh9fhzZG7yIcQrkwViSWwFKkO7Z1N7levg2DeQptt7aMCZJpqM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,144 +141,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-1. The trusted vma->vm_mm pointer can be null and must be checked before
-   dereferencing.
-2. The trusted mm->owner pointer can be null and must be checked before
-   dereferencing.
-3. Sleepable programs are prohibited because the call site operates under
-   RCU protection.
+Add the documentation.
 
 Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
 ---
- .../selftests/bpf/prog_tests/thp_adjust.c     |  7 +++++
- .../bpf/progs/test_thp_adjust_sleepable.c     | 22 ++++++++++++++
- .../bpf/progs/test_thp_adjust_trusted_owner.c | 30 +++++++++++++++++++
- .../bpf/progs/test_thp_adjust_trusted_vma.c   | 27 +++++++++++++++++
- 4 files changed, 86 insertions(+)
- create mode 100644 tools/testing/selftests/bpf/progs/test_thp_adjust_sleepable.c
- create mode 100644 tools/testing/selftests/bpf/progs/test_thp_adjust_trusted_owner.c
- create mode 100644 tools/testing/selftests/bpf/progs/test_thp_adjust_trusted_vma.c
+ Documentation/admin-guide/mm/transhuge.rst | 46 ++++++++++++++++++++++
+ 1 file changed, 46 insertions(+)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/thp_adjust.c b/tools/testing/selftests/bpf/prog_tests/thp_adjust.c
-index 30172f2ee5d5..bbe1a82345ef 100644
---- a/tools/testing/selftests/bpf/prog_tests/thp_adjust.c
-+++ b/tools/testing/selftests/bpf/prog_tests/thp_adjust.c
-@@ -5,6 +5,9 @@
- #include <test_progs.h>
- #include "cgroup_helpers.h"
- #include "test_thp_adjust.skel.h"
-+#include "test_thp_adjust_sleepable.skel.h"
-+#include "test_thp_adjust_trusted_vma.skel.h"
-+#include "test_thp_adjust_trusted_owner.skel.h"
- 
- #define LEN (16 * 1024 * 1024) /* 16MB */
- #define THP_ENABLED_FILE "/sys/kernel/mm/transparent_hugepage/enabled"
-@@ -274,4 +277,8 @@ void test_thp_adjust(void)
- 		subtest_thp_policy_update();
- 
- 	thp_adjust_destroy();
+diff --git a/Documentation/admin-guide/mm/transhuge.rst b/Documentation/admin-guide/mm/transhuge.rst
+index 1654211cc6cf..1e072eaacf65 100644
+--- a/Documentation/admin-guide/mm/transhuge.rst
++++ b/Documentation/admin-guide/mm/transhuge.rst
+@@ -738,3 +738,49 @@ support enabled just fine as always. No difference can be noted in
+ hugetlbfs other than there will be less overall fragmentation. All
+ usual features belonging to hugetlbfs are preserved and
+ unaffected. libhugetlbfs will also work fine as usual.
 +
-+	RUN_TESTS(test_thp_adjust_trusted_vma);
-+	RUN_TESTS(test_thp_adjust_trusted_owner);
-+	RUN_TESTS(test_thp_adjust_sleepable);
- }
-diff --git a/tools/testing/selftests/bpf/progs/test_thp_adjust_sleepable.c b/tools/testing/selftests/bpf/progs/test_thp_adjust_sleepable.c
-new file mode 100644
-index 000000000000..9b92359f9789
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/test_thp_adjust_sleepable.c
-@@ -0,0 +1,22 @@
-+// SPDX-License-Identifier: GPL-2.0
++BPF-based THP adjustment
++========================
 +
-+#include "vmlinux.h"
-+#include <bpf/bpf_helpers.h>
-+#include <bpf/bpf_tracing.h>
++Overview
++--------
 +
-+#include "bpf_misc.h"
++When the system is configured with "always" or "madvise" THP mode, a BPF program
++can be used to adjust THP allocation policies dynamically. This enables
++fine-grained control over THP decisions based on various factors including
++workload identity, allocation context, and system memory pressure.
 +
-+char _license[] SEC("license") = "GPL";
++Program Interface
++-----------------
 +
-+SEC("struct_ops.s/thp_get_order")
-+__failure __msg("attach to unsupported member thp_get_order of struct bpf_thp_ops")
-+int BPF_PROG(thp_sleepable, struct vm_area_struct *vma, enum bpf_thp_vma_type vma_type,
-+	     enum tva_type tva_type, unsigned long orders)
-+{
-+	return -1;
-+}
++This feature implements a struct_ops BPF program with the following interface::
 +
-+SEC(".struct_ops.link")
-+struct bpf_thp_ops vma_ops = {
-+	.thp_get_order = (void *)thp_sleepable,
-+};
-diff --git a/tools/testing/selftests/bpf/progs/test_thp_adjust_trusted_owner.c b/tools/testing/selftests/bpf/progs/test_thp_adjust_trusted_owner.c
-new file mode 100644
-index 000000000000..b3f98c2a9b43
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/test_thp_adjust_trusted_owner.c
-@@ -0,0 +1,30 @@
-+// SPDX-License-Identifier: GPL-2.0
++  int thp_get_order(struct vm_area_struct *vma,
++                    enum bpf_thp_vma_type vma_type,
++                    enum tva_type tva_type,
++                    unsigned long orders);
 +
-+#include "vmlinux.h"
-+#include <bpf/bpf_helpers.h>
-+#include <bpf/bpf_tracing.h>
++Parameters::
 +
-+#include "bpf_misc.h"
++  @vma: vm_area_struct associated with the THP allocation
++  @vma_type: The VMA type, such as BPF_THP_VM_HUGEPAGE if VM_HUGEPAGE is set
++             BPF_THP_VM_NOHUGEPAGE if VM_NOHUGEPAGE is set, or BPF_THP_VM_NONE
++             if neither is set.
++  @tva_type: TVA type for current @vma
++  @orders: Bitmask of requested THP orders for this allocation
++           - PMD-mapped allocation if PMD_ORDER is set
++           - mTHP allocation otherwise
 +
-+char _license[] SEC("license") = "GPL";
++Return value::
 +
-+SEC("struct_ops/thp_get_order")
-+__failure __msg("R3 pointer arithmetic on rcu_ptr_or_null_ prohibited, null-check it first")
-+int BPF_PROG(thp_trusted_owner, struct vm_area_struct *vma, enum bpf_thp_vma_type vma_type,
-+	     enum tva_type tva_type, unsigned long orders)
-+{
-+	struct mm_struct *mm = vma->vm_mm;
-+	struct task_struct *p;
++  The suggested THP order from the BPF program for allocation. It will not
++  exceed the highest requested order in @orders. Return -1 to indicate that the
++  original requested @orders should remain unchanged.
 +
-+	if (!mm)
-+		return 0;
++Implementation Notes
++--------------------
 +
-+	p = mm->owner;
-+	bpf_printk("The task name is %s\n", p->comm);
-+	return -1;
-+}
-+
-+SEC(".struct_ops.link")
-+struct bpf_thp_ops vma_ops = {
-+	.thp_get_order = (void *)thp_trusted_owner,
-+};
-diff --git a/tools/testing/selftests/bpf/progs/test_thp_adjust_trusted_vma.c b/tools/testing/selftests/bpf/progs/test_thp_adjust_trusted_vma.c
-new file mode 100644
-index 000000000000..5ce100348714
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/test_thp_adjust_trusted_vma.c
-@@ -0,0 +1,27 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include "vmlinux.h"
-+#include <bpf/bpf_helpers.h>
-+#include <bpf/bpf_tracing.h>
-+
-+#include "bpf_misc.h"
-+
-+char _license[] SEC("license") = "GPL";
-+
-+SEC("struct_ops/thp_get_order")
-+__failure __msg("R1 invalid mem access 'trusted_ptr_or_null_'")
-+int BPF_PROG(thp_trusted_vma, struct vm_area_struct *vma, enum bpf_thp_vma_type vma_type,
-+	     enum tva_type tva_type, unsigned long orders)
-+{
-+	struct mm_struct *mm = vma->vm_mm;
-+	struct task_struct *p = mm->owner;
-+
-+	if (!p)
-+		return 0;
-+	return -1;
-+}
-+
-+SEC(".struct_ops.link")
-+struct bpf_thp_ops vma_ops = {
-+	.thp_get_order = (void *)thp_trusted_vma,
-+};
++This is currently an experimental feature.
++CONFIG_BPF_GET_THP_ORDER must be enabled to use it.
++Only one BPF program can be attached at a time, but the program can be updated
++dynamically to adjust policies without requiring affected tasks to be restarted.
 -- 
 2.47.3
 
