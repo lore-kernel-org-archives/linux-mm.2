@@ -4,101 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3B47CA0FED
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 01:46:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 951C8CA0FED
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 01:53:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 244CB8E0005; Tue,  9 Sep 2025 21:46:43 -0400 (EDT)
+	id E3F708E0002; Tue,  9 Sep 2025 21:53:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 21CB08E0002; Tue,  9 Sep 2025 21:46:43 -0400 (EDT)
+	id DEC2F8E000D; Tue,  9 Sep 2025 21:53:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 159898E0005; Tue,  9 Sep 2025 21:46:43 -0400 (EDT)
+	id CDAFD8E0002; Tue,  9 Sep 2025 21:53:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 013BA8E0002
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 21:46:42 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6FB841DF382
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 01:46:42 +0000 (UTC)
-X-FDA: 83871651444.27.AD771CC
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 3C0D64000F
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 01:46:40 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=f0FcUSZZ
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id BA4F56B000D
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 21:53:49 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4263111AA5E
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 01:53:49 +0000 (UTC)
+X-FDA: 83871669378.26.F8A0C4C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 9446380006
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 01:53:47 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WOvBDMUm;
+	spf=pass (imf02.hostedemail.com: domain of trondmy@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=trondmy@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757468800;
+	s=arc-20220608; t=1757469227;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iVZDanYB1GEfuIgx7b8oUnFAcvHUmEEb2jsYYOOe4vA=;
-	b=8kcuqu77CEneZ7S37J25VpGf3J8osj5kUtkU4nP7Ih01LDO8SJg3caM0YBT/Pa+3YvJ4Yd
-	cnj+R2g18x7sRY8b6WkTvw9FXv8nmd8YW/b4MlOjky0jNDQuUwp2euXdZFNoT02atVh+19
-	iPrynGAxBWgQTriPfvaV8nMQ7bD+XQk=
+	bh=55wq/f1cb6s/9pF5KMJKT2HnWPh5WEA8I0kPp5UERPs=;
+	b=lLU3HDB7CFcECkMHuP0K2d8S1V9Eb79BEi8CBxANV1xBV21WooRr9aA2AmybBKY/x3ir5N
+	EeB4Aw2+IqWiRpkngWrhVCjModn1VIGrdy5TfpYmRidu8ye3Rk0h56E2HJ+67vJy5eKVyW
+	zKYy+iob+DmWud3ZR1dq83Jlo79JTEU=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=f0FcUSZZ;
-	spf=none (imf12.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757468800; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WOvBDMUm;
+	spf=pass (imf02.hostedemail.com: domain of trondmy@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=trondmy@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757469227; a=rsa-sha256;
 	cv=none;
-	b=nlG/yUH9N7tVZXAMk8nEmn4Yum/esdZEvl5e/wsYa0J6Rvq2f150l7UCei3AW/FWFiR6By
-	lGQQkftxZUZkbQob9/rB9WMwdcquE6ClGZyoJxXnxtnyGzKmeS+mQT0NGfV+i5753N9FtR
-	KclbhDhhZuJPD+UPoTjkUqw99PqC6hQ=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=iVZDanYB1GEfuIgx7b8oUnFAcvHUmEEb2jsYYOOe4vA=; b=f0FcUSZZjVJBUU1eRiHtLrYC8B
-	fX8ygyKP47lN6S0QCXn5v2gT9H3CAbs8IRUKYD4o4ahPPQW9SC1LbIjyzIFy5IpYnJc/Zi35KMKl6
-	GdUlF1LCy0kzBtNQT9ZzXDOjZmQlcu+Xai7VaAjWD7/8ywjnmbm5Ol0aHh6nNDZ+nK+u02Mi2LTbP
-	KkIhdzSbwdYhFuN6+BCgg6md5Cbqr9Wtb/OQnYkHd+LUsIIIrFqJgd3p4eVkD/vtGMjJRJWTj736c
-	yd2K/AZ2RcClBL8DLGKuOfEPa42TkTPx7o/71xbtDzWPW6D8jMVCQK4Hk2xdsrLnqU6R/xPghQ5S7
-	5PHe08Rw==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uw9uo-00000000UeR-417j;
-	Wed, 10 Sep 2025 01:46:31 +0000
-Date: Wed, 10 Sep 2025 02:46:30 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	linux-mips@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Richard Weinberger <richard@nod.at>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Ankur Arora <ankur.a.arora@oracle.com>,
-	David Hildenbrand <david@redhat.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Ira Weiny <ira.weiny@intel.com>, Nishanth Menon <nm@ti.com>,
-	Heiko =?iso-8859-1?Q?St=FCbner?= <heiko@sntech.de>,
-	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-	"Chester A. Unal" <chester.a.unal@arinc9.com>,
-	Sergio Paracuellos <sergio.paracuellos@gmail.com>,
-	Andreas Larsson <andreas@gaisler.com>
-Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
-Message-ID: <aMDYdp3H-yOHU1Pm@casper.infradead.org>
-References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
+	b=FkeI9qw4el1CQHWWDSaiUkgi5Q/cFm5Sh0iqcWl3gz1/bML4+g9Kzsp189gOg2DClgH4rb
+	oI49URSYeTKgOas8t405HN2EleF+RhYszd0RJHnneGB1dgjZTiDob/zsgt9psSuApaleKJ
+	fbHLU3lrC470uQ1PQEyO/RGv1Cwxf0o=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 24C984465D;
+	Wed, 10 Sep 2025 01:53:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B8BFC4CEF4;
+	Wed, 10 Sep 2025 01:53:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757469226;
+	bh=56bS2ap0hJvXbN/99ydP9OC4SqQB/mSQtppLSgmKJc8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=WOvBDMUm1PlZZvHn9uAcpe7U1Tw9LEy7uQ1LlFu9/EY4tP0VzCRKGrrFziva0rjbx
+	 aERK/g/ejJTr7TA7ik3vO0jtvs8i2hlBqAdFr3aG2vkcvkKZabQGZNRU8Fw4vlf+sK
+	 QtUKjzoHWo1TD4+sLtCwqwpRXRr6hFX98H0mCIYoAsHahVdHHwvK7uAmnWtRqknWWD
+	 mz/vPJKtJlG/c4WTZoo8hjlKl1pTeXwRp4rArGRyjlovDusQ6SWUya5aAgEdJH/CnV
+	 g5juBCfQTdpwhNUuFkhNSKtrzk9NXmHpcbpDN1phJ4/Jwww/Gi7+kxIFn+txxuSEzi
+	 pWRIrVq8F5s/g==
+From: Trond Myklebust <trondmy@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org,
+	Anna Schumaker <anna@kernel.org>
+Subject: [PATCH v5 0/3] Initial NFS client support for RWF_DONTCACHE
+Date: Tue,  9 Sep 2025 21:53:41 -0400
+Message-ID: <cover.1757177140.git.trond.myklebust@hammerspace.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <cover.1755612705.git.trond.myklebust@hammerspace.com>
+References: <cover.1755612705.git.trond.myklebust@hammerspace.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
-X-Rspamd-Queue-Id: 3C0D64000F
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 9446380006
+X-Stat-Signature: zr487fdftt3i3sh74hmseksrptjhneww
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: sxyr5mi73k7zf4i3r36nfma7uc98bs7d
-X-HE-Tag: 1757468800-946498
-X-HE-Meta: U2FsdGVkX19hvFMjz3xgA3igtPEQVgNCcb1ssU6wvzUaFkHzH1WnXDV29JgXFGEhltuprM0A9qFE9zzH40J7fwEz4X6yOwntYaVGQaVqg39G6UDiiUAfGGJF7jA9VIls6r6rIN8AsVwB4Yl3/ZBdiM+YJco5toVoZNtbEYcDR5yQO2IhPcMrSQX7BzBu8foWOQMatPOA7YsuufQIg62LE2V1yd1eVmLm1Sc80UYJAzrW8ju9M2OM9Ga9h+ryaZaaXXzmPtDF1H1bzUzmuCx7yIakq9z785Soc+ToUGMTNaWl0h70DnE47FdnX/kmA982BM2TIz6mQjlpYVgoYk5u+T5PcMks8hZW2/L1uC3XNWY5eSBtK+mv0T8ixFjOaRzPCYrarUHHZJAiY7Lf+GzuNrjqGdwmJm7IoOLEBsOm+odVZv2ZJHql08bV7N4TIjWU5/itwQ1ViC3eRERXluAUcRN+fJ+T+c0bXcLlTV5dXZb/8Hq7//7MO7Op5H6z6fJ8fGwnr4cnT+h8F7cNQKhhxmeiAbpMZFDYThjdr8ktsRkD57LUY8OenhgBFGsPTRaJwqNaZuaAOIZ+YSWrl4HQMcpPAKiZQ3CeerzyNcep8VKUsleMP/A7CdGjFvwHTpzGQ3ci71qCiXnWAGqYc4OJPLFp+q2P7BJujQTg8PoGokaMW+vdX+CsIPhox4u7uWzSMZrb5oofqe//P5XN/gNW1qR6QZIOKBs/OlHPlIzWceDH6VPeaOYs+4l+ea1W40i2h7v2XpURKANzK02uePDxY4PiuEjbZWdEcYPXaJgHS/NZ9vmnSTTya1kaW/qjKgd4NhxN13qw9k0Z0x4karquSXJ0j6yrc5tgPEKa6k38/SJV+S7hOMOhMRzzKM5Nuo+yr8VTnULuK7qDus8bOPMZsdFL2savAq1VYR6ppV88sgOWKyCXDTURUDMI3arTBtaeixDJ/f2sULvzsvPcem3
- GTDdiBy8
- +YNFs1Llc76TtKsUF4VMi3jO1GWYvGjgG9om2EszGbzLlpuuVanpiJErTU1Rt6KnKKBELs9aVDZavzVKcpxZ+pPEZp6TxfRegoD+wsYJxstP/9tUJkroDT4MLKxvRCiT/ZqrHwCsyFqU1pCxZTyJ6YDCkGNDuPVUOeNxYpdugX0grz0WRMq49RiIksvoSQywy8BiReJNQAqACRL0duJEr0G3g4aHYQKTx2GyCL4YeNXPO5cfrKbSDhllvO7o9eTVdcLEaU0gliyvI1uwURqv95ULCpGY+z3VO8miWgO+gZ7PT5NNIPN1YDZxXSQ==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1757469227-645138
+X-HE-Meta: U2FsdGVkX18tgkTOJ+J07oEGnFDTsQ21y/WJEKZU7+1xlv3TZmcnU2NwbJlIj6jr8w+AvsbIK1u0pS7Xz7BXXFBbKRhwT7OK59f9CesFx4K4XOStvkEyN5ThR2b9vKWMdWN8LCzTK4g/9J7vP0Gt31k8CvpxbfCra6HivFcFta2Rrwho35w6/o9Bknf5ThvAf+qgvVgSmHy11tq5QT88+e29vw5B08m8UlCD6XKzJDTEH1xL4vrUMlMtw1+CiFP2WlTiuC8u9BfJFx3JkOEbxkqwxd2nWrVbq7sqPnD6tP0qq/0bxwjc1hqwj55UdbBW+aixH8WvQ+LG3ek2zeIsINiL/LC6wWj5jvsVHTs9Q3doudHj/4iyvpOmxsP+rxc+xhohJD8tf44SH5NbGkRtxG+Y5wOBjzmoxvyJlyhpAErduIM2Uy8Iocc6Q1KcLtNUfxhGh1G91/5pS+aEF2jQFMP51m9xpYBzygUqGz5VyBBvOJV7TgjJewCy2e7dhI0OVKzgMbrBTyrWYftGAEoSTZ4LHTdr8Uh97l3Y/N50xzbbS/CacQ1dqWd3A2hYYYPAvjZzh2VtH/HzHPFS0cF+jJi8D2IF8cTwLdY/4mFu3GmdiH7KR+P/dWwE+BGvwsn4ZXKTm6zlh1zo0ep46BvG9jzOkxjLZi6xvC2l0qFlv4MWAgbWbjAVE7QwGYdVuNGv2zx2lV3KTM/XtXoldpqc9SvmRMVySTj0RfFOdOiZ61OF8advpUlz/oTTq/qkuOS3GQGfoyGcNDqDZoN1sjj6QMc0ZqD6JbKIL23n9XoHYkGTHyKvdJ6qctf2E8YSVEkcU0q53VXE7UeCcgModJQM0jn9lvWBgeseKYil2YVLYJIKG1S71x5qlgvLK+UjF2R1rysTk2zO0gQkMWUY5j5WAG/oUonpD7+PbhcZM1UycSaPS1i5wKgBjCTX4TZmOUyo77jKouxtnuyqzbg6Zea
+ qUdpCIbe
+ E1ZLdYXMN8JxCifQeuAElyhLGbM7rzxza2TZcN/0m0Z+KQBgXHcuAinOwWAXAWg2cJJWWUwdNk0eZq7FBJHVEKMkAoHj3FckfW5D3jMPdjdWjPyvdImPLpZrF93hXfjfxBDdIOI9G9x4YV609ZedvmAf07utEAYC63WXnMmxKzr0JTJvp8/GR+0rd3B/MVs2zROGFXu3pc+Pnd12fRZxs6oLrIK66+UgsH0Yj6Y6DWU8SIJt2Snsr5q6KB1HktUkectTcovvv05S7yv4yo6ZJacUAw6BDYRGzETZNM6VzKjSd1cSfQzOGzt44Eg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,34 +92,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 09, 2025 at 11:23:37PM +0200, Arnd Bergmann wrote:
-> While removing a feature that is actively used is clearly a regression
-> and not normally done, I expect removing highmem is going to happen
-> at some point anyway when there are few enough users, but the question
-> is when that time will be.
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-I don't mind that the feature remains ... unless it causes us trouble.
-Which it currently does.  Perhaps we could start by removing HIGHPTE?
-There was a certain amount of complexity introduced into the page fault
-path when support for that was introduced.  x86 removed support for it,
-so it's just ARM left before we can remove the complexity again.
+The main issue is allowing support on 2 stage writes (i.e. unstable
+WRITE followed by a COMMIT) since those don't follow the current
+assumption that the 'dropbehind' flag can be fulfilled as soon as the
+writeback lock is dropped.
 
-Most of the other pain points are around storing metadata (directories,
-superblocks, etc) in page cache highmem.  I think we can get rid of that
-now too.
+v2:
+ - Make use of the new iocb parameter for nfs_write_begin()
+v3:
+ - Set/clear PG_DROPBEHIND on the head of the nfs_page group
+ - Simplify helper folio_end_dropbehind
+v4:
+ - Replace filemap_end_dropbehind_write() with folio_end_dropbehind()
+ - Add a helper to replace folio_end_writeback with an equivalent that
+   does not attempt to interpret the dropbehind flag
+ - Keep the folio dropbehind flag set until the NFS client is ready to
+   call folio_end_dropbehind.
+ - Don't try to do a read-modify-write in nfs_write_begin() if the folio
+   has the dropbehind flag set.
+v5:
+ - Change helper function export types to EXPORT_SYMBOL_GPL
 
-I don't see any particular need to gt rid of file data stored in highmem,
-nor anonymous memory stored in highmem.  And if we're only talking
-about hundreds of megabytes of memory, I think anon+ file pagecache is
-probably most of the memory in the system already unless you have some
-very weird workloads.
+Trond Myklebust (3):
+  filemap: Add a helper for filesystems implementing dropbehind
+  filemap: Add a version of folio_end_writeback that ignores dropbehind
+  NFS: Enable use of the RWF_DONTCACHE flag on the NFS client
 
-Where we may want to be a bit careful is some people have Plans to
-reuse the kmap infrastructure to support things like unmapping the
-pagecacheto protect against spectre-eqsue attacks.  I know Intel was
-working on this when 3dxp was going to be a Thing, but it's recently
-been brought back:
+ fs/nfs/file.c           |  9 +++++----
+ fs/nfs/nfs4file.c       |  1 +
+ fs/nfs/write.c          |  4 +++-
+ include/linux/pagemap.h |  2 ++
+ mm/filemap.c            | 34 ++++++++++++++++++++++++++--------
+ 5 files changed, 37 insertions(+), 13 deletions(-)
 
-https://lore.kernel.org/linux-mm/20250812173109.295750-1-jackmanb@google.com/
+-- 
+2.51.0
 
 
