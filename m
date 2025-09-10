@@ -4,86 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B97DCCAC583
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 12:11:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10E3FCA101F
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 12:14:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1301B8E0003; Wed, 10 Sep 2025 08:11:25 -0400 (EDT)
+	id 46B496B000D; Wed, 10 Sep 2025 08:14:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E0F78E0002; Wed, 10 Sep 2025 08:11:25 -0400 (EDT)
+	id 4433C6B000E; Wed, 10 Sep 2025 08:14:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 01D9E8E0003; Wed, 10 Sep 2025 08:11:24 -0400 (EDT)
+	id 3586B6B0010; Wed, 10 Sep 2025 08:14:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DE8D78E0002
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 08:11:24 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7D73D5B9B8
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 12:11:24 +0000 (UTC)
-X-FDA: 83873225688.04.F8C7EE3
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 9C21F20009
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 12:11:22 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Jy59mXFh
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E1466B000D
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 08:14:29 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 972CBC08F0
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 12:14:28 +0000 (UTC)
+X-FDA: 83873233416.09.5D90A8F
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 4F1CD8000C
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 12:14:26 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=pxUK7Ex4;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=9Ky4gXRZ;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=pxUK7Ex4;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=9Ky4gXRZ;
+	spf=pass (imf02.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757506283;
+	s=arc-20220608; t=1757506466;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mGqnPhD7id+ekgFhW/HlBJ5YeFKgN7a3hdLZmGPXQVQ=;
-	b=GLVEy02/pwIrOD1i0M8iLqgpAW9D3c6z1r8FZe0YIJviazt3TuL3j8DqXqkuEXirJh/OEl
-	5w8B2OMHvUChMhOgYnuVfnlv5an/KJYxv9CxGsNjwzQhwuA04GmVngfXG8tOeYFxc3UMxf
-	BgdJ4iUCuF4I1Ke5dAejVeEK07IeGJs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757506283; a=rsa-sha256;
+	bh=N5gaLRnDjWbSxcnFQcn+mJTPFqz2bFPqndDkLtin1DQ=;
+	b=f6rewM1rgvMNTy+5yQ+8AwI+w2deCYlP9m/t96GpC92JOzSMoojjJIhqUi5Ps3bQnFyAdM
+	5XGj/41Lz9tQ5sOBkvaJ/t8UW7StXgWuQTTqt/xlhs9WHs4E2QE0mUME+BDwMyYav05WrD
+	KPkQVgwRTBOQeMBCnqmnuEkyIzJaDiA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757506466; a=rsa-sha256;
 	cv=none;
-	b=TC8M/xI/DZvR7SGOTIyEkYZrD2kawQb9RLdeyMVLyqjqUzmshbvwX1481BInaLM0aqDl6H
-	7x1yjNKzZAGp4sxfdKPGKWi/04pRjwvJ71hy7TMrNJWs3ulC3SiuXow1KODFajQepqKRDx
-	/1eocnNFQg+2A1bJ+O5gdV6yBkPComk=
+	b=2u92xZsZBexg2Aq0ZjkT1rfjppuvqf3/WZ0nxF4wfEBGEtdebkYrbALmJmm9bpEfCmgxJt
+	vAoOfrbd2GjpSEeIAyIvEtZYy59C81eZQ3yowbMImUEApHQx5Vckjki/qa+GDxo/bX9z7r
+	x5yxq1luHt91sXk+JUkWg0GkhkRyaZo=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Jy59mXFh;
-	spf=none (imf03.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=none
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=mGqnPhD7id+ekgFhW/HlBJ5YeFKgN7a3hdLZmGPXQVQ=; b=Jy59mXFh669GxIRk/sB8i5rJvS
-	emnSTMMjJ+OZ0c03gEbBEcMorTCEz7hfNIeOriqSkRy28qg4UFWdl38upDPmWEm5CP5E3PKJyleLb
-	8jzfyS8Gpfcl8jMZo6UllramEPETYfYghQFTQYE+dSgFt/8yBUbUItX1wvnmC6OE61+7+OEDjIjpb
-	wGPEIGFzbdDHEM2mx1faSJ29dq3GxE7olEaj5VFOXeA8Lwi7p5yLoiHgGx7roO07SCgRv/PPLH9UP
-	e5wu9M5evzxO2GkWJ19mA82uUJFbWhKaqY27/BEPTKn4FT2wgqU2L/Z3LZzMaa28CksvW3K+qhLV7
-	4TR6Nf+w==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uwJPo-00000008MEO-3Q5x;
-	Wed, 10 Sep 2025 11:55:08 +0000
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-To: Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	linux-mm@kvack.org
-Subject: [PATCH v2 01/22] slab: Remove unnecessary test from alloc_debug_processing()
-Date: Wed, 10 Sep 2025 12:54:43 +0100
-Message-ID: <20250910115507.1991829-2-willy@infradead.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250910115507.1991829-1-willy@infradead.org>
-References: <20250910115507.1991829-1-willy@infradead.org>
+	imf02.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=pxUK7Ex4;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=9Ky4gXRZ;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=pxUK7Ex4;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=9Ky4gXRZ;
+	spf=pass (imf02.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 4790221C86;
+	Wed, 10 Sep 2025 12:14:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1757506462; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=N5gaLRnDjWbSxcnFQcn+mJTPFqz2bFPqndDkLtin1DQ=;
+	b=pxUK7Ex4yGUYNZN5PAhw/Tv8WMvIaGVpDrwKkZypT8Tt/i7D8ZuxmpL/UcajxPIzwF7tEo
+	7yqX/56rfaO8T8K4BA4kzZnZPmDrnda+0l6EoZmlxsQdE57FoTbaB1XrLnopGf2+mQL/Nh
+	4zD0nijuHe6aMZY7DbzDYqXQEBWdGVo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1757506462;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=N5gaLRnDjWbSxcnFQcn+mJTPFqz2bFPqndDkLtin1DQ=;
+	b=9Ky4gXRZ131dmOszA0mfrMQRRdIB/H1HsExL07hjq7MUHDiFjy1R943NmRUPW9NaYMiMeh
+	5Y3L9e/6vzRzwxBA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1757506462; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=N5gaLRnDjWbSxcnFQcn+mJTPFqz2bFPqndDkLtin1DQ=;
+	b=pxUK7Ex4yGUYNZN5PAhw/Tv8WMvIaGVpDrwKkZypT8Tt/i7D8ZuxmpL/UcajxPIzwF7tEo
+	7yqX/56rfaO8T8K4BA4kzZnZPmDrnda+0l6EoZmlxsQdE57FoTbaB1XrLnopGf2+mQL/Nh
+	4zD0nijuHe6aMZY7DbzDYqXQEBWdGVo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1757506462;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=N5gaLRnDjWbSxcnFQcn+mJTPFqz2bFPqndDkLtin1DQ=;
+	b=9Ky4gXRZ131dmOszA0mfrMQRRdIB/H1HsExL07hjq7MUHDiFjy1R943NmRUPW9NaYMiMeh
+	5Y3L9e/6vzRzwxBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7870713310;
+	Wed, 10 Sep 2025 12:14:19 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 4cE8GptrwWhadQAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Wed, 10 Sep 2025 12:14:19 +0000
+Date: Wed, 10 Sep 2025 13:14:13 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Anthony Yznaga <anthony.yznaga@oracle.com>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, andreyknvl@gmail.com, 
+	arnd@arndb.de, bp@alien8.de, brauner@kernel.org, bsegall@google.com, 
+	corbet@lwn.net, dave.hansen@linux.intel.com, david@redhat.com, 
+	dietmar.eggemann@arm.com, ebiederm@xmission.com, hpa@zytor.com, jakub.wartak@mailbox.org, 
+	jannh@google.com, juri.lelli@redhat.com, khalid@kernel.org, 
+	liam.howlett@oracle.com, linyongting@bytedance.com, lorenzo.stoakes@oracle.com, 
+	luto@kernel.org, markhemm@googlemail.com, maz@kernel.org, mhiramat@kernel.org, 
+	mgorman@suse.de, mhocko@suse.com, mingo@redhat.com, muchun.song@linux.dev, 
+	neilb@suse.de, osalvador@suse.de, pcc@google.com, peterz@infradead.org, 
+	rostedt@goodmis.org, rppt@kernel.org, shakeel.butt@linux.dev, surenb@google.com, 
+	tglx@linutronix.de, vasily.averin@linux.dev, vbabka@suse.cz, 
+	vincent.guittot@linaro.org, viro@zeniv.linux.org.uk, vschneid@redhat.com, 
+	willy@infradead.org, x86@kernel.org, xhao@linux.alibaba.com, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org
+Subject: Re: [PATCH v3 01/22] mm: Add msharefs filesystem
+Message-ID: <do7cmy4eiiqd5ux62r3u2ghizc62ljg5m3mqx7qzy3im4kc2p6@upmigdbp7eat>
+References: <20250820010415.699353-1-anthony.yznaga@oracle.com>
+ <20250820010415.699353-2-anthony.yznaga@oracle.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9C21F20009
-X-Stat-Signature: drhbui3rwzdzwiyodthoqydhmgsma5zf
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250820010415.699353-2-anthony.yznaga@oracle.com>
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 4F1CD8000C
+X-Stat-Signature: s51mstcinzikegyfyc5eyh44d8u1apff
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1757506282-560944
-X-HE-Meta: U2FsdGVkX18+RP1Fj/jXF6iLrWjmvE/DOTr0jbuzD6fUc/7v33Vg68kAwe1Bp8VNufyUsKcnxeGNk7PqnbBdzgxRfeTdBf0WnhG+4NyXdA6GNuCvzxWA1mSJyTr9padtULFFnxLfzyHH8gxdylUHxGeN+Jx1cQaIFxMJeMXUGs1KBjGXcB1ycY6M4r7oXru9gGbxrKdkVZg9YIoHVjnY4Q/Y5Abs7xzJGH25eWgjjAP1AnReBUB4bY0q7R95OI0FGi6YUbuj5si260wCiD/jXQeqx7A5mwemcgAEBpMCCpMfZptr9tiaIZA2pblxhhDnI1ivJJAMPOD6I2EaOu3Cck5rREvei0KP3c0z7iyj2JP9xIhO2lxUDBHz4rFFrGz9YLfG+Pc7F5g20bfqyS2MfNZhc68VgtW7jq7fvw7nY2Q5n/F6+mXSKOLwrkBfKC7shxYYVBBkPjhpyYJUEKbDoXYfbUliv65kw7F63by3ZZMw1rHYqnQZiCKz9PUx4t+U9x0yQsjRbZuLBZ8Row+NDQdKEbMTmo2ajFJFGPDd8ujqulmXO8MPBsfZFKuW2oKffcj7SV9RcGJsrSpRGCEwDnKL2hXUIPlJqT+B1NY0SAlLLlZEs8Ypy0tsGsGPzGkDMUBBPMuCZuFL0XF4qZS+QgfdqHVZ4w4C1ZKlaXe5bT5r31XGCjdQdwbA3m0B3QPlGxptGUDet1DEVOdpOh1UzzDqax77rzFhv0Gf49wkqe1XivdfsoOFSO7nFZJ54EQJ59NleFBn5WN8sQSe4p/vpsW3E/tsfLcODlO1obM9WYnYqLe+qTLZRwcp+1wBe4YwaeV57Rzazv9/zZzvwxoZ+OO2VVY0OcIoLvNAa0Lj1a3tplhjwRy8o3M1dGPw9BrIpicbHSvNEdAXYo/aF9weWMs12YjySqxrXYcVeX929eJnMmIadKwEZygUl1vDhxW+15n5+XQNiOmxD491Z/9
- 3EGKGxvR
- pyw4IBAqCYFKpPck5N9gYwFrDCHPX+TgB31HKbGViklywVHT2YOKZKxhWakYTZgO33g+bu9rIfmIB1Eby3yCDGrJDmnliIi2nKfX4ybWfJwYroYF+bzSpzu09i80Z+lQ8TvWdDczkk88t0azICgAW9O5z4+KwxR+gEPOARN6Yr6H6ySedjsjpz8i+mF+GP/NUPLQ1njtON9A64U3JLk2o1N2/+mnl8fe2WM0z5mArVM2IJk+pudRW0FNehWSqHpYiM/Mw
+X-HE-Tag: 1757506466-324163
+X-HE-Meta: U2FsdGVkX1+xUYr+5YA0RRyT4HVoCSQXgZl11l1Sk7+0c0VSTC1QQyoAahl45MeIqSSIVs7yrkEOuEt6xmTyGHyLxpO/hcT4/gt4gce62lelRcula5La+kkU1IUDbAAEEm2idEo6Tn/FgkTAZsiQBCgXxpas/JUJ5bXSADmIqHVmgi3pnqFkwN3sIXlOXEwyhVyicr1R2TFsxve47R7T2bWf5rlz5pqXePY8d5tAoxH4t2+AprzLxh2F2XNQc90b+6iEZmWMu19TY+9R1g0xbd7YUjvX3srBY6X7JPICNEKu6QKwlsbHV+ivSOxzWWqdOnoi2YDIPGmEuvMZTJuAPtIawop0/ql1Bosh/rY2QTyKlUWo9GM6ks4wO3wM+2EL9nTezI1kB37pq4QMT0OzGQ0Nr5MdtmiFncYPVYtDjmiLtpwnmZlOd/0fenQSmwkf1h6ZPcmMu3aqAxlDcyEBfq7L3nUZJdJkjRUTZHb3I8hDmCpJtI3v8YxSQDHHe5lrqxRIp0YSlo9g9VOd8vKVCin3vcs46ftYF9j08+dqg5mK5fxsFcHUsHQIvIMbo86smGvfsJXOkyBMOVEc6iRcUp2qhMVR5EGvN2x/JGiuBGDPxSDzuw6/Q1qB/Q52mY15mzeDe5eccRdHygmhJn1c+lUZoPj8mESPpZdm3rgwVwuqAANcpG19vUlrY0/e8v0ZwGo4HxfooHNal7sJ6GNcC73wzb5tvvKQ/UQz0MFIObZl/ttqVQQdwzbXp4DXB1wK6lFHAN5hVVaO9+qwsQJOaTzaW7bXwZNm9ENaeXwaJ2eXf7l1jNlYTUi4jVMkele2Ix+fs0T0S8dLtIu7mneLDeQnjUJW9si994ESO74aNtonBagZr9uPjD7nZElLx4LfBKT1uH/AYbx3OXf4mtnKE3JrtDV1GSyZTRK3wu1uwy28/keJOFS9pngki7vRS1IU21/nF0QUEo2SiYcsV7N
+ gz2Rv1Tp
+ ri7CZJyAxLptyCGWxCbPI04FkPvyeQ9JgYU3NpesDRB4DDCuS0MWdZGxDGOALpOq5hF03N2Csjt8Gmamdy3PCCp5AeIZaynn58d1icxNfrHYzkNYfIvhXqzgUnWCAdD/oz/36ynOLh4dOo4287eOQezgE31EiTcIicDveAKJ2Y5fbcZ9Rh9veEeZ988k5ypW6VG0tzCbe1DkNmKRlQ09h54eSlNqwZp+07XQK6FtAuHXrx+CXid9SIQdEyZqW20AJ87aWWzZkKzCIZVcikgmb98PE520P8mIQhWBCkd8d4Je3J5qntKxHsbS+HlIemtm9zEFK0w7xGDscLybsINvJav/g9x7sgYmVaZfY
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,48 +144,144 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In alloc_debug_processing() we know that the slab pointer passed in
-really is a pointer to a slab.  Both callers modify members of the slab
-data structure.  So we can remove this check.
+On Tue, Aug 19, 2025 at 06:03:54PM -0700, Anthony Yznaga wrote:
+> From: Khalid Aziz <khalid@kernel.org>
+> 
+> Add a pseudo filesystem that contains files and page table sharing
+> information that enables processes to share page table entries.
+> This patch adds the basic filesystem that can be mounted, a
+> CONFIG_MSHARE option to enable the feature, and documentation.
+> 
+> Signed-off-by: Khalid Aziz <khalid@kernel.org>
+> Signed-off-by: Anthony Yznaga <anthony.yznaga@oracle.com>
+> ---
+>  Documentation/filesystems/index.rst    |  1 +
+>  Documentation/filesystems/msharefs.rst | 96 +++++++++++++++++++++++++
+>  include/uapi/linux/magic.h             |  1 +
+>  mm/Kconfig                             | 11 +++
+>  mm/Makefile                            |  4 ++
+>  mm/mshare.c                            | 97 ++++++++++++++++++++++++++
+>  6 files changed, 210 insertions(+)
+>  create mode 100644 Documentation/filesystems/msharefs.rst
+>  create mode 100644 mm/mshare.c
+> 
+> diff --git a/Documentation/filesystems/index.rst b/Documentation/filesystems/index.rst
+> index 11a599387266..dcd6605eb228 100644
+> --- a/Documentation/filesystems/index.rst
+> +++ b/Documentation/filesystems/index.rst
+> @@ -102,6 +102,7 @@ Documentation for filesystem implementations.
+>     fuse-passthrough
+>     inotify
+>     isofs
+> +   msharefs
+>     nilfs2
+>     nfs/index
+>     ntfs3
+> diff --git a/Documentation/filesystems/msharefs.rst b/Documentation/filesystems/msharefs.rst
+> new file mode 100644
+> index 000000000000..3e5b7d531821
+> --- /dev/null
+> +++ b/Documentation/filesystems/msharefs.rst
+> @@ -0,0 +1,96 @@
+> +.. SPDX-License-Identifier: GPL-2.0
+> +
+> +=====================================================
+> +Msharefs - A filesystem to support shared page tables
+> +=====================================================
+> +
+> +What is msharefs?
+> +-----------------
+> +
+> +msharefs is a pseudo filesystem that allows multiple processes to
+> +share page table entries for shared pages. To enable support for
+> +msharefs the kernel must be compiled with CONFIG_MSHARE set.
+> +
+> +msharefs is typically mounted like this::
+> +
+> +	mount -t msharefs none /sys/fs/mshare
+> +
+> +A file created on msharefs creates a new shared region where all
+> +processes mapping that region will map it using shared page table
+> +entries. Once the size of the region has been established via
+> +ftruncate() or fallocate(), the region can be mapped into processes
+> +and ioctls used to map and unmap objects within it. Note that an
+> +msharefs file is a control file and accessing mapped objects within
+> +a shared region through read or write of the file is not permitted.
+> +
 
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
----
- mm/slub.c | 20 +++++++++-----------
- 1 file changed, 9 insertions(+), 11 deletions(-)
+Welp. I really really don't like this API.
+I assume this has been discussed previously, but why do we need a new
+magical pseudofs mounted under some random /sys directory?
 
-diff --git a/mm/slub.c b/mm/slub.c
-index 962110466ffc..ddf26f00b21d 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -1715,17 +1715,15 @@ static noinline bool alloc_debug_processing(struct kmem_cache *s,
- 	return true;
- 
- bad:
--	if (folio_test_slab(slab_folio(slab))) {
--		/*
--		 * If this is a slab page then lets do the best we can
--		 * to avoid issues in the future. Marking all objects
--		 * as used avoids touching the remaining objects.
--		 */
--		slab_fix(s, "Marking all objects used");
--		slab->inuse = slab->objects;
--		slab->freelist = NULL;
--		slab->frozen = 1; /* mark consistency-failed slab as frozen */
--	}
-+	/*
-+	 * Lets do the best we can to avoid issues in the future. Marking
-+	 * all objects as used avoids touching the remaining objects.
-+	 */
-+	slab_fix(s, "Marking all objects used");
-+	slab->inuse = slab->objects;
-+	slab->freelist = NULL;
-+	slab->frozen = 1; /* mark consistency-failed slab as frozen */
-+
- 	return false;
- }
- 
+But, ok, assuming we're thinking about something hugetlbfs like, that's not too
+bad, and programs already know how to use it.
+
+> +How to use mshare
+> +-----------------
+> +
+> +Here are the basic steps for using mshare:
+> +
+> +  1. Mount msharefs on /sys/fs/mshare::
+> +
+> +	mount -t msharefs msharefs /sys/fs/mshare
+> +
+> +  2. mshare regions have alignment and size requirements. Start
+> +     address for the region must be aligned to an address boundary and
+> +     be a multiple of fixed size. This alignment and size requirement
+> +     can be obtained by reading the file ``/sys/fs/mshare/mshare_info``
+> +     which returns a number in text format. mshare regions must be
+> +     aligned to this boundary and be a multiple of this size.
+> +
+
+I don't see why size and alignment needs to be taken into consideration by
+userspace. You can simply establish a mapping and pad it out.
+
+> +  3. For the process creating an mshare region:
+> +
+> +    a. Create a file on /sys/fs/mshare, for example::
+> +
+> +        fd = open("/sys/fs/mshare/shareme",
+> +                        O_RDWR|O_CREAT|O_EXCL, 0600);
+
+Ok, makes sense.
+
+> +
+> +    b. Establish the size of the region::
+> +
+> +        fallocate(fd, 0, 0, BUF_SIZE);
+> +
+> +      or::
+> +
+> +        ftruncate(fd, BUF_SIZE);
+> +
+
+Yep.
+
+> +    c. Map some memory in the region::
+> +
+> +	struct mshare_create mcreate;
+> +
+> +	mcreate.region_offset = 0;
+> +	mcreate.size = BUF_SIZE;
+> +	mcreate.offset = 0;
+> +	mcreate.prot = PROT_READ | PROT_WRITE;
+> +	mcreate.flags = MAP_ANONYMOUS | MAP_SHARED | MAP_FIXED;
+> +	mcreate.fd = -1;
+> +
+> +	ioctl(fd, MSHAREFS_CREATE_MAPPING, &mcreate);
+
+Why?? Do you want to map mappings in msharefs files, that can themselves be
+mapped? Why do we need an ioctl here?
+
+Really, this feature seems very overengineered. If you want to go the fs route,
+doing a new pseudofs that's just like hugetlb, but without the hugepages, sounds
+like a decent idea. Or enhancing tmpfs to actually support this kind of stuff.
+Or properly doing a syscall that can try to attach the page-table-sharing
+property to random VMAs.
+
+But I'm wholly opposed to the idea of "mapping a file that itself has more
+mappings, mappings which you establish using a magic filesystem and ioctls".
+
 -- 
-2.47.2
-
+Pedro
 
