@@ -4,88 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2FB6CA0FED
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 01:59:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45AC0CA0FED
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 02:05:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC2418E0012; Tue,  9 Sep 2025 21:59:47 -0400 (EDT)
+	id 88A9C8E000D; Tue,  9 Sep 2025 22:05:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C4C798E000D; Tue,  9 Sep 2025 21:59:47 -0400 (EDT)
+	id 862378E0005; Tue,  9 Sep 2025 22:05:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B14268E0012; Tue,  9 Sep 2025 21:59:47 -0400 (EDT)
+	id 79EA18E000D; Tue,  9 Sep 2025 22:05:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9962F8E000D
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 21:59:47 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3BD15C0764
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 01:59:47 +0000 (UTC)
-X-FDA: 83871684414.24.50D5F9F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 9C04020005
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 01:59:45 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pcKBDT40;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of trondmy@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=trondmy@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757469585; a=rsa-sha256;
-	cv=none;
-	b=Mi7vDyLoCnao68vhj0/fcrvOkdQBNERwx8eHkX0PjtzF+qDGDppeZrP7IzUjzezkH57TFH
-	yWWKCQus8yZSMmySZjfoHXsgfKwICUCrUtgagc69G6k9qvuZn84LVAAYzVO6S+1cN0svo3
-	7O9ludWCMecS+YBfRUHFhLqwfZvo3MU=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pcKBDT40;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of trondmy@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=trondmy@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6493B8E0005
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 22:05:57 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 194E413B454
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 02:05:57 +0000 (UTC)
+X-FDA: 83871699954.20.EEC7417
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+	by imf25.hostedemail.com (Postfix) with ESMTP id E26D3A0008
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 02:05:53 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=none;
+	spf=pass (imf25.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757469585;
+	s=arc-20220608; t=1757469955;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tY2g1ewNz2H31wMVaoYNp4hPaQ8OMzfHbr13qu9BshQ=;
-	b=xDuZ565RdNJq2BJ0lF7gukuEuGitgtbJmkfrfBXq2hp7L4Gk8mb7EcsOzlpgi9yfQrzwEc
-	EYHXdHQXv411Qggt8Pc+x+88JCTB5N1ujWzt+2zadYG81pkv5Z8tk+E8Dp4VuaiXdfaWfo
-	YKI9c5k7/Lq/aiuC5vO0cmIjiEFnfh8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0073160195;
-	Wed, 10 Sep 2025 01:59:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25188C4CEF4;
-	Wed, 10 Sep 2025 01:59:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757469584;
-	bh=tY2g1ewNz2H31wMVaoYNp4hPaQ8OMzfHbr13qu9BshQ=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=pcKBDT40l2OFNcvFOhCpqh4mzQO1YOZw3KzEyrS9QzV8G+18vGvcGaEoauo+jdN3E
-	 MfuRJbuZ8vqts5jC5guF85KMn4PHQD+4eC5qIXp5IUfsXMgGJHvwYQdt7RCCAOWUal
-	 wFhVOwrs7qnIXnmwlrYxdIWQdztTWchxwCOfWw2UPdQHOjBaT1Ux5HOeRIImeUBQR9
-	 S8SqUfGWsoWXQjcaDU9lvv+ve6pgHsYLf5t5MOBAFw2hqPzP1DocXUe9E+02lbeOEG
-	 TYaFLnzoRxBJvs/4N8ugvmcnBLpVpJgWW7cKgLVzyRECAy8titAUxclO+VesDQDed+
-	 GO0g8MpI2ajaQ==
-Message-ID: <5839b964d7465a8eb7235cd01575a0af073af60d.camel@kernel.org>
-Subject: Re: [PATCH v5 0/3] Initial NFS client support for RWF_DONTCACHE
-From: Trond Myklebust <trondmy@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, Anna Schumaker
-	 <anna@kernel.org>, linux-nfs@vger.kernel.org
-Date: Tue, 09 Sep 2025 21:59:42 -0400
-In-Reply-To: <cover.1757177140.git.trond.myklebust@hammerspace.com>
-References: <cover.1755612705.git.trond.myklebust@hammerspace.com>
-	 <cover.1757177140.git.trond.myklebust@hammerspace.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+	 in-reply-to:in-reply-to:references:references;
+	bh=FA2zqg6E3njNH4bo2LCqKXDIyZ+LC+Uk67cQvqQNd60=;
+	b=gD6YoVIgfAv1w5zqe9raJOI7EEHsgKduoe9vpzlm5zLNEtanfH/jeA950JOHaPr4Kc4DmT
+	HsT3Jc0RwirFwNMh2UKI3twBwlz5+xROHYXCvXBGtBbo8AfD67Q+uQEpc3GRNmxiOj7L+U
+	4NvmDjV4N6HYQn94JSWW/OQy2jSWUos=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=none;
+	spf=pass (imf25.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757469955; a=rsa-sha256;
+	cv=none;
+	b=P34AP7d2+Kn1bh2uMY6qznTbYbWr0sWTqLxMr70EVFck5SoiwuNiBC/v4DoC8gSCtrivLH
+	vnIjuvOpgAR1ra8wBP2UWaFcDZcgupAwHi2+QtdwPZOFkjAzBmUnhBzhphvy8OQGT2m7Nl
+	3BD2289C6YFRS7SLKnwXRB4ACu1yFaI=
+Received: from mail.maildlp.com (unknown [172.19.162.112])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4cM3pt4J8dz24j8p;
+	Wed, 10 Sep 2025 10:02:14 +0800 (CST)
+Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
+	by mail.maildlp.com (Postfix) with ESMTPS id A7CAC140142;
+	Wed, 10 Sep 2025 10:05:29 +0800 (CST)
+Received: from [10.174.177.243] (10.174.177.243) by
+ dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 10 Sep 2025 10:05:28 +0800
+Message-ID: <ce5cbd2b-ccbd-496a-95c0-501b972cd691@huawei.com>
+Date: Wed, 10 Sep 2025 10:05:27 +0800
 MIME-Version: 1.0
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 9C04020005
-X-Stat-Signature: xxdcxbpcxyo5bwt75bxjqtuajgfgroeu
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 6/9] mm: page_alloc: add alloc_contig_frozen_pages()
+To: Zi Yan <ziy@nvidia.com>, Matthew Wilcox <willy@infradead.org>
+CC: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
+	<david@redhat.com>, Oscar Salvador <osalvador@suse.de>, Muchun Song
+	<muchun.song@linux.dev>, <sidhartha.kumar@oracle.com>, <jane.chu@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, <linux-mm@kvack.org>
+References: <20250902124820.3081488-1-wangkefeng.wang@huawei.com>
+ <20250902124820.3081488-7-wangkefeng.wang@huawei.com>
+ <aMB4KhOX7IeFXaOZ@casper.infradead.org>
+ <B41EB8CB-3337-45B3-B952-70359AAFF2D7@nvidia.com>
+Content-Language: en-US
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+In-Reply-To: <B41EB8CB-3337-45B3-B952-70359AAFF2D7@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.177.243]
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ dggpemf100008.china.huawei.com (7.185.36.138)
+X-Rspamd-Queue-Id: E26D3A0008
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 3zhqkdijp1nufww4arj65ufishtrs1k6
 X-Rspam-User: 
-X-HE-Tag: 1757469585-31293
-X-HE-Meta: U2FsdGVkX19MwvKcaUtdlM6h5e1itlQOmO4bipS+yrWqebZPzYh0NopTKQfo9jve8MKP/MpNeRh4+/0/T0WiDIZTyMrQue2I2yMHCDIGVuKLsMjXsEhrGWfWBH0qvXPUCcXTxywuk4qIDDirB41aUkdkUIJcBbdC41lTV9901IhLf79xkRqAHKsztoARa65hNoHFA8w1tmVniynhxQVatVphGw+cql8KXHusgaEy+dbEZm6Iv+JlQ64e62mNxp4K3EKCz6AKTznP6uv5ilOSFL8Rs2ozH6FX4VhcoiwNHfCUIYtpcjPuHRHApjG309pJo9kcaP71c2oH2/0a8TrTb2Wuhe8XoTODHz5YPjxCQwbJH7ok0wJNyXsgRDQC6dzFvIa5tzrNg0J+ceNkh+UfcybUacLLkZTgdi6lv9mznWbhOKkSSHida4EPEkOzYuj3ooLRy1LH5eiSss9JT+SFYwrDUW9mnPpMZEEG/pFz+HEUwrdhF992OMWlIqxSGrmrc3eli5V/+lmrO8+A3Okf+kgoDDriFPtijAUatw5xauVnn6eQX239JlZcFifxIOIsueex+3/zTxosUdZNiUf5fpz10Fd7aBVAiORLRU4bE8xcEwwDE91PDLKOEbtigzvHJw4FFw+rSPKADvwNU7fngfr4FmTEV9UMlqQUhVkXo4AgqU4HTxpk0UGm1bSh0eAR5P1qCSLed7+69aswEQN/BB4G3roUeCXRSOWQaxvwNPlfP7vBLdKmoiRd2ernnRz5NyjDM1kG8w4yZAGWi8yWnTXprrLebqjuiYThvqHvEnZGTzQ9dJNAYTo/4DEoaD4XxkjFYv4sqwIOCXLbcmypREw+nI/ty2jOyYqVzkvCCPv1S2ErW7sAEAh64Cc3YcjnIJ5wqEPFhUe0jWNpfJ2xI9wilm+2SZfc7NEfMx+W8WAP/LKq+FpsGse0cY6MbNpcjRj409BF57i9W4kFGav
- Kt4eQFMV
- EyDQHDcmYcK84VZfulAfuqA9qFnXLRu37DGaurEc6Emx1QDUh/HeJy6QZ05UkZAFfpunOiFqZgphgCBR/uITkWlp3zEeTa4mz4Fbp1qDhuDSGMIC/nOIxKkdViDcoxofyw3xIpvLxKx9lKnYnIsYbbj8Guf4zBCvZ7L94Nn0RkZnab8kspHvsz1L6XwgpHOJLpCrzzduyWEx/HBm4ABlp/OtbmUikbvAJ1zbaM/bt1rRSD+FY3JaQ0uWpFqhBxzjE35m57xWcAU0NsX6HPDfuMFERojboCooyH50bbnNlskHZTHIG/1GsVkvQuw==
+X-HE-Tag: 1757469953-773567
+X-HE-Meta: U2FsdGVkX1+geTnTGYfx42gX8hDMtbW4WLMOqbMQUF/LUXSBAP7b5U2m+j2oXRevhlW0RGc+oeni/+ZGB5MnwAQJU28gUl4jGq7xzzxqg6Q7IcHn24x2GD7QTtcprQ6zcQ+ADi3LR1RfVBjaVRaj+wvDL4c+TiVZAlxUWoO5fgA/qBEgGYY1Nh/4H6SMJ6sPsJ/f37ASZVT1ExkZJUzttx7W2jwrw/qFBzQIXoQyPOXLveVZrW8sGQVn0AQAUV5g4u8NKmIG3iIofQkBzG1r6KMgS84Q1os1JyEzAhEXGcWtktf7j7aEfK6nH+K7BpDIIvbEGJNapGr0iAPeicq5tA+J8ZTN5MA9FdDWtZ+uqHxfJ9fl858jDE3UAZDt+jJYN5UDB0x9w5MKToQY7KdKPeEhI7eAH3npNbCcjHUZ15LlV01qXN+s6uMcwg/RyyZgi9Cyo4PmAIfzsq5bXT65Ksy1y9oB6Zmebc20Xr4youLCfvTSuxNva57OINNSjmxvOAx7fKEV1Z21JOtvNbsu+/5p7iqmWiA6pNOiLmlZTp6oE0pI33vivPFgvgREFbNHYZJeYCcF3rAY8CxwDbk6+Ap0VAXHQ/B7Y8fITx+abzFLoiYXv4GBZhmwno+ikA6KZpoEcWK3G8zrj1QHeq5bNunGOJ+WTONkQvRU5GNw3xJJlXT9LcOWN9KyVhrdANSHySbhuwqpWrT6Knm1ad3pGIyg1Sx1e4K2hnqpUYw5UpRb3M54SVNbypCrWOWxL/Flv6N0jayp8A3Z/IxbBUDsu1R0GD4pW5cbTMU62O/dm9Q+sYxzOk3IdHJ1iIcjLIzDEuJ9lLNfhQmt1Wc4Jlp0FDDXXcHUd3rTD7/W/t7WE2z6uLObTUBGkYw5IrWEKIXflCg875r2rMmZxLM5prsn8CXgby9HErvpoqOKRyh4RXvBtNkYeRfkvt8jHswA0QrOfgtVdeFXbOGBKvNBr+d
+ WqC3fVv5
+ 7KOHb8KsR6lgWmSCYmJQiXfW5t5KGKaBhkG+BqoQFh76Pv5+ICiomUSVM2r6kpNjmaCjSN1+NWDKKw9H09hUpM77fNuhGNhaRFvM5lhprXyvsITIdzNznTSB8WW0zz8LtRWd3EtYFYj3r1KU9qESZZOzLVcL72JfE5vLOMqbhrTa5D7RrESG3Pl/q+JsoCetRHDR2GB2BxEJGRkAwyhbZgAbrmG9a5GE8sqGUKRndBC02YDBygwgKiVzOaWHndVm9mnAs6BCVnAvCbrkrn9UD+ft5lCd0bI9NPNMsU9kz7jYePag0LwCAlV80wQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,62 +98,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Andrew,
 
-On Tue, 2025-09-09 at 21:53 -0400, Trond Myklebust wrote:
-> From: Trond Myklebust <trond.myklebust@hammerspace.com>
->=20
-> The main issue is allowing support on 2 stage writes (i.e. unstable
-> WRITE followed by a COMMIT) since those don't follow the current
-> assumption that the 'dropbehind' flag can be fulfilled as soon as the
-> writeback lock is dropped.
->=20
-> v2:
-> =C2=A0- Make use of the new iocb parameter for nfs_write_begin()
-> v3:
-> =C2=A0- Set/clear PG_DROPBEHIND on the head of the nfs_page group
-> =C2=A0- Simplify helper folio_end_dropbehind
-> v4:
-> =C2=A0- Replace filemap_end_dropbehind_write() with folio_end_dropbehind(=
-)
-> =C2=A0- Add a helper to replace folio_end_writeback with an equivalent
-> that
-> =C2=A0=C2=A0 does not attempt to interpret the dropbehind flag
-> =C2=A0- Keep the folio dropbehind flag set until the NFS client is ready
-> to
-> =C2=A0=C2=A0 call folio_end_dropbehind.
-> =C2=A0- Don't try to do a read-modify-write in nfs_write_begin() if the
-> folio
-> =C2=A0=C2=A0 has the dropbehind flag set.
-> v5:
-> =C2=A0- Change helper function export types to EXPORT_SYMBOL_GPL
->=20
-> Trond Myklebust (3):
-> =C2=A0 filemap: Add a helper for filesystems implementing dropbehind
-> =C2=A0 filemap: Add a version of folio_end_writeback that ignores
-> dropbehind
-> =C2=A0 NFS: Enable use of the RWF_DONTCACHE flag on the NFS client
->=20
-> =C2=A0fs/nfs/file.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 |=C2=A0 9 +++++----
-> =C2=A0fs/nfs/nfs4file.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 1 +
-> =C2=A0fs/nfs/write.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 |=C2=A0 4 +++-
-> =C2=A0include/linux/pagemap.h |=C2=A0 2 ++
-> =C2=A0mm/filemap.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 | 34 ++++++++++++++++++++++++++--------
-> =C2=A05 files changed, 37 insertions(+), 13 deletions(-)
 
-Since the above series has already done the rounds in the linux-nfs and
-linux-fsdevel mailing lists, could you please ask you to shepherd it in
-to the 6.18 merge window? As you can see above the larger set of
-changes are to mm/filemap.c rather than being NFS specific.
+On 2025/9/10 3:08, Zi Yan wrote:
+> On 9 Sep 2025, at 14:55, Matthew Wilcox wrote:
+> 
+>> On Tue, Sep 02, 2025 at 08:48:17PM +0800, Kefeng Wang wrote:
+>>> Introduce a ACR_FLAGS_FROZEN flags to indicate that we want to
+>>> allocate a frozen compound pages by alloc_contig_range(), also
+>>> provide alloc_contig_frozen_pages() to allocate pages without
+>>> incrementing their refcount, which may be beneficial to some
+>>> users (eg hugetlb).
+>>
+>> No, this is not the way to do it.  We're moving towards a future where
+>> pages don't have refcounts (their owning structs eg folios may have a
+>> refcount, but struct page does not have a refcount).  So work towards
+>> that; if you need to keep compatibility with some users, then by all
+>> means keep alloc_contig_range_noprof() as a wrapper that calls
+>> alloc_contig_range_frozen_noprof() and then calls set_page_refcounted()
+>> if alloc_contig_range_frozen_noprof() does not return NULL.  But I'd
+>> be looking to see if alloc_contig_range_noprof() can always return a
+>> non-refcounted page.
+> 
 
-Cheers
- Trond
+Yes, Zi has been comment this shown below, alloc_contig_pages_noprof()
+is called by may driver(directly or indirectly), I originally only hoped
+to minimize the changes, if we follow your plan, we can do a bit more,
+let me try the new way. Also I will separate this patchset to let the 
+cleanup patch could be merged first.
 
---=20
-Trond Myklebust
-Linux NFS client maintainer, Hammerspace
-trondmy@kernel.org, trond.myklebust@hammerspace.com
+> Something like:
+> 
+> struct page *alloc_contig_pages_noprof(unsigned long nr_pages, gfp_t gfp_mask,
+> 		int nid, nodemask_t *nodemask)
+> {
+> 	struct page *page = __alloc_frozen_contig_pages_noprof(...);
+> 	
+> 	// just added page == NULL check
+> 	if (!page)
+> 		return NULL;
+> 
+> 	if (gfp_mask & __GFP_COMP)
+> 		set_page_refcounted(page);
+> 	else {
+> 		unsigned long i;
+> 
+> 		for (i = 0; i < nr_pages; i++)
+> 			set_page_refcounted(page + i);
+> 	}
+> 	return page;
+> }
+> 
+> as I suggested in another email[1] (of course I forgot to check page == NULL).
+> 
+> And other TODOs:
+> 
+> 1. remove set_page_refcounted() in split_free_pages();
+> 2. a new split_frozen_page() to do split_page() work without
+>     set_page_refcounted() and split_page() can just call it;
+> 3. a new free_frozen_contig_range() and free_contig_range()
+>     calls it.
+> 
+
+
+Thanks Matthew/Zi.
+
+
+> 
+> [1] https://lore.kernel.org/linux-mm/298B40E0-8EA5-4667-86EF-22F88B832839@nvidia.com/
+> 
+> Best Regards,
+> Yan, Zi
+
 
