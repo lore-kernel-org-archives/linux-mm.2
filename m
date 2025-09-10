@@ -4,116 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2D7FCA0FED
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 08:39:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85459CA0FED
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 08:39:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C2608E000A; Wed, 10 Sep 2025 04:39:03 -0400 (EDT)
+	id CBF5A6B000D; Wed, 10 Sep 2025 04:39:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 14BC58E0003; Wed, 10 Sep 2025 04:39:03 -0400 (EDT)
+	id C6FCD6B000E; Wed, 10 Sep 2025 04:39:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 014BD8E000A; Wed, 10 Sep 2025 04:39:02 -0400 (EDT)
+	id B38086B0011; Wed, 10 Sep 2025 04:39:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D852F8E0003
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 04:39:02 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7AC5813BC0F
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 08:39:02 +0000 (UTC)
-X-FDA: 83872690524.03.875B38D
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 65854C000C
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 08:38:59 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9BF986B000D
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 04:39:32 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3B0FE11AD75
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 08:39:32 +0000 (UTC)
+X-FDA: 83872691784.22.8703F42
+Received: from mail-il1-f198.google.com (mail-il1-f198.google.com [209.85.166.198])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 78CFCC0004
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 08:39:30 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
 	dkim=none;
-	spf=pass (imf28.hostedemail.com: domain of shiju.jose@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=shiju.jose@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf10.hostedemail.com: domain of 3QTnBaAkbAAYy45qgrrkxgvvoj.muumrk0ykxiutzktz.ius@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.198 as permitted sender) smtp.mailfrom=3QTnBaAkbAAYy45qgrrkxgvvoj.muumrk0ykxiutzktz.ius@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757493570; a=rsa-sha256;
+	cv=none;
+	b=DkyPG0zSyXJQq1hwlMEI2SDhbspXXUJCapEMOIEm2usSC2gQ0SyJBKGoIld6MMDCRjJ8t2
+	vYHdhrg9Tx8jlHSPdrIWmHQgVSzHhDecfDUAgThN/fAYKP+b3lV6xOLaVGwoXLJSVkMyMG
+	4pNzxKWTisUX38zFJUuzHjgntzo4t5U=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf10.hostedemail.com: domain of 3QTnBaAkbAAYy45qgrrkxgvvoj.muumrk0ykxiutzktz.ius@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.198 as permitted sender) smtp.mailfrom=3QTnBaAkbAAYy45qgrrkxgvvoj.muumrk0ykxiutzktz.ius@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757493540;
+	s=arc-20220608; t=1757493570;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OcGpZjdiY9hrkVpCReXe+DC/oLVSLqeRIWi4ys+DtWs=;
-	b=jKoYNk37LcBssNR9OeZnAD2ZJBS6W2VirttCxZ4gVhcjuys/BJXkARczV96d/eXfL+qIyf
-	fIWfjjLCz9qRpuJCx4Fo1H8xws44s8q3KIF2Yvnt3AP7N0VEDv92PhcGUHZAaqFXmSuhiS
-	hJvfNj8Rt5+M0CagnBL+uRRlFv0aDmU=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=none;
-	spf=pass (imf28.hostedemail.com: domain of shiju.jose@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=shiju.jose@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757493540; a=rsa-sha256;
-	cv=none;
-	b=t73QV0B5HfIJPYTxfJzmx5Iv9hybRrl7vP38Shs93DVtgHwMqFGj6UtjLQm15Tyq1hhnjl
-	l1mOISs54FZuMAbY2itRIXIdnf/BrTkwFQENMhQYL6rCnG+oMDOJKPe8sDVCe1JllS4mfv
-	0wvy5oxkHNAxDH8CNYyEt40fX93x9Y8=
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cMDbC6vdSz6GD5p;
-	Wed, 10 Sep 2025 16:37:43 +0800 (CST)
-Received: from frapeml500005.china.huawei.com (unknown [7.182.85.13])
-	by mail.maildlp.com (Postfix) with ESMTPS id E95FB14033C;
-	Wed, 10 Sep 2025 16:38:55 +0800 (CST)
-Received: from frapeml500007.china.huawei.com (7.182.85.172) by
- frapeml500005.china.huawei.com (7.182.85.13) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 10 Sep 2025 10:38:55 +0200
-Received: from frapeml500007.china.huawei.com ([7.182.85.172]) by
- frapeml500007.china.huawei.com ([7.182.85.172]) with mapi id 15.01.2507.039;
- Wed, 10 Sep 2025 10:38:55 +0200
-From: Shiju Jose <shiju.jose@huawei.com>
-To: Yazen Ghannam <yazen.ghannam@amd.com>
-CC: "rafael@kernel.org" <rafael@kernel.org>, "bp@alien8.de" <bp@alien8.de>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "rppt@kernel.org"
-	<rppt@kernel.org>, "dferguson@amperecomputing.com"
-	<dferguson@amperecomputing.com>, "linux-edac@vger.kernel.org"
-	<linux-edac@vger.kernel.org>, "linux-acpi@vger.kernel.org"
-	<linux-acpi@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"tony.luck@intel.com" <tony.luck@intel.com>, "lenb@kernel.org"
-	<lenb@kernel.org>, "leo.duran@amd.com" <leo.duran@amd.com>,
-	"mchehab@kernel.org" <mchehab@kernel.org>, Jonathan Cameron
-	<jonathan.cameron@huawei.com>, Linuxarm <linuxarm@huawei.com>,
-	"rientjes@google.com" <rientjes@google.com>, "jiaqiyan@google.com"
-	<jiaqiyan@google.com>, "Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>, "james.morse@arm.com"
-	<james.morse@arm.com>, "jthoughton@google.com" <jthoughton@google.com>,
-	"somasundaram.a@hpe.com" <somasundaram.a@hpe.com>, "erdemaktas@google.com"
-	<erdemaktas@google.com>, "pgonda@google.com" <pgonda@google.com>,
-	"duenwen@google.com" <duenwen@google.com>, "gthelen@google.com"
-	<gthelen@google.com>, "wschwartz@amperecomputing.com"
-	<wschwartz@amperecomputing.com>, "wbs@os.amperecomputing.com"
-	<wbs@os.amperecomputing.com>, "nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
-	tanxiaofei <tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>,
-	Roberto Sassu <roberto.sassu@huawei.com>, "kangkang.shen@futurewei.com"
-	<kangkang.shen@futurewei.com>, wanghuiqiang <wanghuiqiang@huawei.com>
-Subject: RE: [PATCH v12 1/2] ACPI:RAS2: Add ACPI RAS2 driver
-Thread-Topic: [PATCH v12 1/2] ACPI:RAS2: Add ACPI RAS2 driver
-Thread-Index: AQHcHC9WuMPoKRXbY02Oy+WxUZ/jerSK8o4AgAEvHbA=
-Date: Wed, 10 Sep 2025 08:38:55 +0000
-Message-ID: <81f32641fbc5448c8da1918ddc5d6965@huawei.com>
-References: <20250902173043.1796-1-shiju.jose@huawei.com>
- <20250902173043.1796-2-shiju.jose@huawei.com>
- <20250909162434.GB11602@yaz-khff2.amd.com>
-In-Reply-To: <20250909162434.GB11602@yaz-khff2.amd.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-originating-ip: [10.48.147.226]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=Wcqwa9UVTgt+vSJ2HOOPjUHsHWgh6bX7b58VAKjfe3Q=;
+	b=Ao5fIDSZ8zP2R+Y2G5q1FX0qdS+0LG3DEqWfvSVb+98k99fJheqFmiDFDiz3tboI3sKVpt
+	9m6VFzmLKbrV7FC3cWQ0DSKXAM4p9joRWOhuo8e6ALYNbtU/uFxtDLSw/5aKFhEnCzKCWb
+	NBxjqBK0++Qk79yPiXOI/+XvkEsKZk0=
+Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-4190d8f16c3so2595245ab.3
+        for <linux-mm@kvack.org>; Wed, 10 Sep 2025 01:39:30 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757493569; x=1758098369;
+        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Wcqwa9UVTgt+vSJ2HOOPjUHsHWgh6bX7b58VAKjfe3Q=;
+        b=quHJWNLBxPjgnpt4EE2W+09XJNvyTIiS3rUdo0tQq8Fsg7E/CYhIiMgUJXcF/ULwtE
+         UX3EMhckENVzZ7bEJM8ivBQOIAohAZWcqtlyXT9gWoG8OcyFdCnilgDeoJvrOSP1aLIF
+         yqn7tB8KxTr78YCj5vuNDs/L3uFn1x+kmiDJ5tDs7xRNDZgbkaMJgHvws9RXUquZufZb
+         1e4RKMLrP6znSLwbtdYnXkhGP83tUkK3WJhZ5OtwXD2lHpvkep1ubfXuOTDN6LaqvQpD
+         Pe/e7WU6HIa5Ty34Msw/20G6H9amf4/7GW9GaQDXpEy/ZfRzupkAZZt2Dy7dORhfg1gW
+         bNkA==
+X-Forwarded-Encrypted: i=1; AJvYcCV8g8zDhLwTHHcI0IHwZyQxmux/cNobIFsJz7ZPFz8bbeYFtYCvdMSPfYwUVUM7eAqZDB/IbDbW7Q==@kvack.org
+X-Gm-Message-State: AOJu0YzKDgqmLaoBmEbPsLQ1eMAlKyw+f1uwkAOsUjcmlSFgQnZ8JzfU
+	aPTZ3IBX9hUMsUfTRlhxPXj717f/LTQhH4C0Q940LOit7BkMJ7uHkzLV84EPTKrzTg11jWOA80O
+	qNFveHmdFQkm8nTXLNbqPYzw1PLRmOwAKO0kY32aU5w9ag6PLEiY5KuO909Q=
+X-Google-Smtp-Source: AGHT+IF+kkdZuXHRGt39YmgS5WbPtMYJOAMbJ/XGa2whcdg3dnOyi8+jm0FGA1na2rxzdjWkeavI2JXVEsr6LVsp5+Vhp83goTur
 MIME-Version: 1.0
+X-Received: by 2002:a05:6e02:1a2e:b0:412:f7d1:7432 with SMTP id
+ e9e14a558f8ab-412f7d17596mr65192215ab.1.1757493569579; Wed, 10 Sep 2025
+ 01:39:29 -0700 (PDT)
+Date: Wed, 10 Sep 2025 01:39:29 -0700
+In-Reply-To: <20250910005957.54108-1-rgbi3307@gmail.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68c13941.050a0220.3c6139.001d.GAE@google.com>
+Subject: [syzbot ci] Re: mm/slub: Removing unnecessary variable accesses in
+ the get_freelist()
+From: syzbot ci <syzbot+ci49ef42f07c0503e6@syzkaller.appspotmail.com>
+To: 42.hyeyoo@gmail.com, akpm@linux-foundation.org, cl@linux.com, 
+	iamjoonsoo.kim@lge.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	penberg@kernel.org, rgbi3307@gmail.com, rgbi3307@naver.com, 
+	rientjes@google.com, roman.gushchin@linux.dev, vbabka@suse.cz
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 78CFCC0004
+X-Stat-Signature: eyajoyurghk944ycs1obp4tf1i9ti7en
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 65854C000C
-X-Stat-Signature: 9p5p8o3qm5hfey9yhx6h9oybndsngxwx
-X-HE-Tag: 1757493539-192218
-X-HE-Meta: U2FsdGVkX19arxYHc/zgI0s3GRz2HXDhsOYWKGaMaOyE8JFPO9Phk9QTWzbRErkZkm8nZ+3mR2uO/jVO7e/U6aDkgcMLuEWNm+j1ipZA8HOiHLApg80c4NOM7YVlx0UYmagKuqDmddoHlxkBZqrWpGF8DKIogQV8K8994QOb4i8GQjmxoriV/trv8LK9FUSFZsUdn6jLg21CHucYsikH+J+rEDuRZlsQa4im6BxYOusLSwYXNv3fvCXLCPK4M7c8blwY5PEqp7DHmoftCSFgO94hMpVs53yzeOTi/d+/9o0O2qvzB8rv6uNpeBHfTtpt8sCBrcPEMLVSe8ew4RCdldk2aDU2bsJgwKymN1D6xCdvCVPGj7oIQUYTYpfU6sX6xLIaZJluV3VeUTGNJ1fXV2g/GFVf9pSClMgrnl87O+SdB8zan0HYvO6wNJdhavwcCERYqrDG8tbQHh7dtFnHA4UKN2E6vbL3MS2sYWYRxIhTxL4k/XSBUFiJqgnWlv2dgYEdJCQ9ZY2uNnkG4qF64KiGX4pfMd4Gr15FJre4zg4nDhqNT7QKr/HMa1UGdqtdOV7DTyyn8whf+IsfUiN0+aw7Bklt1b1lVaBAHyYhEhEw9GztoK9pVvrLqf+3U4/4ELHSBvZLqFYWqbZh+G42074c2TjksMg7ydzRs7EKCUqQSdkbhvagolZjrl6rXFaTKrSjT95hU4DAqMo472AWQYURLOM46SlW9Y49fzr80g6HJG01OWr/HJrCrG83ixflN1IByxvpc/E9E+fPi39IH8kd+qKgrdc25rAVnRbXgQ1vMExXb0mBF9MBcZBIgAzeDuW1BZueIm2lH/lQN6A8AB5g1VDauIFtRhL+/KssSBIulAtF0HFrhoDjzv2Jc2D/lqqxW0debzHPyldmCw2GTr/IHFkEy4Moz+meSB6X+bFHIZhtjZTXvie7Z5HZV8MePAyqSAnOdfpZUe/dtsy
- ozq4vbc3
- +F38v3RNEdyxVIkJ1WO8WuKXxOBCw6j/QvNK1Y2R20IZB6ioZgC8SkH5s+iZirobJG+12djifpHVhY0C2vunZqBUws1Jfz+3ShVA3NkxLQt0DKxBQFqHDiOoK8DIivVqrxthiWb+m07xVv27vfx5g4Ab1tN6N1i210HQ0uvDw91t2eTp9OUBTydpIwrlhe7qFN7NeIAZDoaqrrJwl0iCI644xlcSh/rYrXOzecOpkTkdk5TK744DQ1w+aFY2R5tsT9KdXNT19BDS+nSdF97nYMWiFCt8Qv186VsuqlMb2lEUIsNey2q9U1PR5ciHIqp24Xnk8N6zZx5wwP6PpBPZZzMXc1Kr5+9NLAANIG4sETyERUUrArB8GdeKiiBq9WMv5XXsK1OFjLbXRGbsE3gAuInOVYlZOEU6y/Z/r5qQpEvQdzIDc/y9WWs9xwGje7Wmzf8lJFuWUB9q3u/6WWCUnBCLju2aK1bCFfuFAQF/P0yLXn6Ez7z250BYxApeBKb7ALX2ZgbJDkpH7XsV+qJ0RbgjGSqcsdtNirk6IPk0E2nBjxAGhogxSR9XlldPa9XamiarvpPxuWUU58rBz93sfNRZCgvqV20vF9rDA0pKUzpYf8ttgeEqi/7jpF+T6gO8hLk/91z9FXnCpCSEf+4seGxrkMMOGtL18kiboUSrdRmIPKNsX0hkvPUOK8t/3g3aZuxb+UBw+ver+KaYKKdaFCO4L1/Nl7BQ/1y2rQ8V2JRTVhNt2Sg5EmR5i6y8XCATU5oj7iIgRdFUtYwOjYNCYvgtrRmgVjQINb437wIYyzUxVB/xcBPl4UHIg++QzCnnkBFdFBFwe1/eQ3GBTF6oObcVsv/D6gbkKRj9g88oqbvfT32k=
+X-HE-Tag: 1757493570-876920
+X-HE-Meta: U2FsdGVkX1/VsA6cW0C+Ep9YUaaV1bhVJ8H7Vpm2vQJEKfw8asQcAce7HYc7wVnVPQVYHfCc0ENwDtIElGMDdKjVgCg9dNmhqtkMlHMNqxFM+I/vL9HGY83p5D8dohQd1X2lWJTsRF7oUvGkdzCNqUSF/5G5BScj+MDlLirJ8J6tQV6iMUUcdGymZStPp0pz9dYcUEOVXZ7092QrnE4ev5pppl0Ng4K6tNxVAkYANmvRjUeAKc2QCjrIQeji9QQ0Be5iG7bR1lluWAkBV1wr5E5mzZyv1lXD37p2lkpwrskIj6PHdqCvXK/iaSgOMG/g3crztoml/pCHn7PMxfyXElZ//5iqexJN5ScAHlOM3VVp72YxC/Jx43yowCXp6+4RgIvBT7RVqsbOhStgHlKEnbcsGo5Z/j8V6MaotAZF8IWxKgfidELRXEZxW1weJTiWbv55+0macuoSfWRdKIlDkbR5yrgOiIsXiCTaUU6GOSJmqYlVmMKAMAauaeLV2W4liChNiDBYLhKX0m2awPlpMqQLH4L1cczOrR/7idE5iwrtcQ9fdzxsh1TDkNvHi70d+Mb4tlLhgFrvwWpGS0Ua2Z+C2D0WvQEh3vM/O6ec5CNeXaImxz7TDo/JF1rEdBmIKhEJmbWNDXqRl5xq8ercw+ouTN8X0kes4R8ea35xcKAR3/7ahcL28XuB7cY4oh6vXu9HQd66h2ySF9bevBalgDs8axuUZg+MhtTXri0Z/KKD/hARg5j72fgMlCEbDAIFcPCxu4Csud/RCa/mJdT70BKrI5wWl1lIRky8qemggrEUQY1wtxPc1iIOk1Sn/geeXSSRRD7j2adhpU7WySAtMof40jmP++AEoQDDJp9e0iLY6QoRTp9pP9IKZwF4zEjKoBBxiVmJyeo74pdriYsR/DwHZQzZ/Zdn9Vb270sLx6bf4IQNDu8boJVI9WxK7lmsI25hDuokpD6jgiIERpk
+ N1+WDCxS
+ cj0uIUDlUSo/v7zs0Xf6sj2QRzb9J1fgAF8qqfxHlmymrUl+NTbj5Otj7sJoxLlG4m0rFJ2B2zywDOAvFKPBrsytAiO7N+zQksa+Zl8JFs/9P+sjh2ARbYdYDTguEz2aXAVK8qzbBHqZBQSt+QlUJQjq8pUVY7pZj1jU0/T5ODMAfzJ1EuiuXdCll1an3TFrFP82MTgM6ygLQxQgdD7ywx1VIByFUjWIjDBJtH30YR5EqR95/94ZYIGhaiisWKGDWjTNUV8H6kUnxT2ksSx5Yb//Q8afbGBEQqGLUjJYgH10o5TyrXUmoJ0RzxOmQ5G8u8K8bWbZdgKM99Pp1tfXpchbGMjf2jUaowY4A0bpAdNrwvit7Q6USeSuqYoE3cnAAGgRBX36+VUQEL+SwWAEnUyXxbBz7zp28XgBBK6GsG/Obw/5a42P3PuGkooqmMiwPMQoxDrOM0++FmkcksqIc3EwCbxkNryHl/hKOcLx3CFCgu6CW1oBkTse7rTzqzZK12SfDugZFoHAsgZWb6mB3sY8YK+SdlBM9fRFKcYl6aUJ4IHRUrgtJoii4wJ+rrGy+7FjiOXV+JBzdso0xAy16QS+NiJpwTtlANFQSYVtv1dnxy4xAC79sE2vSmxZSw0Gr+mdcTOqWM+yfpPnFx+6q4reehdrXKJApuCe0zgyi1VMNEjXj/uzYnyDsvjQJV6+GRd3Nfc8aQFs2Yrnmsz0qKqrrulH14k3ZiNbM/A7Z8nJhHrnfKBBh9XV0oUY+Cr2AUOjPekY7/epmdRXY/MDkYqpj1o3prYoEQm0QOnivuB9N0YF6NoExdrAtutlPZvjJv5yjyGcnO7H3TpIwwAcqibc3glbYRpTna/OpZJA9sRduVFnZQ2iN0pJuZ5ez2FsIG40H4G6F0QG6KuUkyhF+V/Qt08QcDqhOWW9IqT+BUPyNbSBm3S+yAAaHGJQLNuzf8Jh7EFyB6/rRikIelV26hnK+BkuM
+ 3T1xFvA+
+ CQ4+3GcV9J/lFcqElNckQldywl0OiqxQnuABv5eWFAiacmL4QmFGu/dPa8IA6dQF
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,73 +102,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->-----Original Message-----
->From: Yazen Ghannam <yazen.ghannam@amd.com>
->Sent: 09 September 2025 17:25
->To: Shiju Jose <shiju.jose@huawei.com>
->Cc: rafael@kernel.org; bp@alien8.de; akpm@linux-foundation.org;
->rppt@kernel.org; dferguson@amperecomputing.com; linux-
->edac@vger.kernel.org; linux-acpi@vger.kernel.org; linux-mm@kvack.org; linu=
-x-
->doc@vger.kernel.org; tony.luck@intel.com; lenb@kernel.org;
->leo.duran@amd.com; mchehab@kernel.org; Jonathan Cameron
-><jonathan.cameron@huawei.com>; Linuxarm <linuxarm@huawei.com>;
->rientjes@google.com; jiaqiyan@google.com; Jon.Grimm@amd.com;
->dave.hansen@linux.intel.com; naoya.horiguchi@nec.com;
->james.morse@arm.com; jthoughton@google.com; somasundaram.a@hpe.com;
->erdemaktas@google.com; pgonda@google.com; duenwen@google.com;
->gthelen@google.com; wschwartz@amperecomputing.com;
->wbs@os.amperecomputing.com; nifan.cxl@gmail.com; tanxiaofei
-><tanxiaofei@huawei.com>; Zengtao (B) <prime.zeng@hisilicon.com>; Roberto
->Sassu <roberto.sassu@huawei.com>; kangkang.shen@futurewei.com;
->wanghuiqiang <wanghuiqiang@huawei.com>
->Subject: Re: [PATCH v12 1/2] ACPI:RAS2: Add ACPI RAS2 driver
->
->On Tue, Sep 02, 2025 at 06:30:39PM +0100, shiju.jose@huawei.com wrote:
->> From: Shiju Jose <shiju.jose@huawei.com>
->
->[...]
->
->> +static int ras2_add_aux_device(char *name, int channel, u32 pxm_inst)
->> +{
->> +	unsigned long start_pfn, size_pfn;
->> +	struct ras2_mem_ctx *ras2_ctx;
->> +	int id, rc;
->
->'rc' is uninitialized, and LLVM gives a warning.
->
->The issue is the "goto ctx_free" paths return 'rc' before it is set.
+syzbot ci has tested the following series
 
-Thanks Yazen. I missed setting rc with the error code in the failure case o=
-f the
-newly added code. I will fix in the next version.
+[v1] mm/slub: Removing unnecessary variable accesses in the get_freelist()
+https://lore.kernel.org/all/20250910005957.54108-1-rgbi3307@gmail.com
+* [PATCH] mm/slub: Removing unnecessary variable accesses in the get_freelist()
 
->
->> +
->> +	ras2_ctx =3D kzalloc(sizeof(*ras2_ctx), GFP_KERNEL);
->> +	if (!ras2_ctx)
->> +		return -ENOMEM;
->> +
->> +	ras2_ctx->sys_comp_nid =3D pxm_to_node(pxm_inst);
->> +	/*
->> +	 * Retrieve the lowest contiguous physical memory address range within
->> +	 * the NUMA node.
->> +	 */
->> +	start_pfn =3D node_start_pfn(ras2_ctx->sys_comp_nid);
->> +	size_pfn =3D node_spanned_pages(ras2_ctx->sys_comp_nid);
->> +	if (!size_pfn) {
->> +		pr_debug("Failed to find phy addr range for NUMA node(%u)\n",
->> +			 pxm_inst);
->> +		goto ctx_free;
->> +	}
->> +	ras2_ctx->mem_base_addr =3D __pfn_to_phys(start_pfn);
->> +	ras2_ctx->mem_size =3D __pfn_to_phys(size_pfn);
->> +
-[...]
->
->Thanks,
->Yazen
+and found the following issue:
+kernel BUG in __smpboot_create_thread
 
-Thanks,
-Shiju
+Full report is available here:
+https://ci.syzbot.org/series/832d6128-4556-4bd1-ab18-0676b8e7dbc1
+
+***
+
+kernel BUG in __smpboot_create_thread
+
+tree:      torvalds
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/torvalds/linux
+base:      f777d1112ee597d7f7dd3ca232220873a34ad0c8
+arch:      amd64
+compiler:  Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+config:    https://ci.syzbot.org/builds/7bff7792-4edd-4680-a5e7-3cc9d97ac5ed/config
+
+smpboot: CPU0: Intel QEMU Virtual CPU version 2.5+ (family: 0xf, model: 0x6b, stepping: 0x1)
+Performance Events: unsupported Netburst CPU model 107 no PMU driver, software events only.
+signal: max sigframe size: 1440
+------------[ cut here ]------------
+kernel BUG at mm/slub.c:3832!
+Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
+CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:___slab_alloc+0x13ab/0x1420
+Code: ff ff 4c 89 e7 48 c7 c6 3a a1 a0 8d e8 3e 4f 0f ff 90 0f 0b 90 0f 0b 48 89 f7 48 c7 c6 3a a1 a0 8d e8 29 4f 0f ff 90 0f 0b 90 <0f> 0b 90 0f 0b 4c 89 e7 48 c7 c6 3a a1 a0 8d e8 11 4f 0f ff 90 0f
+RSP: 0000:ffffc90000047750 EFLAGS: 00010046
+RAX: 0000000000000000 RBX: ffff888100028000 RCX: 0000000000800001
+RDX: 0000000000800001 RSI: ffffffff8dba8965 RDI: ffffffff8be33980
+RBP: 0000000000000000 R08: 0000000000000000 R09: ffffffff82189e55
+R10: dffffc0000000000 R11: fffffbfff1f47407 R12: ffff88804b03e480
+R13: ffff88801a441640 R14: ffff88804b03e460 R15: ffffffff82189e55
+FS:  0000000000000000(0000) GS:ffff8880b8615000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffff88813ffff000 CR3: 000000000df36000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ __kmalloc_cache_node_noprof+0x29a/0x3d0
+ __smpboot_create_thread+0x11a/0x3b0
+ smpboot_register_percpu_thread+0xc6/0x420
+ spawn_ksoftirqd+0x2f/0xc0
+ do_one_initcall+0x236/0x820
+ do_pre_smp_initcalls+0x4c/0x80
+ kernel_init_freeable+0x30c/0x4b0
+ kernel_init+0x1d/0x1d0
+ ret_from_fork+0x3fc/0x770
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:___slab_alloc+0x13ab/0x1420
+Code: ff ff 4c 89 e7 48 c7 c6 3a a1 a0 8d e8 3e 4f 0f ff 90 0f 0b 90 0f 0b 48 89 f7 48 c7 c6 3a a1 a0 8d e8 29 4f 0f ff 90 0f 0b 90 <0f> 0b 90 0f 0b 4c 89 e7 48 c7 c6 3a a1 a0 8d e8 11 4f 0f ff 90 0f
+RSP: 0000:ffffc90000047750 EFLAGS: 00010046
+RAX: 0000000000000000 RBX: ffff888100028000 RCX: 0000000000800001
+RDX: 0000000000800001 RSI: ffffffff8dba8965 RDI: ffffffff8be33980
+RBP: 0000000000000000 R08: 0000000000000000 R09: ffffffff82189e55
+R10: dffffc0000000000 R11: fffffbfff1f47407 R12: ffff88804b03e480
+R13: ffff88801a441640 R14: ffff88804b03e460 R15: ffffffff82189e55
+FS:  0000000000000000(0000) GS:ffff8880b8615000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffff88813ffff000 CR3: 000000000df36000 CR4: 00000000000006f0
+
+
+***
+
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
+
+---
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
