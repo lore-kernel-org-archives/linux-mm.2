@@ -4,121 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1181BCA0FED
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 11:35:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2224CA101F
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 11:39:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 67EF08E0005; Wed, 10 Sep 2025 07:35:04 -0400 (EDT)
+	id 095728E0009; Wed, 10 Sep 2025 07:39:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 655EB8E0002; Wed, 10 Sep 2025 07:35:04 -0400 (EDT)
+	id 06D888E0002; Wed, 10 Sep 2025 07:39:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 56BC48E0005; Wed, 10 Sep 2025 07:35:04 -0400 (EDT)
+	id F13618E0009; Wed, 10 Sep 2025 07:39:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 43D968E0002
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 07:35:04 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1494F11AF83
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 11:35:04 +0000 (UTC)
-X-FDA: 83873134128.01.264306E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 44C7A40010
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 11:35:02 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Q6EAhwVv;
-	spf=pass (imf27.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DFE018E0002
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 07:39:21 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8AC10C0869
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 11:39:21 +0000 (UTC)
+X-FDA: 83873144922.18.FEF2B23
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf24.hostedemail.com (Postfix) with ESMTP id B99CE180011
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 11:39:18 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=N81XXorq
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757504102;
+	s=arc-20220608; t=1757504360;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=S9mpz3dJbi97XY1CypNN3jQsgYg7mq2IQ+J4IlijJkQ=;
-	b=q0qD2zaFKNbHSB46KziT669ViycDXBb91dDkS//e8g/Fev6A56m/cEvFq3kKKrcHF9zYEj
-	c36R6mMB/Gq0MOaNTP+Hmjs4nW6jeeTH2ZsVJWnxWgDJil/Iqp9wDx1aaZtXiurLjiaCzX
-	7DBoX7qOw+TJ4VtkLxD64Fq4SNkSrn8=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Q6EAhwVv;
-	spf=pass (imf27.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757504102; a=rsa-sha256;
+	bh=UvoQZuBKjRdf4ju+FuH0otwFuT1D5FOMetJX2Sg2bZs=;
+	b=DASlfbSkSL054UzAoSulvzM1WEE+79YhW2A7W1AWSPJnr3c/WYxgypdiVWSPi7FF/5xs6W
+	pdRPcfnwkq8d+JHc+ryUgQl8vDVNIfMMSCI5Jm7wR7c5ghnSeE3qG2JG6gXDjY8kEp3n9H
+	i+8W7LpIcf2wVTf+cfBxk414qyKgwo0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757504360; a=rsa-sha256;
 	cv=none;
-	b=8YOf9kcB2RRNuU34e1h/T40ZWRp6Ek9yVTA/1SQnJdrYeMHRUq15ihu4Pqqn+lEcNbhz15
-	7K8cp+jQDmXyktUAhglHgLhpjV2Az6W/Lo2oYFLWLvwFe4h0K7SA+PvH19GJIDqnn0+95b
-	HT1QJ7kj+1BVuFnUyzf50pkfenyIidU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8C8B2601A8;
-	Wed, 10 Sep 2025 11:35:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9BC9C4CEF0;
-	Wed, 10 Sep 2025 11:35:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757504101;
-	bh=kU9kFtvBjsff4usmmQcCzQXCY9QyVt8jE4w3Fq1s4sk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Q6EAhwVv4/GUyd1hLtQcyOBX4yrK3MOWP5yViR/h+8yIgrM+JWbKaDFvKX3L7x7vZ
-	 w7gk9hqkIDXf8LmUBE1tPu1/kWb8/p48pk7q1jDHZbowg28RN5Vpv+286v2TH1k7lB
-	 SABMU1QFshIHmPQivGdND/qrwKgUIvG7/eg/HvPfn7cickVNd5j3X9FS+BDhorIK4s
-	 ueE4HXjG5ZFirVgbG+ThrmlAdoHjgkJxuvc9Eox1F+lJseQ4QFpc4s+FYybdNC/cd7
-	 dDSutunjO49Ri5TWxnKUEyhfA7QdnItyGUmUe2DRRzNxt5m+QhB8G/EGZ7s59tSjqq
-	 RAaIr/lhBDxMw==
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.phl.internal (Postfix) with ESMTP id E0496F40066;
-	Wed, 10 Sep 2025 07:34:59 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Wed, 10 Sep 2025 07:34:59 -0400
-X-ME-Sender: <xms:Y2LBaOYv7N3HrUyjdepbfcNY_PrPr8KlJx6szQCXuunSqKHVGbZgrw>
-    <xme:Y2LBaH8SR2Ih5lSHJ5v1Sdq3fl7Q9L6q_XeOogEXelhlyb5AVPlvS-ZsR6PS5UYJ7
-    uPAyq1hyZSPtML4wHY>
-X-ME-Received: <xmr:Y2LBaKpX2PbJsDSEIuRSk7dwjO8GeXrHkCNLqG8nRZW2IJ8wB3VWa3S3tj7ufw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvfedukecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdfstddttddvnecuhfhrohhmpefmihhrhihlucfu
-    hhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrh
-    hnpefhheevkedujeevgfelfedtvdetvdevgfeuhfevieehleduleefuedthffhkeehgfen
-    ucffohhmrghinhepghhithhhuhgsrdgtohhmnecuvehluhhsthgvrhfuihiivgeptdenuc
-    frrghrrghmpehmrghilhhfrhhomhepkhhirhhilhhlodhmvghsmhhtphgruhhthhhpvghr
-    shhonhgrlhhithihqdduieduudeivdeiheehqddvkeeggeegjedvkedqkhgrsheppehkvg
-    hrnhgvlhdrohhrghesshhhuhhtvghmohhvrdhnrghmvgdpnhgspghrtghpthhtohepvddt
-    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouh
-    hnuggrthhiohhnrdhorhhgpdhrtghpthhtohepuggrvhhiugesrhgvughhrghtrdgtohhm
-    pdhrtghpthhtoheplhhorhgvnhiiohdrshhtohgrkhgvshesohhrrggtlhgvrdgtohhmpd
-    hrtghpthhtoheplhhirghmrdhhohiflhgvthhtsehorhgrtghlvgdrtghomhdprhgtphht
-    thhopehvsggrsghkrgesshhushgvrdgtiidprhgtphhtthhopehrphhptheskhgvrhhnvg
-    hlrdhorhhgpdhrtghpthhtohepshhurhgvnhgssehgohhoghhlvgdrtghomhdprhgtphht
-    thhopehmhhhotghkohesshhushgvrdgtohhmpdhrtghpthhtoheplhhinhhugidqmhhmse
-    hkvhgrtghkrdhorhhg
-X-ME-Proxy: <xmx:Y2LBaKFhh2dBGM_Z4kk08QRuX4tMTUHU-uvNNChqRryGMsaejSmYRQ>
-    <xmx:Y2LBaKlvfXkLFPE2uScyXTwiyixiQAtGaJo-Zx9o1xPH6vTMsTwecQ>
-    <xmx:Y2LBaG9V5QQpRF7SJLHzMGFcK7LY0jvKrYpB50V7IGx0akFFXYDcmw>
-    <xmx:Y2LBaLnxjKGxXiKzWCA1uVNqoCo6buvT6-pDV_lgl9KgmGE0T_2kYw>
-    <xmx:Y2LBaElqB-KNOS0YrvWs7jLQtNH__65Z08zytovCnEYvAH8EzYEZbKtf>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 10 Sep 2025 07:34:59 -0400 (EDT)
-Date: Wed, 10 Sep 2025 12:34:57 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org
-Cc: Usama Arif <usamaarif642@gmail.com>
-Subject: [ANNOUNCE] mm-tools: Random tools MM-related tools
-Message-ID: <3btncmnggzmtedj5cpzcqb4zzmef4hvyfuvajtcjykmgqiv5mp@x5jfs76gxidc>
-References: <20250904175729.1029735-1-kirill@shutemov.name>
+	b=ZzElF52p4XDojaL7oSbaPOVq/wSqej4o4+M1T1CrQcBSBpd3EW1tOeiInUxJibw9ljx7mh
+	sZqy/QQkRQccMzBrFx6sBN/Xl6j8Yn3yVRSRwgWpe8/9q+t0e7f4ish7/Lo8HdniepQ27C
+	gCkisIYzMLBCRiESRmJB2LU6xasLRv8=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=N81XXorq;
+	spf=none (imf24.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=none
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=UvoQZuBKjRdf4ju+FuH0otwFuT1D5FOMetJX2Sg2bZs=; b=N81XXorqjR07g+U8HX3I2YUo18
+	UjWpJVdJG7KGZMMMgFyJvU1L5Hpm4YbJKIv47kRU2LD7r1AOIfuyk9foxmp4dS2oNAw0cgYSGgb4U
+	OCQtRKnFdga/+4HNKJoAuWUBVHERHFOqVYZg3rzQWpngXx+q6Lh+LKP0HSX9hK+RmfuHnlSJpe2qV
+	shYDB2nfRS7ZyG1a1PIreR8hL4xkcFbt3t3SnWG0a3w8ZAPZKr8q2p6iI5Q0RRN4ShjGop9mS6jtY
+	F/uPy/zIvSc1nFzc3yjyCwdWQegyF5+X9GnSZH+iB2PC+E5KOcqPfsBFqwPHDigWNv71TGdM2Rguo
+	FpBlOegA==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uwJAP-000000089ss-24a8;
+	Wed, 10 Sep 2025 11:39:13 +0000
+Date: Wed, 10 Sep 2025 12:39:13 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org
+Subject: Re: [PATCH 03/22] slab: Remove dead code in check_slab()
+Message-ID: <aMFjYbaUaQq1GA4c@casper.infradead.org>
+References: <20250829154728.3397606-1-willy@infradead.org>
+ <20250829154728.3397606-4-willy@infradead.org>
+ <aMFfLqkXcZTNv_p5@hyeyoo>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250904175729.1029735-1-kirill@shutemov.name>
-X-Rspamd-Queue-Id: 44C7A40010
+In-Reply-To: <aMFfLqkXcZTNv_p5@hyeyoo>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: B99CE180011
+X-Stat-Signature: 3t3a968q1pszskd4wwajxwoppgw3jzxy
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: txzdme9ddu9zy6yunrb95865654bowsc
-X-HE-Tag: 1757504102-446990
-X-HE-Meta: U2FsdGVkX1+ZHL2w2S3p6uTNsiwakURw8/xBw5vO1aENSz4KBE9xGuM877oO1WkbNSBRpfA73fMOVp3gsteQne80sCrto/q5rN3IjObxDlwMdJKSKeDzNWzmL/nzMRZKU2fLLlnp532J1fnYDXQfKr0Mf6twIEo3tgPeX+e52ryRqXWxl7IZ53ssY1GQeWyJe5xDtvHiqWB/dgmDvDoSYab3frPs+xXMDoMh2rbxQ/uP75SmrjENMDXbcJ7TCbCjFeIKdSOVAU9rYHhWvlj0tsU1LeP72nwZXkSktetI/mJ6Foxk3sWFPvP9lNIwmdcUVqrCgIaxRyQjbi9x3IXS4KszTah21nk9yXCu+HFdpYIHcnU1iVg6K91/QwSt/r2gAXIeExGpYAsxfwUoUcduLxKSufMFMMfGvrw1nT/fQ82gb6BJWA7pQyxQG0pRTMopp6kX3GJyfNqIY3lGceCGqhRv39mlhNxVsGkO5q8DAxGI0Svr9f0rWxZb/BMZ2vrnzDdAw9U1KZbQaxA8kX1bBOFjnNLy+GnPA+LgQ2Ym86eX0Y1QxUtlrx3LoBqt+4/nraY6PCH7nh5bkynUq5UR60P2/kFnkzm6Dueq7Aa2LeTtVSkyVt1mDx2ZpCSq2mz96pvOa2ySW+Fd1iR1Ec/sK8d5KSQPDN4FIUqA2q1YXLzva/3g3MntdRnS9x5p0Duow+8/2RNKsD6VbatZcePPDXxAyvgA2vN2iIpFT/4dKRaAveNyaIUcYnQYP8QBYoFXi/wPOfQsq1HvsbmqjnDmSGyNvSdG2q87hJUPobI2+Ga4OSuqE4azaL0gkF4q/TbWnvyFfwb2MfptVAAcT99aN18Etxc9ru8PlNnL53newkqwtFYEm2+d873uv2Eq8DiB9k0CWqYin5xMONRsHwHjf2Eiwy6x4ufBLZq9IPPXGjU=
+X-HE-Tag: 1757504358-528057
+X-HE-Meta: U2FsdGVkX19hXFNqehr7d/uWtS7LLl4R6x4KWwZzdPvtIHSwtKKFor08GKV7zdKfxEZeBxdQIKLkSs98zbRgNtUdOQfcbyN0/kxf9Hq/DkzAJA596NgHARCypO5YJiGIE8XonZ5ab5jOW5jHZl2mBe60uqOLyDIHZdkRenA7dX8pCzvfanROITZflPM54CK8/OJytRI6itd9K3dVDKm0ISYWzvYtTp3p2GlnpjolrxR5m5EIOsePmixZrRHedm7nlKxBM/nZ14t+00hphGSP8oWOY+2uVgq+RfTEiw2H89XtM3B1V7lB2nrjpoFeqtDaQqeos4OVem5ZtzTWzhrp8Qc92vkeNoRnollrf9F0B48F8hbkN/auwFAi2hsh0F08Dp3jJmvlBe9b6WWxrGdX7gblE/suBBFw4icvUY55QCpWK1gte4cV3buqnB+ARw75GlUEsvHNCvWt0ZOvmreEDFeCS2wj8m6n4zNBzq+r8kcY1auiSSKx9IqCyMs1EYGlIGHxCXcKQoRVCQp0X11LbBrjazTWjdDyPQE/FrK6jDxLZT38qpXqQbc67TkbiaC/ji4yfqNMxZjsviZXHl+pSuox9FJlDeMJlYJL1YY7WYvNUU22vD8J+KvAoID0bHkQNRfjDfZ/AWU6ETtOgJS6HAI4WQdWtAfQDjt6uLaLjIKorzRp6tBFajZQayGRQigFH3DdiQqTDEji6LwjvNTNOzxYU6RW3YpdGVS39CpLzhxL6Zh4Wg+1eJ1Tb3d0gkfRXT+4KyBfrxjK4Tehs4fEwNKOQ6j6zZNnQtUU2Z6Tw1/8hGn4S5VxOtOmK9dA+IeLw6oc3zQc6JmscmdV+NAa6lcn72VthRpYMZNVP6A+3brH/lv/i15GvadJMBqGplNBzMBNPnUGdbhYHV3gzCi2FPqgdgrgyQOaQF3p1bOix8kjmCuZiCNR3Z2H+FI0q65GOPKUq1Ri0LuBT8LlqZO
+ aGLsH+uN
+ Oz+hYqNIEcveb+b+D7kzD8WxTOE6ELJJ2YXQhWIzTUUBRqkcbpzVsaP6PuLRY0GcMeQFGUnZ2VaXQgdT9KmCuSCZfzr3xb3AJfgdhBDch4V+2HKXmUhIZ143mi8OmqVe1WhjHwe4ElRUo35snSil8Owm1kAh/d4OPKdN8yO5QqgdmdH5SgTeuDOGLHQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,19 +92,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 04, 2025 at 06:57:29PM +0100, kirill@shutemov.name wrote:
-> From: Kiryl Shutsemau <kas@kernel.org>
-> 
-> Add a simple tool that allows to issue an advice on a process or a file.
+On Wed, Sep 10, 2025 at 08:21:18PM +0900, Harry Yoo wrote:
+> Side question: if someone wants to (though I don't see much value in it)
+> iterate over n->partial and check whether a slab is corrupted and no
+> longer a slab, should they convert it from slab to page and then check
+> PageSlab()?
 
-JFYI, I split it into two tools: one for PID and one for FILE.
-
-Pushed here:
-
-https://github.com/kiryl/mm-tools
-
-If you want to put anything else there, let me know.
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+I don't think so.  There are probably other objects allocated from the
+corrupt slab, and they might get freed at some point.  If they are,
+we'll want to handle them gracefully (after all, the caller of kfree()
+probably did nothing wrong) and not print a warning suggesting that
+someone's calling kfree() on a non-slab pointer.
 
