@@ -4,118 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBDACCA101F
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 13:46:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58D03CA101F
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 13:51:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 38BD78E0017; Wed, 10 Sep 2025 09:46:40 -0400 (EDT)
+	id A4BF28E0003; Wed, 10 Sep 2025 09:51:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 33B208E0012; Wed, 10 Sep 2025 09:46:40 -0400 (EDT)
+	id 9FD0F8E0001; Wed, 10 Sep 2025 09:51:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 277D88E0017; Wed, 10 Sep 2025 09:46:40 -0400 (EDT)
+	id 913B88E0003; Wed, 10 Sep 2025 09:51:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1709A8E0012
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 09:46:40 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B95881408CC
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 13:46:39 +0000 (UTC)
-X-FDA: 83873465718.26.F9DB1CC
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
-	by imf28.hostedemail.com (Postfix) with ESMTP id DC0BBC0013
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 13:46:37 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b="triYI/5n";
-	spf=pass (imf28.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.169 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 80B808E0001
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 09:51:24 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2BC6613BF17
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 13:51:24 +0000 (UTC)
+X-FDA: 83873477688.22.1C00914
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 3DAC714000D
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 13:51:22 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=FX+8Qla0
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757511997;
+	s=arc-20220608; t=1757512282;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Af9b+zWkct/GsJsGHqMcZiJ29hiwuRshIos/tH0QIzs=;
-	b=Q9oIQNdX4IgX11wW9SGFpE6KkdF+5fWWWZqZCDZ7uIE2QXZ0qtj2K+FcEnChQtXLnsFdk3
-	m3M4rKVXvssIixYlYlI4Anx518t3NY+l/De8Clulp9nFAcuHeShcFlYTMmjBRN4ZJ6snIW
-	gebO1Y8waFbIDmPm34AztZmiJoCHe6k=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b="triYI/5n";
-	spf=pass (imf28.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.169 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757511997; a=rsa-sha256;
+	bh=ZC/bk+aKvdIBrrJ30kooAeuYcfMT0KbaNtS5uBTN9lc=;
+	b=LnoLDOXXeWH1xfdJeC4OWofuxIY9+sHGlOnSU/+VRWrAefZTTalA16t6dsEWOcbzUrFKr2
+	4I2RJ6pBI7UnpVvuZI6GqlUQFur8SpQOxJQ7U7QEgQktiuWzHaz4hXPRJCdO/A8FA4bZZA
+	pp/3JUvLvqYYkt19pruApF4pZYoVWqA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757512282; a=rsa-sha256;
 	cv=none;
-	b=UxutR48e32rBUAUrAkEla1hRfchbkDwWEbh6iAhk+C1rmpYucqS3AURDMDjda2F5vwb3tp
-	eFN77P0fWp3ZwxvUjyl8NAPidPEYVIFf8t7YB6uYGtLAOYegcBNsACtG7T/cjQJxZjXHjb
-	3y0Hz57azpX+u6RzQNSBV7aqanR3F1k=
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-7e872c3a0d5so610733485a.2
-        for <linux-mm@kvack.org>; Wed, 10 Sep 2025 06:46:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg-org.20230601.gappssmtp.com; s=20230601; t=1757511997; x=1758116797; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Af9b+zWkct/GsJsGHqMcZiJ29hiwuRshIos/tH0QIzs=;
-        b=triYI/5nFBpvZin5OSjX7rz/7tsSDkgskMhTDyWeSldyiL3yHp8D8LnTjeobUoJpHq
-         H4BkiRIM6nl8xYg3C1TALDuhttqSkJsmxG3R+/bUqiYCVKimN7OZEt9ElkxfydQ99DcJ
-         yOQ93IP1FgW3bg8KBimiO3B3rWte/gs60KeGYe+Z2/QrARh95r8xZ6CQiV4QJEu3sIEN
-         hzjvPlear0gSx6ghOkD1tqRSolZx1ryRnvrieXrapeFiKymwIItnk4YacGXMTudvS/3l
-         gbBFSESQaYLiPvmTzHk4zXq6O+E6OEQ9ZMIprwGmsWFEPZBBC2tkXsA5FuUroHbQRQK4
-         CUJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757511997; x=1758116797;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Af9b+zWkct/GsJsGHqMcZiJ29hiwuRshIos/tH0QIzs=;
-        b=d2W7gSgouVThcSygW0AIxxfMVFyt+A1PEmL1a0dguxUXaJq9HFHYb+rgOeqqNe/k3D
-         aI/gpy6ckg8xEIIx6NwpfMMZQ3gqYhVLJ0GIc/266hYn1Eu6mAit6TogNPHOytidPXYP
-         /t91RDNqDCA1OzTCyWJL76ZqOJUkIZJyWOKtEH6oImANtcDnmgcWvWArGjlN2+tIwt6L
-         rkuIjiKePnG5MU5dwE4GEw7IGZH/3b0g63iEsZMLlueElXeEJjJx4EE8uozhiaUgOKFj
-         PQxxwLocKG/6eoJABU7BzMlMBLGxeJCOrmLWxwIHW/vdAMdGlkB5KSZG8O3zC+koXn4s
-         hotw==
-X-Forwarded-Encrypted: i=1; AJvYcCXewaMMI2a3XCgfyhKrwuuPQb1+UJ0fv+i2QN2uD4YonBcmwswoLBdNJz0lrCPoygfIeCq/3nZPrQ==@kvack.org
-X-Gm-Message-State: AOJu0Yz0kuvTF0e4ifmqItfcxUH5jvRwN/3suuP7qxp1c5lSrnfKMBed
-	6Q2u5OHJrKT36/YvPstUj2X1LZVKmwyjHPQ9XdL35L2fJ+cms0FwVTNpI40cNulFs/s=
-X-Gm-Gg: ASbGncvz9GoDNAMFcOb/HTWAumh+4s4sSGP9m8+A4mVCBYAg+XL25sqUkq7CsZpV8Pd
-	0C/dXHMshqIjpSvxVQ4yJj12yITnduXg74WQA0kdpfXsLUjTSu38u252GVULQiIXv9BLgZsLev8
-	mO1hgN1jEI23ADx3mvr44ijQ7+4ZwQrsJ6Lz9P8zM+UxVSm/C3cfUrXvZNwvCddWVJ40deGokQ1
-	iezdhFKN3hvnX2SCcsQof+glaWOlNR1u+a46Kfix2iZIE0EwrYYB62KOGvmUxlnt2rHvIqxmnIi
-	sPPhx2iyP0udH92xkcIgzh1HjPJ206/01Q4hVZ6hU7pg8yfe7AsjBtCfwlIViD/4BXQ3VvmBgad
-	IRjPYdEpKl2L+99wiRxs5GHQ=
-X-Google-Smtp-Source: AGHT+IFH+xY6zcLHZp1R7dQuxNyCBZBMpa63uJHwAlgVMDzPHOhi+hDTCg2JXA9cZiRHOYknWC0uzg==
-X-Received: by 2002:a0c:f096:0:20b0:743:5b18:caa with SMTP id 6a1803df08f44-7435b180f23mr114883876d6.56.1757511996502;
-        Wed, 10 Sep 2025 06:46:36 -0700 (PDT)
-Received: from localhost ([2620:10d:c091:600::cb89])
-        by smtp.gmail.com with UTF8SMTPSA id 6a1803df08f44-728a860bdebsm121998106d6.69.2025.09.10.06.46.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Sep 2025 06:46:35 -0700 (PDT)
-Date: Wed, 10 Sep 2025 09:46:35 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Yosry Ahmed <yosry.ahmed@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Chengming Zhou <zhouchengming@bytedance.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/3] mm: remove unused zpool layer
-Message-ID: <20250910134635.GB1111@cmpxchg.org>
-References: <20250829162212.208258-1-hannes@cmpxchg.org>
- <20250829162212.208258-3-hannes@cmpxchg.org>
- <rcxmemdxbxuvtag2qv4sjxoh7ho4z3bz3od6i76rc5yholx2rc@vncn6iuuee7b>
- <20250909151639.GF1474@cmpxchg.org>
- <pmpmejmw4swnconhf3u5uzzhwtki2fdnwvt73vf7lzkigrhwmb@sarxlksng7nb>
- <3dmy2gxowbmq5wmpjtsb26d25k5fjev2geykik3du2ltmhrj7z@nfkwjjhndet5>
+	b=jXW7yQba6npBTEJslO7pkWtfirhnr+Ox4RsdpouGn7bqnGSHoDq3RZ7urEuLc02r7ZMp/c
+	X3FEBf4+mnnMaicOlJoIFQ5iSYSckTPYkxLPJKbDsR2ovj+LybhWZMkGLuVOip9orHF8IQ
+	CfwOeOSDfx+iFDi/mjPGX38gr2BdiQU=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=FX+8Qla0;
+	spf=none (imf23.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=none
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description;
+	bh=ZC/bk+aKvdIBrrJ30kooAeuYcfMT0KbaNtS5uBTN9lc=; b=FX+8Qla09u0oS8yXVaC2o+e2t6
+	ZQ93liu5yxXdmo6r77uOV8xjnYN49IkT+JxMCwkqfRBATTTIATJeeLWmP9WebqrxPsh9dvhe7eYzF
+	V4S/JgUVjxEfQoaIPXMYyhBzsy2W8fH7FcwlMbpvY93KRaq0/5t4L+xfFyHM+KuQApFeDGmlMgEc0
+	k+CBFI88CGcwQcVSUd5nZAJJsmXtgpUwGpzjeY16rwWoDxvscx/bpNFbZjQjn2xAOlTgkiar6Dzlo
+	vFCHZXakf0wwgAhRYxVMqq8aGjdGeFo6v7daqPe6DvhrJyiJy1ofT2RQ8S71zOorVCq1Cpr1yoX0s
+	FeUY4CjQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uwJPq-00000008MFY-2SfW;
+	Wed, 10 Sep 2025 11:55:10 +0000
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+To: Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	linux-mm@kvack.org
+Subject: [PATCH v2 18/22] usercopy: Remove folio references from check_heap_object()
+Date: Wed, 10 Sep 2025 12:55:00 +0100
+Message-ID: <20250910115507.1991829-19-willy@infradead.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20250910115507.1991829-1-willy@infradead.org>
+References: <20250910115507.1991829-1-willy@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3dmy2gxowbmq5wmpjtsb26d25k5fjev2geykik3du2ltmhrj7z@nfkwjjhndet5>
-X-Rspamd-Queue-Id: DC0BBC0013
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: g34esukuk17wpgy8ct8frwb1qozhpm1j
+X-Rspamd-Queue-Id: 3DAC714000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 9wnkgth1yor3ixr4dcmkwp7zi5sxafjr
-X-HE-Tag: 1757511997-119758
-X-HE-Meta: U2FsdGVkX1/tJh86bmnAGwsYCStZzaKR+x3qcbjV6sm0yMsqRn81vd5gYCirhSKGQkZxe2UZyR/Lyqe4IkUbsEz/SVVfizWjqiXkWeLucLP2KI+Pwu+Ze9TqFr2jMyWz6auG+8u5TbODsS8ChjkyiWQKHfFffmF3+or4J98BmHCfooWP8+2/hQAaOwnzBW9lktzy0UAaGygfBh64ZPqVlfWFfl3agB3uGJp+3L4KPetAGG/P+IGxKEotQ7gyzcjmT7VJkFM5+FTtBcbpQ7WVsOcqOaZnMNikRtEwNv1EAN11ePEDjJDRDjB0ziZ37GzsdLjDNNGTmsakfacGscPBREt5FVn4hDVhc1hG+L+RQFV7fSHYrsI1ZMKTrBcQ628I53PIZesYc7pFdpN/hrqq6VR/O9tGuA7DekyNRlCvrtLuFhGO815vMdik6uh0M4Kjp7DCtQnLCosqFd4i41JOfCc0CMJ73Rn68wKqNOyL9L8H4dBCBtOxc9/q0O0MlXg3ICIfiDhNo1HFTGIAhv/QLr8yKwH7giTXqqeps7//Nbdwus3BqwuUAQPafn7mAloqMR/X9VFviaBcdOGWGDAXl33/lb8b4fgYcPLU/2Gf1iM2ZQMlqnq3B6USQ8XZZ7sB74Bqxz6X6QENe6wZTdV9l4jeMRjZWZr4vVN5f+iXsKnJpSvVdWzRM7Rvk9ZjDHBxmdgJz6Ef2KfXZYxIzeptJknOjusLxmg/E3+DvtDFvsRZlIRC2dELTa2IEtefd1ATeMEuwv8CqIAIR3ZCXXPdSxvehuL9b249rE1snKnsrEUO/Rf7yvNCnN4DowoqRnjOjQFAYfuMsVFnSfTUnSxX8qgj2vqoe3B4CAGlYrzQaFNu3H4tOm1vN/5fxxjMkvw6aIX5BJoFtTxPYIULJ+Vq0QwfjKesq+2RM3+3g6bfAeu3IF+iip9hkFtkv1zc2FhLD0a8MG81mwtj+xchLFO
- W+4rGpxG
- Ic46XwNMNUr1Bf15IZ/gJ4Y6f6LtvK2/ErNXTqkT7iJpLr0XyeQwHGRLIeK5Dx/ojdQTmXFfQRMlz56ly2q9qGkldRs8kpr9Gi5dRxYU46F6VT5SP8KBaJCRnuFyU1QTHrrNEQe+vy+E8mCuEYHODOhgyGTKoYdrc7fv4IK+Ngopt5ESdPKe5gmsckT9zspqUiJPIxQ2hte9X4KhQP1q1qPlGsSYe39xu900zNiDsybFg/zdb5aQffYcs+B9T36/9U+XeTgSJoOZ/BT3JVdxAnv5OEiZVT14SNzS0soEsOuDLnH5sJaamArnAC+k5Eb4YCeXbCQAzKl/PL+aOqobu0+2AGhNhg/H9nSLtQes6NorUueLdK64tuw3Ch/FFxY5BJhQvrAAyRxzcR971su3GQDFheDK3HXobS9IQuS8C71JLEtT7819yfS9SPZdK0U7f9CxrGEmE5xaG5DQtttaSY4xdCxzGynG6WWLC0QKDnT6CXweaXjXFLFqjbfpIjy2L6Q9vQFigmEZj8e0=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1757512282-343861
+X-HE-Meta: U2FsdGVkX1+n9ThgSSs20QTDFqgXcOrpGWAp4XfhrfmOQduONtDlvgB1liLVOBIJ+e8rUcaANjwzBdl/t9WbtujA/9RFAjz/Cofy3F2hys8DYIlQ/1pCId2Z4NEatko/M1VJ6uNB3AdSOgDqZ/icnOyurDkhW4y0q/p0hn8XCc0+NKFXd3yvCSfQ9bPz7oPRZF0Uqczm7LEg1815QXrwdQoIeyaPhkw0JM1m4GvDwrGnh7wKawA+0GYAaQouJYKAoguwKpXT2zAsO/3SHKa04wpQIiojhX8gSbMLK3Nd1FsdYViD0NdrBaePL88pbQ9zJE/VNqhqxDIleF50Wmc2bYfBOEZpLov5jk8AKs1UUGumTby+6JfIU4P9WhGDh5qzJMCckGY0bUqB1rCyK650qJnpW3ZnPIJTR6LbFF94kOPmGybbuP2aR7P2eoTEr0oPWlJXWx52vpD54p0tNZOxCEYnLFofZ3R/MtI06lfLH12zKfdwmtqYozuwZA8rasXJsx9aloYr7db0hWR+5Fz3CtTp745sRSlfqQSAiSfrfvLNzDHCfJJXLgNDSefAdQrc362i2VJva1KCslai9JJOIi0ki+zXK3+PZ3Pv5LvhhH73dffvu/6IiOZZxhezITuZHC0ypEy2h8uWimGtfzyi71CAIyL2RUj/gQHAVTo8AXkUa1ozvb6CkOHYgcFFsaMaYRmsg1sJSQbFSgcgwf1q8/+5sxx+s1hgfFedWKGS/CgoBZFIoogOsGOCJ37aLrh+BTiFhPoKB6PQjw4MZBLxSSWkfUL5KT6e6PveViuaFPx2DQZStx5iT+jMLzJKPs8Ttnh9q/dBJlBICDZHsyAx0wdkjeazcYt/D4KcHo3YdcEdmwtsYpdspfcxazCJPktu3DY9+n0drMwzh1yzT11BKwq7VEAwExNdRoW9cGZht3fhJf56+VB+L36pd5ufYYlk7tSHjV0aR2B3iRuvcLX
+ ky1kq6VD
+ WnYpk1P0ZP8KD2h+NesT58nMm4FSSsNeuVhWKiGFeeyl19tLj8HUElgyXHKp9g/amK20w7oEVRDbZjWD/Y1LqEHFA23dV/3xI8XGT75LI5WHgwnFGgg/ZsZiKK48GR7NZoHG1PppYoRQz/QANJerCylrZjewSfskkNAnUSlsdHW4Qz27+5dMYhmmjGsCO7nd1gU4TKjiltQzcQOkLcdblrWK3BB7+XOWgE/j/GQaSVbHprsMBO2VNecsrZNYmXZPxLv1+ZlsoTrWeUTQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,83 +92,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 09, 2025 at 08:09:22PM +0000, Yosry Ahmed wrote:
-> On Tue, Sep 09, 2025 at 08:08:12PM +0000, Yosry Ahmed wrote:
-> > On Tue, Sep 09, 2025 at 04:16:39PM +0100, Johannes Weiner wrote:
-> > > On Fri, Sep 05, 2025 at 06:58:47PM +0000, Yosry Ahmed wrote:
-> > > > On Fri, Aug 29, 2025 at 05:15:27PM +0100, Johannes Weiner wrote:
-> > > > > With zswap using zsmalloc directly, there are no more in-tree users of
-> > > > > this code. Remove it.
-> > > > > 
-> > > > > Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
-> > > > > ---
-> > > > [..]
-> > > > > @@ -125,45 +122,18 @@ config ZSWAP_COMPRESSOR_DEFAULT
-> > > > >         default "zstd" if ZSWAP_COMPRESSOR_DEFAULT_ZSTD
-> > > > >         default ""
-> > > > >  
-> > > > > -choice
-> > > > > -	prompt "Default allocator"
-> > > > > -	depends on ZSWAP
-> > > > > -	default ZSWAP_ZPOOL_DEFAULT_ZSMALLOC if MMU
-> > > > > -	help
-> > > > > -	  Selects the default allocator for the compressed cache for
-> > > > > -	  swap pages.
-> > > > > -	  The default is 'zbud' for compatibility, however please do
-> > > > > -	  read the description of each of the allocators below before
-> > > > > -	  making a right choice.
-> > > > > -
-> > > > > -	  The selection made here can be overridden by using the kernel
-> > > > > -	  command line 'zswap.zpool=' option.
-> > > > > +config ZSMALLOC
-> > > > > +	tristate
-> > > > >  
-> > > > > -config ZSWAP_ZPOOL_DEFAULT_ZSMALLOC
-> > > > > -	bool "zsmalloc"
-> > > > > -	select ZSMALLOC
-> > > > > -	help
-> > > > > -	  Use the zsmalloc allocator as the default allocator.
-> > > > > -endchoice
-> > > > > +if ZSMALLOC
-> > > > >  
-> > > > > -config ZSWAP_ZPOOL_DEFAULT
-> > > > > -       string
-> > > > > -       depends on ZSWAP
-> > > > > -       default "zsmalloc" if ZSWAP_ZPOOL_DEFAULT_ZSMALLOC
-> > > > > -       default ""
-> > > > > +menu "Zsmalloc allocator options"
-> > > > > +	depends on ZSMALLOC
-> > > > >  
-> > > > > -config ZSMALLOC
-> > > > > -	tristate
-> > > > > -	prompt "N:1 compression allocator (zsmalloc)" if (ZSWAP || ZRAM)
-> > > > > -	depends on MMU
-> > > > > -	help
-> > > > > -	  zsmalloc is a slab-based memory allocator designed to store
-> > > > > -	  pages of various compression levels efficiently. It achieves
-> > > > > -	  the highest storage density with the least amount of fragmentation.
-> > > > 
-> > > > Why remove the prompt and help text here?
-> > > 
-> > > We shouldn't ask users unnecessary questions. Zswap and zram are the
-> > > user-visible kernel options; if one of them is selected, they should
-> > > just quietly pull in the zsmalloc code.
-> > 
-> > That's fair, although ideally we should call it out in the commit log :P
-> 
-> With the commit log amended:
-> 
-> Acked-by: Yosry Ahmed <yosry.ahmed@linux.dev> 
+Because the pointer being checked may not lie within the first PAGE_SIZE
+bytes of the object, we have to mark all pages as being LargeKmalloc.
+We could use virt_to_head_page() instead, but that would pessimize
+slab objects.  Once we move to memdescs properly, we'll tag each page
+as being LargeKmalloc anyway, so this is more in keeping with how code
+will be written in the future.
 
-Thanks!
-
-Andrew, could you add this to the changelog?
-
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 ---
+ mm/slub.c     |  8 ++++++--
+ mm/usercopy.c | 21 ++++++++++++---------
+ 2 files changed, 18 insertions(+), 11 deletions(-)
 
-With zpool gone, zsmalloc is now always a simple dependency and no
-longer something the user needs to configure. Hide CONFIG_ZSMALLOC
-from the user and have zswap and zram pull it in as needed.
+diff --git a/mm/slub.c b/mm/slub.c
+index 523a4551ceb6..58e8354e12a2 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -5299,10 +5299,12 @@ static void *___kmalloc_large_node(size_t size, gfp_t flags, int node)
+ 		page = __alloc_frozen_pages_noprof(flags, order, node, NULL);
+ 
+ 	if (page) {
++		unsigned long i;
+ 		ptr = page_address(page);
+ 		mod_lruvec_page_state(page, NR_SLAB_UNRECLAIMABLE_B,
+ 				      PAGE_SIZE << order);
+-		__SetPageLargeKmalloc(page);
++		for (i = 0; i < 1UL << order; i++)
++			__SetPageLargeKmalloc(page + i);
+ 	}
+ 
+ 	ptr = kasan_kmalloc_large(ptr, size, flags);
+@@ -6226,6 +6228,7 @@ EXPORT_SYMBOL(kmem_cache_free);
+ static void free_large_kmalloc(struct page *page, void *object)
+ {
+ 	unsigned int order = compound_order(page);
++	unsigned long i;
+ 
+ 	if (WARN_ON_ONCE(order == 0))
+ 		pr_warn_once("object pointer: 0x%p\n", object);
+@@ -6236,7 +6239,8 @@ static void free_large_kmalloc(struct page *page, void *object)
+ 
+ 	mod_lruvec_page_state(page, NR_SLAB_UNRECLAIMABLE_B,
+ 			      -(PAGE_SIZE << order));
+-	__ClearPageLargeKmalloc(page);
++	for (i = 0; i < 1UL << order; i++)
++		__ClearPageLargeKmalloc(page + i);
+ 	free_frozen_pages(page, order);
+ }
+ 
+diff --git a/mm/usercopy.c b/mm/usercopy.c
+index dbdcc43964fb..8d21635147a4 100644
+--- a/mm/usercopy.c
++++ b/mm/usercopy.c
+@@ -164,7 +164,7 @@ static inline void check_heap_object(const void *ptr, unsigned long n,
+ {
+ 	unsigned long addr = (unsigned long)ptr;
+ 	unsigned long offset;
+-	struct folio *folio;
++	struct page *page;
+ 
+ 	if (is_kmap_addr(ptr)) {
+ 		offset = offset_in_page(ptr);
+@@ -189,15 +189,18 @@ static inline void check_heap_object(const void *ptr, unsigned long n,
+ 	if (!virt_addr_valid(ptr))
+ 		return;
+ 
+-	folio = virt_to_folio(ptr);
+-
+-	if (folio_test_slab(folio)) {
++	page = virt_to_page(ptr);
++	if (PageLargeKmalloc(page)) {
++		page = compound_head(page);
++		offset = ptr - page_address(page);
++		if (n > page_size(page) - offset)
++			usercopy_abort("kmalloc", NULL, to_user, offset, n);
++		return;
++	} else {
++		struct slab *slab = page_slab(page);
+ 		/* Check slab allocator for flags and size. */
+-		__check_heap_object(ptr, n, folio_slab(folio), to_user);
+-	} else if (folio_test_large(folio)) {
+-		offset = ptr - folio_address(folio);
+-		if (n > folio_size(folio) - offset)
+-			usercopy_abort("page alloc", NULL, to_user, offset, n);
++		if (slab)
++			__check_heap_object(ptr, n, slab, to_user);
+ 	}
+ }
+ 
+-- 
+2.47.2
 
----
 
