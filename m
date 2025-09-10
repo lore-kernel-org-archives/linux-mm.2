@@ -4,94 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 515D6CAC582
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 02:45:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26652CAC582
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 02:45:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ADF698E001A; Tue,  9 Sep 2025 22:45:37 -0400 (EDT)
+	id 69A6F8E001B; Tue,  9 Sep 2025 22:45:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB76F8E0016; Tue,  9 Sep 2025 22:45:37 -0400 (EDT)
+	id 672218E0016; Tue,  9 Sep 2025 22:45:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9CD4D8E001A; Tue,  9 Sep 2025 22:45:37 -0400 (EDT)
+	id 587F98E001B; Tue,  9 Sep 2025 22:45:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C2B08E0016
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 22:45:37 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5342411AC92
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 02:45:37 +0000 (UTC)
-X-FDA: 83871799914.16.F1D61BA
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 635FD180007
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 02:45:35 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="GdbJF9C/";
-	spf=pass (imf06.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.216.53 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 482728E0016
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 22:45:46 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 117B21A0750
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 02:45:46 +0000 (UTC)
+X-FDA: 83871800292.22.CAF353F
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 2FED9180004
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 02:45:44 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=UiPZTYKA;
+	spf=pass (imf24.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757472335;
+	s=arc-20220608; t=1757472344;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ynOs6k0nDqBEUqYqBnSm01F3FVZyuHDqWUtbeZyhsAI=;
-	b=ahArGE+Kc9Mo2c3MGwcl6BYvmc2nk5SXanRQMdBkp2S9lS5lYmbPLQzOUksvycXssqtToU
-	ox3AVKpH3mcUT/bMbb1QPqEFQArQh3P6q7evyxbJ1JNp62YLDusiV8hb9p+7ED3s1uz7n7
-	9QrSwPf5nuGj0azXW9FRw0WU79GALGI=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="GdbJF9C/";
-	spf=pass (imf06.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.216.53 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757472335; a=rsa-sha256;
+	bh=tO3gM8aH95iDkX6qv/L3rj4+V1nSK5Vf1Drqukjmutg=;
+	b=2KYsVsEqBO7l65+/K7QqGuoHAg2+GHRjSe0vmP1AKA0Xi6T/5Pzkx/W9lDlh+0hJffwAre
+	jtQ5JvWb4AWIx8bqU8TJ7AiOubetFunXnvmCgbBWe0jUEv/TDU/Fua/zbAill7GkLfc1j9
+	kOv3M9Ge0EFqV8feoRFyCgm1mEqMtms=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757472344; a=rsa-sha256;
 	cv=none;
-	b=ex56du0e30TZ4SIQbBWiE71o4f9FICOcTEfA+jmz/C25eaaVDjoizlcCxHdj5de5giih1Y
-	hAPfPJYhNHdEdHt4NA+NFIm1B002awohyJDSdLekrFVl5Ia6XAQdOkKe0noRS8p5b7z0Dp
-	zut6VOUivlc/YoJi1d1jy2VCl39/SrM=
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-32da4f36572so1102881a91.3
-        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 19:45:35 -0700 (PDT)
+	b=7cs/B3Ic3rs2gfkOUUsZSUigiUwJ3NPT9ks13VVd7Gf5Mb1aXvN9VXnzjU0ZSNiU2g6sMd
+	EozQOyF+rp2ywu9Yz/G3LV1+7NpkAwAYAeFp3A7PIRGZ9T4qpIuWLu1sPYqvqhCks8ge9S
+	SLsvbMlUGqjjQd/dqVitmpJQsynt/zo=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=UiPZTYKA;
+	spf=pass (imf24.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-b4c72885c8bso5213195a12.0
+        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 19:45:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757472334; x=1758077134; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1757472343; x=1758077143; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ynOs6k0nDqBEUqYqBnSm01F3FVZyuHDqWUtbeZyhsAI=;
-        b=GdbJF9C/iysvkIKiiUU1Xh38jcimVZVSUnM5g55ioJVcCQQlvnVgNSkYlwojFXlJiW
-         /Cuk7QTxT8hQn1C+Es2dZTI49l+gBFWcMEBSHDJhiGi2+hMePgTTeSFdi65fxqDUB0La
-         aDva5c08TD37qq1htdTab0s/KlWhTpU/sa73JoIn4qsSzdZWZF4PD/RYGqH5ewUdsir3
-         cLwLzNspaUYzToBjvKM8kWZWHPiasDN6kQ/MlAeQ51ul4EPdi4wHs0R6AQulKGoR/nWl
-         aLzMKpEbmNd/aSOlVnzu4FJ6woxz5l6BNl0WEvfliUAUsCQBx3rM63ybopPGCsC0j4P2
-         APUw==
+        bh=tO3gM8aH95iDkX6qv/L3rj4+V1nSK5Vf1Drqukjmutg=;
+        b=UiPZTYKAgxTlRiXmivcQudLnQccc6BnqKvGOnl/MLD3uju9Kc7y4Lp3j96eoiowMcB
+         Bo5ZW1y0vjxTnKeC/qLLth5RU2gGdYPp0bw20bHWBevWJ5pFJ8gUD2pe6eyzJ2UvmdDa
+         t4Uh4w1Ay4DywahdAdN4KAYHpFqKFX8UyW2XtS3bwllxVQRfc6K4n/VIq0qoBLisfsJI
+         YFS+GAdujbu3URnZx2upHJrhsptxF/QY4QbxrU6HRJkj+mBicp4yS6uqN9qlYRVE8zud
+         idO1c/uC7ACg6gF9aH4E0aJrIh5EA1OgljfT+1s3cu3Mcu/t8rx/8d9PtMOd2zgmEuJe
+         Vh9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757472334; x=1758077134;
+        d=1e100.net; s=20230601; t=1757472343; x=1758077143;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ynOs6k0nDqBEUqYqBnSm01F3FVZyuHDqWUtbeZyhsAI=;
-        b=nngg2i3/dNjML/YwpM907rkRhv3FETc8t/huaB8DPq47uzfCPb7NHlf6xei/FZXsD8
-         g83yqkALCMDIGeU+lgVd1tNpXebsSbVqJlvbotUpO0n3l2XoX2NC0cYJOtJWxmmQ/bVL
-         KI05x1agB+6iRNRK0FlVstVMLD9PVLoceSC6UgVf3VneayrB/c/G+0aOXD7fhaYReOhv
-         bQPNroBlhpHU6aBu8WvT/zw3EVQ/K3TrXsc0vTed8jUnHLwik5NPoWWUxYTcyV2AidGM
-         yOyGlNtXN4QfRD3Y3eNb57jO9Gf2H2AhbzicjYSlJ9zzrdQIgencwzw9TkUggVYVI9jd
-         /Dog==
-X-Forwarded-Encrypted: i=1; AJvYcCXB0sbjsdj6ZVAGUXFGTGABqwITRMThR8B9Dx/xzB4vWHJ0KOqj3JVtmrCpsfxNbDyB0UfcUGt8iw==@kvack.org
-X-Gm-Message-State: AOJu0YyaLe3uQHZfGoxNywNaug51rIUAJphdPHhcOIlg367GbDtuPDms
-	U0vTfD+oqywLoM/p7v3+PETcYdTtKgftFUK466UmfflX0SX3WKUHmtBA
-X-Gm-Gg: ASbGncsqdIO/bOS2pCKLxu4ll1usDffGaoJdaUHTrFAf6lai6TU+wTIbGXTdhybetFs
-	G66zSePbe7YXCantMhzCAfb7meYCg6xhhB0ySCjorbeYZXTRIuGNTsVVBA2g6YBIIsujEbn7g07
-	wtCrWZ2pO33AD+sLLRojukQM1UrC16mOin4DRHngYSMNBOnEv817KB0rS+EBcGZ+j9l7IZYukcs
-	ujLiGXlxH4AEyIZzqg/C9o3MioIBsiM84CPT2NfYx43nOVSi83gkpgK5isYFZ4KYzsInnWFLLHv
-	4rz85NxWO3oTrGPe9BygfZ3Pysz8KkTvgWJb0PU8vORzfxJIdAPMV6lR21ITDrw45Mc0nH/Zxz1
-	/NefZ713XjQeO8/N75ohBTcbpfFxopkxi+62HZ5w7THW/72ACevYhXF0w415TBwUBbLC/+G0JJL
-	5d3Ywz4iPRD6obxA==
-X-Google-Smtp-Source: AGHT+IG9wjHHm9F1qs6Hj5CY79GIA8nP9/1uv27gdyTOHKSsWrRfFyC/XUADgHH+wq4e30aKmqCKiw==
-X-Received: by 2002:a17:90b:3f8c:b0:32b:be68:bb30 with SMTP id 98e67ed59e1d1-32d440d2749mr18927508a91.37.1757472334133;
-        Tue, 09 Sep 2025 19:45:34 -0700 (PDT)
+        bh=tO3gM8aH95iDkX6qv/L3rj4+V1nSK5Vf1Drqukjmutg=;
+        b=NlqplHknQqedYFe9eF0dCZfNWfWBgKfBtSHtHMLdtV3La2EqcZ3psQOQwLnRFWd+Kt
+         ny8s13eSdX52KUndQVAehrzHum8lqIGk2mlTscLpH8L8QAtEmD5gyj6yyNQiyubDS4yt
+         NjIcfJHqtObh7EsH0klOhFX4SMk5cV9uJASPEXhyb2+DxuxjPEcDMwJRwNUPXpZz60tW
+         Hcg8EQraNGJpoAsmO+pT0bHVWoJDs7BIHqrt8RtHG5BPmNFhoU32cDBuP4JOhhhGEgf/
+         nIU4BO9vFAPC6Svf/VnV7mw1B33MShHDv8bwonV9GMNqHAwMJhnUXCs3tlyXeNnVPvbu
+         8UmQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXs8ngaoU4Ip7X1sbkuzYuT4i2AubBVxD3OQxeY2ct6thCm/dpCKSPay1C+ZfOxf29+47IWFLophg==@kvack.org
+X-Gm-Message-State: AOJu0Yy/bOAccVZuGXgeLtGvbtSvNEx6Ret97UkfCbhILH2FWMEEeKo/
+	at+sf84KC/0cguNXvYBOKTXBhCpQufrPOTjBto2hAIeEjZgZr4Q25Hkg
+X-Gm-Gg: ASbGncu8iRmRXzvZF7yequeYe0I4to02nOwGhkVIogHW9WX8T3OBO0zLt5Y/X4oFV/f
+	p9aRW84mCi+zvbUgUE7ypCwvsccZjwBpQY1biaYhm1glSvWP696TTHDH1ExLvI4SEHFlRaFoIoG
+	wqHjX6+TcWXjaZGPz+Bp92qrqUGKblF/6x6PHLhtJDjBKJ9Wt4ihGjEcoDTBVXHi0aIrgxC1OkI
+	jDC6QHWTpPsHsKzWiHMra/vLRxlSGDYJ8JQ9i1fE230JyC1lO6Ps7s2R8DE3ik778yKyGT5iJOS
+	Zb/3oK5TPmcOitEJh2CpxpdajybCOJXsuxVOAzhV/c8cE4Jx80/1I6kUg0hCGICc9naYJw4oqN2
+	WGUaoeefdx6DgSfBc7Y5FWBgsVLAYTKmDeaN7zPioJRxBjtvNtrdsLJzCSlRVwpV9FiCo9UnKIW
+	SLaU1yBX5NgsEZoQ==
+X-Google-Smtp-Source: AGHT+IGLHrt/+HHcQCfm9JLX/3iwkEcxPxZknY81z3v648g7WOhOZb2datUTOMB4DPHSP/I5lhyKEw==
+X-Received: by 2002:a17:90b:5185:b0:32b:d851:be44 with SMTP id 98e67ed59e1d1-32d43f0b8e9mr17115914a91.11.1757472342979;
+        Tue, 09 Sep 2025 19:45:42 -0700 (PDT)
 Received: from localhost.localdomain ([101.82.183.17])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-32dbb314bcesm635831a91.12.2025.09.09.19.45.25
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-32dbb314bcesm635831a91.12.2025.09.09.19.45.34
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 09 Sep 2025 19:45:33 -0700 (PDT)
+        Tue, 09 Sep 2025 19:45:42 -0700 (PDT)
 From: Yafang Shao <laoar.shao@gmail.com>
 To: akpm@linux-foundation.org,
 	david@redhat.com,
@@ -118,23 +117,22 @@ Cc: bpf@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-doc@vger.kernel.org,
 	Yafang Shao <laoar.shao@gmail.com>
-Subject: [PATCH v7 mm-new 03/10] mm: thp: decouple THP allocation between swap and page fault paths
-Date: Wed, 10 Sep 2025 10:44:40 +0800
-Message-Id: <20250910024447.64788-4-laoar.shao@gmail.com>
+Subject: [PATCH v7 mm-new 04/10] mm: thp: enable THP allocation exclusively through khugepaged
+Date: Wed, 10 Sep 2025 10:44:41 +0800
+Message-Id: <20250910024447.64788-5-laoar.shao@gmail.com>
 X-Mailer: git-send-email 2.37.1 (Apple Git-137.1)
 In-Reply-To: <20250910024447.64788-1-laoar.shao@gmail.com>
 References: <20250910024447.64788-1-laoar.shao@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 2FED9180004
+X-Stat-Signature: 17km7owscgkseagm5eq8y78i1ore1hzj
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 635FD180007
-X-Stat-Signature: efo87i4jhrom6xwsqjjx8x5n71zgucep
-X-HE-Tag: 1757472335-722607
-X-HE-Meta: U2FsdGVkX19wbzoJ4WlpHT3RYYGeBKjWnP6U5Kpi40mzteEHSWOnL4OG8WKfigFJVwXNkHDbeu1mEGS4TPPlMLQecA1G2ebmIcslOf35+DqjAgq2/TF6cPjOfW+BsSdTLPxpOAMw1XovISVgDuu7rCcnkxzpX39nli3w1qViEy2NJYHCqNAsPPWS9l2zFBDRfQgWqXtlfTfqbzaHC6W6kJ+gWMNcPNAMpENXSkKOBIXp+kwzOqwgq5T6gahvAK2L05IItXCVFgMqmoZ56UUt3IMoLRXCYpU8g23m5I/mSsxOcZpGv8AwhZGVo7biqTuAnC6u5LiES0/qR8Kq6wlZI/Ur1dxvKIkW/VNiXI0+Gr4nKhG4aV0cmy+UdR5oK/jLSrd+4Ol5jMwFy3W776eCWbDwH2KTLFsYlE026Y6PNzzcRk8HHLLFKLGhsnCzmeFAb+rKt01qdxLiFrIZd6vZ3OlGjBhWxSuxVzWUfz1Y+/wsDoNin7+yiQt0OCTNGpiHjGz5ANXgSGxB0XrNgZ9x1DaZ88s/A5YpCTvcehOQJH0xk6lDVH9mGIPVy6yBmeXEnna+6h3YFWhyXqj6qOsUqnYsdS5BhF1dR+k754/KLNOjPhdFzJaxpMUcVST6qTJEl0v5/7Rh80nIXiDC3VsC0DjtdzQGuPjLbxG5ghdW7Un+Vrk/TA7bZfF2KiOXRoLSSy9OZwsswMgkEWRCWc6P7fp4hffcc8XZLF0vHoPTzsCDxu7ytPwHSQMpFgQKJ8UikLM0AXMYtqdUlYjvTRUVapKh9AcwHrgpL2vwfRiujGYuXO7JxZxVvzFm5Z6mn3zIeogdlFmd7MzxlVbo9QIXHE4WymJ45BJ+ecm/GjexZfK9hNO7yuj6k8ayEmBEoj4MJs5Xbw8EVALkANIvpzlr+p5OUFcyRoEfOK9gZTlIJ7BaV/ZIm20YA9IrBhzKatH2NGjC1ckxLSTMa8Ef++b
- mrYVLziO
- 0UvzFeEVrPovb+7lgKExd9bMdnd0yw8Pl1V1aXlvKKI32GDBdai8//CupbRs4kYlDRZVeotGpnUhGopsLlyY9ZY2/DCWj46jXDLWDYoNdWfp/Bz2imTXMUxPOfjaHuC7rTFFJpcGpPCBLS5JX6C0WsCyDmh0umNjuO2qjRViV580HzfVU1FmM61QBlSALeO9OoXwLF8P/hf0RlPlzO5qbwgfUHWoQ8F0UO6fDC0j3SimfztnMfY0wx64Fg4mKoR/aVNpa+Vy1vR4QzHii6PVEDWlhq6YHIOHmPz94pW2fOWYyP3liMuIaAC3SZtY8PPcXhilFxzRV7XLxwjWeSznEebEpUGmGekpA68JCVG62PxP/nmYamfgnSONGVAVz2m5LviXlr9OsthAoUjd/0l58AfCRg7uSXnfGlVLzbOXaB13jdOBxz3FS7y11BLzlTE9khYwiqadj+NHV7+saPYHZoTCYLz7ZBayp3ZHuC/9HFIbMKkd7BYTfjmtEIBapX/5+JnsulQPQooCUCJVVeghSu1VamblSqL184oDRxHXkHD9rKnKOwvCw55KEwIr55xLaef3a3zxqrtmEn1k=
+X-HE-Tag: 1757472343-61646
+X-HE-Meta: U2FsdGVkX18yLAuaLi0SKQfi8ocTLF8JfRIfPkK7MGcwz0k5GUV/jQBgypKwQY3sjV3yU0xRgpenI8lR6b0udUr7m0WJKYhlgA8l59/GgKYCJ0+0CNkTo1kfma9n3035Q4fCzewzwba1Kurf10aFpvtYiKfEi3kPkG65oM/6AWJdfpaDA649RhAIoHE7rPSQcqJsCuZmJ7/x8R6yNG1+IrRgVySTLm/VhQjxSefLEd8S3L15J7MYDM73HcXqEz89/qHX5YUFCcRK1cgVS8CG1hdg7mULttyqf0A4Pjj4dzqrnp2g+gQCjuZ3ucQFXV3x9w61sQPmUzp7NilDHneCQUf6wcZWKNyZa+cgoOfkRxu58/FTGfCWYuCVSxJB+ZqdjVjquRcFQjOCPeSMME2Qj7opjT+13ezD6ce+R1X6cVz8OPKovn2hAU1TTGUnOCBdweH3sRUPb1vjzfe48zqOzT5wA/F7UK8nj8qjWpJfkx6rMlfARU/yAkPU2A5oG0GLn/vgyl2NCMqEMx9f4Aazc3w0srA/g/jnFSS6JRWjnwtSSONkWPGG+JH+80p3kZ7gOf3uNWBoIqPpdkwfp3YgxlcYZBOSwj6dMFD74tE6XcilMaSQaKtCR5cEyhFPP9uYF3Y71Op4qog311JjS9nVxukpzfPGUyq/c3/FJAK+U1DFEXAchkW9SMo90KJJS2vnCMcFJuHma6EGLUzE9ChMCYZPHmWndqaCmdKUbQ4fUPgk2yFqOvTLGlfRdtStMDtKjUK830jf6nKkh5KTMqdl89m0ryQTh0qE7SCQUsMzBd0OO492GdWs+U9+yp98Ab5VRwZAA1v+9wT9pFVuw6lIQMb925T87ntKhFNPsHmsH0j42KCFxd1XeChQ0iWJa48XfNJljEgPg6DxT/ZlEiYbeTX9ZEkAyqN+wcurpAA2sRzAj/JvLZjMBQiWg+G/m1oCPymJD0ci/couljeAgx6
+ iy+eOSXW
+ uJrVtTo1FjD9oc5Qyi0G3XKrZg0tCLE5uazzi1Q6EaRS1l4mhioJ7V+5dwwhm+EvLZdNBFxwFke23KYm9XnMSR5O8BDl1Tdi8PhMt36L+BAwRnEzQFq6Mu4sqPmZZARHYijKoUBwMuWSLcKF2FkuACLsWDV3BvfUrWCKwSysJ1DgsbGp8ParFl7lNhH5tCibotp8a9F84iEs5Dr9frvZkymKg77IOChCG+9/Ukb/a08q6vlLt8Bll46IMvOAAnBU0/p1t/b3kfGDbcmj1SdLGsmLh2hgxiZWz/6joLEIzydNT7rK6U2e8eyDUEZO4WPzyGMDrJSQoddats2MS7tS9XTuO/BNa0NGIkmJBSxDjCxWtdfLMGW/+fJcaRURKf9Si73tFMzoG4Dg2g3sCocrfrFTzJX+MbfBA2JE3i5d8U+jl9vwnqdGGjUkNQ94b2UvyeYNPZpjk0aeXaUNksgGVZtuv7kl11tfQcZU4
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,69 +141,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The new BPF capability enables finer-grained THP policy decisions by
-introducing separate handling for swap faults versus normal page faults.
+Currently, THP allocation cannot be restricted to khugepaged alone while
+being disabled in the page fault path. This limitation exists because
+disabling THP allocation during page faults also prevents the execution of
+khugepaged_enter_vma() in that path.
 
-As highlighted by Barry:
+With the introduction of BPF, we can now implement THP policies based on
+different TVA types. This patch adjusts the logic to support this new
+capability.
 
-  We’ve observed that swapping in large folios can lead to more
-  swap thrashing for some workloads- e.g. kernel build. Consequently,
-  some workloads might prefer swapping in smaller folios than those
-  allocated by alloc_anon_folio().
-
-While prtcl() could potentially be extended to leverage this new policy,
-doing so would require modifications to the uAPI.
+While we could also extend prtcl() to utilize this new policy, such a
+change would require a uAPI modification.
 
 Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
-Cc: Barry Song <21cnbao@gmail.com>
 ---
- include/linux/huge_mm.h | 3 ++-
- mm/huge_memory.c        | 2 +-
- mm/memory.c             | 2 +-
- 3 files changed, 4 insertions(+), 3 deletions(-)
+ mm/huge_memory.c |  1 -
+ mm/memory.c      | 13 ++++++++-----
+ 2 files changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-index f72a5fd04e4f..b9742453806f 100644
---- a/include/linux/huge_mm.h
-+++ b/include/linux/huge_mm.h
-@@ -97,9 +97,10 @@ extern struct kobj_attribute thpsize_shmem_enabled_attr;
- 
- enum tva_type {
- 	TVA_SMAPS,		/* Exposing "THPeligible:" in smaps. */
--	TVA_PAGEFAULT,		/* Serving a page fault. */
-+	TVA_PAGEFAULT,		/* Serving a non-swap page fault. */
- 	TVA_KHUGEPAGED,		/* Khugepaged collapse. */
- 	TVA_FORCED_COLLAPSE,	/* Forced collapse (e.g. MADV_COLLAPSE). */
-+	TVA_SWAP,		/* Serving a swap */
- };
- 
- #define thp_vma_allowable_order(vma, vm_flags, type, order) \
 diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 26cedfcd7418..523153d21a41 100644
+index 523153d21a41..1e9e7b32e2cf 100644
 --- a/mm/huge_memory.c
 +++ b/mm/huge_memory.c
-@@ -103,7 +103,7 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
- 					 unsigned long orders)
- {
- 	const bool smaps = type == TVA_SMAPS;
--	const bool in_pf = type == TVA_PAGEFAULT;
-+	const bool in_pf = (type == TVA_PAGEFAULT || type == TVA_SWAP);
- 	const bool forced_collapse = type == TVA_FORCED_COLLAPSE;
- 	unsigned long supported_orders;
+@@ -1346,7 +1346,6 @@ vm_fault_t do_huge_pmd_anonymous_page(struct vm_fault *vmf)
+ 	ret = vmf_anon_prepare(vmf);
+ 	if (ret)
+ 		return ret;
+-	khugepaged_enter_vma(vma, vma->vm_flags);
  
+ 	if (!(vmf->flags & FAULT_FLAG_WRITE) &&
+ 			!mm_forbids_zeropage(vma->vm_mm) &&
 diff --git a/mm/memory.c b/mm/memory.c
-index d9de6c056179..d8819cac7930 100644
+index d8819cac7930..d0609dc1e371 100644
 --- a/mm/memory.c
 +++ b/mm/memory.c
-@@ -4515,7 +4515,7 @@ static struct folio *alloc_swap_folio(struct vm_fault *vmf)
- 	 * Get a list of all the (large) orders below PMD_ORDER that are enabled
- 	 * and suitable for swapping THP.
- 	 */
--	orders = thp_vma_allowable_orders(vma, vma->vm_flags, TVA_PAGEFAULT,
-+	orders = thp_vma_allowable_orders(vma, vma->vm_flags, TVA_SWAP,
- 					  BIT(PMD_ORDER) - 1);
- 	orders = thp_vma_suitable_orders(vma, vmf->address, orders);
- 	orders = thp_swap_suitable_orders(swp_offset(entry),
+@@ -6289,11 +6289,14 @@ static vm_fault_t __handle_mm_fault(struct vm_area_struct *vma,
+ 	if (pud_trans_unstable(vmf.pud))
+ 		goto retry_pud;
+ 
+-	if (pmd_none(*vmf.pmd) &&
+-	    thp_vma_allowable_order(vma, vm_flags, TVA_PAGEFAULT, PMD_ORDER)) {
+-		ret = create_huge_pmd(&vmf);
+-		if (!(ret & VM_FAULT_FALLBACK))
+-			return ret;
++	if (pmd_none(*vmf.pmd)) {
++		if (vma_is_anonymous(vma))
++			khugepaged_enter_vma(vma, vm_flags);
++		if (thp_vma_allowable_order(vma, vm_flags, TVA_PAGEFAULT, PMD_ORDER)) {
++			ret = create_huge_pmd(&vmf);
++			if (!(ret & VM_FAULT_FALLBACK))
++				return ret;
++		}
+ 	} else {
+ 		vmf.orig_pmd = pmdp_get_lockless(vmf.pmd);
+ 
 -- 
 2.47.3
 
