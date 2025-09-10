@@ -4,109 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA832CA0FED
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 00:27:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 349B0CA0FED
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 00:33:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 193456B0011; Tue,  9 Sep 2025 20:27:13 -0400 (EDT)
+	id 8CCB98E0005; Tue,  9 Sep 2025 20:33:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 144646B0012; Tue,  9 Sep 2025 20:27:13 -0400 (EDT)
+	id 87D2A8E0001; Tue,  9 Sep 2025 20:33:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 059986B0022; Tue,  9 Sep 2025 20:27:13 -0400 (EDT)
+	id 7BA488E0005; Tue,  9 Sep 2025 20:33:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E363D6B0011
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 20:27:12 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8A965867FF
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 00:27:12 +0000 (UTC)
-X-FDA: 83871451104.01.320FF28
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id DC826C000A
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 00:27:10 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="nE0Fe/1v";
-	spf=pass (imf28.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 68B8D8E0001
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 20:33:24 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0A6FE867FF
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 00:33:24 +0000 (UTC)
+X-FDA: 83871466728.28.3E9D343
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 9813F40004
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 00:33:21 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=bZ+cfOkj
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757464030;
+	s=arc-20220608; t=1757464402;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SAHyxOwAe3YRCNFwJ4gRSaYIv2VZODk7Bm26IRUwtT0=;
-	b=KIMUVpUMwyTm5LC/6yMEN1buvC/pGyQ6vpYsHnQEuV3alIGQ2fRoDtH+SHMjmCaEnMPX/S
-	hODrtiO8bpItAYPp1gBOAluHu1HD2ACAt1hnEXWE+3rCu670XvtUUf/EhK27Z+z2atcB7x
-	B3HLYi9XPV8fknrx9fW1uXiXd+u37+4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757464030; a=rsa-sha256;
-	cv=none;
-	b=ywvx47+62qYYiu1SP4AEJWabEQaImoxYA+Ou0PV04YbxVfksdIV+i705dB0ydXAeuCVuhp
-	PwUU6J0xcrntHDNccQYVJ5PdHljTL6VhmK9vtGbI2G4loF6JF8pbjUMVIziQCcuKPAuEJ5
-	lPE/z3lrBBS9cEGZ8Fp0+xFz6SkyBrQ=
+	bh=+7i6AL/giGG8sDoDggEW2tn65nUMUUOKofKssaLcy1w=;
+	b=pXotNYZJScK8WdX3dzeJOnyUCIHGY8n/XKi1Pa3qDTjnosWszhrWvS+k+7VUqq39tcuuBP
+	Cs++ZBPpVb5RVNRerUjqyKLr8qLuWa9O4TYceMsRUMTG9YvV7xP6wDIWqnJ7vd3FZ9QdKZ
+	04Os8/aWOq9WgIYuaHqhhdNAfekyrX0=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="nE0Fe/1v";
-	spf=pass (imf28.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 43D4A6023B
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 00:27:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4BFCC2BC86
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 00:27:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757464029;
-	bh=GXXS6Yp6FuJ7Gx5+BIIsDkHLY0iBFugbjimeY8S4Bn8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=nE0Fe/1vh6ownMVPPwkt+ywOvxdriVg3oAq2Uckyofgj4I2jk1xWBxlkWEaS80V0D
-	 VZX0ZKAmC8Ei8eIclXUcwhZIAA71IvWUrM0QLVwriCBt5A7ApE7SFLPGyN2jegkACN
-	 I7gBMNoeLxGHL+PEjNjeOhrF6AA+Ik2hhfIomWmNi2nu0iwGegcZ7op0fBawUpr2wv
-	 Oo7InFIiOW2oHfXxeJpxzVI0UqeUoCSYdVz1NYtvPUfPqWE8hJp/8c0bO3Hu6FQ4Et
-	 JsJ4qaS6N3iiU5/LfNmB+k2mG8/XbYg2sVCA0pp+fK3kQVnfYGq2n+V9d4B5A2r3wx
-	 dLq0fifbG4OVQ==
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-45dd9d72f61so36265e9.0
-        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 17:27:09 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWGmu4dtRdecg4OdC9JdBf6wDC9VdPEK7rWu4mQ3j4FtTKoDbTHvSizDo9/bCHTU2ufxYpkYXv+OA==@kvack.org
-X-Gm-Message-State: AOJu0YwACh0Wdb6xgmvHKhkoqPsS71oZTccbHE3waNNP8KCSqT2FJoFU
-	RbpKm5C501Duu8kky6Y33AWUFyIa4w+M/tUiiNqyjW9PKgE3Gf/WOvsa3/T0n6faLBozzCRpDau
-	F440gOc1Q4q5403yGnvu4q41+eRZW1ofDqK2S4FhV
-X-Google-Smtp-Source: AGHT+IEjO5KjVXeuirkJYchCdqjel2eUtWLp8SGydR4OerzOF+GrTMIJyccx5AMwbYmmZQutwhButD5dIBxqgYdkJ80=
-X-Received: by 2002:a05:600c:a31a:b0:45c:b678:296 with SMTP id
- 5b1f17b1804b1-45df82112e9mr295135e9.5.1757464028354; Tue, 09 Sep 2025
- 17:27:08 -0700 (PDT)
+	imf01.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=bZ+cfOkj;
+	spf=none (imf01.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757464402; a=rsa-sha256;
+	cv=none;
+	b=H0kXTRoLEZonromEXBQG4bQUqs6BhUDa0x9IEXVOyS/kTR5UK7frXcqODvNZpln8bxnnCD
+	yYBmklLEWEEQKMJFmXUALFVgSSF33AZ1N/YVa0AkgyP0hmeSsGcaqEiw1gitGrLjEOP2Q0
+	rUYIuY/lyxi1Z+wrvqLtm4xJoZMQz+8=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=+7i6AL/giGG8sDoDggEW2tn65nUMUUOKofKssaLcy1w=; b=bZ+cfOkjVovEqOsNsAmbzO+jK3
+	ZC+G754RaEYlFk7SYJTZu4IivuxnzmWpDq92c8U8z9pZT/sQOKtfHTlKqbSqt0HCu+b0VSx4WKc2x
+	+bVpliaDB4NlawCwjgjl0bDWflR0IoIHGYPD0Qnf7EogwXtQx3zSpeow6CebBT5SkF8jfxtqLX8Bz
+	ghXIvhvFmKBUDO5NX5OzFEQr0TMfd2KFwTD7iZ3oCPmDudEZyCf+zxHDMeWqNMkf+he5zk51h+eN3
+	e+ODD2EaYuKh2EGsIG1BeqOAExdofpHYTBkhvDSasvKMu0BqJovXiJwl5GEdF47eUeq2WNnBSDlYs
+	+DRsEQNg==;
+Received: from [50.53.25.54] (helo=[192.168.254.17])
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uw8lw-0000000BBNh-38jX;
+	Wed, 10 Sep 2025 00:33:16 +0000
+Message-ID: <1c79b3c7-5847-4960-9454-0c70d02a6441@infradead.org>
+Date: Tue, 9 Sep 2025 17:33:15 -0700
 MIME-Version: 1.0
-References: <CACePvbUJSk23sH01msPcNiiiYw7JqWq_7xP1C7iBUN81nxJ36Q@mail.gmail.com>
- <aLJ4fEWo7V9Xsz15@yjaykim-PowerEdge-T330> <CACePvbW_Q6O2ppMG35gwj7OHCdbjja3qUCF1T7GFsm9VDr2e_g@mail.gmail.com>
- <aLRTyWJN60WEu/3q@yjaykim-PowerEdge-T330> <CACePvbVu7-s1BbXDD4Xk+vBk7my0hef5MBkecg1Vs6CBHMAm3g@mail.gmail.com>
- <aLXEkRAGmTlTGeQO@yjaykim-PowerEdge-T330> <CACePvbXAXbxqRi3_OoiSJKVs0dzuC-021AVaTkE3XOSx7FWvXQ@mail.gmail.com>
- <aLqDkpGr4psGFOcF@yjaykim-PowerEdge-T330> <CAF8kJuPuOWUEMg6C9AnAA-mddgHRjuMVqURrbk6bUHxAmEvgFQ@mail.gmail.com>
- <CAF8kJuNW2kmxKYRE9t8WvSOad9JkLYt0WSAcFOQ9r9=2=XGc9Q@mail.gmail.com> <aL3GHJJ6+elPD7OP@yjaykim-PowerEdge-T330>
-In-Reply-To: <aL3GHJJ6+elPD7OP@yjaykim-PowerEdge-T330>
-From: Chris Li <chrisl@kernel.org>
-Date: Tue, 9 Sep 2025 17:26:57 -0700
-X-Gmail-Original-Message-ID: <CAF8kJuPj6-gZ4H+VQtJpJj_MutTgTcR-9BfDQnweayOrXk-NCQ@mail.gmail.com>
-X-Gm-Features: AS18NWAzRhK6Sza7aFhZ16A-JN0ICbt6KESSJLX5RLfWjX7iQZOSQJtZI6HXM48
-Message-ID: <CAF8kJuPj6-gZ4H+VQtJpJj_MutTgTcR-9BfDQnweayOrXk-NCQ@mail.gmail.com>
-Subject: Re: [PATCH 1/4] mm/swap, memcg: Introduce infrastructure for
- cgroup-based swap priority
-To: YoungJun Park <youngjun.park@lge.com>
-Cc: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
-	akpm@linux-foundation.org, hannes@cmpxchg.org, mhocko@kernel.org, 
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev, 
-	shikemeng@huaweicloud.com, kasong@tencent.com, nphamcs@gmail.com, 
-	bhe@redhat.com, baohua@kernel.org, cgroups@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, gunho.lee@lge.com, 
-	iamjoonsoo.kim@lge.com, taejoon.song@lge.com, 
-	Matthew Wilcox <willy@infradead.org>, David Hildenbrand <david@redhat.com>, Kairui Song <ryncsn@gmail.com>, 
-	Wei Xu <weixugc@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: DC826C000A
-X-Stat-Signature: ee1ahtjqm6cy73sm5dy6a8tfknjujzgp
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 5/7] kstate, test: add test module for testing kstate
+ subsystem.
+To: Andrey Ryabinin <arbn@yandex-team.com>, linux-kernel@vger.kernel.org
+Cc: Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>,
+ James Gowans <jgowans@amazon.com>, Andrew Morton
+ <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Baoquan He
+ <bhe@redhat.com>, kexec@lists.infradead.org,
+ Pratyush Yadav <ptyadav@amazon.de>, Jason Gunthorpe <jgg@nvidia.com>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ David Rientjes <rientjes@google.com>, Pratyush Yadav <pratyush@kernel.org>,
+ Changyuan Lyu <changyuanl@google.com>, Jonathan Corbet <corbet@lwn.net>,
+ linux-doc@vger.kernel.org, Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+ Chris Li <chrisl@kernel.org>, Ashish.Kalra@amd.com,
+ William Tu <witu@nvidia.com>, David Matlack <dmatlack@google.com>
+References: <20250909201446.13138-1-arbn@yandex-team.com>
+ <20250909201446.13138-6-arbn@yandex-team.com>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20250909201446.13138-6-arbn@yandex-team.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 9813F40004
+X-Stat-Signature: dmx8o5p75ccuug4157x7n7bbwjkq4g9y
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1757464030-531899
-X-HE-Meta: U2FsdGVkX18c+HJQWLkb16EVC5HGxMAQ4MNctXveTXbvS/lD8PU85G4914CROVrIPaO/RpribFPsjDmLky27s147H+QtY9jyEudE8TPKNn0Gi8agmuY9fotBGrqte7QjNoWvAXfiKR5L9izzXzEqpf5rQ/NIwqVZ2blrTK641omj4bgOqQLHSTEORFn4d2PIXNVOI6dmnz4wxgr/4lZcLxH5pl7hQgldxJFxuT8HNBl6SoKyW1gvZMt+QjbWNkzKV/5usVZ9DsOEuwuFV2HzzqaoMlJglrTkpRk7xivBS88LQBid9cEKrbkiW5XZD+T+CKutxXxJyNjlVtLkWUEpsoup9TfVnRXT51xgEYeOQHhuPIfOimyCGpxkInsdoGlH0wRys9q0ZwlAIpUhN2YHVONJt7Zzqjd1mVM1o9FMUC2Ad3X0GLPpnFCkIvdv2lUVToFXk4OaBoe85/Q1jfaAusrxEs4usc5vI+a/nMpWVSt6wUmuSzugZbde2G0Bt+gONG8N4xKXabIR0bItnTZG4Ask0mF/WIrHP9p3F0o1uwu5MP66jGy37PEbhKncXrzUUolx5XSomsI3TR13LgJ3KmKzbGM1oLKLpC2yXncDrHdaa/6dl01BwdsQ1eyJLqqnXYkM7U8IuBFB+v2NyQFE3AwLV4J6qH7PxOHyYuM7/r/zghXqhlHdjSW27wjxfWmDHwvAywTvB4+Hw1iuQgzI4KxEl05/f1guOgRljMGv8/Dt6eQn9zl+g5PadiFSdppO8G7rM03tR/zjx83xWGJnEujrk+AVaxiltOn1IRrEy78i9QK7WnzLBpDFqItq21beYu7xuJbitPRHlvzIuiIsR+ih41/QDDoD9GkbG5HPGLPcGzsRaaoCzVbCSB2ahIbF97ThiqrVbiWPTmuLbr8hws6Vsrs6RDNmDG7U8UMHYpki0ifJ4dxijwmNa3zItwjV6+Q/dMCuMPY=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1757464401-94827
+X-HE-Meta: U2FsdGVkX1/2bOTqcyRglxL1nT3fiqxZWctZwI5G2h3njN1Qoq1pC4MSBHYFFaF3Dt4uFAoBShN+Jzc0pG3+aEJ++qVLSASAC3c8xAMJj2nrjSWcqOQdxI5K5CJuDR5+Leq3JqKN0ra0wG9QMbd1ellCsG2OAMtne5HnoT9qj+splFFMVltdDvaxJPzAdmuLQ56pVhU4y35StUALX2FeRKMKIg2NpDa9OJVq/R4eF0HKamwgGQ/Is4OsNagszl9H8I/T8ET8tocwG4nUsOpSpLDLcluIPGz9kfXPvHCqs/8wwLjSOfqju88d01UScz0WeEdNvvfp9+60vNwowRrAvEgKgHkA71k+lyYi9yad04oC2U3MrLI6jI5D3+JB1J3Ty6RDqL66ctFdhp5epRE9AD7f+q5Z8vI1dysL0GyaDLog+49ve3tkjob/g0nWia62RxNewFC/tm0GfSYOPtvxfKTwnXP/zq98mvcCq1eNM1BlWYsqY7Pa2zlRl+KbGF8rrTaiytw1xKZLMnBprzU/KPLPrdr+xieVHrPwwhhoVCRlq0ji5iiNJZlgiIVbTJySBt1uzTnkbG7czTQmakkV67F2Mubl7MddO9IoL/GCRFakbmP2+SYzoeLgVOK9OClSPtPJ+dOuytXog1MZKXvTZZ/3WDAFO5/kohVwGUKHx1axpg1GudhOLM7u22PbUTrUG80YDo72kTiT96mevZtTqbiSyAjmz9oAynt2XDA/8rtaiw+hFMzBpaqW+F15x3Pzw/xOxdLvGlJXKwA892ToMZyH0B4t0dk3gIsbIpgfEGqUMQgZ4Y0N7FwkhwnmHiTy0HKTRCISS3Toq0cJWTXaQYCK/eHrnY364BNAbBtLPx+ZQyC389HIMH6CaldI6g01Ynj+FHZe05aHm2NuQ6nRLox2EU40vFNWsVHGigWn6g5JM9H9W2RICE9n+783YFG+kwFym40bCQg7JqVWvF/
+ uNaxGByT
+ 9vLHWKV481m7+HQG2nvHG/15SYZ9fJM+3A9qel73EdK0zqoNAJoVlWnX7758wZzVRBOBycBq5xEi2irkRtmANKjANgV2OtrsZSe+QhUjXWRqtlDAEZC73qq4wbTJENskw03wiJ9cOI8eNUV2ZBQHNuwMOJMMv6N+N8Sw2pvwpwIUDQ8oGosvE0tamOAz7ssmeoS38pbV2vbKmMxCwGK3Xp6m3RWos5ijdjvWchriUGwN92PQQE/U4x2ngPNCloIJbvmjmveqkTYs8aEpz3MJU9BBg/Fu5wiJTEs76
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,91 +105,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Sep 7, 2025 at 10:51=E2=80=AFAM YoungJun Park <youngjun.park@lge.co=
-m> wrote:
->
-> > On Fri, Sep 5, 2025 at 4:45=E2=80=AFPM Chris Li <chrisl@kernel.org> wro=
-te:
-> > > >   - Mask computation: precompute at interface write-time vs runtime
-> > > >     recomputation. (TBD; preference?)
-> > >
-> > > Let's start with runtime. We can have a runtime and cached with
-> > > generation numbers on the toplevel. Any change will reset the top
-> > > level general number then the next lookup will drop the cache value
-> > > and re-evaluate.
-> >
-> > Scratch that cache value idea. I found the run time evaluation can be
-> > very simple and elegant.
-> > Each memcg just needs to store the tier onoff value for the local
-> > swap.tiers operation. Also a mask to indicate which of those tiers
-> > present.
-> > e.g. bits 0-1: default, on bit 0 and off bit 1
-> >        bits 2-3: zswap, on bit 2 and off bit3
-> >        bits 4-6: first custom tier
-> >        ...
-> >
-> > The evaluation of the current tier "memcg" to the parent with the
-> > default tier shortcut can be:
-> >
-> >         onoff =3D memcg->tiers_onoff;
-> >         mask =3D memcg->tiers_mask;
-> >
-> >         for (p =3D memcg->parent; p && !has_default(onoff); p =3D p->pa=
-rent) {
-> >                 merge =3D mask | p->tiers_mask;
-> >                 new =3D merge ^ mask;
-> >                 onoff |=3D p->tiers_onoff & new;
-> >                 mask =3D merge;
-> >         }
-> >         if (onoff & DEFAULT_OFF) {
-> >                 // default off, look for the on tiers to turn on
-> >         } else {
-> >                 // default on, look for the off tiers to turn off
-> >         }
-> >
-> > It is an all bit operation that does not need caching at all. This can
-> > take advantage of the short cut of the default tier. If the default
-> > tier overwrite exists, no need to search the parent further.
-> >
-> > Chris
-> >
->
-> Hi Chris,
->
-> Thanks a lot for the clear code and explanation.
->
-> I=E2=80=99ll proceed with the runtime evaluation approach you suggested.
-> I was initially leaning toward precomputing at write-time since (1)
-> cgroup depth is might be deep, and (2) swap I/O paths are far more freque=
-nt than config
 
-Cgroup depth is typically not deep. Might have a lot of top level
-cgroups. That is the more common setup I am family with. If you know
-other usage cases contradicting that please let me know.
 
-We can turn this into a LPC discussion question to ask the audience as well=
-.
+On 9/9/25 1:14 PM, Andrey Ryabinin wrote:
+> diff --git a/kernel/liveupdate/Kconfig b/kernel/liveupdate/Kconfig
+> index b6ea861006bf..af9a25bdcd6e 100644
+> --- a/kernel/liveupdate/Kconfig
+> +++ b/kernel/liveupdate/Kconfig
+> @@ -69,6 +69,14 @@ config KSTATE
+>  	  state, save it into the memory and restore the state after kexec
+>  	  in new kernel.
+>  
+> +config KSTATE_TEST
+> +	bool "KSTATE test code"
+> +	help
+> +	  Build a simple test/playground code that is useful for kstate
 
-> writes. Is your preference for runtime for implementation simpleness?
-> (Any other reasons I don't know?)
+	  Build simple
 
-Oh, I think it provides the most flexibility with minimal code
-complexity. It is kind of the best world. If the child overrides the
-default value with leading "-/+" without tiername. It will trigger the
-shortcut path and no need to look up the parent.
+> +	  subsystem development. It contains some structure with different
 
-However, if the child has a default empty "swap.tiers" file, change to
-the parent will impact every child cgroup. We can have it both ways
-with what I consider pretty minimal code. That is actually the most
-common usage case. K8s pods would change from the top level.
+	                                          structures
+?
 
-It is a good trade off in terms of ROI from complexity vs feature
-flexibility point of view.
+> +	  kind of data which migrated across kexec to the new kernel
 
-BTW, the "swap.tiers" file should require root or some kind of CAPS so
-non root users can't write to it by themselves. Otherwise they can
-abuse their own setting thus rendering the QoS aspect not effective to
-other cgroups.
+	  kinds        which are migrated
 
-Chris
+> +	  using KSTATE.
+> +
+
+-- 
+~Randy
+
 
