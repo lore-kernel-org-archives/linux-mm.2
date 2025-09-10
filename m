@@ -4,87 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D58F7CA0FED
-	for <linux-mm@archiver.kernel.org>; Tue,  9 Sep 2025 23:53:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F075CA0FED
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 00:01:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 392D38E000F; Tue,  9 Sep 2025 19:53:40 -0400 (EDT)
+	id DB74F8E0003; Tue,  9 Sep 2025 20:01:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3435C8E0001; Tue,  9 Sep 2025 19:53:40 -0400 (EDT)
+	id D8F288E0001; Tue,  9 Sep 2025 20:01:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 259B68E000F; Tue,  9 Sep 2025 19:53:40 -0400 (EDT)
+	id CCBEE8E0003; Tue,  9 Sep 2025 20:01:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 104638E0001
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 19:53:40 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A659111A5D1
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 23:53:39 +0000 (UTC)
-X-FDA: 83871366558.05.24C03B9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 1764B18000A
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 23:53:37 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=MxdR69z8;
-	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id B9CF38E0001
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 20:01:47 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5F4C811A5D1
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 00:01:47 +0000 (UTC)
+X-FDA: 83871387054.26.71B1379
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 6CECD12000A
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 00:01:45 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=gf4xuWLr;
+	spf=pass (imf29.hostedemail.com: domain of briannorris@chromium.org designates 209.85.214.173 as permitted sender) smtp.mailfrom=briannorris@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757462018;
+	s=arc-20220608; t=1757462505;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4spRcZl8/bQUSowkXU4Sq8LSJ1RIoSjsj56RsW/LkU0=;
-	b=nHejTTMQT+C9sucWMkR/6kFE5USz/7ahi/XYpWyk8hldm70pPQPqSpZLt0Alr5G5neG16O
-	6YP/xLh/82z53PPKGSU6E3UsrL4HcBxHpWY2wNMkepvHg/UeqXp45tM5SHh06XcVq/pqWN
-	q1G/J6VLHizQd9UPj8QTVq80wGKjSKg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757462018; a=rsa-sha256;
+	bh=IqcDWqfJLwLOyJ5y56FcG8QSqOyBU74DK/OOgsSQXCI=;
+	b=in/IRKCunJEUUuNrG/7vlJHVa11OGURcqp5a1nLtq8KRAEIjoArEcSJ4smvfLbZUPwjzJH
+	lRLp82dydUNP0V+JhPz8+kwsdv7G4HdRJ8igs04vTVpARyKFfKqWXMa6WCogwX0eypvTqp
+	mZ3Hyxfz331i0hDm0cCMEr9K9aJx0io=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757462505; a=rsa-sha256;
 	cv=none;
-	b=MINXJKy5GZw0TYH31uCNXP+3ve06WeVfHdj4ZprWcSQy9dDKPaVQkQAHQ3sgJb2RwFO8BW
-	dFC3gLWgItBrAeTdyNlPQHB3Db9kVu+dg8rw7CNSXQek3Z7tN86mE/uqHPHQAvA6nOUJ+z
-	riQJGayBUx6Rw7H6H5UK7BLr6WIfuA8=
+	b=7S96GYPv+OBBpaYLMUvQnz+mrfCjJ/gSuFpDavLrcXu26Au9kBHXW+YiZ03xYkNbyk2BVp
+	A9Ql3hkjti+UgYiqbFUfh+RESnrRZddxdMxWZ14Mcn+dQ2tflIYyrNEu3kUULurih5nCeP
+	hsSmDg+URdJuOvS7YKSq7nuIBVREEd0=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=MxdR69z8;
-	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4ABE1601F8;
-	Tue,  9 Sep 2025 23:53:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FEADC4CEF4;
-	Tue,  9 Sep 2025 23:53:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1757462017;
-	bh=TL+mPDulX7ZhVXLQTVuVDyD7XiM47hN+hxaHhpZDWIw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=MxdR69z8T2UdS64FQ0ef5nyIc35+yEWFvt6Dloh9Zrs7OjsDpjMx9BA1tex8blA8N
-	 9ZO2lBXbfg34iDvDboAwvDDrOYKIvjb5SOWlJAswsYNUUjz30W/Yv24Sc5HNZhKo1E
-	 11DCUAvqsSRloZ5VnBDVEinT5bciOOl0jyUfFM58=
-Date: Tue, 9 Sep 2025 16:53:36 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Brian Norris <briannorris@chromium.org>
+	imf29.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=gf4xuWLr;
+	spf=pass (imf29.hostedemail.com: domain of briannorris@chromium.org designates 209.85.214.173 as permitted sender) smtp.mailfrom=briannorris@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-25221fa3c9bso990645ad.0
+        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 17:01:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1757462504; x=1758067304; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=IqcDWqfJLwLOyJ5y56FcG8QSqOyBU74DK/OOgsSQXCI=;
+        b=gf4xuWLrG3aOFmyESAvq6v1nekrh7QmD/AGi8wbvlfbONXR0Hl8lUhZswxVvHhByDJ
+         Uy2PYewKfPeLmykgmVQiYTSwJ/3ewzGEeP0v1UvkHdrEZqMgLfw8W7aK7vEtcxLo4Bqs
+         0WykrpKCMM8woX941Bf+/iQ0YX65/dTIY2IR0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757462504; x=1758067304;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IqcDWqfJLwLOyJ5y56FcG8QSqOyBU74DK/OOgsSQXCI=;
+        b=e00esfURZ2a/WuORwlswnQISflVPWVvVLvCUz1eVP++UNy51JDBAwmH1wnO34X1q3D
+         e3Ql8u8tzU3nInE2Nxlazp56YczCn2nIl6qBcl8ami2rFrdY16jl21NBkkN4TKDjUyoF
+         YLtFCwJo7qryGcEllDT9ZxJ03SzSPPiC7WQHIEsSdPsVDpUrrseLZy+hSzPGQqxzK+UB
+         07kRgCUybGdRN7c89F1ExKqEUfPbU9hhK036Q55kYcGi18V6zoSfcKCz5hfqspSsDDot
+         k8yN7SBIUtmqP5LB6SDIGz8eAL9jZ0bJ5XsJer6rVFGcqq8H2sz7BFmIq+7CaHuo3eyN
+         oFMQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVwUSzHftfOKr7mqSm92/n2ulPfFPFsXKwyOYS4KfJRavUVlrSxoxHZIN+IDYs1qFO5UfKYUYA3XA==@kvack.org
+X-Gm-Message-State: AOJu0YwA/1c7bzp5Mz9mIjBERFa6JyScLLdhIDKzi10vj7Y5zmKf4ahU
+	G1OTpFB2WoKd5tkLL3p/35E9hM7H0J2sc8G5hnyxLtUb0YM+6zHQP8s1HklYqSOxaQ==
+X-Gm-Gg: ASbGncuzofReeE7XNm7g6xEKs8pb5da89Ki+0iGUogQBnEJHfO+UM1D+LIQxMrJg/GW
+	phe9CDS4Feo2bqhzJKT4cAah4I1nFvuMVJggGVNP0aENLUXbAx58wll3eMUV0M7sWSRY4UIC8Tm
+	FDP0ZA8lEUJqApGJqLrbZ0jRDW/uOAzvvqycpK0AzJNRPP8wTUEU3fJ5MLdT1KU1c+UeKWtdjVJ
+	ROqVzctbraODGSkroefWwyNe2le2boe5v6NDOt5tUAajPvyTZahew7iynp/YZ0mXhCfZ5bvVfBz
+	+NEsMYP33kZYchnJqolmTsguDJ8ed74A185PSM/20ppgyv9tflvuBg+4h0Pcn12N/C6qDuI9ib9
+	bsIPZsUjjHGJ/1uqpmkE1mgogTCe1M3ZS9gojyQP5B5JJiOMuTCr0NUFSjr+uh6r3AbegA+Q=
+X-Google-Smtp-Source: AGHT+IEWQd9UQ3bAAMXqR5jg79X2RViVbY9wPPCVw9/Jc8wLdWf1qklDEFie7CGAphB6W0gOvDthEw==
+X-Received: by 2002:a17:902:e551:b0:24c:7bf0:6e68 with SMTP id d9443c01a7336-24cedc7aa79mr255602615ad.7.1757462504013;
+        Tue, 09 Sep 2025 17:01:44 -0700 (PDT)
+Received: from localhost ([2a00:79e0:2e14:7:e1f7:9c44:893a:3857])
+        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-25a27422d29sm9186895ad.27.2025.09.09.17.01.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 09 Sep 2025 17:01:43 -0700 (PDT)
+Date: Tue, 9 Sep 2025 17:01:41 -0700
+From: Brian Norris <briannorris@chromium.org>
+To: Andrew Morton <akpm@linux-foundation.org>
 Cc: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org,
- Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, Lorenzo
- Stoakes <lorenzo.stoakes@oracle.com>, Suren Baghdasaryan
- <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, linux-mm@kvack.org,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>
+	Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>, linux-mm@kvack.org,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>
 Subject: Re: [PATCH] mm: vm_event_item: Explicit #include for THREAD_SIZE
-Message-Id: <20250909165336.c9505e477461fd5e41e6cfe4@linux-foundation.org>
-In-Reply-To: <20250909201419.827638-1-briannorris@chromium.org>
+Message-ID: <aMC_5baavoll9pBM@google.com>
 References: <20250909201419.827638-1-briannorris@chromium.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: zsg347q9yburt1ubj5p1th633bqwty4j
+ <20250909165336.c9505e477461fd5e41e6cfe4@linux-foundation.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250909165336.c9505e477461fd5e41e6cfe4@linux-foundation.org>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 6CECD12000A
+X-Stat-Signature: jrciisemiqq4rd9x4xaekyzw9qidi39q
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1764B18000A
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1757462017-114382
-X-HE-Meta: U2FsdGVkX1+wKgXOriXgSVo8kdjnnK1ZENy/HHd0Pj6iIHDKtbhYfT3t1a7kMHA0E6N7vZCrBpE8CcmCHRNykZCf4mYAZldioWuU67+kA2xtLJiFcEv1nOBkPxMF/OZxr9Eq121aCxnmjz9pbzHpNK2wdJqUQR1iMCh6PpzRgG5CUo+l/Bo597Fr/FMONstjYveSEoj+vSjyT2oq021Zgewc6P+mdicjPRLUyNb70bhm9MMCGT9fjKqcjE1U46NoBxilbNpSAgoDcMKOWSzoxpYcL5PyaJt+mQEqy8pI9dPRfu9UjO3nmBC55Q3l7b8uAcTII+MNvAuU5PrnFRiioFi9uH9ywlGINl56MudsWI68fqRyDpXZDxAt1tm7POBSVgMPJH/L0H0pq5Dj/fjlpC3pfolzezUUTP0hT6ISGYGDsvd/IuZFZLUon+y6SNYElB/pPj498+x65kOSsqaO0THo9adAlR0p1ucxq+wY0Fy6kt7Rde38uqQCp1d69LSe8rtq6A2tArTu0q4ZFE6IJdR2oJR6eBPQb4QNbCv/T5/5k3qhFN+Yy3W8NySFGFRiBI1sxcQnADo2JYqi/I+tH614LiT1Z6dCGReGA8KRZT/wZA4WBgeZouWvVeZLtPQhdtksa5KjUItCuqfoSfLpwVei6tdF/rMXPAG0YBL0phdfjKEVlgOOYKds56D0y1n2rC6a648CYsUUtiCDk5J2+/knOdxKGrTJTdzlP3As3AMegmgp+Kw3HnyYQZ23p5hrcJsUdlT4tv5/d0Fhsdk44SRNwvHU+fNwtSkvjDC2NBkqq2macoxg6T6sukrl5kf6skTk/YAjObLdZYS4Pl1t4kSijBEUISWgDLTmikGM32VEaC1rEkfL8JoMl8rp7hIJic6tCBIlYI+TShiorNFS7e1o7Tccnnm+MmSPpRTQ46jIuvoD2T9tupAPZTK/r9MMqub4t6aa9oJwoPlKUYe
- RcWOSfEI
- c15HmbKv5VE/Euj6Ps5eh8D3oJdp2yPXVIZA+A2/LG3Q3L5GsUZQEwzzkoMxsfBOiIYsmOna5lNS9nhgV0S8EmcA0/TfMPCvrP3pXozZjC/VwFVd60u4kOhTcpJjZ2OM5oOGEgKnS0joJ7QHP3O/W/nTLjlQLf4hlnqMDdz4P/OtMZSEdouobWm2vneL38NuAYnHorFFqCvRo9l57mruGlXU/lr+HPZu1SdkaYcj4gUck53LZRLTVGF+UY3dn7FFb36cnbP/T/cWUpiqxGkjIynIOsysD6faUX6qnRWO7Tozr5KcrJS7ddTW4/Epd5K0wUmmOCuBnaOmAIygIA1hNgTl9SIyib7Hptr20
+X-HE-Tag: 1757462505-546666
+X-HE-Meta: U2FsdGVkX192jF1G9h3uTQlNlnv3D1KYSpZher6WfccU4GlBZh4gTUe/WERkpUEp44bZSc8YewworN22O6RNz5XzP2H5RFmMBx4qM6ksdi6Uy0rG4qQpfnigSv6CoL01IgcznMCbj63AWu+SzUceBnN0gZ+1DKvzTKsLCcwtBNdRkHnhi0ipV5qNmU7Xkayqp/S5crTADix65AiJ+Nzv5CSY/5H9GYet9Jg0JbU2IFDsS32H8AmdzhoxFi8/wks1bZ1Fz1F0cQ728raSmW3vNWZuN4osxpoUkdII8A7QpnQ1Im0CJ7LXwT/echHiUwDq+MrymN9L00l21xVnoWo9TqCSLusij4Q0i7qe+OoxT35z0tzSKTFdTnc9VBqHysoIgI1YiGtWfCDGH8p+wsa1CmpF1lSiclnpf3OZ+xS0sfx4XTPgHRZD7fSHr23YudKvASLoY6S0nTLF4UJszgXw5pPMUv/vAnXTOsiQ2kji/9qPtBX/2oa9vP5GoDXAeTzy0W+QmkyDD/pl765pwFjh7qanDhLMU6tH7gtXHpXrPoZuvBoVKofYR+6WkYfFdXNDRqZkETy1bBfsJPjwNnmHsVgwSniOahDzYKAtGTMs3wZC7KJl6StA8Wl2S8r3j0ocAVN+SXXh2NEKGEmdfgwxlWOe9L3O5wqx9w2PYsbyuzlrSDxBKBFJC2e+lZq8wPubm7isctFXe1KiJceltCZRxe8n05FhETLyn/JuBLsUKsxK3Ufpme7RexUJotzBRmXIHvsFgjB/pM8JEwT4ySJvIzZjUFUCARH8z9NnnIhAkvep9oPwuxS8SPmZY2xdJlhTJoHO4mmPiLJK8nCg14ny1k4XAOZ3vJnK2csOg4u1S5sLq3rShUK7n/nGAKNRamFFkzOyGXYVPYpc4qUiP7WwQ8+duHrdftch0iEYLVcNzmNREs41SpG6cRLfVNhXFQf+EQmQm8CaNukJnQTIJAQ
+ 51OmnLra
+ zehlaVi1gdIHApS57oPIY7+mgiMZd1qP7PddswKqkF0JU3woeH5gQFdpD5DIDbbJmHfUR2lcH751A3PIntIw3bdI9Bq+WAa1xiJ15U1ynLLcCY9qlY1lsadyU+IG8yyfks6oHbNDM5YBt2M48juIM0Z69plEYAg1mwnjyh3NaQSs52EM8/RcR/QTbY3SCGjUpyybIqklkHW18122qzA9jr0st9Bfa3K2LX3+S2OeWn5CVLun6FapPu+XnRV92fHyRzPkoqMxvpoYNmf0Xrj0GQ5qp7aL2cfOC19HGQT2jmP3ZkwQeGbtwtlslulIfO0IT6FYD+TE1M6Gd8LW9MK4yNkuDYwe0Kjzx3xdKezJVsgjf6sOXpb/HlkyPGAnoD2BZ/8LYJDTtixC0WS8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,26 +119,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue,  9 Sep 2025 13:13:57 -0700 Brian Norris <briannorris@chromium.org> wrote:
-
-> This header uses THREAD_SIZE, which is provided by the thread_info.h
-> header but is not included in this header. Depending on the #include
-> ordering in other files, this can produce preprocessor errors.
+On Tue, Sep 09, 2025 at 04:53:36PM -0700, Andrew Morton wrote:
+> On Tue,  9 Sep 2025 13:13:57 -0700 Brian Norris <briannorris@chromium.org> wrote:
 > 
-> ...
->
-> --- a/include/linux/vm_event_item.h
-> +++ b/include/linux/vm_event_item.h
-> @@ -2,6 +2,8 @@
->  #ifndef VM_EVENT_ITEM_H_INCLUDED
->  #define VM_EVENT_ITEM_H_INCLUDED
->  
-> +#include <linux/thread_info.h>
-> +
->  #ifdef CONFIG_ZONE_DMA
->  #define DMA_ZONE(xx) xx##_DMA,
->  #else
+> > This header uses THREAD_SIZE, which is provided by the thread_info.h
+> > header but is not included in this header. Depending on the #include
+> > ordering in other files, this can produce preprocessor errors.
+> > 
+> > ...
+> >
+> > --- a/include/linux/vm_event_item.h
+> > +++ b/include/linux/vm_event_item.h
+> > @@ -2,6 +2,8 @@
+> >  #ifndef VM_EVENT_ITEM_H_INCLUDED
+> >  #define VM_EVENT_ITEM_H_INCLUDED
+> >  
+> > +#include <linux/thread_info.h>
+> > +
+> >  #ifdef CONFIG_ZONE_DMA
+> >  #define DMA_ZONE(xx) xx##_DMA,
+> >  #else
+> 
+> Is there a known configuraion which triggers this, or was this from
+> inspection?
 
-Is there a known configuraion which triggers this, or was this from
-inspection?
+The original trigger was a non-upstream driver that includes this
+header. Since the root cause lay here, I figured I might as well patch
+it at the origin.
+
+Brian
 
