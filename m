@@ -4,60 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58431CA0FED
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 11:55:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BE70CA0FED
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 11:55:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 662598E0002; Wed, 10 Sep 2025 07:55:18 -0400 (EDT)
+	id 2B8A28E0013; Wed, 10 Sep 2025 07:55:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 63C1E8E000C; Wed, 10 Sep 2025 07:55:18 -0400 (EDT)
+	id 2908C8E000C; Wed, 10 Sep 2025 07:55:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 550498E0002; Wed, 10 Sep 2025 07:55:18 -0400 (EDT)
+	id 1CDAC8E0013; Wed, 10 Sep 2025 07:55:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 33BB08E000C
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 07:55:18 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id ED79E1DF6DF
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 11:55:17 +0000 (UTC)
-X-FDA: 83873185074.15.CEC934F
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 042138E0011
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 07:55:19 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BA424B9CE0
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 11:55:18 +0000 (UTC)
+X-FDA: 83873185116.10.35B5506
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 5B983A0011
+	by imf08.hostedemail.com (Postfix) with ESMTP id 294A416000B
 	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 11:55:16 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=fMBcqgoq
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=FOuIhKcW
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757505316;
+	s=arc-20220608; t=1757505317;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uI+TOj/tfjnfjNP9SvH/f7vF7sh4/M3TN7DIoSsDAGE=;
-	b=Gp/q0zmKTJdq6m8cXwzCQG9vo5e0xb2ojf5ZoXco3mPolI9WZYvhkrYx4EAwxSIKvXGau5
-	w3OeswtSZvtfGhZsSGwHQlgzpLyTzhTWOaxBrlIT6seLJMKFI09LyruPBuF2oWpV1Abcw7
-	WBW9DbR3Ht5HHDZDdg3QiuqLvSt/fLk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757505316; a=rsa-sha256;
-	cv=none;
-	b=OgcEOTJWgm+OmEzUEtG0VScTJWg7Wtw68GjZgwSNHeDchCqemLD+LjnLzC41m0ovZ60t+0
-	vv+FCyvaxWfREz6586VwH/uxJsxg/ajwFLPLwd19Wnxr7BXp2/64Qy2WNMOEFtshE4KzTr
-	xzv2PDEjSyMSJSt9eZupKc5Sf/DhYKs=
+	bh=/Xmongdc7DvOZsO2c5OoFPq0TLo5BTBH8w5SjPVE7L8=;
+	b=KxKQhU141K/Q8TotqhOYMXgEJBPW7dFj3FXk9diNCXP84qoGnbGF5MRLCD5mVSqbLAVoUl
+	8sXJ2aD+whpwN62b4VST26BEZZgpZ92CW7YSx6shj6UMLyM51/NhG4E2mqAL76VI++uo0M
+	WGNiI4gJDTgj2+S9eiJzToGG8byLNFg=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=fMBcqgoq;
-	spf=none (imf15.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	imf08.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=FOuIhKcW;
+	spf=none (imf08.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
 	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757505317; a=rsa-sha256;
+	cv=none;
+	b=xh3YvGfMt1eI1atz/BCZl5WydoIw3AeiGWDf4eFaot6gTzr+2PrCtiD7sx6+BQBd0qMNCT
+	dstqQd8KMlzGEEZ/XFDIzfNu/UT60hvm/pLlAQNGs/db/flS1T1FoGWVe4UR6+89LXyBVX
+	cTqrFhZYETdgIXM6J+Bjx53+1bt+sDw=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=uI+TOj/tfjnfjNP9SvH/f7vF7sh4/M3TN7DIoSsDAGE=; b=fMBcqgoqRYQWz5rzmdIDmOiSwW
-	yqFRWm3HqG9R1aGz5RIDSCPs1xgJy+bIpuUmE8fCvUdjp9w13usMtijZc6+3uPodaj7r5EmvU0WCk
-	vinY6qt3Hf59jIpCbTDjAKUGACFkZx4n3K68kyWPSqFcCPeNNbDV7rkmjeUb37phDHQ3yZL5Q0Edw
-	yj/BA3k90yDnUCgYxwu57CmUrRMs+0KNB802OyPgU0f61JdOb84x8vPpEqVJPYnmoJo6Xxx9jXqc1
-	Or34aye+T90Ru4dUGdUR+/h5CTASrblOWDTRtJ3EGAh/Qdc+HhuFXUJErm5qMQc8Mj9GXVYl85S02
-	HyNDAJKA==;
+	bh=/Xmongdc7DvOZsO2c5OoFPq0TLo5BTBH8w5SjPVE7L8=; b=FOuIhKcWeH9kaRHz88dYHZeW9Q
+	tWQnz5aAt+fY/r56SPt9n8hESyIVE0Ipq43OYjHSxcXAV4KPcavELZl97BeNCIdYc0hYd9ugAlNGt
+	0AxSo8Yjhkv9mTK+gQXDmvpNJ8n48hzY2F7O8hK81Jx/9KMtjGvXV2SMCFz57FX7FXIO1nA+LSu+L
+	lrxAFA/UxR7iVR7KTjljerlzwYCZMvf6oSwXOzBWU6RJ7MNmGmk1vBELr+YutJAkF+3P9muBzggmI
+	jrXOXn64TK+Yiq5FasuIFk4HF3WtifnCkpeoF6NSurstSX7cEIGcjFTbHqpI+ZD3DrzJQt3Iy/VvM
+	UDtniZxw==;
 Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uwJPp-00000008MEx-2WbK;
+	id 1uwJPp-00000008MFA-3ftz;
 	Wed, 10 Sep 2025 11:55:09 +0000
 From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 To: Vlastimil Babka <vbabka@suse.cz>,
@@ -68,22 +68,22 @@ Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	Roman Gushchin <roman.gushchin@linux.dev>,
 	Harry Yoo <harry.yoo@oracle.com>,
 	linux-mm@kvack.org
-Subject: [PATCH v2 08/22] slab: Remove folio references in memcg_slab_post_charge()
-Date: Wed, 10 Sep 2025 12:54:50 +0100
-Message-ID: <20250910115507.1991829-9-willy@infradead.org>
+Subject: [PATCH v2 11/22] slab: Remove folio references from free_large_kmalloc()
+Date: Wed, 10 Sep 2025 12:54:53 +0100
+Message-ID: <20250910115507.1991829-12-willy@infradead.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250910115507.1991829-1-willy@infradead.org>
 References: <20250910115507.1991829-1-willy@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 5B983A0011
-X-Stat-Signature: tpjjjnudgyx47bktjkii16n4pd88mo49
+X-Rspamd-Queue-Id: 294A416000B
 X-Rspam-User: 
-X-HE-Tag: 1757505316-414745
-X-HE-Meta: U2FsdGVkX1/Uoo4DmU/3VJbZzo7MS9qiyf/NuzDWYh21Vbn6aQvt3xoKGc5irdRUamf6ZMQ6nBzjaw23oInhlU6wcl7GGAwYacJd8DEgqoLXEavtvFPhh3IhMBo+xjXL+dOz8J+OznRkqcGxttS2CRY5lu2eD3vDJElXaLrhBTKVV1q3f7iszp4mBHMFUdNdzwhNxW5Yb1fxsnpJk/EIkNyEpOT8NyMntmaGVu2sIl7LhxbtdFha8RP8rNyAvo5FTj7UsKmToP9qrSUSm3X9YuvyNoDfjYVA1BvDmuiTEhfmMclYOQ+ZfaOj3liTWrc35tt5tNoJvF0Li/L5etKmN7UGO7PAHyLoAHR6a1/Kw6oWNxqe/zyNVPCDNtIWTR3uAH3ElWRmWycCffQ9YXRne/A9y3ZMjxPqlDP2n/BIjMbB75znCJqzRXumpxbWB7CTYVewDGvED+7R2HpzcpFSecZdAJe7a3Lvm5wiDCi1L2U+GpCs6piAAqgh1S6IyCtWQ4fF4N5elIpRTuTwAMdarw+qknFH8Sl2yhLcGlLj1AME2U8V1gxHgcc7mtH2Hj9f8BI6UM6WTZzODdu2nFmAWGbuYpCMyyAO57Ce7DgXgn9KFHQtgqc9y4Ie25pBfAyYaO6Q+0nYHWvVSq4sQxSxF/9RcIcdYe3GD+XaERarfvGrUWF1RuY963EsyOdpH3buLSB1aoqaYXI4+VyMrN35pFC3s8ee5B/EhnAJ7OAoY28V4+x77CLHcAkgM4uLkRyxsC16BizG2XHNZaqw8YzG6E4TR761OA2IttpauHM+noy6BXpEnR3DiOqQmCdyeI0Z4DoFB5Mo61otegSSJfbIrP1Uw6K3gAbVBCbQbxx/5V2QHPscYzdwYwu2ZMgekEZrsS4S9FZEKWY6+jSVjd6fbDNj9xvl8uJyJCxg39ufqGSTld/oLhjR6GnBleYQVnc7auHq/dux002xlB42S7P
- ANg5mlPl
- S6Ua77TpisaUIOGjBoChsSWqdWcXGbzOGC28rq17OR8z6T70ZEFj5G1S4ODFqb2+8l7C9sWlfNuLlDQKtQJkVs2dvIwXcNSykpwWYdQcdA1IEZYq47GJbMjq9kJEx3+1BweV0EFJQ8QNfw3eaBYDcuQP2+oBUL65HsYq0pE4dfQ44hdkxfMh2xZlYQEaDAfFEsgKG
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 8i4d4quewisp84s93ruw6bhzst7sgmn5
+X-HE-Tag: 1757505316-342343
+X-HE-Meta: U2FsdGVkX19M/XuV6zBdiHHGVBWOjAu6FCowZmLDcKELZVq9BF05vFozO/jcN9phydyj0vT1E5snC7dTYTwQTcOjgS3sRX1wzz7s7GRHCynrl7HFVLV1GCMKmX9IFNUE9cegniweZV3ENvuLtFEi1YtkuaSQlJGZUFOgI9FKowKLBBejOzTi446DWe064lzs7S/4P0Txlgt3tsBlZ6jmWhzDQ6QLArWlmR4SWpQlFCUJisew3B8l3vFUf+TY6YlhlseZ4F09g5oKgobJ913PKDct+JJkOQZcu84C4D4AKSKky34CYIDcr5xW3zUTBFNQpj9BDWcJ3Opida3yba1BFaqAOH64AJ/M9EqcYJT6DPk56rSWEwa8bDPGBNSayMms4FnpI5RCq8kN011fObknNhkuGj9+ZPwEp4C3g7hVyeIgDc1qjN58kRof1BWfsVLq9kxhvrA8V3wOGrZwU06GcHxj02dTCCdQIMEwMznqrns+anbX9L/w6D4Jbb2lL4MsXuQtDDXXi1Sy173Z5VTRZ6f7Sdi6F+midDNiE9DaZiePzEY5y5+I3GUzg0+KJ8nKLMZ7wZhTHZLBgV0+hVVE2bXK2RxIYzWrlQ8zfvS4263n0rhNyoPUdQvhBKmXbS5f3ddZb0QvHEFcwq/g6w/vtVpEj1OUETxRVY/PFxxpEEVm8Fq2299fpS/gbDEc24gqcss/BajrwqqBTGeaI9ZxBxc7sQmi1Sf2Z1W/kfXtukhWXooXjM5I40m34jq+2514Btxsw3skJBdgjgu43BYsIo3tekfNmQIZxh/aZCDXgZYpVf88TTALqw0kzfvmA5/sj1tbqX8Wcs/Xq7S302151zcqhu0P35WPm7AHs7jEiiHI75PMYjS/oNa1C3d93S2yLwzsqFif0eqgv2eEH14zbbQN0GqCdcldZJI2TdhkyYVea43pTHme0vnJDglPN8cEKafT5Vpbo0LLlKmWEhL
+ vD37vK3K
+ 4DG1YBkSA4QWz3PH17lFBYdcPURr2DFdlne++VqyxfN+Rjl96JBoTTxA8gnBWvtqwY++5VaxSSlb7I9D3CjCEamuP332rPSoJPk3F6Ihfqu8TCgLmveswSFcZebwScCseI7arrtjt1p0BdEHOZoG172u2HQIAcU3u4rFMezznlAfWWnALRAUScAKv8hI09mCpzolF
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,65 +92,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This allows us to skip the compound_head() call for large kmalloc
-objects as the virt_to_page() call will always give us the head page
-for the large kmalloc case.
+There's no need to use folio APIs here; just use a page directly.
 
 Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 ---
- mm/slub.c | 23 ++++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+ mm/slub.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
 diff --git a/mm/slub.c b/mm/slub.c
-index b32bffdd6e3c..9bca3e4b82e6 100644
+index 28f68887ac3c..68a013411ff7 100644
 --- a/mm/slub.c
 +++ b/mm/slub.c
-@@ -2304,33 +2304,34 @@ bool memcg_slab_post_charge(void *p, gfp_t flags)
+@@ -6223,12 +6223,12 @@ void kmem_cache_free(struct kmem_cache *s, void *x)
+ }
+ EXPORT_SYMBOL(kmem_cache_free);
+ 
+-static void free_large_kmalloc(struct folio *folio, void *object)
++static void free_large_kmalloc(struct page *page, void *object)
  {
- 	struct slabobj_ext *slab_exts;
- 	struct kmem_cache *s;
--	struct folio *folio;
-+	struct page *page;
- 	struct slab *slab;
- 	unsigned long off;
+-	unsigned int order = folio_order(folio);
++	unsigned int order = compound_order(page);
  
--	folio = virt_to_folio(p);
--	if (!folio_test_slab(folio)) {
-+	page = virt_to_page(p);
-+	if (PageLargeKmalloc(page)) {
-+		unsigned int order;
- 		int size;
- 
--		if (folio_memcg_kmem(folio))
-+		if (PageMemcgKmem(page))
- 			return true;
- 
--		if (__memcg_kmem_charge_page(folio_page(folio, 0), flags,
--					     folio_order(folio)))
-+		order = large_kmalloc_order(page);
-+		if (__memcg_kmem_charge_page(page, flags, order))
- 			return false;
- 
- 		/*
--		 * This folio has already been accounted in the global stats but
-+		 * This page has already been accounted in the global stats but
- 		 * not in the memcg stats. So, subtract from the global and use
- 		 * the interface which adds to both global and memcg stats.
- 		 */
--		size = folio_size(folio);
--		node_stat_mod_folio(folio, NR_SLAB_UNRECLAIMABLE_B, -size);
--		lruvec_stat_mod_folio(folio, NR_SLAB_UNRECLAIMABLE_B, size);
-+		size = PAGE_SIZE << order;
-+		mod_node_page_state(page_pgdat(page), NR_SLAB_UNRECLAIMABLE_B, -size);
-+		mod_lruvec_page_state(page, NR_SLAB_UNRECLAIMABLE_B, size);
- 		return true;
+-	if (WARN_ON_ONCE(!folio_test_large_kmalloc(folio))) {
+-		dump_page(&folio->page, "Not a kmalloc allocation");
++	if (WARN_ON_ONCE(!PageLargeKmalloc(page))) {
++		dump_page(page, "Not a kmalloc allocation");
+ 		return;
  	}
  
--	slab = folio_slab(folio);
-+	slab = page_slab(page);
- 	s = slab->slab_cache;
+@@ -6239,10 +6239,10 @@ static void free_large_kmalloc(struct folio *folio, void *object)
+ 	kasan_kfree_large(object);
+ 	kmsan_kfree_large(object);
  
- 	/*
+-	lruvec_stat_mod_folio(folio, NR_SLAB_UNRECLAIMABLE_B,
++	mod_lruvec_page_state(page, NR_SLAB_UNRECLAIMABLE_B,
+ 			      -(PAGE_SIZE << order));
+-	__folio_clear_large_kmalloc(folio);
+-	free_frozen_pages(&folio->page, order);
++	__ClearPageLargeKmalloc(page);
++	free_frozen_pages(page, order);
+ }
+ 
+ /*
+@@ -6270,7 +6270,7 @@ void kvfree_rcu_cb(struct rcu_head *head)
+ 		 * consider folio order
+ 		 */
+ 		obj = (void *) PAGE_ALIGN_DOWN((unsigned long)obj);
+-		free_large_kmalloc(folio, obj);
++		free_large_kmalloc(&folio->page, obj);
+ 		return;
+ 	}
+ 
+@@ -6310,7 +6310,7 @@ void kfree(const void *object)
+ 
+ 	folio = virt_to_folio(object);
+ 	if (unlikely(!folio_test_slab(folio))) {
+-		free_large_kmalloc(folio, (void *)object);
++		free_large_kmalloc(&folio->page, (void *)object);
+ 		return;
+ 	}
+ 
+@@ -6669,7 +6669,7 @@ int build_detached_freelist(struct kmem_cache *s, size_t size,
+ 	if (!s) {
+ 		/* Handle kalloc'ed objects */
+ 		if (unlikely(!folio_test_slab(folio))) {
+-			free_large_kmalloc(folio, object);
++			free_large_kmalloc(&folio->page, object);
+ 			df->slab = NULL;
+ 			return size;
+ 		}
 -- 
 2.47.2
 
