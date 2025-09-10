@@ -4,112 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 509B9CA101F
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 17:11:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A32BCCA0FED
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 17:29:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A1C5F6B0007; Wed, 10 Sep 2025 13:11:34 -0400 (EDT)
+	id CD9C78E0002; Wed, 10 Sep 2025 13:29:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F2208E0002; Wed, 10 Sep 2025 13:11:34 -0400 (EDT)
+	id C8A0D8E0001; Wed, 10 Sep 2025 13:29:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 92EDE6B000D; Wed, 10 Sep 2025 13:11:34 -0400 (EDT)
+	id B79738E0002; Wed, 10 Sep 2025 13:29:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 811ED6B0007
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 13:11:34 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3613756500
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 17:11:34 +0000 (UTC)
-X-FDA: 83873982108.20.653FDF5
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by imf01.hostedemail.com (Postfix) with ESMTP id D4A0940009
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 17:11:31 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=none;
-	spf=pass (imf01.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu;
-	dmarc=pass (policy=quarantine) header.from=csgroup.eu
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A3FE68E0001
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 13:29:12 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 54DB41180E1
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 17:29:12 +0000 (UTC)
+X-FDA: 83874026544.28.527F183
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 7EA342000E
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 17:29:09 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=i9vEifFT;
+	spf=pass (imf03.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757524292;
+	s=arc-20220608; t=1757525350;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pPunqbRdAk7Q1BPoWeHrXopoyeCo3AMqxUdPg7y0U0M=;
-	b=pi0OlR1WCW7FrHUmAKVLE8GT33mSxza2Xq0J8S+i0I2P/Ungau2yv5pmJJ9BIjW3y+iIkh
-	dVUzpe0If3xnDXO8nV/reGeqbSc0Tx05X70amIP183nd5+0DtvSTkVbq8isMfj1Y95P6YN
-	+bT2j9DCPWOVKefoii0IfGDK/Aes+i4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757524292; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ZXWKe1w6lDmVOAxo2bDh999s1RPdxhTm5trGZqZDIUo=;
+	b=cbu/L9jio0p9dUNh6vDrr6hUl9rYU+pNkd/dT6I+CzWS+bcgQGkvcLcv2xGHzKGvmDDU6s
+	kP0f++8CP6xjfeChshRUvU+U/IVOb0DyW6yba/h0BTGHV3ck54lB8cKjyA6i0sE7QfjEhC
+	zWktVB3jYosdkvWBkQb38X8t5UBKvLQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757525350; a=rsa-sha256;
 	cv=none;
-	b=iQQVBk30vveprTYsAsSLG1cmV/5GP36reMuspw1gjkNXJ55Qe1eD/vwDuM06iZtfnHJtQO
-	amyde/GUBNHCo3F/bNqA4D55yYRYCjNPsF+KTqv0cfJpGenajKXTuZHZvPfJHk6J4N96z4
-	1pAw9WSaN3m63q4JVM9vuZXG0cl2JTA=
+	b=s88iRSmKQ+q3Sgyz0/H6KQvOIiI7rNOSI6UpNk1Dd7E7A+NMX1fITF6C5UymsO2tmPYAxp
+	QVDFZR6wHDakXuqWl/87L4J3BKwZXquXsDcqRhn/bmBzawTH1RozlwylUQHse8Io38ayOA
+	bFrQX4cW65Nqu3q2eyqR9GpgriCN7Ag=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=none;
-	spf=pass (imf01.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu;
-	dmarc=pass (policy=quarantine) header.from=csgroup.eu
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4cMS006bWmz9sj9;
-	Wed, 10 Sep 2025 19:11:28 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id mnbxQRtTxTSD; Wed, 10 Sep 2025 19:11:28 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4cMS005XY2z9sj8;
-	Wed, 10 Sep 2025 19:11:28 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 8550B8B7A7;
-	Wed, 10 Sep 2025 19:11:28 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id tVGSEt2GMt0K; Wed, 10 Sep 2025 19:11:28 +0200 (CEST)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id C99E88B764;
-	Wed, 10 Sep 2025 19:11:26 +0200 (CEST)
-Message-ID: <d9caedb4-41c8-4ef7-99b9-51d891aee555@csgroup.eu>
-Date: Wed, 10 Sep 2025 19:11:26 +0200
+	imf03.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=i9vEifFT;
+	spf=pass (imf03.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1757525350; x=1789061350;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=lnqyI9f64I1yhXVL6nN7wKwIlUzM9Wz76sbGLU0tYUk=;
+  b=i9vEifFTTjlIkXheijcHg57yvNX21oGGFeyJP3OlCIHXKLiAI162ALGg
+   31f3cRSwsmDB14+gM0bKMP3I9MmeZ7tu6KftkNwcBUeDmTvoMDqqp0ev3
+   NpGfHQtCCh/p0nQYy8wzSGZjKupjhYWA8Rj2nkfAJlOi63D8BRN03gNvN
+   olQCSoFE1cvoU/lpS908djZSeC1hcmkKgG3nG/on6Xtde6z/lkuSgle3k
+   SpJa39AWqLmkn5EB6kO1+t+LuAfW/o+XuSgI6jMaFYe4XcccWNimNiaD9
+   IsjVZmjj4Ar1euJcpRqfRK49AUnHZ9i0i/9xiWMgydmmLN1QhpfzMKoVi
+   A==;
+X-CSE-ConnectionGUID: PAMw7MiBSIeAz0QqR6j64A==
+X-CSE-MsgGUID: qNf/9OXjT1mYXHFBmHJM0A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11549"; a="58886900"
+X-IronPort-AV: E=Sophos;i="6.18,254,1751266800"; 
+   d="scan'208";a="58886900"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2025 10:29:08 -0700
+X-CSE-ConnectionGUID: 4mWWF5aTSDe+1XoKr5D04w==
+X-CSE-MsgGUID: ltXG1s5yRRe/xWJO8Hq3Ow==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,255,1751266800"; 
+   d="scan'208";a="173826211"
+Received: from lkp-server01.sh.intel.com (HELO 114d98da2b6c) ([10.239.97.150])
+  by fmviesa008.fm.intel.com with ESMTP; 10 Sep 2025 10:28:42 -0700
+Received: from kbuild by 114d98da2b6c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uwOca-0006Al-0G;
+	Wed, 10 Sep 2025 17:28:40 +0000
+Date: Thu, 11 Sep 2025 01:27:44 +0800
+From: kernel test robot <lkp@intel.com>
+To: Yafang Shao <laoar.shao@gmail.com>, akpm@linux-foundation.org,
+	david@redhat.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+	hannes@cmpxchg.org, usamaarif642@gmail.com,
+	gutierrez.asier@huawei-partners.com, willy@infradead.org,
+	ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
+	ameryhung@gmail.com, rientjes@google.com, corbet@lwn.net,
+	21cnbao@gmail.com, shakeel.butt@linux.dev
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	bpf@vger.kernel.org, linux-mm@kvack.org, linux-doc@vger.kernel.org,
+	Yafang Shao <laoar.shao@gmail.com>,
+	Lance Yang <ioworker0@gmail.com>
+Subject: Re: [PATCH v7 mm-new 01/10] mm: thp: remove disabled task from
+ khugepaged_mm_slot
+Message-ID: <202509110109.PSgSHb31-lkp@intel.com>
+References: <20250910024447.64788-2-laoar.shao@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
-To: Richard Weinberger <richard@nod.at>, Arnd Bergmann <arnd@arndb.de>
-Cc: ksummit <ksummit@lists.linux.dev>,
- linux-kernel <linux-kernel@vger.kernel.org>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
- linuxppc-dev@lists.ozlabs.org, linux-mips <linux-mips@vger.kernel.org>,
- linux-mm <linux-mm@kvack.org>, imx@lists.linux.dev,
- Lucas Stach <l.stach@pengutronix.de>,
- Linus Walleij <linus.walleij@linaro.org>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- Ankur Arora <ankur.a.arora@oracle.com>, David Hildenbrand
- <david@redhat.com>, Mike Rapoport <rppt@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Matthew Wilcox <willy@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, vbabka <vbabka@suse.cz>,
- Suren Baghdasaryan <surenb@google.com>, Ira Weiny <ira.weiny@intel.com>,
- Nishanth Menon <nm@ti.com>, heiko <heiko@sntech.de>,
- Alexander Sverdlin <alexander.sverdlin@gmail.com>,
- "Chester A. Unal" <chester.a.unal@arinc9.com>,
- Sergio Paracuellos <sergio.paracuellos@gmail.com>,
- Andreas Larsson <andreas@gaisler.com>
-References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
- <497308537.21756.1757513073548.JavaMail.zimbra@nod.at>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Language: fr-FR
-In-Reply-To: <497308537.21756.1757513073548.JavaMail.zimbra@nod.at>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: D4A0940009
-X-Stat-Signature: ykpdx9pax9b1spomirm4st9848td9gaz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250910024447.64788-2-laoar.shao@gmail.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 7EA342000E
+X-Stat-Signature: d9dygftd1b7jqd46hubgjxnkisf36bpr
 X-Rspam-User: 
-X-HE-Tag: 1757524291-645358
-X-HE-Meta: U2FsdGVkX1/DDgcAMr/1FdK3ljeb2gutpUMhFI5xJj+icoOSFeyDS5NSwwvMoBbbtZ4peGAq4FFAK6pckfmcPKc/2Vc+ZDBOgTA8j///WjMurgFERpKMUdhERXf9v/Ix9jwVAYLT1Tat9Ime84SKK2n+Cx5mIRlosocUseg66ItCawtWhaKVS90UuwAedtUpncRRzlWYau8VukIchWg6NfUFXcIsivdZUcFCalWPQDtSVMh3EDyYYQdxxOQ93433WWaTddjqnGBJV8PoHW60JnnH+YtgCvATjgQzzJm3AxJAkaLhRFB3kLW2hTGYItPdsQhfHVkPc6bZr+jX+fHw8ZFPGySC1GvIrISvYiCkqidfoi0l3qyT/9eMvZXpa3pXwe0L35eyorKTBralz0gYW7EwOU8Per2qMvrQBP9QKUvSdNQknb2nwc4RdzlK2ArwG8/+6LC4PpP34zl544eIrHr22hQZjs0QXBJCpEciUWx7t8oLaSwOgj69Las+RUIfPfVSi66F3W0o6ewuJU55ndnzJWtE48Q4oAXGm5o8bVvmNRgGiaaSS45ipDqbcn016/yKw6chIldivKq0BUiu2+apmKqRc1dL0CmHh3aAF3gL+qnnHt91OdeQVQGAzUoVlSKE6vvysXK45NLUdVRdF+6yGTt/iPt+t7oUZapblQcxFBALi+8znWiF16d9woesded3VPbff9096tqNdcgdXiaSLWEZXJpfghHccqcVJI4D5SUgUBTjXj/kbjmW2r+U5P8ZpuoY8Hzr9d5gSLzBw2EFzQ44f2Z7qVSjfed0DhPPs+LJq5K1wzuKR7mocPjXmEqDVARAP74y6zZ/Ie+WoxwnTXir58fCuddAUmaBb4DyVTlnFWUiEtg8Oe32E3cj3dIPwLZCx6XKXdCJRYLDA3GBcd4ehdF67NcDAgtuEOJVHp8DZV/tl5aOHlgW1xIas7OOUe8VxzpAeIfxS92
- bFIi3A7Y
- mStiMOLQcjBP88d65uilL2sBWjV6Lvn4oq+dKwCujtRJco/igMlyw+Q5YMcv38YrFemjNiPiFQEcboipQdHyCkmwCpD+AOxXgJPiZXaHp3/cj6d6KV5ELr0sa/ylvFV8lOKXLBGiI05bLHFs46uPmlPMSU2CakgNUQ5yBhHifEQSF4MZhohnnAAhIpjgDkZZP/hS9lxwgtuO+BmUFJ6cKXJ7QR1EbEGbZnUcukTp5xHTiMFsD2rpIJqIkbPUf1IjdCg9DFKE14lYOI4Lgjkl+kMSmj+GPQo30VfrLqRH4ecdSD+SjFFE64IRuU/g819eKbQuicLLjHVPelFxXF1N507sSvkG6tyNrREdaBmX+p/6XlLCMw9APQDHNxCafd9fSFHj6+slrLv2VEbE=
+X-HE-Tag: 1757525349-694019
+X-HE-Meta: U2FsdGVkX19xq9jC4MNaRubeqa9j63Kx6zNXOpkhdByoPRyfNzvOMNMmn93rR3jwLTSJiduXYpyFE/7jmhF+7GkrvgAeY3JIhNKHbnxggAmJzXkgPYVBBqnr/UGcBHK1aFw59w6DBFB7aCM/EbHjGXDFLIfHp3iqvkybwQs5Qi90iC3H4TzUqT73aTMayvYVZJ2zib98Xq+pFH1XeQQZ4DZASmpsj0Ve+7US4PfINDbwpCpSStc6U3LJSwGsDVkTUD72Wu4el3uOgqIW4McIwoq8kMecY4IlpBSulceIJQx5NeAxQfr2u3UNy0WZuGCoMLu9hdT/WC7jAsx9rkova5bEC0RRNSj8aktiAZrgURqorbe0fsNV9RONSENpHDlau7Ot5D0xWFITZ6VmzLju9lXiCExM6pRuxaPZbg9JBCCw4H8oSltj9kWqbrg7CL7IhtcUaE8gO8VEmUyrvJfrDwAxzJuYIL0LZHJyH6sQmY76Uhx83JaHEUzWEbpYU9CHl7C8HkFu2d6+qNKEqr5lEEU9+qje/ExTXpjjwsMd0eiyomgWD7MklLkypNWkbI+icnXqoh9+tn9J27zF0ahtmQ6F3c/OUVweOV7mgDvWwrJCS2y/EPZHgRydJRJ0057j6dWGd7wx2o/18ousOAtQ697QgftDu/Be0e0WOvq4gjF9q+szKuEqX41O046H0jUup01QPL41KzIt+pYEZt28wbJIrwNO/cw5Ne3Sc4c75pps/GNyBBWufN0Y0Z6iTVWiOrykrrHgaJbO44tqdxQg/QS54QUZJd6DVk0F1F8qwVLxgvcNmT8kXlrdneze9+gkxJB7IjCMlskhRAXwIJVFqvkaGUPzMfbKCPbC1ftma/G8H34VO53LJZmigV94y7Ii8Y2zZSiEQ8QTaJ06yBX4IzjU6F8N4cWm2C583szRqRASbS6Gw+hRYnI4WxoNDWTVTOQHwVF+IhtlM3LsZ8S
+ 0g6sUQE1
+ hMsoHbA/qb7KNbawylmxngjNj+L7iu8RNCVRyJtkCWAWDoVVFmsbLZXfMOpaBycMe1QsNO8UVTAQpmIe8HDcP1flhjMQtVyaxEjG6mmwJRWoGJlY3n2qMdMOJ27/6EIwmIR337lFe7YdnCK6lvlUSS9mKhqsGJdMzEiWhjM4kSGULUfOt4JSnWLslUD2YXfWk52KI113DuBYXxkrGzMXNOBYT7wSE08gKI0Im7HSAtTig/i1t9ylHwsmqV+3BrfeSvt2OFbKzwt9MtrRg5t4J+DAN/dmR3mcNdJtdNhmO5aWklcHYKS44vRLp57+px2e0JlWlvW3q1rgeOiDfUGWuVEaypI+lWBnSax2jCIj/0i8fpv+Ik8e/lvRCIhtjhwBoBJOE2QmmyeNQHM0Io9s/76pj3UEsnT1BkSJ5tDz3J04JLWKDUGhjW+UmQlFzRs26nYWN3K6sR1FJ0q31U8tGRifkwg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,62 +118,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Richard,
+Hi Yafang,
 
-Le 10/09/2025 à 16:04, Richard Weinberger a écrit :
-> Arnd,
-> 
-> ----- Ursprüngliche Mail -----
->> Von: "Arnd Bergmann" <arnd@arndb.de>
->> High memory is one of the least popular features of the Linux kernel.
->> Added in 1999 for linux-2.3.16 to support large x86 machines, there
->> are very few systems that still need it. I talked about about this
->> recently at the Embedded Linux Conference on 32-bit systems [1][2][3]
->> and there were a few older discussions before[4][5][6].
->>
->> While removing a feature that is actively used is clearly a regression
->> and not normally done, I expect removing highmem is going to happen
->> at some point anyway when there are few enough users, but the question
->> is when that time will be.
->>
->> I'm still collecting information about which of the remaining highmem
->> users plan to keep updating their kernels and for what reason. Some
->> users obviously are alarmed about potentially losing this ability,
->> so I hope to get a broad consensus on a specific timeline for how long
->> we plan to support highmem in the page cache and to give every user
->> sufficient time to migrate to a well-tested alternative setup if that
->> is possible, or stay on a highmem-enabled LTS kernel for as long
->> as necessary.
-> 
-> I am part of a team responsible for products based on various 32-bit SoCs,
-> so I'm alarmed.
-> These products, which include ARMv7 and PPC32 architectures with up to 2 GiB of RAM,
-> are communication systems with five-figure deployments worldwide.
-> 
-> Removing high memory will have an impact on these systems.
-> The oldest kernel version they run is 4.19 LTS, with upgrades to a more recent
-> LTS release currently in progress.
-> We typically upgrade the kernel every few years and will continue to support
-> these systems for at least the next 10 years.
-> 
-> Even with a new memory split, which could utilize most of the available memory,
-> I expect there to be issues with various applications and FPGA device drivers.
+kernel test robot noticed the following build errors:
 
-Can you tell which PPC32 model/family you are using ? Is it mpc85xx or 
-and/or other variants ? Maybe we can look at keeping CONFIG_HIGHMEM or 
-find alternatives for that subset of PPC32 only.
+[auto build test ERROR on akpm-mm/mm-everything]
 
-Could you also elaborate a bit on the kind of issues you forsee or fear 
-with applications and FPGA device drivers.
+url:    https://github.com/intel-lab-lkp/linux/commits/Yafang-Shao/mm-thp-remove-disabled-task-from-khugepaged_mm_slot/20250910-144850
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20250910024447.64788-2-laoar.shao%40gmail.com
+patch subject: [PATCH v7 mm-new 01/10] mm: thp: remove disabled task from khugepaged_mm_slot
+config: x86_64-allnoconfig (https://download.01.org/0day-ci/archive/20250911/202509110109.PSgSHb31-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250911/202509110109.PSgSHb31-lkp@intel.com/reproduce)
 
-FWIW I sent out today a patch that removes CONFIG_HIGHMEM complely on 
-powerpc in order to get a better view of the impacted areas and allow 
-people to test what it looks like on their system without 
-CONFIG_HIGHMEM. See [1].
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202509110109.PSgSHb31-lkp@intel.com/
 
-Christophe
+All errors (new ones prefixed by >>):
 
-[1] 
-https://patchwork.ozlabs.org/project/linuxppc-dev/patch/28d908b95fe358129db18f69b30891788e15ada0.1757512010.git.christophe.leroy@csgroup.eu/
+>> kernel/sys.c:2500:6: error: call to undeclared function 'hugepage_pmd_enabled'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+    2500 |             hugepage_pmd_enabled())
+         |             ^
+>> kernel/sys.c:2501:3: error: call to undeclared function '__khugepaged_enter'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+    2501 |                 __khugepaged_enter(mm);
+         |                 ^
+   2 errors generated.
 
+
+vim +/hugepage_pmd_enabled +2500 kernel/sys.c
+
+  2471	
+  2472	static int prctl_set_thp_disable(bool thp_disable, unsigned long flags,
+  2473					 unsigned long arg4, unsigned long arg5)
+  2474	{
+  2475		struct mm_struct *mm = current->mm;
+  2476	
+  2477		if (arg4 || arg5)
+  2478			return -EINVAL;
+  2479	
+  2480		/* Flags are only allowed when disabling. */
+  2481		if ((!thp_disable && flags) || (flags & ~PR_THP_DISABLE_EXCEPT_ADVISED))
+  2482			return -EINVAL;
+  2483		if (mmap_write_lock_killable(current->mm))
+  2484			return -EINTR;
+  2485		if (thp_disable) {
+  2486			if (flags & PR_THP_DISABLE_EXCEPT_ADVISED) {
+  2487				mm_flags_clear(MMF_DISABLE_THP_COMPLETELY, mm);
+  2488				mm_flags_set(MMF_DISABLE_THP_EXCEPT_ADVISED, mm);
+  2489			} else {
+  2490				mm_flags_set(MMF_DISABLE_THP_COMPLETELY, mm);
+  2491				mm_flags_clear(MMF_DISABLE_THP_EXCEPT_ADVISED, mm);
+  2492			}
+  2493		} else {
+  2494			mm_flags_clear(MMF_DISABLE_THP_COMPLETELY, mm);
+  2495			mm_flags_clear(MMF_DISABLE_THP_EXCEPT_ADVISED, mm);
+  2496		}
+  2497	
+  2498		if (!mm_flags_test(MMF_DISABLE_THP_COMPLETELY, mm) &&
+  2499		    !mm_flags_test(MMF_VM_HUGEPAGE, mm) &&
+> 2500		    hugepage_pmd_enabled())
+> 2501			__khugepaged_enter(mm);
+  2502		mmap_write_unlock(current->mm);
+  2503		return 0;
+  2504	}
+  2505	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
