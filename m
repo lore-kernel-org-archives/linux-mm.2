@@ -4,118 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90E9ECAC582
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 01:00:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 338E6CAC582
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 01:00:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C17FD6B000C; Tue,  9 Sep 2025 21:00:44 -0400 (EDT)
+	id 86D4D6B000E; Tue,  9 Sep 2025 21:00:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC7566B000D; Tue,  9 Sep 2025 21:00:44 -0400 (EDT)
+	id 81DDB6B0010; Tue,  9 Sep 2025 21:00:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ADD606B000E; Tue,  9 Sep 2025 21:00:44 -0400 (EDT)
+	id 70CE86B0011; Tue,  9 Sep 2025 21:00:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 9DA7D6B000C
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 21:00:44 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2D6E459AB8
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 01:00:44 +0000 (UTC)
-X-FDA: 83871535608.28.B33B3DB
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 5AE6C8000C
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 01:00:42 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=XsgQSKz4;
-	spf=pass (imf02.hostedemail.com: domain of rgbi3307@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5BCD96B000E
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 21:00:56 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id EC71A867F5
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 01:00:55 +0000 (UTC)
+X-FDA: 83871536070.26.F1179B1
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 418ED100005
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 01:00:54 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=AMFtqSnI
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757466054; a=rsa-sha256;
+	cv=none;
+	b=imv2tzGS52jdyYuPgaornywA8Vbz6ocgThgCVrPeB/RepcnRrCxddoTMzISwUUq2HBqCxu
+	zlLy/FuwWL3UgSHNrbuW+S51bwpflL77WO7KhqLeuI1WFCj1xtmK0IMjIDMpQVfOPV1xrm
+	+TkkxgiF4SiKXStrNTkXdl1ON/lopaA=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=AMFtqSnI;
+	dmarc=none;
+	spf=none (imf14.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757466042;
+	s=arc-20220608; t=1757466054;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=gYtIMNwewtfHP8BnvSKdl88/khkNxOHcpB9SEjCgTbM=;
-	b=7z4Wu79Lj+vcLpOOxXQKgUCem6CU27yN5EM3jS/fokzBYZKPIq4L6gaYPP/DX9YWia9Gvg
-	he2DLHu7gkiWDajwxp0dXBx8lZk4+FDtbfsm1f+KhGEUEzpvdPsLA3PPzRu/4IFaWMZ8Je
-	6edGR/Iko4Gj3Sb3qn+VaZ1bLhvlu2U=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757466042; a=rsa-sha256;
-	cv=none;
-	b=S+9kWBq57SM2UNqxJ+yRP7xl8aBLsRR/IhCyVzu/1KNo73cvDKkVP1Mn6UybU95bIFV3Pa
-	nIHoIDEXbmI3vcqBiiK79t+tzFZKF6FC1gdErXYjsmrxLVUlISLOrB5hck79gPxM2ISFBO
-	hRYVod/tFNzH33eCilNOY66sibrPvfc=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=XsgQSKz4;
-	spf=pass (imf02.hostedemail.com: domain of rgbi3307@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=rgbi3307@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2445824dc27so63294155ad.3
-        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 18:00:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757466041; x=1758070841; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=gYtIMNwewtfHP8BnvSKdl88/khkNxOHcpB9SEjCgTbM=;
-        b=XsgQSKz4ha377TnOX2yIP/mFhkBsPJkhWGkXqCnSKVkMvOLWAgsyexvValUseTkoj4
-         5lo93oUrX6BxmNA+7QFVXi7fgq3XlvjXUa97I0dsbtfbI1+mRfuvaqsylRe+7NiLRAm0
-         +zzqX+NMDEn57GqT2CL1h1sm7x+LLMDIUXAvYxit84oqCoDonj/+vu92TcVAtV5k6neF
-         SbB3h69SDPtq/KsUy1w431acCalwnj+1kbaBNZLixZ6pLWeQI+FOti/DpczR/vEdp4b9
-         bw3sXcyYu6gUTe47kQwki8bygfRHYvEnZlTPcqh3mmGTFRajOHi1QiQeiiWFxjAk/zjr
-         CX6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757466041; x=1758070841;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gYtIMNwewtfHP8BnvSKdl88/khkNxOHcpB9SEjCgTbM=;
-        b=Wzvo5GDp040EE8zGppmjKXKfrLpVs/quB82WZwnZUj0VqKHt+QT1dvLovWVNMH+DJZ
-         XIOyw3p6MYMmJtKwbQxrrlL9AWjXpR9JdX1euq1PDMUSecbZquDQhrRVm9Yo28o2Xah3
-         +hQt2ZJKdHoAXK2FTsl9qwredwV60y8rr9nMruMn5WMkR5yd18XQpUH79JjS7tN/iXOd
-         gilG7nA+sUyOHDrxIToIaIry77HCBA65hLQK33RZ8lEHlXHvKF9Mz38jVngGAs5gKK4Z
-         sPzyZ5Cd+AV1xj/0TuiL70xXigldfzrM3YnGeI2sGit/HHrKw1DqYZZpzGNONIIpNP1m
-         bkFQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW4gUEWxVXCdh52y0FsPwWI6M1vs/NSIPSKsESj0y7hvDzV8Yeto8HEDZCLL9GYdgmWJLt5KNifvA==@kvack.org
-X-Gm-Message-State: AOJu0YywoLbboa0HMdj6GF47qkZlvKWtz3bgtBA6xZ/NMn5y1W7hDyeH
-	umw8jD7dc9+FJCmA5G4JcEW1Two1NviJxGhrWKiLdEr6rfQLTUh2qurZ
-X-Gm-Gg: ASbGncvOJ9fs8DY0UeKfRdKunC/Bdw9V5WwzqwQMYo01tV/jgHFyjgKw+CgMN/+sDvN
-	BzpXJ1dRlsb8qWVLn+OsnWV5R2uXdRAloagk2AAwiJvTPafT6kHYkWXwF8DBCAwxLqXNXoi0Dkd
-	2epL7CYdfYK2Frvl9RrRG9Ay8sdd50Rw20qh8BkEso/NaZKblg8xE9vtpl2f57R2DsfPijKhJRu
-	C+0V+c9KgMF383abPhvdFTE9hp+ISNx33BraMPuhYbyCx1Dfi5C3+mLYXz4xcvSa2Io+CSnEJl1
-	DbSfcnh5Ir/+1ePMoAfVGECghEO50bH9QlxkogCRRqC7pfxalXQLrOhBtDCNixeCxbbyc48eTJO
-	7OKWxVydhQA5NMIHUcxdzECb2kxHObhD6WfM=
-X-Google-Smtp-Source: AGHT+IHsFSeEMBKM1x7ICE5JA1RNKFrxEW/Kh9/xTIxKubK9qJVAkBvLbRYdXVICltIthH9H1/yuBQ==
-X-Received: by 2002:a17:902:f68a:b0:24c:9c5c:30b7 with SMTP id d9443c01a7336-251736df08emr188158855ad.47.1757466040977;
-        Tue, 09 Sep 2025 18:00:40 -0700 (PDT)
-Received: from HP-Note-Host.. ([222.234.91.137])
-        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-32dbb62533fsm416564a91.25.2025.09.09.18.00.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Sep 2025 18:00:40 -0700 (PDT)
-From: JaeJoon Jung <rgbi3307@gmail.com>
-To: cl@linux.com,
-	penberg@kernel.org,
-	rientjes@google.com,
-	iamjoonsoo.kim@lge.com,
-	akpm@linux-foundation.org,
-	vbabka@suse.cz,
-	roman.gushchin@linux.dev,
-	42.hyeyoo@gmail.com
-Cc: JaeJoon Jung <rgbi3307@gmail.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	rgbi3307@naver.com
-Subject: [PATCH] mm/slub: Removing unnecessary variable accesses in the get_freelist()
-Date: Wed, 10 Sep 2025 09:59:56 +0900
-Message-ID: <20250910005957.54108-1-rgbi3307@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=VCovnQiKBqc8KwjIgSafo1ECvn4VKWgvcShqCm4XuY4=;
+	b=6YDPkKUkMi/mEC5eSoMU9wraefdyQRzeIUur/12bRwGYFVqSOLpNhFpXo+crzcWAbB7Gbc
+	bgbIIBTU+jlXbrLosigonHpn9YkwjhvTXYqJNu0RH0a21k+VHPSx87LI6NR6SJpshRUxi2
+	Phm5rCqcQJ4+xQnM3ARM0V/SRNAZPIE=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=VCovnQiKBqc8KwjIgSafo1ECvn4VKWgvcShqCm4XuY4=; b=AMFtqSnIawnRKyNrClfcd16FmN
+	SlVzBqWHt3rvR9TpQ7Z2cu+fFLU3Le2wCXeAad6k+WrECaIO5uGrBSJI9/QGWxzwOGXLd9kgPvulb
+	Y1PO9k1kNuDanrgLG6Ye3buIIMYb/QcO7t+gr7BxhHdC77dmF8OV54NJfIWqwaz7KBFlhNAqKY9nV
+	oYbNSw+qdhrleALXGepsklRWB+c9ZdlDCGP8YlkSFwNbacpXaDdL8z+HWJ/9b2/axreLrdTNir+0Y
+	yW0YK+zDEsavCu6hNmok5zv6QL1Hefpl//X5VqECRL6CZ4Xm0jkV04EsBGdRrMqvkgkyCI0I0xV/F
+	gqaoZuSg==;
+Received: from [50.53.25.54] (helo=[192.168.254.17])
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uw9Cc-0000000BHYY-0xlp;
+	Wed, 10 Sep 2025 01:00:50 +0000
+Message-ID: <4e230009-ed70-4260-ba61-170ddab17a80@infradead.org>
+Date: Tue, 9 Sep 2025 18:00:49 -0700
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 7/7] Documentation, kstate: Add KSTATE documentation
+To: Andrey Ryabinin <arbn@yandex-team.com>, linux-kernel@vger.kernel.org
+Cc: Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>,
+ James Gowans <jgowans@amazon.com>, Andrew Morton
+ <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Baoquan He
+ <bhe@redhat.com>, kexec@lists.infradead.org,
+ Pratyush Yadav <ptyadav@amazon.de>, Jason Gunthorpe <jgg@nvidia.com>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ David Rientjes <rientjes@google.com>, Pratyush Yadav <pratyush@kernel.org>,
+ Changyuan Lyu <changyuanl@google.com>, Jonathan Corbet <corbet@lwn.net>,
+ linux-doc@vger.kernel.org, Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+ Chris Li <chrisl@kernel.org>, Ashish.Kalra@amd.com,
+ William Tu <witu@nvidia.com>, David Matlack <dmatlack@google.com>
+References: <20250909201446.13138-1-arbn@yandex-team.com>
+ <20250909201446.13138-8-arbn@yandex-team.com>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20250909201446.13138-8-arbn@yandex-team.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: pwinwsd6tjhdx8ng37bimagd73wc44kg
-X-Rspamd-Queue-Id: 5AE6C8000C
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 418ED100005
+X-Stat-Signature: 5gq5zpt3dc8g6mgojbo45qbsg3rpqdko
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1757466042-930710
-X-HE-Meta: U2FsdGVkX19smyNG9kUqUTHiFrlh8AFoVPd4bc4b8YmDudquChPpCy5vPhrXJzpzgxrt5UjA+XuYJQio7rxadAexYwk9bMyC304Bkc0Em5w/5cBM5CqYlzv1gPSVC0QQfIFQx6rMs+CluLG7GbCJMsK8Vfz6Db5SeZTq8ck8+DP2xq755roFuHPAc3I/Sbg7HllYb5MBiCWTcuijK9d954mrui2lUWVcHlpXCZDTowNssa5fiMpQ/rkfFw0ebFKVid1SyIr71XjeGUGnRqfPguFpkgjq1cUELzLQe33ExgBWkblK3BG7AUeZwUlu5vnA4VxCYpocuUNnw8vMhe82CSE3XC0Q19Ae20MW6JLOu558wEM/JV6/fHKMx0ByhIvTwW4/tsmSF6A6qGHSZYBnmRMVvHvCe1ygSMVFrjSdQnQf5P4jJs1CC2cgnpGM6XyegEKjud9BFMQ/tWmpTNrf2gVS3n1i8KsZC3AibUMBkLvc1+viWOBCiJGZYVN8M2kjzZ+vCHNxtK1oWNjsblWE7d3ZGdZNO54QVp3/GIhXMIbdr8rS8tCDVGy27z4pmzoP0wggzHxIcjWAuh1wln8IaIp7SmkbyfcB8M0zE1rHMNIbmXD9E6jIQhsN0OIxXq0CkGS37tKkfB7ncnWANVBVL1RXOAngaKwOmvrsAH+LsEXc2HOYJ9hFuF9yAM8bKwoOxZXLcvaVczzpAp6xDhe3H+S7mAQB1bg1W+ZpwObjsOJa8/Yf+yF2Nu5KtuNbAZ0RW4/vwU/RgmzdYv7UXUObX4rDhm+G8XgDIPWPTB/RYKcqxCV+LQnYZey6xgIz/OzQInJn2Sh7iELEYtm3sFW+jYanHU793ZoMowTmE4nbefmx9GUyotlhi4yRTkqjWtS6xK6iwjWCKXrAbP9ayZvRd1eCefh6KTPCCeibb40ctFL3peWGSo8duiHlsdOpMLghfyGxVdqhRj/90pEbqpj
- gFMS0avL
- 1q6P9gNxOUaNWrRZWww73oOKVqvzJanM4zen3APRS7lekVQCCIuqrQsi9AoRIv5s7A0ZtGTBmeeIanu9J/4QTjCe3ixIPa8hiZ3+TddP6spBAjsB342I8l0OGuxEJt+QUfloT68+f0Bmga/gE4Y2SSSCjjPNEirsVTEZhDyR4LTn2nBZ68u8w0LGeYYcpk8lKaAIzeNYknn1zHzpRtzXcsAZnfqerACZXh4EcaM881rxzYlML9lg1D86vW0FZ7Vjf/ANGZ5Qpcc1mNW0bNVNhmoUkKDuYxxB6LFwBer81MW8MgjJwxiASJbNzPFeSh9tHTkjcP3Xza1igb27kCZ0/jyp+RuWViKTMdFTba8dvlQ38oYDXyo7pX214bv/AgbthXdl8/ikcmjLIcQuldrxFgbWccM7wbjpO7NZ1IPLuLKBYmd10op9RD7FxTi8gFO67wQ2XokZiA+hTkknn4XIcT6EnF8gLgQltML3bKVc+rDQpynf+4/uZsk71dhFyALNsRCdpmsf+vdVJl+qcWi8rizn3xQ==
+X-HE-Tag: 1757466054-974411
+X-HE-Meta: U2FsdGVkX1+9+A5lGODwgdfVbVikMuGJqcDCSbnVAIX/nvJ6YWIQYvUo22J8vr+ephgkYgHPXLZpMIdIzUakE6siGodmUbtMqerxWIICt/i8yxwByYbAcmvhTvhUGbJAtEun5lvrEFYsIuMp7Sb2Q5CpAKvVPh6Jem0kKHLZJ31J++yd87ZNC8hUS0K99LbNHNFSUOtSFcZcKtJ7jlprIbloXlEwb1Fj+oIUb6jP+QSSacqpMJI46JquRAj6cnefHcYdlloGuEkZlvhl015Qmu9i2l9KVgEQmWsCoAyxQtHV6VxsUv7KidK9cWSclNUyhZ79nSzpmFkTHd+lAo24oUNpOx+o2uimty8gHESpcj5Sf6UJWpEBcGTLpM9i7Jz4mx9N2N8xZDiei3WV+cLm8UVIfPNDXHl1P9ayst3DiLc3te9Ea+umOk3qKGjFBXQVgQuddOk1DLGkKUQZX2FXin/i5Nz588tzIkoA6s+Rup/FIz6s+aHyUflj1igl+Y4Ls5anmNEAJfKDys5UmQ12g1eg2RluTEII6vSG8CtZZcdvxEM2GS18uWrWfQuEKS99j7WS2CXdwo4B+mNAMf55nEc6C93+O5oDwURdiVnKKKGKkTb5Gu1JPaJ8+mmPNBlWfvn94OHXAoCdAOFWgNFfw9u9YkUAFovDb3MUERtSZPchr/TNEJbKjcDmOp6jX9DNJmT/Wa2a/nngDS4+DHqsuQgfv7xNlXvetbqix70ed/svMkHB/nH0kzFrQ6fpKAabtybxLl7G5v2d+/L41pDDthpdd8UjWV/fSQoJ3FOx35rUXkaq3Ai7Amnpu//rxauRx1DgC7nAihKly0syy7UX/3qmUajcH59GyZ1QwHGIR9fswA3+x24eEO3OTNXCTolNKzCb7oC0+QBfAlSsFa1+ZJpzQBANv+hwpu9qQQn2f4D0EIztX0i/8LSQsJeTfpHePcBHXX/YNFroEw3OBB3
+ gnAJGcLF
+ PuOwwP3YbM19hIEtIC136Zgbk3jIKwEnywYnDo/UseO8tIgkZfg28BHI7Php0eANZdSeC0ePHuZg7X7KWfX6mKW5NQcHqmUOHYThm/f7ScCQ4fiucDuVWHes9/DysWs9axGK3AK3f1GOCzTF1YdSXraHWSv41sNfnGyBD7HJD/7o7HYf/mYVrPxK1NwgIvb9t7DHiCW8e+MuUo9h1zwfT5rxCC8p6yN8alhNGFy5Vp2MY8I6FLEJyygdXfCjmC1Gdmtye6A/hIfXGvg+x6rrQQGXDyEGe7EOYX0k0C4Ru/cSP0bp9Z2OkyHtwmoSC/rM5HV/wDL7kIRT2aKg66UnRRkFOqS7Ban6/zAwu8IQTU9MUgve18WLbn9NNng==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,54 +104,188 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-It pass a NULL pointer to the freelist_new variable
-in the __slab_update_freelist() function so that it don't have to re-fetch
-the variable values inside the while loop.
-Removing unnecessary variable accesses as shown below
-will reduce the code size of the get_freelist() function and make it faster.
 
-Signed-off-by: JaeJoon Jung <rgbi3307@gmail.com>
----
- mm/slub.c | 21 ++++-----------------
- 1 file changed, 4 insertions(+), 17 deletions(-)
 
-diff --git a/mm/slub.c b/mm/slub.c
-index d257141896c9..2e305a17a9d7 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -3654,27 +3654,14 @@ __update_cpu_freelist_fast(struct kmem_cache *s,
-  */
- static inline void *get_freelist(struct kmem_cache *s, struct slab *slab)
- {
--	struct slab new;
--	unsigned long counters;
--	void *freelist;
--
- 	lockdep_assert_held(this_cpu_ptr(&s->cpu_slab->lock));
- 
--	do {
--		freelist = slab->freelist;
--		counters = slab->counters;
--
--		new.counters = counters;
--
--		new.inuse = slab->objects;
--		new.frozen = freelist != NULL;
--
--	} while (!__slab_update_freelist(s, slab,
--		freelist, counters,
--		NULL, new.counters,
-+	while (!__slab_update_freelist(s, slab,
-+		slab->freelist, slab->counters,
-+		NULL, slab->counters,
- 		"get_freelist"));
- 
--	return freelist;
-+	return slab->freelist;
- }
- 
- /*
+On 9/9/25 1:14 PM, Andrey Ryabinin wrote:
+> Add KSTATE doc. Describe 'struct kstate_description' and information
+> about versioning fields.
+> 
+> Signed-off-by: Andrey Ryabinin <arbn@yandex-team.com>
+> ---
+>  Documentation/core-api/index.rst  |   1 +
+>  Documentation/core-api/kstate.rst | 117 ++++++++++++++++++++++++++++++
+>  MAINTAINERS                       |   1 +
+>  3 files changed, 119 insertions(+)
+>  create mode 100644 Documentation/core-api/kstate.rst
+> 
+
+> diff --git a/Documentation/core-api/kstate.rst b/Documentation/core-api/kstate.rst
+> new file mode 100644
+> index 000000000000..981ba162109c
+> --- /dev/null
+> +++ b/Documentation/core-api/kstate.rst
+> @@ -0,0 +1,117 @@
+> +.. SPDX-License-Identifier: GPL-2.0
+> +
+> +KSTATE: Kernel state preservation framework
+> +===========================================
+> +
+> +KSTATE (kernel state) is framework to migrate some part of the internal
+> +kernel state (device driver, memory, etc) from one kernel to another across
+> +kexec reboot.
+> +
+> +kstate_description
+> +------------------
+> +
+> +Most kernel's state is in structs and structs could be described by
+
+   Most kernel state
+
+> +kstate_description. E.g. <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+> +
+> +struct kstate_test_data {
+> +	int i;
+> +	unsigned long *p_ulong;
+> +	char s[10];
+> +	struct folio *folio;
+> +};
+> +
+> +struct kstate_description test_state = {
+> +	.name = "test",
+> +	.version_id = 1,
+> +	.id = KSTATE_TEST_ID,
+> +	.fields = (const struct kstate_field[]) {
+> +		KSTATE_BASE_TYPE(s, struct kstate_test_data, char [10]),
+> +		KSTATE_POINTER(p_ulong, struct kstate_test_data),
+> +		KSTATE_FOLIO(folio, struct kstate_test_data),
+> +		KSTATE_END_OF_LIST()
+> +	},
+> +};
+> +
+> +Changing data structures
+> +------------------------
+> +
+> +KSTATE saves/restores structs as a series of fields. When the kernel structs
+> +are changed we may need to change the state to store more/different information.
+> +
+> +Versions
+> +--------
+> +
+> +Version numbers are intended for major incompatible changes, that are not
+
+no comma
+Drop "incompatible" since that is implied in the rest of the sentence.
+
+> +backward compatible.
+> +
+> +Each version is associated with a series of fields saved. The state is always
+> +saved as the newest version specified by ->version_id.
+> +But loading state sometimes is able to load state from an older version.
+> +
+> +There are two version fields:
+> +
+> +    - version_id: the maximum version_id supported by kstate_description.
+> +    - min_version_id: the minimum version_id that given kstate_description is able to understand.
+> +
+> +KSTATE is able to read versions from minimum_version_id to version_id.
+> +
+> +There are _V forms of many KSTATE_ macros to load fields for version dependent fields, e.g.
+> +
+> +	KSTATE_BASE_TYPE_V(i, struct kstate_test_data, int, 2),
+> +
+> +only loads that field for versions 2 and newer.
+> +
+> +Saving state will always create a section with the ‘version_id’ value and thus can’t
+> +be loaded by any older kernel.
+> +
+> +Removing field
+> +--------------
+> +If field is no longer needed it could be marked deprecated using
+
+   If a field
+
+> +KSTATE_*_DEPRECATED macro and bumping ->version_id of kstate_description:
+> +
+> +	KSTATE_BASE_TYPE_DEPRECATED(k, u16, 1),
+> +
+> +The last parameter of the macro is the last version number that have this field.
+
+                                                                   has
+
+> +Old kernel will save such field, but new kernel will skip it on load. Also
+
+   An old kernel                        a new kernel
+
+> +the new kernel will not save such field (as there is nothing to save).
+> +Such change is not backward compatible.
+> +
+> +Adding new field
+> +----------------
+> +
+> +Addition of new field can be done as version dependent field by using _V form of
+
+            of a new field           as a version-dependent field by using the _V form of
+
+
+> +KSTATE_ macro:
+> +	KSTATE_BASE_TYPE_V(i, struct kstate_test_data, int, 2),
+> +
+> +This indicates that 'test_state' only from version 2 and above have field '->i'.
+> +If new kernel sees incoming 'test_state' of version 1 it will skip restoring '->i'
+
+   If a new kernel
+or
+   If the new kernel
+
+> +as nothing was saved. This is not backward compatible, as old kernel doesn't
+
+                                                          as an old kernel doesn't
+
+> +understand the new V2 'test_state'.
+> +
+> +Subsections
+> +-----------
+> +Another option is adding subsection to kstate_description. A subsection is
+
+                     adding a subsection
+
+> +additional kstate_description which linked to the main one:
+
+   an additional                 which is linked to the main one:
+
+> +
+> +struct kstate_description test_state_v2 = {
+> +	.name = "test_v2",
+> +	.id = KSTATE_TEST_ID_V2,
+> +	.fields = (const struct kstate_field[]) {
+> +		KSTATE_BASE_TYPE(i, struct kstate_test_data, int),
+> +		KSTATE_END_OF_LIST()
+> +	},
+> +};
+> +
+> +struct kstate_description test_state = {
+> +	......
+> +	.subsections = (const struct kstate_description *[]){
+> +		&test_state_v2,
+> +		NULL
+> +	},
+> +};
+> +
+> +
+> +Subsection must have a unique ->id. If the receiving side finds a subsection
+
+   A subsection
+
+> +with unknown id it will be ignored. This make subsections suitable for backward
+> +compatible changes (migrate from N+1 to N kernel) assuming old kernel is ok without
+
+                                                     assuming the old kernel
+
+> +information in subsection.
+
+               in the subsection.
+
 -- 
-2.43.0
+~Randy
 
 
