@@ -4,153 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 310E2CA0FED
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 12:18:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7162FCA101F
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 12:31:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 61FC68E000A; Wed, 10 Sep 2025 08:18:21 -0400 (EDT)
+	id B909A8E0003; Wed, 10 Sep 2025 08:31:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5F7B88E0002; Wed, 10 Sep 2025 08:18:21 -0400 (EDT)
+	id B68558E0002; Wed, 10 Sep 2025 08:31:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E6688E000A; Wed, 10 Sep 2025 08:18:21 -0400 (EDT)
+	id A7D8E8E0003; Wed, 10 Sep 2025 08:31:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 390B08E0002
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 08:18:21 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id CC8A616089A
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 12:18:20 +0000 (UTC)
-X-FDA: 83873243160.19.E996F13
-Received: from fhigh-a6-smtp.messagingengine.com (fhigh-a6-smtp.messagingengine.com [103.168.172.157])
-	by imf23.hostedemail.com (Postfix) with ESMTP id AC2B014000E
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 12:18:18 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm3 header.b=lMRppWvj;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="Y 5iH1dN";
-	dmarc=pass (policy=none) header.from=arndb.de;
-	spf=pass (imf23.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.157 as permitted sender) smtp.mailfrom=arnd@arndb.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757506698; a=rsa-sha256;
-	cv=none;
-	b=YGVQMrnv92VDoCd+sPFHNkudXbE3N7zM3m2Px8B8AHGkfQD5Qt8D7TGhHUdtnQyj6UR7Gy
-	CAhsOXH9tCGsDetRoZTwYt54rb8910KIuSrl5zYVQyPyhZPcv7D6ZIZhE2O93gbEr3301z
-	WAps6j5MTMK017RecQND5IJaAQYHZmM=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm3 header.b=lMRppWvj;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="Y 5iH1dN";
-	dmarc=pass (policy=none) header.from=arndb.de;
-	spf=pass (imf23.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.157 as permitted sender) smtp.mailfrom=arnd@arndb.de
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 960D68E0002
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 08:31:24 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 49ED91A08B6
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 12:31:24 +0000 (UTC)
+X-FDA: 83873276088.13.E702398
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 5F78D1A0013
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 12:31:22 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=h+xr8Xl8
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757506698;
+	s=arc-20220608; t=1757507482;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q8QtYwN/6PZfKDPEAgWxGMzQb2D01FG/mGmHU9G0gsI=;
-	b=BOL/BBptgf0gWuapCWWx58FvZCshCSWnFOjoMLuSmY+BJFNd9iUG8pf38sUENRdz1JLioT
-	xB0z6DK8zJIhFLEcwWdPuexJAdiu7wtarfsGX4l9W8Sk70fO2lIgXUsT9AiomZG+5CkLpX
-	MTep+Jn265pxYPW4MhP06DRVv2UG30c=
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id E53E91400363;
-	Wed, 10 Sep 2025 08:18:17 -0400 (EDT)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-05.internal (MEProxy); Wed, 10 Sep 2025 08:18:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1757506697;
-	 x=1757593097; bh=Q8QtYwN/6PZfKDPEAgWxGMzQb2D01FG/mGmHU9G0gsI=; b=
-	lMRppWvjlb2mRKxIhB6zQg+atJittD3Vv0ZFlNazWaKYhCDUGlit6C8CogCEhZ1q
-	2sgfbhbJXdiaC4H4OidSoW40ubFOCE39XJ4KzVLOJ10wP9pvvRgOJMCav1aSbIxu
-	b5u73dAtlkdNSkkiMI6PCleDEH4MA3fhLbYHi9vDGXnFFF3HSW25cOUquO7mmoMj
-	hLTihsaytQfa9faTH1k79YiYkCM7t4dUSBbNDzGqmAGL6UHzBn5bnAk28/B8UHVl
-	HVbi26/Q/o6w6GGoMmjwYJCsCj3ZwcOGPMd2msbPUCVMtjIfrykiD6CUNuGGzFwi
-	0eau0fM1D3x/hvj/bGfcjg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1757506697; x=
-	1757593097; bh=Q8QtYwN/6PZfKDPEAgWxGMzQb2D01FG/mGmHU9G0gsI=; b=Y
-	5iH1dNjKENA9lB+WPTE+aDfd4EEnjCQqu9aXxgemhakIsSB8xgRSPmhWJOELM+Qc
-	IiQZMh2MYWB2J4DQgGxeAv8e3Tv5X8adt+BU0fQ3Bx0kWFJe+j8JUOO+K3HMO98X
-	gynbPyjA0RL3/qKL2eWUMp19Md1yc2Zl15HQ6hSWEwPRxIRDnR8UwsT46S4X1btz
-	q973lX+TENS1d+jVxzDgyYuVsxhPd1+lVItZvghiroNZ7Q1gp4kQIF65tksNivPN
-	9YnVwWznR3+55rCsarJ/A5EB6Y1NQPUeyBXfrRAbH8NDDB4OOQdTfJfemow7s1L0
-	SCw4jQQeqFMyxCkr2GVqQ==
-X-ME-Sender: <xms:iGzBaLzC5EVSAADw_ZXg73KwvPlGkppPq-JRpw5uboD5jbP27FwN4g>
-    <xme:iGzBaDTuoR4zP1RmrdotU0_sl9iOja29GXfmFtU8duZVGR2bSE_X4GARY5TKnB8CH
-    th5x07cEPZvTAFjklA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvfedvjecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhhnugcu
-    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
-    hnpeefhfehteffuddvgfeigefhjeetvdekteekjeefkeekleffjeetvedvgefhhfeihfen
-    ucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenuc
-    frrghrrghmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghp
-    thhtohepvdekpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegthhgvshhtvghrrd
-    grrdhunhgrlhesrghrihhntgelrdgtohhmpdhrtghpthhtoheptghhrhhishhtohhphhgv
-    rdhlvghrohihsegtshhgrhhouhhprdgvuhdprhgtphhtthhopegrnhgurhgvrghssehgrg
-    hishhlvghrrdgtohhmpdhrtghpthhtohepghgvvghrthdorhgvnhgvshgrshesghhlihgu
-    vghrrdgsvgdprhgtphhtthhopegrlhgvgigrnhguvghrrdhsvhgvrhgulhhinhesghhmrg
-    hilhdrtghomhdprhgtphhtthhopehsvghrghhiohdrphgrrhgrtghuvghllhhoshesghhm
-    rghilhdrtghomhdprhgtphhtthhopehsuhhrvghnsgesghhoohhglhgvrdgtohhmpdhrtg
-    hpthhtohepfihilhhlhiesihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehirhgr
-    rdifvghinhihsehinhhtvghlrdgtohhm
-X-ME-Proxy: <xmx:iGzBaNO7Os19I4sPMn6-otQ5bbEKAB4pch0OZuFXHFI5x9JEd39xpg>
-    <xmx:iGzBaK3yqnNlqS-sfm9Lx7D_9HNKC12n5KccpVTug2j5bpB0xc1AZg>
-    <xmx:iGzBaNOhVAFIENTxMk6beeNI3AnqDtq-OlhJo9DV9HIPb6ewt2VQSA>
-    <xmx:iGzBaAvXxr0sCtad7do3vmGOYAy8bEnqRMURmIo7PtKiN1CGOde_GQ>
-    <xmx:iWzBaM4JqI_NrZjl1sbxSuVsA0MIBP4IgV_a6-a8UVVN-ccxa-XdLGBK>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 88DD670006A; Wed, 10 Sep 2025 08:18:16 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	bh=Z28D9iiY/FsctjTG9fO3hTbLrp0EukPX3101AmbRWww=;
+	b=8XvOOJdhPO347zGjjOHbhTzKGZvJXvNyYEF3N+IxoRbgRvsUZQhgK5JfIdhBd6Z25bac+Y
+	5doFp6exfEAcr28mRwgiJQ58xdC+IZJgwitRHK223cBrQK3EnBMGc8CSev8HUM5hh+NPjq
+	AZ/J9e3qlYKO+nxXZCzNijTTM7xmc0s=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=h+xr8Xl8;
+	spf=none (imf19.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757507482; a=rsa-sha256;
+	cv=none;
+	b=6bYsXiBNH+19UBcM8pfyUSM0/lvKPhVex9zYO7PMFZDK0oBSPfe5U53otlfbiqlOCPx4lu
+	jKOgIGjRmya6ViYUrjQsRfembaEjyqpOCaHd5EkvZnT/oifEqo5tSPtkbGB9izzABCKxNB
+	PXPjzYNiB6rYBBIPXCLVqmM88QPKpho=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description;
+	bh=Z28D9iiY/FsctjTG9fO3hTbLrp0EukPX3101AmbRWww=; b=h+xr8Xl8NL5B1jPcR+0s0aUg91
+	KOVaBKIEZGQRkUtpKFNIYkVhS2HnwfGYOXeqw5aULyMFzXEl1rUq+Q1x9prlaEB0EA+hZ+c6dQjuK
+	WWpQDIF5VGG32K21VLPvaFUvIgf2kQ/B+lX2w42pSpxFIO2oJUmp93gCmhiU7JquBj9c1WJ2I1Z9l
+	RfjdTjJeZslIBLjUJDW3U/J19bDKy2jn1y6Zx3dbwegKMuL5UU99cPWdFSlXAwP3kK5d99Im9R+nT
+	fY9w8FEaE4uV9CTtQ1WX+PMHEsAilj+HQ7wRI0P7FHHImQIdZ41F4wNGcCdcPPofKyUi5xRcu42p6
+	oAru50uw==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uwJPq-00000008MFO-1Srp;
+	Wed, 10 Sep 2025 11:55:10 +0000
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+To: Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	linux-mm@kvack.org
+Subject: [PATCH v2 16/22] slab: Remove dead code from free_large_kmalloc()
+Date: Wed, 10 Sep 2025 12:54:58 +0100
+Message-ID: <20250910115507.1991829-17-willy@infradead.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20250910115507.1991829-1-willy@infradead.org>
+References: <20250910115507.1991829-1-willy@infradead.org>
 MIME-Version: 1.0
-X-ThreadId: AmcCJOTBQ5ho
-Date: Wed, 10 Sep 2025 14:17:56 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Matthew Wilcox" <willy@infradead.org>
-Cc: ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- linux-mips@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev,
- "Christophe Leroy" <christophe.leroy@csgroup.eu>,
- "Richard Weinberger" <richard@nod.at>,
- "Lucas Stach" <l.stach@pengutronix.de>,
- "Linus Walleij" <linus.walleij@linaro.org>,
- "Geert Uytterhoeven" <geert+renesas@glider.be>,
- "Ankur Arora" <ankur.a.arora@oracle.com>,
- "David Hildenbrand" <david@redhat.com>,
- "Mike Rapoport" <rppt@kernel.org>,
- "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- "Vlastimil Babka" <vbabka@suse.cz>,
- "Suren Baghdasaryan" <surenb@google.com>,
- "Ira Weiny" <ira.weiny@intel.com>, "Nishanth Menon" <nm@ti.com>,
- =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
- "Alexander Sverdlin" <alexander.sverdlin@gmail.com>,
- "Chester A. Unal" <chester.a.unal@arinc9.com>,
- "Sergio Paracuellos" <sergio.paracuellos@gmail.com>,
- "Andreas Larsson" <andreas@gaisler.com>
-Message-Id: <b60310f3-25d3-4f2b-88cb-ad65d5f55ec2@app.fastmail.com>
-In-Reply-To: <aMDYdp3H-yOHU1Pm@casper.infradead.org>
-References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
- <aMDYdp3H-yOHU1Pm@casper.infradead.org>
-Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: AC2B014000E
-X-Stat-Signature: y89xy6q3reptwxdgosy7zuxqwideyyur
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1757506698-876739
-X-HE-Meta: U2FsdGVkX19OP/rU6AyvPj+PiTfHbij9Ilmu2CGNo0eZ0r0kd8+rA1uu2xvnXVt0qpzg+NOFxwgHGWLRhnLoOJTVcPeAO9nSefH5NpuQ46cWn6SsFu6F6AC/pbVeY4bmF+sBHS0WD+BN+WYOpqU5AxMelLTYiQDiAUWQ2GFPs/87JIeQy6/naVqdWsfS3VSo1s3Ba7tARc5O0kI/tHF/NcBKQW+ACpM8w5fcNS063NZnqbLNT3Vu/gIkq50u/0mk1kzhGXGNwAsMqYQO+3+MbeHaLQ8zjsHELJT4XhoGs2ZIMdLi20dI+cQFqfsdpX87VsAxa88Nr/wB6QGc4Y9J+P+mf9tzkeWZc6FPOf+kDjl68bw+uwMcJHkPCSHLt6JjoKy5KX11nsbf3OWu1vREQG46fAXMiC8o3lf+B9ik0MD8JU/SL47H7dVxECqhbj+HgYcWA1M2b2Q19QhWDfIWTFEpwNQjKVLboCxFWkgyir+TKKy9+BiaGgn/CveSkOOLd/laRC4rFqhk67rGoTFBlePemoFuhYRXu27QeQATpuM0GmHPbg6EQ5ViawekgiFjb9CqQrlYY9KhaCZs7nPM4UghUSw7MLozAGxdh55z6kHAo0QceAUHGqfZTumqeLWM13olQoy1bMRgABySqsNRWusn0gQSQ14ZznoOI5U44GuTIPZpJpPa7I/Gyhu8Y8xwG91ZespLlWGlLFw4zTfvfOdyFg/2cz+jQEgy2UBpYwGbZPJA2OslWroFhf9LjRVndjtF8SxnhN9XBRD/tVc4+0LIpnqToD4Vb0THv/OXDytJbQcHIniqhgvEVMcBeeBBOer/fI0pllemV8uD3Esp4kmYc5F8ftNqiuK+ARvNKUhEjUW4zaWYDBqoMq8NOmz8mr9gMCTsRXjLOqaY0zx1wWMRr3ajQJdqNjTQXqQtWhV4mRgL/J0JGv9bZ+wPe9OZkKtyrd6w+aZ8WXyFwFv
- UOygqddq
- oakl7CSEwxQtzOe/31y9NkgJCz3PM8Dtgvf4/kPXGZ9+Wy9ESmHn7nTi4TbxRUJ9hK2VbnrRIBTtGYjI57bgWwIXHA9lwjtiG9OIpGp0g6bIGGc+PpU8CUMrIK+I0Yrpx1EV2YgEBW88dCVHodahxd8L8r+S7V6D0Lpipq4y0OE88irKTPQtQNMEWWTmlX7XA+BihL163g8PedPOelR1HHzeds73zqLJwBj7LdQaxYcp8QstwJT63WG3nwe1DShMN9g8WjOnJ5wjse4yNNEJ5D9/UxqN1WP+qInhjmBwrtcOvlN7dHjsmh62Yw+NnhJQxWL3T
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 5F78D1A0013
+X-Stat-Signature: 85e53er1tofhiq31zsmdi7mrex3iqmbp
+X-HE-Tag: 1757507482-4974
+X-HE-Meta: U2FsdGVkX18PW2+tZWTbwL4MvrtOvwk5rdp0PU8zf4NyRakaAOgQFlP1ompFoqrw4NlYCutT5kNvbWnet0847EDC4k1pcSDI3qChHr3uyFtDOlaROYoz0EF+R4JqcJwjm8sFReK+pyQryiis5noqfJtENl/mo6kcRtBvY75MUDv+snsDQeaJ5KinXoj30hT+dTt2shVtm6pdd+/7zEGmTHCW1M/1oB98F6U8FhFPM5shmTrOghJ+Hpno7+mV0Rxhg/8aef0K0c0cYr4m1aURW3aciJKwDLnkzcpgrUvYGVFRKgwwRp9RkJGgi+QUgWbSvTI6w3XFCIOfbz3zBIP7bJ+c8QvHJRJxE/4CuE/imTu689oG8r+5uZ/GRmCdVKQz2gLiMs8MVutCuqBn65UKU96L93+VxeUN+i/2Y63p6BxSRJOSvd4/FL/7N+2yqDsmXrCxQKVdnBYKuNSUnnLDq4lOlIm16e/ovrGx2q4czjlCkKBZHb4fQF/iYnBA63kxAZgsR6cw+3gLV+UADglSI8o/IEnyur3fhyQ4aYODlY1aR6Yf4Hw8tPGJmXem9TQUgAFJS5FCU6T7+DC/6b4WrJJSS+gmWdrWEA4ZldkXxCESm8+3oFbtas600ggshvJh/sZtAtznWKMvHOUbuaxfSXZaXBdbZpd27ELmYa8OMKXRs023B+GWyHX4DekEye76SwAg3gDVGxl+dbqpPfI2Ktu4LIhalieMIhL17fRHCkpA+89UcF7ty74f/w9d1ewfRnsRigUOj3i/dEDmFisvwjmK04qfSAAZ7p6s0ppJz1F4jr2rY0s68r1ORgP4e/FDZTDyueFVrDuWgyQZT/DZdfjJvRfPTWRz/1fzpRL85O5p0p3/dtHkdSAHIJf27L6h3W5anNCH7GNT9m9q46HRCyXq9yT4Af+NI4g6F4nb/W8dUfZS1jQf8+5KPEH7Hx2Jvld4i14cjQlgptZ014d
+ k5DpzX4o
+ FQvuf5wX+amCMH7YjfG7eRrnhXKFz8Oflr+6LzQHhVJdED9XdELx/hA0JkysW3+mMVXsikfneaYxZHiJCGTJLlc55pANdnZb+F2MeCxoU/eVaETlS/YCuGQBIYe+3qwp8MSiHSdjnsGN6Qsu9q1aT4c71vKDZ3TzAt22LKoS/fEJPv4Uh4umzuC/c2g+RMqVRe8kGOJGIF7W65m3Wt+K5gq9Jp24X5/YNDKowrySAxxpy52851+HnEOh+iadriif/4oz2ahMmvo5pLGA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -159,67 +92,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 10, 2025, at 03:46, Matthew Wilcox wrote:
-> On Tue, Sep 09, 2025 at 11:23:37PM +0200, Arnd Bergmann wrote:
->> While removing a feature that is actively used is clearly a regression
->> and not normally done, I expect removing highmem is going to happen
->> at some point anyway when there are few enough users, but the question
->> is when that time will be.
->
-> I don't mind that the feature remains ... unless it causes us trouble.
-> Which it currently does.  Perhaps we could start by removing HIGHPTE?
-> There was a certain amount of complexity introduced into the page fault
-> path when support for that was introduced.  x86 removed support for it,
-> so it's just ARM left before we can remove the complexity again.
->
-> Most of the other pain points are around storing metadata (directories,
-> superblocks, etc) in page cache highmem.  I think we can get rid of that
-> now too.
+All three callers of free_large_kmalloc() check PageLargeKmalloc
+first so this warning is now unnecessary.
 
-Agreed, this is roughly what I meant with the suggestion of removing
-__GFP_HIGHMEM allocations from as many places as possible, while leaving
-the pagecache and zram. I already brought up HIGHPTE earlier this year
-since it already has an separate Kconfig symbol, but Russell was worried
-about increasing the lowmem usage at all.
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+---
+ mm/slub.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-Maybe we could go back to the earlier idea of first categorizing
-the important highmem users better, and make it possible to
-use Kconfig symbols to enable highpte/highmem-anonymous/highmem-file/
-highmem-metadata/highmem-zram/... individually as well as count the
-actual usage for each of them. Having statistics in /proc/meminfo or
-similar would allow more informed decision about no longer supporting
-some of the categories later.
+diff --git a/mm/slub.c b/mm/slub.c
+index 0f4e7a2a5887..523a4551ceb6 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -6227,11 +6227,6 @@ static void free_large_kmalloc(struct page *page, void *object)
+ {
+ 	unsigned int order = compound_order(page);
+ 
+-	if (WARN_ON_ONCE(!PageLargeKmalloc(page))) {
+-		dump_page(page, "Not a kmalloc allocation");
+-		return;
+-	}
+-
+ 	if (WARN_ON_ONCE(order == 0))
+ 		pr_warn_once("object pointer: 0x%p\n", object);
+ 
+-- 
+2.47.2
 
-Not sure how many __GFP_ flags we could reasonably spend on categorizing,
-as we are already up to 26 out of 32 (not counting CONFIG_ASAN_HW_TAGS,
-which is 64-bit only and uses two more bits), or what alternative
-would work.
-
-> I don't see any particular need to gt rid of file data stored in highmem,
-> nor anonymous memory stored in highmem.  And if we're only talking
-> about hundreds of megabytes of memory, I think anon+ file pagecache is
-> probably most of the memory in the system already unless you have some
-> very weird workloads.
-
-The main problem I see with the pagecache itself is that the fewer
-highmem machines people test on, the harder it gets to spot regressions
-where new code fails to kmap() the pages correctly.
-
-Another concern is the number of memory zones, but it does not appear
-that we would completely remove ZONE_HIGHMEM as long as ZRAM or pagecache
-uses it.
-
-> Where we may want to be a bit careful is some people have Plans to
-> reuse the kmap infrastructure to support things like unmapping the
-> pagecacheto protect against spectre-eqsue attacks.  I know Intel was
-> working on this when 3dxp was going to be a Thing, but it's recently
-> been brought back:
->
-> https://lore.kernel.org/linux-mm/20250812173109.295750-1-jackmanb@google.com/
-
-If that gets merged, it would at least address the concern about
-testing, since presumably many bugs around missing kmap/kumap then
-also show up on x86-64 kernels with ASI enabled.
-
-    Arnd
 
