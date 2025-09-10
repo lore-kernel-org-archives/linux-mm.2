@@ -4,83 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47611CA0FED
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 11:32:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD592CA0FED
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 11:32:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 73C486B0008; Wed, 10 Sep 2025 07:32:46 -0400 (EDT)
+	id EB5FC6B000C; Wed, 10 Sep 2025 07:32:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6ECA06B000D; Wed, 10 Sep 2025 07:32:46 -0400 (EDT)
+	id E66FF6B000D; Wed, 10 Sep 2025 07:32:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C9636B0008; Wed, 10 Sep 2025 07:32:46 -0400 (EDT)
+	id DA3116B000E; Wed, 10 Sep 2025 07:32:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 39CC46B000C
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C94CB6B000C
 	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 07:32:46 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id F0A0D5B885
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 11:32:45 +0000 (UTC)
-X-FDA: 83873128290.07.BE79D19
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 3F4011C0009
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 11:32:42 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6F1C387023
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 11:32:46 +0000 (UTC)
+X-FDA: 83873128332.27.A4F7A68
+Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
+	by imf23.hostedemail.com (Postfix) with ESMTP id EBB7314000B
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 11:32:43 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
 	dkim=none;
-	spf=pass (imf21.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.187 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf23.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.32 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1757503964;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=2ATC4ybomY+rbqzkqzg0u1Fa6HQmqppjmxI7eHYZVhs=;
-	b=lCrJf3OfG9wgmSzAdNtzIgECFfWXPf2zFbn0V0GDQX6pqdc5MgQZrSo5fk3Nmj8m7KoWtb
-	bYNBE08pWer03t0VtOmBaT6Jo4F9ybWRG/kf4RB7jNaLyNvJDvMP+uZKASNIS/98SK9EPJ
-	4vXPRq26KUMAvC0yIeKXRsFHAAdENm0=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TZ5e2yLlJ7eMjzYVqpZ8aB9ZJtpGY5/ZiCl/kD/P9/E=;
+	b=EZokPTXnUhF67EzKXoCFkdA/Mq2LbutrrIXO/WaJLWjf6mymyF7Dw52pU0CW04Jg6fHW0z
+	0gOLrkY2P0iDWUonQfFqjHsEabGGUOV36ckiRrIJ9c94fWBKaxSXuAOMfGtkunzCDdo5OR
+	oEzf+4KhZJ61zo592exT7T7jJfBRBOg=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
+	imf23.hostedemail.com;
 	dkim=none;
-	spf=pass (imf21.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.187 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf23.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.32 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757503964; a=rsa-sha256;
 	cv=none;
-	b=Upz0VZLN5GQ2JlhJWtnn4GCqwoEdG+xk0JwKQFu50UN887CJmHlJ5FO3+8Ki9RhIX0aMVI
-	yMWhQj9Q7ts/z35dS99Wj9+c9gGe2f4bXWFRrZLwCQGe2OdbXaqlE4Swwn7vFr5hYK2HB7
-	P5QrcVMLRwmAVZf4u5ywtZ8mqc/wb7U=
-Received: from mail.maildlp.com (unknown [172.19.163.174])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4cMJSn2Mh3z14MjD;
-	Wed, 10 Sep 2025 19:32:25 +0800 (CST)
+	b=75rR9sf59g06Fm101AwMBDopzqDUzojdRGJI2IZt5JGwDaQR08yZwc6fnrX1hy1IHl5nJm
+	tJj7aI6x2z+jg4GcaoVWZP0fKPhaTxF2J59j9T9Hn99fNcFX0rkQLiAUmH3DGvyicajO6z
+	o/cW9YM4xDb0isYc0PR8SpMBVYG3Fss=
+Received: from mail.maildlp.com (unknown [172.19.88.214])
+	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4cMJVP1cyjz3tZdn;
+	Wed, 10 Sep 2025 19:33:49 +0800 (CST)
 Received: from dggpemf200018.china.huawei.com (unknown [7.185.36.31])
-	by mail.maildlp.com (Postfix) with ESMTPS id 99BF31402EA;
-	Wed, 10 Sep 2025 19:32:38 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 08B081A016C;
+	Wed, 10 Sep 2025 19:32:40 +0800 (CST)
 Received: from huawei.com (10.50.85.135) by dggpemf200018.china.huawei.com
  (7.185.36.31) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 10 Sep
- 2025 19:32:37 +0800
+ 2025 19:32:39 +0800
 From: Quanmin Yan <yanquanmin1@huawei.com>
 To: <sj@kernel.org>
 CC: <akpm@linux-foundation.org>, <damon@lists.linux.dev>,
 	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
 	<yanquanmin1@huawei.com>, <wangkefeng.wang@huawei.com>, <zuoze1@huawei.com>
-Subject: [PATCH 0/2] mm/damon: add addr_unit for DAMON_LRU_SORT and DAMON_RECLAIM
-Date: Wed, 10 Sep 2025 19:32:19 +0800
-Message-ID: <20250910113221.1065764-1-yanquanmin1@huawei.com>
+Subject: [PATCH 2/2] mm/damon/reclaim: support addr_unit for DAMON_RECLAIM
+Date: Wed, 10 Sep 2025 19:32:21 +0800
+Message-ID: <20250910113221.1065764-3-yanquanmin1@huawei.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250910113221.1065764-1-yanquanmin1@huawei.com>
+References: <20250910113221.1065764-1-yanquanmin1@huawei.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-Originating-IP: [10.50.85.135]
 X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
  dggpemf200018.china.huawei.com (7.185.36.31)
-X-Rspamd-Queue-Id: 3F4011C0009
-X-Stat-Signature: zqn8u9xjeayknwb1ara5axddjc8uq8jc
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1757503962-714983
-X-HE-Meta: U2FsdGVkX1+2n8EP04du5VOoJP1AHYMDRt4cqJjaikzJ+ZEVzk4s+BwgGcyO0a6TRCfofTF3r6tge2bzJHH2hB2BqcaxvqG134DedzoQbGBZwPutGX6ILHFWun4KsPUfOm9uvrkAms+c7uF7jipUxl9/lRTpfGhbQw1XqZU4zzlASzM12M+69Xroihod3lJoiiCyGTfR0zT3pbu0X/KzjSn1nK089i2xMnrpsE6QWDVi/pN/DTKR/S7PEznoTXbYhb7+BXgws8ny0fN1pjf1qAVe750KQId0jKLng0tgFSqTKZQcAJGtBPRa+ezt4P7zftt7sRlLAiGvZig5fmPY6sZVTKa3061xa0Bnl78c0e+ysartchLwjTnenoLB5k2HQEtV1MBaC4w2YPz3c4x8XVyXYbN0jrov65IkPX96CSKmNTMrn7BibX1MLg8yTKgk/Civ36nujRLIpR2wpAUg7A8Bt7FTAXFOTVrGmfQ633VHQhRiqhWUXAigtuWJECuju1+waoAYc6e729aCVRLbi27TVVXL9x2SU+x2AqML6ZciW+WliaN0LobODXIwcFOO5FOG4Mc1Oc+oUDtxFNl/8SVtoz3Gtor1q1bn6jGcRhRij9cTKG63eNXZZBlUNCF7JOxjxsO9S5wZcBFfYmuNE0Np+tDdTgxi8+0h7cZKwz7yEoT4g2jbxqc59vrhVWDwOk5/QVDIk5cUa1xrt2Dbwm2nvxNkHN9JozvRcNLEjwqv+Ar2tPtI3pUtB9cN+29/RkxGvI40L1qeqCUe2gj38GuQndHBR7EH5laZYyNPNLGL0y13g04w7rCYVz0rO2OTgdjQqHyE7kHTjHbs1/BcLgfINJxrI6Xb4vKQcuoLsaWWW+vlaulWVHaT2nEQbK5cqpIqte/ia492/Ma5Yjay8aySKKPLCwpOA6CA1VRCnurObRXMajlwVG5iPCcvsbIP6hWWqScnbWowZDEI0uC
- gpwQSi5h
- ctjlSSiyrpvnXwT3yGVtInEcDDIFSwPcRtlY28Rf9qzToW8ac/6kzorWl/SXDXNvnu7ySztEK1RBsVxVCU0SyJd4C2IBcPqcuMXDF/lE+1ehMDSECbNhYKWrmSRqbVzwLw+idktBQ84cyRmRHTlhoB1hT+O0OBoImQWamfjVIGxr1rPA=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: EBB7314000B
+X-Stat-Signature: 5tthnibxe8fwjsoigpuk1o3y58rdait1
+X-HE-Tag: 1757503963-283027
+X-HE-Meta: U2FsdGVkX19qohLlJqcz50CJX5OLmsJZVv61LFy9+xnZoDzc0VBO6JH2W9dlelVKI//dPWvad4RqtCcGwZYb+RHPlaQGNPMIAlFElsqLdmprlTYRIOXUytvAPLFsuYg663N8jDJFrS7sP8qAmwDdSDi+Zb3vuWJwKXTBclFZgnj2sVPhxYJTZBoqXOZal+pJgXa5qerfRG0Qn5Pmd6SrJLjKBv4O11Jw861oGyf8QkYeWfM/9uTm1JvIKxp1pp9wNnfWOThlSuhf47aVmWA3wH+t+Ef82iSPbpI2hvXLtg/a6PTq8qrwtzGAAhWvGDLrhDFuyaF8i/txNTAr6mxkuZP5gvoApqfhvNui4iTohsssiZyrpazcfLk82w65qH/zbKAX7z4yufjpbvAN61nVyhP5J7p6nHX2D+WnhoRxxnnQZF3+StHTYBCN2CPLPY9mun2nDyzXoD3C6riSkHjJOl+bE/n1MSgjxiKrGFsGJVktC6CnN+vZszdKFjq1gKaa4ZVFWT+SkwvMPZ/uzww1iECV9/6z7ZUkzT59GHc1Yae8jJP40UAxipX8SIPvFovyNsJ7TOs4psLGjs6gzEqMIbBASg8GMLxaB0R61wbIDIKqFnp+5R9ENS1Z8Z4X1GmjIdG96LpdTxmR4bzX9wNUFvFoV+ps1lmc3ycL4yyq9ZZChaVie5LcrF/OeaJVWsH3wg4DBL+zx5kfhIUcDrN4YUWPcn8lPxjaqYPKIkfDWP3tgDaOUNxo4fu+s5/Uk2nXAA88PPMOEZC4qCFLyKMQaf2026IgS1yeMa1w/mJXNBnagitsYzSTa819xLKOPLqmSe8GfrRRbEzuwl9SXrRuGQGUxEm/Hb/++ibyjmwKhBidj9PjAWy8IxWo/L214MJuGMa0decziC5cj0rVvvcZeZBmigB+r+fqK68/evJEZq16L/s8to3ix/eootCzGPi/e0/vQya9MQ2keXUbf6u
+ 4WKglzu6
+ xHxtSM3XuymrEbwLPrbmKLr4H1upmtsBi7qULrkzbWK6Qlj04L1xNqR5nxnUtFJhYDiiygTb/i/kGRmdebkaIVs7MUI4jmWSpa1oAdmsQjJADRONL/Rd3HAye0y6rVJ31HKwSY+jotsSdIVB6+JLU76ETcZ2xxHNVewX2j4cmNZMd35IoUI/mTKL6RJmJnJEAxRsbDjU2TSzVfAGPMhXwUbxdQ7zJXDVcNmA0PsVG4+nx+fw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,18 +92,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In DAMON_LRU_SORT and DAMON_RECLAIM, damon_ctx is independent
-of the core. Add addr_unit to these modules to support systems
-like ARM32 with LPAE.
+Implement a sysfs file to expose addr_unit for DAMON_RECLAIM
+users. During parameter application, use the configured
+addr_unit parameter to perform the necessary initialization.
+Similar to the core layer, prevent setting addr_unit to zero.
 
-Quanmin Yan (2):
-  mm/damon/lru_sort: support addr_unit for DAMON_LRU_SORT
-  mm/damon/reclaim: support addr_unit for DAMON_RECLAIM
+It is worth noting that when monitor_region_start and
+monitor_region_end are unset (i.e., 0), their values will
+later be set to biggest_system_ram. At that point, addr_unit
+may not be the default value 1. Although we could divide the
+biggest_system_ram value by addr_unit, changing addr_unit
+without setting monitor_region_start/end should be considered
+a user misoperation. And biggest_system_ram is only within
+the 0~ULONG_MAX range, system can clearly work correctly with
+addr_unit=1. Therefore, if monitor_region_start/end are unset,
+always silently reset addr_unit to 1.
 
- mm/damon/lru_sort.c | 40 ++++++++++++++++++++++++++++++++++++++++
- mm/damon/reclaim.c  | 40 ++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 80 insertions(+)
+Signed-off-by: Quanmin Yan <yanquanmin1@huawei.com>
+---
+ mm/damon/reclaim.c | 40 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
 
+diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
+index fb7c982a0018..590f9d6c55ef 100644
+--- a/mm/damon/reclaim.c
++++ b/mm/damon/reclaim.c
+@@ -128,6 +128,13 @@ module_param(monitor_region_start, ulong, 0600);
+ static unsigned long monitor_region_end __read_mostly;
+ module_param(monitor_region_end, ulong, 0600);
+ 
++/*
++ * Scale factor for DAMON_RECLAIM to ops address conversion.
++ *
++ * This parameter must not be set to 0.
++ */
++static unsigned long addr_unit __read_mostly = 1;
++
+ /*
+  * Skip anonymous pages reclamation.
+  *
+@@ -194,6 +201,15 @@ static int damon_reclaim_apply_parameters(void)
+ 	if (err)
+ 		return err;
+ 
++	/*
++	 * If monitor_region_start/end are unset, always silently
++	 * reset addr_unit to 1.
++	 */
++	if (!monitor_region_start && !monitor_region_end)
++		addr_unit = 1;
++	param_ctx->addr_unit = addr_unit;
++	param_ctx->min_sz_region = max(DAMON_MIN_REGION / addr_unit, 1);
++
+ 	if (!damon_reclaim_mon_attrs.aggr_interval) {
+ 		err = -EINVAL;
+ 		goto out;
+@@ -294,6 +310,30 @@ static int damon_reclaim_turn(bool on)
+ 	return damon_call(ctx, &call_control);
+ }
+ 
++static int damon_reclaim_addr_unit_store(const char *val,
++		const struct kernel_param *kp)
++{
++	unsigned long input_addr_unit;
++	int err = kstrtoul(val, 0, &input_addr_unit);
++
++	if (err)
++		return err;
++	if (!input_addr_unit)
++		return -EINVAL;
++
++	addr_unit = input_addr_unit;
++	return 0;
++}
++
++static const struct kernel_param_ops addr_unit_param_ops = {
++	.set = damon_reclaim_addr_unit_store,
++	.get = param_get_ulong,
++};
++
++module_param_cb(addr_unit, &addr_unit_param_ops, &addr_unit, 0600);
++MODULE_PARM_DESC(addr_unit,
++	"Scale factor for DAMON_RECLAIM to ops address conversion (default: 1)");
++
+ static int damon_reclaim_enabled_store(const char *val,
+ 		const struct kernel_param *kp)
+ {
 -- 
 2.43.0
 
