@@ -4,183 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC349CA101F
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 15:56:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BCEFCA101F
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 15:59:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 073FE8E0017; Wed, 10 Sep 2025 11:56:01 -0400 (EDT)
+	id 055618E0019; Wed, 10 Sep 2025 11:59:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 04C4A8E0005; Wed, 10 Sep 2025 11:56:01 -0400 (EDT)
+	id 005578E0005; Wed, 10 Sep 2025 11:59:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E7C2F8E0017; Wed, 10 Sep 2025 11:56:00 -0400 (EDT)
+	id E0F828E0019; Wed, 10 Sep 2025 11:59:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D60738E0005
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 11:56:00 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 755DE52E2B
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 15:56:00 +0000 (UTC)
-X-FDA: 83873791680.11.6A3B2D1
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2065.outbound.protection.outlook.com [40.107.223.65])
-	by imf12.hostedemail.com (Postfix) with ESMTP id B594840006
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 15:55:57 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=O75m8XPE;
-	spf=pass (imf12.hostedemail.com: domain of jgg@nvidia.com designates 40.107.223.65 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757519757;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id CD52E8E0005
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 11:59:37 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 735F955EAC
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 15:59:37 +0000 (UTC)
+X-FDA: 83873800794.23.503EB6C
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 8AE2110000F
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 15:59:35 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=sipsolutions.net header.s=mail header.b=MwOKflHh;
+	dmarc=pass (policy=none) header.from=sipsolutions.net;
+	spf=pass (imf14.hostedemail.com: domain of johannes@sipsolutions.net designates 168.119.38.16 as permitted sender) smtp.mailfrom=johannes@sipsolutions.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757519975; a=rsa-sha256;
+	cv=none;
+	b=dEspLTvxsJHjKXBcQLz2W26RTK5SIkXGN4syr4BTOz6wSTfEDfGK2r8CDQcwtz5Tnx5fci
+	Dmo6KYyuBpLUKhFmoKX6yy1Kk2LDGYcHR19mlnljvxQrBjhpFtUKcx1z2f6/A6S3aWSexx
+	hue70T+kkuV5kQJv1AmlevZk4pnk+iU=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=sipsolutions.net header.s=mail header.b=MwOKflHh;
+	dmarc=pass (policy=none) header.from=sipsolutions.net;
+	spf=pass (imf14.hostedemail.com: domain of johannes@sipsolutions.net designates 168.119.38.16 as permitted sender) smtp.mailfrom=johannes@sipsolutions.net
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1757519975;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ecNQJ8L9OxyjeVCtUGHLNP/hxHpCw7UcmTPbPIc+ph0=;
-	b=xOQW6yXBCxgi4TOvMCcnta0GL+o+X/9sdAotJTRYhdh0lneJjn70M48qKtDN3TtrIXmqIu
-	tlY2PA9QYyOF+qrVPCKjKYg0/nuvpG928VTTAXVJLRbDXJ/v0VZAfppeFXUZieIpxjdv5t
-	k5UTRn2DSVNYX6pq9IvAGTxqfLN0IKE=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1757519757; a=rsa-sha256;
-	cv=pass;
-	b=ME3FyPXkBTqcLguWZSc8CT+uuSicLCcc2qGeAVQ0QFycFnIjXie1fa3oQdtVP4EouVwqwk
-	XovIjarnV1W4zGmVXf6B8NXVLV3ChYvsOhiLeglGVGepwBhPiXOfyatBBaVBawK6GDeLDc
-	JdK4NAnPlpSjuvWECfPul1DgGz226Jc=
-ARC-Authentication-Results: i=2;
-	imf12.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=O75m8XPE;
-	spf=pass (imf12.hostedemail.com: domain of jgg@nvidia.com designates 40.107.223.65 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=E/aN/Ap3BHV6pJYwkwKXah7d5/hNMWYKSuLS+rhBZbyspHJk2vDbVi44QxsPJTsq2QO/9aF+dzs1sg8zAuaNFbdMwyq2HGet1JPA3zHMaNzaZxfNV1PyAkBcMAQyxsQbugtsrQIG5ENDdf1zVCLoUR++fM6RUCD2jYX25CZwwwzUs3YnM46yI1Gwpej1ApPcgpxp3N3WNXI+FtWPiYYvCRwlDlbtMuiCM9wIxyGN1IQlLnktW+hziXwsmP+6vs7JnvcVzwT6/50x/iLBPealQtdNq4asnB1zKFskEp5UFo5FgMLe5f0mSM8l2p36QFMK/ZIstZfpdIH5VBcyqpfmhQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ecNQJ8L9OxyjeVCtUGHLNP/hxHpCw7UcmTPbPIc+ph0=;
- b=bdHEQMw3VBf7TN7duta9Z/NSavtwLJOEaQJvCNfFw4lXZnBI28h5Y9e6tpYpiPqVJJ7RYPxnKejCxqRXv3qoEmLn7Nz29LUKI9bHTwlkssX6xsP58HDIrmNzey0GJWbemy3WfaRe15dRF5LHS4uYurqU6mShQ94+WTYYDpY3u0WyA9Gz3ztyZ4oG3q+7mIoimqhhvCO2osUviTWfMgAwMYbDpZrhUh9KkMJJORnYHSdGPfmg7ka7UKFpI9Qi6LB196vNC9pCNXING3r0TWyBP7R1Pb6Z45d9JEaAlxZsDgKzGS9ziePmjZyH2Eow2Qu9FcBXkF24FbXoVZCgxhrEDA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ecNQJ8L9OxyjeVCtUGHLNP/hxHpCw7UcmTPbPIc+ph0=;
- b=O75m8XPEjYwsRxkE4yHRG/dRu4DAvll5fI9FCbND64IXOZA91f3dbByjYind70N2JC5Fu9i8ZjxCbPFgxoTbU+JiL/8hbt2iEflOYInhrukcnE0bEb7hSNKxHSP0oRGSxIgeb/W92AwXezaOwvUY53maxnO2N8GNeoFCxM/G+w4UhxesUpacsgX6OqbW6ibDnvXE9emV5nQ/L+o3lIHJ5AGYaVydBMlqf07f1Puwnqqbzf+qccOqGKtgDO0UyPJlRoMJuzKkal/TNqAArRh8RXkA/nno5xzZ4ESCU+KztOd5GyZsuL51GBMHucLk1ayF96Oyzw8yLDKCrKb6sTKGpA==
-Received: from PH7PR12MB5757.namprd12.prod.outlook.com (2603:10b6:510:1d0::13)
- by SA1PR12MB9513.namprd12.prod.outlook.com (2603:10b6:806:45c::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Wed, 10 Sep
- 2025 15:55:49 +0000
-Received: from PH7PR12MB5757.namprd12.prod.outlook.com
- ([fe80::f012:300c:6bf4:7632]) by PH7PR12MB5757.namprd12.prod.outlook.com
- ([fe80::f012:300c:6bf4:7632%2]) with mapi id 15.20.9094.021; Wed, 10 Sep 2025
- 15:55:48 +0000
-Date: Wed, 10 Sep 2025 12:55:46 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Pratyush Yadav <me@yadavpratyush.com>
-Cc: Matthew Wilcox <willy@infradead.org>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>,
-	Changyuan Lyu <changyuanl@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <bhe@redhat.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Chris Li <chrisl@kernel.org>, Jason Miu <jasonmiu@google.com>,
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH] kho: make sure folio being restored is actually from KHO
-Message-ID: <20250910155546.GB922064@nvidia.com>
-References: <20250910153443.95049-1-pratyush@kernel.org>
- <aMGc-ExhkqwAyY_C@casper.infradead.org>
- <mafs08qimjoez.fsf@yadavpratyush.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <mafs08qimjoez.fsf@yadavpratyush.com>
-X-ClientProxiedBy: YT1PR01CA0146.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:2f::25) To PH7PR12MB5757.namprd12.prod.outlook.com
- (2603:10b6:510:1d0::13)
+	bh=rLlleifu0thdpPhsg3VNchjcqxHN/buCBymoJpUNlHE=;
+	b=UJgpe/shGjc+QDsovEqQ4xtaGmLUUmat+sXJcTH+ci/B+7+Xu+pwbtxY3Am82Lxaw8qhA8
+	ispEiz5ekcryVkiREqZ9CefOYqmLywSplVA/PUTYnPBvoC1iokKCL9SBGKLxgEYtxIOqui
+	CyKZir8q7DC+PGUMykt771faTNjlgBM=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=rLlleifu0thdpPhsg3VNchjcqxHN/buCBymoJpUNlHE=;
+	t=1757519975; x=1758729575; b=MwOKflHhM0aDHPv6hSG5MvV4BlIsAsQM8FfTPbYbLb2dskA
+	9UjDP03+qk5OCForJzOhD/mKnxbsTeqaJrAAG5JM1Vu/tEXV8xATXj7BjSvugUhLbfBLl5m1KOCCR
+	f8sHPMRbOtzJ6BEUwkDytyGb9YCrxQ5bMjUkLKJiyoFR3a+3D7HKdrsp/0rNsYguJTbty1zUQ6/PO
+	zWdWls1BTP5H+Q3hrkoQALBAIPg8FtLCVK547CuE6cwEKEExtickXaO4o83E5PDn2IOzfloO1G7wv
+	K3DfUAFWkRGX4a3eMK+hvFqqp3Xs74mMLwUJlJmz6Jatg2p2PgBwBT1kTLeZu9xw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1uwNEF-0000000D9a5-0csR;
+	Wed, 10 Sep 2025 17:59:27 +0200
+Message-ID: <6eda1208c08130e00cb54e557bc4858ce10a4a94.camel@sipsolutions.net>
+Subject: Re: [PATCH v2 RFC 0/7] KFuzzTest: a new kernel fuzzing framework
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Alexander Potapenko <glider@google.com>
+Cc: Ethan Graham <ethan.w.s.graham@gmail.com>, ethangraham@google.com, 
+	andreyknvl@gmail.com, brendan.higgins@linux.dev, davidgow@google.com, 
+	dvyukov@google.com, jannh@google.com, elver@google.com, rmoar@google.com, 
+	shuah@kernel.org, tarasmadan@google.com, kasan-dev@googlegroups.com, 
+	kunit-dev@googlegroups.com, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, 	dhowells@redhat.com, lukas@wunner.de,
+ ignat@cloudflare.com, 	herbert@gondor.apana.org.au, davem@davemloft.net,
+ linux-crypto@vger.kernel.org
+Date: Wed, 10 Sep 2025 17:59:26 +0200
+In-Reply-To: <CAG_fn=Vco04b9mUPgA1Du28+P4q4wgKNk6huCzU34XWitCL8iQ@mail.gmail.com> (sfid-20250910_124126_320471_24812999)
+References: <20250901164212.460229-1-ethan.w.s.graham@gmail.com>
+	 <513c854db04a727a20ad1fb01423497b3428eea6.camel@sipsolutions.net>
+	 <CAG_fn=Vco04b9mUPgA1Du28+P4q4wgKNk6huCzU34XWitCL8iQ@mail.gmail.com>
+	 (sfid-20250910_124126_320471_24812999)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5757:EE_|SA1PR12MB9513:EE_
-X-MS-Office365-Filtering-Correlation-Id: c8507a99-ff1a-4c50-d87e-08ddf0828267
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|1800799024|366016|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?HHJxuWHqfmlvIp0e8jETj5LZWHi4K/ShZtdBGzjQLLd5HPLX3kGEBY5jfytR?=
- =?us-ascii?Q?2VKi3FRcevOiEZkX78nk5PsUFgp38iwrl8Jt/teKu4zM+ab2ghHXmdZCEEsc?=
- =?us-ascii?Q?AWC8/6R9By3p9if29zF8PY7hOCvZWG4GFaHi+rdvTyetRibA88RVUmCtr7Cj?=
- =?us-ascii?Q?fEhKQUJ71yPtxC7aPRIJHABLirz5VRTteRVK5kg02681F7alnd/P/ctAXYpk?=
- =?us-ascii?Q?nsWdr4pSvhMAwwD5ssWCac0F4WWZxlLX8lwRpkJWToSgdxBEFpY7HtzL8dji?=
- =?us-ascii?Q?2wAuKSB5qJyuVwHu31dZYiG+of/QD3K0bWnLVAzoUYIqDgdtVLv8I7CJvQw6?=
- =?us-ascii?Q?Igwhb8XzX9aRE3Xlm02etiB2Ie+A3lzWosn9Q5j3mBisPu1kIbF3xfwXcJ5l?=
- =?us-ascii?Q?zrUbzlw1tO7SnYwlk53gYJ4qzkp4xFAVKXOVCI+mN/tU6tBIOE046SaPS+go?=
- =?us-ascii?Q?H7r1wLRH8AWKcLXFVw1n3kuxWNnTvj/apsw80AyWkJYkPCfuUozx6iMnpVaE?=
- =?us-ascii?Q?/9fHHAt5mllxZtKqsdQpTX6e2icCGs7ckw9at3xc4++N16viCCfgOnwJ9eU8?=
- =?us-ascii?Q?+v6zyFRzaSH+hCLXRWCDTsWpuO450Jsy1RQGqHrmYXAxw+dDCZ4VkC7flws6?=
- =?us-ascii?Q?udwRA8+MiYQfjusn5GR/+feJ/Hs1tR8eHzsr+EuHPmjzLo1O3N2Wpt0eXLUi?=
- =?us-ascii?Q?mUkPehOsQXO92eiSa05eIn6la1RD0LQ9aDZoQmOgdEOgOEvXHHsDClt4XdN/?=
- =?us-ascii?Q?L+bXjjdOg5VYjaxFeEGA+3urALPybb/D9I8eUGCC3se6lQ6sMiB+PSdY77Fj?=
- =?us-ascii?Q?fj0nmxf7yRqapeZr0lGvmDw6wa0GuGLZmNCfxd6r8Ny8N7Sr+P71JXBhnB22?=
- =?us-ascii?Q?96fgF8kL1RMXGqY0mfa8lKznPpf3pleB1kDyiGD3RlaQUPr/bVic4kFwGGlB?=
- =?us-ascii?Q?9+FuA+rSGG4Xr41GRt2jyf2rOIrDihJfeKKVylBopx9jn9e5zb8er5iIKEg0?=
- =?us-ascii?Q?ObJDIRq4LZeUMRG1agcEIROHjvZQOUBNBWzQXWj9zj9nU3gU6+E+RZL/DKs8?=
- =?us-ascii?Q?ZBoOIpHdI02bXDDhwjaS+Ly9rXGoDPfJ1QGMCz6ja25a7uZU1AiQBpclPgYK?=
- =?us-ascii?Q?XlZ8TxR7DkyO2hqj4GB09cxZ4Z658yRm3Z0KzPTrvPAz1d+omdNKaqjLKoZE?=
- =?us-ascii?Q?YCiswhQuBTnTcs5vMOymoq6Q5bmIpuDS1LCJL0jW+Lf6Uqju8Z5syuilActb?=
- =?us-ascii?Q?7fEAf4l8ch3wjZ+8roU/GF4hia7B9XiuzttC+zvnPs8uIV0RSqYjkTNf5HYZ?=
- =?us-ascii?Q?YZPzglzqv4o8pS0Bg1zyS1+fchZf2Lw1l24xxHMaAI7Bj35er6HfmzoXaeTV?=
- =?us-ascii?Q?tCEJKmqZeoLLiuaXEdUY35PaXnWSUyNrYGZoBfgpUnvrxSa3PwzRdWnonxbF?=
- =?us-ascii?Q?l0L04OuVXRg=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5757.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Oa9x2sqs2y8BofV9H7oBFyi+kFbvfBqpQk5RA1NxT3Z5jDGVI/Wa1TxelPrN?=
- =?us-ascii?Q?1GOo6MQCNCpEfl7kJFQ/9QNxsWce9mh7+2bstWxX7o15hwPL9BObGw7sjvDe?=
- =?us-ascii?Q?9SQlmHpUzTWpMm4/HRLGHwPeHRMcJif0NCL6Xpud+NVEHPlQSefzZ7ZqYMvh?=
- =?us-ascii?Q?u9TeKvfpISr6OU8HTqL/1ghsqTe4PW0l+VB/++KSrnGG93LERDZsywRvDeie?=
- =?us-ascii?Q?3WsR/LeqD1zGXfWDh2o03AFM0EfJJ5P+PosMZt72RpUM8l52VD7CHX3fI/qQ?=
- =?us-ascii?Q?wXUkHYaTX4F0Sv8guUClPHwwOx0/tRADCCEJcxOk0RMyYEZBIVLvmcKkugN5?=
- =?us-ascii?Q?WLA9A6Uioj2Ka9eb91eVw2Ryeg1RkOz3tJfH8h3uZ+TYDXztfcedzv15Jm7x?=
- =?us-ascii?Q?YF+cU/ch41659XPb8QzFSkVI4EzyNqLW9fSToAC93ivxncV4Kmj7sHDk9dpu?=
- =?us-ascii?Q?FKWOryYRVAOm8aosW1S0gD4f5l9OuL7V4gQhdC6hbddb17BFOiPDV57Skqho?=
- =?us-ascii?Q?Xq351xuh9At59krRwWWc9LApnZVMHwO3+b9MOUkSyUS7gd1Qr0eVQPn5WbIC?=
- =?us-ascii?Q?IH8J8QoMyLaqB4/IJ9zjl9SkfNF1uQ0GSB47pfOPL5cF/YA+XZO6fzfSOV5E?=
- =?us-ascii?Q?ltSEE8KI1AxUVJwp3rBAB32BHY0jsigFfx8h36f4F/+2ThPJfy8xR29deZGz?=
- =?us-ascii?Q?MKV90OHkfulPqMY4vYEC/Vus9obpnet/pAl8Gr+rQS91hsUAP/hrELeiYaY7?=
- =?us-ascii?Q?t45w5tnk7zJ9Mbwx2mZyO0OBFTvgxoNoXR6wma+vZP93a0CcS9zxikklgcOw?=
- =?us-ascii?Q?AkRJub4lTtiGUM2IjJR/MJHqIcM78SNMy9DYhQA8UVEkN1NOlEFklDrKC/jF?=
- =?us-ascii?Q?gKu5sJFcaFV6fiyDQkTjgYM32TcgMILZ2TtN4sBE44yqIs7tp8MN0EmnjzK4?=
- =?us-ascii?Q?IlFKSYhGbi2nst01OJJAuN5imcfysGFvmdM74vhUjUuAQYS9AcAhSGQX8X8t?=
- =?us-ascii?Q?qZsJZ3nWJ48mNOcLkW25piZtNC1ZYOolrZRLhfIxSc2344Leh9i/XipsWHHO?=
- =?us-ascii?Q?vjIpC3EmRyD3iQ6cYoj3AtNMyM4150JyvJQn/yjnQXkhqcRs0F2lSoxDIjEd?=
- =?us-ascii?Q?Xbr/6ir7tOPcW6AZOgkojZjcRAWu3LcaP7Kiym6tEsWZSQCF+o6LCEatgp7n?=
- =?us-ascii?Q?kn8/yMKZHrwFtXQWxy5O4Xl5P8HqWdCNo0L7eqW7PFHBZO4iMnjwpPX3iOlD?=
- =?us-ascii?Q?LRYR5plPN31a6cgPn/2XvSSQtvqAFEMuwybn7Y+D5beceuDhQUYMIaBtYkNz?=
- =?us-ascii?Q?8a+bfd5jRU05z30ICXT/ztN5Awb96pkiCi726iPh0sXFb4LtecCcqXjh77+s?=
- =?us-ascii?Q?5xce2d9ZCehTVoGswaeoyr/WmbdqsE52JlRjEH2275wcxyjsU78wc33q916G?=
- =?us-ascii?Q?QSnfFuR81ydY+mLMzNTuBevVL3P5cOP6QeF0ofjkhg2UXSeW9VnfWhqRMuhm?=
- =?us-ascii?Q?eVYP3V/+4Gwd5dq0vWUcz0ZDvqXVOzZNUVVtUPb12bSIDxDXgZZquFhdYWYv?=
- =?us-ascii?Q?TTG/1yYNOcczdMC32Dk=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c8507a99-ff1a-4c50-d87e-08ddf0828267
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5757.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2025 15:55:48.2058
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: WkNeXBh2gzC1m+p3UUelpPsnRmb1I9ty0dWTY6xx4XvTkkvnWL7oyIjTb9RY2Imm
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB9513
-X-Rspamd-Queue-Id: B594840006
-X-Stat-Signature: 3dhxorbxa3jr8ikbwejamz3fcfkozbze
+X-malware-bazaar: not-scanned
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 8AE2110000F
+X-Stat-Signature: 4nsc6hi43b63eo8q4dxrsbp97cjz4iqh
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1757519757-539154
-X-HE-Meta: U2FsdGVkX1+78c25fIOSt63xgQV6r3CY1HErQ8Rg7GLK5DC0wla8vXAaKnIkhZY1oN5TNO7B2HsuRTajzp6j64FLGC/Qnm9qozjODmcNVCm+XsFJuxez/tRpz+iOATWLCJdQCp6tdZlBI0mNCmu+06DTXv08xhNKPFdha5rIW9D7tBDePFXenLl7jTSEf4GId6wJtpmidY6G6+1xKKBz41glZYa0eJT9nd8oqQi41pEGaTI+KQpbFNI4EQTjhEdtkyr+04i18TUgVgOQiHMwmQSItQBh7u0AFPPNwvQpiubgraYsU+gsO8E03W7R5Eq1fh+IfOvi+EEoGjzvpguNdPwic0ZE3LLvgWi6y8I1KK33HkpEHIpBNPuNEwGzM6K247cgKO5oAbARBDnI2I0cnZKgZnVWEbeIujHJmChOL5CTwJcZlVTsyeIRgAvDjFwMuHnDUfvU1cqQALR5qoeN7+0Sqz35aC5p7KZPsealt46giH+8W9q6TE8ZIkaryXQNyqPI5AcUcMn/y4V41UvV/9sbQKyRM3COXZssdhMmJpqTHf0Ez1HL/pm/b1cE/+TE85W6/fHBvaPovN760KMKWzipq8240ddl0G/Urd/aBH9FdPron8MSUFvP2XKmKCn0f0menHsjqNQA+khkHaP0gnpFY676ayUIg1rLNl6ky5WepkgGlMY74EJw97NxkWQD/5qKt8y7k0XVIrpSGNeiHiTtn5AYRaXH9Wb4S6VklaFtIi6oWoRpbsNvDBN47rujUEjelGi4z/QhMjT4VMsRRrAqH3IZGb2atiGTpxoohzkuNpDJ/tkTrRN8q+KFziF4Wx8hCBjGzUUyeT1LQilw0c+oKa9FUJyeM7eDOVRSz+XMJ50Xc7txCz+zRx99kyz1rf6jDfPr6lGP0mQfljIRJ4i1gud4aLEG5frgf/v3mE4LaBoqiUZ9+FZImYndR+oudlAUankI6XezEFivqZw
- E/J1DdZy
- ORp5TqQoUdYdPAhqWZj/KgkxY5Xn+QCUzHt2EAV4mPeb78DflFOk9WsiEvUhg6vue/KuZLp8EMnQxHI7VHpIEncxuklF2w95uw8gZZFx/fe3sJsbrAvYb5qKqNM7xk/pufDY90OtVfYprMSTtWJY54P0W3Z7/6D6mW/rAiJCATmtLGpGA3sWlsVmp7u6e7I0sdQjZ9a0HggAodqH/prLJLy3YgQn4p1DPywuUAPldmBdGMhdnE9p6cJNhxAD4b1SnS7CD+JInLl1UfW+u3Yl7xJvmeffiHvIjaKIXCcVqmJB2X3epoUP4Lv0TgOVErbxtEIa8hMqKi6PyqPW26bMqO5vNB+Er8D4dFFLSIUhB0m13xpydOpkBfXBy9SiBydbn/MPGBMlJT75DqWpR9uyfbkF0JaIWGwSZVkQibk9GoG1x+7bwy6tbgsRGeNYmqALcxPOrI399YFmAU7TiWFh5nK9tjK7DArqljP/yPvkm7UioRFt1gHTTTBzXIQ==
+X-HE-Tag: 1757519975-63988
+X-HE-Meta: U2FsdGVkX18ARx90MXA4eY84kclW1oRJQYvoYtlxKbcj08LVZhiSZhhG0To6LlxEjN6Dy7ABN8XYI6PpvajVvGtY5xe7zp5ooZfKiMgqXNeYPXtjXDZSGZf4X0NecfTia0ByOpAN1FQck516/akaVVuUk58Z9pdGIB6ItK5oG3jdVmptOkoETU6SsAvWGfzuJWNwygwGDeBlShbv6tsXxWQFzlah1Nj32cjwLbYzxA3f7zVRaTaHbjrKl88oDTzQqHel+/8A+uZaqU9IBleqQIbrOxKtRYPdpMgso50ce71mqSzrWSN22VoMX8kKUf9cwc/pFQj/0+g4YHHgceLuGwbiVArFITMNJ+4ixArBSK+z8SjNb1CjU2kAI2DAhemUVrWzmVCfCMOY7kEKAeaAYjouAcCWhs5gczx7v7G7Bb29lvCiSis7fS4144HNOuDh7YnK6f6mGEpKj5LLdfbiWBOPscXTORlhq6Nx5S8EzlWip6sPqNt8NjOxQ+Hhtudg0L0QBe/WZXMNOaQ8qRensMXNOWXIOgYWdNquow/JznezaYJP8ZqvgrfWimhOCItPbCyiXYdoHPCTP+zjSfOszfqwxGfwNuB99Ff72D57o+V99dHVSIShwYBBpjzdswGxixarhtguB6HOC9F1t/wCJUaTA0aHC/7VhBhlXUPYBR6j+QxkD+Mqh96p1a3eKUhqtXlL5FRi03DvyyTaK3Pl3Rc2mYeYCJ+OebWVEFIZjfcMFAQaqJ5qsJSpOoK30jvHPu+HKrYviayQ0nQ2J3ZuSX2kNVACWeSxk4WCBErCg9uI8sX1NO6rxRhuHFMq8PEcxXhhdiEAvk8OrV96fA/DF0NkgENdmOD/erkb7Fct94fJ0pbUaHrDEXKW/9VwlJABY+UfqxJs+OeNh4l7dqlA6yHO5rcsIWPhNA29+WGpucLVl4T+vxBCRxnWiQBRKzehACpvmFscesL6O3T26LQ
+ UFbmDW7p
+ rYIV+Co2UpGM5/5WCE/9R6FtoRy8QNO+vApzHSfRw1kgwJMrUjqqZNW4p7XZUTBaJE+iWAp7smOZHp6H0Q3iIDpxmvaxxHFvpzrV5ojB7FfyCuKYv79p5fSlDCu5MkJ39P6KYk3CA24BWepPMiYer8cZYsFiRaOUmiQlcJJptPEc0MInLX0BzZlkuN/crkh5WRbXxksTgefim+4ls01A0BGC++oexAJFZIqH0KihnxQS+mfX8ZqvJ6MmRL5sGhrd178RrpT3Uq7Q3BmgDawKKKrHr7UzGXZLHXGulHw7IzX91nTX9uq6u++5SwVXcDZBLvX6hrYSE5dcj4P+Wz8O7pbyTeW3jG5hu3YJRAi0BYmCxeSXP1nkLgjDBZ1d2P4tJir/9TpQ6NjjmuT/dGG287EVFgkZAcTU/FyY/oX/v7WnBjj9Ov1YBVr400At0YQqQjh/W6TbDLkep3dc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -189,66 +103,223 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 10, 2025 at 05:52:04PM +0200, Pratyush Yadav wrote:
-> On Wed, Sep 10 2025, Matthew Wilcox wrote:
-> 
-> > On Wed, Sep 10, 2025 at 05:34:40PM +0200, Pratyush Yadav wrote:
-> >> +#define KHO_PAGE_MAGIC 0x4b484f50U /* ASCII for 'KHOP' */
-> >> +
-> >> +/*
-> >> + * KHO uses page->private, which is an unsigned long, to store page metadata.
-> >> + * Use it to store both the magic and the order.
-> >> + */
-> >> +union kho_page_info {
-> >> +	unsigned long page_private;
-> >> +	struct {
-> >> +		unsigned int order;
-> >> +		unsigned int magic;
-> >> +	};
-> >
-> > KHO is only supported on 64-bit?
-> 
-> Yes. Currently only x86_64 and ARM64. It is mainly for hypervisor live
-> update so there isn't much reason to support it on 32-bit platforms.
+Hi,
 
-Presumably this will eventually change to use some special coding on the memdesc
-pointer?
+Thanks for your response!
 
-> >> @@ -210,16 +226,16 @@ static void kho_restore_page(struct page *page, unsigned int order)
-> >>  struct folio *kho_restore_folio(phys_addr_t phys)
-> >>  {
-> >>  	struct page *page = pfn_to_online_page(PHYS_PFN(phys));
-> >> -	unsigned long order;
-> >> +	union kho_page_info info;
-> >>  
-> >>  	if (!page)
-> >>  		return NULL;
-> >>  
-> >> -	order = page->private;
-> >> -	if (order > MAX_PAGE_ORDER)
-> >> +	info.page_private = page->private;
-> >> +	if (info.magic != KHO_PAGE_MAGIC || info.order > MAX_PAGE_ORDER)
+> > > The primary motivation for KFuzzTest is to simplify the fuzzing of
+> > > low-level, relatively stateless functions (e.g., data parsers, format
+> > > converters)
+> >=20
+> > Could you clarify what you mean by "relatively" here? It seems to me
+> > that if you let this fuzz say something like
+> > cfg80211_inform_bss_frame_data(), which parses a frame and registers it
+> > in the global scan list, you might quickly run into the 1000 limit of
+> > the list, etc. since these functions are not stateless. OTOH, it's
+> > obviously possible to just receive a lot of such frames over the air
+> > even, or over simulated air like in syzbot today already.
+>=20
+> While it would be very useful to be able to test every single function
+> in the kernel, there are limitations imposed by our approach.
+> To work around these limitations, some code may need to be refactored
+> for better testability, so that global state can be mocked out or
+> easily reset between runs.
 
-All the impossible checks shoudl be WARN_ON()
+Sure, I that'd be possible. Perhaps I'm more wondering if it's actually
+desirable, but sounds like at least that's how it was intended to be
+used then.
 
-> >>  		return NULL;
-> >>  
-> >> -	kho_restore_page(page, order);
-> >> +	kho_restore_page(page, info.order);
-> >>  	return page_folio(page);
-> >
-> > This all looks very confused.  Before your patch as well as after it.
-> > I don't see anything in the current KHO code that requires the
-> > phys_addr_t to be order-aligned.
-> 
-> Right, good point. I can send that as a follow up patch. But I think
-> this patch stands on its own without that fix too.
+> I am not very familiar with the code in
+> cfg80211_inform_bss_frame_data(), but I can imagine that the code
+> doing the actual frame parsing could be untangled from the code that
+> registers it in the global list.
 
-Maybe it is worth adding some KHO_DEBUG kconfig to protect some of
-these extra checks?
+It could, but I'm actually less worried about the parsing code (it's
+relatively simple to review) than about the data model in this code, and
+trying to fuzz the data model generally requires the state. See e.g.
+https://syzkaller.appspot.com/bug?extid=3Ddc6f4dce0d707900cdea (which I
+finally reproduced in a kunit test a few years after this was originally
+reported.)
 
-phys should be pfn_valid, phys should be aligned, the page should be
-in the right state, order should be valid, etc. All worth checking.
+I mean ... I guess now I'm arguing against myself - having the state
+there is required to find certain classes of bugs, but not having the
+state makes it easier to figure out what's going on :-) A middle ground
+would be to have some isolated state for fuzzing any particular "thing",
+but not necessarily reset between rounds.
 
-Jason
+> The upside of doing so would be the ability to test that parsing logic
+> in modes that real-world syscall invocations may never exercise.
+
+Sure.
+
+> > > We would like to thank David Gow for his detailed feedback regarding =
+the
+> > > potential integration with KUnit. The v1 discussion highlighted three
+> > > potential paths: making KFuzzTests a special case of KUnit tests, sha=
+ring
+> > > implementation details in a common library, or keeping the frameworks
+> > > separate while ensuring API familiarity.
+> > >=20
+> > > Following a productive conversation with David, we are moving forward
+> > > with the third option for now. While tighter integration is an
+> > > attractive long-term goal, we believe the most practical first step i=
+s
+> > > to establish KFuzzTest as a valuable, standalone framework.
+> >=20
+> > I have been wondering about this from another perspective - with kunit
+> > often running in ARCH=3Dum, and there the kernel being "just" a userspa=
+ce
+> > process, we should be able to do a "classic" afl-style fork approach to
+> > fuzzing.
+>=20
+> This approach is quite popular among security researchers, but if I'm
+> understanding correctly, we are yet to see continuous integration of
+> UML-based fuzzers with the kernel development process.
+
+Well, chicken and egg type situation? There are no such fuzzers that are
+actually easy to use and/or integrate, as far as I can tell.
+
+I've been looking also at broader fuzzing tools such as nyx-fuzz and
+related kafl [1] which are cool in theory (and are intended to address
+your "cannot fork VMs quickly enough" issue), but ... while running a
+modified host kernel etc. is sufficient for research, it's practically
+impossible for deploying things since you have to stay on top of
+security etc.
+
+[1] https://intellabs.github.io/kAFL/tutorials/linux/fuzzing_linux_kernel.h=
+tml
+
+That said, it seems to me that upstream kvm code actually has Intel-PT
+support and also dirty page logging (presumably for VM migration), so
+I'm not entirely sure what the nyx/kafl host kernel actually really
+adds. But I have yet to research this in detail, I've now asked some
+folks at Intel who work(ed) on it.
+
+> > That way, state doesn't really (have to) matter at all. This is
+> > of course both an advantage (reproducing any issue found is just the
+> > right test with a single input) and disadvantage (the fuzzer won't
+> > modify state first and then find an issue on a later round.)
+>=20
+> From our experience, accumulated state is more of a disadvantage that
+> we'd rather eliminate altogether.
+
+Interesting. I mean, I do somewhat see it that way too from the
+perspective of someone faced with inscrutable bug reports, but it also
+seems that given enough resources/time, accumulated state lets a fuzzer
+find more potential issues.
+
+> syzkaller can chain syscalls and could in theory generate a single
+> program that is elaborate enough to prepare the state and then find an
+> issue.
+
+Right, mostly, the whole "I found a reproducer now" thing, I guess.
+
+> However, because resetting the kernel (rebooting machines or restoring
+> VM snapshots) is costly, we have to run multiple programs on the same
+> kernel instance, which interfere with each other.
+
+(see above for the nyx/kafl reference)
+
+> As a result, some bugs that are tricky to trigger become even trickier
+> to reproduce, because one can't possibly replay all the interleavings
+> of those programs.
+
+Right.
+
+> So, yes, assuming we can build the kernel with ARCH=3Dum and run the
+> function under test in a fork-per-run model, that would speed things
+> up significantly.
+
+Is it really a speed-up vs. resulting in more readable reports? Possibly
+even at the expense of coverage?
+
+But anyway, making that possible was indeed what I was thinking about.
+It requires some special configuration and "magic" in UML, but it seems
+eminently doable. Mapping KCOV to a given fuzzer's feedback might not be
+trivial, but it should be possible too. In theory you could even compile
+the whole UML kernel with say afl-clang, I suppose.
+
+> > I was just looking at what external state (such as the physical memory
+> > mapped) UML has and that would need to be disentangled, and it's not
+> > _that_ much if we can have specific configurations, and maybe mostly
+> > shut down the userspace that's running inside UML (and/or have kunit
+> > execute before init/pid 1 when builtin.)
+>=20
+> I looked at UML myself around 2023, and back then my impression was
+> that it didn't quite work with KASAN and KCOV, and adding an AFL
+> dependency on top of that made every fuzzer a one-of-a-kind setup.
+
+I'm not entirely sure about KCOV right now, but KASAN definitely works
+today (not in 2023.) I agree that adding a fuzzer on top makes it a one-
+of-a-kind setup, but I guess from my perspective adding syzbot/syzkaller
+(inside) is really mostly the same, since we don't run that ourselves
+right now.
+
+> > Did you consider such a model at all, and have specific reasons for not
+> > going in this direction, or simply didn't consider because you're comin=
+g
+> > from the syzkaller side anyway?
+>=20
+> We did consider such a model, but decided against it, with the
+> maintainability of the fuzzers being the main reason.
+> We want to be sure that every fuzz target written for the kernel is
+> still buildable when the code author turns back on it.
+> We also want every target to be tested continuously and for the bugs
+> to be reported automatically.
+> Coming from the syzkaller side, it was natural to use the existing
+> infrastructure for that instead of reinventing the wheel :)
+
+Fair points, though I'd like to point out that really the only reason
+this is true is the syzkaller availability: that ensures fuzz tests
+would run continuously/automatically, thus ensuring it's buildable
+(since you try that) and thus ensuring it'd be maintained. So it all
+goes back to syzkaller existing already :-)
+
+Which I'm not arguing is bad, quite the opposite, but I'm also close to
+just giving up on the whole UML thing precisely _because_ of it, since
+there's no way anyone can compete with Google's deployment, and adding
+somewhat competing infrastructure to the kernel will just complicate
+matters. Which is maybe unfortunate, because a fork/fuzz model often
+seems more usable in practice, and in particular can also be used more
+easily for regression tests.
+
+Regression, btw, is perhaps something to consider here in this patch
+set? Maybe some side files could be provided with each KFuzzTest that
+something (kunit?) would run to ensure that the code didn't regress when
+asked to parse those files?
+
+> That being said, our current approach doesn't rule out UML.
+> In the future, we could adapt the FUZZ_TEST macro to generate stubs
+> that link against AFL, libFuzzer, or Centipede in UML builds.
+
+That's also true, I guess, in some way this infrastructure would be
+available for any fuzzer to link to, especially if we do something with
+UML as I was thinking about.
+
+Which is also in part why I was asking about the state though, since a
+"reset the whole state" approach is maybe a bit more amenable to
+actually letting the fuzzer modify state than the current approach.
+
+Then again, given that syzbot always modifies state, maybe I'm changing
+my opinion on this and will say that I'm not so sure any more your
+intention of fuzzing "low-level, relatively stateless functions" holds
+that much water? If in practice syzbot is the thing that runs this, then
+that doesn't matter very much apart from having to ensure that it
+doesn't modify state in a way that is completely invalid - but to some
+extent that'd be a bug anyway, and e.g. memory allocations of a function
+can be freed by the fuzztest wrapper code.
+
+
+I guess I'll research the whole nyx thing a bit more, and maybe
+reconsider giving up on the UML-based fork/fuzz model, if I can figure
+out a way to integrate it with KFuzzTest and run those tests, rather
+than my initial intent of integrating it with kunit. Some infrastructure
+could be shared, although I had hoped things like kunit asserts, memory
+allocations, etc. would be available to fuzz test code just to be able
+to share setup/teardown infrastructure - I guess we'll have to see how
+that plays out. :)
+
+Thanks!
+
+johannes
 
