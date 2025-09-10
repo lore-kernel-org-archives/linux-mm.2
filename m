@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36D4ECA0FED
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 02:44:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80846CAC582
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 02:44:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E37E88E0011; Tue,  9 Sep 2025 22:44:06 -0400 (EDT)
+	id 362EC8E0002; Tue,  9 Sep 2025 22:44:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE88F8E0002; Tue,  9 Sep 2025 22:44:06 -0400 (EDT)
+	id 312998E0013; Tue,  9 Sep 2025 22:44:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C887C8E0011; Tue,  9 Sep 2025 22:44:06 -0400 (EDT)
+	id 1B3DD8E0002; Tue,  9 Sep 2025 22:44:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AE3338E0002
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E8B8B8E0013
 	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 22:44:06 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7DE3E59AEB
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 88CA613B5DF
 	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 02:44:06 +0000 (UTC)
-X-FDA: 83871796092.14.B89E6D5
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 7C0A44000A
+X-FDA: 83871796092.09.4019E06
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 84FAA18000A
 	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 02:44:04 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=CVU2PPMI;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757472244; a=rsa-sha256;
-	cv=none;
-	b=vKb2z7258GiYoGDSQ/p9wWiivrBq6klqn5Dk74bOHIJmAxIe1LjiE/nweXyV9H3dRqLbPi
-	GC8LNfg5N5NJXMYmjkZekIMQQkLf3vnwutTUxTMOVs3XObMMg6D2EpDl3HSPhorJUTCYTm
-	2N/sVxhqOiXLcow8bfT1bUkgdncPjUU=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=CVU2PPMI;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Kg7v+3dY;
+	spf=pass (imf06.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1757472244;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0koFSnJrv2UowuMhMeqtiJIslvN7BbZv6mHXQ/mKo7A=;
-	b=T+jwgA2pHNRph3BsBhcPmUeEpMoLPMeLelz926xklvEOGPtqWKJrsII9LP0nGS06toE0o+
-	h//V+6J00CmetD6PkI2WaEMTqo5IqLX8faCoG051Wiu83hVJ1oJGDLrr//nVEFRZymZEy7
-	QeKSxZljwcOi67ww7tdjp+ECHTyRHBA=
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-b4c9a6d3fc7so3799950a12.3
+	bh=rNDvUkQSM5YXWXIzm38SWG/hRRo/bsx6SYKE7k7lSmY=;
+	b=xXdekBHIih79zP3yxqU3J8Dv4UXjP0+iezHfU0Kf3JdSqUihkrH00aty7J1GtP6YqeoyQd
+	oKhRbHkKWi2e9MHd4HjI5+QLwWycIiBLEI8KQVpD5wbfOyXqWYbeOmN6CP3xq2iE78NmnB
+	AUQj+j1lyM0siwVil2fyZxsGf9zmTTg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757472244; a=rsa-sha256;
+	cv=none;
+	b=d6GsxsNMDczPQtycMf7AnXPQnNewWryuezSprFlEnzS/7Cy+gXHF533CAMoQ6bvQzNP/sq
+	wujH50JNkGnOurFx4RZIMUbMMQiYEvmYGLgifOFdk7YpumsyRKVgXe8YauoGEVtIP4F38J
+	RfgvUbq2zdOsH4z1RCsXcLacE2TOmKM=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Kg7v+3dY;
+	spf=pass (imf06.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-323266cdf64so5473249a91.0
         for <linux-mm@kvack.org>; Tue, 09 Sep 2025 19:44:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20230601; t=1757472243; x=1758077043; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=0koFSnJrv2UowuMhMeqtiJIslvN7BbZv6mHXQ/mKo7A=;
-        b=CVU2PPMI2vRs8w1yKYwpSTu5P3SSa+1tPJex07m/mo8GHTCTGb0oIU396E74XGNCWk
-         zTVqZvQhZelR8hxQbNpO0/Q8tiGc5WZzb2e/i2XYSovZiKoOCPirBiEIH3M32OaX2xUW
-         zupsSvkl1iWYYI5jdtnXXDGJsf/3UznMbSdTA0W3WF/Fe9+B4btIhYuA8RI2LrcMbVcD
-         OBJgT6Ggkwz3dWbynbg8eja8wlByCnqfOFBenrKFvpSsKwxKmzJ4ckR14Pb/0C5p95hL
-         4yEwnkTBMCGaFYOYvS0M7RD1VOToXlInyuGn+1VQhmdvmIqVAeHthL9iR6gmFRxJWwCy
-         L8DQ==
+        bh=rNDvUkQSM5YXWXIzm38SWG/hRRo/bsx6SYKE7k7lSmY=;
+        b=Kg7v+3dYew8Z+ykllqHpbnjrREnPNIAuqcEnhxtpCK8UVV3Q5xNRC3cp9q7LoQggU5
+         EOzEZD2CUJFeuwth6c8JFkAsfhS0rri+6KzaHBtgA6ra8ETf4uRA5f0gC5lWa7T1udNe
+         JSdTQClNteXNGmHfruGXam/cL4to7IOJqon2eypTf4YMvOM1FP99FZIA2wQoVM4kGwhd
+         E4VIXMoEC51YeQERAxm9UtNADyGhz6hOEHwADWsx1yKWa80SwgrpkuW6iM+VS/91WX3x
+         C+kPpjrMN5ZvZsr6RcNsXkIXEtqixNflXgtTWKRcWJ8wKs5cThuMNvjyEXeOoTpbjiVU
+         9QuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1757472243; x=1758077043;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=0koFSnJrv2UowuMhMeqtiJIslvN7BbZv6mHXQ/mKo7A=;
-        b=krbXRY5jlYV4ZT2j+/7ptDWBMlnQciutwh+Fl1urmfP+ytKhAOXEIPGzsCWVqglQOI
-         CljGo3fwqJ0FD2wkAYzoUs6rfaqDuNkJYPMqTW5D85KtOl0HkpO+BG69XfEHWHf7Zu2k
-         Q3MQRNzVDrwUSxktQ3AaETGO+IVAaJAdTL9SF5gX0bAZkxqxViFDphppZjkm4F83bt+/
-         2451cIRbONh60Eus6FkOaIeSOy0WGma54pjQUy2SDhOLJjvadIDewBhYvwVIj1QLV+mZ
-         36GkKUMbH7PSUFS9M6gqSAzdQDX6lMp0CekcXwKUHG6PNfBv3Zu5WqYrAJmNwrq/ZKOK
-         ASOA==
-X-Forwarded-Encrypted: i=1; AJvYcCUBO4guNkLj3HkSU2UYmytKdFDuGNIs8Pfn8xsyU3UEZaZzsOw9qGWypo2vUfLH3dhDGefrdEj3Vw==@kvack.org
-X-Gm-Message-State: AOJu0YzQ/aqljVMX7l5NSMg8Cz80M2t7cMXlgqz04wHSbZaw5juzk1EH
-	QjIWex+KiyPozfI4I7XPXfpSreiZgyvc+AzazrKlbxxF7QzPRlNNS74K
-X-Gm-Gg: ASbGnctZyf24Tw5oIDpFE4kSAgmtv35LNtTrW9IG/gNCDebhxxHRoz/jgNnhejq1PmN
-	64iyHJtOsxcdReuWVgGzGZtvHSTZV92Pd7yB4WcPfja4FGig8t/SRMP8c5vlIQlOnAQdWC+EFnu
-	1Mm/hJuN17kk6C4Ty/tos7iQVlredXOuMUyR3AImBv7gKn7NzCX56as45hJ+quNZS+f9FA/7/L2
-	+L3nGV4CJgytXhFNwjPs+b++gg7HwOaPwL0gkVKIXVOKnQaNq06fP223FcS2Oowqg3GJGTX1JXk
-	pMv1FXPBTf2nI7uGeQbNyBmWPi8zrlBL7EftAdDVtBi52d5DcvvbjJQ/s/Yk8h50kL9hx4lDezZ
-	X17Nzg20wk0mlXXeW/jpXKwEJ0DxhmUPGlRQ8
-X-Google-Smtp-Source: AGHT+IHze3NqUFgqDMM+sZM9Wi/Xmfyi7sD03WA5eGHes94PFV7I4KKOuKIIQBvLXj+TekGgIh8lMA==
-X-Received: by 2002:a17:90b:1e51:b0:32b:d089:5c14 with SMTP id 98e67ed59e1d1-32d440c5edfmr18323077a91.35.1757472243321;
+        bh=rNDvUkQSM5YXWXIzm38SWG/hRRo/bsx6SYKE7k7lSmY=;
+        b=qg6sJdJFoU0iS28nhyjXRSsG7lLXShJ6wsx4p/73lr0KsZhVFgEKIcl5EKo1JCYiUd
+         TRILNIMkzumI6zaK/qoUoFCKvM30I3M+gg+B1BJJa83WQIQM32fN81BTtFU3oNX8XLvM
+         cNUZl4cyhB6nFE6b564eloUs4JWbcGk/KWSeulHYJZaTtcb5Iv+iXREmcSmDXoQTWuDI
+         fk+cgqIluPSbKz+MBTpHq5+ZJtGQb+q8DcJDXQGRkYLrBARUC2fonVzHqhaI7yBRoYfI
+         P0SapSIc4ccsuEJjrZfeAg43zMxyioOlQdlapSzx280PjeEUi7FbTQP2gpPVCX0WAc6G
+         kIGg==
+X-Forwarded-Encrypted: i=1; AJvYcCU2rKi3AbmDgjwTeopEiurFlUzta620EzNYJ+ftbHHZUo0Fe75eHCTPVADR7Uceoe6obQrS7WN+1w==@kvack.org
+X-Gm-Message-State: AOJu0Ywusmk1rMsBJZbhipP0T/E7orr9G1d1fZAOwzoiMJwtccBSAYVD
+	etXlol2OL++Tn2O0wTxj/zZbkbjDyUbXxQGJvTaksnr4WMUxfcWcJFYR
+X-Gm-Gg: ASbGncssAYgPOsihIuJHJVL0YeUsWqXFu8pEmTF4HLkkJQsYyOGqtaibn4PO/p0RYEi
+	XkCkZjCJ7cEv9Mx2BgnN2ClOAYTw78ERnAcDZcF92H4pom3MJxGDrwRuD7vWd41r4+37Fyncatw
+	r5Xoklv+RuWQzBSpIVtNUSAUoZFwbpjkzQK/nqu30J3lO66PO/VuOGkF1d02Z9c7fSLsAjnH3qP
+	4qQ4XecPPntt3lJVw2Bbxe4c1W22SZwfXkhPAzVWPiYDUhsy07+NEKUMhnoKDClWdX5miL4cfxM
+	QcagkTaTeG20tU7U6+ebpcS27jphoVbSCuKlWODKlx4JERfXxVXeLlyq2BpPUo6C9ZlfgClzGEf
+	t1UaapR90rCeevKogoUEBq/aqIBNn9TVyA2Ps7MY74d5OSGU=
+X-Google-Smtp-Source: AGHT+IHufov4+itUSgW37fW7I5+vYPKYGEYLT2O7M4oMOCb3e767p9iSPZEDIcWxDU07PyMVD30Hjg==
+X-Received: by 2002:a17:90b:48cc:b0:32b:5ea2:a4f6 with SMTP id 98e67ed59e1d1-32d43ef0806mr17274237a91.6.1757472243216;
         Tue, 09 Sep 2025 19:44:03 -0700 (PDT)
 Received: from archie.me ([103.124.138.155])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-32dbc1c467csm201563a91.7.2025.09.09.19.43.57
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-32daac59f19sm1672020a91.1.2025.09.09.19.43.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Tue, 09 Sep 2025 19:43:58 -0700 (PDT)
 Received: by archie.me (Postfix, from userid 1000)
-	id 3876D41FA3A5; Wed, 10 Sep 2025 09:43:52 +0700 (WIB)
+	id 7D27041BEA9C; Wed, 10 Sep 2025 09:43:52 +0700 (WIB)
 From: Bagas Sanjaya <bagasdotme@gmail.com>
 To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
 	Linux Documentation <linux-doc@vger.kernel.org>,
@@ -192,24 +192,24 @@ Cc: Thomas Gleixner <tglx@linutronix.de>,
 	Masahiro Yamada <masahiroy@kernel.org>,
 	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH v2 03/13] Documentation: perf-security: Convert security credentials bibliography link
-Date: Wed, 10 Sep 2025 09:43:18 +0700
-Message-ID: <20250910024328.17911-4-bagasdotme@gmail.com>
+Subject: [PATCH v2 06/13] Documentation: bpf: Convert external kernel docs link
+Date: Wed, 10 Sep 2025 09:43:21 +0700
+Message-ID: <20250910024328.17911-7-bagasdotme@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250910024328.17911-1-bagasdotme@gmail.com>
 References: <20250910024328.17911-1-bagasdotme@gmail.com>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1135; i=bagasdotme@gmail.com; h=from:subject; bh=OYt2QegR/+u0q3CRKm7Zg38q7SY9D/3L6tdzv43Jflg=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDBkHnijWLH+uxHuD5TvzhcJo65MVRz8evf+ht/Kg8H3eu d3xR8redZSyMIhxMciKKbJMSuRrOr3LSORC+1pHmDmsTCBDGLg4BWAiXd8Y/pkdXvTh5u5HL7eU z3No81zweEv6gxSt+G/HWyxWsM1N7zjH8E/xHeNT5tNsutFpemIVy+M+5pasa5QSXynjZOFf2v3 OnBkA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2744; i=bagasdotme@gmail.com; h=from:subject; bh=IiAjp2UiG4E4i0m+2wynqH3PCAcCcaK0of1KdBtx1KU=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDBkHnii1Whs7TnrT1LggM0BOd5LEqfAiXtc37zS3e5gl8 vnwGP7sKGVhEONikBVTZJmUyNd0epeRyIX2tY4wc1iZQIYwcHEKwERe5TH8D8jY+cG0Uf3udDP5 nmfVwtmWi5mup+fF7AiUlLjK8OXNJ4Z/BmfN3s08dUKM70wua9O148mfqhVc3wuvO6WtdrV4s/k pLgA=
 X-Developer-Key: i=bagasdotme@gmail.com; a=openpgp; fpr=701B806FDCA5D3A58FFB8F7D7C276C64A5E44A1D
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 7C0A44000A
-X-Stat-Signature: keockeyr1aogop4suw5zzgf6ft8k1gk8
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 84FAA18000A
+X-Stat-Signature: u5xq7e869od5unpr4gea4ybn4m1pnfd3
 X-Rspam-User: 
-X-HE-Tag: 1757472244-520586
-X-HE-Meta: U2FsdGVkX1+TpY1MoYhs+EPf7EaM38pYmLvr2T+FI9a+e+vgY4UR7aR8Ev54kcj0Dz0e/8dsv4Hww+t0RJyXFO7wih94nyJBK5zKjXuRvKBhDGDAVudRY11QHJ/TkKutDR93Kmj8L8kuRVbEwq2X/j6BL4qm79xHnUsmbDJbPHjM/irxZ2Z4kfmoQ1OZVinUdK3JaY0TQfcdX1ceSK8bS4sUfujAa3sH1GD1WbGKy4rkrI1x6fVLVlZqvTnhCAbY079yG9krzFl/ZCT4aTqCrwR4wuHcZnxg+Vz6x689kcLoQOCFo1uLaJISORp/ZxKtLd9Z4E+hF6TrYuk0yCsiZxLj6ldkDRRcKY8Q+p4NIdQa0Xp4UeJBVFj1w3T5C9lWReql6iv1OD1d9z/3MjGVgiMdi/h4LexhiVnRL7M2vMVd+wtoqNsXfXRJ7sIsAH2TfgPw3MThGCOFb7fRGbcX0GF7tLt33mofSFYy8zNzHwLGSp1oxx0oVvIwtHftov6431Z4NKlEYVmV2VDH+zGw5WMFvNe9ASJiPfCj6b6QgYBupfUgZ++OEhaRubJhm54j6m8CD71eCRY226h79b3C90hPDT40roe1tixxm4MFfM0FRc5GAWlKtIdm2fNwEnn0v3Odg5/t3MLrP+BQDZKWIluDEk4n4ePqOhrGMyEtIhsDQ4IYo6YXSlW73U7T+KLEEHoM9Z4qZM6dSkw/pscGr6NH3swwPAw74ZEEa0zydEajLKr9GcrQS6dFnUD0btYh+D9Rudvdra8EhvXgFmYYNO9cBIvEWlW9K6FH+qZ1STpPjiD5a3z6nUjkJ/tjNucqCqd8uNwno7vaY4xgnAqgmxQDADghQmCzkuuasnR3wXFlo7Fqd6KtC+EGCiTG08FVePuUcQfE2cqNmJI5CGjOOhbPVHz18envBC46xX7BKiIKulxGLpVyrfHm313QfVP/5+MriQXPgCKHzbVu8B5
- FpOWtUR4
- yhNN1RAZRj2lKjFjiM8VHfWXvpjn+/s3l9IikVQHY8HfGVrpZ5d8j1osjs86JaAO0HssQAD3o/+/yl3egafpoL/ODfVZSHcUZ7gJ/t3SNspcbp9gBnGQJYYpsfQ7CcNm8zYvdPpjta//m7x+e1DzBP6xaauF7aQKCOyPfExXDY2KpkjPd+XT4NaACVXVGfORLbu3lm4WQ3GC/rr8GZv3WFVRCsG/R8EGAdxE5PrCzcfh3/TXP1JgxVZei3rmL2bx1q5bG/1Y1J5w25zJj/yBP/Gfs+UV1sYRx979tWIW9zWOXcdI9juIEuNPvBR+/CQJDBGz0U28R1FC8y1YbjAcdJKx+fv5MbyxXw++2NdeX2e0OidMGTCWIrIlHUUYrhkJyhwR1o3788XvIXC4rU8OWgkaYUfxRwD1hydYs18aE9BaEG+UGqoVOYcTB1KGBBHvdCuvy/U1e64QWZXFoPavfAmXccYNj5I7+swkdDcU2kHCYzMJIizNbZmj+6ZsCvj2IneRtFa6nF6t+HGKFJ8Fi7EriMZLh/DYfyfEbdQEtsZgrX8GHHo8K5YSkNkYgrSVQ89RmH0jFSl7o3hrYFJgoISMPONDwNO17sP8OTm+fq3LPiJSQCIfbodlHT2pIw90mHdr8XNDO4BP5NTkw+t2gMEM5VN2kOgNE5YaGveeF1OZYovkKtPxl3xhj/b7FbXb765lyR3mB/e+E1S/1LT4jZG6LeWG8qc1CqTv/R+fQh0tUbjn2eolmSeFoWZCjQynj0o50M+CKUvdlm/32E/3lNL00d8eQI6dI0UgyC4l83YkL0lqDDktgFFsJVTASe47G48fjg+mBY1AKRmKyzQRc36PDQT2Uz/LrDgaGS2I1opADp+9FH8hyxi3Z5N4QiyHgrq4M15cVbBeylBXQ7818EboQbXYvUflDo/ld
+X-HE-Tag: 1757472244-4738
+X-HE-Meta: U2FsdGVkX1/t6mE5XKxl7WacaS6ZtnB4OpyCWcfgQtDuBpGCkdjhRfTOi/0sBzIrWqBjudy5MjR/ljqSOSfrQTL3s1fSq5nb7ylp2tKCuHIOBxlKR73aJUTIV4KIGp0Ju/0omHldsc122yWuZZHnIyw+vh+Eu3K1p81G1xnyLNKKRK3t5M3f6EODqmCuYyIsrwySNVIMI21EHAEmwIqBZYIOS5xOnhKRmVcjt5t5co6PiadL68fjAIU6l3TlJE6NJSw7Gik8bsDbkF+ldYBBA37RosBaWOY3ERBbNBGMWYrlFRM5iya1cjXPMLb/qtLrtCCdJs61UqW0iyI4Ds4M6Fm4FhISz430g9fmndcii6KvstRxOxEql8xvWL5iiY8NvkulpSYDmRgWy9nZlSI7awWjJk/QYp2wzKUXuaQtm52KWJCoWaAZ+7FogwROQRtN+CKDI7eazc1PRBOroUHwsg7UFHd3tTg+BDLV0lqqhLjPmC33ySSQ4hYpzOlwpKYsR6WdjdCr4Wyl4jg701bageu7VZTqmJxoUFeWaK3Nf5P5+ADOoQ/mPL9V+26rADJ2C0wonXYz0ZjHyA5doUhFUVpIycOBqJoeZ1T/K63EswtrM+cWo9lM0/EqBKVOP2Iu3IwYPEInrsFXa+VSo2PDJ2fWjI5To6yX9s1vu9rCbDUMK3m0QRpK1iVN+NGNxniLEfpfb6N+qLZHRMdgbzTn5bCeLYc4bCh17B2ngxoMuzrWP/3OxiWXm6aXmPL+Des5maIgRXGqbhYt80QT5rxBPtB+AQ+Wwrsz074sNELPuMIE3tcP7gglrZpL4CtLo3ME6o9kodrBl908PwNTSbd0c3Kgbw4FtQfST5QJqnGqgvhqs6QdLT/Tpa1AJCoksJFbXoErl8AePIAWpi13Q0nsLsyYIL4H4yjTR6HCgFZHbTF1NzVhFmLjTnLgQ/dw2xWThXHyzhk3dwWbQ9hcQVL
+ 83NLh/9j
+ u+Vecs9Sx1P+g54qOMtI1jFNPLuCvOAgIwSsFNPTUCtPSynGacYn0fxMFQiOn80t+ecZxpAMhx1EBmOGuDvRbOpU4JnL71/zkd+oUiiM5IJozB1EqeN1LvVTW+VY896ToduYrVHDr+8XMDvP0nu/vuqPN3r1y0nsVYMlOigRCJ1odKxzYW33aA9fkjnmBfB/fJSNQegPo3iJRPAlGq6UuWPTpQAzw529L4P83wRPgDElVP1b7eei4ZJnHF/T7uWYp3xjqiHOIJMANpdP70uGFMmXCSHvv4JWJ8PVfVKqwG74FxjO+dZVt5tr1ZsZ+9toAhBNKST6IUnEXynHwnOwsIrHf/hIh4FAnawbOCaKAWebDmQMt5DCpjqx/RtVrJfTgjOp4cJVopY3/H5VKFkxxLXKelj/iSvYDihg+YGF1UkUZHqxAQZ6VaSnAOpF2xo12D5SbbYuWnSr0W2W7bxbgIo+JbS1Idb5bJbHxjIQLVvitYqSsTQ04IWLsmMWHTupY9WCmm2b/dUSrcTDK7vheKDJkuIn3Ck2+sFmxyG5lO1ktrDuRWlFEbETmfX6sdHMm3E/h4iCxtsf8VOZl1AQuGXsDvI+bun9mchGs/LkMuSQmh4Ax8atRU3zdRalucR57u8Vsux+aHpxNFkcHp6uMLWIvSrZyHng5K8QNHZFEpT+incXavxRXmXSiuWUaPaCbmeviBJWEe/kPOfc+2iWW59lk3Rg+UbqzHC/yyncEpZdDaacU0S5HMYexrQagUzdhbKXSVrjEh1xrR+PHvpQl+a1g4IoRuzcTe/40zvvKIc3Mwzke8os9T+jgvXtYwdcuWF7AJEq2o65t1xv7jY6VSk4U+w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -218,27 +218,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Use internal cross-reference for bibliography link to security
-credentials docs.
+Convert links to other docs pages that use external links into
+internal cross-references.
 
 Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
 ---
- Documentation/admin-guide/perf-security.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/bpf/bpf_iterators.rst | 3 +--
+ Documentation/bpf/map_xskmap.rst    | 5 ++---
+ 2 files changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/Documentation/admin-guide/perf-security.rst b/Documentation/admin-guide/perf-security.rst
-index 34aa334320cad3..ec308e00771427 100644
---- a/Documentation/admin-guide/perf-security.rst
-+++ b/Documentation/admin-guide/perf-security.rst
-@@ -311,7 +311,7 @@ Bibliography
- .. [2] `<http://man7.org/linux/man-pages/man2/perf_event_open.2.html>`_
- .. [3] `<http://web.eece.maine.edu/~vweaver/projects/perf_events/>`_
- .. [4] `<https://perf.wiki.kernel.org/index.php/Main_Page>`_
--.. [5] `<https://www.kernel.org/doc/html/latest/security/credentials.html>`_
-+.. [5] Documentation/security/credentials.rst
- .. [6] `<http://man7.org/linux/man-pages/man7/capabilities.7.html>`_
- .. [7] `<http://man7.org/linux/man-pages/man2/ptrace.2.html>`_
- .. [8] `<https://en.wikipedia.org/wiki/Hardware_performance_counter>`_
+diff --git a/Documentation/bpf/bpf_iterators.rst b/Documentation/bpf/bpf_iterators.rst
+index 189e3ec1c6c8e0..c8e68268fb3e76 100644
+--- a/Documentation/bpf/bpf_iterators.rst
++++ b/Documentation/bpf/bpf_iterators.rst
+@@ -123,8 +123,7 @@ which often takes time to publish upstream and release. The same is true for pop
+ tools like `ss <https://man7.org/linux/man-pages/man8/ss.8.html>`_ where any
+ additional information needs a kernel patch.
+ 
+-To solve this problem, the `drgn
+-<https://www.kernel.org/doc/html/latest/bpf/drgn.html>`_ tool is often used to
++To solve this problem, the :doc:`drgn <drgn>` tool is often used to
+ dig out the kernel data with no kernel change. However, the main drawback for
+ drgn is performance, as it cannot do pointer tracing inside the kernel. In
+ addition, drgn cannot validate a pointer value and may read invalid data if the
+diff --git a/Documentation/bpf/map_xskmap.rst b/Documentation/bpf/map_xskmap.rst
+index dc143edd923393..58562e37c16a01 100644
+--- a/Documentation/bpf/map_xskmap.rst
++++ b/Documentation/bpf/map_xskmap.rst
+@@ -10,7 +10,7 @@ BPF_MAP_TYPE_XSKMAP
+ 
+ The ``BPF_MAP_TYPE_XSKMAP`` is used as a backend map for XDP BPF helper
+ call ``bpf_redirect_map()`` and ``XDP_REDIRECT`` action, like 'devmap' and 'cpumap'.
+-This map type redirects raw XDP frames to `AF_XDP`_ sockets (XSKs), a new type of
++This map type redirects raw XDP frames to AF_XDP sockets (XSKs), a new type of
+ address family in the kernel that allows redirection of frames from a driver to
+ user space without having to traverse the full network stack. An AF_XDP socket
+ binds to a single netdev queue. A mapping of XSKs to queues is shown below:
+@@ -181,12 +181,11 @@ AF_XDP-forwarding programs in the `bpf-examples`_ directory in the `libxdp`_ rep
+ For a detailed explanation of the AF_XDP interface please see:
+ 
+ - `libxdp-readme`_.
+-- `AF_XDP`_ kernel documentation.
++- Documentation/networking/af_xdp.rst.
+ 
+ .. note::
+     The most comprehensive resource for using XSKMAPs and AF_XDP is `libxdp`_.
+ 
+ .. _libxdp: https://github.com/xdp-project/xdp-tools/tree/master/lib/libxdp
+-.. _AF_XDP: https://www.kernel.org/doc/html/latest/networking/af_xdp.html
+ .. _bpf-examples: https://github.com/xdp-project/bpf-examples
+ .. _libxdp-readme: https://github.com/xdp-project/xdp-tools/tree/master/lib/libxdp#using-af_xdp-sockets
 -- 
 An old man doll... just what I always wanted! - Clara
 
