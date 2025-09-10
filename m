@@ -4,117 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 810D8CA0FED
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 12:57:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1229CA101F
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 12:57:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A67078E0008; Wed, 10 Sep 2025 08:57:01 -0400 (EDT)
+	id 1B52B8E000F; Wed, 10 Sep 2025 08:57:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F06D8E0003; Wed, 10 Sep 2025 08:57:01 -0400 (EDT)
+	id 13EA18E0003; Wed, 10 Sep 2025 08:57:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 92DB78E0008; Wed, 10 Sep 2025 08:57:01 -0400 (EDT)
+	id 02D5E8E000F; Wed, 10 Sep 2025 08:57:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 82D7E8E0003
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 08:57:01 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0D02F5BA19
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 12:57:01 +0000 (UTC)
-X-FDA: 83873340642.30.B08AB90
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 2CD921A0009
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 12:56:58 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=WI6y+Y1a;
-	spf=pass (imf19.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E7B4C8E0003
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 08:57:06 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B6EB1140899
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 12:57:06 +0000 (UTC)
+X-FDA: 83873340852.16.7A02856
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 844E3180003
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 12:57:04 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=zrNMJfWy;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="+Opm/xw4";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=zrNMJfWy;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="+Opm/xw4";
+	spf=pass (imf24.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757509019;
+	s=arc-20220608; t=1757509024;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MMKyDunwSGtBRbm9G/rqnpc3sRFNucd0BdvyVxUFvLg=;
-	b=FutYJJp9tpXzqKSTz4WfoB8ZmaE+xx7u38N8bahgfw+rGUmB4wal1ixvhfsOhojLpn7YVg
-	wEbmFeFvgQSTxuEU6m41PvBL7VpTJYS52OI8qqWf0hj9ko0jVLg21Wc4DXzqf/+wyd8V5r
-	ygiavdI7T/OJHqJWSEMVSW2zGygWYHI=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=WI6y+Y1a;
-	spf=pass (imf19.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757509019; a=rsa-sha256;
+	bh=Mwinq8gsjwiHlcc0O4dms+YN1QO5jIp+XwdfQBarGdk=;
+	b=sY/SobXnmlNhM8744fwyq4wEPJa0QdpTL36HV6aw9IFyWb7gH2XNVmz7PSURhf/JmSyH25
+	Efs7AGY2NH8pFi/GYMBk0NMHFZCRqR6W1x08lJOWuYqg2iFcc47jDPGZU7r9s2Nz1t6pGz
+	2+4VCfsdKu/s9mqWBpO6Q9tjDma3sT4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757509024; a=rsa-sha256;
 	cv=none;
-	b=lL2JWQniQTLm5fjNNOmBeCDHAgWHKtSxS61hD9Z/TiGPq9a9B7DpHDx2B3rPMVYVGxrBXe
-	mfss+aZImpdHKxbmZCotijMSC6C5v1PQpFjOrlKvRqYcqFSyYcY+Bg6OTjf0LJyqdIMlYt
-	ZZ5Nx4CSeatP0hTF0gDtU/P+J0aWpd4=
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-6188b6f7f15so7607453a12.2
-        for <linux-mm@kvack.org>; Wed, 10 Sep 2025 05:56:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757509017; x=1758113817; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MMKyDunwSGtBRbm9G/rqnpc3sRFNucd0BdvyVxUFvLg=;
-        b=WI6y+Y1aNwp7bMIAVMayK+byo5peOgbux6dGajINmEzNDI5ZLkI+ZiIpQk38KbJTeF
-         RGLjoa9G9bg41KHGcT5L14MFJhBusitFiWwtWXcX3K7T/Tqy7bOcHBCfvo3vl9Z/3A29
-         dwkbIs2htgLwL9fMMUpQDzEKB4GPZM4ndRlmFYjYYmLrc8rexTd75ZDw5uP1JbGnPTDE
-         ItiskDVWewChwce2rt8YiVZ9DZORyuQ1nGhnvW3FcMZHS/VqRoP9U9LmvFVhO6h0ZoLx
-         yzxmCgBZUD+ExM3JrMbb6SDLnh2I9zB+O3t+ShkM63JotVHb6H2fVN4FNAxJ8p+uTU1N
-         30QQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757509017; x=1758113817;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MMKyDunwSGtBRbm9G/rqnpc3sRFNucd0BdvyVxUFvLg=;
-        b=qzhB9gfNW7m7MQGE7Mr2CnpgPPFCZau94z/Die22xjkZujsNRyzTO6wetn+ZrHHPFD
-         cy6Pp9hnADU/z6xbXxkhxE1/2BgJ1rBNRpfQpLzfyFMWz8Kvy3dBOeFfnQxD7AgLRJzv
-         kFXnU827e7kaimimD9M+DTPaTQ7aUgYal5J6mFyxiVENRNS7TbEYSKL3eLf0DySYu0uI
-         E9zv0j5tY939Vgwv5ptSCe2N29ADMeL2eP5SnXNICz3a87ES+Rk6JqC2i6SW5mnZRYDK
-         VOuMJ1noomGZ9rw53yezGt1D0mROQ7xJHXsK1tM7jcaXft8mD+eJ2/SIhiaLTOuJ6pOO
-         Ezqg==
-X-Gm-Message-State: AOJu0YwQQj0I/ZHgWWIMQ7I8ZqCT4bfjQF2j9PbGezL7cAw0P4L5PulN
-	uBGE0IPNMAnejW5xb9l+/myKdCP/x4n9iamRMDGOdzpo0RQr9WVH3Rpe+aVJCXDdTP4bKYcDUOY
-	4u8A4tPiKYXaSbIcogU1FrspECeb54fM=
-X-Gm-Gg: ASbGncuNVEhNqeEC1X0VTuQwZmN90K0FiYIS4num9NkQQ5avBaJfx7g0WspPLuLSWZt
-	CcYBz0Hm9r/aorSQANMLx0aRvKH0nrZenl/zGyb6NYCSnY2/o41SOZcvE38HeiLttR+WWwpAWVI
-	LN9MjlaTKEMqYGvnX5hd9LOzfrZV5hG0J4ZSHowmi9QeqUOJotD/eZrBjQyRLGQlaL6x8gK6CPr
-	L5GdBCz8GUgycyaLMCilA==
-X-Google-Smtp-Source: AGHT+IEv9eLVpjjBvqrFpdRX6L3iK/v3rJwHC4f9FyOGjkK+DZCBoaCqi9xQ3rFk6LzHDIS4tktgKLhkDhbSow62Vc8=
-X-Received: by 2002:a05:6402:4305:b0:629:7973:e8b1 with SMTP id
- 4fb4d7f45d1cf-6297973ec5fmr7558603a12.7.1757509017250; Wed, 10 Sep 2025
- 05:56:57 -0700 (PDT)
+	b=6RxnFiAZQv0FhbSssNYqdoSo6ZSLk7pbA3pY0hAtuPZL0XjYU1eXkzFiAlDf3oyjslDzFu
+	bJlkdEzPxgBwYgRFJdkTD2OjVQro9dx7dZF6JC+TH6bvpqJ7ZOoCDMeA/jqpCHgr0aajGa
+	fg2C9FyYQf10GzXwkr1A5bUmanbCqCs=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=zrNMJfWy;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="+Opm/xw4";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=zrNMJfWy;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="+Opm/xw4";
+	spf=pass (imf24.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id B9F0A34AD5;
+	Wed, 10 Sep 2025 12:57:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1757509022; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Mwinq8gsjwiHlcc0O4dms+YN1QO5jIp+XwdfQBarGdk=;
+	b=zrNMJfWyTUAJv9/QajN+dxw1lowq1b5xo7iYC33VNiutR13Y0lEpGCugpEYkjJURRCkxSZ
+	mxk6mrguZS5K0i8Hfga+ftK/8uO4y+WqJINm/Ezo7gYoy/OWI5Yc1gRoSKiOGn6T4tWsQU
+	XnRHR3s1ZN8qpdbw0N7VemCelr+gV30=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1757509022;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Mwinq8gsjwiHlcc0O4dms+YN1QO5jIp+XwdfQBarGdk=;
+	b=+Opm/xw4Gd6mN2XQHPUz9IXWZ2mnZucVz5+xsMOZFbF911FoFRNImuxdMNfz//GY/4p20v
+	Bb3tifOUHCaEZ1Dg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1757509022; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Mwinq8gsjwiHlcc0O4dms+YN1QO5jIp+XwdfQBarGdk=;
+	b=zrNMJfWyTUAJv9/QajN+dxw1lowq1b5xo7iYC33VNiutR13Y0lEpGCugpEYkjJURRCkxSZ
+	mxk6mrguZS5K0i8Hfga+ftK/8uO4y+WqJINm/Ezo7gYoy/OWI5Yc1gRoSKiOGn6T4tWsQU
+	XnRHR3s1ZN8qpdbw0N7VemCelr+gV30=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1757509022;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Mwinq8gsjwiHlcc0O4dms+YN1QO5jIp+XwdfQBarGdk=;
+	b=+Opm/xw4Gd6mN2XQHPUz9IXWZ2mnZucVz5+xsMOZFbF911FoFRNImuxdMNfz//GY/4p20v
+	Bb3tifOUHCaEZ1Dg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 91AA813301;
+	Wed, 10 Sep 2025 12:57:01 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id sqhiIJ11wWjwBAAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Wed, 10 Sep 2025 12:57:01 +0000
+Date: Wed, 10 Sep 2025 13:56:59 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	maple-tree@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
+	Charan Teja Kalla <quic_charante@quicinc.com>, shikemeng@huaweicloud.com, kasong@tencent.com, nphamcs@gmail.com, 
+	bhe@redhat.com, baohua@kernel.org, chrisl@kernel.org, 
+	Matthew Wilcox <willy@infradead.org>
+Subject: Re: [PATCH v1 3/9] mm/vma: Add limits to unmap_region() for vmas
+Message-ID: <k45ojp4yjaqp56azyuobcsxyqmm5uslo5gq3ddujwfi3ynvkqz@2oncyj3tbnhy>
+References: <20250909190945.1030905-1-Liam.Howlett@oracle.com>
+ <20250909190945.1030905-4-Liam.Howlett@oracle.com>
 MIME-Version: 1.0
-References: <20250905191357.78298-1-ryncsn@gmail.com> <20250905191357.78298-6-ryncsn@gmail.com>
- <0bbda135-068a-45bd-afd6-3f5cdf4e570d@redhat.com> <CAMgjq7CsKYWzAD0Ev7q0cocQO8kOYLmhgLD0wk6AX-HUzWFJZQ@mail.gmail.com>
- <283fc6d5-caca-4a67-916e-55246a5a4cbb@redhat.com>
-In-Reply-To: <283fc6d5-caca-4a67-916e-55246a5a4cbb@redhat.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Wed, 10 Sep 2025 20:56:20 +0800
-X-Gm-Features: AS18NWCq6G6AFq-R6ytPum-lAXwcxsOSJmLax7Xy0V_qYAvPUPQFSkeoLQETCvU
-Message-ID: <CAMgjq7Axhj-OGe6p1_KHAcR=j92=3MjMMz1YafsPxHWqsmemiA@mail.gmail.com>
-Subject: Re: [PATCH v2 05/15] mm, swap: always lock and check the swap cache
- folio before use
-To: David Hildenbrand <david@redhat.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>, Chris Li <chrisl@kernel.org>, 
-	Barry Song <baohua@kernel.org>, Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Yosry Ahmed <yosryahmed@google.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Zi Yan <ziy@nvidia.com>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: qx7md7hbk7f61pru1u4hduugri1eo1rb
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250909190945.1030905-4-Liam.Howlett@oracle.com>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 844E3180003
+X-Stat-Signature: iz4pzec5escoj7bgq9ohdsjha78pn1uo
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2CD921A0009
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1757509018-112469
-X-HE-Meta: U2FsdGVkX1+UMofoC+BabPdr4KrIc6+b7I6UxlwamEmmUJhCpvkucXBqGEIER66Ec03KIT3h7f1LLyzo8+Xrdu1nfcIR85bT3kl3KnyHB9LcVip58gyeq6wFHIsYm6/DlQXn0MFpllvl43QrbDbULfPMDlYaO/mARxzymUCjcFcZXhDXe2hZdJ5KtManEdSv9uX5btQt4gAtURILzMSX3Cz2wI9AludMR2/JIcxWkQ0siW+7y13ThgKh3fSeaNGcANcSqXCh5brizxJ43hcSxAq+CCNlZSfDG6Rbt1/jIBy45gK1F4Z+bxs42VmO97BoRBZaJyXMfdsHksIDkedjJv59CkrBnooL/ojkbqQFX87Q2FlEmkEAC7Jj8Xcrtr7QO9m1d+nnSPiU9ANKxgqDx1a1RoFkQRyo6RRW+xhSvIff/2/ATOFe0qeDOEgSYrPnQnil4Ryv1FyIX0WBHXCaKBplGLInd6zKq5mz1Jiy/P9EOiux8Adfiw67b2h2h83wJk0YhLeQCadLy0npltT9aXr6pTciZOtckwpilno0pqb/PJy6+u8o2z0IvJnbgJh+moyZBp5jUlWTwF4gOWD39a5CtGfwkoR1mXMd2dfVepqCxRHXAr2FXgkiwpHInx58Z6O/u6+TCPh9vWJLtAoH/vsC7ZLK1Mqs1pADQyMJZLfo+1IpoOwM9jTzSUw1RMz8AOBBIRvuz1H64YhmdnqUla8OvYcEqL+Cutbb4Lm1o2g/QiBqcSxIgE/6MnY7s73eBHaLa2aW8dj2Y3gqJ8Ytw2qZTrYYtJ84/DoTcQI2QxT6LFB0UOfA241xQERRTNOiVQlFc0KCdRuwCB6zTONCVeVotaYG5T8xjBglkKrwBY9H0zSslnIHNosskIkhUxWpCV8rZIlzk9C1kUtr45yIziaTRF2DSElgCtWXwoNAC4OCQuIg0Bjiyf+7taP+TckqBltPZ9nR0fzwVUux471
- Wp/TULUV
- vvXTV8hJVUBEZydm7mf7MkKdOmrRwGR/nv/TUoSyFzkXziY+/pvEnj0lPvyKpfAjYg8GOFHAmA4xY0oJ/6bTmfbSW5vIaG5qlfJK3aI5MGZj1pvfAbX1v7wX52FuI6LRtuk3Ibn47epgB+oDnIk4uJAB/uIcIQd3QOcVaoBJBardBAdf9SIhKlwnawHnD5isFE3IjKCbKVkY0ql/aJfBQt0RYZJMq3OyRPQYMyhf6yeiEXBWqzOmAlawqdkg/G3vQIOXX5TH1in9S2+CgJKxJqtqqtGLHyEPwvsBpDicfTqClUmJVCov77CmfBor7n0FMCn6XpXSASzZmn48zCEHY2XkPuOPI2GOIiTNT5ei03ukZ4VYhegH3D5V+U99zI1At1pIQ
+X-HE-Tag: 1757509024-463617
+X-HE-Meta: U2FsdGVkX18HCCp1IpVNdEBudBC9HBDE9N9aZPG1xIr82j1jSeG5cgFbrEYdJk+OSsaDQn1ioBQ0Jr05uHjsH6yzU9NTEeWFz+NS0X1dNGFNuVyp68ghJuHdYBTKoPajosTXBWBMywZU5InjXAAkmPZ4coAZr26JsoCCUMzMUL8lSZtj5zyehyM9BbO9F9JcF8i5KKc1peefGUkNJ37Z51KMM1yWmmjuUHHfDCS0rT370uKCJj2dVwJ9SlUX4JWJIxSFbMCKzuuy9fXFN9Ab9QNitxyFwxkFJ3VMMWltQqGW5NU9dusRtJgZUa99hIV4LT5XGPhson8/J79PoQjsdVO2hwFzJ1zU/GGaItBkpOD9Jbt/PKhfvbwRCbwDY+fy63lQ5Ehbit2d9lhlVTX0vJRH1c468tV+5ti8QpJjEi8VyUY9i8fIqyqJqxyogoqwJAxGYB6Z9h3fnIXxbIvdsFpCpXnR230mTQJt651l7EkbMXZHd8aoRhs/7HV3QBjIB2AYjsr1zc3Bx4Kufph8w4j8U7E5d2bFnqrj8kA8yLpP5KGNrf1EElVoR3J5e5P9/k7YbGnsiQwPypV5Mpwa8SvXnxYKhyP+YccaMRAH+EQq9AX/vB37fshY+XGxX/q+Wpqlx/cBkqSwdFRGJ54j7LMDkfxSvpsEvjivkMkZ7lWiDhvqQoDEV8rOrsJMqARooXrCsx2bwKs570lPGPeZAsAGoUztIph7X8FWBppmKaF7viqLV5fsuMgBPXWAgf39+GbNWKWcZ65g+KCiEu5bIjySQjFkPsfXBBG9CgHOqLX/ulLOoWl1HgQ4OiMLrvdhQsWPzaUSrU2qS9Jhv4hLnvlcPN0L//w3q40+7K2tHRI6FdbWrPhwAugyy2gRYmUJWp7Um7WRih75kXMOc6JjlFFRwNULO3+a8QmRIfUIzS5cZukRKP8t8qleQM1wABsibfpohnFTIzhEIUXdMy2
+ rZPkM2ie
+ AC+kPf8AXt9dkLHROHRNASLCWXOXU4nSMvh9sW9Z9wwQfR7ipuWmIhTjDljMqIz7sPJjvBcyZN2PcPL9T8LwuhyQVXP2V0W7V96A2bN0hLcFWEoPCF7xOB9ideoiOdrMJInZHHZUjOkewQJlJgdtwFqGx8f4qR3pyR0sl+T758KALLkw4fOWX/b+0nnj9u/v1mQKufp9OgjvokUgE3VT82TI7MuRaXEnGVyWgVvPbo72Y3IC6432+N7GQuujNoLPwO3iWIz396E4LuRCLAj7pUg9NK/CATOlgSYJ3/ExT8H52q+pqH/4UfZa9TcLLvJOs09+P7h22rHmvfj1e68qrlG1mjfZ8MqjVPEfmC/mxh9gzRWlgYk4oI9XqwiWml7PDT8MbO0a/+0TSfNXa5zv+Dk3cXw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,48 +137,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 9, 2025 at 11:19=E2=80=AFPM David Hildenbrand <david@redhat.com=
-> wrote:
->
-> On 09.09.25 16:58, Kairui Song wrote:
-> > On Mon, Sep 8, 2025 at 10:08=E2=80=AFPM David Hildenbrand <david@redhat=
-.com> wrote:
-> >>
-> >>
-> >>>
-> >>>                folio_lock(folio);
-> >>> +             if (!folio_matches_swap_entry(folio, entry)) {
-> >>> +                     folio_unlock(folio);
-> >>> +                     folio_put(folio);
-> >>> +                     continue;
-> >>> +             }
-> >>> +
-> >>
-> >> I wonder if we should put that into unuse_pte() instead. It checks for
-> >> other types of races (like the page table entry getting modified) alre=
-ady.
-> >
-> > Doing this earlier here might help to avoid the folio_wait_writeback
-> > below?
->
-> Why would we care about optimizing that out in that corner case?
->
-> And checking the folio right after locking seems to follow the
-> > convention more strictly.
->
-> I'd just slap it into unuse_pte() where you can return immediately and
-> we don't need another duplicated
->
->         folio_unlock(folio);
->         folio_put(folio);
->         continue;
+On Tue, Sep 09, 2025 at 03:09:39PM -0400, Liam R. Howlett wrote:
+> Add a limit to the vma search instead of using the start and end of the
+> one passed in.
+> 
+> No functional changes intended.
+> 
+> Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+> ---
+>  mm/vma.c | 6 ++++--
+>  mm/vma.h | 1 +
+>  2 files changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/vma.c b/mm/vma.c
+> index abe0da33c8446..a648e0555c873 100644
+> --- a/mm/vma.c
+> +++ b/mm/vma.c
+> @@ -474,6 +474,7 @@ void remove_vma(struct vm_area_struct *vma)
+>   * Called with the mm semaphore held.
+>   */
+>  void unmap_region(struct ma_state *mas, struct vm_area_struct *vma,
+> +		unsigned long vma_min, unsigned long vma_max,
+>  		struct vm_area_struct *prev, struct vm_area_struct *next)
+>  {
+>  	struct mm_struct *mm = vma->vm_mm;
+> @@ -481,7 +482,7 @@ void unmap_region(struct ma_state *mas, struct vm_area_struct *vma,
+>  
+>  	tlb_gather_mmu(&tlb, mm);
+>  	update_hiwater_rss(mm);
+> -	unmap_vmas(&tlb, mas, vma, vma->vm_start, vma->vm_end, vma->vm_end,
+> +	unmap_vmas(&tlb, mas, vma, vma_min, vma_max, vma_max,
+>  		   /* mm_wr_locked = */ true);
+>  	mas_set(mas, vma->vm_end);
+>  	free_pgtables(&tlb, mas, vma, prev ? prev->vm_end : FIRST_USER_ADDRESS,
+> @@ -2417,7 +2418,8 @@ static int __mmap_new_file_vma(struct mmap_state *map,
+>  
+>  		vma_iter_set(vmi, vma->vm_end);
+>  		/* Undo any partial mapping done by a device driver. */
+> -		unmap_region(&vmi->mas, vma, map->prev, map->next);
+> +		unmap_region(&vmi->mas, vma, vma->vm_start, vma->vm_end,
+> +			     map->prev, map->next);
+>  
+>  		return error;
+>  	}
+> diff --git a/mm/vma.h b/mm/vma.h
+> index 9183fe5490090..a9d0cef684ddb 100644
+> --- a/mm/vma.h
+> +++ b/mm/vma.h
+> @@ -261,6 +261,7 @@ int do_vmi_munmap(struct vma_iterator *vmi, struct mm_struct *mm,
+>  void remove_vma(struct vm_area_struct *vma);
+>  
+>  void unmap_region(struct ma_state *mas, struct vm_area_struct *vma,
+> +		unsigned long min, unsigned long max,
+>  		struct vm_area_struct *prev, struct vm_area_struct *next);
+>  
 
-Yeah, removing the duplication is a very good point.
+nit: min and max don't match the arg names in the actual definition of the function
 
->
-> --
-> Cheers
->
-> David / dhildenb
->
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+
+
+-- 
+Pedro
 
