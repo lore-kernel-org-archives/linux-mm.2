@@ -4,86 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F29E1CA0FED
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 12:51:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14ECDCA0FED
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 12:51:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 37A3D8E0006; Wed, 10 Sep 2025 08:51:26 -0400 (EDT)
+	id 725996B0008; Wed, 10 Sep 2025 08:51:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 352308E0002; Wed, 10 Sep 2025 08:51:26 -0400 (EDT)
+	id 6FD326B000C; Wed, 10 Sep 2025 08:51:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 28F018E0006; Wed, 10 Sep 2025 08:51:26 -0400 (EDT)
+	id 612DF6B000D; Wed, 10 Sep 2025 08:51:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1568E8E0002
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 08:51:26 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AF04486FA2
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 12:51:25 +0000 (UTC)
-X-FDA: 83873326530.25.395A13F
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf15.hostedemail.com (Postfix) with ESMTP id CC269A0011
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 12:51:23 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=BqRZ4jP9
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 50ECD6B0008
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 08:51:55 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id F1B8611AF48
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 12:51:54 +0000 (UTC)
+X-FDA: 83873327748.15.1089978
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf09.hostedemail.com (Postfix) with ESMTP id B5E86140008
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 12:51:52 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=BEQjhRzB;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rurJ8SqK;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=BEQjhRzB;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rurJ8SqK;
+	spf=pass (imf09.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757508684;
+	s=arc-20220608; t=1757508713;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=S2f01htXH8N+CIEor6uAxDcWxjOWvAGL7YqE7Lw5Hy8=;
-	b=0VFAJ/qtMpMMInKvuk02aGsW+yHbT/XOVt4kw5CdUw1z+E+TguY9Mburrly1UShymWgKx+
-	QHaGuDiVBihsmxVbX/Qsd7uRZV85UcmMIMwiVPYk6OoasO37EKY6eR/LyWUKrf+hpniJH6
-	lV9UavoKcXsWEksINC/RfARgUTCas9U=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=BqRZ4jP9;
-	spf=none (imf15.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757508684; a=rsa-sha256;
+	bh=pIJwL+vMh5l3ck0ee05Ab56qH+FWN4NOst1+i0OxjGA=;
+	b=etXjM8n0Y0GBWxpS0JJuFct5u7QbUczZ0C2g2t9XN7b+3k2KrnimrFmpGHUeF5tZCDPzEj
+	9O+nhNEoaGlao7Gr0alk6SQNS8Uiz/NEOI3nXS578G7Raj0dRzl32dGB9CDSQhYSvEqD86
+	GVaCDZ6PCdA/WpiRKHAU/3qIM1cEv9s=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757508713; a=rsa-sha256;
 	cv=none;
-	b=AoPebnKJJZe++yrzik/nWDbwGNF6EwJJa8V9gQZBEbSnNEYGbtULOW+zIaMIO3YkNxuoGg
-	DXThTwl8xac1M87eS5D9wmYfVHdx6qEfLcA1qtkfrE9R5j0uMuB/i4r3+LKGTNWJuckJW3
-	GtJc2cTrQSQmWwLfz9pnfBMpjbJAl68=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=S2f01htXH8N+CIEor6uAxDcWxjOWvAGL7YqE7Lw5Hy8=; b=BqRZ4jP95H8y3+NmRjf65BowOr
-	C9ZC24OpMq3sLvT4ogVWsOU1yZ6i8XL8v6wokSd3TREVm1z8cPZak/ybS/Ex5x8VPsXmtW7MiADDb
-	Y2iP7z6KJ/EwybScaXu0IZIlTLQPtK9XfrvqIEuVVUiz7lAMz/ruwjK7KLtZX9m19s97FC5MzEGkh
-	SO08+ZNx+N9ULTKZr084dHCDlaGpauJsJWtzjIY+14l0t9tSU9T2k910mgTm9hRFErkFmfddHQODj
-	qCce25wSsPlc1x7NzmSJp1OZ4wyMhZd72gmfX7P3RZZhHLH6woS1prDLsLKuKQtEZcGTr7L5PFbMB
-	O+Rz0r7Q==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uwJPp-00000008MEr-22IF;
-	Wed, 10 Sep 2025 11:55:09 +0000
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-To: Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	linux-mm@kvack.org
-Subject: [PATCH v2 07/22] slab: Remove folio references from __ksize()
-Date: Wed, 10 Sep 2025 12:54:49 +0100
-Message-ID: <20250910115507.1991829-8-willy@infradead.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250910115507.1991829-1-willy@infradead.org>
-References: <20250910115507.1991829-1-willy@infradead.org>
+	b=DvW7sK+c0bGfMJv/8xQ5wPHgGVvyKFLGm6CwQ7nQhZYgxR1UvIGHaurgpkG15ygn9QSahw
+	GMqfW+0XrNSg6rdmQLr9yRoz9/4J0v7WWDBy94Z5CFpsCoW5//OM4EwQ05l3r10lAckpLO
+	04p3wfZ7HYvDEYJIdxF9wVl1cpkIUDM=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=BEQjhRzB;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rurJ8SqK;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=BEQjhRzB;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rurJ8SqK;
+	spf=pass (imf09.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 34EB233BBC;
+	Wed, 10 Sep 2025 12:51:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1757508710; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pIJwL+vMh5l3ck0ee05Ab56qH+FWN4NOst1+i0OxjGA=;
+	b=BEQjhRzB9UOagEQUB1jwY8JPKwFHrsS2euVJogIqH05KzOX5/cmV+rY4+wMae0xbXyc4QG
+	39MMw9gIo08ZwB1P+PaTxDrIwlHgZZaERSZpTqm9jPVEMoJ8M/PUffoAHTdYjwP4x0bIAQ
+	AGBcMnWSc7TOeY1wr23u333rThoGv4U=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1757508710;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pIJwL+vMh5l3ck0ee05Ab56qH+FWN4NOst1+i0OxjGA=;
+	b=rurJ8SqKSm3tUtl+rSX7DnHzzed1vyieHCjaVK04+xrBTLhl0c+m6dlFRUvOyeuaX2XCBM
+	ofdzq/mM26k8C/AQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1757508710; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pIJwL+vMh5l3ck0ee05Ab56qH+FWN4NOst1+i0OxjGA=;
+	b=BEQjhRzB9UOagEQUB1jwY8JPKwFHrsS2euVJogIqH05KzOX5/cmV+rY4+wMae0xbXyc4QG
+	39MMw9gIo08ZwB1P+PaTxDrIwlHgZZaERSZpTqm9jPVEMoJ8M/PUffoAHTdYjwP4x0bIAQ
+	AGBcMnWSc7TOeY1wr23u333rThoGv4U=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1757508710;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pIJwL+vMh5l3ck0ee05Ab56qH+FWN4NOst1+i0OxjGA=;
+	b=rurJ8SqKSm3tUtl+rSX7DnHzzed1vyieHCjaVK04+xrBTLhl0c+m6dlFRUvOyeuaX2XCBM
+	ofdzq/mM26k8C/AQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 047F813301;
+	Wed, 10 Sep 2025 12:51:48 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id IJTGOGR0wWgoAwAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Wed, 10 Sep 2025 12:51:48 +0000
+Date: Wed, 10 Sep 2025 13:51:47 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	maple-tree@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
+	Charan Teja Kalla <quic_charante@quicinc.com>, shikemeng@huaweicloud.com, kasong@tencent.com, nphamcs@gmail.com, 
+	bhe@redhat.com, baohua@kernel.org, chrisl@kernel.org, 
+	Matthew Wilcox <willy@infradead.org>
+Subject: Re: [PATCH v1 1/9] mm/mmap: Move exit_mmap() trace point
+Message-ID: <q6qlfs74tevbckjowf76y4fbfejr4ulyzrb4fkgq25qgebqnaf@colkcmdzt2bd>
+References: <20250909190945.1030905-1-Liam.Howlett@oracle.com>
+ <20250909190945.1030905-2-Liam.Howlett@oracle.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250909190945.1030905-2-Liam.Howlett@oracle.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: B5E86140008
+X-Stat-Signature: rncguwxipb4cj6p5pwi99w4n1joyk6ip
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: CC269A0011
-X-Stat-Signature: 9g7denunfehpwpsg479q6o9ufpjjjoz6
-X-HE-Tag: 1757508683-649223
-X-HE-Meta: U2FsdGVkX199D5h3BwQq9bWbi2a1HZVlhv77lGSjELs3koKn5O2Yke35d6QfM8EF8bo0RQJwj05znlEaE56jbHp4vCmfwmpl3dJXHk2Q2xrUBffScmKfmDyUynbZrsNxcg0K3wGSkYCrWmMm6zTbSzNgGkJSMmD8F4uB9rMdDW/erTvliu2HhrqWcWc/i5boVILyrLUApfUiZss3eesOYowiHqBLhVqt+vt8/9WP3KBlimFohyQs5XRJg404s7/jOQa67gUtidvOQIXrEnoEFrq5ZB2iOYpcvzyQqM6d5KePYcbu+tWYU4RRJgWlsENcVAKQ6rvDmUmaiwq5D53DcIk941Axe8jH9Qe7XXvCGrNRvEmTh3u6FjdSm4bXtJdyWQ8iCICmlRmY4u5LbKsyGtisVIDJU1Y5IRvX6PKEz1VDlwkS6GJ0uEHTEb2SD/YT/teld3KSXvatg8m2ihhQEQkFXcVbFqDgSYaaXqXlPNo/D9+nGonHRkMN09WFH4cMuMJajeuX4/dZI569tyNlako6Syc2zWzDacA3J9P9lSNsikCsLiAfNjvHgkHEe2HPb+jcMdTl2nmM3AacvS81Ex5+i/zksOyZOYGcvtsaAlcXQcTgIcHUzckd4VD+EVZTSQubPHr1ApFVpUe8sImbgLd6J7z4GK5pLFKXHJBewtC7FJekMa4EwD+3CrlEMFErKdIBpnenZQUeinrOX8zahRi0eKnuoiEyePP7e+01o8eP9jq403H9CtbvTFaJmoTEpONSAIDjzlcIuqTQOVTDLGjLsMKYaZslfsHdxcEtv9j7iitHBMfcQ2PpDHK18+NRpWR3aSfLXtXw01v3m4CXiIQ5UsLTP88lqTRZy8tN5q6KhlcgDoQl4FF6SOxq1Vu8754uPaLKHc2+Ydq8F8nhoV1FE85AKnyISfXpKGs+K7hpHP3WkeRXWPiLH3wSS92ZaXfAdNx/W6tCBc2Hgzw
- UQjuOmKy
- yZ1QAVZVy8luPtvynfQ66KXvpghimiZIZ4SSJkv/NoPPzEIJUihrGLKR9f/QGXWB6eTfE1aGbuh6F1W5Hl7ih2tEGvelM5zJ/zEcwTtbZYiunGdWZBJKGio0XC90zqh0s9X4EoO4qgqdMIO0EMKrICSKQviShvmxfb/ZYPw2FRO1wO4Qw6ju6AUxR/4IM4N+HzKmyPGHme1jYfu/Rr8b29w9n80MAfQTxWBYG1pWCVngdeEWwSzg50VDrA/g0G9qHMAXBChuPzRRJlS0=
+X-HE-Tag: 1757508712-305406
+X-HE-Meta: U2FsdGVkX18auPYYTenQGgWsxPL8L8jCkfM60cfQskpNi9etTTil5xctzasplMGLhpQFVebeuW1FoySxAtRNre3zRc6Z+kPKpUSma6xWy7pZHdc+wOhNUJnwElU5O94rFiDWRiZvVnkerxlKowGUx+rCcv81unbxC3LhNiEXljLGdj4nNERXBlZfCjWJMzcL5YFmg9JDK5+UGuH9bbpZraRKQ2HLSGvyLxUjTChLNukgw/qi3Y7iejkTKN11a31OzPONoCN+Jv8frcDz7doOzped/WCxbMgLOQCv4CtF56HetceU5tKUqkm9wcc34qRxlQvABU9Dav6J22AYPYe032V3K4tjzz9PiwlegKfim2MPy4pdAcXOAgNNO2n7wuoeN+NQ0+kUIdz1M2LJOh6nXfCDtxmoEY0MCHmPIpiDsmFls/AUu45pJ7vUEZPKu8VAon4qzjQByO2pTBQpaDMObBNXZv8A2WQh1aJJFAA6Xyg3cjDOd5CA0Tg6lyrA90BqL3fAFYPuD42rpkVAgEOlOVE8UigNYRm9xGDhYOOKRR0WWXf5qCtfIzymgZaj1JE/2KjcCbZ/VM/mVQYsK0OKC4Ac6mUtJvjEuV4Hmyv6Y7QnZ+cWQoylyMLpprw8HqtjNN963fXLUuUMpYBtS/BLt7Hvl1Gnbk8Mcm5ueZrbD+6oNCDWEiPQzfNRURaW/Y4/84YXCutIS/BitfQ78rsmhUh6+fO1r7F5wQLRiv9C7ILpbpeYiOsTltjlx5DRjYWUu4qVs1EUIUUyQeNdMZiT0hZF4/SxoIMt4oQ826IX5IJjcyYmQtmrJ8LcijIuTyHCVrTY90egCFF6h3+WpKl6Taqwg8wI51DIXKgjy2B99VBtse+Hd/+8aLDmexi2nJ02EHjaGdj8o21F37f8jVze7k0hLipeAh9gC3fONO71j1nrEo5a/uQ53hT7taXPzpIoWWT+/4iRrjVPPRyDesQ
+ 9CoY29bA
+ kzgip8VP+QhjyQt5U8CAmWxjJob++f7BQEpMjhwoI+zOPK5nSFv93enChGyoTFCtIq1eno7hQ9wUxJ0veRH5O71w95Ao0kyduvyqs4vkM/SLQXliWKkiFrzJkjH2X/sdrco6qK6tSwfhs6pStT/KZ3e4EiUhSxWo89aRJYzZW1iGDf1bMyS1zRcnMYOrVkU19Hal5NIeqDjvt5x6ZTlJ/EeUi9rWl9ySavclz65ZJWsItx/0AzA9o+NqrhJIGrr5paUY9CFAeNw4IuaiJBfAdxionOdEvah86gCXFJTQ3R8FLq9QwukRqUlUqzUjPAjEWpdbuEq7jr89O+pMeOgqGzkojkSsaAsN0GMYGX6y4Id82WVklzdG8TgQSdO2wsGlRt53u7U3GkYxFcOpzfajVqydlXg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,100 +137,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In the future, we will separate slab, folio and page from each other
-and calling virt_to_folio() on an address allocated from slab will
-return NULL.  Delay the conversion from struct page to struct slab
-until we know we're not dealing with a large kmalloc allocation.
+On Tue, Sep 09, 2025 at 03:09:37PM -0400, Liam R. Howlett wrote:
+> Move the trace point later in the function so that it is not skipped in
+> the event of a failed fork.
+> 
+> Acked-by: Chris Li <chrisl@kernel.org>
+> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
 
-This deprecates calling ksize() on memory allocated by alloc_pages().
-Today it becomes a warning and support will be removed entirely in
-the future.
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
----
- include/linux/page-flags.h |  2 +-
- mm/slab.h                  | 10 ++++++++++
- mm/slab_common.c           | 23 ++++++++++++-----------
- 3 files changed, 23 insertions(+), 12 deletions(-)
-
-diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-index a997207c3b71..57684c643456 100644
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -1071,7 +1071,7 @@ PAGE_TYPE_OPS(Zsmalloc, zsmalloc, zsmalloc)
-  * Serialized with zone lock.
-  */
- PAGE_TYPE_OPS(Unaccepted, unaccepted, unaccepted)
--FOLIO_TYPE_OPS(large_kmalloc, large_kmalloc)
-+PAGE_TYPE_OPS(LargeKmalloc, large_kmalloc, large_kmalloc)
- 
- /**
-  * PageHuge - Determine if the page belongs to hugetlbfs
-diff --git a/mm/slab.h b/mm/slab.h
-index 084231394250..e3a85318a6e5 100644
---- a/mm/slab.h
-+++ b/mm/slab.h
-@@ -595,6 +595,16 @@ static inline size_t slab_ksize(const struct kmem_cache *s)
- 	return s->size;
- }
- 
-+static inline unsigned int large_kmalloc_order(const struct page *page)
-+{
-+	return page[1].flags.f & 0xff;
-+}
-+
-+static inline size_t large_kmalloc_size(const struct page *page)
-+{
-+	return PAGE_SIZE << large_kmalloc_order(page);
-+}
-+
- #ifdef CONFIG_SLUB_DEBUG
- void dump_unreclaimable_slab(void);
- #else
-diff --git a/mm/slab_common.c b/mm/slab_common.c
-index 08f5baee1309..3216a4e65b51 100644
---- a/mm/slab_common.c
-+++ b/mm/slab_common.c
-@@ -994,26 +994,27 @@ void __init create_kmalloc_caches(void)
-  */
- size_t __ksize(const void *object)
- {
--	struct folio *folio;
-+	const struct page *page;
-+	const struct slab *slab;
- 
- 	if (unlikely(object == ZERO_SIZE_PTR))
- 		return 0;
- 
--	folio = virt_to_folio(object);
-+	page = virt_to_page(object);
- 
--	if (unlikely(!folio_test_slab(folio))) {
--		if (WARN_ON(folio_size(folio) <= KMALLOC_MAX_CACHE_SIZE))
--			return 0;
--		if (WARN_ON(object != folio_address(folio)))
--			return 0;
--		return folio_size(folio);
--	}
-+	if (unlikely(PageLargeKmalloc(page)))
-+		return large_kmalloc_size(page);
-+
-+	slab = page_slab(page);
-+	/* Delete this after we're sure there are no users */
-+	if (WARN_ON(!slab))
-+		return page_size(page);
- 
- #ifdef CONFIG_SLUB_DEBUG
--	skip_orig_size_check(folio_slab(folio)->slab_cache, object);
-+	skip_orig_size_check(slab->slab_cache, object);
- #endif
- 
--	return slab_ksize(folio_slab(folio)->slab_cache);
-+	return slab_ksize(slab->slab_cache);
- }
- 
- gfp_t kmalloc_fix_flags(gfp_t flags)
 -- 
-2.47.2
-
+Pedro
 
