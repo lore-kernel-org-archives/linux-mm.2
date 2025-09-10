@@ -4,170 +4,174 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20B58CA101F
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 06:45:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BF4ECA0FED
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 06:46:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5592B8E0002; Wed, 10 Sep 2025 02:45:51 -0400 (EDT)
+	id A8AC28E0001; Wed, 10 Sep 2025 02:46:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 530CD8E0001; Wed, 10 Sep 2025 02:45:51 -0400 (EDT)
+	id A62B06B0011; Wed, 10 Sep 2025 02:46:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 41F9A8E0002; Wed, 10 Sep 2025 02:45:51 -0400 (EDT)
+	id 9787E8E0001; Wed, 10 Sep 2025 02:46:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 30F788E0001
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 02:45:51 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CEAF3140772
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 06:45:50 +0000 (UTC)
-X-FDA: 83872405260.14.5F59881
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 770F01A000F
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 06:45:48 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=arZ7EH1B;
-	spf=pass (imf19.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 85DA36B000C
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 02:46:27 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 143F1C061E
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 06:46:27 +0000 (UTC)
+X-FDA: 83872406814.11.4268F40
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf07.hostedemail.com (Postfix) with ESMTP id B4E2240002
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 06:46:23 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=go5DBxfn;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=yrjWjHnm;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=QViWeyT9;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=1wRNwhZZ;
+	spf=pass (imf07.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757486748;
+	s=arc-20220608; t=1757486784;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V0LaaZHJC2+QM5StiTxDhV+SbRojzxK9teAGcqG/Wng=;
-	b=Na6zQk0CmC577BjaI4/I8XW285Rk7E3hJTRgEarzOVkPssky53XkCe2dSDndZ41/XoJlqi
-	P0Ygbwyg0Fv8XG+jdXysXVVwX8sWEn3NTWqqPxMr4RGEINUH8xucdgtrz6nNUc7LVh3ajN
-	xas4WyWUnE9EMFTJR85/VuhVnuwQLws=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757486748; a=rsa-sha256;
-	cv=none;
-	b=for+kj/DQKTZz4k7B0h8KnjEWqnVjvgmSEpqFfaxvYssaqxwr4hPCDvqjNh3+XCbUumpN5
-	BmsjyIXzKi6kisWaOZ3oOnhB2Ov1eJj0b+g2KFmRq2uCXQymr5If561tggRAmBea/NK15F
-	RunRVUlZv7OKeVmnLSvhNecCcMHlhT8=
+	bh=p0SWlXWK9IoyrtqaxCrVuElAesP0OmdLAfgcptXBJGo=;
+	b=yhizGCoC7Kcz8vXznPWfwVTOC+c7ZRWHp/gua820oYY+YhaejOH11Q2ufCMgh5DytU2L6k
+	2AwiK9DLWA7nhzAwtUWR1Uqx7YZ5kjgU3UNM28g/cqN+1sNbB4G+evoBMegbu26ddIkzmA
+	crmM94CoVRYLuIhhMtSRCzUoccDQhmc=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=arZ7EH1B;
-	spf=pass (imf19.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757486747;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	imf07.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=go5DBxfn;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=yrjWjHnm;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=QViWeyT9;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=1wRNwhZZ;
+	spf=pass (imf07.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757486784; a=rsa-sha256;
+	cv=none;
+	b=QVZ+M6nzcj4nUrJ0D4TQDXjiuSd2JYcXtoWn4UhWPlLJSppZfOcr2y6sw0sGymG4rAuUdF
+	MEJPus8Ka1x2BnYiSXrdUv4KxIyVe3LVeKX8jX2TGYjLizMIYKiRUs6uoiznJKJK+JJbwE
+	wGQkFzyDxboA95zKWvlwHzZBoCQ70w8=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id EE229336D2;
+	Wed, 10 Sep 2025 06:46:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1757486782; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=V0LaaZHJC2+QM5StiTxDhV+SbRojzxK9teAGcqG/Wng=;
-	b=arZ7EH1Bjmy+6StiNhfjdclDmBF+Zr94WMXZ8M43JMJ7/DNdRpbEgF9jnNfCTts/SW/Jvf
-	K6+nAKy1Dl0IgnezyOykqURIZyVefoJeVSeWYsb2wNmZ40qerigRTjzw5ur0gSzv6JjzDd
-	oBwib650W740NhWVyHfE92k9cuEZlLw=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-583-DQ1MCgsRMGKEp2VjhXcdOQ-1; Wed, 10 Sep 2025 02:45:46 -0400
-X-MC-Unique: DQ1MCgsRMGKEp2VjhXcdOQ-1
-X-Mimecast-MFC-AGG-ID: DQ1MCgsRMGKEp2VjhXcdOQ_1757486745
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-45cb612d362so35550985e9.3
-        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 23:45:46 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757486745; x=1758091545;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=V0LaaZHJC2+QM5StiTxDhV+SbRojzxK9teAGcqG/Wng=;
-        b=QJGWsP6H+aulIvgX3I/rsXUKK91U+cGRkEntEI1zwfdvgLru3e/UfxYtMWrMXpj5CM
-         6fEtYgPtPYzPo9SxLBGmEZsJHTziF201jl9MFmlrpJsZHnq+E3sgryHh8sOsuG/jL9JZ
-         z/LGm3+MhwlMa5amMK1xzQvqZWszpLUpo4cSmtbbsqWW/XXVllnPhwV2DZtaifQD8SuV
-         RBtZNrT0sf5n3BivTQxsBqyT2KbZeBFgg/LLWc4H3a2ZhsMlgBc/hpA+2QAkgzzdMnoE
-         rRvJyOuU+tyUHg+lSp4+OLpp9Jtfsup/Hd8hQvSLgjSEiAja9zt6ihyx/cMBii7W646f
-         fweQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWAWBJmbKfgDgO6VBWuaibML9JrEKWWmBTX7zq9rN38GdYvDl7GX4Po95IRqfZQDH7d+iOio02itg==@kvack.org
-X-Gm-Message-State: AOJu0Yz4kZ7UqKBinM3tNAB1zhwolEv3aWXbSIwAuHlXC6eiYBPoHk1z
-	BxJIF0+1iKMC90HHxWFd6YAmTCQWNGGj9qqC2HeKnsTpL1ykjVcM3Lk72lExGggtXm0Ep6BIU4U
-	dyk2CQcnUdh3cqXOEfLRLAHa75rLBPvYjVGt1ldD4HNW3vkl7V0Q0
-X-Gm-Gg: ASbGncuiu9lCF7NFLhtzkv9fybnGz9x/FRYaQHL2dT+3eyhWXJ/hv9qL5NAObOSxoqX
-	BwP1qzoQh+0c3fDj5apSov1b/OzCYUYGBzkxrzbpz4mryUpsYmp5l0PHKYINugL8WcWj7u/Km6Y
-	T/f/nKADqYXj2qBabvRoQ0K/F06LY6J+3jNwvJYFU/Pdh619GzwupQS4ztMMnNpb6vz73y5dmO0
-	1rzqYmb5Uta5mgU9fBGGspDrZ8K6MngKVxCMcbyjpoHmVs/+CRRwUE1NDsylXzCP5pDRGbT034u
-	TpZ1iuRjnH6c2x3dyRko0DwtMlqrStY9Zlc89aPU/wLrmvqvS+LtwVQJw99FWuVjxCmUT5iLYOB
-	vdXJcmttr6InvYomFZw+WOwLvtUh4PBtZrJ9ObNX3VrOu9h448n6D2EDptaqxratjFdg=
-X-Received: by 2002:a05:600c:8b42:b0:45d:d522:5b2c with SMTP id 5b1f17b1804b1-45dddefa74emr108518515e9.34.1757486745353;
-        Tue, 09 Sep 2025 23:45:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEiaDvgvPi+ow108IrBBgH6uR4YMCBOBWtjYkmddUoAmFVlm0pw98QwAazjmMcru3JY0FxgMQ==
-X-Received: by 2002:a05:600c:8b42:b0:45d:d522:5b2c with SMTP id 5b1f17b1804b1-45dddefa74emr108518355e9.34.1757486744966;
-        Tue, 09 Sep 2025 23:45:44 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f17:9c00:d650:ab5f:74c2:2175? (p200300d82f179c00d650ab5f74c22175.dip0.t-ipconnect.de. [2003:d8:2f17:9c00:d650:ab5f:74c2:2175])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45df17d9774sm23146765e9.9.2025.09.09.23.45.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 09 Sep 2025 23:45:44 -0700 (PDT)
-Message-ID: <e9b34151-0879-4900-af9f-2ce0dbb678a6@redhat.com>
-Date: Wed, 10 Sep 2025 08:45:43 +0200
+	bh=p0SWlXWK9IoyrtqaxCrVuElAesP0OmdLAfgcptXBJGo=;
+	b=go5DBxfnUciK8DNc6Kw+BHvxTCNLZhVXWl769n8CgfPDb3GK/Ly9TKNIKxbz9wsBO2avr/
+	nZf/VQkz6XR0Tx3fX0FrESjbiEjAjuUG+XDomkY5V16WITFzdHnJVySLP5RLCsMuMM3YI3
+	z4pIuSqkvKyxbR7MJDnoMFzjZgAxcDc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1757486782;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=p0SWlXWK9IoyrtqaxCrVuElAesP0OmdLAfgcptXBJGo=;
+	b=yrjWjHnmXioONkhUoxK4mVQJHjajK+6GUCKK63hqPUxIBYj3LclaSe2gfF8j0izaHqMRgu
+	WSM5VEaOj2ThHBCw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1757486781; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=p0SWlXWK9IoyrtqaxCrVuElAesP0OmdLAfgcptXBJGo=;
+	b=QViWeyT9DgvWUvcT4QsDQk/0YxRq22xm5Gr2ajBWLnbDlzkbAnrZegT0wixoAw4Pj3gj0k
+	3ImmPBEeHbtWsvNaaC2JdlMLMDxy/KHQqT1pl75TlPb8IieTdAMQf+P0I6l9JZGAF2veuZ
+	inBTrOyCVEE5499Bxh6UDP/bX2omajw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1757486781;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=p0SWlXWK9IoyrtqaxCrVuElAesP0OmdLAfgcptXBJGo=;
+	b=1wRNwhZZBp7geP79OL2o/1+FYiwDMkHHacc2fu7a8KIoIe7PS5zTxGifoghAMR41z0DiOS
+	kD+La3IIsPIxcEDg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B5FFB13301;
+	Wed, 10 Sep 2025 06:46:21 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 0jAILL0ewWhrDQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 10 Sep 2025 06:46:21 +0000
+Message-ID: <f8127c0c-9de5-4430-ade4-45df78862d28@suse.cz>
+Date: Wed, 10 Sep 2025 08:46:21 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/hugetlb: fix copy_hugetlb_page_range() to use
- ->pt_share_count
-To: Jane Chu <jane.chu@oracle.com>, harry.yoo@oracle.com, osalvador@suse.de,
- liushixin2@huawei.com, muchun.song@linux.dev, akpm@linux-foundation.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20250909184357.569259-1-jane.chu@oracle.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20250909184357.569259-1-jane.chu@oracle.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: OcTKGjLacrhgJp6Xt3EVSRRYGyw5pRQqXKL8lP5NvPc_1757486745
-X-Mimecast-Originator: redhat.com
+Subject: Re: [PATCH v3] mm/slub: Refactor note_cmpxchg_failure for better
+ readability
 Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: Ye Liu <ye.liu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Ye Liu <liuye@kylinos.cn>, Harry Yoo <harry.yoo@oracle.com>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20250909013307.1093853-1-ye.liu@linux.dev>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20250909013307.1093853-1-ye.liu@linux.dev>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: k1dk9zpt75kbkw86w5matthd6qfgafud
+X-Rspamd-Action: no action
+X-Stat-Signature: ag56kce64rs7181nxq3ddtocgmeaq4id
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 770F01A000F
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1757486748-120744
-X-HE-Meta: U2FsdGVkX18wLc43R6Bh6I4ld6UyIPUMvLQPZFFZRxy/lUMdUUEAjynpvAkWNHUX6XxLUiZ3w+7/dkq+D/8TArOIKjG21do74AqBDeNw8rv+d9UruY9CGXDLyOmqsb+9XBUbGs+ctrX7Oc0qxoisodKhHPCMKD6GFIbrdJ6iZZp/oDyGIbs4HbLAmdiPFh7DPhtADaN/4GsJliZTpG1Y8rQ5R0CoKH7MoQIWc53vBekVTkzwaq6w2ptZVChNJEqW6un8R5SvXU6o/xABs1rEDKjsxmLyGeqfAaFEu2lm/fkCkGdHkg8WrQcAm4lZgHTCsAtne3WoyPZgzefb1KSvY4gsfC7tHr8PJuv4HirWjdMv2OC0asF5yEHVHQflXzTCNYxu7k+pkJ5AYSDj8cjkQc0JSmNl6f43wV33lurYfaeg7YhXgN5KTdgi4Xl2AWTvFMZt2r7GQ/GV1Jz1d35U6uIgkq2se5TqCUI4lbCK8oaFJlD0EqJCWwnK6dtrM6qi4CIpISvJlN4ur26v6ArA8Z6vVEJl5YXG9ATdBQWNN7jvi3z26D2WIqPT9joFhkub5USFco1iDcKi+mZ/j0CmUo/Eg75yOeyT8B7eIjKqYBAWTwHbB8eb5owQZkp0JI3RJjRsbXNhupMO8E+JBvu0MQrnxUVTsgg3fVduFZEYEwXK7bnTc9vA9y+t9onR4KoKEsap58hCGOj5rHhZ3zzS7x5l5asrZgSrvZYHQHBDEOsWrIPkGxIYx5QmBicSF5WCwLOOFAqdA5FCCPQKL4y7RuzxeWF+4MA90PslrMwRF0vBLxZSRE7zeYOWg7xsIfXX7pX0brbRedwtbW2aw7RktObvoOSJtqJIcsVj9rKEe8NqeWZFujZY86tvDO14/GX+a3ip/GBmF0w3bz9vwGJDkd/1loKG/CKGrKPapi14GVPWvhceXjw9QvjE3oq2Vccu+nLaA4/IFuPJsNjxfPd
- fZz3t4qY
- VW/fbMugSOIk6pqzweczbdbL89kfmDj4VtbOZInZW0dAkq5tGlljFj7BoH55ZPDpV782fEztKLpy64vgwSAZOi1AbaKlMt6p2zlO5RZKNVEJ6bCF+F34QRiUd9v+jemmh5nXXYcknaWsXj6oxaHw1I5w6HmjvtDb6JQfSoKhHW9YOn1qBqKdx1vD5cm2NN5DkZ470dv0Ro1M3k+edWnNnbjpHE5n3FdILmck4xADFMk7Orj12x85019YU958Os12K8YYI9RF254e5g/+EGj3qbjhqW1vikNINjWCW8aK85j5nRLotrHXRCdySd+sY/WWyTstzldyLWzEBiMsaUSi5wReFrG1R3uDMbCMWZhgNirTIvhu3BR2znMzoxKT8QYNoRrs0/7iUdCG1KvwPVEXRJo2+jahbhMpdS5UftwcshSDIOV9mVjqJzT7q3DpuAXzZWsrNAWiqmnwrWAxFbWhbXE19e0qho9JcQec72QwJbu6mQh9XQ9LIyDLjrg==
+X-Rspamd-Queue-Id: B4E2240002
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1757486783-424047
+X-HE-Meta: U2FsdGVkX19icUqP56UiZ8mTBgA79Ul96WO9Nv1MqZYWSHgqHLfNJeR51p18ZIhBIfJM9W2TsnJ80o+RkR4GG3iClRERNUFf9TbAzdA+RnAI+JUDbzbA9yFh9b0D4cVjdL5ti+lCGQVY0pSub39WEqanZF6VNJfSTdQm+KUOaNDsQzKliF0w6q8SWHbt+i7jJpR5n6ix77QOd/6JR4GKfoFp7w7IlvZ6fhKnOvnhesFR/+wYQ5wIERHNxUUlIZaXacmBxrKRyGmRG6qvtuxeBNjbfK4+lvwGGbHbDnk6kMPPMhRS6gHgZL5MMDglopxHMzhG6FbQ31FLyJPGuEqEsfbJoKnrWx/s9WIJqL4gN7Fh4qdst2dunPkvDkgc7IWHSjhnsq+2YErwxDZsCJM4vlI962tQy/mpBOpA+9yPgG52M5FxY/gV4Kqf9kEAGov24EZxvV/Abw3qIc8zmDLtr+QVSHeYzc4BV9BUO2273CXd6XhVG0PP1xYbmCUXn0g/ZdahfToxveuBFU/Xg+BuQVkfWfy2r+sibx+pe3ud3RLpNohpgQUSPowWsXo2wQsQnQ8FAuFt4LSRwHMD6Kq6IIbQ6WFFqh8+D3GRpU1omgTHhYLY7RelxgFAeJYEyRWzX8WBUuOaxFd3PRrXB7iweFo1Ep+LgsidMkRRJ26MHqQc9mewBPO8P+XLJiUZ1UMqLRwI6PvOg9hfoAsYiXazSjpuAOU/zjAyQzR76t/lbAh4EdVGH9Gm8lPoC6YoBjDQ/RVLmILo+zXlTcctnePjECkra+6ol3PNeGMdjXeia7lEKbOR4cn0oRl4wyn2vyGGWvNu4jJetcmWW75bXiDWlftBtAwzT9iuVYt3lxeDUUQkaQZAFe8lhpKd2ff305HYIg9VMrQHgFODXOX9wezq2LfinkuvEU7hozPIeZREieLEc28oTyDT/jOvil3lAEILisxnKqxc3jfDmCpiQqN
+ wOfAlAUg
+ yU8opHOlaVku5+86cQzMbApw2i/C4SnGLxxL0Lcsremzz6zNk98/FdTE9+1O7rAkpH2loL351lt4+P+c+WsmUd289T3WZoEPG4JjGd72BEuLzGyB+4Cj9inMHw4PEi8FWm1ktMpgXqklQz5wmURL2ZPNea4CTrXeRgtfu9rlN2o4w9Z9MZnlC32Z1LjX7kO8ggi/lwSMwUF0qy/0RL+HkeHOrPkuILh9OPaPegHQXMNBlpk2t5pfPjJQ4AQbFCb0d1zCfjs71P/UWu7nYgvvp0lbSRU/sU2t7UCMybLI8OPXJ4b7iyXRHWKYyoAXJvtuxNgCeUVkhPOtneBAUBIBPYXACUxQk6EQx/dOCh1asnEETEtTX2f9ntdZuJw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -176,81 +180,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 09.09.25 20:43, Jane Chu wrote:
-> commit 59d9094df3d79 introduced ->pt_share_count dedicated to
-> hugetlb PMD share count tracking, but omitted fixing
-> copy_hugetlb_page_range(), leaving the function relying on
-> page_count() for tracking that no longer works.
+On 9/9/25 03:33, Ye Liu wrote:
+> From: Ye Liu <liuye@kylinos.cn>
 > 
-> When lazy page table copy for hugetlb is disabled (commit bcd51a3c679d),
-> fork()'ing with hugetlb PMD sharing quickly lockup -
+> Use IS_ENABLED() and standard if-else to make the code clearer.
 > 
-> [  239.446559] watchdog: BUG: soft lockup - CPU#75 stuck for 27s!
-> [  239.446611] RIP: 0010:native_queued_spin_lock_slowpath+0x7e/0x2e0
-> [  239.446631] Call Trace:
-> [  239.446633]  <TASK>
-> [  239.446636]  _raw_spin_lock+0x3f/0x60
-> [  239.446639]  copy_hugetlb_page_range+0x258/0xb50
-> [  239.446645]  copy_page_range+0x22b/0x2c0
-> [  239.446651]  dup_mmap+0x3e2/0x770
-> [  239.446654]  dup_mm.constprop.0+0x5e/0x230
-> [  239.446657]  copy_process+0xd17/0x1760
-> [  239.446660]  kernel_clone+0xc0/0x3e0
-> [  239.446661]  __do_sys_clone+0x65/0xa0
-> [  239.446664]  do_syscall_64+0x82/0x930
-> [  239.446668]  ? count_memcg_events+0xd2/0x190
-> [  239.446671]  ? syscall_trace_enter+0x14e/0x1f0
-> [  239.446676]  ? syscall_exit_work+0x118/0x150
-> [  239.446677]  ? arch_exit_to_user_mode_prepare.constprop.0+0x9/0xb0
-> [  239.446681]  ? clear_bhb_loop+0x30/0x80
-> [  239.446684]  ? clear_bhb_loop+0x30/0x80
-> [  239.446686]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> Signed-off-by: Ye Liu <liuye@kylinos.cn>
+> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+> Reviewed-by: Christoph Lameter (Ampere) <cl@gentwo.org>
+
+Thanks, added to slab/for-next
+
 > 
-> There are two options to resolve the potential latent issue:
->    1. remove the PMD sharing awareness from copy_hugetlb_page_range(),
->    2. fix it.
-> This patch opts for the second option.
-> 
-> Fixes: 59d9094df3d79 ("mm: hugetlb: independent PMD page table shared
-> count")
-> 
-> Signed-off-by: Jane Chu <jane.chu@oracle.com>
 > ---
->   mm/hugetlb.c | 13 ++++---------
->   1 file changed, 4 insertions(+), 9 deletions(-)
+> Changes in v3:
+> - Add "---" in front of the change log.
+> Changes in v2:
+> - Insert newline after && as it's more than 80 columns.
+> ---
+>  mm/slub.c | 11 +++++------
+>  1 file changed, 5 insertions(+), 6 deletions(-)
 > 
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 753f99b4c718..8ca5b4f7805f 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -5594,18 +5594,13 @@ int copy_hugetlb_page_range(struct mm_struct *dst, struct mm_struct *src,
->   			break;
->   		}
->   
-> -		/*
-> -		 * If the pagetables are shared don't copy or take references.
-> -		 *
-> -		 * dst_pte == src_pte is the common case of src/dest sharing.
-> -		 * However, src could have 'unshared' and dst shares with
-> -		 * another vma. So page_count of ptep page is checked instead
-> -		 * to reliably determine whether pte is shared.
-> -		 */
-> -		if (page_count(virt_to_page(dst_pte)) > 1) {
-> +#ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
-> +		/* If the pagetables are shared don't copy or take references. */
-
-Why remove so much of the original comment?
-
-> +		if (ptdesc_pmd_pts_count(virt_to_ptdesc(dst_pte)) > 0) {
->   			addr |= last_addr_mask;
->   			continue;
->   		}
-
-LGTM, thanks!
-
--- 
-Cheers
-
-David / dhildenb
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 30003763d224..5711d6d29a3f 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -3064,18 +3064,17 @@ static inline void note_cmpxchg_failure(const char *n,
+>  
+>  	pr_info("%s %s: cmpxchg redo ", n, s->name);
+>  
+> -#ifdef CONFIG_PREEMPTION
+> -	if (tid_to_cpu(tid) != tid_to_cpu(actual_tid))
+> +	if (IS_ENABLED(CONFIG_PREEMPTION) &&
+> +	    tid_to_cpu(tid) != tid_to_cpu(actual_tid)) {
+>  		pr_warn("due to cpu change %d -> %d\n",
+>  			tid_to_cpu(tid), tid_to_cpu(actual_tid));
+> -	else
+> -#endif
+> -	if (tid_to_event(tid) != tid_to_event(actual_tid))
+> +	} else if (tid_to_event(tid) != tid_to_event(actual_tid)) {
+>  		pr_warn("due to cpu running other code. Event %ld->%ld\n",
+>  			tid_to_event(tid), tid_to_event(actual_tid));
+> -	else
+> +	} else {
+>  		pr_warn("for unknown reason: actual=%lx was=%lx target=%lx\n",
+>  			actual_tid, tid, next_tid(tid));
+> +	}
+>  #endif
+>  	stat(s, CMPXCHG_DOUBLE_CPU_FAIL);
+>  }
 
 
