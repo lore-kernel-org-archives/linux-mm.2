@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6BE9CA0FED
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 02:44:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36D4ECA0FED
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 02:44:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2A0398E000F; Tue,  9 Sep 2025 22:44:04 -0400 (EDT)
+	id E37E88E0011; Tue,  9 Sep 2025 22:44:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 276ED8E0002; Tue,  9 Sep 2025 22:44:04 -0400 (EDT)
+	id DE88F8E0002; Tue,  9 Sep 2025 22:44:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0537A8E000F; Tue,  9 Sep 2025 22:44:04 -0400 (EDT)
+	id C887C8E0011; Tue,  9 Sep 2025 22:44:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EBD418E0002
-	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 22:44:03 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B79E013BAED
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 02:44:03 +0000 (UTC)
-X-FDA: 83871795966.01.9ADC7FE
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
-	by imf13.hostedemail.com (Postfix) with ESMTP id AE3DE20005
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 02:44:01 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=CzIHHQ8X;
-	spf=pass (imf13.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.215.181 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AE3338E0002
+	for <linux-mm@kvack.org>; Tue,  9 Sep 2025 22:44:06 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7DE3E59AEB
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 02:44:06 +0000 (UTC)
+X-FDA: 83871796092.14.B89E6D5
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 7C0A44000A
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 02:44:04 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=CVU2PPMI;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf12.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757472244; a=rsa-sha256;
+	cv=none;
+	b=vKb2z7258GiYoGDSQ/p9wWiivrBq6klqn5Dk74bOHIJmAxIe1LjiE/nweXyV9H3dRqLbPi
+	GC8LNfg5N5NJXMYmjkZekIMQQkLf3vnwutTUxTMOVs3XObMMg6D2EpDl3HSPhorJUTCYTm
+	2N/sVxhqOiXLcow8bfT1bUkgdncPjUU=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=CVU2PPMI;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf12.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757472241;
+	s=arc-20220608; t=1757472244;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=isRfEajvq74JD8Gx5JZkbk62qSgMtw6IJwcPrIolSGc=;
-	b=M6QggQNVVkuH5yhz+3HE2GsjmAObsmKkexHSZlC6N8kYEut0p4Exj2aYOOf6FNq9ZV/h2v
-	mhEJOs2hmAM+/eIzTTXRQD5jXpYjl+ChOSLYYXltCMuwKuUu3FVJSV7UyPPWb6YycuZYut
-	Y5rpVHwtP0L9VuVqF7TZZLLIfytGUyg=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=CzIHHQ8X;
-	spf=pass (imf13.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.215.181 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757472241; a=rsa-sha256;
-	cv=none;
-	b=mt46lBSjnEeksqgFFMl7LTqtevvNqnVhTegfD0vWTFoZ9PrsQ+eELDBPMF9jjE7+5AsacI
-	ymVTToBKuxFrjQPy2i+tac0FcwVQwTTPTWlHkyHMWAR3723J2RwYBY+xa0gp085D7XvUVZ
-	9NnYYHVdzOfZVYzFCQ6RhgRbtshseXw=
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-b4f9d61e7deso4013824a12.2
-        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 19:44:01 -0700 (PDT)
+	bh=0koFSnJrv2UowuMhMeqtiJIslvN7BbZv6mHXQ/mKo7A=;
+	b=T+jwgA2pHNRph3BsBhcPmUeEpMoLPMeLelz926xklvEOGPtqWKJrsII9LP0nGS06toE0o+
+	h//V+6J00CmetD6PkI2WaEMTqo5IqLX8faCoG051Wiu83hVJ1oJGDLrr//nVEFRZymZEy7
+	QeKSxZljwcOi67ww7tdjp+ECHTyRHBA=
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-b4c9a6d3fc7so3799950a12.3
+        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 19:44:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757472240; x=1758077040; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1757472243; x=1758077043; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=isRfEajvq74JD8Gx5JZkbk62qSgMtw6IJwcPrIolSGc=;
-        b=CzIHHQ8XTe93HAFCa3JaMRVMTRSfxdenlCqXOIExEJ90hF1tGY98jNXRY0GHeJ6XCj
-         YA6Fw48WKwOXyp2yVqFDtYX7JjdCIgdS4VYGBXR8rlytsgyETfUZ2AVObAA5rAmp2Bjx
-         WdZIhJPA+GYPUVJ3algxiS0NkMYnh0Zk1mJliejWUOPMGxKguMP0gfuxpzyxbxC3sj1u
-         vbyUGHyq1NQNUgkWModImG9C0YLiWnAf/aLUsnrn0IlwlOMTU1yhZJ8BdT7A9hfFfUhD
-         j7O4xvBd1mkgxEA58AQ6RVy32UY+q/SLd/oPoFpaCJemCCiCNV+hINPSEH5+CFtUdi0m
-         Wz3A==
+        bh=0koFSnJrv2UowuMhMeqtiJIslvN7BbZv6mHXQ/mKo7A=;
+        b=CVU2PPMI2vRs8w1yKYwpSTu5P3SSa+1tPJex07m/mo8GHTCTGb0oIU396E74XGNCWk
+         zTVqZvQhZelR8hxQbNpO0/Q8tiGc5WZzb2e/i2XYSovZiKoOCPirBiEIH3M32OaX2xUW
+         zupsSvkl1iWYYI5jdtnXXDGJsf/3UznMbSdTA0W3WF/Fe9+B4btIhYuA8RI2LrcMbVcD
+         OBJgT6Ggkwz3dWbynbg8eja8wlByCnqfOFBenrKFvpSsKwxKmzJ4ckR14Pb/0C5p95hL
+         4yEwnkTBMCGaFYOYvS0M7RD1VOToXlInyuGn+1VQhmdvmIqVAeHthL9iR6gmFRxJWwCy
+         L8DQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757472240; x=1758077040;
+        d=1e100.net; s=20230601; t=1757472243; x=1758077043;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=isRfEajvq74JD8Gx5JZkbk62qSgMtw6IJwcPrIolSGc=;
-        b=IlkpYRtkQItopM+A1hTtslLkGn/SXgOetw7/rzpby7lE9KTuYBA174sowW3rbkL78P
-         +vGyyPwG0+2s9kRwEU3Umq8HeVguiPdiAifxWghvDraMhv18djb7a4LdtURPuEFuxkEY
-         P7HZFBcCBdLJijeKZeaQUTnqudXPz2xbh8QIWF4qZXwuSXyMspDTsUpwPr0PsyQMpsbf
-         qOxZfSh4aaVi99AE2aYu5G5awWdHRMZZRi9xyBdW2JkChY2j0c2HceLUVzSiltSDDtu9
-         BznkkPZbuhhqYkfiiYkHRP/tHbAPnSsyuD9cbjvAh6ppozZTy9QQjZm4G4/afcvF8YSb
-         xwaw==
-X-Forwarded-Encrypted: i=1; AJvYcCW1sTUcQOkc0JYZI8XQRyGOuflU7SZETJy9UBapgPdZFngfDkXAM8cR+JxYV6UGIDv+AiPirWz21w==@kvack.org
-X-Gm-Message-State: AOJu0YxjCuKaHLZRjVXNEHuPIn7Oo7ugzIru1Y36NXnD3o4daybFd9YI
-	dpDnpBD4V5SF/cmQkJu12Xb0I26pEkQYXNeWS3OWSA0PiffpfLIxOsdx
-X-Gm-Gg: ASbGncusHt722F/M35FTmYS+OF52m9ESNPt6R1JIZMsRb2euM9FAstfTGDKHe3H1xWb
-	WzQEWk3AhX21pWhuthGXgBGys1wMfdvQhMLuOA4H17+vEnbe++D5jaDdISQNxnMPFw2S0nMg73s
-	//guCG0GXLH1C7y0MMVOg6lnFnaMaTsBkomfjjbtIuB9P2FcAZLvAAvjqgnLjZjL6hWOUAFRp6Y
-	/y1URh/iWD/B/SYFMfC2eNRduVKwVxKN3JFQKaWzaBTQsXTGTSw93lecRso4VbTfxBpEwOnKJSV
-	o7V+jRf9gt8Dha38z3oclfKivpKoNay0Ua4seQ12VfgrhNPyA1v2igE9jEKZIlSl+nHzCfAMM6l
-	3rWSTTXSW90auV8EPaMPiLKATiA==
-X-Google-Smtp-Source: AGHT+IFrrGtrsp5QApHqrAEsH4Lf99kNe3GTHl7qChWDynb5tQqdU4zGL9zb4NWW/Nh5w4cYNQSmBA==
-X-Received: by 2002:a17:902:c943:b0:24e:8118:cc2f with SMTP id d9443c01a7336-251734f2edcmr195946635ad.59.1757472240373;
-        Tue, 09 Sep 2025 19:44:00 -0700 (PDT)
+        bh=0koFSnJrv2UowuMhMeqtiJIslvN7BbZv6mHXQ/mKo7A=;
+        b=krbXRY5jlYV4ZT2j+/7ptDWBMlnQciutwh+Fl1urmfP+ytKhAOXEIPGzsCWVqglQOI
+         CljGo3fwqJ0FD2wkAYzoUs6rfaqDuNkJYPMqTW5D85KtOl0HkpO+BG69XfEHWHf7Zu2k
+         Q3MQRNzVDrwUSxktQ3AaETGO+IVAaJAdTL9SF5gX0bAZkxqxViFDphppZjkm4F83bt+/
+         2451cIRbONh60Eus6FkOaIeSOy0WGma54pjQUy2SDhOLJjvadIDewBhYvwVIj1QLV+mZ
+         36GkKUMbH7PSUFS9M6gqSAzdQDX6lMp0CekcXwKUHG6PNfBv3Zu5WqYrAJmNwrq/ZKOK
+         ASOA==
+X-Forwarded-Encrypted: i=1; AJvYcCUBO4guNkLj3HkSU2UYmytKdFDuGNIs8Pfn8xsyU3UEZaZzsOw9qGWypo2vUfLH3dhDGefrdEj3Vw==@kvack.org
+X-Gm-Message-State: AOJu0YzQ/aqljVMX7l5NSMg8Cz80M2t7cMXlgqz04wHSbZaw5juzk1EH
+	QjIWex+KiyPozfI4I7XPXfpSreiZgyvc+AzazrKlbxxF7QzPRlNNS74K
+X-Gm-Gg: ASbGnctZyf24Tw5oIDpFE4kSAgmtv35LNtTrW9IG/gNCDebhxxHRoz/jgNnhejq1PmN
+	64iyHJtOsxcdReuWVgGzGZtvHSTZV92Pd7yB4WcPfja4FGig8t/SRMP8c5vlIQlOnAQdWC+EFnu
+	1Mm/hJuN17kk6C4Ty/tos7iQVlredXOuMUyR3AImBv7gKn7NzCX56as45hJ+quNZS+f9FA/7/L2
+	+L3nGV4CJgytXhFNwjPs+b++gg7HwOaPwL0gkVKIXVOKnQaNq06fP223FcS2Oowqg3GJGTX1JXk
+	pMv1FXPBTf2nI7uGeQbNyBmWPi8zrlBL7EftAdDVtBi52d5DcvvbjJQ/s/Yk8h50kL9hx4lDezZ
+	X17Nzg20wk0mlXXeW/jpXKwEJ0DxhmUPGlRQ8
+X-Google-Smtp-Source: AGHT+IHze3NqUFgqDMM+sZM9Wi/Xmfyi7sD03WA5eGHes94PFV7I4KKOuKIIQBvLXj+TekGgIh8lMA==
+X-Received: by 2002:a17:90b:1e51:b0:32b:d089:5c14 with SMTP id 98e67ed59e1d1-32d440c5edfmr18323077a91.35.1757472243321;
+        Tue, 09 Sep 2025 19:44:03 -0700 (PDT)
 Received: from archie.me ([103.124.138.155])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-25a2ac085d8sm10840225ad.118.2025.09.09.19.43.56
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-32dbc1c467csm201563a91.7.2025.09.09.19.43.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Tue, 09 Sep 2025 19:43:58 -0700 (PDT)
 Received: by archie.me (Postfix, from userid 1000)
-	id 4B76441F3D85; Wed, 10 Sep 2025 09:43:52 +0700 (WIB)
+	id 3876D41FA3A5; Wed, 10 Sep 2025 09:43:52 +0700 (WIB)
 From: Bagas Sanjaya <bagasdotme@gmail.com>
 To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
 	Linux Documentation <linux-doc@vger.kernel.org>,
@@ -191,26 +191,25 @@ Cc: Thomas Gleixner <tglx@linutronix.de>,
 	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
 	Masahiro Yamada <masahiroy@kernel.org>,
 	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Jani Nikula <jani.nikula@intel.com>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>
-Subject: [PATCH v2 04/13] Documentation: amd-pstate: Use internal link to kselftest
-Date: Wed, 10 Sep 2025 09:43:19 +0700
-Message-ID: <20250910024328.17911-5-bagasdotme@gmail.com>
+	Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH v2 03/13] Documentation: perf-security: Convert security credentials bibliography link
+Date: Wed, 10 Sep 2025 09:43:18 +0700
+Message-ID: <20250910024328.17911-4-bagasdotme@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250910024328.17911-1-bagasdotme@gmail.com>
 References: <20250910024328.17911-1-bagasdotme@gmail.com>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=945; i=bagasdotme@gmail.com; h=from:subject; bh=Rg8Js/mQ+ji0aVDnd3uUR+wPkIV7f8cZoyAXSG+WzrA=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDBkHnihuCjbtUDpafXJnbOHtXRdvzJjhG/D0b9KEh6svl Jx1Ocjf0VHKwiDGxSArpsgyKZGv6fQuI5EL7WsdYeawMoEMYeDiFICJSHcx/FNfPsFU6huDt7vJ kh1V1uZRLxRT1SOqp3E8VV6+6XDdK15GhiW/r34XtloUdOCT982MLd7bz2VGXmhWZatxbn38c0u qDSMA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1135; i=bagasdotme@gmail.com; h=from:subject; bh=OYt2QegR/+u0q3CRKm7Zg38q7SY9D/3L6tdzv43Jflg=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDBkHnijWLH+uxHuD5TvzhcJo65MVRz8evf+ht/Kg8H3eu d3xR8redZSyMIhxMciKKbJMSuRrOr3LSORC+1pHmDmsTCBDGLg4BWAiXd8Y/pkdXvTh5u5HL7eU z3No81zweEv6gxSt+G/HWyxWsM1N7zjH8E/xHeNT5tNsutFpemIVy+M+5pasa5QSXynjZOFf2v3 OnBkA
 X-Developer-Key: i=bagasdotme@gmail.com; a=openpgp; fpr=701B806FDCA5D3A58FFB8F7D7C276C64A5E44A1D
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: AE3DE20005
-X-Stat-Signature: jrjkcm8yparycckzdbodrpnnxyg3h86f
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 7C0A44000A
+X-Stat-Signature: keockeyr1aogop4suw5zzgf6ft8k1gk8
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1757472241-354696
-X-HE-Meta: U2FsdGVkX1/Y/WiaFowzgsPy+wDpIZSXZv/sIwvL/V8GVCg+5WcVIYT3BdrVD+3yb92ZcRIKDMp0hwrcBi1swfp3rfOdPDPeRN8RWSVFGF6pjzc4hhx4Qz/hVacCEM2tDZklicxVNtOfZkxKwaG1vorygzD064AI39YWn1WPLc/HJeMQ5blKQi+BbNBd9+Vc/4s9ouRvJ8WuyqyAjsdaZUeo9JmeM2yVg6RYQGO9gH8S41BYZl9xVb4qWV5rj18JgH65iG3BGhz1K6V7Du29fO9u8EwQRY3ghoEh0IuCvhSb+hOSy3dX2H/jxDZLqkPdg+XR4cot79a5IkIfkWrWmfm6CD0F+y7jfy6AiMdmIvgk3rHU8iWtCV/AvqlYtlSat/Su9fBmXpCdvirROk2YUcoBrBIBOsFGAarFdvBE8ulGUUmFQ4yyvhPFAQQ6Q+pTUz44FRmy7hRZLsFmmYPQW7mOtugYcwvgpM5rWAwgMiaSWJkCEd7QuXTK1r2fNTlvpjayfC2/pLpaPbwbxK3fpnuvdQVHa7rTPmHZU3KTgRJZIrrQFRQEx9d9RWX+BOooTZJzflFdbe/ONn5AS2oinuZgUD99zU2dcnGerzW/m1PA7x0SRJ9eXqjTJQcNqH/Zt49WylQ94DPVocqjXENvRBltTrTpLoDqNbJDyefj4g4B6qiS8oEug0tpN/9EiITTaEjmmHcNY6NXEUGqVjTWWQWO7SlV4cNwjSLk1AMIgq2AlS3dJG3MgZjohkN7EASxdehMsUbRo8AKr+MKUsqdOCPQ8JpcVKMiesDKdmpWbFE8hh6b8NW69gsx9wL/THsdsGiv6urtslGnIH2mchOCO+aXu45AfrFg+YXFzJiKVLHzpr1gdXucD4YhZQ2JRSt8FCT/N95WyPJFDFBtbzXu7BfjIadVl5mcFQ5O6ARAZRYYabftAU4ld/+Y/Y77VGXNB6rWKLLQyrQyiWooBsD
- YLES3a2A
- vOO8oS4U/ZyXsDx3Sqff8eroEOLa83FVUWwTfi++AabcPd0/1FDszKPhswwd40QVhlkbW8BnKoaeUN+ewsdwQAW2CrYfI7Tff54HWGVR5tHEtGVw5SoHVCmE1vg0j1hsqf7fBQvlviZNqZebITCsJhJXCJTMr3HaEIq634ed+0uPhwlmuCcyLoKHLk32AWgJS950Z6QHlO2CjSXw636mcKgC4kn2ZKXBP/TR/PJrIHmPR92+6slf7lXCGGIrgnZmkM+riULY7Bdk4+ojBtnbzJyDegX1G/Rhk7FJZqHn3yCoi5y2GVfZMzLcIvEOp4Q1zKTynj6t1Aggsg2Dx2cjt9DyLrjxpFYgd2c/no3V5GovWuGB4yNm21dsm/V1Abp3d5PhvmhjSMT5JEji8bpUFM8TR6iJEUmRQKRyuIga1MV65soeBFx35D5f2CDwbFXrb6T+elEVlbmU1gyqmhAoErE62MDIvwTIThE+pDSPOB6TeMyQEjhOKqFuin26TDSKc2JE3u3tBdZnzy2pOueMizuSLaCOG+xnVESMPv6uLnH6S9c0QGTiv2zSoKaq6vTYZg0nA8NkTkvZAb43/v0xVZ0r1j0QjkWUOodjsxzCTs2Pr/g5PXE4HTYnz+KKP/tesD5kuN69Q7MJDmlfmcJRo8UxfBTSmGzBCrJncpkmOlXLUGgWdR72Ifz20UrNeADWuJU6iNtfUuAc7/KPONYWkEAP7lA==
+X-HE-Tag: 1757472244-520586
+X-HE-Meta: U2FsdGVkX1+TpY1MoYhs+EPf7EaM38pYmLvr2T+FI9a+e+vgY4UR7aR8Ev54kcj0Dz0e/8dsv4Hww+t0RJyXFO7wih94nyJBK5zKjXuRvKBhDGDAVudRY11QHJ/TkKutDR93Kmj8L8kuRVbEwq2X/j6BL4qm79xHnUsmbDJbPHjM/irxZ2Z4kfmoQ1OZVinUdK3JaY0TQfcdX1ceSK8bS4sUfujAa3sH1GD1WbGKy4rkrI1x6fVLVlZqvTnhCAbY079yG9krzFl/ZCT4aTqCrwR4wuHcZnxg+Vz6x689kcLoQOCFo1uLaJISORp/ZxKtLd9Z4E+hF6TrYuk0yCsiZxLj6ldkDRRcKY8Q+p4NIdQa0Xp4UeJBVFj1w3T5C9lWReql6iv1OD1d9z/3MjGVgiMdi/h4LexhiVnRL7M2vMVd+wtoqNsXfXRJ7sIsAH2TfgPw3MThGCOFb7fRGbcX0GF7tLt33mofSFYy8zNzHwLGSp1oxx0oVvIwtHftov6431Z4NKlEYVmV2VDH+zGw5WMFvNe9ASJiPfCj6b6QgYBupfUgZ++OEhaRubJhm54j6m8CD71eCRY226h79b3C90hPDT40roe1tixxm4MFfM0FRc5GAWlKtIdm2fNwEnn0v3Odg5/t3MLrP+BQDZKWIluDEk4n4ePqOhrGMyEtIhsDQ4IYo6YXSlW73U7T+KLEEHoM9Z4qZM6dSkw/pscGr6NH3swwPAw74ZEEa0zydEajLKr9GcrQS6dFnUD0btYh+D9Rudvdra8EhvXgFmYYNO9cBIvEWlW9K6FH+qZ1STpPjiD5a3z6nUjkJ/tjNucqCqd8uNwno7vaY4xgnAqgmxQDADghQmCzkuuasnR3wXFlo7Fqd6KtC+EGCiTG08FVePuUcQfE2cqNmJI5CGjOOhbPVHz18envBC46xX7BKiIKulxGLpVyrfHm313QfVP/5+MriQXPgCKHzbVu8B5
+ FpOWtUR4
+ yhNN1RAZRj2lKjFjiM8VHfWXvpjn+/s3l9IikVQHY8HfGVrpZ5d8j1osjs86JaAO0HssQAD3o/+/yl3egafpoL/ODfVZSHcUZ7gJ/t3SNspcbp9gBnGQJYYpsfQ7CcNm8zYvdPpjta//m7x+e1DzBP6xaauF7aQKCOyPfExXDY2KpkjPd+XT4NaACVXVGfORLbu3lm4WQ3GC/rr8GZv3WFVRCsG/R8EGAdxE5PrCzcfh3/TXP1JgxVZei3rmL2bx1q5bG/1Y1J5w25zJj/yBP/Gfs+UV1sYRx979tWIW9zWOXcdI9juIEuNPvBR+/CQJDBGz0U28R1FC8y1YbjAcdJKx+fv5MbyxXw++2NdeX2e0OidMGTCWIrIlHUUYrhkJyhwR1o3788XvIXC4rU8OWgkaYUfxRwD1hydYs18aE9BaEG+UGqoVOYcTB1KGBBHvdCuvy/U1e64QWZXFoPavfAmXccYNj5I7+swkdDcU2kHCYzMJIizNbZmj+6ZsCvj2IneRtFa6nF6t+HGKFJ8Fi7EriMZLh/DYfyfEbdQEtsZgrX8GHHo8K5YSkNkYgrSVQ89RmH0jFSl7o3hrYFJgoISMPONDwNO17sP8OTm+fq3LPiJSQCIfbodlHT2pIw90mHdr8XNDO4BP5NTkw+t2gMEM5VN2kOgNE5YaGveeF1OZYovkKtPxl3xhj/b7FbXb765lyR3mB/e+E1S/1LT4jZG6LeWG8qc1CqTv/R+fQh0tUbjn2eolmSeFoWZCjQynj0o50M+CKUvdlm/32E/3lNL00d8eQI6dI0UgyC4l83YkL0lqDDktgFFsJVTASe47G48fjg+mBY1AKRmKyzQRc36PDQT2Uz/LrDgaGS2I1opADp+9FH8hyxi3Z5N4QiyHgrq4M15cVbBeylBXQ7818EboQbXYvUflDo/ld
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -219,25 +218,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Convert kselftest docs link to internal cross-reference.
+Use internal cross-reference for bibliography link to security
+credentials docs.
 
-Acked-by: Mario Limonciello (AMD) <superm1@kernel.org>
 Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
 ---
- Documentation/admin-guide/pm/amd-pstate.rst | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ Documentation/admin-guide/perf-security.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/admin-guide/pm/amd-pstate.rst b/Documentation/admin-guide/pm/amd-pstate.rst
-index e1771f2225d5f0..37082f2493a7c1 100644
---- a/Documentation/admin-guide/pm/amd-pstate.rst
-+++ b/Documentation/admin-guide/pm/amd-pstate.rst
-@@ -798,5 +798,4 @@ Reference
- .. [3] Processor Programming Reference (PPR) for AMD Family 19h Model 51h, Revision A1 Processors
-        https://www.amd.com/system/files/TechDocs/56569-A1-PUB.zip
- 
--.. [4] Linux Kernel Selftests,
--       https://www.kernel.org/doc/html/latest/dev-tools/kselftest.html
-+.. [4] Documentation/dev-tools/kselftest.rst
+diff --git a/Documentation/admin-guide/perf-security.rst b/Documentation/admin-guide/perf-security.rst
+index 34aa334320cad3..ec308e00771427 100644
+--- a/Documentation/admin-guide/perf-security.rst
++++ b/Documentation/admin-guide/perf-security.rst
+@@ -311,7 +311,7 @@ Bibliography
+ .. [2] `<http://man7.org/linux/man-pages/man2/perf_event_open.2.html>`_
+ .. [3] `<http://web.eece.maine.edu/~vweaver/projects/perf_events/>`_
+ .. [4] `<https://perf.wiki.kernel.org/index.php/Main_Page>`_
+-.. [5] `<https://www.kernel.org/doc/html/latest/security/credentials.html>`_
++.. [5] Documentation/security/credentials.rst
+ .. [6] `<http://man7.org/linux/man-pages/man7/capabilities.7.html>`_
+ .. [7] `<http://man7.org/linux/man-pages/man2/ptrace.2.html>`_
+ .. [8] `<https://en.wikipedia.org/wiki/Hardware_performance_counter>`_
 -- 
 An old man doll... just what I always wanted! - Clara
 
