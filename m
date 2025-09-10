@@ -4,173 +4,172 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6505CA0FED
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 06:25:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CD19CA101F
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 06:35:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 294058E0009; Wed, 10 Sep 2025 02:25:58 -0400 (EDT)
+	id 62C048E000A; Wed, 10 Sep 2025 02:35:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2448C8E0001; Wed, 10 Sep 2025 02:25:58 -0400 (EDT)
+	id 603898E0001; Wed, 10 Sep 2025 02:35:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 10C518E0009; Wed, 10 Sep 2025 02:25:58 -0400 (EDT)
+	id 4F2B98E000A; Wed, 10 Sep 2025 02:35:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id ED8118E0001
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 02:25:57 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 700351A07AF
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 06:25:57 +0000 (UTC)
-X-FDA: 83872355154.21.BE6D61E
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 25CCF2000E
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 06:25:54 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=cg7m3Cy9;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=iOV1+cKr;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=cg7m3Cy9;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=iOV1+cKr;
-	spf=pass (imf13.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3CAF48E0001
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 02:35:30 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CF1BBC07BC
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 06:35:29 +0000 (UTC)
+X-FDA: 83872379178.30.A57EFBA
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf05.hostedemail.com (Postfix) with ESMTP id A9C8F100003
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 06:35:27 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gq3Websf;
+	spf=pass (imf05.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757485555;
+	s=arc-20220608; t=1757486127;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=07qaGY/DCprN/vlEhdxbAzLAPCiV8BYCMlpKQ+Zpf6c=;
-	b=q2e+yFO1gBuIL62etBjK1rDecOVc+A8Rm6s8xD+rrSZhd5bCVFIpwpvZJDpYShLPu/JVvF
-	+Z9totviqocP7hal16zHCBpnR4dqRLuLQlL+Vu/NfNZquAHM5dOGFnJtkfDkBMSQpXyyAt
-	qWfj7J7aCkbAAPzpb1pfdU6nl/brNzQ=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=cg7m3Cy9;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=iOV1+cKr;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=cg7m3Cy9;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=iOV1+cKr;
-	spf=pass (imf13.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757485555; a=rsa-sha256;
+	bh=1/tuWACW+YE3IQwtK7wyAuuhZean9mhQqCKf9VrtU6k=;
+	b=i/cMQtcgCnjNi+FIcSDT0wQg/h9F7UaS0TAuI28KufDvVTOku6Mdu7PTB2zjrfd74Zu/1S
+	7KAszVA3LC26Rf2GJ7nCxJBN2D1S2w8kcjpMv+371fHVdJyMUBG8PN7ajYGaDiWB7UwL2S
+	s5vJIQFCseEFHjj65lKjWb9/O09lmqc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757486127; a=rsa-sha256;
 	cv=none;
-	b=5C+oU8oG/hNvnAaRuXVcF3XBY+wqMqKPdukbxdCGnf420tAeeM9POvEQoyvUR+7V+7bHpN
-	ApUAvCcpNoDA18EQ/u19h2xLIGe0ebwKSsvDr2VkxnOfsYLdrJ1/M/FCtzi7o6MmKa2iOB
-	o103/wyBu6Vk0grVjBWhZB/tx9MG6Xs=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 6EE6A1FB3D;
-	Wed, 10 Sep 2025 06:25:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1757485553; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	b=k6Upk4z5F3x3N+IEkm58MINcfRQYr6H0YtWFiPDjuaV9Im2UdPo+alSZgT5E+nUJWMSa4D
+	c+rkf77ytiSzNcGps2bcQMzW99xBD+MebDB+tVtraO9ZDY1OiyI0d/CoxoRVfaTE5soKUo
+	D4UnWj7Do5+Wei356XhHheRJjFuKqCo=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gq3Websf;
+	spf=pass (imf05.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1757486127;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=07qaGY/DCprN/vlEhdxbAzLAPCiV8BYCMlpKQ+Zpf6c=;
-	b=cg7m3Cy9lqcSL8KvQHQDQh9GETomFJf8ewZhJtCCeIl/vac/IzeKQ+ddS+/G2ZWz+DTaWP
-	yBXW8vQNyxTU6zOOjblCyvamhMyhcE8jzspe1ZEjz2j9tCgMnXp79P38bSxNDifAQziIvQ
-	UgnOhog1eJRHUlmPjdF5mZWsMaxxVGo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1757485553;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=07qaGY/DCprN/vlEhdxbAzLAPCiV8BYCMlpKQ+Zpf6c=;
-	b=iOV1+cKrWknLvHXnlI/NH9f2BFgS0Z3SHytLtfGbf6GL8NIliBSHK3z9Ri1k1WOWqrjoIH
-	3RT3PKSYQYMaLJCA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1757485553; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=07qaGY/DCprN/vlEhdxbAzLAPCiV8BYCMlpKQ+Zpf6c=;
-	b=cg7m3Cy9lqcSL8KvQHQDQh9GETomFJf8ewZhJtCCeIl/vac/IzeKQ+ddS+/G2ZWz+DTaWP
-	yBXW8vQNyxTU6zOOjblCyvamhMyhcE8jzspe1ZEjz2j9tCgMnXp79P38bSxNDifAQziIvQ
-	UgnOhog1eJRHUlmPjdF5mZWsMaxxVGo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1757485553;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=07qaGY/DCprN/vlEhdxbAzLAPCiV8BYCMlpKQ+Zpf6c=;
-	b=iOV1+cKrWknLvHXnlI/NH9f2BFgS0Z3SHytLtfGbf6GL8NIliBSHK3z9Ri1k1WOWqrjoIH
-	3RT3PKSYQYMaLJCA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 24FF713310;
-	Wed, 10 Sep 2025 06:25:53 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id ovcxB/EZwWiYBwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 10 Sep 2025 06:25:53 +0000
-Message-ID: <ff28f071-f448-4f25-bea0-17db946e0acf@suse.cz>
-Date: Wed, 10 Sep 2025 08:25:52 +0200
+	bh=1/tuWACW+YE3IQwtK7wyAuuhZean9mhQqCKf9VrtU6k=;
+	b=gq3WebsfWBcuOA1kHiaGIppdVhz+Dezx6OK5cQFhuWUNeJ2MVZey1lK4th7UWHPfTJNvn1
+	+kCNhhwJlG8N3KVunnj2ajbClB3z7lJxByDl2sFKPLEsjhrSrVfNrXBmp5ELqyfOkBNyQB
+	8UuvBUGeEgieE1VBs5M/f3agq1aQ/vQ=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-642-UvJiHZ6MOU6hOKM8R8YlDA-1; Wed, 10 Sep 2025 02:35:23 -0400
+X-MC-Unique: UvJiHZ6MOU6hOKM8R8YlDA-1
+X-Mimecast-MFC-AGG-ID: UvJiHZ6MOU6hOKM8R8YlDA_1757486122
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-45decfa5b26so9053395e9.3
+        for <linux-mm@kvack.org>; Tue, 09 Sep 2025 23:35:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757486122; x=1758090922;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1/tuWACW+YE3IQwtK7wyAuuhZean9mhQqCKf9VrtU6k=;
+        b=Far23GLzJUt325ht/DyC+q6GMh8yjVzRx+zYPKtH5sG0ZzpmFoxrtyXjpJZqkFiP/J
+         h9gj2rKn+yNwF5gM4okQgCygIero36CQvXO/ZLvKjq5vDV54ukuNrIwi14jlZeXV3UyV
+         OPL8otNEeoUpWiLUdUqHJFr9/lO16/WiQ5zm0KYSBAU/ZHxvEwcn8KezCxADrtuNtqCb
+         rL7JhNQuRMY8Zh4uxJ82zsTiZqV/YyzyziqNB1B+7NshK1rSueuBk8zSLgSTAHL3Zugh
+         kSMCRFkh9Ndp9fZEoY14L/e44xfw44jQKeJahJYWgRe0o769aA9Y0fMViXAc+oNRFvjo
+         c2UA==
+X-Forwarded-Encrypted: i=1; AJvYcCW38pa79ACprqTC0MR5CrSkyIEqvj7/XFFH3/GR6kSSkWKUQRCM2bqCyLjV9658OqXoEdxkCLFo0A==@kvack.org
+X-Gm-Message-State: AOJu0Yw6iRpBHk5Vqlj3JjFw9ZU2UfTLto30ZiFZT9XTbAFVkhnOeZRr
+	LNOliBN+GvobT/vMf0eRK6CaB7YGh5dasibhI+giPW9duEXZ8RZCTqCG37I8GT/AXfVCKvqO8LF
+	aDeDeL/VZL1QD0cjJwXVS2vefC64JVFhCEK8q/LppCwXy3EZrkZ89
+X-Gm-Gg: ASbGncsXV5cSA0aI6lUmboaUvJp4tUDah+1MutTpvTBGkQG7ET9oBaTjlgPP2v6NShm
+	09l1IXtfujBKEbk2qJYy3EGeVpy9w8cYgXHagSc22B0Ps8DAyhr/HI5/3M6io6TXBE01YLsMsWU
+	eE1kCnzAnDjV1U4GjFuqqBKzAiX8fO65hOrqiMtUzBpUwjT/FJMpji+1IDsMN1cCr+MgnGhoFbP
+	y3prBEKKa60T+QsSj01gsz7ka1+kfjP1+K9X80fDAWMX1LRnDwU7FMLhMCRuSNe9AZgedpkXI7Z
+	GTIm6/iLKjlgbRru/2RD2kAsPJtsX8ZQh7jxGgh/1nADEMWIioUJKsdzH8nuJfZvhfLRfeGW3RB
+	iIU0rSXrXsIF9ZD2BleAvpwqy0FFufjWNSYVCdV+2fUqG1GbQARIn8lAMU+5U52odp5Q=
+X-Received: by 2002:a05:6000:420f:b0:3de:8806:ed17 with SMTP id ffacd0b85a97d-3e64211e36bmr15711707f8f.25.1757486121992;
+        Tue, 09 Sep 2025 23:35:21 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH1CLbthnqMg0JojmsnCmMzIo0FEhwz8DHkvvjIQ85wqRnbvrk5Vvm6brGu3SKd0Vt6WZPpqQ==
+X-Received: by 2002:a05:6000:420f:b0:3de:8806:ed17 with SMTP id ffacd0b85a97d-3e64211e36bmr15711680f8f.25.1757486121523;
+        Tue, 09 Sep 2025 23:35:21 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f17:9c00:d650:ab5f:74c2:2175? (p200300d82f179c00d650ab5f74c22175.dip0.t-ipconnect.de. [2003:d8:2f17:9c00:d650:ab5f:74c2:2175])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e7521bfd08sm5429110f8f.4.2025.09.09.23.35.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 09 Sep 2025 23:35:20 -0700 (PDT)
+Message-ID: <26a9495a-cee7-4db8-895c-aeb0f1784989@redhat.com>
+Date: Wed, 10 Sep 2025 08:35:19 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] alloc_tag: mark inaccurate allocation counters in
- /proc/allocinfo output
-To: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org
-Cc: kent.overstreet@linux.dev, hannes@cmpxchg.org, usamaarif642@gmail.com,
- rientjes@google.com, roman.gushchin@linux.dev, harry.yoo@oracle.com,
- shakeel.butt@linux.dev, 00107082@163.com, pasha.tatashin@soleen.com,
- souravpanda@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20250909234942.1104356-1-surenb@google.com>
+Subject: Re: [syzbot] [crypto?] KASAN: wild-memory-access Read in
+ crypto_nhpoly1305_update_helper
+To: syzbot <syzbot+634e67b3f57206befe3c@syzkaller.appspotmail.com>,
+ akpm@linux-foundation.org, davem@davemloft.net, herbert@gondor.apana.org.au,
+ jgg@ziepe.ca, jhubbard@nvidia.com, linux-crypto@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, peterx@redhat.com,
+ syzkaller-bugs@googlegroups.com
+References: <68c0f496.050a0220.3c6139.0017.GAE@google.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <68c0f496.050a0220.3c6139.0017.GAE@google.com>
+X-Mimecast-Spam-Score: 1
+X-Mimecast-MFC-PROC-ID: XWQZZK1RcUkXUeC6Wm0wxUo-1NuAay5y4Nr13OSNnDU_1757486122
+X-Mimecast-Originator: redhat.com
 Content-Language: en-US
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20250909234942.1104356-1-surenb@google.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 25CCF2000E
-X-Stat-Signature: hgw8bwne4u86gcw97w84k58scwf9raob
+X-Stat-Signature: wqeityo8n8mqxx6ammbuugruaqgdcpex
+X-Rspamd-Queue-Id: A9C8F100003
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1757485554-864267
-X-HE-Meta: U2FsdGVkX194VXeAjTSbLOwr3xM4ZSYseIN2XeoMaL9u9vLRoF+zTiH422Mszd4q/PVqsjPLeegEMCiZqYxfbEaS/GLWHV6p0PA2Xvl0T9xlOXd4Xu1WOc1B3kANUNQtCQl+ZsxhHBVRqrUoc9vmCEYS3WrpSj+GV6CkhXn8haXjbHZr6kKcAHWpFO4it44pbwjY4YCvGBLGbXIE7Du3GF1wfecepD/8RFm9OJa8WtPuyTxfGEx/K6L42TUzwenwl8jw/piISYFPH8snHejW1NwhRwYkCOIkyEPeUXJsU1ZE6gtfv5Aark7WARfrBWLJUVMEOyG2FzCQGrRxG85dP4rsczRnpu//e1WaVQaSJEu/1/UhAP2EMyQ7IovEf0obwAOkSvAoULWSFfKlW1QvaOfnjPwwCW0e6Uw9IDHckOAKJouDAQkJedM/nFY1riKKQF6pdrd9HpvLsAmg3dnxaMwuc9skicCtFT3LeRgvgpqtX3PuujoWMCUKvrCCK9mHbfEJ37RcoPhCdB8d8HftUsfqLTpj87Cpl+/0D25ug2i2ceyRvaNl3VnAwce9xpQF5bo4SqFzBJq8mh4WVbhnICNkmXcEauwn7Qk2lNEa8ayvw3gwLo4Tg8gN/9KPm4XrKn8PLY2rqHhV4zfgPdBpBhiRU0HoU0smb8kNQo1ZyCCx5xccZQ6Lc4NpGm97TyNuMwkyZzmjJc85TzT/d+/JI17rPZBNyKZq4pyJ3zAnivqSHDkKzmIwLhXclQq+hyXXvgFGLd5+y/VsT4opcE5jgwElnovMbSgQQVb0l4YO8qO4lcWJNcbKenL+H01w8JQCpZFUgDtdh6ZsD4r0f25elN5rMhvQS5GnU+XFc3Q57BFcpDMWMqLvN2RlKRLreM3UQc04zhzNyM9FxIRqK6CNYsM4jkVpB85F82Gx5oMFMrfxr0/Dv2x1KJTVbWU/AhMxuZNhRTwzUAdV4CdOD9z
- hFQQ+5iM
- uZSGyo3XVmIfJWOOW0qZ2EEcKA9sSnKArgVDfqfwVUtTeJbRswJceA62/9uAwfmxgYNID5LqklmyDwQ0mLJ9kU4BtvwqwrqUWScasHfQOC+bLDxkVBQL+FmcO+fHxtnAM73UJ/UYJYqs8H4LlB5xOkfZquRfPfMqEAny3ozHWh88Bxr+O1n0bw+iRaDmHeZjleQfCbswci/ZeGQ/R45i36MgcHEQBKmF5i72kkZgw4eSI4N3CWkb6E6tjgwsFBYr4TIl5oc8DLnnxZLnuVKMy7iLGOJ0Crj+bPY7Xh1XJC5/lQZzu8SgKs0T63g6EAve3TdCrURuN8yqilMby8kBfROM54bG6By+N7vuaI1RJIrQ94Bv5PPiUP/+BoMz92HxrtMtoGfIfy9L2eagLJ4+4IrK6hdgxte2hMEyd
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1757486127-289826
+X-HE-Meta: U2FsdGVkX1+LgcyjmGh/BIXmtjicfHez50CVrQWu7TQ61Z/R+soEYDWCCxqZFDe8JfPtwZLYhG6SB+llaZIPyC8tOUK2kQsZ/k802ZqyMFs2wMKHmsDEQA/zc7hxZMDKGb/KB7d6QNZqVcJYh40JYAnClDqo6ozhTiz8qy3YOEdOtuYy17M4WzijNPdLanadRYUO/NwK0Xg+iJPpTrd9xKWEFaTF5N6pbL8I5iwGPXJdPClVr8nBMf1vns7qmTxHmh0Rr7bcNPcJuhdd7tYjQ+22sZzcmF9k22J3i1G8uJiP7HBmM5z8dfDN3JJQsMZlqQsT1uvHH+AHh1xjF021IjTrkr6QdBN9iGH7kVVKXAZn8vACBfeT5+uS0fZDVv7Yl1pXbvYxxLPAoM7HybJuKfJQ/dfj/8nxotOIcvZrMEtsvdscweKwp/AR4syqVb3wqtVssPzFrQCl8AfRzp1/9N9tFCFSi4Pqrwy0dKrrN0qUIDzL4jk38Gnq9qa4iGyqyKlaDHgKlyslzkn9x6gMpqW4tRCnIU/pg26X1TrtpXqc4ByFU2pNhrVKd33fsfjYo180Vgb7GEkFMjNecS/Edel21D3pOsXpkuPWfw+lTOOKyEctPxAIQLxyXbdfefqpjWspfuQqDJPSVY2g8TzBtO5M6wNcrjLKOC8s1fhQBm+Uf8pIVFi7FiDE3eRBO9xR5ryNNaMS79D/EkeCoaqCBH1Quxz+BISoSXBnLZDzFme66AfZij876hGfY7L8PA5hgJ880e6r8DNpMxe9w/7ybb03ygrkMbb/SBCqfOnYlc12Wa8Th8KgUl+WafZ7ABUe8hi+YVT4Bv4K8lJdv0JmEn/Cez0n2nNLVMuX9NZomVF47jwxtmayypOhhmdSBm3/nHgdNOzmRPa6QDn3EHeNhO+eWK8QFaXB4RkUWWJYS1uEMYJlkUaKvnEsn1bXdQc2bDgPPCytX+Tpuy/M/SM
+ xj780tEH
+ TqWAZUbcnuhxtt57fO8sRANvXu5OLE97MRVtoh7dJt3iaxmEzq/JvrHezctrWqGuYP7ktj+B/TJR0jN0HJJPMSIsFSN18F7WHQdL3/0i6Ed/YJgdEFmQgZU8VTuXo75egC2Zdj3enlAVc3vL1jAjSLRVqU+BzjEfMgdY7CX+mWhIs2M/fGtyJqErRMuaKvWdl+MF87pVfIORs1m5OUT7eYfAfU/pm31qCOLu6q23KLtDii0UlaM2PqLRexdWZbig37KMpISQVIgxVDK+R8BD68uJH9zjvQchxoWvOGZ/9YstLB8WGQijFUvS5fG4Twxgk5giWbTePskoUG3RQkYUfQbd78A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -179,135 +178,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/10/25 01:49, Suren Baghdasaryan wrote:
-> While rare, memory allocation profiling can contain inaccurate counters
-> if slab object extension vector allocation fails. That allocation might
-> succeed later but prior to that, slab allocations that would have used
-> that object extension vector will not be accounted for. To indicate
-> incorrect counters, mark them with an asterisk in the /proc/allocinfo
-> output.
-> Bump up /proc/allocinfo version to reflect change in the file format.
-
-Since it's rare, is it worth the trouble?
-
-> Example output with invalid counters:
-> allocinfo - version: 2.0
->            0        0 arch/x86/kernel/kdebugfs.c:105 func:create_setup_data_nodes
->            0        0 arch/x86/kernel/alternative.c:2090 func:alternatives_smp_module_add
->           0*       0* arch/x86/kernel/alternative.c:127 func:__its_alloc
->            0        0 arch/x86/kernel/fpu/regset.c:160 func:xstateregs_set
->            0        0 arch/x86/kernel/fpu/xstate.c:1590 func:fpstate_realloc
->            0        0 arch/x86/kernel/cpu/aperfmperf.c:379 func:arch_enable_hybrid_capacity_scale
->            0        0 arch/x86/kernel/cpu/amd_cache_disable.c:258 func:init_amd_l3_attrs
->       49152*      48* arch/x86/kernel/cpu/mce/core.c:2709 func:mce_device_create
->        32768        1 arch/x86/kernel/cpu/mce/genpool.c:132 func:mce_gen_pool_create
->            0        0 arch/x86/kernel/cpu/mce/amd.c:1341 func:mce_threshold_create_device
+On 10.09.25 05:46, syzbot wrote:
+> Hello,
 > 
-> Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
+> syzbot found the following issue on:
+> 
+> HEAD commit:    be5d4872e528 Add linux-next specific files for 20250905
 
-Here a link might have been helpful :)
+^ old tag
 
-> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> ---
-> Patch is based on mm-new.
+> git tree:       linux-next
+> console output: https://syzkaller.appspot.com/x/log.txt?x=10f70962580000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=a726684450a7d788
+> dashboard link: https://syzkaller.appspot.com/bug?extid=634e67b3f57206befe3c
+> compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1247a962580000
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=12751134580000
 > 
->  include/linux/alloc_tag.h | 12 ++++++++++++
->  include/linux/codetag.h   |  5 ++++-
->  lib/alloc_tag.c           |  7 +++++--
->  mm/slub.c                 |  2 ++
->  4 files changed, 23 insertions(+), 3 deletions(-)
-> 
-> diff --git a/include/linux/alloc_tag.h b/include/linux/alloc_tag.h
-> index 9ef2633e2c08..d40ac39bfbe8 100644
-> --- a/include/linux/alloc_tag.h
-> +++ b/include/linux/alloc_tag.h
-> @@ -221,6 +221,16 @@ static inline void alloc_tag_sub(union codetag_ref *ref, size_t bytes)
->  	ref->ct = NULL;
->  }
->  
-> +static inline void alloc_tag_set_inaccurate(struct alloc_tag *tag)
-> +{
-> +	tag->ct.flags |= CODETAG_FLAG_INACCURATE;
-> +}
-> +
-> +static inline bool alloc_tag_is_inaccurate(struct alloc_tag *tag)
-> +{
-> +	return !!(tag->ct.flags & CODETAG_FLAG_INACCURATE);
-> +}
-> +
->  #define alloc_tag_record(p)	((p) = current->alloc_tag)
->  
->  #else /* CONFIG_MEM_ALLOC_PROFILING */
-> @@ -230,6 +240,8 @@ static inline bool mem_alloc_profiling_enabled(void) { return false; }
->  static inline void alloc_tag_add(union codetag_ref *ref, struct alloc_tag *tag,
->  				 size_t bytes) {}
->  static inline void alloc_tag_sub(union codetag_ref *ref, size_t bytes) {}
-> +static inline void alloc_tag_set_inaccurate(struct alloc_tag *tag) {}
-> +static inline bool alloc_tag_is_inaccurate(struct alloc_tag *tag) { return false; }
->  #define alloc_tag_record(p)	do {} while (0)
->  
->  #endif /* CONFIG_MEM_ALLOC_PROFILING */
-> diff --git a/include/linux/codetag.h b/include/linux/codetag.h
-> index 457ed8fd3214..8ea2a5f7c98a 100644
-> --- a/include/linux/codetag.h
-> +++ b/include/linux/codetag.h
-> @@ -16,13 +16,16 @@ struct module;
->  #define CODETAG_SECTION_START_PREFIX	"__start_"
->  #define CODETAG_SECTION_STOP_PREFIX	"__stop_"
->  
-> +/* codetag flags */
-> +#define CODETAG_FLAG_INACCURATE	(1 << 0)
-> +
->  /*
->   * An instance of this structure is created in a special ELF section at every
->   * code location being tagged.  At runtime, the special section is treated as
->   * an array of these.
->   */
->  struct codetag {
-> -	unsigned int flags; /* used in later patches */
-> +	unsigned int flags;
->  	unsigned int lineno;
->  	const char *modname;
->  	const char *function;
-> diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
-> index e9b33848700a..a7f15117c759 100644
-> --- a/lib/alloc_tag.c
-> +++ b/lib/alloc_tag.c
-> @@ -80,7 +80,7 @@ static void allocinfo_stop(struct seq_file *m, void *arg)
->  static void print_allocinfo_header(struct seq_buf *buf)
->  {
->  	/* Output format version, so we can change it. */
-> -	seq_buf_printf(buf, "allocinfo - version: 1.0\n");
-> +	seq_buf_printf(buf, "allocinfo - version: 2.0\n");
->  	seq_buf_printf(buf, "#     <size>  <calls> <tag info>\n");
->  }
->  
-> @@ -90,7 +90,10 @@ static void alloc_tag_to_text(struct seq_buf *out, struct codetag *ct)
->  	struct alloc_tag_counters counter = alloc_tag_read(tag);
->  	s64 bytes = counter.bytes;
->  
-> -	seq_buf_printf(out, "%12lli %8llu ", bytes, counter.calls);
-> +	if (unlikely(alloc_tag_is_inaccurate(tag)))
-> +		seq_buf_printf(out, "%11lli* %7llu* ", bytes, counter.calls);
-> +	else
-> +		seq_buf_printf(out, "%12lli %8llu ", bytes, counter.calls);
->  	codetag_to_text(out, ct);
->  	seq_buf_putc(out, ' ');
->  	seq_buf_putc(out, '\n');
-> diff --git a/mm/slub.c b/mm/slub.c
-> index af343ca570b5..9c04f29ee8de 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -2143,6 +2143,8 @@ __alloc_tagging_slab_alloc_hook(struct kmem_cache *s, void *object, gfp_t flags)
->  	 */
->  	if (likely(obj_exts))
->  		alloc_tag_add(&obj_exts->ref, current->alloc_tag, s->size);
-> +	else
-> +		alloc_tag_set_inaccurate(current->alloc_tag);
->  }
->  
->  static inline void
-> 
-> base-commit: f4e8f46973fe0c0f579944a37e96ba9efbe00cca
+
+#syz dup: [syzbot] [io-uring?] KASAN: null-ptr-deref Read in io_sqe_buffer_register
+
+
+-- 
+Cheers
+
+David / dhildenb
 
 
