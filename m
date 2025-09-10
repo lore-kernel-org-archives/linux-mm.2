@@ -4,105 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C113CA0FED
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 15:16:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8B43CA0FED
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 15:22:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A9DD18E0017; Wed, 10 Sep 2025 11:16:30 -0400 (EDT)
+	id 3F4EB8E0022; Wed, 10 Sep 2025 11:22:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A4E3D8E0006; Wed, 10 Sep 2025 11:16:30 -0400 (EDT)
+	id 3CC6E8E0006; Wed, 10 Sep 2025 11:22:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 93D0D8E0017; Wed, 10 Sep 2025 11:16:30 -0400 (EDT)
+	id 2E2308E0022; Wed, 10 Sep 2025 11:22:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7DA9B8E0006
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 11:16:30 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 33BB8160957
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 15:16:30 +0000 (UTC)
-X-FDA: 83873692140.11.715BBF1
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 23F0320014
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 15:16:27 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=none;
-	spf=pass (imf13.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 1DAEE8E0006
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 11:22:33 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9479313BF6B
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 15:22:32 +0000 (UTC)
+X-FDA: 83873707344.07.A376033
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 558F41C000F
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 15:22:30 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=TCx6kk20;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf18.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=mhocko@suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757517750; a=rsa-sha256;
+	cv=none;
+	b=jr7sTzA2kIo71LyTeru54UxI4bbFlsWQCrEZXTo9MsaNG3BpZOlCurdqmFoO79TyAGeLSo
+	8/EglVTAHxa+w5QFupuiAChn4nMfJXbB2rsw0RPZVzrwS11nIY05k1+S3EtDXNwqcRHGhN
+	1E3DqG6LY8W81KMUHq0GeaGjPrhijR8=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=TCx6kk20;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf18.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=mhocko@suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757517388;
+	s=arc-20220608; t=1757517750;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nmKEgDDDv5jHwALQIQWP1dQM1C3WliCJzN4vuebfqtc=;
-	b=Dbxus97IhK91qihJcpxR5+fl55iE1DAzCycKO0ux9JmI8GNI14KMfQchxI7iaWv9eu5YhB
-	oY5kkX5fhg/Khos681YY1AQG45KTT7R1dQgS+3aagYr7ojIVYHEBP0YYj1oiNN9Hto+DNN
-	7emnV9qnx/0+Hw0aN9Sa9JlRnKn0MgQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757517388; a=rsa-sha256;
-	cv=none;
-	b=uSnVLQAca6xcQZ4k+SdU9Mv9i1BMrBJ6Q/wtgOBYggiAB1SlBuQ4Czitucl5x9AA8zvT+F
-	jIadOKx7yC1Gx/6MlKMB5DpVwQbP/DCjKse6mio/kr167V1dXaiOji+3M6jsrEy6TlVF2w
-	zMzxFX5HZ/lww/4oa4e2gWyAIf7x3Fw=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=none;
-	spf=pass (imf13.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AD96716F2;
-	Wed, 10 Sep 2025 08:16:18 -0700 (PDT)
-Received: from [10.57.67.148] (unknown [10.57.67.148])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 99AFA3F694;
-	Wed, 10 Sep 2025 08:16:20 -0700 (PDT)
-Message-ID: <9de08024-adfc-421b-8799-62653468cf63@arm.com>
-Date: Wed, 10 Sep 2025 17:16:18 +0200
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=2Q/qIKqTt/TeHwEAuPNWMb+Opu1b3bhXOvxk1BCU0qY=;
+	b=QyEJGoobf9F/NsL2nVSJctp194Vu7rzWtaA/uCEpebTK2cXwMKzdspdNxiuyKPTlO08SKX
+	U5l0OFMvD+h8FwSBHuVARmAoUxMsn7fekXKUExtSWMnudD0l8Tzx7g+yzWWHt87NOUhEXT
+	/dVjDS41+pU46NkHYfm0gr1oMK+0zKw=
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b0787fc3008so148086266b.3
+        for <linux-mm@kvack.org>; Wed, 10 Sep 2025 08:22:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1757517749; x=1758122549; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=2Q/qIKqTt/TeHwEAuPNWMb+Opu1b3bhXOvxk1BCU0qY=;
+        b=TCx6kk20/xx6+iNyw8/vkR9P5/EUX7156m9d/hHaOub9dBDIQkVSL9zEX+JzV7EnUa
+         1gZovga3jkbvHvPGyXbUgX+csUOrTXd41jMVOBh0gfFI9JBfH9TyCtnnxYxUjp7Yw41L
+         IfvK58Qu0HSltt4LOm/43iKFfAFI7vAvfncQyy1giODEJDgrQANFJ4kn7ILmHBtBE+1e
+         HzuYjqioqRb1Z5o1f+/Kh1PTfbVXIda8b8VTnohLEMpt04QgkHn2ve9kPbrfh2T2DOXr
+         /UwXw2BuNdGQXdwuT9OzWKBrN6DsIWhWTAJAIFR+nz9czC+uiiSx4/RP0tfpE6tefvG/
+         3FIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757517749; x=1758122549;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2Q/qIKqTt/TeHwEAuPNWMb+Opu1b3bhXOvxk1BCU0qY=;
+        b=K3EZdzpcINhZahuftNUH9gjnCBMGfT4Ylvrrym6NDKDdGDlw/WvVAiQAYqvDUEKZLj
+         4zjk6wkudNIg80GRqBt3/UGZ9pJ2OqYnPJiyJu2oCLm1zCRhZRE4d3pdwKjTQTIPbzbq
+         IWUnQhn1RgsFx9ikq3A3zFfInh7enttiol66bZEnzcFpABe6SIaPoNSVQsrh+/4uLNrm
+         YzSlWCaWsfpxCvgUZ0mPmnEGWi+HLfMO6T6jEF143boJYF8M3EZsBtjI0iqP7fXH0k1+
+         3GXk9/hoFfTF0TU9iJE4DdYjY5VJ0D2A57lZ2AyK7jBbZtbVnY8v4L53FNCxVP2K9GBm
+         dc0g==
+X-Forwarded-Encrypted: i=1; AJvYcCVgmXrFK7hR/NtYn1/ELS3R1MEcj/cyaxC7zIMVwzu72wQlADfdsNqUnmsn8M+3OO+zZJFjjhy4qQ==@kvack.org
+X-Gm-Message-State: AOJu0YyF5l2VgCzGLVTuXofP+DYRQSW/Mam76irtZATS4M28irexguIS
+	omxBJlc3Zvl+xdD2ry2QkqT5xKbRREaF6qYS+gi/Xm8Zxug0JWzZ1UD35BMz1E0rY1k=
+X-Gm-Gg: ASbGnctPECOzu5SQgYhBzogEoDaqknQ63C4qmUH3gXUgHad6CFokTZv7WPklXenrOfB
+	2VXpczsDgZJafYWOquFYHAAAJDNjbuZFY8CsjZrdrp4a92aCoVNhkEkMa4Tt7Ly65b3IMptCbSh
+	jnrVm9p9GmH1Lg2vld4BPplgQESm65arSx5qFspBlDrgZ53PV1JcXFZn6iw6wtWm/XSqXxeic7u
+	3PnchMmnYSHf/6FiRTJ6+gVDuj6q7a6RzljtWHknB09GY5gDMhab2BYF/QNSDFw7RbsJYFG4eIx
+	gRmUXCrR6oHHz0tHXjZYum4NmTdCebA2e4SdL+YdIeIbPBHoFv1Ii/mbuJ3lqQZtGqrSbrbBs52
+	J7g+Y5LUXbQ3HDp3sw1nNfCNJNX1yYfLkF8My8SQp11SpPBGMR8w5gmw=
+X-Google-Smtp-Source: AGHT+IGu1RPgfzvjjZxcEkpx1Cu0aX34wfa0rbwgT6cXKfY+5y9LXUr0ynjlTUCJ2SRrzExxIqoXFA==
+X-Received: by 2002:a17:907:6088:b0:b04:48c5:352 with SMTP id a640c23a62f3a-b04b13ca12dmr1500001166b.5.1757517748203;
+        Wed, 10 Sep 2025 08:22:28 -0700 (PDT)
+Received: from localhost (109-81-31-43.rct.o2.cz. [109.81.31.43])
+        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b078e361902sm110599966b.67.2025.09.10.08.22.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Sep 2025 08:22:27 -0700 (PDT)
+Date: Wed, 10 Sep 2025 17:22:25 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: zhongjinji <zhongjinji@honor.com>
+Cc: rientjes@google.com, shakeel.butt@linux.dev, akpm@linux-foundation.org,
+	tglx@linutronix.de, liam.howlett@oracle.com,
+	lorenzo.stoakes@oracle.com, surenb@google.com, lenb@kernel.org,
+	rafael@kernel.org, pavel@kernel.org, linux-mm@kvack.org,
+	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	liulu.liu@honor.com, feng.han@honor.com
+Subject: Re: [PATCH v9 2/2] mm/oom_kill: The OOM reaper traverses the VMA
+ maple tree in reverse order
+Message-ID: <aMGXsenuvA682-Dc@tiehlicka>
+References: <20250910143726.19905-1-zhongjinji@honor.com>
+ <20250910143726.19905-3-zhongjinji@honor.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/7] mm: introduce local state for lazy_mmu sections
-To: David Hildenbrand <david@redhat.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Andreas Larsson <andreas@gaisler.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
- <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "David S. Miller" <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>,
- Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
- Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
- <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
- Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org,
- Mark Rutland <Mark.Rutland@arm.com>
-References: <20250908073931.4159362-1-kevin.brodsky@arm.com>
- <20250908073931.4159362-3-kevin.brodsky@arm.com>
- <d23ea683-cca4-4973-88b1-4f6fd9b22314@redhat.com>
- <ca2054ad-b163-4e61-8ec4-6f2e36461628-agordeev@linux.ibm.com>
- <e7acb889-1fe9-4db3-acf4-39f4960e8ccd@redhat.com>
- <2fecfae7-1140-4a23-a352-9fd339fcbae5-agordeev@linux.ibm.com>
- <e521b1f4-3f2b-48cd-9568-b9a4cf4c4830@redhat.com>
- <47ee1df7-1602-4200-af94-475f84ca8d80@arm.com>
- <29383ee2-d6d6-4435-9052-d75a263a5c45@redhat.com>
-Content-Language: en-GB
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-In-Reply-To: <29383ee2-d6d6-4435-9052-d75a263a5c45@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 23F0320014
-X-Stat-Signature: sg1yftd3tc559sfde4t3h9g5dom3qyk1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250910143726.19905-3-zhongjinji@honor.com>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 558F41C000F
+X-Stat-Signature: ryxbwzcj73uzr9sx4dg8x6zh1f4m3brm
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1757517387-970089
-X-HE-Meta: U2FsdGVkX1+9+KxcGd39YF+++gopnqsb5Pxmd7RaL2B5wbnuG/3SZXMaWdRJBywrzaZK0ki9+VNT0u5NCV85iQmRvzQBDouKNDz/GxBobVt2B8e0ktwytImuoC6g/ddqMoMVnqoMVGSUSMbO/x3wZQoO72eMvp40gkMvQZ5a6RbHABLyaViHcyouPZ78NN8sdQZxzGQrWoxMeaK74I48NXYjlOrRRSR44y1Pv0IB6tGvEQT+ieKWyxx97PI1wipFvI1zxtSQXOlZutihUls+0ap+dTMI9fUkwOPcaLepWLgMrVgGMlmpHbT3YmBHw+n7UsYuf80uEFEPn3LuixWkZS/3JXuk84C0E5vJIDXlX910MLQ7d9TkqslG7dpfNagS+kyzZDPR2n9aOGUO1wWfVBUTuQsCPA+FAi0jS1j7YaRbCRw/vIf1znVlXuM4hiBcni7HO5kUoUJurYKo0D5TudfKqiVJMMLO6i2lexpKUros5XcPE15Ko046JcxCWcfcFiJxA/m/eyvDzXsA8F1EOCOQJ8twZKjtB7wtK4UDKWTubFcKlpJAvHshhTgGQ91WoxfKQecOvLRnJdnsjT4tvby5utK0eKCyLsQE1ILkBv+G/eNqS+do/fnAS8lV95033nMH1jFjhY2lWJC5VHWodhwsEjuxGe9JWYVoXnj2RmZe+cizB9pgVitYaPxQhEFKGKN/dsvsbNRO5Vr8oSB5kv0l3vxFe0W7ObCVjZY50N2f+FV4iTDB7s8ZPml6QSVFUpVbuWt+itAvz7caDRIkRYc3I5gicndGO4Ap46uaAJcpQgNjkyOkPnKpjIxwaRW48qfR3nbGgE8wzo0PYrjSMcJz3IHQmLyyOzYTwMm5KeMMmjpl2mlbOAzIVl24m6jGoJb3Qopy7k8=
+X-HE-Tag: 1757517750-736768
+X-HE-Meta: U2FsdGVkX19osSvT5dWT+T5QlUAoo0+Ff6p3uHD55pjWQACoH4jz3UL2s3FNIz6gryM0ScFJ2UR7/1ix4svpEdieEEbTJjCAsVB6pSj984H/xlPUsGO/yHdMBq1K9ArBhsN1wPM4f8oTi35bbOYBQBAFQWFsInoVJ8JvhO9ScpX8+4a0qlLWhHMgZbs9pccuPQSu8flx7dUkKP38P4BlShFArLTZyszQtmX78jc+o/2tEaFLpkvqCoN6aAU9YWrbf5LXgcRbruEGGIaXajNEo9N065I6l/P27mMJkpmrlETj2pT2JJ47Z0OE1eOsOp2zN1eKCF5gPHEkvrDPJGLCRtfhrGMD1ElAKz71EJAuxtPSV8ghQ6ytaugcu65KmblMe9x8rkRzhGJpFZLI2571VEdaxZG+glS/iKcTLm31TO0t82pSDyzKGR3CK/OGeSM/Sk1BsfqmV9yJsM14FjV6G3uJp5dONKbpeeoQ+hbadKs6kzjUWxtwpLF4KpLmac4ZmzOJR3dicpK7kNFNeEcuLx6KUA523fRdZVFOgP4mcWLJ0U9qRp0QUfxcS64KXQOyM4vgXyewcgbi09VNuVoMqd9y4xKhO/rb51Wn3ivZFFWNL67YqEhbqdaYN+a0fx1I2GWoor2zgBCtt3rO3Lem+Ih7xSran3Ea7JLbdh8TQUX/ompbO7L2uvWsuoUww6kQKRCifIOMedNDnw+nLc+InfoqhH6LiJlZNnmRF/jdWbn6nxFiVzC+waY2ZSPhTVZyy/f6iUdbrJ6lSUI+GN7IrldT1plOFj4f72SdVohKyySQuLdQtjAmmoe4gIeCPZjalU3Mr8hoZGwpi0taoMBFqvvbmE/yf857Dx2mgC2DFSrgZlfUl/oveKTiahq60z6unsu7R4sQCuXE2i6tLJAF2tCxhPfqFw7TwZRPqRSPRY9zqIx+tjSLmcvYl9LR/GzSxDXQtDGktrsuPmV8UFf
+ AGhx879G
+ jCgdZ/2UPTQgmO9qSwBWYQgscvj0K06oHSgnEZ85aIRDx281WDJZH/Bd3soul7ynhILwwo2jaoPu+uZ/Fb+MZltvNAJdGosg+4G/XPsXMJhp3PUaD9OI2xiOKYwi6+ufUDMvx/vM0lNMcXbpHJATla62t4LcHQbZ2aki43iRdm+Odax5akfxRN0u+ARC9KgWwPBA3v2PN/YZDrJvRKFee/a9rZhNDPLy84+zH3rYk3j5aUhgJBqmeizE362u55IimprmwUHD0Suu/o3FiXZgPNspbdIH+xi3ZUeVvW4nFodTZsCV/+HSaHEF4DQkY6XnkneoIg7N/zjvMbjVGSAjmExKTFkJXNqcI/MRrNqcD5afosaLmFa1aTdFzP7JFancL9yHOF64Q5ynM7OTOZjpz9PyZIeFueIteDOjoeGR2zE9Zti1PiDs8MenigWmC7G5Y5ZQ8FJ9TcyReVsmHemvKIi6V/ijQjCL0WwR4OoQIaoaUa4kXmFV+7F5QdOLtu6chGBxJoEYmykdh6Lm7Rr6YWNRVfQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,203 +123,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-+Mark Rutland
+On Wed 10-09-25 22:37:26, zhongjinji wrote:
+> Although the oom_reaper is delayed and it gives the oom victim chance to
+> clean up its address space this might take a while especially for
+> processes with a large address space footprint. In those cases
+> oom_reaper might start racing with the dying task and compete for shared
+> resources - e.g. page table lock contention has been observed.
+> 
+> Reduce those races by reaping the oom victim from the other end of the
+> address space.
+> 
+> It is also a significant improvement for process_mrelease(). When a process
+> is killed, process_mrelease is used to reap the killed process and often
+> runs concurrently with the dying task. The test data shows that after
+> applying the patch, lock contention is greatly reduced during the procedure
+> of reaping the killed process.
+> 
+> The test is based on arm64.
+> 
+> Without the patch:
+> |--99.57%-- oom_reaper
+> |    |--0.28%-- [hit in function]
+> |    |--73.58%-- unmap_page_range
+> |    |    |--8.67%-- [hit in function]
+> |    |    |--41.59%-- __pte_offset_map_lock
+> |    |    |--29.47%-- folio_remove_rmap_ptes
+> |    |    |--16.11%-- tlb_flush_mmu
+> |    |    |--1.66%-- folio_mark_accessed
+> |    |    |--0.74%-- free_swap_and_cache_nr
+> |    |    |--0.69%-- __tlb_remove_folio_pages
+> |    |--19.94%-- tlb_finish_mmu
+> |    |--3.21%-- folio_remove_rmap_ptes
+> |    |--1.16%-- __tlb_remove_folio_pages
+> |    |--1.16%-- folio_mark_accessed
+> |    |--0.36%-- __pte_offset_map_lock
+> 
+> With the patch:
+> |--99.53%-- oom_reaper
+> |    |--55.77%-- unmap_page_range
+> |    |    |--20.49%-- [hit in function]
+> |    |    |--58.30%-- folio_remove_rmap_ptes
+> |    |    |--11.48%-- tlb_flush_mmu
+> |    |    |--3.33%-- folio_mark_accessed
+> |    |    |--2.65%-- __tlb_remove_folio_pages
+> |    |    |--1.37%-- _raw_spin_lock
+> |    |    |--0.68%-- __mod_lruvec_page_state
+> |    |    |--0.51%-- __pte_offset_map_lock
+> |    |--32.21%-- tlb_finish_mmu
+> |    |--6.93%-- folio_remove_rmap_ptes
+> |    |--1.90%-- __tlb_remove_folio_pages
+> |    |--1.55%-- folio_mark_accessed
+> |    |--0.69%-- __pte_offset_map_lock
 
-On 09/09/2025 16:28, David Hildenbrand wrote:
->>>>>>> Can't we just use an "enum lazy_mmu_state" and call it a day?
->>>>>>
->>>>>> I could envision something completely different for this type on
->>>>>> s390,
->>>>>> e.g. a pointer to a per-cpu structure. So I would really ask to
->>>>>> stick
->>>>>> with the current approach.
->>
->> This is indeed the motivation - let every arch do whatever it sees fit.
->> lazy_mmu_state_t is basically an opaque type as far as generic code is
->> concerned, which also means that this API change is the first and last
->> one we need (famous last words, I know).
->
-> It makes the API more complicated, though. :)
+I do not object to the patch but this profile is not telling much really
+as already pointed out in prior versions as we do not know the base
+those percentages are from. It would be really much more helpful to
+measure the elapse time for the oom_repaer and exit_mmap to see those
+gains.
+ 
+> Signed-off-by: zhongjinji <zhongjinji@honor.com>
+> Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+> Acked-by: Michal Hocko <mhocko@suse.com>
+> ---
+>  mm/oom_kill.c | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/oom_kill.c b/mm/oom_kill.c
+> index 88356b66cc35..28fb36be332b 100644
+> --- a/mm/oom_kill.c
+> +++ b/mm/oom_kill.c
+> @@ -516,7 +516,7 @@ static bool __oom_reap_task_mm(struct mm_struct *mm)
+>  {
+>  	struct vm_area_struct *vma;
+>  	bool ret = true;
+> -	VMA_ITERATOR(vmi, mm, 0);
+> +	MA_STATE(mas, &mm->mm_mt, ULONG_MAX, ULONG_MAX);
+>  
+>  	/*
+>  	 * Tell all users of get_user/copy_from_user etc... that the content
+> @@ -526,7 +526,13 @@ static bool __oom_reap_task_mm(struct mm_struct *mm)
+>  	 */
+>  	set_bit(MMF_UNSTABLE, &mm->flags);
+>  
+> -	for_each_vma(vmi, vma) {
+> +	/*
+> +	 * It might start racing with the dying task and compete for shared
+> +	 * resources - e.g. page table lock contention has been observed.
+> +	 * Reduce those races by reaping the oom victim from the other end
+> +	 * of the address space.
+> +	 */
+> +	mas_for_each_rev(&mas, vma, 0) {
+>  		if (vma->vm_flags & (VM_HUGETLB|VM_PFNMAP))
+>  			continue;
+>  
+> -- 
+> 2.17.1
 
-Somewhat, but in the regular case where enter() is called followed by
-leave() there is really no complexity for the caller, just an extra
-local variable.
-
-There are complications where we want to exit lazy_mmu temporarily, as
-in mm/kasan/shadow.c [1k], but this is in fact unavoidable. Chatting
-with Mark Rutland, I realised that to truly support nested sections,
-this must be handled in a special way in any case. To be clear, I am
-referring to this situation:
-
-__kasan_populate_vmalloc:
-    apply_to_page_range:
-        arch_enter_lazy_mmu_mode() {1}
-
-        kasan_populate_vmalloc_pte:
-            arch_leave_lazy_mmu_mode() {2}
-            arch_enter_lazy_mmu_mode() {3}
-
-        arch_leave_lazy_mmu_mode() {4}
-
-With the approach this series takes, call {2} is made safe by passing a
-special parameter (say LAZY_MMU_FLUSH) that forces lazy_mmu to be fully
-exited - and call {3} will then re-enter lazy_mmu. This works regardless
-of whether __kasan_populate_vmalloc() has been called with lazy_mmu
-already enabled (i.e. calls {1} and {4} can be nested).
-
-On the other hand, with a pagefault_disabled-like approach, there is no
-way to instruct call {3} to fully exit lazy_mmu regardless of the
-nesting level.
-
-It would be possible to make both approaches work by introducing a new
-API, along the lines of:
-- int arch_disable_save_lazy_mmu_mode() (the return value indicates the
-nesting level)
-- void arch_restore_lazy_mmu_mode(int state) (re-enter lazy_mmu at the
-given nesting level)
-
-This is arguably more self-documenting than passing LAZY_MMU_FLUSH in
-call {2}. This API is however no simpler when using a
-pagefault_disabled-like approach (and less consistent than when always
-saving state on the stack).
-
-[1k]
-https://lore.kernel.org/all/0d2efb7ddddbff6b288fbffeeb10166e90771718.1755528662.git.agordeev@linux.ibm.com/
-
->
->>
->> I mentioned in the cover letter that the pkeys-based page table
->> protection series [1] would have an immediate use for lazy_mmu_state_t.
->> In that proposal, any helper writing to pgtables needs to modify the
->> pkey register and then restore it. To reduce the overhead, lazy_mmu is
->> used to set the pkey register only once in enter(), and then restore it
->> in leave() [2]. This currently relies on storing the original pkey
->> register value in thread_struct, which is suboptimal and most
->
-> Can you elaborate why this is suboptimal? See below regarding the size
-> of task_struct.
-
-Suboptimal in the sense that we're allocating fixed space for each task
-that we are almost never using.
-
->
->> importantly doesn't work if lazy_mmu sections nest.
->
-> Can you elaborate why it would be problematic with nesting (if we
-> would have a count
-> and can handle the transition from 0->1 and 1->0)?
-
-It doesn't work in that specific patch I linked - but yes it can be made
-to work if we have both an extra task_struct member to store the level
-of nesting *and* an extra thread_struct member to store the saved pkey
-register value (both of which are only used while in lazy_mmu).
-
-
->
->> With this series, we
->> could instead store the pkey register value in lazy_mmu_state_t
->> (enlarging it to 64 bits or more).
->
-> Yes.
->
->>
->> I also considered going further and making lazy_mmu_state_t a pointer as
->> Alexander suggested - more complex to manage, but also a lot more
->> flexible.
->>
->>>>> Would that integrate well with LAZY_MMU_DEFAULT etc?
->>>>
->>>> Hmm... I though the idea is to use LAZY_MMU_* by architectures that
->>>> want to use it - at least that is how I read the description above.
->>>>
->>>> It is only kasan_populate|depopulate_vmalloc_pte() in generic code
->>>> that do not follow this pattern, and it looks as a problem to me.
->>
->> This discussion also made me realise that this is problematic, as the
->> LAZY_MMU_{DEFAULT,NESTED} macros were meant only for architectures'
->> convenience, not for generic code (where lazy_mmu_state_t should ideally
->> be an opaque type as mentioned above). It almost feels like the kasan
->> case deserves a different API, because this is not how enter() and
->> leave() are meant to be used. This would mean quite a bit of churn
->> though, so maybe just introduce another arch-defined value to pass to
->> leave() for such a situation - for instance,
->> arch_leave_lazy_mmu_mode(LAZY_MMU_FLUSH)?
->
-> The discussion made me realize that it's a bit hack right now :)
->
-> If LAZY_MMU_DEFAULT etc. are not for common code, then please
-> maintain them for the individual archs as well, just like you do with the
-> opaque type.
-
-I see your point - having them defined in <linux/mm_types.h> could be
-misleading. I just wanted to avoid all 4 architectures defining the same
-macros. Maybe call them __LAZY_MMU_* to suggest they're not supposed to
-be used in generic code?
-
->
->>
->>>
->>> Yes, that's why I am asking.
->>>
->>> What kind of information (pointer to a per-cpu structure) would you
->>> want to return, and would handling it similar to how
->>> pagefault_disable()/pagefault_enable() e.g., using a variable in
->>> "current" to track the nesting level avoid having s390x to do that?
->>
->> The pagefault_disabled approach works fine for simple use-cases, but it
->> doesn't scale well. The space allocated in task_struct/thread_struct to
->> track that state is wasted (unused) most of the time.
->
-> I'm not sure that's a concern. Fitting an int into existing holes
-> should work
-> and even another 64bit (8byte )...
->
-> I just checked with pahole using the Fedora config on current
-> mm-unstable.
->
->
-> /* size: 9792, cachelines: 153, members: 276 */
-> /* sum members: 9619, holes: 20, sum holes: 125 */
-> /* sum bitfield members: 85 bits, bit holes: 2, sum bit holes: 43 bits */
-> /* padding: 32 */
-> /* member types with holes: 4, total: 6, bit holes: 2, total: 2 */
-> /* paddings: 6, sum paddings: 49 */
-> /* forced alignments: 12, forced holes: 2, sum forced holes: 60 */
->
-> Due to some "arch_task_struct_size" we might actually allocate more
-> space.
->
->
-> Staring at my live system:
->
-> $ sudo slabinfo
-> Name                   Objects Objsize           Space Slabs/Part/Cpu 
-> O/S O %Fr %Ef Flg
-> ...
-> task_struct               1491   12376           24.8M     
-> 721/25/37    2 3   3  74
->
->
-> I am not sure if even an additional 8byte would move the needle here.
->
->
-> Worse, it does not
->> truly enable states to be nested: it allows the outermost section to
->> store some state, but nested sections cannot allocate extra space. This
->> is really what the stack is for.
->
-> If it's really just 8 bytes I don't really see the problem. So likely
-> there is
-> more to it? 
-
-I suppose 8 extra bytes per task is acceptable, but some architectures
-may want to add more state there.
-
-The one case that is truly problematic (though not required at this
-point) is where each (nested) section needs to store its own state. With
-this series it works just fine as there is a lazy_mmu_state_t for each
-section, however if we use task_struct/thread_struct there can be only
-one member shared by all nested sections.
-
-- Kevin
+-- 
+Michal Hocko
+SUSE Labs
 
