@@ -4,101 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 497FACA101F
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 12:43:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37E43CA0FED
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 12:45:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 84C248E0003; Wed, 10 Sep 2025 08:43:27 -0400 (EDT)
+	id 802E98E000B; Wed, 10 Sep 2025 08:45:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 823828E0002; Wed, 10 Sep 2025 08:43:27 -0400 (EDT)
+	id 7D8A28E0002; Wed, 10 Sep 2025 08:45:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 739CC8E0003; Wed, 10 Sep 2025 08:43:27 -0400 (EDT)
+	id 715A98E000B; Wed, 10 Sep 2025 08:45:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6167C8E0002
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 08:43:27 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2A611C08B1
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 12:43:27 +0000 (UTC)
-X-FDA: 83873306454.27.F9B5308
-Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 18FD62000E
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 12:43:24 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=WhLWgdc6;
-	spf=pass (imf13.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5FB198E0002
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 08:45:11 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 07DE05B9B0
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 12:45:11 +0000 (UTC)
+X-FDA: 83873310822.17.88657FA
+Received: from smtp153-170.sina.com.cn (smtp153-170.sina.com.cn [61.135.153.170])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 64E67C000D
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 12:45:06 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=sina.com header.s=201208 header.b=NcWVxE0H;
+	spf=pass (imf10.hostedemail.com: domain of hdanton@sina.com designates 61.135.153.170 as permitted sender) smtp.mailfrom=hdanton@sina.com;
+	dmarc=pass (policy=none) header.from=sina.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757508205;
+	s=arc-20220608; t=1757508308;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cWOnY6bsoNbRGhI6jrKdlgeXeUlIE02ttDreMjH2ThU=;
-	b=0w+5hZMlSAxdh6fTyTDRowg7jOUwiQBhHBo16Tv0go3N6Rfn+N8HenuWkuFh9EHvhSc8Vk
-	6ssu2odzpMXeOmWdyFVw0vrGm3TO90iEcfOQn0OymzP/oCDZ5RLIPIYB9R6s1GOcGVROLa
-	JuIN98zobMvDgXJqTr0Xu6OePTej4wk=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=WhLWgdc6;
-	spf=pass (imf13.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757508205; a=rsa-sha256;
+	bh=wrI27L50Krmhj1fPADGXvtbzVUmtq03K20RQqcV8sng=;
+	b=SR75XVi6tBEBHLWD97j5K1MUdf/QLjMRD2J7O4GueUFtd6oZDW2iObmlCoTBDbwD3JzErz
+	ADkH7UYa8jYRKLeECKX7GXGOxLdRxSQ+5AkrqRkXfpyOV5ocnua9S4ygs+aI1dpt/A94J6
+	IMFYNs2Xrx6LGeFePvMQ227S1H0J5W4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757508308; a=rsa-sha256;
 	cv=none;
-	b=pxBByG9+3AB5r0CVVyowlz/OZR4z7gMjbowlMB/Bx7PqYEYNhKU18aq5PghAbQC+NXl/eQ
-	CsS5DlqWalW3wBuxjphcCfJAYlybF9q70X6p+Lmslua0TuJhwoa8yjylHVXT5+4g7rThb3
-	hxFKkaobjMxGvDLGhYp4CDLD3IWDPmU=
-X-Forwarded-Encrypted: i=1; AJvYcCVkD8CBOPmLEKDnilOKd9Oh95dmgERDsuDI8fah4hYDaKjUk2u6Zto4l+KkeEFj9YlHq42gnz03Fg==@kvack.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1757508203;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cWOnY6bsoNbRGhI6jrKdlgeXeUlIE02ttDreMjH2ThU=;
-	b=WhLWgdc6sjruU+UNXFbtCEKgXPjwQRFvzJrnHM56K5bpmirgA3BuAhfAyPhbLJ7pjAg0W+
-	3rvGTK8ZROFl7hbZBCjZ4FKwEsPsvHYteEtGoLgaRyZe7ESFLSZXxZmiKbxDco112VL57r
-	s4CDRcOVtQnJFnNmarEt4snZfcBIRNQ=
-X-Gm-Message-State: AOJu0Yz+zR3ZgpGZfeIIczphLyPXVfXhC07eARY7oYAyPgVitiDI4g0C
-	bsRzz2LhRh7BewKWH/jz2M4n0QJ0nfif2DmweDJqQL37oW0FNx6nkxCnnjHDbw+WftN6izZuPqU
-	kKwzasrAQXuzCQ6fR0X5DmUhBLy1RJss=
-X-Google-Smtp-Source: AGHT+IGS4IyMyT2B5rjpMHdQ/sH6F7nZ01XypbWguYA7dCWguRiSUdDaKM5DsDcnWRSvBhMGTGMkWFlbQbHkoeCdCfo=
-X-Received: by 2002:ad4:5de2:0:b0:70f:abee:f9ba with SMTP id
- 6a1803df08f44-73a21485479mr148779516d6.12.1757508200059; Wed, 10 Sep 2025
- 05:43:20 -0700 (PDT)
+	b=ARozwmJxPaAIUqShYZ0vFrX93zOKmkUV+Z7YynIRTwgpgRob3icQn+FASv8dq6Sakkklaf
+	uiB7v3T9VcX1ZJVd7tYu/wLd5+6WmFXsEHbzlNS5rYATmoDx6Wd4uRn/zddF4hytgM3P4o
+	AK62Ky8WjdPZVMSbPLFzwpEw7DPRSoU=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=sina.com header.s=201208 header.b=NcWVxE0H;
+	spf=pass (imf10.hostedemail.com: domain of hdanton@sina.com designates 61.135.153.170 as permitted sender) smtp.mailfrom=hdanton@sina.com;
+	dmarc=pass (policy=none) header.from=sina.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1757508306;
+	bh=wrI27L50Krmhj1fPADGXvtbzVUmtq03K20RQqcV8sng=;
+	h=From:Subject:Date:Message-ID;
+	b=NcWVxE0H6KMVQXXNfOsaZA3Ra6YyOM5y6LITw3sp1BkAHTLN8jdVQPPb3ShBQ670T
+	 PKvGWyw9m8a5B6StteXoFqLbKljAQWVccAB+/n7PphB0Gth8eFD909efvMzTy/2JxY
+	 jHMNINst0oszr9y10uA0Kt64RUV+lyCTKunhDfGA=
+X-SMAIL-HELO: localhost.localdomain
+Received: from unknown (HELO localhost.localdomain)([114.249.58.236])
+	by sina.com (10.54.253.34) with ESMTP
+	id 68C172CB00004803; Wed, 10 Sep 2025 20:45:01 +0800 (CST)
+X-Sender: hdanton@sina.com
+X-Auth-ID: hdanton@sina.com
+X-SMAIL-MID: 8252306291757
+X-SMAIL-UIID: 7D4C23C301F749E79BF9F5BE7AA477E1-20250910-204501-1
+From: Hillf Danton <hdanton@sina.com>
+To: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc: Robin Murphy <robin.murphy@arm.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: Excessive page cache occupies DMA32 memory
+Date: Wed, 10 Sep 2025 20:44:49 +0800
+Message-ID: <20250910124452.6747-1-hdanton@sina.com>
+In-Reply-To: <9dc9e324-4a39-43d0-8716-be325fae2247@collabora.com>
+References: <766ef20e-7569-46f3-aa3c-b576e4bab4c6@collabora.com> <aH51JnZ8ZAqZ6N5w@casper.infradead.org> <2025072238-unplanted-movable-7dfb@gregkh> <91fc0c41-6d25-4f60-9de3-23d440fc8e00@collabora.com> <2025072234-cork-unadvised-24d3@gregkh> <c93b34ca-1abf-4db0-90f9-3802ac02c25a@arm.com> <bdd1efa8-691c-4e84-8977-cdfd48e7363a@collabora.com>
 MIME-Version: 1.0
-References: <20250910024447.64788-1-laoar.shao@gmail.com> <20250910024447.64788-3-laoar.shao@gmail.com>
-In-Reply-To: <20250910024447.64788-3-laoar.shao@gmail.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-Date: Wed, 10 Sep 2025 20:42:37 +0800
-X-Gmail-Original-Message-ID: <CABzRoyZm32HT2fDpSy_PRDxeXZVJD35+9YqRpn9XWix8jG6w8g@mail.gmail.com>
-X-Gm-Features: AS18NWA2-rrAiWS-c1ep0R42ZfRXwiuMPFMEj6A1tty0wp_Sw-BPEy3kdhILrOo
-Message-ID: <CABzRoyZm32HT2fDpSy_PRDxeXZVJD35+9YqRpn9XWix8jG6w8g@mail.gmail.com>
-Subject: Re: [PATCH v7 mm-new 02/10] mm: thp: add support for BPF based THP
- order selection
-To: Yafang Shao <laoar.shao@gmail.com>
-Cc: akpm@linux-foundation.org, david@redhat.com, ziy@nvidia.com, 
-	baolin.wang@linux.alibaba.com, lorenzo.stoakes@oracle.com, 
-	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, 
-	dev.jain@arm.com, hannes@cmpxchg.org, usamaarif642@gmail.com, 
-	gutierrez.asier@huawei-partners.com, willy@infradead.org, ast@kernel.org, 
-	daniel@iogearbox.net, andrii@kernel.org, ameryhung@gmail.com, 
-	rientjes@google.com, corbet@lwn.net, 21cnbao@gmail.com, 
-	shakeel.butt@linux.dev, bpf@vger.kernel.org, linux-mm@kvack.org, 
-	linux-doc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 18FD62000E
-X-Rspamd-Server: rspam05
-X-Stat-Signature: uo1g8x4poixcz5uqitb8zuahsyhh9saz
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 16icemmftyu38hggqgjy4mhgy3fm9msu
 X-Rspam-User: 
-X-HE-Tag: 1757508204-77581
-X-HE-Meta: U2FsdGVkX1/fNYK0Jk+vVBNjDUFSYSAQUN/Ah0rtdBxgmqObxYlBHWhm0JA6QpTW00z4WFHPEpzWmUxeA9d870vcqzvm8F+fRapmYnkiQFL6+IngwbOACF7UbfC9Uyf6u2rZpPm9/9p4GIdoHy02hsE+YPu6IkkNKLba6ychf9b5d3iRXYz0fOetQE/WkYfcul871J8SMwN4yRR6yciMOfBPSx34ReEW7K61K+LghyeAus62c/41Qoqh7K+tJoxVlYc5N0nzoYn9xZgmpcJ4o/bxA2/qOAR/YMDQMO+HD640oq3tWNN0/0vI7rxGCzq2fN8Rt6PGue2r8HaeWDv0SZuHG4jSt3cfbyk6uINo9RdkPHaF14XfOmDXzKBhF0MfjeioQqfZPWb8AhiscMGl8nYWdHMz/r3Hhcgk31ew47ScV6xR/iJr2LdFsxHbe75Ts8OLGI5BT4Pvywk1/YPGp/qgfgUo1VtglIZQ9nfqv5iK5tyEnqk+9G5Phs2VCL91URtpWHTNglrPveanjhj4DW38TAekY4voojdLgql2wJFW7wRbFYJklw9u2wNPB9S5rGupwnB1P/F7+SvtjXpyTP8pv8r5aXc153hLU2ZMm/p4Fm0862VQ+JlAXaIs+3xRb1JjZjY733ewoPL4MWRRAO52pquq22LwTFhjdUNgDxIfisJm3kVEGR939i+BXM+Sgtsb4HqUHXt18WppONqlqf2OrZOCYizGDj3gLGeh1vC6KXHYOVKBPbgGjd491H9Cge1LoH+h1ufu9THmgd8wihGYGeVfsSFiFFPXKeR9in/3tdkgZnv3wMRHYl6zFOdb4ERuKrZLa3y38XItXsw8gGy90ojvACgJiTxyhsx66y88vfRnyRg9ZoQoc7tqapA1mdndFJSDXNzOorbajDr1sz4KQjnM24Gae65exEpCZUqKDIk6eWJ6sdHKFetOKOfaE3rIS4ha3tsUn8/8rY8
- sZHngS2p
- VarWK2Je/OkC2WRpjfya5Uqnre11ffcLYlhJc44ft43DD63GMy/+gINphfw379iTJHaMlp1A/qPOkImw/fu171lmuR3A4mtpGpLBAZfcSlVfUfxuTVrC+60aezBLzAc0Akpxu3cbv2ln5pWAZHCe3NJe1n+vqBOYTsmnDKCR1DekhRWQzBW4wRVsh9keJqRixUY8OLY9pg8pmZFLogBxQ8Y46atVms428o1w4Cm4HMGj3lsnQOcViMrgIiKA9GinMwnfD9a+EDhpoItW7oioziWzAGpAeJ+f/MOOX7Q8S4en+MaZTtVHnR0qStAJKN+5/2KDikz8YpK2Tdf00qPDe7hc21g==
+X-Rspamd-Queue-Id: 64E67C000D
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1757508306-736041
+X-HE-Meta: U2FsdGVkX19JuwrvYb0ab5hnTog/BvSewbabRQM352qD2b0EmrHar1/Pi5AMPY6BK6r56YAS9cbLffKCBKLXKyUpBW3iG2iG51uGXUvo/qhjdYvRz27bwq+PQfcV80h0HYP1mXbJd4r3CKH4RUrWmoExgy995UGUPKLU0kbz442pv5oEcbGF8HagHGos5s5Q0TYkwK5ac6UDHybPDO8AaZIDp4mrLvQoEFHQP93e4zJY0Oz5pMLIR6y58gipaRyoboar4CfcLkCSB28FHYRHBzTgQ5oF1MF+zs7/Dd4u2M9t7AlTaE4t+it4gzhXk/3xMnAW4HEGYmd+2h/zmAGOGAaYSuXDBQ0vnmWshckj24V8DCSU3rHSVnwKGIj5EleRoZsnw0yYxAb8+3IqsMmam559VHYe9y2AosWQ3vvaf+kEEkGrhx1YYcM2fdcJS8onoqF4q0h2VtsEaKP8F+ynLvDLRZ9tcc+WhSl7OhccJ4Aara3+ShKmyTVm529/hWFcMdS085aIr5E2btrcNwWQeUiy1xgI4dkUungmnc2zMp2JmBFL3nUIpfkOuDWQ4jOAw8tLulHunwGPLbd5kyIlwHeO5XItnQu/i/IoJBXmwRScNDdPRmFKKEEz9bxzTQ5vWqsEp0ur6V8yq8Zy5wgJAI2yC6aKYpenK3mqRxPhI7v77DAhNWRkAgetAtxUSgI1zX+34G+HhWo5k8zslPzCMXxcJbrVtxjdWm6w6C8AUtp1SnVmSr8olPqYGG1hDzVnTHtAet7z2M/asd+4UoYyZUcrwNwg9QrTpLC7jMTamI3vk6Tv8iBjsKgZQqLMppNzs6/XbSb2CFwOnnm02vYxwpp/UM3Nrrk9rwr/c33ELcaFXenomVVpdRLHgHDj0vKB1RyMpkB6B7W+rMxLvTazJIul0kRk+VipFXEOH/E8PjEt7l2jokYwefFi7RwiQ00kbKNt+CEwLYOU7lgMPCt
+ laSptIYv
+ M8GNmzaiLeaM7K/uahsjMjahRepuawYcEUNOmpBFwsc9CmM5mc8AGQQnyHevh08727Jvn7vyw2EvZ0YbdI5VgvNOGwAX+YdMxdOEATVW3gb0B6+qqzB2aCXBYAkVRmtLUD0n3p6z7xiKBZv61mYzvE197YBAeWsP5B+AM2z7upzbq2KGdLtIepLK2Ma8fefJMvJoR3tJ5U0MlDp3Inbr5v1yrCUSDWhmLRp4x2wqmZcni6hhWM5mPRUA1/gEYhVKuTpGj8k6w6hg+cj2gFHYM+quDpW8pNX39WJyvMtp8Jc0Hqvx9n+Zrze0QWcmTdJGURAodxudaZL6UTjzzkFKVct3m22OTerPXmKs+P+K/F5+Sv0m0VWpIRDvoYqSfCa6p8k2yLJmStxW3zi1SgPgUKXhBFyX5jbJKDUr+CfgWSpJ2+6kcSphSr9qEQ5Utjzt6FxspyiNbdg+Vza8E6QVeEDTRhA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,149 +92,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hey Yafang,
+On Wed, 10 Sep 2025 16:23:37 +0500 Muhammad Usama Anjum wrote:
+> >>>> For example, in the mhi driver, the failure is triggered when the
+> >>>> MHI's st_worker gets scheduled-in at resume.
+> >>>>
+> >>>> mhi_pm_st_worker()
+> >>>> -> mhi_fw_load_handler()
+> >>>>     -> mhi_load_image_bhi()
+> >>>>        -> mhi_alloc_bhi_buffer()
+> >>>>           -> dma_alloc_coherent(GFP_KERNEL) returns -ENOMEM
+> >>>
+> >>> And what is the exact size you are asking for here?
+> > 
+> > 512 KB
+> > 
+Any order above PAGE_ALLOC_COSTLY_ORDER is not guaranteed in 90+% cases.
+Nor is it DMA32 specific.
 
-On Wed, Sep 10, 2025 at 10:53=E2=80=AFAM Yafang Shao <laoar.shao@gmail.com>=
- wrote:
->
-> This patch introduces a new BPF struct_ops called bpf_thp_ops for dynamic
-> THP tuning. It includes a hook bpf_hook_thp_get_order(), allowing BPF
-> programs to influence THP order selection based on factors such as:
-> - Workload identity
->   For example, workloads running in specific containers or cgroups.
-> - Allocation context
->   Whether the allocation occurs during a page fault, khugepaged, swap or
->   other paths.
-> - VMA's memory advice settings
->   MADV_HUGEPAGE or MADV_NOHUGEPAGE
-> - Memory pressure
->   PSI system data or associated cgroup PSI metrics
->
-> The kernel API of this new BPF hook is as follows,
->
-> /**
->  * @thp_order_fn_t: Get the suggested THP orders from a BPF program for a=
-llocation
->  * @vma: vm_area_struct associated with the THP allocation
->  * @vma_type: The VMA type, such as BPF_THP_VM_HUGEPAGE if VM_HUGEPAGE is=
- set
->  *            BPF_THP_VM_NOHUGEPAGE if VM_NOHUGEPAGE is set, or BPF_THP_V=
-M_NONE if
->  *            neither is set.
->  * @tva_type: TVA type for current @vma
->  * @orders: Bitmask of requested THP orders for this allocation
->  *          - PMD-mapped allocation if PMD_ORDER is set
->  *          - mTHP allocation otherwise
->  *
->  * Return: The suggested THP order from the BPF program for allocation. I=
-t will
->  *         not exceed the highest requested order in @orders. Return -1 t=
-o
->  *         indicate that the original requested @orders should remain unc=
-hanged.
->  */
-> typedef int thp_order_fn_t(struct vm_area_struct *vma,
->                            enum bpf_thp_vma_type vma_type,
->                            enum tva_type tva_type,
->                            unsigned long orders);
->
-> Only a single BPF program can be attached at any given time, though it ca=
-n
-> be dynamically updated to adjust the policy. The implementation supports
-> anonymous THP, shmem THP, and mTHP, with future extensions planned for
-> file-backed THP.
->
-> This functionality is only active when system-wide THP is configured to
-> madvise or always mode. It remains disabled in never mode. Additionally,
-> if THP is explicitly disabled for a specific task via prctl(), this BPF
-> functionality will also be unavailable for that task.
->
-> This feature requires CONFIG_BPF_GET_THP_ORDER (marked EXPERIMENTAL) to b=
-e
-> enabled. Note that this capability is currently unstable and may undergo
-> significant changes=E2=80=94including potential removal=E2=80=94in future=
- kernel versions.
->
-> Suggested-by: David Hildenbrand <david@redhat.com>
-> Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+> Another update:
+> This issue reproduces on v6.11.11. To summarize, we're unable to reproduce
+> this bug in the v6.15.9. We wanted to do bisection and find out which kernel
+> change has caused/fixed it, but it's too difficult considering the complex
+> reproducer setup (Tekken 8 Demo game + page cache stress). We don't want to
+> spend more time on something that is very hard to reproduce and is already
+> fixed in later versions.
+> 
+> My debugging has shown in v6.15.9 that the allocation succeeds under the same
+> constraints of power management. My hunch is that somehow the dma memory
+
+Can you try again without the JW work [1] applied?
+
+> doesn't get occupied to the extent that dma allocations start to fail at
+> resume in v6.15.9.
+> 
 > ---
-[...]
-> diff --git a/mm/huge_memory_bpf.c b/mm/huge_memory_bpf.c
-> new file mode 100644
-> index 000000000000..525ee22ab598
-> --- /dev/null
-> +++ b/mm/huge_memory_bpf.c
-> @@ -0,0 +1,243 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * BPF-based THP policy management
-> + *
-> + * Author: Yafang Shao <laoar.shao@gmail.com>
-> + */
-> +
-> +#include <linux/bpf.h>
-> +#include <linux/btf.h>
-> +#include <linux/huge_mm.h>
-> +#include <linux/khugepaged.h>
-> +
-> +enum bpf_thp_vma_type {
-> +       BPF_THP_VM_NONE =3D 0,
-> +       BPF_THP_VM_HUGEPAGE,    /* VM_HUGEPAGE */
-> +       BPF_THP_VM_NOHUGEPAGE,  /* VM_NOHUGEPAGE */
-> +};
-> +
-> +/**
-> + * @thp_order_fn_t: Get the suggested THP orders from a BPF program for =
-allocation
-> + * @vma: vm_area_struct associated with the THP allocation
-> + * @vma_type: The VMA type, such as BPF_THP_VM_HUGEPAGE if VM_HUGEPAGE i=
-s set
-> + *            BPF_THP_VM_NOHUGEPAGE if VM_NOHUGEPAGE is set, or BPF_THP_=
-VM_NONE if
-> + *            neither is set.
-> + * @tva_type: TVA type for current @vma
-> + * @orders: Bitmask of requested THP orders for this allocation
-> + *          - PMD-mapped allocation if PMD_ORDER is set
-> + *          - mTHP allocation otherwise
-> + *
-> + * Return: The suggested THP order from the BPF program for allocation. =
-It will
-> + *         not exceed the highest requested order in @orders. Return -1 =
-to
-> + *         indicate that the original requested @orders should remain un=
-changed.
-
-A minor documentation nit: the comment says "Return -1 to indicate that the
-original requested @orders should remain unchanged". It might be slightly
-clearer to say "Return a negative value to fall back to the original
-behavior". This would cover all error codes as well ;)
-
-> + */
-> +typedef int thp_order_fn_t(struct vm_area_struct *vma,
-> +                          enum bpf_thp_vma_type vma_type,
-> +                          enum tva_type tva_type,
-> +                          unsigned long orders);
-
-Sorry if I'm missing some context here since I haven't tracked the whole
-series closely.
-
-Regarding the return value for thp_order_fn_t: right now it returns a
-single int order. I was thinking, what if we let it return an unsigned
-long bitmask of orders instead? This seems like it would be more flexible
-down the road, especially if we get more mTHP sizes to choose from. It
-would also make the API more consistent, as bpf_hook_thp_get_orders()
-itself returns an unsigned long ;)
-
-Also, for future extensions, it might be a good idea to add a reserved
-flags argument to the thp_order_fn_t signature.
-
-For example thp_order_fn_t(..., unsigned long flags).
-
-This would give us aforward-compatible way to add new semantics later
-without breaking the ABI and needing a v2. We could just require it to be
-0 for now.
-
-Thanks for the great work!
-Lance
+> Thanks,
+> Usama
+>
+[1] Subject: [PATCH 0/5] mm: reliable huge page allocator
+https://lore.kernel.org/all/20250313210647.1314586-1-hannes@cmpxchg.org/
 
