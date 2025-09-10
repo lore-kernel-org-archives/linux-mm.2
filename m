@@ -4,118 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAE81CA0FED
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 20:44:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36441CA101F
+	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 20:46:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0FF2A8E0003; Wed, 10 Sep 2025 16:44:55 -0400 (EDT)
+	id 7DD3C8E0013; Wed, 10 Sep 2025 16:46:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0AD8D6B0023; Wed, 10 Sep 2025 16:44:55 -0400 (EDT)
+	id 78E5C8E000D; Wed, 10 Sep 2025 16:46:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F05758E0003; Wed, 10 Sep 2025 16:44:54 -0400 (EDT)
+	id 6CB688E0013; Wed, 10 Sep 2025 16:46:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DF0786B0012
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 16:44:54 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8CFD5856AC
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 20:44:54 +0000 (UTC)
-X-FDA: 83874519708.20.138FF05
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 9D62CC0004
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 20:44:52 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Z2gqBD7U;
-	spf=pass (imf28.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 56AF78E000D
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 16:46:19 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 028F658336
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 20:46:18 +0000 (UTC)
+X-FDA: 83874523278.11.B451A08
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 29DD940005
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 20:46:16 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=YWYtNtJ2;
+	spf=pass (imf27.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.222.170 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757537092;
+	s=arc-20220608; t=1757537177;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hURlif60FPSjNG3pKdufMNt+U9y26SiGUSn1HYK+xuk=;
-	b=0dWBwEksZ34dVq4525IPrMh2MhNjPxoEjKoFPIKC/M4ZVI175EtIwIBW2wa9MdjwM9C+xv
-	MAmAbvZYE5/HoEraX0nJBhURIfkl3IWIpk6OQRFIckHblJZAMGVZs2ZCz2mxYX/uNGpV3u
-	sBGZXvfluXQUQeMcW6Z0Hbsux7ubHYA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757537092; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=zdPfGCbmStLnf7OkwFRjoXPyuHAb7oGF5r4POmSHGhY=;
+	b=ka64v30UvekiP+I51jW7Q5kEGHhrCrwUv4aKGmZ5NUOHMq9NIxQUTsrrLyLPnIUOVz0S25
+	SekbqrX+0shEaNMvV3SGQO6bsp/qaDmY5KWOS1lzvBRawts6HMXW9ijWUuPJnsLQ3yhRt2
+	P76P+c8LQ6HdLrm5DTCNgfl653BLlNI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757537177; a=rsa-sha256;
 	cv=none;
-	b=c2JS0DAU4M8jQD0jtNsqQ7/1o+E3U7Brt/RYSFIxB0ZjsWD/JqShYJpl+UNh+OEsHn8Lbo
-	5DBW84EEiat7fY4heKg+k7KLd8t5nPiu+PjEII3Gpc+bI4Zan6NBxwV+uzp+m6bdzr3dy8
-	BB1e75NrrtWcn6eoOT4qhYqksy5/xP4=
+	b=gIBBzdtfpmhhgN4FqPvABxeqPQgaV4Hj88tp4cMdv09auQc3DCWjji3k4mVPG7TYY1VoPx
+	EEzb7hhlXgJD8Xme03DEUZYtne2Xtw9LjOCY48nOrGwMJbYAa7us++zHCNIMU4T96NJNbS
+	0WeNiKik+c5R5BmELjKCrW6qpNgv+i0=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Z2gqBD7U;
-	spf=pass (imf28.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=YWYtNtJ2;
+	spf=pass (imf27.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.222.170 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3e2055ce7b3so46447f8f.0
-        for <linux-mm@kvack.org>; Wed, 10 Sep 2025 13:44:52 -0700 (PDT)
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-8126c6c3564so4584485a.0
+        for <linux-mm@kvack.org>; Wed, 10 Sep 2025 13:46:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757537091; x=1758141891; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hURlif60FPSjNG3pKdufMNt+U9y26SiGUSn1HYK+xuk=;
-        b=Z2gqBD7URYoN1No5rwnv7D0VAHrllXSU8Du+qz4np691omcmKhuKHbLUK6zIl1xH02
-         5+uL3K3tKbgPpwAq5OsJefOrob+TY5zZEaiN9mkyVRncvjVgdeC12JXdFgeTNDuqctg+
-         AlRKIjJobwtCiO1u4ZY6GGiOnOQTLVoebNc5Dv9fo5I4Ap++EnWXQHdIujTHEAcycxqM
-         hUqYPDOxczYQ2NGHIXKcXgHdXZwyA+VzPqF3u+MR4EBu5WD0ISolWvv70juBq/FB5zN5
-         3z8ZaRO/IZzUdF8vDTQhWF6707vSkdTRs650BxYZTbWuBGoc1OSa5WGA7zybk2yoHFZf
-         e02A==
+        d=gmail.com; s=20230601; t=1757537176; x=1758141976; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zdPfGCbmStLnf7OkwFRjoXPyuHAb7oGF5r4POmSHGhY=;
+        b=YWYtNtJ24K+wpfhl3baKF11sm8LleYrM7/Zjzju4T/cxB4Oa2InFHwl6vBGtkbFfgG
+         7S1g9gS0NSd8VlGs9oBvbxsdXEbMwUZlIXgp50J/tp1pXuMBiO0C5AMCWlNc5qH0kNce
+         AN435Jq0s1c8HqtAOhKjOua6NGimZFJi2LDqcbCsILDF6uiQcEnBmDfeHCV73w+M6aAy
+         aeWdiJej2m6PkFfvcLC5NxrPzJ9R9XeftvvhyQTORjzVWZ7u0ihvuusgSZX5I/0uq/8Z
+         DIineSXC3hH4qhqsGcL1MptNTeqm9O5yxxvX8wbIvrm5Ih/aXS56C/J9bwnJcOs+1mHG
+         70dQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757537091; x=1758141891;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hURlif60FPSjNG3pKdufMNt+U9y26SiGUSn1HYK+xuk=;
-        b=Xa+sBEMpSx3iDSQzM6aRyUHtQOgfZgQSjNDxlUsK3PMgu32+k7vurh5fXmSapUNs0b
-         kI2whNHqSN0hVlviUEulBJTG4W5j4KYo3PdKOoJBYNICUGwujikprU/U56UiIco9AhTm
-         pLEQBsmELEl1WWKzW413ASKo588BxXc6oNqQLOSSA4U9DSnN7m67j6ripfoxGaMU6quL
-         +HlLVwPZ05sDKG+h/gyCh5J475+ZI7LmRUk0S9BGJTytC5y09SYqHVSt2+WozjKeQgtu
-         ZDn5uMkFdIGLREoAzB/InoGxAEt77rSVGrJehvMK/KPIpYLgW0WPjJQYNalhBhfeEhKL
-         cd9A==
-X-Forwarded-Encrypted: i=1; AJvYcCWOy/MZQZnVpvyN7/upre8woD11esJRN1O0O8wKZoNS/8pfFr9HzhGklL5EoCW0J1ej3o/LXf6BUw==@kvack.org
-X-Gm-Message-State: AOJu0YwkrDlHieZK68kM3xIKMwzoOpSj/yT20mY0LyAI/TGTDkXcLL6n
-	nlWyVVZ/TgA9SMP7LwdcdcsemMdZs9SZTsMRgeXn+Js16lQEcaY5tOkHbYRJi8vFhN5woh9cfBN
-	YlAq+jkkswXmgCzTFO0rGqU95iVMXpl8=
-X-Gm-Gg: ASbGncsfI12JRA18CWr0ciHlFXmbc88HC98HzBpCopq6acOKxYd7AGNX0vfRcPV9fqh
-	91wG8/RazDpRDRCWZQSx3Y0hGyIAjHVcvSUVkJEyEFU0emJk+wkzX/s0BMqRm4681XBpbBlGb3b
-	PdK13fnl2Ylz8TijxStKdKsZOdGR5AfAij88NkKK+uvqUX8WeSCWBGt3+DnOK63BFqbIVtzOwhp
-	J9AkJsLrCethzoFJlqcEXARrsAjxm5K9qRi5RITOE+9HbE=
-X-Google-Smtp-Source: AGHT+IEgKZrxpEMcuKUrNZZ/VjmpOkAy5xtzbBJMsk33KsFm2AIoLuo+xsbMm68dkSaOFsa/gF4LW0lXPvvk+72L35I=
-X-Received: by 2002:adf:9c87:0:b0:3e7:17d4:389b with SMTP id
- ffacd0b85a97d-3e717d43b81mr9837201f8f.52.1757537090882; Wed, 10 Sep 2025
- 13:44:50 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1757537176; x=1758141976;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zdPfGCbmStLnf7OkwFRjoXPyuHAb7oGF5r4POmSHGhY=;
+        b=c9VMg6DnMLfC9rxBsH7foy3SR6pe2tl1+QUBw6sxYjbWGuhWXnuIO7JhN45DlPFeUp
+         H7bLC98V7qL81iohmeLeawVpE6BtW01psyM9Ks8Y0KdUnqFniQ7VFQmkgqm8SzNn+lFO
+         9H3WaP5xJGJEovefs3a91zGQs2Io6f9eFichxTcIEjRVCTt/+pqfMvJqdHnRmZZRHfGJ
+         +ZJFxADzGkKLMsClqJk6249e2X2kw7xvbGWCohtg7QzjYbHF78SSQaZgZ0WituEdpXtZ
+         r0gdBwJsjmOuaeIy5UTEyRp4c9HPs7kkD2Y98RGBitHZvdYAGSSHsxOKFl6Ukbkqu9gw
+         aQUQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWYTUeWkDFQp0WjEnwNB+wlKEPlw1Xq7bsOnkHD5DXIKA/3z5McUxlJEW8uVhX9DvfBmullYltzxw==@kvack.org
+X-Gm-Message-State: AOJu0YzczuBuC2ehZ73s8JYB2t2hh2u4zT3PUQAZj/VguRyPv3LcpRn6
+	f6cVjZ5zwVeIvWbi/adhreijwe6W4HIDnfuNp9Ifmy0Ol/qufMh4hyt46iiE0A==
+X-Gm-Gg: ASbGncsv7giQP7SrO/oWnexvY43ZSN7doU9yMHKfB/m/c8xZJFQmjvvrCbEKrTdrP2T
+	JfJyTLEqLNpoOgrc/t8wmSZInELATeeGwourf3/Uh9QXLYBJIxHBBzMhH6L8ATbjLsbF2hl8RRC
+	zver0eXta+nkjJDG4LHdn3e82/kLrEGWxpJrfMHXbjGkPpU3t86OeMELB/Ty2N2hMNAm66TIaeI
+	PdztU7eoc1vK+5+GXKN4Nc19e/gcxcru5Z8a5tbfozPcUV/jzFcABqNg6w14kBP326D9xpQZnuR
+	csRpaxZEs3DmPfJcYvhgP+oWOcaUXNUouRI3hHfG0BmAXIj9ZQ0G0ExzjWz0O8jUQPtYpRgs0mj
+	2ap69dWBEZ/+aXhl85fQ=
+X-Google-Smtp-Source: AGHT+IEyqefIg2aIVeybWhllIAFyMXyMtJhBmm1X475rnhW0Aevfer0/jPOsC0mHTu8niZEnKw8P6Q==
+X-Received: by 2002:a05:620a:4624:b0:80e:f187:7fd7 with SMTP id af79cd13be357-81ff74afbe7mr152223085a.36.1757537175991;
+        Wed, 10 Sep 2025 13:46:15 -0700 (PDT)
+Received: from localhost ([2a03:2880:20ff:5::])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-81b5e5c0079sm351700385a.43.2025.09.10.13.46.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Sep 2025 13:46:15 -0700 (PDT)
+From: Usama Arif <usamaarif642@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: david@redhat.com,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	shuah@kernel.org,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Usama Arif <usamaarif642@gmail.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH] selftests/mm: include linux/mman.h for prctl_thp_disable
+Date: Wed, 10 Sep 2025 21:46:09 +0100
+Message-ID: <20250910204609.1720498-1-usamaarif642@gmail.com>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-References: <20250910024447.64788-1-laoar.shao@gmail.com> <20250910024447.64788-8-laoar.shao@gmail.com>
-In-Reply-To: <20250910024447.64788-8-laoar.shao@gmail.com>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Wed, 10 Sep 2025 13:44:39 -0700
-X-Gm-Features: AS18NWC0PddnEh_K4ml7j_4k0fHCbV_INsBk7po365NYjaa9qQUoIAl6ZZzp51o
-Message-ID: <CAADnVQJF6YtzOojGV16hmUpFCiZGxuJAi6=Q4TK=VPH=_93eJA@mail.gmail.com>
-Subject: Re: [PATCH v7 mm-new 07/10] selftests/bpf: add a simple BPF based THP policy
-To: Yafang Shao <laoar.shao@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, ziy@nvidia.com, 
-	baolin.wang@linux.alibaba.com, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Liam Howlett <Liam.Howlett@oracle.com>, npache@redhat.com, ryan.roberts@arm.com, 
-	dev.jain@arm.com, Johannes Weiner <hannes@cmpxchg.org>, usamaarif642@gmail.com, 
-	gutierrez.asier@huawei-partners.com, Matthew Wilcox <willy@infradead.org>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Amery Hung <ameryhung@gmail.com>, 
-	David Rientjes <rientjes@google.com>, Jonathan Corbet <corbet@lwn.net>, 21cnbao@gmail.com, 
-	Shakeel Butt <shakeel.butt@linux.dev>, bpf <bpf@vger.kernel.org>, 
-	linux-mm <linux-mm@kvack.org>, "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 9D62CC0004
-X-Stat-Signature: 3x3dbks95u6oidzwwitt1fm39dk46w7b
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: dsu6bummnb1tho9ihs6cbbtm4u5d8ekz
+X-Rspamd-Queue-Id: 29DD940005
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1757537092-831715
-X-HE-Meta: U2FsdGVkX19LwzHNH4pvRACZy8ZGiNlIxwr5N0V6Hi5qlYIw3rxSUwC9zKBE4BtE1Kr129wEDkYN4MGHuNr5kRg1ZbgAghvONLETpN9IKgN+mkUYTd9nv8fZ3NJ00y4f7xURjViTPaallxm3WErTadAcFZ9Z/CP+DnUrKgIsUlp83+J+wabimGthMqDBBQRCehUV1DsMdXu4XwtiXsSsMTN291TLZf97UXFypdljpDxxOeNClxvpq+891U09+PCuf82kK34jEKs3d8xObDMiq+6e5YNIc5mlANYIRQq8ob2XylFnoTa0s2TGgEqVI3X/UqcVCvfIvHRYYg2ccT7DgzBOfQ21eo2ACrhZ+I/r3qE3e76p/RBl0akusjlMYE81w+gDo1GANEtrT8kU7aoAU1bTXJbl3YhTibvZY70qDMywo1mhMlf7xjijkSCl5Bhgj0g8QPEGBhvgtaAGkDpWp4Q94K7uJtgQQoubQMRgslfJkoFkOx4+TSokVHghmLVq+rPPGIdEy7+t1yaU0YGzgSJuvmTutoIDgVh7VDlXphCLzMUvYOq3Vc++s5gQkmjFMA8QMQ5TMnkQNMozOkNGN7RlB8mnuoujuyYdRcA/UBZdpW5uj3K28caD5X+pvnEziqVBRulNhUkwV/1G6J7kXZwPdB5vMwWgZbxHtsgJC1RSr3je2WIXYCitsIVZqdjo+Xa4BoJZBMjYjVrvmH7FOeuxjTsDA1QDVB/ExAw6zsSvjhmH2gCX0As8dCmt0NudwQcnmu+sjrQ+vUW5kCWajOPE8119O1x/oRjCTRYpOf+U4SsW7V6YMlRn/QubbNdh60zK8r2LKFmSIMnsAbkg8ErnFBDWs9FsBJl3DIwiT+tjUPekWhlK6+zonCNQIoThuq31caEqvywWLC618qQl1j2trA026dp84zfU3NZ1pHHPYEba9mFsaR6ecPtunTmPRSumsB9rogu/Ak3urvB
- Mgb6XXSU
- mEUWN6JoKVkQVZkU3Lgejbzb01NwbjENAJFSb6CvMht6l0kTYvcXjkKJcQbSuWhGxmWnmqGbqYaX55kgqBN2Pk69TrH7QCOQSQB5rheYU6go2NYTjyvJp0JHv/KgFPyEK4Jwz4w4e+7z9YI2ZTWawntZBfSJ4OhWKSONfTP2Z4xVEoeMQ2yCL3HrMhLxLQZshWihDWfQlxi74RfxzMWWaM99x7BipzyhzXXaVJsAhZrSDXs6A524bFVCEW7+k9LW0X/0T7uxdcDYnVfONlxGNk7Yk8jQtRD1seVJwy9y/drlb3jzYu/UjLan1cAaqYphJ+G9TuvBmAUMCuDza5k3csXiyfuOmlgp9WWvLuCNusl/MEeb7cfVBVzttIkSk4ln4O+aZ1j8spKFnLi0SCMZm2zsPL1JqxFiXOfEQuHsyxjL0grQ7kNQuW1hAgmXl0oaBp6ttMyyUBoZQw3idfO5Tf2EcGICHD0sW8IIe
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1757537176-247673
+X-HE-Meta: U2FsdGVkX195X6BuO2Jx/dOfi7id8zin1cKUbdQUW9nYYeBgl5xdeyhqbY/UfdOOtMUJhH+0IoYYTK6cwtU/ZlASFW6ddkP1PCUnBpwNyF5s4K8Crr5dmYTC3UnMb2nP4x4plcb+orYElZz9NV7j9F5exGhR3XPFy+lwyYyTqHOt4uNPX+FQbhjAWZ1U1lQH32alpDTrxbVioCE/Zk1EaM3Qv0DXmMxnQI45S6m3d6r3iF6zfP6BsyG42fCl3diPQnl1uG1BAHT/P7tQb7TVmakHIh+DBsmLaC4rFgSNhR+r2dX4f3YAYlqVcbz4hBSHMIxIv2m0AcFfv3OmrpYucvyXxVqb6vDaHFQGvE1ovrP3LEkEd3t0A9xS81grhC0cOxfDui0roz8aNo6DMp5WJq3VGSsK/frFjI3u08dDPgq/tVy+MVeLBvl32FGIKhuze20klVDI0MJ2rM7mlPAc9nTNnfD/gFNODFDVjABdabI0Z34Ij57WKwB/n5cskK/NH1TKbymeYtGhX0EysCQRJ6PrSbAoN1q6shRmiiZ5/ggaJxWZu7dNuFivalXj8LR4d4CmnNoxLC3luBLgQ7RbtFn5WiXgZCJetLvuHicSZmLYAdRjc6KC43FaSOlEiM8h7nDfOVsfikH9/ykJd1EhUrVkkumxcpIDdIXDE5h/tPwhY/kJoi4cYpq4e+V68mCAccvasDyjCBt3tKKRTSgWKINkgpc/HxZrFY1BHZ5d8YeYxtTZyR7NeTt8tUgU/B0SNR1RIIc+i5VrGQ+Q3e4gsU2PNdvytDJsIDvNFDEHrqzKW87wr+KsA6ZLLC3FWwlybJmKih8Xtxt5G0yGxRS2VUI9q4zHAkxmHDUadUKeCaeFfXK87MYZYHKqRl9p1eY7qcGAxPbmAtPWdxjOg0p2/G0nDBoty3qY507agYnExt+D2H52cPi04MW6UMJ2IGLLvv3Q+j+tZd5tjXggT3r
+ 0fTEoceM
+ GulROJbTnLo5qtex2TbmP72kpTi7JpybYoBL+o/35RNvECp7l4BqefgHvbjP6eD3CuGFWhe6fxtJfCPR9/eXBDspM7ofe/EpdUzePLF0yNzTUmso+cRrAR5T9bkLU6v4JnrJYghEHrUB8j5DnMUkfdHY9tJD5ldfC8Gcd5V5s11d9RS40KyipaY+mVJ4cpfsMlLKxaBu2EiHfPQ63c6ZtwuKcX8HDMQRb2VLqrBC20SKOs8NVZppYW6VFK29QGwrxbCrfM9yA9jsQWZs5JdMKYkVVsx1SGFmQpHBzDmAsvIsEq9TTF1d5mLMZ7WxivdvSMneSaXzj2QQfonHInLwiElia82JD2WeU4iw/Nh2ZsGFdH7TC475JVqfL/JkwHpqhQJSJI5nULr/qy2B4EnsTsGSr24BCMNNeasqcTAEmB9drMO8IooZoBCxkA6Nb21TP//AfT801UVKEEiKxLok3tju/6n1YYZXrp0uNOoH8oY7lypWOHpzzSTx3DK6DZ6Q2Qg73eJ+YzAXuP0eF5Vu6AzNxiofLq1JFI8RVifpR9BZOaGOAWckc36mKC3Cu7+hqa5bCi5Us9ykNYuw1PwrksUeoELLixNi2uP/ENbskcu/zF82H/YSvk2Lh9g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,48 +126,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 9, 2025 at 7:46=E2=80=AFPM Yafang Shao <laoar.shao@gmail.com> w=
-rote:
->
-> +/* Detecting whether a task can successfully allocate THP is unreliable =
-because
-> + * it may be influenced by system memory pressure. Instead of making the=
- result
-> + * dependent on unpredictable factors, we should simply check
-> + * bpf_hook_thp_get_orders()'s return value, which is deterministic.
-> + */
-> +SEC("fexit/bpf_hook_thp_get_orders")
-> +int BPF_PROG(thp_run, struct vm_area_struct *vma, u64 vma_flags, enum tv=
-a_type tva_type,
-> +            unsigned long orders, int retval)
-> +{
+MADV_COLLAPSE is part of linux/mman.h and needs to be included
+for this selftest for glibc compatibility. It is also included
+in other tests that use MADV_COLLAPSE.
 
-...
+Fixes: d9c7ff4dae62 ("selftests: prctl: introduce tests for disabling THPs completely")
+Reported-by: Mark Brown <broonie@kernel.org>
+Closes: https://lore.kernel.org/all/c8249725-e91d-4c51-b9bb-40305e61e20d@sirena.org.uk/
+Signed-off-by: Usama Arif <usamaarif642@gmail.com>
+---
+ tools/testing/selftests/mm/prctl_thp_disable.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-> +SEC("struct_ops/thp_get_order")
-> +int BPF_PROG(alloc_in_khugepaged, struct vm_area_struct *vma, enum bpf_t=
-hp_vma_type vma_type,
-> +            enum tva_type tva_type, unsigned long orders)
-> +{
+diff --git a/tools/testing/selftests/mm/prctl_thp_disable.c b/tools/testing/selftests/mm/prctl_thp_disable.c
+index feb711dca3a1d..84b4a4b345af5 100644
+--- a/tools/testing/selftests/mm/prctl_thp_disable.c
++++ b/tools/testing/selftests/mm/prctl_thp_disable.c
+@@ -9,6 +9,7 @@
+ #include <string.h>
+ #include <unistd.h>
+ #include <sys/mman.h>
++#include <linux/mman.h>
+ #include <sys/prctl.h>
+ #include <sys/wait.h>
+ 
+-- 
+2.47.3
 
-This is a bad idea to mix struct_ops logic with fentry/fexit style.
-struct_ops hook will not be affected by compiler optimizations,
-while fentry depends on a whim of compilers.
-struct_ops can be scoped, while fentry is always global.
-sched-ext already struggles with the later, since some scheds
-need tracing data from other parts of the kernel and they cannot
-be grouped together. All sorts of workarounds were proposed, but
-no good solution in sight. So don't go this route for THP.
-Make everything you need to be struct_ops based and/or pass
-whatever extra data into these ops.
-
-Also think of scoping for bpf-thp from the start.
-Currently st_ops/thp_get_order is only one and it's global.
-It's ok for prototypes and experiments, but not ok for landing upstream.
-I think cgroup would a natural scope and different cgroups might
-want their own bpf based THP hints. Once you do that, think through
-how delegation of suggested order will propagate through hierarchy.
-
-bpf-oom seems to be aligning toward the same design principles,
-so don't reinvent the wheel.
 
