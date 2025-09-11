@@ -4,124 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B51B2CAC587
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 17:25:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73262CAC58F
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 17:27:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 050976B0007; Thu, 11 Sep 2025 13:25:13 -0400 (EDT)
+	id CFF5E8E0005; Thu, 11 Sep 2025 13:27:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0282B8E0002; Thu, 11 Sep 2025 13:25:12 -0400 (EDT)
+	id CD7358E0002; Thu, 11 Sep 2025 13:27:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E7FBE6B000D; Thu, 11 Sep 2025 13:25:12 -0400 (EDT)
+	id BECAC8E0005; Thu, 11 Sep 2025 13:27:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id D55A36B0007
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 13:25:12 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 64F621602CC
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 17:25:12 +0000 (UTC)
-X-FDA: 83877645264.08.EB290E2
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 5A4FE40010
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 17:25:10 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=UYxICliW;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=pyyjason@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757611510; a=rsa-sha256;
-	cv=none;
-	b=5ns7HBvPDrRUwBjMWFImqIm3BXXC+A8KrveiDXzgXBLTcqrVqVwB2auhBgb7vmBMbEbx0s
-	YH8sQEn43ar1/VTwSNu+sboNSvOdaLIQ+C55niqagZCErYJmH7g+ho77J0OfPq5WGT3jiA
-	Mw9SX8wQoGaOmRb2kVenT2YtO8mubkU=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=UYxICliW;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=pyyjason@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AED5B8E0002
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 13:27:16 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6A6CF1DF1D6
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 17:27:16 +0000 (UTC)
+X-FDA: 83877650472.25.644D661
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 7C087C000D
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 17:27:14 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=gvOpePS1;
+	spf=pass (imf28.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757611510;
+	s=arc-20220608; t=1757611634;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=66hww0i42bGnBY1WyrFAxgF0MA47MP7lxex8W0+v584=;
-	b=Y82ndS9N5Xua/UXiSZz4pSx1b1IQHjy6rS0EzHPPenRTSBg1om/biswbLniz+JW7gVShrD
-	H3DSNbsiEauS5HrUijBop+KAvjqm0Qz30IiXdjiPHYIoPv3FFmuCEV/YdIsfSE0jPFcTaj
-	jMR3uJsyD4XJh/7fDR26MkuC4CC/3YU=
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-45b4d89217aso7660805e9.2
-        for <linux-mm@kvack.org>; Thu, 11 Sep 2025 10:25:09 -0700 (PDT)
+	bh=tMGmauowOA3MWUf9b16h+wPyqJYbgETKhnspmu2nELg=;
+	b=eqeqxJeNwE/T8Q7p/WO7TO5Vkx2WbhBi7Y9QiDmfjIi3anV2MoCIMRLD9+2Rc76OMcySZH
+	8YUAfHgecwO3Ya13nz8Agem+TkzVbSrkJ5nidnER03Ee8ydVRWUjiHOyvyurU9k0Ngr8BN
+	JLhdvrGzAAX1HcaV8u0Syp4SJcU+1FM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757611634; a=rsa-sha256;
+	cv=none;
+	b=afXIGoWzPSfLg5RhYJvZsdWaNxkUFQS34hzXzw5pL9oMLgJtxW7oqE6z4WGDFwx8dUpNNx
+	rMq28TJdNfgu2biJBkXTBNfhM2M5bkeXXDQRQ5Rj1N3kTr+AsMSbNrTXJga9z1s+fXZ1IN
+	bgqsXv0yGQ9ebHRjRYRqn3o/H9yDiK4=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=gvOpePS1;
+	spf=pass (imf28.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-772301f8a4cso1349499b3a.3
+        for <linux-mm@kvack.org>; Thu, 11 Sep 2025 10:27:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757611509; x=1758216309; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=66hww0i42bGnBY1WyrFAxgF0MA47MP7lxex8W0+v584=;
-        b=UYxICliW4s8z7RaaXNVHKr/ktEQFG/E84oixQNn0xYMXIf18WUBVFIcQQbYNIRJuk4
-         d+eZB8UD4D3QnJzGvy49ertOoy11mtIuixZP/3trPyaVOe6QiDSBONPZJzTF1PlKy3xi
-         YSeYmT8rxoAU+rcesx56W0Dp2F+fi5+FPqfQfxlkqXTtJ+NOaeYWvCTED7mF2OomVEzr
-         uSr3SbioPbs+Xl8GKnKoo/v1a9FMYYJiqoZCBgK5wMsqVooW6pDWleEfycAx9efKZMrj
-         zNgGD6RO8Tywa5SWi4vTFJUzph81E5MJcYMMme/H9NplEo68jv4o9EGNe7VjR8GCy/MX
-         ASQQ==
+        d=gmail.com; s=20230601; t=1757611633; x=1758216433; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=tMGmauowOA3MWUf9b16h+wPyqJYbgETKhnspmu2nELg=;
+        b=gvOpePS1dRgp+Yj/AusxXnFb8dbbr0nCNjSpOnvPySm3Z61GKY+a+n+cLaqTdzTlpV
+         DvO4Q0IVmxl5bkBQhPHK/OvF4doYCI7gHZhrDbTlpPjfyCgyLBrNrgtXPWSur8/Gw76T
+         cuMdUMZGc5US27Q+jk78WJCcr7jJyrx/8LHNHjOV2zczjPrB7cFkXN/s+/5GXWLlfNfA
+         qPIJoAt6V5WxxfJwNbv3ouPP/pM2Qextai0rgTKwCF3BhZ1PlhOROs9kB0oII1fmbKBQ
+         QSnSqZe7L8SOgEqBk7QZ7lOeQKvgqzJs6S0B6sPQ2yykzqhVdD/cdaigF63GKbr5qVFH
+         HfbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757611509; x=1758216309;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=66hww0i42bGnBY1WyrFAxgF0MA47MP7lxex8W0+v584=;
-        b=A1oiU0ESuL4SAqQkRLEjllxeWjkXQa6y4x96By2bh68hVN1ZEii5TSMvbEzQe/6jrz
-         dvRCQ9g9Sd1M3rGplpUVAvjuyxikkYZRhKvVvwkZx7xKRThu7WomFADU/vscTbcVjmtH
-         aeVdkbsR4LLFArUnDBFQyHws/pONQ2WCHSGh+8XfQ2RjUUFo8ee71gKArnH8J14de0xk
-         IXFByhgDZkQUZozdQeTKuJ1EK3LBrD4MNlFawnTU45jL/IpJWKyKojbdOih746fQkE5R
-         3onWy20acwoNjskkbDSK2jvwRfa7oO+Hua3Q8M1Orn8S7SxsUe9os2oQAANjsowj0pgy
-         6rnA==
-X-Forwarded-Encrypted: i=1; AJvYcCWPSsTCmQG2C1pKbnCoWl82d/nAWb+MPzMpJ6hIsONtzSrrmzvVanGXj8Rym+R1t1v6YYU6K31nBA==@kvack.org
-X-Gm-Message-State: AOJu0YzsTmUh9TqhjzsUPPEQKwRJ4U6MIx6+7m8Sg3ytRSB3s5PzFw3i
-	kpYsXO7DwJnqUgX8DlyLq92lnMnz8uaRiGcfIPi5fItM881ewKzgp7td
-X-Gm-Gg: ASbGnctbSvUWKu/udlaWDppo9yNMiG6Bx/sRGGzJ1CU5I3fCKYzJTPIlB7QpeLJQyt0
-	0mHIrjtBYWs6OS0cXo4qJ26lmJh777E0Ssfotclc/Brz33WFRX1C0mlGiaQNO4h2FOJvArfueS3
-	QmceS59tP+o8pYDS0P/8icti3Eoml/OEFNQToV9OA0LrgGB8JCDPy2O+T7mEctU36clSMZb5pae
-	5iueq97iMCUEemA6DyGSFOyoD2Lxpwk8r/Ix/7+NitL0ugnCE/lXFYYMrTQZBd7xphR8GsY/ZpB
-	D4/6WEcUURWwKFbmoAL+MF8/Zo8F7GejfMe359f4FgTT6trdc/vTHYgijUM7kAHC5khDLRLTwvo
-	zsm2QbtXWgyDb06e1xnDymQ5hEDkSlPmhIfwdCwAvdsmCvfETHg==
-X-Google-Smtp-Source: AGHT+IEaEQOTywFYBJnwC3JrY90Mp6xQbmA2EeG+g3Ac9ehgcskjHnu2dwm7OKqmhaMFqIZZy0my7g==
-X-Received: by 2002:a05:600c:19d1:b0:45d:98be:ee8f with SMTP id 5b1f17b1804b1-45f212609f5mr1816215e9.26.1757611508226;
-        Thu, 11 Sep 2025 10:25:08 -0700 (PDT)
-Received: from devbig569.cln6.facebook.com ([2a03:2880:31ff:70::])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45e0187f0a7sm18431515e9.3.2025.09.11.10.25.07
+        d=1e100.net; s=20230601; t=1757611633; x=1758216433;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tMGmauowOA3MWUf9b16h+wPyqJYbgETKhnspmu2nELg=;
+        b=Tc1sIdUFnOuBvYLZMSXeDbwvPPOXkoKxsGxqLx/VxyEyvoyQoSfp63N64Uldu0gavB
+         aoagRFG/crXm6jt/ncHOBy4a8FMghnU2UhVX/5WBc3cDjquU2qyY0+sFw72W9Rn5/uoJ
+         HOeA1KCRlIhLwlfOrKAXUGI4Ayx2TBOMPl2bND90FouIruIKaWgYrWyph71PcuHgJwKm
+         wd6+FIGQkicfLClexGRp5DfiFoI+CvqVwK0Pe9dsmKahnjOQ1dHAzE2KF9ZuZvnE92PZ
+         f1QSgQEtIvwvtljoz9zBwGclekNk2XZtT4bEXwPsJr+aQRcv4EVcpxUJ8xhGrgyVEphj
+         WUJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUqrh4FEj/tYggxsRX9Paai5lCHqFW8uSasT8+YN5SYGH1jm7lH2swFqQ3wESOvEzDZ4gG5sJT4Sw==@kvack.org
+X-Gm-Message-State: AOJu0Yz4i6oqGRZ0nm7YY7O3CULEc9og4WuNWquEtOoLuakhn/6BxJhC
+	w1fxpI4l0ia3H76M6VxbV4u8iGeMkbLTqpO5fMsdUO/j665BeTG66a2w
+X-Gm-Gg: ASbGnctyFR7kkRcH3zXvecUXgh56SLHNmJGOK8vkuww+TfJAtAFs0Vzo9n32Q/H1gf6
+	wgmtN3Z4CJcbQurduUbXJflVarB/eQTn4jfBIhGho0q0ojPjODFMpyztfsBWGnFVCuhcw2Fa1xG
+	64vuW0eM2xJQz6yRtPRNWRyCrI1mISXfkEc6OLjo+nxwWLg61OmRJaPey8mveKFzljPuOPRgbcb
+	fy7cyHoVyjfPEqTDaGjl1S6PFJw200An27H9H+vtbe+TGYynMTlhW5ct7VJTNxLy2HvF4QCK5DZ
+	v6Y34i0oNJm5WAsB1E/LOJWtU0okHIlFCR8dPzjUTWXHwzl4v17WmRxt7QvTqoSwMEFdGXxXtV3
+	zrh0bvBpix+GzSvwpSVMTVmSq42bigKhn+IehHOI20psi6NgfGKxAkUO6c8nbCik5
+X-Google-Smtp-Source: AGHT+IGF2tUvE/Gq5hN9WOCXP/WB7bjb8fSeA/cZ01WaYcNsfLBQ8xYvy+0cJUjDAeb/UBmI19oJMg==
+X-Received: by 2002:a05:6a21:6d9c:b0:243:ca71:d972 with SMTP id adf61e73a8af0-2602bb5937fmr137553637.30.1757611633234;
+        Thu, 11 Sep 2025 10:27:13 -0700 (PDT)
+Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b54a3aa1a22sm2323679a12.52.2025.09.11.10.27.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Sep 2025 10:25:07 -0700 (PDT)
-Date: Thu, 11 Sep 2025 10:25:05 -0700
-From: Yueyang Pan <pyyjason@gmail.com>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: Usama Arif <usamaarif642@gmail.com>, David Wang <00107082@163.com>,
-	akpm@linux-foundation.org, kent.overstreet@linux.dev,
-	vbabka@suse.cz, hannes@cmpxchg.org, rientjes@google.com,
-	roman.gushchin@linux.dev, harry.yoo@oracle.com,
-	shakeel.butt@linux.dev, pasha.tatashin@soleen.com,
-	souravpanda@google.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/1] alloc_tag: mark inaccurate allocation counters in
- /proc/allocinfo output
-Message-ID: <aMMF8elYvlPoOF+J@devbig569.cln6.facebook.com>
-References: <20250909234942.1104356-1-surenb@google.com>
- <20cafc1c.a658.199394de44e.Coremail.00107082@163.com>
- <aMLvCCZbmpSE/aql@devbig569.cln6.facebook.com>
- <902f5f32-2f03-4230-aab0-a886fd8e4793@gmail.com>
- <CAJuCfpGezf06eR7WnzizpwTaxZ5Rm8jbeW4y87zcr6LZuJ9MZA@mail.gmail.com>
+        Thu, 11 Sep 2025 10:27:12 -0700 (PDT)
+Date: Thu, 11 Sep 2025 10:27:08 -0700
+From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+	vbabka@suse.cz, surenb@google.com, mhocko@suse.com,
+	jackmanb@google.com, hannes@cmpxchg.org, wangkefeng.wang@huawei.com,
+	linux-mm@kvack.org, Oscar Salvador <osalvador@suse.de>
+Subject: Re: [PATCH] mm/compaction: fix low_pfn advance on isolating hugetlb
+Message-ID: <aMMGbPX9uUj7TfoG@fedora>
+References: <20250910092240.3981-1-richard.weiyang@gmail.com>
+ <20250911012521.4p7kmxv46kwz5fz5@master>
+ <5F7DCC9D-4CA2-4BA2-9EA8-F04C3883E289@nvidia.com>
+ <20250911032751.khtgvdhcqzyf3rgr@master>
+ <3DE28F4B-ACB1-468F-89B9-D7750D24BE4E@nvidia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJuCfpGezf06eR7WnzizpwTaxZ5Rm8jbeW4y87zcr6LZuJ9MZA@mail.gmail.com>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5A4FE40010
-X-Stat-Signature: 9wkeje5df9ux3qp9h1hrxun8c3eu8bwa
+In-Reply-To: <3DE28F4B-ACB1-468F-89B9-D7750D24BE4E@nvidia.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 7C087C000D
+X-Stat-Signature: zpyodjksi3t76edz55upq9smd1i66d84
 X-Rspam-User: 
-X-HE-Tag: 1757611510-880672
-X-HE-Meta: U2FsdGVkX19SpLKz1azIpwiPeVDtdiXN+L6qdZbREccVbgFYeX91avrOTViC3K09j/cbRLRsc+hPIebqHRdIkZS5A6Ho0u8rBD0bgar67u4OEtmyyA060nfKkum/YeiM5lu4uwV0GFvrti0J1BmNWHriiVOX7rmThuNIcy1u1I0+kh99Ad1GyV+gXV1FqYXsVS/qu/5NagS/2pVIbAMc5c+r+LKhWg9QPHEj5pwIoaKW1QxhheWwsfTs2jFkhhNOMVrtB9dqZ7JuXkU9BRN4yyIPp8G+rC71fOJOLoOE8Pd8ASZJ8tME5luwQNXyxl8YYvbucMuvwQLW3tpvVZTT1F5H0D6DYg9gtUIlOtrRTgzRRno+7mnHoffpJKddkYk6kiRa1oY23gsn0seFopYv/5HvINzywVPoGadIIHCHcao43D7Sioo+O0JYNQQP2N4NX8PYzwdomflmU3Jp2nwXYq4ExvDAfY/Oh87avxUIbqjEWd6e/y6ovBXcjbF4RAMH0WEw+bJdQ04KDdWtEp2XL2yyb5Ga9tX2Zm5gpzZWhTk1Z7JE84k7RCldmnXLTCx04EHTXEsIfmBJDTlZvIU9V6XkJtvgqO5+8H4wlSp56IqXD9xq+Cav3FrBbWR6DcnxNqleZNHKAmikVxwxPfNLrAnuNco1SMfqGhXmOKWRMHWi/omJgU7yIsoaMOk0VtLTnDO1ZqMhDMbOb7UGm9iChh61Zet7um+9U+4YsQmPwYbCDJiTh3CLiKaqSm90pwa/DfnkXQmW8p729bFObgZp/nZA3sSljxKw67k+glJahhKQO2zp5HSp03dR5m2n68vZROV9AwHz76f36+QoLMNBUUCSzzD6/xndNeoWe+ZwHwcXwaCqlnM566Iq0M2fIoEaow9ZDNArrKNS1e3qvy1CaE/jc8pm3VtFt8Mrbjj3/iA2jzkdSnYS72bWHQs9QuEL97MEANqa+zkXKRRBrGS
- mQkvvo9v
- sHimEvfDg/4PC6k+rFgfoLaa8lJzhtSEXVyj9O4n9SUYt2pD998Nh6X3sm18Qd/w4p3hWUr9ToFQk0+ac9XDKE1oP0RwGESVsAc9lh6xelOEjZ7nyIIMABVRpdwTCZz65DbcQrZ0TlJ0rcnMsb+7tjkeMElBDni+TkTEwPhjDXCal7uxEPiGKqbUXSVpsy6FCz7I+R4aI9S1sK+kV9Sf2Af67MRdhziXMjOW5A3Uv7N/rW9BIKJuGCki3J6w1tzaOarj4ihGYNR4VFA6lTcLWxVjoWiViOMGSFlMcT/euBEoZHaqrzjLNWFgdVvY6q+wGVMoHnkskidYiVymvN7ailH7oBsvnPX295erEuF43UUtTqkCpuucb0ZGdZkG/yzLAx8wmPJta7uJ2hKtEQJv2aV+IW6Sd9kP30l8+w+9RO8aE/MmQd8K76Y/GQTCFMX+q00yihibXoChj262cAdXiV8q5c5lKanj5/nqsU+qZy76DW2DylIRbt/tTQeEQzIuoMRlUzAAlLQzmvDDkUlxRNZDSAnUXxBMeWF5fz45HXehGO60CCR1LhB9gKYSosPeJxn88oDjpvv09B/JTtRDSHPK22IYGSuxPXTV7YzqJX88ZJjUVXFHGzOfO9Q==
+X-HE-Tag: 1757611634-828970
+X-HE-Meta: U2FsdGVkX1957TVM6hRD+g0ZtH6EVipXW4+AeQNAg0nphV97G+6knveHNUKMEZOGsmP2W+xsVoFxnAzX/JUdlKdLbdEWEuPtfKkKn5O8gTwmVIAHfWiCdFfGQB3T+e+OssqWkVs0/qKgU1EMFHSg7xLRDgNwYIzDQNmja2MZwaoSO89gZNp49FGzK4oqGjuvfM7I7WiEmY+y5s8vZDo25Yp7bsL2p5ZgBsRwd9YNUrJ8XL0xuiR9BwJ6DR2mPSLF4uj7gXB/ZyZrNXl/EbpG3ZOc9KnVDlDkLobRhxDg3WxMmWGlaV6TtLjQ/TN1J2OpbHY26k6RQNbzW7PWdSWcZpCG+88bwZo4QT1isYJQDbYn07HeYjWgekO6+XV2NYuusRlG/07TfBh8AzBeFd8QB80z82pc0b1XXFDU2d2KbuBsG6Tf5wQKAX2ac/Uq0xgnUeL2cf061U1rHbsbc1OEK9g8PfIC95ivoKBF3PTyZv1FLHKxBRGutFKZxCMKweSgNvDcVfCugq8b9Xp9ER9+DiW/xBFu71/5McQtJxyV9kYdfwAUMqVTJaLVOlRVO9yG1m//Uw0ivthvCVmuycbg5N9nd4ob5Wz+ylt3Bk8ygij3LGpjqVhABMMOlYTBrugdyhw3VVCyh2p9QpBGS2t6L52NNHfW9nPLaSFN4zrcpgDYVt5K4hC56gMmSeE1aVihQpzjOKwry753VwTtkIeg6vTpW6Itw25u9QOtwdfG9pGnIjXtDR7ITWf8f0wJl/Fl2iwUe99k04Wx3DfxmPRv12UgsAQkaRXGH6Wi+jOpibvevl4hysqe8wsvaig3jt+E2HoquyXwz3IEZgljTLREUgiGhre4W09oahPR/So9EIHIpyOp+bhKrD8yRQsxat5/fXtpd2nEnbecAYf40UZHQ4HhXAzT2sEEE8gfqHMCvmTcrLefR48vXe1XIleDED6NT24MUhHxRbJ7XbqBekh
+ 3Dtu24C+
+ XE6SiqyLOG9eE0QCphgNuIsQWzCPtipoZY4tu+KMZ3h64/zhQV9jotS7j2jWr4g4rIiGF3FT5kzxVz5pAvXt9hJiCj3VtQ948AA5HbvX6U8VmsOQHZBGTr0JxX1FqwBxhN1bSGgL0WXeVyBxz3xxy1w5mYuDD7csZsOTKFiYHl496+hs0psnP2n9Hxjcg3uu64+Fhb2J2B9hTLK69NLvpaQ5W+G8WEs9CQOU5R/TUCZJYQE0Qoof1a0wcYGrUpn4knM3FY427IdPjSHaHitXiZOGPHGFXbuBn88lZzdjCCr1h6DnPU6h4s1D8Q0Z3ZPtQ3TMtS3mw1cSkOzxQl3dQUj6tMbCAd5oB4rkMyhCeu/ku3R4D/XzluxRpK70KTmWdMZesswwOltXhsC05h6lHtrx328Bvc1/6QY3zVDRIxaTbK9lO5G8m361Xf30eQlszSOs6fn3UEujm3cJQWJgTiyjxbYNwo6jZM2W3GRRuwdZvT26+X21vT4N10Mw1QQYlVpZVSOLyFH1e4V+WSZTKVEJZNwiQvLMOo7Zq53tVTWo6pfy+I/ImTmhz+UW5oT7y2zTyfhhVVZkJKqmp+M2IWAB5ew88jyxP6/KrbRxyhjU3rG0REPQuygrJzP5e7BV1aLsOO4Azd9bYsGE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,115 +123,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 11, 2025 at 09:18:29AM -0700, Suren Baghdasaryan wrote:
-> On Thu, Sep 11, 2025 at 9:00 AM Usama Arif <usamaarif642@gmail.com> wrote:
-> >
-> >
-> >
-> > On 11/09/2025 16:47, Yueyang Pan wrote:
-> > > On Thu, Sep 11, 2025 at 11:03:50PM +0800, David Wang wrote:
-> > >>
-> > >> At 2025-09-10 07:49:42, "Suren Baghdasaryan" <surenb@google.com> wrote:
-> > >>> While rare, memory allocation profiling can contain inaccurate counters
-> > >>> if slab object extension vector allocation fails. That allocation might
-> > >>> succeed later but prior to that, slab allocations that would have used
-> > >>> that object extension vector will not be accounted for. To indicate
-> > >>> incorrect counters, mark them with an asterisk in the /proc/allocinfo
-> > >>> output.
-> > >>> Bump up /proc/allocinfo version to reflect change in the file format.
-> > >>>
-> > >>> Example output with invalid counters:
-> > >>> allocinfo - version: 2.0
-> > >>>           0        0 arch/x86/kernel/kdebugfs.c:105 func:create_setup_data_nodes
-> > >>>           0        0 arch/x86/kernel/alternative.c:2090 func:alternatives_smp_module_add
-> > >>>          0*       0* arch/x86/kernel/alternative.c:127 func:__its_alloc
-> > >>>           0        0 arch/x86/kernel/fpu/regset.c:160 func:xstateregs_set
-> > >>>           0        0 arch/x86/kernel/fpu/xstate.c:1590 func:fpstate_realloc
-> > >>>           0        0 arch/x86/kernel/cpu/aperfmperf.c:379 func:arch_enable_hybrid_capacity_scale
-> > >>>           0        0 arch/x86/kernel/cpu/amd_cache_disable.c:258 func:init_amd_l3_attrs
-> > >>>      49152*      48* arch/x86/kernel/cpu/mce/core.c:2709 func:mce_device_create
-> > >>>       32768        1 arch/x86/kernel/cpu/mce/genpool.c:132 func:mce_gen_pool_create
-> > >>>           0        0 arch/x86/kernel/cpu/mce/amd.c:1341 func:mce_threshold_create_device
-> > >>>
-> > >>
-> > >> Hi,
-> > >> The changes may  break some client tools, mine included....
-> > >> I don't mind adjusting my tools, but still
-> > >> Is it acceptable  to change
-> > >>       49152*      48* arch/x86/kernel/cpu/mce/core.c:2709 func:mce_device_create
-> > >> to
-> > >>       +49152      +48 arch/x86/kernel/cpu/mce/core.c:2709 func:mce_device_create*
-> > >>
-> > >> The '+' sign make it still standout when view from a terminal, and client tools, not all of them though, might not need any changes.
-> > >> And when client want to filter out inaccurate data items, it could be done by checking the tailing '*" of func name.
-> > >
-> > > I agree with David on this point. We already have monitoring tool built on top
-> > > of this output across meta fleet. Ideally we would like to keep the format of
-> > > of size and calls the same, even for future version, because adding a * will
-> > > change the format from int to str, which leads to change over the regex parser
-> > > many places.
-> > >
-> > > I think simply adding * to the end of function name or filename is sufficient
-> > > as they are already str.
-> > >
-> >
-> > Instead of:
-> >
-> > 49152*      48* arch/x86/kernel/cpu/mce/core.c:2709 func:mce_device_create
-> >
-> > Could we do something like:
-> >
-> > 49152      48 arch/x86/kernel/cpu/mce/core.c:2709 func:mce_device_create(inaccurate)
+On Thu, Sep 11, 2025 at 12:19:34PM -0400, Zi Yan wrote:
+> On 10 Sep 2025, at 23:27, Wei Yang wrote:
 > 
-> If there is a postprocessing then this would break sometimes later
-> when the function name is parsed, right? So IMO that just postpones
-> the breakage.
-> 
+> > On Wed, Sep 10, 2025 at 09:35:53PM -0400, Zi Yan wrote:
+> >> On 10 Sep 2025, at 21:25, Wei Yang wrote:
+> >>
+> >>> On Wed, Sep 10, 2025 at 09:22:40AM +0000, Wei Yang wrote:
+> >>>> Commit 56ae0bb349b4 ("mm: compaction: convert to use a folio in
+> >>>> isolate_migratepages_block()") converts api from page to folio. But the
+> >>>> low_pfn advance for hugetlb page seems wrong when low_pfn doesn't point
+> >>>> to head page.
+> >>>>
+> >>>> Originally, if page is a hugetlb tail page, compound_nr() return 1,
+> >>>> which means low_pfn only advance one in next iteration. After the
+> >>>> change, low_pfn would advance more than the hugetlb range, since
+> >>>> folio_nr_pages() always return total number of the large page. This
+> >>>> results in skipping some range to isolate and then to migrate.
+> >>>>
+> >>>> The worst case for alloc_contig is it does all the isolation and
+> >>>> migration, but finally find some range is still not isolated. And then
+> >>>> undo all the work and try a new range.
+> >>>>
+> >>>> Advance low_pfn to the end of hugetlb.
+> >>>>
+> >>>> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+> >>>> Fixes: 56ae0bb349b4 ("mm: compaction: convert to use a folio in isolate_migratepages_block()")
+> >>>> Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+> >>>> Cc: Oscar Salvador <osalvador@suse.de>
+> >>>
+> >>> Forgot to cc stable.
+> >>>
+> >>> Cc: <stable@vger.kernel.org>
+> >>
+> >> Is there any bug report to justify the backport? Since it is more likely
+> >> to be a performance issue instead of a correctness issue.
+> >>
 > >
-> > This should hopefully not require any changes to the tools that are consuming this file.
-> > I think it might be better to use "(inaccurate)" (without any space after function name) or
-> > some other text instead of "+" or "*" to prevent breaking such tools. I dont think we need
-> > to even increment allocinfo version number as well then?
+> > OK, I thought cc-stable is paired with fixes tag.
+> >
+> > If not, please drop it.
+> >
+> >>>
+> >>>> ---
+> >>>> mm/compaction.c | 2 +-
+> >>>> 1 file changed, 1 insertion(+), 1 deletion(-)
+> >>>>
+> >>>> diff --git a/mm/compaction.c b/mm/compaction.c
+> >>>> index bf021b31c7ec..1e8f8eca318c 100644
+> >>>> --- a/mm/compaction.c
+> >>>> +++ b/mm/compaction.c
+> >>>> @@ -989,7 +989,7 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
+> >>>> 				 * Hugepage was successfully isolated and placed
+> >>>> 				 * on the cc->migratepages list.
+> >>>> 				 */
+> >>>> -				low_pfn += folio_nr_pages(folio) - 1;
+> >>>> +				low_pfn += folio_nr_pages(folio) - folio_page_idx(folio, page) - 1;
+> >>>
+> >>> One question is why we advance compound_nr() in original version.
+> >>>
+> >>> Yes, there are several places advancing compound_nr(), but it seems to iterate
+> >>> on the same large page and do the same thing and advance 1 again.
+> >>>
+> >>> Not sure which part story I missed.
+> >>
+> >> isolate_migratepages_block() starts from the beginning of a pageblock.
+> >> How likely the code hit in the middle of a hugetlb?
+> >>
+> >
+> > OK, this is a kind of optimization based on the knowledge it is not likely to
+> > be a tail page?
 > 
-> I'm wondering if we add a new column at the end like this:
-> 
-> 49152      48 arch/x86/kernel/cpu/mce/core.c:2709
-> func:mce_device_create [inaccurate]
-> 
-> would that break the parsing tools?
-> Well-designed parsers usually throw away additional fields which they
-> don't know how to parse. WDYT?
-> 
+> No, it might be that most of the time page is the head, or people assume so.
 
-It would break the parse now as we count the number of string to decide if 
-there is an optional module name or not. I don't think it is a big 
-deal to fix though.
+For compound pages, we will always have tail pfn < head pfn, so we should
+always find the head page first.
 
-I think one more important thing is probably to reach a consensus on 
-what format can be changed in the future, for example say, we can 
-keep adding columns but not change the format the type of one column.
-With such consensus in mind, it will be easier to design the parser. 
-And I guess many companies will build parser upon this info for fleet-
-wise collection.
-
-> >
-> > >>
-> > >> (There would be some corner cases, for example, the '+' sign may not needed when the value reach a negative value if some underflow bug happened)
-> > >>
-> > >>
-> > >> Thanks
-> > >> David.
-> > >>
-> > >>
-> > >>> Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
-> > >>> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > >>> ---
-> > >>
-> > >
-> > > Thanks
-> > > Pan
-> >
-
-Thanks
-Pan
+If you did find a case where we somehow encounter a tail page here, I'd
+love to see it. And then you'd also want to make sure the other compaction
+trackers are appropriately accounted for.
 
