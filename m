@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CABE5CAC58F
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 09:56:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E3A3CAC596
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 09:57:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 21E958E0002; Thu, 11 Sep 2025 05:56:51 -0400 (EDT)
+	id 4B776900003; Thu, 11 Sep 2025 05:56:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1ABAD900005; Thu, 11 Sep 2025 05:56:51 -0400 (EDT)
+	id 3A74F940009; Thu, 11 Sep 2025 05:56:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA4BF8E0007; Thu, 11 Sep 2025 05:56:50 -0400 (EDT)
+	id 15E01900003; Thu, 11 Sep 2025 05:56:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8CFA58E000A
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A1768E0009
 	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 05:56:50 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 422A9B9643
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 39DA4118E66
 	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 09:56:50 +0000 (UTC)
-X-FDA: 83876515380.14.6F2655B
+X-FDA: 83876515380.16.4449F7E
 Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 879AAC000D
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 09:56:47 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	spf=pass (imf28.hostedemail.com: domain of zhangchunyan@iscas.ac.cn designates 159.226.251.81 as permitted sender) smtp.mailfrom=zhangchunyan@iscas.ac.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757584608; a=rsa-sha256;
-	cv=none;
-	b=XnlTWEz82vmxTehIqR3YDiqWEPe+HIHfShF8neO7rd38b18gqEPoZpxQK2QG4149MbI9x4
-	yhyX1i5PVyE/hBf/CnYnIIZJf4ZmHMe88Kmm+4dbGBsf4vC1VwhmwixoOPNB4iW7/YJpBX
-	40u643yOA4fe341mXuZxmwvDc56vY94=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf28.hostedemail.com: domain of zhangchunyan@iscas.ac.cn designates 159.226.251.81 as permitted sender) smtp.mailfrom=zhangchunyan@iscas.ac.cn
+	by imf20.hostedemail.com (Postfix) with ESMTP id E21E31C000D
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 09:56:46 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	spf=pass (imf20.hostedemail.com: domain of zhangchunyan@iscas.ac.cn designates 159.226.251.81 as permitted sender) smtp.mailfrom=zhangchunyan@iscas.ac.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1757584608;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+46wysSG75TCbMKs3DQNTsJgRj0bbadkIuzr0Y+NRKc=;
-	b=Ne8CMUyzWrdzPD+sev4vU0cXomgXeuAKiLreXFfu0gTBrHvlY/F+i0jVTmixiJaU0YoUer
-	cypn1xlqpAwbKy8FScn1E8mEPWeg8ba0pxI8n0J7GIXk5vAMJWLwRevII/zo2fgyyqfv5R
-	VrMkmHVJqUlMv2/I477+/KhzRNqhD9Y=
+	bh=xv2c4R+QZismnxUgCZWlzQXiZaxNcj/FRPLDAGConSA=;
+	b=5oup8vLa+NSPBk7j4WsG3YtttPremq4auZvotRWtxuITaN9T/jXbHhvYTFR0WV+wtZASix
+	ezCN0KDkdZL+davI1tbCR5UH7wdQA+RFV28VTWFHb5ePcNw1r1zM29B2nuTez4lE1tMdpx
+	1YhtS+R7UOTcn2A8EV1to0sO9wnkD1w=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757584608; a=rsa-sha256;
+	cv=none;
+	b=16e7xPFreldiemIhDOQs0qFBUQhoUT7NbPW7CEHIh3jxqhYjZl26jqQDuAXUOfHbQIou0D
+	l4pqLEStsLOl6WauzBo5tY3J4ulELLzNrY6vPsfdEO+r/n4FjboI8fInDkm/luiqpkOy8t
+	a03iM3g4KlfT8+HB2//jEWme4ZGO/Sk=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=none;
+	spf=pass (imf20.hostedemail.com: domain of zhangchunyan@iscas.ac.cn designates 159.226.251.81 as permitted sender) smtp.mailfrom=zhangchunyan@iscas.ac.cn;
+	dmarc=none
 Received: from ubt.. (unknown [210.73.43.101])
-	by APP-03 (Coremail) with SMTP id rQCowACH2IK5nMJoo6pCAg--.44660S7;
-	Thu, 11 Sep 2025 17:56:16 +0800 (CST)
+	by APP-03 (Coremail) with SMTP id rQCowACH2IK5nMJoo6pCAg--.44660S4;
+	Thu, 11 Sep 2025 17:56:12 +0800 (CST)
 From: Chunyan Zhang <zhangchunyan@iscas.ac.cn>
 To: linux-riscv@lists.infradead.org,
 	linux-fsdevel@vger.kernel.org,
@@ -76,42 +76,42 @@ Cc: Paul Walmsley <paul.walmsley@sifive.com>,
 	Axel Rasmussen <axelrasmussen@google.com>,
 	Yuanchu Xie <yuanchu@google.com>,
 	Chunyan Zhang <zhang.lyra@gmail.com>
-Subject: [PATCH v11 5/5] riscv: mm: Add userfaultfd write-protect support
-Date: Thu, 11 Sep 2025 17:56:02 +0800
-Message-Id: <20250911095602.1130290-6-zhangchunyan@iscas.ac.cn>
+Subject: [PATCH v11 2/5] mm: userfaultfd: Add pgtable_uffd_wp_supported()
+Date: Thu, 11 Sep 2025 17:55:59 +0800
+Message-Id: <20250911095602.1130290-3-zhangchunyan@iscas.ac.cn>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250911095602.1130290-1-zhangchunyan@iscas.ac.cn>
 References: <20250911095602.1130290-1-zhangchunyan@iscas.ac.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowACH2IK5nMJoo6pCAg--.44660S7
-X-Coremail-Antispam: 1UD129KBjvJXoWxZF48ZF4kKF4xKFW5urWrAFb_yoWruw1rpr
-	s5GayrurWDJF97tayftr4YgrWrZw4fWa4DWr9xCa1kJFy7K3yDXr95Kry3try8JFWvv347
-	WFWrKr1rCw47JrDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUmEb7Iv0xC_Zr1lb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I2
+X-CM-TRANSID:rQCowACH2IK5nMJoo6pCAg--.44660S4
+X-Coremail-Antispam: 1UD129KBjvJXoW3Gr1DGFWrJry3KryfWF17ZFb_yoWxuFyfpF
+	47Gw45Xrs7JF97Ga93Aa10k3s8Zw4fKrykWryF93W8A3W3t390vryFkFWFyF93Jr4kWryx
+	tF17trWkur42vwUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUmmb7Iv0xC_KF4lb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I2
 	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI
-	8067AKxVWUAVCq3wA2048vs2IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28C
-	jxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI
-	8IcVCY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E
-	87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64
-	kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVW8JVWxJwAm
-	72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI
-	1lc7CjxVAaw2AFwI0_GFv_Wrylc2xSY4AK67AK6r4fMxAIw28IcxkI7VAKI48JMxC20s02
-	6xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_Jr
-	I_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v2
-	6r1I6r4UMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UMIIF0xvE42xK8VAvwI8IcI
-	k0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4U
-	JVWxJrUvcSsGvfC2KfnxnUUI43ZEXa7IUnmhF7UUUUU==
+	8067AKxVWUXwA2048vs2IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28CjxkF
+	64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW8JVW5JwA2z4x0Y4vE2Ix0cI8IcV
+	CY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv
+	6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c
+	02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVW8JVWxJwAm72CE
+	4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7
+	CjxVAaw2AFwI0_GFv_Wrylc2xSY4AK67AK6r4fMxAIw28IcxkI7VAKI48JMxC20s026xCa
+	FVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_Jr
+	Wlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j
+	6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1lIxAIcVCF04k26cxKx2IYs7xG6r
+	1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1U
+	YxBIdaVFxhVjvjDU0xZFpf9x07jPID7UUUUU=
 X-Originating-IP: [210.73.43.101]
-X-CM-SenderInfo: x2kd0wxfkx051dq6x2xfdvhtffof0/1tbiDAcCB2jCjVc9TAAAsP
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 879AAC000D
-X-Stat-Signature: kbyuurj5n7tq7fif54npxnxnx97rkn8r
+X-CM-SenderInfo: x2kd0wxfkx051dq6x2xfdvhtffof0/1tbiDAgCB2jCjVc9QgAAsO
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: E21E31C000D
+X-Stat-Signature: e3adh48crmbcxxuf7mb9jhdi5s119na4
 X-Rspam-User: 
-X-HE-Tag: 1757584607-985460
-X-HE-Meta: U2FsdGVkX1+d9lO2zZ/QwN1KH/9l0cnnyzounHVWuDXnfU9+DIsqpKLrdxwz7q3F+t1FjA8HF3eeGwXVlChM+wuTkZVOHS+VM2xoNKM8MlBG6oNdwdvGeKPcsT4pzgRGxzCWKYJwp4NiHQ2cOHEqI4h37lR+l5vrxKUUwmvO5Oc7ooeC2ofok2M1cPTogyJ4kTRFwj+WT56lLFsXscIw6wdkC5JJ1VhWjMVeCdMVdiY2g4Lr3eJ6C9ugKpfXQvDE5lLSsxI53EI+WDo8B0ooDuMx62yV00HWfA8WO7q/Hi8f3O334ERD6aToSho2bEPHxnCxuOnwOEh9BiwfsPj1omNybxZ/27B2Jg11lCgYPkvs+MYe4BhEaOd+ga0uF5OLa46a1u42ytb+oI9htq+bZSTPscKmVDRh1Ez3V0FNGPQH0ewBbSGSNaOdjPrpD9xx8Tkc33+U+JKgn/tCdfTMNsIhsAZseI9SuuTCvNd/N4SAdt1ufq6lEqXnnrWDGeb/QNBrgXtNaKaTDj2pLpj8popU2+H7vx47M/bQDjRaGoyIiFOyeJgYpG5Vv8JYJbu5zRhAYZFoP76MxWzRaRHqhx7zkmWq3SPavsEiYZMA/AIvABZiKm66sfSN+QlpiYzw6qrYaa4Sw1uvLR3BTsvJRtYCcqUPOaB21NWR5/gSRtemIqgo7kGopqvkoW11L2MCV6zLxZYTIw4ZFTMpEWdo3NSsX6sgfw88E069yYq5osTZps3zAeQ980E56IbS8DV33N1hzWOb063ZNRt6CHX5+iJtpZXUCaKzMbCxOEGjalq3cHSLexN9Bou7qbB6jdwKSYFDlhUrnkHuRw0B4+XEtWl1TwslNEII5zhhtjvLnZPeuK2Ck+Hmry6EJS2pYACmyZIaYyaf+8F1DqXUIA9vkD0LoRMqNoYJkf0VSRNSmPp0KIwnAdc1q0Ul70H9+lgm52hhJpikX5GLIaXC8d5
- sXx9O/q8
- pqSXtFbcHgHX4hZ3/op+WctgKAuZrH3fT6e+bpGNuYMO+oPA5f6QP5VZW+ZQ0bEYpi9HZsI62MGq/tW1pi4hjptESoC5V0Rr7+S/V3DG1Ap5OutEEPLqQ4SZK7qgbHdW2+rf2EAIfndEP5cmjcW21vuiN+eRlxLSMLCaAtdpSdP7KI20yHydAEUIsLHGug6VZ2x69X9Bgll7o9e85/aPM7ZpzRiRdo87Ue9Gbam6UUSffXJ8=
+X-HE-Tag: 1757584606-700378
+X-HE-Meta: U2FsdGVkX1/w4NKQsUE31G6mihftb6RIt6F/znYWIwgjRnJ4eqw86e23vo9eQf5eMtsiV+5uI25YpKiX6ovqcIFlkCNCm+tFPrYj3i9v1G3OR1Wwfl9aMGos57/uQWyBGdQSVmeHt9B3Xe6uAOKjkdnpmha9uaQOEF0ccpE+fAILHUZF5GDt0EwAuyXq7fPSTJTHt0Ko0dToOwzLRgwv0GP26gxXUojkjdMpKCrxqRz942ddL9FVqp5kUFqD+BZsV8xj5sZCR9nSg8+B0VmLSK8V/sCCy3tb0+vUjL1/1IPWsfj9xbi31/wUqHo27StnlrsDZNf+1OAPhUtErG8ybYTV7uitmOjuMXVQXxAeuBk7pc0UYUTaLvOE+fDyFyZLZ8S6qI03jizvTbyTmAvzWncfsQfSjovqLpk0gel0V1VNg8KSueENw087qwilhO/kBwye3biGOvn6DRpsU2GfdjUouL2HgLLIC6a8v7X03FKh/VXihtJt28pI49C6mfrSS69bmVri3LSO2cIFx1vkT0Ja5I4SysNdZLNAIzKRkbaWyYI739dUdFtgffShU+/GI/bAC8kWieKHksMrVTwQLD6mpdRjhFgmv/mq0Hg51F1nLqh9YiGgDbZZRSjYTFzKEUvXm5YDKWjPbBXMtzpEY25Jq1z5EoWA4LnQCGhdVKvhShkmtPcbn8DxvQ1cuL6JCUj7X9uOYVmqLhRAZPW37UVN0DXOMhe2AwkrWOGQll+Dt5OFUgRxG8tfhGANhfZS5JwV/xZPLj1FZD5qW802m5R0vkcoEAgqEvoTKis185/G53N32RXmEX3MPDB9S0lKMLZSp8iv2/7fd7zjVXTX9sVm6vLWdac0tYRBdCb2ORV6D9P8ZXtfjHHEV7p08Yfjh8r1Mgo+HS+01LMmgxB6XA2Xm8/9T4LXP+xd0fP3MrkkCXZRnE8Kn8ioU8F4y29vXGXVh7JghUIXljRPtnn
+ og0lQ4QX
+ lgPq+UfMAB6vtfVFJCcXHhxzwU+wuNafZcWpZ1p/7aoEyobD+mWLEUKGYppx56uvdpXmoeS5PTitv+AG6eHqRSSd/jfA6kdeeFHsHz0U63qLFTL1Cb46FMXCOPArdRHND1HDi6qUnXzgFmp/zj8vgDr85PSR1c1UHz1DVa4n9sQpFxOEty7wEp0vKhwHw0a2NKbJCThFcu+bkW3MZwiW625QK21nuw9QJyYp6P1g8YdOU/BpR6FPeq3X+pgEUAc8fC7mR6W1iJYJ6Tz9O6mixAeuvbjfsgIy/ky8cAWVeY9vae3BgcTcJh7KfhRLDWzcS099M
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,153 +120,213 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The Svrsw60t59b extension allows to free the PTE reserved bits 60 and 59
-for software, this patch uses bit 60 for uffd-wp tracking
-
-Additionally for tracking the uffd-wp state as a PTE swap bit, we borrow
-bit 4 which is not involved into swap entry computation.
+Some platforms can customize the PTE/PMD entry uffd-wp bit making
+it unavailable even if the architecture provides the resource.
+This patch adds a macro API that allows architectures to define their
+specific implementations to check if the uffd-wp bit is available
+on which device the kernel is running.
 
 Signed-off-by: Chunyan Zhang <zhangchunyan@iscas.ac.cn>
 ---
- arch/riscv/Kconfig                    |  1 +
- arch/riscv/include/asm/pgtable-bits.h | 18 +++++++
- arch/riscv/include/asm/pgtable.h      | 68 +++++++++++++++++++++++++++
- 3 files changed, 87 insertions(+)
+ fs/userfaultfd.c                   | 23 ++++++++--------
+ include/asm-generic/pgtable_uffd.h | 11 ++++++++
+ include/linux/mm_inline.h          |  7 +++++
+ include/linux/userfaultfd_k.h      | 44 +++++++++++++++++++-----------
+ mm/memory.c                        |  6 ++--
+ 5 files changed, 62 insertions(+), 29 deletions(-)
 
-diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index 53b73e4bdf3f..f928768bb14a 100644
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -147,6 +147,7 @@ config RISCV
- 	select HAVE_ARCH_TRANSPARENT_HUGEPAGE if 64BIT && MMU
- 	select HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD if 64BIT && MMU
- 	select HAVE_ARCH_USERFAULTFD_MINOR if 64BIT && USERFAULTFD
-+	select HAVE_ARCH_USERFAULTFD_WP if 64BIT && MMU && USERFAULTFD && RISCV_ISA_SVRSW60T59B
- 	select HAVE_ARCH_VMAP_STACK if MMU && 64BIT
- 	select HAVE_ASM_MODVERSIONS
- 	select HAVE_CONTEXT_TRACKING_USER
-diff --git a/arch/riscv/include/asm/pgtable-bits.h b/arch/riscv/include/asm/pgtable-bits.h
-index f3bac2bbc157..b422d9691e60 100644
---- a/arch/riscv/include/asm/pgtable-bits.h
-+++ b/arch/riscv/include/asm/pgtable-bits.h
-@@ -38,6 +38,24 @@
- #define _PAGE_SWP_SOFT_DIRTY	0
- #endif /* CONFIG_MEM_SOFT_DIRTY */
- 
-+#ifdef CONFIG_HAVE_ARCH_USERFAULTFD_WP
+diff --git a/fs/userfaultfd.c b/fs/userfaultfd.c
+index 54c6cc7fe9c6..b549c327d7ad 100644
+--- a/fs/userfaultfd.c
++++ b/fs/userfaultfd.c
+@@ -1270,9 +1270,9 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
+ 	if (uffdio_register.mode & UFFDIO_REGISTER_MODE_MISSING)
+ 		vm_flags |= VM_UFFD_MISSING;
+ 	if (uffdio_register.mode & UFFDIO_REGISTER_MODE_WP) {
+-#ifndef CONFIG_HAVE_ARCH_USERFAULTFD_WP
+-		goto out;
+-#endif
++		if (!pgtable_uffd_wp_supported())
++			goto out;
 +
-+/* ext_svrsw60t59b: Bit(60) for uffd-wp tracking */
-+#define _PAGE_UFFD_WP							\
-+	((riscv_has_extension_unlikely(RISCV_ISA_EXT_SVRSW60T59B)) ?	\
-+	 (1UL << 60) : 0)
-+/*
-+ * Bit 4 is not involved into swap entry computation, so we
-+ * can borrow it for swap page uffd-wp tracking.
-+ */
-+#define _PAGE_SWP_UFFD_WP						\
-+	((riscv_has_extension_unlikely(RISCV_ISA_EXT_SVRSW60T59B)) ?	\
-+	 _PAGE_USER : 0)
-+#else
-+#define _PAGE_UFFD_WP		0
-+#define _PAGE_SWP_UFFD_WP	0
-+#endif
-+
- #define _PAGE_TABLE     _PAGE_PRESENT
- 
- /*
-diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
-index 77344ff0298b..5d3f17e175e5 100644
---- a/arch/riscv/include/asm/pgtable.h
-+++ b/arch/riscv/include/asm/pgtable.h
-@@ -416,6 +416,41 @@ static inline pte_t pte_wrprotect(pte_t pte)
- 	return __pte(pte_val(pte) & ~(_PAGE_WRITE));
- }
- 
-+#ifdef CONFIG_HAVE_ARCH_USERFAULTFD_WP
-+#define pgtable_uffd_wp_supported()	\
-+	riscv_has_extension_unlikely(RISCV_ISA_EXT_SVRSW60T59B)
-+
-+static inline bool pte_uffd_wp(pte_t pte)
-+{
-+	return !!(pte_val(pte) & _PAGE_UFFD_WP);
-+}
-+
-+static inline pte_t pte_mkuffd_wp(pte_t pte)
-+{
-+	return pte_wrprotect(__pte(pte_val(pte) | _PAGE_UFFD_WP));
-+}
-+
-+static inline pte_t pte_clear_uffd_wp(pte_t pte)
-+{
-+	return __pte(pte_val(pte) & ~(_PAGE_UFFD_WP));
-+}
-+
-+static inline bool pte_swp_uffd_wp(pte_t pte)
-+{
-+	return !!(pte_val(pte) & _PAGE_SWP_UFFD_WP);
-+}
-+
-+static inline pte_t pte_swp_mkuffd_wp(pte_t pte)
-+{
-+	return __pte(pte_val(pte) | _PAGE_SWP_UFFD_WP);
-+}
-+
-+static inline pte_t pte_swp_clear_uffd_wp(pte_t pte)
-+{
-+	return __pte(pte_val(pte) & ~(_PAGE_SWP_UFFD_WP));
-+}
-+#endif /* CONFIG_HAVE_ARCH_USERFAULTFD_WP */
-+
- /* static inline pte_t pte_mkread(pte_t pte) */
- 
- static inline pte_t pte_mkwrite_novma(pte_t pte)
-@@ -838,6 +873,38 @@ static inline pud_t pud_mkspecial(pud_t pud)
- }
+ 		vm_flags |= VM_UFFD_WP;
+ 	}
+ 	if (uffdio_register.mode & UFFDIO_REGISTER_MODE_MINOR) {
+@@ -1980,14 +1980,15 @@ static int userfaultfd_api(struct userfaultfd_ctx *ctx,
+ 	uffdio_api.features &=
+ 		~(UFFD_FEATURE_MINOR_HUGETLBFS | UFFD_FEATURE_MINOR_SHMEM);
  #endif
+-#ifndef CONFIG_HAVE_ARCH_USERFAULTFD_WP
+-	uffdio_api.features &= ~UFFD_FEATURE_PAGEFAULT_FLAG_WP;
+-#endif
+-#ifndef CONFIG_PTE_MARKER_UFFD_WP
+-	uffdio_api.features &= ~UFFD_FEATURE_WP_HUGETLBFS_SHMEM;
+-	uffdio_api.features &= ~UFFD_FEATURE_WP_UNPOPULATED;
+-	uffdio_api.features &= ~UFFD_FEATURE_WP_ASYNC;
+-#endif
++	if (!pgtable_uffd_wp_supported())
++		uffdio_api.features &= ~UFFD_FEATURE_PAGEFAULT_FLAG_WP;
++
++	if (!IS_ENABLED(CONFIG_PTE_MARKER_UFFD_WP) ||
++	    !pgtable_uffd_wp_supported()) {
++		uffdio_api.features &= ~UFFD_FEATURE_WP_HUGETLBFS_SHMEM;
++		uffdio_api.features &= ~UFFD_FEATURE_WP_UNPOPULATED;
++		uffdio_api.features &= ~UFFD_FEATURE_WP_ASYNC;
++	}
  
-+#ifdef CONFIG_HAVE_ARCH_USERFAULTFD_WP
-+static inline bool pmd_uffd_wp(pmd_t pmd)
-+{
-+	return pte_uffd_wp(pmd_pte(pmd));
-+}
-+
-+static inline pmd_t pmd_mkuffd_wp(pmd_t pmd)
-+{
-+	return pte_pmd(pte_mkuffd_wp(pmd_pte(pmd)));
-+}
-+
-+static inline pmd_t pmd_clear_uffd_wp(pmd_t pmd)
-+{
-+	return pte_pmd(pte_clear_uffd_wp(pmd_pte(pmd)));
-+}
-+
-+static inline bool pmd_swp_uffd_wp(pmd_t pmd)
-+{
-+	return pte_swp_uffd_wp(pmd_pte(pmd));
-+}
-+
-+static inline pmd_t pmd_swp_mkuffd_wp(pmd_t pmd)
-+{
-+	return pte_pmd(pte_swp_mkuffd_wp(pmd_pte(pmd)));
-+}
-+
-+static inline pmd_t pmd_swp_clear_uffd_wp(pmd_t pmd)
-+{
-+	return pte_pmd(pte_swp_clear_uffd_wp(pmd_pte(pmd)));
-+}
-+#endif /* CONFIG_HAVE_ARCH_USERFAULTFD_WP */
-+
- #ifdef CONFIG_HAVE_ARCH_SOFT_DIRTY
- static inline bool pmd_soft_dirty(pmd_t pmd)
+ 	ret = -EINVAL;
+ 	if (features & ~uffdio_api.features)
+diff --git a/include/asm-generic/pgtable_uffd.h b/include/asm-generic/pgtable_uffd.h
+index 828966d4c281..895d68ece0e7 100644
+--- a/include/asm-generic/pgtable_uffd.h
++++ b/include/asm-generic/pgtable_uffd.h
+@@ -1,6 +1,17 @@
+ #ifndef _ASM_GENERIC_PGTABLE_UFFD_H
+ #define _ASM_GENERIC_PGTABLE_UFFD_H
+ 
++/*
++ * Some platforms can customize the uffd-wp bit, making it unavailable
++ * even if the architecture provides the resource.
++ * Adding this API allows architectures to add their own checks for the
++ * devices on which the kernel is running.
++ * Note: When overiding it, please make sure the
++ * CONFIG_HAVE_ARCH_USERFAULTFD_WP is part of this macro.
++ */
++#ifndef pgtable_uffd_wp_supported
++#define pgtable_uffd_wp_supported()	IS_ENABLED(CONFIG_HAVE_ARCH_USERFAULTFD_WP)
++#endif
+ #ifndef CONFIG_HAVE_ARCH_USERFAULTFD_WP
+ static __always_inline int pte_uffd_wp(pte_t pte)
  {
-@@ -1055,6 +1122,7 @@ static inline pud_t pud_modify(pud_t pud, pgprot_t newprot)
-  *	bit            0:	_PAGE_PRESENT (zero)
-  *	bit       1 to 2:	(zero)
-  *	bit            3:	_PAGE_SWP_SOFT_DIRTY
-+ *	bit            4:	_PAGE_SWP_UFFD_WP
-  *	bit            5:	_PAGE_PROT_NONE (zero)
-  *	bit            6:	exclusive marker
-  *	bits      7 to 11:	swap type
+diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
+index 89b518ff097e..38845b8b79ff 100644
+--- a/include/linux/mm_inline.h
++++ b/include/linux/mm_inline.h
+@@ -571,6 +571,13 @@ pte_install_uffd_wp_if_needed(struct vm_area_struct *vma, unsigned long addr,
+ 			      pte_t *pte, pte_t pteval)
+ {
+ #ifdef CONFIG_PTE_MARKER_UFFD_WP
++	/*
++	 * Some platforms can customize the PTE uffd-wp bit, making it unavailable
++	 * even if the architecture allows providing the PTE resource.
++	 */
++	if (!pgtable_uffd_wp_supported())
++		return false;
++
+ 	bool arm_uffd_pte = false;
+ 
+ 	/* The current status of the pte should be "cleared" before calling */
+diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
+index c0e716aec26a..6264b56ae961 100644
+--- a/include/linux/userfaultfd_k.h
++++ b/include/linux/userfaultfd_k.h
+@@ -228,15 +228,15 @@ static inline bool vma_can_userfault(struct vm_area_struct *vma,
+ 	if (wp_async && (vm_flags == VM_UFFD_WP))
+ 		return true;
+ 
+-#ifndef CONFIG_PTE_MARKER_UFFD_WP
+ 	/*
+ 	 * If user requested uffd-wp but not enabled pte markers for
+ 	 * uffd-wp, then shmem & hugetlbfs are not supported but only
+ 	 * anonymous.
+ 	 */
+-	if ((vm_flags & VM_UFFD_WP) && !vma_is_anonymous(vma))
++	if ((!IS_ENABLED(CONFIG_PTE_MARKER_UFFD_WP) ||
++	     !pgtable_uffd_wp_supported()) &&
++	    (vm_flags & VM_UFFD_WP) && !vma_is_anonymous(vma))
+ 		return false;
+-#endif
+ 
+ 	/* By default, allow any of anon|shmem|hugetlb */
+ 	return vma_is_anonymous(vma) || is_vm_hugetlb_page(vma) ||
+@@ -437,8 +437,11 @@ static inline bool userfaultfd_wp_use_markers(struct vm_area_struct *vma)
+ static inline bool pte_marker_entry_uffd_wp(swp_entry_t entry)
+ {
+ #ifdef CONFIG_PTE_MARKER_UFFD_WP
+-	return is_pte_marker_entry(entry) &&
+-	    (pte_marker_get(entry) & PTE_MARKER_UFFD_WP);
++	if (pgtable_uffd_wp_supported())
++		return is_pte_marker_entry(entry) &&
++			(pte_marker_get(entry) & PTE_MARKER_UFFD_WP);
++	else
++		return false;
+ #else
+ 	return false;
+ #endif
+@@ -447,14 +450,19 @@ static inline bool pte_marker_entry_uffd_wp(swp_entry_t entry)
+ static inline bool pte_marker_uffd_wp(pte_t pte)
+ {
+ #ifdef CONFIG_PTE_MARKER_UFFD_WP
+-	swp_entry_t entry;
++	if (pgtable_uffd_wp_supported()) {
++		swp_entry_t entry;
+ 
+-	if (!is_swap_pte(pte))
+-		return false;
++		if (!is_swap_pte(pte))
++			return false;
+ 
+-	entry = pte_to_swp_entry(pte);
++		entry = pte_to_swp_entry(pte);
++
++		return pte_marker_entry_uffd_wp(entry);
++	} else {
++		return false;
++	}
+ 
+-	return pte_marker_entry_uffd_wp(entry);
+ #else
+ 	return false;
+ #endif
+@@ -467,14 +475,18 @@ static inline bool pte_marker_uffd_wp(pte_t pte)
+ static inline bool pte_swp_uffd_wp_any(pte_t pte)
+ {
+ #ifdef CONFIG_PTE_MARKER_UFFD_WP
+-	if (!is_swap_pte(pte))
+-		return false;
++	if (pgtable_uffd_wp_supported()) {
++		if (!is_swap_pte(pte))
++			return false;
+ 
+-	if (pte_swp_uffd_wp(pte))
+-		return true;
++		if (pte_swp_uffd_wp(pte))
++			return true;
+ 
+-	if (pte_marker_uffd_wp(pte))
+-		return true;
++		if (pte_marker_uffd_wp(pte))
++			return true;
++	} else {
++		return false;
++	}
+ #endif
+ 	return false;
+ }
+diff --git a/mm/memory.c b/mm/memory.c
+index 0ba4f6b71847..4eb05c5f487b 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -1465,7 +1465,9 @@ zap_install_uffd_wp_if_needed(struct vm_area_struct *vma,
+ {
+ 	bool was_installed = false;
+ 
+-#ifdef CONFIG_PTE_MARKER_UFFD_WP
++	if (!IS_ENABLED(CONFIG_PTE_MARKER_UFFD_WP) || !pgtable_uffd_wp_supported())
++		return false;
++
+ 	/* Zap on anonymous always means dropping everything */
+ 	if (vma_is_anonymous(vma))
+ 		return false;
+@@ -1482,7 +1484,7 @@ zap_install_uffd_wp_if_needed(struct vm_area_struct *vma,
+ 		pte++;
+ 		addr += PAGE_SIZE;
+ 	}
+-#endif
++
+ 	return was_installed;
+ }
+ 
 -- 
 2.34.1
 
