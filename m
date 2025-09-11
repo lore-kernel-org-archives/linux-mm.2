@@ -4,127 +4,179 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1410CCAC58E
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 18:51:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8FA1CAC58E
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 18:57:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 777A28E0003; Thu, 11 Sep 2025 14:51:50 -0400 (EDT)
+	id 1B71A8E0005; Thu, 11 Sep 2025 14:57:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 74F7B8E0001; Thu, 11 Sep 2025 14:51:50 -0400 (EDT)
+	id 18E508E0001; Thu, 11 Sep 2025 14:57:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6653B8E0003; Thu, 11 Sep 2025 14:51:50 -0400 (EDT)
+	id 0A4638E0005; Thu, 11 Sep 2025 14:57:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 527F08E0001
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 14:51:50 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B9BB91A0559
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 18:51:49 +0000 (UTC)
-X-FDA: 83877863538.07.629E0A5
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	by imf21.hostedemail.com (Postfix) with ESMTP id BF9591C000A
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 18:51:47 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Lb0nuMPF;
-	spf=pass (imf21.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=pyyjason@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id ED3D98E0001
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 14:57:01 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 98DF9C05A2
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 18:57:01 +0000 (UTC)
+X-FDA: 83877876642.03.E150271
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 357294000C
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 18:56:59 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ecgea4jt;
+	spf=pass (imf04.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757616707;
+	s=arc-20220608; t=1757617019;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iSXSLjz9xxQBXrBSw3AK6oe7rPYSJGQAvD1J01P1Xw0=;
-	b=hiZpStWwHS8+0LPHV+IOZ9cDGXsRQXqUlYEMFsempTY1q58UIfXzpmmDZNIKkz9OfVykPy
-	8omNkzeYmDCUIXyJhow58ieYtd5G5V0n/ChhOl+FaSfsmolOgrwWcPdXSVV2JnC2m+zko4
-	dxMwSyMrb8IUiOi/QJtB+fm1EYnXb3Y=
+	bh=zN4wlABt8vNZKj2SSLrSF1Ejb/HY7Zk25eK/8tuni40=;
+	b=iNFwiovRSeWd0wbrfynpZFErrrRtZBsxB5vp+blacn2T09XnAL7lON7/C1tWtzGM9gZNkT
+	TmT/RZk2yj/lARWQiaAfUBpQActnQSpnUSu75tXqjpQIUfeBzBdMYpdkjAlbgeRJVdnWmX
+	CtmWXrMm5TORooDrs1ADE8NKvim1ihk=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Lb0nuMPF;
-	spf=pass (imf21.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=pyyjason@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757616707; a=rsa-sha256;
+	imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ecgea4jt;
+	spf=pass (imf04.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757617019; a=rsa-sha256;
 	cv=none;
-	b=zBxboXbL0Fm24xQwZKtiPHI3o9L5QkIVd4kYqgqRKuDrMhrlPdvoetX9cWwmTWysCrmaU+
-	YMql/O/SI9RAFz9dDq652tQRG1eMNTVrQiQqdRcINkWMe01NpFGGufkVDlK15V7EHdcLbg
-	HnM2CTmpBvvFgLt/d8W3ZBEfKyWdZ10=
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-45ddc7d5731so7916905e9.1
-        for <linux-mm@kvack.org>; Thu, 11 Sep 2025 11:51:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757616706; x=1758221506; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=iSXSLjz9xxQBXrBSw3AK6oe7rPYSJGQAvD1J01P1Xw0=;
-        b=Lb0nuMPF79k9KfV+pmYrA0a1extrHxBLfalazr6kTczP1iNlMq6vZ/t+vBQBR/0SIY
-         1E2dVPJHhV+gr3eXsi48ZN5OKdUMuBsgHJl+IBbmuJqaSYKqcq+NsTIY1wYga7Ym89Gh
-         5AI7d44jyWLHMogbKEDVqpkqbsjlT/9uaaU5/GM2+yuMLjSyp7dKBmO79Ru31Lz480bC
-         Q7xdOGMS2DQjnGoSsJFFbTeubw2ou8lgrMvhdINzNwMe7hE7emL1wqEYjT9fWm2VcYb6
-         9qebXPOO4pqhgUwdP7tGML+ldrVIC+8kiSdK4yAw5yzE4aXVuJrOI7fBtemPA2hARdvx
-         gpbA==
+	b=JWoE0uMREAiMbWJS4V5mep0CfTUc9QZJFU+wupmMvFQSDTN6hAvR2GejkY1ClpnYJg27Z+
+	71NVSGWw+V6nJM+ELLnQnAvTCnwm4jspaMjNMG9eLPR7EIlskZKkd4UJrisCVxNVquegs5
+	BoGI7HApujDUeiyCXgGzX8GEH+58b6w=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1757617017;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=zN4wlABt8vNZKj2SSLrSF1Ejb/HY7Zk25eK/8tuni40=;
+	b=ecgea4jt81oQorQOm5tibOyL2r0PKZSrtPlpLMSBMaf3nhRKOLXDcFZCwWr1NrCwPDhOYZ
+	vTPR8OVPHeeA9/nVvhT2xN0SEQHa95wtIUJ92OOTELpWNvWkuoaGslEnrdpHWSayWIQawO
+	XckN/q22KBEil99DpTJ5PY2SwqPdv9E=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-623-98ohCoQuP1yGy9f36bkk9w-1; Thu, 11 Sep 2025 14:56:54 -0400
+X-MC-Unique: 98ohCoQuP1yGy9f36bkk9w-1
+X-Mimecast-MFC-AGG-ID: 98ohCoQuP1yGy9f36bkk9w_1757617013
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-45dd9a66cfbso9082525e9.1
+        for <linux-mm@kvack.org>; Thu, 11 Sep 2025 11:56:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757616706; x=1758221506;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=iSXSLjz9xxQBXrBSw3AK6oe7rPYSJGQAvD1J01P1Xw0=;
-        b=dJhkMz+/FnbNNrfk7diZruGVwIN/UpPt67WSOaR74BzxCexJcdh2+7QsxgPHLgwJ5Y
-         GF6IBNpeUmfeMKK8qqZQpPubDg1GMCwULfgtBRydb5q+i3xw8cAfY2x7lNGuHOXf3pG8
-         V093Bk8Zpw176hriiMEUeiDH0t75HYEJ3nQO+0AGmllKLvHXYttPoQRgmWk0sqZpA/8Q
-         n/o/TO+TNkbaWd6xBoGd4+OWlREjTCtpYSkbzqwGshhrW9ax//Ni48fHRUUtXkFRGiDf
-         c+B9uwu5ulJQNnSoIme0y0Dw6n6bwHqsDiUzeV0vttHo4r7FxpLlZ2wxA6axgsbd7vf2
-         7sCg==
-X-Forwarded-Encrypted: i=1; AJvYcCU+ii+St2rAkJsWNX5CAB/GebMKZpJexTkgIpa3QT10Ka7imBmfFv3b+reHsH+j2mq12NARlAPj3g==@kvack.org
-X-Gm-Message-State: AOJu0YxaywMJqJEMwYXQ6w9snStDR0ikh5fiHLvvfVjYsKgQyGRNEBHw
-	cl9T9ZRVRfj4TOr5kXFMYE2XWd8OTkllkNtBZJq4DxLs/gt4DcoRN1jo
-X-Gm-Gg: ASbGncudCNFAu+lKFaLWH9g7ATKuekl5GwrkDmjPPMsaekOXx8BoTWeYysHflQpukWG
-	s4rQa3wBbul+A4GQq2FQtiDAY9GrLGSXvgqUecTO3/2HngoCfh2wYIBpaY7y77pjArCX0p4XY1m
-	MUP+gBu3/e73OaNV24VGM8c0up3ondBvfKAHgmsRcFQ3ChHbq3ELppnQXkTPqUyhrtzzNNhuPkP
-	6IwrUfI7tjipbjQr8uLqgPNPeOB6dpZiOSn85KRmrNEk4W3WIgWngBlvSDLjCbf9/TzVbqD/lZa
-	IWHx9X6W7R23yDSRKHoaPAMPecZN0Clj8an5ulb6wonM6kerQGPflnqjxXn1WaaWDpBDo9MYUW7
-	HFb5Hh3u4Fq9aGgj+q83T9VojSKgjwQKpq/y9OjM=
-X-Google-Smtp-Source: AGHT+IG721ygNIQdIEEEEkJ+eIYPvjiP+uDfNNRip9ilX+h9GXA46usxqABET0AECdsMFBw5Cwgg8g==
-X-Received: by 2002:a05:600c:314e:b0:459:d451:3364 with SMTP id 5b1f17b1804b1-45f2121ab89mr5163355e9.24.1757616705792;
-        Thu, 11 Sep 2025 11:51:45 -0700 (PDT)
-Received: from devbig569.cln6.facebook.com ([2a03:2880:31ff:49::])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45e015bf73csm18359595e9.11.2025.09.11.11.51.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Sep 2025 11:51:45 -0700 (PDT)
-Date: Thu, 11 Sep 2025 11:51:43 -0700
-From: Yueyang Pan <pyyjason@gmail.com>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: David Wang <00107082@163.com>, Usama Arif <usamaarif642@gmail.com>,
-	akpm@linux-foundation.org, kent.overstreet@linux.dev,
-	vbabka@suse.cz, hannes@cmpxchg.org, rientjes@google.com,
-	roman.gushchin@linux.dev, harry.yoo@oracle.com,
-	shakeel.butt@linux.dev, pasha.tatashin@soleen.com,
-	souravpanda@google.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/1] alloc_tag: mark inaccurate allocation counters in
- /proc/allocinfo output
-Message-ID: <aMMaP6XgGfX3nVVE@devbig569.cln6.facebook.com>
-References: <20250909234942.1104356-1-surenb@google.com>
- <20cafc1c.a658.199394de44e.Coremail.00107082@163.com>
- <aMLvCCZbmpSE/aql@devbig569.cln6.facebook.com>
- <902f5f32-2f03-4230-aab0-a886fd8e4793@gmail.com>
- <CAJuCfpGezf06eR7WnzizpwTaxZ5Rm8jbeW4y87zcr6LZuJ9MZA@mail.gmail.com>
- <aMMF8elYvlPoOF+J@devbig569.cln6.facebook.com>
- <613698f0.a994.19939d88e1c.Coremail.00107082@163.com>
- <CAJuCfpE=0jpana5qryqwPsuoj_8tCEMWFMcEBTB5-9Lyu_j-Tw@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1757617013; x=1758221813;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zN4wlABt8vNZKj2SSLrSF1Ejb/HY7Zk25eK/8tuni40=;
+        b=ZdpBe0zs3Jkq7X4jNZf/gMqGaQCoRMSYRLJCurygw/HQulyQcyBIXpsDosm/iThOfO
+         VXw+G0KUJVGrU8dj9fCRCt4b0zQEU+ZKyyjoefVlb+dplah8psdkw8H7dMAK3c7tXEJu
+         m37I4aC0N4T75nwMOL50qluBHjttiAEp72QYMMhNjRkZY1KCvQWo3sQJEPl4KzVCue6x
+         YwLP6LifO3n0Wy0lK9VplFDMhA/MdOzj04fyY4ete76IOaUNpnLH+yb6U79XtGI4GPv1
+         U9wzZlCBEdkjcJA6gJ4B3xLtWuoh2WIdcNG/a5eNedenyKxRfrjE63nfoQNULnNoCquz
+         6sDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWKqmiGlQj1aniQTCNo38W0R037yjcypJ8tuLhSbjE8nDUbNo56xjyAg5GWxtJbrfOxZkekeEBSQQ==@kvack.org
+X-Gm-Message-State: AOJu0YwD3PvgXIFQwFrMFi0oNBWaBD7wc20SKJCiov+Cj3q1IK3k9Tny
+	02YzZkwDDlhy6+Ycw1aFoF2FY7ei48uSUFGs/F68Mkx2XnAfaDHEBhBGkYiQOVayFb+pY5S/sEF
+	V/sgTeK60e+SwyLxFctaNwe+NVFUUkP2IW30fC5f+anrVOLMyUStv
+X-Gm-Gg: ASbGncucjbxR67Abjjm9fA3gsMKGtPaUkLGXPX7dzffLSKlFAysEoqgNFrEsWfnzXtE
+	qOHeaJlez/h2Xyf9hx3rNHarq6OqVUnWnp7T1cOSgOiDrsRrwzeZjtGA4oIcsjheAujGzQlROI2
+	lnQjfmjaW5ocbxUmApv8K3V+0ikkVxBF5mBj6RHYuy39j/k4qHSMydT+ICUlwwXr0o3vrghrev7
+	TRB2gOWW0+of4q0rpJgqsLuUUA4BgH5+3FS9aSlAePce6hDq+0BP6qzREy0EMrDKm0N0tsyio03
+	caWsYWMeF4oze2UToP86uSYS6phb/j4pYyevCApAcrwcr/9fIh0eeCdBCwBPavjzNIrXT7XsBrP
+	7bYgAwa0IOjX/SJgLxbRafs0+/8lrBIF46Sfkg8i4cylrX58K3kIEUVIk9FK95RpdmKk=
+X-Received: by 2002:a05:600c:228c:b0:45d:f7dc:fa7 with SMTP id 5b1f17b1804b1-45f211ca957mr4717235e9.5.1757617013043;
+        Thu, 11 Sep 2025 11:56:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG91DukpMrQgjHRq8+tJlCvjThkE0VpzxHzF2/wzsnPUt6tW85aVk6dIDRFxnLWBs5wEKH/Hg==
+X-Received: by 2002:a05:600c:228c:b0:45d:f7dc:fa7 with SMTP id 5b1f17b1804b1-45f211ca957mr4717055e9.5.1757617012616;
+        Thu, 11 Sep 2025 11:56:52 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f42:b000:db8b:7655:f60f:812b? (p200300d82f42b000db8b7655f60f812b.dip0.t-ipconnect.de. [2003:d8:2f42:b000:db8b:7655:f60f:812b])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e7607cd415sm3407053f8f.30.2025.09.11.11.56.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 11 Sep 2025 11:56:52 -0700 (PDT)
+Message-ID: <667133bd-0021-4d4e-9cde-fc8c1324522a@redhat.com>
+Date: Thu, 11 Sep 2025 20:56:50 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/4] mm: hugetlb: allocate frozen pages in
+ alloc_gigantic_folio()
+To: Kefeng Wang <wangkefeng.wang@huawei.com>,
+ 20250910133958.301467-1-wangkefeng.wang@huawei.com,
+ Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador
+ <osalvador@suse.de>, Muchun Song <muchun.song@linux.dev>,
+ Zi Yan <ziy@nvidia.com>, Matthew Wilcox <willy@infradead.org>
+Cc: sidhartha.kumar@oracle.com, jane.chu@oracle.com,
+ Vlastimil Babka <vbabka@suse.cz>, Brendan Jackman <jackmanb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org
+References: <20250911065659.617954-1-wangkefeng.wang@huawei.com>
+ <20250911065659.617954-5-wangkefeng.wang@huawei.com>
+ <90e926c9-40cb-4791-8360-e3d145fe3503@redhat.com>
+ <8508e8fb-77cc-43a7-8460-456f68a552ba@huawei.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <8508e8fb-77cc-43a7-8460-456f68a552ba@huawei.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: dixF5CdDJZ3BwxUD4YSJH1L_jTb8mjYoAD1TbDd_A5U_1757617013
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJuCfpE=0jpana5qryqwPsuoj_8tCEMWFMcEBTB5-9Lyu_j-Tw@mail.gmail.com>
+X-Rspamd-Queue-Id: 357294000C
+X-Stat-Signature: 3tb3abfybjwkiiwqaei9ahzyyehzbyfr
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: BF9591C000A
-X-Stat-Signature: 7j6p94iogudf6rx594y9j5h4hmsks3r4
-X-HE-Tag: 1757616707-658440
-X-HE-Meta: U2FsdGVkX19KcofbVuFVk6LE72gMltrpD9S9+ga+qUrb+H/AA2fUVJBCimWmUz/qCcNCe8y0HcB0NZdNUeEXZelBwR7p5OoXgjxm6AjoEQFbbm0NORGrE8SwbnXaStLFLk6Bnw/7tycgTwOmF+HimxKHNGAcbPUONqpswn1AZSUgt51b/G4Z9IZ55nQVlMACnYZTt1757XnoGAt0VMOqKOvES+DZhppVs/43KLBwepWJEULNAMYgHBeTBf66PdzsIyzg/ObI/EPXVd+u7DWFhNDX1pFAKPElvUrrNQInZDvzBly2Hpk9huoWwHmVMRPwG8/V340Sc6QQx0UfjVMzwpi8WZMOUWGrXSMkCQeCGYJ3pyA+q3VmfcgbIIiN1maE/AITypvcgjynLAxzb2Me2lP9ZvF6kRbR0Tne0mGx7f3NVhv5P/a2LOdrkcMplaqElNOAQzvdjiMFwVIkF0Cvqzyl88bkyAV7PJwvX4wnbQ6FjxKAYGUThOevKXd7rUkCJo9CbnJdm6iKdKwsLP89+uh/USd7ljkQx0eh75p+cQPmsm1Gi/mrxT05X79a/292QMbewyNRfSQ8d1jjeimOHaL4zfoeE4gdyc0VHOBDIAaBHuSceZdSGitL6cyhL7ApBHPodz36SDkOgq0v191XElu+/t9dooDeCfF6ArRAT4xUVszeTE5NnF4S8vT/RrIWXNU+cc5gP3cfuMaDDwQVRfbnjNQndwBdTIE4GqPevgokvKYlwhb5E+SjGUPWIkDBL/YdCYadxFLwLeMUTIfKvJld6kLltPvYi8Pz+ZxqgYu96qL9Mj4d+mEYr/ekvJJ//ITUNnwL8ANmoxUwnb+FNzaz6aWz2IkuUYc3CYYbqEXoQ5dw7gNOzAJwDVdnJl6+UeiP75KVCC61SPnucx2pwC8ju0ohG223PTRfxY8x82SOopgZsmnYiYwoMGQcrhxnu3KAn7Y6aDza12RJmWp
- KYswgatw
- d8YoL1eCNXHi10WTXbknytU4bz6dPT290nHoG1vorclt8ERtdDFpfgVkosh2Axajc/lHcVAJp5rvj0f5+jJlXMrVDMOaF60Co0+/2wBp2i4ve3sWuyZNk0U1HkzmaehnUjrMrjFvKPG+LW3ImVcKcfxBnXBx1q5SDgnnsVhh1fFE52JCrwYEbJW3pJq1kyjM/lPBHjl4LFApatxf+sE67wfVRHcuwTG+Lio7YJ9aE9I07RhK8jIxdniilWr33agT0MZWnCynK2T60JRE8vlOd55vNjQQAjLefK5mIv2vujtDpCWA6g1Ak+ruXGf4nwLW4hLVCUMFTuNsX+lKFUNDn04WjwFJS3yfOxlb23gQ1lqEC6rPecvl60fgI0JMtnq2ndGouhf2NxfUvAdaUf5o+sX9aeHFZyiLUdpwmAabs9WYcM4hYubbfTpA/NIKTMow6A2yAphuqdtVzIHDFQTlS3IoQbWlkEycaJXHDoc8HYH1ddE45fU/8Pcg+knln/c1vJVZZAP51H7T90ljSbkfsRarrEFY9K8vZ9PHaWe+WAxtCE3AgbOfKA52oOYqx1va6B79Y0qo+NOg7mLizZbV79kPIhUpr5lfonlPQHfDl3CD8nzBQPVU9k85ECrqg3Sc3q15X0rCyIJId9wU=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1757617019-207371
+X-HE-Meta: U2FsdGVkX19n32iSkBkmp4ICRx+uW5SnV6bNbLJtKYlZH8nOVMWPF9s4Ldcm7vEFy53b/Wiy7HtftBLIvaSohn6zPORSZdmqssfJBgkAMejv4vVCD2nwiqKMB/BZI1WgajwDw4hoQFQxgGdX9C9R6bQdcbUL0JTNMv3bjpyM7IJlvpiY18m4CWCcj3QfdLvG5hR1AqDqZDgjXtjk7IbjihA7W+IyI2lIdw7+CIQSZrzUwSfUfX2vMjuzYO6odJd9OeAFrk+WDXsgcKNMX+XdlhcKQ4i/C5GiWNJiIoo6gfeP/PBkp8nqdArh2QhhgXHm0RCfrHlqsLAHD3l4xmPfiDCa3zeCGAGkn4fDIfhRrTt2jmMUwpgg8OifqzcwAcCFHtdRj10RK0791oV/GpCkpKl+KiQhFnBwKD+rtk0rcxFd1w6QSMMYFIMcesUrizVEiyObw96U7tF4Ql/DXbcVc3NhS4iTSNOEz9uiiVLVeEn0jlzbRwdNiQJ4DRqlWHOFRE9iV/oS2ZP3fgW5hfxjcOOVNWhzzx2zv8uMQ9QHD66LCYRSBRhnfW8tDVxXhdcoZQ/4nJBELV68bjY46gS/SY9//xdBwejJlqvhItXtFTUDauFy9Wv3KkUaxdFpZHx/wLPHpfCOjlhJpqCsQCL3m0RzJri0+mlt0YsDgMG2U44O6U1o5pdsc7n+Fk/4XPS4bkVAki6h2/Cf3Vityo2V7Oe1R5zBvR4XOF1TMRXeANbE43KnuHxk56CcB7Nvld/PtJx56kDGfuodIH33FIW6dhvyE6ikgur+C2gdYcMC12PrvKi82khTXVb22mBLgjEuLOe8059HWg18NMYxNek+iISvg9lgMkQCSQYESdZv+14aHYiq+Y8dr51gjAsVguFtp/T4LfBP/ko4pm0dMCyVXcTXE9SiPc4kY8KIuHJVdcZ5X+U/wNgs2jAIziC34dDdgJUKTm11KGDK0MXkuCQ
+ tAGxoYk0
+ XomlJ1qb43G/EHP6b+Pk1gWmjlque43IVswPxa/r4aCyvH62qVskEC+/vS6IkdrJzmeDMMWlOB3xzWI7ulxFQGxnH+C8hxl2q7M6b99vTKjr4t3KJ0++jMqP7baIo03K5zfv6vp1agrUXwt+hjyScL6n84UZNP2bjJd6HRUswdH6N3jqK9clzgiN0oyCc/FqShFc8up62h31ZFNmMBXj5uFZv00s8MqbTrip2zddP3dB8uWcQNCF+mpwKBSd/g7SG92+7cC0NoOBRhnH9+IWg2TFAm0+w1J2UW64nAoXsHjaMVYGPx+Xwo/8nGRCyqz12kXvzaKHk0/CN3m2Bc6OP693AGQ71vBBD8rFR8FP9Upi+XUB32OvT+t4PL+zgjZTY8qhKU1qyk4tq/GsbpPrU2lB5OVhuYq4ldEOtdaxiB70k8BzyuPiJwesHGQ5eSwt8gx1fXuD/CcakHPwERvkQkZYNN29/jmMhZ2Nxzp+DDGCKlFsrqtfclRwKOw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,175 +185,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 11, 2025 at 11:13:58AM -0700, Suren Baghdasaryan wrote:
-> On Thu, Sep 11, 2025 at 10:35 AM David Wang <00107082@163.com> wrote:
-> >
-> >
-> > At 2025-09-12 01:25:05, "Yueyang Pan" <pyyjason@gmail.com> wrote:
-> > >On Thu, Sep 11, 2025 at 09:18:29AM -0700, Suren Baghdasaryan wrote:
-> > >> On Thu, Sep 11, 2025 at 9:00 AM Usama Arif <usamaarif642@gmail.com> wrote:
-> > >> >
-> > >> >
-> > >> >
-> > >> > On 11/09/2025 16:47, Yueyang Pan wrote:
-> > >> > > On Thu, Sep 11, 2025 at 11:03:50PM +0800, David Wang wrote:
-> > >> > >>
-> > >> > >> At 2025-09-10 07:49:42, "Suren Baghdasaryan" <surenb@google.com> wrote:
-> > >> > >>> While rare, memory allocation profiling can contain inaccurate counters
-> > >> > >>> if slab object extension vector allocation fails. That allocation might
-> > >> > >>> succeed later but prior to that, slab allocations that would have used
-> > >> > >>> that object extension vector will not be accounted for. To indicate
-> > >> > >>> incorrect counters, mark them with an asterisk in the /proc/allocinfo
-> > >> > >>> output.
-> > >> > >>> Bump up /proc/allocinfo version to reflect change in the file format.
-> > >> > >>>
-> > >> > >>> Example output with invalid counters:
-> > >> > >>> allocinfo - version: 2.0
-> > >> > >>>           0        0 arch/x86/kernel/kdebugfs.c:105 func:create_setup_data_nodes
-> > >> > >>>           0        0 arch/x86/kernel/alternative.c:2090 func:alternatives_smp_module_add
-> > >> > >>>          0*       0* arch/x86/kernel/alternative.c:127 func:__its_alloc
-> > >> > >>>           0        0 arch/x86/kernel/fpu/regset.c:160 func:xstateregs_set
-> > >> > >>>           0        0 arch/x86/kernel/fpu/xstate.c:1590 func:fpstate_realloc
-> > >> > >>>           0        0 arch/x86/kernel/cpu/aperfmperf.c:379 func:arch_enable_hybrid_capacity_scale
-> > >> > >>>           0        0 arch/x86/kernel/cpu/amd_cache_disable.c:258 func:init_amd_l3_attrs
-> > >> > >>>      49152*      48* arch/x86/kernel/cpu/mce/core.c:2709 func:mce_device_create
-> > >> > >>>       32768        1 arch/x86/kernel/cpu/mce/genpool.c:132 func:mce_gen_pool_create
-> > >> > >>>           0        0 arch/x86/kernel/cpu/mce/amd.c:1341 func:mce_threshold_create_device
-> > >> > >>>
-> > >> > >>
-> > >> > >> Hi,
-> > >> > >> The changes may  break some client tools, mine included....
-> > >> > >> I don't mind adjusting my tools, but still
-> > >> > >> Is it acceptable  to change
-> > >> > >>       49152*      48* arch/x86/kernel/cpu/mce/core.c:2709 func:mce_device_create
-> > >> > >> to
-> > >> > >>       +49152      +48 arch/x86/kernel/cpu/mce/core.c:2709 func:mce_device_create*
-> > >> > >>
-> > >> > >> The '+' sign make it still standout when view from a terminal, and client tools, not all of them though, might not need any changes.
-> > >> > >> And when client want to filter out inaccurate data items, it could be done by checking the tailing '*" of func name.
-> > >> > >
-> > >> > > I agree with David on this point. We already have monitoring tool built on top
-> > >> > > of this output across meta fleet. Ideally we would like to keep the format of
-> > >> > > of size and calls the same, even for future version, because adding a * will
-> > >> > > change the format from int to str, which leads to change over the regex parser
-> > >> > > many places.
-> > >> > >
-> > >> > > I think simply adding * to the end of function name or filename is sufficient
-> > >> > > as they are already str.
-> > >> > >
-> > >> >
-> > >> > Instead of:
-> > >> >
-> > >> > 49152*      48* arch/x86/kernel/cpu/mce/core.c:2709 func:mce_device_create
-> > >> >
-> > >> > Could we do something like:
-> > >> >
-> > >> > 49152      48 arch/x86/kernel/cpu/mce/core.c:2709 func:mce_device_create(inaccurate)
-> > >>
-> > >> If there is a postprocessing then this would break sometimes later
-> > >> when the function name is parsed, right? So IMO that just postpones
-> > >> the breakage.
-> > >>
-> > >> >
-> > >> > This should hopefully not require any changes to the tools that are consuming this file.
-> > >> > I think it might be better to use "(inaccurate)" (without any space after function name) or
-> > >> > some other text instead of "+" or "*" to prevent breaking such tools. I dont think we need
-> > >> > to even increment allocinfo version number as well then?
-> > >>
-> > >> I'm wondering if we add a new column at the end like this:
-> > >>
-> > >> 49152      48 arch/x86/kernel/cpu/mce/core.c:2709
-> > >> func:mce_device_create [inaccurate]
-> > >>
-> > >> would that break the parsing tools?
-> > >> Well-designed parsers usually throw away additional fields which they
-> > >> don't know how to parse. WDYT?
-> > >>
-> > >
-> > >It would break the parse now as we count the number of string to decide if
-> > >there is an optional module name or not. I don't think it is a big
-> > >deal to fix though.
+On 11.09.25 11:11, Kefeng Wang wrote:
 > 
-> Uh, right. We do have module name as an optional field...
 > 
-> >
-> > The inconsistent of module name is really inconvenient for parsing.....
-> > Could we make changes to make it consistent, something like:
-> >
-> > diff --git a/lib/codetag.c b/lib/codetag.c
-> > index 545911cebd25..b8a4595adc95 100644
-> > --- a/lib/codetag.c
-> > +++ b/lib/codetag.c
-> > @@ -124,7 +124,7 @@ void codetag_to_text(struct seq_buf *out, struct codetag *ct)
-> >                                ct->filename, ct->lineno,
-> >                                ct->modname, ct->function);
-> >         else
-> > -               seq_buf_printf(out, "%s:%u func:%s",
-> > +               seq_buf_printf(out, "%s:%u [kernel] func:%s",
+> On 2025/9/11 16:25, David Hildenbrand wrote:
+>> On 11.09.25 08:56, Kefeng Wang wrote:
+>>> The alloc_gigantic_folio() allocates a folio by alloc_contig_range()
+>>> with refcount increated and then freeze it, convert to allocate a frozen
+>>> folio directly to remove the atomic operation about folio refcount, also
+>>> saving atomic operation during __update_and_free_hugetlb_folio too.
+>>>
+>>> Rename some functions to make them more self-explanatory,
+>>>
+>>>     folio_alloc_gigantic            -> folio_alloc_frozen_gigantic
+>>>     cma_{alloc,free}_folio          -> cma_{alloc,free}_frozen_folio
+>>>     hugetlb_cma_{alloc,free}_folio  -> hugetlb_cma_{alloc,free}
+>>> _frozen_folio
+>>
+>> Can we just get rid of folio_alloc_frozen_gigantic?
+>>
 > 
-> Yeah, until someone creates a module called "kernel" :)
-> We could keep the name empty like this:
+> OK, we could kill it.
 > 
-> +               seq_buf_printf(out, "%s:%u [] func:%s",
+>> Further, can we just get rid of cma_{alloc,free}_frozen_folio() as well
+>> and just let hugetlb use alloc_contig_range_frozen() etc?
 > 
-> but I'm not sure that's the best solution.
-> 
+> HugeTLB can allocate folio by alloc_contig_frozen_pages() directly, but
+> it could allocate from hugetlb_cma, cma_alloc_folio() need change some
+> cma metadata, so we need to keep it.
 
-I guess the best option would be to decide how the format can evolve 
-in the future with some rules in comment or doc. But I am sure who 
-will decide the rules...
+Hm. Assuming we just have cma_alloc_frozen() -- again, probably what 
+cma_alloc() would look like in the future, hugetlb can just construct a 
+folio out of that.
 
-> If we are really concerned about parsers, I could add an ioctl
-> interface to query the counters which are inaccurate. Would that be
-> better?
+Maybe we just want a helper to create a folio out of a given page range?
 
-I think this would be nice as we just need to add functionality on 
-top of the parser when we do need it. I guess most of the time we don't 
-care about that temporary imprecision.
+And that page range is either obtained through cma_alloc_frozen() or 
+alloc_contig_frozen_pages().
 
-> 
-> BTW, I have other ideas for ioctls, like filtering-out 0-sized
-> allocations and such.
+Just a thought, keeping in mind that these things should probably just 
+work with frozen pages and let allcoating of a memdesc etc. be taken 
+care of someone else.
 
-You mean using ioctl to control if we only print out the non zero 
-ones?
+I'd be happy if we can remove the GFP_COMPOUND parameter from alloc_contig*.
 
-> 
-> >                                ct->filename, ct->lineno, ct->function);
-> >  }
-> >
-> >
-> >
-> >
-> > >
-> > >I think one more important thing is probably to reach a consensus on
-> > >what format can be changed in the future, for example say, we can
-> > >keep adding columns but not change the format the type of one column.
-> > >With such consensus in mind, it will be easier to design the parser.
-> > >And I guess many companies will build parser upon this info for fleet-
-> > >wise collection.
-> > >
-> > >> >
-> > >> > >>
-> > >> > >> (There would be some corner cases, for example, the '+' sign may not needed when the value reach a negative value if some underflow bug happened)
-> > >> > >>
-> > >> > >>
-> > >> > >> Thanks
-> > >> > >> David.
-> > >> > >>
-> > >> > >>
-> > >> > >>> Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
-> > >> > >>> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > >> > >>> ---
-> > >> > >>
-> > >> > >
-> > >> > > Thanks
-> > >> > > Pan
-> > >> >
-> > >
-> > >Thanks
-> > >Pan
+@Willy, what's your take?
 
-Thanks
-Pan
+-- 
+Cheers
+
+David / dhildenb
+
 
