@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B9A6CAC58E
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 11:34:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2E0ACAC58D
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 11:34:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 634D3900003; Thu, 11 Sep 2025 07:34:08 -0400 (EDT)
+	id 4ADE9900004; Thu, 11 Sep 2025 07:34:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5E4968E0001; Thu, 11 Sep 2025 07:34:08 -0400 (EDT)
+	id 45E2A8E0001; Thu, 11 Sep 2025 07:34:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4AC73900003; Thu, 11 Sep 2025 07:34:08 -0400 (EDT)
+	id 32657900004; Thu, 11 Sep 2025 07:34:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 372258E0001
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 07:34:08 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E59ABB9942
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 11:34:07 +0000 (UTC)
-X-FDA: 83876760534.23.12D9367
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 55B184000D
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 11:34:06 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aHuckqIP;
-	spf=pass (imf27.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 207C68E0001
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 07:34:12 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E41BE1A0487
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 11:34:11 +0000 (UTC)
+X-FDA: 83876760702.22.D585A14
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 3D961100005
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 11:34:10 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RZe3Hghg;
+	spf=pass (imf05.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757590446;
+	s=arc-20220608; t=1757590450;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZwlqvC2fc4SecRjjUKTuYyeDo2MK/qdSV/YHWgUkGr4=;
-	b=ZARpWlzdCFiL/k7c2VTA8Eth8Lv2DnC2U8ioVk0TuDAGidDNmeoOUrEHGfDPunjslCILhM
-	PgOFsEcbVH1ndGOxnb8Wz8YBEIOH8c5fkzSdCugvXdgWnztA4sGRU2mQrM6uDBdbWSANYI
-	64GagNEK3P0hmg8Ogstyh9IDhzh4wi4=
+	bh=umpxH1rA0uc6khk9bUJY6s1FqGMiyqxhFpcVft9gd4I=;
+	b=av92o+qnNA6AsR2WLpV3LZcHrOILOaFigha9LA544WHgDRJTtsMf2cLErOUjUfccbzaWso
+	LL4odMU48JVFbRftGVs05TBZ9xED/4ViRB8kyym4QARStpq4jQXN8xVvnkvRQp7kHFIHNZ
+	gTebVGHIYpyIQoix80ZktHtI/l5MdKU=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aHuckqIP;
-	spf=pass (imf27.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RZe3Hghg;
+	spf=pass (imf05.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757590446; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757590450; a=rsa-sha256;
 	cv=none;
-	b=N9NIMqf3+S3LgPPbiTl9mYrU7Rlc872Abnfd8s51TxNV2IsNQDVlnLNKFlAuaDCAzMqGsS
-	UtVAYbN8ZIqEalLkELcyw+oNg/JCbcyz3NbyGdWI2lsz2jbBVSHu4ERVwTlOPdp2ixez78
-	l+XRp4d3uLJlzjy4Nd3o1xSHVuZDfBM=
+	b=ywGRS2969FSfVzJlfDn5wVmRGi5ssHc4B/WSBpRCTmzy0lnYcDu+XT3Mikhg5IL65N63Az
+	6kFLBG/o4rsQbljw7H5Ekiei+BNrdwrTDxEPnD2mhfPe9PxIuf+q83WrTbTbOYP+wZjCzV
+	OortYcaAIYsMzEL1WfnqcCOyOtXBovQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B94B5601B5;
-	Thu, 11 Sep 2025 11:34:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECF7FC4CEF0;
-	Thu, 11 Sep 2025 11:34:04 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3CD6E44EA9;
+	Thu, 11 Sep 2025 11:34:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5D78C4CEF1;
+	Thu, 11 Sep 2025 11:34:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757590445;
-	bh=TgV6C5G8VhidqawynN09s+nxyIE1o95t30Jv8/yt6TI=;
+	s=k20201202; t=1757590449;
+	bh=J3JcsAko8zSIGuiXV9DflNw5AuJmzcXfJS1bY+J5d1Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aHuckqIPtEIiOWHvNq0NOX2VUROZZq/uA7zGOdbVdxG4Pu3sXEwSkT9szYEIMUgmg
-	 BRxCuIoA6vu5RW5uQEkSA0Wkre6rPhzocirN8IxZLlyOeC56xl1jMuRu4WS4G7HT0o
-	 tYBmQudeB/a7Uj13GiYWUYHXUkFU2szEXkHMgoDK8LxNqKeZAsi4cyKxbwRjhjXaZF
-	 zvWnMOC4O6ppfFfXSIkLw0gbU+TTsuWC5j9lPKIoSKnGtehkmpXC7vsfBOgu6iLbxn
-	 eW0H7UAlzIhh2IDF7GLOcEzOXhZRB/ePSwMlsyMCAbLM7KMWT8cBAdmtEzPD3lbMvf
-	 2SsFtJS+il52Q==
+	b=RZe3Hghg8tuilG38NUupXeM//AvgeiRR0kwGj/2e8WXc5R8k2LXEtxylcKu0V7VR4
+	 1FL71pt5mLy3q7tg9mEDnGu1K88Gjtgeu2UYS8C2bKbKCCRRb9g+8K76CZAztiQE4R
+	 zdqO+vDPlmfczjhKjstsRUe+TJcL8TsKnPJphvQgKiSQraI79PT0SA713CHwIloZ1b
+	 QjKoUmsx9DTS6kou4xIZNyzUdbLcMrmVlBlLOlxFHYRxg+hUASmotNa3o3ZOLnAna3
+	 tmduKfLeIIC88uvLVpyqh0eIdL4F2g8wYiqMwsjlbdIeqNN/nVtXrzcn3ko/5wuWDV
+	 Cj92uwQIUWB2g==
 From: Leon Romanovsky <leon@kernel.org>
 To: Alex Williamson <alex.williamson@redhat.com>
 Cc: Leon Romanovsky <leonro@nvidia.com>,
@@ -87,22 +87,22 @@ Cc: Leon Romanovsky <leonro@nvidia.com>,
 	Sumit Semwal <sumit.semwal@linaro.org>,
 	Vivek Kasireddy <vivek.kasireddy@intel.com>,
 	Will Deacon <will@kernel.org>
-Subject: [PATCH v2 04/10] PCI/P2PDMA: Export pci_p2pdma_map_type() function
-Date: Thu, 11 Sep 2025 14:33:08 +0300
-Message-ID: <d017c5ecc53ace9e902c988ce654698f8b8f85e6.1757589589.git.leon@kernel.org>
+Subject: [PATCH v2 07/10] vfio/pci: Add dma-buf export config for MMIO regions
+Date: Thu, 11 Sep 2025 14:33:11 +0300
+Message-ID: <e15b8a93822a69041e616edbea16e22644023be9.1757589589.git.leon@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <cover.1757589589.git.leon@kernel.org>
 References: <cover.1757589589.git.leon@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: hix11en5hwnb5yebubndaid3nhkhzrpp
+X-Rspamd-Queue-Id: 3D961100005
+X-Stat-Signature: 7ucepcj1a8ag56de9dmn71nzcerisatq
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 55B184000D
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1757590446-352079
-X-HE-Meta: U2FsdGVkX19fEZRPhRWfUpOfJtuZBX7RyLpjGvkS5jwTaKfFKDytG/rWHBM7FFIyxbRW7CFjagCeXGW3aBooPEfbQQKu766XdvpVxrsF7bRh/7xpeEwzdeYcbcEngNsUwj0Gt/p3iqac6lWFCRAJZQXoi6oM4YGHZl7/4JPYf9drifWBvVUlhgVWVZYIc+UNtT0IHuF74waY7cr+guY+Zhm5XRFosXbAOj044GqUur9CV7WfTOGyjEUruduIjmD7Fd9WhewUUKdCyBP8w8uQ5AuS+Epqo1vvOwfefp/sJyPVi7Ws1aqqXz8JeoGzPcomdwIKZ1ABv8VOS11mWREZN7VEJSssOjBIUQ9YFFRrMubKLPlUFykyXsxmTiXHEK/4UciBeki2YP0rt4qHvhwdMvzu0pk12ooICfaEbOLRyfakv1Ik1UUn2hR/epbtBBJRjuCXx7VvCP23UKmal6BSzixzwls4/8hsaOCe7gHOBT4ZngYONPLSWOMlW9dZKNpKSxTM+IQO+DdVD22vI0dEXt22BctQVTzJSdxnNuY/i//fCHg/aPI05IwPrGuapPcTaIddU2UqmR9kEBcHUMYae5EFj5MDNdhcUOEud3EB6eGXEOZwUGWj5k6FVwnnvRuOEwd1TVdWC3bax0vXJq8ZgFO2i/MIJi9OErKivXdBNQgYQHdJv9zBgnrh6wk9i8jjDgIoqbmMXsTOx2J5X5auGSKYljfj1ixldxCytuqU5npsJ5j+SYkRwo9C5OQfkY7A+8R8GB48+WRVHKT7WPmC8dEfR/1fZDKgaFCMjBTJ1dWMsy1ty/NC94OA4Q4OuSs4Lc6PLAI5M7xXzjmhnPVZFttj163k3KaG/NV9hNDlhhVLkBUSP71BAXKOsB9PKdxKnYq5Suk1EndUF4byGEHKy4fpQR1ggYGquguUd6E9fccNCVeOLEbp8kwE1Er+8BMu1HmxlH5eii/o5FZN6T4
- E6MjUMtu
- FX/wVjSybbPT1oQq+NNpXNqYsPwg3n8B/sdcRN7SpP9u6nBcVdZqOUASpAEGwsElqoj0M0G1ffur/x9Vscr/I2DfKSZ/tZJdrtbk89BFCHyAr1I9U/iJk0bTBCBw9zTZgIwa58wiqKD86xPc34DtYCxrcEKtuGAE+VRXXCwDDmPGkT2i/RoI6xbimJ3h9VZL9RupO3S8XVHbIV0pWNzJFSzlNTLmGJvpM4uCUhyZkfXcSy1UIoKnTQoh7WlYY3fWx12n4Yv0F3KhgdkZ1zAnaHpJktQ==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1757590450-140739
+X-HE-Meta: U2FsdGVkX1+2jx0oQY8+3aQB2pbwd0iCO4QDdwFMN1OjLHuoVy+m0/LypjjrcPgealNC4lr8zgo4OzvAVCA380I2yWnv9++HdG5umHK2aqyzq6lqe002NC2DJQ6Gj7fiD8xUQoEs76RVDCX7z7HeuPrq3+1jhzDr2XrLGiU6Q0GAQnSnXXM5Aj1eGLLhStgfIOp+6oSvoNPJ8DWXtAQmexNZ54NwgbSs+ZvLyuvmbn7EN6nXXs65QJn5is3CRaQRjFOvVR3LOSI4+/k+pPVKKYrr6qzvwVdUzlSNUc+znul9fK198fQUa6A3qINgWdFKdHSA0A8YrcuRoYDKjksyKyG+fUleMVs5P1xCKvSKWEkF82lwUtSDbghkbxCLe5TN+O2ReYkzNkMnA21hGMfm9izC8qXu9IeuUiIMB7CiEXeJX8Rb38CsFd3mrOOROIPfCCbu/NKhpK/c42rGgMnmkmT3UaWGAKX76KNpMf4hAtS02GQl2IX7zXYNDTwWEg3TQUMY0H+lD/yITUQK7DGYgYE4/aNibz2ZDGdr3kRBz1VtwawoRQt389yRz3/ixIX1pDHDY9JVjdEbEf0LiZ1bULDQgC8gg3fyIqiABuP2x3lrodFLzzK4rD2FKbzCcWq+/WAJh0GCS1XrDjkcHIovnywAxrEx02FWIdjVtmexXTLDjXBDW54/93Qg6ceY5Uu4w+8Wso1dqp0HDv3Z7WOplPATzETMVRrWUxAjMGrAFlIHiXzE/Cv+/fpe9ecEO0c1JMhAhF8jIycNMIyD30b+9n+Ev9UGuXSbyKw8TmIl0u6XCD0/27MWUfOdwG5B9+kgja3dnyROgdwtbMV1rWDWG4kF9nTxuSOCG8CQJapmVrR8keWyq1Fh3trv6fBB+KjWUBcVAns1Pnh4az75eBvM3/bMno+kVpPkVRwKoziF4IZPUFM9+9K1jTWTdVdGyoRGsmjFWD3KhIAiob17tNS
+ ZlhvBSex
+ RdhnUjl45GF180Q2IEkGfxlkImLFCXuANb9Zw6IfadtHeF0m1k2Xo/4plWi6clWNDmSbfxYss/6j/L4VPKTi9U75h0M2xAYx228TWTj0NT/rK5pPo8GQ3FY6CZZwxxMW63i+2vkLgkOd8y1BGXpsO5KSPVTgt94Fp896HQbbQKNpFp/9pNfqGIVZm0FUwrKfThUKyEI8Wkt4CtHb0c4aEIs1ub5xwDzrACVoeQoQ7S9s+ki8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,175 +113,45 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Leon Romanovsky <leonro@nvidia.com>
 
-Export the pci_p2pdma_map_type() function to allow external modules
-and subsystems to determine the appropriate mapping type for P2PDMA
-transfers between a provider and target device.
-
-The function determines whether peer-to-peer DMA transfers can be
-done directly through PCI switches (PCI_P2PDMA_MAP_BUS_ADDR) or
-must go through the host bridge (PCI_P2PDMA_MAP_THRU_HOST_BRIDGE),
-or if the transfer is not supported at all.
-
-This export enables subsystems like VFIO to properly handle P2PDMA
-operations by querying the mapping type before attempting transfers,
-ensuring correct DMA address programming and error handling.
+Add new kernel config which indicates support for dma-buf export
+of MMIO regions, which implementation is provided in next patches.
 
 Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 ---
- drivers/pci/p2pdma.c       | 15 ++++++-
- include/linux/pci-p2pdma.h | 85 +++++++++++++++++++++-----------------
- 2 files changed, 59 insertions(+), 41 deletions(-)
+ drivers/vfio/pci/Kconfig | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
-index c22cbb3a26030..7b899e2f82456 100644
---- a/drivers/pci/p2pdma.c
-+++ b/drivers/pci/p2pdma.c
-@@ -1033,8 +1033,18 @@ void pci_p2pmem_publish(struct pci_dev *pdev, bool publish)
- }
- EXPORT_SYMBOL_GPL(pci_p2pmem_publish);
+diff --git a/drivers/vfio/pci/Kconfig b/drivers/vfio/pci/Kconfig
+index 2b0172f546652..55ae888bf26ae 100644
+--- a/drivers/vfio/pci/Kconfig
++++ b/drivers/vfio/pci/Kconfig
+@@ -55,6 +55,26 @@ config VFIO_PCI_ZDEV_KVM
  
--static enum pci_p2pdma_map_type
--pci_p2pdma_map_type(struct p2pdma_provider *provider, struct device *dev)
-+/**
-+ * pci_p2pdma_map_type - Determine the mapping type for P2PDMA transfers
-+ * @provider: P2PDMA provider structure
-+ * @dev: Target device for the transfer
-+ *
-+ * Determines how peer-to-peer DMA transfers should be mapped between
-+ * the provider and the target device. The mapping type indicates whether
-+ * the transfer can be done directly through PCI switches or must go
-+ * through the host bridge.
-+ */
-+enum pci_p2pdma_map_type pci_p2pdma_map_type(struct p2pdma_provider *provider,
-+					     struct device *dev)
- {
- 	enum pci_p2pdma_map_type type = PCI_P2PDMA_MAP_NOT_SUPPORTED;
- 	struct pci_dev *pdev = to_pci_dev(provider->owner);
-@@ -1063,6 +1073,7 @@ pci_p2pdma_map_type(struct p2pdma_provider *provider, struct device *dev)
+ 	  To enable s390x KVM vfio-pci extensions, say Y.
  
- 	return type;
- }
-+EXPORT_SYMBOL_GPL(pci_p2pdma_map_type);
- 
- void __pci_p2pdma_update_state(struct pci_p2pdma_map_state *state,
- 		struct device *dev, struct page *page)
-diff --git a/include/linux/pci-p2pdma.h b/include/linux/pci-p2pdma.h
-index 888ad7b0c54cf..c12500061fd64 100644
---- a/include/linux/pci-p2pdma.h
-+++ b/include/linux/pci-p2pdma.h
-@@ -26,6 +26,45 @@ struct p2pdma_provider {
- 	u64 bus_offset;
- };
- 
-+enum pci_p2pdma_map_type {
-+	/*
-+	 * PCI_P2PDMA_MAP_UNKNOWN: Used internally as an initial state before
-+	 * the mapping type has been calculated. Exported routines for the API
-+	 * will never return this value.
-+	 */
-+	PCI_P2PDMA_MAP_UNKNOWN = 0,
++config VFIO_PCI_DMABUF
++	bool "VFIO PCI extensions for DMA-BUF"
++	depends on VFIO_PCI_CORE
++	depends on PCI_P2PDMA && DMA_SHARED_BUFFER
++	default y
++	help
++	  Enable support for VFIO PCI extensions that allow exporting
++	  device MMIO regions as DMA-BUFs for peer devices to access via
++	  peer-to-peer (P2P) DMA.
 +
-+	/*
-+	 * Not a PCI P2PDMA transfer.
-+	 */
-+	PCI_P2PDMA_MAP_NONE,
++	  This feature enables a VFIO-managed PCI device to export a portion
++	  of its MMIO BAR as a DMA-BUF file descriptor, which can be passed
++	  to other userspace drivers or kernel subsystems capable of
++	  initiating DMA to that region.
 +
-+	/*
-+	 * PCI_P2PDMA_MAP_NOT_SUPPORTED: Indicates the transaction will
-+	 * traverse the host bridge and the host bridge is not in the
-+	 * allowlist. DMA Mapping routines should return an error when
-+	 * this is returned.
-+	 */
-+	PCI_P2PDMA_MAP_NOT_SUPPORTED,
++	  Say Y here if you want to enable VFIO DMABUF-based MMIO export
++	  support for peer-to-peer DMA use cases.
 +
-+	/*
-+	 * PCI_P2PDMA_MAP_BUS_ADDR: Indicates that two devices can talk to
-+	 * each other directly through a PCI switch and the transaction will
-+	 * not traverse the host bridge. Such a mapping should program
-+	 * the DMA engine with PCI bus addresses.
-+	 */
-+	PCI_P2PDMA_MAP_BUS_ADDR,
++	  If unsure, say N.
 +
-+	/*
-+	 * PCI_P2PDMA_MAP_THRU_HOST_BRIDGE: Indicates two devices can talk
-+	 * to each other, but the transaction traverses a host bridge on the
-+	 * allowlist. In this case, a normal mapping either with CPU physical
-+	 * addresses (in the case of dma-direct) or IOVA addresses (in the
-+	 * case of IOMMUs) should be used to program the DMA engine.
-+	 */
-+	PCI_P2PDMA_MAP_THRU_HOST_BRIDGE,
-+};
-+
- #ifdef CONFIG_PCI_P2PDMA
- struct p2pdma_provider *pcim_p2pdma_enable(struct pci_dev *pdev, int bar);
- int pci_p2pdma_add_resource(struct pci_dev *pdev, int bar, size_t size,
-@@ -45,6 +84,8 @@ int pci_p2pdma_enable_store(const char *page, struct pci_dev **p2p_dev,
- 			    bool *use_p2pdma);
- ssize_t pci_p2pdma_enable_show(char *page, struct pci_dev *p2p_dev,
- 			       bool use_p2pdma);
-+enum pci_p2pdma_map_type pci_p2pdma_map_type(struct p2pdma_provider *provider,
-+					     struct device *dev);
- #else /* CONFIG_PCI_P2PDMA */
- static inline struct p2pdma_provider *pcim_p2pdma_enable(struct pci_dev *pdev, int bar)
- {
-@@ -105,6 +146,11 @@ static inline ssize_t pci_p2pdma_enable_show(char *page,
- {
- 	return sprintf(page, "none\n");
- }
-+static inline enum pci_p2pdma_map_type
-+pci_p2pdma_map_type(struct p2pdma_provider *provider, struct device *dev)
-+{
-+	return PCI_P2PDMA_MAP_NOT_SUPPORTED;
-+}
- #endif /* CONFIG_PCI_P2PDMA */
+ source "drivers/vfio/pci/mlx5/Kconfig"
  
- 
-@@ -119,45 +165,6 @@ static inline struct pci_dev *pci_p2pmem_find(struct device *client)
- 	return pci_p2pmem_find_many(&client, 1);
- }
- 
--enum pci_p2pdma_map_type {
--	/*
--	 * PCI_P2PDMA_MAP_UNKNOWN: Used internally as an initial state before
--	 * the mapping type has been calculated. Exported routines for the API
--	 * will never return this value.
--	 */
--	PCI_P2PDMA_MAP_UNKNOWN = 0,
--
--	/*
--	 * Not a PCI P2PDMA transfer.
--	 */
--	PCI_P2PDMA_MAP_NONE,
--
--	/*
--	 * PCI_P2PDMA_MAP_NOT_SUPPORTED: Indicates the transaction will
--	 * traverse the host bridge and the host bridge is not in the
--	 * allowlist. DMA Mapping routines should return an error when
--	 * this is returned.
--	 */
--	PCI_P2PDMA_MAP_NOT_SUPPORTED,
--
--	/*
--	 * PCI_P2PDMA_MAP_BUS_ADDR: Indicates that two devices can talk to
--	 * each other directly through a PCI switch and the transaction will
--	 * not traverse the host bridge. Such a mapping should program
--	 * the DMA engine with PCI bus addresses.
--	 */
--	PCI_P2PDMA_MAP_BUS_ADDR,
--
--	/*
--	 * PCI_P2PDMA_MAP_THRU_HOST_BRIDGE: Indicates two devices can talk
--	 * to each other, but the transaction traverses a host bridge on the
--	 * allowlist. In this case, a normal mapping either with CPU physical
--	 * addresses (in the case of dma-direct) or IOVA addresses (in the
--	 * case of IOMMUs) should be used to program the DMA engine.
--	 */
--	PCI_P2PDMA_MAP_THRU_HOST_BRIDGE,
--};
--
- struct pci_p2pdma_map_state {
- 	struct p2pdma_provider *mem;
- 	enum pci_p2pdma_map_type map;
+ source "drivers/vfio/pci/hisilicon/Kconfig"
 -- 
 2.51.0
 
