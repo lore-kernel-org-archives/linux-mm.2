@@ -4,107 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55102CAC587
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 08:35:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9209ECAC587
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 08:37:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AB4126B000E; Thu, 11 Sep 2025 04:35:46 -0400 (EDT)
+	id DC3C6900004; Thu, 11 Sep 2025 04:37:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A63E46B0010; Thu, 11 Sep 2025 04:35:46 -0400 (EDT)
+	id D9B4B8E0001; Thu, 11 Sep 2025 04:37:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 92BD06B0011; Thu, 11 Sep 2025 04:35:46 -0400 (EDT)
+	id CB140900004; Thu, 11 Sep 2025 04:37:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7ABC96B000E
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 04:35:46 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2405BC0346
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 08:35:46 +0000 (UTC)
-X-FDA: 83876311092.05.E7443A6
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 1D3611A0002
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 08:35:43 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B80D88E0001
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 04:37:03 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id EDA5C13AD35
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 08:37:02 +0000 (UTC)
+X-FDA: 83876314284.19.9EBAE81
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf19.hostedemail.com (Postfix) with ESMTP id B44C21A0002
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 08:37:00 +0000 (UTC)
 Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="V/2pNPLX";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=8wJXEdI7;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="V/2pNPLX";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=8wJXEdI7;
-	spf=pass (imf19.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=gbVdZ5or;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=aLTXTZFS;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=BXH35BNu;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=onTJLSTl;
+	spf=pass (imf19.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757579744;
+	s=arc-20220608; t=1757579821;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KZHXjktAiNRSWCsp7mRo7oXVASySHuSrY3xtvxgr0Oo=;
-	b=cgSLFbAm5fVeGAb3byY6mjEpyZu/JCuhAp774XlvYln/NCKX30njdK1gxhNVgMRxPmKX6w
-	axXgvyPu0S7iJ/TiFKFT+wgveGA0262+MCaIrVrYK0qvjTHQbOgtJUFmBPpUu8VE330Nab
-	Rm7YlhM3Rs4qlg4g9ideWFPd+QiiHEE=
+	bh=MVKatHAMv6K0HJB+fE+uvvzEY9BdzRg6mGSrDhfixOc=;
+	b=6oDBCihy6xeN03OBdBKKPyYzlkUzan8Td+cqgBBXLFFpVayJf/wDSBxIBXOfPb51o7xLFE
+	kLXbQmiy5UF/gWmdHul5T2Mr56qXGsuruodBcWsh4AZ4fiUd7zmZCMbNIJi+bM+Gw0pl0o
+	qN1ziycDwue9XFj6GpqFqMea0DEewqA=
 ARC-Authentication-Results: i=1;
 	imf19.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="V/2pNPLX";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=8wJXEdI7;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="V/2pNPLX";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=8wJXEdI7;
-	spf=pass (imf19.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=gbVdZ5or;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=aLTXTZFS;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=BXH35BNu;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=onTJLSTl;
+	spf=pass (imf19.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757579744; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757579821; a=rsa-sha256;
 	cv=none;
-	b=V+oL/T6ifhCBdnJb8tmQPVWr8Nkm0NElkwXYMMB0PsqTW16g3W1XMWO3EyYnCV5skRYHT8
-	s6ZtKlXql9mzuJ/XKScb25ONPVvAq5J6RSkAs3Y7JR0F0pgWLFiOFX5pMNupw32cIPwzuB
-	6nNp3kZ+niROJZVU7lO68Z/L0nM4UNQ=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	b=Iu/KQCeU3+UE7qBaLHN1yewtkkkHpuZzkspGOYPaVys+YqnxFIbqOgbQHu7HHRdwjN1v3f
+	nyNaRdfb3ijAmB6QvepQxDWRtSIcPWTwUs7G4PbnYvIBX82G427ZKKq4a8TuhMvnPh4git
+	Asi9dZ+8QWCVPqW54hgpVPmqAxH8prQ=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id A4BA43F8BF;
-	Thu, 11 Sep 2025 08:35:41 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id E8F2468606;
+	Thu, 11 Sep 2025 08:36:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1757579741; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1757579819; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=KZHXjktAiNRSWCsp7mRo7oXVASySHuSrY3xtvxgr0Oo=;
-	b=V/2pNPLXjZxOAXOZsGDYJjc2AyKj4F+z+UmxbO0U71QzrlxliA1spl1IIsigxVlhuUNypU
-	V+MwrG1Yfq34WpkYW+gGb73AoQEZkis/St+xrG74pfZnVJhJQupE485J/8vHlzsMWXBU2i
-	e8t2YbSo3Vc4NHMqR5+gg1L1eA9ZgiM=
+	bh=MVKatHAMv6K0HJB+fE+uvvzEY9BdzRg6mGSrDhfixOc=;
+	b=gbVdZ5ordIwsjok0HGyMjLJHMSMCvd7phfCfms+ZTddXEbopzWQoU9SS+FPbGVcufPMb2x
+	JMqA30UnF9uP4ZX8DjZuMTMu0J3iWh4dqAOgxyk/H1JXK2INNCBYcRL6RtLmBo7y9ghHvL
+	it6KQ2/afG8hGOw9P2K0/2NZIIl4e58=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1757579741;
+	s=susede2_ed25519; t=1757579819;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=KZHXjktAiNRSWCsp7mRo7oXVASySHuSrY3xtvxgr0Oo=;
-	b=8wJXEdI7KEwDUG4TdenbF0CZ7u9cEaytJTrnh2lXLZFebLh6NR+j81h2lyWMG5ZPD0huZZ
-	exnc3+IjyrgjDqDw==
+	bh=MVKatHAMv6K0HJB+fE+uvvzEY9BdzRg6mGSrDhfixOc=;
+	b=aLTXTZFSgnI5/Cod9GP6PRHmztHtOqVdF3UN4+Ox//+uZ9pn/LzTYv8Pv/vn52ReXpGA7L
+	LygYn7X671fZo2Cg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1757579741; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1757579818; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=KZHXjktAiNRSWCsp7mRo7oXVASySHuSrY3xtvxgr0Oo=;
-	b=V/2pNPLXjZxOAXOZsGDYJjc2AyKj4F+z+UmxbO0U71QzrlxliA1spl1IIsigxVlhuUNypU
-	V+MwrG1Yfq34WpkYW+gGb73AoQEZkis/St+xrG74pfZnVJhJQupE485J/8vHlzsMWXBU2i
-	e8t2YbSo3Vc4NHMqR5+gg1L1eA9ZgiM=
+	bh=MVKatHAMv6K0HJB+fE+uvvzEY9BdzRg6mGSrDhfixOc=;
+	b=BXH35BNu64iIGCB3YP2jGeLYcKsUThmhJ6XH1FZZJOeTGgj8j+AKxuheSOZ825qLuYyoJA
+	Fnp0TF+S3NW+tY9TPbQQJsr0ly3mI21S04Ty4JaNJv85r6FBeE9/XfvhuQjAIdfE3zrgCt
+	iZWZFl6rA6UgTWCABj5n/rG4pREhBLE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1757579741;
+	s=susede2_ed25519; t=1757579818;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=KZHXjktAiNRSWCsp7mRo7oXVASySHuSrY3xtvxgr0Oo=;
-	b=8wJXEdI7KEwDUG4TdenbF0CZ7u9cEaytJTrnh2lXLZFebLh6NR+j81h2lyWMG5ZPD0huZZ
-	exnc3+IjyrgjDqDw==
+	bh=MVKatHAMv6K0HJB+fE+uvvzEY9BdzRg6mGSrDhfixOc=;
+	b=onTJLSTlgfa3oXRqtjZDgBU2LdJbfKNHu4jUM0BmAA78X6XyIiUUKvU898EivdFRT7NBq1
+	eEDGqyXMCeegHVCg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 93F831372E;
-	Thu, 11 Sep 2025 08:35:41 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D83BA1372E;
+	Thu, 11 Sep 2025 08:36:58 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 1yYeJN2JwmhYcgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 11 Sep 2025 08:35:41 +0000
+	id mpvENCqKwmjOcgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Thu, 11 Sep 2025 08:36:58 +0000
 Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 48964A0A2D; Thu, 11 Sep 2025 10:35:41 +0200 (CEST)
-Date: Thu, 11 Sep 2025 10:35:41 +0200
+	id 8E4F6A0A2D; Thu, 11 Sep 2025 10:36:58 +0200 (CEST)
+Date: Thu, 11 Sep 2025 10:36:58 +0200
 From: Jan Kara <jack@suse.cz>
 To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -134,22 +134,24 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org, linux-mm@kvack.org, 
 	ntfs3@lists.linux.dev, kexec@lists.infradead.org, kasan-dev@googlegroups.com, 
 	Jason Gunthorpe <jgg@nvidia.com>
-Subject: Re: [PATCH v2 02/16] device/dax: update devdax to use mmap_prepare
-Message-ID: <fpdlink5oiu7dbx35qayavv4lq2qjvruyplo2bomvu7lnsz62h@uwoawxkmywo7>
+Subject: Re: [PATCH v2 03/16] mm: add vma_desc_size(), vma_desc_pages()
+ helpers
+Message-ID: <afrz7upbj463hmejktsw2dxvvty7a7jtsibyn4fdlwwyrzogrh@c3svlrvl4job>
 References: <cover.1757534913.git.lorenzo.stoakes@oracle.com>
- <12f96a872e9067fa678a37b8616d12b2c8d1cc10.1757534913.git.lorenzo.stoakes@oracle.com>
+ <5ac75e5ac627c06e62401dfda8c908eadac8dfec.1757534913.git.lorenzo.stoakes@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <12f96a872e9067fa678a37b8616d12b2c8d1cc10.1757534913.git.lorenzo.stoakes@oracle.com>
-X-Rspamd-Queue-Id: 1D3611A0002
-X-Rspamd-Server: rspam05
-X-Stat-Signature: ii493j3qz7bq7gma4th1y74max9zrrf4
+In-Reply-To: <5ac75e5ac627c06e62401dfda8c908eadac8dfec.1757534913.git.lorenzo.stoakes@oracle.com>
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: B44C21A0002
+X-Stat-Signature: fk4k3hodhyxkkku1w16bcubmcnfkinpm
 X-Rspam-User: 
-X-HE-Tag: 1757579743-329508
-X-HE-Meta: U2FsdGVkX1+G8TSlI8qyc+x/OQLh8rcWZZJE8RdGVYcYvVi3N55ZY+klUn2IwIw5QjvMBNgaPsYWDj7DmDaa1AHYp7V7mKId2EFSVO0K8lfhG712VNyqGUsZ3KqrLoZ3emFaEp/qmqRe/nkpc95qHzrA1r2m954B6MSsp4aWTwhWzuSjdjzdTETDxDGAhQwHJSgeeeLHRfHAQsuUBktfWBMxRFbAbXIMzfcSElj3eniQGihcNolxEoTvl61422J/H6U9nQWI5l0Z13GKjt6sV+awqv4uC/XWz1lKh8c/DcjHkwUOkMttKbmKiSUdsjfuDYQrpXki4K0ESaFplwBT6Pn8NuCTk/Nn4WgnFtzWxJ0zS6DCF/4YsQI/JpmpxcMgLKmcxrg7Mp9LfXrpQQpFIURNINXFLBphWpcfvQLVVu/mJtTY0k+hffHsDmNWHhLe4R5CNf5TUDX0EcwYWaPqgJVn7aSBKksCgCO41Mo49zu1TezBih8E2eb8YdHGyoctrZEwdK76Js+fOTrglfK5nKHumtHHiojpm0HNXWI8mP9w9guIx2S0PiQuPQ00Pb6P7G1ywpbJXk+n2iI0mMPfqvHZfi16VlQKk7vfZ6o6/Q9ev+DWhYX2wleccbb4sZctF/O27JQMCwBaBeMNU5mW+cRKjlxRiwXKKuvEIrm5RMLLyijYPwKk11h3rv0K8tfxVD5q9/lAzN8/Gqz/kouPxgH/LHhWZXcvd2Rcy90P+52Hr23gSk7EoPmArH3eQOQBgzI5OChl13l2DTFg8vftuBvfHuJ4yiahaRjOn+KqT3HO+em8th2caUMhHDFSpPV8xW85Y9Ryv/6uQmqN6oDfawgVsn/O1qgtbBdEuaoHg9OFNjtT8O3W7ge2rl+AWvMTV9TrvHMGEraERbYnAU+KMrGM5qTIy2nlqp+OC2EXeSpUyGTAygDdtEXoA7Hex/uiO5FV4+PlVse4zYoBDax
- JYYKMaac
- zMCSYyPDKLMRHEa0MuE08jhMnA2ZMBkXXtTorhWSRC6e1VHc=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1757579820-943169
+X-HE-Meta: U2FsdGVkX1/s/HLYTVWdb4ItZ3iqhPAsQ9wPwHHiFTPgx0QvtmTZPXDfOa5bZfwSAwW7juxZk0/wD0gdg4LoKrGWRIolsWHDLG9Trbsmii2ylep7MyrI3HFcmkl7mnzTMZuCytAH+qyHOu7ddGuG+HLDXjXicTDQS0frWy6dm2ikNk1c1lhKYXgxXHWuDrb+dCqO+oHOt8TPCttOZ7+lKyL758k8Emwd7dfFaD5q9oBUr/JgcGBCiswFlLwDiqMUyBokruVIXSP5WMavyaLnz+Aeu4ZqCze0Aa+y4+yH4ukEXLmjitU5w4Fv9wvUtVXEqaN3FoIXhJibFoazEZlrFee8eW7j6bHWkPQkryjiwExzLDjxqC1/jMJcsXJgx4VNui9kG2tgIbb5TqxhRjATgEYBkYGu3uk6fMsYfGtuXDknOjILiQL/LyQgNxZsrKR2vn93zE0GH3eCSLF0zb11MKcOllpu7NoOY9Hva6X1E9KL9/5/kejyoxr4kxyT6v5IlXUbPvkVoYuPUpbLvmiMLiWbIwx2hIRj6n2guqECkqSFhHU4vGRbigrd3zdQiRhGxUzmQ/JM6Pftacn9DxL3Rw4fWnw1+0Ry+1Dg+uryZjcVhaNB2Uml9K6Oj/Wkjc2m2rzmEW1W9OEt70iUvp/Hdvw8DyocaEhq6JH54XTo+7CQJtQ11M9+1AtbiLPmsaN436RRwU+I7o6bqH4OoD1/eYX9W8xbcRWPRnjmKZFI3WD2KD9Pb7Cgm2HqR8t1rlGcFpO+36wfprks0FU9XyepFS9aFs04+iVZYroFDBpSEGFlRNXaN++IzdfAsFlRT/zhCSLLx36JEII8V1zPxoAfQyZYlmnX/81NYYyZJ38MuU5ysaM8D2vCrh2y5/KRxus+9DHboVQhWIRRojNGlbyViXc1SEgpxMdzEn7SMUAxgV8MqJ+zybLHmaF2EHuj7+lvd89ojykr52AA8heTVZd
+ 7b/cjhF6
+ Ye48t6QAVpnFjGORu2b/fG1IrgWNh0B3gBeMTy8Zf3B9gj2y1cY0xQROtDGO4CENBYepsVCOYNrRt5vezGxBrzNIuDmLdDZ+xptlYFkGgUQlCVdv9BlOAQTwFPbBxD5Fq0MJizisT9Y18AGtR7BYHEuK7CDi7/6WV88SPEKGS3DRxxbgAXgaSWW+/bnGjDMdZM0zwQPnnxBLJJ5EruOH7QSZkP9seBRoxh/aqeQBVDiMtzsZwNkfjF4qSQxu67/9KokLOozwtxQCAxP/jPTqma1tcWFvVxTUsWdjrnLcmZLWbgoMNnixQGwsjVoUuIen/bdDrFdEXwdt2sfqecXx6zTs7mJeBlbh3KlU6YISPxS6yZ452zUJ3E3E87FehZr3yVen8ucwH377lyFRfX2fX7E0w5IXOgFsEHpLjBBegit9vD0AVjORC4TSlAcm+wEdv+BSyGCg6HX+93IsnSj9lmzy0kI0zr0lX7UxFiqTF0IEDYF8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -158,119 +160,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed 10-09-25 21:21:57, Lorenzo Stoakes wrote:
-> The devdax driver does nothing special in its f_op->mmap hook, so
-> straightforwardly update it to use the mmap_prepare hook instead.
+On Wed 10-09-25 21:21:58, Lorenzo Stoakes wrote:
+> It's useful to be able to determine the size of a VMA descriptor range used
+> on f_op->mmap_prepare, expressed both in bytes and pages, so add helpers
+> for both and update code that could make use of it to do so.
 > 
-> Acked-by: David Hildenbrand <david@redhat.com>
 > Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-Looks good. Feel free to add:
+Looks good, I presume more users will come later in the series :). Feel
+free to add:
 
 Reviewed-by: Jan Kara <jack@suse.cz>
 
 								Honza
 
 > ---
->  drivers/dax/device.c | 32 +++++++++++++++++++++-----------
->  1 file changed, 21 insertions(+), 11 deletions(-)
+>  fs/ntfs3/file.c    |  2 +-
+>  include/linux/mm.h | 10 ++++++++++
+>  mm/secretmem.c     |  2 +-
+>  3 files changed, 12 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/dax/device.c b/drivers/dax/device.c
-> index 2bb40a6060af..c2181439f925 100644
-> --- a/drivers/dax/device.c
-> +++ b/drivers/dax/device.c
-> @@ -13,8 +13,9 @@
->  #include "dax-private.h"
->  #include "bus.h"
+> diff --git a/fs/ntfs3/file.c b/fs/ntfs3/file.c
+> index c1ece707b195..86eb88f62714 100644
+> --- a/fs/ntfs3/file.c
+> +++ b/fs/ntfs3/file.c
+> @@ -304,7 +304,7 @@ static int ntfs_file_mmap_prepare(struct vm_area_desc *desc)
 >  
-> -static int check_vma(struct dev_dax *dev_dax, struct vm_area_struct *vma,
-> -		const char *func)
-> +static int __check_vma(struct dev_dax *dev_dax, vm_flags_t vm_flags,
-> +		       unsigned long start, unsigned long end, struct file *file,
-> +		       const char *func)
->  {
->  	struct device *dev = &dev_dax->dev;
->  	unsigned long mask;
-> @@ -23,7 +24,7 @@ static int check_vma(struct dev_dax *dev_dax, struct vm_area_struct *vma,
->  		return -ENXIO;
+>  	if (rw) {
+>  		u64 to = min_t(loff_t, i_size_read(inode),
+> -			       from + desc->end - desc->start);
+> +			       from + vma_desc_size(desc));
 >  
->  	/* prevent private mappings from being established */
-> -	if ((vma->vm_flags & VM_MAYSHARE) != VM_MAYSHARE) {
-> +	if ((vm_flags & VM_MAYSHARE) != VM_MAYSHARE) {
->  		dev_info_ratelimited(dev,
->  				"%s: %s: fail, attempted private mapping\n",
->  				current->comm, func);
-> @@ -31,15 +32,15 @@ static int check_vma(struct dev_dax *dev_dax, struct vm_area_struct *vma,
->  	}
->  
->  	mask = dev_dax->align - 1;
-> -	if (vma->vm_start & mask || vma->vm_end & mask) {
-> +	if (start & mask || end & mask) {
->  		dev_info_ratelimited(dev,
->  				"%s: %s: fail, unaligned vma (%#lx - %#lx, %#lx)\n",
-> -				current->comm, func, vma->vm_start, vma->vm_end,
-> +				current->comm, func, start, end,
->  				mask);
->  		return -EINVAL;
->  	}
->  
-> -	if (!vma_is_dax(vma)) {
-> +	if (!file_is_dax(file)) {
->  		dev_info_ratelimited(dev,
->  				"%s: %s: fail, vma is not DAX capable\n",
->  				current->comm, func);
-> @@ -49,6 +50,13 @@ static int check_vma(struct dev_dax *dev_dax, struct vm_area_struct *vma,
->  	return 0;
+>  		if (is_sparsed(ni)) {
+>  			/* Allocate clusters for rw map. */
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 892fe5dbf9de..0b97589aec6d 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -3572,6 +3572,16 @@ static inline unsigned long vma_pages(const struct vm_area_struct *vma)
+>  	return (vma->vm_end - vma->vm_start) >> PAGE_SHIFT;
 >  }
 >  
-> +static int check_vma(struct dev_dax *dev_dax, struct vm_area_struct *vma,
-> +		     const char *func)
+> +static inline unsigned long vma_desc_size(struct vm_area_desc *desc)
 > +{
-> +	return __check_vma(dev_dax, vma->vm_flags, vma->vm_start, vma->vm_end,
-> +			   vma->vm_file, func);
+> +	return desc->end - desc->start;
 > +}
 > +
->  /* see "strong" declaration in tools/testing/nvdimm/dax-dev.c */
->  __weak phys_addr_t dax_pgoff_to_phys(struct dev_dax *dev_dax, pgoff_t pgoff,
->  		unsigned long size)
-> @@ -285,8 +293,9 @@ static const struct vm_operations_struct dax_vm_ops = {
->  	.pagesize = dev_dax_pagesize,
->  };
+> +static inline unsigned long vma_desc_pages(struct vm_area_desc *desc)
+> +{
+> +	return vma_desc_size(desc) >> PAGE_SHIFT;
+> +}
+> +
+>  /* Look up the first VMA which exactly match the interval vm_start ... vm_end */
+>  static inline struct vm_area_struct *find_exact_vma(struct mm_struct *mm,
+>  				unsigned long vm_start, unsigned long vm_end)
+> diff --git a/mm/secretmem.c b/mm/secretmem.c
+> index 60137305bc20..62066ddb1e9c 100644
+> --- a/mm/secretmem.c
+> +++ b/mm/secretmem.c
+> @@ -120,7 +120,7 @@ static int secretmem_release(struct inode *inode, struct file *file)
 >  
-> -static int dax_mmap(struct file *filp, struct vm_area_struct *vma)
-> +static int dax_mmap_prepare(struct vm_area_desc *desc)
+>  static int secretmem_mmap_prepare(struct vm_area_desc *desc)
 >  {
-> +	struct file *filp = desc->file;
->  	struct dev_dax *dev_dax = filp->private_data;
->  	int rc, id;
+> -	const unsigned long len = desc->end - desc->start;
+> +	const unsigned long len = vma_desc_size(desc);
 >  
-> @@ -297,13 +306,14 @@ static int dax_mmap(struct file *filp, struct vm_area_struct *vma)
->  	 * fault time.
->  	 */
->  	id = dax_read_lock();
-> -	rc = check_vma(dev_dax, vma, __func__);
-> +	rc = __check_vma(dev_dax, desc->vm_flags, desc->start, desc->end, filp,
-> +			 __func__);
->  	dax_read_unlock(id);
->  	if (rc)
->  		return rc;
->  
-> -	vma->vm_ops = &dax_vm_ops;
-> -	vm_flags_set(vma, VM_HUGEPAGE);
-> +	desc->vm_ops = &dax_vm_ops;
-> +	desc->vm_flags |= VM_HUGEPAGE;
->  	return 0;
->  }
->  
-> @@ -377,7 +387,7 @@ static const struct file_operations dax_fops = {
->  	.open = dax_open,
->  	.release = dax_release,
->  	.get_unmapped_area = dax_get_unmapped_area,
-> -	.mmap = dax_mmap,
-> +	.mmap_prepare = dax_mmap_prepare,
->  	.fop_flags = FOP_MMAP_SYNC,
->  };
->  
+>  	if ((desc->vm_flags & (VM_SHARED | VM_MAYSHARE)) == 0)
+>  		return -EINVAL;
 > -- 
 > 2.51.0
 > 
