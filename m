@@ -4,176 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66D75CAC58E
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 15:29:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 310DFCAC58E
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 15:47:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9F6858E0002; Thu, 11 Sep 2025 11:29:39 -0400 (EDT)
+	id 168476B0007; Thu, 11 Sep 2025 11:47:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A6FE8E0001; Thu, 11 Sep 2025 11:29:39 -0400 (EDT)
+	id 1404D6B0008; Thu, 11 Sep 2025 11:47:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 86EB78E0002; Thu, 11 Sep 2025 11:29:39 -0400 (EDT)
+	id 056426B000E; Thu, 11 Sep 2025 11:47:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 749288E0001
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 11:29:39 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 31BF11A04F8
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 15:29:39 +0000 (UTC)
-X-FDA: 83877354078.01.68A9D96
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 124781A000A
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 15:29:36 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="kPO/4uJR";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=PL6gjcrh;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KGzoxmC7;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vwvKgUGG;
-	spf=pass (imf19.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E75856B0007
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 11:47:31 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A1EA3140354
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 15:47:31 +0000 (UTC)
+X-FDA: 83877399102.14.1624987
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	by imf14.hostedemail.com (Postfix) with ESMTP id B8340100005
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 15:47:29 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="e/5quSOM";
+	spf=pass (imf14.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=pyyjason@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757604577;
+	s=arc-20220608; t=1757605649;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gNaB9jWC9XQ+LBt/PpSjOna9nTCIGjNcFdPCPXm51+s=;
-	b=qjYdCdfiZNuoPWcBhHzI43yJAaZnIWP8JCEbAwqSpnkcMy8yNuReVsH1UMe4WB3qrn1d4D
-	0wKrIkC3ZlJug0XvZ7rdfwJ/vcUMdrmaEypjrRrWVbo7S+L5KqpTM4H/7HAS4npN4T7AuR
-	i7QBfnqD5sGXC5TznK1CpQMQAa/jHCs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757604577; a=rsa-sha256;
-	cv=none;
-	b=dS028NQp0JvneHFk3z0+502WLzQrvrSCKeHWeulhgN34iaH3PqbNJThrXLnE17juydgjPM
-	951wWGwJHJtdjspQldZdOYG9NQ7GmT12WYFbWJQIIgxTx2yu+BYUnntf362KH9cbyxXw9m
-	SQr2YjWqSrahcJtSjNv6r+oj26/IObs=
+	bh=wFx9oDnda6VBYzco4HQeSyIICMaeMRy33Q5Glx2a6V4=;
+	b=gfaTfQZgjEiiKx8Nmdj2eMHbrpV7HAZrSHCL+EJ/3JdLNBXngtPOa54CEolqZ3Zd5e2pjb
+	QIfAwNGeMEtWDzlZeifeE0Nlm+czNvuHRksIw/nJVLVQQI5ZnylF0cix7JGeX7UojnJ1Pb
+	TzsPb/fL6+tQnka/rQvZIBDPdDarBAU=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="kPO/4uJR";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=PL6gjcrh;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KGzoxmC7;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vwvKgUGG;
-	spf=pass (imf19.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id D625440103;
-	Thu, 11 Sep 2025 15:29:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1757604575; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=gNaB9jWC9XQ+LBt/PpSjOna9nTCIGjNcFdPCPXm51+s=;
-	b=kPO/4uJRwEmGDVvZ6ycPgy+wszPTYndrPypHrZ17qflwsINhuRrrcK11BQ79Z30MaqFXPK
-	C+NmrlCqAwdkOdXi4rdLynzXZvjJMlx0t7pLVyZokUVNCkKJr/jBgU155BCDhSNHEMgFSz
-	vSRh/dYwHI5vsuoSq8n5zIoaCw5i5Fo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1757604575;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=gNaB9jWC9XQ+LBt/PpSjOna9nTCIGjNcFdPCPXm51+s=;
-	b=PL6gjcrhk3El8+Uu1jjFvLdC67mar07+eXYqVyW986Vi8QF22VVPCBUM+p2b/sif8M9itW
-	M4NjmUa/cn3CXbCw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1757604574; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=gNaB9jWC9XQ+LBt/PpSjOna9nTCIGjNcFdPCPXm51+s=;
-	b=KGzoxmC72esBiaBau2RShPbsQAAYxBr/wiyZ+n8lBV2OoZspFQxby5VtMKrI5Z11W70n38
-	B+kx2bS8Q707VN8QFnUkIhuvdSMYodfisk5uvJjuwN9i34ONPeUlIdd0LJV/FECx75vRwz
-	RasUyur5ewPwz/ElAMsL3gczof+Qwu0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1757604574;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=gNaB9jWC9XQ+LBt/PpSjOna9nTCIGjNcFdPCPXm51+s=;
-	b=vwvKgUGGYBQU25xq5E/VIpW/m+j6XO1kYTkLrMKIc73OJ6YELgy7z50C7JT51+Botjtxp/
-	iKYJyE3XUvJy2dAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AB90F13301;
-	Thu, 11 Sep 2025 15:29:34 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 7V2UKd7qwmjmBQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Thu, 11 Sep 2025 15:29:34 +0000
-Message-ID: <21321a30-4a4c-4d7e-a21b-089ae38eec35@suse.cz>
-Date: Thu, 11 Sep 2025 17:29:34 +0200
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="e/5quSOM";
+	spf=pass (imf14.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=pyyjason@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757605649; a=rsa-sha256;
+	cv=none;
+	b=VCpEFn2YCTGP7gilXx534WiEDvr3wIJTg+dIhdsEo1xYeJCA2X9NWnEr/nu+FCo/cH57YS
+	iDPjjldF/wfC3sswvy1/Zru5Y0WbKPa8gGsoCUrT5H0hDbllHc68/dWsp+5SXrobtpdK0u
+	V60C9ny48rZxUocY23HuBINjP/4svJA=
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-45ed646b656so3027505e9.3
+        for <linux-mm@kvack.org>; Thu, 11 Sep 2025 08:47:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757605648; x=1758210448; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=wFx9oDnda6VBYzco4HQeSyIICMaeMRy33Q5Glx2a6V4=;
+        b=e/5quSOMx2Sjqlw2kA0WxQyaEw1ocW2NvKd/uw/zWXAZ1owCu6/UQRpdxq5LulcMl7
+         PZSKYRMDaHuLbbPAY500SclR8y3fMf/wmnpVasCZf7MaaPc7f2u6QHN8gqKjpwc5n75c
+         eBnvCl7gofQeWyTHK07dx++LsL+1XRqZcMdpfmEIFtE6wyFrqlAVsyy7pQKSJpHABCsn
+         fuTzSUI1moDyyrEN8+PIZdyua7F4KCuSV1hRibj2SbpO7LcpF2QFXo0SWehZsg/gTmMM
+         5ReTLuIo0IqWAHxo5FmwpsyK44vTdntwoPxLwI+077sxQZYbg0X+JqGW7as+qZlwp2N7
+         I16w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757605648; x=1758210448;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wFx9oDnda6VBYzco4HQeSyIICMaeMRy33Q5Glx2a6V4=;
+        b=C8oFA0r7uHSQJyFBvfm42ofX/HNNKZ6GmQsl2BhI4r06JWhPPuVqChTgLdUs/J5hBK
+         Ho4e8S82ELb31M7gmu77m8fCa/IXZxchutOofAjIH+YrSn5shh7JYUbm3h3jHQbHXW36
+         ZXEg1IoXR7rAWBAqduM/IhXK583dcwtf+wgl+GLJmi6DK4sot8wBthJYDKHHCMEZiknc
+         Ob8ocgCsGuH3V0MUQtYecrivfzEqY+dX0avkpfymVh5X8EtU8uFNXjq5bjzAzsoQIGns
+         Oez7q8NPF3s/DvIDtZ2vYKXK68MK2a462QGymlRB4Q2tTdC1Zd4FPOLao5/POEwbqZYF
+         t7Ng==
+X-Forwarded-Encrypted: i=1; AJvYcCXih0C74Oj2EYYxuLbg54HmhoyXqZxMPJoyuSyZBAidKyy9AVhq4Zvg5SVQIjq6YVK3c9fXYqbSWA==@kvack.org
+X-Gm-Message-State: AOJu0YwwZXrvgTsANxgJWWr1W0RqiWjYZNhOj0ofTLmyWuv5fWvdJz1Q
+	dg9rS2p17+znSPm2Bxe4vtkIXQf060fi9md7MKB/1Gcybpq/Fx3fbIV/
+X-Gm-Gg: ASbGncuEzB3H4G8Be5d+2U+IrsGnZ8HfnpyE34sfDIizRbZs7Vs3Rk2lg7BqcKZ+4p8
+	9bFotZD6HwBAZE2BcRt6h73TuWyXC3SwPyn/lNCow/D08LzbfzbnIXPd1GVe5SxBHVp2E1Q0Yy/
+	7Pe6umjjfdxjucD9Qn/v9tjGpOAaataRyt/4vbho9doSDS+R23dGSgHyYCdbJ1GVg36kZQkZtcJ
+	ElOZcSMNnj1NpEijBMQNwlMC0hNmhXXPxFdtzlrxAjDPuoWj/VHzSUmUPKCts7s2yZe/cdM8Spt
+	YAIBdHAuyPyAq37JsDf/oQh3IqkUdSDuxUEtx3tereIAh9ApC7L/5YRvxtjbgoZ8jv/oqhTIKV8
+	i5rVToU0kz5/UNjLe51pUvKeajhl3hqT13hsriMLY+OHr0JcZ
+X-Google-Smtp-Source: AGHT+IFwYbz7NjDqxXwpnaGQMVwcC9yGmE42myK59UTXFjX0Z6krF3VrWIOyB5o/f16GdxD74dmXBw==
+X-Received: by 2002:a05:600c:5493:b0:45d:98be:ee9e with SMTP id 5b1f17b1804b1-45ddde6a3f0mr164977525e9.1.1757605647599;
+        Thu, 11 Sep 2025 08:47:27 -0700 (PDT)
+Received: from devbig569.cln6.facebook.com ([2a03:2880:31ff:6::])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45e0152ffc1sm16239635e9.3.2025.09.11.08.47.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 11 Sep 2025 08:47:26 -0700 (PDT)
+Date: Thu, 11 Sep 2025 08:47:20 -0700
+From: Yueyang Pan <pyyjason@gmail.com>
+To: David Wang <00107082@163.com>
+Cc: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org,
+	kent.overstreet@linux.dev, vbabka@suse.cz, hannes@cmpxchg.org,
+	usamaarif642@gmail.com, rientjes@google.com,
+	roman.gushchin@linux.dev, harry.yoo@oracle.com,
+	shakeel.butt@linux.dev, pasha.tatashin@soleen.com,
+	souravpanda@google.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/1] alloc_tag: mark inaccurate allocation counters in
+ /proc/allocinfo output
+Message-ID: <aMLvCCZbmpSE/aql@devbig569.cln6.facebook.com>
+References: <20250909234942.1104356-1-surenb@google.com>
+ <20cafc1c.a658.199394de44e.Coremail.00107082@163.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 04/22] slab: Remove dead code in
- free_consistency_checks()
-Content-Language: en-US
-To: "Christoph Lameter (Ampere)" <cl@gentwo.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
- linux-mm@kvack.org
-References: <20250910115507.1991829-1-willy@infradead.org>
- <20250910115507.1991829-5-willy@infradead.org>
- <4109cf0b-bd09-115f-5c84-58a8b9fe19de@gentwo.org>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <4109cf0b-bd09-115f-5c84-58a8b9fe19de@gentwo.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 124781A000A
-X-Stat-Signature: ja6xg6m5r1zimzbio3nhx8rrw55a17iw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20cafc1c.a658.199394de44e.Coremail.00107082@163.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1757604576-383853
-X-HE-Meta: U2FsdGVkX1+VsxgckAnXuCccwnIbuDQmP4b1VXN0uaogwS6TswBSAwkjCaJ8A50BUu3UD3TeJTbnyowwECN9aitEsiXltF00t92ma9aFowb83Z4XV/YYusuB82Vrz/0mvoig1SEEO0+PAUB0rG/vyS+R0Z7O34VzOqGjrSP1+8wHQg9rpqWarhZG5K5lS4zZ5OO8QVHA7V/WKN/+6R6Kr47yA0zX0jJrBS3CdFthzSG1a/cxPTufGF9UuvkQZi/nJuuxTTDX2EHBn4XTRNmCWLA6jl1Cj21mBybVYciwUmo/7HzFDGeAF2k5K8p5tVppuhAllyY41Gx/DxGmkad1Apelz/KROf6xKpi4lkS6x0BkAwYWhQ8l3cPKWIBF3BBecfZAYsgM+qYB8PZd7LGGqIEHT4ZqlMaUwMO5DyEYJi/jnfX1G3myw3hxcfzYA7V60VAzlP4qcJ0+cb6YuP4OEZAvyY1CvydIJpVBssBvN/Mer/xkGOQQaMB0+UKSueE7qCm+HkggWhb9SCrAlsDL6I62qoOUHeGizo6gX2x/Q7KIFLM+yvGPH/Jr8o9gpz4Uopc5Ifj7SMqJ6zVN0gejq6pY956Rcc2CiOZxvFWkkgGgjpEfdbs/rHnUrl1zgDm3TMp5797ncEvFOqgwQuEJz0NyNy7dj1of2eRUjsD2A2hRNK5EMXoedeCC3APCu/rwLaNoMNKih4/59PObqm9qzgI6CW72TqbDm2QJ6gIlmtjK8r0zC6lj835LBWRAE2zWklakCI/DOUJclsUkzBZPpb+44YWvvad1dCjB6LYPVenu7UaXhPurYm7pp7jZ9e5vxK/omCd3mprcRo6dFLpuUUfcMEzDPlGYU+pQlVkzOV2RkPlK9TiazK3ByoyNH1eNfkpyrcaaCm7WJ1yiXJW90WN2U4BOJRhB416OCfAPFtW0Lp9ae8pqKFX1sdoIPpvZOpirZtlz+770eJEZEFI
- MLEldHfR
- YLokzJE/JqZUm6l0=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: B8340100005
+X-Stat-Signature: x947co5z8yg7udn5dfzph79b1jm4o7y5
+X-HE-Tag: 1757605649-54652
+X-HE-Meta: U2FsdGVkX1+J3sDim6ELsbUHeax1+aFl61ZHcBmD5o5Hun4e7PXQmBtTYhIaFFXm9yfxXKGqdgRQtVUNJBiSIcMgjdGcUIkyBSgk1+5ly02Lh5Vzh8g6/G3HwyQAoOl2M6CEBlhc+w4X9eYm+5luj46Qrk60T7n7BUiQO3LlQIWpR6Tmrg+gZIiwCGyD7U7sCdm/NjyLkOUubOGJKYhmun+wjtFD5kY3IwwQV/Eh0ujoIr3ElzZAJE9eRStCIy21GwI+YXXB5D6tXR6eJhKEz1Fkr8EkQBWNNiOt6e0ZW9gkfPPKZIqw3KcTbFUevKzjORGVnWbX0Ah998v1nqkG8VB9CR0+shIxPpi7EzBDYQqR+/HioyBL6v5yBReRY7dx/Tj2WEHLAhMeJ6bYti6kGAVO9LHae9dgyRYzDwrsfY0+CYjBM7/vtQ+sV3U1A8NMJKvqo/RFPXLbl2JUX6L13zAvlyRacLesWC5PeGnfjAfP5xB6kSU7kVwUTNNY4FNZhTI+Frwj3bQbfA78JIhFyfsednVIiBfG0QIqMw6wRfWEvYAeeXSQ9al4eHavbRQg/qRyfo9luPUVjTjsznxvMwKo4SSebbPDIeDZhvoZO0OzT5brN0i4x1pG0eHfX/+rwwrzxpN3LuIAPPbkY5F0o6XgDgTM1GkazLYkIN1cQztdXIGI2/XdeFMr5PaRzCjSm6f+nuwTXzRfWIZzoDlFjGcHq3rSZU12LxjsYhvsG9J4KYbogsSoLRbZ6zWPtWGGBra+G/SiUDsQZRRn6kFvr+TmIx9o7bpincCC//mccTnz2Qo9iFjFazPQFqaLiLWlhEiS2ymXVaz95q+0uGLlKSW/opt65iJE1/z+oZJdjUbeAq9LtOsRdrxIYFRdvmkOC5gFU7TfeYra9Ni2j4MlQDJ/rJ5LzlM7112AseI7QHk19aYx+F/ORhSeeDw9QZAYeupFZ0IDKHvndTfdLmB
+ Ezwao2iu
+ roLY9z5lf7L1z7FieBXbxHPtPGPddeNat7qyaMtguX9VhTeiFocz0+lK4GXdLurVcOPKVPJ54V2zTb6rrHgVy8jwhmccYLO+xyPUyRLzEkJO2ZPOch798LfB3og42oVBlbXwrG2sXU9y+1/ZwPOdvmcTHK521OOfaEopXqZKuVvqUvjkowlH/m/GDQP42w2ZqaKgR7zVYriBdg7uIkuqqTJ3Fm+QvahNcXNfKM4qK4kFDxZnQwopAJPI/5P7keY8IyoKIXGKnp2bqsiHhctalgF3kIWBi9u2LEk717h8lidxGxgHxiIaDR3SoOtylFe/0Cc9Ik9wZ7FHYuSsb3UdFqZjmfCTBlPCcqcwDj730YNs2neU2QX5wDsBbTlWPeRhAeyo+tOI4l2eq7BXz/9UXrANmZC4Y474lBxhXNkSjQ4KYeSRZVITm4y7x9to4+VATLydL93VNLtwpUqkD1gYYYvSSIzH7DGTZXZiDsY27ULmM7wzRGNY4bHprpj7icN25po5+opCbEHDxIgLRCbjZ3YcXzn0ZuZMKJgdPgt+b3z+OLd9VidDpeXiD+0onYYXL9xnn2buz8bFb86Fwp3pRMoHJp/3T2iNgtZvs
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -182,26 +124,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/11/25 00:30, Christoph Lameter (Ampere) wrote:
-> On Wed, 10 Sep 2025, Matthew Wilcox (Oracle) wrote:
+On Thu, Sep 11, 2025 at 11:03:50PM +0800, David Wang wrote:
 > 
->> We already know that slab is a valid slab as that's checked by the
->> caller.  In the future, we won't be able to get to a slab pointer
->> from a non-slab page.
+> At 2025-09-10 07:49:42, "Suren Baghdasaryan" <surenb@google.com> wrote:
+> >While rare, memory allocation profiling can contain inaccurate counters
+> >if slab object extension vector allocation fails. That allocation might
+> >succeed later but prior to that, slab allocations that would have used
+> >that object extension vector will not be accounted for. To indicate
+> >incorrect counters, mark them with an asterisk in the /proc/allocinfo
+> >output.
+> >Bump up /proc/allocinfo version to reflect change in the file format.
+> >
+> >Example output with invalid counters:
+> >allocinfo - version: 2.0
+> >           0        0 arch/x86/kernel/kdebugfs.c:105 func:create_setup_data_nodes
+> >           0        0 arch/x86/kernel/alternative.c:2090 func:alternatives_smp_module_add
+> >          0*       0* arch/x86/kernel/alternative.c:127 func:__its_alloc
+> >           0        0 arch/x86/kernel/fpu/regset.c:160 func:xstateregs_set
+> >           0        0 arch/x86/kernel/fpu/xstate.c:1590 func:fpstate_realloc
+> >           0        0 arch/x86/kernel/cpu/aperfmperf.c:379 func:arch_enable_hybrid_capacity_scale
+> >           0        0 arch/x86/kernel/cpu/amd_cache_disable.c:258 func:init_amd_l3_attrs
+> >      49152*      48* arch/x86/kernel/cpu/mce/core.c:2709 func:mce_device_create
+> >       32768        1 arch/x86/kernel/cpu/mce/genpool.c:132 func:mce_gen_pool_create
+> >           0        0 arch/x86/kernel/cpu/mce/amd.c:1341 func:mce_threshold_create_device
+> >
 > 
-> No we dont. This is another case where there is a metadata mismatch and
-> where we already know that something is wrong.
+> Hi, 
+> The changes may  break some client tools, mine included.... 
+> I don't mind adjusting my tools, but still
+> Is it acceptable  to change 
+>       49152*      48* arch/x86/kernel/cpu/mce/core.c:2709 func:mce_device_create
+> to
+>       +49152      +48 arch/x86/kernel/cpu/mce/core.c:2709 func:mce_device_create*
+> 
+> The '+' sign make it still standout when view from a terminal, and client tools, not all of them though, might not need any changes. 
+> And when client want to filter out inaccurate data items, it could be done by checking the tailing '*" of func name.
 
-It's been already checked by free_debug_processing() doing check_slab().
+I agree with David on this point. We already have monitoring tool built on top 
+of this output across meta fleet. Ideally we would like to keep the format of 
+of size and calls the same, even for future version, because adding a * will 
+change the format from int to str, which leads to change over the regex parser 
+many places.
 
-> s should be equal to slab->slab_cache and it is not.
+I think simply adding * to the end of function name or filename is sufficient 
+as they are already str.
 
-It's possible even this check is dead code because we got s from
-slab->slab_cache somewhere before coming here.
+> 
+> (There would be some corner cases, for example, the '+' sign may not needed when the value reach a negative value if some underflow bug happened)
+> 
+> 
+> Thanks
+> David.
+> 
+> 
+> >Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
+> >Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> >---
+> 
 
-It makes little sense to recheck everything over and over.
-
-> Therefore we should diagnose if this is an actual slab before
-> doing further diagnostics.
-
+Thanks
+Pan
 
