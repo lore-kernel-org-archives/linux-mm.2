@@ -4,180 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E5C0CAC58E
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 16:19:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF9F1CAC58E
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 16:20:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D4E518E0003; Thu, 11 Sep 2025 12:19:44 -0400 (EDT)
+	id 29FC48E0007; Thu, 11 Sep 2025 12:20:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D257F8E0001; Thu, 11 Sep 2025 12:19:44 -0400 (EDT)
+	id 277CD8E0001; Thu, 11 Sep 2025 12:20:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C3B7E8E0003; Thu, 11 Sep 2025 12:19:44 -0400 (EDT)
+	id 1B47E8E0007; Thu, 11 Sep 2025 12:20:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B1E148E0001
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 12:19:44 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 648C6B9D49
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 16:19:44 +0000 (UTC)
-X-FDA: 83877480288.01.EFEFC49
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2080.outbound.protection.outlook.com [40.107.236.80])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 93823100005
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 16:19:41 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=YJwxqhH5;
-	spf=pass (imf05.hostedemail.com: domain of ziy@nvidia.com designates 40.107.236.80 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757607581;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0B9BA8E0001
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 12:20:04 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C0179C0456
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 16:20:03 +0000 (UTC)
+X-FDA: 83877481086.25.F5C59F3
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf27.hostedemail.com (Postfix) with ESMTP id E190C4000A
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 16:20:01 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=none;
+	spf=pass (imf27.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1757607602;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PIuRZWAhU0yF/IKY7IM/Y7UnxAEHxWNdIsToDpQUrQM=;
-	b=R0YJQCw5sWKHzL62pdVz75IclLGbs2Li+fiY2Zc7Pg67H6U7iOADSfjQgheWUXTM+WBMr7
-	+oQlH004nEAnwqekfxLaw0zzKf0GtcGRQNWBvq7SiYjlE/t1kUnYv31ZClzH03+jV0sV75
-	k9+0QMxJQl+2dC/PAQ7DT5Kl1D/zS38=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1757607581; a=rsa-sha256;
-	cv=pass;
-	b=j2K/F+xLiCn+UTioIMap7NwL9gqDMcbFIrgMTC8FdiMc8h5VTJl18OjMYo777YyCsUMJsV
-	QyRPASRQiJgzP6sPz8BimbXQ5KqoKj1W3gsF8JM+2ixI/9kCrDUGFIs7q8t3InSXAhrLgm
-	DbCzHTDe6fdVvp6ot6XUCzXCtRbX0e8=
-ARC-Authentication-Results: i=2;
-	imf05.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=YJwxqhH5;
-	spf=pass (imf05.hostedemail.com: domain of ziy@nvidia.com designates 40.107.236.80 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bJ+RAQ0SMTY/tFh9t14Q2S7m1I2tg5ZiuEz0gI4QrftxXigNevL8d0CEnufsPIviKlES1Q1wY7bgrXTHf200l5qgtoCa8IeweTF4yfgseatkmIdsbK0jKBZZhUB3bLoTsaS/ZWHcATd7RyyLZly9CxHXhYj3nNpb+mFqgNIll+mpkEXBIvhX1XjvZgcOMgav+hzB1ZEO4iv+s0sxDo9qxlPTmSPV5D9XLgBA8Jfu2ZNjZoxoDANof/AEfjzXWjLc9SyxDj26NqF2PJ+y+Qhkf9zJ9tAzox9H6hoHyFb/ysr+naNhzEwUTi096qcKM8OyW4Slouj0OveNqrM6R7Z/4g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PIuRZWAhU0yF/IKY7IM/Y7UnxAEHxWNdIsToDpQUrQM=;
- b=nLs+bRCwmqRPIZd4pWkZtcfppwr7kFqnTAZ+cgd3qnSE/HJ+yqcnbAfT5aTvVslP69+kH+Xqe5HgEr+0LYY3HU4clP3VhkkGEDgewhg7FL5QJ+kwZlpBiUHCQYQFdtCco2s59NAM8jL3gG3I92xz6DFxFaeTbpd+w7Gps45Yo0kug97LYInE5qMZwhVBPuUW57nOi0R0Aimh1em0Q1qpNtowNtjAMT+uJMusoJ3Rqo4yccGugtA3CikamWNu43V0UjrLLlxKAawbUiSOY6x1Bkk7sfvaPm17w9EVX6TgaisqcjdG9I+iaS0I7JXgjzaaUW7GmnllFljALUqnR77L0Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PIuRZWAhU0yF/IKY7IM/Y7UnxAEHxWNdIsToDpQUrQM=;
- b=YJwxqhH5AZc5bNItgvZhZ6LGlF961nHNQvYT2345uXjnrIuJoa0w4d8SMeWv4RiVI0SmaZPQU0LvytUtHA1jKZlXKA7dELPLPl18CiIkG09jeht3g5/ZZhjdjQFXDWUTAqRWhCa3YUG7ndeMAJQEsmW5ECuHOMs/lZp318ZC2qIhFVvTQnVCAR1wLU1T3Kx8v6ZOaeqQ+clcUqGN6jhu2knutGP6hLc2NgXY+Kw6WgULXfge/mmcNeAMlNFxYG93cUJG9PXxqLfN+oPG+K1GjT/Fee+YXtB/uCKjCUQRW0laUplm+XJlvfP758WWaLsgLFSslZtvez8kdqPAzuw7qQ==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- DS0PR12MB6487.namprd12.prod.outlook.com (2603:10b6:8:c4::18) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9094.22; Thu, 11 Sep 2025 16:19:36 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a%6]) with mapi id 15.20.9094.021; Thu, 11 Sep 2025
- 16:19:36 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
- mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org,
- wangkefeng.wang@huawei.com, linux-mm@kvack.org,
- Oscar Salvador <osalvador@suse.de>
-Subject: Re: [PATCH] mm/compaction: fix low_pfn advance on isolating hugetlb
-Date: Thu, 11 Sep 2025 12:19:34 -0400
-X-Mailer: MailMate (2.0r6272)
-Message-ID: <3DE28F4B-ACB1-468F-89B9-D7750D24BE4E@nvidia.com>
-In-Reply-To: <20250911032751.khtgvdhcqzyf3rgr@master>
-References: <20250910092240.3981-1-richard.weiyang@gmail.com>
- <20250911012521.4p7kmxv46kwz5fz5@master>
- <5F7DCC9D-4CA2-4BA2-9EA8-F04C3883E289@nvidia.com>
- <20250911032751.khtgvdhcqzyf3rgr@master>
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: MN2PR03CA0013.namprd03.prod.outlook.com
- (2603:10b6:208:23a::18) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	 in-reply-to:in-reply-to:references:references;
+	bh=6qqjTYTrD/QqdRv64e17c4F7ZvmzcQ8jL1KviIELsb0=;
+	b=YugYkT6KaihqvY1C99F/gUUsEOxJ+nN6Ip4Tm5XgLDXkSEdtanC0koBBgWHvrk89WKa6lf
+	NQdonMBh9CH/8OzFbQwJ5ZXJ1GCx61ReITIWbz/JuTvtRclKwpgBZNeFba6e+FeD2nKGeO
+	6GnsAIV9LAmQMGHVocs/UNoaIZmVUzc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757607602; a=rsa-sha256;
+	cv=none;
+	b=WEGQdmLCh5Y9waaz59MITXkDaFpjFBQzldo7+8IR/tB5DKITe7QzxH6HowIRY3B5YM/wDP
+	Yd2cHkG4wn2Lve2HhlHlTtY/u99sGL2ptyEmvjmYIVyLUp5mVWFP4rdpeQS8hugKLJkmC0
+	yfiAC1hZOfDjXbRQiXZ5zD/VW9j21w8=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=none;
+	spf=pass (imf27.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6DC0B153B;
+	Thu, 11 Sep 2025 09:19:52 -0700 (PDT)
+Received: from [10.57.70.14] (unknown [10.57.70.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9403F3F694;
+	Thu, 11 Sep 2025 09:19:53 -0700 (PDT)
+Message-ID: <4b4971fd-0445-4d86-8f3a-6ba3d68d15b7@arm.com>
+Date: Thu, 11 Sep 2025 18:19:51 +0200
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|DS0PR12MB6487:EE_
-X-MS-Office365-Filtering-Correlation-Id: 51b03750-fe0f-4a20-cd5d-08ddf14f0028
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?/rkYi/m6w9yafB9bVL5qdFNLvQVcspqbP50MZEKN4A3Siu3e/DGVAcNwN0uQ?=
- =?us-ascii?Q?2bHL/mntyFBi43Dtkxl1c52JDuJhy6w3KR5EJW4rdEjfZdg8SLvHl9L9qb2W?=
- =?us-ascii?Q?65fjSBVPaWJ12WTZUIXJ3cxJtwr3OfktHGkrtSj2HJthG+P6NvZuEGAYYJSY?=
- =?us-ascii?Q?23rvaITFH/UW/ZUeWR42nwbLSfNU1E5WQc8gnRF2eSoJ/DkdRXypTHhVbbnE?=
- =?us-ascii?Q?/YxTDofFovMXO/xoPE5VZINHDlO0r/dG5+fYGqG+0v4O89P9hrllBIPr1N49?=
- =?us-ascii?Q?OvZUBkMo6N9v0qAfxP/bNxSIxJs2qSqx5BP1iIED/ef0YRpdDeS89Z2BqSFS?=
- =?us-ascii?Q?59/fn7IGK2gteyPvDlLM9qWhpVHz0jv9JZZVeOCG1UblOinwyNK7ppqZZdrE?=
- =?us-ascii?Q?vpF9NlWLSKloYg7z9v4DkWRcodHCbb+fgnRipedeuhQ1u+X6+CwAHYv6Edkh?=
- =?us-ascii?Q?crkJw9TDdcy6X+iXvzG2lcs8Lvpgmga4DAWB/MwrGD8UTiSGFCT4P90OpZrx?=
- =?us-ascii?Q?Tcy0LDc+7OKvqAsIIFrc4edIkcrNTreY7v38AY+GO1HKsQsGNMGke5bJLhEU?=
- =?us-ascii?Q?EJGLgosSkSuv2LABLOUfZ7IkaT8RhfBWFu4Tjlga/Z5KaSlZvL1VtPZv4rNj?=
- =?us-ascii?Q?jKnwteWth5ueEMI5Y3XmRkGrZbb7B9jIT4tHYUft4oB26lMPFx5LUMK6ODi3?=
- =?us-ascii?Q?AjOrhmd63ekX5ACbtSZ8s3iITXkrXiq8kAuetrf9CsyuDZDXC7HBYcj61P+O?=
- =?us-ascii?Q?Cb5DKn7hJqMvawIpgqKa82241eKbya5BYroyM9Yv0yT/9p/hE7fuKP1yAI2M?=
- =?us-ascii?Q?tjQRsilsD5aQLZwBuyMyrtR3lZOdFU4DdCEunlgrDj9RVOEOIt3n78u2Bemn?=
- =?us-ascii?Q?C6TVvaUa34oLPxjgPuh6Av/n0dKD0F+k11cBH1PHZxML/n9VpsRUwP0Md6C9?=
- =?us-ascii?Q?VLbNqMOj4aw6ncyex7aAXK/88PhrliEMBLdOLbHugEyP21brw6Sr4ehiaBaT?=
- =?us-ascii?Q?AFhva9wT3syv3rRHdTYDh4rOz3D0qeV5U5vIU7/c47zKXtRhY84ucsLCI3Je?=
- =?us-ascii?Q?jDlbvf1z2+1bChfw48B4+FeyQKNlbhgZVoQyZO2Rn3mN8zH6Q5GoMuGj8KcR?=
- =?us-ascii?Q?1hVHhD8oTlzCCjXX0P9bTmQOvqkDCz8Kf1mRG58+Tjo91X/aS89ocqF/RYVu?=
- =?us-ascii?Q?x9L4WYCJLmORfhdtxN/tnfzlYnNPAYF71KAOVWMjg+filSB04uEuieeNtHC1?=
- =?us-ascii?Q?eLOU0I81wIm4W7gZ1sVacqVlIDZrISQpwajmftVMqgHYVx48z+t7fmhyQT9U?=
- =?us-ascii?Q?t/f+fA8yVJbrwYRLsg+xToUC8QRjFGRd7XRL7a0xxZc2iBvhbBHlZ2HoKFeP?=
- =?us-ascii?Q?bCMU0Wj3MYeAD0sWY6GX/YEna0wxHuUTDawlq9wlu+b+Xoib2zqxmIL3+Kud?=
- =?us-ascii?Q?AO6NNKDfGjE=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ue5m8LXBLuXo/VYyaLbxFQVYJGPGZ/8a+gn9H4uexJXaKiJTNNPLM0g/8Icw?=
- =?us-ascii?Q?NEY1T1b0RhZ7TlTbH13cGpbpt7hUXh/zOE10qplwPUpkOOYlgbZdanpEPhyg?=
- =?us-ascii?Q?nZywYj+EtC9BqicrKT2ncAu3WFo7AjS+gwxEwLRuDfycYVSzZToXwvQLB7Qa?=
- =?us-ascii?Q?CyYa+O2oBXV/wdUAAaGs+If3YA7WGVXN7KnoxeHrSX27LwnTFlyZEw5k0Lok?=
- =?us-ascii?Q?T/OlgqiR4LCm8PqW6GYFYK+DMY7/WbECkSpyt2R/V71sCjgptpLCQ3zZKibR?=
- =?us-ascii?Q?X4GnsffSIXnNZvS1qWsTmsIW4+3jvZasPRJ4PUVZN+RKvErWZRjYagbvUST4?=
- =?us-ascii?Q?1RDv/ylXZx3fVTZNl/CIyKST1p+4SJ0WjlIrYx6r/3FG96ohqR5AcMLtxopR?=
- =?us-ascii?Q?Cppa4U7bh+4TJGJFYMNbcGncRrYI4mMdNXL72jSz5gK2AWSV+HHbY947qojC?=
- =?us-ascii?Q?41gVtgM42KAiBkwSNoTpj09L14d63z1t3A2sBt+gbzlsAVfZfRJynIio255U?=
- =?us-ascii?Q?jaBNnfFZE7W2+hHNd5iS4tdT+mEKgpnu1CcU+TCfCWCcndgX4+ng1V+/B9Y5?=
- =?us-ascii?Q?unDpLjzZmzzLojhuQPs/MtpdTUfb0LwsRBTaDRd3L+VUfATr1BswmO6Jllz7?=
- =?us-ascii?Q?RzWiBpHKSgQedsN6MG8MNym9vDEX9mGJQAgKt16NFanMDv1vtZ2mFcy9iE13?=
- =?us-ascii?Q?gnCJQVNiyk/VEX6DohauYxEFMwVKqXZI8KVQldd0xYdXM6s9ZKh5egehrTrG?=
- =?us-ascii?Q?XKFeHo9eSknmsi0JW+e+0RinzUlnQcDG4evbdVySvOeLZY7Gky6DrDw/v+8+?=
- =?us-ascii?Q?QrodSvi1ulqh332/yQyYM4pEmKT+DsUsqgehXAJe3Z3xx3TssKSnv6yuBm+C?=
- =?us-ascii?Q?IvHt4TdOt8XQdeMrkW46SqciVwVgW1HFRRsUJ7HI+z03RT3iQBTtA5FzwLiL?=
- =?us-ascii?Q?FZpuCgBbm3L1PJKCAHMiW/LJwJGKRNWE3hWM6iErlzrzRWYO++Eu4Ay0jk1Y?=
- =?us-ascii?Q?NjtQTSNpz1mnLQPG4qI2rEdvdA/PJy8wrBtQS/4c6//UZXTyh0E+WnLa7ffb?=
- =?us-ascii?Q?239TuGZZOhxmoaWLdi+VkoxHkM4sUQkg5NXvGW+MTX3CVW0XI0Ap1ViqpJ+1?=
- =?us-ascii?Q?p1GWIcLCupHZlNOuv5aMNt4B1GqeDqSWWkxRyGHjzCpukXnoa4aQ5LPwFFGt?=
- =?us-ascii?Q?A5HSGGnvYJRv3I50v21DJMePF36bt+axWzhNlIiOklI/wsA+3/3gnukDGtx9?=
- =?us-ascii?Q?dx0/Q7Fop/8bNj+Vgb8w2qZGP56DbQMM9R86wGZk/EX9+rOIf4BB+SjZI/5B?=
- =?us-ascii?Q?jvlNO+JODUz8jh6X/zLfnl84/7tNAimF983zotFDGpX5B0WY+78rQa3O38Ih?=
- =?us-ascii?Q?Ov6Vi9h65SQv8jtR5uT671VtlVlJSz6yBDbhHDlFBFpXi2+ZLI6+5Y0Ob52J?=
- =?us-ascii?Q?vBkgYV0vX0atGPQqKTD7Hv3CQ66/oa4vHG4ZN7dh80RG9MDgx76eT0q3QPMr?=
- =?us-ascii?Q?fLTwgzRjTL2ckDEJ+BFhyXyT4GC1bN72DAU3AJEWNwpm7VJDIs78Jyqp8GGP?=
- =?us-ascii?Q?93t6w84saDW+A0nxtRPW563o2n+M257n21l9mNvO?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 51b03750-fe0f-4a20-cd5d-08ddf14f0028
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Sep 2025 16:19:36.5369
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Obz61IvzoB1hp3RopO5J+Y9zL8Cv4owlQsB9cyQTzTCHqGuUTz67b+ev2F/hVDKn
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6487
-X-Rspamd-Queue-Id: 93823100005
-X-Stat-Signature: c99bbswi86tuao7r5w1t6teu9y4d8xfy
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/7] mm: introduce local state for lazy_mmu sections
+To: David Hildenbrand <david@redhat.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
+ <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ "David S. Miller" <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>,
+ Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
+ Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
+ Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
+ Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org,
+ Mark Rutland <Mark.Rutland@arm.com>
+References: <20250908073931.4159362-1-kevin.brodsky@arm.com>
+ <20250908073931.4159362-3-kevin.brodsky@arm.com>
+ <d23ea683-cca4-4973-88b1-4f6fd9b22314@redhat.com>
+ <ca2054ad-b163-4e61-8ec4-6f2e36461628-agordeev@linux.ibm.com>
+ <e7acb889-1fe9-4db3-acf4-39f4960e8ccd@redhat.com>
+ <2fecfae7-1140-4a23-a352-9fd339fcbae5-agordeev@linux.ibm.com>
+ <e521b1f4-3f2b-48cd-9568-b9a4cf4c4830@redhat.com>
+ <47ee1df7-1602-4200-af94-475f84ca8d80@arm.com>
+ <29383ee2-d6d6-4435-9052-d75a263a5c45@redhat.com>
+ <9de08024-adfc-421b-8799-62653468cf63@arm.com>
+ <ef343405-c394-4763-a79f-21381f217b6c@redhat.com>
+Content-Language: en-GB
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+In-Reply-To: <ef343405-c394-4763-a79f-21381f217b6c@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: E190C4000A
+X-Stat-Signature: 7f8mbkuzyuetg9jtd78mfs14ru6k4r49
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-HE-Tag: 1757607581-791664
-X-HE-Meta: U2FsdGVkX1+Nt3iCafPMX0q+a4adXAmxezbapsrv9U0xb2GZ1isb0uqrt5hrYoYE5/edSn/5XaqaE5RMkEhVLHGLPsyC0KeRp164hw6A6Z1M3oPwVpRgF4XuAK4He5fKvNDrFnQ3hUxhs3btbSNEXfR8tpDHxuXgnIBhKosM7iPqLkjz6hADvjSoSM/t1v3OYFJlAkWGKdZOmp/8ANYPci48O52yGfBML648SQ32ME3uKjvhlc4pxGph427+C6Y8UV3oqOEkPIKtpmuEtRQnry+jhmh36b5qEusFZohnTAg8hgA0KVn++fdlBG929hWrV1ZuJnpG73byRPHVkKvJSm/3oiYcdeXCpt4Wbf0tHT+PvLwAFjiuMJInofrNEonFhBSTCVK4an5uhml3lcnX928Drs3vbnXMDjtmSheVZCoQHC+8LVGwaziej04VjyEQmOdkG5th9sguugnnLe495LTcQMhtxmu5FPkt1Y+MrI9YDr8utSrXJFZyMQM2boSMDCMQvx7kkxenUlQl6w+XFafcxIEumKhlNlURVb/z5mmnA6KUlZz/ZdAw847Fp0VR+yw86tcxq72Dy2QQfH7OwRWnD/05zfLND6WH5hdwAagcPuZEw1N34/DjeegkNnNGJZhxzW25talFqEj3GeE1Eomt6cGgzrc1Wi++/CESWvPtISndc3Vp2XliUNOEANf+J0sl4ESRi3/p/RJnz7/kU2n5kPYxRQ+Rbh48EQONdLauqbCdtvSHq0M9AOy7z/UaE9HiyTSNFpeYUIbBlgWGKW5n2b8H5jYIJ40lmhcyU9wMO2oGsd84dRPYzPQXU+wECQ1b7hsx8bsv6ylJEquJCeaDOVHZSVPA0ECBG0TjU+Dlib9jKL04r81J8kH4/JmFjlaRxBlzOpdKp6/eSoLYv17HRNp53f/NV/R6U7i/Bh3reUodWI177qVwgQBHQRfUyJizgKsEaMKMufdahmA
- xXjY1zGY
- zmon/Dj5jzQQN7SDfW3mTOpPONk66vYPqmGpmkBUVnuf9Zj/+EBHLq1FHYRUB+ikIQ3OHS5CioAHXg5w/dmfiU2377k7SS/bRsWepQOvIa886rdaxUFhJlBtKl8epW3aqRMtKv5F2S/xnrZnm2jWEZdATLyYSEucQq4cV7PKjdA0paSLpMWGe/S5qOjsU4ls9Z+jHTYuswefaN1TtldBixQcHGTAfTyXw7H5mklpGgdF6de2U/12xhK0I1ZdP2CM5FZeKxif/k6rAku3oJUniSLUYLkpWayovS704WQWf7PQS2x1Q/Is8OGieiRV84JWUPbaOl9AHZnrn+/rVrQ+lbWkKU9FjSAlTSBc39h6S2/4SBVLXmGJV1+gnqWppCxjqlpzi0Vv1L3mK2pldJMrZky22nBO1LttjukEYsIAaqvdT2HPjnuSi7EicU7g/VmoXjTCyBf+OQ9S2bqUWFxbgZD+QR2IRi/f0X6+23zZR/Af/0kGmupQ6NSqSue94FcqAkHPeiX2pjm2v0JwqxRt3AmmCfFrIY1twepVbJtdrRBjjwRFHq5ohpM6QR2Tg4VwjFR4KyK+T6F+f8sXomSHOQdQZ0kGrlOsL2mlp0wDLRQrPTzLh3wUNTvIHTXGutm/3/LhGhf/gZ4+2EcI=
+X-HE-Tag: 1757607601-186232
+X-HE-Meta: U2FsdGVkX18wi/9Xy+pPPHx+aEhoihEZBYPB4bp0sjYKjW8zNd2Amrr+R30ncLvYBxxggmspOHTGWHzldflPea23cYr9exVU4TEhw5RhEIrPMLXJh9vx/WfAVJUS6/hVYI86CFOMcKKuMRROxKbH+dqXawR2zIedLxksUw4ZHGJl/zE9rEeSNOBOjfA6mtlutoteK4HIIRiaYLzICA3BJeyylTeJbpUHyeCiElEXNop8KKc/oi5Psc9kD+OuUwqKpWXZRtGd+SQA0CObCE6a8PNbGtXzekPOWky3HGBtIOl+/bPrByTH7UXRRxDjFVHcAn3CmglphnjDPJ73Y9VZRB0am7AtMNtX8YlY1bOi9FioEfTTjLK3d9Y9bWDxpChPPQDh1G4yUl5QZyIEk/H7sgjJMiLgutYbXvF2ZzaMmiq1Za0Y1FwHhG4Z/ifsaJP0EJRu2de0ECnTMEn6k5WNfOFtdcw0a2opAxvee3wXOUZOEVFZWOXq5Gv+wrVgEN15yI927zAxePzB+opmFaOXRKK0Q9QCs9h7pTNWRcRCdWmbtxvlBV7JbEIrc3aLaVkIwXpWdPE/ms38csaoqNeogJvjJJuvKk2zveljyN+GEvg2RlwhauB4XpeVPOHkA682I0rCpt4Yoj7agK8fotTNtS6aA+EQoAVnhlPSL0MySBurahfA76TCTHv+319nnMjjEI7pTS1ZVTRoSjGILrHEmXyeim69RN4cqMpcM68+JkhzdCc/OM0fCiaV6YMZ0lKtaq7/GPEmSh00ubthIJiccKl//vTLLbsLm7fLpLZObekFqfq++X1OHY7ezvy88g+DobH9hiFZlasHNt0YrBi9DqpIKdZss0PrtJ6gFtZ1OPnDa19pMWxQmceEEkrIoCcqKpCjos0+w12ujFv+CmPIZMCYytP6FDI+bGspIQi4ISBKZfhLVbKjbrxeCdqpA9+n4/Ga6AxKhqFaY+RKPsS
+ 9FcdkWXL
+ KdZNibnA0t7v/c2lDMJxJot+Pg54bfVpQoGBgjqQxUFh06G6tgHroyAjFrLzIAhSmC0WaD9XwEu2Q7XJSF4bOzi1WOPLiV34IUzyTctrI3PPes8KIxJekhThdAahboFB5blkyNijefN3vYoI4KUf1YAwk5VBTk2zbYTsFL6ne9bgB3SBEedTWPNBcvKFKZAeOvgZAKoKfbQqx+o5owa7O5f/Zbg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -186,90 +115,175 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10 Sep 2025, at 23:27, Wei Yang wrote:
-
-> On Wed, Sep 10, 2025 at 09:35:53PM -0400, Zi Yan wrote:
->> On 10 Sep 2025, at 21:25, Wei Yang wrote:
+On 10/09/2025 17:37, David Hildenbrand wrote:
 >>
->>> On Wed, Sep 10, 2025 at 09:22:40AM +0000, Wei Yang wrote:
->>>> Commit 56ae0bb349b4 ("mm: compaction: convert to use a folio in
->>>> isolate_migratepages_block()") converts api from page to folio. But =
-the
->>>> low_pfn advance for hugetlb page seems wrong when low_pfn doesn't po=
-int
->>>> to head page.
->>>>
->>>> Originally, if page is a hugetlb tail page, compound_nr() return 1,
->>>> which means low_pfn only advance one in next iteration. After the
->>>> change, low_pfn would advance more than the hugetlb range, since
->>>> folio_nr_pages() always return total number of the large page. This
->>>> results in skipping some range to isolate and then to migrate.
->>>>
->>>> The worst case for alloc_contig is it does all the isolation and
->>>> migration, but finally find some range is still not isolated. And th=
-en
->>>> undo all the work and try a new range.
->>>>
->>>> Advance low_pfn to the end of hugetlb.
->>>>
->>>> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
->>>> Fixes: 56ae0bb349b4 ("mm: compaction: convert to use a folio in isol=
-ate_migratepages_block()")
->>>> Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
->>>> Cc: Oscar Salvador <osalvador@suse.de>
->>>
->>> Forgot to cc stable.
->>>
->>> Cc: <stable@vger.kernel.org>
+>> Somewhat, but in the regular case where enter() is called followed by
+>> leave() there is really no complexity for the caller, just an extra
+>> local variable.
 >>
->> Is there any bug report to justify the backport? Since it is more like=
-ly
->> to be a performance issue instead of a correctness issue.
+>> There are complications where we want to exit lazy_mmu temporarily, as
+>> in mm/kasan/shadow.c [1k], but this is in fact unavoidable. Chatting
+>> with Mark Rutland, I realised that to truly support nested sections,
+>> this must be handled in a special way in any case. To be clear, I am
+>> referring to this situation:
 >>
+>> __kasan_populate_vmalloc:
+>>      apply_to_page_range:
+>>          arch_enter_lazy_mmu_mode() {1}
+>>
+>>          kasan_populate_vmalloc_pte:
+>>              arch_leave_lazy_mmu_mode() {2}
+>>              arch_enter_lazy_mmu_mode() {3}
+>>
+>>          arch_leave_lazy_mmu_mode() {4}
+>>
+>> With the approach this series takes, call {2} is made safe by passing a
+>> special parameter (say LAZY_MMU_FLUSH) that forces lazy_mmu to be fully
+>> exited - and call {3} will then re-enter lazy_mmu. This works regardless
+>> of whether __kasan_populate_vmalloc() has been called with lazy_mmu
+>> already enabled (i.e. calls {1} and {4} can be nested).
+>>
+>> On the other hand, with a pagefault_disabled-like approach, there is no
+>> way to instruct call {3} to fully exit lazy_mmu regardless of the
+>> nesting level.
 >
-> OK, I thought cc-stable is paired with fixes tag.
+> Sure there is, with a better API. See below. :) 
+
+I meant while keeping the existing shape of the API but yes fair enough!
+
 >
-> If not, please drop it.
->
->>>
->>>> ---
->>>> mm/compaction.c | 2 +-
->>>> 1 file changed, 1 insertion(+), 1 deletion(-)
->>>>
->>>> diff --git a/mm/compaction.c b/mm/compaction.c
->>>> index bf021b31c7ec..1e8f8eca318c 100644
->>>> --- a/mm/compaction.c
->>>> +++ b/mm/compaction.c
->>>> @@ -989,7 +989,7 @@ isolate_migratepages_block(struct compact_contro=
-l *cc, unsigned long low_pfn,
->>>> 				 * Hugepage was successfully isolated and placed
->>>> 				 * on the cc->migratepages list.
->>>> 				 */
->>>> -				low_pfn +=3D folio_nr_pages(folio) - 1;
->>>> +				low_pfn +=3D folio_nr_pages(folio) - folio_page_idx(folio, page=
-) - 1;
->>>
->>> One question is why we advance compound_nr() in original version.
->>>
->>> Yes, there are several places advancing compound_nr(), but it seems t=
-o iterate
->>> on the same large page and do the same thing and advance 1 again.
->>>
->>> Not sure which part story I missed.
 >>
->> isolate_migratepages_block() starts from the beginning of a pageblock.=
-
->> How likely the code hit in the middle of a hugetlb?
->>
+>> It would be possible to make both approaches work by introducing a new
+>> API, along the lines of:
+>> - int arch_disable_save_lazy_mmu_mode() (the return value indicates the
+>> nesting level)
+>> - void arch_restore_lazy_mmu_mode(int state) (re-enter lazy_mmu at the
+>> given nesting level)
 >
-> OK, this is a kind of optimization based on the knowledge it is not lik=
-ely to
-> be a tail page?
+> Yes, I think we really need a proper API.
+>
+>>
+>> This is arguably more self-documenting than passing LAZY_MMU_FLUSH in
+>> call {2}. This API is however no simpler when using a
+>> pagefault_disabled-like approach (and less consistent than when always
+>> saving state on the stack).
+>
+> Yes, a proper API is warranted. In particular, thinking about the
+> following:
+>
+> arch_enter_lazy_mmu_mode() {1}
+>     arch_enter_lazy_mmu_mode() {2}
+>
+>     kasan_populate_vmalloc_pte:
+>         arch_leave_lazy_mmu_mode() {3}
+>         arch_enter_lazy_mmu_mode() {4}
+>
+>     arch_leave_lazy_mmu_mode() {5}
+> arch_leave_lazy_mmu_mode() {6}
+>
+>
+> Imagine if we have the following API instead:
+>
+> lazy_mmu_enable() {1}
+>     lazy_mmu_enable() {2}
+>
+>     kasan_populate_vmalloc_pte:
+>         lazy_mmu_pause() {3}
+>         lazy_mmu_continue() {4}
+>
+>     lazy_mmu_disable() {5}
+> lazy_mmu_disable() {6}
+>
+>
+> I think it is crucial that after lazy_mmu_save/lazy_mmu_restore, no
+> more nesting must happen.
 
-No, it might be that most of the time page is the head, or people assume =
-so.
+That makes sense to me - lazy_mmu should only be paused in very specific
+situations and I don't see a justification for supporting nesting while
+paused.
 
---
-Best Regards,
-Yan, Zi
+>
+> Assume we store in the task_struct
+>
+> uint8_t lazy_mmu_enabled_count;
+> bool lazy_mmu_paused;
+
+I didn't think of that approach! I can't immediately see any problem
+with it, assuming we're fine with storing arch-specific context in
+thread_struct (which seems to be the case as things stand).
+
+>
+> We can do things like
+>
+> a) Sanity check that while we are paused that we get no more
+> enable/disable requests
+> b) Sanity check that while we are paused that we get no more pause
+> requests.
+
+These are good points - and this is only possible with such global
+state. (Similarly we can check that the counter never underflows.)
+
+>
+> [...]
+>
+>>>
+>>> If LAZY_MMU_DEFAULT etc. are not for common code, then please
+>>> maintain them for the individual archs as well, just like you do
+>>> with the
+>>> opaque type.
+>>
+>> I see your point - having them defined in <linux/mm_types.h> could be
+>> misleading. I just wanted to avoid all 4 architectures defining the same
+>> macros. Maybe call them __LAZY_MMU_* to suggest they're not supposed to
+>> be used in generic code?
+>
+> Maybe look into avoiding them completely :) Let's agree on the API
+> first and then figure out how to pass the information we need to pass.
+>
+> [...]
+>
+>>> Worse, it does not
+>>>> truly enable states to be nested: it allows the outermost section to
+>>>> store some state, but nested sections cannot allocate extra space.
+>>>> This
+>>>> is really what the stack is for.
+>>>
+>>> If it's really just 8 bytes I don't really see the problem. So likely
+>>> there is
+>>> more to it?
+>>
+>> I suppose 8 extra bytes per task is acceptable, but some architectures
+>> may want to add more state there.
+>
+> Just for reference: we currently perform an order-2 allocation,
+> effectively leaving ~4KiB "unused".
+>
+> If there are any real such case on the horizon where we need to store
+> significantly more (in which case storing it on the stack might
+> probably also bad), please let me know.
+>
+>>
+>> The one case that is truly problematic (though not required at this
+>> point) is where each (nested) section needs to store its own state. With
+>> this series it works just fine as there is a lazy_mmu_state_t for each
+>> section, however if we use task_struct/thread_struct there can be only
+>> one member shared by all nested sections.
+>
+> Do we have a use case for that on the horizon? If so, I fully agree,
+> we have to store information per level. How/what information we have
+> to store would be another question.
+
+Not that I'm aware of, and all things considered it may not be so
+likely: once lazy_mmu is enabled, entering nested sections isn't really
+supposed to change any state.
+
+
+Overall what you're proposing seems sensible to me, the additional
+fields in task_struct don't take much space and we can keep the API
+unchanged in most cases. It is also good to have the option to check
+that the API is used correctly. I'll reply to the cover letter to let
+anyone who didn't follow this thread chip in, before I go ahead and try
+out that new approach.
+
+- Kevin
 
