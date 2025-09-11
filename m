@@ -4,177 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 842F2CAC58E
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 16:38:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EA6ACAC587
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 16:51:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D044A8E0005; Thu, 11 Sep 2025 12:38:20 -0400 (EDT)
+	id 61E2A6B0006; Thu, 11 Sep 2025 12:51:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDBCE8E0001; Thu, 11 Sep 2025 12:38:20 -0400 (EDT)
+	id 5F5E66B0007; Thu, 11 Sep 2025 12:51:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BCA358E0005; Thu, 11 Sep 2025 12:38:20 -0400 (EDT)
+	id 50BBC6B0008; Thu, 11 Sep 2025 12:51:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id ABA2F8E0001
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 12:38:20 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3D5E26B0006
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 12:51:48 -0400 (EDT)
 Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4AC6E59410
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 16:38:20 +0000 (UTC)
-X-FDA: 83877527160.20.C3D2332
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf05.hostedemail.com (Postfix) with ESMTP id D7709100012
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 16:38:17 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=qStGHcRR;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=bLNs7O4N;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=wZNsJn9x;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=B+r4iCSD;
-	spf=pass (imf05.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D45111DF150
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 16:51:47 +0000 (UTC)
+X-FDA: 83877561054.20.21F47C9
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+	by imf12.hostedemail.com (Postfix) with ESMTP id E9C2040013
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 16:51:45 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=KvjS25IT;
+	spf=pass (imf12.hostedemail.com: domain of surenb@google.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757608698;
+	s=arc-20220608; t=1757609505;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=W1aWG7EXWx9OEMM427alJ0JFszpvoAEDfexiWNEc7IE=;
-	b=P39U/wJeGYmAULPXhYHxqSRH0JvPcF4WmVVto6DUJ4q0kB7gFscaOEzXT3Tlwhpwqhdla6
-	O70Fz4xaNqfPHE2XNe7tZYonRitSXcIddCE90dYhmmfTB/MdsIkMiWRfOf+N1DPrmpkxhh
-	UULx2qZxcCrsPf/eypbcGLn/DgA7i4U=
+	bh=M56OV+DCbPOvXLXatH4lyJjMsHmjtzZ/ztacBy9y41M=;
+	b=Ps6Q+Qm6wz8ixxiOvRWuNhRa7MkyinAea7CQgbhlpmFXvdJWTNlPKxUpM5YVnvsZI9Kpqj
+	cDT53Fafc4CEJt6kWJw0NWkf8DrPsqA6yGS/a89SCeLPXv5vCAP0Uq+X6RdvasR1iHuMdj
+	OC29DnCjRLTmkL37yqw93cQoprSF10I=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=qStGHcRR;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=bLNs7O4N;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=wZNsJn9x;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=B+r4iCSD;
-	spf=pass (imf05.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757608698; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=KvjS25IT;
+	spf=pass (imf12.hostedemail.com: domain of surenb@google.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757609506; a=rsa-sha256;
 	cv=none;
-	b=g4Q7HJodpY0lTmIwKDQAMOqmRD02IjvVL3yh+nr+UdkcqwCOmg/dz0azapk9iD0v2yMUod
-	IVYCUWhLpZDWV5Znk5zcOwPmTjharH+7fnkzdlHokEMKbDBUL2w5MAPIuboSO/OgWq8K8e
-	vZ+yeIBVGPZ90aqtyfY58FJ0sLXd6DA=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id A6B0E33DA4;
-	Thu, 11 Sep 2025 16:38:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1757608694; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=W1aWG7EXWx9OEMM427alJ0JFszpvoAEDfexiWNEc7IE=;
-	b=qStGHcRRQikPQroAuzAJ+Wo8/hJeUb/9iWFqg7/fvQm35kV8ZpBPOYsDD/gYdMdQ5OnnFC
-	/zAAClo45ab8cAJE+VsS4RGTUnp6mawcDsaSamMkWBC0kHHdkEYVktAiuCeglEpRaZLM/w
-	mu5OlhUPu5TiKBnUSClqLMPiZNB+8Ug=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1757608694;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=W1aWG7EXWx9OEMM427alJ0JFszpvoAEDfexiWNEc7IE=;
-	b=bLNs7O4NRHkIvrJS3+pM6XHHg/L8fdmF7bf0AMHX9nMkz+LFPBI7RJF+27K+0C49tzNLUt
-	+/vIAJYgCUHHovDg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1757608693; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=W1aWG7EXWx9OEMM427alJ0JFszpvoAEDfexiWNEc7IE=;
-	b=wZNsJn9xIlW4R8LiEUQprbXoNTquua0PlIjiVn24VehUqHIAeWWMKamweS89YphkIDPuca
-	/umbsUN8Ua+kIkv0Gq7Mqr07MmlDKB13tBO2aU97DX/lDFsyyYmMgjHHWXzVmYSjJHmQ/P
-	OAyGX8KWOCc7IkQi/nMUsazzjmcLjbs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1757608693;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=W1aWG7EXWx9OEMM427alJ0JFszpvoAEDfexiWNEc7IE=;
-	b=B+r4iCSDNQd+nNrGc8AnldTFaB1tDNWkascaxX54Z/gdA87wbpSwpV/q+tNqiLSG1gC4qD
-	R6KHr7ArYht00YAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8E6811372E;
-	Thu, 11 Sep 2025 16:38:13 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id lnnqIPX6wmhCHAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Thu, 11 Sep 2025 16:38:13 +0000
-Message-ID: <ee57e179-798d-424f-b84a-b9f6b3bdbeef@suse.cz>
-Date: Thu, 11 Sep 2025 18:38:13 +0200
+	b=Ip4HDjSEK+CmEKZePqPAPLa6LRlzvpB7MVRNgAgf66EEIFTTkaFHc/biWYeQ6M6elW6LLc
+	ZAE5kIqvXPG0y59QFIrxwNJYFYaS4gUws5Xc3Lzwtm4Zr+9wl8gQY/6PMKUkW+M+QGX4NL
+	x6EtwJTLn/vMtiNUxsHdwMhC59b99T0=
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-4b5d6ce4ed7so16021cf.0
+        for <linux-mm@kvack.org>; Thu, 11 Sep 2025 09:51:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1757609505; x=1758214305; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=M56OV+DCbPOvXLXatH4lyJjMsHmjtzZ/ztacBy9y41M=;
+        b=KvjS25ITAhoWJl8fS+fxvByiaE78sLIVV21u2tfUquj7wiCXXTRZBR5X6lslv8b8+8
+         HOAz9wBvGtLQmjlq/AdR+Trx/0ONT51AMmFQnUM1hvRI4oqrgMzshINvSB94GoBkuXEk
+         qBk0lkfcvDFyw1L0Fxx/hnFCJegcIH3lR1E4g3FK6btOj43MvDplx+wC+8GpKQkfHIOm
+         KSfa6e+vkvBcAjNzN/szYCj0R1Ib+b4pY5F/rPttCZXYdDNRmpTxBG7y9BoUBgoRytPh
+         OeIaiPY6F1iXulsCzxArzJBQOVg0c5iIPuJZZ7JUU9Z8ZOBjhn+cZJul452wEY6agdrM
+         Vzqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757609505; x=1758214305;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=M56OV+DCbPOvXLXatH4lyJjMsHmjtzZ/ztacBy9y41M=;
+        b=HGNqKbJB7Lo4JaQZH9Se/tysprXi6LAQfZbsxKqODrdduHVVCOdi4cvSeUMMj1vHG9
+         DabkwqeePb5Gy3BBxg1IsMFyFf1Tra2donAQ4bbIbhWZ+w8yxui0fc2SAw1SGQrH3h+D
+         fXa5vnN4OobBZrcgI9xRdq55vfyowjhTk/qNtLvScohi8NYjwvjzfaKZ8Wvhhhx827mQ
+         YRab2z0vHIFuM3fX0bW7CleMARYr11rKuzXwb89zdN/34Jt1fbEdvjkxmbO3YnSqfSbC
+         iJeZxUu2eg9mSyd1Iv8TE+5luRmLJ1KQGhzf8n1EhXAXBWQ9uzXPdrYYlVY2rSWXRS6+
+         ksQg==
+X-Forwarded-Encrypted: i=1; AJvYcCVvgnZcM4L0o0lQ2m6A9cu6s2TgkEF79MbuotpDXb9nzcuDwWZqZKDPshrz2XscpmFFZJunOToz7Q==@kvack.org
+X-Gm-Message-State: AOJu0YzqiWxW6nPFnxs0eQoc0Opmp/8CX5GR4GTQko5vSP0b36s0Nx5u
+	lk9UrdhtJsNrW+gOSkPc8gDM+i8yUEC99dahrra2XpyrrtAZSh+ak5vNHLvbJizmH0L4C/bXKR3
+	27xXaQdsXHVORJEEDjd2vRXAeMF1lTQ3ZGkYX4gTg
+X-Gm-Gg: ASbGnctQ52VpQHcte6EZyRjsFovmRVicSWdOQBUOgue4Lf/BlIepFDykNJ9Rz8FcxhE
+	0fLnJUNLnanWwIp1uuLfyq3uIN/8FRbIhBU+7W9eqru13Ly+lGlWPWQv0zhW+14xkJitZietbtL
+	7GomqIBru6wiKf/5RMPULIrpOuOdCeJmieuhRnF5Q5bDtt46bLIohksHPRODtNczeC9eubzrpyv
+	ktTesReSZxnfm64iso/ODO7pOE2I4RyFObnRFEGej6mq1F8Y1qY0TU=
+X-Google-Smtp-Source: AGHT+IE+bObvDrZuyNPMo3PXWKyy8l5K3qtIDPqLnf9byW1C3+RMAG6A1j1o4bWTifLLF8jRBy/MYjGCUIpfRUBT0ug=
+X-Received: by 2002:ac8:5e13:0:b0:4b5:e600:3d6a with SMTP id
+ d75a77b69052e-4b625201ec7mr16575921cf.12.1757609504431; Thu, 11 Sep 2025
+ 09:51:44 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 02/22] slab: Remove unnecessary test from
- alloc_single_from_partial()
-Content-Language: en-US
-To: "Christoph Lameter (Ampere)" <cl@gentwo.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
- linux-mm@kvack.org
-References: <20250910115507.1991829-1-willy@infradead.org>
- <20250910115507.1991829-3-willy@infradead.org>
- <52418c79-5a06-67b8-3925-d635e9c0a894@gentwo.org>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <52418c79-5a06-67b8-3925-d635e9c0a894@gentwo.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
+References: <20250909190945.1030905-1-Liam.Howlett@oracle.com>
+ <20250909190945.1030905-8-Liam.Howlett@oracle.com> <CAJuCfpG4D4ikZO1c8zN7HNgLTAco1ggk21rg9AUFwoztA95qSA@mail.gmail.com>
+ <dfd8b8c6-d697-4032-be2a-569b9629c564@lucifer.local>
+In-Reply-To: <dfd8b8c6-d697-4032-be2a-569b9629c564@lucifer.local>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Thu, 11 Sep 2025 09:51:33 -0700
+X-Gm-Features: AS18NWBeIrwsUJ0dxrLNZRQOjzHmferGdajI1AcDlFbkpGG2ylvimaJ6frwN608
+Message-ID: <CAJuCfpGFXbSFnqQtikNq0RoMfc93cLLnqrApq8211H+FpZpJ1Q@mail.gmail.com>
+Subject: Re: [PATCH v1 7/9] mm: Introduce unmap_desc struct to reduce function arguments
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	maple-tree@lists.infradead.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, David Hildenbrand <david@redhat.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
+	Pedro Falcato <pfalcato@suse.de>, Charan Teja Kalla <quic_charante@quicinc.com>, shikemeng@huaweicloud.com, 
+	kasong@tencent.com, nphamcs@gmail.com, bhe@redhat.com, baohua@kernel.org, 
+	chrisl@kernel.org, Matthew Wilcox <willy@infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: D7709100012
-X-Stat-Signature: 88ucwief4hjn4b4sphtqqurcd3wkmz5u
-X-HE-Tag: 1757608697-649550
-X-HE-Meta: U2FsdGVkX19NMp3Uo4cqmDryOaW80CwlE4k9zD0ZH1M78CSYLxM3OmvLwOpg3knPo7h/9XcEsbp53x0YyRHfUx1xOoU0RgJO4Qq3pL0NNH3Mxj9KshNDfNFHEERfNQKChjJV3jPUCRfXn9hCrrfHOYXSMawrNjZIJR6fOX0npnqU7K9vLvOA5XYR6EKozxbL+UdcZof9ltPgNJd3HIcAOnA/XVLBkhYDezS0bPFc5FGh/ZnshGpK+YWUyFyxmKa4YQV9EFlk7Bgl8op34jV7Zl/OWQqWLUdgozcwIRErUcbalBr3ACSwB5JuriYt2j4ESyt7NUNKZAVkrySzMJjYo2A8YvciR9ZpV9Dk1DYgAett6pr8OAsJT0Zr4MYRHkUwNLI57XITi9+6vCaBg6eW6KrnMEZ4LI/OtLxb6V7m+ljmhQ8l5FZ7yqcICMyOzKqwaR0G77Yx96+CL6ILJUdMMbc7gSjnLHA7Id+3Gu1cfSvJg3ckjW4a1afPaq+WiWhQ5QY+7rrQXqbTjPS6cRXIoyaOcBQKjIcgRVZAd3sICwB0KerrHtXysW4nNW0ODBQaaJubTDZhB4QILiHlNHC5Gq95dWmYUn+cHv5DVS9bLhhuoNvC/eQMmmyinlKVCh4JyR3TnAvajlR7JdAe/9HKj1PN5KjEjXPG9FAVO8FJ0zdqBK55Ua0Ts1urAS6JajQkHRzASPXHHXAK/A8Lg1Y9UqAR1N095QVtRC0/qnvUGN0lb0Ej9V5Og4MUK7HBUUgQEAgLntTWHgbj4LLLlMfkXsEINvzVhZqI+zsh92/BDCW6U/okX6bFnIDXG7vkB8x/3vLB65DwRJmw2Q61MDiPOc0h0vWttPRW4GKJ0qN0ASAt0U/3uH1CwbyEwKbYK9Jx0JQNPgEavYqVvNVElnDNBc9kaPg3zxQ/ADTz+54SFseNwtDLG/vu48nrHnTNHMgFhLSkYndPuqzicPcKrzD
- Tkr9ukqb
- ulOd3AuyULCJ/o3QU0BfqfaRXBKfenPuPNZo5KEJuUbNgQuLDP9YenHQ3uoJXxHGIIXJQUAT6ovTOZNIeBgfspWM3iQTQ93eEFMzMdGW+CEdoyR8NX9HqxrQKuTnlRNoyQiIVFe5ST2h/bqGHF/R3Bp6AlAlKrsE6d7QPN9YhdOpATOid5yJhGAjQ0yYk4Ql6s7AzoWAMLNW2lLIKmhVU8ksvVSW3DmsWF2zl5o7S3ilwT9mNZqkIcljGqfSRDIzzzXIlM0RWLzAeTtzeAvhHCdyMNztS+QUrBzSZS5q6Q/HTjXGnw3qCmFHSUHrXgXlP8iKPFJMZTJOXd+VJbZUaG+WSLVS4QVM3sgEX
+X-Rspamd-Queue-Id: E9C2040013
+X-Stat-Signature: omcpfgck7ism8uniew1upmmenifbti6a
+X-HE-Tag: 1757609505-361894
+X-HE-Meta: U2FsdGVkX18UCUVatEXw/Pq9dnyNOACDLMts1OjAyFxGuvNq81ijUDIz59hRWpIO+MP5lrIZaAZv6fMQgL7fuT6Ah/M8bOjk3yKZz3/Km4C5DQhNGt1H1C2TxwfhUMqq2O4L442x2x+nf2tABowFZtCma/CI3ofRvOjK5ffLxZJkFxnsdL7aKUc5YzdOg57KS1F1yyhT+G+t9/y2OMcUcRZXfF+8QtIY4tLr1dkMSz1Bm5y7hFxjN7StGA8mWtdxgY0djtsczU8j6KMaYSxGDFkuqmd5to9syfBmgqCAufAYkJbyKSPdAr34fsZTmOiXdYYKTFn9UzTZmLUO/ct3cBLMx+iyA6VU/OZbwl+G/r/AJ3AZ8Sc/7CE+xA5PmliDdfmraPHc8LAXhEw794pJLRiVDn6axiiQALF41aIqBKa3yNuTJuoIfdKYdZNP7RbR/Wak8ut+n8GbYgZvFsMswwZKFM1mJwFgkHdZGg3k2k92ft+u/69e56z/jcciENhaxnq2k9LgvfDjBTf2kx4FmGwzSJcdKDnFr/oKM/ofaV9xPcc3VvdDGzyE9MfGAt3BsBcMoVZaP8y3amViTcpvrOIQYzs+8jS5GupSoonwdYe4zn0fP+aqOxa8w6njus4Y4mtl5LGJeZqZ06sQaLantXyQJ14IUv5gpxuQZpRz70Q/r8tLHgIIoZfANY06Fk2q2i8AZ35lHshUY5DZ0hh04v5ly/dvVrDFDerIwC3pPmZEjwE8KicbYI639xKGk+AwabbBIReBJk90zqyiZ756GZxyC9hpvCrngDb7YF6qUxw2qpQucPm/nrvCBCq2iLDl74YBq3EEdc41tGK0gNSYvobnFjWWAKKCTBNilFQhHotKcqFyuaG7khT+KIVnPiNL3lKKeC0TzNXP/IHdR8pjIv/yU6fYcjOkLDX4mPYKIjWL0/Guod2rwfXDV9vf7WO3XsUy2+Id1QH7IGx6c/w
+ VMO/1mkL
+ NILa0fqueC1qccJhLX295DilnnDSkeusZZmmjHi/GY1CAiMqgr1oiKE5VRNC9PA6nhqRcY5YaW9wZa7kSJwKQj6kOcgboTElC1dcPXR34uTwwhWigdLnynz4DkIox8Ke+AsTSHbl/isfqr6X1C0r7gzfz0muj2Rn6uAlvmQx3kKuMMyk2aifFF56WQvpg+mliIcBHKWAbbXjsmnFBJp+v7WxmrmgAmUsyvZeHzCnrnWGuhFpwvO9r3pgk13p992zjWPdD27jn5oPawQY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -183,22 +123,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/11/25 00:23, Christoph Lameter (Ampere) wrote:
-> On Wed, 10 Sep 2025, Matthew Wilcox (Oracle) wrote:
-> 
->> We know this is a slab because we already modified slab->inuse
->> just two lines earlier.
-> 
-> Yea looks to me like we should do the debug processing before we modify
-> the slab metadata.
-> 
-> If alloc_debug_processing() fails then we know that there is something
-> corrupted and we better not do further modifications to the slab metadata.
+On Thu, Sep 11, 2025 at 2:22=E2=80=AFAM Lorenzo Stoakes
+<lorenzo.stoakes@oracle.com> wrote:
+>
+> On Tue, Sep 09, 2025 at 02:44:05PM -0700, Suren Baghdasaryan wrote:
+> > On Tue, Sep 9, 2025 at 12:11=E2=80=AFPM Liam R. Howlett <Liam.Howlett@o=
+racle.com> wrote:
+> > > +struct unmap_desc {
+> > > +       struct  ma_state *mas;        /* the maple state point to the=
+ first vma */
+> > > +       struct vm_area_struct *first; /* The first vma */
+> > > +       unsigned long first_pgaddr;   /* The first pagetable address =
+to free */
+> > > +       unsigned long last_pgaddr;    /* The last pagetable address t=
+o free */
+> > > +       unsigned long vma_min;        /* The min vma address */
+> > > +       unsigned long vma_max;        /* The max vma address */
+> > > +       unsigned long tree_max;       /* Maximum for the vma tree sea=
+rch */
+> > > +       unsigned long tree_reset;     /* Where to reset the vma tree =
+walk */
+> > > +       bool mm_wr_locked;            /* If the mmap write lock is he=
+ld */
+> > > +};
+> > > +
+> > > +#define UNMAP_REGION(name, _vmi, _vma, _vma_min, _vma_max, _prev, _n=
+ext)      \
+> >
+> > Maybe DEFINE_UNMAP_REGION() similar to DEFINE_PER_CPU() or DEFINE_SPINL=
+OCK()?
+>
+> Look at MMAP_STATE(), VMG_MMAP_STATE() for precedent in vma.c
 
-I'm going to handle this by checking struct slab pointer first and
-terminating immediately if it fails, but alloc_debug_processing() assumes we
-already obtained the object pointer, modified freelist and incremented inuse
-accordingly, so that will stay.
-
-
+Yeah but UNMAP_REGION() sounds like an action while MMAP_STATE(),
+VMG_MMAP_STATE() do not. Anyway, whatever works I guess.
 
