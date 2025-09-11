@@ -4,104 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB453CA101F
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 00:46:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96243CAC58E
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 00:57:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 22F6A8E0003; Wed, 10 Sep 2025 20:46:22 -0400 (EDT)
+	id C35C08E0005; Wed, 10 Sep 2025 20:57:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2072A8E0001; Wed, 10 Sep 2025 20:46:22 -0400 (EDT)
+	id BE6608E0001; Wed, 10 Sep 2025 20:57:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 144068E0003; Wed, 10 Sep 2025 20:46:22 -0400 (EDT)
+	id AFC698E0005; Wed, 10 Sep 2025 20:57:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 02D628E0001
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 20:46:22 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9B8431A0361
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 00:46:21 +0000 (UTC)
-X-FDA: 83875128162.13.E646CE9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id EFD0240002
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 00:46:19 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QB8At8RC;
-	spf=pass (imf04.hostedemail.com: domain of mhiramat@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mhiramat@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 9A9588E0001
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 20:57:18 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3B2AB13A9E4
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 00:57:18 +0000 (UTC)
+X-FDA: 83875155756.12.06820EC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 8A27A180007
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 00:57:16 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=DpDY3dWV;
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757551580;
+	s=arc-20220608; t=1757552236;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bhmCRE1xvUkDdFSmNKcdyJjIq+1gf0S/XmVmi+FDygA=;
-	b=Et16qacY6AwmbNjyjo2h3cWSVKmoLl1GsQDhGQIGy3piwdsnkaiNFrgq3Cvg8EcchQ50y1
-	MrqWtPuHPIV3WXr9VvVfuTmsND9gYlaaOdzV2WQo+quWef3+JLAL++vmbJbDM7g4XpbKQ1
-	wApWgZbGHr4/5K1s8wJIx1kGIoGYMdQ=
+	bh=Q0Ap2IyqSKrGd+YLGVqonnH2Q3NInRMCUoBm2AjpKS0=;
+	b=sehJC13SExev6Tj+x3StsEo2hmej9sXHSlnT9fzaYDFkkvTT7UAaob81DdLt8XpALk+BWh
+	EIgNI2vXEMfccpJw3zlpZIShGqFmGdQtQlHDyqcA9eJstYo5SwvVbi6KlILug5+Otg2Who
+	Q6Dujdw+EzQSoGiWzIADrxt0dekU098=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QB8At8RC;
-	spf=pass (imf04.hostedemail.com: domain of mhiramat@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mhiramat@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757551580; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=DpDY3dWV;
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757552236; a=rsa-sha256;
 	cv=none;
-	b=WpYq5xYWebkuFWq3j2cJrv3rqoYWI2BGQFcgidgm19roqEbNcCii7BhUackTu3N5Hcc5W6
-	m3WpT2b1XT2KXzd3zW7C4v3o0X2KneDMErNl5BLOCBW1ITKmS3L1Hk5N6VH8hL22Z23+LE
-	wdMf8H8ICRUax9gTZ94CVnFP3zX+ggg=
+	b=1blT5KkLC+4ItZdOgxT/gelEwFIkiKl6f+38ts7rWnxorAzphgZ+jOKFgqC3cXsGGaq2hR
+	+S7eYwE4oZYP6UnGFeye0pC1SbW+glXT9Adq1Nus6oe30dMIrfh6BSneGJXj/phB9m0lNX
+	6oAudIF7DpLGYlx/GgW1kxk9t/ZrhfQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A8EBD405E4;
-	Thu, 11 Sep 2025 00:46:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1598C4CEEB;
-	Thu, 11 Sep 2025 00:46:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757551578;
-	bh=K99ophOl9mX3e/X5pRAQo+wrGNH1h9Nn1UThydP/v4k=;
+	by tor.source.kernel.org (Postfix) with ESMTP id C3F606013B;
+	Thu, 11 Sep 2025 00:57:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EA86C4CEEB;
+	Thu, 11 Sep 2025 00:57:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1757552235;
+	bh=XNuE22YtovlkI6w1sRoVwNQ/wKN/+MV+al8LD8kkVlA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=QB8At8RCA1dKGbJGXAjAsWM+cwkq9bWk1fm7K3sJG7vxNVKP6xSSvUurBGZQunMNl
-	 0btZsSMe1585w9cxhhmI5GHyWBASKD0Q4vMXuOBuUF017rMfS6ktJFxpWz0HVxJGnU
-	 y5dLcJdIDuyFsXsEX5KJdbhpsqRaOJr/F+oB/bidzfW9QlCItd26fNhQmDnfZMJpFW
-	 NMrEb7LGYzujvb/h6RaJtJoASDh2u7mhKUkSOhpdgvEQSnpYSkziJp4RAGYhbclueg
-	 PlYDR7Q2pWHfKj+AJMSvtMw+Q7ukA7O+IOYYTN6mIWK9FFEaGaYjjQn/PS6X/l/nrs
-	 NT3rQC8fJJ5OA==
-Date: Thu, 11 Sep 2025 09:46:09 +0900
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-To: Jinchao Wang <wangjinchao600@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Peter Zijlstra
- <peterz@infradead.org>, Mike Rapoport <rppt@kernel.org>, "Naveen N . Rao"
- <naveen@kernel.org>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander
- Potapenko <glider@google.com>, Andrey Konovalov <andreyknvl@gmail.com>,
- Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino
- <vincenzo.frascino@arm.com>, kasan-dev@googlegroups.com, "David S. Miller"
- <davem@davemloft.net>, Steven Rostedt <rostedt@goodmis.org>, Mathieu
- Desnoyers <mathieu.desnoyers@efficios.com>, Ingo Molnar <mingo@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim
- <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, Alexander
- Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa
- <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, Adrian Hunter
- <adrian.hunter@intel.com>, "Liang, Kan" <kan.liang@linux.intel.com>, Thomas
- Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
- <hpa@zytor.com>, linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
- linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 01/19] x86/hw_breakpoint: introduce
- arch_reinstall_hw_breakpoint() for atomic context
-Message-Id: <20250911094609.5f30e9767ffc3040068ed052@kernel.org>
-In-Reply-To: <20250910052335.1151048-2-wangjinchao600@gmail.com>
-References: <20250910052335.1151048-1-wangjinchao600@gmail.com>
-	<20250910052335.1151048-2-wangjinchao600@gmail.com>
+	b=DpDY3dWVDS6Gl/kawv47cfH4Esb5/+X0WcGv8qx/Txf5F54iKfLiYVbtN06o2vgIV
+	 YSOc2U5CkRYO21buBi3a5HChMP/q9ncd5X1rwAX02tnsE9sX3h+Y6lxn7Rs//6qamB
+	 /sspLg2FDHGE2anhouc60jvfc0Fpd2a1GlGcPnMw=
+Date: Wed, 10 Sep 2025 17:57:14 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Balbir Singh <balbirs@nvidia.com>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>, oe-kbuild@lists.linux.dev,
+ lkp@intel.com, oe-kbuild-all@lists.linux.dev, Linux Memory Management List
+ <linux-mm@kvack.org>
+Subject: Re: [akpm-mm:mm-new 398/411] mm/huge_memory.c:3069
+ __split_huge_pmd_locked() error: uninitialized symbol 'write'.
+Message-Id: <20250910175714.4203dba33afea5516761bb2a@linux-foundation.org>
+In-Reply-To: <88f160fb-0f84-49e2-9139-1fba1a21428e@nvidia.com>
+References: <202509101756.jkC29gja-lkp@intel.com>
+	<88f160fb-0f84-49e2-9139-1fba1a21428e@nvidia.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: EFD0240002
+X-Stat-Signature: aecaut9r8mjjy6nz6rcq49wip9m1jew8
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: kyfo65n3r7hj3oabzjnoubz5c3swojqy
-X-HE-Tag: 1757551579-987650
-X-HE-Meta: U2FsdGVkX1+71Zma0zIYBQjXSIZ0xpwYH3Bo1y+A/2gPUyXHucrBqtett3y3ZmF95h21l3SEBm2T0o05F2LyphGN5clup2VNw3NjMxKE/nWmkP4dfut6HkU+itO9OlxfJJWS5a11zWT2Q3POFW1k/Nmt8HRYLc4ufSRXDPJ4Q066A1EP5nlrZLHcj6QS6IDLxq8PjmU61d6oHWyVtYitBvllDxiPscCFtqlk6dI6olhaJdggv0xutKpdZe3XWU9b271nlUX6C5t4MQz2aXjnLC7qEyrG9flZSEL4pLfyWQ77XAYCzFHzAPC7oeRPlsXFjjJNvTTsPlXn1fRtUhmcckDTSfwaOphMaG0wB/ru+p7Is+Dn95Ah4yBDStA/3cNO/+GgiSQNAm6+9oUYKLjYbnK+QxeUV52ZHmT1x+dbg/uJdQeFvd9do9yiwuDauvQMsAi9Z/Sh1GMw+aLFB9f6Ck98V7pbaummF7Cj6xwaBS08FGgCvutgmzWfBDzM84FCdxDx7cL9DrLr86MnD5udhwmuuif9qWhtC1q4ilyhUJz+GR4Ny+8LO0o9Lia53jnLXVDyxAdlpwiNmGUQz92HS2RNOFEP7C22TB0NgBSxXK4qiEGMt+yFH7/V2MvdxTxg23DwUIiWfQaUg4w4b2HZ/6I9HRR/N8P945LQ5SeoEKQQmPQCX4G61JkGbup7n207mJ4nem2wGOGieMCXQvjwby3Xq2wcdtyVkahUFKdQNOvT+XUqYxuJeJ5z7a1weHjE+9p3Tvw8CPEyzezVF/HvrcFgtc8Ips3SihuE0cQ81aG05R90eEy2/8zIN4ZO4k2rL1JA9FceLSaUdI0Z5BJcjO5UdqW8wG81BEESNWWeUgOqxDr4bCXYKWcGHM8wUlV78ItZyHwIRLco473Abb9Wrup+Iq+pQtf2FXykUOJ8XfVT2HBBg2EC6WP9hRc5YLxCw030Ui/LfeEeH/YPUG6
- BPV5LHJd
- Os+Szzgok1bfxMRB5AyNeC+Wqhb4WwAjeA5xe6cVcGMniBoWxJmy0yH/FXKPfh8yQhZiU
+X-Rspamd-Queue-Id: 8A27A180007
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1757552236-919410
+X-HE-Meta: U2FsdGVkX18FlEMs8qq/nkB7Ufh5YxghbHOJNPch5MnM7YtuHQLTwlqvfYMQqeJyXhEOR+YNhjKpk8vYpNI9vAr6HOOUu3wVHw3o5sHBmdJTUmBZ5vqT9byPmxqxg+AUVzjM8ZlblwDWFz7iu1zREqNUuTdeFF4x/GNu+sSqzc1368dvfQYyuoAZGuOShC8eiHoFlZfnuHx58pETWSTVfhVA4QV1+QRmxGV3v2RuQYSsAKhozd+2yzDXXpFyjzpj2BJdcugshJAeEIGKVGaHSOmAcOMFYyrqzNwyauGPgNZkNxya0tYiSNkNjr3osLokMbICafkTbriF09biVc/PFR6wFLjCMMg/+a8UG9/IDRZ1RzqI798aJhZi1o15WSyJSKJy3lQIIGxSMMQFEaPi0rU202iApI9hLRqiD4zvR2yRaUpe3Hhz2EIj6o/T4CYM95TDwRoWm439UJsR02PKKkGIur6lA3wc9ktBZSLxaEHgWlpywGYKQQPbSEMZSKLFY6C/kBZx8/qpOHN3oKZXsQ0ZUYA/Vt9AK+/vHnTaEC4FMYuRt7GsGAJzqmHEn2tj4GFs/zh6k9HNRxIeHdOYK1ejcDLHV+qkxd1YSnqb6ngx0dRQDVKJlLARqcCBACW3mf49kkhLVE2vPpd6hVrBSncM1+kUEIT2bMJt/+H56sFItVe1zxeVcShnGPYYoPdv6Cazn0n78546DHF2nzSWyrV81JyfIceRD4Fuo5e7J/sdcQBpYKUJzjAw69S99go671DhWQH2ddyIuyzIMRAgzSb9rU9+1kBRpaqwz3N916Pz9vD5f6G7EFwCf9Dj5Qnkzv1x2FeKjSsy2hyJttORuQRaFVO3NF5jz6zGCGC6ET5/ywMaEHy90KL8JezEBByjSUVjpdThsFIpAg6BjtL5pTC/ucTGYxeRKEEpqyTnHJLdxwLucx9KFYoyQ1sKWbEsAla1EbO49lK3l8vPcfg
+ QLB15iYa
+ tBBO1LD39sZn7EQABEvw5sPrD6Kh8vvUUdo8wpbjc9RbOuQ/Ot1Y0IzW26x09S8lV4zCWp90mWIRZKE1Df345+RK220svU25G5rKM1Uw0eVkgEMbVRNsSNYnwLb8059mVaqB+12xm9BM30rvA6M4iIhRgYNKemLwg/h4ii8Ee3BvTlxtmVsJKbtb4mzoK8QBimN93OSn6gc+nq2XpDqsTA223Xx4ibXBcBUze3VJmT+5iVMK3/MbhjQC+pseG24zI/CHWu+EnDaWBm1dve5msq++Fg55G1miD8tj1+rCcDF5W9Jh26qLwIP+630VPt/euFBML
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,203 +93,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Jinchao,
+On Thu, 11 Sep 2025 07:54:20 +1000 Balbir Singh <balbirs@nvidia.com> wrote:
 
-On Wed, 10 Sep 2025 13:23:10 +0800
-Jinchao Wang <wangjinchao600@gmail.com> wrote:
-
-> Introduce arch_reinstall_hw_breakpoint() to update hardware breakpoint
-> parameters (address, length, type) without freeing and reallocating the
-> debug register slot.
+> > smatch warnings:
+> > mm/huge_memory.c:3069 __split_huge_pmd_locked() error: uninitialized symbol 'write'.
+> > mm/huge_memory.c:3078 __split_huge_pmd_locked() error: uninitialized symbol 'young'.
+> > 
+> > vim +/write +3069 mm/huge_memory.c
+> > 
 > 
-> This allows atomic updates in contexts where memory allocation is not
-> permitted, such as kprobe handlers.
+> If the entry is not present, it is a migration or device private entry, so write is
+> set, I understand that smatch is complaining about it falling through the paths.
 > 
-> Signed-off-by: Jinchao Wang <wangjinchao600@gmail.com>
-> ---
->  arch/x86/include/asm/hw_breakpoint.h |  1 +
->  arch/x86/kernel/hw_breakpoint.c      | 50 ++++++++++++++++++++++++++++
->  2 files changed, 51 insertions(+)
+> If freeze is true for a device private migration entry, young needs to be initialized
+> to false.
 > 
-> diff --git a/arch/x86/include/asm/hw_breakpoint.h b/arch/x86/include/asm/hw_breakpoint.h
-> index 0bc931cd0698..bb7c70ad22fe 100644
-> --- a/arch/x86/include/asm/hw_breakpoint.h
-> +++ b/arch/x86/include/asm/hw_breakpoint.h
-> @@ -59,6 +59,7 @@ extern int hw_breakpoint_exceptions_notify(struct notifier_block *unused,
->  
->  
->  int arch_install_hw_breakpoint(struct perf_event *bp);
-> +int arch_reinstall_hw_breakpoint(struct perf_event *bp);
->  void arch_uninstall_hw_breakpoint(struct perf_event *bp);
->  void hw_breakpoint_pmu_read(struct perf_event *bp);
->  void hw_breakpoint_pmu_unthrottle(struct perf_event *bp);
-> diff --git a/arch/x86/kernel/hw_breakpoint.c b/arch/x86/kernel/hw_breakpoint.c
-> index b01644c949b2..89135229ed21 100644
-> --- a/arch/x86/kernel/hw_breakpoint.c
-> +++ b/arch/x86/kernel/hw_breakpoint.c
-> @@ -132,6 +132,56 @@ int arch_install_hw_breakpoint(struct perf_event *bp)
->  	return 0;
->  }
->  
-> +/*
-> + * Reinstall a hardware breakpoint on the current CPU.
-> + *
-> + * This function is used to re-establish a perf counter hardware breakpoint.
-> + * It finds the debug address register slot previously allocated for the
-> + * breakpoint and re-enables it by writing the address to the debug register
-> + * and setting the corresponding bits in the debug control register (DR7).
-> + *
-> + * It is expected that the breakpoint's event context lock is already held
-> + * and interrupts are disabled, ensuring atomicity and safety from other
-> + * event handlers.
-> + */
-> +int arch_reinstall_hw_breakpoint(struct perf_event *bp)
-> +{
-> +	struct arch_hw_breakpoint *info = counter_arch_bp(bp);
-> +	unsigned long *dr7;
-> +	int i;
-> +
-> +	lockdep_assert_irqs_disabled();
-> +
-> +	for (i = 0; i < HBP_NUM; i++) {
-> +		struct perf_event **slot = this_cpu_ptr(&bp_per_reg[i]);
-> +
-> +		if (*slot == bp)
-> +			break;
-> +	}
-> +
-> +	if (WARN_ONCE(i == HBP_NUM, "Can't find a matching breakpoint slot"))
-> +		return -EINVAL;
-> +
-> +	set_debugreg(info->address, i);
-> +	__this_cpu_write(cpu_debugreg[i], info->address);
-> +
-> +	dr7 = this_cpu_ptr(&cpu_dr7);
-> +	*dr7 |= encode_dr7(i, info->len, info->type);
-> +
-> +	/*
-> +	 * Ensure we first write cpu_dr7 before we set the DR7 register.
-> +	 * This ensures an NMI never see cpu_dr7 0 when DR7 is not.
-> +	 */
-> +	barrier();
-> +
-> +	set_debugreg(*dr7, 7);
-> +	if (info->mask)
-> +		amd_set_dr_addr_mask(info->mask, i);
-> +
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(arch_reinstall_hw_breakpoint);
+> Andrew I can send out a patch to fix it or I can wait to gather more feedback
+> and do a v6?
 
-Please do not expose the arch dependent symbol. Instead, you should
-expose an arch independent wrapper.
+I think a little fixup would be good - it's nice to keep track of these
+things as they pop up.
 
-Anyway, you also need to share the same code with arch_install_hw_breakpoint()
-like below;
+Is a v6 expected?  I'm not seeing anything yet which would necessitate
+that.
 
-Thanks,
-
-
-diff --git a/arch/x86/kernel/hw_breakpoint.c b/arch/x86/kernel/hw_breakpoint.c
-index 89135229ed21..2f3c5406999e 100644
---- a/arch/x86/kernel/hw_breakpoint.c
-+++ b/arch/x86/kernel/hw_breakpoint.c
-@@ -84,6 +84,28 @@ int decode_dr7(unsigned long dr7, int bpnum, unsigned *len, unsigned *type)
- 	return (dr7 >> (bpnum * DR_ENABLE_SIZE)) & 0x3;
- }
- 
-+static void __arch_install_hw_breakpoint(struct perf_event *bp, int regno)
-+{
-+	struct arch_hw_breakpoint *info = counter_arch_bp(bp);
-+	unsigned long *dr7;
-+
-+	set_debugreg(info->address, regno);
-+	__this_cpu_write(cpu_debugreg[i], info->address);
-+
-+	dr7 = this_cpu_ptr(&cpu_dr7);
-+	*dr7 |= encode_dr7(i, info->len, info->type);
-+
-+	/*
-+	 * Ensure we first write cpu_dr7 before we set the DR7 register.
-+	 * This ensures an NMI never see cpu_dr7 0 when DR7 is not.
-+	 */
-+	barrier();
-+
-+	set_debugreg(*dr7, 7);
-+	if (info->mask)
-+		amd_set_dr_addr_mask(info->mask, i);
-+}
-+
- /*
-  * Install a perf counter breakpoint.
-  *
-@@ -95,8 +117,6 @@ int decode_dr7(unsigned long dr7, int bpnum, unsigned *len, unsigned *type)
-  */
- int arch_install_hw_breakpoint(struct perf_event *bp)
- {
--	struct arch_hw_breakpoint *info = counter_arch_bp(bp);
--	unsigned long *dr7;
- 	int i;
- 
- 	lockdep_assert_irqs_disabled();
-@@ -113,22 +133,7 @@ int arch_install_hw_breakpoint(struct perf_event *bp)
- 	if (WARN_ONCE(i == HBP_NUM, "Can't find any breakpoint slot"))
- 		return -EBUSY;
- 
--	set_debugreg(info->address, i);
--	__this_cpu_write(cpu_debugreg[i], info->address);
--
--	dr7 = this_cpu_ptr(&cpu_dr7);
--	*dr7 |= encode_dr7(i, info->len, info->type);
--
--	/*
--	 * Ensure we first write cpu_dr7 before we set the DR7 register.
--	 * This ensures an NMI never see cpu_dr7 0 when DR7 is not.
--	 */
--	barrier();
--
--	set_debugreg(*dr7, 7);
--	if (info->mask)
--		amd_set_dr_addr_mask(info->mask, i);
--
-+	__arch_install_hw_breakpoint(bp, i);
- 	return 0;
- }
- 
-@@ -146,8 +151,6 @@ int arch_install_hw_breakpoint(struct perf_event *bp)
-  */
- int arch_reinstall_hw_breakpoint(struct perf_event *bp)
- {
--	struct arch_hw_breakpoint *info = counter_arch_bp(bp);
--	unsigned long *dr7;
- 	int i;
- 
- 	lockdep_assert_irqs_disabled();
-@@ -162,22 +165,7 @@ int arch_reinstall_hw_breakpoint(struct perf_event *bp)
- 	if (WARN_ONCE(i == HBP_NUM, "Can't find a matching breakpoint slot"))
- 		return -EINVAL;
- 
--	set_debugreg(info->address, i);
--	__this_cpu_write(cpu_debugreg[i], info->address);
--
--	dr7 = this_cpu_ptr(&cpu_dr7);
--	*dr7 |= encode_dr7(i, info->len, info->type);
--
--	/*
--	 * Ensure we first write cpu_dr7 before we set the DR7 register.
--	 * This ensures an NMI never see cpu_dr7 0 when DR7 is not.
--	 */
--	barrier();
--
--	set_debugreg(*dr7, 7);
--	if (info->mask)
--		amd_set_dr_addr_mask(info->mask, i);
--
-+	__arch_install_hw_breakpoint(bp, i);
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(arch_reinstall_hw_breakpoint);
-
--- 
-Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
