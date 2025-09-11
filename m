@@ -4,113 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75C8FCAC58F
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Sep 2025 23:57:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB453CA101F
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 00:46:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AB1FC8E0009; Wed, 10 Sep 2025 19:57:45 -0400 (EDT)
+	id 22F6A8E0003; Wed, 10 Sep 2025 20:46:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A23F98E0001; Wed, 10 Sep 2025 19:57:45 -0400 (EDT)
+	id 2072A8E0001; Wed, 10 Sep 2025 20:46:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 913748E0009; Wed, 10 Sep 2025 19:57:45 -0400 (EDT)
+	id 144068E0003; Wed, 10 Sep 2025 20:46:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7DBBA8E0001
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 19:57:45 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2BFB41A02B2
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 23:57:45 +0000 (UTC)
-X-FDA: 83875005690.17.19C113B
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 690F9100005
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 23:57:43 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=B5VMqb9M;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf05.hostedemail.com: domain of 3dRDCaAgKCOoWUZeQkTaSaaSXQ.OaYXUZgj-YYWhMOW.adS@flex--kinseyho.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3dRDCaAgKCOoWUZeQkTaSaaSXQ.OaYXUZgj-YYWhMOW.adS@flex--kinseyho.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757548663; a=rsa-sha256;
-	cv=none;
-	b=arduidnu665OPtx0j/3/BSipt9rWD5VwKh1FH7q5rDq0d7dRJk4qZCisLTDPFhvO/CM3XC
-	L88Q2xtzjFdQvFa7dg9Yobf92R/NgzzKALzxjBekMIorThwUc8d7HyX1BxmmSM34brANd5
-	mOBrECJjR83hrYbpiXHnHrXzovcPvsc=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=B5VMqb9M;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf05.hostedemail.com: domain of 3dRDCaAgKCOoWUZeQkTaSaaSXQ.OaYXUZgj-YYWhMOW.adS@flex--kinseyho.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3dRDCaAgKCOoWUZeQkTaSaaSXQ.OaYXUZgj-YYWhMOW.adS@flex--kinseyho.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 02D628E0001
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 20:46:22 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9B8431A0361
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 00:46:21 +0000 (UTC)
+X-FDA: 83875128162.13.E646CE9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id EFD0240002
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 00:46:19 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QB8At8RC;
+	spf=pass (imf04.hostedemail.com: domain of mhiramat@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mhiramat@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757548663;
+	s=arc-20220608; t=1757551580;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bGwQF+CXl3vYtzdP9mbgCIJA/DkcNggZlxUnpS7TgbA=;
-	b=Yc6wIkPCiOo6Fpt14WdjE4mT2Zwowp5TRNhJrCmFaGUHEf8C1m3PCojxbmuxfQs1s38B4z
-	SqGTiMEAi6apMQdmLTAzMq+VgrkY9VWUDCqLS0ycS54Bcm0VDrEuH56bpPGgJkOjlHmdvB
-	UtKe/k4ec8ukbBtQ7x1bcPAsX2rCg2c=
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-24c8264a137so1012305ad.3
-        for <linux-mm@kvack.org>; Wed, 10 Sep 2025 16:57:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757548662; x=1758153462; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bGwQF+CXl3vYtzdP9mbgCIJA/DkcNggZlxUnpS7TgbA=;
-        b=B5VMqb9MIBqM9xlOtGhTQCbUGNuHAic3o++7EHZrHWB5X9JKquF6KxUvarI14paJgO
-         veE9rTjRF4xgPsuXC0FvK6IuvM4nPVpcAWad8M9QD4hGYB+y+PzzTmuJWpk22t6ShpwM
-         +dJ1sOt7dvhVdBvLdxmo8i++sDCixLdVuMJbKs//gXBbBd4ZvMHbUE3QcbO/SB8oKltd
-         XtErdGt990dk0nPbUr2Ek0Xkz77dVCStZj9AT8lNwFWFHfzprUzp/JccA1HnPMuYcKxD
-         IZME0tYxyVLryAyDA7RTsTHjjNERKlit2Fn7rtRkr3bxOb8vLN3Jmgn61yqjOCCk8x7N
-         310A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757548662; x=1758153462;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bGwQF+CXl3vYtzdP9mbgCIJA/DkcNggZlxUnpS7TgbA=;
-        b=ThAotlwYLJ2/XYAjNVHuvM3rlDApbokun6HnQZrl7rvt80CYtJCcdLcUktnb8+z44W
-         WvxU5td9ZWzFpJht0SUTc9hD4NH+R8hHWJBpBHwDjbCgnkv34hP+Q40rK3DoChZTioKf
-         +j3jXmjtyFVpoXciGJQScYRHUiVBwYEGYsJvii0f/iU3FRkUsJvmiIGFHGhKGeZyhy0i
-         GPQp6QKoaOmlq+uiB45BVGczk9De872j9ZlnJwQEUyPcKA6QY/hIU4LT3CTeJcQoIb8y
-         XttloBMss5Y9OPQeh2doL+Hs1Wif5E7XupunbCSABAut9ceW3ZiWwfNSmTOB5r3uTjRA
-         btcg==
-X-Gm-Message-State: AOJu0Yzc4CMVkqfMUNkMOSM5aIfGxOzm1FbZ3/5qZ/3QhRc31SB74onC
-	/VET8sRKCeG8YIoxvDawIbpwvQyWRrvTM47GJfsZR3CXSgP1uyPIJz9mSDNVQHUG9RFaz7fnaWP
-	ffU03/IVBZs2g4Di2Is4NYMpyeBwqdkoa9g4quyATmW+NlqsVR9uHmjTCEV3mv7xeYBVlQ6i8Fw
-	CbtwZKMHLc2SsiNKdRFKgr1H07eiU9+k5dtYTTUByCrQ==
-X-Google-Smtp-Source: AGHT+IFgMc9+BRlDZ/xcmHEhHQ3WZP/Hvgh8+t59rNiHJPd+WEnbMa1Kj1RSd0TLn33KhEA3jAl11A/Teaqamg==
-X-Received: from pljf9.prod.google.com ([2002:a17:902:ff09:b0:24c:b6ae:fcb0])
- (user=kinseyho job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:3d05:b0:24c:a417:4490 with SMTP id d9443c01a7336-2516ce60006mr244218345ad.5.1757548661978;
- Wed, 10 Sep 2025 16:57:41 -0700 (PDT)
-Date: Wed, 10 Sep 2025 16:51:21 -0700
-In-Reply-To: <20250910235121.2544928-1-kinseyho@google.com>
+	bh=bhmCRE1xvUkDdFSmNKcdyJjIq+1gf0S/XmVmi+FDygA=;
+	b=Et16qacY6AwmbNjyjo2h3cWSVKmoLl1GsQDhGQIGy3piwdsnkaiNFrgq3Cvg8EcchQ50y1
+	MrqWtPuHPIV3WXr9VvVfuTmsND9gYlaaOdzV2WQo+quWef3+JLAL++vmbJbDM7g4XpbKQ1
+	wApWgZbGHr4/5K1s8wJIx1kGIoGYMdQ=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QB8At8RC;
+	spf=pass (imf04.hostedemail.com: domain of mhiramat@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mhiramat@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757551580; a=rsa-sha256;
+	cv=none;
+	b=WpYq5xYWebkuFWq3j2cJrv3rqoYWI2BGQFcgidgm19roqEbNcCii7BhUackTu3N5Hcc5W6
+	m3WpT2b1XT2KXzd3zW7C4v3o0X2KneDMErNl5BLOCBW1ITKmS3L1Hk5N6VH8hL22Z23+LE
+	wdMf8H8ICRUax9gTZ94CVnFP3zX+ggg=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id A8EBD405E4;
+	Thu, 11 Sep 2025 00:46:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1598C4CEEB;
+	Thu, 11 Sep 2025 00:46:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757551578;
+	bh=K99ophOl9mX3e/X5pRAQo+wrGNH1h9Nn1UThydP/v4k=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=QB8At8RCA1dKGbJGXAjAsWM+cwkq9bWk1fm7K3sJG7vxNVKP6xSSvUurBGZQunMNl
+	 0btZsSMe1585w9cxhhmI5GHyWBASKD0Q4vMXuOBuUF017rMfS6ktJFxpWz0HVxJGnU
+	 y5dLcJdIDuyFsXsEX5KJdbhpsqRaOJr/F+oB/bidzfW9QlCItd26fNhQmDnfZMJpFW
+	 NMrEb7LGYzujvb/h6RaJtJoASDh2u7mhKUkSOhpdgvEQSnpYSkziJp4RAGYhbclueg
+	 PlYDR7Q2pWHfKj+AJMSvtMw+Q7ukA7O+IOYYTN6mIWK9FFEaGaYjjQn/PS6X/l/nrs
+	 NT3rQC8fJJ5OA==
+Date: Thu, 11 Sep 2025 09:46:09 +0900
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+To: Jinchao Wang <wangjinchao600@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Peter Zijlstra
+ <peterz@infradead.org>, Mike Rapoport <rppt@kernel.org>, "Naveen N . Rao"
+ <naveen@kernel.org>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander
+ Potapenko <glider@google.com>, Andrey Konovalov <andreyknvl@gmail.com>,
+ Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino
+ <vincenzo.frascino@arm.com>, kasan-dev@googlegroups.com, "David S. Miller"
+ <davem@davemloft.net>, Steven Rostedt <rostedt@goodmis.org>, Mathieu
+ Desnoyers <mathieu.desnoyers@efficios.com>, Ingo Molnar <mingo@redhat.com>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim
+ <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, Alexander
+ Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa
+ <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, Adrian Hunter
+ <adrian.hunter@intel.com>, "Liang, Kan" <kan.liang@linux.intel.com>, Thomas
+ Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
+ <hpa@zytor.com>, linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 01/19] x86/hw_breakpoint: introduce
+ arch_reinstall_hw_breakpoint() for atomic context
+Message-Id: <20250911094609.5f30e9767ffc3040068ed052@kernel.org>
+In-Reply-To: <20250910052335.1151048-2-wangjinchao600@gmail.com>
+References: <20250910052335.1151048-1-wangjinchao600@gmail.com>
+	<20250910052335.1151048-2-wangjinchao600@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
-References: <20250910235121.2544928-1-kinseyho@google.com>
-X-Mailer: git-send-email 2.51.0.384.g4c02a37b29-goog
-Message-ID: <20250910235121.2544928-3-kinseyho@google.com>
-Subject: [RFC PATCH v2 2/2] mm: klruscand: use mglru scanning for page promotion
-From: Kinsey Ho <kinseyho@google.com>
-To: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Cc: Jonathan.Cameron@huawei.com, dave.hansen@intel.com, gourry@gourry.net, 
-	hannes@cmpxchg.org, mgorman@techsingularity.net, mingo@redhat.com, 
-	peterz@infradead.org, raghavendra.kt@amd.com, riel@surriel.com, 
-	rientjes@google.com, sj@kernel.org, weixugc@google.com, willy@infradead.org, 
-	ying.huang@linux.alibaba.com, ziy@nvidia.com, dave@stgolabs.net, 
-	nifan.cxl@gmail.com, xuezhengchu@huawei.com, yiannis@zptcorp.com, 
-	akpm@linux-foundation.org, david@redhat.com, byungchul@sk.com, 
-	kinseyho@google.com, joshua.hahnjy@gmail.com, yuanchu@google.com, 
-	balbirs@nvidia.com, alok.rathore@samsung.com, lorenzo.stoakes@oracle.com, 
-	axelrasmussen@google.com, Liam.Howlett@oracle.com, vbabka@suse.cz, 
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
-	zhengqi.arch@bytedance.com, shakeel.butt@linux.dev
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 690F9100005
-X-Stat-Signature: w48jbeybsnqmjm51y4y5wkpz4yh7m5t1
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: EFD0240002
 X-Rspam-User: 
-X-HE-Tag: 1757548663-904959
-X-HE-Meta: U2FsdGVkX18lA0DhxtI9LT8x0oSfcSxhsaDbHBo5S2CHhzyiVBkjULzSd/97N1vLD2Ezgt9wrOIkNEfmYrqaxG8JYvmUHzDml3TliNvdGKo9sc7ZlmmdoR4IdGXdSGqa5UVwxYJHR75aFXlsRmdJQ816R72pzEYA+A/DxBFhJhytga1ISV5FLsRBB1E6RjBMk7lpm5kSnxw07wZrkiae1PLMCjIpFXkoUcU8S9JbGzOskaHqWZa9cXYjqHw4vLroSKwPhWSEeOX95rs97aB93zk5qWvkZ3G+foU6DmatSq03MTsOCFs7lfuVs0Km9+/lpKSVu7LTfeUVOKQzLVhvxe6u0UZnAS5UaOi/rUF09kSqOG5FCtI6M5PS+xbrGDX7bDlbWOBTAgOeywzbOqlEldUjaiwocEYj7MZ2YbWt3zKacspBR40cq5zf6y44CzkLfj4sZI9/zUaWZr0sgTKawaYI3wNP35G1IGD5zMR3TvkdiSZFx2q27n9utvlzRIyYutyUwyBRTWp9eQeXgrVN+jU5HfebVxkqeSLcXAcjkdMFdlxPMIE8rFFD20DVWGqA+eYShhcKz4rCe3kblrX+J+3jeg928tmL8wzphupGvN2T8PjoY6erY9KD+KaPc5UG1eWsK3VQJ4/VXwBv+XHfXrq2x7DWIHWeUc1bAQkqDA+IrzSdQ/hUBd2RzJfPq87MPnoIAyjNrb8A+FGchMjxqFYAGoIWMFW/1IDEb7rjMNEs1jUepQoxKpYY6H9Rr+2RoAk5Nju5R6L4bLqgHg3kcogcSfqVNOn+unfCFaB/mTmVZB3/ukmnzUt3UuKPFjCp5/kBfMJNwzEYpqLb+Sxza2od6qnZF3R06lD9XG82s1td4S3zPKLfxHC/2n6mZLb5+4NT1ZO30LNCcJFiXe83wiXHFZJV+s5vpSSQnTBI2pMVm1iIYitFP6mU52YF9kebPytmXhUxPlNWoqlIpey
- dgVmRdyx
- 3KnBA5lc2gT4++YGQ2y9hx7SEymMS7nwPgQqJfwyhDgvmfhIeOEUPX52y4fmd3o8XZjVR92x/Hd8snPjKeX/A3obS66PcHqf0BXli7i5uAADDKWem9uA0ExBhpe9WT3MBw5tClq0RvBzB3xy+2sFd2nokAhPizN+EeOqrhwHm0GWbCtXTC+4JfRhpBUvYfyAjKR36nkfOVVgOZlvnYwlhzoWO6lghL0Y1ln43Wl4J5W5Sr/QobwJyhQJt6iGAaHiVqSuw+5PdnlYo6Z0iZexqvcRqYH+pHtF2ViHpnpez8Nmk17CHgc2mp73wwS4RKUBxWv5xtF1hFd/wrEbz3qJFglPRkVlf8nXZRz3wcjhpP8dcgJjjWOJMqHgDJZ3U6eDqk1lFf9/aKaQJy6L0tzQ3f6ji6TxajANPwiNGKc+6A/l8sBp6xBu2exUnKiFhREeDcFyYBNG+IaN+cnDO5Vi6KVUpn8W8rzjJ0I5ItG/kwD1cAI4V/lTLpEHy9s5gAui/VXui+bDzCSnsn9AERZhliRRlc4qfJYnQ7LDluaLzmsSNE1GNYfDwBNXwLB8+m9Kojc9jP6s4HXK/HOculx7aETx9uUnU5oOVN9jlvY4BgTy2t4/lrqjdKz/UyfVWcX11DKfx3ku1p9VbhjLY8IkoTiWGw3z+2Qyo4xEe
+X-Rspamd-Server: rspam07
+X-Stat-Signature: kyfo65n3r7hj3oabzjnoubz5c3swojqy
+X-HE-Tag: 1757551579-987650
+X-HE-Meta: U2FsdGVkX1+71Zma0zIYBQjXSIZ0xpwYH3Bo1y+A/2gPUyXHucrBqtett3y3ZmF95h21l3SEBm2T0o05F2LyphGN5clup2VNw3NjMxKE/nWmkP4dfut6HkU+itO9OlxfJJWS5a11zWT2Q3POFW1k/Nmt8HRYLc4ufSRXDPJ4Q066A1EP5nlrZLHcj6QS6IDLxq8PjmU61d6oHWyVtYitBvllDxiPscCFtqlk6dI6olhaJdggv0xutKpdZe3XWU9b271nlUX6C5t4MQz2aXjnLC7qEyrG9flZSEL4pLfyWQ77XAYCzFHzAPC7oeRPlsXFjjJNvTTsPlXn1fRtUhmcckDTSfwaOphMaG0wB/ru+p7Is+Dn95Ah4yBDStA/3cNO/+GgiSQNAm6+9oUYKLjYbnK+QxeUV52ZHmT1x+dbg/uJdQeFvd9do9yiwuDauvQMsAi9Z/Sh1GMw+aLFB9f6Ck98V7pbaummF7Cj6xwaBS08FGgCvutgmzWfBDzM84FCdxDx7cL9DrLr86MnD5udhwmuuif9qWhtC1q4ilyhUJz+GR4Ny+8LO0o9Lia53jnLXVDyxAdlpwiNmGUQz92HS2RNOFEP7C22TB0NgBSxXK4qiEGMt+yFH7/V2MvdxTxg23DwUIiWfQaUg4w4b2HZ/6I9HRR/N8P945LQ5SeoEKQQmPQCX4G61JkGbup7n207mJ4nem2wGOGieMCXQvjwby3Xq2wcdtyVkahUFKdQNOvT+XUqYxuJeJ5z7a1weHjE+9p3Tvw8CPEyzezVF/HvrcFgtc8Ips3SihuE0cQ81aG05R90eEy2/8zIN4ZO4k2rL1JA9FceLSaUdI0Z5BJcjO5UdqW8wG81BEESNWWeUgOqxDr4bCXYKWcGHM8wUlV78ItZyHwIRLco473Abb9Wrup+Iq+pQtf2FXykUOJ8XfVT2HBBg2EC6WP9hRc5YLxCw030Ui/LfeEeH/YPUG6
+ BPV5LHJd
+ Os+Szzgok1bfxMRB5AyNeC+Wqhb4WwAjeA5xe6cVcGMniBoWxJmy0yH/FXKPfh8yQhZiU
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,180 +110,203 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce a new kernel daemon, klruscand, that periodically invokes the
-MGLRU page table walk. It leverages the new callbacks to gather access
-information and forwards it to the kpromoted daemon for promotion
-decisions.
+Hi Jinchao,
 
-This benefits from reusing the existing MGLRU page table walk
-infrastructure, which is optimized with features such as hierarchical
-scanning and bloom filters to reduce CPU overhead.
+On Wed, 10 Sep 2025 13:23:10 +0800
+Jinchao Wang <wangjinchao600@gmail.com> wrote:
 
-As an additional optimization to be added in the future, we can tune
-the scan intervals for each memcg.
+> Introduce arch_reinstall_hw_breakpoint() to update hardware breakpoint
+> parameters (address, length, type) without freeing and reallocating the
+> debug register slot.
+> 
+> This allows atomic updates in contexts where memory allocation is not
+> permitted, such as kprobe handlers.
+> 
+> Signed-off-by: Jinchao Wang <wangjinchao600@gmail.com>
+> ---
+>  arch/x86/include/asm/hw_breakpoint.h |  1 +
+>  arch/x86/kernel/hw_breakpoint.c      | 50 ++++++++++++++++++++++++++++
+>  2 files changed, 51 insertions(+)
+> 
+> diff --git a/arch/x86/include/asm/hw_breakpoint.h b/arch/x86/include/asm/hw_breakpoint.h
+> index 0bc931cd0698..bb7c70ad22fe 100644
+> --- a/arch/x86/include/asm/hw_breakpoint.h
+> +++ b/arch/x86/include/asm/hw_breakpoint.h
+> @@ -59,6 +59,7 @@ extern int hw_breakpoint_exceptions_notify(struct notifier_block *unused,
+>  
+>  
+>  int arch_install_hw_breakpoint(struct perf_event *bp);
+> +int arch_reinstall_hw_breakpoint(struct perf_event *bp);
+>  void arch_uninstall_hw_breakpoint(struct perf_event *bp);
+>  void hw_breakpoint_pmu_read(struct perf_event *bp);
+>  void hw_breakpoint_pmu_unthrottle(struct perf_event *bp);
+> diff --git a/arch/x86/kernel/hw_breakpoint.c b/arch/x86/kernel/hw_breakpoint.c
+> index b01644c949b2..89135229ed21 100644
+> --- a/arch/x86/kernel/hw_breakpoint.c
+> +++ b/arch/x86/kernel/hw_breakpoint.c
+> @@ -132,6 +132,56 @@ int arch_install_hw_breakpoint(struct perf_event *bp)
+>  	return 0;
+>  }
+>  
+> +/*
+> + * Reinstall a hardware breakpoint on the current CPU.
+> + *
+> + * This function is used to re-establish a perf counter hardware breakpoint.
+> + * It finds the debug address register slot previously allocated for the
+> + * breakpoint and re-enables it by writing the address to the debug register
+> + * and setting the corresponding bits in the debug control register (DR7).
+> + *
+> + * It is expected that the breakpoint's event context lock is already held
+> + * and interrupts are disabled, ensuring atomicity and safety from other
+> + * event handlers.
+> + */
+> +int arch_reinstall_hw_breakpoint(struct perf_event *bp)
+> +{
+> +	struct arch_hw_breakpoint *info = counter_arch_bp(bp);
+> +	unsigned long *dr7;
+> +	int i;
+> +
+> +	lockdep_assert_irqs_disabled();
+> +
+> +	for (i = 0; i < HBP_NUM; i++) {
+> +		struct perf_event **slot = this_cpu_ptr(&bp_per_reg[i]);
+> +
+> +		if (*slot == bp)
+> +			break;
+> +	}
+> +
+> +	if (WARN_ONCE(i == HBP_NUM, "Can't find a matching breakpoint slot"))
+> +		return -EINVAL;
+> +
+> +	set_debugreg(info->address, i);
+> +	__this_cpu_write(cpu_debugreg[i], info->address);
+> +
+> +	dr7 = this_cpu_ptr(&cpu_dr7);
+> +	*dr7 |= encode_dr7(i, info->len, info->type);
+> +
+> +	/*
+> +	 * Ensure we first write cpu_dr7 before we set the DR7 register.
+> +	 * This ensures an NMI never see cpu_dr7 0 when DR7 is not.
+> +	 */
+> +	barrier();
+> +
+> +	set_debugreg(*dr7, 7);
+> +	if (info->mask)
+> +		amd_set_dr_addr_mask(info->mask, i);
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(arch_reinstall_hw_breakpoint);
 
-Signed-off-by: Kinsey Ho <kinseyho@google.com>
-Signed-off-by: Yuanchu Xie <yuanchu@google.com>
----
- mm/Kconfig     |   8 ++++
- mm/Makefile    |   1 +
- mm/klruscand.c | 118 +++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 127 insertions(+)
- create mode 100644 mm/klruscand.c
+Please do not expose the arch dependent symbol. Instead, you should
+expose an arch independent wrapper.
 
-diff --git a/mm/Kconfig b/mm/Kconfig
-index 8b236eb874cf..6d53c1208729 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -1393,6 +1393,14 @@ config PGHOT
- 	  by various sources. Asynchronous promotion is done by per-node
- 	  kernel threads.
+Anyway, you also need to share the same code with arch_install_hw_breakpoint()
+like below;
+
+Thanks,
+
+
+diff --git a/arch/x86/kernel/hw_breakpoint.c b/arch/x86/kernel/hw_breakpoint.c
+index 89135229ed21..2f3c5406999e 100644
+--- a/arch/x86/kernel/hw_breakpoint.c
++++ b/arch/x86/kernel/hw_breakpoint.c
+@@ -84,6 +84,28 @@ int decode_dr7(unsigned long dr7, int bpnum, unsigned *len, unsigned *type)
+ 	return (dr7 >> (bpnum * DR_ENABLE_SIZE)) & 0x3;
+ }
  
-+config KLRUSCAND
-+	bool "Kernel lower tier access scan daemon"
-+	default y
-+	depends on PGHOT && LRU_GEN_WALKS_MMU
-+	help
-+	  Scan for accesses from lower tiers by invoking MGLRU to perform
-+	  page table walks.
++static void __arch_install_hw_breakpoint(struct perf_event *bp, int regno)
++{
++	struct arch_hw_breakpoint *info = counter_arch_bp(bp);
++	unsigned long *dr7;
 +
- source "mm/damon/Kconfig"
++	set_debugreg(info->address, regno);
++	__this_cpu_write(cpu_debugreg[i], info->address);
++
++	dr7 = this_cpu_ptr(&cpu_dr7);
++	*dr7 |= encode_dr7(i, info->len, info->type);
++
++	/*
++	 * Ensure we first write cpu_dr7 before we set the DR7 register.
++	 * This ensures an NMI never see cpu_dr7 0 when DR7 is not.
++	 */
++	barrier();
++
++	set_debugreg(*dr7, 7);
++	if (info->mask)
++		amd_set_dr_addr_mask(info->mask, i);
++}
++
+ /*
+  * Install a perf counter breakpoint.
+  *
+@@ -95,8 +117,6 @@ int decode_dr7(unsigned long dr7, int bpnum, unsigned *len, unsigned *type)
+  */
+ int arch_install_hw_breakpoint(struct perf_event *bp)
+ {
+-	struct arch_hw_breakpoint *info = counter_arch_bp(bp);
+-	unsigned long *dr7;
+ 	int i;
  
- endmenu
-diff --git a/mm/Makefile b/mm/Makefile
-index ecdd5241bea8..05a96ec35aa3 100644
---- a/mm/Makefile
-+++ b/mm/Makefile
-@@ -148,3 +148,4 @@ obj-$(CONFIG_EXECMEM) += execmem.o
- obj-$(CONFIG_TMPFS_QUOTA) += shmem_quota.o
- obj-$(CONFIG_PT_RECLAIM) += pt_reclaim.o
- obj-$(CONFIG_PGHOT) += pghot.o
-+obj-$(CONFIG_KLRUSCAND) += klruscand.o
-diff --git a/mm/klruscand.c b/mm/klruscand.c
-new file mode 100644
-index 000000000000..1ee2ac906771
---- /dev/null
-+++ b/mm/klruscand.c
-@@ -0,0 +1,118 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+#include <linux/memcontrol.h>
-+#include <linux/kthread.h>
-+#include <linux/module.h>
-+#include <linux/vmalloc.h>
-+#include <linux/random.h>
-+#include <linux/migrate.h>
-+#include <linux/mm_inline.h>
-+#include <linux/slab.h>
-+#include <linux/sched/clock.h>
-+#include <linux/memory-tiers.h>
-+#include <linux/sched/mm.h>
-+#include <linux/sched.h>
-+#include <linux/pghot.h>
-+
-+#include "internal.h"
-+
-+#define KLRUSCAND_INTERVAL 2000
-+#define BATCH_SIZE (2 << 16)
-+
-+static struct task_struct *scan_thread;
-+static unsigned long pfn_batch[BATCH_SIZE];
-+static int batch_index;
-+
-+static void flush_cb(void)
-+{
-+	int i;
-+
-+	for (i = 0; i < batch_index; i++) {
-+		unsigned long pfn = pfn_batch[i];
-+
-+		pghot_record_access(pfn, NUMA_NO_NODE,
-+					PGHOT_PGTABLE_SCAN, jiffies);
-+
-+		if (i % 16 == 0)
-+			cond_resched();
-+	}
-+	batch_index = 0;
-+}
-+
-+static bool accessed_cb(unsigned long pfn)
-+{
-+	WARN_ON_ONCE(batch_index == BATCH_SIZE);
-+
-+	if (batch_index < BATCH_SIZE)
-+		pfn_batch[batch_index++] = pfn;
-+
-+	return batch_index == BATCH_SIZE;
-+}
-+
-+static int klruscand_run(void *unused)
-+{
-+	struct lru_gen_mm_walk *walk;
-+
-+	walk = kzalloc(sizeof(*walk),
-+		       __GFP_HIGH | __GFP_NOMEMALLOC | __GFP_NOWARN);
-+	if (!walk)
-+		return -ENOMEM;
-+
-+	while (!kthread_should_stop()) {
-+		unsigned long next_wake_time;
-+		long sleep_time;
-+		struct mem_cgroup *memcg;
-+		int flags;
-+		int nid;
-+
-+		next_wake_time = jiffies + msecs_to_jiffies(KLRUSCAND_INTERVAL);
-+
-+		for_each_node_state(nid, N_MEMORY) {
-+			pg_data_t *pgdat = NODE_DATA(nid);
-+			struct reclaim_state rs = { 0 };
-+
-+			if (node_is_toptier(nid))
-+				continue;
-+
-+			rs.mm_walk = walk;
-+			set_task_reclaim_state(current, &rs);
-+			flags = memalloc_noreclaim_save();
-+
-+			memcg = mem_cgroup_iter(NULL, NULL, NULL);
-+			do {
-+				struct lruvec *lruvec =
-+					mem_cgroup_lruvec(memcg, pgdat);
-+				unsigned long max_seq =
-+					READ_ONCE((lruvec)->lrugen.max_seq);
-+
-+				lru_gen_scan_lruvec(lruvec, max_seq, accessed_cb, flush_cb);
-+				cond_resched();
-+			} while ((memcg = mem_cgroup_iter(NULL, memcg, NULL)));
-+
-+			memalloc_noreclaim_restore(flags);
-+			set_task_reclaim_state(current, NULL);
-+			memset(walk, 0, sizeof(*walk));
-+		}
-+
-+		sleep_time = next_wake_time - jiffies;
-+		if (sleep_time > 0 && sleep_time != MAX_SCHEDULE_TIMEOUT)
-+			schedule_timeout_idle(sleep_time);
-+	}
-+	kfree(walk);
-+	return 0;
-+}
-+
-+static int __init klruscand_init(void)
-+{
-+	struct task_struct *task;
-+
-+	task = kthread_run(klruscand_run, NULL, "klruscand");
-+
-+	if (IS_ERR(task)) {
-+		pr_err("Failed to create klruscand kthread\n");
-+		return PTR_ERR(task);
-+	}
-+
-+	scan_thread = task;
-+	return 0;
-+}
-+module_init(klruscand_init);
+ 	lockdep_assert_irqs_disabled();
+@@ -113,22 +133,7 @@ int arch_install_hw_breakpoint(struct perf_event *bp)
+ 	if (WARN_ONCE(i == HBP_NUM, "Can't find any breakpoint slot"))
+ 		return -EBUSY;
+ 
+-	set_debugreg(info->address, i);
+-	__this_cpu_write(cpu_debugreg[i], info->address);
+-
+-	dr7 = this_cpu_ptr(&cpu_dr7);
+-	*dr7 |= encode_dr7(i, info->len, info->type);
+-
+-	/*
+-	 * Ensure we first write cpu_dr7 before we set the DR7 register.
+-	 * This ensures an NMI never see cpu_dr7 0 when DR7 is not.
+-	 */
+-	barrier();
+-
+-	set_debugreg(*dr7, 7);
+-	if (info->mask)
+-		amd_set_dr_addr_mask(info->mask, i);
+-
++	__arch_install_hw_breakpoint(bp, i);
+ 	return 0;
+ }
+ 
+@@ -146,8 +151,6 @@ int arch_install_hw_breakpoint(struct perf_event *bp)
+  */
+ int arch_reinstall_hw_breakpoint(struct perf_event *bp)
+ {
+-	struct arch_hw_breakpoint *info = counter_arch_bp(bp);
+-	unsigned long *dr7;
+ 	int i;
+ 
+ 	lockdep_assert_irqs_disabled();
+@@ -162,22 +165,7 @@ int arch_reinstall_hw_breakpoint(struct perf_event *bp)
+ 	if (WARN_ONCE(i == HBP_NUM, "Can't find a matching breakpoint slot"))
+ 		return -EINVAL;
+ 
+-	set_debugreg(info->address, i);
+-	__this_cpu_write(cpu_debugreg[i], info->address);
+-
+-	dr7 = this_cpu_ptr(&cpu_dr7);
+-	*dr7 |= encode_dr7(i, info->len, info->type);
+-
+-	/*
+-	 * Ensure we first write cpu_dr7 before we set the DR7 register.
+-	 * This ensures an NMI never see cpu_dr7 0 when DR7 is not.
+-	 */
+-	barrier();
+-
+-	set_debugreg(*dr7, 7);
+-	if (info->mask)
+-		amd_set_dr_addr_mask(info->mask, i);
+-
++	__arch_install_hw_breakpoint(bp, i);
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(arch_reinstall_hw_breakpoint);
+
 -- 
-2.51.0.384.g4c02a37b29-goog
-
+Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
