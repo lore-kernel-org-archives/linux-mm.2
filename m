@@ -4,32 +4,32 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 005F4CAC58E
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 17:02:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 183B6CAC587
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 17:02:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5E9918E000D; Thu, 11 Sep 2025 13:02:47 -0400 (EDT)
+	id 23ED78E000F; Thu, 11 Sep 2025 13:02:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C13A8E000B; Thu, 11 Sep 2025 13:02:47 -0400 (EDT)
+	id 17C4F8E000B; Thu, 11 Sep 2025 13:02:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D7408E000D; Thu, 11 Sep 2025 13:02:47 -0400 (EDT)
+	id 042CC8E000F; Thu, 11 Sep 2025 13:02:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D5658E000B
+	by kanga.kvack.org (Postfix) with ESMTP id E6DB68E000B
 	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 13:02:47 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E3F1513A7B4
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 17:02:46 +0000 (UTC)
-X-FDA: 83877588732.18.1F498D8
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf16.hostedemail.com (Postfix) with ESMTP id A16BB180017
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B0731160531
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 17:02:47 +0000 (UTC)
+X-FDA: 83877588774.12.8DF6E35
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 0D9D020008
 	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 17:02:44 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=QF7gdNKw;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ZzFRLsT1;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=QF7gdNKw;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ZzFRLsT1;
-	spf=pass (imf16.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=UlRLIenv;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="oGn/PNUn";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=UlRLIenv;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="oGn/PNUn";
+	spf=pass (imf13.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1757610165;
@@ -38,83 +38,83 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4Pv1HSdC4mXzEJtFV99nSHn9ZZRv54mCokp/t2JPr4o=;
-	b=JxRWFFCDHJ4IE8ru6OWG8UJ9vkzacO9n04vhnnCbhlEe0+99YEdS4QtDF2fnuEk3SApq2v
-	ZETU4VhviIhm6M1hasYJcvug8cOa5WTonWbGm+qUnyISQtWeVTgUWEDcR89J44leJzW4v6
-	Noaz7d6YOTdJSCNuOWGaqI+gJ4tQ2vE=
+	bh=gU8uzwxAYobW2SW2rVaJMdcJbOZvC5xNrUDaVXNRGxg=;
+	b=0OJP0x8gU8a2pvqCDUXW4ygny5WVY5zgSPKyI/+8Rej8U13jxwV9ZauzVQBMWISHZjWFvL
+	AIwnHQ05oCyHf+r2n3skWJZg+BqKTfwEOEpItFKk1hjh6xRlMJELbkF9t7EVphmZ/7I18W
+	es5dCxswhEZ5ivSP9ZX3kF7ZP09JgQI=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=UlRLIenv;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="oGn/PNUn";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=UlRLIenv;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="oGn/PNUn";
+	spf=pass (imf13.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757610165; a=rsa-sha256;
 	cv=none;
-	b=3lF7Lzr13TuVpLi7QHStudNwAhmzL2jJQsh480wzFiuk6vVpMwqLMGaQRXyfh411XDfaCE
-	PQM/7+ZyBNs9+nbRt0120lqexFxTo9dCwfVeqElMnheiBPeGEhKlCL7eiuS5pSpkZbg30Y
-	EeW7JHIYqSdqsFmAQsuz/sw8V9N6FW0=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=QF7gdNKw;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ZzFRLsT1;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=QF7gdNKw;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ZzFRLsT1;
-	spf=pass (imf16.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+	b=7/0fqBcoCErbnCt6SQJj4KuGruH0e4TwshbVsB7jeR04bVnIaiaANiPwSROdDrh5yJUBZ5
+	I+u19OMeXLaS5VFdsmtg5khPXuhrSxSOpbDBulSJyYM52TlKXgKz0xgaADf1xC/IVoKfRw
+	CbWderEhJE5l8t4RNYbjuIwC/L5ZmOY=
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 485AC76483;
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 4B129385FB;
 	Thu, 11 Sep 2025 17:02:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
 	t=1757610155; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=4Pv1HSdC4mXzEJtFV99nSHn9ZZRv54mCokp/t2JPr4o=;
-	b=QF7gdNKwdu0/USHXbl4y1V8/yJbhvLhl97mMfX04Ke9OmFeWQkWbXSDP5Dr6YGfiyUTuxa
-	ZqdMklKHmoXCPwjCIkQm3Oz1lSQbfVOAOM3ID9xPRcBiCdXZWLXb05Q90q65Of6QkXxd8r
-	MMGbQUc1Unp+j/QoySvE+aZckuUPyn4=
+	bh=gU8uzwxAYobW2SW2rVaJMdcJbOZvC5xNrUDaVXNRGxg=;
+	b=UlRLIenv1BNmXoAJVTeMxpBMoAOaKHc+pxyu8MYuMXV9fqIzZ772TMdMW3aU9SyOhqvpu8
+	R2akgspt2OlhZShcE7t4dWKxIt5YhY8i24bHvKqb7c5INKHxKjJ0O+qvtYZPfNYp8VD06D
+	5JRoTmIMTR0olrImNVE8InGeFX+Jc2M=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
 	s=susede2_ed25519; t=1757610155;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=4Pv1HSdC4mXzEJtFV99nSHn9ZZRv54mCokp/t2JPr4o=;
-	b=ZzFRLsT1OyihjWkvvWzckDLpxpzhTnothsrLr4f3UrldTZP1Dig0fGl2EZCo6SvvRPmYhc
-	qfkdAyNx5hihfrDA==
+	bh=gU8uzwxAYobW2SW2rVaJMdcJbOZvC5xNrUDaVXNRGxg=;
+	b=oGn/PNUniXADceo50TVabUOMevpYbP0N9zyRD3gLNzAzq1D7glDcZHWggPBOKsv2PZAEqQ
+	JVylQibCsPAR0iDA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
 	t=1757610155; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=4Pv1HSdC4mXzEJtFV99nSHn9ZZRv54mCokp/t2JPr4o=;
-	b=QF7gdNKwdu0/USHXbl4y1V8/yJbhvLhl97mMfX04Ke9OmFeWQkWbXSDP5Dr6YGfiyUTuxa
-	ZqdMklKHmoXCPwjCIkQm3Oz1lSQbfVOAOM3ID9xPRcBiCdXZWLXb05Q90q65Of6QkXxd8r
-	MMGbQUc1Unp+j/QoySvE+aZckuUPyn4=
+	bh=gU8uzwxAYobW2SW2rVaJMdcJbOZvC5xNrUDaVXNRGxg=;
+	b=UlRLIenv1BNmXoAJVTeMxpBMoAOaKHc+pxyu8MYuMXV9fqIzZ772TMdMW3aU9SyOhqvpu8
+	R2akgspt2OlhZShcE7t4dWKxIt5YhY8i24bHvKqb7c5INKHxKjJ0O+qvtYZPfNYp8VD06D
+	5JRoTmIMTR0olrImNVE8InGeFX+Jc2M=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
 	s=susede2_ed25519; t=1757610155;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=4Pv1HSdC4mXzEJtFV99nSHn9ZZRv54mCokp/t2JPr4o=;
-	b=ZzFRLsT1OyihjWkvvWzckDLpxpzhTnothsrLr4f3UrldTZP1Dig0fGl2EZCo6SvvRPmYhc
-	qfkdAyNx5hihfrDA==
+	bh=gU8uzwxAYobW2SW2rVaJMdcJbOZvC5xNrUDaVXNRGxg=;
+	b=oGn/PNUniXADceo50TVabUOMevpYbP0N9zyRD3gLNzAzq1D7glDcZHWggPBOKsv2PZAEqQ
+	JVylQibCsPAR0iDA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2A90513AF8;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3A2C413AD6;
 	Thu, 11 Sep 2025 17:02:35 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id qOAXCqsAw2gUJAAAD6G6ig
+	id KKnpDasAw2gUJAAAD6G6ig
 	(envelope-from <vbabka@suse.cz>); Thu, 11 Sep 2025 17:02:35 +0000
 From: Vlastimil Babka <vbabka@suse.cz>
-Date: Thu, 11 Sep 2025 19:02:38 +0200
-Subject: [PATCH 5/6] slab: validate slab before using it in
- alloc_single_from_partial()
+Date: Thu, 11 Sep 2025 19:02:39 +0200
+Subject: [PATCH 6/6] slab: don't validate slab pointer in
+ free_debug_processing()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250911-slub-slab-validation-v1-5-8b67eb3b3dc5@suse.cz>
+Message-Id: <20250911-slub-slab-validation-v1-6-8b67eb3b3dc5@suse.cz>
 References: <20250911-slub-slab-validation-v1-0-8b67eb3b3dc5@suse.cz>
 In-Reply-To: <20250911-slub-slab-validation-v1-0-8b67eb3b3dc5@suse.cz>
 To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
@@ -124,14 +124,14 @@ Cc: Harry Yoo <harry.yoo@oracle.com>, Christoph Lameter <cl@gentwo.org>,
  Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
  linux-kernel@vger.kernel.org, Vlastimil Babka <vbabka@suse.cz>
 X-Mailer: b4 0.14.2
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: A16BB180017
-X-Stat-Signature: fzgebidsjqwj617bqph7jyj9f9qnptxn
+X-Rspamd-Queue-Id: 0D9D020008
 X-Rspam-User: 
-X-HE-Tag: 1757610164-389456
-X-HE-Meta: U2FsdGVkX1/6fD+isjyF0IcajcpNWcqKJdx5dwevDsV4F68Zy9vRtyJ2qgrQts4QEspng3u+TnSWdLESPYTnezNxL6ToFPXuWpN2xVwBnfDrUj9bmT6fUaPpzqxkXST2udTP1p+o8aLVIj3EoNMIRm5G3jTgcp6L5LmZI5eQhCfpP6iPPE/G7A36zFHw+VAu+j616FswlcnCnDjnF0tAlkI5WK3iIEu4EjlZ3iQieQ6vVFNj4lSfZ2KuaLHFO89OGsS5XW28jVx+QLexh0ORukZXfWfsO6VS9snpNW5rd4xF8p/W60/CGWsLuU9qHgwxVFp4+UAcBV8pIF6ycyhEci4woHDw6Lr0tG1CtoOOM+rM/h3B3NI9G4bSIMOwn1uEspDuLhw8NhE9RyasD/QODKCJaNBj6uwv9mxvFVZMeC9Dlcxn4BdJvHnqQ08pNBLN6WiVZyxe7c6VMZfAKQhGJkfhRpGmF1y/fbBD4bsywi54oAmsTN+zIJj+FUAM0xwIGo5VJ+PHikQf2lR0joe861kyUpDZbuM6zJ68QfO98LcYCY6pUwZwnOsyBKvPKUa4SDJmwiWhGVDLVDDvJurcW3yW3sPqJfNCg2c0aMLr/+BdVBnteazBjcCpJ8dTshNWsplCvjbQ932dxeuTkUsPm18AhrHH6rWbWJSIibHA15ibzPphyQjIf6thx92AyaRvjl6kWMAnNxQGHYRhfEvShBdf8QxGw5oKdrT+0zs3PIHdsc1OxXEpY2E9CtKFqT/SqSF6SiIAS137tYkMZ4d9/83mwXGPvJDGMlKoITOcBu0lgVIi4LYj28u0K33U5pNwj77BfydDnPb3bvlRHRKBAEei7V6DUoMg2Hh84NqpYejbRt5Ni/7F7dKKDSi0InduPRBDXV3cJXeXwEHAQTEgOqLEJFTiBycG1NA+m3ldKWd3EPXei1UpNycxoDukQAPvAbhcP4FxQBPo3p6I7lm
- 5cRH7zau
- WwWxjEX6m+uGF3hlTYV7U16McU2UukC/xqW2aPG5MH8AuwAWpcQyuj42Akdj5UUI4nyQnnJr21G8BPo/MH3Hl5g50wZah445LGoWdEF+iIcwsraMgSLinXGhw8TDXbXN3mP8SFDio8uM/AHgj86GT+w1ePgMxWLuuuTq1J62oDeM4EtBkAQ9al0FqiSjARtd2Rq/2exqvh8AFxJ1MrEQO5b2c/C59b5G7wUQg+Hxr44JvcHaRPM5oUXkMPDzM6sXnu2h4GD93n++695NWXagZRFMSjx9CoQRMkTv4m6vix4RimAQ=
+X-Rspamd-Server: rspam07
+X-Stat-Signature: b9cm79y6aubh4j6wwtwpdt5u66t96wya
+X-HE-Tag: 1757610164-794231
+X-HE-Meta: U2FsdGVkX1/LwgKVDwpdm9O2x+Gmwqss1dEDgJ1qw2xhZKTJJ7hPuP4KXAP3WGq3XZXtxtuQ19bEzpPY+XgSqaObXj+Rmb/u4AfueTLXXw0XglhtLiXMytGP58jxDcGma4rfksoR5oORwCu4fSpS3nDn0+xrvxeZJXkbQ6NLSkWkXD+AJRPVkBM94sBPq4Gy8eof0zsXcN7tdn5WoVpv5sko7gKyhHPHaWp5UenLNPvpEzRxV9H4KZ/5ztAPnjWiq4UYwvJPDWUyAbveg0LEBaptfLOfyXGPaYP86tZf+Ni2GtANPqNyr2aWDZekXudXW+Pu5QBI/gWBf6BvdmrRrZue+RZIdC9CG4yXbz9xxLVN29WgAfdPq0FWP3LtgQQMnDN4wTmQ2aVq0dpbaMHZyNxaKU+yrES2naDOOI6vV6d9oA/MQrAV5yEaIGlki9jA8/rk86UvCeo5AR2HFebQTqV62i6Y94vYbi+GdFc29206pKHzVTCgebdTDiq3iMOeAKxUvJFEoPaFg7P6z/+1TuISCrP2R3vAkLKv60mm81aD30fdDmI0/rokdigRjFGpHtGIWG4gLBUq/4OLlsQ5BbIQ9qJBEeRPmFIk6CwnFC/cQzE1exXZxy7pTvYH9q1k2O7OLlE4wRqIX1jp51N0aXeEBUH9crxFWHyD9TlURr7CIMMch2nWZwnUsQ7/TXRhsDOrmLY6fIudmnPrjwGLs89+GTW3vxXDba0cwVpJ5vlXLg7ueKdjXp/YUN2dyLOV6kjAbte5vWUY9Qp+DIYeFdNojzwXJc8XNX+tLY1+0M3nbKPE8kJXZyhl/7KYl5CYG6ZOY/Ww72oev7jGYa2uEfpgiVEhzBV1appxvrl7zITYGH8KECGxnhT0W5zlaKPOSaFZ3PdYvU+JaAFbETA7Zr8gxXFXWB3u2/RSOfb6Y5v5NEh5HtMGw9bKfgHEUFqOve1ogt2dqVIlPf8u1B+
+ g0N1Qa8i
+ ycUWx1hoAdA7GQD2yapUJeT/Qrq7evabub5sANW7GmyhzYEygrGPvg0k7etwr7IJ6nuqml4GjGNShIndQJGM9ZLs8SSfWbOCMxyF14Bj/nfVSqqImybCtYe+c+Hf7oE83Tt87oeWBgq+jleCR3wZyxn2fd3B9+NHQZTNpMTAieJtZM26tn9bTBtyHS0FZKdpdVf9ipHGl08ASB2rQT1YW87Uc89OrD2SpDhYdwtmH6OVCezjcrqtETW+1uUQwlzzu7Tjw3EJVf75aP/De3rl1i6wKsdjvtLTS7TGzkzYUYJ0yr/Y=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,64 +140,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-We touch slab->freelist and slab->inuse before checking the slab pointer
-is actually sane. Do that validation first, which will be safer. We can
-thus also remove the check from alloc_debug_processing().
+The struct slab pointer has been obtained one from the object being
+freed on all the paths that lead to this function. In all cases this
+already includes the test for slab type of the struct page which struct
+slab is overlaying. Thus we would not reach this function if it was
+not a valid slab pointer in the first place.
 
-This adds a new "s->flags & SLAB_CONSISTENCY_CHECKS" test but
-alloc_single_from_partial() is only called for caches with debugging
-enabled so it's acceptable.
-
-In alloc_single_from_new_slab() we just created the struct slab and call
-alloc_debug_processing() to mainly set up redzones, tracking etc, while
-not really expecting the consistency checks to fail. Thus don't validate
-it there.
+One less obvious case is that kmem_cache_free() trusts virt_to_slab()
+blindly so it may be NULL if the slab type check is false. But with
+SLAB_CONSISTENCY_CHECKS, cache_from_obj() called also from
+kmem_cache_free() catches this and returns NULL, which terminates
+freeing immediately.
 
 Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 ---
- mm/slub.c | 17 ++++++++---------
- 1 file changed, 8 insertions(+), 9 deletions(-)
+ mm/slub.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
 diff --git a/mm/slub.c b/mm/slub.c
-index 909c71372a2f542b6e0d67c12ea683133b246b66..93df6e82af37c798c3fa5574c9d825f0f4a83013 100644
+index 93df6e82af37c798c3fa5574c9d825f0f4a83013..106dbce64acdf32c1d271ec130c35c0ec0e15630 100644
 --- a/mm/slub.c
 +++ b/mm/slub.c
-@@ -1651,11 +1651,6 @@ static noinline bool alloc_debug_processing(struct kmem_cache *s,
- 			struct slab *slab, void *object, int orig_size)
- {
+@@ -3487,11 +3487,6 @@ static inline bool free_debug_processing(struct kmem_cache *s,
+ 	int cnt = 0;
+ 
  	if (s->flags & SLAB_CONSISTENCY_CHECKS) {
 -		if (!validate_slab_ptr(slab)) {
 -			slab_err(s, slab, "Not a valid slab page");
--			return false;
+-			goto out;
 -		}
 -
- 		if (!alloc_consistency_checks(s, slab, object))
- 			goto bad;
+ 		if (!check_slab(s, slab))
+ 			goto out;
  	}
-@@ -2825,15 +2820,19 @@ static void *alloc_single_from_partial(struct kmem_cache *s,
- 
- 	lockdep_assert_held(&n->list_lock);
- 
-+	if (s->flags & SLAB_CONSISTENCY_CHECKS) {
-+		if (!validate_slab_ptr(slab)) {
-+			slab_err(s, slab, "Not a valid slab page");
-+			return NULL;
-+		}
-+	}
-+
- 	object = slab->freelist;
- 	slab->freelist = get_freepointer(s, object);
- 	slab->inuse++;
- 
--	if (!alloc_debug_processing(s, slab, object, orig_size)) {
--		if (validate_slab_ptr(slab))
--			remove_partial(n, slab);
-+	if (!alloc_debug_processing(s, slab, object, orig_size))
- 		return NULL;
--	}
- 
- 	if (slab->inuse == slab->objects) {
- 		remove_partial(n, slab);
 
 -- 
 2.51.0
