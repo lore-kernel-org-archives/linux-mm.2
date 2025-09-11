@@ -4,117 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 183B6CAC587
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 17:02:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16714CAC587
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 17:02:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 23ED78E000F; Thu, 11 Sep 2025 13:02:48 -0400 (EDT)
+	id 722728E000B; Thu, 11 Sep 2025 13:02:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 17C4F8E000B; Thu, 11 Sep 2025 13:02:48 -0400 (EDT)
+	id 6ABD78E0006; Thu, 11 Sep 2025 13:02:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 042CC8E000F; Thu, 11 Sep 2025 13:02:47 -0400 (EDT)
+	id 5C2638E000B; Thu, 11 Sep 2025 13:02:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E6DB68E000B
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 13:02:47 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B0731160531
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 17:02:47 +0000 (UTC)
-X-FDA: 83877588774.12.8DF6E35
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 0D9D020008
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 17:02:44 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=UlRLIenv;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="oGn/PNUn";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=UlRLIenv;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="oGn/PNUn";
-	spf=pass (imf13.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 48CCD8E0006
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 13:02:53 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 032FF1A0522
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 17:02:52 +0000 (UTC)
+X-FDA: 83877589026.16.F461D4F
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf08.hostedemail.com (Postfix) with ESMTP id CCC0D16001A
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 17:02:50 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=caB69UBa;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=eciko9ma;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=caB69UBa;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=eciko9ma;
+	spf=pass (imf08.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757610165;
+	s=arc-20220608; t=1757610171;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gU8uzwxAYobW2SW2rVaJMdcJbOZvC5xNrUDaVXNRGxg=;
-	b=0OJP0x8gU8a2pvqCDUXW4ygny5WVY5zgSPKyI/+8Rej8U13jxwV9ZauzVQBMWISHZjWFvL
-	AIwnHQ05oCyHf+r2n3skWJZg+BqKTfwEOEpItFKk1hjh6xRlMJELbkF9t7EVphmZ/7I18W
-	es5dCxswhEZ5ivSP9ZX3kF7ZP09JgQI=
+	bh=jRP07fiR2IX4gxo9ENuoZTQhuQ0mAms5suV1861+oXk=;
+	b=6yH4wD+Lu9XYW0LoiVtw3oVN9dnkL8dyrZ7D4pzfourcFL9jdTgRHOHPeBx6m16hFuSB7d
+	tfEVHzpxbEp2us5AjxB95tMAfgf9xNylsbRVBWHr7UoDgx+UiUTf8YMWuC1WsJujBs4YQ6
+	2RPOW1Np6dLom11axpzaJeIh6MiWYyk=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=UlRLIenv;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="oGn/PNUn";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=UlRLIenv;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="oGn/PNUn";
-	spf=pass (imf13.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	imf08.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=caB69UBa;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=eciko9ma;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=caB69UBa;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=eciko9ma;
+	spf=pass (imf08.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757610165; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757610171; a=rsa-sha256;
 	cv=none;
-	b=7/0fqBcoCErbnCt6SQJj4KuGruH0e4TwshbVsB7jeR04bVnIaiaANiPwSROdDrh5yJUBZ5
-	I+u19OMeXLaS5VFdsmtg5khPXuhrSxSOpbDBulSJyYM52TlKXgKz0xgaADf1xC/IVoKfRw
-	CbWderEhJE5l8t4RNYbjuIwC/L5ZmOY=
+	b=XHanMk/4FIV+9+fMD6zwd23156dNaTcfHdIug8wbUilVc811Ugkjl+WHlrpE4A+Dxf3lMk
+	GpWT0sAq9Nsvhx7LiWaaCUSV1C/aIZ2+BfZ9yOEwsUFcDkhktnYZ5y9+hNipfZHlrO+vXm
+	Oe7UxtNOQBplS065sXJtUQcv9MiTbuE=
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 4B129385FB;
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 11BE47647F;
 	Thu, 11 Sep 2025 17:02:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
 	t=1757610155; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=gU8uzwxAYobW2SW2rVaJMdcJbOZvC5xNrUDaVXNRGxg=;
-	b=UlRLIenv1BNmXoAJVTeMxpBMoAOaKHc+pxyu8MYuMXV9fqIzZ772TMdMW3aU9SyOhqvpu8
-	R2akgspt2OlhZShcE7t4dWKxIt5YhY8i24bHvKqb7c5INKHxKjJ0O+qvtYZPfNYp8VD06D
-	5JRoTmIMTR0olrImNVE8InGeFX+Jc2M=
+	bh=jRP07fiR2IX4gxo9ENuoZTQhuQ0mAms5suV1861+oXk=;
+	b=caB69UBaTbJw0cyHbpwNyhsojWzldNenRQf7IxQxYYwsRwFbZdTbBFqmXnGnAGylbG5XUg
+	I5a6YRc/oyJW8A5J8RVQ776dTKd4NHj4ur+OL0++IZVMvjqcxkOoHUX9zRiuO8du7yXG5E
+	HxvVaXgq4LODJ7BLPbAebZN/vGYVRTs=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
 	s=susede2_ed25519; t=1757610155;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=gU8uzwxAYobW2SW2rVaJMdcJbOZvC5xNrUDaVXNRGxg=;
-	b=oGn/PNUniXADceo50TVabUOMevpYbP0N9zyRD3gLNzAzq1D7glDcZHWggPBOKsv2PZAEqQ
-	JVylQibCsPAR0iDA==
+	bh=jRP07fiR2IX4gxo9ENuoZTQhuQ0mAms5suV1861+oXk=;
+	b=eciko9ma7alFW2z3yd0wB6yiSLgj3Fo+mGOYT5Imo3INWV5tQGVmCZaGV+oajdOCArOO+C
+	Kot8xIChGaREOEAw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
 	t=1757610155; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=gU8uzwxAYobW2SW2rVaJMdcJbOZvC5xNrUDaVXNRGxg=;
-	b=UlRLIenv1BNmXoAJVTeMxpBMoAOaKHc+pxyu8MYuMXV9fqIzZ772TMdMW3aU9SyOhqvpu8
-	R2akgspt2OlhZShcE7t4dWKxIt5YhY8i24bHvKqb7c5INKHxKjJ0O+qvtYZPfNYp8VD06D
-	5JRoTmIMTR0olrImNVE8InGeFX+Jc2M=
+	bh=jRP07fiR2IX4gxo9ENuoZTQhuQ0mAms5suV1861+oXk=;
+	b=caB69UBaTbJw0cyHbpwNyhsojWzldNenRQf7IxQxYYwsRwFbZdTbBFqmXnGnAGylbG5XUg
+	I5a6YRc/oyJW8A5J8RVQ776dTKd4NHj4ur+OL0++IZVMvjqcxkOoHUX9zRiuO8du7yXG5E
+	HxvVaXgq4LODJ7BLPbAebZN/vGYVRTs=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
 	s=susede2_ed25519; t=1757610155;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=gU8uzwxAYobW2SW2rVaJMdcJbOZvC5xNrUDaVXNRGxg=;
-	b=oGn/PNUniXADceo50TVabUOMevpYbP0N9zyRD3gLNzAzq1D7glDcZHWggPBOKsv2PZAEqQ
-	JVylQibCsPAR0iDA==
+	bh=jRP07fiR2IX4gxo9ENuoZTQhuQ0mAms5suV1861+oXk=;
+	b=eciko9ma7alFW2z3yd0wB6yiSLgj3Fo+mGOYT5Imo3INWV5tQGVmCZaGV+oajdOCArOO+C
+	Kot8xIChGaREOEAw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3A2C413AD6;
-	Thu, 11 Sep 2025 17:02:35 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id F0C5C13AD6;
+	Thu, 11 Sep 2025 17:02:34 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id KKnpDasAw2gUJAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Thu, 11 Sep 2025 17:02:35 +0000
+	id ECiDOqoAw2gUJAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 11 Sep 2025 17:02:34 +0000
 From: Vlastimil Babka <vbabka@suse.cz>
-Date: Thu, 11 Sep 2025 19:02:39 +0200
-Subject: [PATCH 6/6] slab: don't validate slab pointer in
- free_debug_processing()
+Date: Thu, 11 Sep 2025 19:02:35 +0200
+Subject: [PATCH 2/6] slab: wrap debug slab validation in
+ validate_slab_ptr()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250911-slub-slab-validation-v1-6-8b67eb3b3dc5@suse.cz>
+Message-Id: <20250911-slub-slab-validation-v1-2-8b67eb3b3dc5@suse.cz>
 References: <20250911-slub-slab-validation-v1-0-8b67eb3b3dc5@suse.cz>
 In-Reply-To: <20250911-slub-slab-validation-v1-0-8b67eb3b3dc5@suse.cz>
 To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
@@ -124,14 +124,14 @@ Cc: Harry Yoo <harry.yoo@oracle.com>, Christoph Lameter <cl@gentwo.org>,
  Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
  linux-kernel@vger.kernel.org, Vlastimil Babka <vbabka@suse.cz>
 X-Mailer: b4 0.14.2
-X-Rspamd-Queue-Id: 0D9D020008
+X-Rspamd-Queue-Id: CCC0D16001A
+X-Rspamd-Server: rspam05
+X-Stat-Signature: obu7yhawe4z9zq9fns8bxcxfqrgp9o4o
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: b9cm79y6aubh4j6wwtwpdt5u66t96wya
-X-HE-Tag: 1757610164-794231
-X-HE-Meta: U2FsdGVkX1/LwgKVDwpdm9O2x+Gmwqss1dEDgJ1qw2xhZKTJJ7hPuP4KXAP3WGq3XZXtxtuQ19bEzpPY+XgSqaObXj+Rmb/u4AfueTLXXw0XglhtLiXMytGP58jxDcGma4rfksoR5oORwCu4fSpS3nDn0+xrvxeZJXkbQ6NLSkWkXD+AJRPVkBM94sBPq4Gy8eof0zsXcN7tdn5WoVpv5sko7gKyhHPHaWp5UenLNPvpEzRxV9H4KZ/5ztAPnjWiq4UYwvJPDWUyAbveg0LEBaptfLOfyXGPaYP86tZf+Ni2GtANPqNyr2aWDZekXudXW+Pu5QBI/gWBf6BvdmrRrZue+RZIdC9CG4yXbz9xxLVN29WgAfdPq0FWP3LtgQQMnDN4wTmQ2aVq0dpbaMHZyNxaKU+yrES2naDOOI6vV6d9oA/MQrAV5yEaIGlki9jA8/rk86UvCeo5AR2HFebQTqV62i6Y94vYbi+GdFc29206pKHzVTCgebdTDiq3iMOeAKxUvJFEoPaFg7P6z/+1TuISCrP2R3vAkLKv60mm81aD30fdDmI0/rokdigRjFGpHtGIWG4gLBUq/4OLlsQ5BbIQ9qJBEeRPmFIk6CwnFC/cQzE1exXZxy7pTvYH9q1k2O7OLlE4wRqIX1jp51N0aXeEBUH9crxFWHyD9TlURr7CIMMch2nWZwnUsQ7/TXRhsDOrmLY6fIudmnPrjwGLs89+GTW3vxXDba0cwVpJ5vlXLg7ueKdjXp/YUN2dyLOV6kjAbte5vWUY9Qp+DIYeFdNojzwXJc8XNX+tLY1+0M3nbKPE8kJXZyhl/7KYl5CYG6ZOY/Ww72oev7jGYa2uEfpgiVEhzBV1appxvrl7zITYGH8KECGxnhT0W5zlaKPOSaFZ3PdYvU+JaAFbETA7Zr8gxXFXWB3u2/RSOfb6Y5v5NEh5HtMGw9bKfgHEUFqOve1ogt2dqVIlPf8u1B+
- g0N1Qa8i
- ycUWx1hoAdA7GQD2yapUJeT/Qrq7evabub5sANW7GmyhzYEygrGPvg0k7etwr7IJ6nuqml4GjGNShIndQJGM9ZLs8SSfWbOCMxyF14Bj/nfVSqqImybCtYe+c+Hf7oE83Tt87oeWBgq+jleCR3wZyxn2fd3B9+NHQZTNpMTAieJtZM26tn9bTBtyHS0FZKdpdVf9ipHGl08ASB2rQT1YW87Uc89OrD2SpDhYdwtmH6OVCezjcrqtETW+1uUQwlzzu7Tjw3EJVf75aP/De3rl1i6wKsdjvtLTS7TGzkzYUYJ0yr/Y=
+X-HE-Tag: 1757610170-775101
+X-HE-Meta: U2FsdGVkX1/rC4GfUk4qhjbVdzrIlcRN2Q/rQTe+ZVr1CrBqTxUPbpyla02RuMLqJnOJLHgOSuEOFd/5Cz90d8XpR1uU2Azzq30G1d8sVCLJy0T2sGmW2JG+yzwchgLRKKAfVdewB6djtK+moDYoG7tv1i2Nej8GEnvyEI00XX3HJadu6CVQbOoJ6DBaCtzclTI4/dymMa5SKRo7ZxKItYusNhBStmM3Qkl4rXoYN/fj1AvtCw3QV6HCEFVfHbyjsJi3tDvn2OewBw4dgG4fRfQgB9nKnKW8skwj7Kdz/Pq4gXxS6lQXESPxvr+C4VB2ZgDDPq6G4UhU81nLGMEnLXPkNBIsJ20z4o5exoavmuyARmhhehPy9y3a2jbTKOtz5vVvuV6jXYPAr2/OjFNZ6cVyEG3eZh0VGpZV40IOvbKg6XvvhkR8aCYCuGW9NXtL1YVXReS6pjsd3ZdbhOPZ5tkF0i8xwLl9fk+kI4GklpYqsYihJBz9kiPPA9IBt+9WkK2jVZz0Upyd6fG6jaXGwhmYkVHVOWLvQeix9sFZQHi5FskqXouf1LMzfWqZL6DoaAxpkQzAUY0qfKCsJPuMvZeAoHk8fK8y2PVKs8rz7lgTbHiC3IOwySwN4v1gt62ls77tdkmYJpOUSGOPpiXAh4ucagHnJMs5IFc5ayQ99HLVcZYgF+o05ZqpD5u5WrmXQXE/wYuH3fiW6ecdizNYQB+qcImPIVWSXT/Lf63jKFAZ7TUHfJz6H7WMVzj2iJfr9fHvRdqFovxSwt5vtq6DE8kByxLsZvMgzmaOYzVwLQx2QroGhE1VvVriJNZGCPiljcK0AyoRRkE4Dk7ZB4dtNH3nNtH/NJx4/HYVfxwvUndFViVLVbj5YPumbtwgZGbxqHkk1G3uBxheahclyBZiPHExfW2bZNUU9DO64LH8gr4j70R80hc8C+9VXvGki5Le1NTT1aCDkGJNy4Mnzwk
+ 0y4p41Qg
+ XF4WkU0ZbIS/lWclpPkxP1WBRJGoFXRodiYF0S/uFZac/6/jwoZJO03NZY6QEOP2cpwC4OkPLEwAyGOEWDUvccy9FMn3nduNZ7JLBX+bv7NjDPA2osQtQH72js/KT0Yg3WJ4Ms4WOaQfXGtKSbWND1RvmZv13s8Ejx8/ces3A9Ul4r4T0adOD7g+y6EA1DUsHAjYAY7qptKVGP+hvBOU0eWr+KBCS7GfrBFQHEW0u35VOIse7LbLXJlx9wOkiA7vXY4JTq7WCczoMWTdMQ2zwScfxqjLeyg0ZnKTw6d5CE+P+IBo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,38 +140,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The struct slab pointer has been obtained one from the object being
-freed on all the paths that lead to this function. In all cases this
-already includes the test for slab type of the struct page which struct
-slab is overlaying. Thus we would not reach this function if it was
-not a valid slab pointer in the first place.
+This will make it clear where we currently cast struct slab to folio
+only to check the slab type, and allow to change the implementation
+later with memdesc conversion.
 
-One less obvious case is that kmem_cache_free() trusts virt_to_slab()
-blindly so it may be NULL if the slab type check is false. But with
-SLAB_CONSISTENCY_CHECKS, cache_from_obj() called also from
-kmem_cache_free() catches this and returns NULL, which terminates
-freeing immediately.
+For now use a struct page based implementation instead of struct folio
+to be compatible with further upcoming changes.
 
 Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 ---
- mm/slub.c | 5 -----
- 1 file changed, 5 deletions(-)
+ mm/slub.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
 diff --git a/mm/slub.c b/mm/slub.c
-index 93df6e82af37c798c3fa5574c9d825f0f4a83013..106dbce64acdf32c1d271ec130c35c0ec0e15630 100644
+index 56143bfd1ae319d384981c810a5ed84af00f4afa..5bbfe4ee8d9846ec9a34584c10750388849da3b9 100644
 --- a/mm/slub.c
 +++ b/mm/slub.c
-@@ -3487,11 +3487,6 @@ static inline bool free_debug_processing(struct kmem_cache *s,
- 	int cnt = 0;
+@@ -821,6 +821,15 @@ static inline unsigned int get_orig_size(struct kmem_cache *s, void *object)
+ 	return *(unsigned int *)p;
+ }
  
- 	if (s->flags & SLAB_CONSISTENCY_CHECKS) {
--		if (!validate_slab_ptr(slab)) {
--			slab_err(s, slab, "Not a valid slab page");
--			goto out;
--		}
--
- 		if (!check_slab(s, slab))
- 			goto out;
++/*
++ * For debugging context when we want to check if the struct slab pointer
++ * appears to be valid.
++ */
++static bool validate_slab_ptr(struct slab *slab)
++{
++	return PageSlab(slab_page(slab));
++}
++
+ #ifdef CONFIG_SLUB_DEBUG
+ static unsigned long object_map[BITS_TO_LONGS(MAX_OBJS_PER_PAGE)];
+ static DEFINE_SPINLOCK(object_map_lock);
+@@ -1453,7 +1462,7 @@ static int check_slab(struct kmem_cache *s, struct slab *slab)
+ {
+ 	int maxobj;
+ 
+-	if (!folio_test_slab(slab_folio(slab))) {
++	if (!validate_slab_ptr(slab)) {
+ 		slab_err(s, slab, "Not a valid slab page");
+ 		return 0;
+ 	}
+@@ -1653,7 +1662,7 @@ static noinline bool alloc_debug_processing(struct kmem_cache *s,
+ 	return true;
+ 
+ bad:
+-	if (folio_test_slab(slab_folio(slab))) {
++	if (validate_slab_ptr(slab)) {
+ 		/*
+ 		 * If this is a slab page then lets do the best we can
+ 		 * to avoid issues in the future. Marking all objects
+@@ -2818,7 +2827,7 @@ static void *alloc_single_from_partial(struct kmem_cache *s,
+ 	slab->inuse++;
+ 
+ 	if (!alloc_debug_processing(s, slab, object, orig_size)) {
+-		if (folio_test_slab(slab_folio(slab)))
++		if (validate_slab_ptr(slab))
+ 			remove_partial(n, slab);
+ 		return NULL;
  	}
 
 -- 
