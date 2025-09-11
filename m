@@ -4,120 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3C13CA101F
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 02:49:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 633FCCA101F
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 02:52:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1EB7C8E000D; Wed, 10 Sep 2025 22:49:34 -0400 (EDT)
+	id BB6F58E000F; Wed, 10 Sep 2025 22:52:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1BC5A8E0001; Wed, 10 Sep 2025 22:49:34 -0400 (EDT)
+	id B87108E0001; Wed, 10 Sep 2025 22:52:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0D2458E000D; Wed, 10 Sep 2025 22:49:34 -0400 (EDT)
+	id A9D198E000F; Wed, 10 Sep 2025 22:52:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id F02F78E0001
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 22:49:33 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9797C1A0392
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 02:49:33 +0000 (UTC)
-X-FDA: 83875438626.02.A52D24B
-Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
-	by imf06.hostedemail.com (Postfix) with ESMTP id B8D6F180004
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 02:49:31 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=atMU47hM;
-	spf=pass (imf06.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.219.45 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 957268E0001
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 22:52:33 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 52DF413A3B6
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 02:52:33 +0000 (UTC)
+X-FDA: 83875446186.05.063F9BB
+Received: from mail-oa1-f53.google.com (mail-oa1-f53.google.com [209.85.160.53])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 88AFB1A0002
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 02:52:31 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=D85w678k;
+	spf=pass (imf19.hostedemail.com: domain of zhang.lyra@gmail.com designates 209.85.160.53 as permitted sender) smtp.mailfrom=zhang.lyra@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757558971;
+	s=arc-20220608; t=1757559151;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mPkvLMLUO4/MeSrlRc20PFaOfOQfZFZatjMRvIBVqIE=;
-	b=jj5L2ksPe1GIJK01gQQoVky6HTWsDkMpdXUArTnJn64QtmNJnC8pS896gDIrAgIAk3Yi+f
-	1KPyELjChDZ42JwRj8avSpVmPhVZ+cKCf3LoMChcXixRxIlIXnr7dtxRW+oKg6aEUA4Asm
-	JKvjNEdeJbEH583MmIWNs4yxSoTOujs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757558971; a=rsa-sha256;
-	cv=none;
-	b=KFJtw9i0vUk62lTSgPvVHbLUyEbW8sRAnj2kBJJOFx4D7Fwf7SI3IOzWiNjIKheogO7TnZ
-	XGZ4Mh6tY6QyJIm6AiPWv1eCSZYM/tq4JqX1c0v1PpK+BYFuoOxoGP9pMMv/9zPKGiwNLu
-	+8v5FaoDwEVV6g/mI99Leb0tXiXnX9o=
+	bh=bpMjHp2LWdB4AWDkPscdVaO0VRTcuWiIT22FTu9B1MU=;
+	b=EGSbarlHTMG6TYSQB+erSPcg02oGt8hY0bMAiexIjZ7kNblfVt/QPf+PwifTADDGIxUU/Q
+	2dnXOb9eECHj9in/9ByOienXCmRrew++R48T58cVgZAYubyifH6d72CzXl0FJiZm51iDJj
+	nHSRhatOBwwG0OqgyUXIS00KT8qAibI=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=atMU47hM;
-	spf=pass (imf06.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.219.45 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=D85w678k;
+	spf=pass (imf19.hostedemail.com: domain of zhang.lyra@gmail.com designates 209.85.160.53 as permitted sender) smtp.mailfrom=zhang.lyra@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-70dfa0a9701so2711356d6.2
-        for <linux-mm@kvack.org>; Wed, 10 Sep 2025 19:49:31 -0700 (PDT)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757559151; a=rsa-sha256;
+	cv=none;
+	b=K75Ej3cSfys4pKPies/woYot+xrWeIkrkRxZ9cqXZ3Ti+ktPU16LogqX6tTkSbsOHkJGUW
+	gsgU2kdgC9lRG0c5CCc09wnUjBJXFC2V09yWIjVySFbJH88rAjWPtn46d2JTqVlguQdZFZ
+	EQrbihCqYJRh91+gPdfP4IPGZje+1nM=
+Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-3257a70c221so176983fac.3
+        for <linux-mm@kvack.org>; Wed, 10 Sep 2025 19:52:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757558971; x=1758163771; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mPkvLMLUO4/MeSrlRc20PFaOfOQfZFZatjMRvIBVqIE=;
-        b=atMU47hMBODIujovd71zQ1gnRX8KVEl3r01zMfI1JluD7NTfx1qUJ1ZALlJu1ru9Kt
-         +/k0DrctpRu9kTZzQjG2/YH9MxY71N+UdK2m2h9zPWnuRgxCIsTh3yJpPpTw45GA8pq+
-         dGClZw+JAvDJ0XuF51Ubfn+FttrYuPBJzbxDD1HHRHO7uFGmBfGh3ymdIAS9yOAZ37Zq
-         +ctDOtw95csW6QbzqKzzvtiv6JqFV7oXfUTt+3sCRw5vtmBXubVUQf8vhft4MgJE9Ahh
-         BGEbMvlTxLHKpgb5rXCdvdRKSxRBhqGV+RM2MGyeBLmOUdj9Vbg0hAxahusgrwiWucs8
-         d41Q==
+        d=gmail.com; s=20230601; t=1757559150; x=1758163950; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=bpMjHp2LWdB4AWDkPscdVaO0VRTcuWiIT22FTu9B1MU=;
+        b=D85w678k7ZBbPzJJI+88kQaVPvglKiZg+XU9LvWD90tioHRumoF0gUy7VOj/5VUEZO
+         hndAVHFahH7B4VpSLQ97+63+F+Cnq4niMxB+ywkdtwxNk4FiRGDCAzyqSSRsnNF9l+Vz
+         DXMl4aQxIypJpagp8ZIOko0D5BeE9q8NtMSI/K88l6Mpz9GBC7A2mES7LFWp+edDn3wO
+         ZX80dI9XpWE/Y3cOaRWnHUjq4BXv96Wx9n4GCfpYorVMHeyOFzG53sh0HE5VsnfsCSGP
+         NDIgG4+pf8+BWMBHLRJnw/eKNMPo7I8lxFE4I+FOSuATq4uqIqaI2i4M6r7wfzYnhMDZ
+         vtjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757558971; x=1758163771;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mPkvLMLUO4/MeSrlRc20PFaOfOQfZFZatjMRvIBVqIE=;
-        b=JjpyGYez1ZVfVnQl+B+3IEfnJsMUdEHHeOARUiIwYitLLrX5GJ6h59WXcKoB0gkkAC
-         mLogeSZ2BSCvSjcj5is8Tv7kOFtrufnD01gfueFjy674ElRMaX0zeMuEiPpMrZwq4eAF
-         jW+phu3ZE97bTASm+7Cc8Z9uuHO9F6edk5MvCjSZH6Upf7+/k6uqFkkNSzjiD+ZHcy9B
-         bEVkSjhw2lfV4Xd6J6kRkmHCRetCSotuuamAP4ubTCeZrg3p2ICgvDroPs2k9BYrzZWe
-         Jxs6j4tQka++e20bLuBsPQFPWr34CpqIOdFIDeCcIkKk5YXbcCdQwIZv0C/4P2z5Vuy/
-         aUfw==
-X-Forwarded-Encrypted: i=1; AJvYcCXZ2OGvYwphYMqSvzt49cj+4aT8MwbXVPD6NV3p5LYsuGbxJ+G7zQMgv1atSGUBbO1YirmOpzOXgg==@kvack.org
-X-Gm-Message-State: AOJu0Ywhm6OFgT8eYl5UD9xcuiChLJjDfS4yTbIy72wUpJMcUFIyn7fl
-	HKoeKCmX92fGlnhRDNs+V0D52mkutoMhB7susBNrpXvgQgzZ23lrIS5GnHywiAHu/TrCVGXYG/R
-	tpfWSQYJtwhdMZGB+78lXBQPaALVcWys=
-X-Gm-Gg: ASbGncvxxykv2aaAkeqN/bEasl6uKNycKKVEG9rBvXNfUufOChAA6qKdEl65WsUdjTC
-	Sg0N/uwykcEU6xmdbJW73lDw/e4FsinikivK36oj16I1WS3GFhR1C+DO16azWaqTR9Fb9pLhSeZ
-	51YGRKQ9zUe6uzWAtkvazZYGpdpfeO2zjcwkHNj1ocleBpHsLl3XZpV1tJaucqNHeJMS6BReSdk
-	Gi3Q6qZbvQKMWsxJq9RB7VhETsyG6vOUlPXNW3O
-X-Google-Smtp-Source: AGHT+IGqscjg9YNQgZdBNOy6g5+0CDhJK0qHro2vjyAAA8dy6Xw4gh+wTZvmnYMWSlPTMxgNC1MioX6UzB7j+ICQZ0c=
-X-Received: by 2002:ad4:5f0f:0:b0:729:aa08:11f5 with SMTP id
- 6a1803df08f44-7394587e3b9mr199292636d6.64.1757558970712; Wed, 10 Sep 2025
- 19:49:30 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1757559150; x=1758163950;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=bpMjHp2LWdB4AWDkPscdVaO0VRTcuWiIT22FTu9B1MU=;
+        b=V9ivEkgLh92DDZukl7LXFPt6IxBo2al8PcJweXm2foDmxYJhh2Uqs8NHPbPOyv4/kj
+         yr36p4JCzwBPjsCNTh8Jgj6av2O5CKlT4XYg6fcg6bedzkrN2tg66U4A9bTJ28l2WizN
+         f8TUpY2O7RE4n1AE9iu2NEVd+0wdNRrXYYXXuRQbyVbqERCfIaQzMiSrYdTNh6g4ZVtT
+         t0LJoxIzkmYLuMt+R8ZVpzk1p8nrnW3/+HefMCuFB/1+tdz8lyEVfpwbxfREXjig81Kq
+         F4GWQHlIc8FhPppiY9SXOLUMzGRYSrGrJvu/e+ftwFEhJIUYS3RGtnGXHoENP5jCT8QI
+         rlxA==
+X-Forwarded-Encrypted: i=1; AJvYcCVSg4fsd4+Si+I4iznjsobChKalh/Z3sYRKy4xjWvTZolfZ1iiEzErD+UwkFJUJxR2NWWA7mAfKfg==@kvack.org
+X-Gm-Message-State: AOJu0YwCmf6g8Lo6TLwW6NWhIyvTgIZPlFSQDw8FtfuiSIGR15dtEXDW
+	MpobqOoqMb8/pxGfJ3ER5AEttrsNuR7oZ8npepJCeQ5OpIjpTLF+W52PvH8SUN4OViwIt0Nry4r
+	K6GKdLj1DZUpcEyvSPkMt1mnVLAiXXnw=
+X-Gm-Gg: ASbGncuZ8E1kDKvmvNcBLMgaRN2sAxLFsfEIw3AahGA5tu7J/QVDpggVBS4KTrHc3Yp
+	4CJgg34hadcFwNhbRFU7rdhtUXVZ6EmZhYMahiogKQt2OuqMm0RvtVmO8DAooynbOtaDyHA65+z
+	zH/7sRtbQuqZi2w1D/sm2Fgf+mz7Fmhi2el/CQiOBsXcDXDoKfdfLU66c1sCkWwh4BkdYbW69oE
+	HobKQ43Ee/3vVPSHE9ol92AUpQUVFJKezyMhKc=
+X-Google-Smtp-Source: AGHT+IFv2XibXXypOlqv0RILHKkLaMk/1jc9mR92t82jtZp+Vm0vVDQ6eAhrLbih1UZ+0wzcwt9/oVQRFlYGSifHFZw=
+X-Received: by 2002:a05:6870:524d:b0:321:2680:2f84 with SMTP id
+ 586e51a60fabf-3226284cc7bmr8304474fac.3.1757559150312; Wed, 10 Sep 2025
+ 19:52:30 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250910024447.64788-1-laoar.shao@gmail.com> <20250910024447.64788-3-laoar.shao@gmail.com>
- <CABzRoyZm32HT2fDpSy_PRDxeXZVJD35+9YqRpn9XWix8jG6w8g@mail.gmail.com>
- <CABzRoyYqGsABGVgXbH3Sts3yBsk7ED=BsKbcP3Skc-oWeFsN_w@mail.gmail.com> <ac633edf-4744-4215-b105-c168d3a734ce@linux.dev>
-In-Reply-To: <ac633edf-4744-4215-b105-c168d3a734ce@linux.dev>
-From: Yafang Shao <laoar.shao@gmail.com>
-Date: Thu, 11 Sep 2025 10:48:54 +0800
-X-Gm-Features: AS18NWCKZiA03E-aejW3uz2mDNVDJGB6xG9JGVb75n2Lnhn-9uYRcZZKPr2Dc4I
-Message-ID: <CALOAHbAfzDNdx5LTUhH+eMgVfdG35gAM5subeByP97x53=CWLw@mail.gmail.com>
-Subject: Re: [PATCH v7 mm-new 02/10] mm: thp: add support for BPF based THP
- order selection
-To: Lance Yang <lance.yang@linux.dev>
-Cc: akpm@linux-foundation.org, david@redhat.com, ziy@nvidia.com, 
-	baolin.wang@linux.alibaba.com, lorenzo.stoakes@oracle.com, 
-	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, 
-	dev.jain@arm.com, hannes@cmpxchg.org, usamaarif642@gmail.com, 
-	gutierrez.asier@huawei-partners.com, willy@infradead.org, ast@kernel.org, 
-	daniel@iogearbox.net, andrii@kernel.org, ameryhung@gmail.com, 
-	rientjes@google.com, corbet@lwn.net, 21cnbao@gmail.com, 
-	shakeel.butt@linux.dev, bpf@vger.kernel.org, linux-mm@kvack.org, 
-	linux-doc@vger.kernel.org
+References: <20250909095611.803898-1-zhangchunyan@iscas.ac.cn>
+ <20250909095611.803898-2-zhangchunyan@iscas.ac.cn> <6b2f12aa-8ed9-476d-a69d-f05ea526f16a@redhat.com>
+ <CAAfSe-vbvGQy9JozQY3vsqrrPrTaWYMcNw+NaDf3nReWz8ynZg@mail.gmail.com> <8f9a4a13-2881-4baf-ab62-3d0d79e0cd3c@redhat.com>
+In-Reply-To: <8f9a4a13-2881-4baf-ab62-3d0d79e0cd3c@redhat.com>
+From: Chunyan Zhang <zhang.lyra@gmail.com>
+Date: Thu, 11 Sep 2025 10:51:54 +0800
+X-Gm-Features: Ac12FXw931KhRWiAwZHuKU_RVXZ29toqGSbWPbkJSujEUI17HyVR0UbdKmmlFK4
+Message-ID: <CAAfSe-snV-XZ3xGmK6gXNXw-D3ECWbyQgG+WG3c5gAsREz4ccQ@mail.gmail.com>
+Subject: Re: [PATCH V10 1/5] mm: softdirty: Add pte_soft_dirty_available()
+To: David Hildenbrand <david@redhat.com>
+Cc: Chunyan Zhang <zhangchunyan@iscas.ac.cn>, linux-riscv@lists.infradead.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Alexandre Ghiti <alex@ghiti.fr>, Deepak Gupta <debug@rivosinc.com>, Ved Shanbhogue <ved@rivosinc.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: B8D6F180004
-X-Stat-Signature: p3gu8aiqqiuownpkbao1ps4d3384itqb
 X-Rspam-User: 
-X-HE-Tag: 1757558971-508419
-X-HE-Meta: U2FsdGVkX19STKg6v/wOwI3xvQThQ9lcNwMtNjur7f9q/F0EgCcUkW3U0bxsTgRdjOTAYkvHJL7OZc3cxtpunW8W1MN0uEkMAxbb0A0plW4lc8o5ycKYhQ3/zUiMHzVr8IovfO76u2B9K4WNVZxmj8PzSBXwCPDXkYBZ/qlzeSQxA/eaZEzwOkub//Sn1HCbcqeRSxjoG3xSW3K923Ook4bzkEaHw6zMzyL6di73UUazOplNP+p/tSUFyzLUlW9vD7dhMfzc0OAulaZ64yLJGRd+W9nvL8PH/OSR6ejMOnEsE4m+YsZ62Prf67Tfvb6PRE7qFG0+ryZ797ZOHwYsB0Uom7grwr3T2pT00GNKruBTUi2WXWaCuJfWy1rC/u7nmkcQG6A1NtWe/k73g09u2ytTnW9Je10zly0v7HsM1kAOkdanESkLxseLMrb+dg0IcHBaZYK/bpZ1EvMfforvcNJfYmOS16pwG3G7jv3qiXVwCP0hUWNUSHGgKRBiU7sUnkXV/Y7IngX7zZfqzaP6yQ6lGm4WqrfSJJRlm/LgHU0l2Hd9bGmRuz82l7BpZ11Gzo9kP4A8kgcPcIP0uuV31vQMH0/g5jICOXuPsAc+/BwUsMDDlcoFZ8qKNvQ8jGC0HxbW9MzOa8Ff452YFAxRM3IqGWOUyNc7agBmFavbvB1xRk0Fv+GT5jKBKD6DRP6jGOv+uYjD7Z8IlNSKjuBKZvagqosV8keq/Lm9eLZoFM+v0mFpC8ALzYn37ykgb+PBMRfF3fltOzBEulwpEA4upJtDN8YiXW1J9Mde27fNbyC417zsWXDuWBe+sq01s9/RHtkGwHWMjGKJ8X41l7PuVBX5OY2edWguyy4nK49GgwMMsfxk5yerz1kz2+C9lWqumMqoT/wni2o7VNZ1el3z6ln//K5orGpuUGOl9QrfYm5fevdEE1ioqzjpFOXzDkdzWLOGeV6xeDr3hiUoDfG
- 5+UxZhmh
- qMVQPmpIKauN8bbHSdnGkCnhM7Un8Y+4AWIEV+hd5Q+QCaEuefsYikPfceK0qvwIB0YN/Y07kMeGta6roNlUfRirjo1nOORSoThIN8TYnzUdKP0TZfPo+gIVnBvOR+5hAeVdMPL5exEleiHSX4QbtMR0XYNvHgTKDaAqDsK64nXNCZ4WFXR19vlO9SESP0qd5inw4shgjjhWOnXpf2DBnxwefbhGPpKgUqnBBoweXZTpwZGB4Rniw7rMR0cKAIIkouz5sBMvuCzoSH0ytIGJ52SGvi/etnKhIk8K2cyM+F9Pygx1BKkdsR2P/uU312gVHCbO+N7hEodd6IcrlYezPBgmCi5iNV/D3A4yGAJTwtFz2Kz+NyYzgoCk8CHZgQHs5Wc2gMniO17sV1Xssy7iNBEMhF4zH3JnwzMQ8ynPiAqTZ8grOZ05xWrABz1Es9L2OPY0vpJNrfCCJoTw=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 88AFB1A0002
+X-Stat-Signature: fxkmca88kxtrrg7r75cz89a831z4enj1
+X-HE-Tag: 1757559151-473140
+X-HE-Meta: U2FsdGVkX1/YsOf2ikTidJDDmh0Q4cS4JR68CK21aIU1eXfXXJO0yLuFYtB6gsct/QEW8q9/shCc65EBr49Wylb1EvQ7y/44TqETu1Aw23Fu09dk1D5x47xb+aONPB5TsLoSB3j7/kVDNx3FYxjuiVBinCsgoS5bZpLSWhWOGAKbaBlinKtIJ+r9Wm3jxwFXKiLzY4DwuQuIQVh4nXv2+C7hHg7k6tWEjoMUyXEj3oZI7eSUBmfs21F8ltxeNoN1hRgcaBnLZDCDpmV2sqUpQpAV6/0ZwfHZMb2FGPuYpd8OtvcdKsDWVnob+casBCViZVzD7CnOxzNJjxshK/JFO8cK3g/fVzuoHnJoZqy8xx41qDBHYa1x1EDEZ+f1SDnRmEuZf1WoZkxMyxmFIWE1yXIOGveDwbtNlQ72bhiYQ8LzWKo/qA1guQT3PSXuVrw7KczG5NKTTXnHFy2cFYbMBs3GVgeDgmFQvvqF0ZPEQfVbMMSLLHh+WKCWVcrS7dBkUox96YQjoJA4s5dWqh8C2JgDeA265tVFEUQT/l3gkpecVV9ObnB3+NEoGzmrWb+FsDLD4bHc7ABdNjke6KZN8GA6RrGiS6u0AVAXgHWUECc3zsA0yIjF/AB01lq91nGrkgMy8iJSTlVFeX4Q7x6COpV25HNaw9QGk1Qr3b7UFc67z4W2+6Cjp4qIBtpeWBlsIQ5DYRp7QS+ozHLeXy73+FUqm0hsUnIqAwLGQsParItACo5c0trI6KU0LJ16wd7xoo8KqNR7qvFb5zVaiHurEklbXCmcRItFBHkA6laF+Ran+GhneAaFIy3DNymr2+SVStYIpJBtG358e3LsX6PWdf79YdpXvCh/hiikxgjp2WIrn3YR8uN1THfqLwBAWPWerN7wV2G5TQvLKnGEif/pH0EZ19bzYp5uGyMXSvZwHfmlxDRsl2DRQ4oSWksazScREpfz6EWaSGeNaR0hehA
+ RuTXsCzv
+ wqFSR9Gj9mFHRhFeQjtSydmuXIQcrnV5nXmGWj0PRdFVWsFDH6CqYX39iALzcdJ0Uqa+70z1LlaWDxzdjJtuOVVwav9AcgN5nLI4W6paRr6NFH6jYlgMYe3lwwrk8shyOURGfDgoCLfbDfaCGkJ0eTK6WPC8BLvhqAF19DvCRYf5DdEa6FOyAZvrpJTnbLv24fwyc81BuFvKPhoDlD0bHf88T0qFx65jCvZ4gp3QXHE1yJUVK/H0pmSojvGanQS2uTBFFvDHgEowux3gA1uejrvm2KYY4h26CB0DdmE9cBlFCHbmChDzQU6qWE8hhntViLLKWSEeuP+xPZty/OJfwEo3lrPzzNNuuvdrHupFW+sQNuNAMhMuYjfOfWDQe6Ut/YBIA6vOkMF6jcBbWGfJOw3L6/RjEzbjcLGfav1eux341Y+kso2G2VYDxFddD7THUiakHS0o5R/4LhK8dZIjL1k5sS3WxYcWf+2Yl+pdgp3gCtCs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,224 +124,171 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 10, 2025 at 9:57=E2=80=AFPM Lance Yang <lance.yang@linux.dev> w=
-rote:
+On Wed, 10 Sept 2025 at 16:51, David Hildenbrand <david@redhat.com> wrote:
 >
->
->
-> On 2025/9/10 20:54, Lance Yang wrote:
-> > On Wed, Sep 10, 2025 at 8:42=E2=80=AFPM Lance Yang <lance.yang@linux.de=
-v> wrote:
+> On 10.09.25 10:25, Chunyan Zhang wrote:
+> > Hi David,
+> >
+> > On Tue, 9 Sept 2025 at 19:42, David Hildenbrand <david@redhat.com> wrote:
 > >>
-> >> Hey Yafang,
-> >>
-> >> On Wed, Sep 10, 2025 at 10:53=E2=80=AFAM Yafang Shao <laoar.shao@gmail=
-.com> wrote:
+> >> On 09.09.25 11:56, Chunyan Zhang wrote:
+> >>> Some platforms can customize the PTE soft dirty bit and make it unavailable
+> >>> even if the architecture allows providing the PTE resource.
 > >>>
-> >>> This patch introduces a new BPF struct_ops called bpf_thp_ops for dyn=
-amic
-> >>> THP tuning. It includes a hook bpf_hook_thp_get_order(), allowing BPF
-> >>> programs to influence THP order selection based on factors such as:
-> >>> - Workload identity
-> >>>    For example, workloads running in specific containers or cgroups.
-> >>> - Allocation context
-> >>>    Whether the allocation occurs during a page fault, khugepaged, swa=
-p or
-> >>>    other paths.
-> >>> - VMA's memory advice settings
-> >>>    MADV_HUGEPAGE or MADV_NOHUGEPAGE
-> >>> - Memory pressure
-> >>>    PSI system data or associated cgroup PSI metrics
+> >>> Add an API which architectures can define their specific implementations
+> >>> to detect if the PTE soft-dirty bit is available, on which the kernel
+> >>> is running.
 > >>>
-> >>> The kernel API of this new BPF hook is as follows,
-> >>>
-> >>> /**
-> >>>   * @thp_order_fn_t: Get the suggested THP orders from a BPF program =
-for allocation
-> >>>   * @vma: vm_area_struct associated with the THP allocation
-> >>>   * @vma_type: The VMA type, such as BPF_THP_VM_HUGEPAGE if VM_HUGEPA=
-GE is set
-> >>>   *            BPF_THP_VM_NOHUGEPAGE if VM_NOHUGEPAGE is set, or BPF_=
-THP_VM_NONE if
-> >>>   *            neither is set.
-> >>>   * @tva_type: TVA type for current @vma
-> >>>   * @orders: Bitmask of requested THP orders for this allocation
-> >>>   *          - PMD-mapped allocation if PMD_ORDER is set
-> >>>   *          - mTHP allocation otherwise
-> >>>   *
-> >>>   * Return: The suggested THP order from the BPF program for allocati=
-on. It will
-> >>>   *         not exceed the highest requested order in @orders. Return=
- -1 to
-> >>>   *         indicate that the original requested @orders should remai=
-n unchanged.
-> >>>   */
-> >>> typedef int thp_order_fn_t(struct vm_area_struct *vma,
-> >>>                             enum bpf_thp_vma_type vma_type,
-> >>>                             enum tva_type tva_type,
-> >>>                             unsigned long orders);
-> >>>
-> >>> Only a single BPF program can be attached at any given time, though i=
-t can
-> >>> be dynamically updated to adjust the policy. The implementation suppo=
-rts
-> >>> anonymous THP, shmem THP, and mTHP, with future extensions planned fo=
-r
-> >>> file-backed THP.
-> >>>
-> >>> This functionality is only active when system-wide THP is configured =
-to
-> >>> madvise or always mode. It remains disabled in never mode. Additional=
-ly,
-> >>> if THP is explicitly disabled for a specific task via prctl(), this B=
-PF
-> >>> functionality will also be unavailable for that task.
-> >>>
-> >>> This feature requires CONFIG_BPF_GET_THP_ORDER (marked EXPERIMENTAL) =
-to be
-> >>> enabled. Note that this capability is currently unstable and may unde=
-rgo
-> >>> significant changes=E2=80=94including potential removal=E2=80=94in fu=
-ture kernel versions.
-> >>>
-> >>> Suggested-by: David Hildenbrand <david@redhat.com>
-> >>> Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> >>> Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+> >>> Signed-off-by: Chunyan Zhang <zhangchunyan@iscas.ac.cn>
 > >>> ---
-> >> [...]
-> >>> diff --git a/mm/huge_memory_bpf.c b/mm/huge_memory_bpf.c
-> >>> new file mode 100644
-> >>> index 000000000000..525ee22ab598
-> >>> --- /dev/null
-> >>> +++ b/mm/huge_memory_bpf.c
-> >>> @@ -0,0 +1,243 @@
-> >>> +// SPDX-License-Identifier: GPL-2.0
+> >>>    fs/proc/task_mmu.c      | 17 ++++++++++++++++-
+> >>>    include/linux/pgtable.h | 10 ++++++++++
+> >>>    mm/debug_vm_pgtable.c   |  9 +++++----
+> >>>    mm/huge_memory.c        | 10 ++++++----
+> >>>    mm/internal.h           |  2 +-
+> >>>    mm/mremap.c             | 10 ++++++----
+> >>>    mm/userfaultfd.c        |  6 ++++--
+> >>>    7 files changed, 48 insertions(+), 16 deletions(-)
+> >>>
+> >>> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+> >>> index 29cca0e6d0ff..20a609ec1ba6 100644
+> >>> --- a/fs/proc/task_mmu.c
+> >>> +++ b/fs/proc/task_mmu.c
+> >>> @@ -1058,7 +1058,7 @@ static void show_smap_vma_flags(struct seq_file *m, struct vm_area_struct *vma)
+> >>>         * -Werror=unterminated-string-initialization warning
+> >>>         *  with GCC 15
+> >>>         */
+> >>> -     static const char mnemonics[BITS_PER_LONG][3] = {
+> >>> +     static char mnemonics[BITS_PER_LONG][3] = {
+> >>>                /*
+> >>>                 * In case if we meet a flag we don't know about.
+> >>>                 */
+> >>> @@ -1129,6 +1129,16 @@ static void show_smap_vma_flags(struct seq_file *m, struct vm_area_struct *vma)
+> >>>                [ilog2(VM_SEALED)] = "sl",
+> >>>    #endif
+> >>>        };
 > >>> +/*
-> >>> + * BPF-based THP policy management
-> >>> + *
-> >>> + * Author: Yafang Shao <laoar.shao@gmail.com>
+> >>> + * We should remove the VM_SOFTDIRTY flag if the PTE soft-dirty bit is
+> >>> + * unavailable on which the kernel is running, even if the architecture
+> >>> + * allows providing the PTE resource and soft-dirty is compiled in.
 > >>> + */
+> >>> +#ifdef CONFIG_MEM_SOFT_DIRTY
+> >>> +     if (!pte_soft_dirty_available())
+> >>> +             mnemonics[ilog2(VM_SOFTDIRTY)][0] = 0;
+> >>> +#endif
 > >>> +
-> >>> +#include <linux/bpf.h>
-> >>> +#include <linux/btf.h>
-> >>> +#include <linux/huge_mm.h>
-> >>> +#include <linux/khugepaged.h>
+> >>>        size_t i;
+> >>>
+> >>>        seq_puts(m, "VmFlags: ");
+> >>> @@ -1531,6 +1541,8 @@ static inline bool pte_is_pinned(struct vm_area_struct *vma, unsigned long addr,
+> >>>    static inline void clear_soft_dirty(struct vm_area_struct *vma,
+> >>>                unsigned long addr, pte_t *pte)
+> >>>    {
+> >>> +     if (!pte_soft_dirty_available())
+> >>> +             return;
+> >>>        /*
+> >>>         * The soft-dirty tracker uses #PF-s to catch writes
+> >>>         * to pages, so write-protect the pte as well. See the
+> >>> @@ -1566,6 +1578,9 @@ static inline void clear_soft_dirty_pmd(struct vm_area_struct *vma,
+> >>>    {
+> >>>        pmd_t old, pmd = *pmdp;
+> >>>
+> >>> +     if (!pte_soft_dirty_available())
+> >>> +             return;
 > >>> +
-> >>> +enum bpf_thp_vma_type {
-> >>> +       BPF_THP_VM_NONE =3D 0,
-> >>> +       BPF_THP_VM_HUGEPAGE,    /* VM_HUGEPAGE */
-> >>> +       BPF_THP_VM_NOHUGEPAGE,  /* VM_NOHUGEPAGE */
-> >>> +};
+> >>>        if (pmd_present(pmd)) {
+> >>>                /* See comment in change_huge_pmd() */
+> >>>                old = pmdp_invalidate(vma, addr, pmdp);
+> >>> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> >>> index 4c035637eeb7..c0e2a6dc69f4 100644
+> >>> --- a/include/linux/pgtable.h
+> >>> +++ b/include/linux/pgtable.h
+> >>> @@ -1538,6 +1538,15 @@ static inline pgprot_t pgprot_modify(pgprot_t oldprot, pgprot_t newprot)
+> >>>    #endif
+> >>>
+> >>>    #ifdef CONFIG_HAVE_ARCH_SOFT_DIRTY
 > >>> +
-> >>> +/**
-> >>> + * @thp_order_fn_t: Get the suggested THP orders from a BPF program =
-for allocation
-> >>> + * @vma: vm_area_struct associated with the THP allocation
-> >>> + * @vma_type: The VMA type, such as BPF_THP_VM_HUGEPAGE if VM_HUGEPA=
-GE is set
-> >>> + *            BPF_THP_VM_NOHUGEPAGE if VM_NOHUGEPAGE is set, or BPF_=
-THP_VM_NONE if
-> >>> + *            neither is set.
-> >>> + * @tva_type: TVA type for current @vma
-> >>> + * @orders: Bitmask of requested THP orders for this allocation
-> >>> + *          - PMD-mapped allocation if PMD_ORDER is set
-> >>> + *          - mTHP allocation otherwise
-> >>> + *
-> >>> + * Return: The suggested THP order from the BPF program for allocati=
-on. It will
-> >>> + *         not exceed the highest requested order in @orders. Return=
- -1 to
-> >>> + *         indicate that the original requested @orders should remai=
-n unchanged.
-> >>
-> >> A minor documentation nit: the comment says "Return -1 to indicate tha=
-t the
-> >> original requested @orders should remain unchanged". It might be sligh=
-tly
-> >> clearer to say "Return a negative value to fall back to the original
-> >> behavior". This would cover all error codes as well ;)
-
-will change it.
-
-> >>
+> >>> +/*
+> >>> + * Some platforms can customize the PTE soft dirty bit and make it unavailable
+> >>> + * even if the architecture allows providing the PTE resource.
 > >>> + */
-> >>> +typedef int thp_order_fn_t(struct vm_area_struct *vma,
-> >>> +                          enum bpf_thp_vma_type vma_type,
-> >>> +                          enum tva_type tva_type,
-> >>> +                          unsigned long orders);
+> >>> +#ifndef pte_soft_dirty_available
+> >>> +#define pte_soft_dirty_available()   (true)
+> >>> +#endif
+> >>> +
+> >>>    #ifndef CONFIG_ARCH_ENABLE_THP_MIGRATION
+> >>>    static inline pmd_t pmd_swp_mksoft_dirty(pmd_t pmd)
+> >>>    {
+> >>> @@ -1555,6 +1564,7 @@ static inline pmd_t pmd_swp_clear_soft_dirty(pmd_t pmd)
+> >>>    }
+> >>>    #endif
+> >>>    #else /* !CONFIG_HAVE_ARCH_SOFT_DIRTY */
+> >>> +#define pte_soft_dirty_available()   (false)
+> >>>    static inline int pte_soft_dirty(pte_t pte)
+> >>>    {
+> >>>        return 0;
+> >>> diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
+> >>> index 830107b6dd08..98ed7e22ccec 100644
+> >>> --- a/mm/debug_vm_pgtable.c
+> >>> +++ b/mm/debug_vm_pgtable.c
+> >>> @@ -690,7 +690,7 @@ static void __init pte_soft_dirty_tests(struct pgtable_debug_args *args)
+> >>>    {
+> >>>        pte_t pte = pfn_pte(args->fixed_pte_pfn, args->page_prot);
+> >>>
+> >>> -     if (!IS_ENABLED(CONFIG_MEM_SOFT_DIRTY))
+> >>> +     if (!IS_ENABLED(CONFIG_MEM_SOFT_DIRTY) || !pte_soft_dirty_available())
 > >>
-> >> Sorry if I'm missing some context here since I haven't tracked the who=
-le
-> >> series closely.
+> >> I suggest that you instead make pte_soft_dirty_available() be false without CONFIG_MEM_SOFT_DIRTY.
 > >>
-> >> Regarding the return value for thp_order_fn_t: right now it returns a
-> >> single int order. I was thinking, what if we let it return an unsigned
-> >> long bitmask of orders instead? This seems like it would be more flexi=
-ble
-> >> down the road, especially if we get more mTHP sizes to choose from. It
-> >> would also make the API more consistent, as bpf_hook_thp_get_orders()
-> >> itself returns an unsigned long ;)
+> >> e.g., for the default implementation
+> >>
+> >> define pte_soft_dirty_available()       IS_ENABLED(CONFIG_MEM_SOFT_DIRTY)
+> >>
+> >> That way you can avoid some ifefs and cleanup these checks.
 > >
-> > I just realized a flaw in my previous suggestion :(
+> > Do you mean something like this:
 > >
-> > Changing the return type of thp_order_fn_t to unsigned long for consist=
-ency
-> > and flexibility. However, I completely overlooked that this would preve=
-nt
-> > the BPF program from returning negative error codes ...
+> > --- a/include/linux/pgtable.h
+> > +++ b/include/linux/pgtable.h
+> > @@ -1538,6 +1538,16 @@ static inline pgprot_t pgprot_modify(pgprot_t
+> > oldprot, pgprot_t newprot)
+> >   #endif
 > >
-> > Thanks,
-> > Lance
-> >
-> >>
-> >> Also, for future extensions, it might be a good idea to add a reserved
-> >> flags argument to the thp_order_fn_t signature.
-> >>
-> >> For example thp_order_fn_t(..., unsigned long flags).
-> >>
-> >> This would give us aforward-compatible way to add new semantics later
-> >> without breaking the ABI and needing a v2. We could just require it to=
- be
-> >> 0 for now.
-
-That makes sense. However, as Lorenzo mentioned previously, we should
-keep the interface as minimal as possible.
-
-> >>
-> >> Thanks for the great work!
-> >> Lance
+> >   #ifdef CONFIG_HAVE_ARCH_SOFT_DIRTY
+> > +#ifndef arch_soft_dirty_available
+> > +#define arch_soft_dirty_available()     (true)
+> > +#endif
+> > +#define pgtable_soft_dirty_supported()
+> > (IS_ENABLED(CONFIG_MEM_SOFT_DIRTY) && arch_soft_dirty_available())
+> > +
+> >   #ifndef CONFIG_ARCH_ENABLE_THP_MIGRATION
+> >   static inline pmd_t pmd_swp_mksoft_dirty(pmd_t pmd)
+> >   {
+> > @@ -1555,6 +1565,7 @@ static inline pmd_t pmd_swp_clear_soft_dirty(pmd_t pmd)
+> >   }
+> >   #endif
+> >   #else /* !CONFIG_HAVE_ARCH_SOFT_DIRTY */
+> > +#define pgtable_soft_dirty_supported() (false)
 >
+> Maybe we can simplify to
 >
-> Forgot to add:
+> #ifndef pgtable_soft_dirty_supported
+> #define pgtable_soft_dirty_supported()  IS_ENABLED(CONFIG_MEM_SOFT_DIRTY)
+> #endif
 >
-> Noticed that if the hook returns 0, bpf_hook_thp_get_orders() falls
-> back to 'orders', preventing us from dynamically disabling mTHP
-> allocations.
+> And then just let the arch that overrides this function just make it
+> respect IS_ENABLED(CONFIG_MEM_SOFT_DIRTY).
 
-Could you please clarify what you mean by that?
+Ok, got you, I will address it.
 
-+       thp_order =3D bpf_hook_thp_get_order(vma, vma_type, tva_type, order=
-s);
-+       if (thp_order < 0)
-+               goto out;
+Thanks for your review,
+Chunyan
 
-In my implementation, it only falls back to @orders if the return
-value is negative. If the return value is 0, it uses BIT(0):
-
-+       if (thp_order <=3D highest_order(orders))
-+               thp_orders =3D BIT(thp_order);
 
 >
-> Honoring a return of 0 is critical for our use case, which is to
-> dynamically disable mTHP for low-priority containers when memory gets
-> low in mixed workloads.
+> --
+> Cheers
 >
-> And then re-enable it for them when memory is back above the low
-> watermark.
-
-Thank you for detailing your use case; that context is very helpful.
-
---=20
-Regards
-Yafang
+> David / dhildenb
+>
 
