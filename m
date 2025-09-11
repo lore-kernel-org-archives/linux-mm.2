@@ -4,93 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B15B0CAC58E
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 22:12:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1E5ECAC58E
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 22:23:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 14B938E000A; Thu, 11 Sep 2025 18:12:08 -0400 (EDT)
+	id EFA6A6B000C; Thu, 11 Sep 2025 18:23:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0FCD38E0001; Thu, 11 Sep 2025 18:12:08 -0400 (EDT)
+	id ED1ED6B000D; Thu, 11 Sep 2025 18:23:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 012338E000A; Thu, 11 Sep 2025 18:12:07 -0400 (EDT)
+	id E0EA46B000E; Thu, 11 Sep 2025 18:23:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E14418E0001
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 18:12:07 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 830F11DF321
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 22:12:07 +0000 (UTC)
-X-FDA: 83878368294.22.0F8F632
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id D889940009
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 22:12:05 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UKOSrtqK;
-	spf=pass (imf17.hostedemail.com: domain of deller@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=deller@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id CDB916B000C
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 18:23:27 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7A338869AB
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 22:23:27 +0000 (UTC)
+X-FDA: 83878396854.21.2B97C5A
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+	by imf25.hostedemail.com (Postfix) with ESMTP id DE922A0006
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 22:23:24 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b="oYf4Wl/v";
+	spf=pass (imf25.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757628725;
+	s=arc-20220608; t=1757629405;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XWpJWV64GYdcAD/E/BiNmSu3qUiBBTsmA09VhnsQlGk=;
-	b=1zpnJ/aDDQTmNVJ8tAPfI+sfIufxUo7f0HmdhBM/2d1DP075aHtCxzRShQL1N4/UOhUbko
-	ipKtTDIOjsDVaA1rxP0r6rceV3tAdIsU1BeHsEUSGfzKOPlhBlWxICpKbDN4RSe5F5qE8V
-	BIK0dMzGhTjjfxGW6mdl1KwWRGEeG9I=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757628725; a=rsa-sha256;
+	bh=9atdt/om7OmffbDgov9WTxIsiO59X0BmEMtINP1uP9A=;
+	b=Pbru3F8RH6sPjiGvQ5+ghke01xur/mgy9Uj6G6KO170a1VCZWqG2zvLGPhwGirk9OokrO0
+	qAgiBIvPZp71A5nIONnK0C5JHNV4Q+OgWthKjU9X/KXMpWhNWsqNofZ49IN9TlKCkwwDs8
+	JiQn6J7yFNI161Ao8F+KoiCAXOSiv2I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757629405; a=rsa-sha256;
 	cv=none;
-	b=BhaFEvhy6vAjFmyf+Z/BKwfMe76qGJY/GKQifahFPxdknXbWZNHgNr4Ujk3MBnI0EG9MLc
-	gTZAwGMJ8k+RAuKhBqh8x2EoizAe2uPKsBtZAc/cZOIbmhwacsJUVpnpQ98e3s5nF7HwyX
-	YzlrgEdM+gGFW+A2LQzsNIXC+/hclCQ=
+	b=PQcFBsiiqfUtr+k4b9nFaUjMKDQg3k8ZlWW1rp7TdRXLkLhYkCIKganyo5OjW7cRDmA7ED
+	IbLZpgJTov6na+KXex3ddN/32VvXS/xvE3e+6jFQLqZea5gDHNjM+phTu0dsp+1xpupW4A
+	oB4MM7U2I62m8RF8fnpHoKJo+JvE1y4=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UKOSrtqK;
-	spf=pass (imf17.hostedemail.com: domain of deller@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=deller@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3755D601DC;
-	Thu, 11 Sep 2025 22:12:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24C6CC4CEF0;
-	Thu, 11 Sep 2025 22:12:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757628724;
-	bh=DeLh3i9NlJmc/TaFuy9SbAsEHHq0KJslJKPRhSgnwfo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UKOSrtqKQVZlMs9z6RnoiO9/kj9V+A1VDufGQhBGin6cryYHGL/O1aOqMXF6oTedS
-	 sN84d+io1JlNFB2WR8QI54FM8QBQ/VHw7p/P27Q2eKjxZq+cnxIHQo7MLHcshuzxSb
-	 Hsb/Fu9WaI01ggTmvYxCHPwvdrOM7wD9BPqsd6pXT5p5KpnpmoZ9HvT5ajYfZjD5jl
-	 yUgVi/BBU2LCg61hR1oOYCyb2V9LCWCMuPmoMsLFlqeUg+bD7+ssp6bzXF2+0skMcc
-	 Ouo0jKTC/WjXgm64Wsp2dt8HRkJBOTOUG7o6JhVDWkPnq7OyhLhoLx3EbHdDYtw5sg
-	 tJoFqPr+ek1xA==
-Date: Fri, 12 Sep 2025 00:12:00 +0200
-From: Helge Deller <deller@kernel.org>
-To: Toke =?iso-8859-15?Q?H=F8iland-J=F8rgensen?= <toke@redhat.com>,
-	David Hildenbrand <david@redhat.com>,
-	Linux Kernel Development <linux-kernel@vger.kernel.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	linux-parisc <linux-parisc@vger.kernel.org>
-Cc: Christoph Biedl <linux-kernel.bfrz@manchmal.in-ulm.de>,
-	Helge Deller <deller@gmx.de>
-Subject: boot failure because of inaccurate page_pool_page_is_pp() on 32-bit
- kernels
-Message-ID: <aMNJMFa5fDalFmtn@p100>
-References: <5a004aef-9df1-4126-b167-1aae27d4240d@gmx.de>
- <1756327287@msgid.manchmal.in-ulm.de>
+	imf25.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b="oYf4Wl/v";
+	spf=pass (imf25.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20250911222322euoutp011634560d57af0d6769ea82508ee6c7b3~kWqER7Qs81513015130euoutp01K;
+	Thu, 11 Sep 2025 22:23:22 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20250911222322euoutp011634560d57af0d6769ea82508ee6c7b3~kWqER7Qs81513015130euoutp01K
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1757629402;
+	bh=9atdt/om7OmffbDgov9WTxIsiO59X0BmEMtINP1uP9A=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=oYf4Wl/vK4mtCwLnlaPuk0Vbqm1kIIG4/GofumuhdavmIiBHyUZQRceOU6BgMduk5
+	 UPpbMvZbaMJvAX41rCofkjz8fUum8Xd7cFaLczcWfrjE46zM7Gw77+bY+gxYbnaXwW
+	 jL8zkycMTQXVpPJyDpmR0+MuvHwC/4FUakNYU3YU=
+Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20250911222321eucas1p114043a72e011e2fff92df33a2133b21e~kWqDhtt8p0600006000eucas1p18;
+	Thu, 11 Sep 2025 22:23:21 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20250911222317eusmtip2aabd06b78078a7146730dff557f2cb71~kWqAG3AB-1019110191eusmtip2F;
+	Thu, 11 Sep 2025 22:23:17 +0000 (GMT)
+Message-ID: <5ffc63e9-19bd-4e12-92fc-57fe12d10f4f@samsung.com>
+Date: Fri, 12 Sep 2025 00:23:17 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1756327287@msgid.manchmal.in-ulm.de>
-X-Stat-Signature: sthx5idmsinmu61spxxakczetwj4g4sf
-X-Rspamd-Queue-Id: D889940009
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH v6 03/16] dma-debug: refactor to use physical addresses
+ for page mapping
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Jason Gunthorpe <jgg@nvidia.com>, Abdiel Janulgue
+	<abdiel.janulgue@gmail.com>, Alexander Potapenko <glider@google.com>, Alex
+	Gaynor <alex.gaynor@gmail.com>, Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>, David
+	Hildenbrand <david@redhat.com>, iommu@lists.linux.dev, Jason Wang
+	<jasowang@redhat.com>, Jens Axboe <axboe@kernel.dk>, Joerg Roedel
+	<joro@8bytes.org>, Jonathan Corbet <corbet@lwn.net>, Juergen Gross
+	<jgross@suse.com>, kasan-dev@googlegroups.com, Keith Busch
+	<kbusch@kernel.org>, linux-block@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-nvme@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+	linux-trace-kernel@vger.kernel.org, Madhavan Srinivasan
+	<maddy@linux.ibm.com>, Masami Hiramatsu <mhiramat@kernel.org>, Michael
+	Ellerman <mpe@ellerman.id.au>, "Michael S. Tsirkin" <mst@redhat.com>, Miguel
+	Ojeda <ojeda@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	rust-for-linux@vger.kernel.org, Sagi Grimberg <sagi@grimberg.me>, Stefano
+	Stabellini <sstabellini@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
+	xen-devel@lists.xenproject.org
+Content-Language: en-US
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <20250910052618.GH341237@unreal>
+Content-Transfer-Encoding: 7bit
+X-CMS-MailID: 20250911222321eucas1p114043a72e011e2fff92df33a2133b21e
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20250910052628eucas1p160daa0dadb6f81d7831d8047628aa9d4
+X-EPHeader: CA
+X-CMS-RootMailID: 20250910052628eucas1p160daa0dadb6f81d7831d8047628aa9d4
+References: <cover.1757423202.git.leonro@nvidia.com>
+	<56d1a6769b68dfcbf8b26a75a7329aeb8e3c3b6a.1757423202.git.leonro@nvidia.com>
+	<20250909193748.GG341237@unreal>
+	<CGME20250910052628eucas1p160daa0dadb6f81d7831d8047628aa9d4@eucas1p1.samsung.com>
+	<20250910052618.GH341237@unreal>
+X-Rspamd-Queue-Id: DE922A0006
+X-Stat-Signature: iw1ugndyag3nhdognh41nryx4xqz9wei
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1757628725-740264
-X-HE-Meta: U2FsdGVkX19OzbHPCyEzlj8FZPuVJ6k9UGdzdk6hLMIMvuKk1To5seg3JyVmIjDBsmAQiSaaAc1fCBQyhsIh6CPR9jH2Wr28mVtiD9j0FGceZ9ftBE7SZ1Uudkt6qo7d28s5vrPOSVmgrzNZEV7toyOH0Jbj8YTI73NHgS6rKhc/VvOfVOU8csd2g7lplvLL52L2Qqdd2C5pxOxfSB0XR4I32L5PnP2UWASr5MMVcy5kSP7O1gfUmKetConD49q+DKoNML/lDlHqQhmr26/dEi3K/s6pZeRS2ZVdlYra/At9rWKpTISKT4j+bbYT6/wsfLt9n6FPvsoRxDIG2jbx0a+ES07l4VMYfj7aImDTpzmXHEO7ryzBQYVAD0FSx67KYTMo/adVFXxhQlznsSJTv2d8rTd1zfFKY9UOYB3SMZEdFP7j3sIj7kpIDok6hI1K4Sgkm7gJ+765AEG/yIwWY4xjJMWxekIPdRuDj8Ulvm3NnK9YWbrm0yg90HeJrj3st1jhWU2hLgnfp0vYIMpmrD9vPFO6Aepb7nrfHnDS13Sk2vXNUl0drgehGi/L+N+h/Tpoe826LOe31bzq9gBVVUz0cTGGTH6AOYK5SWTSbenTiCBNtBMLMd8uSdY0N/5q4C3q3Cclnly+syBqei7bhKx15OG5X6/tZuK64gxcSg+uffIuupJwFDseDZvA9dfcA5CBJtI/c4HTpmW5zS/okhqmgsmDU7QYHUQd8R2oDIzm+yBTCnYYrk7MZvhRLvwc/nWr7XA3HqAtzdPbtQuhrHpMBGwuh/RLskmB4p5K8udBIfYkG6ZUYv5a294LVdm20c0euAW4CHX5BJHNDJM3p5Nok5eYnHhl80yT8XYnxFw1wUzMMJhnwzHE/oc/taVbT9ARtkilhSfjJ+n1Yh/0h1gJ8i9loUH8vSpVYu5AHr4Orxk8WPGfXKcCaXhmusr1msyT9kSRvlcqOwV+egU
- zyi+wOkQ
- 5zVoMKrBU1S/vIItobdz+UBBs7FcuEYm5E2ZUS3IFQURGTwqj72JYTrg6iTwU0Ttcux6a7j25UmDS3YPzZwpNJ/bdTMKvB3/bEIhAgjoAODkupZGxHlkrsIrQgCUH00kolU64PvSeZjOdeDZ/kzSil8CQgidHxIQVhw5aI4Nk95GeJLBmT162UywNECE5s3t31KLkKyCVHno9Ak+MYYHJADxS/T04rvNU3d/scJTQ1ApNBtizadcQ/3V4kmQR7Os15QAq//fGo1ylp0BsLq++7S4aVv/ay1+HudyIWXsbjMB7+qakAcH52WKxLUBWt2SmXdEdaN6s86rM6lCffgZAaKBY9ju6F1Clonya1zB5QHmxVboOas1+WvdNi7sB5Tb5Ur6N
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1757629404-683424
+X-HE-Meta: U2FsdGVkX1+I1gPYZsRooo8RFar89t4s02ERDSUA6zR0Ri+qTEJl4C4sq0b25yMKoJb7Hl4fBVGvk1NPleA6oKhrP9kjyRiyM7c3XJIGvSl89/JympnJSQbKtmKuGaj7sz0SHjciAYLFDZ2F154Zb7tsvyQSJ2l7/iHNa19AOFlbDPu+XQtzfESHNpVZSKo6ZpgvBSgkUoZuCgDuu8JCEOzxeVpiZ7g01zK6hPJvrP0IpHK2ipV+WUiZYR5bon6m4pY7ETKx7jxH1AwmFLRyzl12w14NQhcj6lMrXIdj3MckzPoZ8lL6N0n4lhlPLTUr5K/n8hszjdzjLDWX3pix/b/w98QQbnAwGrDF2lmHp6cT0+ReqbSZt+4HQ0n+B2h9kHkJoWHiFB3h31bl6OGOdSjji/+m9Jab8wfhbZ/3KgC+LEhjXpVVbaObAV0zCVGCbZ023Srb/ojhmpK23PbKbTBDADsk1NDq233jQCo+jkVn8izDrR4GjKTc7YnupkrlrUNdRxzYAU0vzQA7r1XuXLHEzIREb4T5qQC7TYqRNa8jh3lflkgRhZ5sX+Wi4vUBuAegyDVlmxzVVpLA+u8+zIDgGZ1mvI/m/RDxGqgiLAPo/qxtGY8dmF4L31LT9QedwT/5w5Ju5/2PU66GyDEf4hIZ46rugI14JPPvT3q2yvWL8HUDlvqSCC8Ntq28VeLeLPI0rKqudDCkHlC2O8Ptd8nKCiLQIt+pPKv2va6DEAX5cychFVQ6mlFjXi20ssyAOkrKgyIYBrUHwOQL/RE1fp6SEVQSi14YFKfpkKrb3ez2aiOQtT1bk/VubN4AduxKNR7YG23ktm5NmnV6jVC6299SfFHe25wMoEzsyANA1uwQD0bh9yRZz540MHm2UYgVByDeBnncHTw7tQn4iWNRX1uojXObW3n2Jk3ylIqnXk/sU3m7/wyWZAU8GYA4iYfdYptmVJHD42Yh88/4rKe
+ w2brqSwq
+ THbvf5POCiDkefJtjFcwjZOQU/5dmLmuJ9+fpDr2v0IdFjrb+hRZIaYjY/IADDKs/TmwFCZQABFG7NyCfTxovjqAOjYZNWe0km60lB0m0k8sX8nbB+yXMDGtfoTYhVKuYZsBsWt40OQsvKSoOO5zZfp30I1kGVRMik3V4k5/T0no+n6c=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,61 +125,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-As reported earlier in this mail thread, all 32-bit Linux kernels since v6.16
-fail to boot on the parisc architecture like this:
+On 10.09.2025 07:26, Leon Romanovsky wrote:
+> On Tue, Sep 09, 2025 at 10:37:48PM +0300, Leon Romanovsky wrote:
+>> On Tue, Sep 09, 2025 at 04:27:31PM +0300, Leon Romanovsky wrote:
+>>> From: Leon Romanovsky <leonro@nvidia.com>
+>> <...>
+>>
+>>>   include/linux/page-flags.h         |  1 +
+>> <...>
+>>
+>>> --- a/include/linux/page-flags.h
+>>> +++ b/include/linux/page-flags.h
+>>> @@ -614,6 +614,7 @@ FOLIO_FLAG(dropbehind, FOLIO_HEAD_PAGE)
+>>>    * available at this point.
+>>>    */
+>>>   #define PageHighMem(__p) is_highmem_idx(page_zonenum(__p))
+>>> +#define PhysHighMem(__p) (PageHighMem(phys_to_page(__p)))
+>> This was a not so great idea to add PhysHighMem() because of "else"
+>> below which unfolds to maze of macros and automatically generated
+>> functions with "static inline int Page##uname ..." signature.
+>>
+>>>   #define folio_test_highmem(__f)	is_highmem_idx(folio_zonenum(__f))
+>>>   #else
+>>>   PAGEFLAG_FALSE(HighMem, highmem)
+> After sleeping over it, the following hunk will help:
+>
+> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+> index dfbc4ba86bba2..2a1f346178024 100644
+> --- a/include/linux/page-flags.h
+> +++ b/include/linux/page-flags.h
+> @@ -614,11 +614,11 @@ FOLIO_FLAG(dropbehind, FOLIO_HEAD_PAGE)
+>    * available at this point.
+>    */
+>   #define PageHighMem(__p) is_highmem_idx(page_zonenum(__p))
+> -#define PhysHighMem(__p) (PageHighMem(phys_to_page(__p)))
+>   #define folio_test_highmem(__f)        is_highmem_idx(folio_zonenum(__f))
+>   #else
+>   PAGEFLAG_FALSE(HighMem, highmem)
+>   #endif
+> +#define PhysHighMem(__p) (PageHighMem(phys_to_page(__p)))
+>
+>   /* Does kmap_local_folio() only allow access to one page of the folio? */
+>   #ifdef CONFIG_DEBUG_KMAP_LOCAL_FORCE_MAP
 
- BUG: Bad page state in process swapper  pfn:000f7
- page: refcount:0 mapcount:0 mapping:00000000 index:0x0 pfn:0xf7
- flags: 0x0(zone=0)
- raw: 00000000 118022c0 118022c0 00000000 00000000 00000000 ffffffff 00000000
- raw: 00000000
- page dumped because: page_pool leak
- Modules linked in:
- CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 6.15.0-rc1-32bit+ #2730 NONE
- Hardware name: 9000/778/B160L
- Backtrace:
-  [<106ece88>] bad_page+0x14c/0x17c
-  [<10406c50>] free_page_is_bad.part.0+0xd4/0xec
-  [<106ed180>] free_page_is_bad+0x80/0x88
-  [<106ef05c>] __free_pages_ok+0x374/0x508
-  [<1011d34c>] __free_pages_core+0x1f0/0x218
-  [<1011a2f0>] memblock_free_pages+0x68/0x94
-  [<10120324>] memblock_free_all+0x26c/0x310
-  [<1011a4d8>] mm_core_init+0x18c/0x208
-  [<10100e88>] start_kernel+0x4ec/0x7a0
-  [<101054d0>] start_parisc+0xb4/0xc4
+Okay, I will add this fixup while applying the patches.
 
-git bisecting leads to this patch which triggers the crash:
+Best regards
+-- 
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
 
- commit ee62ce7a1d909ccba0399680a03c2dee83bcae95
- Author: Toke Høiland-Jørgensen <toke@redhat.com>
- Date:   Wed Apr 9 12:41:37 2025 +0200
-    page_pool: Track DMA-mapped pages and unmap them when destroying the pool
-
-It turns out that the patch itself isn't wrong.
-
-But it's the culprit which leads to the kernel bug since it modifies
-PP_MAGIC_MASK for 32-bit kernels from:
-
--#define PP_MAGIC_MASK ~0x3UL
-+#define PP_MAGIC_MASK ~(PP_DMA_INDEX_MASK | 0x3UL)
-
-Function page_pool_page_is_pp() needs to unambiguously identify page pool
-pages (using PP_MAGIC_MASK), but since the patch now reduced the valid bits to
-check in PP_MAGIC_MASK from 0xFFFFFFFC to 0xc000007c, the remaining bits are
-not sufficient to unambiguously identify such pages any longer.
-
-Because of that, page_pool_page_is_pp() sometimes wrongly reports pages as
-page pool pages and as such triggers the kernel BUG as it believes it found a
-page pool leak.
-
-IMHO this is a generic 32-bit kernel issue, not just affecting parisc.
-
-Do you see any options other than:
-a) revert the patch (ee62ce7a1d90), or:
-b) return false in page_pool_page_is_pp() when !defined(CONFIG_64BIT),
-   which means to effectively disable the page pool page test on 32bit
-   machines
-
-Helge
 
