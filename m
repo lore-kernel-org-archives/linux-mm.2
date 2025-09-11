@@ -4,219 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35FD7CA101F
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 03:04:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD722CAC58E
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 03:05:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E5568E0011; Wed, 10 Sep 2025 23:04:42 -0400 (EDT)
+	id 2571D8E0013; Wed, 10 Sep 2025 23:05:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8BC988E0010; Wed, 10 Sep 2025 23:04:42 -0400 (EDT)
+	id 22E5C8E0010; Wed, 10 Sep 2025 23:05:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7AB538E0011; Wed, 10 Sep 2025 23:04:42 -0400 (EDT)
+	id 16B9E8E0013; Wed, 10 Sep 2025 23:05:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 6A24D8E0010
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 23:04:42 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2D1721A039A
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 03:04:42 +0000 (UTC)
-X-FDA: 83875476804.13.5233F51
-Received: from TYDPR03CU002.outbound.protection.outlook.com (mail-japaneastazon11013005.outbound.protection.outlook.com [52.101.127.5])
-	by imf20.hostedemail.com (Postfix) with ESMTP id EBCC01C0005
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 03:04:38 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=vivo.com header.s=selector2 header.b=P70jUQMH;
-	spf=pass (imf20.hostedemail.com: domain of liulei.rjpt@vivo.com designates 52.101.127.5 as permitted sender) smtp.mailfrom=liulei.rjpt@vivo.com;
-	dmarc=pass (policy=quarantine) header.from=vivo.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757559879;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 06E0B8E0010
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 23:05:18 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 950CA119A6A
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 03:05:17 +0000 (UTC)
+X-FDA: 83875478274.23.0FB5721
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+	by imf10.hostedemail.com (Postfix) with ESMTP id BDC55C000A
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 03:05:15 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mq1KZfJy;
+	spf=pass (imf10.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1757559916;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cRbGvgmHvyULbjdc4WklCHtAfWNi+SOsZ3jHQhwCQYg=;
-	b=npJJ2N1NEdV4Ho3Ku3Wy5Somn6MYqUCi2Im12n9LLFdwGRgHIHlLhyxvzaUcFt9CXG3D9T
-	3sV+8hGtjCGKcHKBbfSO96lINUiJywektRU5Md8QSRfo5xcCLb8j62rt7z+zNMMQF9Lokw
-	U3xjh5wOzVD6v5FrX7J8JXw4L0IPbtA=
-ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=vivo.com header.s=selector2 header.b=P70jUQMH;
-	spf=pass (imf20.hostedemail.com: domain of liulei.rjpt@vivo.com designates 52.101.127.5 as permitted sender) smtp.mailfrom=liulei.rjpt@vivo.com;
-	dmarc=pass (policy=quarantine) header.from=vivo.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1757559879; a=rsa-sha256;
-	cv=pass;
-	b=RaAQi3Jnz/7Ut/05KHQWZBalSOrW9OoC5uaf2apxJDSAdKWgZuXP36wXSyjYgMSkHf78ti
-	mVHsnCgcCek/fxtifjIq03v0hQ4kakBbQUJ0QFYHw3Shbxx8aHRjYqQC2w3K6DxE2zjfkF
-	dKUohyAqd6pckcfgEk8k5TC3VBxvoBM=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VhZmpvTBl8aIkOo2XS+Wwt8YYBIlYXXl6zQP+ABcDunlEOTu4hf2XkILA7LI/PQ+TC88Coi29lN10UTHpvlG/oGzvjCcI4MB9rnKJnQw+QU+2T3hOm7JAcEZTeqC1ndmE8GLrgtyO6nkbUtmn65qfKr+LNXpjWxZkdbG91WBx2D+11oN7cQwqUKg3hPD0CkAhSmhE8hVxc/4+rcmC3rLsq2reEgDh1ScuJS5k4SlpPrw3VzGJIGmT4sPB+PPiDoFgD3csbH9RN1DyN7frSILTgP0e/Hxb/GuQieXQz5vYuRv1Wvx8Lzc20072h1hn4MAltaaVZgodMMDmzL+5UBh8w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cRbGvgmHvyULbjdc4WklCHtAfWNi+SOsZ3jHQhwCQYg=;
- b=vfLJWeknX9DyT+/GJSe/cd0HQLVVJdYwP5807feWeHHMIDgcS9FtmAYZMjLiX0neWoQfqfFdgGBcM7+Hl5eTDp3BbeHeGksOy9SaUHl48stDXQdrVFPNpm8ho+BR0lE5+T3ij+4N573YgDcDApxYftQcc9BTt/H9FLqCWJi/thf+jrI2EfYnQHQCfHBg/YiYjCbLrH1pLPxakXxVIBzEecR9kVPGNcUSS9S5wQhWx2PkUAehKpoidhixTRUOZlqztqMn/OEMRNPKDXpm7TNYByBQrbDAJylBJYNVz5vNUuFiUmCNij488aeR/WRgCxIX0xsDIYgNZfmj52zr5yYnmQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
- dkim=pass header.d=vivo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cRbGvgmHvyULbjdc4WklCHtAfWNi+SOsZ3jHQhwCQYg=;
- b=P70jUQMH6X55M0U5r076FmxAfSJ7X+GV+SRmb13eknglsbn9LIYATto27viAXkeImtWWSiGqs17jh0Mp4ZBnQ7X+IhJq3ZsNt0LBig3cViZSxgJdZgLcd1gFWe5H368Zsb/fmyN9RYQlbNzkYd96f1G8DsJBtqPmk2ncJwt4K8fekO2MxvRaF/LckGext8YTKduAhtO8hrx+LhK+L8n/AdxY4G7R3fR3JUWGjRpGthOteRO+sonNLeWRZ2P1FMvn3lmbMVbs900Mnf9Aqiq4A2AMvY0Z4Bvu1b/M9ZYDoVAqWwxHMmjnqRIAATgzhGjboLI061oK7GX5f0GQ87nl2Q==
-Received: from SEZPR06MB5624.apcprd06.prod.outlook.com (2603:1096:101:c8::14)
- by TYZPR06MB5179.apcprd06.prod.outlook.com (2603:1096:400:1f8::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Thu, 11 Sep
- 2025 03:04:34 +0000
-Received: from SEZPR06MB5624.apcprd06.prod.outlook.com
- ([fe80::e837:10e3:818e:bdfd]) by SEZPR06MB5624.apcprd06.prod.outlook.com
- ([fe80::e837:10e3:818e:bdfd%4]) with mapi id 15.20.9094.021; Thu, 11 Sep 2025
- 03:04:33 +0000
-Message-ID: <78e45bc6-20ba-48fa-8247-40d745cd7c38@vivo.com>
-Date: Thu, 11 Sep 2025 11:04:25 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v0 0/2] mm: swap: Gather swap entries and batch async
- release
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- David Rientjes <rientjes@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Kemeng Shi <shikemeng@huaweicloud.com>, Kairui Song <kasong@tencent.com>,
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
- Barry Song <baohua@kernel.org>, Chris Li <chrisl@kernel.org>,
- Johannes Weiner <hannes@cmpxchg.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Muchun Song <muchun.song@linux.dev>, David Hildenbrand <david@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Chen Yu <yu.c.chen@intel.com>, Hao Jia <jiahao1@lixiang.com>,
- "Kirill A. Shutemov" <kas@kernel.org>, Usama Arif <usamaarif642@gmail.com>,
- Oleg Nesterov <oleg@redhat.com>, Christian Brauner <brauner@kernel.org>,
- Mateusz Guzik <mjguzik@gmail.com>, Steven Rostedt <rostedt@goodmis.org>,
- Andrii Nakryiko <andrii@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
- Fushuai Wang <wangfushuai@baidu.com>,
- "open list:MEMORY MANAGEMENT - OOM KILLER" <linux-mm@kvack.org>,
- open list <linux-kernel@vger.kernel.org>,
- "open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)"
- <cgroups@vger.kernel.org>
-References: <20250909065349.574894-1-liulei.rjpt@vivo.com>
- <fszpgct7ywqy6qq3qnjflol3theovmgnau2wgdqqdxin4q7ezm@zumgw533hxon>
- <CAJuCfpFaTj8PsXkoYRQKQ0sOu+mKikUAE8Wbcx+YpZXZ4M7cMA@mail.gmail.com>
- <b74b1e28-8479-4b14-9210-5b4334d3ce22@vivo.com>
- <uwqrobr5xqtvav73srbe6v2nccgtoy2456vpgzemwex26lwsq7@2g74vl5oomfx>
-From: Lei Liu <liulei.rjpt@vivo.com>
-In-Reply-To: <uwqrobr5xqtvav73srbe6v2nccgtoy2456vpgzemwex26lwsq7@2g74vl5oomfx>
+	bh=9T9VUgZB4FkXCXqmZCRFSIgZN/NB+DPn0gz88Z9lruY=;
+	b=rKsOw5qpvZ0xFsBsREq9mEDqOi8H2juHk23AnM1tJ65ct/T6pVehGz4P391VKNCJpxwVI7
+	BqIZrhm+ynDfot0WqMYUuPgKAyH499s+Gh4Xv/OuEc1+jWUGkMxg15OWxuRKwVVq3YWPD+
+	g66nT/bLty0G7ztcBHUEMAAdQlm/DZE=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mq1KZfJy;
+	spf=pass (imf10.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757559916; a=rsa-sha256;
+	cv=none;
+	b=1RmLJW5wdVY3b1gbq5KttKZiXSL4K+GXFN6mQRFYHoqwFLYeHinAjlzNIWP2a08G6Y+RQJ
+	ilQqaKboGEEvSb3Sex/6SEHMsbIPHiTDjYJpbh+9cESSFTk91qbsO+2pIPNVQeQcGDRduE
+	CTvXaEp4QktlZU5Y2ozUiJgJEVLWh3A=
+Message-ID: <f1b2fe3d-e8d4-47a7-b369-ee826fec0e7c@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1757559913;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9T9VUgZB4FkXCXqmZCRFSIgZN/NB+DPn0gz88Z9lruY=;
+	b=mq1KZfJySR1GsrdLS/vyU1/YzvGVT859oA5mxcagNE4baLrGHdnZHnTOwg/0IGaV075piA
+	RATnyx24do8iwRkHvAEVXabMu0YLLSWSz2uR6KaKXiP+rxVO8WxCS8kFcxHvsdzsaWlaCD
+	1vz/9+SZQcqDilMFaMIE2QeNQD6fpLM=
+Date: Thu, 11 Sep 2025 11:04:58 +0800
+MIME-Version: 1.0
+Subject: Re: [PATCH v7 mm-new 02/10] mm: thp: add support for BPF based THP
+ order selection
+Content-Language: en-US
+To: Yafang Shao <laoar.shao@gmail.com>
+Cc: akpm@linux-foundation.org, david@redhat.com, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, hannes@cmpxchg.org, usamaarif642@gmail.com,
+ gutierrez.asier@huawei-partners.com, willy@infradead.org, ast@kernel.org,
+ daniel@iogearbox.net, andrii@kernel.org, ameryhung@gmail.com,
+ rientjes@google.com, corbet@lwn.net, 21cnbao@gmail.com,
+ shakeel.butt@linux.dev, bpf@vger.kernel.org, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org
+References: <20250910024447.64788-1-laoar.shao@gmail.com>
+ <20250910024447.64788-3-laoar.shao@gmail.com>
+ <CABzRoyZm32HT2fDpSy_PRDxeXZVJD35+9YqRpn9XWix8jG6w8g@mail.gmail.com>
+ <CABzRoyYqGsABGVgXbH3Sts3yBsk7ED=BsKbcP3Skc-oWeFsN_w@mail.gmail.com>
+ <ac633edf-4744-4215-b105-c168d3a734ce@linux.dev>
+ <CALOAHbAfzDNdx5LTUhH+eMgVfdG35gAM5subeByP97x53=CWLw@mail.gmail.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <CALOAHbAfzDNdx5LTUhH+eMgVfdG35gAM5subeByP97x53=CWLw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: TYCP286CA0309.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:38b::10) To SEZPR06MB5624.apcprd06.prod.outlook.com
- (2603:1096:101:c8::14)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SEZPR06MB5624:EE_|TYZPR06MB5179:EE_
-X-MS-Office365-Filtering-Correlation-Id: acae6fd2-b29f-46c0-b4d1-08ddf0dfeee9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|42112799006|366016|1800799024|376014|7416014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?MGlZYkN3VmVKTUt6Y1FHLzVMYXdjRWt5bUtDaDN0ODRQcFVickVOWkhMQ2JD?=
- =?utf-8?B?Vk9iY3VITGFHUmlSQUxsNmFHZ1Jqd2JKTkpNaXI3d3BNekhSaVRQWi9RZkJI?=
- =?utf-8?B?ZHFPMVcyTkF0UEhTa3NPdUVvM0JVTFg2YW9nLzdESmpCeVRnWXd3d3YvcjRJ?=
- =?utf-8?B?cEFKd0w3MlZFa1p5WDNLYWxlQ3JCYTF1U2Zka2JhNmVyYnAzeTkxTEx1MHdQ?=
- =?utf-8?B?N2JwTmFJbmxmMElHS2dqZzJLTklkL0JnRTJVbk9RUFlYT1FWeWlDZGlHSy9z?=
- =?utf-8?B?KzNma3c1cm5GaWJWSzh5Tkx2d2c0MUo5ckpxNEJhTUIzMlo5K05LLys1NTlW?=
- =?utf-8?B?Q0h0dUtpaUc4NzBJR29mdkl5c0p5RDVmdlp3ejhPUE52aHUzcHNvcVJvVVN6?=
- =?utf-8?B?eUZxOEp0ak8vQ3lxcDhBNVQzc2Y5TTluNkJVb0RHYXdzSE5uSUZGOHRQdEts?=
- =?utf-8?B?bWhMQ29LOEljNXVMd2UxQnBqdjg1cGNIMnFFdGFJcFhxdWdWZnQ2b2FhRGNq?=
- =?utf-8?B?MHZDZm1RNXVKQmxUR3hyOXZFYzZic2pTVlZ2V3pCcWM2OUIzRWYxajlpTVcv?=
- =?utf-8?B?STVtaU1kUmlJNGVOVDduTVpNNkk2NUhKSmNicEEzdjRVWWZnVjh3aEZXYURM?=
- =?utf-8?B?aGZ1Z1Q0M2syOWVGZUNNMnhaWlE4NThKMWZqTVc5MkpsdC9mRmVseWMrdnNF?=
- =?utf-8?B?cXlCMklNNHkyeFBzL0wyQWJDLzlhTkE4bkFjd2N6K0RGUGM3Y1dSQzZmdzFT?=
- =?utf-8?B?OTVMUGtZRFp5N2dOVHZiNldraGJBYzdOZnhlWWh2eGFsRkhXZWwxWEp4dDZJ?=
- =?utf-8?B?RENieGQ2U3hkaFAvM2cwUUNnZUVWaDdvRERyT01hUDMvVzhzamRUZmlVaHlF?=
- =?utf-8?B?NFAwUnY1RG1vUzVvZXJFVzY3SHg2MFlGeUFyNWt3UWxaRHNzSjFtR3d2T3VJ?=
- =?utf-8?B?TjlQM0RvSmhvVXZlUmpmbHk3T0YvMHY4UlM3TTNZWTNoSldnQWUrSExLOWtR?=
- =?utf-8?B?dVNnQW5pWEFiQWt2dXVjMldqL3NxdTdjTnN3SmtuZUt5SEJJUzdUdm00eUgr?=
- =?utf-8?B?YjZ4YVBhTnJSVitJY1RkWXFobnhWbTQzelJSaVh4aVFrYTh1c3p2RjZGOFVW?=
- =?utf-8?B?NkdZUUU2QWdVU0wySEFBNUI5UjlZak9OMjM5WkpvM01MbE1wTTF0bG80SXpM?=
- =?utf-8?B?SzM2S09hUUlUck9vcmJPd3o1M1RDQU9VV3FGUXpGZUcxR3Z1a2o1OVZSVnUw?=
- =?utf-8?B?aTBSMEQvL0VIYW5OUEVMcmhBKzhEN01tRUtNM0JVNVhwQndVZ204NmM1Q0w4?=
- =?utf-8?B?TnJCSTJFTUNMWWx3SVdDUE0wWGtZUGwrWEVsM0JSZ3ZhdkFKajYyTHlibm1a?=
- =?utf-8?B?MkRyZ2Z5RkZ3Zzkyc3JtdlRNR0FQMTd6Q1h0SndVTlhhY3hTZ0JNS0lFQkF6?=
- =?utf-8?B?ZDlOSlJMRmg5ejNMaGhoUHcwTk44QUM1S3IzZ3poMnNzb0lHN0ZJRGJyTTk3?=
- =?utf-8?B?ajFDaGc3QUdFVEFjeXhPTDNXYlk3U2MwaFowK0FmZDJHcm9Wa2dhaTl2QmJK?=
- =?utf-8?B?RjdUY0VaMkZZaVBXb2VrZ0tESDdnMjJxNW1OQjhGdnRqTEttK1BBMks4bFRJ?=
- =?utf-8?B?REdWSlVaeUxNajhoblg5QzdlSi9McFpkM2YwbmNpbDkyNE5hSlBMVkFTWld6?=
- =?utf-8?B?MmlWWGFrQzZJM0lEQXlqRjI2Vk5Hem81eXk4MEI2cHljalFlMEFsbjczSUUx?=
- =?utf-8?B?a2FRdUJxUEtsM0VaR09IaEMwNm0vbEN4dHBoT0tUOVppQ3VJVTFZdHVlRjFU?=
- =?utf-8?B?eTJpd2RHRHF1NGNvbExXdW83ODRlNUE5WWhoZXNWN3dhaDF0aGxReWJOek5i?=
- =?utf-8?B?Uy9IM3NvKy9CY1BLZ3ZPOWVDdnJuSzl4bFd3ank2WjdEOTY3dklRbmU5bXJX?=
- =?utf-8?Q?YN/2QNtojdE=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SEZPR06MB5624.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(42112799006)(366016)(1800799024)(376014)(7416014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Z2Rzd3JET0ZQKzdudlRERGRraWhrOGNGRjV6dEQvYzhiTDE4L0lzcGNRRjl6?=
- =?utf-8?B?QUY5M01xWlpYblc1K2JnS2hkWTJQdC9YVUxGdE93c28weU9mUU1oMitiVmdG?=
- =?utf-8?B?eGk0UDF1YVN0Nm4yMkJZcnlURFowQmg5RXAxL3RpZ1FrYUhLQlZoc2VwaDhJ?=
- =?utf-8?B?UWIvOFFjUU9JTklVMEd5WnZaRDZWYTJITDZ6eSs0S2FFRWxiK3E0S25Pc0No?=
- =?utf-8?B?RTlVWk45SU5Xc2lyK0RqVGNBWjdNTzRVajh1d0hsQ3hMNEZtZ0s0a2ppZWNR?=
- =?utf-8?B?YlVsRXhLS0NxSGFoWGN3TmdvdVBzekFVaVpBOHlPSjVVdzh6eVlEN3FXOUZm?=
- =?utf-8?B?a3lEZVcvZCs3S0tlTVNBdmtRc0xPaGhaOEZtRkZURUdtNmFWc3RKa1JYZVRm?=
- =?utf-8?B?b1REL1hidTB1Ty9FMXNMWGRpUTZSa1BTNzdmeWJkOUljRDdPWkRMOXpwdEFz?=
- =?utf-8?B?RkI2VEJ3NkVlRGZzZDFaenVjejQxUmRvZUNaUTBNcU5QSHF6VGk2RlhySEZt?=
- =?utf-8?B?NHVtYkEvdmVRWlUzaG4vWE9RRVl1c3pxSEJnUm8yWDZwakREN2lXanpkdVNJ?=
- =?utf-8?B?Z2EyQzlVVTArV3VXaWJra2JVajFRVzhqbFRHaVZFRWwzVXA5WVl5ZnRheVZp?=
- =?utf-8?B?Q3pxRmlGanRXQ2tJZHZUclpLdWt3eUhtMnY5eWQxblhNcDhmR1NrLzlCbHJR?=
- =?utf-8?B?RE9PNWFza01ZN2lWRHVPVkRzY3BoZ0FOTEVobE16cWJEV3JTQ2NsN2xpNDlR?=
- =?utf-8?B?elRMczBkMFp5TlhoWFFQWTRvRlozY0c3YlpTcDhnQ2p5L3ZrZ1JoZXdBS0J4?=
- =?utf-8?B?ZHA3SG1NUkgrd21YMzJzTjVySk40dlNsUms0TTJXQ0FuR04wWXU1aWRkcjNh?=
- =?utf-8?B?YngzOTdCZmtTcVlXVWNyb2Y3U0w0SnY2Ylpta2RnVU5Tc0s3RS81Yzg3RjRH?=
- =?utf-8?B?VHFoa2Y1T1RYTjFwZVFZZm5uN3pZQlBEZitUZURSMytDU1crcDM5THNVZTBh?=
- =?utf-8?B?a3hoTFlONUxzQjI3SHVaQUwrc1V5NWpkUlkvVXFrWHpjOFB0dGtNbjU0eHNx?=
- =?utf-8?B?MDJidzJHVTVqQjlEVFRVbmZuRjhobGJ1SUc3SWlCaitZcEVzSk9rZTdhbnUx?=
- =?utf-8?B?SGk4bmZWTzRvaTFOYkRXUWhTSlN5RmFyZkZGU3BjamdKNTVIS3JGUkx2Tkpn?=
- =?utf-8?B?a1h0TUZNWkxURVFjYXo1ZWFtWUU5UExaaDJUbmdsSHV4eVUxcHBFUnVvbTdH?=
- =?utf-8?B?bVRobmRSQU1Cc2o2Nk1IK0dESXRRZDVMemJnZUpMeXc3dkhFc2taRUFOWGt6?=
- =?utf-8?B?VkFuOHZROXhRam5NbTRkUXA1UlBjRkxJaGpOY3M0N0s4dHJvM1Z4bFNhWGdG?=
- =?utf-8?B?cXRtYmVMdlJyZU5DL3JJNzBudlRTMHc4UWs0WEg3MHpTNnJCZ3kxMExETHR3?=
- =?utf-8?B?Yi9NNW1TdWxWL3p1Mld5MnJ1QnJkTnZsWDFueWVNL3AvRW9YVE5RbHQ4T1ZG?=
- =?utf-8?B?dHl1bFR4Z1pOTDU4dDJVcjR4V1RGUUpmOEpYd2RYdVdMbzdDdWk1N3BSMmRs?=
- =?utf-8?B?eGJkYTRtWG00a3hBbWlhUFZQWkFIRzhBckN4amswRXUrUUVGSmUxcnYwcldr?=
- =?utf-8?B?NTJMVXBJU3FLSjB4QmUrR3dBY3p1VnVucXhySVZ2NitEbFNYS2x1UFNBK2lj?=
- =?utf-8?B?dWdPeVU0cnY4ZnZSbWJKdHVoa2kvVnJTZjZMVWQ0TjJ5Q25TWmo3SUJjK0xt?=
- =?utf-8?B?ZGhxR1NRWXRlaWtSR3RCZ2xaOWVYbFRmZ0wvQjE3aWxsZmQ3NHNIbkNCVWxL?=
- =?utf-8?B?RjFuc0RaUExtRmUrQXJ4VEFQWkR0aXRaWEdPUDB2SG44NlpNQmI0TVNVaXly?=
- =?utf-8?B?VkxvVkhwbzMxa1dpUkZYT3RIRW4wd3BhYnkzdzJ5L3JrQm5lTVVZN1NOSnJN?=
- =?utf-8?B?ZlRRdCtBVGJpYVlxOGRKMzIvSVVwbEMxZFNEVThXeThkMVltRDMrY2dSOEIv?=
- =?utf-8?B?RjA0L0FSMHpUR3BncTUxOTJUek1PWU9iMzZITmRKYiswYnlVaWhVZ3BOeURU?=
- =?utf-8?B?ZDVvK0hwUlZHNklUV1BBTmJMeUdCQ2JVRktleWMxaTB0MU00bjd6ZmdDRkll?=
- =?utf-8?Q?Zuo16JPwqiZ1bB3CD2QHuZl39?=
-X-OriginatorOrg: vivo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: acae6fd2-b29f-46c0-b4d1-08ddf0dfeee9
-X-MS-Exchange-CrossTenant-AuthSource: SEZPR06MB5624.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Sep 2025 03:04:33.5165
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kJS5QZMimr7M4lUZHknF/iRXizkJKn0hM0znUhgZcgEQgIPg+9KEjBZIf2b8vawBQ9BqG57wvV4hJ53KYAW/Mg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYZPR06MB5179
-X-Stat-Signature: shti8j9yboz4qgbbk8y176pjjc1fpdpg
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: BDC55C000A
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EBCC01C0005
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1757559878-574013
-X-HE-Meta: U2FsdGVkX1+8XlFvwW8vRH8phmft8UUT6WDh4FqmDCPtYcCcvntzmcyNqQ8hYU2T8bYP0BAvPCJU348b20PpHiEHAolO+dChori/Q97XjOyfTDw1aMKVZdn8mH1eH9vCgr3O3H6b3RmWwA6uNVWOyxG31pXGypZkPT2rizdQ4dHKDXRPCQ2xuxfscM5gY7XOTGF0aHfltvrZzN4pGYl2nlNr9oCalQXpSzzC54sco9nuuRin8+oHTZ/aM4V6M3BtAFOnUjOxmGV0O+3aLuloi8ikec8y+rW6xW5tYAwMi+HWCqnyn0Qgu+SnCAesFv/KHSB/hNMyW0KYdTvxNOFJUeWkCWR1CiU4z0ilLrPsDrRN9l1BrU5u+oJjdhJ5YNU+aTtGsD4DpthCp2yeJEUrL3K4xyJ6FgPJ7Apc0JxbUXtWuz2LEPvVQQh8uuwUsm88Od4Pf9M8wP8/pq5tBO0k2uShbAJpky7n4KwCeZVv9hLGv4FHJJBGEehCKJ0K3lk8f7zlSEjr1QjQOYW7muzF8purbdaZOQx5mqKWVBWZBZSxlRZjcxB0KVI5ZAltn5Q5a7vd4uXbWZiQK4l3wRkd9Krm9FujyCRhSNjPG6dTYXwEr/QJ6nymgq2F+yV77AQdu9KGUx/hWzpIX02c1R5c9KGl/zrkrq6KsRJQWRfvFK9rMYcagPYhDxrO7oaNJGM5BzpYLQR6rRi46wGgo/7wLLMrhi8J0WUUQ/S5tgeCTWS/mb8bN2GvxX9Aw3MtpmXv+hbAHANOd63gUHkcGpx/5WFCZo5o6NhJl66jBhpY2+OTZobeX78qSG0aec6slsoHP+VejNb6NOLGgLrH0FDoXTxhVc6I62yQig0g7s3nXgZDkWhZXhuLq4x+KOm4hfoNYJRvQE9ze66yifT1GCi8/XTLbRlPV7yh5BEivIb+ckNza4UT5EqTvqV1vebhM6+dp9TqvVxZDn55DIymMQd
- WyBUiml5
- 6cYCK+/vtG9eZiJcNPg1ikGgI+lxhTPykQQVVzLnZRrSgfW1kunGDvrhrwBGZ8nxeFoCYNglWhwchVWShCqu2iExNArQJEd3RtGoSox/m2sRHkpJiNdhQcRs8QNEwb9xefcj//JBqE/UBh+N91YXd9J0JfIAZ8KVZIlzYCPDUEjA12LNk0vfh3JtiUKzt5dXNl4W9v9EKnbRTYXfKdkYX14nr0xjicv4V+FNGHRBWjzik5GxPLp3o34qdwwUMHPbhNP+lOeC9LyDEcEoRDXLUYRvz1f3laOP35dQ8XjYd0ZHB4DjCJKqND7lcq+aQKvJd9SG4N5nhF1PvzWLESons3IWt+IR3FwBrt8gRT5g7XUcR5ls4XAXUi3wjEMoNjKFwG+RGJfsuFK7kg7QuIe2mUur+7c8y9pG/LpRq8Yg/S4TXW0x7RHUob6gdCQ7FwNVpbwZVcQjEvNmzyeiUIjDv9WXWXDwS/2xf1uZcHI//HO40dWlhu6LsAKOeOo1A/AT9EMd9Ue49rCbauF/D2E1a8s6jNvPQj2mbj3wezv6aBtMnpZa6kNfPUEfSgo9+9n56pEmN80iiulKuaBI/2Xpf76sQFRYBf50XYjuz/mDHZeamkl6hJcYBt56QEvLvGCZn/A38++H5KqHnI6E=
+X-Rspamd-Server: rspam07
+X-Stat-Signature: r7d6n76h9j57omy96m7uwau474kk6oft
+X-HE-Tag: 1757559915-3604
+X-HE-Meta: U2FsdGVkX198grcf/1tIQEubFvQvi5OhcOeUXQ4gxAXi+ZnjduQU9lFiUYSrhWcN0ku6UB+VI85kd9KCpSWhDvjj9v+cldkl+HkThlEfne62kLkc5ETqeCX2eHOsug8JaHgbvVdjiDmvAfKHUw/dRB6JYYnQ9spnB8kkQ1YU9+snbTwKbAf+0X+w0yRasIx4UPGKZljbO6Q6tqIuuxkvd7hcZhBq4zQRsChOLjyARyp3LvQSEP00uo439owCE1Jt4Fj9k24wrGlP3SdrWaO/zR7rda5t2MWEHZhSMcQY1qy4NmMrwfgGeMc8gCJizd9waqNOZ9kJ+bEGqrDmHb01KDRITkDgS89SLq6nasebrNt0aw+OZ3R178nwWJl80bLVRS4XwPLRHGruwsu0PYH3R6KKtgg4n8BUEUqUHL+p8O8oCPnRvG2oS+aX+rowiA8j3+0gPBra2yeAMR/MA6BjuYkupQXOVhZjGBeAQQha+2s5QUU01Pc35bICuEOLrxjYYxHPhSdEpWZ32i5/UYDuhd1tfo3Kp/vQQmta4b6b7kO32XAm9UvstiZ1xjgfcjNYLQumTuJ09+W4zDzSJNi3iFRQrhhrJhLvdE1wW6akSli9nJfQf75kNfr/bX5ERMwSfqiJ2tOQBD5XbI6uOAmHFmNHJ8PP/Na9y9ou48/5CDfUddM4L7ayjehp24AUl0wcvkwkgnB/EwtciBofy83mEdBhg4QS1MyDfsLvhVapb/3s5s/7OKjTYcJyWUUXRwVFY2NS3/KGGjXupZ5TaO1QVZZ1iTTeaPaYsPmSkCTcoXLgLal23avOqWh6kVvLUE0n3IYiiJ/vx49FuuyFx10EVxyd7j87ngsafisE1kJLH7aJ0s6wgfu7vBo1VORtfLwjIGNKOhyjLWDbHS2jN/AE76n2PfL0S7gB9L036t5AmDPauZ5qzuDyh9IVsB0yyK7onIo4S8cqIr9q3ekC8vb
+ LI83lA/F
+ xb4/64XAKjGrA7VJHOm4I/DHIoWL5IsO7lg0gGd0FWRDFG1q6kp5tfvBj7nvOD5/V8U5Q5XJWnFMEzs3CZCMjoOGIo9bT3XeJOEHTkSKs1+F4qGKvFK21XHCXphUIJ/8SQI3QgS9TmyEWOD495w8nnulmvzlsPnUTQr7vxd6OKJn0yRhK0LAcccnpAFByhKdUEHmFxRTwnEsysa3wgKYjXoe2Isbp7OZIX8Eay9AphUuFDu6olreFkbaY2Fmo89j4Ki+1OJiCdFpiRAef9d5uNgexggKTQGGwgJnYYFSGYSlNvHSYboo5N0ttR5BaCQazaYn7mRAzEKw/Wucxar0FyVsX/A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -226,67 +104,91 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-on 2025/9/11 4:12, Shakeel Butt wrote:
-> On Wed, Sep 10, 2025 at 10:14:04PM +0800, Lei Liu wrote:
->> On 2025/9/10 3:48, Suren Baghdasaryan wrote:
->>> On Tue, Sep 9, 2025 at 12:21 PM Shakeel Butt <shakeel.butt@linux.dev> wrote:
->>>> On Tue, Sep 09, 2025 at 02:53:39PM +0800, Lei Liu wrote:
->>>>> 1. Problem Scenario
->>>>> On systems with ZRAM and swap enabled, simultaneous process exits create
->>>>> contention. The primary bottleneck occurs during swap entry release
->>>>> operations, causing exiting processes to monopolize CPU resources. This
->>>>> leads to scheduling delays for high-priority processes.
->>>>>
->>>>> 2. Android Use Case
->>>>> During camera launch, LMKD terminates background processes to free memory.
->>>> How does LMKD trigger the kills? SIGKILL or cgroup.kill?
->>> SIGKILL
->>>
->>>>> Exiting processes compete for CPU cycles, delaying the camera preview
->>>>> thread and causing visible stuttering - directly impacting user
->>>>> experience.
->>>> Since the exit/kill is due to low memory situation, punting the memory
->>>> freeing to a low priority async mechanism will help in improving user
->>>> experience. Most probably the application (camera preview here) will get
->>>> into global reclaim and will compete for CPU with the async memory
->>>> freeing.
+
+On 2025/9/11 10:48, Yafang Shao wrote:
+> On Wed, Sep 10, 2025 at 9:57 PM Lance Yang <lance.yang@linux.dev> wrote:
+[...]
+>>>>> +/**
+>>>>> + * @thp_order_fn_t: Get the suggested THP orders from a BPF program for allocation
+>>>>> + * @vma: vm_area_struct associated with the THP allocation
+>>>>> + * @vma_type: The VMA type, such as BPF_THP_VM_HUGEPAGE if VM_HUGEPAGE is set
+>>>>> + *            BPF_THP_VM_NOHUGEPAGE if VM_NOHUGEPAGE is set, or BPF_THP_VM_NONE if
+>>>>> + *            neither is set.
+>>>>> + * @tva_type: TVA type for current @vma
+>>>>> + * @orders: Bitmask of requested THP orders for this allocation
+>>>>> + *          - PMD-mapped allocation if PMD_ORDER is set
+>>>>> + *          - mTHP allocation otherwise
+>>>>> + *
+>>>>> + * Return: The suggested THP order from the BPF program for allocation. It will
+>>>>> + *         not exceed the highest requested order in @orders. Return -1 to
+>>>>> + *         indicate that the original requested @orders should remain unchanged.
 >>>>
->>>> What we really need is faster memory freeing and we should explore all
->>>> possible ways. As others suggested fix/improve the bottleneck in the
->>>> memory freeing path. In addition I think we should explore parallelizing
->>>> this as well.
+>>>> A minor documentation nit: the comment says "Return -1 to indicate that the
+>>>> original requested @orders should remain unchanged". It might be slightly
+>>>> clearer to say "Return a negative value to fall back to the original
+>>>> behavior". This would cover all error codes as well ;)
+> 
+> will change it.
+
+Please feel free to change it ;)
+
+> 
 >>>>
->>>> On Android, I suppose most of the memory is associated with single or
->>>> small set of processes and parallelizing memory freeing would be
->>>> challenging. BTW is LMKD using process_mrelease() to release the killed
->>>> process memory?
->>> Yes, LMKD has a reaper thread which wakes up and calls
->>> process_mrelease() after the main LMKD thread issued SIGKILL.
->> Hi Suren
+[...]
+>>>>
+>>>> Also, for future extensions, it might be a good idea to add a reserved
+>>>> flags argument to the thp_order_fn_t signature.
+>>>>
+>>>> For example thp_order_fn_t(..., unsigned long flags).
+>>>>
+>>>> This would give us aforward-compatible way to add new semantics later
+>>>> without breaking the ABI and needing a v2. We could just require it to be
+>>>> 0 for now.
+> 
+> That makes sense. However, as Lorenzo mentioned previously, we should
+> keep the interface as minimal as possible.
+
+Got it.
+
+[...]
+>> Forgot to add:
 >>
->> our current issue is that after lmkd kills a process,|exit_mm|takes
->> considerable time. The interface you provided might help quickly free
->> memory, potentially allowing us to release some memory from processes before
->> lmkd kills them. This could be a good idea.
+>> Noticed that if the hook returns 0, bpf_hook_thp_get_orders() falls
+>> back to 'orders', preventing us from dynamically disabling mTHP
+>> allocations.
+> 
+> Could you please clarify what you mean by that?
+> 
+> +       thp_order = bpf_hook_thp_get_order(vma, vma_type, tva_type, orders);
+> +       if (thp_order < 0)
+> +               goto out;
+> 
+> In my implementation, it only falls back to @orders if the return
+> value is negative. If the return value is 0, it uses BIT(0):
+
+My bad, I completely misread the code last night ...
+
+I see now that returning 0 forces a base page (order-0)
+
+> 
+> +       if (thp_order <= highest_order(orders))
+> +               thp_orders = BIT(thp_order);
+
+Yes, this is exactly the behavior we need. It will allow us to dynamically
+disable mTHP for low-priority containers when we need to, which is perfect
+for our use case!
+
+> 
 >>
->> We will take your suggestion into consideration.
-> But LMKD already does the process_mrelease(). Is that not happening on
-> your setup?
+>> Honoring a return of 0 is critical for our use case, which is to
+>> dynamically disable mTHP for low-priority containers when memory gets
+>> low in mixed workloads.
+>>
+>> And then re-enable it for them when memory is back above the low
+>> watermark.
+> 
+> Thank you for detailing your use case; that context is very helpful.
 
-Hi Shakeel
-
-Thank you for your consideration.
-
-In our product, we have observed that in scenarios where multiple
-
-processes are being killed, the load on the lmkd_reaper thread can
-become very heavy, leading to issues with power consumption and lag.
-
-This problem also occurs in the current camera launch scenario.
-
-
-Best regards,
-Lei
-
-
+Cheers,
+Lance
 
