@@ -4,136 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 407E8CAC58E
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 01:02:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E446BCA101F
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 01:25:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8238E8E0006; Wed, 10 Sep 2025 21:02:11 -0400 (EDT)
+	id 1EFB38E0009; Wed, 10 Sep 2025 21:25:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7FAD28E0001; Wed, 10 Sep 2025 21:02:11 -0400 (EDT)
+	id 1C7418E0001; Wed, 10 Sep 2025 21:25:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 710408E0006; Wed, 10 Sep 2025 21:02:11 -0400 (EDT)
+	id 0DD238E0009; Wed, 10 Sep 2025 21:25:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B1138E0001
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 21:02:11 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E720EB8915
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 01:02:10 +0000 (UTC)
-X-FDA: 83875168020.23.2766F61
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 14157140002
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 01:02:08 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=YZxOmNl1;
-	spf=pass (imf09.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id EA9098E0001
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 21:25:27 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 924531DDD04
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 01:25:27 +0000 (UTC)
+X-FDA: 83875226694.16.19C5C05
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	by imf17.hostedemail.com (Postfix) with ESMTP id BDA8640009
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 01:25:25 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=B2PWpRTF;
+	spf=pass (imf17.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757552529;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1757553925;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c6RyKxrXBphbUIxCwH62JzKN1u04ZKF0pThPVVL+cJk=;
-	b=3UzeSN1yqjoUEeL2Em2rVMSlbXv5uJf9UaMNlTM0XQTMCBtvubV+5vMxHPcjYybbbk8Eid
-	vH2HF7uikqTSrjZE8ud/z2r/i9pdwLVcwfbxbuDMMK9EZamHKXK5phg3kkrGoO5ptsSHrM
-	ofSPXpoA9HtPOeTzHDJ9O7KCIefR2KI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757552529; a=rsa-sha256;
-	cv=none;
-	b=B5aiI/wcn07Lf8Olcm7W3gvS96C6/0W4wyp9kjupYrTmkSjVifezrRCkFgYmcd7uy0qI7h
-	8vq1QyjzvTjC0R65RCI3wveptkLt+FDf6LHiFY4qVDG17+ew701aWn9D3IYEQb2WSJhFSc
-	EcnpCnHGYoe0aG3iAjc/vemQ6Ak1i3k=
+	bh=2IBWw+7TFkrpbrXc8qs0EKB07x7xflQGNP5arLhvKP4=;
+	b=IkG5WpEx+FzY5JHc51mDcGf2Zc3O7QKAgBkr32FaBLNIO2/TV58eCgsLUalLGdsTzObMzI
+	ug4g1ROS59MzXRNTaQDUNga1jijaG5x3UdoJWLJKun2ZU7MsWbNcnD55Us2LLwAgHsx/sH
+	r3tyjFctAGTuGj4dP27CMNj1mkXd7h4=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=YZxOmNl1;
-	spf=pass (imf09.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=B2PWpRTF;
+	spf=pass (imf17.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-77256e75eacso167638b3a.0
-        for <linux-mm@kvack.org>; Wed, 10 Sep 2025 18:02:08 -0700 (PDT)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757553925; a=rsa-sha256;
+	cv=none;
+	b=wvaxiEsvtclgziKWwp0+yCHlS3BjcQ99lKMprQCK2yWsygOHRM+3aM/Exitstm2IRl5VVh
+	Tp0s2zKma+FZ63rMiqLH2ROBW6yENXq5hchnZX/PvkEDAm6jjXldBtfDOXwU972xg08yiE
+	q9V3yX0ajsn1IXuWf1plW90UKqacEtA=
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-62733e779bbso254929a12.1
+        for <linux-mm@kvack.org>; Wed, 10 Sep 2025 18:25:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757552528; x=1758157328; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=c6RyKxrXBphbUIxCwH62JzKN1u04ZKF0pThPVVL+cJk=;
-        b=YZxOmNl12hJce7RpFvlNblOmNUcldnjUn1/YO530WZQqyvemJ7tG1QM4uOvfrFtfQW
-         lMu7SPuFdcESt1P9I4Ns80ofI11udHV3/vJvU3IFDY9SadjitG6LO+QpNo8813BK+mfG
-         x6seyTEUsK2edHwTWmCIxntP10KHJLdYKli4w8e7zkcI6L7kFc7Fu8vc/MZC8xxuV44Q
-         Fdi1srIAkFqYX55jNaH0KuOe+m+UqEbDqn6kdGqrB+2ARBEyuEh2UQc7yCCjvDlxVHnV
-         OQWlYi8d90uvXgOsLRK8sn0uRc40BgbF0/bbQgEKwN0YPCxJ/WRRjGfVdQOrV9gkzg25
-         g7QA==
+        d=gmail.com; s=20230601; t=1757553924; x=1758158724; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2IBWw+7TFkrpbrXc8qs0EKB07x7xflQGNP5arLhvKP4=;
+        b=B2PWpRTFX2ybOOwnJtR6xJpyG9tYZaA8VXJhz4/yqms5aL+PEFzle+8/4eHQdBj+YS
+         G7BvEBtb6xSbhqBAIGUdI0/2nXb95fmmD3RpruV8olYky+SXInlp1N7ROv/FDHbSNdsD
+         NxOR5PnvGCeTXN6e93abzjxu/U0IHxVW9QH056mYsViYiN8upuJ6wpVh9x1Qb05BzPtW
+         k1aMd+N57fXj8FTjD3vtBo+fBH/JRhsaBGfIuIce/kKr/4lySwUCPUt70BPuxRe0MFFU
+         XSijg9scOWPAxnJ6sY0JQgJMa3KGG3f6bvdD5uyoKy0zbVPDRu9peuIIAzb3spf4g3pM
+         T1IQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757552528; x=1758157328;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=c6RyKxrXBphbUIxCwH62JzKN1u04ZKF0pThPVVL+cJk=;
-        b=ZKovDw+U+qwZ5R92kaneZUHzRPhRCgTCxXqSVbewba3B8ffbx+WklKaRe/vldnFxvB
-         mj2ISpOQGPtvb1oxeQ+Rzjj1JRce+mES6PutvFiK7oGD4+UEz1hzykIQwNfxQm9i2TVO
-         u7dkeyVy9ZfttnDUuO0Vu70GXJ118l77QOCgyXJVWm1o+uAROA1B3on25Mlvj9qnTRAT
-         uWCQTEBa4dzGCjRinWzl0COtA3Xm61+UVW4va8TL4Eha3M0wIXxewcJFASwIhoSLD3E8
-         O/mHMt4aGcsXFYK3nEVcZs0GfMDlaS+cDYFckh/hLojigZSj4O515CgcK+NwiW6s96rA
-         Adog==
-X-Forwarded-Encrypted: i=1; AJvYcCUDzhq/XfFLwsseNZdGzCjLW7SmTAEAuUfEb1LVlKt1/cZQI9MAoseTuCLhnGg0G1RXydA/NWaPCw==@kvack.org
-X-Gm-Message-State: AOJu0YwtcUpB4chXT6+gHa7TO4t5ysxFgn0xDtmavia/AJ73ETdkMGYB
-	klhWnHcS2Uz80V9Qhe9U1+z7oMGM5cekXJZXxdEjLq/mnQD6jc7r7mom
-X-Gm-Gg: ASbGncvnX5knt7JCLRiT2fWPTfNANhvtyD1lVx+py0gMqrQuf11lR1+Hq6N88d/LEQ8
-	XZlSP+MLHVGP7tQasg0Wh0eQOTbzjERE9HcX9zgiMGSYLEveuRHht9E47w5e5slc7bhfWqHuzO9
-	u8coF1gxN6HdKb/xdSoEXF2sBi5i8ejxQRmAYMrvMHU0ZpqjwJwDWEWzIP54nY2tSJgmDjWtiC8
-	fY4xBtQtq9wnVuERZJuU3Z1Tsl7TiF14us3W9UnlNyvzgu/3E9OUEQRanRulHOBrAI3N8Mmyaym
-	nmqwfagxs9IguWuVvBojAldfWos0c5BIO4M881qwKpyNFpc7bQODpS03UsrfmYSwdovIZKfKK1f
-	AWTR69jyzDXxqWf72cEzD36SWaVs=
-X-Google-Smtp-Source: AGHT+IHWKYeBfZHFw5wp0lGo2/j/+43qoXRd/Q4Cw1fK4Uyl50WB09aLvc51pAjyyTCeRnBJqpSTow==
-X-Received: by 2002:a05:6a00:4652:b0:772:5ba4:d75 with SMTP id d2e1a72fcca58-7742dd1270emr21626263b3a.4.1757552527499;
-        Wed, 10 Sep 2025 18:02:07 -0700 (PDT)
-Received: from [127.0.0.1] ([2a11:3:200::20f3])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-77607b34254sm122807b3a.75.2025.09.10.18.01.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 10 Sep 2025 18:02:06 -0700 (PDT)
-Message-ID: <5ed43490-6894-4780-8faf-52d5f25bf3cc@gmail.com>
-Date: Thu, 11 Sep 2025 09:01:49 +0800
+        d=1e100.net; s=20230601; t=1757553924; x=1758158724;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=2IBWw+7TFkrpbrXc8qs0EKB07x7xflQGNP5arLhvKP4=;
+        b=DOgU+rgzwB0OGWjvhS8gC/oZYxLbtZgehKa4VEFQofnNTf6XVXpYypM1k8JUK5vZ0w
+         gdUijUd9011tUr8O+yCXF82KhWiMUkOX+ziS9d32kfM+7UMTqMxHKt6GlUHrOa8Ks2Qv
+         kxY1ONlgjrZ5sJxr0AO+5xw272HVNuWMmTqqpCAYE2O6b1XWgPXDIN68WAsthzsw8ONV
+         wvQvZAf3JwkRTpGgWoCxugCz15vI64ED36789zVW0rBvYybsjlJ0/wOcq7AQkG+5KQhN
+         tPm26OHJG6wa4qjSHwZ4tNZL5ALL3jpRik7PqCFytfsOZx9LzlXHPLZczglfWDwGJrXY
+         kg7A==
+X-Forwarded-Encrypted: i=1; AJvYcCV+JlSiOIMDLAbxrcqoDNxSrt3GsBiDBMeE+zId6Oca/2bPa5CL6QGAPJ82kYkhpMkHIhfbH9C4Og==@kvack.org
+X-Gm-Message-State: AOJu0YybWRr27EyV6DG2qQCRgQpCIy4Vdn1raEu1crsIczjn/r6Ce+wO
+	9gve5bQAYjVFNVI6+UHxdScr1x/mKqUYHZtYbplUfeThEG731Xmq7273
+X-Gm-Gg: ASbGncsAmjT25QQGw6xBkmLxfddJyJnQidHL7kl8ZG7Eb1mgsKNHZ7O8wVxt9y6gQX7
+	ta6dlqF8xNAvSg95M81MWyCbOHSm83qlNaxzDV0ndfdzOe6TIpWA1Kg9YHy8Mg7/Ep+uaVmnMCF
+	jH/Oq+ndhXross1yJ8CTYY87PYkRRp4VYYBu4NTb/FoYcT/+91ORzSia7yKCiorpCQ+n9vPrOkj
+	kMWF4QYHS/UmEXeY6YZlJ2jTb2jKancY8VJ6H9i56Lv/Oe9D4SwaPdLuSCeBeR8yy2Wf/T3JdxB
+	ZFir2O5ztdz7tjckkVOIQcX8jXFuKwDGGiDv5S9JHHlSi6Bg90ep7A7LhLActp1wJDjfsajdn3w
+	UZrSxAKSXVC+dzOc5gul5f6QH0r9IRVPrDLOm
+X-Google-Smtp-Source: AGHT+IHWOSXmwSCzpHQhPNANhYq1hmYyjY5oy51ES93vJl+RjeBZ5pglbMYMT3WEdFRAICEOT7DFeg==
+X-Received: by 2002:a05:6402:3512:b0:61c:9193:a51 with SMTP id 4fb4d7f45d1cf-623801ea22emr15452016a12.33.1757553923905;
+        Wed, 10 Sep 2025 18:25:23 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-62ec3400c76sm86322a12.35.2025.09.10.18.25.22
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 10 Sep 2025 18:25:22 -0700 (PDT)
+Date: Thu, 11 Sep 2025 01:25:21 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
+	mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org,
+	ziy@nvidia.com, wangkefeng.wang@huawei.com, linux-mm@kvack.org,
+	Oscar Salvador <osalvador@suse.de>
+Subject: Re: [PATCH] mm/compaction: fix low_pfn advance on isolating hugetlb
+Message-ID: <20250911012521.4p7kmxv46kwz5fz5@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20250910092240.3981-1-richard.weiyang@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 01/19] x86/hw_breakpoint: introduce
- arch_reinstall_hw_breakpoint() for atomic context
-Content-Language: en-US
-To: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Peter Zijlstra <peterz@infradead.org>, Mike Rapoport <rppt@kernel.org>,
- "Naveen N . Rao" <naveen@kernel.org>,
- Andrey Ryabinin <ryabinin.a.a@gmail.com>,
- Alexander Potapenko <glider@google.com>,
- Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>, kasan-dev@googlegroups.com,
- "David S. Miller" <davem@davemloft.net>, Steven Rostedt
- <rostedt@goodmis.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Ingo Molnar <mingo@redhat.com>, Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
- Adrian Hunter <adrian.hunter@intel.com>,
- "Liang, Kan" <kan.liang@linux.intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250910052335.1151048-1-wangjinchao600@gmail.com>
- <20250910052335.1151048-2-wangjinchao600@gmail.com>
- <20250911094609.5f30e9767ffc3040068ed052@kernel.org>
-From: Jinchao Wang <wangjinchao600@gmail.com>
-In-Reply-To: <20250911094609.5f30e9767ffc3040068ed052@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 14157140002
-X-Stat-Signature: mczijiwq87gfaymry6nf84t1g7t87yq1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250910092240.3981-1-richard.weiyang@gmail.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Rspamd-Queue-Id: BDA8640009
+X-Rspamd-Server: rspam05
+X-Stat-Signature: xj6hxwwzqw8si7smxmbzff7zizxobz6g
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1757552528-238971
-X-HE-Meta: U2FsdGVkX18ofx8gP14AcxDbdNFk9pTqbyVnY+hV+lg9FSUcCUyYJIZVt9Bo+NTpRf3aO9/x1WnWJXyI0ieeCJE56KtQjC/07oMSJZzvL9mlWMsyykWs98cn3U++edhLeNTIdoISsvM4Opvb+EttFm6gpkp2qfF1Rhk30WGA8TahYfgA2gCrAOsG0C3v1JZte8yZlpwmHwdlebmhfXq8WSgRU896REAcL+4ze+hoXLpZD/ckkt+fTsDe6FbhHpkMpoeaJd740MPzLQADrfjmSpuw6NgtB3/VIgIbshRLDFy+9vpcoS4BdgWLAP1lp74iBNyxBClXmRUsYbjfN2IDL9VlLol0F+y2cO60KEFxglYMOXjGqMGo3e+YuoT38cCp4dH6cNtpi7vyIQAw2WqufgSKxFWc5mxLlxXyabvh8EY1ooSLAZqLnIn6JQvkUH+5arhDPgQbJgJSvFgRTtbfh9kuBdSeqH6U1QpAkU/8P1o7e8lkZlmG535s33bqjpetgsX0bxBxWQvH+quNdzeurcZ9JUGCXkMMMn5YPMf7TrwCYqplplpmp0RaePeUvrEInKyKVupoawdVlHiulVN+8HTyvNEzF4SpGM6PPVt1139nBnha+JrhF3qlwfJCzEcHevqAtbHf8d/ZU3wL/xrqa+x3IzTPOGRtGB0rW+6C+X8F8Ufq/215tIsmKBYJzlQd7ULdVV9GbIIHYQAjl7a4s3TlzzjPEDTOvnvl6OAMt7ydKsyD5j5utkQSAX0hAaX9yGCnvCwwupxHNvzaCTNfdDlBiK1xiGkXM7mxaU7jbqd9mhJh23k1YIlWB8RePKSxuOLOpYQNCEBch9VdI2+VviTL7dVkSFsnmaxZvwxcJ58QFwuUSFN73lDOBjF4tzQCreqbsfcxETXQjc4pcnSEzS+UgwL3bKV9ZxZwpENwnxm0FsIz7kPBGptqFjROazeM5HodhtzSf6TNtsQhoUn
- GFSa2Njp
- Ly3BMqmanzCHumvwX6HOOge16NPpPcxbYVfB41PF7tM90pJB5zKTAOIS5CH2KtWSuAaDY0SjebNcOM7qdTuu839JeTHVhGDVYwNPC6s7AADICPX35uF6tRQTrRxX0Dt5upo9pOTwy/yt+idV8qVWnPmDKRcc7jAIGLeFIb7JZXZuk6yaLP1/f3kfARfytnaToC6NFUCkHZu7/Yye4Nj1E50PpxNmhlVOBFZI4
+X-HE-Tag: 1757553925-242214
+X-HE-Meta: U2FsdGVkX19Ga6ZwAI+wuhYZD85Qx6oBgWHSJ+2FuBLokIsFFNmTe7vEkDUe1wCpIme0V0RwIIKaV0nPQLZMaBuEI240Ly/Fw+gw/e8mEr/o7SketdPEaAjKyrA7+XbjJtXxsQ8hJcFrMiaiqiPTrQKK1PbOYFec12wVBgutXqBPo9n3mJHnk+JhlnZlI1H9PLyb2dDsSNqyGpFdnWOCLKVu/7/vpShqU+CnRwnCKtP3Q+kMRnvF8e54tMKqHjCG0aeE0yUMgMb/Shj5qJ0T0dNW2MS8DR+mQtncFHRRzYPHG39XOIWZo72bh/J+2XrGHyVjZovOHMx5MjJxsVitjmygDrYaKpkAAlqDwS3IxTFnck9k+Z6oD0rkaQoofDreu54HT+005YbDdJAOv81LHuulZjGnKaM7lQuwFbZU2tgHHYeMqq0UuHTasuQ6fljZDCxLfyVmYOSQ9sg/0wJY2LXIaWjC706cd8uXYTsLi4gaq7VKSDutUH/m2wK/3uMLHQ213zwUiK1aFjOb32Me1iO9jmdZyxxft8S/kawxAAfwIW2wNCaqVNxk9OaJXXD8+jXuuagkNKVS0WEFkCciOLQAHqksjty2xlBlcHValJUDYi04gncjcRbtarpkxmbitpP5NfSOAduC7fF6lf4vkx6Awx68xS0R7GTp+hqyyS9ucLbf+I/DGpDeI6xZtpOiJXZpSCrrmdOpGYRwzfkHICVZdEM/ge4ZwpzExtsGNvCPGPRePEH4ZT/xBmxL+akzFMxpBhDIuV3a4tVE3GWOtFkDByxCakgDdA2tWsRO8zBrwB33O1p7h7iWNbbQY9uxkpvo/BxMJePdg/a6GjG2KqdC/zQXVoFRoIRfVN4cOjJEsc/mvVKGeydOpzMsD+ksOBR7skhrZZrm2mnRxbxfdXeXf0ceAbHYylJLBxkyIjVSI3No3mTaMk8rtu5C9kssP/zLBmiNX2KPtU5Yl4F
+ KywLGMqA
+ cCOsDnC/kx865CyYY951HpQXsADtxokig88nyLEWeHsEkf9vg0boakrkRcjYvt5fvezcv1HhH7iZ+TJjqxGj8VCbKcAt1DfkxGv38d3wg9IjRnERDODBP7MDFX6zQ+iJE71ulOaqzcr262mI8LPMrY618wVKazIt8GQ4Cglp6bph29nsE31U4CqTXbc7uPMl3pFwmanp1VAuKonaVCwpyxCkw4MfJAnEBk8vj/4EPP9Uhr8zWL6+yPpduGBbJD0XMm/am/COEGpH67oJkARdvMPGdKQcj8lf/51u7JM+3GnafhrDpvkIFALYLd6N+fRshgok9
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,214 +122,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-On 9/11/25 08:46, Masami Hiramatsu (Google) wrote:
-> Hi Jinchao,
+On Wed, Sep 10, 2025 at 09:22:40AM +0000, Wei Yang wrote:
+>Commit 56ae0bb349b4 ("mm: compaction: convert to use a folio in
+>isolate_migratepages_block()") converts api from page to folio. But the
+>low_pfn advance for hugetlb page seems wrong when low_pfn doesn't point
+>to head page.
 >
-> On Wed, 10 Sep 2025 13:23:10 +0800
-> Jinchao Wang <wangjinchao600@gmail.com> wrote:
+>Originally, if page is a hugetlb tail page, compound_nr() return 1,
+>which means low_pfn only advance one in next iteration. After the
+>change, low_pfn would advance more than the hugetlb range, since
+>folio_nr_pages() always return total number of the large page. This
+>results in skipping some range to isolate and then to migrate.
 >
->> Introduce arch_reinstall_hw_breakpoint() to update hardware breakpoint
->> parameters (address, length, type) without freeing and reallocating the
->> debug register slot.
->>
->> This allows atomic updates in contexts where memory allocation is not
->> permitted, such as kprobe handlers.
->>
->> Signed-off-by: Jinchao Wang <wangjinchao600@gmail.com>
->> ---
->>   arch/x86/include/asm/hw_breakpoint.h |  1 +
->>   arch/x86/kernel/hw_breakpoint.c      | 50 ++++++++++++++++++++++++++++
->>   2 files changed, 51 insertions(+)
->>
->> diff --git a/arch/x86/include/asm/hw_breakpoint.h b/arch/x86/include/asm/hw_breakpoint.h
->> index 0bc931cd0698..bb7c70ad22fe 100644
->> --- a/arch/x86/include/asm/hw_breakpoint.h
->> +++ b/arch/x86/include/asm/hw_breakpoint.h
->> @@ -59,6 +59,7 @@ extern int hw_breakpoint_exceptions_notify(struct notifier_block *unused,
->>   
->>   
->>   int arch_install_hw_breakpoint(struct perf_event *bp);
->> +int arch_reinstall_hw_breakpoint(struct perf_event *bp);
->>   void arch_uninstall_hw_breakpoint(struct perf_event *bp);
->>   void hw_breakpoint_pmu_read(struct perf_event *bp);
->>   void hw_breakpoint_pmu_unthrottle(struct perf_event *bp);
->> diff --git a/arch/x86/kernel/hw_breakpoint.c b/arch/x86/kernel/hw_breakpoint.c
->> index b01644c949b2..89135229ed21 100644
->> --- a/arch/x86/kernel/hw_breakpoint.c
->> +++ b/arch/x86/kernel/hw_breakpoint.c
->> @@ -132,6 +132,56 @@ int arch_install_hw_breakpoint(struct perf_event *bp)
->>   	return 0;
->>   }
->>   
->> +/*
->> + * Reinstall a hardware breakpoint on the current CPU.
->> + *
->> + * This function is used to re-establish a perf counter hardware breakpoint.
->> + * It finds the debug address register slot previously allocated for the
->> + * breakpoint and re-enables it by writing the address to the debug register
->> + * and setting the corresponding bits in the debug control register (DR7).
->> + *
->> + * It is expected that the breakpoint's event context lock is already held
->> + * and interrupts are disabled, ensuring atomicity and safety from other
->> + * event handlers.
->> + */
->> +int arch_reinstall_hw_breakpoint(struct perf_event *bp)
->> +{
->> +	struct arch_hw_breakpoint *info = counter_arch_bp(bp);
->> +	unsigned long *dr7;
->> +	int i;
->> +
->> +	lockdep_assert_irqs_disabled();
->> +
->> +	for (i = 0; i < HBP_NUM; i++) {
->> +		struct perf_event **slot = this_cpu_ptr(&bp_per_reg[i]);
->> +
->> +		if (*slot == bp)
->> +			break;
->> +	}
->> +
->> +	if (WARN_ONCE(i == HBP_NUM, "Can't find a matching breakpoint slot"))
->> +		return -EINVAL;
->> +
->> +	set_debugreg(info->address, i);
->> +	__this_cpu_write(cpu_debugreg[i], info->address);
->> +
->> +	dr7 = this_cpu_ptr(&cpu_dr7);
->> +	*dr7 |= encode_dr7(i, info->len, info->type);
->> +
->> +	/*
->> +	 * Ensure we first write cpu_dr7 before we set the DR7 register.
->> +	 * This ensures an NMI never see cpu_dr7 0 when DR7 is not.
->> +	 */
->> +	barrier();
->> +
->> +	set_debugreg(*dr7, 7);
->> +	if (info->mask)
->> +		amd_set_dr_addr_mask(info->mask, i);
->> +
->> +	return 0;
->> +}
->> +EXPORT_SYMBOL_GPL(arch_reinstall_hw_breakpoint);
-> Please do not expose the arch dependent symbol. Instead, you should
-> expose an arch independent wrapper.
+>The worst case for alloc_contig is it does all the isolation and
+>migration, but finally find some range is still not isolated. And then
+>undo all the work and try a new range.
 >
-> Anyway, you also need to share the same code with arch_install_hw_breakpoint()
-> like below;
+>Advance low_pfn to the end of hugetlb.
 >
-> Thanks,
+>Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+>Fixes: 56ae0bb349b4 ("mm: compaction: convert to use a folio in isolate_migratepages_block()")
+>Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+>Cc: Oscar Salvador <osalvador@suse.de>
 
-You are right. The arch-dependent symbol has been removed and the code 
-is shared
+Forgot to cc stable.
 
-with arch_install_hw_breakpoint() in the next version of the patch.
+Cc: <stable@vger.kernel.org>
 
-https://lore.kernel.org/lkml/20250910093951.1330637-1-wangjinchao600@gmail.com
-
-
+>---
+> mm/compaction.c | 2 +-
+> 1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/arch/x86/kernel/hw_breakpoint.c b/arch/x86/kernel/hw_breakpoint.c
-> index 89135229ed21..2f3c5406999e 100644
-> --- a/arch/x86/kernel/hw_breakpoint.c
-> +++ b/arch/x86/kernel/hw_breakpoint.c
-> @@ -84,6 +84,28 @@ int decode_dr7(unsigned long dr7, int bpnum, unsigned *len, unsigned *type)
->   	return (dr7 >> (bpnum * DR_ENABLE_SIZE)) & 0x3;
->   }
->   
-> +static void __arch_install_hw_breakpoint(struct perf_event *bp, int regno)
-> +{
-> +	struct arch_hw_breakpoint *info = counter_arch_bp(bp);
-> +	unsigned long *dr7;
-> +
-> +	set_debugreg(info->address, regno);
-> +	__this_cpu_write(cpu_debugreg[i], info->address);
-> +
-> +	dr7 = this_cpu_ptr(&cpu_dr7);
-> +	*dr7 |= encode_dr7(i, info->len, info->type);
-> +
-> +	/*
-> +	 * Ensure we first write cpu_dr7 before we set the DR7 register.
-> +	 * This ensures an NMI never see cpu_dr7 0 when DR7 is not.
-> +	 */
-> +	barrier();
-> +
-> +	set_debugreg(*dr7, 7);
-> +	if (info->mask)
-> +		amd_set_dr_addr_mask(info->mask, i);
-> +}
-> +
->   /*
->    * Install a perf counter breakpoint.
->    *
-> @@ -95,8 +117,6 @@ int decode_dr7(unsigned long dr7, int bpnum, unsigned *len, unsigned *type)
->    */
->   int arch_install_hw_breakpoint(struct perf_event *bp)
->   {
-> -	struct arch_hw_breakpoint *info = counter_arch_bp(bp);
-> -	unsigned long *dr7;
->   	int i;
->   
->   	lockdep_assert_irqs_disabled();
-> @@ -113,22 +133,7 @@ int arch_install_hw_breakpoint(struct perf_event *bp)
->   	if (WARN_ONCE(i == HBP_NUM, "Can't find any breakpoint slot"))
->   		return -EBUSY;
->   
-> -	set_debugreg(info->address, i);
-> -	__this_cpu_write(cpu_debugreg[i], info->address);
-> -
-> -	dr7 = this_cpu_ptr(&cpu_dr7);
-> -	*dr7 |= encode_dr7(i, info->len, info->type);
-> -
-> -	/*
-> -	 * Ensure we first write cpu_dr7 before we set the DR7 register.
-> -	 * This ensures an NMI never see cpu_dr7 0 when DR7 is not.
-> -	 */
-> -	barrier();
-> -
-> -	set_debugreg(*dr7, 7);
-> -	if (info->mask)
-> -		amd_set_dr_addr_mask(info->mask, i);
-> -
-> +	__arch_install_hw_breakpoint(bp, i);
->   	return 0;
->   }
->   
-> @@ -146,8 +151,6 @@ int arch_install_hw_breakpoint(struct perf_event *bp)
->    */
->   int arch_reinstall_hw_breakpoint(struct perf_event *bp)
->   {
-> -	struct arch_hw_breakpoint *info = counter_arch_bp(bp);
-> -	unsigned long *dr7;
->   	int i;
->   
->   	lockdep_assert_irqs_disabled();
-> @@ -162,22 +165,7 @@ int arch_reinstall_hw_breakpoint(struct perf_event *bp)
->   	if (WARN_ONCE(i == HBP_NUM, "Can't find a matching breakpoint slot"))
->   		return -EINVAL;
->   
-> -	set_debugreg(info->address, i);
-> -	__this_cpu_write(cpu_debugreg[i], info->address);
-> -
-> -	dr7 = this_cpu_ptr(&cpu_dr7);
-> -	*dr7 |= encode_dr7(i, info->len, info->type);
-> -
-> -	/*
-> -	 * Ensure we first write cpu_dr7 before we set the DR7 register.
-> -	 * This ensures an NMI never see cpu_dr7 0 when DR7 is not.
-> -	 */
-> -	barrier();
-> -
-> -	set_debugreg(*dr7, 7);
-> -	if (info->mask)
-> -		amd_set_dr_addr_mask(info->mask, i);
-> -
-> +	__arch_install_hw_breakpoint(bp, i);
->   	return 0;
->   }
->   EXPORT_SYMBOL_GPL(arch_reinstall_hw_breakpoint);
->
+>diff --git a/mm/compaction.c b/mm/compaction.c
+>index bf021b31c7ec..1e8f8eca318c 100644
+>--- a/mm/compaction.c
+>+++ b/mm/compaction.c
+>@@ -989,7 +989,7 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
+> 				 * Hugepage was successfully isolated and placed
+> 				 * on the cc->migratepages list.
+> 				 */
+>-				low_pfn += folio_nr_pages(folio) - 1;
+>+				low_pfn += folio_nr_pages(folio) - folio_page_idx(folio, page) - 1;
+
+One question is why we advance compound_nr() in original version. 
+
+Yes, there are several places advancing compound_nr(), but it seems to iterate
+on the same large page and do the same thing and advance 1 again.
+
+Not sure which part story I missed.
+
+> 				goto isolate_success_no_list;
+> 			}
+> 
+>-- 
+>2.34.1
+
 -- 
-Thanks,
-Jinchao
-
+Wei Yang
+Help you, Help me
 
