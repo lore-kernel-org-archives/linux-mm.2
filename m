@@ -4,92 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7497ECAC58E
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 21:31:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4F0ECAC587
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 21:32:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B50FA8E0002; Thu, 11 Sep 2025 17:31:36 -0400 (EDT)
+	id 38B038E0003; Thu, 11 Sep 2025 17:32:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B01D08E0001; Thu, 11 Sep 2025 17:31:36 -0400 (EDT)
+	id 33BB48E0001; Thu, 11 Sep 2025 17:32:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A176C8E0002; Thu, 11 Sep 2025 17:31:36 -0400 (EDT)
+	id 251D78E0003; Thu, 11 Sep 2025 17:32:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 90E3E8E0001
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 17:31:36 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2F63A1A05C9
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 21:31:36 +0000 (UTC)
-X-FDA: 83878266192.15.C713544
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 87B6312000F
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 21:31:34 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=tFh5AqH+;
-	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 162D48E0001
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 17:32:32 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id AE1B65985D
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 21:32:31 +0000 (UTC)
+X-FDA: 83878268502.12.D3F5472
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	by imf06.hostedemail.com (Postfix) with ESMTP id BA907180003
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 21:32:28 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=gx6dZDMv;
+	spf=pass (imf06.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757626294;
+	s=arc-20220608; t=1757626349;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RHmXu0AkOxaiJpaZvBbiwNDV9hlhvpnupN6TeW++RHA=;
-	b=L/0Qb9HujJbZcgF5WwjmtKFx5fpCaqcmqJLZnmhj1vdzIKqArm++NI+/TDPsYlIZVm0yQ5
-	zvcOLOtYSiFWber6fKe9Nd41rRg/VuPZNYBbAgXLVvF08eQG8GiyXjg0Gp5BiS11HbiC1A
-	80Vd+zjBuj1zJ0uOs2A9scaB3VbWBek=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757626294; a=rsa-sha256;
-	cv=none;
-	b=OUY8lAxl+Ap5yqIVb9E0wuXe3pB42ia536d088KHcAF8DWtIGmYHbsqpmKF51+GtiQRypD
-	v8RYew+LCyAWsWhw9SeENRdAsmYmG9IDvppM8ToJfOPLG+0PL6OJG6p4UxyV/VYZFzh9um
-	MFIRkUT/aYFtkmJwvoVoHF8RpsNOKs4=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=bue2z43hj/EI6OSryiZymP3PGJWQVHs/nVNTgMZbeHw=;
+	b=GGoWBkhuPjisf+hpIwoTXxasa7gtMmPlmQV9ckYUvwyTdRl7yshK2RCrwOja4bOel3KlWK
+	QkBleJ4JevgV4RsedPT25DPQxzvuVyGhd5k0P7JcIK0+l7yY5hziybZ3UUHKWESXIszOK8
+	WpxNV4BlUA4Zf7fzphQBOvyRTjibyNc=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=tFh5AqH+;
-	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8CE7A601DE;
-	Thu, 11 Sep 2025 21:31:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA22AC4CEF0;
-	Thu, 11 Sep 2025 21:31:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1757626293;
-	bh=9x2Wu5/QlMnDtDHROyBHPWM0ROyv8HlbmYz0WmyG3Mw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=tFh5AqH+gi6m/CLMpP7QXYgwkYHzcXMB7mZp2v+6RCpabU7ltDnI2vft5P5GybKjV
-	 1RI9Og7EAf86WmewFeV9tfagYcVEXCjNB5Jw9HAOJHoKenxGlDmu3Cm2oc3rVNBNtM
-	 7UIZ2y2u5VliwKQZ8V2TxKcXP4mi+uupY+CN02Eg=
-Date: Thu, 11 Sep 2025 14:31:32 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Usama Arif <usamaarif642@gmail.com>
-Cc: Yueyang Pan <pyyjason@gmail.com>, David Wang <00107082@163.com>, Suren
- Baghdasaryan <surenb@google.com>, kent.overstreet@linux.dev,
- vbabka@suse.cz, hannes@cmpxchg.org, rientjes@google.com,
- roman.gushchin@linux.dev, harry.yoo@oracle.com, shakeel.butt@linux.dev,
- pasha.tatashin@soleen.com, souravpanda@google.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/1] alloc_tag: mark inaccurate allocation counters in
- /proc/allocinfo output
-Message-Id: <20250911143132.ca88948c48df874f71983218@linux-foundation.org>
-In-Reply-To: <902f5f32-2f03-4230-aab0-a886fd8e4793@gmail.com>
-References: <20250909234942.1104356-1-surenb@google.com>
-	<20cafc1c.a658.199394de44e.Coremail.00107082@163.com>
-	<aMLvCCZbmpSE/aql@devbig569.cln6.facebook.com>
-	<902f5f32-2f03-4230-aab0-a886fd8e4793@gmail.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 87B6312000F
-X-Stat-Signature: fu6uc35ptgqqgybxw1gp579xugzpd1r1
+	imf06.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=gx6dZDMv;
+	spf=pass (imf06.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757626349; a=rsa-sha256;
+	cv=none;
+	b=3rUvD4IYwkGNj96UgCWC/5JIE+XehzWoRhvB7AQqc30+XARhGWR9H9h0aCr2TjS1WY+3NY
+	SIyLam5csF8smeV4omXSS725HcpAEWf0xGg0S/yqaICqzJlPV2u76eaBYC0t9305KfO1Wt
+	7ZrIhkzaa60yLiGbAqUITy0HGdx0ti0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1757626349; x=1789162349;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=zXy1HEH2uPFS4s3SbrF8IGtm5jPewK8JqClz/oEsfLA=;
+  b=gx6dZDMvn1O33qJhdB1uOHM1a4tYC1Se+RMy9WcvWJgrGDcOMtdkOhNp
+   jmKNDeFXfJo301jq1h4JNWoeiMj7Ut3tW+7okYwcZtGNwIne26T3qu3I6
+   C6Qho1F63NTMr+rJzh87iQHPLSjMxnnxQrRUaq5SZLXmDH3qPWP4wMMYN
+   /DgpFLkZkyjgInMzRUfJ5UMn5e/j9EHpQnG6EeCkrpnrSoSm4mogWnGjM
+   bgLXy9f/tINvOFz7bf7ZiwJYonJrUwd5BVT3Akfl8ECEu5M4XT3i9wubf
+   d6SQISCzJK+1U+v3wTJl57jyMwitEK+pt2f1WnJkpaajTRmzlOJ+st0Lb
+   g==;
+X-CSE-ConnectionGUID: jAHHKvc5RLC/MiMSIG9HzA==
+X-CSE-MsgGUID: Plmfobq1QoSqAl+xh0Q1WA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11550"; a="70590226"
+X-IronPort-AV: E=Sophos;i="6.18,258,1751266800"; 
+   d="scan'208";a="70590226"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2025 14:32:27 -0700
+X-CSE-ConnectionGUID: kQENUW1kSM++OhHMGoS49w==
+X-CSE-MsgGUID: 4wZherGfQ7eKmCfVr0MtQg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,258,1751266800"; 
+   d="scan'208";a="179015372"
+Received: from lkp-server02.sh.intel.com (HELO eb5fdfb2a9b7) ([10.239.97.151])
+  by fmviesa004.fm.intel.com with ESMTP; 11 Sep 2025 14:31:34 -0700
+Received: from kbuild by eb5fdfb2a9b7 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uwotA-0000eG-1G;
+	Thu, 11 Sep 2025 21:31:32 +0000
+Date: Fri, 12 Sep 2025 05:31:31 +0800
+From: kernel test robot <lkp@intel.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>
+Subject: [akpm-mm:mm-new 423/440] util.c:undefined reference to
+ `vmf_insert_mixed'
+Message-ID: <202509120557.Fjb2Px63-lkp@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1757626294-276410
-X-HE-Meta: U2FsdGVkX1/MCZHHhjzfFBN8fSZ174x4xDU4fSh7vvqzcPxSpjNsO9IyrShIIr7qqRTaOtb7+epxjFT9zgVxFUMrImp6kTShGUXTz++R7Z1+GbqmkDdsh7+rUWKLgP60YBl8P+WigYkDpD/v9i+PgVyvFCm33j0YtoK/R57wKsHo6zDJLXoqcy+pJNwjS8w98tOxRlH5P8BBaAahI5DF1er4xsl7YBSsWI93aCHxd/FRf1T7xdBYaOytwcViVMSNHjJbx0gDHt/MlwOarVb+KSdTGBAAotyDV5lr7Spdc5Mg3/Xr8uJYN7h7NYd4ylhlvQBHiHx50TuyqEKwmxeTKYv8mtSJhIaYpbYTPdwKBqaZldWzhD9FSSKTIGCs+Ol+k8zfnsRbebLxiv3cKgWsvC6DFx+IaFBcM0ZdIIPMFD2HKV38oU1aYAFWfPT14Su8Jscdqi2CI4fbxjSHBoiA/xnd5sM0KlzkY4lBwHHjKi2EwaY60whvN5CVPrajaHDblqLG+N4RsAOKAphJxkA6ysq9ScDCPWiLIt9V/6vV9QCtzv6l5MlZGxCpoLwleRVjsCHqlC1DBwRCql6o3X6rEvHVcaozYC+jpr9v6I8g77HI40F8mKSK4KwNxBJpblzRMn6LjVpOjvG+c6dXsILxf/kjgq+ZGTNbR4+eIEAtzuw9BlwGs2eKMQTcA22gXyts/FJs1ed1wHg+OFNfA/xwgmAJREj8Gteh4c7PPilGTnUgIkxIt7HOD6oCSgZFrc+ySH2p0x+DYSqeUC13BArHY/GFMDX3Af0yCx/pCAZMWa0e7Z2+afPL2Cu6Z/epIO4ZS7AWL0VRFgOsuOqmKOSBtBsL3+2C+nX1k7Nj4ZYDTuLyLNUu0S+fPtT2b2OR008Vzygwv6lfuBdsAoRgSPCKkIWhe94ytLNMHUtPS8hpvLH82ol7s95JdPQm+ETkfs1FOTFvLkIegRM4AR+splc
- bCE1zLrj
- tjgdCrRV6tzpOPe8p6ZPoqmUJUSnifybsi77tK/2tPUkZ6JuSq0x/aDpxC6JfwpuPwEDwKvsXLmayp5xHwx88StvYrVomMSl37zYGV1vdvuUgT4GC3ZhB0y/6Cmb79r72xsc4rrSgAnn11qQmpBej3c0dWkHjlC9JA5pNETqHKN7LgZl74bQXnjDt4GDg5Dkng6OYEKIbWLQ2pDxa48JyZiOHSAbUM2e7CXbZ2Jll7KNmTQcbsLBb+1r4t9zxrGsCWSa7hlADpJyR0Sbp5/36Iujxga98/PUfYHDcbzkxOOYOPlvs23JckPR9shLTQTLgmoeC
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: BA907180003
+X-Stat-Signature: 6wqqz8knnfi9nwg8z9ygktbe3if9f696
+X-HE-Tag: 1757626348-845257
+X-HE-Meta: U2FsdGVkX1+PP9w/3pg1QjrvKWvVO1BxYfcQUFSQa2qrZNhl5nn1uEU09IVT5cjexg7klIybiRbN2ZA3r4ex9/Lu+IzG7iIoWUa6zlIh5GZX2VfWZ4AdxNexvnr/oubcmbO0u3NcJVqua/UDOJ2FwWxj5Gvl10eB5ZmaE9YvX/iXUo19a1ddc/cWM4YU9kGu/MSdmjkAAi+KJLkUTfdX5NugrJlrPHkZb6ncfkMoT6s4YdJe1k+bVpPTUwShSZ9l7v0vq3qNYmfIIQ/lPIqWjYWVI0l2B0771byVdaoyTFIxaQ5j+v2jbD+w0t7PW+xFNuu3EzDk8ZW7162f1z4ZCWZEedN+fhwpkXlOQ/9hqzA0MIpBm8tRXAfDMsVxffCphYcCEyJ3sWct+Ics5v63j4Zgq+KmpPmRBimQr6jzoNKhXU1ROuVkvQxD52RoBGcRnL+Ksl0aKXX0sa3jnFoMq/uFg3+uv7pr78iaNGu/Yku1GoprbGALLeZfcAglIB+6C3qp93HWegqHpJVsPu2mq/c9G1X2V7/C4s6CME3OL4j1iuEfxPGf6aFIPP2eMa8zdjht3lE+FvupdfIv/pv6sfncfaBzDmDf1Vqwb4+6F5r8Ws4LKnyKumCx1/n9C/RCaN3dNLmKJhTQOlGUEzPJhfyDU1bAoiVCHwwPqtAvt8uXlH0ZhVSbAOHqIyzR6gauhANL7ll3jpmYBN2eNnakdYsT7U7QNRiQUN1K+XV0p6ZBQBQ7p8gUQRKWCCXbmOJJO0AiNTXj9P2Dxp6B5OrQY1DkceX8bjJSIMT/NuTvxRXHzo+OL2/RSqV9yKDx6BjQqw/YO5JVvCspoSwOwLfxdUvjZWV2dk4q5pLKpIEEmQ1iJI88GUHftPvSg5gdsKZGjXHUOYXzHrSfuaFG4mDWzoGPXOxeWldh15JZ99qwlu8Lx81Gwqnf1WDXCxwkEVbMkclP8i20hjhcM+C2OTZ
+ wfPO7qeU
+ z4n8Q4MQTywBKr47D3K8oe/C3qMaR5aUjt0n7yhb+I2CoAGegl/tuSmNn0stk0sri9r71XeW3AnRKXBzJR6gdkqflVZe8k7kvxEFhqVwHxkArG706XNz8GKbebOxDPs1QuzBoX85VIBiy0oUG+Y0RkwvokMAUFwAkKYTmoYJqIsI12oN3JVMFDQSWpKpN8sEKSgaVKniHyJW8X0vP5HFG/WwrChevS/AjYsXy8UcVkKGSOlddelxZsOwObIhk+/qG1hDVqDRVD+69thpiX4NMfj5ldY8R9vqAreQgYoc2c5v9Xvc8BcBGeORlo+ghIILQ3i5Vj2RCrSud/iUFkMFwkf8CXRfZs4am12+SmIjS0UGdgRQe5zXNpXVZMw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,33 +105,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 11 Sep 2025 12:00:23 -0400 Usama Arif <usamaarif642@gmail.com> wrote:
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+head:   31690ac95cb30fd036eeda36844c6e2820685e7c
+commit: 52b3813194a48b5dd38cc3d76686e0b060171b0f [423/440] mm: add ability to take further action in vm_area_desc
+config: m68k-allnoconfig (https://download.01.org/0day-ci/archive/20250912/202509120557.Fjb2Px63-lkp@intel.com/config)
+compiler: m68k-linux-gcc (GCC) 15.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250912/202509120557.Fjb2Px63-lkp@intel.com/reproduce)
 
-> > I think simply adding * to the end of function name or filename is sufficient 
-> > as they are already str.
-> > 
-> 
-> Instead of:
-> 
-> 49152*      48* arch/x86/kernel/cpu/mce/core.c:2709 func:mce_device_create
-> 
-> Could we do something like:
-> 
-> 49152      48 arch/x86/kernel/cpu/mce/core.c:2709 func:mce_device_create(inaccurate)
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202509120557.Fjb2Px63-lkp@intel.com/
 
-Can we add another row, saying "the previous row was inaccurate"?  I
-guess that would break parsers also.
+All errors (new ones prefixed by >>):
 
+   m68k-linux-ld: mm/util.o: in function `mmap_action_complete':
+>> util.c:(.text+0x92c): undefined reference to `vmf_insert_mixed'
+>> m68k-linux-ld: util.c:(.text+0xa2a): undefined reference to `remap_pfn_range_complete'
+   m68k-linux-ld: mm/util.o: in function `mmap_action_prepare':
+>> util.c:(.text+0xbe0): undefined reference to `remap_pfn_range_prepare'
+   m68k-linux-ld: mm/util.o: in function `__compat_vma_mmap_prepare':
+   util.c:(.text+0x10f6): undefined reference to `remap_pfn_range_prepare'
 
-
-I don't know if this was by design, but the present format does provide
-extensibility.  It is basically
-
-	NNNN NNN name:value name:value
-
-one could arguably append a third name:value and hope that authors of
-existing parsers figured this out.
-
-
-Whatev.  I'll drop this version from mm.git.
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
