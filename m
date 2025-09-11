@@ -4,100 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B85DCAC58E
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 17:51:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D65A8CAC58E
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 17:53:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3E97C8E000D; Thu, 11 Sep 2025 13:51:49 -0400 (EDT)
+	id 328D2900002; Thu, 11 Sep 2025 13:53:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C13F8E0002; Thu, 11 Sep 2025 13:51:49 -0400 (EDT)
+	id 300A48E0002; Thu, 11 Sep 2025 13:53:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2FDB48E000D; Thu, 11 Sep 2025 13:51:49 -0400 (EDT)
+	id 2168C900002; Thu, 11 Sep 2025 13:53:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1A55F8E0002
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 13:51:49 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 945C857488
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 17:51:48 +0000 (UTC)
-X-FDA: 83877712296.05.4EAB373
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
-	by imf03.hostedemail.com (Postfix) with ESMTP id DEF0620008
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 17:51:45 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=163.com header.s=s110527 header.b="m WRqnN4";
-	spf=pass (imf03.hostedemail.com: domain of 00107082@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=00107082@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 110318E0002
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 13:53:10 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B3EF3140406
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 17:53:09 +0000 (UTC)
+X-FDA: 83877715698.20.172D55B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id C4F0740009
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 17:53:07 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Bkf3Wnkq;
+	spf=pass (imf17.hostedemail.com: domain of ebiggers@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ebiggers@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757613106;
+	s=arc-20220608; t=1757613188;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AtiestZDxHxuoOodygddya+nGdZy6YtJmY3raJbnLWo=;
-	b=DDDK8YE6ZeN9OHpzNiryhtOBAsMA27CBHaOdXuf6G8BNj83EXWGIc79ugtzMVaSDl2dx/d
-	I78zLG30CJV9i1tHhOxnVgGsso5Dzv8M4DaxuHHtjVan3teff/PYp4RRiFLWxMVv+iJI4M
-	FN4wTTTEirBIej81JR6ZuR70NP/b3B4=
+	bh=Dtns83FC3YsvcEfVkCRkQi8rN9yb9Edlp++8Gk32kgE=;
+	b=CWlMdz8nV9BwS/bmxUHUl9BiVgBMCSXgZD1orJh5sZSLEk6tDNeUY5pACGnu+V8RYtevUB
+	VN9zrydpQlHH2YggWaflR6WCk7z7GFGRdXhyYV+R4ouZhtHGB92wvUr/mmgWlnPxUo8XTG
+	WraViwUDTm6nignS882Nbf/cnR6Rhgs=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=163.com header.s=s110527 header.b="m WRqnN4";
-	spf=pass (imf03.hostedemail.com: domain of 00107082@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=00107082@163.com;
-	dmarc=pass (policy=none) header.from=163.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757613106; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Bkf3Wnkq;
+	spf=pass (imf17.hostedemail.com: domain of ebiggers@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ebiggers@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757613188; a=rsa-sha256;
 	cv=none;
-	b=5PePZxJhniGAljoPEajfaj0mYGxwbISXfD8HGH8DnAOY6kfmqvtgmwFlligKNF+X0ZWyHN
-	NWQ8pYOpQ46jh2NBzj21NBl9YiaU8FO+iJfdT4MTP6PmE8MSfPxcLTP0NMUGPUBbIPcxBA
-	yjwTosKDZ0kb9EJpRPe+ikqynPMxfqI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
-	Message-ID; bh=mvkpPH3gXgQfOGx5XNPyhkkSAkpbWFiEpnj5hg32BEU=; b=m
-	WRqnN4D460X1V43mPH3TgZpTTgIEvDnwp9hdsKoxqmIb6mCdzRn3UFT+NPH43W16
-	Fa1RZf7WGpSlFkpIuK4HQGJ15UAIuSir7E6U7S+C0C51lU6x+06ZJEfeBqZIrZsI
-	3YTXU/XmsR7l82xu0tUL1Y+bxjJT1h5PIJCYak5Dc4=
-Received: from 00107082$163.com ( [111.35.190.173] ) by
- ajax-webmail-wmsvr-40-105 (Coremail) ; Fri, 12 Sep 2025 01:35:17 +0800
- (CST)
-X-Originating-IP: [111.35.190.173]
-Date: Fri, 12 Sep 2025 01:35:17 +0800 (CST)
-From: "David Wang" <00107082@163.com>
-To: "Yueyang Pan" <pyyjason@gmail.com>,
-	"Suren Baghdasaryan" <surenb@google.com>
-Cc: "Usama Arif" <usamaarif642@gmail.com>, akpm@linux-foundation.org,
-	kent.overstreet@linux.dev, vbabka@suse.cz, hannes@cmpxchg.org,
-	rientjes@google.com, roman.gushchin@linux.dev, harry.yoo@oracle.com,
-	shakeel.butt@linux.dev, pasha.tatashin@soleen.com,
-	souravpanda@google.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/1] alloc_tag: mark inaccurate allocation counters in
- /proc/allocinfo output
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2023.4-cmXT build
- 20250723(a044bf12) Copyright (c) 2002-2025 www.mailtech.cn 163com
-In-Reply-To: <aMMF8elYvlPoOF+J@devbig569.cln6.facebook.com>
-References: <20250909234942.1104356-1-surenb@google.com>
- <20cafc1c.a658.199394de44e.Coremail.00107082@163.com>
- <aMLvCCZbmpSE/aql@devbig569.cln6.facebook.com>
- <902f5f32-2f03-4230-aab0-a886fd8e4793@gmail.com>
- <CAJuCfpGezf06eR7WnzizpwTaxZ5Rm8jbeW4y87zcr6LZuJ9MZA@mail.gmail.com>
- <aMMF8elYvlPoOF+J@devbig569.cln6.facebook.com>
-X-NTES-SC: AL_Qu2eBfqavUkq4SWaZOkZnEYQheY4XMKyuPkg1YJXOp80tyTsxiEfQUNxPEXKzOWlECWMiSeZdTpnz/ViUo9WXYTGH9/sw2MZO6PvPRd9w6wr
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+	b=dTpUdcY81d5OC2RAS3aSvYOFYCNz7kFQLw6ECurIGhvq8cHVQphNG7fTYbqUERBgChO+lU
+	bOyg0piTJ4hJwlPUDtQ0kEygvTen09faHBcVJEKJrzbaYLbnGNb2neewRQRx4FU4V3s6Oi
+	9AjzHzGQcRZlxyWhmoUuB1orXm1Vtqw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id ACBF6436CF;
+	Thu, 11 Sep 2025 17:53:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 520F5C4CEF0;
+	Thu, 11 Sep 2025 17:53:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757613186;
+	bh=Z2+nBVkWPIG88TqQQAQmMSXJogs17OhTvk+WeLYH5XY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Bkf3WnkqmhSBMwSLyzsGZ4azoGtNd8x/AeMvYcXme2KsLCIEMQZtg0JCCc0qUpn1v
+	 z+u3JV55OoKd/cRJ6z1iBNauxJ8IY3vgnqPeeCjoP6Me9/aABeN2uwINlWrmbuDTwg
+	 2ZAEVKEL4LaW+BUqXN5EXd9Z3vxEV7T36Ngf2dwKRUpV2qo0xtn+0oBYPXaDxpFMKo
+	 oi5aJWCkp7UljPT7nxxCFxB4+IUEG/RoY+2H0P0xN4n5nIPexb1NlE92bPoInX0VtG
+	 r4ZnCaWOYjkUaGV2sCttM3XsoIt94mqYpPGnYpbPB5uyczrJ7QqVvd3/6z+a1xgSi3
+	 HCnY4YKUgLeQA==
+Date: Thu, 11 Sep 2025 10:51:45 -0700
+From: Eric Biggers <ebiggers@kernel.org>
+To: Alexander Potapenko <glider@google.com>
+Cc: Marco Elver <elver@google.com>, kasan-dev@googlegroups.com,
+	Dmitry Vyukov <dvyukov@google.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] kmsan: Fix out-of-bounds access to shadow memory
+Message-ID: <20250911175145.GA1376@sol>
+References: <20250829164500.324329-1-ebiggers@kernel.org>
+ <20250910194921.GA3153735@google.com>
+ <CAG_fn=W_7o6ANs94GwoYjyjvY5kSFYHB6DwfE+oXM7TP1eP5dw@mail.gmail.com>
 MIME-Version: 1.0
-Message-ID: <613698f0.a994.19939d88e1c.Coremail.00107082@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:aSgvCgDnp09WCMNocOIuAA--.14284W
-X-CM-SenderInfo: qqqrilqqysqiywtou0bp/xtbBEBbFqmjC95PhaQADss
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAG_fn=W_7o6ANs94GwoYjyjvY5kSFYHB6DwfE+oXM7TP1eP5dw@mail.gmail.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: DEF0620008
-X-Stat-Signature: p63g3cobaigtqb567zosymqxqzdekh99
-X-HE-Tag: 1757613105-96141
-X-HE-Meta: U2FsdGVkX18KiKZeOlwKxNLjdx7g2GUuCbco+9FnkUgXFpQiTUvOOklrJd94EtDG1SI9EQnIufSZQpgLur6ZmfnD8NSUJgI4tVnLpyhUVJgAjN/oAUnq76zuFwEYwQ2XLBEhmNjsCx/2EX9pJwLkypN9S39J7ZPYukebNtI9Qbg8fnnbdXu2dPaBoE8gdheQzRayMdLlmLKpglkgVT2dJfVH0KvsCtkusGOPl5LbeDo3AZ6wGvUJlEUmGh9f6/A4evR6NbLUIpe9cQrYdRa3xm7hDs/aK9Yx1hIwizxs7VWu0DFLgVlfm4NaNAlQs5iRgSdnin/WdH5hUk2vRIcM4jJnNg6SOEXFJ8TZiUglFMJBtW4Vl4+cMigtKbPaA5+52evZkI7uZMB8bmeiKEIKz8VE57R7A9f3G7EIx/VGhxqt3luE/qJaN/1Ea0fjxSaexuYYFtv0qNnz9SmaZFH2dea6p6Yj/eUjFkTc4cbqAAbJW/7Fm3zqcOfxCA3OjZV53jxa+nhwnbn1mn+0YUZrtaVVW2oBn7SXXL6eEcJDg5JqBxuiT6myGqC4eEkCClQBtjV8sPHR7ZlZsYuyoqfltNbRAJZUQADt12McPzevbV94Snx+n0GqB9Guit3OiUCQTyaPzm7s+To5tTQht5VD7KkdtGi8MJqpduW5QrJQiogVs2645ficQs+TqlL2T9xoqoY+2Zj8ZYEzfBgVlzqUMwpUyccidF22ksYcf5fXNT/sY7lEf8s7UM4mCogjY8fGn9fA6/2e087eBspeCSJp2LMgD6O+7bcPB+Or1DtwrU6M8785j1Iv1Kr0JEyrGC0uDE+vt2MFD6foh40jQ6rFuVolic/09dhAfXBIJJqQse6/9Exh6BT6yK67fWzhGAVNmGDKX9Ur03jQiPz4wR3Frd9fXZVVqmiMGtaGX7+aOb9knD7flHH94kkLxXXxcP3eRrnpfng3BRcplyB0BE4
- asxbJam8
- AB/C+GFc2KVngv04xBPCCtzg5ybmOwbcVQKJQRAy4S67cf5wLESgIZxtogEaQj4mxQjMX+MESN1L8QrIIJSVTFrXg4BPZxXADEfrXwpZ0gic3nHBRxrVmKisCbERYK5UPArSy+QolgiExB+YnDf7oniXcZc9r1rYQuWwbnHS5c/8jfTeBPICex92/aiuTpbEm0xF6XeNMo3J/+z9OSt4+avxfHvXblP5W87Rf3NwwOWHgwNPFVzZIFmKHoVpHqUrAEblC8qq7zq40X/7Oijw1EP5geaxX9OnOKuJ4v1g9Y7p+tlRBjcygHVxNKcQ5UzqcF1o9sVvhxVuitJ/u7Xxxp6qrgp8/JppWUEnpCbD4zTiZwMg+7aORJ8Fdcbt7m66HSokYTB9mhXWyKcI6FcfkZw0YkAL6sfcZ68PRjQ2ZDtD6NlTQ30fmrbdFUIM/0V81/ACPP6az/oTKt3qM34bccAB7C+g64u5hfU4yYyCX8DN6va1isElrzbWJeVCxN48R8GoEBvci+aOYfRLt6PFd5TEyP3+h4Obt+eglIDqFlZV7/xLF5XMlo0/oI3Horq5Sdr2Iy0uuLQRa1mRuzh7a1i83PugWaKjcPjWhWqAuk9BBqSgnZKBMYNb3XMbyrQWnZXNrBW0mUMqjqdeocRCejS/DJtzakqLt9mXPuyQvv9cQKOZc4/NIEcbJKw==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C4F0740009
+X-Stat-Signature: y7qq48qc6t4atfu5dsuxddo6pjrk4tzr
+X-HE-Tag: 1757613187-420129
+X-HE-Meta: U2FsdGVkX1/8aG5B+kWXpnrwOjczTSHkYJtjRATuE5B3WA6ZW8xfNWN6t3txsme0+/vQc64lhATW9m+2/dl9/ZMgZiLOiYv4sByiC8h/gnaRX2t7P6iVtNDWqNaoKkNgItJ6p2U5tvNOUv61MNM8pFsyXLsyHIFNIKMrastBJSGDqK227rKIUVdQ4lfBj7GU0+nG8x4FdqcSp03uTIvV82u5LtLH1zEAz80H/hFhuyFmkTGUJUWRYENydl37MTBvDu2aRoASoq8DILabN06xmNp3TA5UXuzUgxTf9y5DXBO9JFTJr0yb4jGQ2WMW5WbZ32EKAkuyAWFDFIGhDn4JEusU8QcYWXhn5SZlUnPY/zKUEq0Vf62tzTufQfRN8a7yAzzavxm10ACGScNM0FtOqbd5H1pRlAjye9wtwIJkMGexaTbVF71F4ab7eSX9mG5YKpOAPTr2pOoop8Fql37Njsl61HRg2+Ii+nldjrsjSvxqlU40OmBfAGeM8SuD2xvk7HwSyH5Ln1h21wU9j8JPB386kaU8fqJL8HsDWaGWy8GWz3Xjo6tXm8l+1fv/7AqoUI4RuRfTpCl+cy7KM43AKAwmioAodNASuqbnKmEaKHry19yOSlMp6VYwcnKruk2UX9AX+A5HfBQK9CMsLMiRnc+p5zo2G5tewq0TNTK0NptRCxg0gtJfXoean5vCtvb0l0cnrLpLk5Uxly6nw4NUCBHJFPhHiC3OrQdzf8N5DcQzH3xt0uGadfKi8yBV9B1H4rTINUU9sCyp6cnGA7cJGhG7mDOv6hPhCtfwM06tiOfQA0zuODwIqWjvtwKVmMmbwfx13XniEO/Z5qbxgCTi0TJdC7HwuKBb1tfi83ERyBnKEoHjhSC7W0SXFtaR2UN1NwY5IFtY7gPsBGWI9p1pMBTB3XDpT7SZ3Zp+5f/O1m9n0QajLxVGEGf0JkOVEEnRzFeqy/qMq8AzSizOcJ0
+ icE9dSLm
+ Q55MmYVJRC+6Z4nS9p+6bDI9W7IYQe8k0MgB9JVAaraXKE1uAe+xFS1lP7yzmIsTrIWQ+hVU+KkhidgP2UHMPixIawVNjC/QpQKNVTpIVg/pCRVPqglZ0c9Ua9z0p9hE+ohYo+CyFUDs7MKcrELaC+NAse4r63/lMCip0WwgwgleRJy+EYabMQm3+E8E0HCG3ZPsOO5idnnsn+raJsmzcwFtO8F86HyEimvg56sUv+Qgebr4RKEeWmE8CPjjsz9Itnh+BAa6w5Jerz1BLM2XM42g+o/US00f8Qne8nDxQFuF1ZS41tWt+6VTbpFMG9m2My+xw2D/FVSBZspDD/ONWVRe+2JPb53SKXbVa2PvsdFWwNXg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,106 +97,196 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-CkF0IDIwMjUtMDktMTIgMDE6MjU6MDUsICJZdWV5YW5nIFBhbiIgPHB5eWphc29uQGdtYWlsLmNv
-bT4gd3JvdGU6Cj5PbiBUaHUsIFNlcCAxMSwgMjAyNSBhdCAwOToxODoyOUFNIC0wNzAwLCBTdXJl
-biBCYWdoZGFzYXJ5YW4gd3JvdGU6Cj4+IE9uIFRodSwgU2VwIDExLCAyMDI1IGF0IDk6MDDigK9B
-TSBVc2FtYSBBcmlmIDx1c2FtYWFyaWY2NDJAZ21haWwuY29tPiB3cm90ZToKPj4gPgo+PiA+Cj4+
-ID4KPj4gPiBPbiAxMS8wOS8yMDI1IDE2OjQ3LCBZdWV5YW5nIFBhbiB3cm90ZToKPj4gPiA+IE9u
-IFRodSwgU2VwIDExLCAyMDI1IGF0IDExOjAzOjUwUE0gKzA4MDAsIERhdmlkIFdhbmcgd3JvdGU6
-Cj4+ID4gPj4KPj4gPiA+PiBBdCAyMDI1LTA5LTEwIDA3OjQ5OjQyLCAiU3VyZW4gQmFnaGRhc2Fy
-eWFuIiA8c3VyZW5iQGdvb2dsZS5jb20+IHdyb3RlOgo+PiA+ID4+PiBXaGlsZSByYXJlLCBtZW1v
-cnkgYWxsb2NhdGlvbiBwcm9maWxpbmcgY2FuIGNvbnRhaW4gaW5hY2N1cmF0ZSBjb3VudGVycwo+
-PiA+ID4+PiBpZiBzbGFiIG9iamVjdCBleHRlbnNpb24gdmVjdG9yIGFsbG9jYXRpb24gZmFpbHMu
-IFRoYXQgYWxsb2NhdGlvbiBtaWdodAo+PiA+ID4+PiBzdWNjZWVkIGxhdGVyIGJ1dCBwcmlvciB0
-byB0aGF0LCBzbGFiIGFsbG9jYXRpb25zIHRoYXQgd291bGQgaGF2ZSB1c2VkCj4+ID4gPj4+IHRo
-YXQgb2JqZWN0IGV4dGVuc2lvbiB2ZWN0b3Igd2lsbCBub3QgYmUgYWNjb3VudGVkIGZvci4gVG8g
-aW5kaWNhdGUKPj4gPiA+Pj4gaW5jb3JyZWN0IGNvdW50ZXJzLCBtYXJrIHRoZW0gd2l0aCBhbiBh
-c3RlcmlzayBpbiB0aGUgL3Byb2MvYWxsb2NpbmZvCj4+ID4gPj4+IG91dHB1dC4KPj4gPiA+Pj4g
-QnVtcCB1cCAvcHJvYy9hbGxvY2luZm8gdmVyc2lvbiB0byByZWZsZWN0IGNoYW5nZSBpbiB0aGUg
-ZmlsZSBmb3JtYXQuCj4+ID4gPj4+Cj4+ID4gPj4+IEV4YW1wbGUgb3V0cHV0IHdpdGggaW52YWxp
-ZCBjb3VudGVyczoKPj4gPiA+Pj4gYWxsb2NpbmZvIC0gdmVyc2lvbjogMi4wCj4+ID4gPj4+ICAg
-ICAgICAgICAwICAgICAgICAwIGFyY2gveDg2L2tlcm5lbC9rZGVidWdmcy5jOjEwNSBmdW5jOmNy
-ZWF0ZV9zZXR1cF9kYXRhX25vZGVzCj4+ID4gPj4+ICAgICAgICAgICAwICAgICAgICAwIGFyY2gv
-eDg2L2tlcm5lbC9hbHRlcm5hdGl2ZS5jOjIwOTAgZnVuYzphbHRlcm5hdGl2ZXNfc21wX21vZHVs
-ZV9hZGQKPj4gPiA+Pj4gICAgICAgICAgMCogICAgICAgMCogYXJjaC94ODYva2VybmVsL2FsdGVy
-bmF0aXZlLmM6MTI3IGZ1bmM6X19pdHNfYWxsb2MKPj4gPiA+Pj4gICAgICAgICAgIDAgICAgICAg
-IDAgYXJjaC94ODYva2VybmVsL2ZwdS9yZWdzZXQuYzoxNjAgZnVuYzp4c3RhdGVyZWdzX3NldAo+
-PiA+ID4+PiAgICAgICAgICAgMCAgICAgICAgMCBhcmNoL3g4Ni9rZXJuZWwvZnB1L3hzdGF0ZS5j
-OjE1OTAgZnVuYzpmcHN0YXRlX3JlYWxsb2MKPj4gPiA+Pj4gICAgICAgICAgIDAgICAgICAgIDAg
-YXJjaC94ODYva2VybmVsL2NwdS9hcGVyZm1wZXJmLmM6Mzc5IGZ1bmM6YXJjaF9lbmFibGVfaHli
-cmlkX2NhcGFjaXR5X3NjYWxlCj4+ID4gPj4+ICAgICAgICAgICAwICAgICAgICAwIGFyY2gveDg2
-L2tlcm5lbC9jcHUvYW1kX2NhY2hlX2Rpc2FibGUuYzoyNTggZnVuYzppbml0X2FtZF9sM19hdHRy
-cwo+PiA+ID4+PiAgICAgIDQ5MTUyKiAgICAgIDQ4KiBhcmNoL3g4Ni9rZXJuZWwvY3B1L21jZS9j
-b3JlLmM6MjcwOSBmdW5jOm1jZV9kZXZpY2VfY3JlYXRlCj4+ID4gPj4+ICAgICAgIDMyNzY4ICAg
-ICAgICAxIGFyY2gveDg2L2tlcm5lbC9jcHUvbWNlL2dlbnBvb2wuYzoxMzIgZnVuYzptY2VfZ2Vu
-X3Bvb2xfY3JlYXRlCj4+ID4gPj4+ICAgICAgICAgICAwICAgICAgICAwIGFyY2gveDg2L2tlcm5l
-bC9jcHUvbWNlL2FtZC5jOjEzNDEgZnVuYzptY2VfdGhyZXNob2xkX2NyZWF0ZV9kZXZpY2UKPj4g
-PiA+Pj4KPj4gPiA+Pgo+PiA+ID4+IEhpLAo+PiA+ID4+IFRoZSBjaGFuZ2VzIG1heSAgYnJlYWsg
-c29tZSBjbGllbnQgdG9vbHMsIG1pbmUgaW5jbHVkZWQuLi4uCj4+ID4gPj4gSSBkb24ndCBtaW5k
-IGFkanVzdGluZyBteSB0b29scywgYnV0IHN0aWxsCj4+ID4gPj4gSXMgaXQgYWNjZXB0YWJsZSAg
-dG8gY2hhbmdlCj4+ID4gPj4gICAgICAgNDkxNTIqICAgICAgNDgqIGFyY2gveDg2L2tlcm5lbC9j
-cHUvbWNlL2NvcmUuYzoyNzA5IGZ1bmM6bWNlX2RldmljZV9jcmVhdGUKPj4gPiA+PiB0bwo+PiA+
-ID4+ICAgICAgICs0OTE1MiAgICAgICs0OCBhcmNoL3g4Ni9rZXJuZWwvY3B1L21jZS9jb3JlLmM6
-MjcwOSBmdW5jOm1jZV9kZXZpY2VfY3JlYXRlKgo+PiA+ID4+Cj4+ID4gPj4gVGhlICcrJyBzaWdu
-IG1ha2UgaXQgc3RpbGwgc3RhbmRvdXQgd2hlbiB2aWV3IGZyb20gYSB0ZXJtaW5hbCwgYW5kIGNs
-aWVudCB0b29scywgbm90IGFsbCBvZiB0aGVtIHRob3VnaCwgbWlnaHQgbm90IG5lZWQgYW55IGNo
-YW5nZXMuCj4+ID4gPj4gQW5kIHdoZW4gY2xpZW50IHdhbnQgdG8gZmlsdGVyIG91dCBpbmFjY3Vy
-YXRlIGRhdGEgaXRlbXMsIGl0IGNvdWxkIGJlIGRvbmUgYnkgY2hlY2tpbmcgdGhlIHRhaWxpbmcg
-JyoiIG9mIGZ1bmMgbmFtZS4KPj4gPiA+Cj4+ID4gPiBJIGFncmVlIHdpdGggRGF2aWQgb24gdGhp
-cyBwb2ludC4gV2UgYWxyZWFkeSBoYXZlIG1vbml0b3JpbmcgdG9vbCBidWlsdCBvbiB0b3AKPj4g
-PiA+IG9mIHRoaXMgb3V0cHV0IGFjcm9zcyBtZXRhIGZsZWV0LiBJZGVhbGx5IHdlIHdvdWxkIGxp
-a2UgdG8ga2VlcCB0aGUgZm9ybWF0IG9mCj4+ID4gPiBvZiBzaXplIGFuZCBjYWxscyB0aGUgc2Ft
-ZSwgZXZlbiBmb3IgZnV0dXJlIHZlcnNpb24sIGJlY2F1c2UgYWRkaW5nIGEgKiB3aWxsCj4+ID4g
-PiBjaGFuZ2UgdGhlIGZvcm1hdCBmcm9tIGludCB0byBzdHIsIHdoaWNoIGxlYWRzIHRvIGNoYW5n
-ZSBvdmVyIHRoZSByZWdleCBwYXJzZXIKPj4gPiA+IG1hbnkgcGxhY2VzLgo+PiA+ID4KPj4gPiA+
-IEkgdGhpbmsgc2ltcGx5IGFkZGluZyAqIHRvIHRoZSBlbmQgb2YgZnVuY3Rpb24gbmFtZSBvciBm
-aWxlbmFtZSBpcyBzdWZmaWNpZW50Cj4+ID4gPiBhcyB0aGV5IGFyZSBhbHJlYWR5IHN0ci4KPj4g
-PiA+Cj4+ID4KPj4gPiBJbnN0ZWFkIG9mOgo+PiA+Cj4+ID4gNDkxNTIqICAgICAgNDgqIGFyY2gv
-eDg2L2tlcm5lbC9jcHUvbWNlL2NvcmUuYzoyNzA5IGZ1bmM6bWNlX2RldmljZV9jcmVhdGUKPj4g
-Pgo+PiA+IENvdWxkIHdlIGRvIHNvbWV0aGluZyBsaWtlOgo+PiA+Cj4+ID4gNDkxNTIgICAgICA0
-OCBhcmNoL3g4Ni9rZXJuZWwvY3B1L21jZS9jb3JlLmM6MjcwOSBmdW5jOm1jZV9kZXZpY2VfY3Jl
-YXRlKGluYWNjdXJhdGUpCj4+IAo+PiBJZiB0aGVyZSBpcyBhIHBvc3Rwcm9jZXNzaW5nIHRoZW4g
-dGhpcyB3b3VsZCBicmVhayBzb21ldGltZXMgbGF0ZXIKPj4gd2hlbiB0aGUgZnVuY3Rpb24gbmFt
-ZSBpcyBwYXJzZWQsIHJpZ2h0PyBTbyBJTU8gdGhhdCBqdXN0IHBvc3Rwb25lcwo+PiB0aGUgYnJl
-YWthZ2UuCj4+IAo+PiA+Cj4+ID4gVGhpcyBzaG91bGQgaG9wZWZ1bGx5IG5vdCByZXF1aXJlIGFu
-eSBjaGFuZ2VzIHRvIHRoZSB0b29scyB0aGF0IGFyZSBjb25zdW1pbmcgdGhpcyBmaWxlLgo+PiA+
-IEkgdGhpbmsgaXQgbWlnaHQgYmUgYmV0dGVyIHRvIHVzZSAiKGluYWNjdXJhdGUpIiAod2l0aG91
-dCBhbnkgc3BhY2UgYWZ0ZXIgZnVuY3Rpb24gbmFtZSkgb3IKPj4gPiBzb21lIG90aGVyIHRleHQg
-aW5zdGVhZCBvZiAiKyIgb3IgIioiIHRvIHByZXZlbnQgYnJlYWtpbmcgc3VjaCB0b29scy4gSSBk
-b250IHRoaW5rIHdlIG5lZWQKPj4gPiB0byBldmVuIGluY3JlbWVudCBhbGxvY2luZm8gdmVyc2lv
-biBudW1iZXIgYXMgd2VsbCB0aGVuPwo+PiAKPj4gSSdtIHdvbmRlcmluZyBpZiB3ZSBhZGQgYSBu
-ZXcgY29sdW1uIGF0IHRoZSBlbmQgbGlrZSB0aGlzOgo+PiAKPj4gNDkxNTIgICAgICA0OCBhcmNo
-L3g4Ni9rZXJuZWwvY3B1L21jZS9jb3JlLmM6MjcwOQo+PiBmdW5jOm1jZV9kZXZpY2VfY3JlYXRl
-IFtpbmFjY3VyYXRlXQo+PiAKPj4gd291bGQgdGhhdCBicmVhayB0aGUgcGFyc2luZyB0b29scz8K
-Pj4gV2VsbC1kZXNpZ25lZCBwYXJzZXJzIHVzdWFsbHkgdGhyb3cgYXdheSBhZGRpdGlvbmFsIGZp
-ZWxkcyB3aGljaCB0aGV5Cj4+IGRvbid0IGtub3cgaG93IHRvIHBhcnNlLiBXRFlUPwo+PiAKPgo+
-SXQgd291bGQgYnJlYWsgdGhlIHBhcnNlIG5vdyBhcyB3ZSBjb3VudCB0aGUgbnVtYmVyIG9mIHN0
-cmluZyB0byBkZWNpZGUgaWYgCj50aGVyZSBpcyBhbiBvcHRpb25hbCBtb2R1bGUgbmFtZSBvciBu
-b3QuIEkgZG9uJ3QgdGhpbmsgaXQgaXMgYSBiaWcgCj5kZWFsIHRvIGZpeCB0aG91Z2guCgpUaGUg
-aW5jb25zaXN0ZW50IG9mIG1vZHVsZSBuYW1lIGlzIHJlYWxseSBpbmNvbnZlbmllbnQgZm9yIHBh
-cnNpbmcuLi4uLiAgCkNvdWxkIHdlIG1ha2UgY2hhbmdlcyB0byBtYWtlIGl0IGNvbnNpc3RlbnQs
-IHNvbWV0aGluZyBsaWtlOgoKZGlmZiAtLWdpdCBhL2xpYi9jb2RldGFnLmMgYi9saWIvY29kZXRh
-Zy5jCmluZGV4IDU0NTkxMWNlYmQyNS4uYjhhNDU5NWFkYzk1IDEwMDY0NAotLS0gYS9saWIvY29k
-ZXRhZy5jCisrKyBiL2xpYi9jb2RldGFnLmMKQEAgLTEyNCw3ICsxMjQsNyBAQCB2b2lkIGNvZGV0
-YWdfdG9fdGV4dChzdHJ1Y3Qgc2VxX2J1ZiAqb3V0LCBzdHJ1Y3QgY29kZXRhZyAqY3QpCiAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICBjdC0+ZmlsZW5hbWUsIGN0LT5saW5lbm8sCiAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICBjdC0+bW9kbmFtZSwgY3QtPmZ1bmN0aW9uKTsKICAg
-ICAgICBlbHNlCi0gICAgICAgICAgICAgICBzZXFfYnVmX3ByaW50ZihvdXQsICIlczoldSBmdW5j
-OiVzIiwKKyAgICAgICAgICAgICAgIHNlcV9idWZfcHJpbnRmKG91dCwgIiVzOiV1IFtrZXJuZWxd
-IGZ1bmM6JXMiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgY3QtPmZpbGVuYW1lLCBj
-dC0+bGluZW5vLCBjdC0+ZnVuY3Rpb24pOwogfQoKCgoKPgo+SSB0aGluayBvbmUgbW9yZSBpbXBv
-cnRhbnQgdGhpbmcgaXMgcHJvYmFibHkgdG8gcmVhY2ggYSBjb25zZW5zdXMgb24gCj53aGF0IGZv
-cm1hdCBjYW4gYmUgY2hhbmdlZCBpbiB0aGUgZnV0dXJlLCBmb3IgZXhhbXBsZSBzYXksIHdlIGNh
-biAKPmtlZXAgYWRkaW5nIGNvbHVtbnMgYnV0IG5vdCBjaGFuZ2UgdGhlIGZvcm1hdCB0aGUgdHlw
-ZSBvZiBvbmUgY29sdW1uLgo+V2l0aCBzdWNoIGNvbnNlbnN1cyBpbiBtaW5kLCBpdCB3aWxsIGJl
-IGVhc2llciB0byBkZXNpZ24gdGhlIHBhcnNlci4gCj5BbmQgSSBndWVzcyBtYW55IGNvbXBhbmll
-cyB3aWxsIGJ1aWxkIHBhcnNlciB1cG9uIHRoaXMgaW5mbyBmb3IgZmxlZXQtCj53aXNlIGNvbGxl
-Y3Rpb24uCj4KPj4gPgo+PiA+ID4+Cj4+ID4gPj4gKFRoZXJlIHdvdWxkIGJlIHNvbWUgY29ybmVy
-IGNhc2VzLCBmb3IgZXhhbXBsZSwgdGhlICcrJyBzaWduIG1heSBub3QgbmVlZGVkIHdoZW4gdGhl
-IHZhbHVlIHJlYWNoIGEgbmVnYXRpdmUgdmFsdWUgaWYgc29tZSB1bmRlcmZsb3cgYnVnIGhhcHBl
-bmVkKQo+PiA+ID4+Cj4+ID4gPj4KPj4gPiA+PiBUaGFua3MKPj4gPiA+PiBEYXZpZC4KPj4gPiA+
-Pgo+PiA+ID4+Cj4+ID4gPj4+IFN1Z2dlc3RlZC1ieTogSm9oYW5uZXMgV2VpbmVyIDxoYW5uZXNA
-Y21weGNoZy5vcmc+Cj4+ID4gPj4+IFNpZ25lZC1vZmYtYnk6IFN1cmVuIEJhZ2hkYXNhcnlhbiA8
-c3VyZW5iQGdvb2dsZS5jb20+Cj4+ID4gPj4+IC0tLQo+PiA+ID4+Cj4+ID4gPgo+PiA+ID4gVGhh
-bmtzCj4+ID4gPiBQYW4KPj4gPgo+Cj5UaGFua3MKPlBhbgo=
+On Thu, Sep 11, 2025 at 11:09:17AM +0200, Alexander Potapenko wrote:
+> On Wed, Sep 10, 2025 at 9:49 PM Eric Biggers <ebiggers@kernel.org> wrote:
+> >
+> > On Fri, Aug 29, 2025 at 09:45:00AM -0700, Eric Biggers wrote:
+> > > Running sha224_kunit on a KMSAN-enabled kernel results in a crash in
+> > > kmsan_internal_set_shadow_origin():
+> > >
+> > >     BUG: unable to handle page fault for address: ffffbc3840291000
+> > >     #PF: supervisor read access in kernel mode
+> > >     #PF: error_code(0x0000) - not-present page
+> > >     PGD 1810067 P4D 1810067 PUD 192d067 PMD 3c17067 PTE 0
+> > >     Oops: 0000 [#1] SMP NOPTI
+> > >     CPU: 0 UID: 0 PID: 81 Comm: kunit_try_catch Tainted: G                 N  6.17.0-rc3 #10 PREEMPT(voluntary)
+> > >     Tainted: [N]=TEST
+> > >     Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
+> > >     RIP: 0010:kmsan_internal_set_shadow_origin+0x91/0x100
+> > >     [...]
+> > >     Call Trace:
+> > >     <TASK>
+> > >     __msan_memset+0xee/0x1a0
+> > >     sha224_final+0x9e/0x350
+> > >     test_hash_buffer_overruns+0x46f/0x5f0
+> > >     ? kmsan_get_shadow_origin_ptr+0x46/0xa0
+> > >     ? __pfx_test_hash_buffer_overruns+0x10/0x10
+> > >     kunit_try_run_case+0x198/0xa00
+> >
+> > Any thoughts on this patch from the KMSAN folks?  I'd love to add
+> > CONFIG_KMSAN=y to my crypto subsystem testing, but unfortunately the
+> > kernel crashes due to this bug :-(
+> >
+> > - Eric
+> 
+> Sorry, I was out in August and missed this email when digging through my inbox.
+> 
+> Curiously, I couldn't find any relevant crashes on the KMSAN syzbot
+> instance, but the issue is legit.
+> Thank you so much for fixing this!
+> 
+> Any chance you can add a test case for it to mm/kmsan/kmsan_test.c?
+
+Unfortunately most of the KMSAN test cases already fail on upstream,
+which makes it difficult to develop new ones:
+
+[    1.322395] KTAP version 1
+[    1.322899] 1..1
+[    1.323644]     KTAP version 1
+[    1.324142]     # Subtest: kmsan
+[    1.324650]     # module: kmsan_test
+[    1.324667]     1..24
+[    1.325990]     # test_uninit_kmalloc: uninitialized kmalloc test (UMR report)
+[    1.327078] *ptr is true
+[    1.327525]     # test_uninit_kmalloc: EXPECTATION FAILED at mm/kmsan/kmsan_test.c:173
+                   Expected report_matches(&expect) to be true, but is false
+[    1.330117]     not ok 1 test_uninit_kmalloc
+[    1.330474]     # test_init_kmalloc: initialized kmalloc test (no reports)
+[    1.332129] *ptr is false
+[    1.333384]     ok 2 test_init_kmalloc
+[    1.333729]     # test_init_kzalloc: initialized kzalloc test (no reports)
+[    1.335285] *ptr is false
+[    1.339418]     ok 3 test_init_kzalloc
+[    1.339791]     # test_uninit_stack_var: uninitialized stack variable (UMR report)
+[    1.341484] cond is false
+[    1.341927]     # test_uninit_stack_var: EXPECTATION FAILED at mm/kmsan/kmsan_test.c:211
+                   Expected report_matches(&expect) to be true, but is false
+[    1.344844]     not ok 4 test_uninit_stack_var
+[    1.345262]     # test_init_stack_var: initialized stack variable (no reports)
+[    1.347083] cond is true
+[    1.347847]     ok 5 test_init_stack_var
+[    1.348145]     # test_params: uninit passed through a function parameter (UMR report)
+[    1.349926] arg1 is false
+[    1.350338] arg2 is false
+[    1.350746] arg is false
+[    1.351154] arg1 is false
+[    1.351561] arg2 is true
+[    1.351987]     # test_params: EXPECTATION FAILED at mm/kmsan/kmsan_test.c:262
+                   Expected report_matches(&expect) to be true, but is false
+[    1.354751]     not ok 6 test_params
+[    1.355229]     # test_uninit_multiple_params: uninitialized local passed to fn (UMR report)
+[    1.357056] signed_sum3(a, b, c) is true
+[    1.357677]     # test_uninit_multiple_params: EXPECTATION FAILED at mm/kmsan/kmsan_test.c:282
+                   Expected report_matches(&expect) to be true, but is false
+[    1.360393]     not ok 7 test_uninit_multiple_params
+[    1.360676]     # test_uninit_kmsan_check_memory: kmsan_check_memory() called on uninit local (UMR report)
+[    1.362916]     # test_uninit_kmsan_check_memory: EXPECTATION FAILED at mm/kmsan/kmsan_test.c:309
+                   Expected report_matches(&expect) to be true, but is false
+[    1.365946]     not ok 8 test_uninit_kmsan_check_memory
+[    1.366415]     # test_init_kmsan_vmap_vunmap: pages initialized via vmap (no reports)
+[    1.368805]     ok 9 test_init_kmsan_vmap_vunmap
+[    1.369223]     # test_init_vmalloc: vmalloc buffer can be initialized (no reports)
+[    1.371106] buf[0] is true
+[    1.371937]     ok 10 test_init_vmalloc
+[    1.372396]     # test_uaf: use-after-free in kmalloc-ed buffer (UMR report)
+[    1.374021] value is true
+[    1.374463]     # test_uaf: EXPECTATION FAILED at mm/kmsan/kmsan_test.c:378
+                   Expected report_matches(&expect) to be true, but is false
+[    1.376867]     not ok 11 test_uaf
+[    1.377229]     # test_percpu_propagate: uninit local stored to per_cpu memory (UMR report)
+[    1.378951] check is false
+[    1.379432]     # test_percpu_propagate: EXPECTATION FAILED at mm/kmsan/kmsan_test.c:396
+                   Expected report_matches(&expect) to be true, but is false
+[    1.382201]     not ok 12 test_percpu_propagate
+[    1.382625]     # test_printk: uninit local passed to pr_info() (UMR report)
+[    1.384329] ffffc900002bfcd4 contains 0
+[    1.384933]     # test_printk: EXPECTATION FAILED at mm/kmsan/kmsan_test.c:418
+                   Expected report_matches(&expect) to be true, but is false
+[    1.387474]     not ok 13 test_printk
+[    1.387824]     # test_init_memcpy: memcpy()ing aligned initialized src to aligned dst (no reports)
+[    1.390061]     ok 14 test_init_memcpy
+[    1.390327]     # test_memcpy_aligned_to_aligned: memcpy()ing aligned uninit src to aligned dst (UMR report)
+[    1.392359]     # test_memcpy_aligned_to_aligned: EXPECTATION FAILED at mm/kmsan/kmsan_test.c:459
+                   Expected report_matches(&expect) to be true, but is false
+[    1.395181]     not ok 15 test_memcpy_aligned_to_aligned
+[    1.395467]     # test_memcpy_aligned_to_unaligned: memcpy()ing aligned uninit src to unaligned dst (UMR report)
+[    1.397845]     # test_memcpy_aligned_to_unaligned: EXPECTATION FAILED at mm/kmsan/kmsan_test.c:483
+                   Expected report_matches(&expect) to be true, but is false
+[    1.400221]     # test_memcpy_aligned_to_unaligned: EXPECTATION FAILED at mm/kmsan/kmsan_test.c:486
+                   Expected report_matches(&expect) to be true, but is false
+[    1.403059]     not ok 16 test_memcpy_aligned_to_unaligned
+[    1.403437]     # test_memcpy_initialized_gap: unaligned 4-byte initialized value gets a nonzero origin after memcpy() - (2 UMR reports)
+[    1.406077]     # test_memcpy_initialized_gap: EXPECTATION FAILED at mm/kmsan/kmsan_test.c:532
+                   Expected report_matches(&expect) to be true, but is false
+[    1.408340]     # test_memcpy_initialized_gap: EXPECTATION FAILED at mm/kmsan/kmsan_test.c:538
+                   Expected report_matches(&expect) to be true, but is false
+[    1.411063]     not ok 17 test_memcpy_initialized_gap
+[    1.411338]     # test_memset16: memset16() should initialize memory
+[    1.413393]     ok 18 test_memset16
+[    1.413651]     # test_memset32: memset32() should initialize memory
+[    1.415427]     ok 19 test_memset32
+[    1.415739]     # test_memset64: memset64() should initialize memory
+[    1.417513]     ok 20 test_memset64
+[    1.417783]     # test_long_origin_chain: origin chain exceeding KMSAN_MAX_ORIGIN_DEPTH (UMR report)
+[    1.419805]     # test_long_origin_chain: EXPECTATION FAILED at mm/kmsan/kmsan_test.c:584
+                   Expected report_matches(&expect) to be true, but is false
+[    1.422415]     not ok 21 test_long_origin_chain
+[    1.422752]     # test_stackdepot_roundtrip: testing stackdepot roundtrip (no reports)
+[    1.424598]  kunit_try_run_case+0x19d/0xa50
+[    1.425243]  kunit_generic_run_threadfn_adapter+0x62/0xe0
+[    1.426252]  kthread+0x8cd/0xb40
+[    1.426747]  ret_from_fork+0x189/0x2b0
+[    1.427320]  ret_from_fork_asm+0x1a/0x30
+[    1.428245]     ok 22 test_stackdepot_roundtrip
+[    1.428519]     # test_unpoison_memory: unpoisoning via the instrumentation vs. kmsan_unpoison_memory() (2 UMR reports)
+[    1.430771] =====================================================
+[    1.431682] BUG: KMSAN: uninit-value in test_unpoison_memory+0x146/0x3e0
+[    1.432705]  test_unpoison_memory+0x146/0x3e0
+[    1.433356]  kunit_try_run_case+0x19d/0xa50
+[    1.433979]  kunit_generic_run_threadfn_adapter+0x62/0xe0
+[    1.434773]  kthread+0x8cd/0xb40
+[    1.435263]  ret_from_fork+0x189/0x2b0
+[    1.435846]  ret_from_fork_asm+0x1a/0x30
+
+[    1.436692] Local variable a created at:
+[    1.437270]  test_unpoison_memory+0x41/0x3e0
+[    1.437903]  kunit_try_run_case+0x19d/0xa50
+
+[    1.438766] Bytes 0-2 of 3 are uninitialized
+[    1.439433] Memory access of size 3 starts at ffffc90000347cd5
+
+[    1.440517] CPU: 3 UID: 0 PID: 99 Comm: kunit_try_catch Tainted: G                 N  6.17.0-rc5-00110-ge59a039119c3 #3 PREEMPT(none) 
+[    1.442247] Tainted: [N]=TEST
+[    1.442725] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
+[    1.444376] =====================================================
+[    1.445263] Disabling lock debugging due to kernel taint
+[    1.446103] =====================================================
+[    1.447007] BUG: KMSAN: uninit-value in test_unpoison_memory+0x23f/0x3e0
+[    1.447996]  test_unpoison_memory+0x23f/0x3e0
+[    1.448650]  kunit_try_run_case+0x19d/0xa50
+[    1.449319]  kunit_generic_run_threadfn_adapter+0x62/0xe0
+[    1.450122]  kthread+0x8cd/0xb40
+[    1.450611]  ret_from_fork+0x189/0x2b0
+[    1.451181]  ret_from_fork_asm+0x1a/0x30
+
+[    1.452010] Local variable b created at:
+[    1.452894]  test_unpoison_memory+0x56/0x3e0
+[    1.453537]  kunit_try_run_case+0x19d/0xa50
+
+[    1.454407] Bytes 0-2 of 3 are uninitialized
+[    1.455043] Memory access of size 3 starts at ffffc90000347cd1
+
+[    1.456182] CPU: 3 UID: 0 PID: 99 Comm: kunit_try_catch Tainted: G    B            N  6.17.0-rc5-00110-ge59a039119c3 #3 PREEMPT(none) 
+[    1.457925] Tainted: [B]=BAD_PAGE, [N]=TEST
+[    1.458545] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
+[    1.460239] =====================================================
+[    1.461617]     ok 23 test_unpoison_memory
+[    1.462056]     # test_copy_from_kernel_nofault: testing copy_from_kernel_nofault with uninitialized memory
+[    1.464122] ret is false
+[    1.464538]     # test_copy_from_kernel_nofault: EXPECTATION FAILED at mm/kmsan/kmsan_test.c:656
+                   Expected report_matches(&expect) to be true, but is false
+[    1.467250]     not ok 24 test_copy_from_kernel_nofault
+[    1.482563] # kmsan: pass:11 fail:13 skip:0 total:24
+[    1.483790] # Totals: pass:11 fail:13 skip:0 total:24
+[    1.484532] not ok 1 kmsan
 
