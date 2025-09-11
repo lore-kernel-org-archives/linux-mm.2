@@ -4,154 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9209ECAC587
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 08:37:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 426C6CAC58D
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 08:37:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC3C6900004; Thu, 11 Sep 2025 04:37:03 -0400 (EDT)
+	id 9CC2F900002; Thu, 11 Sep 2025 04:37:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D9B4B8E0001; Thu, 11 Sep 2025 04:37:03 -0400 (EDT)
+	id 97D548E0001; Thu, 11 Sep 2025 04:37:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB140900004; Thu, 11 Sep 2025 04:37:03 -0400 (EDT)
+	id 8BA10900002; Thu, 11 Sep 2025 04:37:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B80D88E0001
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 04:37:03 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id EDA5C13AD35
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 08:37:02 +0000 (UTC)
-X-FDA: 83876314284.19.9EBAE81
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf19.hostedemail.com (Postfix) with ESMTP id B44C21A0002
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 08:37:00 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=gbVdZ5or;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=aLTXTZFS;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=BXH35BNu;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=onTJLSTl;
-	spf=pass (imf19.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 752728E0001
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 04:37:19 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 365371403D0
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 08:37:19 +0000 (UTC)
+X-FDA: 83876314998.01.FF22B00
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 67CDF20005
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 08:37:17 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=R4qvQjRQ;
+	spf=pass (imf03.hostedemail.com: domain of naresh.kamboju@linaro.org designates 209.85.214.175 as permitted sender) smtp.mailfrom=naresh.kamboju@linaro.org;
+	dmarc=pass (policy=none) header.from=linaro.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757579821;
+	s=arc-20220608; t=1757579837;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MVKatHAMv6K0HJB+fE+uvvzEY9BdzRg6mGSrDhfixOc=;
-	b=6oDBCihy6xeN03OBdBKKPyYzlkUzan8Td+cqgBBXLFFpVayJf/wDSBxIBXOfPb51o7xLFE
-	kLXbQmiy5UF/gWmdHul5T2Mr56qXGsuruodBcWsh4AZ4fiUd7zmZCMbNIJi+bM+Gw0pl0o
-	qN1ziycDwue9XFj6GpqFqMea0DEewqA=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=gbVdZ5or;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=aLTXTZFS;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=BXH35BNu;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=onTJLSTl;
-	spf=pass (imf19.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757579821; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=XlHLF6IxLX265PKrXSfqim3Osu2zErg+VtcQhos8Amk=;
+	b=tVbyAIhVTFJYVUqMZv1hHBYPYQzgXyWb+hnJEZ9qJW1kei/cviLG61AB/MUe6iolTO0Mka
+	Uw0/lzRNas2cgEs+5j2jpTSo5rG4mepg3hzN9ZzHuGGXAnsswK4SrDdEEFTsFMrOlsQ5gx
+	ZCcZW4wGGW5uCdCKk9pN7J0eNw1ZF1k=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757579837; a=rsa-sha256;
 	cv=none;
-	b=Iu/KQCeU3+UE7qBaLHN1yewtkkkHpuZzkspGOYPaVys+YqnxFIbqOgbQHu7HHRdwjN1v3f
-	nyNaRdfb3ijAmB6QvepQxDWRtSIcPWTwUs7G4PbnYvIBX82G427ZKKq4a8TuhMvnPh4git
-	Asi9dZ+8QWCVPqW54hgpVPmqAxH8prQ=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id E8F2468606;
-	Thu, 11 Sep 2025 08:36:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1757579819; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MVKatHAMv6K0HJB+fE+uvvzEY9BdzRg6mGSrDhfixOc=;
-	b=gbVdZ5ordIwsjok0HGyMjLJHMSMCvd7phfCfms+ZTddXEbopzWQoU9SS+FPbGVcufPMb2x
-	JMqA30UnF9uP4ZX8DjZuMTMu0J3iWh4dqAOgxyk/H1JXK2INNCBYcRL6RtLmBo7y9ghHvL
-	it6KQ2/afG8hGOw9P2K0/2NZIIl4e58=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1757579819;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MVKatHAMv6K0HJB+fE+uvvzEY9BdzRg6mGSrDhfixOc=;
-	b=aLTXTZFSgnI5/Cod9GP6PRHmztHtOqVdF3UN4+Ox//+uZ9pn/LzTYv8Pv/vn52ReXpGA7L
-	LygYn7X671fZo2Cg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1757579818; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MVKatHAMv6K0HJB+fE+uvvzEY9BdzRg6mGSrDhfixOc=;
-	b=BXH35BNu64iIGCB3YP2jGeLYcKsUThmhJ6XH1FZZJOeTGgj8j+AKxuheSOZ825qLuYyoJA
-	Fnp0TF+S3NW+tY9TPbQQJsr0ly3mI21S04Ty4JaNJv85r6FBeE9/XfvhuQjAIdfE3zrgCt
-	iZWZFl6rA6UgTWCABj5n/rG4pREhBLE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1757579818;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MVKatHAMv6K0HJB+fE+uvvzEY9BdzRg6mGSrDhfixOc=;
-	b=onTJLSTlgfa3oXRqtjZDgBU2LdJbfKNHu4jUM0BmAA78X6XyIiUUKvU898EivdFRT7NBq1
-	eEDGqyXMCeegHVCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D83BA1372E;
-	Thu, 11 Sep 2025 08:36:58 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id mpvENCqKwmjOcgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 11 Sep 2025 08:36:58 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 8E4F6A0A2D; Thu, 11 Sep 2025 10:36:58 +0200 (CEST)
-Date: Thu, 11 Sep 2025 10:36:58 +0200
-From: Jan Kara <jack@suse.cz>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Matthew Wilcox <willy@infradead.org>, 
-	Guo Ren <guoren@kernel.org>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, "David S . Miller" <davem@davemloft.net>, 
-	Andreas Larsson <andreas@gaisler.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dan Williams <dan.j.williams@intel.com>, 
-	Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>, 
-	Nicolas Pitre <nico@fluxnic.net>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@redhat.com>, 
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, Baoquan He <bhe@redhat.com>, Vivek Goyal <vgoyal@redhat.com>, 
-	Dave Young <dyoung@redhat.com>, Tony Luck <tony.luck@intel.com>, 
-	Reinette Chatre <reinette.chatre@intel.com>, Dave Martin <Dave.Martin@arm.com>, 
-	James Morse <james.morse@arm.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Uladzislau Rezki <urezki@gmail.com>, 
-	Dmitry Vyukov <dvyukov@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-csky@vger.kernel.org, 
-	linux-mips@vger.kernel.org, linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, 
-	nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org, linux-mm@kvack.org, 
-	ntfs3@lists.linux.dev, kexec@lists.infradead.org, kasan-dev@googlegroups.com, 
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: Re: [PATCH v2 03/16] mm: add vma_desc_size(), vma_desc_pages()
- helpers
-Message-ID: <afrz7upbj463hmejktsw2dxvvty7a7jtsibyn4fdlwwyrzogrh@c3svlrvl4job>
-References: <cover.1757534913.git.lorenzo.stoakes@oracle.com>
- <5ac75e5ac627c06e62401dfda8c908eadac8dfec.1757534913.git.lorenzo.stoakes@oracle.com>
+	b=7/A6CQKu47telWRUAmWjLBp6NSYGkn4XOk21TULK4ifeoc9NafGtyAw+yIyKGVYzc151hG
+	YdF4bdAr7uOdT+eZ/rbS5mTdgKGsdQg5DLcQwCwmVjyGI00WXXFTrb99rRPf+W245bnWt3
+	7lZL1MmiXwZmEjV2mFSh/UQR0CUVAI4=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=R4qvQjRQ;
+	spf=pass (imf03.hostedemail.com: domain of naresh.kamboju@linaro.org designates 209.85.214.175 as permitted sender) smtp.mailfrom=naresh.kamboju@linaro.org;
+	dmarc=pass (policy=none) header.from=linaro.org
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-24b1622788dso3121655ad.2
+        for <linux-mm@kvack.org>; Thu, 11 Sep 2025 01:37:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1757579836; x=1758184636; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=XlHLF6IxLX265PKrXSfqim3Osu2zErg+VtcQhos8Amk=;
+        b=R4qvQjRQkYnXLmcNuuDF2icA3ecHMnC/jqNpRtugqSnuEBNEXMjBEmSt2DQF2rbxKq
+         7LJuxpZt72pThcoaaCNdAbMr+vtS05MZDYX95kOUU0UtWrCEYOe5mLLK+Be8C1ciOat/
+         RjKWyjLVQKiXkfKJ1Gwl/atnr2uxRwqUR1Lm+VOgmYMfimxwPQrRd6Xex92iwvLIvkXN
+         TRj2OGC/zGrobqjfUVvfWnqkRz0/q6XK6v/VlRuUPSwiYfK202rYsL8xyENM/gHu4Dw4
+         NF0n7f6ny5Hf1ZRbgT6CdL7D/o3iAoeHq06Yj3TMOt3sG+IUVc1mwV6H5BYL1MwSw38O
+         8GlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757579836; x=1758184636;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=XlHLF6IxLX265PKrXSfqim3Osu2zErg+VtcQhos8Amk=;
+        b=dp1wNRjtyfvBwuNdNnXIIRvSZgCM5FkKiBxXeGigtEPTkSKiuJ5eNE2mfQu5yFl/9j
+         EpteVNpiaXusnYbEDVkV6gFz+E+1mBivm6+ICVqtsH/L1gBQDPT3XvD+C6N5wbJ4HGzY
+         FLwp11YLQJeKanOjElD0a835MJe8/aj6CAeB3i0sWtBPwi989kHt7QfBjux7n6XgyfYO
+         9fGGDjGjaYqkCchPx54WJoZZyFYG90GmcGMxSJeBbSEhzxqrrNc4HPNp4mqq7vjEjaxD
+         BimKEVWslULmdcLTiH2G02OGE9FezROX6HnGYrZFWBn9Y7fC8uHxVjpFZh/2rbl8onHt
+         hyfA==
+X-Forwarded-Encrypted: i=1; AJvYcCVPS+GGyL6VzEsXfcDNSaDpnf94JYCXxT00oU2iJ5SOwUwk6s7L9vPmGUvz7pExmR5T4eeQT2so5g==@kvack.org
+X-Gm-Message-State: AOJu0YwJMbujcWCNhUaiEmvHR2uxfPJsL/s/cm5VNFGNNn0epBRJcDYT
+	3PYhMiiVqAOnPCPnWci0VpbbOrIaWj3/MWCE0CW7xFWpXfWzkZi7w6FO39Wg4fZBlJb0Zgk9774
+	Yhr8BWj4hGRBB4j8XRCSFDI7biCOuqk8rPCi/F8ZsQQ==
+X-Gm-Gg: ASbGnctpfyuN4MRXDLK5aCoxENPJBGePxBaR4gqm00FPWrvKjAluHKuxCuMYZbqToTm
+	KKFCclwg9xcENsunCmjsxhaEcb7Os+fV2msJeS70nNy643yriLYxqP6VfuYw2068whT5UcQ4+mb
+	MnbKzO764BckPDj6pqVZmRcBmhWngoVHHokrZHpTW6/sBgXhXM9P4dlSpH5AYp1Zs9LLfzU3Bxw
+	Wn9x85iplAn7GLhflYhZ5fkp7T0N9aPj099WL4kElqXLvSpwbl74V/Un3zPfLMRl3byAxXc6JW5
+	cSE8Vfg=
+X-Google-Smtp-Source: AGHT+IGR2+igFyrerQ3HlTU0fDr7FuwZJE+/EsvxJ0BM47OK3QyzESdHU/BATUPNXmekU8opkqkhhnxnT4KYCn47WJg=
+X-Received: by 2002:a17:903:230a:b0:24f:30dc:d3fe with SMTP id
+ d9443c01a7336-25170e428f3mr249071415ad.29.1757579835668; Thu, 11 Sep 2025
+ 01:37:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5ac75e5ac627c06e62401dfda8c908eadac8dfec.1757534913.git.lorenzo.stoakes@oracle.com>
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: B44C21A0002
-X-Stat-Signature: fk4k3hodhyxkkku1w16bcubmcnfkinpm
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Thu, 11 Sep 2025 14:07:04 +0530
+X-Gm-Features: AS18NWDVnn8cWFJt-IwGb3BydlPhAt8pRyLoCxHvXGT9gVTi8T47w_BuQztkQok
+Message-ID: <CA+G9fYtUi3bnZ2zycCot6KGeZcn67JAvz=wZm=6f2w9ZnL=0Uw@mail.gmail.com>
+Subject: next-20250911: mm/slub.c:3960:27: error: a function declaration
+ without a prototype is deprecated in all versions of C void flush_all_rcu_sheaves()
+To: open list <linux-kernel@vger.kernel.org>, lkft-triage@lists.linaro.org, 
+	Linux Regressions <regressions@lists.linux.dev>, clang-built-linux <llvm@lists.linux.dev>, 
+	linux-mm <linux-mm@kvack.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Ben Copeland <benjamin.copeland@linaro.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Dan Carpenter <dan.carpenter@linaro.org>, Anders Roxell <anders.roxell@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: hh58ix7rmami8ijmswwfrf7t3d41iuag
+X-Rspamd-Queue-Id: 67CDF20005
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1757579820-943169
-X-HE-Meta: U2FsdGVkX1/s/HLYTVWdb4ItZ3iqhPAsQ9wPwHHiFTPgx0QvtmTZPXDfOa5bZfwSAwW7juxZk0/wD0gdg4LoKrGWRIolsWHDLG9Trbsmii2ylep7MyrI3HFcmkl7mnzTMZuCytAH+qyHOu7ddGuG+HLDXjXicTDQS0frWy6dm2ikNk1c1lhKYXgxXHWuDrb+dCqO+oHOt8TPCttOZ7+lKyL758k8Emwd7dfFaD5q9oBUr/JgcGBCiswFlLwDiqMUyBokruVIXSP5WMavyaLnz+Aeu4ZqCze0Aa+y4+yH4ukEXLmjitU5w4Fv9wvUtVXEqaN3FoIXhJibFoazEZlrFee8eW7j6bHWkPQkryjiwExzLDjxqC1/jMJcsXJgx4VNui9kG2tgIbb5TqxhRjATgEYBkYGu3uk6fMsYfGtuXDknOjILiQL/LyQgNxZsrKR2vn93zE0GH3eCSLF0zb11MKcOllpu7NoOY9Hva6X1E9KL9/5/kejyoxr4kxyT6v5IlXUbPvkVoYuPUpbLvmiMLiWbIwx2hIRj6n2guqECkqSFhHU4vGRbigrd3zdQiRhGxUzmQ/JM6Pftacn9DxL3Rw4fWnw1+0Ry+1Dg+uryZjcVhaNB2Uml9K6Oj/Wkjc2m2rzmEW1W9OEt70iUvp/Hdvw8DyocaEhq6JH54XTo+7CQJtQ11M9+1AtbiLPmsaN436RRwU+I7o6bqH4OoD1/eYX9W8xbcRWPRnjmKZFI3WD2KD9Pb7Cgm2HqR8t1rlGcFpO+36wfprks0FU9XyepFS9aFs04+iVZYroFDBpSEGFlRNXaN++IzdfAsFlRT/zhCSLLx36JEII8V1zPxoAfQyZYlmnX/81NYYyZJ38MuU5ysaM8D2vCrh2y5/KRxus+9DHboVQhWIRRojNGlbyViXc1SEgpxMdzEn7SMUAxgV8MqJ+zybLHmaF2EHuj7+lvd89ojykr52AA8heTVZd
- 7b/cjhF6
- Ye48t6QAVpnFjGORu2b/fG1IrgWNh0B3gBeMTy8Zf3B9gj2y1cY0xQROtDGO4CENBYepsVCOYNrRt5vezGxBrzNIuDmLdDZ+xptlYFkGgUQlCVdv9BlOAQTwFPbBxD5Fq0MJizisT9Y18AGtR7BYHEuK7CDi7/6WV88SPEKGS3DRxxbgAXgaSWW+/bnGjDMdZM0zwQPnnxBLJJ5EruOH7QSZkP9seBRoxh/aqeQBVDiMtzsZwNkfjF4qSQxu67/9KokLOozwtxQCAxP/jPTqma1tcWFvVxTUsWdjrnLcmZLWbgoMNnixQGwsjVoUuIen/bdDrFdEXwdt2sfqecXx6zTs7mJeBlbh3KlU6YISPxS6yZ452zUJ3E3E87FehZr3yVen8ucwH377lyFRfX2fX7E0w5IXOgFsEHpLjBBegit9vD0AVjORC4TSlAcm+wEdv+BSyGCg6HX+93IsnSj9lmzy0kI0zr0lX7UxFiqTF0IEDYF8=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1757579837-83344
+X-HE-Meta: U2FsdGVkX1+KzRL95dvjSHCvNpzr7D5kV4/NXVL8mbbGDYk4+tLsMSPXT1kpGeqIxUYfWz1MVYQJuLst2YYcne/4sh5Thm3S9uT5zmFLI5xSsKpSgq6Gr3ETXbS8+AK5YgAoYzaBcFPGyHAK+UvgTqnAi+kxOZ/MteN7QwZqfmrolp9DJEH81H/HaLmf7aJiyedZ9QC8uWEhLzMj7FwJIEPxIT2UcaJ50Rq2vKhkGsCFSVqJYNYNQQqN/xzROqNkz6YapYC3gz6NE2c9AjzACw0Vvcu+NxzoFdPPdDt0CNDJPiZiWmOfHXpmrt8ePMZ7bslL/N4amWO8kK4L0QQbUdjWQQSN7i//YVOiLTjuAbVR3P0GOYis0E587W7Kq7pC/++cjaJJG7hJDSas05RPjpdP0PWmbskb4VEJFVxR68mae2nzVKWCy2DooMH4HCOLpBzYbVQ71o1fdr4PtL1CwyWF1jUPvsxrBgPkLHhmQwZPV0+Pgrtw2pQpGDypulKmGE+CaiakFdj/L83FpAhm8+EoCFpdPseJcNps/S50B3W9fCfSExpDAg49J7LwCDvCkkhXwW0Zo44Reyjo/F9ogEC/3iHTnon6kriyAAwDIynLPEhsoetXaZ8/QKL6AXnnIt6CePy648aL1iT0F/WNzHuxXAl4mAxBU966/6t3rvxgGnGbJCNZyd7yAw65oEX2O9xP5B/d5XP+xp0w0Mxt2BjiispbwnkwOglUOtaepueTXv2RosOL9/vPIIuGyclr6XRiWsacWi4NS0y2zb5sPaKhtpnBHPWO551nSYTigKz0WEKUCPJlKM8xg9JuqNYlOVgqoqstwtkOLvHu5na0FTXsTl41MjQQC8h6k+d/Js6T4133jZtjJyo+C/7a4L56k2Nf5OMNYdTBQveblo8Gh1VjQDvh89qXcvC3mgri1rzXfFQFraFkFmCwi4aH5uE+eYL0uy+zVW6sUOTLTyR
+ 5L1p1qCT
+ ZPP0ZOKAFDsXOAFm4PuvvL1JkGU7ocKFhVWCq7UvU2t8p1XuOFAnDnhykPwxsDRV5I3vvtsNdNAcGyztYNE5PzFHVKSLg8FuwiRIRazzyhcUUd0OQaq5MHzTONFHB5l0DKERiHBscuZnAx4LFQW9E71u50mS3JXmod9igYWPcGKXFh3SN6KYzArcuKVN9cYRjJ213TtAWRvG97Ay8RB/eKc2+OpkJKENQ8046ewk8HKECga8tmnW98imD7DYTyhKGxDKZBN+5hM534GpBXg8B8Gid9iv/0eQiA0eH0wd/WBxdtOjEn0QWUohjNi2YbtL7khz/Yw+JHBwFfbkIUUikbm7rmoXOXkOLScP2a3SFp5CLM4bo2agmwZx/YtcfZHHGxRDF+QfRiSX7e93IhBjNaa/Fvc6xquK67yB44+vX7Q6ToUstq0JjuUUvGgJ/yjnV1xe+
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -160,77 +114,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed 10-09-25 21:21:58, Lorenzo Stoakes wrote:
-> It's useful to be able to determine the size of a VMA descriptor range used
-> on f_op->mmap_prepare, expressed both in bytes and pages, so add helpers
-> for both and update code that could make use of it to do so.
-> 
-> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+The following build warnings / errors noticed on aram arm64 defconfig
+with clang-20 and clang-nightly toolchains on the Linux next-20250911 tag.
 
-Looks good, I presume more users will come later in the series :). Feel
-free to add:
+Regression Analysis:
+- New regression? yes
+- Reproducibility? yes
 
-Reviewed-by: Jan Kara <jack@suse.cz>
+Build regression: next-20250911: mm/slub.c:3960:27: error: a function
+declaration without a prototype is deprecated in all versions of C
+void flush_all_rcu_sheaves()
 
-								Honza
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-> ---
->  fs/ntfs3/file.c    |  2 +-
->  include/linux/mm.h | 10 ++++++++++
->  mm/secretmem.c     |  2 +-
->  3 files changed, 12 insertions(+), 2 deletions(-)
-> 
-> diff --git a/fs/ntfs3/file.c b/fs/ntfs3/file.c
-> index c1ece707b195..86eb88f62714 100644
-> --- a/fs/ntfs3/file.c
-> +++ b/fs/ntfs3/file.c
-> @@ -304,7 +304,7 @@ static int ntfs_file_mmap_prepare(struct vm_area_desc *desc)
->  
->  	if (rw) {
->  		u64 to = min_t(loff_t, i_size_read(inode),
-> -			       from + desc->end - desc->start);
-> +			       from + vma_desc_size(desc));
->  
->  		if (is_sparsed(ni)) {
->  			/* Allocate clusters for rw map. */
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 892fe5dbf9de..0b97589aec6d 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -3572,6 +3572,16 @@ static inline unsigned long vma_pages(const struct vm_area_struct *vma)
->  	return (vma->vm_end - vma->vm_start) >> PAGE_SHIFT;
->  }
->  
-> +static inline unsigned long vma_desc_size(struct vm_area_desc *desc)
-> +{
-> +	return desc->end - desc->start;
-> +}
-> +
-> +static inline unsigned long vma_desc_pages(struct vm_area_desc *desc)
-> +{
-> +	return vma_desc_size(desc) >> PAGE_SHIFT;
-> +}
-> +
->  /* Look up the first VMA which exactly match the interval vm_start ... vm_end */
->  static inline struct vm_area_struct *find_exact_vma(struct mm_struct *mm,
->  				unsigned long vm_start, unsigned long vm_end)
-> diff --git a/mm/secretmem.c b/mm/secretmem.c
-> index 60137305bc20..62066ddb1e9c 100644
-> --- a/mm/secretmem.c
-> +++ b/mm/secretmem.c
-> @@ -120,7 +120,7 @@ static int secretmem_release(struct inode *inode, struct file *file)
->  
->  static int secretmem_mmap_prepare(struct vm_area_desc *desc)
->  {
-> -	const unsigned long len = desc->end - desc->start;
-> +	const unsigned long len = vma_desc_size(desc);
->  
->  	if ((desc->vm_flags & (VM_SHARED | VM_MAYSHARE)) == 0)
->  		return -EINVAL;
-> -- 
-> 2.51.0
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+## Build log
+mm/slub.c:3960:27: error: a function declaration without a prototype
+is deprecated in all versions of C [-Werror,-Wstrict-prototypes]
+ 3960 | void flush_all_rcu_sheaves()
+      |                           ^
+      |                            void
+1 error generated.
+
+## Source
+* Kernel version: 6.17.0-rc5
+* Git tree: https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next.git
+* Git describe: 6.17.0-rc5-next-20250911
+* Git commit: 8f21d9da46702c4d6951ba60ca8a05f42870fe8f
+* Architectures: arm, arm64, i386,  mips, powerpc, riscv, s390
+* Toolchains: clang-20 and clang-nightly
+* clang: Debian clang version 20.1.8
+(++20250809043815+87f0227cb601-1~exp1~20250809163919.3)
+* Kconfigs: defconfig+lkftconfigs
+
+## Build
+* Build log: https://qa-reports.linaro.org/api/testruns/29853978/log_file/
+* Build details:
+https://regressions.linaro.org/lkft/linux-next-master/next-20250911/build/clang-20-defconfig/
+* Build plan: https://tuxapi.tuxsuite.com/v1/groups/linaro/projects/lkft/builds/32XlFDtH7RdddaA6FHskupLDDSO
+* Build link: https://storage.tuxsuite.com/public/linaro/lkft/builds/32XlFDtH7RdddaA6FHskupLDDSO/
+* Kernel config:
+https://storage.tuxsuite.com/public/linaro/lkft/builds/32XlFDtH7RdddaA6FHskupLDDSO/config
+* Build log details:
+https://regressions.linaro.org/lkft/linux-next-master/next-20250911/log-parser-build-clang/clang-compiler-mm_slub_c-error-a-function-declaration-without-a-prototype-is-deprecated-in-all-versions-of-c/
+
+--
+Linaro LKFT
 
