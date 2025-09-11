@@ -4,124 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C7FCCA1016
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 06:30:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AA01CAC587
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 06:57:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 50E7C8E0003; Thu, 11 Sep 2025 02:30:40 -0400 (EDT)
+	id 219028E0005; Thu, 11 Sep 2025 02:57:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E69C8E0001; Thu, 11 Sep 2025 02:30:40 -0400 (EDT)
+	id 1C75D8E0006; Thu, 11 Sep 2025 02:57:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3FC278E0003; Thu, 11 Sep 2025 02:30:40 -0400 (EDT)
+	id 10AC08E0001; Thu, 11 Sep 2025 02:57:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 301DE8E0001
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 02:30:40 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D3513B908F
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 06:30:39 +0000 (UTC)
-X-FDA: 83875995798.20.2F839D5
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	by imf15.hostedemail.com (Postfix) with ESMTP id BCD16A0011
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 06:30:37 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=AMV5WXx1;
-	spf=pass (imf15.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EE0D68E0001
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 02:57:10 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8F04758C7D
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 06:57:10 +0000 (UTC)
+X-FDA: 83876062620.09.01723F4
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 1502E1C0004
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 06:57:06 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=none;
+	spf=pass (imf21.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.188 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757572237;
+	s=arc-20220608; t=1757573828;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RXEYcjZIAtbprlQLt6w5w3s/MIH7MOGVjxguPzaQ920=;
-	b=zDqpXeqNa/LXWGpWRTGkwEgeM7VmzkR1W2OBgmUKM/Fi6zy2Iz68v5Tkn90NHvjAp6+bDZ
-	XcQW87Ltty9x5nM8K8vpWClWrLKqj/Yijcj8XKIzJKXbSFdp0lgCgBzxPnnUeOYOx9BMIs
-	ysmkXm4kbQqnZGpbAREQ4uaZv28mMbI=
+	 in-reply-to:in-reply-to:references:references;
+	bh=9oPLJzG99Jh3YwSf/9dS14WB1D58fDFox/TWeEN3RpU=;
+	b=ToXpdRIR/Np/aM01GfXYaNKP75jSg+b8igjGjx0RvUu+p5BdD37BjaJjAxU84PH3y6pm9R
+	WkWGPrG3vbMFcd6ysTNpQTM/H+jlWGmkvsN/OHmgBeM8oHO+U1bucHcGoDayeaj9if32OZ
+	bpOG29riQcswFMU71DFsy9bUDcvFxDY=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=AMV5WXx1;
-	spf=pass (imf15.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757572237; a=rsa-sha256;
+	imf21.hostedemail.com;
+	dkim=none;
+	spf=pass (imf21.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.188 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757573828; a=rsa-sha256;
 	cv=none;
-	b=tWrI5hDiZE77p3cE83IrFu8RhXnu7GZsMpWCiZTw0SFP09EqYeMGIrZNU1TDnRfGmNrnJ7
-	+Qnoz1UUWHpDFJlfo67vF99mdr7txaybuyDXCOUEgBsn+u9PPMdnu/N3HBEi27s+q7dCE9
-	wSs7EjsKI6EnMG8v7Pb2CawCeeDpsvg=
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b0411b83aafso48585266b.1
-        for <linux-mm@kvack.org>; Wed, 10 Sep 2025 23:30:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757572236; x=1758177036; darn=kvack.org;
-        h=user-agent:in-reply-to:content-transfer-encoding
-         :content-disposition:mime-version:references:reply-to:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=RXEYcjZIAtbprlQLt6w5w3s/MIH7MOGVjxguPzaQ920=;
-        b=AMV5WXx1kZvunfYdxDQXLET85VSMNnu70MT+Wxaxg/ARA+Z2VPYXCrskhG2tVTWzVz
-         holgCtC/+YUYah2MS5pKx/RWIrJqyr4JYpvz5gOVDRynm6v0/1/wHEfl8PK/qr4zZnqg
-         dcDPor/vTwY/j1kFh5rw0yPbZOcSOnBxHFbbk3de8N8+lHvHdEXg0bk1NoN4ySi4GAd4
-         jOfVhCFKa3fdAoI9Yvzl7ur2NpkAkzf9dBhNzdTg0WPvlooFEJ0qqg6McwwXxp/9k/Sl
-         4/DoeRX07TaAf95a4ELD/+UV8kmhUhKZrPW+oKzr132XOL7Yi5oAYhi8V1a3xNwChwyZ
-         0ZNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757572236; x=1758177036;
-        h=user-agent:in-reply-to:content-transfer-encoding
-         :content-disposition:mime-version:references:reply-to:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RXEYcjZIAtbprlQLt6w5w3s/MIH7MOGVjxguPzaQ920=;
-        b=KdIaO1dGan042qyJq/pr6HeszKWcpFB4j1dzfTFHtiPvK9JM5RTuvg3mtubs7gC29h
-         cMymU6o1XNMT8B3wrqpnPy/7mvUdzoe5zUrunfclZaWZ4rFcTIFpO5JtjMrIMCz8TeyH
-         Nc7MzJmuDq3yuCSaq2eQYHKWrkS0pgedoP0JOfmVvG7LoTcQ6iJh/jBSEvzWLt+rwzM7
-         5R7TIpJnCnBhuGUUb2XcAhgGagJp6KFB8aRCD2WzJGQpB4aeR/GVSYYom38Nyj65OSEL
-         jqV0aBflojseGI3WWUICMHDReHm61QyICUWaU4hfsAJoy7BUH2AxUX9m9eReGt60UMdE
-         meWg==
-X-Forwarded-Encrypted: i=1; AJvYcCUHOagymN9hbd1fURC5LuxIuT8gPVu4wTlIE4tHCJToTgurHsRiZLYtrXdyYFnSoCnGs5UeRCO9sg==@kvack.org
-X-Gm-Message-State: AOJu0YwhaX2ZHdC+tCMhEUPsmyyYdFKZKBRvoYlBI5VPiGb/J8OKMIV1
-	VU/QQImmaNiytOXcHejHDZas0RyB7UuHVfh6OzTvtWuuv7UqQ87adEC6
-X-Gm-Gg: ASbGncs3g0xTpGA2gte88d2LADeLNXF2t9TOWtcRIScvSbzIRg/oEUt/i0yn+Xf6Rgq
-	QvDkG4D8VylvZuui223tDZC0QgO2k0Y4ah2A9a1djRn7tUlbkj4pBDEbSGmwaLXI0qrEG23UweB
-	MYBRJO9I9jX6e9dW6vxloMHrcBaQwLCYwXXAHAWZdo9mt8R/jQ261w3fo+qqmd/bP6KHGxX/lgU
-	8p/2QpE49PbSO73uibT9ro2Hunt3i6CxcxZwxRWAxBR3pv0ZS5FaPwyuqw+c+sRUIdqv8lBgump
-	EHtcizDok79IV+s+slwMwnPJqVx/mDeAydRHj0KfXP+dsLI7zNZKe4Oc3A0xWukHNSeQRP8M4Vz
-	Vf5LB/N8EOqHadmc+aQfl1P7J9w==
-X-Google-Smtp-Source: AGHT+IHZ9ZWi7XlMCg3ZcgfQhWuoIso34skiXBN5z48byGqxjy303yHncziQQ9pcqTDJOEpVfuXEOg==
-X-Received: by 2002:a17:906:d555:b0:b03:bc9c:ee9b with SMTP id a640c23a62f3a-b04b14aec03mr1692318166b.26.1757572235825;
-        Wed, 10 Sep 2025 23:30:35 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b07b3171560sm60372366b.47.2025.09.10.23.30.35
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 10 Sep 2025 23:30:35 -0700 (PDT)
-Date: Thu, 11 Sep 2025 06:30:34 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: Zi Yan <ziy@nvidia.com>, akpm@linux-foundation.org, vbabka@suse.cz,
-	surenb@google.com, mhocko@suse.com, jackmanb@google.com,
-	hannes@cmpxchg.org, wangkefeng.wang@huawei.com, linux-mm@kvack.org,
-	Oscar Salvador <osalvador@suse.de>
-Subject: Re: [PATCH] mm/compaction: fix low_pfn advance on isolating hugetlb
-Message-ID: <20250911063034.uafc5mmnf7k4d7km@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20250910092240.3981-1-richard.weiyang@gmail.com>
- <20250911012521.4p7kmxv46kwz5fz5@master>
- <5F7DCC9D-4CA2-4BA2-9EA8-F04C3883E289@nvidia.com>
- <EBF646E5-8A7D-4115-808D-E13033240659@nvidia.com>
- <2A28BE8E-E62D-4ED2-8A35-759BFAE4C52C@nvidia.com>
- <20250911033413.qcs74q4n6n6767zj@master>
+	b=sVZCCLrDqDM2hXlAiaJ7Ge3y0Rwwp24VXkig2PHT/HYICHPGEY/rnLhTAkQA0uMA8Nf8rk
+	p1ahWvuiqPl7rpFsvRAQC5VJQM5/oteODAUkDcW0qqiErLeq02qgjCAWmEadnLXB7b0O35
+	YznNuOINVBzMz/QjCEOWZc6w+vsUG0c=
+Received: from mail.maildlp.com (unknown [172.19.163.252])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4cMpCG4Vs9zRkNW;
+	Thu, 11 Sep 2025 14:52:26 +0800 (CST)
+Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
+	by mail.maildlp.com (Postfix) with ESMTPS id A6630180B63;
+	Thu, 11 Sep 2025 14:57:03 +0800 (CST)
+Received: from localhost.localdomain (10.175.112.125) by
+ dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 11 Sep 2025 14:57:02 +0800
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
+	<david@redhat.com>, Oscar Salvador <osalvador@suse.de>, Muchun Song
+	<muchun.song@linux.dev>, Zi Yan <ziy@nvidia.com>, Matthew Wilcox
+	<willy@infradead.org>
+CC: <sidhartha.kumar@oracle.com>, <jane.chu@oracle.com>, Vlastimil Babka
+	<vbabka@suse.cz>, Brendan Jackman <jackmanb@google.com>, Johannes Weiner
+	<hannes@cmpxchg.org>, <linux-mm@kvack.org>, Kefeng Wang
+	<wangkefeng.wang@huawei.com>
+Subject: [PATCH 1/4] mm: debug_vm_pgtable: add debug_vm_pgtable_free_huge_page()
+Date: Thu, 11 Sep 2025 14:56:56 +0800
+Message-ID: <20250911065659.617954-2-wangkefeng.wang@huawei.com>
+X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20250911065659.617954-1-wangkefeng.wang@huawei.com>
+References: <20250911065659.617954-1-wangkefeng.wang@huawei.com>
+Reply-To: <20250910133958.301467-1-wangkefeng.wang@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250911033413.qcs74q4n6n6767zj@master>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Queue-Id: BCD16A0011
+Content-Type: text/plain
+X-Originating-IP: [10.175.112.125]
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ dggpemf100008.china.huawei.com (7.185.36.138)
+X-Rspamd-Queue-Id: 1502E1C0004
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 68xnc99tqq75cp7i81nuefte1o7a5q39
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: rg3ddr3r1pt9e55hfhn3siifam6nx33b
-X-HE-Tag: 1757572237-210050
-X-HE-Meta: U2FsdGVkX1/Md4oEaiVqZdRYoxK682+pWFuHNZSYvcKdqiqEKaRm15xqHOazMYsXTgcKg08f+uft8lfJ1Tz0OiuijhSxZkFA9wx5x7KmiT0xASbIOZm22NhEl74rKmN8dNCEfCOoD+CITyn+1PcXxTW0AXzQsN8o//Oky8giT043fU6qi4JeQyckWE7Wg6MfPdN+HSbQHn7oJ/ApcqHBxSYakZqSEqblmt/c+0fj9++Depaw4rpS4rIOnNBiWLHWjcRgAT8CL5Xvv8AOzMrgIxDpBoz650wG0EdP1hi3ipGdIhMnt0tmrsfrRBlOXYshDRc97GzKfbTZg1flEmXqU0291g5D9d95Aw1kbINfcn/mz72FNWJnR4yIoV7MuL4JGe0seW/w5AIvjDmsbMQfxtfyXDLrsnEpGCU9MKtFuPBaPVgI9XHTHa+0T+uHe1uafgsvcoameoTjA7jzFOrNYQXXbUMa/q8EDH1jgGeFbHzPwy0c8UrETiLjXFLLv6KHOAUvON4rJT8AL7oOmWQHHc9MWJvAQrtLVRpFbt2zniU8LbWfi636aLlLk1DnsMjSAtJ0erTyMBLFecCKXMgQFj0ruooSV/hUGYkm5dpRJ2zY6HCqIAaPUg++P4ttXhYn0I7BnuGqpCikHuOt0Z/bCKxlEKGCRCuLqu/fI55Vfad0NrdRr1QHXx5JATcPJGAn3nvlQHtCoIv2ByNhcicSQmxtPiQYDA6zjSG7vxXNt81c3jL7SpEXqCayVyIdG+sGgkooSGZi3b4JSmSHPScHZ77FCuzUF3DDP2nFH4FISB8xOA6X8D4cTBdMVHOFH2Y8Awwptv8qdxXTLXLnvj8TghxiC3WnrbmhXyV4TBAMrjzhbYirQEpCncxy9SHcxBW5vd0ubMWl0udeX5hes3Nvolcnl5ZwBPrUay+sf8J5O7/KSrfX6DpcG89hyJMRI8pzCgvuG2W2dtAOODuTHjG
- HK5TthiY
- EUVZgrZH847CzuaasCzhzHunngaNm5tYGgU1Gsn0Mu9DbNzz1DbkNn54ATOqoOO7IBdgXrIDY2v36L6N8AKFAMbILh4pml4ukrbz7jB8O689rZ7wpAWATaUqq8cVo9C0yz4/wlCmUFUehqZrBXui+tZ0xAjRaTtfMmq701gU53TFzZ/4IqGmtbfxUJwJ/jF9hz3ivZLz0fooG6+7vbWJPdSxH9K+G3UguLouFb/Q+38NwXnsICVpVE7Ukoy7WPF5Uulk+q7rTKMW6SKl63bYpRh/dCc6hlo1xgft8AnClZ/X0d0lvgtv+Vv/cvl7HREM6tvm4vdnjt6etxHz/4RDuhsfvKgGhF+lcmhzTzuQkMHZK8XQOZtf5ZBV5HKqOuIRRnek+Y5AWPu8grv54DIwmKtbHHurnYbyW8dnk1ZUc0ZwdYyjOhoeIjipkWeWqJh7f7WBlxJWJ7iYooMFoTeTpP4Y3ycXWDfmaPZlA4nFMMnL5bZbQJPp6r1IsjcVhJZu664hUnDP/ObZxF2sgMG+1CKSzt+i19Wi0y8PZaHybDpxfkDGiWhqH2fqJ3IlCP+yhf8V2bKMPv+l3E49keSgcDsIBdjhDE8riuaC3jtnFc1CITHIsp6XzsWIa7IBgTC/dL++gWmIOS1H3abrmt7rsBwFgrwvtlqaJNdQkPeMMmFL26paCpwhlLER40886eODUGs2BmkxQsfXk9H+N5xPfnVeiBgoIbI4BvWeHIcjnWHHmjkrnA9EueRPW7bBzri3pRK8yp7KRK++omqszQIRkbM0iQ54TVxCCFdS923f73NC7sIqghRxAVQhWfRtgkvFy1THMeGROTfGbV4D53SW2BnTEdw==
+X-HE-Tag: 1757573826-478995
+X-HE-Meta: U2FsdGVkX1+EOZH79ncbuHM5ksf9CsYOVgH+hiA4z71R4NzDtdvo8XrtIkQs0F8k7znpwqaK/YL2PVbMzDNkzJMX4dd1yl6w+VhRm4+hD0hxW8QZJpY9F/3LOqLju7M6BkdEZKleHhvpddWaJU8PhoHkNH8ZExdgMgJ67xWKgyv42NarbSLtOZtb93U/MCKhkytTDZiEN5OrVTki1wUeFjumubXUP4lNqiISo9OgviHs7eHxX4E92XssvxxjAVpv8hH34wNcDJezlC5poXjkxoZc2i0Ktj0skPMJGwgfFlyW2ao02Hl2mM/+4n4fL49K7pf9bvkFn7HJQprN4RQOP9Oh8SZc69Nz/RmBGoiwnAn0tgbIVaZooCbuoldsHUTzWF0puoQ8k8mdLIagSVDxrKJ1RGPn94ubwf9hrMvmlSSVO3Q9pyR3B7CFVZxom9jtL5Y3HG7dJOkdW9pACcrhHdaKcaH/J8UsBHhEGAD+fGs8HHKnxZw19UzCf3viwixylk0tn1vpz15wwGfeTVTjPYIlXj1qQ58jYy7r/PBA/oHiK1QVRh0nhU8128jOd02dpoCBNgtUXHouulYDi2DYKPnjwjzw80308tyewWSgfqb8NM3LQiCtrnn5yAkp5bDSaFN6Vu3EVDxKnwJCtTjzpNqM+dWRJ89gq3b0TUhmz2jgYMZikoZT/TtEcgmtautH55alpcWeNGJne1bVqRI1wOaYSrWXf+dJbFcFbwhNf/YUh7kjoJqOnEZr1apG4GyZwxNzMcZ0IFvK85X5LpnrqrRAjCIHF0bBU9CYZNeftkN4qgEfRDAn2wqrn0Oar6QXdvOAgqYbqGMVjxwRnCbIKea4ceH9Redlvawvuz5wS3lBeHNf1Ci4LLq6zs4nLbh11LqEcP8YcQdJPTwD1xa4YFII8hmsmhglBxKpyhqbC7AbxWtCBuxbnXoMpJ6S1wwQiH4+TEjqABg1uprTC5N
+ /ryuqCWz
+ QN6OQoJPuD+n0QuyecKR7L+zHMdMdwd5YwgHWxvZmFewe7DKuQYB+vI6B54HhXUbAmoSAVEKWuZdTIc9TbrZnio0kND4DQlKSFryhNsBoDMN7I6AbaBSkS6zdpyT6NGza020cGV01otyn8dCjOwU4Xe1W02Seuud2VJhIsVFfwL09zhAQEFlj6hkGDYU7s32VxdfEOFCebZMUupIDe7vGAW/iqe4h3XAtqtV3QZb5EGD+s9wqTI/WRK4Hlcs9JTC3pmp9/kMdVwZFHEtkafdpeCljW5T67D0WC0jxfXmkfOUkSlC6WhmIWS293QKtwRXhvO+4C48N5wy1sF4mb7Lfm6hf25+vRK2PC/D/nuSOgky+IC8Xsup8Ds2pxFXUs6xa0goAGISTX4SOu/Q8IXNNBVpPuOOqKPTDtqp15PvtkrcphwTniT8d+0PHJHmdneo3dwTZBGVxYGTOiw5sJ3IRkGrO1A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,119 +97,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 11, 2025 at 03:34:13AM +0000, Wei Yang wrote:
->On Wed, Sep 10, 2025 at 09:50:09PM -0400, Zi Yan wrote:
->>On 10 Sep 2025, at 21:38, Zi Yan wrote:
->>
->>> On 10 Sep 2025, at 21:35, Zi Yan wrote:
->>>
->>>> On 10 Sep 2025, at 21:25, Wei Yang wrote:
->>>>
->>>>> On Wed, Sep 10, 2025 at 09:22:40AM +0000, Wei Yang wrote:
->>>>>> Commit 56ae0bb349b4 ("mm: compaction: convert to use a folio in
->>>>>> isolate_migratepages_block()") converts api from page to folio. But the
->>>>>> low_pfn advance for hugetlb page seems wrong when low_pfn doesn't point
->>>>>> to head page.
->>>>>>
->>>>>> Originally, if page is a hugetlb tail page, compound_nr() return 1,
->>>>>> which means low_pfn only advance one in next iteration. After the
->>>>>> change, low_pfn would advance more than the hugetlb range, since
->>>>>> folio_nr_pages() always return total number of the large page. This
->>>>>> results in skipping some range to isolate and then to migrate.
->>>>>>
->>>>>> The worst case for alloc_contig is it does all the isolation and
->>>>>> migration, but finally find some range is still not isolated. And then
->>>>>> undo all the work and try a new range.
->>>>>>
->>>>>> Advance low_pfn to the end of hugetlb.
->>>>>>
->>>>>> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
->>>>>> Fixes: 56ae0bb349b4 ("mm: compaction: convert to use a folio in isolate_migratepages_block()")
->>
->>This behavior seems to be introduced by commit 369fa227c219 ("mm: make
->>alloc_contig_range handle free hugetlb pages”). The related change is:
->>
->>+               if (PageHuge(page) && cc->alloc_contig) {
->>+                       ret = isolate_or_dissolve_huge_page(page);
->>+
->>+                       /*
->>+                        * Fail isolation in case isolate_or_dissolve_huge_page()
->>+                        * reports an error. In case of -ENOMEM, abort right away.
->>+                        */
->>+                       if (ret < 0) {
->>+                                /* Do not report -EBUSY down the chain */
->>+                               if (ret == -EBUSY)
->>+                                       ret = 0;
->>+                               low_pfn += (1UL << compound_order(page)) - 1;
->
->The compound_order(page) return 1 for a tail page.
->
->See below.
->
->>+                               goto isolate_fail;
->>+                       }
->>+
->>+                       /*
->>+                        * Ok, the hugepage was dissolved. Now these pages are
->>+                        * Buddy and cannot be re-allocated because they are
->>+                        * isolated. Fall-through as the check below handles
->>+                        * Buddy pages.
->>+                        */
->>+               }
->>+
->>
->>>>>> Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
->>>>>> Cc: Oscar Salvador <osalvador@suse.de>
->>>>>
->>>>> Forgot to cc stable.
->>>>>
->>>>> Cc: <stable@vger.kernel.org>
->>>>
->>>> Is there any bug report to justify the backport? Since it is more likely
->>>> to be a performance issue instead of a correctness issue.
->>>>
->>>>>
->>>>>> ---
->>>>>> mm/compaction.c | 2 +-
->>>>>> 1 file changed, 1 insertion(+), 1 deletion(-)
->>>>>>
->>>>>> diff --git a/mm/compaction.c b/mm/compaction.c
->>>>>> index bf021b31c7ec..1e8f8eca318c 100644
->>>>>> --- a/mm/compaction.c
->>>>>> +++ b/mm/compaction.c
->>>>>> @@ -989,7 +989,7 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
->>>>>> 				 * Hugepage was successfully isolated and placed
->>>>>> 				 * on the cc->migratepages list.
->>>>>> 				 */
->>>>>> -				low_pfn += folio_nr_pages(folio) - 1;
->>>>>> +				low_pfn += folio_nr_pages(folio) - folio_page_idx(folio, page) - 1;
->>>>>
->>>>> One question is why we advance compound_nr() in original version.
->>>>>
->>>>> Yes, there are several places advancing compound_nr(), but it seems to iterate
->>>>> on the same large page and do the same thing and advance 1 again.
->>>>>
->>>>> Not sure which part story I missed.
->>>>
->>>> isolate_migratepages_block() starts from the beginning of a pageblock.
->>>> How likely the code hit in the middle of a hugetlb?
->>>>
->>>
->>> In addition, there are two other “low_pfn += (1UL << order) - 1”
->>> in the if (PageHuge(page)), why not change them too if you think
->>> page can point to the middle of a hugetlb?
->>>
->
->The order here is get from compound_order(page), which is 1 for a tail page.
->
->So it looks right. Maybe I misunderstand it?
+Add a new helper to free huge page to be consistency to
+debug_vm_pgtable_alloc_huge_page(), also move the
+free_contig_range() under CONFIG_ALLOC_CONTIG since all
+caller are built with CONFIG_ALLOC_CONTIG.
 
-Oops, compound_order(page) returns 0 for tail page.
+Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+---
+ include/linux/gfp.h   |  2 +-
+ mm/debug_vm_pgtable.c | 35 ++++++++++++++++-------------------
+ mm/page_alloc.c       |  2 +-
+ 3 files changed, 18 insertions(+), 21 deletions(-)
 
-What I want to say is low_pfn advance by 1 for tail page. Sorry for the
-misleading.
-
+diff --git a/include/linux/gfp.h b/include/linux/gfp.h
+index 5ebf26fcdcfa..651acd42256f 100644
+--- a/include/linux/gfp.h
++++ b/include/linux/gfp.h
+@@ -437,8 +437,8 @@ extern struct page *alloc_contig_pages_noprof(unsigned long nr_pages, gfp_t gfp_
+ 					      int nid, nodemask_t *nodemask);
+ #define alloc_contig_pages(...)			alloc_hooks(alloc_contig_pages_noprof(__VA_ARGS__))
+ 
+-#endif
+ void free_contig_range(unsigned long pfn, unsigned long nr_pages);
++#endif
+ 
+ #ifdef CONFIG_CONTIG_ALLOC
+ static inline struct folio *folio_alloc_gigantic_noprof(int order, gfp_t gfp,
+diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
+index 830107b6dd08..767321a8b26c 100644
+--- a/mm/debug_vm_pgtable.c
++++ b/mm/debug_vm_pgtable.c
+@@ -946,22 +946,26 @@ static unsigned long __init get_random_vaddr(void)
+ 	return random_vaddr;
+ }
+ 
+-static void __init destroy_args(struct pgtable_debug_args *args)
++static void __init
++debug_vm_pgtable_free_huge_page(struct pgtable_debug_args *args,
++		unsigned long pfn, int order)
+ {
+-	struct page *page = NULL;
++#ifdef CONFIG_CONTIG_ALLOC
++	if (args->is_contiguous_page) {
++		free_contig_range(pfn, 1 << order);
++		return;
++	}
++#endif
++	__free_pages(pfn_to_page(pfn), order);
++}
+ 
++static void __init destroy_args(struct pgtable_debug_args *args)
++{
+ 	/* Free (huge) page */
+ 	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
+ 	    has_transparent_pud_hugepage() &&
+ 	    args->pud_pfn != ULONG_MAX) {
+-		if (args->is_contiguous_page) {
+-			free_contig_range(args->pud_pfn,
+-					  (1 << (HPAGE_PUD_SHIFT - PAGE_SHIFT)));
+-		} else {
+-			page = pfn_to_page(args->pud_pfn);
+-			__free_pages(page, HPAGE_PUD_SHIFT - PAGE_SHIFT);
+-		}
+-
++		debug_vm_pgtable_free_huge_page(args, args->pud_pfn, HPAGE_PMD_ORDER);
+ 		args->pud_pfn = ULONG_MAX;
+ 		args->pmd_pfn = ULONG_MAX;
+ 		args->pte_pfn = ULONG_MAX;
+@@ -970,20 +974,13 @@ static void __init destroy_args(struct pgtable_debug_args *args)
+ 	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
+ 	    has_transparent_hugepage() &&
+ 	    args->pmd_pfn != ULONG_MAX) {
+-		if (args->is_contiguous_page) {
+-			free_contig_range(args->pmd_pfn, (1 << HPAGE_PMD_ORDER));
+-		} else {
+-			page = pfn_to_page(args->pmd_pfn);
+-			__free_pages(page, HPAGE_PMD_ORDER);
+-		}
+-
++		debug_vm_pgtable_free_huge_page(args, args->pmd_pfn, HPAGE_PMD_ORDER);
+ 		args->pmd_pfn = ULONG_MAX;
+ 		args->pte_pfn = ULONG_MAX;
+ 	}
+ 
+ 	if (args->pte_pfn != ULONG_MAX) {
+-		page = pfn_to_page(args->pte_pfn);
+-		__free_page(page);
++		__free_page(pfn_to_page(args->pte_pfn));
+ 
+ 		args->pte_pfn = ULONG_MAX;
+ 	}
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 6ff9f17d5f4e..587be3aa1366 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -7090,7 +7090,6 @@ struct page *alloc_contig_pages_noprof(unsigned long nr_pages, gfp_t gfp_mask,
+ 	}
+ 	return NULL;
+ }
+-#endif /* CONFIG_CONTIG_ALLOC */
+ 
+ void free_contig_range(unsigned long pfn, unsigned long nr_pages)
+ {
+@@ -7117,6 +7116,7 @@ void free_contig_range(unsigned long pfn, unsigned long nr_pages)
+ 	WARN(count != 0, "%lu pages are still in use!\n", count);
+ }
+ EXPORT_SYMBOL(free_contig_range);
++#endif /* CONFIG_CONTIG_ALLOC */
+ 
+ /*
+  * Effectively disable pcplists for the zone by setting the high limit to 0
 -- 
-Wei Yang
-Help you, Help me
+2.43.0
+
 
