@@ -4,85 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70679CAC587
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 22:58:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96814CAC587
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 23:56:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 66FDB6B0006; Thu, 11 Sep 2025 18:58:51 -0400 (EDT)
+	id 875A16B0011; Thu, 11 Sep 2025 19:56:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 620E76B0007; Thu, 11 Sep 2025 18:58:51 -0400 (EDT)
+	id 826376B0012; Thu, 11 Sep 2025 19:56:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5364F8E0001; Thu, 11 Sep 2025 18:58:51 -0400 (EDT)
+	id 73C756B0022; Thu, 11 Sep 2025 19:56:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D56A6B0006
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 18:58:51 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C4E3713B5C8
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 22:58:50 +0000 (UTC)
-X-FDA: 83878486020.16.AE27234
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
-	by imf05.hostedemail.com (Postfix) with ESMTP id D737210000E
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 22:58:48 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jGUnMNWf;
-	spf=pass (imf05.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	by kanga.kvack.org (Postfix) with ESMTP id 5CF546B0011
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 19:56:07 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id F2F6C59BBA
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 23:56:06 +0000 (UTC)
+X-FDA: 83878630332.18.7F3063B
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	by imf08.hostedemail.com (Postfix) with ESMTP id D519D160005
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 23:56:04 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=woUpxw0L;
+	spf=pass (imf08.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757631529;
+	s=arc-20220608; t=1757634965;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O+kkQ1dLhorRJCNFbvL1k5Va4YKpeSOB/jnNX2FSU18=;
-	b=q/40L+NVzLEpV9YaBxksyIMtaUAhWCI+IE9s7LHYNydvzv5GOCM2S91DdVS9puC3d/99Tg
-	ON0JGL579iU9eNG/FrCR+Kk7dNQT5hzYjz9WivggNlssMMFychNRrse9Vuq6hy8siY+d4j
-	+ue9/FaH+oDzSHyXyKJLCC15b87ZrBQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757631529; a=rsa-sha256;
-	cv=none;
-	b=A/mLUIzeA6WSOCA0rFtomr/tJf27PuaRqMEsuq0zWOq6t2U2OM9T/+JDhAhx4yD5BXrhTT
-	F8ujoVbvMAWGM7lKFii+Tr/lyGBZycnDsF54fP6V2dAiV/vpwXtS/ZBxUNjY3NouU0S2IS
-	PUeJlwBRmi7w6yTTosdyYm02r8zjpa0=
+	bh=H1syGOpRMTLt/2HES4uKtyZYHkD0JGY65K8XvQf+2yI=;
+	b=5ZbWeLNc3o3CuolBKYMwAHFSn2YYRaPwMSzI3gbVgKdeCQAF1wgwEXyVzPgOW9uXHLQD1l
+	h4XK0veb0z3QqUfLkVLkialCV9KeGA1DmQD7VEJG+upGtBcs3fNs25WQlTLmpDOge2dK9i
+	UECvBmK1qGTT2PnA15cLDZkLdvu54Qs=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jGUnMNWf;
-	spf=pass (imf05.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=woUpxw0L;
+	spf=pass (imf08.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-Date: Thu, 11 Sep 2025 15:58:41 -0700
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757634965; a=rsa-sha256;
+	cv=none;
+	b=arXZhao3H38/cX25uZHPqwTAamuF0imjROFX2sTfJTyiheLXJM3jKEmY729jht0RNM9xNF
+	iZxgjpySSNX2qqGYU378TF8BdG2gDM2ZqV4dr87DGXvjQaqx63VmBBaclu7QlpESaMwrIk
+	O4+XcwO+Clf3mdn976hQuTOofyieDRI=
+Date: Thu, 11 Sep 2025 16:55:55 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1757631526;
+	t=1757634962;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=O+kkQ1dLhorRJCNFbvL1k5Va4YKpeSOB/jnNX2FSU18=;
-	b=jGUnMNWf16oWd8l8xX+J6UzoPwWzG330vsSlLM11/Xm3WDURfCDpE+jPvoZxPDwGEVZgkk
-	cV6HYqsqshA2hlbs93LQGlswyLoQ5a4An1Allfd0fnwTJDUVqgUtClFxsKTpwau6VlCXK+
-	onap0hIjmGlgaQViSGYiMWP5ALRpLqM=
+	bh=H1syGOpRMTLt/2HES4uKtyZYHkD0JGY65K8XvQf+2yI=;
+	b=woUpxw0Lvx2lNuiyEe9jO0AcBG5pByFcVWwU5B0QKOHtZDf9/l2FReWiI5Meepw10iTRjE
+	C10QmKSidujzUGJsNRTPnzuwAkv6addj4INaQ1XCPEOxwtQtf6/DQlaA2DC+CXrxZxNprb
+	UU8hf4URR+WvcsxU8T34PD0IQyboj+U=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: akpm@linux-foundation.org, kent.overstreet@linux.dev, vbabka@suse.cz, 
-	mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com, 
-	usamaarif642@gmail.com, 00107082@163.com, pasha.tatashin@soleen.com, 
-	souravpanda@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/3] alloc_tag: avoid warnings when freeing non-compound
- "tail" pages
-Message-ID: <h3njg4vlzeq3nkeoxx47zlq56hzyueq2g5kaoititfrmjizqe3@4yvoyckuszxk>
-References: <20250909233409.1013367-1-surenb@google.com>
- <20250909233409.1013367-4-surenb@google.com>
+To: zhongjinji <zhongjinji@honor.com>
+Cc: mhocko@suse.com, rientjes@google.com, akpm@linux-foundation.org, 
+	tglx@linutronix.de, liam.howlett@oracle.com, lorenzo.stoakes@oracle.com, 
+	surenb@google.com, lenb@kernel.org, rafael@kernel.org, pavel@kernel.org, 
+	linux-mm@kvack.org, linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	liulu.liu@honor.com, feng.han@honor.com
+Subject: Re: [PATCH v9 1/2] mm/oom_kill: Thaw the entire OOM victim process
+Message-ID: <y7hdpmq6smlv2eztltwilmxcvalax63y66ttbckewa6mrk45yl@nu2kv3vtbsxv>
+References: <20250910143726.19905-1-zhongjinji@honor.com>
+ <20250910143726.19905-2-zhongjinji@honor.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250909233409.1013367-4-surenb@google.com>
+In-Reply-To: <20250910143726.19905-2-zhongjinji@honor.com>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: D737210000E
-X-Stat-Signature: 1g3oucfmjfdmooxu4qubz4x3oebtznm3
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1757631528-33544
-X-HE-Meta: U2FsdGVkX190baNVBdMKm/ze+zl+7ir8pL06GypzasqTtupHi7tR2vrQcCgdcO40BuM2e7s40XwDIYRaJpzs43P8QlJzAxlho73KkKGmnAhdbEffIyFaxUD5Bs4hvqetqYKRA4Lw6JpcIfLPtIoVENE3tCGKMCl52kRGUPvi2cnCDRBa0zek+j8W9xkVHCjkFqh6cSRcJzUhpzvsEaZzl3NU/LlN6HNQDisxTL8zI3bjUMNxGXdwD0Q+vCz7reP7aFIO83xoejOOYaGPze6gUctYF31XHScf+FlMSNPzsuFIZKw7y7a6FQP0t5a2eNNClXFA/AO0cdTf0+Dk6VftoOmHBla37p6fSpkJvr9K80U6smuK0PS5LTsYihq+vNzFec6c6N+AWVRAQDLJ618PrbnIsKjU6qacKhJ5GVLfnSTgbeYse2QkMC9izKRDOJUZuJmkqgZlkVb32hnazgjOSssT4/me3wBjrLrPVerybRaYqZbw9Um9q5s1bPyZOylYqeWo1QnoP/USMeXVxhezRCku0vj51bBr7R0DpHQyESfqu8U0gwZazAje7ZP9xqzr2FGvauDJY0a5GAfTCU8xV46N25PcVoo+AMdgTcp3iMdOICvABad0uyiFBIFy4hI5pqwLAHUf4WXwg340L5mw4AlLEGXbw8fQG2J0rE0dwPJTKOOYRKZqhBLJNBZ5B7s3VGhG0Rduej5D0564HCWE8aIdmCK0PDq7TUJ6FvAw48LwC9qptszKuwkKCjRwzkBecHiYduHIvIocZhEOTosA3dr9TzTZoiGeM389/aPNmQm48yaxxxriEoG8lk9KIQi1HwK8TqXbQyhJg3rmiYHIn6t17oQhXE97KHgATq+hM4wfz1XKdIv34no1o+nGUR2c202JI4QNCgsec+Jqg60vQ88UT3NG5HAfwFfyxxHCFPPSz2CyQND/LhOjEGxXjoFLYrqWQ7QpoD9Vg2hsyN6
- ruVe/Rq6
- tF49q4/EOxsFSiRrfJ6Bf8su1xZscNvteOCOzo+bsMItneixULuQfb6fo/aHUz9ZZf+2krplbMHwP04+8YrTlc0TUgbXpa4mzJaMB6Tq1/tr2PECH3hfH0k1mRGQ5cWc0wTwATwMB+eVspqfyCnSwKdOOrWKUatyr8txSv6zUuRbVYwf+nlWQyLpinPIuV/TX8wd3MKQtNV9Pvv1AxAA4dvC5unj+xPcAwulDOElzBDt09NC2vS48zxCYHVfl63GDPg8PoYhuySoJrO4EWKyWxMg3BjOn7NTpcqgsizYuwVmpucDqj/pEmA9FyQWt7gEYrT9T3L8ZYFoYflw=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: D519D160005
+X-Stat-Signature: igb3rdfosgayfnyngn5gdy4aqdaog4tt
+X-HE-Tag: 1757634964-105297
+X-HE-Meta: U2FsdGVkX1+wLNdyIipZ+hDxgEM9HRAp06TYOrfabx+hER5KlnpUqQylwS87ukSYWiQjhjpxjaim+HhUCV7QPaatiCd67A/2xyDyiWoGu7wzlSfEMk9URgRWdHB4dziwSV5p0gX1UTioHF1LTDWZlMsReecmS2IyqaxXwOPcIDlqSV511BxA0mQL8VwBLiZCgmB6NtRtLURG8/hLwsQujiHTjm7d7F/VZjbT7SURxgZgiT1H5Kc9dN9j+N4PixoMGsYoKYhysb5NKeF4ULYFC6fDfVbinYefhoBinUYl4zb5FjQm33cW5WjFXvueQAkTj6n4kFC8CjlSmZD+EbY624BZ8IPQzrIrsguHCMpCEO0Lbv8sa7f59NtihocdCYkaBemP+uFA+4Rw2di66eZzEF9lt9cfp8tT94hKrO3QRv1+3zB6eCVJY3fTqwXd8Z/SwqLsfR95V2XPfM0dKihaBR+Wyo5UIyb+T7DEn5lbaEEMPhTpXdzuVFjIkiqxb7g34Locq3GFJfHZBcGDmhwwBaGhwZNctJaVvEPWc5xSjqc2+T+Y8vN7gWH3q3t+uHg2gCZuceAeiIfJLu10r85UZEIz/wx8XUxvdNKsnorHzhetMwg+jANrI7fsk5vTwzFXgyPu7eIGrX8CVJH5crzklQTvverUeMJINAhEXn8o4k654+7Dy/GjWUHfajjz+vnoeorvnKkBLx89Fh84zqzp7LLGGncMWX1DaM9s9VryBXtWgUiRwy+cl2OXIZBl54p2W4eD4d/pkvSMiC74OsdsYH1aSQ1EKQskXw0I9yuxtra6DhxKuqyjwvFvM5XQ02med/0IoiY/soiEAoSjMBN+1l5aRvpvSNvFwGDXV+W/B6FRpnMtRlbXUNfzgwslUR7Qfx4KTQ14OET6fFp7bM+00PdJZqhW5gTEZnVLXS1EkVQiJSS4lxllamZ7CUM8GXTQ2tLQjYsKaAfHZONEbsR
+ onyBTggg
+ ayhkbPLpYCPvi1c6MnFLd3KBy9P0Lyx32CbqKO5d0snfAHamRF5FEX3rTnX71lXvVSO081Xukz+jHDr0jYEVJ7eZe7XuHsApsNgym2H+quRK8jrA/arZ0nEVYokaVSKl63e0eUbYahYauVRf8cx/ihvNpF2ysxBiDX0PuSJwga3HQw1SfpfZ0htjMqm3CsUpvhFCiB0K8n7txbkW/KDJOvOcOIggACM8GlTZsED0uCDczfpyJtjpyh6l+ccFvi7qTG4P5COzFngdW3G8TWrsxR3VUw1qLnR91CLzXyEJ/F55kLfRrb82vsTgi/ILtWyKodj0bz9/eUkikqxfjUk7Nip8zEsbYZwp6j8Y39FiE+qgNgNTHNedwZQ+mXA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,19 +91,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 09, 2025 at 04:34:09PM -0700, Suren Baghdasaryan wrote:
-> When freeing "tail" pages of a non-compount high-order page, we properly
-> subtract the allocation tag counters, however later when these pages are
-> released, alloc_tag_sub() will issue warnings because tags for these pages
-> are NULL.
-> This issue was originally anticipated by Vlastimil in his review [1] and
-> then recently reported by David.
-> Prevent warnings by marking the tags empty.
+On Wed, Sep 10, 2025 at 10:37:25PM +0800, zhongjinji wrote:
+> OOM killer is a mechanism that selects and kills processes when the system
+> runs out of memory to reclaim resources and keep the system stable. But the
+> oom victim cannot terminate on its own when it is frozen, even if the OOM
+> victim task is thawed through __thaw_task(). This is because __thaw_task() can
+> only thaw a single OOM victim thread, and cannot thaw the entire OOM victim
+> process.
 > 
-> [1] https://lore.kernel.org/all/6db0f0c8-81cb-4d04-9560-ba73d63db4b8@suse.cz/
+> Also, freezing_slow_path() decides whether a task is an OOM victim by checking
+> the task's TIF_MEMDIE flag. When a task is thawed, the freezer bypasses PM
+> freezing and cgroup freezing states to thaw it. But TIF_MEMDIE is not a thread
+> group shared flag, and only one thread is marked with TIF_MEMDIE. If other
+> threads are thawed, they may still remain frozen due to PM freezing and cgroup
+> freezing states.
 > 
-> Suggested-by: David Wang <00107082@163.com>
-> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> To solve this, thaw_process() is introduced to thaw all threads of the victim,
+> ensuring every thread in the victim process can be thawed. The freezer uses
+> tsk_is_oom_victim() to determine whether a task is an OOM victim, because
+> tsk->signal->oom_mm is data shared by all threads. This allows all victim threads
+> to rely on it to be thawed.
+> 
+> This change will thaw the entire victim process when OOM occurs,
+> ensuring that the oom victim can terminate on its own.
+> 
+> Signed-off-by: zhongjinji <zhongjinji@honor.com>
+> 
+> Acked-by: Michal Hocko <mhocko@suse.com>
 
 Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 
