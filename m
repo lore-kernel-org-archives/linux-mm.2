@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9DDECAC58F
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 09:56:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79A59CAC58D
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 09:56:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CF0B48E0001; Thu, 11 Sep 2025 05:56:50 -0400 (EDT)
+	id EE1CB8E000A; Thu, 11 Sep 2025 05:56:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C8433900003; Thu, 11 Sep 2025 05:56:50 -0400 (EDT)
+	id E7D458E0002; Thu, 11 Sep 2025 05:56:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AABC88E0007; Thu, 11 Sep 2025 05:56:50 -0400 (EDT)
+	id CA817900005; Thu, 11 Sep 2025 05:56:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7CF0C8E0001
+	by kanga.kvack.org (Postfix) with ESMTP id 7D5828E0002
 	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 05:56:50 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 312371602B3
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 46CC213AD85
 	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 09:56:50 +0000 (UTC)
-X-FDA: 83876515380.17.D57DC0B
+X-FDA: 83876515380.15.BC0DFFA
 Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	by imf21.hostedemail.com (Postfix) with ESMTP id DB15F1C0010
+	by imf17.hostedemail.com (Postfix) with ESMTP id DF87F40008
 	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 09:56:47 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	spf=pass (imf21.hostedemail.com: domain of zhangchunyan@iscas.ac.cn designates 159.226.251.81 as permitted sender) smtp.mailfrom=zhangchunyan@iscas.ac.cn
+Authentication-Results: imf17.hostedemail.com;
+	spf=pass (imf17.hostedemail.com: domain of zhangchunyan@iscas.ac.cn designates 159.226.251.81 as permitted sender) smtp.mailfrom=zhangchunyan@iscas.ac.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1757584608;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=KEbqKrvNeZMQh7a4FC4BfrmA5wtAR5mj7OKwd+p54Yk=;
-	b=Zjn9PArbZf1RhfdF4ZG45m2YH5Cjr87Zk7tVEQP9Rm6t7PlJ/o2GlKmH6xHCK24QcDUVnr
-	i7t5Ad2vstTfNYgCUYdXJz1Wkabh0S3CiC4yDFwbUhOo2JaAMy3+HfGmlvT5o9pk1Wv4hp
-	S2IrCTPk3X735CnYkECmhTqaAEFARJA=
+	bh=1fufXc22ekDFFCLcNhRZylIksJ6NB4RKup1MF5QUeVQ=;
+	b=TtxNrl5hiBVp3abomZzIJBxSRBHDJ4Oh+d5gsGJttxmVX/BKgiiAmPvs5pkrF8YRyKieXQ
+	/nug7DN1RiEbr5m3IJXEzI2Jfs2kq/L2T+tJ0Ou2lKrcwvtvY0unBicxa+NkMLd5OJHMcB
+	05g6ogb4p/aOvp9rrkQxqYuB5aw45uQ=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=none;
+	spf=pass (imf17.hostedemail.com: domain of zhangchunyan@iscas.ac.cn designates 159.226.251.81 as permitted sender) smtp.mailfrom=zhangchunyan@iscas.ac.cn;
+	dmarc=none
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757584608; a=rsa-sha256;
 	cv=none;
-	b=p19IG5eTXB+GoLKs5XIVSIi3352cXqD7h9eN3ldCEej1jlKUJoM6iFQhQ5H3y0xNFt9Oe3
-	wqG9hfmbzP91OqRoM/4Mz6leLw8jA6Dl1iPmBBE1LVkIQzL69W1OAYCSifLUnxGi7VJYZk
-	w1jjlVNIP4SBFF5QgE9d6sSKnedPIfw=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=none;
-	spf=pass (imf21.hostedemail.com: domain of zhangchunyan@iscas.ac.cn designates 159.226.251.81 as permitted sender) smtp.mailfrom=zhangchunyan@iscas.ac.cn;
-	dmarc=none
+	b=jJHHW7mk4RuiwyXybe6Rqe7o0wMT3GfqSn5EvQXuXkteAeDFPEAIVtprNbzbEGf5D/CPMs
+	3AkgNIxAUQ7OzcYAo0jeipXTzfKC0PhfzZCs3N1l6ti/zZWjhzotH9nKtRbwHYzfckl2tS
+	CbGOtT8b/pj3pn7ruq5MOnJJipKGgW4=
 Received: from ubt.. (unknown [210.73.43.101])
-	by APP-03 (Coremail) with SMTP id rQCowACH2IK5nMJoo6pCAg--.44660S5;
-	Thu, 11 Sep 2025 17:56:13 +0800 (CST)
+	by APP-03 (Coremail) with SMTP id rQCowACH2IK5nMJoo6pCAg--.44660S6;
+	Thu, 11 Sep 2025 17:56:14 +0800 (CST)
 From: Chunyan Zhang <zhangchunyan@iscas.ac.cn>
 To: linux-riscv@lists.infradead.org,
 	linux-fsdevel@vger.kernel.org,
@@ -76,42 +76,42 @@ Cc: Paul Walmsley <paul.walmsley@sifive.com>,
 	Axel Rasmussen <axelrasmussen@google.com>,
 	Yuanchu Xie <yuanchu@google.com>,
 	Chunyan Zhang <zhang.lyra@gmail.com>
-Subject: [PATCH v11 3/5] riscv: Add RISC-V Svrsw60t59b extension support
-Date: Thu, 11 Sep 2025 17:56:00 +0800
-Message-Id: <20250911095602.1130290-4-zhangchunyan@iscas.ac.cn>
+Subject: [PATCH v11 4/5] riscv: mm: Add soft-dirty page tracking support
+Date: Thu, 11 Sep 2025 17:56:01 +0800
+Message-Id: <20250911095602.1130290-5-zhangchunyan@iscas.ac.cn>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250911095602.1130290-1-zhangchunyan@iscas.ac.cn>
 References: <20250911095602.1130290-1-zhangchunyan@iscas.ac.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowACH2IK5nMJoo6pCAg--.44660S5
-X-Coremail-Antispam: 1UD129KBjvJXoW7CrykZr47tw4rWF1rtFWfGrg_yoW8KrWrpr
-	4FkryrCrWrWwn3uw4ayr95u3y8Xw4kGwsxGw4Uuw1rJrW7Z34xXw1vy3W7Gw1DXa1vqrnY
-	gF1F9r1xuw4jyFUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUmGb7Iv0xC_Cr1lb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I2
+X-CM-TRANSID:rQCowACH2IK5nMJoo6pCAg--.44660S6
+X-Coremail-Antispam: 1UD129KBjvJXoW3WFW5WFyUWr4rXw4DJF1UWrg_yoW7Xr1fpF
+	Z5GFyrZ39YyFn3KayftrsIgrWYvws3Way5Wry3Ca1kJay7G3yUXF90grW3Ary5JFWkZayf
+	urZ3tr45CrW7Jr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUmEb7Iv0xC_tr1lb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I2
 	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI
-	8067AKxVWUWwA2048vs2IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28CjxkF
-	64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI8IcV
-	CY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv
-	6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c
-	02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVW8JVWxJwAm72CE
-	4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7
-	CjxVAaw2AFwI0_GFv_Wrylc2xSY4AK67AK6r4fMxAIw28IcxkI7VAKI48JMxC20s026xCa
-	FVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_Jr
-	Wlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j
-	6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UMIIF0xvE42xK8VAvwI8IcIk0rV
-	WUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4UJVWx
-	JrUvcSsGvfC2KfnxnUUI43ZEXa7IUnsID7UUUUU==
+	8067AKxVWUAVCq3wA2048vs2IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28C
+	jxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI
+	8IcVCY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E
+	87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64
+	kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVW8JVWxJwAm
+	72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI
+	1lc7CjxVAaw2AFwI0_GFv_Wrylc2xSY4AK67AK6r4fMxAIw28IcxkI7VAKI48JMxC20s02
+	6xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_Jr
+	I_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v2
+	6r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UMIIF0xvE42xK8VAvwI8IcI
+	k0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4U
+	JVWxJrUvcSsGvfC2KfnxnUUI43ZEXa7IUnDxhPUUUUU==
 X-Originating-IP: [210.73.43.101]
-X-CM-SenderInfo: x2kd0wxfkx051dq6x2xfdvhtffof0/1tbiDAgCB2jCjVc9QgABsP
-X-Stat-Signature: 4cj4keoe1etxyuctgqdzdhd3fb6edsyj
-X-Rspamd-Queue-Id: DB15F1C0010
+X-CM-SenderInfo: x2kd0wxfkx051dq6x2xfdvhtffof0/1tbiBwsCB2jCjnQ4RgAAsn
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1757584607-594016
-X-HE-Meta: U2FsdGVkX18W6tjqEV02QR4XBSNtPAdf0tbvi+/X+Zm+b4vpz4oFbGS+gupUJNKV6bTMb5PbH0/M0WKEjIIF8JWsztGYhhxHdd8upvSBqW1nec+h/3BmAE/OGHa8AmyDRGEkqhWMnPVRNAwrHDMtbtsFArve42R0PQ+9Do4KVPN33CfBxRxyYdhh/UbvyfNiErfByAi3M+qtjqaT1iwQTZqB+1z9Jfbgg5xbbhr0Ixmj7hupeBcKxDnwN9/Ltvj1YNlcZ/mU6VzXLkX+4TYA84D6+npLL8HO3ct4h2yJmDKaJo/hamr5V7F7xVAvJQIyjprKfXUz8REhqqQ1yWsnSksxyQSGLAtI5/Jsv/4kpzngaT/Z+FKQe/kIqXxlfCk39WTntWqc1eRtRRSYV41mzHHAqo/6UXbmD3tC3gN5v2Pou+glXBqnRqoiRz7MPN6Mzn4ck8cR8Zcgh12NCsg3vXrzv0fnPHXdW4MeHbEZLKA20XQic0ToyOTTETNNzgEh2dgUyVsxm/5OTmG42ubraHJEhZ3sVrln3z1eLHy3PHoJjmdZzME7HC3UJ1UioorkmNfEPOBPwEMdAW0JLUwxB4dIa6A9SUpXkiP0NpH0D8hiMAs87oU6Zyq3GAagQEYdkM+HgS7p+8c6OX0lLsm1Ldubxpbakz39yqb3I5U1CLtZBA/TXxC7NiMFUPsv+wCN6+zZOl42ZZwxnjH7Rn4d43zJnwO+MKjdg/XC4B806syJzA6E5QP7xGch61SkQbpn/3FFkV8IK6+tuvFA5eO4wK1iicxBYS/I40fMfIlBLFmkfsVcBbA6uvijqU9NZUpaX+BX1gJCpl8hvFJd8c8dvNdx+KFaluOJNbkvbcBIKK5DO2D+BFxSmeuvLlw3Z+MKgA1zq68vpps/0K9TeRolyWHlAbKfDoVE7yMgfiFRay+BHO1eOK8tVSxkrmg1vubmBrMjwbKetOlP02pwix3
- 06N7MDQY
- F27ptXo5Ovi0Rc1SThiDXm9P4FJ1ZeMQlLYdwkx8AuHQxlqHCzvCqiL8wDMY+v1azB2qYuxL8NxJOfk+uYvyDv7hKZ28R2B+hDjteqZjTSTQtnrszigbGnYeK5w0tfaXXEWRed/vaQiFXFwV0S/ZiRD4RU/ePf7gX3TAoufwBdABrY4skHsvsjWTwQDdxLzapNcRa3tXsLrIfLTxO0szPSMqvtS26MPE/sjM1RbZ/yWEH00oqarwAdCK2+L35mpSx7hECQWbJodzF/5wg4CtsT10AdpYSG8sVPzbQdFQjseKZuz7YgpEhqoxxwu0erlgiaxp+50vyKq/0v/7KRlwqRuSAD9ce76tsTl+yn05dGqXZuxip5hLE8BDyT2BSnH7VQwMpgHveLTjh/HdJIsRMdVTydcYHWHKIo5/E
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: DF87F40008
+X-Stat-Signature: e47ehbprxfat68aiwj7mb8ybmz7r3es9
+X-HE-Tag: 1757584607-505265
+X-HE-Meta: U2FsdGVkX18cB30k6dx0Flu+v4Cl9IYp/AAEOLLmtQHOVm4Gi6m90bKKVUPbZed74aGy9HU0fjwpjJ/mDb1wmwzNEaYrvsZ3TVxkc/6JtItuIjiiBn8vOSO7LrMXcyizg2kVe/8lG4IoVvfrLjythQXhrbwAulBJuV48yajs3+L5q1+KaFJkTnsA5NKrbePpYdW89VCSye8hiW6J3sIrE3ypE/IphmdEot2bXx7UIcKsh3l4rtjdxP6wJUk21dVISfq9l3Cu6xLfZ+wbye3CsADrQWzkpiW+gx+qQ5oCHRXErmmkcJ1TxOoGxtiB8k7eatwcAFDERoLbWvkoDpwAtiAthEOOKgZJ7xdoRFB2bWGioGwuzqdocKHZUs8rMlQbdjyfyif3XJlCZs+IKkuOG+6IEv/+Ls81s2MbNh7ch/1YZ9JWLl/5GYw2Wc0fu1rcTw7I2fmIAjzSgebPnfPU7KvqnmpLS+FAS28SI3lLtxyxASfDSDoy/oaMQwMSbbXLAAh/EPlZrCTFFoDEvybdMLXVGrhP7js2lBWHfGUNClSbo/wEAmt09c/hMXJGacAF/f6IBFy/YiHRgU/+VflLeSuow7V9K2rijodEvEqWqJlOgcs5d0pbKCQEg4cr6Tgc984YE59sjTIC7Fe3KOv0guzSRr+A7FMykjdi1uS8m/P9nxpFZHszB3cYdS+NH7tlVibhTGX1NvPxhFwENgmf5RmH+S1dL1kJaOfVWNjz11A5jINC3scANoJazBpzeW+PmhmYUXmMegLycUYyLhmtj9u3bfTf+ODjUOYJDP9+NKF8MafBqinTAba5zFDHhGE6NOO0o5o859A+vnkgM9uAUiqoB30+sGhWgGIqq31zRFqTFCBiLNdt8PnCfLaKmQBg1BV2eIUyZjK+vnsnMKMh2ueI5p4CxWYyzv1NNtni8c4wdHQI/98eRSy7m4mheEpTy4sI6C1ZxrmPsGUNYVY
+ gdesFRSa
+ oLWC/TJ1D9S9DAcUP1UQzoaJNKRwbEvlrF+IvIIMHCa8YrxLXPnuEJkon5w4f3QGLOaGAXskabXOu6kG84YeVbZGZIM6i3AGGfKhoJBHuE9AbL2ptaUZrQ5QBuXFb7K480g2khByPvBtwyLyvUviR1Y4Jnpupki4kOOerP8r1qvFCSTXHC2Gi0Dzeoj1Tv40+dxkjD3NWMqYl5/GTEhtCzWwYXKdE3YFWvSieQyC2ZTAqoED7dk8qlf9Fu6ZkvomPh1fsTbZUh0+7/iyuHdIjMrdLVA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,67 +120,168 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The Svrsw60t59b extension allows to free the PTE reserved bits 60
-and 59 for software to use.
+The Svrsw60t59b extension allows to free the PTE reserved bits 60 and 59
+for software, this patch uses bit 59 for soft-dirty.
 
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+To add swap PTE soft-dirty tracking, we borrow bit 3 which is available
+for swap PTEs on RISC-V systems.
+
 Signed-off-by: Chunyan Zhang <zhangchunyan@iscas.ac.cn>
 ---
- arch/riscv/Kconfig             | 14 ++++++++++++++
- arch/riscv/include/asm/hwcap.h |  1 +
- arch/riscv/kernel/cpufeature.c |  1 +
- 3 files changed, 16 insertions(+)
+ arch/riscv/Kconfig                    |  1 +
+ arch/riscv/include/asm/pgtable-bits.h | 19 +++++++
+ arch/riscv/include/asm/pgtable.h      | 75 ++++++++++++++++++++++++++-
+ 3 files changed, 93 insertions(+), 2 deletions(-)
 
 diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index a4b233a0659e..d99df67cc7a4 100644
+index d99df67cc7a4..53b73e4bdf3f 100644
 --- a/arch/riscv/Kconfig
 +++ b/arch/riscv/Kconfig
-@@ -862,6 +862,20 @@ config RISCV_ISA_ZICBOP
+@@ -141,6 +141,7 @@ config RISCV
+ 	select HAVE_ARCH_MMAP_RND_COMPAT_BITS if COMPAT
+ 	select HAVE_ARCH_RANDOMIZE_KSTACK_OFFSET
+ 	select HAVE_ARCH_SECCOMP_FILTER
++	select HAVE_ARCH_SOFT_DIRTY if 64BIT && MMU && RISCV_ISA_SVRSW60T59B
+ 	select HAVE_ARCH_THREAD_STRUCT_WHITELIST
+ 	select HAVE_ARCH_TRACEHOOK
+ 	select HAVE_ARCH_TRANSPARENT_HUGEPAGE if 64BIT && MMU
+diff --git a/arch/riscv/include/asm/pgtable-bits.h b/arch/riscv/include/asm/pgtable-bits.h
+index 179bd4afece4..f3bac2bbc157 100644
+--- a/arch/riscv/include/asm/pgtable-bits.h
++++ b/arch/riscv/include/asm/pgtable-bits.h
+@@ -19,6 +19,25 @@
+ #define _PAGE_SOFT      (3 << 8)    /* Reserved for software */
  
- 	  If you don't know what to do here, say Y.
- 
-+config RISCV_ISA_SVRSW60T59B
-+	bool "Svrsw60t59b extension support for using PTE bits 60 and 59"
-+	depends on MMU && 64BIT
-+	depends on RISCV_ALTERNATIVE
-+	default y
-+	help
-+	  Adds support to dynamically detect the presence of the Svrsw60t59b
-+	  extension and enable its usage.
+ #define _PAGE_SPECIAL   (1 << 8)    /* RSW: 0x1 */
 +
-+	  The Svrsw60t59b extension allows to free the PTE reserved bits 60
-+	  and 59 for software to use.
++#ifdef CONFIG_MEM_SOFT_DIRTY
 +
-+	  If you don't know what to do here, say Y.
++/* ext_svrsw60t59b: bit 59 for soft-dirty tracking */
++#define _PAGE_SOFT_DIRTY						\
++	((riscv_has_extension_unlikely(RISCV_ISA_EXT_SVRSW60T59B)) ?	\
++	 (1UL << 59) : 0)
++/*
++ * Bit 3 is always zero for swap entry computation, so we
++ * can borrow it for swap page soft-dirty tracking.
++ */
++#define _PAGE_SWP_SOFT_DIRTY						\
++	((riscv_has_extension_unlikely(RISCV_ISA_EXT_SVRSW60T59B)) ?	\
++	 _PAGE_EXEC : 0)
++#else
++#define _PAGE_SOFT_DIRTY	0
++#define _PAGE_SWP_SOFT_DIRTY	0
++#endif /* CONFIG_MEM_SOFT_DIRTY */
 +
- config TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
- 	def_bool y
- 	# https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=aed44286efa8ae8717a77d94b51ac3614e2ca6dc
-diff --git a/arch/riscv/include/asm/hwcap.h b/arch/riscv/include/asm/hwcap.h
-index affd63e11b0a..f98fcb5c17d5 100644
---- a/arch/riscv/include/asm/hwcap.h
-+++ b/arch/riscv/include/asm/hwcap.h
-@@ -106,6 +106,7 @@
- #define RISCV_ISA_EXT_ZAAMO		97
- #define RISCV_ISA_EXT_ZALRSC		98
- #define RISCV_ISA_EXT_ZICBOP		99
-+#define RISCV_ISA_EXT_SVRSW60T59B	100
+ #define _PAGE_TABLE     _PAGE_PRESENT
  
- #define RISCV_ISA_EXT_XLINUXENVCFG	127
+ /*
+diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
+index 91697fbf1f90..77344ff0298b 100644
+--- a/arch/riscv/include/asm/pgtable.h
++++ b/arch/riscv/include/asm/pgtable.h
+@@ -427,7 +427,7 @@ static inline pte_t pte_mkwrite_novma(pte_t pte)
  
-diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeature.c
-index 743d53415572..2ba71d2d3fa3 100644
---- a/arch/riscv/kernel/cpufeature.c
-+++ b/arch/riscv/kernel/cpufeature.c
-@@ -539,6 +539,7 @@ const struct riscv_isa_ext_data riscv_isa_ext[] = {
- 	__RISCV_ISA_EXT_DATA(svinval, RISCV_ISA_EXT_SVINVAL),
- 	__RISCV_ISA_EXT_DATA(svnapot, RISCV_ISA_EXT_SVNAPOT),
- 	__RISCV_ISA_EXT_DATA(svpbmt, RISCV_ISA_EXT_SVPBMT),
-+	__RISCV_ISA_EXT_DATA(svrsw60t59b, RISCV_ISA_EXT_SVRSW60T59B),
- 	__RISCV_ISA_EXT_DATA(svvptc, RISCV_ISA_EXT_SVVPTC),
- };
+ static inline pte_t pte_mkdirty(pte_t pte)
+ {
+-	return __pte(pte_val(pte) | _PAGE_DIRTY);
++	return __pte(pte_val(pte) | _PAGE_DIRTY | _PAGE_SOFT_DIRTY);
+ }
  
+ static inline pte_t pte_mkclean(pte_t pte)
+@@ -455,6 +455,42 @@ static inline pte_t pte_mkhuge(pte_t pte)
+ 	return pte;
+ }
+ 
++#ifdef CONFIG_HAVE_ARCH_SOFT_DIRTY
++#define pgtable_soft_dirty_supported()				\
++	(IS_ENABLED(CONFIG_MEM_SOFT_DIRTY) &&			\
++	 riscv_has_extension_unlikely(RISCV_ISA_EXT_SVRSW60T59B))
++
++static inline bool pte_soft_dirty(pte_t pte)
++{
++	return !!(pte_val(pte) & _PAGE_SOFT_DIRTY);
++}
++
++static inline pte_t pte_mksoft_dirty(pte_t pte)
++{
++	return __pte(pte_val(pte) | _PAGE_SOFT_DIRTY);
++}
++
++static inline pte_t pte_clear_soft_dirty(pte_t pte)
++{
++	return __pte(pte_val(pte) & ~(_PAGE_SOFT_DIRTY));
++}
++
++static inline bool pte_swp_soft_dirty(pte_t pte)
++{
++	return !!(pte_val(pte) & _PAGE_SWP_SOFT_DIRTY);
++}
++
++static inline pte_t pte_swp_mksoft_dirty(pte_t pte)
++{
++	return __pte(pte_val(pte) | _PAGE_SWP_SOFT_DIRTY);
++}
++
++static inline pte_t pte_swp_clear_soft_dirty(pte_t pte)
++{
++	return __pte(pte_val(pte) & ~(_PAGE_SWP_SOFT_DIRTY));
++}
++#endif /* CONFIG_HAVE_ARCH_SOFT_DIRTY */
++
+ #ifdef CONFIG_RISCV_ISA_SVNAPOT
+ #define pte_leaf_size(pte)	(pte_napot(pte) ?				\
+ 					napot_cont_size(napot_cont_order(pte)) :\
+@@ -802,6 +838,40 @@ static inline pud_t pud_mkspecial(pud_t pud)
+ }
+ #endif
+ 
++#ifdef CONFIG_HAVE_ARCH_SOFT_DIRTY
++static inline bool pmd_soft_dirty(pmd_t pmd)
++{
++	return pte_soft_dirty(pmd_pte(pmd));
++}
++
++static inline pmd_t pmd_mksoft_dirty(pmd_t pmd)
++{
++	return pte_pmd(pte_mksoft_dirty(pmd_pte(pmd)));
++}
++
++static inline pmd_t pmd_clear_soft_dirty(pmd_t pmd)
++{
++	return pte_pmd(pte_clear_soft_dirty(pmd_pte(pmd)));
++}
++
++#ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
++static inline bool pmd_swp_soft_dirty(pmd_t pmd)
++{
++	return pte_swp_soft_dirty(pmd_pte(pmd));
++}
++
++static inline pmd_t pmd_swp_mksoft_dirty(pmd_t pmd)
++{
++	return pte_pmd(pte_swp_mksoft_dirty(pmd_pte(pmd)));
++}
++
++static inline pmd_t pmd_swp_clear_soft_dirty(pmd_t pmd)
++{
++	return pte_pmd(pte_swp_clear_soft_dirty(pmd_pte(pmd)));
++}
++#endif /* CONFIG_ARCH_ENABLE_THP_MIGRATION */
++#endif /* CONFIG_HAVE_ARCH_SOFT_DIRTY */
++
+ static inline void set_pmd_at(struct mm_struct *mm, unsigned long addr,
+ 				pmd_t *pmdp, pmd_t pmd)
+ {
+@@ -983,7 +1053,8 @@ static inline pud_t pud_modify(pud_t pud, pgprot_t newprot)
+  *
+  * Format of swap PTE:
+  *	bit            0:	_PAGE_PRESENT (zero)
+- *	bit       1 to 3:       _PAGE_LEAF (zero)
++ *	bit       1 to 2:	(zero)
++ *	bit            3:	_PAGE_SWP_SOFT_DIRTY
+  *	bit            5:	_PAGE_PROT_NONE (zero)
+  *	bit            6:	exclusive marker
+  *	bits      7 to 11:	swap type
 -- 
 2.34.1
 
