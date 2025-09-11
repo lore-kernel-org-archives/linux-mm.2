@@ -4,176 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43D8BCAC58E
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 18:50:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1410CCAC58E
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 18:51:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 616CA8E0002; Thu, 11 Sep 2025 14:50:49 -0400 (EDT)
+	id 777A28E0003; Thu, 11 Sep 2025 14:51:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5EDB68E0001; Thu, 11 Sep 2025 14:50:49 -0400 (EDT)
+	id 74F7B8E0001; Thu, 11 Sep 2025 14:51:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B54C8E0002; Thu, 11 Sep 2025 14:50:49 -0400 (EDT)
+	id 6653B8E0003; Thu, 11 Sep 2025 14:51:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 386058E0001
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 14:50:49 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D8AB1C0590
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 18:50:48 +0000 (UTC)
-X-FDA: 83877860976.18.21A6879
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 5660F40018
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 18:50:46 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UPCHQTCA;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf11.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757616646; a=rsa-sha256;
-	cv=none;
-	b=iH8wTcqQVfeoTscxxz/YbHM0zFkW05TItz4lF1ebFDkyqBzkQ4VRRtDCIbqBmAMVLPh06u
-	66qd+BS9xyZcXvBVXiiMfMWskiAgvq1Ob/6mpPgV0Jwk1SMSku4HdmpIpanFqV4TPl2fdx
-	x2JZv8P2pT7zMTY8wR3oZnhJEYF3cdY=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UPCHQTCA;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf11.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 527F08E0001
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 14:51:50 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B9BB91A0559
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 18:51:49 +0000 (UTC)
+X-FDA: 83877863538.07.629E0A5
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	by imf21.hostedemail.com (Postfix) with ESMTP id BF9591C000A
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 18:51:47 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Lb0nuMPF;
+	spf=pass (imf21.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=pyyjason@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757616646;
+	s=arc-20220608; t=1757616707;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=75rXashiaKSypPE7yXVIqcKrMNGsZ586vqRO26aajTA=;
-	b=cOuFybrjnJFa9wtvFFgdpuFwJTlJUn/pViFJvjsWcp/CCM5b+bGUBSNrXt4xf2q1+4DvEe
-	6X+EexwFR7GBD0AZhp0UWyCipKATHtCSKUaKkmZnKM8pzX1zYBKYN1JSwDJi/tYBJYmRPg
-	+63qlvoSqGjlDyPwBRboHYYRpfGXPx0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757616645;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=75rXashiaKSypPE7yXVIqcKrMNGsZ586vqRO26aajTA=;
-	b=UPCHQTCALxcOwwNGaFS/lpmEOkR2j5Ol745YVNvZMeoUeySzrWD7j6qn31vOlD323OTXUW
-	WJd3cgeZ35opT3K8rzNNkspls4O0NwaFStqWlKfygjQgzcCMH6JrD9g2G9c212PnErJ3KM
-	yDLHPo8cn7XPaAMDkHqG3VRlEbl/SLE=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-49-QmXO_TPvNTyrpl26d2u-1Q-1; Thu, 11 Sep 2025 14:50:44 -0400
-X-MC-Unique: QmXO_TPvNTyrpl26d2u-1Q-1
-X-Mimecast-MFC-AGG-ID: QmXO_TPvNTyrpl26d2u-1Q_1757616643
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3e68a54dac2so496675f8f.1
-        for <linux-mm@kvack.org>; Thu, 11 Sep 2025 11:50:44 -0700 (PDT)
+	bh=iSXSLjz9xxQBXrBSw3AK6oe7rPYSJGQAvD1J01P1Xw0=;
+	b=hiZpStWwHS8+0LPHV+IOZ9cDGXsRQXqUlYEMFsempTY1q58UIfXzpmmDZNIKkz9OfVykPy
+	8omNkzeYmDCUIXyJhow58ieYtd5G5V0n/ChhOl+FaSfsmolOgrwWcPdXSVV2JnC2m+zko4
+	dxMwSyMrb8IUiOi/QJtB+fm1EYnXb3Y=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Lb0nuMPF;
+	spf=pass (imf21.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=pyyjason@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757616707; a=rsa-sha256;
+	cv=none;
+	b=zBxboXbL0Fm24xQwZKtiPHI3o9L5QkIVd4kYqgqRKuDrMhrlPdvoetX9cWwmTWysCrmaU+
+	YMql/O/SI9RAFz9dDq652tQRG1eMNTVrQiQqdRcINkWMe01NpFGGufkVDlK15V7EHdcLbg
+	HnM2CTmpBvvFgLt/d8W3ZBEfKyWdZ10=
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-45ddc7d5731so7916905e9.1
+        for <linux-mm@kvack.org>; Thu, 11 Sep 2025 11:51:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757616706; x=1758221506; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=iSXSLjz9xxQBXrBSw3AK6oe7rPYSJGQAvD1J01P1Xw0=;
+        b=Lb0nuMPF79k9KfV+pmYrA0a1extrHxBLfalazr6kTczP1iNlMq6vZ/t+vBQBR/0SIY
+         1E2dVPJHhV+gr3eXsi48ZN5OKdUMuBsgHJl+IBbmuJqaSYKqcq+NsTIY1wYga7Ym89Gh
+         5AI7d44jyWLHMogbKEDVqpkqbsjlT/9uaaU5/GM2+yuMLjSyp7dKBmO79Ru31Lz480bC
+         Q7xdOGMS2DQjnGoSsJFFbTeubw2ou8lgrMvhdINzNwMe7hE7emL1wqEYjT9fWm2VcYb6
+         9qebXPOO4pqhgUwdP7tGML+ldrVIC+8kiSdK4yAw5yzE4aXVuJrOI7fBtemPA2hARdvx
+         gpbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757616643; x=1758221443;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=75rXashiaKSypPE7yXVIqcKrMNGsZ586vqRO26aajTA=;
-        b=hey2Q7nyGqMrqol3gvFIowMN4EKSwmkg7VC42Ne2ALa0IXvoo4xp+j643aCAvQWuBl
-         yf3KpWlNWrYYw00/YsTdACsFPu9pp73DkC4UoryMNzG26+KLe6OSsL+PzGeTDXGYWgOT
-         kA0Y+oOprbvUqxyN0yUHkiuxuriclCTSVoexZLEiewOK4kPPqkL2Tt71/9JWgXwqUhI0
-         Swy7MgESFkH5jYU04oEsRjz8MXQ5zWmhJPMA9THMyG9htYwUI+o0+s25Le+feVx0UgBP
-         8JQA/M8QoROHO2vbSYs/3Q878lqApmWLO+SyxEyBIih+zmRAskVh2CoHyAF6/8O1YFAq
-         ahnQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVEE0aeW1uSzBqNJIxIncldh6Yau313o15LtxbMpeSm4ca6lup+yyKyl5Wm3foPLL3Z21bfo0LsPQ==@kvack.org
-X-Gm-Message-State: AOJu0Yycd3Nu/f0GYNlMP1DWTS1TUWjdF2mNnT4k5teuTkunEB2sloG/
-	xEayYQ8+l5j6EYHlss/3wsAcrx7YGFgBdCQdSl19JXfKJHuXFYm+4tvm/B4lnC5DWAkhBwvQU97
-	ggVRR772OlgVa83dhAMLa8Adjlmi2zpquhKF727qWb0LBWZbhHz8Z
-X-Gm-Gg: ASbGncszfp3tJF8vJDePAj7W6McjqZd/563Xg9XInUr7u5ChLXQxv5/eyUi+dE4HIYQ
-	CWAgoNfox3OJFhlMfi82VKIuD7TWHtEw3aJtgPddq4XRadxY0SbOJOnrgUlKPwgFrvoy1LUxjW8
-	9zLeXNvMqrwt5QMOYeJz0osNW5nQM6cXE0M485WWtjfN6fXHWKzn9ioHEdVmE43RD9SbD5tOOHE
-	IyFvKOnSc98kCgAKfuepihlsBa3cBRb3qwcHBrjUj58FWc84kc7Vdl605eI4ux3/xHBL2hBAJqP
-	JmDHi1luvRyuhqtzpMofpOw69B8PURvzb9Kxdp0dqR4c/v05kN/YhhdbTrgZXEWeWawFOKCsY6U
-	M5Iu84pgQOOCPcLtAAZroq6mHargtRR2d7kbfAKV5dhfl+KrXm8z+YLqZUgK8c/reqpw=
-X-Received: by 2002:a5d:64e9:0:b0:3e2:3717:cce5 with SMTP id ffacd0b85a97d-3e75e16b341mr3701775f8f.30.1757616642963;
-        Thu, 11 Sep 2025 11:50:42 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEIa5vhuiI1ykuJSwXQKeFBJi+2181WGO35nRF69Fl/mSTSWBEjbLZZ8kV1vJ8X+ThIJ6dl3Q==
-X-Received: by 2002:a5d:64e9:0:b0:3e2:3717:cce5 with SMTP id ffacd0b85a97d-3e75e16b341mr3701754f8f.30.1757616642485;
-        Thu, 11 Sep 2025 11:50:42 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f42:b000:db8b:7655:f60f:812b? (p200300d82f42b000db8b7655f60f812b.dip0.t-ipconnect.de. [2003:d8:2f42:b000:db8b:7655:f60f:812b])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e7607ccf93sm3506371f8f.38.2025.09.11.11.50.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 11 Sep 2025 11:50:41 -0700 (PDT)
-Message-ID: <0ab2cb14-ba8e-4436-b03d-9457137f492a@redhat.com>
-Date: Thu, 11 Sep 2025 20:50:40 +0200
+        d=1e100.net; s=20230601; t=1757616706; x=1758221506;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=iSXSLjz9xxQBXrBSw3AK6oe7rPYSJGQAvD1J01P1Xw0=;
+        b=dJhkMz+/FnbNNrfk7diZruGVwIN/UpPt67WSOaR74BzxCexJcdh2+7QsxgPHLgwJ5Y
+         GF6IBNpeUmfeMKK8qqZQpPubDg1GMCwULfgtBRydb5q+i3xw8cAfY2x7lNGuHOXf3pG8
+         V093Bk8Zpw176hriiMEUeiDH0t75HYEJ3nQO+0AGmllKLvHXYttPoQRgmWk0sqZpA/8Q
+         n/o/TO+TNkbaWd6xBoGd4+OWlREjTCtpYSkbzqwGshhrW9ax//Ni48fHRUUtXkFRGiDf
+         c+B9uwu5ulJQNnSoIme0y0Dw6n6bwHqsDiUzeV0vttHo4r7FxpLlZ2wxA6axgsbd7vf2
+         7sCg==
+X-Forwarded-Encrypted: i=1; AJvYcCU+ii+St2rAkJsWNX5CAB/GebMKZpJexTkgIpa3QT10Ka7imBmfFv3b+reHsH+j2mq12NARlAPj3g==@kvack.org
+X-Gm-Message-State: AOJu0YxaywMJqJEMwYXQ6w9snStDR0ikh5fiHLvvfVjYsKgQyGRNEBHw
+	cl9T9ZRVRfj4TOr5kXFMYE2XWd8OTkllkNtBZJq4DxLs/gt4DcoRN1jo
+X-Gm-Gg: ASbGncudCNFAu+lKFaLWH9g7ATKuekl5GwrkDmjPPMsaekOXx8BoTWeYysHflQpukWG
+	s4rQa3wBbul+A4GQq2FQtiDAY9GrLGSXvgqUecTO3/2HngoCfh2wYIBpaY7y77pjArCX0p4XY1m
+	MUP+gBu3/e73OaNV24VGM8c0up3ondBvfKAHgmsRcFQ3ChHbq3ELppnQXkTPqUyhrtzzNNhuPkP
+	6IwrUfI7tjipbjQr8uLqgPNPeOB6dpZiOSn85KRmrNEk4W3WIgWngBlvSDLjCbf9/TzVbqD/lZa
+	IWHx9X6W7R23yDSRKHoaPAMPecZN0Clj8an5ulb6wonM6kerQGPflnqjxXn1WaaWDpBDo9MYUW7
+	HFb5Hh3u4Fq9aGgj+q83T9VojSKgjwQKpq/y9OjM=
+X-Google-Smtp-Source: AGHT+IG721ygNIQdIEEEEkJ+eIYPvjiP+uDfNNRip9ilX+h9GXA46usxqABET0AECdsMFBw5Cwgg8g==
+X-Received: by 2002:a05:600c:314e:b0:459:d451:3364 with SMTP id 5b1f17b1804b1-45f2121ab89mr5163355e9.24.1757616705792;
+        Thu, 11 Sep 2025 11:51:45 -0700 (PDT)
+Received: from devbig569.cln6.facebook.com ([2a03:2880:31ff:49::])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45e015bf73csm18359595e9.11.2025.09.11.11.51.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 11 Sep 2025 11:51:45 -0700 (PDT)
+Date: Thu, 11 Sep 2025 11:51:43 -0700
+From: Yueyang Pan <pyyjason@gmail.com>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: David Wang <00107082@163.com>, Usama Arif <usamaarif642@gmail.com>,
+	akpm@linux-foundation.org, kent.overstreet@linux.dev,
+	vbabka@suse.cz, hannes@cmpxchg.org, rientjes@google.com,
+	roman.gushchin@linux.dev, harry.yoo@oracle.com,
+	shakeel.butt@linux.dev, pasha.tatashin@soleen.com,
+	souravpanda@google.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/1] alloc_tag: mark inaccurate allocation counters in
+ /proc/allocinfo output
+Message-ID: <aMMaP6XgGfX3nVVE@devbig569.cln6.facebook.com>
+References: <20250909234942.1104356-1-surenb@google.com>
+ <20cafc1c.a658.199394de44e.Coremail.00107082@163.com>
+ <aMLvCCZbmpSE/aql@devbig569.cln6.facebook.com>
+ <902f5f32-2f03-4230-aab0-a886fd8e4793@gmail.com>
+ <CAJuCfpGezf06eR7WnzizpwTaxZ5Rm8jbeW4y87zcr6LZuJ9MZA@mail.gmail.com>
+ <aMMF8elYvlPoOF+J@devbig569.cln6.facebook.com>
+ <613698f0.a994.19939d88e1c.Coremail.00107082@163.com>
+ <CAJuCfpE=0jpana5qryqwPsuoj_8tCEMWFMcEBTB5-9Lyu_j-Tw@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] resource: Improve child resource handling in
- release_mem_region_adjustable()
-To: Sumanth Korikkar <sumanthk@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm <linux-mm@kvack.org>
-Cc: linux-s390@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- Dan Williams <dan.j.williams@intel.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>
-References: <20250911140004.2241566-1-sumanthk@linux.ibm.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20250911140004.2241566-1-sumanthk@linux.ibm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: G9W9-R3LzAoicEq7DZEgzsi4w06v0SUmUguWVmucp2U_1757616643
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5660F40018
-X-Stat-Signature: zd76dsum3ew8p4rcj7c5oumiizxs68sz
+In-Reply-To: <CAJuCfpE=0jpana5qryqwPsuoj_8tCEMWFMcEBTB5-9Lyu_j-Tw@mail.gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1757616646-368111
-X-HE-Meta: U2FsdGVkX19vHWBwW8hUhtCHLi4DeRHfa2S7eua7tdzfSSQhRJtEnaNVpFdV0JeqvHhCzpzXF+Rzguh3pDuLI8D/GMDTzx28rtvmgPkyGy93H7rSHGwxpqtDLf32N+ddtcE4PQiQu20MGvcLaE0VBG0KqL+6dAAUChDxRzx68aYAgzxBrSUvPqTNJYFy5f2RfklmeLAb/8wimIWMGbeLpXUfWQO9aPiq4efxgtphmarb6EpFH+Ok6DJlPuBmONCsgbIP3XhfjWSUm//bmu+4rSIiN7PDIbctn9BQIyldGojo82tCsOAEliQ1XoLcnoSqhSN6PvEhmmatG70itigTNB7drjF4i3i+azOzGuEWQtMzGXg85vLbuJXumdHWhiWgjTSBlpR3J4EaivPTzytTDry5ov6ti0P21+WeGpgezDXbOfbhRz2jVMjOt3+7+cAqqPZKMuDuEsClrm/FWusvXaS6cjVNsw778QlthYdxdqFzNxBsnLqH86VxnFKaKZP1fnqO1RDvWtlcCjaBHHOHYBE4rVO5HzTVqSIojkwfOvR2ZHLFdqHD+VHlcGx/1PdKEh4d80XNL/+emhMBT2GNroC3qUui+hzDVNezkM/0MQPGBzPOpNtNf0ml1h3ZIl3XigX6/3vrwoxRLlFBUyQuXdyXo+oa1fpSdO1OV58wZQturv5DEcE64P6RRDTEiDv1IwnaSL9hQp91NvyQ9seIEy0n7mw/tSquWe/uT9fJvTgTTQkgAMYPlqSeWcI3YkVEAuTg/o1v18Yz8SUsLpMtLc9mdJtAbfFmEOXMYzgfQySYe+PsWetoOX3sw2taCB2abEC1Au02i07lfGsMqH3fOZzk9l8u0Xti+TStvcHjIhegW9Z6WaagHRk07MfGXMyigq3w4ScK3WpYnd5IapNFL3+nbePZnIprfsGC6z8tNQYnHPGowoD4Ww0YstKhgWBZWTWThJHMXIe7tsN2rm+
- J7t4VSMO
- a1guFHkWba4dZRFZ/LAJBHws1CMLyopDReo48OLXYoW8dLZhrtf3l+lgeIPqMScKmOUFNbP4libnH5igLc1J/UbC5mNn+a92N4TpbP3vj8yoqasrV6Bk6wgtj4kHVAT1BKCNls1XsXf4ykBQjxpV4uRZef+kZtSVb7wGALgGBlg+mxB8OwNmHZQaRakbJx9nU/lnuNHlNnQaWzYZfDS4+n56D6UvwAee9KMw0gHC2D49J5LjfpRGMv/z3rnOLm659BsSg6Qx4Q+bMCU5Uj+5H/k8LKvFGXYOhIaMTPjvI2922IwErDZqgRTjaJdQ0cJlO5e9W6s1dkWfvJj0qSu9Bd6Kn3OoTAtIkA8e/vShrkCD4lYz58fJXoOHwLQPHtlvRYVMinxBq+tIK5tPf3zfP9twcaZ7lf9TVO3dc9fXfXooCngeUgNboLAuSKxdV4SLYDDqCtxzR1a9DEj3I4Zz6tR0XRU3RDpHL8X2z4llR7LwJzrczkc9KJJFGUi/HvZCxiWPa8woEqHowho9AkLu6EXObQg==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: BF9591C000A
+X-Stat-Signature: 7j6p94iogudf6rx594y9j5h4hmsks3r4
+X-HE-Tag: 1757616707-658440
+X-HE-Meta: U2FsdGVkX19KcofbVuFVk6LE72gMltrpD9S9+ga+qUrb+H/AA2fUVJBCimWmUz/qCcNCe8y0HcB0NZdNUeEXZelBwR7p5OoXgjxm6AjoEQFbbm0NORGrE8SwbnXaStLFLk6Bnw/7tycgTwOmF+HimxKHNGAcbPUONqpswn1AZSUgt51b/G4Z9IZ55nQVlMACnYZTt1757XnoGAt0VMOqKOvES+DZhppVs/43KLBwepWJEULNAMYgHBeTBf66PdzsIyzg/ObI/EPXVd+u7DWFhNDX1pFAKPElvUrrNQInZDvzBly2Hpk9huoWwHmVMRPwG8/V340Sc6QQx0UfjVMzwpi8WZMOUWGrXSMkCQeCGYJ3pyA+q3VmfcgbIIiN1maE/AITypvcgjynLAxzb2Me2lP9ZvF6kRbR0Tne0mGx7f3NVhv5P/a2LOdrkcMplaqElNOAQzvdjiMFwVIkF0Cvqzyl88bkyAV7PJwvX4wnbQ6FjxKAYGUThOevKXd7rUkCJo9CbnJdm6iKdKwsLP89+uh/USd7ljkQx0eh75p+cQPmsm1Gi/mrxT05X79a/292QMbewyNRfSQ8d1jjeimOHaL4zfoeE4gdyc0VHOBDIAaBHuSceZdSGitL6cyhL7ApBHPodz36SDkOgq0v191XElu+/t9dooDeCfF6ArRAT4xUVszeTE5NnF4S8vT/RrIWXNU+cc5gP3cfuMaDDwQVRfbnjNQndwBdTIE4GqPevgokvKYlwhb5E+SjGUPWIkDBL/YdCYadxFLwLeMUTIfKvJld6kLltPvYi8Pz+ZxqgYu96qL9Mj4d+mEYr/ekvJJ//ITUNnwL8ANmoxUwnb+FNzaz6aWz2IkuUYc3CYYbqEXoQ5dw7gNOzAJwDVdnJl6+UeiP75KVCC61SPnucx2pwC8ju0ohG223PTRfxY8x82SOopgZsmnYiYwoMGQcrhxnu3KAn7Y6aDza12RJmWp
+ KYswgatw
+ d8YoL1eCNXHi10WTXbknytU4bz6dPT290nHoG1vorclt8ERtdDFpfgVkosh2Axajc/lHcVAJp5rvj0f5+jJlXMrVDMOaF60Co0+/2wBp2i4ve3sWuyZNk0U1HkzmaehnUjrMrjFvKPG+LW3ImVcKcfxBnXBx1q5SDgnnsVhh1fFE52JCrwYEbJW3pJq1kyjM/lPBHjl4LFApatxf+sE67wfVRHcuwTG+Lio7YJ9aE9I07RhK8jIxdniilWr33agT0MZWnCynK2T60JRE8vlOd55vNjQQAjLefK5mIv2vujtDpCWA6g1Ak+ruXGf4nwLW4hLVCUMFTuNsX+lKFUNDn04WjwFJS3yfOxlb23gQ1lqEC6rPecvl60fgI0JMtnq2ndGouhf2NxfUvAdaUf5o+sX9aeHFZyiLUdpwmAabs9WYcM4hYubbfTpA/NIKTMow6A2yAphuqdtVzIHDFQTlS3IoQbWlkEycaJXHDoc8HYH1ddE45fU/8Pcg+knln/c1vJVZZAP51H7T90ljSbkfsRarrEFY9K8vZ9PHaWe+WAxtCE3AgbOfKA52oOYqx1va6B79Y0qo+NOg7mLizZbV79kPIhUpr5lfonlPQHfDl3CD8nzBQPVU9k85ECrqg3Sc3q15X0rCyIJId9wU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -182,235 +133,175 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11.09.25 16:00, Sumanth Korikkar wrote:
-
-Hi,
-
-> When memory block is removed via try_remove_memory(), it eventually
-> reaches release_mem_region_adjustable(). The current implementation
-> assumes that when a busy memory resource is split into two, all child
-> resources remain in the lower address range.
+On Thu, Sep 11, 2025 at 11:13:58AM -0700, Suren Baghdasaryan wrote:
+> On Thu, Sep 11, 2025 at 10:35 AM David Wang <00107082@163.com> wrote:
+> >
+> >
+> > At 2025-09-12 01:25:05, "Yueyang Pan" <pyyjason@gmail.com> wrote:
+> > >On Thu, Sep 11, 2025 at 09:18:29AM -0700, Suren Baghdasaryan wrote:
+> > >> On Thu, Sep 11, 2025 at 9:00 AM Usama Arif <usamaarif642@gmail.com> wrote:
+> > >> >
+> > >> >
+> > >> >
+> > >> > On 11/09/2025 16:47, Yueyang Pan wrote:
+> > >> > > On Thu, Sep 11, 2025 at 11:03:50PM +0800, David Wang wrote:
+> > >> > >>
+> > >> > >> At 2025-09-10 07:49:42, "Suren Baghdasaryan" <surenb@google.com> wrote:
+> > >> > >>> While rare, memory allocation profiling can contain inaccurate counters
+> > >> > >>> if slab object extension vector allocation fails. That allocation might
+> > >> > >>> succeed later but prior to that, slab allocations that would have used
+> > >> > >>> that object extension vector will not be accounted for. To indicate
+> > >> > >>> incorrect counters, mark them with an asterisk in the /proc/allocinfo
+> > >> > >>> output.
+> > >> > >>> Bump up /proc/allocinfo version to reflect change in the file format.
+> > >> > >>>
+> > >> > >>> Example output with invalid counters:
+> > >> > >>> allocinfo - version: 2.0
+> > >> > >>>           0        0 arch/x86/kernel/kdebugfs.c:105 func:create_setup_data_nodes
+> > >> > >>>           0        0 arch/x86/kernel/alternative.c:2090 func:alternatives_smp_module_add
+> > >> > >>>          0*       0* arch/x86/kernel/alternative.c:127 func:__its_alloc
+> > >> > >>>           0        0 arch/x86/kernel/fpu/regset.c:160 func:xstateregs_set
+> > >> > >>>           0        0 arch/x86/kernel/fpu/xstate.c:1590 func:fpstate_realloc
+> > >> > >>>           0        0 arch/x86/kernel/cpu/aperfmperf.c:379 func:arch_enable_hybrid_capacity_scale
+> > >> > >>>           0        0 arch/x86/kernel/cpu/amd_cache_disable.c:258 func:init_amd_l3_attrs
+> > >> > >>>      49152*      48* arch/x86/kernel/cpu/mce/core.c:2709 func:mce_device_create
+> > >> > >>>       32768        1 arch/x86/kernel/cpu/mce/genpool.c:132 func:mce_gen_pool_create
+> > >> > >>>           0        0 arch/x86/kernel/cpu/mce/amd.c:1341 func:mce_threshold_create_device
+> > >> > >>>
+> > >> > >>
+> > >> > >> Hi,
+> > >> > >> The changes may  break some client tools, mine included....
+> > >> > >> I don't mind adjusting my tools, but still
+> > >> > >> Is it acceptable  to change
+> > >> > >>       49152*      48* arch/x86/kernel/cpu/mce/core.c:2709 func:mce_device_create
+> > >> > >> to
+> > >> > >>       +49152      +48 arch/x86/kernel/cpu/mce/core.c:2709 func:mce_device_create*
+> > >> > >>
+> > >> > >> The '+' sign make it still standout when view from a terminal, and client tools, not all of them though, might not need any changes.
+> > >> > >> And when client want to filter out inaccurate data items, it could be done by checking the tailing '*" of func name.
+> > >> > >
+> > >> > > I agree with David on this point. We already have monitoring tool built on top
+> > >> > > of this output across meta fleet. Ideally we would like to keep the format of
+> > >> > > of size and calls the same, even for future version, because adding a * will
+> > >> > > change the format from int to str, which leads to change over the regex parser
+> > >> > > many places.
+> > >> > >
+> > >> > > I think simply adding * to the end of function name or filename is sufficient
+> > >> > > as they are already str.
+> > >> > >
+> > >> >
+> > >> > Instead of:
+> > >> >
+> > >> > 49152*      48* arch/x86/kernel/cpu/mce/core.c:2709 func:mce_device_create
+> > >> >
+> > >> > Could we do something like:
+> > >> >
+> > >> > 49152      48 arch/x86/kernel/cpu/mce/core.c:2709 func:mce_device_create(inaccurate)
+> > >>
+> > >> If there is a postprocessing then this would break sometimes later
+> > >> when the function name is parsed, right? So IMO that just postpones
+> > >> the breakage.
+> > >>
+> > >> >
+> > >> > This should hopefully not require any changes to the tools that are consuming this file.
+> > >> > I think it might be better to use "(inaccurate)" (without any space after function name) or
+> > >> > some other text instead of "+" or "*" to prevent breaking such tools. I dont think we need
+> > >> > to even increment allocinfo version number as well then?
+> > >>
+> > >> I'm wondering if we add a new column at the end like this:
+> > >>
+> > >> 49152      48 arch/x86/kernel/cpu/mce/core.c:2709
+> > >> func:mce_device_create [inaccurate]
+> > >>
+> > >> would that break the parsing tools?
+> > >> Well-designed parsers usually throw away additional fields which they
+> > >> don't know how to parse. WDYT?
+> > >>
+> > >
+> > >It would break the parse now as we count the number of string to decide if
+> > >there is an optional module name or not. I don't think it is a big
+> > >deal to fix though.
 > 
-> This simplification causes problems when child resources actually belong
-> to the upper split. For example:
+> Uh, right. We do have module name as an optional field...
 > 
-> * Initial memory layout:
-> lsmem
-> RANGE                                 SIZE   STATE REMOVABLE  BLOCK
-> 0x0000000000000000-0x00000002ffffffff  12G  online       yes   0-95
+> >
+> > The inconsistent of module name is really inconvenient for parsing.....
+> > Could we make changes to make it consistent, something like:
+> >
+> > diff --git a/lib/codetag.c b/lib/codetag.c
+> > index 545911cebd25..b8a4595adc95 100644
+> > --- a/lib/codetag.c
+> > +++ b/lib/codetag.c
+> > @@ -124,7 +124,7 @@ void codetag_to_text(struct seq_buf *out, struct codetag *ct)
+> >                                ct->filename, ct->lineno,
+> >                                ct->modname, ct->function);
+> >         else
+> > -               seq_buf_printf(out, "%s:%u func:%s",
+> > +               seq_buf_printf(out, "%s:%u [kernel] func:%s",
 > 
-> * /proc/iomem
-> 00000000-2dfefffff : System RAM
->    158834000-1597b3fff : Kernel code
->    1597b4000-159f50fff : Kernel data
->    15a13c000-15a218fff : Kernel bss
-> 2dff00000-2ffefffff : Crash kernel
-> 2fff00000-2ffffffff : System RAM
+> Yeah, until someone creates a module called "kernel" :)
+> We could keep the name empty like this:
 > 
-> * After offlining and removing range
->    0x150000000-0x157ffffff
-> lsmem
-> RANGE                                  SIZE   STATE REMOVABLE  BLOCK
-> 0x0000000000000000-0x000000014fffffff  5.3G  online       yes   0-41
-> 0x0000000150000000-0x0000000157ffffff  128M offline               42
-> 0x0000000158000000-0x00000002ffffffff  6.6G  online       yes  43-95
+> +               seq_buf_printf(out, "%s:%u [] func:%s",
 > 
-
-First of all
-
-1) How are you triggering this :)
-
-2) Why do you say "and removing the range" when it's still listed in 
-lsmem output.
-
-lsmem will only list present memory block devices. So if it's still 
-listed there, nothing was removed. Or is that prior to actually removing it.
-
-
-Is this some powerpc dlpar use case?
-
-> The iomem resource gets split into two entries, but kernel code, kernel
-> data, and kernel bss remain attached to the lower resource [0–5376M]
-> instead of the correct upper resource [5504M–12288M].
-
-Yes.
-
-> 
-> As a result, WARN_ON() triggers in release_mem_region_adjustable()
-> ("Usecase: split into two entries - we need a new resource")
-> ------------[ cut here ]------------
-> WARNING: CPU: 5 PID: 858 at kernel/resource.c:1486
-> release_mem_region_adjustable+0x210/0x280
-> Modules linked in:
-> CPU: 5 UID: 0 PID: 858 Comm: chmem Not tainted 6.17.0-rc2-11707-g2c36aaf3ba4e
-> Hardware name: IBM 3906 M04 704 (z/VM 7.3.0)
-> Krnl PSW : 0704d00180000000 0000024ec0dae0e4
->             (release_mem_region_adjustable+0x214/0x280)
->             R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:1 PM:0 RI:0 EA:3
-> Krnl GPRS: 0000000000000000 00000002ffffafc0 fffffffffffffff0 0000000000000000
->             000000014fffffff 0000024ec2257608 0000000000000000 0000024ec2301758
->             0000024ec22680d0 00000000902c9140 0000000150000000 00000002ffffafc0
->             000003ffa61d8d18 0000024ec21fb478 0000024ec0dae014 000001cec194fbb0
-> Krnl Code: 0000024ec0dae0d8: af000000            mc      0,0
->             0000024ec0dae0dc: a7f4ffc1            brc     15,0000024ec0dae05e
->            #0000024ec0dae0e0: af000000            mc      0,0
->            >0000024ec0dae0e4: a5defffd            llilh   %r13,65533
->             0000024ec0dae0e8: c04000c6064c        larl    %r4,0000024ec266ed80
->             0000024ec0dae0ee: eb1d400000f8        laa     %r1,%r13,0(%r4)
->             0000024ec0dae0f4: 07e0                bcr     14,%r0
->             0000024ec0dae0f6: a7f4ffc0            brc     15,0000024ec0dae076
-> Call Trace:
->   [<0000024ec0dae0e4>] release_mem_region_adjustable+0x214/0x280
-> ([<0000024ec0dadf3c>] release_mem_region_adjustable+0x6c/0x280)
->   [<0000024ec10a2130>] try_remove_memory+0x100/0x140
->   [<0000024ec10a4052>] __remove_memory+0x22/0x40
->   [<0000024ec18890f6>] config_mblock_store+0x326/0x3e0
->   [<0000024ec11f7056>] kernfs_fop_write_iter+0x136/0x210
->   [<0000024ec1121e86>] vfs_write+0x236/0x3c0
->   [<0000024ec11221b8>] ksys_write+0x78/0x110
->   [<0000024ec1b6bfbe>] __do_syscall+0x12e/0x350
->   [<0000024ec1b782ce>] system_call+0x6e/0x90
-> Last Breaking-Event-Address:
->   [<0000024ec0dae014>] release_mem_region_adjustable+0x144/0x280
-> ---[ end trace 0000000000000000 ]---
-> 
-> Also, resource adjustment doesn't happen and stale resources still cover
-> [0-12288M].  Later, memory re-add fails in register_memory_resource()
-> with -EBUSY.
-> 
-> i.e: /proc/iomem is still:
-> 00000000-2dfefffff : System RAM
->    158834000-1597b3fff : Kernel code
->    1597b4000-159f50fff : Kernel data
->    15a13c000-15a218fff : Kernel bss
-> 2dff00000-2ffefffff : Crash kernel
-> 2fff00000-2ffffffff : System RAM
-> 
-> Enhance release_mem_region_adjustable() to reassign child resources
-> to the correct parent after a split. Children are now assigned based on
-> their actual range: If they fall within the lower split, keep them in
-> the lower parent. If they fall within the upper split, move them to the
-> upper parent.
-> 
-> Kernel code/data/bss regions are not offlined, so they will always
-> reside entirely within one parent and never span across both.
-
-Yes.
-
-> 
-> Output after the enhancement:
-> * Initial state /proc/iomem (before removal of memory block):
-> 00000000-2dfefffff : System RAM
->    1f94f8000-1fa477fff : Kernel code
->    1fa478000-1fac14fff : Kernel data
->    1fae00000-1faedcfff : Kernel bss
-> 2dff00000-2ffefffff : Crash kernel
-> 2fff00000-2ffffffff : System RAM
-> 
-> * Offline and remove 0x1e8000000-0x1efffffff memory range
-> * /proc/iomem
-> 00000000-1e7ffffff : System RAM
-> 1f0000000-2dfefffff : System RAM
->    1f94f8000-1fa477fff : Kernel code
->    1fa478000-1fac14fff : Kernel data
->    1fae00000-1faedcfff : Kernel bss
-> 2dff00000-2ffefffff : Crash kernel
-> 2fff00000-2ffffffff : System RAM
+> but I'm not sure that's the best solution.
 > 
 
-Do we need a Fixes: and CC stable?
+I guess the best option would be to decide how the format can evolve 
+in the future with some rules in comment or doc. But I am sure who 
+will decide the rules...
 
-> Signed-off-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
-> ---
->   kernel/resource.c | 44 +++++++++++++++++++++++++++++++++++++++-----
->   1 file changed, 39 insertions(+), 5 deletions(-)
+> If we are really concerned about parsers, I could add an ioctl
+> interface to query the counters which are inaccurate. Would that be
+> better?
+
+I think this would be nice as we just need to add functionality on 
+top of the parser when we do need it. I guess most of the time we don't 
+care about that temporary imprecision.
+
 > 
-> diff --git a/kernel/resource.c b/kernel/resource.c
-> index f9bb5481501a..c329b8a4aa2f 100644
-> --- a/kernel/resource.c
-> +++ b/kernel/resource.c
-> @@ -1388,6 +1388,41 @@ void __release_region(struct resource *parent, resource_size_t start,
->   EXPORT_SYMBOL(__release_region);
->   
->   #ifdef CONFIG_MEMORY_HOTREMOVE
-> +static void append_child_to_parent(struct resource *new_parent, struct resource *new_child)
-> +{
-> +	struct resource *child;
-> +
-> +	child = new_parent->child;
-> +	if (child) {
-> +		while (child->sibling)
-> +			child = child->sibling;
-> +		child->sibling = new_child;
+> BTW, I have other ideas for ioctls, like filtering-out 0-sized
+> allocations and such.
 
-Shouldn't we take care of the address ordering here? I guess this works 
-because we process them in left-to-right (lowest-to-highest) address.
+You mean using ioctl to control if we only print out the non zero 
+ones?
 
-> +	} else {
-> +		new_parent->child = new_child;
-> +	}
-> +	new_child->parent = new_parent;
-> +	new_child->sibling = NULL;
-> +}
-> +
-> +static void move_children_to_parent(struct resource *old_parent,
-> +				    struct resource *new_parent,
-> +				    resource_size_t split_addr)
+> 
+> >                                ct->filename, ct->lineno, ct->function);
+> >  }
+> >
+> >
+> >
+> >
+> > >
+> > >I think one more important thing is probably to reach a consensus on
+> > >what format can be changed in the future, for example say, we can
+> > >keep adding columns but not change the format the type of one column.
+> > >With such consensus in mind, it will be easier to design the parser.
+> > >And I guess many companies will build parser upon this info for fleet-
+> > >wise collection.
+> > >
+> > >> >
+> > >> > >>
+> > >> > >> (There would be some corner cases, for example, the '+' sign may not needed when the value reach a negative value if some underflow bug happened)
+> > >> > >>
+> > >> > >>
+> > >> > >> Thanks
+> > >> > >> David.
+> > >> > >>
+> > >> > >>
+> > >> > >>> Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
+> > >> > >>> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> > >> > >>> ---
+> > >> > >>
+> > >> > >
+> > >> > > Thanks
+> > >> > > Pan
+> > >> >
+> > >
+> > >Thanks
+> > >Pan
 
-I'd call this "reparent_child_resources". But actually the function is 
-weird. Because you only reparents some resources from old to now.
-
-Two questions:
-
-a) Is split_addr really required. Couldn't we derive that from "old_parent"
-
-b) Could we somehow make it clearer (variable names etc) that we are 
-only reparenting from "left" to "right" (maybe we can find better names).
-
-Something like
-
-/*
-  * Reparent all child resources that no longer belong to "low" after
-  * a split to "high". Note that "high" does not have any children,
-  * because "low" is the adjusted original resource and "high" is a new
-  * resource.
-  */
-static void reparent_children_after_split(struct resource *low,
-		struct resource *high)
-
-Again, maybe we can find better names for left/right low/high.
-
-[...]
-
->    *
->    * Note:
->    * - Additional release conditions, such as overlapping region, can be
->    *   supported after they are confirmed as valid cases.
-> - * - When a busy memory resource gets split into two entries, the code
-> - *   assumes that all children remain in the lower address entry for
-> - *   simplicity.  Enhance this logic when necessary.
-> + * - When a busy memory resource gets split into two entries, its children is
-
-s/is/are/
-
-> + *   reassigned to the correct parent based on their range. If a child memory
-> + *   resource overlaps with more than one parent, enhance the logic as needed.
->    */
->   void release_mem_region_adjustable(resource_size_t start, resource_size_t size)
->   {
-> @@ -1482,6 +1515,7 @@ void release_mem_region_adjustable(resource_size_t start, resource_size_t size)
->   			new_res->parent = res->parent;
->   			new_res->sibling = res->sibling;
->   			new_res->child = NULL;
-> +			move_children_to_parent(res, new_res, end);
->   
->   			if (WARN_ON_ONCE(__adjust_resource(res, res->start,
->   							   start - res->start)))
-
-
--- 
-Cheers
-
-David / dhildenb
-
+Thanks
+Pan
 
