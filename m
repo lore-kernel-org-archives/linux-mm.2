@@ -4,104 +4,187 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 596F0CAC58D
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 11:57:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39607CAC58D
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 12:04:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 96E43900006; Thu, 11 Sep 2025 07:56:59 -0400 (EDT)
+	id 7F587900003; Thu, 11 Sep 2025 08:04:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 91EFC900003; Thu, 11 Sep 2025 07:56:59 -0400 (EDT)
+	id 7CDA2900002; Thu, 11 Sep 2025 08:04:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 80CDC900006; Thu, 11 Sep 2025 07:56:59 -0400 (EDT)
+	id 6951D900003; Thu, 11 Sep 2025 08:04:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 667CC900003
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 07:56:59 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1AF0916047C
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 11:56:59 +0000 (UTC)
-X-FDA: 83876818158.25.C525269
-Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 9A917C000A
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 11:56:56 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=GohG3hsw;
-	spf=pass (imf10.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 55048900002
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 08:04:34 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EECF4140451
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 12:04:33 +0000 (UTC)
+X-FDA: 83876837226.04.A316A03
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 6E9D0A0022
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 12:04:31 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BEICEPI+;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf15.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757592271; a=rsa-sha256;
+	cv=none;
+	b=5s59w/Cl80lle0pF3D3iPil56mNVx5thAySEIBohxRmjhTDf723ubK2bxUjKVxx4Ll6vkU
+	xzrDb1pMZWYhzD3SYlamPo/Mi4KJD7hKk+YZi5dKae3kgjlqRwLxgnRIf8Zy7DFrb/DZ5L
+	w9fMQ3ymIAi7r7twOwokvgV0g7HtlxM=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BEICEPI+;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf15.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757591817;
+	s=arc-20220608; t=1757592271;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5JDZiUNGKCBItJIYOpf475ci/DywIm3cZjVabYjTYa8=;
-	b=1x6GkQIS271+VyY8D8MHgLdqwQ88RS3dr29ZCRXCFFf/AeRR7TxEkpWLhnGTvcIl/+y5PE
-	a16t4/Ko29z2xcJQOvz0cH9CLzaOBemkNoKFMcd1fUfNebQA8ZvNTvsJ1BKgGcc1+YeC6E
-	gOc4aSmHwimRrL/Q5TiiKFJwYbAjKM0=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=GohG3hsw;
-	spf=pass (imf10.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757591817; a=rsa-sha256;
-	cv=none;
-	b=2Xg1rrsLf0WqLCsow1zMrYnyFz1MJpFiadzloSrmBzAMSxggqqrpOD7R6sKwW4G0ogZ/D1
-	pDTrSiVdsCK0CgbOkRuwGoerwy2IZW8UwSk7SzOWOIJko6iC1LLll8JZj8L7Pos7YSaI1f
-	VCF3fY63JREyK6Um03hjjdLHetOeq4Q=
-X-Gm-Message-State: AOJu0YwtUTiYrGSzg6GFpgHz9MA167ifAVTKYTpoBsbMpVdjTgMP4NMp
-	O0z66F5VcCCG9kj7Ntj8QpNDtvv2raPrfloyKDfEo0XlW+C2YuEdeUqLlLCUlf8nJl6GyP+tpKx
-	YxocSCr2XI20/tGrxS2iCqW06XgX7g5Q=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1757591814;
+	bh=EuZPErlVPfP4Zi7OehwAoScM8rfscgPVz8IjeFSlZfc=;
+	b=j4y1pdaMObAR6f5HGopxRC0yHiTx9Rc45KZKpJ3qv9phEJkpDmEw3jDUUETnfjFExUmbKr
+	N74oqAcKtoGjK1kY2Ay1b9sgHilyU8EmDnraqDsnZ7PFEpGE2FkY3W5O7xAXY7nNtCGVbr
+	3Iyg9ZjxE7y9O7Z82prTc3RLsd/vZr8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1757592270;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5JDZiUNGKCBItJIYOpf475ci/DywIm3cZjVabYjTYa8=;
-	b=GohG3hsw6x4Khe09U/hSMvHIOzVTaAhOrX5tWDhY/W1XyN105cMyAL1VsIQW8g1vd2UeCQ
-	IktS8yweer+sPo72/HDy+Mt0NXqfGUDns9UX6Ip14e1n6n9Xd0rVbT1rzibqsy6HJn9jmC
-	6hnvME3REAxrrJ2J6VzCWH7uMf7fb6U=
-X-Google-Smtp-Source: AGHT+IEXApRUSGqzTdz8LGQ3sqqidsvXMOn/52e45zYqOErA4zB6eInbCEGzZYysFWdiqEJmirz6NYhi3f460w6jZ4A=
-X-Received: by 2002:a05:6214:b6a:b0:70d:b15e:e8ea with SMTP id
- 6a1803df08f44-739494b62c2mr224021166d6.66.1757591808697; Thu, 11 Sep 2025
- 04:56:48 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=EuZPErlVPfP4Zi7OehwAoScM8rfscgPVz8IjeFSlZfc=;
+	b=BEICEPI+XKEA1tgJ61XnCtifDdNA0RJaEhVHg29X8Jyr5qs1Wv+sDcCzgWLKCp9JhVzO90
+	6Uz977rR0LxC9CTD5IjrmA+4B1llAZnpQIn5Zv5ueAoNUru6FC0UW6DFTBMaYRNDOGc4Ld
+	t2IB/ET8P35zeVNZ1a8Q+rqgEgNNLdA=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-198-sRovzYWZMXqCkifG6d0jGw-1; Thu, 11 Sep 2025 08:04:29 -0400
+X-MC-Unique: sRovzYWZMXqCkifG6d0jGw-1
+X-Mimecast-MFC-AGG-ID: sRovzYWZMXqCkifG6d0jGw_1757592268
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-45e037fd142so4709365e9.3
+        for <linux-mm@kvack.org>; Thu, 11 Sep 2025 05:04:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757592268; x=1758197068;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=EuZPErlVPfP4Zi7OehwAoScM8rfscgPVz8IjeFSlZfc=;
+        b=IZPjgX82s0+ywVwAEV0d8xKKyJMnTt+t6sY18G4SoNw9u0hcwd3ikpUac95SPFG39m
+         hEUN3xNLc07Iva3lAthZNlTgaVFi+wtnX9lzvd9/XP1Tuy2XF1s2v/WJrrM+IDnngX4B
+         OjFBjzhIFx9BGlqx/EvNHkVn/5sIzMsVZ8LckB/94avXPJl2nb7sxI8LTs726rkn9opX
+         4VotkPOyCnz/5kHRA3D3sQBscqzXtGvdjutPHYHuP1wJShlQR+wtWTIPGLX1Gmv5K26C
+         6RYxzTQnDhuPy5O/KqmMa33SOBSZCY2e8bKeZ27s3VUGYn5mPCL5RGALgurmN+ZJaeCc
+         07jg==
+X-Forwarded-Encrypted: i=1; AJvYcCUsBTc4jFwpI8LRkGDqRePP3xGnV4nSgIzcWLDmUYZfUPGzaUxRiSWvP02UgHL3wiAyV7HkImMQ8w==@kvack.org
+X-Gm-Message-State: AOJu0Yx88WjKoe8V0jvJhJrwLl+ToDkGPfUgVm+u8/rQuTqtX+kLM67n
+	faoQqjYgHVGE6fOZ0bsFOEB/vA7aftc3V5nPL2IHgG/PdBEx24uA0Uy5FHYBJWufrXzNkVN5/uK
+	AemnDf2y4tWX1FU9HLf+2N802d/ZI076cFluzwKywRpI2cd26kAeQ
+X-Gm-Gg: ASbGncvZE4avQtOfgj9nhxa2i02nNqIzvYK/M9MVqRDxVZeciOhGJVXDipIsCrd5/oo
+	4NyPgL/rjoIWL9gJkUk22AfbAZ+DS19Mke/f7QdkHDMpvXIXF1kCYGK5a6cemZhGKtIq9TPqFGt
+	cUihRqvsF40lR1P8aupMJ1KdpL1LruWcx5oYyqIWTuFxzSX7eXLxQobowfOUgsT0RComR9oqBUG
+	qMg/xgtkoJjK/925aFNjiXHU3ILNf6u7PkEo1x9mnq16DuR33EZbtdOWZgZUssqN5Sv4ZTe3yyF
+	jWouGHqvN852suy0XUhe8zcBw90UJ5CB3IRbQoqBfyOtcoHjQptD+ulPIfeatcpgmo7vlnbI/VK
+	MfREYCavmRKORHQAk3S05tQ0z2oA4cFRc4JMdL4+fXlHr4DiUdL2xM13pzo8xzuvi+qQ=
+X-Received: by 2002:a05:600c:17d8:b0:45e:598:90b0 with SMTP id 5b1f17b1804b1-45e05989245mr12298495e9.9.1757592268210;
+        Thu, 11 Sep 2025 05:04:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE8gojWv48o7hPnSlLmGoQLH2lzL/OCbhuDjeyev+XCC7h++EYG0R0k7MthrD+iGwxnZwbgRA==
+X-Received: by 2002:a05:600c:17d8:b0:45e:598:90b0 with SMTP id 5b1f17b1804b1-45e05989245mr12298135e9.9.1757592267679;
+        Thu, 11 Sep 2025 05:04:27 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f42:b000:db8b:7655:f60f:812b? (p200300d82f42b000db8b7655f60f812b.dip0.t-ipconnect.de. [2003:d8:2f42:b000:db8b:7655:f60f:812b])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45e0187f0a7sm13295915e9.3.2025.09.11.05.04.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 11 Sep 2025 05:04:27 -0700 (PDT)
+Message-ID: <6f1857b8-45db-4017-b6e8-02ecfa2104a3@redhat.com>
+Date: Thu, 11 Sep 2025 14:04:24 +0200
 MIME-Version: 1.0
-References: <20250819134205.622806-1-npache@redhat.com> <20250819134205.622806-2-npache@redhat.com>
-In-Reply-To: <20250819134205.622806-2-npache@redhat.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-Date: Thu, 11 Sep 2025 19:56:11 +0800
-X-Gmail-Original-Message-ID: <CABzRoyZCYRURSupw+XQJDmD7bpOLa7CUD9n6tzU=8A=ip=bwNw@mail.gmail.com>
-X-Gm-Features: AS18NWBtFn7leMsBPpqgaxe_Sgl_E59_0tprYdbM9-D6lm5caZCPd91EJN0l5lY
-Message-ID: <CABzRoyZCYRURSupw+XQJDmD7bpOLa7CUD9n6tzU=8A=ip=bwNw@mail.gmail.com>
-Subject: Re: [PATCH v10 01/13] khugepaged: rename hpage_collapse_* to collapse_*
-To: Nico Pache <npache@redhat.com>
-Cc: linux-mm@kvack.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	david@redhat.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com, 
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, ryan.roberts@arm.com, 
-	dev.jain@arm.com, corbet@lwn.net, rostedt@goodmis.org, mhiramat@kernel.org, 
-	mathieu.desnoyers@efficios.com, akpm@linux-foundation.org, baohua@kernel.org, 
-	willy@infradead.org, peterx@redhat.com, wangkefeng.wang@huawei.com, 
-	usamaarif642@gmail.com, sunnanyong@huawei.com, vishal.moola@gmail.com, 
-	thomas.hellstrom@linux.intel.com, yang@os.amperecomputing.com, 
-	kirill.shutemov@linux.intel.com, aarcange@redhat.com, raquini@redhat.com, 
-	anshuman.khandual@arm.com, catalin.marinas@arm.com, tiwai@suse.de, 
-	will@kernel.org, dave.hansen@linux.intel.com, jack@suse.cz, cl@gentwo.org, 
-	jglisse@google.com, surenb@google.com, zokeefe@google.com, hannes@cmpxchg.org, 
-	rientjes@google.com, mhocko@suse.com, rdunlap@infradead.org, hughd@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 9A917C000A
+User-Agent: Mozilla Thunderbird
+Subject: Re: [v5 03/15] mm/rmap: extend rmap and migration support
+ device-private entries
+To: Balbir Singh <balbirs@nvidia.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+Cc: damon@lists.linux.dev, dri-devel@lists.freedesktop.org,
+ Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, Oscar Salvador <osalvador@suse.de>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lyude Paul <lyude@redhat.com>,
+ Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Ralph Campbell <rcampbell@nvidia.com>,
+ =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Francois Dugast <francois.dugast@intel.com>
+References: <20250908000448.180088-1-balbirs@nvidia.com>
+ <20250908000448.180088-4-balbirs@nvidia.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20250908000448.180088-4-balbirs@nvidia.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 8sybpQzU_dN_RrpFo68-QoL8jY7F4Sxz1IgweodY48g_1757592268
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 6E9D0A0022
+X-Stat-Signature: w1nkr6pq76sx8x6qw7gga1am3yzzdafc
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: qpq88ff1n564hbiy416zsc7mfmtotaer
-X-HE-Tag: 1757591816-475775
-X-HE-Meta: U2FsdGVkX18mWjGJ/EYfH4Q8vp9b5uQxaFTsYCpEYvrnfU3yOA8x2THpsqbjzVYBBeER4oi+FGPd8IW7ygg/AqBXxnggRDyVtoKFsxFpmU1ZnVYDJnK8Z9DsTUuXrCLxVmmMFV2WPL58bLy3CU+lnbCFD3t7Igrf0F0nDXgZ+o0MntjbWOOtUS4srCAMtePT1vQVGgxtDbMjD9OGHGGKlUXzlYMdigU6v6DpuiV8gsNwjY3fIOLu0bbztjWSJ5/Hkoqz2ILIPCKxnZg91Fh+IL0DWq53brnOPIueWGGzEoz8Q4zXiapYz1x5qi2BwscFDmFiiW0JfsI12sMjOZ7bTOsl1YHPesTlMJj50rW7DP5Sh7vkKpHnvCOhGXo7Rx5EN/ihgG1g47VsGz1mneNYHzSwy16UPg9sEvO1QYr293qZ66q/ZZXNdFA710F/1GdeQo5D2m+LWrDQf8w3adx/bumm/zFwZgUHo0GbnaaoBjXoO7cuz63tQ+4yrRdzYjzsCDNB4xNrrr8SvAJ+StoS2N5q+PZ3kRKRpykwhuSqQZ4kBJKzNLTP871FjNY7x2ad3MqcAaMHZYJe/5xrxBcCrrBkqUh0DaSUIy2KTKeyXOXpocAnAnp6PfkIbXpHka9wYB4wZ8U8r/842uWaI9m8vqZOTp5u9r8SLyl3YwLC3kAy6FXp3b1inKM8WTAs4pufiUIoYQWiKAgHd7tDSLvSpBpfngYGjtXp02UQ/ACNVkZ7gwlsogGPBca8H54W+98r5Fiq+eteb2krA0QrQdflqJDEXIKhHvvGhunQFT/CJes2EPXw5JR3eIrwradpaQn/HfAzh8tjcSuIV2k258BIv0MacE7JDTQ8WIuqktfJFwBaeamg/T/hQJ7p5qhjiMqlAc+FSczaflolwTIt4/fDH7ZJz9cjDFGq6YktdbuDCGw8peCEWhixOrSksQDdUItUSKS5ojmxNXU8ahCn53S
- Gzu8K0eU
- z3yy3isdvV8GW93Ff8sCJxRjsdYyBdn6bemZP61afGPygimh34BXdp/iEJ7BIZ3zvHGURdRRh1RXWPtc4YrHIh930B9k0AzthUkwZAFVBRn3Uze5eEDGbKIePJgoH/dipbiPvOn/6/PrqHtfbzU3bYLCBDilJZrQBLSmDSWATOfhzbWaIVgRchTxB9kJRoht07OY+pL0/rD4bU/Uy2Idqn9S2vbXrWayT6IMwRPICqk+8tZil9w1oNv0cOx9j7e3bvHACnKbJMEO9Y7Mjqvnxnk5lp6QfJZbE0fPXYYC5/8+6nUt2BM7oP6UcPx4Gk2vTkt+OUd5jtAfMpNoUbcpPhYB1loICW5iFTQ+dTq+IotQzeXcah+73Sqex7Sl5PmEketm6qYm83WWJIT5jP/OeeLnQApd/NkBD8ogR
+X-HE-Tag: 1757592271-803135
+X-HE-Meta: U2FsdGVkX1+/1zSJ/8vjETfJd1llNamzvF7gyj3aZtGgISOu0Ru+i5DHlJIIZBBxs/aNmAL0NDdPRRmDhg6Q1KPeeuOjRHNjOEDsgDg+LiJhbOxqjub4x27SWSUbp7AcxHYhAtRhBbL6aMgBjqXecjvWhW5gOrJotlnOJiRq0i6PwqY8YalXOsYTTazdqbCm1gvRn3ZfILYEtRsy0TrNNSQB1GE8No5E6vkbJZKmH4EhZloDE68hqHW3r3tVipztYdfv97Th3rUbCZycYmnOHUjUVSEQk0ooX+AIqlyvw5jNk5GzHIloLMVL4ndl9WhFkSj+6AIPWkHe1IS9191cIZ4Gvm3k8k/Pn3B2829hpwwN99bIUxMeLGluFix0n3F2ByAmW1LMMJ3H7XmFsiGEB20xIYIZiVvhzvYfcGuRLRKv1da2wLvW0BBNY+934wxRocJQH9++3IR6LbKo6YXBEUTwgYVIipvjJg7kcKyibLuMUbYbvTtDTRXBEn2ChhQbkVPfdS3tzaiE9d9/1LKEVLSJuDnE1tA3e9faJS0tmUdfniL5Z8vd9ej00zzavI6vDxzisLzswW8pvJiyvgxuPRXNyjoYCeOGCpHO0G8o5UF3iBPZOjXzIoNyeKYqKdz4fBII8mmuZmVXlpKIe0D7Z/sEH3kI+euKGmwmC4PlDJnyaSk7AeXgGG9KPTGz7J29qSkpIhLNux2SW1vXkkc5+fhVMi8dBf1L2dGOH1Leh/98RC4nkBXcyhPsB+4kkab3u6kKxPbFnfozChn0pwMD0lZDTana6qHF4ee57HESd9xnAuGc0keys8u/4ngCZn9851bG5eyu39PSU9pacmQQxTHQx88Q6sB58YxsR1LKNhL0Zl2TJ7n2tx1DjUwU20J4MOS5RBOgzem6BjwWb3Y+HHU7SV6KTgtKUC1nkwGWCXVNP0Aya9mUd5yoqswZnXbP1J254NONpasiqC3GypI
+ O3Un2t29
+ RbyhNXd33fol+MYnRMH0jvBfYgWCG/+S1iV1TRfcurCxIJMZ/HHxtBG9axu+HyFhiOHlNMOaoRRrKtYcxiYskxzMtM2H66kURUJdB4m39ZOUIuIh9Qe6Kff56vxl/d1gq5JWKy/+04fpCAn/+MB+BeTLIpXiK45FpJYKp7ttSnyD7CweDTYuhW4jgeRGabzjVmWxiwOJrSvyeN57tLha2Y9IKmHqa1weK/AwAC581HwR6Vgmqo7539o0rf7GnKjjS5uFYD28RnocMUPHhKvHrxR4tcDXnwMgmVvvQsdm9eDvlVj7aA/J4p3nvJWjGA7eb404WEuwNGEZIRIVO6IftKX9glXvN6Knc+nsSutTBgNnGvK07WT217ngpc0HRYAOCo661/McsrtyuZBK9aWeAnD99ShqyUEcvjIj/SBtqDzGT7BzDL9ZDF/qzrTiNcYj7U/K3OAFldtRA6qor1b54+8jgmuzlxHEcgWYZoJuyfX5eBdq7ZgS/o5VxkOy1zMaV6vJXlfZCF9n6RSW75hLhYTWfxcl2UrVq/zf0KecaRapFKL1sI7vwAYgQXwQk22GDBMLZmVUrS0q0p60ng2FhzTnZLZBQCpX9uafIafKHxwqz2nbaUAHDDyrTozIrdEm4WEISk+Z3vRHShWI2WUeBMlLxpSq8QaT5aSB/bJKi9cb+1caZpRvLZNR/qP+AsEa84rqBsXUDUZJEFu6NFVL/hGIJ1bfn8PpqlJIX4+FL2OsTFaMVQ6Asbrn9UMzbX6wz3KJtt+/AKWVXSwOKyh9Dv6d+7gMlZUPOg2ECPryPgCHtBTNA98ch7td5mveDwj/9qXJVZ86neNN1bPw2ibTB5B+FmsWONsqeoYlDb289CSNeaf8iIhQ0XtKnhFTZ2JJ0eEVG
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,342 +193,124 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 19, 2025 at 9:43=E2=80=AFPM Nico Pache <npache@redhat.com> wrot=
-e:
->
-> The hpage_collapse functions describe functions used by madvise_collapse
-> and khugepaged. remove the unnecessary hpage prefix to shorten the
-> function name.
->
-> Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Acked-by: David Hildenbrand <david@redhat.com>
-> Signed-off-by: Nico Pache <npache@redhat.com>
+On 08.09.25 02:04, Balbir Singh wrote:
 
-LGTM.
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
+subject:
 
-Cheers,
-Lance
+"mm/rmap: rmap and migration support for device-private PMD entries"
 
+
+> Add device-private THP support to reverse mapping infrastructure,
+> enabling proper handling during migration and walk operations.
+> 
+> The key changes are:
+> - add_migration_pmd()/remove_migration_pmd(): Handle device-private
+>    entries during folio migration and splitting
+> - page_vma_mapped_walk(): Recognize device-private THP entries during
+>    VMA traversal operations
+> 
+> This change supports folio splitting and migration operations on
+> device-private entries.
+> 
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Zi Yan <ziy@nvidia.com>
+> Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+> Cc: Rakie Kim <rakie.kim@sk.com>
+> Cc: Byungchul Park <byungchul@sk.com>
+> Cc: Gregory Price <gourry@gourry.net>
+> Cc: Ying Huang <ying.huang@linux.alibaba.com>
+> Cc: Alistair Popple <apopple@nvidia.com>
+> Cc: Oscar Salvador <osalvador@suse.de>
+> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+> Cc: Nico Pache <npache@redhat.com>
+> Cc: Ryan Roberts <ryan.roberts@arm.com>
+> Cc: Dev Jain <dev.jain@arm.com>
+> Cc: Barry Song <baohua@kernel.org>
+> Cc: Lyude Paul <lyude@redhat.com>
+> Cc: Danilo Krummrich <dakr@kernel.org>
+> Cc: David Airlie <airlied@gmail.com>
+> Cc: Simona Vetter <simona@ffwll.ch>
+> Cc: Ralph Campbell <rcampbell@nvidia.com>
+> Cc: Mika Penttilä <mpenttil@redhat.com>
+> Cc: Matthew Brost <matthew.brost@intel.com>
+> Cc: Francois Dugast <francois.dugast@intel.com>
+> 
+> Signed-off-by: Balbir Singh <balbirs@nvidia.com>
 > ---
->  mm/khugepaged.c | 73 ++++++++++++++++++++++++-------------------------
->  1 file changed, 36 insertions(+), 37 deletions(-)
->
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index d3d4f116e14b..0e7bbadf03ee 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -402,14 +402,14 @@ void __init khugepaged_destroy(void)
->         kmem_cache_destroy(mm_slot_cache);
->  }
->
-> -static inline int hpage_collapse_test_exit(struct mm_struct *mm)
-> +static inline int collapse_test_exit(struct mm_struct *mm)
->  {
->         return atomic_read(&mm->mm_users) =3D=3D 0;
->  }
->
-> -static inline int hpage_collapse_test_exit_or_disable(struct mm_struct *=
-mm)
-> +static inline int collapse_test_exit_or_disable(struct mm_struct *mm)
->  {
-> -       return hpage_collapse_test_exit(mm) ||
-> +       return collapse_test_exit(mm) ||
->                 mm_flags_test(MMF_DISABLE_THP_COMPLETELY, mm);
->  }
->
-> @@ -444,7 +444,7 @@ void __khugepaged_enter(struct mm_struct *mm)
->         int wakeup;
->
->         /* __khugepaged_exit() must not run from under us */
-> -       VM_BUG_ON_MM(hpage_collapse_test_exit(mm), mm);
-> +       VM_BUG_ON_MM(collapse_test_exit(mm), mm);
->         if (unlikely(mm_flags_test_and_set(MMF_VM_HUGEPAGE, mm)))
->                 return;
->
-> @@ -502,7 +502,7 @@ void __khugepaged_exit(struct mm_struct *mm)
->         } else if (mm_slot) {
->                 /*
->                  * This is required to serialize against
-> -                * hpage_collapse_test_exit() (which is guaranteed to run
-> +                * collapse_test_exit() (which is guaranteed to run
->                  * under mmap sem read mode). Stop here (after we return =
-all
->                  * pagetables will be destroyed) until khugepaged has fin=
-ished
->                  * working on the pagetables under the mmap_lock.
-> @@ -592,7 +592,7 @@ static int __collapse_huge_page_isolate(struct vm_are=
-a_struct *vma,
->                 folio =3D page_folio(page);
->                 VM_BUG_ON_FOLIO(!folio_test_anon(folio), folio);
->
-> -               /* See hpage_collapse_scan_pmd(). */
-> +               /* See collapse_scan_pmd(). */
->                 if (folio_maybe_mapped_shared(folio)) {
->                         ++shared;
->                         if (cc->is_khugepaged &&
-> @@ -848,7 +848,7 @@ struct collapse_control khugepaged_collapse_control =
-=3D {
->         .is_khugepaged =3D true,
->  };
->
-> -static bool hpage_collapse_scan_abort(int nid, struct collapse_control *=
-cc)
-> +static bool collapse_scan_abort(int nid, struct collapse_control *cc)
->  {
->         int i;
->
-> @@ -883,7 +883,7 @@ static inline gfp_t alloc_hugepage_khugepaged_gfpmask=
-(void)
->  }
->
->  #ifdef CONFIG_NUMA
-> -static int hpage_collapse_find_target_node(struct collapse_control *cc)
-> +static int collapse_find_target_node(struct collapse_control *cc)
->  {
->         int nid, target_node =3D 0, max_value =3D 0;
->
-> @@ -902,7 +902,7 @@ static int hpage_collapse_find_target_node(struct col=
-lapse_control *cc)
->         return target_node;
->  }
->  #else
-> -static int hpage_collapse_find_target_node(struct collapse_control *cc)
-> +static int collapse_find_target_node(struct collapse_control *cc)
->  {
->         return 0;
->  }
-> @@ -923,7 +923,7 @@ static int hugepage_vma_revalidate(struct mm_struct *=
-mm, unsigned long address,
->         enum tva_type type =3D cc->is_khugepaged ? TVA_KHUGEPAGED :
->                                  TVA_FORCED_COLLAPSE;
->
-> -       if (unlikely(hpage_collapse_test_exit_or_disable(mm)))
-> +       if (unlikely(collapse_test_exit_or_disable(mm)))
->                 return SCAN_ANY_PROCESS;
->
->         *vmap =3D vma =3D find_vma(mm, address);
-> @@ -996,7 +996,7 @@ static int check_pmd_still_valid(struct mm_struct *mm=
-,
->
->  /*
->   * Bring missing pages in from swap, to complete THP collapse.
-> - * Only done if hpage_collapse_scan_pmd believes it is worthwhile.
-> + * Only done if khugepaged_scan_pmd believes it is worthwhile.
->   *
->   * Called and returns without pte mapped or spinlocks held.
->   * Returns result: if not SCAN_SUCCEED, mmap_lock has been released.
-> @@ -1082,7 +1082,7 @@ static int alloc_charge_folio(struct folio **foliop=
-, struct mm_struct *mm,
->  {
->         gfp_t gfp =3D (cc->is_khugepaged ? alloc_hugepage_khugepaged_gfpm=
-ask() :
->                      GFP_TRANSHUGE);
-> -       int node =3D hpage_collapse_find_target_node(cc);
-> +       int node =3D collapse_find_target_node(cc);
->         struct folio *folio;
->
->         folio =3D __folio_alloc(gfp, HPAGE_PMD_ORDER, node, &cc->alloc_nm=
-ask);
-> @@ -1268,10 +1268,10 @@ static int collapse_huge_page(struct mm_struct *m=
-m, unsigned long address,
->         return result;
->  }
->
-> -static int hpage_collapse_scan_pmd(struct mm_struct *mm,
-> -                                  struct vm_area_struct *vma,
-> -                                  unsigned long address, bool *mmap_lock=
-ed,
-> -                                  struct collapse_control *cc)
-> +static int collapse_scan_pmd(struct mm_struct *mm,
-> +                            struct vm_area_struct *vma,
-> +                            unsigned long address, bool *mmap_locked,
-> +                            struct collapse_control *cc)
->  {
->         pmd_t *pmd;
->         pte_t *pte, *_pte;
-> @@ -1382,7 +1382,7 @@ static int hpage_collapse_scan_pmd(struct mm_struct=
- *mm,
->                  * hit record.
->                  */
->                 node =3D folio_nid(folio);
-> -               if (hpage_collapse_scan_abort(node, cc)) {
-> +               if (collapse_scan_abort(node, cc)) {
->                         result =3D SCAN_SCAN_ABORT;
->                         goto out_unmap;
->                 }
-> @@ -1451,7 +1451,7 @@ static void collect_mm_slot(struct khugepaged_mm_sl=
-ot *mm_slot)
->
->         lockdep_assert_held(&khugepaged_mm_lock);
->
-> -       if (hpage_collapse_test_exit(mm)) {
-> +       if (collapse_test_exit(mm)) {
->                 /* free mm_slot */
->                 hash_del(&slot->hash);
->                 list_del(&slot->mm_node);
-> @@ -1753,7 +1753,7 @@ static void retract_page_tables(struct address_spac=
-e *mapping, pgoff_t pgoff)
->                 if (find_pmd_or_thp_or_none(mm, addr, &pmd) !=3D SCAN_SUC=
-CEED)
->                         continue;
->
-> -               if (hpage_collapse_test_exit(mm))
-> +               if (collapse_test_exit(mm))
->                         continue;
->                 /*
->                  * When a vma is registered with uffd-wp, we cannot recyc=
-le
-> @@ -2275,9 +2275,9 @@ static int collapse_file(struct mm_struct *mm, unsi=
-gned long addr,
->         return result;
->  }
->
-> -static int hpage_collapse_scan_file(struct mm_struct *mm, unsigned long =
-addr,
-> -                                   struct file *file, pgoff_t start,
-> -                                   struct collapse_control *cc)
-> +static int collapse_scan_file(struct mm_struct *mm, unsigned long addr,
-> +                             struct file *file, pgoff_t start,
-> +                             struct collapse_control *cc)
->  {
->         struct folio *folio =3D NULL;
->         struct address_space *mapping =3D file->f_mapping;
-> @@ -2332,7 +2332,7 @@ static int hpage_collapse_scan_file(struct mm_struc=
-t *mm, unsigned long addr,
->                 }
->
->                 node =3D folio_nid(folio);
-> -               if (hpage_collapse_scan_abort(node, cc)) {
-> +               if (collapse_scan_abort(node, cc)) {
->                         result =3D SCAN_SCAN_ABORT;
->                         folio_put(folio);
->                         break;
-> @@ -2382,7 +2382,7 @@ static int hpage_collapse_scan_file(struct mm_struc=
-t *mm, unsigned long addr,
->         return result;
->  }
->
-> -static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *res=
-ult,
-> +static unsigned int collapse_scan_mm_slot(unsigned int pages, int *resul=
-t,
->                                             struct collapse_control *cc)
->         __releases(&khugepaged_mm_lock)
->         __acquires(&khugepaged_mm_lock)
-> @@ -2420,7 +2420,7 @@ static unsigned int khugepaged_scan_mm_slot(unsigne=
-d int pages, int *result,
->                 goto breakouterloop_mmap_lock;
->
->         progress++;
-> -       if (unlikely(hpage_collapse_test_exit_or_disable(mm)))
-> +       if (unlikely(collapse_test_exit_or_disable(mm)))
->                 goto breakouterloop;
->
->         vma_iter_init(&vmi, mm, khugepaged_scan.address);
-> @@ -2428,7 +2428,7 @@ static unsigned int khugepaged_scan_mm_slot(unsigne=
-d int pages, int *result,
->                 unsigned long hstart, hend;
->
->                 cond_resched();
-> -               if (unlikely(hpage_collapse_test_exit_or_disable(mm))) {
-> +               if (unlikely(collapse_test_exit_or_disable(mm))) {
->                         progress++;
->                         break;
->                 }
-> @@ -2449,7 +2449,7 @@ static unsigned int khugepaged_scan_mm_slot(unsigne=
-d int pages, int *result,
->                         bool mmap_locked =3D true;
->
->                         cond_resched();
-> -                       if (unlikely(hpage_collapse_test_exit_or_disable(=
-mm)))
-> +                       if (unlikely(collapse_test_exit_or_disable(mm)))
->                                 goto breakouterloop;
->
->                         VM_BUG_ON(khugepaged_scan.address < hstart ||
-> @@ -2462,12 +2462,12 @@ static unsigned int khugepaged_scan_mm_slot(unsig=
-ned int pages, int *result,
->
->                                 mmap_read_unlock(mm);
->                                 mmap_locked =3D false;
-> -                               *result =3D hpage_collapse_scan_file(mm,
-> +                               *result =3D collapse_scan_file(mm,
->                                         khugepaged_scan.address, file, pg=
-off, cc);
->                                 fput(file);
->                                 if (*result =3D=3D SCAN_PTE_MAPPED_HUGEPA=
-GE) {
->                                         mmap_read_lock(mm);
-> -                                       if (hpage_collapse_test_exit_or_d=
-isable(mm))
-> +                                       if (collapse_test_exit_or_disable=
-(mm))
->                                                 goto breakouterloop;
->                                         *result =3D collapse_pte_mapped_t=
-hp(mm,
->                                                 khugepaged_scan.address, =
-false);
-> @@ -2476,7 +2476,7 @@ static unsigned int khugepaged_scan_mm_slot(unsigne=
-d int pages, int *result,
->                                         mmap_read_unlock(mm);
->                                 }
->                         } else {
-> -                               *result =3D hpage_collapse_scan_pmd(mm, v=
-ma,
-> +                               *result =3D collapse_scan_pmd(mm, vma,
->                                         khugepaged_scan.address, &mmap_lo=
-cked, cc);
->                         }
->
-> @@ -2509,7 +2509,7 @@ static unsigned int khugepaged_scan_mm_slot(unsigne=
-d int pages, int *result,
->          * Release the current mm_slot if this mm is about to die, or
->          * if we scanned all vmas of this mm.
->          */
-> -       if (hpage_collapse_test_exit(mm) || !vma) {
-> +       if (collapse_test_exit(mm) || !vma) {
->                 /*
->                  * Make sure that if mm_users is reaching zero while
->                  * khugepaged runs here, khugepaged_exit will find
-> @@ -2563,8 +2563,8 @@ static void khugepaged_do_scan(struct collapse_cont=
-rol *cc)
->                         pass_through_head++;
->                 if (khugepaged_has_work() &&
->                     pass_through_head < 2)
-> -                       progress +=3D khugepaged_scan_mm_slot(pages - pro=
-gress,
-> -                                                           &result, cc);
-> +                       progress +=3D collapse_scan_mm_slot(pages - progr=
-ess,
-> +                                                         &result, cc);
->                 else
->                         progress =3D pages;
->                 spin_unlock(&khugepaged_mm_lock);
-> @@ -2805,12 +2805,11 @@ int madvise_collapse(struct vm_area_struct *vma, =
-unsigned long start,
->
->                         mmap_read_unlock(mm);
->                         mmap_locked =3D false;
-> -                       result =3D hpage_collapse_scan_file(mm, addr, fil=
-e, pgoff,
-> -                                                         cc);
-> +                       result =3D collapse_scan_file(mm, addr, file, pgo=
-ff, cc);
->                         fput(file);
->                 } else {
-> -                       result =3D hpage_collapse_scan_pmd(mm, vma, addr,
-> -                                                        &mmap_locked, cc=
-);
-> +                       result =3D collapse_scan_pmd(mm, vma, addr,
-> +                                                  &mmap_locked, cc);
->                 }
->                 if (!mmap_locked)
->                         *lock_dropped =3D true;
-> --
-> 2.50.1
->
->
+
+[...]
+
+
+> +++ b/mm/page_vma_mapped.c
+> @@ -250,12 +250,11 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+>   			pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+>   			pmde = *pvmw->pmd;
+>   			if (!pmd_present(pmde)) {
+> -				swp_entry_t entry;
+> +				swp_entry_t entry = pmd_to_swp_entry(pmde);
+>   
+>   				if (!thp_migration_supported() ||
+>   				    !(pvmw->flags & PVMW_MIGRATION))
+>   					return not_found(pvmw);
+> -				entry = pmd_to_swp_entry(pmde);
+>   				if (!is_migration_entry(entry) ||
+>   				    !check_pmd(swp_offset_pfn(entry), pvmw))
+>   					return not_found(pvmw);
+
+Why this change? Looks unrelated.
+
+> @@ -277,6 +276,15 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+>   			 * cannot return prematurely, while zap_huge_pmd() has
+>   			 * cleared *pmd but not decremented compound_mapcount().
+
+Reminder to self: cleanup compound_mapcount() leftovers
+
+>   			 */
+> +			swp_entry_t entry;
+> +
+> +			entry = pmd_to_swp_entry(pmde);
+
+swp_entry_t entry = pmd_to_swp_entry(pmde);
+
+> +
+> +			if (is_device_private_entry(entry)) {
+> +				pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+> +				return true;
+> +			}
+> +
+>   			if ((pvmw->flags & PVMW_SYNC) &&
+>   			    thp_vma_suitable_order(vma, pvmw->address,
+>   						   PMD_ORDER) &&
+> diff --git a/mm/rmap.c b/mm/rmap.c
+> index 236ceff5b276..6de1baf7a4f1 100644
+> --- a/mm/rmap.c
+> +++ b/mm/rmap.c
+> @@ -1063,8 +1063,10 @@ static int page_vma_mkclean_one(struct page_vma_mapped_walk *pvmw)
+>   		} else {
+>   #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>   			pmd_t *pmd = pvmw->pmd;
+> -			pmd_t entry;
+> +			pmd_t entry = pmdp_get(pmd);
+>   
+> +			if (!pmd_present(entry))
+> +				continue;
+>   			if (!pmd_dirty(*pmd) && !pmd_write(*pmd))
+>   				continue;
+>   
+
+If you just did a pmdp_get() you should use it in these functions as 
+well. If not (cleanup later), do a straight *pmd like the others.
+
+
+
+Apart from that nothing jumped at me.
+
+-- 
+Cheers
+
+David / dhildenb
+
 
