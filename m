@@ -4,166 +4,187 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D299ACAC58D
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 12:07:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1640ACA1016
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 12:16:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 207AA6B0022; Thu, 11 Sep 2025 08:07:29 -0400 (EDT)
+	id 72448900004; Thu, 11 Sep 2025 08:16:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1DF546B0023; Thu, 11 Sep 2025 08:07:29 -0400 (EDT)
+	id 6FBE4900002; Thu, 11 Sep 2025 08:16:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0CE906B0024; Thu, 11 Sep 2025 08:07:29 -0400 (EDT)
+	id 5EA56900004; Thu, 11 Sep 2025 08:16:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E9B416B0022
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 08:07:28 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 63CF9140208
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 12:07:27 +0000 (UTC)
-X-FDA: 83876844534.22.8395883
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf23.hostedemail.com (Postfix) with ESMTP id CDAD4140012
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 12:07:24 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=k8qq71z0;
-	spf=pass (imf23.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 455E4900002
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 08:16:01 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DE81C85CDD
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 12:16:00 +0000 (UTC)
+X-FDA: 83876866080.07.DC4DB76
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 7A90C10000A
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 12:15:58 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JNAl9yJR;
+	spf=pass (imf14.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757592445;
+	s=arc-20220608; t=1757592958;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c30ZQnsvAEyuVkRVamQoGQaRen0nYIRa+BA7jFqu78U=;
-	b=jOmlWoefXsfb/xZbsOYpPt1vcWAFOVnbNlH4Gwia2U0nrRWCdXgfzoByaFdsPKEkWY5ZJv
-	o9Y5IsrY5/PSynJM5QC6N1G5EQTdLjLn9lRVP183b1MiBg/2/HVt+G6O8HnFf2O5eWW8UC
-	vPS95tcS8blDiugw6abd5vgdDo9i10Y=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=k8qq71z0;
-	spf=pass (imf23.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757592445; a=rsa-sha256;
+	bh=LZSC160BNjuUUAGLkXphv06qqbR9jmakoLUoFELbVgo=;
+	b=TADj70w8Aasky2La2/m1iSu6sOEAZId+MjizO1Aq+SGkk4ITzGz1oV/Prq/S4dS7HlLX5z
+	8RG12TUrA2VIwLZB15wIGMgbLk3HbYxX+EDnn6410gNDEth3qU1aBq13VEmkI9I6zbbZg0
+	L768SFdr9V6JJlq1QERti94ZKDsyzc8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757592958; a=rsa-sha256;
 	cv=none;
-	b=TmiGygds2CERMfjHAN/BN6nAsp9GfiFFFI9s1OWqy2a9UCjMdL0Dk3GSkXXmc3uJCVA5da
-	ZHDW+VVHy3niQAryasL+VNWM3eQq7rsn9lxSsO4/1Ab5TMYehgZvXWjDkNuYW7A+E3B4Uj
-	J5RjT/NrwT8d0QmZovNAdGQWd2tA1nQ=
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58B84fHU032047;
-	Thu, 11 Sep 2025 12:06:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=c30ZQnsvAEyuVkRVamQoGQaRen0nYI
-	Ra+BA7jFqu78U=; b=k8qq71z07GrReGd9S9mOiL2kfz2BW5pit9iGHWyQ501+3o
-	18SrSVgXyKIh3fgbTocFTOqLMtqSFK4cxX7BIxE3tS22XZO0MuuzR1offUBCNMnq
-	oKDIaYOBM6OqV/8/2nb5TYMMtbfty7TIxuJR1UwI7ijudG7hBz2n8mEO1/1JtIWQ
-	dCG50x7Is5mNMQX/2OgEzJRaOS4B3WAK5BbVoavZQgJ0vMUStU+M4xrwJU761IBV
-	72RsuHX8BmU9AXx/ZC8PQ4TAp5bfKtZi3PWfc0gEnh3wsk+FWngrjfyj6wXqFlUw
-	ta9dp/wt1kSFBm9tnzdcdwRJffzZgn8TZgXdZhNg==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490cffmge8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 11 Sep 2025 12:06:56 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58BButst022969;
-	Thu, 11 Sep 2025 12:06:55 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490cffmge1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 11 Sep 2025 12:06:55 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58B99ZNi011435;
-	Thu, 11 Sep 2025 12:06:54 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 490y9unx8m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 11 Sep 2025 12:06:54 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 58BC6qp621103260
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 11 Sep 2025 12:06:52 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 592C42004B;
-	Thu, 11 Sep 2025 12:06:52 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 95E1D20040;
-	Thu, 11 Sep 2025 12:06:51 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.155.204.135])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu, 11 Sep 2025 12:06:51 +0000 (GMT)
-Date: Thu, 11 Sep 2025 14:06:50 +0200
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: David Hildenbrand <david@redhat.com>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, Andreas Larsson <andreas@gaisler.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
-        Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ryan Roberts <ryan.roberts@arm.com>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
-        Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
-        linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-        sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org,
-        Mark Rutland <Mark.Rutland@arm.com>
-Subject: Re: [PATCH v2 2/7] mm: introduce local state for lazy_mmu sections
-Message-ID: <80be36e5-d6e1-4b37-a1ca-47e92ac21b02-agordeev@linux.ibm.com>
-References: <20250908073931.4159362-1-kevin.brodsky@arm.com>
- <20250908073931.4159362-3-kevin.brodsky@arm.com>
- <d23ea683-cca4-4973-88b1-4f6fd9b22314@redhat.com>
- <ca2054ad-b163-4e61-8ec4-6f2e36461628-agordeev@linux.ibm.com>
- <e7acb889-1fe9-4db3-acf4-39f4960e8ccd@redhat.com>
- <2fecfae7-1140-4a23-a352-9fd339fcbae5-agordeev@linux.ibm.com>
- <e521b1f4-3f2b-48cd-9568-b9a4cf4c4830@redhat.com>
- <47ee1df7-1602-4200-af94-475f84ca8d80@arm.com>
- <b2e52967-7ca1-411e-9c66-8d3483624ca7-agordeev@linux.ibm.com>
- <250835cd-f07a-4b8a-bc01-ace24b407efc@arm.com>
+	b=0LpGvsWajJ2lD+hEaqoiUjkKT3IUUvTKc2pb7kveWHZT98Btlif4b7P049ezzdwFhRzpGE
+	FZt9JAEBJuaZMvNwVem37n59TAheqBkvJIfr54GNUxOXFlCCCwwtDbtCmd2ErZuh+W5X05
+	h2kcrQGhcPbPyROgXKhITDQ6UlJJ8AM=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JNAl9yJR;
+	spf=pass (imf14.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1757592957;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=LZSC160BNjuUUAGLkXphv06qqbR9jmakoLUoFELbVgo=;
+	b=JNAl9yJRIkC9pIQd65H3xLzXZ1EIl7BpT0Ync6JhBfW1hxwSRvgeUz6+xBrMMbMI7f4U1v
+	JVVgOGQmaVBYRBTV0rMxrfW6sONuQyWjDnywlp9lyAcfp7I/SWrqURSo3jJUCLUL9P67DH
+	hSASFVrpBtIhQ7E/ly9264Bnaug0eZE=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-264-aqQ8EmUUO1Ss3tJEuPo30g-1; Thu, 11 Sep 2025 08:15:56 -0400
+X-MC-Unique: aqQ8EmUUO1Ss3tJEuPo30g-1
+X-Mimecast-MFC-AGG-ID: aqQ8EmUUO1Ss3tJEuPo30g_1757592955
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3e68a54dac2so322587f8f.1
+        for <linux-mm@kvack.org>; Thu, 11 Sep 2025 05:15:56 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757592955; x=1758197755;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=LZSC160BNjuUUAGLkXphv06qqbR9jmakoLUoFELbVgo=;
+        b=eUyNrdhGK8WFsBSCzzdQWxi7bRhthVwRcUPH9uXmNVeFmmBMzZYwbUgKRVsuKaCInb
+         wbnHRyBGvVVIRqiiHUNfHIlJtNDRSOqBgN+m2B7JX21h9hGH+OCsTAIyeBpwYg11SbjM
+         mzHelRLbpZf92kmaHQvBEDuw8JRC0unZ+26K0Fo4iFLgxLmgYRikGJzayTEh4fLdJC9w
+         9CoKJdo4bYU83LAhx/Kqz+byo7/rfIPrC1n5IA9FqZ0dZ4s5KYNfR/jiCViS/alYuknH
+         0DmomWU04cIgaVUzjYQoHEebmk1N5/VlerP80hae/DZgEVY2iaLmZoGvUMP1jYlOYu9B
+         70xA==
+X-Forwarded-Encrypted: i=1; AJvYcCU31OLVV3SmgPFziqkd9eStrynO/by3/QC0J6QCW6kOzSRuhecILwVL6yTT4/oeewxjjlgwDi9n+A==@kvack.org
+X-Gm-Message-State: AOJu0Yy5m//ujXeDyryf+7Xgfoui/K/z4rdHmHCAswFYjhGc7xs2deMP
+	9BOZak2SZt+MA8XrgAOF36Dw+grup36qC3y/nFOzr41a0yaDnIdrpjYGW96bwaUq2WOh4J3IEE3
+	rZV0BrRUoYKDYOxbH7tDJYKm9rsh3CF9wUN/9IUhbn7fw9J2bRb4j
+X-Gm-Gg: ASbGncvmKPzn/92qAospKY7F0q0psXwoHQGIlmg/mh7fXCBR64ijN28OrgiBs47eNqW
+	OHi9iVKsCzBruy6D3aAW6oNLOcWRYZDtGxxQpDdLPd8Bp1YIcFl+Ay50Uo4FjdU3xYaBcfSTMPh
+	PjHfrOe3XI3N6k0YxzAfhRrJqkP+6QwtCvlkPaOiCVlLVO4f4rrGHn+R5P/t4D/reAUygCzzFDI
+	ReuzDhC1Jig834EJThI7FpVZT1emkTKjubwyVhA5dsWj6OZfhMI4zIEu7K0va172N/oDfDK9uri
+	cLhCpisveQmULVrMVMDh4M0yAnXg50Lsa1YYmMJOaMkfRQq6tU2emg/Fd4rO4CtLWPgsSfmmlHR
+	6Mz1UiMF5TCyj40p3RICH6PMfVDbcEMrEyj5wz2j5S+gkDT1RkVYvPtIT4pv3+ZP4JIc=
+X-Received: by 2002:a05:6000:26c4:b0:3ce:7673:bb30 with SMTP id ffacd0b85a97d-3e75e13cae4mr2820245f8f.14.1757592955136;
+        Thu, 11 Sep 2025 05:15:55 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFguV4xqw7F+/FuyOrWlJOAk5WiiJK6C2irThfGhJhUviXccwRkqmzT0qljmwNeg5bEqGRHFw==
+X-Received: by 2002:a05:6000:26c4:b0:3ce:7673:bb30 with SMTP id ffacd0b85a97d-3e75e13cae4mr2820217f8f.14.1757592954536;
+        Thu, 11 Sep 2025 05:15:54 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f42:b000:db8b:7655:f60f:812b? (p200300d82f42b000db8b7655f60f812b.dip0.t-ipconnect.de. [2003:d8:2f42:b000:db8b:7655:f60f:812b])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45e0157d68esm12986065e9.6.2025.09.11.05.15.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 11 Sep 2025 05:15:53 -0700 (PDT)
+Message-ID: <17e3c19e-0719-4643-8db8-cf8c5b5aa022@redhat.com>
+Date: Thu, 11 Sep 2025 14:15:51 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <250835cd-f07a-4b8a-bc01-ace24b407efc@arm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: EOlye06iv3wrpFZ8EV5hsz2FcaKHpkNR
-X-Proofpoint-GUID: 51K6fRL5QpJCzFIQhT_Qazz7bChQjXpl
-X-Authority-Analysis: v=2.4 cv=EYDIQOmC c=1 sm=1 tr=0 ts=68c2bb60 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=kj9zAlcOel0A:10 a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=7CQSdrXTAAAA:8
- a=jRhVRVM2bwpbWWX_RR8A:9 a=CjuIK1q_8ugA:10 a=a-qgeE7W1pNrGK8U0ZQC:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA2MDAyMCBTYWx0ZWRfX8pGJfFgtntNW
- /kOIUEwDJMICGimD1/ufjSKSVIfmo3TNK7+Fxsinl9Egq+oGXoolAwIU93iuesvkQ3s13VVlzhh
- JIgGdj6U9PokjpkHg4ykDpABkraxfLb3HERwg3941FM1HXB2esU2ebixaknpbywBxWh5hGHimsp
- ci9R67AshxoJpy340lLj5ssEfi6eKhyjCh5p8fZq/k83GFNAv5ZYjhl/Hqc7I+sNgjVlWR40LHM
- kZLurS1M60tPSFVJMaBaPvAXWRbQAESVilgI8Vf2JWna8t2s571X/x3Ahb2bFBInNwL1PkLtgz0
- aizOmw9YsKcqSGhvZ6E05+Xu1Xlt46nNfGetQx37HOL9xVINKsAa7u5yRb/jAsXOIQWyZmkfM1v
- 9y5BFajA
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-10_04,2025-09-11_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 adultscore=0 suspectscore=0 spamscore=0 impostorscore=0
- priorityscore=1501 phishscore=0 clxscore=1015 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509060020
-X-Stat-Signature: pas4z3wdjnx8quyty95k3xjgyi98wrr8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [v5 02/15] mm/huge_memory: add device-private THP support to PMD
+ operations
+To: Balbir Singh <balbirs@nvidia.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+Cc: damon@lists.linux.dev, dri-devel@lists.freedesktop.org,
+ Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, Oscar Salvador <osalvador@suse.de>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lyude Paul <lyude@redhat.com>,
+ Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Ralph Campbell <rcampbell@nvidia.com>,
+ =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Francois Dugast <francois.dugast@intel.com>
+References: <20250908000448.180088-1-balbirs@nvidia.com>
+ <20250908000448.180088-3-balbirs@nvidia.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20250908000448.180088-3-balbirs@nvidia.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 5vyg7WtnJBNxTDp8vDWP53s60LGYYtfBKFNS7pciFPs_1757592955
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ye8moo4qo994ow9g53u7oa4og66b7b6e
+X-Rspamd-Queue-Id: 7A90C10000A
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CDAD4140012
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1757592444-197632
-X-HE-Meta: U2FsdGVkX18z+i4Hv9ntFweNpYQyBBjX0If0hwReNLLbzSY3QYDyT7KxGmDCxyJb6XXy7XgC5rBPAfm47VGkuflR78k0zZYuQXx00Zeec5nTHweUO4HNdqQraM/9myzb2m8vKxaQtcYC3OuuoYftZZHDJXHRRJ5fkADBYFmY/T63/3FTJKYyTMC10DsNzRZDTD4z4u6J+1RxgIQFu1OAg2vHf0SNb+qWLXSDfY2wH2dN55iYZOMsvHfsbOuIVDFrh6BLzOOtgrDGMLIsAnY3WYoU31fj2NfkK9ogMfMO5U9EYNN3VImpzkekoXad9siGaibiPQ6hKtUTXJetNFQAlw7MhTgGD8AYA+ZsxmQGgYPffwIJrWjLBka6+brSR4EtO32q3x9lLOO0oHsOF+zEIaYySVrEEj25BoKxgOzbkKiUnbCryD8SLEfbFEX/Nll3KmhhjWW3NobBx/+2/6JQdYgXWotSavzx32cylv3qPYNl+BRm0x/0fYcYJHOokU3zaInoNedLG0iWpHeLGkDxLy9KqEcTimWZz8scJTpOjSJcR5bEg3EnJ9RsStd7Tv1MtZmwqqPWc7dxa+nnN9XYnusF5Xcov1e1k6XOvufq++hfFcGXQO1DM/qUjdl3OOMwhIcqY+kwSiBiANrUBKB+BCL1MHH9kz6FHksvYde2hAoRcIaBDO7FsY7quQgYX/QSnG9X99rqmiarGvlPh370ez59ofeo2ew8Ifi25GgEw56wVSBVgYMYrUmJYXYo3lOcp3x+Oq3IxsOQ216a9V1BUrBG/2Hr7z+C9zvwGQlgBrGYazmp20qb5jsQXzhYbSdHj4oglQ5UwBBhl7xmj+hoYSnvh+yqSOkuWlt940KZwOkpL9k3gP1Tz4GRovmwcEnQEmy13oSIF3pltY9o56yy+83auB2tK/6xdUMewM0Ssg71eLUV/VtAFeGNTbBIxGKaIc4hwJIpKV4c96kp9jr
- n+7u2CAd
- CVNXxWLRhCqS39Epi1vlaJylaFgEh6IsR1VKiV2y3WJLSlKgFE0l+gjLmdivFZse2hxGLKqI3oV34WdsQhskwVnQEKcD5t5im81TFUgKDTwNhQPnrVAzpFH9gNFEqU8G1p+XyfImCMfcHEqeGwQGCMyShMp3leWxysvwn5eFVT9u2iOxndYv4F9Jr0Dety+0BhsYx0bCKjXteZkQmM+A8SjyOkwYaJKcaT9zcL4aq0GcFy/Hrtn4CUIxoOlBa7UKClhLpyhTxW/+mrsUH1M9B3E7dzYMXAdpZZy3wT+MaVUQFrJteZykQ7GIflAHeB6meksC16YHEKV9W+N4nzP7/7Nq9EkpKFcg0GwIfptmUh9KOhMTKQhK3xzRWWxmj2YrchbfkLR1TTy399QbvzGOSX7Rz3pGInVPAWmJXJ8ivWCL2eN4kldHMKKYVbLZDYPch+mEs8itAC+sE7cWaG0UiWF6Hp7LwCbZ8sfkH
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1757592958-481254
+X-HE-Meta: U2FsdGVkX19aFva/oOivSDXgnrO1Mo2MTxovwrAsA8fNB7Z4hACri7CeluwALrFPv7cdyG+1GRQo0Nji21KKsI4pcVjXHYhaLwijVifdcjasTOjtiIgxiv3/Wucog7Z6SBvite1k7aXxHivB8Qr+ZGXAg2HJdlJr/vOM0C9vTtr4bSUcRaUdx6JIKVCrTQC5Vx6KsecsDzUbnWdgMoVWl8j4JAiOx/LA46jxSGlLcsr1cgXAfo7KGOddZc2SGI/jsQtHjWV0L6RUO49BzPANGz7zQtqstjjCBs3iMiFlh/brsGeVNibZAUMFiPzhKOCbi9Q5MR0li6Qu2MY7B7VgxrSatbOSo7bk+DV5jBw6Bl47+y7YT4T31TNuQhKTL8gDaglzW7W7a4oOUMWASuNU7JAs4nulR97L+70X0c9p0G/mXZaXZMJdiCk8MwHOLMPE1IKKHyNbyX9N5op4BvdP7UvN7+v0ZUIUaLqDnVoQxwHOAoztkRa8Yo7pBp4TrykO44a0D43G+eRmURKyDKK83nYd3NJBMON400QVXChYLNxUhsjYoJVN1IQhFPPSfphCMtH4wg2kHiIB0GLxQ0Ywmz+k1nm2l7DRcoWz4pdNGf1HsSWfmdozc57lPjfkU1sbSLhSMWyR/3T1XSteqeh7Yxz0/5f3d8WtATCwwIrCyDKFaRrkforAh3YsIIPNax1avyV1oYSjo9RfkKDSfYVT3B5kHRRdl+Tx8kmlfoUV0k8UBPMqp1aV6fYIuMEDlvmsu7QY5XI+0Z+bDi9tJaIBvVsdaD3KHpZwJ2dnlrOF96wuFVAbW9RpLZx2qkDetfGKS6p0SgBoSNcGJKzPUcqI+7mL27pObEzB8ES4Nc2kQUvNUBFWsVy6FP7r3cZa58k+fmI1nO8rRsoIezJXX6i4dG6ZB9Sed6o36gxWcdj0ybA4115gK+7dI5KtsbXPPkNh6RwMfLDzz4vMW7qYVMv
+ lmjerHvK
+ B1kMSQmnS+cEPJHi3zWWQ/Ii5vKnjgyaF+dvYM5eFhG7JucbKpE/XpacvW6XwU2f+wXgkKHydA8UXm2O0SPya8i1I8UXnKp1NTWvf6ePwS2rQ3JO+QbLHJoUlOSiIL2EWoZlZocOSSDcI0YOKaHwHP2XFNrjkZlh91DMoh1NqeNE+NjpILcWzh7Nx2jHwNUXH1xTmxCSCgZ6gaIwnIq0KtPy8pLR65ZqzWV4AlZgiWCVzpd05q3gRrEDmKvHIkpzSZTJfJYS+RT3tA5wupbK/8HvD+MnsWrR+PwNl6LZawC0BwQmkogmtZ5HVvpHP2aL/SYCojiFw2TOOPnzXWU9NaZNlhub2527ixL1L4wS1TzqhVIeLQOrR9gTHgEP8RXQse2vnqOuuyoesdJBEuHBu0MSQnOw2dw3zA5LEtB73oPsL70xqstS2t2uINW19pjhL32EJDP0pW0DZEL74q4Pe9dVhPwhFvJ0xdcKQAm+eYxNdnPIaDdhK2Md+EOS8pQq8Y93wJv3z4zxMw5+8EZlc63thEn3+kzX3ulPB0BV/CDq28p+/9RzOXmeir24jUtn4ep72TIEkqeDFcKOnK2z6AOmS9zNEtlGl2Gh7DEIovtHfM2WnxqSx7KrhbXwYiNrqCJFTTc+foOs3UBHTGp9qIBfHB2DgwqyE4/dzO//QpXvF2FW+FghaWeutSaW0IxkuiuNjoTDBc+5VtD1lJSYfQeGbfQrYiGg16H5J/keFM4zZ35CPE5/NrjFEpg4nMA+7Ja3K8e1CLqZj2/Gd0KhHaEWwJ6Ib0G+QL+yoPpMwYzRWbdeoEL5NNBMdKJ4kK+HrjKqPqv0dYZY4IUtUyOcLMjK/0BfZNoTioOb9u/pBKOnyw+2LCBG+033ius1wqGxmvUlELDYtooa1rQD1ZGV6efpQzzs/pj7SUMyY8UToDDWdE1C96HwApNJbrtmrQoJhbOcxmLc82KHqvtq0t37gMBKdrA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -172,73 +193,251 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 10, 2025 at 06:11:54PM +0200, Kevin Brodsky wrote:
-
-Hi Kevin,
-
-> On 09/09/2025 16:38, Alexander Gordeev wrote:
-> >>>>> Would that integrate well with LAZY_MMU_DEFAULT etc?
-> >>>> Hmm... I though the idea is to use LAZY_MMU_* by architectures that
-> >>>> want to use it - at least that is how I read the description above.
-> >>>>
-> >>>> It is only kasan_populate|depopulate_vmalloc_pte() in generic code
-> >>>> that do not follow this pattern, and it looks as a problem to me.
-> >> This discussion also made me realise that this is problematic, as the
-> >> LAZY_MMU_{DEFAULT,NESTED} macros were meant only for architectures'
-> >> convenience, not for generic code (where lazy_mmu_state_t should ideally
-> >> be an opaque type as mentioned above). It almost feels like the kasan
-> >> case deserves a different API, because this is not how enter() and
-> >> leave() are meant to be used. This would mean quite a bit of churn
-> >> though, so maybe just introduce another arch-defined value to pass to
-> >> leave() for such a situation - for instance,
-> >> arch_leave_lazy_mmu_mode(LAZY_MMU_FLUSH)?
-> > What about to adjust the semantics of apply_to_page_range() instead?
-> >
-> > It currently assumes any caller is fine with apply_to_pte_range() to
-> > enter the lazy mode. By contrast, kasan_(de)populate_vmalloc_pte() are
-> > not fine at all and must leave the lazy mode. That literally suggests
-> > the original assumption is incorrect.
-> >
-> > We could change int apply_to_pte_range(..., bool create, ...) to e.g.
-> > apply_to_pte_range(..., unsigned int flags, ...) and introduce a flag
-> > that simply skips entering the lazy mmu mode.
+On 08.09.25 02:04, Balbir Singh wrote:
+> Extend core huge page management functions to handle device-private THP
+> entries. This enables proper handling of large device-private folios in
+> fundamental MM operations.
 > 
-> This is pretty much what Ryan proposed [1r] some time ago, although for
-> a different purpose (avoiding nesting). There wasn't much appetite for
-> it then, but I agree that this would be a more logical way to go about it.
+> The following functions have been updated:
 > 
-> - Kevin
+> - copy_huge_pmd(): Handle device-private entries during fork/clone
+> - zap_huge_pmd(): Properly free device-private THP during munmap
+> - change_huge_pmd(): Support protection changes on device-private THP
+> - __pte_offset_map(): Add device-private entry awareness
 > 
-> [1r]
-> https://lore.kernel.org/all/20250530140446.2387131-4-ryan.roberts@arm.com/
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Zi Yan <ziy@nvidia.com>
+> Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+> Cc: Rakie Kim <rakie.kim@sk.com>
+> Cc: Byungchul Park <byungchul@sk.com>
+> Cc: Gregory Price <gourry@gourry.net>
+> Cc: Ying Huang <ying.huang@linux.alibaba.com>
+> Cc: Alistair Popple <apopple@nvidia.com>
+> Cc: Oscar Salvador <osalvador@suse.de>
+> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+> Cc: Nico Pache <npache@redhat.com>
+> Cc: Ryan Roberts <ryan.roberts@arm.com>
+> Cc: Dev Jain <dev.jain@arm.com>
+> Cc: Barry Song <baohua@kernel.org>
+> Cc: Lyude Paul <lyude@redhat.com>
+> Cc: Danilo Krummrich <dakr@kernel.org>
+> Cc: David Airlie <airlied@gmail.com>
+> Cc: Simona Vetter <simona@ffwll.ch>
+> Cc: Ralph Campbell <rcampbell@nvidia.com>
+> Cc: Mika Penttilä <mpenttil@redhat.com>
+> Cc: Matthew Brost <matthew.brost@intel.com>
+> Cc: Francois Dugast <francois.dugast@intel.com>
+> 
+> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+> Signed-off-by: Balbir Singh <balbirs@nvidia.com>
+> ---
+>   include/linux/swapops.h | 27 +++++++++++++++++++
+>   mm/huge_memory.c        | 60 ++++++++++++++++++++++++++++++++++++-----
+>   mm/pgtable-generic.c    |  6 +++++
+>   3 files changed, 86 insertions(+), 7 deletions(-)
+> 
+> diff --git a/include/linux/swapops.h b/include/linux/swapops.h
+> index 64ea151a7ae3..59c5889a4d54 100644
+> --- a/include/linux/swapops.h
+> +++ b/include/linux/swapops.h
+> @@ -594,6 +594,33 @@ static inline int is_pmd_migration_entry(pmd_t pmd)
+>   }
+>   #endif  /* CONFIG_ARCH_ENABLE_THP_MIGRATION */
+>   
+> +#if defined(CONFIG_ZONE_DEVICE) && defined(CONFIG_ARCH_ENABLE_THP_MIGRATION)
+> +
+> +/**
+> + * is_pmd_device_private_entry() - Check if PMD contains a device private swap entry
+> + * @pmd: The PMD to check
+> + *
+> + * Returns true if the PMD contains a swap entry that represents a device private
+> + * page mapping. This is used for zone device private pages that have been
+> + * swapped out but still need special handling during various memory management
+> + * operations.
+> + *
+> + * Return: 1 if PMD contains device private entry, 0 otherwise
+> + */
+> +static inline int is_pmd_device_private_entry(pmd_t pmd)
+> +{
+> +	return is_swap_pmd(pmd) && is_device_private_entry(pmd_to_swp_entry(pmd));
+> +}
+> +
+> +#else /* CONFIG_ZONE_DEVICE && CONFIG_ARCH_ENABLE_THP_MIGRATION */
+> +
+> +static inline int is_pmd_device_private_entry(pmd_t pmd)
+> +{
+> +	return 0;
+> +}
+> +
+> +#endif /* CONFIG_ZONE_DEVICE && CONFIG_ARCH_ENABLE_THP_MIGRATION */
+> +
+>   static inline int non_swap_entry(swp_entry_t entry)
+>   {
+>   	return swp_type(entry) >= MAX_SWAPFILES;
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 26cedfcd7418..2af74e09b279 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -1703,8 +1703,11 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
+>   	if (unlikely(is_swap_pmd(pmd))) {
+>   		swp_entry_t entry = pmd_to_swp_entry(pmd);
+>   
+> -		VM_BUG_ON(!is_pmd_migration_entry(pmd));
+> -		if (!is_readable_migration_entry(entry)) {
+> +		VM_WARN_ON(!is_pmd_migration_entry(pmd) &&
+> +				!is_pmd_device_private_entry(pmd));
+> +
 
-May be I missing the point, but I read it as an opposition to the whole
-series in general and to the way apply_to_pte_range() would be altered
-in particular:
+Wrong indentation.
 
- static int apply_to_pte_range(struct mm_struct *mm, pmd_t *pmd,
- 				     unsigned long addr, unsigned long end,
- 				     pte_fn_t fn, void *data, bool create,
--				     pgtbl_mod_mask *mask)
-+				     pgtbl_mod_mask *mask, bool lazy_mmu)
+> +		if (is_migration_entry(entry) &&
+> +			!is_readable_migration_entry(entry)) {
 
-The idea of instructing apply_to_page_range() to skip the lazy mmu mode
-was not countered. Quite opposite, Liam suggested exactly the same:
+Dito.
 
-<quote>
-Could we do something like the pgtbl_mod_mask or zap_details and pass
-through a struct or one unsigned int for create and lazy_mmu?
+Wonder if we want to be more explicit.
 
-These wrappers are terrible for readability and annoying for argument
-lists too.
+if (is_readable_migration_entry(enrty) ||
+     is_readable_exclusive_migration_entry)) {
 
-Could we do something like the pgtbl_mod_mask or zap_details and pass
-through a struct or one unsigned int for create and lazy_mmu?
 
-At least we'd have better self-documenting code in the wrappers.. and if
-we ever need a third boolean, we could avoid multiplying the wrappers
-again.
-<quote>
+>   			entry = make_readable_migration_entry(
+>   							swp_offset(entry));
+>   			pmd = swp_entry_to_pmd(entry);
+> @@ -1713,7 +1716,37 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
+>   			if (pmd_swp_uffd_wp(*src_pmd))
+>   				pmd = pmd_swp_mkuffd_wp(pmd);
+>   			set_pmd_at(src_mm, addr, src_pmd, pmd);
+> +		} else if (is_device_private_entry(entry)) {
+> +			/*
+> +			 * For device private entries, since there are no
+> +			 * read exclusive entries, writable = !readable
+> +			 */
+> +			if (is_writable_device_private_entry(entry)) {
+> +				entry = make_readable_device_private_entry(
+> +					swp_offset(entry));
 
-Thanks!
+Put this on a single line.
+
+> +				pmd = swp_entry_to_pmd(entry);
+> +
+> +				if (pmd_swp_soft_dirty(*src_pmd))
+> +					pmd = pmd_swp_mksoft_dirty(pmd);
+> +				if (pmd_swp_uffd_wp(*src_pmd))
+> +					pmd = pmd_swp_mkuffd_wp(pmd);
+> +				set_pmd_at(src_mm, addr, src_pmd, pmd);
+> +			}
+> +
+> +			src_folio = pfn_swap_entry_folio(entry);
+> +			VM_WARN_ON(!folio_test_large(src_folio));
+> +
+> +			folio_get(src_folio);
+> +			/*
+> +			 * folio_try_dup_anon_rmap_pmd does not fail for
+> +			 * device private entries.
+> +			 */
+> +			ret = folio_try_dup_anon_rmap_pmd(src_folio,
+> +							  &src_folio->page,
+> +							  dst_vma, src_vma);
+> +			VM_WARN_ON(ret);
+
+Please just drop the ret + VM_WARN_ON here, like we did in the PTE case.
+
+>   		}
+> +
+>   		add_mm_counter(dst_mm, MM_ANONPAGES, HPAGE_PMD_NR);
+>   		mm_inc_nr_ptes(dst_mm);
+>   		pgtable_trans_huge_deposit(dst_mm, dst_pmd, pgtable);
+> @@ -2211,15 +2244,17 @@ int zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+>   			folio_remove_rmap_pmd(folio, page, vma);
+>   			WARN_ON_ONCE(folio_mapcount(folio) < 0);
+>   			VM_BUG_ON_PAGE(!PageHead(page), page);
+> -		} else if (thp_migration_supported()) {
+> +		} else if (is_pmd_migration_entry(orig_pmd) ||
+> +				is_pmd_device_private_entry(orig_pmd)) {
+
+
+Indentation ...
+
+>   			swp_entry_t entry;
+>   
+> -			VM_BUG_ON(!is_pmd_migration_entry(orig_pmd));
+>   			entry = pmd_to_swp_entry(orig_pmd);
+>   			folio = pfn_swap_entry_folio(entry);
+>   			flush_needed = 0;
+> -		} else
+> -			WARN_ONCE(1, "Non present huge pmd without pmd migration enabled!");
+> +
+> +			if (!thp_migration_supported())
+> +				WARN_ONCE(1, "Non present huge pmd without pmd migration enabled!");
+> +		}
+>   
+>   		if (folio_test_anon(folio)) {
+>   			zap_deposited_table(tlb->mm, pmd);
+> @@ -2239,6 +2274,12 @@ int zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+>   				folio_mark_accessed(folio);
+>   		}
+>   
+> +		if (folio_is_device_private(folio)) {
+> +			folio_remove_rmap_pmd(folio, &folio->page, vma);
+> +			WARN_ON_ONCE(folio_mapcount(folio) < 0);
+> +			folio_put(folio);
+> +		}
+> +
+>   		spin_unlock(ptl);
+>   		if (flush_needed)
+>   			tlb_remove_page_size(tlb, &folio->page, HPAGE_PMD_SIZE);
+> @@ -2367,7 +2408,8 @@ int change_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+>   		struct folio *folio = pfn_swap_entry_folio(entry);
+>   		pmd_t newpmd;
+>   
+> -		VM_BUG_ON(!is_pmd_migration_entry(*pmd));
+> +		VM_WARN_ON(!is_pmd_migration_entry(*pmd) &&
+> +			   !folio_is_device_private(folio));
+>   		if (is_writable_migration_entry(entry)) {
+>   			/*
+>   			 * A protection check is difficult so
+> @@ -2380,6 +2422,10 @@ int change_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+>   			newpmd = swp_entry_to_pmd(entry);
+>   			if (pmd_swp_soft_dirty(*pmd))
+>   				newpmd = pmd_swp_mksoft_dirty(newpmd);
+> +		} else if (is_writable_device_private_entry(entry)) {
+> +			entry = make_readable_device_private_entry(
+> +							swp_offset(entry));
+> +			newpmd = swp_entry_to_pmd(entry);
+>   		} else {
+>   			newpmd = *pmd;
+>   		}
+> diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
+> index 567e2d084071..604e8206a2ec 100644
+> --- a/mm/pgtable-generic.c
+> +++ b/mm/pgtable-generic.c
+> @@ -292,6 +292,12 @@ pte_t *___pte_offset_map(pmd_t *pmd, unsigned long addr, pmd_t *pmdvalp)
+>   		*pmdvalp = pmdval;
+>   	if (unlikely(pmd_none(pmdval) || is_pmd_migration_entry(pmdval)))
+>   		goto nomap;
+> +	if (is_swap_pmd(pmdval)) {
+> +		swp_entry_t entry = pmd_to_swp_entry(pmdval);
+> +
+> +		if (is_device_private_entry(entry))
+> +			goto nomap;
+> +	}
+
+Couldn't we do here
+
+if (!pmd_present(pmdval))
+	goto nomap;
+
+To replace the original pmd_none() .. check.
+
+A page table must always be present IIRC.
+
+-- 
+Cheers
+
+David / dhildenb
+
 
