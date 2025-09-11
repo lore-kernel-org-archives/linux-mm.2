@@ -4,82 +4,183 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C9DCCAC58E
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 13:09:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08549CAC58E
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 13:09:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DBC328E000C; Thu, 11 Sep 2025 09:09:17 -0400 (EDT)
+	id 642CB8E000D; Thu, 11 Sep 2025 09:09:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D6C9A8E0001; Thu, 11 Sep 2025 09:09:17 -0400 (EDT)
+	id 5F34A8E0001; Thu, 11 Sep 2025 09:09:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CAA3C8E000C; Thu, 11 Sep 2025 09:09:17 -0400 (EDT)
+	id 4E1ED8E000D; Thu, 11 Sep 2025 09:09:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B6F328E0001
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 09:09:17 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7B863C02E6
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 13:09:17 +0000 (UTC)
-X-FDA: 83877000354.15.7F89EDB
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
-	by imf11.hostedemail.com (Postfix) with ESMTP id EB02B40013
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 13:09:14 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 3B09A8E0001
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 09:09:32 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 03CC71DDD15
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 13:09:31 +0000 (UTC)
+X-FDA: 83877000984.23.4CF72DF
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 977B440017
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 13:09:29 +0000 (UTC)
 Authentication-Results: imf11.hostedemail.com;
-	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of tujinjiang@huawei.com designates 45.249.212.190 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="C/ZFgXLQ";
+	spf=pass (imf11.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757596155;
+	s=arc-20220608; t=1757596169;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=8kBUjibU5GTdAAhUvM2oLx/x2rKUrbb/rWEG1X+3uuw=;
-	b=qT7KWZ9apfisemhgmN8TQF+xqCKeOxU2JBD3r8e75qFH6jGUkdwhjQ/rK7Kra0dWUy2zmR
-	LWzYcBTcWQ/gds8akZjZ/FmdfFKZPr73QnxsK66oDiMIY/vFpdsM+qMBCNxvHMyl/0r5kM
-	WC05v9R4roZmV96e+XyPFxsMxhEzTeI=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=YUFyy1FRSzQ52ZqGvkXLXzMBnhMlgzM8XhXhFaEMyE0=;
+	b=143Ou5R04/dPaRCMFyYcDaeX2jlGTTc2aMW4YXp7dgcwyImOEXqQvvst7hCCZjg4gbe1Ff
+	4m0DXQhjSxZEGwUKLMeEOvRyXev8nzF/EEv4XdHGjzS3u+sLItolUT1eIow2kjzJHwmVaw
+	Tc4zJeq7BJwGPNeojGovsPn5/aNaSk4=
 ARC-Authentication-Results: i=1;
 	imf11.hostedemail.com;
-	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of tujinjiang@huawei.com designates 45.249.212.190 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757596155; a=rsa-sha256;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="C/ZFgXLQ";
+	spf=pass (imf11.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757596169; a=rsa-sha256;
 	cv=none;
-	b=GIZNfh3KocOteu/QNTe9ci+w9WtuVUPlDrWwuQNRfZGwcqYFN+gWEE/knaXDeWrC6LPxge
-	++J+Jzd3V7kUgPfKmR3gI3RQM+6FxZ0UcoW7Tn9YLx3EYpmy3LPprz5ufCH+W68qSXSbMo
-	uPMinI/yNtP3zmXxm+akCbjzFXcSqlI=
-Received: from mail.maildlp.com (unknown [172.19.162.112])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4cMySg2y1Nz2CfyN;
-	Thu, 11 Sep 2025 21:04:35 +0800 (CST)
-Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
-	by mail.maildlp.com (Postfix) with ESMTPS id 18C321400CB;
-	Thu, 11 Sep 2025 21:09:08 +0800 (CST)
-Received: from huawei.com (10.50.85.135) by kwepemr500001.china.huawei.com
- (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 11 Sep
- 2025 21:09:07 +0800
-From: Jinjiang Tu <tujinjiang@huawei.com>
-To: <muchun.song@linux.dev>, <osalvador@suse.de>, <david@redhat.com>,
-	<akpm@linux-foundation.org>, <mike.kravetz@oracle.com>, <linux-mm@kvack.org>
-CC: <wangkefeng.wang@huawei.com>, <tujinjiang@huawei.com>
-Subject: [PATCH] mm/hugetlb: fix folio is still mapped when deleted
-Date: Thu, 11 Sep 2025 21:08:48 +0800
-Message-ID: <20250911130848.4087211-1-tujinjiang@huawei.com>
-X-Mailer: git-send-email 2.43.0
+	b=uHG7u+TqkmaDK5rbF+KJzULXcarXNmt8Nw3G2eFe/u7JVvZ4it9fpgFCc24d/WV4GrtxCc
+	NtNeYJoU6u1CPT9Z8ZzgRLDQoNMOWx7ivPp/ufM+pqBc0JnwUxmGpRxkV2RTCtBs4JtnvR
+	aS1fBydeh5HfDZqZ192uajHr56xkcQM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1757596169;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=YUFyy1FRSzQ52ZqGvkXLXzMBnhMlgzM8XhXhFaEMyE0=;
+	b=C/ZFgXLQ0P+0FHP9BOPF5zv41ApQB2l7jO7SHiUYNGGLbhEGJ6hD0tvQHra8Yq3/S49pZt
+	FdURdgzAW4BliXUgwDiK0GA5EtQqy8Fpppt8vKoGmSmaejhspLn4dnDWhC368FBNugCp5j
+	K8NFsEfS3E72aOUdIcdSknwNfPKVmOM=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-398-ooKx0l9VMNiGzXPNEY7jLg-1; Thu, 11 Sep 2025 09:09:27 -0400
+X-MC-Unique: ooKx0l9VMNiGzXPNEY7jLg-1
+X-Mimecast-MFC-AGG-ID: ooKx0l9VMNiGzXPNEY7jLg_1757596166
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-45de27bf706so3666505e9.0
+        for <linux-mm@kvack.org>; Thu, 11 Sep 2025 06:09:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757596166; x=1758200966;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YUFyy1FRSzQ52ZqGvkXLXzMBnhMlgzM8XhXhFaEMyE0=;
+        b=jyt/vJqM+sJJ3d8JhfAivMFzGYjdt2tApWrkV5UlE+FLhW8IoSWFZ9bIMwhOvzikLs
+         FdlQ8y6ATNMBBrg134aaznGoufw2S2aipE/Hd2rLaQaMVCBohUVvTmK8ZE1ooDcBObxD
+         m5bYH87QJ0/8FydnPMthpNJDp1FpbXmw4x7vEnlYgLxV7i7kypfxUYXGcHSDkXJGgC/g
+         jLU2i+B5gcy2gSC1TD3ASpM5TSnM17Mn/79H5higoo8iIS4vmsTZ9VnnKLABAVQOiz1m
+         gPdGA5UZL4qtKI/rmUX5f5+GCT+hhHR/vHCjRb3JDtlBl9aGXZASPP2VpoDAN7x3pOz6
+         M0jw==
+X-Forwarded-Encrypted: i=1; AJvYcCVNnlE+LXzeyoKOtOveIDg9bKzsIrFByXfnayFMw5EhJBMoIIB3+gq+LhsLohYsY5OTXnEp8czHZw==@kvack.org
+X-Gm-Message-State: AOJu0YzNyNYlwE2+3apRO+EJSRjIbfLtJJkcAwOyZSeHq2lR5nyg9j2e
+	+9Ce+0EcDp3qDDYmgaLVjc3WlL3xfOlMzQko828nDTBc6JIqs7anjfvB7L4mmAz7K8kL07j2gK+
+	Z1ZyTuHC5j+mLbbP4g15lEygPzVxoPW+qlPrr4IbdH8KgVtIdd30R
+X-Gm-Gg: ASbGncvtVR+pmRsuc4YokGMLKmG1t2OjMAQA/bFBvValaqS3BJ34BZHhmklmQbB2gFn
+	Hd2Ibdtj1QeHX4tqnu2jwTdlAumgl5JCBC4qnqV0yHUztyX54wTwT2nDs6+vWw755KVVoNzrbqG
+	UXLpfzn+lCtl+LSyl8wrjQp680OxsyNldxo2wyL2nYuI9HdKQ71V+GzzHVpV56gloqhbYtHghuK
+	fhISdRJdgJw2SaE05haomP31BD+Zl+qcXfssZxl410NmC+uAzOIPCrZbUhxU1RM/eZO1x4KZnmW
+	DohyGvVMjAiWOuUdXjTo0bUQZQovlj8ytoV/2syQQS+3tO9X3q8Kjt7RCsRfQMFqw1gUtFOPfmN
+	uWkZts6CL0+oaHGZixe3/JkBvhv3rgUc4KWQ4ngkBebZwYoLup8ubmKQS+BuYw6pbEBQ=
+X-Received: by 2002:a05:600c:5303:b0:45d:d5e2:f683 with SMTP id 5b1f17b1804b1-45de078d428mr171872995e9.25.1757596166218;
+        Thu, 11 Sep 2025 06:09:26 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGMVjs0jUiwGXDJa2IwLszE3cbnhFWu0Qry8o5d527djVHWalLfChIafmqiEKbHOLTHnkMNig==
+X-Received: by 2002:a05:600c:5303:b0:45d:d5e2:f683 with SMTP id 5b1f17b1804b1-45de078d428mr171872335e9.25.1757596165586;
+        Thu, 11 Sep 2025 06:09:25 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f42:b000:db8b:7655:f60f:812b? (p200300d82f42b000db8b7655f60f812b.dip0.t-ipconnect.de. [2003:d8:2f42:b000:db8b:7655:f60f:812b])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45e04cf2870sm10194895e9.1.2025.09.11.06.09.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 11 Sep 2025 06:09:25 -0700 (PDT)
+Message-ID: <9bcaf3ec-c0a1-4ca5-87aa-f84e297d1e42@redhat.com>
+Date: Thu, 11 Sep 2025 15:09:22 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.50.85.135]
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemr500001.china.huawei.com (7.202.194.229)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v11 1/5] mm: softdirty: Add pgtable_soft_dirty_supported()
+To: Chunyan Zhang <zhangchunyan@iscas.ac.cn>,
+ linux-riscv@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Cc: Paul Walmsley <paul.walmsley@sifive.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, Deepak Gupta <debug@rivosinc.com>,
+ Ved Shanbhogue <ved@rivosinc.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>,
+ Arnd Bergmann <arnd@arndb.de>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Chunyan Zhang <zhang.lyra@gmail.com>
+References: <20250911095602.1130290-1-zhangchunyan@iscas.ac.cn>
+ <20250911095602.1130290-2-zhangchunyan@iscas.ac.cn>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20250911095602.1130290-2-zhangchunyan@iscas.ac.cn>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: kPTjSVJQf-VRFYDGRRO9JNeLfe37OjJXVlZDYWx39rI_1757596166
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: EB02B40013
-X-Stat-Signature: bcge3e89jw1od7sz9ksg971jtf5du86k
-X-HE-Tag: 1757596154-567699
-X-HE-Meta: U2FsdGVkX19KAyUWJh6ov+2tN6js8NB4873yI5zBBDq9G2rineKcGWmFda1/QPZiUaI9WgZVvHK2u24o0OV4i0uv6pE0hlZUznaN815W4okmLXS1a1VoK8CLEJEnoOcabX5Lk7B3gosCj7a96vnbGtQnBoojcGL4DsLfyN30idlTCxIclZi8aDc+bpOsJD1VhOWwpXKs8eXdLuKOZr6vMg9c342lwDAamtsbQCandqqzroV/FEWwtVF0/Ob0+WuhvGfZNEXJWiVPBrHTwHP0l5Z3CyqWub+g4zYGoQdGBX6DF3cqORk/R118CFKc0V+VLJZRFBNJTPotxT7SjRa+hskwNgsY5cSzn0jFVLgtpeLH3CmzUOeNeBaIZ4xYLazL9uF5S7ue/+ciDUnyffgk3/Ddc3HbkEV9gdXoShyY5Z12etuuS1aGbns5px27tNZQhuFHL3Le6kIJljoCdZQ6LS+wo/nKqnANRJS0abw0NzelDyN3jkuUU5DOA4HAub11HQ6Pcxzv2+UNbnOtGFGkeZCzaAnwgyltJQ9+rSZPV40EeL7wJz8g8oUEyWS1AiD1N0ymVyw32YXwqgvSElT4amgZolFQ+cx45boHMZJX7zGNg5/9pZOzhZL/GPgCyGvZFoSZdHmmNrZEBSHvEca3mCLExftaJLi5htOiZNvwheSqTTyeWh6Q9jMK/0/REhMQ/AO18EZbP/+AJLdCzCDV3Wxoz32pzPehs7TFaXKi+1ZSTyVfdh516OsmOedWUeC8yNOkPfoYZVI9LCzXg5R+RgGen99xQ4rEHpUovqw66YhfPm027mK8O2Uv9nqJE5TxZfQ4VzvPp2OMAXflBBxP/SPUC7EANxEcKJhZPBgkWaNE/QM+ctSpnvJXBLP68MSbEB5QUz0S+UlovlnZCuunsViSm1HU8y1Hzd0r6mVVnwaUExGBlj36Ry6E8Z+5wvJxvuN9DuxAFsNDKPKtgzD
- s0ELg7f3
- BDFBveHRbvmH7CMzW3yPVj8NwBS3V9FTQ+b0n1T/j+ErGzVemk6BWs9RMtKTUJ5KhwAC561Oat5ZIZvxzKMkWgvchQLWc7i53V1n2/DwWOct2uuP5G2c7FgOAYaSRJWpAPL6KWx6rcakjZXiAuZVLNb1FUpK/5xucX2el2Z8D7DBGmQD6O4sW6ytwFTP1TSVXVldS
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 977B440017
+X-Stat-Signature: oe9iywzpksweixorksbeq4rp3s8bqmgq
+X-HE-Tag: 1757596169-507948
+X-HE-Meta: U2FsdGVkX18RijAj09toy0zi1tbGcvpm0pkzaNzmRS4YgX352e5k2Y1Ao9FaKiMrY6/FlV1Ww1gMb1nVKIgWXormAmijDF1nJu3ygFD374piFBET2FWXJE/m5rPtHeY8ENQ+VRlD9Qs+dbKPBfccb1Ii/JZ1tugCpwtTt49o1R3nvqLym7czlxxMOoyQne5EE/3DLrFOVaZ36UgqhGE0JmuXqWiGrJzK/8YBtDqmBzLDDOhdcUxMXaWdnrgNsa6NpjzXSwYdz31Z/iVF2205ARoKsAhfTiM9DMx9JD8QQzN21tL4EOm0hENZmWeUaMX1E8Nak4Q3hkPLGbpybDljFPGxYDyKDX+DSFZCRROxMtXOe1eHN+BRKZbaq+DFcZPy/KmDslcXfIrenxQZhRMOe+D5WnbqVFxbbeehkjMnas25Vkp2VqR0nSWFKF+97qPUY3nUAm9DsUPVTl+y2CAzjCDl8Yc7SbOnwqnOEBpZqI/t2LayWLcgD/77VL3jBG8WRn0pVhIjMpY7NC496CjnlIs6Y7+ici2QuOECGvp5+LZYVexlpV9rJLv4PS5sGL5SdY13+4dG0iKlokF508/QWUmBbJ/u1cEwm7+MXHUTIj7KW9t7+NuvbXe5qfF6OWMBYxP+XI+4+6vtPBd9NIW6ywjQjLnjySuoGeqY3SbAqYANlGoojpBjN26BjLHF070byzXIXKirfTDC7sSer3iuNy2/xyMXNGUGRu5dGRO8QMVqS2mkP7fF4gLT1J8l9z36/lSJM7L/ECyaYR6xOOtYyIcOA1KfWn5PaaI0xG5/tIhweWp57251eQVcDUuAE0TwYCqszhVozzq9c50RcOTSKVXu8HhHBXnyMuLIz7kO+RjqmEhA3W76dDYA/ilKo1sbqdxkFn2JNcPduTPHxsOGna04cUmHXpIpr/XswyZY+wL9X2xPSHjANgQ6riWEdm0Vu797IYY6yMe8Riibf9u
+ pENAGcRG
+ rTspskDV2edmdLa2qR+201/20baqODFw2o5eLX+lVuswW/7lhXrF9M8bgRv4YnBSk+/LLtzwEgqhjQm+Z4R3ePyW/rp2O59m2TyjsIvGuNZ9dBrOhj64qMv+Qmyo+OP3gz4mr/T9r3SgTpwtIu8zzTFY/KwMgzPxdXMO98UEclKW69UIhGnvaAXswTBbZ08NOQ8JfXS7jMKCtl2GlcV+e/VCVr0an0+kjA0bwEEQ7uetzjOPLc23Hrop3cmvoAkEPTD2T7ug1wGwVsZ2yGof4ZwzzIDgOEJ1RJP9BV69QdSJJxScyK3BeU/MT15EOHwFT/9WqPv5qZ89uAbHvXHpYIG2FmaZXFilvPsBXM6q62i3+exjHH1MmB6I7lIKKSbEd7ClYL5LyxRc/XKDo11KJJ0g0bdugIAvoehnXCRNYA49xuVDMoU6n0IO5+ovyu6F7h71+gD38q8FKz8sI9RU02NaLRCre4BiQ+7GwP/godfkDQyZs2vA+Dn48oyJ8cIE0qVUSe1xJIdtFw8YI6bZTxmjzfFzdB5KMFFQBu1RbSTDLLnxkEiunqa1P+mff/Qx6oUvO+WJiD7VEmS4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -88,60 +189,319 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Migration may be raced with fallocating hole. remove_inode_single_folio
-will unmap the folio if the folio is still mapped. However, it's called
-without folio lock. If the folio is migrated and the mapped pte has been
-converted to migration entry, folio_mapped() returns false, and won't
-unmap it. Due to extra refcount held by remove_inode_single_folio,
-migration fails, restores migration entry to normal pte, and the folio
-is mapped again. As a result, we triggered BUG in filemap_unaccount_folio.
+On 11.09.25 11:55, Chunyan Zhang wrote:
+> Some platforms can customize the PTE PMD entry soft-dirty bit making it
+> unavailable even if the architecture provides the resource.
+> 
+> Add an API which architectures can define their specific implementations
+> to detect if soft-dirty bit is available on which device the kernel is
+> running.
 
-The log is as follows:
- BUG: Bad page cache in process hugetlb  pfn:156c00
- page: refcount:515 mapcount:0 mapping:0000000099fef6e1 index:0x0 pfn:0x156c00
- head: order:9 mapcount:1 entire_mapcount:1 nr_pages_mapped:0 pincount:0
- aops:hugetlbfs_aops ino:dcc dentry name(?):"my_hugepage_file"
- flags: 0x17ffffc00000c1(locked|waiters|head|node=0|zone=2|lastcpupid=0x1fffff)
- page_type: f4(hugetlb)
- page dumped because: still mapped when deleted
- CPU: 1 UID: 0 PID: 395 Comm: hugetlb Not tainted 6.17.0-rc5-00044-g7aac71907bde-dirty #484 NONE
- Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 0.0.0 02/06/2015
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x4f/0x70
-  filemap_unaccount_folio+0xc4/0x1c0
-  __filemap_remove_folio+0x38/0x1c0
-  filemap_remove_folio+0x41/0xd0
-  remove_inode_hugepages+0x142/0x250
-  hugetlbfs_fallocate+0x471/0x5a0
-  vfs_fallocate+0x149/0x380
+Thinking to myself: maybe pgtable_supports_soft_dirty() would read better
+Whatever you prefer.
 
-Hold folio lock before checking if the folio is mapped to avold race with
-migration.
+> 
+> Signed-off-by: Chunyan Zhang <zhangchunyan@iscas.ac.cn>
+> ---
+>   fs/proc/task_mmu.c      | 17 ++++++++++++++++-
+>   include/linux/pgtable.h | 12 ++++++++++++
+>   mm/debug_vm_pgtable.c   | 10 +++++-----
+>   mm/huge_memory.c        | 13 +++++++------
+>   mm/internal.h           |  2 +-
+>   mm/mremap.c             | 13 +++++++------
+>   mm/userfaultfd.c        | 10 ++++------
+>   7 files changed, 52 insertions(+), 25 deletions(-)
+> 
+> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+> index 29cca0e6d0ff..9e8083b6d4cd 100644
+> --- a/fs/proc/task_mmu.c
+> +++ b/fs/proc/task_mmu.c
+> @@ -1058,7 +1058,7 @@ static void show_smap_vma_flags(struct seq_file *m, struct vm_area_struct *vma)
+>   	 * -Werror=unterminated-string-initialization warning
+>   	 *  with GCC 15
+>   	 */
+> -	static const char mnemonics[BITS_PER_LONG][3] = {
+> +	static char mnemonics[BITS_PER_LONG][3] = {
+>   		/*
+>   		 * In case if we meet a flag we don't know about.
+>   		 */
+> @@ -1129,6 +1129,16 @@ static void show_smap_vma_flags(struct seq_file *m, struct vm_area_struct *vma)
+>   		[ilog2(VM_SEALED)] = "sl",
+>   #endif
+>   	};
+> +/*
+> + * We should remove the VM_SOFTDIRTY flag if the soft-dirty bit is
+> + * unavailable on which the kernel is running, even if the architecture
+> + * provides the resource and soft-dirty is compiled in.
+> + */
+> +#ifdef CONFIG_MEM_SOFT_DIRTY
+> +	if (!pgtable_soft_dirty_supported())
+> +		mnemonics[ilog2(VM_SOFTDIRTY)][0] = 0;
+> +#endif
 
-Fixes: 4aae8d1c051e ("mm/hugetlbfs: unmap pages if page fault raced with hole punch")
-Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
----
- fs/hugetlbfs/inode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+You can now drop the ifdef.
 
-diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-index 09d4baef29cf..d21865d0178a 100644
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -521,10 +521,10 @@ static bool remove_inode_single_folio(struct hstate *h, struct inode *inode,
- 	 * the fault mutex.  The mutex will prevent faults
- 	 * until we finish removing the folio.
- 	 */
-+	folio_lock(folio);
- 	if (unlikely(folio_mapped(folio)))
- 		hugetlb_unmap_file_folio(h, mapping, folio, index);
- 
--	folio_lock(folio);
- 	/*
- 	 * We must remove the folio from page cache before removing
- 	 * the region/ reserve map (hugetlb_unreserve_pages).  In
+But, I wonder if could we instead just stop setting the flag. Then we don't
+have to worry about any VM_SOFTDIRTY checks.
+
+Something like the following
+
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 892fe5dbf9de0..8b8bf63a32ef7 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -783,6 +783,7 @@ static inline void vma_init(struct vm_area_struct *vma, struct mm_struct *mm)
+  static inline void vm_flags_init(struct vm_area_struct *vma,
+  				 vm_flags_t flags)
+  {
++	VM_WARN_ON_ONCE(!pgtable_soft_dirty_supported() && (flags & VM_SOFTDIRTY));
+  	ACCESS_PRIVATE(vma, __vm_flags) = flags;
+  }
+  
+@@ -801,6 +802,7 @@ static inline void vm_flags_reset(struct vm_area_struct *vma,
+  static inline void vm_flags_reset_once(struct vm_area_struct *vma,
+  				       vm_flags_t flags)
+  {
++	VM_WARN_ON_ONCE(!pgtable_soft_dirty_supported() && (flags & VM_SOFTDIRTY));
+  	vma_assert_write_locked(vma);
+  	WRITE_ONCE(ACCESS_PRIVATE(vma, __vm_flags), flags);
+  }
+@@ -808,6 +810,7 @@ static inline void vm_flags_reset_once(struct vm_area_struct *vma,
+  static inline void vm_flags_set(struct vm_area_struct *vma,
+  				vm_flags_t flags)
+  {
++	VM_WARN_ON_ONCE(!pgtable_soft_dirty_supported() && (flags & VM_SOFTDIRTY));
+  	vma_start_write(vma);
+  	ACCESS_PRIVATE(vma, __vm_flags) |= flags;
+  }
+diff --git a/mm/mmap.c b/mm/mmap.c
+index 5fd3b80fda1d5..40cb3fbf9a247 100644
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -1451,8 +1451,10 @@ static struct vm_area_struct *__install_special_mapping(
+  		return ERR_PTR(-ENOMEM);
+  
+  	vma_set_range(vma, addr, addr + len, 0);
+-	vm_flags_init(vma, (vm_flags | mm->def_flags |
+-		      VM_DONTEXPAND | VM_SOFTDIRTY) & ~VM_LOCKED_MASK);
++	vm_flags |= mm->def_flags | VM_DONTEXPAND;
++	if (pgtable_soft_dirty_supported())
++		vm_flags |= VM_SOFTDIRTY;
++	vm_flags_init(vma, vm_flags & ~VM_LOCKED_MASK);
+  	vma->vm_page_prot = vm_get_page_prot(vma->vm_flags);
+  
+  	vma->vm_ops = ops;
+diff --git a/mm/vma.c b/mm/vma.c
+index abe0da33c8446..16a1ed2a6199c 100644
+--- a/mm/vma.c
++++ b/mm/vma.c
+@@ -2551,7 +2551,8 @@ static void __mmap_complete(struct mmap_state *map, struct vm_area_struct *vma)
+  	 * then new mapped in-place (which must be aimed as
+  	 * a completely new data area).
+  	 */
+-	vm_flags_set(vma, VM_SOFTDIRTY);
++	if (pgtable_soft_dirty_supported())
++		vm_flags_set(vma, VM_SOFTDIRTY);
+  
+  	vma_set_page_prot(vma);
+  }
+@@ -2819,7 +2820,8 @@ int do_brk_flags(struct vma_iterator *vmi, struct vm_area_struct *vma,
+  	mm->data_vm += len >> PAGE_SHIFT;
+  	if (vm_flags & VM_LOCKED)
+  		mm->locked_vm += (len >> PAGE_SHIFT);
+-	vm_flags_set(vma, VM_SOFTDIRTY);
++	if (pgtable_soft_dirty_supported())
++		vm_flags_set(vma, VM_SOFTDIRTY);
+  	return 0;
+  
+  mas_store_fail:
+diff --git a/mm/vma_exec.c b/mm/vma_exec.c
+index 922ee51747a68..c06732a5a620a 100644
+--- a/mm/vma_exec.c
++++ b/mm/vma_exec.c
+@@ -107,6 +107,7 @@ int relocate_vma_down(struct vm_area_struct *vma, unsigned long shift)
+  int create_init_stack_vma(struct mm_struct *mm, struct vm_area_struct **vmap,
+  			  unsigned long *top_mem_p)
+  {
++	unsigned long flags  = VM_STACK_FLAGS | VM_STACK_INCOMPLETE_SETUP;
+  	int err;
+  	struct vm_area_struct *vma = vm_area_alloc(mm);
+  
+@@ -137,7 +138,9 @@ int create_init_stack_vma(struct mm_struct *mm, struct vm_area_struct **vmap,
+  	BUILD_BUG_ON(VM_STACK_FLAGS & VM_STACK_INCOMPLETE_SETUP);
+  	vma->vm_end = STACK_TOP_MAX;
+  	vma->vm_start = vma->vm_end - PAGE_SIZE;
+-	vm_flags_init(vma, VM_SOFTDIRTY | VM_STACK_FLAGS | VM_STACK_INCOMPLETE_SETUP);
++	if (pgtable_soft_dirty_supported())
++		flags |= VM_SOFTDIRTY;
++	vm_flags_init(vma, flags);
+  	vma->vm_page_prot = vm_get_page_prot(vma->vm_flags);
+  
+  	err = insert_vm_struct(mm, vma);
+
+
+> +
+>   	size_t i;
+>   
+>   	seq_puts(m, "VmFlags: ");
+> @@ -1531,6 +1541,8 @@ static inline bool pte_is_pinned(struct vm_area_struct *vma, unsigned long addr,
+>   static inline void clear_soft_dirty(struct vm_area_struct *vma,
+>   		unsigned long addr, pte_t *pte)
+>   {
+> +	if (!pgtable_soft_dirty_supported())
+> +		return;
+>   	/*
+>   	 * The soft-dirty tracker uses #PF-s to catch writes
+>   	 * to pages, so write-protect the pte as well. See the
+> @@ -1566,6 +1578,9 @@ static inline void clear_soft_dirty_pmd(struct vm_area_struct *vma,
+>   {
+>   	pmd_t old, pmd = *pmdp;
+>   
+> +	if (!pgtable_soft_dirty_supported())
+> +		return;
+> +
+>   	if (pmd_present(pmd)) {
+>   		/* See comment in change_huge_pmd() */
+>   		old = pmdp_invalidate(vma, addr, pmdp);
+
+That would all be handled with the above never-set-VM_SOFTDIRTY.
+
+> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> index 4c035637eeb7..2a3578a4ae4c 100644
+> --- a/include/linux/pgtable.h
+> +++ b/include/linux/pgtable.h
+> @@ -1537,6 +1537,18 @@ static inline pgprot_t pgprot_modify(pgprot_t oldprot, pgprot_t newprot)
+>   #define arch_start_context_switch(prev)	do {} while (0)
+>   #endif
+>   
+> +/*
+> + * Some platforms can customize the PTE soft-dirty bit making it unavailable
+> + * even if the architecture provides the resource.
+> + * Adding this API allows architectures to add their own checks for the
+> + * devices on which the kernel is running.
+> + * Note: When overiding it, please make sure the CONFIG_MEM_SOFT_DIRTY
+> + * is part of this macro.
+> + */
+> +#ifndef pgtable_soft_dirty_supported
+> +#define pgtable_soft_dirty_supported()	IS_ENABLED(CONFIG_MEM_SOFT_DIRTY)
+> +#endif
+> +
+>   #ifdef CONFIG_HAVE_ARCH_SOFT_DIRTY
+>   #ifndef CONFIG_ARCH_ENABLE_THP_MIGRATION
+>   static inline pmd_t pmd_swp_mksoft_dirty(pmd_t pmd)
+> diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
+> index 830107b6dd08..b32ce2b0b998 100644
+> --- a/mm/debug_vm_pgtable.c
+> +++ b/mm/debug_vm_pgtable.c
+> @@ -690,7 +690,7 @@ static void __init pte_soft_dirty_tests(struct pgtable_debug_args *args)
+>   {
+>   	pte_t pte = pfn_pte(args->fixed_pte_pfn, args->page_prot);
+>   
+> -	if (!IS_ENABLED(CONFIG_MEM_SOFT_DIRTY))
+> +	if (!pgtable_soft_dirty_supported())
+>   		return;
+>   
+>   	pr_debug("Validating PTE soft dirty\n");
+> @@ -702,7 +702,7 @@ static void __init pte_swap_soft_dirty_tests(struct pgtable_debug_args *args)
+>   {
+>   	pte_t pte;
+>   
+> -	if (!IS_ENABLED(CONFIG_MEM_SOFT_DIRTY))
+> +	if (!pgtable_soft_dirty_supported())
+>   		return;
+>   
+>   	pr_debug("Validating PTE swap soft dirty\n");
+> @@ -718,7 +718,7 @@ static void __init pmd_soft_dirty_tests(struct pgtable_debug_args *args)
+>   {
+>   	pmd_t pmd;
+>   
+> -	if (!IS_ENABLED(CONFIG_MEM_SOFT_DIRTY))
+> +	if (!pgtable_soft_dirty_supported())
+>   		return;
+>   
+>   	if (!has_transparent_hugepage())
+> @@ -734,8 +734,8 @@ static void __init pmd_swap_soft_dirty_tests(struct pgtable_debug_args *args)
+>   {
+>   	pmd_t pmd;
+>   
+> -	if (!IS_ENABLED(CONFIG_MEM_SOFT_DIRTY) ||
+> -		!IS_ENABLED(CONFIG_ARCH_ENABLE_THP_MIGRATION))
+> +	if (!pgtable_soft_dirty_supported() ||
+> +	    !IS_ENABLED(CONFIG_ARCH_ENABLE_THP_MIGRATION))
+>   		return;
+>   
+>   	if (!has_transparent_hugepage())
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 9c38a95e9f09..218d430a2ec6 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -2271,12 +2271,13 @@ static inline int pmd_move_must_withdraw(spinlock_t *new_pmd_ptl,
+>   
+>   static pmd_t move_soft_dirty_pmd(pmd_t pmd)
+>   {
+> -#ifdef CONFIG_MEM_SOFT_DIRTY
+> -	if (unlikely(is_pmd_migration_entry(pmd)))
+> -		pmd = pmd_swp_mksoft_dirty(pmd);
+> -	else if (pmd_present(pmd))
+> -		pmd = pmd_mksoft_dirty(pmd);
+> -#endif
+> +	if (pgtable_soft_dirty_supported()) {
+> +		if (unlikely(is_pmd_migration_entry(pmd)))
+> +			pmd = pmd_swp_mksoft_dirty(pmd);
+> +		else if (pmd_present(pmd))
+> +			pmd = pmd_mksoft_dirty(pmd);
+> +	}
+> +
+
+Wondering, should simply the arch take care of that and we can just clal
+pmd_swp_mksoft_dirty / pmd_mksoft_dirty?
+
+>   	return pmd;
+>   }
+>   
+> diff --git a/mm/internal.h b/mm/internal.h
+> index 45b725c3dc03..c6ca62f8ecf3 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -1538,7 +1538,7 @@ static inline bool vma_soft_dirty_enabled(struct vm_area_struct *vma)
+>   	 * VM_SOFTDIRTY is defined as 0x0, then !(vm_flags & VM_SOFTDIRTY)
+>   	 * will be constantly true.
+>   	 */
+> -	if (!IS_ENABLED(CONFIG_MEM_SOFT_DIRTY))
+> +	if (!pgtable_soft_dirty_supported())
+>   		return false;
+>   
+
+That should be handled with the above never-set-VM_SOFTDIRTY.
+
+>   	/*
+> diff --git a/mm/mremap.c b/mm/mremap.c
+> index e618a706aff5..7beb3114dbf5 100644
+> --- a/mm/mremap.c
+> +++ b/mm/mremap.c
+> @@ -162,12 +162,13 @@ static pte_t move_soft_dirty_pte(pte_t pte)
+>   	 * Set soft dirty bit so we can notice
+>   	 * in userspace the ptes were moved.
+>   	 */
+> -#ifdef CONFIG_MEM_SOFT_DIRTY
+> -	if (pte_present(pte))
+> -		pte = pte_mksoft_dirty(pte);
+> -	else if (is_swap_pte(pte))
+> -		pte = pte_swp_mksoft_dirty(pte);
+> -#endif
+> +	if (pgtable_soft_dirty_supported()) {
+> +		if (pte_present(pte))
+> +			pte = pte_mksoft_dirty(pte);
+> +		else if (is_swap_pte(pte))
+> +			pte = pte_swp_mksoft_dirty(pte);
+> +	}
+> +
+>   	return pte;
+>   }
+>   
 -- 
-2.43.0
+Cheers
+
+David / dhildenb
 
 
