@@ -4,92 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C628CAC58E
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 13:05:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C9DCCAC58E
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 13:09:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E4F478E000B; Thu, 11 Sep 2025 09:05:22 -0400 (EDT)
+	id DBC328E000C; Thu, 11 Sep 2025 09:09:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E267D8E0001; Thu, 11 Sep 2025 09:05:22 -0400 (EDT)
+	id D6C9A8E0001; Thu, 11 Sep 2025 09:09:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D63B08E000B; Thu, 11 Sep 2025 09:05:22 -0400 (EDT)
+	id CAA3C8E000C; Thu, 11 Sep 2025 09:09:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C53998E0001
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 09:05:22 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 78D7A1DEDEE
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 13:05:22 +0000 (UTC)
-X-FDA: 83876990484.28.6776D34
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id B19424000B
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 13:05:20 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IpLaEWgh;
-	spf=pass (imf07.hostedemail.com: domain of hawk@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=hawk@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id B6F328E0001
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 09:09:17 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7B863C02E6
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 13:09:17 +0000 (UTC)
+X-FDA: 83877000354.15.7F89EDB
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+	by imf11.hostedemail.com (Postfix) with ESMTP id EB02B40013
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 13:09:14 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=none;
+	spf=pass (imf11.hostedemail.com: domain of tujinjiang@huawei.com designates 45.249.212.190 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757595920;
+	s=arc-20220608; t=1757596155;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=j7PGj9rzcuZwLMbV1E3yxmQSH4iS25NGH8GVTnXJIcY=;
-	b=XPQGstKJqLljJFoP+qAzc2/wOTj+lWxJX6PwBXq9zGHv5oco+Zyezvqdb2uQuhlS/QG8nM
-	p2/2ReIBerLQI6vaX+2a0KmbsMcoHoX6w08MJbPRLw1Ko/YjMwCHDXFsujq9SmYFNlUjJs
-	sAoHawpperPVQs0YIl/4fL2Y+1OBdn4=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=8kBUjibU5GTdAAhUvM2oLx/x2rKUrbb/rWEG1X+3uuw=;
+	b=qT7KWZ9apfisemhgmN8TQF+xqCKeOxU2JBD3r8e75qFH6jGUkdwhjQ/rK7Kra0dWUy2zmR
+	LWzYcBTcWQ/gds8akZjZ/FmdfFKZPr73QnxsK66oDiMIY/vFpdsM+qMBCNxvHMyl/0r5kM
+	WC05v9R4roZmV96e+XyPFxsMxhEzTeI=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IpLaEWgh;
-	spf=pass (imf07.hostedemail.com: domain of hawk@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=hawk@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757595920; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=none;
+	spf=pass (imf11.hostedemail.com: domain of tujinjiang@huawei.com designates 45.249.212.190 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757596155; a=rsa-sha256;
 	cv=none;
-	b=phSL2+u2omlL/SdkOFacI4l80h7OvPoEzPLFKXyC7Qiztej6neagyvmamLfAuKb/6UeAX9
-	Njd74rhWufWtR79c3mVt5Z1516s2mM/tKofji35P8WK+/lAJKS400Ifyk1QZyohtxdvWk7
-	FVCIC7/QRDgMRd7YhoLGdNP7kc1TRHA=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id DA27860234;
-	Thu, 11 Sep 2025 13:05:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E26CC4CEF7;
-	Thu, 11 Sep 2025 13:05:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757595919;
-	bh=3cTu3t1kABFgYDURDBVW7RvACYUtHwzvTu1HQFQwBrE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=IpLaEWghBa5tYMxCDG0sjjg4V/u3gIB5GXvKS0QT+rYChZqB/iW30acZpzJ16tDhN
-	 6bPsToGoA15Qk39Wj4KtZBN1J7438fQNLDVueFH7TQ78kwKlLjdyQDXqlYWt6aeCfv
-	 YecrLMEM4j062LMtihWQ7MCSdN/CzonOyBg0j2RG3CZUvgFhLgJhHYE7J1vlbAD4on
-	 zk2x3sS6JLkz+nWyyHyGgp4Ho+O8r/u21CwaUqTYTQf7rhkSLmlhjF9dQ8FfVsBziN
-	 NHrGjOKn6AJb7wQeLgrp7623OIDdui++gANvZqO26Lt8gO2J7/Q0MOuTzTKPyx7UKz
-	 ZXnlDSBzMOCUg==
-Message-ID: <7ea8e560-89f6-4f3a-97a6-cf70c1d3d0d0@kernel.org>
-Date: Thu, 11 Sep 2025 15:05:14 +0200
+	b=GIZNfh3KocOteu/QNTe9ci+w9WtuVUPlDrWwuQNRfZGwcqYFN+gWEE/knaXDeWrC6LPxge
+	++J+Jzd3V7kUgPfKmR3gI3RQM+6FxZ0UcoW7Tn9YLx3EYpmy3LPprz5ufCH+W68qSXSbMo
+	uPMinI/yNtP3zmXxm+akCbjzFXcSqlI=
+Received: from mail.maildlp.com (unknown [172.19.162.112])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4cMySg2y1Nz2CfyN;
+	Thu, 11 Sep 2025 21:04:35 +0800 (CST)
+Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
+	by mail.maildlp.com (Postfix) with ESMTPS id 18C321400CB;
+	Thu, 11 Sep 2025 21:09:08 +0800 (CST)
+Received: from huawei.com (10.50.85.135) by kwepemr500001.china.huawei.com
+ (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 11 Sep
+ 2025 21:09:07 +0800
+From: Jinjiang Tu <tujinjiang@huawei.com>
+To: <muchun.song@linux.dev>, <osalvador@suse.de>, <david@redhat.com>,
+	<akpm@linux-foundation.org>, <mike.kravetz@oracle.com>, <linux-mm@kvack.org>
+CC: <wangkefeng.wang@huawei.com>, <tujinjiang@huawei.com>
+Subject: [PATCH] mm/hugetlb: fix folio is still mapped when deleted
+Date: Thu, 11 Sep 2025 21:08:48 +0800
+Message-ID: <20250911130848.4087211-1-tujinjiang@huawei.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] page_pool: always add GFP_NOWARN for ATOMIC
- allocations
-To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
-Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
- andrew+netdev@lunn.ch, horms@kernel.org, ilias.apalodimas@linaro.org,
- nathan@kernel.org, nick.desaulniers+lkml@gmail.com, morbo@google.com,
- justinstitt@google.com, llvm@lists.linux.dev, Linux-MM <linux-mm@kvack.org>
-References: <20250908152123.97829-1-kuba@kernel.org>
- <20250910175240.72c56e86@kernel.org>
-Content-Language: en-US
-From: Jesper Dangaard Brouer <hawk@kernel.org>
-In-Reply-To: <20250910175240.72c56e86@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: B19424000B
-X-Rspamd-Server: rspam05
-X-Stat-Signature: g3btn7f3um9xpkrhqiib6webos16jnfq
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.50.85.135]
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemr500001.china.huawei.com (7.202.194.229)
 X-Rspam-User: 
-X-HE-Tag: 1757595920-280477
-X-HE-Meta: U2FsdGVkX18xLVN7l8H3C7s2uUGq1INWn4ebP/S873Ug/KlLfvWGaqjiN44wcqGjRAKZMX0ABQT2hbnec9a8ohZqvZW+T34Owzmf/Mo5djDv5CmTVNt7tyOtEMdwcFv77llMLumN2oiTk1cUUzSmtL6EH2ur3iCxGZtc7ypFItbL9ZgkzZxks58rJjxNHyS2WelkPZMdITVn15bZ1kfYIHgqFhuKNt9FcvDC72A3TeS/SKjlhn0OEiRGzl9blY6gJ/Hn7MJycmNbC77YPF2W4z5AT8DOO+D8riyMUCBuDiL5AZGYZGtevcEYy+KccmaWJTDmGeehlPX63w9VK1R84FiQlWI0FNmL0EUw7HK9r5+1RnaG7O4s5ANYbeKDphrgTo2LtWkH9oeVx9rAXptM9/P3xeWxfUXqkLOkrkvabin94cPAvviTogpXwSwpsvM1MiqWIwJQtcVh7Vle2Uyeq4Wy6y2bbzjdiu0FsgPJl3oJy0hHkN34nD8Br+WzOVW24jJlV0pSw6w37TxgABPeo7lM+DexG0ICty+Tt/Md7pim47ayw+d6jnIeQ2zaY6/+5ziegJSxR2YQJBbA7E9AWmEspBdsxYfOyXauQNaY0pQ5oicidPdWm1/dbyK0CwvTXRmS7Yt/k86bK4RmOG63QJA0btJnJrwKkvuoLEwtC6fvRvqreH1iWHBP2FhkP78KuVp6IZWvrv4+AjUp6vhcs7dw44kiFWcHJn+JrTEw5XAkbPzL5lZrguGG2fOIdSstI5jqm2D/i/4EBZwS1j6yKda+glzC7MqUktjtB/OUIaELSO835fLnOd7m+lklJVOGS6R1YS5LFWbniaBfcXNb2Em8s0bL4mwCCMwSMQDHziEgIaHemfjihL/JaHISqr7p57JA+FiRj4/WzsPQAp15DcOtwl+S9uwnPn8/gi7BTA7FcJ8C8ykQ97W9xWKZ62sUIJEMnnlbnJmZ7QFoT0G
- kYW/CIGV
- gyM5f3EO9qMpB6U6+2Ieryx2dDIWDSBqdOml/728wqDb/QylALLj4mqOsZi7ZAhv/Mrv0IwSPCorl7ixv5bVtqokitno1q/0zZ8sx4g5Qr82Kl/bmgnYpf9jvMhSZeOV+BKFCOPfllUluS4MdqK/v8zH3IWK3GxXzQp1pNa7A2DWotsrUVjdPmVju2Pc33lzjOhH/D0H4Flt3ruNo5BMQwR3XatIZFCYRaDUnSfHMN9NxNMEXlfBNSf7el9mV+ScaHK+wr5VGucdNEX32Qeq9T0AVEkULxoGyo+iDxsjRx9teuHQ5xS3MKZ+U8tDyXzFsMIHmhO4GuP4BF3U9crV9qCSA9rqpOjhcwFF5yWAYHRDd/DHC8w8OPbo3qH+DS+h0JqRh0/7pIrRjFmyfYxddvRD6Nshop8Ha4HwmUPGyswcwUF3gUw9P9cHQ2U1CshYSec5+4xy32OSQd7ZSAQ+AppFutRb/nHQLeuZW
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: EB02B40013
+X-Stat-Signature: bcge3e89jw1od7sz9ksg971jtf5du86k
+X-HE-Tag: 1757596154-567699
+X-HE-Meta: U2FsdGVkX19KAyUWJh6ov+2tN6js8NB4873yI5zBBDq9G2rineKcGWmFda1/QPZiUaI9WgZVvHK2u24o0OV4i0uv6pE0hlZUznaN815W4okmLXS1a1VoK8CLEJEnoOcabX5Lk7B3gosCj7a96vnbGtQnBoojcGL4DsLfyN30idlTCxIclZi8aDc+bpOsJD1VhOWwpXKs8eXdLuKOZr6vMg9c342lwDAamtsbQCandqqzroV/FEWwtVF0/Ob0+WuhvGfZNEXJWiVPBrHTwHP0l5Z3CyqWub+g4zYGoQdGBX6DF3cqORk/R118CFKc0V+VLJZRFBNJTPotxT7SjRa+hskwNgsY5cSzn0jFVLgtpeLH3CmzUOeNeBaIZ4xYLazL9uF5S7ue/+ciDUnyffgk3/Ddc3HbkEV9gdXoShyY5Z12etuuS1aGbns5px27tNZQhuFHL3Le6kIJljoCdZQ6LS+wo/nKqnANRJS0abw0NzelDyN3jkuUU5DOA4HAub11HQ6Pcxzv2+UNbnOtGFGkeZCzaAnwgyltJQ9+rSZPV40EeL7wJz8g8oUEyWS1AiD1N0ymVyw32YXwqgvSElT4amgZolFQ+cx45boHMZJX7zGNg5/9pZOzhZL/GPgCyGvZFoSZdHmmNrZEBSHvEca3mCLExftaJLi5htOiZNvwheSqTTyeWh6Q9jMK/0/REhMQ/AO18EZbP/+AJLdCzCDV3Wxoz32pzPehs7TFaXKi+1ZSTyVfdh516OsmOedWUeC8yNOkPfoYZVI9LCzXg5R+RgGen99xQ4rEHpUovqw66YhfPm027mK8O2Uv9nqJE5TxZfQ4VzvPp2OMAXflBBxP/SPUC7EANxEcKJhZPBgkWaNE/QM+ctSpnvJXBLP68MSbEB5QUz0S+UlovlnZCuunsViSm1HU8y1Hzd0r6mVVnwaUExGBlj36Ry6E8Z+5wvJxvuN9DuxAFsNDKPKtgzD
+ s0ELg7f3
+ BDFBveHRbvmH7CMzW3yPVj8NwBS3V9FTQ+b0n1T/j+ErGzVemk6BWs9RMtKTUJ5KhwAC561Oat5ZIZvxzKMkWgvchQLWc7i53V1n2/DwWOct2uuP5G2c7FgOAYaSRJWpAPL6KWx6rcakjZXiAuZVLNb1FUpK/5xucX2el2Z8D7DBGmQD6O4sW6ytwFTP1TSVXVldS
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,45 +88,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Migration may be raced with fallocating hole. remove_inode_single_folio
+will unmap the folio if the folio is still mapped. However, it's called
+without folio lock. If the folio is migrated and the mapped pte has been
+converted to migration entry, folio_mapped() returns false, and won't
+unmap it. Due to extra refcount held by remove_inode_single_folio,
+migration fails, restores migration entry to normal pte, and the folio
+is mapped again. As a result, we triggered BUG in filemap_unaccount_folio.
 
+The log is as follows:
+ BUG: Bad page cache in process hugetlb  pfn:156c00
+ page: refcount:515 mapcount:0 mapping:0000000099fef6e1 index:0x0 pfn:0x156c00
+ head: order:9 mapcount:1 entire_mapcount:1 nr_pages_mapped:0 pincount:0
+ aops:hugetlbfs_aops ino:dcc dentry name(?):"my_hugepage_file"
+ flags: 0x17ffffc00000c1(locked|waiters|head|node=0|zone=2|lastcpupid=0x1fffff)
+ page_type: f4(hugetlb)
+ page dumped because: still mapped when deleted
+ CPU: 1 UID: 0 PID: 395 Comm: hugetlb Not tainted 6.17.0-rc5-00044-g7aac71907bde-dirty #484 NONE
+ Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 0.0.0 02/06/2015
+ Call Trace:
+  <TASK>
+  dump_stack_lvl+0x4f/0x70
+  filemap_unaccount_folio+0xc4/0x1c0
+  __filemap_remove_folio+0x38/0x1c0
+  filemap_remove_folio+0x41/0xd0
+  remove_inode_hugepages+0x142/0x250
+  hugetlbfs_fallocate+0x471/0x5a0
+  vfs_fallocate+0x149/0x380
 
-On 11/09/2025 02.52, Jakub Kicinski wrote:
-> On Mon,  8 Sep 2025 08:21:23 -0700 Jakub Kicinski wrote:
->> Driver authors often forget to add GFP_NOWARN for page allocation
->> from the datapath. This is annoying to operators as OOMs are a fact
->> of life, and we pretty much expect network Rx to hit page allocation
->> failures during OOM. Make page pool add GFP_NOWARN for ATOMIC allocations
->> by default.
-> 
-> Hi Jesper! Are you okay with this? [2] It's not a lot of instructions and
-> it's in the _slow() function, anyway. 
+Hold folio lock before checking if the folio is mapped to avold race with
+migration.
 
-For this "_slow()" function I don't worry about the performance.
-The optimization you did seems a bit premature... did you run the
-page_pool benchmark to see if it is worth it?
+Fixes: 4aae8d1c051e ("mm/hugetlbfs: unmap pages if page fault raced with hole punch")
+Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+---
+ fs/hugetlbfs/inode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> TBH I wrote the patch to fix the
-> driver (again) first but when writing the commit message I realized my
-> explanation why we can't fix this in the core was sounding like BS :$
+diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+index 09d4baef29cf..d21865d0178a 100644
+--- a/fs/hugetlbfs/inode.c
++++ b/fs/hugetlbfs/inode.c
+@@ -521,10 +521,10 @@ static bool remove_inode_single_folio(struct hstate *h, struct inode *inode,
+ 	 * the fault mutex.  The mutex will prevent faults
+ 	 * until we finish removing the folio.
+ 	 */
++	folio_lock(folio);
+ 	if (unlikely(folio_mapped(folio)))
+ 		hugetlb_unmap_file_folio(h, mapping, folio, index);
+ 
+-	folio_lock(folio);
+ 	/*
+ 	 * We must remove the folio from page cache before removing
+ 	 * the region/ reserve map (hugetlb_unreserve_pages).  In
+-- 
+2.43.0
 
-It feels slightly strange to fix drivers misuse of the API in the core,
-but again I'm not going to nack it, as it might be easier for us as
-maintainers as it is hard to catch all cases during driver review.
-
-All driver are suppose to use page_pool_dev_alloc[1] as it sets
-(GFP_ATOMIC | __GFP_NOWARN).  Or page_pool_dev_alloc_netmems().
-
-  [1] https://elixir.bootlin.com/linux/v6.16.6/source/include/net/
-page_pool/helpers.h#L175-L179
-
-The reason I added page_pool_dev_alloc() is because all driver used to
-call a function named dev_alloc_page(), that also sets the appropriate
-GFP flags.  So, I simple piggybacked on that design decision (which I
-don't know whom came up with). Thus, I'm open to change.  Maybe DaveM
-can remember/explain why "dev_alloc" was a requirement.
-
-I'll let it be up to you,
---Jesper
-
-[2] https://lore.kernel.org/all/20250908152123.97829-1-kuba@kernel.org/
 
