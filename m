@@ -4,87 +4,254 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69454CAC58E
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 14:30:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 380D8CAC587
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 14:34:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 860028E0002; Thu, 11 Sep 2025 10:30:40 -0400 (EDT)
+	id 5F8658E0002; Thu, 11 Sep 2025 10:34:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 810238E0001; Thu, 11 Sep 2025 10:30:40 -0400 (EDT)
+	id 581FD8E0001; Thu, 11 Sep 2025 10:34:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 74D428E0002; Thu, 11 Sep 2025 10:30:40 -0400 (EDT)
+	id 3FC2A8E0002; Thu, 11 Sep 2025 10:34:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6548A8E0001
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 10:30:40 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 077A5591B7
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 14:30:40 +0000 (UTC)
-X-FDA: 83877205440.26.C4548E6
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
-	by imf25.hostedemail.com (Postfix) with ESMTP id DD132A0015
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 14:30:37 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Af4pJ3d4;
-	spf=pass (imf25.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757601038;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 23B088E0001
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 10:34:50 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D87F5B7B78
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 14:34:49 +0000 (UTC)
+X-FDA: 83877215898.08.8A15ABF
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 48BBE1C0009
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 14:34:46 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=k0khx+LM;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=RvTKmoaU;
+	spf=pass (imf18.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=oracle.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1757601286;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0ggZBAjhYjIflaDH1RktcBl45HG8nhXAZG/qjhNo9vw=;
-	b=dcQXbHPQCgLqF+63JW5L+OKVEjQ6SR/7Jv9ZF+EcdE2FyBffE+bv0hH6vJDkBUqxp2RuXA
-	IXE8lPqWNbOgESH+Tf1BPEEfx5s7WT0/ZagtNd/rAupGFZdq/E22hvOtZYBMAPIMggOubF
-	LSBP+6VnLdhKkr9035oCJP5irPw31lA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757601038; a=rsa-sha256;
-	cv=none;
-	b=h4aURxPdCNt27MY6pHnXFOakYpPDexGm8GoNbJMfGTbW78cBAIVb2j5Csodq7twJunRkAQ
-	GWDwivh8qYBjCZFNkKRNr4VyhBBmJr12JUX7xP6ELfz5CRW1yRqyxFTwWxXUm36M8TaAM9
-	tmBgttKUfgFTjGTrNdmdyaB8H5txohw=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Af4pJ3d4;
-	spf=pass (imf25.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Date: Thu, 11 Sep 2025 14:30:31 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1757601035;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0ggZBAjhYjIflaDH1RktcBl45HG8nhXAZG/qjhNo9vw=;
-	b=Af4pJ3d4AxqymMzi7MWDMC/qm2UPqpLWI0/cF/PpxmZJf7yE05u1WNdLdZ/wIdEECzISNb
-	BnvqOi6giWGl8XkKWZK2NZRqleJDA8D5eZi5Ii65UFHVdvXJwrQTC7WXEu+bUNFqLXyfgR
-	oPiPfo1gBKEoAQ0lNb1zkpt7wyaqU/E=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Nhat Pham <nphamcs@gmail.com>, Chengming Zhou <zhouchengming@bytedance.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/3] mm: zswap: interact directly with zsmalloc
-Message-ID: <f5hn4awbmkelckl6khlaosw3tbfrwzvf5l7kn6mnqpbastsdnh@77mqvfjzyfys>
-References: <20250829162212.208258-1-hannes@cmpxchg.org>
- <20250829162212.208258-2-hannes@cmpxchg.org>
- <r3dzlbqyvhaho5zuac7eba6pxz47zy3cz4lopxza3ls3ibadlh@6evm5aryyuxp>
- <20250909150156.GB1474@cmpxchg.org>
- <46xtfjznexpdlemxjwykin5k74oqomedb2fyli5jrb4xnquuke@ztcmxhmhlkx7>
- <20250910134240.GA1111@cmpxchg.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+	bh=5toIOah/2wNPm+vXmweZN2sthZ57GLihwAS3vuLZSZE=;
+	b=mz1APDPHtHfAwyEFjst1Lpe2/X6iC+NP0ekt7A3BN5y+ZEZhUy+WW88p4bFbl91fPkmB4b
+	58/L+YaKnBGHA3rlgR3k5HFFnOVpAcFRZuDXO/cE3l1L2dkAgJvRL58ZXUVOqcSJX1CSZh
+	oaXYE3H8AAbOQWMdlIEaieXh1/o8JNg=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1757601286; a=rsa-sha256;
+	cv=pass;
+	b=7nPde2IaSKOzkGELoXBHQqwEY+ohEqKv2MCpNOx/ktYS+fM6oK2EpDsw90RoRl12t8kG1k
+	0UkXyCDJZ2EBcBJb4/rQp11e+yur2wyvFlCG5ae3BOYzkLjR3QGEGz4eSLXpc7o2PqssRm
+	UQF7J3+/TqnTeRT2RI2Vcc9KHMkl9S8=
+ARC-Authentication-Results: i=2;
+	imf18.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=k0khx+LM;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=RvTKmoaU;
+	spf=pass (imf18.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=oracle.com
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58BDtlBm019593;
+	Thu, 11 Sep 2025 14:34:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=5toIOah/2wNPm+vXmweZN2sthZ57GLihwAS3vuLZSZE=; b=
+	k0khx+LMuqTz+paHZMnh0VttvMl/GvLliY4QhGmNnntS+obBNTIX+V8CVU0xmk9j
+	cIQmt0W1l/j+TklmTC3HlAIjH3CdYVc64OG5M021x6x2PE2JMaKifJZGrasW3FHb
+	QLpVjntuLbQC9lBtn3t19Yz32E3fcB84K2zszKyONXzztgap+YuU/guTaZ0zn8rS
+	vQLU/qyeXmj6E7G5+yWTHY/32R60QTtgEK9qBgo+Hff2Zu1xhHczhksESSjZGQ3d
+	OHFI6sIr3X1IpWhNAhbaCv4MMD2AhDok1yOwQ1KkoWgd0g3TJCJt0CE94AqENwtJ
+	pCRfaXA2vtePmoiRSNcUIg==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4922shxa25-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 11 Sep 2025 14:34:11 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 58BDX8x9030623;
+	Thu, 11 Sep 2025 14:34:11 GMT
+Received: from nam02-dm3-obe.outbound.protection.outlook.com (mail-dm3nam02on2072.outbound.protection.outlook.com [40.107.95.72])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 490bdcg4t9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 11 Sep 2025 14:34:10 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qYEn1jmuidJhUtLoKiMYkBjFzL3zfeGC1WJJoUhnMgeJnIWoMnarWU96x5uxMSC6eih5qszVVymcIaenQP+w0Rnzzs2EoOJoBan5ZXidxvWMQ2SDxP/ePVVsm/34Y+gSOEWcP2L/hfE/qypz3idIUyONlk69ZygQdn5pTqor2xG0o2W9XQ8dgRyStlNC5g4vtm8D1+cMGNCTUI72YyGSc9xFKMWzqw2lqjJyTG9ktsRfxghKMiRzkvQE/rS4P3H4oISvXGxyoKznmAgHOxp5LuJ9wc8Y6QODYe0E23iIBMDK6aCcWLfzHHuylN81yNZQqh8Opi5wdZWQHaPfINpFww==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5toIOah/2wNPm+vXmweZN2sthZ57GLihwAS3vuLZSZE=;
+ b=DK06q8E+gZFTZ/v6AEjRi+q5D6uDwVANNw5+RadIbu5oGahDx085Kc1CrO+oxB3U2ZQ0KZPU7/2hxFFntsFVizS7e8YeyOKVZBrxOvg3tZ88spgCdPRE/Ft90Twe29ivH4c/6uwDUM5QKDtOKkZftHEbq+MLZXNahAtpUcojVjdezKf+o3sG9fHaxPKZOO+B1G8nPVNJQpk1KDTB5jrBQts/uy/JQwYQAS/dCUnzwHU56HzauifCxAYX6EXa2VK30y2CGk42FPjZ9sAK5KYgClJIAgFVHk2gJINZlznVlqXw55cUkl6GQEkuYgoV1djfDdNPC3AC/wjhTZa9FqRUeg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5toIOah/2wNPm+vXmweZN2sthZ57GLihwAS3vuLZSZE=;
+ b=RvTKmoaUN1isadmQFLGEdCFadJL3JN/mgmcY7LVhLRIYX2vbqUJjZTnGJ8TCbGj+tF1X/lQRg3xaUvgSPhK7vlL0VMv08FRAG8GV9iuR3Sjzqedj8E/yfCUA2N4FFqehOvCVc8pNdaAvFecPNBPYYbNowfYy4fZ8y5ucJzvZHPo=
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
+ by IA1PR10MB7538.namprd10.prod.outlook.com (2603:10b6:208:44b::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Thu, 11 Sep
+ 2025 14:33:12 +0000
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2%5]) with mapi id 15.20.9094.021; Thu, 11 Sep 2025
+ 14:33:11 +0000
+Date: Thu, 11 Sep 2025 15:33:09 +0100
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: Yafang Shao <laoar.shao@gmail.com>
+Cc: akpm@linux-foundation.org, david@redhat.com, ziy@nvidia.com,
+        baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+        npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+        hannes@cmpxchg.org, usamaarif642@gmail.com,
+        gutierrez.asier@huawei-partners.com, willy@infradead.org,
+        ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
+        ameryhung@gmail.com, rientjes@google.com, corbet@lwn.net,
+        21cnbao@gmail.com, shakeel.butt@linux.dev, bpf@vger.kernel.org,
+        linux-mm@kvack.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v7 mm-new 02/10] mm: thp: add support for BPF based THP
+ order selection
+Message-ID: <4d676324-adc6-4c4c-9d2b-a5e9725bcd6c@lucifer.local>
+References: <20250910024447.64788-1-laoar.shao@gmail.com>
+ <20250910024447.64788-3-laoar.shao@gmail.com>
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250910134240.GA1111@cmpxchg.org>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: DD132A0015
-X-Stat-Signature: jhrc6qf3iqia5mewqyp6yh9bht99rzoi
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250910024447.64788-3-laoar.shao@gmail.com>
+X-ClientProxiedBy: LO4P265CA0030.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:2ae::15) To DM4PR10MB8218.namprd10.prod.outlook.com
+ (2603:10b6:8:1cc::16)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|IA1PR10MB7538:EE_
+X-MS-Office365-Filtering-Correlation-Id: 876e20fd-cec0-441d-1f93-08ddf1402291
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?TExaZU9la3hDcitaaFVJMWlrR3lqK3hjSTlCUjZNcE40ckw1YnRLNmhlQXd2?=
+ =?utf-8?B?Tkp5VzhkTm5PYU5xcTZRODcwdDRvalY3VmppVGlTT2NFWk14di9DZzZ0MWE2?=
+ =?utf-8?B?K2YybnhXcmFoajVFYmRadkQrNHZCQk15OCszblVlU1NLazZPb1c4MEV0RHVR?=
+ =?utf-8?B?djgzdFoyMlJ2eENNNWp6NDQ4bFNJU3lDQWpzSDhKOFNvVXB3NXNJWHVPT2xs?=
+ =?utf-8?B?Sk9OQnAzL1B5SS9xODZtckVQcmhJYllTOW5WTnNidWxsN1p1bjFabERJcGlL?=
+ =?utf-8?B?bVNINUp6UEU2MzFjUE1JSDJza08wQkd3bFpBYlcwSUZPb1BCT1Z6VDRhUDBF?=
+ =?utf-8?B?SGczZXU0aDM5dnZsdy90U2x1aUNnamRoYUh4em1QTlMrMUZzbE0ya21Sdk1l?=
+ =?utf-8?B?ODB3ODA4dnhKN016QkR6MVc1L1NVRVdsMTI5M0lxYUFrdmdRcGRyQ3dwbG9Y?=
+ =?utf-8?B?SVNUVXYrVnl5RHFyRmpreVVBWDNCek03OUNqOFVrYWVjSEh5UlBkNTVZZEhI?=
+ =?utf-8?B?cG5PU0R1VjJreGg2dm9MaWZSNlNheDBZUVkvcjF3cjIxSkdUbENUcW80dnJ4?=
+ =?utf-8?B?S0FrYzZTa1pESmVGVzFpL3l4S0gvQ0FVSG9yMWp0Qk5lVEh4VDdRdzFUK2VK?=
+ =?utf-8?B?RGY2Mjl2TFRKcjA3NC9kb3d2WDlKVW90cE4reGJDYjc1YUpuQTQ2T0ZHSEcz?=
+ =?utf-8?B?c0d5ZGVHUW9vYzlycEU3MWYra0Y2ODg2YmhlRVZEWUxOWUZIOGd2ZS90V2lw?=
+ =?utf-8?B?WkYxVlJjeUNaZU5saFlpM21hVFR0SmhKeFpZUGNDSHlGTERqdkJGM2JBQitC?=
+ =?utf-8?B?aUh1Ym1CdjdaVXkrVmUwZ0p0dDNaN2g0cUprWkNjVk5sdTN2L0ZEcDJFd1d6?=
+ =?utf-8?B?aVplRmhiRUg5NURGWTRBOXdVLzlNZGZZdFUwSDkzOXF1ZVZVcktJQzljZTJL?=
+ =?utf-8?B?S0NmSWUxR2V1MEw5OGhlUGtVTUZ4cmFveG5RNFhzSlVJNDMyR0t5NGR1Q1M1?=
+ =?utf-8?B?SGFRZ1RRRklvV2hIQTZocjZHNW4ydXE0a3hsU09OQjlWNlJIMTEzTlcza2p5?=
+ =?utf-8?B?U2VhTkJJV3h3RkZ5ZVRWcWpXRjBSZW54YmZtcTE5QTR4WS9mc3BWb1dIZjMv?=
+ =?utf-8?B?RVFZdjZoOThwbFErVGRVWnJQcStpeHNBVEVYSE1GbXIyZ2pmSWZJdTBmNWJh?=
+ =?utf-8?B?cFlSUzdYNFMxeDNnd294SWRpTEFDODA5ZVBLVkNDMTFpdkJacHp3T1Q2aEJT?=
+ =?utf-8?B?dXNwdXA1NWNTSlVwblhyc1cyMGN0Z2puWXRVc0NWa3pkQ0RpanZjMlFEbVlZ?=
+ =?utf-8?B?T1JhWUxmNUFxbEJTTWtRdXRWN2JweFY0L0pFYVR2d1F2dWlDYzRUbVlSRmNr?=
+ =?utf-8?B?UzJjS1daNWVXc0EzeTAwa1RvanRkTVZ6ZXJDNmh0TzFGZHBoang1bUZwOWx3?=
+ =?utf-8?B?aWpjVGdXcGc2NUZFejhRWkJ1V1A5dGdIeWREZlhacjJhWUFjdm1qbUY0dkc3?=
+ =?utf-8?B?VndGRVg1dEg2OU1tNUpMaStETUMzcFZBZG1kYlZtUE1LYkh4SkFHUjhydlNx?=
+ =?utf-8?B?SGV3WGlMMmZRaHVPcEwvdlJLTGg2eWFCMlVNYy8yYUNQSDdHejAwbXc1dTVt?=
+ =?utf-8?B?YU5SR21MUmxGTktGR1BFQWd3cU9KQ2N4U3JHc0ZPdFNFcGQzdWkyVGlmekdH?=
+ =?utf-8?B?R3R5Sk90NC9xUno4bm9HSXBHVCtSdkIwWVBRYnBncE1CQ3IyajJSK2NRYXc0?=
+ =?utf-8?B?YjVsRzVINThyM0dpdEtvaThSc3d6d0Z4MDgvUGVvaTZkeFhLbnYrQUs1TG9H?=
+ =?utf-8?B?NS8wbUdMdXNIdXFuaG5sR2g5bUdkQUx5UW1EMUtPM3lsSlBlRGhOQlJSUk9P?=
+ =?utf-8?B?THFUdDQzeUFYRGNDNDhwbzZ1WllZeVgxSVFiZkxKK3BtbmphUWJ3dFFBaGxE?=
+ =?utf-8?Q?M0YmFz7pVIk=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?M3k2Ni9YMGZxY1hFSUFMaUFIMXk2KzRvcURWR1d2RTdzRU9TMGFCSmQ5WWcy?=
+ =?utf-8?B?dzZYalN6d3hsM2RMR2lmdmNKT1FaYkxzN1oybExSZzlOQmNEeWo1S2pJZ205?=
+ =?utf-8?B?eUsvMHJGenJ4TU1MczAyZmFVZmp0TUw1ZU5lZDVaY1ZLYUswOFFZOFNFRUNW?=
+ =?utf-8?B?cGptSzVjTnBJVWNMZ00xWTc0d05oQWpmdzhHbFA3d1pNUWxPWmFuWFBESnJv?=
+ =?utf-8?B?TXZ5V2xvbkEvNXNWNzdIVjZhYjAvS3Q5MWxIbXlHYTBsckJ0Q1dRQjByZlNV?=
+ =?utf-8?B?NW03K01yS2dzTjRZU29sNTUwMUJOTU9tZy9wTHdUWXBGZE9xbU9iMWI2aWx2?=
+ =?utf-8?B?TmgwdjJWb0FGakVxcGkzYUFFOGptZU1PU0tXdzRNZzYyd3F2S3RMSWQ5eDZV?=
+ =?utf-8?B?RlhoUTBxUm1ZQm50QW1rdzVWYWdaUFpnd3VyZmh1aWNDekpXWkRKVTkzS1hr?=
+ =?utf-8?B?MmRITThoR1VWb3JCdHFVM3FQY3lCOUh6SW1IQzBjWmNrZ09MOEFuN3Y2enpU?=
+ =?utf-8?B?dkJJZkpDY2dvOGR2QXI3TzlIRzdjdWhZR0o0VmJsUVg4Mk1zcWY2MUh2R3RQ?=
+ =?utf-8?B?MDcyTTFnb0VkME40clM5SWtOWkxYMzRHcktJRUxBTStvMEhaQjQweHN5Nm9N?=
+ =?utf-8?B?VlJhT1hjRVhtQ1AxVkVWZTQ2K0dSQmNaK0d2QUtoN1FoVFNFdUd3eUJPYkZF?=
+ =?utf-8?B?a0xieHY4eElobmFKcHdPTlEwK3QwZ2RPREtDb3N4ZmFDanRiblBRK09oM1BU?=
+ =?utf-8?B?Q3c3aTl3OGtYOXZYOUlhbkN0QTBLeUxtU0pLQno5eEl0MDlZeEJRbmhxVGYy?=
+ =?utf-8?B?aE8xaGZEWHN1QkUrc0grdW5hNzdXTjdBb2dnSTR2YXB2T1dzS1ZxY0FUYVRo?=
+ =?utf-8?B?bjRmOHdjVGxRaHJFRE1HaU1OdmJTb0FMa21yVmJrbThQVjFzUEY3bkw2Wnov?=
+ =?utf-8?B?UEM3NUY3c3RHOFB1OU5DNGNGTVJwZzNSSTBtS1o3a0VrRTc0akVDRitHZWhW?=
+ =?utf-8?B?Z2hWNW9uRDltNmNuNkNGM2ttcjNPOEtwRTVHOHE3VUdOSHZMWGovRUtyS25Z?=
+ =?utf-8?B?LzcyMTcrdWhDQ0JMUElxcHpJekt4bVhHckVYMXdoTWU1MDhQQW5MWE9JblR2?=
+ =?utf-8?B?L0xOMUswcnBxWXJKdWpYblloZ1NtekFha0tjUExmaUN4cjVGNkxmZVZWZm1u?=
+ =?utf-8?B?c0JWNnFTblJWL2xuOVE2Y2dYcGljUElDdDA4S2EweUkwQzhvcjVlSGdXcXpl?=
+ =?utf-8?B?SFlldVJMcEJ6bjRWMEpZSk9Vcm9lS0ZiY0JuUlErNzdpdjQrVzE3dlJIbEJs?=
+ =?utf-8?B?RjhQRHhMK0krczR3aHFkcXNiRnhVbDhvL2QvRE0yTlZjVUdpYVhacmhhUDY1?=
+ =?utf-8?B?a3EwcDBXdXd3Z0NzUjVmdnI1SHBiQ0JncEh0OGExWVV3UlRxajJtdkkyTVhT?=
+ =?utf-8?B?ZW5NRW45Um5qUE0xODVJdHJESlJaeTFXektDNC9BVksxYjZuL3pFc2Yvamhj?=
+ =?utf-8?B?Unc5U0toUWhmVXpBUjN3N3JMeGdNTE05djZJQU93Y1gvSVpqYTFSVWtIZkV5?=
+ =?utf-8?B?Ulo2cjQyL3RiWjg0WVk0OGJtZm54SlRxaW5SbWlXQUdWb2RjQmE0WTNCUHNo?=
+ =?utf-8?B?UVVOQ29QditDNy9VL3AwaWdOUkhtQXkyMFZzeTk1VklnVm01Y21TMDEwWW9K?=
+ =?utf-8?B?Um5acTBkcURKNCt4a2ZsSXpiK1JkeEtaUldvcTM4bDFzRzQvaStRRWQyOTEx?=
+ =?utf-8?B?K2VnWTVyaEt1aXpBRmpvdys1ejlid3VKQmFZaVFRWmdhUm5pWmtyQ09IU0xy?=
+ =?utf-8?B?VklJL0h0bXZvVVlMeWVpQk5sZWcrV1o0c0pKN0ZIMHIrSmQvQkU4eE5tTm5E?=
+ =?utf-8?B?MTJVbElYd0F0OFNNN2R3Q1BDaWFkZWNTeVR2ZSthRWFWZzhNR1dkYWx0NmRC?=
+ =?utf-8?B?ZldHdUU1ZDl0TzBVeDhHb1N5M1kvenMrc3R1MUREdnFFUldiR3k5MFUwY1Rv?=
+ =?utf-8?B?Q2Nnc01lbUIwalk4UWtwOFNxNFE2ell1UkY2Tm9haVlLRGJJM1R1eUdlVklP?=
+ =?utf-8?B?cmVqczlDTkI0dE9kRG5EWExLNStwWmE0OXZyTlhqS01WQUcvY0hwTGFRckR1?=
+ =?utf-8?B?aEsxdjc0WWNvQWdrZTdCQkJJb2JjQVEwYThLSmtGT1haOXRpL0RrVW5MQllV?=
+ =?utf-8?B?aFE9PQ==?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	ZFpLi/Qi1BypZHgDbkxQ8QB/qsV3TCsnMTvJOpxGtn2NW7Kt2PDjW0oTa1CkxkGyOIjvSITO+BmlLP2J1kki6SPTZrsaW/ItvQLffvHciWPTcpME/jHulC51GsyAMb1jFQ+yHaLnDa56Y77gH8sBfkiyJmV+CMDqaUPc90mdmq+PBgN5/8bBVijOFxwZ+asgH0Dq+rfQ8JeVnA5pTsQ1p8EFW+arupmK3FKPnBaSdk0uqSSAgtbIfDWhV3nivkChWF3XenFdtIsIqHmXj6bTxevD2LH3OdLaf51UMRl//P6ROL7HTdxGxY7mKuPw+Sak7iQU+b3DvRNaRmF9DcO7qhxEDdZRwP6vD9mrqT91EswCCwxvTkq/rbtqphHsLykvcnatvbK7FGyCZ7Wq6LPLYzJ+rCYfxn0IL8wVeqDbi04e3xwQIs6sMj1Eq08TeLmBhb1kACHJ7rGZCSIRAAnMxDFm3hnM565ALwLo/wz7JUhsOLOerfmTTINr7F1pAjjzsthJdX7njOkdwnn8Rz6AQE+cWgG54xF4vH0ax2/Z8GgrhvWFy1cSIqGIeyNQXwJIlObE8hmM2MacMNisHn8YVA8mL9YjR2tFBkDXdZYxTFI=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 876e20fd-cec0-441d-1f93-08ddf1402291
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Sep 2025 14:33:11.8319
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: GW0FsPOSE+2+SGKXsWTIs875F1OcJ154dNYh0/At/V7iIsgFdYUyKqARPNXLSuOIz4NE7dj4Zu8HnT1qsivuiQNUtIqQJsxWebFA3dnH+VY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR10MB7538
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-11_01,2025-09-11_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 adultscore=0
+ suspectscore=0 spamscore=0 phishscore=0 bulkscore=0 mlxscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2508110000 definitions=main-2509110128
+X-Authority-Analysis: v=2.4 cv=esTfzppX c=1 sm=1 tr=0 ts=68c2dde4 cx=c_pps
+ a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
+ a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=yJojWOMRYYMA:10 a=GoEa3M9JfhUA:10 a=20KFwNOVAAAA:8 a=yPCof4ZbAAAA:8
+ a=pGLkceISAAAA:8 a=C4rHJTz6X3AyEP4uSZ8A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA4MDE2NSBTYWx0ZWRfX/nLd0cZvbA9I
+ jOJVHathAAHzyreF6ndhTswkkyD3cL4WGU8A+KSEfLIUUHDuIBNYCOxnRaakcojkmxZ9Sb7ZjQs
+ G8kunMDcBXOWSs0i/Yjl2Zilioc9iIKaUYyJqQeABoLGq/UXD2iXLjy/9baEYfPMqV1H7Qysfpl
+ +EhHjw9jrCo0FmXSkKKpCb24K++VKH2ME1e9QEu0xPC3xerNYraJYRpB1ujRkPBPZb1qANJM+gf
+ n1chuNIG+7hbBifJGbGSqepfIdEjj6dxDfRd7eKsaNsJ0AjSTEvzYUxvVHYhoM2GdFU1ZPgg7mZ
+ 5zJ0lkY/dYkUS8iYsbCIgdvavzNTaiiwm9/fUOqcNNXtTexjpsPW8qA+JLVZ7eHXHVGsmW//vGP
+ W/rEHRNG
+X-Proofpoint-GUID: iTeKRm6JKGk6670427SFN0ArRgtTe27b
+X-Proofpoint-ORIG-GUID: iTeKRm6JKGk6670427SFN0ArRgtTe27b
+X-Stat-Signature: mhbtz6t4mr9kxsunpihyqkie3aywd1m9
 X-Rspam-User: 
-X-HE-Tag: 1757601037-403822
-X-HE-Meta: U2FsdGVkX189nwP9jyB6JKg7bTAr2phVBf1etLBov3JbHxJuWsiqfma49/Vj7fk44RxWm77mq82KYJxVSYrH2C3uL+fD0yCN8TTx61DEU8fQKuVoePAZSlTbZi8SaArUSzScD1pigl3iw4nITPfiyulB2Oq9Qq7/sxLM/o8Q/ezimzXVeef8AKeELco7PJ+3u3+xrnpyVcCHvxVxCwaBooGMoCxjPHDdnwvYM4bn8tYv/562irRepZalrUsbQs2DE1572ixO+ZW/6fW08T8uPbyqfp9qW1aN8tnFNM7wafmsjiW5IjJZ0o7mizE/B8yBbgi3A9QG4iaozajuOegWQZSTRydxn6gcmlMUTWN6QwxPNZCNEWsi+Z8RydIEfPXvc3JXdg3LhUccMIzKO5B7pSp05JnnPM36DdcETWEwYhd1JoKEfCaIegoTV1mioQpORB4HpnOBzE8gYmPAFTzvJyh/TQlZwNmlegzCOuC8w63CXEo01gkaSN9R48RaXiIc/W9RbpZN82fkmmeey9w8fjEX3y4hnHJSNTEh/SlHNw5g9Su3lv1zr9rOdmmsuEssPghY/G6PD56+HzmfyXhhLYG/Qd38Fg3O8M2Duc2h3zugnQceXwP0mO3c1DfAA9duMJJt4YSX/HAVinF6io1lifg3hG9oL0YPINJQGAwdoseOT1MT+nGoiNRUtgomGoe3fxS2YRN966Yg2E+b6z2IC3XBTKLqCB+kJiyNHyD/I/2qqIUIllsEuT8iSTSLiyuBQSRlSfk3CCAgmOkXX8K2PRnXA/d4orWp2RxVFrQdRq08K9MQZmcX0LbmgVpnhw1xD+C2pencRn9sGOOJb7g8OsAU+YyNCGbkaONOSmxKydckBROIlxTOcJ+gPf86ORXsshTw5KIUwXmGC/yqAzNyZbAFhNElP6TM6q8FDopMx6A7H9i5DHw+lRoydFiXyDmCY/HPOL/eLG3ZV3t8JJY
- NgkEKw0l
- 5Dgc+yHeiDdIr5ERSuYRKgl+Vfu+fU9K7Sxl0HeI+m48SRh3h9BIUBcQD/rFgvvYoAb1diy1KmlXHiMb47io5VywadaeZT/BegFsCqL4+NHWTTKONVIqn+T0pUVfZKztiwoJZQLJqX3Us9CHXIk3DFRlATIUzuLXpTPMGVaPTSGHw+h6nRVH+bnteNYMCQmVFVyEhUOWDNeQpReqXEQJkhn/xM5JK4h5+8KWJUO0Zp601VMcBWjA0XNKO+SgOwLqAmzuiWLGrXUKr7vc=
+X-Rspamd-Queue-Id: 48BBE1C0009
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1757601286-184311
+X-HE-Meta: U2FsdGVkX1+/ZiqgUtOfo2iUyzTgz09yz8vMuVsw4CX/Efw1btkMSwKKatzvaz2vvGnHVCGcXCSPjkEGyPk5rq7W7I/GBjWHawhR+qn3h0gVgH6aLhU06OyOFC7K1k9hVG1AZnpAVA9pRGOvjBVmRRCFpy6Myc40n2jTXbqaBF3fjsnBGb2bzCQtuDzcRsOja6Z4UYZ6SrsjPaMcnLPE94UK6gcT5D+lOx4V3EF2KlcYFhIgeVURuPmuygFi597AoY1cejtVkVCPkG3Swdp/Xb8SwoZ0FQwMa0KR1KU2uowjwt4q0DfFEFk9a8st8/TghGB3P4MPiOIyEaG7yumTHsnKWDeoQFkQyOuiSZe85H7/yjCQpcrfCAjnOlLfYcfjyei3ORVB6EyLVFHQjQzQEZZUAqJhIMEm+9Q85effXc5BnWW3Jl04E2DY0HAmD8C3+IkD/msppazkoqHgfP02Q3KJhqozQ9MvRIUHtDel0vljyUJ2mv81w7+9uv3ydGOcGP2MDtwRI1RbJ+/kclP94MnQ8+2ttOL69Ax+zeHe5kPmA02WCUK/gGx+t3OWHe1Xcy7F2k9CxDkPysljasvt4aDHAARvaX0GpDvva5Rq92Gh0UipNuLf/c8DWiF5L+g97v99okIwbfZf11fAWJqPlFDYCSW3LS0i1I0qBVyi0nYYR3j7VIHvR4Q4g3TFF3Q9N0oOz2pa8LsrDNzxMfQuvgoDF7PIGkkb5hKxRrHpM2ZY4y30nQ9kAIYaV4za7zSfkYf783Xv0U/TJ7XTkO4HbrtElexQyMsN8Dr0AKDsMwdkTkW1+gwOFilnjEXWbgd8Kl+sbbfsyUPzNbXh58zr4T4hxEl+/6QN2FFppgzGtZhioRKz2VF5zHip6n6xw994puvn2GPqY66yqExlYjtz9ztrcGTlPT9cv1zTGMihdW177WKfUbYiRWXWaLd7fsQQPg6gRHowhb6V55MGm4/
+ 7HF5euXE
+ +Cw4NIXGAiOcjxG4yKLsBbseeFY9LFKglKVDUA0X2fI0HhbV4HF4O2W+79O6bSd5HIBxXpqPRnYn2Q4s49JrfyWhmNsodl0zVM3uQ5JBtEpnF39qnCSLbrfCQkSHJxH602Cqqp2wGZBolqXmmgDgjlGNjJKqPYnFaF2mQZZ1u0MQcQgBetthk1ct3qvpw1SHOvTsSXhXLXEGqGQ0RqaS/02muHZwXSZv2bf1H6QAAQQrHF3goNVKq9k8lBLspEo1pkMzYLWYV7+IllwLxiydrb7xlypPLe2X5UJr1N6enE0Qy/r7EwQO8WjrNjEPy6j/0UgNWMa5jocLd0qCQALwf2yVrWPUiKTuEpTf6zb4n/CSsCCZgSHDgItR1spqFSQago05o/wGFPO6e446Dgpq/ukXyNUlPJDCWrbujwHhWvLA9Rq4eeD2yiSbZk7vitee+CaSYghLb+BH5zAXJGKpD4cI3EzSOlomyzfDNUATHdwePQL9A6L6wmXJ2I6rMc/Jb1zdKbvl+CCxib7uwb/BL4DXdxdOIA3ICl5IVpRC5HReK6YFdUG/hiuoZum3xZck78joFMlnr22uiXX6uBfM1sP9jQJh6dA3pOT1cSf9LiIz51ZlQLdOjqPHUe12KBnCGEyLGcy9dxGt2GkdzJJrYiqKrCgS5NEWujMF+50PD2ZF9L+Nvu/EE09l3PazlukkPdU3K8Cqaqwsms+Goa3M+EGLYs67u47vth5MpBxt5It9br7P7SabRh4+RlA+nbc3GsD/g2VZFEgiXyyQiutmk74FRVWWiHyehGv4f+QqJa0TGuwnkt71w/jW5t4JqMODqmMlpeQ6UtThOl98sQCwXe9sCmA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,183 +260,492 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 10, 2025 at 09:42:40AM -0400, Johannes Weiner wrote:
-> On Tue, Sep 09, 2025 at 08:10:43PM +0000, Yosry Ahmed wrote:
-> > On Tue, Sep 09, 2025 at 04:01:56PM +0100, Johannes Weiner wrote:
-> > > On Fri, Sep 05, 2025 at 06:53:15PM +0000, Yosry Ahmed wrote:
-> > > > On Fri, Aug 29, 2025 at 05:15:26PM +0100, Johannes Weiner wrote:
-> > > > > zswap goes through the zpool layer to enable runtime-switching of
-> > > > > allocator backends for compressed data. However, since zbud and z3fold
-> > > > > were removed in 6.15, zsmalloc has been the only option available.
-> > > > > 
-> > > > > As such, the zpool indirection is unnecessary. Make zswap deal with
-> > > > > zsmalloc directly. This is comparable to zram, which also directly
-> > > > > interacts with zsmalloc and has never supported a different backend.
-> > > > > 
-> > > > > Note that this does not preclude future improvements and experiments
-> > > > > with different allocation strategies. Should it become necessary, it's
-> > > > > possible to provide an alternate implementation for the zsmalloc API,
-> > > > > selectable at compile time. However, zsmalloc is also rather mature
-> > > > > and feature rich, with years of widespread production exposure; it's
-> > > > > encouraged to make incremental improvements rather than fork it.
-> > > > > 
-> > > > > In any case, the complexity of runtime pluggability seems excessive
-> > > > > and unjustified at this time. Switch zswap to zsmalloc to remove the
-> > > > > last user of the zpool API.
-> > > > > 
-> > > > > Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
-> > > > > ---
-> > > > [..]
-> > > > > @@ -315,52 +292,29 @@ static struct zswap_pool *zswap_pool_create(char *type, char *compressor)
-> > > > >  error:
-> > > > >  	if (pool->acomp_ctx)
-> > > > >  		free_percpu(pool->acomp_ctx);
-> > > > > -	if (pool->zpool)
-> > > > > -		zpool_destroy_pool(pool->zpool);
-> > > > > +	if (pool->zs_pool)
-> > > > > +		zs_destroy_pool(pool->zs_pool);
-> > > > >  	kfree(pool);
-> > > > >  	return NULL;
-> > > > >  }
-> > > > >  
-> > > > >  static struct zswap_pool *__zswap_pool_create_fallback(void)
-> > > > >  {
-> > > > > -	bool has_comp, has_zpool;
-> > > > > -
-> > > > > -	has_comp = crypto_has_acomp(zswap_compressor, 0, 0);
-> > > > > -	if (!has_comp && strcmp(zswap_compressor,
-> > > > > -				CONFIG_ZSWAP_COMPRESSOR_DEFAULT)) {
-> > > > > +	if (!crypto_has_acomp(zswap_compressor, 0, 0) &&
-> > > > > +	    strcmp(zswap_compressor, CONFIG_ZSWAP_COMPRESSOR_DEFAULT)) {
-> > > > >  		pr_err("compressor %s not available, using default %s\n",
-> > > > >  		       zswap_compressor, CONFIG_ZSWAP_COMPRESSOR_DEFAULT);
-> > > > >  		param_free_charp(&zswap_compressor);
-> > > > >  		zswap_compressor = CONFIG_ZSWAP_COMPRESSOR_DEFAULT;
-> > > > > -		has_comp = crypto_has_acomp(zswap_compressor, 0, 0);
-> > > > > -	}
-> > > > > -	if (!has_comp) {
-> > > > > -		pr_err("default compressor %s not available\n",
-> > > > > -		       zswap_compressor);
-> > > > > -		param_free_charp(&zswap_compressor);
-> > > > > -		zswap_compressor = ZSWAP_PARAM_UNSET;
-> > > > > -	}
-> > > > > -
-> > > > > -	has_zpool = zpool_has_pool(zswap_zpool_type);
-> > > > > -	if (!has_zpool && strcmp(zswap_zpool_type,
-> > > > > -				 CONFIG_ZSWAP_ZPOOL_DEFAULT)) {
-> > > > > -		pr_err("zpool %s not available, using default %s\n",
-> > > > > -		       zswap_zpool_type, CONFIG_ZSWAP_ZPOOL_DEFAULT);
-> > > > > -		param_free_charp(&zswap_zpool_type);
-> > > > > -		zswap_zpool_type = CONFIG_ZSWAP_ZPOOL_DEFAULT;
-> > > > > -		has_zpool = zpool_has_pool(zswap_zpool_type);
-> > > > > -	}
-> > > > > -	if (!has_zpool) {
-> > > > > -		pr_err("default zpool %s not available\n",
-> > > > > -		       zswap_zpool_type);
-> > > > > -		param_free_charp(&zswap_zpool_type);
-> > > > > -		zswap_zpool_type = ZSWAP_PARAM_UNSET;
-> > > > > +		if (!crypto_has_acomp(zswap_compressor, 0, 0)) {
-> > > > > +			pr_err("default compressor %s not available\n",
-> > > > > +			       zswap_compressor);
-> > > > > +			zswap_compressor = ZSWAP_PARAM_UNSET;
-> > > > > +			return NULL;
-> > > > > +		}
-> > > > 
-> > > > Hmm it seems like there may be a change of behavior here. If
-> > > > zswap_compressor == CONFIG_ZSWAP_COMPRESSOR_DEFAULT at the beginning and
-> > > > crypto_has_acomp() returns false, the old code will go into the second
-> > > > if (!has_comp) block, printing an error, freeing the string, and setting
-> > > > zswap_compressor to ZSWAP_PARAM_UNSET, then we eventually return NULL.
-> > > > 
-> > > > It seems like the new code will just call zswap_pool_create() anyway.
-> > > > 
-> > > > Am I missing something here?
-> > > 
-> > > I don't think that scenario is possible, due to the way the Kconfig
-> > > works. Whatever backend I select for CONFIG_ZSWAP_COMPRESSOR_DEFAULT
-> > > pulls in the crypto module as built-in/=y. It should always be there.
-> > 
-> > What if none of the CONFIG_ZSWAP_COMPRESSOR_DEFAULT_* options are
-> > selected (i.e. empty string)? Also, can CONFIG_ZSWAP_COMPRESSOR_DEFAULT
-> > be set directly to an arbitrary string?
-> 
-> No, that isn't possible. It's a multiple choice symbol that forces one
-> of the options and has a valid default value. I tried to made it an
-> empty string in .config by hand, but oldconfig restored it; if I
-> remove the DEFAULT_* line entirely, oldconfig reprompts.
+On Wed, Sep 10, 2025 at 10:44:39AM +0800, Yafang Shao wrote:
+> This patch introduces a new BPF struct_ops called bpf_thp_ops for dynamic
+> THP tuning. It includes a hook bpf_hook_thp_get_order(), allowing BPF
+> programs to influence THP order selection based on factors such as:
+> - Workload identity
+>   For example, workloads running in specific containers or cgroups.
+> - Allocation context
+>   Whether the allocation occurs during a page fault, khugepaged, swap or
+>   other paths.
+> - VMA's memory advice settings
+>   MADV_HUGEPAGE or MADV_NOHUGEPAGE
+> - Memory pressure
+>   PSI system data or associated cgroup PSI metrics
+>
+> The kernel API of this new BPF hook is as follows,
+>
+> /**
+>  * @thp_order_fn_t: Get the suggested THP orders from a BPF program for allocation
+>  * @vma: vm_area_struct associated with the THP allocation
+>  * @vma_type: The VMA type, such as BPF_THP_VM_HUGEPAGE if VM_HUGEPAGE is set
+>  *            BPF_THP_VM_NOHUGEPAGE if VM_NOHUGEPAGE is set, or BPF_THP_VM_NONE if
+>  *            neither is set.
+>  * @tva_type: TVA type for current @vma
+>  * @orders: Bitmask of requested THP orders for this allocation
+>  *          - PMD-mapped allocation if PMD_ORDER is set
+>  *          - mTHP allocation otherwise
+>  *
+>  * Return: The suggested THP order from the BPF program for allocation. It will
+>  *         not exceed the highest requested order in @orders. Return -1 to
+>  *         indicate that the original requested @orders should remain unchanged.
+>  */
+> typedef int thp_order_fn_t(struct vm_area_struct *vma,
+> 			   enum bpf_thp_vma_type vma_type,
+> 			   enum tva_type tva_type,
+> 			   unsigned long orders);
+>
+> Only a single BPF program can be attached at any given time, though it can
+> be dynamically updated to adjust the policy. The implementation supports
+> anonymous THP, shmem THP, and mTHP, with future extensions planned for
+> file-backed THP.
+>
+> This functionality is only active when system-wide THP is configured to
+> madvise or always mode. It remains disabled in never mode. Additionally,
+> if THP is explicitly disabled for a specific task via prctl(), this BPF
+> functionality will also be unavailable for that task.
+>
+> This feature requires CONFIG_BPF_GET_THP_ORDER (marked EXPERIMENTAL) to be
+> enabled. Note that this capability is currently unstable and may undergo
+> significant changes—including potential removal—in future kernel versions.
 
-Good to know, I honestly never really know how kconfig handles these
-things.
+Thanks for highlighting.
 
-> 
-> > I would prefer if the code behavior did not change to rely on the config
-> > possibilities.
-> 
-> How about this on top?
-> 
-> From f842e1338594c4b78456f878731a261a074d5277 Mon Sep 17 00:00:00 2001
-> From: Johannes Weiner <hannes@cmpxchg.org>
-> Date: Wed, 10 Sep 2025 09:00:01 -0400
-> Subject: [PATCH] yosry
-> 
-> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+>
+> Suggested-by: David Hildenbrand <david@redhat.com>
+> Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
 > ---
->  mm/zswap.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index c88ad61b232c..991fe380c61e 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -314,6 +314,10 @@ static struct zswap_pool *__zswap_pool_create_fallback(void)
->  		}
->  	}
->  
-> +	/* Kconfig bug? */
-> +	if (WARN_ON(!crypto_has_acomp(zswap_compressor, 0, 0)))
-> +		return NULL;
+>  MAINTAINERS             |   1 +
+>  include/linux/huge_mm.h |  26 ++++-
+>  mm/Kconfig              |  12 ++
+>  mm/Makefile             |   1 +
+>  mm/huge_memory_bpf.c    | 243 ++++++++++++++++++++++++++++++++++++++++
+>  5 files changed, 280 insertions(+), 3 deletions(-)
+>  create mode 100644 mm/huge_memory_bpf.c
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 8fef05bc2224..d055a3c95300 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -16252,6 +16252,7 @@ F:	include/linux/huge_mm.h
+>  F:	include/linux/khugepaged.h
+>  F:	include/trace/events/huge_memory.h
+>  F:	mm/huge_memory.c
+> +F:	mm/huge_memory_bpf.c
+
+THanks!
+
+>  F:	mm/khugepaged.c
+>  F:	mm/mm_slot.h
+>  F:	tools/testing/selftests/mm/khugepaged.c
+> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+> index 23f124493c47..f72a5fd04e4f 100644
+> --- a/include/linux/huge_mm.h
+> +++ b/include/linux/huge_mm.h
+> @@ -56,6 +56,7 @@ enum transparent_hugepage_flag {
+>  	TRANSPARENT_HUGEPAGE_DEFRAG_REQ_MADV_FLAG,
+>  	TRANSPARENT_HUGEPAGE_DEFRAG_KHUGEPAGED_FLAG,
+>  	TRANSPARENT_HUGEPAGE_USE_ZERO_PAGE_FLAG,
+> +	TRANSPARENT_HUGEPAGE_BPF_ATTACHED,      /* BPF prog is attached */
+>  };
+>
+>  struct kobject;
+> @@ -270,6 +271,19 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
+>  					 enum tva_type type,
+>  					 unsigned long orders);
+>
+> +#ifdef CONFIG_BPF_GET_THP_ORDER
+> +unsigned long
+> +bpf_hook_thp_get_orders(struct vm_area_struct *vma, vm_flags_t vma_flags,
+> +			enum tva_type type, unsigned long orders);
+
+Thanks for renaming!
+
+> +#else
+> +static inline unsigned long
+> +bpf_hook_thp_get_orders(struct vm_area_struct *vma, vm_flags_t vma_flags,
+> +			enum tva_type tva_flags, unsigned long orders)
+> +{
+> +	return orders;
+> +}
+> +#endif
 > +
->  	return zswap_pool_create(zswap_compressor);
+>  /**
+>   * thp_vma_allowable_orders - determine hugepage orders that are allowed for vma
+>   * @vma:  the vm area to check
+> @@ -291,6 +305,12 @@ unsigned long thp_vma_allowable_orders(struct vm_area_struct *vma,
+>  				       enum tva_type type,
+>  				       unsigned long orders)
+>  {
+> +	unsigned long bpf_orders;
+> +
+> +	bpf_orders = bpf_hook_thp_get_orders(vma, vm_flags, type, orders);
+> +	if (!bpf_orders)
+> +		return 0;
+
+I think it'd be easier to just do:
+
+	/* The BPF-specified order overrides which order is selected. */
+	orders &= bpf_hook_thp_get_orders(vma, vm_flags, type, orders);
+	if (!orders)
+		return 0;
+
+> +
+>  	/*
+>  	 * Optimization to check if required orders are enabled early. Only
+>  	 * forced collapse ignores sysfs configs.
+> @@ -304,12 +324,12 @@ unsigned long thp_vma_allowable_orders(struct vm_area_struct *vma,
+>  		    ((vm_flags & VM_HUGEPAGE) && hugepage_global_enabled()))
+>  			mask |= READ_ONCE(huge_anon_orders_inherit);
+>
+> -		orders &= mask;
+> -		if (!orders)
+> +		bpf_orders &= mask;
+> +		if (!bpf_orders)
+>  			return 0
+
+With my suggeted change this would remain the same.
+
+>  	}
+>
+> -	return __thp_vma_allowable_orders(vma, vm_flags, type, orders);
+> +	return __thp_vma_allowable_orders(vma, vm_flags, type, bpf_orders);
+
+With my suggeted change this would remain the same.
+
 >  }
+>
+>  struct thpsize {
+> diff --git a/mm/Kconfig b/mm/Kconfig
+> index d1ed839ca710..4d89d2158f10 100644
+> --- a/mm/Kconfig
+> +++ b/mm/Kconfig
+> @@ -896,6 +896,18 @@ config NO_PAGE_MAPCOUNT
+>
+>  	  EXPERIMENTAL because the impact of some changes is still unclear.
+>
+> +config BPF_GET_THP_ORDER
 
-Sure, looks good, although I think it's clearer (and smaller diff) to
-preserve the old structure instead, up to you:
+Yeah, I think we maybe need to sledgehammer this as already Lance was confused
+as to the permenancy of this, and I feel that users might be too, even with the
+'(EXPERIMENTAL)' bit.
 
-diff --git a/mm/zswap.c b/mm/zswap.c
-index c88ad61b232cf..bbfc087792648 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -300,18 +300,21 @@ static struct zswap_pool *zswap_pool_create(char *compressor)
+So maybe
 
- static struct zswap_pool *__zswap_pool_create_fallback(void)
- {
--       if (!crypto_has_acomp(zswap_compressor, 0, 0) &&
-+       bool has_comp = crypto_has_acomp(zswap_compressor, 0, 0);
-+
-+       if (!has_comp &&
-            strcmp(zswap_compressor, CONFIG_ZSWAP_COMPRESSOR_DEFAULT)) {
-                pr_err("compressor %s not available, using default %s\n",
-                       zswap_compressor, CONFIG_ZSWAP_COMPRESSOR_DEFAULT);
-                param_free_charp(&zswap_compressor);
-                zswap_compressor = CONFIG_ZSWAP_COMPRESSOR_DEFAULT;
--               if (!crypto_has_acomp(zswap_compressor, 0, 0)) {
--                       pr_err("default compressor %s not available\n",
--                              zswap_compressor);
--                       zswap_compressor = ZSWAP_PARAM_UNSET;
--                       return NULL;
--               }
-+               has_comp = crypto_has_acomp(zswap_compressor, 0, 0);
-+       }
-+       if (!has_comp) {
-+               pr_err("default compressor %s not available\n",
-+                      zswap_compressor);
-+               zswap_compressor = ZSWAP_PARAM_UNSET;
-+               return NULL;
-        }
+config BPF_GET_THP_ORDER_EXPERIMENTAL
 
-        return zswap_pool_create(zswap_compressor);
->  
-> -- 
-> 2.51.0
-> 
+Just to hammer it home?
+
+> +	bool "BPF-based THP order selection (EXPERIMENTAL)"
+> +	depends on TRANSPARENT_HUGEPAGE && BPF_SYSCALL
+> +
+> +	help
+> +	  Enable dynamic THP order selection using BPF programs. This
+> +	  experimental feature allows custom BPF logic to determine optimal
+> +	  transparent hugepage allocation sizes at runtime.
+> +
+> +	  WARNING: This feature is unstable and may change in future kernel
+> +	  versions.
+> +
+>  endif # TRANSPARENT_HUGEPAGE
+>
+>  # simple helper to make the code a bit easier to read
+> diff --git a/mm/Makefile b/mm/Makefile
+> index 21abb3353550..f180332f2ad0 100644
+> --- a/mm/Makefile
+> +++ b/mm/Makefile
+> @@ -99,6 +99,7 @@ obj-$(CONFIG_MIGRATION) += migrate.o
+>  obj-$(CONFIG_NUMA) += memory-tiers.o
+>  obj-$(CONFIG_DEVICE_MIGRATION) += migrate_device.o
+>  obj-$(CONFIG_TRANSPARENT_HUGEPAGE) += huge_memory.o khugepaged.o
+> +obj-$(CONFIG_BPF_GET_THP_ORDER) += huge_memory_bpf.o
+>  obj-$(CONFIG_PAGE_COUNTER) += page_counter.o
+>  obj-$(CONFIG_MEMCG_V1) += memcontrol-v1.o
+>  obj-$(CONFIG_MEMCG) += memcontrol.o vmpressure.o
+> diff --git a/mm/huge_memory_bpf.c b/mm/huge_memory_bpf.c
+> new file mode 100644
+> index 000000000000..525ee22ab598
+> --- /dev/null
+> +++ b/mm/huge_memory_bpf.c
+> @@ -0,0 +1,243 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * BPF-based THP policy management
+> + *
+> + * Author: Yafang Shao <laoar.shao@gmail.com>
+> + */
+> +
+> +#include <linux/bpf.h>
+> +#include <linux/btf.h>
+> +#include <linux/huge_mm.h>
+> +#include <linux/khugepaged.h>
+> +
+> +enum bpf_thp_vma_type {
+> +	BPF_THP_VM_NONE = 0,
+> +	BPF_THP_VM_HUGEPAGE,	/* VM_HUGEPAGE */
+> +	BPF_THP_VM_NOHUGEPAGE,	/* VM_NOHUGEPAGE */
+> +};
+
+I'm really not so sure how useful this is - can't a user just ascertain this
+from the VMA flags themselves?
+
+Let's keep the interface as minimal as possible.
+
+> +
+> +/**
+> + * @thp_order_fn_t: Get the suggested THP orders from a BPF program for allocation
+
+orders -> order?
+
+> + * @vma: vm_area_struct associated with the THP allocation
+> + * @vma_type: The VMA type, such as BPF_THP_VM_HUGEPAGE if VM_HUGEPAGE is set
+> + *            BPF_THP_VM_NOHUGEPAGE if VM_NOHUGEPAGE is set, or BPF_THP_VM_NONE if
+> + *            neither is set.
+
+Obv as above let's drop this probably :)
+
+> + * @tva_type: TVA type for current @vma
+> + * @orders: Bitmask of requested THP orders for this allocation
+
+Shouldn't requested = available?
+
+> + *          - PMD-mapped allocation if PMD_ORDER is set
+> + *          - mTHP allocation otherwise
+
+Not sure these 2 points are super useful.
+
+> + *
+> + * Return: The suggested THP order from the BPF program for allocation. It will
+> + *         not exceed the highest requested order in @orders. Return -1 to
+> + *         indicate that the original requested @orders should remain unchanged.
+> + */
+> +typedef int thp_order_fn_t(struct vm_area_struct *vma,
+> +			   enum bpf_thp_vma_type vma_type,
+> +			   enum tva_type tva_type,
+> +			   unsigned long orders);
+> +
+> +struct bpf_thp_ops {
+> +	thp_order_fn_t __rcu *thp_get_order;
+> +};
+> +
+> +static struct bpf_thp_ops bpf_thp;
+> +static DEFINE_SPINLOCK(thp_ops_lock);
+> +
+> +/*
+> + * Returns the original @orders if no BPF program is attached or if the
+> + * suggested order is invalid.
+> + */
+> +unsigned long bpf_hook_thp_get_orders(struct vm_area_struct *vma,
+> +				      vm_flags_t vma_flags,
+> +				      enum tva_type tva_type,
+> +				      unsigned long orders)
+> +{
+> +	thp_order_fn_t *bpf_hook_thp_get_order;
+> +	unsigned long thp_orders = orders;
+> +	enum bpf_thp_vma_type vma_type;
+> +	int thp_order;
+> +
+> +	/* No BPF program is attached */
+> +	if (!test_bit(TRANSPARENT_HUGEPAGE_BPF_ATTACHED,
+> +		      &transparent_hugepage_flags))
+> +		return orders;
+> +
+> +	if (vma_flags & VM_HUGEPAGE)
+> +		vma_type = BPF_THP_VM_HUGEPAGE;
+> +	else if (vma_flags & VM_NOHUGEPAGE)
+> +		vma_type = BPF_THP_VM_NOHUGEPAGE;
+> +	else
+> +		vma_type = BPF_THP_VM_NONE;
+
+As per above, not sure this is all that useful.
+
+> +
+> +	rcu_read_lock();
+> +	bpf_hook_thp_get_order = rcu_dereference(bpf_thp.thp_get_order);
+> +	if (!bpf_hook_thp_get_order)
+> +		goto out;
+> +
+> +	thp_order = bpf_hook_thp_get_order(vma, vma_type, tva_type, orders);
+> +	if (thp_order < 0)
+> +		goto out;
+> +	/*
+> +	 * The maximum requested order is determined by the callsite. E.g.:
+> +	 * - PMD-mapped THP uses PMD_ORDER
+> +	 * - mTHP uses (PMD_ORDER - 1)
+
+I don't think this is quite right, highest_order() figures out the highest set
+bit, so mTHP can be PMD_ORDER - 1 or less (in theory ofc).
+
+I think we can just replace this with something simpler like - 'depending on
+where the BPF hook is invoked, we check for either PMD order or mTHP orders
+(less than PMD order)' or something.
+
+> +	 *
+> +	 * We must respect this upper bound to avoid undefined behavior. So the
+> +	 * highest suggested order can't exceed the highest requested order.
+> +	 */
+
+I think this sentence is also unnecessary.
+
+> +	if (thp_order <= highest_order(orders))
+> +		thp_orders = BIT(thp_order);
+> +
+> +out:
+> +	rcu_read_unlock();
+> +	return thp_orders;
+> +}
+> +
+> +static bool bpf_thp_ops_is_valid_access(int off, int size,
+> +					enum bpf_access_type type,
+> +					const struct bpf_prog *prog,
+> +					struct bpf_insn_access_aux *info)
+> +{
+> +	return bpf_tracing_btf_ctx_access(off, size, type, prog, info);
+> +}
+> +
+> +static const struct bpf_func_proto *
+> +bpf_thp_get_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog)
+> +{
+> +	return bpf_base_func_proto(func_id, prog);
+> +}
+> +
+> +static const struct bpf_verifier_ops thp_bpf_verifier_ops = {
+> +	.get_func_proto = bpf_thp_get_func_proto,
+> +	.is_valid_access = bpf_thp_ops_is_valid_access,
+> +};
+> +
+> +static int bpf_thp_init(struct btf *btf)
+> +{
+> +	return 0;
+> +}
+> +
+> +static int bpf_thp_check_member(const struct btf_type *t,
+> +				const struct btf_member *member,
+> +				const struct bpf_prog *prog)
+> +{
+> +	/* The call site operates under RCU protection. */
+> +	if (prog->sleepable)
+> +		return -EINVAL;
+> +	return 0;
+> +}
+> +
+> +static int bpf_thp_init_member(const struct btf_type *t,
+> +			       const struct btf_member *member,
+> +			       void *kdata, const void *udata)
+> +{
+> +	return 0;
+> +}
+> +
+> +static int bpf_thp_reg(void *kdata, struct bpf_link *link)
+> +{
+> +	struct bpf_thp_ops *ops = kdata;
+> +
+> +	spin_lock(&thp_ops_lock);
+> +	if (test_and_set_bit(TRANSPARENT_HUGEPAGE_BPF_ATTACHED,
+> +			     &transparent_hugepage_flags)) {
+> +		spin_unlock(&thp_ops_lock);
+> +		return -EBUSY;
+> +	}
+> +	WARN_ON_ONCE(rcu_access_pointer(bpf_thp.thp_get_order));
+> +	rcu_assign_pointer(bpf_thp.thp_get_order, ops->thp_get_order);
+> +	spin_unlock(&thp_ops_lock);
+> +	return 0;
+> +}
+> +
+> +static void bpf_thp_unreg(void *kdata, struct bpf_link *link)
+> +{
+> +	thp_order_fn_t *old_fn;
+> +
+> +	spin_lock(&thp_ops_lock);
+> +	clear_bit(TRANSPARENT_HUGEPAGE_BPF_ATTACHED, &transparent_hugepage_flags);
+> +	old_fn = rcu_replace_pointer(bpf_thp.thp_get_order, NULL,
+> +				     lockdep_is_held(&thp_ops_lock));
+> +	WARN_ON_ONCE(!old_fn);
+> +	spin_unlock(&thp_ops_lock);
+> +
+> +	synchronize_rcu();
+> +}
+> +
+> +static int bpf_thp_update(void *kdata, void *old_kdata, struct bpf_link *link)
+> +{
+> +	thp_order_fn_t *old_fn, *new_fn;
+> +	struct bpf_thp_ops *old = old_kdata;
+> +	struct bpf_thp_ops *ops = kdata;
+> +	int ret = 0;
+> +
+> +	if (!ops || !old)
+> +		return -EINVAL;
+> +
+> +	spin_lock(&thp_ops_lock);
+> +	/* The prog has aleady been removed. */
+> +	if (!test_bit(TRANSPARENT_HUGEPAGE_BPF_ATTACHED,
+> +		      &transparent_hugepage_flags)) {
+> +		ret = -ENOENT;
+> +		goto out;
+> +	}
+> +
+> +	new_fn = rcu_dereference(ops->thp_get_order);
+> +	old_fn = rcu_replace_pointer(bpf_thp.thp_get_order, new_fn,
+> +				     lockdep_is_held(&thp_ops_lock));
+> +	WARN_ON_ONCE(!old_fn || !new_fn);
+> +
+> +out:
+> +	spin_unlock(&thp_ops_lock);
+> +	if (!ret)
+> +		synchronize_rcu();
+> +	return ret;
+> +}
+> +
+> +static int bpf_thp_validate(void *kdata)
+> +{
+> +	struct bpf_thp_ops *ops = kdata;
+> +
+> +	if (!ops->thp_get_order) {
+> +		pr_err("bpf_thp: required ops isn't implemented\n");
+> +		return -EINVAL;
+> +	}
+> +	return 0;
+> +}
+> +
+> +static int bpf_thp_get_order(struct vm_area_struct *vma,
+> +			     enum bpf_thp_vma_type vma_type,
+> +			     enum tva_type tva_type,
+> +			     unsigned long orders)
+> +{
+> +	return -1;
+> +}
+> +
+> +static struct bpf_thp_ops __bpf_thp_ops = {
+> +	.thp_get_order = (thp_order_fn_t __rcu *)bpf_thp_get_order,
+> +};
+> +
+> +static struct bpf_struct_ops bpf_bpf_thp_ops = {
+> +	.verifier_ops = &thp_bpf_verifier_ops,
+> +	.init = bpf_thp_init,
+> +	.check_member = bpf_thp_check_member,
+> +	.init_member = bpf_thp_init_member,
+> +	.reg = bpf_thp_reg,
+> +	.unreg = bpf_thp_unreg,
+> +	.update = bpf_thp_update,
+> +	.validate = bpf_thp_validate,
+> +	.cfi_stubs = &__bpf_thp_ops,
+> +	.owner = THIS_MODULE,
+> +	.name = "bpf_thp_ops",
+> +};
+> +
+> +static int __init bpf_thp_ops_init(void)
+> +{
+> +	int err;
+> +
+> +	err = register_bpf_struct_ops(&bpf_bpf_thp_ops, bpf_thp_ops);
+> +	if (err)
+> +		pr_err("bpf_thp: Failed to register struct_ops (%d)\n", err);
+> +	return err;
+> +}
+> +late_initcall(bpf_thp_ops_init);
+> --
+> 2.47.3
+>
 
