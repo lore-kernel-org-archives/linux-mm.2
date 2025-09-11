@@ -4,117 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BCE9CA101F
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 02:49:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3C13CA101F
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 02:49:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9FA388E000A; Wed, 10 Sep 2025 22:49:07 -0400 (EDT)
+	id 1EB7C8E000D; Wed, 10 Sep 2025 22:49:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9D1ED8E0001; Wed, 10 Sep 2025 22:49:07 -0400 (EDT)
+	id 1BC5A8E0001; Wed, 10 Sep 2025 22:49:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E7518E000A; Wed, 10 Sep 2025 22:49:07 -0400 (EDT)
+	id 0D2458E000D; Wed, 10 Sep 2025 22:49:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 79AA88E0001
-	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 22:49:07 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2B8C81A0396
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 02:49:07 +0000 (UTC)
-X-FDA: 83875437534.30.2C695EE
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 491301C000B
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 02:49:05 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ILOjOgjH;
-	spf=pass (imf21.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id F02F78E0001
+	for <linux-mm@kvack.org>; Wed, 10 Sep 2025 22:49:33 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9797C1A0392
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 02:49:33 +0000 (UTC)
+X-FDA: 83875438626.02.A52D24B
+Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
+	by imf06.hostedemail.com (Postfix) with ESMTP id B8D6F180004
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 02:49:31 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=atMU47hM;
+	spf=pass (imf06.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.219.45 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757558945;
+	s=arc-20220608; t=1757558971;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5OZoiAx3D14NUhogiseSPH9gCaOHyrKTxNV9KPmuGJk=;
-	b=Tz//brSVuYxEjZoAhO0ka6lH1WZRQJKe9rn9XdFl8NndBKljaVdpefjbtm0TvTV7rrlfcS
-	TK+10bmJIvlI+K9qFR3UweajGkXBATHbKgsoPifZj2bbnpA+Xe4sIjvTGKSkLWvtQmpboJ
-	UHiAgKvEKmgfitkhwgQS+XwJvHctfk0=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ILOjOgjH;
-	spf=pass (imf21.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757558945; a=rsa-sha256;
+	bh=mPkvLMLUO4/MeSrlRc20PFaOfOQfZFZatjMRvIBVqIE=;
+	b=jj5L2ksPe1GIJK01gQQoVky6HTWsDkMpdXUArTnJn64QtmNJnC8pS896gDIrAgIAk3Yi+f
+	1KPyELjChDZ42JwRj8avSpVmPhVZ+cKCf3LoMChcXixRxIlIXnr7dtxRW+oKg6aEUA4Asm
+	JKvjNEdeJbEH583MmIWNs4yxSoTOujs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757558971; a=rsa-sha256;
 	cv=none;
-	b=cww4S/fIhBUfgP2fh0NXaBshd3dnLcbXdin1uPnUeJGBHdK+WjF5Apyi/dy7LfasRp4xkv
-	AuVwboGadCCWQRW5ez76NQbanfVXRmWc42o51v/wNhqtBSQrG7CQlZ0Nwf9DPusg2Uzk3t
-	mwJ7Ow2RjSGWH/26EiEpUjR4f0bTctk=
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-627b85e4c0fso421033a12.1
-        for <linux-mm@kvack.org>; Wed, 10 Sep 2025 19:49:04 -0700 (PDT)
+	b=KFJtw9i0vUk62lTSgPvVHbLUyEbW8sRAnj2kBJJOFx4D7Fwf7SI3IOzWiNjIKheogO7TnZ
+	XGZ4Mh6tY6QyJIm6AiPWv1eCSZYM/tq4JqX1c0v1PpK+BYFuoOxoGP9pMMv/9zPKGiwNLu
+	+8v5FaoDwEVV6g/mI99Leb0tXiXnX9o=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=atMU47hM;
+	spf=pass (imf06.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.219.45 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-70dfa0a9701so2711356d6.2
+        for <linux-mm@kvack.org>; Wed, 10 Sep 2025 19:49:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757558944; x=1758163744; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1757558971; x=1758163771; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=5OZoiAx3D14NUhogiseSPH9gCaOHyrKTxNV9KPmuGJk=;
-        b=ILOjOgjHPxMe9biVIaWj6yl1+wf2keKp5GBWBeM4fld7IOaF1R8NiYAcQFw48u25/0
-         b1PLbqX6ECwbeCR9Tzl1sqwGBqJ7deqkFqjocGmW52VJYLndRpNKdUfjtfhEyFddd8Bb
-         2Qwcz+s7Wg+YbWdx7xsUNkprJ/2p7TbDGV/w6SKvPTQuWUEaPCX+OdiZC7UNQh8LLnQ2
-         gAAacqLEi2RZUHoTxNCVqx9Go0tpulIc0QQJoIjLeu4lnR1fGV9TKrsaRcwAgi918COc
-         UKoMZz3nKyYKP8vNvuW9ge6Ef307bWC0d5TmjKu3SToMYZ2t/9lurAjKOTqkOvtnumSX
-         d/Uw==
+        bh=mPkvLMLUO4/MeSrlRc20PFaOfOQfZFZatjMRvIBVqIE=;
+        b=atMU47hMBODIujovd71zQ1gnRX8KVEl3r01zMfI1JluD7NTfx1qUJ1ZALlJu1ru9Kt
+         +/k0DrctpRu9kTZzQjG2/YH9MxY71N+UdK2m2h9zPWnuRgxCIsTh3yJpPpTw45GA8pq+
+         dGClZw+JAvDJ0XuF51Ubfn+FttrYuPBJzbxDD1HHRHO7uFGmBfGh3ymdIAS9yOAZ37Zq
+         +ctDOtw95csW6QbzqKzzvtiv6JqFV7oXfUTt+3sCRw5vtmBXubVUQf8vhft4MgJE9Ahh
+         BGEbMvlTxLHKpgb5rXCdvdRKSxRBhqGV+RM2MGyeBLmOUdj9Vbg0hAxahusgrwiWucs8
+         d41Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757558944; x=1758163744;
+        d=1e100.net; s=20230601; t=1757558971; x=1758163771;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=5OZoiAx3D14NUhogiseSPH9gCaOHyrKTxNV9KPmuGJk=;
-        b=QzYNnQmF7c1XFd3v/txaiP8rMfkvxVNcggTPl/q8kWo9NIOnRAhzxgQtoA+5D4wFAo
-         Aeu3TXRwRv+BNqodKQH0WmLWn3CyKOJfFz3zN1LBhMwZkwdUSgZ6L7cLUHL8T1m3OpSz
-         KRFC/6vGHK43w5R8Ha/Tv3IBqXICS/wRBc4VapP6LoUvRv7koN9V+7IwN2LqqbBRnZap
-         VXbbiarBFUTKb3UC0xBf05HUUjcIKA5u8iC9oLoDg85SePFIYVOZg2K3Qunjn06FX9yf
-         NgJ5BBaV2MzkKY0m+pxPpp+Ocp8aHmHg6OV7lqe+Iym4wBDYtUIS/lbhXBUYBB0Clltd
-         crvw==
-X-Gm-Message-State: AOJu0Yykrbr9egdsPSZ0njePtUrVc547WLhicH/aF92tALB9q8OFlcDs
-	ULnV17y1tgaWypJEr7+VxS8karIxO1VQwcCgMbhICQ5vxyzIN8uGDpdDvRvEJCOvbnN5gKLo++w
-	YNZ81fwGtsriFPLQWTKRPlyVvBDaGA8Y=
-X-Gm-Gg: ASbGncsLvz0GI7OqpDc7Ut9AwP10nQChlvEOWFq8zgCtcri4SBfGPNG7VMMFltaOD2R
-	un1pTBVnaKfr2LKM+dfxLDRIthWAntqr07vmdiJ4QzG+jmPXHEEhEsR4Ci0le0EPFCSg2NNhVf1
-	OoaosCt7ZV6uCElG/W0tN8WuznpsD5Ay7dtE/aV/KKsYnkggT0RmvPWwbUI5gpMDykX6k8karPw
-	scJYSB2LsY=
-X-Google-Smtp-Source: AGHT+IEYHmvG/jugLq7AgXA4mg/ZW7DuKWF7PgpBRp/DjnIiezoiI7BVOiKnT/2u6xwHYZ46AUuUh+pceBX2k8UFMyc=
-X-Received: by 2002:a50:f605:0:b0:61c:c9f0:643b with SMTP id
- 4fb4d7f45d1cf-62e7532be3bmr1184638a12.0.1757558943455; Wed, 10 Sep 2025
- 19:49:03 -0700 (PDT)
+        bh=mPkvLMLUO4/MeSrlRc20PFaOfOQfZFZatjMRvIBVqIE=;
+        b=JjpyGYez1ZVfVnQl+B+3IEfnJsMUdEHHeOARUiIwYitLLrX5GJ6h59WXcKoB0gkkAC
+         mLogeSZ2BSCvSjcj5is8Tv7kOFtrufnD01gfueFjy674ElRMaX0zeMuEiPpMrZwq4eAF
+         jW+phu3ZE97bTASm+7Cc8Z9uuHO9F6edk5MvCjSZH6Upf7+/k6uqFkkNSzjiD+ZHcy9B
+         bEVkSjhw2lfV4Xd6J6kRkmHCRetCSotuuamAP4ubTCeZrg3p2ICgvDroPs2k9BYrzZWe
+         Jxs6j4tQka++e20bLuBsPQFPWr34CpqIOdFIDeCcIkKk5YXbcCdQwIZv0C/4P2z5Vuy/
+         aUfw==
+X-Forwarded-Encrypted: i=1; AJvYcCXZ2OGvYwphYMqSvzt49cj+4aT8MwbXVPD6NV3p5LYsuGbxJ+G7zQMgv1atSGUBbO1YirmOpzOXgg==@kvack.org
+X-Gm-Message-State: AOJu0Ywhm6OFgT8eYl5UD9xcuiChLJjDfS4yTbIy72wUpJMcUFIyn7fl
+	HKoeKCmX92fGlnhRDNs+V0D52mkutoMhB7susBNrpXvgQgzZ23lrIS5GnHywiAHu/TrCVGXYG/R
+	tpfWSQYJtwhdMZGB+78lXBQPaALVcWys=
+X-Gm-Gg: ASbGncvxxykv2aaAkeqN/bEasl6uKNycKKVEG9rBvXNfUufOChAA6qKdEl65WsUdjTC
+	Sg0N/uwykcEU6xmdbJW73lDw/e4FsinikivK36oj16I1WS3GFhR1C+DO16azWaqTR9Fb9pLhSeZ
+	51YGRKQ9zUe6uzWAtkvazZYGpdpfeO2zjcwkHNj1ocleBpHsLl3XZpV1tJaucqNHeJMS6BReSdk
+	Gi3Q6qZbvQKMWsxJq9RB7VhETsyG6vOUlPXNW3O
+X-Google-Smtp-Source: AGHT+IGqscjg9YNQgZdBNOy6g5+0CDhJK0qHro2vjyAAA8dy6Xw4gh+wTZvmnYMWSlPTMxgNC1MioX6UzB7j+ICQZ0c=
+X-Received: by 2002:ad4:5f0f:0:b0:729:aa08:11f5 with SMTP id
+ 6a1803df08f44-7394587e3b9mr199292636d6.64.1757558970712; Wed, 10 Sep 2025
+ 19:49:30 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250910160833.3464-1-ryncsn@gmail.com> <20250910160833.3464-12-ryncsn@gmail.com>
- <CABzRoyZc1zHHy5eFaO5hRY=bM36xsk3COd=r18KahmrP11tpSw@mail.gmail.com> <CABzRoyaAA3D0nfkQcBMjZ7crUckJXXpGmYfmq6ojQC+BQUigFw@mail.gmail.com>
-In-Reply-To: <CABzRoyaAA3D0nfkQcBMjZ7crUckJXXpGmYfmq6ojQC+BQUigFw@mail.gmail.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Thu, 11 Sep 2025 10:48:26 +0800
-X-Gm-Features: AS18NWC5UawFwugDPvNI2uWDDImGqhex1CbdEPqHScQ40krGyxpQdpVNzqIYko8
-Message-ID: <CAMgjq7CtYpe4sEYaw2carqGskvchV9Z+1yn2Wa3nMP2VguV_eQ@mail.gmail.com>
-Subject: Re: [PATCH v3 11/15] mm, swap: use the swap table for the swap cache
- and switch API
+References: <20250910024447.64788-1-laoar.shao@gmail.com> <20250910024447.64788-3-laoar.shao@gmail.com>
+ <CABzRoyZm32HT2fDpSy_PRDxeXZVJD35+9YqRpn9XWix8jG6w8g@mail.gmail.com>
+ <CABzRoyYqGsABGVgXbH3Sts3yBsk7ED=BsKbcP3Skc-oWeFsN_w@mail.gmail.com> <ac633edf-4744-4215-b105-c168d3a734ce@linux.dev>
+In-Reply-To: <ac633edf-4744-4215-b105-c168d3a734ce@linux.dev>
+From: Yafang Shao <laoar.shao@gmail.com>
+Date: Thu, 11 Sep 2025 10:48:54 +0800
+X-Gm-Features: AS18NWCKZiA03E-aejW3uz2mDNVDJGB6xG9JGVb75n2Lnhn-9uYRcZZKPr2Dc4I
+Message-ID: <CALOAHbAfzDNdx5LTUhH+eMgVfdG35gAM5subeByP97x53=CWLw@mail.gmail.com>
+Subject: Re: [PATCH v7 mm-new 02/10] mm: thp: add support for BPF based THP
+ order selection
 To: Lance Yang <lance.yang@linux.dev>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>, Chris Li <chrisl@kernel.org>, 
-	Barry Song <baohua@kernel.org>, Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@redhat.com>, Yosry Ahmed <yosryahmed@google.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
-	linux-kernel@vger.kernel.org
+Cc: akpm@linux-foundation.org, david@redhat.com, ziy@nvidia.com, 
+	baolin.wang@linux.alibaba.com, lorenzo.stoakes@oracle.com, 
+	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, 
+	dev.jain@arm.com, hannes@cmpxchg.org, usamaarif642@gmail.com, 
+	gutierrez.asier@huawei-partners.com, willy@infradead.org, ast@kernel.org, 
+	daniel@iogearbox.net, andrii@kernel.org, ameryhung@gmail.com, 
+	rientjes@google.com, corbet@lwn.net, 21cnbao@gmail.com, 
+	shakeel.butt@linux.dev, bpf@vger.kernel.org, linux-mm@kvack.org, 
+	linux-doc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: B8D6F180004
+X-Stat-Signature: p3gu8aiqqiuownpkbao1ps4d3384itqb
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 491301C000B
-X-Stat-Signature: n1eytqkya38i9miw1mz1d77bfkkmbbog
-X-HE-Tag: 1757558945-809805
-X-HE-Meta: U2FsdGVkX19kP8nE0eVM926B91Xz9XAMfVj+y6R8UK0gQZi/ngKniHOhNYkiPsKvrScaln+6cmK1EgE8AT0lyuBYl2ri8x2DpB5c+idPavKDCewrX4uwrpZ/RVa22ZVAIG+wh3Kythisy1tOGwuEBtzEnj73JG2Tx4VtJhUmlowZ+j4xoCy+uzlUz4yIHS/+pDtpUDwPOE2uSvtpHP5xxRLNJa0pmWBkLFguZYwTzjwtK4Q6pZhuOoNdN7GpcgkC97jLxxOX4qf0E79utwmE1+3pbo1bIIDHxAyt9ARl4+cliYLM8OAQMN0fYgcMsRlh/6bLWh2030CKj39xti1p4JiX7trU09twLO5TFQ+TdHK+AvnyXgIaaEctWONmUpXFs2DcW6t67wGriTnNtlN2RXHqgnuxh45dX/KVIiPkm3HEFmLVdLVZZ1k3tDqOwoLV8mu8BpWxfe0neZCu8m9W0IJyBlE55+m0g+k9WYRXNEc2WLanqzjHrNuzr6R4nb6+B31ijMRpg2jadMzl9/pSpgnYJGbA4PW5eMbbkIONEqLgWlzDTRGLGCtAwKbVOcWevRUYP58h4L2t1A5K0SI635vikworlcopudkuxweUgrGr9Mmmx9mlHOsUyO7jpzpIsCHfZVjCg4dEQqAKutiCOT0bNZnLKHfWs8wM0Lm9HOyZr1zXgpfxNIOtzN51H8MOVTaK0CUEI/oSN7Gni4HHSHV49WNprb45v3GFU85q4FADNpQ7skg8XIzTMMvJ+m1RqNh5Z25j1tIvVk71cMj4M1WgGFkiNAPvgQY0eDGhvLVJnpTujXMWf/RDvtF8/uJ+RzceBgqQki1qhgvLfcUKs2/+YURy1fxNTO1s5r18GaPmb68xqNd1xNV8G/4ctpdujxiX14Fd7ybGr4hRpDA28RMy/F5/DNB09hLZdurlNl6nZ4eqycvLkf+vQpA9cF6cx508gooRyXdkTp+zH0W
- zogs/GXT
- gmS1BENdTm1K2x9WrheYL3SaoDg4AaWcIJVRxw/DjEH/kK6w2D6YSasVbxXplmekUlsJIhN5cD99ZxCWGj4ayvzbuMwWBm7Tlhmk07StSQv+2S45USV+v7kauMSvookJUuXx2nGgBnGu8QWlQ1nVpWyQQWLLC0fSRBR1kt6sYMRBjZUcIgmHBNG7o5Dga1itGfeOvDz0DcGaUVV1bPkLQg8y75UQQfn6Y33jRGDpt8xpRaIQyuglrdu0dRgOElM+xForayNBfkXJ5JVRN0kQHXAoQYT/AnaLw9TeWGnDaILMczUcD1P83C1Fjugf2cdbfp0A5z5M5qQlJqXDQF1ZDG7+cz3e/3OBRqv/AJIhPqAVHFhGd+nW27VRJ8uxvxc2Z5KSwv9htVPhrBe8eS5ke+mt7H83tPz1ileSPIIZAhmAuxePhYyeUkAc/ZA==
+X-HE-Tag: 1757558971-508419
+X-HE-Meta: U2FsdGVkX19STKg6v/wOwI3xvQThQ9lcNwMtNjur7f9q/F0EgCcUkW3U0bxsTgRdjOTAYkvHJL7OZc3cxtpunW8W1MN0uEkMAxbb0A0plW4lc8o5ycKYhQ3/zUiMHzVr8IovfO76u2B9K4WNVZxmj8PzSBXwCPDXkYBZ/qlzeSQxA/eaZEzwOkub//Sn1HCbcqeRSxjoG3xSW3K923Ook4bzkEaHw6zMzyL6di73UUazOplNP+p/tSUFyzLUlW9vD7dhMfzc0OAulaZ64yLJGRd+W9nvL8PH/OSR6ejMOnEsE4m+YsZ62Prf67Tfvb6PRE7qFG0+ryZ797ZOHwYsB0Uom7grwr3T2pT00GNKruBTUi2WXWaCuJfWy1rC/u7nmkcQG6A1NtWe/k73g09u2ytTnW9Je10zly0v7HsM1kAOkdanESkLxseLMrb+dg0IcHBaZYK/bpZ1EvMfforvcNJfYmOS16pwG3G7jv3qiXVwCP0hUWNUSHGgKRBiU7sUnkXV/Y7IngX7zZfqzaP6yQ6lGm4WqrfSJJRlm/LgHU0l2Hd9bGmRuz82l7BpZ11Gzo9kP4A8kgcPcIP0uuV31vQMH0/g5jICOXuPsAc+/BwUsMDDlcoFZ8qKNvQ8jGC0HxbW9MzOa8Ff452YFAxRM3IqGWOUyNc7agBmFavbvB1xRk0Fv+GT5jKBKD6DRP6jGOv+uYjD7Z8IlNSKjuBKZvagqosV8keq/Lm9eLZoFM+v0mFpC8ALzYn37ykgb+PBMRfF3fltOzBEulwpEA4upJtDN8YiXW1J9Mde27fNbyC417zsWXDuWBe+sq01s9/RHtkGwHWMjGKJ8X41l7PuVBX5OY2edWguyy4nK49GgwMMsfxk5yerz1kz2+C9lWqumMqoT/wni2o7VNZ1el3z6ln//K5orGpuUGOl9QrfYm5fevdEE1ioqzjpFOXzDkdzWLOGeV6xeDr3hiUoDfG
+ 5+UxZhmh
+ qMVQPmpIKauN8bbHSdnGkCnhM7Un8Y+4AWIEV+hd5Q+QCaEuefsYikPfceK0qvwIB0YN/Y07kMeGta6roNlUfRirjo1nOORSoThIN8TYnzUdKP0TZfPo+gIVnBvOR+5hAeVdMPL5exEleiHSX4QbtMR0XYNvHgTKDaAqDsK64nXNCZ4WFXR19vlO9SESP0qd5inw4shgjjhWOnXpf2DBnxwefbhGPpKgUqnBBoweXZTpwZGB4Rniw7rMR0cKAIIkouz5sBMvuCzoSH0ytIGJ52SGvi/etnKhIk8K2cyM+F9Pygx1BKkdsR2P/uU312gVHCbO+N7hEodd6IcrlYezPBgmCi5iNV/D3A4yGAJTwtFz2Kz+NyYzgoCk8CHZgQHs5Wc2gMniO17sV1Xssy7iNBEMhF4zH3JnwzMQ8ynPiAqTZ8grOZ05xWrABz1Es9L2OPY0vpJNrfCCJoTw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,54 +126,224 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 11, 2025 at 10:34=E2=80=AFAM Lance Yang <lance.yang@linux.dev> =
-wrote:
+On Wed, Sep 10, 2025 at 9:57=E2=80=AFPM Lance Yang <lance.yang@linux.dev> w=
+rote:
 >
-> On Thu, Sep 11, 2025 at 10:27=E2=80=AFAM Lance Yang <lance.yang@linux.dev=
-> wrote:
-> >
-> > Hi Kairui,
-> >
-> > I'm hitting a build error with allnoconfig:
-> >
-> > In file included from mm/shmem.c:44:
-> > mm/swap.h: In function =E2=80=98folio_index=E2=80=99:
-> > mm/swap.h:462:24: error: implicit declaration of function
-> > =E2=80=98swp_offset=E2=80=99; did you mean =E2=80=98pmd_offset=E2=80=99=
-?
-> > [-Wimplicit-function-declaration]
-> > 462 | return swp_offset(folio->swap);
-> >
-> > It looks like a header might be missing in mm/swap.h. Please let me kno=
-w
-> > if you need any more information.
 >
-> Confirmed that just adding #include <linux/swapops.h> into mm/swap.h fixe=
-s it.
 >
-> diff --git a/mm/swap.h b/mm/swap.h
-> index ad339547ee8c..271e8c560fcc 100644
-> --- a/mm/swap.h
-> +++ b/mm/swap.h
-> @@ -3,6 +3,7 @@
->  #define _MM_SWAP_H
->
->  #include <linux/atomic.h> /* for atomic_long_t */
-> +#include <linux/swapops.h>
->  struct mempolicy;
->  struct swap_iocb;
->
-> Cheers,
-> Lance
->
+> On 2025/9/10 20:54, Lance Yang wrote:
+> > On Wed, Sep 10, 2025 at 8:42=E2=80=AFPM Lance Yang <lance.yang@linux.de=
+v> wrote:
+> >>
+> >> Hey Yafang,
+> >>
+> >> On Wed, Sep 10, 2025 at 10:53=E2=80=AFAM Yafang Shao <laoar.shao@gmail=
+.com> wrote:
+> >>>
+> >>> This patch introduces a new BPF struct_ops called bpf_thp_ops for dyn=
+amic
+> >>> THP tuning. It includes a hook bpf_hook_thp_get_order(), allowing BPF
+> >>> programs to influence THP order selection based on factors such as:
+> >>> - Workload identity
+> >>>    For example, workloads running in specific containers or cgroups.
+> >>> - Allocation context
+> >>>    Whether the allocation occurs during a page fault, khugepaged, swa=
+p or
+> >>>    other paths.
+> >>> - VMA's memory advice settings
+> >>>    MADV_HUGEPAGE or MADV_NOHUGEPAGE
+> >>> - Memory pressure
+> >>>    PSI system data or associated cgroup PSI metrics
+> >>>
+> >>> The kernel API of this new BPF hook is as follows,
+> >>>
+> >>> /**
+> >>>   * @thp_order_fn_t: Get the suggested THP orders from a BPF program =
+for allocation
+> >>>   * @vma: vm_area_struct associated with the THP allocation
+> >>>   * @vma_type: The VMA type, such as BPF_THP_VM_HUGEPAGE if VM_HUGEPA=
+GE is set
+> >>>   *            BPF_THP_VM_NOHUGEPAGE if VM_NOHUGEPAGE is set, or BPF_=
+THP_VM_NONE if
+> >>>   *            neither is set.
+> >>>   * @tva_type: TVA type for current @vma
+> >>>   * @orders: Bitmask of requested THP orders for this allocation
+> >>>   *          - PMD-mapped allocation if PMD_ORDER is set
+> >>>   *          - mTHP allocation otherwise
+> >>>   *
+> >>>   * Return: The suggested THP order from the BPF program for allocati=
+on. It will
+> >>>   *         not exceed the highest requested order in @orders. Return=
+ -1 to
+> >>>   *         indicate that the original requested @orders should remai=
+n unchanged.
+> >>>   */
+> >>> typedef int thp_order_fn_t(struct vm_area_struct *vma,
+> >>>                             enum bpf_thp_vma_type vma_type,
+> >>>                             enum tva_type tva_type,
+> >>>                             unsigned long orders);
+> >>>
+> >>> Only a single BPF program can be attached at any given time, though i=
+t can
+> >>> be dynamically updated to adjust the policy. The implementation suppo=
+rts
+> >>> anonymous THP, shmem THP, and mTHP, with future extensions planned fo=
+r
+> >>> file-backed THP.
+> >>>
+> >>> This functionality is only active when system-wide THP is configured =
+to
+> >>> madvise or always mode. It remains disabled in never mode. Additional=
+ly,
+> >>> if THP is explicitly disabled for a specific task via prctl(), this B=
+PF
+> >>> functionality will also be unavailable for that task.
+> >>>
+> >>> This feature requires CONFIG_BPF_GET_THP_ORDER (marked EXPERIMENTAL) =
+to be
+> >>> enabled. Note that this capability is currently unstable and may unde=
+rgo
+> >>> significant changes=E2=80=94including potential removal=E2=80=94in fu=
+ture kernel versions.
+> >>>
+> >>> Suggested-by: David Hildenbrand <david@redhat.com>
+> >>> Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> >>> Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+> >>> ---
+> >> [...]
+> >>> diff --git a/mm/huge_memory_bpf.c b/mm/huge_memory_bpf.c
+> >>> new file mode 100644
+> >>> index 000000000000..525ee22ab598
+> >>> --- /dev/null
+> >>> +++ b/mm/huge_memory_bpf.c
+> >>> @@ -0,0 +1,243 @@
+> >>> +// SPDX-License-Identifier: GPL-2.0
+> >>> +/*
+> >>> + * BPF-based THP policy management
+> >>> + *
+> >>> + * Author: Yafang Shao <laoar.shao@gmail.com>
+> >>> + */
+> >>> +
+> >>> +#include <linux/bpf.h>
+> >>> +#include <linux/btf.h>
+> >>> +#include <linux/huge_mm.h>
+> >>> +#include <linux/khugepaged.h>
+> >>> +
+> >>> +enum bpf_thp_vma_type {
+> >>> +       BPF_THP_VM_NONE =3D 0,
+> >>> +       BPF_THP_VM_HUGEPAGE,    /* VM_HUGEPAGE */
+> >>> +       BPF_THP_VM_NOHUGEPAGE,  /* VM_NOHUGEPAGE */
+> >>> +};
+> >>> +
+> >>> +/**
+> >>> + * @thp_order_fn_t: Get the suggested THP orders from a BPF program =
+for allocation
+> >>> + * @vma: vm_area_struct associated with the THP allocation
+> >>> + * @vma_type: The VMA type, such as BPF_THP_VM_HUGEPAGE if VM_HUGEPA=
+GE is set
+> >>> + *            BPF_THP_VM_NOHUGEPAGE if VM_NOHUGEPAGE is set, or BPF_=
+THP_VM_NONE if
+> >>> + *            neither is set.
+> >>> + * @tva_type: TVA type for current @vma
+> >>> + * @orders: Bitmask of requested THP orders for this allocation
+> >>> + *          - PMD-mapped allocation if PMD_ORDER is set
+> >>> + *          - mTHP allocation otherwise
+> >>> + *
+> >>> + * Return: The suggested THP order from the BPF program for allocati=
+on. It will
+> >>> + *         not exceed the highest requested order in @orders. Return=
+ -1 to
+> >>> + *         indicate that the original requested @orders should remai=
+n unchanged.
+> >>
+> >> A minor documentation nit: the comment says "Return -1 to indicate tha=
+t the
+> >> original requested @orders should remain unchanged". It might be sligh=
+tly
+> >> clearer to say "Return a negative value to fall back to the original
+> >> behavior". This would cover all error codes as well ;)
 
-Hi Lance,
+will change it.
 
-You are testing V2 not V3 right? The build error is in V2 and I can
-confirm that. But In V3 I've added "ifdef CONFIG_SWAP" for the
-swp_offset usage in swap.h. I've just tested allnoconfig and it
-works fine on aarch64 and x86_64.
+> >>
+> >>> + */
+> >>> +typedef int thp_order_fn_t(struct vm_area_struct *vma,
+> >>> +                          enum bpf_thp_vma_type vma_type,
+> >>> +                          enum tva_type tva_type,
+> >>> +                          unsigned long orders);
+> >>
+> >> Sorry if I'm missing some context here since I haven't tracked the who=
+le
+> >> series closely.
+> >>
+> >> Regarding the return value for thp_order_fn_t: right now it returns a
+> >> single int order. I was thinking, what if we let it return an unsigned
+> >> long bitmask of orders instead? This seems like it would be more flexi=
+ble
+> >> down the road, especially if we get more mTHP sizes to choose from. It
+> >> would also make the API more consistent, as bpf_hook_thp_get_orders()
+> >> itself returns an unsigned long ;)
+> >
+> > I just realized a flaw in my previous suggestion :(
+> >
+> > Changing the return type of thp_order_fn_t to unsigned long for consist=
+ency
+> > and flexibility. However, I completely overlooked that this would preve=
+nt
+> > the BPF program from returning negative error codes ...
+> >
+> > Thanks,
+> > Lance
+> >
+> >>
+> >> Also, for future extensions, it might be a good idea to add a reserved
+> >> flags argument to the thp_order_fn_t signature.
+> >>
+> >> For example thp_order_fn_t(..., unsigned long flags).
+> >>
+> >> This would give us aforward-compatible way to add new semantics later
+> >> without breaking the ABI and needing a v2. We could just require it to=
+ be
+> >> 0 for now.
 
-V2: https://lore.kernel.org/linux-mm/20250905191357.78298-12-ryncsn@gmail.c=
-om/
+That makes sense. However, as Lorenzo mentioned previously, we should
+keep the interface as minimal as possible.
+
+> >>
+> >> Thanks for the great work!
+> >> Lance
+>
+>
+> Forgot to add:
+>
+> Noticed that if the hook returns 0, bpf_hook_thp_get_orders() falls
+> back to 'orders', preventing us from dynamically disabling mTHP
+> allocations.
+
+Could you please clarify what you mean by that?
+
++       thp_order =3D bpf_hook_thp_get_order(vma, vma_type, tva_type, order=
+s);
++       if (thp_order < 0)
++               goto out;
+
+In my implementation, it only falls back to @orders if the return
+value is negative. If the return value is 0, it uses BIT(0):
+
++       if (thp_order <=3D highest_order(orders))
++               thp_orders =3D BIT(thp_order);
+
+>
+> Honoring a return of 0 is critical for our use case, which is to
+> dynamically disable mTHP for low-priority containers when memory gets
+> low in mixed workloads.
+>
+> And then re-enable it for them when memory is back above the low
+> watermark.
+
+Thank you for detailing your use case; that context is very helpful.
+
+--=20
+Regards
+Yafang
 
