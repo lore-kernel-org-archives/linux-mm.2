@@ -4,132 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56AD2CAC58E
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 20:57:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F2C1CAC58E
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 21:26:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5110D8E0002; Thu, 11 Sep 2025 16:57:23 -0400 (EDT)
+	id 63C9F6B0005; Thu, 11 Sep 2025 17:26:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E82E8E0001; Thu, 11 Sep 2025 16:57:23 -0400 (EDT)
+	id 6140D6B0006; Thu, 11 Sep 2025 17:26:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3FE4F8E0002; Thu, 11 Sep 2025 16:57:23 -0400 (EDT)
+	id 529C76B0007; Thu, 11 Sep 2025 17:26:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2DC148E0001
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 16:57:23 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C9D4B597A2
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 20:57:22 +0000 (UTC)
-X-FDA: 83878179924.24.9095B32
-Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 3722D1C0005
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 20:57:13 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=temperror ("DNS error when getting key") header.d=hpe.com header.s=pps0720 header.b=cSQfZyXH;
-	spf=pass (imf20.hostedemail.com: domain of kyle.meyer@hpe.com designates 148.163.147.86 as permitted sender) smtp.mailfrom=kyle.meyer@hpe.com;
-	dmarc=pass (policy=reject) header.from=hpe.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 3CFC06B0005
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 17:26:22 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B4B581A0544
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 21:26:21 +0000 (UTC)
+X-FDA: 83878252962.26.B73708E
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	by imf08.hostedemail.com (Postfix) with ESMTP id ADD1216000A
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 21:26:19 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="Wxb//3CQ";
+	spf=pass (imf08.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757624240;
+	s=arc-20220608; t=1757625979;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J0ID9F64YdLXnEJhVLSOMHkdqi2X6q7O8dZhA/oVjxI=;
-	b=o0HaQp1NulZqEhyzXjOw7+hjJb/14gBu1OqJFFZpH08Lb2M/ouFj077sspT2YhJlpXLsdz
-	nuBwnOo3ho6E0ecmkcoBhpgeHrVJzeWsAGKJiOzNy2ahxr5rrW77Nzd4fSO5gDe8xbQ+/6
-	+maGwi5lEz4aEbhC2gWwI6q86QgN8Do=
+	bh=muvx9qdyEE3ghxoAMYPt3hoTct41JTKDZsOlOaOPEAU=;
+	b=B3lVqyw27QNWvyxY+uUamxoqLdaPN0IUWkacnS3UKqy3k8IETiqAob/DxrYcJlSL0jH7rV
+	oJNmBO7Xr9gHpFpdAgOidznXPTODDN0ooV0TFP+mo1+Ue6W1nhf0F5SHGQ3ROTFF4YEyOp
+	jePOM+TComPWEXCx86ACdbD6sVUAyOA=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=temperror ("DNS error when getting key") header.d=hpe.com header.s=pps0720 header.b=cSQfZyXH;
-	spf=pass (imf20.hostedemail.com: domain of kyle.meyer@hpe.com designates 148.163.147.86 as permitted sender) smtp.mailfrom=kyle.meyer@hpe.com;
-	dmarc=pass (policy=reject) header.from=hpe.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757624240; a=rsa-sha256;
+	imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="Wxb//3CQ";
+	spf=pass (imf08.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757625979; a=rsa-sha256;
 	cv=none;
-	b=No+VghMmDJA6DzBhbOespB09nVp7u7ddHWhPA7qu3Y6E/3hbFe3HCKY1MdGt+jG9yOecgx
-	QWsLAixmUh3L8Vm3xihwiwDcLQ2BunYVV+Fo7ZnO7VzXTekxTfPXyZ+HV+6aj0CkUahyzD
-	tS8qaXISG3Y4VA1SLJfae9CR4NFiaLk=
-Received: from pps.filterd (m0150241.ppops.net [127.0.0.1])
-	by mx0a-002e3701.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58BFINgC007212;
-	Thu, 11 Sep 2025 20:56:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pps0720; bh=J0ID9F64YdLXnEJhVLSOMHkdqi
-	2X6q7O8dZhA/oVjxI=; b=cSQfZyXHw97+qAk5GLrVBgwewFdz885Cteb9qF6kZC
-	cl0B/IlTfIYZlYVAQL80a6ViC3RMb7LwXyVxWpyeUQW2ZjFRH89J7JwZPy7swLK8
-	bfJdi8MluU5znLPe19N6KRAHsTlRVjl9hc2fwjmchGWfXeicxabPj8CO4JJ95aRV
-	D+zFfqrdQw7/J2i1jmRyxhcTzHsKKP8MGvlaz9Bm3J2WYbe576VycumLp3m3y7wL
-	cmgGV0a94bE4YbFXaAsE3e48TESw/6B8qRdJ7MM59bacGyVJ3D/ggJqoVo67Ocpm
-	Hq8fo4AFsLG/i0MW3vGgTuCEWf3aENH+ykwjbcc2Wq1Q==
-Received: from p1lg14879.it.hpe.com ([16.230.97.200])
-	by mx0a-002e3701.pphosted.com (PPS) with ESMTPS id 493p9xfpef-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 11 Sep 2025 20:56:34 +0000 (GMT)
-Received: from p1lg14886.dc01.its.hpecorp.net (unknown [10.119.18.237])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by p1lg14879.it.hpe.com (Postfix) with ESMTPS id 206FD132D3;
-	Thu, 11 Sep 2025 20:56:32 +0000 (UTC)
-Received: from HPE-5CG20646DK.localdomain (unknown [16.231.227.39])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by p1lg14886.dc01.its.hpecorp.net (Postfix) with ESMTPS id 708208118D1;
-	Thu, 11 Sep 2025 20:56:28 +0000 (UTC)
-Date: Thu, 11 Sep 2025 15:56:26 -0500
-From: Kyle Meyer <kyle.meyer@hpe.com>
-To: "Luck, Tony" <tony.luck@intel.com>
-Cc: David Hildenbrand <david@redhat.com>, akpm@linux-foundation.org,
-        corbet@lwn.net, linmiaohe@huawei.com, shuah@kernel.org,
-        Liam.Howlett@oracle.com, bp@alien8.de, hannes@cmpxchg.org,
-        jack@suse.cz, jane.chu@oracle.com, jiaqiyan@google.com,
-        joel.granados@kernel.org, laoar.shao@gmail.com,
-        lorenzo.stoakes@oracle.com, mclapinski@google.com, mhocko@suse.com,
-        nao.horiguchi@gmail.com, osalvador@suse.de, rafael.j.wysocki@intel.com,
-        rppt@kernel.org, russ.anderson@hpe.com, shawn.fan@intel.com,
-        surenb@google.com, vbabka@suse.cz, linux-acpi@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH] mm/memory-failure: Disable soft offline for HugeTLB
- pages by default
-Message-ID: <aMM3elPmG1MdUNrJ@hpe.com>
-References: <aMGkAI3zKlVsO0S2@hpe.com>
- <749511a8-7c57-4f97-9e49-8ebe8befe9aa@redhat.com>
- <aMMNVA9EXXHYvmKH@agluck-desk3>
+	b=hTqfeglA8RuoHq0+wMb0QkL8/PHxRPoP3gsfyXU/cKi1ZfU6aynT6Q5Vdz+Jqkrd6bYUss
+	FwYPB3XmTtZOKrGDqfvfVOv8/V3qphomF6hblzYy49U9qxyeUwfYYOFBkkjALMSDlvaf3/
+	dIi9/aWDSOFGvt0134U79UyAlERZR0c=
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-45dd9d72f61so24095e9.0
+        for <linux-mm@kvack.org>; Thu, 11 Sep 2025 14:26:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1757625978; x=1758230778; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=muvx9qdyEE3ghxoAMYPt3hoTct41JTKDZsOlOaOPEAU=;
+        b=Wxb//3CQCUzp/HvZi5n7CMKviuzTBUYs/41hiED6J3hgOIBKUh4PljtHjrvH0SPVs7
+         FmkXBG0GB+QsEmT/cfX+K4gEoJFH1di7tDMKMTAbuvHds411cGLMjIAi8ZHj0SxxjPpS
+         A6V2TauBUJA7Qj/nGich312pR2IHTNrnIkxFuT2HlC+HK4PdH0NCsiXUacqzMvmtzoNy
+         891GmN4pOqEjSfzglkBm+v69ziF1loiK7uHM3YccZwCrWHudRN30yz1X6YRchgdayp7O
+         DwDXbXTeenKBxv3uHQ/Ykvl2xfqwP47nwTKNkl91hOflqptiHfet5sAq35gNIjWAqWCY
+         ckTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757625978; x=1758230778;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=muvx9qdyEE3ghxoAMYPt3hoTct41JTKDZsOlOaOPEAU=;
+        b=mTqNnzt3dQUHq8zlr0XPRqy0//hYzfMT5qg6G6Z/bIF5ywxR+RTN0af/0X96yy86nH
+         tPpU47Ld96joKV0+lstmrHcdrQByNq/fMK6gf00Z84fjV1f5DMsAOyhtAW2VK90otFu2
+         gh/gnic/vjFnaqEndxtNETk+SMzotcYLpTFzQxO8BeE6owGTWskXC1TccSC+2ZA7eX62
+         YdBQLhyXEiH2/jeoYnwbCpdklnPquUvy3pwzGwTq3JYJOvAlQt5wmcbZrcoYORGJauEf
+         PSk2e1NbPibt/zlj9+rh+xl824g6JHXoN5KQY8Um8h/LRhxcyxp8I4Cre3uBgs6IO7fL
+         WuSw==
+X-Forwarded-Encrypted: i=1; AJvYcCVYUQVvysdotpP87+Z7UNzTT4EsHd+p7nE9sHAl+Wwa42F4xiYky1aG7b6U9AfTuA2pomUgQTTZng==@kvack.org
+X-Gm-Message-State: AOJu0YzzJtBhryKdqV4kA4OzswZcYdBYu/bEQ6Vtv/k6wGb2OQtXCT6I
+	jp6I0nEOmonzhk9mxaNPP+hzpfZ0NEghJBqVfmBA7Rm/c10g9mzubbGgPz7EwqICYZb4RONp4WK
+	dIPsz1y07kFfOjmmzGeySVG6jhHj1Q4VpJbtqcR/F
+X-Gm-Gg: ASbGnctqOBS1nL1EvpA4i6sINXlwjkH+MFh6kOwX0Zvi95cG/qBiR8O3BGaYLgogZXz
+	kASGOEXDQhDkDAzU/fKvikUkn7OiC0TzYnH0MJwGTXuIQ0IOTPKQp2UWha9i75ddOcxCJWaWsfg
+	E6YX2x+XYAYf96d5TA1mvvtM/70ROAx6BwF6ocgypbq4KTFxeriTPb4z3CQw1xTWVtanEsj5M2w
+	7qyeet2xVrIRKg4yJuIRutpTtzFtLGg2KihbzHn8+/PoB0sqIzobg6nRg==
+X-Google-Smtp-Source: AGHT+IGeI5npxi7Mgjv/AQZyj20ErEgsxJ1WUGm5ufWtxl66DRT2cimFQlPKpRNZt6Q0/CjVOtAFU08N/DTZ4T3ULi4=
+X-Received: by 2002:a05:600c:4b94:b0:453:672b:5b64 with SMTP id
+ 5b1f17b1804b1-45df74aea3amr3235725e9.2.1757625977823; Thu, 11 Sep 2025
+ 14:26:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aMMNVA9EXXHYvmKH@agluck-desk3>
-X-Proofpoint-ORIG-GUID: Ethw6hHnLfczx3VAEZBXc-08gscPDyGN
-X-Proofpoint-GUID: Ethw6hHnLfczx3VAEZBXc-08gscPDyGN
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTExMDAyNiBTYWx0ZWRfXyI2+SdrKv+fr
- J09MeyCR3Ioip+tv+DaUAAlfVfIk22LrAWmlkzH/QV5q4UAWPgfHNFOl4+ub//1Adee37pHPb4b
- 764zMHo5pXXt1CcHaobNJvfMfwFmUUV/nH/D82/1aTPO6jutWA9MvX8an2UNfGrfTzL9DSk8XRW
- WdZT5V1erw/xxDMTunGIMHe9T2MS+FKEBZCOwsxI4yn8gC3OcGhueHg0cu+lqePY9/N+YX888Hk
- 3sUbWytd+nDRfz/JfHwjdEa8Usy/cqfyazlCUsltcgMUe3O7HboftW1ebSfQdBIJZ49UPQ+CDK2
- gt4/eks53CHvrIBOELJSndItTN1QUeIx7bgqpZ1GHhLx5QsJwOy/K+Q1x9blJwm1hm8x2x3EJNQ
- nmqPYiXa
-X-Authority-Analysis: v=2.4 cv=Ke/SsRYD c=1 sm=1 tr=0 ts=68c33782 cx=c_pps
- a=5jkVtQsCUlC8zk5UhkBgHg==:117 a=5jkVtQsCUlC8zk5UhkBgHg==:17
- a=kj9zAlcOel0A:10 a=yJojWOMRYYMA:10 a=e0XSXhz86abGffj2R7MA:9
- a=CjuIK1q_8ugA:10
-X-HPE-SCL: -1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-11_03,2025-09-11_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 priorityscore=1501 malwarescore=0 adultscore=0 clxscore=1015
- phishscore=0 bulkscore=0 impostorscore=0 spamscore=0 classifier=typeunknown
- authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2509110026
-X-Rspamd-Queue-Id: 3722D1C0005
-X-Rspamd-Server: rspam05
-X-Stat-Signature: yuxyogyziwn5rwbicga6bxywhhjqtx58
+References: <aMGkAI3zKlVsO0S2@hpe.com> <CACw3F50yTvMphcp111Qzh3PKm+FYoXX9g_sLpV5TPuubqK2+Qw@mail.gmail.com>
+ <aMG6SRckMsnQH7ov@hpe.com>
+In-Reply-To: <aMG6SRckMsnQH7ov@hpe.com>
+From: Jiaqi Yan <jiaqiyan@google.com>
+Date: Thu, 11 Sep 2025 14:26:05 -0700
+X-Gm-Features: AS18NWBC4uuIS2CzvlC033iuGSPukXC1VYLzEEUeHNx8bxP_6fELZH6vPU6FTTw
+Message-ID: <CACw3F51TsnT+QK8eYKHRcy==_vLsa+N3Btz_kzpfH=6mkYbHxA@mail.gmail.com>
+Subject: Re: [PATCH] mm/memory-failure: Disable soft offline for HugeTLB pages
+ by default
+To: Kyle Meyer <kyle.meyer@hpe.com>
+Cc: akpm@linux-foundation.org, corbet@lwn.net, david@redhat.com, 
+	linmiaohe@huawei.com, shuah@kernel.org, tony.luck@intel.com, 
+	Liam.Howlett@oracle.com, bp@alien8.de, hannes@cmpxchg.org, jack@suse.cz, 
+	jane.chu@oracle.com, joel.granados@kernel.org, laoar.shao@gmail.com, 
+	lorenzo.stoakes@oracle.com, mclapinski@google.com, mhocko@suse.com, 
+	nao.horiguchi@gmail.com, osalvador@suse.de, rafael.j.wysocki@intel.com, 
+	rppt@kernel.org, russ.anderson@hpe.com, shawn.fan@intel.com, 
+	surenb@google.com, vbabka@suse.cz, linux-acpi@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1757624233-993164
-X-HE-Meta: U2FsdGVkX1+wUoyCBlTXzSXv35xiCBffobBJ6jFZxzdzsWTaFw7N40AB1l9Dqv7J2KFW+e0VOvW6hlNDz+uM7aKTKUkeaL9mrv1Mbex0qdZBJYTQTUGqBqhei31FDBTMCmqYCv8rPEf07MkF5CbOem2ca1ZOGYi/sLXTLEc6YP8Cufm3nHoXe/dSZWvpN1biUGUxL0U7tF1EXxZJ2XgWBPoRKHHfMgJngUy/lVGmprDxlsJymaxS55Kw+wxwAw2Sbvz7sh11HmtxSPhlv72TZcbueHGhblduAN80T+RP20SDt5mGPbUcplECaLltF0EFG097yD3ZBOrny4gU8PDwzPZNtUmFK6msVxd8MxVLOG5pftmm9LmUuw5hwEv16radoaF/4FZY682pQa6P7RlUotF1092fh1KDBNxYdAri6dhc19MzNe1h7dOYivorrFTUrrlKsXt2cUmuXsBlmGg20wqJ/S7SIBAGM7MR0qtknoF63TG1Sgtg0o1njDqxDlAeEJkUC8Ae3IyY4HHLxaogmHRU94ZGxwLG1kg5ThsZi4Zmv+UQ3Oyazr+djkZaK6JoSwKOinIE9YBJnj5+s/9Wus7vpHHWT7cuHR552IObKMLJ4TdC8PSVCgik0dw2+Te59y6PJU2J45ZI3nSdORNlqQdZ6MzQ8Koy65Ayi/6uenqr5i4QQyn+wQ8H10okNxLEAlinAMDn1kflLfCQNSzY4U5bRxQN5xl3X1ORgmiEZb2u74eq+xjsroc4tQV+cXORECIQaIC4LoLIX8OWl3qDa9XmlDUda6v1uRrB2x4LcxZC0juyYv9FA8LGlgDg1alaPJ2cEmxw4n2d0VPZNlwG8WxuRnFZ88pRhWW4Ilc/mnvcjSnnnKXiLYP0imju7/Sjgjv9P+OcTi4CEgW3G5d6ERUy6+7Qcx4lAumZvVw0yORh5FwhRm5naLGw7ApviOHNm4ko6NaoVD+Vva7sJ1V
- FTucuiyY
- Kgk43xhr3cyQ6tM7iqRo4ukocqRVMIFCmgKtaVRE/xla/TxUp0fSS+tkbS0hBFv6v88cSrML4obJ8B0wqfCar+0u4bidBsAmi5eixS22REJbC+To55MsIBHYlQ80h65QWWLbeJVci0WzCNc+W2h8qpVqrKpNN05HeuVNmWD77ho+V7c1qax0UHmlyxDIlGRRJD5u/xR9ID7yxMyWxxTA5+hdBAwBqYEN/tN2F2fFTrXMhUc6LMHHwxLf1kpPsxzsTP7bLrXb3tIIKTjspMGjTjbUaWJPkKevWnef64qDs1Bwmwgr4Z7ykT3ihnA==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: ADD1216000A
+X-Stat-Signature: yajzdgetkhmg8jrt9hcyrgegxztimp4r
+X-HE-Tag: 1757625979-523968
+X-HE-Meta: U2FsdGVkX19JDfAFAS3Qf+eNfUPbULOSWa5tKnbsgtMVjIQM8AbRvlP0B+piz6JQgzODOuZAL/fb23vK9N0IXWjgb0g78cVrkaYaA1mSrAzGYmjVpZygLyJxMHbTZZTLr+uTcczb1x2dmYws3LhCJ6+VMswVJxGeoPZlup2UnFJG9IqslJUOl4wNIwZo5BUu99pWdtKOiVr/OfI/1bBuREWUGvfM5DU+9+L7gOYeXHy8qJJpQlwcGdhl/fO+4aEHiRR+D8e1Db98AO2V1gjrjKKLcev8vn4XmAihve3LnwkHsbmtcVeYrTLSlUyThhjqtWam8w/OzGwKMzaPUJ7x2xpX1jRzHTzLGRkA6edhKfiW5wR9fd+lrUHO92Vnlq6+XWMyzWim22JI7AWpzN6MqjsaA/k8NDUWca9ijl7BNFN3J0YTV03BYZuOVdXjjaiURawQ+Qm2Kl9L8Av3ZCFTv/tlV7oWjUynYks5Uf8pp2rck4iNLB49tX69LYIF6wBzU3/i93USxMNdsh84bAWoD27yqRGgndQ5CFJ/hCL0Z8rm8dybmmwQY/UDtPxvzGMZK+v3H1/TwbmS95HZEndc4XoJ2l4inGDfznGjkYow6a4B85/Bk4W5WeKQ8BqoU4IZO0XVy9W7KYNLDow81CUaA/fI4ACNKd7vW+AwEU3dkesbH04UMErTeDY6v7E/9gRlRRKiwUicKXC22CBdHhtBsidLzinQOQIldd/PLeSmfdQ9YtSf88G/sAF8EoFdV4GBAmAXQKiV/UqAhovyDyy8NUT99V2PbUZs31h9XNDtNCJ0n5KW3bO6Ogjs4UaIoeVba4rDX+LqULBAkpvn4cAZ4+4aSlKYP7t7ac1uXG41lfE5CefTk2RvLSp5D0e/25T1fYfRxKy7FINPU91IvtpPtInfLcZXX6TI2Yul+deHuW7vSsgQCXaTPVMxPi+cszMMbJ7tIXgUA9LbMzwukcU
+ X4uTf6AS
+ bjdFxsM3aixbrWHvfpiy0wngMcecfJ+t9gSuyGzwzmnjpxc0H5Sp8wsJcwjJLlOu2rjMHeXoFMOFsklKg99I6OYObCo2FjZfv2/Hzsfqg/sA4AeOy6/FbYiuXYYhxsbpwsH4SwymmZhiuMNPXPLAvkiotRp4F1AumrR2iAHajXh9KVcKvjsEAlDih78kgIOluZrwx/F78Vhmv3oWLT1wtjxLn4NSsLGcCMkTsFUJVbpBZvwuiKZCRBQUZSzTKKBW1LgPoB0QX8BczzU8/2NMhQONqIOSeiA9W3hUToG8/pcSDhDOWlxvrZvrCgP9MhUniZ4AqQis/K5U2P1YSmBpBHKrtK+2bpgHiWnhRZkKiLZ1BWzY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,66 +126,316 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 11, 2025 at 10:56:36AM -0700, Luck, Tony wrote:
-> On Thu, Sep 11, 2025 at 10:46:10AM +0200, David Hildenbrand wrote:
-> > On 10.09.25 18:15, Kyle Meyer wrote:
-> > > Soft offlining a HugeTLB page reduces the available HugeTLB page pool.
+On Wed, Sep 10, 2025 at 10:50=E2=80=AFAM Kyle Meyer <kyle.meyer@hpe.com> wr=
+ote:
+>
+> On Wed, Sep 10, 2025 at 09:44:24AM -0700, Jiaqi Yan wrote:
+> > On Wed, Sep 10, 2025 at 9:16=E2=80=AFAM Kyle Meyer <kyle.meyer@hpe.com>=
+ wrote:
+> > >
+> > > Soft offlining a HugeTLB page reduces the available HugeTLB page pool=
+.
 > > > Since HugeTLB pages are preallocated, reducing the available HugeTLB
 > > > page pool can cause allocation failures.
-> > > 
+> > >
 > > > /proc/sys/vm/enable_soft_offline provides a sysctl interface to
 > > > disable/enable soft offline:
-> > > 
+> > >
 > > > 0 - Soft offline is disabled.
 > > > 1 - Soft offline is enabled.
-> > > 
-> > > The current sysctl interface does not distinguish between HugeTLB pages
+> > >
+> > > The current sysctl interface does not distinguish between HugeTLB pag=
+es
 > > > and other page types.
-> > > 
+> > >
 > > > Disable soft offline for HugeTLB pages by default (1) and extend the
 > > > sysctl interface to preserve existing behavior (2):
-> > > 
+> > >
 > > > 0 - Soft offline is disabled.
 > > > 1 - Soft offline is enabled (excluding HugeTLB pages).
 > > > 2 - Soft offline is enabled (including HugeTLB pages).
-> > > 
+> > >
 > > > Update documentation for the sysctl interface, reference the sysctl
 > > > interface in the sysfs ABI documentation, and update HugeTLB soft
 > > > offline selftests.
-> > 
-> > I'm sure you spotted that the documentation for
-> > "/sys/devices/system/memory/soft_offline_pag" resides under "testing".
-> 
-> But that is only one of several places in the kernel that
-> feed into the page offline code.
-> 
-> This patch was motivated by the GHES path where BIOS indicates
-> a corrected error threshold was exceeded. There's also the
-> drivers/ras/cec.c path where Linux does it's own threshold
-> counting.
-> > 
-> > If your read about MADV_SOFT_OFFLINE in the man page it clearly says:
-> > 
-> > "This feature is intended for testing of memory error-handling code; it is
-> > available  only if the kernel was configured with CONFIG_MEMORY_FAILURE."
-> 
-> Agreed that this all depends on CONFIG_MEMORY_FAILURE ... so if any
-> part of the flow is compiled in when that is "=n" then some
-> changes are needed to fix that.
-> 
-> > 
-> > So I'm sorry to say: I miss why we should add all this complexity to make a
-> > feature used for testing soft-offlining work differently for hugetlb folios
-> > -- with a testing interface.
+> > >
+> > > Reported-by: Shawn Fan <shawn.fan@intel.com>
+> > > Suggested-by: Tony Luck <tony.luck@intel.com>
+> > > Signed-off-by: Kyle Meyer <kyle.meyer@hpe.com>
+> > > ---
+> > >
+> > > Tony's original patch disabled soft offline for HugeTLB pages when
+> > > a correctable memory error reported via GHES (with "error threshold
+> > > exceeded" set) happened to be on a HugeTLB page:
+> > >
+> > > https://lore.kernel.org/all/20250904155720.22149-1-tony.luck@intel.co=
+m
+> > >
+> > > This patch disables soft offline for HugeTLB pages by default
+> > > (not just from GHES).
+> > >
+> > > ---
+> > >  .../ABI/testing/sysfs-memory-page-offline     |  6 ++++
+> > >  Documentation/admin-guide/sysctl/vm.rst       | 18 ++++++++---
+> > >  mm/memory-failure.c                           | 21 ++++++++++--
+> > >  .../selftests/mm/hugetlb-soft-offline.c       | 32 +++++++++++++----=
+--
+> > >  4 files changed, 60 insertions(+), 17 deletions(-)
+> > >
+> > > diff --git a/Documentation/ABI/testing/sysfs-memory-page-offline b/Do=
+cumentation/ABI/testing/sysfs-memory-page-offline
+> > > index 00f4e35f916f..befb89ae39ec 100644
+> > > --- a/Documentation/ABI/testing/sysfs-memory-page-offline
+> > > +++ b/Documentation/ABI/testing/sysfs-memory-page-offline
+> > > @@ -20,6 +20,12 @@ Description:
+> > >                 number, or a error when the offlining failed.  Readin=
+g
+> > >                 the file is not allowed.
+> > >
+> > > +               Soft-offline can be disabled/enabled via sysctl:
+> > > +               /proc/sys/vm/enable_soft_offline
+> > > +
+> > > +               For details, see:
+> > > +               Documentation/admin-guide/sysctl/vm.rst
+> > > +
+> > >  What:          /sys/devices/system/memory/hard_offline_page
+> > >  Date:          Sep 2009
+> > >  KernelVersion: 2.6.33
+> > > diff --git a/Documentation/admin-guide/sysctl/vm.rst b/Documentation/=
+admin-guide/sysctl/vm.rst
+> > > index 4d71211fdad8..ae56372bd604 100644
+> > > --- a/Documentation/admin-guide/sysctl/vm.rst
+> > > +++ b/Documentation/admin-guide/sysctl/vm.rst
+> > > @@ -309,19 +309,29 @@ physical memory) vs performance / capacity impl=
+ications in transparent and
+> > >  HugeTLB cases.
+> > >
+> > >  For all architectures, enable_soft_offline controls whether to soft =
+offline
+> > > -memory pages.  When set to 1, kernel attempts to soft offline the pa=
+ges
+> > > -whenever it thinks needed.  When set to 0, kernel returns EOPNOTSUPP=
+ to
+> > > -the request to soft offline the pages.  Its default value is 1.
+> > > +memory pages:
+> > > +
+> > > +- 0: Soft offline is disabled.
+> > > +- 1: Soft offline is enabled (excluding HugeTLB pages).
+> > > +- 2: Soft offline is enabled (including HugeTLB pages).
+> >
+> > Would it be better to keep/inherit the previous documented behavior "1
+> > - Soft offline is enabled (no matter what type of the page is)"? Thus
+> > it will have no impact to users that are very nervous about corrected
+> > memory errors and willing to lose hugetlb page. Something like:
+> >
+> >   enum soft_offline {
+> >       SOFT_OFFLINE_DISABLED =3D 0,
+> >       SOFT_OFFLINE_ENABLED,
+> >       SOFT_OFFLINE_ENABLED_SKIP_HUGETLB,
+> >       // SOFT_OFFLINE_ENABLED_SKIP_XXX...
+> >   };
+>
+> I don't have a strong opinion on the default because there's a sysctl
+> interface, but that seems reasonable. I'll wait for more feedback before
+> putting together a v2.
 
-I would also like to note that the current sysctl interface already affects
-testing interfaces. Please see the following commit:
+Yeah, no strong opinion from me either, as long as
+SOFT_OFFLINE_DISABLED is still 0 (used by our fleet).
 
-56374430c5dfc ("mm/memory-failure: userspace controls soft-offlining pages")
+In case you don't need to send out v2:
 
-The sysctl interface should probably be mentioned in
-sysfs-memory-page-offline with or without this patch.
+Reviewed-by: Jiaqi Yan <jiaqiyan@google.com>
 
-Thanks,
-Kyle Meyer
+>
+> > > +
+> > > +The default is 1.
+> > > +
+> > > +If soft offline is disabled for the requested page type, EOPNOTSUPP =
+is returned.
+> > >
+> > >  It is worth mentioning that after setting enable_soft_offline to 0, =
+the
+> > >  following requests to soft offline pages will not be performed:
+> > >
+> > > +- Request to soft offline from sysfs (soft_offline_page).
+> > > +
+> > >  - Request to soft offline pages from RAS Correctable Errors Collecto=
+r.
+> > >
+> > > -- On ARM, the request to soft offline pages from GHES driver.
+> > > +- On ARM and X86, the request to soft offline pages from GHES driver=
+.
+> > >
+> > >  - On PARISC, the request to soft offline pages from Page Deallocatio=
+n Table.
+> > >
+> > > +Note: Soft offlining a HugeTLB page reduces the HugeTLB page pool.
+> > > +
+> > >  extfrag_threshold
+> > >  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > >
+> > > diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> > > index fc30ca4804bf..cb59a99b48c5 100644
+> > > --- a/mm/memory-failure.c
+> > > +++ b/mm/memory-failure.c
+> > > @@ -64,11 +64,18 @@
+> > >  #include "internal.h"
+> > >  #include "ras/ras_event.h"
+> > >
+> > > +enum soft_offline {
+> > > +       SOFT_OFFLINE_DISABLED =3D 0,
+> > > +       SOFT_OFFLINE_ENABLED_SKIP_HUGETLB,
+> > > +       SOFT_OFFLINE_ENABLED
+> > > +};
+> > > +
+> > >  static int sysctl_memory_failure_early_kill __read_mostly;
+> > >
+> > >  static int sysctl_memory_failure_recovery __read_mostly =3D 1;
+> > >
+> > > -static int sysctl_enable_soft_offline __read_mostly =3D 1;
+> > > +static int sysctl_enable_soft_offline __read_mostly =3D
+> > > +       SOFT_OFFLINE_ENABLED_SKIP_HUGETLB;
+> > >
+> > >  atomic_long_t num_poisoned_pages __read_mostly =3D ATOMIC_LONG_INIT(=
+0);
+> > >
+> > > @@ -150,7 +157,7 @@ static const struct ctl_table memory_failure_tabl=
+e[] =3D {
+> > >                 .mode           =3D 0644,
+> > >                 .proc_handler   =3D proc_dointvec_minmax,
+> > >                 .extra1         =3D SYSCTL_ZERO,
+> > > -               .extra2         =3D SYSCTL_ONE,
+> > > +               .extra2         =3D SYSCTL_TWO,
+> > >         }
+> > >  };
+> > >
+> > > @@ -2799,12 +2806,20 @@ int soft_offline_page(unsigned long pfn, int =
+flags)
+> > >                 return -EIO;
+> > >         }
+> > >
+> > > -       if (!sysctl_enable_soft_offline) {
+> > > +       if (sysctl_enable_soft_offline =3D=3D SOFT_OFFLINE_DISABLED) =
+{
+> > >                 pr_info_once("disabled by /proc/sys/vm/enable_soft_of=
+fline\n");
+> > >                 put_ref_page(pfn, flags);
+> > >                 return -EOPNOTSUPP;
+> > >         }
+> > >
+> > > +       if (sysctl_enable_soft_offline =3D=3D SOFT_OFFLINE_ENABLED_SK=
+IP_HUGETLB) {
+> > > +               if (folio_test_hugetlb(pfn_folio(pfn))) {
+> > > +                       pr_info_once("disabled for HugeTLB pages by /=
+proc/sys/vm/enable_soft_offline\n");
+> > > +                       put_ref_page(pfn, flags);
+> > > +                       return -EOPNOTSUPP;
+> > > +               }
+> > > +       }
+> > > +
+> > >         mutex_lock(&mf_mutex);
+> > >
+> > >         if (PageHWPoison(page)) {
+> > > diff --git a/tools/testing/selftests/mm/hugetlb-soft-offline.c b/tool=
+s/testing/selftests/mm/hugetlb-soft-offline.c
+> > > index f086f0e04756..7e2873cd0a6d 100644
+> > > --- a/tools/testing/selftests/mm/hugetlb-soft-offline.c
+> > > +++ b/tools/testing/selftests/mm/hugetlb-soft-offline.c
+> > > @@ -1,10 +1,15 @@
+> > >  // SPDX-License-Identifier: GPL-2.0
+> > >  /*
+> > >   * Test soft offline behavior for HugeTLB pages:
+> > > - * - if enable_soft_offline =3D 0, hugepages should stay intact and =
+soft
+> > > - *   offlining failed with EOPNOTSUPP.
+> > > - * - if enable_soft_offline =3D 1, a hugepage should be dissolved an=
+d
+> > > - *   nr_hugepages/free_hugepages should be reduced by 1.
+> > > + *
+> > > + * - if enable_soft_offline =3D 0 (SOFT_OFFLINE_DISABLED), HugeTLB p=
+ages
+> > > + *   should stay intact and soft offlining failed with EOPNOTSUPP.
+> > > + *
+> > > + * - if enable_soft_offline =3D 1 (SOFT_OFFLINE_ENABLED_SKIP_HUGETLB=
+), HugeTLB pages
+> > > + *   should stay intact and soft offlining failed with EOPNOTSUPP.
+> > > + *
+> > > + * - if enable_soft_offline =3D 2 (SOFT_OFFLINE_ENABLED), a HugeTLB =
+page should be
+> > > + *   dissolved and nr_hugepages/free_hugepages should be reduced by =
+1.
+> > >   *
+> > >   * Before running, make sure more than 2 hugepages of default_hugepa=
+gesz
+> > >   * are allocated. For example, if /proc/meminfo/Hugepagesize is 2048=
+kB:
+> > > @@ -32,6 +37,12 @@
+> > >
+> > >  #define EPREFIX " !!! "
+> > >
+> > > +enum soft_offline {
+> > > +       SOFT_OFFLINE_DISABLED =3D 0,
+> > > +       SOFT_OFFLINE_ENABLED_SKIP_HUGETLB,
+> > > +       SOFT_OFFLINE_ENABLED
+> > > +};
+> > > +
+> > >  static int do_soft_offline(int fd, size_t len, int expect_errno)
+> > >  {
+> > >         char *filemap =3D NULL;
+> > > @@ -83,7 +94,7 @@ static int set_enable_soft_offline(int value)
+> > >         char cmd[256] =3D {0};
+> > >         FILE *cmdfile =3D NULL;
+> > >
+> > > -       if (value !=3D 0 && value !=3D 1)
+> > > +       if (value < SOFT_OFFLINE_DISABLED || value > SOFT_OFFLINE_ENA=
+BLED)
+> > >                 return -EINVAL;
+> > >
+> > >         sprintf(cmd, "echo %d > /proc/sys/vm/enable_soft_offline", va=
+lue);
+> > > @@ -155,7 +166,7 @@ static int create_hugetlbfs_file(struct statfs *f=
+ile_stat)
+> > >  static void test_soft_offline_common(int enable_soft_offline)
+> > >  {
+> > >         int fd;
+> > > -       int expect_errno =3D enable_soft_offline ? 0 : EOPNOTSUPP;
+> > > +       int expect_errno =3D (enable_soft_offline =3D=3D SOFT_OFFLINE=
+_ENABLED) ? 0 : EOPNOTSUPP;
+> > >         struct statfs file_stat;
+> > >         unsigned long hugepagesize_kb =3D 0;
+> > >         unsigned long nr_hugepages_before =3D 0;
+> > > @@ -198,7 +209,7 @@ static void test_soft_offline_common(int enable_s=
+oft_offline)
+> > >         // No need for the hugetlbfs file from now on.
+> > >         close(fd);
+> > >
+> > > -       if (enable_soft_offline) {
+> > > +       if (enable_soft_offline =3D=3D SOFT_OFFLINE_ENABLED) {
+> > >                 if (nr_hugepages_before !=3D nr_hugepages_after + 1) =
+{
+> > >                         ksft_test_result_fail("MADV_SOFT_OFFLINE shou=
+ld reduced 1 hugepage\n");
+> > >                         return;
+> > > @@ -219,10 +230,11 @@ static void test_soft_offline_common(int enable=
+_soft_offline)
+> > >  int main(int argc, char **argv)
+> > >  {
+> > >         ksft_print_header();
+> > > -       ksft_set_plan(2);
+> > > +       ksft_set_plan(3);
+> > >
+> > > -       test_soft_offline_common(1);
+> > > -       test_soft_offline_common(0);
+> > > +       test_soft_offline_common(SOFT_OFFLINE_ENABLED);
+> > > +       test_soft_offline_common(SOFT_OFFLINE_ENABLED_SKIP_HUGETLB);
+> > > +       test_soft_offline_common(SOFT_OFFLINE_DISABLED);
+> >
+> > Thanks for updating the test code! Looks good to me.
+> >
+> > >
+> > >         ksft_finished();
+> > >  }
+> > > --
+> > > 2.51.0
+> > >
 
