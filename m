@@ -4,256 +4,258 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CD39CAC587
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 14:56:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E5FDCAC58E
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 14:59:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 93A6B940008; Thu, 11 Sep 2025 10:56:35 -0400 (EDT)
+	id AA07F940009; Thu, 11 Sep 2025 10:59:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9120B940007; Thu, 11 Sep 2025 10:56:35 -0400 (EDT)
+	id A77FC940007; Thu, 11 Sep 2025 10:59:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D9C8940008; Thu, 11 Sep 2025 10:56:35 -0400 (EDT)
+	id 94000940009; Thu, 11 Sep 2025 10:59:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C612940007
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 10:56:35 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 25C5CC04ED
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 14:56:35 +0000 (UTC)
-X-FDA: 83877270750.20.5C7F41B
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 81744940007
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 10:59:20 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 282E01DCFEE
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 14:59:20 +0000 (UTC)
+X-FDA: 83877277680.05.65BC794
 Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 9EBF640011
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 14:56:31 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=KQ4BjkqV;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=q1SOkyTj;
-	spf=pass (imf27.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	by imf23.hostedemail.com (Postfix) with ESMTP id 8F736140002
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 14:59:16 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=oRtzTNoi;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=Ph26avnJ;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf23.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
 	dmarc=pass (policy=reject) header.from=oracle.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757602591;
+	s=arc-20220608; t=1757602756;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xd+yHOe+qBG5VNlmLZd0cLgzA/Ep2npg5+fHd8XxstI=;
-	b=pvSzgUP84HsMMeDdVYVcrLc4EYYQN/bg84BtlSnerEPqALUVxh2yCuLzDHeCtVBdZfMmpd
-	Xla6YLpR52NjpWxu6XXakfJRHmRUTr+NYMY8ExLwBaY0p5XiDKLzQgJublzMWaZ1Xbhfko
-	nTAJNLED4bIAYOe6VTFFrKmhKcpAPKE=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1757602591; a=rsa-sha256;
+	bh=LmLCaJ7iOCj4owM2hnjYwbQufw9N4Jkk32/ywrZhdQw=;
+	b=DGCQ3551c9jVIBjiigNYoZ6K4m9znuRle/me0aZrUT7qTMOskwDEQTZM91Ui6fEwQvlt92
+	lQvsMieoi5OReZcJQy0aeRw4lIPnetzmwC8w5iJalJj6qDuCPJVETNLeP3CXaGZz/S0aAe
+	6nnZCvx0Ky9i0rSx3L53TB/d8G3jSN4=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1757602756; a=rsa-sha256;
 	cv=pass;
-	b=nws7Yt1I9+2GyuDM2GsL/1Av81CRIR6GPvQkSH5BqEYa56BmrWr+2Yz77+1tUygCrwQ7Ay
-	9vuVKVoZE+Sj1cLE7ZuZTLX9KBx8eplzi7kfeWcxHjHqcuGgTqfbcJ5ORL30y1LHbGxzva
-	GUgiVDZveJy3cCHngh9cl6LpQ3YtRnQ=
+	b=UMjbVB0HZ0G4nUEPUiNHov031wQcsu3vkDWq51qgxAOQpFyJIsMA7Is/DuM2TnEuLiJzM+
+	H9V1FsgUxoKLDN8LKAFD0LZnCsFI1BDqoLGwvRc6SSlTgv1q0v7EQvnU97GcOX67vOeSDi
+	8vndphpWHIaqP0ix9rGsw05yoSPcYoM=
 ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=KQ4BjkqV;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=q1SOkyTj;
-	spf=pass (imf27.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	imf23.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=oRtzTNoi;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=Ph26avnJ;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf23.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
 	dmarc=pass (policy=reject) header.from=oracle.com
 Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58BDtjb2011867;
-	Thu, 11 Sep 2025 14:56:01 GMT
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58BDtjg2011866;
+	Thu, 11 Sep 2025 14:58:43 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=xd+yHOe+qBG5VNlmLZd0cLgzA/Ep2npg5+fHd8XxstI=; b=
-	KQ4BjkqVcN2/ppTf2lYDySfryC+2yoqdKQf8HaOWA1Re4j9Dzkk8/2nJBkiX9cLP
-	gXyrX76N3x6zzpSc9UU7py4NwIvuRiqcVY94En2bMea3O136MrZQggNGxooCNxZT
-	XnxcOaLI5Fyhx407zgDZmSQSj2eqqAI2n7geRA9gXKGJk6wLOAuk1pCvsLKzywfJ
-	XQUcvnYyCDgI5iQc9aURkv/7Vv2oemjXSKfc8HOdlmAajH6qZLvF9j/50gU2pA6q
-	FmAYbVpLscCSWCLTbx+xmJvhjUThgDGOc39+Zw9DCT+y6KHjG6MBu7Cf6VQcCGeC
-	gm98rZPSwgnnMuYHPapiwA==
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 49226sxfdv-1
+	corp-2025-04-25; bh=LmLCaJ7iOCj4owM2hnjYwbQufw9N4Jkk32/ywrZhdQw=; b=
+	oRtzTNoiaMNj9O5yzfD9OHVODLv7gA+Juyct+YnWqHdZ8ovMUezPc9LW+5ehNm75
+	jsavQApWcnddqlsDjEKr0iuSnkxih/M4eodwroNTB9K5ZyFadcSEhIQldIVKuIjt
+	PJ6n5tKIeOHwc97X7ZoHabAJwAlxO8AilUReywJ1xrFwoP/PmFLYXx907lw/xndG
+	QWB3EQcgozQJhHRdAgU9Hr1JT3mtcoW93NhIqiBICLPZkmgacefXsHZ+oxe1nI7F
+	QnGdaMIHZXV/pGZf6LXlnzR0Ix5pWmVq/pQQ2i8mfNSUWF+k6kLNtMiIWSMqE5Qk
+	VZD0PiUYihYhN0Pw9lqRvQ==
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 49226sxfmt-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 11 Sep 2025 14:56:01 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 58BEhRZE002823;
-	Thu, 11 Sep 2025 14:56:01 GMT
-Received: from sa9pr02cu001.outbound.protection.outlook.com (mail-southcentralusazon11013067.outbound.protection.outlook.com [40.93.196.67])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 490bdk37ju-1
+	Thu, 11 Sep 2025 14:58:42 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 58BE5BOQ038916;
+	Thu, 11 Sep 2025 14:58:40 GMT
+Received: from ph0pr06cu001.outbound.protection.outlook.com (mail-westus3azon11011003.outbound.protection.outlook.com [40.107.208.3])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 490bdcjmkh-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 11 Sep 2025 14:56:01 +0000
+	Thu, 11 Sep 2025 14:58:40 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tUfzf2IXnZgFo2HpBPmWXLnJfFRPZJxduHkSbkva7x159aXLimxNoAAOqIfGEckILH+nxH5sI33L+ydhB1G7kPBYjBg5wl23/0/HljX6dGczkwmiTp6J9vNknz/FLBMbaZwJfC1/DNzBC5iLfZUK8U6kuiGiz3g6CEHyzrjZ0l5Thgi+NbADlI+bp8G3YB3psg+RdqDXL6Gw1XYJzACDeBLpUIPgAVnQjeoEkusZStD7bnnQg3QGWpc5Jj1XUs7mq4anisSYvkQyNteffVtnRf1qowhl6oJ9nucuryHq69mQMRNtvGvrgIt7k4+gGmDTo21MpbzYC7lHPiWrSzbJTQ==
+ b=Sp76mfyUrKcNLCEzSD0BAUfMaSut1UeBHvj/BBNFB1HHEi5Xq7/AnLRllegIcJzyt3mZlsVNF/JZQzVYkbRZZFBigs2fK1leRWAkW6Dwc+tEE/KP4ddryY3WIw4jkogLZV2V0BrHLyEei8BTXUg/9a4FEwLI5KTyONPjhndFizXAZgzpgmjvoujW0DMy6Ti9DYDEcGmwkSjqeZlkrJkNcPZDPM82qMXBF/SWr80D/iyhgTeOSlyeLqf7BcZQRYuuUsGDxfzMbWEV4B6y6rUHriBA5GZZyuGfTfd9emb+Hh/H3gpQ64Dcgps+GSScJYlEXj91PP84Kk9rcaoBuRAGGg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xd+yHOe+qBG5VNlmLZd0cLgzA/Ep2npg5+fHd8XxstI=;
- b=MWasyNI4DYmZVLc1rojjWt2qWFSM3C6ZolHrwUkEQVrr+R72h3TyIlg4C6zeAmcIUqhbg0m0JpC0KXHLEHsq49sy3W3ANEehQ782zWrRAs608U0DQDDFf9cx2JoiG+Z0tVlCwFXaT2t+ynnsPttxbtsDX5ps4QLI57BG56wvhYhCQ5M/pZxSn8rTZUjmQDJEN3DHoLH+JDod7bR+28tKERF3ylTkaEc0wAA44sCH2pLy1TOqpTgjYsigPuf/45fsSflCH+sYePhVNFsFYPiZt5D4YvoVD/pPDcf2P/5e52NFktjpq62xs4GnEvsWPGkvDmAUldT5jV1WgggDD8S8dA==
+ bh=LmLCaJ7iOCj4owM2hnjYwbQufw9N4Jkk32/ywrZhdQw=;
+ b=nQdwWbyGCsPmX0se9khb/KPhHXygpnNj1sS3B+6aZhai6ZuZm2HlrCy+uEMGwOAc4b5WaU7N9gQ1DnTywjpCeSK51yI01nfwyaUgkUuSw/x2vW0gNUHoxd/HvmWh7wohRqku9gSSU2QDrQeuDi0+H4vjh9qZA36nE2Jr/FaHoOyje9EBSpKxIUAcLnOeqq2Ce1CwJraci0xUleQEE30xldwAFKUor4xa4DTpl5TnTjoc/Y+XjOnatbFe9a0w07WSWCvj25Iz1l6qt3898Ln3J69suDHdXvtxdhAwwUSLj2p9y1de2YwSgHJ1LpD8hcJwg460ZoPgAoBgIB51FlXcSw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
  dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xd+yHOe+qBG5VNlmLZd0cLgzA/Ep2npg5+fHd8XxstI=;
- b=q1SOkyTjQ/iCALa5DEkj/rVZ+RMVRAgjwiTqLzahT4hd+3ZGfIaO2zDbnWeJ0mEC8uCCl4Jc9EWJGyY3NXT1ylS64QZ3pIKBWBXs8fh8lY7hJMiOEroUd9IEzl50GX/CEPi5+4Jd99kbIDEcm2/hPcnlJsxaSDMUZcUQuK67OaQ=
+ bh=LmLCaJ7iOCj4owM2hnjYwbQufw9N4Jkk32/ywrZhdQw=;
+ b=Ph26avnJXTRVYNaoi2G1YLOc14wartZ4VX3x3RZ9PGG44EvtVKdVOl+/nqrnTx1uhlnkpfxK7HmJK0G7kj1fNw+oQHeHvmmAf/UPFPr95Vx8yYYEpciHa+LetjqpjuF5mZYVDfyPCvReyEq4yNqofN6otSEvlAmPMxwI7VcwPao=
 Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
  by CH3PR10MB7260.namprd10.prod.outlook.com (2603:10b6:610:12e::15) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Thu, 11 Sep
- 2025 14:55:56 +0000
+ 2025 14:58:13 +0000
 Received: from DM4PR10MB8218.namprd10.prod.outlook.com
  ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
  ([fe80::2650:55cf:2816:5f2%5]) with mapi id 15.20.9094.021; Thu, 11 Sep 2025
- 14:55:56 +0000
-Date: Thu, 11 Sep 2025 15:55:53 +0100
+ 14:58:13 +0000
+Date: Thu, 11 Sep 2025 15:58:11 +0100
 From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Yafang Shao <laoar.shao@gmail.com>
-Cc: akpm@linux-foundation.org, david@redhat.com, ziy@nvidia.com,
-        baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
-        npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
-        hannes@cmpxchg.org, usamaarif642@gmail.com,
+To: Lance Yang <lance.yang@linux.dev>
+Cc: Yafang Shao <laoar.shao@gmail.com>, akpm@linux-foundation.org,
+        david@redhat.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+        Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
+        dev.jain@arm.com, hannes@cmpxchg.org, usamaarif642@gmail.com,
         gutierrez.asier@huawei-partners.com, willy@infradead.org,
         ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
         ameryhung@gmail.com, rientjes@google.com, corbet@lwn.net,
         21cnbao@gmail.com, shakeel.butt@linux.dev, bpf@vger.kernel.org,
         linux-mm@kvack.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v7 mm-new 03/10] mm: thp: decouple THP allocation between
- swap and page fault paths
-Message-ID: <0aad915f-80b1-4c2f-adcd-4b4afe5b17dc@lucifer.local>
+Subject: Re: [PATCH v7 mm-new 02/10] mm: thp: add support for BPF based THP
+ order selection
+Message-ID: <4fba4e8a-a735-4cac-b003-39363583ad19@lucifer.local>
 References: <20250910024447.64788-1-laoar.shao@gmail.com>
- <20250910024447.64788-4-laoar.shao@gmail.com>
+ <20250910024447.64788-3-laoar.shao@gmail.com>
+ <CABzRoyZm32HT2fDpSy_PRDxeXZVJD35+9YqRpn9XWix8jG6w8g@mail.gmail.com>
+ <3b1c6388-812f-4702-bd71-33a6373a381a@lucifer.local>
+ <5a2a4b59-9368-4185-bd08-74324eebacb3@linux.dev>
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250910024447.64788-4-laoar.shao@gmail.com>
-X-ClientProxiedBy: LO4P123CA0454.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:1aa::9) To DM4PR10MB8218.namprd10.prod.outlook.com
+In-Reply-To: <5a2a4b59-9368-4185-bd08-74324eebacb3@linux.dev>
+X-ClientProxiedBy: LO4P123CA0280.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:195::15) To DM4PR10MB8218.namprd10.prod.outlook.com
  (2603:10b6:8:1cc::16)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|CH3PR10MB7260:EE_
-X-MS-Office365-Filtering-Correlation-Id: e2bb3231-6ec5-42d4-91df-08ddf143500c
+X-MS-Office365-Filtering-Correlation-Id: 97341448-785b-426d-bcbd-08ddf143a193
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|366016|7416014|7053199007;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016|7416014;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?cWY2WEp6cTgwOURCYmF2N1FUZkFNRHI4MWZOZnM3MmFmWVZycmpjUm5LOWdX?=
- =?utf-8?B?OWsxNEtIVHhCQ1hNcWhwWktVbHhEWjl1MThDS01hQVNJSVduMHBnQ0pjNDZE?=
- =?utf-8?B?bENNNTBqVHJNYnFjditFZlBuTTZKZDg0WVByZk9qaEVlWno1ZXFrWlphVWts?=
- =?utf-8?B?c0ZiNTI4QjE1N1AxUjNOcGJNaG1LN1M5MThtL3IrMENlbnByaUloQnA2VWhJ?=
- =?utf-8?B?empiNFJCa1ZXdkdGUWM5Z1BxR0w1M1JLK2ZSQURrUERuMldxR3hPVEw3NWIy?=
- =?utf-8?B?K0xOeWV3alhRblYzd1l1VUlkQlpRMEM5ZHNsdSt5V1k2clR5bmpGV2lkVndo?=
- =?utf-8?B?UnZGdFlpMFFNbm1vdmtkVmg0MWNMY01xV1VPYUNDbWtlZE54V01wcUUzRS9Z?=
- =?utf-8?B?OHd5UlJoWHFFRHAvVDF4OWtIY2ltMnZkekpUY0ZndXQ5NFlYdDhKd3h4dE13?=
- =?utf-8?B?b1NFVEttMzMvT1BjVHRWbzBHM2dvWE1vOEtEaHdQNlpJa3V4MWtZU1ZvVmVo?=
- =?utf-8?B?SzNwMnRSWlVPVGcrMGJBNXg4Z29wVFZ3TmdQRitQaXV2RVY2emtRaHk4RElz?=
- =?utf-8?B?MjhLSFpxS1Jra2loZVp3a2NQK1hXT3plaXdVSzIyZEJTQmVoWGtoTmJSYXJw?=
- =?utf-8?B?c1pnVGpjK0V1bTlHVzROSDg2ZVd3WEM5S3VMUEZYMHNwN3lUaHF6ZDQ1MDF4?=
- =?utf-8?B?c2tZL2ZDVUVnSFBWcHYxai95VjlpaXNJNkhzQnJmWnUyTE5XeGp2WFZFdjl1?=
- =?utf-8?B?bUhCaThWMkZENUZudnhvSVFsR294Y1lSVDY0R3ZLS2xaUWNvMHpSMHRpODRh?=
- =?utf-8?B?QmxNaUdJMXh6cFBIdFNiMlZKZGRxcUFZQW5CSFVrRnBLMnZOQlZCeTZSWWdV?=
- =?utf-8?B?MFUyTnJjMnZJWEtWMFdtZG1yMGwrWnA3MTcxTTJ6NHB3YnlwRnFuNEJ5NjJr?=
- =?utf-8?B?YVdaZC82VnhMZU43MU9UUXRNYzdjU2dKWWlReEZMQVFDMFEzb2N5NXdHR3pr?=
- =?utf-8?B?V0dHMThOWGlLbUFBSEk2NnlIK3AxMytyQW5mWTluREwwWXdwNkRHOTRhU0Ey?=
- =?utf-8?B?b2d4VE40UXN6UWJLa3VzcDB0Y1NKTDF0MVdObjlVb0RPUTBhTFFzRzJ3Wm9w?=
- =?utf-8?B?MlhFZ1g5M0ZiQkZreDdiSHBvZkpua2xYQUhYQmRkNXNjYW8rV0Z0dXlVWW9o?=
- =?utf-8?B?YkhqWWY4U2pxWlBHUUI0RzcyT1B5T3QwVGtEVndDOSszUHBvcjc2NXpqdDVV?=
- =?utf-8?B?TTFheTgzWTU0WVZkSm9CcUUrZ2ptcVdVNXJpVGJhQkZtNWlsRUVQa3FXVlVV?=
- =?utf-8?B?UFJnVkw5elpna0dRTTlsdkIwTkp3Qjg1YS9rQklMeU9zRkRHZDBJKytJOXRt?=
- =?utf-8?B?RzhFWDBJTUNaR1NDelFIcFBJc2tPT3FXdTF0c3lPR2hmMDFyYXhtT1pTNUVO?=
- =?utf-8?B?T1h1ZEw4KzUyMmpaQU1jTUcvbHpvTjlyUnJFKzJhZFFPRTNWUDFpL0ExdHlV?=
- =?utf-8?B?bmRpb0NRM1JTb2ROcUNoMlI0a1NObXBwQndTRkJ1RW1SNSs2dStnSW9pNkgx?=
- =?utf-8?B?VUZmNEwyS09MVUlPdk1uOThhZ3NVY3J6WXE4SU1FcjNySEhncytLd3hXUXJL?=
- =?utf-8?B?bWdScS9FVTgzVzg1L0R1RkdJQ0VYMmowS0ZuYlBRTTRnZmdvSnl5OXNFYmVJ?=
- =?utf-8?B?cW0wd1Y3b3VITmQ2TU4xOGNyVU02R0lLdkJKT2N2SUp0aEZ6Y3d5L2ZRL0dH?=
- =?utf-8?B?c1JPNVBBWnZrejY4SGlNY1FOaEdwN0VYdW9TVjNqTDYxLzBHQjk3aC83YllB?=
- =?utf-8?B?eHlWTHpJY1lqcFpEc21QZTc3RkNpcFhpRGIxU0NiVHFxRTJsSFBTbjJEVHVm?=
- =?utf-8?B?UzJyS1lCZzZvNFp1VnFpTlFneVF1UXIyK2FJbGgvZ2puKzR1eERCeHJNa24z?=
- =?utf-8?Q?GPNQ+8IesaM=3D?=
+	=?utf-8?B?NzVBU3hKckE0N1A5cEowb3hwSVI5cUFNRlhIdEM0OVBGTnFaNnhDbWlDQnor?=
+ =?utf-8?B?WEhNYTZSYno3aVlHMEtrbWNqbW1VMFdOZkxHTWo1ZkFYRjVZcGxOclFSb1Yr?=
+ =?utf-8?B?Y0hWT2IzcEhzdUZpbzJ1SXl2RnZNd1IrWi85aHI2ZzFQalAvN0hOSnYzSm85?=
+ =?utf-8?B?K3o5YkdiTDQ2c3ZBdW82cjRERzVaSDRpVnhBZS9pWFB3RVZXQnFmeis4V3JZ?=
+ =?utf-8?B?TlFvUWV0cWY5cTNzd2M2aXZPckpTcmxKbnFMOWpqVkFNQ1crSnJuRHp3KzJw?=
+ =?utf-8?B?T0xRQ1BYVTZNa051RGdjSTRxQ2gxYVhZcko2dndIRmp3WVVtUmtTL2hMbExP?=
+ =?utf-8?B?NmMxbFhkc0c0TXYxa1A2STBhTksxcHpLY012TUtMZUNoc2NrbmN5Z0lrdnRw?=
+ =?utf-8?B?RGlMZXlLWkFjRTNYay9JbWdNWUl1WFNNK2NtZTJKY3B4TGh5QlA1SUFOZHFT?=
+ =?utf-8?B?OE5ITGVFZ24wY3FXSlRXajFLRlltKzJPbmhSd1FwYXA0cmhJS2JMMjBXTkZh?=
+ =?utf-8?B?Z0M0RWdZWmNKU09nbVpvK3pIaEJFTmlMclAxY0tHRTlFUXZYbHIvNi9DRVQ1?=
+ =?utf-8?B?NnRaMTU0S252ZFFEU2owRWY1NDIyK0VHcGtLTDk1MGpsbTBMNTdrMGVRQyth?=
+ =?utf-8?B?UGJwbHYvOUxKMitvb1lUczRCTDNtR1NNcncyRGthZERqQlRiSExtNFJncnIv?=
+ =?utf-8?B?VVZRcVlZeFJkK3pZbVhqSnJOUWc1NEE5SUhBQnhPQjdWb3M5Z3hyVzQ4VEhE?=
+ =?utf-8?B?a3NTdnRCUzcrN3gyR2hvN0JOYUl2QndZa3Rud3djNGRnVEc4UysyZmM5Sk1l?=
+ =?utf-8?B?eDJRbVNPaWpHM2FzSW1wS090UVFHSjFpOHc3L0Ftb2lqWXN0MXRIN2d0eXhk?=
+ =?utf-8?B?eUdsQkFnNU52K3kvRU82YmxPY1NCVC9aSHZJNlMvZm1CT0c0aTBpSFY0Uk4w?=
+ =?utf-8?B?ajc5Mm9VOEZTVmtUU3NWQzJyM3ZIQVRpeUxvS1M4ZGZiZkVpYTNpZkMvbVVm?=
+ =?utf-8?B?T2lGWXZXQ3RlN0h5Z3hIbkRtbTFJWE5mZnN0Sk9ZZGoyL3NVSFlMZnhWelRV?=
+ =?utf-8?B?cDVLRTVhcVpNY2pzNXZIdExra0x6UFlmUnNKTXJJVHN4UUZlQnFtbGlHR1Vv?=
+ =?utf-8?B?UVJZY0hNYlkxVHZMZFJnM1VBRjA5cFY0MUMwRk5JSWs0MFE1WGMrS1dvaytE?=
+ =?utf-8?B?Tm9TS0lGaVRsNzRaV2R2d2FlZnpmd2JHRW9QakFGWkJIWmRadnA0ZEttM0Rj?=
+ =?utf-8?B?aEM3TnNqN2VmcVZ5L0RkZVdIWEJnRWt5TzRnS1hickRnamN1bnlZd2tvUXpy?=
+ =?utf-8?B?eHRlR3Nza2JEL3UrY2xHQW5EMkM3NWFzRktEY0dPNC9jZUlZL0MrUlFHOGdV?=
+ =?utf-8?B?cmxMeGhpYUovTlNTQkN6U1VCcU40REpRNGo3WVpOanJiYTViU2FmalBPbFg2?=
+ =?utf-8?B?bFFiZlhENDRJTTc5dWtublVyM0gxMFZ6S0lPbndSalFXZzk5OTAwWkl2L3RL?=
+ =?utf-8?B?N1VBSmIzK3lNWEZza0diSU13V3dWaUF0cDVuekhzN1ZoU1dmSU16M3F3amNG?=
+ =?utf-8?B?S0JSRlNNU2dKeTJNRkZCWVhCOU52WEpDTWVWNnNqcmRnWUVVU0tGenh3QkxH?=
+ =?utf-8?B?OVlMVGFQWkJLQ0hHVStidWtUME1KaDc2cy8rVGhIZUJCVFYrSDhjQWpiUUJt?=
+ =?utf-8?B?RWNabXk1MmhnT0hwOTFrdEVDQmVQZ25NREtwbnhObnQ4elp3SnlMeWJUejUz?=
+ =?utf-8?B?SzRRUVhmVEZvaEdMNkNDZzk2VHRua1pqWVpvbGt6TEw0UFlSSlRlTTM1UG1Q?=
+ =?utf-8?B?MEJMWEUwelhqejdmRS8zZ1ZYdXVOdDE2SmlvYnFqZ1hMMnlLYUpyaU9YZ3h3?=
+ =?utf-8?B?TU5MNjJRb2dHRVBGK2RGbkVHdEFMUmoxWmhCTEVKNThYbmxDa0IvQmZGOGdz?=
+ =?utf-8?Q?5rIiKIuFbEY=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(7416014)(7053199007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(7416014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NHRWUWlVMlo5dEpxSXVJd3p2eGJXUmMwSHVBRTFwNUNSdjE5YUhJOEIxQTdK?=
- =?utf-8?B?WldpcUpTbTBHSWVHdFFwNk5oNUJ2VkxyMDhlYUswMm5GY2oyVGloT1dRNDdi?=
- =?utf-8?B?dVJkQ3U4N2FyaVVSS1NqQ004US9DdjFSeHFzTmVhZk1aNmtPUk1kTFgrRUNj?=
- =?utf-8?B?eVFxN01ocGNnN1A4QUNkRnNqdmJ2U0cya0Y0UGtldVJ5Wm5hU1E0SmZvRjZU?=
- =?utf-8?B?MHdDR1RzV3d0YmhNd1dqNmJydi9oWElLMHFqS0JwSHpLYndIMEMrb0IzUXVs?=
- =?utf-8?B?MHVKYkVCZTJGTWFxWHJRejVKMmFxVUZrZDg0c2wvdmVFdUZVMGd2K3krVE41?=
- =?utf-8?B?bUJIU3I2aHJqbjYzKzNsNS9CUE9GS2piRXlnbitOeGpaMVUzeTR1dm5WbUhY?=
- =?utf-8?B?UUNwUDByUzZjZHZKQUVmY3lkQU50SEhCTHJSOVMvaWNzYk5YaEhqb0JmNVh3?=
- =?utf-8?B?RjhZRk1mcm0vN3ROOTJrL2pvVlE1bUQrYkFkK05TekdrbjlOR1h0VnZvSzQx?=
- =?utf-8?B?V3h0QzMyV203MUkxdDBaQnZFNDFDRW1ROHM1R1NIdDIzTjBmMkdZZ0JCc2xv?=
- =?utf-8?B?ZHFmeDNyN3lBM0dGRFRqZ1RYZEd1RWtabHpnUlAzVEM4M2V0dWwyMWkyNEw5?=
- =?utf-8?B?SGZZUjFJYzMwZlNETjBEdU5sVG9ubVQ3L2NMTDY0dlhWeTBnb1A3K0RuNzJ1?=
- =?utf-8?B?bThnOWxncXFqNmluNktFZzUyWFIrdjNMVyt3V1U3dmlpSGFPcG53UnYxanlq?=
- =?utf-8?B?SnRLcEtvRWMrWFFZemhmcHJhTzhVQ21DQXFjYTB4L0VqdFRwb3VJU1ZVYlFE?=
- =?utf-8?B?eU5yT0t4MzljdjJwMFNSZTQwN0NNMmxKMFVBTWNranAwamxmSzBRTmJaMlZC?=
- =?utf-8?B?WlN5SGdnT21rRjJJRTBidWRlSW8xcHF1VmR5MU5VWlRHQ1ljcmRsNjJNTGFQ?=
- =?utf-8?B?aHFjc2oyRTB5V2FONHErNlh0OUg4ZUc2Z2xueDNxWlJoRGtNejFpanFWUWhw?=
- =?utf-8?B?alAxV3lSeHVvL1lnRGhlVUJ1VWU4TkV6eWRlT2pUMTkwQjlZTzRQQXlwaStr?=
- =?utf-8?B?N01lSHNPWGJrU2pmK2tjdzdyZUN1YlRWb1J4cWxZMW4vcUVYMmlUemlLV0hR?=
- =?utf-8?B?R0xuWmRndjJQMm9adDJudTc0Rjg3azdqSnpwa0hNMnlMcDA5VXhyeGVLUStQ?=
- =?utf-8?B?QWU2U2xyM2hRM1Nja1RidE05NXowYitxVGVjekpLdnNXVDI3Nkk1SFFpOVVV?=
- =?utf-8?B?bnNtYWZ5dFlZWE9EK1FFSGNsb1RqcTk3bHBvSkFVbkZGaHUwdVZiVk1jNUU3?=
- =?utf-8?B?UkZHY2kwTmMvKytXeFBZSlBQRDFkblIzaEtIMXA1dTU5c0pjcEZxN2IvNllI?=
- =?utf-8?B?N05GS2RHTkJ4ZkFiWXBSaEhNOWRtaWZIekVuYVFnN09HYmo0emREM0RKcHRK?=
- =?utf-8?B?R3gxYXRLQ3lheDFrQnVkQ0JIMkx6NXJsMzd0TjhYL1VkdWhyVDZQTVBSc1Rp?=
- =?utf-8?B?d09JSm9XZEJYS1dBWDgzQnpkRDJxQ3h4QlZVRUNNem5qeHFOYnR5cVllVDZs?=
- =?utf-8?B?YTd0anZ4bGx1VmRDY3RxWE55dE04TGRKaEFZLzgzMCtaVU43M3VXc1hVMWhR?=
- =?utf-8?B?SjdCWWpxZ01MQUtRcEJhNlJncGtqV2pDdldZZlpBYzgxclpGN2RucFZ1VE40?=
- =?utf-8?B?MmxVMWZCU1pZQmJBU0ptUHhFSitsYlpobC9tMXNiRGEyallwMXZreVlEZFJI?=
- =?utf-8?B?QWc0OUg0Ui9NRGtIU2pUQ1NNZjBqY2tXcVhkUENGbU9kT0Z3dXdYRHk0SnQ5?=
- =?utf-8?B?WjFBb3V4Vk1oZDN5VWJQZURNN3ZhdUdVck1tSDAzNmhYcVliYVROUnlLV2M0?=
- =?utf-8?B?UFpsdkx2T3hXV2NTS0tackdOaC9HZHN2VGhhQ3RKcTlTQXdOdGtZYWRJY3JX?=
- =?utf-8?B?WnNwOTJPMzhLUDFYOUNrWVZDVmpXNVpJWG95cSszK2VZRGdjeWQyVDBWcExN?=
- =?utf-8?B?WjBIRmJ4WkZ5V2xqeVp0VlR5SnVWWjJCdlp3REJob091UDl1SWN4b3FYTWdw?=
- =?utf-8?B?UDVCRnhFa0hCRFh3eXltL0RzQlVtQlpwTWxGZmtwUHRHbnViZmk2WWdiWVB0?=
- =?utf-8?B?V1dNT0dvZzU1MFYzZ1hQSVc5SGJFOWRITXY0S3ErNWk4SlRWalJVTFVPR1BL?=
- =?utf-8?B?dFE9PQ==?=
+	=?utf-8?B?aGR3WjBFdWtLY0g2SDNRQVN0K2dnUFloemxrV1FJWkxTUk9zRHd2amRaek5H?=
+ =?utf-8?B?ck8wdnNaQ2VXOWVhOFd0VHc4M2wzT3dNQzhhMVpIM1hIUHpQVUtqY281MTYx?=
+ =?utf-8?B?dnIrQkpYdjh1YXk5RnFOVTREeXVVVW5YTU9aNEo1K1ZGaHpVU2dLbmpEbHZv?=
+ =?utf-8?B?T0s5cWNaaU1SUGhSVFR4eUhWUzlxejdMZ0krN2wyZHFkVGlKbkdUdnFrMWtr?=
+ =?utf-8?B?Wit4aDJwcWMyYXRreXdsUnFCayt6bXlZV0RxckFPZHRQYjNJOU04dHlEd3dZ?=
+ =?utf-8?B?TnVKOXg4eHAybWN6Wk8wanN3Mlp2bE5sMXp6SjVMNFdDSi9TcEJ5SngyRW9y?=
+ =?utf-8?B?MmczcWRKVU5aQTltYlgydFM0YlAwc09mQWpjYlR6bUpZdis0R0pJbXJJbWx4?=
+ =?utf-8?B?VU83TlRJeC9xSm03aGpXTmp2bWVCNWMzNWhRYmlQOEFjR21NLzAyTDljbEU3?=
+ =?utf-8?B?cXloanpJUElGNFVMcEsxNEVuR0tpc3FoRXp5a2ZjS3FQdGdHeU5sTEo1M2dP?=
+ =?utf-8?B?cVNXRlYyVDdmajd2NURENkdDUnZ2RVp1UThCY3FSSUVTTUpaZ1JtVjBpS042?=
+ =?utf-8?B?STRMbUhPZzhxVUEydXczM0J0NmFCQjhrUGNES1duS2tsandnOWppUW84bjRo?=
+ =?utf-8?B?b2FJMmdMTjdwUm9FL1N6cUVVYXJ0bi8vVUhCbjI3WW9pT3hsMnBLalNiVzIy?=
+ =?utf-8?B?Q0xsbkZnZmFmY0FNUGJCYzloL2JzWUNSeWtDcFBEbWN1RHc3eDdvNEpPaVdN?=
+ =?utf-8?B?K0YrVTUxdlkxeEV2SlVDdjVnYkZhVmdhVUdVUUdKMGExdWtvYko1NWsrT0d3?=
+ =?utf-8?B?cDRVQ2xOQ2ZOZjIzcldsR2xXczRwSGdzL0JDVWNEYjMvcHYwdGZ1SFIwZXpq?=
+ =?utf-8?B?Ujc4Wm1lMUJQNkk4TVhFS2JCUW1oWDhPVGJJb1RMRDRkVnFrdkFnbmtjQlNK?=
+ =?utf-8?B?eEZXakZDWHFYRWhGZU9ESW1PNEwrTkQ0UGh2d3ZwMzAwVGkxZnRhdEtib3Jw?=
+ =?utf-8?B?ay9JbThhMVQrMjVoUklzaWlCRjM3czRVUGhzUmNsbTRBVDEvVllRVjRjVGRZ?=
+ =?utf-8?B?YkZHeEFZa2JmTkUra2pRd2ZnV0g2TlhSeElKYU1nZlJRTHRYRWsvSnRZclhS?=
+ =?utf-8?B?b1g5VEdnaEdqVXQ3K09kcHlIcjJ6WFJiaEQ1MHFtQXFVUnJYOVhyNXQ2Zyti?=
+ =?utf-8?B?Si9QUnlrMTVBVk9CZUxvM3hqZWRaSGJUZjNsT29mZ01wbkNiZjh1K3AwVlhh?=
+ =?utf-8?B?SENWWFMwZzV4aXF5czlrZ3c2aDFzZGN0cUYzUVVJb1J1NUkxZk9QQzdhcUc5?=
+ =?utf-8?B?Y21KR1cwWUxUR0lIL0xKcm5vMUpWSUpqQkJMUUw0dTZpUXZrWE9yV3FjTytQ?=
+ =?utf-8?B?NDRIWlkyRE1ZbXZEanNCSHRkYUZkVDIrblMyaG1HUWpxT3VoNldXRmdSWk9B?=
+ =?utf-8?B?WWwyblZYRElyUWRaei9XTlVPRVU4cE9FeTBmZ08vQy9oL1pBV0tKa0k0RERW?=
+ =?utf-8?B?MXhGdGVudWNYdmo2d0hXN05DMnUzYysvV2I3SkZ6Ti9Tdnp2S0tiU2trdmlS?=
+ =?utf-8?B?alhpcjFQQ0hzRTcvakJ2QzB6Y09QaGZ5N1QxQklQWm1jSDRIVzdoZTFOcDFS?=
+ =?utf-8?B?ck54c0t1dUFUZlZsSUZ0NWEzYTRCMXhkeEdPRHo4dkRYbHlFbUNVc0NnMGdU?=
+ =?utf-8?B?MjFLdlJaZENzWmdBVllEUERmZFFUbTB4aTA3MHFiVmdkSU9sbEdRdmRWWXdl?=
+ =?utf-8?B?YnJVb2s0Z2tYb0dsMCt3TG9DS04zSXhVdDFmOTJkZUFXWkNPbGdrVG00MHE1?=
+ =?utf-8?B?MG1aV1ZkUGd2SHY0S09OeFBFZWl3Z2pFKzI2MGZpMVpvWU56cFFUZ3BFSlpE?=
+ =?utf-8?B?NThsZlN6VTVON1JEbmdrK3JHTHlTYU5nK29aUjdTM2pYT21mMXJ6RFFOYnRN?=
+ =?utf-8?B?VlhzcGVtV05FMjlWb1o0UGJJTkRpQTB6MEROTnpDcWVidVRYTExuRUI5WHFP?=
+ =?utf-8?B?cFRTOVFZbnNDSHlESGJYNXpLU3dhM0Q1dGE2ZUhaa0tXWG1KY3BVVGtuUXRu?=
+ =?utf-8?B?eFlOQlNjNXlFWEJaN010UjB6Yjcwa3JEMWlMRExSL1FIc24wd1Q5UXNTYllh?=
+ =?utf-8?B?SjArYys2OXBmbzM3bEk1RmlKODQ4WHpOY3dpS1RiemZ3TEMreHJnanU4NGl0?=
+ =?utf-8?B?bnc9PQ==?=
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	VCH0Gedl61u9CL9XzBoXEyaHg4G4GRfcnoPMTL0R/ZEkK1252uUcW0BtLkNBfyv712qx2wh9EMWSNBstbaAbdeEzJADfurrwbv4pdESdT6ljfEUdUfaXPFNojAtQZBa7XVwHurpjBcI+6l8Q17TwfTAeKyqyDyMB8jfWkjPjrAPqg956Z0HI1Sefp6qIY+a/75p80zY1E7wCPKu9z9MYLLsCUGVMPylU3HdbX0M7m2DsbQPtCGnxOAHtgux0h1WEzPoJzVH8iMO+Ilv/vFPnik71DRKS0j4yPCd4l++1nrX62v/cNhKOgr/VQXNz13EwFjamcIORWLCks4XPKPtjbJPoVtXYGP9MiFl6pAlpQQEDSMd4pIi/vSDhHYs4v0WT7Cdgve32GoM6y18bkFovXSd0GTvzlmYdP6esbZPrJM5T96masVxFDTmVIIa9qidLKayX0heOH0fK7IalHqzbSWlL/GakoHoFH94fQC9L6mA+dd2QsS3H7Va+piXLLGs/jC/SDpjPx3A3fgaTBLXsjb29bGniTWu8njCI/yhIJnR9GQNoGGFf9oNzsN/q4Svb9BwE7W/JtNHQCCjWWsLW7ZYR54/Abr9ZhLu3UCyow3o=
+	ALjy5RCmIpmljNNgMjNo+qmC5mB3HtATH9w34TkwzaocV9n8yEAkoyHwlnQAmOYqK4Q59IQtbYtPnnksgb48dA+sjNgpe9TS2oe5+8Guf4z/PVjssxG9XVh3sNppIuO2ZsEDW2sVynE0LKFNNsBs1CQ2UwrIaY0QI6SbPSJgCWv1JkVgUj7gwHldSF/cywHj5rQ8Q6O8oHucsIETjwgupuHQ/OlhKP+Ims2G40xA5d3xZ4C67sOh0sQXf/bp4CLka6J/QRGGcpAnc7FIYf6urKZK/psLT1fF0+K9m+oE/i+vEREUpVx/zHGXpc/hpr0CXQL3yU8QbZT89f6+idg49fAZCNqod8YoWM3c/VeO1e8nNa2RyUiDXpEVSmBzSu34uBRuHQM3dMfkr28ZxeDioBjqxo3pKJUfUXqrxFogatDPfehe2LJbj35aFIINJ0+OrnQu5FKfyybSZtW6AIUqx1mIvvbc/y2dxiozM1M8dzgm9E2YXHjaEttosi2WmSGRGVaKSAcRO1DUTwF4uC7iid81NLcqqm8CFW37YcoTkRVPaaMlekxHUpSM7l7onqGFfPRLIJ0/bDqwpKvEGN0x/nU1L5xrw9zj/Io32beG8A0=
 X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e2bb3231-6ec5-42d4-91df-08ddf143500c
+X-MS-Exchange-CrossTenant-Network-Message-Id: 97341448-785b-426d-bcbd-08ddf143a193
 X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Sep 2025 14:55:56.5246
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Sep 2025 14:58:13.3094
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: U8fzqbZu5xZHRHZY1M0BbEkUHH1SzBifrWNuPSDGlTpsikxiqzvuDIMuOv6B3+XTPtGNx1n6YKj55Ac4l0vtPUURstXYdTLFZ/XUDsIw20Q=
+X-MS-Exchange-CrossTenant-UserPrincipalName: /ZcVZ1wTqVd65MrrQ0CYwZb2s7kIoPNbGVIXddQSBu9Q3pQTjRUhg97x/dXc7D71Osm1AQPXf0VI9PWQWcTFb822IzVDUxwr5Uf0DalDgmM=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR10MB7260
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-09-11_01,2025-09-11_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 adultscore=0 suspectscore=0
- bulkscore=0 mlxscore=0 mlxlogscore=999 phishscore=0 malwarescore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 bulkscore=0 suspectscore=0
+ mlxlogscore=999 adultscore=0 spamscore=0 phishscore=0 malwarescore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2508110000
- definitions=main-2509110131
-X-Authority-Analysis: v=2.4 cv=QeRmvtbv c=1 sm=1 tr=0 ts=68c2e301 b=1 cx=c_pps
- a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
+ definitions=main-2509110132
+X-Authority-Analysis: v=2.4 cv=QeRmvtbv c=1 sm=1 tr=0 ts=68c2e3a2 b=1 cx=c_pps
+ a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
  a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
  a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
  a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=yJojWOMRYYMA:10 a=GoEa3M9JfhUA:10 a=pGLkceISAAAA:8 a=yPCof4ZbAAAA:8
- a=2ir9tKXkK0-iLYl0BP0A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 cc=ntf
- awl=host:12084
-X-Proofpoint-ORIG-GUID: jxRTgcloltPnprOkh_Woc2GSPU11UQW5
-X-Proofpoint-GUID: jxRTgcloltPnprOkh_Woc2GSPU11UQW5
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA4MDE1OCBTYWx0ZWRfX97H1dVepI9R7
- U1TYe4iPHkwlA7Cs1saPP2PTzJHkVnktGhjs4zhhMMdDzFJNz/DDJIOi+C5ztshhgMF1MoSVTdz
- RnZEzV1ty1durgr8SZwZi8sbGcq2S3iQvWORCyOHH/bhOFKPdVz6X5HUqUSVuEbML/4JRbpJsPW
- /d5y6wTqv8RL28zuwe1Zp0VjfyZOLFPtWg1EZfoBltzWRvF2hE9z7nH33coM0h4/CE+E8lhhefo
- cA7FS4CPcygULU1tYStdJ+b/ye/j8b7ZNnzxwe3jRjsay0yd6oCyFpQf6IlgsGXUZp3kaWbmMOf
- KxKvLX1Q3xIyhIZlDuPNZygRpIoBRN9xYETm0uBPQLiumb9lwLG4Dr1dy3AAXXz5iGaQ2B65peF
- 2em5mTbt0hN/PuF/6FLaq7k0d41BAA==
-X-Stat-Signature: bkhsdbfdy5o85uhxe1yo6o5btfykrmoj
+ a=yJojWOMRYYMA:10 a=GoEa3M9JfhUA:10 a=pGLkceISAAAA:8 a=20KFwNOVAAAA:8
+ a=yPCof4ZbAAAA:8 a=-4zaChfW14p0fnKyauwA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ cc=ntf awl=host:12083
+X-Proofpoint-ORIG-GUID: 234oXUBdpIrYsM4bLhp8Y-wy9FKHzvX1
+X-Proofpoint-GUID: 234oXUBdpIrYsM4bLhp8Y-wy9FKHzvX1
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA4MDE1OCBTYWx0ZWRfXz518bEZiJzNp
+ jRaJmd016VHXdV81FrVBugem5cA7/Kl8m4CWmkuG+ZWMaxJnamVyBHeK5XVftzp4yt4n0svWIhn
+ JavfbX4Fv18VrpqQ2zAvPZkTa7ERhifn9XeR2iPlzzGrp66Zc93DTqcWnVKez0l5Ed94laecgbw
+ TdA//MYv2e8fOZIq/VriNVoz4r7YzWSzDX98ZLsnkFp1ZLlY2w9aQssdywoUVDVerZnFZ9NDfNn
+ H4QxjoU6EebhWqLZtkGiAm6buHqK/5O2/OKHm20Oheo2zsQoVommAtSKNicG5HpqJ1mCW89wWtb
+ x6BrElrwktSOIsOlHgJ1c+J051OQtkDyRzn/Vkk3nZRc39CoQ3GLEUKMY/ft3xM8ctzzDOAOYJn
+ OoTKGe2/cJjU4iXFUl0czcsV6mO/vg==
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 8F736140002
+X-Stat-Signature: x36hat5sf98kemaog43s6ikfh8tb3ird
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9EBF640011
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1757602591-306219
-X-HE-Meta: U2FsdGVkX1/7BrlIyMqFh1qLzn5miPZf9PqIXSo3oGJaU818j2gOxYQRaNC/ASKL4qtwSR2zAZ0+wt8J5TVbVjhYZpXqo1/qPg+ZeG6O/uyMqLHqlh8C2a6EZ/RoIDySu7ejXb93EOK1AUbsgdlzauDnyFuO108PmUyBJMDZQvSddVKPwv8XPblqA8zZC9Jpu+/KTF+Bi9o9iCuHSkP/xukP+iYzMCb8KMeqxg62h4ZDLBTDcC+jnvS1+rRlbe5lVtLxJJ2iasoLGbuQLpnLN2McqLv9etXpk6cGN99zWSDsGJhCeJ3Lhmm+Z7yDuljNuSSK0pHumxGJNG6B5/GurRqNJPCRnaKa67padbPOXEZnrIKcGGuwnXfjlKv/IONF0/jTSDikZX/go79ZnqFkiqXSfp/EB8jmdGfy5hMHK5d504AbTlUG3xWIXQText3pHk6lxYswuJ7nowPKZk8L79WvVVKN2QCI1n0gXN9fISYR6L2A7hfVo6Ui5sA3M1tlNuOr8qNtR88rjpjwCgAnyUxBPX/HaqqvT446y0aUyTP8RDb+O+6T69qVS0pKnBHWK/PtzWJVQ7D278sfUoyN+8Cc1JXaXR5fWrNIomFd/nmmvPTVR2jlny2Qx0K72ABW/n9lNag9tj+x9E/2httVh+RdvtoOEXaSYX8rQNhIwvcyiw2VrAqj0Yq59tjAsZI6rV/XItNthpbAI/UheIann8oTvzrHHQIJ+gyPE6XZK0pXxot/3hU52L5gkkJsc6FRcwa4MJ9luQ92MBRMwQllXDkqBYUJf8f4u0bjOz5kjerijq4GyaAoLJrucL1YnKeMarPfXrtuKC3WX/vCL3tj3w4HELw9afShx8p84XXPgJgBMlbdV/n25CGkE7kDCTjwgOLvzdOMhXq9vAZE6KNEY+jq70oLykAcK5Of0qdaqMmcRJAgi8dQ8VnG2nSFhDl+H8T4PP+hmAEvm9yi5Z4
- sH8zlsFf
- VCznbxG+fB9zh1Tod/pQEQ04uy9zG3ELwv2h3b4kwLwEgWnPsU0siH/hQGF/qjNI3JwjyBciQ4D0TpQpH01Crc8pQYxNliE/OlvdoCQPB1/vVVfSE+nkfad2L1MImd8N0n50pyr3WlYyDrWNdqv3ClEX10WKHPGSf5avB/nSo+V7Bag8FvEcPVfuc5tpoZjYcMvN/sGZHIxM4t38slyLtkgELXqFovQGAT0i2FcWiQbi00DrlOe1w0jyTrOFYHcoQACCNs+Am4+f/jbwQ4Xc7kKEegxiac07XyDIOSxCSSJU8VFe9GebJXtvPxs7jjyCGMqXu3RpD3hmfl7DfW/JjQOgwvJUKHxd8PHIN2Pa0/SkE9FcfcrRH+40fkdq2bBcycSScpM/QGJfM8VWsa9H5zJ8udGL3R5gv5ZFn8TiDHR6af67Jhj4Zryw/akjV9nVVppBau18fpqmOBaiSUuDNRlNmqyJKF+iX2ZUnwKW4ng0ozzn9R7icekbs7x1bABL5oX3sNV4mtDVNo4Yz8J6+DGsmGgAnA9+ok58/oQMNIFY7cq3d+aS749RqfV3mFy9ibUFzn8s5A6pE5+nTeg4cBsS1LyXjDE2Uni62TXgBQUmbHc9t3WZx39NCz5ffTf5AHLMLr1KjJzU6Y/kA87pB/JkJV78/dpYbS1EF5ZavB7o9r3SRlWwwMKHirKlVQudt5s6oM21ws5xcbRokbGPzzS2fkjUTcrDWZRi0gSSacJmkLI92mmu93cwE8sWoZGC/JWJHa+JnIsOJM1KUaD0RMd/HR456NDUEJjm8IvWGx8RYK+Xlr299gvSkACHTICILHxkU
+X-HE-Tag: 1757602756-583080
+X-HE-Meta: U2FsdGVkX1+T7Khi3SFEulORAw5YxXxPsSwDcPu0cXamBIWMXMeIhKEMg3WZh1KjUFufCQ3g1yZIRKpisbgR2EyadzuejEIuYceAEXSXXo2sOGKZMSCr8edLcApysLwNTkTRlo8LIcG0D+K5QObHbaPHuMU97kYIEbDdQm/ClApX5id49nmJQCYXtMi8dynG1FMxhRq8iAP7rwtlDwsV9x/es5bKnJnYSt4czOXcj1IiKe620su2wyuWfsahaZ201rHaEBQdMpOASnbVLIRDLBIUNYCSvPqO83wWTMBh9y+tO3vn9L46owjt7QsqsDXSvyeJOv7nfb+bq34Itr7ajQlZvL0X4UB0m91VqdDgfS45rj7r5GHTwDDk1E7aSVIp2fBcT32pSJTbPg8vIdg+bHogLNWiexEtcVoPwvs1usBddrM1AOseeeQX5Whjru4arcikhoIlgqQMGlCMcoM2UPQn2WzR5pD84M4fnnn9RwZI7A7h7ZVUhVrf7uFbX3agrlkPGU3s56jENtMfS50ghshkPjMw0llj4T13JXgJnsNzuam5QBFs8bi5MLQf0Y2ZAtjMmQ/ImQIlhTv1Wym9XQD3Mbq1bsz1mSuloH7kApnf+Rjf/To9jTj0THGzbPcBfRpWsIVnyhODvODnbLiJQeNjL9K7eyOE4nWM2juHqagyR1KVGvxgQeTYQd71dlvAtQZxQbqsTUy6RHPnhgKrZKWvwTOw0/b1r9+3fEg8eUbOFN0W8XL8rCI700SoHOEMdWfB+DSBsx8sM+roNRP9Y2SyaVO8ICm8BZ7/03uh39cnCCJa+sVIt2cYM3pSZqXIpsG4g2gWREzuFRw7hIiGbOpsVOIIvR/N5Fg9qg3saZ1bnCS0oLcCHjQEK2Y/eRdbeign8LZOYib3HPrMnkL5q12TGHwjaE/t1+WUUlfCFhMkXOa7tkvLHNpTJk56zxp/l6UhBrGk5TMnTmjx9CJ
+ av2zJ1dk
+ JKAfy7NjhOTmDQQe+ecifsiCpA5JXnPQ9fliwA6TS714j5Gb9wmkWIM4reHZTLIPcUY49z1ZFb91yRkxFMOIxqSc5emz7eLuiEpMD8IORxAtZAqyra2V+KSgPx1DO0DdBWnsAXVURsy1mI1ba571rPbybKosM0x0lBOrl6DoU3rsOTSWWPIXVpl8wXnccVUq49ZUAufZQ1Iaz4huH0fkgH7FenVf0qtTS8KS0xGyLxdjDVRkmfsxrITQgzeCBMp0wSeUiMwd8saAjPF8fF4ZNx3wUnBuVVLxiH8FSPy82vbNL8TgDH9ib7Kyy8Sa51S8JsJ7CqYMqU9Ke9rr5PhdSJDkgIiSZWwJf/mgvGs5kQRvji1P9354tEMvssa1O7THafsEryUnHcr6lOb5TdQT5W2is6FubiPJQXZuorHI1aXnuFk29LSvlHFOwv9pklCxG9updhHW5Nw1KvVd2G9VpDH0SFiJM+L15ur7yPU4SxmE8x1MtIdph+S2w5UVsPP2N7a0q2fx3xkBQDRhF2ElxDqrUmunFJIIOqpu8BnMjHRXAGpizYMduct/9hF6Hmm2MF06qDQm8jD8bCPSPImVzyzHcQkkyLs0T/0BivtnBFUqUyYqq6cqgP4O0oHzR9E/DWzoRl0b1JuQ1WEV8FoUIXp+cxaydZ7GIJMQ/ETIjNfp1UAOHsbTPbZQhyl8gklGj1GAYmZtGYadLzdA8dS7zRsxrYzxI7A7Qxy6aXAkygHydNZZwWSfEglguaHylEPoITStEpyzErLw7c9ABHbysPzqamsEzImNrcKXAZ/KjGY6FUabIRHA69lg/LBvJKy51Zf8jaVf1x+Lp7jqSNTc6Ok/zyKzcuWyFr+b/oydTYL44Er9qGlQ0lIAg6wj2hy8DtVEwiB5+9DOwIrp1tlxy0+4RreBWwl3QHORv
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -262,80 +264,189 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 10, 2025 at 10:44:40AM +0800, Yafang Shao wrote:
-> The new BPF capability enables finer-grained THP policy decisions by
-> introducing separate handling for swap faults versus normal page faults.
+On Thu, Sep 11, 2025 at 10:42:26PM +0800, Lance Yang wrote:
 >
-> As highlighted by Barry:
 >
->   We’ve observed that swapping in large folios can lead to more
->   swap thrashing for some workloads- e.g. kernel build. Consequently,
->   some workloads might prefer swapping in smaller folios than those
->   allocated by alloc_anon_folio().
+> On 2025/9/11 22:02, Lorenzo Stoakes wrote:
+> > On Wed, Sep 10, 2025 at 08:42:37PM +0800, Lance Yang wrote:
+> > > Hey Yafang,
+> > >
+> > > On Wed, Sep 10, 2025 at 10:53 AM Yafang Shao <laoar.shao@gmail.com> wrote:
+> > > >
+> > > > This patch introduces a new BPF struct_ops called bpf_thp_ops for dynamic
+> > > > THP tuning. It includes a hook bpf_hook_thp_get_order(), allowing BPF
+> > > > programs to influence THP order selection based on factors such as:
+> > > > - Workload identity
+> > > >    For example, workloads running in specific containers or cgroups.
+> > > > - Allocation context
+> > > >    Whether the allocation occurs during a page fault, khugepaged, swap or
+> > > >    other paths.
+> > > > - VMA's memory advice settings
+> > > >    MADV_HUGEPAGE or MADV_NOHUGEPAGE
+> > > > - Memory pressure
+> > > >    PSI system data or associated cgroup PSI metrics
+> > > >
+> > > > The kernel API of this new BPF hook is as follows,
+> > > >
+> > > > /**
+> > > >   * @thp_order_fn_t: Get the suggested THP orders from a BPF program for allocation
+> > > >   * @vma: vm_area_struct associated with the THP allocation
+> > > >   * @vma_type: The VMA type, such as BPF_THP_VM_HUGEPAGE if VM_HUGEPAGE is set
+> > > >   *            BPF_THP_VM_NOHUGEPAGE if VM_NOHUGEPAGE is set, or BPF_THP_VM_NONE if
+> > > >   *            neither is set.
+> > > >   * @tva_type: TVA type for current @vma
+> > > >   * @orders: Bitmask of requested THP orders for this allocation
+> > > >   *          - PMD-mapped allocation if PMD_ORDER is set
+> > > >   *          - mTHP allocation otherwise
+> > > >   *
+> > > >   * Return: The suggested THP order from the BPF program for allocation. It will
+> > > >   *         not exceed the highest requested order in @orders. Return -1 to
+> > > >   *         indicate that the original requested @orders should remain unchanged.
+> > > >   */
+> > > > typedef int thp_order_fn_t(struct vm_area_struct *vma,
+> > > >                             enum bpf_thp_vma_type vma_type,
+> > > >                             enum tva_type tva_type,
+> > > >                             unsigned long orders);
+> > > >
+> > > > Only a single BPF program can be attached at any given time, though it can
+> > > > be dynamically updated to adjust the policy. The implementation supports
+> > > > anonymous THP, shmem THP, and mTHP, with future extensions planned for
+> > > > file-backed THP.
+> > > >
+> > > > This functionality is only active when system-wide THP is configured to
+> > > > madvise or always mode. It remains disabled in never mode. Additionally,
+> > > > if THP is explicitly disabled for a specific task via prctl(), this BPF
+> > > > functionality will also be unavailable for that task.
+> > > >
+> > > > This feature requires CONFIG_BPF_GET_THP_ORDER (marked EXPERIMENTAL) to be
+> > > > enabled. Note that this capability is currently unstable and may undergo
+> > > > significant changes—including potential removal—in future kernel versions.
+> > > >
+> > > > Suggested-by: David Hildenbrand <david@redhat.com>
+> > > > Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> > > > Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+> > > > ---
+> > > [...]
+> > > > diff --git a/mm/huge_memory_bpf.c b/mm/huge_memory_bpf.c
+> > > > new file mode 100644
+> > > > index 000000000000..525ee22ab598
+> > > > --- /dev/null
+> > > > +++ b/mm/huge_memory_bpf.c
+> > > > @@ -0,0 +1,243 @@
+> > > > +// SPDX-License-Identifier: GPL-2.0
+> > > > +/*
+> > > > + * BPF-based THP policy management
+> > > > + *
+> > > > + * Author: Yafang Shao <laoar.shao@gmail.com>
+> > > > + */
+> > > > +
+> > > > +#include <linux/bpf.h>
+> > > > +#include <linux/btf.h>
+> > > > +#include <linux/huge_mm.h>
+> > > > +#include <linux/khugepaged.h>
+> > > > +
+> > > > +enum bpf_thp_vma_type {
+> > > > +       BPF_THP_VM_NONE = 0,
+> > > > +       BPF_THP_VM_HUGEPAGE,    /* VM_HUGEPAGE */
+> > > > +       BPF_THP_VM_NOHUGEPAGE,  /* VM_NOHUGEPAGE */
+> > > > +};
+> > > > +
+> > > > +/**
+> > > > + * @thp_order_fn_t: Get the suggested THP orders from a BPF program for allocation
+> > > > + * @vma: vm_area_struct associated with the THP allocation
+> > > > + * @vma_type: The VMA type, such as BPF_THP_VM_HUGEPAGE if VM_HUGEPAGE is set
+> > > > + *            BPF_THP_VM_NOHUGEPAGE if VM_NOHUGEPAGE is set, or BPF_THP_VM_NONE if
+> > > > + *            neither is set.
+> > > > + * @tva_type: TVA type for current @vma
+> > > > + * @orders: Bitmask of requested THP orders for this allocation
+> > > > + *          - PMD-mapped allocation if PMD_ORDER is set
+> > > > + *          - mTHP allocation otherwise
+> > > > + *
+> > > > + * Return: The suggested THP order from the BPF program for allocation. It will
+> > > > + *         not exceed the highest requested order in @orders. Return -1 to
+> > > > + *         indicate that the original requested @orders should remain unchanged.
+> > >
+> > > A minor documentation nit: the comment says "Return -1 to indicate that the
+> > > original requested @orders should remain unchanged". It might be slightly
+> > > clearer to say "Return a negative value to fall back to the original
+> > > behavior". This would cover all error codes as well ;)
+> > >
+> > > > + */
+> > > > +typedef int thp_order_fn_t(struct vm_area_struct *vma,
+> > > > +                          enum bpf_thp_vma_type vma_type,
+> > > > +                          enum tva_type tva_type,
+> > > > +                          unsigned long orders);
+> > >
+> > > Sorry if I'm missing some context here since I haven't tracked the whole
+> > > series closely.
+> > >
+> > > Regarding the return value for thp_order_fn_t: right now it returns a
+> > > single int order. I was thinking, what if we let it return an unsigned
+> > > long bitmask of orders instead? This seems like it would be more flexible
+> > > down the road, especially if we get more mTHP sizes to choose from. It
+> > > would also make the API more consistent, as bpf_hook_thp_get_orders()
+> > > itself returns an unsigned long ;)
+> >
+> > I think that adds confusion - as in how an order might be chosen from
+> > those. Also we have _received_ a bitmap of available orders - and the intent
+> > here is to select _which one we should use_.
 >
-> While prtcl() could potentially be extended to leverage this new policy,
-> doing so would require modifications to the uAPI.
->
-> Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+> Yep. Makes sense to me ;)
 
-Other than nits, these seems fine, so:
+Thanks :)
 
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>
+> >
+> > And this is an experimental feature, behind a flag explicitly labelled as
+> > experimental (and thus subject to change) so if we found we needed to change
+> > things in the future we can.
+>
+> You're right, I didn't pay enough attention to the fact that this is
+> an experimental feature. So my suggestions were based on a lack of
+> context ...
 
-> Cc: Barry Song <21cnbao@gmail.com>
-> ---
->  include/linux/huge_mm.h | 3 ++-
->  mm/huge_memory.c        | 2 +-
->  mm/memory.c             | 2 +-
->  3 files changed, 4 insertions(+), 3 deletions(-)
->
-> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-> index f72a5fd04e4f..b9742453806f 100644
-> --- a/include/linux/huge_mm.h
-> +++ b/include/linux/huge_mm.h
-> @@ -97,9 +97,10 @@ extern struct kobj_attribute thpsize_shmem_enabled_attr;
->
->  enum tva_type {
->  	TVA_SMAPS,		/* Exposing "THPeligible:" in smaps. */
-> -	TVA_PAGEFAULT,		/* Serving a page fault. */
-> +	TVA_PAGEFAULT,		/* Serving a non-swap page fault. */
->  	TVA_KHUGEPAGED,		/* Khugepaged collapse. */
->  	TVA_FORCED_COLLAPSE,	/* Forced collapse (e.g. MADV_COLLAPSE). */
-> +	TVA_SWAP,		/* Serving a swap */
+It's fine, don't worry :) these are sensible suggestions - it to me highlights
+that we haven't been clear enough perhaps.
 
-Serving a swap what? :) I think TVA_SWAP_PAGEFAULT would be better here right?
-And 'serving a swap page fault'.
+>
+> >
+> > >
+> > > Also, for future extensions, it might be a good idea to add a reserved
+> > > flags argument to the thp_order_fn_t signature.
+> >
+> > We don't need to do anything like this, as we are behind an experimental flag
+> > and in no way guarantee that this will be used this way going forwards.
+> > >
+> > > For example thp_order_fn_t(..., unsigned long flags).
+> > >
+> > > This would give us aforward-compatible way to add new semantics later
+> > > without breaking the ABI and needing a v2. We could just require it to be
+> > > 0 for now.
+> >
+> > There is no ABI.
+> >
+> > I mean again to emphasise, this is an _experimental_ feature not to be relied
+> > upon in production.
+> >
+> > >
+> > > Thanks for the great work!
+> > > Lance
+> >
+> > Perhaps we need to put a 'EXPERIMENTAL_' prefix on the config flag too to really
+> > bring this home, as it's perhaps not all that clear :)
+>
+> No need for a 'EXPERIMENTAL_' prefix, it was just me missing
+> the background. Appreciate you clarifying this!
 
->  };
+Don't worry about it, but also it suggests that we probably need to be
+ultra-super clear to users in general. So I think an _EXPERIMENTAL suffix is
+probably pretty valid here just to _hammer home_ that - hey - we might break
+you! :)
+
 >
->  #define thp_vma_allowable_order(vma, vm_flags, type, order) \
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 26cedfcd7418..523153d21a41 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -103,7 +103,7 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
->  					 unsigned long orders)
->  {
->  	const bool smaps = type == TVA_SMAPS;
-> -	const bool in_pf = type == TVA_PAGEFAULT;
-> +	const bool in_pf = (type == TVA_PAGEFAULT || type == TVA_SWAP);
->  	const bool forced_collapse = type == TVA_FORCED_COLLAPSE;
->  	unsigned long supported_orders;
+> Cheers,
+> Lance
 >
-> diff --git a/mm/memory.c b/mm/memory.c
-> index d9de6c056179..d8819cac7930 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -4515,7 +4515,7 @@ static struct folio *alloc_swap_folio(struct vm_fault *vmf)
->  	 * Get a list of all the (large) orders below PMD_ORDER that are enabled
->  	 * and suitable for swapping THP.
->  	 */
-> -	orders = thp_vma_allowable_orders(vma, vma->vm_flags, TVA_PAGEFAULT,
-> +	orders = thp_vma_allowable_orders(vma, vma->vm_flags, TVA_SWAP,
->  					  BIT(PMD_ORDER) - 1);
->  	orders = thp_vma_suitable_orders(vma, vmf->address, orders);
->  	orders = thp_swap_suitable_orders(swp_offset(entry),
-> --
-> 2.47.3
->
+
+Cheers, Lorenzo
 
