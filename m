@@ -4,254 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 418C0CAC587
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 22:08:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B15B0CAC58E
+	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 22:12:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9F55C8E0009; Thu, 11 Sep 2025 18:08:03 -0400 (EDT)
+	id 14B938E000A; Thu, 11 Sep 2025 18:12:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A5DC8E0001; Thu, 11 Sep 2025 18:08:03 -0400 (EDT)
+	id 0FCD38E0001; Thu, 11 Sep 2025 18:12:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 81F7A8E0009; Thu, 11 Sep 2025 18:08:03 -0400 (EDT)
+	id 012338E000A; Thu, 11 Sep 2025 18:12:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B74D8E0001
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 18:08:03 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2D11511A737
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 22:08:03 +0000 (UTC)
-X-FDA: 83878358046.28.C8341C6
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 8A75E40008
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 22:07:59 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="LBRxTS/V";
-	spf=pass (imf01.hostedemail.com: domain of reinette.chatre@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=reinette.chatre@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757628479;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E14418E0001
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 18:12:07 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 830F11DF321
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 22:12:07 +0000 (UTC)
+X-FDA: 83878368294.22.0F8F632
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id D889940009
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 22:12:05 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UKOSrtqK;
+	spf=pass (imf17.hostedemail.com: domain of deller@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=deller@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1757628725;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5cNNf73/JRglblIRtVK/g6Tyl545PuASxqcWeEmDvWU=;
-	b=mNKCq5+nJE4E3zSL0sQFYROhlS2oZxQmHvRml466r0Da35SL1YeAY10a6LSk3GHNSMpcwg
-	zMy5oo6YJLZ1wfYX2UxRoydUCg+bBLA8qw1JdXfoXzc8limH831OaCwbLtdwAW/ZRZJhhH
-	plyfDt+Dzh56tn4jNHbi2jT+gDMI95A=
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="LBRxTS/V";
-	spf=pass (imf01.hostedemail.com: domain of reinette.chatre@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=reinette.chatre@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1757628479; a=rsa-sha256;
-	cv=fail;
-	b=mq0f1NODW3SiKwpdZzBAZ6l8hbZhm9jBGHl6QphK3PbjqxlmpiBo/OWULXw60UdqxDi3xw
-	W9STdCIXFghWxkKrX10JxErAabq60OkOo0x+HCPK8cy2DFY2aaXbmiUzFtClIo9DKK2hgK
-	SV5/Cr+uUCwMTUwcNCgr3Cx5Dl2qxXY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757628480; x=1789164480;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=WVMQo6mpQ/b+WqvKhu7x8+i1hPUZygZNl5VCKkqm9Gk=;
-  b=LBRxTS/V3Yz/DepLPoof3SpiTnzLDUPLbNvN/HSFZIleWgmI5NXNg+yT
-   AqVP4nM2Z27C/ziTEEK+4UmdeFrPv1oRn0Kekj42O6Ly7gede2PSfhY37
-   kblXavqzFBfWA88hE/Xe9F6JHkGvr6Mr5UlJqVTqqJYm57wwhb23BLJYJ
-   nHlEk1ErxHQdpMZl/HtZGiwO2LCEcwp2Wv7o3YMJ/55X0MlVMjIudfiVE
-   syKFWEvytmS44x5h6mgaYQim0GhhwuK72EFT1OeNFxIqsS3oG0vp4kgDM
-   8hOq4Z0PC1pXtjenk0sLbnJnKvJTVlqCuQFAGaF3bgxBBJ5KMUKOTACEH
-   Q==;
-X-CSE-ConnectionGUID: pylrZNQLSimk0C1JdQiViQ==
-X-CSE-MsgGUID: AQHVbvo2Sve+8a0TE5PmyA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11550"; a="60047657"
-X-IronPort-AV: E=Sophos;i="6.18,258,1751266800"; 
-   d="scan'208";a="60047657"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2025 15:07:58 -0700
-X-CSE-ConnectionGUID: U6lWyK6UTcmYMbAPExNOLQ==
-X-CSE-MsgGUID: v0NE2+oWSAC0gXSGJnwhTA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,258,1751266800"; 
-   d="scan'208";a="173375460"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2025 15:07:58 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Thu, 11 Sep 2025 15:07:57 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17 via Frontend Transport; Thu, 11 Sep 2025 15:07:57 -0700
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com (40.107.95.43) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Thu, 11 Sep 2025 15:07:55 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WFVtCAxN7HfqW8jh9OHyy/v+TCKQ4F+WiL9QjEczdFR0ynaq1dl+RJkHrj17fs58soc/ycyAykGYftCbFDCuznWMcqqKsl2zqIr9vW7IFbhrdl/hUGJcE81OM1RE35zyxN0OnUpvxwESLAfPAXZ2kXIV7Qo+g+Yepp78lBl4LeGgVbjadaOtZ6LNkpWP5i80YCVsMmQcapg/gApVLPPXwPknKmpkfmvLnYWpfrFNGNl06gsqkPa+yTR469oyxwHHglcfgHik21YKj4pLJYSh0Jg2FBemYqk1o53FdkUg2jL4tbeceU7m9Yzq2g5aEUU5dkOXBDFImmga1W1V8z9kLw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5cNNf73/JRglblIRtVK/g6Tyl545PuASxqcWeEmDvWU=;
- b=vIXrVNqQ4jMuBAud/KroaKhkzOxm+s30aFRdKklI7vfRe40mc7iONyn8KciKur7+8TgtlKOhu0MzmjtD9VzmFEZ/IvnNweq7uirPRMNSPl9Ig0VkUnfsuFk5wcBh6AIRsOx1+gryHUkW/kaiArKo5exI/30SicG2l0ncX9bVZke5ujR5Es+2R1iKndBp7nmg/WllwkX9wUmX+A/DnrWnMTO2C4K849grHO89JjWJlp6el2oG6HUmR7X9kAAks90eOrrpo9KwAJFAF4Los9Xh2YV4KUOHPA7GyqaLb2YYzFkS+PQWG601Tg72+w/58uV3S0Ld7E7L5T9q7FryKa0v5w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SJ2PR11MB7573.namprd11.prod.outlook.com (2603:10b6:a03:4d2::10)
- by SA2PR11MB5035.namprd11.prod.outlook.com (2603:10b6:806:116::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Thu, 11 Sep
- 2025 22:07:48 +0000
-Received: from SJ2PR11MB7573.namprd11.prod.outlook.com
- ([fe80::61a:aa57:1d81:a9cf]) by SJ2PR11MB7573.namprd11.prod.outlook.com
- ([fe80::61a:aa57:1d81:a9cf%4]) with mapi id 15.20.9094.021; Thu, 11 Sep 2025
- 22:07:48 +0000
-Message-ID: <f04792c6-f651-41f7-a960-56ca37894454@intel.com>
-Date: Thu, 11 Sep 2025 15:07:43 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 12/16] mm: update resctl to use mmap_prepare
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Andrew Morton
-	<akpm@linux-foundation.org>
-CC: Jonathan Corbet <corbet@lwn.net>, Matthew Wilcox <willy@infradead.org>,
-	Guo Ren <guoren@kernel.org>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger
-	<borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, "David S .
- Miller" <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>, "Arnd
- Bergmann" <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Dan Williams <dan.j.williams@intel.com>, Vishal Verma
-	<vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>, Nicolas Pitre
-	<nico@fluxnic.net>, Muchun Song <muchun.song@linux.dev>, Oscar Salvador
-	<osalvador@suse.de>, David Hildenbrand <david@redhat.com>, Konstantin Komarov
-	<almaz.alexandrovich@paragon-software.com>, Baoquan He <bhe@redhat.com>,
-	Vivek Goyal <vgoyal@redhat.com>, Dave Young <dyoung@redhat.com>, Tony Luck
-	<tony.luck@intel.com>, Dave Martin <Dave.Martin@arm.com>, James Morse
-	<james.morse@arm.com>, Alexander Viro <viro@zeniv.linux.org.uk>, "Christian
- Brauner" <brauner@kernel.org>, Jan Kara <jack@suse.cz>, "Liam R . Howlett"
-	<Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport
-	<rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
-	<mhocko@suse.com>, Hugh Dickins <hughd@google.com>, Baolin Wang
-	<baolin.wang@linux.alibaba.com>, Uladzislau Rezki <urezki@gmail.com>, "Dmitry
- Vyukov" <dvyukov@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, "Jann
- Horn" <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
-	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-fsdevel@vger.kernel.org>, <linux-csky@vger.kernel.org>,
-	<linux-mips@vger.kernel.org>, <linux-s390@vger.kernel.org>,
-	<sparclinux@vger.kernel.org>, <nvdimm@lists.linux.dev>,
-	<linux-cxl@vger.kernel.org>, <linux-mm@kvack.org>, <ntfs3@lists.linux.dev>,
-	<kexec@lists.infradead.org>, <kasan-dev@googlegroups.com>, Jason Gunthorpe
-	<jgg@nvidia.com>
-References: <cover.1757534913.git.lorenzo.stoakes@oracle.com>
- <f0bfba7672f5fb39dffeeed65c64900d65ba0124.1757534913.git.lorenzo.stoakes@oracle.com>
-From: Reinette Chatre <reinette.chatre@intel.com>
-Content-Language: en-US
-In-Reply-To: <f0bfba7672f5fb39dffeeed65c64900d65ba0124.1757534913.git.lorenzo.stoakes@oracle.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MW3PR05CA0004.namprd05.prod.outlook.com
- (2603:10b6:303:2b::9) To SJ2PR11MB7573.namprd11.prod.outlook.com
- (2603:10b6:a03:4d2::10)
+	bh=XWpJWV64GYdcAD/E/BiNmSu3qUiBBTsmA09VhnsQlGk=;
+	b=1zpnJ/aDDQTmNVJ8tAPfI+sfIufxUo7f0HmdhBM/2d1DP075aHtCxzRShQL1N4/UOhUbko
+	ipKtTDIOjsDVaA1rxP0r6rceV3tAdIsU1BeHsEUSGfzKOPlhBlWxICpKbDN4RSe5F5qE8V
+	BIK0dMzGhTjjfxGW6mdl1KwWRGEeG9I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757628725; a=rsa-sha256;
+	cv=none;
+	b=BhaFEvhy6vAjFmyf+Z/BKwfMe76qGJY/GKQifahFPxdknXbWZNHgNr4Ujk3MBnI0EG9MLc
+	gTZAwGMJ8k+RAuKhBqh8x2EoizAe2uPKsBtZAc/cZOIbmhwacsJUVpnpQ98e3s5nF7HwyX
+	YzlrgEdM+gGFW+A2LQzsNIXC+/hclCQ=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UKOSrtqK;
+	spf=pass (imf17.hostedemail.com: domain of deller@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=deller@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3755D601DC;
+	Thu, 11 Sep 2025 22:12:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24C6CC4CEF0;
+	Thu, 11 Sep 2025 22:12:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757628724;
+	bh=DeLh3i9NlJmc/TaFuy9SbAsEHHq0KJslJKPRhSgnwfo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UKOSrtqKQVZlMs9z6RnoiO9/kj9V+A1VDufGQhBGin6cryYHGL/O1aOqMXF6oTedS
+	 sN84d+io1JlNFB2WR8QI54FM8QBQ/VHw7p/P27Q2eKjxZq+cnxIHQo7MLHcshuzxSb
+	 Hsb/Fu9WaI01ggTmvYxCHPwvdrOM7wD9BPqsd6pXT5p5KpnpmoZ9HvT5ajYfZjD5jl
+	 yUgVi/BBU2LCg61hR1oOYCyb2V9LCWCMuPmoMsLFlqeUg+bD7+ssp6bzXF2+0skMcc
+	 Ouo0jKTC/WjXgm64Wsp2dt8HRkJBOTOUG7o6JhVDWkPnq7OyhLhoLx3EbHdDYtw5sg
+	 tJoFqPr+ek1xA==
+Date: Fri, 12 Sep 2025 00:12:00 +0200
+From: Helge Deller <deller@kernel.org>
+To: Toke =?iso-8859-15?Q?H=F8iland-J=F8rgensen?= <toke@redhat.com>,
+	David Hildenbrand <david@redhat.com>,
+	Linux Kernel Development <linux-kernel@vger.kernel.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	linux-parisc <linux-parisc@vger.kernel.org>
+Cc: Christoph Biedl <linux-kernel.bfrz@manchmal.in-ulm.de>,
+	Helge Deller <deller@gmx.de>
+Subject: boot failure because of inaccurate page_pool_page_is_pp() on 32-bit
+ kernels
+Message-ID: <aMNJMFa5fDalFmtn@p100>
+References: <5a004aef-9df1-4126-b167-1aae27d4240d@gmx.de>
+ <1756327287@msgid.manchmal.in-ulm.de>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2PR11MB7573:EE_|SA2PR11MB5035:EE_
-X-MS-Office365-Filtering-Correlation-Id: 319beb2c-694a-446d-cac7-08ddf17fa485
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014|7053199007;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?Zk04RzdPUEtuUFdCdXJaMk8vcG41bzNvL3hlNjBhaXVES0pyRGMvaWF5cjMw?=
- =?utf-8?B?RVZORnJvQ3V2Sm80YTJLamxsYWR1R01qT0RIR1hIdzVVM2xLUHZXaFoyYm9I?=
- =?utf-8?B?dENrMm9qTWNjTmNibU9ZTkowbThqRG1jclNRNXJ1YmV5aHpVV2F3MUp2d245?=
- =?utf-8?B?d2V6cWRLUkFTeDBMTGVmVWlkRUlieFovaW45NkpxNDh4cmtGYWVtTXNZektU?=
- =?utf-8?B?Z29HTGtUdVZGL3VvY0lmYWl0UW5yN1JTT0llYWYrU2FiUHhXejh4cVFRMXFZ?=
- =?utf-8?B?Qk1GNnRMTkNtaGhwcTNTRENwaEdnZ3AyQkFaUldoQitaL3BQL1Vpb3Fzd1BO?=
- =?utf-8?B?VUdTQTBLTEJEcVpsMkdsZkowemYyWkU2bUVXYk5HcC9IbStLMXNnUkNyQnpn?=
- =?utf-8?B?bXY4clptaUNldjBnOEd2cnNQTUYvckRZMlZ6Q1BjTW82d2VsVFZjZExGdTMv?=
- =?utf-8?B?YWN6MFl3ZkhMQlJsMUtaeWwvckhxL1ZNV3NCY0dUdmNBa0J0NWwwTUdTVTFB?=
- =?utf-8?B?YURFdUYxK1QxVzI3TTAyQng3Y0NWeUkvSlJTcHg1ZmpRZmlJeWNRMGMzWVM2?=
- =?utf-8?B?MDVFM1J5NXVRYWpkalhkUjlBVVQ4cXk1MUJ6S3V5Q3lBWWpaS3BBYnJYYS8w?=
- =?utf-8?B?enluK0JaQ1ErSHA5YkVDSzkrSVRpaDdodWtTaEtON1RNcXlBUHhqZThSS2dx?=
- =?utf-8?B?QitJQU82RTRsSmRuUmNqRW1Gdmo2RDRpMDZvVXk5Q09aL2JOcTUwa0dwODBi?=
- =?utf-8?B?UHVIMnJXRHgwRFFyU1BIb2twNDRQSGtjRGhTY3M0b3lkZWgzeWQ2Z2lsMmYz?=
- =?utf-8?B?T0hlbG5HMUdxV01pbjJqK25iV3d5SWRZN08rTE1yNEFCYiswUFhzbFhLUEpY?=
- =?utf-8?B?Tm5Ba0E0eWJOdjNSWjU5bzFFS0pRaGt5NU5raGhsNFVyWE5YUEZmOXBLSDdP?=
- =?utf-8?B?QkQwZjlTTnF4R3AyZ2RHMjNZS2IxOHZ6akp5di9acGtKaTJHdFVjcGY0VmNY?=
- =?utf-8?B?Rnk5SHI0T1drdlYyOG9FYWUzSlhLbW5uTWlyZlBMTHFKZ1Bta0ZrdVkwSFVt?=
- =?utf-8?B?VVU5SGZldlp4andUTUN6SjRpL2pwTkgrVjA1bTl3M0pzUm9JaUFacmVXYnU2?=
- =?utf-8?B?UmFEWGhvekF0NkVnaUtQR1hiczlEbXdWNzdVbEtiRENJRzJLaDVnREdKK0pj?=
- =?utf-8?B?OE1SaTlseDI1Und4RkxiTk1IME5KUXBqdVhHTGkrc2lFWkVIQ2JsRGRsVmFv?=
- =?utf-8?B?aDZseVJrSVJWcTU1VEx6S3hnUG0wVEJaaCtPdzRPcEJSU3BvMUVKanYzOWxK?=
- =?utf-8?B?QWt1aU5QT0FNNHY4U2VpSU5ZclFheUQrOXFSNzNXNGlqSUNGUlJ6MERiS1Fi?=
- =?utf-8?B?QUhGSWIyVzh2VTk1c2h1ZkpsNkdpeklMc1c0b3hyYmw4RDBmcTFvNjJoeWF3?=
- =?utf-8?B?ZlMvVlhGRlJvMHhGSHYvaGhkR3NhTEJ4Nlc2NVp3MS9TKzEwUTdrenpnb3lU?=
- =?utf-8?B?Ynhrci9FRHF6T3JldXJnbmxlQmZoZit4LzhuV2s0UDBzWjVLcnJOTzd2RXZo?=
- =?utf-8?B?RGlUdUNzQW1OWUVTa0t6S0tuWTdYVUtTcU1nWDNEdlVlaXVaZU84Zi94RU9I?=
- =?utf-8?B?SDNvZ0pkeHJBWVZGK25lblMvYzVneloxbzJqRDFHSzNiSnhBZm13U1dnbXhC?=
- =?utf-8?B?SXB5MUwyZWdIeDk3UlhwWkxVS2dYOFJuRlp0TlphL2djNG9QRkZkREkvSG5Q?=
- =?utf-8?B?YmllVWc0ZGJqS1ZBVitqWCtzSHE5V21Ub0JiaFlrR1pxS1lSbGV4ZVBRdWl0?=
- =?utf-8?B?aEpsN1g2MlBmUW5mMDN3TTc5M1UwSGtTdDk4ZlpxdkkxK3p0ZnNnQnowSGdJ?=
- =?utf-8?B?ZzhlRWZNNXA3SDZjVm9TbDQ1RGsxdkF6UWtnQVNSVnJnOU1vZ2RMUGh3M2d5?=
- =?utf-8?Q?AeK/eY4ohe0=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR11MB7573.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?MENpTWZGNnBaYU9Ka3U1VXYrWkxZTTNFVkE4c1Q4eDViZnYzZG1SL3dHZS92?=
- =?utf-8?B?Q0lMS2lpWUY2eXhtZXRTalA5SzBFQXU0bjRSZXJDenBEN0d3Z2Vra3J1WTZR?=
- =?utf-8?B?RlpLY2t2UDlrM3I4dGVVTDJ3R0Rrc2NINU1GbFNRL0FOcXBEUWRhQWpEU1lr?=
- =?utf-8?B?Z2lkUndBMmM2ZnhPelBDUDU4d09nUVRraUhZeEZXc0doVmRlSmhKdnN5RUp1?=
- =?utf-8?B?aGpBN1BocDFHSDhYVXhqTldmUVFZOUVJZ25DTzVvcnhTM01CdFdxeWlmZjRX?=
- =?utf-8?B?U2cvVFRvMW1wYXRHUHFrdXR6eEdZTGhLUHZ0YUNVZzlOMFBTSkJLUk9KKzlX?=
- =?utf-8?B?eW1CMDVZeC9FVHp4T1hXc0Q5ZmU5bjlEUVhQdE9MczJqRjZaM0xKSEg5QlBU?=
- =?utf-8?B?VDZKUFcyWjlWTUlIRVVacDhtVGR2UzY5cXRQbzRiZHJiRGl5eEdONlF4OUxP?=
- =?utf-8?B?K2wzK1EvWU1mNVRvejB4cXc3TFpXbEdrRHVKNGtaTzIreGRzZm9IZ1dlVElN?=
- =?utf-8?B?NlNndERuTzhHd1h1UkpUVWRNcGF3Q3F2VXhBcWdlYnRqcVFLMFlyakZyRmh4?=
- =?utf-8?B?bmNtbEFJVUsyWmxJdWt6R1hkZUhlWENtOHFHa2NaclVpaVNISlh4QlpXVjNO?=
- =?utf-8?B?dTBMRDgrZHA5VHovQUtob2MvQWp1MFpRTUVWSEhJWW1HODdubEtNbjVFN0V4?=
- =?utf-8?B?Ni91NmFLMHdxcDVHaVlLNmhlT1ZuZEVVdDNNWGN3MWkvc3BjbVJyWWdydEZl?=
- =?utf-8?B?N1FTWDhodGdSREYzQTkwbkFzdHd4ZGsyRjd3QzBYVDQzNTB4MzV6OVRyN2Jr?=
- =?utf-8?B?c01hL0YzR0RWcWg4alJ6WHdFc01pdkpnVUl3SnZ0WldtRXNLWW1KQTQ3UW5i?=
- =?utf-8?B?bW9aRDg3T1hra1BrZ2VBbWRzRU9VS0oyeDJneWNhMGhaQzlXQlhNbUJpeXBh?=
- =?utf-8?B?U0xLb1BoSHlUMUl3ZXlVdmRoeTZDYlNLNzA5M1I1UTVOMnlUUllUNDBPNnl1?=
- =?utf-8?B?ekEreFliUnA3OTNJREVYcXUvbW52TGVoYkI2YkN4Z3R4WGFidFRMazU4Yzdm?=
- =?utf-8?B?Wk1ZRnhISzJIbTNrc2wzbmYwODk2bXhVTXFEM3R1RnBFQmhGS3pHeDJYNVM1?=
- =?utf-8?B?eENpRExNcDU0N3ZNYnNRNUt4Z3BIdEhzaC9qMHNNdGFLYlEyTiszditqTU5Q?=
- =?utf-8?B?eWtwTDBEWnZFTHExV05XQ3o1VFBrZjR5L1B2cjVNZ2EzZUg4YU50WFpUTXgw?=
- =?utf-8?B?Rm1qc2phMUFQR0tDMDJ2bnFlaHJwN3ptOERTdGVKOFN0bC9aWnNscTlOM2s1?=
- =?utf-8?B?VzNBVGhpVlQ1QVJUaC9mZy8vaVJ5b08xYUE3ZWMrQkRlbUg1RE5SSi9jVnZ3?=
- =?utf-8?B?VHI1MVlHTytuV0RMVU9kMWlLVXdHZDh2OGhtRUFVQXlSN0JPM3dFK3ovK0du?=
- =?utf-8?B?ekFxQmpESlRrYUpBbzBzY3E4c1h0bGtxa1BrNUZBRGNYVnNBV0lGb3VyZzZv?=
- =?utf-8?B?aDlxLzFmTkJtRVJtSHJUREJvaW9sOEI4cEtnNHoxMXB2MWV2SW5wZFpZTnBG?=
- =?utf-8?B?b3ZJWEswdkdueTJkM1lHK0RXUXgrSmFnSUtuZUgxd25ENHRHbWN6ZzVzeEgy?=
- =?utf-8?B?bU1tL3VKZTN1NXZ3UjcxaWVzdkg1azFjZjVXZm9sajR2Qlg1cGRhTEYzNFI2?=
- =?utf-8?B?ZFkxTXFrL0lDMVJqL1BqU3Q5N2prN2lTOGVNT1RPelBGR2tLamlvWE94QjUz?=
- =?utf-8?B?QTlJd29VZ3JNWU02R1dpeXZzT1FPU29kV0xVYVJzQ0JZNEwwZVhRSVgrMUdr?=
- =?utf-8?B?RFZyMDVsbGtNRVVGdzN3TEpXMm1Wam1XbkhJajRoZzhUUzBaazVNM2FLMitt?=
- =?utf-8?B?SXFFaTBSMERYd1dQbExmc2ZhSEM0RWp1ZjVvMjdwa2RqSDVPM3JmK1pPUXVW?=
- =?utf-8?B?YVdONHJUbzdBRnFtUFNhTlJhWHNHTUptYlNYSVRENUF4NXpFbkZhTUF5S2ht?=
- =?utf-8?B?cTgzRE5yQWNpRnVTb245cVJRNmdDelFJSjVoMUlyWWVoTW83WnBucmpuWHdH?=
- =?utf-8?B?T01uUUFsRjNoODJwUzRydGROcU1DMUZ5RHJteWdFa0ZPY1dRUnlXSWVZZGwr?=
- =?utf-8?B?OTdSZC9WVWdqMk1nU2lhYXNoWjdOYnNXd3E2cUlVSU9veXk1SFQrYUwzdmpi?=
- =?utf-8?B?M2c9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 319beb2c-694a-446d-cac7-08ddf17fa485
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR11MB7573.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Sep 2025 22:07:48.1404
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: rO5jqT5bmqq3jlE63kAzh7ThfNpeBg8PqnLpYMv16VOydfIKeo9nuSGlCOTYP1Vn2szmpkXQZvG35yWfdCnDhtRdV2i0nmt/Db7iZC6ir3I=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB5035
-X-OriginatorOrg: intel.com
-X-Stat-Signature: wemgpfpxjwrf4eijrtbq3rqw8nktsma4
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1756327287@msgid.manchmal.in-ulm.de>
+X-Stat-Signature: sthx5idmsinmu61spxxakczetwj4g4sf
+X-Rspamd-Queue-Id: D889940009
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8A75E40008
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1757628479-316693
-X-HE-Meta: U2FsdGVkX1/0g7sBicslD3FDYgSnRhsvKl5JIVXMF+7jdOcx/pDVACRdBhAl79wNQei7lDYFT9+3+HSQ1hZyEBQQ2IV+7qS7SqN5Rco+clA/XRw27zt4r6tfAjEuwHfsGLjsz8Qne4OmBoGxK1RKHh+PmZflkCovc+C9YIWWuxKs4ebM45DJvasiDItCRMjysxCiHPywmoNzEiLL00WkYHI9ek7NXJX9MkLNR5gXl8s8uLhuiMImODAZupfv9AMeTBgAVQE4A5qic7MGiYnreuhfaZfH5GtmksnHArGOv+OpYrfFreiQDQx9Hn2e4+t93/EplbDows0BrIswm/Z2O+3zXeup0mQP+BiJVsnKad8xs3hHhKV+F54+wLQ3QnH9ZNLUdByVCfr1n2DqLnuC4VRuI720uF1rbCaIh3lTctYrK24g/KhQwMgjvFc6uEEyX+Tp8pcnqDWH3jNVggdtqpCet8BdoYjGV0EFu8II1F2qY1meTcdEv1kC3Vl8Ut9+PXS+oK74TQ1UMdl+e9EKYDQAg3EVcuKStlCXlCLXEwDl6zceVzWWUVjWsD92YOkShfPF4m5GOE5ArCol2U9zlHiLfAsrqJecaGAh8T+UbmqcTX+5ak6h9m5oVrIWj8hHUGIWj48eMyIBYszkAV7HvyfilVZqnYYs7K8RnaPLWpIZeJpmY7yCj1yBM1AJqh8C4eVlqcX0DaEuQBFqqyxLHFiFan44wNncYdYi3zb3o09Rbxv+9ISI2waGTkktyWSV1RJcLv1NuIDxD6/KJVQXZ8AOLTlNGL0WwbR16MUpvN1OnV1Q2ydY62pXk6+TmLXQqlZUsVHuDCqUB4JDz94mLoT/8V9WI1VkHq1pHzRGdISJCg2iQJwu5qYdRHsEayYwtDONc5CzlnX32CMvX89GfQ5aI3lbkqX+ctgxR/bAsO5eF9pYt7O/2uwq74d18Q6JUMOaObyz7qJ0TcsGw04
- M4d5cxCe
- cT4VVidoTYAdq6gmu6ebmh5RRSaTMhcTdnbkHWuaqopbaSxp9Wj6z7Q3S5i1N9CcIjyyVnqXS2/oPN0DSwVioDDWR2uHKVY+XfkHWM5Dt12+IlQccpGSwiDTnrZd8LVh6ajX4go73wC8kQu/Rt4EW04haL4LLwlkO0e+2twO6QtMXL1gFtqnTgWL1DEqL1Apme4eHuGtCUUheWt4YiUlHAaHZTrZxmTxHp2KDre/nCl0vKfz8JoPr58PPc7p9vty5N6ZI2pWRk+UPtEljzERkBrPlSJbtRtX5aR20UoSIpAmvzgU/kBazN+npXI53ghCIv6uhARSZZsMVCXdDTydfrnCCmWbprwoqL+9HlM3rpjbsxXO42o3r5lmPnb4tj7+CKr05YfG7bDSVD+FLQKm3V2KwEXzo1Z2e8WpDMIcpOpmCJ5YsQqtLPiZjNkdAUA3dCWkqx7bJafmhctrsRCbsjtNB1uY0/+6J5uLhvAJ9y1iXHk/wNhMJ6i5sp0URw/enJY8TistznSFSwNDsqvPH33ahGuXUxxiFj7oGCaytXIAraRYm4NVenZNy29QGd1faag8erRYnHJ684Os+yUX4ULQiWMqSsYa3SmFV3FU1K9KlmH4i2EsWy7XHh1ri3KQkWY9DXvRRS82EN/euIgJEZ8m/rl23Drnf8Thl
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1757628725-740264
+X-HE-Meta: U2FsdGVkX19OzbHPCyEzlj8FZPuVJ6k9UGdzdk6hLMIMvuKk1To5seg3JyVmIjDBsmAQiSaaAc1fCBQyhsIh6CPR9jH2Wr28mVtiD9j0FGceZ9ftBE7SZ1Uudkt6qo7d28s5vrPOSVmgrzNZEV7toyOH0Jbj8YTI73NHgS6rKhc/VvOfVOU8csd2g7lplvLL52L2Qqdd2C5pxOxfSB0XR4I32L5PnP2UWASr5MMVcy5kSP7O1gfUmKetConD49q+DKoNML/lDlHqQhmr26/dEi3K/s6pZeRS2ZVdlYra/At9rWKpTISKT4j+bbYT6/wsfLt9n6FPvsoRxDIG2jbx0a+ES07l4VMYfj7aImDTpzmXHEO7ryzBQYVAD0FSx67KYTMo/adVFXxhQlznsSJTv2d8rTd1zfFKY9UOYB3SMZEdFP7j3sIj7kpIDok6hI1K4Sgkm7gJ+765AEG/yIwWY4xjJMWxekIPdRuDj8Ulvm3NnK9YWbrm0yg90HeJrj3st1jhWU2hLgnfp0vYIMpmrD9vPFO6Aepb7nrfHnDS13Sk2vXNUl0drgehGi/L+N+h/Tpoe826LOe31bzq9gBVVUz0cTGGTH6AOYK5SWTSbenTiCBNtBMLMd8uSdY0N/5q4C3q3Cclnly+syBqei7bhKx15OG5X6/tZuK64gxcSg+uffIuupJwFDseDZvA9dfcA5CBJtI/c4HTpmW5zS/okhqmgsmDU7QYHUQd8R2oDIzm+yBTCnYYrk7MZvhRLvwc/nWr7XA3HqAtzdPbtQuhrHpMBGwuh/RLskmB4p5K8udBIfYkG6ZUYv5a294LVdm20c0euAW4CHX5BJHNDJM3p5Nok5eYnHhl80yT8XYnxFw1wUzMMJhnwzHE/oc/taVbT9ARtkilhSfjJ+n1Yh/0h1gJ8i9loUH8vSpVYu5AHr4Orxk8WPGfXKcCaXhmusr1msyT9kSRvlcqOwV+egU
+ zyi+wOkQ
+ 5zVoMKrBU1S/vIItobdz+UBBs7FcuEYm5E2ZUS3IFQURGTwqj72JYTrg6iTwU0Ttcux6a7j25UmDS3YPzZwpNJ/bdTMKvB3/bEIhAgjoAODkupZGxHlkrsIrQgCUH00kolU64PvSeZjOdeDZ/kzSil8CQgidHxIQVhw5aI4Nk95GeJLBmT162UywNECE5s3t31KLkKyCVHno9Ak+MYYHJADxS/T04rvNU3d/scJTQ1ApNBtizadcQ/3V4kmQR7Os15QAq//fGo1ylp0BsLq++7S4aVv/ay1+HudyIWXsbjMB7+qakAcH52WKxLUBWt2SmXdEdaN6s86rM6lCffgZAaKBY9ju6F1Clonya1zB5QHmxVboOas1+WvdNi7sB5Tb5Ur6N
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -260,22 +99,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Lorenzo,
+As reported earlier in this mail thread, all 32-bit Linux kernels since v6.16
+fail to boot on the parisc architecture like this:
 
-On 9/10/25 1:22 PM, Lorenzo Stoakes wrote:
-> Make use of the ability to specify a remap action within mmap_prepare to
-> update the resctl pseudo-lock to use mmap_prepare in favour of the
-> deprecated mmap hook.
-> 
-> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> ---
+ BUG: Bad page state in process swapper  pfn:000f7
+ page: refcount:0 mapcount:0 mapping:00000000 index:0x0 pfn:0xf7
+ flags: 0x0(zone=0)
+ raw: 00000000 118022c0 118022c0 00000000 00000000 00000000 ffffffff 00000000
+ raw: 00000000
+ page dumped because: page_pool leak
+ Modules linked in:
+ CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 6.15.0-rc1-32bit+ #2730 NONE
+ Hardware name: 9000/778/B160L
+ Backtrace:
+  [<106ece88>] bad_page+0x14c/0x17c
+  [<10406c50>] free_page_is_bad.part.0+0xd4/0xec
+  [<106ed180>] free_page_is_bad+0x80/0x88
+  [<106ef05c>] __free_pages_ok+0x374/0x508
+  [<1011d34c>] __free_pages_core+0x1f0/0x218
+  [<1011a2f0>] memblock_free_pages+0x68/0x94
+  [<10120324>] memblock_free_all+0x26c/0x310
+  [<1011a4d8>] mm_core_init+0x18c/0x208
+  [<10100e88>] start_kernel+0x4ec/0x7a0
+  [<101054d0>] start_parisc+0xb4/0xc4
 
-Thank you.
+git bisecting leads to this patch which triggers the crash:
 
-Acked-by: Reinette Chatre <reinette.chatre@intel.com>
+ commit ee62ce7a1d909ccba0399680a03c2dee83bcae95
+ Author: Toke Høiland-Jørgensen <toke@redhat.com>
+ Date:   Wed Apr 9 12:41:37 2025 +0200
+    page_pool: Track DMA-mapped pages and unmap them when destroying the pool
 
-This does not conflict with any of the resctrl changes currently
-being queued in tip tree for inclusion during next merge window.
+It turns out that the patch itself isn't wrong.
 
-Reinette
+But it's the culprit which leads to the kernel bug since it modifies
+PP_MAGIC_MASK for 32-bit kernels from:
+
+-#define PP_MAGIC_MASK ~0x3UL
++#define PP_MAGIC_MASK ~(PP_DMA_INDEX_MASK | 0x3UL)
+
+Function page_pool_page_is_pp() needs to unambiguously identify page pool
+pages (using PP_MAGIC_MASK), but since the patch now reduced the valid bits to
+check in PP_MAGIC_MASK from 0xFFFFFFFC to 0xc000007c, the remaining bits are
+not sufficient to unambiguously identify such pages any longer.
+
+Because of that, page_pool_page_is_pp() sometimes wrongly reports pages as
+page pool pages and as such triggers the kernel BUG as it believes it found a
+page pool leak.
+
+IMHO this is a generic 32-bit kernel issue, not just affecting parisc.
+
+Do you see any options other than:
+a) revert the patch (ee62ce7a1d90), or:
+b) return false in page_pool_page_is_pp() when !defined(CONFIG_64BIT),
+   which means to effectively disable the page pool page test on 32bit
+   machines
+
+Helge
 
