@@ -4,40 +4,30 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95304CAC582
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 09:17:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46D50CA101F
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 09:17:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F0C0D6B000D; Fri, 12 Sep 2025 05:17:46 -0400 (EDT)
+	id 7E0746B000E; Fri, 12 Sep 2025 05:17:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE3426B000E; Fri, 12 Sep 2025 05:17:46 -0400 (EDT)
+	id 795076B0010; Fri, 12 Sep 2025 05:17:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DABF56B0010; Fri, 12 Sep 2025 05:17:46 -0400 (EDT)
+	id 51FD26B0011; Fri, 12 Sep 2025 05:17:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C98F86B000D
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 05:17:46 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 77D1686F03
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 430386B000E
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 05:17:47 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id EDB645AE58
 	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 09:17:46 +0000 (UTC)
-X-FDA: 83880045732.12.2A2ADBD
-Received: from fra-out-002.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-002.esa.eu-central-1.outbound.mail-perimeter.amazon.com [3.65.3.180])
-	by imf20.hostedemail.com (Postfix) with ESMTP id E9B911C0005
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 09:17:43 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=oS1A9aQA;
-	dmarc=pass (policy=quarantine) header.from=amazon.co.uk;
-	spf=pass (imf20.hostedemail.com: domain of "prvs=343957b79=roypat@amazon.co.uk" designates 3.65.3.180 as permitted sender) smtp.mailfrom="prvs=343957b79=roypat@amazon.co.uk"
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757668664; a=rsa-sha256;
-	cv=none;
-	b=N0uTD/wClJBKhN3AtS78MGT3Ny9v9vGosHjlTvQXOSjvo/mjd6UWmAQHvFct3UQTME3nwk
-	imDKmco61iR8GoJIjrJMZnwMs118yb6T3/hZ6oLAVvnbU/UPlQ9t/hzvwyh11mduk4GsgX
-	hHaKJs3jrxxARIXAw4va7VtZUivp2L4=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=oS1A9aQA;
-	dmarc=pass (policy=quarantine) header.from=amazon.co.uk;
-	spf=pass (imf20.hostedemail.com: domain of "prvs=343957b79=roypat@amazon.co.uk" designates 3.65.3.180 as permitted sender) smtp.mailfrom="prvs=343957b79=roypat@amazon.co.uk"
+X-FDA: 83880045732.21.78EE186
+Received: from fra-out-001.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-001.esa.eu-central-1.outbound.mail-perimeter.amazon.com [18.156.205.64])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 9B4D1180006
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 09:17:44 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=OZ7xmStx;
+	spf=pass (imf16.hostedemail.com: domain of "prvs=343957b79=roypat@amazon.co.uk" designates 18.156.205.64 as permitted sender) smtp.mailfrom="prvs=343957b79=roypat@amazon.co.uk";
+	dmarc=pass (policy=quarantine) header.from=amazon.co.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1757668664;
 	h=from:from:sender:reply-to:subject:subject:date:date:
@@ -45,49 +35,59 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L6MGuHLofg/UQ6j3od6DFBlP6h40d9oLh3k2QL5DRKE=;
-	b=6BW5INfVQWKptN2bDzMt5eLlp+hHR16PX24Mg8/diChajhR+CgY8JHU3UHD4pKj+aoZW+t
-	aAwddI1QzRlVAutnG53VzrfE8n7hTY0yDZv6WENcCkSCTYrCKregpqQ3EH/P4lqPMRtgiA
-	McNfPKyohME+5AuHnFFGHKXMq2qgA0c=
+	bh=nAXTWOycHUS9oQq/r+tGcFhviHWk3dwfE1BhY62JZQI=;
+	b=3eQ4WBmpGruM+ouSxo77BKqVp/VLKRpePfONbrPTgntk4I/+jb5CMMRJC4RAgQIMvcRQzP
+	XwOtJ+ALxAkouBRd2KNRxknV2em1eAW3/hftxy6atPzeeVIEK+ThVDw9F4HY26rQjMBli5
+	L2Zo0bAaX0Rxz4AfA+gcHxAcBztdGOo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757668664; a=rsa-sha256;
+	cv=none;
+	b=8IoTivxv9g15GvqXSbnbM+qjPun4d2K+4UtZBJY8DOTxqdTQAygEX7fMEfGJkU0p13Qy+M
+	poPYEJt8ybYGk85dLwUKMcLfLHg5kPiKyOSNWWj1NMiIWfRkactYeoMfwwHTB+PR56MVdF
+	oo587GUsT/RhNLUoM8mDbcD/XyY5MDM=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=OZ7xmStx;
+	spf=pass (imf16.hostedemail.com: domain of "prvs=343957b79=roypat@amazon.co.uk" designates 18.156.205.64 as permitted sender) smtp.mailfrom="prvs=343957b79=roypat@amazon.co.uk";
+	dmarc=pass (policy=quarantine) header.from=amazon.co.uk
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
   s=amazoncorp2; t=1757668664; x=1789204664;
   h=from:cc:subject:date:message-id:references:in-reply-to:
    content-transfer-encoding:mime-version;
-  bh=L6MGuHLofg/UQ6j3od6DFBlP6h40d9oLh3k2QL5DRKE=;
-  b=oS1A9aQA0s5qXdEwYS2xf2esNE+/UOK2uL3UPIQ8GhY89soSISfKlEN9
-   74pQWK/FXM0IUnTKvQnh/U1GK5+eoxCc59HvQ5CaEX7zAbJORBCidGsTX
-   bmCMLe2zyROrGYTBzuPP2Lx12AG0CBCPpRJGiFHeIZMngeE9RjxJ35J3+
-   x4M68qb7kPwFo+gLijQ1PQYNjaLnh6bPm45L4W6WvJV0YtgsXC+0aF9w5
-   zCjzapJ7Uhjbgn1vpyTNUioOK+3lHJzGzXz8QAWat/zP4yM057Hww8Xmm
-   T/UPws2sppOb8tmuAOWGbCzDwtJPusTMFhx3Nlcg+4T0YEIc4WMdz3fp8
+  bh=nAXTWOycHUS9oQq/r+tGcFhviHWk3dwfE1BhY62JZQI=;
+  b=OZ7xmStx4Ot/QUWvdPWSEDqdkMvqQD0FVqfNzrIVgXg37siWGqcFmOUP
+   dSKDzInNsOZ29H5WGuuL2Mwcng+6TglH4RTTk0r78i9qE6x+2aYp6KqG7
+   nYvSZOuucNXBIXsSrc/QQ/BhJQNO72pjDY4GlYdAZutAAbdA5Zbxo24Zf
+   Jjip83bx0JJJ76OmLKaRDJaXYFtIDGmh/V1pUOdZLrschiNeZwI/L78NJ
+   gUsgSUZTmErBDtXlM+ZHllGHDS2HFVEX/d+fvmo/aC6SkGnL/UOODZOXB
+   16pslmUdGPupZExJ4DJP29wMs1oHNCziSUhwnUgAhw/Lii9NFfHQ0JPzF
    w==;
-X-CSE-ConnectionGUID: cI7j6VGMR7Gv8uvIQ36e9A==
-X-CSE-MsgGUID: MCGMwWEZT+SLHHcXUqXwxg==
+X-CSE-ConnectionGUID: j4Efto7WShqD4fI79HucAg==
+X-CSE-MsgGUID: 6DNTX8jxTMubfNopILf8Eg==
 X-IronPort-AV: E=Sophos;i="6.18,259,1751241600"; 
-   d="scan'208";a="2009525"
+   d="scan'208";a="2004634"
 Received: from ip-10-6-6-97.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.6.97])
-  by internal-fra-out-002.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2025 09:17:33 +0000
-Received: from EX19MTAEUC002.ant.amazon.com [54.240.197.228:12545]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.20.211:2525] with esmtp (Farcaster)
- id 01a2f483-7280-4d83-8886-4614fd54f9f9; Fri, 12 Sep 2025 09:17:33 +0000 (UTC)
-X-Farcaster-Flow-ID: 01a2f483-7280-4d83-8886-4614fd54f9f9
-Received: from EX19D022EUA004.ant.amazon.com (10.252.50.82) by
- EX19MTAEUC002.ant.amazon.com (10.252.51.181) with Microsoft SMTP Server
+  by internal-fra-out-001.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2025 09:17:34 +0000
+Received: from EX19MTAEUA002.ant.amazon.com [54.240.197.232:6318]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.11.107:2525] with esmtp (Farcaster)
+ id a91e1d85-e397-46af-94b1-48a53ba9e43e; Fri, 12 Sep 2025 09:17:34 +0000 (UTC)
+X-Farcaster-Flow-ID: a91e1d85-e397-46af-94b1-48a53ba9e43e
+Received: from EX19D015EUB001.ant.amazon.com (10.252.51.114) by
+ EX19MTAEUA002.ant.amazon.com (10.252.50.126) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Fri, 12 Sep 2025 09:17:31 +0000
+ Fri, 12 Sep 2025 09:17:33 +0000
 Received: from EX19D015EUB004.ant.amazon.com (10.252.51.13) by
- EX19D022EUA004.ant.amazon.com (10.252.50.82) with Microsoft SMTP Server
+ EX19D015EUB001.ant.amazon.com (10.252.51.114) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Fri, 12 Sep 2025 09:17:31 +0000
+ Fri, 12 Sep 2025 09:17:33 +0000
 Received: from EX19D015EUB004.ant.amazon.com ([fe80::2dc9:7aa9:9cd3:fc8a]) by
  EX19D015EUB004.ant.amazon.com ([fe80::2dc9:7aa9:9cd3:fc8a%3]) with mapi id
- 15.02.2562.020; Fri, 12 Sep 2025 09:17:31 +0000
+ 15.02.2562.020; Fri, 12 Sep 2025 09:17:33 +0000
 From: "Roy, Patrick" <roypat@amazon.co.uk>
 CC: "Thomson, Jack" <jackabt@amazon.co.uk>, "Kalyazin, Nikita"
 	<kalyazin@amazon.co.uk>, "Cali, Marco" <xmarcalx@amazon.co.uk>,
-	"derekmn@amazon.co.uk" <derekmn@amazon.co.uk>, Elliot Berman
-	<quic_eberman@quicinc.com>, "willy@infradead.org" <willy@infradead.org>,
+	"derekmn@amazon.co.uk" <derekmn@amazon.co.uk>, "Roy, Patrick"
+	<roypat@amazon.co.uk>, "willy@infradead.org" <willy@infradead.org>,
 	"corbet@lwn.net" <corbet@lwn.net>, "pbonzini@redhat.com"
 	<pbonzini@redhat.com>, "maz@kernel.org" <maz@kernel.org>,
 	"oliver.upton@linux.dev" <oliver.upton@linux.dev>, "joey.gouly@arm.com"
@@ -146,15 +146,15 @@ CC: "Thomson, Jack" <jackabt@amazon.co.uk>, "Kalyazin, Nikita"
 	<linux-nfs@vger.kernel.org>, "devel@lists.orangefs.org"
 	<devel@lists.orangefs.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
 	"bpf@vger.kernel.org" <bpf@vger.kernel.org>,
-	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, "Roy,
- Patrick" <roypat@amazon.co.uk>
-Subject: [PATCH v6 01/11] filemap: Pass address_space mapping to
- ->free_folio()
-Thread-Topic: [PATCH v6 01/11] filemap: Pass address_space mapping to
- ->free_folio()
-Thread-Index: AQHcI8YRV4VfKNensEyd8J0XmS1q6g==
-Date: Fri, 12 Sep 2025 09:17:31 +0000
-Message-ID: <20250912091708.17502-2-roypat@amazon.co.uk>
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, "Fuad
+ Tabba" <tabba@google.com>
+Subject: [PATCH v6 02/11] arch: export set_direct_map_valid_noflush to KVM
+ module
+Thread-Topic: [PATCH v6 02/11] arch: export set_direct_map_valid_noflush to
+ KVM module
+Thread-Index: AQHcI8YSgiTpMeKXGkS2hhvLGeEJDA==
+Date: Fri, 12 Sep 2025 09:17:32 +0000
+Message-ID: <20250912091708.17502-3-roypat@amazon.co.uk>
 References: <20250912091708.17502-1-roypat@amazon.co.uk>
 In-Reply-To: <20250912091708.17502-1-roypat@amazon.co.uk>
 Accept-Language: en-US
@@ -165,14 +165,14 @@ x-originating-ip: [172.19.88.180]
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E9B911C0005
-X-Stat-Signature: qiq139nar5zonx5rbpx3a6ndhxk5wmpe
+X-Rspamd-Queue-Id: 9B4D1180006
+X-Stat-Signature: pkfpuyeemmjxem73o9kjaxud8igypi8f
 X-Rspam-User: 
-X-HE-Tag: 1757668663-210491
-X-HE-Meta: U2FsdGVkX18GDeCSk/gzhjHDQ9B0yIOIBYLIMG71fSSjn6FP4SISjdwrNnrFnmcFD4vAiH9eYPa9RWfp5n9qA/J3/SLYtb56LKFPgT8kt7fvBIPMI3Ij8u/Y+NFhK1ecVopbeVhDsuitFruInhJk02HEL7rJRW2Y3J1HKt5qQolrhFS4Rqgn37hITHGIjY6MVS1hHVWeSsz+JMx3rNEBKV60MKjMkbbEySRp4HU1UlueASkKmG8HroRaTwqo9CrrlX/yrTqkaP917ZsmPTWVFAVnlE0VJrTCxfjn+cKZwqFOCS9wH7hrCcyGq8ThWpkVS/wfjw2134GJBrl4Qzi5/ZRxgltppt7xDXpJxjiFOnH/o8ne8u3KdlRKi0fTjuVrR8fd29mPJnwhPbzFtDi6Tb0m7DjEPFnAnYcS9NqH7jLG42DxagPRiSoz0BpB2gHfr2bV7IzaTbFll/vM+09UtUgmKNYu+JMhtCWtbUaPeMmF8JQOj1KnuDR5G/N2hkF9694fuZoJjcMHxXxFo+pxz+5qUwFoYaRszO5hOlufl24zoXS6SDA0HlC+59fJO62zV9Ul67PrYdCvwVjSHK0H3/0m9VS6/8X8shFHbLRg2Ip0qfQKH6hd0l9YpmyXELp3ZUXNCQPsZHehnAGYZOWhuGpX6WO7e/39iM3E1OHqLDR6H/FKuqhcd2lh2XozU8AgCCPaqrzLDDDlaEPnhByf6Mv8eB5XsOwM7oo5kkPTAYu4fBX1TsEaLLLVcHr3p8RwC7KmWCTsoMYUtsEXngLrdufwPwjFOVZLe84AMWfI8WNMtp3fMwZrCOef9OSjsQdPwFEj+Q/nlb4lDze6OTGIu7ehRPhWOoKkPI649ef29OxyideSj+UJv/odgrsJGQrUnjxCsammjY8/OtplgM2Rxju0kmo0oifmy1SMJTInsHssypNQ317rmR02y3P80PVe2M9hIHRR8hee8r0dSlQ
- Ymat+pKV
- +miOF6QKEUmyGeJvoUCYKOZufavuhvxcHncoLevA9fQ+763xewSPj8M49kAlOe9tBNzGuUGE+UN0UOl/SaP3zPzvvsfSgT2Z/fCgR0MmIdQl98eSkhNv2VBSxSkUA5mGqTei9DcZPGWvYtH4yEzWRVMTNLjqqU/gbuExCCNxjdVGaGqQJi7gwUfoQ2HybZANdCyeGnCGMqu9kAr7XreCVvGrIUD1KlWFF43G8ohZ63fFrhEMPjsZyIOQMovUyFMoxMKXF+qYA4IFCKeSRu0CgJ9/wEhVBYhdYLvbvocG+2xZE5MoUNvXdJha3VOszU1Wu5ciN7uHd0pRZ5vR4mNQy0ARxjhfy563QXj5owpG+D62cF19GCPrg7ZXdzQSRN1oOWJh9s/sX6pO2kCNlk7lBsDE3ZFY8g6na90unSvtEENJCNSpClkBmLclrbUOP66eZnrkhT4FWrSHkrIgZGmwqIZANutw+bNGeq3ZHceyJvF42/Vvot6Ue1vpLXtbPe1Qtu8K9bItfkNRxC6iKuaysxGWpYQ8Ozh/5wJvAujl+7aLsxeisnk5UbAyHMssZSiwI1U+OwhXiPTX9eHrSpomAvBLosNJAAFqpLCwu5QHuBf9cyrZeaF1MZMbcCsSq9lWHz0zAQ0JwabgRkRuhQu9E1cOnDuVT1VK3k5LLN8/T2Dgfd4zRhOFhoxcjn9yrNlvxoMscDdVPZCzo6BLzLAvwH5wkLxh0VeQiHD6V5MZ+Tw3/KrqbpEMS9R1eTlH8H2Jy8TwtPHp4Fs7QsCp4JOpQ61Fv+aia0L5KWj1W8A50JJs5qLNbYXIIASRnvF4XeJ44HmlkCpiICsq/6jETPk2103pSEIf9MHQsMoyetnTathFetXehmcBPXTo1eCjdRwiLmjhEDFIAU2P5ULPFFAM8eYmWNSUxXEcX8V4RNeChXUWUQJTYQE3wv+ui17DUYBSPbVnsGK0mzcJBp4E=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1757668664-473401
+X-HE-Meta: U2FsdGVkX18Y3KLkq5YWAQ41SnP6/J56Z4qK0oCB7eygVQ2qm49EBh1nibSIUeTEuxSa3bcd2ScbBAy/VIjv4tzd1tadxNCEHAZzJJ0uLoqSSuEAVGAYdcLiRB7R+DnLPdhakcWB0S5m+SaI0Q+0mLcdsCnpAt4rgwQdBLzC6GHFfhLmvmus7vmMjaZoHRDUHDx2cyAOLAvNNchCfwWIiQELNGEKudKTIIHuTjJM1cLBL7NyuRS07uG23xSnRNqroltb2BJgciL6RYn4d6wSOAtzJhvJaHGo6IUkzfVa9JCrCrUj7BZ8IeeWoy6k/UNXWf5PXf7JZNipWCZgurxEAD8jycHsU4IuXg9B4lJqk5Z9iSMuoGsvu8vqeB78t3zRx0jGoEOG+b0Ib8oJ2zHV3KX1FBEDRTHm9afMJWkDyRRSQeNS3U/6XUgM6aHjjmn9XNhDQc2jyJb9vsaZyX8TUL7HzGODpyxX01ZIHd9VOSytqeCZbJ+/R+JetcEF3OnGax8jBeXr35AcLW7uHRsL8WIZs0GjVCyEEmE0k33ERR2/GTehrAFbWY6jB/fGDudfLlFDGH/xRZl1IIQzchBMpTmnBflJSeyOfwNEPIU8hE8TpOoXIQNpPmNy8avPqSL+YB6VxNMa9igqIZTMlp7ZaZ2NCsV/i6gpEHg9XGQ2Ffl78iDhU5NIY6MuCTWOpdmfmiaEgJ9x05HMGjZ4MpDd0gt0XTHotrIlWiJKYNzoWxtsikgM+Q7MHsmZ7HbAprIv65k2LSudTGbWuh0qBuNUZkP2FzcyDP8NZk5qYkuVlhex9ugtQfNcHt2RXFaGRWNujYyzogi10PaPHg41D817qtY58ZG5bK1+3kAXM1/Woyu5XG8rv8ZPU2hAwffhXuWIIQQ/3yL6YHmQBpSq3eAiD5ke5RKD+9D6dOx6TJyTCMpqHZzi32i4obShgopgFtg73CYtxCr5I/jkjc+qS29
+ 6VBpWvNs
+ QgIi8lDWPFPROPS5f6hjlfr/JwLeM5ieUWhV4USHjhDmfXtuqplvGYBxMxz9leG4WfVTQ6eKXZUEmrBf3K9Sxnshq7JMEPs4wOIaCvbIXV5je/puovqferkPR0B73uj9pqtE8bXeRZAXvD0s4F1p9AbOwXlisO/j7zsOyZRsUEJ77TvLIwQ6mWcs5boeADOeIqYe9pk6BcCdyUaBbc0fguWGUOGQJvUMqV561c0xqSr3HoQcPAwU7r6wZqjlpuA6BnHabE5Mf1c1+bkCgqhKOJbfizXu2OHR0duslRwN1RSZH82Ftkrr6XVmaIyJtT+6T0Kq9kcJ1D7SwSszdMwHjPABb1vdxDr6fGgUsSD3kCq5ySeLvHtM4BugHYDlAAI+HAaPPvk0s/qqVwH+8OYJsHR/1Vd1bjyk80I35xqEAho2RzkWEhQjV4gE9KqXCdC/56COKyXnM1+3C+9TK7Ii0U9a2Kq1xtVcrUdHgaeAqSq6LJhbAUvvUxPm0FrJqCLPoeZfsS6ymnqjECGRqsInBBCmwa1lmaDTE8KTdwqYDpoaYgl4UAKdWAi/mX7mt/z023b63d0JFBXSA9bCnhc2p1npK3h0BHk9CVtyS0EVaU8zpwGZpRo1YKUSPp7kmeFs3Slwwpjz6LY4bMM0u1qf5x0FOblWxwr34WGApDMOBaJ7X1h7Qta6HBBtPUf2pgTrtk8At8sVPlCoonnWOPP8EYy98QlPMAlmosGDxBNEBPcHzTtDaP3T/uoHF1QCR7vqTBTYjGiXx0bbroRIecrF2DBU8t0JW8DLqoDLZ867Zuz0R5h2Os6FaBBlcFy1c8i/50B//6H/NKEFwLBPLpHPUvzWTuT0G4s+yAQ77UiJa1ZqeL1kJSbFeuRoJFaChpemJiejW
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -181,231 +181,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Elliot Berman <quic_eberman@quicinc.com>=0A=
+Use the new per-module export functionality to allow KVM (and only KVM)=0A=
+access to set_direct_map_valid_noflush(). This allows guest_memfd to=0A=
+remove its memory from the direct map, even if KVM is built as a module.=0A=
 =0A=
-When guest_memfd removes memory from the host kernel's direct map,=0A=
-direct map entries must be restored before the memory is freed again. To=0A=
-do so, ->free_folio() needs to know whether a gmem folio was direct map=0A=
-removed in the first place though. While possible to keep track of this=0A=
-information on each individual folio (e.g. via page flags), direct map=0A=
-removal is an all-or-nothing property of the entire guest_memfd, so it=0A=
-is less error prone to just check the flag stored in the gmem inode's=0A=
-private data.  However, by the time ->free_folio() is called,=0A=
-folio->mapping might be cleared. To still allow access to the address=0A=
-space from which the folio was just removed, pass it in as an additional=0A=
-argument to ->free_folio, as the mapping is well-known to all callers.=0A=
+Direct map removal gives guest_memfd the same protection that=0A=
+memfd_secret enjoys, such as hardening against Spectre-like attacks=0A=
+through in-kernel gadgets.=0A=
 =0A=
-Link: https://lore.kernel.org/all/15f665b4-2d33-41ca-ac50-fafe24ade32f@redh=
-at.com/=0A=
-Suggested-by: David Hildenbrand <david@redhat.com>=0A=
-Acked-by: David Hildenbrand <david@redhat.com>=0A=
-Signed-off-by: Elliot Berman <quic_eberman@quicinc.com>=0A=
-[patrick: rewrite shortlog for new usecase]=0A=
+Reviewed-by: Fuad Tabba <tabba@google.com>=0A=
 Signed-off-by: Patrick Roy <roypat@amazon.co.uk>=0A=
 ---=0A=
- Documentation/filesystems/locking.rst |  2 +-=0A=
- fs/nfs/dir.c                          | 11 ++++++-----=0A=
- fs/orangefs/inode.c                   |  3 ++-=0A=
- include/linux/fs.h                    |  2 +-=0A=
- mm/filemap.c                          |  9 +++++----=0A=
- mm/secretmem.c                        |  3 ++-=0A=
- mm/vmscan.c                           |  4 ++--=0A=
- virt/kvm/guest_memfd.c                |  3 ++-=0A=
- 8 files changed, 21 insertions(+), 16 deletions(-)=0A=
+ arch/arm64/mm/pageattr.c     | 1 +=0A=
+ arch/loongarch/mm/pageattr.c | 1 +=0A=
+ arch/riscv/mm/pageattr.c     | 1 +=0A=
+ arch/s390/mm/pageattr.c      | 1 +=0A=
+ arch/x86/mm/pat/set_memory.c | 1 +=0A=
+ 5 files changed, 5 insertions(+)=0A=
 =0A=
-diff --git a/Documentation/filesystems/locking.rst b/Documentation/filesyst=
-ems/locking.rst=0A=
-index aa287ccdac2f..74c97287ec40 100644=0A=
---- a/Documentation/filesystems/locking.rst=0A=
-+++ b/Documentation/filesystems/locking.rst=0A=
-@@ -262,7 +262,7 @@ prototypes::=0A=
- 	sector_t (*bmap)(struct address_space *, sector_t);=0A=
- 	void (*invalidate_folio) (struct folio *, size_t start, size_t len);=0A=
- 	bool (*release_folio)(struct folio *, gfp_t);=0A=
--	void (*free_folio)(struct folio *);=0A=
-+	void (*free_folio)(struct address_space *, struct folio *);=0A=
- 	int (*direct_IO)(struct kiocb *, struct iov_iter *iter);=0A=
- 	int (*migrate_folio)(struct address_space *, struct folio *dst,=0A=
- 			struct folio *src, enum migrate_mode);=0A=
-diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c=0A=
-index d81217923936..644bd54e052c 100644=0A=
---- a/fs/nfs/dir.c=0A=
-+++ b/fs/nfs/dir.c=0A=
-@@ -55,7 +55,7 @@ static int nfs_closedir(struct inode *, struct file *);=
-=0A=
- static int nfs_readdir(struct file *, struct dir_context *);=0A=
- static int nfs_fsync_dir(struct file *, loff_t, loff_t, int);=0A=
- static loff_t nfs_llseek_dir(struct file *, loff_t, int);=0A=
--static void nfs_readdir_clear_array(struct folio *);=0A=
-+static void nfs_readdir_clear_array(struct address_space *, struct folio *=
-);=0A=
- static int nfs_do_create(struct inode *dir, struct dentry *dentry,=0A=
- 			 umode_t mode, int open_flags);=0A=
+diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c=0A=
+index 04d4a8f676db..4f3cddfab9b0 100644=0A=
+--- a/arch/arm64/mm/pageattr.c=0A=
++++ b/arch/arm64/mm/pageattr.c=0A=
+@@ -291,6 +291,7 @@ int set_direct_map_valid_noflush(struct page *page, uns=
+igned nr, bool valid)=0A=
  =0A=
-@@ -218,7 +218,8 @@ static void nfs_readdir_folio_init_array(struct folio *=
-folio, u64 last_cookie,=0A=
+ 	return set_memory_valid(addr, nr, valid);=0A=
+ }=0A=
++EXPORT_SYMBOL_FOR_MODULES(set_direct_map_valid_noflush, "kvm");=0A=
+ =0A=
+ #ifdef CONFIG_DEBUG_PAGEALLOC=0A=
  /*=0A=
-  * we are freeing strings created by nfs_add_to_readdir_array()=0A=
-  */=0A=
--static void nfs_readdir_clear_array(struct folio *folio)=0A=
-+static void nfs_readdir_clear_array(struct address_space *mapping,=0A=
-+				    struct folio *folio)=0A=
- {=0A=
- 	struct nfs_cache_array *array;=0A=
- 	unsigned int i;=0A=
-@@ -233,7 +234,7 @@ static void nfs_readdir_clear_array(struct folio *folio=
-)=0A=
- static void nfs_readdir_folio_reinit_array(struct folio *folio, u64 last_c=
-ookie,=0A=
- 					   u64 change_attr)=0A=
- {=0A=
--	nfs_readdir_clear_array(folio);=0A=
-+	nfs_readdir_clear_array(folio->mapping, folio);=0A=
- 	nfs_readdir_folio_init_array(folio, last_cookie, change_attr);=0A=
+diff --git a/arch/loongarch/mm/pageattr.c b/arch/loongarch/mm/pageattr.c=0A=
+index f5e910b68229..458f5ae6a89b 100644=0A=
+--- a/arch/loongarch/mm/pageattr.c=0A=
++++ b/arch/loongarch/mm/pageattr.c=0A=
+@@ -236,3 +236,4 @@ int set_direct_map_valid_noflush(struct page *page, uns=
+igned nr, bool valid)=0A=
+ =0A=
+ 	return __set_memory(addr, 1, set, clear);=0A=
  }=0A=
++EXPORT_SYMBOL_FOR_MODULES(set_direct_map_valid_noflush, "kvm");=0A=
+diff --git a/arch/riscv/mm/pageattr.c b/arch/riscv/mm/pageattr.c=0A=
+index 3f76db3d2769..6db31040cd66 100644=0A=
+--- a/arch/riscv/mm/pageattr.c=0A=
++++ b/arch/riscv/mm/pageattr.c=0A=
+@@ -400,6 +400,7 @@ int set_direct_map_valid_noflush(struct page *page, uns=
+igned nr, bool valid)=0A=
  =0A=
-@@ -249,7 +250,7 @@ nfs_readdir_folio_array_alloc(u64 last_cookie, gfp_t gf=
-p_flags)=0A=
- static void nfs_readdir_folio_array_free(struct folio *folio)=0A=
+ 	return __set_memory((unsigned long)page_address(page), nr, set, clear);=
+=0A=
+ }=0A=
++EXPORT_SYMBOL_FOR_MODULES(set_direct_map_valid_noflush, "kvm");=0A=
+ =0A=
+ #ifdef CONFIG_DEBUG_PAGEALLOC=0A=
+ static int debug_pagealloc_set_page(pte_t *pte, unsigned long addr, void *=
+data)=0A=
+diff --git a/arch/s390/mm/pageattr.c b/arch/s390/mm/pageattr.c=0A=
+index 348e759840e7..8ffd9ef09bc6 100644=0A=
+--- a/arch/s390/mm/pageattr.c=0A=
++++ b/arch/s390/mm/pageattr.c=0A=
+@@ -413,6 +413,7 @@ int set_direct_map_valid_noflush(struct page *page, uns=
+igned nr, bool valid)=0A=
+ =0A=
+ 	return __set_memory((unsigned long)page_to_virt(page), nr, flags);=0A=
+ }=0A=
++EXPORT_SYMBOL_FOR_MODULES(set_direct_map_valid_noflush, "kvm");=0A=
+ =0A=
+ bool kernel_page_present(struct page *page)=0A=
  {=0A=
- 	if (folio) {=0A=
--		nfs_readdir_clear_array(folio);=0A=
-+		nfs_readdir_clear_array(folio->mapping, folio);=0A=
- 		folio_put(folio);=0A=
- 	}=0A=
+diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c=0A=
+index 8834c76f91c9..87e9c7d2dcdc 100644=0A=
+--- a/arch/x86/mm/pat/set_memory.c=0A=
++++ b/arch/x86/mm/pat/set_memory.c=0A=
+@@ -2661,6 +2661,7 @@ int set_direct_map_valid_noflush(struct page *page, u=
+nsigned nr, bool valid)=0A=
+ =0A=
+ 	return __set_pages_np(page, nr);=0A=
  }=0A=
-@@ -391,7 +392,7 @@ static void nfs_readdir_folio_init_and_validate(struct =
-folio *folio, u64 cookie,=0A=
- 	if (folio_test_uptodate(folio)) {=0A=
- 		if (nfs_readdir_folio_validate(folio, cookie, change_attr))=0A=
- 			return;=0A=
--		nfs_readdir_clear_array(folio);=0A=
-+		nfs_readdir_clear_array(folio->mapping, folio);=0A=
- 	}=0A=
- 	nfs_readdir_folio_init_array(folio, cookie, change_attr);=0A=
- 	folio_mark_uptodate(folio);=0A=
-diff --git a/fs/orangefs/inode.c b/fs/orangefs/inode.c=0A=
-index a01400cd41fd..37227ba71593 100644=0A=
---- a/fs/orangefs/inode.c=0A=
-+++ b/fs/orangefs/inode.c=0A=
-@@ -452,7 +452,8 @@ static bool orangefs_release_folio(struct folio *folio,=
- gfp_t foo)=0A=
- 	return !folio_test_private(folio);=0A=
- }=0A=
++EXPORT_SYMBOL_FOR_MODULES(set_direct_map_valid_noflush, "kvm");=0A=
  =0A=
--static void orangefs_free_folio(struct folio *folio)=0A=
-+static void orangefs_free_folio(struct address_space *mapping,=0A=
-+				struct folio *folio)=0A=
- {=0A=
- 	kfree(folio_detach_private(folio));=0A=
- }=0A=
-diff --git a/include/linux/fs.h b/include/linux/fs.h=0A=
-index d7ab4f96d705..afb0748ffda6 100644=0A=
---- a/include/linux/fs.h=0A=
-+++ b/include/linux/fs.h=0A=
-@@ -457,7 +457,7 @@ struct address_space_operations {=0A=
- 	sector_t (*bmap)(struct address_space *, sector_t);=0A=
- 	void (*invalidate_folio) (struct folio *, size_t offset, size_t len);=0A=
- 	bool (*release_folio)(struct folio *, gfp_t);=0A=
--	void (*free_folio)(struct folio *folio);=0A=
-+	void (*free_folio)(struct address_space *, struct folio *folio);=0A=
- 	ssize_t (*direct_IO)(struct kiocb *, struct iov_iter *iter);=0A=
- 	/*=0A=
- 	 * migrate the contents of a folio to the specified target. If=0A=
-diff --git a/mm/filemap.c b/mm/filemap.c=0A=
-index 751838ef05e5..3dd8ad922d80 100644=0A=
---- a/mm/filemap.c=0A=
-+++ b/mm/filemap.c=0A=
-@@ -226,11 +226,11 @@ void __filemap_remove_folio(struct folio *folio, void=
- *shadow)=0A=
- =0A=
- void filemap_free_folio(struct address_space *mapping, struct folio *folio=
-)=0A=
- {=0A=
--	void (*free_folio)(struct folio *);=0A=
-+	void (*free_folio)(struct address_space *, struct folio *);=0A=
- =0A=
- 	free_folio =3D mapping->a_ops->free_folio;=0A=
- 	if (free_folio)=0A=
--		free_folio(folio);=0A=
-+		free_folio(mapping, folio);=0A=
- =0A=
- 	folio_put_refs(folio, folio_nr_pages(folio));=0A=
- }=0A=
-@@ -820,7 +820,8 @@ EXPORT_SYMBOL(file_write_and_wait_range);=0A=
- void replace_page_cache_folio(struct folio *old, struct folio *new)=0A=
- {=0A=
- 	struct address_space *mapping =3D old->mapping;=0A=
--	void (*free_folio)(struct folio *) =3D mapping->a_ops->free_folio;=0A=
-+	void (*free_folio)(struct address_space *, struct folio *) =3D=0A=
-+		mapping->a_ops->free_folio;=0A=
- 	pgoff_t offset =3D old->index;=0A=
- 	XA_STATE(xas, &mapping->i_pages, offset);=0A=
- =0A=
-@@ -849,7 +850,7 @@ void replace_page_cache_folio(struct folio *old, struct=
- folio *new)=0A=
- 		__lruvec_stat_add_folio(new, NR_SHMEM);=0A=
- 	xas_unlock_irq(&xas);=0A=
- 	if (free_folio)=0A=
--		free_folio(old);=0A=
-+		free_folio(mapping, old);=0A=
- 	folio_put(old);=0A=
- }=0A=
- EXPORT_SYMBOL_GPL(replace_page_cache_folio);=0A=
-diff --git a/mm/secretmem.c b/mm/secretmem.c=0A=
-index 60137305bc20..422dcaa32506 100644=0A=
---- a/mm/secretmem.c=0A=
-+++ b/mm/secretmem.c=0A=
-@@ -150,7 +150,8 @@ static int secretmem_migrate_folio(struct address_space=
- *mapping,=0A=
- 	return -EBUSY;=0A=
- }=0A=
- =0A=
--static void secretmem_free_folio(struct folio *folio)=0A=
-+static void secretmem_free_folio(struct address_space *mapping,=0A=
-+				 struct folio *folio)=0A=
- {=0A=
- 	set_direct_map_default_noflush(folio_page(folio, 0));=0A=
- 	folio_zero_segment(folio, 0, folio_size(folio));=0A=
-diff --git a/mm/vmscan.c b/mm/vmscan.c=0A=
-index a48aec8bfd92..559bd6ac965c 100644=0A=
---- a/mm/vmscan.c=0A=
-+++ b/mm/vmscan.c=0A=
-@@ -788,7 +788,7 @@ static int __remove_mapping(struct address_space *mappi=
-ng, struct folio *folio,=0A=
- 		xa_unlock_irq(&mapping->i_pages);=0A=
- 		put_swap_folio(folio, swap);=0A=
- 	} else {=0A=
--		void (*free_folio)(struct folio *);=0A=
-+		void (*free_folio)(struct address_space *, struct folio *);=0A=
- =0A=
- 		free_folio =3D mapping->a_ops->free_folio;=0A=
- 		/*=0A=
-@@ -817,7 +817,7 @@ static int __remove_mapping(struct address_space *mappi=
-ng, struct folio *folio,=0A=
- 		spin_unlock(&mapping->host->i_lock);=0A=
- =0A=
- 		if (free_folio)=0A=
--			free_folio(folio);=0A=
-+			free_folio(mapping, folio);=0A=
- 	}=0A=
- =0A=
- 	return 1;=0A=
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c=0A=
-index 08a6bc7d25b6..9ec4c45e3cf2 100644=0A=
---- a/virt/kvm/guest_memfd.c=0A=
-+++ b/virt/kvm/guest_memfd.c=0A=
-@@ -430,7 +430,8 @@ static int kvm_gmem_error_folio(struct address_space *m=
-apping, struct folio *fol=0A=
- }=0A=
- =0A=
- #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE=0A=
--static void kvm_gmem_free_folio(struct folio *folio)=0A=
-+static void kvm_gmem_free_folio(struct address_space *mapping,=0A=
-+				struct folio *folio)=0A=
- {=0A=
- 	struct page *page =3D folio_page(folio, 0);=0A=
- 	kvm_pfn_t pfn =3D page_to_pfn(page);=0A=
+ #ifdef CONFIG_DEBUG_PAGEALLOC=0A=
+ void __kernel_map_pages(struct page *page, int numpages, int enable)=0A=
 -- =0A=
 2.50.1=0A=
 =0A=
