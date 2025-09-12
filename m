@@ -4,176 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E8DBCA101F
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 07:57:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9979CAC582
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 07:59:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CAC208E000C; Fri, 12 Sep 2025 03:57:36 -0400 (EDT)
+	id DE0F8900002; Fri, 12 Sep 2025 03:59:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C56AB8E0001; Fri, 12 Sep 2025 03:57:36 -0400 (EDT)
+	id DB9078E0001; Fri, 12 Sep 2025 03:59:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B454C8E000C; Fri, 12 Sep 2025 03:57:36 -0400 (EDT)
+	id CCFB9900002; Fri, 12 Sep 2025 03:59:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A21738E0001
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 03:57:36 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2DA341406DC
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 07:57:36 +0000 (UTC)
-X-FDA: 83879843712.24.AD3BEE7
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf18.hostedemail.com (Postfix) with ESMTP id C17101C0006
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 07:57:33 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id BB6E58E0001
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 03:59:08 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 29993BAC99
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 07:59:08 +0000 (UTC)
+X-FDA: 83879847576.29.A4B8EB1
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 46FCA1C0011
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 07:59:06 +0000 (UTC)
 Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YZsnxfOD;
-	spf=pass (imf18.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=FF15jLCF;
+	spf=pass (imf18.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.219.46 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757663853;
+	s=arc-20220608; t=1757663946;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r+PqVYBDLbo+GI2XNIjczAPm5r0PaP1XGtlnWHDNHZk=;
-	b=txqyb0BfQMC/HUGbDq2zIW/qieiJB3sBxne41KRpuT7ubeLIHlBre+3b3qSc/dOPEGnLkn
-	Hkg+LSg0R3GaKTQHKcKLvkR7J7JtFiDDECIZUfBxR/hZXSyaLZ+xJFUFdw5N5jxxbfhkGl
-	5y1hMamw2m2YU5ngQusGCGvx7SUgnPs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757663853; a=rsa-sha256;
+	bh=qYy2brfv/lGBhEHGS6G90beLGEnMaAiYcYf7uECp+D4=;
+	b=zyDvN9xDRxQhCyEOZV4r5ZDVqZkX+iNq+X8ld3idraF65L+tGPccHhk0+Y0m56waDZ1/DD
+	LrjTkCX6zFnj/jglua1ujMm06edVpwZyvzV2sZxTvFmVN5ZJZRbRInrTi3zcWam06bbTWq
+	Mkgc1hqZ6/+UOw0lGb1ZZX68z8WgQi0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757663946; a=rsa-sha256;
 	cv=none;
-	b=SWkvzC5KX8Ts+HDNYflTt9WNz5yB1Iz3WKcF54HTpH7QbQML+QuHU+P8MtnWw8WcSyTfpK
-	oC83t/0F51cVVKELVt+tzhq7O3edftQg6++yv50gDvJlFvX8ZgZEUkblFe/6m9mfYmfSQa
-	ACUES4yKMiypB3SpO/tCgeyYK4xGLZ4=
+	b=C1jPSmhB7Un8m7AljbEG+2i2Gxet6/fen6ZqiClQie36tHsihwMbmoxvGJypcuvfoxY4cE
+	wNyMX/Dj9dd+Ffq/1QUhoisJGreLFu/24PjLhjxAnQJCYXnw8rHJurY6nBx84XTq/fc9BJ
+	S+212cnRzvpXhNBt40p7CqouHyiRYF8=
 ARC-Authentication-Results: i=1;
 	imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YZsnxfOD;
-	spf=pass (imf18.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757663853;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=r+PqVYBDLbo+GI2XNIjczAPm5r0PaP1XGtlnWHDNHZk=;
-	b=YZsnxfODrcqQHFT3QrKNrDeJcfGHC85vx3t1KKXbuJTSugN3KrKdgD4fHMiPDYpRJZJIRI
-	Uzz87777EmeASGTap9L9mo42CrC7lKoozp4S5OgQusQRUdFY9BAz2k0mvSE8ejdGovbvuy
-	moP614TGWpOjlaE/6qJTOEj7oPX+3/E=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-690-mUc5isblNLC_l-IQrcpSTw-1; Fri, 12 Sep 2025 03:57:31 -0400
-X-MC-Unique: mUc5isblNLC_l-IQrcpSTw-1
-X-Mimecast-MFC-AGG-ID: mUc5isblNLC_l-IQrcpSTw_1757663851
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3e7634eb959so747685f8f.2
-        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 00:57:31 -0700 (PDT)
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=FF15jLCF;
+	spf=pass (imf18.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.219.46 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-729c1074875so11238666d6.0
+        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 00:59:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757663945; x=1758268745; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qYy2brfv/lGBhEHGS6G90beLGEnMaAiYcYf7uECp+D4=;
+        b=FF15jLCFCkw+1Cd0eP0TAcd7Y6QenRyuQ7ZuixACaxSFlE9QEezUhYO52+GkVct3RK
+         No+KmkCIC7MOu4XZR1aCUSYi8rmJJtbYn/H5Yq8nf8MFHCppm44dohxREianE2MceiYL
+         uHGFa7h1WnIlcqzPHSXNQvc4TqHXklZgARCPzNudqz6B4MbbaGc6ulR4JfI9d9dThDIp
+         XeC0VAiPKLQwMcyGqnm0o8XBiQBWa7n0uLJj6RM3XOudGAtFn4jWeXxJMa8vij0663Op
+         qdoPhDqo4RQtPRcwAdhflU13Y0A3na0YTZXOYh1Bm3aq9tVVAn3hRH1OTrDd2OcwKdc/
+         GRug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757663850; x=1758268650;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=r+PqVYBDLbo+GI2XNIjczAPm5r0PaP1XGtlnWHDNHZk=;
-        b=SG9fb9QmOuiePgqlg5EWb3A2RPVdLV7Q5tqJvqBF2cqiKQ8Am2ndfpJBpp5VWv2bg+
-         qtniyVqtcxOu4RLOhMU+JCau5XxOApHi3PLdvOfaYk+ZrH4xZvFbORpiczgbB8P9Z8yp
-         Ggjexmjqe9377WsgdEjkQTX0TUzZyAu2592Ie4eMx1Z3mUf0Qei6F43eXKAvQc5v/FBL
-         Dj+YOhMBUCTeWXYvq3p63UaiPOKUcZaVYe6PUh/FWC8jFxf9w+VIV75UjA/iIM9ObxNk
-         UWY5mo3eCW9koIyD1E+n3hXp03BG01TB4gq1fKCAn3t+VHbgE3F91NQkh933nDCoIzCz
-         Sfcw==
-X-Forwarded-Encrypted: i=1; AJvYcCUzFrR0YrjWPU+LLB3Xo7ucV9rM45sP/MzaQUWPbvXzjJgawRBXnIF98lCWlDOMJV3NBbo5NkQDIg==@kvack.org
-X-Gm-Message-State: AOJu0YxrXNUnVAO2xPTqnSXMxTHM+4PoylsdW5WUlfQRH4pmVIaKv0MP
-	pce5Os3FV8Aj9buB7bKWPGI5FrBIFhJVW4qCy3t2WUHQoHJMi1Mg68kBl/9aL2wq418EbQCiQ0v
-	AahYl6/oW7b9k/ibTqVKVZMrE9I9GWk0Lb5eD48W+jJxWBPl/duBx
-X-Gm-Gg: ASbGnctT8ixiGEI6pwXbfuG0wUI0+Qw/8tMqsgw8Y8e7sIYnhjFpbiABgrs1j/18QDA
-	1kfYWabQEtYs3kgPt6gW3BPewemfaz8CUSl+1fHc+R27FFzwNR5WiV/HkTBaZdSiV6m0BaHSywI
-	kAGXL26COiFkAk4fGzyQBHEuo+PxrKR7tOdZuUTC3YsHO6xLtxac+D/0sa7cEqhJSlqKR1JyDy4
-	jEEcJkU18p/KnRo2P9J1MUyy97eRfO1dRS7NQkf6gIy5F2qY+SmbCV85Vf5ikS5EfarnqAL1N/2
-	U5JIJ8E/Ln3o1c98R3N+FxKEEPxRAwIHqjC1PIOJjInx+HELAA6yPUGE/UzJ/45xHJKU+W+RLvY
-	QlH2Cg1gT4GlK1EIHVI6zJmtmCYpGgdl+2GU0FCoqqfozVJhR310f7YiZZ7Gdn28kWZQ=
-X-Received: by 2002:a05:6000:1acb:b0:3e5:d2f1:403d with SMTP id ffacd0b85a97d-3e7659e981fmr1992700f8f.36.1757663850562;
-        Fri, 12 Sep 2025 00:57:30 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF5jTihNZ8u71EpurEXi9WIL859gU0373T54vnlvHENg3fNIgXreHhMHhAU/LbYZT2vWSOlPw==
-X-Received: by 2002:a05:6000:1acb:b0:3e5:d2f1:403d with SMTP id ffacd0b85a97d-3e7659e981fmr1992669f8f.36.1757663850093;
-        Fri, 12 Sep 2025 00:57:30 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f20:da00:b70a:d502:3b51:1f2d? (p200300d82f20da00b70ad5023b511f2d.dip0.t-ipconnect.de. [2003:d8:2f20:da00:b70a:d502:3b51:1f2d])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e7607e1400sm5516947f8f.55.2025.09.12.00.57.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 Sep 2025 00:57:29 -0700 (PDT)
-Message-ID: <e326949b-5d8f-4a35-8116-015e784df421@redhat.com>
-Date: Fri, 12 Sep 2025 09:57:28 +0200
+        d=1e100.net; s=20230601; t=1757663945; x=1758268745;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qYy2brfv/lGBhEHGS6G90beLGEnMaAiYcYf7uECp+D4=;
+        b=RJzlNEAh9QrVBMSEUmkeH8kr/AA94iJI2IncGYbZLHGwecmazui8veypzznwnmkX7o
+         49SL1o1tn/ICpIlInukAAMBvVvEw6xjnNIurH8o0k6AivV/NSwx70yc95HrFh+cedkQ2
+         qJq7LDitSA4dGylpiSD1bN8mwuIeL2mdR+mkZta0Ln4RBqqXjtNPCCPVqfiWK8Jx6d54
+         XMUnmbwF0HXG7dFGcRoqzS1ge5c5ZZ8OeZ108NnUENZKEG1olDHD+18HB1TZ9e9NUBBZ
+         it9wkoUlWx5MmAAATAGokRFfTtE2qx+FYocJcB+wNK8hn6CMK4SUv3/yaeEHrfBHxLp3
+         rQBA==
+X-Forwarded-Encrypted: i=1; AJvYcCWnVAiooVCSLV49ORFnFRPELOqaYUBuFgas5tHtGZLAEopSyZ7WyulAxSaPG8uiXrIeEaSIJgYOfg==@kvack.org
+X-Gm-Message-State: AOJu0YyWiCdZcJc2EqTRU2YnY450EIa5rKLHeOZK7hoiidTkaTb326vt
+	w7Ll43sOumI3VAEndOwobKZkUaMYvyPIcKEBgNWwKd6SIRGasGenr9gCAfBPjh7iVsIKeL/HJm+
+	zvcL7olmiJeJF1uJyeDZH7RZ9MASmB5k=
+X-Gm-Gg: ASbGnct1we0Va286aBOv+ZYVpajepMMCniI/Zw4OAco/t3IWV7caHcwpGL5vrl64TIg
+	GqC+7rF3DtWrK+BmXGPZUoSgzU0MQVTLX1vVg9flu9NCruFAkcSRMaFlNclPbR6+E9KVaKprtIX
+	zDLRqCho3KsTj36oGumOuzQgicXqjk6dX3yZ9pGEKi114mI3qTvJj4RIpqx06A64qxeisqyyacf
+	VsPhQ+icilLJj22O9U2ioN0Bs1h2LQMgfZNGOW4
+X-Google-Smtp-Source: AGHT+IEiaKF9pCkKWh4BbgOuXEKINdPyo/qenFs+0EOn/D/MSNe6hpdAb0zelQRVPMYqozXABSTq8lw3wGvRohll0zs=
+X-Received: by 2002:ad4:4eeb:0:b0:71e:bbb8:9dba with SMTP id
+ 6a1803df08f44-767c5620288mr22748156d6.56.1757663944986; Fri, 12 Sep 2025
+ 00:59:04 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: boot failure because of inaccurate page_pool_page_is_pp() on
- 32-bit kernels
-To: Helge Deller <deller@kernel.org>, =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vu?=
- =?UTF-8?Q?sen?= <toke@redhat.com>,
- Linux Kernel Development <linux-kernel@vger.kernel.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- linux-parisc <linux-parisc@vger.kernel.org>
-Cc: Christoph Biedl <linux-kernel.bfrz@manchmal.in-ulm.de>,
- Helge Deller <deller@gmx.de>, Byungchul Park <byungchul@sk.com>
-References: <5a004aef-9df1-4126-b167-1aae27d4240d@gmx.de>
- <1756327287@msgid.manchmal.in-ulm.de> <aMNJMFa5fDalFmtn@p100>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <aMNJMFa5fDalFmtn@p100>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 4HFgtLcroxaFGa59xlxvJ27tBCM0mKlx34Wll6ZxTHk_1757663851
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: C17101C0006
-X-Stat-Signature: koouoyudhss9677yt69kjsc7fi5otufh
+References: <20250910024447.64788-1-laoar.shao@gmail.com> <20250910024447.64788-3-laoar.shao@gmail.com>
+ <CABzRoyZm32HT2fDpSy_PRDxeXZVJD35+9YqRpn9XWix8jG6w8g@mail.gmail.com>
+ <3b1c6388-812f-4702-bd71-33a6373a381a@lucifer.local> <5a2a4b59-9368-4185-bd08-74324eebacb3@linux.dev>
+ <4fba4e8a-a735-4cac-b003-39363583ad19@lucifer.local>
+In-Reply-To: <4fba4e8a-a735-4cac-b003-39363583ad19@lucifer.local>
+From: Yafang Shao <laoar.shao@gmail.com>
+Date: Fri, 12 Sep 2025 15:58:28 +0800
+X-Gm-Features: AS18NWBZ0o-Yi5EczDhcsVitmeJ-1xW5LexZHJbJIlEjf9ralk8ClSHWw7rPZas
+Message-ID: <CALOAHbCzb=sfCzVvJze4Xth1v5YPxfdeNpWGkGALANciPae95A@mail.gmail.com>
+Subject: Re: [PATCH v7 mm-new 02/10] mm: thp: add support for BPF based THP
+ order selection
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org, david@redhat.com, 
+	ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, 
+	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, hannes@cmpxchg.org, 
+	usamaarif642@gmail.com, gutierrez.asier@huawei-partners.com, 
+	willy@infradead.org, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, 
+	ameryhung@gmail.com, rientjes@google.com, corbet@lwn.net, 21cnbao@gmail.com, 
+	shakeel.butt@linux.dev, bpf@vger.kernel.org, linux-mm@kvack.org, 
+	linux-doc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 46FCA1C0011
+X-Stat-Signature: 5b3jpab15z8zn6h3nhcspphwgdpkknio
 X-Rspam-User: 
-X-HE-Tag: 1757663853-914584
-X-HE-Meta: U2FsdGVkX1850mvc+220SqrxnsmRlGzbliZeeS7V/LtjZczx4E13/99u0xkw01Lk/leU1xYu/Ifyn7t+LHD5KLF5l6EFw2jkIZ9OlaTa3hRaT/0Ksh1+seMJA78MBdZFWfRC7HwUeB8zWk7fBrYyE86UDy4Vc/7Ojcvl4NV4jxc1YjTMMJ3v2M0XkwgRObpAyzf7umZyAoz3i31onj9fMTIKseM3pG6c0PZRmVt8HErP5c9Py+9FV0T5c8uPdzHJQsYJd/m3r1ilWQMb+J9wP2lTS8TBDdiWUTcvIEuapkMfUONhfWSj5gH6XNNgHGiRASahe67S8xvMg+3mn/MzhfateIpMJXJxhWnd85whroh2kLJCFVxd9gGMMQGWnSsa8IYZyvnwEKuHu1rEwFMN9s2WnV6lJVQ3PG1VezkpdApFtKrPy5MP45aAqT95Vl418js3SJOhLMG7D6AXdZ4DqC9HxDSJOC3X2fTDjnik7yDGa5xL68F/aejWYbQU0OMmuiSiq3v0o14pShwk2DsWWbOMfpEqI073IClbi07s/+Ab0k3d8Ac5FFKzvpvR+UX+0pMtKE38N7gUnhttj4jz2OP0QUYD7/E++Ajup80fSNeGOkS/AqRJc/9/IGm4xrGJ0LZIgMbJG2YRZP6K9Gkx3Qsp53fgR0fHyABpEOidbbDkj5DC2lnPwg/FP4JmutXnIWS5JpIKOdRwtRbKodFkfzJGnnMN0EnISXZSv/+6DADb+S5QQy9KM/3lia1uDKvMCmloTJQEx4Yb1ESdLWkWQxMfhapi3QYgMgTvWbB8bG1Z74RJDG2fTadp4VMNlKUucCQHyQRd8NnxGsFh8Atuo6Girzk9H25nlgvaa7T9VRm70Gz1PiO7v6DGBd14ReC1BX9CwuA2o0/QQU14RAGDIk2IgkJb/+jCKfvMC9A6aKbWDUx1hqitXjXA0n2PWhLAzsyJjLS6afLVcMddNlj
- 7UxbGZZO
- 8QaXc241xooy+veAugOcjWJysf5Vv/OpYWdnZjOhMuwAxc8jKij78K52sWznJfDIgvcOxTOeZ6xG6GgzSwhINBnhgPV3GJuKJCAKueYkYv1oRw8xjhCX94poi21irpTQ0HbtceoOxK6aanPFNj/eZAJ+AD+EFFT/v6NBrVr4vB81iNDEmfG9TOYzHjDAiNL6L8KRtJj7ke0XK1UGOHY0t6Gz21x5ajHgaFmGawLB/8EN7UexpCu/2/2YnaBdd4feLo2FgsE/N0TPrm7gh0+LdWja5O2RTREK54ALy/OKgOGcWz0orUAEV9WhNdigJLtqSk1vy99vItf8IE54dHaFMQdF4q27dMiPYq+2rdRn1y/qLEHJ3Xi/BxJKYlRwcKojUYzkxBRJsA+Bylj2DAGSZSwhh0QySa+nZx6HI9Wnk4/RlNGEB0PrcVdOUgl55WeMq70BdqnpROAt7X/aXBpKrIAu8SBXtvq/PVdMhlSGcz5w/UK1bfgvcBHZtRWdgF+9w/0CI1WW+uUj6b9ey+tjbuMGLfv9gBSdvfAV/OuDTx04zPkpJWBfh9+m89YMpQ8gk0u5D
+X-HE-Tag: 1757663946-504672
+X-HE-Meta: U2FsdGVkX1+oTO8lfScdzBnIJKIZYPC7CHqnGQUlgcMyDBnSuoeqlnp98oI1mCwKevEwzYi3N5Iam06N0PhlfTdN6PWG67ngKAjDyJWYFRs1VDMRROfS4MRs2bTeDR6/668+dLyUBhpdH0N6F0/36YcybGzQaCSj7JasYYxiksE7vviT9ikN2zCK6gFd/D8hDmpkXb+W32O6alda0OPGgYRZHi8/sHjA+hTjukurRAHMmJM+UPPyg46YOwe1+Dn62/Qp71WkzmeExoMV6xQr7oapgRDuBpqAGnpVEyIHYHDnK1eIbid5wy6FwfgNY3L1IsHQb3JNx9vHS/XC3cilCzQhv5EcBiQG7Z259S7o0PMiopEFYh/sLxE+Au3ctNmz9PZvtGb7XujgFcu04y8yfInTtlc4r5cldULKDSULuYpMRO6TG0hCECPZ+XZoGgmuuk7sDYEPGAVzIF/4ztQPvVMFbNjCXbV1nOiTvvX+1xpZUje42cbqv6ONCFJgim0Rmb04J6QP/3aZFUUf6pDOiI++GXBK86A8+CGYdak9m653Pasw+8jLcPU9tTDaJnQenNaGhsFgcFWL60jEsVyudDExke+veFjPculgmqGBltQUPDTlgsRVW8wP453aMPyaPHoYowxkl23tGCDF2vy4ki7L2ApguIGfhrSCV/2C9CyoeltrPc6zepl+clY59/mUSpGnC/cyTABldScZF56wMWU+YRTVl/6Qmp91glsd9dJUg5JTxpAA16dEg54sPqv7lPdzmseyeZQASKvF+jhUwrLN1QciHNuAH6sqZTaeqSUg7Gjj/Bv+HF4v5aw3NIZgtkmzS+P4L4jCFlJU7G6QfyWzth9NeD23xV54ajbO/RCU2i/IKnNtlmJ2bCO9zDJIhag1w5sd83CfuWr0uvMUPjlj5cBLPhQJh1MFz10DUJOwSb95Bj58a/YOAOoWMMx5Pen74HkNwr0xN7sCWZ1
+ dacjLEPL
+ V/Bqxtvu4g4igkrmUiUaf6jOWLJ1XjdWbSk5pNHwL8SSZtKzoSJcGXGzNDXNpMSGAhpx2L9OLfx0SVDLJE5fOJ+WBwcUrrZHyQAr7yfXql4LPx1iqSiPgDUH/VEUFPrbihupBsML19u3T6ADi+qlmzRUadiJfrZdx2JbyWxleRDQoU6PJkPxolm6cD9IHjGfNhK5PYPxhVAS4XbVnBznCu7ijfkOxGHuSLJbV0Oaxnwuw2AnaizauYEmRLE5sjp123Vyh0jIoCTdznWxg2tQC+N7VfhvJygDav8P6yIy7vZw1CPYWswW6z2Rn/w/vrOezAk3aC3MPCIok/XF99F/4kI75a5eO7VzR2+SNMteZ2JDl3bVfe0LtOcdolko9m8ln4kegFTYdV/fn1sA9aQpaZqi136nXlRJncGsrY0L0A4F65X9UNgPhWERtWZ87xibnGnDVvGauZTwvyRw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -182,75 +126,240 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12.09.25 00:12, Helge Deller wrote:
-> As reported earlier in this mail thread, all 32-bit Linux kernels since v6.16
-> fail to boot on the parisc architecture like this:
-> 
->   BUG: Bad page state in process swapper  pfn:000f7
->   page: refcount:0 mapcount:0 mapping:00000000 index:0x0 pfn:0xf7
->   flags: 0x0(zone=0)
->   raw: 00000000 118022c0 118022c0 00000000 00000000 00000000 ffffffff 00000000
->   raw: 00000000
->   page dumped because: page_pool leak
->   Modules linked in:
->   CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 6.15.0-rc1-32bit+ #2730 NONE
->   Hardware name: 9000/778/B160L
->   Backtrace:
->    [<106ece88>] bad_page+0x14c/0x17c
->    [<10406c50>] free_page_is_bad.part.0+0xd4/0xec
->    [<106ed180>] free_page_is_bad+0x80/0x88
->    [<106ef05c>] __free_pages_ok+0x374/0x508
->    [<1011d34c>] __free_pages_core+0x1f0/0x218
->    [<1011a2f0>] memblock_free_pages+0x68/0x94
->    [<10120324>] memblock_free_all+0x26c/0x310
->    [<1011a4d8>] mm_core_init+0x18c/0x208
->    [<10100e88>] start_kernel+0x4ec/0x7a0
->    [<101054d0>] start_parisc+0xb4/0xc4
-> 
-> git bisecting leads to this patch which triggers the crash:
-> 
->   commit ee62ce7a1d909ccba0399680a03c2dee83bcae95
->   Author: Toke Høiland-Jørgensen <toke@redhat.com>
->   Date:   Wed Apr 9 12:41:37 2025 +0200
->      page_pool: Track DMA-mapped pages and unmap them when destroying the pool
-> 
-> It turns out that the patch itself isn't wrong.
-> 
-> But it's the culprit which leads to the kernel bug since it modifies
-> PP_MAGIC_MASK for 32-bit kernels from:
-> 
-> -#define PP_MAGIC_MASK ~0x3UL
-> +#define PP_MAGIC_MASK ~(PP_DMA_INDEX_MASK | 0x3UL)
-> 
-> Function page_pool_page_is_pp() needs to unambiguously identify page pool
-> pages (using PP_MAGIC_MASK), but since the patch now reduced the valid bits to
-> check in PP_MAGIC_MASK from 0xFFFFFFFC to 0xc000007c, the remaining bits are
-> not sufficient to unambiguously identify such pages any longer.
-> 
-> Because of that, page_pool_page_is_pp() sometimes wrongly reports pages as
-> page pool pages and as such triggers the kernel BUG as it believes it found a
-> page pool leak.
-> 
-> IMHO this is a generic 32-bit kernel issue, not just affecting parisc.
-> 
-> Do you see any options other than:
-> a) revert the patch (ee62ce7a1d90), or:
-> b) return false in page_pool_page_is_pp() when !defined(CONFIG_64BIT),
->     which means to effectively disable the page pool page test on 32bit
->     machines
+On Thu, Sep 11, 2025 at 10:58=E2=80=AFPM Lorenzo Stoakes
+<lorenzo.stoakes@oracle.com> wrote:
+>
+> On Thu, Sep 11, 2025 at 10:42:26PM +0800, Lance Yang wrote:
+> >
+> >
+> > On 2025/9/11 22:02, Lorenzo Stoakes wrote:
+> > > On Wed, Sep 10, 2025 at 08:42:37PM +0800, Lance Yang wrote:
+> > > > Hey Yafang,
+> > > >
+> > > > On Wed, Sep 10, 2025 at 10:53=E2=80=AFAM Yafang Shao <laoar.shao@gm=
+ail.com> wrote:
+> > > > >
+> > > > > This patch introduces a new BPF struct_ops called bpf_thp_ops for=
+ dynamic
+> > > > > THP tuning. It includes a hook bpf_hook_thp_get_order(), allowing=
+ BPF
+> > > > > programs to influence THP order selection based on factors such a=
+s:
+> > > > > - Workload identity
+> > > > >    For example, workloads running in specific containers or cgrou=
+ps.
+> > > > > - Allocation context
+> > > > >    Whether the allocation occurs during a page fault, khugepaged,=
+ swap or
+> > > > >    other paths.
+> > > > > - VMA's memory advice settings
+> > > > >    MADV_HUGEPAGE or MADV_NOHUGEPAGE
+> > > > > - Memory pressure
+> > > > >    PSI system data or associated cgroup PSI metrics
+> > > > >
+> > > > > The kernel API of this new BPF hook is as follows,
+> > > > >
+> > > > > /**
+> > > > >   * @thp_order_fn_t: Get the suggested THP orders from a BPF prog=
+ram for allocation
+> > > > >   * @vma: vm_area_struct associated with the THP allocation
+> > > > >   * @vma_type: The VMA type, such as BPF_THP_VM_HUGEPAGE if VM_HU=
+GEPAGE is set
+> > > > >   *            BPF_THP_VM_NOHUGEPAGE if VM_NOHUGEPAGE is set, or =
+BPF_THP_VM_NONE if
+> > > > >   *            neither is set.
+> > > > >   * @tva_type: TVA type for current @vma
+> > > > >   * @orders: Bitmask of requested THP orders for this allocation
+> > > > >   *          - PMD-mapped allocation if PMD_ORDER is set
+> > > > >   *          - mTHP allocation otherwise
+> > > > >   *
+> > > > >   * Return: The suggested THP order from the BPF program for allo=
+cation. It will
+> > > > >   *         not exceed the highest requested order in @orders. Re=
+turn -1 to
+> > > > >   *         indicate that the original requested @orders should r=
+emain unchanged.
+> > > > >   */
+> > > > > typedef int thp_order_fn_t(struct vm_area_struct *vma,
+> > > > >                             enum bpf_thp_vma_type vma_type,
+> > > > >                             enum tva_type tva_type,
+> > > > >                             unsigned long orders);
+> > > > >
+> > > > > Only a single BPF program can be attached at any given time, thou=
+gh it can
+> > > > > be dynamically updated to adjust the policy. The implementation s=
+upports
+> > > > > anonymous THP, shmem THP, and mTHP, with future extensions planne=
+d for
+> > > > > file-backed THP.
+> > > > >
+> > > > > This functionality is only active when system-wide THP is configu=
+red to
+> > > > > madvise or always mode. It remains disabled in never mode. Additi=
+onally,
+> > > > > if THP is explicitly disabled for a specific task via prctl(), th=
+is BPF
+> > > > > functionality will also be unavailable for that task.
+> > > > >
+> > > > > This feature requires CONFIG_BPF_GET_THP_ORDER (marked EXPERIMENT=
+AL) to be
+> > > > > enabled. Note that this capability is currently unstable and may =
+undergo
+> > > > > significant changes=E2=80=94including potential removal=E2=80=94i=
+n future kernel versions.
+> > > > >
+> > > > > Suggested-by: David Hildenbrand <david@redhat.com>
+> > > > > Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> > > > > Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+> > > > > ---
+> > > > [...]
+> > > > > diff --git a/mm/huge_memory_bpf.c b/mm/huge_memory_bpf.c
+> > > > > new file mode 100644
+> > > > > index 000000000000..525ee22ab598
+> > > > > --- /dev/null
+> > > > > +++ b/mm/huge_memory_bpf.c
+> > > > > @@ -0,0 +1,243 @@
+> > > > > +// SPDX-License-Identifier: GPL-2.0
+> > > > > +/*
+> > > > > + * BPF-based THP policy management
+> > > > > + *
+> > > > > + * Author: Yafang Shao <laoar.shao@gmail.com>
+> > > > > + */
+> > > > > +
+> > > > > +#include <linux/bpf.h>
+> > > > > +#include <linux/btf.h>
+> > > > > +#include <linux/huge_mm.h>
+> > > > > +#include <linux/khugepaged.h>
+> > > > > +
+> > > > > +enum bpf_thp_vma_type {
+> > > > > +       BPF_THP_VM_NONE =3D 0,
+> > > > > +       BPF_THP_VM_HUGEPAGE,    /* VM_HUGEPAGE */
+> > > > > +       BPF_THP_VM_NOHUGEPAGE,  /* VM_NOHUGEPAGE */
+> > > > > +};
+> > > > > +
+> > > > > +/**
+> > > > > + * @thp_order_fn_t: Get the suggested THP orders from a BPF prog=
+ram for allocation
+> > > > > + * @vma: vm_area_struct associated with the THP allocation
+> > > > > + * @vma_type: The VMA type, such as BPF_THP_VM_HUGEPAGE if VM_HU=
+GEPAGE is set
+> > > > > + *            BPF_THP_VM_NOHUGEPAGE if VM_NOHUGEPAGE is set, or =
+BPF_THP_VM_NONE if
+> > > > > + *            neither is set.
+> > > > > + * @tva_type: TVA type for current @vma
+> > > > > + * @orders: Bitmask of requested THP orders for this allocation
+> > > > > + *          - PMD-mapped allocation if PMD_ORDER is set
+> > > > > + *          - mTHP allocation otherwise
+> > > > > + *
+> > > > > + * Return: The suggested THP order from the BPF program for allo=
+cation. It will
+> > > > > + *         not exceed the highest requested order in @orders. Re=
+turn -1 to
+> > > > > + *         indicate that the original requested @orders should r=
+emain unchanged.
+> > > >
+> > > > A minor documentation nit: the comment says "Return -1 to indicate =
+that the
+> > > > original requested @orders should remain unchanged". It might be sl=
+ightly
+> > > > clearer to say "Return a negative value to fall back to the origina=
+l
+> > > > behavior". This would cover all error codes as well ;)
+> > > >
+> > > > > + */
+> > > > > +typedef int thp_order_fn_t(struct vm_area_struct *vma,
+> > > > > +                          enum bpf_thp_vma_type vma_type,
+> > > > > +                          enum tva_type tva_type,
+> > > > > +                          unsigned long orders);
+> > > >
+> > > > Sorry if I'm missing some context here since I haven't tracked the =
+whole
+> > > > series closely.
+> > > >
+> > > > Regarding the return value for thp_order_fn_t: right now it returns=
+ a
+> > > > single int order. I was thinking, what if we let it return an unsig=
+ned
+> > > > long bitmask of orders instead? This seems like it would be more fl=
+exible
+> > > > down the road, especially if we get more mTHP sizes to choose from.=
+ It
+> > > > would also make the API more consistent, as bpf_hook_thp_get_orders=
+()
+> > > > itself returns an unsigned long ;)
+> > >
+> > > I think that adds confusion - as in how an order might be chosen from
+> > > those. Also we have _received_ a bitmap of available orders - and the=
+ intent
+> > > here is to select _which one we should use_.
+> >
+> > Yep. Makes sense to me ;)
+>
+> Thanks :)
+>
+> >
+> > >
+> > > And this is an experimental feature, behind a flag explicitly labelle=
+d as
+> > > experimental (and thus subject to change) so if we found we needed to=
+ change
+> > > things in the future we can.
+> >
+> > You're right, I didn't pay enough attention to the fact that this is
+> > an experimental feature. So my suggestions were based on a lack of
+> > context ...
+>
+> It's fine, don't worry :) these are sensible suggestions - it to me highl=
+ights
+> that we haven't been clear enough perhaps.
+>
+> >
+> > >
+> > > >
+> > > > Also, for future extensions, it might be a good idea to add a reser=
+ved
+> > > > flags argument to the thp_order_fn_t signature.
+> > >
+> > > We don't need to do anything like this, as we are behind an experimen=
+tal flag
+> > > and in no way guarantee that this will be used this way going forward=
+s.
+> > > >
+> > > > For example thp_order_fn_t(..., unsigned long flags).
+> > > >
+> > > > This would give us aforward-compatible way to add new semantics lat=
+er
+> > > > without breaking the ABI and needing a v2. We could just require it=
+ to be
+> > > > 0 for now.
+> > >
+> > > There is no ABI.
+> > >
+> > > I mean again to emphasise, this is an _experimental_ feature not to b=
+e relied
+> > > upon in production.
+> > >
+> > > >
+> > > > Thanks for the great work!
+> > > > Lance
+> > >
+> > > Perhaps we need to put a 'EXPERIMENTAL_' prefix on the config flag to=
+o to really
+> > > bring this home, as it's perhaps not all that clear :)
+> >
+> > No need for a 'EXPERIMENTAL_' prefix, it was just me missing
+> > the background. Appreciate you clarifying this!
+>
+> Don't worry about it, but also it suggests that we probably need to be
+> ultra-super clear to users in general. So I think an _EXPERIMENTAL suffix=
+ is
+> probably pretty valid here just to _hammer home_ that - hey - we might br=
+eak
+> you! :)
 
-We should have a change coming soon that would use a page type and fix 
-it as well I think.
+I will add it. Thanks for the reminder.
 
-https://lkml.kernel.org/r/20250728052742.81294-1-byungchul@sk.com
-
-Until then, the easiest fix would be indeed to go with b).
-
-But maybe the page type thing could be backported?
-
--- 
-Cheers
-
-David / dhildenb
-
+--=20
+Regards
+Yafang
 
