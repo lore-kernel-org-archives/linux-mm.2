@@ -4,121 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F60CCA101F
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 17:22:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D37BACA101F
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 17:34:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 43A758E000E; Fri, 12 Sep 2025 13:22:10 -0400 (EDT)
+	id 233238E0008; Fri, 12 Sep 2025 13:34:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 411E68E000D; Fri, 12 Sep 2025 13:22:10 -0400 (EDT)
+	id 1E3A58E0007; Fri, 12 Sep 2025 13:34:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 34EC28E000E; Fri, 12 Sep 2025 13:22:10 -0400 (EDT)
+	id 0D2E58E0008; Fri, 12 Sep 2025 13:34:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 212C28E000D
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 13:22:10 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0478D5B8D7
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 17:22:08 +0000 (UTC)
-X-FDA: 83881266378.17.5660654
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 261F380005
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 17:22:06 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=mOjVvRyg;
-	spf=pass (imf02.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id EBECE8E0007
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 13:34:30 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 72CAA1A092A
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 17:34:30 +0000 (UTC)
+X-FDA: 83881297500.16.1243253
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 8B64840009
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 17:34:28 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=T12eNLDY;
+	spf=pass (imf27.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757697727;
+	s=arc-20220608; t=1757698468;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7/Ce2uFEGoYy9ONGvcPniZfSJV0om/oSbVx5ZmlOg9Q=;
-	b=Mvu7PN5evX2eyWLi4YcazdSOf1tE/j0ith17S/eJX/jVaD2mBIOBBP2hzioQ2qsnqk7dgE
-	tiCzeXKQfxIHhdyq98hKMPNeuaw5h8t/xM1+9rpHKvMLNNKiQca6ynTC2yjPCpwi8Lr5+A
-	nVcli3DLd8ssjggzVz10yhKNWNWwTmg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757697727; a=rsa-sha256;
-	cv=none;
-	b=mpHhkykFOWrFEYhTyO4Pczn3TLZ84Y2bFkXm5DuicC3t+/0f8u182mAZCOHqlrZCGTIwOc
-	OOgicRakwba5lyvmS/GHTSOMjAPpfd+xwbp74HvL4kcE7UBgoC6d5weuHT3XX/WKM3y5HL
-	oscAcfRs7wc5WrTIudC6t0xOEbVUfcc=
+	bh=c5LHAOD3RsM7IX6ZQaWQlGO8B8wFFk4TliEC/qZmawU=;
+	b=KfHJF4hv2INqfB900iFSbdeRWJg7tidhWTEA1vbFHseUZ28AdKyH8TnaDullR5Dr7QMAgJ
+	eTSSVIzrw6IZ2IJnN4btrIhbe+ltHHblDuCHcyuxgfYww1Jo+ve+Fg93qTMYw6gt1bB+8h
+	ScNTKePNIaBIDtJpil9J3dMrJMJlVc8=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=mOjVvRyg;
-	spf=pass (imf02.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=T12eNLDY;
+	spf=pass (imf27.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-25d44908648so13907925ad.0
-        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 10:22:06 -0700 (PDT)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757698468; a=rsa-sha256;
+	cv=none;
+	b=b0humKLjMcGAFD4+/snhoUcc1lPWUlGeexpYCioIgU6EIIBSaTVXrVmZHv4DCuHrjE6bbf
+	pIBrwiWsFwGDc572QZN/k2IxgFD07zoOGWzRC/vk2+A+CoVFe7nkSuRyM92gHvUEkgxJSx
+	3H3NecU/b+ZhmnN++2oHtUz4qPZSknM=
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3e7622483beso1204003f8f.3
+        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 10:34:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757697726; x=1758302526; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7/Ce2uFEGoYy9ONGvcPniZfSJV0om/oSbVx5ZmlOg9Q=;
-        b=mOjVvRygxrKx2eJwTLD8u1ANaxVYPAUhdc3Od/3n9QK5zagU0GSDTOwXyRMIQteVIe
-         W//RuD01JV1a3nxt4h3SglDLI7xCqind889gCurEah0Nz9e36LaEDnHJ3hNnbUlxjjjp
-         4aSFg83IFUubLYpzVc6JT1pIKY2vtRL2Y1uikQ6M2ACgc0dvh384BlH6biQnEapaXRR3
-         1NYRgnrQ/YunHXtpQ741iZ8fBRnjcUNrWv0C7qc3wBgUmPjJLi0k9G3zRVekadicgRzJ
-         Fb8kUwPrJOucSfwUbXAxR9sCEOS08SiIJrmTTa/yPEtcGamXSWMkrBSjk7x6aKlsMvIc
-         Osag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757697726; x=1758302526;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1757698467; x=1758303267; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7/Ce2uFEGoYy9ONGvcPniZfSJV0om/oSbVx5ZmlOg9Q=;
-        b=WaiENrvy8VEXWO4HCdf2SsG8Hy6wiFoWxd5djngSvFsufeLacLNPmv+xqcGScVw4Fs
-         GnvqtAtWecSQhYFkPFcBJC8dh9QlfA84/deMfu9wxnmnPt1xo3yHw6DNMLTgu9uHkleg
-         OC5fsW+izcV1zQwpUWueM7WYvoRXTXzbJlTDG/b6b7kUumKCClFNNfY7ar7G4a8jDsAB
-         dRZM9gxSCJVl5Ouz02JfYiCIB4gG5pfKTXQz1UU2Iy/PW6KHe3ap2TneVFP7Rv5yT/NY
-         KhPo51aVBuAiMS9h45MdKj6rSPPfezHs3qg1jJJpR1WRaj0nep6LBpyPJTyzVTVUuf11
-         Z5tA==
-X-Forwarded-Encrypted: i=1; AJvYcCXp00WYp+kaTPMNw1Fnn1Dt0YdO+jJ/2Wnqq77rUgaUGuZfkOZ02Tggrll4iWnKaq3P8kORXBmL9g==@kvack.org
-X-Gm-Message-State: AOJu0YwqgCbLecdVCjJWagQ2bfE6yrYlyrOOkHBuQYXnoY5VrwuHG0CX
-	C5+oSyClPORumJ5+nHf9/3WeXP31IdOtrJd8ZKxAD3GN/Tgq+6Wsknew
-X-Gm-Gg: ASbGnctFM+M7b52u6WMQucTOS9kSz+t13WYz/vomZnm6VF7Bpdov5Ug8pMHmbG1KJAU
-	OOElUQkCgqcgS1JwRabHcIWuQB68LujtW30A4YLdDzRes7X04uZV8Z0zSTpT0zGdCjNlbNIhTDo
-	okqGiS/uBP/oEnrnaGaXfqtXFodBEIweMoCn71MWPN6dPiaGUyHdmJr4uOn/QgQOdiJLY0Nf+IT
-	kMCmyPvelab5s/cR9nkGHqm55EUhr3CcPCDXDbRTJQ9l/xVkSrKT1A0UMpaHPesyDxQKTDk3ZSu
-	aJ88EJV9OClHO3Hg2eJSTfuIk3YGshOm40C30sWu1oIjeLJwysZqltuZclUNmoBu6svN99OAe8o
-	i+xopzE4UIKxmD8qjCx9ZDxDeff8FeRSqu4fhaZcT9fNpkDb3/8AASUMHGHZma/4xox3s5/0B7k
-	E=
-X-Google-Smtp-Source: AGHT+IHVV8Oq30NVewYiHqlKi7iGlJkcPwO+JQbcpr9qwgbiK6Id2zZYBxd9vUZB6T9tg/Dm5oddNQ==
-X-Received: by 2002:a17:903:230c:b0:24c:ea17:e322 with SMTP id d9443c01a7336-25d244e6be4mr45981845ad.3.1757697725249;
-        Fri, 12 Sep 2025 10:22:05 -0700 (PDT)
-Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-25c37295f9dsm54426275ad.55.2025.09.12.10.22.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Sep 2025 10:22:04 -0700 (PDT)
-Date: Fri, 12 Sep 2025 10:22:01 -0700
-From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
-	vbabka@suse.cz, surenb@google.com, mhocko@suse.com,
-	jackmanb@google.com, hannes@cmpxchg.org, wangkefeng.wang@huawei.com,
-	linux-mm@kvack.org, Oscar Salvador <osalvador@suse.de>
-Subject: Re: [PATCH] mm/compaction: fix low_pfn advance on isolating hugetlb
-Message-ID: <aMRWuS-Ore7jgna3@fedora>
-References: <20250910092240.3981-1-richard.weiyang@gmail.com>
- <20250911012521.4p7kmxv46kwz5fz5@master>
- <5F7DCC9D-4CA2-4BA2-9EA8-F04C3883E289@nvidia.com>
- <20250911032751.khtgvdhcqzyf3rgr@master>
- <3DE28F4B-ACB1-468F-89B9-D7750D24BE4E@nvidia.com>
- <aMMGbPX9uUj7TfoG@fedora>
- <20250912010721.zd67xbfdava2u26e@master>
- <ED7450E4-51F9-4749-A74E-C3AE8927E577@nvidia.com>
+        bh=c5LHAOD3RsM7IX6ZQaWQlGO8B8wFFk4TliEC/qZmawU=;
+        b=T12eNLDYrBV/+0SvV10KssKYYp0V0v9Xg4krGrMk0y+Le5GP62EI7R324RN/FIkXVa
+         3XceKzd1Rmt3lX0YnUFhi8TnYgXjiwaRqRJ7eHV+/a+eU/3As/6xqd9SmU4N5nZWM+1m
+         W6DYZArObdlxzMco4OaOGNJNmbzi7DZURjB16BgYMXD+Imf1q+45WL1GWSl4OB1MVpLM
+         RI+ftejy1Q3Y7jzH+JXjaLv8OSvxY3l0CvqF8Zr2H+Jawkr/M1PQAMFJSnnajMAiDe+N
+         9mk6dTa4J7FFclpY8+nxM+fZSnmOAfHuatI9fWKd3NSZTQuMKqDN+o1uf7tQ9vdduxob
+         Jifw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757698467; x=1758303267;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=c5LHAOD3RsM7IX6ZQaWQlGO8B8wFFk4TliEC/qZmawU=;
+        b=YU0iAJIlnQ2sBVwvnu3A8QgVmejDXr/AxuiZR4hPnHiq3eAo7jpTgfiXS438YWVRGQ
+         2WWzmJjYZaZb/Jka6Ro5xnIQV6StaDhh5XtaRKmMK5s2+FkkObGq91N7zs5kObKVOxCw
+         z+pJyyDheifnUC4byTMPz4sGs9KBuBC4T0asExYPfMjn6L7Et6C9hr1Bx1HXfzjeoIOZ
+         yMWa3pAwmQBkvz42jyB6BucCaA6is4MMpiQ7pkJtxFr/t47jLFdHbJERIgwF0g8upLlt
+         K8YSUExt65OXWZAZVnfmsB5jDUwPcQe2HVTwzBQXy+5+iDGYmiep9Ll3a1GT+czOeX3E
+         nXFA==
+X-Forwarded-Encrypted: i=1; AJvYcCV7VIff4Y6C0GNHpbefaXfOIYXDFZaLZirvD+dDjIIMWNu9KKk0uBYKkZmk+PcrjMX6PLbY6ac2NA==@kvack.org
+X-Gm-Message-State: AOJu0YxRgA7PghYQ0ENpkoPnMfgdTPmMVwVnVqU5BJw/8oOsZq2WQjLg
+	y4KIGJkuCmAQt4Mia5aOhw1t0WWUvwm9SVk7trulgwfDZQCaTU8xkC4a8cq+DNOhKbBoQyHVWUm
+	K9BoaAMH82T7PvcqkEAnfGzWNmBtMGK8=
+X-Gm-Gg: ASbGncv6ISr8hhc/MXdqV6+Sy1fVcnCk9PG00LWRSTl8RKalNFNuF0qSSQ4diU/ZZ/u
+	Edxttzl5TElDXgJzqFgVFAh3pAN0QLHSAtfpXjgMCKBJ/GvoEFA1eDWKSZhwiMTzH9qq3gQFZue
+	Fj9wgxFOd4HwY9Gxi2e+XQt3vTEmgOtlRN5JsQ/joRJ5UxIOzb+5PM10IN1axrAOhsrRFZ3ITKw
+	IyCbYPPbNBQ45KbMIwIFXM9tqaywp+T7QhATrHEJd9mL1U=
+X-Google-Smtp-Source: AGHT+IF84u9tsLSiw4lDvT5XmwWtoH0L/3zRkVWz/Q7BbdJ5SQIMqXyHfKSwJKnSQJcmnQtbE+lOWa60Ml7eykZbfmc=
+X-Received: by 2002:a05:6000:2510:b0:3e7:4277:ddc2 with SMTP id
+ ffacd0b85a97d-3e76579abb9mr3853126f8f.10.1757698466762; Fri, 12 Sep 2025
+ 10:34:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ED7450E4-51F9-4749-A74E-C3AE8927E577@nvidia.com>
-X-Stat-Signature: zy9p4t8nb5xu3u816j5q6xq7athi3h8h
-X-Rspamd-Queue-Id: 261F380005
+References: <20250909010007.1660-1-alexei.starovoitov@gmail.com>
+ <20250909010007.1660-3-alexei.starovoitov@gmail.com> <2kaahuvnmke2bj27cu4tu3sr5ezeohra56btxj2iu4ijof5dim@thdwhzjjqzgd>
+ <aMRVNqH47mdkl5Ke@casper.infradead.org>
+In-Reply-To: <aMRVNqH47mdkl5Ke@casper.infradead.org>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Fri, 12 Sep 2025 10:34:15 -0700
+X-Gm-Features: AS18NWDOSsJ18D-9VlumoGDeKjZauJ0F3-n9lYvWRCc26bWu4h9-Bjo2I0KS2Vg
+Message-ID: <CAADnVQJbx0Wf4xrAEfQyZhhpC13zJH6NqdFjYQ+StQzzi+Y=Nw@mail.gmail.com>
+Subject: Re: [PATCH slab v5 2/6] mm: Allow GFP_ACCOUNT to be used in alloc_pages_nolock().
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>, bpf <bpf@vger.kernel.org>, 
+	linux-mm <linux-mm@kvack.org>, Vlastimil Babka <vbabka@suse.cz>, Harry Yoo <harry.yoo@oracle.com>, 
+	Michal Hocko <mhocko@suse.com>, Sebastian Sewior <bigeasy@linutronix.de>, 
+	Andrii Nakryiko <andrii@kernel.org>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Steven Rostedt <rostedt@goodmis.org>, Johannes Weiner <hannes@cmpxchg.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1757697726-184602
-X-HE-Meta: U2FsdGVkX18/vz96UrTM1tlkBkX/XfUi4Bgq7Jh+vXq7/ggcji2k4meZMfMh6L2iYSImDOJ5Cueiff1Vqm9F1yQpGcl84XfY2E2+6efoX6FJTjsK+QvPui/KV4R23uC4VkBG4hb2xkVHSEsYmKyN3GjhCP7rSbCHtmqhOjj+6ghNmf/AaFNgv9lvSPREVkscXJR8YUOfhMLQncAQszxW7VJVyS044bN+s6dteQDBXSxB1+YxuLHrHTKSJwTkEkT9QIhe5cl84ZRgmi0TRFl112SSLtGsnXQyz6SKp3F6r+NiEvvvjNnvfhi/R1LEA58s373VAxCWv5k4Wjls3fT1VaHHLNUl2j9pzcbPHM14dgvbzdNuapWS1e4/L7FCBi8oNG/4SqrrAYe4zYif71skehpOZfw87usvTN7C0UT0WqsoA1YqtAcwfQrq39Jkgz87G/alojhX+3XHEO9AUxW6bgPlkiug1ZHMeuvIq7RmuOmd5jo4F46Uix1p8BABkJUC7hUJtEe1glwg4801nNuKFjRvyl39efSppJ50Z4cpUMhQ+cvPrgYSAA/jKrNCdsHaP7XPhiSgYL7L+Ow1hE+pWdUn+yBuQlgwbd6JFkiHOmDR1nk9WUyCJXbcsXXFa/rOut9CnbTjrEl5k4kI8gvYkfyUm7qlXtskHfLIUfCWQdh7tbmrQCf1TvzUUFLpcIvflq+c3ncut5V9SlVCkIoVblgryA4lWsqrD9m9YsDkLUWBf5/R9ZQ27CE0hRxjy4+3aT+SQ6N2RYhHO5TZ0MeuAsmADaEGnWZUFBm6dODOYKSSdL8it5RI2l+PDfKkioLSrj88XCMyfuX7yom1KiifZMUwITeS5bggEvQ3QGQZbsDj9SfbpwU7mmL9/h6B/qSvKD68QeqRYDkaE7cAoTk7RnREJ73b7NchnS7e+jynhPCdkcKdViUCiuvv8dE4/vWHJmGG6yfKlyUDyYvTiei
- zZiAg3/h
- 2RLzdC7rBdPHUXHsn8QJmzFm3Xu67eMVuJtluvQnm501m8Q/zQhZTN9zCfkW7bqnrE7KdddefK6Bqa3irCS+NfquDk0vjQtBqT9DrxSc1uVAiDiQGzB3Oq5bi9PKJHkn/1WpAocLHgrjxZm2rAb831EPdzaFhLqm8fGdbaTxqBw7zG+fhVuq7m25hHZbt/Oh2hAVvqeSljjCy5PihJU/Lxj+mpWY8+vNd3Q8ahhVSzB3dXjGZtkQ8v0Wn8GoenxFaq/te45ULTNKFHCFpPVn+0un4Z46t5pMBZip+cLtbgvZD4fSnAQFNj9R5Hu7WJ9XD+W3Ny26lr9UM3KWPwGS/IICJoFeY0wjOnG8tFNATvE+zB3WpB50m8Tw2T0ezu7H8SQum+yl+ERXS7gLL8tzAw4ArwnsmBYhhUqpcYcAp21np/G8Kp0KSYlUQ19v79/CjYjGP2pzImABXiBWr7z0ZAheux5j6Z2B4PC7/zzKbGace0q7LsfOkGdB7c9qOgrtoNXvLM02Zfam10FhnTcVr4hWEfAD928ecOUSVJElgVE/UzOZjY8P+qdneipOeY+RROktoH+AZAH6p8VVN2a3hEwyiJR9nMolTZg5pJxDJ3y8ZED6i2kTaaye4eIDYGy5oQoLKFw4QZeIbwEk=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 8B64840009
+X-Stat-Signature: yuoi5zrzp3qje6m7sp95dzu7kpths68s
+X-HE-Tag: 1757698468-302786
+X-HE-Meta: U2FsdGVkX1/xr4dZq1Su1gNn9Am1DggMBGiRGfPZzTZMHGtfi0P9jJ5GCqi0erNtWGE4ZL9AsOycDVnqSzxht13v81TGCF+1ngizFB1GdQV6omcVh2r0KZ9959lYbILD4ITkAP/KjllQqD641mgXM96nZ12QIw+Kz83xK1bxZ8vDoS46ZcuuKY0qjYv0s9kxXSh3cwNvnldjUuA2eStJ0JCbcAkyr1wm0NlCFOSbO+3s6qc6jAo9rABkNPDJMdT5J+Lz350Edwlo6E1B5++RUjMsHeIjZV2lIoAYKYleahN/gdSw+LDNhN1ubEI6H3zrboQPnbnLctENQVLOKoryPG2VnTR69uZD50EeoGS1l2JHTnXjhRrS7tx3IpN/Vt4Djeml4qqjsBXixKho27oGIRTfAoZCJtZZam16g6ZOvXXeWchw4pY9UDN1tl9QYKXozN3X9Tqjcx15g58zcyBd68ImH1JxmXSI0/qLvyj9gRPRL/AmYWp7xf5htMd8gNPxQ1ATmKCdB5R9j4IBTSMIXNh+spG6JPBrXHK6mgx/V3v2jZHrqSw66nnyqC2uthULZZ6/Xd+coL2rnVwczuV160uNjnfn5BSq+ZkeSPoNMuAr71FroUJhB/mr6rqqQZr+17OuysGSc+4HGYbGHsP9to1ijpkbRNqHiTwQLVOh1812j3IQFFktxPciA+mfHtUsFznYYz3SDtY5CRgeCA/rPLPx0h9IBlLxDlF1NSbjJ2cbeyPPJprqBGb3XEYr7MqzRv/YIfQQzXXmCxWPhhNK/03Ewb80WCAWT2dXdFOQ87jcfExPzdasOV/HDCmvo0bWxFfck7lJMIRN/PluNtalbI73TgcJEkYyefpDlPKNqLHk5A0aOgn7IeXvioc0HEsN9407FLgwXZZ4pSaMKRxaVT76kMnpGoP/a21xw567h8p8mQ1FtMLaYr19Ul4n+2giJk03HfTEzGTyAWe9khQ
+ sE1jR43W
+ CwGoZNvSv0lKyRDJyF+Az2MWwA7rzhuNTl/rWe8EZAiLgh0P5T4+alYs/v55oIZ2CVbr6Ko66lSE65Y0TWHfWZkIBoirI4N71QZ9m0l9JV7u7DKcHL1FczdxKV5rh7fvE15Es9M9OfZbZFrxv/iMW41V8+My2wQxxAO4CPIYnLSX+yD70jrpRiPFb7tSWzZBNfac9kuU+ZQaJRf43ievkft8OTcDZSj7Xw/fPSI9KK27RGVkcF8qxZqALYIHdz03pKf/3WNA8/VLuIn93b9CNVTc4G9cW4zlRjehmzm99x08ti/CN1VvLC+qGkOEkwXCtQCxbsS0lTO8kaBdVFAfdH/4EZ7vORq+GgprOyFLnT4StP9YBJx5TrYeLAXQjQ48JWHc/6ct+zSUZ0eQsonfsMBd0iylSjB7vA5kB+qQ3cuXRQPG+A2oQg9vydhv8w+FxDUM9Mbkp8a52ATcQHjB+IjfV89MUc3IVYijzdntO+FRZY9qKhZwOt7ul+w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,128 +122,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 11, 2025 at 09:29:39PM -0400, Zi Yan wrote:
-> On 11 Sep 2025, at 21:07, Wei Yang wrote:
-> 
-> > On Thu, Sep 11, 2025 at 10:27:08AM -0700, Vishal Moola (Oracle) wrote:
-> >> On Thu, Sep 11, 2025 at 12:19:34PM -0400, Zi Yan wrote:
-> >>> On 10 Sep 2025, at 23:27, Wei Yang wrote:
-> >>>
-> >>>> On Wed, Sep 10, 2025 at 09:35:53PM -0400, Zi Yan wrote:
-> >>>>> On 10 Sep 2025, at 21:25, Wei Yang wrote:
-> >>>>>
-> >>>>>> On Wed, Sep 10, 2025 at 09:22:40AM +0000, Wei Yang wrote:
-> >>>>>>> Commit 56ae0bb349b4 ("mm: compaction: convert to use a folio in
-> >>>>>>> isolate_migratepages_block()") converts api from page to folio. But the
-> >>>>>>> low_pfn advance for hugetlb page seems wrong when low_pfn doesn't point
-> >>>>>>> to head page.
-> >>>>>>>
-> >>>>>>> Originally, if page is a hugetlb tail page, compound_nr() return 1,
-> >>>>>>> which means low_pfn only advance one in next iteration. After the
-> >>>>>>> change, low_pfn would advance more than the hugetlb range, since
-> >>>>>>> folio_nr_pages() always return total number of the large page. This
-> >>>>>>> results in skipping some range to isolate and then to migrate.
-> >>>>>>>
-> >>>>>>> The worst case for alloc_contig is it does all the isolation and
-> >>>>>>> migration, but finally find some range is still not isolated. And then
-> >>>>>>> undo all the work and try a new range.
-> >>>>>>>
-> >>>>>>> Advance low_pfn to the end of hugetlb.
-> >>>>>>>
-> >>>>>>> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-> >>>>>>> Fixes: 56ae0bb349b4 ("mm: compaction: convert to use a folio in isolate_migratepages_block()")
-> >>>>>>> Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-> >>>>>>> Cc: Oscar Salvador <osalvador@suse.de>
-> >>>>>>
-> >>>>>> Forgot to cc stable.
-> >>>>>>
-> >>>>>> Cc: <stable@vger.kernel.org>
-> >>>>>
-> >>>>> Is there any bug report to justify the backport? Since it is more likely
-> >>>>> to be a performance issue instead of a correctness issue.
-> >>>>>
-> >>>>
-> >>>> OK, I thought cc-stable is paired with fixes tag.
-> >>>>
-> >>>> If not, please drop it.
-> >>>>
-> >>>>>>
-> >>>>>>> ---
-> >>>>>>> mm/compaction.c | 2 +-
-> >>>>>>> 1 file changed, 1 insertion(+), 1 deletion(-)
-> >>>>>>>
-> >>>>>>> diff --git a/mm/compaction.c b/mm/compaction.c
-> >>>>>>> index bf021b31c7ec..1e8f8eca318c 100644
-> >>>>>>> --- a/mm/compaction.c
-> >>>>>>> +++ b/mm/compaction.c
-> >>>>>>> @@ -989,7 +989,7 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
-> >>>>>>> 				 * Hugepage was successfully isolated and placed
-> >>>>>>> 				 * on the cc->migratepages list.
-> >>>>>>> 				 */
-> >>>>>>> -				low_pfn += folio_nr_pages(folio) - 1;
-> >>>>>>> +				low_pfn += folio_nr_pages(folio) - folio_page_idx(folio, page) - 1;
-> >>>>>>
-> >>>>>> One question is why we advance compound_nr() in original version.
-> >>>>>>
-> >>>>>> Yes, there are several places advancing compound_nr(), but it seems to iterate
-> >>>>>> on the same large page and do the same thing and advance 1 again.
-> >>>>>>
-> >>>>>> Not sure which part story I missed.
-> >>>>>
-> >>>>> isolate_migratepages_block() starts from the beginning of a pageblock.
-> >>>>> How likely the code hit in the middle of a hugetlb?
-> >>>>>
-> >>>>
-> >>>> OK, this is a kind of optimization based on the knowledge it is not likely to
-> >>>> be a tail page?
-> >>>
-> >>> No, it might be that most of the time page is the head, or people assume so.
-> >>
-> >> For compound pages, we will always have tail pfn < head pfn, so we should
-> >> always find the head page first.
-> >>
+On Fri, Sep 12, 2025 at 10:15=E2=80=AFAM Matthew Wilcox <willy@infradead.or=
+g> wrote:
+>
+> On Fri, Sep 12, 2025 at 10:11:26AM -0700, Shakeel Butt wrote:
+> > On Mon, Sep 08, 2025 at 06:00:03PM -0700, Alexei Starovoitov wrote:
+> > [...]
+> > > diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> > > index d1d037f97c5f..30ccff0283fd 100644
+> > > --- a/mm/page_alloc.c
+> > > +++ b/mm/page_alloc.c
+> > > @@ -7480,6 +7480,7 @@ static bool __free_unaccepted(struct page *page=
+)
+> > >
+> > >  /**
+> > >   * alloc_pages_nolock - opportunistic reentrant allocation from any =
+context
+> > > + * @gfp_flags: GFP flags. Only __GFP_ACCOUNT allowed.
 > >
-> > I think you want to say tail pfn > head pfn?
-> >
-> >> If you did find a case where we somehow encounter a tail page here, I'd
-> >> love to see it. And then you'd also want to make sure the other compaction
-> >> trackers are appropriately accounted for.
-> >
-> > I may not follow you here, below is the call flow for
-> > isolate_migratepages_block() invoked during __alloc_contig_pages().
-> >
-> > __alloc_contig_pages(nr_pages, ..);
-> >     start = ALIGN(zone->zone_start_pfn, nr_pages);
-> >     alloc_contig_range_noprof(start, ..);
-> >         __alloc_contig_migrate_range(.., start, ..);
-> >             pfn = start;
-> >             isolate_migratepages_range(.., pfn, ..);
-> >                 isolate_migratepages_block(.., pfn, ..);
-> >                     page = pfn_to_page(pfn);
-> >     start += nr_pages;
-> >
-> > In the loop of __alloc_contig_pages(), it iterate on each nr_pages range. And
-> > nr_pages seems could be any positive number, so it looks the first pfn checked
-> > by isolate_migratepages_block() could be not aligned with page order or less
-> > than MAX_PAGE_ORDER. This mean it could be a tail page per my understanding.
-> >
-> > Maybe I missed some point here?
+> > If only __GFP_ACCOUNT is allowed then why not use a 'bool account' in t=
+he
+> > parameter and add __GFP_ACCOUNT if account is true?
+>
+> It's clearer in the callers to call alloc_pages_nolock(__GFP_ACCOUNT)
+> than it is to call alloc_pages_nolock(true).
+>
+> I can immediately tell what the first one does.  I have no idea what
+> the polarity of 'true' might be (does it mean accounted or unaccounted?)
+> Is it rlated to accounting, GFP_COMP, highmem, whether it's OK to access
+> atomic reserves ... or literally anything else that you might want to
+> select when allocating memory.
+>
+> This use of unadorned booleans is an antipattern.  Nobody should be
+> advocating for such things.
 
-That looks right, I missed the comment:
-        /* Scan block by block. First and last block may be incomplete */
++1.
+We strongly discourage bool in arguments in any function.
+It makes callsites unreadable.
 
-> You are right.
-> 
-> But nr_pages cannot be any positive number, since ALIGN only accepts
-> power of 2 as the alignment. So alloc_contig_pages() might need another
-> fix to handle the case nr_pages is not power of 2.
-> 
-> Oh, after I checked pfn_range_valid_contig(), I find your example does not
-> apply, since it returns false when any page in the range is PageHuge.
-> This means with your example, PageHuge branch will never be executed.
-> But alloc_contig_range_noprof() is exported and can be used directly,
-> the @start input can be any pfn, which can be in the middle of PageHuge.
-> So your fix is still needed for this case.
+We learned it the hard way though :(
+Some of the verifier code became a mess like:
+        err =3D check_load_mem(env, insn, true, false, false, "atomic_load"=
+);
 
-Makes sense to me.
+it's on our todo to clean this up.
 
