@@ -4,60 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C9E9CA101F
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 16:13:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D584CA101F
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 16:16:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D3F238E0005; Fri, 12 Sep 2025 12:13:15 -0400 (EDT)
+	id 5F3768E0007; Fri, 12 Sep 2025 12:16:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CEE978E0002; Fri, 12 Sep 2025 12:13:15 -0400 (EDT)
+	id 5A4378E0002; Fri, 12 Sep 2025 12:16:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C04A28E0005; Fri, 12 Sep 2025 12:13:15 -0400 (EDT)
+	id 4E0FE8E0007; Fri, 12 Sep 2025 12:16:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AB2728E0002
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 12:13:15 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 39FF08E0002
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 12:16:41 -0400 (EDT)
 Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4E25611AF20
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 16:13:15 +0000 (UTC)
-X-FDA: 83881092750.21.93B2572
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 51A661C0007
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 16:13:13 +0000 (UTC)
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C9CF01A08A3
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 16:16:40 +0000 (UTC)
+X-FDA: 83881101360.21.321F49A
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	by imf20.hostedemail.com (Postfix) with ESMTP id DEA521C000D
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 16:16:38 +0000 (UTC)
 Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=epZf1NZ6;
-	spf=pass (imf20.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=PszUAUam;
+	spf=pass (imf20.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757693593;
+	s=arc-20220608; t=1757693799;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L8EycLHCQ1ab18SBt2ew+m+Nf9Rse51xt4sZeCcpwKU=;
-	b=Hg7ek8kDTeU0oLS04fgZ/4JK79k1dgGtjP1t6MW7J+S6jkFUmZ8TeVM8ubMLvaXZgE/hL5
-	YBycyddYYdBFcXTj+b6x9dar1K6yegDoHtuCeUDpTWIKcMzJcZN8noiTnJEk8sB8JQsR2n
-	kJsTLBN9+oPNlWorLAUbbra1+DiERso=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757693593; a=rsa-sha256;
-	cv=none;
-	b=KOKOMTjOAtG8k3p41mUavDHGp/rEJyQHvU7JZg3OJEGeVP6SQjq9ZbQUznJcFO+NLJPcyr
-	CPTmcJhttgmeyVY3Bf5bpNpRGkfeiCLI9/n6si0Vc8jILSTa+J9sq13ag8XNOZBfk3uG3f
-	OV+KhvpAFhvf2m+dnn3OrGGxh8Eunbc=
+	bh=V1s+nFYjm1BpxiJXuCQc5sgO3Fa1nM6X/7/UG+can/4=;
+	b=jgwY0PBtaedhpRYqtJuyx46+rklDc5+o/8NB1alB23S/bHwY4VTT2/30kJ4Vlp5Gz6cIMV
+	Z6OgxxrCne6kmBnow7Bjc6FS1drVs6T9x1fqsDIjUMfTnfszT1gTxSyFpWFF5RbJHu20Af
+	SPoZ/D8PLWXy9usgRvh3oQ91CTDKagk=
 ARC-Authentication-Results: i=1;
 	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=epZf1NZ6;
-	spf=pass (imf20.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=PszUAUam;
+	spf=pass (imf20.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-Date: Fri, 12 Sep 2025 09:13:04 -0700
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757693799; a=rsa-sha256;
+	cv=none;
+	b=ZVOqx8g+HcwiM1cx46moN8Ym5wJr1urzkNOCH6K1XuSj7/4iUvhXjDKz06fW1iOGg4oIN/
+	QvVJVFFPnTnEEM9WA+zIHDd+lQfvu+Ah51Gg8aNRsGDlW1g0X0M4UchQbvlfP5WZSXSERy
+	l5Km/+5LJyqCd4dGVQQ48jS/dcwzixA=
+Date: Fri, 12 Sep 2025 09:16:30 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1757693590;
+	t=1757693797;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=L8EycLHCQ1ab18SBt2ew+m+Nf9Rse51xt4sZeCcpwKU=;
-	b=epZf1NZ6MtODr26KHOCJ6w57aBjFtc8qnGUh/M8xLbRAVFGsAQYr9wPTqrQE3aOknly5pD
-	77fmvTRZSQ6pLHiBa/WcLzC7ELXFsbWSBYfL/56Cbv1CPJOm1GZKSkbAGOJ3HB5atJFG5a
-	+rlNMSY1+2LO3q4yoEhtJSa16Fzi0uw=
+	bh=V1s+nFYjm1BpxiJXuCQc5sgO3Fa1nM6X/7/UG+can/4=;
+	b=PszUAUam6aowRxm6ZI/acl/mBwJKKxfq4NU97UBuocvbxpfWLDpBxO5mbaEm5kzmwhyHUR
+	ngSILCiSozH7WWna3NVXykdXJDAyZvwgVAhv+pFVBh1bGBctE6H8K5nBj2ObrmK++2YurX
+	8VZs49fCYqPVDzEcRqzTYm9R90lfeVw=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Shakeel Butt <shakeel.butt@linux.dev>
 To: Baolin Wang <baolin.wang@linux.alibaba.com>
@@ -65,24 +65,24 @@ Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, david@redhat.com,
 	mhocko@kernel.org, zhengqi.arch@bytedance.com, lorenzo.stoakes@oracle.com, 
 	hughd@google.com, willy@infradead.org, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] mm: vmscan: remove folio_test_private() check in
+Subject: Re: [PATCH 2/2] mm: vmscan: simplify the folio refcount check in
  pageout()
-Message-ID: <qe56xt2natnxnkht7wgknsb5nqjhinaaajomvvvgnfpwry2jih@hsj2w5zqj6wv>
+Message-ID: <g3seb57wsx2qn7tks33gudalcxfxk7ejq6cmkdbsfalb7sxoru@2esiwxtv7wia>
 References: <cover.1757648598.git.baolin.wang@linux.alibaba.com>
- <b8c0fe71982aa1cafafd59d8e71064efaac16007.1757648598.git.baolin.wang@linux.alibaba.com>
+ <e475c5ddbb94763b12d396122ade8ee3c711a967.1757648598.git.baolin.wang@linux.alibaba.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <b8c0fe71982aa1cafafd59d8e71064efaac16007.1757648598.git.baolin.wang@linux.alibaba.com>
+In-Reply-To: <e475c5ddbb94763b12d396122ade8ee3c711a967.1757648598.git.baolin.wang@linux.alibaba.com>
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: p74o7kas39njj1tntwwggyk7h8i8wjfz
+X-Stat-Signature: xdiztw9paqne44c5bojoiur5fnm8yjdm
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 51A661C0007
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1757693593-419022
-X-HE-Meta: U2FsdGVkX19w0pInOYAfFXAzoOZ7XNama9m0DeXEXHDBOCfMBFmP7mU2UHPqIX/oYqwWfW7TnzO/7AM0VcNP/4tzEA0DaLUDMu9TU7wNvl7WkTd5XIkRYxBFYGBoJWzvCR6F/kI7HFxTH2vIvQBY1slX1jiSE0oX8vjTsCIMEAiurI9YPNIBIasMXnGFR22pxj9Pkr+AZvlsCY6ETfZYKrx6woT2pZKJielGYPZyQsM6FNBEW77op92t5NMMEch/B1RzebRzR7cy5fGiW0zZeCkYAJ8BdbBGdMtJ7VEZ4H203e4W4fE9hxOgcWndH/1KSD2h2qPN2/4y81CYNKC9Idou+U0dFpJ386XpV3pu2cWeKibZ9oK0jKa+NpTFJDbL5addZWhEpEih1huuL1HPmkO9kEZPblqxVOdbK44TiBd3m1Nu2Y13jevpOnTVH4K5cKlMN3BupDOCyElQCOToYz5f125dMhUCXn7VadgXBIKotZVw3CfiODWdNJabn1m911b0nP35LpkZPzrhXipN/tOisjrcoRrcAWW+X50qwyvoMiAte5VxoGRGhOPyNLRCNZjGo7eBIY4IB/Q+us6eORWa5KhxBOpSba3nFq347TOilOn6PuDvpNDqpdr8ip157N1WmjJyQkKSUI/j0Lj+UV26pf+0SBX7khRryB7ovO7kL8dHEJQeYPgrPL0bCPT4VU6VHbdzQ9cU4ATIcIOV39jpfT/52uoYLGEne0tIvnPjhAxFYyx/5TL7JLXKGrlTtWmCkwq3pD+kJwNhjGgEaihA9SJiBXBHHCOkSzBN8yIQ6bEV9aNi85rLT2I89HzhGeVHePXIGoeRqHZom4f2uZCWC9E9YqvbrnMmpawPqNKqXEhVTm22FquvrRgeOwyzeupxd1NuZ56uZfHrO2xfyn3tJPEpoUMStujnxq7PdsO10pwPs3bSx9sxkvcqlZKvPCoy0BsQZ2afGxeyMEd
- XdleNFSi
- 4J1J7x/9dclaVp4K4QmFRllyEO6BeHT+X88PCC9IwDjOqRjUWEBuYH1h4IRaajw0vutFfTUxRT6CsHg3ps0y7i/NV5bqgEhNhcFyH0Cb3qtqXeRXRymdQGXEMcsZMf8zPI8uPDDrGlES4duyktd7HOTdL3kGWx+XfNwWdeKJt2Fb5Z/Js3WsJYph/0TmuS30oiafb5BTv7uz0f3LZAotKFxtNLDMq+8wC4py3+hizSJPMt/rQX1B2+bxb/3lzWojJlP1u1cnfZNJbr6/FNOYRhf+sUQ==
+X-Rspamd-Queue-Id: DEA521C000D
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1757693798-978119
+X-HE-Meta: U2FsdGVkX1+fgiTYg5gZIvDKvRaPewnksjWx99UiULdei5QeEktAkARNq8kiySJwOzPT8Ag6sEEQacdOiM41YQn27qGJ3ilvFHsm2SFLOCQ1TFZerleFqlor6OrwqNVndvdxVlLWJDaVGC4x5j5FHRPZsIlg0X6Buex/nfqJMEap5d+GBrPLXq3UPoBzXvNuB7pKP1FFs9RPLMI6obImqTtJTz4TuxyBKOo91a+oZTnPgTDDhDWVueStGjoCQbioLI1l7aF5h4LmS4UPBmpl5gBZRcZdTjGWzyT1Ev22GuJ9L0L0CrJs2O015VvZtxXbuvLvjwg7jwYCM9OBTuBAieh68Nn4LCKIXZTSdyQDWVFywNfkWwDhyOuEdG3xQHuw0HX564O4n3WG1Ogrjobl2RmbUguoyVonIpP8ev4QNn76Ve8U2Wf9q5FvUescEgspPjMzeTqWPlcXkGmO8YFE+841IHvi/aL9wygwVb9Mc7NRKrtRKG5c3Ab4xfoIPqdxgXQQodVNf1jRv9SPaGPCVwfYDfSZPpdb6yh3ygQYYMghiJ35rdK1y4dyRdyLfyxjm8vyWsAizzFtIQ3Jgs7Zf5POBZNM2Z4lQTw3H2HX19GSSvht94hIdMMsFyLFD9h7PJu7I2Fe+I1sW0JdAIKW/IfZBuuVpSGbNMIAzE0lP2tHiYWPpQGDvIHVLrvuA8nXjpQw75zZxqv1OuXRhNEYqzhrvg+l5k+ICgNVTg1ywLlRprd28bfddHpyy8QMBBiQfqA6dzyYIFvzSe+snteRmuGaZHh/hY7XVVn/FmGFQLRniuG692jnuASzsxnDJSkiAUjDtDTIwEDHix3FS69BBr9xzq//eWa0Ayut557ffyD3UwmtWh8/R9+qT3DBM6dQBEfyDIJChyshFLq1261NrL1giU5NlHID7trmBwi77FWfAxUYlagT2jsMqQj40gb86BiAeSqQqhCCC5RnEtO
+ xTjmllL+
+ 8s6tmjO3dAbCXFKwdOUUFOsvvbIPwjcmGscg1mL7oa4n3Hq5ttCkWYzyfiA+yGLOVrZ1Vx42fTJYSC/FGfHNpqxBNxl8hcNtDerklwdANEc52/GXLBni+kWSMJO75Ddm111KpsuheXxAiQVXDr29ml19ifXXR2F+pk8RcF+c7u8dHTO1/3pKOWzf/5i5oU+Bk7K3t+CR0sEQ5iUZA3jHZJBU1o5fxEVP7Qxsu9NBw8Z67yykH1PQLh1+cQXPKqqhDZAmcxq6kHkH/tHAcwNVSzDBqtBJHZ9Kk7DM5Dcai9ZIzpAnJGjjHBCreXw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,50 +91,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 12, 2025 at 11:45:07AM +0800, Baolin Wang wrote:
-> Currently, we no longer attempt to write back filesystem folios in pageout(),
-> and only tmpfs/shmem folios and anonymous swapcache folios can be written back.
-> Moreover, tmpfs/shmem and swapcache folios do not use the PG_private flag,
-> which means no fs-private private data is used. Therefore, we can remove the
-> redundant folio_test_private() checks and related buffer_head release logic.
+On Fri, Sep 12, 2025 at 11:45:08AM +0800, Baolin Wang wrote:
+> Since we no longer attempt to write back filesystem folios in pageout(),
+> and only tmpfs/shmem folios and anonymous swapcache folios can be written
+> back, we can remove the redundant folio_test_private() when checking the
+> folio's refcount, as tmpfs/shmem and swapcache folios do not use the
+> PG_private flag.
+> 
+> While we're at it, we can open-code the folio refcount check instead of
+> adding a simple helper that has only one user.
 > 
 > Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> ---
->  mm/vmscan.c | 16 +---------------
->  1 file changed, 1 insertion(+), 15 deletions(-)
-> 
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index f1fc36729ddd..8056fccb9cc4 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -697,22 +697,8 @@ static pageout_t pageout(struct folio *folio, struct address_space *mapping,
->  	 * swap_backing_dev_info is bust: it doesn't reflect the
->  	 * congestion state of the swapdevs.  Easy to fix, if needed.
->  	 */
-> -	if (!is_page_cache_freeable(folio))
-> +	if (!is_page_cache_freeable(folio) || !mapping)
->  		return PAGE_KEEP;
-> -	if (!mapping) {
-> -		/*
-> -		 * Some data journaling orphaned folios can have
-> -		 * folio->mapping == NULL while being dirty with clean buffers.
-> -		 */
 
-Can this case not happen anymore and try_to_free_buffers is not needed?
-
-> -		if (folio_test_private(folio)) {
-> -			if (try_to_free_buffers(folio)) {
-> -				folio_clear_dirty(folio);
-> -				pr_info("%s: orphaned folio\n", __func__);
-> -				return PAGE_CLEAN;
-> -			}
-> -		}
-> -		return PAGE_KEEP;
-> -	}
->  
->  	if (!shmem_mapping(mapping) && !folio_test_anon(folio))
->  		return PAGE_ACTIVATE;
-> -- 
-> 2.43.7
-> 
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 
