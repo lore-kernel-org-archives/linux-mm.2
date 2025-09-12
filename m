@@ -4,164 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 225E7CAC582
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 14:05:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8362ACA101F
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 14:12:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7FBB96B0027; Fri, 12 Sep 2025 10:05:41 -0400 (EDT)
+	id C02BE8E0011; Fri, 12 Sep 2025 10:12:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D3BF6B0028; Fri, 12 Sep 2025 10:05:41 -0400 (EDT)
+	id BDABF8E0002; Fri, 12 Sep 2025 10:12:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C2846B0029; Fri, 12 Sep 2025 10:05:41 -0400 (EDT)
+	id AF07C8E0011; Fri, 12 Sep 2025 10:12:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 59C3F6B0027
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 10:05:41 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 20DD713BC26
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 14:05:41 +0000 (UTC)
-X-FDA: 83880771282.19.EEF77FD
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf13.hostedemail.com (Postfix) with ESMTP id A519C20005
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 14:05:38 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=JdymV3IT;
-	spf=pass (imf13.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9DC8C8E0002
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 10:12:48 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 50B171A0862
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 14:12:48 +0000 (UTC)
+X-FDA: 83880789216.12.B62B30C
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	by imf22.hostedemail.com (Postfix) with ESMTP id D071DC0012
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 14:12:45 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=W250Hofs;
+	spf=pass (imf22.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757685938;
+	s=arc-20220608; t=1757686366;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1Fi+81t5zqEybF/Ll9ApuHFjhXkkb1vHdHvbxL0Vc8U=;
-	b=PAlNfhUxDiLIPZD5g/ELwba2rFLCRT9Ckcrh10CF1+RY8Q3brECd88+l/CrJlSI9juMNPa
-	VKv4VKjhhKds5EHx6s68sa+wh06sqNjZtRcWXTUVhgNiZhAe7kjX+3pIzAH39x8M38TpoN
-	KQ9T5g/w/iOKwpFPwICTmyd2VykLZ8o=
+	bh=tkZAXzfE56Ye+65KcJu3D+78RmJwSGKf5LKjnICPk0A=;
+	b=M3ZXfRMlvBg0lMxphPGgWlgFzAZssF6TTxYUCz7qA1iImeEuKQlju6gmOGLDUkJtEEBa5e
+	TL9MqeUP6b3jG9wvd6H45CgN9RtCC4octFLteEfq/LI+lH5FHx4pwDkxL04I1P28nR3H7u
+	yAM5siV+d8pGyGlLGqtsxSnR+CikYKs=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=JdymV3IT;
-	spf=pass (imf13.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757685938; a=rsa-sha256;
+	imf22.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=W250Hofs;
+	spf=pass (imf22.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757686366; a=rsa-sha256;
 	cv=none;
-	b=rnkUfpDbOQNGE90bMrRpbDsjVn8SvQ4YgkWax1OYzEPKeJLgP22i1BpU6j5H0u1c3ggjF7
-	sexSpznDmwF28qXr1z9zNpApQSOTqx4KEwpkQb6UlB4Lu6F1pnoSY581RVQCvSVfmE6gI9
-	nUxi7vOVlWfju8StbNx1qh+bWHxe5Bc=
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58C386ET024821;
-	Fri, 12 Sep 2025 14:05:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=1Fi+81t5zqEybF/Ll9ApuHFjhXkkb1
-	vHdHvbxL0Vc8U=; b=JdymV3ITkTcSWYrGAqYC9vUBwbPERmwdJ7SwSpzPahVcmB
-	br9gT4phgvwygUUAi3bNoWfXtnHy6dCZTXY+1IcGYGCd6MSDvQFtwZ59FVh14Zkm
-	vfzwu2r9YJDSn9D4O25/8kKQeaXBrfxGz7ow9SGeZK6IqKoWvjNrVhipWaODarli
-	GtDPVfrbEzN5BeTqC/p995pcDrx5upjpVdi3aGcDIMnh5WmfSVmAgJWAuMpIitpB
-	dx+gg/KyXJBqYUJvppfytE11Gs6VCBfid+zHk9Mld+hpjF8BzLN0R4DoaJen6tmh
-	Qsj/3X1kE2+aoD7/v/vGVE9/PNoEAxLm1WFuoGLQ==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490cmxby8m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 12 Sep 2025 14:05:13 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58CE2ClP009324;
-	Fri, 12 Sep 2025 14:05:13 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490cmxby8e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 12 Sep 2025 14:05:13 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58CAOXI1010588;
-	Fri, 12 Sep 2025 14:05:11 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4910snb7ur-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 12 Sep 2025 14:05:11 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 58CE59N522544674
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 12 Sep 2025 14:05:09 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 536162004B;
-	Fri, 12 Sep 2025 14:05:09 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8D07120043;
-	Fri, 12 Sep 2025 14:05:08 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.155.204.135])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Fri, 12 Sep 2025 14:05:08 +0000 (GMT)
-Date: Fri, 12 Sep 2025 16:05:07 +0200
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, Andreas Larsson <andreas@gaisler.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
-        Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ryan Roberts <ryan.roberts@arm.com>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
-        Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
-        linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-        sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org,
-        Mark Rutland <Mark.Rutland@arm.com>
-Subject: Re: [PATCH v2 2/7] mm: introduce local state for lazy_mmu sections
-Message-ID: <cdd9bc60-96d4-4f19-86c3-dcf598ccbd92-agordeev@linux.ibm.com>
-References: <4b4971fd-0445-4d86-8f3a-6ba3d68d15b7@arm.com>
- <4aa28016-5678-4c66-8104-8dcc3fa2f5ce@redhat.com>
- <15d01c8b-5475-442e-9df5-ca37b0d5dc04@arm.com>
- <7953a735-6129-4d22-be65-ce736630d539@redhat.com>
- <781a6450-1c0b-4603-91cf-49f16cd78c28@arm.com>
- <a17ab4e3-627a-4989-a5a5-d430eadabb86@redhat.com>
- <9ed5441f-cc03-472a-adc6-b9d3ad525664-agordeev@linux.ibm.com>
- <74d1f275-23c3-4fd8-b665-503c7fc87df0@redhat.com>
- <248b4623-8755-4323-8a44-be4af30e4856-agordeev@linux.ibm.com>
- <b46d3430-fb84-464b-b053-490c6ea083da@redhat.com>
+	b=b2yW6TPqSO8cSvZ9lhpmC0MltVNQwHdJmEXT2YBzkRpZOcwJR1nS65DYLnj+hQ+EjLjfgZ
+	W/a7k8uu+PkqpkusX7JjTuQkzwYWVpOr6RaTgvRu67UneTU0PntcwZXmP6PIl/guvKj9VB
+	6HL8VZfcyo1MCJ8vD/WutI+sn4pcGkI=
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id D0F8B40E015C;
+	Fri, 12 Sep 2025 14:12:41 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id ctliiuI1qv13; Fri, 12 Sep 2025 14:12:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1757686358; bh=tkZAXzfE56Ye+65KcJu3D+78RmJwSGKf5LKjnICPk0A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=W250Hofs3CAu2xKR7YwCa+iuLV0a0Hass4IjlijRdWxTDhiQQrX5MMxcjFX/Muc19
+	 L1D9c9Lb04ZjcZf2KbXFQiyCtAZkXdrAvGqG3NsN38YXvViWfFhq3P0qTKJhMAoDtQ
+	 6UGaVchmykQilTK2/QSbuXaV+EiXymkTV0TZvEiQmPcJ9I0YHSQejDJXCwfIbEj6Vm
+	 G82J1yDYKg8aVzqOuciVXFDjtRzsZBjG214DEdiy5w4HRkaQgpbr9bqur9Dn4iIy+G
+	 kUEKLKzCNYgwDfBobGKajNUoiHCg1W0aYCKRpRyJgrKkrptRO3UAkR+8VAi2i/X4dd
+	 OJiTh87FPlwX5ZYud/PEw6fK/bMAFObYM9H8+6ZA0bJgAWhCCE7E2K5ZeCBch71PJ7
+	 ec3fzVkjxAt1hg8ejNy+olL5CCuC7iTcNROQynBJNScdIV1SUCJWANA9rP0ZqSoeV0
+	 fQ4ChX9Ohn7lYM7tj7Csy7+36rXAEKPCnTft1D/juHMPjpnN3GuSelzM6eN2ldRDPQ
+	 10q3tNaz2HGvwBOzQHWUWiiR7DrqZPQL7a9bJUMlBSqtM/i2yS/ATc4iyOplB8BAiX
+	 cGCC0JD2nAMdgH2VtFBFe971EdKWqTPbJYopr/QR5spgvae29gJxJ+ZXY3XQCRzdvH
+	 Hd5DDtPIhAX+N27TiOyX93NY=
+Received: from zn.tnic (p5de8ed27.dip0.t-ipconnect.de [93.232.237.39])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id C653340E0140;
+	Fri, 12 Sep 2025 14:12:01 +0000 (UTC)
+Date: Fri, 12 Sep 2025 16:11:55 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Shiju Jose <shiju.jose@huawei.com>
+Cc: "rafael@kernel.org" <rafael@kernel.org>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"rppt@kernel.org" <rppt@kernel.org>,
+	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
+	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"tony.luck@intel.com" <tony.luck@intel.com>,
+	"lenb@kernel.org" <lenb@kernel.org>,
+	"leo.duran@amd.com" <leo.duran@amd.com>,
+	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
+	"mchehab@kernel.org" <mchehab@kernel.org>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Linuxarm <linuxarm@huawei.com>,
+	"rientjes@google.com" <rientjes@google.com>,
+	"jiaqiyan@google.com" <jiaqiyan@google.com>,
+	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>,
+	"james.morse@arm.com" <james.morse@arm.com>,
+	"jthoughton@google.com" <jthoughton@google.com>,
+	"somasundaram.a@hpe.com" <somasundaram.a@hpe.com>,
+	"erdemaktas@google.com" <erdemaktas@google.com>,
+	"pgonda@google.com" <pgonda@google.com>,
+	"duenwen@google.com" <duenwen@google.com>,
+	"gthelen@google.com" <gthelen@google.com>,
+	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
+	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
+	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
+	tanxiaofei <tanxiaofei@huawei.com>,
+	"Zengtao (B)" <prime.zeng@hisilicon.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	"kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>,
+	wanghuiqiang <wanghuiqiang@huawei.com>
+Subject: Re: [PATCH v12 1/2] ACPI:RAS2: Add ACPI RAS2 driver
+Message-ID: <20250912141155.GAaMQqK4vS8zHd1z4_@fat_crate.local>
+References: <20250902173043.1796-1-shiju.jose@huawei.com>
+ <20250902173043.1796-2-shiju.jose@huawei.com>
+ <20250910192707.GAaMHRCxWx37XitN3t@fat_crate.local>
+ <9dd5e9d8e9b04a93bd4d882ef5d8b63e@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <b46d3430-fb84-464b-b053-490c6ea083da@redhat.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: ZMmKMxWqtsslbAtdOPAzBRJYU4GL7wAu
-X-Proofpoint-ORIG-GUID: j5mM8DCXgm3DPCWWxntSIgsJIjsuTDHV
-X-Authority-Analysis: v=2.4 cv=J52q7BnS c=1 sm=1 tr=0 ts=68c42899 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=kj9zAlcOel0A:10 a=yJojWOMRYYMA:10 a=xegNWJJ1Rn4Hofgs2fcA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA2MDAyNSBTYWx0ZWRfXyQgs4MJipRKm
- Vh4mPp8mP6XTDOkYJ7/naEofqsCMunScyHXUNGqkDffcXe8gbUTaR6visxv0m0kRskga/a5g93o
- Y0rVCYsKPe9P0+nMVlo+OxrV7SEnalYxsvJH/2d4bx8m5Zotd/48CmrUGFK82F0g4ZHLlVG2QyQ
- v9UaEdTcRwYdLo8RFKENqA+3oT6sxrdZPoE2SA+aupZ9ucY0p/3lfsPwTVCbkACKw9viHKZUPh5
- sUwnl0/J1iAjs+cvRsvj5o5BYd545b8qOoQTDQow9AxgiianjYJVfAmcO4Lvo/OxYU1Zraata1S
- PL9YSDjhZWpLjBNA8UeDChKZIto5ViRARZ1acta2OR59pSCA4kyBpUWrv47WX0z1P1aU2UCNZhg
- VoRSX1Jb
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-12_05,2025-09-11_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 clxscore=1015 suspectscore=0 spamscore=0 phishscore=0
- bulkscore=0 adultscore=0 malwarescore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509060025
-X-Rspamd-Queue-Id: A519C20005
-X-Rspamd-Server: rspam05
-X-Stat-Signature: moxarymwgkruymioxutp8kbwo7mmdiwd
+In-Reply-To: <9dd5e9d8e9b04a93bd4d882ef5d8b63e@huawei.com>
+X-Stat-Signature: br3ase7saec68wo8dtop98ru7mdmw1zg
 X-Rspam-User: 
-X-HE-Tag: 1757685938-562495
-X-HE-Meta: U2FsdGVkX1+AUJuN6YqvW7OHK4YvUlUmP7oe9GbCUxz/pwU6keZA1EH2hbUPCoN+Ewb6qpS8S1q8/Y8jzoz7RIuX/pbai8KPCEFS6gI44VZBZLNru2tVEQ4OhIkLZ4qo4cfkMC8Ss6eMMswNMa2wamZmJKYtZyd1B9rMVcA7Vyr4HW+JUW9KmObYl5XcUew3VBYCJWyfnK1a/MoNg8jqj1O2O+7TAxyqLqgnFBAs/OwgQ7nhm32yV9rGcxHpxQtCMhdwksaX4KtVNILVeVzmk9y3QIK73xAfcdRrJCJqMJ4T3aA5FIlzEjMzpvpu2MxlRyPZgvVJR9n5IYs8aptxyQfjEIrzHXaV8b8J2KUylWbEAGpanxzzmU0eEFBu0JG1gBEj46zum7GV12T8u4jgu7LRFr0GuV1E1O2vRL8UlgFNUuGtQwbbUcndN0XbxGemCPRv6huEwPHgKTgZE5niAVwPy6HigIAYANGGa5qU9t0wjFo5OKcQIAP8+ljDpp5cJBlZeO5WnA/q31Fjluk2RtML08KQP9Y7AcC6gxbOpr7XBwzM/iV6gmC5drAgqenarPiseGmBI3EC5Ef3z0PWIEczpcCxb/48Ry5gg1py4sWpnWLfW79vxFE+VbuMgfSr5TSvBCvj3XW3U7IksWr9+TPJT0y/jUnZ45HmSB+sM+J9s06hWydpampZMOmMu/5GgHKozNjh3u0EWuf9GNgNRHNb4HrVn3fOieVB0xe7Ef4vS43sunMFT2VlYJs7vU3OX4zyRCmcwmbD82hrSCLZWeBe341259Xd06BgSxZiKJsyLIboJytVCURLY7jZbkwJvjoDzLVzGztmeD/PT50XZgTKSQJmZBkl1eDEL3JascA/7bi15dxfDY1vbs3f1DQLgj3zSoyPGSA4UrsKRn/Okg3PE8JzIEBr
+X-Rspamd-Queue-Id: D071DC0012
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1757686365-60823
+X-HE-Meta: U2FsdGVkX1/pHrUFLAT0eLv0ZSTpyQSM6Gi/06v1QZjjH6BSaEu8VgiHINZSqckm2c45AoPyNss0/CLaoQf8YV3ii4b4cUWyZo5v058HeQvl+ZaWIxBNmTeWxHv5lrjITMkRSQm0diQMIU8nhFVjMsWS6fu1xVdzab6s62ki/AtnEqR9sVjfDKtfBPR5L8hxviB8bhwT6+3z1UecJZ7mK2UjDFQxkUQMOpnCa9WGrdvggCTM3JPNlHf6LHUFvAXuLyXnCfvsUu9uDlx/o7bWkNtbbzAB7KfdVAsaSoBy4TmmMC1lbSowrPCaq27EHoPJBY2uKd4UEeaMs17l9fpNzpxF8M3lL5jO3YGmsA6oj1u66C/Jw2N+IHzIZlM4w7OqPbNDLM8uziYoBgnGJIPObMxYtPLFXyxhKaLNzWQ17/oQZ65aLgWzsgL454zpBbjk57cMqcLCl0QoaTUDmFmAJhBdevVFtvHeeR74CPKPHAhhPiMC4z7vwyyw98Dra66ep4IynAf7fc2Kvw3K3jF+Cv09Ri90LCbRR77W1zG3/oUPh2ajGumH7alBFUBR8uXD69ASszHx2cAwHgNPVOxYO/c99tVcZuAWQiGQ42xg/yXbywkDS6VqcO1cSwJb7lvv2mTdQgINMnexXjc8L+RWZhNUdcqpFXlMJ46LdJLQfl/mRgy5ZtVuEOjYzHtwIYgYttmFaNigCm1Zjv6YINNgAGRGnGpjgPlrCHa+Z1Vv9o0ahB8pxrz5JfdhNiTTxWGnxuWflQEOhzI0Gc/FkQuBWZ3geXg+CxBNvh7RgLSZRXsVUTTtdqAShzjXwHYuOfVvKaVPzkR9IoDSTEIzOF+ZwyqBzVx/ZcAYUl8/+oLcDiXZXsz2P5SMig9cwrCy+ZcwdiV58NEsJ3TeA2me8MkkhywUHbP47m+WQqrrL3MmMNw/njho5Xq+4JMD8Km2OzmM913PoAsgWdcfj07Xg2H
+ 74qTSYEe
+ Egae6AEvjspoGS6uOI4E9l+2Ex21sfzl9tPIvE7gY73sSgndM9NOJ0/ww+fvoOpQlKNEKVcsFWivt5W2dscJbb1/pBIS1vSKshHD88/ohpP83xd/72v23rdP4InpL33lL4dK4wg7sUeceWehQAQDdNJu+oEMvGRncoJCsjrGtlLybvMsKby1c9dogVVs4nyPTJKLkqYGaLOrLp/7FCHVY6jdk/pN4+VK+MmmikIUhnk89hhc49wgTqC9kq7R7KXCpbmCAqPenZMP1pLco5ScYWpdf4DjwuCD0lUhegI58RLDmrRwgI6XRx0KvIkTbjaRlnWd+z987YDE8ZlY6njo25/1EFr0ISdMIgzAXLoKOURSRrg4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -170,40 +139,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 12, 2025 at 03:02:15PM +0200, David Hildenbrand wrote:
-> How would that work with nesting? I feel like there is a fundamental problem
-> with nesting with what you describe but I might be wrong.
+On Fri, Sep 12, 2025 at 12:04:57PM +0000, Shiju Jose wrote:
+> >Why is this requirement here?
+> The physical memory address range retrieved here for the NUMA domain is used in the subsequent
+> patch  [PATCH v12 2/2] ras: mem: Add memory ACPI RAS2 driver,
+> 1. to set Requested Address Range(INPUT) field of Table 5.87: Parameter Block Structure for PATROL_SCRUB
+> when send GET_PATROL_PARAMETERS command to the firmware, to get scrub parameters, running status,
+> current scrub rate etc.
+> 2. for the validity check of the user requested memory address range to scrub. 
 
-My picture is - flush on each lazy_mmu_disable(), pause on lazy_mmu_pause()
-and honour only top-level arch_enter_lazy_mmu_mode_pte(mm, start, end, ptep) 
-context on all nested levels.
+Again, why does it have to be *lowest* and *contiguous*?
 
-In theory (and if I got it right, you leave the door open for this possibility)
-every (mm, start, end, ptep) context could be stored for each nesting level
-(as an opaque arch-specific data?).
+Your answer doesn't explain that.
 
-But I do not really expect it ever, since arch_enter_lazy_mmu_mode_pte()
-is only to be called in PTE walkers that never span more than one page
-table and follow the pattern:
+> Also intended to expose this supported memory address range to the
+> userspace via EDAC scrub control interface, though it is not present now.
 
-	ptep = pte_offset_map_lock(...);
-	arch_enter_lazy_mmu_mode_pte(mm, start, end, ptep);
+Why? To tie ourselves with even more user ABI?!
 
-	for (...; ptep++) {
-		/*
-		 * set_pte(ptep, ...) or something
-		 */
-	}
+There better be a good reason and not a better design for what this is trying
+to do.
 
-	arch_leave_lazy_mmu_mode();                                             
-	pte_unmap_unlock(...);                                         
+> >What happens with the aux devices you created successfully here? Unwind?
+> Please see the previous discussions on this were about allowing the successfully created
+> auxiliary devices to exist.
+> https://lore.kernel.org/all/20250415210504.GA854098@yaz-khff2.amd.com/
 
-As result, the lazy mmu mode is only "bound" to a single PTE table on s390,
-while arch_enter_lazy_mmu_mode() is going to stay NOP.
+There's no discussion here. And nothing answers the question "why" this is ok
+to do this way.
 
-So when you say you feel a fundamental problem - what that could be?
+-- 
+Regards/Gruss,
+    Boris.
 
-> David / dhildenb
-
-Thanks!
+https://people.kernel.org/tglx/notes-about-netiquette
 
