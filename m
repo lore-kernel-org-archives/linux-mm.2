@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 646A3CAC582
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 15:10:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4E0CCA101F
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 15:10:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B9B236B00B2; Fri, 12 Sep 2025 11:10:39 -0400 (EDT)
+	id 2E9246B00B4; Fri, 12 Sep 2025 11:10:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B4A746B00B4; Fri, 12 Sep 2025 11:10:39 -0400 (EDT)
+	id 298F16B00B6; Fri, 12 Sep 2025 11:10:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A39F26B00B5; Fri, 12 Sep 2025 11:10:39 -0400 (EDT)
+	id 1B5D86B00B7; Fri, 12 Sep 2025 11:10:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 90B836B00B2
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 11:10:39 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 596ACC08BC
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 15:10:39 +0000 (UTC)
-X-FDA: 83880934998.15.B5EBDD9
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 3DDBE1C0017
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 15:10:37 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=nFqlmNeN;
-	spf=pass (imf21.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.128.176 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 0951D6B00B4
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 11:10:45 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C098813BDA0
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 15:10:44 +0000 (UTC)
+X-FDA: 83880935208.05.3131657
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+	by imf16.hostedemail.com (Postfix) with ESMTP id EC083180013
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 15:10:42 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=COQswQD6;
+	spf=pass (imf16.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.128.172 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org;
 	dmarc=pass (policy=none) header.from=linaro.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757689837;
+	s=arc-20220608; t=1757689843;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+ds8gslyRhEA90VqYYB6jUYRwIuKnqG3r9jdtCHu7D4=;
-	b=sMnIzGQaErEeMBNpmLwqI4aoIPRrq/TWJczXJIfWlY6Fh2OH7IhQuqYc3YB9tkvPKIgmy0
-	zJasmNMG+IEaJJKVAmlMqgwgyG149hcGeaWkGkeo5sEJY2921kMnAqQbexRIrwu4Uui2Pw
-	HwHelJ8UI2TH3uFlt2gMl7cGl+JHQjY=
+	bh=FGwNZTJUDbb42i0I/DCBOpee9BSl0Ek2gmsDPeJY6Qk=;
+	b=RlPmWxZ5sD3W2Z/GivJykWMMqXo7CzgMVNh/bYGCsNRBg6Zeb5HNSpo59s7M6qR7HCsu4x
+	TSK9BKx6M5ItbP96qTwjsyu7c2dcf8639e/Nw7GBxEWbsX0zQKSYr55WV+lVsrY2ukFLkV
+	BsYtxH0BiYSePxZ0FtWojorxzQyd7VE=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=nFqlmNeN;
-	spf=pass (imf21.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.128.176 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=COQswQD6;
+	spf=pass (imf16.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.128.172 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org;
 	dmarc=pass (policy=none) header.from=linaro.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757689837; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757689843; a=rsa-sha256;
 	cv=none;
-	b=M5BUQ5ijqZtOOrfNYqDntUEkuXNikt2YeyutTMvHvqdIIOAAb/8Ed8RO+Xs6PpeTaYEJ+n
-	tpINqX62vo91Tb2Sh/leiGoTd24wAHquq1PTAznOcxpecMME1YxS2ElZizQqw3mDVs53G0
-	JOmbPgLLq8CFPTkmveanRvUDOxepf+w=
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-724b9ba77d5so20265137b3.3
-        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 08:10:37 -0700 (PDT)
+	b=hxqnsJlEb8RnZCy9/MPUOqSYhlfyh+sRMClDB2lS36tdlvHsJkPGBXeDSXfP4Q4pGPFNqi
+	n66O1SSs0BQZ41DHxFG8WR80/KY75sHUEVVEmSER0O516mYCRGZD7MbesO3IznzNmLVN6H
+	go6Xw5dgfcUjlsoDtusu9oFt2BP6DKw=
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-71d603b60cbso18644967b3.1
+        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 08:10:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1757689836; x=1758294636; darn=kvack.org;
+        d=linaro.org; s=google; t=1757689842; x=1758294642; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=+ds8gslyRhEA90VqYYB6jUYRwIuKnqG3r9jdtCHu7D4=;
-        b=nFqlmNeNFBufuEXGHm4Lzc90TgbMUaf+FKNPfGYFdCdPDfqoMgp9rDExL1uNmScEIt
-         ZrYMuV6K8eZ2cBP3TeD85ZDMsFbiZnYW1XR4W4yPV4q9HvkmVMU8+0tC1XR4V6AJ5OIu
-         ush/z8cjuGZKSKTq7tomJ1HZw180VSfMXGBFveGQ55HQrx86xhJeAC+7V2kjkAY0a1ou
-         eD/Sa8MrXXgas29QBcL2vj6AmdPV2jB2pN5mS70OIPd3KESZuSBb3ibSjeUdhLMcgEHs
-         GlZLZRFt8uu0XJSaec+hKY8ecPFdjOpwHOKoqbMs0eVZH7mwWI4UvSLfV5Nc6PEgAmgM
-         aW9Q==
+        bh=FGwNZTJUDbb42i0I/DCBOpee9BSl0Ek2gmsDPeJY6Qk=;
+        b=COQswQD6VlaId+8cIqGz2OyyVAjY1xQ2N8pDdrpzOX3qVz/O8mizTcZIXbMCjO/WRq
+         iEpZWRACCTorUQ7GFVq8HhVinW2gpDGLw82TLsgUfmEu2uiID9qO3PmTaqRxW1Od0Osg
+         81fsvDiha7fojvUAAk/oH30wJbWseFqP3GhHePLoDyo+u5+OXTuZsWZGB9Yy89QlviIV
+         l6ZbChCc68Iz94E1q4mx3L6tgv4cZv2xpRVw4E5ENMgglzVSRY56EVEehg/S69QRTL4S
+         GxbIFFA9QEnd8XI8dPfvtOo4P5mjN9zHIhNiFCIa3UDJDJa/oX8lu97L20PYjO0nkgya
+         Fc9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757689836; x=1758294636;
+        d=1e100.net; s=20230601; t=1757689842; x=1758294642;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=+ds8gslyRhEA90VqYYB6jUYRwIuKnqG3r9jdtCHu7D4=;
-        b=wogyIJ+haAuFAbYQQl/iPTJKaxHCUwTABsWlK8x3fafw7yCl04wUTNINSPg57YxY56
-         kCjtinIM03Quuevz/dA0vc2M4ql4xlud6I+ftZ5pN6kTmNDhb24//1v5bWHEpz8cSTMm
-         hQUXwTOjKg/g1pxeaHjiZ4/Clysvpu/WGHrA4CL0SjLoTM2dLv2XEDAElD/MXK0gAAKt
-         +6n7QLUo/jgCorJXmd4Bok3fycLD9V1gr+sS9XXojaj/ucD0jQSZkhgUbNfs1r6FdRIG
-         VfhL3rS59aSYCz6KnYiAiSIewKYxcD+rFEBEhsSiGiuFItyiXfmuv9aZGlqzzBu42xlF
-         LgZw==
-X-Forwarded-Encrypted: i=1; AJvYcCUtv6XwYxUYXsCjP3LsDPCmr+s+wjR6y9H7qxV+hqiZDTUa5iDzt0MYmLA8NCfYwzkeMNSyjDcWOQ==@kvack.org
-X-Gm-Message-State: AOJu0YzwzGCqM/DBSSFtxbx3SdG5oQEmeA8PvvGj82bXu9OvxqEtJazp
-	qBWx5E3U5nsEjK4lYb6yp5Ul9chrcGquNsE4GscjhIrboY9WwoKTK4aHGEWzPg5jFj0=
-X-Gm-Gg: ASbGncsGUqPiJZrzRIsc5Z831dd9zBca13+y94AgSqGkrcISxp18q3Me08W5sruB16j
-	uAEsGH3DIKPUtIUe2fGKLcMq8hrE0u1wM1r/Tav4G8tW01hL66uzUXqV3mon7wzty4nmOhIozDx
-	wOdZhESjgmxd2MUAkvi1qaAm73sXNySCEce+NfX6TxQluNxNbdFnAM+/uQHBs8+DQ3wbdfH38tp
-	aYK2fOdHbWho9fADqTJ2COkOClvRbLTpyb51JjXIgNrSrAa2evESoIOKOb9H1N7zGU6rPftdd4h
-	JPHcS/cfom3KmyiWgdLCWto5JXl4PQlpoQ3b863O4fsj8+KuE37bc53ItJUCwYy0GbhCBpcDZjU
-	S0C0RAIrnARVGr9W8BjGv664EzAcG7FnMig==
-X-Google-Smtp-Source: AGHT+IGUk5zUSgxh+r2dAU6fmhsNlb1RTWa2J7nuwDb4l4jA+t4jqiomYFBGdZGHaaNJrIZspvEapA==
-X-Received: by 2002:a05:690c:7286:b0:725:dc12:3004 with SMTP id 00721157ae682-73063d589abmr33964367b3.22.1757689836260;
-        Fri, 12 Sep 2025 08:10:36 -0700 (PDT)
+        bh=FGwNZTJUDbb42i0I/DCBOpee9BSl0Ek2gmsDPeJY6Qk=;
+        b=uzULreecUQ8W17SGweOUbfxokJNkqJe51bR7Uy6/kW4ia0xYQwceluRr9hryYU0ZU4
+         TUfkXRtXTr+dOCubLM6FH0njHbfjYIQJbUn0+z+DsThXD2vhfRXX38uRuK4YdAM3zuZE
+         lDaGmV2kJly8GoUqQZhptSx+bn1pPib5dQKnamcHoI8n24SBG08u3BKZRx8PB06UHi/E
+         1BaO/pLBOLjUn5KhBnSimlNZ6RdOC78pafv35j1Wcn+upKWYBROZourFP9C5yArmEWJI
+         kdkNKlLSQvzn5THOwwGxSvaGCqTLeklhtLvDYbP2YboEOVOJvz2DgTMdqvTk6noROMrr
+         zxBg==
+X-Forwarded-Encrypted: i=1; AJvYcCUWp6nIeCELosjmYSleHF1FW8hYlamR2SUgFEFX4nXR3TOUeLCSubbkWEFnI8wCoA3MYhMmS2pjSQ==@kvack.org
+X-Gm-Message-State: AOJu0Ywok4juofA9LmjxQ1br+g95Q/ijJyDpRZzAXRbxEdgCl72i/ZNg
+	B91zWrLsy7RWQCDpXDIWf1/KwbPiMQZ7+Tyf4DLRcitparrBdMtG0IF5/KPI9a+KSeE=
+X-Gm-Gg: ASbGncv33ZsYnOYlk3geNZe1l7+R/0T7VT0gOkQ8UDuj39OBPFy8/SNTxHYYCECUHQy
+	toUM9g6zlSTT2Dn7aIlqGhWtB068Hupi9FhFVDi2j7fP27mlDbM33ektbFNrjnEFv3cMv4vKhBK
+	+E7YxtDha+dxHPIkvCDeBQwb0expr0BszJgyPmRsdD3nWOkxpI6Z87NqGLnfEkHP4vSPfgkVc+z
+	3AjMLp9/udP42t1+mvt5k2BDGKIPZJqrWaEYTUf93tFtgA8PdnxATBYgHh+nmKGvuPi5Lz0I4Kh
+	2fAJcNsjH4fr/9gU5ge9b6TVaHk5IcNLTTf3T9doZh1Wf1/NqWmK0GWc7676EeJ+M18wi9aulUk
+	1r67RJusRGbsYQi1AXlJBVGQg2l6DBoKF9Ppl68Jlf+Db
+X-Google-Smtp-Source: AGHT+IGd4PoJfw4tH37hzUk6PYKHbfiAkto5gdK9xgc2f3TOFApwMRiD1EpUFg4A8D8xg0pKJaYxEg==
+X-Received: by 2002:a05:690c:f93:b0:71f:efa8:5881 with SMTP id 00721157ae682-730652db42amr34340137b3.30.1757689841832;
+        Fri, 12 Sep 2025 08:10:41 -0700 (PDT)
 Received: from eugen-station.. ([145.224.119.89])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-624841586c1sm1302244d50.6.2025.09.12.08.10.31
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-624841586c1sm1302244d50.6.2025.09.12.08.10.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Sep 2025 08:10:36 -0700 (PDT)
+        Fri, 12 Sep 2025 08:10:41 -0700 (PDT)
 From: Eugen Hristev <eugen.hristev@linaro.org>
 To: linux-arm-msm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
@@ -110,22 +110,22 @@ Cc: tudor.ambarus@linaro.org,
 	linux-doc@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	Eugen Hristev <eugen.hristev@linaro.org>
-Subject: [RFC][PATCH v3 09/16] genirq/irqdesc: Have nr_irqs as non-static
-Date: Fri, 12 Sep 2025 18:08:48 +0300
-Message-ID: <20250912150855.2901211-10-eugen.hristev@linaro.org>
+Subject: [RFC][PATCH v3 10/16] panic: Have tainted_mask as non-static
+Date: Fri, 12 Sep 2025 18:08:49 +0300
+Message-ID: <20250912150855.2901211-11-eugen.hristev@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250912150855.2901211-1-eugen.hristev@linaro.org>
 References: <20250912150855.2901211-1-eugen.hristev@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3DDBE1C0017
+X-Rspamd-Queue-Id: EC083180013
 X-Rspamd-Server: rspam05
-X-Stat-Signature: h4dkeok98fmugqtqpamt3kxneqggu479
+X-Stat-Signature: pjr8y5er4k3kaq6nyaq73yoe1n6fsb1d
 X-Rspam-User: 
-X-HE-Tag: 1757689837-223544
-X-HE-Meta: U2FsdGVkX19MIGoTfY1Cwwv7bYOFwZTNeZxWXEbwNGtTb+b7Z/OM3bn07d09xoyD6frMyGfVWud6vHn+sXZPuF2Pl9BKIb/DdbA2YPC54GYKPfG8cK7gpwGpWkpRPxtez/JFUcalgwl87fD1hXm6r098Rvjv7PMf32k9vzWH9bRISwzWi+IX6gPXA/xdLgiVtsbZvRVNs17FPOykXdPJaSww2h6rd/g25n/IjrSgJh9Ua0YfW7pdx2eFnOsHQqJtPtnWauEpMHB2MPQXv288bug7BcpUCzAYaOVU4OLw5PFKJSDvvafPF9aU8tkysAEnxpEB6u1xXjQ8fNdtiitCHJawiDhTxqYodpSTkWMa/OWvvrBjdkrAsdQuN5sAwJEXDG+7bddSdMmKBCTgk+d7cJDsbR6FMLSaglTmNtvgl9VpkwI0hs62lCoBWNIHg9qbR7oYcov9Pu7X0ykETtBPXN4QUesH7hkWsGuU5stuM7oA2baXvIVCbYeqJ3NwaCoJu0Ia6kln0Fqh5rHbDibCAl754gAF4CDPymZFvyaz3HlzluzguchB2hGiTBXOXHkRYrEhLmSfXSOvETPUtmyFbGuTlP334WUAcdRsf0J9rj/ybjjRLI7xV2SrljEsRZvEAPGlh+JWBHyErVomvdcnybwcg9KR27ePpIhuvCZ55eENr0dutTO8AcBGPupQzhHBHF4bo5LkLxojTaJopHRWCgcTXgZ9OkYvzrPJbesBeDLL2jAzZvNXPV9BIzVnTobBpe2WW5dq5s2J/iJymOx3gV6Mc0IXp66bf60CrZK7BogbVR5Y7qNgaKVticIBmmuDSQ/AN14vVN3k8jKyThf0fwj9BjK7kE0s1UeBI8UkFEiQNnImyftX+VsFvBTZ4Z/qnpiTeSv80P9JmLX1Fl+sIRH5tAVGpI1oxbN3qEJO3IeOhX8amUr7GBVqZNr5cit4dfY0/IHjrHR5soqYIWB
- m7am2GZ1
- Oz6fpS2kgfGKeNgrHMlKdE38Gimqw1K0KIx7ydNU4BpCOcwkPkNkici3g5ScWpmehQYfLOArmIGfCXA5suR8fZoL1g7nNnVG+kQ51oqjfMDQHQaNktDpfRFWf2FPCGb+JY1/LgmmQ7MqInm0ASKSdokyPhJpCyYiggmfSEmZOewiGTzskbNVKreI+qdL0D4glX8XR7nU9FkoaTbk7z55z5qbC1gGAPDgBPSfAD5x4StyqfBtwY3o0ieoaVzdlA6BpHvCdPk+CQe0Tldv+9lWwLbxsOeb5XUxu0W0/px1ZOA9SpB0x18TcAajTR5X/W86ZJ20zyd9z/LCZEOJY4RJ0Sn/kb7xwaWKDGNmqcBsnuOGbRVFrcP2mcZl0dKYz0gQ6+8wrGpx754QG0q4aGQqpBT1axw==
+X-HE-Tag: 1757689842-505001
+X-HE-Meta: U2FsdGVkX1/rkPMHGTU7LaqOCiYaJC70kdzjcfk6XQoN7qt4ZKK6QxeZLZmCDASXMOOmJo/6qOLPF1ibna26lJHBt83HfI+t57wSHSzGwnecOPRXPSf8es8vKWKVpXl05iW7R4ys96czlgAFypv1Lsbetf9wn3GzIzYcI4dw5WiPBoTAkWzbSVdoeZ+gmJronzjXQ1khoXVqkXdHvE9DGdO3Dc2IKGp6d6QnU7XAKdYgxi9mcwZq3B9y8Laz2Bgu4DFOj8E33Wxoe86df1fHlb62qiZ7o0MGHUuWXJtgIo3SL0byLTqCr0HXChAfsUyBcQ5mj0PseSu77XvkTT+V8+19iE8Ic818L50o2RdCOoM4KvRoitZ5SsgJ91h2ABEQ6k27yDPveXAXaRWCD/4Q6mE148En5rUXtQRxQX+et6NyGCQmHAcYgjI4EdNO5aWBaVHyYvRTDm1+s4B3H+p1u93rcghcsprfICZTBsPNFfs0/6rcOg9Ah3rUPhVsehREFiE/JGE/mof2aFcamHKmQMDfd5O34wFIwfD76bPiZ0qLv/H4o+KNVEk9W4kOeRkfS8do4ScIkNz4+ynVRkCOsHIZAys7BrpinRMzbtsMGsHLPoCXrIPrRviGyAfX+xVXGXqxAf8o8KUrukVZ5WK0zcz9LZoYnkmMj9JZ1eT8v5nYUfH88qHiJpiUHKjxSKZ8YTGV7Et0tG3eAuc66xpTUV0lZGgtZRW9fDcakQcffB+A8272h31XC3n5UDErahAnMAm7MFrbrdFSK+5x99Vd6u8ACvDvy2rlTeE4w5CSW0EPZhrH/FYpssqeb2x5Ychzc+1MnOHVYnfdph6ziVGEk9kCXVrboABAcmvgf5llIe4j7tQpMOe0Li73cscVcKeGVBL7eiFLy//ZC8vROLTxhW7eGKx1TQhVlpQsQM2mqwt2mljt2F38e4mDcqvs9LPtVTQkxVk4bVCrDIyXumA
+ ai6c/nGk
+ KMVfXXxZkA2UzKQC/5cYzNf4uKxgRrI3XxDLXrJ0kSG4m0rxVjlM4t9ybJ35JgnTa93pBKfm0mrXr/sQ5ESXx/35L37J8pekYNxXMY5+Aclvw9j28J4uYo0MY/OLe+HrTzC/D5mOwlxC0drvTXdHEb+AxHAGIn/zVeueluA7gdzYfw+3y7w7cf/6Y5TzLWLUL6oQpe/hcwxg3VtDST++Ha/eiHS/qqt37qZLLwevFJ2N1V90+s4TYg9umpB2PTpNCAVaqSTVCoSmNR5/MNKEv9ZqfGvTmS5uq18bTDGakEy37eQwDJmPUqmZodrCrH1bjNd3V8YJaIzzoJIeGHpkjKU9q5ncEA04GnHBqRLbrhnywe91FA6jRaU/gZQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,27 +134,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-nr_irqs is required for debugging the kernel, and needs to be
+tainted_mask is required for debugging the kernel, and needs to be
 accessible for kmemdump into vmcoreinfo.
 
 Signed-off-by: Eugen Hristev <eugen.hristev@linaro.org>
 ---
- kernel/irq/irqdesc.c | 2 +-
+ kernel/panic.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/irq/irqdesc.c b/kernel/irq/irqdesc.c
-index db714d3014b5..6c3c8c4687fd 100644
---- a/kernel/irq/irqdesc.c
-+++ b/kernel/irq/irqdesc.c
-@@ -139,7 +139,7 @@ static void desc_set_defaults(unsigned int irq, struct irq_desc *desc, int node,
- 	desc_smp_init(desc, node, affinity);
- }
+diff --git a/kernel/panic.c b/kernel/panic.c
+index d9c7cd09aeb9..048c33dab98a 100644
+--- a/kernel/panic.c
++++ b/kernel/panic.c
+@@ -54,7 +54,7 @@ static unsigned int __read_mostly sysctl_oops_all_cpu_backtrace;
+ #endif /* CONFIG_SMP */
  
--static unsigned int nr_irqs = NR_IRQS;
-+unsigned int nr_irqs = NR_IRQS;
- 
- /**
-  * irq_get_nr_irqs() - Number of interrupts supported by the system.
+ int panic_on_oops = CONFIG_PANIC_ON_OOPS_VALUE;
+-static unsigned long tainted_mask =
++unsigned long tainted_mask =
+ 	IS_ENABLED(CONFIG_RANDSTRUCT) ? (1 << TAINT_RANDSTRUCT) : 0;
+ static int pause_on_oops;
+ static int pause_on_oops_flag;
 -- 
 2.43.0
 
