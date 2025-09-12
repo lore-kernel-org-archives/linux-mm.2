@@ -4,114 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57EB8CA101F
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 23:26:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E808CA101F
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 23:32:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 796AE8E0002; Fri, 12 Sep 2025 19:26:37 -0400 (EDT)
+	id EA8CF6B0011; Fri, 12 Sep 2025 19:32:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 76E2E8E0001; Fri, 12 Sep 2025 19:26:37 -0400 (EDT)
+	id E808F8E0001; Fri, 12 Sep 2025 19:32:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 683708E0002; Fri, 12 Sep 2025 19:26:37 -0400 (EDT)
+	id D9B7E6B0011; Fri, 12 Sep 2025 19:32:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 56C788E0001
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 19:26:37 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D4AB9873AF
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 23:26:36 +0000 (UTC)
-X-FDA: 83882184792.28.2C12541
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 69A3718000C
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 23:26:34 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=WcQQzxrB;
-	spf=pass (imf24.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	by kanga.kvack.org (Postfix) with ESMTP id C7E3F6B0011
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 19:32:22 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5D8E111B092
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 23:32:22 +0000 (UTC)
+X-FDA: 83882199324.07.B7249EC
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf11.hostedemail.com (Postfix) with ESMTP id E313F4000A
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 23:32:19 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UAvHGdvz;
+	spf=pass (imf11.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757719594;
+	s=arc-20220608; t=1757719940;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FYya9fW1mJvYJ3jPqwJBitUidkWXto77tPEtahloeFg=;
-	b=eTEW6TqoMGxFqvpHwByMwoclRzxnGChekqUxLNo6sYtanDiPNyQtjo9p2Sr+DT+tUxlXS5
-	XJwjteRiHTo4mDz2okNfM9QKKuWTK2lX+TdhRIaZyjKeSSe7bn28/uDUfZtMdtwMOy5wvP
-	SOzsL1bNRXlfNxFa70QaC/egeIB73hs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757719594; a=rsa-sha256;
+	bh=qeJiLUczh+jDUEzC4NUWxpIlCOTOGxO/IeLpeysMhqw=;
+	b=UmuHWjIsqGYUDNOMLTQzobw77kpu6tYQiHB2CZyqr4UKmk+twpNOvqscIf++OQoCNvs3Aj
+	HJMJ0Z4p+p0N4okgwV4BxCdpx0RjE2F27LU63NR9gKWDkFntaUc2cPAsJZmPrRBJSddghJ
+	OEwh1Bla3kjNtpGB50oty3pLuU3k3v4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757719940; a=rsa-sha256;
 	cv=none;
-	b=JyiuJdg0s9bc+v2Cu0oCngcos3Net2IhApHntSMq105IK30RMDD805oEhMPxW3eAFwDqBF
-	gCHkPBC0GoACzupLv5RubppCCDtzjk1+MMOpOJ04ONfJqyErvG06vBS0obOaro+CW+a1kW
-	uMSKFW1cdPgx4W1UOMSUd39Hs8a8EIM=
+	b=70RPYVWA4IrUnUW9AymyYID9kQUXcV1xxOUOXN5VY41HICHESiZROXl/DoEHyyvokAftlT
+	wP+XZhTwMIRGS/CQfEC9cAbUnRK3iMe25pdU5gvv7cTbGGiZebS50NM9B3Sy0nO0o3j2JP
+	9FaNfDFnSAD6SgjCqpBDVl2hvahBaqw=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=WcQQzxrB;
-	spf=pass (imf24.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	imf11.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UAvHGdvz;
+	spf=pass (imf11.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757719593;
+	s=mimecast20190719; t=1757719939;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FYya9fW1mJvYJ3jPqwJBitUidkWXto77tPEtahloeFg=;
-	b=WcQQzxrBgwWsB/xNMY23bzBlXh42gHTj6+VcUA31yo48Onh/QQWg+n3oMvZ3I20sn+Jby/
-	CSLN0FAW520wEGNTb5/W4YAs7h+uR7c+TIVmooavyKiJr2Q1pBeFH7drzoXMVkgocLUBa3
-	mlBAJ5+WZCJK1V02u3+d4B0GytTKEDI=
-Received: from mail-yx1-f70.google.com (mail-yx1-f70.google.com
- [74.125.224.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=qeJiLUczh+jDUEzC4NUWxpIlCOTOGxO/IeLpeysMhqw=;
+	b=UAvHGdvzGEY1ZxZitzkMoIwwFXg8Ix1vIBNRuNAe2HJ6/ahZLE9EiqM6aOzdXm00yDcYgs
+	mPzN4A/y/Y1GyhVuPoJW25YOxd4mmVdhTRMNrehWcxAREAf2sn0LLeUNJwXb57AyXWFe4h
+	97MeXKPAfykbdafbMIhKGAW/EpQUjq0=
+Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com
+ [209.85.128.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-589-ME0KirfZNsez8Ar3Gq6KAw-1; Fri, 12 Sep 2025 19:26:30 -0400
-X-MC-Unique: ME0KirfZNsez8Ar3Gq6KAw-1
-X-Mimecast-MFC-AGG-ID: ME0KirfZNsez8Ar3Gq6KAw_1757719590
-Received: by mail-yx1-f70.google.com with SMTP id 956f58d0204a3-6119ec806f9so2137021d50.0
-        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 16:26:30 -0700 (PDT)
+ us-mta-650-EhNyUmA0OGCKSzViLqsyBg-1; Fri, 12 Sep 2025 19:32:18 -0400
+X-MC-Unique: EhNyUmA0OGCKSzViLqsyBg-1
+X-Mimecast-MFC-AGG-ID: EhNyUmA0OGCKSzViLqsyBg_1757719937
+Received: by mail-yw1-f199.google.com with SMTP id 00721157ae682-71d603c7e05so32606487b3.1
+        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 16:32:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757719590; x=1758324390;
+        d=1e100.net; s=20230601; t=1757719937; x=1758324737;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=FYya9fW1mJvYJ3jPqwJBitUidkWXto77tPEtahloeFg=;
-        b=H7MeD9HQLus+O7vgliYxh1LGj8jW3etG5gLOtQgDzkqtkLSMFTNus3tvkf1gjD4PTr
-         nKaIdBxTpKNW+w/avGFJsg/2hMpioqyoIn/sTGqLLyi4Q0i/VRl9hw1/0J3cVMO0J99d
-         xmEK7LHmGXcIra62IQiNUXv0Y5hf/JfzhLnDwq4/B5gVW+8dY+TCsi3RuzcZ5HSVOpzx
-         FJ78TcR1TEgzuBMgh+YODQU+lmaZnct//1IcXtEgsCgBJ7G4oCm0GMUSq7N4N+xggzWp
-         KGPAAWv47AAoo7CVX1RcfeHBzjDWyx42cnqLhStob/QI/c4mz1gCp4ZJ8Y7UtAz6IE/D
-         VwpQ==
-X-Gm-Message-State: AOJu0YyIwtX4OnBp9eTQZfFQQAGsR9BCC5M5KnwEMtC9MWJkQAqXSvv2
-	zZzm0hBxPhRQu3sKJGt8083d2HSrngt4slnZnApx4eH5uNiLBBvNYaaFFq+i6Q5tyPkO7RtI0yF
-	UIrxKrtBx9jsxFnKijdc5tB14hFwh13ZkM4c4l5Erg8XBKxwVHSgtaBAw/bOB8tYnBGItQkz7hk
-	UxLB3w7QLrKvTcadx/H2ZFjdGUpdk=
-X-Gm-Gg: ASbGncsqrMkw5pYuS590K6Ccx8M1W/gFsUuL/iaNxILfi93VvpMOESY1UQvACokyf/g
-	AbOthXLq6i+bk0IjQ3099F2WpGaXW4OJQYf3RtdXIJJa+gIf+l81U9oVaEC/bZ2EFumjQ713a1e
-	R1a+R4rjVSfZiaULgHyGheIx2+/Pi4EphwzRM=
-X-Received: by 2002:a53:c949:0:b0:623:696e:39c6 with SMTP id 956f58d0204a3-62724632d67mr3454903d50.35.1757719589832;
-        Fri, 12 Sep 2025 16:26:29 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH4AnimwV4DJpIrzY5zDni7Ex/wppWCYlFBHUNbQWqcehb1JqlslO2cG7IpWR63nH0AcJL1oIrwAvdwGrMu0Z8=
-X-Received: by 2002:a53:c949:0:b0:623:696e:39c6 with SMTP id
- 956f58d0204a3-62724632d67mr3454856d50.35.1757719589379; Fri, 12 Sep 2025
- 16:26:29 -0700 (PDT)
+        bh=qeJiLUczh+jDUEzC4NUWxpIlCOTOGxO/IeLpeysMhqw=;
+        b=BbyhAI0I2ODfGDQwc3f75rorAbne27wniVPySDQMPylZlEb66kGlUsyIwhf//bMTcB
+         GviBCY70sCryK9Y0rySZ73Q2SMmX5cHNO5et/pYebWPew4bLxRuFMcbSXKUPBjE3Aea6
+         48hjrjn3dvmHQT4vWylFUo3dwYr8yEh8zDGXfPtq2AQu6mxDRXze/PBgx9kdUt3y2a0B
+         Iw2pMpwKncvA68Es53MKDTxbrgaRcm+S4RC8WiMA4Gx2cqYwXGnq1/Qof64cyVfLDbTy
+         EteLZrkwdA0iq+a4zU152DTdfjo1SSe5wkRZSAf9/nb916CzQWKHe/jaIUhwDO4N65uP
+         b7+g==
+X-Forwarded-Encrypted: i=1; AJvYcCVHcOK3uVRkWdB987ucHJ+T1YvUufy5saFC5tFwA7BX03dSSTZJ3b1IXMKTuQ7ZOiNDyWiG4Rry1w==@kvack.org
+X-Gm-Message-State: AOJu0Yxnzw1Iiv10jHCPcXxgUvKDuLH0abGA91lAvZ/fGTxlr11W8DOg
+	rDRPxmMm+JOmxjlEdax9M+pru6w5uOO1N7v3ngHePq/x9bZBQajWRF6l8NDYrD3TawOYp4ib5zD
+	gFlxaB+dIUSbu0LkK0uAdbOcmC8h4a1Y5k9qLOOeu+AJGehADWZIil49vfpUZf54wR2ZMCHaqVx
+	RMCG69/teBLuLJsquLS32QOFF7qEA=
+X-Gm-Gg: ASbGncvF4YKCxMKhVFAkBz7zZEijsbgR8u1Gc538zfoSDAHKJIYDHxwVcDZ6iSNCNWp
+	lH5gjwhZlH2B4jM8Eh5NeDV6NJjSywvBih8YZij3pUqov53j0hbrgwASI7hDRuTnwFb/ZJa63Gz
+	CetRohIPrgKOPwST4e9YQyBZMDdarLs/xW5ik=
+X-Received: by 2002:a05:690c:6d01:b0:71f:b624:323a with SMTP id 00721157ae682-730631915bcmr48747557b3.22.1757719937520;
+        Fri, 12 Sep 2025 16:32:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEK1z++fo1VlAXjdvZLZjfG0xFXeJ93pQE2PD3RXY0X2Ke9QcK3xuGmHvpnFUlHapj1cPtD8bnkIBPCoxV0I88=
+X-Received: by 2002:a05:690c:6d01:b0:71f:b624:323a with SMTP id
+ 00721157ae682-730631915bcmr48747047b3.22.1757719937032; Fri, 12 Sep 2025
+ 16:32:17 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250912032810.197475-1-npache@redhat.com> <20250912032810.197475-7-npache@redhat.com>
- <4e1fef74-f369-439e-83ff-c50f991c834e@lucifer.local>
-In-Reply-To: <4e1fef74-f369-439e-83ff-c50f991c834e@lucifer.local>
+References: <20250912032810.197475-1-npache@redhat.com> <ppzgohmkll7dbf2aiwhw7f4spf6kxjtwwe3djkx26pwy4ekrnd@mgeantq5sn2z>
+ <d0e81c75-ad63-4e37-9948-3ae89bc94334@redhat.com>
+In-Reply-To: <d0e81c75-ad63-4e37-9948-3ae89bc94334@redhat.com>
 From: Nico Pache <npache@redhat.com>
-Date: Fri, 12 Sep 2025 17:26:03 -0600
-X-Gm-Features: Ac12FXw8kuzu15sT3828_sGKN1OjxWfPvlvmcTocIEno-x-VWWBe1uDeooNmQyg
-Message-ID: <CAA1CXcCugu0C3s2V1GcZZC=WksiNy8vkomHCcdvtGKfhxhoyfw@mail.gmail.com>
-Subject: Re: [PATCH v11 06/15] khugepaged: introduce collapse_max_ptes_none
- helper function
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: linux-mm@kvack.org, linux-doc@vger.kernel.org, 
+Date: Fri, 12 Sep 2025 17:31:51 -0600
+X-Gm-Features: Ac12FXw_TS5TScQ8j1sWTJVRrVUFEA5RkwbW-1v00F8cU_6m8fECtZnnxeVB4sc
+Message-ID: <CAA1CXcA+pb5KvEnJJqdf1eSjaFiBZ82MRB+KDmyhj3DbiQqOxg@mail.gmail.com>
+Subject: Re: [PATCH v11 00/15] khugepaged: mTHP support
+To: David Hildenbrand <david@redhat.com>
+Cc: Kiryl Shutsemau <kas@kernel.org>, linux-mm@kvack.org, linux-doc@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	david@redhat.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com, 
+	ziy@nvidia.com, baolin.wang@linux.alibaba.com, lorenzo.stoakes@oracle.com, 
 	Liam.Howlett@oracle.com, ryan.roberts@arm.com, dev.jain@arm.com, 
 	corbet@lwn.net, rostedt@goodmis.org, mhiramat@kernel.org, 
 	mathieu.desnoyers@efficios.com, akpm@linux-foundation.org, baohua@kernel.org, 
 	willy@infradead.org, peterx@redhat.com, wangkefeng.wang@huawei.com, 
 	usamaarif642@gmail.com, sunnanyong@huawei.com, vishal.moola@gmail.com, 
-	thomas.hellstrom@linux.intel.com, yang@os.amperecomputing.com, kas@kernel.org, 
+	thomas.hellstrom@linux.intel.com, yang@os.amperecomputing.com, 
 	aarcange@redhat.com, raquini@redhat.com, anshuman.khandual@arm.com, 
 	catalin.marinas@arm.com, tiwai@suse.de, will@kernel.org, 
 	dave.hansen@linux.intel.com, jack@suse.cz, cl@gentwo.org, jglisse@google.com, 
@@ -120,18 +120,18 @@ Cc: linux-mm@kvack.org, linux-doc@vger.kernel.org,
 	richard.weiyang@gmail.com, lance.yang@linux.dev, vbabka@suse.cz, 
 	rppt@kernel.org, jannh@google.com, pfalcato@suse.de
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: hRTlrqeYZ798U6LNfChvNYpvWDvg9NmUynzLeMPe39k_1757719590
+X-Mimecast-MFC-PROC-ID: towCs95wPhpAT1k5tK6MG08t0i2KIiT1HS48EJL4BB8_1757719937
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 69A3718000C
-X-Stat-Signature: awxbjurw1bm4xp1u18bb46cwomp9rfou
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: E313F4000A
+X-Stat-Signature: iue44mimubbfdwyhnukoha34i6ixu4tr
 X-Rspam-User: 
-X-HE-Tag: 1757719594-100278
-X-HE-Meta: U2FsdGVkX1/CBAVvzoxJNrG6jja9yeP8ULPJzjQyRWIWqC9ksibPeGSxvZf0kfrTtswB7XkPPKZvLyGHUVj8WhrBs1xH+6Rxy5P9G+hiMV4FxEvQWEeRvYcwh2nbXEsGcq4M9rmAWMaa3BI3daTVQqvi6sQYoTSFrC8E4McWCLfKFWztQ7/sZhF4niymKy3ID61A7wlP0rhtMZyaFPE3/L5UQisAqIaUR/6DbEBjK4DBdxkMVvWFVRcRxHGQYzAdCDN3NBrzCbvXsCtJglmfX6pMVhst7lctclenvZfqYOkrRb4h0aGt2cxV5zGiT6QCMM9VqJFLJWqOibTmfRwHhPvdAavgM46o8QSPmEyYqxN9bExll4S6pvT1zmXYhitxYPY3gQ3MKi/g7NbfUbPGmSbkF0PWyYo5v/iuOQllbFt8S/B0GRs0eNVsYJ9zJTzUk9ndMh3eWUs5IZymYIArk1SB4dHkKPM1u1Zo1DYAzmYQ2/na2aI7cKXWAFYNCq3mTdUlMsBDW6OoDCnfqyysqKRYThHAqnFi4ElumndTIdy5nyIHKqHGBzprXy0JciO26jbWIdi3KxCq9fzB1MUMyalH6pj6dVEJfjX4s/DqRb2Zw2krA3E5lrAaG9qzC7JQ5INV8HF7wspvCXdYTpJCzHqMCR+lh4wL9rhyFg+cF9Tb/fVEfWp1poLedOVKboH0Cg97tpaaDmcr+T8TC6chexxrGxO2X70nbcSw7zREkDRq9JLF0L06e92ogeeEm1Ju+yk3Nb7No7Ny0+8C7Oa8pmAyRESpd6PaapDwW7/Bs0ixzSojPpBnJS2rDhh2pv01cFvwO0ltUKgpcp/xuXvPk9Nr3lLSfW1Y+RUac2iWaIkcwaRlWlj6vcWMujYDWbGVy2UcQVLwuzKzjwVAspe4wKBPlTa1C5FcMiLa8RR19ucg0xZpSSWYLWy8+P74LMQf4nYjH9ozrdYLmYDTkDw
- siLYsQow
- W0WZuEKnRTwjO5QoUF5/E1LWKkgnewAkywiTKCBXq/Jp1cbJSl8JFYJMWf0w9uN+SyGY+iJgq79MTcJ9QeStQbOdIiIqaAwDoGLB65d5TYQJpLyce2dOSJJsG0X7dzC9HXf8ay+cPVxFcox+2ugKlpEeDIFYLm3ShTZfE3PiX72V39ZORTnwGbvms0SIHynpaPmW/BEEyI2w/9a3q/7nv0U3cZHx7fB85XbjrCw/kxnlmBULtMK/e3q02RJbQa2h0xQEjZSLwmnDYRQeR+NMo4UxEUmJUMAytr0QZrN+tlDruHSnVRtQcm9WkwbOoPrPshozOt1np/cPuhjHUY3c1kfQ+3G2qDD8I9JA0Oe9prlWb2Ew1B66yTd41ao1eioSBWuG1738c9qTRouIjRBlsgfuq9W/i52vVj0Bj6lhUFq2p3eewgLolC1wkqEcxIDb0RQ2vGGAXdW+dsqVF+Vyi7APWI/g20rZ+6oyPYAbYPxkYi0AE8BmrysCVyxi0yOBoSy85Lhogn9WWIeG0DCP+c6rRYEPTgPQqJF8K
+X-HE-Tag: 1757719939-216221
+X-HE-Meta: U2FsdGVkX18nuRQKM5vmf4FhOs3EcJdawQ2OsKCuHZ9Deadqe7TmALyNyUabEc1ZRCUi/1i9ufeRvvF6kHSKcbzEXxnVsORrj9e5ZJibalbjQ4MmxUbHRxhdeUAqEqypSgLvV+cZ4ww4kZnstfu3J56jqaWYvS+uUEfo38jsFgmAASTQaYr8+Ws6TQntKSaVByKRTWGK7UiZF6A14mICdCuSZJJf4iGJOUjWMybUiB1VwH9VR6PaFzNajAU9r4Amsh/U0wY4E5UJMgj7E1wXxNQ6d0p53gCzdG2ZN6P+qCe7q/iEGw+ivAAHArLG3JhKQKEkAHjTNO2oSq+mdHfM9VmoR8/n+aK0w5+4GbmYXxzGHbw2GCrDDA2nPiIy0FKhbVst0KSzLhbwNmH+F4zmz7dCR2RmACJTUYrhrSKI68GRachKIJFWE2VnPz7Ws7Ve9SE1R5QOsm+eqWEiFvHbasF6v0wajVDyv943dXCS4DLspObvWQ8jV3EG2yzdPRQTWZLpUX/kwfh00HvOazYapWK62o3F8hSQrNkxySPiH72iIWqChU63YRzX6q0VX4eN4+ympXtvD5DRAyQIedImsgP33JgLTRwRXcEMvqyGo5d12xc1rpi1Xu4Tm1A9BtUZSJdD5DyhZ6DnfrpfgBJPoq4q1425iHJR/FUv8Pg5+65escmem/d2388dz0z+pMC3KbAXh6eZ5jiPhdujw6o3Fc+I/JwgFCzPKkMBATATX0QLbOHCPPnBYaGly1mIvyRJxaygb3U5trUuLGEs6vtwdE6wZPt9r2KgB7PO9SLYIEFjlR6s1rcmAZCTdOwl8qv602o3TdlpSAbZvcOAkcaXk+JgDmw82/GxRqPVOqgVPKFwQ3BX8xDEwuMCwwziQkPYHHOIqJZaagbsjZRM6z69wieEFo59gsYmyY3v0JYjcM9WshBswVAWbdsD6EuC5SJyoo94stJyXO6/C2YZIFQ
+ lSKSQHdL
+ gnH2ogZ1SHURQvcJuFDFKkt4ZkbX6pM7d/qnQAeJnDfEdrwtsH8Wisl8IZ3E25MNZ6wxuFH9m6gtOVxkPTZaauqo1QmH5iK3rl1Pyf5G3xU0xBkMLOWfVbNgGfp/ltJIMPDQiFV0Tqo/Fmyv9l8VrRL3x7r/NOkC1zYdZ91aHW5A6OmIUIZktynwlwerhMUgzooVKCc5ImqxkY8cdhOuvdke11cTUF9Zp+MF4E2+fyE+bZ/tmdE4qDy3tonNZneZe6rkfV3dv2diYPfzN5zmrYnv6F/7lniQNrZa76ZrybXkxu3onODLhIML0Wsopwn09V0yHusGj6H7HhHJC2JPE8JTiLa/BbFfQYAAb
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,192 +140,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 12, 2025 at 7:36=E2=80=AFAM Lorenzo Stoakes
-<lorenzo.stoakes@oracle.com> wrote:
+On Fri, Sep 12, 2025 at 6:25=E2=80=AFAM David Hildenbrand <david@redhat.com=
+> wrote:
 >
-> On Thu, Sep 11, 2025 at 09:28:01PM -0600, Nico Pache wrote:
-> > The current mechanism for determining mTHP collapse scales the
-> > khugepaged_max_ptes_none value based on the target order. This
-> > introduces an undesirable feedback loop, or "creep", when max_ptes_none
-> > is set to a value greater than HPAGE_PMD_NR / 2.
+> On 12.09.25 14:19, Kiryl Shutsemau wrote:
+> > On Thu, Sep 11, 2025 at 09:27:55PM -0600, Nico Pache wrote:
+> >> The following series provides khugepaged with the capability to collap=
+se
+> >> anonymous memory regions to mTHPs.
+> >>
+> >> To achieve this we generalize the khugepaged functions to no longer de=
+pend
+> >> on PMD_ORDER. Then during the PMD scan, we use a bitmap to track indiv=
+idual
+> >> pages that are occupied (!none/zero). After the PMD scan is done, we d=
+o
+> >> binary recursion on the bitmap to find the optimal mTHP sizes for the =
+PMD
+> >> range. The restriction on max_ptes_none is removed during the scan, to=
+ make
+> >> sure we account for the whole PMD range. When no mTHP size is enabled,=
+ the
+> >> legacy behavior of khugepaged is maintained. max_ptes_none will be sca=
+led
+> >> by the attempted collapse order to determine how full a mTHP must be t=
+o be
+> >> eligible for the collapse to occur. If a mTHP collapse is attempted, b=
+ut
+> >> contains swapped out, or shared pages, we don't perform the collapse. =
+It is
+> >> now also possible to collapse to mTHPs without requiring the PMD THP s=
+ize
+> >> to be enabled.
+> >>
+> >> When enabling (m)THP sizes, if max_ptes_none >=3D HPAGE_PMD_NR/2 (255 =
+on
+> >> 4K page size), it will be automatically capped to HPAGE_PMD_NR/2 - 1 f=
+or
+> >> mTHP collapses to prevent collapse "creep" behavior. This prevents
+> >> constantly promoting mTHPs to the next available size, which would occ=
+ur
+> >> because a collapse introduces more non-zero pages that would satisfy t=
+he
+> >> promotion condition on subsequent scans.
 > >
-> > With this configuration, a successful collapse to order N will populate
-> > enough pages to satisfy the collapse condition on order N+1 on the next
-> > scan. This leads to unnecessary work and memory churn.
+> > Hm. Maybe instead of capping at HPAGE_PMD_NR/2 - 1 we can count
+> > all-zeros 4k as none_or_zero? It mirrors the logic of shrinker.
 > >
-> > To fix this issue introduce a helper function that caps the max_ptes_no=
-ne
-> > to HPAGE_PMD_NR / 2 - 1 (255 on 4k page size). The function also scales
-> > the max_ptes_none number by the (PMD_ORDER - target collapse order).
 >
-> I would say very clearly that this is only in the mTHP case.
+> I am all for not adding any more ugliness on top of all the ugliness we
+> added in the past.
+>
+> I will soon propose deprecating that parameter in favor of something
+> that makes a bit more sense.
+>
+> In essence, we'll likely have an "eagerness" parameter that ranges from
+> 0 to 10. 10 is essentially "always collapse" and 0 "never collapse if
+> not all is populated".
+Hi David,
 
-ack, I stole most of the verbiage here from other notes I've
-previously written, but it can be improved.
+Do you have any reason for 0-10, I'm guessing these will map to
+different max_ptes_none values.
+I suggest 0-5, mapping to 0,32,64,128,255,511
 
->
->
-> >
-> > Signed-off-by: Nico Pache <npache@redhat.com>
->
-> Hmm I thought we were going to wait for David to investigate different
-> approaches to this?
->
-> This is another issue with quickly going to another iteration. Though I d=
-o think
-> David explicitly said he'd come back with a solution?
+You can take my collapse_max_ptes_none() function in this series and
+rework it for the larger sysctl work you are doing.
 
-Sorry I thought that was being done in lockstep. The last version was
-about a month ago and I had a lot of changes queued up. Now that we
-have collapse_max_pte_none() David has a much easier entry point to
-work off :)
-
-I think he will still need this groundwork for the solution he is
-working on with "eagerness". if 10 -> 511, and 9 ->255, ..., 0 -> 0.
-It will still have to do the scaling. Although I believe 0-10 should
-be more like 0-5 mapping to 0,32,64,128,255,511
-
+Cheers,
+-- Nico
 >
-> So I'm not sure why we're seeing this solution here? Unless I'm missing
-> something?
+> In between we will have more flexibility on how to set these values.
 >
-> > ---
-> >  mm/khugepaged.c | 22 +++++++++++++++++++++-
-> >  1 file changed, 21 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> > index b0ae0b63fc9b..4587f2def5c1 100644
-> > --- a/mm/khugepaged.c
-> > +++ b/mm/khugepaged.c
-> > @@ -468,6 +468,26 @@ void __khugepaged_enter(struct mm_struct *mm)
-> >               wake_up_interruptible(&khugepaged_wait);
-> >  }
-> >
-> > +/* Returns the scaled max_ptes_none for a given order.
+> Likely 9 will be around 50% to not even motivate the user to set
+> something that does not make sense (creep).
 >
-> We don't start comments at the /*, please use a normal comment format lik=
-e:
-ack
+> Of course, the old parameter will have to stick around in compat mode.
 >
-> /*
->  * xxxx
->  */
+> --
+> Cheers
 >
-> > + * Caps the value to HPAGE_PMD_NR/2 - 1 in the case of mTHP collapse t=
-o prevent
->
-> This is super unclear.
->
-> It start with 'caps the xxx' which seems like you're talking generally.
->
-> You should say very clearly 'For PMD allocations we apply the
-> khugepaged_max_ptes_none parameter as normal. For mTHP ... [details about=
- mTHP].
-ack I will clean this up.
->
-> > + * a feedback loop. If max_ptes_none is greater than HPAGE_PMD_NR/2, t=
-he value
-> > + * would lead to collapses that introduces 2x more pages than the orig=
-inal
-> > + * number of pages. On subsequent scans, the max_ptes_none check would=
- be
-> > + * satisfied and the collapses would continue until the largest order =
-is reached
-> > + */
->
-> This is a super vauge explanation. Please describe the issue with creep m=
-ore
-> clearly.
-ok I will try to come up with something clearer.
->
-> Also aren't we saying that 511 or 0 are the sensible choices? But now som=
-ehow
-> that's not the case?
-Oh I stated I wanted to propose this, and although there was some
-pushback I still thought it deserved another attempt. This still
-allows for some configurability, and with David's eagerness toggle
-this still seems to fit nicely.
->
-> You're also not giving a kdoc info on what this returns.
-Ok I'll add a kdoc here, why this function in particular, I'm trying
-to understand why we dont add kdocs on other functions?
->
-> > +static int collapse_max_ptes_none(unsigned int order)
->
-> It's a problem that existed already, but khugepaged_max_ptes_none is an u=
-nsigned
-> int and this returns int.
->
-> Maybe we should fix this while we're at it...
-ack
->
-> > +{
-> > +     int max_ptes_none;
-> > +
-> > +     if (order !=3D HPAGE_PMD_ORDER &&
-> > +         khugepaged_max_ptes_none >=3D HPAGE_PMD_NR/2)
-> > +             max_ptes_none =3D HPAGE_PMD_NR/2 - 1;
-> > +     else
-> > +             max_ptes_none =3D khugepaged_max_ptes_none;
-> > +     return max_ptes_none >> (HPAGE_PMD_ORDER - order);
-> > +
-> > +}
-> > +
->
-> I really don't like this formulation, you're making it unnecessarily uncl=
-ear and
-> now, for the super common case of PMD size, you have to figure out 'oh it=
-'s this
-> second branch and we're subtracting HPAGE_PMD_ORDER from HPAGE_PMD_ORDER =
-so just
-> return khugepaged_max_ptes_none'. When we could... just return it no?
->
-> So something like:
->
-> #define MAX_PTES_NONE_MTHP_CAP (HPAGE_PMD_NR / 2 - 1)
->
-> static unsigned int collapse_max_ptes_none(unsigned int order)
-> {
->         unsigned int max_ptes_none_pmd;
->
->         /* PMD-sized THPs behave precisely the same as before. */
->         if (order =3D=3D HPAGE_PMD_ORDER)
->                 return khugepaged_max_ptes_none;
->
->         /*
->         * Bizarrely, this is expressed in terms of PTEs were this PMD-siz=
-ed.
->         * For the reasons stated above, we cap this value in the case of =
-mTHP.
->         */
->         max_ptes_none_pmd =3D MIN(MAX_PTES_NONE_MTHP_CAP,
->                 khugepaged_max_ptes_none);
->
->         /* Apply PMD -> mTHP scaling. */
->         return max_ptes_none >> (HPAGE_PMD_ORDER - order);
-> }
-yeah that's much cleaner thanks!
->
-> >  void khugepaged_enter_vma(struct vm_area_struct *vma,
-> >                         vm_flags_t vm_flags)
-> >  {
-> > @@ -554,7 +574,7 @@ static int __collapse_huge_page_isolate(struct vm_a=
-rea_struct *vma,
-> >       struct folio *folio =3D NULL;
-> >       pte_t *_pte;
-> >       int none_or_zero =3D 0, shared =3D 0, result =3D SCAN_FAIL, refer=
-enced =3D 0;
-> > -     int scaled_max_ptes_none =3D khugepaged_max_ptes_none >> (HPAGE_P=
-MD_ORDER - order);
-> > +     int scaled_max_ptes_none =3D collapse_max_ptes_none(order);
-> >       const unsigned long nr_pages =3D 1UL << order;
-> >
-> >       for (_pte =3D pte; _pte < pte + nr_pages;
-> > --
-> > 2.51.0
-> >
->
-> Thanks, Lorenzo
+> David / dhildenb
 >
 
 
