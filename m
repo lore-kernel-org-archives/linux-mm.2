@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11A0ACAC582
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 15:11:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0141ECAC582
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 15:11:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E0906B00BD; Fri, 12 Sep 2025 11:11:06 -0400 (EDT)
+	id 5F6186B00BF; Fri, 12 Sep 2025 11:11:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B8696B00BF; Fri, 12 Sep 2025 11:11:06 -0400 (EDT)
+	id 5CE216B00C1; Fri, 12 Sep 2025 11:11:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A7936B00C0; Fri, 12 Sep 2025 11:11:06 -0400 (EDT)
+	id 4BCDA6B00C2; Fri, 12 Sep 2025 11:11:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 46F3C6B00BD
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 11:11:06 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0B1BA11AEF3
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 15:11:06 +0000 (UTC)
-X-FDA: 83880936132.09.C4CC1AA
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 1B2094000E
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 15:11:03 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=IUBFqS3n;
-	spf=pass (imf04.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.128.176 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3991A6B00BF
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 11:11:11 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DF53B5B967
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 15:11:10 +0000 (UTC)
+X-FDA: 83880936300.22.9F17CEA
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
+	by imf14.hostedemail.com (Postfix) with ESMTP id DD6B5100014
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 15:11:08 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=bPCtJIrw;
+	dmarc=pass (policy=none) header.from=linaro.org;
+	spf=pass (imf14.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.128.181 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757689868; a=rsa-sha256;
+	cv=none;
+	b=4pZIrYCgcT5qBKqq5HrpI9qM1mBSXkWIsOdAYYGUGjMXrrFw0ngbf7OnOSpmFLiuLNNGHN
+	hTNIoMnuzCNBtaZA2oIgzoOzqz7efU6O1hz1ovmbkRz4HhsMo40gn8oKQQCnaZxZ566O3Y
+	fO2mDja6F7WJcyT+K8fbex1P3vIu+js=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=bPCtJIrw;
+	dmarc=pass (policy=none) header.from=linaro.org;
+	spf=pass (imf14.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.128.181 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757689864;
+	s=arc-20220608; t=1757689868;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UNgnuqtXCBxfx2G2dXAsaT/aGFlSDDhwnEcansq3QOI=;
-	b=BGwXajDN8DNac6MQNJ3a35sJ+c8IFSgYUeIspU5AaDFdvIXu+JFWta0PROygIPLndPNmT4
-	tSA/bEYKn4FGqThsSff3uBIDJPGkezAsYyK1gRO178ac1/jXr1cllX5VnPD05LpLFdP1AQ
-	GZS60iBWNkBUPjtoLRPY2T6GWLT8CPA=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=IUBFqS3n;
-	spf=pass (imf04.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.128.176 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757689864; a=rsa-sha256;
-	cv=none;
-	b=gzNM1ZriKqXGX2coxTmJNr5MSBKXxdbwqLTHwhpLZNSV6OpMuRd1C022zrHY3GeJUr2pZP
-	W2zWK6gHGbf79yHJh+rUzP0DCGbXnqbOz15Bz/OaFGSUjSe3EpNNmoKiQp4rMjmUOlVrlC
-	zuj3ZegihI+GPsdRg1QVAleQ8wIhj14=
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-71d6051afbfso14337347b3.2
-        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 08:11:03 -0700 (PDT)
+	bh=TgoQ+woT/93cBsRw8kKeoK5/i5b3BJOE5ioHeOB3mNE=;
+	b=Gx5Y+8uJbv0Tldtmx2kiRXuK1wpoy4RULI17ElnJbTfkX2qRdPUsb0t5XjmSLabo5eHZt8
+	8+KVkJobsN1iE8GuVIB9Ay7R9RnWxfPuYx6rvv3b7GSDBJENSNPHpWepxMenWe/e9Zw6ma
+	YIGJXg/Ww8Xx5ueUOcOvSK8l2IyT2nM=
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-72e565bf2feso14087587b3.3
+        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 08:11:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1757689863; x=1758294663; darn=kvack.org;
+        d=linaro.org; s=google; t=1757689868; x=1758294668; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=UNgnuqtXCBxfx2G2dXAsaT/aGFlSDDhwnEcansq3QOI=;
-        b=IUBFqS3nV2BFINFKit6IAu/e3dd3FhDETCWkEH/cqbA19HJON3S0jeX+9J/+HRrgES
-         9cNo8jVR3MS+ZU0FEKX8k63wh5nzcMorV3Kz7Jw1jeYM1p49h3AnkoD23shXVIpBZc+O
-         lh5N1JxymXpjZvUAi7NnhIagf1x5rT0I0E3750Z8rusY/qF29p7CbnhUkikTqOk74qCF
-         IYo+TWJilf0ihGktgmvnkb3CGilcy55oer7i96VnOSvlCPYlhdpVSLeV1ohv6TJ0Zccv
-         h6vx4FlPIlNb6lvM8F5T44Cv5UVIBAWDKaiOqHOBSevskYQUSWPqFw9atUPon56Y7dIN
-         fPjQ==
+        bh=TgoQ+woT/93cBsRw8kKeoK5/i5b3BJOE5ioHeOB3mNE=;
+        b=bPCtJIrw6YsnSq4Dx8KNpfnY1Cp6UabbZ61vPsmxh1ZNeXMH1/txTTEjUJvFtzZcKO
+         0kVsRDkXvnPH/+qFBduYZS0PC2SLk5dfhxE8BifsmBVe9lBW8kn8QyyyZfZNnjD79JWa
+         m5WrRiwVm3QXIOARJmBwdyDoWLi6b0F9MxYyCK7gObK/C9CmVglBHeTV5XjB4YcslpI6
+         Nq1+QBlI615vJwRPF8/C1fFfI7/EiLixGjrjZ0WXSRAZHxsq5azehFQnw7M6HaV2+0Uz
+         x8iORnYfzymJ9jsn8B8SSg9nFsg3yjFX4ecl9T9/nyhcf9seSj40ewJYLXhDLfwrrjGE
+         EoCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757689863; x=1758294663;
+        d=1e100.net; s=20230601; t=1757689868; x=1758294668;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=UNgnuqtXCBxfx2G2dXAsaT/aGFlSDDhwnEcansq3QOI=;
-        b=QJDgrOfo9Ygt6N2VzIxwPKJRoz6RZyH8T9OgSBV9z90VgrkXN026QP7JG/cgskeiX1
-         qerbbiXcX0MZT3cMe7weVFtNjR/ROStJe0hNIVHgrCtVYrJ7TeiduA5KonQ3CUJFBFaE
-         xUmQEl/yvYj5QXvi6eCwWUpIKDDZosx/g3x+lfLUWD4khtLQHd0JUDlaHMwAwZe38pbh
-         sqOrV0R0BlmQPCodF2XKDbkTk3bglLHxjYdP/dl3pRmytyheA/wl8S3lpOMOYdurQDwM
-         vW9RLlTcOe9cpf3SHC57IjkNV25P3tnE6QVjxUynV5C62lCzPiExjq1vw7kGf5pTqXDR
-         RJfw==
-X-Forwarded-Encrypted: i=1; AJvYcCU626pUqRMkBNiQVsbZHvvYAZrW7ttzd6/ftpYnA7939toyFmFjjfYEAeafTuP8TbHuTQhluJrY3Q==@kvack.org
-X-Gm-Message-State: AOJu0YwYt4LMKtyHh46NJmLRugYP6+l0KS9aSgCWB+67xTA1LxcNHs38
-	3GA/dgnstVMdK/NsUC6wBjGIMzEU9Fu0biM2C4N89a0M+p56lNu24DHau1ME+FyMT6k=
-X-Gm-Gg: ASbGncvsxQLSbrjwvmWlRh0Fhz4FzeECDD/OI4HFzqa9U0+WuxfTk4Gogf0nt3fTZF6
-	aM5dGQxKr30wq0jl/l+pZClgezcW2Hy5JVxOegsrffrAVui7n+53/CO8zzGiJTUPw8FJwluAzFB
-	i7ywG9zEn+00qI9E0oCxwxDIczJMXwyeKeG8g+a6/9FWmn30x4X9BgNnB0qf/w84si4IaeEiEt0
-	fZh4uJYxnQj0q60lAQAvrxvqtV/y3xbff0191kGaaEc00rsez+k8hLf3cEiOykz5XTGCeSInvIp
-	ugw4uNv8t0qrIUJfun7RSaRghYWVfzO9BeKjIKAM5f1CNe/oRiJ887PsrkOGAR9OgWUbF52Zo2U
-	VdxSMj8pS6EeWLSKZpNBHObP6BAKeSt/0aQ==
-X-Google-Smtp-Source: AGHT+IEtne9c9aNxfz8OotnYXAiNsAB4JCtq87oaoJ7ML/Nd9NUoYp51pIa4pWBpc4rPSN6ehP6TAw==
-X-Received: by 2002:a05:690c:9688:b0:721:1c48:a627 with SMTP id 00721157ae682-730627c990emr26695147b3.6.1757689862953;
-        Fri, 12 Sep 2025 08:11:02 -0700 (PDT)
+        bh=TgoQ+woT/93cBsRw8kKeoK5/i5b3BJOE5ioHeOB3mNE=;
+        b=tT76dgZiRh8r0mn+6wfMmC1VztiEQNVRNds/TQI1xNjxMaOUc+hOYIj7bOr5tUQILH
+         TbstvufvOpezBeiQ9HIOc+0PVacvEecXYBqGLlaCwUsw3amZhQR4oOB3jiE4Yua8j1a1
+         FvzXTSCGtwHX8OY/oFmeY8U0JYqLdcR7Zy3rnocjY+5vYVTXl5qI1ULAMpw8xi/vUPKy
+         zBTZ89wrO3m7YerDxdiA/ZbMXFI+28+DlIQv5vVQKfWQTL/ALtSa2omgOd1SscrM1Tlq
+         k9ckG+vNCZOqZf5X6UH3xSeJEifPnIdmeq1u8qi04lQ1CPvpTauw6CDyh0tQdY07+kS0
+         i16A==
+X-Forwarded-Encrypted: i=1; AJvYcCXyGnVGpiXVr2zTD/2MtQ/cXLYc1G4/baONSsc0eBHA3wNlJAruMI226bHrjL/Np0SxTOfw3+Jurg==@kvack.org
+X-Gm-Message-State: AOJu0YxmLwKMnaF4hzWA/LzqKHxgmHgcthZPHq4JQB2L0pGUj+XH5HMG
+	uit+290JUH4sgL+t12MmauM/+Kj57DMvaCGzP6Iv9wuKpHes88C2ii0OTtn6WdwaKv8=
+X-Gm-Gg: ASbGncsWgkgzF//xFFcteGpP2CjrqA5HUXgBlQHDssNDxiH0qtT2AvMEnYdtE4ejKyX
+	2HIefbJwZTEqIVTFq3xyk5zAR2NxdtGXAmBflhIpAGywiP9X18K7E2+dUUhgUKnTbdZsr/A4DoX
+	zQga3Hub+ZQhVHFWKgoLOA4xRM/Rr5pmToPJQ1kVN9FrVFy34AZoMtgBa4gJWgDsUbks1PF1M0x
+	WS41mIf6DxQs+xOVT9pw3iWY76akBprjobmartLBR6MlluKe1Cb4hcZJfjApHyqcY46pcor+eNt
+	h2AdxouPS0BHlaH+C90TXa3I+5BMt3m/Lu+bhgBtNDii4Lh26z2lJuXlRPSg+nzK6fPrjJv+mHz
+	fOD1nHH2Zov+NLquqsS20h9mipkLrhHti9Q==
+X-Google-Smtp-Source: AGHT+IGUcGV4IM3PVToM3wIMhJFlncT19Inxpe70tej0adAKBemPa7cOoqolhGXuc6qPV6B9GeZ9vg==
+X-Received: by 2002:a05:690c:f92:b0:70e:2d17:84b5 with SMTP id 00721157ae682-7305f99fd82mr33784177b3.0.1757689867582;
+        Fri, 12 Sep 2025 08:11:07 -0700 (PDT)
 Received: from eugen-station.. ([145.224.119.89])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-624841586c1sm1302244d50.6.2025.09.12.08.10.58
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-624841586c1sm1302244d50.6.2025.09.12.08.11.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Sep 2025 08:11:02 -0700 (PDT)
+        Fri, 12 Sep 2025 08:11:07 -0700 (PDT)
 From: Eugen Hristev <eugen.hristev@linaro.org>
 To: linux-arm-msm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
@@ -110,22 +110,22 @@ Cc: tudor.ambarus@linaro.org,
 	linux-doc@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	Eugen Hristev <eugen.hristev@linaro.org>
-Subject: [RFC][PATCH v3 14/16] kernel/vmcoreinfo: Register kmemdump core image information
-Date: Fri, 12 Sep 2025 18:08:53 +0300
-Message-ID: <20250912150855.2901211-15-eugen.hristev@linaro.org>
+Subject: [RFC][PATCH v3 15/16] kmemdump: Add Kinfo backend driver
+Date: Fri, 12 Sep 2025 18:08:54 +0300
+Message-ID: <20250912150855.2901211-16-eugen.hristev@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250912150855.2901211-1-eugen.hristev@linaro.org>
 References: <20250912150855.2901211-1-eugen.hristev@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1B2094000E
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: DD6B5100014
+X-Stat-Signature: yuz9cnbfkw57mwoktwdy1jwytkfn45rj
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: wtb73m9c1nwjo68u6c464yzn7kyfqd8w
-X-HE-Tag: 1757689863-874218
-X-HE-Meta: U2FsdGVkX1/GWK61BEU8D6PoA5zX3nf+Rnwd5il+xd4JK3OyafoPtCKm5RptdBiY+iLSWkaO1cGCn8kBobrlOJLZUTtZsl8iHHf8eHl5CK2KuRBsL3cb2cXCx4xpREuFeJAX2QCZ3j4HePjDgeiMxYIF6AcRuEjU9OMRIhbR/fILs2dDzFjAeodSoZGtOk0kUII17tjwVqjGJjFrqSezE4Dk0H9s0bYOaSLM+9RPb7eDQN6dairDdxv+e65xVt3cX97kRHT0FDNDxcMGJ9iJY3ZEg1NoDMMmZAbgTKZhUSawKnB/Gcr5yG2/hCp/HRviR7cyciYd2q4GxKYnJOBErAfhJAEoXiqfHAKyyQ2DXJOZivCKpxi0YcBBAl9wO57qLf2HaJYkaY19w7Lo7yoDiYjETG95vQ1m5f6B5pwsg0+MCGGR6Pmin+eS3zKwiVie/GothAOXws7LghGfNr6od54aB60rFYnG1zN/E4cnG58+Oxa/VwmdhGkMobuPkdkqe8hglfoz1+5/wyT6neOIVCAZaEH4tI61iLCMt+P9qd8SbYI1tGUWGOpLJaBxKCiMJ+5SGb0ZyohSzOo2iBs1KlkBDgfg3AbOtGTKWIHcfRao1q4VgKXUPsS+GmX78Eac5Wg+ys/lt5Tn1psdqy8BKgjbmCE/RL18lW0+Yto/6ZHLqhTZnMRSUYhRZ3Ejox3KcpRVfF0ld+//27B/HYwYOG8XC9XykepHK/FsqYWWb4rTyc//z08cfsWYI2+v9UvJo+lu5UajJcHbS7xVH9B8S/xblMJ7J9D3h3xvGscRdUfH5rQOn51+yOXqIzR2e1Ua8yjpQJfCU/PWc6Tyo4kKObP/rHXiMBSErEnKj0q3HiHwI/77pzVv7ucP8lTgcXzuOd40xs0cVFfxVHRpqywZVosDHbWIp5lO22kH9ueBgWS9GqRwDhKLaxQECupSNMBXQeXzz56Ui0Q3uAxckLo
- kPgOTTAF
- 7wr5i4UBLr8yVk1RtbCCtCjdusSCz648JDEg05sXRX5+5IdwHCVP1sdKHBhq3HOM7VkzR/FnJ6MoB708NUvTOE8L95xYS7AG+tCkDKHUfdTywXq4MGhmeNjyiamZgqwLZ7urIEV6aAC72LEqdkJ7IYsUhz30ase6zAJi2WvokhsRKl4zScFQhBf61KqTe4u/QXcaXdgDz3K8ZjaHNvXRLgA1O/191A2L94wYJjaj2LoyEMm4KVVtS81l0SiE7yylkVGY9B981sYUfKRMPL+sDVYmJ5hNTIW37uDZlYJDTraFF9OCRX4sAhc1v265VLEgONBHiwS4edu/OMNPcmQqYjAKGn3ZyxqEcTTQcG4f7LKmpI/M=
+X-HE-Tag: 1757689868-203221
+X-HE-Meta: U2FsdGVkX18hzkwBiM9zivgKYK0aTrfFOVQdWRD8b5hbOiyEDShkZlURpqxXSmhiRRwbhREyXjch+sNk+V2yx5oEnQfHZn44YnRPy4ZOnQbsNPWVFP6mESJkdP4D2lfm6wBTqa9Inu7+b5oZpIT7qo+Fk1OP0w3h88MdI4pn7pYxE1924hwgak71TEfdgZECPyvoRJyy11MIHCps8opr5kuPxKha2IUGn1iu+FBJYuLe9PMh3MVhFQnlW/g1KhFiuR5iQ6l1f3bdOx+HWHEfOjiMqOTyHk2QJ9S/dTwEApUzjvfC8i3Wg5UAksQGLzkXwOPPHdhw4yX06TrDUEWUCZ5THZlTAfZ2faQoadVdhInLJWtuxHXfIqhetYcsTzph903rY/yfzLm6LWHp5gOQOqNgjqsWSSmyQC8PrPgzk5YUfaA8lkC/6ie5nimGoTYlm7pcFkJxnTCvUAt0Qil/wAqpwV1NK9i3ha0Vlbe2W0eeVp8tGAHXsOIlodJxcyN1tRNl3mbZGjWr7uHf6k08Zv1rHqFCBt7tW2e1e/u2vnyMOq+A7ruz59vBKh6PLSFXYFahA37EsQ3dIjMToknhPaEPfXfylZcovbGqYRIbX6/DglHI5rB3MWGy2Rq59KbxXK1MxQ1pgwhuy6TkXRonbeSLb2GIJVNYA5oLExtb4Uk1qng8qLr3rzPGXu8jHlKxwhzIhg4AcCPF8zpvXgS1iySFzapOIHHw+RZCbuXbYGVktvqPGy1RWbC3cLlUBRzW5ULiJokvlornNmbWw0FViinCtXiJ9Uzy44o2LKynjVYkOa/YA3FexnPnSLL45i+r6AK5bpToDeW6H2y7+wq9DU3sTRUyDi6t6s/WcQmwwnTJkPoRAv735K/gXoMOhJX2AxocufOjFF8voYR2zbwmgtVAOXf8oTnqLhFHxPfK5RFsYjxfsKLi4cuKWHXLyaXQBGEqFZeQKqJoMzURBng
+ 4ROJlRIz
+ yaVFhMb3un35PC8/6/a5wPL2iU/ySJiEPzbWmxenzrFDF2Nyc9TcmXVqBB+aed+xRwZrD3CmBfgvv7UdMgTHk9mdgMIgjlZlSi+FhohdjvBLitxJxoUY03MVhxDBrQZ24bDKxMi5Ti6TZoSO6M6cCQMWTxF4i1CTR9n64mfrM0o8O5z80n9hY7VvgIJHfGnh39Jr3seRnYxbLLMPs3Zlczj5JD5z8jNSS6YXRwFpzooaLGm++pYQqG8x6/NhnBvyIIaZ4XArl0JtV0rP3oBKjxiRwbF7MEUbauqSa/8cejzxqNCS4aoP5JnacbsBh24vUg4BUrDWxKig0IwmROP+kUMzwaDbOEGDLckmSUw3dtwngdYkuOVWQKsVDasgIFZCjsQtKFBsCjPuVwadTlttofoUStX9wMm8EAdqYCx9+zr2D+1/46XLbRV9hp0wCf3E2Q+Av
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,183 +134,366 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The coreimage generated by kmemdump requires some kernel information
-in order to be successfully loaded by `crash` or gdb.
-Register all this information through vmcoreinfo once vmcoreinfo is setup.
+Add Kinfo backend driver.
+This backend driver will select only regions of interest for the firmware,
+and it copy those into a shared memory area that is supplied via OF.
+The firmware is only interested in addresses for some symbols.
+The list format is kinfo-compatible, with devices like Google Pixel phone.
 
 Signed-off-by: Eugen Hristev <eugen.hristev@linaro.org>
 ---
- kernel/vmcore_info.c | 141 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 141 insertions(+)
+ MAINTAINERS               |   5 +
+ mm/kmemdump/Kconfig.debug |  13 ++
+ mm/kmemdump/Makefile      |   1 +
+ mm/kmemdump/kinfo.c       | 293 ++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 312 insertions(+)
+ create mode 100644 mm/kmemdump/kinfo.c
 
-diff --git a/kernel/vmcore_info.c b/kernel/vmcore_info.c
-index 3e2e846ba9c8..1d83e95cf9be 100644
---- a/kernel/vmcore_info.c
-+++ b/kernel/vmcore_info.c
-@@ -15,6 +15,7 @@
- #include <linux/memblock.h>
- #include <linux/kmemleak.h>
- #include <linux/kmemdump.h>
-+#include <linux/sched/stat.h>
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 8234acb24cbc..65d9e5db46a9 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -13818,6 +13818,11 @@ F:	include/linux/kmemdump.h
+ F:	mm/kmemdump/kmemdump.c
+ F:	mm/kmemdump/kmemdump_coreimage.c
  
- #include <asm/page.h>
- #include <asm/sections.h>
-@@ -24,6 +25,17 @@
- #include "kallsyms_internal.h"
- #include "kexec_internal.h"
- 
-+void sched_get_runqueues_area(void **start, size_t *size);
++KMEMDUMP KINFO BACKEND DRIVER
++M:	Eugen Hristev <eugen.hristev@linaro.org>
++S:	Maintained
++F:	mm/kmemdump/kinfo.c
 +
-+extern unsigned int nr_irqs;
-+extern unsigned long tainted_mask;
-+extern unsigned int nr_swapfiles;
+ KMEMDUMP QCOM MINIDUMP BACKEND DRIVER
+ M:	Eugen Hristev <eugen.hristev@linaro.org>
+ S:	Maintained
+diff --git a/mm/kmemdump/Kconfig.debug b/mm/kmemdump/Kconfig.debug
+index 91cec45bc3ca..ff88bf8017ae 100644
+--- a/mm/kmemdump/Kconfig.debug
++++ b/mm/kmemdump/Kconfig.debug
+@@ -38,3 +38,16 @@ config KMEMDUMP_QCOM_MINIDUMP_BACKEND
+ 	  into the minidump table of contents. Further on, the firmware
+ 	  will be able to read the table of contents and extract the
+ 	  memory regions on case-by-case basis.
 +
-+#ifdef CONFIG_IKCONFIG_PROC
-+extern char kernel_config_data;
-+extern char kernel_config_data_end;
-+#endif
++config KMEMDUMP_KINFO_BACKEND
++	tristate "Shared memory KInfo compatible backend"
++	depends on KMEMDUMP
++	select VMCORE_INFO
++	help
++	  Say y here to enable the Shared memory KInfo compatible backend
++	  driver.
++	  With this backend, the registered regions are copied to a shared
++	  memory zone at register time.
++	  The shared memory zone is supplied via OF.
++	  This backend will select only regions that are of interest,
++	  and keep only addresses. The format of the list is Kinfo compatible.
+diff --git a/mm/kmemdump/Makefile b/mm/kmemdump/Makefile
+index 6ec3871203ef..1ec94ee6c008 100644
+--- a/mm/kmemdump/Makefile
++++ b/mm/kmemdump/Makefile
+@@ -3,3 +3,4 @@
+ obj-y += kmemdump.o
+ obj-$(CONFIG_KMEMDUMP_COREIMAGE) += kmemdump_coreimage.o
+ obj-$(CONFIG_KMEMDUMP_QCOM_MINIDUMP_BACKEND) += qcom_minidump.o
++obj-$(CONFIG_KMEMDUMP_KINFO_BACKEND) += kinfo.o
+diff --git a/mm/kmemdump/kinfo.c b/mm/kmemdump/kinfo.c
+new file mode 100644
+index 000000000000..9f0ec8a1aaa2
+--- /dev/null
++++ b/mm/kmemdump/kinfo.c
+@@ -0,0 +1,293 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ *
++ * Copyright 2002 Rusty Russell <rusty@rustcorp.com.au> IBM Corporation
++ * Copyright 2021 Google LLC
++ * Copyright 2025 Linaro Ltd. Eugen Hristev <eugen.hristev@linaro.org>
++ */
++#include <linux/platform_device.h>
++#include <linux/kallsyms.h>
++#include <linux/module.h>
++#include <linux/of.h>
++#include <linux/of_reserved_mem.h>
++#include <linux/kmemdump.h>
++#include <linux/module.h>
++#include <linux/utsname.h>
 +
- /* vmcoreinfo stuff */
- unsigned char *vmcoreinfo_data;
- size_t vmcoreinfo_size;
-@@ -121,8 +133,137 @@ EXPORT_SYMBOL(paddr_vmcoreinfo_note);
- 
- static void vmcoreinfo_kmemdump(void)
- {
-+	void *start;
-+	size_t size;
-+	int i;
++#define BUILD_INFO_LEN		256
++#define DEBUG_KINFO_MAGIC	0xCCEEDDFF
 +
- 	kmemdump_register_id(KMEMDUMP_ID_COREIMAGE_VMCOREINFO,
- 			     (void *)vmcoreinfo_data, vmcoreinfo_size);
-+	kmemdump_register_id(KMEMDUMP_ID_COREIMAGE_linux_banner,
-+			     (void *)&linux_banner, banner_len);
-+	kmemdump_register_id(KMEMDUMP_ID_COREIMAGE_init_uts_ns,
-+			     (void *)&init_uts_ns, sizeof(init_uts_ns));
++/*
++ * Header structure must be byte-packed, since the table is provided to
++ * bootloader.
++ */
++struct kernel_info {
++	/* For kallsyms */
++	__u8 enabled_all;
++	__u8 enabled_base_relative;
++	__u8 enabled_absolute_percpu;
++	__u8 enabled_cfi_clang;
++	__u32 num_syms;
++	__u16 name_len;
++	__u16 bit_per_long;
++	__u16 module_name_len;
++	__u16 symbol_len;
++	__u64 _relative_pa;
++	__u64 _text_pa;
++	__u64 _stext_pa;
++	__u64 _etext_pa;
++	__u64 _sinittext_pa;
++	__u64 _einittext_pa;
++	__u64 _end_pa;
++	__u64 _offsets_pa;
++	__u64 _names_pa;
++	__u64 _token_table_pa;
++	__u64 _token_index_pa;
++	__u64 _markers_pa;
++	__u64 _seqs_of_names_pa;
 +
-+	sched_get_runqueues_area(&start, &size);
-+	kmemdump_register_id(KMEMDUMP_ID_COREIMAGE_runqueues,
-+			     (void *)start, size);
++	/* For frame pointer */
++	__u32 thread_size;
 +
-+#ifdef CONFIG_IKCONFIG_PROC
-+	/* Register 8 bytes before and after, to catch the marker too */
-+	kmemdump_register_id(KMEMDUMP_ID_COREIMAGE_CONFIG,
-+			     (void *)&kernel_config_data - 8,
-+			     &kernel_config_data_end - &kernel_config_data + 16);
-+#endif
++	/* For virt_to_phys */
++	__u64 swapper_pg_dir_pa;
 +
-+	kmemdump_register_id(KMEMDUMP_ID_COREIMAGE___cpu_possible_mask,
-+			     (void *)&__cpu_possible_mask,
-+			     sizeof(__cpu_possible_mask));
-+	kmemdump_register_id(KMEMDUMP_ID_COREIMAGE___cpu_active_mask,
-+			     (void *)&__cpu_active_mask,
-+			     sizeof(__cpu_active_mask));
-+	kmemdump_register_id(KMEMDUMP_ID_COREIMAGE___cpu_online_mask,
-+			     (void *)&__cpu_online_mask,
-+			     sizeof(__cpu_online_mask));
-+	kmemdump_register_id(KMEMDUMP_ID_COREIMAGE___cpu_present_mask,
-+			     (void *)&__cpu_present_mask,
-+			     sizeof(__cpu_present_mask));
++	/* For linux banner */
++	__u8 last_uts_release[__NEW_UTS_LEN];
 +
-+	kmemdump_register_id(KMEMDUMP_ID_COREIMAGE_nr_irqs,
-+			     (void *)&nr_irqs, sizeof(nr_irqs));
++	/* Info of running build */
++	__u8 build_info[BUILD_INFO_LEN];
 +
-+	kmemdump_register_id(KMEMDUMP_ID_COREIMAGE_tainted_mask,
-+			     (void *)&tainted_mask, sizeof(tainted_mask));
-+	kmemdump_register_id(KMEMDUMP_ID_COREIMAGE_taint_flags,
-+			     (void *)&taint_flags, sizeof(taint_flags));
++	/* For module kallsyms */
++	__u32 enabled_modules_tree_lookup;
++	__u32 mod_mem_offset;
++	__u32 mod_kallsyms_offset;
++} __packed;
 +
-+	kmemdump_register_id(KMEMDUMP_ID_COREIMAGE_jiffies_64,
-+			     (void *)&jiffies_64, sizeof(jiffies_64));
++struct kernel_all_info {
++	__u32 magic_number;
++	__u32 combined_checksum;
++	struct kernel_info info;
++} __packed;
 +
-+	kmemdump_register_id(KMEMDUMP_ID_COREIMAGE_nr_threads,
-+			     (void *)&nr_threads, sizeof(nr_threads));
++struct debug_kinfo {
++	struct device *dev;
++	void *all_info_addr;
++	u32 all_info_size;
++	struct kmemdump_backend kinfo_be;
++};
 +
-+	kmemdump_register_id(KMEMDUMP_ID_COREIMAGE_node_states,
-+			     (void *)&node_states, sizeof(node_states));
++static struct debug_kinfo *kinfo;
 +
-+	kmemdump_register_id(KMEMDUMP_ID_COREIMAGE_init_mm,
-+			     (void *)&init_mm, sizeof(init_mm));
-+	kmemdump_register_id(KMEMDUMP_ID_COREIMAGE_init_mm_pgd,
-+			     (void *)&init_mm.pgd, sizeof(*init_mm.pgd));
++#define be_to_kinfo(be) container_of(be, struct debug_kinfo, kinfo_be)
 +
-+	kmemdump_register_id(KMEMDUMP_ID_COREIMAGE__totalram_pages,
-+			     (void *)&_totalram_pages, sizeof(_totalram_pages));
++static void update_kernel_all_info(struct kernel_all_info *all_info)
++{
++	int index;
++	struct kernel_info *info;
++	u32 *checksum_info;
 +
-+	kmemdump_register_id(KMEMDUMP_ID_COREIMAGE_nr_swapfiles,
-+			     (void *)&nr_swapfiles, sizeof(nr_swapfiles));
++	all_info->magic_number = DEBUG_KINFO_MAGIC;
++	all_info->combined_checksum = 0;
 +
-+	kmemdump_register_id(KMEMDUMP_ID_COREIMAGE___per_cpu_offset,
-+			     (void *)&__per_cpu_offset, sizeof(__per_cpu_offset));
++	info = &all_info->info;
++	checksum_info = (u32 *)info;
++	for (index = 0; index < sizeof(*info) / sizeof(u32); index++)
++		all_info->combined_checksum ^= checksum_info[index];
++}
 +
-+	kmemdump_register_id(KMEMDUMP_ID_COREIMAGE_high_memory,
-+			     (void *)&high_memory, sizeof(high_memory));
-+#ifdef CONFIG_NUMA
-+	kmemdump_register_id(KMEMDUMP_ID_COREIMAGE_node_data,
-+			     (void *)&node_data,
-+			     MAX_NUMNODES * sizeof(struct pglist_data));
++static int build_info_set(const char *str, const struct kernel_param *kp)
++{
++	struct kernel_all_info *all_info = kinfo->all_info_addr;
++	size_t build_info_size;
 +
-+	for (i = 0; i < MAX_NUMNODES; i++) {
-+		if (!NODE_DATA(i))
-+			continue;
-+		kmemdump_register((void *)NODE_DATA(i),
-+				  roundup(sizeof(pg_data_t), SMP_CACHE_BYTES));
++	if (kinfo->all_info_addr == 0 || kinfo->all_info_size == 0)
++		return -ENAVAIL;
++
++	all_info = (struct kernel_all_info *)kinfo->all_info_addr;
++	build_info_size = sizeof(all_info->info.build_info);
++
++	memcpy(&all_info->info.build_info, str, min(build_info_size - 1,
++						    strlen(str)));
++	update_kernel_all_info(all_info);
++
++	if (strlen(str) > build_info_size) {
++		pr_warn("%s: Build info buffer (len: %zd) can't hold entire string '%s'\n",
++			__func__, build_info_size, str);
++		return -ENOMEM;
 +	}
-+#endif
 +
-+	kmemdump_register_id(KMEMDUMP_ID_COREIMAGE_mem_section,
-+			     (void *)&mem_section, sizeof(mem_section));
-+	for (i = 0; i < NR_SECTION_ROOTS; i++) {
-+		if (!mem_section[i])
-+			continue;
-+		kmemdump_register((void *)mem_section[i],
-+				  SECTIONS_PER_ROOT * sizeof(struct mem_section));
++	return 0;
++}
++
++static const struct kernel_param_ops build_info_op = {
++	.set = build_info_set,
++};
++
++module_param_cb(build_info, &build_info_op, NULL, 0200);
++MODULE_PARM_DESC(build_info, "Write build info to field 'build_info' of debug kinfo.");
++
++static int register_kinfo_region(const struct kmemdump_backend *be,
++				 enum kmemdump_uid id, void *vaddr, size_t size)
++{
++	struct debug_kinfo *kinfo = be_to_kinfo(be);
++	struct kernel_all_info *all_info = kinfo->all_info_addr;
++	struct kernel_info *info = &all_info->info;
++	struct uts_namespace *uts;
++
++	switch (id) {
++	case KMEMDUMP_ID_COREIMAGE__sinittext:
++		info->_sinittext_pa = (u64)__pa(vaddr);
++		break;
++	case KMEMDUMP_ID_COREIMAGE__einittext:
++		info->_einittext_pa = (u64)__pa(vaddr);
++		break;
++	case KMEMDUMP_ID_COREIMAGE__end:
++		info->_end_pa = (u64)__pa(vaddr);
++		break;
++	case KMEMDUMP_ID_COREIMAGE__text:
++		info->_text_pa = (u64)__pa(vaddr);
++		break;
++	case KMEMDUMP_ID_COREIMAGE__stext:
++		info->_stext_pa = (u64)__pa(vaddr);
++		break;
++	case KMEMDUMP_ID_COREIMAGE__etext:
++		info->_etext_pa = (u64)__pa(vaddr);
++		break;
++	case KMEMDUMP_ID_COREIMAGE_kallsyms_num_syms:
++		info->num_syms = *(__u32 *)vaddr;
++		break;
++	case KMEMDUMP_ID_COREIMAGE_kallsyms_relative_base:
++		info->_relative_pa = (u64)__pa(*(u64 *)vaddr);
++		break;
++	case KMEMDUMP_ID_COREIMAGE_kallsyms_offsets:
++		info->_offsets_pa = (u64)__pa(vaddr);
++		break;
++	case KMEMDUMP_ID_COREIMAGE_kallsyms_names:
++		info->_names_pa = (u64)__pa(vaddr);
++		break;
++	case KMEMDUMP_ID_COREIMAGE_kallsyms_token_table:
++		info->_token_table_pa = (u64)__pa(vaddr);
++		break;
++	case KMEMDUMP_ID_COREIMAGE_kallsyms_token_index:
++		info->_token_index_pa = (u64)__pa(vaddr);
++		break;
++	case KMEMDUMP_ID_COREIMAGE_kallsyms_markers:
++		info->_markers_pa = (u64)__pa(vaddr);
++		break;
++	case KMEMDUMP_ID_COREIMAGE_kallsyms_seqs_of_names:
++		info->_seqs_of_names_pa = (u64)__pa(vaddr);
++		break;
++	case KMEMDUMP_ID_COREIMAGE_swapper_pg_dir:
++		info->swapper_pg_dir_pa = (u64)__pa(vaddr);
++		break;
++	case KMEMDUMP_ID_COREIMAGE_init_uts_ns:
++		uts = vaddr;
++		strscpy(info->last_uts_release, uts->name.release, __NEW_UTS_LEN);
++		break;
++	default:
++		break;
++	};
++
++	update_kernel_all_info(all_info);
++	return 0;
++}
++
++static int unregister_kinfo_region(const struct kmemdump_backend *be,
++				   enum kmemdump_uid id)
++{
++	return 0;
++}
++
++static int debug_kinfo_probe(struct platform_device *pdev)
++{
++	struct device_node *mem_region;
++	struct reserved_mem *rmem;
++	struct kernel_info *info;
++	struct kernel_all_info *all_info;
++
++	mem_region = of_parse_phandle(pdev->dev.of_node, "memory-region", 0);
++	if (!mem_region) {
++		dev_warn(&pdev->dev, "no such memory-region\n");
++		return -ENODEV;
 +	}
-+	kmemdump_register_id(KMEMDUMP_ID_COREIMAGE_MEMSECT,
-+			     (void *)mem_section,
-+			     sizeof(struct mem_section *) * NR_SECTION_ROOTS);
 +
-+	kmemdump_register_id(KMEMDUMP_ID_COREIMAGE_kallsyms_num_syms,
-+			     (void *)&kallsyms_num_syms,
-+			     sizeof(kallsyms_num_syms));
-+	kmemdump_register_id(KMEMDUMP_ID_COREIMAGE_kallsyms_relative_base,
-+			     (void *)&kallsyms_relative_base,
-+			     sizeof(kallsyms_relative_base));
-+	kmemdump_register_id(KMEMDUMP_ID_COREIMAGE_kallsyms_offsets,
-+			     (void *)&kallsyms_offsets,
-+			     sizeof(&kallsyms_offsets));
-+	kmemdump_register_id(KMEMDUMP_ID_COREIMAGE_kallsyms_names,
-+			     (void *)&kallsyms_names,
-+			     sizeof(&kallsyms_names));
-+	kmemdump_register_id(KMEMDUMP_ID_COREIMAGE_kallsyms_token_table,
-+			     (void *)&kallsyms_token_table,
-+			     sizeof(&kallsyms_token_table));
-+	kmemdump_register_id(KMEMDUMP_ID_COREIMAGE_kallsyms_token_index,
-+			     (void *)&kallsyms_token_index,
-+			     sizeof(&kallsyms_token_index));
-+	kmemdump_register_id(KMEMDUMP_ID_COREIMAGE_kallsyms_markers,
-+			     (void *)&kallsyms_markers,
-+			     sizeof(&kallsyms_markers));
-+	kmemdump_register_id(KMEMDUMP_ID_COREIMAGE_kallsyms_seqs_of_names,
-+			     (void *)&kallsyms_seqs_of_names,
-+			     sizeof(&kallsyms_seqs_of_names));
-+	kmemdump_register_id(KMEMDUMP_ID_COREIMAGE__sinittext,
-+			     (void *)&_sinittext, sizeof(&_sinittext));
-+	kmemdump_register_id(KMEMDUMP_ID_COREIMAGE__einittext,
-+			     (void *)&_einittext, sizeof(&_einittext));
-+	kmemdump_register_id(KMEMDUMP_ID_COREIMAGE__end,
-+			     (void *)&_end, sizeof(&_end));
-+	kmemdump_register_id(KMEMDUMP_ID_COREIMAGE__text,
-+			     (void *)&_text, sizeof(&_text));
-+	kmemdump_register_id(KMEMDUMP_ID_COREIMAGE__stext,
-+			     (void *)&_stext, sizeof(&_stext));
-+	kmemdump_register_id(KMEMDUMP_ID_COREIMAGE__etext,
-+			     (void *)&_etext, sizeof(&_etext));
-+	kmemdump_register_id(KMEMDUMP_ID_COREIMAGE_swapper_pg_dir,
-+			     (void *)&swapper_pg_dir, sizeof(&swapper_pg_dir));
- }
- 
- static int __init crash_save_vmcoreinfo_init(void)
++	rmem = of_reserved_mem_lookup(mem_region);
++	if (!rmem) {
++		dev_warn(&pdev->dev, "no such reserved mem of node name %s\n",
++			 pdev->dev.of_node->name);
++		return -ENODEV;
++	}
++
++	/* Need to wait for reserved memory to be mapped */
++	if (!rmem->priv)
++		return -EPROBE_DEFER;
++
++	if (!rmem->base || !rmem->size) {
++		dev_warn(&pdev->dev, "unexpected reserved memory\n");
++		return -EINVAL;
++	}
++
++	if (rmem->size < sizeof(struct kernel_all_info)) {
++		dev_warn(&pdev->dev, "unexpected reserved memory size\n");
++		return -EINVAL;
++	}
++
++	kinfo = kzalloc(sizeof(*kinfo), GFP_KERNEL);
++	if (!kinfo)
++		return -ENOMEM;
++
++	kinfo->dev = &pdev->dev;
++
++	strscpy(kinfo->kinfo_be.name, "debug_kinfo");
++	kinfo->kinfo_be.register_region = register_kinfo_region;
++	kinfo->kinfo_be.unregister_region = unregister_kinfo_region;
++	kinfo->all_info_addr = rmem->priv;
++	kinfo->all_info_size = rmem->size;
++
++	all_info = kinfo->all_info_addr;
++
++	memset(all_info, 0, sizeof(struct kernel_all_info));
++	info = &all_info->info;
++	info->enabled_all = IS_ENABLED(CONFIG_KALLSYMS_ALL);
++	info->enabled_absolute_percpu = IS_ENABLED(CONFIG_KALLSYMS_ABSOLUTE_PERCPU);
++	info->enabled_base_relative = IS_ENABLED(CONFIG_KALLSYMS_BASE_RELATIVE);
++	info->enabled_cfi_clang = IS_ENABLED(CONFIG_CFI_CLANG);
++	info->name_len = KSYM_NAME_LEN;
++	info->bit_per_long = BITS_PER_LONG;
++	info->module_name_len = MODULE_NAME_LEN;
++	info->symbol_len = KSYM_SYMBOL_LEN;
++	info->thread_size = THREAD_SIZE;
++	info->enabled_modules_tree_lookup = IS_ENABLED(CONFIG_MODULES_TREE_LOOKUP);
++	info->mod_mem_offset = offsetof(struct module, mem);
++	info->mod_kallsyms_offset = offsetof(struct module, kallsyms);
++
++	return kmemdump_register_backend(&kinfo->kinfo_be);
++}
++
++static void debug_kinfo_remove(struct platform_device *pdev)
++{
++	kfree(kinfo);
++	kmemdump_unregister_backend(&kinfo->kinfo_be);
++}
++
++static const struct of_device_id debug_kinfo_of_match[] = {
++	{ .compatible	= "google,debug-kinfo" },
++	{},
++};
++MODULE_DEVICE_TABLE(of, debug_kinfo_of_match);
++
++static struct platform_driver debug_kinfo_driver = {
++	.probe = debug_kinfo_probe,
++	.remove = debug_kinfo_remove,
++	.driver = {
++		.name = "debug-kinfo",
++		.of_match_table = of_match_ptr(debug_kinfo_of_match),
++	},
++};
++module_platform_driver(debug_kinfo_driver);
++
++MODULE_AUTHOR("Eugen Hristev <eugen.hristev@linaro.org>");
++MODULE_AUTHOR("Jone Chou <jonechou@google.com>");
++MODULE_DESCRIPTION("kmemdump Kinfo Driver");
++MODULE_LICENSE("GPL");
 -- 
 2.43.0
 
