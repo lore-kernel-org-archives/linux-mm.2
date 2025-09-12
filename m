@@ -4,67 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFCBECA101F
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 12:31:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61287CAC582
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 12:31:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5BCFF8E000C; Fri, 12 Sep 2025 08:31:19 -0400 (EDT)
+	id BFEAC6B0007; Fri, 12 Sep 2025 08:31:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 56D8C8E0003; Fri, 12 Sep 2025 08:31:19 -0400 (EDT)
+	id BD6B36B000C; Fri, 12 Sep 2025 08:31:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 483488E000C; Fri, 12 Sep 2025 08:31:19 -0400 (EDT)
+	id B13846B000D; Fri, 12 Sep 2025 08:31:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A4CC8E0003
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 08:31:19 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E3DA5871BC
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 12:31:18 +0000 (UTC)
-X-FDA: 83880533436.06.192BABA
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A23F76B0007
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 08:31:25 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4F6A7BA7C6
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 12:31:25 +0000 (UTC)
+X-FDA: 83880533730.01.9C8B7CC
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 0A2EE10001A
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 12:31:16 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=H3JI5oOM;
-	spf=pass (imf05.hostedemail.com: domain of usama.anjum@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=usama.anjum@collabora.com;
+	by imf16.hostedemail.com (Postfix) with ESMTP id A3AD5180008
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 12:31:23 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=JZx55i85;
+	spf=pass (imf16.hostedemail.com: domain of usama.anjum@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=usama.anjum@collabora.com;
 	dmarc=pass (policy=none) header.from=collabora.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757680277;
+	s=arc-20220608; t=1757680283;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jqC/Y5/5X3Jl44Gdt7jThhBkOEYWXM3k58RTRkZoEr8=;
-	b=I7MCTrEz6ddZUAv1qAaAyOk7tsZS4lYRHLEu4pu0okKXZdjURkyckCUlQJUio1L0Q7lLUd
-	2Vyf+EkDXmxMS/O8tP3jWMFlkyhQBqrt2b+K0B/AuwrKmoFL3PovxZL57TfxYoehf3mJr8
-	sjuX1QYwgUZwCZ/agWUeSqjJS7aS+EQ=
+	bh=OeorsTMJBwQyBoBatjPu7vtGfUn1ybQMr4j+YF0CXLU=;
+	b=PwoIdDEs2zCQpIxsSy+WngIKf/+9HTCIctmXDPrEW7pNIK5IgPcPiiMEpYetp4uiHnBVev
+	cRcSl4aD8sTp6S2jFpJ7cJZgpobBBgYsd3pLGTwW1FmzMzYvAy+v8K/vX9KZDPz+FLZd4I
+	sC8Jt+kuLMdhpdw7bjzd63oIS+PEH8s=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=H3JI5oOM;
-	spf=pass (imf05.hostedemail.com: domain of usama.anjum@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=usama.anjum@collabora.com;
+	imf16.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=JZx55i85;
+	spf=pass (imf16.hostedemail.com: domain of usama.anjum@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=usama.anjum@collabora.com;
 	dmarc=pass (policy=none) header.from=collabora.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757680277; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757680283; a=rsa-sha256;
 	cv=none;
-	b=6IuXvPlg00ih5P0sLc9nJZqYtzgngcKlmMyzvvJMW5OskjOh9bZWZ3G9rzzOPu2ZesYtyZ
-	da0WiiGsiBWHLT2LcgEb77mvucOc0TvNcU4dezYG1vW1oUshS/g6tEQundatOKfXOrfUjL
-	pZ6FYVRfT/8CdHaZxkKBRSNiHlCyh8c=
+	b=cjnGf58wUjXwBPDI8/dgPeM+UMvXp56f7uuONkj45ThOGgj36jSqILP48KkM0oscGeV2DI
+	BsU101jAS2fsGcr9Z0bgPwCvKLBFoOAqHmggkGf12L/R8u80AipFWL5JvRiAhOxVvUjO3B
+	whXf4FAzhwxA2NRBThugw/pheEtd5jg=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1757680274;
-	bh=t+a7zA6bZDMOWmuPa8ga3Id8iVwTgiOsXbGtzVzdwx0=;
+	s=mail; t=1757680281;
+	bh=+8A4GsCErF68UbEHFv25lzsdwJliaWDufQGZLDYg8ro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H3JI5oOMwl9BnNQ/9ofEPsnIh7Bo0S8a1+haHTZwoLjB+HK5LE41Ku60KxBPj0G9f
-	 ppECop1iZbdyjsdqsADCxKxnBJD08+0j86+lJ1WbDqvgMLwNiox4vjXzxfuxgKe5HT
-	 ES62BY1dizMXPbmxIROIRtRG4a9Thr1YY3cWh6eqvo6k+BWybSARB2f1FaA3s5DKSO
-	 d/ebpckXtm6p5VGeGV+K5hWlStP7sVa1QegWZ8NM1QuYBkW4LTMW1C+lY5gYQ2Xiqu
-	 st0VbvrlsQSxUkuwmBq5QWl0gnD7KGR+mm15hl3eM/VvZRYQIHDg6UzTXqnLgDT+SO
-	 J1myC79JdnxVg==
+	b=JZx55i85auuE2Dc9gI2kjOxJzaNdpk438dMjZ3qbQL2GxwcMfhkBMIOs40YaadmMV
+	 wgdsJrBpoCoUAjRjzNVKUI8eWzTXWHiW+2s4KN3g/fFEV7eI9q9zQXI1mG4OWu0x5V
+	 NiIJQ2RICSDnLJEwNqrobsYO/9Z2OuP+82YlfVyRMCQ+4bxTZ4+Rxd49j44ClTM4+g
+	 gSkNLKQ+aATw+Jj+2gF5Eym+jKSgw8LUtJxEPJwHQOUGHB4Cs4fDV4AgxKGrieGUja
+	 6Md8nHWY87gIN4boh2hKV8fEHJRWIR6pZEDErfvcZ5RtcqJwpUrYZilceHx4IC1Agm
+	 gUcUTl0+Ps70g==
 Received: from mt.tail9873f4.ts.net (unknown [144.48.130.189])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: usama.anjum)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id C7A2117E0DD7;
-	Fri, 12 Sep 2025 14:31:02 +0200 (CEST)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 26ED517E0927;
+	Fri, 12 Sep 2025 14:31:14 +0200 (CEST)
 From: Muhammad Usama Anjum <usama.anjum@collabora.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@redhat.com>,
@@ -89,24 +89,23 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 	linux-kernel@vger.kernel.org
 Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>,
 	kernel@collabora.com,
-	Sidhartha Kumar <sidhartha.kumar@oracle.com>,
-	Kevin Brodsky <kevin.brodsky@arm.com>
-Subject: [PATCH 1/2] selftests/mm: Add -Wunreachable-code and fix warnings
-Date: Fri, 12 Sep 2025 17:30:21 +0500
-Message-ID: <20250912123025.1271051-2-usama.anjum@collabora.com>
+	Sidhartha Kumar <sidhartha.kumar@oracle.com>
+Subject: [PATCH 2/2] selftests/mm: protection_keys: Fix dead code
+Date: Fri, 12 Sep 2025 17:30:22 +0500
+Message-ID: <20250912123025.1271051-3-usama.anjum@collabora.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20250912123025.1271051-1-usama.anjum@collabora.com>
 References: <20250912123025.1271051-1-usama.anjum@collabora.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: hafa636yriohowrto43ixe4bya743at9
+X-Rspamd-Queue-Id: A3AD5180008
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 15qh6bdr4974ubsq1aipse5rho1a9a5x
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0A2EE10001A
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1757680276-487960
-X-HE-Meta: U2FsdGVkX1/P8hOTf6AmQ7JRstwnOx6CkAOBL1iqJYklyD6ojteTKoJJhONG4fr65MGIX3z0JjbLrSkULAiPkabeI/KY+2tKOEb3zomJF+bu4KfbJp2lvLjgET5zQec+7i0YWrwFAHAzBYaDdq9fHzJx7QZdk9CWK0TmU6PPsL7X/4eiI/gf/gTtutvx0ng8X0Mb+pJc5FegfZ20H8jXE6lnyOkJtN2qrN0LJ2pcZnu9NB3CWL2s3b2heFPbOe+LFwwOYtu2gjItfxcLYfJDOlOEzX45p+4djM98E4oXvj+imREaDUatv8F1vaJ2ZGVsmoppp9GJINVuMbf3lNPFg3ES5ffC5HUDbeCkCZPw31y+hTk8rj8NsxSjNhAEIzHvXYFf/ZbnW0GwOvp25ojpG1EPa05AZYEb9W1wJgphfOegxSKLUJXg5VsA2no4h6DYtINe/uCRtc+VZKsI9m0eMA4aoTFUXbjbLD87PhMCZWOUnl+dkWq6iwArc2liXWLg9ri4i8PiC7lorfr/9UH4gp9umq5rLR2gx+QhL14VizVS0aJE9UC3pwdjvefoKirF3mxue04wd8ZTpiMlO6myolAwFsWMg2qbd+saTj/SxYO4qz1Dr5bpYqdb9TwLmtCQwHDjBwRQrwiis7wnMT2pOK4itjd0RxJkeeCl1mp2oOuF88S6f2V46804uT7OMmGuzpieQ1iXcsOEFNyICNlTCo4N7e4jrUbx4VHrL1ub+ahpLuaY01dUbzrAFfhXFWoGTlYlFQ4pneuYjLHSu/lNV3k5OThnAbVUfAXxNxil6H9qnnFPxwpdj4500o2Wf/VmVH/O65HqZbKlZzUjlKN6m9eV/aebzmm7ttjCbOYU1gJLujFLqLnJ6ODcl9PZjrNRpJ19BM4eZXPf9x1/DLwT3jJbHtkK5RNSZP0uRi2VpCW71y7xbIAiFH7GAgwccHbYNGKWkFPl8ObEs89pXPx
- ypelgvgZ
- SNVjM/wSVoyZePDa9J4s8//gYt9+7KxkGjTL8ia0adUYQJbsrAN5X+PnhxB3AOqDwd/YM0FIuK9UPdRI9e2VQvtxZsoqij/vwbMye0BORu1TW3aqkcMwZ80g9p4ecDjR/Fj7nhUfpx+IKQeAYSQ/yVuQkHOYUVO8Dg6DDRz3nQ7+t0xm2EFM0V3o5T25ZPND4HudgMFaroYu4F31bGR5So+a4vbCwaLT8LAcvlItj9eRbM/3sg83/VGFoxqqv6UAKQkbfpK3TLER5Sd8bjHQAaVREV6cxHwRw6cEdPerOTaU4sgNIl8ShvllhtJonv7y9Sh39fdX/OYhGizPxA1CuLbe6HnpWCUnxZBUdqmdIrKexeXq9KVhEm3lLqEshFKC6MxaJ
+X-HE-Tag: 1757680283-746433
+X-HE-Meta: U2FsdGVkX18ztEODGeQXiizBcBM+YcXWKhYu65NwC2uLBb8m99tz++znCP9qzF/MG7eCfhifTfLhyPiRzrWYSMscL46pnGOjfqL4HtPbd1fMnh3Rr/QH4p9+MmjnMumgqesRmYcoDuetKETSQttHvtR5sJUYNfe5rZZn6CXh4pXMMjUGnh+Z+QnWaMjgG+ByiK36lOPDKDrT+DAQDR6ry84x+m2xN4QC64Uu5QL95GgD+QAOkj3D/wQTseqbHznSgSWptGRZzojzTipc4ssjWUTHEBEdulS6qlEV4E99abwnS9pSuJ8E0K/hHCjJ6nikV2uwWnDb5qtEpn8L0925k5RpFNwf11uO8SbK3V+UxeW91zb0p9mOj0p20NP4W8ROkk4oUwn6fFhllIqIZIrn05EGPPlUsAEgTKDNwB9CSNUxgxli3f+JGqdBNEn+uHj2mXLwEH6g/q9uZBKNRl+LKRGgpvHu10GZ8nd/19kZ3b/IyRvNpqIr9fwfqS7DlTPDUMRFcUvuDFP01lyfkcFK7FVoLPVW8VJiSTxNY+jlaiMReMnXtfWiOrm6RdMOrYBYpIh0c7552LctgFGRzNtXrUTxo0r5vt46HWWMfvkqEZ/7/10c/6WZxZ6Gq/9l/fnBB7SZbijSiPxMzuW7h+iEJ/XIKocNLWxsEdHKUsViPyJ9DUyYZkQuzUddr2DQjUMJLdXHmjjPaMjLcimdDllynwy+XUT/Aa+4e2ebazHvNJ53v2YLBMlF0wQHG9QwqxUlNiFul+M2GY5okhPq7PwTx6gv24lt2nDQVV9s3faqQYM4dwtqJB06jK5+kysqosRYOfhXs8xMKqERCJXMmBuU6Ve/wV3+qm5Cl/OdT5QXZWuDaFsQYV3Mml18EQAitc3FDB+HHoIhJt90FkVVtRSw7c1SddT9xv8nKvmtFpxESB7XJo0wyaFK8Im1Xj4/ZhQMW+bUHYoZN8tXLQo6kQ2
+ 8kTjGVgk
+ zKbevwEGTcTnb3iWeaiq0vteiyrKp1MuqUMFTQOXoYLxVvL62Xw3HBp9d1z3I61BXHin5xujrl2sA8xRKQy9/vG+iyjtah5e/g+r3m0JKw5YNbdkj58skya+szU/6rgg85+WZJ/EpCs+0PqNb5Ly6b9yVejxK3fFbEoJnK51gsJOJsKNUWiNEgngV/fD+catvZG0Qf2y7LMOcFxRQ6yzW3Tv0gl/fMrgO7XCm6FsxsOcZswF11Y01Kyg1oP37Jby1AyVJl+gpBtztwTp8adTD+0urHx1Ul8hAQTQGUrRjFyUqwT8b8utv+rgarSVNu+24yFCZ/sFEZZ8K+/hnbWyJNJj1amfIATcWa92VbQhF4MxUSgkv/xfxa6Kw/w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,92 +114,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Enable -Wunreachable-code flag to catch dead code and fix them.
+The while loop doesn't execute and following warning gets generated:
 
-1. Remove the dead code and write a comment instead:
-hmm-tests.c:2033:3: warning: code will never be executed
+protection_keys.c:561:15: warning: code will never be executed
 [-Wunreachable-code]
-                perror("Should not reach this\n");
-                ^~~~~~
+                int rpkey = alloc_random_pkey();
 
-2. ksft_exit_fail_msg() calls exit(). So cleanup isn't done. Replace it
-   with ksft_print_msg().
-split_huge_page_test.c:301:3: warning: code will never be executed
-[-Wunreachable-code]
-                goto cleanup;
-                ^~~~~~~~~~~~
-
-3. Remove duplicate inline.
-pkey_sighandler_tests.c:44:15: warning: duplicate 'inline' declaration
-specifier [-Wduplicate-decl-specifier]
-static inline __always_inline
+Let's enable the while loop such that it gets executed nr_iterations
+times. Simplify the code a bit as well.
 
 Reviewed-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
-Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
 Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
 ---
- tools/testing/selftests/mm/Makefile                | 1 +
- tools/testing/selftests/mm/hmm-tests.c             | 5 ++---
- tools/testing/selftests/mm/pkey_sighandler_tests.c | 2 +-
- tools/testing/selftests/mm/split_huge_page_test.c  | 2 +-
- 4 files changed, 5 insertions(+), 5 deletions(-)
+ tools/testing/selftests/mm/protection_keys.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
-index 5a1dee50b8987..eaf9312097f7b 100644
---- a/tools/testing/selftests/mm/Makefile
-+++ b/tools/testing/selftests/mm/Makefile
-@@ -34,6 +34,7 @@ endif
- MAKEFLAGS += --no-builtin-rules
+diff --git a/tools/testing/selftests/mm/protection_keys.c b/tools/testing/selftests/mm/protection_keys.c
+index 23ebec367015f..6281d4c61b50e 100644
+--- a/tools/testing/selftests/mm/protection_keys.c
++++ b/tools/testing/selftests/mm/protection_keys.c
+@@ -557,13 +557,11 @@ int mprotect_pkey(void *ptr, size_t size, unsigned long orig_prot,
+ 	int nr_iterations = random() % 100;
+ 	int ret;
  
- CFLAGS = -Wall -O2 -I $(top_srcdir) $(EXTRA_CFLAGS) $(KHDR_INCLUDES) $(TOOLS_INCLUDES)
-+CFLAGS += -Wunreachable-code
- LDLIBS = -lrt -lpthread -lm
+-	while (0) {
++	while (nr_iterations-- >= 0) {
+ 		int rpkey = alloc_random_pkey();
+ 		ret = sys_mprotect_pkey(ptr, size, orig_prot, pkey);
+ 		dprintf1("sys_mprotect_pkey(%p, %zx, prot=0x%lx, pkey=%ld) ret: %d\n",
+ 				ptr, size, orig_prot, pkey, ret);
+-		if (nr_iterations-- < 0)
+-			break;
  
- # Some distributions (such as Ubuntu) configure GCC so that _FORTIFY_SOURCE is
-diff --git a/tools/testing/selftests/mm/hmm-tests.c b/tools/testing/selftests/mm/hmm-tests.c
-index 1325de70f44fc..25045536f4707 100644
---- a/tools/testing/selftests/mm/hmm-tests.c
-+++ b/tools/testing/selftests/mm/hmm-tests.c
-@@ -2030,11 +2030,10 @@ TEST_F(hmm, hmm_cow_in_device)
- 	if (pid == -1)
- 		ASSERT_EQ(pid, 0);
- 	if (!pid) {
--		/* Child process waitd for SIGTERM from the parent. */
-+		/* Child process waits for SIGTERM from the parent. */
- 		while (1) {
- 		}
--		perror("Should not reach this\n");
--		exit(0);
-+		/* Should not reach this */
- 	}
- 	/* Parent process writes to COW pages(s) and gets a
- 	 * new copy in system. In case of device private pages,
-diff --git a/tools/testing/selftests/mm/pkey_sighandler_tests.c b/tools/testing/selftests/mm/pkey_sighandler_tests.c
-index b5e076a564c95..302fef54049c8 100644
---- a/tools/testing/selftests/mm/pkey_sighandler_tests.c
-+++ b/tools/testing/selftests/mm/pkey_sighandler_tests.c
-@@ -41,7 +41,7 @@ static siginfo_t siginfo = {0};
-  * syscall will attempt to access the PLT in order to call a library function
-  * which is protected by MPK 0 which we don't have access to.
-  */
--static inline __always_inline
-+static __always_inline
- long syscall_raw(long n, long a1, long a2, long a3, long a4, long a5, long a6)
- {
- 	unsigned long ret;
-diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
-index 7731191cc8e9b..743af3c051905 100644
---- a/tools/testing/selftests/mm/split_huge_page_test.c
-+++ b/tools/testing/selftests/mm/split_huge_page_test.c
-@@ -510,7 +510,7 @@ static void split_file_backed_thp(int order)
- 
- 	status = snprintf(testfile, INPUT_MAX, "%s/thp_file", tmpfs_loc);
- 	if (status >= INPUT_MAX) {
--		ksft_exit_fail_msg("Fail to create file-backed THP split testing file\n");
-+		ksft_print_msg("Fail to create file-backed THP split testing file\n");
- 		goto cleanup;
- 	}
- 
+ 		dprintf1("%s()::%d, ret: %d pkey_reg: 0x%016llx"
+ 			" shadow: 0x%016llx\n",
 -- 
 2.47.3
 
