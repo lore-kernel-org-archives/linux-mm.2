@@ -4,116 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2732DCAC58E
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 00:25:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F6ACCAC58E
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 00:29:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 18AB26B0008; Thu, 11 Sep 2025 20:25:28 -0400 (EDT)
+	id 4528B8E0002; Thu, 11 Sep 2025 20:29:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 13C108E0001; Thu, 11 Sep 2025 20:25:28 -0400 (EDT)
+	id 42A1F8E0001; Thu, 11 Sep 2025 20:29:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 02A3B6B000E; Thu, 11 Sep 2025 20:25:27 -0400 (EDT)
+	id 318838E0002; Thu, 11 Sep 2025 20:29:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E4DB46B0008
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 20:25:27 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 585061A0618
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 00:25:27 +0000 (UTC)
-X-FDA: 83878704294.28.5959BF6
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 8B3D31C0009
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 00:25:25 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=0HpualqK;
-	spf=pass (imf21.hostedemail.com: domain of surenb@google.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1DFE18E0001
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 20:29:00 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BFD7A86D32
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 00:28:59 +0000 (UTC)
+X-FDA: 83878713198.17.02481A7
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	by imf09.hostedemail.com (Postfix) with ESMTP id B53B014000A
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 00:28:57 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=PZabL3YH;
+	spf=pass (imf09.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757636725;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1757636937;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fBEQ8ZTMn3TZxAlSy9fAiaDOr1I2tmTY9zRoUUHxCNg=;
-	b=KN3UNeywAvZiAUcfmk6T3hs2G1D5/2P3IsmSR2OeKGe50WVeEJX9MynmHYtHVc/BW1jHRu
-	O8GGMrYos4aI7EGUsO/zUfhIDzLj7DmKPm5flAs6DW/cTzzke2Gk6yaGYIxVrKo0HBpMhA
-	BIkh2EweoU6B0WfFqlUewMEgDD0sMGQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757636725; a=rsa-sha256;
+	bh=ASdPZSSSXAdXjHSoSiY28vR4LCE2ELnT4FVMhx13pKY=;
+	b=b5XotPfZ2DmW2V8WdoJBhGzG+YFGzOX9ypfGmCNmX3QllxxFoke/5vGjr3x+I7HTcsI12x
+	9k8a3axGm3UwEH+rTu3U64Uh7YtigRH9g9ZcZ1/5JIeAJ8kMaUeEv/Kimbh6gWj1vNHmpT
+	rKCoyJFGBOskY2BkPLvNlzCe0WlSTpM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757636937; a=rsa-sha256;
 	cv=none;
-	b=Z3BxSCScn7ExPvUhIXvL5YFc3QpxtdPzRsDmxdvs57AT++zaeKBO+a1Y/ZmY7gQ1FUYQ5x
-	la+k5I5LAiFyTzNEKqRrj+z6zrDc3969V1T7HpD0VrIB4xqwJo9AI4nA15Mhmy5sTUj76T
-	92q42UwpvkPdNuUwTqYlCBgFJAb1QIs=
+	b=L5UTTYw02CEGIFAY4xmnryT+FsMmtJe23MghSjHdlyDR+wuVvSjj7OQ5gLgDfDA2fSxAyt
+	YOrdfWggIriOkIy4EGs7hFCk2Zyw8Cpg6MA4UKuaWQmiN8WZO5/1fiLVTWZL/sUMQNoZRm
+	8j4PGDVy5pHTCri4OxKUdk4hd0rTwFM=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=0HpualqK;
-	spf=pass (imf21.hostedemail.com: domain of surenb@google.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-4b48fc1d998so72161cf.1
-        for <linux-mm@kvack.org>; Thu, 11 Sep 2025 17:25:25 -0700 (PDT)
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=PZabL3YH;
+	spf=pass (imf09.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-62ec7fe6e35so2368043a12.0
+        for <linux-mm@kvack.org>; Thu, 11 Sep 2025 17:28:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757636725; x=1758241525; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fBEQ8ZTMn3TZxAlSy9fAiaDOr1I2tmTY9zRoUUHxCNg=;
-        b=0HpualqKzHqqpPBIuRZB/s/bwdjy/Oc21TkUUSD1nJ7VtM1DxRQzFeh0jJwYeuxhjt
-         L+Kxo36DO/4x8t6Tx2TYPkuwc0RmyM+JsCHP4+nKHViChOf2ysZV8Ur4R9Mq+CXOWdXe
-         aWRjLhFTyeXNYYG50sPLETOFAtwMHI20rQ8oawapJHbqjkKxC8n1L6WnpGRt2+WHNDur
-         LCSHYvK6hj4gMrcsjo97rDK6Bj3IHrKnkE+zFkl64qo9peRP9WnCLxLZBqa2C/WnGXmm
-         SwFAvi3JiY1F0jNFZ1V+YU32FILmvJj6T8erPpI21oaqqjh53jJiGhs7w4k828YQGVM/
-         K+Fg==
+        d=gmail.com; s=20230601; t=1757636936; x=1758241736; darn=kvack.org;
+        h=user-agent:in-reply-to:content-transfer-encoding
+         :content-disposition:mime-version:references:reply-to:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ASdPZSSSXAdXjHSoSiY28vR4LCE2ELnT4FVMhx13pKY=;
+        b=PZabL3YHdhoVFs4eTneLSjQqfoobiSblAdYNrZwaNW4Z++yalHDv/vXPaHsJS1XH4T
+         06zhYuJDL7lW0w/HJd1zKi995pZ1vRewq1a4QZgE4ZF5gkkasepOHBNkdP9RHPIQ2yti
+         yx7144w0820dhn50UC73KEtKipQiIPRRVjo8rLWyXyaekp3XAk6kPVCHGwi2n0lSylcc
+         uTCSC9L5CrDvWke8KjDhjcGsDtKzjlsiEMy8+m6ZqntnpdhhaAGd252mxXIHP29B5/0k
+         YX9cIPBNKMvA57v88U/yPM86tAlQd509czn1bjMOLGqJTBWHmqVlwcVTlkyawQg1kc/B
+         BrpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757636725; x=1758241525;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fBEQ8ZTMn3TZxAlSy9fAiaDOr1I2tmTY9zRoUUHxCNg=;
-        b=F6VT+0XjLLlrfPLh/BKMrT6LBCaXjCZ+9Mgi06IOlVA9Q2zipaALjsc34Ti/ZHeiGK
-         7rXZ98PML7zfeuXZMnOY+HdiiZv9XMKUvVrWD0PDrhUGhStJftwpGsEwauoJOwU7Npc7
-         tfP3zwRE1EwnNWFEalDJo6buPE3NTs/EWIC6a2hxVEZsgT8k2+pYIaquVuLMYnpydGNe
-         vugBKZurycINVaVL6kvVt1GDZbyqsgUDzbNo+bTiu/3pVGDHV1Q0lo5zI06K7y2lO3j/
-         pD0OC7NXE3u4HP9/53p3epc/wX8IsJvfEXB8tNrljh31Rdulb9tSH7kUNhQ2omuwx+d9
-         dDUw==
-X-Forwarded-Encrypted: i=1; AJvYcCVLw50TaOPbKM5xaTulGzE3qrT01R95q9ubdWTb/AlY/Qy55YkmkA//TdkYTw1/5cBCxdWrw94Z0Q==@kvack.org
-X-Gm-Message-State: AOJu0YwjWD9KV1t9GKje36ZPqrfmpmdQTsCbsA9f+0CcUIgYGGRgIirI
-	gomGFhdOrggjFnNPmTQob7KD7eapoMsH0wKuVrClinLU/6mkDkvFGC5m36mQwqonGq3kAvhA0yK
-	rLcfzPZSR0ZQlMfvv4yYdnSvmMaK0e3h+cVbDz8Ng
-X-Gm-Gg: ASbGncv7/G8wcG/Wzd31juC0vbhE7LvO3E1hjPQOzzJIleW/dwZtQFFa84uup86RA8s
-	nrNhBJGQKGnuzAgW1jajetukBMdlSsc35AeKV6xxuwBu05RecFWsCEtvPx13VwvNAX3PejF8ZEx
-	Gm5sLlGOYZ4HAAHScZMtQ4+TSv/AApT9taYCSmbpZxW+zITugwmN2Pvy0ntJKQQtS2hLKfoseGR
-	6zRbzfu6Zgtmxgl4pJS0+ol3JfSGhTcwiMkPNCddis7
-X-Google-Smtp-Source: AGHT+IE+0Ikv6ZmClRprAjJ7En2Cf/iJ3MovNG6j9LOKINd4JOerL1B8XHmC6+uwh0xdO946ixKIpCb4kUZ9Dkji5K0=
-X-Received: by 2002:a05:622a:4a:b0:4b3:4781:bf2f with SMTP id
- d75a77b69052e-4b626eb8e4dmr17807611cf.9.1757636724078; Thu, 11 Sep 2025
- 17:25:24 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1757636936; x=1758241736;
+        h=user-agent:in-reply-to:content-transfer-encoding
+         :content-disposition:mime-version:references:reply-to:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ASdPZSSSXAdXjHSoSiY28vR4LCE2ELnT4FVMhx13pKY=;
+        b=n7hXfnoQ2tbN6B+Vwn0u+KvcRO0bU4CjBSaXohcF+NijVzIYHnYpOm5hJRWu9ao01l
+         fx9tBn/zquFUIeXnV7XcXnXWpRBGPP/sDJkvHKPgs+wqsaq9Rrv3wjz/BSH5J33OPGnC
+         hbBXZ/h9x5WlhWwKeWqXQnaoS2MkXfGXBJShpe0++T0eMbvDwmLVVOjZqopVDTcbmxtl
+         kmEYGuxLZXhQoOVaeIlVhAGLy9N6yNYX8eY/iwx0xExjKYWbY/rVbATFzXhHYEl1zrNE
+         gzDosMAd+JTm33Cw4Je93ff1OsDXdwqkZ+8vq5XlqbYezgG9g3QwGJftK0O2wmwJzUMQ
+         nPcg==
+X-Forwarded-Encrypted: i=1; AJvYcCU4aG0tgebZM5KlkT2HF08y9gVfXNGVmVEqj93+khosLGHcTistmPD8NJ4X1gXsN7REgCyPMRuxBQ==@kvack.org
+X-Gm-Message-State: AOJu0YwYCe8RTQwGd4utmGEYjIS7Ipg0F2ftBSM5bli59/PxZRb6Gxef
+	1hnJnvI+A7a0oLC2sHCepoJv4rUlczHq0WZD0dROygT6yRV5PiJfWlvj
+X-Gm-Gg: ASbGncuao67n+mpOggmBoSrYrMNh9brptx6ap+nsM6XTenDyKChMZL/pS4cfDoc/t4d
+	5yqQLrujn/f2XhtsI9+XVXJAHb7/JAiYLCvvAhD0Jjb9UD2CEhrdagLN5WS1Y2/SvzcWEDIJUUt
+	762CJN9d3CoTbXjqS80LxueyoRplc+G1LkFtIN4TtY1CODjV9GUnDKUwS7Vpuiu0PmRzrJIMPh5
+	fexvamVqjEUx+WNPNTUNZja15UsTLNnElykRBnnwdeBNsW7ruZO+eVXaE6Figns17wd3SINtL2D
+	9oV49jeq7uT+QfAfMH+7HAaYugDPFmhywq5yNTowJ/VrU3n9L1uw0Q25oUcPMhH3bIPmapyCMFY
+	Ndyozsmgc9Nm1wGTk6n9o7YfKns8auCp4eO7x
+X-Google-Smtp-Source: AGHT+IFi2FY351hze3vPhPcLZZaHjPrNG+mH5MMCCUmJBntlvXiBAh0dcPEDPnIrYwXB+v1WXDTKTQ==
+X-Received: by 2002:a05:6402:5114:b0:62c:6a07:97d7 with SMTP id 4fb4d7f45d1cf-62ed82c4019mr1286645a12.34.1757636935849;
+        Thu, 11 Sep 2025 17:28:55 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-62ec33ac2c7sm2003030a12.13.2025.09.11.17.28.54
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 11 Sep 2025 17:28:55 -0700 (PDT)
+Date: Fri, 12 Sep 2025 00:28:54 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+	vbabka@suse.cz, surenb@google.com, mhocko@suse.com,
+	jackmanb@google.com, hannes@cmpxchg.org, wangkefeng.wang@huawei.com,
+	linux-mm@kvack.org, Oscar Salvador <osalvador@suse.de>
+Subject: Re: [PATCH] mm/compaction: fix low_pfn advance on isolating hugetlb
+Message-ID: <20250912002854.plq5uhy432xq6puv@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20250910092240.3981-1-richard.weiyang@gmail.com>
+ <20250911012521.4p7kmxv46kwz5fz5@master>
+ <5F7DCC9D-4CA2-4BA2-9EA8-F04C3883E289@nvidia.com>
+ <EBF646E5-8A7D-4115-808D-E13033240659@nvidia.com>
+ <2A28BE8E-E62D-4ED2-8A35-759BFAE4C52C@nvidia.com>
+ <20250911033413.qcs74q4n6n6767zj@master>
+ <20250911063034.uafc5mmnf7k4d7km@master>
+ <EBA618FC-889E-48A1-AC02-9A18F6B5943E@nvidia.com>
 MIME-Version: 1.0
-References: <20250909234942.1104356-1-surenb@google.com> <20cafc1c.a658.199394de44e.Coremail.00107082@163.com>
- <aMLvCCZbmpSE/aql@devbig569.cln6.facebook.com> <902f5f32-2f03-4230-aab0-a886fd8e4793@gmail.com>
- <20250911143132.ca88948c48df874f71983218@linux-foundation.org>
-In-Reply-To: <20250911143132.ca88948c48df874f71983218@linux-foundation.org>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Thu, 11 Sep 2025 17:25:12 -0700
-X-Gm-Features: AS18NWCtHRQfQeopObePXdwXorxorF9mUB9KiM1id21GcnnHiYfUjUroiM7mNYg
-Message-ID: <CAJuCfpEoWtgv8k4vApkGsNNUYFBnvS-N2DPQu2JrreCUPbT5dA@mail.gmail.com>
-Subject: Re: [PATCH 1/1] alloc_tag: mark inaccurate allocation counters in
- /proc/allocinfo output
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Usama Arif <usamaarif642@gmail.com>, Yueyang Pan <pyyjason@gmail.com>, 
-	David Wang <00107082@163.com>, kent.overstreet@linux.dev, vbabka@suse.cz, 
-	hannes@cmpxchg.org, rientjes@google.com, roman.gushchin@linux.dev, 
-	harry.yoo@oracle.com, shakeel.butt@linux.dev, pasha.tatashin@soleen.com, 
-	souravpanda@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 8B3D31C0009
-X-Stat-Signature: pkhcqd589ezdaxhqaqtptpizpoctm3qp
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <EBA618FC-889E-48A1-AC02-9A18F6B5943E@nvidia.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Rspamd-Queue-Id: B53B014000A
+X-Stat-Signature: n8q981tkb46rymmdygt6oi8998fmhqdm
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-HE-Tag: 1757636725-874566
-X-HE-Meta: U2FsdGVkX18rFY/F/3+rwTc5iOPlQsUon9CI4kk6sM7IDxG/+fwgj/oZMeYfHbu5tSq/fe4b/cAHNAKX29aKsznDAbEPtQ5GNc8GRjZewz1w3kn2N3sCePgFgBOQK3sOfcx22eiUouoX0aDdtbw4vWBFq1ZpdOUjEKHxaUcHe0TSJT5lWJGkzznWaPP8QeW8THvKV5NgoTKeKyFMfo0aixXM2TI/CVulcwtOwpn7kKYByovmWK1cPHeuRf+0LFeKbypgi2H0EIXY0DQPpo3d52AhhyCPv7narD961vZIqdO1wr696qkGhnvHBH/C7ty9L4l/c4s1NUKScBUgjeN/RSXy8LiYF3l9E7+I68BWQJMKHa3eGaO2euqv+zKe2q9MV7WO0/nsiOK5AYWotHmST8e8aebyATidnLg+0N1wMeTGv2ahe8Sz9V6I62UZP41F3UA+CRJxeEdtyGbC0aJyx9TI8OozQckUVBQedQE0411efq2O4HaGploR1knUS+syQJIbf/617ThMFs3E096EDEjLFimjXbrQI3AeMff9NkQ99i+JpEIJQP+feZiSFvF9nPN7Pxe3IJm23Gsy/uHWk4tkjtMcTWCqkdeQGlxKr4+nQ/rTjHRYCvnD1X3avplJkokoeQprslm+4MAIQlfDOH0vT6p9NMOElrVFOtOzRV8Oqd3YssDabWW3wlBL1ad6b1S6VabHiqxu6Y5Nk90E8mJdC6gL6cDrd32Zi3zDAeiGUUhXRSQlvrjN+qv+jK1dJ0HlcUWlDUn/ttvGfIDzOzCSzSqkHXSzwQ69p1bhCObxLeJdadN1LDOPW8cN6nF2pE+Cl0mEruwLY3hDoR4nfHMfZ1GWjamN8yaSbp6qCzFaKAecdQB/kvAFU+fu1WdpLkCTmWIqO3BMEsF42fsPqNbxwZqcL4MidQhAnyXCJwFhlelDtFBrlxrlrFgp7MuYK9eQ4vJ6PuU0Mxw8NOA
- ht7Kfaoc
- 0vClOwQBuawTLvpZbZVGkSKqh3Jf1CK71lRjjiAkTQ3xO7+XJQRbX5zre5mr+1Sx2jtmqJR4XLjWOyCQ1Wbi1KOn/eJ8cmZ2hg7pgvDMBmBZGkUL6hIMKUs4LLZIKzGk6qe9ds/jOsfCTwV7p3Yl4xiFf0ISSuHFASqCBgVjswOq1BG6nA0FWQHZFgbl6F9zCxDcZY8LoQSEQ6zSJh9A3HNBq+ES0c1zMF+SOV4J/go+3MEWvEa4AOEipafBtuAkMea36K8JHB8smWZ27by+oRkLrdm6OeN3oL5jrjfEQpuo2AUAAUTpcmuAcp+STJg/tx6Wy
+X-HE-Tag: 1757636937-89845
+X-HE-Meta: U2FsdGVkX1/5f9VnQS9v1EmWDEFXXPsEoVGnQYBox4qXDC4tqUj2syP6EU+CdxOm65M/8Sqq+Jz5aD2G72nN7iOXfMTUlV60/4+Cvg0MXOqCcpjoDGgRin1fgrbC3ZeY0y4JLYzM70Vrfc8FPfs9J+rC44U0s0tH41er7WyaI3P/TSwqtG1dSaPkJ4KvMBfQndoIc5AeZtmfkNs38ATqN8yrgJPvI6fG7wvVi3QhUwus3FN7YWHZfl0+c7veg4H1GzOsjaJA/+Xxj15M4f5Hv0tnm7Qb27pQ/8xtTyVWL1o1Z8NiMXAM+b/DQ9ICXUm9dmcobc++TFGxCWzztVaVxf/+E4tZtst7DSwNi1W5zqlX/6CsfeA8QW68pzlRQS9Je2+7VHm9C0lrXZIpkZmh5KQ2RZSBa3NYPelW0DZzW9xwLUF1GTTbAkjhiVXEg5L06asejxW4UHKr9WjJbtv5/Kkmzy/uLqBqnUksfvz7eeeJ5Z8yzypzB7uyGRMmtQ8A+eACcETE9bCmWXGCHRRZ5MEeQymxaj+YNvMfG/ajTYP8Oqrpjly3+Z7bfHSG8ywR4rO0sMiQ5l0H/2vTm0/ZHbnms/qvkBzxf4oy/lkAzH7ztBPfu/cft3Uso9jRg7Yunib/vcoac26PH9jJ1f2Vs82dk34O7HYML+4Ng/1bdClrFiv7aPM3F5ntz1VFyzXbGlHB/kDMI/6TJ43uBc7K7FMPgLKYDNOeA+/4eOwkr+tAtyboyQAACWy/uJmkKLTGp0ch2peyH9X7tCbGurwAC7Ul/Cf+ChVNVf8Bg4SDFoduf6wjqxCi4uE8nhlmaCQUGX2p3gRzXl0UM1e2RyTrMLwTPcsXl3Uu1GVeewE0roxnSPJxFIMTOe2pUItjJwgd84ho3BGam6dSnaGKAfp8Vb+YPxbWT5ZWwzbIf99S51bhMTzFr3OwpRXkUKBhHRob/X6E1JOtJsU0Tbcqbae
+ Ucx4ZP0x
+ oFbQH6549eQw4pdWq1VbVHivC3ikT3Zb99SH4YLLtM41dSenXr40Fa1vv6EvGf/9Ix/kb1e6dMxEK7rB9gFtVcZzqhOu2u3bERcBDmQCVUhWzOXE4axtJ+1yxIEbAM1Wco+mYDXJQUvQrLAInl39r+LSZNbGPhjD6xYvzaz4y2LhqkEBXj8OGuHWeHPxu5X79QhYcrkK2e3AoHSVP9rLHw4LTMBqPOzDwcaGq0ReqkXSPurcO6onVPi+cCO3Dz01Db5GLBo6fyEkBXYORsKi7VUTMbKdIeL6SuwjbY0qKqHdB1D/4P2ofAQXxrxifhgwqj3bSQssAFSGtsheZJZm89UezexVjhFpyjWGHnFn5sB6NcRuKWNyuiT+RFV7YmXJ1Alek9vsu8ew4GOnBONUtGuIVMu4U7qJApXSw01fn75PXS49quYBGEKNsEKbfxggqWxNXEJ4sBjbiSdGQTqp5RyqUQg6MZL9cK3LNiBhh8xQi0iEjzrwn+y8jFKL2bvV/oukFL6RoDfLNQkcmKdLSrvhn3D0aPQuPm7nYLOQVMQPIyGFbSmdi7TM+83xp3mAkH7PlwGTdwUloO1TsAQOgp7LRsUQPeIe2PLRn+zl2tWn+cR1/8/VFZSXY+b+IttG1hrDxHsrgJs4VY1X3Z7Kd+UIgn1wHnxZnv1MRen2hD2xqzg9V7AfiTK1H56e+kTJ0BY+C4IJEMEMCJMQuI6zaCxzVNSI0grL6DicQ/4PLqZayqYgys/CTN7nt194dWm5N49qpYt4Tbvjqc3o9ueZ4jW8yUgGi5Xda/b+UTMnA52pDg39A+YXbqmc2/W3m+eyz6VqCloOZA6HeWjtJp9nyFN6uFw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,57 +132,136 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 11, 2025 at 2:31=E2=80=AFPM Andrew Morton <akpm@linux-foundatio=
-n.org> wrote:
+On Thu, Sep 11, 2025 at 12:28:24PM -0400, Zi Yan wrote:
+>On 11 Sep 2025, at 2:30, Wei Yang wrote:
 >
-> On Thu, 11 Sep 2025 12:00:23 -0400 Usama Arif <usamaarif642@gmail.com> wr=
-ote:
+>> On Thu, Sep 11, 2025 at 03:34:13AM +0000, Wei Yang wrote:
+>>> On Wed, Sep 10, 2025 at 09:50:09PM -0400, Zi Yan wrote:
+>>>> On 10 Sep 2025, at 21:38, Zi Yan wrote:
+>>>>
+>>>>> On 10 Sep 2025, at 21:35, Zi Yan wrote:
+>>>>>
+>>>>>> On 10 Sep 2025, at 21:25, Wei Yang wrote:
+>>>>>>
+>>>>>>> On Wed, Sep 10, 2025 at 09:22:40AM +0000, Wei Yang wrote:
+>>>>>>>> Commit 56ae0bb349b4 ("mm: compaction: convert to use a folio in
+>>>>>>>> isolate_migratepages_block()") converts api from page to folio. But the
+>>>>>>>> low_pfn advance for hugetlb page seems wrong when low_pfn doesn't point
+>>>>>>>> to head page.
+>>>>>>>>
+>>>>>>>> Originally, if page is a hugetlb tail page, compound_nr() return 1,
+>>>>>>>> which means low_pfn only advance one in next iteration. After the
+>>>>>>>> change, low_pfn would advance more than the hugetlb range, since
+>>>>>>>> folio_nr_pages() always return total number of the large page. This
+>>>>>>>> results in skipping some range to isolate and then to migrate.
+>>>>>>>>
+>>>>>>>> The worst case for alloc_contig is it does all the isolation and
+>>>>>>>> migration, but finally find some range is still not isolated. And then
+>>>>>>>> undo all the work and try a new range.
+>>>>>>>>
+>>>>>>>> Advance low_pfn to the end of hugetlb.
+>>>>>>>>
+>>>>>>>> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+>>>>>>>> Fixes: 56ae0bb349b4 ("mm: compaction: convert to use a folio in isolate_migratepages_block()")
+>>>>
+>>>> This behavior seems to be introduced by commit 369fa227c219 ("mm: make
+>>>> alloc_contig_range handle free hugetlb pages”). The related change is:
+>>>>
+>>>> +               if (PageHuge(page) && cc->alloc_contig) {
+>>>> +                       ret = isolate_or_dissolve_huge_page(page);
+>>>> +
+>>>> +                       /*
+>>>> +                        * Fail isolation in case isolate_or_dissolve_huge_page()
+>>>> +                        * reports an error. In case of -ENOMEM, abort right away.
+>>>> +                        */
+>>>> +                       if (ret < 0) {
+>>>> +                                /* Do not report -EBUSY down the chain */
+>>>> +                               if (ret == -EBUSY)
+>>>> +                                       ret = 0;
+>>>> +                               low_pfn += (1UL << compound_order(page)) - 1;
+>>>
+>>> The compound_order(page) return 1 for a tail page.
+>>>
+>>> See below.
+>>>
+>>>> +                               goto isolate_fail;
+>>>> +                       }
+>>>> +
+>>>> +                       /*
+>>>> +                        * Ok, the hugepage was dissolved. Now these pages are
+>>>> +                        * Buddy and cannot be re-allocated because they are
+>>>> +                        * isolated. Fall-through as the check below handles
+>>>> +                        * Buddy pages.
+>>>> +                        */
+>>>> +               }
+>>>> +
+>>>>
+>>>>>>>> Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+>>>>>>>> Cc: Oscar Salvador <osalvador@suse.de>
+>>>>>>>
+>>>>>>> Forgot to cc stable.
+>>>>>>>
+>>>>>>> Cc: <stable@vger.kernel.org>
+>>>>>>
+>>>>>> Is there any bug report to justify the backport? Since it is more likely
+>>>>>> to be a performance issue instead of a correctness issue.
+>>>>>>
+>>>>>>>
+>>>>>>>> ---
+>>>>>>>> mm/compaction.c | 2 +-
+>>>>>>>> 1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>>>>>
+>>>>>>>> diff --git a/mm/compaction.c b/mm/compaction.c
+>>>>>>>> index bf021b31c7ec..1e8f8eca318c 100644
+>>>>>>>> --- a/mm/compaction.c
+>>>>>>>> +++ b/mm/compaction.c
+>>>>>>>> @@ -989,7 +989,7 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
+>>>>>>>> 				 * Hugepage was successfully isolated and placed
+>>>>>>>> 				 * on the cc->migratepages list.
+>>>>>>>> 				 */
+>>>>>>>> -				low_pfn += folio_nr_pages(folio) - 1;
+>>>>>>>> +				low_pfn += folio_nr_pages(folio) - folio_page_idx(folio, page) - 1;
+>>>>>>>
+>>>>>>> One question is why we advance compound_nr() in original version.
+>>>>>>>
+>>>>>>> Yes, there are several places advancing compound_nr(), but it seems to iterate
+>>>>>>> on the same large page and do the same thing and advance 1 again.
+>>>>>>>
+>>>>>>> Not sure which part story I missed.
+>>>>>>
+>>>>>> isolate_migratepages_block() starts from the beginning of a pageblock.
+>>>>>> How likely the code hit in the middle of a hugetlb?
+>>>>>>
+>>>>>
+>>>>> In addition, there are two other “low_pfn += (1UL << order) - 1”
+>>>>> in the if (PageHuge(page)), why not change them too if you think
+>>>>> page can point to the middle of a hugetlb?
+>>>>>
+>>>
+>>> The order here is get from compound_order(page), which is 1 for a tail page.
+>>>
+>>> So it looks right. Maybe I misunderstand it?
+>>
+>> Oops, compound_order(page) returns 0 for tail page.
+>>
+>> What I want to say is low_pfn advance by 1 for tail page. Sorry for the
+>> misleading.
 >
-> > > I think simply adding * to the end of function name or filename is su=
-fficient
-> > > as they are already str.
-> > >
-> >
-> > Instead of:
-> >
-> > 49152*      48* arch/x86/kernel/cpu/mce/core.c:2709 func:mce_device_cre=
-ate
-> >
-> > Could we do something like:
-> >
-> > 49152      48 arch/x86/kernel/cpu/mce/core.c:2709 func:mce_device_creat=
-e(inaccurate)
+>OK, that sounds inefficient and inconsistent with your fix.
 >
-> Can we add another row, saying "the previous row was inaccurate"?  I
-> guess that would break parsers also.
+>While at it, can you also change two “low_pfn += (1UL << order) - 1” to skip
+>the rest of hugetlb?
 >
->
->
-> I don't know if this was by design, but the present format does provide
-> extensibility.  It is basically
->
->         NNNN NNN name:value name:value
->
-> one could arguably append a third name:value and hope that authors of
-> existing parsers figured this out.
 
-Actually that sounds like the best idea so far. Currently the format is:
+Sure, glad to.
 
-<bytes> <count> <file>:<line> [<module>] func:<function>
+You prefer do the fix in one patch or have a separate one?
 
-We can adopt a rule that after this, the line can contain additional
-key:value pairs. In that case for inaccurate lines we can add:
+>--
+>Best Regards,
+>Yan, Zi
 
-49152      48 arch/x86/kernel/cpu/mce/core.c:2709
-func:mce_device_create accurate:no
-
-In the future we can append more key:value pairs if we need them.
-Parsers which don't know how to parse a new key can simply ignore
-them.
-
-Does that sound good to everyone?
-
->
->
-> Whatev.  I'll drop this version from mm.git.
+-- 
+Wei Yang
+Help you, Help me
 
