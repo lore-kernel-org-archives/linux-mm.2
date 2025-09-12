@@ -4,113 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7439FCA101F
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 16:39:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 258DACAC582
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 16:49:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 930C08E0003; Fri, 12 Sep 2025 12:39:26 -0400 (EDT)
+	id 6B0406B002A; Fri, 12 Sep 2025 12:49:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E2748E0002; Fri, 12 Sep 2025 12:39:26 -0400 (EDT)
+	id 6615E6B00A4; Fri, 12 Sep 2025 12:49:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D0728E0003; Fri, 12 Sep 2025 12:39:26 -0400 (EDT)
+	id 527806B00A5; Fri, 12 Sep 2025 12:49:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 696858E0002
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 12:39:26 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0A23687240
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 16:39:26 +0000 (UTC)
-X-FDA: 83881158732.20.1E0266F
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 13EF614000B
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 16:39:23 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=MinaiU58;
-	spf=pass (imf23.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3CF046B002A
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 12:49:47 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id AF96B5BA6F
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 16:49:46 +0000 (UTC)
+X-FDA: 83881184772.27.74BA0EE
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 6F7891C000F
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 16:49:44 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=microchip.com header.s=mchp header.b="z/Bp2ta5";
+	spf=pass (imf20.hostedemail.com: domain of "prvs=3431635e0=Nicolas.Ferre@microchip.com" designates 68.232.153.233 as permitted sender) smtp.mailfrom="prvs=3431635e0=Nicolas.Ferre@microchip.com";
+	dmarc=pass (policy=reject) header.from=microchip.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757695164;
+	s=arc-20220608; t=1757695784;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+0xh0UvEoHi2O7LGyNOcCCIeHeMOwroJteEEcZ04c6w=;
-	b=p+LVpen3gFTDw6qEW+/MKZQ7lr1cUIHoanF40RS61/zNsWScTk/TUXbdUXyAIDmyUdOXCR
-	ECwvMClyeqwVRi6Tms3LunTk8FrGA9XU3LFsR2XN97zK3WZnXikdta1tQiy3a0SaA1lT7P
-	PD/geNtSybDCnqdAiSq6fQgUkaJ1E04=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=MinaiU58;
-	spf=pass (imf23.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757695164; a=rsa-sha256;
+	bh=cnmFDlEOsmIEfqMrpAweTNFX9QftyJSBrntOrKfce2w=;
+	b=WvGHpEvEo9FB7H9cIBu7nsUmsmKCM6Jnfnsg1tLcEMBSID8Dv0+KpavX5XSut+ondX8JjT
+	cCkIDNJc6U78YKMHUEEHYTRBVQqh1qeX160sxJp2SPfuf1p83vozie/YR0o4ALGb6dTI46
+	7B/jOaSDaEskNW49hubpSDiG47Sq7NI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757695784; a=rsa-sha256;
 	cv=none;
-	b=AX4EaAKQkDH8k7ePvFoZpydPgYITmG9XjV6comZSKJFsQGABPx5D+JTTH5QQE764PuURmI
-	afFj7WV5VkmbivgTJYebS0SZdvo286vX0CgOGKxHeVAhJGvfaYhrZpYoEswIesD5mT07zp
-	0aVwwQ091eR9mu+/9T7DARtFhgSbeC0=
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3e249a4d605so2327908f8f.3
-        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 09:39:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757695162; x=1758299962; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+0xh0UvEoHi2O7LGyNOcCCIeHeMOwroJteEEcZ04c6w=;
-        b=MinaiU58bUOuf8zPx44h7Dr45tiqYJqD8QZS2tl3KwC/otd2fxl6XSTRSXEYtuPegq
-         QWATvpsxZq7bubVun/6UDl4vG7Z2nEf5ard6c3jM1LDqY+lCw0Y/9q4QT4jkzHGOM2TB
-         fmcF102HwZYuOnR2YY3bY9PF72Dnj77Yi101SvclrihY0ozliPZgsEUyiQ4TrgOtA+HY
-         plnPXLY0c5lImokxcZPBDMidMVUYso5ccmxND/TF8vDiDsHg94cbicBoI89RxW5vpRv6
-         MCIYyZxDTdcfJCrqTf5VRH8dmDOaoAnWx9SnTx08FckQfntaqhTvTDdRER6U8EV0PpAY
-         LVXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757695162; x=1758299962;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+0xh0UvEoHi2O7LGyNOcCCIeHeMOwroJteEEcZ04c6w=;
-        b=DnPi33d24IDDSpOilV5YurhejyX/pYC21e00oAuTnEf89KGEF8VRdiEdzmI5md3Sl9
-         vMN1rIePxYg1jdzKE6YgU5qkZfsyMwJ3oSI8LGQ6eaq/EcCyQhtpouMJX9IgMN53S9JS
-         zk2ggPk97ObSQimdmwJ3LMgrdUS1xXGAIhDhwMoVvjMIz3cbCmLj/Jefn4RhfCHf1nfi
-         zcKCQGIJHj0nxbZzWcwnmIMoHfXcHGpi2mFxpdouhtJ2+zPXG7HX+P5m/aly9jVlkjP8
-         SJcPJkG4lQDGbFrEdhWE1ZTQxvocouS07b4vNQ7KNalKAdzSeoZrSIqgLGUncharh6B3
-         QyVA==
-X-Forwarded-Encrypted: i=1; AJvYcCXeaR7feudAxdsi96RORs/Myl2TmAaxRWOHFzdBFQNsw0m8OdZ3dlgIeF4EY0H2jwIKQIBpB29/Fg==@kvack.org
-X-Gm-Message-State: AOJu0Yxktm+CQygqlmHQLnHDR8AbAnu5f7wutpjXzTde5VH8L0P30WD/
-	lmFelZzFTxYLtAEM8wLdm02+ynP0F890pvH7bya0ypHX/9nb0MBayNpOcO4t7rZ2P7vcuTT8+yR
-	VQEHLH0Od/yHeAOxx4MuNgKPPB1d3U5dfT/Ns
-X-Gm-Gg: ASbGncvfIipYC1nGhmSLeo0tnIjtnisx2JCsD0Qt2K9gB1KLrgwBAB5PVn6SMAUkxxZ
-	9NgPKlW56mAXRfKCGN0eoz7piV0wez0PmywwpaZyXV4FWg1c8Q0qZMGHMT0xkMsJy4O9RByyOZv
-	QFwH7ZsPsjUp4ibNL6vL9AouC511H8Df1JueM77E5NPYtiebAxorAIWFSBox6gcaa0y39pn6EAR
-	pBrBqwbmjJkiQPVhduyl+xUMUdH8T8YnkUGQ3NDXr94TRQ=
-X-Google-Smtp-Source: AGHT+IHV1PvlYuf+XFcfwDj68QaEKHStgMJBQQVVA0MAE80vskWQUTNtIwoaXfzpqlGfo4C7abh1Y2609Ap85Dz11Is=
-X-Received: by 2002:a05:6000:178e:b0:3e5:25c2:9637 with SMTP id
- ffacd0b85a97d-3e7657986b6mr3795843f8f.17.1757695162195; Fri, 12 Sep 2025
- 09:39:22 -0700 (PDT)
+	b=1hF6C9cOH06mMKeOd0CkuQX5VAWDrGxpFki21Q/KrWWk0y0wOLJt0AErJ0RrSWSGFfgGp0
+	NRSpyJRhmXQ3yaBmNLowAMxIu5gIntgYrvTcqiZ0gl5DehY/bkwskuOGMVyYzlfmIgChBK
+	ZE15iPD37aWIVH8xgYjljmTgtH/Pi7s=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=microchip.com header.s=mchp header.b="z/Bp2ta5";
+	spf=pass (imf20.hostedemail.com: domain of "prvs=3431635e0=Nicolas.Ferre@microchip.com" designates 68.232.153.233 as permitted sender) smtp.mailfrom="prvs=3431635e0=Nicolas.Ferre@microchip.com";
+	dmarc=pass (policy=reject) header.from=microchip.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1757695785; x=1789231785;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=u1apkPsXybe68Jt3zrIWLyQZ7H3ZjR0gWhhluRQrN3k=;
+  b=z/Bp2ta5KHcG5dl1LZVjVrXnqozabOTOwL9uTjgILmb6BWP8owpWrcRC
+   L1IprKG7JnS3keKo7QfCm988c0w4H88eqG14Vun9B0knsuXiQF99BCunb
+   PC3XuWuf2hQCO24cga2D8jYE2X0NLd4mvp8BSGOY4pBOJjIbe0YmtzqwT
+   aI1oLT/cb8Wi46ZfYTh2AZ5JPfQlrwjz4q85+EGL7X+x8E4UOXe6wiKc6
+   5CBi7arvShMj1zcqOdJ1qCMoR8zPgoLwli57u6D0Dr1PIPit/oWLCvRWo
+   w71zcBdkVAW3iWmAfYLlMXxsD3K5glAV4FPjJJmu9olMBX1byNMp7FFNX
+   Q==;
+X-CSE-ConnectionGUID: s3gPgfU6QPiurXqxeBySFg==
+X-CSE-MsgGUID: 0XiE5fKtQqWtnhAnsP3idA==
+X-IronPort-AV: E=Sophos;i="6.18,259,1751266800"; 
+   d="scan'208";a="46433595"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 12 Sep 2025 09:49:42 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58; Fri, 12 Sep 2025 09:49:38 -0700
+Received: from [10.159.245.205] (10.10.85.11) by chn-vm-ex02.mchp-main.com
+ (10.10.85.144) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
+ Transport; Fri, 12 Sep 2025 09:49:32 -0700
+Message-ID: <f931da29-5f10-494a-acc0-309bd805d41a@microchip.com>
+Date: Fri, 12 Sep 2025 18:49:31 +0200
 MIME-Version: 1.0
-References: <202509121822.aOV6H1ts-lkp@intel.com> <8fe99133-3322-4e39-9b58-80df547b8d1f@suse.cz>
-In-Reply-To: <8fe99133-3322-4e39-9b58-80df547b8d1f@suse.cz>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Fri, 12 Sep 2025 09:39:11 -0700
-X-Gm-Features: AS18NWC-ioE-NKfTIE_NGzGThSkiI0Gn4u0FeGkHnHauTm4TCVRXnQ1WFKRGfSE
-Message-ID: <CAADnVQJWXk+Zzsf_oVTaJkpm4nO3iq34bGcUDQRarOVSX+tLbA@mail.gmail.com>
-Subject: Re: [vbabka-slab:slab/for-6.18/kmalloc_nolock 14/14]
- mm/slub.c:3866:2: warning: variable 'flags' is used uninitialized whenever
- '&&' condition is false
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: kernel test robot <lkp@intel.com>, Alexei Starovoitov <ast@kernel.org>, Harry Yoo <harry.yoo@oracle.com>, 
-	clang-built-linux <llvm@lists.linux.dev>, oe-kbuild-all@lists.linux.dev, 
-	linux-mm <linux-mm@kvack.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 13EF614000B
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 5behy4ex6e7dibftj85axqt99dipcm5t
+User-Agent: Mozilla Thunderbird
+Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
+To: Arnd Bergmann <arnd@arndb.de>, <ksummit@lists.linux.dev>
+CC: <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linuxppc-dev@lists.ozlabs.org>, <linux-mips@vger.kernel.org>,
+	<linux-mm@kvack.org>, <imx@lists.linux.dev>, Christophe Leroy
+	<christophe.leroy@csgroup.eu>, Richard Weinberger <richard@nod.at>, "Lucas
+ Stach" <l.stach@pengutronix.de>, Linus Walleij <linus.walleij@linaro.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>, Ankur Arora
+	<ankur.a.arora@oracle.com>, David Hildenbrand <david@redhat.com>, "Mike
+ Rapoport" <rppt@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Matthew Wilcox <willy@infradead.org>, Andrew Morton
+	<akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>,
+	"Ira Weiny" <ira.weiny@intel.com>, Nishanth Menon <nm@ti.com>,
+	=?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, Alexander Sverdlin
+	<alexander.sverdlin@gmail.com>, "Chester A. Unal"
+	<chester.a.unal@arinc9.com>, Sergio Paracuellos
+	<sergio.paracuellos@gmail.com>, Andreas Larsson <andreas@gaisler.com>, "Mihai
+ Sain" <Mihai.Sain@microchip.com>, Alexandre Belloni
+	<alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>
+References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
+From: Nicolas Ferre <nicolas.ferre@microchip.com>
+Content-Language: en-US, fr
+Organization: microchip
+In-Reply-To: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 538zgonfbufoouc4yxpozmtn9gwkfzui
 X-Rspam-User: 
-X-HE-Tag: 1757695163-689784
-X-HE-Meta: U2FsdGVkX18iHlbVI59tR70Ntcp7Mf5M0av+Yg9gaCsnaHd0ubcCvkKl2R8qmglkVDybgrrZBE/8LOuqxv+GuMKFTN0BWRUHtPBKGvBnZZPBOhqkyp6zZdZgmiJZU2WtgC8mAcu2IKGT33uCZ3ejkGzX7hWcVxyDp7br4mfR/z9U9N6nXdTWhsgo2oayJHkC5of1b2MyNmD9WyGC5mCNKzsuCGgV1k5vI8NapwBq89vA6iDirhlA1/Kv0kQ7kFgE34U4Bmh8SblW8Ks6w0nosaFu2vxKkshILKf7EA0CFmZLZtSUmnSW7F7FEHKDLxVwL0eF89VytJE6ZO0zPMu6bGO5JBkOuE3wqLXZbvjOsMaUDgBgA6Kz1bkpzPAM31eaVqwRpPYiB0hnGNs1lVqQX4Wl0/X1zDU4JmZVSSYCQ74Pbj8lMnAV54Xd5HVNlKivR5oq+zfcdhRKc+/OcOAhfA/Wy7cMag+b6sxn1Bg+NTLmNY/wqKwYdlIdyTec1757yHEbVnAOppoJW7PrF7aXihHhbDSSbqmGXygH1rK4puUeopy79uNcWUyON7xr/vEPM/JL7d9LMqns4YPadc1wbbjoNUEZnEUW5tsIiPagEcCiEDG26uiyPMejtJZ8ppAqtPAyxMQowAnv6u7oqgD8lg7EpUhC1YhuwRC/iP50GPKFkhhQc9rEVXnt4CSDk/Sen3DyNU2pq3z6kdB5Lg4n2k99aJxz4tn9kQ+vBBzYgJW5oZRyStug7j6ZlSCTBsKUCKQtVEmc5HhkFl+6zgtb7jCF5+kZVg7lHpQWddXhEWVBn9ktBNERsSTxXQ4DhkMu9jEz3IH1/Ts6DxhZWMRwiqIjO/RM4bE9vJWRAAnsm2/DcsaaJkE4paj966ZlV42F3iMqDsjBWUua4NW/pD5hqXgGCfbF2IJfyOTms6hz0GjxRaSMnchP2YJDz5gKpeQqwaJfU1KB+oETFnEQ6BO
- Vkbwp1Ly
- NQHcn2c/UdwtrzDksZm16ipHLsBZtRvj4jEut32JTVY3jIEpJzMRP/MwbOtrbcRH+A6qJq3ZB+x54pp5Aodrj4ijbjO7U+pqlbkj6Q1M+c5hNEVqkoWez6Q4SNGTL1gKin25/nltafYbdlq+D4BC7ZmEKIUbpZKBJRmHG5fjzADeL39PY23mpC/tHu6rkoMf1dBeiU4SRihUnTlW486XOlbGheZM6tZbsiPQwvTz8cYZU12mvjvmnye45OhEcfiDlV43LUiQNoqZ8Pf48/1g1VmJ7eM44OUMXNgTL/sTleoFxvKNdy3vhkGG+GoZ4HxQRnbvytykBn85WQX3/uj/j7OO/WoKCYIoUKi9DkqWKZtZ99+NLmOAiO/6qUQ14p46/D7HkBuaVBBwRg8jrXFjp8qxBTCZCGcHJWGw8fsRA75qUoNSqFAc4qmiBOuOdYHKIIZz5/QaR+aeqn7JS1CNi+PWkFhzrXBuDloUbX+40B6YsA5knK8OOV+n0O30V5AS4i25OxjEwH4Fqsjw6g/zt6A9rWj/I/qpMId1esN7Q8RjuHS9Fjyolfo4PIQ==
+X-Rspamd-Queue-Id: 6F7891C000F
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1757695784-594333
+X-HE-Meta: U2FsdGVkX1/LmK7smKyAXxv5+nDIzwyO1EgMqjF5VXDLS/t+7HLD/2W8GffewHm5fT4o/QTXAPK686fy/lhV6XI1/ry9nXSY915ul4AktHCKJS2xKqzkdmA/gp0YiYEJ5KR8+GORHqnmsmf0FgR1iBHFhdXXZFFAT9mEZyZW8/21/2u8FEBbRrVazLvRjoCExlJFsOXLpc8YKiRdpeGHsSEx1SkCsa0KkmM7af3LRNqNQGkxdvBTMl26AW4uTgYltGieMn+RY0Df8d/nZFNimtRGwklbxDKumSOX54LUp3VC1I7BCaKq//fpRrU2X5ivyaMm9hkSDO/wgI1T6SNAK/oupTxhsRyZ3m7zCg4V44kCQBUA9CAwFBgtFbrTxYGc3ICzQAnHP5ZfJDHD47tPZ9OgcFz3Wuc0pvWhLnPY9IBEgNTVCVWADG0mcKlj969XQDyA7KD+xbkJ4u1pZ8jPHhnP7taeEoD4J2mSmJUX1zaYWmzMbVT57kSNE+0U7w4acvLrA0Y4PNupQyTyYqIJb1uMTlaflDUNjgVDbnYlZTnrPk/Ev23zeNRqwO2mvYvhYOegVR/DA5aMxoSOLrIuPYISk7ofj9B6YpTmpCE4JjzfWTrHGPbsfCFBbaoKO3KXtxWG51vE8vPl7ULEa8eS3bMSKC8MzMejOPI/RcNoBU5/X8yfkGPfZSpzNQwWFTFz1LvWIpoUEhPwnb77xOM5IAGJoclkCkpuqWajeR+ibr32mHA87WhC7pVia6s+GFJ1VuOs1gT+VB92ra0Ck9KJm3UM9KwHOJ5pVXn8R0kZoJur3e5/aFrV/pu4qA6A69cB0WR2vo4gnem80eLOpZ+BrozF93yMbi8aWj6x93h/lDKAs1T5oK7JrH41Ea0P9pLdg8GILQ+PdUKpACBXXgRuQm5MnMLMmjTVedLzrITc4z7ZCMx5UsMBZ8aIHHCi7kk69ftS4u7oQwzp5QRZTv0
+ REPxDWsd
+ ybh72XCPisDQQFAwFHiKZF6KatAwZjDfBd7qmV/GOauYxe9d4B1yYRyyhj0MbtchCdh43CLgsAQM5C2IHJ1biu738YqnEGNjIa3PTAXShFOHfIhhTX1qhO5Tol8bFrQR43XI+eLrcu2UGM0rnQG9l2FU3Q7Fz/oi20JS/RsZXzp21nIMbcYAeFmgsNUdlUiB5mLZQosXdqZBs56Be3vDrflrdo1gHDsqvzZAquu/lQgsURBN/Tuh/n5TqAnJ3ns22N7wn9oSVKc3pxY9cxVgi4EstTanQZNyXc8F62lkiXrqDOJJc72ACb7Y3vjNHNcbDdOnWh1aPIPguKV4MUhpSYNgfG8iX+9Ij4rlzrns2YcSQMBmUsBE7GpUjzWAwCrxiVYwKIhnA549KawGU67ckBkgnpfpvLce3WIMUL/cryii96YaiUm4f+1NINBGvdK1lnUQVC5JBs7EP8n//RCCrWIfut4Nb5te5KQqBeRMFgB2obudHMtto0Hq8fzXeZnHfZjt5oNP5vaQq7+KwS8Bgx72LbiZigP2YRBBhx9sghbfJs0AYBBanuJUzeIwin9H/m1FJdvuoHjMVtGyN/XNSKdG7/Fp4Wi07ctE17klbTfxKSQohwlNG/L26SwF3CQfVEZvo9aYdtv3N4Qk+HaQ1176erNsWVhz6rPwBdlGBcWJ9+0RyDCkfd6yxxxu3011K0bvDLJhtk52wMxt2pxm1aDVD9jkRRnLliM3e
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,151 +123,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 12, 2025 at 6:23=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz> wr=
-ote:
->
-> On 9/12/25 12:25, kernel test robot wrote:
-> > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git=
- slab/for-6.18/kmalloc_nolock
-> > head:   8014922e0e72dde7684abebeab3404720401679f
-> > commit: 8014922e0e72dde7684abebeab3404720401679f [14/14] slab: Introduc=
-e kmalloc_nolock() and kfree_nolock().
-> > config: x86_64-buildonly-randconfig-004-20250912 (https://download.01.o=
-rg/0day-ci/archive/20250912/202509121822.aOV6H1ts-lkp@intel.com/config)
-> > compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87=
-f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-> > reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/arc=
-hive/20250912/202509121822.aOV6H1ts-lkp@intel.com/reproduce)
-> >
-> > If you fix the issue in a separate patch/commit (i.e. not just a new ve=
-rsion of
-> > the same patch/commit), kindly add following tags
-> > | Reported-by: kernel test robot <lkp@intel.com>
-> > | Closes: https://lore.kernel.org/oe-kbuild-all/202509121822.aOV6H1ts-l=
-kp@intel.com/
-> >
-> > All warnings (new ones prefixed by >>):
-> >
-> >>> mm/slub.c:3866:2: warning: variable 'flags' is used uninitialized whe=
-never '&&' condition is false [-Wsometimes-uninitialized]
-> >     3866 |         local_lock_cpu_slab(s, flags);
-> >          |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> >    mm/slub.c:3776:2: note: expanded from macro 'local_lock_cpu_slab'
-> >     3776 |         lockdep_assert(local_trylock_irqsave(&(s)->cpu_slab-=
->lock, flags))
-> >          |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
-~~~~~~~~~~~~~~
-> >    include/linux/lockdep.h:279:15: note: expanded from macro 'lockdep_a=
-ssert'
-> >      279 |         do { WARN_ON(debug_locks && !(cond)); } while (0)
-> >          |                      ^~~~~~~~~~~
-> >    include/asm-generic/bug.h:171:25: note: expanded from macro 'WARN_ON=
-'
-> >      171 |         int __ret_warn_on =3D !!(condition);                =
-              \
-> >          |                                ^~~~~~~~~
-> >    mm/slub.c:3891:27: note: uninitialized use occurs here
-> >     3891 |         local_unlock_cpu_slab(s, flags);
-> >          |                                  ^~~~~
-> >    mm/slub.c:3780:48: note: expanded from macro 'local_unlock_cpu_slab'
-> >     3780 |         local_unlock_irqrestore(&(s)->cpu_slab->lock, flags)
-> >          |                                                       ^~~~~
-> >    include/linux/local_lock.h:52:48: note: expanded from macro 'local_u=
-nlock_irqrestore'
-> >       52 |         __local_unlock_irqrestore(this_cpu_ptr(lock), flags)
-> >          |                                                       ^~~~~
-> >    include/linux/local_lock_internal.h:202:21: note: expanded from macr=
-o '__local_unlock_irqrestore'
-> >      202 |                 local_irq_restore(flags);                   =
-    \
-> >          |                                   ^~~~~
-> >    include/linux/irqflags.h:240:61: note: expanded from macro 'local_ir=
-q_restore'
-> >      240 | #define local_irq_restore(flags) do { raw_local_irq_restore(=
-flags); } while (0)
-> >          |                                                             =
-^~~~~
-> >    include/linux/irqflags.h:179:26: note: expanded from macro 'raw_loca=
-l_irq_restore'
-> >      179 |                 arch_local_irq_restore(flags);          \
-> >          |                                        ^~~~~
-> >    mm/slub.c:3866:2: note: remove the '&&' if its condition is always t=
-rue
-> >     3866 |         local_lock_cpu_slab(s, flags);
-> >          |         ^
-> >    mm/slub.c:3776:2: note: expanded from macro 'local_lock_cpu_slab'
-> >     3776 |         lockdep_assert(local_trylock_irqsave(&(s)->cpu_slab-=
->lock, flags))
-> >          |         ^
-> >    include/linux/lockdep.h:279:15: note: expanded from macro 'lockdep_a=
-ssert'
-> >      279 |         do { WARN_ON(debug_locks && !(cond)); } while (0)
-> >          |                      ^
-> >    mm/slub.c:3863:21: note: initialize the variable 'flags' to silence =
-this warning
-> >     3863 |         unsigned long flags;
-> >          |                            ^
-> >          |                             =3D 0
-> >    1 warning generated.
-> >
-> >
-> > vim +3866 mm/slub.c
->
-> >   3852
-> >   3853        /*
-> >   3854         * Put a slab into a partial slab slot if available.
-> >   3855         *
-> >   3856         * If we did not find a slot then simply move all the par=
-tials to the
-> >   3857         * per node partial list.
-> >   3858         */
-> >   3859        static void put_cpu_partial(struct kmem_cache *s, struct =
-slab *slab, int drain)
-> >   3860        {
-> >   3861                struct slab *oldslab;
-> >   3862                struct slab *slab_to_put =3D NULL;
-> >   3863                unsigned long flags;
-> >   3864                int slabs =3D 0;
-> >   3865
-> >> 3866         local_lock_cpu_slab(s, flags);
->
-> I guess this?
->
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -3772,8 +3772,11 @@ static void deactivate_slab(struct kmem_cache *s, =
-struct slab *slab,
->  #define local_lock_cpu_slab(s, flags)  \
->         local_lock_irqsave(&(s)->cpu_slab->lock, flags)
->  #else
-> -#define local_lock_cpu_slab(s, flags)  \
-> -       lockdep_assert(local_trylock_irqsave(&(s)->cpu_slab->lock, flags)=
-)
-> +#define gg(s, flags)                                         \
-> +       do {                                                             =
-      \
-> +               bool __l =3D local_trylock_irqsave(&(s)->cpu_slab->lock, =
-flags); \
-> +               lockdep_assert(__l);
+Arnd,
 
-That works, but would raise questions for anyone looking at
-these two lines as-is, since it's an implementation
-detail of lockdep_assert() and combination of .config flags.
+On 09/09/2025 at 23:23, Arnd Bergmann wrote:
+> I'm still collecting information about which of the remaining highmem
+> users plan to keep updating their kernels and for what reason.
 
-what clang warning suggested is imo cleaner:
+We have 1GB of memory on our latest Cortex-A7 SAMA7D65 evaluation boards 
+[1] (full production announced beg. 2025). The wide range of DDR types 
+supported make some of these types interesting to use at such density.
+Both our Cortex-A7 SoCs don't have IOMMU; core and DMAs can address the 
+full range of the 32 bit address space, so we're quite 
+standard/simplistic in this area. We use CMA with large chunks as our 
+camera or display interfaces address "modern-ish" resolutions (~1080p).
 
-diff --git a/mm/slub.c b/mm/slub.c
-index 4079abb5d0e1..a6b50cd1d95f 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -3865,7 +3865,7 @@ static void put_cpu_partial(struct kmem_cache
-*s, struct slab *slab, int drain)
- {
-        struct slab *oldslab;
-        struct slab *slab_to_put =3D NULL;
--       unsigned long flags;
-+       unsigned long flags =3D 0;
-        int slabs =3D 0;
+We use CONFIG_HIGHMEM and activated it for simplicity, conformance to 
+usual user-space workloads and planned to add it to our sama7_defconfig 
+[2]. I understand that we might reconsider this "by default" choice and 
+move to one of the solutions you highlighted in your message, lwn.net 
+article or recent talk at ELC-E.
 
-Could you fold one of them in?
+Of course we plan to maintain these boards and keep updating our kernel 
+"offer" once a year for those associated SoCs (with maintaining 
+upstream, as usual). As you said, being ARMv7, we're quite confident for 
+now.
+
+As you mentioned, we've recently released one ARMv5te arm926ejs-based 
+soc: the SAM9x75 family. But we don't have the intention to use too big 
+memory sizes on them, even if they do address large screens, with LVDS 
+and MIPI or modern camera interfaces...
+
+I don't have too much info about our customer's use cases as they are 
+very, very diverse, but don't hesitate to reach out to me if you have 
+questions about a particular combination of use.
+Thanks for your regular update on these topics.
+
+Best regards,
+   Nicolas
+
+[1]: for instance: 
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/arm/boot/dts/microchip/at91-sama7d65_curiosity.dts#n29
+
+[2]: 
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/arm/configs/sama7_defconfig
 
