@@ -4,121 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E18BCCAC582
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 11:34:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66E45CAC582
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 11:36:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4D2A88E0012; Fri, 12 Sep 2025 07:34:46 -0400 (EDT)
+	id C501F8E0013; Fri, 12 Sep 2025 07:36:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4AA998E0005; Fri, 12 Sep 2025 07:34:46 -0400 (EDT)
+	id C27EB8E0005; Fri, 12 Sep 2025 07:36:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A0538E0012; Fri, 12 Sep 2025 07:34:46 -0400 (EDT)
+	id B3D908E0013; Fri, 12 Sep 2025 07:36:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 283AB8E0005
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 07:34:46 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C3EDA13BB60
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 11:34:45 +0000 (UTC)
-X-FDA: 83880390930.27.43BE1AD
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 4B7BF14000D
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 11:34:43 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Lz3BmvmO;
-	spf=pass (imf26.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A368A8E0005
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 07:36:11 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3EA9AC07BB
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 11:36:11 +0000 (UTC)
+X-FDA: 83880394542.15.AA5BB56
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 8A1374000D
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 11:36:08 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XOj2mOFZ;
+	spf=pass (imf01.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757676883;
+	s=arc-20220608; t=1757676968;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZWd+C+6xlO7ZNnElus07Td372OLIDupg0E/fPHS2G6s=;
-	b=JM3MV0MGO9PgxGJL9gLqtYqYozgvjJ9k1XPf2ft11IRmzz0iKMnNp8kQLKErY8V2lUuTXg
-	DWm4/UWbDGoctN70dRxVfFWKpSJQubm7BS3FZlZxbu1QcgNjhEOkBPNKFo/4AHMk3ICQl3
-	lSkFdg/WYXN+RPWYRhZcurSbYGBrcd8=
+	bh=L4WTNdMCGh54uRDM/L4Uxaq4pm+e6gS6JQHYqsqi25s=;
+	b=wttq7EQvmWFm1K+7o4nYw00sXQjIb++HgY3KSDza8XbGIABBKX1cVtffoEeSaZvecvvlUv
+	plEq/3QaIkNg5A+h3mknBzANQn2q+MqEs2DczvSXNZtCofWJkO0Yzjr6vK76S8xz6FCn7k
+	e3YAj/mTY9aCiM76nBT9vO/AJnfgUPk=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Lz3BmvmO;
-	spf=pass (imf26.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	imf01.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XOj2mOFZ;
+	spf=pass (imf01.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757676883; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757676968; a=rsa-sha256;
 	cv=none;
-	b=IVZzo6JspaoTA6JjrGFF5oZdnSb1XCgcN8GJpsbT7y83Ys9ZzMtLfrTzrmKv+YKmrADof3
-	iig6Sgbc6xJZKvKDW1DhIxJpgGChn2k7RJcAvodG3gjers2Oh1Mp/tSM+etmVdjOG2czqY
-	KGcDQQYaATotZuoa3OrX0UOd/Ojc6QM=
+	b=HJNB3ucP3bFgLx61TwBkGT9Novyn2XhiHp04BitqMLp7A8kZa0kQjQ+x58TV8k6R4/1q7r
+	ZtKaoqH8o0M4fRSi/C/oDkLRvYEKOMrEqjlDTKup0vnjCkUqrNcBVhzLBWwz6fSCGXVv3X
+	Mc+YK0s5nP7926ugQg6VdHcL5ZVR+ZM=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757676882;
+	s=mimecast20190719; t=1757676967;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ZWd+C+6xlO7ZNnElus07Td372OLIDupg0E/fPHS2G6s=;
-	b=Lz3BmvmOLHBg/6PtImScADLSvnkSvbLTJCj/a/WTlvF5gSQUuwTULUQcgYQPULlq0SSYXV
-	KqkohEldUl7R36u4fvakdAiYm6vFbloC8I7Y+/SmMv6DaYufEgi7pvlCT3YYcYrvn2ogBE
-	cDvzx9W0B/XKTWarrkWnKaKMXn0EjnM=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=L4WTNdMCGh54uRDM/L4Uxaq4pm+e6gS6JQHYqsqi25s=;
+	b=XOj2mOFZ9fzs7SqurF0FUpLkugTTqOXC6JTSoQFXQKKtK2P3cqUH+hv52Zroggs8OUAMF8
+	ztYhs4ieaq5bdY+745oMRqnWwkNZlmEXVIWz2hQzf5OyEjAG8r+/wlgthu/hD6/qLMSqdS
+	ZRCF/W7TqAdtY9be0lSkkE+4B2VSHFY=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-262-3J2yfsODOu2qOL13THgnmw-1; Fri, 12 Sep 2025 07:34:41 -0400
-X-MC-Unique: 3J2yfsODOu2qOL13THgnmw-1
-X-Mimecast-MFC-AGG-ID: 3J2yfsODOu2qOL13THgnmw_1757676880
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-45df7e734e0so11479145e9.0
-        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 04:34:41 -0700 (PDT)
+ us-mta-281-6rJqPVBUPTaxjr8xShhaOQ-1; Fri, 12 Sep 2025 07:36:06 -0400
+X-MC-Unique: 6rJqPVBUPTaxjr8xShhaOQ-1
+X-Mimecast-MFC-AGG-ID: 6rJqPVBUPTaxjr8xShhaOQ_1757676965
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-45de27bf706so8772275e9.0
+        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 04:36:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757676880; x=1758281680;
+        d=1e100.net; s=20230601; t=1757676965; x=1758281765;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ZWd+C+6xlO7ZNnElus07Td372OLIDupg0E/fPHS2G6s=;
-        b=W84DLfVDl4aVjKCyznDEqVOeRoCLohFbTPUFUQO1/P96NV//solb4n5GnOtZF0hcy7
-         GioaDnMX2R6PH2BRNBNUaTw7WtA5+dXEfgle4TKWW4bfll/GvshMeA7/ovJcDD2Uxx4Y
-         G51pMkj7hXYtMIOH2FVz/XNeCXBYUBTFIBlIcF1B2fFNt0brZZv+snMKpn0pMPZzGQLd
-         B5fglevJWnvOvuafHfA0tfBoU7FQt3q/hgMNIOK8LrMR0FQXvMZ4HSf/xD6hA4DR2tgV
-         feV0G18wwPCUZejmMu+wPQUrRaaoF18Np1aUouHnXen79K1/nPUGUI+ZrOhCFe3c/2Sy
-         33yw==
-X-Forwarded-Encrypted: i=1; AJvYcCX140x5ROgP0edSdHEOXfyk5Z8vxTLIbRz/azb9XRpLCOMx1KtMAqzONxkMlYUheYLjUVSm62SMsQ==@kvack.org
-X-Gm-Message-State: AOJu0Ywb2+OZXd34vSerEbecwfwFuYn282noT7nudUPzL/ssZGSPguyd
-	c6KeqIUCjODhiXfh5flb1apOU4D6OoMIJKuG4cR+VJWEGY0OJrZJkTdSnPIQh6YElXnA6btgRvF
-	BzRt+Hiz7uLZYm0uUYbtzflHFuj6V9Zo8RGiJHa2AC4UBkaoOhluV
-X-Gm-Gg: ASbGncu17vH/YzRofzZoqH49y47vXkhyl19/g75W4Ie9H5gPSPaA1wuVaRib7NNlrGq
-	MCenpEmkJdA0loKwhWetuoWOJH9JPPv5rbkPujJg+mImEqljlM/OuK1q/t6u4MsYnZEhaSWqU28
-	z9FqJcRVZVvHSSnL8jmRygt/Jv3w/PZmoR33F0toupF+Uma1qPW8YMVQXpRg7j7tJJh/fpeevnj
-	AJ9273Dz7Km0+J+Z+z43qgihPs8t0LI8o/jH525+13MehTOMqBOnwrsMsyo9L4IoWp4Ec8+d0sZ
-	piFJuZazPllY3CSEmRLOmq+LvFqwYqKtaDJk5ywSHyrXqnuThcT0tHodg8IuRRiHnEJwSkCE9C5
-	NOkHIMebdAjCQahrWsCJN4BjEJFrTgx4JMn5q/LRXO8fFIAO1IQh7XlaI/uJbqQsc9bQ=
-X-Received: by 2002:a05:600c:3b85:b0:45d:e285:c4ec with SMTP id 5b1f17b1804b1-45f216696c8mr21980655e9.4.1757676880128;
-        Fri, 12 Sep 2025 04:34:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGBCLdYjQPkVnjO0W8XKaGSgjZLsccprLNd6W9/Xe0KR1we4p5qR7REUfvO0pBQsst9YNwS0w==
-X-Received: by 2002:a05:600c:3b85:b0:45d:e285:c4ec with SMTP id 5b1f17b1804b1-45f216696c8mr21980295e9.4.1757676879669;
-        Fri, 12 Sep 2025 04:34:39 -0700 (PDT)
+        bh=L4WTNdMCGh54uRDM/L4Uxaq4pm+e6gS6JQHYqsqi25s=;
+        b=Do54UYDXi69vERZaj0MB3wG05WCSwn/zm6djpKp+pT2q522rhNrciXTrZtAQqekUkn
+         cZfRQqp1P6WApxA5LyFy0WCAsAI6ZgQip6RkrKvuxoF0blwGArcJozYpc/o6TTk9EWgi
+         hi/5cFWnu2wHQEY6BgzTTgmfz39er4iHsry35FybmW7dTBffCfsKDIOBIqjjB+O5Nzxr
+         PsD3AHVuAgSkYYl/33pR+8cdHGi1ZF/yttV76ueFaIs7ch0A3RmfVaJErIquhyJTdvpO
+         GcZFaLAQBl6ATIEbXw684nr0AdFYJ3BDXJy7jHU4lS4lTEDCKp4yk9luWvcqAYW7i2C0
+         DmoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVkyPkK9mMtZ51ftSmA3Ji8yXp9i4/pwOzbRqXjYT+e1M6h/rYdyEo8u/nHxSCyykAOyDbUEamRsg==@kvack.org
+X-Gm-Message-State: AOJu0YxtOclWqlB9mY7mhuAG6EVXSuojLuxkKEQZfI4iGSfZKPXHLsKi
+	GAKLdFt3XIMLKRF81kMkOZpwo8YsKUdw4w1SFUnOt0lRKwBNZc5MU1twG2masE5CraWKnXCZpzB
+	7QyhUsVoFrrqgVPrG4cCLBz28UUoC86JIUXdcfhSp6kvKc6DZc0EM
+X-Gm-Gg: ASbGnctA3+zMtNb1Fwwa5ks4ME2NZUpW6Hnrd7aX1xPcsqyDKYouhCn8kMP8NBDROB/
+	o3gEt5phMsHD4iwB70yBATEmmYgtW9Ygeg0lCeNB3X6XCMGvJ9b7IGoRIpEFT4sbyPBpUFhReGB
+	0m5M9JCbp3OmD5BfdHefklwf7wNxqwSZjyZKApiwsqIyxHuoGDNGG6sqrbJi3p2/Yyfnrc3QNVS
+	anIt3yEvQ56JQpMm4u8+aVMGkiOSx4CLUtZsZZiaodpNkY5NOEkY033tvF7NxSSYAHDm62BFyL7
+	nlve5GafZHTeMw+Hs2saMBTvKflWLe2ggGvE6d8/K/mFvOPb+gy/peVueji1s8hNhxq60L4k6j/
+	HsorIbf4Hi+nahULpwcCGLi9Th54Iyus/gOqfnJ1e6k/JUQzWSjhS0txZnnbXUmh7fxY=
+X-Received: by 2002:a05:600c:4e4b:b0:45d:cff6:733f with SMTP id 5b1f17b1804b1-45f211d517emr27953585e9.11.1757676965172;
+        Fri, 12 Sep 2025 04:36:05 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEApCot1i+5m775BUiDD6WRxTCaO0+qykFG5pVRf5Sw41hSYWcT5lrn+50Nw2D8nJepyAo5JA==
+X-Received: by 2002:a05:600c:4e4b:b0:45d:cff6:733f with SMTP id 5b1f17b1804b1-45f211d517emr27953335e9.11.1757676964784;
+        Fri, 12 Sep 2025 04:36:04 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f20:da00:b70a:d502:3b51:1f2d? (p200300d82f20da00b70ad5023b511f2d.dip0.t-ipconnect.de. [2003:d8:2f20:da00:b70a:d502:3b51:1f2d])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e7607ccf9esm6158472f8f.40.2025.09.12.04.34.38
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e760775842sm6503959f8f.7.2025.09.12.04.36.03
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 Sep 2025 04:34:39 -0700 (PDT)
-Message-ID: <d7a03a2b-d950-4645-80f2-63830bd84f76@redhat.com>
-Date: Fri, 12 Sep 2025 13:34:37 +0200
+        Fri, 12 Sep 2025 04:36:04 -0700 (PDT)
+Message-ID: <3f739d3e-f6fc-4a3f-9bbb-151a6dc6c083@redhat.com>
+Date: Fri, 12 Sep 2025 13:36:03 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: next-20250912: riscv: s390: mm/kasan/shadow.c
- 'kasan_populate_vmalloc_pte' pgtable.h:247:41: error: statement with no
- effect [-Werror=unused-value]
-To: Naresh Kamboju <naresh.kamboju@linaro.org>,
- kasan-dev <kasan-dev@googlegroups.com>, linux-mm <linux-mm@kvack.org>,
- open list <linux-kernel@vger.kernel.org>,
- linux-riscv <linux-riscv@lists.infradead.org>, linux-s390@vger.kernel.org,
- lkft-triage@lists.linaro.org, Linux Regressions
- <regressions@lists.linux.dev>, Andrew Morton <akpm@linuxfoundation.org>
-Cc: Kevin Brodsky <kevin.brodsky@arm.com>,
- Andrey Ryabinin <ryabinin.a.a@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Dan Carpenter <dan.carpenter@linaro.org>, Arnd Bergmann <arnd@arndb.de>,
- Anders Roxell <anders.roxell@linaro.org>,
- Ben Copeland <benjamin.copeland@linaro.org>
-References: <CA+G9fYvQekqNdZpOeibBf0DZNjqR+ZGHRw1yHq6uh0OROZ9sRw@mail.gmail.com>
+Subject: Re: [PATCH] mm: transhuge-stress: fix potential memory leak on
+ realloc failure
+To: Haofeng Li <920484857@qq.com>, Andrew Morton <akpm@linux-foundation.org>
+Cc: 13266079573@163.com, lihaofeng@kylinos.cn, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ lorenzo.stoakes@oracle.com, ziy@nvidia.com
+References: <b6f38984-5f89-4a9d-a905-ddcdbd7510a3@redhat.com>
+ <tencent_43768D3DB24034B62C249781C1DE7359C807@qq.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -164,21 +156,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CA+G9fYvQekqNdZpOeibBf0DZNjqR+ZGHRw1yHq6uh0OROZ9sRw@mail.gmail.com>
+In-Reply-To: <tencent_43768D3DB24034B62C249781C1DE7359C807@qq.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: ahTskYsxCLqSvnhV9gjx9huEpmB1hGiXBn4nocKqeWo_1757676880
+X-Mimecast-MFC-PROC-ID: 1bV5IxS07F92IyQCvYotZ1FuATyaIFREhVyhEfmUv9Y_1757676965
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 4B7BF14000D
-X-Stat-Signature: 9zjs1bbionp1gcnaxhmjdnmhako4dgh3
-X-HE-Tag: 1757676883-225446
-X-HE-Meta: U2FsdGVkX19eAWW7suEHzrnAIy98vBiqfICClyfzRMOMaghHCitgGn/t+HLmAKxiA0VZX/atd9/osi8ubMD5hmTAcLCwQ1A++OQNxUUq+DZ5iWyWGLLaKOCuFG6jvjtBPxXj0XM+lNUd7sBBueanOdC87ajp2MeH5xBmXtnyYNx1qkugFxSxkusxHcY2+zyWmfm9AwHeccUwqJgqLJnmlh8kvelrbtUAi0/kh4oXnbz7f2LNlDFbhyOF5DYo711DeBoiQfzZMCzLNTdyo/LhKNz2USL7q/rAbBQV/AtzWntl7H1jgjlOtcUm9ZYPmWnnESom0eLbRMl2/VRFGeI1u2wLDtD5gh2yIij/54FABsz2RF2HghTSBLw8nj+mPnhwwtlLMHNQrMTcXXAbj9RdGU7aqNr6cWR/GanYvfnl1padQs0/3SS1pbBkG+ZcPTvP9SKleN5YA9w+RZyqUAgVIgd2PznmRmI+l1qQlZiKQJfooBaD4W/wdIjcW2MQnM9QhdXiFOcd8GEHZqm2OTfC61javieKDpTCfcHWAi2wqprdk6Wjdc/uy4JdSrdMdRQe6OFvSLvwtkU/fSRRjf5Tl3N/uwOi4flduljRIy6WjJG7LKxin70S2yyJgCJIBOLDg7myhsEyLt8l1Siebq3F9YaYkUeqyRwAzRRYauEDcaQNv1Kh47Gwo0zSsc/IgIbMZYE+lh7qLaF05zZqDb6gSFvdaWLZ6O4S+Jfsp/pM/O4vRhqCth+DvsVT9dFOxbF3ljHIvWFcWa/FWkTCHt8eu+R8ZxvyN7+ahlz5JvfE8ZePSmiZH7oMuaZVvjnvcEoCJg6eZs/9ONRDQD8Yzzm2g4RhJjp8NwqcO2NVcZNioK4ruvxiQ5FwzcXXQwQI3uGE+5X7V/+GD9AuzNJnHVKFo5hg1NrDDpwnO2+wG6sB5QGDN4RG5paOefVgy2QVJEg8IfNU05NMCnjK7FvwVCa
- j4b644Hy
- WgtGtCCb3bRYxiQ2bjzfBzerl7Y1MbYP00NwXdv/DAoV1br1g/1FUJc+D/00a3G7pSA200Az6pfPGmng9Hpi7wI2EaL4wsWd1xpA8LPqQwyYh2d5d1w+Dgjs310VLqNuKZX3J2BuREWQomQdNc5PqcNVbMTCoxmZvr9heAQPXEDAIuzR79sUbXqx5k9uUfHjkg0yVRH/MSuolnc+MMVepeVy+JgFn/mLMXVq93NdEc4LVjxVy5HSg0VHgpk3Cb25+TCh8srd6UWCKwYM/TUqZKGjcS1yMO6tf5aRbinVk5ADroAXf3RD8J/LBIePXSD+GRNbqSKBd0lJLqfcUdJnThRlBqolb3VtLWWAf53eeXu62sjJ1Etaa52e9H8ijutruY3idOl8+eb4Jz2ThaQP/epXRLOrjrcwK389d8P6wx6CruzshFgtbNrH5Cw69EuhaPsr2V7GuFmKImilefwwMB5iJw0175qDmdf/1r0Xj7aimCEjIQ/CUW8P8DlGhCDKRrASrzddSp/46lLWr1r6ZISERFL8TjShK92QRpuozN7uyQCcfuPo7/HJBFy1DcXT4dEcDQ/a0o+NDPlH8H+ZceMaH9Vn6zflcom0J
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 8A1374000D
+X-Stat-Signature: zojysu4ic59zu3ea3ig1op673muthg9p
+X-HE-Tag: 1757676968-35699
+X-HE-Meta: U2FsdGVkX18+qCVPtgAZ68tXMSJqESyyRV543sXl6v+yKdnq3HgAlmn8pkcw7uDCyqgfDqku8/LphApvd5K5mr3xU+lSMkIL0YjluysXyz9a3AfN7OYk768Dy3VhMhagt3IJIZnL2zyoP+UT4a9kydO3NwVMrVS5pOHbaKTllrSQs92yt5JcZav2BCNqTbZY/0qY48IbhyobnfWXihnjtvUDsVKdUwUJVMQQ7NB7sayqPrcX9TMEpfgrlsfWN9hv2lOff37Uh5hOwH2OU6BvuOMVsFDd2Sh24nGk/7nukaEQnVqMChDL4qdU0C22UbYIYtddG8Qsamo51mnl2l/M2Vw5MpnzqRy1zrujByby4xrLhIhpb5CVDab5E1F0eCo3t8Ha8OKJygM2EFGNgauH159+cZ2/T4IEnCyOS2J5COk3cVjDsiRQK5ZDqZ4OnPpt779xPda6+bSDzm+R3tamhfa2yF6J4Lbyi5ClaNErU+UcIz12lg+VX78INQUYU6Jr2m5lB1TZnAm5j1MfMCj2qZEzidyAltnSg0GGNsyakcLFqzvc8WpfU0KZgffDlGpZWNtMPVoIUYgEx6VvWMMBm9L/2lFgdAU6W4pR5cWKyFKXeCwdfPttniYxDZ6PB+xez9Ixe4ZnhX7bhcFiq52XJcY0y5dpD9jp6lxXO2Yo1y7QNeAYPIh3E0pdNjKNHKmShN0vKfy+fOkVIDEnBnRh60ZyxAH5Jorqd0P40iklkwMtobGANUWQCAATmgay3Y3lWF8mHxSPS/8a1B8F/88f1tvJYafJLrpByQX/uwwU8Md+7REZsEsaaU4Evus7/jgHl/22Z2bhK8H1fakQx5a1N1hDjEQxCs6bndQLfCQ0QhnvdOdHHDgddySDChJ9mtGRiN2tWZSQfR1PynAD+3P3RJ5+hnrK1KEOInBs1Q+KwkDvdQzv+hlqUQBq0j8RNq2KFnfYSG51O2UPlSJIyoy
+ hsr115SC
+ 50x3bpBD6RGJE8oLJTLyziSQkMHTWVvBMrsbPSsvNNarWuWqB1iUamea05EFUiTZkQWDjAk6e/s8of6Om5+K2Qp79a5M6Rmrco1MgAybF18Uxeq/jRPjGpphzeB5laFwYgV2SWHIZWVwK3aNQKh02FZ052u6kgOHFVSmjJuvd9jyBmX0LQYB2FCLwrFfy0mNAoCdrOx5FE1QZg7RBWkgCdGpC6ccU4AF8T+4RG8diCUpAlybPWSSViUHhXIKvKeibPxb5TdiqiJ1jqmygmcpFbxdiCqmr3h5+IcK5PcYBPpcmdq5fK0TEPmidTf8RC/lRkZ2pJXpT3lw2OUoZBu7UMs6n+V6I7YwY9qrRgJ0kJceCL6JpeRq2H/woWthmTQbpnrttjGFRYI33hm1VCY1QVrUhR3Y5BXvYD3EF
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -187,50 +179,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12.09.25 13:32, Naresh Kamboju wrote:
-> The following build warnings / errors noticed on the riscv and s390
-> with allyesconfig build on the Linux next-20250912 tag.
+On 12.09.25 12:10, Haofeng Li wrote:
+> From: David Hildenbrand <david@redhat.com>
+>> What do you think happens when a process exits? :)
 > 
-> Regression Analysis:
-> - New regression? yes
-> - Reproducibility? yes
+>> Correct! All memory ever allocated to that process gets freed, avoiding
+>> any memory leaks.
 > 
-> Build regression: next-20250912 mm/kasan/shadow.c
-> 'kasan_populate_vmalloc_pte' pgtable.h error statement with no effect
-> [-Werror=unused-value]
+> Thanks for pointing this out. You are absolutely correct that the operating system will reclaim all allocated memory when a process exits, so there is no persistent memory leak in this specific scenario.
 > 
-> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> I opted to add explicit memory freeing in the error path primarily as a practice for better long-term maintainability:
 > 
-> $ git log --oneline next-20250911..next-20250912 --  mm/kasan/shadow.c
->    aed53ec0b797a mm: introduce local state for lazy_mmu sections
->    307f2dc9b308e kasan: introduce ARCH_DEFER_KASAN and unify static key
-> across modes
+> It ensures correctness if the code structure changes in the future (e.g., becomes part of a longer-running routine).
 > 
-> ## Test log
-> In file included from include/linux/kasan.h:37,
->                   from mm/kasan/shadow.c:14:
-> mm/kasan/shadow.c: In function 'kasan_populate_vmalloc_pte':
-> include/linux/pgtable.h:247:41: error: statement with no effect
-> [-Werror=unused-value]
->    247 | #define arch_enter_lazy_mmu_mode()      (LAZY_MMU_DEFAULT)
->        |                                         ^
-> mm/kasan/shadow.c:322:9: note: in expansion of macro 'arch_enter_lazy_mmu_mode'
->    322 |         arch_enter_lazy_mmu_mode();
->        |         ^~~~~~~~~~~~~~~~~~~~~~~~
-> mm/kasan/shadow.c: In function 'kasan_depopulate_vmalloc_pte':
-> include/linux/pgtable.h:247:41: error: statement with no effect
-> [-Werror=unused-value]
->    247 | #define arch_enter_lazy_mmu_mode()      (LAZY_MMU_DEFAULT)
->        |                                         ^
-> mm/kasan/shadow.c:497:9: note: in expansion of macro 'arch_enter_lazy_mmu_mode'
->    497 |         arch_enter_lazy_mmu_mode();
->        |         ^~~~~~~~~~~~~~~~~~~~~~~~
-> cc1: all warnings being treated as errors
+> It maintains consistency with other error paths in the codebase.
 > 
+> It prevents false positives from static analysis tools (like valgrind).
+> 
+> I'm happy to adjust it if you still think it's preferable to remove the free() in this context.
 
-
-I'm afraid these changes landed in -mm-unstable a bit too early.
-
+No code changes are required. This patch adds more complexity without 
+any benefit.
 
 -- 
 Cheers
