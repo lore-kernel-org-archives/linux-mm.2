@@ -4,107 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D065CAC582
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 08:07:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FC42CAC595
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 08:15:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C47508E0007; Fri, 12 Sep 2025 04:07:39 -0400 (EDT)
+	id E7BBE8E000A; Fri, 12 Sep 2025 04:15:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C1EF28E0001; Fri, 12 Sep 2025 04:07:39 -0400 (EDT)
+	id E2CAA8E0001; Fri, 12 Sep 2025 04:15:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B5B7E8E0007; Fri, 12 Sep 2025 04:07:39 -0400 (EDT)
+	id D1B7B8E000A; Fri, 12 Sep 2025 04:15:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A84E28E0001
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 04:07:39 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4524B1606E5
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 08:07:39 +0000 (UTC)
-X-FDA: 83879869038.23.E1441FC
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 6D0EF1A0002
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 08:07:37 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=iI5jFlHN;
-	spf=pass (imf19.hostedemail.com: domain of 3xtTDaAkKCMsr2ztv8Fy2x55x2v.t532z4BE-331Crt1.58x@flex--aliceryhl.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3xtTDaAkKCMsr2ztv8Fy2x55x2v.t532z4BE-331Crt1.58x@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id BA5598E0001
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 04:15:47 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D5C0011AA96
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 08:15:46 +0000 (UTC)
+X-FDA: 83879889492.27.E917641
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	by imf28.hostedemail.com (Postfix) with ESMTP id DDC0DC0004
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 08:15:44 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=AjiQe1K0;
+	spf=pass (imf28.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757664457;
+	s=arc-20220608; t=1757664944;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+tgtoriTVA3wUl1fLwqvusUWB5z4BoYTpvvOhTysEkY=;
-	b=kuBOTqle5aXCNrebUXJt6/JJ6IVeeEoPXUx+DHUD9qkhXwGtolI0V6UwpK3LAPOAT4f1zM
-	BLWfxnjVP0X+PTM4J/cySVhL89wN3x57IX4nJhQgyMMJVHtIG/zCrKtT67/htygCgpN2iR
-	pPIy5KPi+lC9PaP4fSXH8rzgxshgdqk=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=iI5jFlHN;
-	spf=pass (imf19.hostedemail.com: domain of 3xtTDaAkKCMsr2ztv8Fy2x55x2v.t532z4BE-331Crt1.58x@flex--aliceryhl.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3xtTDaAkKCMsr2ztv8Fy2x55x2v.t532z4BE-331Crt1.58x@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757664457; a=rsa-sha256;
+	bh=b2EuFHC5+5B8ohKz2yz145rUlrp5xKfqVTKvvn+wKTM=;
+	b=VHw5N3AhLRXXkIPpdQrbx3e/Umwm45Js4T/ROdCy4qy4owATj9xZPUGPMPTLSqPsPagTB7
+	JXaRvDH62ejdWUniyZVhJrd23mqc9PGLkK+RQmGO6jtnP5OfY8BvV/RMLT39W7j734YSwo
+	DPleecUuPC/QtAsa3ogCag4TWNfIxBo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757664944; a=rsa-sha256;
 	cv=none;
-	b=JOHJxlMK5nQHUbpTF64wxdkxlc8Cyas4Cxxr3m1nYvbczGp+rn1CPXC8GXRp1OpYBfhCVH
-	HV1WtLBgYHJwI1otPnnJzqz/HeDmZaE2OyL73M7U+paOM7Tv4qcDN1+KG+gGK4k2Vf6e79
-	wbB5EWpK681vOmFR3uzJY/PdWBqc/mY=
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3e04ea95c6cso744227f8f.1
-        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 01:07:37 -0700 (PDT)
+	b=l6secDyYz9iiuET9ujT3tLdiEtAMt+/7i63oytBu9I9X/89rZi1AbeBhQY73eCDej04Jeb
+	hsgqPKv4+njnpKTqogqlH288ABX+8pzCGwWxJXiW2+QPHyJf2fJ+0CfTL4t5M59aEbc+it
+	RdqYDdMjsQwT6B3xE8T7v+STZoXhQow=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=AjiQe1K0;
+	spf=pass (imf28.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-24457f581aeso16635655ad.0
+        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 01:15:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757664456; x=1758269256; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+tgtoriTVA3wUl1fLwqvusUWB5z4BoYTpvvOhTysEkY=;
-        b=iI5jFlHNVP1ae41HWtfKSIMF/YWtOt25OPxseYhU9YCbTRxDCyp162kKOzdTu8UrTO
-         O7JvdAybAFdo9cmWWQc0lLcSUxOL7edDJIDlIRqmhq5XRlcNMlGwKH/UTSWaSBHrsJwi
-         d5I1KPWcppU6w9zM2JHIA75dHfLSqTgQUqx6ogiDU33VLvE+X793d9CpxaN945AsAuv5
-         MYJmhCU19j4QK7Od0654Fq8PoZ0a38K55QhHqTBB+QtmtxzN1n1HFNvgvBuGkVc9P1YW
-         JpFdjCRadtejLZKcNoX0W0LzVXebPNgb8rNgT8z+iuCe7HJiV5gacisNXB+1E4r759qM
-         cQpA==
+        d=gmail.com; s=20230601; t=1757664944; x=1758269744; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=b2EuFHC5+5B8ohKz2yz145rUlrp5xKfqVTKvvn+wKTM=;
+        b=AjiQe1K0MzAt3YGlrsUL+eJVrYG4+J/4IxMnazfIC+ii0lI7LUT1rxJjmYRPj+Bh5A
+         U6M6EwnaNdABKsQS99m4hQac+tvTUQtvzFDoydT7MU+Kxdg7xcwTVVU1ZQENju2jBuwS
+         5quw0CZuY4LB3Oc+WY6DyTLqHZRkZrxgoQfQjhmyaMxwUN2YkT1W0+YyE5gUyyJ6i3kE
+         EfbtlrnFIagPStKMWyaLffGIpxDg9UM4Ov1vAyda7O8w7lGc7dTr/qF+r3SYBXUtyQb7
+         +XTZQrPUCsaPUoyeKtMaNF+p3e52QGfYBZKN+3Qs4S2dgmAk6lTxWWB8xHC5Uf+QPixA
+         NJTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757664456; x=1758269256;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+tgtoriTVA3wUl1fLwqvusUWB5z4BoYTpvvOhTysEkY=;
-        b=YQAth8X0amyVBK6mXqa8a2lmiUm1DzzfqWzGhiyC1WjOruGBbo7R3IHLtmbZu/GzcZ
-         pvuo8nE1XxNOFgw3dVbBU7hhJfmTi+fcMb7Cq8WC0eoVsf83jU3dtEhFTDhuoc2r0hPh
-         giotWAsBT2cokZGp5Z+feVxFJt2vxCLwuvWZ9SPmgxYbZnYJMBzKLRU6HSbruUnEK6pX
-         nmhx42EyTCweqRZ+CIbjLTHWMqGsrIJDZKHimBcfd6JNf4d5RY4tgaHHChqrIQqAtbET
-         e+VIWjPzhZYJr9NRFpbGOzLLjafGmCSSnrlt1/gqwhgI3KLcllBf7/a4ljuVYEeUl6yo
-         g+sg==
-X-Forwarded-Encrypted: i=1; AJvYcCW3l/HrnGmMngVcBrXQ1M8DBGwL/O/Ig+W02PTaCDBixk6d5ko6KDFz2saLMdgpv2hQPSULme4BpQ==@kvack.org
-X-Gm-Message-State: AOJu0YxqNJG7aGJHSDagqbJlV67m7ETHnhtxMUQYk6belbGV+eH3ux6t
-	b6MkHanF2G0sK2YCXL9vJJjBl2fMUHJVqxqqqsnshfuuIxpmceEmH+TDtXSTpcDZ1Ao2E5Hex+i
-	GJYmGrIWQxtQvcXTY8Q==
-X-Google-Smtp-Source: AGHT+IFkxsfqAcrnekL3Ice7pB/PeSHdeKiiZaFaWBiHr3Z/hX7oTQ21wuR0+bX+ocJ/wu6+RCMQdyFuzPpJpAo=
-X-Received: from wmbdp7.prod.google.com ([2002:a05:600c:6487:b0:45b:9acb:6940])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:2f87:b0:3e4:8163:b6f9 with SMTP id ffacd0b85a97d-3e765796c6bmr1878906f8f.14.1757664454769;
- Fri, 12 Sep 2025 01:07:34 -0700 (PDT)
-Date: Fri, 12 Sep 2025 08:07:33 +0000
-In-Reply-To: <20250910140212.997771-1-ojeda@kernel.org>
-Mime-Version: 1.0
-References: <20250910140212.997771-1-ojeda@kernel.org>
-Message-ID: <aMPUxZoV9BCqDg0y@google.com>
-Subject: Re: [PATCH] rust: maple_tree: fix intra-doc link
-From: Alice Ryhl <aliceryhl@google.com>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: "Liam R . Howlett" <Liam.Howlett@oracle.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Andrew Ballance <andrewjballance@gmail.com>, maple-tree@lists.infradead.org, 
-	linux-mm@kvack.org, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Content-Type: text/plain; charset="utf-8"
-X-Stat-Signature: aoducc6msgx6awaniug7sw5wk7u4zwf8
+        d=1e100.net; s=20230601; t=1757664944; x=1758269744;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=b2EuFHC5+5B8ohKz2yz145rUlrp5xKfqVTKvvn+wKTM=;
+        b=J+YLaPIPO3Qe1w49rYtFTQPEwzb+3IM+enpqip17lGG8FHiXwiT+VEycyP7RfEwhaH
+         hskpkXyhJk4fMcqpbEofUDxigvSmwrkxO8z5Nl/2JpB1NRrzj6OP6XZ6CWyJR1yfBojC
+         9JJ1rxwkK/0CWXuZMrlf8uY50DwKITQ7bBsF9bQpgmZK/pdB8GVumc2xwqeozwJIn6LU
+         FlYkOaZt4EXFpcVYo+hWMd1KzvmHjnXyuNf/GHxuPtjp6/HGsSDo9GW2W22SuDpqtipB
+         Rb/7+Ecb8FNeFXCEiPnIYjAFkZ4tSdbN+yfcJDT2Jj3gWHEzix2qN+Fq7UBCEXWL8CSs
+         h1ig==
+X-Forwarded-Encrypted: i=1; AJvYcCW/0TQYXbBABu/pztUc2JS0BBTcQQoICO9hI2ALhTN+cW7nr0xZDggs8V2eEdB1+d8AhbR7uVSe0g==@kvack.org
+X-Gm-Message-State: AOJu0Yz85c7gt9kRYjNQgZp4bpbFMVUWBC8sq6R/T2vuChqAfYdzQ+2Z
+	VaqTF/Z+QIa6ft0Ap8H73mVFWM2s/It6QroRLulncth3+4OmPPEvMd1h
+X-Gm-Gg: ASbGnctOfy5YAD9sSRRgkmiFUZWQqs3O3vE/purE0NfTLiUWSqlCIK24aQ1BzwJSQW6
+	aHqw/lArE2gMNi5zaZFAHGUmGNwIHOAGV4k6LhpNsby69vtJNNUqG3nvEYiNcUP9Bg1PRoQsaeT
+	Jm78I1TBAhXlKfcrkbuRTM3ay0aZpji0JOfMXSQ1ebfc7mRqlGGeIkCYZTnRBtHqv64JA76DZpY
+	B6IG3kHRiBWyJk1EjzDXREVDN7JQm/1nvd9kssctId5paAtbWbjfjauK9NLf8zYvGWMVddd75ZB
+	9i9XgEjx4SW8uFs11zp9B3oHO5kn56zaKRMDCeQvDnQQLuw22tgo45iEcuqJKphTKqMxTZ1gdHt
+	Z2wELseNIDiTYoawwDQ==
+X-Google-Smtp-Source: AGHT+IEbBMlmn4X7zEmlKlP8C6ibHYXtACBPItjKVzlA2dNacKH531krqQgn4mB7LrrpYHonZsrfZg==
+X-Received: by 2002:a17:902:f707:b0:25e:78db:4a0d with SMTP id d9443c01a7336-25e78db4d35mr3480525ad.36.1757664943639;
+        Fri, 12 Sep 2025 01:15:43 -0700 (PDT)
+Received: from [127.0.0.1] ([2403:2c80:6::3079])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-25c36cc580csm41503445ad.10.2025.09.12.01.15.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 12 Sep 2025 01:15:43 -0700 (PDT)
+Message-ID: <8c047b5f-f4c2-4795-8ceb-a556ac6647b2@gmail.com>
+Date: Fri, 12 Sep 2025 16:15:30 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 00/19] mm/ksw: Introduce real-time Kernel Stack Watch
+ debugging tool
+Content-Language: en-CA
+To: Alexander Potapenko <glider@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>, Peter Zijlstra
+ <peterz@infradead.org>, Mike Rapoport <rppt@kernel.org>,
+ "Naveen N . Rao" <naveen@kernel.org>,
+ Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+ Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>, kasan-dev@googlegroups.com,
+ "David S. Miller" <davem@davemloft.net>, Steven Rostedt
+ <rostedt@goodmis.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Ingo Molnar <mingo@redhat.com>, Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+ Adrian Hunter <adrian.hunter@intel.com>,
+ "Liang, Kan" <kan.liang@linux.intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, linux-mm@kvack.org,
+ linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250910052335.1151048-1-wangjinchao600@gmail.com>
+ <aMO07xMDpDdDc1zm@mdev>
+ <CAG_fn=V5LUhQQeCo9cNBKX1ys3OivB49TuSeWoPN-MPT=YTG6g@mail.gmail.com>
+From: Jinchao Wang <wangjinchao600@gmail.com>
+In-Reply-To: <CAG_fn=V5LUhQQeCo9cNBKX1ys3OivB49TuSeWoPN-MPT=YTG6g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: DDC0DC0004
+X-Stat-Signature: zb8cyhb9yah3hf7n8z4gi1ddnsyh8fc3
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6D0EF1A0002
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1757664457-493494
-X-HE-Meta: U2FsdGVkX19GYyoyD0OWrH24NOyc8i64JIfwk2KtisKfe9IicdFSFu/4qs8zKYb2MjcxdpDj3ssv7vYMBVxYpdIXCzcNJQgCjeoOPxh4LMpPNuyVx9uC9dSxv7po0sqvyYaTsCY+PAphD4lYnUWd/R6chWteFj05978SUjCVvR5VwkKN8fG1p0Mdo5Ze2iLpdIuW1fzfn1xKVTs5vlSN38WitTo94zZSMUhn5dCKnxlOVt4S7Rnm/5EooLHygeFJcx53bTAR5v2WaOs4pDrJRhnWLpTLZ7oxG0qV4BNVdfHhdOglFp1BaShgovF6UT/sIXemiAEJgM84Q7AfQEggitXYNdKW5/hpUcZgUanF3S6fEpo4bLAj8pvs8o2YHDnGbm+g6L32ZFzvPX8vxY0jF1VOsVgaTB/qXymQrRE9f8NJNJjRYC56kMkP/N1YkfgiwJh2uHyzYGPxW1FT8MSQUban9rw3HXAc7duP3Ovrt3TInA6m5K47Nl+Fl8TwVsm+1wUBDIcbTQIvSHniQTcug0aL7rMiMuaU7C9oqqD+QZio4ak8lQM6p9WS5GCVuA7GqFbzMFWN8a9HnbS9Hyu5N/ewNLg/JnazaHuM8gOq1Bs8DeqdIzdT9lhqF/WJ66OMZeVbEy6CRb1gYZgzsWTefpKp5EHIP6+RJuNChutmF/sHs3ABMTSsuKTOWHZ95tzUzO6az4yei72I5M97TDBOGsEyJS8eku0GdJOs8Fz0j40vqrCTpiIBYV1Mh1vq5qpAJ9+wxcQkbkEXMIAE/YGbd74cGQR4nFPEMND5/38gNgO3CsRLvpb/mePwNLZRYSEpbx1iNcNXUg3rUFZm+NzxoiYQV8JxMr2t6OMl4ATAfvly6L2h7yXUvOHBDnt9Ee0bOb+6yR6pz8Eg+Yc5N35G5VulfTEgWUAPjM1Q/LwEvkHRqivpB8lgmQrH7xLJQ2mG0Zxq1SjyLLVMXf/Xy5B
- 7oT9suPu
- fhNfHWQgcJ3cW2w956rQCwdiaoVuS7Lxlx5XGosepRQbxblNX4gY0E9eQJfKsg4GvtSG5Hy1ELIW2qaFj68i4clsQ95mf0VS14UDw/vONZva4+Z+//OnZ7yOw5nPiwnieb+c3Ao9l1gSnRLgjBGNNUhtGUX/X+s1uOp+XFad28KgPvGjmwYVuk//bxppXtuj6fqMP9hpVJ9yXCkP0Yeu+BBkDLyrcrLaPXTcpTiq+PpSeSA//kfavpE3BMh2XWMsvsfJgH35LneZMtVIxnJjfTm3vsdyiM2M8r6Kf0T5L3k/+m8i0dbnRBrmAA+DtUkvNbUA2Wl6uIo3UGTAyCazZYwetdvY1mg6jiMPNM546/vr5MddiCABhEjiRICpWpIG8BGjHyS1vdxwuNYyvxU+yOUdGYSp5Nymu7LN7bxNRp9mRfNQDOp5e/KK5W6u6RYG8eCLD9xW5A1b2wKSXwwQoWbhT5dwaL9TXuu5nTe9W3XTQSiVsEKhc5rg5eM/iOChzlOJ/4izhgkHvBu3C7rqTuLgw9u1KQaV7SsNRBxVpr7nwr8oHOISKHuO25FbXlvWyndDbzNrw2w7FTMoHKFdDGXkisfiB0uQzEsTzaSOv/UOUmPOT9BfPHjLHgAa0yGLN8RoPC82mvd2dIsRShAyUVCOxS4yJkKxp7nz1j1Rlqea4RBaEQaX8FWOFIYoNo6RNOpeEzOUd+a/kJQXtJEMajamcq61rRlqfXZn5+MciYkSKE3E=
+X-HE-Tag: 1757664944-242225
+X-HE-Meta: U2FsdGVkX1+TzftRarWJElfB6YIWlBgsL33Zwxs31+2fO4MaTNgxh/UdRpxXjWXr/j1MWp2fyt5o6oKkzea/PlmW1uhDnN7K7AE4sqLFBonBVCGMtJLr1tyNYBtTPB/4VxCDCQaD3QE4VntJLYRbdSETIvmMeHbcmEw54O7NN+zgXBW29TLYHkhwaFNglqCPf0WvR3W60lNRITe/7YYSqXtKIWdvSKEsISY3vC2yq7rYvRgprytYvH47vRyrtMXgPQOaz3E2UHVv8QWWeF8k3cjmKANKx3O71sb50TU95uxRu+s/1n/SCMSmpu+9NWEoNoC5mg0uTZmesiZGrvjG09FIUmYa9GBKiv2MS2KDwPNMToJWfdD05cxvs5+Fnw6l3IMSwlDM+kWSXc3hbBTCq037vZfY02XEAaAmJfui4L7UZTkAzWJN7RILKZEAyXhPyo5M9JzI7ZGj8T3vyoSsZUkPg2MeXzP5goYvT3KeJstg/VeANUEP2tjqO3LhUJTP39Age1wiNejKQnbvpFQFfozTC6LPUHAezOvfbp5OZD9nFIYW+fBtE5wdMb+V70EjOhRBsMOV9M7/RAQOYZGwO5SzwD40lcT6u92LmGS59RWtrqYBCQwHBTgs9cQFhOO98/OAX7bTkme89ILmP18EEmBvNKd/jXq/v0xYeBvHoLB//8Z7hjYjg+c+rU299CG8kqd7FuVrkaMW4RtLB2jEUaW3z2jDLV7uVMvQ1wxjhEThAEtp+iDg63fV/lif22RhIzP7ID9RN99Uo/G0uOep3LJYR9w2L7FivXfpe1F2wEsot7gXtGMoQEyaSWpKrRcqj/PXYYzAeAsG8xqNfCoY4YTe3S+N2zOp/os9gIlEeClfg902y9vioILtHApvmuxqPgzHTZg1LOcQ4PEPUrh00np5zl4R4XUSIgywyNopBJsojygigLUzyNZL5XY/79dVglFYiANcHtiYgc1M+Ci
+ bh+H9GWn
+ 9Vqlf40tk6fxg0ARr2lQv9GBtT95jeg0So1AEq2Oq3RYeheXHZhCAGF+8IxmJZOgIQhW6LGq9OxwNGLvoBbIU1BclGu7GQtBD/TCOOxWmkjzxCuBZ3Gx47jnRvOYfmmBohKCRNk0EoYfHDhO+5hV4cYuEIS9UtSXfrMAXhcAJLwENVd0RDDpQjy8GdsAr6sOmtrNdkBXCjwB9bieKDkfpPgpsaSYZsHPgrBQFuUX1587uAZF7ohr7claaiDpx6QuoAAd51WcV9FW9jC5nUI4FrqypsIh/660e4CbWQkaU1oeSHOH0T05B1RjmAKggbi28ve22Jk2uQCZoPhCGxqhDfsxkgh6Ju7XPUV/afh1/bs5qZ+0ICrBaFr0s/i0IJBEvn4ajYtm6xMCkksJmHLqFt5xgloH/2YFuk7Lk4C7Ndn0lsNNOCaz9OVMfBMq6tFe52EU0u684dzWUqX8495OTz3tVaBXJDILvN/4XttatZD9/8cxDkYOhwxVpy6dHEKWeogW6q92Oc55KCuzzs+wb4mNQbMGBO5hLBHUPGZEQzzSk9FD0mm2t8wYtvzJaJwmuowkyl8VNDqtGokwZV4wjlj8RtUOe1ijk4Jp4VdW3C8NCf/FhGDhCXEK/TH78iEQJIJ36T7HO0NobZ9M=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,32 +142,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 10, 2025 at 04:02:12PM +0200, Miguel Ojeda wrote:
-> A couple `Occupied` intra-doc links are broken:
+On 9/12/25 14:41, Alexander Potapenko wrote:
+> On Fri, Sep 12, 2025 at 7:51 AM Jinchao Wang <wangjinchao600@gmail.com> wrote:
+>>
+>> FYI: The current patchset contains lockdep issues due to the kprobe handler
+>> running in NMI context. Please do not spend time reviewing this version.
+>> Thanks.
+>> --
+>> Jinchao
 > 
->     error: unresolved link to `Occupied`
->       --> rust/kernel/maple_tree.rs:96:46
->        |
->     96 |     /// return an [`InsertError`] with the [`Occupied`] kind. It may also fail if memory
->        |                                              ^^^^^^^^ no item named `Occupied` in scope
->        |
->        = help: to escape `[` and `]` characters, add '\' before them like `\[` or `\]`
->        = note: `-D rustdoc::broken-intra-doc-links` implied by `-D warnings`
->        = help: to override `-D warnings` add `#[allow(rustdoc::broken_intra_doc_links)]`
+> Hi Jinchao,
 > 
->     error: unresolved link to `Occupied`
->        --> rust/kernel/maple_tree.rs:135:36
->         |
->     135 |     /// [`InsertError`] with the [`Occupied`] kind. It may also fail if memory allocation fails
->         |                                    ^^^^^^^^ no item named `Occupied` in scope
->         |
->         = help: to escape `[` and `]` characters, add '\' before them like `\[` or `\]`
+> In the next version, could you please elaborate more on the user
+> workflow of this tool?
+> It occurs to me that in order to detect the corruption the user has to
+> know precisely in which function the corruption is happening, which is
+> usually the hardest part.
 > 
-> Thus fix them.
-> 
-> Fixes: 7f51d867d2ed ("rust: maple_tree: add MapleTree")
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Hi Alexander,
 
+Thank you for the question. I agree with your observation about the
+challenge of detecting stack corruption.
+
+Stack corruption debugging typically involves three steps:
+  1. Detect the corruption
+  2. Find the root cause
+  3. Fix the issue
+
+Your question addresses step 1, which is indeed a challenging
+part. Currently, we have several approaches for detection:
+
+- Compile with CONFIG_STACKPROTECTOR_STRONG to add stack canaries
+   and trigger __stack_chk_fail() on corruption
+- Manual detection when local variables are unexpectedly modified
+   (though this is quite difficult in practice)
+
+However, KStackWatch is specifically designed for step 2 rather than
+step 1. Let me illustrate with a complex scenario:
+
+In one actual case, the corruption path was:
+- A calls B (the buggy function) through N1 call levels
+- B stores its stack variable L1's address in P (through a global
+   variable or queue or list...)
+- C (the victim) called by A through N2 levels, unexpectedly has a
+   canary or local variable L2 with the overlapping address with L1
+- D uses P in a separate task (N3 call levels deep), which modifies
+   the value of L1, and L2 is corrupted
+- C finds the corruption
+
+The only clue might be identifying function D first, which then leads
+us to B through P.
+
+Key advantages of KStackWatch:
+  - Lightweight overhead that doesn't reduce reproduction probability
+  - Real-time capability to identify corruption exactly when it happens
+  - Precise location tracking of where corruptions occur
+
+KStackWatch helps identify function D directly, bypassing the complex
+call chains (N1, N2, N3) and intermediate functions. Once we locate D,
+we can trace back through the corruption path and resolve the issue.
+
+Does this clarify the tool's intended workflow?
+
+-- 
+Jinchao
 
