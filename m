@@ -4,111 +4,172 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6DE4CA101F
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 07:26:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90EF4CA101F
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 07:31:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0CF076B0008; Fri, 12 Sep 2025 03:26:32 -0400 (EDT)
+	id E6DF68E0002; Fri, 12 Sep 2025 03:31:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A6DB6B000C; Fri, 12 Sep 2025 03:26:32 -0400 (EDT)
+	id E45848E0001; Fri, 12 Sep 2025 03:31:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED7826B000D; Fri, 12 Sep 2025 03:26:31 -0400 (EDT)
+	id D0D218E0002; Fri, 12 Sep 2025 03:31:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D610D6B0008
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 03:26:31 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7D4AD1406E5
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 07:26:31 +0000 (UTC)
-X-FDA: 83879765382.12.FF7760D
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 6DF4040005
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 07:26:29 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf07.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id BD7088E0001
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 03:31:12 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8D7571DF64A
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 07:31:12 +0000 (UTC)
+X-FDA: 83879777184.13.1A5C73F
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 0DD901A000C
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 07:31:09 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XPJ+rlWO;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf19.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757662270; a=rsa-sha256;
+	cv=none;
+	b=Ax7wmzana8uwJwZgHcGh5Di3i/rhTdvkY9jBidnCwKjVB0HzD1lRT7m+S4FUUwp9p8dlup
+	pgm9LDJ1jfOP8/b57ihkfuHgF0hHJRURjeu2bWSG0RvJjrJ2KANf9uzeS6GXaxcJh19tgO
+	IJaRCpEXeJZnppPEtmLI3/28KGYTvf4=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XPJ+rlWO;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf19.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757661989;
+	s=arc-20220608; t=1757662270;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jHtH5ew5HJ7wpnudtpflMQ+7ZEEIn9+nbCJ8h1BOfgo=;
-	b=IfWYjWCxDQoo+akBU+qs7tn2JSjsf9VbWMCKfsyX8VSkOSzWZC3t6gquzPQdeHaaRX6Hqi
-	IH63xpMc9RqZJoXnh2MMtbmg1ef+XnpHS+wHBfTopmZoe3AYBohvDZ4UNroFCb/g3/q2GA
-	E5jDkARrPCsz95JHzW8zSWXAnncEkuA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757661989; a=rsa-sha256;
-	cv=none;
-	b=uhMovT5bu/RzmoRKz3iXkRmttUO4OHp1lnMiFL3yc6nmTP4Dyw8ix1rAUWVZMZCcXI0NZ4
-	QthxCgf62Za9Ft+ni+QHsVEoUM79BOgKTJeGl9AJekP08hgkjdfWo3G00Ek3epqty3Qbdc
-	pVf33hhr1pwwnGaSJaEthnS8ekcoBb4=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf07.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CD76F16A3;
-	Fri, 12 Sep 2025 00:26:19 -0700 (PDT)
-Received: from [10.57.66.147] (unknown [10.57.66.147])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DD1E03F63F;
-	Fri, 12 Sep 2025 00:26:20 -0700 (PDT)
-Message-ID: <15d01c8b-5475-442e-9df5-ca37b0d5dc04@arm.com>
-Date: Fri, 12 Sep 2025 09:26:18 +0200
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=WmiBqy0L2WUHv+kOIrvdhPLSX42K2Mcyiy9ePRV90Tg=;
+	b=ZiwGOaZWo38sNyVH71f6Ws2UUNIy4s/6Y4INrHh72eFeCPaZWEj96vWP/6td6rsnVPm6Ut
+	LcQ1shCOqXC3nktoqX+rDQviSWlKq6njHNl7TMi3WSlNyl0ouNYDaNr4NxC6JCb/5W57hj
+	19vHlduidC7Ol+CzVIX2ijK5O/Uwj3s=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1757662269;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=WmiBqy0L2WUHv+kOIrvdhPLSX42K2Mcyiy9ePRV90Tg=;
+	b=XPJ+rlWO6TvKTU+lzNlPF00TRxhdv4rUjNnjcO1xbBvXtwoe0J3PD1KSa+EnJOBJrX5O+q
+	M9qvbUkcxVckGDomnYMfGnvqkRWH3sW1f31+53ZVSQ4Yyc4Eaj5IcYeEbLoxZVs1YwVdck
+	ZpfmhKSCVNukc1/gQc5WoopDlCpU2nQ=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-306-J3xBjsacPQ6lve9D9gKAAg-1; Fri, 12 Sep 2025 03:31:07 -0400
+X-MC-Unique: J3xBjsacPQ6lve9D9gKAAg-1
+X-Mimecast-MFC-AGG-ID: J3xBjsacPQ6lve9D9gKAAg_1757662266
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3e2055ce94bso1121674f8f.2
+        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 00:31:07 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757662266; x=1758267066;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WmiBqy0L2WUHv+kOIrvdhPLSX42K2Mcyiy9ePRV90Tg=;
+        b=KqfzGaaLD4l6SZVmODRby2WE9gxHWQi/daSilU5XqPo10ItxMImVUlRw/GGqNf9RJ8
+         3fdultUKBbpD/Q3aI70weKGyX7VlF2WMHwppW5Bq7NERWq2zESu5CN+Hfg3v6gQcNlLB
+         yRGuid0HoM/zHLmGBJ2yR/rx6JkC8xhEcW+bwjgY6ltSUQw/Mma1JbIq2rI75jwXIjfP
+         lzvg4Pv3bIDnP94T1s0TxZeQnQHm68G33ZF8GyB8987GpsyUkHPUmA/5nqKJyFsJswFh
+         ELCCHDX17+7E69mjkfFSclaBQ22zJL2NXtqlLxqknsU0nOG1L9gTXZLjIc4WTdTukmBM
+         TDsQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWqFXWeBu1r6bGs1x7lPbXEt44wJ1Y96DONPXSdg7OehLY9ojv9NzdL4V247esTfwQUGEOOKpfcbA==@kvack.org
+X-Gm-Message-State: AOJu0YzCnKO6SnglMZpQdaKpEJWdyuSmPrGr7qrT7rwGQxRgJI/otj1m
+	MNw8BZfPL2HrN+cR/4jk+lUqHqy5I2BR4loA7UGMubybt+ISWkCNDAqIdhjP4MrNo5ztupmRuR+
+	B7DsxN/XMTUgSzVXD0eLnCM+p3Y3Qe4whgTNXuWUH7ypYaaGORtt8
+X-Gm-Gg: ASbGncuBSxjIQUzm4J1KrM19StlUYjSxmdzDfOR65mhliWwqOtKEthm75L3rf8qOpXb
+	tsYNlBVHLCxwdlkBgefy1azHjttZkep/6wI9+ZcVNYk7NquKr9/ijw9oYKencxeKSn8jYNS5Imw
+	lYgKkm99wzkbFvJV6JE6aEmt0s/1iW/GeKs3iDGbZwZWervat4wv/l3OXTqP/lYEq5axKA9rW5x
+	BFZXazn+GgMtyJArVPsogiZ/FEIOmedkNfpuLnlbKWqfhURp2zLQvRQALLfxOmjKJ1YR6BZfFhZ
+	3Rd+YSWrW6YKZ5QWBRVdYD9oJ4Wtelqq+s9tkd9E5OAulzhGvS/nC1XUj3dm4LkglQEkpR59lIw
+	Pc/DctfsAPlqG4t6boOr92uHBHPCEU4ZuPhly8lheBg6ZGew9wPXAfsXDjoKS8XvXzRU=
+X-Received: by 2002:a5d:5d02:0:b0:3e7:5e19:5ec3 with SMTP id ffacd0b85a97d-3e765a2dd2amr1433340f8f.41.1757662266420;
+        Fri, 12 Sep 2025 00:31:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGvNIXBKO3q6si7Ysd4vKlJR6P6Qcpb2+dcH0QDR1TDVJzzqtFB6D3wBWW/HUyK+eg3VSV32A==
+X-Received: by 2002:a5d:5d02:0:b0:3e7:5e19:5ec3 with SMTP id ffacd0b85a97d-3e765a2dd2amr1433313f8f.41.1757662265971;
+        Fri, 12 Sep 2025 00:31:05 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f20:da00:b70a:d502:3b51:1f2d? (p200300d82f20da00b70ad5023b511f2d.dip0.t-ipconnect.de. [2003:d8:2f20:da00:b70a:d502:3b51:1f2d])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e7607770c2sm5412795f8f.8.2025.09.12.00.31.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 12 Sep 2025 00:31:05 -0700 (PDT)
+Message-ID: <eb6e18c0-533f-4e77-a56f-60ab8cacc369@redhat.com>
+Date: Fri, 12 Sep 2025 09:31:04 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/7] mm: introduce local state for lazy_mmu sections
-To: David Hildenbrand <david@redhat.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Andreas Larsson <andreas@gaisler.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
- <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "David S. Miller" <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>,
- Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
- Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
- <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
- Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org,
- Mark Rutland <Mark.Rutland@arm.com>
-References: <20250908073931.4159362-1-kevin.brodsky@arm.com>
- <20250908073931.4159362-3-kevin.brodsky@arm.com>
- <d23ea683-cca4-4973-88b1-4f6fd9b22314@redhat.com>
- <ca2054ad-b163-4e61-8ec4-6f2e36461628-agordeev@linux.ibm.com>
- <e7acb889-1fe9-4db3-acf4-39f4960e8ccd@redhat.com>
- <2fecfae7-1140-4a23-a352-9fd339fcbae5-agordeev@linux.ibm.com>
- <e521b1f4-3f2b-48cd-9568-b9a4cf4c4830@redhat.com>
- <47ee1df7-1602-4200-af94-475f84ca8d80@arm.com>
- <29383ee2-d6d6-4435-9052-d75a263a5c45@redhat.com>
- <9de08024-adfc-421b-8799-62653468cf63@arm.com>
- <ef343405-c394-4763-a79f-21381f217b6c@redhat.com>
- <4b4971fd-0445-4d86-8f3a-6ba3d68d15b7@arm.com>
- <4aa28016-5678-4c66-8104-8dcc3fa2f5ce@redhat.com>
-Content-Language: en-GB
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-In-Reply-To: <4aa28016-5678-4c66-8104-8dcc3fa2f5ce@redhat.com>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH] mm/hugetlb: fix copy_hugetlb_page_range() to use
+ ->pt_share_count
+To: jane.chu@oracle.com, harry.yoo@oracle.com, osalvador@suse.de,
+ liushixin2@huawei.com, muchun.song@linux.dev, akpm@linux-foundation.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20250909184357.569259-1-jane.chu@oracle.com>
+ <e9b34151-0879-4900-af9f-2ce0dbb678a6@redhat.com>
+ <2fa7aa11-6521-40f3-9934-aba275154ca2@oracle.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <2fa7aa11-6521-40f3-9934-aba275154ca2@oracle.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: dpdETwErHN30xAQX2crPhemGgy-3iRutENE8s6brasM_1757662266
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 73448xiasftdpxbfsaz8c8ja7mtcc61x
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 0DD901A000C
+X-Stat-Signature: xoapq1gb4uumdcj3ggfbhfjtjyxczkxc
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6DF4040005
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1757661989-898579
-X-HE-Meta: U2FsdGVkX1/5OYvInuS1YPvOlGWZQMlX72ZlKf5Tj3cDeL1TUlBTK0WinwUkM9tpetc9y8ZiOvA5YBC/bvcSW9q+gez3Xu2E3ZpN2TWNaUIuS6fK6mr0KgQOjBzUr2EbxVW7lL/bWJ8vlHsgOZOOerJcXKeTjUEbDcvztJltMkN0NnXlIJQ0ltZ/oSubGYU2BsTa/g4vd+jBf+HDS4qxbG/4lThRGj0XRhLw600285urhsxMRoVtaP01mIfx6l3lrJ1GQBd6wFQ+W+pToODkDZU+keoDR+e7ptECfzXl31uyJYn1vwvQQ757Mem/8P65U/Br60XFkBMBU+2+8fxYBQlqNsL1sU+DWmp3afTyNVsTB3k+XM8n1CXBuqsZCLP1hMm14DjZjECzfsb7SyyCpgLcvh1YIhNNeLbxWFJHnuaiHr5ZHGitMhz0PWxYkDvKcSl+0v0f7dkY0vjdhi2hYR3jmSV0/AI2kmkghT4TXZGYwQnes6ox+8T4C+MpehDLh9kA65k+RslQU/1glbBAl0j4EUR0/qUM25atXeBSuAIlXlwNUnVs3vKCDRZ/u/qExQbpzumxwwb4Ov5EviT2i/lIlH8qn5940N+8wy5xVQcylbYCYfCTVlIykC2x6KeyAmnz49oIjSVpzO3pQGxkBH+X9m3+viQWse0szum/ILjKgcQJWuPgGV/rHOHat2VzgYlYCJIVE2sq7jAi9IYP65rZMgkfz/b+zmb9XEcZue5MEGqiBbQfuEUtN2WUfaNhDsob+XQ8CnoMB01ooi5WlZZjqcLeLCmSlXrzmHmnClrf67sM2n9iEtu3jygHpeAuZUPNQDXmH7yY5tK8goHRoCNE9hHesxhCeuTH+I5bl8ibpJ3JzuuImzp9dLgf5DZdasmvnsfILp7rWs7wwlslBy146tjqW2empaVqe+TgUVJwWh+Wtss1b7SAZnpeQEqfQYFrfaaZ2nbP6ndnPWs
- Vl/FqlHM
- xhLwWESZ054lhdRIL2hD6bDo1uVdamSXEoG4ga2HjrgAT1eeA069BU4T+ZmRaNxRSwDH8gpJFRaUsFZawLtblGQFiXppRSK45lGFJxx2Ac/RBrBQivKyVxMgTshSBATpqsl52LIff7aBWnlANIfhtZhIbNy8NCt1e2AJe0xQFNJ39IwxgRpeSyG5iqDIZn5RI2iuc4df5/GybQTLfBuLOY4QOkw==
+X-HE-Tag: 1757662269-784728
+X-HE-Meta: U2FsdGVkX19JC22BgVynDQ+H7l2LTGqrzSQQnprhxydoQvJiplgeB9OZhP52xXTeQDc1//hX8g4FZ1bAh/RMV6JX5CtsTUoSTb4ALreqg/6/xeiE0NZoj39qq/DCnFuFdtK+jMfZYBbykn2ahv23rE4NBpXrBTbPwiikm57WDsmPbgVuSfC8rIL0n/Ha/2/qtLz68yi4S8j5OXREb10MNNZBMKXYZS+W8rj9DJzTRqWdQxzOvMZukPnZue9qnI5NFc99sC55ItuHEZJwsEVbO1+8mdatzlFYOXzp9vfYSKkOyr128RPhOFP2Jpu4Kiuwi9mn++hwkAbgawJkc4275YY6h5RH6tqrZvP2EPF29+972yWg6QlZIkH7pkddw6JUfKTDuTtqhaM0OLx+aNhmrzpq1c+shfdT6sAFTFvILPltbrpy3U6yppj6P3gf9z7b+EFOG9DZGfe7x0x1NLqCUPHu7W2nnH0Vc91EIpOLmJvR++K5PUKgkr1Ci+p/B3QZ9Md8ZO/W1hgO1qUVHsCcP2gXozkSyz1KAMfdO+xoJ5p+EySL7xDRcHnaO4PP9wQ+6ko0fhHidrMAYtkumtTJZteLirvhfUgyqqGa4S3inmRy269b9Spk0/GkSOugtSSObzFjCGcE4WHmMzlpANQAbC/HYyHodZeuIhTByiDmv0YQ9/rNI/CYhbJD66HkZ+uksNelzWHWwU6kQsQmZvoCuKZ54QtWhCWfoQ9tf/EiNe5OJ1DDlMoGicCeROax5KZnEe2djf0J84Olmxk8QJ4+IY/kCCq/k/21SOj8QXrAZpuL2iPshrlJ/EWghOCrlsMRofLZ7DEbeR3AWx4XQZnxuoV8TyAw8O6QqqRqoRYLCqbzb9PYO4jpC67pQ/bZ7gjY0kAubJsZ828BIxorld/cJCFcLiwdVa94mFN8ZT94tuZjwXLa6L/HWNMpcslRXysjVSp9L/crv3IF3SZryoF
+ Pfvgw7XJ
+ 7hzVowVgBiEUSfcgpObpcAs/dvwFpRhkbYgJHuvEGsVfOZRT6xUyIOT5/n3JOPVgp5o3RLQ+DAgYElzk8rJaFoftOJCrVfDPePfyAvZbKeDsCaLjIzxtXxnI1vBcaVNbrCwJAgccus8oSlEDtUeyUNgGWDN3Vzxqk9Vaz5Dj2yBDdmviMEr/7bzByhVDvPl7be4PhWNGWp3ptZ+xcvhBxXMgPeBHkg1YqCvOPu6DHzDkI1MR0/soHCWQOndrtue6eCt5t0BYAZmNNrcIrCKcvK0Cv8CC/ofauMwszOQLAuyLZX57zolB3CJBRr2DN5fUT8P8eLNC1mYIZZrODCftGyb1VUGWCtZIOPw7lVLblzJvCNpgkX08ZHUdhNCiP4hheuYy9v3ZM2JPg7k6oyLvryoKN9TvBPFffZsTy6uY6e+Kc1eIkIm5OZUWSmyMunT3IfDHd9GgCnbKI9J2i2Z6gVvdIQxRA2h64eM8DyDale6EwtIJSAK+mhD5bVi5rvz3eSVU58wQb9TutQ98=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,140 +178,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/09/2025 20:14, David Hildenbrand wrote:
->>>> On the other hand, with a pagefault_disabled-like approach, there
->>>> is no
->>>> way to instruct call {3} to fully exit lazy_mmu regardless of the
->>>> nesting level.
->>>
->>> Sure there is, with a better API. See below. :)
+On 11.09.25 21:54, jane.chu@oracle.com wrote:
+> 
+> On 9/9/2025 11:45 PM, David Hildenbrand wrote:
+> [..]
+>>> -        /*
+>>> -         * If the pagetables are shared don't copy or take references.
+>>> -         *
+>>> -         * dst_pte == src_pte is the common case of src/dest sharing.
+>>> -         * However, src could have 'unshared' and dst shares with
+>>> -         * another vma. So page_count of ptep page is checked instead
+>>> -         * to reliably determine whether pte is shared.
+>>> -         */
+>>> -        if (page_count(virt_to_page(dst_pte)) > 1) {
+>>> +#ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
+>>> +        /* If the pagetables are shared don't copy or take
+>>> references. */
 >>
->> I meant while keeping the existing shape of the API but yes fair enough!
->
-> Time to do it properly I guess :)
+>> Why remove so much of the original comment?
+> 
+> Because, this part of checking has already advanced from the "dst_pte ==
+> src_pte" to "page_count() > 1" to ->pt_share_count > 0, it seems cleaner
+> to just keep an one liner comment.
+> That said, if you feel the comments should be kept, I'd be happy to
+> restore them with a bit revision.
 
-Yes, I think the discussions on that series have shown that we might as
-well refactor it completely. Once and for all™!
+Well, the comment explains why checking the pte pointers is insufficient 
+and why there is a corner case where the pointers differ but we still 
+want to unshare. :)
 
->
-> [...]
->
->>> Assume we store in the task_struct
->>>
->>> uint8_t lazy_mmu_enabled_count;
->>> bool lazy_mmu_paused;
->>
->> I didn't think of that approach! I can't immediately see any problem
->> with it, assuming we're fine with storing arch-specific context in
->> thread_struct (which seems to be the case as things stand).
->
-> Right, just to complete the picture:
->
-> a) We will have some CONFIG_ARCH_LAZY_MMU
->
-> b) Without that config, all lazy_mmu_*() functions are a nop and no
-> lazy_mmu_state is stored in task_struct 
+But yeah, I agree that reading the code it's clear: if dst is already 
+shared, just don't do anything.
 
-Agreed on both counts (replacing __HAVE_ARCH_ENTER_LAZY_MMU_MODE).
+I would probably rephrase the comment to something simpler like
 
->
-> struct lazy_mmu_state {
->     uint8_t enabled_count;
->     bool paused;
+"/* If the pagetables are shared, there is nothing to do. */
 
-Looking at the arm64 implementation, I'm thinking: instead of the paused
-member, how about a PF_LAZY_MMU task flag? It would be set when lazy_mmu
-is actually enabled (i.e. inside an enter()/leave() section, and not
-inside a pause()/resume() section). This way, architectures could use
-that flag directly to tell if lazy_mmu is enabled instead of reinventing
-the wheel, all in slightly different ways. Namely:
+If you resend, please add a comment to the patch description like "While 
+at it, simplify the comment, the details are not actually relevant anymore".
 
-* arm64 uses a thread flag (TIF_LAZY_MMU) - this is trivially replaced
-with PF_LAZY_MMU
-* powerpc and sparc use batch->active where batch is a per-CPU variable;
-I expect this can also be replaced with PF_LAZY_MMU
-* x86/xen is more complex as it has xen_lazy_mode which tracks both
-LAZY_MMU and LAZY_CPU modes. I'd probably leave that one alone, unless a
-Xen expert is motivated to refactor it.
+-- 
+Cheers
 
-With that approach, the implementation of arch_enter() and arch_leave()
-becomes very simple (no tracking of lazy_mmu status) on arm64, powerpc
-and sparc.
+David / dhildenb
 
-(Of course we could also have an "enabled" member in lazy_mmu_state
-instead of PF_LAZY_MMU, there is no functional difference.)
-
-> }
->
-> c) With that config, common-code lazy_mmu_*() functions implement the
-> updating of the lazy_mmu_state in task_struct and call into arch code
-> on the transition from 0->1, 1->0 etc.
-
-Indeed, this is how I thought about it. There is actually quite a lot
-that can be moved to the generic functions:
-* Updating lazy_mmu_state
-* Sanity checks on lazy_mmu_state (e.g. underflow/overflow)
-* Bailing out if in_interrupt() (not done consistently across arch's at
-the moment)
-
->
-> Maybe that can be done through exiting
-> arch_enter_lazy_mmu_mode()/arch_leave_lazy_mmu_mode() callbacks, maybe
-> we need more. I feel like
-> we might be able to implement that through the existing helpers.
-
-We might want to rename them to align with the new generic helpers, but
-yes otherwise the principle should remain unchanged.
-
-In fact, we will also need to revive arch_flush_lazy_mmu_mode(). Indeed,
-in the nested situation, we need the following arch calls:
-
-enter() -> arch_enter()
-    enter() -> [nothing]
-    leave() -> arch_flush()
-leave() -> arch_leave()
-
-leave() must always flush whatever arch state was batched, as may be
-expected by the caller.
-
-How does all that sound?
-
->
-> [...]
->
->>
->> Overall what you're proposing seems sensible to me, the additional
->> fields in task_struct don't take much space and we can keep the API
->> unchanged in most cases. It is also good to have the option to check
->> that the API is used correctly. I'll reply to the cover letter to let
->> anyone who didn't follow this thread chip in, before I go ahead and try
->> out that new approach.
->
-> And on top of the proposal above we will have some
->
-> struct arch_lazy_mmu_state;
->
-> define by the architecture (could be an empty struct on most).
->
-> We can store that inside "struct lazy_mmu_state;" or if we ever have
-> to, start returning only that from the enable/disable etc. functions.
-
-I'm not sure we'd want to mix those styles (task_struct member + local
-variable), that's adding complexity without much upside... Also having a
-local variable at every nesting level only makes sense if we have an
-arch callback regardless of nesting level, which is unnecessary in this
-proposed API.
-
->
-> For now, I'd say just store it in the task struct in the
-> lazy_mmu_state. But we can always adjust later if required.
->
-> In the first (this) series we probably don't even have to introduce
-> arch_lazy_mmu_state. 
-
-I suppose this could improve the overall struct layout - but otherwise I
-don't really see the need compared to adding members to thread_struct
-(which is fully arch-specific).
-
-- Kevin
 
