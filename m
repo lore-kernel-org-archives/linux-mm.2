@@ -4,76 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1CD6CAC582
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 03:31:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82938CA101F
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 03:31:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4AF568E000C; Thu, 11 Sep 2025 23:31:18 -0400 (EDT)
+	id E26408E000D; Thu, 11 Sep 2025 23:31:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4874A8E0001; Thu, 11 Sep 2025 23:31:18 -0400 (EDT)
+	id DFCFE8E0001; Thu, 11 Sep 2025 23:31:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 39CDD8E000C; Thu, 11 Sep 2025 23:31:18 -0400 (EDT)
+	id D13688E000D; Thu, 11 Sep 2025 23:31:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1FE638E0001
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 23:31:18 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CE10FC068A
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 03:31:17 +0000 (UTC)
-X-FDA: 83879172594.10.81D7877
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 1A11D180005
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 03:31:15 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FeIvTeYw;
-	spf=pass (imf06.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BC6A68E0001
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 23:31:22 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7DBDAC067A
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 03:31:22 +0000 (UTC)
+X-FDA: 83879172804.23.232CE93
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf22.hostedemail.com (Postfix) with ESMTP id C2D61C0006
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 03:31:20 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=igcy3AXn;
+	spf=pass (imf22.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757647876;
+	s=arc-20220608; t=1757647880;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wETBaE+dYsc2nQqnQRxwAppd6Mkv5OwMkb/6jMq01AA=;
-	b=imJ2iZVFThciAL2iJcBbzcXu9SIc8nCrCI4V0qMlitKUhtvDhe0m+9i1bLrjTVf4WX6/WU
-	E7LDuk8g8mlkL6l7OyeNUt3tkq6Jnsr4cnxz5iKX+dWoZUh6e1xyGRgDfltTwTM2thMNxf
-	eODXXk3QhF+1AmsglDNGVET0h2zmVmY=
+	bh=ZpCf0X6KApE3Nxwemh/YTyo0WnmYkSshuYDdaCzSaMA=;
+	b=gbRV3p1xMPgZERuXrsutGFJ0iAhSHyfE2Hvw6LfX/37Bq0NrxARL2bRe0DuAtHFi044UPW
+	IAI8D0TGxBFujsO9kFBEQJemDddclSzRMEVUHqq2dNdwDx52H+kWhEi6uD0Ew5j2ohvn98
+	OMQTEhk8GqPIoZcmV7EcZ0MSMInir1o=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FeIvTeYw;
-	spf=pass (imf06.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	imf22.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=igcy3AXn;
+	spf=pass (imf22.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757647876; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757647880; a=rsa-sha256;
 	cv=none;
-	b=726e8uyxCDy2//IOCVsBNmn40fnt44wfB6s4jfkoQBjG9EgrCAfs5kcaKn9Z5u5eVJHTnw
-	4JT5OjFw9qlb/v94N5ngZLdpdUQE3AYu6sOW+2jTJ1NRbbE/nH0WEpBGZQLXq7qjw+tXzQ
-	WAynl6PE9OJAEciFfJdGTiMn5RcJw70=
+	b=n0EFSe/UmQh53c16EaQ2yxhYdV+NOYf4reXdp7dEY0FBSj4czXTitmfmb87dbZ8im5Ay5/
+	NoNVERGCx6JXo1Tr1zY7JGDjlZa2AxCq+J3sNugYCi1d5ifbO9nfNBSz62YbRE9u40NYsr
+	znn3DBjp6WoNBte3oqpfMhXf4qshZN8=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757647875;
+	s=mimecast20190719; t=1757647880;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wETBaE+dYsc2nQqnQRxwAppd6Mkv5OwMkb/6jMq01AA=;
-	b=FeIvTeYwqBizBtzX90OFvpjuNQc0hHQuoYRY50LfWw2zcenHAXeXkhNQuyLRBtk0UBYlFh
-	AkD1MMJ3ZbW0zmACG9FotaFBCEpPN+hHjGgMqSGu7UgfktJB1E0vv1lJr7neFhNBOWclgX
-	4yBdAdr+IWJd0KLI3XuwsNcP0NrFNSA=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=ZpCf0X6KApE3Nxwemh/YTyo0WnmYkSshuYDdaCzSaMA=;
+	b=igcy3AXnUoeP72GxE/t+jEbcqP/5O6aRCgsv7gwtimieo4/5MmCL72COC6SiT9SwcWBFRi
+	sXmtec1n/CxLp3yXNOQmwR0Y5X67mJmSva0UY6OABYk9qY5TFUZtl55DQD4Atyph848aco
+	D2oQc+wVq8T9kSKdeqh8XVzYjBvIIFE=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-263-A36zdP3KMpCQ6dV6BkoLuQ-1; Thu,
- 11 Sep 2025 23:31:13 -0400
-X-MC-Unique: A36zdP3KMpCQ6dV6BkoLuQ-1
-X-Mimecast-MFC-AGG-ID: A36zdP3KMpCQ6dV6BkoLuQ_1757647869
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-608-C_W9vkk9M-mFjBmhEYVg1g-1; Thu,
+ 11 Sep 2025 23:31:16 -0400
+X-MC-Unique: C_W9vkk9M-mFjBmhEYVg1g-1
+X-Mimecast-MFC-AGG-ID: C_W9vkk9M-mFjBmhEYVg1g_1757647859
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 821101944F11;
-	Fri, 12 Sep 2025 03:31:08 +0000 (UTC)
-Received: from h1.redhat.com (unknown [10.22.80.28])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 79C801800451;
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 292711800452;
 	Fri, 12 Sep 2025 03:30:59 +0000 (UTC)
+Received: from h1.redhat.com (unknown [10.22.80.28])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D9090180035E;
+	Fri, 12 Sep 2025 03:30:49 +0000 (UTC)
 From: Nico Pache <npache@redhat.com>
 To: linux-mm@kvack.org,
 	linux-doc@vger.kernel.org,
@@ -124,22 +124,22 @@ Cc: david@redhat.com,
 	rppt@kernel.org,
 	jannh@google.com,
 	pfalcato@suse.de
-Subject: [PATCH v11 11/15] khugepaged: introduce collapse_allowable_orders helper function
-Date: Thu, 11 Sep 2025 21:28:06 -0600
-Message-ID: <20250912032810.197475-12-npache@redhat.com>
+Subject: [PATCH v11 10/15] khugepaged: improve tracepoints for mTHP orders
+Date: Thu, 11 Sep 2025 21:28:05 -0600
+Message-ID: <20250912032810.197475-11-npache@redhat.com>
 In-Reply-To: <20250912032810.197475-1-npache@redhat.com>
 References: <20250912032810.197475-1-npache@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Stat-Signature: 7u3rwut7e1s7jzxj3hb46izu3rkfbkjb
+X-Rspamd-Queue-Id: C2D61C0006
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1A11D180005
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1757647875-331595
-X-HE-Meta: U2FsdGVkX1/iIBqKgQi4ysU79Yj7hnw3QF6T5KXzv5aVl7xdRtMgb9iltE345j3jW3YmjndsCnzxH6rmnxNu51b683ZQEghlUfmdsbI29Fpxg8+FyIl+sKA1vFUPUwn1IBOz/+/94HE0HbkVkbLfydCsgT3yqTh4ko9SCxfCgEQh5xEa4Ct0Fc+kjuBfALYG230nIP41Fcid0bOzCzU/kko08Qrsa/0GrXB+MuenkQQmWVml0vByHJYND4NUFpib+evZI4eGr5S984F/I8NmRxr2Qw166M40ssQYUeNKjH2fFv9M0Mh8+Ip3wLBmGLIskc3za3WYCsgB3FZuCnjJqcRUCSkJd+vLnKHKk24iG24kdymZKqTtjjwE8bId1eDnssz8oSZA0bGFqXcil/w3zoj/RoLZvJNgowQZkuWxVoMlTbKf7Yj9bebznPaIqarPi+fD1hIlOIl6I9JRDtk7vwicnv1PE6Odu6ZsGbTutG9b2pUqtRBfebuJTzB9hs0/VOVRMQBwbvtkZKfcSMAOtTlXu9UA7hPsjS+B9zIKj+6gZVbrvFEYxkpcUx6+gMwg4yURrCOWJYiH7PccGm+i3VAYSxBzg0HXaueo7IWTW4h0lc0ieQMEr5YLSsrSF5u7meGs2HuPX+HN2BWrKevAAl4QYhddr/xVDlwOluiut981/lF24vJKxbKyV8hRl5TJEpKEZ3xuKcSYOkD7UM8CPqhXf9B4SS0QJlD2FsvRdHmZIASwIbUJMIWN/D1WauShu7wFdNKy+cDe2HOcINjaAaBDb1G4iUnIErR1NxQUldRP6Z1NYNHI93YSn+lM2Ctql6R4v2lgOCR3yMBOLeeaex88N3PW8YamwDr5OYnaf/ajShE5J+3ZaTHwhAT+HAccRlHgC3XdY0IGfSolunYVS7fQlxV///WH/fFG2C769F9m/+DilSghfRt98u7QYM1Qt7Uc+IlncYBCWeiz9nm
- jTo3Fsba
- NjVCyLi/eE2HYz/ySezDmA9FrY6n2b2xDCN5fccBW5zUUcwUmsryLstyb1JuzLel/c/VLLSkE+fPM8JK/C1b8PD2fSJUCdvxTVS/IvEr/yZu+8tZRVtu6q9gTziVj7PV0Cqb9LQ3+JDNmMbpVJ1KpG2Em+kXJ9Vxtwkgi1UgX+/E4hs0RBqaaA+dxSzr+USMF4Z54R4yexlxKeCd86jDP+y8GMnIZxL1DPpKCjjUwlIOUi+Escq9m72GGpdlTT/G6WLvUSydtVRIS8V4HK0bjmkMaZF1msfPQOeRYfZlEKnlmSoHscu+dBfa+SKhZ+wWfd+OVxlOWdaG/bJzhW1DBUBNOhE4XF5jg+PpoxG4uIp2JWxL/JGncO3+mlbuYI50F4LPPzWxvY5/d+Nur43gwe0l+WkdC90fiz4KxrP2CZRRpMhQOWfCat8j/9oFsJdYQ7N9iclTiPB29u9A=
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 4joimim1x6ugppfmi7gkf7xr4fhq8f1o
+X-HE-Tag: 1757647880-980338
+X-HE-Meta: U2FsdGVkX19+Ov+qIwPXltPUT0mZEghjamo/TgGcMQN3s5a+mV15VCTQF54XyUdROI1hSDQlhyZPlOliXfwiqN/v0Yv4hjnUqc89E92lx022/rCg4EFZk5Gdhf0OWuMRBlDWkeqQv0FQ8ZEEJ4gXDiallKbGNToPFdI3oQ+bKI6RUAltVvnfkLnQfgN614bGqOzTiGMB21g8wwMpSuhWiS9bDEBWIc0ONhma4gCeeOAuyq1l6m1pKU0m35UdsiRwMbR4rhL8N9hBRY0sjMbAQFUemjT0HIXbsAm6dpldKeu7j47qEeXpRHob2LXU3B3XYWPwLsNPRpDsNolGGcArqPNOiB5NMD1jBdvfG+mFfDQOsJ+l+lKv6crU6vzlXP8kHpP/3ZnA6YAU5Y5wozR7/FViN+47PHOK7ME2U3OUK9ec6m8FLg4Yne28wQ5F/L0QRtHQXrMBaLkepnmigqnH7EZ/qS43zibqYPwH3+2AkE+lKonazti1/03HztbqKZ2L8tVfs4gG9h6pGye2HpL90WUcWm3jJTK//8auapT/NeWWPO4LC/Fe6woUSai75kTV67taPon4KO5WceSGWhYIl7pnPciRjcZYuztsPaUMB7ssCOM2giv2Rq+CyEqa95oJYJStLvSfQGnXrxhZ4fZhvM45gPZ2sy/hvuKMIMA/wXkMdZ1dsuAFzCQBc44raIXNacxjBQqqT1fVsaiGeNi63LANQ5fTdcwjG0/x/EmbICFJj2qUMtJH0YsrFilOQT7bGXZx35oev5AVgUrarSuF7yAUpV/kpeODqt70Mi+yI9dbqq78l9jJpAR3lcctwyoQsTTlTGD3f1JibYd5SHXqdO+8JN4OsDLWPW7WXAExom0p4kY2OrCxSkR0dMUYc5kFMnEQVTSYeDpAFk02EJTk8KLqVz+zF/O29L87OouEp5XZiKFbhbPgEZhK8y2OXEZRmo3fxLmHS9mYsvqaYbD
+ fg0BBIIB
+ RviH69JLD2o+WXpdrZ3tgWSwqOQfvh7g7EYK5JscHeoUEQ3eUKcaOGbc2JGpYxNx1dyaky6D5+Zzuc/zDlK/zJHbg1b2/rVvoNJ1K+6aRWoZUonCrYvuIaAWlNAlJVt6KQrWizimLxkdshOP+d0MerKpz9U+1EDvb/rHYSMw0Rt7/rtwyJGOlrAnkYHGKwydb6ve2CpTUdKNSkSoc2qEPLRq9GYWn3RstOeTCi5cY/l006fBOKoez0coF6TbPX+yDOdzfgLdg6MC5dKCnT/DY3LpF1gaccryOejle9XKY6siH6VoHBcu8RSoIRZ/ZeYh0k7XarVkfBJ3jfaGUAFQOuk5sYBlUigQ8yJOLouY3pJ6ZGgoeVE8kw+WrYlX7/y1yDXZHADBzgwC8K2TYP7ufH1uVQHMDTk7K1H7X3qmhaIAOvbd7tylBhQ2A/ED0UiYtPftj
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -148,67 +148,165 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add collapse_allowable_orders() to generalize THP order eligibility. The
-function determines which THP orders are permitted based on collapse
-context (khugepaged vs madv_collapse).
+Add the order to the mm_collapse_huge_page<_swapin,_isolate> tracepoints to
+give better insight into what order is being operated at for.
 
-This consolidates collapse configuration logic and provides a clean
-interface for future mTHP collapse support where the orders may be
-different.
-
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 Signed-off-by: Nico Pache <npache@redhat.com>
 ---
- mm/khugepaged.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ include/trace/events/huge_memory.h | 34 +++++++++++++++++++-----------
+ mm/khugepaged.c                    |  9 ++++----
+ 2 files changed, 27 insertions(+), 16 deletions(-)
 
+diff --git a/include/trace/events/huge_memory.h b/include/trace/events/huge_memory.h
+index dd94d14a2427..19d99b2549e6 100644
+--- a/include/trace/events/huge_memory.h
++++ b/include/trace/events/huge_memory.h
+@@ -88,40 +88,44 @@ TRACE_EVENT(mm_khugepaged_scan_pmd,
+ 
+ TRACE_EVENT(mm_collapse_huge_page,
+ 
+-	TP_PROTO(struct mm_struct *mm, int isolated, int status),
++	TP_PROTO(struct mm_struct *mm, int isolated, int status, unsigned int order),
+ 
+-	TP_ARGS(mm, isolated, status),
++	TP_ARGS(mm, isolated, status, order),
+ 
+ 	TP_STRUCT__entry(
+ 		__field(struct mm_struct *, mm)
+ 		__field(int, isolated)
+ 		__field(int, status)
++		__field(unsigned int, order)
+ 	),
+ 
+ 	TP_fast_assign(
+ 		__entry->mm = mm;
+ 		__entry->isolated = isolated;
+ 		__entry->status = status;
++		__entry->order = order;
+ 	),
+ 
+-	TP_printk("mm=%p, isolated=%d, status=%s",
++	TP_printk("mm=%p, isolated=%d, status=%s order=%u",
+ 		__entry->mm,
+ 		__entry->isolated,
+-		__print_symbolic(__entry->status, SCAN_STATUS))
++		__print_symbolic(__entry->status, SCAN_STATUS),
++		__entry->order)
+ );
+ 
+ TRACE_EVENT(mm_collapse_huge_page_isolate,
+ 
+ 	TP_PROTO(struct folio *folio, int none_or_zero,
+-		 int referenced, int status),
++		 int referenced, int status, unsigned int order),
+ 
+-	TP_ARGS(folio, none_or_zero, referenced, status),
++	TP_ARGS(folio, none_or_zero, referenced, status, order),
+ 
+ 	TP_STRUCT__entry(
+ 		__field(unsigned long, pfn)
+ 		__field(int, none_or_zero)
+ 		__field(int, referenced)
+ 		__field(int, status)
++		__field(unsigned int, order)
+ 	),
+ 
+ 	TP_fast_assign(
+@@ -129,26 +133,30 @@ TRACE_EVENT(mm_collapse_huge_page_isolate,
+ 		__entry->none_or_zero = none_or_zero;
+ 		__entry->referenced = referenced;
+ 		__entry->status = status;
++		__entry->order = order;
+ 	),
+ 
+-	TP_printk("scan_pfn=0x%lx, none_or_zero=%d, referenced=%d, status=%s",
++	TP_printk("scan_pfn=0x%lx, none_or_zero=%d, referenced=%d, status=%s order=%u",
+ 		__entry->pfn,
+ 		__entry->none_or_zero,
+ 		__entry->referenced,
+-		__print_symbolic(__entry->status, SCAN_STATUS))
++		__print_symbolic(__entry->status, SCAN_STATUS),
++		__entry->order)
+ );
+ 
+ TRACE_EVENT(mm_collapse_huge_page_swapin,
+ 
+-	TP_PROTO(struct mm_struct *mm, int swapped_in, int referenced, int ret),
++	TP_PROTO(struct mm_struct *mm, int swapped_in, int referenced, int ret,
++		 unsigned int order),
+ 
+-	TP_ARGS(mm, swapped_in, referenced, ret),
++	TP_ARGS(mm, swapped_in, referenced, ret, order),
+ 
+ 	TP_STRUCT__entry(
+ 		__field(struct mm_struct *, mm)
+ 		__field(int, swapped_in)
+ 		__field(int, referenced)
+ 		__field(int, ret)
++		__field(unsigned int, order)
+ 	),
+ 
+ 	TP_fast_assign(
+@@ -156,13 +164,15 @@ TRACE_EVENT(mm_collapse_huge_page_swapin,
+ 		__entry->swapped_in = swapped_in;
+ 		__entry->referenced = referenced;
+ 		__entry->ret = ret;
++		__entry->order = order;
+ 	),
+ 
+-	TP_printk("mm=%p, swapped_in=%d, referenced=%d, ret=%d",
++	TP_printk("mm=%p, swapped_in=%d, referenced=%d, ret=%d, order=%u",
+ 		__entry->mm,
+ 		__entry->swapped_in,
+ 		__entry->referenced,
+-		__entry->ret)
++		__entry->ret,
++		__entry->order)
+ );
+ 
+ TRACE_EVENT(mm_khugepaged_scan_file,
 diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 5b45ef575446..d224fa97281a 100644
+index 8abbe6e4317a..5b45ef575446 100644
 --- a/mm/khugepaged.c
 +++ b/mm/khugepaged.c
-@@ -485,7 +485,16 @@ static int collapse_max_ptes_none(unsigned int order)
- 	else
- 		max_ptes_none = khugepaged_max_ptes_none;
- 	return max_ptes_none >> (HPAGE_PMD_ORDER - order);
-+}
-+
-+/* Check what orders are allowed based on the vma and collapse type */
-+static unsigned long collapse_allowable_orders(struct vm_area_struct *vma,
-+			vm_flags_t vm_flags, bool is_khugepaged)
-+{
-+	enum tva_type tva_flags = is_khugepaged ? TVA_KHUGEPAGED : TVA_FORCED_COLLAPSE;
-+	unsigned long orders = BIT(HPAGE_PMD_ORDER);
- 
-+	return thp_vma_allowable_orders(vma, vm_flags, tva_flags, orders);
- }
- 
- void khugepaged_enter_vma(struct vm_area_struct *vma,
-@@ -493,7 +502,7 @@ void khugepaged_enter_vma(struct vm_area_struct *vma,
- {
- 	if (!mm_flags_test(MMF_VM_HUGEPAGE, vma->vm_mm) &&
- 	    hugepage_pmd_enabled()) {
--		if (thp_vma_allowable_order(vma, vm_flags, TVA_KHUGEPAGED, PMD_ORDER))
-+		if (collapse_allowable_orders(vma, vm_flags, true))
- 			__khugepaged_enter(vma->vm_mm);
+@@ -720,13 +720,13 @@ static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
+ 	} else {
+ 		result = SCAN_SUCCEED;
+ 		trace_mm_collapse_huge_page_isolate(folio, none_or_zero,
+-						    referenced, result);
++						    referenced, result, order);
+ 		return result;
  	}
+ out:
+ 	release_pte_pages(pte, _pte, compound_pagelist);
+ 	trace_mm_collapse_huge_page_isolate(folio, none_or_zero,
+-					    referenced, result);
++					    referenced, result, order);
+ 	return result;
  }
-@@ -2557,7 +2566,7 @@ static unsigned int collapse_scan_mm_slot(unsigned int pages, int *result,
- 			progress++;
- 			break;
- 		}
--		if (!thp_vma_allowable_order(vma, vma->vm_flags, TVA_KHUGEPAGED, PMD_ORDER)) {
-+		if (!collapse_allowable_orders(vma, vma->vm_flags, true)) {
- skip:
- 			progress++;
- 			continue;
-@@ -2865,7 +2874,7 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
- 	BUG_ON(vma->vm_start > start);
- 	BUG_ON(vma->vm_end < end);
  
--	if (!thp_vma_allowable_order(vma, vma->vm_flags, TVA_FORCED_COLLAPSE, PMD_ORDER))
-+	if (!collapse_allowable_orders(vma, vma->vm_flags, false))
- 		return -EINVAL;
+@@ -1121,7 +1121,8 @@ static int __collapse_huge_page_swapin(struct mm_struct *mm,
  
- 	cc = kmalloc(sizeof(*cc), GFP_KERNEL);
+ 	result = SCAN_SUCCEED;
+ out:
+-	trace_mm_collapse_huge_page_swapin(mm, swapped_in, referenced, result);
++	trace_mm_collapse_huge_page_swapin(mm, swapped_in, referenced, result,
++					   order);
+ 	return result;
+ }
+ 
+@@ -1347,7 +1348,7 @@ static int collapse_huge_page(struct mm_struct *mm, unsigned long pmd_address,
+ 	*mmap_locked = false;
+ 	if (folio)
+ 		folio_put(folio);
+-	trace_mm_collapse_huge_page(mm, result == SCAN_SUCCEED, result);
++	trace_mm_collapse_huge_page(mm, result == SCAN_SUCCEED, result, order);
+ 	return result;
+ }
+ 
 -- 
 2.51.0
 
