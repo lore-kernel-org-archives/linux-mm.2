@@ -4,172 +4,179 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A5C1CA101F
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 13:23:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73225CAC582
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 13:28:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D1DE98E000E; Fri, 12 Sep 2025 09:23:17 -0400 (EDT)
+	id D069A8E0013; Fri, 12 Sep 2025 09:28:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CCA708E0002; Fri, 12 Sep 2025 09:23:17 -0400 (EDT)
+	id CD6648E0002; Fri, 12 Sep 2025 09:28:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B98858E000E; Fri, 12 Sep 2025 09:23:17 -0400 (EDT)
+	id BEC248E0013; Fri, 12 Sep 2025 09:28:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A5A028E0002
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 09:23:17 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 641861607E2
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 13:23:17 +0000 (UTC)
-X-FDA: 83880664434.21.EE8C632
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 76019C0003
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 13:23:14 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=FIhA3Uyv;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=xGzRxfDo;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=r9NFTES6;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=IMI9huKC;
-	spf=pass (imf22.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B1FB08E0002
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 09:28:36 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 857E91607BA
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 13:28:36 +0000 (UTC)
+X-FDA: 83880677832.07.4240DC0
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 156FBA0013
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 13:28:33 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=X5I+cn03;
+	spf=pass (imf25.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757683395;
+	s=arc-20220608; t=1757683714;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VoE3Dg1oBpiGBChJQrjIFUPIH9aCo1cpIPZjfwEUPqI=;
-	b=uyryGl576FBnlzlubPUKFX+nCya9b2tGKDRCRzzDefl+fqLZ6Vub4+NgHiRSdlg/umeIr9
-	hAUBGNohYzLZuoNGv2yHAKGUYgm/ldKiacTwSWQ9imTIyBfcQiD0Kx5TeIeF63Iiz04JJt
-	a9S1CnIxhIRiYiDm+O9jsqlcmsKUFHQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757683395; a=rsa-sha256;
+	bh=TxCuVeKIYByX83ELv08YQNod/eiQVC5gVFgMvw8risQ=;
+	b=BU99g9wzM5yt3WkwCnIwWU2YNSbwi3F60enSfgAgOONcGNnr1HobEG0r5zQPvfBYCDAJT6
+	gjmJIGkd/c09KOTM6JC6pTRuswUtMqAD9OK0aeSrYb2m/BKSWpNRzq7VW6F/M+1ARxdiYU
+	fe5fZOv3b5AgQl1T69G6IUSTr/WTIZs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757683714; a=rsa-sha256;
 	cv=none;
-	b=yZUq6kuyxLt1W+zaaZmd6xiiG6wPrsxzR64CSRVgOLY5dhFqjex1OGZHu82mNiEg8mbce+
-	FTE2d4cyhmhwfhlcDBNaLyxbqOgkFm+eghJlXXcOkD88CrEbpaegWcZlr3kX7BIMjlbc1S
-	+/hOP45+W0f4b6aUsiaG1anjTpBilFk=
+	b=Ac3UHVoC6v9y1ANAGRIX9i6o/ktoKgcqi9zNV0TfaLQvsgZkhcvXqMf5BAKHIv7xwJt0Gl
+	5lE1QQpQyePnD5yjC9DFG/YteVgImY0tBCgBkDNTcDIqnBF4wc+c+CRdYWB4KJNkJE0Hyz
+	uvl67S6UzOFisYbhfVCzEO+dJaovsR8=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=FIhA3Uyv;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=xGzRxfDo;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=r9NFTES6;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=IMI9huKC;
-	spf=pass (imf22.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id EA4BE21002;
-	Fri, 12 Sep 2025 13:23:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1757683391; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=X5I+cn03;
+	spf=pass (imf25.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1757683713;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=VoE3Dg1oBpiGBChJQrjIFUPIH9aCo1cpIPZjfwEUPqI=;
-	b=FIhA3UyvlutNw+ce2h5LfcCwvEelZEqmHYOHngabNDG3QxBRs6Li055oja8d1lL0xcAphO
-	Nr0e7MshbfPELtv/iiVfp8XlV+5lCcDxCyeaIAb6w97810Lan3XT3+1tBALIRcp16K22nz
-	Ukk2TCfM8vAJIsNuQjXOdk8BVcFmKH0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1757683391;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=VoE3Dg1oBpiGBChJQrjIFUPIH9aCo1cpIPZjfwEUPqI=;
-	b=xGzRxfDo/SPnIXch4G/vYV2LqWav71a5D4t+8UDj01BxixSoEMlqDDX0IMlcy09R3vKxC9
-	VTFT2dGSaNKgF6Cw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1757683390; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=VoE3Dg1oBpiGBChJQrjIFUPIH9aCo1cpIPZjfwEUPqI=;
-	b=r9NFTES6lLfyfe54LgPQiD7eAgRMsrA7+buaNB3YxFAwGwPxHwv0yt5hRLQeYr+Vkuegbf
-	jFeZ90Y8Z8uq+Ot9Ie4CxtXQ3VYu2Q6Qj3di+oC9vQU8RweilmcGp5Bam/QuwDs2qQF4jb
-	s7M1TzjqdvpAo3tG8DjxhVqAvDqQQDc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1757683390;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=VoE3Dg1oBpiGBChJQrjIFUPIH9aCo1cpIPZjfwEUPqI=;
-	b=IMI9huKCDx3GxP/D2jj4kSLzGZQlm2lvMND9SsTOx570bFiK/QZDImH313Zp7BxSibBhta
-	SSxcBImYnpOCkwAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D931B13869;
-	Fri, 12 Sep 2025 13:23:10 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id pPF/Mr4exGgpEAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Fri, 12 Sep 2025 13:23:10 +0000
-Message-ID: <8fe99133-3322-4e39-9b58-80df547b8d1f@suse.cz>
-Date: Fri, 12 Sep 2025 15:23:10 +0200
+	bh=TxCuVeKIYByX83ELv08YQNod/eiQVC5gVFgMvw8risQ=;
+	b=X5I+cn03pwz0xcNVp/7hMikhRn748AoomX19RoC1+A7oqvRdb2LxD4CLdp4lPirEpWCEZ+
+	DLCU66svhIsSGZazdXRfkUvMIvJIiCAt5+6d66EYr6QsWwVVSkuqvcjvme+BBiMazCra+w
+	h0fvQqqP2JKXVEYsJH1s7/4uGeddQxY=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-315--ccGAkEGMJOVi5vXFFFVEA-1; Fri, 12 Sep 2025 09:28:32 -0400
+X-MC-Unique: -ccGAkEGMJOVi5vXFFFVEA-1
+X-Mimecast-MFC-AGG-ID: -ccGAkEGMJOVi5vXFFFVEA_1757683711
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3e7696b36d9so383889f8f.0
+        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 06:28:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757683711; x=1758288511;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TxCuVeKIYByX83ELv08YQNod/eiQVC5gVFgMvw8risQ=;
+        b=ZDM1QcFztrXAXAfy9A8Zy+gQGjNMrKW9RCQ3ypjOU1yHhQiJd0JaBvnB4USaw762G9
+         oF6JugsMKI2yHPKoFsopEWbb30xKZbOX+HMQ5pfk17OY+uNyzwv4ObiIpwolBIpSZcBP
+         LKHGB8JaqC7v9C0GHCJ29+5npJB/fiNQcbOfRth55jq/Kzv9De7dHZh9okhx+/ObDj+0
+         8p/jOR3K6z22ihzBV5qLJjR+QuSHu9VQErXKqvuao9LrSBz4tfV12HvA5D+X1qCUoRVI
+         gtRXlFDedKYI6KPFxYE3CGa9B1C9osRmztnYcD6NVgnnS61a5yAB28626irLIWJefPOj
+         Bfbw==
+X-Forwarded-Encrypted: i=1; AJvYcCW9szBUGoqObGPnMBLjuEBtvVOz0c7cPSI75xiEY9EiiDukzmQXmc52wZFEQS6uQjPB99q4ZTXLqA==@kvack.org
+X-Gm-Message-State: AOJu0YzYsCAc16JEZCwkUhooRk37c+H1RdprvxKzwmr9KsUbpSOHftAr
+	wQBEXedRB8pxC0K8j2kZBptE5pXF8FGUSXvajowLwuA5tyhorMCoQLKcmC8jHS6eTiE/0997oOF
+	QGq57rQDzg2fm5U3IAsO3e6WHcM7IfbA158WP/Uu9d5sFML3WfX/T
+X-Gm-Gg: ASbGnctPIHdlf4snBnzZ3r54Ft/5j8ZO/thXp1TlqGcV8eUyHyB8YBn4qZuGY0BC9fQ
+	sVq8cZeG6arex2xGXxuAr+uXxrMKNCYHnf1WcW+2wI5UznMaX1x489X93m/hDG5fCZzLQvkamJd
+	Giuj7iEFjH2fQjDuJnHmgQjyjQupD1jRZzoBkNGz/pFh1WxK9aVnDg2YK5HHHDrbh7og5opqr5Q
+	nPPB3+Zhky5KnWl8R4rI62J+f590m+7fDZ6M7w1KAHa2751nGrbt/2bk+bPYyTQUlV9z24J7F9w
+	rq/UphJE5w5DlbjRQoxu65OovZzGx6J6NlwF2G/N7+7uAWkjsBePGktoGrhP92eg6w78pJa4UEu
+	zqyiaOz4Q9fg/uU7Bnbm3wrxrp+4I3YbTPMiZuzLoolvwhRVZgVLeasCdYZUEeD+WNic=
+X-Received: by 2002:a05:6000:2384:b0:3d8:3560:59f4 with SMTP id ffacd0b85a97d-3e75e13caefmr6723691f8f.15.1757683711142;
+        Fri, 12 Sep 2025 06:28:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHb2l7aN1/8HIAcICiml5mSkrzckyj6yy2pKIKfzYSogTxvyEF5XddWuqkJ2hocBG9MnDZbvQ==
+X-Received: by 2002:a05:6000:2384:b0:3d8:3560:59f4 with SMTP id ffacd0b85a97d-3e75e13caefmr6723659f8f.15.1757683710722;
+        Fri, 12 Sep 2025 06:28:30 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f20:da00:b70a:d502:3b51:1f2d? (p200300d82f20da00b70ad5023b511f2d.dip0.t-ipconnect.de. [2003:d8:2f20:da00:b70a:d502:3b51:1f2d])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45e0156d40esm68008195e9.1.2025.09.12.06.28.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 12 Sep 2025 06:28:30 -0700 (PDT)
+Message-ID: <8ffb72f9-7d46-48da-833e-83ffd8e32a5b@redhat.com>
+Date: Fri, 12 Sep 2025 15:28:28 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [vbabka-slab:slab/for-6.18/kmalloc_nolock 14/14]
- mm/slub.c:3866:2: warning: variable 'flags' is used uninitialized whenever
- '&&' condition is false
+Subject: Re: [PATCH] selftests/mm: centralize the __always_unused macro
+To: Muhammad Usama Anjum <usama.anjum@collabora.com>,
+ Shuah Khan <shuah@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Antonio Quartulli <antonio@openvpn.net>, Sabrina Dubroca
+ <sd@queasysnail.net>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Cc: kernel@collabora.com, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org
+References: <20250912125102.1309796-1-usama.anjum@collabora.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20250912125102.1309796-1-usama.anjum@collabora.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: Q653FwBobuWxsavUIgmfRJx5wN1MGFAlNSiqXKILd3U_1757683711
+X-Mimecast-Originator: redhat.com
 Content-Language: en-US
-To: kernel test robot <lkp@intel.com>, Alexei Starovoitov <ast@kernel.org>,
- Harry Yoo <harry.yoo@oracle.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, linux-mm@kvack.org
-References: <202509121822.aOV6H1ts-lkp@intel.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <202509121822.aOV6H1ts-lkp@intel.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 76019C0003
-X-Stat-Signature: 9n6f7u1epitk6bb14kensinczy16u34w
+X-Rspamd-Queue-Id: 156FBA0013
+X-Stat-Signature: nhiqmh3z4oncepfqwk3756mmpnx4o9qd
 X-Rspam-User: 
-X-HE-Tag: 1757683394-295864
-X-HE-Meta: U2FsdGVkX18nNQU8n2hsPQ2ELLAaXPOl6Nqi4Npya2OM+42aWPLFDh7+8YTKAOu7cIaVQ7JWiTvxKf7WbhbOvaqEQ6qQpB+BvIsiJ912+Klv3H9bQNxzw2mIj5Cz1onV+E2uLFxL2J79GMOHrF5Xzc1Ze1ogqWzThpdT+S8EFw8dch+XOhCfVbNRqhSXg4VUTIMnSDA0Lt/YD842l7ciTOXyx4Q7x4wfz+gf0gWOt+floYd3KLMIPwkySw/1VpJ5ziSgSmkvGMUUdgy7iN1DxcAfowdInzL4IiowFXddUEaOrLxg4RzlTiQzoURaayBz3WmKB5VXaI9G32lm94/MF2q7S2Gt4kvKVswAZrqyEQoQGdoieOdvKAx936SOgPbqbA5xc7O0NZAQFRYYy51ocGsONFjLZhmyyhprhZ+502V/bwmF+4K9KUYGnD/HcWJXdKf0clw5VneOFtSvvIP1xHhlfJhOQEKfCUJr202MDWMKCjGk4bMKdAsJeEXlQeoOp1N9jFnhz/6QyByu+vskAgsHjQvP0udmBTOgoN/5v7Xw14k5XpFvbt/EZWzngs3xq3brE1cWm1XJYAHcB2fQbBZww1WQPFq4cSwm0EVd4cnkyetZg8IVHu2E8QsZX1kIZCb1bICLG3KdbNqsN6zgpFzVIBOCWI+oMeLn5j9rkttOfbGOVrlvW7KAx9boyGblXcP9etrTuNMJYNOQz4224slfPpYUViox9VSeCreDs+14mNr2wAuss82EUZ83cbQteF0aoCqY1As6GXsF78yQo8FHM7CXW4pi+57+rWxqmCRwY63XayEbBCcGnBEJ+ombvW2lNhEogOToUV7KObyximrOZh0fUg2U15yC1pzTiTakrx6Zma3s46PULFYif+E9+VVM8TcZegOULnO6YJVs01WnFYerbdMHKGVyCE6lKO4xDDvZYoyPPnmDosVMe4MHnjyuKhUWfTiNLGW0VtI
- v7wlia3j
- hL8aJtb2LhpDJbYppuOfTVs710c0o+mMs+N5PJYlW5iqkKUhd0X7Hm+UOowQYTN9kSaXl6gMbr4r3JVK5277dbY5ju0l5T7CRINspnCGnVNx4WG8GrZ4ylAPJRPoF+dBm/tJag1B/BxIfWOdRbgbRKgRC3cNLYihQRZ4FgPexYGPp42L10a0G1r9qXRS4OM4uFOhbYJsRYdIdNcv/iB9F/ERVAvMgzYeAg+ZdwnbarO4O2lnU9Lu5HiP0iXHjTAZuWBMORg4F6MzWcS8241G7pHZCzj5cxQ9ATz6nvyUdzDEOAQXMlS4muzNBZty7TJmTsIktqXB3A+FRdPwWAWq3QmllRbBC48wsJzSTZxQ2ebUn3nHezRb3tjnmtW8rvvyFMUzC1/rDCLstiXmf6iHDai1Ts2HT0aHEn0cmxV/WKlINsho=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1757683713-730060
+X-HE-Meta: U2FsdGVkX19y3TRwaPhst+BgAPULiigaFrye90lT8LIWnRI4FE4w2Yl/V/R8kepuY/IfeOUhpbokksdP6KSrKfd4IdLUElW+gTuYxirSToH11gY3Cq33SUD1rTc1hS1Dc56LzFWH+m81QgNtFSf81leZGjmkEdOeTdXoei5FMawwFyKh3IYCgr3n4NZiaK2ZhPNatp78C+3BKHKJb04eQoOSX2IOpmZbFMbxBpk8RNqGoCqdJl3oY9MxioNkYPRvpAuEsi3njA6zRz4CPPxHz8KGjKNe0D93ZdVYybOiHPYzS7ZYKZfJM/utjHoJf3NwqSRBCNqGDSqi+HbtyYUtMmoa/ZxX8NU2ymNobQXXZflL0usaeVMd52alp5cpINt6c2L5rgVbpJYr+HoKGiuSTTqP1uCg7ovErgY0ZuZ7iwCXfMkA7ybRvEWpOIyoXOt0gl8WKHhuJMjwcwnzyL5kkP/MHPNroSZxXQRDhs7tzudc8beF1Hn9ZclThArtOrfHj2I+DCTJfN0h/mskmXE2xqoFiWhmN6nMr0Bdw6iZeEHN4PjLpG5Zoh+4PJnPZnROJNPaPppGjmXirAJyse8E5ukRDj/VRliHn0KtWuYoxuX1jLOGqZnuiQiKNJAP4g/iCr2f6UnzEhGYlshN4G7pjAk4n46R5Sf5FYHo1VyMvoze1kGGZcfWBW70/PX6w9tdJ3D5nmThp5lto/YdylWpM+YpBxsEICAHfxzd81yCC6p/yCkgfpg52SAdvFdsYl24WahWVQcUgpKiy8xoPOoyohDDRxqgTtMfVOf8kWGanb5wETJTklRZvmRHOQNoLOeQfxX2BGj91y0fj1yGZvBej/PHPnhnC/X2w9ardTYDvaH4TfNP1q4dHQ3rBx+K1Ztch1dXvkXHIp3j3BpWazeTnFargIb+Qh5YqmNO+KgEPL7wtuy3bPilAlewOZyU3+aLaM1rrcQU5v9wQFR0yz1
+ r/VWWbUj
+ L8U8SwSWwhe/a8ZTbdmyCSRaaCDCYVO6gT681CLlb9OEoSG6wBCceK3caMLXIvXs8OvKFz+aNV5kcJTA0r/kODWWwUJITUj27JyXgzYERIeXXXdo6ckrt0aXitPDXtvNPqh6dFjz8Bg52/Am+yAtntv/TWDV00VaWAB9i5o53u5sQC+HwMxOODu0s9XCq8Z2AvxPuvRhQEFzEBl76sdcdl87MVbXNTsGx3dlcpvJ8CR4F2avw9bH6mLd8fdqQ7kTLXatz7PV08YyV6xZ96Avk9OTcMK4RKHlxNvjQEM65GgZaxlZWxh//6rL21wiPwUeZccR3zLaH/X5jSHlm/TxBjesc7TZvr/Z95V18onPWOiNV/XCwXeauGcTp2Aky8+aKrGFmHUZWMwbvClA4HUSokfyAlwjPHHUAvbAkpLxv6SDLll7nCmS7ZUjK4rn/yV2Qap4yxOMIhp9GBhE3airtf0SFLhqlr9MKI4crzzqxQunguT5G2oZs8DAgWMYwg+gWlRzAfst5fdwo49A=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -178,100 +185,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/12/25 12:25, kernel test robot wrote:
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git slab/for-6.18/kmalloc_nolock
-> head:   8014922e0e72dde7684abebeab3404720401679f
-> commit: 8014922e0e72dde7684abebeab3404720401679f [14/14] slab: Introduce kmalloc_nolock() and kfree_nolock().
-> config: x86_64-buildonly-randconfig-004-20250912 (https://download.01.org/0day-ci/archive/20250912/202509121822.aOV6H1ts-lkp@intel.com/config)
-> compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250912/202509121822.aOV6H1ts-lkp@intel.com/reproduce)
+On 12.09.25 14:51, Muhammad Usama Anjum wrote:
+> This macro gets used in different tests. Add it to kselftest.h
+> which is central location and tests use this header. Then use this new
+> macro.
 > 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202509121822.aOV6H1ts-lkp@intel.com/
-> 
-> All warnings (new ones prefixed by >>):
-> 
->>> mm/slub.c:3866:2: warning: variable 'flags' is used uninitialized whenever '&&' condition is false [-Wsometimes-uninitialized]
->     3866 |         local_lock_cpu_slab(s, flags);
->          |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->    mm/slub.c:3776:2: note: expanded from macro 'local_lock_cpu_slab'
->     3776 |         lockdep_assert(local_trylock_irqsave(&(s)->cpu_slab->lock, flags))
->          |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->    include/linux/lockdep.h:279:15: note: expanded from macro 'lockdep_assert'
->      279 |         do { WARN_ON(debug_locks && !(cond)); } while (0)
->          |                      ^~~~~~~~~~~
->    include/asm-generic/bug.h:171:25: note: expanded from macro 'WARN_ON'
->      171 |         int __ret_warn_on = !!(condition);                              \
->          |                                ^~~~~~~~~
->    mm/slub.c:3891:27: note: uninitialized use occurs here
->     3891 |         local_unlock_cpu_slab(s, flags);
->          |                                  ^~~~~
->    mm/slub.c:3780:48: note: expanded from macro 'local_unlock_cpu_slab'
->     3780 |         local_unlock_irqrestore(&(s)->cpu_slab->lock, flags)
->          |                                                       ^~~~~
->    include/linux/local_lock.h:52:48: note: expanded from macro 'local_unlock_irqrestore'
->       52 |         __local_unlock_irqrestore(this_cpu_ptr(lock), flags)
->          |                                                       ^~~~~
->    include/linux/local_lock_internal.h:202:21: note: expanded from macro '__local_unlock_irqrestore'
->      202 |                 local_irq_restore(flags);                       \
->          |                                   ^~~~~
->    include/linux/irqflags.h:240:61: note: expanded from macro 'local_irq_restore'
->      240 | #define local_irq_restore(flags) do { raw_local_irq_restore(flags); } while (0)
->          |                                                             ^~~~~
->    include/linux/irqflags.h:179:26: note: expanded from macro 'raw_local_irq_restore'
->      179 |                 arch_local_irq_restore(flags);          \
->          |                                        ^~~~~
->    mm/slub.c:3866:2: note: remove the '&&' if its condition is always true
->     3866 |         local_lock_cpu_slab(s, flags);
->          |         ^
->    mm/slub.c:3776:2: note: expanded from macro 'local_lock_cpu_slab'
->     3776 |         lockdep_assert(local_trylock_irqsave(&(s)->cpu_slab->lock, flags))
->          |         ^
->    include/linux/lockdep.h:279:15: note: expanded from macro 'lockdep_assert'
->      279 |         do { WARN_ON(debug_locks && !(cond)); } while (0)
->          |                      ^
->    mm/slub.c:3863:21: note: initialize the variable 'flags' to silence this warning
->     3863 |         unsigned long flags;
->          |                            ^
->          |                             = 0
->    1 warning generated.
-> 
-> 
-> vim +3866 mm/slub.c
+> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+> ---
 
->   3852	
->   3853	/*
->   3854	 * Put a slab into a partial slab slot if available.
->   3855	 *
->   3856	 * If we did not find a slot then simply move all the partials to the
->   3857	 * per node partial list.
->   3858	 */
->   3859	static void put_cpu_partial(struct kmem_cache *s, struct slab *slab, int drain)
->   3860	{
->   3861		struct slab *oldslab;
->   3862		struct slab *slab_to_put = NULL;
->   3863		unsigned long flags;
->   3864		int slabs = 0;
->   3865	
->> 3866		local_lock_cpu_slab(s, flags);
+Acked-by: David Hildenbrand <david@redhat.com>
 
-I guess this?
+-- 
+Cheers
 
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -3772,8 +3772,11 @@ static void deactivate_slab(struct kmem_cache *s, struct slab *slab,
- #define local_lock_cpu_slab(s, flags)  \
-        local_lock_irqsave(&(s)->cpu_slab->lock, flags)
- #else
--#define local_lock_cpu_slab(s, flags)  \
--       lockdep_assert(local_trylock_irqsave(&(s)->cpu_slab->lock, flags))
-+#define local_lock_cpu_slab(s, flags)                                         \
-+       do {                                                                   \
-+               bool __l = local_trylock_irqsave(&(s)->cpu_slab->lock, flags); \
-+               lockdep_assert(__l);                                           \
-+       } while (0)
- #endif
+David / dhildenb
 
 
