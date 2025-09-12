@@ -4,95 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EB5BCAC582
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 15:39:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1824DCA101F
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 15:41:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D40E86B00A9; Fri, 12 Sep 2025 11:39:27 -0400 (EDT)
+	id 75099940008; Fri, 12 Sep 2025 11:41:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D1C8B6B00AC; Fri, 12 Sep 2025 11:39:27 -0400 (EDT)
+	id 72735940007; Fri, 12 Sep 2025 11:41:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C535D6B00AE; Fri, 12 Sep 2025 11:39:27 -0400 (EDT)
+	id 63CE1940008; Fri, 12 Sep 2025 11:41:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AFAB16B00A9
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 11:39:27 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6EB041408A4
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 15:39:27 +0000 (UTC)
-X-FDA: 83881007574.12.1846983
-Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 928A01C0008
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 15:39:23 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf21.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 553B9940007
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 11:41:22 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E578F1DF9A3
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 15:41:21 +0000 (UTC)
+X-FDA: 83881012362.09.F807C54
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id E67A614000D
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 15:41:19 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LETEawqk;
+	spf=pass (imf23.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757691565;
+	s=arc-20220608; t=1757691679;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2Nj8DQPnCkFLpvYGpE6u33/VSU5idrFUlh2LxYOAFEI=;
-	b=nfHenvInH2X5AC3+h9MmcCqyYplpEZVR8zG2XDbD92U4R8fpbQY8hW5m9gj0Hn/AVGboRE
-	A9JWLtAQnQQYUcEKVd2JqsYnPhc/2V4GWTAPJ5gOICkRbH679qHV9aE/LfYiu0/TXkaW73
-	JlWnO1go51qVku0b6Ahh4H3B2oQKLUM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757691565; a=rsa-sha256;
-	cv=none;
-	b=WLNJM0bIGvYCZTOlpCVdCL5tmnPvsMv3fGKdEkVW08erDwqWPMa53IU0JYVcwUhqlRDPrx
-	8YBfovrMj7TeP2cdNBCAnpx5GeIDquRpxPrBbRTInfh744HDvfFjXrAlqa40ToCKZrf4i4
-	637GE+QEzui3OTyRiIfHsHrp96kanrc=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=UsBm1C/SFb+Ex8cUtIoUrwQa8ExtOXnZu4LdgQrs34Y=;
+	b=Bq53IG5zYoKLolrNQdh9qyNGR+OYVnNT5o1jQWthyYij1cudjK7rgFSpM1hFrcj9K8RG8T
+	umDTi+b006Zy+rfQ8eTYPtrlzYUSbLVY8mmwW0tTj7WkBh4UySUNNP8p71mU1O2gqzP02v
+	zwM3Xzdcw1eOgN/3lgOYIFsjYe/gtlQ=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf21.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.51.102 with ESMTP; 13 Sep 2025 00:39:19 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Sat, 13 Sep 2025 00:39:19 +0900
-From: YoungJun Park <youngjun.park@lge.com>
-To: Chris Li <chrisl@kernel.org>
-Cc: Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	akpm@linux-foundation.org, hannes@cmpxchg.org, mhocko@kernel.org,
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	muchun.song@linux.dev, shikemeng@huaweicloud.com,
-	kasong@tencent.com, nphamcs@gmail.com, bhe@redhat.com,
-	baohua@kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, gunho.lee@lge.com,
-	iamjoonsoo.kim@lge.com, taejoon.song@lge.com,
-	Matthew Wilcox <willy@infradead.org>,
-	David Hildenbrand <david@redhat.com>,
-	Kairui Song <ryncsn@gmail.com>, Wei Xu <weixugc@google.com>
-Subject: Re: [PATCH 1/4] mm/swap, memcg: Introduce infrastructure for
- cgroup-based swap priority
-Message-ID: <aMQ+pzsINPPE8EQ6@yjaykim-PowerEdge-T330>
-References: <aLJ4fEWo7V9Xsz15@yjaykim-PowerEdge-T330>
- <CACePvbW_Q6O2ppMG35gwj7OHCdbjja3qUCF1T7GFsm9VDr2e_g@mail.gmail.com>
- <aLRTyWJN60WEu/3q@yjaykim-PowerEdge-T330>
- <CACePvbVu7-s1BbXDD4Xk+vBk7my0hef5MBkecg1Vs6CBHMAm3g@mail.gmail.com>
- <aLXEkRAGmTlTGeQO@yjaykim-PowerEdge-T330>
- <CACePvbXAXbxqRi3_OoiSJKVs0dzuC-021AVaTkE3XOSx7FWvXQ@mail.gmail.com>
- <aLqDkpGr4psGFOcF@yjaykim-PowerEdge-T330>
- <CAF8kJuPuOWUEMg6C9AnAA-mddgHRjuMVqURrbk6bUHxAmEvgFQ@mail.gmail.com>
- <aL3Dav4RLvtLliYC@yjaykim-PowerEdge-T330>
- <CAF8kJuPnaJi=aKFwEknoh-eNgUPoje29EiKApmaWur+GqBGc0g@mail.gmail.com>
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LETEawqk;
+	spf=pass (imf23.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757691679; a=rsa-sha256;
+	cv=none;
+	b=4+TLXzEmoYm/NIZdFb1DOnci0pZAyx/q75YWEdxxh6Gfwf+AUI6gehq/obyUU9YGnwN59d
+	zAvEvCyvJQqjDqmYKxJZvnypngSUlJVJLPOOH1phhhlfZRxUsu6VMjXBx61QRktiNh50zO
+	pcSOF+5TF42KPRiMJ15axEAv0STRbvs=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id D877160206;
+	Fri, 12 Sep 2025 15:41:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F098BC4CEFA;
+	Fri, 12 Sep 2025 15:41:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757691678;
+	bh=Pnh9rQTYsWlWtV4pH/2q/GaxI6G4+CAlVzB4h1vWAoE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LETEawqks87rrqCiHQ5/U14DkW7DlUVM93h+Ie4U9Dl4p6mYpnwLE4ZqR5AO8AEBn
+	 dR1WStbWV5V9l9qK3zmkbGLb6UBjJD5O6u+2h3j89D+ciFYRl+Th3glaQUrcx30MQw
+	 Tkld+qm5o/EUk3ytI2gfN9O6rIoZULo/ETcpvpu7hO+ViRz3K4/5KAM3ORxWD/wrNh
+	 VzvfFXGaRR4rBbOfklPvWEhXKsa2ZRqkYDUG5ukgbSZLfkFDcT7jaZpgTkfZdjy/v2
+	 MyF/zZDRovmWQ2/Xn5K5R1uoRrwa3V94yrMqFNfGUqtK21Ok88HhXPDWZ0om90q6el
+	 7+N1NeEgpSZYQ==
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 3D2FDF40066;
+	Fri, 12 Sep 2025 11:41:15 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-11.internal (MEProxy); Fri, 12 Sep 2025 11:41:15 -0400
+X-ME-Sender: <xms:Gz_EaOsbf31G_UXVkIOUtD0npSfMH0xLF6dHFR3WGNEPXd02pGS-Dw>
+    <xme:Gz_EaBS5LF0vrQqGE-T4tzVT3yWzra1_wjtlfYaSiXICuy4mBnNp-WAsEjzl-yl5s
+    DX6ch17wM9xjkcoCGY>
+X-ME-Received: <xmr:Gz_EaHnFVMwlGSqkETfEvMPfhx6t1OtXoxkXRZpuyjZpu79YwQupf9WCWtUBKw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvleeggecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdfstddttddvnecuhfhrohhmpefmihhrhihlucfu
+    hhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrh
+    hnpeehieekueevudehvedtvdffkefhueefhfevtdduheehkedthfdtheejveelueffgeen
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrih
+    hllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeiudduiedvieehhedq
+    vdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgsehshhhuthgvmhhovhdrnh
+    grmhgvpdhnsggprhgtphhtthhopeelkedpmhhouggvpehsmhhtphhouhhtpdhrtghpthht
+    ohepuggrvhhiugesrhgvughhrghtrdgtohhmpdhrtghpthhtohepnhhprggthhgvsehrvg
+    guhhgrthdrtghomhdprhgtphhtthhopehlihhnuhigqdhmmheskhhvrggtkhdrohhrghdp
+    rhgtphhtthhopehlihhnuhigqdguohgtsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtg
+    hpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhr
+    tghpthhtoheplhhinhhugidqthhrrggtvgdqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvg
+    hlrdhorhhgpdhrtghpthhtohepiihihiesnhhvihguihgrrdgtohhmpdhrtghpthhtohep
+    sggrohhlihhnrdifrghngheslhhinhhugidrrghlihgsrggsrgdrtghomhdprhgtphhtth
+    hopehlohhrvghniihordhsthhorghkvghssehorhgrtghlvgdrtghomh
+X-ME-Proxy: <xmx:Gz_EaJGoEIfYRYdOJMLO3p1Ayi-LNhwkTjZnkBk9hX6EIQqfnae1mw>
+    <xmx:Gz_EaJIMiWEI0LTXh-qd-YU5gzmFymkxr1ZbO2n2SuyFlUmXlbd3sg>
+    <xmx:Gz_EaPrAIDTKpJT5sMkEYfN_hCgQIRB427TL9pAeEEF5Ez2_39i48w>
+    <xmx:Gz_EaC1u3_UGXrJyTRYAy_bFxc7y2Pox7uFkM5OKfmrYyCh0oq-h0g>
+    <xmx:Gz_EaJI2cA6z4MM-kX4yh72tx0H_aTTuhQrmm4VTq_ozAg3kuAhZzXv0>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 12 Sep 2025 11:41:14 -0400 (EDT)
+Date: Fri, 12 Sep 2025 16:41:11 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: David Hildenbrand <david@redhat.com>
+Cc: Nico Pache <npache@redhat.com>, linux-mm@kvack.org,
+ 	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, 	ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, lorenzo.stoakes@oracle.com,
+ 	Liam.Howlett@oracle.com, ryan.roberts@arm.com, dev.jain@arm.com,
+ corbet@lwn.net, 	rostedt@goodmis.org, mhiramat@kernel.org,
+ mathieu.desnoyers@efficios.com, 	akpm@linux-foundation.org,
+ baohua@kernel.org, willy@infradead.org, peterx@redhat.com,
+ 	wangkefeng.wang@huawei.com, usamaarif642@gmail.com,
+ sunnanyong@huawei.com, 	vishal.moola@gmail.com,
+ thomas.hellstrom@linux.intel.com, yang@os.amperecomputing.com,
+ 	aarcange@redhat.com, raquini@redhat.com, anshuman.khandual@arm.com,
+ 	catalin.marinas@arm.com, tiwai@suse.de, will@kernel.org,
+ dave.hansen@linux.intel.com, 	jack@suse.cz, cl@gentwo.org,
+ jglisse@google.com, surenb@google.com, 	zokeefe@google.com,
+ hannes@cmpxchg.org, rientjes@google.com, mhocko@suse.com,
+ 	rdunlap@infradead.org, hughd@google.com, richard.weiyang@gmail.com,
+ 	lance.yang@linux.dev, vbabka@suse.cz, rppt@kernel.org, jannh@google.com,
+ 	pfalcato@suse.de
+Subject: Re: [PATCH v11 00/15] khugepaged: mTHP support
+Message-ID: <7ri4u7uxsv6elyohqiq2w5oxv4yhk2tyniwglfxtiueiyofb3n@l4exlmlf5ty4>
+References: <20250912032810.197475-1-npache@redhat.com>
+ <ppzgohmkll7dbf2aiwhw7f4spf6kxjtwwe3djkx26pwy4ekrnd@mgeantq5sn2z>
+ <43f42d9d-f814-4b54-91a6-3073f7c7cedf@redhat.com>
+ <ab8c2e03-53fb-402c-a674-c2c6ab11f54e@redhat.com>
+ <rapl4xr55zv2nq3jh5ulk4wvfyxa2kmbnnb4uram6q43y4cbwn@dv5m52ocyqne>
+ <80c50bf4-27b1-483c-9977-2519369c2630@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAF8kJuPnaJi=aKFwEknoh-eNgUPoje29EiKApmaWur+GqBGc0g@mail.gmail.com>
-X-Stat-Signature: zgcmbw5uwqyojbxoyx5bosief5s6rarw
+In-Reply-To: <80c50bf4-27b1-483c-9977-2519369c2630@redhat.com>
+X-Rspamd-Queue-Id: E67A614000D
+X-Rspamd-Server: rspam05
+X-Stat-Signature: zyzd7mhjct48khsq6ipnycqn1hsdoiqc
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 928A01C0008
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1757691563-693142
-X-HE-Meta: U2FsdGVkX1/fQ+sTlY6lYsnH6MjnZ+vX6twvyS6MV5A0U93mfrOQN18fMkIM20ZkX0Pjey5YSlwE1y/DQPbZ1Vy/oNeXfIuvLSMLyT8oNHOjiIu3GwSlB+RW5y54dyV96rjdjSclGUR+syCHHLXyLrf9AFYl+zTTZKAHuHsaao/C4Bjk2jSRYEGY9OW6Tv1E0E/55OmYzTpb056Ilb4j0jOFnoc5dOM5+pYP+cf/y/pCzBj2tYr19X8w/KfYcLTzgFn6cQMnA4jQtfh+jKgI6FzjN63i3t2YXizNst1LFvRwJnhCMwAck2yn/ptPnx6jegc60OqsFOhtQuYqYyyOsNEFG/00f8Fw8e2Mjz+UlWQPj9lKliZePSM3Ya4Qhcy5uMggeway9lbAkHzJo6kzJcqRdAhbe23VlgI5pxIJhk2hVBepgg7EYCwagLo8RygNo0d858w1TlcVQrr8q/Rdb77ZFcDZaBM4Ui4spi+xOCyMB/SDKfEu/zuhnH7AekuGz0b8XxIZRiafmdsHrmG0+iefcxBM/UK2q0Xc4AKKrf/wqE3jTE0Ex/A2kbathUgpqckeWEdDTqnfHecrYIg/BHlTBPpOtBH6MhcVfS7m65/Tz7BmjzUkEsuBlI7dyVjk6xf+b+zCYf0826cILyJrmIphu31wtSP6eMYeJeybaFqK2zFawJsNZQn9UaXYLWeQn0soiY54Wsuf+mLS22vhI2nxkD76z9XjxXd84hjeie/hThRJqbJOtDH5wiRhCC8ryd4iy5liPD69qcldYWNyacnL7nSs7T80qJpSn5DGJ9lpzYm6aGfVGP0xW9EtxikdTlGAsfpsF1dHbm2oJ9sYCPY1UFAMBZPZ9fVu+AIpyWrO9D1el7B0YltESXF/OthOYsew2ZkD0loN/JGaZLtJby/qLzDKdh1yso5DGWU1KcFVlpJPdg1ja9QCabB3zY0TtlwxDNuWeYPBNOjGhKb
- uKLENRPU
- vqQvE8L8gCg9MoW+TlKgjAt4/tk0gPcniK97h7Wo3BugnzMnom6d7o861i3skFfgoLGjqstzBr+EM/uv1Uo9ht5Mj76mgDlaqpFqzAX9TRpLeIPVTbfu78aL7G/yzDK4HQ2nxdU/Ib9ZAlLPWMppYZSV/MXZQUZ8l/23zGVplHpHTfR27bhctqF1yZXN3pnNTLL5UaZei6NCbJG8VhZYCSKo8O+VQjwJ7782XbCPcjUVrncQygmSGeQSKGelnKiBxje5mWAqch7YGu5QhVjnTBBN+dawT0aL7DLCRXDMF0FoE8as=
+X-HE-Tag: 1757691679-30665
+X-HE-Meta: U2FsdGVkX1+McJ1xSK6QFkzBocmQYik9E0PXud0Vi815VaHnn5TWfpzilkf9t/SLowFXWdVtA7yW7A2ezwRelV1hQiNzTM2kJc3uYaBA+ihGcFytnvk/GmJKHNvchPfcHSCoZhNzfnzWKcLn+BKvrpWg/ZWeqYvjVcPaw5fOsf33ADin/Acrkl7gDiAEoYyy3MCzNWJ+TX+Ak+UrV6furRAZQLNdBglj2JzGe49ppWbBWORx4JQ9+v/yyp0AQXgcnif4MYr+y8c/3cf1mqjnK6bvA/+PkYsynfh9G8b8abcFxemaltDEKRe/jL2fByWd1GJtzMPoN6q7F/ExA4uBtIKNPe7+ikVVzmgWiQqWASqqDJo0uRJM5S1f1+7yGoxNkRhErcIdxDvkDi5dPoTZ9Vi3bZRmE2r51VE+QK7Uki67Vl0iJWBYn/VEQdNPHegnglwDYPaYP5SyyceMtJvSE/rKIGdOs59w3qW2LBffLI1PgMGrym80TbpjBey0DNdZUsmffHr+gB47HzXFxN0+WdZCliNQuROB0UXD63NBX+5Osr+7Bq1mOxxdYAGgMW12ECgYQHrxviER1kIsk2bxWVYyRCGexBEwyj9z+Z9zmc347PSIfbbRWqHK6xWZnmmeLZjHckRHzoe/cZAseWb7s/dKPnWjo4bXszYTIH35LQV/E5fPkBKUJBIb4m7pUBMRHzIPIs811gOJZROjf+8SQ2EQ/UtScJq/K8XPvxnCwiDnBRULg+mf86ao8qm/4f/HwOzKuX/boW4hjATzVgS8cevnYK4AmskHrxuZgTpC9qJ4A+1MpjO+2SQQTU8OolCEPPnYoGh0AssPf3UXRod/6bK2RMsPYIxFirX1iQy+LUvZkpio1mbBAwcQ0e4nAh/x7sZNjxnNse2JddO17AVzzuoZgHwb5UPHyzoPtW1xMEpBXrvRRcR7rF7Vf4S0ZTpkJ1TgMqOk/Fbsj4MPctW
+ TDHPJWiW
+ 4fFM/yBaVRBL34Wx0oKHUpCLYKF0NCF+B1I+3AiKcSBchejTWJX3jsv1KPBPlRVtN4KgjqvDcI5rKSKUBGdQSq622B/iZ5Y6nXHGD3H6lGwe4t784oPCCqiNTSVrX06MuKKWEhwEYw3+etJT19CKAmRytBUlZnxWIaFBD0kg86LVfQw4C8dmYI067LV/nfTssOMNvQuItBgjR+QnzlLOVQ5r7D2AeZOFY4+N1bfxWucytOoI2sRu418Nz1WaToEC38AFN4GOn0u/TACKjfhilWZc/mq+/WohxvOIJrjup/WEyI6wLbwyZI8P58R8bsRDbwPDhoLsINSpvFhv6vz8LVwXUzQU/KKMQuIpi
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,231 +148,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Chris Li :D
+On Fri, Sep 12, 2025 at 04:56:47PM +0200, David Hildenbrand wrote:
+> On 12.09.25 16:35, Kiryl Shutsemau wrote:
+> > On Fri, Sep 12, 2025 at 04:28:09PM +0200, David Hildenbrand wrote:
+> > > On 12.09.25 15:47, David Hildenbrand wrote:
+> > > > On 12.09.25 14:19, Kiryl Shutsemau wrote:
+> > > > > On Thu, Sep 11, 2025 at 09:27:55PM -0600, Nico Pache wrote:
+> > > > > > The following series provides khugepaged with the capability to collapse
+> > > > > > anonymous memory regions to mTHPs.
+> > > > > > 
+> > > > > > To achieve this we generalize the khugepaged functions to no longer depend
+> > > > > > on PMD_ORDER. Then during the PMD scan, we use a bitmap to track individual
+> > > > > > pages that are occupied (!none/zero). After the PMD scan is done, we do
+> > > > > > binary recursion on the bitmap to find the optimal mTHP sizes for the PMD
+> > > > > > range. The restriction on max_ptes_none is removed during the scan, to make
+> > > > > > sure we account for the whole PMD range. When no mTHP size is enabled, the
+> > > > > > legacy behavior of khugepaged is maintained. max_ptes_none will be scaled
+> > > > > > by the attempted collapse order to determine how full a mTHP must be to be
+> > > > > > eligible for the collapse to occur. If a mTHP collapse is attempted, but
+> > > > > > contains swapped out, or shared pages, we don't perform the collapse. It is
+> > > > > > now also possible to collapse to mTHPs without requiring the PMD THP size
+> > > > > > to be enabled.
+> > > > > > 
+> > > > > > When enabling (m)THP sizes, if max_ptes_none >= HPAGE_PMD_NR/2 (255 on
+> > > > > > 4K page size), it will be automatically capped to HPAGE_PMD_NR/2 - 1 for
+> > > > > > mTHP collapses to prevent collapse "creep" behavior. This prevents
+> > > > > > constantly promoting mTHPs to the next available size, which would occur
+> > > > > > because a collapse introduces more non-zero pages that would satisfy the
+> > > > > > promotion condition on subsequent scans.
+> > > > > 
+> > > > > Hm. Maybe instead of capping at HPAGE_PMD_NR/2 - 1 we can count
+> > > > > all-zeros 4k as none_or_zero? It mirrors the logic of shrinker.
+> > > > 
+> > > > BTW, I thought further about this and I agree: if we count zero-filled
+> > > > pages towards none_or_zero one we can avoid the "creep" problem.
+> > > > 
+> > > > The scanning-for-zero part is rather nasty, though.
+> > > 
+> > > Aaand, thinking again from the other direction, this would mean that just
+> > > because pages became zero after some time that we would no longer collapse
+> > > because none_or_zero would then be higher. Hm ....
+> > > 
+> > > How I hate all of this so very very much :)
+> > 
+> > This is not new. Shrinker has the same problem: it cannot distinguish
+> > between hot 4k that happened to be zero from the 4k that is there just
+> > because of we faulted in 2M a time.
+> 
+> Right. And so far that problem is isolated to the shrinker.
+> 
+> To me so far "none_or_zero" really meant "will I consume more memory when
+> collapsing". That's not true for zero-filled pages, obviously.
 
-> On Sun, Sep 7, 2025 at 10:40 AM YoungJun Park <youngjun.park@lge.com> wrote:
-> >
-> > Hi, Chris Li
-> >
-> > Thank you for your thoughtful and quick feedback.
-> >
-> > > > If you remove the
-> > > > swap tier. the range of that tier merges to the neighbour tier.  That
-> > > > way you don't need to worry about the swap file already having an
-> > > > entry in this tier you swap out.
-> > >
-> > > Should the configured mask simply be left as-is,
-> > > even if (a) the same key is later reintroduced with a different order (e.g.,
-> > > first → third), or (b) a merge causes the cgroup to use a lower tier it did not
-> >
-> > Let me clarify my concern with a concrete example.
-> > Suppose:
-> > 1. SSD → tier "A" (31–40), HDD → "B" (21–30), HDD2 → "C" (10–20), HDD3 → "D" (0–9)
-> > 2. A cgroup uses tier "A"
-> > 3. SSD is swapped off → tier "A" becomes a hole
->
-> There is just no swap device in A. A still (31-40).
+Well, KSM can reclaim these zero-filled memory until we collapse it.
 
-I implicitly meant that A would be removed. After step 3  SSD is swapped off, 
-tier A would be REMOVED via the interface.
-
->
-> > 4. Tier "D" is removed
-> > 5. Tier "A" is reassigned to range (0–9)
-> > 6. Then a cgroup configured with "A" cannot actually use "A" (0~9)
->
-> That would require each cgroup to hold a reference count of A.
-> So A can't be re-assign while having a cgroup using A. in 5.
-
-Yes, exactly.
-I also think cgroups should hold references.
-If we only rely on swap devices for references, complexity decreases, but 
-the issue I mentioned could still occur.
-
-> > 7. Later a new tier "E" is added and assigned (31–40)
-> > 8. A cgroup now configured with "E" refers to the same numeric range (31–40),
-> >    but the meaning has changed compared to when it used "A".
->
-> I consider the user reassigning the same tier name with different
-> ranges is a user error. They want to shoot themself in the foot, we
-> can't stop them. Maybe we shouldn't even try to stop them. It does not
-> make sense to complicate things just to prevent users from doing
-> nonsense things. It has no additional complexity cost, sure.
-
-I also disagree with reassigning the same name.
-
-Assuming no cgroup tier references exist, I was referring to a situation where 
-"A" is removed and then reassigned.
-In that case, the cgroup that originally specified "A" would be unable to 
-reference its intended tier range.
-If we align on holding cgroup references, the concern I raised would be 
-cleanly resolved.
-
->
-> >
-> > This feels unintuitive. I would prefer invalidating the mask if the referenced
-> > tier is removed, so stale references don't silently point to a different tier.
->
-> If there is a life cycle of the invalidation? Forever does not seem to
-> be good either. It will prevent user reuse the tier range even there
-> is no cgroup referencing that before.
->
-> If you want this kind of invalidation, I suggest just make a reference
-> count on the "A", each cgroup that references "A" holds a reference
-> count. It will be tricky to reference count the default on case
-> though, basically every tier is reference counted.
-
-Yes, I agree!
-
-> > > I talked to Wei about swap tiers a bit. Add him to the CC as well. He
-> > > made me realize that we need two level things in the cgroup
-> > > "swap.tiers".
-> > > ...
-> > > For the operation, each tier will need two bits, including the
-> > > default. One bit select this timer off, one bit select this tier on.
-> > > e.g. we have 16 tiers including the default, then all 16 tiers take up 32 bits.
-> >
-> > My understanding is:
-> >
-> > Per tier (2-bit state)
-> > - `+` → always on (bit 10)
-> > - `-` → always off (bit 01)
-> > - missing → inherit from parent (bit 00)
-> > - `11` is invalid
->
-> Right.
->
-> >
-> > Default tier
-> > - `+` means inherit parent as the base
-> > - `-` means start from zero (ignore parent)
-> > - missing means (this is the part I want to confirm) nothing?
->
-> + means override default to "on" for all, allow every tier. (starting
-> for every tier)
-> - means override default to "off" for all. disallow every tier.
-> (starting from zero)
-
-Ack.
-So for the missing case, is it "nothing"? 
-Isn't it that we inherit from the parent and then incrementally add or 
-remove from there?
-
-> > So in my view "default" is an **inheritance control knob**, whereas in your
-> > explanation "default" is also a **special tier** with its own 2-bit state.
-> > Is that the right reading?
->
-> It is a knob to override all. Yes it is a special tier wild cast. If
-> the tier was not mentioned using +tier_name or -tier_name, the tier
-> uses the default on/off value. If a tier has more than one on/off
-> operation, the last write wins (closer to the leaf node cgroup) wins.
->
-> Therefore, if the cgroup has default override was set, there is no
-> need to lookup the parent any more, it overrides every tier already.
-> That provides a way for the child cgroup to overwrite all parent swap
-> tiers selection.
->
-> >
-> > If my understanding is correct, I'm also happy to adopt the interface format
-> > you proposed.
-> >
-> > Over the weekend I kept thinking about it, and your proposal looks like a
-> > more flexible interface. It also has clear similarities to how cgroup
-> > controllers are added, so the format seems acceptable to me.
->
-> It is more flexible and I have a simple way to perform the parent
-> lookup on/off evaluation with short cuts. I send that out in the other
-> email.
-
-Ack. Thank you once again for the detailed pseudo-code proposal.
-
-> > I have one remaining concern about cgroup semantics.
-> > The inheritance and resource model we're discussing seems to diverge
-> > somewhat from existing cgroup v2 conventions. Since we've aligned that
-> > this effectively acts as QoS control, it also makes me wonder whether we
-> > should proactively propose a doc update to the "Resource Distribution
-> > Models" section so the concept is explicitly covered. This may be me
-> > being overcautious, so I'd appreciate your view.
->
-> More documents is better. Yes it diverges from the existing V2
-> convention as the parent contains the child. QoS is a policy, it is
-> relative indpendent of parents, unlike the containing relationship.
-
-Yes, I'll think about this more and share if I have something clearer to 
-discuss.
-
-> > > Wei also raises one very important point. Because zswap is not tight
-> > > to a swap device. We might want a predefined tier bit to describe
-> > > zswap. e.g. the first tier bit is always given to zswap and the tier
-> > > name is always zswap, the priority range can be assigned from
-> > > mm/swap/tiers interface.
-> >
-> > Ack. Reserving a predefined tier bit for zswap makes sense.
-> >
-> > As a passing thought (not a strong proposal): a few common tiers (e.g., zswap,
-> > ssd, hdd, remote) could be predefined and non-removable, with users inserting
-> > custom ranges between or apart from them. For example, if an SSD tier is
-> > predefined, `swapon` for SSD devices could be limited to that tier—this would
-> > align with grouping by service speed and nudge users toward sensible configs.
->
-> Then we will need to assign a fixed default range for them thus might
-> make this more complex when people actually define their own tiers.
-> I think the kernel should avoid making any default scheme on the user
-> space swap tiers. Just like the software that manages the cgroup
-> controls it.
->
-> There are other complications. e.g. I have priority 3: first SSD drive
-> 1, then priority 2: HDD, then priority 1: SSD driver 2.
-> Pre-configured SSD tier will not be able to describe this, the first
-> and third drive in the list is SSD. It create conflict in ordering. I
-> think it is best to avoid defining any customer definable tier.
-
-Ack. Thank you for your thoughts.
-
-> > > > * **Tier specification**
-> > > >   - Priority >= 0 range is divided into intervals, each identified by a
-> > > >     tier name. The full 0+ range must be covered.
-> > >
-> > > Not necessarily true if we allow removal of the tier and generate
-> > > holes removed range as we discussed above. Unless I understand the
-> > > previous hole idea incorrectly.
-> >
-> > Ack. I prefer allowing holes, so we don't need to enforce covering the full
-> > range simply.
-> > (I had considered usage making full-range coverage coexist with holes,
-> > but on reflection that doesn't seem necessary. complicated)
->
-> Ack.
-
-I'm reconsidering this part.
-
-Previously, I thought about holes because we weren't holding cgroup's tier
-references.
-If there's no swap device but a cgroup references a tier, and we remove 
-that tier and let it merge, it would be very confusing for the cgroup 
-holding the reference. They implicitly uses other tier's the swap devices
-(That's why I proposed cgroup mask invalidation + holes.)
-
-If cgroups hold tier references, suppose a specific assigned middle tier 
-disappears.
-Then, merging this tier seems more natural.
-Since no swap device or cgroup is using the disappearing tier, merging 
-the tier's priority itself shouldn't be problematic.
-From the perspective of the tier being merged into, since there are no 
-swap devices in the merging tier, it won't end up using unintended swap 
-devices, so it shouldn't be an issue.
-
-So I'm thinking maybe we should go back to full range coverage + tier 
-merge.
-
->
-> Great.
->
-> More agreement now.
-
-Yes, we seem to agree on most things.
-Thank you again for the review!
-
-Best Regards
-Youngjun Park
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
