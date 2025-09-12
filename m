@@ -4,128 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76AEFCA101F
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 15:11:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22A69CA101F
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 15:15:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D23296B00C1; Fri, 12 Sep 2025 11:11:19 -0400 (EDT)
+	id 7FE496B000C; Fri, 12 Sep 2025 11:15:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CFA4C6B00C3; Fri, 12 Sep 2025 11:11:19 -0400 (EDT)
+	id 7D46A6B000D; Fri, 12 Sep 2025 11:15:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C37A56B00C4; Fri, 12 Sep 2025 11:11:19 -0400 (EDT)
+	id 6E9B06B00A4; Fri, 12 Sep 2025 11:15:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B17086B00C1
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 11:11:19 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7415613BDA3
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 15:11:19 +0000 (UTC)
-X-FDA: 83880936678.08.E403BB5
-Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 7C99AA001B
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 15:11:17 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D5A26B000C
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 11:15:38 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0C83E140888
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 15:15:38 +0000 (UTC)
+X-FDA: 83880947556.04.141B83C
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf15.hostedemail.com (Postfix) with ESMTP id DFC07A001A
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 15:15:34 +0000 (UTC)
 Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=JWd9VAn+;
-	spf=pass (imf15.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.219.171 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ZQkPnZnU;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=o9EJkBgC;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ZQkPnZnU;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=o9EJkBgC;
+	spf=pass (imf15.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757689877;
+	s=arc-20220608; t=1757690135;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CNs2h9oqVJ2U55pyNU2xzrbkzs9MTq1sjEL+cOU6gkc=;
-	b=usJJJgpvFJ0B3dRY3ywxXGH+Ev+CbG8poey64XJ/nxt8O4qR7oGB4YlNYhlZljwOmjkSgk
-	bzT3scwLMbXWW5c4+plgHnxoUE9fCWcliH7W4IGbF74l72qcjb7d//G2kfj+rmUkk24QI8
-	wVbwJ+59WZc8LYkjXklH8PWxCCPk+xQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757689877; a=rsa-sha256;
+	bh=FWdXdLhM1N+CqR/OguV/6Acj3qPcJbiUisZav4LkXGY=;
+	b=6e5Y83cBosrP1zerMyTzdmTgLpRvIyNR65GbDtrubxR6Wljv/rLTqWWESfT6h5FZubY/Cr
+	+6E6kCmi3l+XPEllYYosCry8C0AtU1JTYRfOjwNyzhyj8JtUIg3leVxHwrnUKefHTmTr+Z
+	efPnPMacgdBsmEkcQQo65mY2tNgsWSo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757690135; a=rsa-sha256;
 	cv=none;
-	b=WiKipbzUvJZc8QR1C73lFqHQTRi12BLAHafv8xqZR/8JsQTWGEjan8QFCIzETz2xYQZOnd
-	Ek6rAs6UkZyWL6g3ImhawsboJdQNBfMtksRscVJDJN+zAxGK+e00SnTJuHWcJw2Z17gvL5
-	yo5cOo5syeVDarou3gOqAhaV8mrAAJg=
+	b=Eq+S0g1kdIygodYZoQJ5Oj+BYfXG/tOyDpWUAhM2A5yx5SRP+ibQEKajCAsyQ0zm5Hj2fZ
+	fQny52VU+MlAuDpx+K0xDdTQOOC6V0s/BGe+J0kGSlUxxJ+22fXTF6fRSCA5vCTg1GRp+0
+	ziThvMHblrFqdsWnWDARgfO2pURaj1Y=
 ARC-Authentication-Results: i=1;
 	imf15.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=JWd9VAn+;
-	spf=pass (imf15.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.219.171 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
-Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-ea3e0b4a98aso494862276.1
-        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 08:11:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1757689876; x=1758294676; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CNs2h9oqVJ2U55pyNU2xzrbkzs9MTq1sjEL+cOU6gkc=;
-        b=JWd9VAn+ik61/wvjYZl5rPkHXMD4gdLItsFbW8Mnk0aarL9riR6+PYj1zVXjlaCmrk
-         oZ+rF2C8i8p1WK13DOVdSGes5RVLZPbTaeutXYFpRIxYnf6HIpLWp0eRi2XaxI/23OUK
-         UqHqhZ4O0xJZHj6Ww8EI0X8X2WstGsC71ANdgRFONZvokSznUQeH7B60KCOuNNLwqbrj
-         6BApENMkwBvPqy7PH2fHdfkbyy4FXXf8uEKYiajF1QlOC66HPJccugRfN+sD669oZdFc
-         1P9xNjSyuVUMSL5BvGN9PDiM1OUYL3XAvTMZa7tYvQFHpMcMHhHBTkBWjY2a9FHGhohQ
-         h9qw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757689876; x=1758294676;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CNs2h9oqVJ2U55pyNU2xzrbkzs9MTq1sjEL+cOU6gkc=;
-        b=qRZP6BQL/Gs6mt0vsoNoVz+rajptz715aDvZ3TbH0w/XI+0wDeweRaR6nUUDAhbJeH
-         F+jU+oZv8hz3mO0ls2RKZD06MCEmfDbeRkdauA1HPMx+c1Op8iyOJJ0tMwOlFgotp34F
-         YeGxHF840pvJO/B/ygM2DS9Qs/PYfjiw1fNdFMQPgb3hIeIeg2VPksIxBj7iGxebe92w
-         fgIoZbM81Vlbtg42YPSHasduwuUBFRoAjbrDSblc5X36cCn8U7LQ6c9RSLC8OU86Mxnw
-         uz3z5y10D8o2Ff5hLGkjLOa85JxX8oWK8iPQZcmTmUWQlVHYkUE/Ek1BTgB3ES9Khuvo
-         kDbw==
-X-Forwarded-Encrypted: i=1; AJvYcCUIaoY4lnpBoheXDCPPcybjMp8O8Vi/dAzAeah5XV3X00V9bqIRWl3MURKKlyH3+hrS7dDVvwxaeA==@kvack.org
-X-Gm-Message-State: AOJu0YwYIiM3f44VCG0RAQ7JBb7gd4z7svGSW+FX4ex4F++pCcocs0Ll
-	RkmLY08rla77WJOXIjU5zydf/3Vz07wTRT9/VlcQT6Ztn70Q6gBGoiQrRUkhzZLGN5I=
-X-Gm-Gg: ASbGncsi1dHNkF/xKCHSXzYZxmTdBubSyVKiriaeMyDHNOjHG46IrhqE+0QuqToQh+m
-	jz3KBhaSMG+GOZpYVxKkWNNFa9nzh8h/6gWYHfW2uh32V8bL3QZlLw/2SkAodnn4hrNnBW2VmLd
-	UdlC+e9EVSiogQ3ub9Rh3mei0t1gO8oE3Pa8pdmRMbivPQonsUjn0H3l0NVK6n66kpsWu96O0zv
-	SAEDmnDLrAn4A20P1/A+bhg+nTsZEP8UimOItd4mwS33lCvxgCcTcoYA+Hge/TdmwGF3APC4igI
-	nNFTQw0gTa36JoMkn9tQvW6dbF+L2djxgL0J5rIifVpNTW570pqqte28KWYpRmzSmgO4ijLwbmI
-	6fpJz3JdX8O3JFT20zK3Rp44gBzGuEGoDfA==
-X-Google-Smtp-Source: AGHT+IEpiP8vlE6JAkelU9ryV0aqgK+NNUoCmR9E9pT/XsbUls6aw+6SDhLPMx2e7d1wIx+kCxhExw==
-X-Received: by 2002:a05:690c:4a0a:b0:71c:1754:2696 with SMTP id 00721157ae682-730659ba7ecmr33141997b3.36.1757689872581;
-        Fri, 12 Sep 2025 08:11:12 -0700 (PDT)
-Received: from eugen-station.. ([145.224.119.89])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-624841586c1sm1302244d50.6.2025.09.12.08.11.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Sep 2025 08:11:12 -0700 (PDT)
-From: Eugen Hristev <eugen.hristev@linaro.org>
-To: linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	tglx@linutronix.de,
-	andersson@kernel.org,
-	pmladek@suse.com,
-	rdunlap@infradead.org,
-	corbet@lwn.net,
-	david@redhat.com,
-	mhocko@suse.com
-Cc: tudor.ambarus@linaro.org,
-	mukesh.ojha@oss.qualcomm.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-hardening@vger.kernel.org,
-	jonechou@google.com,
-	rostedt@goodmis.org,
-	linux-doc@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	Eugen Hristev <eugen.hristev@linaro.org>
-Subject: [RFC][PATCH v3 16/16] dt-bindings: Add Google Kinfo
-Date: Fri, 12 Sep 2025 18:08:55 +0300
-Message-ID: <20250912150855.2901211-17-eugen.hristev@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250912150855.2901211-1-eugen.hristev@linaro.org>
-References: <20250912150855.2901211-1-eugen.hristev@linaro.org>
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ZQkPnZnU;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=o9EJkBgC;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ZQkPnZnU;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=o9EJkBgC;
+	spf=pass (imf15.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 9819F5F89F;
+	Fri, 12 Sep 2025 15:15:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1757690132; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FWdXdLhM1N+CqR/OguV/6Acj3qPcJbiUisZav4LkXGY=;
+	b=ZQkPnZnUu0qs3kJEusmuAXceM6Cr2U2hTKszSrPMNpY2THiPZeW/Juuus6RPE2J94Y8IQk
+	CEkqZwKLD3dlDwefjM+0IUpZo0a0CnkApYDdt1MtFrVgEfmsQn7PctIVYwdPve20guNUI+
+	ZRjYiJbsdYTcQ1gs3ZC/4H+K7PDpU2k=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1757690132;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FWdXdLhM1N+CqR/OguV/6Acj3qPcJbiUisZav4LkXGY=;
+	b=o9EJkBgCdfy9n0AMynRlG7cd+7nwcG2V+Rxk2lHxoLENnKZiD+UnslU7EURZvxnDhezG2O
+	10PBsEc2Ijyq+cAw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1757690132; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FWdXdLhM1N+CqR/OguV/6Acj3qPcJbiUisZav4LkXGY=;
+	b=ZQkPnZnUu0qs3kJEusmuAXceM6Cr2U2hTKszSrPMNpY2THiPZeW/Juuus6RPE2J94Y8IQk
+	CEkqZwKLD3dlDwefjM+0IUpZo0a0CnkApYDdt1MtFrVgEfmsQn7PctIVYwdPve20guNUI+
+	ZRjYiJbsdYTcQ1gs3ZC/4H+K7PDpU2k=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1757690132;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FWdXdLhM1N+CqR/OguV/6Acj3qPcJbiUisZav4LkXGY=;
+	b=o9EJkBgCdfy9n0AMynRlG7cd+7nwcG2V+Rxk2lHxoLENnKZiD+UnslU7EURZvxnDhezG2O
+	10PBsEc2Ijyq+cAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C73C713869;
+	Fri, 12 Sep 2025 15:15:29 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id fndjLRE5xGi0MwAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Fri, 12 Sep 2025 15:15:29 +0000
+Date: Fri, 12 Sep 2025 16:15:23 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: David Hildenbrand <david@redhat.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Kiryl Shutsemau <kas@kernel.org>, 
+	Nico Pache <npache@redhat.com>, linux-mm@kvack.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, ziy@nvidia.com, 
+	baolin.wang@linux.alibaba.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, 
+	ryan.roberts@arm.com, dev.jain@arm.com, corbet@lwn.net, rostedt@goodmis.org, 
+	mhiramat@kernel.org, mathieu.desnoyers@efficios.com, akpm@linux-foundation.org, 
+	baohua@kernel.org, willy@infradead.org, peterx@redhat.com, 
+	wangkefeng.wang@huawei.com, usamaarif642@gmail.com, sunnanyong@huawei.com, 
+	vishal.moola@gmail.com, thomas.hellstrom@linux.intel.com, yang@os.amperecomputing.com, 
+	aarcange@redhat.com, raquini@redhat.com, anshuman.khandual@arm.com, 
+	catalin.marinas@arm.com, tiwai@suse.de, will@kernel.org, dave.hansen@linux.intel.com, 
+	jack@suse.cz, cl@gentwo.org, jglisse@google.com, surenb@google.com, 
+	zokeefe@google.com, rientjes@google.com, mhocko@suse.com, rdunlap@infradead.org, 
+	hughd@google.com, richard.weiyang@gmail.com, lance.yang@linux.dev, vbabka@suse.cz, 
+	rppt@kernel.org, jannh@google.com
+Subject: Re: [PATCH v11 00/15] khugepaged: mTHP support
+Message-ID: <hcpxpo3xpqcppxlxhmyxkqkqnu4syohhkt5oeyh7qse7kvuwiw@qbhiubf2ubtm>
+References: <20250912032810.197475-1-npache@redhat.com>
+ <ppzgohmkll7dbf2aiwhw7f4spf6kxjtwwe3djkx26pwy4ekrnd@mgeantq5sn2z>
+ <d0e81c75-ad63-4e37-9948-3ae89bc94334@redhat.com>
+ <20250912133701.GA802874@cmpxchg.org>
+ <da251159-b39f-467b-a4e3-676aa761c0e8@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 7C99AA001B
-X-Stat-Signature: 4xiwowiz47sqdxsm3huaudunezecmz7w
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <da251159-b39f-467b-a4e3-676aa761c0e8@redhat.com>
+X-Rspamd-Action: no action
+X-Stat-Signature: 6hciz1orj4ofg4dhi1oqbfuuj1wpkbxc
 X-Rspam-User: 
-X-HE-Tag: 1757689877-506348
-X-HE-Meta: U2FsdGVkX1+sv2BHFp6SeIVVcIciXH45fz8D5yArOiuE1/ZuQug35C4nLNfPJMSpyfit+KJPPjJHFmFRwNLtDs+Y+Ht3+A1qzTD+0H7nZK4TCzSo7QqayZPLHrqkjHpi0j5pZHRNATWye1eL/T1Bv7ttlFEuvVWGMTJCbGn7b1CmAy/UuRZZNU7uCz1BHLOKdSwcKEYZ+PILFJXoB0Ok0aTM5leA4Iwl8LEB4B+YmUQQmgMrhny2U5XPgAkPRCU4pM6RUWBoDYtPiIx1MVv14on9u1h/lC0oWiphKYiYtjSb4YgtWtVtC7CCD/By9OO/oBLU+U5Y6LoOTtOU4i3NDqEaFILlnYJrAx7XnVypD/HgTC53iKL0r9+W9ZkrkhR28dov3hqgmUfRIezoUaA7p5kWlrTa+MSPjf+HTe2kJlrU2eCc9zkbt0O1Op3x27XbFw7Crj000jDz8RwfQWzhege3QtVu3tvAj4cXy4Dca64jbDqDxU9Iw3da+mtHsGNzost09A7yCAJMMy62f6hnPe0f/bNTT+iqBJUAiWn2AAUzPDUXecOuLCMpWxz6Ee3GNMuuE3banhLMok+QeenI5/VZmGxsoVFLpVnAHuGbwbZO4dyYvH0ST5M9JTOfe7SIkbrjDre9BF6ICF/zF0furN5aMhEFFnSP9KCDPoF4NAURdcRQdFP+xhfbg+w7Mqy5ZzbUNopj+zNgU13DBZs5QZ8CxOXADIxmH2mu3d4kzdVs5Yft9EpCBqrBut8IuJkEs4Pym2DfsJKVPQCBkwY1hPG+5GDz2HxfvUbynOwWkn2QT4bWy3SbM9AU8mfefGmNM1v+a+GvDb07nQwRJ00QSVn4T8lB6bt9CnoUCiyPP2/8kHV0eEEXwbvUjjCjLM+ucs/evWOftM2haokC02PLIkX3khGUYFejHmzT2j/s8cw64Uj/UqJAXpCs/4MrZoNfywyFN2CRlJcrKm4vqHQ
- onixxbSR
- 8EeSv6hTn4qckGp3f+iokPamU5cMiKCN59LFhWlhcAebVmq5x10XqENUgxuGc6vWG2457jFMzYyR8nCbRSksKin3q0D/11mPufli3Lsd6NftsI49jvF6Tc3R0lyHxyNiGkk///sxmoiJKL442DmOsYHRi/La1glnBEqPeFBoVsDWreU98HnNe56F9oiaA3EG15vnOwRoy2vkfKCw+hdBJp/2pGJOYIL1FvlGZ+wV5n9oUxvU77Lsm8G7ueyrGu1PiHNidNmJuy/69Tx4YAlnphxdblqO4C7tSVmEk5K5MK4GAvXbej2/fhf02dEU1vNhmpifBFtTGOwOmZKhBQnqdZIpXA81d/KHKUHWu9mHKqKtaXkD+m53BFC434QW/cvufPflN
+X-Rspamd-Queue-Id: DFC07A001A
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1757690134-95637
+X-HE-Meta: U2FsdGVkX1/sodxvrQnPwTPXiWWeJj2H1WomZ9OpzODMTMY/ZbcGGvsd8M225s9t2RIMZWJQIf95zchHijC+lEfqfaXhm9QIZDfJcHBoF740VIXEeZtm6vadN0fqn3HUiBGc1F8fHS/9/ePQ4ZjlVAemRnoYPBeGQ1vUHkmaGWnA8rkoZO5Uh7tsJ5grknLzYKn4ttmA8cPwWyycl37SPZOaOP1kTMdUYJgRRL+e0SUozunjVabR/7qeg88KNhO4Kez1Lv3DWEdZrL1YrzJ2LgCd7tHYaSd2+8oISriG6TbNuuXANLEJsAAR32RdcJAVSvi/QPgcFCj4utASpcBpMExIS3bv+BKJHomKLZzzdQlIbbcSruBEyrh6suT3UUFPg2MkUb0rW2zUUdeZS8EV+IJZlJochpa4EuELQ28iqGXZgNt5UDcVBIBtgMNCqcIE/m3nID/vvMtsZzfZusto2vinIt57oP/0BHi9Tm4xa08j2+cp/6Q2KGHS7uuh3nLbDHkxUax7Af3+adX1jctGvcRMoekgoq8zaSqfevuTr7YNMFPOs2xZ2FYnunSvI1snBkPQQ0/cNEYQvzaNrHhFZ6jFSaBiK9mjuxpANtHbilbB2G4+rqjAZ72R4NDl+92AL8p5fgnCNcwGTEYDkOyzGymNbk/c+OoCmIijjGExt6Y9barIe64NHOKioTugPuVVzhD4sGxPNGNypnsA1bOV9hsDON3TJFmGUnw+fe/Xvlc/bIyypYR3iaGunSDWJvMih/FvnY7hPsZnNMSheRQ78cXunbCr4KfdwDoVYcAAyqyEcEy4F3QSzJoucpjf5Cd1dfH23MZ7qnPTubWk7zhQdJQg0UOxjWUzVtCZ61oMoAT3Pu01O/ojR2ucnOuhgjfzg9yFJM0EON8aY1GDMVn/t6qTuWbedROB6/RSfxmKtrhCDRyLT1FPSZjcCs/8b2wCHsyLHMjgZtlCI1bBA3z
+ LrI6iEOA
+ Zb5ffY8vc5f/m+/cdJkk+yFLt9eKkv96Y+eDVLK8soMBLzw74WafKDIQFcHTvdYj/UwQQib01iVU5Fjcl5kAWuDN5R0auokSkWsW4KIq0a9QIHmiFdF1whw1ltjDrcWq3FgDBVssSq8lvUjMy7jCIx9UpB7bT1oQT7HzamIyUWYz3HaO4wUyOrzjfMaFouPaGx007RehXPvTih9vAIXRjn0hSEPAOGmuFy2ErtY0xv+oyBZjHrrXJTwC2HXFks51n74996vupysetZci4C/WptzHkeBW0EXIvUxlEvCbjTl9Aoh67tczDmlBWCZScukrfqFmItDA8yamPAonXkKS1C+ZmhNEFJU8W11nSXnXM74FR7t2X30Z0xmS9hQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,70 +148,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add documentation for Google Kinfo kmemdump backend driver.
+On Fri, Sep 12, 2025 at 03:46:36PM +0200, David Hildenbrand wrote:
+> On 12.09.25 15:37, Johannes Weiner wrote:
+> > On Fri, Sep 12, 2025 at 02:25:31PM +0200, David Hildenbrand wrote:
+> > > On 12.09.25 14:19, Kiryl Shutsemau wrote:
+> > > > On Thu, Sep 11, 2025 at 09:27:55PM -0600, Nico Pache wrote:
+> > > > > The following series provides khugepaged with the capability to collapse
+> > > > > anonymous memory regions to mTHPs.
+> > > > > 
+> > > > > To achieve this we generalize the khugepaged functions to no longer depend
+> > > > > on PMD_ORDER. Then during the PMD scan, we use a bitmap to track individual
+> > > > > pages that are occupied (!none/zero). After the PMD scan is done, we do
+> > > > > binary recursion on the bitmap to find the optimal mTHP sizes for the PMD
+> > > > > range. The restriction on max_ptes_none is removed during the scan, to make
+> > > > > sure we account for the whole PMD range. When no mTHP size is enabled, the
+> > > > > legacy behavior of khugepaged is maintained. max_ptes_none will be scaled
+> > > > > by the attempted collapse order to determine how full a mTHP must be to be
+> > > > > eligible for the collapse to occur. If a mTHP collapse is attempted, but
+> > > > > contains swapped out, or shared pages, we don't perform the collapse. It is
+> > > > > now also possible to collapse to mTHPs without requiring the PMD THP size
+> > > > > to be enabled.
+> > > > > 
+> > > > > When enabling (m)THP sizes, if max_ptes_none >= HPAGE_PMD_NR/2 (255 on
+> > > > > 4K page size), it will be automatically capped to HPAGE_PMD_NR/2 - 1 for
+> > > > > mTHP collapses to prevent collapse "creep" behavior. This prevents
+> > > > > constantly promoting mTHPs to the next available size, which would occur
+> > > > > because a collapse introduces more non-zero pages that would satisfy the
+> > > > > promotion condition on subsequent scans.
+> > > > 
+> > > > Hm. Maybe instead of capping at HPAGE_PMD_NR/2 - 1 we can count
+> > > > all-zeros 4k as none_or_zero? It mirrors the logic of shrinker.
+> > > > 
+> > > 
+> > > I am all for not adding any more ugliness on top of all the ugliness we
+> > > added in the past.
+> > > 
+> > > I will soon propose deprecating that parameter in favor of something
+> > > that makes a bit more sense.
+> > > 
+> > > In essence, we'll likely have an "eagerness" parameter that ranges from
+> > > 0 to 10. 10 is essentially "always collapse" and 0 "never collapse if
+> > > not all is populated".
+> > > 
+> > > In between we will have more flexibility on how to set these values.
+> > > 
+> > > Likely 9 will be around 50% to not even motivate the user to set
+> > > something that does not make sense (creep).
+> > 
+> > One observation we've had from production experiments is that the
+> > optimal number here isn't static. If you have plenty of memory, then
+> > even very sparse THPs are beneficial.
+> 
+> Exactly.
+> 
+> And willy suggested something like "eagerness" similar to "swapinness" that
+> gives us more flexibility when implementing it, including dynamically
+> adjusting the values in the future.
+>
 
-Signed-off-by: Eugen Hristev <eugen.hristev@linaro.org>
----
- .../bindings/misc/google,kinfo.yaml           | 36 +++++++++++++++++++
- MAINTAINERS                                   |  1 +
- 2 files changed, 37 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/misc/google,kinfo.yaml
+Ideally we would be able to also apply this to the page faulting paths.
+In many cases, there's no good reason to create a THP on the first fault...
 
-diff --git a/Documentation/devicetree/bindings/misc/google,kinfo.yaml b/Documentation/devicetree/bindings/misc/google,kinfo.yaml
-new file mode 100644
-index 000000000000..b1e4fac43586
---- /dev/null
-+++ b/Documentation/devicetree/bindings/misc/google,kinfo.yaml
-@@ -0,0 +1,36 @@
-+# SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/misc/google,kinfo.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Google Pixel Kinfo debug driver
-+
-+maintainers:
-+  - Eugen Hristev <eugen.hristev@linaro.org>
-+
-+description:
-+  The Google Pixel Kinfo debug driver uses a supplied reserved memory area
-+  to save debugging information on the running kernel.
-+
-+properties:
-+  compatible:
-+    items:
-+      - const: google,kinfo
-+
-+  memory-region:
-+    maxItems: 1
-+    description: Reference to the reserved-memory for the data
-+
-+required:
-+  - compatible
-+  - memory-region
-+
-+additionalProperties: true
-+
-+examples:
-+  - |
-+    debug-kinfo {
-+        compatible = "google,debug-kinfo";
-+        memory-region = <&debug_kinfo_reserved>;
-+    };
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 65d9e5db46a9..6a846c51db04 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -13821,6 +13821,7 @@ F:	mm/kmemdump/kmemdump_coreimage.c
- KMEMDUMP KINFO BACKEND DRIVER
- M:	Eugen Hristev <eugen.hristev@linaro.org>
- S:	Maintained
-+F:	Documentation/devicetree/bindings/misc/google,kinfo.yaml
- F:	mm/kmemdump/kinfo.c
- 
- KMEMDUMP QCOM MINIDUMP BACKEND DRIVER
+> > 
+> > An extreme example: if all your THPs have 2/512 pages populated,
+> > that's still cutting TLB pressure in half!
+> 
+> IIRC, you create more pressure on the huge entries, where you might have
+> less TLB entries :) But yes, there can be cases where it is beneficial, if
+> there is absolutely no memory pressure.
+>
+
+Correct, but it depends on the microarchitecture. For modern x86_64 AMD, it
+happens that the L1 TLB entries are shared between 4K/2M/1G. This was not
+(is not?) the case for Intel, where e.g back on kabylake, you had separate
+entries for 4K/2MB/1GB.
+
+Maybe in the Great Glorious Future (how many of those do we have?!) it would
+be a good idea to take this kinds of things into account. Just because we can
+map a THP, doesn't mean we should.
+
+Shower thought: it might be in these cases especially where the FreeBSD
+reservation system comes in handy - best effort allocating a THP, but not
+actually mapping it as such until you really _know_ it is hot - and until
+then, memory reclaim can just break your THP down if it really needs to.
+
 -- 
-2.43.0
-
+Pedro
 
