@@ -4,92 +4,179 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FDE4CAC582
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 06:58:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55C59CAC582
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 07:04:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E4B6E8E000D; Fri, 12 Sep 2025 02:58:32 -0400 (EDT)
+	id AFC948E000A; Fri, 12 Sep 2025 03:04:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E22C78E000A; Fri, 12 Sep 2025 02:58:32 -0400 (EDT)
+	id AD4038E0001; Fri, 12 Sep 2025 03:04:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D60018E000D; Fri, 12 Sep 2025 02:58:32 -0400 (EDT)
+	id 9C3148E000A; Fri, 12 Sep 2025 03:04:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C149A8E000A
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 02:58:32 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 65026C070F
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 06:58:32 +0000 (UTC)
-X-FDA: 83879694864.23.86F258C
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 1E67C40007
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 06:58:29 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=none;
-	spf=pass (imf27.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.188 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8B7EE8E0001
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 03:04:00 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 12B4213B977
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 07:04:00 +0000 (UTC)
+X-FDA: 83879708640.26.1EAF012
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf13.hostedemail.com (Postfix) with ESMTP id BA7A82000B
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 07:03:57 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=YAw3MQpS;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=r6rquoKC;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=YAw3MQpS;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=r6rquoKC;
+	spf=pass (imf13.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757660310;
+	s=arc-20220608; t=1757660638;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2E6yMIhNSy6cSyfxW49TGCbvOUJeebZDL5mutmJ4gxY=;
-	b=HlueMz1GkH2d3/FMIxmn4ZH4T7e5p47VXi4qUcnmQouMmzPmIpLXaUkr2ttvZXJlbIZQaC
-	c4myWlkC2zKpAjBvOsooc+ygne6wEgAYwDr+X7yiBas8Ui6p+CHf4QOj/0HwvZuvMrGqa4
-	0qzrwRJ4pLEoqqjOKN1L2YMPNoZ/3kY=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=hb+M6nmwYLobuCedusXEdpwyQSQdI3DZay+vrJXRqEw=;
+	b=wDkxhGPGZVsNeAUtNzVITRh5pSdNUZridsoCZrIonJz3LgTqHc8i/VnvcAF9u9JtGjb/yI
+	rbnpdecmwMce3ERV5fBDpeWyBVndi+F2+HStTtbON+PpDTi7nUnnTdhJHGCZsKGLMc4fhV
+	gfdEqElXVW4urJrhvAi/aIR/KIe2NBw=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=none;
-	spf=pass (imf27.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.188 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757660310; a=rsa-sha256;
+	imf13.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=YAw3MQpS;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=r6rquoKC;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=YAw3MQpS;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=r6rquoKC;
+	spf=pass (imf13.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757660638; a=rsa-sha256;
 	cv=none;
-	b=Br5L2M+XLoeIIzyb/mEimJ30oIvAX+9/WjrgNrSU9nE8TLFacSVV/u5cTqVeGXq9GnUO2U
-	u/jJ5f0t8l5PBxgFGhVs5Vkq3NhNih0UYAzA96FGmRwoscr0cW2eKhm5aFMJC0+zLHPEHY
-	3xWLT01r9bPzi6oTFHo/DEQE5RdS+1I=
-Received: from mail.maildlp.com (unknown [172.19.163.48])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4cNQBM47CVzQlNX;
-	Fri, 12 Sep 2025 14:53:47 +0800 (CST)
-Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id A7FD1180064;
-	Fri, 12 Sep 2025 14:58:24 +0800 (CST)
-Received: from [10.174.177.243] (10.174.177.243) by
- dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 12 Sep 2025 14:58:23 +0800
-Message-ID: <e02c04f9-2ab2-43fb-a9e6-f63d0acbdba3@huawei.com>
-Date: Fri, 12 Sep 2025 14:58:22 +0800
+	b=Yl+0IHC7MiqzOjVUCHOc+L7HLM5XfoEU4rkb4nhfDbYplWP9mvbya78Dx23OXLWpvOjt7B
+	idPaOc1SeVZoj8/SEc8ddTRcDmOqPONiL63SAmuQ0H3y50SogY+NdH4tjZzGs9AB3tqvOP
+	GxssgDcvjG5W07OYtfMiK5Fuwl1ZxLU=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 235683498E;
+	Fri, 12 Sep 2025 07:03:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1757660636; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=hb+M6nmwYLobuCedusXEdpwyQSQdI3DZay+vrJXRqEw=;
+	b=YAw3MQpSQMNJzqxOgp6MXtaLAHbZz3Ns9UKk+gw++Y0CGtMedZTNdmqBZ5OaOlmt76FeZS
+	Gd89kNPnplmgrpq1q2eaohYhLZWbuUDasY9eOxbez/fFuEN1n0AUyJot9e1ND0yZcySfwu
+	OZ9W1AwBUh6ct91p2NxpJesW4l9K+LA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1757660636;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=hb+M6nmwYLobuCedusXEdpwyQSQdI3DZay+vrJXRqEw=;
+	b=r6rquoKCeW9A5SHzxgDfenOh5wd44S8lpFMwMWU/8QTAN1wX5hq4CGMX8Pkdiia4VirwdD
+	tjhZsKsOa52yKZAA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1757660636; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=hb+M6nmwYLobuCedusXEdpwyQSQdI3DZay+vrJXRqEw=;
+	b=YAw3MQpSQMNJzqxOgp6MXtaLAHbZz3Ns9UKk+gw++Y0CGtMedZTNdmqBZ5OaOlmt76FeZS
+	Gd89kNPnplmgrpq1q2eaohYhLZWbuUDasY9eOxbez/fFuEN1n0AUyJot9e1ND0yZcySfwu
+	OZ9W1AwBUh6ct91p2NxpJesW4l9K+LA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1757660636;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=hb+M6nmwYLobuCedusXEdpwyQSQdI3DZay+vrJXRqEw=;
+	b=r6rquoKCeW9A5SHzxgDfenOh5wd44S8lpFMwMWU/8QTAN1wX5hq4CGMX8Pkdiia4VirwdD
+	tjhZsKsOa52yKZAA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0576713869;
+	Fri, 12 Sep 2025 07:03:56 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id /+UDAdzFw2goEQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Fri, 12 Sep 2025 07:03:56 +0000
+Message-ID: <298f6a92-7bf0-4cf4-afbf-554ef3e8e7e7@suse.cz>
+Date: Fri, 12 Sep 2025 09:03:55 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] mm: debug_vm_pgtable: add
- debug_vm_pgtable_free_huge_page()
-To: <20250910133958.301467-1-wangkefeng.wang@huawei.com>, Andrew Morton
-	<akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, Oscar
- Salvador <osalvador@suse.de>, Muchun Song <muchun.song@linux.dev>, Zi Yan
-	<ziy@nvidia.com>, Matthew Wilcox <willy@infradead.org>
-CC: <sidhartha.kumar@oracle.com>, <jane.chu@oracle.com>, Vlastimil Babka
-	<vbabka@suse.cz>, Brendan Jackman <jackmanb@google.com>, Johannes Weiner
-	<hannes@cmpxchg.org>, <linux-mm@kvack.org>
-References: <20250911065659.617954-1-wangkefeng.wang@huawei.com>
- <20250911065659.617954-2-wangkefeng.wang@huawei.com>
+Subject: Re: [PATCH v8 04/23] slab: add sheaf support for batching kfree_rcu()
+ operations
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Suren Baghdasaryan <surenb@google.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
+ Uladzislau Rezki <urezki@gmail.com>,
+ Sidhartha Kumar <sidhartha.kumar@oracle.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, rcu@vger.kernel.org,
+ maple-tree@lists.infradead.org
+References: <20250910-slub-percpu-caches-v8-0-ca3099d8352c@suse.cz>
+ <20250910-slub-percpu-caches-v8-4-ca3099d8352c@suse.cz>
+ <iycnfietmsgggxcdjuqngjuzbuygsxfpvkcz2fwm4frdxin42u@pxhmqcgejnov>
 Content-Language: en-US
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <20250911065659.617954-2-wangkefeng.wang@huawei.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <iycnfietmsgggxcdjuqngjuzbuygsxfpvkcz2fwm4frdxin42u@pxhmqcgejnov>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- dggpemf100008.china.huawei.com (7.185.36.138)
-X-Rspamd-Queue-Id: 1E67C40007
-X-Stat-Signature: rcuu8gaghmmo1kdaep4prbdes15ie1e5
+X-Rspamd-Queue-Id: BA7A82000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1757660309-746947
-X-HE-Meta: U2FsdGVkX19SybuCNvnBjQivydPQZukqw88PPJE/7h6vxgCg4d1NWq++E601OcDNcWlvDyZACesp7dDEGfyRoOW5S3zt50bVeMxkwysG2JOkD+oSKcbRelfFNWRN7sxWI11RT581SSe6GguxEQ7GEZ0DnfuLvs1GWnEwDaVOANzU2XU86UrptCXxHQUSynjDuopJaQA396NceHjKa3Aaw75tHA6DdVAFYQJDIR22KXIzeLxlXSdScU6K6GHQjh4KmHos0vo6OFJefummWjRZ7bzIMANsGl2DMlX6roKsUx/iBZzB7cj0asHzZlHyFCWKGXEYxAlqSwpfjkPPt3xFXMmvB90WeW5/+SQ48jH4Uqn2OnYkz72mPRZ3KHqRNI8rZnwNkWeDIDncBkdPGeW/dQ7KTHRUkjvYPQsW206bCzQXBnVxYHJxMfp83bjvnAjt7KKKjXf4SoD8D9C3KKyVkDyLVlGekfMOPFWPpM/0wUysfUrfzemfZNSswfhW+VBDwul1IRrX1qXkION4v5a3IlSJIlZ3PKoW1F1h7xs0c2I6LSFJ0dj4IDQnSnXY/DpfxGtxH1RQH8jFF4kOdrBGNcfRTEGcxWB4PZ5TmUKzpnaQ3DBxO4KRWlmsR++M90otlzxIErjvilq+3i/19kiUin/5EDifD8WbZIU1qhC2yRji7HA8zI5ejDC01/8CJRN2qOtbmpHrS6D8D1Yjk+IpHpdzL69GPoEj6KNYR+9WE0rG9sXWUxuSoy1ZArUla+cuiq/r04QZTiwqs3TvOMed8Uijxv5Fbfd6GNX457BBGtuddz3Tjr2Tscj2IugYusbdVgw01e/hz21EYmEUOpI2qVC/TT3ha/XSvGx4Kdrjlq/eNjVkMJDNHFdNOy+H6prMahUoOVydADhLKDd+pvv8PJz5oZO3GxyOtIm/acEeMtockxNgBkUjaGXuTPs4TnJbP9hN1Z7n6hp1enKQb6C
- L1JUZwCn
- JbSps
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 7drrussaqrkhbb84t8z8rgryb9k5d7du
+X-HE-Tag: 1757660637-588038
+X-HE-Meta: U2FsdGVkX1/4xDahmJuPK0XH+8Fgl5h1wpyI0X+YCXUrcThfFL10KtpZQ7QaHACwBXjTbcpkJ8em6kr0Hm5jI0G9jxez54cm2+aLR8PiBezHTnDN6ufTWhZJPUtlaioIEaxFjqjrQB4u0AuY+/4QP2AI8AGZRr0hmHyemD8P3R7dJrOefZeluMFT0ZR6e2blNwvAuBOrZWKum1qeiz+TJBdgErDKSobbwgavS0L9mT916OhlH0eEYP6GQwZInIRn7esCsoaZZQu5xzhaJcjhi8RwopMvz3H4qJxBp0Wq9qEgJTekjd7kXM1yO7btHSX8F7We2gKZ/dFR+4ksq4JTeFDtCjQIo/NRmp4MoIgoGSf/W7RpoPbkVrVZkfyxLi7RK+C5ksULX29J6b6yVcnYPXS/nkt54F+8JmTr3tY2D0xFLmrduM5ir/tVgDOozQXlJOMvyVFh7jn4ARnz3ObCz49EET7GVh4AMBVyHiXQgpMr54hPuM0ASuWKM/2+KCJnsVtFTecbG4EkdekvlLeg21iSgYpi+MDntv3+5OPKAx9JPzORuK5O5SkdhPIMRlFPgKjlzYpRMOBI5M7fhVfqGLLd38FXy6Bmrw2lco29F7CLqapgPcqNOivSLq2aPjn5B7pQtXZ2FwKbK0xKEN5N38jifewAp7AN8ZR/KSrZOPV69L1jWTt9R57HY9GOL+nSIQR9gzMtvR7QnVqA2e+1sKIsgnktkFdIRcFlut+6+axcBVUToaV1XrKfha/nWK/fxxWuN/tjT2dRvqFHTBckZrxvr9CqzkMKkhYqJueUygn/pIqEHefgjVcXMpAzRMjoMFesURvHJFtmMj52MFntoOy9FtAgdDbZt5IX9YsN6ykYlC5LUfgEi+tcj17NiDZmd9yeLIGP8WMvdVG4/ONQYnrKzzwwEcCqQLhZmv+bYmBkg5U3xtaEzs7+WiXfc7iHhCY3JBm4JEZfguGG2lB
+ /COTAUR2
+ zKRmjNCI9kjiZ8uZ5wloGa1fE87TA+7U3++HAUL5fI1AE1A5IBYvCJpMJavN8ijDDQERVItttvehsvYrypalWJEI+O9pm4h4a93Rs3HDpQehMUUWsujDTk7PYuVIbnuoY4Chw3k6YM15I+nMFiKbCCfQJCl+d5xGrWwkuvq4OqoBJYXz6ACkPe1iQrog4lOl0/Zm2+1ZrI6ebt/dVrK9vqIJ1VR5KyGHte/upReSP0+wi+fNaLDVB/lficu/vq7vfA9tcp0hJwFj6y+EAHil+YZuNQ818qM0sq2A0hb9dujXJJCw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,73 +185,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2025/9/11 14:56, Kefeng Wang wrote:
-> Add a new helper to free huge page to be consistency to
-> debug_vm_pgtable_alloc_huge_page(), also move the
-> free_contig_range() under CONFIG_ALLOC_CONTIG since all
-> caller are built with CONFIG_ALLOC_CONTIG.
+On 9/12/25 02:38, Sergey Senozhatsky wrote:
+> Hi Vlastimil,
 > 
-> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+> On (25/09/10 10:01), Vlastimil Babka wrote:
+> [..]
+>> +
+>> +	if (rcu_free)
+>> +		call_rcu(&rcu_free->rcu_head, rcu_free_sheaf_nobarn);
+>> +}
+>> +
+>> +
+>> +/* needed for kvfree_rcu_barrier() */
+>> +void flush_all_rcu_sheaves()
+>> +{
+> 
+> mm/slub.c:3960:27: error: a function declaration without a prototype is deprecated in all versions of C [-Werror,-Wstrict-prototypes]
+>  3960 | void flush_all_rcu_sheaves()
+>       |                           ^
+>       |                            void
+> 
 > ---
->   include/linux/gfp.h   |  2 +-
->   mm/debug_vm_pgtable.c | 35 ++++++++++++++++-------------------
->   mm/page_alloc.c       |  2 +-
->   3 files changed, 18 insertions(+), 21 deletions(-)
-> 
-> diff --git a/include/linux/gfp.h b/include/linux/gfp.h
-> index 5ebf26fcdcfa..651acd42256f 100644
-> --- a/include/linux/gfp.h
-> +++ b/include/linux/gfp.h
-> @@ -437,8 +437,8 @@ extern struct page *alloc_contig_pages_noprof(unsigned long nr_pages, gfp_t gfp_
->   					      int nid, nodemask_t *nodemask);
->   #define alloc_contig_pages(...)			alloc_hooks(alloc_contig_pages_noprof(__VA_ARGS__))
->   
-> -#endif
->   void free_contig_range(unsigned long pfn, unsigned long nr_pages);
-> +#endif
->   
->   #ifdef CONFIG_CONTIG_ALLOC
->   static inline struct folio *folio_alloc_gigantic_noprof(int order, gfp_t gfp,
-> diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
-> index 830107b6dd08..767321a8b26c 100644
-> --- a/mm/debug_vm_pgtable.c
-> +++ b/mm/debug_vm_pgtable.c
-> @@ -946,22 +946,26 @@ static unsigned long __init get_random_vaddr(void)
->   	return random_vaddr;
->   }
->   
-> -static void __init destroy_args(struct pgtable_debug_args *args)
-> +static void __init
-> +debug_vm_pgtable_free_huge_page(struct pgtable_debug_args *args,
-> +		unsigned long pfn, int order)
->   {
-> -	struct page *page = NULL;
-> +#ifdef CONFIG_CONTIG_ALLOC
-> +	if (args->is_contiguous_page) {
-> +		free_contig_range(pfn, 1 << order);
-> +		return;
-> +	}
-> +#endif
-> +	__free_pages(pfn_to_page(pfn), order);
-> +}
->   
-> +static void __init destroy_args(struct pgtable_debug_args *args)
-> +{
->   	/* Free (huge) page */
->   	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
->   	    has_transparent_pud_hugepage() &&
->   	    args->pud_pfn != ULONG_MAX) {
-> -		if (args->is_contiguous_page) {
-> -			free_contig_range(args->pud_pfn,
-> -					  (1 << (HPAGE_PUD_SHIFT - PAGE_SHIFT)));
-> -		} else {
-> -			page = pfn_to_page(args->pud_pfn);
-> -			__free_pages(page, HPAGE_PUD_SHIFT - PAGE_SHIFT);
-> -		}
-> -
-> +		debug_vm_pgtable_free_huge_page(args, args->pud_pfn, HPAGE_PMD_ORDER);
 
-Should be HPAGE_PUD_ORDER, will fix it.
+Thanks, the bots told me too and it's fixed in -next
+
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 11ad4173e2f2..a1eae71a0f8c 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -3955,9 +3955,8 @@ static void flush_rcu_sheaf(struct work_struct *w)
+>  		call_rcu(&rcu_free->rcu_head, rcu_free_sheaf_nobarn);
+>  }
+>  
+> -
+>  /* needed for kvfree_rcu_barrier() */
+> -void flush_all_rcu_sheaves()
+> +void flush_all_rcu_sheaves(void)
+>  {
+>  	struct slub_percpu_sheaves *pcs;
+>  	struct slub_flush_work *sfw;
+
 
