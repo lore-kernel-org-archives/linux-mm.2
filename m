@@ -4,95 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA7C1CA101F
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 20:40:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5070CAC582
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 21:03:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E5F388E0006; Fri, 12 Sep 2025 16:40:40 -0400 (EDT)
+	id D09448E0007; Fri, 12 Sep 2025 17:03:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E0DDB8E0002; Fri, 12 Sep 2025 16:40:40 -0400 (EDT)
+	id CB9168E0002; Fri, 12 Sep 2025 17:03:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CFCED8E0006; Fri, 12 Sep 2025 16:40:40 -0400 (EDT)
+	id B81408E0007; Fri, 12 Sep 2025 17:03:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B21A58E0002
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 16:40:40 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3428F11B08B
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 20:40:40 +0000 (UTC)
-X-FDA: 83881766640.15.F73F9BE
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 70694100017
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 20:40:37 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=SKBA1QL6;
-	spf=pass (imf05.hostedemail.com: domain of lkp@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A28898E0002
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 17:03:18 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 39D1887398
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 21:03:18 +0000 (UTC)
+X-FDA: 83881823676.13.D966E2E
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 3510F10000A
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 21:03:16 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="Ghc3h/On";
+	spf=pass (imf14.hostedemail.com: domain of surenb@google.com designates 209.85.160.179 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757709638;
+	s=arc-20220608; t=1757710996;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=GkQyydKle2Ur2rRQ+ZFRyFgS6ECCnnchdf69h3nuARI=;
-	b=5i3RnhFPgfPC7fwEQcVxz+LD4KdNry4gkpLrdAkvO/hvI88xYINdFnCHalxXmLwhgUl/c3
-	DnfptS2JNg+H0gtEPMoipCPM3LGZ+i7gLaA202fFwNCzARorHJaq+bfuSAgiBY5MWjtIJb
-	8ZTRCnWpCix2MAzvG+s2IHMHB84yekc=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=SKBA1QL6;
-	spf=pass (imf05.hostedemail.com: domain of lkp@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757709638; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=tVJ20harXnfzHnDKK1hOVgN5G5NhgZps321C9eNzyC8=;
+	b=OeGvqJ9ZyQ2/T2buUqq9LmJc/tTQtHq11vxpSKBvm5mAkpM52NKd9WvDErIAnH8Avm/mp4
+	4kFmXMbOW2N/dhCFc/9oRJpzc964rKkaUjLafPgd2A1UdTSUThuWMkJX4POU4z+dlVUvtW
+	QSyAseT8KT2D0BjHP74PwZDT4/ZVpiU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757710996; a=rsa-sha256;
 	cv=none;
-	b=ycZKW9wi9l75C52Ahz34oLI6axyXl0mNmeu2mLYICVCfxLXJhGlxrv0JO4ZSW7Yt2HoU8Y
-	A3fMkk/nNaYFr81hMWmlKk0HcQDoo97uYpWRaRnrjGRnZDx32nzMQ0cGvwceCKuHhrMA/2
-	FsGEqpalMkzyASICOSl6QQy5HJuQ08I=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757709638; x=1789245638;
-  h=date:from:to:cc:subject:message-id;
-  bh=QPd8bLe3/lbqxpRBttBhBB11z+gpK6GTHhs/MLT6RZY=;
-  b=SKBA1QL6r3VSV2b4N0W9qgujdM3lKwhf7VeaBB2bKYP+3/3ctT4fUPuM
-   FydSCr2E2PLcjO2H/7S3E0wxGI9qmXCRcOY4wa3FDTCqf9Aq7CkhYOidz
-   Ai7+fihBWemWBWjDMs2fFDh1FXEaO2qiKQouYBljjLu+FPLZVIy+WJNrJ
-   RH32oSYmFvF+cIA9FtWbmHZOiIHrVPqpKy09+E6+c+CGuDalliu+zgOQB
-   uQAy16a5peoXRvWdSpPmEsKLssMZhAmo4JaGdZXDF3ngaN5FBqNiv6EfD
-   rtB3JsgiOrhHNJkNh9etUF59G3mv7gKPdvNLgaefuH4N5b7+jc69qhiY+
-   g==;
-X-CSE-ConnectionGUID: 7n2y5iKPRye6dZAIhKNKRg==
-X-CSE-MsgGUID: dFOQj5nWT2ehArdEtmdfpQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="82648237"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="82648237"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2025 13:40:36 -0700
-X-CSE-ConnectionGUID: eWBgVwySSw6L1dvF8wMOEw==
-X-CSE-MsgGUID: eicCNeYSQlmyQs4KATF89A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,260,1751266800"; 
-   d="scan'208";a="178447284"
-Received: from lkp-server02.sh.intel.com (HELO eb5fdfb2a9b7) ([10.239.97.151])
-  by fmviesa005.fm.intel.com with ESMTP; 12 Sep 2025 13:40:33 -0700
-Received: from kbuild by eb5fdfb2a9b7 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uxAZL-0001Ct-24;
-	Fri, 12 Sep 2025 20:40:31 +0000
-Date: Sat, 13 Sep 2025 04:40:09 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linux Memory Management List <linux-mm@kvack.org>
-Subject: [linux-next:master] BUILD REGRESSION
- 590b221ed4256fd6c34d3dea77aa5bd6e741bbc1
-Message-ID: <202509130410.vJTHL1fx-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	b=uwB5IHHU+qyPJyHupB5zAqHclTmtvrcXuesUAZbuXBi7QQtC+qJtTXkAkPxh00MfuiuA5e
+	Oyg2yyzFEV7aeOxcfwufCYGXLzPWgXS80P7sbySkDQIw2QYF0rTq50HPq7IkfQEgvTEBZV
+	JzcJtS39le77RQbvfpiKekbTT99Izes=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="Ghc3h/On";
+	spf=pass (imf14.hostedemail.com: domain of surenb@google.com designates 209.85.160.179 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-4b48fc1d998so23511cf.1
+        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 14:03:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1757710995; x=1758315795; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tVJ20harXnfzHnDKK1hOVgN5G5NhgZps321C9eNzyC8=;
+        b=Ghc3h/OnHcUsQbMegMHB/VCB9gPFKymWZmdl+4p3qXnGQQro9ZeKPS1gU2N+xJOeDS
+         tz7iXIaSvYS6LsvwiZbYjRwPDkNDPJJGVZthOAqBNQWOcmTiR5bw2oj8SwcWMUgPQiWL
+         Wl47caB7gLtB2CKFqywEX5MMG4+stsHNv66uwJhAaGHwcA4/7iNDv+R3nxTIznKc/uv/
+         RqSH/q9xUb/D8AOWZcTPx2s1J8pcNPKEuD/pOPWVFv1K0EhuaeD5pZL9qJaJaqTDDRFz
+         Z2kqmxUzeP5uV8IBZn7uphoxjN4BGGufTi+fghAoKQvjL4/FMb74Z5Gh7w8jRqm73+xH
+         yHAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757710995; x=1758315795;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tVJ20harXnfzHnDKK1hOVgN5G5NhgZps321C9eNzyC8=;
+        b=XDcbhKpzYuRnJ/q2YQx0lgQMaf49x5/ubDex4WzKyml6Zr0LQ4U0qkYJ1JfTLBrrTp
+         aJevv4su5PgU+e1qG9/I10FvNIyBqtXOh28DXyzkUiw16JFehL04T0F9zVSsSqRfqz9C
+         EwyBDP/2iwDsTJuDr1va6lK6xKk29/XJ81R8GG2ZuJIC6Y81IVGjC/xVKJP40KNqyiIy
+         n5vFIe5qzuN8PlRngxS0yPoYoy5sjliC1FdBD8jlRmw24iWlZovhzHgLOveihljxat45
+         gmV+3G8XSCmfAxGr2Ze281ddLoMah+xBx+rWJNe5tYBS2zDDG67PZ8Fk5t8QCBfYwTFA
+         x53g==
+X-Forwarded-Encrypted: i=1; AJvYcCUMpbz2ekIEvNug4EyqLGI1M6AU1KFIUvSCh0OYC8ZUKxR4imSqkE2HObwj3oC35BRbRZMfnLjKAA==@kvack.org
+X-Gm-Message-State: AOJu0YwuQbY7x+bXQoTyjZPB2oBaYBVBIpe5VOkQoA9M6qLlaLVnN/C7
+	JW36Xz/qt+PD1PyV671iMjyIP1KakLzGBmFzhuOok1jImdCZYjPdASWB0mM5EcE/dzytGV26ImE
+	BEusw/pQk0yVDe3TUAv2rND8X4k+wXhXW0pxBsIeV
+X-Gm-Gg: ASbGncsaCg6GDuQWhAG2W/Jr0mp6tfihXjIydnXoO29KuyVGr6UH1FdyANVmrEHGQvE
+	byw9qYp7eEPlyND00DvyH5+TYq3KwZz9DHCfr064RvwEbv3yk2eEOl1OkY0bedhAg+PWrGPmO3N
+	NCfsD2nXGm7Go+Ism74uqBbyJKiDjKi4jdNYP5dJc/86IraLI52e182G+5HAWT4g1rX3qNEq00j
+	+XsU6aVqIo1c9Ys/H9GKHHvrbQlbR3exA==
+X-Google-Smtp-Source: AGHT+IHseG9PtEuPE49/9tbUbIRhif36dOcTKh3RESUYQ0Xj0YcJ9huxjsg7Lumt1ghFNmsQrsmKynduT/0KDy32sIQ=
+X-Received: by 2002:a05:622a:1a08:b0:4b3:19b2:d22 with SMTP id
+ d75a77b69052e-4b78baee828mr1134171cf.13.1757710994465; Fri, 12 Sep 2025
+ 14:03:14 -0700 (PDT)
+MIME-Version: 1.0
+References: <20250909010007.1660-1-alexei.starovoitov@gmail.com>
+ <20250909010007.1660-6-alexei.starovoitov@gmail.com> <jftidhymri2af5u3xtcqry3cfu6aqzte3uzlznhlaylgrdztsi@5vpjnzpsemf5>
+In-Reply-To: <jftidhymri2af5u3xtcqry3cfu6aqzte3uzlznhlaylgrdztsi@5vpjnzpsemf5>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Fri, 12 Sep 2025 14:03:03 -0700
+X-Gm-Features: AS18NWBlwC6GnqxcNf8gN0VWwblEoVKW3TIWvmUUYGCzInpHnPoKF5oCvFK5EWQ
+Message-ID: <CAJuCfpGUjaZcs1r9ADKck_Ni7f41kHaiejR01Z0bE8pG0K1uXA@mail.gmail.com>
+Subject: Re: [PATCH slab v5 5/6] slab: Reuse first bit for OBJEXTS_ALLOC_FAIL
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Alexei Starovoitov <alexei.starovoitov@gmail.com>, bpf@vger.kernel.org, linux-mm@kvack.org, 
+	vbabka@suse.cz, harry.yoo@oracle.com, mhocko@suse.com, bigeasy@linutronix.de, 
+	andrii@kernel.org, memxor@gmail.com, akpm@linux-foundation.org, 
+	peterz@infradead.org, rostedt@goodmis.org, hannes@cmpxchg.org, 
+	roman.gushchin@linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 3510F10000A
+X-Stat-Signature: easyecezm6wai978mjt5dhxw6x1mk8k8
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 70694100017
-X-Stat-Signature: x9f7momre7f87g8zpm7bii3ww69jjowa
-X-HE-Tag: 1757709637-497006
-X-HE-Meta: U2FsdGVkX18Z73tanWaealGyRFDi58zbNn9ahqCuYFpscAPaq7tWGV6Ebx79BBv05f9GrPLBOzvFdjBkM3+9srjz0b21z1w/wPT2F5eSqPyh/t7D2ltE2H7QoAZx1CtUVwt6h31uIXBjE4aIkvq2cN6t53T4l+ZOm0HCEQC0s7/5zdOaDbeaOeaQM0FVYyBuQqynZpbvf4DifkO4A7LH74FDfecdxNOQVcGIsj9vYXqYOKis4vFpguGrYas37YxLdSH5kLc+OgHvHsFWAWPeuQx99OhClmXHJrXOYfbVdKZE7k5NjCuHSrJWSdAopiy/1p5KfcsvBQwkDhEUSkW3q6d/GlBztQ0uI9T8J90WNe87YIIGz0JFHE7LHw8V0mcLHBo3Ug73sVgaZM2ky9AvrbWeKqAoSv5HJ21aZk7fd6YJBHhOKxwQwJ+1Tcw2FBYRJmc3p4Lx4MCLF7rTl3rAB02PQljuOp44xqCdSN2FJ4D9M3F/cdTQ8mx1NLkIbZTbLUGharplbGIRz5S0K+hEXZUb9xtIg13W6+ONJGZFNwHtqa0GS8zxgrcGS3GV0tGkdigcwXAyiWraKI9uS7KRyA0x8/Y/Kh6KE3Szwuk1xuaT9yk9hFLWGFQfOSSxJKI55QovbLC92GGJXhqEXwwb7NQ9k/xKUpnOK0Ge1NRB8qwzQisrX4JCuR7Aq7Kc8wxxEOxsgojrOPWLxM9omeRAIaUUAbqom1nqqpEss36PLePb255cY65twcI1fdssRARxxnw2apWPMfs5/NT0vgiABCyxyz1Q8VIOX10QPUzqUsUao6yrQulKzcE65rjKBujp+M7Hrx7OC35/nJMHYWiLsxojHuZWcqT1FuQN8SgDj5dkTNDpr4vKmt0DfgWMVlwXGWNn9m704BjDPsvHHUQqy99RhypxPzQ+3ZK2wNNUIkyb6+HXZnXSbRWuFWOg+zDJ72+2t4HOKJyjYSgYDBm
- 8NsW2IAv
- bjBZ51OWlTyw/Jp+KTkvOOybOIandcexUNRZxE/FcQBgi0E3JH5P69wEknULEWXINTBM0MCWnNLso162d37MNi7qBqNSUEL6IKRKfsTnlPcG4PtZ5W3Fpdrk+hrspn3cFmGC5dpBLx41KEmzSCyEtCwp5xpRjxiXCtUKTTTbI1zPS2nEeP/2K8CAsDA==
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1757710996-981766
+X-HE-Meta: U2FsdGVkX1/9/jC6llIMONwjx02k25mnOLflEYFVI4s3uKyrw4jByUoSnBL0RbjwV1v4ViHSYzVRUadrgpyqwTbd1LdeIFeth3Y9K0g/MqgEO0VdyeXbZ1IzbSQlwr5vhPmfjp+TcEGcfQ7/1ryxzOAm+XYnI7+8GvlVL+NHKlgJfqhR/qfL31QFAuhGdxk16GsLs6Cl+sBW/AAJJYPOBKc/2gbY/pewpCwU0MiAvd9OxgNk+p2s3t75zsCYvOwcKkl6SnRtDYpJ5UxBkrbchkjncUt12ayr/p9BEMTJJ1htR4k0skPuWQz7H/xnxrLFvtQLXnM+YKiNsEQhzHxwglZwE0LE0TFP+gxpYUxD/l+jcScmMnwsrxo9/5WA9qThc8d+v+9gS2zAqkdYthtMM2GcWZVk4Vqpa22H7t/pZWdFf8TDB6Xzcz89xVsWnO/D5j6eoQoBN0eic/FJteaeOpkZ8EY8A/BHpgO5no3CihF9h1YlKk4tBSkufSItbVxBU4CSHxqegHHZIca1JfMNQyLIusSQCQyjpfiVzSIb4wBtlyJm50/EqmxJO44h57EKHKwTgTz4FuCY5izaJ5rV4blCBwaAHo8uP48f/1Qe6vSvWIbc0rqUYu0HMenPS4kW6K2XaWjUJHMVbrwl+kxn5TuoABtpG4nqic6ZEhVjn1/VdwO1z03UUKCGRIklboKWxJR7cBiEFa3WXhu21az32fs3ymWLQ1i49uVLVWDBjy5O9FhrSzEahFF5kGnIfQJVEtAkID9Mj41SirgXCrHKDYD7tUxh0Lht7f8dnu2B6tom75vPLXWXvvl4wLGJz9K9FWivT4B8HPYTVKcC/N1yFM6M2zRKWfiJWcagKeMTYiyG2fOu9wh+vO3m5NZPFuqfIoF6YFkHzrnYy/gdHpSHF6+IyXcBilvsgAFWmB9S9m9w0GVSSE7caeD4pdZmsgoyr5hLNbO2iT2O46+9oAX
+ nhGBjrMg
+ t4n0qzbeXOFUvdFhoxsQWiSVvsk3p1ksufX6QPonB7hPz5Aa30ASl5NQEPBAbKzebflkgf5MHjbETVL3OzfAT8mb3Oe+8CzRzDVmMGulkeu/FBDEqrgt/DhaDaRZAtCjKd7liA2x8mF27/ERTJgTbcbnFEmj+PJCDuLc22vtxF3eesFifKVLfoL+RrYZAkMK9VandAJt0iREqT8khroNjVQxeJ3Xka1KhPZJr3NYUzNqplyrdU/fOYR49HcqY5D4VY8qiOrWyqMLSYlxF7hhX0+yjhcqkpI+2hxareKjf7CDuvgHD9w4uHGiHPnJjcLYIUGl6YvAsS4/9GudaXNRdupH5ig==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,873 +120,146 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: 590b221ed4256fd6c34d3dea77aa5bd6e741bbc1  Add linux-next specific files for 20250912
+On Fri, Sep 12, 2025 at 12:27=E2=80=AFPM Shakeel Butt <shakeel.butt@linux.d=
+ev> wrote:
+>
+> +Suren, Roman
+>
+> On Mon, Sep 08, 2025 at 06:00:06PM -0700, Alexei Starovoitov wrote:
+> > From: Alexei Starovoitov <ast@kernel.org>
+> >
+> > Since the combination of valid upper bits in slab->obj_exts with
+> > OBJEXTS_ALLOC_FAIL bit can never happen,
+> > use OBJEXTS_ALLOC_FAIL =3D=3D (1ull << 0) as a magic sentinel
+> > instead of (1ull << 2) to free up bit 2.
+> >
+> > Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+>
+> Are we low on bits that we need to do this or is this good to have
+> optimization but not required?
 
-Error/Warning (recently discovered and may have been fixed):
+That's a good question. After this change MEMCG_DATA_OBJEXTS and
+OBJEXTS_ALLOC_FAIL will have the same value and they are used with the
+same field (page->memcg_data and slab->obj_exts are aliases). Even if
+page_memcg_data_flags can never be used for slab pages I think
+overlapping these bits is not a good idea and creates additional
+risks. Unless there is a good reason to do this I would advise against
+it.
 
-    https://lore.kernel.org/oe-kbuild-all/202508142038.M8MuVqEP-lkp@intel.com
-    https://lore.kernel.org/oe-kbuild-all/202508211859.UoYsJbLN-lkp@intel.com
-    https://lore.kernel.org/oe-kbuild-all/202509052225.NIyWDaaP-lkp@intel.com
-    https://lore.kernel.org/oe-kbuild-all/202509061641.M9r43HWa-lkp@intel.com
-    https://lore.kernel.org/oe-kbuild-all/202509101930.OsSQJxIP-lkp@intel.com
-    https://lore.kernel.org/oe-kbuild-all/202509112310.qXbyQPpQ-lkp@intel.com
-    https://lore.kernel.org/oe-kbuild/202509112313.0XfkfKPl-lkp@intel.com
-    https://lore.kernel.org/oe-kbuild/202509120229.YpG1CcD3-lkp@intel.com
-    https://lore.kernel.org/oe-kbuild/202509121747.MZEQ1fF2-lkp@intel.com
-    https://lore.kernel.org/oe-kbuild/202509121952.ChfqonoQ-lkp@intel.com
-    https://lore.kernel.org/oe-kbuild/202509122123.Tv76XiqQ-lkp@intel.com
-    https://lore.kernel.org/oe-kbuild/202509122328.JDGUFyAN-lkp@intel.com
+>
+> I do have some questions on the state of slab->obj_exts even before this
+> patch for Suren, Roman, Vlastimil and others:
+>
+> Suppose we newly allocate struct slab for a SLAB_ACCOUNT cache and tried
+> to allocate obj_exts for it which failed. The kernel will set
+> OBJEXTS_ALLOC_FAIL in slab->obj_exts (Note that this can only be set for
+> new slab allocation and only for SLAB_ACCOUNT caches i.e. vec allocation
+> failure for memory profiling does not set this flag).
+>
+> Now in the post alloc hook, either through memory profiling or through
+> memcg charging, we will try again to allocate the vec and before that we
+> will call slab_obj_exts() on the slab which has:
+>
+>         unsigned long obj_exts =3D READ_ONCE(slab->obj_exts);
+>
+>         VM_BUG_ON_PAGE(obj_exts && !(obj_exts & MEMCG_DATA_OBJEXTS), slab=
+_page(slab));
+>
+> It seems like the above VM_BUG_ON_PAGE() will trigger because obj_exts
+> will have OBJEXTS_ALLOC_FAIL but it should not, right? Or am I missing
+> something? After the following patch we will aliasing be MEMCG_DATA_OBJEX=
+TS
+> and OBJEXTS_ALLOC_FAIL and will avoid this trigger though which also
+> seems unintended.
 
-    Documentation/.renames.txt: warning: ignored by one of the .gitignore files
-    arch/arm64/boot/dts/qcom/lemans-evk.dtb: displayport-controller@af54000 (qcom,sa8775p-dp): clocks: [[225, 1], [225, 11], [225, 15], [225, 18], [225, 19]] is too short
-    arch/arm64/boot/dts/qcom/lemans-evk.dtb: displayport-controller@af54000 (qcom,sa8775p-dp): reg: [[0, 183844864, 0, 260], [0, 183845376, 0, 192], [0, 183848960, 0, 1904], [0, 183853056, 0, 156], [0, 183857152, 0, 156]] is too short
-    arch/arm64/boot/dts/qcom/lemans-evk.dtb: displayport-controller@af5c000 (qcom,sa8775p-dp): clocks: [[225, 1], [225, 28], [225, 32], [225, 35], [225, 36]] is too short
-    arch/arm64/boot/dts/qcom/lemans-evk.dtb: displayport-controller@af5c000 (qcom,sa8775p-dp): reg: [[0, 183877632, 0, 260], [0, 183878144, 0, 192], [0, 183881728, 0, 1904], [0, 183885824, 0, 156], [0, 183889920, 0, 156]] is too short
-    arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dtb: edp@aea0000 (qcom,sc7280-edp): reg: [[0, 183107584, 0, 512], [0, 183108096, 0, 512], [0, 183108608, 0, 3072], [0, 183111680, 0, 1024]] is too short
-    arch/arm64/boot/dts/qcom/qcm6490-idp.dtb: edp@aea0000 (qcom,sc7280-edp): reg: [[0, 183107584, 0, 512], [0, 183108096, 0, 512], [0, 183108608, 0, 3072], [0, 183111680, 0, 1024]] is too short
-    arch/arm64/boot/dts/qcom/qcm6490-shift-otter.dtb: edp@aea0000 (qcom,sc7280-edp): reg: [[0, 183107584, 0, 512], [0, 183108096, 0, 512], [0, 183108608, 0, 3072], [0, 183111680, 0, 1024]] is too short
-    arch/arm64/boot/dts/qcom/qcs6490-rb3gen2-industrial-mezzanine.dtb: edp@aea0000 (qcom,sc7280-edp): reg: [[0, 183107584, 0, 512], [0, 183108096, 0, 512], [0, 183108608, 0, 3072], [0, 183111680, 0, 1024]] is too short
-    arch/arm64/boot/dts/qcom/qcs6490-rb3gen2-vision-mezzanine.dtb: edp@aea0000 (qcom,sc7280-edp): reg: [[0, 183107584, 0, 512], [0, 183108096, 0, 512], [0, 183108608, 0, 3072], [0, 183111680, 0, 1024]] is too short
-    arch/arm64/boot/dts/qcom/qcs6490-rb3gen2.dtb: edp@aea0000 (qcom,sc7280-edp): reg: [[0, 183107584, 0, 512], [0, 183108096, 0, 512], [0, 183108608, 0, 3072], [0, 183111680, 0, 1024]] is too short
-    arch/arm64/boot/dts/qcom/qcs9100-ride-r3.dtb: displayport-controller@af54000 (qcom,sa8775p-dp): reg: [[0, 183844864, 0, 260], [0, 183845376, 0, 192], [0, 183848960, 0, 1904], [0, 183853056, 0, 156], [0, 183857152, 0, 156]] is too short
-    arch/arm64/boot/dts/qcom/qcs9100-ride-r3.dtb: displayport-controller@af5c000 (qcom,sa8775p-dp): reg: [[0, 183877632, 0, 260], [0, 183878144, 0, 192], [0, 183881728, 0, 1904], [0, 183885824, 0, 156], [0, 183889920, 0, 156]] is too short
-    arch/arm64/boot/dts/qcom/qcs9100-ride.dtb: displayport-controller@af54000 (qcom,sa8775p-dp): reg: [[0, 183844864, 0, 260], [0, 183845376, 0, 192], [0, 183848960, 0, 1904], [0, 183853056, 0, 156], [0, 183857152, 0, 156]] is too short
-    arch/arm64/boot/dts/qcom/qcs9100-ride.dtb: displayport-controller@af5c000 (qcom,sa8775p-dp): reg: [[0, 183877632, 0, 260], [0, 183878144, 0, 192], [0, 183881728, 0, 1904], [0, 183885824, 0, 156], [0, 183889920, 0, 156]] is too short
-    arch/arm64/boot/dts/qcom/sa8775p-ride-r3.dtb: displayport-controller@af54000 (qcom,sa8775p-dp): reg: [[0, 183844864, 0, 260], [0, 183845376, 0, 192], [0, 183848960, 0, 1904], [0, 183853056, 0, 156], [0, 183857152, 0, 156]] is too short
-    arch/arm64/boot/dts/qcom/sa8775p-ride-r3.dtb: displayport-controller@af5c000 (qcom,sa8775p-dp): reg: [[0, 183877632, 0, 260], [0, 183878144, 0, 192], [0, 183881728, 0, 1904], [0, 183885824, 0, 156], [0, 183889920, 0, 156]] is too short
-    arch/arm64/boot/dts/qcom/sa8775p-ride.dtb: displayport-controller@af54000 (qcom,sa8775p-dp): reg: [[0, 183844864, 0, 260], [0, 183845376, 0, 192], [0, 183848960, 0, 1904], [0, 183853056, 0, 156], [0, 183857152, 0, 156]] is too short
-    arch/arm64/boot/dts/qcom/sa8775p-ride.dtb: displayport-controller@af5c000 (qcom,sa8775p-dp): reg: [[0, 183877632, 0, 260], [0, 183878144, 0, 192], [0, 183881728, 0, 1904], [0, 183885824, 0, 156], [0, 183889920, 0, 156]] is too short
-    arch/arm64/boot/dts/qcom/sc7280-crd-r3.dtb: edp@aea0000 (qcom,sc7280-edp): reg: [[0, 183107584, 0, 512], [0, 183108096, 0, 512], [0, 183108608, 0, 3072], [0, 183111680, 0, 1024]] is too short
-    arch/arm64/boot/dts/qcom/sc7280-herobrine-crd-pro.dtb: edp@aea0000 (qcom,sc7280-edp): reg: [[0, 183107584, 0, 512], [0, 183108096, 0, 512], [0, 183108608, 0, 3072], [0, 183111680, 0, 1024]] is too short
-    arch/arm64/boot/dts/qcom/sc7280-herobrine-crd.dtb: edp@aea0000 (qcom,sc7280-edp): reg: [[0, 183107584, 0, 512], [0, 183108096, 0, 512], [0, 183108608, 0, 3072], [0, 183111680, 0, 1024]] is too short
-    arch/arm64/boot/dts/qcom/sc7280-herobrine-evoker-lte.dtb: edp@aea0000 (qcom,sc7280-edp): reg: [[0, 183107584, 0, 512], [0, 183108096, 0, 512], [0, 183108608, 0, 3072], [0, 183111680, 0, 1024]] is too short
-    arch/arm64/boot/dts/qcom/sc7280-herobrine-evoker.dtb: edp@aea0000 (qcom,sc7280-edp): reg: [[0, 183107584, 0, 512], [0, 183108096, 0, 512], [0, 183108608, 0, 3072], [0, 183111680, 0, 1024]] is too short
-    arch/arm64/boot/dts/qcom/sc7280-herobrine-herobrine-r1.dtb: edp@aea0000 (qcom,sc7280-edp): reg: [[0, 183107584, 0, 512], [0, 183108096, 0, 512], [0, 183108608, 0, 3072], [0, 183111680, 0, 1024]] is too short
-    arch/arm64/boot/dts/qcom/sc7280-herobrine-villager-r0.dtb: edp@aea0000 (qcom,sc7280-edp): reg: [[0, 183107584, 0, 512], [0, 183108096, 0, 512], [0, 183108608, 0, 3072], [0, 183111680, 0, 1024]] is too short
-    arch/arm64/boot/dts/qcom/sc7280-herobrine-villager-r1-lte.dtb: edp@aea0000 (qcom,sc7280-edp): reg: [[0, 183107584, 0, 512], [0, 183108096, 0, 512], [0, 183108608, 0, 3072], [0, 183111680, 0, 1024]] is too short
-    arch/arm64/boot/dts/qcom/sc7280-herobrine-villager-r1.dtb: edp@aea0000 (qcom,sc7280-edp): reg: [[0, 183107584, 0, 512], [0, 183108096, 0, 512], [0, 183108608, 0, 3072], [0, 183111680, 0, 1024]] is too short
-    arch/arm64/boot/dts/qcom/sc7280-herobrine-zombie-lte.dtb: edp@aea0000 (qcom,sc7280-edp): reg: [[0, 183107584, 0, 512], [0, 183108096, 0, 512], [0, 183108608, 0, 3072], [0, 183111680, 0, 1024]] is too short
-    arch/arm64/boot/dts/qcom/sc7280-herobrine-zombie-nvme-lte.dtb: edp@aea0000 (qcom,sc7280-edp): reg: [[0, 183107584, 0, 512], [0, 183108096, 0, 512], [0, 183108608, 0, 3072], [0, 183111680, 0, 1024]] is too short
-    arch/arm64/boot/dts/qcom/sc7280-herobrine-zombie-nvme.dtb: edp@aea0000 (qcom,sc7280-edp): reg: [[0, 183107584, 0, 512], [0, 183108096, 0, 512], [0, 183108608, 0, 3072], [0, 183111680, 0, 1024]] is too short
-    arch/arm64/boot/dts/qcom/sc7280-herobrine-zombie.dtb: edp@aea0000 (qcom,sc7280-edp): reg: [[0, 183107584, 0, 512], [0, 183108096, 0, 512], [0, 183108608, 0, 3072], [0, 183111680, 0, 1024]] is too short
-    arch/arm64/boot/dts/qcom/sc7280-idp.dtb: edp@aea0000 (qcom,sc7280-edp): reg: [[0, 183107584, 0, 512], [0, 183108096, 0, 512], [0, 183108608, 0, 3072], [0, 183111680, 0, 1024]] is too short
-    arch/arm64/boot/dts/qcom/sc7280-idp2.dtb: edp@aea0000 (qcom,sc7280-edp): reg: [[0, 183107584, 0, 512], [0, 183108096, 0, 512], [0, 183108608, 0, 3072], [0, 183111680, 0, 1024]] is too short
-    arch/arm64/boot/dts/qcom/sc8180x-lenovo-flex-5g.dtb: displayport-controller@ae9a000 (qcom,sc8180x-edp): reg: [[0, 183083008, 0, 512], [0, 183083520, 0, 512], [0, 183084032, 0, 1536], [0, 183085568, 0, 1024]] is too short
-    arch/arm64/boot/dts/qcom/sc8180x-primus.dtb: displayport-controller@ae9a000 (qcom,sc8180x-edp): reg: [[0, 183083008, 0, 512], [0, 183083520, 0, 512], [0, 183084032, 0, 1536], [0, 183085568, 0, 1024]] is too short
-    arch/arm64/boot/dts/qcom/sm6350-sony-xperia-lena-pdx213.dtb: displayport-controller@ae90000 (qcom,sm6350-dp): clocks: [[127, 1], [127, 7], [127, 11], [127, 14], [127, 15]] is too short
-    arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dtb: displayport-controller@ae90000 (qcom,sm6350-dp): clocks: [[141, 1], [141, 7], [141, 11], [141, 14], [141, 15]] is too short
-    arch/arm64/boot/dts/qcom/sm7325-nothing-spacewar.dtb: edp@aea0000 (qcom,sc7280-edp): reg: [[0, 183107584, 0, 512], [0, 183108096, 0, 512], [0, 183108608, 0, 3072], [0, 183111680, 0, 1024]] is too short
-    arch/arm64/boot/dts/qcom/sm8250-samsung-r8q.dtb: displayport-controller@ae90000 (qcom,sm8250-dp): clocks: [[193, 0], [193, 12], [193, 18], [193, 21], [193, 26]] is too short
-    arch/arm64/boot/dts/qcom/sm8250-samsung-x1q.dtb: displayport-controller@ae90000 (qcom,sm8250-dp): clocks: [[193, 0], [193, 12], [193, 18], [193, 21], [193, 26]] is too short
-    arch/arm64/boot/dts/xilinx/zynqmp-zcu102-rev1.0.dtb: clock-generator@36 (silabs,si5341): 'clock-output-names' does not match any of the regexes: '^out@[0-9]$', '^pinctrl-[0-9]+$', '^vddo[0-9]-supply$'
-    arch/arm64/boot/dts/xilinx/zynqmp-zcu102-rev1.0.dtb: clock-generator@36 (silabs,si5341): out@0: 'always-on' does not match any of the regexes: '^pinctrl-[0-9]+$'
-    arch/arm64/boot/dts/xilinx/zynqmp-zcu102-revA.dtb: clock-generator@36 (silabs,si5341): 'clock-output-names' does not match any of the regexes: '^out@[0-9]$', '^pinctrl-[0-9]+$', '^vddo[0-9]-supply$'
-    arch/arm64/boot/dts/xilinx/zynqmp-zcu102-revA.dtb: clock-generator@36 (silabs,si5341): out@0: 'always-on' does not match any of the regexes: '^pinctrl-[0-9]+$'
-    arch/arm64/boot/dts/xilinx/zynqmp-zcu102-revB.dtb: clock-generator@36 (silabs,si5341): 'clock-output-names' does not match any of the regexes: '^out@[0-9]$', '^pinctrl-[0-9]+$', '^vddo[0-9]-supply$'
-    arch/arm64/boot/dts/xilinx/zynqmp-zcu102-revB.dtb: clock-generator@36 (silabs,si5341): out@0: 'always-on' does not match any of the regexes: '^pinctrl-[0-9]+$'
-    arch/arm64/boot/dts/xilinx/zynqmp-zcu106-revA.dtb: clock-generator@36 (silabs,si5341): 'clock-output-names' does not match any of the regexes: '^out@[0-9]$', '^pinctrl-[0-9]+$', '^vddo[0-9]-supply$'
-    arch/arm64/boot/dts/xilinx/zynqmp-zcu106-revA.dtb: clock-generator@36 (silabs,si5341): out@0: 'always-on' does not match any of the regexes: '^pinctrl-[0-9]+$'
-    arch/arm64/boot/dts/xilinx/zynqmp-zcu111-revA.dtb: clock-generator@36 (silabs,si5341): 'clock-output-names' does not match any of the regexes: '^out@[0-9]$', '^pinctrl-[0-9]+$', '^vddo[0-9]-supply$'
-    arch/arm64/boot/dts/xilinx/zynqmp-zcu111-revA.dtb: clock-generator@36 (silabs,si5341): out@0: 'always-on' does not match any of the regexes: '^pinctrl-[0-9]+$'
-    drivers/hid/hid-steelseries.c:599:1: warning: label 'srws1_remove' defined but not used [-Wunused-label]
-    drivers/infiniband/hw/mlx5/mr.c:840:31: warning: 'sprintf' may write a terminating nul past the end of the destination [-Wformat-overflow=]
-    drivers/mfd/tps6594-core.c:767:21: error: implicit declaration of function 'FIELD_GET' [-Werror=implicit-function-declaration]
-    drivers/mfd/tps6594-core.c:767:21: error: implicit declaration of function 'FIELD_GET' [-Wimplicit-function-declaration]
-    drivers/mfd/tps6594-core.c:767:7: error: call to undeclared function 'FIELD_GET'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-    drivers/mfd/tps6594-core.c:767:7: error: implicit declaration of function 'FIELD_GET' [-Werror=implicit-function-declaration]
+You are correct. Current VM_BUG_ON_PAGE() will trigger if
+OBJEXTS_ALLOC_FAIL is set and that is wrong. When
+alloc_slab_obj_exts() fails to allocate the vector it does
+mark_failed_objexts_alloc() and exits without setting
+MEMCG_DATA_OBJEXTS (which it would have done if the allocation
+succeeded). So, any further calls to slab_obj_exts() will generate a
+warning because MEMCG_DATA_OBJEXTS is not set. I believe the proper
+fix would not be to set MEMCG_DATA_OBJEXTS along with
+OBJEXTS_ALLOC_FAIL because the pointer does not point to a valid
+vector but to modify the warning to:
 
-Unverified Error/Warning (likely false positive, kindly check if interested):
+VM_BUG_ON_PAGE(obj_exts && !(obj_exts & (MEMCG_DATA_OBJEXTS |
+OBJEXTS_ALLOC_FAIL)), slab_page(slab));
 
-    drivers/char/tpm/tpm_ppi.c:349 tpm_show_ppi_tcg_operations() warn: inconsistent returns 'global &tpm_ppi_lock'.
-    drivers/char/tpm/tpm_ppi.c:378 tpm_show_ppi_vs_operations() warn: inconsistent returns 'global &tpm_ppi_lock'.
-    drivers/gpu/drm/xe/xe_bo.c:2446 xe_bo_create_pin_range_novm() error: uninitialized symbol 'bo'.
-    drivers/gpu/drm/xe/xe_bo.c:2513 xe_bo_create_pin_map_at_novm() error: uninitialized symbol 'bo'.
-    drivers/gpu/drm/xe/xe_dma_buf.c:253 xe_dma_buf_init_obj() error: uninitialized symbol 'bo'.
-    drivers/gpu/drm/xe/xe_pxp_submit.c:133 allocate_gsc_client_resources() error: uninitialized symbol 'bo'.
-    kernel/power/energy_model.c:649 em_dev_register_pd_no_update() error: we previously assumed 'dev->em_pd' could be null (see line 594)
+IOW, we expect the obj_ext to be either NULL or have either
+MEMCG_DATA_OBJEXTS or OBJEXTS_ALLOC_FAIL set.
+>
+> Next question: OBJEXTS_ALLOC_FAIL is for memory profiling and we never
+> set it when memcg is disabled and memory profiling is enabled or even
+> with both memcg and memory profiling are enabled but cache does not have
+> SLAB_ACCOUNT. This seems unintentional as well, right?
 
-Error/Warning ids grouped by kconfigs:
+I'm not sure why you think OBJEXTS_ALLOC_FAIL is not set by memory
+profiling (independent of CONFIG_MEMCG state).
+__alloc_tagging_slab_alloc_hook()->prepare_slab_obj_exts_hook()->alloc_slab=
+_obj_exts()
+will attempt to allocate the vector and set OBJEXTS_ALLOC_FAIL if that
+fails.
 
-recent_errors
-|-- alpha-allnoconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- alpha-allyesconfig
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
-|-- alpha-defconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- arc-allmodconfig
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
-|-- arc-allnoconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- arc-allyesconfig
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
-|-- arc-defconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- arc-randconfig-001-20250912
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- arc-randconfig-002-20250912
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
-|-- arc-randconfig-r123-20250912
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
-|-- arm-allmodconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- arm-allnoconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- arm-allyesconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- arm-defconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- arm-jornada720_defconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- arm-randconfig-001-20250912
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- arm-randconfig-002-20250912
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- arm-randconfig-003-20250912
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- arm-randconfig-004-20250912
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- arm-randconfig-r131-20250912
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- arm64-allmodconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- arm64-allnoconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- arm64-defconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- arm64-randconfig-001-20250912
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- arm64-randconfig-002-20250912
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- arm64-randconfig-003-20250912
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- arm64-randconfig-004-20250912
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- arm64-randconfig-051-20250912
-|   |-- arch-arm64-boot-dts-qcom-lemans-evk.dtb:displayport-controller-af54000-(qcom-sa8775p-dp):clocks:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-lemans-evk.dtb:displayport-controller-af54000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-lemans-evk.dtb:displayport-controller-af5c000-(qcom-sa8775p-dp):clocks:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-lemans-evk.dtb:displayport-controller-af5c000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcm6490-fairphone-fp5.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcm6490-idp.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcm6490-shift-otter.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcs6490-rb3gen2-industrial-mezzanine.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcs6490-rb3gen2-vision-mezzanine.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcs6490-rb3gen2.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcs9100-ride-r3.dtb:displayport-controller-af54000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcs9100-ride-r3.dtb:displayport-controller-af5c000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcs9100-ride.dtb:displayport-controller-af54000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcs9100-ride.dtb:displayport-controller-af5c000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sa8775p-ride-r3.dtb:displayport-controller-af54000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sa8775p-ride-r3.dtb:displayport-controller-af5c000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sa8775p-ride.dtb:displayport-controller-af54000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sa8775p-ride.dtb:displayport-controller-af5c000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-crd-r3.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-crd-pro.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-crd.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-evoker-lte.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-evoker.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-herobrine-r1.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-villager-r0.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-villager-r1-lte.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-villager-r1.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-zombie-lte.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-zombie-nvme-lte.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-zombie-nvme.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-zombie.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-idp.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-idp2.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc818-lenovo-flex-5g.dtb:displayport-controller-ae9a000-(qcom-sc818-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc818-primus.dtb:displayport-controller-ae9a000-(qcom-sc818-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sm6350-sony-xperia-lena-pdx213.dtb:displayport-controller-ae90000-(qcom-sm6350-dp):clocks:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sm7225-fairphone-fp4.dtb:displayport-controller-ae90000-(qcom-sm6350-dp):clocks:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sm7325-nothing-spacewar.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sm8250-samsung-r8q.dtb:displayport-controller-ae90000-(qcom-sm8250-dp):clocks:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sm8250-samsung-x1q.dtb:displayport-controller-ae90000-(qcom-sm8250-dp):clocks:is-too-short
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu102-rev1..dtb:clock-generator-(silabs-si5341):clock-output-names-does-not-match-any-of-the-regexes:out-pinctrl-vddo-supply
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu102-rev1..dtb:clock-generator-(silabs-si5341):out:always-on-does-not-match-any-of-the-regexes:pinctrl
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu102-revA.dtb:clock-generator-(silabs-si5341):clock-output-names-does-not-match-any-of-the-regexes:out-pinctrl-vddo-supply
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu102-revA.dtb:clock-generator-(silabs-si5341):out:always-on-does-not-match-any-of-the-regexes:pinctrl
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu102-revB.dtb:clock-generator-(silabs-si5341):clock-output-names-does-not-match-any-of-the-regexes:out-pinctrl-vddo-supply
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu102-revB.dtb:clock-generator-(silabs-si5341):out:always-on-does-not-match-any-of-the-regexes:pinctrl
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu106-revA.dtb:clock-generator-(silabs-si5341):clock-output-names-does-not-match-any-of-the-regexes:out-pinctrl-vddo-supply
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu106-revA.dtb:clock-generator-(silabs-si5341):out:always-on-does-not-match-any-of-the-regexes:pinctrl
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu111-revA.dtb:clock-generator-(silabs-si5341):clock-output-names-does-not-match-any-of-the-regexes:out-pinctrl-vddo-supply
-|   `-- arch-arm64-boot-dts-xilinx-zynqmp-zcu111-revA.dtb:clock-generator-(silabs-si5341):out:always-on-does-not-match-any-of-the-regexes:pinctrl
-|-- arm64-randconfig-052-20250912
-|   |-- arch-arm64-boot-dts-qcom-lemans-evk.dtb:displayport-controller-af54000-(qcom-sa8775p-dp):clocks:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-lemans-evk.dtb:displayport-controller-af54000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-lemans-evk.dtb:displayport-controller-af5c000-(qcom-sa8775p-dp):clocks:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-lemans-evk.dtb:displayport-controller-af5c000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcm6490-fairphone-fp5.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcm6490-idp.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcm6490-shift-otter.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcs6490-rb3gen2-industrial-mezzanine.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcs6490-rb3gen2-vision-mezzanine.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcs6490-rb3gen2.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcs9100-ride-r3.dtb:displayport-controller-af54000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcs9100-ride-r3.dtb:displayport-controller-af5c000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcs9100-ride.dtb:displayport-controller-af54000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcs9100-ride.dtb:displayport-controller-af5c000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sa8775p-ride-r3.dtb:displayport-controller-af54000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sa8775p-ride-r3.dtb:displayport-controller-af5c000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sa8775p-ride.dtb:displayport-controller-af54000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sa8775p-ride.dtb:displayport-controller-af5c000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-crd-r3.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-crd-pro.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-crd.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-evoker-lte.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-evoker.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-herobrine-r1.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-villager-r0.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-villager-r1-lte.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-villager-r1.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-zombie-lte.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-zombie-nvme-lte.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-zombie-nvme.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-zombie.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-idp.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-idp2.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc818-lenovo-flex-5g.dtb:displayport-controller-ae9a000-(qcom-sc818-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc818-primus.dtb:displayport-controller-ae9a000-(qcom-sc818-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sm6350-sony-xperia-lena-pdx213.dtb:displayport-controller-ae90000-(qcom-sm6350-dp):clocks:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sm7225-fairphone-fp4.dtb:displayport-controller-ae90000-(qcom-sm6350-dp):clocks:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sm7325-nothing-spacewar.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sm8250-samsung-r8q.dtb:displayport-controller-ae90000-(qcom-sm8250-dp):clocks:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sm8250-samsung-x1q.dtb:displayport-controller-ae90000-(qcom-sm8250-dp):clocks:is-too-short
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu102-rev1..dtb:clock-generator-(silabs-si5341):clock-output-names-does-not-match-any-of-the-regexes:out-pinctrl-vddo-supply
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu102-rev1..dtb:clock-generator-(silabs-si5341):out:always-on-does-not-match-any-of-the-regexes:pinctrl
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu102-revA.dtb:clock-generator-(silabs-si5341):clock-output-names-does-not-match-any-of-the-regexes:out-pinctrl-vddo-supply
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu102-revA.dtb:clock-generator-(silabs-si5341):out:always-on-does-not-match-any-of-the-regexes:pinctrl
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu102-revB.dtb:clock-generator-(silabs-si5341):clock-output-names-does-not-match-any-of-the-regexes:out-pinctrl-vddo-supply
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu102-revB.dtb:clock-generator-(silabs-si5341):out:always-on-does-not-match-any-of-the-regexes:pinctrl
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu106-revA.dtb:clock-generator-(silabs-si5341):clock-output-names-does-not-match-any-of-the-regexes:out-pinctrl-vddo-supply
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu106-revA.dtb:clock-generator-(silabs-si5341):out:always-on-does-not-match-any-of-the-regexes:pinctrl
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu111-revA.dtb:clock-generator-(silabs-si5341):clock-output-names-does-not-match-any-of-the-regexes:out-pinctrl-vddo-supply
-|   `-- arch-arm64-boot-dts-xilinx-zynqmp-zcu111-revA.dtb:clock-generator-(silabs-si5341):out:always-on-does-not-match-any-of-the-regexes:pinctrl
-|-- arm64-randconfig-053-20250912
-|   |-- arch-arm64-boot-dts-qcom-lemans-evk.dtb:displayport-controller-af54000-(qcom-sa8775p-dp):clocks:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-lemans-evk.dtb:displayport-controller-af54000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-lemans-evk.dtb:displayport-controller-af5c000-(qcom-sa8775p-dp):clocks:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-lemans-evk.dtb:displayport-controller-af5c000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcm6490-fairphone-fp5.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcm6490-idp.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcm6490-shift-otter.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcs6490-rb3gen2-industrial-mezzanine.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcs6490-rb3gen2-vision-mezzanine.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcs6490-rb3gen2.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcs9100-ride-r3.dtb:displayport-controller-af54000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcs9100-ride-r3.dtb:displayport-controller-af5c000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcs9100-ride.dtb:displayport-controller-af54000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcs9100-ride.dtb:displayport-controller-af5c000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sa8775p-ride-r3.dtb:displayport-controller-af54000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sa8775p-ride-r3.dtb:displayport-controller-af5c000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sa8775p-ride.dtb:displayport-controller-af54000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sa8775p-ride.dtb:displayport-controller-af5c000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-crd-r3.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-crd-pro.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-crd.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-evoker-lte.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-evoker.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-herobrine-r1.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-villager-r0.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-villager-r1-lte.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-villager-r1.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-zombie-lte.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-zombie-nvme-lte.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-zombie-nvme.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-zombie.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-idp.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-idp2.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc818-lenovo-flex-5g.dtb:displayport-controller-ae9a000-(qcom-sc818-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc818-primus.dtb:displayport-controller-ae9a000-(qcom-sc818-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sm6350-sony-xperia-lena-pdx213.dtb:displayport-controller-ae90000-(qcom-sm6350-dp):clocks:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sm7225-fairphone-fp4.dtb:displayport-controller-ae90000-(qcom-sm6350-dp):clocks:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sm7325-nothing-spacewar.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sm8250-samsung-r8q.dtb:displayport-controller-ae90000-(qcom-sm8250-dp):clocks:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sm8250-samsung-x1q.dtb:displayport-controller-ae90000-(qcom-sm8250-dp):clocks:is-too-short
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu102-rev1..dtb:clock-generator-(silabs-si5341):clock-output-names-does-not-match-any-of-the-regexes:out-pinctrl-vddo-supply
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu102-rev1..dtb:clock-generator-(silabs-si5341):out:always-on-does-not-match-any-of-the-regexes:pinctrl
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu102-revA.dtb:clock-generator-(silabs-si5341):clock-output-names-does-not-match-any-of-the-regexes:out-pinctrl-vddo-supply
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu102-revA.dtb:clock-generator-(silabs-si5341):out:always-on-does-not-match-any-of-the-regexes:pinctrl
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu102-revB.dtb:clock-generator-(silabs-si5341):clock-output-names-does-not-match-any-of-the-regexes:out-pinctrl-vddo-supply
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu102-revB.dtb:clock-generator-(silabs-si5341):out:always-on-does-not-match-any-of-the-regexes:pinctrl
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu106-revA.dtb:clock-generator-(silabs-si5341):clock-output-names-does-not-match-any-of-the-regexes:out-pinctrl-vddo-supply
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu106-revA.dtb:clock-generator-(silabs-si5341):out:always-on-does-not-match-any-of-the-regexes:pinctrl
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu111-revA.dtb:clock-generator-(silabs-si5341):clock-output-names-does-not-match-any-of-the-regexes:out-pinctrl-vddo-supply
-|   `-- arch-arm64-boot-dts-xilinx-zynqmp-zcu111-revA.dtb:clock-generator-(silabs-si5341):out:always-on-does-not-match-any-of-the-regexes:pinctrl
-|-- arm64-randconfig-054-20250912
-|   |-- arch-arm64-boot-dts-qcom-lemans-evk.dtb:displayport-controller-af54000-(qcom-sa8775p-dp):clocks:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-lemans-evk.dtb:displayport-controller-af54000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-lemans-evk.dtb:displayport-controller-af5c000-(qcom-sa8775p-dp):clocks:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-lemans-evk.dtb:displayport-controller-af5c000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcm6490-fairphone-fp5.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcm6490-idp.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcm6490-shift-otter.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcs6490-rb3gen2-industrial-mezzanine.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcs6490-rb3gen2-vision-mezzanine.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcs6490-rb3gen2.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcs9100-ride-r3.dtb:displayport-controller-af54000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcs9100-ride-r3.dtb:displayport-controller-af5c000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcs9100-ride.dtb:displayport-controller-af54000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcs9100-ride.dtb:displayport-controller-af5c000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sa8775p-ride-r3.dtb:displayport-controller-af54000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sa8775p-ride-r3.dtb:displayport-controller-af5c000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sa8775p-ride.dtb:displayport-controller-af54000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sa8775p-ride.dtb:displayport-controller-af5c000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-crd-r3.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-crd-pro.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-crd.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-evoker-lte.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-evoker.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-herobrine-r1.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-villager-r0.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-villager-r1-lte.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-villager-r1.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-zombie-lte.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-zombie-nvme-lte.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-zombie-nvme.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-zombie.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-idp.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-idp2.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc818-lenovo-flex-5g.dtb:displayport-controller-ae9a000-(qcom-sc818-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc818-primus.dtb:displayport-controller-ae9a000-(qcom-sc818-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sm6350-sony-xperia-lena-pdx213.dtb:displayport-controller-ae90000-(qcom-sm6350-dp):clocks:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sm7225-fairphone-fp4.dtb:displayport-controller-ae90000-(qcom-sm6350-dp):clocks:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sm7325-nothing-spacewar.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sm8250-samsung-r8q.dtb:displayport-controller-ae90000-(qcom-sm8250-dp):clocks:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sm8250-samsung-x1q.dtb:displayport-controller-ae90000-(qcom-sm8250-dp):clocks:is-too-short
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu102-rev1..dtb:clock-generator-(silabs-si5341):clock-output-names-does-not-match-any-of-the-regexes:out-pinctrl-vddo-supply
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu102-rev1..dtb:clock-generator-(silabs-si5341):out:always-on-does-not-match-any-of-the-regexes:pinctrl
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu102-revA.dtb:clock-generator-(silabs-si5341):clock-output-names-does-not-match-any-of-the-regexes:out-pinctrl-vddo-supply
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu102-revA.dtb:clock-generator-(silabs-si5341):out:always-on-does-not-match-any-of-the-regexes:pinctrl
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu102-revB.dtb:clock-generator-(silabs-si5341):clock-output-names-does-not-match-any-of-the-regexes:out-pinctrl-vddo-supply
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu102-revB.dtb:clock-generator-(silabs-si5341):out:always-on-does-not-match-any-of-the-regexes:pinctrl
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu106-revA.dtb:clock-generator-(silabs-si5341):clock-output-names-does-not-match-any-of-the-regexes:out-pinctrl-vddo-supply
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu106-revA.dtb:clock-generator-(silabs-si5341):out:always-on-does-not-match-any-of-the-regexes:pinctrl
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu111-revA.dtb:clock-generator-(silabs-si5341):clock-output-names-does-not-match-any-of-the-regexes:out-pinctrl-vddo-supply
-|   `-- arch-arm64-boot-dts-xilinx-zynqmp-zcu111-revA.dtb:clock-generator-(silabs-si5341):out:always-on-does-not-match-any-of-the-regexes:pinctrl
-|-- arm64-randconfig-055-20250912
-|   |-- arch-arm64-boot-dts-qcom-lemans-evk.dtb:displayport-controller-af54000-(qcom-sa8775p-dp):clocks:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-lemans-evk.dtb:displayport-controller-af54000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-lemans-evk.dtb:displayport-controller-af5c000-(qcom-sa8775p-dp):clocks:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-lemans-evk.dtb:displayport-controller-af5c000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcm6490-fairphone-fp5.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcm6490-idp.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcm6490-shift-otter.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcs6490-rb3gen2-industrial-mezzanine.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcs6490-rb3gen2-vision-mezzanine.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcs6490-rb3gen2.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcs9100-ride-r3.dtb:displayport-controller-af54000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcs9100-ride-r3.dtb:displayport-controller-af5c000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcs9100-ride.dtb:displayport-controller-af54000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-qcs9100-ride.dtb:displayport-controller-af5c000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sa8775p-ride-r3.dtb:displayport-controller-af54000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sa8775p-ride-r3.dtb:displayport-controller-af5c000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sa8775p-ride.dtb:displayport-controller-af54000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sa8775p-ride.dtb:displayport-controller-af5c000-(qcom-sa8775p-dp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-crd-r3.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-crd-pro.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-crd.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-evoker-lte.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-evoker.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-herobrine-r1.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-villager-r0.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-villager-r1-lte.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-villager-r1.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-zombie-lte.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-zombie-nvme-lte.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-zombie-nvme.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-herobrine-zombie.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-idp.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc7280-idp2.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc818-lenovo-flex-5g.dtb:displayport-controller-ae9a000-(qcom-sc818-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sc818-primus.dtb:displayport-controller-ae9a000-(qcom-sc818-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sm6350-sony-xperia-lena-pdx213.dtb:displayport-controller-ae90000-(qcom-sm6350-dp):clocks:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sm7225-fairphone-fp4.dtb:displayport-controller-ae90000-(qcom-sm6350-dp):clocks:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sm7325-nothing-spacewar.dtb:edp-aea0000-(qcom-sc7280-edp):reg:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sm8250-samsung-r8q.dtb:displayport-controller-ae90000-(qcom-sm8250-dp):clocks:is-too-short
-|   |-- arch-arm64-boot-dts-qcom-sm8250-samsung-x1q.dtb:displayport-controller-ae90000-(qcom-sm8250-dp):clocks:is-too-short
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu102-rev1..dtb:clock-generator-(silabs-si5341):clock-output-names-does-not-match-any-of-the-regexes:out-pinctrl-vddo-supply
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu102-rev1..dtb:clock-generator-(silabs-si5341):out:always-on-does-not-match-any-of-the-regexes:pinctrl
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu102-revA.dtb:clock-generator-(silabs-si5341):clock-output-names-does-not-match-any-of-the-regexes:out-pinctrl-vddo-supply
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu102-revA.dtb:clock-generator-(silabs-si5341):out:always-on-does-not-match-any-of-the-regexes:pinctrl
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu102-revB.dtb:clock-generator-(silabs-si5341):clock-output-names-does-not-match-any-of-the-regexes:out-pinctrl-vddo-supply
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu102-revB.dtb:clock-generator-(silabs-si5341):out:always-on-does-not-match-any-of-the-regexes:pinctrl
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu106-revA.dtb:clock-generator-(silabs-si5341):clock-output-names-does-not-match-any-of-the-regexes:out-pinctrl-vddo-supply
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu106-revA.dtb:clock-generator-(silabs-si5341):out:always-on-does-not-match-any-of-the-regexes:pinctrl
-|   |-- arch-arm64-boot-dts-xilinx-zynqmp-zcu111-revA.dtb:clock-generator-(silabs-si5341):clock-output-names-does-not-match-any-of-the-regexes:out-pinctrl-vddo-supply
-|   `-- arch-arm64-boot-dts-xilinx-zynqmp-zcu111-revA.dtb:clock-generator-(silabs-si5341):out:always-on-does-not-match-any-of-the-regexes:pinctrl
-|-- arm64-randconfig-r133-20250912
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   `-- drivers-gpu-drm-amd-amdgpu-amdgpu_userq_fence.c:sparse:sparse:incompatible-types-in-comparison-expression-(different-address-spaces):
-|-- csky-allnoconfig
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   |-- arch-csky-abiv2-cacheflush.c:error:passing-argument-of-test_and_set_bit-from-incompatible-pointer-type
-|   |-- arch-csky-abiv2-inc-abi-cacheflush.h:error:passing-argument-of-clear_bit-from-incompatible-pointer-type
-|   |-- arch-csky-abiv2-inc-abi-cacheflush.h:error:passing-argument-of-const_test_bit-from-incompatible-pointer-type
-|   `-- arch-csky-abiv2-inc-abi-cacheflush.h:error:passing-argument-of-generic_test_bit-from-incompatible-pointer-type
-|-- csky-defconfig
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   |-- arch-csky-abiv2-cacheflush.c:error:passing-argument-of-test_and_set_bit-from-incompatible-pointer-type
-|   |-- arch-csky-abiv2-inc-abi-cacheflush.h:error:passing-argument-of-clear_bit-from-incompatible-pointer-type
-|   |-- arch-csky-abiv2-inc-abi-cacheflush.h:error:passing-argument-of-const_test_bit-from-incompatible-pointer-type
-|   `-- arch-csky-abiv2-inc-abi-cacheflush.h:error:passing-argument-of-generic_test_bit-from-incompatible-pointer-type
-|-- csky-randconfig-001-20250912
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   |-- arch-csky-abiv2-cacheflush.c:error:passing-argument-of-test_and_set_bit-from-incompatible-pointer-type
-|   |-- arch-csky-abiv2-inc-abi-cacheflush.h:error:passing-argument-of-clear_bit-from-incompatible-pointer-type
-|   |-- arch-csky-abiv2-inc-abi-cacheflush.h:error:passing-argument-of-const_test_bit-from-incompatible-pointer-type
-|   |-- arch-csky-abiv2-inc-abi-cacheflush.h:error:passing-argument-of-generic_test_bit-from-incompatible-pointer-type
-|   |-- drivers-hid-hid-steelseries.c:warning:label-srws1_remove-defined-but-not-used
-|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
-|-- csky-randconfig-002-20250912
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   |-- arch-csky-abiv2-cacheflush.c:error:passing-argument-of-test_and_set_bit-from-incompatible-pointer-type
-|   |-- arch-csky-abiv2-inc-abi-cacheflush.h:error:passing-argument-of-clear_bit-from-incompatible-pointer-type
-|   |-- arch-csky-abiv2-inc-abi-cacheflush.h:error:passing-argument-of-const_test_bit-from-incompatible-pointer-type
-|   `-- arch-csky-abiv2-inc-abi-cacheflush.h:error:passing-argument-of-generic_test_bit-from-incompatible-pointer-type
-|-- csky-randconfig-r132-20250912
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   |-- arch-csky-abiv2-cacheflush.c:error:passing-argument-of-test_and_set_bit-from-incompatible-pointer-type
-|   |-- arch-csky-abiv2-inc-abi-cacheflush.h:error:passing-argument-of-clear_bit-from-incompatible-pointer-type
-|   |-- arch-csky-abiv2-inc-abi-cacheflush.h:error:passing-argument-of-const_test_bit-from-incompatible-pointer-type
-|   `-- arch-csky-abiv2-inc-abi-cacheflush.h:error:passing-argument-of-generic_test_bit-from-incompatible-pointer-type
-|-- hexagon-allmodconfig
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   `-- drivers-mfd-tps6594-core.c:error:call-to-undeclared-function-FIELD_GET-ISO-C99-and-later-do-not-support-implicit-function-declarations
-|-- hexagon-allnoconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- hexagon-allyesconfig
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   `-- drivers-mfd-tps6594-core.c:error:call-to-undeclared-function-FIELD_GET-ISO-C99-and-later-do-not-support-implicit-function-declarations
-|-- hexagon-defconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- hexagon-randconfig-001-20250912
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   `-- drivers-mfd-tps6594-core.c:error:call-to-undeclared-function-FIELD_GET-ISO-C99-and-later-do-not-support-implicit-function-declarations
-|-- hexagon-randconfig-002-20250912
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- hexagon-randconfig-r111-20250912
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   `-- drivers-mfd-tps6594-core.c:error:call-to-undeclared-function-FIELD_GET-ISO-C99-and-later-do-not-support-implicit-function-declarations
-|-- i386-allmodconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- i386-allnoconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- i386-allyesconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- i386-buildonly-randconfig-001-20250912
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
-|-- i386-buildonly-randconfig-002-20250912
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- i386-buildonly-randconfig-003-20250912
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- i386-buildonly-randconfig-004-20250912
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- i386-buildonly-randconfig-005-20250912
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
-|-- i386-buildonly-randconfig-006-20250912
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   `-- drivers-mfd-tps6594-core.c:error:call-to-undeclared-function-FIELD_GET-ISO-C99-and-later-do-not-support-implicit-function-declarations
-|-- i386-defconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- i386-randconfig-061-20250912
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- i386-randconfig-062-20250912
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- i386-randconfig-063-20250912
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- i386-randconfig-141-20250911
-|   |-- drivers-gpu-drm-xe-xe_bo.c-xe_bo_create_pin_map_at_novm()-error:uninitialized-symbol-bo-.
-|   |-- drivers-gpu-drm-xe-xe_bo.c-xe_bo_create_pin_range_novm()-error:uninitialized-symbol-bo-.
-|   |-- drivers-gpu-drm-xe-xe_dma_buf.c-xe_dma_buf_init_obj()-error:uninitialized-symbol-bo-.
-|   `-- drivers-gpu-drm-xe-xe_pxp_submit.c-allocate_gsc_client_resources()-error:uninitialized-symbol-bo-.
-|-- i386-randconfig-141-20250912
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   `-- kernel-power-energy_model.c-em_dev_register_pd_no_update()-error:we-previously-assumed-dev-em_pd-could-be-null-(see-line-)
-|-- loongarch-allmodconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- loongarch-allnoconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- loongarch-allyesconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- loongarch-defconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- loongarch-randconfig-001-20250912
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
-|-- loongarch-randconfig-002-20250912
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- m68k-allmodconfig
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
-|-- m68k-allnoconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- m68k-allyesconfig
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
-|-- m68k-amiga_defconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- m68k-defconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- m68k-m5208evb_defconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- microblaze-allmodconfig
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
-|-- microblaze-allnoconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- microblaze-allyesconfig
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
-|-- microblaze-defconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- mips-allnoconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- mips-allyesconfig
-|   |-- (.head.text):relocation-truncated-to-fit:R_MIPS_26-against-kernel_entry
-|   |-- (.ref.text):relocation-truncated-to-fit:R_MIPS_26-against-start_secondary
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- mips-randconfig-r113-20250912
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- mips-randconfig-r121-20250912
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   `-- clang:error:clang-frontend-command-failed-with-exit-code-(use-v-to-see-invocation)
-|-- nios2-allnoconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- nios2-defconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- nios2-randconfig-001-20250912
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
-|-- nios2-randconfig-002-20250912
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
-|-- openrisc-allnoconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- openrisc-allyesconfig
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
-|-- openrisc-defconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- parisc-allmodconfig
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
-|-- parisc-allnoconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- parisc-allyesconfig
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
-|-- parisc-defconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- parisc-randconfig-001-20250912
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- parisc-randconfig-002-20250912
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
-|-- parisc64-defconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- powerpc-allnoconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- powerpc-allyesconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- powerpc-lite5200b_defconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- powerpc-mvme5100_defconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- powerpc-randconfig-001-20250912
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
-|-- powerpc-randconfig-002-20250912
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- powerpc-randconfig-003-20250912
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   `-- drivers-mfd-tps6594-core.c:error:call-to-undeclared-function-FIELD_GET-ISO-C99-and-later-do-not-support-implicit-function-declarations
-|-- powerpc64-randconfig-001-20250912
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
-|-- powerpc64-randconfig-002-20250912
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- powerpc64-randconfig-003-20250912
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- riscv-allmodconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- riscv-allnoconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- riscv-allyesconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- riscv-defconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- riscv-randconfig-001-20250912
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- riscv-randconfig-002-20250912
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
-|-- s390-alldefconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- s390-allmodconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- s390-allnoconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- s390-allyesconfig
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   `-- drivers-infiniband-hw-mlx5-mr.c:warning:sprintf-may-write-a-terminating-nul-past-the-end-of-the-destination
-|-- s390-defconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- s390-randconfig-001-20250912
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- s390-randconfig-002-20250912
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- sh-allmodconfig
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
-|-- sh-allnoconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- sh-allyesconfig
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
-|-- sh-defconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- sh-randconfig-001-20250912
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
-|-- sh-randconfig-002-20250912
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- sparc-allmodconfig
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
-|-- sparc-allnoconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- sparc-defconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- sparc-randconfig-001-20250912
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- sparc-randconfig-002-20250912
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
-|-- sparc-randconfig-r122-20250912
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- sparc64-defconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- sparc64-randconfig-001-20250912
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- sparc64-randconfig-002-20250912
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   `-- drivers-mfd-tps6594-core.c:error:call-to-undeclared-function-FIELD_GET-ISO-C99-and-later-do-not-support-implicit-function-declarations
-|-- um-allmodconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- um-allnoconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- um-allyesconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- um-defconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- um-i386_defconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- um-randconfig-001-20250912
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- um-randconfig-002-20250912
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- um-x86_64_defconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- x86_64-allnoconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- x86_64-allyesconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- x86_64-buildonly-randconfig-001-20250912
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- x86_64-buildonly-randconfig-002-20250912
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- x86_64-buildonly-randconfig-003-20250912
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   `-- drivers-mfd-tps6594-core.c:error:call-to-undeclared-function-FIELD_GET-ISO-C99-and-later-do-not-support-implicit-function-declarations
-|-- x86_64-buildonly-randconfig-004-20250912
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- x86_64-buildonly-randconfig-005-20250912
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   `-- drivers-mfd-tps6594-core.c:error:call-to-undeclared-function-FIELD_GET-ISO-C99-and-later-do-not-support-implicit-function-declarations
-|-- x86_64-buildonly-randconfig-006-20250912
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- x86_64-defconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- x86_64-randconfig-121-20250912
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   `-- drivers-gpu-drm-amd-amdgpu-amdgpu_userq_fence.c:sparse:sparse:incompatible-types-in-comparison-expression-(different-address-spaces):
-|-- x86_64-randconfig-122-20250912
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- x86_64-randconfig-123-20250912
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- x86_64-randconfig-161-20250912
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   |-- drivers-char-tpm-tpm_ppi.c-tpm_show_ppi_tcg_operations()-warn:inconsistent-returns-global-tpm_ppi_lock-.
-|   `-- drivers-char-tpm-tpm_ppi.c-tpm_show_ppi_vs_operations()-warn:inconsistent-returns-global-tpm_ppi_lock-.
-|-- x86_64-rhel-9.4-rust
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- xtensa-allnoconfig
-|   `-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|-- xtensa-allyesconfig
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
-|-- xtensa-randconfig-001-20250912
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
-|-- xtensa-randconfig-002-20250912
-|   |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-|   `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
-`-- xtensa-randconfig-r112-20250912
-    |-- Documentation-.renames.txt:warning:ignored-by-one-of-the-.gitignore-files
-    `-- drivers-mfd-tps6594-core.c:error:implicit-declaration-of-function-FIELD_GET
+>
+> Also I think slab_obj_exts() needs to handle OBJEXTS_ALLOC_FAIL explicitl=
+y.
 
-elapsed time: 847m
+Agree, so is my proposal to update the warning sounds right to you?
 
-configs tested: 133
-configs skipped: 5
-
-tested configs:
-alpha                             allnoconfig    gcc-15.1.0
-alpha                            allyesconfig    gcc-15.1.0
-alpha                               defconfig    gcc-15.1.0
-arc                              allmodconfig    gcc-15.1.0
-arc                               allnoconfig    gcc-15.1.0
-arc                              allyesconfig    gcc-15.1.0
-arc                                 defconfig    gcc-15.1.0
-arc                   randconfig-001-20250912    gcc-10.5.0
-arc                   randconfig-002-20250912    gcc-12.5.0
-arm                              allmodconfig    gcc-15.1.0
-arm                               allnoconfig    clang-22
-arm                              allyesconfig    gcc-15.1.0
-arm                                 defconfig    clang-22
-arm                      jornada720_defconfig    clang-22
-arm                   randconfig-001-20250912    clang-22
-arm                   randconfig-002-20250912    gcc-14.3.0
-arm                   randconfig-003-20250912    clang-22
-arm                   randconfig-004-20250912    gcc-10.5.0
-arm64                            allmodconfig    clang-19
-arm64                             allnoconfig    gcc-15.1.0
-arm64                               defconfig    gcc-15.1.0
-arm64                 randconfig-001-20250912    clang-20
-arm64                 randconfig-002-20250912    clang-16
-arm64                 randconfig-003-20250912    clang-22
-arm64                 randconfig-004-20250912    clang-19
-csky                              allnoconfig    gcc-15.1.0
-csky                                defconfig    gcc-15.1.0
-csky                  randconfig-001-20250912    gcc-15.1.0
-csky                  randconfig-002-20250912    gcc-11.5.0
-hexagon                          allmodconfig    clang-17
-hexagon                           allnoconfig    clang-22
-hexagon                          allyesconfig    clang-22
-hexagon                             defconfig    clang-22
-hexagon               randconfig-001-20250912    clang-22
-hexagon               randconfig-002-20250912    clang-22
-i386                             allmodconfig    gcc-14
-i386                              allnoconfig    gcc-14
-i386                             allyesconfig    gcc-14
-i386        buildonly-randconfig-001-20250912    gcc-14
-i386        buildonly-randconfig-002-20250912    clang-20
-i386        buildonly-randconfig-003-20250912    gcc-13
-i386        buildonly-randconfig-004-20250912    clang-20
-i386        buildonly-randconfig-005-20250912    gcc-14
-i386        buildonly-randconfig-006-20250912    clang-20
-i386                                defconfig    clang-20
-loongarch                        allmodconfig    clang-19
-loongarch                         allnoconfig    clang-22
-loongarch                           defconfig    clang-19
-loongarch             randconfig-001-20250912    gcc-15.1.0
-loongarch             randconfig-002-20250912    clang-22
-m68k                             allmodconfig    gcc-15.1.0
-m68k                              allnoconfig    gcc-15.1.0
-m68k                             allyesconfig    gcc-15.1.0
-m68k                          amiga_defconfig    gcc-15.1.0
-m68k                                defconfig    gcc-15.1.0
-m68k                       m5208evb_defconfig    gcc-15.1.0
-microblaze                       allmodconfig    gcc-15.1.0
-microblaze                        allnoconfig    gcc-15.1.0
-microblaze                       allyesconfig    gcc-15.1.0
-microblaze                          defconfig    gcc-15.1.0
-mips                              allnoconfig    gcc-15.1.0
-nios2                             allnoconfig    gcc-11.5.0
-nios2                               defconfig    gcc-11.5.0
-nios2                 randconfig-001-20250912    gcc-11.5.0
-nios2                 randconfig-002-20250912    gcc-11.5.0
-openrisc                          allnoconfig    gcc-15.1.0
-openrisc                         allyesconfig    gcc-15.1.0
-openrisc                            defconfig    gcc-15.1.0
-parisc                           allmodconfig    gcc-15.1.0
-parisc                            allnoconfig    gcc-15.1.0
-parisc                           allyesconfig    gcc-15.1.0
-parisc                              defconfig    gcc-15.1.0
-parisc                randconfig-001-20250912    gcc-14.3.0
-parisc                randconfig-002-20250912    gcc-8.5.0
-parisc64                            defconfig    gcc-15.1.0
-powerpc                           allnoconfig    gcc-15.1.0
-powerpc                          allyesconfig    clang-22
-powerpc                   lite5200b_defconfig    clang-22
-powerpc                    mvme5100_defconfig    gcc-15.1.0
-powerpc               randconfig-001-20250912    gcc-8.5.0
-powerpc               randconfig-002-20250912    clang-22
-powerpc               randconfig-003-20250912    clang-17
-powerpc64             randconfig-001-20250912    gcc-12.5.0
-powerpc64             randconfig-002-20250912    clang-22
-powerpc64             randconfig-003-20250912    clang-19
-riscv                            allmodconfig    clang-22
-riscv                             allnoconfig    gcc-15.1.0
-riscv                            allyesconfig    clang-16
-riscv                               defconfig    clang-22
-riscv                 randconfig-001-20250912    clang-16
-riscv                 randconfig-002-20250912    gcc-9.5.0
-s390                             alldefconfig    gcc-15.1.0
-s390                             allmodconfig    clang-18
-s390                              allnoconfig    clang-22
-s390                             allyesconfig    gcc-15.1.0
-s390                                defconfig    clang-22
-s390                  randconfig-001-20250912    gcc-10.5.0
-s390                  randconfig-002-20250912    gcc-10.5.0
-sh                               allmodconfig    gcc-15.1.0
-sh                                allnoconfig    gcc-15.1.0
-sh                               allyesconfig    gcc-15.1.0
-sh                                  defconfig    gcc-15.1.0
-sh                    randconfig-001-20250912    gcc-15.1.0
-sh                    randconfig-002-20250912    gcc-15.1.0
-sparc                            allmodconfig    gcc-15.1.0
-sparc                             allnoconfig    gcc-15.1.0
-sparc                               defconfig    gcc-15.1.0
-sparc                 randconfig-001-20250912    gcc-8.5.0
-sparc                 randconfig-002-20250912    gcc-13.4.0
-sparc64                             defconfig    clang-20
-sparc64               randconfig-001-20250912    gcc-8.5.0
-sparc64               randconfig-002-20250912    clang-20
-um                               allmodconfig    clang-19
-um                                allnoconfig    clang-22
-um                               allyesconfig    gcc-14
-um                                  defconfig    clang-22
-um                             i386_defconfig    gcc-14
-um                    randconfig-001-20250912    clang-22
-um                    randconfig-002-20250912    gcc-14
-um                           x86_64_defconfig    clang-22
-x86_64                            allnoconfig    clang-20
-x86_64                           allyesconfig    clang-20
-x86_64      buildonly-randconfig-001-20250912    gcc-14
-x86_64      buildonly-randconfig-002-20250912    gcc-14
-x86_64      buildonly-randconfig-003-20250912    clang-20
-x86_64      buildonly-randconfig-004-20250912    clang-20
-x86_64      buildonly-randconfig-005-20250912    clang-20
-x86_64      buildonly-randconfig-006-20250912    gcc-14
-x86_64                              defconfig    gcc-14
-x86_64                          rhel-9.4-rust    clang-20
-xtensa                            allnoconfig    gcc-15.1.0
-xtensa                randconfig-001-20250912    gcc-9.5.0
-xtensa                randconfig-002-20250912    gcc-12.5.0
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+>
+>
+> > ---
+> >  include/linux/memcontrol.h | 10 ++++++++--
+> >  mm/slub.c                  |  2 +-
+> >  2 files changed, 9 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+> > index 785173aa0739..d254c0b96d0d 100644
+> > --- a/include/linux/memcontrol.h
+> > +++ b/include/linux/memcontrol.h
+> > @@ -341,17 +341,23 @@ enum page_memcg_data_flags {
+> >       __NR_MEMCG_DATA_FLAGS  =3D (1UL << 2),
+> >  };
+> >
+> > +#define __OBJEXTS_ALLOC_FAIL MEMCG_DATA_OBJEXTS
+> >  #define __FIRST_OBJEXT_FLAG  __NR_MEMCG_DATA_FLAGS
+> >
+> >  #else /* CONFIG_MEMCG */
+> >
+> > +#define __OBJEXTS_ALLOC_FAIL (1UL << 0)
+> >  #define __FIRST_OBJEXT_FLAG  (1UL << 0)
+> >
+> >  #endif /* CONFIG_MEMCG */
+> >
+> >  enum objext_flags {
+> > -     /* slabobj_ext vector failed to allocate */
+> > -     OBJEXTS_ALLOC_FAIL =3D __FIRST_OBJEXT_FLAG,
+> > +     /*
+> > +      * Use bit 0 with zero other bits to signal that slabobj_ext vect=
+or
+> > +      * failed to allocate. The same bit 0 with valid upper bits means
+> > +      * MEMCG_DATA_OBJEXTS.
+> > +      */
+> > +     OBJEXTS_ALLOC_FAIL =3D __OBJEXTS_ALLOC_FAIL,
+> >       /* the next bit after the last actual flag */
+> >       __NR_OBJEXTS_FLAGS  =3D (__FIRST_OBJEXT_FLAG << 1),
+> >  };
+> > diff --git a/mm/slub.c b/mm/slub.c
+> > index 212161dc0f29..61841ba72120 100644
+> > --- a/mm/slub.c
+> > +++ b/mm/slub.c
+> > @@ -2051,7 +2051,7 @@ static inline void handle_failed_objexts_alloc(un=
+signed long obj_exts,
+> >        * objects with no tag reference. Mark all references in this
+> >        * vector as empty to avoid warnings later on.
+> >        */
+> > -     if (obj_exts & OBJEXTS_ALLOC_FAIL) {
+> > +     if (obj_exts =3D=3D OBJEXTS_ALLOC_FAIL) {
+> >               unsigned int i;
+> >
+> >               for (i =3D 0; i < objects; i++)
+> > --
+> > 2.47.3
+> >
 
