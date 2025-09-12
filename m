@@ -4,101 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1D81CA101F
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 15:25:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D711CA101F
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 15:36:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 381196B00A5; Fri, 12 Sep 2025 11:25:40 -0400 (EDT)
+	id 82D308E0005; Fri, 12 Sep 2025 11:36:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 331D88E0002; Fri, 12 Sep 2025 11:25:40 -0400 (EDT)
+	id 7DED18E0002; Fri, 12 Sep 2025 11:36:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 220686B00B6; Fri, 12 Sep 2025 11:25:40 -0400 (EDT)
+	id 6A5DA8E0005; Fri, 12 Sep 2025 11:36:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B6186B00A5
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 11:25:40 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9C1D1B9BDA
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 15:25:39 +0000 (UTC)
-X-FDA: 83880972798.14.79555B6
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf09.hostedemail.com (Postfix) with ESMTP id A6AB214000A
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 15:25:37 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf09.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 576998E0002
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 11:36:01 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 133E41607FE
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 15:36:01 +0000 (UTC)
+X-FDA: 83880998922.20.341AD99
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf30.hostedemail.com (Postfix) with ESMTP id BC62280006
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 15:35:58 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=OBpA4FMu;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=kAockfyw;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=OBpA4FMu;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=kAockfyw;
+	spf=pass (imf30.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757690737;
+	s=arc-20220608; t=1757691359;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YaVFVuWtyKgp7Y3tlzPDyRgfcQER5D3c+vZ1/BrwHVY=;
-	b=8owJWGltz5lKmI/FTMtLPjPpfHjwWSXpa9+0XmWu2xzm6uei2F1vLxuMyJnrd3XvISC2EA
-	MxjRWAl1SepmsZoaW8cErIH/Hu28yXPwL7wuddNossj/0oI+R0jTrLsWzF/nzX9kuKlHxS
-	KhI6VNAuJU+jn2U1O7GKjiBOLQdnCI0=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf09.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757690737; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=PBiocSUn73h91SztgA47KjxTQZuFNez33YFYDrxjsUg=;
+	b=HNMOcTg6AlkKl4ZhTFLrdYMRP+q4BkXlrXsbDLK4CbRrNoymlh+nGe5xiQVqpW5nUXxUfN
+	G39Z6XwsEH5NCD4nVlFKDvoYonw67pgyZotweYa0vVrJgdlJFaa+/es6sC2lBXo8iTtmtH
+	HM+gld3RY3NsDsJ696K8J/cVFlG/Ma0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757691359; a=rsa-sha256;
 	cv=none;
-	b=E70LNy9wgx+WNQkpbUdrjZmrEtO8jbeFtmKD35C8gZoCsBrwfrMJbKtHcEhrBSuTcgTUGN
-	D/yDUc6pKf2Ln7nzSNoA/o0I6sVC2TE/3ilY6+UVrpyM2lFYva0vpxAL/aV0xZjp/0IaX2
-	QOZD8YjM67C5OOYe5G8Vd3JVYUYu+r0=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6E94328AC;
-	Fri, 12 Sep 2025 08:25:28 -0700 (PDT)
-Received: from [10.57.66.147] (unknown [10.57.66.147])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 301DA3F694;
-	Fri, 12 Sep 2025 08:25:29 -0700 (PDT)
-Message-ID: <338ef811-1dab-4c4e-bc5f-8ebd8cb68435@arm.com>
-Date: Fri, 12 Sep 2025 17:25:27 +0200
+	b=0yICbFV+YSi1Z2PgPJESpj2yQI0uuVxCnSbu8ZmTxVNWkZxWA8PKec258enMQLOvvcZtDZ
+	LWT6ydtAdrZYfvQxGTLFF4ESaL7mjCST2ANtg4GbPjVcc1Z+d7Q7DjGerghhUSG00hyl90
+	AFE5MZ0dBC9sODl+qzA0ltJ0aY2VrAA=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=OBpA4FMu;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=kAockfyw;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=OBpA4FMu;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=kAockfyw;
+	spf=pass (imf30.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id EEA3920CAB;
+	Fri, 12 Sep 2025 15:35:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1757691357; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PBiocSUn73h91SztgA47KjxTQZuFNez33YFYDrxjsUg=;
+	b=OBpA4FMudjq2OYs5e/zWXlxyHxdj4X6xE5RK4DMMA5bEGrPppUbMnm0YNkCpx8dE26VLra
+	Y1iOy+TI3nJcNDUe61syTO77ppu3K/VXb0ahWHKzuQxxDo6zZcJnRzU95Kzy1Cf9tUgEa6
+	8rfhzKENsesY0kzhPnIe37oanrOzfXA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1757691357;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PBiocSUn73h91SztgA47KjxTQZuFNez33YFYDrxjsUg=;
+	b=kAockfywONAG9VoHlV/w63sA0RrFbI31pywIuhkQYtAHEM2l0KLiWHuHxAMzy+7F+jVkSZ
+	7+iid89z8TqVABDw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1757691357; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PBiocSUn73h91SztgA47KjxTQZuFNez33YFYDrxjsUg=;
+	b=OBpA4FMudjq2OYs5e/zWXlxyHxdj4X6xE5RK4DMMA5bEGrPppUbMnm0YNkCpx8dE26VLra
+	Y1iOy+TI3nJcNDUe61syTO77ppu3K/VXb0ahWHKzuQxxDo6zZcJnRzU95Kzy1Cf9tUgEa6
+	8rfhzKENsesY0kzhPnIe37oanrOzfXA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1757691357;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PBiocSUn73h91SztgA47KjxTQZuFNez33YFYDrxjsUg=;
+	b=kAockfywONAG9VoHlV/w63sA0RrFbI31pywIuhkQYtAHEM2l0KLiWHuHxAMzy+7F+jVkSZ
+	7+iid89z8TqVABDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1FE3F13869;
+	Fri, 12 Sep 2025 15:35:54 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id GH1IBNo9xGgkOgAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Fri, 12 Sep 2025 15:35:54 +0000
+Date: Fri, 12 Sep 2025 16:35:44 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: David Hildenbrand <david@redhat.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Kiryl Shutsemau <kas@kernel.org>, Nico Pache <npache@redhat.com>, 
+	linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, ziy@nvidia.com, baolin.wang@linux.alibaba.com, 
+	Liam.Howlett@oracle.com, ryan.roberts@arm.com, dev.jain@arm.com, corbet@lwn.net, 
+	rostedt@goodmis.org, mhiramat@kernel.org, mathieu.desnoyers@efficios.com, 
+	akpm@linux-foundation.org, baohua@kernel.org, willy@infradead.org, peterx@redhat.com, 
+	wangkefeng.wang@huawei.com, usamaarif642@gmail.com, sunnanyong@huawei.com, 
+	vishal.moola@gmail.com, thomas.hellstrom@linux.intel.com, yang@os.amperecomputing.com, 
+	aarcange@redhat.com, raquini@redhat.com, anshuman.khandual@arm.com, 
+	catalin.marinas@arm.com, tiwai@suse.de, will@kernel.org, dave.hansen@linux.intel.com, 
+	jack@suse.cz, cl@gentwo.org, jglisse@google.com, surenb@google.com, 
+	zokeefe@google.com, rientjes@google.com, mhocko@suse.com, rdunlap@infradead.org, 
+	hughd@google.com, richard.weiyang@gmail.com, lance.yang@linux.dev, vbabka@suse.cz, 
+	rppt@kernel.org, jannh@google.com
+Subject: Re: [PATCH v11 00/15] khugepaged: mTHP support
+Message-ID: <cip5baipge3u2tb2ysds6qeoq7qjqmtkk2x7uefamcwpgh42be@24bwdor4jskq>
+References: <20250912032810.197475-1-npache@redhat.com>
+ <ppzgohmkll7dbf2aiwhw7f4spf6kxjtwwe3djkx26pwy4ekrnd@mgeantq5sn2z>
+ <d0e81c75-ad63-4e37-9948-3ae89bc94334@redhat.com>
+ <20250912133701.GA802874@cmpxchg.org>
+ <da251159-b39f-467b-a4e3-676aa761c0e8@redhat.com>
+ <bd206c0e-3d99-4656-ad2f-f57316232498@lucifer.local>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-Subject: Re: [PATCH v2 0/7] Nesting support for lazy MMU mode
-To: David Hildenbrand <david@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Andreas Larsson <andreas@gaisler.com>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
- <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "David S. Miller" <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>,
- Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
- Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
- <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
- Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org,
- Mark Rutland <Mark.Rutland@arm.com>
-References: <20250908073931.4159362-1-kevin.brodsky@arm.com>
- <20250908191602.61160a7990b9ea418de758c7@linux-foundation.org>
- <d1b4ff2a-052f-4556-91ae-273962edbed0@redhat.com>
-Content-Language: en-GB
-In-Reply-To: <d1b4ff2a-052f-4556-91ae-273962edbed0@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 71gc7k4ou75e5bp9roqp5dmsqna4g18w
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <bd206c0e-3d99-4656-ad2f-f57316232498@lucifer.local>
+X-Stat-Signature: 3o7pcd3un8yrym7qtzm8y6c4xic4x13o
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A6AB214000A
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1757690737-212226
-X-HE-Meta: U2FsdGVkX1+uWF32/TMPwLDcfP+JaVy2zxn2L4t8evtWL3wD118nVw05W/mLDrtkO21iOJiOeArPf3xLF3GKRb24r+Em3KWnjKJfkHpSo+HXrKd23MEA5I9xJOFHUnpcyTPGy+esExrLXen2e9Fn0JF5VBMi2OZwBYHKZrCSKZK+Guq1P1rBWO1PITzfuHEqTVpWdCDfcNvtTA+uaRaamv9ZF0AwEwVw5Y9+Us4OAscxvh8Hd0hh9Ap67+MEXPXHpg0dahJFAKc6Uc7PfdDj2zdwoWQ0CllqPi/zvBxeAkzdCph2VI8k0ycUxHDeF+pfeqbqujaSbisK5CYjwTmxntdfoNuTGmBpH7gOhpTXYy4qEL/KNRYhoUO+02LUfGwiEXtetnaysCbugt4sYkHHIney7YcuKC+t04pfQQhiP5tkN79wgQbI+kVms++PK3aFlzlR5yzAlgFcN0V92uFC+DA7FKmVDEp4MV8lrbdDRn414p7OLPYgeNy4lCMnG5JyjRnCuN0x1h2/qxflLfQ8EKIGZ6uB3uwcs6Il4MWglxe7BJKyDIVnF7khtzYA3i6hkvyP2p88lXuwZbYRSkYmxXddZbLiHeoTn1/OhRnoHp0PaIRfZLnNkv7Mdt3/bu024P1z3Q7BGaGzNDGd3QuN6H9Gc71PfNVRCPxmZnJWsBQnt4VwtbOI4sj98B58D1hKeIl3xuhdhoF+AmuwJxHfVfY7bUdts2rViqg0fdbberl/bipIzyVtlXUuMvnP87U78/wMnt3HZRIUywHoLwZeWh4zDfoE864T/GUFytBZi0rwEHraAifxpBihOGYdViECW6Ti8llGKafEX8mJB3RtZU28iT1ZVNDRjUQlMmcbdnIbq7Cx59FJK1OTUzk6/WGgLyHGQrI0wcFba+KDfO31lgVgL2q0/U6hjhN799gld01EYdKs8iF+NVIlmdJt9qxckjj60ox71mprr+8HYrF
- MgdL54xE
- TPX0viFbmcuCuSpcOYVzE+6fKFEzKDZ6rbMjVTc4kY9qTErvEGcbN5zyEkgdZGdTpXAznqUiky+ieF1gyhLXV7/tJg9ETloWroKJ2zhC752c4dskWBlZ0dzu0YCzftNQu8VBAhHtYlwt0Lztm4mDPbyso+JnfuDX1zun/vdSzVwQaSyWoJO3+lmyo6VqV/H5Eo4K5tqSPvjYuzesqiLEIQEgc38k3OA7bHO8VgHwwagDAqUhPNA/s6cLsDFcUXgcditVZM4QQEl8vOXQr870W0Ju6pg==
+X-Rspamd-Queue-Id: BC62280006
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1757691358-171300
+X-HE-Meta: U2FsdGVkX1+ITSxXOdQ8fbprA9h6/i8Gf/pUP4CcCahSA0Nm1AKFMlEjOj5+0NiwMV+HZdh/pNh67QuHFdi66njHwpuoWyfd3guttJ0Xrk/FmNp1zEYov1i3O2sephUoKjngF9H/O68c0Sl3oAYCjZTKIuIF2O5k9Dyjkf89rPJc7gFrd+6B0X+cc1995ADJVnICNahAeR7aZ/GDwWTL4bk1ncTkLQK86OikoyMrzNG2AdHzkk1BCwvdrTcQCj5UNyk9PBP2YfvSdJ59Cght4amPJfGStHGkiBCSUgZmbsBGoP5yO+L/frzPD6uid+xH4ooUljV6BnNg/fWrckYX1yBbJK2fuTJ/xt7W/UETMmrMM2zgroTSjOIGPC3LTI/u5Z5j5j7mx0gGDLPH73UOHvswNK4/Q4/1EmQLq1uak0G6vJ1P0BHrqD9+YFwnTo7k7PUlwi88Ky+oL3XaSQ0G0W0lL9XcACC722wf6za+6AsDraxL0jUpR253JVnc7yq6+PFOyt2DC8Ey2D9Eu6wX37HXF0Yw8ueUFJ/cHxLOEW0ml9TCbM46DpYbZwSIUc/gQ2xmOpObneQIB7NWKzp+UTtmqOhGjWwNKNwhkD7lhXxD9Px0d6GqCZxJQtNi5YdX/T3wzjDTQv5gAmEv8tAOYdmppy2MJjg1jhzzxDiADNF71vswggfO9S4Kavxmx6m4OrpdR+v3rh/9tPUe+K5IwZutrtc/vfzuezp+0SuFSHHFZ7E/sw9VMR/2UC1vbtjmlHTVnrxR00+3xpBK9tRq92Y+uOQIJ+IiPOLnoIMKQ1hX4uT/u0VIKBYRa0pJTOaJpo43cp8Bdcz5HJOpt+eB1vu7izzk+22KI0YsVpuKXpQrS2sRMTHK9RAoCmzHsHDEQNNRygKbVLQafqTbxT4LSVVpEeF9pigSk3JTcI5Vb7F42fq6q7zRiwKd/ZBIRhwFUdN/Q2Mz6Xmo7papZDq
+ hsfQDiJe
+ VWAJAqbGUFTua5c8/QuD4FR6sw3lg7L1G0Ve07KiKhXZXcqvQ/D/eVeqhFZjywQKnYYqxCO+d/jEziXfZHLy/DpnpEH4RaLOKO24KYaUiujS+9Olr6Q1enCBCJ4mcQQ3oj6f2vopOA3lzbs7uOTA7HMXx4KaBWTWYcdPneP/wh3idDQ1KAJzWmsgpOBwbltZU4Py8S4uzzGEIOLL6Ob+nhVW9VkP/6XZpoMQH6rbSVNpXs/rYJ0FWWBXcXNJOnDJ2Xw7lYiPkUnKRXCkLTu5qh9c6SDH8GL+57aO1AgSWVh2FKGMYyE4HM7h/wzHWg7XdHF319OU/su4XEn6VqTNmQDHJW+BXzM31ZNGR2znd+a9VIsddqfZvDc800Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,105 +148,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 09/09/2025 11:21, David Hildenbrand wrote:
-> On 09.09.25 04:16, Andrew Morton wrote:
->> On Mon,  8 Sep 2025 08:39:24 +0100 Kevin Brodsky
->> <kevin.brodsky@arm.com> wrote:
->>
->>> The main change enabling nesting is patch 2, following the approach
->>> suggested by Catalin Marinas [4]: have enter() return some state and
->>> the matching leave() take that state.
->>
->> This is so totally the correct way.  Thanks.
->
-> Staring at this, I wonder if we could alternatively handle it like
-> pagefault_disable()/pagefault_enable(), having something like
-> current->lazy_mmu_enabled.
->
-> We wouldn't have to worry about preemption in that case I guess
-> (unless the arch has special requirements).
->
-> Not sure if that was already discussed, just a thought. 
+On Fri, Sep 12, 2025 at 03:01:02PM +0100, Lorenzo Stoakes wrote:
+> On Fri, Sep 12, 2025 at 03:46:36PM +0200, David Hildenbrand wrote:
+> > <snip>
+> > Exactly.
+> >
+> > And willy suggested something like "eagerness" similar to "swapinness" that
+> > gives us more flexibility when implementing it, including dynamically
+> > adjusting the values in the future.
+> 
+> I like the idea of abstracting it like this, and - in a rare case of kernel
+> developer agreement (esp. around naming :) - both Matthew, David and I rather
+> loved referring to this as 'eagerness' here :)
+> 
+> The great benefit in relation to dynamic state is that we can simply treat this
+> as an _abstract_ thing. I.e. 'how eager are we to establish THPs, trading off
+> against memory pressure and higher order folio resource consumption'.
+> 
+> And then we can decide how precisely that is implemented in practice - and a
+> sensible approach would indeed be to differentiate between scenarios where we
+> might be more willing to chomp up memory vs. those we are not.
+> 
+> This also aligns nicely with the 'grand glorious future' we all dream off (don't
+> we??) in THP where things are automated as much as possible and the _kernel
+> decides_ what's best as far as is possible.
+> 
+> As with swappiness, it is essentially a 'hint' to us in abstract terms rather
+> than simply exposing an internal kernel parameter.
+> 
+> (Credit to Matthew for making this abstraction suggestion in the THP cabal
+> meeting by the way!)
+> 
+> >
+> > >
+> > > An extreme example: if all your THPs have 2/512 pages populated,
+> > > that's still cutting TLB pressure in half!
+> >
+> > IIRC, you create more pressure on the huge entries, where you might have
+> > less TLB entries :) But yes, there can be cases where it is beneficial, if
+> > there is absolutely no memory pressure.
+> >
+> > >
+> > > So in the absence of memory pressure, allocating and collapsing should
+> > > optimally be aggressive even on very sparse regions.
+> >
+> > Yes, we discussed that as well in the THP cabal.
+> >
+> > It's very similar to the max_ptes_swapped: that parameter should not exist.
+> > If there is no memory pressure we can just swap it in. If there is memory
+> > pressure we probably would not want to swap in much.
+> 
+> Yes, but at least an eagerness parameter gets us closer to this ideal.
+> 
+> Of course, I agree that max_ptes_none should simply never have been exposed like
+> this. It is emblematic of a 'just shove a parameter into a tunable/sysfs and let
+> the user decide' approach you see in the kernel sometimes.
+> 
+> This is problmeatic as users have no earthly idea how to set the parameter (most
+> likely never touch it), and only start fiddling should issues arise and it looks
+> like a viable solution of some kind.
+> 
+> The problem is users usually lack a great deal of context the kernel has, and
+> may make incorrect decisions that work in one situation but not another.
 
-Based on the outcome of the discussion with David on patch 2 [1p], there
-is indeed an alternative approach that we should seriously consider. In
-summary:
+Note that in this case we really don't have much for context. We can trivially do
+"check what number of ptes are mapped", but not anything much fancier. You can
+also attempt to look at A bits (and/or check PG_referenced or PG_active). But
+currently there's really nothing setup to collect this information in a timely
+basis, and for anon memory (AFAIK) you only gauge this on reclaim, _if_ you
+find the page itself.
 
-* Keep the API stateless, handle nesting with a counter in task_struct
-* Introduce new functions to temporarily disable lazy_mmu without
-impacting nesting, track that with a bool in task_struct (addresses the
-situation in mm/kasan/shadow.c and possibly some x86 cases too)
-* Move as much handling from arch_* to generic functions
+The good news is that there are 3 or 4 separate movements for getting page
+"temperature" information with their own special infra and daemons, for their
+own special little features.
 
-What the new generic infrastructure would look like:
+> 
+> TL;DR - this kind of interface is just lazy and we have to assess these kinds of
+> tunables based on the actual RoI + understanding from the user's perspective.
 
-struct task_struct {
-    ...
-#ifdef CONFIG_ARCH_LAZY_MMU
-    struct {
-        uint8_t count;
-        bool enabled; /* or paused, see below */
-    } lazy_mmu_state;
-#endif
-}
+Fully agreed.
 
-* lazy_mmu_mode_enable():
-    if (!lazy_mmu_state.count) {
-        arch_enter_lazy_mmu_mode();
-        lazy_mmu_state.enabled = true;
-    }
-    lazy_mmu_state.count++;
-
-* lazy_mmu_mode_disable():
-    lazy_mmu_count--;
-    if (!lazy_mmu_state.count) {
-        lazy_mmu_state.enabled = false;
-        arch_leave_lazy_mmu_mode();
-    } else {
-        arch_flush_lazy_mmu_mode();
-    }
-
-* lazy_mmu_mode_pause():
-    lazy_mmu_state.enabled = false;
-    arch_leave_lazy_mmu_mode();
-
-* lazy_mmu_mode_resume();
-    arch_enter_lazy_mmu_mode();
-    lazy_mmu_state.enabled = true;
-
-The generic enable()/disable() helpers are able to handle most of the
-logic, leaving only truly arch-specific code to the arch callbacks:
-* Updating lazy_mmu_state
-* Sanity checks on lazy_mmu_state (e.g. count underflow/overflow,
-pause()/resume() only called when count > 0, etc.)
-* Bailing out if in_interrupt() (not done consistently across arch's at
-the moment)
-
-A further improvement is to make arch code check lazy_mmu_state.enabled
-to determine whether lazy_mmu is enabled at any given point. At the
-moment every arch uses a different mechanism, and this is an occasion to
-make them converge.
-
-The arch callback interface remains unchanged, and we are resurrecting
-arch_flush_lazy_mmu_mode() to handle the nested disable() case (flushing
-must happen when exiting a section regardless of nesting):
-
-enable() -> arch_enter()
-    enable() -> [nothing]
-    disable() -> arch_flush()
-disable() -> arch_leave()
-
-Note: lazy_mmu_state.enabled (set whenever lazy_mmu is actually enabled)
-could be replaced with lazy_mmu_state.paused (set inside a
-pause()/resume() section). I believe this is equivalent but the former
-is slightly more convenient for arch code - to be confirmed in practice.
-
-Any thoughts on this? Unless there are concerns, I will move towards
-that approach in v3.
-
-- Kevin
-
-[1p]
-https://lore.kernel.org/all/4aa28016-5678-4c66-8104-8dcc3fa2f5ce@redhat.com/t/#u
-
+-- 
+Pedro
 
