@@ -4,118 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51D52CAC582
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 09:21:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79336CA101F
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 09:25:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B1FDF8E001D; Fri, 12 Sep 2025 05:21:51 -0400 (EDT)
+	id C0FD58E0008; Fri, 12 Sep 2025 05:25:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF53F8E0006; Fri, 12 Sep 2025 05:21:51 -0400 (EDT)
+	id BE74B8E0006; Fri, 12 Sep 2025 05:25:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A0C198E001D; Fri, 12 Sep 2025 05:21:51 -0400 (EDT)
+	id B24628E0008; Fri, 12 Sep 2025 05:25:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F7488E0006
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 05:21:51 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5A65613BA6B
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 09:21:51 +0000 (UTC)
-X-FDA: 83880056022.27.8B2578C
-Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 881B6180007
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 09:21:49 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=SxZ47Gdj;
-	spf=pass (imf06.hostedemail.com: domain of zhang.lyra@gmail.com designates 209.85.210.48 as permitted sender) smtp.mailfrom=zhang.lyra@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A11228E0006
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 05:25:00 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 57EB51A073A
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 09:25:00 +0000 (UTC)
+X-FDA: 83880063960.09.7128BCD
+Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
+	by imf10.hostedemail.com (Postfix) with ESMTP id AD9C4C000A
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 09:24:57 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=LQgf9naz;
+	spf=pass (imf10.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757668909;
+	s=arc-20220608; t=1757669098;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WUZ7obya3Sr5RFpCVfRbeOTL3de87o7Xbr0uUEJlIJc=;
-	b=0oiM4NRi1Yb86kb5cDhg4pG+xDr7bcUTs5Nra3uDBrbtRutJAK2axO8BjTHcu5n1XHuCX2
-	c8jHo4vxvNuER8MnBh8L2Vs7AbKGbm/tJcWRgb4SINTUPnIhbFNmfAGESutSeaLizehzF4
-	Rp96xMyHBg/tpC55qcO8rIWoqUlSSrY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757668909; a=rsa-sha256;
-	cv=none;
-	b=pZwlJe+fkqzRBasVmmHlfGW/37yv1HZ2FXGfeLigW9GarY/PxgNT0377fV0f3vyG8AjXA8
-	ROHjtCQpnt+/oZpsfMA+tFcs7NBWx04zIbPauUnwwbJm2KjW68Z3eu9OQLp1NTsOwVaAhy
-	+38VNTUVpLe5oAcYBUpgGVnIwpHRTeM=
+	bh=yeQuxM0fjpmIe4g0xUTHddlrE41HXqCqb25Ih/uw2qU=;
+	b=YOyBNQK5y+h/ojebiZKIuRQbWSpHCm5RipIJJuFjCdjttxUi+t+ld0bIaprJyCxCyYGEzx
+	bWPiAZSkEDePLBuePxhobvy7DJvikJWW3bCZQcgKJkSOfoF04ucWxQC3+298/aZIHzTJRx
+	wz11LbK1EIDzUV04UaU7i3vyijDf6OY=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=SxZ47Gdj;
-	spf=pass (imf06.hostedemail.com: domain of zhang.lyra@gmail.com designates 209.85.210.48 as permitted sender) smtp.mailfrom=zhang.lyra@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-7459d088020so848093a34.3
-        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 02:21:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757668908; x=1758273708; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=WUZ7obya3Sr5RFpCVfRbeOTL3de87o7Xbr0uUEJlIJc=;
-        b=SxZ47GdjQzX4apM5G87VbQz4yWYeY7wVQyC3LeiB1wIBNts0U8P6wujIKVvVtWRTmh
-         x5YuxgBPKZ3ceN/hFw4CKZrCVFVlJ9mOtzAPSyKPoqq96MoivRrIe47yzhiA8OnajVoy
-         mWAtdlyovYYNJAvco6Z6H1Ja8m/MHB8FkGE8YLFrmdByI+AZtWCYAqVp2faGCadQMlOz
-         ut0BOdv53kPx5BtKAr7QgOSOCkxiBGKRPu/r/C3Cy3SBjjwrv+IW9zKcRwlC/Dri+p2/
-         RRxsmLHXX61gYwysFq51Rsr/SVLTqeUHrWlc2m43Eoh503zu2Fn7XIHpiFhMhtYpHBxs
-         xg1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757668908; x=1758273708;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=WUZ7obya3Sr5RFpCVfRbeOTL3de87o7Xbr0uUEJlIJc=;
-        b=sC6XSVQ0d6R42RCmSUUbf/j6+0p1mmJ72zCVrE3jU+5GDOCUzHWrhNiS5UGKbbaZrA
-         7AKa8Tyblv9xdTWcO1IQIL7C1uRQjfvAV6D79xCKTMjJpmr4dHHcOsREoSPjSr4i61S8
-         XZOZErBHgGBR4IUvY6IDFmuLsqqddp5IXNAzHI2t0ojbOW/pLWcsjkNYF7GIEL/D9tKG
-         nvT53kMfSqC5FmbQ5pv3pDUnve4KFtaAasstDVlrE8vBq/qZQ4y20lkHcGeGjXMrytuR
-         ejPvvarJW2Md09avS5QJl6LJQ5Ic8FvRSfcOHPe/i6QFV7vzSTDBsL3G4aEftLFHD/oC
-         sBYA==
-X-Forwarded-Encrypted: i=1; AJvYcCX8X+Xw5YIAUebS0tZxlMoQpm5VPq1ygpJ8wOZeUaORgLNiyeRwtL/GxTmtjfBiN9HBqU4GahEXVw==@kvack.org
-X-Gm-Message-State: AOJu0YyQ+7LiipiLekn8IEeSqg09S/WUsWjzS9NfYb1lGdTVgccNc32H
-	+fc4Wu3zuPgkny4mxtRW2ngycY5t0nPx3VCVU7XPzuvUd8XTH64Vo/oxddFcgfMaKQICqj/QqCL
-	JMZgcBgBgFLMfnGpm+LDXx4007m7LCI4=
-X-Gm-Gg: ASbGncvuaAYK0RZItYtNiU+/E0pHAjX6xRpWW/d5k8L8g78LBOogTUInt/x3W1h4QIa
-	IHykYUjkk1w8AdCf4VT4HkWrakdGY7WqJk2BSeYQtS8iTw7iNbzZp7HlSkiWgUsTNrpssEYbk2t
-	hR/3vRsPBW/oPu2oejYCOpA03WUmWfJKrh1vrcF5xxZWGFHA+90S8dKw0ykPOMfLH4cKEDILfgP
-	ENpTQ==
-X-Google-Smtp-Source: AGHT+IHKdOD0sav1pzLGsvexIHlR11xBcySbkJsNI1i4E1d/USdK7pecHfX7/WogNjy7HJPcnksQEcW2rH2s9qtPrgk=
-X-Received: by 2002:a05:6871:204:b0:31d:8a1e:78ce with SMTP id
- 586e51a60fabf-32e554a2f38mr945748fac.16.1757668908198; Fri, 12 Sep 2025
- 02:21:48 -0700 (PDT)
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=LQgf9naz;
+	spf=pass (imf10.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757669098; a=rsa-sha256;
+	cv=none;
+	b=tIB/ue92MLXkleYrdd+nxtfUFiVT0HuOjKR1gnneP3JMcrDmFcJyH0tB98qD58vBd78MVB
+	Zxj66uyURz1Z2YG5zqlwjYiOKFAKa2WTbmWxQlBiwwhfmERKcyJFvZRFaYJ1HZ9W3bQbSi
+	Ov1epi45Ca4s5EjsFCjyFQiUmmjqZZY=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1757669094; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=yeQuxM0fjpmIe4g0xUTHddlrE41HXqCqb25Ih/uw2qU=;
+	b=LQgf9nazpTkfsOzxRUfJrhqOt4jk9EMMOVAA6Dypi8Epz5gCvBUtQ0b6O8fRiMQlZl2XIsalleKR+R2NkR6i7pOoW811DQcW1o7/2taMYN3370iioinhA37d7GC7zhZiU8KeBIfjumliAZL2Dc5sZALy6bcWcqswFNEZSOuUmTk=
+Received: from 30.74.144.122(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WnqpgPM_1757669090 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 12 Sep 2025 17:24:52 +0800
+Message-ID: <50305e9f-ad03-4ce9-9ae7-0c657bd87ef0@linux.alibaba.com>
+Date: Fri, 12 Sep 2025 17:24:50 +0800
 MIME-Version: 1.0
-References: <20250911095602.1130290-1-zhangchunyan@iscas.ac.cn>
- <20250911095602.1130290-2-zhangchunyan@iscas.ac.cn> <9bcaf3ec-c0a1-4ca5-87aa-f84e297d1e42@redhat.com>
- <CAAfSe-sAru+FuhVWRa+i5_sj6m4318pLFrgP0Gsd0DVWzjE-hg@mail.gmail.com> <04d2d781-fd5e-4778-b042-d4dbeb8c5d49@redhat.com>
-In-Reply-To: <04d2d781-fd5e-4778-b042-d4dbeb8c5d49@redhat.com>
-From: Chunyan Zhang <zhang.lyra@gmail.com>
-Date: Fri, 12 Sep 2025 17:21:11 +0800
-X-Gm-Features: Ac12FXyFflHnf_JBI4i9hH9jqdgSKY4ieN6Zsx6mGzkigco15IPWhOrDoEo2gdw
-Message-ID: <CAAfSe-tQgmBm=RS2gCi7VaRW1XZhS_sJ9rHbvqJ0w=KwTf+m3g@mail.gmail.com>
-Subject: Re: [PATCH v11 1/5] mm: softdirty: Add pgtable_soft_dirty_supported()
-To: David Hildenbrand <david@redhat.com>
-Cc: Chunyan Zhang <zhangchunyan@iscas.ac.cn>, linux-riscv@lists.infradead.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Paul Walmsley <paul.walmsley@sifive.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Deepak Gupta <debug@rivosinc.com>, Ved Shanbhogue <ved@rivosinc.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: 8s34ojw9qh58ekiikq117bfog3apziwb
-X-Rspamd-Queue-Id: 881B6180007
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v11 11/15] khugepaged: introduce collapse_allowable_orders
+ helper function
+To: Nico Pache <npache@redhat.com>, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org
+Cc: david@redhat.com, ziy@nvidia.com, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, ryan.roberts@arm.com, dev.jain@arm.com,
+ corbet@lwn.net, rostedt@goodmis.org, mhiramat@kernel.org,
+ mathieu.desnoyers@efficios.com, akpm@linux-foundation.org,
+ baohua@kernel.org, willy@infradead.org, peterx@redhat.com,
+ wangkefeng.wang@huawei.com, usamaarif642@gmail.com, sunnanyong@huawei.com,
+ vishal.moola@gmail.com, thomas.hellstrom@linux.intel.com,
+ yang@os.amperecomputing.com, kas@kernel.org, aarcange@redhat.com,
+ raquini@redhat.com, anshuman.khandual@arm.com, catalin.marinas@arm.com,
+ tiwai@suse.de, will@kernel.org, dave.hansen@linux.intel.com, jack@suse.cz,
+ cl@gentwo.org, jglisse@google.com, surenb@google.com, zokeefe@google.com,
+ hannes@cmpxchg.org, rientjes@google.com, mhocko@suse.com,
+ rdunlap@infradead.org, hughd@google.com, richard.weiyang@gmail.com,
+ lance.yang@linux.dev, vbabka@suse.cz, rppt@kernel.org, jannh@google.com,
+ pfalcato@suse.de
+References: <20250912032810.197475-1-npache@redhat.com>
+ <20250912032810.197475-12-npache@redhat.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20250912032810.197475-12-npache@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: hwepjp8ux8w7fpcghinuq5t575hmfyo3
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1757668909-615752
-X-HE-Meta: U2FsdGVkX18pkAQyVuG3WePuXG+g5Rp8SfPq4V8eKEjZiHwJUmVy0KKJKrZtlSUJ4B5Ked10ADGDyZDwNyFJUUS67wuleVj53HfTRDhHnxtRaCMGXICWpB+MoIMOUg2Ve9uOP5rxrZPfF8EVT+8TiWv5WWK6okrAkyY+Lh58Dn3ZXXr90l/lXVaSKpwgM5UyEO6taLxakYZeMzBG1xe+no7Fn6/e6WN9Evxg/6tTnbTbeP9tInpf9WPxUqLeLmZj0x3y/Wz0srctaolrmpp9xC0IcdXPgxcwG2VGjde0naCdwpwSzb+HHkP9OmDW3qyB1RA4OuZ9iBwDABtwm+3fhAqXtR9OwZ84z+So1NpDkaQbyD/XJd9au8UxEPFFnRRjA7hOoGxKAHXI2yn9lKvs6tV0Z/knBijh8Tw6+itENmHELAUIFnRjxysep6XIO7xon5gDwk72HNCVtx69D+E3l0OqwKFF5T3W9mVauNhZMODTYL8CKMpuD0jQuuOl/+8Yck28mnKVLf1WQ1EZWa8CfKTlZ8tedAua3/7HWP9puG1IOg1cZFxlYJHuLQ5v4HXpR6jThJ7+Po1YPNtnOJaqOeGMgZ7SM+dSQHuc3aCCb2bnL/ZdqlogACDSbijGWR7nbiZv17KsJiOG9cbRXuEhIMPFlMd0OvjOYu69gav1yfGdywjpQPZqr1sSqK4EYOB+j9k3uNhT9MNlp002D+ZzUrxdqRpZLTh+d4Id/MhREQxCzi6CXqc1NheXMgCrCkF6bncz4LfGzke0qCNd5OkFe+g51B8ISpoF0pgjBMzGm7gWzuZpn4t44ch6ljtv/svwGP3d3jFjgfzN3w87IZFq1RbcY2EKxCIYzrNaMgLbX6JlbFQP3sRoimJ7pQNjsIjAX370MeNp6+yphBRpACxT/v+oaZdfB36ouqOkRM/ae+IES4+R9OO2cCCf1zTU/uLUBujeZDjP8OtebltQC9p
- 163B422P
- VDrRjbVgrCL1rRt+cL2qcUMjHUW0avYV5WGk0RA5qDrwRlUJQCYtYaFPiOrHdWk1PlfSMAvlahQ4UDdu/EBONoY7haoUIAa7HWIDMsLkMGHyifktFNqdxZBpNCi+1d677s9xSnp//n8FbOCuTi6vLkZJlWv+ts5UGUVTXxbEsXrWXGmRLqkK57XmSUYfJRCAvCHWwrQiD8JCctN268yju+y2tkEm6n8DcRiuccXm5PDBxuskxbzGEhYKS4biALDwod7bs4dTjno4AuVV32/9SOyil7hZ2iv5iYWWCZY5d7+zH1lpkukwVcOTxYvxKKO6NKu4s8HFs/yuE6UxolInEgTjS2p1buTW9DQdmAKtRX765T3u1y9oNUQGIVAnPKbavoDZh5W7T4GyPOwwr+S5ExFBKedKcmo1m4gFxhcB3kq6i9b3zmWXcAVQwEX2nydTK9iafY0+SQezkqIwHyDpZVlV3vJMrYF8LQ6NnivSHXsA+P/Q=
+X-Rspamd-Queue-Id: AD9C4C000A
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1757669097-363689
+X-HE-Meta: U2FsdGVkX18QfQ3stqQN1JYuDbLuYYg9CJUXtixATLLPYc8yypdG4RacH9lkR32kFg2cP5lk/LkRdw0bBtXDCw7EdultCxwe/J2HqOF6n7owaQ1jKyi2HTguhYCy2czmVMDRJZptVEKB446SVNj4PV3Xlnxmniq8xRqxNcq7EhVsbPTsMTN1Cq6LuK1Gvzw7F+ixFaCF4g5fOjPLzwpQubbcmrQZIRHq9LVwjJhNcXPQX90G+CEpphLCO3KWRlf2YFkVngrLEdKT1E6WwcYkLFp6pkLL3BaeI1U8eJFHzAjFdMa5oe/er+yYAyVHc3Pypb4A55fhCd+defJR6E0W/LVPjhmAgPrYzYHdnPfhOY5aGbisiS08xSaUuiUbuXgWSdCn8DmoIIiZ2sjjFHuFfL5BXjDCCNFLVz7MVcKC4U9qtablosU32o5dTlbEUnIOPhtdY1r7oACw8jWC8kdC7ydM7tb1xFHGmvB7lcK9t376wlAuOlSCM0quz/ZAHTC+50WyKmcdFx3aG5H/Im36rgo0FlOmdI/e46iIpLvZ98RQhrtIongdQJepWRNoVWJFwDmxS+jPTls76DXWjW7b88dsYzUyKboNmgtuKUe4qoOA2v9c5paA99SXRDwvii5i8MNqNn2V1D7Qg+AcND+pyZxpGWNp7O5UZi3gJpbRxq995aLfQjOs9QeNTKZQmHb7y1SgCyKVMQP4g7CM8HCcUY95f5STKHQfaAuFTWSLvA4CAqIrQ/PonIOMrYT/VszF9oKB1ZxT/16mDANtmieRr7mshtwF2GHuISND7gKqbDJZeWnmAyBGB/5+AHTMRnrk3oKR39IO9wzv5/b3sP2GmIwkmwDTzwJAW9pWdAioh0ySNure0AjrOdTWHfymEO3+3Hv7H1MYrca0su+Wo4CkEe4Vy/coOeVaIvYMzSdqrXByWRnS39UUuLcTFRXk3Fqncdil/GRaUushOVj4xv7
+ 9MSMgtuA
+ WWC6UNyoLCKuKyND8aFprbw7576x/wGzEzu6iDZNHFHi1N/mjBdEt0Ldnalr3cRHtziWtj0a+F6eHYuIz6Fj0P8OG4QWggPYU8p18PGq+oJ1/cNyNRZvEY4N93bKxN3eyT3lyyHKRfINn45n5kqfquaA4o7J7yU9jqaQDXaGNTecv3PrJ4VjdbZZ0Sp2E+YcKrOsGgWTt76L0Ohs1gZI0wXRHrlALKL0Oefhh7XK6aPSol6fxZktkECHvcPGN736N7qxfUo0PFGlQut0mXJqy8w4/nBa4dELtftovoC8UtCCuRh+mUJ7KJUllMP9p2RZ2qU7ZwknUstCYX49gBl6ST6ZXrT8xKAJB9e6Q+ieOjBHeON57tZxZ8crDakf933i0mz0jqQwGUl1RyWHyIDdr9NwAg9ILXi6sfIX8mQfN7m03so/il2vjqUJ1mz8WovOMfNWbjb6uBz1/ciAnXfQVElZMbUVSJM81yFm3
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,272 +103,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 12 Sept 2025 at 16:41, David Hildenbrand <david@redhat.com> wrote:
->
-> [...]
->
-> >>> +/*
-> >>> + * We should remove the VM_SOFTDIRTY flag if the soft-dirty bit is
-> >>> + * unavailable on which the kernel is running, even if the architecture
-> >>> + * provides the resource and soft-dirty is compiled in.
-> >>> + */
-> >>> +#ifdef CONFIG_MEM_SOFT_DIRTY
-> >>> +     if (!pgtable_soft_dirty_supported())
-> >>> +             mnemonics[ilog2(VM_SOFTDIRTY)][0] = 0;
-> >>> +#endif
-> >>
-> >> You can now drop the ifdef.
-> >
-> > Ok, you mean define VM_SOFTDIRTY 0x08000000 no matter if
-> > MEM_SOFT_DIRTY is compiled in, right?
-> >
-> > Then I need memcpy() to set mnemonics[ilog2(VM_SOFTDIRTY)] here.
->
-> The whole hunk will not be required when we make sure VM_SOFTDIRTY never
-> gets set, correct?
 
-Oh no, this hunk code does not set vmflag.
-The mnemonics[ilog2(VM_SOFTDIRTY)] is for show_smap_vma_flags(),
-something like below:
-# cat /proc/1/smaps
-5555605c7000-555560680000 r-xp 00000000 fe:00 19
-  /bin/busybox
-...
-VmFlags: rd ex mr mw me sd
 
-'sd' is for soft-dirty
+On 2025/9/12 11:28, Nico Pache wrote:
+> Add collapse_allowable_orders() to generalize THP order eligibility. The
+> function determines which THP orders are permitted based on collapse
+> context (khugepaged vs madv_collapse).
+> 
+> This consolidates collapse configuration logic and provides a clean
+> interface for future mTHP collapse support where the orders may be
+> different.
+> 
+> Signed-off-by: Nico Pache <npache@redhat.com>
 
-I think this is still needed, right?
+LGTM.
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
->
-> >
-> >>
-> >> But, I wonder if could we instead just stop setting the flag. Then we don't
-> >> have to worry about any VM_SOFTDIRTY checks.
-> >>
-> >> Something like the following
-> >>
-> >> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> >> index 892fe5dbf9de0..8b8bf63a32ef7 100644
-> >> --- a/include/linux/mm.h
-> >> +++ b/include/linux/mm.h
-> >> @@ -783,6 +783,7 @@ static inline void vma_init(struct vm_area_struct *vma, struct mm_struct *mm)
-> >>    static inline void vm_flags_init(struct vm_area_struct *vma,
-> >>                                   vm_flags_t flags)
-> >>    {
-> >> +       VM_WARN_ON_ONCE(!pgtable_soft_dirty_supported() && (flags & VM_SOFTDIRTY));
-> >>          ACCESS_PRIVATE(vma, __vm_flags) = flags;
-> >>    }
-> >>
-> >> @@ -801,6 +802,7 @@ static inline void vm_flags_reset(struct vm_area_struct *vma,
-> >>    static inline void vm_flags_reset_once(struct vm_area_struct *vma,
-> >>                                         vm_flags_t flags)
-> >>    {
-> >> +       VM_WARN_ON_ONCE(!pgtable_soft_dirty_supported() && (flags & VM_SOFTDIRTY));
-> >>          vma_assert_write_locked(vma);
-> >>          WRITE_ONCE(ACCESS_PRIVATE(vma, __vm_flags), flags);
-> >>    }
-> >> @@ -808,6 +810,7 @@ static inline void vm_flags_reset_once(struct vm_area_struct *vma,
-> >>    static inline void vm_flags_set(struct vm_area_struct *vma,
-> >>                                  vm_flags_t flags)
-> >>    {
-> >> +       VM_WARN_ON_ONCE(!pgtable_soft_dirty_supported() && (flags & VM_SOFTDIRTY));
-> >>          vma_start_write(vma);
-> >>          ACCESS_PRIVATE(vma, __vm_flags) |= flags;
-> >>    }
-> >> diff --git a/mm/mmap.c b/mm/mmap.c
-> >> index 5fd3b80fda1d5..40cb3fbf9a247 100644
-> >> --- a/mm/mmap.c
-> >> +++ b/mm/mmap.c
-> >> @@ -1451,8 +1451,10 @@ static struct vm_area_struct *__install_special_mapping(
-> >>                  return ERR_PTR(-ENOMEM);
-> >>
-> >>          vma_set_range(vma, addr, addr + len, 0);
-> >> -       vm_flags_init(vma, (vm_flags | mm->def_flags |
-> >> -                     VM_DONTEXPAND | VM_SOFTDIRTY) & ~VM_LOCKED_MASK);
-> >> +       vm_flags |= mm->def_flags | VM_DONTEXPAND;
-> >
-> > Why use '|=' rather than not directly setting vm_flags which is an
-> > uninitialized variable?
->
-> vm_flags is passed in by the caller?
->
+> ---
+>   mm/khugepaged.c | 15 ++++++++++++---
+>   1 file changed, 12 insertions(+), 3 deletions(-)
+> 
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 5b45ef575446..d224fa97281a 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -485,7 +485,16 @@ static int collapse_max_ptes_none(unsigned int order)
+>   	else
+>   		max_ptes_none = khugepaged_max_ptes_none;
+>   	return max_ptes_none >> (HPAGE_PMD_ORDER - order);
+> +}
+> +
+> +/* Check what orders are allowed based on the vma and collapse type */
+> +static unsigned long collapse_allowable_orders(struct vm_area_struct *vma,
+> +			vm_flags_t vm_flags, bool is_khugepaged)
+> +{
+> +	enum tva_type tva_flags = is_khugepaged ? TVA_KHUGEPAGED : TVA_FORCED_COLLAPSE;
+> +	unsigned long orders = BIT(HPAGE_PMD_ORDER);
+>   
+> +	return thp_vma_allowable_orders(vma, vm_flags, tva_flags, orders);
+>   }
+>   
+>   void khugepaged_enter_vma(struct vm_area_struct *vma,
+> @@ -493,7 +502,7 @@ void khugepaged_enter_vma(struct vm_area_struct *vma,
+>   {
+>   	if (!mm_flags_test(MMF_VM_HUGEPAGE, vma->vm_mm) &&
+>   	    hugepage_pmd_enabled()) {
+> -		if (thp_vma_allowable_order(vma, vm_flags, TVA_KHUGEPAGED, PMD_ORDER))
+> +		if (collapse_allowable_orders(vma, vm_flags, true))
+>   			__khugepaged_enter(vma->vm_mm);
+>   	}
+>   }
+> @@ -2557,7 +2566,7 @@ static unsigned int collapse_scan_mm_slot(unsigned int pages, int *result,
+>   			progress++;
+>   			break;
+>   		}
+> -		if (!thp_vma_allowable_order(vma, vma->vm_flags, TVA_KHUGEPAGED, PMD_ORDER)) {
+> +		if (!collapse_allowable_orders(vma, vma->vm_flags, true)) {
+>   skip:
+>   			progress++;
+>   			continue;
+> @@ -2865,7 +2874,7 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+>   	BUG_ON(vma->vm_start > start);
+>   	BUG_ON(vma->vm_end < end);
+>   
+> -	if (!thp_vma_allowable_order(vma, vma->vm_flags, TVA_FORCED_COLLAPSE, PMD_ORDER))
+> +	if (!collapse_allowable_orders(vma, vma->vm_flags, false))
+>   		return -EINVAL;
+>   
+>   	cc = kmalloc(sizeof(*cc), GFP_KERNEL);
 
-Then the original code seems wrong.
-
-> But just to clarify: this code was just a quick hack, adjust it as you need.
-
-Got it.
-
->
-> [...]
->
-> >>>
-> >>> +     if (!pgtable_soft_dirty_supported())
-> >>> +             return;
-> >>> +
-> >>>        if (pmd_present(pmd)) {
-> >>>                /* See comment in change_huge_pmd() */
-> >>>                old = pmdp_invalidate(vma, addr, pmdp);
-> >>
-> >> That would all be handled with the above never-set-VM_SOFTDIRTY.
->
-> I meant that there is no need to add the pgtable_soft_dirty_supported()
-> check.
-
-Ok I will take a look.
-
->
-> >
-> > Sorry I'm not sure I understand here, you mean no longer need #ifdef
-> > CONFIG_MEM_SOFT_DIRTY for these function definitions, right?
->
-> Likely we could drop them. VM_SOFTDIRTY will never be set so the code
-> will not be invoked.
-
-The relationship of VM_SOFTDIRTY and clear_soft_dirty_pmd() is not
-very direct from the first sight, let me take a further look.
-
->
-> And for architectures where VM_SOFTDIRTY is never even possible
-> (!CONFIG_MEM_SOFT_DIRTY) we keep it as 0.
-
-Ok.
-
->
-> That way, the compiler can even optimize out all of that code because
->
-> "vma->vm_flags & VM_SOFTDIRTY" -> "vma->vm_flags & 0"
->
-> will never be true.
->
-> >
-> >>
-> >>> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> >>> index 4c035637eeb7..2a3578a4ae4c 100644
-> >>> --- a/include/linux/pgtable.h
-> >>> +++ b/include/linux/pgtable.h
-> >>> @@ -1537,6 +1537,18 @@ static inline pgprot_t pgprot_modify(pgprot_t oldprot, pgprot_t newprot)
-> >>>    #define arch_start_context_switch(prev)     do {} while (0)
-> >>>    #endif
-> >>>
-> >>> +/*
-> >>> + * Some platforms can customize the PTE soft-dirty bit making it unavailable
-> >>> + * even if the architecture provides the resource.
-> >>> + * Adding this API allows architectures to add their own checks for the
-> >>> + * devices on which the kernel is running.
-> >>> + * Note: When overiding it, please make sure the CONFIG_MEM_SOFT_DIRTY
-> >>> + * is part of this macro.
-> >>> + */
-> >>> +#ifndef pgtable_soft_dirty_supported
-> >>> +#define pgtable_soft_dirty_supported()       IS_ENABLED(CONFIG_MEM_SOFT_DIRTY)
-> >>> +#endif
-> >>> +
-> >>>    #ifdef CONFIG_HAVE_ARCH_SOFT_DIRTY
-> >>>    #ifndef CONFIG_ARCH_ENABLE_THP_MIGRATION
-> >>>    static inline pmd_t pmd_swp_mksoft_dirty(pmd_t pmd)
-> >>> diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
-> >>> index 830107b6dd08..b32ce2b0b998 100644
-> >>> --- a/mm/debug_vm_pgtable.c
-> >>> +++ b/mm/debug_vm_pgtable.c
-> >>> @@ -690,7 +690,7 @@ static void __init pte_soft_dirty_tests(struct pgtable_debug_args *args)
-> >>>    {
-> >>>        pte_t pte = pfn_pte(args->fixed_pte_pfn, args->page_prot);
-> >>>
-> >>> -     if (!IS_ENABLED(CONFIG_MEM_SOFT_DIRTY))
-> >>> +     if (!pgtable_soft_dirty_supported())
-> >>>                return;
-> >>>
-> >>>        pr_debug("Validating PTE soft dirty\n");
-> >>> @@ -702,7 +702,7 @@ static void __init pte_swap_soft_dirty_tests(struct pgtable_debug_args *args)
-> >>>    {
-> >>>        pte_t pte;
-> >>>
-> >>> -     if (!IS_ENABLED(CONFIG_MEM_SOFT_DIRTY))
-> >>> +     if (!pgtable_soft_dirty_supported())
-> >>>                return;
-> >>>
-> >>>        pr_debug("Validating PTE swap soft dirty\n");
-> >>> @@ -718,7 +718,7 @@ static void __init pmd_soft_dirty_tests(struct pgtable_debug_args *args)
-> >>>    {
-> >>>        pmd_t pmd;
-> >>>
-> >>> -     if (!IS_ENABLED(CONFIG_MEM_SOFT_DIRTY))
-> >>> +     if (!pgtable_soft_dirty_supported())
-> >>>                return;
-> >>>
-> >>>        if (!has_transparent_hugepage())
-> >>> @@ -734,8 +734,8 @@ static void __init pmd_swap_soft_dirty_tests(struct pgtable_debug_args *args)
-> >>>    {
-> >>>        pmd_t pmd;
-> >>>
-> >>> -     if (!IS_ENABLED(CONFIG_MEM_SOFT_DIRTY) ||
-> >>> -             !IS_ENABLED(CONFIG_ARCH_ENABLE_THP_MIGRATION))
-> >>> +     if (!pgtable_soft_dirty_supported() ||
-> >>> +         !IS_ENABLED(CONFIG_ARCH_ENABLE_THP_MIGRATION))
-> >>>                return;
-> >>>
-> >>>        if (!has_transparent_hugepage())
-> >>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> >>> index 9c38a95e9f09..218d430a2ec6 100644
-> >>> --- a/mm/huge_memory.c
-> >>> +++ b/mm/huge_memory.c
-> >>> @@ -2271,12 +2271,13 @@ static inline int pmd_move_must_withdraw(spinlock_t *new_pmd_ptl,
-> >>>
-> >>>    static pmd_t move_soft_dirty_pmd(pmd_t pmd)
-> >>>    {
-> >>> -#ifdef CONFIG_MEM_SOFT_DIRTY
-> >>> -     if (unlikely(is_pmd_migration_entry(pmd)))
-> >>> -             pmd = pmd_swp_mksoft_dirty(pmd);
-> >>> -     else if (pmd_present(pmd))
-> >>> -             pmd = pmd_mksoft_dirty(pmd);
-> >>> -#endif
-> >>> +     if (pgtable_soft_dirty_supported()) {
-> >>> +             if (unlikely(is_pmd_migration_entry(pmd)))
-> >>> +                     pmd = pmd_swp_mksoft_dirty(pmd);
-> >>> +             else if (pmd_present(pmd))
-> >>> +                     pmd = pmd_mksoft_dirty(pmd);
-> >>> +     }
-> >>> +
-> >>
-> >> Wondering, should simply the arch take care of that and we can just clal
-> >> pmd_swp_mksoft_dirty / pmd_mksoft_dirty?
-> >
->
-> I think we have that already in include/linux/pgtable.h:
->
-> We have stubs that just don't do anything.
->
-> For riscv support you would handle runtime-enablement in these helpers.
->
-> >
-> >>
-> >>>        return pmd;
-> >>>    }
-> >>>
-> >>> diff --git a/mm/internal.h b/mm/internal.h
-> >>> index 45b725c3dc03..c6ca62f8ecf3 100644
-> >>> --- a/mm/internal.h
-> >>> +++ b/mm/internal.h
-> >>> @@ -1538,7 +1538,7 @@ static inline bool vma_soft_dirty_enabled(struct vm_area_struct *vma)
-> >>>         * VM_SOFTDIRTY is defined as 0x0, then !(vm_flags & VM_SOFTDIRTY)
-> >>>         * will be constantly true.
-> >>>         */
-> >>> -     if (!IS_ENABLED(CONFIG_MEM_SOFT_DIRTY))
-> >>> +     if (!pgtable_soft_dirty_supported())
-> >>>                return false;
-> >>>
-> >>
-> >> That should be handled with the above never-set-VM_SOFTDIRTY.
-> >
-> > We don't need to check if (!pgtable_soft_dirty_supported()) if I
-> > understand correctly.
-> Hm, let me think about that. No, I think this has to stay as the comment
-> says, so this case here is special.
-
-I will cook a new version and then we can discuss further based on the
-new patch.
-
-Thanks for your review,
-Chunyan
 
