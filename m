@@ -4,125 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72509CAC582
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 12:46:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E018CA101F
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 12:51:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C21848E001E; Fri, 12 Sep 2025 08:46:49 -0400 (EDT)
+	id A80C28E001F; Fri, 12 Sep 2025 08:51:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF9948E0003; Fri, 12 Sep 2025 08:46:49 -0400 (EDT)
+	id A58E48E0003; Fri, 12 Sep 2025 08:51:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B0F758E001E; Fri, 12 Sep 2025 08:46:49 -0400 (EDT)
+	id 96D348E001F; Fri, 12 Sep 2025 08:51:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9FE788E0003
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 08:46:49 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 550A011ABED
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 12:46:49 +0000 (UTC)
-X-FDA: 83880572538.26.A9D7A22
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 4EFCC80003
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 12:46:47 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=HTvt2Vay;
-	spf=pass (imf30.hostedemail.com: domain of linus.walleij@linaro.org designates 209.85.208.177 as permitted sender) smtp.mailfrom=linus.walleij@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
+	by kanga.kvack.org (Postfix) with ESMTP id 85D778E0003
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 08:51:45 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 54D2D1DF8E5
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 12:51:45 +0000 (UTC)
+X-FDA: 83880584970.14.4E2B145
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	by imf09.hostedemail.com (Postfix) with ESMTP id CD0D9140007
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 12:51:43 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=CLwevAb3;
+	dmarc=pass (policy=none) header.from=collabora.com;
+	spf=pass (imf09.hostedemail.com: domain of usama.anjum@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=usama.anjum@collabora.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757681504; a=rsa-sha256;
+	cv=none;
+	b=b98ytBbT/arv9erf/CtYh3x7SxngITyghOgEVvnrEJUE2em19ekfkLCatsuqvUh2h2nEwa
+	LrFlTjW1jewEaJXiNpbSAdQAoFkFM1Z4eutj9yNBGKX2Ob3U7EoVF/RMg9poUyx5CEOytr
+	nQrIliz/EoyaiTH4QKcVlljq+pi6dVE=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=CLwevAb3;
+	dmarc=pass (policy=none) header.from=collabora.com;
+	spf=pass (imf09.hostedemail.com: domain of usama.anjum@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=usama.anjum@collabora.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757681207;
+	s=arc-20220608; t=1757681504;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4J5UZwv7Uo2rH+o6sSlfGyt4PnQotdtpRnvjkNoAGSQ=;
-	b=ac9qJwrZiPEVMwvMVCmt2WgqpNE/QehmRRIGbNuOyDmJR9TjjEg0oHqC/1qgXQ4R8p2tJj
-	PQyyTOD+WaDR6OQBHfG0xxpe9Rv1qOCBywwVvfBsbQjD9fqZl0S3RoLfGEoe7rqpyzLpQf
-	98GDEwkmYREWFoGGAyK8Uhtz9EeLapk=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=HTvt2Vay;
-	spf=pass (imf30.hostedemail.com: domain of linus.walleij@linaro.org designates 209.85.208.177 as permitted sender) smtp.mailfrom=linus.walleij@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757681207; a=rsa-sha256;
-	cv=none;
-	b=YA/xugxZN3TPBnVWOd6hm2fyy7xJFsSdUpczBcjXYfvZYwo0BAMa4O6KhK5q4L46rk0gbc
-	FDczVJZZd9ly3BtUDtta8BwYf6MJiIREp03BeXVRfpFkGm0XsH7Q4tgh6GJwtLPxMuphm4
-	fX7VsKL7FHUqX4+xblBO1soS95WcKfY=
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-336b88c5362so18046581fa.0
-        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 05:46:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1757681205; x=1758286005; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4J5UZwv7Uo2rH+o6sSlfGyt4PnQotdtpRnvjkNoAGSQ=;
-        b=HTvt2Vayex8oLcFZ1Q08KUnvM3supO2zD8XhVhelHGGazANFYSPYKAHnI4EgiUWNL+
-         Oa/95ZBuHKdpdWMUDfuiX9IFrAM4EdZ7APhvxgD20hYI+VGAY413D3bMw4sLki+gZuCv
-         0NbiVr7RhOsf4mNIssLMn1mfGFhKrVycCzfl0lFe6ajiuDCW0DXlZ9MXJwCw0GNCh2Ut
-         NnjLrHMjRgmsA7Lrno5tzWW/OadAbTNr4aO/pFpebrWYN9hsnJnq/yonJav1wIAzNzps
-         tXKIECidXnGGxMqUKFmmEarFGtcTqoJGl2w+zyhyHzF4rNvX6RyV7R2uV5tlDueaWP7P
-         3Dhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757681205; x=1758286005;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4J5UZwv7Uo2rH+o6sSlfGyt4PnQotdtpRnvjkNoAGSQ=;
-        b=tN33EJKdu7CGKNOvNgIR7ihMpGvXjiBN+4MimEO/axkmCnAFC/y03KKNsSDtZ9tsCX
-         hOnLFAERurpcLw0rOg0pEH7gatzkGigGBgUtlKeL5DOzMeGPCaJiFDQFbNrRZWiytolw
-         +wm/Ejaycd+Gbwl65wqpfrGrgurrsbpeHFKkjVZIjHW9+kVSYg9wdRm2ugxFe6YFuf9+
-         spanfqvbNtZpZkQHOVTxZv+h0JiRkMrlJhUavu2wXpt1VP+ffFW2ZCiTJcI7/k5OVFaV
-         UU+p+AvUDN5gcRUJM7Ad0YYoR6DzOeJ90GryfJcR6B/SSmNErLwsYNwu9DlYAiNcpIyW
-         mDWA==
-X-Forwarded-Encrypted: i=1; AJvYcCVsOr5CeGI3zFANSPqIMNN5VfOLihK7S8K9NOClfYJABhugqA9EAOQvJjLFybI7pBlWO92Zk32GNQ==@kvack.org
-X-Gm-Message-State: AOJu0YyGUAjplzdEqpfSxuTR93Kr31kydmkyGCVBBXGMCiRuMRCyyVpc
-	rELw4vfdUtYNeWn/kZtw6WVGmOcadvyCEs2qAmhC6NWTkEePvVL38cLd5Do/JGWbJcyVzweC8YL
-	0xBo8Ejlmdf+lax8Iglo6e36zC0d1el5qqm2JGxsAEg==
-X-Gm-Gg: ASbGncv/+GNirIIEH0WVviD3NAA9aDjEInOJh96PW8seZ5vJ2D0b0EF5nejqietHRnw
-	0qoxWViZ5TWdDKf6CjjtxYPp6NFqinLAR7JjA1NMiOQV3Np1bWZY85poQPEGa55BwhEZesJI+PI
-	eGGgzXJYFc0X7V9mUDmf43GoQAaME0fSNernVhXlt+C+EBJFWtEo2F/PbicScCCtQMWusxsa/xv
-	bH5Izc=
-X-Google-Smtp-Source: AGHT+IFceSrS+iukkr/XkXsYJuXAC3/mzUt2kTyPUu5TFhzIuaRO7o+4f66lybawSyOyyY1O0N/R5wKHhfBQZAMqWCU=
-X-Received: by 2002:a05:651c:23c5:20b0:339:1b54:b367 with SMTP id
- 38308e7fff4ca-3513b296a39mr5927901fa.18.1757681205355; Fri, 12 Sep 2025
- 05:46:45 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=H6d6KVvobvRf6h5qFx/slYq7JJ6pJNt8yO6v6nFVy1k=;
+	b=J2BWgqiqRQOi+6VWBMUoBGazcx7TMyaiCJbpF34TH5HRZyMaHElvPXM+g3qHZxrOz4SWGa
+	mjwBEloVWLolZCBeyWP7vKGGK7sRABYTT1Z3bd+j4TQYR9/M3BeGzQkUlYbUaCL7d7UpsA
+	DPNjFlTiSCzfmJlvVxvfuX8H0HImJcc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1757681499;
+	bh=2qOtmkngpDfQA1QjDe6RQo1pEYaj3+XYIoXwhftLLaA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=CLwevAb3CWcyJim69XKJIdeuO297ATtaWgZcLKBdj0cxs8L6/lJleYP4V5c3ARgzZ
+	 mvApCazawRn7ksRS8rRgw7+M5IioDk889yvihSyxEjD01Xjzwl7h4yjXJw8uM+8EME
+	 q9Efd0AFpPJRRxC4p1h44uM7i7JE1KaFCsr1tEnW6Oc2lQqZsOGK+fIEkro0Z3z5hQ
+	 pUj37vBazcoYk04C2qJ8h1ERSRzNu82gQ9cVr78+0PC0w47vAOACV+O8RxHuiIcJ2c
+	 QE3T8uVrL7Toa5dwJBwx4YHO1S7HsSJKBtzW5gmIPcYgtwYmnv3Hnh4/Zv7058b2i2
+	 j90us0yAg7dqg==
+Received: from mt.tail9873f4.ts.net (unknown [144.48.130.189])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: usama.anjum)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 1EF4917E090D;
+	Fri, 12 Sep 2025 14:51:33 +0200 (CEST)
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+To: Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Antonio Quartulli <antonio@openvpn.net>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	kernel@collabora.com,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	netdev@vger.kernel.org
+Subject: [PATCH] selftests/mm: centralize the __always_unused macro
+Date: Fri, 12 Sep 2025 17:51:01 +0500
+Message-ID: <20250912125102.1309796-1-usama.anjum@collabora.com>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
- <497308537.21756.1757513073548.JavaMail.zimbra@nod.at> <dec53524-97ee-4e56-8795-c7549c295fac@sr71.net>
- <640041197.22387.1757536385810.JavaMail.zimbra@nod.at> <4fcd272f-81e3-4729-922b-588ad144e39b@app.fastmail.com>
-In-Reply-To: <4fcd272f-81e3-4729-922b-588ad144e39b@app.fastmail.com>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Fri, 12 Sep 2025 14:46:31 +0200
-X-Gm-Features: Ac12FXysdXrp8ARxlqs--JPKzGSESzQlXQvRlkFB3ZYER3az5tDF4P1ySurKojc
-Message-ID: <CACRpkdY9VS1H642wSUsLvwi91YOwXGkiePdq+JktDSeiWTon8w@mail.gmail.com>
-Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: Richard Weinberger <richard@nod.at>, Dave Hansen <dave@sr71.net>, ksummit <ksummit@lists.linux.dev>, 
-	linux-kernel <linux-kernel@vger.kernel.org>, 
-	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, 
-	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-mips <linux-mips@vger.kernel.org>, 
-	linux-mm <linux-mm@kvack.org>, imx <imx@lists.linux.dev>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Lucas Stach <l.stach@pengutronix.de>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Ankur Arora <ankur.a.arora@oracle.com>, 
-	David Hildenbrand <david@redhat.com>, Mike Rapoport <rppt@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Matthew Wilcox <willy@infradead.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, Ira Weiny <ira.weiny@intel.com>, 
-	Nishanth Menon <nm@ti.com>, =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, 
-	Alexander Sverdlin <alexander.sverdlin@gmail.com>, 
-	"Chester A. Unal" <chester.a.unal@arinc9.com>, 
-	Sergio Paracuellos <sergio.paracuellos@gmail.com>, Andreas Larsson <andreas@gaisler.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: CD0D9140007
+X-Stat-Signature: 9fczuaeipcbk53sc6jb8pzf8gstzpsx6
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 4EFCC80003
-X-Stat-Signature: 61hmy1fnrds7hedqqtisw5r688ezjac8
-X-HE-Tag: 1757681207-614452
-X-HE-Meta: U2FsdGVkX182La4CLL5D6T0joKPr2y5DeQzkP8dmmC0AjSuFUyjy+0ImfqBRKlS7vaB35l2l55x/R+pai1zWR/Dc7PCS0zhNqFnMCmFpxQuA8fGJk0B/OvE7hihBBLQdAoI7jZQOzf/GoOeeCmvf/gn2d4EFVWzI93vzwQXOvw/gaSVfx1THH30izCoFDFR+1qHU8MtVJAtZeN9cRaqI6ZoctqMB8VnZV9VIuP244pVbPUFJUs68rk2dF2NBcyLCe9xAg1fCC9NFDrLUr1pdIk5eCtH757Caw2ydXiXhIE1wRBcvj332LNKdFRtt1Be1j84C0B85RYMvKhuuzZwGY1AWZdJIWuz0aJhSGahRHAM7HiHAprr4iUFS7r+V6idnglUpDpMXdbkhf89oe8n5i0khytnYXSfgCX+0ifRVHjcKiAvel0QLJat6L4LUTuv2pWukXWCc8RIv2PghWUVPEJxUGawiq3fwVx8IdjIgHqdm6TK1lDQRzh6vwA2EAVb+/2XrzkGeXPU4LLsZ7byUAvpy4vAY1VOmyz8PeebxuRetvtuy3duTyBr9twEKPS8JvimDtOQAvwmS0ziOneYw1vSGE4bPd5SAnXwfbsShkTAiEI//L1i2GcmLQJEZzTADXaEh0OiyIWyqu5mbfyKzlhVA/KJLh98v0wiNmiHnIPsuRfzOyDaJgV0V9qytE5y4eyekyjQ35zd3gr3ZRfC3b15WK39HrFBV7aKwGECAnn3VP3xKcIyrlyMD66U0orz/bF8xHpPRlHQtSwU8h+mNOfWz+5RROqKQuqK3f8cTVvrLdG72pqMcHXvAu9JsToGjM9x6XX/xE2DokTpDQFv48Tx6Id5QBT5v/XczqWNVAt6SbO5xojFdG2fbiBMWnc63Nw0HXIpYrldTF0eu2rwDjs/RwP0hnqgb8QKdOiatMbe7EGlV3OSvMuAawUqv+npFsecJ4QOXJfrUGP2QTUR
- Mtv5/Aws
- qZM1QhqarxiJRom8KUZtAq8m2ktZR8yGgNyJ7JXHJSrMmfdVegBnwHZ41p4iIjNirgPAa8fGNVV/JOQAe1AfJNNXaoDbJ4QH7UeBv+uHwjKqNb9A2TMX689uYT9uszXjw3c4Vm6aX9ICzw9BiICjyvowjd02GZ6X/n2c9bYoFYG13mtz+GaUoX0Jgxfn26WD76M+TyRYvmMmbFI5wuK7zJPQhS19qPcrKoIBbQADi96XEFVEpi/p1oZm2TUgWjyt939jGY5rCKgcqMKaNECyneuXX/axf3zsbgZ7bJAQeyHUMS0TLC2EkGSTOEGq7KYlGPcebMT/Li4s8LknzGh6u2pA7KViwcGjdNxya7GTHdd2iuAnvzbALLXeO5Q==
+X-HE-Tag: 1757681503-308181
+X-HE-Meta: U2FsdGVkX19uV90h7pJryct7rKEbpGST55tDeq6ug5YLiFfDSRgoAJLI+yzyh0b174aZE1M+zizIrWFb+5WTjQJe7WKNBOQYRiilP3y1AWr9Y8whUf2NZILRhf/8rfM6bzkv8BDlC1iHxyBYBa89/lndhM0tZOQAgU9QYVqOjSIQA+zPpSzxyPr7km1v24uEv01VfCEhEj639LHBEafghClKu8WDsxCWA0di8Zk27+PDGKrWCHAMI/2xD/ePh2m3QyXguVCCvbr8zoeyqNd0wZBJYb1eiZE4iWGbBSdBlr8DADQojCpvxTVTXRYmJCOINIOtb9064tNoUgPCYkp4T9mBtkFfsp4exoKPQoP5Le9fCIVwlpofMJdUjbXdKJTO7TeRoQHAFzuXUE7x+3IpNe5+pI4SpaU64zCGHFCtYtQsZNXsS6iXUBM8EWOrr7ohcASrDfm6eJk4TZijo4QVSNViXHr8zoCbjhngXL0t/prdvwLATmIlxetZ6s17A8nSHR1A7Qo2dhbZ68JYv9Bl7lZbIipsCb2AttACX3B7wOXyhvAc7i9Znfd8HUHKwJVhQl+NDisfCGhEeSPbLhz7+6dZjp6Dcaz0EQdTrb6Je29CCCjPOfBp5mpYIxYgCDnlRFuGPmzlC6kfr2eQosIhAOLZ7SN8UZ/RENFlLnSwsvQbjHwA35gwEYP/k5DjjYJb/oNDM4N6MmoajHVWq5a9ddZsUXH+3Akq4UHAbh//1fdsVv74iXfgQdq9uxDUretooiOTpGjkrydsHfyM268lquLtcHz96TSw6p4njSrVucBxF7YESKDB+QiJFnZ2exceCKwtI+m8h5jQwPN1Gpfi6jqJss0ozXPN7IEWQixnpTS8IggiTKrG2MrLmag+rvW8c0GvTYwI9uh1xZ7eSGWcNknAdXOk8DG/8sA7SWW2Th2IdY8QU78MJ8Byb3UYvtmYq6hSY4Ic5zYLVjOT3PC
+ F71KmRHW
+ PfT1o++kPMDsM8mugKfcJOtQXyRa0koWizJz5wVPD9ckmaq0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,29 +110,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 12, 2025 at 12:31=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> wrot=
-e:
-> On Wed, Sep 10, 2025, at 22:33, Richard Weinberger wrote:
-> > ----- Urspr=C3=BCngliche Mail -----
-> >> Von: "Dave Hansen" <dave@sr71.net>
-> >>> Even with a new memory split, which could utilize most of the
-> >>> available memory, I expect there to be issues with various
-> >>> applications and FPGA device drivers.
->
-> I also remember driver problems on older Marvell NAS systems, which
-> we never fully figured out, my best guess in retrospect is that these
-> had devices with DMA address restrictions, and if lowmem is small
-> enough it would always work, but any lowmem allocation above the
-> hardware DMA address limit would cause data corruption.
+This macro gets used in different tests. Add it to kselftest.h
+which is central location and tests use this header. Then use this new
+macro.
 
-This kind of mess is often also driver problems, in the Kirkwood MMC
-driver there is some dated code traversing sglists iteratively
-instead of using sg_miter() on !DMA which I think is not entirely
-safe either.
+Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+---
+ tools/testing/selftests/kselftest.h          | 4 ++++
+ tools/testing/selftests/mm/protection_keys.c | 2 +-
+ tools/testing/selftests/net/ovpn/ovpn-cli.c  | 3 ++-
+ 3 files changed, 7 insertions(+), 2 deletions(-)
 
-I wanted to fix that driver but the hardware is in my NAS and
-all the time someone is watching a movie from it :D
+diff --git a/tools/testing/selftests/kselftest.h b/tools/testing/selftests/kselftest.h
+index 661d31c4b558c..274480e3573ab 100644
+--- a/tools/testing/selftests/kselftest.h
++++ b/tools/testing/selftests/kselftest.h
+@@ -92,6 +92,10 @@
+ #endif
+ #define __printf(a, b)   __attribute__((format(printf, a, b)))
+ 
++#ifndef __always_unused
++#define __always_unused __attribute__((__unused__))
++#endif
++
+ #ifndef __maybe_unused
+ #define __maybe_unused __attribute__((__unused__))
+ #endif
+diff --git a/tools/testing/selftests/mm/protection_keys.c b/tools/testing/selftests/mm/protection_keys.c
+index 6281d4c61b50e..2085982dba696 100644
+--- a/tools/testing/selftests/mm/protection_keys.c
++++ b/tools/testing/selftests/mm/protection_keys.c
+@@ -1302,7 +1302,7 @@ static void test_mprotect_with_pkey_0(int *ptr, u16 pkey)
+ 
+ static void test_ptrace_of_child(int *ptr, u16 pkey)
+ {
+-	__attribute__((__unused__)) int peek_result;
++	__always_unused int peek_result;
+ 	pid_t child_pid;
+ 	void *ignored = 0;
+ 	long ret;
+diff --git a/tools/testing/selftests/net/ovpn/ovpn-cli.c b/tools/testing/selftests/net/ovpn/ovpn-cli.c
+index 9201f2905f2ce..688a5fa6fdacd 100644
+--- a/tools/testing/selftests/net/ovpn/ovpn-cli.c
++++ b/tools/testing/selftests/net/ovpn/ovpn-cli.c
+@@ -32,9 +32,10 @@
+ 
+ #include <sys/socket.h>
+ 
++#include "../../kselftest.h"
++
+ /* defines to make checkpatch happy */
+ #define strscpy strncpy
+-#define __always_unused __attribute__((__unused__))
+ 
+ /* libnl < 3.5.0 does not set the NLA_F_NESTED on its own, therefore we
+  * have to explicitly do it to prevent the kernel from failing upon
+-- 
+2.47.3
 
-Yours,
-Linus Walleij
 
