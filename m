@@ -4,109 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B75ACAC582
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 09:37:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E0A1CAC582
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 09:43:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 85BFF8E0022; Fri, 12 Sep 2025 05:37:47 -0400 (EDT)
+	id 77E0D6B0010; Fri, 12 Sep 2025 05:43:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 80BCE8E0006; Fri, 12 Sep 2025 05:37:47 -0400 (EDT)
+	id 755F56B0022; Fri, 12 Sep 2025 05:43:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6D44E8E0022; Fri, 12 Sep 2025 05:37:47 -0400 (EDT)
+	id 66B746B0023; Fri, 12 Sep 2025 05:43:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 589E58E0006
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 05:37:47 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1C41813BA61
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 09:37:47 +0000 (UTC)
-X-FDA: 83880096174.18.34A0CC4
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	by imf24.hostedemail.com (Postfix) with ESMTP id A372A180003
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 09:37:44 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=zytor.com header.s=2025082201 header.b=jxIBuKWB;
-	spf=pass (imf24.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
-	dmarc=pass (policy=none) header.from=zytor.com
+	by kanga.kvack.org (Postfix) with ESMTP id 5642D6B0010
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 05:43:34 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E67065A17B
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 09:43:33 +0000 (UTC)
+X-FDA: 83880110706.05.822B5C9
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 0C97320008
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 09:43:31 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=D9iFzv1G;
+	spf=pass (imf13.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757669865;
+	s=arc-20220608; t=1757670212;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GE2ISEvWqh9sN8UYw61P33fDsnFm1/nb1kUiiX/ifUM=;
-	b=grmgLAj0dAx23Gi5alg6fvXpUT3j/dy/cUOJfW9eeI79KidqrsWQ4MziOPocR2x1TL2OHX
-	CFUxMW4DyHuEPYLZoL8J3UgJMnBKm2STJEFc77lWngq0r6L+ksCWD8m/Ss5hBF7jxI2YlA
-	u9GmaIzeGLJ7P2GA1ec1A34+vJhH0Uc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757669865; a=rsa-sha256;
+	bh=OETlIHZhLuu2YOWBlAPQ9XetW3Ixqb//beh5cOzY/AE=;
+	b=aglEzrwYfRT6aHTNlovuVfPnmKd+wbpcCi96ZRZoeSphK7DvTaWETJxE0vEOHiESNh9Dn8
+	jBMcCPI59XeKpO2X4TwTodxQcT6OBKApX06xxitGqwCaC9BIwOAo+95fQRUzfAu1i7ubGp
+	yKbT3Gf6Zy0fxD+LX4/BaGd7if9og0M=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757670212; a=rsa-sha256;
 	cv=none;
-	b=KA1GcCcYz16pEOt8RdtghGSNHJmgHMtK2nyFCATsXm82UPzOpJ6TpLUaaaQ4rY60BPseNm
-	634k5bTDqI45ET6xUbKLzyRPP8R1llEQN9KJmxUjRw64ONke8R144BYV3zXkLQ70K0abdE
-	k+U7RLodx+Kd6opmbnKhbXkuItTg8Ws=
+	b=b9dTccH08nuuc4FRkG/iO/wohcT60j5FQ2hyNYe1iDFA2VlMMLgmLabU74BI4qP9rPdaPL
+	COwFLs+qqcrHzQNg0cMi/PEP21juvTpEtowx6VovqR9oT8+rcjT5KqIZa78coj2E/5cYt/
+	I6wwQaNQw1ynVGIMsi8366CTBzKENdU=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=zytor.com header.s=2025082201 header.b=jxIBuKWB;
-	spf=pass (imf24.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
-	dmarc=pass (policy=none) header.from=zytor.com
-Received: from ehlo.thunderbird.net (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 58C9b0xv1357625
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Fri, 12 Sep 2025 02:37:00 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 58C9b0xv1357625
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025082201; t=1757669821;
-	bh=GE2ISEvWqh9sN8UYw61P33fDsnFm1/nb1kUiiX/ifUM=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=jxIBuKWBOuwi8Xn/pfTljgb3zhi4Bf+6TpFn4wY12CV2bo/HBYvEFlNNTSG8fPcmd
-	 Jj/Tfu0GL4cwgOIGmCy3Nn+jkWh8vnC8zuP/GErTXN0RQ77TNqxFkI31NPKxEScs+g
-	 3vOnPn4RJLBqsy4KnA1eIay9kM3VJsautov8wGzn+movTKqUP1FRL6RWjeOsUKd4W1
-	 PzI9yWN2VGly1IKj7GF6C15ow1c72iThcEsS5Y7nUNwJIqldXBZ/Cz0CDjQetsdIXJ
-	 cSf1aezna12azQgXZfQWWPOQrMR8BIbyp5qTPTfw3ynfjS2Z5IuCtNAHsMLsakvOcZ
-	 RcYRHWLQ0/FWA==
-Date: Fri, 12 Sep 2025 02:36:58 -0700
-From: "H. Peter Anvin" <hpa@zytor.com>
-To: Andreas Larsson <andreas@gaisler.com>, Arnd Bergmann <arnd@arndb.de>,
-        ksummit@lists.linux.dev
-CC: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
-        linux-mm@kvack.org, imx@lists.linux.dev,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Richard Weinberger <richard@nod.at>,
-        Lucas Stach <l.stach@pengutronix.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Ankur Arora <ankur.a.arora@oracle.com>,
-        David Hildenbrand <david@redhat.com>, Mike Rapoport <rppt@kernel.org>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Ira Weiny <ira.weiny@intel.com>, Nishanth Menon <nm@ti.com>,
-        =?ISO-8859-1?Q?Heiko_St=FCbner?= <heiko@sntech.de>,
-        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-        "Chester A. Unal" <chester.a.unal@arinc9.com>,
-        Sergio Paracuellos <sergio.paracuellos@gmail.com>
-Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
-User-Agent: K-9 Mail for Android
-In-Reply-To: <a393f6bd-ac30-4861-818c-ba0b558df4a4@gaisler.com>
-References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com> <5d2fec2b-8e59-417e-b9e6-12c6e27dd5f0@gaisler.com> <363853cd-7f10-4aa9-8850-47eee6d516b9@app.fastmail.com> <a393f6bd-ac30-4861-818c-ba0b558df4a4@gaisler.com>
-Message-ID: <0FEA041E-A07E-4259-AFBC-02906D122C3A@zytor.com>
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=D9iFzv1G;
+	spf=pass (imf13.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-62ec5f750f7so2502435a12.3
+        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 02:43:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757670210; x=1758275010; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OETlIHZhLuu2YOWBlAPQ9XetW3Ixqb//beh5cOzY/AE=;
+        b=D9iFzv1GMQzt/EoBy4tFU5TYHHiDG+fUFi3fYjO4PMpkVZ+ylSZ009oRa2+1NuncOB
+         Q3d5G0pivp4E3RgYDeBwjl6mq1FZEKPCAJlWISfNr6QBAvBzB8AMx6FwBYxveZVo9Rxw
+         UCsmDRwjOyWL+MM9MMZPtafCwt76xBCsaoel/RGGXHwwhS5+E+SkPWHz5GVIaVPAUr4a
+         bRyRvO+1EdMniFG4f9ujRlt6J253jVNZ8afSu4+gmNAllb4GAkL1AsDxQ6qJYzFMJ3Xm
+         SoILRtOr5BBdXwEPIx3lD9L8KniRvxDJeYUJGC+yjhQS9JYEwOX2iYfkNn50OcCDbFDN
+         muuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757670210; x=1758275010;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=OETlIHZhLuu2YOWBlAPQ9XetW3Ixqb//beh5cOzY/AE=;
+        b=U16qYGE0GlAOaXPjhWcEyQZKFSLLbnEwPpz0Eb6ASG15rLMfsSW2RCfJJhbP/Ql3R0
+         h/R/vSQO46lrsglrlISYzmOUdjJPtEPjiz79GAh7KdcCNYMMIvoaq6uX69HDBcPUbFS5
+         Nx8zCLkNKb3r2psppkUD1UstwbmdgGuLlalS2j1LNWaFGb8lJkbQ7tqrKo8dzK+Cp7LY
+         TGecKwrGWcCEM7qtigxMfbhQeOqQz4z2itPSRDJO8VslEhiQeQ3O479e7iy+WAGTWNTE
+         mclxgkc77nD/InheS1x5Gax87Tbg1wB21OfVbRpKNIEk463L9pkefWy87THx9oVypEdX
+         99HA==
+X-Forwarded-Encrypted: i=1; AJvYcCU8dE4MSXOu7Xvz9NU8TpDjYleYUHSZ7GEz1IISgBgCIBUeHhgngucZgYpcogBSMIsGo5kEGt8KlA==@kvack.org
+X-Gm-Message-State: AOJu0YzNbEUFq7iugDxh4u1YGUkRgOL9S5uXfrHN4NRx3pHJNPQCldVY
+	8DXwk4HOwTrjYa4wDjQDRpcWtYqguhXMXRf+NhKJu7RYHWAT8spHwgZTBLhMtGelswpGw44TDfU
+	qSu1fwSxvmHdaFPDGWSLHN8A90+kkg8E=
+X-Gm-Gg: ASbGncunMPV4EoC/0595Tkh1sZZyabuTXU3C9GjcO8NqDyxYbdDMmLwfzE8zuu9RNe1
+	1F/NHBIsVwXDHH5couLAOXVXESbnwksHScPrT9R4Y/sFUYE1IkS5dqB8a+MTFesYtflwjErpWx6
+	3iNWUjloPgbmxEi7joAlcXzrPK+CbL3+5k0GZ9yl0OLlkGbnDqZHylZTXDWUaXmyYAn4qVmzpi0
+	VGCnXwOLvM=
+X-Google-Smtp-Source: AGHT+IEzZL/B+m1oA93uBf6bciqzmOCInPrUEGceQPEbgzipBFvRN2q5E9EMf4RZciIhQg3sL5+cbhvs5JrscubJ+vY=
+X-Received: by 2002:a05:6402:2553:b0:627:f96f:aa7a with SMTP id
+ 4fb4d7f45d1cf-62ed85204f8mr2284392a12.30.1757670210176; Fri, 12 Sep 2025
+ 02:43:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+References: <20250910160833.3464-1-ryncsn@gmail.com> <20250910160833.3464-12-ryncsn@gmail.com>
+ <CABzRoyZc1zHHy5eFaO5hRY=bM36xsk3COd=r18KahmrP11tpSw@mail.gmail.com>
+ <CABzRoyaAA3D0nfkQcBMjZ7crUckJXXpGmYfmq6ojQC+BQUigFw@mail.gmail.com>
+ <CAMgjq7CtYpe4sEYaw2carqGskvchV9Z+1yn2Wa3nMP2VguV_eQ@mail.gmail.com>
+ <223c560b-0234-4203-a11d-661656317808@linux.dev> <d5f84730-c7c0-4059-a5b7-061a9eaebc5c@lucifer.local>
+In-Reply-To: <d5f84730-c7c0-4059-a5b7-061a9eaebc5c@lucifer.local>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Fri, 12 Sep 2025 17:42:53 +0800
+X-Gm-Features: AS18NWCKrRyfpaANX_oyOUj3Wt6htqC4Oat1olLvElN275-UZVlguwjwLMwtUec
+Message-ID: <CAMgjq7BbYmTCmA+NPS_jQ3iWM4DJR1mkDe925qTcYOMzbGwnGg@mail.gmail.com>
+Subject: Re: [PATCH v3 11/15] mm, swap: use the swap table for the swap cache
+ and switch API
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Lance Yang <lance.yang@linux.dev>, linux-mm@kvack.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, 
+	Hugh Dickins <hughd@google.com>, Chris Li <chrisl@kernel.org>, Barry Song <baohua@kernel.org>, 
+	Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@redhat.com>, Yosry Ahmed <yosryahmed@google.com>, Zi Yan <ziy@nvidia.com>, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: i4c58ne7wdausgwjpponiepqxa37bkff
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 0C97320008
+X-Stat-Signature: twed7m711yzj3scst35ax193ah4ae5o1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A372A180003
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1757669864-426351
-X-HE-Meta: U2FsdGVkX1/87D7ZLHCxHak8oCNwINZDkPBIQgTyrxNZdLIdvAa4k78pwSBtNyLQ9yKhJskLqCvR8VZGDdZVmBIz1lBw6Qd4Q3vLNFbCLCH7NYEzo9AAUkPGD/JBnC2zO45v9Q513TO+Je8QTE4fxPoYLy2R2TQh5LLoUBJhMf6GvRMa0Ur2aFWe6astmwoq0iEDdnEmZs/8wmYYHmKv3gCjzFXoGj3FAQm3t5dRx0BlssXm5dOs/W3ib+qjLaJrB5aq+geCyZYSmGUTTKegRNkbENcyiWhQohpXEvzD5NoyPmIMz/R3igbAdrh45v/iv9mtZp/2Ntel4PVJYw6Xv+1h/c45SYbKQZZ9wMJgdQNtzSvSASgxDL/aRBwf0UFB6U7XP0z6m4SQzaJH0vbzIYsrydpEwvhee0P1eKhyMtruYc2pEyfPiCkCmsmMMESKb6exCk4FpEwvICFRnzr+Lk9jgNxhloyEuLxMHjBNXA9jDoipIoCOMcATV17zFAiiKdCcRW9LYUQXOUCzM0OkTy37g8TWcwaZkMaBRReozR3IWi18w679YNdOmxpUsKWpad05Xj5j1Tf8Fp7nlObl4o3j49ULq4+C8vMin2TMDSNvsyPduu0AlmW7hjWE16evkRUX4Nm/2v9qnGJJD1YgK5OpHmS/SSI+33wlYZNjGLNlvGEdNExl2kJdC3yXZjbGKZWdSlSOcktmsNW/G9pFqKmo9orghCVcm5WhrHRm+KwoCkDWgIN2cZ6MPwpdL3jpF66uAsBXGeolADyELJtDu76BzVK3fvsd0dRhF5SHUgij79r7k1uNDFKyzjqSrugZ/oafTDC/RIdNp3dSrN4zVYVUEW5uHTMVxyiXU6M5uHbLPaFaFK/eRbECZTCwgyQBUIk27Yq0ZTYcU4cWF1CD4CNMvmaOYMspXQAj17PyHbWlshKRkkS37mtimiJvmgiPpgVv9+KMnZepRojnLnA
- 6guOckoK
- 5np6PQIrCkDcZpYmV7ZsmuU93esoIVsDZ2P+3VXCUoxxFbeDf8g7G18dziz4sIFR/StCIbSQG8EZ6v3IU9QM05JN2K0UK3l001z7D/g6NxAlEqhPph+zZPdfhLLkLOq2925gjT4ciujWtoFKaTz1nEPiTmiWO3PjRp7lIYhByRA8nI1g1HB79iJ57A/1gS8Du+3L2MKQvsJ9JNLcfbJ+IkDapbcBADIN63N8IL8kfOxmlkPzfgo7iDCpZJjGaT14TE8bT5M4fdNg2SyU1uNAdwJABilEa5/qCCzQZy4Q596X7sWg+3CFLL55CfqlYn14k26jBsmHDxDtC0zAQgcGgZBP+G0ktNWl/FJ+AQD1cyFy3NLc+6F6VT+r2TW61SOqfKpi3WEqzzDhXLLPxd+dZT0IIoCJ+bUwt3YiV+BfbQZA3l5k=
+X-HE-Tag: 1757670211-208107
+X-HE-Meta: U2FsdGVkX1+C0i6ftIbrsY9Z6ZVMP5l7m+s4QQN2QRysN3yKvg0Zt40FgzNbqsABtIgC9JMXFV4afgrSMksFQSF2Z99L/Xd8P84yFkXFBvYW0Krvo+aRvrBA3KCQsFO98fmqgcLyd5vflU7+JFAy/KBvNINqoZuxLA2yBaTZ3cfnfiyzYSjDEZau0YLm8jYyc+c6YqdDF0HgXuCoHGdzOOkguiJbUIyJcv4Upr1eVzURjrOhGzU6fargZfipIea7yuJPErACMBY8Xen24jliFAPzhYUZ7zr/vRENx+mNLXXJZi7s6ZIXFh3DAESMMkw/DDtFcD2KAJOFcT/6nR11rYEMjg5aamc+4iPIYDH0ts+kH10hvMOr4TwimJgdVJngp4qNU1Xq3cHxuotvq9KVmEjVLCsimH/FUz060JKtGn5/uNJwKQCL76xH2XMu9y4nmi8VrQoSpZC1dR9Dux4glOENjO7BNbClVBPKn9xWDPgOCQks2OUG5H4YpqB4IXWcvzTnOpr8P+vQ2mbZWCnNfT7dpz4C/Tjol63V4J+zGULtBXdtkYTkiN6kSxI6pfVumjIbTJJaWHQE0HHecX25wCyThf99xW1VH2oEEMUwR0QFyROwekyz6ytmY3qAtDu/NQfEc5KpydEYiBAjtV++GYgJQ6ki2TUGOKcs9lE0lImppZ3gxxkqGPii10eCIokbMdfjiG+TWaKYlFx79Pb10FMNO/AG9iS/VDFc0wKCXvdxB9okjZH+AgIMWlHxUZZ1j8egcUKdMmYIalB0/Nz72NPD1DMzTw068yZlY1TmokxoWktVBqlHv/YsAi9XuGLbajSkjaZA+jJ5tOvoUUiPGUu2Uc+gRCPf4w/p6S8pXOCgbm8ncOrKPL04tUBjUzZFbtLoOptGAy1QRzX9b2HDH+0IGG7PKvposVo2HtRjw/FTZILM069tIY0oy8LtfAAt4xiOjSgnypaxzbFM73b
+ jFsHrNyu
+ 6rWfauC98Ih+DUFDoN9gmgt5tSozwA4cHcDOr1av0UtZpVcMUvfsyPQtZfYk0wC5y8WfI4m1woCBCihEaGmyUZBPCb8esuCAwPwEj78NaNn8o5ktVii0B1eJmM0ASnze1G5Fx5Vfjec++RoW3R6m0mCdZwFIUjFIfiXaTGVB410Ys8Kw/OIs7sphcQq9EYQwbUsqvXw1iz3l0N8BWyUROs7geHhlLOw1RiXnnbIHG1TVC4G0Fls0GKh1aecm0bdSnjpWEX644xDuwwQ95dMtDAFFlqGYh1ouBVXFXlRnc7U/vlRU/DBPdjlpti5MTx3W65JPAR4a9JrCXI7/O5xBd7sklHyRN0QTAaxh/Oyj0SNpw3pmEw49haGyl8gntjMtH1p9PYWwUbJ8XQ3FFslVztsYnngB8PwTszJb5
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,92 +127,209 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On September 12, 2025 2:32:04 AM PDT, Andreas Larsson <andreas@gaisler=2Eco=
-m> wrote:
->On 2025-09-11 09:53, Arnd Bergmann wrote:
->> On Thu, Sep 11, 2025, at 07:38, Andreas Larsson wrote:
->>>
->>> We have a upcoming SoC with support for up to 16 GiB of DRAM=2E When t=
-hat is
->>> used in LEON sparc32 configuration (using 36-bit physical addressing),=
- a
->>> removed CONFIG_HIGHMEM would be a considerable limitation, even after =
-an
->>> introduction of different CONFIG_VMSPLIT_* options for sparc32=2E
->>=20
->> I agree that without highmem that chip is going to be unusable from Lin=
-ux,
->> but I wonder if there is a chance to actually use it even with highmem,
->> for a combination of reasons:
+On Fri, Sep 12, 2025 at 5:31=E2=80=AFPM Lorenzo Stoakes
+<lorenzo.stoakes@oracle.com> wrote:
 >
->I would definitely not call it unusable in LEON sparc32 mode with
->HIGHMEM gone, but it would of course be seriously hampered memory wise
->without HIGHMEM support compared to with HIGHMEM=2E In NOEL-V 64-bit
->RISC-V mode it will of course not be affected by these matters=2E
+> On Thu, Sep 11, 2025 at 10:54:19AM +0800, Lance Yang wrote:
+> >
+> >
+> > On 2025/9/11 10:48, Kairui Song wrote:
+> > > On Thu, Sep 11, 2025 at 10:34=E2=80=AFAM Lance Yang <lance.yang@linux=
+.dev> wrote:
+> > > >
+> > > > On Thu, Sep 11, 2025 at 10:27=E2=80=AFAM Lance Yang <lance.yang@lin=
+ux.dev> wrote:
+> > > > >
+> > > > > Hi Kairui,
+> > > > >
+> > > > > I'm hitting a build error with allnoconfig:
+> > > > >
+> > > > > In file included from mm/shmem.c:44:
+> > > > > mm/swap.h: In function =E2=80=98folio_index=E2=80=99:
+> > > > > mm/swap.h:462:24: error: implicit declaration of function
+> > > > > =E2=80=98swp_offset=E2=80=99; did you mean =E2=80=98pmd_offset=E2=
+=80=99?
+> > > > > [-Wimplicit-function-declaration]
+> > > > > 462 | return swp_offset(folio->swap);
+> > > > >
+> > > > > It looks like a header might be missing in mm/swap.h. Please let =
+me know
+> > > > > if you need any more information.
+> > > >
+> > > > Confirmed that just adding #include <linux/swapops.h> into mm/swap.=
+h fixes it.
+> > > >
+> > > > diff --git a/mm/swap.h b/mm/swap.h
+> > > > index ad339547ee8c..271e8c560fcc 100644
+> > > > --- a/mm/swap.h
+> > > > +++ b/mm/swap.h
+> > > > @@ -3,6 +3,7 @@
+> > > >   #define _MM_SWAP_H
+> > > >
+> > > >   #include <linux/atomic.h> /* for atomic_long_t */
+> > > > +#include <linux/swapops.h>
+> > > >   struct mempolicy;
+> > > >   struct swap_iocb;
+> > > >
+> > > > Cheers,
+> > > > Lance
+> > > >
+> > >
+> > > Hi Lance,
+> > >
+> > > You are testing V2 not V3 right? The build error is in V2 and I can
+> > > confirm that. But In V3 I've added "ifdef CONFIG_SWAP" for the
+> > > swp_offset usage in swap.h. I've just tested allnoconfig and it
+> > > works fine on aarch64 and x86_64.
+> > >
+> > > V2: https://lore.kernel.org/linux-mm/20250905191357.78298-12-ryncsn@g=
+mail.com/
+> >
+> >
+> > Ah, I was testing V2. My apologies for the noise!
+> >
 >
+> OK so my bug is different then :)
 >
->> - sparc32 has 36-bit addressing in the MMU, but Linux apparently never
->>   supported a 64-bit phys_addr_t here, which would be required=2E
->>   This is probably the easiest part and I assume you already have patch=
-es
->>   for it=2E
->>=20
->> - As far as I can tell, the current lowmem area is 192MB, which would
->>   be ok(-ish) on a 512MB maxed-out SPARCstation, but for anything bigge=
-r
->>   you likely run out of lowmem long before being able to touch the
->>   all highmem pages=2E This obviously depends a lot on the workload=2E
->>=20
->> - If you come up with patches to extend lowmem to 2GB at the expense
->>   of a lower TASK_SIZE, you're still  looking at a ration of 7:1 with
->>   14GB of highmem on the maxed-out configuration, so many workloads
->>   would still struggle to actually use that memory for page cache=2E
+> I think the issue is that you're not properly checking for:
 >
->Yes, we already have patches for 36-bit addressing with 64-bit
->phys_addr_t=2E Patches for CONFIG_VMSPLIT_* are under development=2E
+> #ifdef CONFIG_MMU
+> ...
+> #endif
 >
->Even with 192 MiB lowmem we have being using up to 4 GiB without running
->into problems=2E Could you elaborate on why you think lowmem would run ou=
-t
->before 14 GiB highmem in a VMSPLIT_3G or VMSPLIT_2G configuration?
+> This is v3 (I see the #ifdef CONFIG_SWAP) btw.
 >
->And even if 14 GiB highmem would be hard to get full usage out of, for a
->board with 8 GiB memory (or a configuration limiting 16 GiB down to only
->use 8 GiB or somewhere in between) the difference between getting to use
->2 GiB and 8 GiB is quite hefty=2E
+> So swapops.h is wrapped by #ifdef CONFIG_MMU which is why the declaration=
+ is
+> missing.
 >
->=20
->> - If we remove HIGHPTE (as discussed in this thread) but keep HIGHMEM,
->>   you probably still lose on the 16GB configuration=2E On 4GB configura=
-tions,
->>   HIGHPTE is not really a requirement, but for workloads with many
->>   concurrent tasks using a lot of virtual address space, you would
->>   likely want to /add/ HIGHPTE support on sparc32 first=2E
+> The below fixpatch fixes things for me.
 >
->That is an interesting point=2E Regardless of workloads though, it still
->would be a huge difference between having or not having HIGHMEM, with or
->without HIGHPTE=2E
+> Cheers, Lorenzo
 >
+> ----8<----
+> From 5a3969a438af9c33422a45fe813a44068d784b2f Mon Sep 17 00:00:00 2001
+> From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Date: Fri, 12 Sep 2025 10:28:40 +0100
+> Subject: [PATCH] fix
 >
->> When you say "used in LEON sparc32 configuration", does that mean
->> you can also run Linux in some other confuration like an rv64
->> kernel on a NOEL-V core on that chip?
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> ---
+>  arch/sparc/include/asm/pgtable_64.h |  3 +++
+>  mm/swap.h                           | 37 +++++++++++++++++------------
+>  2 files changed, 25 insertions(+), 15 deletions(-)
 >
->Yes, boot strapping will select between sparc32 LEON and rv64 NOEL-V=2E
+> diff --git a/arch/sparc/include/asm/pgtable_64.h b/arch/sparc/include/asm=
+/pgtable_64.h
+> index b8000ce4b59f..b06f55915653 100644
+> --- a/arch/sparc/include/asm/pgtable_64.h
+> +++ b/arch/sparc/include/asm/pgtable_64.h
+> @@ -1050,6 +1050,9 @@ int page_in_phys_avail(unsigned long paddr);
 >
+>  int remap_pfn_range(struct vm_area_struct *, unsigned long, unsigned lon=
+g,
+>                    unsigned long, pgprot_t);
+> +void remap_pfn_range_prepare(struct vm_area_desc *desc, unsigned long pf=
+n);
+> +int remap_pfn_range_complete(struct vm_area_struct *vma, unsigned long a=
+ddr,
+> +               unsigned long pfn, unsigned long size, pgprot_t pgprot);
 >
->> Aside from the upcoming SoC and whatever happens to that, what is
->> the largest LEON Linux memory configuration that you know is used
->> in production today and still requires kernel updates beyond ~2029?
+>  void adi_restore_tags(struct mm_struct *mm, struct vm_area_struct *vma,
+>                      unsigned long addr, pte_t pte);
+> diff --git a/mm/swap.h b/mm/swap.h
+> index caff4fe30fc5..18651687fcd1 100644
+> --- a/mm/swap.h
+> +++ b/mm/swap.h
+> @@ -53,7 +53,7 @@ enum swap_cluster_flags {
+>         CLUSTER_FLAG_MAX,
+>  };
 >
->The maximum I know of for systems currently in production has the
->capacity to have up to 2 GiB memory=2E
+> -#ifdef CONFIG_SWAP
+> +#if defined(CONFIG_SWAP) && defined(CONFIG_MMU)
+>  #include <linux/swapops.h> /* for swp_offset */
+>  #include <linux/blk_types.h> /* for bio_end_io_t */
 >
+> @@ -317,7 +317,26 @@ static inline int non_swapcache_batch(swp_entry_t en=
+try, int max_nr)
+>         return i;
+>  }
 >
->Cheers,
->Andreas
+> +/**
+> + * folio_index - File index of a folio.
+> + * @folio: The folio.
+> + *
+> + * For a folio which is either in the page cache or the swap cache,
+> + * return its index within the address_space it belongs to.  If you know
+> + * the folio is definitely in the page cache, you can look at the folio'=
+s
+> + * index directly.
+> + *
+> + * Return: The index (offset in units of pages) of a folio in its file.
+> + */
+> +static inline pgoff_t folio_index(struct folio *folio)
+> +{
+> +       if (unlikely(folio_test_swapcache(folio)))
+> +               return swp_offset(folio->swap);
+> +       return folio->index;
+> +}
+> +
+>  #else /* CONFIG_SWAP */
+> +
+>  struct swap_iocb;
+>  static inline struct swap_cluster_info *swap_cluster_lock(
+>         struct swap_info_struct *si, pgoff_t offset, bool irq)
+> @@ -442,24 +461,12 @@ static inline int non_swapcache_batch(swp_entry_t e=
+ntry, int max_nr)
+>  {
+>         return 0;
+>  }
+> -#endif /* CONFIG_SWAP */
 >
+> -/**
+> - * folio_index - File index of a folio.
+> - * @folio: The folio.
+> - *
+> - * For a folio which is either in the page cache or the swap cache,
+> - * return its index within the address_space it belongs to.  If you know
+> - * the folio is definitely in the page cache, you can look at the folio'=
+s
+> - * index directly.
+> - *
+> - * Return: The index (offset in units of pages) of a folio in its file.
+> - */
+>  static inline pgoff_t folio_index(struct folio *folio)
+>  {
+> -       if (unlikely(folio_test_swapcache(folio)))
+> -               return swp_offset(folio->swap);
+>         return folio->index;
+>  }
 >
+> +#endif
+> +
+>  #endif /* _MM_SWAP_H */
+> --
+> 2.51.0
 
-SPARC32 has a 4:4 address space=2E  You still use HIGHMEM?!
+Thanks for the info. But I think V3 should be good?
+
+CONFIG_SWAP depends on CONFIG_MMU so if you have !CONFIG_MMU, you must
+have !CONFIG_SWAP.
+
+I didn't adjust the header in V3 and fixed it differently from what
+Lance is suggesting, V3 wraps swp_offset with CONFIG_SWAP. It should
+covers !CONFIG_MMU case too.
+
+The folio_index in V3 (this patch) looks like this:
+
+static inline pgoff_t folio_index(struct folio *folio)
+{
+#ifdef CONFIG_SWAP
+        if (unlikely(folio_test_swapcache(folio)))
+               return swp_offset(folio->swap);
+#endif
+        return folio->index;
+}
+
+I just tested !MMU and it seems fine.
 
