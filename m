@@ -4,58 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0C32CAC582
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 03:45:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A8F2CAC58F
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 03:45:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 285768E0005; Thu, 11 Sep 2025 23:45:26 -0400 (EDT)
+	id 630318E0007; Thu, 11 Sep 2025 23:45:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 25D1B8E0001; Thu, 11 Sep 2025 23:45:26 -0400 (EDT)
+	id 60ABC8E0001; Thu, 11 Sep 2025 23:45:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 172DB8E0005; Thu, 11 Sep 2025 23:45:26 -0400 (EDT)
+	id 4CE458E0007; Thu, 11 Sep 2025 23:45:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 06E608E0001
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 23:45:26 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 97480BA668
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 03:45:25 +0000 (UTC)
-X-FDA: 83879208210.09.82D1EF7
-Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
-	by imf25.hostedemail.com (Postfix) with ESMTP id CECCDA0004
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 03:45:22 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=DhWVCziV;
-	spf=pass (imf25.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3B6688E0001
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 23:45:27 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C1B6711A866
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 03:45:26 +0000 (UTC)
+X-FDA: 83879208252.26.8F2D431
+Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 9CD0414000C
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 03:45:24 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="vCzWiY/I";
+	spf=pass (imf09.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757648724;
+	s=arc-20220608; t=1757648725;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=VhR2dfGJ3MJkrrgv8n7mSFnqfZscAqFtNuOqBN+ob4U=;
-	b=V10hzeMvK37WtcV3MiqvrvXXyW1ljDPFd5b8F+kcp9CEEDCB7Y8PSoS5l+YttKAColzD83
-	EkwK9gXEA2YdaJ1j87YVAWNL5hHmVEGwkPSi1l5UNxRZ/66Lqv+/G3eU67dC+OlHM2JDe7
-	by6A6soMNh04E8LigCG0CKFbgLYiG3s=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757648724; a=rsa-sha256;
-	cv=none;
-	b=Dl93LrpbXS4qwFTLO49ElYl5SdE1sjXHXfXP6/mQkh3HddPZTI3AWZTFwap8b+4CsYCFUc
-	axoAvEZ3UT/zv6zlsz4U3lGxJvg0SF2Ol2aYVScjQpWHrR0i79OjsF7itdn2TJDPvwCgI0
-	OxyVBY9em6H3H1+ECLQaRob0RuTkxDs=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=qyQrs62isi3bE4wSQQlge28P6mKhxXCb0Z1mmjlzN3w=;
+	b=7hM4+mZ2pPrQuKIhh5AG3pkVkYafRi/Vk2FAic53WuYkNb41mKl1MHF1LIVqd67YjZ4WAA
+	fDX5cYX1cIpA0/snuPpYpsDqc8PjyK5lHo9ySSITNxRnnmbW3XUxUmKEzXg53bToEb/5ZD
+	hnVdZWG+5nUEUJAXZdMGubZ/8AtQH7M=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=DhWVCziV;
-	spf=pass (imf25.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="vCzWiY/I";
+	spf=pass (imf09.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757648725; a=rsa-sha256;
+	cv=none;
+	b=DJBtKjVOJe9AV6L9SxkeouIo3OC4vnn7hTbhnU1jRaDSpQrPeNlQZUe4CZICJ84z9ei0tm
+	u1FXX8u6hxj+FWvJke6RaA3CbBy49PPkf6Q3cCSA4XsVb22MtVKfiqewmy3cTe46wzCPl9
+	UJMrE0aZFa7JHcTCD9E9fRVgJBZBC7c=
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1757648719; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=VhR2dfGJ3MJkrrgv8n7mSFnqfZscAqFtNuOqBN+ob4U=;
-	b=DhWVCziVIZLAE1GABMJc4uBJjMTjXDh9OPH09Ts9hb0Af0kIOuzWyDtU5wEPAt718IhsHgmR+zLOoVyVBKEfjerOFIiYcVLUXj3NKxmvGluV6seMh/Kbof8KFsmLR5zvIiELXJi5e0Fk5gDw7I+i6YSgnEvEc7CYaZNoU6mMymA=
-Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wnp5B8A_1757648717 cluster:ay36)
+	t=1757648722; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=qyQrs62isi3bE4wSQQlge28P6mKhxXCb0Z1mmjlzN3w=;
+	b=vCzWiY/IgCjRPy0gleKP5xIdP8Durpis042OY/2Du5B3GUc+ZahPx3y7oeAXwfkjAdQ2rCI43ogJkCo3pgAUFfybOoAzqHwFSg+fapEvw0nayor4QLrmjqDfngN2BJJiSLI3Dt2jLjywxkdM89cOwrtGq/g9FAEbtjbWsBs6Hu8=
+Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wnp4pMF_1757648719 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Fri, 12 Sep 2025 11:45:18 +0800
+          Fri, 12 Sep 2025 11:45:19 +0800
 From: Baolin Wang <baolin.wang@linux.alibaba.com>
 To: akpm@linux-foundation.org,
 	hannes@cmpxchg.org
@@ -69,20 +69,22 @@ Cc: david@redhat.com,
 	baolin.wang@linux.alibaba.com,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 0/2] some cleanups for pageout()
-Date: Fri, 12 Sep 2025 11:45:06 +0800
-Message-ID: <cover.1757648598.git.baolin.wang@linux.alibaba.com>
+Subject: [PATCH 1/2] mm: vmscan: remove folio_test_private() check in pageout()
+Date: Fri, 12 Sep 2025 11:45:07 +0800
+Message-ID: <b8c0fe71982aa1cafafd59d8e71064efaac16007.1757648598.git.baolin.wang@linux.alibaba.com>
 X-Mailer: git-send-email 2.43.7
+In-Reply-To: <cover.1757648598.git.baolin.wang@linux.alibaba.com>
+References: <cover.1757648598.git.baolin.wang@linux.alibaba.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: CECCDA0004
-X-Stat-Signature: 5b6c3913ffhyrfufahsc3zewbkcbca6p
 X-Rspam-User: 
-X-HE-Tag: 1757648722-184180
-X-HE-Meta: U2FsdGVkX1+LSrHvKa6zFZpltILAhqmZH+ZYCsSqKA03X5gqD692FuG0GZAAbePKMBtX1bwQmnbv/nLkepYmA89BNmDci8Ja6AX9n1Fr7Npvk4S4BDcx5l/+2+ej8eEkmW6AqoWhjXiNCEpZ+d9U66NJrfeKinX1InVryE5Tyqiott0yJ6gP6Ilp2d1WyJz1FL+J3bw3pUSIJHDEInyQjBVgSCo5qgD5g1c4XD9OBnSA3RPfD49Nta/VPFS6uBsYpD1JCA6QHca8o1efewCzgEEqKmvTEhCrLL41JW+fpY8cJoVHmruKjdoy1ciTGAR1AfPCgS6ukpTNtIFyv0YhjqHDPz8B6oVGdfoeJGaTpizgoY0K6fma76cOCyRVR9mJ6rXv/WhHt5o4ZN4EScH/nx0jALYXyT9Ka3iUgH2eqZaIrOG9x3wUxVSsGYq/iwlpNlBmERHOB3xu7Luum+/iH4HCk6J4+Pv/G/wjB5M2F8xvvRkFsIGHTB5WpzqtqD2u1lsv/Lqn3LHOf/vMDfZIfbANM3nxsgqV8NOzi9hntnNoRpS6g5q6MKf4DsF5uU488HwTLsvrY6gXQ51QfxlaR5nCohC4q3kYaVqNN52c0iXWltUMvMvIFaljn2KzvwDMmpPlQMOLNbE3cFlxj7M0z+7N1xe7NNKbsfocYEY3gfHGgyx2POaJ+fYY7zKh2e9HifrCfLtD6pjVTVWaWMZtnlhC9HRT7MAPOU5g/AGrAklDN6ApTFs6ocWp5hRfwH6gxwe6bnzzt6F5dISW4E17bRwrZuQ1X1IdZ3qO4vY8ZX0rWt57E+8HvoH7pS5UWtZ+f0T8IgdsJiDGGPWgx2JSZuozk/JySxfDfD8EHKkV8PvOWSfJOjuZ0zhQzXo4JHfzy3jf30Ey/lkqWcR7PktOCB4czLwkTnoMu7zbPMz+9Oo8MHCON/0vDEW3S30sh9/5jhcU6KNtkU6XFPa9zr3
- eNzbEVxz
- 4HJ7seq07blmZyCbCYg3mqakDEsmTJRaGP8lrEcxWWCHHAGkTeXSwRcAYxE0ebgBWp23o/smhhqeS60u10DVc1NZECNakVfUPROhOPWW9wsOwSLL+b3f3raMFrVQbfIl1/p4Ayb4pQAi95lCjjsTfMdVYDnjYeSxuTLRNNmvs2GGZx6/1qBAuCNnma3yLOsiq6vDgsiWpZjipSto/7M5I/kjK78+R28xWgTMP3fPP18gdhlKaKUsFHv0G87LBF9KgZM0iH43qSzwjbXquhAHuHuY+W9OT3SM5KrJ559FP7RdBVGdPSIERYG+ki0ILyp5AlxJO
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 9CD0414000C
+X-Stat-Signature: ir5tziu6fysdqc9zebiutd5sbt7d5ty5
+X-HE-Tag: 1757648724-702329
+X-HE-Meta: U2FsdGVkX19kuuowQiUg9YVJByk3jdon1Gi4llZgsktAY0VSrt+I0MGc5UDc3VqeSTMymFm16VGf9KzAPNVugjoK4SLogAGzSoxe+OtmeF2CWxvTvvzhEAt2f3i9NcEnQlIYyiPm0cShVcCA5pbAKIZOCC6T0neTODiXuUB1IdqOwMehMo0YvN2VQ+nf36dFHTI0tx4j552W8fdFQtxu/f9QLx2yPLc4Iwo7sHyqoyoh4E8Dq0j0qKIKuo9e8buJt0EUKWHtYrPoBQkyw9cazG9rraZNRuLdwD7vT4r3Gxlpg/U5PYM4X5AeSYaa5ZakBI//mtabCZ3xT3EB5j5GdYIndCklF6diAiNlAzeG9ZopwDBgwnJIl/UnLnmNwl53FopNnT3/vsd8dnyPotTAZp3OkFRPaFt3T6d+x19rt7mXkWFadJw9gtioo48Svoa6wIn7QoIm0XmDIzETEwxxHC7MTE3Rr6PM+ppDzfu3BYzc5CHZK6rFPrJ1r1tzaOX39lhMYkfYcGZNdCRwbnMsLetAOy0eJAq+23RGs0ZG1zi+FBI4X+3oDotWVI4hdytHQt4xxJXapsbV+G5wZbOLEVlrp6mccBAReyFCLfdpEvLXEI0C3BmbJwMtYF5ofISxZE/eomBWvM/wLlnW/xM9HWvBlaMOTUh3060M4+JGj1XrzXr4Afd4l2wL7PplfGOVWPZt4w92PemoMl8WGh5ZdHtVBjcK62NPisnqr8tKs+0fczaEqbAyfj3wMf5OUuthGfVNwo5TR4ar7aGXpN5n6Mq3965Kz1I2WiBG1mmeHKedEENWwKTq43aLGDMFtYwcrgmabvDjN1khpCg3fDu3puZccxBTkzsTBXGqhBUJN+RqOWU93ofHmp4CkcvYrzRspc8de7yWG8YF1/vXHzrYstHiMXYEilinqb9HaiAHO+4g8MhJNXWoBoHqt1s4mx22A7knmUZ1t4YrFzXD/6S
+ PjR1ULKk
+ 8K9FVuyo4AMkVOCQZC+rjPYjAb2nX9YtycyDTRrtHFRvHGa4V47KyFu81os/t5aAEn96Ax13wpZRR9CnNXIij+TLe9rMIh3j3xDTLN6wBVwiI6aVT7JnxGuA7uq1UEY43s/hau1tmNpstplLu3LPLRy4lFFKQuJyPfYraUbn1j6Qlpr6Ipy+29FXoyIm9NgCbNb+kISF70+ER4P+sfQvK8L8tzW4r47KTCtZkA2zCQxzE8ewA/U12KX8Y2bmK15PBKSWonmVQ1DDqYGRgaIiRbJQFkyH6AkV0gt2HS+0eIWSl4MQpU6eDJ8X5DXTB72/H8hZ9rFfzBny6dx0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,19 +93,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Since we no longer attempt to write back filesystem folios in pageout(),
-and only tmpfs/shmem folios and anonymous swapcache folios can be written
-back, we can remove the redundant folio_test_private() related logic to
-simplify the logic of pageout(), as tmpfs/shmem and swapcache folios do
-not use the PG_private flag.
+Currently, we no longer attempt to write back filesystem folios in pageout(),
+and only tmpfs/shmem folios and anonymous swapcache folios can be written back.
+Moreover, tmpfs/shmem and swapcache folios do not use the PG_private flag,
+which means no fs-private private data is used. Therefore, we can remove the
+redundant folio_test_private() checks and related buffer_head release logic.
 
-Baolin Wang (2):
-  mm: vmscan: remove folio_test_private() check in pageout()
-  mm: vmscan: simplify the folio refcount check in pageout()
+Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+---
+ mm/vmscan.c | 16 +---------------
+ 1 file changed, 1 insertion(+), 15 deletions(-)
 
- mm/vmscan.c | 30 ++++--------------------------
- 1 file changed, 4 insertions(+), 26 deletions(-)
-
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index f1fc36729ddd..8056fccb9cc4 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -697,22 +697,8 @@ static pageout_t pageout(struct folio *folio, struct address_space *mapping,
+ 	 * swap_backing_dev_info is bust: it doesn't reflect the
+ 	 * congestion state of the swapdevs.  Easy to fix, if needed.
+ 	 */
+-	if (!is_page_cache_freeable(folio))
++	if (!is_page_cache_freeable(folio) || !mapping)
+ 		return PAGE_KEEP;
+-	if (!mapping) {
+-		/*
+-		 * Some data journaling orphaned folios can have
+-		 * folio->mapping == NULL while being dirty with clean buffers.
+-		 */
+-		if (folio_test_private(folio)) {
+-			if (try_to_free_buffers(folio)) {
+-				folio_clear_dirty(folio);
+-				pr_info("%s: orphaned folio\n", __func__);
+-				return PAGE_CLEAN;
+-			}
+-		}
+-		return PAGE_KEEP;
+-	}
+ 
+ 	if (!shmem_mapping(mapping) && !folio_test_anon(folio))
+ 		return PAGE_ACTIVATE;
 -- 
 2.43.7
 
