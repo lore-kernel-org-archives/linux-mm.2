@@ -4,178 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CC6BCAC582
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 09:36:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B75ACAC582
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 09:37:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A7BB48E0021; Fri, 12 Sep 2025 05:36:25 -0400 (EDT)
+	id 85BFF8E0022; Fri, 12 Sep 2025 05:37:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A2BCA8E0006; Fri, 12 Sep 2025 05:36:25 -0400 (EDT)
+	id 80BCE8E0006; Fri, 12 Sep 2025 05:37:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8F4D98E0021; Fri, 12 Sep 2025 05:36:25 -0400 (EDT)
+	id 6D44E8E0022; Fri, 12 Sep 2025 05:37:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 772EF8E0006
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 05:36:25 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 28E2013BA8B
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 09:36:25 +0000 (UTC)
-X-FDA: 83880092730.10.48ACA28
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf06.hostedemail.com (Postfix) with ESMTP id A2106180005
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 09:36:22 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DVY9SEPw;
-	spf=pass (imf06.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 589E58E0006
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 05:37:47 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1C41813BA61
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 09:37:47 +0000 (UTC)
+X-FDA: 83880096174.18.34A0CC4
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+	by imf24.hostedemail.com (Postfix) with ESMTP id A372A180003
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 09:37:44 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=zytor.com header.s=2025082201 header.b=jxIBuKWB;
+	spf=pass (imf24.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
+	dmarc=pass (policy=none) header.from=zytor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757669782;
+	s=arc-20220608; t=1757669865;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=B4KJZdY1MD+iAN7yxyMGS4DtOSEdOr2LuczyAdAae4g=;
-	b=wbHGLtMuMjIeJEktNjtREx+I/GqETNe++jkNSUO5LfgBDnHUsjdOq1ou5/8WCwSsedaVMV
-	GK6oXhHyRJWfLlKMZNHg7FL3SG9TKGKkMc1R6tOlu+7+vzaU30iBLc28PNXHvdD3iOSevC
-	1phAbz9HF/hOlzzVqLh2D8mk8gfq5vo=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DVY9SEPw;
-	spf=pass (imf06.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757669782; a=rsa-sha256;
+	bh=GE2ISEvWqh9sN8UYw61P33fDsnFm1/nb1kUiiX/ifUM=;
+	b=grmgLAj0dAx23Gi5alg6fvXpUT3j/dy/cUOJfW9eeI79KidqrsWQ4MziOPocR2x1TL2OHX
+	CFUxMW4DyHuEPYLZoL8J3UgJMnBKm2STJEFc77lWngq0r6L+ksCWD8m/Ss5hBF7jxI2YlA
+	u9GmaIzeGLJ7P2GA1ec1A34+vJhH0Uc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757669865; a=rsa-sha256;
 	cv=none;
-	b=uNZgqL4vM1jLL5ANeyAld2xZXMUTvOkEfVTEsE35DiSRxyjXpRIOCkYf0VB65NLV6R0u/X
-	er7N3pfc6I0lOmp7tJSw9IxU4pKzmZzmSqnSKuGRCePahpmRX8xrTddbnmA8gsVGVm2y+L
-	+O2jHjfqaRYfgs5pyQwVKKP/rL0vluc=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757669782;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=B4KJZdY1MD+iAN7yxyMGS4DtOSEdOr2LuczyAdAae4g=;
-	b=DVY9SEPwFGTmzT6ffJylpI0tLbpzffjtOX8j/p4kgQjztrVNrg96cutieXGnISmxALvMny
-	vYzXURzuPrv5L4e2GYgwqE6St2zDLNJ7eFD5q81W4Df0TKdR0yyaH2tkTo5Mkl2ii6Ry2b
-	YIfbYXfl94mFp20pt+h2RLHt53B1JWk=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-615-KzdmmUPiMWaRZ4I7D-5_5g-1; Fri, 12 Sep 2025 05:36:20 -0400
-X-MC-Unique: KzdmmUPiMWaRZ4I7D-5_5g-1
-X-Mimecast-MFC-AGG-ID: KzdmmUPiMWaRZ4I7D-5_5g_1757669780
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-45decfa5b26so9551295e9.3
-        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 02:36:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757669780; x=1758274580;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=B4KJZdY1MD+iAN7yxyMGS4DtOSEdOr2LuczyAdAae4g=;
-        b=dXKe88XXSYuo4rcIPHRXwgez3/8RxV7aX2JK724DiDsR5x97MBYCfHeZ4IkTdjleQa
-         uLIDDxf42V+S8DFodXXTUSLR2ywJQwRynqmzCm8mSAJsmSizjD8YArh4793tha860tVv
-         fRv/RqgqSG8v2SaNhrR/naoeIQ1qyFSHCaPmJyBL77a4pTwlAufeek1SJVoOF8NVL7U8
-         z89xWqtj23FllZ5fXFHiThbIU0cE/lBMgPUHtpphkkK4Rx0J7CadJszT6RKaidl17dDQ
-         kTSAsvF3yU+AQibfnknglEPTI8mDY+S3DG7mTy0u+RU3W4MLpYAP94klZA0Uwd2OJRA4
-         oWKw==
-X-Forwarded-Encrypted: i=1; AJvYcCWUu8wpSGc26JqOLAjQl+Dm9xHsBGaMcvJT5pSaGmQXTm8f1EJ1amLp9GUdN3O6hYfGFog9jAs/0g==@kvack.org
-X-Gm-Message-State: AOJu0Yz9CoUpvxqayxvqsWTnmKS6LbsbYwKQmTbWb72WGYDmTCimS0K+
-	tzLnf6G9AihGGcOVhVRYB3SCwlYn9kSnq/y4+f/+FnQiiTK/68F+5Ukl1TYv51ORgVyEQu+1Jxy
-	HFNKbVjCR0FKOj/SDkWKJ6a8F391+LV8oAn07yATbMU1say81FF/9YYc8SMA3
-X-Gm-Gg: ASbGncsaLvooNXuGWG6uWZzxh55jUcR5tQEPXndB3va1sshkNSrOMA3M0UbPvevrIZp
-	CQVv8f6NmREUl2ksDZZnnk8RS2sZKqKnIJdrFxe/mpHJqMQlCT8hxS+ApgUMoCqnd2mbGz97sR8
-	VQFwjHCwtO66c63rMJPwJFKXRUuH9e7XLWryE3qByfTWNiLHUYEjCcrk7IUm7Wl1dJm2zNoIfYR
-	NUr9sEddVW/L4eXeVzI30KReeivunEhrY//S3hwASTQO/kQnbdkLcHqo1/obWz5j4rAvtdUfu7T
-	F90haRaRXY9mmwrEh4ZnV01vAh19ZkSD7ZIfiDxlddv++SgUE+bMtZOhMIhojkXMLu7GqTcPCJ8
-	TKe6hm+JrhygqfHM2rjErIW58UTBtIEVaTeRgGscOcwrTUMnasdmaNY49BBQS9LG7WUE=
-X-Received: by 2002:a05:6000:2410:b0:3e4:64b0:a75d with SMTP id ffacd0b85a97d-3e7659db640mr1861334f8f.30.1757669779722;
-        Fri, 12 Sep 2025 02:36:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEffTnkjpwSgdIokrJRdi0r1dJ0It77LZ+hWwe5tws1dme1LH9tLiMm17T34HzdwjxEeiy8uw==
-X-Received: by 2002:a05:6000:2410:b0:3e4:64b0:a75d with SMTP id ffacd0b85a97d-3e7659db640mr1861304f8f.30.1757669779279;
-        Fri, 12 Sep 2025 02:36:19 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f20:da00:b70a:d502:3b51:1f2d? (p200300d82f20da00b70ad5023b511f2d.dip0.t-ipconnect.de. [2003:d8:2f20:da00:b70a:d502:3b51:1f2d])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e7607e2fd7sm5942242f8f.63.2025.09.12.02.36.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 Sep 2025 02:36:18 -0700 (PDT)
-Message-ID: <37816bb5-97f8-4c05-84ed-9a81cfc5c755@redhat.com>
-Date: Fri, 12 Sep 2025 11:36:17 +0200
+	b=KA1GcCcYz16pEOt8RdtghGSNHJmgHMtK2nyFCATsXm82UPzOpJ6TpLUaaaQ4rY60BPseNm
+	634k5bTDqI45ET6xUbKLzyRPP8R1llEQN9KJmxUjRw64ONke8R144BYV3zXkLQ70K0abdE
+	k+U7RLodx+Kd6opmbnKhbXkuItTg8Ws=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=zytor.com header.s=2025082201 header.b=jxIBuKWB;
+	spf=pass (imf24.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
+	dmarc=pass (policy=none) header.from=zytor.com
+Received: from ehlo.thunderbird.net (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 58C9b0xv1357625
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Fri, 12 Sep 2025 02:37:00 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 58C9b0xv1357625
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2025082201; t=1757669821;
+	bh=GE2ISEvWqh9sN8UYw61P33fDsnFm1/nb1kUiiX/ifUM=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=jxIBuKWBOuwi8Xn/pfTljgb3zhi4Bf+6TpFn4wY12CV2bo/HBYvEFlNNTSG8fPcmd
+	 Jj/Tfu0GL4cwgOIGmCy3Nn+jkWh8vnC8zuP/GErTXN0RQ77TNqxFkI31NPKxEScs+g
+	 3vOnPn4RJLBqsy4KnA1eIay9kM3VJsautov8wGzn+movTKqUP1FRL6RWjeOsUKd4W1
+	 PzI9yWN2VGly1IKj7GF6C15ow1c72iThcEsS5Y7nUNwJIqldXBZ/Cz0CDjQetsdIXJ
+	 cSf1aezna12azQgXZfQWWPOQrMR8BIbyp5qTPTfw3ynfjS2Z5IuCtNAHsMLsakvOcZ
+	 RcYRHWLQ0/FWA==
+Date: Fri, 12 Sep 2025 02:36:58 -0700
+From: "H. Peter Anvin" <hpa@zytor.com>
+To: Andreas Larsson <andreas@gaisler.com>, Arnd Bergmann <arnd@arndb.de>,
+        ksummit@lists.linux.dev
+CC: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
+        linux-mm@kvack.org, imx@lists.linux.dev,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Richard Weinberger <richard@nod.at>,
+        Lucas Stach <l.stach@pengutronix.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Ankur Arora <ankur.a.arora@oracle.com>,
+        David Hildenbrand <david@redhat.com>, Mike Rapoport <rppt@kernel.org>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Ira Weiny <ira.weiny@intel.com>, Nishanth Menon <nm@ti.com>,
+        =?ISO-8859-1?Q?Heiko_St=FCbner?= <heiko@sntech.de>,
+        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+        "Chester A. Unal" <chester.a.unal@arinc9.com>,
+        Sergio Paracuellos <sergio.paracuellos@gmail.com>
+Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
+User-Agent: K-9 Mail for Android
+In-Reply-To: <a393f6bd-ac30-4861-818c-ba0b558df4a4@gaisler.com>
+References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com> <5d2fec2b-8e59-417e-b9e6-12c6e27dd5f0@gaisler.com> <363853cd-7f10-4aa9-8850-47eee6d516b9@app.fastmail.com> <a393f6bd-ac30-4861-818c-ba0b558df4a4@gaisler.com>
+Message-ID: <0FEA041E-A07E-4259-AFBC-02906D122C3A@zytor.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] resource: Improve child resource handling in
- release_mem_region_adjustable()
-To: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm <linux-mm@kvack.org>,
- linux-s390@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- Dan Williams <dan.j.williams@intel.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>
-References: <20250911140004.2241566-1-sumanthk@linux.ibm.com>
- <0ab2cb14-ba8e-4436-b03d-9457137f492a@redhat.com>
- <aMPluIk8EnOuIWbi@li-2b55cdcc-350b-11b2-a85c-a78bff51fc11.ibm.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <aMPluIk8EnOuIWbi@li-2b55cdcc-350b-11b2-a85c-a78bff51fc11.ibm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: TD74axAXUB1MpKGSaGmue9wEGaKdbf8ChglFot3kVt0_1757669780
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: A2106180005
-X-Stat-Signature: itedt31jkmjyu6khubj5sr3qz5u133ha
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: i4c58ne7wdausgwjpponiepqxa37bkff
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1757669782-152100
-X-HE-Meta: U2FsdGVkX1/pfDE/Eo9WQqeQCI0BTRFtrGIcR18nMIMcXTOn4mfTo6ynb4WKxklWV9Ka1y2JmukQy5j5IcSSk6UAC6evmYmfC2r+KCuX+DUIP0btkDz7B5skgJcU8SU6l6ZULTa67178bDFGOH9L0ZSsz5dFxg1TWSxR/w96baIxZi2G1sc5BRVdg3h8N2kVOg96/sRcOL8JLUNLT25x4tn94DvptkH8OSkTwqrgnqNrn1XDkTSiT3bedhabxUlpDZiwxh1ccPT0MQ1L63/4+P4LguzDGNJxMUfxZInk9Gid1eiy8v6KcL9AhMuvMCWIDI5R3rY8C2VfPaCAmpg+JcX/LVw+vA1AMTXMotgJh1FL+/vMvnGXcgDM3IbDovxM9eT7eKPrYQBeEOkJXo0gzv/LorD1rllWGHrCyJB7udm6l/GJlAn6sDhZgwlAP3F8nVxpvTUucbUh6zGrXzkGcz9kZbbtqA5Gt9dQMePRSezoH6vcGJStPn83pQGuY5fIzVGZWNXW7IEBFWQ93X5SL3fUoVZ3Zg7tk9F3ovGfVPT9uH/PekNFcIAbCVv7N2RGBZfI3v0R76C9cJbfZi+nIASVLz/QOTRBon1hwK4TZnqdzOkBzjhuoAo6/0Q9U5kNTBzYQsnGnKSS4sys7dT/Ne/bj3M+nZdKcoRDgmjKaNxzyKEqdb13ZAM6tLjsG7cVXrsJCQWwQE0QrH9OjltNABXA16hO4hgzZ9Ur3mUIsHt3kpr9ktUjMkjvoyoW+h+HzBHdawcjhelZ5HjUxxjOPzX/8Aw83SZA/rhcnzDwox15S6+Ei0gnpKWvGQha5vJDiuOm96TpxSy/rVLHH1oLO7iB271RUR0bylMIr+Kwvw2tXoZh0Z1cdWfzWNEocoNCMWZTfATZ0r/UP2xP4BWl4pHShRfC5SgJx0RgpoQ9tREownNOB7o7lRSVMOR4CVhT18VoW2Srqdd954GsSLv
- m5s1ciBq
- jYb5Ol1BojDCrM9kbKLUYso+nnQYLYUDxn85ZAutwiY93EP4k+XWfVv14Fx/UH1W7lroz0n7uz4efQcyn+LBLErFUbn9VXSRufwO34vmxamTmcV0qci83PDIkIz9U8GUAgQUPpL9Ne8AXOKVnVAEyfzME3TJ/N1MP5uaDO9qjhXxBxdnGk4Fk/H5/1or48KkSrDroSlJdb3zHDVTuSzedkc8mDBo14qHfDePXr9T4jQyEfVaBNG51bZ4ZVbdg6pXUzcFauwt8PXM8eywoCvt2Oyb2g+aEJxl7qE1TXQ/aaze2KcV+e1Ky39Du2FCaFQlZkyKF09BNLQb6UgJ4kGQMVYmgExt0LxpQyBYuwKHjlxptBqgEfcPNOWEa/+y9UhHy6k6Bsva6ZOhs7qxhODvDtbEHAO0UQ+82b1Ic/6VUZiSf2tWggEyKX/GC6s83oFlcdBfTzCRfmJOrl3xNkBOVFZGr40Ww+Xz/71i4hC28jgHs2hRbTNuHkj5x4f1XnF12+fkNTNiuKnYiJ3E=
+X-Rspamd-Queue-Id: A372A180003
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1757669864-426351
+X-HE-Meta: U2FsdGVkX1/87D7ZLHCxHak8oCNwINZDkPBIQgTyrxNZdLIdvAa4k78pwSBtNyLQ9yKhJskLqCvR8VZGDdZVmBIz1lBw6Qd4Q3vLNFbCLCH7NYEzo9AAUkPGD/JBnC2zO45v9Q513TO+Je8QTE4fxPoYLy2R2TQh5LLoUBJhMf6GvRMa0Ur2aFWe6astmwoq0iEDdnEmZs/8wmYYHmKv3gCjzFXoGj3FAQm3t5dRx0BlssXm5dOs/W3ib+qjLaJrB5aq+geCyZYSmGUTTKegRNkbENcyiWhQohpXEvzD5NoyPmIMz/R3igbAdrh45v/iv9mtZp/2Ntel4PVJYw6Xv+1h/c45SYbKQZZ9wMJgdQNtzSvSASgxDL/aRBwf0UFB6U7XP0z6m4SQzaJH0vbzIYsrydpEwvhee0P1eKhyMtruYc2pEyfPiCkCmsmMMESKb6exCk4FpEwvICFRnzr+Lk9jgNxhloyEuLxMHjBNXA9jDoipIoCOMcATV17zFAiiKdCcRW9LYUQXOUCzM0OkTy37g8TWcwaZkMaBRReozR3IWi18w679YNdOmxpUsKWpad05Xj5j1Tf8Fp7nlObl4o3j49ULq4+C8vMin2TMDSNvsyPduu0AlmW7hjWE16evkRUX4Nm/2v9qnGJJD1YgK5OpHmS/SSI+33wlYZNjGLNlvGEdNExl2kJdC3yXZjbGKZWdSlSOcktmsNW/G9pFqKmo9orghCVcm5WhrHRm+KwoCkDWgIN2cZ6MPwpdL3jpF66uAsBXGeolADyELJtDu76BzVK3fvsd0dRhF5SHUgij79r7k1uNDFKyzjqSrugZ/oafTDC/RIdNp3dSrN4zVYVUEW5uHTMVxyiXU6M5uHbLPaFaFK/eRbECZTCwgyQBUIk27Yq0ZTYcU4cWF1CD4CNMvmaOYMspXQAj17PyHbWlshKRkkS37mtimiJvmgiPpgVv9+KMnZepRojnLnA
+ 6guOckoK
+ 5np6PQIrCkDcZpYmV7ZsmuU93esoIVsDZ2P+3VXCUoxxFbeDf8g7G18dziz4sIFR/StCIbSQG8EZ6v3IU9QM05JN2K0UK3l001z7D/g6NxAlEqhPph+zZPdfhLLkLOq2925gjT4ciujWtoFKaTz1nEPiTmiWO3PjRp7lIYhByRA8nI1g1HB79iJ57A/1gS8Du+3L2MKQvsJ9JNLcfbJ+IkDapbcBADIN63N8IL8kfOxmlkPzfgo7iDCpZJjGaT14TE8bT5M4fdNg2SyU1uNAdwJABilEa5/qCCzQZy4Q596X7sWg+3CFLL55CfqlYn14k26jBsmHDxDtC0zAQgcGgZBP+G0ktNWl/FJ+AQD1cyFy3NLc+6F6VT+r2TW61SOqfKpi3WEqzzDhXLLPxd+dZT0IIoCJ+bUwt3YiV+BfbQZA3l5k=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -184,108 +115,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-> 
-> Hi David,
-
-Hi!
-
-> 
-> I am working on the item related to the last discussion -  dynamic
-> runtime (de)configuration of memory on s390:
-> https://lore.kernel.org/all/aCx-SJdHd-3Z12af@li-2b55cdcc-350b-11b2-a85c-a78bff51fc11.ibm.com/
-> 
-> I came across the problem when I tried to offline and remove the memory
-> via /sys/firmware/memory interface.
-
-Ah, that makes sense. Sorry that I didn't immediately connect the dots 
-when seeing your name.
-
-> 
-> I have also modified lsmem (not yet upstream) to list deconfigured
-> memory, which currently appears as offline. An additional "configured"
-> column is also introduced to show the configuration state, but it is not
-> displayed here yet (without --output-all).
-
-Worth mentioning in the patch description, otherwise it's confusing.
-
-> 
->>> 0x0000000150000000-0x0000000157ffffff  128M offline               42
-> 
-> True, this will not be shown with the master lsmem, since the sysfs
-> entry is removed after deconfiguration.
-> 
->> Do we need a Fixes: and CC stable?
-> 
-> It will reference commit 825f787bb496 ("resource: add
-> release_mem_region_adjustable()"). Since the commit already states
-> "enhance this logic when necessary," I did not add a Fixes tag.
-
-So if this cannot be triggered yet, all good and no need for Fixes:.
-
-I was assuming that maybe this can be triggered with ppc dlpar, so I was 
-concerned.
-
-> 
->>> Signed-off-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
->>> ---
->>>    kernel/resource.c | 44 +++++++++++++++++++++++++++++++++++++++-----
->>>    1 file changed, 39 insertions(+), 5 deletions(-)
+On September 12, 2025 2:32:04 AM PDT, Andreas Larsson <andreas@gaisler=2Eco=
+m> wrote:
+>On 2025-09-11 09:53, Arnd Bergmann wrote:
+>> On Thu, Sep 11, 2025, at 07:38, Andreas Larsson wrote:
 >>>
->>> diff --git a/kernel/resource.c b/kernel/resource.c
->>> index f9bb5481501a..c329b8a4aa2f 100644
->>> --- a/kernel/resource.c
->>> +++ b/kernel/resource.c
->>> @@ -1388,6 +1388,41 @@ void __release_region(struct resource *parent, resource_size_t start,
->>>    EXPORT_SYMBOL(__release_region);
->>>    #ifdef CONFIG_MEMORY_HOTREMOVE
->>> +static void append_child_to_parent(struct resource *new_parent, struct resource *new_child)
->>> +{
->>> +	struct resource *child;
->>> +
->>> +	child = new_parent->child;
->>> +	if (child) {
->>> +		while (child->sibling)
->>> +			child = child->sibling;
->>> +		child->sibling = new_child;
->>
->> Shouldn't we take care of the address ordering here? I guess this works
->> because we process them in left-to-right (lowest-to-highest) address.
-> 
-> __request_resource() adds the child resources in the increasing order.
-> With that, we dont need to check the ordering again here.  True, here we
-> process the child resources from lowest to highest address.
-> 
->>> +	} else {
->>> +		new_parent->child = new_child;
->>> +	}
->>> +	new_child->parent = new_parent;
->>> +	new_child->sibling = NULL;
->>> +}
->>> +
->>> +static void move_children_to_parent(struct resource *old_parent,
->>> +				    struct resource *new_parent,
->>> +				    resource_size_t split_addr)
->>
->> I'd call this "reparent_child_resources". But actually the function is
->> weird. Because you only reparents some resources from old to now.
->>
->> Two questions:
->>
->> a) Is split_addr really required. Couldn't we derive that from "old_parent"
-> 
-> old_parent->end points to old end range before the split, so I think it
-> doesnt tell where the split boundary is, until __adjust_resource() is
-> called. Hence, split_addr was added.
+>>> We have a upcoming SoC with support for up to 16 GiB of DRAM=2E When t=
+hat is
+>>> used in LEON sparc32 configuration (using 36-bit physical addressing),=
+ a
+>>> removed CONFIG_HIGHMEM would be a considerable limitation, even after =
+an
+>>> introduction of different CONFIG_VMSPLIT_* options for sparc32=2E
+>>=20
+>> I agree that without highmem that chip is going to be unusable from Lin=
+ux,
+>> but I wonder if there is a chance to actually use it even with highmem,
+>> for a combination of reasons:
+>
+>I would definitely not call it unusable in LEON sparc32 mode with
+>HIGHMEM gone, but it would of course be seriously hampered memory wise
+>without HIGHMEM support compared to with HIGHMEM=2E In NOEL-V 64-bit
+>RISC-V mode it will of course not be affected by these matters=2E
+>
+>
+>> - sparc32 has 36-bit addressing in the MMU, but Linux apparently never
+>>   supported a 64-bit phys_addr_t here, which would be required=2E
+>>   This is probably the easiest part and I assume you already have patch=
+es
+>>   for it=2E
+>>=20
+>> - As far as I can tell, the current lowmem area is 192MB, which would
+>>   be ok(-ish) on a 512MB maxed-out SPARCstation, but for anything bigge=
+r
+>>   you likely run out of lowmem long before being able to touch the
+>>   all highmem pages=2E This obviously depends a lot on the workload=2E
+>>=20
+>> - If you come up with patches to extend lowmem to 2GB at the expense
+>>   of a lower TASK_SIZE, you're still  looking at a ration of 7:1 with
+>>   14GB of highmem on the maxed-out configuration, so many workloads
+>>   would still struggle to actually use that memory for page cache=2E
+>
+>Yes, we already have patches for 36-bit addressing with 64-bit
+>phys_addr_t=2E Patches for CONFIG_VMSPLIT_* are under development=2E
+>
+>Even with 192 MiB lowmem we have being using up to 4 GiB without running
+>into problems=2E Could you elaborate on why you think lowmem would run ou=
+t
+>before 14 GiB highmem in a VMSPLIT_3G or VMSPLIT_2G configuration?
+>
+>And even if 14 GiB highmem would be hard to get full usage out of, for a
+>board with 8 GiB memory (or a configuration limiting 16 GiB down to only
+>use 8 GiB or somewhere in between) the difference between getting to use
+>2 GiB and 8 GiB is quite hefty=2E
+>
+>=20
+>> - If we remove HIGHPTE (as discussed in this thread) but keep HIGHMEM,
+>>   you probably still lose on the 16GB configuration=2E On 4GB configura=
+tions,
+>>   HIGHPTE is not really a requirement, but for workloads with many
+>>   concurrent tasks using a lot of virtual address space, you would
+>>   likely want to /add/ HIGHPTE support on sparc32 first=2E
+>
+>That is an interesting point=2E Regardless of workloads though, it still
+>would be a huge difference between having or not having HIGHMEM, with or
+>without HIGHPTE=2E
+>
+>
+>> When you say "used in LEON sparc32 configuration", does that mean
+>> you can also run Linux in some other confuration like an rv64
+>> kernel on a NOEL-V core on that chip?
+>
+>Yes, boot strapping will select between sparc32 LEON and rv64 NOEL-V=2E
+>
+>
+>> Aside from the upcoming SoC and whatever happens to that, what is
+>> the largest LEON Linux memory configuration that you know is used
+>> in production today and still requires kernel updates beyond ~2029?
+>
+>The maximum I know of for systems currently in production has the
+>capacity to have up to 2 GiB memory=2E
+>
+>
+>Cheers,
+>Andreas
+>
+>
 
-Makes sense, that's also where the sanity checks happen.
-
-Worth throwing in a comment for the function telling that lower was not 
-adjusted yet.
-
--- 
-Cheers
-
-David / dhildenb
-
+SPARC32 has a 4:4 address space=2E  You still use HIGHMEM?!
 
