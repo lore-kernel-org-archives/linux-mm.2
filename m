@@ -4,86 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D050CAC582
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 12:45:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72509CAC582
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 12:46:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9AE928E001D; Fri, 12 Sep 2025 08:45:55 -0400 (EDT)
+	id C21848E001E; Fri, 12 Sep 2025 08:46:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 986588E0003; Fri, 12 Sep 2025 08:45:55 -0400 (EDT)
+	id BF9948E0003; Fri, 12 Sep 2025 08:46:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C3168E001D; Fri, 12 Sep 2025 08:45:55 -0400 (EDT)
+	id B0F758E001E; Fri, 12 Sep 2025 08:46:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 795A38E0003
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 08:45:55 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1E5E186E23
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 12:45:55 +0000 (UTC)
-X-FDA: 83880570270.13.9BC76AB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 6F8F940009
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 12:45:53 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=pi6wWXWm;
-	spf=pass (imf07.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9FE788E0003
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 08:46:49 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 550A011ABED
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 12:46:49 +0000 (UTC)
+X-FDA: 83880572538.26.A9D7A22
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 4EFCC80003
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 12:46:47 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=HTvt2Vay;
+	spf=pass (imf30.hostedemail.com: domain of linus.walleij@linaro.org designates 209.85.208.177 as permitted sender) smtp.mailfrom=linus.walleij@linaro.org;
+	dmarc=pass (policy=none) header.from=linaro.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757681153;
+	s=arc-20220608; t=1757681207;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VoP5P5m4UFcgrLJBWCJl2WTnNmypn+YpDH8toV7kcY4=;
-	b=pCxrKoXV4YnkpaZprn3RM1mLEKK7jcrSwGXaHk++ClWTVt8WyVKCnHCXxgWnhVKzKhkMnl
-	M4KhGK85ErSxrZRKxPPRWzjgOmmbqQiY/iVev4mU18g1g0jq5xisUYepG+scyhjdZj3WtE
-	XBkz6b3aSAFIHPZ3ulqGE+QM0kaMldw=
+	bh=4J5UZwv7Uo2rH+o6sSlfGyt4PnQotdtpRnvjkNoAGSQ=;
+	b=ac9qJwrZiPEVMwvMVCmt2WgqpNE/QehmRRIGbNuOyDmJR9TjjEg0oHqC/1qgXQ4R8p2tJj
+	PQyyTOD+WaDR6OQBHfG0xxpe9Rv1qOCBywwVvfBsbQjD9fqZl0S3RoLfGEoe7rqpyzLpQf
+	98GDEwkmYREWFoGGAyK8Uhtz9EeLapk=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=pi6wWXWm;
-	spf=pass (imf07.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757681153; a=rsa-sha256;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=HTvt2Vay;
+	spf=pass (imf30.hostedemail.com: domain of linus.walleij@linaro.org designates 209.85.208.177 as permitted sender) smtp.mailfrom=linus.walleij@linaro.org;
+	dmarc=pass (policy=none) header.from=linaro.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757681207; a=rsa-sha256;
 	cv=none;
-	b=ig8cv0vGOMqYrIEltMKwOyuxoWrZ4aF+qzTWJF91258YpUymeR6VLi3pP8k7fEwBuniSv5
-	5HA3sS5svqviCcreMp21h49XUaaYLNxX5gtrdhKtDjsfMHrz4nWuMzNfJsS/93AcOrG0sd
-	w2mdzPyvHIt8DfraFVMwBSYDpboiSh0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id ADA7F6021D;
-	Fri, 12 Sep 2025 12:45:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDBCAC4CEF1;
-	Fri, 12 Sep 2025 12:45:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757681152;
-	bh=lD5ROtoWeAtmKAISXqDN/6McT33HUmW9pjihJpJCvFs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pi6wWXWmQDtPgt2V60hAsaqZj1tVBkAvmTLZ+o3qpgRgmD2p03mdvdELPH70exUwF
-	 WYpG8IWw43ziWv9WR/YMz+vytLSkBPhkovit7iN7uZ6iSxIKa/qfTGalJR2rxwyw7V
-	 egJY3LU0VybbRWgl6Dm0NyepInCpRe3AAtOyUh9w=
-Date: Fri, 12 Sep 2025 14:45:49 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Andrew Guerrero <ajgja@amazon.com>
-Cc: akpm@linux-foundation.org, cgroups@vger.kernel.org, gunnarku@amazon.com,
-	guro@fb.com, hannes@cmpxchg.org, roman.gushchin@linux.dev,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, mhocko@kernel.org,
-	shakeel.butt@linux.dev, muchun.song@linux.dev,
-	stable@vger.kernel.org, vdavydov.dev@gmail.com
-Subject: Re: [PATCH] mm: memcontrol: fix memcg accounting during cpu hotplug
-Message-ID: <2025091216-purveyor-prior-2a81@gregkh>
-References: <2025090735-glade-paralegal-cdd1@gregkh>
- <20250908210900.24088-1-ajgja@amazon.com>
+	b=YA/xugxZN3TPBnVWOd6hm2fyy7xJFsSdUpczBcjXYfvZYwo0BAMa4O6KhK5q4L46rk0gbc
+	FDczVJZZd9ly3BtUDtta8BwYf6MJiIREp03BeXVRfpFkGm0XsH7Q4tgh6GJwtLPxMuphm4
+	fX7VsKL7FHUqX4+xblBO1soS95WcKfY=
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-336b88c5362so18046581fa.0
+        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 05:46:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1757681205; x=1758286005; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4J5UZwv7Uo2rH+o6sSlfGyt4PnQotdtpRnvjkNoAGSQ=;
+        b=HTvt2Vayex8oLcFZ1Q08KUnvM3supO2zD8XhVhelHGGazANFYSPYKAHnI4EgiUWNL+
+         Oa/95ZBuHKdpdWMUDfuiX9IFrAM4EdZ7APhvxgD20hYI+VGAY413D3bMw4sLki+gZuCv
+         0NbiVr7RhOsf4mNIssLMn1mfGFhKrVycCzfl0lFe6ajiuDCW0DXlZ9MXJwCw0GNCh2Ut
+         NnjLrHMjRgmsA7Lrno5tzWW/OadAbTNr4aO/pFpebrWYN9hsnJnq/yonJav1wIAzNzps
+         tXKIECidXnGGxMqUKFmmEarFGtcTqoJGl2w+zyhyHzF4rNvX6RyV7R2uV5tlDueaWP7P
+         3Dhw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757681205; x=1758286005;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4J5UZwv7Uo2rH+o6sSlfGyt4PnQotdtpRnvjkNoAGSQ=;
+        b=tN33EJKdu7CGKNOvNgIR7ihMpGvXjiBN+4MimEO/axkmCnAFC/y03KKNsSDtZ9tsCX
+         hOnLFAERurpcLw0rOg0pEH7gatzkGigGBgUtlKeL5DOzMeGPCaJiFDQFbNrRZWiytolw
+         +wm/Ejaycd+Gbwl65wqpfrGrgurrsbpeHFKkjVZIjHW9+kVSYg9wdRm2ugxFe6YFuf9+
+         spanfqvbNtZpZkQHOVTxZv+h0JiRkMrlJhUavu2wXpt1VP+ffFW2ZCiTJcI7/k5OVFaV
+         UU+p+AvUDN5gcRUJM7Ad0YYoR6DzOeJ90GryfJcR6B/SSmNErLwsYNwu9DlYAiNcpIyW
+         mDWA==
+X-Forwarded-Encrypted: i=1; AJvYcCVsOr5CeGI3zFANSPqIMNN5VfOLihK7S8K9NOClfYJABhugqA9EAOQvJjLFybI7pBlWO92Zk32GNQ==@kvack.org
+X-Gm-Message-State: AOJu0YyGUAjplzdEqpfSxuTR93Kr31kydmkyGCVBBXGMCiRuMRCyyVpc
+	rELw4vfdUtYNeWn/kZtw6WVGmOcadvyCEs2qAmhC6NWTkEePvVL38cLd5Do/JGWbJcyVzweC8YL
+	0xBo8Ejlmdf+lax8Iglo6e36zC0d1el5qqm2JGxsAEg==
+X-Gm-Gg: ASbGncv/+GNirIIEH0WVviD3NAA9aDjEInOJh96PW8seZ5vJ2D0b0EF5nejqietHRnw
+	0qoxWViZ5TWdDKf6CjjtxYPp6NFqinLAR7JjA1NMiOQV3Np1bWZY85poQPEGa55BwhEZesJI+PI
+	eGGgzXJYFc0X7V9mUDmf43GoQAaME0fSNernVhXlt+C+EBJFWtEo2F/PbicScCCtQMWusxsa/xv
+	bH5Izc=
+X-Google-Smtp-Source: AGHT+IFceSrS+iukkr/XkXsYJuXAC3/mzUt2kTyPUu5TFhzIuaRO7o+4f66lybawSyOyyY1O0N/R5wKHhfBQZAMqWCU=
+X-Received: by 2002:a05:651c:23c5:20b0:339:1b54:b367 with SMTP id
+ 38308e7fff4ca-3513b296a39mr5927901fa.18.1757681205355; Fri, 12 Sep 2025
+ 05:46:45 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250908210900.24088-1-ajgja@amazon.com>
+References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
+ <497308537.21756.1757513073548.JavaMail.zimbra@nod.at> <dec53524-97ee-4e56-8795-c7549c295fac@sr71.net>
+ <640041197.22387.1757536385810.JavaMail.zimbra@nod.at> <4fcd272f-81e3-4729-922b-588ad144e39b@app.fastmail.com>
+In-Reply-To: <4fcd272f-81e3-4729-922b-588ad144e39b@app.fastmail.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Fri, 12 Sep 2025 14:46:31 +0200
+X-Gm-Features: Ac12FXysdXrp8ARxlqs--JPKzGSESzQlXQvRlkFB3ZYER3az5tDF4P1ySurKojc
+Message-ID: <CACRpkdY9VS1H642wSUsLvwi91YOwXGkiePdq+JktDSeiWTon8w@mail.gmail.com>
+Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Richard Weinberger <richard@nod.at>, Dave Hansen <dave@sr71.net>, ksummit <ksummit@lists.linux.dev>, 
+	linux-kernel <linux-kernel@vger.kernel.org>, 
+	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, 
+	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-mips <linux-mips@vger.kernel.org>, 
+	linux-mm <linux-mm@kvack.org>, imx <imx@lists.linux.dev>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Lucas Stach <l.stach@pengutronix.de>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Ankur Arora <ankur.a.arora@oracle.com>, 
+	David Hildenbrand <david@redhat.com>, Mike Rapoport <rppt@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Matthew Wilcox <willy@infradead.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, Ira Weiny <ira.weiny@intel.com>, 
+	Nishanth Menon <nm@ti.com>, =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, 
+	Alexander Sverdlin <alexander.sverdlin@gmail.com>, 
+	"Chester A. Unal" <chester.a.unal@arinc9.com>, 
+	Sergio Paracuellos <sergio.paracuellos@gmail.com>, Andreas Larsson <andreas@gaisler.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 6F8F940009
-X-Stat-Signature: 7h9p5a5ecrkkgp5j3kx79i4dpxi4heyi
-X-HE-Tag: 1757681153-25796
-X-HE-Meta: U2FsdGVkX19q5uyzrOmTmTkbYmjCbNfQJ/doL5YHuehGKlwhGsRljeHuDuPRD0AiBy2n7fydraAWNLlltAi9MjdGU+gh0QO4icTc+FHNmB+GQVFFWPXP3CXbNb8mjK71YIee25cXgXcn9KNOF+N0YIL3XFcFO2mAx6q2L8LMTprhpqnTHQ13UDv3QnToZM5Lz+pW65xz8ZCnzD9U+EgDzoJ67lLQ6b8BJ+TUWhZ49Valv8/29BaFIdfOJ6PwUEsST0fdfr33urOnDKWx6LUJ5yjGWh+kPWNvqGKmp3l8h3o5415e0TlS21xu41W/HI5g13sO4eeElFgT5opEcM37JR1eAD8bKFEjKxrxdRi06Z3TWhmu1I509dcVkCbJr3jGJ54l5v26z8x/fMqJsVEg26MNSfd2STL0lspDhuA5hxftSXoreA5X7wSLX+tqoQxkEOUhcdpvIyzkpTbylKNiT7OTrw97oOzhcNe2vsZwg3Ur7bcsAfkSdlI7uWYyOtuLgIDMgFwfmZdJ3hNYzMZJs6H4THi4CAqEHoKDgQH34n9EgxMn6iq0S7OCTVKLDAkNs6HwvT2pdMsJkIwSQN9ZxbmqLgPPjPN8gMzoy6C90HOZ7VJFZGJE345qjtzGx9s091s1imR3tXPO4ItlIVen0YH00JjpMZaSEfaPoGmDRu/jxv5QZBIWbIzgNop9PaoCE6qPB1k7AxPUDs6WLTIezTF+TTBpIk2qjJcivo/qD6cwrlIkJ5gjS2ePMXwlwdlC/UtwgOpF19lM9P4q1m6SlRsoL6UoBit1BW9uVRJNuvZsIlU4GD6LZuVR6HVNKwbulnbboMBG/9rzJD0TUiK1M7/0vPQNLB4oORY5SN73nC1cxlTyA6n9gxXzhycg2q6pbmFQzxS3oxEUanWdz+oXcitgtNh8T1/epB9yCHtCEdmkydkMxDD7DQ07TNWhgg8H1wRItZxngN44xwTnNjN
- 7W9lucyI
- 0sAnx1GE5UvPfBZkYYZckONZtRlMEZWoX8U8zxKuPneNMooHoHFrhdbebVp5oWR0ucqrou1CMujWJwwzPjQZA9rKDmMWsjKhclGDUkPRjYpbuhk+Bzm6WV1Dt+gdD9I97n+L2vb8LKMwqI9yDSQrGaMQRov3nqJ2yyRGqztLId6K6GQB38Pl2WCCdT+Y0/eA826/DxSiZG2mSfC2LFFXryQJgGeVGOwyS27udVF/SA0siW3Vq/LuqULriGIJF/SKCbRlyK9J7KkY4/O6hUpcOk7SOyPkKDPwMRXSiTYDcybWKBX9hhcztuY8VkXlmsGvlwNS8NbPT0xkPHaByoYKDkUVXCCSGfEQXlFOldT9WXmaAaUC8BUxrxvfIB2A9Gl10xkatKZWpfrTvh5FW2ljedql8EPMbzCchYN40ple2OnVAZ8sPbYp9shH1E0yr1n07L2xEzQggnK6dXXuEcvhq3j2ecqP+FHkHfY/Lozup5M0MHiULu/zhytQwqA==
+X-Rspamd-Queue-Id: 4EFCC80003
+X-Stat-Signature: 61hmy1fnrds7hedqqtisw5r688ezjac8
+X-HE-Tag: 1757681207-614452
+X-HE-Meta: U2FsdGVkX182La4CLL5D6T0joKPr2y5DeQzkP8dmmC0AjSuFUyjy+0ImfqBRKlS7vaB35l2l55x/R+pai1zWR/Dc7PCS0zhNqFnMCmFpxQuA8fGJk0B/OvE7hihBBLQdAoI7jZQOzf/GoOeeCmvf/gn2d4EFVWzI93vzwQXOvw/gaSVfx1THH30izCoFDFR+1qHU8MtVJAtZeN9cRaqI6ZoctqMB8VnZV9VIuP244pVbPUFJUs68rk2dF2NBcyLCe9xAg1fCC9NFDrLUr1pdIk5eCtH757Caw2ydXiXhIE1wRBcvj332LNKdFRtt1Be1j84C0B85RYMvKhuuzZwGY1AWZdJIWuz0aJhSGahRHAM7HiHAprr4iUFS7r+V6idnglUpDpMXdbkhf89oe8n5i0khytnYXSfgCX+0ifRVHjcKiAvel0QLJat6L4LUTuv2pWukXWCc8RIv2PghWUVPEJxUGawiq3fwVx8IdjIgHqdm6TK1lDQRzh6vwA2EAVb+/2XrzkGeXPU4LLsZ7byUAvpy4vAY1VOmyz8PeebxuRetvtuy3duTyBr9twEKPS8JvimDtOQAvwmS0ziOneYw1vSGE4bPd5SAnXwfbsShkTAiEI//L1i2GcmLQJEZzTADXaEh0OiyIWyqu5mbfyKzlhVA/KJLh98v0wiNmiHnIPsuRfzOyDaJgV0V9qytE5y4eyekyjQ35zd3gr3ZRfC3b15WK39HrFBV7aKwGECAnn3VP3xKcIyrlyMD66U0orz/bF8xHpPRlHQtSwU8h+mNOfWz+5RROqKQuqK3f8cTVvrLdG72pqMcHXvAu9JsToGjM9x6XX/xE2DokTpDQFv48Tx6Id5QBT5v/XczqWNVAt6SbO5xojFdG2fbiBMWnc63Nw0HXIpYrldTF0eu2rwDjs/RwP0hnqgb8QKdOiatMbe7EGlV3OSvMuAawUqv+npFsecJ4QOXJfrUGP2QTUR
+ Mtv5/Aws
+ qZM1QhqarxiJRom8KUZtAq8m2ktZR8yGgNyJ7JXHJSrMmfdVegBnwHZ41p4iIjNirgPAa8fGNVV/JOQAe1AfJNNXaoDbJ4QH7UeBv+uHwjKqNb9A2TMX689uYT9uszXjw3c4Vm6aX9ICzw9BiICjyvowjd02GZ6X/n2c9bYoFYG13mtz+GaUoX0Jgxfn26WD76M+TyRYvmMmbFI5wuK7zJPQhS19qPcrKoIBbQADi96XEFVEpi/p1oZm2TUgWjyt939jGY5rCKgcqMKaNECyneuXX/axf3zsbgZ7bJAQeyHUMS0TLC2EkGSTOEGq7KYlGPcebMT/Li4s8LknzGh6u2pA7KViwcGjdNxya7GTHdd2iuAnvzbALLXeO5Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,48 +131,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 08, 2025 at 09:09:00PM +0000, Andrew Guerrero wrote:
-> On 2025-09-07 13:10 UTC, Greg KH wrote:
-> > On Sat, Sep 06, 2025 at 03:21:08AM +0000, Andrew Guerrero wrote:
-> > > This patch is intended for the 5.10 longterm release branch. It will not apply
-> > > cleanly to mainline and is inadvertantly fixed by a larger series of changes in 
-> > > later release branches:
-> > > a3d4c05a4474 ("mm: memcontrol: fix cpuhotplug statistics flushing").
-> > 
-> > Why can't we take those instead?
-> > 
-> > > In 5.15, the counter flushing code is completely removed. This may be another
-> > > viable option here too, though it's a larger change.
-> > 
-> > If it's not needed anymore, why not just remove it with the upstream
-> > commits as well?
-> 
-> Yeah, my understanding is the typical flow is to pull commits from upstream into
-> stable branches. However, I'm not confident I know the the answer to "which
-> upstream commits?" To get started,
-> 
-> `git log -L :memcg_hotplug_cpu_dead:mm/memcontrol.c linux-5.10.y..linux-5.15.y`
-> 
-> tells me that the upstream changes to pull are:
-> 
-> - https://lore.kernel.org/all/20210209163304.77088-1-hannes@cmpxchg.org/T/#u
-> - https://lore.kernel.org/all/20210716212137.1391164-1-shakeelb@google.com/T/#u
-> 
-> However, these are substantial features that "fix" the issue indirectly by
-> transitioning the memcg accounting system over to rstats. I can pick these 10
-> upstream commits, but I'm worried I may overlook some additional patches from
-> 5.15.y that need to go along with them. I may need some guidance if we go this
-> route.
+On Fri, Sep 12, 2025 at 12:31=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> wrot=
+e:
+> On Wed, Sep 10, 2025, at 22:33, Richard Weinberger wrote:
+> > ----- Urspr=C3=BCngliche Mail -----
+> >> Von: "Dave Hansen" <dave@sr71.net>
+> >>> Even with a new memory split, which could utilize most of the
+> >>> available memory, I expect there to be issues with various
+> >>> applications and FPGA device drivers.
+>
+> I also remember driver problems on older Marvell NAS systems, which
+> we never fully figured out, my best guess in retrospect is that these
+> had devices with DMA address restrictions, and if lowmem is small
+> enough it would always work, but any lowmem allocation above the
+> hardware DMA address limit would cause data corruption.
 
-Testing is key :)
+This kind of mess is often also driver problems, in the Kirkwood MMC
+driver there is some dated code traversing sglists iteratively
+instead of using sg_miter() on !DMA which I think is not entirely
+safe either.
 
-> Another reasonable option is to take neither route. We can maintain this patch
-> internally and then drop it once we upgrade to a new kernel version.
+I wanted to fix that driver but the hardware is in my NAS and
+all the time someone is watching a movie from it :D
 
-Perhaps just do that for now if you all are hitting this issue?  It
-seems to be the only report I've seen so far.
-
-thanks,
-
-greg k-h
+Yours,
+Linus Walleij
 
