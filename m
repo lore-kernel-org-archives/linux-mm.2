@@ -4,85 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96814CAC587
-	for <linux-mm@archiver.kernel.org>; Thu, 11 Sep 2025 23:56:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2732DCAC58E
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 00:25:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 875A16B0011; Thu, 11 Sep 2025 19:56:07 -0400 (EDT)
+	id 18AB26B0008; Thu, 11 Sep 2025 20:25:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 826376B0012; Thu, 11 Sep 2025 19:56:07 -0400 (EDT)
+	id 13C108E0001; Thu, 11 Sep 2025 20:25:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 73C756B0022; Thu, 11 Sep 2025 19:56:07 -0400 (EDT)
+	id 02A3B6B000E; Thu, 11 Sep 2025 20:25:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5CF546B0011
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 19:56:07 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id F2F6C59BBA
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 23:56:06 +0000 (UTC)
-X-FDA: 83878630332.18.7F3063B
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
-	by imf08.hostedemail.com (Postfix) with ESMTP id D519D160005
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 23:56:04 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=woUpxw0L;
-	spf=pass (imf08.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id E4DB46B0008
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 20:25:27 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 585061A0618
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 00:25:27 +0000 (UTC)
+X-FDA: 83878704294.28.5959BF6
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 8B3D31C0009
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 00:25:25 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=0HpualqK;
+	spf=pass (imf21.hostedemail.com: domain of surenb@google.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757634965;
+	s=arc-20220608; t=1757636725;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H1syGOpRMTLt/2HES4uKtyZYHkD0JGY65K8XvQf+2yI=;
-	b=5ZbWeLNc3o3CuolBKYMwAHFSn2YYRaPwMSzI3gbVgKdeCQAF1wgwEXyVzPgOW9uXHLQD1l
-	h4XK0veb0z3QqUfLkVLkialCV9KeGA1DmQD7VEJG+upGtBcs3fNs25WQlTLmpDOge2dK9i
-	UECvBmK1qGTT2PnA15cLDZkLdvu54Qs=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=woUpxw0L;
-	spf=pass (imf08.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757634965; a=rsa-sha256;
+	bh=fBEQ8ZTMn3TZxAlSy9fAiaDOr1I2tmTY9zRoUUHxCNg=;
+	b=KN3UNeywAvZiAUcfmk6T3hs2G1D5/2P3IsmSR2OeKGe50WVeEJX9MynmHYtHVc/BW1jHRu
+	O8GGMrYos4aI7EGUsO/zUfhIDzLj7DmKPm5flAs6DW/cTzzke2Gk6yaGYIxVrKo0HBpMhA
+	BIkh2EweoU6B0WfFqlUewMEgDD0sMGQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757636725; a=rsa-sha256;
 	cv=none;
-	b=arXZhao3H38/cX25uZHPqwTAamuF0imjROFX2sTfJTyiheLXJM3jKEmY729jht0RNM9xNF
-	iZxgjpySSNX2qqGYU378TF8BdG2gDM2ZqV4dr87DGXvjQaqx63VmBBaclu7QlpESaMwrIk
-	O4+XcwO+Clf3mdn976hQuTOofyieDRI=
-Date: Thu, 11 Sep 2025 16:55:55 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1757634962;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=H1syGOpRMTLt/2HES4uKtyZYHkD0JGY65K8XvQf+2yI=;
-	b=woUpxw0Lvx2lNuiyEe9jO0AcBG5pByFcVWwU5B0QKOHtZDf9/l2FReWiI5Meepw10iTRjE
-	C10QmKSidujzUGJsNRTPnzuwAkv6addj4INaQ1XCPEOxwtQtf6/DQlaA2DC+CXrxZxNprb
-	UU8hf4URR+WvcsxU8T34PD0IQyboj+U=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: zhongjinji <zhongjinji@honor.com>
-Cc: mhocko@suse.com, rientjes@google.com, akpm@linux-foundation.org, 
-	tglx@linutronix.de, liam.howlett@oracle.com, lorenzo.stoakes@oracle.com, 
-	surenb@google.com, lenb@kernel.org, rafael@kernel.org, pavel@kernel.org, 
-	linux-mm@kvack.org, linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	liulu.liu@honor.com, feng.han@honor.com
-Subject: Re: [PATCH v9 1/2] mm/oom_kill: Thaw the entire OOM victim process
-Message-ID: <y7hdpmq6smlv2eztltwilmxcvalax63y66ttbckewa6mrk45yl@nu2kv3vtbsxv>
-References: <20250910143726.19905-1-zhongjinji@honor.com>
- <20250910143726.19905-2-zhongjinji@honor.com>
+	b=Z3BxSCScn7ExPvUhIXvL5YFc3QpxtdPzRsDmxdvs57AT++zaeKBO+a1Y/ZmY7gQ1FUYQ5x
+	la+k5I5LAiFyTzNEKqRrj+z6zrDc3969V1T7HpD0VrIB4xqwJo9AI4nA15Mhmy5sTUj76T
+	92q42UwpvkPdNuUwTqYlCBgFJAb1QIs=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=0HpualqK;
+	spf=pass (imf21.hostedemail.com: domain of surenb@google.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-4b48fc1d998so72161cf.1
+        for <linux-mm@kvack.org>; Thu, 11 Sep 2025 17:25:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1757636725; x=1758241525; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fBEQ8ZTMn3TZxAlSy9fAiaDOr1I2tmTY9zRoUUHxCNg=;
+        b=0HpualqKzHqqpPBIuRZB/s/bwdjy/Oc21TkUUSD1nJ7VtM1DxRQzFeh0jJwYeuxhjt
+         L+Kxo36DO/4x8t6Tx2TYPkuwc0RmyM+JsCHP4+nKHViChOf2ysZV8Ur4R9Mq+CXOWdXe
+         aWRjLhFTyeXNYYG50sPLETOFAtwMHI20rQ8oawapJHbqjkKxC8n1L6WnpGRt2+WHNDur
+         LCSHYvK6hj4gMrcsjo97rDK6Bj3IHrKnkE+zFkl64qo9peRP9WnCLxLZBqa2C/WnGXmm
+         SwFAvi3JiY1F0jNFZ1V+YU32FILmvJj6T8erPpI21oaqqjh53jJiGhs7w4k828YQGVM/
+         K+Fg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757636725; x=1758241525;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fBEQ8ZTMn3TZxAlSy9fAiaDOr1I2tmTY9zRoUUHxCNg=;
+        b=F6VT+0XjLLlrfPLh/BKMrT6LBCaXjCZ+9Mgi06IOlVA9Q2zipaALjsc34Ti/ZHeiGK
+         7rXZ98PML7zfeuXZMnOY+HdiiZv9XMKUvVrWD0PDrhUGhStJftwpGsEwauoJOwU7Npc7
+         tfP3zwRE1EwnNWFEalDJo6buPE3NTs/EWIC6a2hxVEZsgT8k2+pYIaquVuLMYnpydGNe
+         vugBKZurycINVaVL6kvVt1GDZbyqsgUDzbNo+bTiu/3pVGDHV1Q0lo5zI06K7y2lO3j/
+         pD0OC7NXE3u4HP9/53p3epc/wX8IsJvfEXB8tNrljh31Rdulb9tSH7kUNhQ2omuwx+d9
+         dDUw==
+X-Forwarded-Encrypted: i=1; AJvYcCVLw50TaOPbKM5xaTulGzE3qrT01R95q9ubdWTb/AlY/Qy55YkmkA//TdkYTw1/5cBCxdWrw94Z0Q==@kvack.org
+X-Gm-Message-State: AOJu0YwjWD9KV1t9GKje36ZPqrfmpmdQTsCbsA9f+0CcUIgYGGRgIirI
+	gomGFhdOrggjFnNPmTQob7KD7eapoMsH0wKuVrClinLU/6mkDkvFGC5m36mQwqonGq3kAvhA0yK
+	rLcfzPZSR0ZQlMfvv4yYdnSvmMaK0e3h+cVbDz8Ng
+X-Gm-Gg: ASbGncv7/G8wcG/Wzd31juC0vbhE7LvO3E1hjPQOzzJIleW/dwZtQFFa84uup86RA8s
+	nrNhBJGQKGnuzAgW1jajetukBMdlSsc35AeKV6xxuwBu05RecFWsCEtvPx13VwvNAX3PejF8ZEx
+	Gm5sLlGOYZ4HAAHScZMtQ4+TSv/AApT9taYCSmbpZxW+zITugwmN2Pvy0ntJKQQtS2hLKfoseGR
+	6zRbzfu6Zgtmxgl4pJS0+ol3JfSGhTcwiMkPNCddis7
+X-Google-Smtp-Source: AGHT+IE+0Ikv6ZmClRprAjJ7En2Cf/iJ3MovNG6j9LOKINd4JOerL1B8XHmC6+uwh0xdO946ixKIpCb4kUZ9Dkji5K0=
+X-Received: by 2002:a05:622a:4a:b0:4b3:4781:bf2f with SMTP id
+ d75a77b69052e-4b626eb8e4dmr17807611cf.9.1757636724078; Thu, 11 Sep 2025
+ 17:25:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250910143726.19905-2-zhongjinji@honor.com>
-X-Migadu-Flow: FLOW_OUT
+References: <20250909234942.1104356-1-surenb@google.com> <20cafc1c.a658.199394de44e.Coremail.00107082@163.com>
+ <aMLvCCZbmpSE/aql@devbig569.cln6.facebook.com> <902f5f32-2f03-4230-aab0-a886fd8e4793@gmail.com>
+ <20250911143132.ca88948c48df874f71983218@linux-foundation.org>
+In-Reply-To: <20250911143132.ca88948c48df874f71983218@linux-foundation.org>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Thu, 11 Sep 2025 17:25:12 -0700
+X-Gm-Features: AS18NWCtHRQfQeopObePXdwXorxorF9mUB9KiM1id21GcnnHiYfUjUroiM7mNYg
+Message-ID: <CAJuCfpEoWtgv8k4vApkGsNNUYFBnvS-N2DPQu2JrreCUPbT5dA@mail.gmail.com>
+Subject: Re: [PATCH 1/1] alloc_tag: mark inaccurate allocation counters in
+ /proc/allocinfo output
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Usama Arif <usamaarif642@gmail.com>, Yueyang Pan <pyyjason@gmail.com>, 
+	David Wang <00107082@163.com>, kent.overstreet@linux.dev, vbabka@suse.cz, 
+	hannes@cmpxchg.org, rientjes@google.com, roman.gushchin@linux.dev, 
+	harry.yoo@oracle.com, shakeel.butt@linux.dev, pasha.tatashin@soleen.com, 
+	souravpanda@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 8B3D31C0009
+X-Stat-Signature: pkhcqd589ezdaxhqaqtptpizpoctm3qp
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: D519D160005
-X-Stat-Signature: igb3rdfosgayfnyngn5gdy4aqdaog4tt
-X-HE-Tag: 1757634964-105297
-X-HE-Meta: U2FsdGVkX1+wLNdyIipZ+hDxgEM9HRAp06TYOrfabx+hER5KlnpUqQylwS87ukSYWiQjhjpxjaim+HhUCV7QPaatiCd67A/2xyDyiWoGu7wzlSfEMk9URgRWdHB4dziwSV5p0gX1UTioHF1LTDWZlMsReecmS2IyqaxXwOPcIDlqSV511BxA0mQL8VwBLiZCgmB6NtRtLURG8/hLwsQujiHTjm7d7F/VZjbT7SURxgZgiT1H5Kc9dN9j+N4PixoMGsYoKYhysb5NKeF4ULYFC6fDfVbinYefhoBinUYl4zb5FjQm33cW5WjFXvueQAkTj6n4kFC8CjlSmZD+EbY624BZ8IPQzrIrsguHCMpCEO0Lbv8sa7f59NtihocdCYkaBemP+uFA+4Rw2di66eZzEF9lt9cfp8tT94hKrO3QRv1+3zB6eCVJY3fTqwXd8Z/SwqLsfR95V2XPfM0dKihaBR+Wyo5UIyb+T7DEn5lbaEEMPhTpXdzuVFjIkiqxb7g34Locq3GFJfHZBcGDmhwwBaGhwZNctJaVvEPWc5xSjqc2+T+Y8vN7gWH3q3t+uHg2gCZuceAeiIfJLu10r85UZEIz/wx8XUxvdNKsnorHzhetMwg+jANrI7fsk5vTwzFXgyPu7eIGrX8CVJH5crzklQTvverUeMJINAhEXn8o4k654+7Dy/GjWUHfajjz+vnoeorvnKkBLx89Fh84zqzp7LLGGncMWX1DaM9s9VryBXtWgUiRwy+cl2OXIZBl54p2W4eD4d/pkvSMiC74OsdsYH1aSQ1EKQskXw0I9yuxtra6DhxKuqyjwvFvM5XQ02med/0IoiY/soiEAoSjMBN+1l5aRvpvSNvFwGDXV+W/B6FRpnMtRlbXUNfzgwslUR7Qfx4KTQ14OET6fFp7bM+00PdJZqhW5gTEZnVLXS1EkVQiJSS4lxllamZ7CUM8GXTQ2tLQjYsKaAfHZONEbsR
- onyBTggg
- ayhkbPLpYCPvi1c6MnFLd3KBy9P0Lyx32CbqKO5d0snfAHamRF5FEX3rTnX71lXvVSO081Xukz+jHDr0jYEVJ7eZe7XuHsApsNgym2H+quRK8jrA/arZ0nEVYokaVSKl63e0eUbYahYauVRf8cx/ihvNpF2ysxBiDX0PuSJwga3HQw1SfpfZ0htjMqm3CsUpvhFCiB0K8n7txbkW/KDJOvOcOIggACM8GlTZsED0uCDczfpyJtjpyh6l+ccFvi7qTG4P5COzFngdW3G8TWrsxR3VUw1qLnR91CLzXyEJ/F55kLfRrb82vsTgi/ILtWyKodj0bz9/eUkikqxfjUk7Nip8zEsbYZwp6j8Y39FiE+qgNgNTHNedwZQ+mXA==
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1757636725-874566
+X-HE-Meta: U2FsdGVkX18rFY/F/3+rwTc5iOPlQsUon9CI4kk6sM7IDxG/+fwgj/oZMeYfHbu5tSq/fe4b/cAHNAKX29aKsznDAbEPtQ5GNc8GRjZewz1w3kn2N3sCePgFgBOQK3sOfcx22eiUouoX0aDdtbw4vWBFq1ZpdOUjEKHxaUcHe0TSJT5lWJGkzznWaPP8QeW8THvKV5NgoTKeKyFMfo0aixXM2TI/CVulcwtOwpn7kKYByovmWK1cPHeuRf+0LFeKbypgi2H0EIXY0DQPpo3d52AhhyCPv7narD961vZIqdO1wr696qkGhnvHBH/C7ty9L4l/c4s1NUKScBUgjeN/RSXy8LiYF3l9E7+I68BWQJMKHa3eGaO2euqv+zKe2q9MV7WO0/nsiOK5AYWotHmST8e8aebyATidnLg+0N1wMeTGv2ahe8Sz9V6I62UZP41F3UA+CRJxeEdtyGbC0aJyx9TI8OozQckUVBQedQE0411efq2O4HaGploR1knUS+syQJIbf/617ThMFs3E096EDEjLFimjXbrQI3AeMff9NkQ99i+JpEIJQP+feZiSFvF9nPN7Pxe3IJm23Gsy/uHWk4tkjtMcTWCqkdeQGlxKr4+nQ/rTjHRYCvnD1X3avplJkokoeQprslm+4MAIQlfDOH0vT6p9NMOElrVFOtOzRV8Oqd3YssDabWW3wlBL1ad6b1S6VabHiqxu6Y5Nk90E8mJdC6gL6cDrd32Zi3zDAeiGUUhXRSQlvrjN+qv+jK1dJ0HlcUWlDUn/ttvGfIDzOzCSzSqkHXSzwQ69p1bhCObxLeJdadN1LDOPW8cN6nF2pE+Cl0mEruwLY3hDoR4nfHMfZ1GWjamN8yaSbp6qCzFaKAecdQB/kvAFU+fu1WdpLkCTmWIqO3BMEsF42fsPqNbxwZqcL4MidQhAnyXCJwFhlelDtFBrlxrlrFgp7MuYK9eQ4vJ6PuU0Mxw8NOA
+ ht7Kfaoc
+ 0vClOwQBuawTLvpZbZVGkSKqh3Jf1CK71lRjjiAkTQ3xO7+XJQRbX5zre5mr+1Sx2jtmqJR4XLjWOyCQ1Wbi1KOn/eJ8cmZ2hg7pgvDMBmBZGkUL6hIMKUs4LLZIKzGk6qe9ds/jOsfCTwV7p3Yl4xiFf0ISSuHFASqCBgVjswOq1BG6nA0FWQHZFgbl6F9zCxDcZY8LoQSEQ6zSJh9A3HNBq+ES0c1zMF+SOV4J/go+3MEWvEa4AOEipafBtuAkMea36K8JHB8smWZ27by+oRkLrdm6OeN3oL5jrjfEQpuo2AUAAUTpcmuAcp+STJg/tx6Wy
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,33 +122,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 10, 2025 at 10:37:25PM +0800, zhongjinji wrote:
-> OOM killer is a mechanism that selects and kills processes when the system
-> runs out of memory to reclaim resources and keep the system stable. But the
-> oom victim cannot terminate on its own when it is frozen, even if the OOM
-> victim task is thawed through __thaw_task(). This is because __thaw_task() can
-> only thaw a single OOM victim thread, and cannot thaw the entire OOM victim
-> process.
-> 
-> Also, freezing_slow_path() decides whether a task is an OOM victim by checking
-> the task's TIF_MEMDIE flag. When a task is thawed, the freezer bypasses PM
-> freezing and cgroup freezing states to thaw it. But TIF_MEMDIE is not a thread
-> group shared flag, and only one thread is marked with TIF_MEMDIE. If other
-> threads are thawed, they may still remain frozen due to PM freezing and cgroup
-> freezing states.
-> 
-> To solve this, thaw_process() is introduced to thaw all threads of the victim,
-> ensuring every thread in the victim process can be thawed. The freezer uses
-> tsk_is_oom_victim() to determine whether a task is an OOM victim, because
-> tsk->signal->oom_mm is data shared by all threads. This allows all victim threads
-> to rely on it to be thawed.
-> 
-> This change will thaw the entire victim process when OOM occurs,
-> ensuring that the oom victim can terminate on its own.
-> 
-> Signed-off-by: zhongjinji <zhongjinji@honor.com>
-> 
-> Acked-by: Michal Hocko <mhocko@suse.com>
+On Thu, Sep 11, 2025 at 2:31=E2=80=AFPM Andrew Morton <akpm@linux-foundatio=
+n.org> wrote:
+>
+> On Thu, 11 Sep 2025 12:00:23 -0400 Usama Arif <usamaarif642@gmail.com> wr=
+ote:
+>
+> > > I think simply adding * to the end of function name or filename is su=
+fficient
+> > > as they are already str.
+> > >
+> >
+> > Instead of:
+> >
+> > 49152*      48* arch/x86/kernel/cpu/mce/core.c:2709 func:mce_device_cre=
+ate
+> >
+> > Could we do something like:
+> >
+> > 49152      48 arch/x86/kernel/cpu/mce/core.c:2709 func:mce_device_creat=
+e(inaccurate)
+>
+> Can we add another row, saying "the previous row was inaccurate"?  I
+> guess that would break parsers also.
+>
+>
+>
+> I don't know if this was by design, but the present format does provide
+> extensibility.  It is basically
+>
+>         NNNN NNN name:value name:value
+>
+> one could arguably append a third name:value and hope that authors of
+> existing parsers figured this out.
 
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Actually that sounds like the best idea so far. Currently the format is:
+
+<bytes> <count> <file>:<line> [<module>] func:<function>
+
+We can adopt a rule that after this, the line can contain additional
+key:value pairs. In that case for inaccurate lines we can add:
+
+49152      48 arch/x86/kernel/cpu/mce/core.c:2709
+func:mce_device_create accurate:no
+
+In the future we can append more key:value pairs if we need them.
+Parsers which don't know how to parse a new key can simply ignore
+them.
+
+Does that sound good to everyone?
+
+>
+>
+> Whatev.  I'll drop this version from mm.git.
 
