@@ -4,133 +4,199 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8362ACA101F
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 14:12:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17C65CAC582
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 14:25:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C02BE8E0011; Fri, 12 Sep 2025 10:12:48 -0400 (EDT)
+	id 456E48E000E; Fri, 12 Sep 2025 10:25:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BDABF8E0002; Fri, 12 Sep 2025 10:12:48 -0400 (EDT)
+	id 407A58E0002; Fri, 12 Sep 2025 10:25:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF07C8E0011; Fri, 12 Sep 2025 10:12:48 -0400 (EDT)
+	id 2A84E8E000E; Fri, 12 Sep 2025 10:25:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9DC8C8E0002
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 10:12:48 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 50B171A0862
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 14:12:48 +0000 (UTC)
-X-FDA: 83880789216.12.B62B30C
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by imf22.hostedemail.com (Postfix) with ESMTP id D071DC0012
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 14:12:45 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=W250Hofs;
-	spf=pass (imf22.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
+	by kanga.kvack.org (Postfix) with ESMTP id 1548D8E0002
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 10:25:19 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AC37EC0895
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 14:25:18 +0000 (UTC)
+X-FDA: 83880820716.10.9B2D965
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 34579100014
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 14:25:16 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ITTGI8IE;
+	spf=pass (imf05.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757686366;
+	s=arc-20220608; t=1757687116;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tkZAXzfE56Ye+65KcJu3D+78RmJwSGKf5LKjnICPk0A=;
-	b=M3ZXfRMlvBg0lMxphPGgWlgFzAZssF6TTxYUCz7qA1iImeEuKQlju6gmOGLDUkJtEEBa5e
-	TL9MqeUP6b3jG9wvd6H45CgN9RtCC4octFLteEfq/LI+lH5FHx4pwDkxL04I1P28nR3H7u
-	yAM5siV+d8pGyGlLGqtsxSnR+CikYKs=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=W250Hofs;
-	spf=pass (imf22.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757686366; a=rsa-sha256;
+	bh=gn3WhgefbhqadhZ+e2VS3g6y1n7EinfOM5ykIxfpPls=;
+	b=EKXESUIRxmI6t8+g6tlXlPHj1LzCLiBlXZvDen3u/CxNZEugVrtCNTG3QyWIVxftAN1WLE
+	l4YHyVYqk2afraOYzvWaQAwnvU722WzqQXJyahsPmRApVfmQeTgClykOSCTGNclKQN4ndk
+	PPzWwGG6WwcV6YkppHj7xImCvNl2BsE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757687116; a=rsa-sha256;
 	cv=none;
-	b=b2yW6TPqSO8cSvZ9lhpmC0MltVNQwHdJmEXT2YBzkRpZOcwJR1nS65DYLnj+hQ+EjLjfgZ
-	W/a7k8uu+PkqpkusX7JjTuQkzwYWVpOr6RaTgvRu67UneTU0PntcwZXmP6PIl/guvKj9VB
-	6HL8VZfcyo1MCJ8vD/WutI+sn4pcGkI=
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id D0F8B40E015C;
-	Fri, 12 Sep 2025 14:12:41 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id ctliiuI1qv13; Fri, 12 Sep 2025 14:12:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1757686358; bh=tkZAXzfE56Ye+65KcJu3D+78RmJwSGKf5LKjnICPk0A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=W250Hofs3CAu2xKR7YwCa+iuLV0a0Hass4IjlijRdWxTDhiQQrX5MMxcjFX/Muc19
-	 L1D9c9Lb04ZjcZf2KbXFQiyCtAZkXdrAvGqG3NsN38YXvViWfFhq3P0qTKJhMAoDtQ
-	 6UGaVchmykQilTK2/QSbuXaV+EiXymkTV0TZvEiQmPcJ9I0YHSQejDJXCwfIbEj6Vm
-	 G82J1yDYKg8aVzqOuciVXFDjtRzsZBjG214DEdiy5w4HRkaQgpbr9bqur9Dn4iIy+G
-	 kUEKLKzCNYgwDfBobGKajNUoiHCg1W0aYCKRpRyJgrKkrptRO3UAkR+8VAi2i/X4dd
-	 OJiTh87FPlwX5ZYud/PEw6fK/bMAFObYM9H8+6ZA0bJgAWhCCE7E2K5ZeCBch71PJ7
-	 ec3fzVkjxAt1hg8ejNy+olL5CCuC7iTcNROQynBJNScdIV1SUCJWANA9rP0ZqSoeV0
-	 fQ4ChX9Ohn7lYM7tj7Csy7+36rXAEKPCnTft1D/juHMPjpnN3GuSelzM6eN2ldRDPQ
-	 10q3tNaz2HGvwBOzQHWUWiiR7DrqZPQL7a9bJUMlBSqtM/i2yS/ATc4iyOplB8BAiX
-	 cGCC0JD2nAMdgH2VtFBFe971EdKWqTPbJYopr/QR5spgvae29gJxJ+ZXY3XQCRzdvH
-	 Hd5DDtPIhAX+N27TiOyX93NY=
-Received: from zn.tnic (p5de8ed27.dip0.t-ipconnect.de [93.232.237.39])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id C653340E0140;
-	Fri, 12 Sep 2025 14:12:01 +0000 (UTC)
-Date: Fri, 12 Sep 2025 16:11:55 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Shiju Jose <shiju.jose@huawei.com>
-Cc: "rafael@kernel.org" <rafael@kernel.org>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	"rppt@kernel.org" <rppt@kernel.org>,
-	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
-	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"tony.luck@intel.com" <tony.luck@intel.com>,
-	"lenb@kernel.org" <lenb@kernel.org>,
-	"leo.duran@amd.com" <leo.duran@amd.com>,
-	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
-	"mchehab@kernel.org" <mchehab@kernel.org>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Linuxarm <linuxarm@huawei.com>,
-	"rientjes@google.com" <rientjes@google.com>,
-	"jiaqiyan@google.com" <jiaqiyan@google.com>,
-	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>,
-	"james.morse@arm.com" <james.morse@arm.com>,
-	"jthoughton@google.com" <jthoughton@google.com>,
-	"somasundaram.a@hpe.com" <somasundaram.a@hpe.com>,
-	"erdemaktas@google.com" <erdemaktas@google.com>,
-	"pgonda@google.com" <pgonda@google.com>,
-	"duenwen@google.com" <duenwen@google.com>,
-	"gthelen@google.com" <gthelen@google.com>,
-	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
-	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
-	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
-	tanxiaofei <tanxiaofei@huawei.com>,
-	"Zengtao (B)" <prime.zeng@hisilicon.com>,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	"kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>,
-	wanghuiqiang <wanghuiqiang@huawei.com>
-Subject: Re: [PATCH v12 1/2] ACPI:RAS2: Add ACPI RAS2 driver
-Message-ID: <20250912141155.GAaMQqK4vS8zHd1z4_@fat_crate.local>
-References: <20250902173043.1796-1-shiju.jose@huawei.com>
- <20250902173043.1796-2-shiju.jose@huawei.com>
- <20250910192707.GAaMHRCxWx37XitN3t@fat_crate.local>
- <9dd5e9d8e9b04a93bd4d882ef5d8b63e@huawei.com>
+	b=F75ogXJCQzH27UDapm5xW0QueyNKmETzr1QoQN26wYUSL9IN1z3cMIMd3Eqtm6rkdgB1WD
+	2Jjj4uGEVroU8qvZj72pC0uWzYZcOuMIaQ74/SYbql2bLddOwM7H0WsPztb5zR9pW0QgnE
+	V9a3XceytfnunqMMdhpOkhh3S6a5g0Q=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ITTGI8IE;
+	spf=pass (imf05.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1757687115;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=gn3WhgefbhqadhZ+e2VS3g6y1n7EinfOM5ykIxfpPls=;
+	b=ITTGI8IEYS693XakVLg4WSSwvqZfefn4zoC6E5WjV3iT0cFkdZWBeSeclogqG4jEhly3kB
+	pdC5wm3yG0MelWA1BRdbKZXpd/ncPvRNwykYF8uUlWAQy9fp7cMYMosnn7iMOTvgOODv7s
+	h7dTnNYn4D7i8o7ceO1t/ILVDXBlozg=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-541-iWsffmm4PvKW80gT0QrHzw-1; Fri, 12 Sep 2025 10:25:14 -0400
+X-MC-Unique: iWsffmm4PvKW80gT0QrHzw-1
+X-Mimecast-MFC-AGG-ID: iWsffmm4PvKW80gT0QrHzw_1757687113
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3e3f8616125so1906394f8f.1
+        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 07:25:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757687113; x=1758291913;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gn3WhgefbhqadhZ+e2VS3g6y1n7EinfOM5ykIxfpPls=;
+        b=J4b12N8V0nyaKHY7ecCTpIXY/voVZhekLFzFGnZbsWv5XyTFM1GG44fk84nC715fPo
+         VZl7sLLzQKIJUv0aVgWcuw2AZPo6rP4GwTmoQbspuK6/FRy7b8HLDtwtPgs9ZyIanfIy
+         Tn2o3HgL935VmUcFrLuCPK3avGnfWyOmygdfublWS3y/YigBwRRMiKRYwHVFnUHlWLL+
+         PsKsCPs5tr4+7nxV0wksuEYBLHY9BYh4XkJo8kWPRjX1wTJpoooAKwYaZa27wNOKWqku
+         o1Ol7rOIudgHWH5PzFmc/hiyCQ6rVOwYvk7qE8I+TZLB+h6B1JvoFEf0FnAfK8rlLIr4
+         b0jA==
+X-Forwarded-Encrypted: i=1; AJvYcCVruP2uGI9seU/alzC6J8XC4DQRVt36Bb3ND9MwaoIIpzH4mX4PfeMs8Ecz809BGS7Nh/H3NKvGJQ==@kvack.org
+X-Gm-Message-State: AOJu0YzvigNcQI5UzCpIKlwFLHV0noi4x3Hlto1V0AFTR9Ib+nk1sqCl
+	VV5f09VgUlJWpQ+kCU6T3+pQ8oNO5WrrmgwSyuSnEz6oQsDo8bRsMoE4HUfMCFeIZcjRM3VJlZz
+	upNRQBEqt1sySe5dcOqTTq03MR2JdmYeGpw9TgGDaUs+a8q3UZhCw
+X-Gm-Gg: ASbGncvpq5gf+umlvNAKnlz2+yDpqn7+x2VdQj9/NrTn8B/Snsbd0wFM2lkkJ+YejqI
+	xiCtA7PnU+4hvqL3RmTH8duWHf/KsL1btHFmmeds83DYjVKyejebmF9Ta8RQsd8Df3J6VouwYT8
+	3qSnZhNqN5IwfsfcY0Q2mWmST8vYVUgylYtm4Ey9sEYbF8H9/XoA4dk7IqElMZ923d5x3LZ8Bvt
+	XOI47uQMDgCGmf1GC095cH/3qo3ft8CKdij3fy2HpSjAwRKovytB3EXjHnY+Fi8vkV1UidgcCDb
+	ILHRTbzfNQ1/h+UyNGBtRVYjZW6Zh2b70XdE9HgVG6dqvO57lu+DMWPh387n4VQqN3FH1H3GlVd
+	cnuDvK7sQPmCP6DMJLUPl6KJDBOVWbMT7nVZqD44FuZmhAkjp5S/QcELZYvqOkOb5FSk=
+X-Received: by 2002:a05:6000:186a:b0:3c6:c737:d39f with SMTP id ffacd0b85a97d-3e765792e71mr3311139f8f.3.1757687112702;
+        Fri, 12 Sep 2025 07:25:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG5Dw0WMhxC0tkHYzo2PeBegNsNsLTmAmmO9jpDPgYtz3v1hBhfjXrJHgGEloPWOm+UgdFZUw==
+X-Received: by 2002:a05:6000:186a:b0:3c6:c737:d39f with SMTP id ffacd0b85a97d-3e765792e71mr3311069f8f.3.1757687111967;
+        Fri, 12 Sep 2025 07:25:11 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f20:da00:b70a:d502:3b51:1f2d? (p200300d82f20da00b70ad5023b511f2d.dip0.t-ipconnect.de. [2003:d8:2f20:da00:b70a:d502:3b51:1f2d])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e7607e9e6asm6786163f8f.62.2025.09.12.07.25.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 12 Sep 2025 07:25:11 -0700 (PDT)
+Message-ID: <852d6f8c-e167-4527-9dc9-98549124f6b1@redhat.com>
+Date: Fri, 12 Sep 2025 16:25:08 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <9dd5e9d8e9b04a93bd4d882ef5d8b63e@huawei.com>
-X-Stat-Signature: br3ase7saec68wo8dtop98ru7mdmw1zg
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/7] mm: introduce local state for lazy_mmu sections
+To: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
+ <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ "David S. Miller" <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>,
+ Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
+ Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
+ Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
+ Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org,
+ Mark Rutland <Mark.Rutland@arm.com>
+References: <4b4971fd-0445-4d86-8f3a-6ba3d68d15b7@arm.com>
+ <4aa28016-5678-4c66-8104-8dcc3fa2f5ce@redhat.com>
+ <15d01c8b-5475-442e-9df5-ca37b0d5dc04@arm.com>
+ <7953a735-6129-4d22-be65-ce736630d539@redhat.com>
+ <781a6450-1c0b-4603-91cf-49f16cd78c28@arm.com>
+ <a17ab4e3-627a-4989-a5a5-d430eadabb86@redhat.com>
+ <9ed5441f-cc03-472a-adc6-b9d3ad525664-agordeev@linux.ibm.com>
+ <74d1f275-23c3-4fd8-b665-503c7fc87df0@redhat.com>
+ <248b4623-8755-4323-8a44-be4af30e4856-agordeev@linux.ibm.com>
+ <b46d3430-fb84-464b-b053-490c6ea083da@redhat.com>
+ <cdd9bc60-96d4-4f19-86c3-dcf598ccbd92-agordeev@linux.ibm.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzSREYXZpZCBIaWxk
+ ZW5icmFuZCA8ZGF2aWRAcmVkaGF0LmNvbT7CwZoEEwEIAEQCGwMCF4ACGQEFCwkIBwICIgIG
+ FQoJCAsCBBYCAwECHgcWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaJzangUJJlgIpAAKCRBN
+ 3hD3AP+DWhAxD/9wcL0A+2rtaAmutaKTfxhTP0b4AAp1r/eLxjrbfbCCmh4pqzBhmSX/4z11
+ opn2KqcOsueRF1t2ENLOWzQu3Roiny2HOU7DajqB4dm1BVMaXQya5ae2ghzlJN9SIoopTWlR
+ 0Af3hPj5E2PYvQhlcqeoehKlBo9rROJv/rjmr2x0yOM8qeTroH/ZzNlCtJ56AsE6Tvl+r7cW
+ 3x7/Jq5WvWeudKrhFh7/yQ7eRvHCjd9bBrZTlgAfiHmX9AnCCPRPpNGNedV9Yty2Jnxhfmbv
+ Pw37LA/jef8zlCDyUh2KCU1xVEOWqg15o1RtTyGV1nXV2O/mfuQJud5vIgzBvHhypc3p6VZJ
+ lEf8YmT+Ol5P7SfCs5/uGdWUYQEMqOlg6w9R4Pe8d+mk8KGvfE9/zTwGg0nRgKqlQXrWRERv
+ cuEwQbridlPAoQHrFWtwpgYMXx2TaZ3sihcIPo9uU5eBs0rf4mOERY75SK+Ekayv2ucTfjxr
+ Kf014py2aoRJHuvy85ee/zIyLmve5hngZTTe3Wg3TInT9UTFzTPhItam6dZ1xqdTGHZYGU0O
+ otRHcwLGt470grdiob6PfVTXoHlBvkWRadMhSuG4RORCDpq89vu5QralFNIf3EysNohoFy2A
+ LYg2/D53xbU/aa4DDzBb5b1Rkg/udO1gZocVQWrDh6I2K3+cCs7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <cdd9bc60-96d4-4f19-86c3-dcf598ccbd92-agordeev@linux.ibm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: T74jZKp7W_PUP5chBg2PPXemUEH5i0zuj93YaIGNqgE_1757687113
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 34579100014
+X-Stat-Signature: 6s5ni1tuamw5kbigrr7bxxztcwrkqcc1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D071DC0012
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1757686365-60823
-X-HE-Meta: U2FsdGVkX1/pHrUFLAT0eLv0ZSTpyQSM6Gi/06v1QZjjH6BSaEu8VgiHINZSqckm2c45AoPyNss0/CLaoQf8YV3ii4b4cUWyZo5v058HeQvl+ZaWIxBNmTeWxHv5lrjITMkRSQm0diQMIU8nhFVjMsWS6fu1xVdzab6s62ki/AtnEqR9sVjfDKtfBPR5L8hxviB8bhwT6+3z1UecJZ7mK2UjDFQxkUQMOpnCa9WGrdvggCTM3JPNlHf6LHUFvAXuLyXnCfvsUu9uDlx/o7bWkNtbbzAB7KfdVAsaSoBy4TmmMC1lbSowrPCaq27EHoPJBY2uKd4UEeaMs17l9fpNzpxF8M3lL5jO3YGmsA6oj1u66C/Jw2N+IHzIZlM4w7OqPbNDLM8uziYoBgnGJIPObMxYtPLFXyxhKaLNzWQ17/oQZ65aLgWzsgL454zpBbjk57cMqcLCl0QoaTUDmFmAJhBdevVFtvHeeR74CPKPHAhhPiMC4z7vwyyw98Dra66ep4IynAf7fc2Kvw3K3jF+Cv09Ri90LCbRR77W1zG3/oUPh2ajGumH7alBFUBR8uXD69ASszHx2cAwHgNPVOxYO/c99tVcZuAWQiGQ42xg/yXbywkDS6VqcO1cSwJb7lvv2mTdQgINMnexXjc8L+RWZhNUdcqpFXlMJ46LdJLQfl/mRgy5ZtVuEOjYzHtwIYgYttmFaNigCm1Zjv6YINNgAGRGnGpjgPlrCHa+Z1Vv9o0ahB8pxrz5JfdhNiTTxWGnxuWflQEOhzI0Gc/FkQuBWZ3geXg+CxBNvh7RgLSZRXsVUTTtdqAShzjXwHYuOfVvKaVPzkR9IoDSTEIzOF+ZwyqBzVx/ZcAYUl8/+oLcDiXZXsz2P5SMig9cwrCy+ZcwdiV58NEsJ3TeA2me8MkkhywUHbP47m+WQqrrL3MmMNw/njho5Xq+4JMD8Km2OzmM913PoAsgWdcfj07Xg2H
- 74qTSYEe
- Egae6AEvjspoGS6uOI4E9l+2Ex21sfzl9tPIvE7gY73sSgndM9NOJ0/ww+fvoOpQlKNEKVcsFWivt5W2dscJbb1/pBIS1vSKshHD88/ohpP83xd/72v23rdP4InpL33lL4dK4wg7sUeceWehQAQDdNJu+oEMvGRncoJCsjrGtlLybvMsKby1c9dogVVs4nyPTJKLkqYGaLOrLp/7FCHVY6jdk/pN4+VK+MmmikIUhnk89hhc49wgTqC9kq7R7KXCpbmCAqPenZMP1pLco5ScYWpdf4DjwuCD0lUhegI58RLDmrRwgI6XRx0KvIkTbjaRlnWd+z987YDE8ZlY6njo25/1EFr0ISdMIgzAXLoKOURSRrg4=
+X-HE-Tag: 1757687116-789581
+X-HE-Meta: U2FsdGVkX1+mw1liFIs148owdAPRS/d864Hxwn47fmwm72T+sBckNWJS2uRoT3Vq/MqWDXx0/R8jeaO3CdyVHOVR/3fmhVwMRkq4ccuwU8zzte4MAXou9vkDY2B+pk63xoAGkRQL9jgF8/cfM+jgijUGAJojNzd9iVKhY4oCNEsa7t11umSZUqKoTfcnKE46flB+nJ3cRwqxEG9QgkPcBDQNT0fgkDIO9i7v0tQy/XK6OYMbebfyXGlUZRLAP5vVBxGY3c/oVBU27+Z0UphWRaeZ11Hs5lfEYtBMM57UMIfSpRtorFjPeXhFvgICHg3g1okZ1oTsHYdpJCtLrZp+qFZMMBFYjQxZ5AopQtwivoBBpaqwKXyb4HBnDcfRW9mFs7Z/z6J5ELddN+CAREr7kVZZyP9vWPO/XKzlUNba+tanW+A5Fvw0Fk/ZHviMkMOr75Hb9Kw3CS0LOIulpc7o6KpItYeAnWLbi+zKCyGG9NNvUlfOLxWbw7YPtV0ttwN9Tj5j8aWJLGaNmTcTZxP6/5GKozbLryPhORk5MOSFftpmLpG5+sL6O9kURl4RgA2Fjf5yVC8L/kBUpuErhQ2VBf7kEP92+438d4vc066TqWd+Bew2qysr2YcW8IGyBDUaVoA8DfWwESgIGFq5SlxY7GPDxL30ioUxHGOEAugjobeRcP5Q6FAUW/ijSY+fjms3VD4/GYRrFIygUtckPRhTyuXQslJh7ccA0WEXgquq1oqjIRwSVq2TV9sS+6bud/fFpGn0gNLscO7ZCFGxXX7wT+WCg+Epd2JBRiyRem+xH7kPd82jjio7yjlek9ps65TfQmCW51YnRaYF0tV4C2cwUa9WZRxBhqh7vf9SLsiCXPAdONmyq9YiOYeDC3ED61YFppkDG/N8U+7BXvG7RZ38lQpoVPnnTtpaRKJf5mgmbtpgPv2d+c1SVhsi9+K5duKmx3bMM7iEjHM9SGDzwI9
+ 96dtSCw/
+ p0WpqnMA05ZEkZZarVP4/UIRQcb/KhCynoWEvNBpPlni3kyHt+g0p5fNCYs/kWdlDCQur2a7SVeH/5VNHNupvOE54xLG30lI7aCMLvwCiXwnJAX26VR5GA7dhyqaqR6qa9hbEsGSFKqMQrTpeCSYbh35C58rWrxBAb1/LyAou06xK/qQ+0zBuF7Htz7S8H+IEDLT1uOO8cZM3Pa1pZZSCicmrVzwo/yxZY7O6Hh6p0EinEhPjNtZZYE0lYk97YR8dtDaTs0h7a2U5b9cDYyIECFOTbL9Tu05tyZZjcYbibjVgVGUQH6Bp+j25NZs02vBj0c5BY+TFp4cdlTjNmW1S8foVEX49LPi/9NaGR9JeRhQTuJYvZjTpZFzCr0RsqOw5gZpONA90UdnFD2Owbyg1a5zHmUC9jfh2+XIihTjhfDCVy6pDo8mQzjYCQmT16YEzoJ9kZq7w2KUK/ug8auGvcJIkSLMiTzhK1PC8
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,38 +205,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 12, 2025 at 12:04:57PM +0000, Shiju Jose wrote:
-> >Why is this requirement here?
-> The physical memory address range retrieved here for the NUMA domain is used in the subsequent
-> patch  [PATCH v12 2/2] ras: mem: Add memory ACPI RAS2 driver,
-> 1. to set Requested Address Range(INPUT) field of Table 5.87: Parameter Block Structure for PATROL_SCRUB
-> when send GET_PATROL_PARAMETERS command to the firmware, to get scrub parameters, running status,
-> current scrub rate etc.
-> 2. for the validity check of the user requested memory address range to scrub. 
+On 12.09.25 16:05, Alexander Gordeev wrote:
+> On Fri, Sep 12, 2025 at 03:02:15PM +0200, David Hildenbrand wrote:
+>> How would that work with nesting? I feel like there is a fundamental problem
+>> with nesting with what you describe but I might be wrong.
+> 
+> My picture is - flush on each lazy_mmu_disable(), pause on lazy_mmu_pause()
+> and honour only top-level arch_enter_lazy_mmu_mode_pte(mm, start, end, ptep)
+> context on all nested levels.
+> 
+> In theory (and if I got it right, you leave the door open for this possibility)
+> every (mm, start, end, ptep) context could be stored for each nesting level
+> (as an opaque arch-specific data?).
 
-Again, why does it have to be *lowest* and *contiguous*?
+Yes, I explained that we could do that, for example, by returning a 
+"struct arch_lazy_mmu_state" from enable() and feeding it into disable().
 
-Your answer doesn't explain that.
+I would just wish that we could avoid that ...
 
-> Also intended to expose this supported memory address range to the
-> userspace via EDAC scrub control interface, though it is not present now.
+As an alternative, you could store it somewhere else as an array (percpu 
+variable? task_struct) and support only a limited number of nesting 
+levels. The current nesting level could always be retrieved from the 
+task_struct, for example.
 
-Why? To tie ourselves with even more user ABI?!
+Maybe s390x really wouldn't need support for more than one nesting level 
+right now.
 
-There better be a good reason and not a better design for what this is trying
-to do.
+> 
+> But I do not really expect it ever, since arch_enter_lazy_mmu_mode_pte()
+> is only to be called in PTE walkers that never span more than one page
+> table and follow the pattern:
 
-> >What happens with the aux devices you created successfully here? Unwind?
-> Please see the previous discussions on this were about allowing the successfully created
-> auxiliary devices to exist.
-> https://lore.kernel.org/all/20250415210504.GA854098@yaz-khff2.amd.com/
+Well, the cover letter here states:
 
-There's no discussion here. And nothing answers the question "why" this is ok
-to do this way.
+"Unfortunately, a corner case (DEBUG_PAGEALLOC) may still cause nesting 
+to occur on arm64. Ryan proposed [2] to address that corner case at the 
+generic level but this approach received pushback; [3] then attempted to 
+solve the issue on arm64 only, but it was deemed too fragile."
+
+So I guess we should support nesting cleanly, at least on the core-mm side.
+
+I guess we could start with saying "well, s390x doesn't fully support 
+nesting yet but doing so just requires changing the way we manage this 
+per-nesting-level state internally".
+
+s390 is trying to do something different than the other archs here, so 
+that naturally concerns me :)
+
+But if it's really just about forwarding that data and having s390 store 
+it somewhere (task_struct, percpu variable, etc), fine with me.
 
 -- 
-Regards/Gruss,
-    Boris.
+Cheers
 
-https://people.kernel.org/tglx/notes-about-netiquette
+David / dhildenb
+
 
