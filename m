@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D917CAC582
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 10:13:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF535CA101F
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 10:13:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E6F936B0010; Fri, 12 Sep 2025 06:12:59 -0400 (EDT)
+	id 3257E6B0011; Fri, 12 Sep 2025 06:13:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E203C6B0011; Fri, 12 Sep 2025 06:12:59 -0400 (EDT)
+	id 2D6726B0022; Fri, 12 Sep 2025 06:13:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE7916B0012; Fri, 12 Sep 2025 06:12:59 -0400 (EDT)
+	id 177026B0023; Fri, 12 Sep 2025 06:13:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B696F6B0010
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 06:12:59 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 82793160704
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 10:12:59 +0000 (UTC)
-X-FDA: 83880184878.08.666C2E7
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 9637F14000E
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 10:12:57 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=DmeUj6pW;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757671977; a=rsa-sha256;
-	cv=none;
-	b=Jr5QohcrLkWnk2Uh2FGekO1x76ewzPOiRoz5DbBnSk9Q3Beyi2eNGGpxaA/HHBnMh2ldpK
-	UU1BF0lblw0uTAbV6CdxpSH8FLU9Yfatd5bOinirc5AMfQfgzIUoPtdFs4NA9yBvGCvfeq
-	0qBbRE+du6Gi1BSsUBwIU8egY53/504=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=DmeUj6pW;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 03BF86B0011
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 06:13:05 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 931581DF749
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 10:13:05 +0000 (UTC)
+X-FDA: 83880185130.30.0895BB6
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+	by imf08.hostedemail.com (Postfix) with ESMTP id B2119160002
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 10:13:03 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=KSQSxu+U;
+	spf=pass (imf08.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.215.182 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757671977;
+	s=arc-20220608; t=1757671983;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mwBrRJrnxCqu1u7UrV9e609up8TstQr3mGzjgxeQ/fA=;
-	b=kCKfCcTcJIHsitDwtsKcw6Z+pJcE/YguVLwPsKc9I5Nxht+6oEgI6DeWN2tpu3t3KYWyaB
-	iW3c9wxQrpRrwg894PsAwyXywZ6SRBmaAPw3v6s9lF+VGlD290x17kE76h9FpttsFPB2Pr
-	czRhRBCQU0a+XekRCEjZ63VYUk2uY98=
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-24c9a399346so12840515ad.0
-        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 03:12:57 -0700 (PDT)
+	bh=2Mx/ZUXbIMqKSHkTbty4rSJVQCBlfpfdQjz++MJLD94=;
+	b=IOl4Wm9ozDlGXwonWi+pgC1cYwaEcTclQvLLs4rHoiNp27UESQMhmfFNKSDdZLbk2+ShJI
+	iAbDc5apVrRxIHY4WEc6qKkqsMl2cH0wtF+2FbGTtiMUusdtSam+BwmEGN6k0quKayNxDl
+	rSwUjNVfoh6lLEl+aYyPz4S1KXfgB24=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757671983; a=rsa-sha256;
+	cv=none;
+	b=4q9jK4thiuUWBegt8LOE9XWg7U8Pyf4RLgTttq59qXb00So3NQgFLdiZygJqWPnADVojUT
+	fcqlF3DoojZlbJF4tB9+qAIDQRRFL+zjhQ7qB1hCb5IqQzTpENEUrHiKQ2v1aUk1fWVy14
+	erMU/7OntkCtqiuCVOCe9t/h6hayl+k=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=KSQSxu+U;
+	spf=pass (imf08.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.215.182 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-b5229007f31so1089760a12.2
+        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 03:13:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757671976; x=1758276776; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1757671982; x=1758276782; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mwBrRJrnxCqu1u7UrV9e609up8TstQr3mGzjgxeQ/fA=;
-        b=DmeUj6pWQ4zedsmNkAMp3BPygx0pX2IxE8LttxLyJCOEUR5ktNDMQe3qsMjYM5z00t
-         iDZpt5ETCg0hUPLqtYZQnounyVC9VMCcEsyE55FrxnfuPReYgeWMjlGCX6ZO60CGfy3n
-         2uHj2jKV4XzUoCs4HN0ThuHF/OlBSDyYxD5bHw4599HnOjARS/aGZ/PEBBOzcjIL01ED
-         Q/MTRb7vPpBXlyNS1oh+r6X/ohc8uUQIm7aIRP5TORXENr2Jap8ljJ0qIgoiqcAPIa0K
-         pnUkJU6kKka5yDamS81LhtLcqkjJPuCdfztx6NPC7SJqHVRNinPTC4/p1trjTVwQ7Qz2
-         338g==
+        bh=2Mx/ZUXbIMqKSHkTbty4rSJVQCBlfpfdQjz++MJLD94=;
+        b=KSQSxu+UuQTKlTYRNIQgwiVc4IriWvvZWJvuIxjklg19zIMznaJTSFsa+qCVNXSz1L
+         yPJOxMcYOKPJInO84ZTMV2Uu5AoYHFL41SzUG394MMnkYGB1xF/TA1wKxnL3qMIhf+t2
+         U2I4+Tn0h+5ve9ies/l98DMw4OBt/u64xKWRufqi8lnU26XfR0s3Ag5ayKYdoK3how5R
+         p18dcyFWa4N8GmNmEGLNHgVwp7EYrYM6UZVfHibHS1EW4VUiCT5+K7XTngccQI/RGdV6
+         jt+1bLgdbXaKUJU9bOGGLiBRkdiJljiBswFwlB53GCPmXyi1cBvBv6IWD7dVwT6fgY0B
+         gWxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757671976; x=1758276776;
+        d=1e100.net; s=20230601; t=1757671982; x=1758276782;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=mwBrRJrnxCqu1u7UrV9e609up8TstQr3mGzjgxeQ/fA=;
-        b=ndKxv3/mouVcAfpSpzdoVAFfdPsy/B9fnw6nQ+7pGP8f3Hs7ibqZbKbifDZSVm5CIZ
-         UlZEozvh+1dOZQwViuxHB+Pc8M7G3ZeBC+EHWpCdVx1pjtfQA7CKSYjDmErcZpoDY/Ow
-         JptzPFrQSLLSQrnstNho2q/ZwklwDugEpBWu3bS0YAqjBBjypdszALnCDDlpupVwcUA9
-         NhCzozFaQM6B0ZCWCUnDnw7xgoZcmOn05IafvMgwtbiaFtL9ttRkPRACmKlU3O7Ak2Gz
-         Q/NctV5i/Nhk+pG+fe23qWKR7vlG9FDfEJNLj7FxIxTe3l3vKHalHgmcx0a3mge4/Egc
-         W/7Q==
-X-Forwarded-Encrypted: i=1; AJvYcCX3NYWUvLuUPkJitVE7cT0aMNz1zNbkdPHlChFzywaMyGMYDIIzX0l0DqgWQZzzKqKMSm+PLBA7Eg==@kvack.org
-X-Gm-Message-State: AOJu0YwsqcXzi9mgfNNsxjWDDv/vzYzkKuqdajZ66A8YWyvfaHTBhW+y
-	/JSbyKMVhHXvlZ/TwI4l/8JDnOAVIM+m/8Ja/4Akna4ZRnhxgRDy3KMv
-X-Gm-Gg: ASbGncsJLKqJPNO5gfKjFAYuT5/k6wfugHd8M9Jy1yn7fKTYNqwulgUj7HqEhMXkpbp
-	EZWYV0++e2rfDuavhtId7FakcckT8h5OpgT+WsREQlq5utvE/6Mq+uCI/FnyVjFBVTyGj+1gDXM
-	hwzUnV+QtCc3l/xo2ye5VgNjGm2hAJY5YUpLEPH6VWyxEbuPb3503h2et2k2aJkb9T5n+L3boSo
-	lSj+3qqi5HIAWUD5jVyhwTHNoHvdpjaG+VYkFHD4KSPP7ycPLFdF5687GzGkUfS7NsToh0jAdJ0
-	l53fLMKPzNFarF4W7YpsH7BKm1rH5fmCAT+TyexrW+tVNdRZ/+YR9h4sNJE96a6M4ugwc+HIb3e
-	0mI5N9JqfHUVOL7ZSkiJEXw/JIalGqpWk2dQaTrQ=
-X-Google-Smtp-Source: AGHT+IHmhDxbrAgWt/ZFf2b2ARujdiSrTzk9h/pJ/Apo0LVYSifl646MIHmgwZB8g3f29HVWj78WGw==
-X-Received: by 2002:a17:903:2f0d:b0:248:79d4:93bb with SMTP id d9443c01a7336-25d26e449b9mr26345655ad.31.1757671976359;
-        Fri, 12 Sep 2025 03:12:56 -0700 (PDT)
+        bh=2Mx/ZUXbIMqKSHkTbty4rSJVQCBlfpfdQjz++MJLD94=;
+        b=npjX6CrERBdDYPivNTbac2AKDlEWu7fOrklFSM1tpy2AsnaCZGufg4SnDJOOJU3q0+
+         /7BPE/KX1MWocaZBbntmRUWVahLXbuAylgH4UoN5dZpneEgsLYokivTJeU11cySwXC29
+         mnguzH3dRW9MOG0HQiG6vlgL2QMpvTx2TiLwOIv77DVcdHRBW0KUX4dtG6mOO/QtfIP/
+         4ToqiyBHCGN4J8RtP4CtH1Ap5r+A2SLDoiwWQr9G9TU6Di1Mh4iOdrgjCnIR+VGMwh8w
+         6gnssRVzqgTjfyGyI5sz4PhsQn97EVV2nRJFtSzCobtixaHBiSek7kbP3p3UBso46qqg
+         pk0w==
+X-Forwarded-Encrypted: i=1; AJvYcCWReSrzxKvalWWjP5Bd0SSKoigABo+sfXkKa0WpHTK9MSKh6LaSYWDOKBc7pO8hauS/x7Rkm3MHAQ==@kvack.org
+X-Gm-Message-State: AOJu0YyzV+ryK2Ozuz2A5gwAjHxNrTBWxzc5DMf5z2zq2aJ1Z9MReqY3
+	KrH7nKIaDgzqu2+7McQvvtkzdXgjo13Ne9Tt7H0VOWdV0pXoBNi7sRQp
+X-Gm-Gg: ASbGnctk6X+FyFdWbW+MdfzjP050HdNmqYCrJzPdxiNk0KVh+4Pkc3GWNzKLCOzxCh9
+	7qOYn31y6WW+VpV/Ft1VAM5Ie9Wpc6UHWYGOBhOpkxPdYOusF78J/QQwkex092cWpWjFg3m+frb
+	s9qBLy1P+nWH9CXi40YOsmS3zXcENBsiqVjA70GSgwbl49Lor7fXos4NtMrAJmDWZcKgRAcRASs
+	8Ii4cVCaQgyVoQqWiPlaTh7omraV3qo2/a2+b6J9c8vcLC5hprnAyOF7t17sm4h76hv/BI/RBbm
+	39kAHqcYrll0Id3wG91KKVcSxjKVvB7JYFv++BL8dkWLyya85JKMrFD/ifsqcqjl2vBFVNm7D0R
+	GFHgrKLRQ7Lg8raDj7J4+xy4OzajcrT01TFC9h9Mt2TgXwT67+A==
+X-Google-Smtp-Source: AGHT+IE+4u/LnZqfy4mSwj4sJkJVx6sl0nYi/VrPz9wqHW9cd8FRDoTWUsuOoKihHmm7ZzWEk3p2jA==
+X-Received: by 2002:a17:902:cecf:b0:251:493c:43e9 with SMTP id d9443c01a7336-25d243e79cdmr29426295ad.3.1757671982485;
+        Fri, 12 Sep 2025 03:13:02 -0700 (PDT)
 Received: from localhost ([185.49.34.62])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-25c36cc6af7sm44843015ad.5.2025.09.12.03.12.54
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-25c37295f9dsm44540355ad.55.2025.09.12.03.13.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Sep 2025 03:12:55 -0700 (PDT)
+        Fri, 12 Sep 2025 03:13:01 -0700 (PDT)
 From: Jinchao Wang <wangjinchao600@gmail.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Masami Hiramatsu <mhiramat@kernel.org>,
@@ -154,22 +154,22 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
 	linux-trace-kernel@vger.kernel.org
 Cc: Jinchao Wang <wangjinchao600@gmail.com>
-Subject: [PATCH v4 12/21] mm/ksw: resolve stack watch addr and len
-Date: Fri, 12 Sep 2025 18:11:22 +0800
-Message-ID: <20250912101145.465708-13-wangjinchao600@gmail.com>
+Subject: [PATCH v4 13/21] mm/ksw: manage probe and HWBP lifecycle via procfs
+Date: Fri, 12 Sep 2025 18:11:23 +0800
+Message-ID: <20250912101145.465708-14-wangjinchao600@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250912101145.465708-1-wangjinchao600@gmail.com>
 References: <20250912101145.465708-1-wangjinchao600@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 9637F14000E
-X-Stat-Signature: ikkbcrn3xbe8m9u7b5rpyx5masqdspd1
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: B2119160002
+X-Stat-Signature: r1tkud6botxse97e9iqfc6oj9ymfkrkq
 X-Rspam-User: 
-X-HE-Tag: 1757671977-451715
-X-HE-Meta: U2FsdGVkX1+3t2QOHs+XSNaRaJAFnRyUpAc9isQl051IxmtmKmDX7WTBEoCeFPYpIMsaF4toy9N7PZiscSeuqlOXcH27RrLhI4NPUDYR73MgO76sFoELEHuVvvbbwW8MHgCAO5aHx2C2MwtgiCMbv2SJzNNb+sb/htEhtCGIt9N8Fd5428ZLY8YsYukykjXPIq69Wm8UrSzH2oaliEv3QWRS73afO7/G107T7ebS+z1QWMnMtRi0q6OZ/jIGcjkx8ztZjBMbqVdmx9bAdJ8y4P9PzgnlZNUxD9rdfwIPzBLGSa+1cFaXRxwkDdDrnAurg/1KQQFCgG0d0QmQY07MFEzPzmGEhv6aZOOIUu1Bs9pVhes2OA5O56Z0SpUT62VMCgHZ6hxGBU/xD8w9Ux2n6tQAiM6rrocQX4nuJYhW3Q/fZC9ZGAPyT5NuRqBI4dqU3Kpwy0/LiX8ofBOfxOkPzSIg/Sgu5t1i6aDrftjChN81FSGfsGfHHEHOURh+UMa7E4GcfbokZJ54KgKdaSDnV82+5ri5klmZsuO1vfPLtI7iGOoMFSxw3eVSTOHRVqy9Csb/fC3E0hNjua0hZsERDKU7XlcIKjqZH0N06+xADn1/ZsDZhYVHAY6lgAqXBgsbSjKnrTZi4ymZPqL49NtT3a4F9hnOhC1xvDYuXV1rZTDbMxd4gJTuNjnneBm39MiY4Koe85aaqgh1T7fDr2WJ+RuXiDXyMuAocA1QqgO5EDPryEDxT4HcHneJhhofcpqtksxdHAY/Xe+U7V2rjPmtDwZHV7xIZk7I3XS8VixTlvd3rrNYAkmtz/Xm42Wuu6ur16ZDZbLlEZ8a8ME6QsxDLrxIMwt5bgfbC+1inTVPx/1xh9uSH3PPOppaZd7qZV86LABUJ8EtfueNK+QMTSjdA5Fgk43a/5ScmQoIoW1Tcj9Yi0WievPomnMT+Q+p0vc45hEZIaPFpZG1ooHSqEz
- sF4LUJVD
- 3B+3bauT6Mwdor48dY/plf4uK2kChpCx3qkX3osp3xfsQ/z0+1jFuycR1HyqzZ9pLgEBfWe1gfnte3FAZSTk+EQD+Ewms3j9tTlAZDGzV1yGrJan/MrAl45oY1iRfwiw75/Xf/Y3xcxUqKBddj7OM+02fd8WSVE1A7C1uQP9DLWw6b4ytFrvXxLDnTIHL/xdyls2VTGgqDmZarvFJ8guysfiPN1U1JL5jYgok0/NaT1Mkl+vIss9BslaM3u2zxNErSlY16N7H4Zxr6t0UnuCBWb9WVa5pKBE426w2JYS+gWyi72PtI9Ip9bA75o0rEjHMpI819uwnYwHf16eSx16epSCGz4puWr3773WNbO5uiRichMAnEP8Yui1O3OzDrG17X+36FP90efFnOkC8EGe2fOyzwD/FSVL9KDh8BeD0tiNt5QPqmPVzNDdiynbFbWc+1X3N2Zq42A1EBS64fiPLLy+l4XAMY9KdYLRvAfAel3NES1HDpQ0SM3PCWBA/CaxDRipPH2HigsVNR/OM7XL2ruinpYlmuJIWJKiuL7gYSSKBwmI=
+X-HE-Tag: 1757671983-452313
+X-HE-Meta: U2FsdGVkX190UFEXabkIkChRgoqN/++28TYSW3zlfR57zOIv8Se/lV8BVPpEt4ZYkhYYAS7qvZXm0mq5eysGFMRBIy+/xa8ShoThLld01NHZPosv0FKfC/jQIqcyM6THDGV/JsI81CJe0Rtfxv4gzlVD6Q5YED6p+3ZpgVGeJgY7R9kZBJbSn0vLNMIb8dX9iRHSutszRFB+KzYhqJwFrseMUPETpobzOljX3+o3GN249S3LX/KMsp2oWedEmfG5YiRnvwMN90PyegWhqDWQtNhIDk2srn4HG6nnPW065qHw6l8qi5IkPEBv3vyHp4dCkPRfnbY4QfWsVgaeoZwvYLL+5KaeM0SWk3v7mIcYhFUGAz2dceO9TupPbOBtDztkIHFliKGMG1i/TyvNGk2iBdqgASkDZrtV0WB3QtI0rSThSHkqy2aPfliVHjYtMui84SyTrwRkxDH9/veMMSevPXZWDiumWIRVDcnrS2BXyTTRJKMU9Hzxi186hlZQJH8Ot5+a5WC1rWgxOQ2mKmB4PxY0qLbOl9M/Dc9U1iZaMwrMSqON4g160xkFwRujiInQvOXfDBfhAVOBbTUsA019sKUGOe6dctOXMXySaNlWI/4/4deFW9LtdLtaKfkW3qHiiBEFUq/RFxDF5kHirWhyRA0OAEDgPpziJz03M4yegNX3JxFYas6arxOo5x6KlcFfu8w75pZht2ZoGffC16x7vL2sBrXl0EKw625XmeV2n6F0EzCrkLMj3LYLspsYKdKf7Bt9sGmgsaAU/h7TGCltL0rqgwmBQ/0Gh+E9IBZmYw2q1RGnNNLwE6P2W4zwlSZiwa8HvYD7LpwfA5jEHXN+iJpLWCS3Lr0yObjfEQb3P3HnJD63Ls1MyPWd78EUo1R9tfgKM+yytajnw8Eti2LlHneQoQ4S7ePIRH9WTPxShxzYjcfL0bb/TnjNDOBKxnHYmCtybxIhC6Z/Jjx9BoV
+ R6J6kSGN
+ fRRreACYoLIYGQzZoS3GYU8rM7VH4zXBHVveR9G+c1JOlayiWbDsLjMGVvdDk9+F96u26KXlatbkhrlILPygQjQaVVd0ej4Z0xEOv/LTEPyahkDFUudp66ibYI1JRUsFLaaZk9JJ1jsLRAOoCPZO0IRZ+akp5bkuMZMp15iU3afUWD63ZodenuU3+Qbqvzu83a5d6hL/TdfsUjefxXPh8Vn65rDq6TQFj5TEFmSL2D9jIkDMxf86v0HGL3ChEUC++Q6qmCjSCvObdIqF13etF2x5SZoFVej4D8GEiOXTmZwldZnCUySpu8/BPhFm8Z5SYN5E6ct12cliRD/aMb51ZAq5VWUvkcNGClsg57VzreOykLvnGGp9uS8/LXhzW9PoQW4ycU+z8854Hm9lHYV6Nt9AjH6stD9sDqnGVsj4SQgaCBzVDir8WQMfxihjNa81sB7041uR7vZ/P/z3Y1ehkT1m6YC9IjLhT7BTb6B0SYQ6C3SBn+ZW6nBJdcIjDsjRV+Jc3oQp46L7DOWuvfaNcQ73rANAF/FfsToN9hUC0NpFg23emt8KUlg1a+w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -178,123 +178,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add helpers to find the stack canary or a local variable addr and len
-for the probed function based on ksw_get_config(). For canary search,
-limits search to a fixed number of steps to avoid scanning the entire
-stack. Validates that the computed address and length are within the
-kernel stack.
+Allow dynamic enabling/disabling of kstackwatch through user input of proc.
+With this patch, the entire system becomes functional.
 
 Signed-off-by: Jinchao Wang <wangjinchao600@gmail.com>
 ---
- mm/kstackwatch/stack.c | 88 ++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 84 insertions(+), 4 deletions(-)
+ mm/kstackwatch/kernel.c | 55 ++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 54 insertions(+), 1 deletion(-)
 
-diff --git a/mm/kstackwatch/stack.c b/mm/kstackwatch/stack.c
-index ac52a9f81486..65a97309e028 100644
---- a/mm/kstackwatch/stack.c
-+++ b/mm/kstackwatch/stack.c
-@@ -9,18 +9,98 @@
+diff --git a/mm/kstackwatch/kernel.c b/mm/kstackwatch/kernel.c
+index 8e1dca45003e..9ef969f28e29 100644
+--- a/mm/kstackwatch/kernel.c
++++ b/mm/kstackwatch/kernel.c
+@@ -17,6 +17,43 @@ MODULE_LICENSE("GPL");
+ static struct ksw_config *ksw_config;
+ static atomic_t config_file_busy = ATOMIC_INIT(0);
  
- #include "kstackwatch.h"
- 
-+#define INVALID_PID -1
-+#define MAX_CANARY_SEARCH_STEPS 128
- static struct kprobe entry_probe;
- static struct fprobe exit_probe;
--#define INVALID_PID -1
- static atomic_t ksw_stack_pid = ATOMIC_INIT(INVALID_PID);
- 
-+static unsigned long ksw_find_stack_canary_addr(struct pt_regs *regs)
++static bool watching_active;
++
++static int ksw_start_watching(void)
 +{
-+	unsigned long *stack_ptr, *stack_end, *stack_base;
-+	unsigned long expected_canary;
-+	unsigned int i;
++	int ret;
 +
-+	stack_ptr = (unsigned long *)kernel_stack_pointer(regs);
-+
-+	stack_base = (unsigned long *)(current->stack);
-+
-+	// TODO: limit it to the current frame
-+	stack_end = (unsigned long *)((char *)current->stack + THREAD_SIZE);
-+
-+	expected_canary = current->stack_canary;
-+
-+	if (stack_ptr < stack_base || stack_ptr >= stack_end) {
-+		pr_err("Stack pointer 0x%lx out of bounds [0x%lx, 0x%lx)\n",
-+		       (unsigned long)stack_ptr, (unsigned long)stack_base,
-+		       (unsigned long)stack_end);
-+		return 0;
++	/*
++	 * Watch init will preallocate the HWBP,
++	 * so it must happen before stack init
++	 */
++	ret = ksw_watch_init();
++	if (ret) {
++		pr_err("ksw_watch_init ret: %d\n", ret);
++		return ret;
 +	}
 +
-+	for (i = 0; i < MAX_CANARY_SEARCH_STEPS; i++) {
-+		if (&stack_ptr[i] >= stack_end)
-+			break;
-+
-+		if (stack_ptr[i] == expected_canary) {
-+			pr_debug("canary found i:%d 0x%lx\n", i,
-+				 (unsigned long)&stack_ptr[i]);
-+			return (unsigned long)&stack_ptr[i];
-+		}
++	ret = ksw_stack_init();
++	if (ret) {
++		pr_err("ksw_stack_init ret: %d\n", ret);
++		ksw_watch_exit();
++		return ret;
 +	}
++	watching_active = true;
 +
-+	pr_debug("canary not found in first %d steps\n",
-+		 MAX_CANARY_SEARCH_STEPS);
++	pr_info("start watching: %s\n", ksw_config->config_str);
 +	return 0;
 +}
 +
-+static int ksw_stack_validate_addr(unsigned long addr, size_t size)
++static void ksw_stop_watching(void)
 +{
-+	unsigned long stack_start, stack_end;
++	ksw_stack_exit();
++	ksw_watch_exit();
++	watching_active = false;
 +
-+	if (!addr || !size)
-+		return -EINVAL;
-+
-+	stack_start = (unsigned long)current->stack;
-+	stack_end = stack_start + THREAD_SIZE;
-+
-+	if (addr < stack_start || (addr + size) > stack_end)
-+		return -ERANGE;
-+
-+	return 0;
++	pr_info("stop watching: %s\n", ksw_config->config_str);
 +}
 +
- static int ksw_stack_prepare_watch(struct pt_regs *regs,
- 				   const struct ksw_config *config,
- 				   ulong *watch_addr, u16 *watch_len)
+ /*
+  * Format of the configuration string:
+  *    function+ip_offset[+depth] [local_var_offset:local_var_len]
+@@ -109,6 +146,9 @@ static ssize_t kstackwatch_proc_write(struct file *file,
+ 	if (copy_from_user(input, buffer, count))
+ 		return -EFAULT;
+ 
++	if (watching_active)
++		ksw_stop_watching();
++
+ 	input[count] = '\0';
+ 	strim(input);
+ 
+@@ -123,12 +163,22 @@ static ssize_t kstackwatch_proc_write(struct file *file,
+ 		return ret;
+ 	}
+ 
++	ret = ksw_start_watching();
++	if (ret) {
++		pr_err("Failed to start watching with %d\n", ret);
++		return ret;
++	}
++
+ 	return count;
+ }
+ 
+ static int kstackwatch_proc_show(struct seq_file *m, void *v)
  {
--	/* implement logic will be added in following patches */
--	*watch_addr = 0;
--	*watch_len = 0;
-+	ulong addr;
-+	u16 len;
+-	seq_printf(m, "%s\n", ksw_config->config_str);
++	if (watching_active)
++		seq_printf(m, "%s\n", ksw_config->config_str);
++	else
++		seq_puts(m, "not watching\n");
 +
-+	/* Resolve addresses for all active watches */
-+	switch (ksw_get_config()->type) {
-+	case WATCH_CANARY:
-+		addr = ksw_find_stack_canary_addr(regs);
-+		len = sizeof(unsigned long);
-+		break;
-+
-+	case WATCH_LOCAL_VAR:
-+		addr = kernel_stack_pointer(regs) +
-+		       ksw_get_config()->local_var_offset;
-+		len = ksw_get_config()->local_var_len;
-+		break;
-+
-+	default:
-+		pr_err("Unknown watch type %d\n", ksw_get_config()->type);
-+		return -EINVAL;
-+	}
-+
-+	if (ksw_stack_validate_addr(addr, len)) {
-+		pr_err("invalid stack addr:0x%lx len :%u\n", addr, len);
-+		return -EINVAL;
-+	}
-+
-+	*watch_addr = addr;
-+	*watch_len = len;
  	return 0;
  }
+ 
+@@ -176,6 +226,9 @@ static int __init kstackwatch_init(void)
+ 
+ static void __exit kstackwatch_exit(void)
+ {
++	if (watching_active)
++		ksw_stop_watching();
++
+ 	remove_proc_entry("kstackwatch", NULL);
+ 	kfree(ksw_config);
  
 -- 
 2.43.0
