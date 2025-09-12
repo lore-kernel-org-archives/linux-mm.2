@@ -4,116 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D37BACA101F
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 17:34:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D8B2CAC582
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 17:44:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 233238E0008; Fri, 12 Sep 2025 13:34:31 -0400 (EDT)
+	id 901268E000D; Fri, 12 Sep 2025 13:44:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E3A58E0007; Fri, 12 Sep 2025 13:34:31 -0400 (EDT)
+	id 8B3188E0007; Fri, 12 Sep 2025 13:44:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0D2E58E0008; Fri, 12 Sep 2025 13:34:31 -0400 (EDT)
+	id 7A11C8E000D; Fri, 12 Sep 2025 13:44:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id EBECE8E0007
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 13:34:30 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 72CAA1A092A
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 17:34:30 +0000 (UTC)
-X-FDA: 83881297500.16.1243253
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 8B64840009
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 17:34:28 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=T12eNLDY;
-	spf=pass (imf27.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 679888E0007
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 13:44:50 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2017BC0782
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 17:44:50 +0000 (UTC)
+X-FDA: 83881323540.03.18219FB
+Received: from fhigh-b6-smtp.messagingengine.com (fhigh-b6-smtp.messagingengine.com [202.12.124.157])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 2C4D41C000D
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 17:44:48 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="C lQV0HT";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=im51tb+C;
+	spf=pass (imf20.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.157 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757698468;
+	s=arc-20220608; t=1757699088;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c5LHAOD3RsM7IX6ZQaWQlGO8B8wFFk4TliEC/qZmawU=;
-	b=KfHJF4hv2INqfB900iFSbdeRWJg7tidhWTEA1vbFHseUZ28AdKyH8TnaDullR5Dr7QMAgJ
-	eTSSVIzrw6IZ2IJnN4btrIhbe+ltHHblDuCHcyuxgfYww1Jo+ve+Fg93qTMYw6gt1bB+8h
-	ScNTKePNIaBIDtJpil9J3dMrJMJlVc8=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=T12eNLDY;
-	spf=pass (imf27.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757698468; a=rsa-sha256;
+	bh=UbXOseeNnaP83dMYePU0k6b7ZDIfNAE/7Jdsl7Ac4sk=;
+	b=mjJXMBu7zpRBztiAU2TbFnQg0g2kCboT8+IaYQ9VAPK/nseoImfHdV3fOgNmA6l0hXsznS
+	hEenv4LqtjkpMA0sFYXZi3VRj5amP6H4eVCBUG4FFg2MF2nOU2w9P/2bQcLMpHORrfgY4J
+	m5r/SH8KjgPxP0ahptTZqC9s369wU64=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757699088; a=rsa-sha256;
 	cv=none;
-	b=b0humKLjMcGAFD4+/snhoUcc1lPWUlGeexpYCioIgU6EIIBSaTVXrVmZHv4DCuHrjE6bbf
-	pIBrwiWsFwGDc572QZN/k2IxgFD07zoOGWzRC/vk2+A+CoVFe7nkSuRyM92gHvUEkgxJSx
-	3H3NecU/b+ZhmnN++2oHtUz4qPZSknM=
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3e7622483beso1204003f8f.3
-        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 10:34:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757698467; x=1758303267; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=c5LHAOD3RsM7IX6ZQaWQlGO8B8wFFk4TliEC/qZmawU=;
-        b=T12eNLDYrBV/+0SvV10KssKYYp0V0v9Xg4krGrMk0y+Le5GP62EI7R324RN/FIkXVa
-         3XceKzd1Rmt3lX0YnUFhi8TnYgXjiwaRqRJ7eHV+/a+eU/3As/6xqd9SmU4N5nZWM+1m
-         W6DYZArObdlxzMco4OaOGNJNmbzi7DZURjB16BgYMXD+Imf1q+45WL1GWSl4OB1MVpLM
-         RI+ftejy1Q3Y7jzH+JXjaLv8OSvxY3l0CvqF8Zr2H+Jawkr/M1PQAMFJSnnajMAiDe+N
-         9mk6dTa4J7FFclpY8+nxM+fZSnmOAfHuatI9fWKd3NSZTQuMKqDN+o1uf7tQ9vdduxob
-         Jifw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757698467; x=1758303267;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=c5LHAOD3RsM7IX6ZQaWQlGO8B8wFFk4TliEC/qZmawU=;
-        b=YU0iAJIlnQ2sBVwvnu3A8QgVmejDXr/AxuiZR4hPnHiq3eAo7jpTgfiXS438YWVRGQ
-         2WWzmJjYZaZb/Jka6Ro5xnIQV6StaDhh5XtaRKmMK5s2+FkkObGq91N7zs5kObKVOxCw
-         z+pJyyDheifnUC4byTMPz4sGs9KBuBC4T0asExYPfMjn6L7Et6C9hr1Bx1HXfzjeoIOZ
-         yMWa3pAwmQBkvz42jyB6BucCaA6is4MMpiQ7pkJtxFr/t47jLFdHbJERIgwF0g8upLlt
-         K8YSUExt65OXWZAZVnfmsB5jDUwPcQe2HVTwzBQXy+5+iDGYmiep9Ll3a1GT+czOeX3E
-         nXFA==
-X-Forwarded-Encrypted: i=1; AJvYcCV7VIff4Y6C0GNHpbefaXfOIYXDFZaLZirvD+dDjIIMWNu9KKk0uBYKkZmk+PcrjMX6PLbY6ac2NA==@kvack.org
-X-Gm-Message-State: AOJu0YxRgA7PghYQ0ENpkoPnMfgdTPmMVwVnVqU5BJw/8oOsZq2WQjLg
-	y4KIGJkuCmAQt4Mia5aOhw1t0WWUvwm9SVk7trulgwfDZQCaTU8xkC4a8cq+DNOhKbBoQyHVWUm
-	K9BoaAMH82T7PvcqkEAnfGzWNmBtMGK8=
-X-Gm-Gg: ASbGncv6ISr8hhc/MXdqV6+Sy1fVcnCk9PG00LWRSTl8RKalNFNuF0qSSQ4diU/ZZ/u
-	Edxttzl5TElDXgJzqFgVFAh3pAN0QLHSAtfpXjgMCKBJ/GvoEFA1eDWKSZhwiMTzH9qq3gQFZue
-	Fj9wgxFOd4HwY9Gxi2e+XQt3vTEmgOtlRN5JsQ/joRJ5UxIOzb+5PM10IN1axrAOhsrRFZ3ITKw
-	IyCbYPPbNBQ45KbMIwIFXM9tqaywp+T7QhATrHEJd9mL1U=
-X-Google-Smtp-Source: AGHT+IF84u9tsLSiw4lDvT5XmwWtoH0L/3zRkVWz/Q7BbdJ5SQIMqXyHfKSwJKnSQJcmnQtbE+lOWa60Ml7eykZbfmc=
-X-Received: by 2002:a05:6000:2510:b0:3e7:4277:ddc2 with SMTP id
- ffacd0b85a97d-3e76579abb9mr3853126f8f.10.1757698466762; Fri, 12 Sep 2025
- 10:34:26 -0700 (PDT)
+	b=d7a3inzpHFUtXFYnhgz1C+ps9wvFqnqEpfBMPiK45r1nTnqyYKivX1yP6vcibOr5x4k5Bo
+	OqFdMvLTfH17cdFamkbWYzHdcl3EBkTf72+qxrTgXBHbS1F3/xjtxDZoCeHy3xYUbTXwCe
+	v7GzsJ1n+G+U19FZM/UFBK/y3WFHCBE=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="C lQV0HT";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=im51tb+C;
+	spf=pass (imf20.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.157 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id B77937A014C;
+	Fri, 12 Sep 2025 13:44:46 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Fri, 12 Sep 2025 13:44:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1757699086; x=
+	1757785486; bh=UbXOseeNnaP83dMYePU0k6b7ZDIfNAE/7Jdsl7Ac4sk=; b=C
+	lQV0HTId9nSrky+AZyRVP6KYEATXi3LI2X3MH1EKxhekzxJptQPKhSRwtr0nFi0D
+	qEqgqtXj9mKLK1L+i0QAajauX/Ee0j/OQeVlnnIuoU/D/g9iR27vQOkBnUVceFBq
+	/fW5nZCXO/yEL7wCN1jNkkQUkiChOyUgqgE8Man/Pj49Y9wkX8Mn/uy9pumaHknp
+	GGtLlzoEcfR0XZ/4cQAiO0HMxC5IQQzkvcrgL8THEFXpfS0g7u9+VYb3vNxMOopv
+	zpLK8opf+6sAS7H58t97ncAqDZyyIn97GBjNjFE2X96H4+1nxhoEHXYb+Ia8ssyt
+	lJXJ3CyGFn5IudSqqQVrA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1757699086; x=1757785486; bh=UbXOseeNnaP83dMYePU0k6b7ZDIfNAE/7Jd
+	sl7Ac4sk=; b=im51tb+Cxc9Wf3P9QHBTtqrLu4rPtozC6R2oFl+yniN2rBzHA1N
+	sERVMcZv6I+ZvcgjX3uo3M2RxUZKvck4epBQ1ESR8jLG98+0hmZe8kMnO9iGp+gj
+	VrQlEthRCh2jQ9vzDZCYp10JbwFjB2p4G6lescKIMpMy45VFSa+gptcc+58g3Cvv
+	5WAcgLAR/AYqgv3+PIlR4kKLJp+uON8BWBvm8AymfEiFGNA2txXh1mfyvYMPmf2s
+	jYRW3t2y6vLDEdxSlqi+HyehpCIPUC74lkiFJxzv9rB2qEqb4zOwPCzO1MhtqBe8
+	rKuc+chegJ9jJ9A/vmXvpbG/NteWp3JXaGQ==
+X-ME-Sender: <xms:DVzEaDlSoyTdClnPKHNq_iKBQHeosJ1uFtNg-5H8GgHyp4xlIJ_v8A>
+    <xme:DVzEaCt4stj4bo245syo5toimrJAm8oWqoe8zTcuPqMz2Uk4dKk0o_mYjPzxXE9Ig
+    PiY6OCeX3dQwa4OSP8>
+X-ME-Received: <xmr:DVzEaCfdcx_95HunODtaZRKSeQ5hWu94jJE370DO-LEmJGSDj5nJQ4eKSH7IjA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvleeikecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdfstddttddvnecuhfhrohhmpefmihhrhihlucfu
+    hhhuthhsvghmrghuuceokhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvqeenucggtf
+    frrghtthgvrhhnpeejheeufeduvdfgjeekiedvjedvgeejgfefieetveffhfdtvddtledu
+    hfeffeffudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhroh
+    hmpehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgdpnhgspghrtghpthhtohepvdeg
+    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegurghvihgusehrvgguhhgrthdrtg
+    homhdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhg
+    pdhrtghpthhtoheplhhorhgvnhiiohdrshhtohgrkhgvshesohhrrggtlhgvrdgtohhmpd
+    hrtghpthhtohepiihihiesnhhvihguihgrrdgtohhmpdhrtghpthhtohepsggrohhlihhn
+    rdifrghngheslhhinhhugidrrghlihgsrggsrgdrtghomhdprhgtphhtthhopehlihgrmh
+    drhhhofihlvghtthesohhrrggtlhgvrdgtohhmpdhrtghpthhtohepnhhprggthhgvsehr
+    vgguhhgrthdrtghomhdprhgtphhtthhopehrhigrnhdrrhhosggvrhhtshesrghrmhdrtg
+    homhdprhgtphhtthhopeguvghvrdhjrghinhesrghrmhdrtghomh
+X-ME-Proxy: <xmx:DVzEaEaGwv2OwHz4xSZo8qNskgJ435vmbHuXJZd7RhbxWdL6yuCjEA>
+    <xmx:DVzEaK0hR0wItz6tDK741-KZNaADkjRugK7IrzvSaJVnWvPQiOOEaQ>
+    <xmx:DVzEaNrq98OX_y_swKPEMos7hZTf3KQfNq3T8PcOoMjxt0PQPJdNIA>
+    <xmx:DVzEaLwJKRMt6gJyMlHTa0s3AK9A3JfBYscahY6m9rRIJdNZYIxEvg>
+    <xmx:DlzEaB45ZF3zCnnB4Ev4Y8vQA_MjYTBHMcj6KSUxfR1hVLJJ5LCXBqO3>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 12 Sep 2025 13:44:45 -0400 (EDT)
+Date: Fri, 12 Sep 2025 18:44:43 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: David Hildenbrand <david@redhat.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/khugepaged: Do not fail collapse_pte_mapped_thp() on
+ SCAN_PMD_NULL
+Message-ID: <5n3vzdmdmeyicqf5dji2vo5hsfupigq7nl44cog7vwm6nchtqo@so5mvct4fwhn>
+References: <xhan2av3fyl7qpsl4bhjtds2zeegrl57ehtc5grtkua3c3v3nz@vain5s6gpycl>
+ <36bf71ea-f6aa-42fa-9fa2-53d00f351777@redhat.com>
 MIME-Version: 1.0
-References: <20250909010007.1660-1-alexei.starovoitov@gmail.com>
- <20250909010007.1660-3-alexei.starovoitov@gmail.com> <2kaahuvnmke2bj27cu4tu3sr5ezeohra56btxj2iu4ijof5dim@thdwhzjjqzgd>
- <aMRVNqH47mdkl5Ke@casper.infradead.org>
-In-Reply-To: <aMRVNqH47mdkl5Ke@casper.infradead.org>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Fri, 12 Sep 2025 10:34:15 -0700
-X-Gm-Features: AS18NWDOSsJ18D-9VlumoGDeKjZauJ0F3-n9lYvWRCc26bWu4h9-Bjo2I0KS2Vg
-Message-ID: <CAADnVQJbx0Wf4xrAEfQyZhhpC13zJH6NqdFjYQ+StQzzi+Y=Nw@mail.gmail.com>
-Subject: Re: [PATCH slab v5 2/6] mm: Allow GFP_ACCOUNT to be used in alloc_pages_nolock().
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>, bpf <bpf@vger.kernel.org>, 
-	linux-mm <linux-mm@kvack.org>, Vlastimil Babka <vbabka@suse.cz>, Harry Yoo <harry.yoo@oracle.com>, 
-	Michal Hocko <mhocko@suse.com>, Sebastian Sewior <bigeasy@linutronix.de>, 
-	Andrii Nakryiko <andrii@kernel.org>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Steven Rostedt <rostedt@goodmis.org>, Johannes Weiner <hannes@cmpxchg.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <36bf71ea-f6aa-42fa-9fa2-53d00f351777@redhat.com>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 2C4D41C000D
+X-Stat-Signature: ffa4ii86z6irgu5wrbatz8bd11xcse6t
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 8B64840009
-X-Stat-Signature: yuoi5zrzp3qje6m7sp95dzu7kpths68s
-X-HE-Tag: 1757698468-302786
-X-HE-Meta: U2FsdGVkX1/xr4dZq1Su1gNn9Am1DggMBGiRGfPZzTZMHGtfi0P9jJ5GCqi0erNtWGE4ZL9AsOycDVnqSzxht13v81TGCF+1ngizFB1GdQV6omcVh2r0KZ9959lYbILD4ITkAP/KjllQqD641mgXM96nZ12QIw+Kz83xK1bxZ8vDoS46ZcuuKY0qjYv0s9kxXSh3cwNvnldjUuA2eStJ0JCbcAkyr1wm0NlCFOSbO+3s6qc6jAo9rABkNPDJMdT5J+Lz350Edwlo6E1B5++RUjMsHeIjZV2lIoAYKYleahN/gdSw+LDNhN1ubEI6H3zrboQPnbnLctENQVLOKoryPG2VnTR69uZD50EeoGS1l2JHTnXjhRrS7tx3IpN/Vt4Djeml4qqjsBXixKho27oGIRTfAoZCJtZZam16g6ZOvXXeWchw4pY9UDN1tl9QYKXozN3X9Tqjcx15g58zcyBd68ImH1JxmXSI0/qLvyj9gRPRL/AmYWp7xf5htMd8gNPxQ1ATmKCdB5R9j4IBTSMIXNh+spG6JPBrXHK6mgx/V3v2jZHrqSw66nnyqC2uthULZZ6/Xd+coL2rnVwczuV160uNjnfn5BSq+ZkeSPoNMuAr71FroUJhB/mr6rqqQZr+17OuysGSc+4HGYbGHsP9to1ijpkbRNqHiTwQLVOh1812j3IQFFktxPciA+mfHtUsFznYYz3SDtY5CRgeCA/rPLPx0h9IBlLxDlF1NSbjJ2cbeyPPJprqBGb3XEYr7MqzRv/YIfQQzXXmCxWPhhNK/03Ewb80WCAWT2dXdFOQ87jcfExPzdasOV/HDCmvo0bWxFfck7lJMIRN/PluNtalbI73TgcJEkYyefpDlPKNqLHk5A0aOgn7IeXvioc0HEsN9407FLgwXZZ4pSaMKRxaVT76kMnpGoP/a21xw567h8p8mQ1FtMLaYr19Ul4n+2giJk03HfTEzGTyAWe9khQ
- sE1jR43W
- CwGoZNvSv0lKyRDJyF+Az2MWwA7rzhuNTl/rWe8EZAiLgh0P5T4+alYs/v55oIZ2CVbr6Ko66lSE65Y0TWHfWZkIBoirI4N71QZ9m0l9JV7u7DKcHL1FczdxKV5rh7fvE15Es9M9OfZbZFrxv/iMW41V8+My2wQxxAO4CPIYnLSX+yD70jrpRiPFb7tSWzZBNfac9kuU+ZQaJRf43ievkft8OTcDZSj7Xw/fPSI9KK27RGVkcF8qxZqALYIHdz03pKf/3WNA8/VLuIn93b9CNVTc4G9cW4zlRjehmzm99x08ti/CN1VvLC+qGkOEkwXCtQCxbsS0lTO8kaBdVFAfdH/4EZ7vORq+GgprOyFLnT4StP9YBJx5TrYeLAXQjQ48JWHc/6ct+zSUZ0eQsonfsMBd0iylSjB7vA5kB+qQ3cuXRQPG+A2oQg9vydhv8w+FxDUM9Mbkp8a52ATcQHjB+IjfV89MUc3IVYijzdntO+FRZY9qKhZwOt7ul+w==
+X-HE-Tag: 1757699088-266162
+X-HE-Meta: U2FsdGVkX1/Y7fbjum5dl1sMvooq7BpSSLlLRBnWjdUXtjNCndT8IPRBCcKPZKXGVOgDZcZM/mOIC6WF7hXU2bJVJv3Sq7PqPv7qaXCYQPlnzgj/6enR/0hou4Y+w+kRfqdUYLaTaVSm9gJC3Dc6EyftEeWcXBjktixFnIF7arKJgDrQQ7KeyjF6XmV7Q/JHetuJfxjRkEljIEa61/AhPy1AyGImDK6j5g4kLiQn/irjXq6TvvW5Fv7BN6LRl5zBz43/WpOB7m5+RugpjF4RqpSkZCUsYOWjhaag9PRAwAxzhhAcLXm3vgXCe/mZwIjVVEFkvN251BamFGIhgM0Y47CBdWMqDWV0ERE5ZQb527rIPwWXCXs/kCnVC/TbXxcTPuOmF6qf3+XXBRzJWKNev5T9/52E9q2A1HAYcUDf7Snv1XHLbkx3byl7zjIOJQbOaf/ROED6RcJzNI0xVlGjO4eKIIsO/mNuAE8XnO7mkZsyNAxkF9dCSbvfhbs5cdwqz6yYHdEJ0lyPNTcIIrcNFgEdx8zA5gOzh64Wjiv4MdM1skNQqVGppdEW4luqqhEz/wuBJ7/yb5m9MpO0huzD+PfcAxm2g5ZMwyil8sH4P+ffexka94LUdqMwqfpUNNcMg4Y+nNvYdrTSGZFf9kwmwu3oZzBQmOraOh8Fw2+9phsxjbiBTGB5OQntD8LXAIrEBe1JuSjHGk0j4w5oE4QDr4YMBrfkJuaMQDGZIc+Zd8xuur87FvJ6LDY49LCd1PRCxEwZbJaM29BS+W31RKucPRxJfF/diBGh63ho4XKYQzhWmJ3BU7MpLq3Zu1pnhvoCCOL/Aw4j6i25vlgfh2fFPRhByaoDpshxJXOiNg3huhqunzk1XPN/xwPb1ccjRjabKLNYw1+hAjQqMoEOTY/LqHAapql5V9eDVXKCxsAcUYS7OHYsx+zAlxXjanSWzGV8GpgRFFuqGhm7zNpJj5X
+ snWSyk/6
+ Fhc7gjmLK2du6c4ds3AtnXMCl2vTcpGOZKDgdg7HunzQ0FlZYTwqG3D/BHQadViTrorg9nWv61xuS9CMMJBuAg4RXgx2EbBHxpVogTGhGr8eoshoIbDlsqyVvFYBwng2YWyMp4rVhRW+2cIA6NOx0ruTEY+ZTg2HTjazu4i0OTI+VSa3wsSTaToe+L3xsXARGMYGDKNCNppUtU2FZqjuH8JErDfFsqY1yqSgGK3EROX4r4ptGz1ulW/3mkR1MJ2wso5JDRF11J4HjJvMkHwrcxXXdsrXJKEkPtp1YiBJ4ni8hy5ZFhlTDBDQEehdcU3gZFTCiyWgogU/jiWHytaslg96D12UWllqJvwflntxsR2LtqAmXbILCRz88McTQuINgq3okF7QFPUNarqbk4shBlZ5Rnl1TFbVuC5QENHDvdq6CfUF/lNPG/07zrSg7puwBMRRbOBaDG/Pr32QxVolkuZnVva1rpsR5p25BGZ5xv1DTZf4e6TuTxNGW9EzHEp8nSQPA
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,48 +139,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 12, 2025 at 10:15=E2=80=AFAM Matthew Wilcox <willy@infradead.or=
-g> wrote:
->
-> On Fri, Sep 12, 2025 at 10:11:26AM -0700, Shakeel Butt wrote:
-> > On Mon, Sep 08, 2025 at 06:00:03PM -0700, Alexei Starovoitov wrote:
-> > [...]
-> > > diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> > > index d1d037f97c5f..30ccff0283fd 100644
-> > > --- a/mm/page_alloc.c
-> > > +++ b/mm/page_alloc.c
-> > > @@ -7480,6 +7480,7 @@ static bool __free_unaccepted(struct page *page=
-)
-> > >
-> > >  /**
-> > >   * alloc_pages_nolock - opportunistic reentrant allocation from any =
-context
-> > > + * @gfp_flags: GFP flags. Only __GFP_ACCOUNT allowed.
-> >
-> > If only __GFP_ACCOUNT is allowed then why not use a 'bool account' in t=
-he
-> > parameter and add __GFP_ACCOUNT if account is true?
->
-> It's clearer in the callers to call alloc_pages_nolock(__GFP_ACCOUNT)
-> than it is to call alloc_pages_nolock(true).
->
-> I can immediately tell what the first one does.  I have no idea what
-> the polarity of 'true' might be (does it mean accounted or unaccounted?)
-> Is it rlated to accounting, GFP_COMP, highmem, whether it's OK to access
-> atomic reserves ... or literally anything else that you might want to
-> select when allocating memory.
->
-> This use of unadorned booleans is an antipattern.  Nobody should be
-> advocating for such things.
+On Fri, Sep 12, 2025 at 07:13:48PM +0200, David Hildenbrand wrote:
+> On 12.09.25 18:58, Kiryl Shutsemau wrote:
+> > From: Kiryl Shutsemau <kas@kernel.org>
+> > 
+> > MADV_COLLAPSE on a file mapping behaves inconsistently depending on if
+> > PMD page table is installed or not.
+> > 
+> > Consider following example:
+> > 
+> > 	p = mmap(NULL, 2UL << 20, PROT_READ | PROT_WRITE,
+> > 		 MAP_SHARED, fd, 0);
+> > 	err = madvise(p, 2UL << 20, MADV_COLLAPSE);
+> > 
+> > fd is a populated tmpfs file.
+> > 
+> > The result depends on the address that the kernel returns on mmap().
+> > If it is located in an existing PMD table, the madvise() will succeed.
+> > However, if the table does not exist, it will fail with -EINVAL.
+> > 
+> > This occurs because find_pmd_or_thp_or_none() returns SCAN_PMD_NULL when
+> > a page table is missing, which causes collapse_pte_mapped_thp() to fail.
+> > 
+> > SCAN_PMD_NULL and SCAN_PMD_NONE should be treated the same in
+> > collapse_pte_mapped_thp(): install the PMD leaf entry and allocate page
+> > tables as needed.
+> > 
+> > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> > ---
+> 
+> Makes sense to me.
+> 
+> Is this something we want a Fixes: or even Cc: stable for?
 
-+1.
-We strongly discourage bool in arguments in any function.
-It makes callsites unreadable.
+I am not sure if it is stable@ matter.
 
-We learned it the hard way though :(
-Some of the verifier code became a mess like:
-        err =3D check_load_mem(env, insn, true, false, false, "atomic_load"=
-);
+I believe it is there from the start:
 
-it's on our todo to clean this up.
+Fixes: 7d8faaf15545 ("mm/madvise: introduce MADV_COLLAPSE sync hugepage collapse")
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
