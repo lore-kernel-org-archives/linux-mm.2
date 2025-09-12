@@ -4,174 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65487CA101F
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 09:18:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 330FCCA101F
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 09:20:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C28DC8E001C; Fri, 12 Sep 2025 05:18:12 -0400 (EDT)
+	id 881D18E000B; Fri, 12 Sep 2025 05:20:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BFCAB8E0006; Fri, 12 Sep 2025 05:18:12 -0400 (EDT)
+	id 831968E0006; Fri, 12 Sep 2025 05:20:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA0D28E001C; Fri, 12 Sep 2025 05:18:12 -0400 (EDT)
+	id 7208C8E000B; Fri, 12 Sep 2025 05:20:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9120B8E0006
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 05:18:12 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 545341DF450
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 09:18:12 +0000 (UTC)
-X-FDA: 83880046824.08.6859586
-Received: from fra-out-011.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-011.esa.eu-central-1.outbound.mail-perimeter.amazon.com [52.28.197.132])
-	by imf27.hostedemail.com (Postfix) with ESMTP id DCE7F40005
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 09:18:09 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=gCfCUwSC;
-	spf=pass (imf27.hostedemail.com: domain of "prvs=343957b79=roypat@amazon.co.uk" designates 52.28.197.132 as permitted sender) smtp.mailfrom="prvs=343957b79=roypat@amazon.co.uk";
-	dmarc=pass (policy=quarantine) header.from=amazon.co.uk
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5ABB88E0006
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 05:20:04 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1D4C816068A
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 09:20:04 +0000 (UTC)
+X-FDA: 83880051528.20.2F7EF34
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 0CBB7160007
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 09:20:01 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=oT7QcAey;
+	spf=pass (imf08.hostedemail.com: domain of sumanthk@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sumanthk@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757668690;
+	s=arc-20220608; t=1757668802;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ojtm9hG3uDHHN9CPzAzA1kwd7CoLxip6b5f2qHGneMU=;
-	b=LqFA7PozkxYqltTRG3dpZU6SzcAND2BdeWddTlcKMRoAWCv03Yqs9W9ibTfvchS8VS/EbE
-	5HtPm5bALiPPrd3xDlwWP789ah9zj9Jqx5JBD22IWl+H69SqzhCVPgnyHAfe+FPSlrmch7
-	Ohsqan6+O1BMeFMoAAOy2j1apn9by1g=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757668690; a=rsa-sha256;
+	bh=rZc9834EQmnX5OjtQuA7Dp/c6DGjo1MBldcjPqT/2OU=;
+	b=fH0/NTZLGDPy11gaDOYnC3mPTpNd5n9tOJRy7xM2tMcLOkZilzFvcDOysVDyKjZk60Mr85
+	ug78ggDI+AxrgvfRisE/+6FtQoyjCFN7/4xgPbQLO7eD0aEYXiVw5PCjAsfecI+SoGIos1
+	2+yhGXMn/meaC5T1kWWVrFpP2qelJec=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757668802; a=rsa-sha256;
 	cv=none;
-	b=DYHa+XfSqhRDYmelqsatZwvDuDExADWEHdFjQ1CAx4rCa5onLQvUIAl3tsFnbLXAvg39IN
-	SVvODH3TU5tC2grVMIj/pWHtNVAElHMcWtPcIulCESYaWMwPuJD8g8VgQ95M25EqrivW0y
-	UhEqau/G5BZtcJpR4ZOxV63euYvGIAw=
+	b=icsYUb+z0NRk2fTRraALlW4roFrAkkxxBkr8nrARsEp+FEysHKF/sGrAWFDvmQoqCHK/uj
+	3xKEtfEWONCtRQhwi4XL06DUQlaAtP9tazYaAo7tKF3EXnB+dQwk88mOoxGcQMdV5cFn7d
+	88F+CVc7+CSB1Jvr9FMhf86MJw2B6mY=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=gCfCUwSC;
-	spf=pass (imf27.hostedemail.com: domain of "prvs=343957b79=roypat@amazon.co.uk" designates 52.28.197.132 as permitted sender) smtp.mailfrom="prvs=343957b79=roypat@amazon.co.uk";
-	dmarc=pass (policy=quarantine) header.from=amazon.co.uk
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
-  s=amazoncorp2; t=1757668690; x=1789204690;
-  h=from:cc:subject:date:message-id:references:in-reply-to:
-   content-transfer-encoding:mime-version;
-  bh=Ojtm9hG3uDHHN9CPzAzA1kwd7CoLxip6b5f2qHGneMU=;
-  b=gCfCUwSCYRds0KIQrSrU8dDW8BefAUliT//2kIFd0ukbpP8hEnpa3Uzc
-   HDV6sqmGMdeKfgpkgzJ5iJ6WvWmpb9D16xSyOy0Nko60VXZOLQ/CjtuFy
-   LARkmQDfjJ023YhcgBdf9haIRcf3ljKFX04JbVAlNUHzuGVgkyZ3NMXzZ
-   4MqDEopUW36F77mRWyoQYD9N5d3zU2lO+T1hIdeykDqgSJbomZpaalJgZ
-   zpyHnyYO+oF+XEb+xcrNNd6ArueP33t0TOshQWaG6xa/yL/xKnCm1EqYc
-   jMWH/3VxRFmid0aASERAFquLWKraWkAHpgI84RKHKgFmawoC+ZZAzxTXC
-   Q==;
-X-CSE-ConnectionGUID: pZZ13Mj+TDqV8Gs/7yExlA==
-X-CSE-MsgGUID: RfZcwfpiTzSibRHA+5TiDQ==
-X-IronPort-AV: E=Sophos;i="6.18,259,1751241600"; 
-   d="scan'208";a="1903318"
-Received: from ip-10-6-3-216.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.3.216])
-  by internal-fra-out-011.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2025 09:17:59 +0000
-Received: from EX19MTAEUC002.ant.amazon.com [54.240.197.228:4257]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.23.240:2525] with esmtp (Farcaster)
- id 0791345b-5f96-4e3a-80ef-d080c8c5816b; Fri, 12 Sep 2025 09:17:59 +0000 (UTC)
-X-Farcaster-Flow-ID: 0791345b-5f96-4e3a-80ef-d080c8c5816b
-Received: from EX19D015EUB004.ant.amazon.com (10.252.51.13) by
- EX19MTAEUC002.ant.amazon.com (10.252.51.181) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Fri, 12 Sep 2025 09:17:48 +0000
-Received: from EX19D015EUB004.ant.amazon.com (10.252.51.13) by
- EX19D015EUB004.ant.amazon.com (10.252.51.13) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Fri, 12 Sep 2025 09:17:47 +0000
-Received: from EX19D015EUB004.ant.amazon.com ([fe80::2dc9:7aa9:9cd3:fc8a]) by
- EX19D015EUB004.ant.amazon.com ([fe80::2dc9:7aa9:9cd3:fc8a%3]) with mapi id
- 15.02.2562.020; Fri, 12 Sep 2025 09:17:47 +0000
-From: "Roy, Patrick" <roypat@amazon.co.uk>
-CC: "Thomson, Jack" <jackabt@amazon.co.uk>, "Kalyazin, Nikita"
-	<kalyazin@amazon.co.uk>, "Cali, Marco" <xmarcalx@amazon.co.uk>,
-	"derekmn@amazon.co.uk" <derekmn@amazon.co.uk>, "Roy, Patrick"
-	<roypat@amazon.co.uk>, "willy@infradead.org" <willy@infradead.org>,
-	"corbet@lwn.net" <corbet@lwn.net>, "pbonzini@redhat.com"
-	<pbonzini@redhat.com>, "maz@kernel.org" <maz@kernel.org>,
-	"oliver.upton@linux.dev" <oliver.upton@linux.dev>, "joey.gouly@arm.com"
-	<joey.gouly@arm.com>, "suzuki.poulose@arm.com" <suzuki.poulose@arm.com>,
-	"yuzenghui@huawei.com" <yuzenghui@huawei.com>, "catalin.marinas@arm.com"
-	<catalin.marinas@arm.com>, "will@kernel.org" <will@kernel.org>,
-	"chenhuacai@kernel.org" <chenhuacai@kernel.org>, "kernel@xen0n.name"
-	<kernel@xen0n.name>, "paul.walmsley@sifive.com" <paul.walmsley@sifive.com>,
-	"palmer@dabbelt.com" <palmer@dabbelt.com>, "aou@eecs.berkeley.edu"
-	<aou@eecs.berkeley.edu>, "alex@ghiti.fr" <alex@ghiti.fr>,
-	"agordeev@linux.ibm.com" <agordeev@linux.ibm.com>,
-	"gerald.schaefer@linux.ibm.com" <gerald.schaefer@linux.ibm.com>,
-	"hca@linux.ibm.com" <hca@linux.ibm.com>, "gor@linux.ibm.com"
-	<gor@linux.ibm.com>, "borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>,
-	"svens@linux.ibm.com" <svens@linux.ibm.com>, "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>, "luto@kernel.org" <luto@kernel.org>,
-	"peterz@infradead.org" <peterz@infradead.org>, "tglx@linutronix.de"
-	<tglx@linutronix.de>, "mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de"
-	<bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com"
-	<hpa@zytor.com>, "trondmy@kernel.org" <trondmy@kernel.org>, "anna@kernel.org"
-	<anna@kernel.org>, "hubcap@omnibond.com" <hubcap@omnibond.com>,
-	"martin@omnibond.com" <martin@omnibond.com>, "viro@zeniv.linux.org.uk"
-	<viro@zeniv.linux.org.uk>, "brauner@kernel.org" <brauner@kernel.org>,
-	"jack@suse.cz" <jack@suse.cz>, "akpm@linux-foundation.org"
-	<akpm@linux-foundation.org>, "david@redhat.com" <david@redhat.com>,
-	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
-	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "vbabka@suse.cz"
-	<vbabka@suse.cz>, "rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com"
-	<surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>, "ast@kernel.org"
-	<ast@kernel.org>, "daniel@iogearbox.net" <daniel@iogearbox.net>,
-	"andrii@kernel.org" <andrii@kernel.org>, "martin.lau@linux.dev"
-	<martin.lau@linux.dev>, "eddyz87@gmail.com" <eddyz87@gmail.com>,
-	"song@kernel.org" <song@kernel.org>, "yonghong.song@linux.dev"
-	<yonghong.song@linux.dev>, "john.fastabend@gmail.com"
-	<john.fastabend@gmail.com>, "kpsingh@kernel.org" <kpsingh@kernel.org>,
-	"sdf@fomichev.me" <sdf@fomichev.me>, "haoluo@google.com" <haoluo@google.com>,
-	"jolsa@kernel.org" <jolsa@kernel.org>, "jgg@ziepe.ca" <jgg@ziepe.ca>,
-	"jhubbard@nvidia.com" <jhubbard@nvidia.com>, "peterx@redhat.com"
-	<peterx@redhat.com>, "jannh@google.com" <jannh@google.com>,
-	"pfalcato@suse.de" <pfalcato@suse.de>, "axelrasmussen@google.com"
-	<axelrasmussen@google.com>, "yuanchu@google.com" <yuanchu@google.com>,
-	"weixugc@google.com" <weixugc@google.com>, "hannes@cmpxchg.org"
-	<hannes@cmpxchg.org>, "zhengqi.arch@bytedance.com"
-	<zhengqi.arch@bytedance.com>, "shakeel.butt@linux.dev"
-	<shakeel.butt@linux.dev>, "shuah@kernel.org" <shuah@kernel.org>,
-	"seanjc@google.com" <seanjc@google.com>, "linux-fsdevel@vger.kernel.org"
-	<linux-fsdevel@vger.kernel.org>, "linux-doc@vger.kernel.org"
-	<linux-doc@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "kvmarm@lists.linux.dev"
-	<kvmarm@lists.linux.dev>, "loongarch@lists.linux.dev"
-	<loongarch@lists.linux.dev>, "linux-riscv@lists.infradead.org"
-	<linux-riscv@lists.infradead.org>, "linux-s390@vger.kernel.org"
-	<linux-s390@vger.kernel.org>, "linux-nfs@vger.kernel.org"
-	<linux-nfs@vger.kernel.org>, "devel@lists.orangefs.org"
-	<devel@lists.orangefs.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"bpf@vger.kernel.org" <bpf@vger.kernel.org>,
-	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>
-Subject: [PATCH v6 11/11] KVM: selftests: Test guest execution from direct map
- removed gmem
-Thread-Topic: [PATCH v6 11/11] KVM: selftests: Test guest execution from
- direct map removed gmem
-Thread-Index: AQHcI8YabQ9AygaqQUCaf6AaD/P8kg==
-Date: Fri, 12 Sep 2025 09:17:47 +0000
-Message-ID: <20250912091708.17502-12-roypat@amazon.co.uk>
-References: <20250912091708.17502-1-roypat@amazon.co.uk>
-In-Reply-To: <20250912091708.17502-1-roypat@amazon.co.uk>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-originating-ip: [172.19.88.180]
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	imf08.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=oT7QcAey;
+	spf=pass (imf08.hostedemail.com: domain of sumanthk@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sumanthk@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58C7s0fp010489;
+	Fri, 12 Sep 2025 09:19:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=rZc9834EQmnX5OjtQuA7Dp/c6DGjo1
+	MBldcjPqT/2OU=; b=oT7QcAeyDCK579nnNLWUMSZVrW1VsEuASH/MVg9/rpXyvO
+	qx2tdjP0DI+d58PUpp8IUcdgMKdIsu3scsvEWQqpXSyldabSxttqvPuCNi6JvyQU
+	eKuC8ewTHbhVNDwSv+J26pujadusNJFEx9ewhKtws+CBinrWUAMumvxYHGTfNv8r
+	wGPFxPpU9Zy6lx+1iEs65EeIg4GN+IoY+hzhHSETrAo8ql3om5qxClC+0R5cZXlW
+	lUFK5/KKHtP9nmUDrJnTHzg8eWbRrYWdv0ALZnKtkhGraqtCz4UhHEe9vn66LyNl
+	gmHXowVT99A8gtSQQKBkcmWEnDMWR/FkWnu6CqRA==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490ukexmfx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 12 Sep 2025 09:19:59 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58C9FceJ011457;
+	Fri, 12 Sep 2025 09:19:58 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 490y9utf24-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 12 Sep 2025 09:19:58 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 58C9JtNa18284942
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 12 Sep 2025 09:19:55 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id ED3472004B;
+	Fri, 12 Sep 2025 09:19:54 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5581A20043;
+	Fri, 12 Sep 2025 09:19:54 +0000 (GMT)
+Received: from li-2b55cdcc-350b-11b2-a85c-a78bff51fc11.ibm.com (unknown [9.111.76.176])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Fri, 12 Sep 2025 09:19:54 +0000 (GMT)
+Date: Fri, 12 Sep 2025 11:19:52 +0200
+From: Sumanth Korikkar <sumanthk@linux.ibm.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm <linux-mm@kvack.org>,
+        linux-s390@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>
+Subject: Re: [PATCH] resource: Improve child resource handling in
+ release_mem_region_adjustable()
+Message-ID: <aMPluIk8EnOuIWbi@li-2b55cdcc-350b-11b2-a85c-a78bff51fc11.ibm.com>
+References: <20250911140004.2241566-1-sumanthk@linux.ibm.com>
+ <0ab2cb14-ba8e-4436-b03d-9457137f492a@redhat.com>
 MIME-Version: 1.0
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: DCE7F40005
-X-Stat-Signature: xfprgqkdzwhn4rbw75jtjbpxcm8b4r6n
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0ab2cb14-ba8e-4436-b03d-9457137f492a@redhat.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA2MDE5NSBTYWx0ZWRfX8+MoGTPNm00b
+ KOFWKPKV2Xy6RGjoy4rtU6RkByiK7NoS78T8ir18gq0fRHiE730SriDs43zGcf0b4Hjb5xIok0I
+ BWWHNTnZhD4ZiOO+KQTPmY+i19osybJzSjnXpE/Fx+XFj2/sBsz6CL71CXB/GNRQh7X/PRVR0gA
+ AmkvzSmLGJRctE6HKF044iUzNjOzF3AkQ6oNFAzMmYSFmsghNoUtk8D3xhk/hUHm/sCyxzv9QGV
+ MryrgP7l5jM3fk1GMdX/L1ARR4/zvtumI+U7v1eUYLC3pqPp/fzUxpEKt9P1+3WUjEXo2ZGbGns
+ cFZJG+/JGGc4BlQdJFES5+c2xq1ryJtdmCUCrf3icv8QG8DJKQoQFT0W4Z3WihToReKBIAY8505
+ lRWnYkx6
+X-Proofpoint-ORIG-GUID: YvJGDlMvwKn3eiGsY0_1sV8saR02XCv-
+X-Proofpoint-GUID: YvJGDlMvwKn3eiGsY0_1sV8saR02XCv-
+X-Authority-Analysis: v=2.4 cv=StCQ6OO0 c=1 sm=1 tr=0 ts=68c3e5bf cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=kj9zAlcOel0A:10 a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=2Bmdxn4tqa3G8kVuJ3QA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-12_03,2025-09-11_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 malwarescore=0 bulkscore=0 clxscore=1015 adultscore=0
+ suspectscore=0 priorityscore=1501 impostorscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509060195
+X-Rspamd-Queue-Id: 0CBB7160007
+X-Stat-Signature: ej36wmnsetifd8aoqokcroj4qmpynd7r
 X-Rspam-User: 
-X-HE-Tag: 1757668689-531344
-X-HE-Meta: U2FsdGVkX19Q56KhSXlDFU3CurFFzfrzlJHV0bkucamTkdvhZm5jAktu1Zi2UemWwYE1hP8wkRHXATmug1j6/rvFSiCI8GsIiwykkpBY737hLl9+aygy5s+fODDAJKreXmtZkxsnWp0jUws5ub0wBcwHek/qgvggTeMCTazOk2c7RMceIKlU+Kw4bC4W5+8k5rbA03lxowzFwsFlf3GybMQ+B1XZqSsibYEmrw6HxeZHYGmuftLsyVNqjerRxHgn+o7PLcAAYRq96RfKaC/fsMP6/ObOU//4lUkP0ZGDxyU8DRDBRryW0CSVpqJIw6xSERYwg+/qNMvUjjRCWb4vdCJTIo82xSAE11K1lRJbOp81Zhzaq3LI1dzInC6OuaxpYni/Y52dYibH5axegtDq+6zDhb8WGmgcKDQ/hcdAkKmvy9rKMY43KrhSA/K8Q/qP1MM3iWpRogsld/K0jpec1EVw1WMeBGoYr3SqPGyUnLPnzU8ZSTtL6865btc8+hamTy855PzRF83kyIhiHY1visdm80HML5ODcUWzAna0P2chB7qOqDQwfEiy6S2oUgtK8Mw6jcW/YEA+XAUlLK1Rmbj/2HEBZ4lAn0kfxo5v6A0WldM2khIc1axUH93K3cIZkMSXOjQHGn8o+z0Bym2+TEPywD295QUS2piOWSAzKGDQpAzBL87QsKGVhy4n7dAA87hWq4/3B8NHuio+RLNiZ/gtk9SFXkgn87mhEuVWdBf9y8f/sU5s7RltUPAteKo9veVxBPkHwiXB3tsEIE9ynuQSzAZM3A5fzv7uDO0wmdofaxPNU8KRePOte2m/sOBAxnNTcGbHTDy9xdpAwCiSZjjLI08UnSx8mYvE3+JUxgzwwd2vrOCgQ2NMnBgUXCks8/IyE1n5puWuHaPcGQDgBhqUXzjPQAySRRUud+9GWiNKRPaCZn45l+cKujMNC5dQoTgdImGMjCE3v5sajh6
- KHdFSCLS
- v3bH8INPkF1vbWPVy3H28X0dbx5eJ6AhWdWZxh6kFxIym5dKTSQQARKwoT6avSuuq8I2bRTsndr4ZTP8dvXxHQv1mvIE/JPe2+RLrj8y8aYtGyt/ycNcxRks0lyXQUMujAI+H0nBRO+RezK4EPSi6CdCK9mvjBmDiATZ7nbDahx3zE9ov0xT4EaLcp6/sm3qXOtCizARc2VxCrkYyLAcYeCZB7KevO4PvxfLBlDC+vg1IkpK2eoVBmaoRRD/DFABhgWqSYCOB/2ArVyo1lHL48RPAdSQabJA0rYe/+PdM35Gu2rupu8fBSfALkGGn/YU0Vsh42LyzSt/nzJdvS6yoWbIuSVacnBvml+yeu65wWhDpMnT2UoPDoYz5/SM93OJNeFzLbhIB86MdRkZv7InnQ+Kdx9msCnQ54n2IAVDWUkvkGWVfjrmDn00JzY6ThiKaG5yL45B3ur1oSA88rCK76k7LNxvJQS3NT5mtL0zUUNYaS+0Iz2ScicdacFawxTjIEXqb+NfwqiPEA1u+XvOILtVolZ5Ld1CLDQ7yZof12AzsvJkoLjIY+Km0zAiiKDmYQOi5EE6gbLSmHhfoGI95eVMYrgFwnAtLpGuXlbvSr6U53I0P+HtpmL7HcrASkiijX3LJKV9EtKMNHceVkU7nxXiNYIsRh3Tsbpxbw1iTEGmxXSx8qt97YVZ1SXc0AU514tgy8wa0pXv9CDq+h7W3204vIAQcA/lg3cWkv/bl4DsVhXRiNlT3Qj3blnmEefiVodvcQ6126rCx2EU0GD00jZ6Jdcs78GGBOgIQrhl0/5ac0gTFbwmXv5P1nw==
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1757668801-730891
+X-HE-Meta: U2FsdGVkX18yJa4yIXuoJ2rK/ll8XjcoaKS+ilkl+SE7qSu3o4EL4kFeSJqdDLgGIU4XGIgmizV8JFIa1VjBNuICIEmFb2kXyPHl4Lfs6ElGB/iN/N8LLl9TLBUV7201BNW5yiLva7PqGFUXiB7zPOovp085tYFpZXauzw9Cy+K9EdgEberdqwHUnYWHtFgdL7uDFtGvJFMKmBW+ujY7SVv0Isd8xk4mtIlPGPdWN4eoZpVQoqn/cgll830jJFGgSIfq/wbnmE/kpn3eRGiOH1tlIeEJEp8V8f2feaNODLmaZyI8wDjmVLx/RAujYG1XjVZ4VKY4w7cpLOfBNo1dLjpsrTlx6vBO8YAh2fzOSbk/FY+IJOlm/rQdHH5KsxJSc8Npt0Xq2f0oKu0zPcO7yZc/lNzfr0+VsGgRTiYp9R0dWy6nedksq63chqNIjsLRTxbgxIDoQYOgoVbF9B8u1s6L4j7VEywabm+f2QMG7/852p6KJbv8kkwXvLnxahuIKaG5GVvxrDle6yzPf3KL27yP8eVN3uKgRTvWCX2b+Vrizgdyn1F18pKMtp0Q66Uc3mLMlSUeyX+IuvbZscJdUWz/P5BM0CSKzcojdIZzpNpL/l2bnJz7NgAdAnyL169UrKLwwx7WkXay7sUXCCfmbnydugvDxLUgBSdo9yZc9TfHzhqXC0Vt3YvDuO7mzSe+oNmYLZlt2dSNb7JyGQZ5DCmCK8AjLf9B4OWM6CVaSwuapr7ySnza+R90cQMyXzsVQcR3QbOs9rpBiP24nDS+z2UXXqoYRsAcrkpkqJVD90OpFPgqkRIq4Nm5lYmyw+jULcC8Nc6hTkMBKbuM/tGu6XT27xP0OIanUkkFTWXVKH8EB9qRHfluLuyIaUS5cufbaeBlr6XHa3gleIRqDBJwlbkovVtn4F19DVBpNOyo7dABdoWHP1oWfPGllrRb/99hVZjd2WuWd82ZOkE7jlt
+ hAw2y9I+
+ EperO41ObzB6YD/2g/ey+3M5rrHVQmZAQYTR6iTO8FfZrTEnjIZTMS5+fds2Blaq0kxbn
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -180,94 +141,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a selftest that loads itself into guest_memfd (via=0A=
-GUEST_MEMFD_FLAG_MMAP) and triggers an MMIO exit when executed. This=0A=
-exercises x86 MMIO emulation code inside KVM for guest_memfd-backed=0A=
-memslots where the guest_memfd folios are direct map removed.=0A=
-Particularly, it validates that x86 MMIO emulation code (guest page=0A=
-table walks + instruction fetch) correctly accesses gmem through the VMA=0A=
-that's been reflected into the memslot's userspace_addr field (instead=0A=
-of trying to do direct map accesses).=0A=
-=0A=
-Signed-off-by: Patrick Roy <roypat@amazon.co.uk>=0A=
----=0A=
- .../selftests/kvm/set_memory_region_test.c    | 50 +++++++++++++++++--=0A=
- 1 file changed, 46 insertions(+), 4 deletions(-)=0A=
-=0A=
-diff --git a/tools/testing/selftests/kvm/set_memory_region_test.c b/tools/t=
-esting/selftests/kvm/set_memory_region_test.c=0A=
-index ce3ac0fd6dfb..cb3bc642d376 100644=0A=
---- a/tools/testing/selftests/kvm/set_memory_region_test.c=0A=
-+++ b/tools/testing/selftests/kvm/set_memory_region_test.c=0A=
-@@ -603,6 +603,41 @@ static void test_mmio_during_vectoring(void)=0A=
- =0A=
- 	kvm_vm_free(vm);=0A=
- }=0A=
-+=0A=
-+static void guest_code_trigger_mmio(void)=0A=
-+{=0A=
-+	/*=0A=
-+	 * Read some GPA that is not backed by a memslot. KVM consider this=0A=
-+	 * as MMIO and tell userspace to emulate the read.=0A=
-+	 */=0A=
-+	READ_ONCE(*((uint64_t *)MEM_REGION_GPA));=0A=
-+=0A=
-+	GUEST_DONE();=0A=
-+}=0A=
-+=0A=
-+static void test_guest_memfd_mmio(void)=0A=
-+{=0A=
-+	struct kvm_vm *vm;=0A=
-+	struct kvm_vcpu *vcpu;=0A=
-+	struct vm_shape shape =3D {=0A=
-+		.mode =3D VM_MODE_DEFAULT,=0A=
-+		.src_type =3D VM_MEM_SRC_GUEST_MEMFD_NO_DIRECT_MAP,=0A=
-+	};=0A=
-+	pthread_t vcpu_thread;=0A=
-+=0A=
-+	pr_info("Testing MMIO emulation for instructions in gmem\n");=0A=
-+=0A=
-+	vm =3D __vm_create_shape_with_one_vcpu(shape, &vcpu, 0, guest_code_trigge=
-r_mmio);=0A=
-+=0A=
-+	virt_map(vm, MEM_REGION_GPA, MEM_REGION_GPA, 1);=0A=
-+=0A=
-+	pthread_create(&vcpu_thread, NULL, vcpu_worker, vcpu);=0A=
-+=0A=
-+	/* If the MMIO read was successfully emulated, the vcpu thread will exit =
-*/=0A=
-+	pthread_join(vcpu_thread, NULL);=0A=
-+=0A=
-+	kvm_vm_free(vm);=0A=
-+}=0A=
- #endif=0A=
- =0A=
- int main(int argc, char *argv[])=0A=
-@@ -626,10 +661,17 @@ int main(int argc, char *argv[])=0A=
- 	test_add_max_memory_regions();=0A=
- =0A=
- #ifdef __x86_64__=0A=
--	if (kvm_has_cap(KVM_CAP_GUEST_MEMFD) &&=0A=
--	    (kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SW_PROTECTED_VM))) {=
-=0A=
--		test_add_private_memory_region();=0A=
--		test_add_overlapping_private_memory_regions();=0A=
-+	if (kvm_has_cap(KVM_CAP_GUEST_MEMFD)) {=0A=
-+		if (kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SW_PROTECTED_VM)) {=0A=
-+			test_add_private_memory_region();=0A=
-+			test_add_overlapping_private_memory_regions();=0A=
-+		}=0A=
-+=0A=
-+		if (kvm_has_cap(KVM_CAP_GUEST_MEMFD_MMAP) &&=0A=
-+			kvm_has_cap(KVM_CAP_GUEST_MEMFD_NO_DIRECT_MAP))=0A=
-+			test_guest_memfd_mmio();=0A=
-+		else=0A=
-+			pr_info("Skipping tests requiring KVM_CAP_GUEST_MEMFD_MMAP | KVM_CAP_GU=
-EST_MEMFD_NO_DIRECT_MAP");=0A=
- 	} else {=0A=
- 		pr_info("Skipping tests for KVM_MEM_GUEST_MEMFD memory regions\n");=0A=
- 	}=0A=
--- =0A=
-2.50.1=0A=
-=0A=
+> > lsmem
+> > RANGE                                  SIZE   STATE REMOVABLE  BLOCK
+> > 0x0000000000000000-0x000000014fffffff  5.3G  online       yes   0-41
+> > 0x0000000150000000-0x0000000157ffffff  128M offline               42
+> > 0x0000000158000000-0x00000002ffffffff  6.6G  online       yes  43-95
+> > 
+> 
+> First of all
+> 
+> 1) How are you triggering this :)
+> 
+> 2) Why do you say "and removing the range" when it's still listed in lsmem
+> output.
+> 
+> lsmem will only list present memory block devices. So if it's still listed
+> there, nothing was removed. Or is that prior to actually removing it.
+> 
+> 
+> Is this some powerpc dlpar use case?
+
+Hi David,
+
+I am working on the item related to the last discussion -  dynamic
+runtime (de)configuration of memory on s390:
+https://lore.kernel.org/all/aCx-SJdHd-3Z12af@li-2b55cdcc-350b-11b2-a85c-a78bff51fc11.ibm.com/
+
+I came across the problem when I tried to offline and remove the memory
+via /sys/firmware/memory interface.
+
+I have also modified lsmem (not yet upstream) to list deconfigured
+memory, which currently appears as offline. An additional "configured"
+column is also introduced to show the configuration state, but it is not
+displayed here yet (without --output-all).
+
+> > 0x0000000150000000-0x0000000157ffffff  128M offline               42
+
+True, this will not be shown with the master lsmem, since the sysfs
+entry is removed after deconfiguration.
+
+> Do we need a Fixes: and CC stable?
+
+It will reference commit 825f787bb496 ("resource: add
+release_mem_region_adjustable()"). Since the commit already states
+"enhance this logic when necessary," I did not add a Fixes tag.
+
+> > Signed-off-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
+> > ---
+> >   kernel/resource.c | 44 +++++++++++++++++++++++++++++++++++++++-----
+> >   1 file changed, 39 insertions(+), 5 deletions(-)
+> > 
+> > diff --git a/kernel/resource.c b/kernel/resource.c
+> > index f9bb5481501a..c329b8a4aa2f 100644
+> > --- a/kernel/resource.c
+> > +++ b/kernel/resource.c
+> > @@ -1388,6 +1388,41 @@ void __release_region(struct resource *parent, resource_size_t start,
+> >   EXPORT_SYMBOL(__release_region);
+> >   #ifdef CONFIG_MEMORY_HOTREMOVE
+> > +static void append_child_to_parent(struct resource *new_parent, struct resource *new_child)
+> > +{
+> > +	struct resource *child;
+> > +
+> > +	child = new_parent->child;
+> > +	if (child) {
+> > +		while (child->sibling)
+> > +			child = child->sibling;
+> > +		child->sibling = new_child;
+> 
+> Shouldn't we take care of the address ordering here? I guess this works
+> because we process them in left-to-right (lowest-to-highest) address.
+
+__request_resource() adds the child resources in the increasing order.
+With that, we dont need to check the ordering again here.  True, here we
+process the child resources from lowest to highest address.
+
+> > +	} else {
+> > +		new_parent->child = new_child;
+> > +	}
+> > +	new_child->parent = new_parent;
+> > +	new_child->sibling = NULL;
+> > +}
+> > +
+> > +static void move_children_to_parent(struct resource *old_parent,
+> > +				    struct resource *new_parent,
+> > +				    resource_size_t split_addr)
+> 
+> I'd call this "reparent_child_resources". But actually the function is
+> weird. Because you only reparents some resources from old to now.
+> 
+> Two questions:
+> 
+> a) Is split_addr really required. Couldn't we derive that from "old_parent"
+
+old_parent->end points to old end range before the split, so I think it
+doesnt tell where the split boundary is, until __adjust_resource() is
+called. Hence, split_addr was added.
+
+> b) Could we somehow make it clearer (variable names etc) that we are only
+> reparenting from "left" to "right" (maybe we can find better names).
+> 
+> Something like
+> 
+> /*
+>  * Reparent all child resources that no longer belong to "low" after
+>  * a split to "high". Note that "high" does not have any children,
+>  * because "low" is the adjusted original resource and "high" is a new
+>  * resource.
+>  */
+> static void reparent_children_after_split(struct resource *low,
+> 		struct resource *high)
+
+Nice. I will use this convention with split_addr.
+
+> >    *
+> >    * Note:
+> >    * - Additional release conditions, such as overlapping region, can be
+> >    *   supported after they are confirmed as valid cases.
+> > - * - When a busy memory resource gets split into two entries, the code
+> > - *   assumes that all children remain in the lower address entry for
+> > - *   simplicity.  Enhance this logic when necessary.
+> > + * - When a busy memory resource gets split into two entries, its children is
+> 
+> s/is/are/
+
+Will correct it. Thank you
 
