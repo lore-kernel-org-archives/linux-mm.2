@@ -4,117 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 258DACAC582
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 16:49:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FF9BCAC582
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 16:58:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B0406B002A; Fri, 12 Sep 2025 12:49:47 -0400 (EDT)
+	id 600C18E0007; Fri, 12 Sep 2025 12:58:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6615E6B00A4; Fri, 12 Sep 2025 12:49:47 -0400 (EDT)
+	id 5D7148E0002; Fri, 12 Sep 2025 12:58:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 527806B00A5; Fri, 12 Sep 2025 12:49:47 -0400 (EDT)
+	id 513858E0007; Fri, 12 Sep 2025 12:58:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3CF046B002A
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 12:49:47 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id AF96B5BA6F
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 16:49:46 +0000 (UTC)
-X-FDA: 83881184772.27.74BA0EE
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 6F7891C000F
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 16:49:44 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=microchip.com header.s=mchp header.b="z/Bp2ta5";
-	spf=pass (imf20.hostedemail.com: domain of "prvs=3431635e0=Nicolas.Ferre@microchip.com" designates 68.232.153.233 as permitted sender) smtp.mailfrom="prvs=3431635e0=Nicolas.Ferre@microchip.com";
-	dmarc=pass (policy=reject) header.from=microchip.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 415858E0002
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 12:58:19 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E241216089C
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 16:58:18 +0000 (UTC)
+X-FDA: 83881206276.25.BF303B2
+Received: from fhigh-b6-smtp.messagingengine.com (fhigh-b6-smtp.messagingengine.com [202.12.124.157])
+	by imf11.hostedemail.com (Postfix) with ESMTP id F09B440012
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 16:58:16 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b=WXSLXHFz;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="B 3qsl0q";
+	spf=pass (imf11.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.157 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757695784;
+	s=arc-20220608; t=1757696297;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cnmFDlEOsmIEfqMrpAweTNFX9QftyJSBrntOrKfce2w=;
-	b=WvGHpEvEo9FB7H9cIBu7nsUmsmKCM6Jnfnsg1tLcEMBSID8Dv0+KpavX5XSut+ondX8JjT
-	cCkIDNJc6U78YKMHUEEHYTRBVQqh1qeX160sxJp2SPfuf1p83vozie/YR0o4ALGb6dTI46
-	7B/jOaSDaEskNW49hubpSDiG47Sq7NI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757695784; a=rsa-sha256;
-	cv=none;
-	b=1hF6C9cOH06mMKeOd0CkuQX5VAWDrGxpFki21Q/KrWWk0y0wOLJt0AErJ0RrSWSGFfgGp0
-	NRSpyJRhmXQ3yaBmNLowAMxIu5gIntgYrvTcqiZ0gl5DehY/bkwskuOGMVyYzlfmIgChBK
-	ZE15iPD37aWIVH8xgYjljmTgtH/Pi7s=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=upnrRYU6bn+uBt1fGKw3p6hAlWqFSwlxqJgEcP0xUEk=;
+	b=8q48jCHAxfS8ph7AMV0EbOv89aUR7I3+91Wlm7huUbyyem1cPbcuVaCKp1UajRTDI3006o
+	rcqNjfbUS8Yx8viV+CzvCw8QAoLKfjFIyoOrAqioCu7Lcv3V+mE/SvLOqzJf4nRxQGahAr
+	gQtrZ2HLiqdjjN/yTfcHtNfarp3tSjw=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=microchip.com header.s=mchp header.b="z/Bp2ta5";
-	spf=pass (imf20.hostedemail.com: domain of "prvs=3431635e0=Nicolas.Ferre@microchip.com" designates 68.232.153.233 as permitted sender) smtp.mailfrom="prvs=3431635e0=Nicolas.Ferre@microchip.com";
-	dmarc=pass (policy=reject) header.from=microchip.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1757695785; x=1789231785;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=u1apkPsXybe68Jt3zrIWLyQZ7H3ZjR0gWhhluRQrN3k=;
-  b=z/Bp2ta5KHcG5dl1LZVjVrXnqozabOTOwL9uTjgILmb6BWP8owpWrcRC
-   L1IprKG7JnS3keKo7QfCm988c0w4H88eqG14Vun9B0knsuXiQF99BCunb
-   PC3XuWuf2hQCO24cga2D8jYE2X0NLd4mvp8BSGOY4pBOJjIbe0YmtzqwT
-   aI1oLT/cb8Wi46ZfYTh2AZ5JPfQlrwjz4q85+EGL7X+x8E4UOXe6wiKc6
-   5CBi7arvShMj1zcqOdJ1qCMoR8zPgoLwli57u6D0Dr1PIPit/oWLCvRWo
-   w71zcBdkVAW3iWmAfYLlMXxsD3K5glAV4FPjJJmu9olMBX1byNMp7FFNX
-   Q==;
-X-CSE-ConnectionGUID: s3gPgfU6QPiurXqxeBySFg==
-X-CSE-MsgGUID: 0XiE5fKtQqWtnhAnsP3idA==
-X-IronPort-AV: E=Sophos;i="6.18,259,1751266800"; 
-   d="scan'208";a="46433595"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 12 Sep 2025 09:49:42 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Fri, 12 Sep 2025 09:49:38 -0700
-Received: from [10.159.245.205] (10.10.85.11) by chn-vm-ex02.mchp-main.com
- (10.10.85.144) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
- Transport; Fri, 12 Sep 2025 09:49:32 -0700
-Message-ID: <f931da29-5f10-494a-acc0-309bd805d41a@microchip.com>
-Date: Fri, 12 Sep 2025 18:49:31 +0200
+	imf11.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b=WXSLXHFz;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="B 3qsl0q";
+	spf=pass (imf11.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.157 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757696297; a=rsa-sha256;
+	cv=none;
+	b=w5xl8GqPwmxt1UzI2BiJc6gsjLrUgbI2vG3cxN/0qvvwkhc0DPmux9m4e21hPdAFJtf5r0
+	eO4ECbVe3yiGAh+qld7c7hzFWtWLqZrG6oLf8Ssc+rjaLns0q0nfyALueUNlqAda5u54iu
+	uqpxXxAN26r4nX06I4l1Y+gVcOMXaI4=
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 8144F7A0145;
+	Fri, 12 Sep 2025 12:58:15 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Fri, 12 Sep 2025 12:58:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=fm2; t=1757696295; x=1757782695; bh=upnrRYU6bn+uBt1fGKw3p
+	6hAlWqFSwlxqJgEcP0xUEk=; b=WXSLXHFz4Eg996BrG1TuO+hDbfjJsr5zmoaMu
+	4OG24FCJ9ws3ZSuDRzFvBHNPzBwCqmyd6fUX1rkPLyD8jw2uMAxfHqDCg9+7pYXA
+	1iePl57kOXkQUWHHq/VIX92Vakl5iGOsHmuVrZ0JeVQYsPOy4aSKfTuYHZlSpwrA
+	hK/UNdCWxPr3WZwaFgFwkBaCLqOZHp56L0/oHzH53LqFha/yT0IpL5r4xZJrFt2e
+	YiZt3/kVWJF1srsaWHf89AA6pQ/I1Spzzju+bLTyV60SfFIHjJKxrBvIXtFNCkAH
+	2by37mMKosUtefuW02l3H5ZiQdj0SOYLRMJAnMo3TyARbh7FA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:message-id
+	:mime-version:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1757696295; x=
+	1757782695; bh=upnrRYU6bn+uBt1fGKw3p6hAlWqFSwlxqJgEcP0xUEk=; b=B
+	3qsl0q33858qadPEzFXWKzd5k4TXP/gBqZ3s8rEIHdzjP6YegAEsgxiTNWec9RUa
+	PMd85Zr7oXvzKNibN8A5jG1VlRLLagP9wbhRDxoOLjZAsHlm97Blkbj+l3BMgoNE
+	VnUoZvvy0rin6xkHKLhyiZz97B7NyDjSesBWBDga8jpOn0R8h4BHYWL05GDDpORo
+	jSzpDNl/Oam3+DDU9cynoUvHHs9jkC44T9cF89HeOBfRVuOhatCvmd6wJW48s8EY
+	GQ2PvRryCEiMRwm/9OdhuE9cfDzLh+1NlJMEhLJNeO3Wt6wxfRh/L4Ym/PHLAfno
+	m3KZeWpYHnghmOMEIKtWA==
+X-ME-Sender: <xms:JlHEaNiLR-LMVhcfewzkaoYUsYkFo79QWAm1g7hsGxUzjqpfTIh-Gg>
+    <xme:JlHEaN7a9yO4-00uoqEMsCOZ6VHt_0D7BNNgo71j4A1CsI9rYMVbH_mA_ZNtuFM42
+    aK1EDjCvm7ryNQIWPI>
+X-ME-Received: <xmr:JlHEaF61r7mHUYPFQXYPtDUEx0azbEjJLgVQRZQZ2oTcZ22DGkLvCoyLHryLuA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvleehlecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfggtggusehttdfstddttddvnecuhfhrohhmpefmihhrhihlucfuhhhu
+    thhsvghmrghuuceokhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvqeenucggtffrrg
+    htthgvrhhnpeefhfdugfeghfdvfeefvddujeeuueefvdefuddvfeejheevveeigfejteet
+    teeiudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    hkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgdpnhgspghrtghpthhtohepvdegpdhm
+    ohguvgepshhmthhpohhuthdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnug
+    grthhiohhnrdhorhhgpdhrtghpthhtohepuggrvhhiugesrhgvughhrghtrdgtohhmpdhr
+    tghpthhtoheplhhorhgvnhiiohdrshhtohgrkhgvshesohhrrggtlhgvrdgtohhmpdhrtg
+    hpthhtohepiihihiesnhhvihguihgrrdgtohhmpdhrtghpthhtohepsggrohhlihhnrdif
+    rghngheslhhinhhugidrrghlihgsrggsrgdrtghomhdprhgtphhtthhopehlihgrmhdrhh
+    hofihlvghtthesohhrrggtlhgvrdgtohhmpdhrtghpthhtohepnhhprggthhgvsehrvggu
+    hhgrthdrtghomhdprhgtphhtthhopehrhigrnhdrrhhosggvrhhtshesrghrmhdrtghomh
+    dprhgtphhtthhopeguvghvrdhjrghinhesrghrmhdrtghomh
+X-ME-Proxy: <xmx:JlHEaLH_MnLrv7K_tzBlUdSsVroMe6YE7s7287G-Zcfpv6MlO0nmuA>
+    <xmx:JlHEaDz25KXMEbRbN-HWsHgrLN68RP6YZhKZj7nG0ufAmcuNxfJsIg>
+    <xmx:JlHEaL3l966TxlLzY-b_JuezyIin1hBw8MX8fl054bTs7xw56rhJ0Q>
+    <xmx:JlHEaGPO0kAiiQsM5xbntXTe-uBltdCOx8_lNhFeL86bhh9lNbEebA>
+    <xmx:J1HEaP0hCnFIs3xOnKUjvL3hHeaPCEad_K-hwv5brwN7MqostgwHUt6A>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 12 Sep 2025 12:58:13 -0400 (EDT)
+Date: Fri, 12 Sep 2025 17:58:11 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] mm/khugepaged: Do not fail collapse_pte_mapped_thp() on
+ SCAN_PMD_NULL
+Message-ID: <xhan2av3fyl7qpsl4bhjtds2zeegrl57ehtc5grtkua3c3v3nz@vain5s6gpycl>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
-To: Arnd Bergmann <arnd@arndb.de>, <ksummit@lists.linux.dev>
-CC: <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linuxppc-dev@lists.ozlabs.org>, <linux-mips@vger.kernel.org>,
-	<linux-mm@kvack.org>, <imx@lists.linux.dev>, Christophe Leroy
-	<christophe.leroy@csgroup.eu>, Richard Weinberger <richard@nod.at>, "Lucas
- Stach" <l.stach@pengutronix.de>, Linus Walleij <linus.walleij@linaro.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>, Ankur Arora
-	<ankur.a.arora@oracle.com>, David Hildenbrand <david@redhat.com>, "Mike
- Rapoport" <rppt@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Matthew Wilcox <willy@infradead.org>, Andrew Morton
-	<akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>,
-	"Ira Weiny" <ira.weiny@intel.com>, Nishanth Menon <nm@ti.com>,
-	=?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, Alexander Sverdlin
-	<alexander.sverdlin@gmail.com>, "Chester A. Unal"
-	<chester.a.unal@arinc9.com>, Sergio Paracuellos
-	<sergio.paracuellos@gmail.com>, Andreas Larsson <andreas@gaisler.com>, "Mihai
- Sain" <Mihai.Sain@microchip.com>, Alexandre Belloni
-	<alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>
-References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
-From: Nicolas Ferre <nicolas.ferre@microchip.com>
-Content-Language: en-US, fr
-Organization: microchip
-In-Reply-To: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 538zgonfbufoouc4yxpozmtn9gwkfzui
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Stat-Signature: b55dymf7rxgqe7szpo6udsm6tizn6scw
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6F7891C000F
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1757695784-594333
-X-HE-Meta: U2FsdGVkX1/LmK7smKyAXxv5+nDIzwyO1EgMqjF5VXDLS/t+7HLD/2W8GffewHm5fT4o/QTXAPK686fy/lhV6XI1/ry9nXSY915ul4AktHCKJS2xKqzkdmA/gp0YiYEJ5KR8+GORHqnmsmf0FgR1iBHFhdXXZFFAT9mEZyZW8/21/2u8FEBbRrVazLvRjoCExlJFsOXLpc8YKiRdpeGHsSEx1SkCsa0KkmM7af3LRNqNQGkxdvBTMl26AW4uTgYltGieMn+RY0Df8d/nZFNimtRGwklbxDKumSOX54LUp3VC1I7BCaKq//fpRrU2X5ivyaMm9hkSDO/wgI1T6SNAK/oupTxhsRyZ3m7zCg4V44kCQBUA9CAwFBgtFbrTxYGc3ICzQAnHP5ZfJDHD47tPZ9OgcFz3Wuc0pvWhLnPY9IBEgNTVCVWADG0mcKlj969XQDyA7KD+xbkJ4u1pZ8jPHhnP7taeEoD4J2mSmJUX1zaYWmzMbVT57kSNE+0U7w4acvLrA0Y4PNupQyTyYqIJb1uMTlaflDUNjgVDbnYlZTnrPk/Ev23zeNRqwO2mvYvhYOegVR/DA5aMxoSOLrIuPYISk7ofj9B6YpTmpCE4JjzfWTrHGPbsfCFBbaoKO3KXtxWG51vE8vPl7ULEa8eS3bMSKC8MzMejOPI/RcNoBU5/X8yfkGPfZSpzNQwWFTFz1LvWIpoUEhPwnb77xOM5IAGJoclkCkpuqWajeR+ibr32mHA87WhC7pVia6s+GFJ1VuOs1gT+VB92ra0Ck9KJm3UM9KwHOJ5pVXn8R0kZoJur3e5/aFrV/pu4qA6A69cB0WR2vo4gnem80eLOpZ+BrozF93yMbi8aWj6x93h/lDKAs1T5oK7JrH41Ea0P9pLdg8GILQ+PdUKpACBXXgRuQm5MnMLMmjTVedLzrITc4z7ZCMx5UsMBZ8aIHHCi7kk69ftS4u7oQwzp5QRZTv0
- REPxDWsd
- ybh72XCPisDQQFAwFHiKZF6KatAwZjDfBd7qmV/GOauYxe9d4B1yYRyyhj0MbtchCdh43CLgsAQM5C2IHJ1biu738YqnEGNjIa3PTAXShFOHfIhhTX1qhO5Tol8bFrQR43XI+eLrcu2UGM0rnQG9l2FU3Q7Fz/oi20JS/RsZXzp21nIMbcYAeFmgsNUdlUiB5mLZQosXdqZBs56Be3vDrflrdo1gHDsqvzZAquu/lQgsURBN/Tuh/n5TqAnJ3ns22N7wn9oSVKc3pxY9cxVgi4EstTanQZNyXc8F62lkiXrqDOJJc72ACb7Y3vjNHNcbDdOnWh1aPIPguKV4MUhpSYNgfG8iX+9Ij4rlzrns2YcSQMBmUsBE7GpUjzWAwCrxiVYwKIhnA549KawGU67ckBkgnpfpvLce3WIMUL/cryii96YaiUm4f+1NINBGvdK1lnUQVC5JBs7EP8n//RCCrWIfut4Nb5te5KQqBeRMFgB2obudHMtto0Hq8fzXeZnHfZjt5oNP5vaQq7+KwS8Bgx72LbiZigP2YRBBhx9sghbfJs0AYBBanuJUzeIwin9H/m1FJdvuoHjMVtGyN/XNSKdG7/Fp4Wi07ctE17klbTfxKSQohwlNG/L26SwF3CQfVEZvo9aYdtv3N4Qk+HaQ1176erNsWVhz6rPwBdlGBcWJ9+0RyDCkfd6yxxxu3011K0bvDLJhtk52wMxt2pxm1aDVD9jkRRnLliM3e
+X-Rspamd-Queue-Id: F09B440012
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1757696296-672435
+X-HE-Meta: U2FsdGVkX1+kxNqIBkmtTtuxGnyIzI45GYsiUV6ry9bMKgCeJ2PrlEuxYjdxtnS3Ew/GlItLqUEz10UxYUWbVBfOSHG+FdJ8UBH1lU4ZQkg6PZmKwKALBY9yIt0+0P74VQeIknZAaRpHZ11eOtQFLyEgNtoyKNAXK2yOqRjLxENX0yFimOeNSmrfoE3vGGNSK5CaX/R55CnLGt8GKc6V8bRQepF3rOoBSaqOiJK/agL945Gyt5gUpx2we26KM3Mq+FxiZkC8lI4OfG11hPGGT8+/vLuaW8tlRA9ddTItqrMHVcUIdASUBPCPhFahh1+S9mVoao428GQoY/19fog2xzc1WZJDkS5BPm6wIc1vYVvkQZxlOQ7FcyQBxOSTYwqx5AnseecnpbuVIfDQskU363nIBUV9wF19kmRu2xQQiEdWbvdy/f4NdXzzmRyOf0d9ZKHCVlNXQpvw7sf5SJX8SSOMj5Ld60LZh+/ZKZk87faVFh8qxzA3xrZQ9vicL0t4dnS3m5Fb0C4rIegb298S28sLNrXzqLGoRj7sQKWvCSTIKmCQTTfLrCir61bVgWqFpOZ4OXB5vYf24xiVzuLPFxtEU6PjklKKFEV0OknkgWT9DnoUN8lbrcfc0psfD0PrDPXCSHtihj8rOPQcDeec3I4uKBaekBl9lueNhnVs6r0t603idgpopO6wsfWvK2mSjq5fgMEznWdkLsWoHcVu2T/kQEdDjCPTot+eEC21O3uqwOXsgsQYUJDUWI08MdnFMSPVQlik4pfZ4XIhisFXhVQ2irAOCCl6MQ8PDhEbRzJBclUhFjCodTxzCwuHtxpM4/N+4LHvzZHeCU+y/b/Vdr3pAxUxEWAayhvhODt348grf7ZLE6DBDWCyo5e2VoYoo74ycjC6H5ICso0KJZ7bN7nsRSum8kiXjxQTPGRtzswo1LjX03kyAbCIhazkFW2Dt8o28+9A0xslK2k0cO6
+ ZQ7i+pS3
+ O0PCLt34+0g2PZSNJlu7qNvRs2/FOnFRobiBylJdUGSO/7nxvKHglIf0ptsksBxMcMcrFnmRy/Ep6hs9QX3QKWrJ5qhj4bmo6qVGuwOSjemTDD5cKXeXm4jS+fFum1Gvfpd+maIO3mPPuje6ZY72+Vnk+iLTIVknfwOXtuji0GNwpKdXjEY1Msnm2+nbNgP6NMFq0Lil5mV0JMGiRSeWexzru0nSRp/gNyybRY4cnF345j9UCtZhivMVFbJ/ULYZ/N7XdHMijrJZRa8y+44gar0SDTwftQcFJ26wqJzDaeMXBOgS3QhmNfep+h2lR7CkpwM0iDtiT/y+rsZFbJpEDBGVJ+KkecGTHsZkv0uxSkSN2N/F4jidvFulG7gsyrIgJQ3u4lSErdrbjnrKx8R65AVR61/DyjthzJx7ExzsTAWcDeSiDqFGaqDPI3rgDvovefXfE8yKEf1y8eM6ZIDn3XO8rxKmJ6a5rtZlWKN5L/ftg5yj6frYHe7vVMrSoDSp8pJbO
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,47 +134,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Arnd,
+From: Kiryl Shutsemau <kas@kernel.org>
 
-On 09/09/2025 at 23:23, Arnd Bergmann wrote:
-> I'm still collecting information about which of the remaining highmem
-> users plan to keep updating their kernels and for what reason.
+MADV_COLLAPSE on a file mapping behaves inconsistently depending on if
+PMD page table is installed or not.
 
-We have 1GB of memory on our latest Cortex-A7 SAMA7D65 evaluation boards 
-[1] (full production announced beg. 2025). The wide range of DDR types 
-supported make some of these types interesting to use at such density.
-Both our Cortex-A7 SoCs don't have IOMMU; core and DMAs can address the 
-full range of the 32 bit address space, so we're quite 
-standard/simplistic in this area. We use CMA with large chunks as our 
-camera or display interfaces address "modern-ish" resolutions (~1080p).
+Consider following example:
 
-We use CONFIG_HIGHMEM and activated it for simplicity, conformance to 
-usual user-space workloads and planned to add it to our sama7_defconfig 
-[2]. I understand that we might reconsider this "by default" choice and 
-move to one of the solutions you highlighted in your message, lwn.net 
-article or recent talk at ELC-E.
+	p = mmap(NULL, 2UL << 20, PROT_READ | PROT_WRITE,
+		 MAP_SHARED, fd, 0);
+	err = madvise(p, 2UL << 20, MADV_COLLAPSE);
 
-Of course we plan to maintain these boards and keep updating our kernel 
-"offer" once a year for those associated SoCs (with maintaining 
-upstream, as usual). As you said, being ARMv7, we're quite confident for 
-now.
+fd is a populated tmpfs file.
 
-As you mentioned, we've recently released one ARMv5te arm926ejs-based 
-soc: the SAM9x75 family. But we don't have the intention to use too big 
-memory sizes on them, even if they do address large screens, with LVDS 
-and MIPI or modern camera interfaces...
+The result depends on the address that the kernel returns on mmap().
+If it is located in an existing PMD table, the madvise() will succeed.
+However, if the table does not exist, it will fail with -EINVAL.
 
-I don't have too much info about our customer's use cases as they are 
-very, very diverse, but don't hesitate to reach out to me if you have 
-questions about a particular combination of use.
-Thanks for your regular update on these topics.
+This occurs because find_pmd_or_thp_or_none() returns SCAN_PMD_NULL when
+a page table is missing, which causes collapse_pte_mapped_thp() to fail.
 
-Best regards,
-   Nicolas
+SCAN_PMD_NULL and SCAN_PMD_NONE should be treated the same in
+collapse_pte_mapped_thp(): install the PMD leaf entry and allocate page
+tables as needed.
 
-[1]: for instance: 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/arm/boot/dts/microchip/at91-sama7d65_curiosity.dts#n29
+Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+---
+ mm/khugepaged.c | 25 ++++++++++++++++++++++++-
+ 1 file changed, 24 insertions(+), 1 deletion(-)
 
-[2]: 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/arm/configs/sama7_defconfig
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index b486c1d19b2d..9e76a4f46df9 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -1488,6 +1488,28 @@ static int set_huge_pmd(struct vm_area_struct *vma, unsigned long addr,
+ 	return SCAN_SUCCEED;
+ }
+ 
++static int install_huge_pmd(struct vm_area_struct *vma, unsigned long haddr,
++			    pmd_t *pmd, struct folio *folio)
++{
++	struct mm_struct *mm = vma->vm_mm;
++	pgd_t *pgd;
++	p4d_t *p4d;
++	pud_t *pud;
++
++	pgd = pgd_offset(mm, haddr);
++	p4d = p4d_alloc(mm, pgd, haddr);
++	if (!p4d)
++		return SCAN_FAIL;
++	pud = pud_alloc(mm, p4d, haddr);
++	if (!pud)
++		return SCAN_FAIL;
++	pmd = pmd_alloc(mm, pud, haddr);
++	if (!pmd)
++		return SCAN_FAIL;
++
++	return set_huge_pmd(vma, haddr, pmd, folio, &folio->page);
++}
++
+ /**
+  * collapse_pte_mapped_thp - Try to collapse a pte-mapped THP for mm at
+  * address haddr.
+@@ -1556,6 +1578,7 @@ int collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
+ 	switch (result) {
+ 	case SCAN_SUCCEED:
+ 		break;
++	case SCAN_PMD_NULL:
+ 	case SCAN_PMD_NONE:
+ 		/*
+ 		 * All pte entries have been removed and pmd cleared.
+@@ -1700,7 +1723,7 @@ int collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
+ maybe_install_pmd:
+ 	/* step 5: install pmd entry */
+ 	result = install_pmd
+-			? set_huge_pmd(vma, haddr, pmd, folio, &folio->page)
++			? install_huge_pmd(vma, haddr, pmd, folio)
+ 			: SCAN_SUCCEED;
+ 	goto drop_folio;
+ abort:
+-- 
+2.50.1
 
