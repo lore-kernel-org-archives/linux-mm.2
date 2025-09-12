@@ -4,173 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66E45CAC582
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 11:36:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22F7ECAC582
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 11:38:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C501F8E0013; Fri, 12 Sep 2025 07:36:11 -0400 (EDT)
+	id 810508E000E; Fri, 12 Sep 2025 07:38:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C27EB8E0005; Fri, 12 Sep 2025 07:36:11 -0400 (EDT)
+	id 7E64B8E0005; Fri, 12 Sep 2025 07:38:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B3D908E0013; Fri, 12 Sep 2025 07:36:11 -0400 (EDT)
+	id 723268E000E; Fri, 12 Sep 2025 07:38:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A368A8E0005
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 07:36:11 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3EA9AC07BB
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 11:36:11 +0000 (UTC)
-X-FDA: 83880394542.15.AA5BB56
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 8A1374000D
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 11:36:08 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XOj2mOFZ;
-	spf=pass (imf01.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 61C618E0005
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 07:38:16 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 081231DF7C2
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 11:38:16 +0000 (UTC)
+X-FDA: 83880399792.21.08799F7
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 1DF4FC000F
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 11:38:13 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=3wJZxwIN;
+	spf=pass (imf28.hostedemail.com: domain of jannh@google.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=jannh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757676968;
+	s=arc-20220608; t=1757677094;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L4WTNdMCGh54uRDM/L4Uxaq4pm+e6gS6JQHYqsqi25s=;
-	b=wttq7EQvmWFm1K+7o4nYw00sXQjIb++HgY3KSDza8XbGIABBKX1cVtffoEeSaZvecvvlUv
-	plEq/3QaIkNg5A+h3mknBzANQn2q+MqEs2DczvSXNZtCofWJkO0Yzjr6vK76S8xz6FCn7k
-	e3YAj/mTY9aCiM76nBT9vO/AJnfgUPk=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XOj2mOFZ;
-	spf=pass (imf01.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757676968; a=rsa-sha256;
+	bh=77+GV1lwUUSzhO8t4LWfjhVWWHizbDTb6ir0sTb+aMQ=;
+	b=EovK+PtCSN2EE14K54yPZHN9PCL8ZUv5AqcMyaYCPAbl7smM3dTzttRIs7FriLn23C+ih2
+	beGTYMu+IXLScgUgw2fLbu6Lhj1vm/lxHfYtyrnYFPSEK3siDqJtrrR8yYwQ5j5Tl6mSPk
+	+SkP2IWu9sgIy5xOQMizFfFRUKp1krA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757677094; a=rsa-sha256;
 	cv=none;
-	b=HJNB3ucP3bFgLx61TwBkGT9Novyn2XhiHp04BitqMLp7A8kZa0kQjQ+x58TV8k6R4/1q7r
-	ZtKaoqH8o0M4fRSi/C/oDkLRvYEKOMrEqjlDTKup0vnjCkUqrNcBVhzLBWwz6fSCGXVv3X
-	Mc+YK0s5nP7926ugQg6VdHcL5ZVR+ZM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757676967;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=L4WTNdMCGh54uRDM/L4Uxaq4pm+e6gS6JQHYqsqi25s=;
-	b=XOj2mOFZ9fzs7SqurF0FUpLkugTTqOXC6JTSoQFXQKKtK2P3cqUH+hv52Zroggs8OUAMF8
-	ztYhs4ieaq5bdY+745oMRqnWwkNZlmEXVIWz2hQzf5OyEjAG8r+/wlgthu/hD6/qLMSqdS
-	ZRCF/W7TqAdtY9be0lSkkE+4B2VSHFY=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-281-6rJqPVBUPTaxjr8xShhaOQ-1; Fri, 12 Sep 2025 07:36:06 -0400
-X-MC-Unique: 6rJqPVBUPTaxjr8xShhaOQ-1
-X-Mimecast-MFC-AGG-ID: 6rJqPVBUPTaxjr8xShhaOQ_1757676965
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-45de27bf706so8772275e9.0
-        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 04:36:06 -0700 (PDT)
+	b=2fdvDiiUO9K09V+FfsH87WaWCm9tBYP0+g69oQsmEzhDX7R4VsQya0v+w2qPuyJroAgh90
+	Q+34l23Ys2kRzMUfjAD8LNG4epP9ibFBm6bS1dzYqFEHxvLbr01PVSzB7I6XriYocQESCt
+	GTv6KH8ANAE1EFvUcYip1cHmnaiuofU=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=3wJZxwIN;
+	spf=pass (imf28.hostedemail.com: domain of jannh@google.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=jannh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-61cfbb21fd1so11288a12.0
+        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 04:38:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1757677092; x=1758281892; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=77+GV1lwUUSzhO8t4LWfjhVWWHizbDTb6ir0sTb+aMQ=;
+        b=3wJZxwIN8hbsgoYoZbgZxBOSCg1Bu/zpXy61Rc35R8p2NpsphmXR4naEVT5ZAYpMJO
+         H0tHyb05foIduobmR2yPj4ZqwC9g22VfY7mnVn2obIv7itKik4GkWoyEMkMC24jIfZQp
+         RVm1nwY72IOgu3nzRJkRzIPMf+43IKXR6rxHT/fvwd3atsqZ8uyoQxbzC+GOJKhFo06G
+         x2z2DGI/8LH32rOgfItb1rSlRzyjTaJ5x0NP/xxHApyCAp6QrnXKqKCcZ/w2iL6ehGll
+         WuZ/f/CSD0Tcq3wWOuIVoKQwMNzqblrTgF6FitbnTEtv3KmXKUoBPyu0Qh8vs/pcQpoh
+         +17Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757676965; x=1758281765;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=L4WTNdMCGh54uRDM/L4Uxaq4pm+e6gS6JQHYqsqi25s=;
-        b=Do54UYDXi69vERZaj0MB3wG05WCSwn/zm6djpKp+pT2q522rhNrciXTrZtAQqekUkn
-         cZfRQqp1P6WApxA5LyFy0WCAsAI6ZgQip6RkrKvuxoF0blwGArcJozYpc/o6TTk9EWgi
-         hi/5cFWnu2wHQEY6BgzTTgmfz39er4iHsry35FybmW7dTBffCfsKDIOBIqjjB+O5Nzxr
-         PsD3AHVuAgSkYYl/33pR+8cdHGi1ZF/yttV76ueFaIs7ch0A3RmfVaJErIquhyJTdvpO
-         GcZFaLAQBl6ATIEbXw684nr0AdFYJ3BDXJy7jHU4lS4lTEDCKp4yk9luWvcqAYW7i2C0
-         DmoQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVkyPkK9mMtZ51ftSmA3Ji8yXp9i4/pwOzbRqXjYT+e1M6h/rYdyEo8u/nHxSCyykAOyDbUEamRsg==@kvack.org
-X-Gm-Message-State: AOJu0YxtOclWqlB9mY7mhuAG6EVXSuojLuxkKEQZfI4iGSfZKPXHLsKi
-	GAKLdFt3XIMLKRF81kMkOZpwo8YsKUdw4w1SFUnOt0lRKwBNZc5MU1twG2masE5CraWKnXCZpzB
-	7QyhUsVoFrrqgVPrG4cCLBz28UUoC86JIUXdcfhSp6kvKc6DZc0EM
-X-Gm-Gg: ASbGnctA3+zMtNb1Fwwa5ks4ME2NZUpW6Hnrd7aX1xPcsqyDKYouhCn8kMP8NBDROB/
-	o3gEt5phMsHD4iwB70yBATEmmYgtW9Ygeg0lCeNB3X6XCMGvJ9b7IGoRIpEFT4sbyPBpUFhReGB
-	0m5M9JCbp3OmD5BfdHefklwf7wNxqwSZjyZKApiwsqIyxHuoGDNGG6sqrbJi3p2/Yyfnrc3QNVS
-	anIt3yEvQ56JQpMm4u8+aVMGkiOSx4CLUtZsZZiaodpNkY5NOEkY033tvF7NxSSYAHDm62BFyL7
-	nlve5GafZHTeMw+Hs2saMBTvKflWLe2ggGvE6d8/K/mFvOPb+gy/peVueji1s8hNhxq60L4k6j/
-	HsorIbf4Hi+nahULpwcCGLi9Th54Iyus/gOqfnJ1e6k/JUQzWSjhS0txZnnbXUmh7fxY=
-X-Received: by 2002:a05:600c:4e4b:b0:45d:cff6:733f with SMTP id 5b1f17b1804b1-45f211d517emr27953585e9.11.1757676965172;
-        Fri, 12 Sep 2025 04:36:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEApCot1i+5m775BUiDD6WRxTCaO0+qykFG5pVRf5Sw41hSYWcT5lrn+50Nw2D8nJepyAo5JA==
-X-Received: by 2002:a05:600c:4e4b:b0:45d:cff6:733f with SMTP id 5b1f17b1804b1-45f211d517emr27953335e9.11.1757676964784;
-        Fri, 12 Sep 2025 04:36:04 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f20:da00:b70a:d502:3b51:1f2d? (p200300d82f20da00b70ad5023b511f2d.dip0.t-ipconnect.de. [2003:d8:2f20:da00:b70a:d502:3b51:1f2d])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e760775842sm6503959f8f.7.2025.09.12.04.36.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 Sep 2025 04:36:04 -0700 (PDT)
-Message-ID: <3f739d3e-f6fc-4a3f-9bbb-151a6dc6c083@redhat.com>
-Date: Fri, 12 Sep 2025 13:36:03 +0200
+        d=1e100.net; s=20230601; t=1757677092; x=1758281892;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=77+GV1lwUUSzhO8t4LWfjhVWWHizbDTb6ir0sTb+aMQ=;
+        b=ZpsqdF/d2ekltBsEuDFxbuS5xTC6/UqeLdrRaDBCGtMQ5/ZV7Q0PAEOrZiVwQ2OrL2
+         kzcyj7t3EJQCPDRWcAaAQDCBLsrSCWx5uPWmobHBWAmiu7cNDXcSZkODkJ8aTCuCs9C2
+         9f0k8mF+uXXx/wvbHw9YMUD8ZQpACQj99MOD6TfCOjiejGSC/2ktNaqjC9kP5yrHRKnh
+         8/uWhwvBpBHBTX24FSAMCzDp11TEMiYdbIDK9wMfQxQmaj0HkRUlQ9UK6qoSAOOWMtqC
+         mFLVRZij6J2mot8XWB6XB3lOq+qr7R+2PgG3XQoQHR8TBrNkA8ws33SK0KGnn9MmL+Md
+         Rp5g==
+X-Forwarded-Encrypted: i=1; AJvYcCUpuNwTRrnisXljYR9rhIIifdke8nxpPFJsRv6G5yteeuDFPr43HYeRSQQkkUCzuBa1zwv/sCmrig==@kvack.org
+X-Gm-Message-State: AOJu0Yx+DRdeQrUpryRc909rsiTd6QcpKxhPpjeBX4BDp8yspz/tPjeA
+	HNcPcV3h+4FIuh36frNmyw3Ijgs0Jq2CHgbAJOoPbkD+T1kNIIdEBY07qI9FJpC7eI5TKrjrsXy
+	bhns6xR7dVAtHJ9sOgHYWWGYmhvJmSwcwZf9zaWX5
+X-Gm-Gg: ASbGncvtBbFz7CKNmigttsM4beDK6JSac9Sc+elB9jkPG9uvoeYtL0UFomkPngixrh1
+	hSj7vCjNvsbUZYQ+JILjcAIlYt7lts0yWb7pa9y7jhpvUFlwevQeMIwDAKsuVWHOH1CKWutFxul
+	RFP8sFHWS1W/kC4PTUAnsuesEQR15kqcnffQczPBgh8oQx+p4qvJufliBe9oezSJe7bBrxLfUDl
+	X0HVseXRqKG65mTvBT+NRqJKGVduftnhrG1VGuT77w=
+X-Google-Smtp-Source: AGHT+IEnq2pTqk8VnKJOw2rKh4XRa5XJiNMjl2A0ZEr+Jp68Gr+iheO6ijwrheOQRTv+B4qb0pOOa3eV/Z1NpcX6INc=
+X-Received: by 2002:a05:6402:915:b0:61e:c5d1:5d4b with SMTP id
+ 4fb4d7f45d1cf-62d2581a41dmr375934a12.2.1757677092230; Fri, 12 Sep 2025
+ 04:38:12 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: transhuge-stress: fix potential memory leak on
- realloc failure
-To: Haofeng Li <920484857@qq.com>, Andrew Morton <akpm@linux-foundation.org>
-Cc: 13266079573@163.com, lihaofeng@kylinos.cn, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- lorenzo.stoakes@oracle.com, ziy@nvidia.com
-References: <b6f38984-5f89-4a9d-a905-ddcdbd7510a3@redhat.com>
- <tencent_43768D3DB24034B62C249781C1DE7359C807@qq.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzSREYXZpZCBIaWxk
- ZW5icmFuZCA8ZGF2aWRAcmVkaGF0LmNvbT7CwZoEEwEIAEQCGwMCF4ACGQEFCwkIBwICIgIG
- FQoJCAsCBBYCAwECHgcWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaJzangUJJlgIpAAKCRBN
- 3hD3AP+DWhAxD/9wcL0A+2rtaAmutaKTfxhTP0b4AAp1r/eLxjrbfbCCmh4pqzBhmSX/4z11
- opn2KqcOsueRF1t2ENLOWzQu3Roiny2HOU7DajqB4dm1BVMaXQya5ae2ghzlJN9SIoopTWlR
- 0Af3hPj5E2PYvQhlcqeoehKlBo9rROJv/rjmr2x0yOM8qeTroH/ZzNlCtJ56AsE6Tvl+r7cW
- 3x7/Jq5WvWeudKrhFh7/yQ7eRvHCjd9bBrZTlgAfiHmX9AnCCPRPpNGNedV9Yty2Jnxhfmbv
- Pw37LA/jef8zlCDyUh2KCU1xVEOWqg15o1RtTyGV1nXV2O/mfuQJud5vIgzBvHhypc3p6VZJ
- lEf8YmT+Ol5P7SfCs5/uGdWUYQEMqOlg6w9R4Pe8d+mk8KGvfE9/zTwGg0nRgKqlQXrWRERv
- cuEwQbridlPAoQHrFWtwpgYMXx2TaZ3sihcIPo9uU5eBs0rf4mOERY75SK+Ekayv2ucTfjxr
- Kf014py2aoRJHuvy85ee/zIyLmve5hngZTTe3Wg3TInT9UTFzTPhItam6dZ1xqdTGHZYGU0O
- otRHcwLGt470grdiob6PfVTXoHlBvkWRadMhSuG4RORCDpq89vu5QralFNIf3EysNohoFy2A
- LYg2/D53xbU/aa4DDzBb5b1Rkg/udO1gZocVQWrDh6I2K3+cCs7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <tencent_43768D3DB24034B62C249781C1DE7359C807@qq.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 1bV5IxS07F92IyQCvYotZ1FuATyaIFREhVyhEfmUv9Y_1757676965
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <CAGsJ_4x=YsQR=nNcHA-q=0vg0b7ok=81C_qQqKmoJ+BZ+HVduQ@mail.gmail.com>
+ <a67129f8-9ff6-4109-bbbf-4209f6dfa3be@lucifer.local> <CAG48ez0GVWV024kPe6kSV8c0LO7coACYXf9-85iqw+T+paUi3Q@mail.gmail.com>
+ <6558e0c9-fb6a-4f2f-b9e7-0647ff64ba66@lucifer.local>
+In-Reply-To: <6558e0c9-fb6a-4f2f-b9e7-0647ff64ba66@lucifer.local>
+From: Jann Horn <jannh@google.com>
+Date: Fri, 12 Sep 2025 13:37:35 +0200
+X-Gm-Features: AS18NWAzZsjGQliqyiTl9pQxCmir8M4tqguMI3tkEmFPd9rMStG7X3Y6CyP-0mE
+Message-ID: <CAG48ez1FXUMsvKEcJCFcUBUP0BM2=LTWzH=iKiHhL4PurN6q8g@mail.gmail.com>
+Subject: Re: [DISCUSSION] anon_vma root lock contention and per anon_vma lock
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Barry Song <21cnbao@gmail.com>, Nicolas Geoffray <ngeoffray@google.com>, 
+	Lokesh Gidra <lokeshgidra@google.com>, David Hildenbrand <david@redhat.com>, 
+	Harry Yoo <harry.yoo@oracle.com>, Suren Baghdasaryan <surenb@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Rik van Riel <riel@surriel.com>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Linux-MM <linux-mm@kvack.org>, 
+	Kalesh Singh <kaleshsingh@google.com>, SeongJae Park <sj@kernel.org>, 
+	Barry Song <v-songbaohua@oppo.com>, Peter Xu <peterx@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 1DF4FC000F
+X-Stat-Signature: rmybd5iw19rwf3c8amhgjpyb3feiwjkc
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 8A1374000D
-X-Stat-Signature: zojysu4ic59zu3ea3ig1op673muthg9p
-X-HE-Tag: 1757676968-35699
-X-HE-Meta: U2FsdGVkX18+qCVPtgAZ68tXMSJqESyyRV543sXl6v+yKdnq3HgAlmn8pkcw7uDCyqgfDqku8/LphApvd5K5mr3xU+lSMkIL0YjluysXyz9a3AfN7OYk768Dy3VhMhagt3IJIZnL2zyoP+UT4a9kydO3NwVMrVS5pOHbaKTllrSQs92yt5JcZav2BCNqTbZY/0qY48IbhyobnfWXihnjtvUDsVKdUwUJVMQQ7NB7sayqPrcX9TMEpfgrlsfWN9hv2lOff37Uh5hOwH2OU6BvuOMVsFDd2Sh24nGk/7nukaEQnVqMChDL4qdU0C22UbYIYtddG8Qsamo51mnl2l/M2Vw5MpnzqRy1zrujByby4xrLhIhpb5CVDab5E1F0eCo3t8Ha8OKJygM2EFGNgauH159+cZ2/T4IEnCyOS2J5COk3cVjDsiRQK5ZDqZ4OnPpt779xPda6+bSDzm+R3tamhfa2yF6J4Lbyi5ClaNErU+UcIz12lg+VX78INQUYU6Jr2m5lB1TZnAm5j1MfMCj2qZEzidyAltnSg0GGNsyakcLFqzvc8WpfU0KZgffDlGpZWNtMPVoIUYgEx6VvWMMBm9L/2lFgdAU6W4pR5cWKyFKXeCwdfPttniYxDZ6PB+xez9Ixe4ZnhX7bhcFiq52XJcY0y5dpD9jp6lxXO2Yo1y7QNeAYPIh3E0pdNjKNHKmShN0vKfy+fOkVIDEnBnRh60ZyxAH5Jorqd0P40iklkwMtobGANUWQCAATmgay3Y3lWF8mHxSPS/8a1B8F/88f1tvJYafJLrpByQX/uwwU8Md+7REZsEsaaU4Evus7/jgHl/22Z2bhK8H1fakQx5a1N1hDjEQxCs6bndQLfCQ0QhnvdOdHHDgddySDChJ9mtGRiN2tWZSQfR1PynAD+3P3RJ5+hnrK1KEOInBs1Q+KwkDvdQzv+hlqUQBq0j8RNq2KFnfYSG51O2UPlSJIyoy
- hsr115SC
- 50x3bpBD6RGJE8oLJTLyziSQkMHTWVvBMrsbPSsvNNarWuWqB1iUamea05EFUiTZkQWDjAk6e/s8of6Om5+K2Qp79a5M6Rmrco1MgAybF18Uxeq/jRPjGpphzeB5laFwYgV2SWHIZWVwK3aNQKh02FZ052u6kgOHFVSmjJuvd9jyBmX0LQYB2FCLwrFfy0mNAoCdrOx5FE1QZg7RBWkgCdGpC6ccU4AF8T+4RG8diCUpAlybPWSSViUHhXIKvKeibPxb5TdiqiJ1jqmygmcpFbxdiCqmr3h5+IcK5PcYBPpcmdq5fK0TEPmidTf8RC/lRkZ2pJXpT3lw2OUoZBu7UMs6n+V6I7YwY9qrRgJ0kJceCL6JpeRq2H/woWthmTQbpnrttjGFRYI33hm1VCY1QVrUhR3Y5BXvYD3EF
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1757677093-201373
+X-HE-Meta: U2FsdGVkX1832+IyFm5DZRFaErdN2uejmrPDtYFKbNAevTsQfMqb63hn8m+JUcB3v9lRNbQFka1ScOGli7mbK8S5cFFakuv3avlHYyo3A4IDevkKAq3OXd2dAZINnxlIisdi342VDYImLH1O8+R1fP2Pp5SUeESudUQgBOscmK3mO4/SMo71WWRO6j1W2Q1GTZeautxCpVxUhir1TBSjyy2onREGRW1fBdmzLiQXCrhoBO8pQN/GvRa7cTRameO4iXMgql5Yf8MOUzeCanOwKhDBVgZlcmqLZbTfOyK4A3k6z0yxewerPT4hkNpt9/gBY6uttmWLIQUze6whREnU6wWjsCV5s5CJfDiWjBiECGSItcAcD1Qb4rEd/E4bEQUQi67u68USa/Hr/pwR0P7hFnvQ7ioJ5TAMSaXYWBQKKIAOh66JUu3V1U96aEX3CHnsyoL2/rczRphLQRHkd50uZry3CLiqbtWEizhda8/sheSsvSSdegcnMunw+ApAE5xj4/4yEvsr5rr7OA96WSKJMTF4b6Edzx9E5pQnBCehMBrR9X7Sa6SRg2zr/xMyjluR3o4u+yuzIRpas6tGPbGy2jglnOUI049EYVs8eo0Kilj+D0xhg+FMcGrmOOuEE/YTEs7Ep+blUnTmDXia774OoCBqYhwHmly+NiA1huUzaKymjO3LmBAFBRaDWkEmZFw1656mi3meWiJnGkGPEYToiVdhGEnPyty5LzYwGKk5ZhjxBPQO/F/W0QT+osAuRC8YlhDVtD/XUixbZ4HSRSVD0RvohyQLoMkk/9q7ywYi8vWL6bhwtOm5esgQ1AMthqYawivbLamTEPSn3aBLzKWz6qWpgwlXIadXtCNK+FH7O4tpAxN3fnZ3QGqzvAslhpwfMS55j5yDI8uKJsZZlvUit2ryYoMSiza3d1WUb3b65Pp7sHxHaEBBy85XbK52hJUapidzWGMo1XHRV/kLSyA
+ xGh6Du8h
+ Hr/V8AsWtwyN9IzbnkA1PeVivujCcKJhVW/AwltC1aVpcaHnuZmZ/cSM//sC6Qi/w3e29SBxnyXQEuDCV3pacsO6X74IxykLp/apYSXT/hVDZOBiiU4lapOBCM/Vknwvt/G9Ldih7j9wdEW2FNM905OKRB7N9FAd7b97TFF7NNsBjL27lh6NRQdX98pV4A0UHbM+BtVOoZRRm2wWxXQCK3WZ2UPpZYpR9Pj6AOQdGPlu2UBuxyS4+8St6rj+N3+2xrF/fwlIyqSOmGZM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -179,31 +123,122 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12.09.25 12:10, Haofeng Li wrote:
-> From: David Hildenbrand <david@redhat.com>
->> What do you think happens when a process exits? :)
-> 
->> Correct! All memory ever allocated to that process gets freed, avoiding
->> any memory leaks.
-> 
-> Thanks for pointing this out. You are absolutely correct that the operating system will reclaim all allocated memory when a process exits, so there is no persistent memory leak in this specific scenario.
-> 
-> I opted to add explicit memory freeing in the error path primarily as a practice for better long-term maintainability:
-> 
-> It ensures correctness if the code structure changes in the future (e.g., becomes part of a longer-running routine).
-> 
-> It maintains consistency with other error paths in the codebase.
-> 
-> It prevents false positives from static analysis tools (like valgrind).
-> 
-> I'm happy to adjust it if you still think it's preferable to remove the free() in this context.
+On Fri, Sep 12, 2025 at 6:49=E2=80=AFAM Lorenzo Stoakes
+<lorenzo.stoakes@oracle.com> wrote:
+> On Thu, Sep 11, 2025 at 08:22:13PM +0200, Jann Horn wrote:
+> > On Thu, Sep 11, 2025 at 10:29=E2=80=AFAM Lorenzo Stoakes
+> > <lorenzo.stoakes@oracle.com> wrote:
+> > > On Thu, Sep 11, 2025 at 07:17:01PM +1200, Barry Song wrote:
+> > > > Hi All,
+> > > >
+> > > > I=E2=80=99m aware that Lokesh started a discussion on the concurren=
+cy issue
+> > > > between usefaultfd_move and memory reclamation [1]. However, my
+> > > > concern is different, so I=E2=80=99m starting a separate discussion=
+.
+> > > >
+> > > > In the process tree, many processes may share anon_vma->root, even =
+if
+> > > > they don=E2=80=99t share the anon_vma itself. This causes serious l=
+ock contention
+> > > > between memory reclamation (which calls folio_referenced and try_to=
+_unmap)
+> > > > and other processes calling fork(), exit(), mprotect(), etc.
+> > >
+> > > Well, when you say lock contention, I mean - we need to have a lock t=
+hat is held
+> > > over the entire fork tree, as we are cloning references to them.
+> > >
+> > > This is at the anon_vma level - so the folio might be exclusive, but =
+other
+> > > folios there might not be.
+> > >
+> > > Note that I'm working on a radical rework of anon_vma's at the moment=
+ (time
+> > > is not in my favour given other tasks + review workload, but it _is_
+> > > happening).
+> > >
+> > > So I'm interested to gather real world usecase data on how best to
+> > > implement things and this is interesting re: that.
+> > >
+> > > My proposed approach would use something like ranged locks. It's a bi=
+t
+> > > fuzzy right now so definitely interested in putting some meat on that=
+.
+> > >
+> > > >
+> > > > On Android, this issue becomes more severe since many processes are
+> > > > descendants of zygote.
+> > > >
+> > > > Memory reclamation path:
+> > > >   folio_lock_anon_vma_read
+> > > >
+> > > > mprotect path:
+> > > >   mprotect
+> > > >     split_vma
+> > > >       anon_vma_clone
+> > > >
+> > > > fork / copy_process path:
+> > > >   copy_process
+> > > >     dup_mmap
+> > > >       anon_vma_fork
+> > > >
+> > > > exit path:
+> > > >   exit_mmap
+> > > >     free_pgtables
+> > > >       unlink_anon_vmas
+> > > >
+> > > > To be honest, memory reclamation=E2=80=94especially folio_reference=
+d()=E2=80=94is a
+> > > > problem. It is called very frequently and can block other important
+> > > > user threads waiting for the anon_vma root lock, causing UI lag.
+> > > >
+> > > > I have a rough idea: since the vast majority of anon folios are act=
+ually
+> > > > exclusive (I observed almost 98% of Android anon folios fall into t=
+his
+> > > > category), they don=E2=80=99t need to iterate the anon_vma tree. Th=
+ey belong to
+> > > > a single process, and even for rmap, it is per-process.
+> > > >
+> > > > I propose introducing a per-anon_vma lock. For exclusive folios who=
+se
+> > > > anon_vma is not shared, we could use this per-anon_vma lock.
+> > >
+> > > I'm not sure how adding _more_ locks is going to reduce contention :)=
+ and
+> > > the anon_vma's are all linked to their parents etc. etc. so it's simp=
+ly not
+> > > ok to hold one lock and not the others when making changes.
+> >
+> > folio_referenced() only wants to look at mappings of a single folio,
+> > right? And it only uses the anon_vma of that folio? So as long as we
+> > can guarantee that the folio can't concurrently change which anon_vma
+> > it is associated with, folio_referenced() really only cares about the
+> > specific anon_vma that the folio is associated with, and the anon_vmas
+> > of other folios in the VMAs we traverse are irrelevant?
+>
+> Right yeah, true. But the AVC's link you to 'related' VMA's which are
+> across the hierarchy.
+>
+> I think really the refined way of saying this is - yes, you could, but
+> you're then putting the weight on the VMA side, and the VMA side is
+> being invoked _all the time_.
 
-No code changes are required. This patch adds more complexity without 
-any benefit.
+Ah, fair.
 
--- 
-Cheers
+I guess one approach would be to do something hazard-pointer-ish? Like
+a semaphore-like thing in the root anon_vma that contains a normal
+reader count, a hazard-pointer reader count (limited to some small
+number like 2 or 4), and a writer count (up to 1), combined with a
+limited number of hazard pointer slots; where a writer can ignore the
+hazard-pointer reader count if none of the hazard pointers match any
+anon_vma it wants to look at (but readers still always have to wait
+for writers). The write-locking fastpath would just be a normal
+"atomically add N if zero" just like with normal locking, and only the
+case where there actually are hazard-pointer readers would make the
+locking more expensive...
 
-David / dhildenb
-
+But inventing more artisanal locking schemes is probably not a great idea..=
+.
 
