@@ -4,115 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49B04CA101F
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 05:09:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F67ECA101F
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 05:10:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A00B38E0006; Fri, 12 Sep 2025 01:09:19 -0400 (EDT)
+	id 967786B0005; Fri, 12 Sep 2025 01:10:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9AA6F8E0001; Fri, 12 Sep 2025 01:09:19 -0400 (EDT)
+	id 910536B0008; Fri, 12 Sep 2025 01:10:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 899428E0006; Fri, 12 Sep 2025 01:09:19 -0400 (EDT)
+	id 7D81A6B000C; Fri, 12 Sep 2025 01:10:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 71EEE8E0001
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 01:09:19 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 291F916066E
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 05:09:19 +0000 (UTC)
-X-FDA: 83879419638.10.D077F46
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	by imf08.hostedemail.com (Postfix) with ESMTP id D6324160007
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 05:09:15 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6399D6B0005
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 01:10:16 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 08D325A1AC
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 05:10:16 +0000 (UTC)
+X-FDA: 83879422032.30.B56FF5E
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 34A2B160005
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 05:10:14 +0000 (UTC)
 Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=j0H8PKTC;
-	spf=pass (imf08.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=LR+awPzX;
+	spf=pass (imf08.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757653756;
+	s=arc-20220608; t=1757653814;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rwYxsNqoUYSFgLOSDQllnhi//dNEj1XGsn4w4FAZtc8=;
-	b=bfkYF71UC2/hBhwNMiz1ndjFJiwbANKTMqGtuEUKRkI9XFpnbjBeqDxzXTv6g3DMVQg6c8
-	o21NQdzm5/W797jn977WT65Gpb0TuG1+mdUEnKroh8FY+DzqhQb67pKQKP+hd826drImXq
-	kzFJ+4twnTsjQtAo8oPsHpGRt0H0Dys=
+	bh=qbPyCpu3W647hBHDQPOVQFsDCH+I95wEJ0zUtQfDIl0=;
+	b=ywtwVzLPPahTMAM18asRKM74Whc5LduR/ROAAHNjZID18wNcEkWbRN8LkJmTRGbSRoBug+
+	2JM3WcaZYuReE4ln36CDr+s+AG1gYGlwXsnYQLXMqbQ9kGkDfAfwg3p3oYuF0z+N9uc7Sp
+	xDIzHCUQhVw9pDpVKMfGAiw1RhbY39I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757653814; a=rsa-sha256;
+	cv=none;
+	b=3yGsuZ0R84uhWdb4/I3llrto+Q+opWK6loj7ImL6vul6RIVoLTIhCvGGPa6hw9h0Mbla7+
+	HZg/aYm++uTEHySpmDTnXlWtk5r6knR2a2R7jBN7wcZ05mCRI4x006Wu7kD24dUan4yaoD
+	+TImg4EkXaBw0XEQ8Q1KenUqKMlkJCc=
 ARC-Authentication-Results: i=1;
 	imf08.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=j0H8PKTC;
-	spf=pass (imf08.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757653756; a=rsa-sha256;
-	cv=none;
-	b=nJhlzUmwwjXb5L4as6Fbl87yli1GeWPg0IKit7p8oj6rspXQVSAgz/wDEoBknBaQF2/vUK
-	wbQlk/NW5PWnBEPLo819JGY3//8Za0DbRJH4MrqEj8pMesqFhkdixGKLtY6e2C4wJg5LeL
-	/3VrD/9Hj1B1H0KB0/bS+ej6clfpCpc=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757653756; x=1789189756;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=5Sv52k5u28oEP7ozheRx2UKgazKeixsYXp9Xrw63D20=;
-  b=j0H8PKTC+vjetOnN2NXFmA9vpjso9wdtaP02dh+ZTdtbl7cZlauCYoUM
-   x2Y01nTZQBnZGex71Mg3m9T2H6tn4EyiLe/UTrLB6r7QBAovnnQq3oWCD
-   u0DWwROv9/84BjCD4BAhxTVsfpcLkqbGAeIzNZxisk47+Jzxt3uyVy2I1
-   VWWkf7i33QvHNZ0aN9DycxxhkxuZYlaTZ6VZmQ1m6e+oeYNFvdfZdgqhg
-   VfvFVig6oHKgjW7jjg7cngJAz69I6vpshFqf17k8m5Aj67veOLVw4yXoW
-   CC4lZfIoXtj/MI200UloC8bFBP6rZYrQI1lV9xuLZ5CXWQG0n+Y00UD6j
-   Q==;
-X-CSE-ConnectionGUID: +bWFrzY2RmaU/f+ES+OwDA==
-X-CSE-MsgGUID: nq0kRhurQwmzMEg0jqu3Gg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11550"; a="59035023"
-X-IronPort-AV: E=Sophos;i="6.18,259,1751266800"; 
-   d="scan'208";a="59035023"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2025 22:09:14 -0700
-X-CSE-ConnectionGUID: Chkn6f1JSeqZFCMjjKycKA==
-X-CSE-MsgGUID: UIGyh3Q8S1+iLeSJ6X/vNg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,259,1751266800"; 
-   d="scan'208";a="173165172"
-Received: from lkp-server02.sh.intel.com (HELO eb5fdfb2a9b7) ([10.239.97.151])
-  by orviesa010.jf.intel.com with ESMTP; 11 Sep 2025 22:09:09 -0700
-Received: from kbuild by eb5fdfb2a9b7 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uww1y-0000rE-0r;
-	Fri, 12 Sep 2025 05:09:06 +0000
-Date: Fri, 12 Sep 2025 13:08:46 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	maple-tree@lists.infradead.org, linux-kernel@vger.kernel.org,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Charan Teja Kalla <quic_charante@quicinc.com>,
-	shikemeng@huaweicloud.com, kasong@tencent.com, nphamcs@gmail.com,
-	bhe@redhat.com, baohua@kernel.org, chrisl@kernel.org,
-	Matthew Wilcox <willy@infradead.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>
-Subject: Re: [PATCH v1 8/9] mm/vma: Use unmap_desc in vms_clear_ptes() and
- exit_mmap()
-Message-ID: <202509121212.sx5Tfe4e-lkp@intel.com>
-References: <20250909190945.1030905-9-Liam.Howlett@oracle.com>
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=LR+awPzX;
+	spf=pass (imf08.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-4b61161c32eso19135041cf.3
+        for <linux-mm@kvack.org>; Thu, 11 Sep 2025 22:10:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757653813; x=1758258613; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=qbPyCpu3W647hBHDQPOVQFsDCH+I95wEJ0zUtQfDIl0=;
+        b=LR+awPzXK0S1RrSosuHRgXNCOmJ7wZGXk7LrxFaG/GSGwDJEmOqTxTfyrzjjVwk0mo
+         vBlHpnQ2sfiFoibZqvGYI2PSfNJXJO/TyFA31IRQoQgZ2ZWRD8ghnENnBMOYce5Fju5v
+         2Z/0/K/GgVLkhQbqMgZp1QArgJUOjzupP3dX526bDR7C/C7Ocw/Qr+Sr9a2gKGkY3U2b
+         fVIQUPVBFdW69PFlNsL9w4vKYl6k+EYquSLGqMl+0dyrrWbMfPNid516s3PSTCRtF+py
+         S3a7cAXUsnW3cSdfDhU6RVvaAggyw63nQkEryX7sgvYugHNatXeI5A+eIcVK6RF7Bxox
+         d/GQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757653813; x=1758258613;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qbPyCpu3W647hBHDQPOVQFsDCH+I95wEJ0zUtQfDIl0=;
+        b=o+6bzuBmlfUE+cui9ZNNqGyrquCsBwVH+kLhAMFb/verg+ZcZ+9+RrffArL+I52BQ4
+         BPMMc+poDhEosiw+Eyd+wbb9/Vl0KBirMzETfrcbP/m4U4VtPAFVdsgakP8PZDEwintt
+         eANxLMJ0/w7hsV2osaXyWCPCLsx5VFZeJ2J3bv9UEWExjvTbwocJDZ1JqCbZ2S3+eUcj
+         LO3qzbVqf3TH/AWs9hXsmqJ57kDXlJSMYBw7R71+60b4EmKeeCxpxou9Z/v1K2naveF+
+         YX9vykz0OY8EzHF8e1a1wMkgo7Ci6a3ua25PZfwG/yC0wwmAhINp3ef1IRFSc+EbYa1L
+         cb7A==
+X-Forwarded-Encrypted: i=1; AJvYcCXoYjs6Bk0atgckG7bg3+zaDAYP5kvY05sEuMz6sfd1kI6Ky+TcMEn5yCUlzSMee+OIjleSgRJQ5w==@kvack.org
+X-Gm-Message-State: AOJu0Yw8hfVMRwG1HjcGw13pUasRoiEd8XN8cbZDiae9CZXrxh6OPMo8
+	82lErgzuZH+6gqtX69Jl9iWd5zy/Q536uSlHXQoOjSYLcwD/e/vtpujbOH75+S4DeOSifaLwwNv
+	57WOAvGqevgCysqwMSMWylop/G4+8hGI=
+X-Gm-Gg: ASbGncsrdWovB+vcIbUi5N6XFDyzvxMAC048ruPDOIfvzVvUSgtoEAKCOIxsHjTtvlW
+	jxsbshDCBYY826hp2wCBIXvnwoPcK/tlVW0ihrDaMKNFLwB8tpFkwweCy+hGri8waA12uKZWx/f
+	fRt3Bm5PGyixbeHOboMz6zXXPWX+ogFUABgh0MaATMlSMfjkd3Q7i2whUnm6jel6D+cxNYcfAP9
+	qRN4wk5BSp1VI9gCfqT9S6TavQMpNbzPT7m5p/tHvLNTr9lMQ==
+X-Google-Smtp-Source: AGHT+IHg/ZLW8OL1W6sAQgPgoAtj6sEmZMsyMYpk69Y+kGyyxYWpRGNOcI81o64593HxM+7/IRbGxMx4DAPwyBrPpCw=
+X-Received: by 2002:a05:622a:581a:b0:4b5:4874:4f92 with SMTP id
+ d75a77b69052e-4b77d0137b3mr26934041cf.13.1757653813012; Thu, 11 Sep 2025
+ 22:10:13 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250909190945.1030905-9-Liam.Howlett@oracle.com>
+References: <20250908044950.311548-1-lokeshgidra@google.com>
+ <CAGsJ_4zuj1nNpS0Ap=x-_dqERTU_NiCZAiHD=JULY1FQn+NwMw@mail.gmail.com>
+ <CA+EESO6H7zkgEOnmDEZoPL8+5EBD6UrJOBAvcU_gXyxCNZSOZw@mail.gmail.com>
+ <CAGsJ_4zi6kb3fBC9e8GkjR2JTpiAN9rTCpb2HmRV3ri_kDWE6w@mail.gmail.com>
+ <CA+EESO6bQRLkHWWEMu5-1QbwKptQDRkkEK4vf8oi1dH6mSz3OA@mail.gmail.com>
+ <CAGsJ_4wux1JOTQjT-SdWOTOT7-+eFMQLKRjKNrhE7vE31u5Jdg@mail.gmail.com>
+ <CA+EESO6eNfb+92+uYDRRWdx4SJnHGY34QtzbWUpoB54yjvL0xw@mail.gmail.com>
+ <CAGsJ_4yJYUbP5DZcmvpe7GwEDYnjMsycgN0TXKZoytrCk3VXxQ@mail.gmail.com> <CA+EESO7yPcWMgUv_-sP+h9qs=ndppYM-Hzwq5tWpg=DbOUpirw@mail.gmail.com>
+In-Reply-To: <CA+EESO7yPcWMgUv_-sP+h9qs=ndppYM-Hzwq5tWpg=DbOUpirw@mail.gmail.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Fri, 12 Sep 2025 13:10:02 +0800
+X-Gm-Features: Ac12FXwlrAc8yHNyRwhoNp1v9EgwoCTboeWFi7-eYrxh3trnePxE7thhtssjOho
+Message-ID: <CAGsJ_4wrAcTuC+QuQk1qNOFQhEz=ocCmQ+QXta-BpWZeV2iJmg@mail.gmail.com>
+Subject: Re: [RFC PATCH 1/2] mm: always call rmap_walk() on locked folios
+To: Lokesh Gidra <lokeshgidra@google.com>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, kaleshsingh@google.com, 
+	ngeoffray@google.com, David Hildenbrand <david@redhat.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Harry Yoo <harry.yoo@oracle.com>, 
+	Peter Xu <peterx@redhat.com>, Suren Baghdasaryan <surenb@google.com>, SeongJae Park <sj@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: koiczkf756zucuurd683hcxx3bckf998
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: D6324160007
-X-Stat-Signature: o1i3536kuc9qz34w3qacyar5u1rpr4hr
-X-HE-Tag: 1757653755-855886
-X-HE-Meta: U2FsdGVkX1/xIukqj9zkApJLaFBzGVXxOldkfikXS/b9W774OQ4H01jKG20NxMMkMO1JTv0aj7iJBxyfMqRUlUe4Ta3E7rMA82FNwzqpD2vAMEKLz8gE+lm43E9+neI5Rt1Hks582+ss1wwFPU9rkYwjJ5Nno9myUPFz1G8CNdMe6Sa4KzUheexml21/+SL08i5KGFnQuOGVJZVuRf+px2VyaLolUu2pNOljEhvhja84NtUAnjdZyxU0my8RMWBpMJLqaIrSj8Q/ouh9qs0YHgZHbqus4NB/ylMmtiysdCu3j88VqTutaS0WnoeOA6dZoVZKGP+VzSZD8PTbg1iWAJg3DA0Nl41LcCdIwRiUZ4uo/ViNgJC52iGT1mrAssAHkBxU/jzFIPAfiVRA9ahMsbDL6E+saBWreYrElHOKI0phbMlRiEzYcln9tMuTonlV0JHAmhyoiLGj8ktuPeafhq8BxAZ790iEHTeo6TCITASsWoJCJgjYfyfK57FGEBykKol1UrnoIor3QoJ9CcJEARTXV82kdqz+6rfLCnlaOtpjEulTxp1CB5OtNCJrTriEFRl8BnyPeKoJ4+Xkt2rYrz9BkNKhSMZOt/Wgc+oDnyx8r/u+HiZjZeWMCfcG7ToP8LW2Qupm4EG4QUwL+4xTupTOGjFMlLpUGxr0qFq8Y91jkLrHdp97qR9POpAMT51bMePV0dh/oI75JimA+58RkGbA6QSBUoCj9Lli5+ifZTLJ/aifXEiX0SCOXUt9vgmjuN3hogJZLjRUMAKl/QArtTMBRojHL8cU1/StjkFgo/u2DCwWC3FsrnmrJ/MtouMUcEYDj1qS/nBqjPd8RiNqe2rFrfduC9pXpQ7bTG0TfnFxLbTDUPoUp/IXIk3Y81aIDWjPjlV2GCaiP+Sq9n1PJQM1hplXRyNrITe35JWQr6Bu4pz85wvoK+QkqBejQylX0mbZa7u0O7uBixEx9d9
- +bW6dhDB
- JD0U96kU17a1BK0US8+t69A0TmOzYrm8CWehjqo9AQfRw2SMD6ba7VJ7MHnZWqDukQQ3bg5BHXBvGFhsRHZaz2aVVO6grkNg64T9kkOGWaDY3xiuUTvqvuZ9cAoWC2Gv+ZAVOWeBUZvh0ATjODQqe5FnRhraEgluzy8UmG8Mz85iHh+ghdOg80gPSlFkN9P/CHhvO2rPWhZfiMbCSPRahbjjGhH3Z+UG9dZWsXErA+LKTXNfnwbFQKDeLtZ9B57vA0o/DXgXcEOlUQP1q426s92CieRVXu/4pAH3Yi9r0ZWB1JC4/dKTG1OKss4Bi4Qc+qvA8z1mUKMpcZFb9N651kQANFB9LQ7oJ6BXCs9Xp9gGQCsPYGTFWuPGtGcVttC1p89TqjkJoQVVIjMbAIlMooY+nczKtb6YcCsHToIUEbLW3+L4=
+X-Rspamd-Queue-Id: 34A2B160005
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1757653814-73132
+X-HE-Meta: U2FsdGVkX18DA0y0bwAQL8/FF5pr88jfdw+llWKsN+gWo7fAE5gBv0rFGeJRJnfwYwQBSCRXEIwRQ50wlppI9xA9sv3KH5dlaixC8zDJ7Y2QGqC62D5QHoPY4m5d6HP2q9lJefpGWm25bfQ5/ws9bGA1xHJZgQZAgm7oTVwWkLqmNx0aQxkySwxoeoFTPR4yieYB5StnMI6dR1iOWZYZ511TCFRNtuIwf5kRUEssD/XNTnzcSqcwUD3QnFF85JxVpWQik+Ha8Gi+qJAygfMQJqWDrAg+3Jqz+pSJPGYc98BGJkd6nYic7lWDKpHEmGIYO5cn82UIMfyqu7EauJZZoNe7YECIrxFYRv29e2EknMI2ZvI/vcae2XH725UOBMc8Qy9fIn/U2U5PQ6+1f3tKh26zX7zMu0sZUYWwyE33oy10fWbFyhsWunMpSll1qce/XvT/yfE9U9SGCmc9vPF9YDcmIaH4ZOT3ozac5m4ePGIAC6KyzaYlS15kO14CKS5qZ7l6udFnX+vJWzUh/FW3SpILQY1yKFpM+hHSGTQEw1AVS3b54etzPrVhzJqD47PCHSal1n73dfL9mLqTbbV/gFj584et9QQDG9P/4kF1gOs6bMZpD+1HtHfcwnzpU2mNKuPBn0SUVUIW7LxlQEY2MwjQLI8VZT3QO166GqK9Bjb0cbmWfa7uHSW+ue6A5Q9zxiq50alrd33qB739Jz11eX7kK9pRX7FcRVNwK7UyBtko7bazh4Tt/hH5mIuV2HWzxIbwh39JQZdCnuH38k29q6UJpd0slnm7KtqMfahTBdo5bJxsU9+Eak8oQwYjE6pdGe91aqJ2QKlAzSL/SRWZ29tsi6m3P+G2pdhDMhiJK1GHlZdl1v5e8n6ZkOjEcs3aoXJ5EAedj3+qfWlrkBcuhPLnN+gpefih0VlR/nOnEnxkPi/aa1F+HgeivAqfoAXQZhDF69BKXATFoXO1mXH
+ NJr9QeCt
+ ux0S5S9yhP18Unr6wA7cVDoQAMFOmZ8NtozkkbQgMppqpJZ15/qT8nyGxESDSOTJcyxfhQ0riQ1v4IwWIkVjBsuXZeL2KMbgX5TibvaOd9iYmCNlRvFDiKwOeVJAD32Y1C1WUhxqHJxgQwkhRBIv5NwT+yyPEaqBCQM4o4fKMdyDcU+4VrxaA5gjvDdwu4MCngwhJ7V7hamn/8X4g3hV+NRmzoqerdPuQZHK9/I3qIfevVR2NVbswTG1XwNSpbHJbxQw1QyiUjxCtKun5mPAYjHibLQfSTH8y/JQDQaDzlUu9pMwZELAcKQQmK7XGDJHSDcuhJqxTysd0nwS+VgGCSDZ5mSpor6IXCWNvyquFh3e621zuywparh8dDThb6MBHxEpXbogZtUWc/YRLg/qFw0zDEmZI2FTGe1tCgjXpL9UPqhYQBGQeVF7fdkD0BRV/6SBnkNIXg27e/bY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,69 +122,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Liam,
+[...]
+> > > > >
+> > > > > IIUC, shink_active_list() doesn't behave any differently whether there
+> > > > > is contention or not, except when it's an executable file folio. So I
+> > > > > doubt such data would be any useful. Please correct me if I'm wrong.
+> > > >
+> > > > Since we skipped clearing the PTE young bit in folio_referenced_one, a
+> > > > cold page might be misidentified as hot during shrink_inactive_list().
+> > > > My understanding is that as long as the percentage is small, this
+> > > > shouldn't be a concern.
+> > > I see. That makes a lot more sense why folio_referenced() is called on
+> > > all folios in shrink_active_list(). I missed that young bit clearing
+> > > before.
+> > >
+> > > Any suggestions on a good testcase to gather this data?
+> >
+> > I would run monkey for a few hours with some debug counters, e.g. how
+> > many folios pass through shrink_active_list(), how many get contended
+> > and moved to the inactive list without clearing the young bit. If the
+> > percentage is small, we can just ignore this disordered LRU behavior.
+> >
+> Thanks for the suggestion, Barry.
+>
+> Monkey test wasn't successful in creating sufficient mem pressure. So,
+> I used an app cycle test. It took over 1 hour to complete it on an
+> arm64 Android device with memory limited to 6GB.
+>
+> During the test shrink_active_list() got called over 140k times. Out
+> of that, over 29k invocations had at least one non-KSM anon folio.
+> None of the folio_referenced() calls on these folios ended up with
+> contention i.e. folio_trylock() failing.
+>
+> So, as thought, this patch doesn't seem to have any negative effect on
+> shrink_active_list().
 
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on akpm-mm/mm-everything]
-[cannot apply to linus/master v6.17-rc5 next-20250911]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Liam-R-Howlett/mm-mmap-Move-exit_mmap-trace-point/20250910-031555
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20250909190945.1030905-9-Liam.Howlett%40oracle.com
-patch subject: [PATCH v1 8/9] mm/vma: Use unmap_desc in vms_clear_ptes() and exit_mmap()
-config: arm-allnoconfig (https://download.01.org/0day-ci/archive/20250912/202509121212.sx5Tfe4e-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 21857ae337e0892a5522b6e7337899caa61de2a6)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250912/202509121212.sx5Tfe4e-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202509121212.sx5Tfe4e-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   In file included from mm/filemap.c:53:
-   In file included from mm/internal.h:23:
->> mm/vma.h:173:22: error: use of undeclared identifier 'USER_PGTABLES_CEILING'
-     173 |         desc->last_pgaddr = USER_PGTABLES_CEILING;
-         |                             ^~~~~~~~~~~~~~~~~~~~~
-   In file included from mm/filemap.c:65:
-   mm/swap.h:461:10: error: call to undeclared function 'swp_offset'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     461 |                 return swp_offset(folio->swap);
-         |                        ^
-   2 errors generated.
---
-   In file included from mm/oom_kill.c:50:
-   In file included from mm/internal.h:23:
->> mm/vma.h:173:22: error: use of undeclared identifier 'USER_PGTABLES_CEILING'
-     173 |         desc->last_pgaddr = USER_PGTABLES_CEILING;
-         |                             ^~~~~~~~~~~~~~~~~~~~~
-   1 error generated.
+Cool, thanks! It seems to meet expectations, given that a folio is
+a very small granularity. I also raised another discussion [1],
+which, if it works out, should provide one more reason why we
+need your patches.
 
 
-vim +/USER_PGTABLES_CEILING +173 mm/vma.h
+[1] https://lore.kernel.org/linux-mm/CAGsJ_4x=YsQR=nNcHA-q=0vg0b7ok=81C_qQqKmoJ+BZ+HVduQ@mail.gmail.com/
 
-   166	
-   167	static inline void unmap_all_init(struct unmap_desc *desc,
-   168			struct vma_iterator *vmi, struct vm_area_struct *vma)
-   169	{
-   170		desc->mas = &vmi->mas;
-   171		desc->first = vma;
-   172		desc->first_pgaddr = FIRST_USER_ADDRESS;
- > 173		desc->last_pgaddr = USER_PGTABLES_CEILING;
-   174		desc->vma_min = 0;
-   175		desc->vma_max = ULONG_MAX;
-   176		desc->tree_max = ULONG_MAX;
-   177		desc->tree_reset = vma->vm_end;
-   178		desc->mm_wr_locked = false;
-   179	}
-   180	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thanks
+Barry
 
