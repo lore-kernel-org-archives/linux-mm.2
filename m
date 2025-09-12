@@ -4,121 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D327ACAC592
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 18:36:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40F2BCA101F
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 19:27:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AFC8E6B000E; Fri, 12 Sep 2025 14:36:01 -0400 (EDT)
+	id 495EB6B0011; Fri, 12 Sep 2025 15:27:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AAD136B0010; Fri, 12 Sep 2025 14:36:01 -0400 (EDT)
+	id 46BBD6B0029; Fri, 12 Sep 2025 15:27:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C3166B0011; Fri, 12 Sep 2025 14:36:01 -0400 (EDT)
+	id 3A8636B00A4; Fri, 12 Sep 2025 15:27:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A6D16B000E
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 14:36:01 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 18C56C091D
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 18:36:01 +0000 (UTC)
-X-FDA: 83881452522.27.7953A19
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 1D9A310000F
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 18:35:58 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=BBI5+iGq;
-	spf=pass (imf05.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.221.45 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 289AB6B0011
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 15:27:46 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C29C6140924
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 19:27:45 +0000 (UTC)
+X-FDA: 83881582890.02.8359AF7
+Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
+	by imf06.hostedemail.com (Postfix) with ESMTP id E4526180007
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 19:27:43 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=o4c6cVOO;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf06.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757705264; a=rsa-sha256;
+	cv=none;
+	b=XUYdh5X6RysLmfAy41URPPwoTYlbKZDZs/K0YbsloAZEee+k0QPmd8/8W7q8/90dpHmoPY
+	91WizMzUbPVV2Vj06yDh/yoykw/B7fCmXYLGgSkghSAck+nuXt8gvr86SW6CqVA2f2+I+l
+	bK5xGRC2ejU57H53g+P1jmH8KRWfsUA=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=o4c6cVOO;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf06.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757702159;
+	s=arc-20220608; t=1757705264;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RTwLCqYrxP4A65CpeLdDZfX/1/5VrrEeFcGj8O2B7PY=;
-	b=jkFOFTHodaTKEDtXcrTCR5C10BYzTbzMjeFjYoCLtC61lhnxqxzaDgmaynV6OKHGDUENWG
-	W2FF6oNLKmcGttFNd0yZHw252vEBbbM7SdtcPgCCJKRHVHql4MqFIunuHwvEU/Q/k0O48v
-	300ka9kgo0gwU/ELst0f8XS+q1nAY1k=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757702159; a=rsa-sha256;
-	cv=none;
-	b=8Ak+Y+NVBFNjK2ipiYAyJBwIEEp0auqLuVutwDqwl25XAeA3U2Su8n4+nJF54+2Z2hVOlt
-	xBZ8yDTSVy+8Qjo6ImmqDNaJck382DkbVmS1e3RoD2DPHZNlQg15AAFxdnNpyIIohimaxi
-	G2Rh/C3C0HPuq+cwnihjgaHCD0oc3hk=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=BBI5+iGq;
-	spf=pass (imf05.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.221.45 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3e8123c07d7so146227f8f.0
-        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 11:35:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1757702157; x=1758306957; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=RTwLCqYrxP4A65CpeLdDZfX/1/5VrrEeFcGj8O2B7PY=;
-        b=BBI5+iGqU0oVmJIxbZU5YQDFcRjB9c0rBdhpP0xGJCKc2NS6qZ+JAM3WsdioeiRY77
-         FJo49UUqKXnZ5WVUKSpJjtG7FebbrsqEbmm4wbBDikGUP94Ajqmqa2OLm5SOlAELgQCC
-         GY7Pa+XQCYxYWPIjBc4GPXDRIYiUf4CWjFpJDwK/LsHgahH9snLZBesWoqR6GWPn2OhH
-         +TZrNXJ0AWsIi4UJFvBVa79Rvtggdr7kDUMJ5Jq36Ye9BKrIoO7fi3o/k9i6xjVC4gl1
-         fy7xgA5m8SISqbwUv27RacN4oX+LcYLYRciWSryxQ5NFOH9LMUkke+zfJ6OlvlLx1Wj3
-         rhRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757702157; x=1758306957;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RTwLCqYrxP4A65CpeLdDZfX/1/5VrrEeFcGj8O2B7PY=;
-        b=S0oiyWU0cpmLkzRN5jowWhRNE/Ess/1EO+Sw0hkkuAzh2dKK6/HwsqyXgnJ+ybVQId
-         JL7zJhrDL0o67TSy8By1Acd9a8g3iNVXuYlQyZs+NFI7HZzfEQYCHCr+7xe1jYh13syd
-         GHKsyFvQx8Ja47hhTDtCx2mW27yrE3xzTpJWNwbVtC9DwWgcIV49sBYGzY/J60oec2os
-         Dm7a0t7s+KUFAUZjxdZJIG+R03gJOrl1QqS3z2QIt6ujJByOC4KOueuEfPlloYzir1wR
-         XlKT0DQw1nA6mzgAlHxXxskZCTuuV/9tmavRtHJH/ljgPhz1qQe7gZ5dviiAxhCoD2sJ
-         6qqQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVbvGbyP2D+Y2txOdfRy/aNf10yXudef12KRbpu29TVwnVbiCbzy+6gHG3t6+iccY4f4hrnfkxZQA==@kvack.org
-X-Gm-Message-State: AOJu0YzwLs8PMrkHjMXC8tAMNHeBnjeIBAgedvX9WijS/r1eeHsbNFGz
-	SwCM4hzhQfbM69UjBQ5UOphgG34LRLPEyJNqk3IUBcwyzyPHeQ08+U/0HF9/1pkFaUg=
-X-Gm-Gg: ASbGnctJHdU3/VmkmJ7+KGOOJ0enfvG/cSjy4owYAZdCIewc3I965sXLJlEdkrie1bm
-	N+SOtOkLt+P5kusM+qFuWl62pbgusWtRhwHgJjQPgFXO87lx7kbtlKHtedp6eQh+mmuTKWJP1w9
-	AIQ+buIsETADgZUwisfOhDoLlSQjw2s8zbiBO4AbNvLWmwa3hi5hiLFqyaPFvy4EaSPLkY0yHwQ
-	xs/DqrT+UflxdxORhr088qAsX+y8FIG0i8A8W3b4vR7VJdM8l5PjAyMRHvt51ZWi8cfTJQJDrZl
-	vwAMvf11694dARKutgNXzyJ6/JsQNVpptS7PpDTwGnfcT2HCnc2uGWSwg1rHrkHtDPK/DwsF6cm
-	V5TT+/8I9UzzW1/ZP0G2SXy+ZlbQ8UJEzRnWbQ+pwfqelAA==
-X-Google-Smtp-Source: AGHT+IEFXfAwL8n5C3J9dCog5MqYjz/0z+tjRYy8VBux8QIcdwHNBxHHgPhwuMllRtUOig1ksCGmnw==
-X-Received: by 2002:a05:6000:26c6:b0:3cf:3f1:acd8 with SMTP id ffacd0b85a97d-3e765a2367emr4237912f8f.28.1757702157424;
-        Fri, 12 Sep 2025 11:35:57 -0700 (PDT)
-Received: from [192.168.68.105] ([145.224.119.89])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e7607cd0a7sm7293297f8f.39.2025.09.12.11.35.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 Sep 2025 11:35:57 -0700 (PDT)
-Message-ID: <0bc838d3-26ad-4f2f-8bb5-1c34748e1fbb@linaro.org>
-Date: Fri, 12 Sep 2025 21:35:54 +0300
+	bh=ExXevDn+7ykaskoO7a8ZpNNYaKFfGSwxcpOAezuUCvI=;
+	b=JDQk7238HSDZbFy3oYZExJaUZDcAT4IfatToXs93o0nxVRexdc5mGZaFxt+3SScZCnpgI0
+	os9vqId44h+Z7Q8n+SI5jiysZyp2xKZ4eOkOa456ts4I0mHSTe3hCaV8h9KQ3gZyDHUwo5
+	FS76hb+xyFudcd1WF/kjkmFJ9cd/G4s=
+Date: Fri, 12 Sep 2025 12:27:33 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1757705261;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ExXevDn+7ykaskoO7a8ZpNNYaKFfGSwxcpOAezuUCvI=;
+	b=o4c6cVOO96AdX8Fjafc3zvAlboi73GPkU2UPTpPb0+c7R79fSvoO7fbF4tXTlRlgRso/9Q
+	k/57cS6gIvTBhLNdSI5qr2BXMsK+OzcVrGYP6IiaYY4KtSlUEUsy7z/MQXuvq9ewQEGJQW
+	MYP1JzIqQdKf5gT1ijxwjA4HnQHIers=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: bpf@vger.kernel.org, linux-mm@kvack.org, vbabka@suse.cz, 
+	harry.yoo@oracle.com, mhocko@suse.com, bigeasy@linutronix.de, andrii@kernel.org, 
+	memxor@gmail.com, akpm@linux-foundation.org, peterz@infradead.org, 
+	rostedt@goodmis.org, hannes@cmpxchg.org, surenb@google.com, roman.gushchin@linux.dev
+Subject: Re: [PATCH slab v5 5/6] slab: Reuse first bit for OBJEXTS_ALLOC_FAIL
+Message-ID: <jftidhymri2af5u3xtcqry3cfu6aqzte3uzlznhlaylgrdztsi@5vpjnzpsemf5>
+References: <20250909010007.1660-1-alexei.starovoitov@gmail.com>
+ <20250909010007.1660-6-alexei.starovoitov@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC][PATCH v3 00/16] Introduce kmemdump
-To: David Hildenbrand <david@redhat.com>, linux-arm-msm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, tglx@linutronix.de,
- andersson@kernel.org, pmladek@suse.com, rdunlap@infradead.org,
- corbet@lwn.net, mhocko@suse.com
-Cc: tudor.ambarus@linaro.org, mukesh.ojha@oss.qualcomm.com,
- linux-arm-kernel@lists.infradead.org, linux-hardening@vger.kernel.org,
- jonechou@google.com, rostedt@goodmis.org, linux-doc@vger.kernel.org,
- devicetree@vger.kernel.org
-References: <20250912150855.2901211-1-eugen.hristev@linaro.org>
- <9c2e289c-0258-4e25-aaeb-a97be89ebd84@redhat.com>
-Content-Language: en-US
-From: Eugen Hristev <eugen.hristev@linaro.org>
-In-Reply-To: <9c2e289c-0258-4e25-aaeb-a97be89ebd84@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 1D9A310000F
-X-Stat-Signature: juwxgmcktszzxghccpdr7mnz9jxssq4h
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250909010007.1660-6-alexei.starovoitov@gmail.com>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E4526180007
+X-Stat-Signature: k3kboih6agfkn8ud8s6juid88eaetr86
 X-Rspam-User: 
-X-HE-Tag: 1757702158-419240
-X-HE-Meta: U2FsdGVkX19e46oldGnHszBVqW3CbwO7qMLi1StJw7wSnWt3F8ILCwJIbxlPjt3edY53YIzRZmOUTmUMJHzaXEAlJiPodiqpS0fzD/66Q2LcWjSx0SLGfZ7tk+Stk8jcZebnrqp7C1H85nJhlrBdyC91LCnl5tpXM9QngiwFPwNPMcqcX1nFTYZOWjggWjffKbZIJNU0RTaZH6kmqTUAkzsefOYBaOERFeKazRmsKTm1/U5EvKBskdj9TC2FLMc0r6Xv8dIyh8IKtVn5cDGBaKztGJ0kXWNa4X8gVjcBWvJQ+ijtS1XqVCW0kauvqorbhWMlHN94p8JsOmEpsXU1Sy7f7b4mZAjjdsSQyvzMcnqtjFUK0YF/2ySkPHpJ6X3QMEhtQEOih+DA0lw92s5RzPl28Xk43CXdxNZlv0xhi7xGWxh51FxvpSGv7tOtuP7k7+paDJu4GgKruuon6yYzovXoYDDBiUuAB+joQgE4lGn8z88ct2rwhC3z+f6Z+I0UrWV0538CEZ7X1Td8IssIMAfYSxQfn7ABXofFvuxIrxkCAXds3lXh0jj2N3sf67hLmtKqE8jwkJbwTCwakxA7jmphOLQhpTO+M5kleK29TWQArX6mAuutqpZL3RSWFGa0qfQrt5oK5wS7dIqByEH5cxfxDYPCXjXS8meR+/YnZleNDyKGNuFZPHh0Wc9WrA/O8kfqhCtTMinCKOorns9Yj6mBi7i4tszJZytnlyFxPEbiW8evEhjxoK9TfRRifilQHl88BTXzlQHsEaDBFtS5n8nIQwQsb095Ik0jHTYqXghRh17lfOQMvgwfioBuSBL0oScrdGTxeRP5dyii3nxWjQF8xv5zeybF75Q78/d159cLLQttbXwLw+Se5+3xD4bNk2bpa9zQKH+/Mz5wNFKWTINhngztiDz7jnjo8BM1L1DNZ887h8JqJ2eGKW47iLlC5Cz3BoJTav9dg7H5tYz
- Zqn0fuNK
- 0t5cySo0eicLSayd5zfwbsmB/wQf5mGrMUSL5CYOXIJ+W+06VwyjCoVJq4fHn7rUGTtfDsUAjtIFymWPmgbTLmY+2P3rXkMszDJFGn5JEZw/6ZyUmqdWMXvu9Ibpr2t4msPs2xX/vwQOfD89k4TAD8fTGBfiVt/whA732e+hHbr2HQQq3VqAtpHEelwfsogv5NKd/B/UALalQptJRLLNjf1cL51yhfLKRa6B0t4joPPkTApm8Ah1RfOmI4ARAlG2U0pG2K9958Nslr5GDJY4hpuk+KwpkkbqxpTuFAAVT2JtvVoVDD5zP0rye1VG9Su61jaSfIyFWd8Md48tkoT1QLz/nq0Vjxs2igSKMeytLa/CdWJ/YHCRiRlC4TAGOiKLPfbYC+noyDxCp4m9kzyC2YXGTCg==
+X-HE-Tag: 1757705263-724513
+X-HE-Meta: U2FsdGVkX19G6Z5spAAjZYmQ1ICGVHCGjZ2lJQPlps5XYsM07o2N+6SnyEJmvqr7NAEtBM6H+6nyZaGwMdZziEgDOKpkAFA6LD0ObZOkTgKDWw0ItprjDvto8Xlohu6tRYAXdpSXpeIRlfPdHn6B0V5jk7X/V0/Qt4tLQLm80hgw/fwDElu2qnBhAQLip0g1Nd4xYShd0b0Kajvjp2wJaTEDzZu8fcr7lUZwS/RXxHTuimlWmHt5C5gBhtUeI37pZ8xnR+qnn9pYudlJd9u8JGz/PdkFz17cKXePeyVBLirCq1mdaHE1ck09Z1hrHLSRkGisg5AcH4BDxPaSFwCbFXLpcSm0SkYQ2AnsjpEZkIrVQiA2u0KOjFCyLsevj8rVgur+FVHZ5a+3pa7wrjxhQ8b6ZBhc6WgtB5fFAnjI8+Sr7hhNIenNvnHTysuingn7Eu8SMJwOqmRbnhythU35ZtdEsuZPLmoV5SqfRRC7FYCJfWYJN4aVtmNf4yRqn0nIV/ycLis09AUmtp2Sww9ZsfVCnX0IP9kKLfGL9bV10Mf41erR/U4Kte8YgGWBn4jcS/xRjQf7u6NCsZhflEVdy+FhQgMf7ifwAdjP38kvG+tlNTZvCqOMzD/sLSfSUXcXy5eSgZkHqK0i+jLv14TCHC3Uy7zvf1wpGc/7fOZb3amNiaCF04yCwOyMDZ9whfb3mtwqWF5KNMrWabMXrzVh/eO5u32DjUVLvaRPPJhvemkrZT1met3GoVbzAmgBfQwlvV//Ah4JCUlpzNKf+G55E/vuc7wAw9oIcDqjlq0FbBQJ44GweUpjbWv/UCNy4xykRoW04yKF9x+IWi9f8ue1CN1QVZCzaZMjSMUrf5t+34mZNM7g8KPEsx/hI71t/zXYoj96D0YfOTEBFzTWSjseq2AoLCjNDY0hDpDRK2+M5ivgS6O3yicthaqZEvpD8gVMyBB2DnylM7MphAiv2EU
+ oRrXBMGE
+ 3MqUWTMhQSCo2D4M6ToSlTFXBKbpT1vScL6dV9bPqXKTJ8tf1yVc3JaEdjREvaT43zZWGzhYpg0Hd4aKUGsgm+GcE1zOSefSgwQnz3uD319hqc/2JqR6eed/u780NFhRzYF0zT1tvo6iXVYSNN119bYXNAQKaBDwDFWRAb8pd8T3rGK/KnJxN+/xsa7+1dX25o/MkZ5C3MppkWmo5L1d3Tqk3lIatWww99Xy92E2yYy5cDP3lJ4HkuC/tRlzTz+14Rv46v6wt/xL5TdaCHVWNrN02Zi/v5OOsmrR3CA4QbhgBrWO4e2sBxj3XRSz1Edq2RTm9VgkzCYO3BqyMsXVrj8XHDuKZbfip1Bbn
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,27 +90,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
++Suren, Roman
 
-
-On 9/12/25 18:56, David Hildenbrand wrote:
->>
->> Changelog since the v2 of the RFC:
->> - V2 available here : https://lore.kernel.org/all/20250724135512.518487-1-eugen.hristev@linaro.org/
->> - Removed the .section as requested by David Hildenbrand.
->> - Moved all kmemdump registration(when possible) to vmcoreinfo.
->> - Because of this, some of the variables that I was registering had to be non-static
->> so I had to modify this as per David Hildenbrand suggestion.
->> - Fixed minor things in the Kinfo driver: one field was broken, fixed some
->> compiler warnings, fixed the copyright and remove some useless includes.
->> - Moved the whole kmemdump from drivers/debug into mm/ and Kconfigs into mm/Kconfig.debug
->> and it's now available in kernel hacking, as per Randy Dunlap review
->> - Reworked some of the Documentation as per review from Jon Corbet
+On Mon, Sep 08, 2025 at 06:00:06PM -0700, Alexei Starovoitov wrote:
+> From: Alexei Starovoitov <ast@kernel.org>
 > 
-> IIUC, it's now only printk.c where we do kmemdump-related magic, right?
+> Since the combination of valid upper bits in slab->obj_exts with
+> OBJEXTS_ALLOC_FAIL bit can never happen,
+> use OBJEXTS_ALLOC_FAIL == (1ull << 0) as a magic sentinel
+> instead of (1ull << 2) to free up bit 2.
 > 
+> Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 
-Yes. The other places just have some changes such that I am able to
-gather the data inside vmcoreinfo. (remove static, add some function to
-get sizes)
+Are we low on bits that we need to do this or is this good to have
+optimization but not required?
 
+I do have some questions on the state of slab->obj_exts even before this
+patch for Suren, Roman, Vlastimil and others:
+
+Suppose we newly allocate struct slab for a SLAB_ACCOUNT cache and tried
+to allocate obj_exts for it which failed. The kernel will set
+OBJEXTS_ALLOC_FAIL in slab->obj_exts (Note that this can only be set for
+new slab allocation and only for SLAB_ACCOUNT caches i.e. vec allocation
+failure for memory profiling does not set this flag).
+
+Now in the post alloc hook, either through memory profiling or through
+memcg charging, we will try again to allocate the vec and before that we
+will call slab_obj_exts() on the slab which has:
+
+	unsigned long obj_exts = READ_ONCE(slab->obj_exts);
+
+	VM_BUG_ON_PAGE(obj_exts && !(obj_exts & MEMCG_DATA_OBJEXTS), slab_page(slab));
+
+It seems like the above VM_BUG_ON_PAGE() will trigger because obj_exts
+will have OBJEXTS_ALLOC_FAIL but it should not, right? Or am I missing
+something? After the following patch we will aliasing be MEMCG_DATA_OBJEXTS
+and OBJEXTS_ALLOC_FAIL and will avoid this trigger though which also
+seems unintended.
+
+Next question: OBJEXTS_ALLOC_FAIL is for memory profiling and we never
+set it when memcg is disabled and memory profiling is enabled or even
+with both memcg and memory profiling are enabled but cache does not have
+SLAB_ACCOUNT. This seems unintentional as well, right?
+
+Also I think slab_obj_exts() needs to handle OBJEXTS_ALLOC_FAIL explicitly.
+
+
+> ---
+>  include/linux/memcontrol.h | 10 ++++++++--
+>  mm/slub.c                  |  2 +-
+>  2 files changed, 9 insertions(+), 3 deletions(-)
+> 
+> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+> index 785173aa0739..d254c0b96d0d 100644
+> --- a/include/linux/memcontrol.h
+> +++ b/include/linux/memcontrol.h
+> @@ -341,17 +341,23 @@ enum page_memcg_data_flags {
+>  	__NR_MEMCG_DATA_FLAGS  = (1UL << 2),
+>  };
+>  
+> +#define __OBJEXTS_ALLOC_FAIL	MEMCG_DATA_OBJEXTS
+>  #define __FIRST_OBJEXT_FLAG	__NR_MEMCG_DATA_FLAGS
+>  
+>  #else /* CONFIG_MEMCG */
+>  
+> +#define __OBJEXTS_ALLOC_FAIL	(1UL << 0)
+>  #define __FIRST_OBJEXT_FLAG	(1UL << 0)
+>  
+>  #endif /* CONFIG_MEMCG */
+>  
+>  enum objext_flags {
+> -	/* slabobj_ext vector failed to allocate */
+> -	OBJEXTS_ALLOC_FAIL = __FIRST_OBJEXT_FLAG,
+> +	/*
+> +	 * Use bit 0 with zero other bits to signal that slabobj_ext vector
+> +	 * failed to allocate. The same bit 0 with valid upper bits means
+> +	 * MEMCG_DATA_OBJEXTS.
+> +	 */
+> +	OBJEXTS_ALLOC_FAIL = __OBJEXTS_ALLOC_FAIL,
+>  	/* the next bit after the last actual flag */
+>  	__NR_OBJEXTS_FLAGS  = (__FIRST_OBJEXT_FLAG << 1),
+>  };
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 212161dc0f29..61841ba72120 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -2051,7 +2051,7 @@ static inline void handle_failed_objexts_alloc(unsigned long obj_exts,
+>  	 * objects with no tag reference. Mark all references in this
+>  	 * vector as empty to avoid warnings later on.
+>  	 */
+> -	if (obj_exts & OBJEXTS_ALLOC_FAIL) {
+> +	if (obj_exts == OBJEXTS_ALLOC_FAIL) {
+>  		unsigned int i;
+>  
+>  		for (i = 0; i < objects; i++)
+> -- 
+> 2.47.3
+> 
 
