@@ -4,117 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28F44CAC582
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 19:38:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03CB8CAC582
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 20:06:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 40E8C8E0002; Fri, 12 Sep 2025 15:38:16 -0400 (EDT)
+	id 2C7358E0003; Fri, 12 Sep 2025 16:06:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3BF666B0006; Fri, 12 Sep 2025 15:38:16 -0400 (EDT)
+	id 29ED38E0002; Fri, 12 Sep 2025 16:06:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2ADFD8E0002; Fri, 12 Sep 2025 15:38:16 -0400 (EDT)
+	id 1DB8C8E0003; Fri, 12 Sep 2025 16:06:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D8566B0005
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 15:38:16 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 64FE5160909
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 19:38:15 +0000 (UTC)
-X-FDA: 83881609350.04.5194A54
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 87EDE180005
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 19:38:13 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=PkMu76b3;
-	spf=pass (imf06.hostedemail.com: domain of surenb@google.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 106C18E0002
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 16:06:54 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id AE45C1A088A
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 20:06:53 +0000 (UTC)
+X-FDA: 83881681506.03.A69E444
+Received: from mx0a-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+	by imf25.hostedemail.com (Postfix) with ESMTP id A6B25A0011
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 20:06:51 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=fb.com header.s=s2048-2025-q2 header.b=hoEvy0Wr;
+	spf=pass (imf25.hostedemail.com: domain of "prvs=535097c470=amastro@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=535097c470=amastro@meta.com";
+	dmarc=pass (policy=reject) header.from=fb.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757705893;
+	s=arc-20220608; t=1757707611;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hxKLJXAozeMmWAPKUjfUsQIDjzwB9fwUvrZiHvNyBbo=;
-	b=iymz4hFRptfouRZ3PAliNrF3DyS5kWWLjkzBbJ/oAFZidX1af2crgiBZKPY15d1AxiPX0c
-	EOPP/9B07gz/cJnaGrqOzLiKDlpOldopKZlG5hKSdPM+akrb9Z0UkPN6lK43VcE5get5NZ
-	Tkg9uKYalo4pWBNPPK6jB8YB0vd+HOs=
+	bh=XDrxit+4/wDzPk/43t+MgtkBccOuXiTPH9TtU4SBEDs=;
+	b=EYyra0IpJOvj+LXsRN/pa1Ohbo63ho+oj7g5MCMRigUE9umN/PsYFtGV/ySPgCmdLmPjfu
+	EtGSDoEjIo2207OoCoI7f7QtpWik0bZkhga47ZvCbUFfceMxF9IGSYYoTYunDD7Q2K9crD
+	gE28B28ctYzfC4R+NbPjQ/WMHwWUvxQ=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=PkMu76b3;
-	spf=pass (imf06.hostedemail.com: domain of surenb@google.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757705893; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=fb.com header.s=s2048-2025-q2 header.b=hoEvy0Wr;
+	spf=pass (imf25.hostedemail.com: domain of "prvs=535097c470=amastro@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=535097c470=amastro@meta.com";
+	dmarc=pass (policy=reject) header.from=fb.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757707611; a=rsa-sha256;
 	cv=none;
-	b=Kpb3+fr0v0nM7By5azlQbmC7fKuAlYLxD/l4NwmkZyMY5665Q9mGK31wpwTDsjEzAv1+ea
-	HcLDMrSyOlPtAOpO9aJwVKWFvIoxAli8rBAXO4xnCCt1D4XOCKg/y2uj/VGLqnAmUQHOnA
-	F6gZpXj1gmITw/c0pqh+vBoZjfEfA6E=
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-4b4bcb9638aso5241cf.0
-        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 12:38:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757705892; x=1758310692; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hxKLJXAozeMmWAPKUjfUsQIDjzwB9fwUvrZiHvNyBbo=;
-        b=PkMu76b3squvlRfhnkJYQhM4aa7LIZtW6KhGlrhDP42j7twSseSXdzpp5UmmO99DTg
-         6ZSIM10BMG/nR9eTSdkQSqqyAqZTmlzwjep4cuYtQWe2K/0pLOLGIXedpkwyfVWcMCUk
-         vsrSw5Pw+ibI3qHc9mRyBtO+WZhgwYQWip6bh0GorOpMcytZZ9BXzYDJIaOJTu1tVhqN
-         4PI10poavCLmuA3C6MfZEiz8QvzjPWGO9yRE/KWsotfQomOH3ElK9jbWetpY6e2B0rvr
-         VcQlYpSPtBorbpQmKbtNg1sF+QZ6APq+RVMu1bhnYXm0A4Z2Bdv4yIhLEKZGkwj7K92I
-         aDfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757705892; x=1758310692;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hxKLJXAozeMmWAPKUjfUsQIDjzwB9fwUvrZiHvNyBbo=;
-        b=Kx3qm37GRfgndZ2fMErZ7epOBHhctirt8x33boWbRP045ABlowAld9UqN5VRUKfWDm
-         v/DQdZeT0Zf6Ln069wZFGHy1YGhEugVlZoRDOBl5NW06PA49OO37CmSgDZasahLtIVvM
-         NFNmutclKs7m6UhXEsk4W+jY8vdGBSyFA/xVHLSw8uUmfjy/OqFPOnPWzYJINUlNWHfq
-         say06cWu5c+TfmPFDbyGm1ThBq4mqhf5EN3nSOoJqjMBLC7BuolFSi3/SkAs/MHYCXRd
-         F+EdzDT40z3NphdsEzQhJggUVgvkieOSh1JwfDKhUBDjjw9RzhHZVvAXm3pI/2am+b/z
-         KwzQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWL2eog8gaaD+S4ENwH9Cauy9vt4X9X+ABWtHcQUmD2aJQKFYSYbbf5EHKQrrljOUnpQ7LSn8Vx4w==@kvack.org
-X-Gm-Message-State: AOJu0YwJbj7Cv7KB4gH00Chyqt1na0ImPSZsOgrrbhCvjMvCGOdY3vyj
-	ueZc48qmLZ8T4l0YaV2xCqnYHcyYKgdbcO2r5Q+JYnSSdvaWxt06n6cFdJMzdDShd1vMptEAcl1
-	gEX2+uilOr6+oysfEwnws6DvL1MixLfdOGoBvdLJ+
-X-Gm-Gg: ASbGncu2rsSosrStIWbUWO1QuzvQknOcZKa73XkvCQXRfTOZW9erXJTSiuXpo3djYq9
-	ac3Rnnv++6JEgtZ6VNQKzlK5EWcPyqzliRxjQ/VTTfdYsSNKOtuF7NtHk1n18f3Pu31syVOKFmt
-	aKyZzNVVoJB11iH/J4Zqnx+OSUwMw6p+vrLyohr3UlD+QOh3mRVBmIatp8+ovX094/4N9+rKpro
-	UcctXJoEcJBCfiphpeOssg=
-X-Google-Smtp-Source: AGHT+IFmFvmuMn+gst9JeecVjoOqDASQ8FiGmAOvs5QtdO3E6xy+fy2CjLC5X+Z4o1NPGM2DESnpaITFOKT0WwBaSWY=
-X-Received: by 2002:a05:622a:1a08:b0:4b1:22f0:8016 with SMTP id
- d75a77b69052e-4b78b78b205mr803781cf.2.1757705892211; Fri, 12 Sep 2025
- 12:38:12 -0700 (PDT)
+	b=06I1/JnXyYsS4awJ2Rp4woF+AMhvGBKHXX7WRiL7NOV+PXMHUgMZ3VExzvMcK417HRhJuf
+	d/5zrZbC2JyNtY30rV5gmeaLE50cXxqkEzXrxm0o51yuENRC089uU0KWji0gdmUrFXNaXk
+	huXk2HNwK3HUDYLsIcv3hqZq9Bt2B/8=
+Received: from pps.filterd (m0089730.ppops.net [127.0.0.1])
+	by m0089730.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 58CJ7v1l2663110
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 13:06:50 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fb.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=s2048-2025-q2; bh=XDrxit+4/wDzPk/43t+M
+	gtkBccOuXiTPH9TtU4SBEDs=; b=hoEvy0Wr6Zma2xPs7AUSnoWBbsogAwmkUU4l
+	9YUFY1ov5IqQAKGk1y/yrxb4k/EKe9rLtpDJtTA0Q/STSSkAZR9a9bEyT1K0XUoo
+	3RZuxAi0GUunhBRKlj1yMSscuuUiM8QZWfYQzqdl4Wara0I251WNa5oEeVgALGqV
+	2O6oBKyGNKKwn9uQzSO14jA3S/ADSOcX/1VunVrgeeVIsn4qJ8tX6Rs5mBk3g8PQ
+	MeiDyRIeFPHoEuC9dNDKabtQq+dY1RMdGfhugq9dXEWyVihp+Aa6nrUTZw8lNqz8
+	KYjiizQMxvqyeNV4sHhhWU5Lv59scMG8iHO1JMnrnR1VVtw5aA==
+Received: from maileast.thefacebook.com ([163.114.135.16])
+	by m0089730.ppops.net (PPS) with ESMTPS id 494ppvsu43-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 13:06:50 -0700 (PDT)
+Received: from twshared28243.32.prn2.facebook.com (2620:10d:c0a8:1b::2d) by
+ mail.thefacebook.com (2620:10d:c0a9:6f::8fd4) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.20; Fri, 12 Sep 2025 20:06:36 +0000
+Received: by devgpu015.cco6.facebook.com (Postfix, from userid 199522)
+	id 7B405DDAB9B; Fri, 12 Sep 2025 11:55:29 -0700 (PDT)
+Date: Fri, 12 Sep 2025 11:55:29 -0700
+From: Alex Mastro <amastro@fb.com>
+To: Leon Romanovsky <leon@kernel.org>
+CC: Alex Williamson <alex.williamson@redhat.com>,
+        Leon Romanovsky
+	<leonro@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>,
+        Andrew Morton
+	<akpm@linux-foundation.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Christian
+ =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+        Christoph Hellwig
+	<hch@lst.de>, <dri-devel@lists.freedesktop.org>,
+        <iommu@lists.linux.dev>, Jens Axboe <axboe@kernel.dk>,
+        Joerg Roedel <joro@8bytes.org>, <kvm@vger.kernel.org>,
+        <linaro-mm-sig@lists.linaro.org>, <linux-block@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-media@vger.kernel.org>,
+        <linux-mm@kvack.org>, <linux-pci@vger.kernel.org>,
+        Logan Gunthorpe <logang@deltatee.com>,
+        Marek
+ Szyprowski <m.szyprowski@samsung.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Vivek Kasireddy
+	<vivek.kasireddy@intel.com>,
+        Will Deacon <will@kernel.org>
+Subject: Re: [PATCH v1 10/10] vfio/pci: Add dma-buf export support for MMIO
+ regions
+Message-ID: <aMRsoUx/NH/Dspm9@devgpu015.cco6.facebook.com>
+References: <cover.1754311439.git.leon@kernel.org>
+ <5e043d8b95627441db6156e7f15e6e1658e9d537.1754311439.git.leon@kernel.org>
 MIME-Version: 1.0
-References: <20250909234942.1104356-1-surenb@google.com> <20cafc1c.a658.199394de44e.Coremail.00107082@163.com>
- <aMLvCCZbmpSE/aql@devbig569.cln6.facebook.com> <902f5f32-2f03-4230-aab0-a886fd8e4793@gmail.com>
- <20250911143132.ca88948c48df874f71983218@linux-foundation.org>
- <CAJuCfpEoWtgv8k4vApkGsNNUYFBnvS-N2DPQu2JrreCUPbT5dA@mail.gmail.com> <aMP7g7ts8n2Gubql@devbig569.cln6.facebook.com>
-In-Reply-To: <aMP7g7ts8n2Gubql@devbig569.cln6.facebook.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Fri, 12 Sep 2025 12:38:01 -0700
-X-Gm-Features: AS18NWD6AauY0FbZgSwcBpoAh8LOEeedT2LpwLIFm0sZjdQgHEGT9i9EDpb1gFY
-Message-ID: <CAJuCfpEy7kQdDzU9GR6T=nz7HB6EnSkfx3vXmTBEuvJPqhxyfQ@mail.gmail.com>
-Subject: Re: [PATCH 1/1] alloc_tag: mark inaccurate allocation counters in
- /proc/allocinfo output
-To: Yueyang Pan <pyyjason@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Usama Arif <usamaarif642@gmail.com>, 
-	David Wang <00107082@163.com>, kent.overstreet@linux.dev, vbabka@suse.cz, 
-	hannes@cmpxchg.org, rientjes@google.com, roman.gushchin@linux.dev, 
-	harry.yoo@oracle.com, shakeel.butt@linux.dev, pasha.tatashin@soleen.com, 
-	souravpanda@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 87EDE180005
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <5e043d8b95627441db6156e7f15e6e1658e9d537.1754311439.git.leon@kernel.org>
+X-FB-Internal: Safe
+X-Proofpoint-ORIG-GUID: GAaXQjBvE3G87BJHWZAj1VM4UyYO5OoL
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTEyMDE4NCBTYWx0ZWRfX+FAPD3oIbNYM
+ fInFKTafIVOLLf28uSROS91+mXpSKuY0OdCEj01c/0BDSwQLgwq2Vu3eCj9jj5SZXTVcA/VfhwO
+ NC6ex5T/TRe8IViHns4Lkd9TXKzpsHlHx6GdXYhLx6jIW4Wug59uXB4LHufKpqASp4VrLqn7CRy
+ d546fIKForNDgA+hZnpYjhwkXAA+sLNbWL0kB/Ft7Al79xKAQOr68xxookGUxsbm5l3h3WrBXs5
+ ORveSHvEbEjkgtENUOArqcOLAPKTBSkeUK0UJn/C1Zed+wCzKMoLajUjorYLHJxOWPyaMH/9coz
+ 6/TLhwLppI0Ii/6Lmzwp5lqZacMFAfD8xTK4lNbchEXfx81fLaLtcoPxTHNIX4=
+X-Authority-Analysis: v=2.4 cv=TdKWtQQh c=1 sm=1 tr=0 ts=68c47d5a cx=c_pps
+ a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
+ a=kj9zAlcOel0A:10 a=yJojWOMRYYMA:10 a=1ZiGsszX2omsYK9W0xoA:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-GUID: GAaXQjBvE3G87BJHWZAj1VM4UyYO5OoL
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-12_07,2025-09-12_01,2025-03-28_01
+X-Rspamd-Queue-Id: A6B25A0011
+X-Stat-Signature: pc16d8boogjyk8j4r5yj9x5em4q8zixt
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 5crdif33g5dhggeex6tw7e1rfd6sjman
-X-HE-Tag: 1757705893-760253
-X-HE-Meta: U2FsdGVkX1+8SKnzdrEzM/qWqdM2eWPChxkyrELeHsbrOxeCkkpS15c1ekMj5SP+syNml3ajCY0ixMhG7Ua01vfwo32ezmlmFlr9gz9AOIVXFBS6zHb9Npj/duTwQh2cTOMnBgP3jTIjRptsIdLztfPynCg9CpY+mw96h0RdNVDz8Y/AYCYXFXPnZx4ZCGIYVG7Y+hEjAQQU4wF9gNEnQkC+F9y1SXa9UYTPT09wipM4h+yrEPWEMoww8/fFxJWTVJNI8H9XESjsTyxTml1fE/jUvhAC04rQgvsqPlSTbwjZ0s5po/1ABkpR0tgoZBRg/m3N039XEXuEL+7GSqtClP9qo7xKt+LN8zTAv8IfFG/jmYAUuybXVtlaz5rIGA1V2dmLmrZqosewyGNrNl/+xSLL/xz8MsFNc2VUpeAo+4CkljcIYdV1+4AhDERTB3y7U/lczVQZx8nTdTb641dAkzVlcO/ap+ZOLajLoGjQEaDTHBYUP3G7lzQ/jKdqIUFJ1KWN18+V+YV/wwp2GeiTHYrmkVkCLUDU2d0UKc07km6OPUUYv5c8zigp8LWk9Nl24tu4LOUiIh0krIZwBQa0Tj7i3BMPdUOLdq79+PwakVmWgjM6AT0qN3ur911qjIoCAnNhKh4aI/fClCrzWTQTG5lAOeFkVcwuSN3J+HCYiyJRieVYzlhIU8L3Mdexdh7XZXB3zTwlKsQmIBTmpNBCBca9/HObpsW9SSkDxxtN2XIgGg51AtP+7OJlyAvIn5lZIT3Ofssk3J8V+1/LuowkS+HDX0vVJuRtdUgTtBf9KYLMKfGrqtNrBudgXGN/3VE/1yzrrn68fhbewpLoFc2EJtuPodTjqCEw/9mXMyvd6UqGjfQZuyqYsBYfMqpOErw9Yyr8Tt/cwWYEBK8H0j63+eW9mqJhn/TylL6m0BO7RPP/bitXSuyQc987ZeTX9yWYu/LuvVYpDfdZ9zrA29G
- WY01BaDd
- l5AySTq2w9LY1/LQww7aExu+K4YMmjA28tIUw1wu1bkhehX0rMSHxROdAfFKqOUzHxUs2Lip4SiL2iBjSKm6YJeCBGRz0cFl1LBC2kWVx/IG/JxprrJxa9ZzSHzS6PN4Zk2EXNJy8x6yViwibzMUymEa+z/budUTEtH+Bf+FWbl78NnKxTfG7ACUKUNuO9iILLrRiJvQGQrA32s3va8a65zDrQjV/mrBjwVyHQQol7uol+8XjPb84fvFGL7zcuzEbXoOvytibFVJ6i38CPd3zwwfAJIhJvw641PULwHfw3G0u1tpUf706Zo5FetybQbNwaUk8XjNw0IRD3m8=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1757707611-528775
+X-HE-Meta: U2FsdGVkX1+6KRcXqKIyeMANQgFxHYWw8KCBAAjhLdcXwA+Qk+e02WhvJlmQVBJ/KQPBF9P3ydF7daJGa8lOV9iMUi0Gw/w2ezf4ARkWw7txq5KDQUACTBwbLxw4tXA+PJZ/Bwz//qP7eyFRtcHlGkAZsNz3AzwW5FY1Re6dMt9M+nDjL+tDMzKuaOFzgtTHHP0XGWG+PtTgcr7yMXGous5b59FJVo3lPKNZpNqgrlddI2o9h94XwOC0YinCdgBvaKpEw37+9FnHqSO3QmTR7qOUoCDHIum7Qz5QQ0HGQIej4IMcQgJdV0B7fB6KXWPuHD2TQdRYLDDvF4ao7BoHUM92ctvEQN1YhE4VCGqNQcKb+i1t1jccHqT2T/J2laqWutdui5i+KP7OQLg05y2PRCDInYMS9Iv03zfn/wKDj2j1HuM5Aozp0ZbhbwcubHHZHdV+UgFZwqNrv/5OzYyeYpH3I2hPq6ItRKWpQBncvVCZZFDahxuaPMJ1EkCFszaXiQeQyo7ev5KvOfCpAD0xRq/lMnmtlMBQ+kXJ7TLHTPXYZ1vFqImsDrIfkeAS5J6fIkijIuxUArnM2zZSGbczwt38ve35B9wjXmhCMh1HFClAa6v3bo7sXqrnCJ3KdsOuUTk2OP/ahN8LPShU7lktfy5wuAf990bosTxTuLrLTgxv+4a7/haw7iwu3CC0y7M+wumsnVeUKTWhJGhwmTB04vZ/ONbsledT8ZxxSQdOLJIgjaVGscIPzzTxsgVj220h///oegrFSN1qsN5ECCmPnqTiaDjBhCaSlmg8YPxPyhGDl5J/LDFJduuHqalZONccjJ0lDtkIGDCCjaPdWHzKYctcmTWxYIQ0K877VrjgTC8pYC7fv0fhom+DqCRA58Yg6kFmHn5SnPqVslRiXuzXS3GLutE83zVtPAvQvzJ1/wuW0GGKgj9tIDltlizweE7cya6H+io5LobPrC5SFB8
+ hUqPZWhB
+ w1aEJJvb9WKcNtywERZRNBGDL7vMiDluA57WSc4WuiZsHe61C4Uu8n8dZPyemVpVgpO+hle1/7K2zrcEaPzmgp+7+L6UGqokq9BNxNx+z7qruQX59OXIIdivxWaMq+WFalT/C+rNs0dxrdiMGKjtUTXVaj35Iv/XLjjOAvQyEcRfufcr4C1Qp/ejKHIbgB1ge/SMLgNHsPcvTms9mA2QjfGrZbSR99BsyDXyMhCpW5iaPgZ/OJ4l8pvCn2X8B6rL4TKnkFW1x0KJB3Zz7t2lUAI/ONnMl1InbiX3w3chtA9CrqUnefUd0GzmNgQxGnIflE811a3cyoUC91wXo5L12khus/iqpqz9CC4BJzTyfAKyC/uChm7lPOQek4TXouSSFGVWJ0L2TktXhTciskVFOv3zaZKQ2gXE7rETYAEZVYYEtZFM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,72 +137,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 12, 2025 at 3:52=E2=80=AFAM Yueyang Pan <pyyjason@gmail.com> wr=
-ote:
->
-> On Thu, Sep 11, 2025 at 05:25:12PM -0700, Suren Baghdasaryan wrote:
-> > On Thu, Sep 11, 2025 at 2:31=E2=80=AFPM Andrew Morton <akpm@linux-found=
-ation.org> wrote:
-> > >
-> > > On Thu, 11 Sep 2025 12:00:23 -0400 Usama Arif <usamaarif642@gmail.com=
-> wrote:
-> > >
-> > > > > I think simply adding * to the end of function name or filename i=
-s sufficient
-> > > > > as they are already str.
-> > > > >
-> > > >
-> > > > Instead of:
-> > > >
-> > > > 49152*      48* arch/x86/kernel/cpu/mce/core.c:2709 func:mce_device=
-_create
-> > > >
-> > > > Could we do something like:
-> > > >
-> > > > 49152      48 arch/x86/kernel/cpu/mce/core.c:2709 func:mce_device_c=
-reate(inaccurate)
-> > >
-> > > Can we add another row, saying "the previous row was inaccurate"?  I
-> > > guess that would break parsers also.
-> > >
-> > >
-> > >
-> > > I don't know if this was by design, but the present format does provi=
-de
-> > > extensibility.  It is basically
-> > >
-> > >         NNNN NNN name:value name:value
-> > >
-> > > one could arguably append a third name:value and hope that authors of
-> > > existing parsers figured this out.
-> >
-> > Actually that sounds like the best idea so far. Currently the format is=
-:
-> >
-> > <bytes> <count> <file>:<line> [<module>] func:<function>
-> >
-> > We can adopt a rule that after this, the line can contain additional
-> > key:value pairs. In that case for inaccurate lines we can add:
-> >
-> > 49152      48 arch/x86/kernel/cpu/mce/core.c:2709
-> > func:mce_device_create accurate:no
-> >
-> > In the future we can append more key:value pairs if we need them.
-> > Parsers which don't know how to parse a new key can simply ignore
-> > them.
-> >
-> > Does that sound good to everyone?
->
-> Yeah I agree on this proposal. We can keep this convention.
+On Mon, Aug 04, 2025 at 04:00:45PM +0300, Leon Romanovsky wrote:
+> +static void dma_ranges_to_p2p_phys(struct vfio_pci_dma_buf *priv,
+> +				   struct vfio_device_feature_dma_buf *dma_buf,
+> +				   struct vfio_region_dma_range *dma_ranges)
+> +{
+> +	struct pci_dev *pdev = priv->vdev->pdev;
+> +	phys_addr_t pci_start;
+> +	int i;
+> +
+> +	pci_start = pci_resource_start(pdev, dma_buf->region_index);
+> +	for (i = 0; i < dma_buf->nr_ranges; i++) {
+> +		priv->phys_vec[i].len = dma_ranges[i].length;
+> +		priv->phys_vec[i].paddr += pci_start + dma_ranges[i].offset;
 
-Ok, if no further objections I'll post the next version and will
-document that v2 allows additional key:value pairs in each line.
-Thanks,
-Suren.
+Is the intent really to += paddr? I would have expected a plain assignment.
 
->
-> >
-> > >
-> > >
-> > > Whatev.  I'll drop this version from mm.git.
+> +		priv->size += priv->phys_vec[i].len;
+> +	}
+> +	priv->nr_ranges = dma_buf->nr_ranges;
+> +}
+
+...
+
+> +	priv->phys_vec = kcalloc(get_dma_buf.nr_ranges, sizeof(*priv->phys_vec),
+> +				 GFP_KERNEL);
+> +	if (!priv->phys_vec) {
+> +		ret = -ENOMEM;
+> +		goto err_free_priv;
+> +	}
+> +
+> +	priv->vdev = vdev;
+> +	dma_ranges_to_p2p_phys(priv, &get_dma_buf, dma_ranges);
+
 
