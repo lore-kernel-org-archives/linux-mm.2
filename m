@@ -4,85 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04B94CAC582
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 09:18:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65487CA101F
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 09:18:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5E55E8E0016; Fri, 12 Sep 2025 05:18:10 -0400 (EDT)
+	id C28DC8E001C; Fri, 12 Sep 2025 05:18:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5BEE58E0006; Fri, 12 Sep 2025 05:18:10 -0400 (EDT)
+	id BFCAB8E0006; Fri, 12 Sep 2025 05:18:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 484C68E0016; Fri, 12 Sep 2025 05:18:10 -0400 (EDT)
+	id AA0D28E001C; Fri, 12 Sep 2025 05:18:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 367F18E0006
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 05:18:10 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id F3D2F5AD2E
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9120B8E0006
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 05:18:12 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 545341DF450
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 09:18:12 +0000 (UTC)
+X-FDA: 83880046824.08.6859586
+Received: from fra-out-011.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-011.esa.eu-central-1.outbound.mail-perimeter.amazon.com [52.28.197.132])
+	by imf27.hostedemail.com (Postfix) with ESMTP id DCE7F40005
 	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 09:18:09 +0000 (UTC)
-X-FDA: 83880046740.16.AF352A4
-Received: from fra-out-006.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-006.esa.eu-central-1.outbound.mail-perimeter.amazon.com [18.197.217.180])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 82A3410000A
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 09:18:07 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=tUJYliAD;
-	spf=pass (imf14.hostedemail.com: domain of "prvs=343957b79=roypat@amazon.co.uk" designates 18.197.217.180 as permitted sender) smtp.mailfrom="prvs=343957b79=roypat@amazon.co.uk";
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=gCfCUwSC;
+	spf=pass (imf27.hostedemail.com: domain of "prvs=343957b79=roypat@amazon.co.uk" designates 52.28.197.132 as permitted sender) smtp.mailfrom="prvs=343957b79=roypat@amazon.co.uk";
 	dmarc=pass (policy=quarantine) header.from=amazon.co.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757668687;
+	s=arc-20220608; t=1757668690;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2GKsQpLhDwEigIcg6L6Ns++AnIJyQDate+xl8DCsoZg=;
-	b=OCb5eeOOHTipfq8HMFtaDZFPZdS39pVFQNlkU+MusRWMc/kjYgzQGRFoNGT4aAb+DPGO1f
-	s1v/xEoLL28XA+pnC1hVsV32vhhsC8PdPHkJf3T6vyZDTCvVsbzpJDgLs/Dy91MwZ/J3iq
-	bVl10qZ45KJH69kCMK0XQiHpPBJKgHs=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=tUJYliAD;
-	spf=pass (imf14.hostedemail.com: domain of "prvs=343957b79=roypat@amazon.co.uk" designates 18.197.217.180 as permitted sender) smtp.mailfrom="prvs=343957b79=roypat@amazon.co.uk";
-	dmarc=pass (policy=quarantine) header.from=amazon.co.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757668687; a=rsa-sha256;
+	bh=Ojtm9hG3uDHHN9CPzAzA1kwd7CoLxip6b5f2qHGneMU=;
+	b=LqFA7PozkxYqltTRG3dpZU6SzcAND2BdeWddTlcKMRoAWCv03Yqs9W9ibTfvchS8VS/EbE
+	5HtPm5bALiPPrd3xDlwWP789ah9zj9Jqx5JBD22IWl+H69SqzhCVPgnyHAfe+FPSlrmch7
+	Ohsqan6+O1BMeFMoAAOy2j1apn9by1g=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757668690; a=rsa-sha256;
 	cv=none;
-	b=cEFaubjnSWH2USxQLkPNQtV7KblUry1Nl/7b6GYwIoz7DJc5IKz4eM7F+zwh/rQXMzgNqN
-	xY5KnuGAvBpUgOLFVzYkpdqHjH05d7PypRSFMdaBE/sL9h9le1zt9xjKBkkNKJ2kxREKcK
-	AK/Ekg5Hh4hAJHoqzMVeSqaZYN5SvQk=
+	b=DYHa+XfSqhRDYmelqsatZwvDuDExADWEHdFjQ1CAx4rCa5onLQvUIAl3tsFnbLXAvg39IN
+	SVvODH3TU5tC2grVMIj/pWHtNVAElHMcWtPcIulCESYaWMwPuJD8g8VgQ95M25EqrivW0y
+	UhEqau/G5BZtcJpR4ZOxV63euYvGIAw=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=gCfCUwSC;
+	spf=pass (imf27.hostedemail.com: domain of "prvs=343957b79=roypat@amazon.co.uk" designates 52.28.197.132 as permitted sender) smtp.mailfrom="prvs=343957b79=roypat@amazon.co.uk";
+	dmarc=pass (policy=quarantine) header.from=amazon.co.uk
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
-  s=amazoncorp2; t=1757668687; x=1789204687;
+  s=amazoncorp2; t=1757668690; x=1789204690;
   h=from:cc:subject:date:message-id:references:in-reply-to:
    content-transfer-encoding:mime-version;
-  bh=2GKsQpLhDwEigIcg6L6Ns++AnIJyQDate+xl8DCsoZg=;
-  b=tUJYliADo9GpxA3xk5tDFukreZ6rFlK5ipjBshJLszlLEAcHcz1pnzU2
-   UmRTO3dUXAawzW2MS4HV6RtxcfiKwRtKRvZ4jkIXdCQf25ba1YKe//t44
-   S7L+BNd4GYIkm84u3NXSRreEerk2f+qpUPhtOlxdwbWOArCUsm+AxK0V6
-   gcfry4edhqxChSHfQVOYeZy5/KHEDypDYpYUYkC6YghUUldNzVg1o6F0Z
-   S0F6f2i8tqmtRh/xO8A6C3czZD8fgsrvheKjBOOaB8LwYVfIDlXcnPU7K
-   H3FeMwcx541LdroXsULfuKllZdYDZiLnEnIRPBqEBzVIEnhdK6uyV+vG9
-   A==;
-X-CSE-ConnectionGUID: EQbxnKQwQYmgqUwZT2/W1g==
-X-CSE-MsgGUID: TxKdpCE+QeCObZn1Jdms6w==
+  bh=Ojtm9hG3uDHHN9CPzAzA1kwd7CoLxip6b5f2qHGneMU=;
+  b=gCfCUwSCYRds0KIQrSrU8dDW8BefAUliT//2kIFd0ukbpP8hEnpa3Uzc
+   HDV6sqmGMdeKfgpkgzJ5iJ6WvWmpb9D16xSyOy0Nko60VXZOLQ/CjtuFy
+   LARkmQDfjJ023YhcgBdf9haIRcf3ljKFX04JbVAlNUHzuGVgkyZ3NMXzZ
+   4MqDEopUW36F77mRWyoQYD9N5d3zU2lO+T1hIdeykDqgSJbomZpaalJgZ
+   zpyHnyYO+oF+XEb+xcrNNd6ArueP33t0TOshQWaG6xa/yL/xKnCm1EqYc
+   jMWH/3VxRFmid0aASERAFquLWKraWkAHpgI84RKHKgFmawoC+ZZAzxTXC
+   Q==;
+X-CSE-ConnectionGUID: pZZ13Mj+TDqV8Gs/7yExlA==
+X-CSE-MsgGUID: RfZcwfpiTzSibRHA+5TiDQ==
 X-IronPort-AV: E=Sophos;i="6.18,259,1751241600"; 
-   d="scan'208";a="2009018"
-Received: from ip-10-6-11-83.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.11.83])
-  by internal-fra-out-006.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2025 09:17:57 +0000
+   d="scan'208";a="1903318"
+Received: from ip-10-6-3-216.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.3.216])
+  by internal-fra-out-011.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2025 09:17:59 +0000
 Received: from EX19MTAEUC002.ant.amazon.com [54.240.197.228:4257]
  by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.23.240:2525] with esmtp (Farcaster)
- id 333abaee-5346-466a-a477-4aea92fee266; Fri, 12 Sep 2025 09:17:57 +0000 (UTC)
-X-Farcaster-Flow-ID: 333abaee-5346-466a-a477-4aea92fee266
-Received: from EX19D015EUB002.ant.amazon.com (10.252.51.123) by
- EX19MTAEUC002.ant.amazon.com (10.252.51.245) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Fri, 12 Sep 2025 09:17:45 +0000
+ id 0791345b-5f96-4e3a-80ef-d080c8c5816b; Fri, 12 Sep 2025 09:17:59 +0000 (UTC)
+X-Farcaster-Flow-ID: 0791345b-5f96-4e3a-80ef-d080c8c5816b
 Received: from EX19D015EUB004.ant.amazon.com (10.252.51.13) by
- EX19D015EUB002.ant.amazon.com (10.252.51.123) with Microsoft SMTP Server
+ EX19MTAEUC002.ant.amazon.com (10.252.51.181) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Fri, 12 Sep 2025 09:17:44 +0000
+ Fri, 12 Sep 2025 09:17:48 +0000
+Received: from EX19D015EUB004.ant.amazon.com (10.252.51.13) by
+ EX19D015EUB004.ant.amazon.com (10.252.51.13) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Fri, 12 Sep 2025 09:17:47 +0000
 Received: from EX19D015EUB004.ant.amazon.com ([fe80::2dc9:7aa9:9cd3:fc8a]) by
  EX19D015EUB004.ant.amazon.com ([fe80::2dc9:7aa9:9cd3:fc8a%3]) with mapi id
- 15.02.2562.020; Fri, 12 Sep 2025 09:17:44 +0000
+ 15.02.2562.020; Fri, 12 Sep 2025 09:17:47 +0000
 From: "Roy, Patrick" <roypat@amazon.co.uk>
 CC: "Thomson, Jack" <jackabt@amazon.co.uk>, "Kalyazin, Nikita"
 	<kalyazin@amazon.co.uk>, "Cali, Marco" <xmarcalx@amazon.co.uk>,
@@ -147,13 +147,13 @@ CC: "Thomson, Jack" <jackabt@amazon.co.uk>, "Kalyazin, Nikita"
 	<devel@lists.orangefs.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
 	"bpf@vger.kernel.org" <bpf@vger.kernel.org>,
 	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>
-Subject: [PATCH v6 09/11] KVM: selftests: stuff vm_mem_backing_src_type into
- vm_shape
-Thread-Topic: [PATCH v6 09/11] KVM: selftests: stuff vm_mem_backing_src_type
- into vm_shape
-Thread-Index: AQHcI8YZpVhjVEUOFEesx4zhC46W0w==
-Date: Fri, 12 Sep 2025 09:17:44 +0000
-Message-ID: <20250912091708.17502-10-roypat@amazon.co.uk>
+Subject: [PATCH v6 11/11] KVM: selftests: Test guest execution from direct map
+ removed gmem
+Thread-Topic: [PATCH v6 11/11] KVM: selftests: Test guest execution from
+ direct map removed gmem
+Thread-Index: AQHcI8YabQ9AygaqQUCaf6AaD/P8kg==
+Date: Fri, 12 Sep 2025 09:17:47 +0000
+Message-ID: <20250912091708.17502-12-roypat@amazon.co.uk>
 References: <20250912091708.17502-1-roypat@amazon.co.uk>
 In-Reply-To: <20250912091708.17502-1-roypat@amazon.co.uk>
 Accept-Language: en-US
@@ -164,14 +164,14 @@ x-originating-ip: [172.19.88.180]
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: 82A3410000A
-X-Rspamd-Server: rspam05
-X-Stat-Signature: iq8otqqii4jqkock46nfkydypcmqhney
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: DCE7F40005
+X-Stat-Signature: xfprgqkdzwhn4rbw75jtjbpxcm8b4r6n
 X-Rspam-User: 
-X-HE-Tag: 1757668687-487290
-X-HE-Meta: U2FsdGVkX19ThuZbROeVjfVgImezHQqt5/3H6oDpO/3VEq31w5Yh6W042AVJJIVElF/Akd9UNZmSWvZy8VLffZich9IYc0rvq117zvCA5h5pwpgAwU4bNDhbvrKgz/9oZTqPtY7/r2YPc73SLpQJSMB+J4GTW4yTaD7hbJ0xk9Pumq+P3NQsHyUpniyXhYO8kQhmshG95bYEiUhnZ4WKZRFasYkFkt/M99vYwKshnPcsXKsYaNra5fDcPA9u4jOzgtSjjCJJDMWAbWgUvLin0AdQsHdDfjcpdaLUes/vP9bY3hD0ekDwhL1BGhPLxVgeQ2AIjstoq/Lrs7hAMLCgkw7KoA7204skobOuWbqhTYg23ZXs2RLHVAiY/XazYPfAhxHqstQp1+1jwiATNt48aHd45SZalovPsdrToOgQW7B6Fw0rMIjWdcJBQ16S7cd7jVSzYEthq5g2vtqZ4E3WdWsMgeXcccasTvGzd5I8tZovMWfPBr2fy/+KKEKnSIu+XLJNZayz9BzbE8WFWWWV21wGlRBzjqmOjXuxnEIEsxu5TEMFoJJpdfbSun+kebsJ51tyz3LtqT0iYcV3cydxPaMmsup2sxxseUW0OKDSB//vXTjW8LOCN84yGKVe6GY/xYgqv6WfNstGgaRk51xhjDBpYAHO/roSl7ETGZeJm9V0j4V5a8mLfKLlhYvRLngLTfXiEoqOkly4BmB1flHKOrQm9NEdTrbpW4TTdYgPQSqkNSq4rpom70kvaSrqTYl5ZTaLVz+S5ALWP5BAAhLwDLfqxZArm566mbjOSF2I2l6iysIw473zaF35vqLb6A0fJJMXWu1LU94bO474gzcVVBEytlNuk0xe708ypWtnOYI4BFbSwPXlt2bVzFk7mryByzd5xATDDRaBjpDjp9NS4kyPdR3IV501tJL4cQ+Cgq17AeT1s4QmoHXQA/Rpxy4POTdxAF9wTEPoHeEaGNR
- JafA5+Ia
- dMWEkjLKJnLJMge9cbYZYcPuYrNvhGHVAsBBnOXS4bKfqo0unJKGeBKTKYbm/596F1JHtYlqhqv59VSqzS6Ksbz3zXDAttChNyxBj1e50lUJJj63ABbSBhUUamYdpvhC7UjbH3gHW2BFy+5V+ktNWb4hRukNifpcRWIMEptpYDFckCtp0yETGSsAtEnO5q1ROqwXz2kXw1CHr/H4IFG+pxBmeSDtN4DTiPNkIQnn+UhhscRVKR6ERCrD6mbFJ3/kNp445M77PWqm2slLkii1AOtcp42oHCdHRzpwGCWXsNK0RLIYNehcjVDR56lWU5qgQfJnuleasQLMwnA8RPzEkSeexXq7U5qd/9Er0DNg7iUZrXTzVqh8+4iwIu7IW3nQRMG4242hNVglqTy1dB6ezusSGXtYbn+DYjK5gOSR/K8ZS11/OL8KF4aLWd8NLdI7qQMweKDuxWemmwFqPhtHpPR9S0n5E/ObdflSLoYsf4KvY3yUSk3yu0ovPWqsR90qdL1fYYwu//a4yZ6iLvD+PG+96xBguYiJg3Nfl+RCBeOW/HiYCLy5EUQ0r0C7loqCfTGet9/Zm+ioZib2ghIo9EVEHpiTPSVW0l6SQz7CT8yog4sRYK9a3VQPwyRTSZJq0k2KyYkTq4FqsHkcIPlc7lYRVYMjoVR05MDJcGXe19Aqy4VTAAP0nDZbQn9IxiTNAuM0OoGIsC2gry3qB0lUidUM6m3qLVJXQl/a668fQ9suZg2zoYZzye+2TWnrZJ2PKSIfQhmqYF5rKQ0oiru48zD8KHf5lOM15UdguG7RrtR5XA85OiP51PyV//2xWcuSU4HIYQ3+K5enA1zLdY26WWJ+cSStnNfPkzwMmfE4iEegaVUA=
+X-HE-Tag: 1757668689-531344
+X-HE-Meta: U2FsdGVkX19Q56KhSXlDFU3CurFFzfrzlJHV0bkucamTkdvhZm5jAktu1Zi2UemWwYE1hP8wkRHXATmug1j6/rvFSiCI8GsIiwykkpBY737hLl9+aygy5s+fODDAJKreXmtZkxsnWp0jUws5ub0wBcwHek/qgvggTeMCTazOk2c7RMceIKlU+Kw4bC4W5+8k5rbA03lxowzFwsFlf3GybMQ+B1XZqSsibYEmrw6HxeZHYGmuftLsyVNqjerRxHgn+o7PLcAAYRq96RfKaC/fsMP6/ObOU//4lUkP0ZGDxyU8DRDBRryW0CSVpqJIw6xSERYwg+/qNMvUjjRCWb4vdCJTIo82xSAE11K1lRJbOp81Zhzaq3LI1dzInC6OuaxpYni/Y52dYibH5axegtDq+6zDhb8WGmgcKDQ/hcdAkKmvy9rKMY43KrhSA/K8Q/qP1MM3iWpRogsld/K0jpec1EVw1WMeBGoYr3SqPGyUnLPnzU8ZSTtL6865btc8+hamTy855PzRF83kyIhiHY1visdm80HML5ODcUWzAna0P2chB7qOqDQwfEiy6S2oUgtK8Mw6jcW/YEA+XAUlLK1Rmbj/2HEBZ4lAn0kfxo5v6A0WldM2khIc1axUH93K3cIZkMSXOjQHGn8o+z0Bym2+TEPywD295QUS2piOWSAzKGDQpAzBL87QsKGVhy4n7dAA87hWq4/3B8NHuio+RLNiZ/gtk9SFXkgn87mhEuVWdBf9y8f/sU5s7RltUPAteKo9veVxBPkHwiXB3tsEIE9ynuQSzAZM3A5fzv7uDO0wmdofaxPNU8KRePOte2m/sOBAxnNTcGbHTDy9xdpAwCiSZjjLI08UnSx8mYvE3+JUxgzwwd2vrOCgQ2NMnBgUXCks8/IyE1n5puWuHaPcGQDgBhqUXzjPQAySRRUud+9GWiNKRPaCZn45l+cKujMNC5dQoTgdImGMjCE3v5sajh6
+ KHdFSCLS
+ v3bH8INPkF1vbWPVy3H28X0dbx5eJ6AhWdWZxh6kFxIym5dKTSQQARKwoT6avSuuq8I2bRTsndr4ZTP8dvXxHQv1mvIE/JPe2+RLrj8y8aYtGyt/ycNcxRks0lyXQUMujAI+H0nBRO+RezK4EPSi6CdCK9mvjBmDiATZ7nbDahx3zE9ov0xT4EaLcp6/sm3qXOtCizARc2VxCrkYyLAcYeCZB7KevO4PvxfLBlDC+vg1IkpK2eoVBmaoRRD/DFABhgWqSYCOB/2ArVyo1lHL48RPAdSQabJA0rYe/+PdM35Gu2rupu8fBSfALkGGn/YU0Vsh42LyzSt/nzJdvS6yoWbIuSVacnBvml+yeu65wWhDpMnT2UoPDoYz5/SM93OJNeFzLbhIB86MdRkZv7InnQ+Kdx9msCnQ54n2IAVDWUkvkGWVfjrmDn00JzY6ThiKaG5yL45B3ur1oSA88rCK76k7LNxvJQS3NT5mtL0zUUNYaS+0Iz2ScicdacFawxTjIEXqb+NfwqiPEA1u+XvOILtVolZ5Ld1CLDQ7yZof12AzsvJkoLjIY+Km0zAiiKDmYQOi5EE6gbLSmHhfoGI95eVMYrgFwnAtLpGuXlbvSr6U53I0P+HtpmL7HcrASkiijX3LJKV9EtKMNHceVkU7nxXiNYIsRh3Tsbpxbw1iTEGmxXSx8qt97YVZ1SXc0AU514tgy8wa0pXv9CDq+h7W3204vIAQcA/lg3cWkv/bl4DsVhXRiNlT3Qj3blnmEefiVodvcQ6126rCx2EU0GD00jZ6Jdcs78GGBOgIQrhl0/5ac0gTFbwmXv5P1nw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -180,105 +180,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Use one of the padding fields in struct vm_shape to carry an enum=0A=
-vm_mem_backing_src_type value, to give the option to overwrite the=0A=
-default of VM_MEM_SRC_ANONYMOUS in __vm_create().=0A=
-=0A=
-Overwriting this default will allow tests to create VMs where the test=0A=
-code is backed by mmap'd guest_memfd instead of anonymous memory.=0A=
+Add a selftest that loads itself into guest_memfd (via=0A=
+GUEST_MEMFD_FLAG_MMAP) and triggers an MMIO exit when executed. This=0A=
+exercises x86 MMIO emulation code inside KVM for guest_memfd-backed=0A=
+memslots where the guest_memfd folios are direct map removed.=0A=
+Particularly, it validates that x86 MMIO emulation code (guest page=0A=
+table walks + instruction fetch) correctly accesses gmem through the VMA=0A=
+that's been reflected into the memslot's userspace_addr field (instead=0A=
+of trying to do direct map accesses).=0A=
 =0A=
 Signed-off-by: Patrick Roy <roypat@amazon.co.uk>=0A=
 ---=0A=
- .../testing/selftests/kvm/include/kvm_util.h  | 19 ++++++++++---------=0A=
- tools/testing/selftests/kvm/lib/kvm_util.c    |  2 +-=0A=
- tools/testing/selftests/kvm/lib/x86/sev.c     |  1 +=0A=
- .../selftests/kvm/pre_fault_memory_test.c     |  1 +=0A=
- 4 files changed, 13 insertions(+), 10 deletions(-)=0A=
+ .../selftests/kvm/set_memory_region_test.c    | 50 +++++++++++++++++--=0A=
+ 1 file changed, 46 insertions(+), 4 deletions(-)=0A=
 =0A=
-diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing=
-/selftests/kvm/include/kvm_util.h=0A=
-index 5204a0a18a7f..8baa0bbacd09 100644=0A=
---- a/tools/testing/selftests/kvm/include/kvm_util.h=0A=
-+++ b/tools/testing/selftests/kvm/include/kvm_util.h=0A=
-@@ -188,7 +188,7 @@ enum vm_guest_mode {=0A=
- struct vm_shape {=0A=
- 	uint32_t type;=0A=
- 	uint8_t  mode;=0A=
--	uint8_t  pad0;=0A=
-+	uint8_t  src_type;=0A=
- 	uint16_t pad1;=0A=
- };=0A=
+diff --git a/tools/testing/selftests/kvm/set_memory_region_test.c b/tools/t=
+esting/selftests/kvm/set_memory_region_test.c=0A=
+index ce3ac0fd6dfb..cb3bc642d376 100644=0A=
+--- a/tools/testing/selftests/kvm/set_memory_region_test.c=0A=
++++ b/tools/testing/selftests/kvm/set_memory_region_test.c=0A=
+@@ -603,6 +603,41 @@ static void test_mmio_during_vectoring(void)=0A=
  =0A=
-@@ -196,14 +196,15 @@ kvm_static_assert(sizeof(struct vm_shape) =3D=3D size=
-of(uint64_t));=0A=
+ 	kvm_vm_free(vm);=0A=
+ }=0A=
++=0A=
++static void guest_code_trigger_mmio(void)=0A=
++{=0A=
++	/*=0A=
++	 * Read some GPA that is not backed by a memslot. KVM consider this=0A=
++	 * as MMIO and tell userspace to emulate the read.=0A=
++	 */=0A=
++	READ_ONCE(*((uint64_t *)MEM_REGION_GPA));=0A=
++=0A=
++	GUEST_DONE();=0A=
++}=0A=
++=0A=
++static void test_guest_memfd_mmio(void)=0A=
++{=0A=
++	struct kvm_vm *vm;=0A=
++	struct kvm_vcpu *vcpu;=0A=
++	struct vm_shape shape =3D {=0A=
++		.mode =3D VM_MODE_DEFAULT,=0A=
++		.src_type =3D VM_MEM_SRC_GUEST_MEMFD_NO_DIRECT_MAP,=0A=
++	};=0A=
++	pthread_t vcpu_thread;=0A=
++=0A=
++	pr_info("Testing MMIO emulation for instructions in gmem\n");=0A=
++=0A=
++	vm =3D __vm_create_shape_with_one_vcpu(shape, &vcpu, 0, guest_code_trigge=
+r_mmio);=0A=
++=0A=
++	virt_map(vm, MEM_REGION_GPA, MEM_REGION_GPA, 1);=0A=
++=0A=
++	pthread_create(&vcpu_thread, NULL, vcpu_worker, vcpu);=0A=
++=0A=
++	/* If the MMIO read was successfully emulated, the vcpu thread will exit =
+*/=0A=
++	pthread_join(vcpu_thread, NULL);=0A=
++=0A=
++	kvm_vm_free(vm);=0A=
++}=0A=
+ #endif=0A=
  =0A=
- #define VM_TYPE_DEFAULT			0=0A=
+ int main(int argc, char *argv[])=0A=
+@@ -626,10 +661,17 @@ int main(int argc, char *argv[])=0A=
+ 	test_add_max_memory_regions();=0A=
  =0A=
--#define VM_SHAPE(__mode)			\=0A=
--({						\=0A=
--	struct vm_shape shape =3D {		\=0A=
--		.mode =3D (__mode),		\=0A=
--		.type =3D VM_TYPE_DEFAULT		\=0A=
--	};					\=0A=
--						\=0A=
--	shape;					\=0A=
-+#define VM_SHAPE(__mode)				\=0A=
-+({							\=0A=
-+	struct vm_shape shape =3D {			\=0A=
-+		.mode	  =3D (__mode),			\=0A=
-+		.type	  =3D VM_TYPE_DEFAULT,		\=0A=
-+		.src_type =3D VM_MEM_SRC_ANONYMOUS	\=0A=
-+	};						\=0A=
-+							\=0A=
-+	shape;						\=0A=
- })=0A=
- =0A=
- #if defined(__aarch64__)=0A=
-diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/sel=
-ftests/kvm/lib/kvm_util.c=0A=
-index a81089f7c83f..3a22794bd959 100644=0A=
---- a/tools/testing/selftests/kvm/lib/kvm_util.c=0A=
-+++ b/tools/testing/selftests/kvm/lib/kvm_util.c=0A=
-@@ -495,7 +495,7 @@ struct kvm_vm *__vm_create(struct vm_shape shape, uint3=
-2_t nr_runnable_vcpus,=0A=
- 	if (is_guest_memfd_required(shape))=0A=
- 		flags |=3D KVM_MEM_GUEST_MEMFD;=0A=
- =0A=
--	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, 0, 0, nr_pages, fla=
-gs);=0A=
-+	vm_userspace_mem_region_add(vm, shape.src_type, 0, 0, nr_pages, flags);=
+ #ifdef __x86_64__=0A=
+-	if (kvm_has_cap(KVM_CAP_GUEST_MEMFD) &&=0A=
+-	    (kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SW_PROTECTED_VM))) {=
 =0A=
- 	for (i =3D 0; i < NR_MEM_REGIONS; i++)=0A=
- 		vm->memslots[i] =3D 0;=0A=
- =0A=
-diff --git a/tools/testing/selftests/kvm/lib/x86/sev.c b/tools/testing/self=
-tests/kvm/lib/x86/sev.c=0A=
-index c3a9838f4806..d920880e4fc0 100644=0A=
---- a/tools/testing/selftests/kvm/lib/x86/sev.c=0A=
-+++ b/tools/testing/selftests/kvm/lib/x86/sev.c=0A=
-@@ -164,6 +164,7 @@ struct kvm_vm *vm_sev_create_with_one_vcpu(uint32_t typ=
-e, void *guest_code,=0A=
- 	struct vm_shape shape =3D {=0A=
- 		.mode =3D VM_MODE_DEFAULT,=0A=
- 		.type =3D type,=0A=
-+		.src_type =3D VM_MEM_SRC_ANONYMOUS,=0A=
- 	};=0A=
- 	struct kvm_vm *vm;=0A=
- 	struct kvm_vcpu *cpus[1];=0A=
-diff --git a/tools/testing/selftests/kvm/pre_fault_memory_test.c b/tools/te=
-sting/selftests/kvm/pre_fault_memory_test.c=0A=
-index 0350a8896a2f..d403f8d2f26f 100644=0A=
---- a/tools/testing/selftests/kvm/pre_fault_memory_test.c=0A=
-+++ b/tools/testing/selftests/kvm/pre_fault_memory_test.c=0A=
-@@ -68,6 +68,7 @@ static void __test_pre_fault_memory(unsigned long vm_type=
-, bool private)=0A=
- 	const struct vm_shape shape =3D {=0A=
- 		.mode =3D VM_MODE_DEFAULT,=0A=
- 		.type =3D vm_type,=0A=
-+		.src_type =3D VM_MEM_SRC_ANONYMOUS,=0A=
- 	};=0A=
- 	struct kvm_vcpu *vcpu;=0A=
- 	struct kvm_run *run;=0A=
+-		test_add_private_memory_region();=0A=
+-		test_add_overlapping_private_memory_regions();=0A=
++	if (kvm_has_cap(KVM_CAP_GUEST_MEMFD)) {=0A=
++		if (kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SW_PROTECTED_VM)) {=0A=
++			test_add_private_memory_region();=0A=
++			test_add_overlapping_private_memory_regions();=0A=
++		}=0A=
++=0A=
++		if (kvm_has_cap(KVM_CAP_GUEST_MEMFD_MMAP) &&=0A=
++			kvm_has_cap(KVM_CAP_GUEST_MEMFD_NO_DIRECT_MAP))=0A=
++			test_guest_memfd_mmio();=0A=
++		else=0A=
++			pr_info("Skipping tests requiring KVM_CAP_GUEST_MEMFD_MMAP | KVM_CAP_GU=
+EST_MEMFD_NO_DIRECT_MAP");=0A=
+ 	} else {=0A=
+ 		pr_info("Skipping tests for KVM_MEM_GUEST_MEMFD memory regions\n");=0A=
+ 	}=0A=
 -- =0A=
 2.50.1=0A=
 =0A=
