@@ -4,122 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 989FACAC582
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 07:53:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E8DBCA101F
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 07:57:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD6928E0008; Fri, 12 Sep 2025 03:53:10 -0400 (EDT)
+	id CAC208E000C; Fri, 12 Sep 2025 03:57:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D87228E0001; Fri, 12 Sep 2025 03:53:10 -0400 (EDT)
+	id C56AB8E0001; Fri, 12 Sep 2025 03:57:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C75BE8E0008; Fri, 12 Sep 2025 03:53:10 -0400 (EDT)
+	id B454C8E000C; Fri, 12 Sep 2025 03:57:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B422C8E0001
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 03:53:10 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5AD1711AAF2
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 07:53:10 +0000 (UTC)
-X-FDA: 83879832540.03.891B6CB
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A21738E0001
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 03:57:36 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2DA341406DC
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 07:57:36 +0000 (UTC)
+X-FDA: 83879843712.24.AD3BEE7
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 1022DC0009
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 07:53:07 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=EMvgFXIU;
-	spf=pass (imf22.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	by imf18.hostedemail.com (Postfix) with ESMTP id C17101C0006
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 07:57:33 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YZsnxfOD;
+	spf=pass (imf18.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757663588;
+	s=arc-20220608; t=1757663853;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p22hl1mxPQvYXz93krcBnYpXobl8Fk3Ezh7wV4Ywahc=;
-	b=5cVGGGWsTEHLYqzbdvZLml7Lmaqj+SmzCKuiwFMNl2BLfGBmh9Krtw4kDBWzr9Tc+1We9M
-	SguM55DsHNEIWC+k4COtrmpAJdAVqX5gatHU7DElYMJiOxzkDhjjFMoN+FhWhbxNeTumvL
-	rZnt3QhwGEMZBkNi7d534yhE508ezkM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757663588; a=rsa-sha256;
+	bh=r+PqVYBDLbo+GI2XNIjczAPm5r0PaP1XGtlnWHDNHZk=;
+	b=txqyb0BfQMC/HUGbDq2zIW/qieiJB3sBxne41KRpuT7ubeLIHlBre+3b3qSc/dOPEGnLkn
+	Hkg+LSg0R3GaKTQHKcKLvkR7J7JtFiDDECIZUfBxR/hZXSyaLZ+xJFUFdw5N5jxxbfhkGl
+	5y1hMamw2m2YU5ngQusGCGvx7SUgnPs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757663853; a=rsa-sha256;
 	cv=none;
-	b=4fswmDme1i7u99Gi1lmLfDNb0T6m0yeZIybqdXmqrSAlnDW0FlksP7rzNIdkojXo7q07pM
-	eSBmwAN2GcLWf82pXoFW6gC3yxUOpLSZ8brdLbcj14+tpjKUilG5P1S8jk1c3NEPzxCWki
-	IyzJ5EHVTXmdesmV+7YvQ9/oZ0kE6Us=
+	b=SWkvzC5KX8Ts+HDNYflTt9WNz5yB1Iz3WKcF54HTpH7QbQML+QuHU+P8MtnWw8WcSyTfpK
+	oC83t/0F51cVVKELVt+tzhq7O3edftQg6++yv50gDvJlFvX8ZgZEUkblFe/6m9mfYmfSQa
+	ACUES4yKMiypB3SpO/tCgeyYK4xGLZ4=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=EMvgFXIU;
-	spf=pass (imf22.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YZsnxfOD;
+	spf=pass (imf18.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757663587;
+	s=mimecast20190719; t=1757663853;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=p22hl1mxPQvYXz93krcBnYpXobl8Fk3Ezh7wV4Ywahc=;
-	b=EMvgFXIUIXa306XZljnEvNZRFMsMqgT4/08UBTSWpkKtfK16mGT683nJKPv4pWaHnyBvr3
-	1OQR32aKW/U9IEH3GAggED41Oc28j0UQuuKgS1J6pme65rrfzTOyhECD6uWFZ7hJr8Wg/m
-	Z6M1iXFui9ITHlcwTfgeYcmpzC6SG4s=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=r+PqVYBDLbo+GI2XNIjczAPm5r0PaP1XGtlnWHDNHZk=;
+	b=YZsnxfODrcqQHFT3QrKNrDeJcfGHC85vx3t1KKXbuJTSugN3KrKdgD4fHMiPDYpRJZJIRI
+	Uzz87777EmeASGTap9L9mo42CrC7lKoozp4S5OgQusQRUdFY9BAz2k0mvSE8ejdGovbvuy
+	moP614TGWpOjlaE/6qJTOEj7oPX+3/E=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-656-4bWNB2h4Mh-17ETMZkvBvA-1; Fri, 12 Sep 2025 03:53:06 -0400
-X-MC-Unique: 4bWNB2h4Mh-17ETMZkvBvA-1
-X-Mimecast-MFC-AGG-ID: 4bWNB2h4Mh-17ETMZkvBvA_1757663585
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3e68a54dac2so705123f8f.1
-        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 00:53:06 -0700 (PDT)
+ us-mta-690-mUc5isblNLC_l-IQrcpSTw-1; Fri, 12 Sep 2025 03:57:31 -0400
+X-MC-Unique: mUc5isblNLC_l-IQrcpSTw-1
+X-Mimecast-MFC-AGG-ID: mUc5isblNLC_l-IQrcpSTw_1757663851
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3e7634eb959so747685f8f.2
+        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 00:57:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757663585; x=1758268385;
+        d=1e100.net; s=20230601; t=1757663850; x=1758268650;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=p22hl1mxPQvYXz93krcBnYpXobl8Fk3Ezh7wV4Ywahc=;
-        b=URQjxAmm20qalDkq/WZe268nCl+uvK25H9R+0xVYiziIzPdIV1MUAKHgZEO+IDEvoE
-         0AGGZiZGmSbjxvmqyg3NAj/B6asQ79TYeMiusR8PxND0MoZLTZxtmu63WtpjvF2pfSLE
-         KixERu+7In//a8294TastQpdB852JyTZdmJ4fC//VGEqJGTTpUr8FNOcCMbbqby1xmOh
-         XkjdeD9Od22uszDkocJBmqBFbSxyrOI+g9VLUR3pJ9Kx2OFtqdx5/LOvM9OaiUGm+Va/
-         HihIyITcmXFkSs2aMvfaHMtTFAzyAgLhL9XIBATsswpEnaYdoJQiNGo8LWFcs+I8XsI3
-         IqsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXwDSMDGP6zq8QWNaBBwV4UxXGr+8HkO+vvCZT3e83iusqzr1ce8O5kAuuWBg92cDlNrppkO6+UPw==@kvack.org
-X-Gm-Message-State: AOJu0YywUvMDMMPEK8lrgxmZIqp3RaDy762gidraA9y4xbdlhttY9CE3
-	g/wT8flmPF06DCFY9YgtpCGSaOLZMBBJQqxVhxEcs9eubzKOY3i/C9FAvbRaRgQfmHwb4UU/LXu
-	zpgM+PG+dypiUA34Ld0RdchRFc3fwToBrvkKc7UIXRpB/bSmg887q
-X-Gm-Gg: ASbGnctXD4kWiHuj2cAI2E6k6cKSKawL8IDNcKfN428LHLsZYloZLVzoEoX/ysnMfFh
-	Rc1RKzJBhEDmBYzmkMCt/l3xoMV5XmgaZMOwOwn1eg4dCdkM+LwDW7eIUYBf4W9LcAdWAZw9O0w
-	YYHjxpSEmz5NwXu7XFE34p65tniBCwuLx7H/hNG9A7j8IWy7MTfhUvwXHqPCNhMZqF+VmesPlD3
-	cmhgBPYoP5u3bwP4BBlUgB5myp6nTeKd9+Uj5NsQ37fdghEsWPSYfjKE6M56a/sW0oXHQ3xrlou
-	HvvmB/S7Y0FKe0WYzxGm5hBAE8DFluHJwaS53jyQRVMFQpn9CeUILvHExBb90ZkMXZSJees1t21
-	143iqgajvgJ/j4EXYQXK/SOze3eHxR/tGmRdk2SlCout8JOGt6DcL2qq6nYDIeTbRyB8=
-X-Received: by 2002:a05:6000:2003:b0:3de:e787:5d8c with SMTP id ffacd0b85a97d-3e75e1071bdmr5309931f8f.13.1757663584798;
-        Fri, 12 Sep 2025 00:53:04 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFq7C4qTXd+XsofeMwanjE1i08XNy6UqslUe+yjaLRudd1Ww9k5jR9x6r0SjXc+XP9zCsAuvg==
-X-Received: by 2002:a05:6000:2003:b0:3de:e787:5d8c with SMTP id ffacd0b85a97d-3e75e1071bdmr5309885f8f.13.1757663584264;
-        Fri, 12 Sep 2025 00:53:04 -0700 (PDT)
+        bh=r+PqVYBDLbo+GI2XNIjczAPm5r0PaP1XGtlnWHDNHZk=;
+        b=SG9fb9QmOuiePgqlg5EWb3A2RPVdLV7Q5tqJvqBF2cqiKQ8Am2ndfpJBpp5VWv2bg+
+         qtniyVqtcxOu4RLOhMU+JCau5XxOApHi3PLdvOfaYk+ZrH4xZvFbORpiczgbB8P9Z8yp
+         Ggjexmjqe9377WsgdEjkQTX0TUzZyAu2592Ie4eMx1Z3mUf0Qei6F43eXKAvQc5v/FBL
+         Dj+YOhMBUCTeWXYvq3p63UaiPOKUcZaVYe6PUh/FWC8jFxf9w+VIV75UjA/iIM9ObxNk
+         UWY5mo3eCW9koIyD1E+n3hXp03BG01TB4gq1fKCAn3t+VHbgE3F91NQkh933nDCoIzCz
+         Sfcw==
+X-Forwarded-Encrypted: i=1; AJvYcCUzFrR0YrjWPU+LLB3Xo7ucV9rM45sP/MzaQUWPbvXzjJgawRBXnIF98lCWlDOMJV3NBbo5NkQDIg==@kvack.org
+X-Gm-Message-State: AOJu0YxrXNUnVAO2xPTqnSXMxTHM+4PoylsdW5WUlfQRH4pmVIaKv0MP
+	pce5Os3FV8Aj9buB7bKWPGI5FrBIFhJVW4qCy3t2WUHQoHJMi1Mg68kBl/9aL2wq418EbQCiQ0v
+	AahYl6/oW7b9k/ibTqVKVZMrE9I9GWk0Lb5eD48W+jJxWBPl/duBx
+X-Gm-Gg: ASbGnctT8ixiGEI6pwXbfuG0wUI0+Qw/8tMqsgw8Y8e7sIYnhjFpbiABgrs1j/18QDA
+	1kfYWabQEtYs3kgPt6gW3BPewemfaz8CUSl+1fHc+R27FFzwNR5WiV/HkTBaZdSiV6m0BaHSywI
+	kAGXL26COiFkAk4fGzyQBHEuo+PxrKR7tOdZuUTC3YsHO6xLtxac+D/0sa7cEqhJSlqKR1JyDy4
+	jEEcJkU18p/KnRo2P9J1MUyy97eRfO1dRS7NQkf6gIy5F2qY+SmbCV85Vf5ikS5EfarnqAL1N/2
+	U5JIJ8E/Ln3o1c98R3N+FxKEEPxRAwIHqjC1PIOJjInx+HELAA6yPUGE/UzJ/45xHJKU+W+RLvY
+	QlH2Cg1gT4GlK1EIHVI6zJmtmCYpGgdl+2GU0FCoqqfozVJhR310f7YiZZ7Gdn28kWZQ=
+X-Received: by 2002:a05:6000:1acb:b0:3e5:d2f1:403d with SMTP id ffacd0b85a97d-3e7659e981fmr1992700f8f.36.1757663850562;
+        Fri, 12 Sep 2025 00:57:30 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF5jTihNZ8u71EpurEXi9WIL859gU0373T54vnlvHENg3fNIgXreHhMHhAU/LbYZT2vWSOlPw==
+X-Received: by 2002:a05:6000:1acb:b0:3e5:d2f1:403d with SMTP id ffacd0b85a97d-3e7659e981fmr1992669f8f.36.1757663850093;
+        Fri, 12 Sep 2025 00:57:30 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f20:da00:b70a:d502:3b51:1f2d? (p200300d82f20da00b70ad5023b511f2d.dip0.t-ipconnect.de. [2003:d8:2f20:da00:b70a:d502:3b51:1f2d])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e774a3fb5bsm805305f8f.58.2025.09.12.00.53.02
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e7607e1400sm5516947f8f.55.2025.09.12.00.57.29
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 Sep 2025 00:53:03 -0700 (PDT)
-Message-ID: <a0e586dc-dce6-41a2-9607-f2f64b752df1@redhat.com>
-Date: Fri, 12 Sep 2025 09:53:02 +0200
+        Fri, 12 Sep 2025 00:57:29 -0700 (PDT)
+Message-ID: <e326949b-5d8f-4a35-8116-015e784df421@redhat.com>
+Date: Fri, 12 Sep 2025 09:57:28 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/memory-failure: Disable soft offline for HugeTLB pages
- by default
-To: "Luck, Tony" <tony.luck@intel.com>
-Cc: Kyle Meyer <kyle.meyer@hpe.com>, akpm@linux-foundation.org,
- corbet@lwn.net, linmiaohe@huawei.com, shuah@kernel.org,
- Liam.Howlett@oracle.com, bp@alien8.de, hannes@cmpxchg.org, jack@suse.cz,
- jane.chu@oracle.com, jiaqiyan@google.com, joel.granados@kernel.org,
- laoar.shao@gmail.com, lorenzo.stoakes@oracle.com, mclapinski@google.com,
- mhocko@suse.com, nao.horiguchi@gmail.com, osalvador@suse.de,
- rafael.j.wysocki@intel.com, rppt@kernel.org, russ.anderson@hpe.com,
- shawn.fan@intel.com, surenb@google.com, vbabka@suse.cz,
- linux-acpi@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mm@kvack.org
-References: <aMGkAI3zKlVsO0S2@hpe.com>
- <749511a8-7c57-4f97-9e49-8ebe8befe9aa@redhat.com>
- <aMMNVA9EXXHYvmKH@agluck-desk3>
+Subject: Re: boot failure because of inaccurate page_pool_page_is_pp() on
+ 32-bit kernels
+To: Helge Deller <deller@kernel.org>, =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vu?=
+ =?UTF-8?Q?sen?= <toke@redhat.com>,
+ Linux Kernel Development <linux-kernel@vger.kernel.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ linux-parisc <linux-parisc@vger.kernel.org>
+Cc: Christoph Biedl <linux-kernel.bfrz@manchmal.in-ulm.de>,
+ Helge Deller <deller@gmx.de>, Byungchul Park <byungchul@sk.com>
+References: <5a004aef-9df1-4126-b167-1aae27d4240d@gmx.de>
+ <1756327287@msgid.manchmal.in-ulm.de> <aMNJMFa5fDalFmtn@p100>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -165,21 +159,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aMMNVA9EXXHYvmKH@agluck-desk3>
+In-Reply-To: <aMNJMFa5fDalFmtn@p100>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: DvTcMhqIOFI5y1Ceoxk7klDQZ0rR680SNgiUv1ntk9s_1757663585
+X-Mimecast-MFC-PROC-ID: 4HFgtLcroxaFGa59xlxvJ27tBCM0mKlx34Wll6ZxTHk_1757663851
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 1022DC0009
-X-Stat-Signature: 4ycysukcw3kpx8x4kqnn96193tui6htz
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: C17101C0006
+X-Stat-Signature: koouoyudhss9677yt69kjsc7fi5otufh
 X-Rspam-User: 
-X-HE-Tag: 1757663587-656073
-X-HE-Meta: U2FsdGVkX1+K6xUPH9sLY7tJhObYRv8cIrH9cl2xAtmDgDNY7sbrcJzz01kLFYZIkVAVXMRe6qNXfhhcHxkPkWuv9NiRKd9TISCRuJZcP3QfRvP1pQViIH++RqYvX0z+fn6W4ByYfwUV4M4Upxd3ufghvruGXCatpAtLX6TNlBXh8DHO/PqbHGptFxqLovukvBc6gjznLe935xLVIrKKxZQZzT8ufEurmD2gtfFCrVpJ8Qe4Tr4Omk2ig1bHu0U+lN3PxCWjPs/WYCKhc4FXH+8uj4T2bLeZysKo7AFdPOu2KihVJoYT73DiPfuDOeo7TAheaBCAZw0KF2MHeLipwJZid0KaZngtVlg66vIqFE5nzrF+7o2cH/03WFUBmwK5NSnuE/PggMs4ky4akNnzgYb2+al7tha+H13QPViReHrawYB/4ijh2C83vj5rUrLVNr1za5E66OASdy7DgfmniRF3uGbRtp/R6Q3uMkQSqsG6myf1JTJYS++6EEF42U4igs4Wo2z3zz6N6w4/DIKwdUbcIZf9EUOweRq6k7ItA6SzGU4zWXsbNCELD0yXwqzjyJmJs6wzZk5eavShB7PvU4jJhpfsL/dscbS06YCSP3++T2eL30JjdxuFfxaP6sn6fJFmuELzAt9xjV1d3V08svkOSKauFx+Ob5wFVl+YLDkD65dObtxPpg+H4/Wd35S79twwVV8do1i55Kc/AO61v5JNtCsgUyO77i+KP7EWCCa9XJXQ5grE5rRrxZqLae7xVnd7BVvuHxtucGxY3X1WtFLLD/cQ4hix2jttoP6IYps7juCT1TzDTJr1A1DS5c5SBMaz9jj2BQ5EXvxK45+OfJxP/AYYnxxaiJ7G8gHFseDjxn3cRaKvdEVe89jJnDGU8D5qcU97S7No9TNB0h0AdptI1Xz4OWsQ2apoeYy6WXdT69nJ6wVOlsetVMhJ9uudXikQ005wJRnl9iInAob
- 8vispkYR
- Ilk6C2CsfBogchTpm1t+2+Oc8K41BqVQ8Ic6COljpSHsfCsoVVixmtCqPkFnQ9TDWu9vvGz2Xkwgy15zgCuY5zKtr+VG94VQXZ0Rdgh1auape/eKsymzMxr7TMtt2gTdbrkJWWTOspnhFSQwktmnqPZqHpVfbYI4bEeOcGLBhJwgszguVR+qAkukjjRxSZzA7cX6nI8ccqQA4q5dJ4wf+hQF2yr0s9ZdSBa98LAvvIVYTDxsfp4Yeg5cTxpsUejwuzi7H7akxpVHr4JJAKjuJfj9KKsCL1+I1Mf8YNltv60iVBtXkFcPgRBYP3Rn0res7bBkLThMIoq2fLozxvdgx0qTa0mJrEC2kNThfZDQMFy0w79TIJl2gj5Rr32mGuVMM/O/wMxbdzejiYFWFfRsXbPtSpZ2iDAv7BlyKDDo5Yr1dETm2hWRSPD1yBF3zdXpT2wq0GyViBeRgJY+UdPyhmGN1L+XtxToCccO23NXTLrvuPhyr7gfqbY7jkQ==
+X-HE-Tag: 1757663853-914584
+X-HE-Meta: U2FsdGVkX1850mvc+220SqrxnsmRlGzbliZeeS7V/LtjZczx4E13/99u0xkw01Lk/leU1xYu/Ifyn7t+LHD5KLF5l6EFw2jkIZ9OlaTa3hRaT/0Ksh1+seMJA78MBdZFWfRC7HwUeB8zWk7fBrYyE86UDy4Vc/7Ojcvl4NV4jxc1YjTMMJ3v2M0XkwgRObpAyzf7umZyAoz3i31onj9fMTIKseM3pG6c0PZRmVt8HErP5c9Py+9FV0T5c8uPdzHJQsYJd/m3r1ilWQMb+J9wP2lTS8TBDdiWUTcvIEuapkMfUONhfWSj5gH6XNNgHGiRASahe67S8xvMg+3mn/MzhfateIpMJXJxhWnd85whroh2kLJCFVxd9gGMMQGWnSsa8IYZyvnwEKuHu1rEwFMN9s2WnV6lJVQ3PG1VezkpdApFtKrPy5MP45aAqT95Vl418js3SJOhLMG7D6AXdZ4DqC9HxDSJOC3X2fTDjnik7yDGa5xL68F/aejWYbQU0OMmuiSiq3v0o14pShwk2DsWWbOMfpEqI073IClbi07s/+Ab0k3d8Ac5FFKzvpvR+UX+0pMtKE38N7gUnhttj4jz2OP0QUYD7/E++Ajup80fSNeGOkS/AqRJc/9/IGm4xrGJ0LZIgMbJG2YRZP6K9Gkx3Qsp53fgR0fHyABpEOidbbDkj5DC2lnPwg/FP4JmutXnIWS5JpIKOdRwtRbKodFkfzJGnnMN0EnISXZSv/+6DADb+S5QQy9KM/3lia1uDKvMCmloTJQEx4Yb1ESdLWkWQxMfhapi3QYgMgTvWbB8bG1Z74RJDG2fTadp4VMNlKUucCQHyQRd8NnxGsFh8Atuo6Girzk9H25nlgvaa7T9VRm70Gz1PiO7v6DGBd14ReC1BX9CwuA2o0/QQU14RAGDIk2IgkJb/+jCKfvMC9A6aKbWDUx1hqitXjXA0n2PWhLAzsyJjLS6afLVcMddNlj
+ 7UxbGZZO
+ 8QaXc241xooy+veAugOcjWJysf5Vv/OpYWdnZjOhMuwAxc8jKij78K52sWznJfDIgvcOxTOeZ6xG6GgzSwhINBnhgPV3GJuKJCAKueYkYv1oRw8xjhCX94poi21irpTQ0HbtceoOxK6aanPFNj/eZAJ+AD+EFFT/v6NBrVr4vB81iNDEmfG9TOYzHjDAiNL6L8KRtJj7ke0XK1UGOHY0t6Gz21x5ajHgaFmGawLB/8EN7UexpCu/2/2YnaBdd4feLo2FgsE/N0TPrm7gh0+LdWja5O2RTREK54ALy/OKgOGcWz0orUAEV9WhNdigJLtqSk1vy99vItf8IE54dHaFMQdF4q27dMiPYq+2rdRn1y/qLEHJ3Xi/BxJKYlRwcKojUYzkxBRJsA+Bylj2DAGSZSwhh0QySa+nZx6HI9Wnk4/RlNGEB0PrcVdOUgl55WeMq70BdqnpROAt7X/aXBpKrIAu8SBXtvq/PVdMhlSGcz5w/UK1bfgvcBHZtRWdgF+9w/0CI1WW+uUj6b9ey+tjbuMGLfv9gBSdvfAV/OuDTx04zPkpJWBfh9+m89YMpQ8gk0u5D
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -188,90 +182,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11.09.25 19:56, Luck, Tony wrote:
-> On Thu, Sep 11, 2025 at 10:46:10AM +0200, David Hildenbrand wrote:
->> On 10.09.25 18:15, Kyle Meyer wrote:
->>> Soft offlining a HugeTLB page reduces the available HugeTLB page pool.
->>> Since HugeTLB pages are preallocated, reducing the available HugeTLB
->>> page pool can cause allocation failures.
->>>
->>> /proc/sys/vm/enable_soft_offline provides a sysctl interface to
->>> disable/enable soft offline:
->>>
->>> 0 - Soft offline is disabled.
->>> 1 - Soft offline is enabled.
->>>
->>> The current sysctl interface does not distinguish between HugeTLB pages
->>> and other page types.
->>>
->>> Disable soft offline for HugeTLB pages by default (1) and extend the
->>> sysctl interface to preserve existing behavior (2):
->>>
->>> 0 - Soft offline is disabled.
->>> 1 - Soft offline is enabled (excluding HugeTLB pages).
->>> 2 - Soft offline is enabled (including HugeTLB pages).
->>>
->>> Update documentation for the sysctl interface, reference the sysctl
->>> interface in the sysfs ABI documentation, and update HugeTLB soft
->>> offline selftests.
->>
->> I'm sure you spotted that the documentation for
->> "/sys/devices/system/memory/soft_offline_pag" resides under "testing".
+On 12.09.25 00:12, Helge Deller wrote:
+> As reported earlier in this mail thread, all 32-bit Linux kernels since v6.16
+> fail to boot on the parisc architecture like this:
 > 
-> But that is only one of several places in the kernel that
-> feed into the page offline code.
+>   BUG: Bad page state in process swapper  pfn:000f7
+>   page: refcount:0 mapcount:0 mapping:00000000 index:0x0 pfn:0xf7
+>   flags: 0x0(zone=0)
+>   raw: 00000000 118022c0 118022c0 00000000 00000000 00000000 ffffffff 00000000
+>   raw: 00000000
+>   page dumped because: page_pool leak
+>   Modules linked in:
+>   CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 6.15.0-rc1-32bit+ #2730 NONE
+>   Hardware name: 9000/778/B160L
+>   Backtrace:
+>    [<106ece88>] bad_page+0x14c/0x17c
+>    [<10406c50>] free_page_is_bad.part.0+0xd4/0xec
+>    [<106ed180>] free_page_is_bad+0x80/0x88
+>    [<106ef05c>] __free_pages_ok+0x374/0x508
+>    [<1011d34c>] __free_pages_core+0x1f0/0x218
+>    [<1011a2f0>] memblock_free_pages+0x68/0x94
+>    [<10120324>] memblock_free_all+0x26c/0x310
+>    [<1011a4d8>] mm_core_init+0x18c/0x208
+>    [<10100e88>] start_kernel+0x4ec/0x7a0
+>    [<101054d0>] start_parisc+0xb4/0xc4
+> 
+> git bisecting leads to this patch which triggers the crash:
+> 
+>   commit ee62ce7a1d909ccba0399680a03c2dee83bcae95
+>   Author: Toke Høiland-Jørgensen <toke@redhat.com>
+>   Date:   Wed Apr 9 12:41:37 2025 +0200
+>      page_pool: Track DMA-mapped pages and unmap them when destroying the pool
+> 
+> It turns out that the patch itself isn't wrong.
+> 
+> But it's the culprit which leads to the kernel bug since it modifies
+> PP_MAGIC_MASK for 32-bit kernels from:
+> 
+> -#define PP_MAGIC_MASK ~0x3UL
+> +#define PP_MAGIC_MASK ~(PP_DMA_INDEX_MASK | 0x3UL)
+> 
+> Function page_pool_page_is_pp() needs to unambiguously identify page pool
+> pages (using PP_MAGIC_MASK), but since the patch now reduced the valid bits to
+> check in PP_MAGIC_MASK from 0xFFFFFFFC to 0xc000007c, the remaining bits are
+> not sufficient to unambiguously identify such pages any longer.
+> 
+> Because of that, page_pool_page_is_pp() sometimes wrongly reports pages as
+> page pool pages and as such triggers the kernel BUG as it believes it found a
+> page pool leak.
+> 
+> IMHO this is a generic 32-bit kernel issue, not just affecting parisc.
+> 
+> Do you see any options other than:
+> a) revert the patch (ee62ce7a1d90), or:
+> b) return false in page_pool_page_is_pp() when !defined(CONFIG_64BIT),
+>     which means to effectively disable the page pool page test on 32bit
+>     machines
 
-Right, I can see one more call to soft_offline_page() from 
-arch/parisc/kernel/pdt.c.
+We should have a change coming soon that would use a page type and fix 
+it as well I think.
 
-And there is memory_failure_work_func() that I missed.
+https://lkml.kernel.org/r/20250728052742.81294-1-byungchul@sk.com
 
-So agreed that this goes beyond testing.
+Until then, the easiest fix would be indeed to go with b).
 
-It caught my attention because you ended up modifying documentation 
-residing in Documentation/ABI/testing/sysfs-memory-page-offline.
-
-Reading 56374430c5dfc that Kyle pointed out is gets clearer.
-
-So the patch motivation/idea makes sense to me.
-
-
-I'll note two things:
-
-(1) The interface design is not really extensible. Imagine if we want to 
-exclude yet another page type.
-
-Can we maybe add a second interface that defines a filter for types?
-
-Alternatively, you could use all the remaining flags as such a filter.
-
-0 - Soft offline is completely disabled.
-1 - Soft offline is enabled except for manually disabled types.
-
-Filter
-
-2 - disable hugetlb.
-
-So value 3 would give you "enable all except hugetlb" etc.
-
-We could add in the future
-
-4 - disable guest_memfd (just some random example)
-
-
-Then you
-
-2) Changing the semantics of the value "1"
-
-IIUC, you are changing the semantics of value "1". It used to mean 
-"SOFT_OFFLINE_ENABLED" now it is "SOFT_OFFLINE_ENABLED_SKIP_HUGETLB", 
-which is a change in behavior.
-
-If that is the case, I don't think that's okay.
-
-
-2) I am not sure about changing the default. That should be an admin/
-    distro decision.
+But maybe the page type thing could be backported?
 
 -- 
 Cheers
