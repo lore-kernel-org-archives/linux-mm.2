@@ -4,185 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DFFA1CA101F
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 12:25:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C083BCA101F
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 12:30:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 49F688E0014; Fri, 12 Sep 2025 08:25:41 -0400 (EDT)
+	id 19C868E0007; Fri, 12 Sep 2025 08:30:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 476BD8E0003; Fri, 12 Sep 2025 08:25:41 -0400 (EDT)
+	id 174818E0003; Fri, 12 Sep 2025 08:30:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3656A8E0014; Fri, 12 Sep 2025 08:25:41 -0400 (EDT)
+	id 064E18E0007; Fri, 12 Sep 2025 08:30:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 21CC48E0003
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 08:25:41 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C220713B8DD
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 12:25:40 +0000 (UTC)
-X-FDA: 83880519240.16.2B7F376
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 4F88180006
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 12:25:38 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=COR5gYVO;
-	spf=pass (imf30.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id EB3908E0003
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 08:30:39 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 73F35BB4D3
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 12:30:39 +0000 (UTC)
+X-FDA: 83880531798.05.59675A4
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 1E5C740013
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 12:30:36 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="Qw+89lj/";
+	spf=pass (imf12.hostedemail.com: domain of sumanthk@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sumanthk@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757679938;
+	s=arc-20220608; t=1757680237;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wTo+izX1w//0z26IKQTIbvBaXy5RN7cB2ha614yOXr0=;
-	b=CjkWXT7CAAiGZ5ERW/VpWbFDtSFDLLZwCqyaIj6FlJ4C6hE3CR/Y60Ri4pmPObxuDGN732
-	cHRYVejCA+Mw1WOOSHgieedEJVExgRGRD+f6pT11+waFID6RNephKSC4zkn4wsMVNRle4Z
-	R3l7IQ4VT8ssTccYTVtnbfnr8fqw0DQ=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Urv9ho9Iqt11s8undguJ4H22kdSFOgvvZ5cOGTJ+/eU=;
+	b=b/F8lxVC37W1ZMKSQ4h9XrPK7FVklWfV+M1mzqwIebwZZ6Qn3ub0B8W4HQAcV8RYIQ+Q/A
+	zw7UvHqJbdHWUh3yZxTvTEKEuMKLW66XGGqds2Td1ln9YnWsyq7qMsq0r0/LWQF8QF9qaY
+	hKT8yff8VFJ8oa8uWMHZEETNwB7DYow=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=COR5gYVO;
-	spf=pass (imf30.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757679938; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="Qw+89lj/";
+	spf=pass (imf12.hostedemail.com: domain of sumanthk@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sumanthk@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757680237; a=rsa-sha256;
 	cv=none;
-	b=AlY1cwcY9XGCtad1Cd/TZiL9T7J6E/pH+opzfGmojbwHgcaUZzX/P/WH6Pa1QOcRdLuf2X
-	5don2W3jhl02cz7NVbkocHpJTIGuK6oCKXX4ZTtNnX52WKvuXQ+bjTuY1gN5Kgpg0XUBDv
-	t6NU+SAW09MVyauO90Sc4Wnrks6Hn+A=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757679937;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=wTo+izX1w//0z26IKQTIbvBaXy5RN7cB2ha614yOXr0=;
-	b=COR5gYVO8IQHtx64ybw10Nxjz5bcEZLpGRMaqt898a/5Iv5TA7DBlMjWPeFrXGaMjuQf0C
-	/2mKOxeid6bFk9M+J+YXrjOOValz60Ok00D91kzTtWz+e/hQXE737L2JFGCJzMQ5Mm84Sa
-	R7Rg+vzqwhgLD9kkKqk9JoTCZk3qrxU=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-298-JWh0LvsUOPG6xnmc94p7vQ-1; Fri, 12 Sep 2025 08:25:36 -0400
-X-MC-Unique: JWh0LvsUOPG6xnmc94p7vQ-1
-X-Mimecast-MFC-AGG-ID: JWh0LvsUOPG6xnmc94p7vQ_1757679935
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3e424a186fcso995090f8f.0
-        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 05:25:36 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757679935; x=1758284735;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wTo+izX1w//0z26IKQTIbvBaXy5RN7cB2ha614yOXr0=;
-        b=UVWP9fWESCReEvDFemcbeRXMJr4nYqEHh6FVXfJo5fTXCWLDPPBWFNPPZGXSFzTQx1
-         823C3y+qupT56YgC4onhjmeluL+QD25tC4/xdrXeV359pPgxOfn5pRDbNjb0q5KM5wLI
-         xxSdeIzcT5TP5akg+tbDfaQnd1XUQbMSofu5NjKq4gZBqAv0xnuQxsL223WnQwi0lRSm
-         mnnA2ZTEH/eSY2r2gYGJoVhCGf7W8MF4y29NnBamquR/goFL6Cmykx2I/+SL71DM0rmk
-         6V5lmenX3rbtscaKaBDqtd5Qfm7XT8TbrcQxDEk60m7sKoQ5s2wPXGALMpi8GnAhq3I5
-         gjZg==
-X-Gm-Message-State: AOJu0Yx/kXdJpWH8hW4Y5J3225vg/TOuz6oBxsHPrLPEAZBytwj3hHVQ
-	f/y2lfgaByu36wpDpSq5zHLoUTj3VmHaG0rivbRmFKFwK0KR65yGNyrWeDbfyVADQret0e/Ik13
-	UxZB6ZAjCsbOTXJHHBs5xSS4n1KSsIbpagMwXGFHi/RpjFd2BPDYy
-X-Gm-Gg: ASbGncvaz6oLPc0LNOEVxNc00nhiuZQdvG7tUw6pljzIpXUY/3nBk80t+7rg45qV7sl
-	uRQ7tSl71MkkyUUoUGZhdKG96lb4efks+Ih0lih9hJJMKMvh1Ga//DxgUKUdJXx9sjLlNF3L9ZF
-	L/95JyWZ4Ujme3cdd+PSV6+kf+NPXAtZxtJIRuK1imqwhQBbGD7mzTWw8W/N6j6SGRDG0netAQJ
-	UlChO8WpC5Le9NFEenYMWnLroC0/eWrBm0J8EQBqUzpYxr1w+hlvtjyD9qNvGqXhIuLYJot7c5j
-	YVCixwQnJqWT6fWrvu7Ve+dsBvPy3i86XTsJVGXSnC7rpFUkA1Lf9JCVC2sFk1eWAr3nzKvIKcZ
-	vl+exa6aAAlDv2k17uFnHbZRHDSZL484utKhexWCsek4p+Rf0g+lqr6454Nl5JveRAs4=
-X-Received: by 2002:a05:6000:178e:b0:3e4:957d:d00 with SMTP id ffacd0b85a97d-3e7659f5dd6mr2519969f8f.58.1757679935083;
-        Fri, 12 Sep 2025 05:25:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH6PZSoaqYfs4WDxtD7xqA4jAMhuyLomw1mK3Dy9a1s3qWzRB2kaFiIuJKmlg+DYd89YE4p1Q==
-X-Received: by 2002:a05:6000:178e:b0:3e4:957d:d00 with SMTP id ffacd0b85a97d-3e7659f5dd6mr2519910f8f.58.1757679934531;
-        Fri, 12 Sep 2025 05:25:34 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f20:da00:b70a:d502:3b51:1f2d? (p200300d82f20da00b70ad5023b511f2d.dip0.t-ipconnect.de. [2003:d8:2f20:da00:b70a:d502:3b51:1f2d])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e7607d822fsm6485239f8f.53.2025.09.12.05.25.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 Sep 2025 05:25:34 -0700 (PDT)
-Message-ID: <d0e81c75-ad63-4e37-9948-3ae89bc94334@redhat.com>
-Date: Fri, 12 Sep 2025 14:25:31 +0200
+	b=ynYQev8pIW0/3bWw8eppbsG6ATewt25IQuLnJQAx60xrs2TgLEAk0fSgZLc6UVpIPRQrzs
+	h7AsRG5pVbAn/SVdbCMdths57nN7CXdPvGeSpfaoF05Xeuh2O5dobxp98aTx1W2uB5xV6h
+	tknmKnWUpkkANGoW1sbl+d0xk2SSI8Y=
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58C1frKi028317;
+	Fri, 12 Sep 2025 12:30:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pp1; bh=Urv9ho9Iqt11s8undguJ4H22kdSF
+	OgvvZ5cOGTJ+/eU=; b=Qw+89lj/Q0CKqoICJCtHvas+tx39zFmDc5hj9Gicq9lz
+	gahHb+u+ZL/e/plfOtI8C7rk5irquzQLmpyuArl2Jb0J6Q83h7cWWK8kzqNgJ/Qj
+	CTtRmu78Ow8FtpXKWj4RXMv8sxWysdr54B8Tdj+pl1PoKsiSXyeS+tWJWA8uPqn6
+	SYjHLUkVc+ap0WmOzaUmM+lfDJZ7dWYN4ptRKNUziXo0quANDRvPnQAV+AnzRb+2
+	Gq+SGnSEi4IiS0SKSz8DvCa13a0iO4FrEIs2kpv8v2Y/8M+5J8TtzvW6dj2AfGs8
+	nE3y2qPxWPuZcIwhSj2/nF/yl/n9cxKDobh8+g+pmA==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490cmxbf7s-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 12 Sep 2025 12:30:34 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58CAwWAW017181;
+	Fri, 12 Sep 2025 12:30:33 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4911gmtqww-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 12 Sep 2025 12:30:33 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 58CCUU1S21955026
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 12 Sep 2025 12:30:30 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5DE4120040;
+	Fri, 12 Sep 2025 12:30:30 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2FA882004B;
+	Fri, 12 Sep 2025 12:30:30 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 12 Sep 2025 12:30:30 +0000 (GMT)
+From: Sumanth Korikkar <sumanthk@linux.ibm.com>
+To: Andrew Morton <akpm@linux-foundation.org>, linux-mm <linux-mm@kvack.org>,
+        David Hildenbrand <david@redhat.com>
+Cc: linux-s390@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>, sumanthk@linux.ibm.com
+Subject: [PATCH v2] resource: Improve child resource handling in release_mem_region_adjustable()
+Date: Fri, 12 Sep 2025 14:30:21 +0200
+Message-ID: <20250912123021.3219980-1-sumanthk@linux.ibm.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 00/15] khugepaged: mTHP support
-To: Kiryl Shutsemau <kas@kernel.org>, Nico Pache <npache@redhat.com>
-Cc: linux-mm@kvack.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- ziy@nvidia.com, baolin.wang@linux.alibaba.com, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, ryan.roberts@arm.com, dev.jain@arm.com,
- corbet@lwn.net, rostedt@goodmis.org, mhiramat@kernel.org,
- mathieu.desnoyers@efficios.com, akpm@linux-foundation.org,
- baohua@kernel.org, willy@infradead.org, peterx@redhat.com,
- wangkefeng.wang@huawei.com, usamaarif642@gmail.com, sunnanyong@huawei.com,
- vishal.moola@gmail.com, thomas.hellstrom@linux.intel.com,
- yang@os.amperecomputing.com, aarcange@redhat.com, raquini@redhat.com,
- anshuman.khandual@arm.com, catalin.marinas@arm.com, tiwai@suse.de,
- will@kernel.org, dave.hansen@linux.intel.com, jack@suse.cz, cl@gentwo.org,
- jglisse@google.com, surenb@google.com, zokeefe@google.com,
- hannes@cmpxchg.org, rientjes@google.com, mhocko@suse.com,
- rdunlap@infradead.org, hughd@google.com, richard.weiyang@gmail.com,
- lance.yang@linux.dev, vbabka@suse.cz, rppt@kernel.org, jannh@google.com,
- pfalcato@suse.de
-References: <20250912032810.197475-1-npache@redhat.com>
- <ppzgohmkll7dbf2aiwhw7f4spf6kxjtwwe3djkx26pwy4ekrnd@mgeantq5sn2z>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <ppzgohmkll7dbf2aiwhw7f4spf6kxjtwwe3djkx26pwy4ekrnd@mgeantq5sn2z>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: DV0sMx47eS2zWwCvsqXZ-RnHgArAEFz_rZypmKXQt2k_1757679935
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 4F88180006
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: uMoYrLT0iW4OQ1UgOgoxU0W3PO5nWRMp
+X-Proofpoint-ORIG-GUID: uMoYrLT0iW4OQ1UgOgoxU0W3PO5nWRMp
+X-Authority-Analysis: v=2.4 cv=J52q7BnS c=1 sm=1 tr=0 ts=68c4126a cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=9XsctY_nk5j_wR6wWCgA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA2MDAyNSBTYWx0ZWRfX7WFU4E+yg89y
+ 8oIGbv5n7CV5IentjEmKS5isO6fkcOz3nx5Rvr23eYf+2UBpK5JSEHskZaU3AkkN1gs9UcHaPa9
+ ZsjGGjIP19i/SLodLlXo0taXSkQurYIgahy6OPHXcEGwrFV5hu1D12Uz95bJMtq36HL0WYwx/iC
+ hKl18wMEXQxHDjhr1MDGNoBCaYqMmdhX0+IAriCP76j0wGKWTitSLqKDFjrtumtAdB0SlCV2f9Y
+ uIuWnjaKCa12jxBRwedeE9OdLnN9e8Pkczajk3hmaucgD9kCCJ74NvpssAU6076eW/HC+L2TY1e
+ QMqztLZMRjMxa0DLmI4xCdwjw4yVmZkaLg+hu9FO0OafFKg7mKZc+e/ddkl0PuJnhrQerQU5EGF
+ t1Xkzpf1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-12_04,2025-09-11_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 clxscore=1015 suspectscore=0 spamscore=0 phishscore=0
+ bulkscore=0 adultscore=0 malwarescore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509060025
+X-Rspamd-Queue-Id: 1E5C740013
+X-Stat-Signature: iers6jjmkootb9856uzy36eqourpbtei
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 7h1s575dqqznx88wu6g8xis5kgf8ajq5
-X-HE-Tag: 1757679938-450100
-X-HE-Meta: U2FsdGVkX1++Oi1EkHIh/Z3bJlXh1yZYKmdzMHe+s3hS72mxJP2UEcWrzZm4Bvv33vZ9dtY63KFm59+87C8NWagjnw+RAv7Ls0/xKQ85IGQH49xi6rMSWVEFkFGNVhag3Yyj6fNyI16lfBg0UIqg+S2YW7Vfh5CaaF7+BYOCJ9oqrJmLru141BeAqNRxxQQKNOkSmlHEHVYMTTfvJf++AKUH22K8/RjkmaXGyoy7lhU8f02enjc5FZMsF0ailU71WiK6GyUrKD4i8cvbifPNu/WlyEEcmTcq+uIxkWtW5d5MIhxcujMo8qlu2v78dxkgdFiwbHtFq/RcHFWRLqvuKx96JQryXPIWZunUmoZIa7GVGUnLM88HLPQ5xO4439+4RBj3FKORDglPZSqLfUUFLqkwZtdNQJzHOwdCxui51L6CHfZQVTar4PgLyrCvI7pZBzZravpPt6qSdRmPwWzY4UMs0NoAEsBLgt5LINBsBjvPJdXFs4j3GvLyO1YRVc+HrzzIH16W/K3+oMV7f7JtVGJoVskfusFPawZ3ieoBdFPKX6Spb3XzL76R1Eqc76JCf+07YUeKCuIj7yNYNC77+b0ZoQ3ZIyGL8/dhAS/Hpo/Gik+02HdanWziRv8fpUMeNfR18DX5C1mnQxMpiwzEeZgU8rflBqAGwtMX65XrcLkAQZGVCPjDRwcn5hg+46vIt8K5RdkLGhDw+YOn2phkygtcGl8TiP4tjEF6S2Exfuau4mjoiYZ1JcO6X4OWpERlIV/HOUhU11W4jdG7uHkMOQ16mGqiolfvdQYHbwT42XstZUA4jYBfvYUncWy3SOpNyepM7Z3xyjC49QtINBdYzMauR4Xo19i3qMUTECUgxcGpZUiDZu0MpZoOaWCp9j6wSvXfzamOG/jHByHJveYDlFbHXsCPB0pk2GsULEtwYpyvRg25rHm0Ibehe1/8QHSGp42+HFT5AL3QayWH01c
- jDXIW5+x
- OX6PSwj23sI4tWKz70CXDG0ZsJFIbDA5KPyGKMAaedxWTEy2t2jedP6BBpuAYDwuagRp+xG15ny4KSweHRGq/LviNKsbzOxOg3MqgTy090RSkxpPfX9QsEua2EIaBYOZf4/Y4bEVWZTqzrmSO5oIMFAq8qG9YjtN51sWksAqX5NO9Glog3h4cfHGOyAbaE/u/1juV0arpAoDfjCXqPtNhigMAl/4Uonjruwi8etiF+yrO56VBTdi9CqC+b6j2crsV8dFlU6p+vPP3s67Oe8EZI/w8NBm0rdlD2TBbBPR2h9Gl40jIk6+dJMaqluZrRxGD9wo+CohTCBK26q9St/4qI9DnFhVwTwe/stdAnhEst/rJ3bfmomwB07TIU1x1DTLQ2xEERZ/ND0uK4hjoD5v/JZeY8JBfvGcxVYXXX4g/6ewXIMae4RRZVNehrAHA8BwEBuYJMwweBzs0leHFzsrzIpJzzR1erEV/VlB/jmA1X6JLF375XmCsxLMKqA==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1757680236-238506
+X-HE-Meta: U2FsdGVkX1/0WaRWQb9+UyBRh8L6HpP1fQHU/bxGuPcVBjhWk8l1DDjS8VjYPk0i/TZaT48BgqJLZ9ZSUhFyi0O/jKc42JBuBHMxm7BY94CrTQDfs3WoTmrl0+FoAim2YJLHqxNnObszg4I7l7w4u818gP4k1ZkHGgbUDddXDHlhgbjPumhOpiTI3jEpx8YOkwU/W15tuAtoZVeOj40S8W9cmy5ihfI9MnTsajWSnIdXEjpS40hR8Kwylv2xson8w9nEFGf1zJlC0gB3VkhKtVK4NRvaMTQOM9hVSa8JJM2Jdr/XrR0eIKqDPcGQ/3UFRD+EBbzirXOQdKn7E+i88tmOS3dv5cdNrzkGtWPeoL5BYjDD5VJbDHoVyem6VX8d+uwm5v/F1+ALQ5BhUum2jL/aF6lTTdrKtwlwPLSQnc5CUab0xhePqFHtk3FJkJwbX294p+rgraSZt7TbYGYrjfZ1vMcQI/NDgjWgVkU9Bx4GWX9y9igmfvUN4kIRrIA2w0Hi0KiXUWKdf4JwYy4W1ROZ2ngTqOmxg1+Z0N2TuUxrDn/7mM4Fcrr1SeDj1d76r2P2hNXtCPd2cTMDhAEnOHB0ZhuNlaW7fdW64AWLUekra81MiRz3HlEhtPGXpFsviqQkeZfBEqiKRQxjZF7XDJQhc793ko7drTa6WVfMnvzyPqdqfIGd38jacnTdGCnsEa2INBltuXncmijME/K7EM3zC4dQBXxZqwt9iB2Qh9pWSGCVqsasbwyoTCoaniO7nYU0AclXSN1n++wyEelzJKmoH7wawIOxUHvWN2nrxIHmJFXiNO3kc0qnq0+QWY6CEm5+wrWFV/e2L6ZO18kcqVMZbSXEeC2ayuRguqnWgOiNb93QYAUI8xVS0FIxwGyRia6PnQE7F+jWaqHIOPIO1leW5VcW/zWCzgcYpmfjx+f8ajvCsqLVH+6AH6mXFXZIjZkQU+yIe8SYpBrdozP
+ sxdKpG3Z
+ cnH5Su2WaWEjuHhJebU4O4mA1OAaDihM43qFX/7RCI4g7j4318oGicmpZQ6NAoyUacAawvwyUBoUNdz/fCpWScoPamRrc/gkHCi+hOaH3K90LgjaNLMaeOYE++WSzFQrAp/ZLJt5hwsrdROVZiAv+uVI8Umg9JP0ibTTOKmQnJod3qe4l1AvVO3i0cruWoUqqARdynA+s6hKdHo/dJInNiFVhK++313QmrXiUY4i6fWQR5C/hUypp2CUcYPY74pakOeO21DWNcKKAUwGxKibPXd/snd3o45nXBxWXKuYrfNFfAIg8rBd4bqTBeBibal2zO2D1uJ2p+7y1R51DqpxGmSV9Xw0K6rF2t6he3+FPG+XPDGXLrcA+Vyb43jiqEj5BkdOr+DZTi8QFcoTuNCqiEzXw19AIhZqsfW4f
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -191,55 +138,210 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12.09.25 14:19, Kiryl Shutsemau wrote:
-> On Thu, Sep 11, 2025 at 09:27:55PM -0600, Nico Pache wrote:
->> The following series provides khugepaged with the capability to collapse
->> anonymous memory regions to mTHPs.
->>
->> To achieve this we generalize the khugepaged functions to no longer depend
->> on PMD_ORDER. Then during the PMD scan, we use a bitmap to track individual
->> pages that are occupied (!none/zero). After the PMD scan is done, we do
->> binary recursion on the bitmap to find the optimal mTHP sizes for the PMD
->> range. The restriction on max_ptes_none is removed during the scan, to make
->> sure we account for the whole PMD range. When no mTHP size is enabled, the
->> legacy behavior of khugepaged is maintained. max_ptes_none will be scaled
->> by the attempted collapse order to determine how full a mTHP must be to be
->> eligible for the collapse to occur. If a mTHP collapse is attempted, but
->> contains swapped out, or shared pages, we don't perform the collapse. It is
->> now also possible to collapse to mTHPs without requiring the PMD THP size
->> to be enabled.
->>
->> When enabling (m)THP sizes, if max_ptes_none >= HPAGE_PMD_NR/2 (255 on
->> 4K page size), it will be automatically capped to HPAGE_PMD_NR/2 - 1 for
->> mTHP collapses to prevent collapse "creep" behavior. This prevents
->> constantly promoting mTHPs to the next available size, which would occur
->> because a collapse introduces more non-zero pages that would satisfy the
->> promotion condition on subsequent scans.
-> 
-> Hm. Maybe instead of capping at HPAGE_PMD_NR/2 - 1 we can count
-> all-zeros 4k as none_or_zero? It mirrors the logic of shrinker.
-> 
+When memory block is removed via try_remove_memory(), it eventually
+reaches release_mem_region_adjustable(). The current implementation
+assumes that when a busy memory resource is split into two, all child
+resources remain in the lower address range.
 
-I am all for not adding any more ugliness on top of all the ugliness we 
-added in the past.
+This simplification causes problems when child resources actually belong
+to the upper split. For example:
 
-I will soon propose deprecating that parameter in favor of something 
-that makes a bit more sense.
+* Initial memory layout:
+lsmem
+RANGE                                 SIZE   STATE REMOVABLE  BLOCK
+0x0000000000000000-0x00000002ffffffff  12G  online       yes   0-95
 
-In essence, we'll likely have an "eagerness" parameter that ranges from 
-0 to 10. 10 is essentially "always collapse" and 0 "never collapse if 
-not all is populated".
+* /proc/iomem
+00000000-2dfefffff : System RAM
+  158834000-1597b3fff : Kernel code
+  1597b4000-159f50fff : Kernel data
+  15a13c000-15a218fff : Kernel bss
+2dff00000-2ffefffff : Crash kernel
+2fff00000-2ffffffff : System RAM
 
-In between we will have more flexibility on how to set these values.
+* After offlining and removing range
+  0x150000000-0x157ffffff
+lsmem -o RANGE,SIZE,STATE,BLOCK,CONFIGURED
+(output according to upcoming lsmem changes with the configured column:
+s390)
+RANGE                                  SIZE   STATE  BLOCK  CONFIGURED
+0x0000000000000000-0x000000014fffffff  5.3G  online   0-41  yes
+0x0000000150000000-0x0000000157ffffff  128M offline     42  no
+0x0000000158000000-0x00000002ffffffff  6.6G  online  43-95  yes
 
-Likely 9 will be around 50% to not even motivate the user to set 
-something that does not make sense (creep).
+The iomem resource gets split into two entries, but kernel code, kernel
+data, and kernel bss remain attached to the lower resource [0–5376M]
+instead of the correct upper resource [5504M–12288M].
 
-Of course, the old parameter will have to stick around in compat mode.
+As a result, WARN_ON() triggers in release_mem_region_adjustable()
+("Usecase: split into two entries - we need a new resource")
+------------[ cut here ]------------
+WARNING: CPU: 5 PID: 858 at kernel/resource.c:1486
+release_mem_region_adjustable+0x210/0x280
+Modules linked in:
+CPU: 5 UID: 0 PID: 858 Comm: chmem Not tainted 6.17.0-rc2-11707-g2c36aaf3ba4e
+Hardware name: IBM 3906 M04 704 (z/VM 7.3.0)
+Krnl PSW : 0704d00180000000 0000024ec0dae0e4
+           (release_mem_region_adjustable+0x214/0x280)
+           R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:1 PM:0 RI:0 EA:3
+Krnl GPRS: 0000000000000000 00000002ffffafc0 fffffffffffffff0 0000000000000000
+           000000014fffffff 0000024ec2257608 0000000000000000 0000024ec2301758
+           0000024ec22680d0 00000000902c9140 0000000150000000 00000002ffffafc0
+           000003ffa61d8d18 0000024ec21fb478 0000024ec0dae014 000001cec194fbb0
+Krnl Code: 0000024ec0dae0d8: af000000            mc      0,0
+           0000024ec0dae0dc: a7f4ffc1            brc     15,0000024ec0dae05e
+          #0000024ec0dae0e0: af000000            mc      0,0
+          >0000024ec0dae0e4: a5defffd            llilh   %r13,65533
+           0000024ec0dae0e8: c04000c6064c        larl    %r4,0000024ec266ed80
+           0000024ec0dae0ee: eb1d400000f8        laa     %r1,%r13,0(%r4)
+           0000024ec0dae0f4: 07e0                bcr     14,%r0
+           0000024ec0dae0f6: a7f4ffc0            brc     15,0000024ec0dae076
 
+ [<0000024ec0dae0e4>] release_mem_region_adjustable+0x214/0x280
+([<0000024ec0dadf3c>] release_mem_region_adjustable+0x6c/0x280)
+ [<0000024ec10a2130>] try_remove_memory+0x100/0x140
+ [<0000024ec10a4052>] __remove_memory+0x22/0x40
+ [<0000024ec18890f6>] config_mblock_store+0x326/0x3e0
+ [<0000024ec11f7056>] kernfs_fop_write_iter+0x136/0x210
+ [<0000024ec1121e86>] vfs_write+0x236/0x3c0
+ [<0000024ec11221b8>] ksys_write+0x78/0x110
+ [<0000024ec1b6bfbe>] __do_syscall+0x12e/0x350
+ [<0000024ec1b782ce>] system_call+0x6e/0x90
+Last Breaking-Event-Address:
+ [<0000024ec0dae014>] release_mem_region_adjustable+0x144/0x280
+---[ end trace 0000000000000000 ]---
+
+Also, resource adjustment doesn't happen and stale resources still cover
+[0-12288M].  Later, memory re-add fails in register_memory_resource()
+with -EBUSY.
+
+i.e: /proc/iomem is still:
+00000000-2dfefffff : System RAM
+  158834000-1597b3fff : Kernel code
+  1597b4000-159f50fff : Kernel data
+  15a13c000-15a218fff : Kernel bss
+2dff00000-2ffefffff : Crash kernel
+2fff00000-2ffffffff : System RAM
+
+Enhance release_mem_region_adjustable() to reassign child resources
+to the correct parent after a split. Children are now assigned based on
+their actual range: If they fall within the lower split, keep them in
+the lower parent. If they fall within the upper split, move them to the
+upper parent.
+
+Kernel code/data/bss regions are not offlined, so they will always
+reside entirely within one parent and never span across both.
+
+Output after the enhancement:
+* Initial state /proc/iomem (before removal of memory block):
+00000000-2dfefffff : System RAM
+  1f94f8000-1fa477fff : Kernel code
+  1fa478000-1fac14fff : Kernel data
+  1fae00000-1faedcfff : Kernel bss
+2dff00000-2ffefffff : Crash kernel
+2fff00000-2ffffffff : System RAM
+
+* Offline and remove 0x1e8000000-0x1efffffff memory range
+* /proc/iomem
+00000000-1e7ffffff : System RAM
+1f0000000-2dfefffff : System RAM
+  1f94f8000-1fa477fff : Kernel code
+  1fa478000-1fac14fff : Kernel data
+  1fae00000-1faedcfff : Kernel bss
+2dff00000-2ffefffff : Crash kernel
+2fff00000-2ffffffff : System RAM
+
+Signed-off-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
+---
+Add review suggestions from David. Thank you
+* Rename move_children_to_parent() to reparent_children_after_split()
+  and add comment.
+* Replace "is" with "are" in release_mem_region_adjustable() comment
+  section.
+
+ kernel/resource.c | 50 ++++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 45 insertions(+), 5 deletions(-)
+
+diff --git a/kernel/resource.c b/kernel/resource.c
+index f9bb5481501a..b9fa2a4ce089 100644
+--- a/kernel/resource.c
++++ b/kernel/resource.c
+@@ -1388,6 +1388,47 @@ void __release_region(struct resource *parent, resource_size_t start,
+ EXPORT_SYMBOL(__release_region);
+ 
+ #ifdef CONFIG_MEMORY_HOTREMOVE
++static void append_child_to_parent(struct resource *new_parent, struct resource *new_child)
++{
++	struct resource *child;
++
++	child = new_parent->child;
++	if (child) {
++		while (child->sibling)
++			child = child->sibling;
++		child->sibling = new_child;
++	} else {
++		new_parent->child = new_child;
++	}
++	new_child->parent = new_parent;
++	new_child->sibling = NULL;
++}
++
++/*
++ * Reparent all child resources that no longer belong to "low" after a split to
++ * "high". Note that "high" does not have any children, because "low" is the
++ * original resource and "high" is a new resource. Treat "low" as the original
++ * resource being split and defer its range adjustment to __adjust_resource().
++ */
++static void reparent_children_after_split(struct resource *low,
++					  struct resource *high,
++					  resource_size_t split_addr)
++{
++	struct resource *child, *next, **p;
++
++	p = &low->child;
++	while ((child = *p)) {
++		next = child->sibling;
++		if (child->start > split_addr) {
++			/* unlink child */
++			*p = next;
++			append_child_to_parent(high, child);
++		} else {
++			p = &child->sibling;
++		}
++	}
++}
++
+ /**
+  * release_mem_region_adjustable - release a previously reserved memory region
+  * @start: resource start address
+@@ -1397,15 +1438,13 @@ EXPORT_SYMBOL(__release_region);
+  * is released from a currently busy memory resource.  The requested region
+  * must either match exactly or fit into a single busy resource entry.  In
+  * the latter case, the remaining resource is adjusted accordingly.
+- * Existing children of the busy memory resource must be immutable in the
+- * request.
+  *
+  * Note:
+  * - Additional release conditions, such as overlapping region, can be
+  *   supported after they are confirmed as valid cases.
+- * - When a busy memory resource gets split into two entries, the code
+- *   assumes that all children remain in the lower address entry for
+- *   simplicity.  Enhance this logic when necessary.
++ * - When a busy memory resource gets split into two entries, its children are
++ *   reassigned to the correct parent based on their range. If a child memory
++ *   resource overlaps with more than one parent, enhance the logic as needed.
+  */
+ void release_mem_region_adjustable(resource_size_t start, resource_size_t size)
+ {
+@@ -1482,6 +1521,7 @@ void release_mem_region_adjustable(resource_size_t start, resource_size_t size)
+ 			new_res->parent = res->parent;
+ 			new_res->sibling = res->sibling;
+ 			new_res->child = NULL;
++			reparent_children_after_split(res, new_res, end);
+ 
+ 			if (WARN_ON_ONCE(__adjust_resource(res, res->start,
+ 							   start - res->start)))
 -- 
-Cheers
-
-David / dhildenb
+2.48.1
 
 
