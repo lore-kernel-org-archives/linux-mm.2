@@ -4,119 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73225CAC582
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 13:28:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0DBBCA101F
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 13:32:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D069A8E0013; Fri, 12 Sep 2025 09:28:36 -0400 (EDT)
+	id 456516B0006; Fri, 12 Sep 2025 09:32:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD6648E0002; Fri, 12 Sep 2025 09:28:36 -0400 (EDT)
+	id 406B16B0012; Fri, 12 Sep 2025 09:32:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BEC248E0013; Fri, 12 Sep 2025 09:28:36 -0400 (EDT)
+	id 2CE286B0028; Fri, 12 Sep 2025 09:32:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B1FB08E0002
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 09:28:36 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 857E91607BA
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 13:28:36 +0000 (UTC)
-X-FDA: 83880677832.07.4240DC0
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 156FBA0013
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 13:28:33 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=X5I+cn03;
-	spf=pass (imf25.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 1665E6B0006
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 09:32:52 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B7F331A082A
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 13:32:51 +0000 (UTC)
+X-FDA: 83880688542.12.8A00480
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 023EA100022
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 13:32:48 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=I5gR+3MH;
+	spf=pass (imf05.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757683714;
+	s=arc-20220608; t=1757683969;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TxCuVeKIYByX83ELv08YQNod/eiQVC5gVFgMvw8risQ=;
-	b=BU99g9wzM5yt3WkwCnIwWU2YNSbwi3F60enSfgAgOONcGNnr1HobEG0r5zQPvfBYCDAJT6
-	gjmJIGkd/c09KOTM6JC6pTRuswUtMqAD9OK0aeSrYb2m/BKSWpNRzq7VW6F/M+1ARxdiYU
-	fe5fZOv3b5AgQl1T69G6IUSTr/WTIZs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757683714; a=rsa-sha256;
-	cv=none;
-	b=Ac3UHVoC6v9y1ANAGRIX9i6o/ktoKgcqi9zNV0TfaLQvsgZkhcvXqMf5BAKHIv7xwJt0Gl
-	5lE1QQpQyePnD5yjC9DFG/YteVgImY0tBCgBkDNTcDIqnBF4wc+c+CRdYWB4KJNkJE0Hyz
-	uvl67S6UzOFisYbhfVCzEO+dJaovsR8=
+	bh=d3WySasVKe/ME+w6oNrrZ2gd9OipXbQaPkCZGsmbrHU=;
+	b=cuy42nVLg9G/IoZ0s1+fQlF8QJ5bd2aNajJa25pd72A7CRKKpMyV20FF6q7q4KoHtbYTMr
+	jXrfOlaLoySsL6xyjfXJfowmRrTjbdY1X9wUNz6ZfKIiwlpppAkB3vp/zXE50BjbkEbe+4
+	dpVC/FrDM6iWEhKvRUuPoGUhjGVpDI0=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=X5I+cn03;
-	spf=pass (imf25.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=I5gR+3MH;
+	spf=pass (imf05.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757683969; a=rsa-sha256;
+	cv=none;
+	b=LiQsh9WgtaIWk4P+OpkuqjP8xaeujejKfBt48LbY7YNTE3P9+/oKXugz5hPYaNvpemPhUs
+	FYLkpYGDzO89JnIoNsLfxJOMRMbZgjYJHG+/90l03yfHMX3m78VGhAsWTR56/TpdJrTL3c
+	cJIbgPRto+OGk5YfUOTIJZtindxPVBY=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757683713;
+	s=mimecast20190719; t=1757683968;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=TxCuVeKIYByX83ELv08YQNod/eiQVC5gVFgMvw8risQ=;
-	b=X5I+cn03pwz0xcNVp/7hMikhRn748AoomX19RoC1+A7oqvRdb2LxD4CLdp4lPirEpWCEZ+
-	DLCU66svhIsSGZazdXRfkUvMIvJIiCAt5+6d66EYr6QsWwVVSkuqvcjvme+BBiMazCra+w
-	h0fvQqqP2JKXVEYsJH1s7/4uGeddQxY=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=d3WySasVKe/ME+w6oNrrZ2gd9OipXbQaPkCZGsmbrHU=;
+	b=I5gR+3MHYpI2ZLnWkoa+8Yfwz4pqse3fgAH82lrz9ZENAI7ADcujH4bQWiW+H9EFjnQY8B
+	55RQiKXzJkM6Ii6o6LKM02HAN0GE5q4t/ngs7bD/BJaw81pumUC7LzLkaU5K1iMEQm8+BJ
+	/sK3vTmthYvPpokB7jMsm0Q0lFhxwxs=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-315--ccGAkEGMJOVi5vXFFFVEA-1; Fri, 12 Sep 2025 09:28:32 -0400
-X-MC-Unique: -ccGAkEGMJOVi5vXFFFVEA-1
-X-Mimecast-MFC-AGG-ID: -ccGAkEGMJOVi5vXFFFVEA_1757683711
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3e7696b36d9so383889f8f.0
-        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 06:28:32 -0700 (PDT)
+ us-mta-482-FYJsuwYYPOKaR4js_NFEsA-1; Fri, 12 Sep 2025 09:32:46 -0400
+X-MC-Unique: FYJsuwYYPOKaR4js_NFEsA-1
+X-Mimecast-MFC-AGG-ID: FYJsuwYYPOKaR4js_NFEsA_1757683965
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3d3d2472b92so1138853f8f.1
+        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 06:32:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757683711; x=1758288511;
+        d=1e100.net; s=20230601; t=1757683965; x=1758288765;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=TxCuVeKIYByX83ELv08YQNod/eiQVC5gVFgMvw8risQ=;
-        b=ZDM1QcFztrXAXAfy9A8Zy+gQGjNMrKW9RCQ3ypjOU1yHhQiJd0JaBvnB4USaw762G9
-         oF6JugsMKI2yHPKoFsopEWbb30xKZbOX+HMQ5pfk17OY+uNyzwv4ObiIpwolBIpSZcBP
-         LKHGB8JaqC7v9C0GHCJ29+5npJB/fiNQcbOfRth55jq/Kzv9De7dHZh9okhx+/ObDj+0
-         8p/jOR3K6z22ihzBV5qLJjR+QuSHu9VQErXKqvuao9LrSBz4tfV12HvA5D+X1qCUoRVI
-         gtRXlFDedKYI6KPFxYE3CGa9B1C9osRmztnYcD6NVgnnS61a5yAB28626irLIWJefPOj
-         Bfbw==
-X-Forwarded-Encrypted: i=1; AJvYcCW9szBUGoqObGPnMBLjuEBtvVOz0c7cPSI75xiEY9EiiDukzmQXmc52wZFEQS6uQjPB99q4ZTXLqA==@kvack.org
-X-Gm-Message-State: AOJu0YzYsCAc16JEZCwkUhooRk37c+H1RdprvxKzwmr9KsUbpSOHftAr
-	wQBEXedRB8pxC0K8j2kZBptE5pXF8FGUSXvajowLwuA5tyhorMCoQLKcmC8jHS6eTiE/0997oOF
-	QGq57rQDzg2fm5U3IAsO3e6WHcM7IfbA158WP/Uu9d5sFML3WfX/T
-X-Gm-Gg: ASbGnctPIHdlf4snBnzZ3r54Ft/5j8ZO/thXp1TlqGcV8eUyHyB8YBn4qZuGY0BC9fQ
-	sVq8cZeG6arex2xGXxuAr+uXxrMKNCYHnf1WcW+2wI5UznMaX1x489X93m/hDG5fCZzLQvkamJd
-	Giuj7iEFjH2fQjDuJnHmgQjyjQupD1jRZzoBkNGz/pFh1WxK9aVnDg2YK5HHHDrbh7og5opqr5Q
-	nPPB3+Zhky5KnWl8R4rI62J+f590m+7fDZ6M7w1KAHa2751nGrbt/2bk+bPYyTQUlV9z24J7F9w
-	rq/UphJE5w5DlbjRQoxu65OovZzGx6J6NlwF2G/N7+7uAWkjsBePGktoGrhP92eg6w78pJa4UEu
-	zqyiaOz4Q9fg/uU7Bnbm3wrxrp+4I3YbTPMiZuzLoolvwhRVZgVLeasCdYZUEeD+WNic=
-X-Received: by 2002:a05:6000:2384:b0:3d8:3560:59f4 with SMTP id ffacd0b85a97d-3e75e13caefmr6723691f8f.15.1757683711142;
-        Fri, 12 Sep 2025 06:28:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHb2l7aN1/8HIAcICiml5mSkrzckyj6yy2pKIKfzYSogTxvyEF5XddWuqkJ2hocBG9MnDZbvQ==
-X-Received: by 2002:a05:6000:2384:b0:3d8:3560:59f4 with SMTP id ffacd0b85a97d-3e75e13caefmr6723659f8f.15.1757683710722;
-        Fri, 12 Sep 2025 06:28:30 -0700 (PDT)
+        bh=d3WySasVKe/ME+w6oNrrZ2gd9OipXbQaPkCZGsmbrHU=;
+        b=kVMJxeL0hsxNuCPzB6AkWwbNRTqBJT/m6CCNw5lIbAg+nA0xuKKfVqKuhhXRT5UqQw
+         et8EcRLDH48IIM6Ai2OC+54XtY0ChSk4rgycBw5e2oe3EWiNO3WD67W8RCZ+dYvtTNLn
+         ZQZmib8VicvmzMmZ4RM883OP75hw5jHEnl1QDO068thG2M1en2HOeZwlof/lLtXXpmmX
+         eMTnZK0XZbXYcPhLDI64t/BMSBC/s8OPAGaOHnABQmqB8ZeetUbFYM9mpv6i1a+buWi0
+         lzhhdlYONcoStxIy2CbbEDB+/gBMMI4dAYf2h6EWBIWn0InI0eNpiNaUziUrkWJy5KVR
+         ujlw==
+X-Forwarded-Encrypted: i=1; AJvYcCXHCA3WkMWixSClT7DqiIHM3XuRBXkjotMJ/lDqK3WsmMwDnsibDUkq1C/Vke3nzYhzeZ3C/R//qg==@kvack.org
+X-Gm-Message-State: AOJu0YwJNLtuaOWt3XoMvhVqMO8Z1E7e4Be2gjGCSPMc3yaQ0zwIGBuI
+	jKEdYacNjWVq7Dca6bFjFlzXm44xxSBZ59fM0rEiNoOut+uiiW11s/2f/epSsPEN9lPbwpz8oie
+	VDZpuc4D7m8yUza7sNCfd8on2M7Oor3mWVJXkySoFOTtLLAbvY0wW
+X-Gm-Gg: ASbGncsdtv7CoCiWc2iqS2DFOlbKoGNDiiS9WwQ88XCRdDVB0qTJc0qVHQvLbt4uaux
+	MLdvhrKg0K2zO03RfW/W00MBRghvPHFXw80qVzxAcXlQAKFgyE7xTbspMal+7jhF3+UHIm7hFxw
+	PjlJ/cjd4aCN9qJED7jwiCB5NShFACHiiHaXvaXbos8+gEHoNQXHzMzePuZ/vBa8n7bWcJWQzTW
+	Z1mk5uH2jFNt94SJ71WXGufYJVSpzMCm97DHRVFdbqW1h3s59Vq1YzSXunFG9cFgnDx7BBywm0P
+	zK7W6gj7nV9O8C+rtxCEtjiOGpMsrx6bUoVOf9CHYqkwwEOdsJGv+umzccjxlU2VDsVei1rRZBS
+	sxi8+1TpwVnn+0MEzRF90ccxr4uLlGlYwENvVXtXRO8UnaeDrYdRd0ahKrGLMrA8mDZM=
+X-Received: by 2002:a05:6000:2584:b0:3d2:208c:45aa with SMTP id ffacd0b85a97d-3e7659eb4damr2923117f8f.29.1757683965354;
+        Fri, 12 Sep 2025 06:32:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGQvIA7aWaWPgRmM3ibF4CzK7cagNHsOvK16zCwCwknz8tuIMHPgwLUmt6YVpOJeww1hCUbMg==
+X-Received: by 2002:a05:6000:2584:b0:3d2:208c:45aa with SMTP id ffacd0b85a97d-3e7659eb4damr2923086f8f.29.1757683964875;
+        Fri, 12 Sep 2025 06:32:44 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f20:da00:b70a:d502:3b51:1f2d? (p200300d82f20da00b70ad5023b511f2d.dip0.t-ipconnect.de. [2003:d8:2f20:da00:b70a:d502:3b51:1f2d])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45e0156d40esm68008195e9.1.2025.09.12.06.28.29
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e760786ceasm6793014f8f.16.2025.09.12.06.32.43
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 Sep 2025 06:28:30 -0700 (PDT)
-Message-ID: <8ffb72f9-7d46-48da-833e-83ffd8e32a5b@redhat.com>
-Date: Fri, 12 Sep 2025 15:28:28 +0200
+        Fri, 12 Sep 2025 06:32:44 -0700 (PDT)
+Message-ID: <b2334e92-9d04-4d27-aac1-fec91d5ee464@redhat.com>
+Date: Fri, 12 Sep 2025 15:32:42 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: centralize the __always_unused macro
-To: Muhammad Usama Anjum <usama.anjum@collabora.com>,
- Shuah Khan <shuah@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+Subject: Re: [PATCH v11 1/5] mm: softdirty: Add pgtable_soft_dirty_supported()
+To: Chunyan Zhang <zhang.lyra@gmail.com>
+Cc: Chunyan Zhang <zhangchunyan@iscas.ac.cn>,
+ linux-riscv@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, Deepak Gupta <debug@rivosinc.com>,
+ Ved Shanbhogue <ved@rivosinc.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>,
+ Arnd Bergmann <arnd@arndb.de>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
  Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Antonio Quartulli <antonio@openvpn.net>, Sabrina Dubroca
- <sd@queasysnail.net>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
-Cc: kernel@collabora.com, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org
-References: <20250912125102.1309796-1-usama.anjum@collabora.com>
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>
+References: <20250911095602.1130290-1-zhangchunyan@iscas.ac.cn>
+ <20250911095602.1130290-2-zhangchunyan@iscas.ac.cn>
+ <9bcaf3ec-c0a1-4ca5-87aa-f84e297d1e42@redhat.com>
+ <CAAfSe-sAru+FuhVWRa+i5_sj6m4318pLFrgP0Gsd0DVWzjE-hg@mail.gmail.com>
+ <04d2d781-fd5e-4778-b042-d4dbeb8c5d49@redhat.com>
+ <CAAfSe-tQgmBm=RS2gCi7VaRW1XZhS_sJ9rHbvqJ0w=KwTf+m3g@mail.gmail.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -162,21 +170,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20250912125102.1309796-1-usama.anjum@collabora.com>
+In-Reply-To: <CAAfSe-tQgmBm=RS2gCi7VaRW1XZhS_sJ9rHbvqJ0w=KwTf+m3g@mail.gmail.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Q653FwBobuWxsavUIgmfRJx5wN1MGFAlNSiqXKILd3U_1757683711
+X-Mimecast-MFC-PROC-ID: H_BkOOs7mLgiTE53tvWmrI1eQZ41mphwm-2KS7sUHbU_1757683965
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 156FBA0013
-X-Stat-Signature: nhiqmh3z4oncepfqwk3756mmpnx4o9qd
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1757683713-730060
-X-HE-Meta: U2FsdGVkX19y3TRwaPhst+BgAPULiigaFrye90lT8LIWnRI4FE4w2Yl/V/R8kepuY/IfeOUhpbokksdP6KSrKfd4IdLUElW+gTuYxirSToH11gY3Cq33SUD1rTc1hS1Dc56LzFWH+m81QgNtFSf81leZGjmkEdOeTdXoei5FMawwFyKh3IYCgr3n4NZiaK2ZhPNatp78C+3BKHKJb04eQoOSX2IOpmZbFMbxBpk8RNqGoCqdJl3oY9MxioNkYPRvpAuEsi3njA6zRz4CPPxHz8KGjKNe0D93ZdVYybOiHPYzS7ZYKZfJM/utjHoJf3NwqSRBCNqGDSqi+HbtyYUtMmoa/ZxX8NU2ymNobQXXZflL0usaeVMd52alp5cpINt6c2L5rgVbpJYr+HoKGiuSTTqP1uCg7ovErgY0ZuZ7iwCXfMkA7ybRvEWpOIyoXOt0gl8WKHhuJMjwcwnzyL5kkP/MHPNroSZxXQRDhs7tzudc8beF1Hn9ZclThArtOrfHj2I+DCTJfN0h/mskmXE2xqoFiWhmN6nMr0Bdw6iZeEHN4PjLpG5Zoh+4PJnPZnROJNPaPppGjmXirAJyse8E5ukRDj/VRliHn0KtWuYoxuX1jLOGqZnuiQiKNJAP4g/iCr2f6UnzEhGYlshN4G7pjAk4n46R5Sf5FYHo1VyMvoze1kGGZcfWBW70/PX6w9tdJ3D5nmThp5lto/YdylWpM+YpBxsEICAHfxzd81yCC6p/yCkgfpg52SAdvFdsYl24WahWVQcUgpKiy8xoPOoyohDDRxqgTtMfVOf8kWGanb5wETJTklRZvmRHOQNoLOeQfxX2BGj91y0fj1yGZvBej/PHPnhnC/X2w9ardTYDvaH4TfNP1q4dHQ3rBx+K1Ztch1dXvkXHIp3j3BpWazeTnFargIb+Qh5YqmNO+KgEPL7wtuy3bPilAlewOZyU3+aLaM1rrcQU5v9wQFR0yz1
- r/VWWbUj
- L8U8SwSWwhe/a8ZTbdmyCSRaaCDCYVO6gT681CLlb9OEoSG6wBCceK3caMLXIvXs8OvKFz+aNV5kcJTA0r/kODWWwUJITUj27JyXgzYERIeXXXdo6ckrt0aXitPDXtvNPqh6dFjz8Bg52/Am+yAtntv/TWDV00VaWAB9i5o53u5sQC+HwMxOODu0s9XCq8Z2AvxPuvRhQEFzEBl76sdcdl87MVbXNTsGx3dlcpvJ8CR4F2avw9bH6mLd8fdqQ7kTLXatz7PV08YyV6xZ96Avk9OTcMK4RKHlxNvjQEM65GgZaxlZWxh//6rL21wiPwUeZccR3zLaH/X5jSHlm/TxBjesc7TZvr/Z95V18onPWOiNV/XCwXeauGcTp2Aky8+aKrGFmHUZWMwbvClA4HUSokfyAlwjPHHUAvbAkpLxv6SDLll7nCmS7ZUjK4rn/yV2Qap4yxOMIhp9GBhE3airtf0SFLhqlr9MKI4crzzqxQunguT5G2oZs8DAgWMYwg+gWlRzAfst5fdwo49A=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 023EA100022
+X-Stat-Signature: qnpgiq1m5pphbn3wd8gbr61arbqdh5kw
+X-HE-Tag: 1757683968-940402
+X-HE-Meta: U2FsdGVkX18PO5HiL3KdrR1exFRKn9aWWkT6tH/uMuCglyy3X+6GQwzi+VcSFi/1bwDI0XeQd8iNMVMLvk8V4qCv6W0ZN8JRJCfk9RJHtP2FHEjv/vPz9ovs5v5YctOgWx7BC9LWVTJm494/sfufCoPuA+GzeercKPKeS5VmoEn1/ab2I1f9LWexn4f/OuIoip6CpLkNV7/uWWli0ZOtd33Ub48KkjzLj9ghevDAJ8UTd5wj2iett86Msbs1DFvY+a4xB5oQCEon/vy/xIJsBDgN/Tw5U6xzP6uNc1ryu2McKLWgXc2Z4w/i/Q1kSPE6mh8OGW6hbBMNFOZzdjhGS/NfKsSt4dcZeQWT44nSG38E1SLV5UNOwA3yesWOie2UGSyVdvEizZncKlPbwI0hdrUVZNl4FzkDxRtHlfQBHZHlTycT0QLNw2plyU3wUBV/XsUsAEFI7Vxy0bFRJgjRzgQZVWBiK74E6u8nb/sqE2Q0pzmTfh8mnZg4iYl8aYhRtVkyIH0fjIxx7I5saN6uwuh0hvU4yy2OcuwqklFB+cnkTVXVJ2PjnJG3sQkw/Ppb208lYgc3AwAFVHaKgfupqOUOrgXU1jxgJw2QcAg3y4Aeqj5QtDfPrnyAOQkBtH7xk1Pa/G9H0vx2UjL0CgviGZ+eOGaXPmW0W/cGqHqTiHueNk64U2UGdo2Vcctkqq6wCcw87BeZgTMK3BgfJckh0TQohAl48L62vOHQtkrJOkpVoNaOdNGENltt9kxXdKm8zL62uLgZT7plun2KG+Uk9LQuMRvTK2qCU0yzY77i+JPCt7rT4UlkUlk9HynbHh8W3A5avFNXHqMcXQX21doYKemi+9wld2K3nzHWa4RfZ074taMJGADVUr09Jpn/1JArH3+2TLIaCRGHX7feMn7Uqxkr5ijGEBxyHI4dkWkVKQE0/j9CswWhcUNcoCm5FmVaFwmY/In2pBX3jRnwQAR
+ xerh84Ju
+ hPYEA+WYivHXbI1Vx/oR1aN0nyQL36NurrPhNWnNECS/HEUOetTV5VFDuZuxc2Ac0xEo53bQ3KMnR9M3QlvbD9rXgI+G9cFsFJzjHqurKGrZWQwU9QkF0aTkpfRfDuX32r8vHfrxVX3khMkGBUF58LW2ffmZGVJDGk3cm9kSIP1rDSkbA5cjn0YQz6J8nmn4hMPqTsUvWgw3VQvnRmcF5PL3oKXnXzp8lSKg0nBrwGKjR7g4vTm099W+ysV4Q6K6zsp/1LkTjw/3QDgwSYiWHrRzIlikaajB32Nm902RYeziJUBnrqpU6JlRidWjl28pmRfD/bhVOu8VWJe8NtnFHzLJRSu+uN1i7bg71P8nQ4t2+2au5/JAgmG8NLw745dsUKIJj6/NFjcDlx/5wFKoAbnivK+50xAP38mqb1+Un3iuit6E/x0MzH5qgEOvb11nPBsMMhMubX/5f9JBl/EHI27XPV+7+5c+HVQWUOCEkCVY4u+2/OPRZNIMCdVa/Cx/Hqss6V8YAnx25QaVNMsG4rPb8U+KIEyl0jFaz
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -185,15 +193,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12.09.25 14:51, Muhammad Usama Anjum wrote:
-> This macro gets used in different tests. Add it to kselftest.h
-> which is central location and tests use this header. Then use this new
-> macro.
+On 12.09.25 11:21, Chunyan Zhang wrote:
+> On Fri, 12 Sept 2025 at 16:41, David Hildenbrand <david@redhat.com> wrote:
+>>
+>> [...]
+>>
+>>>>> +/*
+>>>>> + * We should remove the VM_SOFTDIRTY flag if the soft-dirty bit is
+>>>>> + * unavailable on which the kernel is running, even if the architecture
+>>>>> + * provides the resource and soft-dirty is compiled in.
+>>>>> + */
+>>>>> +#ifdef CONFIG_MEM_SOFT_DIRTY
+>>>>> +     if (!pgtable_soft_dirty_supported())
+>>>>> +             mnemonics[ilog2(VM_SOFTDIRTY)][0] = 0;
+>>>>> +#endif
+>>>>
+>>>> You can now drop the ifdef.
+>>>
+>>> Ok, you mean define VM_SOFTDIRTY 0x08000000 no matter if
+>>> MEM_SOFT_DIRTY is compiled in, right?
+>>>
+>>> Then I need memcpy() to set mnemonics[ilog2(VM_SOFTDIRTY)] here.
+>>
+>> The whole hunk will not be required when we make sure VM_SOFTDIRTY never
+>> gets set, correct?
 > 
-> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-> ---
+> Oh no, this hunk code does not set vmflag.
+> The mnemonics[ilog2(VM_SOFTDIRTY)] is for show_smap_vma_flags(),
+> something like below:
+> # cat /proc/1/smaps
+> 5555605c7000-555560680000 r-xp 00000000 fe:00 19
+>    /bin/busybox
+> ...
+> VmFlags: rd ex mr mw me sd
+> 
+> 'sd' is for soft-dirty
+> 
+> I think this is still needed, right?
 
-Acked-by: David Hildenbrand <david@redhat.com>
+If nobody sets VM_SOFTDIRTY in vma->vm_flags, then we will never print it.
+
+So you can just leave the "#ifdef CONFIG_MEM_SOFT_DIRTY" as is to handle 
+the VM_SOFTDIRTY=0 case.
+
+So you should not have to change anything in show_smap_vma_flags().
+
+[...]
+
+>>>> That should be handled with the above never-set-VM_SOFTDIRTY.
+>>>
+>>> We don't need to check if (!pgtable_soft_dirty_supported()) if I
+>>> understand correctly.
+>> Hm, let me think about that. No, I think this has to stay as the comment
+>> says, so this case here is special.
+> 
+> I will cook a new version and then we can discuss further based on the
+> new patch.
+
+
+Sounds good!
+
 
 -- 
 Cheers
