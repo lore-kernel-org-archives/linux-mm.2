@@ -4,135 +4,191 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 330FCCA101F
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 09:20:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82E16CA101F
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 09:20:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 881D18E000B; Fri, 12 Sep 2025 05:20:04 -0400 (EDT)
+	id E2EAD8E0014; Fri, 12 Sep 2025 05:20:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 831968E0006; Fri, 12 Sep 2025 05:20:04 -0400 (EDT)
+	id DFF028E0006; Fri, 12 Sep 2025 05:20:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7208C8E000B; Fri, 12 Sep 2025 05:20:04 -0400 (EDT)
+	id CEE818E0014; Fri, 12 Sep 2025 05:20:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5ABB88E0006
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 05:20:04 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1D4C816068A
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 09:20:04 +0000 (UTC)
-X-FDA: 83880051528.20.2F7EF34
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 0CBB7160007
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 09:20:01 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=oT7QcAey;
-	spf=pass (imf08.hostedemail.com: domain of sumanthk@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sumanthk@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id BE67E8E0006
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 05:20:14 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8AD3011ABBB
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 09:20:14 +0000 (UTC)
+X-FDA: 83880051948.22.D8F3F7A
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 0B1E91C0009
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 09:20:11 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JIgFH+24;
+	spf=pass (imf21.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757668802;
+	s=arc-20220608; t=1757668812;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rZc9834EQmnX5OjtQuA7Dp/c6DGjo1MBldcjPqT/2OU=;
-	b=fH0/NTZLGDPy11gaDOYnC3mPTpNd5n9tOJRy7xM2tMcLOkZilzFvcDOysVDyKjZk60Mr85
-	ug78ggDI+AxrgvfRisE/+6FtQoyjCFN7/4xgPbQLO7eD0aEYXiVw5PCjAsfecI+SoGIos1
-	2+yhGXMn/meaC5T1kWWVrFpP2qelJec=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757668802; a=rsa-sha256;
+	bh=+MzP8ZtzjuFzx7no/Z95bzESB3nOqylto37d5k77ugs=;
+	b=47QzZr73zb1I6LUZXyryjxgTYNWFRfwC+GFtrhC26+3juhlu0P1Hiw1UDUwGpVd0clBgw7
+	4BI7JGI8tBf3e5Ni+WyRDKuuxIxjhGi3ZkoQ7Bur72wDE+GkgyX5zOO0m0F/N4QL6wt/Ih
+	RCmxWfah1/hRxudVcRBxjMYFTZZnfmw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757668812; a=rsa-sha256;
 	cv=none;
-	b=icsYUb+z0NRk2fTRraALlW4roFrAkkxxBkr8nrARsEp+FEysHKF/sGrAWFDvmQoqCHK/uj
-	3xKEtfEWONCtRQhwi4XL06DUQlaAtP9tazYaAo7tKF3EXnB+dQwk88mOoxGcQMdV5cFn7d
-	88F+CVc7+CSB1Jvr9FMhf86MJw2B6mY=
+	b=dh8AFbY5W0byqvzZUtaAcC3k8RRd4XUc2E/Jp3PjMT5ILoNeq+1ZkEza1Lvt6n59LbUBpT
+	lFCjz3m/AykEIa1Qd4k55MiZOIbKqlQ+k8/Qsmd0ndPMS2t0+RpRX4CNnHYfx0LmvJoocc
+	Ez9UA1bcyedNls5J59xrjIFRwS/AD0E=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=oT7QcAey;
-	spf=pass (imf08.hostedemail.com: domain of sumanthk@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sumanthk@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58C7s0fp010489;
-	Fri, 12 Sep 2025 09:19:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=rZc9834EQmnX5OjtQuA7Dp/c6DGjo1
-	MBldcjPqT/2OU=; b=oT7QcAeyDCK579nnNLWUMSZVrW1VsEuASH/MVg9/rpXyvO
-	qx2tdjP0DI+d58PUpp8IUcdgMKdIsu3scsvEWQqpXSyldabSxttqvPuCNi6JvyQU
-	eKuC8ewTHbhVNDwSv+J26pujadusNJFEx9ewhKtws+CBinrWUAMumvxYHGTfNv8r
-	wGPFxPpU9Zy6lx+1iEs65EeIg4GN+IoY+hzhHSETrAo8ql3om5qxClC+0R5cZXlW
-	lUFK5/KKHtP9nmUDrJnTHzg8eWbRrYWdv0ALZnKtkhGraqtCz4UhHEe9vn66LyNl
-	gmHXowVT99A8gtSQQKBkcmWEnDMWR/FkWnu6CqRA==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490ukexmfx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 12 Sep 2025 09:19:59 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58C9FceJ011457;
-	Fri, 12 Sep 2025 09:19:58 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 490y9utf24-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 12 Sep 2025 09:19:58 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 58C9JtNa18284942
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 12 Sep 2025 09:19:55 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id ED3472004B;
-	Fri, 12 Sep 2025 09:19:54 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5581A20043;
-	Fri, 12 Sep 2025 09:19:54 +0000 (GMT)
-Received: from li-2b55cdcc-350b-11b2-a85c-a78bff51fc11.ibm.com (unknown [9.111.76.176])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Fri, 12 Sep 2025 09:19:54 +0000 (GMT)
-Date: Fri, 12 Sep 2025 11:19:52 +0200
-From: Sumanth Korikkar <sumanthk@linux.ibm.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm <linux-mm@kvack.org>,
-        linux-s390@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>
-Subject: Re: [PATCH] resource: Improve child resource handling in
- release_mem_region_adjustable()
-Message-ID: <aMPluIk8EnOuIWbi@li-2b55cdcc-350b-11b2-a85c-a78bff51fc11.ibm.com>
-References: <20250911140004.2241566-1-sumanthk@linux.ibm.com>
- <0ab2cb14-ba8e-4436-b03d-9457137f492a@redhat.com>
+	imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JIgFH+24;
+	spf=pass (imf21.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1757668811;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=+MzP8ZtzjuFzx7no/Z95bzESB3nOqylto37d5k77ugs=;
+	b=JIgFH+24Jj9eHdrh2r65d4whFVGZufAQ+j/FAkutV92PVhRkzAHJ/yOY9JZlTRpjm/wZP+
+	iI0RcanYPQB1SnWjvfJyidjhtEzVKNdvgvttpHrxhp2+8sgwGefP2R0jmvx5SAgyJ8SQpi
+	bp6NwxNeonrlymbSvAQc+16C0KSL26Q=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-81-EoYle17gP96sPS3MaBMfaA-1; Fri, 12 Sep 2025 05:20:09 -0400
+X-MC-Unique: EoYle17gP96sPS3MaBMfaA-1
+X-Mimecast-MFC-AGG-ID: EoYle17gP96sPS3MaBMfaA_1757668809
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-45b990eb77cso10308465e9.0
+        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 02:20:09 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757668808; x=1758273608;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+MzP8ZtzjuFzx7no/Z95bzESB3nOqylto37d5k77ugs=;
+        b=AxpwPxdlbLIAD3AkUscHyur8w2zlhQYLoe+/VlNTLmCRIPj1XfAQIuXXuvR45tFk5v
+         MOG+qsLXd1DVYD33Qi0aH3ftNBLZqJGjOgwHATcwBe1ntiS+Wh4DOZ8JTvx1zcgZD2W2
+         fXIwOL+vEDxmyQCi+UsZk31M7wZWUVndJmxp3H5c83JrYAdEXTYm19mu5d6JhohF5Kj4
+         NuIziLW5BWdng2zuBAjc4gBlXTAHJ6Ia3NtUst/xCSnEFwts2AgMhGbFquvR26hNzDn9
+         gZvtd0eVDLJbEGEI9e+5Ydfbm1Rgh5UE/2DopgsPXM+V+RpZFifornH790sXu6n8s160
+         FKzQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVfUVOmIrzhETAwuehmnKXEJJgSmYNLJF/R4RrH5Ad/aCEOOTzWelz5zQc9M3teQk78Q6NqDigrjg==@kvack.org
+X-Gm-Message-State: AOJu0Ywzhg2HLFnKOqzSdK7d8ib4dSxGPvnCUu992e0HKcXEPvWgIr9x
+	ivhmFDWaMiu5pUG0GUXJG/1zwF8Y0pjd6VW8l/LjT/Q+a+Gc3cYy7Pdm/PqPxVO6F6VTofR+p9Y
+	Pepg6v9+B0rdyYmIKMQxIMhr0c/Y0TU6C+Nh9nhRbkez/AX443Mr2
+X-Gm-Gg: ASbGnct0KcjVt3bXLR42nR+Ac11zM+uVMRckEgxP9NA1wvl+4LwwhLCl1oMaxkUMEV8
+	cr4tXApPgRE24aK6/Ck0GfeYP/19jhn/kERkNiGR1ua7sdO9sgtbTN/jK4gx/gPxQwUBeQPbQGw
+	/fXA9GNkH27T/ieC8W6TIgajEyb6mGUoyOmcznDuzlWGB4549hPDl6QYQWl5wdFfhHzbgddLr+j
+	nIBmiRdl5oAmjBGlwYzBYLFzUJfybNr9RwK0vtQ4DThCyMO2cfSgqjMs0RUmFTMWMGC9w1QIMxl
+	QmuxesmWlp2QCqalCP7exg2Cn2r8pZtS3eowouuBGFA7vaX2Er0V6te1qXiJYYirOI2U/84X5FL
+	bEREsXKqRccYTy70wB7h0k/u8WEkQq0zCHPPh4PJ1TgouZkpwVL5Yh1OoOAcPfIEvVAA=
+X-Received: by 2002:a05:600c:c112:b0:45b:9b9f:88cb with SMTP id 5b1f17b1804b1-45dfd5fa22amr49779985e9.16.1757668808485;
+        Fri, 12 Sep 2025 02:20:08 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGXkEspv+20MlFbesTl37GXWHbZfquxB4ih7Dl0E1NZ+jD5GQeintUf727ez0VnQ0g0eWxksw==
+X-Received: by 2002:a05:600c:c112:b0:45b:9b9f:88cb with SMTP id 5b1f17b1804b1-45dfd5fa22amr49779515e9.16.1757668808019;
+        Fri, 12 Sep 2025 02:20:08 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f20:da00:b70a:d502:3b51:1f2d? (p200300d82f20da00b70ad5023b511f2d.dip0.t-ipconnect.de. [2003:d8:2f20:da00:b70a:d502:3b51:1f2d])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45e0156c64bsm58222385e9.2.2025.09.12.02.20.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 12 Sep 2025 02:20:06 -0700 (PDT)
+Message-ID: <3674bdb2-0e59-4f0d-8adf-4794a6db546c@redhat.com>
+Date: Fri, 12 Sep 2025 11:20:03 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0ab2cb14-ba8e-4436-b03d-9457137f492a@redhat.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA2MDE5NSBTYWx0ZWRfX8+MoGTPNm00b
- KOFWKPKV2Xy6RGjoy4rtU6RkByiK7NoS78T8ir18gq0fRHiE730SriDs43zGcf0b4Hjb5xIok0I
- BWWHNTnZhD4ZiOO+KQTPmY+i19osybJzSjnXpE/Fx+XFj2/sBsz6CL71CXB/GNRQh7X/PRVR0gA
- AmkvzSmLGJRctE6HKF044iUzNjOzF3AkQ6oNFAzMmYSFmsghNoUtk8D3xhk/hUHm/sCyxzv9QGV
- MryrgP7l5jM3fk1GMdX/L1ARR4/zvtumI+U7v1eUYLC3pqPp/fzUxpEKt9P1+3WUjEXo2ZGbGns
- cFZJG+/JGGc4BlQdJFES5+c2xq1ryJtdmCUCrf3icv8QG8DJKQoQFT0W4Z3WihToReKBIAY8505
- lRWnYkx6
-X-Proofpoint-ORIG-GUID: YvJGDlMvwKn3eiGsY0_1sV8saR02XCv-
-X-Proofpoint-GUID: YvJGDlMvwKn3eiGsY0_1sV8saR02XCv-
-X-Authority-Analysis: v=2.4 cv=StCQ6OO0 c=1 sm=1 tr=0 ts=68c3e5bf cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=kj9zAlcOel0A:10 a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=2Bmdxn4tqa3G8kVuJ3QA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-12_03,2025-09-11_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 malwarescore=0 bulkscore=0 clxscore=1015 adultscore=0
- suspectscore=0 priorityscore=1501 impostorscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509060195
-X-Rspamd-Queue-Id: 0CBB7160007
-X-Stat-Signature: ej36wmnsetifd8aoqokcroj4qmpynd7r
+User-Agent: Mozilla Thunderbird
+Subject: Re: [v5 01/15] mm/zone_device: support large zone device private
+ folios
+To: Balbir Singh <balbirs@nvidia.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+Cc: damon@lists.linux.dev, dri-devel@lists.freedesktop.org,
+ Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, Oscar Salvador <osalvador@suse.de>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lyude Paul <lyude@redhat.com>,
+ Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Ralph Campbell <rcampbell@nvidia.com>,
+ =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Francois Dugast <francois.dugast@intel.com>
+References: <20250908000448.180088-1-balbirs@nvidia.com>
+ <20250908000448.180088-2-balbirs@nvidia.com>
+ <8c5267ec-cc85-4eff-b890-eb705472e2b2@redhat.com>
+ <f98d3149-9cc1-4211-af8f-e49547134b8c@nvidia.com>
+ <244005a2-4796-4985-853e-f916bdfd096a@redhat.com>
+ <ce40579b-4ded-473b-8fdb-a41d5b5021d5@nvidia.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <ce40579b-4ded-473b-8fdb-a41d5b5021d5@nvidia.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: X7kP61vYGBqBI7P8KeL9_WRrdX7OesXmCN54ZvP31Xw_1757668809
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 0B1E91C0009
+X-Stat-Signature: 49ssc89aten5cd1z994eh7hbmabqtpg8
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1757668801-730891
-X-HE-Meta: U2FsdGVkX18yJa4yIXuoJ2rK/ll8XjcoaKS+ilkl+SE7qSu3o4EL4kFeSJqdDLgGIU4XGIgmizV8JFIa1VjBNuICIEmFb2kXyPHl4Lfs6ElGB/iN/N8LLl9TLBUV7201BNW5yiLva7PqGFUXiB7zPOovp085tYFpZXauzw9Cy+K9EdgEberdqwHUnYWHtFgdL7uDFtGvJFMKmBW+ujY7SVv0Isd8xk4mtIlPGPdWN4eoZpVQoqn/cgll830jJFGgSIfq/wbnmE/kpn3eRGiOH1tlIeEJEp8V8f2feaNODLmaZyI8wDjmVLx/RAujYG1XjVZ4VKY4w7cpLOfBNo1dLjpsrTlx6vBO8YAh2fzOSbk/FY+IJOlm/rQdHH5KsxJSc8Npt0Xq2f0oKu0zPcO7yZc/lNzfr0+VsGgRTiYp9R0dWy6nedksq63chqNIjsLRTxbgxIDoQYOgoVbF9B8u1s6L4j7VEywabm+f2QMG7/852p6KJbv8kkwXvLnxahuIKaG5GVvxrDle6yzPf3KL27yP8eVN3uKgRTvWCX2b+Vrizgdyn1F18pKMtp0Q66Uc3mLMlSUeyX+IuvbZscJdUWz/P5BM0CSKzcojdIZzpNpL/l2bnJz7NgAdAnyL169UrKLwwx7WkXay7sUXCCfmbnydugvDxLUgBSdo9yZc9TfHzhqXC0Vt3YvDuO7mzSe+oNmYLZlt2dSNb7JyGQZ5DCmCK8AjLf9B4OWM6CVaSwuapr7ySnza+R90cQMyXzsVQcR3QbOs9rpBiP24nDS+z2UXXqoYRsAcrkpkqJVD90OpFPgqkRIq4Nm5lYmyw+jULcC8Nc6hTkMBKbuM/tGu6XT27xP0OIanUkkFTWXVKH8EB9qRHfluLuyIaUS5cufbaeBlr6XHa3gleIRqDBJwlbkovVtn4F19DVBpNOyo7dABdoWHP1oWfPGllrRb/99hVZjd2WuWd82ZOkE7jlt
- hAw2y9I+
- EperO41ObzB6YD/2g/ey+3M5rrHVQmZAQYTR6iTO8FfZrTEnjIZTMS5+fds2Blaq0kxbn
+X-HE-Tag: 1757668811-487424
+X-HE-Meta: U2FsdGVkX1+SUVavnA8/Gw7Zdrub0UXYLoz5ZXcJY4uiWriH3b3ryVTCbfngYCyLA8d5FRn3VDlfBTb27wk4lU5T1HNaxrHvdiGZvSrUX2cgX1wy16PQWyKoVhem2Gf5D53slozfliKE+5UF1DsOI7rfD76BwKmZ+3W6CPqS8qnAfN72sRJljrTYBNIhNT8rhr0H3Ekom7ESIoEtjamMreqkaSENjXhtYb5GLLlY+cR+djxME9zdcTENRygezlzaRVPBujtYeWqWrioaWZaStwc7LG0XzA/r3gs1VTmdfIZ4BlZcnJKcsbJvQda7os45Xg/sybwPyUV32kk3RinNbB6xQU1FC1GgM8K5rcMl3/2gRTnvbrxZYCBYIYqIf8X0YDd0NkwFU7XMG5XBISXeeros8WRNCrHT/13T7P1B2T7mN425EO7XwWRfJZ7NYCjMbevTEuKFkHvxJDo+H5skVdHZdavRasTuwJ7Ie8MrCsBK1i6BTYbb979gKiU7xhDLszYxuR0Pix5ZTEOfSBPK61LdUVF6G3HIbkwbtaNrN354ByodR9o+cAzaAT0MMwhGnKvl75C0iNAuVw4Hz7iseySIylzDCMov97RSoLOlxAwA52Y2Wfar9lc8jb8RU4ZKARJkb5raweWPT74qfFXBmsjoIVSaD3UyXEYeZxbKLg/LO98O/Evfyt5Zse8zuiEIhVl21Y62IJ6t+tkvhubsWqyCcN4i3d1B6JdyO34utE95V6PJwQHPCxlAAXZWzhPB9NOY95dgiP79xW2Hgeeh+Pj47MobFrmj5tBHNxYjy1Y1jF+0dSqkqiQVtchxftwaiuiAxRX/9X6bQqnrM+1c/ItUPRJR+6WPcMWot2xixtxN6ipQwiWkDT/MbJwN/t9b9Tg98th2M19WjP0qjKp1bkD8tE5E4UeRJ8aFMtBZHx7mq986zv+MfUIHYkEZYNstHx5VUyFTIumQks5OTWQ
+ yX+5xilc
+ ByX5g/5hL5p9iwMXJnX6hrScOOVOfN4WCHYmUb9VzyKqiCd5vk/dy3Dxov1oEL/qe9JR8n7GKf/hOJdoRZf4ZeM8x1Nj1CLqa4z1ODqZUBIZPIKrDlZbR7B0bQ8H+9TvH7J45CwuD2ax8kRMH0JR+TOhUAB7dtOClnJ1zezAZ5Idb597sUqIBk3uPVbVO374xx1ipx9P0DJJlw5HwyFJGxcbUElppNK5PH+zwA7jdyrwjbnc27mQV2f6vVd27/lXD3iqV4DbV6gbYdl8+qrB9OqPWyh+bGaokau5A8rYoJmvJI3A3nFSIiGmgcTjXmuIG30yspiLxQYoni1EonV0nyEUQt0B9RjCGkJ1jP9yoPTc37s0N372ITaFfNLivtSswjPw1vJTkzsiAwUl187iXzow8N4QHlyLXsqdfEFYzbPTrHiUiZXMMcYXKpoukkXFmvmgO5zLLcet+PNh77skqk4PA/IHJ/nLAKUdOTEcsml6ZEpI9ga7+qSUGMoe5HcO1+8zGXMsIOL353w/SlBmuVFzh081IoR+ctmPMTLiVyHqmUX5AtDEZRb4UReiXKSdJaFWEfbltaNPQojLS94DqZCKi0EiOcr4k1XyEhgWRJzAAimk7PBydKueLgQJHFVmmlkvufPJPxPqJeA99HwDBkNi66Ww9SKSJuQ7/WlN215vcW1h74AyIfa0Sca3DJZPSqkyvNd42wThZ+i2qXX8drODWlaFs53fQplQzgEmTP8MWwIywpWJhINxE5Kj3XZXwDUA8LkB7hGNl8wjDg9zGeY1UCD2xs/0RmKWLQqokBSvigEdIz/bggvp/wel4Q0vSLvTw/oUqLAV5AqsqD9ivq91MdpiPc/9mi7xx+Pkma6LiGmZ0849tdFORTl9C4AkJY7qJPCdDykydMku1DhziXRlKcx0GuCCCCjEMwZXP9tDnvN37WSOGokoOPQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,128 +197,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > lsmem
-> > RANGE                                  SIZE   STATE REMOVABLE  BLOCK
-> > 0x0000000000000000-0x000000014fffffff  5.3G  online       yes   0-41
-> > 0x0000000150000000-0x0000000157ffffff  128M offline               42
-> > 0x0000000158000000-0x00000002ffffffff  6.6G  online       yes  43-95
-> > 
+On 12.09.25 06:49, Balbir Singh wrote:
+> On 9/11/25 22:52, David Hildenbrand wrote:
+>> On 11.09.25 14:49, Balbir Singh wrote:
+>>> On 9/11/25 21:45, David Hildenbrand wrote:
+>>>> On 08.09.25 02:04, Balbir Singh wrote:
+>>>>> Add routines to support allocation of large order zone device folios
+>>>>> and helper functions for zone device folios, to check if a folio is
+>>>>> device private and helpers for setting zone device data.
+>>>>>
+>>>>> When large folios are used, the existing page_free() callback in
+>>>>> pgmap is called when the folio is freed, this is true for both
+>>>>> PAGE_SIZE and higher order pages.
+>>>>>
+>>>>> Zone device private large folios do not support deferred split and
+>>>>> scan like normal THP folios.
+>>>>>
+>>>>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>>>>> Cc: David Hildenbrand <david@redhat.com>
+>>>>> Cc: Zi Yan <ziy@nvidia.com>
+>>>>> Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+>>>>> Cc: Rakie Kim <rakie.kim@sk.com>
+>>>>> Cc: Byungchul Park <byungchul@sk.com>
+>>>>> Cc: Gregory Price <gourry@gourry.net>
+>>>>> Cc: Ying Huang <ying.huang@linux.alibaba.com>
+>>>>> Cc: Alistair Popple <apopple@nvidia.com>
+>>>>> Cc: Oscar Salvador <osalvador@suse.de>
+>>>>> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>>>>> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+>>>>> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+>>>>> Cc: Nico Pache <npache@redhat.com>
+>>>>> Cc: Ryan Roberts <ryan.roberts@arm.com>
+>>>>> Cc: Dev Jain <dev.jain@arm.com>
+>>>>> Cc: Barry Song <baohua@kernel.org>
+>>>>> Cc: Lyude Paul <lyude@redhat.com>
+>>>>> Cc: Danilo Krummrich <dakr@kernel.org>
+>>>>> Cc: David Airlie <airlied@gmail.com>
+>>>>> Cc: Simona Vetter <simona@ffwll.ch>
+>>>>> Cc: Ralph Campbell <rcampbell@nvidia.com>
+>>>>> Cc: Mika Penttilä <mpenttil@redhat.com>
+>>>>> Cc: Matthew Brost <matthew.brost@intel.com>
+>>>>> Cc: Francois Dugast <francois.dugast@intel.com>
+>>>>>
+>>>>> Signed-off-by: Balbir Singh <balbirs@nvidia.com>
+>>>>> ---
+>>>>
+>>>> You missed my comments of this patch in v3.
+>>>>
+>>>
+>>> Hi, David
+>>>
+>>> Looks I missed your comments, just checked those were largely about alignment and
+>>> integrating the code for DEVICE_COHERENT and DEVICE_PRIVATE cases into similar looking
+>>> bits for zone device folio free and code-alignment. I'll take a look and update as needed.
+>>
+>> Yes, and the confusing folio->mapping = NULL that I cannot connect to THP support.
+>>
 > 
-> First of all
-> 
-> 1) How are you triggering this :)
-> 
-> 2) Why do you say "and removing the range" when it's still listed in lsmem
-> output.
-> 
-> lsmem will only list present memory block devices. So if it's still listed
-> there, nothing was removed. Or is that prior to actually removing it.
-> 
-> 
-> Is this some powerpc dlpar use case?
+> I can remove that, let me reunify those bits, seems relatively straight forward
 
-Hi David,
+BTW, I was wondering when we invalidate folio_test_anon() by clearing 
+folio->mapping int he current code flow?
 
-I am working on the item related to the last discussion -  dynamic
-runtime (de)configuration of memory on s390:
-https://lore.kernel.org/all/aCx-SJdHd-3Z12af@li-2b55cdcc-350b-11b2-a85c-a78bff51fc11.ibm.com/
+I mean, this must happen at some point when freeing device folios.
 
-I came across the problem when I tried to offline and remove the memory
-via /sys/firmware/memory interface.
+-- 
+Cheers
 
-I have also modified lsmem (not yet upstream) to list deconfigured
-memory, which currently appears as offline. An additional "configured"
-column is also introduced to show the configuration state, but it is not
-displayed here yet (without --output-all).
+David / dhildenb
 
-> > 0x0000000150000000-0x0000000157ffffff  128M offline               42
-
-True, this will not be shown with the master lsmem, since the sysfs
-entry is removed after deconfiguration.
-
-> Do we need a Fixes: and CC stable?
-
-It will reference commit 825f787bb496 ("resource: add
-release_mem_region_adjustable()"). Since the commit already states
-"enhance this logic when necessary," I did not add a Fixes tag.
-
-> > Signed-off-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
-> > ---
-> >   kernel/resource.c | 44 +++++++++++++++++++++++++++++++++++++++-----
-> >   1 file changed, 39 insertions(+), 5 deletions(-)
-> > 
-> > diff --git a/kernel/resource.c b/kernel/resource.c
-> > index f9bb5481501a..c329b8a4aa2f 100644
-> > --- a/kernel/resource.c
-> > +++ b/kernel/resource.c
-> > @@ -1388,6 +1388,41 @@ void __release_region(struct resource *parent, resource_size_t start,
-> >   EXPORT_SYMBOL(__release_region);
-> >   #ifdef CONFIG_MEMORY_HOTREMOVE
-> > +static void append_child_to_parent(struct resource *new_parent, struct resource *new_child)
-> > +{
-> > +	struct resource *child;
-> > +
-> > +	child = new_parent->child;
-> > +	if (child) {
-> > +		while (child->sibling)
-> > +			child = child->sibling;
-> > +		child->sibling = new_child;
-> 
-> Shouldn't we take care of the address ordering here? I guess this works
-> because we process them in left-to-right (lowest-to-highest) address.
-
-__request_resource() adds the child resources in the increasing order.
-With that, we dont need to check the ordering again here.  True, here we
-process the child resources from lowest to highest address.
-
-> > +	} else {
-> > +		new_parent->child = new_child;
-> > +	}
-> > +	new_child->parent = new_parent;
-> > +	new_child->sibling = NULL;
-> > +}
-> > +
-> > +static void move_children_to_parent(struct resource *old_parent,
-> > +				    struct resource *new_parent,
-> > +				    resource_size_t split_addr)
-> 
-> I'd call this "reparent_child_resources". But actually the function is
-> weird. Because you only reparents some resources from old to now.
-> 
-> Two questions:
-> 
-> a) Is split_addr really required. Couldn't we derive that from "old_parent"
-
-old_parent->end points to old end range before the split, so I think it
-doesnt tell where the split boundary is, until __adjust_resource() is
-called. Hence, split_addr was added.
-
-> b) Could we somehow make it clearer (variable names etc) that we are only
-> reparenting from "left" to "right" (maybe we can find better names).
-> 
-> Something like
-> 
-> /*
->  * Reparent all child resources that no longer belong to "low" after
->  * a split to "high". Note that "high" does not have any children,
->  * because "low" is the adjusted original resource and "high" is a new
->  * resource.
->  */
-> static void reparent_children_after_split(struct resource *low,
-> 		struct resource *high)
-
-Nice. I will use this convention with split_addr.
-
-> >    *
-> >    * Note:
-> >    * - Additional release conditions, such as overlapping region, can be
-> >    *   supported after they are confirmed as valid cases.
-> > - * - When a busy memory resource gets split into two entries, the code
-> > - *   assumes that all children remain in the lower address entry for
-> > - *   simplicity.  Enhance this logic when necessary.
-> > + * - When a busy memory resource gets split into two entries, its children is
-> 
-> s/is/are/
-
-Will correct it. Thank you
 
