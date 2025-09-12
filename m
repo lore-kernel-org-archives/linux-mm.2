@@ -4,108 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FC8ACAC58E
-	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 01:37:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7E6DCAC58E
+	for <linux-mm@archiver.kernel.org>; Fri, 12 Sep 2025 01:59:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DEF8C900003; Thu, 11 Sep 2025 21:37:48 -0400 (EDT)
+	id 14C3C900004; Thu, 11 Sep 2025 21:59:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D9FD3900002; Thu, 11 Sep 2025 21:37:48 -0400 (EDT)
+	id 123EB900002; Thu, 11 Sep 2025 21:59:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C8E63900003; Thu, 11 Sep 2025 21:37:48 -0400 (EDT)
+	id 0612F900004; Thu, 11 Sep 2025 21:59:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B6434900002
-	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 21:37:48 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B55AA1A0619
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 01:37:47 +0000 (UTC)
-X-FDA: 83878886574.13.E3EFC97
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 1545F1C0006
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 01:37:45 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=czhWoQrA;
-	spf=pass (imf21.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EA154900002
+	for <linux-mm@kvack.org>; Thu, 11 Sep 2025 21:59:21 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9259D1DF041
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 01:59:21 +0000 (UTC)
+X-FDA: 83878940922.15.3CF2B00
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id C9E6914000E
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 01:59:14 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=difnhe8r;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757641066;
+	s=arc-20220608; t=1757642355;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+D1zQTiTnlEZqnFCgmfLcL4sMppDPwHxOoeZoJwx6to=;
-	b=FsPb6o00LQzMdxMDwSDQ7Ex1CEpYhWR3JhO7unA4RABtc5CDgw/Ccoy0lEryQzWHRKVlPf
-	F4Eo8UePBjKTif0cLRMGMzNLuqajKJQ8eWmDJzW+/8NN6YscA6UF/2hCUMDcNCv5rTmAxK
-	LyOAJCYf1r1cEUwqsjipGzOlOqlQFHM=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=czhWoQrA;
-	spf=pass (imf21.hostedemail.com: domain of chuhu@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757641066; a=rsa-sha256;
-	cv=none;
-	b=YFBVlggkpX7WrrOKGOSyNq4fwpi90Ak5xvWg8mWg2uLQLsG+r9HyAfYvraX0R3TY8oGXt0
-	H37qOdrPjLlkGQXQX9wNcNcqGms8V6hIChg0mMI2xdnosJZ88Xvz8c3AVyu7PxPMhyaEae
-	MjBD2/HDuX50a/cCbSnBKJdHqQEfmn0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757641065;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+D1zQTiTnlEZqnFCgmfLcL4sMppDPwHxOoeZoJwx6to=;
-	b=czhWoQrAAMmkTDUy3XtvjItrUc45a0Ct6/Xxn6PuxhswPgTh2o1fU51wu3rFUr9rTcTRNt
-	BKqzhT+hXtBgLQFttrQKeP5LbEqMvr1T26XDvpRZSWCWNre8jOIllB+v8XGIZA4iZhEiT1
-	bGevB8mM4CW7RS1OKKRlfyiLeGm/syI=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-641-1IyLpvnVOwmbrj65fPzDkQ-1; Thu,
- 11 Sep 2025 21:37:43 -0400
-X-MC-Unique: 1IyLpvnVOwmbrj65fPzDkQ-1
-X-Mimecast-MFC-AGG-ID: 1IyLpvnVOwmbrj65fPzDkQ_1757641062
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 31BFA1955EA8;
-	Fri, 12 Sep 2025 01:37:42 +0000 (UTC)
-Received: from dell-per7425-02.rhts.eng.pek2.redhat.com (dell-per7425-02.rhts.eng.pek2.redhat.com [10.73.116.18])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7A15B1800452;
-	Fri, 12 Sep 2025 01:37:36 +0000 (UTC)
-From: Chunyu Hu <chuhu@redhat.com>
-To: akpm@linux-foundation.org,
-	david@redhat.com,
-	shuah@kernel.org,
-	linux-mm@kvack.org
-Cc: linux-kselftest@vger.kernel.org,
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=HjaSi0G8l11qUIurcoc9kI8DVjHYgorpEf/xcpDqoQM=;
+	b=7NQtBBGNb/JSqtu8BXQdGKJ7mHywcM4X1wLreYM5JBUj2Okai4KD+Xsot5T3HYws4I3VYR
+	6ybQtNpsHskjo3ciqjjYwHr/qGo/gOhtxp5vKjfAc86T0Tn5n66DaQ3lA/+/upLqc9JVSd
+	QSfXOjOsHH3oE6oHOoLgVoK8HtFjQc0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757642355; a=rsa-sha256;
+	cv=none;
+	b=irs/cMqAUqNzRGYTMkPowDHygHydud4pY2JcIjDqipw2jwA+lyZ5jjLSJyAT/rp9aUbawu
+	MU2oCOZuMFikL+0bWVAfawC743kPxNgMrrrxlOR4dWadhwAeqqNto+1T5tHMTZeyM3IaRs
+	qs5QSN8wkkx3dZLt0YtI4lZ6bkW9+nI=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=difnhe8r;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id B4D3A4473A;
+	Fri, 12 Sep 2025 01:59:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 571FBC4CEF0;
+	Fri, 12 Sep 2025 01:59:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757642353;
+	bh=meu8m65eD3yfEwGMUX3MAwvZUXiaWLYcK+z9uaK0MG4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=difnhe8rYJ5KYdrAC/LLuy/z68nGffP5eq6tURh51P5H9B0rWNM+2S29plk+JSMnb
+	 R5ryLu093928ic6MByU1XZT5WhVqZ96NtoAIFYDgqsbXPmuUs/IbqDnDiDQTKltm4R
+	 5alZpJVf4mXmpap37JqkD8Fm7i/zS6ow+yTWYafuFgu+mzq1MU6hAIn2GN9vxp+M9W
+	 FS2zjM6LmhgsCUik5aa6LImOnIYw8J4QuxDH0LR93nSqPxZuk+aga2TECNsmGP/h5b
+	 4lI9QMMGs0efuyZDuCNo5GXs26UfMwDI3qKKqAaL+9IH9+a4gRgLBj5lIkdZUiLijS
+	 /eRxPF4CW5q3Q==
+From: SeongJae Park <sj@kernel.org>
+To: Balbir Singh <balbirs@nvidia.com>
+Cc: SeongJae Park <sj@kernel.org>,
 	linux-kernel@vger.kernel.org,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	chuhu@redhat.com
-Subject: [PATCH v3 3/3] selftests/mm: fix va_high_addr_switch.sh failure on x86_64
-Date: Fri, 12 Sep 2025 09:37:11 +0800
-Message-ID: <20250912013711.3002969-4-chuhu@redhat.com>
-In-Reply-To: <20250912013711.3002969-3-chuhu@redhat.com>
-References: <20250912013711.3002969-1-chuhu@redhat.com>
- <20250912013711.3002969-2-chuhu@redhat.com>
- <20250912013711.3002969-3-chuhu@redhat.com>
+	linux-mm@kvack.org,
+	dri-devel@lists.freedesktop.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lyude Paul <lyude@redhat.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Ralph Campbell <rcampbell@nvidia.com>,
+	=?UTF-8?q?Mika=20Penttil=C3=A4?= <mpenttil@redhat.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Francois Dugast <francois.dugast@intel.com>
+Subject: Re: [v5 03/15] mm/rmap: extend rmap and migration support device-private entries
+Date: Thu, 11 Sep 2025 18:59:09 -0700
+Message-Id: <20250912015910.59404-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250908000448.180088-4-balbirs@nvidia.com>
+References: 
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Rspamd-Queue-Id: C9E6914000E
+X-Stat-Signature: ii8qefm5gucpcyrt65dup4c5tb6tewhm
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 1545F1C0006
-X-Stat-Signature: xcwmg7ysdho1o7c4geefkcea7ygaod83
-X-HE-Tag: 1757641065-353843
-X-HE-Meta: U2FsdGVkX19JsJw7u57TyQi28ccKv4wpmcGxKh1zVtJjiLkw8mYpl+g+zC3TGAvA7MbAyl2jjUT3fnvB/Vro+zfDgkoGSH47pRf7AUwsXBEOONrz5+HSzuydfhHJ2TTWwCcu1E5jwcDwqEPpyoBFGqDaW+Pn9Bm/DMADPOburd7UTUqDXOt9YnlPVMA0kwJnfVZ5hco7sXTLqDMibVz9OPjsjWya1Ehdh1RFY2ryiq/C4BS89dp7KZ4cUjne6mtpQecbS6BRqOKwoWizwhMrjHnLj6EyclZ1liVeT/ovvdi3Kh6KKuq1UGdY5rw8qWs+Sw6/MWCY41y4CIQ2xWlifLR5RD13auI6FGSBwlQ9PPPc5o3GNpDhrQ3rE82/Spj5uymKADWE/ex7wy63F7sSjYbzDFKaz4+GtpuQ1PdW2PPsj7dOWozjXjaPe4iTti2WMYkd6ZyDgo7xrGc9XvvAOGXpNPfcm8Ck5tZCDFTOHs6z4BNRQba1/NPv+OigKVvRT+GYI+1m1ckTehbE9zwQTA61qNfBSxoGuW0BKj2KsaDq9wxrbyq79mOvioDXhuJbObDhSdCbO0QEqcn+ufjmQPxMk2e4ru9p88A4LOUKs2g+NNRsf59ijkra3fYrlmkWkrO+HL89Gh2qiSeWd9y5ZY3vRbU7ivhRG9qUA9sGm2YOkof0vXyMqA3iu46q8yu+w1hd54TIu8GH3waMdjqNRUJYCiWQERT3il3LJgSH3/YFbL4ZycSOE4rY43bOQNXUtZj0G9zmm/PCjqnTgzI3Zq1gzL7GZP6EL1g236m/jr+fRMdW1S8W8BrzryZF07lfHY2s7Qs1reg8tWPkYTy/xHaVYSUimWTyHyDKlFRDR2qEVoRLahsl3wC3VdLOqzgOKIeKzQI1EL3yycLQzx+NKocgknV9amdLhxbPyRlVIsfBCG4rIrnPFfShlHKBnK3h4tnaz3QjFrTGFJlsdmq
- eWWycp74
- qPOyhvo3y10AWIjV+ivJ49EvBvOzzeZJeFqPGTzaxe6R+ahJhUyR4QPaHTtuWI/Uf7eNwcBuTiVyGrF/sz6Sne761SOneFKioXCgR7XRMIL8XmSoaA5Z67gqD3aLAKde/ZNGCzNDCGWtyyxLCtMU0fU2zT/4Um/EwHUfztzX4wboXYDonsMytCJG6KB0JyhrNhhBKVzHJ1Zeb6pdf1DQUT0S9FcbevVPKjcRuIUQAx1igcuTlDWSbJMm5AWKbN00D76tHcBbG/RTVbpzMCahHhyIWakDKplfDZbIeHrK7jIIEv7ZOHSmvETKXGIhqwvJwQMcVG7RUFXDb7SfNB5JsfO7AmL2QpvYCvzIt0fbld/IZZb6clX9xkk38u0cwF+VgLJPD
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1757642354-364600
+X-HE-Meta: U2FsdGVkX19drfrH0StmseT4CDoL7yoeiBkdxXcmwGZ8fuLpvtchfeHmTXHCy43t2sVET9knz62RN3G/3lq0/JgZXPaB+tI3qG4sT6W5ic3OlmZ2cixfMCF9clQf6jkRWxyDm9EBaFFFStVZOk4VnndEwThh9TEu6NSEdiCwOONsETboBD7rG+X3zVQq3kycnf2wn0dnfVrWGzl6V8qT2nQU1G3IAPjdHtfkFF76N6nh+Z6D5ikg2oGdAmGNyG3F1sdslMnhUaWoFIkkQsPK6BGgDiXYJwuzSEQM4ERTVxVhntAJbR0wA6J52HuQ/vtk3WU1y5TPyUmSNJ4ezmOU3r+UijcxRKoJXQMa8KTvjdy9IywEoaVeUP7m3JBhJXqCzH6PjXxJaQ4RnixhBtcTEp/15CGT08qocJhzfUpTwBXQ2X/0nRscayJRMPFFT52Af3A+F/ukAqgCCoMl52j8HgoxiZPJjkMJanSq421O0DJDYbJtkH+WIDwk4gMNkFzLGuD3/UPgqwdu0WL90mqd2pX0l3JCpDUnrStmCgpXuN6kP/WSQk5+LjU31ogn800lB9vgPhaC6lD8p18h24e0hXpir2+XJ9PUjvtxZvaroscZrJTKz2GnXBxlRVVDoR3cMiJ+p1m5NkyMRIoDPs57vemHHy2sSZ7VqPE14cJyt5OlugAZ9khxIyRV0Vc47Z4/SOEkJ7DAXlHbRRLZrDngD0wDwrYUAXO313+fA4WO1uPHOwqpRsRyNDooukzZ34T7C7GXaFtHEiAD3RwIeUQ10KpYL6hUdrUdxxh+2xeheJpTsOs9UKGhZe7f2PCMWyQ4P0WXT/LbLDuj1p8FEoQOp77wMT0CdnZlkvyu0qBynfTUrKHcQ3Dtk0Lkv3IUDPcg6IyFF0ShzidjjNlp9dAG3kEazkH7EzUf0P/yAv95UKLsYsWXlR5Y51d3RoMiXOxX6cGnrn3YFRo7TMSpiB2
+ CjO90xyS
+ FcjXQK6Pmk8B1ZX3l5hRLcJC0FaIiMcJ/t00rrs+zTx7Xt+uTx3JWFI6Yt3rbCs4900RUQuWDsSRXS4auEwQaETHZilnMl75ZssVpT/0fJPD3bK6tuFCc3HtoeSr36QqVSVrEApRWLIMMyAC0euX5XM531kZNSrJBocz8DPuriQsFjvRWfGoqZIi/Gc0+LHavYNnvcXNAc5cJ3cTgjTkRrTPnGuBRG3w1CJIhTyeJ87lR2burN1xwUN5ah4tpxCNcZ0oldWklBe24SgwCJvc7J0bDN5Iwpr1jjMCGaaWYAGzV+mh2RQaTMdLRoK6+kThIs72aGcnWQ3V7pbEVI4VH16/mHULzTAe1EzfoJkwzAw+485vC1DIkDagoiG3PVBHS8hZ4JIgIOBCCozWCngsHdDZFWRueM2MTI+epPQhRfxEz+E8MDl3Wf4ACOln58X9ZoATyVvxFrJZciUImvZwpPfLGZaqXaRi7uzmw4WCufWh8Bx7ra4BAiwdf96kk35wDvgJSBZPINjKpQT0VgZT9uEH/ZqUCynRm10ZKstRx9BS/xNUXCP3h981jvmXOam21JREdiUTtyJRDnpnk0SbtNzw3PpxpC/LcwpGMF0Gb+O4DhOyww6LiwCAQCgOlmQfQikGysvKRViPDIITO7I1xfcCsVWuSgJCydSdwEa2Lt3KpGDsodkHAwuOYjQhRXoC/0LzbXEYgh+NRW+PoVfMU4UnmfA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,91 +120,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The test will fail as below on x86_64 with cpu la57 support (will skip if
-no la57 support). Note, the test requries nr_hugepages to be set first.
+On Mon,  8 Sep 2025 10:04:36 +1000 Balbir Singh <balbirs@nvidia.com> wrote:
 
-  # running bash ./va_high_addr_switch.sh
-  # -------------------------------------
-  # mmap(addr_switch_hint - pagesize, pagesize): 0x7f55b60fa000 - OK
-  # mmap(addr_switch_hint - pagesize, (2 * pagesize)): 0x7f55b60f9000 - OK
-  # mmap(addr_switch_hint, pagesize): 0x800000000000 - OK
-  # mmap(addr_switch_hint, 2 * pagesize, MAP_FIXED): 0x800000000000 - OK
-  # mmap(NULL): 0x7f55b60f9000 - OK
-  # mmap(low_addr): 0x40000000 - OK
-  # mmap(high_addr): 0x1000000000000 - OK
-  # mmap(high_addr) again: 0xffff55b6136000 - OK
-  # mmap(high_addr, MAP_FIXED): 0x1000000000000 - OK
-  # mmap(-1): 0xffff55b6134000 - OK
-  # mmap(-1) again: 0xffff55b6132000 - OK
-  # mmap(addr_switch_hint - pagesize, pagesize): 0x7f55b60fa000 - OK
-  # mmap(addr_switch_hint - pagesize, 2 * pagesize): 0x7f55b60f9000 - OK
-  # mmap(addr_switch_hint - pagesize/2 , 2 * pagesize): 0x7f55b60f7000 - OK
-  # mmap(addr_switch_hint, pagesize): 0x800000000000 - OK
-  # mmap(addr_switch_hint, 2 * pagesize, MAP_FIXED): 0x800000000000 - OK
-  # mmap(NULL, MAP_HUGETLB): 0x7f55b5c00000 - OK
-  # mmap(low_addr, MAP_HUGETLB): 0x40000000 - OK
-  # mmap(high_addr, MAP_HUGETLB): 0x1000000000000 - OK
-  # mmap(high_addr, MAP_HUGETLB) again: 0xffff55b5e00000 - OK
-  # mmap(high_addr, MAP_FIXED | MAP_HUGETLB): 0x1000000000000 - OK
-  # mmap(-1, MAP_HUGETLB): 0x7f55b5c00000 - OK
-  # mmap(-1, MAP_HUGETLB) again: 0x7f55b5a00000 - OK
-  # mmap(addr_switch_hint - pagesize, 2*hugepagesize, MAP_HUGETLB): 0x800000000000 - FAILED
-  # mmap(addr_switch_hint , 2*hugepagesize, MAP_FIXED | MAP_HUGETLB): 0x800000000000 - OK
-  # [FAIL]
+> Add device-private THP support to reverse mapping infrastructure,
+> enabling proper handling during migration and walk operations.
+> 
+> The key changes are:
+> - add_migration_pmd()/remove_migration_pmd(): Handle device-private
+>   entries during folio migration and splitting
+> - page_vma_mapped_walk(): Recognize device-private THP entries during
+>   VMA traversal operations
+> 
+> This change supports folio splitting and migration operations on
+> device-private entries.
+> 
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Zi Yan <ziy@nvidia.com>
+> Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+> Cc: Rakie Kim <rakie.kim@sk.com>
+> Cc: Byungchul Park <byungchul@sk.com>
+> Cc: Gregory Price <gourry@gourry.net>
+> Cc: Ying Huang <ying.huang@linux.alibaba.com>
+> Cc: Alistair Popple <apopple@nvidia.com>
+> Cc: Oscar Salvador <osalvador@suse.de>
+> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+> Cc: Nico Pache <npache@redhat.com>
+> Cc: Ryan Roberts <ryan.roberts@arm.com>
+> Cc: Dev Jain <dev.jain@arm.com>
+> Cc: Barry Song <baohua@kernel.org>
+> Cc: Lyude Paul <lyude@redhat.com>
+> Cc: Danilo Krummrich <dakr@kernel.org>
+> Cc: David Airlie <airlied@gmail.com>
+> Cc: Simona Vetter <simona@ffwll.ch>
+> Cc: Ralph Campbell <rcampbell@nvidia.com>
+> Cc: Mika Penttilä <mpenttil@redhat.com>
+> Cc: Matthew Brost <matthew.brost@intel.com>
+> Cc: Francois Dugast <francois.dugast@intel.com>
+> 
+> Signed-off-by: Balbir Singh <balbirs@nvidia.com>
+> ---
+>  mm/damon/ops-common.c | 20 +++++++++++++++++---
+>  mm/huge_memory.c      | 16 +++++++++++++++-
+>  mm/page_idle.c        |  5 +++--
+>  mm/page_vma_mapped.c  | 12 ++++++++++--
+>  mm/rmap.c             | 19 ++++++++++++++++---
+>  5 files changed, 61 insertions(+), 11 deletions(-)
+> 
+> diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
+> index 998c5180a603..eda4de553611 100644
+> --- a/mm/damon/ops-common.c
+> +++ b/mm/damon/ops-common.c
+> @@ -75,12 +75,24 @@ void damon_ptep_mkold(pte_t *pte, struct vm_area_struct *vma, unsigned long addr
+>  void damon_pmdp_mkold(pmd_t *pmd, struct vm_area_struct *vma, unsigned long addr)
+>  {
+>  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> -	struct folio *folio = damon_get_folio(pmd_pfn(pmdp_get(pmd)));
+> +	pmd_t pmdval = pmdp_get(pmd);
+> +	struct folio *folio;
+> +	bool young = false;
+> +	unsigned long pfn;
+> +
+> +	if (likely(pmd_present(pmdval)))
+> +		pfn = pmd_pfn(pmdval);
+> +	else
+> +		pfn = swp_offset_pfn(pmd_to_swp_entry(pmdval));
+>  
+> +	folio = damon_get_folio(pfn);
+>  	if (!folio)
+>  		return;
+>  
+> -	if (pmdp_clear_young_notify(vma, addr, pmd))
+> +	if (likely(pmd_present(pmdval)))
+> +		young |= pmdp_clear_young_notify(vma, addr, pmd);
+> +	young |= mmu_notifier_clear_young(vma->vm_mm, addr, addr + PAGE_SIZE);
+> +	if (young)
+>  		folio_set_young(folio);
+>  
+>  	folio_set_idle(folio);
+> @@ -203,7 +215,9 @@ static bool damon_folio_young_one(struct folio *folio,
+>  				mmu_notifier_test_young(vma->vm_mm, addr);
+>  		} else {
+>  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> -			*accessed = pmd_young(pmdp_get(pvmw.pmd)) ||
+> +			pmd_t pmd = pmdp_get(pvmw.pmd);
+> +
+> +			*accessed = (pmd_present(pmd) && pmd_young(pmd)) ||
+>  				!folio_test_idle(folio) ||
+>  				mmu_notifier_test_young(vma->vm_mm, addr);
 
-addr_switch_hint is defined as DFEFAULT_MAP_WINDOW in the failed test (for
-x86_64, DFEFAULT_MAP_WINDOW is defined as (1UL<<47) - pagesize) in 64 bit.
+Could you please elaborate more about why the above change is needed on the
+commit message?
 
-Before commit cc92882ee218 ("mm: drop hugetlb_get_unmapped_area{_*}
-functions"), for x86_64 hugetlb_get_unmapped_area() is handled in arch code
-arch/x86/mm/hugetlbpage.c and addr is checked with map_address_hint_valid()
-after align with 'addr &= huge_page_mask(h)' which is a round down way, and
-it will fail the check because the addr is within the DEFAULT_MAP_WINDOW but
-(addr + len) is above the DFEFAULT_MAP_WINDOW. So it wil go through the
-hugetlb_get_unmmaped_area_top_down() to find an area within the
-DFEFAULT_MAP_WINDOW.
+For example, I found below from v3 of this patch series:
 
-After commit cc92882ee218 ("mm: drop hugetlb_get_unmapped_area{_*}
-functions").  The addr hint for hugetlb_get_unmmaped_area() will be rounded
-up and aligned to hugepage size with ALIGN() for all arches.  And after the
-align, the addr will be above the default MAP_DEFAULT_WINDOW, and the
-map_addresshint_valid() check will pass because both aligned addr (addr0)
-and (addr + len) are above the DEFAULT_MAP_WINDOW, and the aligned hint
-address (0x800000000000) is returned as an suitable gap is found there,
-in arch_get_unmapped_area_topdown().
+    pmd_pfn() does not work well with zone device entries, use
+    pfn_pmd_entry_to_swap() for checking and comparison as for zone device
+    entries.
 
-To still cover the case that addr is within the DEFAULT_MAP_WINDOW, and
-addr + len is above the DFEFAULT_MAP_WINDOW, change to choose the last
-hugepage aligned address within the DEFAULT_MAP_WINDOW as the hint addr,
-and the addr + len (2 hugepages) will be one hugepage above the
-DEFAULT_MAP_WINDOW.  An aligned address won't be affected by the page
-round up or round down from kernel, so it's determistic.
+Adding that kind of elaboration on the commit message would be helpful.
 
-Fixes: cc92882ee218 ("mm: drop hugetlb_get_unmapped_area{_*} functions")
-Suggested-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Chunyu Hu <chuhu@redhat.com>
----
- tools/testing/selftests/mm/va_high_addr_switch.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Also, seems the DAMON part change is not really required to be made together
+with other changes.  If I'm not wrong, could you make DAMON part change as a
+separate commit?
 
-diff --git a/tools/testing/selftests/mm/va_high_addr_switch.c b/tools/testing/selftests/mm/va_high_addr_switch.c
-index 896b3f73fc53..306eba825107 100644
---- a/tools/testing/selftests/mm/va_high_addr_switch.c
-+++ b/tools/testing/selftests/mm/va_high_addr_switch.c
-@@ -230,10 +230,10 @@ void testcases_init(void)
- 			.msg = "mmap(-1, MAP_HUGETLB) again",
- 		},
- 		{
--			.addr = (void *)(addr_switch_hint - pagesize),
-+			.addr = (void *)(addr_switch_hint - hugepagesize),
- 			.size = 2 * hugepagesize,
- 			.flags = MAP_HUGETLB | MAP_PRIVATE | MAP_ANONYMOUS,
--			.msg = "mmap(addr_switch_hint - pagesize, 2*hugepagesize, MAP_HUGETLB)",
-+			.msg = "mmap(addr_switch_hint - hugepagesize, 2*hugepagesize, MAP_HUGETLB)",
- 			.low_addr_required = 1,
- 			.keep_mapped = 1,
- 		},
--- 
-2.49.0
+The code looks good to me.
 
+Reviewed-by: SeongJae Park <sj@kernel.org>
+
+
+Thanks,
+SJ
+
+[...]
 
