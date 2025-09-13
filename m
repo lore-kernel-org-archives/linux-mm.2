@@ -4,107 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D4A8CAC58E
-	for <linux-mm@archiver.kernel.org>; Sat, 13 Sep 2025 13:55:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9914CCAC587
+	for <linux-mm@archiver.kernel.org>; Sat, 13 Sep 2025 14:35:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 12B7E8E0002; Sat, 13 Sep 2025 09:55:34 -0400 (EDT)
+	id 99F528E0001; Sat, 13 Sep 2025 10:35:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0DC828E0001; Sat, 13 Sep 2025 09:55:34 -0400 (EDT)
+	id 976F06B000D; Sat, 13 Sep 2025 10:35:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F0CA68E0002; Sat, 13 Sep 2025 09:55:33 -0400 (EDT)
+	id 88C9B8E0001; Sat, 13 Sep 2025 10:35:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D55DD8E0001
-	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 09:55:33 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 71A451D78F8
-	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 13:55:33 +0000 (UTC)
-X-FDA: 83884374546.11.F7E58F0
-Received: from mailrelay-egress16.pub.mailoutpod3-cph3.one.com (mailrelay-egress16.pub.mailoutpod3-cph3.one.com [46.30.212.3])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 0581D180007
-	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 13:55:30 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=konsulko.se header.s=rsa2 header.b=LGSlOP2H;
-	dkim=pass header.d=konsulko.se header.s=ed2 header.b="F/zMMroe"
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 711FE6B0008
+	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 10:35:16 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 22138B637C
+	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 14:35:16 +0000 (UTC)
+X-FDA: 83884474632.02.5467639
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 3017340008
+	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 14:35:13 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=los6zu5c;
+	spf=pass (imf17.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757771731;
+	s=arc-20220608; t=1757774114;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VqfvmRHEuxO9NpjvelkKGUF0GWJA3hdevKwZTAZOKIQ=;
-	b=AP1jUg/5eoW9jhV2XAyfvdGjYM0ydtkKw44DFhwNhNs+zjm0Cms/JwwE0atHKJPg7OEN96
-	Ft7ksjMisQncwBYn3kNPMzufyBXIqbX2xN3NUzf7OYWLNDY9kHzCG67Mpk/5p1CH5+5xbT
-	Kf37jiO/USl8B5TyxV1QsOvXAIiJXGE=
+	bh=6fiXrarRSR0kdAO2K4VRZ44JDkzpu5N8uZFGaP00hf0=;
+	b=7xEFXKVfWG3GlRjfs6JZnQIDX0NkdDcjBxWQc3dqI192p9pDlCDGG5gsLbipIIxqn8qzr7
+	0dfXrh80xXiMJgUpNEgKFi/91UuaE2fyxMJJ4NVNbo2MWx/AndJ2m4X84TKHU+MYToc6P7
+	+Wm8xSqZG2o6fA2TLu2+iBRan3mA4gU=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=konsulko.se header.s=rsa2 header.b=LGSlOP2H;
-	dkim=pass header.d=konsulko.se header.s=ed2 header.b="F/zMMroe";
-	spf=none (imf06.hostedemail.com: domain of vitaly.wool@konsulko.se has no SPF policy when checking 46.30.212.3) smtp.mailfrom=vitaly.wool@konsulko.se;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757771731; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=los6zu5c;
+	spf=pass (imf17.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757774114; a=rsa-sha256;
 	cv=none;
-	b=wHaCMW0NfcVYUTSfXGcfbhgsya53YJGUubzV7MRi1ajvBkErcum0ZFoTjsZ0Nq2Yjz8Os+
-	1zV/Vi6fDLYGed71hu/tguzUQzBVanroufb1xVhoA9UfdULKQ97qHGJX5eAd8DdUWMo5yu
-	+fHL/5xJaa6S2/TIParMgO/Zhbh1sFw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1757771728; x=1758376528;
-	d=konsulko.se; s=rsa2;
-	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
-	 subject:mime-version:content-type:from;
-	bh=VqfvmRHEuxO9NpjvelkKGUF0GWJA3hdevKwZTAZOKIQ=;
-	b=LGSlOP2HhEqZ35E6Yti2WK1A67orLvN2dkvyYCoJikgar0EgL0TAVg+P5z0paT1XG1/1stpUglgww
-	 +8AxVcNNCtppvLvq9IlAb9pTFkAAxKwtIippuIO4EfYZs8qDteLSZ2S+f5s1s3I6oVjH/ZVLkhOr0l
-	 9vbipnrbFfXYEsOE4AdwDKX5+6flhpHTXUcg/uxQyIQzRN07jtIcX/Mvw4AROx9x+tyNk3ExO+B2pT
-	 gw7pFPIYa+6fotbHEQvLesNMkbVaOg1zKo3+/CY+WpFlqSKEeswqCCiue/pBsKdrFex8nMw1FHvyWR
-	 AXqQaP4Ock4crGWzth99tTFlxBnxjWw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1757771728; x=1758376528;
-	d=konsulko.se; s=ed2;
-	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
-	 subject:mime-version:content-type:from;
-	bh=VqfvmRHEuxO9NpjvelkKGUF0GWJA3hdevKwZTAZOKIQ=;
-	b=F/zMMroea44rwTonlcUX/xsJv+9EB6im4MPMNcyat5f4tYo6VrKIWO6ufl4Jit3sShq2pgBDfHhqx
-	 oVipukvBw==
-X-HalOne-ID: 4cc0b88f-90a9-11f0-ae4b-e90f2b8e16ca
-Received: from smtpclient.apple (host-90-233-222-218.mobileonline.telia.com [90.233.222.218])
-	by mailrelay2.pub.mailoutpod2-cph3.one.com (Halon) with ESMTPSA
-	id 4cc0b88f-90a9-11f0-ae4b-e90f2b8e16ca;
-	Sat, 13 Sep 2025 13:55:27 +0000 (UTC)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
-Subject: Re: [PATCH 0/3] mm: remove zpool
-From: Vitaly Wool <vitaly.wool@konsulko.se>
-In-Reply-To: <f3ufcsjvvxhi5gzw2wglkpedgyyi6tiaje7em3tbxkzhklphvh@sv3dbo4yba5p>
-Date: Sat, 13 Sep 2025 15:55:16 +0200
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>,
- Vlastimil Babka <vbabka@suse.cz>,
- hannes@cmpxchg.org,
- linux-kernel@vger.kernel.org,
- linux-mm@kvack.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Christoph Hellwig <hch@infradead.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <98B3AFB0-EBD5-4779-A5DB-FFA6717E83C3@konsulko.se>
-References: <20250829162212.208258-1-hannes@cmpxchg.org>
- <20250904093325.2768507-1-vitaly.wool@konsulko.se>
- <7b1ca42d-1b89-44f4-bffb-e6b09f86fdc5@suse.cz>
- <1d42c513-cc83-4f08-a10c-cbd6206070f4@konsulko.se>
- <girukcvvzgbtkxt4aftfz3lw3glvf2qsof4mx6wf5perolck5n@vaxlrtaeuzw7>
- <dh74mr7bjtpzk7frviv6iqqno2u2b27p7jiagp2dtnsz2wrfhr@wlb5vqg4majs>
- <tbvushbdn7nzitey3uy6humdndd6247r4544ngqkds3cr447e6@prnla4edwxmk>
- <f3ufcsjvvxhi5gzw2wglkpedgyyi6tiaje7em3tbxkzhklphvh@sv3dbo4yba5p>
-To: Yosry Ahmed <yosry.ahmed@linux.dev>
-X-Mailer: Apple Mail (2.3826.200.121)
+	b=ZZLx/sQXnjFtjFyBE64h6maKGoq+Qsa5qL9fdzpvMjqSZiyJjWc7FvUJxikhnxOdOQ7wWh
+	Ys3/H0xGzXjbt4PAQTvGiDLGRa6tblg+0OfNbyFRKzgUkL25JBP2GY7XZ/2iIYHuMg7AEw
+	jqKCWY4C1Ax+DJxZmgPHYZP8LLoo6MA=
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3e4aeaa57b9so2454992f8f.1
+        for <linux-mm@kvack.org>; Sat, 13 Sep 2025 07:35:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757774112; x=1758378912; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=6fiXrarRSR0kdAO2K4VRZ44JDkzpu5N8uZFGaP00hf0=;
+        b=los6zu5cjF6V1gZmq5tcy3gyFvtQy92xSfHd7f5xBaj80aPtMzKLiJXhzFVyOqAjPm
+         Kt88HZ/VZs2e49sUk1A5xP5YjaHxc5svBJ7W0yhb3ChsIYn6gnMsPKks0siF9fj7Svix
+         MFzpBS+lGABHxtOdaN8uVEKMBEtEEZVZj4Z4kJzVaeE0l3M7kNl1crdAg0Nuc3RmBTdw
+         XTPivvdFFGwdumHmyxBam6EXjbfq2WUOzO7U2a6ipZLn39w4ddnfXH44tdrs0OSTTrmf
+         HiT4dlTv4FNwl3v/Uw879Pl4LMfxp3rfOw0kc66DmYyiGm/6P5YWguDvQVjl4jBUBaO/
+         S6FA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757774112; x=1758378912;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6fiXrarRSR0kdAO2K4VRZ44JDkzpu5N8uZFGaP00hf0=;
+        b=qe7da9g4BNJFX9eVriranaurPrT8VaGnLQu42NvRPSAKYDnsz2kNUrJueogpDz5fWX
+         j/I8JlI/dcYOM12CmMxTuEBkgg9XhK9duB4rtulK1W9WG7j7KoLj+r9IfpsewsU9A5KP
+         eTEy1WrwixOvTx+KhtNyIKpouQiHFYX6smtrbjqGUgPqJXHr3UGN554QFwaKH239/wps
+         vO5UwxnHrf3+AAq4/eSFVxyNLNMB67hHuDHraoORzHbUArPA5srB67Bs6q7FZpsK4pX5
+         dCIq3SRmUPrP2qk97ld9CVXDr6W3kbrkrfUugsaVaKZJ7jyDuTWzdpoJaZm12i77Rpdn
+         NN8g==
+X-Forwarded-Encrypted: i=1; AJvYcCVOzfTx/p7d/GY/ZswRqbIFh+jxbNB5xU5o3eCixSfEYBUJRCLa8IRhD7IOkOx41SWC48kDjYhByg==@kvack.org
+X-Gm-Message-State: AOJu0YwyhJOQytzDuUZc6gbPzQSyD3LeYyw3EHA/merCTDubbQadrcUw
+	A0vPCBDZh0/gJV15+WvT746CxT2zDMJq7Nb/CIc7RHCfUxoEb2g8pjkR
+X-Gm-Gg: ASbGnctMedAlSto87ZRbU6j88Q2woDKzMktFPgcNh02o/YpbyFWLIMOIeqYxeqBJk/z
+	fSXJp+AMFgY5ysCjhWukz/m0J9L8iY5HX3+ux9cnpUHg+v3MEvkyqYaNuSQW3fRZdbFs76bPWMh
+	zZur8OuTGlWKDTYnvrjRkXW3WamBER9Tu/Xkgq+gPF52HN9KHGNeY/S0TCNRXWuiXcR2vE6qKya
+	rGhD8hv1WyiEc25Os4nHJAH3D7CVhrjue7fcB+aw4wSMs0ZwlMEtAMQ47HHPmFx4hg7FGWHQaUv
+	c6BhpaaFxESB1p7vcjiaDr3Yu0PYj7JVDW1ruOUgPHxr+P0cy/UIV0ksBCOFJRTuxLe3YhrEJS2
+	QjmplewubptSHLmobK9SZNcLrGER+AApNaXGHf4X1T/xuTO4VE2V9GdT49puHBg3gMYvb+Q==
+X-Google-Smtp-Source: AGHT+IHhpBBCovNgxAqBRlSFfJutUHogP+FA8KmrQiU/CxNP8LHdbv9lBhG/X6uQAQCakmX95bODlw==
+X-Received: by 2002:a05:6000:26c6:b0:3e7:4c93:18bc with SMTP id ffacd0b85a97d-3e765a092c1mr5272349f8f.49.1757774112195;
+        Sat, 13 Sep 2025 07:35:12 -0700 (PDT)
+Received: from f (cst-prg-67-222.cust.vodafone.cz. [46.135.67.222])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45f29174de1sm15209675e9.2.2025.09.13.07.35.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 13 Sep 2025 07:35:11 -0700 (PDT)
+Date: Sat, 13 Sep 2025 16:35:03 +0200
+From: Mateusz Guzik <mjguzik@gmail.com>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Suren Baghdasaryan <surenb@google.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Harry Yoo <harry.yoo@oracle.com>, Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, rcu@vger.kernel.org, maple-tree@lists.infradead.org
+Subject: Re: [PATCH v5 01/14] slab: add opt-in caching layer of percpu sheaves
+Message-ID: <ja3gd6bdckiuanm3xu4hszpjm7euvffm3k7tmu7drh6mdel7m6@oyr635vikumk>
+References: <20250723-slub-percpu-caches-v5-0-b792cd830f5d@suse.cz>
+ <20250723-slub-percpu-caches-v5-1-b792cd830f5d@suse.cz>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250723-slub-percpu-caches-v5-1-b792cd830f5d@suse.cz>
+X-Stat-Signature: 56tdn7etz35iezt1sq73e9z3qn7hxhra
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 0581D180007
-X-Stat-Signature: fpi9bgfft7jrwp9j3yrypuzsgrpxa5qe
-X-HE-Tag: 1757771730-250501
-X-HE-Meta: U2FsdGVkX1/rr/+huVcOwUkqFNTDjhyH1tuiMITTj/bxiSX+YS+Jy8XzrXB6U+jwIfI8hcpPt4G2N4jeM2Wn/eQ6eC/z6dG1gcVrKdqwCdJ+fTfNWuNHQCFWKwwTtfcYqKtc5kRE5DLbFXtdnz3psbTwdyvhImLyJTz95JyrcEatj3+ukysSDgvoOSVRC509wXebhnMI6DF5jC55T0vIY96eWAhz9HMiPrMHKuXeaWvTyDrllO3HrdKf0606/DtLUE25nRodD1iE7nor8S6N8EhTLElCthR8niJKWiDZKL7W2U5MJlQhWkHo0nWz5xGHewXqiKQ2cLvbO9XVrb038Jm4nVXIvRGRnbEXpDDeMJXzkIQGTwqm10smIwKSRRVdUJXGmu8GlvmxZGRjChm/p1KCwytD8xa5EbLqvA7usUFBAgriF/FlfI0HFR/4PfrTYa2OYup/G9sOysrWeNYokZUZ5lexvop462ztWcnp1TDVszB178KzXcUlDsyRzncXJrYlqQATuxEjOajBH6bEyhH6fUegPIBCzN4rZ8kp6P9+zpsm8TnF8x+RtHmeVWtVnte2qp1efpfAcXv71sYpBdUIsyNqdEolV8DgBciPyn2DN44fgje+0urfwSPpqbASAoiBGBj9yGdxTifwOANj6Bv7TXRgTprhxviebXMhB1K7BlK3nMSfUWqsWm5OEuxm+CVqusAR/N8ZhTl1tdKsexCwPg8bVe5h+7pUdDAUlbW5aP8psmt9wGyBSAGRGqmhICNfhrLGvyhnC1wRPElZY38TI+0EakbF49K9HXKDCtZjuyeiEnasRv2OAtVtwMwKiLKQHrJu1fUNH5zEFEg+GXADcryhxR/03nM51pLwJpgRn8ZC2G6Pg79JS8ayQGp5o+rOnmWccbDoxSMnvyDRpfHdNeO2dXehA2shUkyDjq5SmSNiQCk1u+Wb2vnpI71XbJYwiKhkNFHY+4iUItK
- Qr8d4wU1
- HxPl47H2cWYjPSPCiuOKa8Mzvp4dHWYEmtvFCAqHNdIZ/CPrBxr+L5xmjswXxazdFaxdS/g3SbFm3MV6UE7f9UGLY/q5K0Mj7GW35dvZaAcNAuxfon8ms/pjYA9/99+Q81hA8klYoqZTsFFsF0l6kexsKeMWYOye7yj8eyTDWHOo+2B8qS27QU2mmTnxRBf9HxxnU
+X-Rspamd-Queue-Id: 3017340008
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1757774113-76739
+X-HE-Meta: U2FsdGVkX19AplWg3UxSm6Ro7sHVirTB1nxkzbdEIR2CStRqAmr/37qZT1qQw0zgw1hBijhIE8458QfOW2306P/T/liThNkLXJOvIdiqAWPdrVEUDOJbDO6euOYvxemE0RmRvPfQvEBPEXY4ql23xT2OW1FpM1MSs5giDpBMBB+CboYw51t/+94HysuMjQzQl421Lk8goWPBqd7RKU2A+ra8EC4Nc4smil3wSWIpQQ2GImnZYjUopSTBH0unLPLw/Cw4zIt86gMrXWqHuXjAvM6ySY1VZ5M7a6FboLR6C4sRUEv9Sioyr6nmrdxauTOcQ+hM2xyBZVEvFTI+s7SaspvI3Cqt6sjc6+yIG78/DxYWbno5dVypETnjqlF3tN6HfxSLr3kOIsT+NrqfjNZ59LVYjyATWg5ugyVAzN8Pb9spNZXDVdEldFDcjeMwCRFFE9aO9CYz5FlAr2f+UtKp3m8A3EbOq6rC3uFsmvNWJLaTV9KcW5uQZc/rf7QMMAqHOlkZF+aNylv3jsdfIp42IsCVtVAGY28GTmZaA/fhYd34Mylxzv0bIWHaBLQ454NzREtv6381v80Mtuup1hLlFq8P7q9gKj66/RAIWlaja63/ehtxxxd4ELKu7Tj5t/GChSKv7j/ac3pOsKXDWtwpC+Cnp0vJdF+vo7CjMdWCrlkBBWLZ8ZihUaJLtQIizwl4kzX4NhMsHx+5XGL/RNWZ3wECXxz25P3Udj2kif9iAjK2qjIt/zQLuQm8tIR3qxygEllUV8n/WwpP172eU46nY76gJ+lLbkzHeVX8oa/Df6s5YL7Xb0NgSoSKrJzkAmKFAz+XU0UY1TqbmQNEtBiIAUlVpeDGpJfD2SR2yRjPbujXCfv4ugBUO2NdxQL6clbVth50RVLOiI4tGKYwEDGly6j6o8hgufq0QEyXWSbEAdkOg7zgaibSTLLgcemMa39KEj69kJqAUg/P1g6kAIy
+ bD79ZNsL
+ Or2DLsQTZ8J/ttKwzQXtBIVRYNyQKBCrlTePzsrfpp0YORVDkeNZidgLAeGUeKi+UfUBKhwS5UMzSdj1naqqYptWWUkOkyVT+QTjXW1Z8EuRlo83YYTINr9SWTV0Ff8MKDk8fLtu2DoZ37WrLUKPwgan0CLKxOzpVdM79OsaD84kcO8xGnhD+bNIDhUdxllU8Q0k/ja5x6XY8bZHnVoLN21zuqZLD4ZFhUaDXazegwyTntK4zImBNJcBoAWEr9rJtpD7VDSNX9y/L4byHsXsAjZPSiidZ7kmMuebTkf9ujb0rz/2tNTwTAe3NO+Sach8LsSb4LvoXmvb05/6rbmWv6Lg0UG5ucZH9jlNFR/cJ3pGvWQ5u9jGk3F8aBCijl9Cusr9XFpG4Pt9RvvKV7c8WTbq98/wCGClqeKPPF4U4mxFIrGloFZ2T7vCuJA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,53 +121,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Jul 23, 2025 at 03:34:34PM +0200, Vlastimil Babka wrote:
+> The sheaves do not distinguish NUMA locality of the cached objects.
 
+While currently sheaves are opt-in, to my understanding the plan is to
+make this the default.
 
-> On Sep 9, 2025, at 10:12=E2=80=AFPM, Yosry Ahmed =
-<yosry.ahmed@linux.dev> wrote:
->=20
-> On Mon, Sep 08, 2025 at 09:18:01PM +0900, Sergey Senozhatsky wrote:
->> On (25/09/06 14:25), Sergey Senozhatsky wrote:
->>> On (25/09/05 19:57), Yosry Ahmed wrote:
->>>> I think Android uses zram+zsmalloc with 16K pages. Perhaps Sergey =
-could
->>>> confirm.
->>>=20
->>> I'm not working on android directly,
->>>=20
->>> I can confirm that android uses zram+zsmalloc.  As of 16K pages, =
-there
->>> was a way to toggle 16k pages on android (via system settings), I =
-don't
->>> know if this is the default now.
->>=20
->> While I don't know what zsmalloc struggles Vitaly is referring to in
->> particular, off the top of my head, zsmalloc does memcpy()'s for =
-objects
->> that span multiple pages, when zsmalloc kmap()'s both physical pages =
-and
->> memcpy()'s chunks of the object into a provided buffer. With 16K =
-pages
->> we can have rather larger compressed objects, so those memcpy() are =
-likely
->> more visible.  Attacking this would be a good idea, I guess.
->=20
-> Yeah I personally think attacking whatever problems zsmalloc has with
-> 16K pages is the way to go.
+I would argue a hard requirement for a general purpose allocator in this
+day and age is to provide node-local memory by default. Notably if you
+have a workload which was careful to bind itself to one node, it should
+not receive memory backed by other nodes unless there is no other
+option. AFAIU this is satisifed with the stock allocator on the grounds
+of running on a given domain, without having to explicitly demand memory
+from it for everyting.
 
-Well, there is a way out for 16+K pages, that being:
-* restricting zsmalloc to not have objects spanning across 2 pages
-* reworking size_classes based allocation to have uneven steps
-* as a result of the above, organising binary search for the right size =
-object
+I expect the lack of NUMA-awareness to result in increased accumulation
+of "mismatched" memory as uptime goes up, violating the above.
 
-This will effectively turn zsmalloc into zblock, with some extra cruft =
-that makes it far less comprehensible.
+Some examples how I expect that to happen should this get expanded to
+all allocations:
+- wherever init happens to reap a zombie, task_struct and some more
+  stuff may be "misplaced"
+- even ignoring init, literally any fork/exec/exit heavy workload which
+  runs on more than one node will be ripe with mismatched frees as the
+  scheduler moves things around and the original parent reaps children
+- a process passes a file descriptor to a process on another domain and
+  the latter is the last to fput
+- a container creates a bunch of dentries and whacks them
+etc.
 
-Another option would be to leave zsmalloc do its job on 4K pages and use =
-zblock for bigger pages. But it is not possible at the moment because =
-zpool api has been removed. Thats=E2=80=99s why I NACK=E2=80=99ed the =
-zpool removal, at least until we have a replacement for it ready.
+In all of these cases getting unlucky means you are using non-local
+memory, which in turn will result in weird anomalies which suddenly
+clear themselves up if you restart the program (or which show up out of
+nowhere).
 
-~Vitaly=
+Arguably, the fork thing is a problem as is and *probably* could be
+reduced by asking the scheduler upfront where it would run the child
+domain-wise if it had to do it right now and making fork allocate memory
+from that domain.
+
+But even with this or some other mitigation in place there would be
+plenty of potential to free non-local memory, so the general problem
+statement stands.
+
+I admit though I don't have a good solution as to how to handle the
+"bad" frees. Someone (I think you?) stated that one of the previous
+allocators was just freeing to per-domain lists or arrays and that was
+causing trouble -- perhaps this would work if it came with small limits
+in place for how big these can get?
 
