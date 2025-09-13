@@ -4,113 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DC12CAC58E
-	for <linux-mm@archiver.kernel.org>; Sat, 13 Sep 2025 04:27:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD508CAC587
+	for <linux-mm@archiver.kernel.org>; Sat, 13 Sep 2025 04:54:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 616158E0002; Sat, 13 Sep 2025 00:27:19 -0400 (EDT)
+	id EB93C8E0003; Sat, 13 Sep 2025 00:54:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C6B58E0001; Sat, 13 Sep 2025 00:27:19 -0400 (EDT)
+	id E68D38E0001; Sat, 13 Sep 2025 00:54:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 503628E0002; Sat, 13 Sep 2025 00:27:19 -0400 (EDT)
+	id DA5988E0003; Sat, 13 Sep 2025 00:54:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 430F48E0001
-	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 00:27:19 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CCB721DFAB2
-	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 04:27:18 +0000 (UTC)
-X-FDA: 83882942556.17.7711BDE
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	by imf15.hostedemail.com (Postfix) with ESMTP id D1C66A0012
-	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 04:27:16 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=gkC0fHcn;
-	spf=pass (imf15.hostedemail.com: domain of lokeshgidra@google.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=lokeshgidra@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id CB80A8E0001
+	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 00:54:32 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8C8CA1A0A55
+	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 04:54:32 +0000 (UTC)
+X-FDA: 83883011184.23.AFE590D
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	by imf01.hostedemail.com (Postfix) with ESMTP id E31B140003
+	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 04:54:29 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=FuWjdRA3;
+	spf=pass (imf01.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757737636;
+	s=arc-20220608; t=1757739270;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=blrxGJEUUPTcsFrTcd8XfRhY99hJp8EqG9gyFD99ZxM=;
-	b=RSofL3x2AdVu2fa4EaWNzUteX0x+bSF1j14E2r2H8RUw0Heg7FfFyrZpjc0lEfaNL15S9X
-	6hqVnvcNX3Fh+zZd4fm/rYkkdIb4VaHxhf1hz7KEwaIW8JsVPxaTRImmXIyepLL3/8CL/w
-	iYmh7ApRLjs/PtCdkilIwg6hitedt1Y=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757737636; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=GCaiZqVBhhBiGreDrxp/HTJvLmYdvREUwnSsfve/ZH4=;
+	b=oT2ApRR51C9iEOD12tPkqBuEGRKfB0YaOYxYpdoBuYlkjCRVFsKOMPrPgoEbuKxJygjeRo
+	V4jSygKFsX52IZ2eTAA23UZlJ4K2C+Deh0Mq3WVVZGC2m6Mc3O1pWw2C8UC1B9b6uCSpNN
+	MY472mUExGlTsgcZXEV+oWrlv/kFFgM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757739270; a=rsa-sha256;
 	cv=none;
-	b=WmhxgkVYRQUghtrQxEDBEGwgHK25rV+dSFXYOKgZVibBq+QfpsSKEikprTLP4qOcsp9kzz
-	Lxh3PvAniFo8AMNQMJLB8cLa3q/YyBbppxEmaBGkAb5sB5M+41bFmGj449c7reWKhVL6uA
-	zPAcZ19CoiBLyeThdllbZkjLvuqm0pA=
+	b=Cl6/shAqTfKYtWTyIKtGXLmI9cI5rFERfAsKFB5StmjXXmqB3CbNK6wOYw80cptcLimRk9
+	OprLMHrDouz+QBnn1Jj65SB56CA9kuz3JjubKmQ4kwN3G6I8fcLTv62SMf6oltptdU4dtF
+	28MI7HIFMXCtAIG9OaziFpsInHFHBaA=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=gkC0fHcn;
-	spf=pass (imf15.hostedemail.com: domain of lokeshgidra@google.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=lokeshgidra@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-61d14448c22so2537a12.1
-        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 21:27:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757737635; x=1758342435; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=blrxGJEUUPTcsFrTcd8XfRhY99hJp8EqG9gyFD99ZxM=;
-        b=gkC0fHcnFuzWZ4qcBeFBr3byMLyPY25+SGfUAG4sx1lNFhdNNgb8TkuGuSPDszX2YH
-         owLaSeyXXg1YLyIS5ovsFk72ZW6ndkaUzpr7ScoQ9PEjVvB2hfszEzA5b0vwlnWo+HEn
-         qij/OpiTkOlLsx1tlru2dxTlhs6Gv85fmAVvw9TCL9kDxefXH0Vr22AJoiqCH8Hw4BFw
-         +h3fqbNsRbRCtfvwdg3AYpldM7d6rEgZA0Ekx6Q1+bt5mcXqb+tqFq+TqOpThC2HndX/
-         1nnOoN5XhtQN+/W7VXQcecXOyE/c8YNFz1Aqd594JISWyFu2m8CDWGCPOve8dM35opst
-         c4/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757737635; x=1758342435;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=blrxGJEUUPTcsFrTcd8XfRhY99hJp8EqG9gyFD99ZxM=;
-        b=O8NGGyYP/KMnh0tp4wIXFhbdOKQdNJBTp6G7r4nOSFTUmNyY9Duzn07+GkCq5Ks/Ni
-         spcX2rOhMiPERQb+C3dzxeTk0hb9Z1C8Q4+cPA9DUeU/S6xlfB3NglVpEOmlNCfRzL63
-         8OR3uo2CRRmHelQDLz5MKUIi1FnoRbjYzg7rW0bxezaI4i3eNN2akLiRinDC+dBjMVfD
-         bSowu2WstltRorutKq2KFyEbiKRr3GkvUyZ1Lg+BRcf2eX/bjG8C3dQkTPA5U/JNMyMs
-         0alF6lORW3UbdIw/qHQoLy8GkTqngETDwfYhfQLt3+ya+exIAzWPxZu1VPszG+q0ct4/
-         Dz/w==
-X-Forwarded-Encrypted: i=1; AJvYcCX6rPuojVuUMPObQJy67sG8T6jd4SXXeo8hh9eqLBlNcp3v1XQ5nlTr/uNXF9x/Gty1ypuVkB1OiA==@kvack.org
-X-Gm-Message-State: AOJu0YxC4IoQKCBN5DX6XB9afhOqR1u0JqLM+d7YuQ8pjxkvSYYI4EcT
-	ZQPuMVMbapQhm//CerXlw+o8vDjbhXaGmcdxiYFriZfsPOpY4exWlM0J1kcOgmgHHFiDivKOFIB
-	Hta74/0WMC/DQyEaNMThnQAXj/mz8t7IFKq6RBTdg
-X-Gm-Gg: ASbGnctzSTv0hA/Dinw3sM1ZfUdUQlkrvrSZqSYehktPLvRmqJMDl+0ukAtGMsiTA+v
-	G1gjS/7caKst0u0aaN0ykEIUOiXt3kZjsgY6ITNFQ7S/5qEXce6dH94HJTIQyAOSVNmXCkzxQyP
-	LVfZYaT/vRtGXMTyYfeDnlsxWNGaOo2JwoVDVIJSJRzBo9fghcQeFrVkaQpy99MhuD0ihq/d8eG
-	eAZp1u8927lCgKQkwPqKGYLT+3nQlcPTGrzizgs0VwuKCg=
-X-Google-Smtp-Source: AGHT+IHjFw2Zg2JiBFqjUk5Z6gMn2JCEfkhFslCWm77ZXeR1Q/G+nsrA50IIlOGyl+GgWAbAeLhbFj7ZxBQk2EyomnM=
-X-Received: by 2002:a05:6402:4415:b0:61c:c08d:359d with SMTP id
- 4fb4d7f45d1cf-62f03e2b937mr35968a12.4.1757737634875; Fri, 12 Sep 2025
- 21:27:14 -0700 (PDT)
+	imf01.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=FuWjdRA3;
+	spf=pass (imf01.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1757739270; x=1789275270;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=vf17++RMcUm1uTKoA7SlmMgh6YPFEz2iKCiWctknxnQ=;
+  b=FuWjdRA3vt7fChcgqgjIsZMTRofon7tASJZrEkiFEVUqKV5J/JMK107B
+   HFIQsEApnAbMbakMEMzjIDhRWYEPfwfUuFKAmjfOHXgOv0IOuwNxIMzjV
+   IkiEnhg4lkvl2Mmwni53D1xDZrvQ0NyNpWL5X2sjSl4tRBDeZyh/OMtqn
+   3V6brk+qyACSpxO92VVUjkTFlWduUP2eAmvTeeQmfRZ6SJXAyKyI2EUXd
+   UnRRBydlNEyd3UsWtbk3MKvEqEEtRW6ceYNvdRjv3InNH1dMPI6sCuuAm
+   Mo3J1Qqtk70ga9MFt8afdL7dP8M/75XgIMGsOnDGbLeovFD/ifE1wMGMY
+   Q==;
+X-CSE-ConnectionGUID: 6AZYXtjCRYa/Nj/UXWP+zg==
+X-CSE-MsgGUID: EXzYwOkDTWyBZ4UL9bjWwg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11551"; a="60151366"
+X-IronPort-AV: E=Sophos;i="6.18,260,1751266800"; 
+   d="scan'208";a="60151366"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2025 21:54:28 -0700
+X-CSE-ConnectionGUID: dl5LpduZQZerRsKIL84RQQ==
+X-CSE-MsgGUID: HCSkTh/JRZSJmYTWN0jrog==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,260,1751266800"; 
+   d="scan'208";a="197872578"
+Received: from lkp-server02.sh.intel.com (HELO eb5fdfb2a9b7) ([10.239.97.151])
+  by fmviesa002.fm.intel.com with ESMTP; 12 Sep 2025 21:54:27 -0700
+Received: from kbuild by eb5fdfb2a9b7 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uxIHJ-0001Mo-05;
+	Sat, 13 Sep 2025 04:54:25 +0000
+Date: Sat, 13 Sep 2025 12:53:27 +0800
+From: kernel test robot <lkp@intel.com>
+To: Balbir Singh <balbirs@nvidia.com>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>
+Subject: [akpm-mm:mm-unstable 39/428] include/linux/pgtable.h:235:36: error:
+ expected expression before 'do'
+Message-ID: <202509131255.x9EfvIGt-lkp@intel.com>
 MIME-Version: 1.0
-References: <20250908044950.311548-1-lokeshgidra@google.com>
- <d507dc89-e6b0-4360-bc77-1a8bf74b9134@lucifer.local> <3f37af16-abf2-4ed4-9894-0028a9f02f76@redhat.com>
-In-Reply-To: <3f37af16-abf2-4ed4-9894-0028a9f02f76@redhat.com>
-From: Lokesh Gidra <lokeshgidra@google.com>
-Date: Fri, 12 Sep 2025 21:27:03 -0700
-X-Gm-Features: AS18NWA3XZo4rdm4oou7ezMAUiUYL9jGdXUz2TYAt-2RnbIiKYE4Cg9f0NuB_DU
-Message-ID: <CA+EESO5D6CBezDCnN6=7zujzczDZp1t-kajXQCEVsgYTYciT4g@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/2] mm: always call rmap_walk() on locked folios
-To: David Hildenbrand <david@redhat.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, akpm@linux-foundation.org, 
-	linux-mm@kvack.org, kaleshsingh@google.com, ngeoffray@google.com, 
-	Harry Yoo <harry.yoo@oracle.com>, Peter Xu <peterx@redhat.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Barry Song <baohua@kernel.org>, SeongJae Park <sj@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: D1C66A0012
-X-Stat-Signature: tzi9rg7cf6xpsme96ebzqkrbm488jsss
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: E31B140003
+X-Stat-Signature: gfef3fmwapnhsp6dh64wjdbjfqunpj4x
 X-Rspam-User: 
-X-HE-Tag: 1757737636-323398
-X-HE-Meta: U2FsdGVkX1/O4d7iwG4OawED0N+AFx0FOTXZIRdHPKnI/xvhbcEOM0zSnzxnzGxJUy3rmiCj1Kt/FZB9e0mp9XIUxYhz+gdXUpF48JEUP817qeuqm1PxO9tEAjaLl7FVfACDkbBCVcqqfp+0hGq3u3J/qvk4m+s3AeuGy/K0E2pr9AfjA06qLOhBBzISVnzphMe0AkqEl58bEdDPDGTh+C4o5lOF5+6veh7FUZwq7rHF/iuP+NcHNNbbsC2YU5wgab0Js7ekvWfNMyZf5zEIxSeITCFPV05r+PihFzqIyNu+cFtCmMY12X5ChjEpDSiPt873Kv8Y8RnOwqlYx5noZoWRT7fqsdhKvsj0QIhEA8623ZyX5bXjn9I8QF8N9wVL4hDQbfQv9WrOff9I2R1oYrXYGR0/MMR4JHRftIqys8oSDvcc9ucTiT4F/ea+9dRFIVhVTmZaKyxoKBsdEkJ+dBlv3Ox/NUqwfegNrlT5xwezokH+ZU1t24YHnQb3F/qHktq0jwmT/12Fm7YpMuzQIyiMSEJQ7gwmzjCGjpycoxsS2OTgO+C7Lk2u+G567JtVA4nOHW74Z7p8nwZEvv2C7F+cB597u6rviC1FVYXIuJXD0OjlaXf77nhHDooMgz53kdm5kN13QHJJQuXq0TI8ZLIcjAsKkCH6WBcNFH2CekKARmii2yiFI3P13HaJcJfqFT7P6oXwM9dn67xtkpXdX4IFyuHOcZ2zkggZ2dRDZ1mY98Xp0au6zUhBnyYuWNE0QorfCBM8iurBTmGN+qR+q5P0Cj/r+WAATFJ/t+qPdo0XhkSoOhNu1tpzGRrRgwni7NQO42qUctXFPvCjuV9DkQZlpKpeY4/iBuGEaW6IZzOpcWqj8lBNOb+m2I1YSO7Loj2kPPoOCtYPy0jvBrzT2LUkrgvpX2Rd55Fpj2Eda7/aTI6mWbsS2zDXhxWtzWhS1N/0YFhjz5YVL7+mBRi
- LKLVA3H2
- A7TB/HSXqYhoPWC0vl6DDy1idkzzAAUpf0jfQn8h/lIkDzi6kVEO3gz2KL7JQFh9NFnSDh4Cv9Ce9X2cOiIHc/IhBzYnKuX2eN7HSQj6oVj+Lqnv+Nmw720RiDnaCLAoGVt/DEGZbITFYCvydtdGx4UPjgDpoqnFaclFTmhaUwNKRQPN9ZszWijbnUD7z7cGK8KNsNyXqIMPi1ybOHIXrPXZL3pz3m6uQICGhUICfPdPp/UWstdR9Ra6oh++h5sWdNCLJ3btHzN4gYu0=
+X-HE-Tag: 1757739269-826569
+X-HE-Meta: U2FsdGVkX19x7iQTxBls2jj4i4kwHPKugHNgzA1gKCV5SgixrWb3B+tBmqv1pRZHiBKq3+jCvcKoHC1VqEtV18f0jn/4tYqWw0vMAdMRQ0c4d0bKWfmg0b9OsuV4f1tVZ91EbojQPAUwDkzEyR8nyb0qWw8Ai+apKjZFFdcfhpQe0Yoa4rO9An4/phW/bBB7p0fNiAagrOQ1nt7AwrcE0crSkZcGvBnpsdH7lVAIWP1L6Gt5u7wSx0pcxorQk8xT13qEmTUi6yiF0j6ho4wUHK1LkAKfI9MMYhRp/WiptfdXZebLiooofSHMIpO4N+AN6Abq8q1XuOa1YeX44kyPnQ6XuSVRSzIt0oWknRzicRid67wx9fJEYxA8w2EsUa2FpLfPBROi/pGTG8KV9UjYafBOqMxv9CWAFK6LKd5EMD4YZeL0tw7WI6Cu2J4tf5TAqy0tIzjmU45l5wBl3hTKx5oUJyyuJSmJSuzZO/fy97XucSwwpDSI6MeslK53flyvPrG9Rjog9DmQr/GlK9CC0JwTS0uqS91eV1YW6v9jaTU7/Y2/KtPXj7Z5m/c0L8Q2+zaa7Wy3CeFQ1qEvnZoLZU7kvu+lAhvBgyk82tHEK/n9xpskpm2gaMlxxo7Fvd3qn7FTGhdtiYJ9hwsTpJIAlDvlSPusPtpPpTQek8wJSdJigUOGWRoWggEVaZ4PkC/SbZqlFEoQVlSyvvsWDXF8Rrksc+018RAsxnpBkijTb1p+0nbvaXjObH8/YpMxlaFXv1+/urcvgXsS18P4jfyQko33w7cl11tsHk+FcL0IREacO3sLoIMgteLgD4l9m61uKg01NKCv3gF4U8qRYFclY/OpjJ78LvhDf6LA9XL824CNJKW2kPyTw++MI8gn5x2Whs1AkAu2SPJBfI/1M77brXe4sN0xuSRYTgfQKtxmpfKQrpSC9evQQXB1nWnA7H3vPXtdYYPZRV+nEsXvHWT
+ JPYmSi3R
+ TcEd8xqKF9jx1YHEs7OQjYwxKcuqEncBq09JAIXTkUX7+QkhG2lWEGPxKtjLeAMU5JXUE5avnP7c6a+4ePosudByUNX9SxkQ9nKATVXOdbTt7gWsMyvdwaVDd3BGmgmnnUAgWPvSexggCykgPKoy7poBePfLT3ce/sUS/EgbD1Sc21l0NfE9lI0O6wNbryNxkjlG8GoFw1jD4Te9ebYrDr0nMmarLedP9tj15Uad16dViTz5tPJep8lG7PgQHpbtTdmLV1AYwitVs0c/ax7lJisI2T2y03ytwH2lfEZdjpez1hNo+fWyAxcoFiPgswjmP4vx0fv0Jo7iGYMY/SE3LHFT3XoEZXRm20X7zFjO0nqvVHBMXPZcbdIKBceu0AeZWIM6LCH24HUUj5rhM3Od/RUiylBUJIaSzfEW6DCPLSaxq2k48KNb3sxo0gzszz7Z7MdUWYdvL5f9+35DNo9hwiy6PTAHyb6fALqsy
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,100 +105,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 12, 2025 at 2:03=E2=80=AFAM David Hildenbrand <david@redhat.com=
-> wrote:
->
-> On 11.09.25 21:39, Lorenzo Stoakes wrote:
-> > Please please please use a cover letter if there's more than 1 patch :)
-> >
-> > I really dislike the 2/2 replying to the 1/2.
->
-> +1000
->
-> >
-> > On Sun, Sep 07, 2025 at 09:49:49PM -0700, Lokesh Gidra wrote:
-> >> Prior discussion about this can be found at [1].
-> >>
-> >> rmap_walk() requires all folios, except non-KSM anon, to be locked. Th=
-is
-> >> implies that when threads update folio->mapping to an anon_vma with
-> >> different root (currently only done by UFFDIO MOVE), they have to
-> >
-> > I said this on the discussion thread, but can we please stop dancing ar=
-ound
-> > and acting as if this isn't an entirely uffd-specific patch please :)
-> >
-> > Let's very explicitly say that's why we're doing this.
-> >
-> >> serialize against rmap_walk() with write-lock on the anon_vma, hurting
-> >> scalability. Furthermore, this necessitates rechecking anon_vma when
-> >> pinning/locking an anon_vma (like in folio_lock_anon_vma_read()).
-> >
-> > THis is really quite confusing, you're compressing far too much informa=
-tion
-> > into a single sentence.
-> >
-> > Let's reword this to make it clearer like:
-> >
-> >       Userfaultfd has a scaling issue with its UFFDIO_MOVE operation, a=
-n
-> >       operation that is heavily used in android [insert reason why].
-> >
-> >       The issue arises because UFFDIO_MOVE updates folio->mapping to an
-> >       anon_vma with a different root. It acquires the folio lock to do
-> >       so, but this is insufficient, because rmap_walk() has a mode in
-> >       which a folio lock need not be acquired, exclusive to non-KSM
-> >       anonymous folios.
-> >
-> >       This means that UFFDIO_MOVE has to acquire the anon_vma write loc=
-k
-> >       of the root anon_vma belonging to the folio it wishes to move.
-> >
-> >       This has resulted in scalability issues due to contention between
-> >       [insert contention information]. We have observed:
-> >
-> >       [ insert some data to back this up ]
-> >
-> >       This patch resolves the issue by removing this exception. This is
-> >       less problematic than it might seem, as the only caller which
-> >       utilises this mode is shrink_active_list().
-> >
-> > Something like this is _a lot_ clearer I think.
->
-> Yes, fully agreed.
->
-> >
-> >>
-> >> This can be simplified quite a bit by ensuring that rmap_walk() is
-> >> always called on locked folios. Among the few callers of rmap_walk() o=
-n
-> >> unlocked anon folios, shrink_active_list()->folio_referenced() is the
-> >> only performance critical one.
-> >
-> > Let's please not call this a simplification, I mean yes we simplify the
-> > code per se, but we're fundamentally changing the locking logic.
-> >
-> > Let's explicitly say that.
-> >
-> > Also I find it odd that you say shrink_active_list()->folio_referenced(=
-) is
-> > 'performance critical', I mean if so, surely this series is broken then=
-?
-> >
-> > I'd delete that, the entire basis of this being ok is that it's _not_
-> > performance critical to make this change.
->
-> I think we can mention that as a side-effect of this performance
-> optimization for uffd, folio_get_anon_vma() gets simpler and we no
-> langer handle locking of anon folios different to locking of other
-> (pagecache, ksm) folios.
->
-Thank you both for the valuable feedback. I'll upload next version
-within few days addressing all the comments.
->
-> --
-> Cheers
->
-> David / dhildenb
->
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-unstable
+head:   8ded915c4409a5190b1c9c57c172d62ab5534274
+commit: f6748cc302fdca7c486c6098f315bd4174f5c614 [39/428] kasan: Fix warnings caused by use of arch_enter_lazy_mmu_mode()
+config: s390-randconfig-002-20250913 (https://download.01.org/0day-ci/archive/20250913/202509131255.x9EfvIGt-lkp@intel.com/config)
+compiler: s390-linux-gcc (GCC) 8.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250913/202509131255.x9EfvIGt-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202509131255.x9EfvIGt-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   In file included from include/linux/kasan.h:37,
+                    from mm/kasan/shadow.c:14:
+   mm/kasan/shadow.c: In function 'kasan_populate_vmalloc_pte':
+>> include/linux/pgtable.h:235:36: error: expected expression before 'do'
+    #define arch_enter_lazy_mmu_mode() do {} while (0)
+                                       ^~
+   mm/kasan/shadow.c:322:8: note: in expansion of macro 'arch_enter_lazy_mmu_mode'
+     (void)arch_enter_lazy_mmu_mode();
+           ^~~~~~~~~~~~~~~~~~~~~~~~
+   mm/kasan/shadow.c: In function 'kasan_depopulate_vmalloc_pte':
+>> include/linux/pgtable.h:235:36: error: expected expression before 'do'
+    #define arch_enter_lazy_mmu_mode() do {} while (0)
+                                       ^~
+   mm/kasan/shadow.c:497:8: note: in expansion of macro 'arch_enter_lazy_mmu_mode'
+     (void)arch_enter_lazy_mmu_mode();
+           ^~~~~~~~~~~~~~~~~~~~~~~~
+
+
+vim +/do +235 include/linux/pgtable.h
+
+533c67e63584067 Kinsey Ho               2023-12-27  214  
+bcc6cc832573a99 Matthew Wilcox (Oracle  2023-08-02  215) /*
+bcc6cc832573a99 Matthew Wilcox (Oracle  2023-08-02  216)  * A facility to provide lazy MMU batching.  This allows PTE updates and
+bcc6cc832573a99 Matthew Wilcox (Oracle  2023-08-02  217)  * page invalidations to be delayed until a call to leave lazy MMU mode
+bcc6cc832573a99 Matthew Wilcox (Oracle  2023-08-02  218)  * is issued.  Some architectures may benefit from doing this, and it is
+bcc6cc832573a99 Matthew Wilcox (Oracle  2023-08-02  219)  * beneficial for both shadow and direct mode hypervisors, which may batch
+bcc6cc832573a99 Matthew Wilcox (Oracle  2023-08-02  220)  * the PTE updates which happen during this window.  Note that using this
+bcc6cc832573a99 Matthew Wilcox (Oracle  2023-08-02  221)  * interface requires that read hazards be removed from the code.  A read
+bcc6cc832573a99 Matthew Wilcox (Oracle  2023-08-02  222)  * hazard could result in the direct mode hypervisor case, since the actual
+bcc6cc832573a99 Matthew Wilcox (Oracle  2023-08-02  223)  * write to the page tables may not yet have taken place, so reads though
+bcc6cc832573a99 Matthew Wilcox (Oracle  2023-08-02  224)  * a raw PTE pointer after it has been modified are not guaranteed to be
+691ee97e1a9de0c Ryan Roberts            2025-03-03  225   * up to date.
+691ee97e1a9de0c Ryan Roberts            2025-03-03  226   *
+691ee97e1a9de0c Ryan Roberts            2025-03-03  227   * In the general case, no lock is guaranteed to be held between entry and exit
+691ee97e1a9de0c Ryan Roberts            2025-03-03  228   * of the lazy mode. So the implementation must assume preemption may be enabled
+691ee97e1a9de0c Ryan Roberts            2025-03-03  229   * and cpu migration is possible; it must take steps to be robust against this.
+691ee97e1a9de0c Ryan Roberts            2025-03-03  230   * (In practice, for user PTE updates, the appropriate page table lock(s) are
+691ee97e1a9de0c Ryan Roberts            2025-03-03  231   * held, but for kernel PTE updates, no lock is held). Nesting is not permitted
+691ee97e1a9de0c Ryan Roberts            2025-03-03  232   * and the mode cannot be used in interrupt context.
+bcc6cc832573a99 Matthew Wilcox (Oracle  2023-08-02  233)  */
+bcc6cc832573a99 Matthew Wilcox (Oracle  2023-08-02  234) #ifndef __HAVE_ARCH_ENTER_LAZY_MMU_MODE
+bcc6cc832573a99 Matthew Wilcox (Oracle  2023-08-02 @235) #define arch_enter_lazy_mmu_mode()	do {} while (0)
+bcc6cc832573a99 Matthew Wilcox (Oracle  2023-08-02  236) #define arch_leave_lazy_mmu_mode()	do {} while (0)
+bcc6cc832573a99 Matthew Wilcox (Oracle  2023-08-02  237) #define arch_flush_lazy_mmu_mode()	do {} while (0)
+bcc6cc832573a99 Matthew Wilcox (Oracle  2023-08-02  238) #endif
+bcc6cc832573a99 Matthew Wilcox (Oracle  2023-08-02  239) 
+
+:::::: The code at line 235 was first introduced by commit
+:::::: bcc6cc832573a99d1f935c89a28e2c71fd1aaf0c mm: add default definition of set_ptes()
+
+:::::: TO: Matthew Wilcox (Oracle) <willy@infradead.org>
+:::::: CC: Andrew Morton <akpm@linux-foundation.org>
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
