@@ -4,100 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB3B8CAC587
-	for <linux-mm@archiver.kernel.org>; Sat, 13 Sep 2025 04:13:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DC12CAC58E
+	for <linux-mm@archiver.kernel.org>; Sat, 13 Sep 2025 04:27:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 13C5A8E0005; Sat, 13 Sep 2025 00:13:48 -0400 (EDT)
+	id 616158E0002; Sat, 13 Sep 2025 00:27:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 113FD8E0001; Sat, 13 Sep 2025 00:13:48 -0400 (EDT)
+	id 5C6B58E0001; Sat, 13 Sep 2025 00:27:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 050E78E0005; Sat, 13 Sep 2025 00:13:47 -0400 (EDT)
+	id 503628E0002; Sat, 13 Sep 2025 00:27:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E88D58E0001
-	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 00:13:47 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 83A4E1A0A2B
-	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 04:13:47 +0000 (UTC)
-X-FDA: 83882908494.09.F66125F
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 9A4C11A0005
-	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 04:13:43 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=none;
-	spf=pass (imf19.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.187 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	by kanga.kvack.org (Postfix) with ESMTP id 430F48E0001
+	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 00:27:19 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CCB721DFAB2
+	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 04:27:18 +0000 (UTC)
+X-FDA: 83882942556.17.7711BDE
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	by imf15.hostedemail.com (Postfix) with ESMTP id D1C66A0012
+	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 04:27:16 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=gkC0fHcn;
+	spf=pass (imf15.hostedemail.com: domain of lokeshgidra@google.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=lokeshgidra@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757736825;
+	s=arc-20220608; t=1757737636;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=K5u2GS7vsAOSZ5yshlHoZ1AbFGgkSFsUNwNS7dJtLeg=;
-	b=ZfFcqZRQBvVOSvh0PpvVFEXKnmZSCMSTcPiWaFyvA4dMlbbBPh43VSWCo4beW58ikqjiKS
-	eihs8PYzHuFEjWxKsi8Qu3g3elvLp5KcPDWi/p8hLPy19gNwLF80+OSP9WG86IqD54x6oU
-	pwK6D80QFmz/11gdGhUFkDLL5ll437M=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=none;
-	spf=pass (imf19.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.187 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757736825; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=blrxGJEUUPTcsFrTcd8XfRhY99hJp8EqG9gyFD99ZxM=;
+	b=RSofL3x2AdVu2fa4EaWNzUteX0x+bSF1j14E2r2H8RUw0Heg7FfFyrZpjc0lEfaNL15S9X
+	6hqVnvcNX3Fh+zZd4fm/rYkkdIb4VaHxhf1hz7KEwaIW8JsVPxaTRImmXIyepLL3/8CL/w
+	iYmh7ApRLjs/PtCdkilIwg6hitedt1Y=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757737636; a=rsa-sha256;
 	cv=none;
-	b=CV1K+lvuhrJrJwoihPpiJO0HCJwfHz8nDSh84RyyPYGtH7L1kcB4Hw3+ytQrRT2+8VH+SY
-	qzXHYKsQY4JdzGOGsm+6WewzY/iDXcSkspRUOLnAHc+zWQ13XuuvqHbX0HjrLIL5WKK37M
-	4MP9rykteq8rFzpoFeJYj8DEDanVEzU=
-Received: from mail.maildlp.com (unknown [172.19.163.48])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4cNyZr3c95z14Mn3;
-	Sat, 13 Sep 2025 12:13:24 +0800 (CST)
-Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id 0615618006C;
-	Sat, 13 Sep 2025 12:13:39 +0800 (CST)
-Received: from [10.174.177.243] (10.174.177.243) by
- dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Sat, 13 Sep 2025 12:13:37 +0800
-Message-ID: <39ea6d31-ec9c-4053-a875-8e86a8676a62@huawei.com>
-Date: Sat, 13 Sep 2025 12:13:36 +0800
+	b=WmhxgkVYRQUghtrQxEDBEGwgHK25rV+dSFXYOKgZVibBq+QfpsSKEikprTLP4qOcsp9kzz
+	Lxh3PvAniFo8AMNQMJLB8cLa3q/YyBbppxEmaBGkAb5sB5M+41bFmGj449c7reWKhVL6uA
+	zPAcZ19CoiBLyeThdllbZkjLvuqm0pA=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=gkC0fHcn;
+	spf=pass (imf15.hostedemail.com: domain of lokeshgidra@google.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=lokeshgidra@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-61d14448c22so2537a12.1
+        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 21:27:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1757737635; x=1758342435; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=blrxGJEUUPTcsFrTcd8XfRhY99hJp8EqG9gyFD99ZxM=;
+        b=gkC0fHcnFuzWZ4qcBeFBr3byMLyPY25+SGfUAG4sx1lNFhdNNgb8TkuGuSPDszX2YH
+         owLaSeyXXg1YLyIS5ovsFk72ZW6ndkaUzpr7ScoQ9PEjVvB2hfszEzA5b0vwlnWo+HEn
+         qij/OpiTkOlLsx1tlru2dxTlhs6Gv85fmAVvw9TCL9kDxefXH0Vr22AJoiqCH8Hw4BFw
+         +h3fqbNsRbRCtfvwdg3AYpldM7d6rEgZA0Ekx6Q1+bt5mcXqb+tqFq+TqOpThC2HndX/
+         1nnOoN5XhtQN+/W7VXQcecXOyE/c8YNFz1Aqd594JISWyFu2m8CDWGCPOve8dM35opst
+         c4/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757737635; x=1758342435;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=blrxGJEUUPTcsFrTcd8XfRhY99hJp8EqG9gyFD99ZxM=;
+        b=O8NGGyYP/KMnh0tp4wIXFhbdOKQdNJBTp6G7r4nOSFTUmNyY9Duzn07+GkCq5Ks/Ni
+         spcX2rOhMiPERQb+C3dzxeTk0hb9Z1C8Q4+cPA9DUeU/S6xlfB3NglVpEOmlNCfRzL63
+         8OR3uo2CRRmHelQDLz5MKUIi1FnoRbjYzg7rW0bxezaI4i3eNN2akLiRinDC+dBjMVfD
+         bSowu2WstltRorutKq2KFyEbiKRr3GkvUyZ1Lg+BRcf2eX/bjG8C3dQkTPA5U/JNMyMs
+         0alF6lORW3UbdIw/qHQoLy8GkTqngETDwfYhfQLt3+ya+exIAzWPxZu1VPszG+q0ct4/
+         Dz/w==
+X-Forwarded-Encrypted: i=1; AJvYcCX6rPuojVuUMPObQJy67sG8T6jd4SXXeo8hh9eqLBlNcp3v1XQ5nlTr/uNXF9x/Gty1ypuVkB1OiA==@kvack.org
+X-Gm-Message-State: AOJu0YxC4IoQKCBN5DX6XB9afhOqR1u0JqLM+d7YuQ8pjxkvSYYI4EcT
+	ZQPuMVMbapQhm//CerXlw+o8vDjbhXaGmcdxiYFriZfsPOpY4exWlM0J1kcOgmgHHFiDivKOFIB
+	Hta74/0WMC/DQyEaNMThnQAXj/mz8t7IFKq6RBTdg
+X-Gm-Gg: ASbGnctzSTv0hA/Dinw3sM1ZfUdUQlkrvrSZqSYehktPLvRmqJMDl+0ukAtGMsiTA+v
+	G1gjS/7caKst0u0aaN0ykEIUOiXt3kZjsgY6ITNFQ7S/5qEXce6dH94HJTIQyAOSVNmXCkzxQyP
+	LVfZYaT/vRtGXMTyYfeDnlsxWNGaOo2JwoVDVIJSJRzBo9fghcQeFrVkaQpy99MhuD0ihq/d8eG
+	eAZp1u8927lCgKQkwPqKGYLT+3nQlcPTGrzizgs0VwuKCg=
+X-Google-Smtp-Source: AGHT+IHjFw2Zg2JiBFqjUk5Z6gMn2JCEfkhFslCWm77ZXeR1Q/G+nsrA50IIlOGyl+GgWAbAeLhbFj7ZxBQk2EyomnM=
+X-Received: by 2002:a05:6402:4415:b0:61c:c08d:359d with SMTP id
+ 4fb4d7f45d1cf-62f03e2b937mr35968a12.4.1757737634875; Fri, 12 Sep 2025
+ 21:27:14 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] mm: hugetlb: allocate frozen pages in
- alloc_gigantic_folio()
-To: David Hildenbrand <david@redhat.com>, Andrew Morton
-	<akpm@linux-foundation.org>, Oscar Salvador <osalvador@suse.de>, Muchun Song
-	<muchun.song@linux.dev>, Zi Yan <ziy@nvidia.com>, Matthew Wilcox
-	<willy@infradead.org>
-CC: <sidhartha.kumar@oracle.com>, <jane.chu@oracle.com>, Vlastimil Babka
-	<vbabka@suse.cz>, Brendan Jackman <jackmanb@google.com>, Johannes Weiner
-	<hannes@cmpxchg.org>, <linux-mm@kvack.org>
-References: <20250911065659.617954-1-wangkefeng.wang@huawei.com>
- <20250911065659.617954-5-wangkefeng.wang@huawei.com>
- <90e926c9-40cb-4791-8360-e3d145fe3503@redhat.com>
- <8508e8fb-77cc-43a7-8460-456f68a552ba@huawei.com>
- <667133bd-0021-4d4e-9cde-fc8c1324522a@redhat.com>
- <d63e7e02-b2ab-46fb-b981-ad4f4f28d634@huawei.com>
- <3a842ae3-f13a-4f5d-8870-d81cf1f0d56d@redhat.com>
- <1da42002-9dad-45a7-98f8-90a97801002d@redhat.com>
- <8a524eda-c3fe-4e28-a24b-4050484e472f@huawei.com>
- <5ede233c-c8c6-4067-afb3-df94b4222cda@redhat.com>
-Content-Language: en-US
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <5ede233c-c8c6-4067-afb3-df94b4222cda@redhat.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- dggpemf100008.china.huawei.com (7.185.36.138)
+References: <20250908044950.311548-1-lokeshgidra@google.com>
+ <d507dc89-e6b0-4360-bc77-1a8bf74b9134@lucifer.local> <3f37af16-abf2-4ed4-9894-0028a9f02f76@redhat.com>
+In-Reply-To: <3f37af16-abf2-4ed4-9894-0028a9f02f76@redhat.com>
+From: Lokesh Gidra <lokeshgidra@google.com>
+Date: Fri, 12 Sep 2025 21:27:03 -0700
+X-Gm-Features: AS18NWA3XZo4rdm4oou7ezMAUiUYL9jGdXUz2TYAt-2RnbIiKYE4Cg9f0NuB_DU
+Message-ID: <CA+EESO5D6CBezDCnN6=7zujzczDZp1t-kajXQCEVsgYTYciT4g@mail.gmail.com>
+Subject: Re: [RFC PATCH 1/2] mm: always call rmap_walk() on locked folios
+To: David Hildenbrand <david@redhat.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, akpm@linux-foundation.org, 
+	linux-mm@kvack.org, kaleshsingh@google.com, ngeoffray@google.com, 
+	Harry Yoo <harry.yoo@oracle.com>, Peter Xu <peterx@redhat.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Barry Song <baohua@kernel.org>, SeongJae Park <sj@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: D1C66A0012
+X-Stat-Signature: tzi9rg7cf6xpsme96ebzqkrbm488jsss
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 9A4C11A0005
-X-Stat-Signature: zdk69ccd3uayg3yc5ptjaik8nrfhmxsb
-X-HE-Tag: 1757736823-44818
-X-HE-Meta: U2FsdGVkX1/JmXAkyp08Wu2O6chsDyuv2dXx9lRHVDfvLH0iuGmYR9z4ltJ0B+og9d8zYHZfHCybBzziMSnc6POw/UpnVp8/FD8/eCU0NpPdHzuhizipD7QxwK2Vi1AU12UB+iAdTIQ1+gj+L3uJDszjYkrBjZ70cg9MLA+3NwBnCKg0hrXreaI/nl3I9/YbeQD18Xxxll9ufZgHpeRyx0Lip3NnviA5fAe/T+fr1Ru9W0wG0I/Uq8RrV7Ym0lZXD1MdUPvfUq/ztT7YbI40KIMed7v+/kjghSvoUWYvRGMIvM8GujKW+14ce7i1Kw+demPrKyu6y7Spfqkl+vbvi+9GLGy1aMv2nMoKCx3NImsb1zuz5L8b5dhfAq+/5+5j6GymdCzgMDN4HISE4VbvvnaZFjtRTf7SJawG209Rf5AiMTKA+KPSJxOkLPqM6jkJgS03BPGcox0o4Da5/3cGfZ16+f8P4zccXlxeP//qlMTT6rjr3wZLa8Nu3cAAbsdjk/aCudMjbJpDrblsj4Vbdu2Bf9vWV1rpHZ8QhsNvGCPZTZ5guhVHmh+8KsMuJu1rMXm92+JmxMZDH4quYEH8Mtbx8haBHQAT2EL09o84opbxkfjB0Jj326HGWoAYFbpg2MdteCQvlPjzjxm21/yrYCTDIJpv9zXKzqmTEHO1SjcIxH5JBIeJVkMLLpaWy8tcaSbpLlQZh1wfgK9uy3WrcwVN38IkDKh5ENu8kB6keTGpfkR1RK6mMnMcqS4k+MKqjcT1XsTAzuUZ1KzFA1d/2BHyFKOgHuKE8CfjNOhr4OomG8M0P+q0NqWpk8+RUcqOwvZzSmo39kpxNq2s9kFoWt/seZhm4VMV+arZap1lvPuHC0FIozLsaop1YwkdRL3Fjsmxtqwclai+xiBLBi6roYRXF8heqGI7biWb8FJX3dvPUepdSxdr70356izHIsItf3yCW1QCsVJkWRC/RzU
- ROFZK7I4
- /MpmhLwFTnbuUMGZm4KlmBg4Emppd1tlULRfual6SJooeONBanO7tRcYK3OAxhdDrA3GFTWsBt+iruEqVO72sFdCk5HOiQxkDE7QrLwCQuSlhX68ix28PDXyGFi57ehh5suOZlmS8HhOhl7RhaJPvCmQ2PAIwWeUmROQ0p43y4rvtQNT/PXDxCtHvVHO9GBZStpiViky/NqTY+VDw4v4d9YhYjMcGVUkK7NJA8bChTAn7R1nGXOGuC+GnVeAW4m1pDjn0g6MgagHdaY8WGJFhTS/Y2u/3XegpYOwu
+X-HE-Tag: 1757737636-323398
+X-HE-Meta: U2FsdGVkX1/O4d7iwG4OawED0N+AFx0FOTXZIRdHPKnI/xvhbcEOM0zSnzxnzGxJUy3rmiCj1Kt/FZB9e0mp9XIUxYhz+gdXUpF48JEUP817qeuqm1PxO9tEAjaLl7FVfACDkbBCVcqqfp+0hGq3u3J/qvk4m+s3AeuGy/K0E2pr9AfjA06qLOhBBzISVnzphMe0AkqEl58bEdDPDGTh+C4o5lOF5+6veh7FUZwq7rHF/iuP+NcHNNbbsC2YU5wgab0Js7ekvWfNMyZf5zEIxSeITCFPV05r+PihFzqIyNu+cFtCmMY12X5ChjEpDSiPt873Kv8Y8RnOwqlYx5noZoWRT7fqsdhKvsj0QIhEA8623ZyX5bXjn9I8QF8N9wVL4hDQbfQv9WrOff9I2R1oYrXYGR0/MMR4JHRftIqys8oSDvcc9ucTiT4F/ea+9dRFIVhVTmZaKyxoKBsdEkJ+dBlv3Ox/NUqwfegNrlT5xwezokH+ZU1t24YHnQb3F/qHktq0jwmT/12Fm7YpMuzQIyiMSEJQ7gwmzjCGjpycoxsS2OTgO+C7Lk2u+G567JtVA4nOHW74Z7p8nwZEvv2C7F+cB597u6rviC1FVYXIuJXD0OjlaXf77nhHDooMgz53kdm5kN13QHJJQuXq0TI8ZLIcjAsKkCH6WBcNFH2CekKARmii2yiFI3P13HaJcJfqFT7P6oXwM9dn67xtkpXdX4IFyuHOcZ2zkggZ2dRDZ1mY98Xp0au6zUhBnyYuWNE0QorfCBM8iurBTmGN+qR+q5P0Cj/r+WAATFJ/t+qPdo0XhkSoOhNu1tpzGRrRgwni7NQO42qUctXFPvCjuV9DkQZlpKpeY4/iBuGEaW6IZzOpcWqj8lBNOb+m2I1YSO7Loj2kPPoOCtYPy0jvBrzT2LUkrgvpX2Rd55Fpj2Eda7/aTI6mWbsS2zDXhxWtzWhS1N/0YFhjz5YVL7+mBRi
+ LKLVA3H2
+ A7TB/HSXqYhoPWC0vl6DDy1idkzzAAUpf0jfQn8h/lIkDzi6kVEO3gz2KL7JQFh9NFnSDh4Cv9Ce9X2cOiIHc/IhBzYnKuX2eN7HSQj6oVj+Lqnv+Nmw720RiDnaCLAoGVt/DEGZbITFYCvydtdGx4UPjgDpoqnFaclFTmhaUwNKRQPN9ZszWijbnUD7z7cGK8KNsNyXqIMPi1ybOHIXrPXZL3pz3m6uQICGhUICfPdPp/UWstdR9Ra6oh++h5sWdNCLJ3btHzN4gYu0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,207 +119,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2025/9/13 2:07, David Hildenbrand wrote:
-> 
->>>>
->>>> Would be interesting trying to see how much overhead would remain when
->>>> just dealing
->>
->> Patch2 skip atomic update in split_page() with 
->> alloc_contig_frozen_pages(),
->> I could test performance about old alloc_contig_pages() with/without
->> GFP_COMP and new alloc_contig_frozen_pages() when allocate same size.
-> 
-> Yes, that would be very interesting.
-
-
-TEST1： alloc_contig_frozen_pages（split without atomic） + GFP_KERNEL
-TEST2： alloc_contig_pages（split with atomic） + GFP_KERNEL
-TEST3： alloc_contig_frozen_pages（split without atomic） + 
-GFP_KERNEL|__GFP_COMP
-TEST4： alloc_contig_pages（split with atomic） + GFP_KERNEL|__GFP_COMP
-
-Alloc/free 10 * 1G, the result shows as usec
-
-        TEST1  TEST2   TEST3   TEST4
-alloc
-       301024  296947  286681  288125
-       297099  297194  286810  289906
-       297134  300445  289950  288393
-				
-free				
-       215014  215332  16730   16613
-       214730  214948  16516   16588
-       215727  214945  16589   16507
-
-The perf profile show below,
-
-split_free_frozen_pages()'s proportion is lower than split_free_pages，
-but the total time is not reduced.
-
-TEST1 alloc:
-- sysctl_test_sysctl_handler.part.0
-    - 96.92% alloc_contig_frozen_pages_noprof
-       - 82.69% pfn_range_valid_contig
-            pfn_to_online_page
-       - 13.97% alloc_contig_range_frozen_noprof
-            4.39% replace_free_hugepage_folios
-          - 4.34% split_free_frozen_pages
-               __list_add_valid_or_report
-          - 3.22% undo_isolate_page_range
-             - 3.04% unset_migratetype_isolate
-                - __move_freepages_block_isolate
-                     2.96% __move_freepages_block
-          - 0.86% __drain_all_pages
-               drain_pages_zone
-               free_pcppages_bulk
-          - 0.59% start_isolate_page_range
-             - 0.51% set_migratetype_isolate
-                  __move_freepages_block_isolate
-
-TEST2 alloc:
-  - sysctl_test_sysctl_handler.part.0
-    - 99.82% alloc_contig_pages_old_noprof
-       - 81.59% pfn_range_valid_contig
-            pfn_to_online_page
-       - 18.16% alloc_contig_range_old_noprof.constprop.0
-          - 8.10% split_free_pages
-               4.72% __split_page
-               1.38% __list_add_valid_or_report
-            5.83% replace_free_hugepage_folios
-          - 3.07% undo_isolate_page_range
-             - 3.01% unset_migratetype_isolate
-                - __move_freepages_block_isolate
-                     2.88% __move_freepages_block
-
-TEST3 alloc:
-- sysctl_test_sysctl_handler.part.0
-    - 99.85% alloc_contig_frozen_pages_noprof
-       - 86.04% pfn_range_valid_contig
-            pfn_to_online_page
-       - 13.52% alloc_contig_range_frozen_noprof
-            4.23% replace_free_hugepage_folios
-          - 3.99% prep_new_page
-               prep_compound_page
-          - 3.86% undo_isolate_page_range
-             - 3.43% unset_migratetype_isolate
-                - __move_freepages_block_isolate
-                     3.35% __move_freepages_block
-            0.54% __alloc_contig_migrate_range 
-
-
-
-> 
->>
->>>>
->>>> OTOH, maybe we can leave GFP_COMPOUND support in but make the function
->>>> more generic, not limited to folios (I suspect many users will not want
->>>> folios, except hugetlb).
->>>>
->>
->> Maybe just only add cma_alloc_frozen(), and
->> cma_alloc()/hugetlb_cma_alloc_folio()
->> is the wrapper that calls it and set page refcount, like what we did in
->> other frozen allocation.
->>
->> struct page *cma_alloc_frozen(struct cma *cma, unsigned long count,
->>                 unsigned int align, gfp_t gfp);
-> 
-> I think it's weird that cma_alloc_frozen() consumes gfp_t when 
-> cma_alloc() doesn't. So I would wish that we can clean that up (-> 
-> remove gfp if possible).
-> 
-> So maybe we really want a
-> 
-> cma_alloc_frozen
-> 
-> and
-> 
-> cma_alloc_frozen_compound
-> 
-> whereby the latter consumes an "order" instead of "count + align".
-> 
->>
->>>> Maybe just a
->>>>
->>>> struct page * cma_alloc_compound(struct cma *cma, unsigned int order,
->>>> unsigned int align, bool no_warn);
->>>
->>> ^ no need for the align as I realized, just like
->>> cma_alloc_folio() doesn't have.
->>
->> since cma_alloc_frozen is more generic, we need keep align,
->>
->>>
->>> I do wonder why we decided to allow cma_alloc_folio() to consume gfp_t
->>> flags when we don't do the same for cma_alloc().
->>>
->>
->> cma_alloc_folio() now is called by hugetlb allocation, the gfp could be
->> htlb_alloc_mask(), with/without __GFP_THISNODE/__GFP_RETRY_MAYFAIL...
->> and this could be used in alloc_contig_frozen_pages(),(eg,
->> gfp_zone).
-> 
-> Take a look at alloc_contig_range_noprof() where I added
-> 
->      __alloc_contig_verify_gfp_mask()
-> 
-> Essentially, we ignore
-> 
->      GFP_ZONEMASK | __GFP_RECLAIMABLE | __GFP_WRITE | __GFP_HARDWALL
->         | __GFP_THISNODE | __GFP_MOVABLE
-> 
-> And we *always* set __GFP_RETRY_MAYFAIL
-> 
-> I'd argue that hugetlb passing in random parameters that don't really 
-> make sense for contig allcoations is rather an issue and makes you 
-> believe that they would have any effect.
-> 
-> If cma_alloc doesn't provide them a cma_alloc_frozen or cma_alloc_folio 
-> shouldn't provide them.
-
-Oh, I make a mistake, the cma_alloc_folio calls  alloc_contig_range
-(not alloc_contig_pages) to  alloc page from special cma ranges, and
-__GFP_THISNODE only needed by hugetlb_cma_alloc_folio(), so the gfp
-flags is not useful for cma_alloc_frozen or cma_alloc_folio, let's
-remove it.
-
-
-
-> 
->>
->> For cma_alloc() unconditional use GFP_KERNEL from commit
->> 6518202970c1 "mm/cma: remove unsupported gfp_mask parameter from
->> cma_alloc()", but this is another story.
->>
->> Back to this patchset, just add a new cma_alloc_frozen() shown
->> above and directly call it in cma_alloc()/hugetlb_cma_alloc_folio(),
->> get rid of folio_alloc_frozen_gigantic() and cma_alloc_folio(), and
->> we could do more optimization in the next step.
-> 
-> Yeah, that's probably a good first step, but while at it I would hope we 
-> could just cleanup the gfp stuff and provide a more consistent interface.
-> 
-
-So
-struct page *cma_alloc_frozen(struct cma *cma, unsigned long count, 
-unsigned int align, bool no_warn) in include/linux/cma.h
-
-and
-struct page *cma_alloc_frozen_compound(struct cma *cma, unsigned int 
-order) in mm/internal.h since maybe only hugetlb use it.
-
-or keep cma_alloc_folio() but remove gfp,
-struct folio *cma_alloc_folio(struct cma *cma, int order, gfp_t gfp)
-
-Any comments?
-
-Thanks.
-
-
-
-
-
+On Fri, Sep 12, 2025 at 2:03=E2=80=AFAM David Hildenbrand <david@redhat.com=
+> wrote:
+>
+> On 11.09.25 21:39, Lorenzo Stoakes wrote:
+> > Please please please use a cover letter if there's more than 1 patch :)
+> >
+> > I really dislike the 2/2 replying to the 1/2.
+>
+> +1000
+>
+> >
+> > On Sun, Sep 07, 2025 at 09:49:49PM -0700, Lokesh Gidra wrote:
+> >> Prior discussion about this can be found at [1].
+> >>
+> >> rmap_walk() requires all folios, except non-KSM anon, to be locked. Th=
+is
+> >> implies that when threads update folio->mapping to an anon_vma with
+> >> different root (currently only done by UFFDIO MOVE), they have to
+> >
+> > I said this on the discussion thread, but can we please stop dancing ar=
+ound
+> > and acting as if this isn't an entirely uffd-specific patch please :)
+> >
+> > Let's very explicitly say that's why we're doing this.
+> >
+> >> serialize against rmap_walk() with write-lock on the anon_vma, hurting
+> >> scalability. Furthermore, this necessitates rechecking anon_vma when
+> >> pinning/locking an anon_vma (like in folio_lock_anon_vma_read()).
+> >
+> > THis is really quite confusing, you're compressing far too much informa=
+tion
+> > into a single sentence.
+> >
+> > Let's reword this to make it clearer like:
+> >
+> >       Userfaultfd has a scaling issue with its UFFDIO_MOVE operation, a=
+n
+> >       operation that is heavily used in android [insert reason why].
+> >
+> >       The issue arises because UFFDIO_MOVE updates folio->mapping to an
+> >       anon_vma with a different root. It acquires the folio lock to do
+> >       so, but this is insufficient, because rmap_walk() has a mode in
+> >       which a folio lock need not be acquired, exclusive to non-KSM
+> >       anonymous folios.
+> >
+> >       This means that UFFDIO_MOVE has to acquire the anon_vma write loc=
+k
+> >       of the root anon_vma belonging to the folio it wishes to move.
+> >
+> >       This has resulted in scalability issues due to contention between
+> >       [insert contention information]. We have observed:
+> >
+> >       [ insert some data to back this up ]
+> >
+> >       This patch resolves the issue by removing this exception. This is
+> >       less problematic than it might seem, as the only caller which
+> >       utilises this mode is shrink_active_list().
+> >
+> > Something like this is _a lot_ clearer I think.
+>
+> Yes, fully agreed.
+>
+> >
+> >>
+> >> This can be simplified quite a bit by ensuring that rmap_walk() is
+> >> always called on locked folios. Among the few callers of rmap_walk() o=
+n
+> >> unlocked anon folios, shrink_active_list()->folio_referenced() is the
+> >> only performance critical one.
+> >
+> > Let's please not call this a simplification, I mean yes we simplify the
+> > code per se, but we're fundamentally changing the locking logic.
+> >
+> > Let's explicitly say that.
+> >
+> > Also I find it odd that you say shrink_active_list()->folio_referenced(=
+) is
+> > 'performance critical', I mean if so, surely this series is broken then=
+?
+> >
+> > I'd delete that, the entire basis of this being ok is that it's _not_
+> > performance critical to make this change.
+>
+> I think we can mention that as a side-effect of this performance
+> optimization for uffd, folio_get_anon_vma() gets simpler and we no
+> langer handle locking of anon folios different to locking of other
+> (pagecache, ksm) folios.
+>
+Thank you both for the valuable feedback. I'll upload next version
+within few days addressing all the comments.
+>
+> --
+> Cheers
+>
+> David / dhildenb
+>
 
