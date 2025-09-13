@@ -4,115 +4,176 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9914CCAC587
-	for <linux-mm@archiver.kernel.org>; Sat, 13 Sep 2025 14:35:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E9A3CAC593
+	for <linux-mm@archiver.kernel.org>; Sat, 13 Sep 2025 20:33:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 99F528E0001; Sat, 13 Sep 2025 10:35:16 -0400 (EDT)
+	id 08E1C6B0006; Sat, 13 Sep 2025 16:33:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 976F06B000D; Sat, 13 Sep 2025 10:35:16 -0400 (EDT)
+	id 03E4A6B0007; Sat, 13 Sep 2025 16:32:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 88C9B8E0001; Sat, 13 Sep 2025 10:35:16 -0400 (EDT)
+	id E47E26B0008; Sat, 13 Sep 2025 16:32:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 711FE6B0008
-	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 10:35:16 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 22138B637C
-	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 14:35:16 +0000 (UTC)
-X-FDA: 83884474632.02.5467639
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 3017340008
-	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 14:35:13 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=los6zu5c;
-	spf=pass (imf17.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CE3E26B0006
+	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 16:32:59 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6D4B71A01CD
+	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 20:32:59 +0000 (UTC)
+X-FDA: 83885376078.20.A7CCD78
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 24675180002
+	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 20:32:56 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=uL1vOO8A;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="wq+V+a/Z";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=uL1vOO8A;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="wq+V+a/Z";
+	spf=pass (imf16.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757774114;
+	s=arc-20220608; t=1757795577;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6fiXrarRSR0kdAO2K4VRZ44JDkzpu5N8uZFGaP00hf0=;
-	b=7xEFXKVfWG3GlRjfs6JZnQIDX0NkdDcjBxWQc3dqI192p9pDlCDGG5gsLbipIIxqn8qzr7
-	0dfXrh80xXiMJgUpNEgKFi/91UuaE2fyxMJJ4NVNbo2MWx/AndJ2m4X84TKHU+MYToc6P7
-	+Wm8xSqZG2o6fA2TLu2+iBRan3mA4gU=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=los6zu5c;
-	spf=pass (imf17.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757774114; a=rsa-sha256;
+	bh=dpRJZ9I95GmOVaMkK/sESDsiFIQvQ5KFj4dQmisZ5f0=;
+	b=NKtGVlBBeij5K4S9iVAOSL9GuV7pED7cuD2/YlJcOv17AvbkkhSLsZb1IGXoAwGDDl93wF
+	GvHoFNDuf8RoFviv9Rk55eswk7dt8v5f1fjs1FjgyNYgwR9cM5SQmJ/hl/MEtZSHuLu+W8
+	+ITUt0axdFNc4NecIiJyH7c7buPWkbA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757795577; a=rsa-sha256;
 	cv=none;
-	b=ZZLx/sQXnjFtjFyBE64h6maKGoq+Qsa5qL9fdzpvMjqSZiyJjWc7FvUJxikhnxOdOQ7wWh
-	Ys3/H0xGzXjbt4PAQTvGiDLGRa6tblg+0OfNbyFRKzgUkL25JBP2GY7XZ/2iIYHuMg7AEw
-	jqKCWY4C1Ax+DJxZmgPHYZP8LLoo6MA=
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3e4aeaa57b9so2454992f8f.1
-        for <linux-mm@kvack.org>; Sat, 13 Sep 2025 07:35:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757774112; x=1758378912; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=6fiXrarRSR0kdAO2K4VRZ44JDkzpu5N8uZFGaP00hf0=;
-        b=los6zu5cjF6V1gZmq5tcy3gyFvtQy92xSfHd7f5xBaj80aPtMzKLiJXhzFVyOqAjPm
-         Kt88HZ/VZs2e49sUk1A5xP5YjaHxc5svBJ7W0yhb3ChsIYn6gnMsPKks0siF9fj7Svix
-         MFzpBS+lGABHxtOdaN8uVEKMBEtEEZVZj4Z4kJzVaeE0l3M7kNl1crdAg0Nuc3RmBTdw
-         XTPivvdFFGwdumHmyxBam6EXjbfq2WUOzO7U2a6ipZLn39w4ddnfXH44tdrs0OSTTrmf
-         HiT4dlTv4FNwl3v/Uw879Pl4LMfxp3rfOw0kc66DmYyiGm/6P5YWguDvQVjl4jBUBaO/
-         S6FA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757774112; x=1758378912;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6fiXrarRSR0kdAO2K4VRZ44JDkzpu5N8uZFGaP00hf0=;
-        b=qe7da9g4BNJFX9eVriranaurPrT8VaGnLQu42NvRPSAKYDnsz2kNUrJueogpDz5fWX
-         j/I8JlI/dcYOM12CmMxTuEBkgg9XhK9duB4rtulK1W9WG7j7KoLj+r9IfpsewsU9A5KP
-         eTEy1WrwixOvTx+KhtNyIKpouQiHFYX6smtrbjqGUgPqJXHr3UGN554QFwaKH239/wps
-         vO5UwxnHrf3+AAq4/eSFVxyNLNMB67hHuDHraoORzHbUArPA5srB67Bs6q7FZpsK4pX5
-         dCIq3SRmUPrP2qk97ld9CVXDr6W3kbrkrfUugsaVaKZJ7jyDuTWzdpoJaZm12i77Rpdn
-         NN8g==
-X-Forwarded-Encrypted: i=1; AJvYcCVOzfTx/p7d/GY/ZswRqbIFh+jxbNB5xU5o3eCixSfEYBUJRCLa8IRhD7IOkOx41SWC48kDjYhByg==@kvack.org
-X-Gm-Message-State: AOJu0YwyhJOQytzDuUZc6gbPzQSyD3LeYyw3EHA/merCTDubbQadrcUw
-	A0vPCBDZh0/gJV15+WvT746CxT2zDMJq7Nb/CIc7RHCfUxoEb2g8pjkR
-X-Gm-Gg: ASbGnctMedAlSto87ZRbU6j88Q2woDKzMktFPgcNh02o/YpbyFWLIMOIeqYxeqBJk/z
-	fSXJp+AMFgY5ysCjhWukz/m0J9L8iY5HX3+ux9cnpUHg+v3MEvkyqYaNuSQW3fRZdbFs76bPWMh
-	zZur8OuTGlWKDTYnvrjRkXW3WamBER9Tu/Xkgq+gPF52HN9KHGNeY/S0TCNRXWuiXcR2vE6qKya
-	rGhD8hv1WyiEc25Os4nHJAH3D7CVhrjue7fcB+aw4wSMs0ZwlMEtAMQ47HHPmFx4hg7FGWHQaUv
-	c6BhpaaFxESB1p7vcjiaDr3Yu0PYj7JVDW1ruOUgPHxr+P0cy/UIV0ksBCOFJRTuxLe3YhrEJS2
-	QjmplewubptSHLmobK9SZNcLrGER+AApNaXGHf4X1T/xuTO4VE2V9GdT49puHBg3gMYvb+Q==
-X-Google-Smtp-Source: AGHT+IHhpBBCovNgxAqBRlSFfJutUHogP+FA8KmrQiU/CxNP8LHdbv9lBhG/X6uQAQCakmX95bODlw==
-X-Received: by 2002:a05:6000:26c6:b0:3e7:4c93:18bc with SMTP id ffacd0b85a97d-3e765a092c1mr5272349f8f.49.1757774112195;
-        Sat, 13 Sep 2025 07:35:12 -0700 (PDT)
-Received: from f (cst-prg-67-222.cust.vodafone.cz. [46.135.67.222])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45f29174de1sm15209675e9.2.2025.09.13.07.35.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 13 Sep 2025 07:35:11 -0700 (PDT)
-Date: Sat, 13 Sep 2025 16:35:03 +0200
-From: Mateusz Guzik <mjguzik@gmail.com>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Suren Baghdasaryan <surenb@google.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Harry Yoo <harry.yoo@oracle.com>, Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, rcu@vger.kernel.org, maple-tree@lists.infradead.org
+	b=RXe7gqPLqnoBCGXDx89MHOzMo8p9PMOe+weZDCOkv/vYW8L5qmF5XNXL8AiTe/r0SrOGwA
+	dROeufHDva/phdSBhhRGnFJsiluDwVa2Cy5dR8BzjePwMOV4mENImzcOct1U/sdH0cQGLp
+	Ko2f4ssBZxqRa5zLyEqx+hZ3S6Js16o=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=uL1vOO8A;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="wq+V+a/Z";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=uL1vOO8A;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="wq+V+a/Z";
+	spf=pass (imf16.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 7EFC635226;
+	Sat, 13 Sep 2025 20:32:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1757795574; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=dpRJZ9I95GmOVaMkK/sESDsiFIQvQ5KFj4dQmisZ5f0=;
+	b=uL1vOO8AMkos9j6t0UAlhApuIadXfq3j8WmqNpNZLPg2+cy2E/qVOxPALciFGZG2+NABuy
+	tRewSBF3AoZY4avZVQkvaO6IZJLc9cMacmXsFlxEyGiIpOUrw69ZDtcNf5T6XALFlBzJ/P
+	aYLTO6PW2CCrVPT/GI6b2XtdeapO4Vw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1757795574;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=dpRJZ9I95GmOVaMkK/sESDsiFIQvQ5KFj4dQmisZ5f0=;
+	b=wq+V+a/Z+AaQ7JDlKetlW214a3l4Kc3IhloUXUP4BBTPwLmiIIMYvUeqsxJP7Cq/BKW4Pk
+	iNwM+jfMPEct9nDA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1757795574; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=dpRJZ9I95GmOVaMkK/sESDsiFIQvQ5KFj4dQmisZ5f0=;
+	b=uL1vOO8AMkos9j6t0UAlhApuIadXfq3j8WmqNpNZLPg2+cy2E/qVOxPALciFGZG2+NABuy
+	tRewSBF3AoZY4avZVQkvaO6IZJLc9cMacmXsFlxEyGiIpOUrw69ZDtcNf5T6XALFlBzJ/P
+	aYLTO6PW2CCrVPT/GI6b2XtdeapO4Vw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1757795574;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=dpRJZ9I95GmOVaMkK/sESDsiFIQvQ5KFj4dQmisZ5f0=;
+	b=wq+V+a/Z+AaQ7JDlKetlW214a3l4Kc3IhloUXUP4BBTPwLmiIIMYvUeqsxJP7Cq/BKW4Pk
+	iNwM+jfMPEct9nDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 616311372E;
+	Sat, 13 Sep 2025 20:32:54 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id zXW8FvbUxWiYYQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Sat, 13 Sep 2025 20:32:54 +0000
+Message-ID: <b923fd8a-4f07-4689-a0cf-4ac5b85c6fe5@suse.cz>
+Date: Sat, 13 Sep 2025 22:32:54 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v5 01/14] slab: add opt-in caching layer of percpu sheaves
-Message-ID: <ja3gd6bdckiuanm3xu4hszpjm7euvffm3k7tmu7drh6mdel7m6@oyr635vikumk>
+To: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Suren Baghdasaryan <surenb@google.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
+ Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, rcu@vger.kernel.org,
+ maple-tree@lists.infradead.org
 References: <20250723-slub-percpu-caches-v5-0-b792cd830f5d@suse.cz>
  <20250723-slub-percpu-caches-v5-1-b792cd830f5d@suse.cz>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250723-slub-percpu-caches-v5-1-b792cd830f5d@suse.cz>
-X-Stat-Signature: 56tdn7etz35iezt1sq73e9z3qn7hxhra
+ <ja3gd6bdckiuanm3xu4hszpjm7euvffm3k7tmu7drh6mdel7m6@oyr635vikumk>
+Content-Language: en-US
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <ja3gd6bdckiuanm3xu4hszpjm7euvffm3k7tmu7drh6mdel7m6@oyr635vikumk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 24675180002
+X-Stat-Signature: z13xntcza6wwne7xiix46t6tdxyx69gd
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3017340008
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1757774113-76739
-X-HE-Meta: U2FsdGVkX19AplWg3UxSm6Ro7sHVirTB1nxkzbdEIR2CStRqAmr/37qZT1qQw0zgw1hBijhIE8458QfOW2306P/T/liThNkLXJOvIdiqAWPdrVEUDOJbDO6euOYvxemE0RmRvPfQvEBPEXY4ql23xT2OW1FpM1MSs5giDpBMBB+CboYw51t/+94HysuMjQzQl421Lk8goWPBqd7RKU2A+ra8EC4Nc4smil3wSWIpQQ2GImnZYjUopSTBH0unLPLw/Cw4zIt86gMrXWqHuXjAvM6ySY1VZ5M7a6FboLR6C4sRUEv9Sioyr6nmrdxauTOcQ+hM2xyBZVEvFTI+s7SaspvI3Cqt6sjc6+yIG78/DxYWbno5dVypETnjqlF3tN6HfxSLr3kOIsT+NrqfjNZ59LVYjyATWg5ugyVAzN8Pb9spNZXDVdEldFDcjeMwCRFFE9aO9CYz5FlAr2f+UtKp3m8A3EbOq6rC3uFsmvNWJLaTV9KcW5uQZc/rf7QMMAqHOlkZF+aNylv3jsdfIp42IsCVtVAGY28GTmZaA/fhYd34Mylxzv0bIWHaBLQ454NzREtv6381v80Mtuup1hLlFq8P7q9gKj66/RAIWlaja63/ehtxxxd4ELKu7Tj5t/GChSKv7j/ac3pOsKXDWtwpC+Cnp0vJdF+vo7CjMdWCrlkBBWLZ8ZihUaJLtQIizwl4kzX4NhMsHx+5XGL/RNWZ3wECXxz25P3Udj2kif9iAjK2qjIt/zQLuQm8tIR3qxygEllUV8n/WwpP172eU46nY76gJ+lLbkzHeVX8oa/Df6s5YL7Xb0NgSoSKrJzkAmKFAz+XU0UY1TqbmQNEtBiIAUlVpeDGpJfD2SR2yRjPbujXCfv4ugBUO2NdxQL6clbVth50RVLOiI4tGKYwEDGly6j6o8hgufq0QEyXWSbEAdkOg7zgaibSTLLgcemMa39KEj69kJqAUg/P1g6kAIy
- bD79ZNsL
- Or2DLsQTZ8J/ttKwzQXtBIVRYNyQKBCrlTePzsrfpp0YORVDkeNZidgLAeGUeKi+UfUBKhwS5UMzSdj1naqqYptWWUkOkyVT+QTjXW1Z8EuRlo83YYTINr9SWTV0Ff8MKDk8fLtu2DoZ37WrLUKPwgan0CLKxOzpVdM79OsaD84kcO8xGnhD+bNIDhUdxllU8Q0k/ja5x6XY8bZHnVoLN21zuqZLD4ZFhUaDXazegwyTntK4zImBNJcBoAWEr9rJtpD7VDSNX9y/L4byHsXsAjZPSiidZ7kmMuebTkf9ujb0rz/2tNTwTAe3NO+Sach8LsSb4LvoXmvb05/6rbmWv6Lg0UG5ucZH9jlNFR/cJ3pGvWQ5u9jGk3F8aBCijl9Cusr9XFpG4Pt9RvvKV7c8WTbq98/wCGClqeKPPF4U4mxFIrGloFZ2T7vCuJA==
+X-HE-Tag: 1757795576-678814
+X-HE-Meta: U2FsdGVkX18sfEwqmeUzRfa2YlvY7hnDFu90mftNGjkca5edNgYP3nv3Cbo9SMdVcFPMwlXpesNMfX3PWSnIK8YvCNu2iTyHuqETqpHUBxt5INC0LwAzCSZj2+BBdzffrKbOvBHZoTyV4t4oaqQpqsYNi9hxggw6/V79bFNQ+dWrHqahFbW63tBgs4rqWU6pgrGFsipWuCAX6cmJfgRukt7W+7RbhnW9Iw9zrgQwQEqZyzGkDpvTlGVIuqgZl/s8LcwYWiu/rM8Qrc/crqyj7NVOorIQX55fM9q/zMCJZisj98kiE5LYiApp9WgJrgfrpTjBHuxiyPxB43T6beeu62/mET3N5u9IbB0We08T7G6nfroOKpJRtcStRb1QGDs34YmQwjNQmorKO9swWUza+xCHtaytl+/VebMV6LG7FwQyUY8F78gmG56rvOvh394Zg/LO1Vq2yD7vZNBS9APhdTISPhBYEMZxEKR9qWbQSoyaSc91GWVYfoQX/QbQoewfufjCAWySc3GpK0UlYkH8zHRocbZk22lpZ91GYBxLXQAYOa0mkmto6CswafRGsc2vI63Hxgle60R2F9G/aRr7S6PVOJ69YvSJ3T2yLWQLniyJV0JPvFMRbVh1DI1QoOIRGmcTBxNy1jMp23tmhKlKEY2ItmecaD8txlDnsoh646Yb0UvARS7tsFsjONMROQRCOpNNmvrv39ZATkyR+EE0eX6tbWFkXehIwDxiy2kqWEwW1WINe5NGIuypl2agR4EVXVW92wAwtpmPOxC59Wv7xy/axcr2bl3MhI1RO8ntJnOPB1jdphl3JC36AVcXvS/7LI9q9jS8pZCjrQX5A6Ry5TYvzGJHnmzsynUgyg3Hn988h1IdkcRE6ZywU/HhJhtI/BwCaUiJrqnIxLfkt1caLxtm59RnuLGDic+vhK3RPoGEgEZpcCUBEA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,52 +182,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 23, 2025 at 03:34:34PM +0200, Vlastimil Babka wrote:
-> The sheaves do not distinguish NUMA locality of the cached objects.
+On 9/13/25 16:35, Mateusz Guzik wrote:
+> On Wed, Jul 23, 2025 at 03:34:34PM +0200, Vlastimil Babka wrote:
+>> The sheaves do not distinguish NUMA locality of the cached objects.
+> 
+> While currently sheaves are opt-in, to my understanding the plan is to
+> make this the default.
+> 
+> I would argue a hard requirement for a general purpose allocator in this
+> day and age is to provide node-local memory by default. Notably if you
+> have a workload which was careful to bind itself to one node, it should
+> not receive memory backed by other nodes unless there is no other
+> option. AFAIU this is satisifed with the stock allocator on the grounds
+> of running on a given domain, without having to explicitly demand memory
+> from it for everyting.
+> 
+> I expect the lack of NUMA-awareness to result in increased accumulation
+> of "mismatched" memory as uptime goes up, violating the above.
 
-While currently sheaves are opt-in, to my understanding the plan is to
-make this the default.
+Yeah this is addressed in later patch in the series "mm, slub: skip percpu
+sheaves for remote object freeing" and then "mm, slab: allow NUMA restricted
+allocations to use percpu sheaves" further improves it. I should update
+commit log in this patch too.
 
-I would argue a hard requirement for a general purpose allocator in this
-day and age is to provide node-local memory by default. Notably if you
-have a workload which was careful to bind itself to one node, it should
-not receive memory backed by other nodes unless there is no other
-option. AFAIU this is satisifed with the stock allocator on the grounds
-of running on a given domain, without having to explicitly demand memory
-from it for everyting.
+> I admit though I don't have a good solution as to how to handle the
+> "bad" frees. Someone (I think you?) stated that one of the previous
+> allocators was just freeing to per-domain lists or arrays and that was
+> causing trouble -- perhaps this would work if it came with small limits
+> in place for how big these can get?
 
-I expect the lack of NUMA-awareness to result in increased accumulation
-of "mismatched" memory as uptime goes up, violating the above.
+Yes, the alien arrays of SLAB, with their dreaded periodical flushing.
+To avoid that the later patch simply skips the percpu sheaf. Only about 5%
+of frees seem to be remote, so 95% will still benefit.
 
-Some examples how I expect that to happen should this get expanded to
-all allocations:
-- wherever init happens to reap a zombie, task_struct and some more
-  stuff may be "misplaced"
-- even ignoring init, literally any fork/exec/exit heavy workload which
-  runs on more than one node will be ripe with mismatched frees as the
-  scheduler moves things around and the original parent reaps children
-- a process passes a file descriptor to a process on another domain and
-  the latter is the last to fput
-- a container creates a bunch of dentries and whacks them
-etc.
-
-In all of these cases getting unlucky means you are using non-local
-memory, which in turn will result in weird anomalies which suddenly
-clear themselves up if you restart the program (or which show up out of
-nowhere).
-
-Arguably, the fork thing is a problem as is and *probably* could be
-reduced by asking the scheduler upfront where it would run the child
-domain-wise if it had to do it right now and making fork allocate memory
-from that domain.
-
-But even with this or some other mitigation in place there would be
-plenty of potential to free non-local memory, so the general problem
-statement stands.
-
-I admit though I don't have a good solution as to how to handle the
-"bad" frees. Someone (I think you?) stated that one of the previous
-allocators was just freeing to per-domain lists or arrays and that was
-causing trouble -- perhaps this would work if it came with small limits
-in place for how big these can get?
 
