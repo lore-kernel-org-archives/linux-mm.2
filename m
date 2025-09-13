@@ -4,138 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 199DACA101F
-	for <linux-mm@archiver.kernel.org>; Sat, 13 Sep 2025 00:29:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FF98CA101F
+	for <linux-mm@archiver.kernel.org>; Sat, 13 Sep 2025 00:33:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 41A208E0007; Fri, 12 Sep 2025 20:29:29 -0400 (EDT)
+	id AC2308E000A; Fri, 12 Sep 2025 20:33:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3DA228E0001; Fri, 12 Sep 2025 20:29:29 -0400 (EDT)
+	id A734F8E0001; Fri, 12 Sep 2025 20:33:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F0008E0007; Fri, 12 Sep 2025 20:29:29 -0400 (EDT)
+	id 961DF8E000A; Fri, 12 Sep 2025 20:33:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F9D18E0001
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 20:29:29 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B778A873EB
-	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 00:29:28 +0000 (UTC)
-X-FDA: 83882343216.25.D166CE4
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 66A0FA000D
-	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 00:29:26 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7FCC18E0001
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 20:33:31 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2DA191DF9E7
+	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 00:33:31 +0000 (UTC)
+X-FDA: 83882353422.30.CA07707
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 40EC1A0006
+	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 00:33:29 +0000 (UTC)
 Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="LcNE/WBi";
-	spf=pass (imf15.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	dkim=pass header.d=linux.dev header.s=key1 header.b=n9lG8fkF;
+	spf=pass (imf15.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757723366;
+	s=arc-20220608; t=1757723609;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s1fdhbuUsD9MQP0PGb9Ytw8aU7X4xbIFZ9UR7PMXzJY=;
-	b=oC4MBEz/Wlzu7Y7tj0kcy4qF+eg/FoGrbCcEvpLq85eVCaUOBtUbqAtrOmvcvwO9UUKfo2
-	hM2G3xl/q+N8RutVYYFG8StSEOd9nfMT5Ks5Shpp0NgCBJjwPR8CkQvRMQpLn50uTjybd6
-	x/gsd1wxM4GhGRRW2hybJ4SWMrbI3xE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757723366; a=rsa-sha256;
-	cv=none;
-	b=r3lqlyTHnjzxgIP8zkX84OnKkASlDhdhrX0SvO2A7FsH/2/CJ3UnwovHUqmLawLKLvzUUc
-	OoSro5H7PbVP8DEpV30nkjdo59nJ+cpkmkP8+cN1cttq9bsflofPlzCJyGXbD6+yi8hsxQ
-	N3delYiQ6gVrBRJ/X58ObivEO6VCH64=
+	bh=WGB/lzbCpaHo9dgOu5gbU38UbtCr6Cc9U5CcwPrl1Ok=;
+	b=YVN6t/D3Uastd7qu0qlG/8gg3PG4bPDs5QM7l++3cPZPSwV/9jM/GRV7XsHx9ZqcCC7YUM
+	4M0XytdNSzsD5oOrlKZH7f4XaMpbJeKZ6uI2MPVTYAAuV6QpwLjg/eB6prUUs6d94zRQt/
+	u0Poj3HuYrHMFQ+s+hV4oEFbFjCOCHA=
 ARC-Authentication-Results: i=1;
 	imf15.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="LcNE/WBi";
-	spf=pass (imf15.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757723365;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=n9lG8fkF;
+	spf=pass (imf15.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757723609; a=rsa-sha256;
+	cv=none;
+	b=gAwXzCLRh2QjRUlKgNn+C0f1LC9BitrFmPfEYG8ibplGKhFy9ZexMTPEi96LrNQhLTIJfz
+	HgItUfgQMB0MHlXxC/iJwGwK9LXUxkTraRntPKK47d4miHDZzfnauDzD3lCtcexGazVB6D
+	wutKt0WDfr04Smxm9QgQrtPm6xgj2ME=
+Date: Fri, 12 Sep 2025 17:33:20 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1757723606;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=s1fdhbuUsD9MQP0PGb9Ytw8aU7X4xbIFZ9UR7PMXzJY=;
-	b=LcNE/WBiqzMOXRc5zebH292lco5qBXLi2Sz3pCgyawQHzxy3kTE3T4mTDW+gKZw0o64BWw
-	ocGZjvCu2xy1yiG6MKHs90cx+7uSBbUpkHUgH7CzFJ0TK1qYxo1PYdTnvQNXW6o8K17OwY
-	wc/W0/HrFNo/HTx+JVAwbCIr2SY7ZYQ=
-Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
- [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-99-03EVwRfiOka007IplMDMlA-1; Fri, 12 Sep 2025 20:29:22 -0400
-X-MC-Unique: 03EVwRfiOka007IplMDMlA-1
-X-Mimecast-MFC-AGG-ID: 03EVwRfiOka007IplMDMlA_1757723362
-Received: by mail-yw1-f197.google.com with SMTP id 00721157ae682-729540b6278so26894467b3.1
-        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 17:29:22 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757723362; x=1758328162;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=s1fdhbuUsD9MQP0PGb9Ytw8aU7X4xbIFZ9UR7PMXzJY=;
-        b=Evfcqxvp3lxCOI6psQxsnhQ63dr7QNMAK6+nQ/vgpccZlBhQ/FlY2X0JrzxI6CQl2h
-         9nJKZoTC6pc6yQMPf98Rhfj+FIywvrLIHclqJJZv9Xn8KnojjvQo7LDo6Khv+GgqCn7I
-         INpvqxQfPIcuQp+qMQu8Fgws3de/LZjm5lJ1tRvFPrmgphi/kgFGL10Cy+/ilnsHZ/+f
-         9eCJm6HYk2Cp1Q1qI+eHtjh4XgjAhmmnc/F9hrtEzsfU5UK/BTUwrFlc/u9JQJPEn4s2
-         r3H9haxz6OhiSmOn8NT342NzVkCMyLmmPeie+PNpAJslY5AeFOgSGPpNQ0ZG/Qs6tLoc
-         FqXA==
-X-Forwarded-Encrypted: i=1; AJvYcCXOBEZ0cAu533vluoUQXdf7gK/THydXNcw0SulTDrSURHP4uSt+4LVCWyHyGbjlrwRckEoQTW6FRQ==@kvack.org
-X-Gm-Message-State: AOJu0YwZUec51di9xUw9SjqPHgbU8gQHU6U8KEX5y2lhzh/cpBrGuAoU
-	vj3NM/plQhGkwRTy1/CUSofMJ6tIPRWiqYjd7GxIYr0Wo2lt8K4R1BlpG7OBgxls9DIo7kSpVws
-	BFrHBQxW0aKlXGL4NAgNsBeWm5LaS5272/YIL5IG6SJvBQqQ1iSz94HXPTW+Z75kVG8RIlJ38SD
-	hTLd7KoHFJAQQadL4RP9AmGAlU0WA=
-X-Gm-Gg: ASbGncsOjDo4CXuvf1r9WPd5QS5gjlEsqbGpkWIH2tnQe8JNlxmU39+zNKS0IrGheiK
-	eNqBwAPv+VJMVPm9p6NhTfhj7ASiilvWMWtHoKJTQvM2VV8+NDst1q/1ScrpFSlTOmxC6nHZ29E
-	dOgTfXUV72ANwk86HULcVGAVBnujSEJ7wy9dU=
-X-Received: by 2002:a05:690c:260a:b0:723:b6c4:3f1c with SMTP id 00721157ae682-730623e2925mr43228827b3.5.1757723361819;
-        Fri, 12 Sep 2025 17:29:21 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGP1ODcsVeOBTo/o3/Af/Xr6qV4tedAzQFkTLbisgc33kkPWRX3CWYPLhnD2DHm/8atuDvj5iDMrMVSvY62shE=
-X-Received: by 2002:a05:690c:260a:b0:723:b6c4:3f1c with SMTP id
- 00721157ae682-730623e2925mr43228427b3.5.1757723361261; Fri, 12 Sep 2025
- 17:29:21 -0700 (PDT)
+	bh=WGB/lzbCpaHo9dgOu5gbU38UbtCr6Cc9U5CcwPrl1Ok=;
+	b=n9lG8fkFNXoTKbDC7ZUJQ9i1eG/XGvvWRmoHOWaWnQHdcdhEoE2EBr6cKDXBS07gSuzIXA
+	no/l2Op9fYR8dV01si3tFhJo9nqZImcg/Yx2OYDrVg1g2n7I/OOuxR2x71IXJLVulgHZKZ
+	8FNOV/Nge6b5aPNstaF+wNnNDXw52Ic=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: Suren Baghdasaryan <surenb@google.com>, bpf <bpf@vger.kernel.org>, 
+	linux-mm <linux-mm@kvack.org>, Vlastimil Babka <vbabka@suse.cz>, 
+	Harry Yoo <harry.yoo@oracle.com>, Michal Hocko <mhocko@suse.com>, 
+	Sebastian Sewior <bigeasy@linutronix.de>, Andrii Nakryiko <andrii@kernel.org>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Steven Rostedt <rostedt@goodmis.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Roman Gushchin <roman.gushchin@linux.dev>
+Subject: Re: [PATCH slab v5 5/6] slab: Reuse first bit for OBJEXTS_ALLOC_FAIL
+Message-ID: <rfwbbfu4364xwgrjs7ygucm6ch5g7xvdsdhxi52mfeuew3stgi@tfzlxg3kek3x>
+References: <20250909010007.1660-6-alexei.starovoitov@gmail.com>
+ <jftidhymri2af5u3xtcqry3cfu6aqzte3uzlznhlaylgrdztsi@5vpjnzpsemf5>
+ <CAJuCfpGUjaZcs1r9ADKck_Ni7f41kHaiejR01Z0bE8pG0K1uXA@mail.gmail.com>
+ <CAADnVQJu-mU-Px0FvHqZdTTP+x8ROTXaqHKSXdeS7Gc4LV9zsQ@mail.gmail.com>
+ <shfysi62hb5g7lo44mw4htwxdsdljcp3usu2wvsjpd2a57vvid@tuhj63dixxpn>
+ <CAADnVQ+eD7p4i0B9Q2T-OS_n=AqcrrvYZGY57QOOqKEof6SkDQ@mail.gmail.com>
+ <lv2tkehyh4pihbczb7ghvbkkl4l75ksdx2xjtxf2r7lgzam76h@ekkrlady2et3>
+ <CAADnVQLX_mi9WLygRxwp5PtBFG7L_sqm9sL93ejENWqVO3ar7g@mail.gmail.com>
+ <e7nh3cxyhmlxds4b2ko36gnxbdfclcxu3eae5irvrd2m6qzqoj@gor7vopfe47z>
+ <CAADnVQJuAo5K417ZZ77AA1LM5uZr5O2v1dRrEEue-v39zGVyVw@mail.gmail.com>
 MIME-Version: 1.0
-References: <20250912032810.197475-1-npache@redhat.com> <ppzgohmkll7dbf2aiwhw7f4spf6kxjtwwe3djkx26pwy4ekrnd@mgeantq5sn2z>
- <43f42d9d-f814-4b54-91a6-3073f7c7cedf@redhat.com> <ab8c2e03-53fb-402c-a674-c2c6ab11f54e@redhat.com>
- <rapl4xr55zv2nq3jh5ulk4wvfyxa2kmbnnb4uram6q43y4cbwn@dv5m52ocyqne>
- <80c50bf4-27b1-483c-9977-2519369c2630@redhat.com> <7ri4u7uxsv6elyohqiq2w5oxv4yhk2tyniwglfxtiueiyofb3n@l4exlmlf5ty4>
- <59641180-a0d9-400c-aaeb-0c9e93954bf5@redhat.com> <c5bcecb8-13e7-4db5-849e-2120c69b2af5@lucifer.local>
- <ed784d6c-6c2a-4e0b-ad2f-e953bf310ce8@redhat.com> <dcfc7e27-d3c8-4fd0-8b7b-ce8f5051d597@lucifer.local>
-In-Reply-To: <dcfc7e27-d3c8-4fd0-8b7b-ce8f5051d597@lucifer.local>
-From: Nico Pache <npache@redhat.com>
-Date: Fri, 12 Sep 2025 18:28:55 -0600
-X-Gm-Features: Ac12FXwNur65Nm5OvErIVCDdmRDdfURv-x3te_kyR-KK-IxwM19Wyqk2iaWoTIE
-Message-ID: <CAA1CXcDyTR64jdhZPae2HPYOwsUxU1R1tj1hMeE=vV_ey9GXsg@mail.gmail.com>
-Subject: Re: [PATCH v11 00/15] khugepaged: mTHP support
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: David Hildenbrand <david@redhat.com>, Kiryl Shutsemau <kas@kernel.org>, linux-mm@kvack.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, ziy@nvidia.com, 
-	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, ryan.roberts@arm.com, 
-	dev.jain@arm.com, corbet@lwn.net, rostedt@goodmis.org, mhiramat@kernel.org, 
-	mathieu.desnoyers@efficios.com, akpm@linux-foundation.org, baohua@kernel.org, 
-	willy@infradead.org, peterx@redhat.com, wangkefeng.wang@huawei.com, 
-	usamaarif642@gmail.com, sunnanyong@huawei.com, vishal.moola@gmail.com, 
-	thomas.hellstrom@linux.intel.com, yang@os.amperecomputing.com, 
-	aarcange@redhat.com, raquini@redhat.com, anshuman.khandual@arm.com, 
-	catalin.marinas@arm.com, tiwai@suse.de, will@kernel.org, 
-	dave.hansen@linux.intel.com, jack@suse.cz, cl@gentwo.org, jglisse@google.com, 
-	surenb@google.com, zokeefe@google.com, hannes@cmpxchg.org, 
-	rientjes@google.com, mhocko@suse.com, rdunlap@infradead.org, hughd@google.com, 
-	richard.weiyang@gmail.com, lance.yang@linux.dev, vbabka@suse.cz, 
-	rppt@kernel.org, jannh@google.com, pfalcato@suse.de
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: dGoFy5m0K5tc7M0byWWxy-LQfXt-yBloiMUWRqJ_8es_1757723362
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: byxqstkmcxeczw69qjdon6tsin8bdqja
-X-Rspamd-Queue-Id: 66A0FA000D
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAADnVQJuAo5K417ZZ77AA1LM5uZr5O2v1dRrEEue-v39zGVyVw@mail.gmail.com>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 40EC1A0006
+X-Rspamd-Server: rspam05
+X-Stat-Signature: iynxqprgwmb1o4x9uj7ufpp5mu3863nb
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1757723366-262345
-X-HE-Meta: U2FsdGVkX1/7VhFI8DKiyzLasPw6gPyHyR8DVM+OT5a3//BUIpkK1SM0InLmSkThXF9iq+Rm1hoviSK3WaNuxSrvbEfGm22F554braJK5EnYMnAR6ErXISCNzDsjfWVmPD2AOxxwRRT+09D0vj3Obsv40IVuw2oqmN63qd7aV4Y5UiqShKb+RqxeNGh/ao8wx//oXBhzGDKfBnAT3vBT0Pr3P6VmnatcwHaUIeQCjdMQN6x+uSACKPrRBXlt7vv9gMvf2zVYZWXOuO3F0wZCZRMydJ3mKqQoOAgB370p8c+BHYRvj1ijkb+gwKM3+2bDOYGgWwGuk8sYgsTQoB/rMeRwM+EkuAeayhdMkgdCDenwm+eTjnLwH6M3I3U+CEP3muTdzV+E1Lp59H3SHWWn663fB6cCxP3sWS9gNYnREO4U3uXEkzwAWtXhfUmmTzu8EEh4+RvMPJwR6qanasGscawVGe2eNmuU+7YdGcvnXik0SrPvsZLyUSsxT24tN9O8AuIEsw/MF3WT/Ta5oltXbhiw6GH8d5liGkQh9n4C4Z/Sqo09KfEIEGdkLXa1AFk9Jabtgw8HHsOa4CGwaTomhAO8E66gMxG0wAk0f9wKfje6iQMrWJlBnGSxpfLAYVFgBrQqRY++PDCQhsTptWzCheJ6nF0IS7/kZSaHlEppMF07wtgez8mOEYwv29kNM96SBxu3l1tzHEOzKR1GRibRcovwVB+vbP+UVooP64ThviADuoFm/P1Ct6BbOA4S+GRFDqKJOmT+zCqOh2tYepvxVEAUOYJzauINyeucMe321r3yPJuGeUGP9lshYHMDkIls12JKpv9gEzM9dln50C2oit2VlbUR1EUsSsk9wvCHTDdGc7VmuedDGeXme8PFu+0whqZyzX9xMNzivQoi0Ci4u59aIUH4pco7r9Quh5opKLG9lSbkY4fIUxyfSLKy4jR+Xfa7aP5d7oVNt+wrnAm
- iBg1T/+L
- RBq3TYtVUWkrq3ld4Gpfp5gguC/XgOk5JgeqKgv8vhQoU59eWvdVmflN9iIsWeeF2RmLmc1QZOrZjZPJshuFBuIKK2yYs5rZgjM3KfCrk72y4CKL1b1W5C43IxRIXLr07zDoXy7XkRlwrxg9ol3Hqfe1lETZT66S2SCHp3qRNiniXTAs526CFNvo1UYTtkHtTByZgK44hbTcGKGlbpQh/M216d5osBLd5CRRJdYuTZ0TlukYQVSBy1tRKdLXJa52D6RBGXsQJNM1w668T5cEhuP73AOGAPtHyRX9NHzAxLR2k2NDeguFLJn89UVU7VxmiQUiX+fGkG2SAStS/RtCux4rW/uwlvUMvj3EM
+X-HE-Tag: 1757723609-760915
+X-HE-Meta: U2FsdGVkX1+b99klDwCYCYslcOnnKHkaERfBPEyshc74W91iocctLK93yApSAFBw3V5UXiNLMuKE8SUOrU6shZ2HFGmw1KMqy9uuvP/apfif0l8brsjO+xWas2ntZcBDu+DdsXG2yhKHIrbBATFCq+jRRF2hVl7Vbx1GXRD9chhAwj+1fIQzsQZCSciB8CuN8MyzGqqc5THffFIWbCfr2lX1Yo/U+KTPvh1FeImIxhD8Tcf0dw7l6I7NisGcj5I5e3vGa5a0T/dA7EoQ4GC8EmHj+dbSNK3wm4MomUFE395d+S7d8dKq7oid6klf9UhIk8wo4ksgrpjM+xWUMSeqjO5oHs0d1mE7BZcYO5gLjD9NDzx0pbNwsSixQcAGSj7NGwSyd8rj+cRe0f5IaJP7v8EIZr3H9xPKLUeKf47xgXzTZ63/pJGH1DB4klOsVEryT9Omc0hAqjASeipjupmQNV5Q90lS74rVfBlNNb2/VZ4gN8owgdvU+s3oZqQg4355OM5vDEvpAYWh58ojxd/SELB6N724yERKd3/woN5dHbInSLSxwmheNHfdy1pP3zVEJIIdWQ59G8GswiZQ75xvvb7NiwS68okfa0tWn5n+7l4IRNBE422uMt+bGFmNBEUMzsCPP41cYxH+QmZSfqeQH+S1taQbgt7P3JlTe74IeobBlqX95PXEc0JVYwcwsuGwkyBciLhEUzH+DNVT43xkuOfV864N9PeT7qUSjEdmKfaVMFFpJLW1E1BVNV6graqWIzwR13DIfcwbh7X1jNNVFsqekBDQ8g1X9lttl2VUbW9xSOIGHTLk1DcPdznTgf8f3A3t2lsqMkbIFSxQwe7yoxesjdZLD6w9m0W+u74AshmhKpB60p19ULkxnjRCIqovwEbsht/e1GEe7C9gZPqJOZHv3OxXqx9TY0z+9TN8qA7/sCcDBYNYeTLpJ8dslhqikjFHruY5kKZjLhe1q/z
+ eygEmaxG
+ I7V+oRCRq28frGDtoKLMAtcCi7GM/FCZwrmzpoL4LWWUTD5FWRMQwX9OXF7Mqb40a1pgSktbtqMwH3Ipq3VYjfL3Swa5CVynLlCrj1J9aytcItjkIWiwJBXekYDpY2omNnm9oCrt6xwlCsOFsFhXizFDStxoNFYzWTAEpFFxmi13anbvzsG8BSC4TR3zpDI2gFi8OxrKqrsQ+zs/ZthlDwyqb7FJOUGlzlG27sVWOdRezihpqfZlAzlZjeSVJmBoAnltIO3qu55w7/K2bvd7chtCcE56Wj9USpOkO40mF24C7Q9fHizI/QVkKbDUql1cs6nFukkNOHhOWxBXbMbp9bdTAlkCh0bM3PW4k/cbvwTnEDmlSawTryzYvOH2s/mLfKazZg0c2XB5roSI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,185 +104,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 12, 2025 at 12:22=E2=80=AFPM Lorenzo Stoakes
-<lorenzo.stoakes@oracle.com> wrote:
->
-> On Fri, Sep 12, 2025 at 07:53:22PM +0200, David Hildenbrand wrote:
-> > On 12.09.25 17:51, Lorenzo Stoakes wrote:
-> > > With all this stuff said, do we have an actual plan for what we inten=
-d to do
-> > > _now_?
+On Fri, Sep 12, 2025 at 05:07:59PM -0700, Alexei Starovoitov wrote:
+> On Fri, Sep 12, 2025 at 5:02 PM Shakeel Butt <shakeel.butt@linux.dev> wrote:
 > >
-> > Oh no, no I have to use my brain and it's Friday evening.
->
-> I apologise :)
->
-> >
+> > On Fri, Sep 12, 2025 at 02:59:08PM -0700, Alexei Starovoitov wrote:
+> > > On Fri, Sep 12, 2025 at 2:44 PM Shakeel Butt <shakeel.butt@linux.dev> wrote:
+> > > >
+> > > > On Fri, Sep 12, 2025 at 02:31:47PM -0700, Alexei Starovoitov wrote:
+> > > > > On Fri, Sep 12, 2025 at 2:29 PM Shakeel Butt <shakeel.butt@linux.dev> wrote:
+> > > > > >
+> > > > > > On Fri, Sep 12, 2025 at 02:24:26PM -0700, Alexei Starovoitov wrote:
+> > > > > > > On Fri, Sep 12, 2025 at 2:03 PM Suren Baghdasaryan <surenb@google.com> wrote:
+> > > > > > > >
+> > > > > > > > On Fri, Sep 12, 2025 at 12:27 PM Shakeel Butt <shakeel.butt@linux.dev> wrote:
+> > > > > > > > >
+> > > > > > > > > +Suren, Roman
+> > > > > > > > >
+> > > > > > > > > On Mon, Sep 08, 2025 at 06:00:06PM -0700, Alexei Starovoitov wrote:
+> > > > > > > > > > From: Alexei Starovoitov <ast@kernel.org>
+> > > > > > > > > >
+> > > > > > > > > > Since the combination of valid upper bits in slab->obj_exts with
+> > > > > > > > > > OBJEXTS_ALLOC_FAIL bit can never happen,
+> > > > > > > > > > use OBJEXTS_ALLOC_FAIL == (1ull << 0) as a magic sentinel
+> > > > > > > > > > instead of (1ull << 2) to free up bit 2.
+> > > > > > > > > >
+> > > > > > > > > > Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+> > > > > > > > >
+> > > > > > > > > Are we low on bits that we need to do this or is this good to have
+> > > > > > > > > optimization but not required?
+> > > > > > > >
+> > > > > > > > That's a good question. After this change MEMCG_DATA_OBJEXTS and
+> > > > > > > > OBJEXTS_ALLOC_FAIL will have the same value and they are used with the
+> > > > > > > > same field (page->memcg_data and slab->obj_exts are aliases). Even if
+> > > > > > > > page_memcg_data_flags can never be used for slab pages I think
+> > > > > > > > overlapping these bits is not a good idea and creates additional
+> > > > > > > > risks. Unless there is a good reason to do this I would advise against
+> > > > > > > > it.
+> > > > > > >
+> > > > > > > Completely disagree. You both missed the long discussion
+> > > > > > > during v4. The other alternative was to increase alignment
+> > > > > > > and waste memory. Saving the bit is obviously cleaner.
+> > > > > > > The next patch is using the saved bit.
+> > > > > >
+> > > > > > I will check out that discussion and it would be good to summarize that
+> > > > > > in the commit message.
+> > > > >
+> > > > > Disgaree. It's not a job of a small commit to summarize all options
+> > > > > that were discussed on the list. That's what the cover letter is for
+> > > > > and there there are links to all previous threads.
+> > > >
+> > > > Currently the commit message is only telling what the patch is doing and
+> > > > is missing the 'why' part and I think adding the 'why' part would make it
+> > > > better for future readers i.e. less effort to find why this is being
+> > > > done this way. (Anyways this is just a nit from me)
 > > >
-> > > As Nico has implemented a basic solution here that we all seem to agr=
-ee is not
-> > > what we want.
-> > >
-> > > Without needing special new hardware or major reworks, what would thi=
-s parameter
-> > > look like?
-> > >
-> > > What would the heuristics be? What about the eagerness scales?
-> > >
-> > > I'm but a simple kernel developer,
+> > > I think 'why' here is obvious. Free the bit to use it later.
+> > > From time to time people add a sentence like
+> > > "this bit will be used in the next patch",
+> > > but I never do this and sometimes remove it from other people's
+> > > commits, since "in the next patch" is plenty ambiguous and not helpful.
 > >
-> > :)
+> > Yes, the part about the freed bit being used in later patch was clear.
+> > The part about if we really need it was not obvious and if I understand
+> > the discussion at [1] (relevant text below), it was not required but
+> > good to have.
+> > ```
+> >         > I was going to say "add a new flag to enum objext_flags",
+> >         > but all lower 3 bits of slab->obj_exts pointer are already in use? oh...
+> >         >
+> >         > Maybe need a magic trick to add one more flag,
+> >         > like always align the size with 16?
+> >         >
+> >         > In practice that should not lead to increase in memory consumption
+> >         > anyway because most of the kmalloc-* sizes are already at least
+> >         > 16 bytes aligned.
 > >
-> > and interested in simple pragmatic stuff :)
-> > > do you have a plan right now David?
+> >         Yes. That's an option, but I think we can do better.
+> >         OBJEXTS_ALLOC_FAIL doesn't need to consume the bit.
+> > ```
 > >
-> > Ehm, if you ask me that way ...
+> > Anyways no objection from me but Harry had a followup request [2]:
+> > ```
+> >         This will work, but it would be helpful to add a comment clarifying that
+> >         when bit 0 is set with valid upper bits, it indicates
+> >         MEMCG_DATA_OBJEXTS, but when the upper bits are all zero, it indicates
+> >         OBJEXTS_ALLOC_FAIL.
 > >
-> > >
-> > > Maybe we can start with something simple like a rough percentage per =
-eagerness
-> > > entry that then gets scaled based on utilisation?
+> >         When someone looks at the code without checking history it might not
+> >         be obvious at first glance.
+> > ```
 > >
-> > ... I think we should probably:
-> >
-> > 1) Start with something very simple for mTHP that doesn't lock us into =
-any particular direction.
->
-> Yes.
->
-> >
-> > 2) Add an "eagerness" parameter with fixed scale and use that for mTHP =
-as well
->
-> Yes I think we're all pretty onboard with that it seems!
->
-> >
-> > 3) Improve that "eagerness" algorithm using a dynamic scale or #whateve=
-r
->
-> Right, I feel like we could start with some very simple linear thing here=
- and
-> later maybe refine it?
+> > I think the above requested comment would be really useful.
+> 
+> ... and that comment was added. pretty much verbatim copy paste
+> of the above. Don't you see it in the patch?
 
-I agree, something like 0,32,64,128,255,511 seem to map well, and is
-not too different from what im doing with the scaling by
-(HPAGE_PMD_ORDER - order).
+Haha it seems I am blind, yup it is there.
 
->
-> >
-> > 4) Solve world peace and world hunger
->
-> Yes! That would be pretty great ;)
-This should probably be a larger priority
->
-> >
-> > 5) Connect it all to memory pressure / reclaim / shrinker / heuristics =
-/ hw hotness / #whatever
->
-> I think these are TODOs :)
->
-> >
-> >
-> > I maintain my initial position that just using
-> >
-> > max_ptes_none =3D=3D 511 -> collapse mTHP always
-> > max_ptes_none !=3D 511 -> collapse mTHP only if we all PTEs are non-non=
-e/zero
-> >
-> > As a starting point is probably simple and best, and likely leaves room=
- for any
-> > changes later.
->
-> Yes.
->
-> >
-> >
-> > Of course, we could do what Nico is proposing here, as 1) and change it=
- all later.
->
-> Right.
->
-> But that does mean for mTHP we're limited to 256 (or 255 was it?) but I g=
-uess
-> given the 'creep' issue that's sensible.
+> 
+> > Suren is
+> > fixing the condition of VM_BUG_ON_PAGE() in slab_obj_exts(). With this
+> > patch, I think, that condition will need to be changed again.
+> 
+> That's orthogonal and I'm not convinced it's correct.
+> slab_obj_exts() is doing the right thing. afaict.
 
-I dont think thats much different to what david is trying to propose,
-given eagerness=3D9 would be 50%.
-at 10 or 511, no matter what, you will only ever collapse to the
-largest enabled order.
-The difference in my approach is that technically, with PMD disabled,
-and 511, you would still need 50% utilization to collapse, which is
-not ideal if you always want to collapse to some mTHP size even with 1
-page occupied. With davids solution this is solved by never allowing
-anything in between 255-511.
+Currently we have 
 
->
-> >
-> > It's just when it comes to documenting all that stuff in patch #15 that=
- I feel like
-> > "alright, we shouldn't be doing it longterm like that, so let's not mak=
-e anybody
-> > depend on any weird behavior here by over-domenting it".
-> >
-> > I mean
-> >
-> > "
-> > +To prevent "creeping" behavior where collapses continuously promote to=
- larger
-> > +orders, if max_ptes_none >=3D HPAGE_PMD_NR/2 (255 on 4K page size), it=
- is
-> > +capped to HPAGE_PMD_NR/2 - 1 for mTHP collapses. This is due to the fa=
-ct
-> > +that introducing more than half of the pages to be non-zero it will al=
-ways
-> > +satisfy the eligibility check on the next scan and the region will be =
-collapse.
-> > "
-> >
-> > Is just way, way to detailed.
-> >
-> > I would just say "The kernel might decide to use a more conservative ap=
-proach
-> > when collapsing smaller THPs" etc.
-> >
-> >
-> > Thoughts?
->
-> Well I've sort of reviewed oppositely there :) well at least that it need=
-s to be
-> a hell of a lot clearer (I find that comment really compressed and I just=
- don't
-> really understand it).
+VM_BUG_ON_PAGE(obj_exts && !(obj_exts & MEMCG_DATA_OBJEXTS))
 
-I think your review is still valid to improve the internal code
-comment. I think David is suggesting to not be so specific in the
-actual admin-guide docs as we move towards a more opaque tunable.
+but it should be (before your patch) something like:
 
->
-> I guess I didn't think about people reading that and relying on it, so ma=
-ybe we
-> could alternatively make that succinct.
->
-> But I think it'd be better to say something like "mTHP collapse cannot cu=
-rrently
-> correctly function with half or more of the PTE entries empty, so we cap =
-at just
-> below this level" in this case.
+VM_BUG_ON_PAGE(obj_exts && !(obj_exts & (MEMCG_DATA_OBJEXTS | OBJEXTS_ALLOC_FAIL)))
 
-Some middle ground might be the best answer, not too specific, but
-also allude to the interworking a little.
-
-Cheers,
--- Nico
->
-> >
-> > --
-> > Cheers
-> >
-> > David / dhildenb
-> >
->
-> Cheers, Lorenzo
->
-
+After your patch, hmmm, the previous one would be right again and the
+newer one will be the same as the previous due to aliasing. This patch
+doesn't need to touch that VM_BUG. Older kernels will need to move to
+the second condition though.
 
