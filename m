@@ -4,85 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 859ABCA101F
-	for <linux-mm@archiver.kernel.org>; Sat, 13 Sep 2025 03:04:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39DA9CAC587
+	for <linux-mm@archiver.kernel.org>; Sat, 13 Sep 2025 03:24:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 66D918E0002; Fri, 12 Sep 2025 23:04:58 -0400 (EDT)
+	id 3665C8E0003; Fri, 12 Sep 2025 23:24:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 61E578E0001; Fri, 12 Sep 2025 23:04:58 -0400 (EDT)
+	id 33E1D8E0001; Fri, 12 Sep 2025 23:24:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 533E98E0002; Fri, 12 Sep 2025 23:04:58 -0400 (EDT)
+	id 27A328E0003; Fri, 12 Sep 2025 23:24:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 45B518E0001
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 23:04:58 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CDF291409F2
-	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 03:04:57 +0000 (UTC)
-X-FDA: 83882735034.24.A7BEED0
-Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 4361C1A0005
-	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 03:04:53 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="FP/D4P48";
-	spf=pass (imf19.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 152528E0001
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 23:24:45 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8C2CA1A0A26
+	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 03:24:44 +0000 (UTC)
+X-FDA: 83882784888.09.19A054D
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 06651A0011
+	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 03:24:40 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=OE+Xq6IS;
+	spf=pass (imf15.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757732696;
+	s=arc-20220608; t=1757733883;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6oiFjqJ2Qm+dtXW2VEyHJx3EfGVEzVOxZqD8aCepxi8=;
-	b=a/Twt4E1SfG8UxZjSXdZHiayA4RfV0W7eHfYIPskkFR1mOgke0joSchZkpP8XKgDkmOR1r
-	itrB+H6Bn++UiorY04/Ztc31A158HJgQXETAZuszSOrsVmn0FsaglUuUvfOvVMBMev3IeK
-	PIohorwFfj3Ck1JaV+XufmAiUY/2+2c=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757732696; a=rsa-sha256;
+	bh=Q3I2VSj+5/i2iRYQrnjqI4t6HKmkDRL5/Des0wQPmt0=;
+	b=Md7Gju6N8lAGLKbAh1YWO+8lTOtIvMzAJPYpID1YHA+MepAWAkjcHCR18j8nCUzqZJH6bh
+	dd7tCWmCl9aw5St2kdJb+9tFvqecVM46e1qCT+7gKjQm0j4ABq/3wKPt38MyuTv2OCkSl+
+	I5PzKsXo/rZ3mlXO2rP/Qu4Q8914r84=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757733883; a=rsa-sha256;
 	cv=none;
-	b=sHirbh/rHlVXJv504l4lij8T3na/cnbRywB0b/yOGDB1fM3Tt86L3RE9EPGHL62yqLnzEU
-	4J2Tn9CAbMP3Mzwp4gMCBIfMpXoUa2SUaXAc7dq9fxLY5sx/XQGEvJ0rdcdqB12tXo/Rz7
-	/s7vQqfsieyW6g9h9phgJnN+r6tCSmI=
+	b=38odV3vu0OOeEqG6nY+lgxwl8n90wKSYC1yBrwNX73qUFQy0GWtWsCuPbqXYJx0y0C6RnR
+	CKjqHVyz1qbEjPbIHavCeTJtfhcZBUJhinkuOHSvWXYVhAb+BpWGJCaqlL80gyYDQP2o/2
+	22PJkahfVC/IfLulFc82VpIZPuVk7fQ=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="FP/D4P48";
-	spf=pass (imf19.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=OE+Xq6IS;
+	spf=pass (imf15.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1757732691; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=6oiFjqJ2Qm+dtXW2VEyHJx3EfGVEzVOxZqD8aCepxi8=;
-	b=FP/D4P48WXsidbDWSIUnfJdAwix+aYSESt+Lbau08KYFHLjNlEZslSFYNHiuCqm+EFGAtwQZD+vDSm0ybsdmJGU1Aq65Qq52vZ77KhDXO9dUZfSQUz07U0lNb5p70UNyUW7/aee2q4INaJsahJ5fYdTaMjQ4/xIr3zr+9qe8bPc=
-Received: from 30.134.50.220(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WnsSUij_1757732688 cluster:ay36)
+	t=1757733877; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=Q3I2VSj+5/i2iRYQrnjqI4t6HKmkDRL5/Des0wQPmt0=;
+	b=OE+Xq6ISQlEqNRRGoO9wxgrvv8nh0tK39sZOgKQlm06sDllm+qdFyZUsUCa5L+bzIGemELhrqKQDgcwjLd+AC9DCCXzxfhkz0yHiiIFD3gg6biJnK/2GLsG+lex0ebbvTTPbsi1lzP2D0piZKl+2cJTwpAgRG1hNuWYFzgsUDlg=
+Received: from 30.134.50.220(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wnsej1J_1757733876 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Sat, 13 Sep 2025 11:04:49 +0800
-Message-ID: <11629632-c652-460e-b617-3ec0c27969f5@linux.alibaba.com>
-Date: Sat, 13 Sep 2025 11:04:48 +0800
+          Sat, 13 Sep 2025 11:24:36 +0800
+Message-ID: <02798d6c-1ad3-4109-be3a-e09feb5e4eda@linux.alibaba.com>
+Date: Sat, 13 Sep 2025 11:24:35 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 1/2] mm: vmscan: remove folio_test_private() check in
  pageout()
-To: Matthew Wilcox <willy@infradead.org>
+To: Shakeel Butt <shakeel.butt@linux.dev>
 Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, david@redhat.com,
- mhocko@kernel.org, zhengqi.arch@bytedance.com, shakeel.butt@linux.dev,
- lorenzo.stoakes@oracle.com, hughd@google.com, linux-mm@kvack.org,
+ mhocko@kernel.org, zhengqi.arch@bytedance.com, lorenzo.stoakes@oracle.com,
+ hughd@google.com, willy@infradead.org, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org
 References: <cover.1757648598.git.baolin.wang@linux.alibaba.com>
  <b8c0fe71982aa1cafafd59d8e71064efaac16007.1757648598.git.baolin.wang@linux.alibaba.com>
- <aMQ6bW-OoMWMVEFF@casper.infradead.org>
+ <qe56xt2natnxnkht7wgknsb5nqjhinaaajomvvvgnfpwry2jih@hsj2w5zqj6wv>
 From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <aMQ6bW-OoMWMVEFF@casper.infradead.org>
+In-Reply-To: <qe56xt2natnxnkht7wgknsb5nqjhinaaajomvvvgnfpwry2jih@hsj2w5zqj6wv>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 4361C1A0005
-X-Stat-Signature: f55it5eqp5bnbi6ju5srop3x6mytq1gc
+X-Rspamd-Queue-Id: 06651A0011
+X-Stat-Signature: eowxskgry83ouurw9e147p41yf45i9wg
 X-Rspam-User: 
-X-HE-Tag: 1757732693-696142
-X-HE-Meta: U2FsdGVkX18m8Q+p/RURmBrkbGLLuEjJnfVkNm+dig57GjSOdPPZEkwj0r2oMkLVoftQ9DKRqKKgjyrcx9zi9gXKuSraiY3+pY4Z9r1znfaLcVm+TNPCm0iSEoO9I/53HWmiTdmymh3FCthMqtGJNBBoxyTp0Qo8Epmu5dSPNV7rnkozxGGqlvLgrqlbhJG2I3xgQg1dVh169g659S2DMSBQYUHNTgDzlq3K8BHJIT3B79JCPrCIKggSZhu4P4Nju6xLOz1BcpLXbMuczcipXpHH6+lmgq4x2MVR6gDlv6KT38dKfBprXLSuynn0xNt3drjlzRb8FZCrsE538pctSrbqPSiGB14rNDKJggx0L2/dRF8AHGOWeCCrxVMm82+TH0UF7Tfh9+uqrNrvW22RumV38CNQp1JlSl4xu8GlRBlrz1VKyia1xYPCsIdVGX40Fny3unikYq/XmSyE230wUF6P6lLV0k0o15TzF+Al+mixJmrMZEhd3F+5NTgYdbsOKvHV6yqDD20zve9JT2oBpuWs2wA7A3kDDas1s5sNbpYFc25BGDcImrCbBdwFtWXe6sgZlq/pt5Yo9ZEcJIGR4t84ecJr8oj4Jsfy46Gx72J+IukUeyZ3LvjD9NlVLtSwGoJAIVISkLVRwi4ruo0RzMyZ8wZy27nEPfTQu7ZZWvYPfXyJa29g5uFWVonSrxM7EkKVhQ071kz9CiZJxWRXjHno++dhEbXO7cvR2vdf7NPHQEi13Xbf+vElrNgirjKvQcHX8lAgGxjMccdGxUH//7enTW8UZnn/zGTGZb47nGPddVy+sfrRUPbQzPWeGWO+e+TffCft81v0YOqLNoF0hghqFUxJ3F0dGCKDvJIOl0gn+7a0nWCLfa8bLwS0w7kVsicvaBRfDi26QEIB+ch/9ZR9PSu9BW8qldQCFzyGiQht148G21J4FKjaOloKUpT8VHMknUmVJj7k4fV1MrX
- CeMRlCDQ
- 1BDdz5PhisaT4eo6AXLetChTX6ttqbQnaxl+bZmZXETt7N8Bjqjr5xg0xtC8s5a76N48Ah0vIyqFqqjkyQRTim9QJagx4mWYxKMGkrM/DIqt6PW6ZC5fvUW5JSY3v4A3c5GoVJpQ13AvDkDglW+OsDVU23mY53UyeY+tu/GuwGi8k7Nf6arHWnkIVMdaKStQ5DCmcAv9sSGvcAv27qPYCxAZxKzFNVKOcvxyK6He0ezcaQCF+Wgr/aZbXT9dKsBKJfCFTix9bieVuEGKNQ4NeIBbQgIaI+oq+kuDUReyMlmVCMBf10mT3Kdg/KY26uYn3NsTBFHz+zWGbnhh5BrWDl0xBr2+jnkvGMwHo8r5gBeabwvU=
+X-HE-Tag: 1757733880-487214
+X-HE-Meta: U2FsdGVkX1+69ThX7ZC5SgSRe6Isvk4FVeWwsaRqcAGPlA5A4l2dmyI0atsh1qrXDVK3gx0VEQufvxm7oPUFwWLXngsBNdTi0xASIldeCn7gMdCw0+qBbT+QMj0rS4yAga+nOvSjsQ5Y0nHoUsmvPGhAHW607dH127NE8MO3CKczwzreb6eoklbswZreaZrYcBmwnmO52N7yk8CKE/lKqtrMk9hL+9hWYd9+LXDspN5C6MV51IyaxNdByFvdKZjT0YqGBWqLvb+LQoKwJ0R0yRT5mdP6WfefDIvJWcqeNihMs991ZbnsNsDmLGqmvDpb897eeXF/TGMGaMdU05vt+/IpHViVoBla/WHdqUTfkGbYTRonAdEODFdQbHJWfLnIqEZ53dbwbxmSbMo+l/49RO1BdyrOvgKUMMkpjWRRKZoEKLmSE7dIz0iRZ10bFRvoATfG0cHWu52mo7bRuus0kYIRQv16ULEtRmDtebimXWZ4l1hbpLbPUPwsVB9D9VkGwUV4JXpxg8eoj8Depivt6aq0Bm5YomySfBTmORULKQxcKM5zELqaD/Ogmez9oKsjsI3aDtD7mCjXYIH1K7aEbqRxAePcjg6/soJcUKAoAfD2kgM/ie9BlLJFUSIqbpMuXERCQwZ+0Yl6i+EBykC+rgclTitccACl39JdQkp5eVlo3dhBr8ewjRuw63zBap935GqP2pd3PmjAiLCDDwtVS4fAG+OkDGyjzjZ710P7VFrXn+fuLEIQcNmdncvuNTgKbpbUboix9v1HZBGsxBwoEoDtqeLofmgll6NGbA0/RbiR2l0yZPgFJYTmRbmkRofo4mYLPArGp5W9MU9A7YpoImYJbIlc4nOxI8QCVU5moulQ2LBv6MfLLoxKuc69etoqE3nITHjpUBDTxvLMgaD8O48XMGRzpx0OMeo2JXKUqPCijE2tivxTnLY4OETnS/z5L1Tlxm9G2Py5hJ+PubC
+ 0J9JrlQ/
+ a9pZwJmb24L1VYT5+HyNpXLs8qJNzp/WrwrTMOOHKhMp7XDtZVAYp/VXuFeBt9HEpfZOQzYFQSUXY+3PVbhCo8v8gtZxlx8pNKn2NsywUaMDBlxXFLYczl+90n3hiM0OA99qOBQlxEDhDaL6pv7d3eQcSDR8UGKmiq5Gew9XxT01OYBTIWQwOs7j3PbuMOl3YC8znwuB2URH/gvgQytwSLo6SEQ/er7KFPTjuBI1XFwLARERIvjteJ5CnUcrkRoJuSCbXcw0jiz0lOtb98lFtNQgKSZYjQJMygsnrwvAOkqPhGFrtDR6nfROidg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,8 +93,23 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2025/9/12 23:21, Matthew Wilcox wrote:
+On 2025/9/13 00:13, Shakeel Butt wrote:
 > On Fri, Sep 12, 2025 at 11:45:07AM +0800, Baolin Wang wrote:
+>> Currently, we no longer attempt to write back filesystem folios in pageout(),
+>> and only tmpfs/shmem folios and anonymous swapcache folios can be written back.
+>> Moreover, tmpfs/shmem and swapcache folios do not use the PG_private flag,
+>> which means no fs-private private data is used. Therefore, we can remove the
+>> redundant folio_test_private() checks and related buffer_head release logic.
+>>
+>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>> ---
+>>   mm/vmscan.c | 16 +---------------
+>>   1 file changed, 1 insertion(+), 15 deletions(-)
+>>
+>> diff --git a/mm/vmscan.c b/mm/vmscan.c
+>> index f1fc36729ddd..8056fccb9cc4 100644
+>> --- a/mm/vmscan.c
+>> +++ b/mm/vmscan.c
 >> @@ -697,22 +697,8 @@ static pageout_t pageout(struct folio *folio, struct address_space *mapping,
 >>   	 * swap_backing_dev_info is bust: it doesn't reflect the
 >>   	 * congestion state of the swapdevs.  Easy to fix, if needed.
@@ -102,26 +117,59 @@ On 2025/9/12 23:21, Matthew Wilcox wrote:
 >> -	if (!is_page_cache_freeable(folio))
 >> +	if (!is_page_cache_freeable(folio) || !mapping)
 >>   		return PAGE_KEEP;
-> 
-> I feel like we need to keep the comment (assuming it's still true ...
-> which it probably is, although there's nobody who would think to update
-> this comment if it became no longer true).  I would certainly wonder why
-> we can have this !mapping test.
-
-I think the !mapping check is still needed here because the tmpfs/shmem 
-folios truncation might race with folio reclamation, see shmem_undo_range().
-
-Additionally, the comments here are no longer related to tmpfs/shmem and 
-swapcache folios, so I still prefer to remove them.
-
+>> -	if (!mapping) {
 >> -		/*
 >> -		 * Some data journaling orphaned folios can have
 >> -		 * folio->mapping == NULL while being dirty with clean buffers.
 >> -		 */
 > 
-> I approve of this simplification, and I think there's more work to be
-> done in this area.  Thanks for doing it.
+> Can this case not happen anymore and try_to_free_buffers is not needed?
 
-Thanks for taking a look. Yes, I will continue to take a closer look at 
-the further work here.
+For dirty file folios, pageout() will return PAGE_KEEP and put them back 
+on the LRU list. So even if mapping = NULL, background workers for 
+writeback will continue to handle them, rather than in shrink_folio_list().
+
+For clean file folios, the !mapping case will be be handled later in 
+shrink_folio_list(), please see the following comments:
+
+/*
+  * If the folio has buffers, try to free the buffer
+  * mappings associated with this folio. If we succeed
+  * we try to free the folio as well.
+  *
+  * We do this even if the folio is dirty.
+  * filemap_release_folio() does not perform I/O, but it
+  * is possible for a folio to have the dirty flag set,
+  * but it is actually clean (all its buffers are clean).
+  * This happens if the buffers were written out directly,
+  * with submit_bh(). ext3 will do this, as well as
+  * the blockdev mapping.  filemap_release_folio() will
+  * discover that cleanness and will drop the buffers
+  * and mark the folio clean - it can be freed.
+  *
+  * Rarely, folios can have buffers and no ->mapping.
+  * These are the folios which were not successfully
+  * invalidated in truncate_cleanup_folio().  We try to
+  * drop those buffers here and if that worked, and the
+  * folio is no longer mapped into process address space
+  * (refcount == 1) it can be freed.  Otherwise, leave
+  * the folio on the LRU so it is swappable.
+  */
+
+>> -		if (folio_test_private(folio)) {
+>> -			if (try_to_free_buffers(folio)) {
+>> -				folio_clear_dirty(folio);
+>> -				pr_info("%s: orphaned folio\n", __func__);
+>> -				return PAGE_CLEAN;
+>> -			}
+>> -		}
+>> -		return PAGE_KEEP;
+>> -	}
+>>   
+>>   	if (!shmem_mapping(mapping) && !folio_test_anon(folio))
+>>   		return PAGE_ACTIVATE;
+>> -- 
+>> 2.43.7
+>>
+
 
