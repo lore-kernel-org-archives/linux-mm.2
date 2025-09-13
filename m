@@ -4,103 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77A54CA101F
-	for <linux-mm@archiver.kernel.org>; Sat, 13 Sep 2025 00:10:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC0C3CAC582
+	for <linux-mm@archiver.kernel.org>; Sat, 13 Sep 2025 00:12:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D266A6B0008; Fri, 12 Sep 2025 20:10:39 -0400 (EDT)
+	id 47E288E000A; Fri, 12 Sep 2025 20:12:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD6906B000C; Fri, 12 Sep 2025 20:10:39 -0400 (EDT)
+	id 429428E0001; Fri, 12 Sep 2025 20:12:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC6236B000D; Fri, 12 Sep 2025 20:10:39 -0400 (EDT)
+	id 33D7F8E000A; Fri, 12 Sep 2025 20:12:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A989D6B0008
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 20:10:39 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5A614C078F
-	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 00:10:39 +0000 (UTC)
-X-FDA: 83882295798.11.597CE85
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 6125240009
-	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 00:10:37 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=TKl4rvIt;
-	spf=pass (imf27.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2115F8E0001
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 20:12:04 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DFB2858DAB
+	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 00:12:03 +0000 (UTC)
+X-FDA: 83882299326.06.93DCD10
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	by imf18.hostedemail.com (Postfix) with ESMTP id C70071C0009
+	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 00:12:01 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=GOIqqNsV;
+	spf=pass (imf18.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757722237;
+	s=arc-20220608; t=1757722321;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gh4qNOq/fXdAmcpuz4VCDjOq3KMlvlbBCKcrRvBJTss=;
-	b=PB9rdsnDGkGMpmzRBM3chn/RMm2bi8VwzT/sNntYH7OF6ru5rQz+TgoLyF7jQIekOHl8aU
-	rr8IZs1NUe6lL+cRQyDlbhdxv8efPWFgu+Xp8JdOEZzw/MndkIvdnxcuSeUqtWE2EX9uyd
-	IWQKinhIOpk8JGNaHS04pva33nJn0hk=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=TKl4rvIt;
-	spf=pass (imf27.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757722237; a=rsa-sha256;
+	bh=cfDQQUU5oGkiiYtYM/v8xrRfjVH+9wKoO55lVwiMx/A=;
+	b=CVHkVhIGwBeujIUL+iZ9R1Y90MwYp+h7NDi4Hk09LfeXlRa3ZZdf9K3GQh1qBju4xez1Cx
+	/7o+SQIraLKefLUgJZeZi6KaiCuHpkVuiZz1OpKm1x/WwNGg5QoKNAwgh4ld0n5NekTRmO
+	ZPr1ON50sDehqURRF7uxWj+IewQ2O7M=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757722321; a=rsa-sha256;
 	cv=none;
-	b=uKBOfa1fntFaL7R6TV/2uCkELzo3W/6NhVW0yKz+wCNz1hg85AynR9MceX3edOiRcOvpcD
-	K2juTK/lHfQvgbwRHwcKbYfacthDiFVbqOs8wYbcQcTLUZIPRVlZMcEcYa/+7s4aiIiWNf
-	1e8EE3A4eyo7OUDqkQl3IfP6WmeWJVQ=
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-b0415e03e25so322076366b.0
-        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 17:10:37 -0700 (PDT)
+	b=2psIi1d+jV1hFPk4pYv32giBrF0SFwocUbOBlfHe/hqF7ztTfYWT8pGfJduLEz+QvhBAdJ
+	YfxdQGAji9p5cf+2AYI8/er+4NSS2r/nS5yTD3D2pPJcEsvuL2UwjtLuogU5LJakgCrLP+
+	rp4IJhXWhwPcXqEDweYOgC9gSMD12q8=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=GOIqqNsV;
+	spf=pass (imf18.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b0787fc3008so350864766b.3
+        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 17:12:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757722236; x=1758327036; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1757722320; x=1758327120; darn=kvack.org;
         h=user-agent:in-reply-to:content-disposition:mime-version:references
          :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=gh4qNOq/fXdAmcpuz4VCDjOq3KMlvlbBCKcrRvBJTss=;
-        b=TKl4rvItyO6xCYIpeuHTfIVy4qcTG9WiOr8xXC+acVFBYLvKvVpYsevxvGxjfMJOc9
-         9ZWSUkht3rTDFz35yojr0cN+yRFDmQGhfG31IIkXN5/3nsRhp7CE+hHirW2WyZztXyBZ
-         TXv7mxhvg0JBmCWMS2oGleS3k0iSqvJ+w82rcIDkiwUkvxm6EX73L0RAQL5sXbcR77Xc
-         vG4FPP1BzLv1KKgfLeXkX6Xh65uZt26JDx1q1K+rny8dh0X8+K5zS5de9kC4Pt9frsi/
-         zDNtxcXYueTOBCgEc8jBj2skxsI/CIUBVnQkmyG1JLriZV4sXth+TX9nPx0o3XKaHWKx
-         e7jQ==
+        bh=cfDQQUU5oGkiiYtYM/v8xrRfjVH+9wKoO55lVwiMx/A=;
+        b=GOIqqNsVXXkMZ9ZkZdHZ9n+RlAqEzlKf0tFV1M6NlZP4b2jv6JsQe8SKoGs5ZxFTDQ
+         fWPTzoqkzCwNQgrcGPeI0dsm36U1r6OeOrIeY2xtqJsNKjEByJXf1Bp91lTQRZCMUpC1
+         KeoxxsYCE+dT0DWRnurFm4D2T+RtVfp+250I3vyNoWuc6d4K26q0nm6qEPCCCAZl7ZDo
+         mtWjKrGo4W7FhAur5JlcEalmYYoiYlVrou3a5fplzRgm1PGUr+NZfgdssOtZtk+ujGY8
+         QJpWIbbmxjjE+5MX8IqBiCinhBvWTJF+KtGirZPgeZy+H5VwL4EREBW1EK4rlYzUHI+f
+         9puw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757722236; x=1758327036;
+        d=1e100.net; s=20230601; t=1757722320; x=1758327120;
         h=user-agent:in-reply-to:content-disposition:mime-version:references
          :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=gh4qNOq/fXdAmcpuz4VCDjOq3KMlvlbBCKcrRvBJTss=;
-        b=ODz0m96CWtMoYq1pb8TfhqLd7C0Eg/DEYiclEgZfABxAxom4n1WdrYKvKj025rThwv
-         GnKf6vc+/FZ5m1d4rDMlBsByF+RSEOmx1y5EX7ptq63vvz3OlcxIGHbl8lxnJLDykBQM
-         MUzhanLGH763+Fx9QSdqsbhBnDnOKh5XfDuLQ4bt9SK7/FkUfNEWUCLWN+H2NUnzZ71H
-         CkuvVveadCpeXNjAfqecXQkiA1Q3epyjci8sWImMv/oSVcN6tPoRHlTqB9FtMjhjcNk9
-         /QEqMBn52wXAhWAlShRXSWWh7yvJ6wSqxchFdMZ7/cJunOFMRLAAsrylmCARR6+zxQtl
-         ggKw==
-X-Forwarded-Encrypted: i=1; AJvYcCUFgJuoUApL75mmSGdQHLeEK4qr7A/gWiDFq+b6pMG5T9PjkfL1ZqGMuzvSOoUZlVd8yyBmRtsekg==@kvack.org
-X-Gm-Message-State: AOJu0YxStJdDAWb5P+zr5gR1RXwoXVcBYrYKTatfMm2NxdQM57RDefow
-	ND6tq+UJQ6LeY7Y3B+id89/qojs1jchmqcVM/RFGjCHEr7nahpxobRsu
-X-Gm-Gg: ASbGncv0Zi7j3mNSM0eOjx21muGR36cO19tJTxkMMjlBdPloFE3dXlYMGTVi/vY/hQB
-	eggHMnKQG7TxIOJlv2WeV+/guI0EsdBPo/zrRhFRFOQmVz4tHOk/wIhRX5K46BRIE3TM7v7LZW5
-	geViRYWR7M7Gxz3pjFl8dIQKbuo9pzj/uJ7h4PnuHPlW2Gf2XcLupP/B+25nVkL/g/D5d0UTvqF
-	IzCz8gRGUsLBiOFNZy1mmjV9qc74xYH2UvqvM2MiuOPXF7awrtbLboX+RYvrKS0N4niu1rO8brW
-	rcaAf/XDtegqAmtHObA+8ZeCIb2THA+o/Zo+db7byfHBTSpr4M9fJsposaEjeINQ2+2iETX/yQa
-	SD85atTQLwGqHc+HrvpRw5yw/og==
-X-Google-Smtp-Source: AGHT+IF+IFElhDrfYVuV3NnJDLLLUGoVTpNF/5sEZ66XO8Fi157c0djNevbADhBEv0DTmFyy6cy2HQ==
-X-Received: by 2002:a17:907:9720:b0:b04:3c00:b934 with SMTP id a640c23a62f3a-b07c35c2876mr455826966b.21.1757722235717;
-        Fri, 12 Sep 2025 17:10:35 -0700 (PDT)
+        bh=cfDQQUU5oGkiiYtYM/v8xrRfjVH+9wKoO55lVwiMx/A=;
+        b=cwAnKImCO+aiSb5D0PoTco+BgPZwaIUUvRwzq/Zcp+ibUWFtCrg+l8ggt4wGanRDWo
+         W/JzH0DgVvW4Lep1ERyWMZq1BelfBy+nez3hPdpNAAr1Y8zghEuIxcR9ah2yypktx81P
+         pVlTlu280V31TxePxeSeEdFQdXiAFw6TdaBOCWx2tt2neNFEO8scDJxCnekXCbrZG3GK
+         wPzhm4KE++FbpwOotXSALuGbTm2DRjmKbAkohC2808ZSpjoo5KTAdfrk4slaE41wCDaF
+         Iw2jI0+7oSMYNf59X34NEm7eTTXQYYBu4uDFXCEgr4oUAeR4s9jCH9ZdA17BbaMpVBcG
+         BM3g==
+X-Forwarded-Encrypted: i=1; AJvYcCUKJcL4vgcdTAIEodAlnnJLIvkjK8Q87vsrXADqhFUyzwK/Klh9tgpiDhJg8zFXxwhRCLqQY8svcw==@kvack.org
+X-Gm-Message-State: AOJu0YzsCmTX9UL/klt4OV7C8DKLNNVIqu6WZ+fXhiDW6QWx4t4PXzCQ
+	/vuxycw2SxV2yWrys0h85jrriv7iy0rZQDrUSj9vAHK3fzIndsCTfFkh
+X-Gm-Gg: ASbGncuJ5vFfE59iv/1H5rjgQLMNo31PwE4A19+g9v5+U5qcsWpg3ehuDhX7Ner/SSG
+	bMj/i3oxqLMcdr+N2SbSHUWSwvJ+NMnqE3WOkkCqNPHrq0s8Pa1PP8kpL5V8Cu/EMuqnoghPpfW
+	N4pv4l8erM3oyzTJlHP2uwCEA8BcS+0T1JDQqSzhC9k4Nw6ki+8vspnIjrIL/EJNxGoaS687PJC
+	eJYcAoUJujQgijX7GLauEenGloD8ohmecIai5jf7lpz9C+GiywbbfBiFbuVF7VDxv1XvRq4bz2l
+	eoEzxcQ0TWhCzwIR8hInC/P/0fQTd5Wm5hEO46Pv4dKkxSZA0LIVI9y7lSu7cjwj7faqaSN+G5C
+	YDcgLatEl/cb9rBsZ5TSYSTabWe6KCaK4Dm5N0CUDHAGfurM=
+X-Google-Smtp-Source: AGHT+IHlHnsEFUmYdE6yH8DNPlzEOR+XxDNHd+uRFCixTF9DbS1ax3cJx7cENRih7UqzJPRXfnqyBQ==
+X-Received: by 2002:a17:906:4788:b0:b04:b435:fc6b with SMTP id a640c23a62f3a-b07c3a79fefmr484465466b.60.1757722320110;
+        Fri, 12 Sep 2025 17:12:00 -0700 (PDT)
 Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b07b30da4basm475667266b.8.2025.09.12.17.10.35
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b07bf0011d7sm331689666b.91.2025.09.12.17.11.59
         (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 12 Sep 2025 17:10:35 -0700 (PDT)
-Date: Sat, 13 Sep 2025 00:10:34 +0000
+        Fri, 12 Sep 2025 17:11:59 -0700 (PDT)
+Date: Sat, 13 Sep 2025 00:11:59 +0000
 From: Wei Yang <richard.weiyang@gmail.com>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>,
-	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
+To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+Cc: Zi Yan <ziy@nvidia.com>, Wei Yang <richard.weiyang@gmail.com>,
 	akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
 	mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org,
 	wangkefeng.wang@huawei.com, linux-mm@kvack.org,
 	Oscar Salvador <osalvador@suse.de>
 Subject: Re: [PATCH] mm/compaction: fix low_pfn advance on isolating hugetlb
-Message-ID: <20250913001034.wt3iw4nyrmldblhg@master>
+Message-ID: <20250913001159.2oamn2veekw2f6li@master>
 Reply-To: Wei Yang <richard.weiyang@gmail.com>
 References: <20250910092240.3981-1-richard.weiyang@gmail.com>
  <20250911012521.4p7kmxv46kwz5fz5@master>
@@ -110,19 +109,20 @@ References: <20250910092240.3981-1-richard.weiyang@gmail.com>
  <aMMGbPX9uUj7TfoG@fedora>
  <20250912010721.zd67xbfdava2u26e@master>
  <ED7450E4-51F9-4749-A74E-C3AE8927E577@nvidia.com>
+ <aMRWuS-Ore7jgna3@fedora>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ED7450E4-51F9-4749-A74E-C3AE8927E577@nvidia.com>
+In-Reply-To: <aMRWuS-Ore7jgna3@fedora>
 User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Queue-Id: 6125240009
-X-Stat-Signature: mzx3hmq389d5g6hdm3e615pow9r9yxob
+X-Stat-Signature: ixd3z4wge3qhgmaff3b8yjtrxxukunyh
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1757722237-979488
-X-HE-Meta: U2FsdGVkX19xOHaOvBVgsAeSLjZRXYx2AFaAtiWBMG4vYcaSenBHVBPLT23gRHRmwa+eE/b1g42KwgCSEbPMhGLZkarKuJrjt1/eDeQxU3J/2CdjPzInpB8KtfUtBUbJZh4zRSCrNJ+J7klVgxfuY3rsNnIeTR2knEJaevtg8JG5StqgNs45l5BnjMoNAXxz5j9XA8Pr+oQX2qxtxS2wCcGPp61OTxTIYSkkDlL9jwXMySJZW6HnajFzkXSXNsCv8hIrjUR5J2kinD8PWW88NedRtoT5t6r7l9nlSIJ8Zdu4+Q3oLtYwKuIeqr6SmgtBEwdESEY9eEXV8FXSHHjBmXCYl1OoYnaVkeFjXOH/6/y2FmYwLTB1NFN0q2XAjQpbJCTdFN3ZWzdaeqBETdp2TE+MZhvtzcwxRVzqvvoALfOCS/doA5u8R4q6i/g/GVZb987C5YDOnaPZmTaTzWdOioF+cb1tSCJ+BenN0yZrO0jRatSDQ46tlGJDetQSrGTm9Ggljldtcpj2CN/Rk0fElZbqOLXKA0GcKC+uEiyLHs4Ds66Cbzb3y781ksLqOHrk35gyomu44nHaNz31jDD4yLKHF80M5MQvokglLdChm8hA8yGN+6BqE3XA3rHdKDfbCHt2cbgScy+OuyQSq2S7DOldYwHjzKSSKBlw3sks09VoVyA5zgHtL79MCwHoqodBH6WDzxoXQncRouvgM+oyXTUFE4XmLWUWvhD/J6yjde/HG9Haj2PmueKqKVwUlUy6UFwPS5zYS+qb7YAns03qOCINEdyh+1ymjZIJsm5FqvkQmDtSS1An0c5CsTscP/pDin9IPVNnMC/CyTnU++qOHZubKirYhWWf4i1qAN/bHp4AxdgeWT/9WhqdP/ctgyw+eOvUJGexCjhAeuEye88q0ddX1AacRLrDGNMazmQahddWRustijkmTjp6JyLbV8TzsIe7EgtKMSjWiN3LQAQ
- Q8AyhzcR
- 15XnxYHpY0BaGVArz0I1+01PGscjwq9OicVEwONDricYBiyhsr62gNHhK47ENPBwfLdCaio3zTC9w/nCNTmciUbIKL3kIBWuBeSTqJjmoo0sPsqRUz9xyPTf2+ys67RMCWGpmAY60boOj7eCU8W19t5QOdOd6mEjXeRCYLQ09ajf0VdmD5hRO00j5v4dJmUdqm4bcYALIURtmxMEW/FpRwf6B93ibVGUugB6OSN1++8UtOPbEUjfDbR5f0Vtg7dxAN6DHAa3UcE55k62NNEQb4RnDfuYMZRVFme4FshogiqRcCkpgok3P+HgZ0Mr8kqp2YR8Ve9aH0U6ySqiEvbSyiz9VzjMbebCbt/WDywnlAGBXVnViSFg+bg3ih3hjCBW4Ma/FgR26a0zg2LjKsTSmHgz/eQ/RlukxW+W7jV7zAMZhqVfIitD6whtZhHCdehu58AnFUA9jxjjGvR7Wcjrs4eGVH+9D1EBOuK8PwSar/hp7De0iDjpSqKAeuNx1Onr4scl62pnSYqgRzg59vUeue4XKxJ5bp/TE+PH0hw307Z828hvd3MlfwUJ1WF8SYHU8/Ee23dhb3BZFVIpm9jv5mZgi22+M/uyLoKedsmF0O0Wv+PhDU0qwgsBYgDa3R2z/Y95L/h0rSrPueuG560m26bCfExEg+kzxvDNWFyeuAb065ljPYJylVIH1e3BSGoQcUPyePmAyrJL1WVXg4ieo2Tp64NWvc6KtWUgH2YhdqUY6SXcSNg+wzmOvgWGuz1tRQoOJ
+X-Rspamd-Queue-Id: C70071C0009
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1757722321-865711
+X-HE-Meta: U2FsdGVkX1/vUqFoWqhrCJcydgSbQnLDeavqyfRxMW27UJAu+Jba3avELw5PNIpUA3CCKbhy5Scgq/5wR+q0WFWxOoEQJCUZ8Efb85u8gErFikwWbHcfDXxadbs+u8pwTdWEsvpVQjF8GbFBvUyrz5bUCuPzvhPqdvYcc6QgZI9rkr0VPLHHEgkOet3iSsCLEP62dsTXilpJ0d2PkeBKp3mp5bHo60qB+O1BkYgkn0Hi7bJIHPsrBautFaKE1Gyv7TM/U2r2ELJfzgQwVKZYXSEqiz4q+7FbvAFn7BVOYUPcwIWWeOaE/inEeJieFsEKzQD0jEvMtiLnGNoGFTaZzF0yLtm6aEIFn7QSCVwaVBgamNDKQc2S28LuhmQ60DPmHEBwlSnnx8CehvhqgVcijq1kqRMH8YoyZK6yIrvBQTbU0n9QjL0Yvj6G2YivH/54bForUtZrFJlk6gCSCwxvtNGXGx+YJEBHkqlKNRYYtwSqUZQy6yRwpUIoqiL4yebvAipetdzWj7/7KQucR9vdMItvhvmj3S6/KfEB/GLJht05pzGxMAKntqm+rFlTuJ9aYPP5NeOCoQmTXtEq5OcbP0KtGmyZjRZPL3AQiXJYx8pCuUy71PlMUBcKEc8d5Bz1JpJClEz0Z05D/w5ZjH8zjjMovp5Xq4f/IApVwawskqnGHFWUIbxDMYkzi7ggfXg+JfKEk65BJYLFOjTUjx/zN2qwfNUjz8ezQ3BK9mcegecaZ8IsIDD/U0LTzThwu6owP++Gm7vV4vIMj1RxZOpV3DJ/c95omC1REiUH1FeiHN1qlPVJ+zHkZQJ18UJJpstZJaiykR0T3YcU1DOuAp20yPA4wp4nwu3DO2+xClXcxFoYAnovG+7n9dEoegPhsEy8ZKd4JOi4PzfujFesE2NOXLjqWYrQf6felVXnlcuB6202fmh1S2k2CP+HbbQE1r34mFK9YrqAy/4Nf0Fcyox
+ GhVqEKG7
+ GAMQDjyOgbPKdUs6SNrk4DkyCmbUJfF2eHaPbE+Ddem7NOaAhnP12778BoZUwW7CTsAPwaYDs5fm4gH//tGGZK1zeRMysZVmXnt2qHU33YE6JByU1wp8qNlRILcmaLDRdFvcFSoMkKiqffCQvvWrx2XwP+XFlZXBrMc1QXLzRO+V8Wo5t9vayy9Uew64tRJXe/2K1fV9LnM3KNpHmAHBDLJCjB2g5fs3YvvPOrvmdQcb0zbyfcNrYDAU0mwK2+0rlK+XwbUgZ9MYLzkh2HyNbhrE4Zn8PHkoq/BWoPo5tND8UAC7OWcDPPGmB6cQ87K5zFQfPnL8BOyzr0q0yggw58158Zft02hLTZ6tlLtekJS/cN1cvmuKxJIpfSyUqcUzbN3Pc1ArjJZgre+wcusaXSabn6jiUrmi8DR3AUGky8Af2/zM8keAoeeH70xf/y9BnjkcdHAQ+MDpDjDhtSak0XvqSQvNtpq2PAWeyFrfjEg1/WCFzKeHM8PgnXncweBkfgevBjk3k9Dr8j+Un9qPHk9yyGx/TFsDfJfNoxtcCkIEQVnnMevsdiMlJcIZ4DJ31PfljComT10G/QBNw9jfLWG/2D+7i0krAY3TI9EoNKpwxoc5QMBVup8WqZT0EBKjayK0nkfDrsOf58VS2ySSuByN8lqb9bS+gcMqPBqdG3VFLsBRWkdktAzujmPhdk6w/1jF3A7EVfG7lPqjAk17x41glC1zLp6IVHyp3pFgpOU9uMzSYCLKnk5NtK1CDIHmhGaPR
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,68 +131,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 11, 2025 at 09:29:39PM -0400, Zi Yan wrote:
+On Fri, Sep 12, 2025 at 10:22:01AM -0700, Vishal Moola (Oracle) wrote:
 [...]
->>>
->>> For compound pages, we will always have tail pfn < head pfn, so we should
->>> always find the head page first.
->>>
->>
->> I think you want to say tail pfn > head pfn?
->>
->>> If you did find a case where we somehow encounter a tail page here, I'd
->>> love to see it. And then you'd also want to make sure the other compaction
->>> trackers are appropriately accounted for.
->>
->> I may not follow you here, below is the call flow for
->> isolate_migratepages_block() invoked during __alloc_contig_pages().
->>
->> __alloc_contig_pages(nr_pages, ..);
->>     start = ALIGN(zone->zone_start_pfn, nr_pages);
->>     alloc_contig_range_noprof(start, ..);
->>         __alloc_contig_migrate_range(.., start, ..);
->>             pfn = start;
->>             isolate_migratepages_range(.., pfn, ..);
->>                 isolate_migratepages_block(.., pfn, ..);
->>                     page = pfn_to_page(pfn);
->>     start += nr_pages;
->>
->> In the loop of __alloc_contig_pages(), it iterate on each nr_pages range. And
->> nr_pages seems could be any positive number, so it looks the first pfn checked
->> by isolate_migratepages_block() could be not aligned with page order or less
->> than MAX_PAGE_ORDER. This mean it could be a tail page per my understanding.
->>
->> Maybe I missed some point here?
+>> >>>>>>> ---
+>> >>>>>>> mm/compaction.c | 2 +-
+>> >>>>>>> 1 file changed, 1 insertion(+), 1 deletion(-)
+>> >>>>>>>
+>> >>>>>>> diff --git a/mm/compaction.c b/mm/compaction.c
+>> >>>>>>> index bf021b31c7ec..1e8f8eca318c 100644
+>> >>>>>>> --- a/mm/compaction.c
+>> >>>>>>> +++ b/mm/compaction.c
+>> >>>>>>> @@ -989,7 +989,7 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
+>> >>>>>>> 				 * Hugepage was successfully isolated and placed
+>> >>>>>>> 				 * on the cc->migratepages list.
+>> >>>>>>> 				 */
+>> >>>>>>> -				low_pfn += folio_nr_pages(folio) - 1;
+>> >>>>>>> +				low_pfn += folio_nr_pages(folio) - folio_page_idx(folio, page) - 1;
+>> >>>>>>
+>> >>>>>> One question is why we advance compound_nr() in original version.
+>> >>>>>>
+>> >>>>>> Yes, there are several places advancing compound_nr(), but it seems to iterate
+>> >>>>>> on the same large page and do the same thing and advance 1 again.
+>> >>>>>>
+>> >>>>>> Not sure which part story I missed.
+>> >>>>>
+>> >>>>> isolate_migratepages_block() starts from the beginning of a pageblock.
+>> >>>>> How likely the code hit in the middle of a hugetlb?
+>> >>>>>
+>> >>>>
+>> >>>> OK, this is a kind of optimization based on the knowledge it is not likely to
+>> >>>> be a tail page?
+>> >>>
+>> >>> No, it might be that most of the time page is the head, or people assume so.
+>> >>
+>> >> For compound pages, we will always have tail pfn < head pfn, so we should
+>> >> always find the head page first.
+>> >>
+>> >
+>> > I think you want to say tail pfn > head pfn?
+>> >
+>> >> If you did find a case where we somehow encounter a tail page here, I'd
+>> >> love to see it. And then you'd also want to make sure the other compaction
+>> >> trackers are appropriately accounted for.
+>> >
+>> > I may not follow you here, below is the call flow for
+>> > isolate_migratepages_block() invoked during __alloc_contig_pages().
+>> >
+>> > __alloc_contig_pages(nr_pages, ..);
+>> >     start = ALIGN(zone->zone_start_pfn, nr_pages);
+>> >     alloc_contig_range_noprof(start, ..);
+>> >         __alloc_contig_migrate_range(.., start, ..);
+>> >             pfn = start;
+>> >             isolate_migratepages_range(.., pfn, ..);
+>> >                 isolate_migratepages_block(.., pfn, ..);
+>> >                     page = pfn_to_page(pfn);
+>> >     start += nr_pages;
+>> >
+>> > In the loop of __alloc_contig_pages(), it iterate on each nr_pages range. And
+>> > nr_pages seems could be any positive number, so it looks the first pfn checked
+>> > by isolate_migratepages_block() could be not aligned with page order or less
+>> > than MAX_PAGE_ORDER. This mean it could be a tail page per my understanding.
+>> >
+>> > Maybe I missed some point here?
 >
->You are right.
+>That looks right, I missed the comment:
+>        /* Scan block by block. First and last block may be incomplete */
 >
->But nr_pages cannot be any positive number, since ALIGN only accepts
->power of 2 as the alignment. So alloc_contig_pages() might need another
->fix to handle the case nr_pages is not power of 2.
+>> You are right.
+>> 
+>> But nr_pages cannot be any positive number, since ALIGN only accepts
+>> power of 2 as the alignment. So alloc_contig_pages() might need another
+>> fix to handle the case nr_pages is not power of 2.
+>> 
+>> Oh, after I checked pfn_range_valid_contig(), I find your example does not
+>> apply, since it returns false when any page in the range is PageHuge.
+>> This means with your example, PageHuge branch will never be executed.
+>> But alloc_contig_range_noprof() is exported and can be used directly,
+>> the @start input can be any pfn, which can be in the middle of PageHuge.
+>> So your fix is still needed for this case.
 >
+>Makes sense to me.
 
-You are right, I missed ALIGN() requirement.
-
-So here we should use roundup().
-
->Oh, after I checked pfn_range_valid_contig(), I find your example does not
->apply, since it returns false when any page in the range is PageHuge.
-
-You are right, here hide some magic...
-
->This means with your example, PageHuge branch will never be executed.
->But alloc_contig_range_noprof() is exported and can be used directly,
->the @start input can be any pfn, which can be in the middle of PageHuge.
->So your fix is still needed for this case.
->
-
-Then the next question is why we filter PageHuge() in
-pfn_range_valid_contig(). Looks we can handle PageHuge() by isolating and
-migrate it.
-
->--
->Best Regards,
->Yan, Zi
+Thanks :-)
 
 -- 
 Wei Yang
