@@ -4,122 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBECCCA101F
-	for <linux-mm@archiver.kernel.org>; Sat, 13 Sep 2025 00:08:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17378CA101F
+	for <linux-mm@archiver.kernel.org>; Sat, 13 Sep 2025 00:09:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 272C98E0007; Fri, 12 Sep 2025 20:08:15 -0400 (EDT)
+	id 5AB378E0008; Fri, 12 Sep 2025 20:09:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 223888E0001; Fri, 12 Sep 2025 20:08:15 -0400 (EDT)
+	id 55C0B8E0001; Fri, 12 Sep 2025 20:09:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0EB948E0007; Fri, 12 Sep 2025 20:08:15 -0400 (EDT)
+	id 471548E0008; Fri, 12 Sep 2025 20:09:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F39A38E0001
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 20:08:14 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9607E13BF69
-	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 00:08:14 +0000 (UTC)
-X-FDA: 83882289708.30.A6CDBD1
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	by imf21.hostedemail.com (Postfix) with ESMTP id D3AD11C0010
-	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 00:08:12 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="U7K/WvEO";
-	spf=pass (imf21.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 30DD58E0001
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 20:09:44 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id EEDC3BBD0A
+	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 00:09:43 +0000 (UTC)
+X-FDA: 83882293446.05.4EDBD36
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 2AE38A000D
+	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 00:09:41 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=iq0m92TX;
+	spf=pass (imf15.hostedemail.com: domain of 3RLbEaAkKCBE9Bur89r43x55x2v.t532z4BE-331Crt1.58x@flex--sudarsanm.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3RLbEaAkKCBE9Bur89r43x55x2v.t532z4BE-331Crt1.58x@flex--sudarsanm.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757722092;
+	s=arc-20220608; t=1757722182;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oarCFVaYBfWe/dEymvNS5bjL3XCSyA2+fYOAmVQlg5Q=;
-	b=MPPclEM3QUqjl5/0vbJz6t4iob7iQ4Hs/okW4ApkfFOYQkP/Srvlnz2KRIpXJdi3c/5Je7
-	a+YecybA4UDKFb5NYIM1oKUDdrxHyC0QZQ0YP8ym/oVErnq+aQqboeXtC1gVSN1TS+ScoF
-	kEHWfgs4WZ1rMpAXMmR+CYfeIMkIVsY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757722092; a=rsa-sha256;
-	cv=none;
-	b=vlc90lD8ba33LJy2cxQda2n3cXZ45sO/Z130CyswXpdwM2N2Fv3vTMohJ+CnR5elN9g+6g
-	EBtzDgQEx5Iu7016FdZhwF5Zupe7vBsgqC/54vvhTVztRPMApi2OfMOMwn3K9oooEHMHq+
-	082PxWIY8qa9BgTRTWoC9Gmb0gCLC/A=
+	bh=D4qcwx7tIF7ceX4FWdqTaXFiCrpIzKr7ul9F9MwN60k=;
+	b=5xArNFjFp7wdgtUTlXfPnbznP8xkKixJcUfXMkULODmhJy1HKR5SWKZ/pE710mr9MwpgBx
+	2yDHMjMWYxNMBOy/P9iI4S3tZiNca0KTfLf+j/5hU6o0mCmKGlRnNQNtdPzYFJ8wc3Wxl6
+	CBboytxZiVWTneJcXU8Jf+GrO5SVjE8=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="U7K/WvEO";
-	spf=pass (imf21.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-45df0cde41bso18389625e9.3
-        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 17:08:12 -0700 (PDT)
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=iq0m92TX;
+	spf=pass (imf15.hostedemail.com: domain of 3RLbEaAkKCBE9Bur89r43x55x2v.t532z4BE-331Crt1.58x@flex--sudarsanm.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3RLbEaAkKCBE9Bur89r43x55x2v.t532z4BE-331Crt1.58x@flex--sudarsanm.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757722182; a=rsa-sha256;
+	cv=none;
+	b=0PZqwpp4NjBkQxlSxH0o+rztUi/sCUJKH9NRT0oMzpIlVeMiLZJSS1ZJy5O/JVbSKnWH/0
+	RPiuFePJGfCd/W8mGUZPb0X3RlGWnHIEM2t58GVqUGcVfjGEeS9wR5IK28TXT51GkBn7Cz
+	CeE9aCvCNKMDF62i1EJ9CLTSTPKGI4U=
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-77283b2b5f7so4069454b3a.0
+        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 17:09:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757722091; x=1758326891; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oarCFVaYBfWe/dEymvNS5bjL3XCSyA2+fYOAmVQlg5Q=;
-        b=U7K/WvEOke57lZqaF0jqsxQF0wtZ1Uriju+f/+Yr+aIN+FNoEmUuTt1Jxkg2f04cPN
-         T1zhTziT6buH/eyLdGDnjEw3m/mFYRZS7ISFBHWTJ2DU9QDfwH7dCyt259l9Pw0TjorK
-         pKCs6fBBHdj7E8yoAOx1uB0/A7xtOnBOrCKO3seD1pZPJhyJKwH7qdHWC+WMwn32gDPb
-         5aH2WIrJg96b/PArKG8lB0/F2VjDTbkODxhDTKTxSw8MTJ0dJYQFk6ChBWP7+Y5KJqwq
-         GHaWaWfgfoqAvF9usRjVkiKMlORQxOSC5jQoFAZmmfrMdiykcsUeuQmEb4evF0B8wAWY
-         PxQg==
+        d=google.com; s=20230601; t=1757722181; x=1758326981; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=D4qcwx7tIF7ceX4FWdqTaXFiCrpIzKr7ul9F9MwN60k=;
+        b=iq0m92TX1Yf2F4nF9FeXvvRBXta09Rv9wFve1kM0/E4Xor6gbCUEkjkyT/3NYXAmoF
+         JClyzp9ySIH30oHGFOFgU9tY8/otuZyeRlT9bSyczGvlY5Dacyl2/zKaQYPsyZu8qLpR
+         19Zip83eNDeZ6oEgTd3xBE1mxkUbhMrOkABy1eTpG/AtPy6Qu7kFoL5zQkvetSEwmeVq
+         ixDXZrDH4bkjaxtPSa5blXtRVh0NJ56WVV3HgAi51MrFJfhV2Lff5vDLYmW/FmUW6ho+
+         M+N9psievd19dXxX9XBH+X9uj/JpedQPDJq+xsAq+lOYs26lZKgrQTgjuhSqP6uoz6TJ
+         6Xjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757722091; x=1758326891;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oarCFVaYBfWe/dEymvNS5bjL3XCSyA2+fYOAmVQlg5Q=;
-        b=j6yDs/eGHOGfg+q/Vz+p1cWnHo5mSmq0dIXz7C9LaTDT5yH9NZFHvvwPFaveSu2F+t
-         gxmygL6fwy/hHbVYiPo4FrZWfdehE1J1SBytosk2koKLb9bJY8a3uz4xCDenxPvAOT5s
-         mzZxrI6OvFwQrETPZwz9rq0fXqip0xXmoPNB5Sqze5oWh4srkFJ8/fE6WwOD+3X9RqyP
-         Mno++xuREtlYQijjk1fm2aAwPYpx/qNDz1SoX5kCqV6IhWj2LLna1AD9/vGV/AUI2agx
-         tcRquxxgHC/JOpw0rHNJ8wON97xNPmFUu5yF/KVv1HcKeZgGlsmMKuHgw4mjZGmZGg67
-         OT3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXMLWzFau0OwzXp+wVfF+0plmAJ0V4cgH/4cvvJCN56isTgybqc7Ujvzo+/FuarAauOHntp9pW3MA==@kvack.org
-X-Gm-Message-State: AOJu0Yw0YxViaOlTeuQhniEuXTNklyOE/5RjxkIMSVP/crMesjTzRHLV
-	6ZZZE3UXDJUOvKF9Lk833zEiZ21JRjJvQqJHBTjumfygJX/5N37k1MClt33EMqRmfcaKzSMjBfL
-	Pz3fPPzs2ZIUqsdrD4QqL92/GZc+j2j4=
-X-Gm-Gg: ASbGncshsrQAMh2wTi6cIqr8qwBpqbCq5I/OSrb3N4swLH5DRSCOFY+aW8GzY6WEUj/
-	hVPbAXSLDOYF5rzaWHxZu2Xnlm2HPBtarxsLplWpQCCKiCOK0V0O4f9oJiadHD9aTHOlMztI1B+
-	G2WOG5i/6lV/iasgAQfrLlmePW3R13QFaD7lUjnhjNGB0rJe94EPXYbHw0IdFg0CbKJ6I1Jcdmx
-	yOPTunAaDUiFDdwTtjQnvKT57kjX/6+8ePUhLU3zmbi7u0=
-X-Google-Smtp-Source: AGHT+IGs+Xusqht/8VJHegMGPb9jp1iG1FiTVIwbkOnWYvsoVG9viYUph7imP1ifYwIEbTOxvv/ltAkVzWvCpvR4B2o=
-X-Received: by 2002:a05:6000:186a:b0:3d8:afc6:e8f8 with SMTP id
- ffacd0b85a97d-3e76579dc26mr4995623f8f.2.1757722090851; Fri, 12 Sep 2025
- 17:08:10 -0700 (PDT)
-MIME-Version: 1.0
-References: <20250909010007.1660-1-alexei.starovoitov@gmail.com>
- <20250909010007.1660-6-alexei.starovoitov@gmail.com> <jftidhymri2af5u3xtcqry3cfu6aqzte3uzlznhlaylgrdztsi@5vpjnzpsemf5>
- <CAJuCfpGUjaZcs1r9ADKck_Ni7f41kHaiejR01Z0bE8pG0K1uXA@mail.gmail.com>
- <CAADnVQJu-mU-Px0FvHqZdTTP+x8ROTXaqHKSXdeS7Gc4LV9zsQ@mail.gmail.com>
- <shfysi62hb5g7lo44mw4htwxdsdljcp3usu2wvsjpd2a57vvid@tuhj63dixxpn>
- <CAADnVQ+eD7p4i0B9Q2T-OS_n=AqcrrvYZGY57QOOqKEof6SkDQ@mail.gmail.com>
- <lv2tkehyh4pihbczb7ghvbkkl4l75ksdx2xjtxf2r7lgzam76h@ekkrlady2et3>
- <CAADnVQLX_mi9WLygRxwp5PtBFG7L_sqm9sL93ejENWqVO3ar7g@mail.gmail.com> <e7nh3cxyhmlxds4b2ko36gnxbdfclcxu3eae5irvrd2m6qzqoj@gor7vopfe47z>
-In-Reply-To: <e7nh3cxyhmlxds4b2ko36gnxbdfclcxu3eae5irvrd2m6qzqoj@gor7vopfe47z>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Fri, 12 Sep 2025 17:07:59 -0700
-X-Gm-Features: AS18NWCwWrkehvUmDDVjVIsB98WyNlLefJiTWEE2sdpB7_QgIyHcNpFJxwLW6m4
-Message-ID: <CAADnVQJuAo5K417ZZ77AA1LM5uZr5O2v1dRrEEue-v39zGVyVw@mail.gmail.com>
-Subject: Re: [PATCH slab v5 5/6] slab: Reuse first bit for OBJEXTS_ALLOC_FAIL
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Suren Baghdasaryan <surenb@google.com>, bpf <bpf@vger.kernel.org>, 
-	linux-mm <linux-mm@kvack.org>, Vlastimil Babka <vbabka@suse.cz>, Harry Yoo <harry.yoo@oracle.com>, 
-	Michal Hocko <mhocko@suse.com>, Sebastian Sewior <bigeasy@linutronix.de>, 
-	Andrii Nakryiko <andrii@kernel.org>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Steven Rostedt <rostedt@goodmis.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>
+        d=1e100.net; s=20230601; t=1757722181; x=1758326981;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=D4qcwx7tIF7ceX4FWdqTaXFiCrpIzKr7ul9F9MwN60k=;
+        b=bC6UzyR87hDrUjK1LMQMBfPAtJwGgLiWuhuBcH4PvmQqV+aJufsSBBZh6xGmt8QFPe
+         EjGiXtQlSy4eXejEwx5aswfRzUFFM85Di8CeUJ3tgTtEq8omNNyxEuZTrvAjp7ytWtGH
+         KXNSw7hFViLFGAUteNfTXGhsG8BVdvMjfRHsehD4DptIrpmhkhud7YikV2eX4xBEHfQp
+         dT1Zlh/KIQ6n+Efn9RLtBw4F++ClJeC9oZmQQYWgw4DTPZsafeYgcoa1CUAdsVAr+LsZ
+         LE3GIjD3+tz15YisEErSRc8zvCgkSNk8ca+/4WbUg1JANbzJV2hma995yP1qb+omQnWS
+         53Zg==
+X-Forwarded-Encrypted: i=1; AJvYcCXZMJ8XJYjR4izG2Ov5MiXaRG5wTXTuMS3dq4kI+TpLfOABEmyNfHw2Zh6q7gghUiwWqi5ghZEQnA==@kvack.org
+X-Gm-Message-State: AOJu0Yyh2uofCBwCD3yn++3bZ8cfawD9SISPJ2M9q/xYPZ5uIQCIdxhD
+	WAyK1+y87jsJk1uqg7A7uW5SfGwF8DF78ivG9dSShbtC8KFWp94P9kFcRFyrNvMYGpV02A41WQ5
+	y9JNAJ7ynQ8i/j+irxA==
+X-Google-Smtp-Source: AGHT+IHS23gulFRPNDYDol1StJlKh3HDBOcLTAfZPF7cXgJccYt3Eih+Wl2Bgx4LCQZX6nkkbvzcr31DF56Mzcs=
+X-Received: from pjwx7.prod.google.com ([2002:a17:90a:c2c7:b0:327:d54a:8c93])
+ (user=sudarsanm job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a21:3288:b0:252:2bfe:b648 with SMTP id adf61e73a8af0-2602c6246e2mr5853775637.52.1757722180835;
+ Fri, 12 Sep 2025 17:09:40 -0700 (PDT)
+Date: Fri, 12 Sep 2025 17:09:35 -0700
+In-Reply-To: <20250723-slub-percpu-caches-v5-0-b792cd830f5d@suse.cz>
+Mime-Version: 1.0
+References: <20250723-slub-percpu-caches-v5-0-b792cd830f5d@suse.cz>
+X-Mailer: git-send-email 2.51.0.384.g4c02a37b29-goog
+Message-ID: <20250913000935.1021068-1-sudarsanm@google.com>
+Subject: Re: Benchmarking [PATCH v5 00/14] SLUB percpu sheaves
+From: Sudarsan Mahendran <sudarsanm@google.com>
+To: vbabka@suse.cz
+Cc: Liam.Howlett@oracle.com, cl@gentwo.org, harry.yoo@oracle.com, 
+	howlett@gmail.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	maple-tree@lists.infradead.org, rcu@vger.kernel.org, rientjes@google.com, 
+	roman.gushchin@linux.dev, surenb@google.com, urezki@gmail.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 8hy1puteehbs5equ1gr79sd1rmz7mkjh
-X-Rspamd-Queue-Id: D3AD11C0010
+X-Rspamd-Queue-Id: 2AE38A000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1757722092-170871
-X-HE-Meta: U2FsdGVkX18nmjqMcqU2NiU4Wl8Ie5s8Og8KB0egKQNTG/tnERBGvNkzKFFqHIy+aJ33VaOYEHN6C9q498LOsl9HJC98Q8/1tFTppezmjGgJ9Lpr8nyajzq1pUyqi2UlJjNkr2qSF6SN+RC201I4njkUNsJDoZlpfkGxoMeVsM+fp/wyudot7OQYJeT/ZrdnHV2mnvpPYEK5BtTOx2l8Ta8dHHhzwVzuQ/kxyLr3dKJew8TSyeotZdt9Gu0iADMVBcOFJfyQcuGkukoYZGGhP0+X4typG3bD/bQYh5tUKEwwuRTtObUGt8yIM6HFLD1JlqEBPpeX3NWy+AvW//aw56wcRA3q5Y1hIDmeyT8rPH6FYprFqrhOnWRr2DuII2n4AE9Ocgtm0qxLubBPthNxhb1xycCaevyasbnshrQehI6xzOwZE2l7tXmrq/2EP+Atxr3SFZkdOepW19pzr85WS+z3Ja+XOruKeK93jylIPyuZZNmRwV0z8f9SWwRvKDHBAdWqy45wgcj9Undhl3or6sv1jzrPPo4uUNW6IQ42twT03ILU6QHEN9VDhe8PgkphoROOTILV45fPdOvkDo8HO+TmuD76qwenQccvUnznfolrLgz3qGRqIzmZ9Brh3MFz1WXVUVflk5nG2e9mh7bMb55qXqICPccSiKeIynnUq4GKWm8We2z+VJ6kAk5GMPtWeD1j5WoXL/ruFqQBrHKgt5tBPlGST1uJAWgYR8w3X4i3CnyL1n9hHgVImA96nbS7WFx+NaflSzJOYg2lTvzVqWuyjtS6U5kNmy9AJk360vkRmbTR9imLZk2rd3hKZb99Hd6Mc8yu2oqJHPGfQqOuN+GmLfEDWa6GAZ+RIpOe1B7CB4cQhH6uGL3iW7NzbI+ko67ucP+BoD17+BqUKGFa4PM/G9t9rXpwT0vjAMqXE4aSd38vGhjWBloHayk2o9Lzr33xJu6AlUkDJKbEXIS
- TPN72vaD
- laQ/w3irGg683KZmSXf4S29JVb47RDyf+4WWVm0+WINoVK1+zgsA7YBJ+i6RJiUfQ46VJulndeXNZbSLpVerxpdi47PRlHUlqrwQo
+X-Rspamd-Server: rspam07
+X-Stat-Signature: pdd8bruw5yrrpwiuyjgkfq9w6sj9p35i
+X-HE-Tag: 1757722181-314292
+X-HE-Meta: U2FsdGVkX1+VcyFgiD6RIMOdjRTiEKftYwL18+VUbg6mCuTvnn4infI9wi9brfQyUXX+wPFqWsHF47xDrA5gnlLwNblYyQyvWmtAfW+4ZW9pMLlght3J5Kf708TERwYc1etb324xdTQJtlCi24ZnC8nNOQndxNIr6UqAF1hE/xWQmsRzENYERo6L440sPyNOGBWMRnbVSAogryTb4SS+G37LMZf62lq3NDD38HutLrlDBnNwIHOqGFSe+6ToCL3s1LIXgfluOLsEVlCNVhDfJ+pT0OmqtwUDOpQG9pr3Bxqci1Zi0K09VAhxCeqCPcIxSzYMvqa7JWVZqwujoIyU1h0omKINSsoYvpOrzXI1TBQp0xWB+ALXRLqgl9pCEB5VJ9gyBm30w/jKJXX1XbCFGDj9PMPuXXcmVWmP79Hh7BYop0ZxQPtCCacFDKvOny/dvE3txvqlwFlHGvFpf1z+W7j5+clwNpAU/a+oqcHrqaT7CRGj6chvrQEMFg8JU2qqlFoNVsqnd+Ek0r8J5sIUv64ADbQvzlXBW6LOFfDFRQMfzZjrW0Pi0V3VJ7XjGqFrXhOPPv7L3L8QSdmUqyd+XWrsc5loQfjMx0j9NzdSN5auNcY65bYWfbntNEufx4JNwjyZwLHnaHmMbfodn38NqSaDrSYnVfgm56haeghM/EEz/m2W1yQlhPpvrWJBVZngOQXNOk8Dd8h3OJOyIsqiN+uuc6gDBa+/UZgiBNv6MSRfDpCPYz/V24VqSgksLNtkV+WOMRnNo2n+ePK0T4/KEhgink7m4UbiqrVbmWkCk/cJMivGyUvZWeINXya7mxvH8nvjSqf8UzOqPtE5wVwr8FiTc3fWm57ujLZqPjiEDDP+Sz4+0ltcYZ/bkqIinNF569hwHr2+pOKUNaR6RbPacogc/kgcr0s/tgS8QsuC9FlZcj6yWY1ySuKDk0vI21yHAXz+mHcc0ognFSXNIpW
+ dpdDbvjK
+ nYeBa+fcZkgvNqOtyB6WHhA0mz3qewMXACoAqGoPi4G8sOuDytPoCCKFvDsl9XL2+fhgt1zgbK6w66OyONd2EZMCa22urQJcKmCMListfI+HQIPE9sYOzGHlZP+Q1TlyxIWWccqqByFtA3fEnZTONtxOYTcehxeqbzH3O2t/4zF/kIFQjdvHfJW0LIDshgjJiFyMPKYnFbdQnHHKZAhi5NwdoGlzPu9BAslu2TN951aLFR9BbAfg15Bn2E+gD/1VN8i57DRQjl7YEz2b5dA9be73eVu82reDN57FxrLDtxMkf1xyapFAVmnd56Ntwi4HgiEe1YFdSHBcox0+/YRjbLKhdN3jg+p8rWy4lXuUjVgy0I/Nbt4OgBmcYhIaRnxuJe+oMH8KCm3qtCBJEvSMaeQR+vWkC+/ghEy5zXehBseUVWJK3l7t3MEceD5MwNf6aJWmWL1ivw7rThT4T6+7osETklcMC/a6Yi3P1F1gQ836c9utWbqPNqJTgzksedV1qcEKn3B5AseU74FJJ/f86VmISxHSXPwPTw3USHmrJFmCevzXa8USc8UjJqe1EmCBG8la2a/3PsM4Ex+A=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,129 +111,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 12, 2025 at 5:02=E2=80=AFPM Shakeel Butt <shakeel.butt@linux.de=
-v> wrote:
->
-> On Fri, Sep 12, 2025 at 02:59:08PM -0700, Alexei Starovoitov wrote:
-> > On Fri, Sep 12, 2025 at 2:44=E2=80=AFPM Shakeel Butt <shakeel.butt@linu=
-x.dev> wrote:
-> > >
-> > > On Fri, Sep 12, 2025 at 02:31:47PM -0700, Alexei Starovoitov wrote:
-> > > > On Fri, Sep 12, 2025 at 2:29=E2=80=AFPM Shakeel Butt <shakeel.butt@=
-linux.dev> wrote:
-> > > > >
-> > > > > On Fri, Sep 12, 2025 at 02:24:26PM -0700, Alexei Starovoitov wrot=
-e:
-> > > > > > On Fri, Sep 12, 2025 at 2:03=E2=80=AFPM Suren Baghdasaryan <sur=
-enb@google.com> wrote:
-> > > > > > >
-> > > > > > > On Fri, Sep 12, 2025 at 12:27=E2=80=AFPM Shakeel Butt <shakee=
-l.butt@linux.dev> wrote:
-> > > > > > > >
-> > > > > > > > +Suren, Roman
-> > > > > > > >
-> > > > > > > > On Mon, Sep 08, 2025 at 06:00:06PM -0700, Alexei Starovoito=
-v wrote:
-> > > > > > > > > From: Alexei Starovoitov <ast@kernel.org>
-> > > > > > > > >
-> > > > > > > > > Since the combination of valid upper bits in slab->obj_ex=
-ts with
-> > > > > > > > > OBJEXTS_ALLOC_FAIL bit can never happen,
-> > > > > > > > > use OBJEXTS_ALLOC_FAIL =3D=3D (1ull << 0) as a magic sent=
-inel
-> > > > > > > > > instead of (1ull << 2) to free up bit 2.
-> > > > > > > > >
-> > > > > > > > > Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-> > > > > > > >
-> > > > > > > > Are we low on bits that we need to do this or is this good =
-to have
-> > > > > > > > optimization but not required?
-> > > > > > >
-> > > > > > > That's a good question. After this change MEMCG_DATA_OBJEXTS =
-and
-> > > > > > > OBJEXTS_ALLOC_FAIL will have the same value and they are used=
- with the
-> > > > > > > same field (page->memcg_data and slab->obj_exts are aliases).=
- Even if
-> > > > > > > page_memcg_data_flags can never be used for slab pages I thin=
-k
-> > > > > > > overlapping these bits is not a good idea and creates additio=
-nal
-> > > > > > > risks. Unless there is a good reason to do this I would advis=
-e against
-> > > > > > > it.
-> > > > > >
-> > > > > > Completely disagree. You both missed the long discussion
-> > > > > > during v4. The other alternative was to increase alignment
-> > > > > > and waste memory. Saving the bit is obviously cleaner.
-> > > > > > The next patch is using the saved bit.
-> > > > >
-> > > > > I will check out that discussion and it would be good to summariz=
-e that
-> > > > > in the commit message.
-> > > >
-> > > > Disgaree. It's not a job of a small commit to summarize all options
-> > > > that were discussed on the list. That's what the cover letter is fo=
-r
-> > > > and there there are links to all previous threads.
-> > >
-> > > Currently the commit message is only telling what the patch is doing =
-and
-> > > is missing the 'why' part and I think adding the 'why' part would mak=
-e it
-> > > better for future readers i.e. less effort to find why this is being
-> > > done this way. (Anyways this is just a nit from me)
-> >
-> > I think 'why' here is obvious. Free the bit to use it later.
-> > From time to time people add a sentence like
-> > "this bit will be used in the next patch",
-> > but I never do this and sometimes remove it from other people's
-> > commits, since "in the next patch" is plenty ambiguous and not helpful.
->
-> Yes, the part about the freed bit being used in later patch was clear.
-> The part about if we really need it was not obvious and if I understand
-> the discussion at [1] (relevant text below), it was not required but
-> good to have.
-> ```
->         > I was going to say "add a new flag to enum objext_flags",
->         > but all lower 3 bits of slab->obj_exts pointer are already in u=
-se? oh...
->         >
->         > Maybe need a magic trick to add one more flag,
->         > like always align the size with 16?
->         >
->         > In practice that should not lead to increase in memory consumpt=
-ion
->         > anyway because most of the kmalloc-* sizes are already at least
->         > 16 bytes aligned.
->
->         Yes. That's an option, but I think we can do better.
->         OBJEXTS_ALLOC_FAIL doesn't need to consume the bit.
-> ```
->
-> Anyways no objection from me but Harry had a followup request [2]:
-> ```
->         This will work, but it would be helpful to add a comment clarifyi=
-ng that
->         when bit 0 is set with valid upper bits, it indicates
->         MEMCG_DATA_OBJEXTS, but when the upper bits are all zero, it indi=
-cates
->         OBJEXTS_ALLOC_FAIL.
->
->         When someone looks at the code without checking history it might =
-not
->         be obvious at first glance.
-> ```
->
-> I think the above requested comment would be really useful.
+Hi Vlastimil,
 
-... and that comment was added. pretty much verbatim copy paste
-of the above. Don't you see it in the patch?
+I ported this patch series on top of v6.17 and ran
+some benchmarks: will-it-scale, hackbench, redis,
+unixbench and kernbench. I ran the benchmarks
+on Intel Granite Rapids (480 cores), AMD Turin (512 cores)
+and ARM (80 cores)
 
-> Suren is
-> fixing the condition of VM_BUG_ON_PAGE() in slab_obj_exts(). With this
-> patch, I think, that condition will need to be changed again.
+Summary of the results:
 
-That's orthogonal and I'm not convinced it's correct.
-slab_obj_exts() is doing the right thing. afaict.
+- Significant change (meaning >10% difference
+  between base and experiment) on will-it-scale
+  tests in AMD.
+- No significant change on other benchmarks ran.
+
+Summary of AMD will-it-scale test changes:
+
+Number of runs : 15
+Direction      : + is good
+
+|            | MIN        | MAX        | MEAN       | MEDIAN     | STDDEV     |
+|:-----------|:-----------|:-----------|:-----------|:-----------|:-----------|
+| brk1_8_processes
+| BASE       | 7,667,220  | 7,705,767  | 7,682,782  | 7,676,211  | 12,733     |
+| TEST       | 9,477,395  | 10,053,058 | 9,878,753  | 9,959,360  | 182,014    |
+| %          | +23.61%    | +30.46%    | +28.58%    | +29.74%    | +1,329.46% |
+| brk1_8_threads
+| BASE       | 1,838,468  | 1,890,873  | 1,864,473  | 1,864,875  | 18,406     |
+| TEST       | 1,464,917  | 1,668,207  | 1,608,345  | 1,654,578  | 70,558     |
+| %          | -20.32%    | -11.78%    | -13.74%    | -11.28%    | +283.34%   |
+| brk1_128_processes
+| BASE       | 65,018,211 | 65,603,366 | 65,285,348 | 65,103,197 | 232,885    |
+| TEST       | 51,287,801 | 52,161,228 | 51,647,807 | 51,509,505 | 277,326    |
+| %          | -21.12%    | -20.49%    | -20.89%    | -20.88%    | +19.08%    |
+| brk1_256_processes
+| BASE       | 15,186,881 | 15,239,120 | 15,210,265 | 15,205,809 | 15,850     |
+| TEST       | 20,478,924 | 23,936,204 | 22,754,698 | 22,771,320 | 1,255,974  |
+| %          | +34.85%    | +57.07%    | +49.60%    | +49.75%    | +7,823.72% |
+| brk1_384_processes
+| BASE       | 11,587,076 | 11,851,775 | 11,765,869 | 11,806,007 | 73,736     |
+| TEST       | 25,464,757 | 29,176,818 | 26,695,946 | 26,563,116 | 1,012,563  |
+| %          | +119.77%   | +146.18%   | +126.89%   | +125.00%   | +1,273.23% |
+| brk1_512_processes
+| BASE       | 14,410,293 | 14,891,082 | 14,775,209 | 14,793,142 | 114,384    |
+| TEST       | 22,918,195 | 29,648,177 | 25,204,321 | 25,128,471 | 1,604,037  |
+| %          | +59.04%    | +99.10%    | +70.59%    | +69.87%    | +1,302.32% |
+| mmap1_8_processes
+| BASE       | 3,164,411  | 3,170,585  | 3,167,590  | 3,167,692  | 2,436      |
+| TEST       | 3,516,242  | 3,756,209  | 3,684,585  | 3,698,731  | 68,659     |
+| %          | +11.12%    | +18.47%    | +16.32%    | +16.76%    | +2,718.28% |
+| mmap1_8_threads
+| BASE       | 627,817    | 632,702    | 630,554    | 629,281    | 1,764      |
+| TEST       | 541,202    | 554,097    | 549,104    | 549,896    | 4,257      |
+| %          | -13.80%    | -12.42%    | -12.92%    | -12.62%    | +141.34%   |
+| mmap1_128_processes
+| BASE       | 30,303,429 | 30,736,686 | 30,466,107 | 30,343,821 | 174,985    |
+| TEST       | 9,749,426  | 9,893,331  | 9,823,701  | 9,857,157  | 52,125     |
+| %          | -67.83%    | -67.81%    | -67.76%    | -67.52%    | -70.21%    |
+| mmap1_256_processes
+| BASE       | 7,496,765  | 7,546,703  | 7,528,379  | 7,543,246  | 21,465     |
+| TEST       | 10,868,119 | 16,947,857 | 12,695,418 | 11,608,083 | 2,157,787  |
+| %          | +44.97%    | +124.57%   | +68.63%    | +53.89%    | +9,952.34% |
+| mmap1_384_processes
+| BASE       | 5,629,206  | 5,856,927  | 5,758,347  | 5,733,892  | 85,930     |
+| TEST       | 12,053,514 | 13,635,555 | 12,966,975 | 13,283,450 | 606,325    |
+| %          | +114.12%   | +135.49%   | +112.89%   | +104.26%   | +2,855.57% |
+| mmap1_512_processes
+| BASE       | 6,959,199  | 6,996,383  | 6,975,912  | 6,974,353  | 15,446     |
+| TEST       | 10,197,814 | 12,029,690 | 11,458,180 | 11,381,726 | 534,690    |
+| %          | +46.54%    | +71.94%    | +64.25%    | +63.19%    | +3,361.67% |
+| tlb_flush2_384_threads
+| BASE       | 2,953,477  | 3,021,464  | 3,003,512  | 3,014,264  | 25,525     |
+| TEST       | 2,231,417  | 2,526,876  | 2,408,368  | 2,411,121  | 115,773    |
+| %          | -24.45%    | -16.37%    | -19.81%    | -20.01%    | +353.55%   |
+| tlb_flush2_512_threads
+| BASE       | 2,499,486  | 2,542,966  | 2,520,278  | 2,530,049  | 17,161     |
+| TEST       | 1,707,641  | 1,714,524  | 1,708,951  | 1,707,713  | 1,877      |
+| %          | -31.68%    | -32.58%    | -32.19%    | -32.50%    | -89.06%    |
+| mmap2_128_processes
+| BASE       | 29,754,984 | 30,313,146 | 30,010,106 | 29,897,731 | 218,812    |
+| TEST       | 9,688,640  | 9,750,688  | 9,710,137  | 9,696,830  | 23,428     |
+| %          | -67.44%    | -67.83%    | -67.64%    | -67.57%    | -89.29%    |
+| mmap2_256_processes
+| BASE       | 7,483,929  | 7,532,461  | 7,491,876  | 7,489,398  | 11,134     |
+| TEST       | 11,580,023 | 16,508,551 | 15,337,145 | 15,943,608 | 1,489,489  |
+| %          | +54.73%    | +119.17%   | +104.72%   | +112.88%   | +13,276.75%|
+| mmap2_384_processes
+| BASE       | 5,725,503  | 5,826,364  | 5,763,341  | 5,765,247  | 29,674     |
+| TEST       | 11,682,353 | 13,720,566 | 12,269,665 | 11,776,228 | 877,060    |
+| %          | +104.04%   | +135.49%   | +112.89%   | +104.26%   | +2,855.57% |
+| mmap2_512_processes
+| BASE       | 6,959,199  | 6,996,383  | 6,975,912  | 6,974,353  | 15,446     |
+| TEST       | 10,197,814 | 12,029,690 | 11,458,180 | 11,381,726 | 534,690    |
+| %          | +46.54%    | +71.94%    | +64.25%    | +63.19%    | +3,361.67% |
+
 
