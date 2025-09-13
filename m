@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DDECCAC58E
-	for <linux-mm@archiver.kernel.org>; Sat, 13 Sep 2025 04:07:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD2ECCAC58E
+	for <linux-mm@archiver.kernel.org>; Sat, 13 Sep 2025 04:13:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 303B36B0010; Sat, 13 Sep 2025 00:07:54 -0400 (EDT)
+	id 0ED248E0002; Sat, 13 Sep 2025 00:13:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B4066B0011; Sat, 13 Sep 2025 00:07:54 -0400 (EDT)
+	id 0C52E8E0001; Sat, 13 Sep 2025 00:13:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A2D26B0012; Sat, 13 Sep 2025 00:07:54 -0400 (EDT)
+	id F1D058E0002; Sat, 13 Sep 2025 00:13:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0706A6B0010
-	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 00:07:54 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9BEBD11B144
-	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 04:07:53 +0000 (UTC)
-X-FDA: 83882893626.14.8E28011
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id DFA338E0001
+	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 00:13:22 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7D6D61608D9
+	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 04:13:22 +0000 (UTC)
+X-FDA: 83882907444.03.4B0B7D3
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf16.hostedemail.com (Postfix) with ESMTP id D6816180007
-	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 04:07:50 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=Zvj7+2VJ
+	by imf21.hostedemail.com (Postfix) with ESMTP id 18BC71C0004
+	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 04:13:20 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=xPzy07H5
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757736471;
+	s=arc-20220608; t=1757736801;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZkZpc5dBMnXI4POCZ2TCFFqEd7xijX/+QZHk6h+vWnA=;
-	b=hFDh5KvEnx2i8h7+R2y393S+733XOyNPtOwrQc5imULk1l9gBUDVkyjxbuhB7PC+DIqWeh
-	RYgqJPovGQw7f55SZlUr+GSH2yuQXZvF/5BnrMtonwnmQAU9hnYzbFEpEQ8fkqWsvtdNUZ
-	S9i5nW3URYtYy1U2rj1GZT1wh4ZM6Ps=
+	bh=u7ndZnQxyXKvcCzhFli8oZf0PjWLBirdplU5n0FJmLw=;
+	b=Aaek3iZBNKJ4sEfvJAC1N1Ha4xao0i7SzkASSZ2Q0X7rvIZTTjbbkIeDLjsNC2tPKJH7Zx
+	/+EOmqDGkLLDEUISEcjmTj5+iRpsJuA14LRVX/dqygk/YfIxrWz0igBUQoUD8uLyKBQ25z
+	TqTYaq0TMQgSLHgcF0hW9NzGovLxexc=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=Zvj7+2VJ;
-	spf=none (imf16.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=xPzy07H5;
+	spf=none (imf21.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757736471; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757736801; a=rsa-sha256;
 	cv=none;
-	b=k8PP7ZZAvXgo30T/XyJi3/cjaUZpG7D3CzxHku4roBsv7rtQ95r+MGOG2YVcvXVF/s+PaM
-	ORC63yXFwDTeAcXs9dtAgHKzfpQ6B77SrPiHu4GxFRmY30eXf7Z6W++E3vOMERrODyCFrz
-	e6JCF/mnLnWdsZ9BWgqFrHo1TgWVyvo=
+	b=XjezKsQUmpLdrbdeQzgkCYKXGs/Yre084TO3jr1xdwRrQ2rKw63/WTQaK+EJTB4HVmes1S
+	Aj6/B4rhKbRljcgOxZyZnKem/CunNEY2L4pXx5Z2tU/Db2NF/LqSJh2vrMp4g7yJ8HYbPO
+	PKspH3Q3p1Rnj8dHtx5c5dRjQErCj1s=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
 	Message-ID:Sender:Reply-To:Cc:Content-ID:Content-Description;
-	bh=ZkZpc5dBMnXI4POCZ2TCFFqEd7xijX/+QZHk6h+vWnA=; b=Zvj7+2VJQP1AUrM1oc0jI4D0df
-	kZLbrgoF6tWC1TSXrQCzaRwf64BcIFqWM9jqgctShxRWwA64Z3cH3ZJp9xtz/vExBAcClQcmfIZn7
-	yCcLB+AesJzDmEPSjA8I8PqMwPg+QtoHLtCCGQwR4t8mmkzazK/OjVldlPQMX7eK39OikaYuiFAkS
-	f3j34JKAUXKzXllob2T5kCBHPFSR85WlWQfJBGW6vvdYMXS8Z3QXIbkl5YsAeQ69QGvyvU6VGYXVL
-	zapYbucIouJWo+hLXEvQIBUIuwgelZEWHzU6JUYSd+NcP/fFDMoT6FMSctoEiTHXQLnPtkJJ7TQUx
-	RnGJ92cg==;
+	bh=u7ndZnQxyXKvcCzhFli8oZf0PjWLBirdplU5n0FJmLw=; b=xPzy07H5oLyRzMkKUDnRYxRbA8
+	FB9s/mgtYrIEncNja4JJjGye+zGOM5arCPaXRnqY0vBLCsFj8oDAeoSE0UqBh4+bDiLKE1WlvVIGg
+	KVrxlIQZrGV8DB3SCKRdz/WridjNvy5CXv+SD1Va6LVYxjNBA+mGHiEbQRiwSEI+cHvjloDDoXglj
+	0dK5WfUej0zVDXKQOXKsr5DuKq3kr+d9vFJrusNVKTTSLwcsCky4pU6kPywtug6qim/3Nk3gXwtyf
+	vbw1VCU9MqDSbqZvzBQzA1VgqzMvxCdl5wn99ll+PJEWgdoqb2XafQieoBP+l+brAtdIBvxrTKifR
+	pUY01Pvg==;
 Received: from [50.53.25.54] (helo=[192.168.254.17])
 	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uxHXd-0000000D5gz-1paw;
-	Sat, 13 Sep 2025 04:07:13 +0000
-Message-ID: <69198449-411b-4374-900a-16dc6cb91178@infradead.org>
-Date: Fri, 12 Sep 2025 21:07:11 -0700
+	id 1uxHdN-0000000D6om-3RkA;
+	Sat, 13 Sep 2025 04:13:09 +0000
+Message-ID: <6b5e5d3e-5db8-44f2-8dca-42f317be8e0d@infradead.org>
+Date: Fri, 12 Sep 2025 21:13:07 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 15/21] mm/ksw: add test module
+Subject: Re: [PATCH v4 03/21] HWBP: Add modify_wide_hw_breakpoint_local() API
 To: Jinchao Wang <wangjinchao600@gmail.com>,
  Andrew Morton <akpm@linux-foundation.org>,
  Masami Hiramatsu <mhiramat@kernel.org>, Peter Zijlstra
@@ -107,20 +107,20 @@ To: Jinchao Wang <wangjinchao600@gmail.com>,
  Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
  linux-trace-kernel@vger.kernel.org
 References: <20250912101145.465708-1-wangjinchao600@gmail.com>
- <20250912101145.465708-16-wangjinchao600@gmail.com>
+ <20250912101145.465708-4-wangjinchao600@gmail.com>
 Content-Language: en-US
 From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20250912101145.465708-16-wangjinchao600@gmail.com>
+In-Reply-To: <20250912101145.465708-4-wangjinchao600@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: D6816180007
+X-Rspamd-Queue-Id: 18BC71C0004
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-Stat-Signature: igao4bu5zaxumyyprh84ypzy5rkt54bu
-X-HE-Tag: 1757736470-213023
-X-HE-Meta: U2FsdGVkX1+YwiA16BihnkTA8+W72XCFRa7vfx7CMmyNft913iY3W9VoYFoVRy0WYwOlU7r9blN1PAD15gu3GELVAYZ/4vxJ5QVYojlS6TUuYv+QX3ZzGOvjJ1vM2jd1np7zgnkjKpoqiBdzbneVqtn3SXRW6zm815kOCk/ACJn/YlmVo7wqAKyfi9rug+ky2EKn9u/D0W26TYRYQ10gl48DSAgJS9WHrGFZm2G9HEOwnaZ4xn4KWl/bbYka/7OMeUGgrQD4GowP1o8zSGCIXFk4fr8SIAcz7RGT4KteEomrFN/nN7TJBPp0CHGtfOS7NS0obQhcKyyxm+enNyHlbzi+JTMxLE/RNK7SRyFaHKVTZVtkxUXNOaCMKbReXEbo3biMxaad1K88gMizjgUblH+zhlizbG94wwTifYu0lyz4SwLRL/He+FM5AS4CGmk4+qqgaoP9tWSbmKiR+vyOnPjZ9q3GsJp7UjhD9golz5dOG6Nly0GnyvvcXYAKzF4CMqYmZjhy8K2nKcmTfgx4o18WeCjtwWY3XqhSnnUYE7pWu3Pom2ISbcJ4pSQeqeSZLztVoYp7hNUYCIw4YYqj1RCBKVQZWdwBZdoqsXzIKztjbG+rfrY6ETOpWWpv+RAkZySeUj7xZB18WX47HXtiNrk/1jNbH3tCruE/ofrsMpQY45eI0Nhx+DkGyLQOKW3XcfjRgL7n9RDYzVD1FoGJchVm+VWepQGWJqSAGOBuzndVxTUJ3yanZxpEKv6ADDgqebzIW05xSNmPg3opde8vGgtKTxKWhZyvXKe6puhmyFogeF2uAQ2pPnRWvVhkVT/EBaTK78bPhLeYpLskj6zM3QQdsGOmAr5R+aRBfen7FFG5QDSOv3b2zF/uLCFD/kGdr7cB6cl1OV2qHfJQuHIuy+45hyTXh3YxC83QTKbh0u0VQ2s/5hzqmLTIVsqXAtG8hmDMbM+hiXkW57xlDQs
- EiqSb56G
- VNVQ7EFzro+9Cz910Kan7bue0j+5oMM+3oI3fzQ+ClZ71y1OwjozTWkZdKzhPZQZNsIH0Bs+VcF3bCF8TFt70/y4f09yzc3SWq1McWSJ8e4DjttZz1RWATD6+Au53JL4WEGrnp+vsQeJF8Q0gGgBmL9ieI4k8G+pB/r7LUYtd/Rphe7QjIZZYfjXCPENAPkZv3I1XPWfEEZNQlzXK0Mr/IPeW6PZH15mBlfOW5qxyD4QxDh7cn2Z6C1GwYDxrebAVBqKKKAZVhtrNMD5a7cSmxHeepu9U9gDGBJGnNtubm87AzSWTQaLSJ5VKTVh+WBxVNniq
+X-Stat-Signature: qaq453x9srp7gearj8dywucu3w8985e6
+X-HE-Tag: 1757736800-135805
+X-HE-Meta: U2FsdGVkX1+JD+5Q9z7dCTvmY3oCJRc4hzM7GEkKXB6Vjkc+T7B8pw0CpQOGY64Bg5vRj93llNHEJqBcoGRwItyUeOzJVENCio3/NDTbxJZu1/lH/U1FcPW1LGPjusn6sG5PCE50/5umPhgaGZmmqZ902JD1H7p27dF5t2J6ydV1JQmpKHXsWr0U2vPS2T4uZyv+PHAXUBd9r0JB+EuIjKSE+6OdyZZMe3gEHUlv9563behmepVFkwBkXCxY4HhD/jL6NWdlRjaNGAcfxFDcJnvOlsbzCu9Vpj366n4FBrkScp9u/kA8bUazzhxvfS6qNzW5bcPW64FMujOJK1T4SnagLqhzGyEkPY99BTqyI19mRZeFvsIra/9dI1NoaA4Mp8mw6jsB69MLFDdvEYnQpZYJgZ6ikCqRwTvq+onG3S2LyfJ80flYFPJ/PTiJ0U3CMGg7tjPxGCLSaZd+teV+NWJ7+7Bs5+zjTNfnXZk7sLIgNyAn0HE7G/WuwUyP31EYQTKKycDgKFa8xZ55S4oCXYdX73pXVCywCOMdL+8j7hHKUnxqJrhx3UXHEdqS2nnsRQcC6zAdgbI2Ga22JotO5dAUiltutgvKQNLs+SuEnDj350t1V8BRmdbPNWbWMbOMOlxvG+2iflGZvLEdPymzMpMx2uWigKQn/kTBnpKRCSH7Aor+xWGzc0pk5RnTuy9gfcqtGNIBQVCgdkrn3RH9CZEuuuOfLYWwOOwyapB5a1RB3d/RfhElp9AtxRPf1/p66YWtap/SnX+618vVSNtFN3Br6KaBdFC5AG30ZBUTf3hvImYm2TISCrL1rHXZpQRb1ehWDQ+zPgRHbKFqKEO5r/suL7I1Ywu4YiJwqrBm37aAJR/EFjEBipp8gRWYN8wDF/wk+IOIh8GWoL91vb9UntbhrVwMDPBTaINGZ7OLyQTxNsfDWvGydymLxhfBohkXGHpwGDnybvr4LAfQnlg
+ L4I1ZP39
+ vbf0fCDb+5k8CCtTwiiW9Oq8IskHtI+lcTAYlq8VayRG/LYY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,27 +132,27 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 On 9/12/25 3:11 AM, Jinchao Wang wrote:
-> diff --git a/mm/Kconfig.debug b/mm/Kconfig.debug
-> index fdfc6e6d0dec..46c280280980 100644
-> --- a/mm/Kconfig.debug
-> +++ b/mm/Kconfig.debug
-> @@ -320,3 +320,13 @@ config KSTACK_WATCH
->  	  the recursive depth of the monitored function.
->  
->  	  If unsure, say N.
-> +
-> +config KSTACK_WATCH_TEST
-> +	tristate "KStackWatch Test Module"
-> +	depends on KSTACK_WATCH
-> +	help
-> +	  This module provides controlled stack exhaustion and overflow scenarios
-> +	  to verify the functionality of KStackWatch. It is particularly useful
-> +	  for development and validation of the KStachWatch mechanism.
+> +/**
+> + * modify_wide_hw_breakpoint_local - update breakpoint config for local cpu
+> + * @bp: the hwbp perf event for this cpu
+> + * @attr: the new attribute for @bp
+> + *
+> + * This does not release and reserve the slot of HWBP, just reuse the current
 
-typo:	                                        ^^^^^^^^^^^
+                                                 of a HWBP; it just reuses
 
-> +
-> +	  If unsure, say N.
+and preferable s/cpu/CPU/ in comments.
+
+> + * slot on local CPU. So the users must update the other CPUs by themselves.
+> + * Also, since this does not release/reserve the slot, this can not change the
+> + * type to incompatible type of the HWBP.
+> + * Return err if attr is invalid or the cpu fails to update debug register
+> + * for new @attr.
+> + */
+> +#ifdef CONFIG_HAVE_REINSTALL_HW_BREAKPOINT
+> +int modify_wide_hw_breakpoint_local(struct perf_event *bp,
+> +				    struct perf_event_attr *attr)
+> +{
 
 -- 
 ~Randy
