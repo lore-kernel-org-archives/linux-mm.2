@@ -4,105 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17378CA101F
-	for <linux-mm@archiver.kernel.org>; Sat, 13 Sep 2025 00:09:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77A54CA101F
+	for <linux-mm@archiver.kernel.org>; Sat, 13 Sep 2025 00:10:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5AB378E0008; Fri, 12 Sep 2025 20:09:44 -0400 (EDT)
+	id D266A6B0008; Fri, 12 Sep 2025 20:10:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 55C0B8E0001; Fri, 12 Sep 2025 20:09:44 -0400 (EDT)
+	id CD6906B000C; Fri, 12 Sep 2025 20:10:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 471548E0008; Fri, 12 Sep 2025 20:09:44 -0400 (EDT)
+	id BC6236B000D; Fri, 12 Sep 2025 20:10:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 30DD58E0001
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 20:09:44 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id EEDC3BBD0A
-	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 00:09:43 +0000 (UTC)
-X-FDA: 83882293446.05.4EDBD36
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 2AE38A000D
-	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 00:09:41 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=iq0m92TX;
-	spf=pass (imf15.hostedemail.com: domain of 3RLbEaAkKCBE9Bur89r43x55x2v.t532z4BE-331Crt1.58x@flex--sudarsanm.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3RLbEaAkKCBE9Bur89r43x55x2v.t532z4BE-331Crt1.58x@flex--sudarsanm.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A989D6B0008
+	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 20:10:39 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5A614C078F
+	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 00:10:39 +0000 (UTC)
+X-FDA: 83882295798.11.597CE85
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 6125240009
+	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 00:10:37 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=TKl4rvIt;
+	spf=pass (imf27.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757722182;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1757722237;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D4qcwx7tIF7ceX4FWdqTaXFiCrpIzKr7ul9F9MwN60k=;
-	b=5xArNFjFp7wdgtUTlXfPnbznP8xkKixJcUfXMkULODmhJy1HKR5SWKZ/pE710mr9MwpgBx
-	2yDHMjMWYxNMBOy/P9iI4S3tZiNca0KTfLf+j/5hU6o0mCmKGlRnNQNtdPzYFJ8wc3Wxl6
-	CBboytxZiVWTneJcXU8Jf+GrO5SVjE8=
+	bh=gh4qNOq/fXdAmcpuz4VCDjOq3KMlvlbBCKcrRvBJTss=;
+	b=PB9rdsnDGkGMpmzRBM3chn/RMm2bi8VwzT/sNntYH7OF6ru5rQz+TgoLyF7jQIekOHl8aU
+	rr8IZs1NUe6lL+cRQyDlbhdxv8efPWFgu+Xp8JdOEZzw/MndkIvdnxcuSeUqtWE2EX9uyd
+	IWQKinhIOpk8JGNaHS04pva33nJn0hk=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=iq0m92TX;
-	spf=pass (imf15.hostedemail.com: domain of 3RLbEaAkKCBE9Bur89r43x55x2v.t532z4BE-331Crt1.58x@flex--sudarsanm.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3RLbEaAkKCBE9Bur89r43x55x2v.t532z4BE-331Crt1.58x@flex--sudarsanm.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757722182; a=rsa-sha256;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=TKl4rvIt;
+	spf=pass (imf27.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757722237; a=rsa-sha256;
 	cv=none;
-	b=0PZqwpp4NjBkQxlSxH0o+rztUi/sCUJKH9NRT0oMzpIlVeMiLZJSS1ZJy5O/JVbSKnWH/0
-	RPiuFePJGfCd/W8mGUZPb0X3RlGWnHIEM2t58GVqUGcVfjGEeS9wR5IK28TXT51GkBn7Cz
-	CeE9aCvCNKMDF62i1EJ9CLTSTPKGI4U=
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-77283b2b5f7so4069454b3a.0
-        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 17:09:41 -0700 (PDT)
+	b=uKBOfa1fntFaL7R6TV/2uCkELzo3W/6NhVW0yKz+wCNz1hg85AynR9MceX3edOiRcOvpcD
+	K2juTK/lHfQvgbwRHwcKbYfacthDiFVbqOs8wYbcQcTLUZIPRVlZMcEcYa/+7s4aiIiWNf
+	1e8EE3A4eyo7OUDqkQl3IfP6WmeWJVQ=
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-b0415e03e25so322076366b.0
+        for <linux-mm@kvack.org>; Fri, 12 Sep 2025 17:10:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757722181; x=1758326981; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=D4qcwx7tIF7ceX4FWdqTaXFiCrpIzKr7ul9F9MwN60k=;
-        b=iq0m92TX1Yf2F4nF9FeXvvRBXta09Rv9wFve1kM0/E4Xor6gbCUEkjkyT/3NYXAmoF
-         JClyzp9ySIH30oHGFOFgU9tY8/otuZyeRlT9bSyczGvlY5Dacyl2/zKaQYPsyZu8qLpR
-         19Zip83eNDeZ6oEgTd3xBE1mxkUbhMrOkABy1eTpG/AtPy6Qu7kFoL5zQkvetSEwmeVq
-         ixDXZrDH4bkjaxtPSa5blXtRVh0NJ56WVV3HgAi51MrFJfhV2Lff5vDLYmW/FmUW6ho+
-         M+N9psievd19dXxX9XBH+X9uj/JpedQPDJq+xsAq+lOYs26lZKgrQTgjuhSqP6uoz6TJ
-         6Xjw==
+        d=gmail.com; s=20230601; t=1757722236; x=1758327036; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gh4qNOq/fXdAmcpuz4VCDjOq3KMlvlbBCKcrRvBJTss=;
+        b=TKl4rvItyO6xCYIpeuHTfIVy4qcTG9WiOr8xXC+acVFBYLvKvVpYsevxvGxjfMJOc9
+         9ZWSUkht3rTDFz35yojr0cN+yRFDmQGhfG31IIkXN5/3nsRhp7CE+hHirW2WyZztXyBZ
+         TXv7mxhvg0JBmCWMS2oGleS3k0iSqvJ+w82rcIDkiwUkvxm6EX73L0RAQL5sXbcR77Xc
+         vG4FPP1BzLv1KKgfLeXkX6Xh65uZt26JDx1q1K+rny8dh0X8+K5zS5de9kC4Pt9frsi/
+         zDNtxcXYueTOBCgEc8jBj2skxsI/CIUBVnQkmyG1JLriZV4sXth+TX9nPx0o3XKaHWKx
+         e7jQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757722181; x=1758326981;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=D4qcwx7tIF7ceX4FWdqTaXFiCrpIzKr7ul9F9MwN60k=;
-        b=bC6UzyR87hDrUjK1LMQMBfPAtJwGgLiWuhuBcH4PvmQqV+aJufsSBBZh6xGmt8QFPe
-         EjGiXtQlSy4eXejEwx5aswfRzUFFM85Di8CeUJ3tgTtEq8omNNyxEuZTrvAjp7ytWtGH
-         KXNSw7hFViLFGAUteNfTXGhsG8BVdvMjfRHsehD4DptIrpmhkhud7YikV2eX4xBEHfQp
-         dT1Zlh/KIQ6n+Efn9RLtBw4F++ClJeC9oZmQQYWgw4DTPZsafeYgcoa1CUAdsVAr+LsZ
-         LE3GIjD3+tz15YisEErSRc8zvCgkSNk8ca+/4WbUg1JANbzJV2hma995yP1qb+omQnWS
-         53Zg==
-X-Forwarded-Encrypted: i=1; AJvYcCXZMJ8XJYjR4izG2Ov5MiXaRG5wTXTuMS3dq4kI+TpLfOABEmyNfHw2Zh6q7gghUiwWqi5ghZEQnA==@kvack.org
-X-Gm-Message-State: AOJu0Yyh2uofCBwCD3yn++3bZ8cfawD9SISPJ2M9q/xYPZ5uIQCIdxhD
-	WAyK1+y87jsJk1uqg7A7uW5SfGwF8DF78ivG9dSShbtC8KFWp94P9kFcRFyrNvMYGpV02A41WQ5
-	y9JNAJ7ynQ8i/j+irxA==
-X-Google-Smtp-Source: AGHT+IHS23gulFRPNDYDol1StJlKh3HDBOcLTAfZPF7cXgJccYt3Eih+Wl2Bgx4LCQZX6nkkbvzcr31DF56Mzcs=
-X-Received: from pjwx7.prod.google.com ([2002:a17:90a:c2c7:b0:327:d54a:8c93])
- (user=sudarsanm job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a21:3288:b0:252:2bfe:b648 with SMTP id adf61e73a8af0-2602c6246e2mr5853775637.52.1757722180835;
- Fri, 12 Sep 2025 17:09:40 -0700 (PDT)
-Date: Fri, 12 Sep 2025 17:09:35 -0700
-In-Reply-To: <20250723-slub-percpu-caches-v5-0-b792cd830f5d@suse.cz>
-Mime-Version: 1.0
-References: <20250723-slub-percpu-caches-v5-0-b792cd830f5d@suse.cz>
-X-Mailer: git-send-email 2.51.0.384.g4c02a37b29-goog
-Message-ID: <20250913000935.1021068-1-sudarsanm@google.com>
-Subject: Re: Benchmarking [PATCH v5 00/14] SLUB percpu sheaves
-From: Sudarsan Mahendran <sudarsanm@google.com>
-To: vbabka@suse.cz
-Cc: Liam.Howlett@oracle.com, cl@gentwo.org, harry.yoo@oracle.com, 
-	howlett@gmail.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	maple-tree@lists.infradead.org, rcu@vger.kernel.org, rientjes@google.com, 
-	roman.gushchin@linux.dev, surenb@google.com, urezki@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 2AE38A000D
+        d=1e100.net; s=20230601; t=1757722236; x=1758327036;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=gh4qNOq/fXdAmcpuz4VCDjOq3KMlvlbBCKcrRvBJTss=;
+        b=ODz0m96CWtMoYq1pb8TfhqLd7C0Eg/DEYiclEgZfABxAxom4n1WdrYKvKj025rThwv
+         GnKf6vc+/FZ5m1d4rDMlBsByF+RSEOmx1y5EX7ptq63vvz3OlcxIGHbl8lxnJLDykBQM
+         MUzhanLGH763+Fx9QSdqsbhBnDnOKh5XfDuLQ4bt9SK7/FkUfNEWUCLWN+H2NUnzZ71H
+         CkuvVveadCpeXNjAfqecXQkiA1Q3epyjci8sWImMv/oSVcN6tPoRHlTqB9FtMjhjcNk9
+         /QEqMBn52wXAhWAlShRXSWWh7yvJ6wSqxchFdMZ7/cJunOFMRLAAsrylmCARR6+zxQtl
+         ggKw==
+X-Forwarded-Encrypted: i=1; AJvYcCUFgJuoUApL75mmSGdQHLeEK4qr7A/gWiDFq+b6pMG5T9PjkfL1ZqGMuzvSOoUZlVd8yyBmRtsekg==@kvack.org
+X-Gm-Message-State: AOJu0YxStJdDAWb5P+zr5gR1RXwoXVcBYrYKTatfMm2NxdQM57RDefow
+	ND6tq+UJQ6LeY7Y3B+id89/qojs1jchmqcVM/RFGjCHEr7nahpxobRsu
+X-Gm-Gg: ASbGncv0Zi7j3mNSM0eOjx21muGR36cO19tJTxkMMjlBdPloFE3dXlYMGTVi/vY/hQB
+	eggHMnKQG7TxIOJlv2WeV+/guI0EsdBPo/zrRhFRFOQmVz4tHOk/wIhRX5K46BRIE3TM7v7LZW5
+	geViRYWR7M7Gxz3pjFl8dIQKbuo9pzj/uJ7h4PnuHPlW2Gf2XcLupP/B+25nVkL/g/D5d0UTvqF
+	IzCz8gRGUsLBiOFNZy1mmjV9qc74xYH2UvqvM2MiuOPXF7awrtbLboX+RYvrKS0N4niu1rO8brW
+	rcaAf/XDtegqAmtHObA+8ZeCIb2THA+o/Zo+db7byfHBTSpr4M9fJsposaEjeINQ2+2iETX/yQa
+	SD85atTQLwGqHc+HrvpRw5yw/og==
+X-Google-Smtp-Source: AGHT+IF+IFElhDrfYVuV3NnJDLLLUGoVTpNF/5sEZ66XO8Fi157c0djNevbADhBEv0DTmFyy6cy2HQ==
+X-Received: by 2002:a17:907:9720:b0:b04:3c00:b934 with SMTP id a640c23a62f3a-b07c35c2876mr455826966b.21.1757722235717;
+        Fri, 12 Sep 2025 17:10:35 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b07b30da4basm475667266b.8.2025.09.12.17.10.35
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 12 Sep 2025 17:10:35 -0700 (PDT)
+Date: Sat, 13 Sep 2025 00:10:34 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Wei Yang <richard.weiyang@gmail.com>,
+	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
+	akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
+	mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org,
+	wangkefeng.wang@huawei.com, linux-mm@kvack.org,
+	Oscar Salvador <osalvador@suse.de>
+Subject: Re: [PATCH] mm/compaction: fix low_pfn advance on isolating hugetlb
+Message-ID: <20250913001034.wt3iw4nyrmldblhg@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20250910092240.3981-1-richard.weiyang@gmail.com>
+ <20250911012521.4p7kmxv46kwz5fz5@master>
+ <5F7DCC9D-4CA2-4BA2-9EA8-F04C3883E289@nvidia.com>
+ <20250911032751.khtgvdhcqzyf3rgr@master>
+ <3DE28F4B-ACB1-468F-89B9-D7750D24BE4E@nvidia.com>
+ <aMMGbPX9uUj7TfoG@fedora>
+ <20250912010721.zd67xbfdava2u26e@master>
+ <ED7450E4-51F9-4749-A74E-C3AE8927E577@nvidia.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ED7450E4-51F9-4749-A74E-C3AE8927E577@nvidia.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Rspamd-Queue-Id: 6125240009
+X-Stat-Signature: mzx3hmq389d5g6hdm3e615pow9r9yxob
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: pdd8bruw5yrrpwiuyjgkfq9w6sj9p35i
-X-HE-Tag: 1757722181-314292
-X-HE-Meta: U2FsdGVkX1+VcyFgiD6RIMOdjRTiEKftYwL18+VUbg6mCuTvnn4infI9wi9brfQyUXX+wPFqWsHF47xDrA5gnlLwNblYyQyvWmtAfW+4ZW9pMLlght3J5Kf708TERwYc1etb324xdTQJtlCi24ZnC8nNOQndxNIr6UqAF1hE/xWQmsRzENYERo6L440sPyNOGBWMRnbVSAogryTb4SS+G37LMZf62lq3NDD38HutLrlDBnNwIHOqGFSe+6ToCL3s1LIXgfluOLsEVlCNVhDfJ+pT0OmqtwUDOpQG9pr3Bxqci1Zi0K09VAhxCeqCPcIxSzYMvqa7JWVZqwujoIyU1h0omKINSsoYvpOrzXI1TBQp0xWB+ALXRLqgl9pCEB5VJ9gyBm30w/jKJXX1XbCFGDj9PMPuXXcmVWmP79Hh7BYop0ZxQPtCCacFDKvOny/dvE3txvqlwFlHGvFpf1z+W7j5+clwNpAU/a+oqcHrqaT7CRGj6chvrQEMFg8JU2qqlFoNVsqnd+Ek0r8J5sIUv64ADbQvzlXBW6LOFfDFRQMfzZjrW0Pi0V3VJ7XjGqFrXhOPPv7L3L8QSdmUqyd+XWrsc5loQfjMx0j9NzdSN5auNcY65bYWfbntNEufx4JNwjyZwLHnaHmMbfodn38NqSaDrSYnVfgm56haeghM/EEz/m2W1yQlhPpvrWJBVZngOQXNOk8Dd8h3OJOyIsqiN+uuc6gDBa+/UZgiBNv6MSRfDpCPYz/V24VqSgksLNtkV+WOMRnNo2n+ePK0T4/KEhgink7m4UbiqrVbmWkCk/cJMivGyUvZWeINXya7mxvH8nvjSqf8UzOqPtE5wVwr8FiTc3fWm57ujLZqPjiEDDP+Sz4+0ltcYZ/bkqIinNF569hwHr2+pOKUNaR6RbPacogc/kgcr0s/tgS8QsuC9FlZcj6yWY1ySuKDk0vI21yHAXz+mHcc0ognFSXNIpW
- dpdDbvjK
- nYeBa+fcZkgvNqOtyB6WHhA0mz3qewMXACoAqGoPi4G8sOuDytPoCCKFvDsl9XL2+fhgt1zgbK6w66OyONd2EZMCa22urQJcKmCMListfI+HQIPE9sYOzGHlZP+Q1TlyxIWWccqqByFtA3fEnZTONtxOYTcehxeqbzH3O2t/4zF/kIFQjdvHfJW0LIDshgjJiFyMPKYnFbdQnHHKZAhi5NwdoGlzPu9BAslu2TN951aLFR9BbAfg15Bn2E+gD/1VN8i57DRQjl7YEz2b5dA9be73eVu82reDN57FxrLDtxMkf1xyapFAVmnd56Ntwi4HgiEe1YFdSHBcox0+/YRjbLKhdN3jg+p8rWy4lXuUjVgy0I/Nbt4OgBmcYhIaRnxuJe+oMH8KCm3qtCBJEvSMaeQR+vWkC+/ghEy5zXehBseUVWJK3l7t3MEceD5MwNf6aJWmWL1ivw7rThT4T6+7osETklcMC/a6Yi3P1F1gQ836c9utWbqPNqJTgzksedV1qcEKn3B5AseU74FJJ/f86VmISxHSXPwPTw3USHmrJFmCevzXa8USc8UjJqe1EmCBG8la2a/3PsM4Ex+A=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1757722237-979488
+X-HE-Meta: U2FsdGVkX19xOHaOvBVgsAeSLjZRXYx2AFaAtiWBMG4vYcaSenBHVBPLT23gRHRmwa+eE/b1g42KwgCSEbPMhGLZkarKuJrjt1/eDeQxU3J/2CdjPzInpB8KtfUtBUbJZh4zRSCrNJ+J7klVgxfuY3rsNnIeTR2knEJaevtg8JG5StqgNs45l5BnjMoNAXxz5j9XA8Pr+oQX2qxtxS2wCcGPp61OTxTIYSkkDlL9jwXMySJZW6HnajFzkXSXNsCv8hIrjUR5J2kinD8PWW88NedRtoT5t6r7l9nlSIJ8Zdu4+Q3oLtYwKuIeqr6SmgtBEwdESEY9eEXV8FXSHHjBmXCYl1OoYnaVkeFjXOH/6/y2FmYwLTB1NFN0q2XAjQpbJCTdFN3ZWzdaeqBETdp2TE+MZhvtzcwxRVzqvvoALfOCS/doA5u8R4q6i/g/GVZb987C5YDOnaPZmTaTzWdOioF+cb1tSCJ+BenN0yZrO0jRatSDQ46tlGJDetQSrGTm9Ggljldtcpj2CN/Rk0fElZbqOLXKA0GcKC+uEiyLHs4Ds66Cbzb3y781ksLqOHrk35gyomu44nHaNz31jDD4yLKHF80M5MQvokglLdChm8hA8yGN+6BqE3XA3rHdKDfbCHt2cbgScy+OuyQSq2S7DOldYwHjzKSSKBlw3sks09VoVyA5zgHtL79MCwHoqodBH6WDzxoXQncRouvgM+oyXTUFE4XmLWUWvhD/J6yjde/HG9Haj2PmueKqKVwUlUy6UFwPS5zYS+qb7YAns03qOCINEdyh+1ymjZIJsm5FqvkQmDtSS1An0c5CsTscP/pDin9IPVNnMC/CyTnU++qOHZubKirYhWWf4i1qAN/bHp4AxdgeWT/9WhqdP/ctgyw+eOvUJGexCjhAeuEye88q0ddX1AacRLrDGNMazmQahddWRustijkmTjp6JyLbV8TzsIe7EgtKMSjWiN3LQAQ
+ Q8AyhzcR
+ 15XnxYHpY0BaGVArz0I1+01PGscjwq9OicVEwONDricYBiyhsr62gNHhK47ENPBwfLdCaio3zTC9w/nCNTmciUbIKL3kIBWuBeSTqJjmoo0sPsqRUz9xyPTf2+ys67RMCWGpmAY60boOj7eCU8W19t5QOdOd6mEjXeRCYLQ09ajf0VdmD5hRO00j5v4dJmUdqm4bcYALIURtmxMEW/FpRwf6B93ibVGUugB6OSN1++8UtOPbEUjfDbR5f0Vtg7dxAN6DHAa3UcE55k62NNEQb4RnDfuYMZRVFme4FshogiqRcCkpgok3P+HgZ0Mr8kqp2YR8Ve9aH0U6ySqiEvbSyiz9VzjMbebCbt/WDywnlAGBXVnViSFg+bg3ih3hjCBW4Ma/FgR26a0zg2LjKsTSmHgz/eQ/RlukxW+W7jV7zAMZhqVfIitD6whtZhHCdehu58AnFUA9jxjjGvR7Wcjrs4eGVH+9D1EBOuK8PwSar/hp7De0iDjpSqKAeuNx1Onr4scl62pnSYqgRzg59vUeue4XKxJ5bp/TE+PH0hw307Z828hvd3MlfwUJ1WF8SYHU8/Ee23dhb3BZFVIpm9jv5mZgi22+M/uyLoKedsmF0O0Wv+PhDU0qwgsBYgDa3R2z/Y95L/h0rSrPueuG560m26bCfExEg+kzxvDNWFyeuAb065ljPYJylVIH1e3BSGoQcUPyePmAyrJL1WVXg4ieo2Tp64NWvc6KtWUgH2YhdqUY6SXcSNg+wzmOvgWGuz1tRQoOJ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,99 +131,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Vlastimil,
+On Thu, Sep 11, 2025 at 09:29:39PM -0400, Zi Yan wrote:
+[...]
+>>>
+>>> For compound pages, we will always have tail pfn < head pfn, so we should
+>>> always find the head page first.
+>>>
+>>
+>> I think you want to say tail pfn > head pfn?
+>>
+>>> If you did find a case where we somehow encounter a tail page here, I'd
+>>> love to see it. And then you'd also want to make sure the other compaction
+>>> trackers are appropriately accounted for.
+>>
+>> I may not follow you here, below is the call flow for
+>> isolate_migratepages_block() invoked during __alloc_contig_pages().
+>>
+>> __alloc_contig_pages(nr_pages, ..);
+>>     start = ALIGN(zone->zone_start_pfn, nr_pages);
+>>     alloc_contig_range_noprof(start, ..);
+>>         __alloc_contig_migrate_range(.., start, ..);
+>>             pfn = start;
+>>             isolate_migratepages_range(.., pfn, ..);
+>>                 isolate_migratepages_block(.., pfn, ..);
+>>                     page = pfn_to_page(pfn);
+>>     start += nr_pages;
+>>
+>> In the loop of __alloc_contig_pages(), it iterate on each nr_pages range. And
+>> nr_pages seems could be any positive number, so it looks the first pfn checked
+>> by isolate_migratepages_block() could be not aligned with page order or less
+>> than MAX_PAGE_ORDER. This mean it could be a tail page per my understanding.
+>>
+>> Maybe I missed some point here?
+>
+>You are right.
+>
+>But nr_pages cannot be any positive number, since ALIGN only accepts
+>power of 2 as the alignment. So alloc_contig_pages() might need another
+>fix to handle the case nr_pages is not power of 2.
+>
 
-I ported this patch series on top of v6.17 and ran
-some benchmarks: will-it-scale, hackbench, redis,
-unixbench and kernbench. I ran the benchmarks
-on Intel Granite Rapids (480 cores), AMD Turin (512 cores)
-and ARM (80 cores)
+You are right, I missed ALIGN() requirement.
 
-Summary of the results:
+So here we should use roundup().
 
-- Significant change (meaning >10% difference
-  between base and experiment) on will-it-scale
-  tests in AMD.
-- No significant change on other benchmarks ran.
+>Oh, after I checked pfn_range_valid_contig(), I find your example does not
+>apply, since it returns false when any page in the range is PageHuge.
 
-Summary of AMD will-it-scale test changes:
+You are right, here hide some magic...
 
-Number of runs : 15
-Direction      : + is good
+>This means with your example, PageHuge branch will never be executed.
+>But alloc_contig_range_noprof() is exported and can be used directly,
+>the @start input can be any pfn, which can be in the middle of PageHuge.
+>So your fix is still needed for this case.
+>
 
-|            | MIN        | MAX        | MEAN       | MEDIAN     | STDDEV     |
-|:-----------|:-----------|:-----------|:-----------|:-----------|:-----------|
-| brk1_8_processes
-| BASE       | 7,667,220  | 7,705,767  | 7,682,782  | 7,676,211  | 12,733     |
-| TEST       | 9,477,395  | 10,053,058 | 9,878,753  | 9,959,360  | 182,014    |
-| %          | +23.61%    | +30.46%    | +28.58%    | +29.74%    | +1,329.46% |
-| brk1_8_threads
-| BASE       | 1,838,468  | 1,890,873  | 1,864,473  | 1,864,875  | 18,406     |
-| TEST       | 1,464,917  | 1,668,207  | 1,608,345  | 1,654,578  | 70,558     |
-| %          | -20.32%    | -11.78%    | -13.74%    | -11.28%    | +283.34%   |
-| brk1_128_processes
-| BASE       | 65,018,211 | 65,603,366 | 65,285,348 | 65,103,197 | 232,885    |
-| TEST       | 51,287,801 | 52,161,228 | 51,647,807 | 51,509,505 | 277,326    |
-| %          | -21.12%    | -20.49%    | -20.89%    | -20.88%    | +19.08%    |
-| brk1_256_processes
-| BASE       | 15,186,881 | 15,239,120 | 15,210,265 | 15,205,809 | 15,850     |
-| TEST       | 20,478,924 | 23,936,204 | 22,754,698 | 22,771,320 | 1,255,974  |
-| %          | +34.85%    | +57.07%    | +49.60%    | +49.75%    | +7,823.72% |
-| brk1_384_processes
-| BASE       | 11,587,076 | 11,851,775 | 11,765,869 | 11,806,007 | 73,736     |
-| TEST       | 25,464,757 | 29,176,818 | 26,695,946 | 26,563,116 | 1,012,563  |
-| %          | +119.77%   | +146.18%   | +126.89%   | +125.00%   | +1,273.23% |
-| brk1_512_processes
-| BASE       | 14,410,293 | 14,891,082 | 14,775,209 | 14,793,142 | 114,384    |
-| TEST       | 22,918,195 | 29,648,177 | 25,204,321 | 25,128,471 | 1,604,037  |
-| %          | +59.04%    | +99.10%    | +70.59%    | +69.87%    | +1,302.32% |
-| mmap1_8_processes
-| BASE       | 3,164,411  | 3,170,585  | 3,167,590  | 3,167,692  | 2,436      |
-| TEST       | 3,516,242  | 3,756,209  | 3,684,585  | 3,698,731  | 68,659     |
-| %          | +11.12%    | +18.47%    | +16.32%    | +16.76%    | +2,718.28% |
-| mmap1_8_threads
-| BASE       | 627,817    | 632,702    | 630,554    | 629,281    | 1,764      |
-| TEST       | 541,202    | 554,097    | 549,104    | 549,896    | 4,257      |
-| %          | -13.80%    | -12.42%    | -12.92%    | -12.62%    | +141.34%   |
-| mmap1_128_processes
-| BASE       | 30,303,429 | 30,736,686 | 30,466,107 | 30,343,821 | 174,985    |
-| TEST       | 9,749,426  | 9,893,331  | 9,823,701  | 9,857,157  | 52,125     |
-| %          | -67.83%    | -67.81%    | -67.76%    | -67.52%    | -70.21%    |
-| mmap1_256_processes
-| BASE       | 7,496,765  | 7,546,703  | 7,528,379  | 7,543,246  | 21,465     |
-| TEST       | 10,868,119 | 16,947,857 | 12,695,418 | 11,608,083 | 2,157,787  |
-| %          | +44.97%    | +124.57%   | +68.63%    | +53.89%    | +9,952.34% |
-| mmap1_384_processes
-| BASE       | 5,629,206  | 5,856,927  | 5,758,347  | 5,733,892  | 85,930     |
-| TEST       | 12,053,514 | 13,635,555 | 12,966,975 | 13,283,450 | 606,325    |
-| %          | +114.12%   | +135.49%   | +112.89%   | +104.26%   | +2,855.57% |
-| mmap1_512_processes
-| BASE       | 6,959,199  | 6,996,383  | 6,975,912  | 6,974,353  | 15,446     |
-| TEST       | 10,197,814 | 12,029,690 | 11,458,180 | 11,381,726 | 534,690    |
-| %          | +46.54%    | +71.94%    | +64.25%    | +63.19%    | +3,361.67% |
-| tlb_flush2_384_threads
-| BASE       | 2,953,477  | 3,021,464  | 3,003,512  | 3,014,264  | 25,525     |
-| TEST       | 2,231,417  | 2,526,876  | 2,408,368  | 2,411,121  | 115,773    |
-| %          | -24.45%    | -16.37%    | -19.81%    | -20.01%    | +353.55%   |
-| tlb_flush2_512_threads
-| BASE       | 2,499,486  | 2,542,966  | 2,520,278  | 2,530,049  | 17,161     |
-| TEST       | 1,707,641  | 1,714,524  | 1,708,951  | 1,707,713  | 1,877      |
-| %          | -31.68%    | -32.58%    | -32.19%    | -32.50%    | -89.06%    |
-| mmap2_128_processes
-| BASE       | 29,754,984 | 30,313,146 | 30,010,106 | 29,897,731 | 218,812    |
-| TEST       | 9,688,640  | 9,750,688  | 9,710,137  | 9,696,830  | 23,428     |
-| %          | -67.44%    | -67.83%    | -67.64%    | -67.57%    | -89.29%    |
-| mmap2_256_processes
-| BASE       | 7,483,929  | 7,532,461  | 7,491,876  | 7,489,398  | 11,134     |
-| TEST       | 11,580,023 | 16,508,551 | 15,337,145 | 15,943,608 | 1,489,489  |
-| %          | +54.73%    | +119.17%   | +104.72%   | +112.88%   | +13,276.75%|
-| mmap2_384_processes
-| BASE       | 5,725,503  | 5,826,364  | 5,763,341  | 5,765,247  | 29,674     |
-| TEST       | 11,682,353 | 13,720,566 | 12,269,665 | 11,776,228 | 877,060    |
-| %          | +104.04%   | +135.49%   | +112.89%   | +104.26%   | +2,855.57% |
-| mmap2_512_processes
-| BASE       | 6,959,199  | 6,996,383  | 6,975,912  | 6,974,353  | 15,446     |
-| TEST       | 10,197,814 | 12,029,690 | 11,458,180 | 11,381,726 | 534,690    |
-| %          | +46.54%    | +71.94%    | +64.25%    | +63.19%    | +3,361.67% |
+Then the next question is why we filter PageHuge() in
+pfn_range_valid_contig(). Looks we can handle PageHuge() by isolating and
+migrate it.
 
+>--
+>Best Regards,
+>Yan, Zi
+
+-- 
+Wei Yang
+Help you, Help me
 
