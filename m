@@ -4,92 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66961CAC58E
-	for <linux-mm@archiver.kernel.org>; Sat, 13 Sep 2025 03:26:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DDECCAC58E
+	for <linux-mm@archiver.kernel.org>; Sat, 13 Sep 2025 04:07:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BF5006B0007; Fri, 12 Sep 2025 23:26:29 -0400 (EDT)
+	id 303B36B0010; Sat, 13 Sep 2025 00:07:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BCCEF6B0008; Fri, 12 Sep 2025 23:26:29 -0400 (EDT)
+	id 2B4066B0011; Sat, 13 Sep 2025 00:07:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B09756B000C; Fri, 12 Sep 2025 23:26:29 -0400 (EDT)
+	id 1A2D26B0012; Sat, 13 Sep 2025 00:07:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9FC1D6B0007
-	for <linux-mm@kvack.org>; Fri, 12 Sep 2025 23:26:29 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3B24311B135
-	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 03:26:29 +0000 (UTC)
-X-FDA: 83882789298.23.07CEA9B
-Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
-	by imf04.hostedemail.com (Postfix) with ESMTP id E10AC40003
-	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 03:26:26 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=s8lMUvZN;
-	spf=pass (imf04.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	by kanga.kvack.org (Postfix) with ESMTP id 0706A6B0010
+	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 00:07:54 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9BEBD11B144
+	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 04:07:53 +0000 (UTC)
+X-FDA: 83882893626.14.8E28011
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf16.hostedemail.com (Postfix) with ESMTP id D6816180007
+	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 04:07:50 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=Zvj7+2VJ
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757733987;
+	s=arc-20220608; t=1757736471;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LBPemiQvLMxvPRaP1xaM0T1pppLLfrD8DNU0toXcXBo=;
-	b=p081kpUBpwBefOEE93iFbeJpbLYw0dGYzx8j68RXFehxbp3X8XTrUOTN+SwJqc1MPZcjQO
-	vPqQvjy2NAoDBI5ZkdAyMVP6qGu32vK5wgdiVAsq5nDDPzmOmuyhuiJWQ0NoTzeIp9NFU0
-	1WZy9X9uazgaUaLvjy6q8fwt12seCbo=
+	bh=ZkZpc5dBMnXI4POCZ2TCFFqEd7xijX/+QZHk6h+vWnA=;
+	b=hFDh5KvEnx2i8h7+R2y393S+733XOyNPtOwrQc5imULk1l9gBUDVkyjxbuhB7PC+DIqWeh
+	RYgqJPovGQw7f55SZlUr+GSH2yuQXZvF/5BnrMtonwnmQAU9hnYzbFEpEQ8fkqWsvtdNUZ
+	S9i5nW3URYtYy1U2rj1GZT1wh4ZM6Ps=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=s8lMUvZN;
-	spf=pass (imf04.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757733987; a=rsa-sha256;
+	imf16.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=Zvj7+2VJ;
+	spf=none (imf16.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757736471; a=rsa-sha256;
 	cv=none;
-	b=AYK+tmmHUAxiymrbNBPFIcCcz1Iqd9YdhJhk/Gad3rrDbl0YB0P3cFTpkZ1jdhXKUiuTPb
-	jRo4V7BrChoIJAQiPkOGUrpy8GallIdkxXynXwfhzXTlJtnFNRjWlvyNWuCcO8V+w3rp02
-	FGqMpowwz7TWhDVFNjsS3iLnmba8BBQ=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1757733984; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=LBPemiQvLMxvPRaP1xaM0T1pppLLfrD8DNU0toXcXBo=;
-	b=s8lMUvZNXSVQg4/b/wF+xJThTetnZEhAtxWpj7Y+zhMuUr6JFGkoBv3r4pcuL+hOebIMB65UGZI9826i4ydw0vQpYDNcuvsDmwrjtFgMWdyk2dCl1Y9553dbR4bcW/CmbmAuHJ52CkhntrbTiarBDpMYHoEy/rpD9NBS2rdV+M0=
-Received: from 30.134.50.220(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wnse-95_1757733982 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Sat, 13 Sep 2025 11:26:23 +0800
-Message-ID: <59ddf3bc-cfc0-40ab-ae2d-859724ef6168@linux.alibaba.com>
-Date: Sat, 13 Sep 2025 11:26:22 +0800
+	b=k8PP7ZZAvXgo30T/XyJi3/cjaUZpG7D3CzxHku4roBsv7rtQ95r+MGOG2YVcvXVF/s+PaM
+	ORC63yXFwDTeAcXs9dtAgHKzfpQ6B77SrPiHu4GxFRmY30eXf7Z6W++E3vOMERrODyCFrz
+	e6JCF/mnLnWdsZ9BWgqFrHo1TgWVyvo=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Cc:Content-ID:Content-Description;
+	bh=ZkZpc5dBMnXI4POCZ2TCFFqEd7xijX/+QZHk6h+vWnA=; b=Zvj7+2VJQP1AUrM1oc0jI4D0df
+	kZLbrgoF6tWC1TSXrQCzaRwf64BcIFqWM9jqgctShxRWwA64Z3cH3ZJp9xtz/vExBAcClQcmfIZn7
+	yCcLB+AesJzDmEPSjA8I8PqMwPg+QtoHLtCCGQwR4t8mmkzazK/OjVldlPQMX7eK39OikaYuiFAkS
+	f3j34JKAUXKzXllob2T5kCBHPFSR85WlWQfJBGW6vvdYMXS8Z3QXIbkl5YsAeQ69QGvyvU6VGYXVL
+	zapYbucIouJWo+hLXEvQIBUIuwgelZEWHzU6JUYSd+NcP/fFDMoT6FMSctoEiTHXQLnPtkJJ7TQUx
+	RnGJ92cg==;
+Received: from [50.53.25.54] (helo=[192.168.254.17])
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uxHXd-0000000D5gz-1paw;
+	Sat, 13 Sep 2025 04:07:13 +0000
+Message-ID: <69198449-411b-4374-900a-16dc6cb91178@infradead.org>
+Date: Fri, 12 Sep 2025 21:07:11 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 09/15] mm/shmem, swap: remove redundant error handling
- for replacing folio
-To: Kairui Song <ryncsn@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
- Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>,
- Chris Li <chrisl@kernel.org>, Barry Song <baohua@kernel.org>,
- Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>,
- Kemeng Shi <shikemeng@huaweicloud.com>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@redhat.com>,
- Yosry Ahmed <yosryahmed@google.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- linux-kernel@vger.kernel.org
-References: <20250910160833.3464-1-ryncsn@gmail.com>
- <20250910160833.3464-10-ryncsn@gmail.com>
- <0cb2bc82-1957-4efe-8c85-8558743dcf80@linux.alibaba.com>
- <CAMgjq7Bc6r2=BcAPCeVPcVJ_hP8bXTs_pya2fWg8ZL-vTG9SAg@mail.gmail.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <CAMgjq7Bc6r2=BcAPCeVPcVJ_hP8bXTs_pya2fWg8ZL-vTG9SAg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E10AC40003
-X-Stat-Signature: npog7h14owbe53fxgxu3n6ky9mfjiayq
+Subject: Re: [PATCH v4 15/21] mm/ksw: add test module
+To: Jinchao Wang <wangjinchao600@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>, Peter Zijlstra
+ <peterz@infradead.org>, Mike Rapoport <rppt@kernel.org>,
+ Alexander Potapenko <glider@google.com>, Jonathan Corbet <corbet@lwn.net>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
+ Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+ Adrian Hunter <adrian.hunter@intel.com>,
+ "Liang, Kan" <kan.liang@linux.intel.com>,
+ David Hildenbrand <david@redhat.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Nathan Chancellor <nathan@kernel.org>,
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
+ Kees Cook <kees@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Sami Tolvanen <samitolvanen@google.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Masahiro Yamada <masahiroy@kernel.org>, Rong Xu <xur@google.com>,
+ Naveen N Rao <naveen@kernel.org>, David Kaplan <david.kaplan@amd.com>,
+ Andrii Nakryiko <andrii@kernel.org>, Jinjie Ruan <ruanjinjie@huawei.com>,
+ Nam Cao <namcao@linutronix.de>, workflows@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, linux-mm@kvack.org, llvm@lists.linux.dev,
+ Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+ Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>, kasan-dev@googlegroups.com,
+ "David S. Miller" <davem@davemloft.net>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ linux-trace-kernel@vger.kernel.org
+References: <20250912101145.465708-1-wangjinchao600@gmail.com>
+ <20250912101145.465708-16-wangjinchao600@gmail.com>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20250912101145.465708-16-wangjinchao600@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: D6816180007
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1757733986-752220
-X-HE-Meta: U2FsdGVkX18MpatwdR8P9PtwA4YSnkkIml78AAxG9bclqFMSl0BNV1YOr0+xgd/ekgLIiNTKxSuSN3nYglo8UkZTaUn5gCF/IYIcIbKk63ggVMxCOWAuYse2Chi1icn2uqCSFJXD9/BVotbBnFPU9Ryyfx5M+X5ViLqcobnkg3+cuVRMhfX4m/9Dm3i7VoWTX4iaMI1gJWu+BEHUYbND765ImId+RcDx72zie14GU85VzHPKBJ5vOLeKm/oJeN6eSStFyjxB9Qn5A/iDi/zbwlMuh78uuNvgjsO1cFefygMy8Y/pneArJMhK06muzqjwopzdWU2ZMDUBrdwmgRKdEjdh8LPZpIoNo3u8LbWLM46matk2jkLGzDHVu6zxF3Kga8qcIKoTz66MnaigAxGoMDatp6K7t0X0f0RljaSzWd3vHgig0aYTYAK4NREfJ1U1ymm7WHcH0j76Gv4kvAkaIR0v0KnjQSsR0XvZz0NzuvaEBoltptbtGKnJuqZSQg/eJZ35pJ8U4pOGNIKsj28jm9GdcTijWMWFPrtXCXcPEy4o+7qT69NkGShsQGVSe0PEsFXl5tfCd064I0jRt0R8xI7WoiVukVrNsMlNDNzaOqC5p9cdxig2F7512i4TG/pSJ6437ZqjfQN6reydz5xwKt/PamsPHCcuQa+FgYb89/0RrUH7WpHtXgIQPVm6cgwvaU/9apnD7tXJFbiu3Uvc4N+iOS+JubY8hE2PL5pabg9R5RadkosWYawafUy+zVsRZx2y8Df1LXDYl1qVB8mk5UkG1Rc8bkTCZuIRjD69yQLIKUTHCf01wPT0ekbMC53PWH66jrisiZf6QpwXcvvxt9ed9Jdzn+gwsFla9qhnUQR+RYuV+ekJD4QmJ3UeC7PmXn3mYAs89MQwy2vRsK9QytCdji+jXp2MDyBSsDS7vO4Ks4Y+82JX/Z5IADu4hlT3KoXcTAGaE0XeadCSWId
- YnP3kEbP
- symlXM+MVVX2okxuLPDE1OqP1nuNJMVHGEdJ6TZi2cuXxuLonE3Rr2tC5zh66mBsprGUKY9FzcFwKtIBk6BZ1nEdQz6unNBR2wlAawa/QXmV7UZdZJQDG8Je1lNsPq2pcT7jdJMo+gDKKAt1mc7vbDwCW0KzDFEHvXjMQHTU2T2nkjqsat1p6kxstjGnRC2sU5ea7g2eDyzOC1Bhm41ibqPQuZSp18P5Ze470AU4vanfTsjrbp5PkJ++0lU+SXrzb5YmsEyOEmiP0t5HwGO9N6SMTCZ0HkOk9a4TNQA/sTbP8GPndbx2G7Xe1+Bnq1FNrAF/xeWGBAQy+63WRpuYoIvbGn5taWcVeHHoBpK8szSv2fUkntgjtX3H9Yg==
+X-Rspamd-Server: rspam07
+X-Stat-Signature: igao4bu5zaxumyyprh84ypzy5rkt54bu
+X-HE-Tag: 1757736470-213023
+X-HE-Meta: U2FsdGVkX1+YwiA16BihnkTA8+W72XCFRa7vfx7CMmyNft913iY3W9VoYFoVRy0WYwOlU7r9blN1PAD15gu3GELVAYZ/4vxJ5QVYojlS6TUuYv+QX3ZzGOvjJ1vM2jd1np7zgnkjKpoqiBdzbneVqtn3SXRW6zm815kOCk/ACJn/YlmVo7wqAKyfi9rug+ky2EKn9u/D0W26TYRYQ10gl48DSAgJS9WHrGFZm2G9HEOwnaZ4xn4KWl/bbYka/7OMeUGgrQD4GowP1o8zSGCIXFk4fr8SIAcz7RGT4KteEomrFN/nN7TJBPp0CHGtfOS7NS0obQhcKyyxm+enNyHlbzi+JTMxLE/RNK7SRyFaHKVTZVtkxUXNOaCMKbReXEbo3biMxaad1K88gMizjgUblH+zhlizbG94wwTifYu0lyz4SwLRL/He+FM5AS4CGmk4+qqgaoP9tWSbmKiR+vyOnPjZ9q3GsJp7UjhD9golz5dOG6Nly0GnyvvcXYAKzF4CMqYmZjhy8K2nKcmTfgx4o18WeCjtwWY3XqhSnnUYE7pWu3Pom2ISbcJ4pSQeqeSZLztVoYp7hNUYCIw4YYqj1RCBKVQZWdwBZdoqsXzIKztjbG+rfrY6ETOpWWpv+RAkZySeUj7xZB18WX47HXtiNrk/1jNbH3tCruE/ofrsMpQY45eI0Nhx+DkGyLQOKW3XcfjRgL7n9RDYzVD1FoGJchVm+VWepQGWJqSAGOBuzndVxTUJ3yanZxpEKv6ADDgqebzIW05xSNmPg3opde8vGgtKTxKWhZyvXKe6puhmyFogeF2uAQ2pPnRWvVhkVT/EBaTK78bPhLeYpLskj6zM3QQdsGOmAr5R+aRBfen7FFG5QDSOv3b2zF/uLCFD/kGdr7cB6cl1OV2qHfJQuHIuy+45hyTXh3YxC83QTKbh0u0VQ2s/5hzqmLTIVsqXAtG8hmDMbM+hiXkW57xlDQs
+ EiqSb56G
+ VNVQ7EFzro+9Cz910Kan7bue0j+5oMM+3oI3fzQ+ClZ71y1OwjozTWkZdKzhPZQZNsIH0Bs+VcF3bCF8TFt70/y4f09yzc3SWq1McWSJ8e4DjttZz1RWATD6+Au53JL4WEGrnp+vsQeJF8Q0gGgBmL9ieI4k8G+pB/r7LUYtd/Rphe7QjIZZYfjXCPENAPkZv3I1XPWfEEZNQlzXK0Mr/IPeW6PZH15mBlfOW5qxyD4QxDh7cn2Z6C1GwYDxrebAVBqKKKAZVhtrNMD5a7cSmxHeepu9U9gDGBJGnNtubm87AzSWTQaLSJ5VKTVh+WBxVNniq
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,93 +131,30 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2025/9/12 20:36, Kairui Song wrote:
-> On Fri, Sep 12, 2025 at 4:22 PM Baolin Wang
-> <baolin.wang@linux.alibaba.com> wrote:
->> On 2025/9/11 00:08, Kairui Song wrote:
->>> From: Kairui Song <kasong@tencent.com>
->>>
->>> Shmem may replace a folio in the swap cache if the cached one doesn't
->>> fit the swapin's GFP zone. When doing so, shmem has already double
->>> checked that the swap cache folio is locked, still has the swap cache
->>> flag set, and contains the wanted swap entry. So it is impossible to
->>> fail due to an XArray mismatch. There is even a comment for that.
->>>
->>> Delete the defensive error handling path, and add a WARN_ON instead:
->>> if that happened, something has broken the basic principle of how the
->>> swap cache works, we should catch and fix that.
->>>
->>> Signed-off-by: Kairui Song <kasong@tencent.com>
->>> Reviewed-by: David Hildenbrand <david@redhat.com>
->>> ---
->>>    mm/shmem.c | 42 ++++++++++++------------------------------
->>>    1 file changed, 12 insertions(+), 30 deletions(-)
->>>
->>> diff --git a/mm/shmem.c b/mm/shmem.c
->>> index 410f27bc4752..5f395fab489c 100644
->>> --- a/mm/shmem.c
->>> +++ b/mm/shmem.c
->>> @@ -1661,13 +1661,13 @@ int shmem_writeout(struct folio *folio, struct swap_iocb **plug,
->>>                }
->>>
->>>                /*
->>> -              * The delete_from_swap_cache() below could be left for
->>> +              * The swap_cache_del_folio() below could be left for
->>>                 * shrink_folio_list()'s folio_free_swap() to dispose of;
->>>                 * but I'm a little nervous about letting this folio out of
->>>                 * shmem_writeout() in a hybrid half-tmpfs-half-swap state
->>>                 * e.g. folio_mapping(folio) might give an unexpected answer.
->>>                 */
->>> -             delete_from_swap_cache(folio);
->>> +             swap_cache_del_folio(folio);
->>>                goto redirty;
->>>        }
->>>        if (nr_pages > 1)
->>> @@ -2045,7 +2045,7 @@ static struct folio *shmem_swap_alloc_folio(struct inode *inode,
->>>        new->swap = entry;
->>>
->>>        memcg1_swapin(entry, nr_pages);
->>> -     shadow = get_shadow_from_swap_cache(entry);
->>> +     shadow = swap_cache_get_shadow(entry);
->>
->> Again, there are still some issues with the patch split. The swapcache
->> related APIs replacement should be placed in Patch 8, otherwise there
->> will be buidling errors after applying Patch 8.
->>
->> With this issue fixed:
->> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->>
-> 
-> Hi Baolin
-> 
-> Yeah you are right, I need to move these few changes to patch 8.
-> 
-> BTW I also found that the WARN_ON and irq unlock needs following fix,
-> the stats update need to be done with irq disabled:
+On 9/12/25 3:11 AM, Jinchao Wang wrote:
+> diff --git a/mm/Kconfig.debug b/mm/Kconfig.debug
+> index fdfc6e6d0dec..46c280280980 100644
+> --- a/mm/Kconfig.debug
+> +++ b/mm/Kconfig.debug
+> @@ -320,3 +320,13 @@ config KSTACK_WATCH
+>  	  the recursive depth of the monitored function.
+>  
+>  	  If unsure, say N.
+> +
+> +config KSTACK_WATCH_TEST
+> +	tristate "KStackWatch Test Module"
+> +	depends on KSTACK_WATCH
+> +	help
+> +	  This module provides controlled stack exhaustion and overflow scenarios
+> +	  to verify the functionality of KStackWatch. It is particularly useful
+> +	  for development and validation of the KStachWatch mechanism.
 
-Yes, indeed, I overlooked this.
+typo:	                                        ^^^^^^^^^^^
 
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index 957e40caba6e..c4d491c93506 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -2121,14 +2121,14 @@ static int shmem_replace_folio(struct folio
-> **foliop, gfp_t gfp,
->          /* Swap cache still stores N entries instead of a high-order entry */
->          xa_lock_irq(&swap_mapping->i_pages);
->          for (i = 0; i < nr_pages; i++) {
-> -               WARN_ON_ONCE(xas_store(&xas, new));
-> +               WARN_ON_ONCE(xas_store(&xas, new) != old);
->                  xas_next(&xas);
->          }
-> -       xa_unlock_irq(&swap_mapping->i_pages);
-> 
->          mem_cgroup_replace_folio(old, new);
->          shmem_update_stats(new, nr_pages);
->          shmem_update_stats(old, -nr_pages);
-> +       xa_unlock_irq(&swap_mapping->i_pages);
-> 
->          folio_add_lru(new);
->          *foliop = new;
+> +
+> +	  If unsure, say N.
+
+-- 
+~Randy
 
 
