@@ -4,104 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7567CCAC587
-	for <linux-mm@archiver.kernel.org>; Sat, 13 Sep 2025 08:19:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2EBBCAC587
+	for <linux-mm@archiver.kernel.org>; Sat, 13 Sep 2025 08:29:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 64E368E0001; Sat, 13 Sep 2025 04:19:00 -0400 (EDT)
+	id 3CB438E0003; Sat, 13 Sep 2025 04:29:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6248F6B000D; Sat, 13 Sep 2025 04:19:00 -0400 (EDT)
+	id 37C498E0002; Sat, 13 Sep 2025 04:29:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 515168E0001; Sat, 13 Sep 2025 04:19:00 -0400 (EDT)
+	id 21D5A8E0003; Sat, 13 Sep 2025 04:29:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 262CC6B0008
-	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 04:19:00 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CB2CCBC7CA
-	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 08:18:59 +0000 (UTC)
-X-FDA: 83883526398.26.3490AEB
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf03.hostedemail.com (Postfix) with ESMTP id C881D20003
-	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 08:18:57 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KtpoM3bE;
-	spf=pass (imf03.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id F3DA28E0002
+	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 04:29:39 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 801EE1DF930
+	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 08:29:39 +0000 (UTC)
+X-FDA: 83883553278.25.AB19950
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 8371040002
+	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 08:29:37 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NIhFoz3V;
+	spf=pass (imf04.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757751537;
+	s=arc-20220608; t=1757752177;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Spp/Jz1qXl5SUzfrVjS1ofed61ZjUSO+C5UH/+1pmIs=;
-	b=Tm5rnf/981wCqIJmOz3eABa0uK2Cz5KVr//peGrOPPYzJoIYrbkJz6f0lgGQVk/+rXbdQD
-	CjmZRB1F8RLutatozRsoxVeZE1GyGzfzfQsiIaiU/DB6civBr71MY8NLYub3raelTycBJ3
-	4l4lcTgY5WGlUvsQ+/KmaO4bRC3Epj4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757751537; a=rsa-sha256;
-	cv=none;
-	b=YsPIR59BMFauGL/IDR43Iq2td/HNcSeJmR9iftd544G3JcBjwWLfgqCzKR7u+3D08o9Ghy
-	5b/0emS8NgOoh4/6RX/p6GDpmxJx6UXQEm0gvi3OZqcv+w9Y+D0xhUpSBsv+TxZQvDkB1Z
-	yPnYRHJ2b4uxYTXNLkA9kqvvagSjrfk=
+	bh=PIeQDW6Tdi47ZNT16hYEbfLPFjdOb5UbtK5p18GEOMw=;
+	b=TjkwM8BLifg3NYOdSrPt5M4eF0Ak9zNTGJOi3xovhvLv2ZMtq/EsqF0JPr5s/zxMchdvkp
+	u46OPsoZ0raPCawJx907cCKMTiZAhQhC76KIUeOOzcHZz5bd96gVpwCUJyAS0cpfOjVGHy
+	pC72r2ycNVHGsk/MwONeF8z0K+PUtDk=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KtpoM3bE;
-	spf=pass (imf03.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NIhFoz3V;
+	spf=pass (imf04.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757752177; a=rsa-sha256;
+	cv=none;
+	b=O2D1gQKvDumuLSiEMczRtBSv5VRxmsnTLk9Wc2xI1RjOGitJDHpu05fWbvsGg4vceuY+iP
+	XHeC2S5sm7iVmqHXGjIt6M97CMINpDmVOh9Vgu5YiTpKGrSPWbbZ+KjSFRk5jdClkGnIM4
+	FlxUa+bqogA3fyU32hScDD8rtIpjHmQ=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757751537;
+	s=mimecast20190719; t=1757752176;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Spp/Jz1qXl5SUzfrVjS1ofed61ZjUSO+C5UH/+1pmIs=;
-	b=KtpoM3bEKsP5I85ScyDCHWcxG4d8OqaPoa+MG1bORVZajQs9Zw+FLb1Mn3LG9Z/IBx3uo/
-	ws1X16tv3q+HFXSm1Wsd8w32Rg6oDynTYBVp95Dx12w0ijgT4g3/geQWf3oPx/CqRVoLfK
-	Xvfe2039Eu8OP5pKWHs/lxUh/jkqboA=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+	bh=PIeQDW6Tdi47ZNT16hYEbfLPFjdOb5UbtK5p18GEOMw=;
+	b=NIhFoz3VgXF/QGRvyO+03CFEcS/Wfn1/wQo9xj9wzr3WSi3a34y+cc4XmfPE6qMOV4J4ZU
+	v22SfJsqt7o18NDLohGsBrbnYqvVxy5lR1BYsGrBMJAn25UOH7Gk8jJzn1PDCI1QIbcsg5
+	2EKjt8cUrPUQS6FCFjPOho21979wBd8=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-501-cbEIzo6iN9yUuPu2mhHx7A-1; Sat,
- 13 Sep 2025 04:18:53 -0400
-X-MC-Unique: cbEIzo6iN9yUuPu2mhHx7A-1
-X-Mimecast-MFC-AGG-ID: cbEIzo6iN9yUuPu2mhHx7A_1757751532
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-212-Ke3lSLs4P8SczzOZFgRwfw-1; Sat,
+ 13 Sep 2025 04:29:34 -0400
+X-MC-Unique: Ke3lSLs4P8SczzOZFgRwfw-1
+X-Mimecast-MFC-AGG-ID: Ke3lSLs4P8SczzOZFgRwfw_1757752165
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0A99319560B3;
-	Sat, 13 Sep 2025 08:18:52 +0000 (UTC)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 965251953943;
+	Sat, 13 Sep 2025 08:29:24 +0000 (UTC)
 Received: from localhost (unknown [10.72.112.45])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5D19019560B9;
-	Sat, 13 Sep 2025 08:18:49 +0000 (UTC)
-Date: Sat, 13 Sep 2025 16:18:46 +0800
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E99FA1954126;
+	Sat, 13 Sep 2025 08:29:19 +0000 (UTC)
+Date: Sat, 13 Sep 2025 16:29:15 +0800
 From: Baoquan He <bhe@redhat.com>
-To: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: kasan-dev@googlegroups.com, ryabinin.a.a@gmail.com, glider@google.com,
-	dvyukov@google.com, vincenzo.frascino@arm.com, linux-mm@kvack.org,
-	Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
-Subject: Re: System is broken in KASAN sw_tags mode during bootup
-Message-ID: <aMUo5rXaXOU2nNh4@MiWiFi-R3L-srv>
-References: <aKMLgHdTOEf9B92E@MiWiFi-R3L-srv>
- <CA+fCnZebyMgWWEOW_ZxiGwnkiXqXX6XK5NJv-uWXAxdN+JxsSw@mail.gmail.com>
+To: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>,
+	andreyknvl@gmail.com
+Cc: sohil.mehta@intel.com, baohua@kernel.org, david@redhat.com,
+	kbingham@kernel.org, weixugc@google.com, Liam.Howlett@oracle.com,
+	alexandre.chartre@oracle.com, kas@kernel.org, mark.rutland@arm.com,
+	trintaeoitogc@gmail.com, axelrasmussen@google.com,
+	yuanchu@google.com, joey.gouly@arm.com, samitolvanen@google.com,
+	joel.granados@kernel.org, graf@amazon.com,
+	vincenzo.frascino@arm.com, kees@kernel.org, ardb@kernel.org,
+	thiago.bauermann@linaro.org, glider@google.com, thuth@redhat.com,
+	kuan-ying.lee@canonical.com, pasha.tatashin@soleen.com,
+	nick.desaulniers+lkml@gmail.com, vbabka@suse.cz,
+	kaleshsingh@google.com, justinstitt@google.com,
+	catalin.marinas@arm.com, alexander.shishkin@linux.intel.com,
+	samuel.holland@sifive.com, dave.hansen@linux.intel.com,
+	corbet@lwn.net, xin@zytor.com, dvyukov@google.com,
+	tglx@linutronix.de, scott@os.amperecomputing.com,
+	jason.andryuk@amd.com, morbo@google.com, nathan@kernel.org,
+	lorenzo.stoakes@oracle.com, mingo@redhat.com, brgerst@gmail.com,
+	kristina.martsenko@arm.com, bigeasy@linutronix.de, luto@kernel.org,
+	jgross@suse.com, jpoimboe@kernel.org, urezki@gmail.com,
+	mhocko@suse.com, ada.coupriediaz@arm.com, hpa@zytor.com,
+	leitao@debian.org, peterz@infradead.org, wangkefeng.wang@huawei.com,
+	surenb@google.com, ziy@nvidia.com, smostafa@google.com,
+	ryabinin.a.a@gmail.com, ubizjak@gmail.com, jbohac@suse.cz,
+	broonie@kernel.org, akpm@linux-foundation.org,
+	guoweikang.kernel@gmail.com, rppt@kernel.org, pcc@google.com,
+	jan.kiszka@siemens.com, nicolas.schier@linux.dev, will@kernel.org,
+	andreyknvl@gmail.com, jhubbard@nvidia.com, bp@alien8.de,
+	x86@kernel.org, linux-doc@vger.kernel.org, linux-mm@kvack.org,
+	llvm@lists.linux.dev, linux-kbuild@vger.kernel.org,
+	kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v5 17/19] mm: Unpoison pcpu chunks with base address tag
+Message-ID: <aMUrW1Znp1GEj7St@MiWiFi-R3L-srv>
+References: <cover.1756151769.git.maciej.wieczor-retman@intel.com>
+ <bcf18f220ef3b40e02f489fdb90fc7a5a153a383.1756151769.git.maciej.wieczor-retman@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <CA+fCnZebyMgWWEOW_ZxiGwnkiXqXX6XK5NJv-uWXAxdN+JxsSw@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+In-Reply-To: <bcf18f220ef3b40e02f489fdb90fc7a5a153a383.1756151769.git.maciej.wieczor-retman@intel.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: x1uX4N0jdqAxpNoSXDq9PgxpQxMpN6bgL8ds-ys5qtA_1757751532
+X-Mimecast-MFC-PROC-ID: qheyVIgArcSOqsiww18nX8zjEvs1OLPwgK_tidRSP64_1757752165
 X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: o3okh84w6n47q59xdprm9bjkh1ca1zaa
-X-Rspamd-Queue-Id: C881D20003
+X-Rspamd-Queue-Id: 8371040002
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1757751537-651045
-X-HE-Meta: U2FsdGVkX1/GPxfc0xShclX8IpcLGo1Q2ETPaJxIBTBKkG27S+FQWjZlJIBc7sB7jwdSXmxtilSWGogePfhUBLI9a/sqvEs3Nul0wX03mVbzoSCB8ddyiXpOAt04ErIdlBfotILh9sOdItYaV7rR6i5mezgWnGEwJtVl+/tFBiV92LtHT+1YK28JmpBaLXI+Z4caRNjP8CyrmQdlyplqeq6AN87oba5rWOqNgEoyuBDLjEXLz2CvZPaglzxlWiIuKdGOfWYwje1do6NeXe4pP2J7VzORg4OoiqmoagExC79ijN0IBrm8qBjBeYRU/8fpAsbzE9Re2EGOmscxyPDEOCq1yHIJ6pCDQGaU27xXHsf2OzDCR2Q6s5AKZjMilz5tBNonSuG9S3WAtdZKAG89T9XeSLUeAZzrKvUuuKq0tFOiH9mEkhDqQf13/P0UpIte+VCzQYZJK6enBRuwuceazGMFnQmsHXXP1LABVXkJszbDlI1AMV8ezIffRUtnIfCSEvMlB79hij2ANH0CJyDgDwo6flWHUsGkTXW+BrkXLSfab9dwC1+E5MFnPxNEcuuSi6K2RHTOjWjdG55LLYr8RPkbN9cHClbzFyye2hKyHbjp4zaL09PZSDmTunxYWhPe/ZIP+q2XVIy7KgnQOeNKsjqdZ4/jqAWSf2It0g5BEeyqclI9Zx/JkWnl1NNhM48ZRvazw9ly6IQMw5StchcAQMi2pTRlfRJFsco731G8GwMLnhBMgFq4TCe389TxpOalVM6+En1n0gGe4Ig2VXgLUrdvOJ2WdsjBmq46PoTcuWhDeg4hTUGB+jXIjc5NY+fjhzOozpqc1b/wDzYMZcA5bXUnpD7lB+CLMo8c4W3LFrdWZ/fJYOFW93YR8RLVFRJ7j/38TJAEbiM5zr6MraxjsqYRiPHIuSML+e666do0oh3JaHcXjMSQuswjjl/NZTJqf+LLc4ZXYsFIyrcTeDI
- pM0znRCn
- 9i/Slm4L+bgmfqtZIC8f9bP1tipj/3t34qx3SkIxEdo1C+PfdavuB1QVGtb8vST2McUu7foh8ZtWBhTR12qOLgvhDul2Q94R5pbChZXY+7dgdw4t9EUMzywmZ8fOt33Z5BFsO80ZzxTPcnQpXGAlHXXDGvpjZDhylSlbo7ThNvKPwXWDisPkOWSXcl7z8ONX2iVIn+WX2D3xXOGuSvs+Jk0mvk/IYWvLngwvVQFlsTmm0WV5AuyTGuPbIEmrAb5ZH40FNZVUkiEBQKcrtuP34nARvPnTHe+zz3cVadzMGcW/bR+glo152VqNtEfLGXfOsZkaKDgxn7lxBOIDamQzYeVjvj8mRsQmAzN/f6C3Ky6tENAh5SyiJj3n8ncshf4udqj94g+r7LsZwipPsN8lBjgsIeabk0SsjNRdEKAI83kWYQyd4hv16MhhqACqzQ6fHolV2qd5SGIQs4kiWR8TvCCA/JYXiGlzxGThZe/OJwCSmaHyfPaNpyq0hZB3VYSyCuoOlpdlINMgzK3/7pJizrZYcLXV8lN7RF4QT6oefPXkZAdcPv1A3nN+qBBQFLh0MASDfv/fEycydJBonKKPBpxP1fLxH141fkxB+RODua3c0hle0P/we8th+fGqnd13KZYEXfBILjUl7X27Ha9bErKTutQ==
+X-Rspamd-Server: rspam07
+X-Stat-Signature: w5pe9ezdyk7s5r7wrttm5fhtite6cea4
+X-HE-Tag: 1757752177-535249
+X-HE-Meta: U2FsdGVkX18SWoJ1mZhRRA14PErf4+7lfNY2dKJusSR2D4jKDXyhwFz83AtoTVzh+hKK0Dp2J09iL+vSiCQmW8rmAeei2+O373wCbiSdbicLODX1jUcV3KjgdJwfuoZrg0bgFayl5sU8WLNIrD3+iVGCiMHgRKhSLyeraZ95iInbEGDljfCNooH+eK8qYOIg++eLgoJpHeui366AK7QzZlMLsBqyNjXYwBFAsWftUHI2Q+ezlXSZMyEEtQPujauOGXCbO101gu1awE3ZpPwZodcUyiYJbMJFYn4TG3Nl1bhLVI3VKtC+saCs7LPUuOTzqo3oDO+VPMD+z0T9bfs4VTPnAG5pdZM+h0OF1XTEoGaLoTSmt0GhMqL41HKehaM5nj7vnbyRXGBIZZxBzETGZ0ucQ0WtExEH46odIYFGySR2GLphl2n+l66ZnpHGhKceSHxLrUXwT8BGu9Gk4+bsUCnOpjzetyEMKG47sR6Nrlg0xNY6/gIjUBeJHydyoA0VgzXbLGUvyDibgTzMIz8XfABZswB6NQowl3wIQRRIENKbwY/r8MqFcScnBFwvaMfwF2NiBvctz5N+UadJZnqjQZZkZIJg5jIQopE257qcQuZr4VDG9mKS2kHYIpkgFUg2STj1QLRLYpPEsd6s1QuebTKIQE9j26sDQvtFKepkPAN2FATqeYhUsKX2N7ENbJCjrqZ+oo5SKZbF4/0db5FObnZfAaYK5xND2ScVe6M8XPJxEmp+6KLFsHUg/gNHTpcyNkwnYzjhb2afTiTZRNFvZMs67V6zKI8VboX0UmooXOfz/cXEKQDblzrrTYJWpHt00ehBQW6vhhyDbe1Vzvk5KR2/WM67XnroQ2ofCano2Uc3SXYukuKo+wL1r4Geq5+Coy0b+BORWLr9E5I6hMEHN/IcTpFtE4/hA3yg1czpolTmcIkJpExRche04YKUmUDYTh38U7HZ8QK1rUBXhak
+ XQbrQFnz
+ kCb1mw2xlZctuqG+T1hWROxSI95SIfuiPXsC2pCNaoOIAtZKwz4mBDGfdb4RLu6QFk5j+DSznT6w42nn7gl5ASyVbN9o1bteRQ7VIrPgSLGTyI9gEo34h0p8HchUrnyvJ8Xuyhk6Qjyytxwodx5PvzKgiNn5pVntPehE4vOLvJJMnXkuy3BYv6rM0RCBUejk6tgfUXFW5WiGvnEJI0tHHjaeTxBQB4sddFQ5SMPuE5BNwTQwCwDL/p2+BC30iXyPzG6dKzocJgGT1gMqdvz5BtQ8aroPVWBKINYIEw6Vr1gUOYhD1zANjSd/EVpQK4u+8lfrdPTpjcqxqDbA6K/tkaEWWi2Ink8qyN+q06uFRiiQHE6qY3e6zZ8SDuKz3bJ9YsOFyGCEgUbVTmpLTmeUs0UUDU/L6yKXcn3I1XZdCxTjxk3Ex2Uxu4qhIXaxHnwkZ4oLM+oLm8CFHcF9DK+F5QsD38ew5jy0SG4hy/fTPOTGwL93YrAwjHiQk3+5WNjAgiRG5K3J/wzJoVeAWUSsenlWLnxNtvw+6Coj0BEzj4jXGowTOxDjd0QU5cb1+k0BFjexzRIOuDP5zKX2WlVsddkEGVg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,131 +136,256 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 09/06/25 at 07:23pm, Andrey Konovalov wrote:
-> On Mon, Aug 18, 2025 at 1:16 PM Baoquan He <bhe@redhat.com> wrote:
-> >
-> > Hi,
-> >
-> > This can be reproduced stably on hpe-apollo arm64 system with the latest
-> > upstream kernel. I have this system at hand now, the boot log and kernel
-> > config are attached for reference.
-> >
-> > [   89.257633] ==================================================================
-> > [   89.257646] BUG: KASAN: invalid-access in pcpu_alloc_noprof+0x42c/0x9a8
-> > [   89.257672] Write of size 528 at addr ddfffd7fbdc00000 by task systemd/1
-> > [   89.257685] Pointer tag: [dd], memory tag: [ca]
-> > [   89.257692]
-> > [   89.257703] CPU: 108 UID: 0 PID: 1 Comm: systemd Not tainted 6.17.0-rc2 #1 PREEMPT(voluntary)
-> > [   89.257719] Hardware name: HPE Apollo 70             /C01_APACHE_MB         , BIOS L50_5.13_1.16 07/29/2020
-> > [   89.257726] Call trace:
-> > [   89.257731]  show_stack+0x30/0x90 (C)
-> > [   89.257753]  dump_stack_lvl+0x7c/0xa0
-> > [   89.257769]  print_address_description.isra.0+0x90/0x2b8
-> > [   89.257789]  print_report+0x120/0x208
-> > [   89.257804]  kasan_report+0xc8/0x110
-> > [   89.257823]  kasan_check_range+0x7c/0xa0
-> > [   89.257835]  __asan_memset+0x30/0x68
-> > [   89.257847]  pcpu_alloc_noprof+0x42c/0x9a8
-> > [   89.257859]  mem_cgroup_alloc+0x2bc/0x560
-> > [   89.257873]  mem_cgroup_css_alloc+0x78/0x780
-> > [   89.257893]  cgroup_apply_control_enable+0x230/0x578
-> > [   89.257914]  cgroup_mkdir+0xf0/0x330
-> > [   89.257928]  kernfs_iop_mkdir+0xb0/0x120
-> > [   89.257947]  vfs_mkdir+0x250/0x380
-> > [   89.257965]  do_mkdirat+0x254/0x298
-> > [   89.257979]  __arm64_sys_mkdirat+0x80/0xc0
-> > [   89.257994]  invoke_syscall.constprop.0+0x88/0x148
-> > [   89.258011]  el0_svc_common.constprop.0+0x78/0x148
-> > [   89.258025]  do_el0_svc+0x38/0x50
-> > [   89.258037]  el0_svc+0x3c/0x168
-> > [   89.258050]  el0t_64_sync_handler+0xa0/0xf0
-> > [   89.258063]  el0t_64_sync+0x1b0/0x1b8
-> > [   89.258076]
-> > [   89.258080] The buggy address belongs to a 0-page vmalloc region starting at 0xcafffd7fbdc00000 allocated at pcpu_get_vm_areas+0x0/0x1da0
-> > [   89.258111] The buggy address belongs to the physical page:
-> > [   89.258117] page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x881ddac
-> > [   89.258129] flags: 0xa5c00000000000(node=1|zone=2|kasantag=0x5c)
-> > [   89.258148] raw: 00a5c00000000000 0000000000000000 dead000000000122 0000000000000000
-> > [   89.258160] raw: 0000000000000000 f3ff000813efa600 00000001ffffffff 0000000000000000
-> > [   89.258168] raw: 00000000000fffff 0000000000000000
-> > [   89.258173] page dumped because: kasan: bad access detected
-> > [   89.258178]
-> > [   89.258181] Memory state around the buggy address:
-> > [   89.258192] Unable to handle kernel paging request at virtual address ffff7fd7fbdbffe0
-> > [   89.258199] KASAN: probably wild-memory-access in range [0xfffffd7fbdbffe00-0xfffffd7fbdbffe0f]
-> > [   89.258207] Mem abort info:
-> > [   89.258211]   ESR = 0x0000000096000007
-> > [   89.258216]   EC = 0x25: DABT (current EL), IL = 32 bits
-> > [   89.258223]   SET = 0, FnV = 0
-> > [   89.258228]   EA = 0, S1PTW = 0
-> > [   89.258232]   FSC = 0x07: level 3 translation fault
-> > [   89.258238] Data abort info:
-> > [   89.258241]   ISV = 0, ISS = 0x00000007, ISS2 = 0x00000000
-> > [   89.258246]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-> > [   89.258252]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-> > [   89.258260] swapper pgtable: 4k pages, 48-bit VAs, pgdp=0000008ff8b8f000
-> > [   89.258267] [ffff7fd7fbdbffe0] pgd=1000008ff0275403, p4d=1000008ff0275403, pud=1000008ff0274403, pmd=1000000899079403, pte=0000000000000000
-> > [   89.258296] Internal error: Oops: 0000000096000007 [#1]  SMP
-> > [   89.540859] Modules linked in: i2c_dev
-> > [   89.544619] CPU: 108 UID: 0 PID: 1 Comm: systemd Not tainted 6.17.0-rc2 #1 PREEMPT(voluntary)
-> > [   89.553234] Hardware name: HPE Apollo 70             /C01_APACHE_MB         , BIOS L50_5.13_1.16 07/29/2020
-> > [   89.562970] pstate: 604000c9 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-> > [   89.569933] pc : __pi_memcpy_generic+0x24/0x230
-> > [   89.574472] lr : kasan_metadata_fetch_row+0x20/0x30
-> > [   89.579350] sp : ffff8000859d76c0
-> > [   89.582660] x29: ffff8000859d76c0 x28: 0000000000000100 x27: ffff008ec626d800
-> > [   89.589807] x26: 0000000000000210 x25: 0000000000000000 x24: fffffd7fbdbfff00
-> > [   89.596952] x23: ffff8000826cbeb8 x22: fffffd7fbdc00000 x21: 00000000fffffffe
-> > [   89.604097] x20: ffff800082682ee0 x19: fffffd7fbdbffe00 x18: 00000000049016ff
-> > [   89.611242] x17: 3030303030303030 x16: 2066666666666666 x15: 6631303030303030
-> > [   89.618386] x14: 0000000000000001 x13: 0000000000000001 x12: 0000000000000001
-> > [   89.625530] x11: 687420646e756f72 x10: 0000000000000020 x9 : 0000000000000000
-> > [   89.632674] x8 : ffff78000859d766 x7 : 0000000000000000 x6 : 000000000000003a
-> > [   89.639818] x5 : ffff8000859d7728 x4 : ffff7fd7fbdbfff0 x3 : efff800000000000
-> > [   89.646963] x2 : 0000000000000010 x1 : ffff7fd7fbdbffe0 x0 : ffff8000859d7718
-> > [   89.654107] Call trace:
-> > [   89.656549]  __pi_memcpy_generic+0x24/0x230 (P)
-> > [   89.661086]  print_report+0x180/0x208
-> > [   89.664753]  kasan_report+0xc8/0x110
-> > [   89.668333]  kasan_check_range+0x7c/0xa0
-> > [   89.672258]  __asan_memset+0x30/0x68
-> > [   89.675836]  pcpu_alloc_noprof+0x42c/0x9a8
-> > [   89.679935]  mem_cgroup_alloc+0x2bc/0x560
-> > [   89.683947]  mem_cgroup_css_alloc+0x78/0x780
-> > [   89.688222]  cgroup_apply_control_enable+0x230/0x578
-> > [   89.693191]  cgroup_mkdir+0xf0/0x330
-> > [   89.696771]  kernfs_iop_mkdir+0xb0/0x120
-> > [   89.700697]  vfs_mkdir+0x250/0x380
-> > [   89.704103]  do_mkdirat+0x254/0x298
-> > [   89.707596]  __arm64_sys_mkdirat+0x80/0xc0
-> > [   89.711697]  invoke_syscall.constprop.0+0x88/0x148
-> > [   89.716491]  el0_svc_common.constprop.0+0x78/0x148
-> > [   89.721286]  do_el0_svc+0x38/0x50
-> > [   89.724602]  el0_svc+0x3c/0x168
-> > [   89.727746]  el0t_64_sync_handler+0xa0/0xf0
-> > [   89.731933]  el0t_64_sync+0x1b0/0x1b8
-> > [   89.735603] Code: f100805f 540003c8 f100405f 540000c3 (a9401c26)
-> > [   89.741695] ---[ end trace 0000000000000000 ]---
-> > [   89.746308] note: systemd[1] exi
-> > =========================
-> 
-> Might be the same issue as the one being fixed by Maciej here:
-> 
-> https://lore.kernel.org/all/bcf18f220ef3b40e02f489fdb90fc7a5a153a383.1756151769.git.maciej.wieczor-retman@intel.com/
-> https://lore.kernel.org/all/3339d11e69c9127108fe8ef80a069b7b3bb07175.1756151769.git.maciej.wieczor-retman@intel.com/
-> 
-> Perhaps it makes sense to split that fix out of the series and submit
-> separately.
+Hi ,
 
-Thanks for the information. I finally got a machine to reproduce the
-issue and testing the patches. It's weird it firstly can't be reproduced
-in the latest 6.17.0-rc5+, not sure if I made anything wrong on steps.
-Later, I started it over and can stably reproduce the problem, I can
-confirm Maciej's two patches can fix the problem very well.
+On 08/25/25 at 10:24pm, Maciej Wieczor-Retman wrote:
+> The problem presented here is related to NUMA systems and tag-based
+> KASAN mode. It can be explained in the following points:
+> 
+> 	1. There can be more than one virtual memory chunk.
+> 	2. Chunk's base address has a tag.
+> 	3. The base address points at the first chunk and thus inherits
+> 	   the tag of the first chunk.
+> 	4. The subsequent chunks will be accessed with the tag from the
+> 	   first chunk.
+> 	5. Thus, the subsequent chunks need to have their tag set to
+> 	   match that of the first chunk.
+> 
+> Refactor code by moving it into a helper in preparation for the actual
+> fix.
 
-Will reply to Maciej's patches to add my Tested-by.
+I got a boot breakage on a hpe-apollo arm64 system with sw_tags mode, and
+the boot breakage can be met stably. The detailed situation is reported
+in below link:
 
-Thanks
-Baoquan
+System is broken in KASAN sw_tags mode during bootup
+https://lore.kernel.org/all/aKMLgHdTOEf9B92E@MiWiFi-R3L-srv/T/#u
+
+After applying this patch 17 and patch 18 in this series, I can confirm
+the breakage is gone. Thanks for the great fix, and please feel free to
+add:
+
+Tested-by: Baoquan He <bhe@redhat.com>
+
+========================
+CONFIG_KASAN=y
+CONFIG_CC_HAS_KASAN_MEMINTRINSIC_PREFIX=y
+# CONFIG_KASAN_GENERIC is not set
+CONFIG_KASAN_SW_TAGS=y
+# CONFIG_KASAN_HW_TAGS is not set
+# CONFIG_KASAN_OUTLINE is not set
+CONFIG_KASAN_INLINE=y
+CONFIG_KASAN_STACK=y
+CONFIG_KASAN_VMALLOC=y
+CONFIG_KASAN_KUNIT_TEST=m
+================================
+
+[  100.907469] ==================================================================
+[  100.907485] BUG: KASAN: invalid-access in pcpu_alloc_noprof+0x42c/0x9a8
+[  100.907509] Write of size 160 at addr 10fffd7fbdc00000 by task systemd/1
+[  100.907524] Pointer tag: [10], memory tag: [5b]
+[  100.907532]
+[  100.907544] CPU: 229 UID: 0 PID: 1 Comm: systemd Not tainted 6.16.0+ #2 PREEMPT(voluntary)
+[  100.907562] Hardware name: HPE Apollo 70             /C01_APACHE_MB         , BIOS L50_5.13_1.16 07/29/2020
+[  100.907571] Call trace:
+[  100.907578]  show_stack+0x30/0x98 (C)
+[  100.907597]  dump_stack_lvl+0x7c/0xa0
+[  100.907614]  print_address_description.isra.0+0x90/0x2b8
+[  100.907635]  print_report+0x120/0x208
+[  100.907651]  kasan_report+0xc8/0x110
+[  100.907669]  kasan_check_range+0x80/0xa0
+[  100.907685]  __asan_memset+0x30/0x68
+[  100.907700]  pcpu_alloc_noprof+0x42c/0x9a8
+[  100.907716]  css_rstat_init+0x1bc/0x220
+[  100.907734]  cgroup_create+0x188/0x540
+[  100.907749]  cgroup_mkdir+0xb4/0x330
+[  100.907765]  kernfs_iop_mkdir+0xb0/0x120
+[  100.907783]  vfs_mkdir+0x250/0x380
+[  100.907800]  do_mkdirat+0x254/0x298
+[  100.907815]  __arm64_sys_mkdirat+0x80/0xc0
+[  100.907831]  invoke_syscall.constprop.0+0x88/0x148
+[  100.907848]  el0_svc_common.constprop.0+0x78/0x148
+[  100.907863]  do_el0_svc+0x38/0x50
+[  100.907877]  el0_svc+0x3c/0x160
+[  100.907895]  el0t_64_sync_handler+0x10c/0x138
+[  100.907911]  el0t_64_sync+0x1b0/0x1b8
+[  100.907925]
+[  100.907931] The buggy address belongs to a 0-page vmalloc region starting at 0x5bfffd7fbdc00000 allocated at pcpu_get_vm_areas+0x0/0x1da8
+[  100.907963] The buggy address belongs to the physical page:
+[  100.907970] page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x8811a35
+[  100.907984] flags: 0xa6a00000000000(node=1|zone=2|kasantag=0x6a)
+[  100.908006] raw: 00a6a00000000000 0000000000000000 dead000000000122 0000000000000000
+[  100.908019] raw: 0000000000000000 b4ff00878bce6400 00000001ffffffff 0000000000000000
+[  100.908029] raw: 00000000000fffff 0000000000000000
+[  100.908037] page dumped because: kasan: bad access detected
+[  100.908044]
+[  100.908048] Memory state around the buggy address:
+[  100.908059] Unable to handle kernel paging request at virtual address ffff7fd7fbdbffe0
+[  100.908068] KASAN: probably wild-memory-access in range [0xfffffd7fbdbffe00-0xfffffd7fbdbffe0f]
+[  100.908078] Mem abort info:
+[  100.908083]   ESR = 0x0000000096000007
+[  100.908089]   EC = 0x25: DABT (current EL), IL = 32 bits
+[  100.908098]   SET = 0, FnV = 0
+[  100.908105]   EA = 0, S1PTW = 0
+[  100.908111]   FSC = 0x07: level 3 translation fault
+[  100.908118] Data abort info:
+[  100.908123]   ISV = 0, ISS = 0x00000007, ISS2 = 0x00000000
+[  100.908130]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+[  100.908138]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+[  100.908147] swapper pgtable: 4k pages, 48-bit VAs, pgdp=0000008ff8b76000
+[  100.908156] [ffff7fd7fbdbffe0] pgd=1000008ff0299403, p4d=1000008ff0299403, pud=1000008ff0298403, pmd=1000008811a17403, pte=0000000000000000
+[  100.908192] Internal error: Oops: 0000000096000007 [#1]  SMP
+[  101.185060] Modules linked in: i2c_dev
+[  101.188820] CPU: 229 UID: 0 PID: 1 Comm: systemd Not tainted 6.16.0+ #2 PREEMPT(voluntary)
+[  101.197175] Hardware name: HPE Apollo 70             /C01_APACHE_MB         , BIOS L50_5.13_1.16 07/29/2020
+[  101.206912] pstate: 604000c9 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[  101.213877] pc : __pi_memcpy_generic+0x24/0x230
+[  101.218418] lr : kasan_metadata_fetch_row+0x20/0x30
+[  101.223299] sp : ffff8000859b7700
+[  101.226610] x29: ffff8000859b7700 x28: 0000000000000100 x27: ffff008ec6291800
+[  101.233758] x26: 00000000000000a0 x25: 0000000000000000 x24: fffffd7fbdbfff00
+[  101.240904] x23: ffff8000826b1e58 x22: fffffd7fbdc00000 x21: 00000000fffffffe
+[  101.248051] x20: ffff800082669d18 x19: fffffd7fbdbffe00 x18: 0000000000000000
+[  101.255196] x17: 3030303030303030 x16: 2066666666666666 x15: 6631303030303030
+[  101.262342] x14: 0000000000000001 x13: 0000000000000001 x12: 0000000000000001
+[  101.269487] x11: 687420646e756f72 x10: 0000000000000020 x9 : 0000000000000000
+[  101.276633] x8 : ffff78000859b76a x7 : 0000000000000000 x6 : 000000000000003a
+[  101.283778] x5 : ffff8000859b7768 x4 : ffff7fd7fbdbfff0 x3 : efff800000000000
+[  101.290924] x2 : 0000000000000010 x1 : ffff7fd7fbdbffe0 x0 : ffff8000859b7758
+[  101.298070] Call trace:
+[  101.300512]  __pi_memcpy_generic+0x24/0x230 (P)
+[  101.305051]  print_report+0x180/0x208
+[  101.308719]  kasan_report+0xc8/0x110
+[  101.312299]  kasan_check_range+0x80/0xa0
+[  101.316227]  __asan_memset+0x30/0x68
+[  101.319807]  pcpu_alloc_noprof+0x42c/0x9a8
+[  101.323908]  css_rstat_init+0x1bc/0x220
+[  101.327749]  cgroup_create+0x188/0x540
+[  101.331502]  cgroup_mkdir+0xb4/0x330
+[  101.335082]  kernfs_iop_mkdir+0xb0/0x120
+[  101.339011]  vfs_mkdir+0x250/0x380
+[  101.342416]  do_mkdirat+0x254/0x298
+[  101.345908]  __arm64_sys_mkdirat+0x80/0xc0
+[  101.350008]  invoke_syscall.constprop.0+0x88/0x148
+[  101.354803]  el0_svc_common.constprop.0+0x78/0x148
+[  101.359598]  do_el0_svc+0x38/0x50
+[  101.362916]  el0_svc+0x3c/0x160
+[  101.366061]  el0t_64_sync_handler+0x10c/0x138
+[  101.370423]  el0t_64_sync+0x1b0/0x1b8
+[  101.374095] Code: f100805f 540003c8 f100405f 540000c3 (a9401c26)
+[  101.380187] ---[ end trace 0000000000000000 ]---
+[  101.384802] note: systemd[1] ex
+** replaying previous printk message **
+
+
+> 
+> Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+> ---
+> Changelog v4:
+> - Redo the patch message numbered list.
+> - Do the refactoring in this patch and move additions to the next new
+>   one.
+> 
+> Changelog v3:
+> - Remove last version of this patch that just resets the tag on
+>   base_addr and add this patch that unpoisons all areas with the same
+>   tag instead.
+> 
+>  include/linux/kasan.h | 10 ++++++++++
+>  mm/kasan/hw_tags.c    | 11 +++++++++++
+>  mm/kasan/shadow.c     | 10 ++++++++++
+>  mm/vmalloc.c          |  4 +---
+>  4 files changed, 32 insertions(+), 3 deletions(-)
+> 
+> diff --git a/include/linux/kasan.h b/include/linux/kasan.h
+> index 7a2527794549..3ec432d7df9a 100644
+> --- a/include/linux/kasan.h
+> +++ b/include/linux/kasan.h
+> @@ -613,6 +613,13 @@ static __always_inline void kasan_poison_vmalloc(const void *start,
+>  		__kasan_poison_vmalloc(start, size);
+>  }
+>  
+> +void __kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms);
+> +static __always_inline void kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms)
+> +{
+> +	if (kasan_enabled())
+> +		__kasan_unpoison_vmap_areas(vms, nr_vms);
+> +}
+> +
+>  #else /* CONFIG_KASAN_VMALLOC */
+>  
+>  static inline void kasan_populate_early_vm_area_shadow(void *start,
+> @@ -637,6 +644,9 @@ static inline void *kasan_unpoison_vmalloc(const void *start,
+>  static inline void kasan_poison_vmalloc(const void *start, unsigned long size)
+>  { }
+>  
+> +static inline void kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms)
+> +{ }
+> +
+>  #endif /* CONFIG_KASAN_VMALLOC */
+>  
+>  #if (defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS)) && \
+> diff --git a/mm/kasan/hw_tags.c b/mm/kasan/hw_tags.c
+> index 9a6927394b54..1f569df313c3 100644
+> --- a/mm/kasan/hw_tags.c
+> +++ b/mm/kasan/hw_tags.c
+> @@ -382,6 +382,17 @@ void __kasan_poison_vmalloc(const void *start, unsigned long size)
+>  	 */
+>  }
+>  
+> +void __kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms)
+> +{
+> +	int area;
+> +
+> +	for (area = 0 ; area < nr_vms ; area++) {
+> +		vms[area]->addr = __kasan_unpoison_vmalloc(
+> +			vms[area]->addr, vms[area]->size,
+> +			KASAN_VMALLOC_PROT_NORMAL);
+> +	}
+> +}
+> +
+>  #endif
+>  
+>  void kasan_enable_hw_tags(void)
+> diff --git a/mm/kasan/shadow.c b/mm/kasan/shadow.c
+> index d2c70cd2afb1..b41f74d68916 100644
+> --- a/mm/kasan/shadow.c
+> +++ b/mm/kasan/shadow.c
+> @@ -646,6 +646,16 @@ void __kasan_poison_vmalloc(const void *start, unsigned long size)
+>  	kasan_poison(start, size, KASAN_VMALLOC_INVALID, false);
+>  }
+>  
+> +void __kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms)
+> +{
+> +	int area;
+> +
+> +	for (area = 0 ; area < nr_vms ; area++) {
+> +		kasan_poison(vms[area]->addr, vms[area]->size,
+> +			     arch_kasan_get_tag(vms[area]->addr), false);
+> +	}
+> +}
+> +
+>  #else /* CONFIG_KASAN_VMALLOC */
+>  
+>  int kasan_alloc_module_shadow(void *addr, size_t size, gfp_t gfp_mask)
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index c93893fb8dd4..00be0abcaf60 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -4847,9 +4847,7 @@ struct vm_struct **pcpu_get_vm_areas(const unsigned long *offsets,
+>  	 * With hardware tag-based KASAN, marking is skipped for
+>  	 * non-VM_ALLOC mappings, see __kasan_unpoison_vmalloc().
+>  	 */
+> -	for (area = 0; area < nr_vms; area++)
+> -		vms[area]->addr = kasan_unpoison_vmalloc(vms[area]->addr,
+> -				vms[area]->size, KASAN_VMALLOC_PROT_NORMAL);
+> +	kasan_unpoison_vmap_areas(vms, nr_vms);
+>  
+>  	kfree(vas);
+>  	return vms;
+> -- 
+> 2.50.1
+> 
+> 
 
 
