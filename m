@@ -4,121 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CB74CA0EE8
-	for <linux-mm@archiver.kernel.org>; Sun, 14 Sep 2025 13:53:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80AF8CAC587
+	for <linux-mm@archiver.kernel.org>; Sun, 14 Sep 2025 13:55:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9ADA98E0005; Sun, 14 Sep 2025 09:53:23 -0400 (EDT)
+	id D5C0A8E0007; Sun, 14 Sep 2025 09:55:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 985BA8E0001; Sun, 14 Sep 2025 09:53:23 -0400 (EDT)
+	id D34448E0001; Sun, 14 Sep 2025 09:55:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C29E8E0005; Sun, 14 Sep 2025 09:53:23 -0400 (EDT)
+	id C70A38E0007; Sun, 14 Sep 2025 09:55:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7BDA68E0001
-	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 09:53:23 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0FFD0160322
-	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 13:53:23 +0000 (UTC)
-X-FDA: 83887997886.16.160B1F1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 47C15120003
-	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 13:53:21 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Hm3bsaZn;
-	spf=pass (imf29.hostedemail.com: domain of mhiramat@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mhiramat@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id B61BD8E0001
+	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 09:55:16 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4DD741DCFE5
+	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 13:55:16 +0000 (UTC)
+X-FDA: 83888002632.30.5C22718
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 683A1180006
+	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 13:55:13 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=lGh3vpR6;
+	spf=pass (imf16.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757858001;
+	s=arc-20220608; t=1757858114;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UT3BD6f28q3caqcvv9tNqfI2EwehMhyKTfYqk9PWNbc=;
-	b=6sPIxD/JghSmuaHNnv23CpKDQNiOSGpAinfJA7PWVOod9K7FAsVIisx8ZfyRM9YucRFgSF
-	j1cbiZSfU/DzcZhsEqpV1EoaQ3r7Eynr44x36fbvYHbDNNOnqCUmdYB1rYCCmq+lTmyP1r
-	oa3A7SYxbjgjEHUaww7iaMruqQcCIB4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757858001; a=rsa-sha256;
-	cv=none;
-	b=C2DHlIvfltwIK7ESPSzQvcdhsP4H8IC7U9fSH9rV85q/ptZBtB/9GLDqoyPkUbP4XNwxOR
-	H4PtP9hvkiYTqx5tm7lRxv+VCLiC7A4aEEYwe+ST+Fa0cj0ZrRyDAzn807VAUlTxyExv1o
-	erb9SwOzt1oxx93ZkB0GMBNVyY57ebc=
+	bh=39sYhmUjXM85XEA1urNdAsqDuvHH0nawtYDD4ElEZhI=;
+	b=jRJOE3a6LhLiYQHrLn9nRMYP4Pkiu/cMBHbR44U5H/2ax292RDSVYo+krr8kh39pIWiYpf
+	8fLt0X5p50N231HUt2zGAwN1J6vV1PXRV0nAC/aYpHdBMEnwg/R4TSoQ6L2HZdPuBnikOJ
+	TUNcx3I3B0ydJiBmDcBn0ujYK8eAD20=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Hm3bsaZn;
-	spf=pass (imf29.hostedemail.com: domain of mhiramat@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mhiramat@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 43C26404B0;
-	Sun, 14 Sep 2025 13:53:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95F0FC4CEF0;
-	Sun, 14 Sep 2025 13:53:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757858000;
-	bh=Up9Xu/CJoHEjUcchIJsyeiW2UaO4s1K1qCNgKItusWg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Hm3bsaZn2JvvJqxIY9S3ulwLpYVfges3Vprs9UKDgleuWKeb0EAYJrz6RKDtsItTD
-	 2awMaKPZ+wOkswbhdv1+Wwe5OwP87TII+h6gIlFDrCBOG8/KpDgNBNgrqurUJrGwwj
-	 1s28FU0H0CT4SdxvYS/av7lUhVE5zGQfFumGB0hGhZkHAtQeoLqiQd510v1PnFXFiK
-	 YqZukWPqiKIe+x6kKKokwvL0KeD8SzvtJl5oA+wult90ARlAMp2b1Z2jJJd07f11YD
-	 Vpe354oAqwdIWbmOkSkRqziYY5oO5Sho7Uc6n4G6FGbr0zo7SEsStdW68E/vgiMwDF
-	 FdRnhA7K5BHNA==
-Date: Sun, 14 Sep 2025 22:53:06 +0900
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-To: Jinchao Wang <wangjinchao600@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Peter Zijlstra
- <peterz@infradead.org>, Mike Rapoport <rppt@kernel.org>, Alexander
- Potapenko <glider@google.com>, Jonathan Corbet <corbet@lwn.net>, Thomas
- Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav
- Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Juri Lelli
- <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>, Steven Rostedt
- <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman
- <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, Arnaldo
- Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>, Alexander Shishkin
- <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, Ian
- Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>,
- "Liang, Kan" <kan.liang@linux.intel.com>, David Hildenbrand
- <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
- <mhocko@suse.com>, Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers
- <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, Justin
- Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>, Alice Ryhl
- <aliceryhl@google.com>, Sami Tolvanen <samitolvanen@google.com>, Miguel
- Ojeda <ojeda@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>, Rong Xu
- <xur@google.com>, Naveen N Rao <naveen@kernel.org>, David Kaplan
- <david.kaplan@amd.com>, Andrii Nakryiko <andrii@kernel.org>, Jinjie Ruan
- <ruanjinjie@huawei.com>, Nam Cao <namcao@linutronix.de>,
- workflows@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
- linux-mm@kvack.org, llvm@lists.linux.dev, Andrey Ryabinin
- <ryabinin.a.a@gmail.com>, Andrey Konovalov <andreyknvl@gmail.com>, Dmitry
- Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>,
- kasan-dev@googlegroups.com, "David S. Miller" <davem@davemloft.net>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- linux-trace-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 02/21] x86/hw_breakpoint: Add
- arch_reinstall_hw_breakpoint
-Message-Id: <20250914225306.2185b79065e32f60a40ef54c@kernel.org>
-In-Reply-To: <20250912101145.465708-3-wangjinchao600@gmail.com>
-References: <20250912101145.465708-1-wangjinchao600@gmail.com>
-	<20250912101145.465708-3-wangjinchao600@gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 47C15120003
-X-Stat-Signature: ebf5bddemarkk8ycug9foh59atx6t7rb
+	imf16.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=lGh3vpR6;
+	spf=pass (imf16.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757858114; a=rsa-sha256;
+	cv=none;
+	b=TAncePlc6gd7NF7DpiocfUn50QYm6v486UMDgh/F+4k+KGdDVmqlsdfn+maEr7rC4khAvC
+	UIKrmAjp6OXghvW3jJBWcKaDq1PP0grFjBU4zCLNWPxqTkhkEMxFfKatFz4mzTnaa1NX2p
+	BAu5QTElaDm2H2ovxlzJXtrA39Rh0ng=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1757858114; x=1789394114;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=yAOoUPFw9dHD3qqCEAFNjt0DzdHHTrnt3LHkQ2Jj9wU=;
+  b=lGh3vpR6D+slNMX0Cr7w8rjiTZF6iwgTAizJtVrdidse6gu9jVJQwOj5
+   lDanWZrE4uHHgGvisuAs3hTyc9ZE4E+1LTuOPkdDLjCUMc9oIalVLqFa8
+   4mrMgg5gAx3m0KCG0zOBRaopZtnxgtBZuxTiSUNVEB7RBLUnSzaNFIXnY
+   ztFSsCVBqd8zdSfCu6xrxSjQJUgxDbYQHo5N6muwF4/H/NcwEQYqT+Q7O
+   S9GBVjTfL+s7iUV7uwvp/WjDX1mX+iUff6CFZB4wge2cIPa2fpw6OpFa6
+   1pidmwp5YdUUiocqhagJbD37yuGk3J6Ez0HXXSdh81N0YapKX0xVohmeH
+   A==;
+X-CSE-ConnectionGUID: E4Ehff3hRoGbYvVk1/ujZQ==
+X-CSE-MsgGUID: j9bTkYaeRNChdNmHAmC9kw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="60048151"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="60048151"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2025 06:55:13 -0700
+X-CSE-ConnectionGUID: wIPbWldqRJqDW6vPQtA66Q==
+X-CSE-MsgGUID: ErIUcXNcSKe45ZSx3eHwwQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,264,1751266800"; 
+   d="scan'208";a="175200651"
+Received: from lkp-server02.sh.intel.com (HELO eb5fdfb2a9b7) ([10.239.97.151])
+  by fmviesa010.fm.intel.com with ESMTP; 14 Sep 2025 06:55:09 -0700
+Received: from kbuild by eb5fdfb2a9b7 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uxnC6-0002Rw-27;
+	Sun, 14 Sep 2025 13:55:06 +0000
+Date: Sun, 14 Sep 2025 21:54:25 +0800
+From: kernel test robot <lkp@intel.com>
+To: xu.xin16@zte.com.cn, akpm@linux-foundation.org
+Cc: oe-kbuild-all@lists.linux.dev, shakeel.butt@linux.dev,
+	hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev,
+	david@redhat.com, chengming.zhou@linux.dev, muchun.song@linux.dev,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	cgroups@vger.kernel.org, xu.xin16@zte.com.cn
+Subject: Re: [PATCH v2 1/5] memcg: add per-memcg ksm_rmap_items stat
+Message-ID: <202509142147.WQI0impC-lkp@intel.com>
+References: <20250914180351288rcLuZnPAMUej48nuTc7KV@zte.com.cn>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250914180351288rcLuZnPAMUej48nuTc7KV@zte.com.cn>
 X-Rspam-User: 
-X-HE-Tag: 1757858001-369496
-X-HE-Meta: U2FsdGVkX1+cnSNSNAFnD9Gtnww14RB3HVsoBiW4ZydkVsgCN6d0XmF1wSNqHxTU5FST0D1j7tW8V0XUo/U2SWfEuAC2k+fR1SlJKQl6X6Synb1CkzS8KYuWhA5o6wGFWEC8zSa34kCgHxdRP8sJLaNMWzqyqCGaJGTYQX7z0pezbX+hHu91xUkh4yGJrw6lZ9Jq8Xvq4rR0RhzFVdRVZN98eaCvB6dnGS/0PRO1CLWMZ18ZFWnUryx+/DgpqfJJUhkn2Jiygzs6xJToT9/iffCF7LMyfLM9Y19h4cQEg4jkmbVJDocwBqn2blh44tKFTWKSNuIGHk9SZB0iI4nkcSOYCr7hEW7kXepgS79Y4TLMzRTHyxbCPIQnBNDK5Y9RnOa6B4Hyr5lwVe62HtWh/rSk9CDmLvCbGufS5B6v+E4BoX/ReUUrz3fXVufuSEIYj5xzDvNc2jDnhQiSv0HhwQwRbCgk1kfM3rMCCTKVtv3uoHMK3UhjazNBCnCecGGn2HGi4ws+xLKmpOvtai0713sDIXclThsKAwNNzYAWIipB8Dvgd4M0lcXYu62XFX0K8edVdmkxz5gGbVim2yiI6tpuAUDkgpR8GM4EbDJuPw45OL78i5XiweaSGwK/e69rk4CrAK66/liRy9+W6pI7R+A1cK+PyHt3wEtg+smRq6twt5cfIimJB9SYbxn2hjUdUX7J4ouotf5/cfddSiefU/tEoOsFtXK6fRO7vx2lkcnNv6aqgkw4lcMbgyjbJ2DMElI6Yacm3MrC9jgAOLKnCgRmOc8Vr9arS+YD/l54TNRjVzJkOIQe23sRTPEk21mRFfd2b1rf0SVuHfj3tB4XNlQa8saD8/RfAZz7eSJBDU5fl5gxOWtOSlOy+RFpYiJcT9f6OLyWflPgEse+7QUybyy4+HzbICORQfeFCZG9MQJYZwjzaNxmU1shj0OrgTFjUyqnAO/iZbOvWghpCI1
- oDulvVsc
- HNrYeoEXyYcM1ggLTF46Y2eux9C/8Sopq+2rScC2K5s72a9VVwtVAcYhDBDa137E9hPeq+5KHPg5aR6zTqaYNF5tXYijc1nQcD5XCCynMRdIX20VS9YSxD5yGXxn4Z8rx5eEWGpOwbcdzc25aKCBjkk/9/rjpkWBMwLXQgRjgFj5xU/eyDBSKFISWjn8hLEO1hWQ4V20g25iksFRjFyX2TGWnbaWFeZF6KScBT0GSGB8Jvu9DeUE5xQlRuPmWtln/8Rjk33ekkm8sF82HOJOxi46ZdT5Ig7iJQbG7aaKBPN2wI40zoDlscZ7gHn1MJcRY6Elmno5YBE1tUm0Pmywp7o32HwBy3NNpwuyR3W7RW28bEAVU6CZKr+Xnb7ANRwv8NeJBoj9RG35Grdj8k7Du+JfYSrPkQ+3vItQO
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 683A1180006
+X-Stat-Signature: j346umhx1mdiwpfdwhkainrnejambcze
+X-HE-Tag: 1757858113-442193
+X-HE-Meta: U2FsdGVkX1+1MNMVqitGH7YdHke+C6+RQqkudY0ZFeWdXFugLzx4ySqnydPcYuKPpqXwXq89YZfznfiN/3B6AzmOImtMDe4K18VAjLYtlphzjp/bYwU6cNJmTbBT0oBHtFB6nsRbmZ9B1eZxCFmZ0Z6VRJvBO6BMxF/0eJk7qw6TFzd5GBXcalYyhXPx8SIXfi7lcXoPYRTaP9uCJ4ngnRnhHUjNVEcoQHfdqR+UZ5Np13YjuMChehgUQY+6wrm08sftrsR8rQJmjOff0X2GYI3T3QLDYt6IL04wqNUnXvBAm0ZX9d9OKiGOmyTHEC707ieqPIjREvDbns8fFkPTAJx1lhpMgeh0D6WwwwU9C0iehBOf0+NgGujNFXrcPt8enTwa9ddp3QeGdpWQsJp/ZcZiurhXKAHAjmzQi45pDPdMBZQUkHpHjnF5CjAD1aFgcKjQ6zFL+vau2UVwSqGOdaZyZRJF6W4GMr4beVdmcmfAqm0zQ2Mklid8kn5WHGtbGDDn839NdKKzaHLfxHo42bR60UpgzI7Cs9n+cRMFEmPLb3+45taiMFC3PRinr+0mBzC0AfwnGUSWT/2etlxhOc8C1rB/N5o1tS0VvuUxZJ+gP6Y9Erjnkzw/amNtT8uucYUgovdbhbo+q5Kt28xtRE7qPSayX0IPRi/Sv4ZsUPo/uEpf40p0k4oTubJ+ct3Pw5JWwtAjlYEKXdTXapfKFH3lDeWHa3l3UM22irpeYvIWPymVl/237fJ//RbM7sYW8GEDggbt0h2TbOwQKDW7s8YynZlW5zMaz36RHxFFcRE0ARuWARH+i33JGSF2bB8aL8J5LPSe5+899jHN4W9O7Z9kHg7nF2c64LRWLZPf1PnGtxIbJC90t2TeWLIKuxRpdoyAfomDmddMSPyu42Km5CDlcSxp7cxbyinrgpujEtx1e8LT9ktWpGzgenFBAOUeBqcyDktkUHr4q4fOSgM
+ eaAjxZZF
+ MFFQkH24UEX3gW+ixNnIvaaRwC+VxH/WWHhf/KWVQA0Rd29osgPZe7tzN4Ii/GqzGFdXYppb1Q7Pd8GyYQTwhPSm7ZTBuCfILLWjc2ymhr/ChuPC2y3tfTU3wWlKXSVRIPLO9JxZCReXcPIPEa7/+EUDcN8mn3YM6nPWb7pJG0G77PWI9Sjlj5sNHTqmo5DKGkoDHXSowNr1lw+XqsQuYLJDqlC+pAhNakk+TFBIm5u3v6Ga/xDvpS6WtcDC/9v0Ahaz5qxnfEvVTTX/UiE+Vi+Otf7aKeqWrbkxxafVWNCzqdSRmLD5bKSHC4gzoKkriqsDA8lR3XoypLOQU6KQpytye+GFknMEC+VZ+HWxB5fu5zRVBb6GAUmI4xb5mEye0BUMTPzflxuaSftl07ZoOqSD1hY9tOWGfvKMQww5hIMmp49A=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,79 +110,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 12 Sep 2025 18:11:12 +0800
-Jinchao Wang <wangjinchao600@gmail.com> wrote:
+Hi,
 
-> The new arch_reinstall_hw_breakpoint() function can be used in an
-> atomic context, unlike the more expensive free and re-allocation path.
-> This allows callers to efficiently re-establish an existing breakpoint.
-> 
+kernel test robot noticed the following build errors:
 
-Looks good to me.
+[auto build test ERROR on akpm-mm/mm-everything]
+[also build test ERROR on tj-cgroup/for-next linus/master v6.17-rc5 next-20250912]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+url:    https://github.com/intel-lab-lkp/linux/commits/xu-xin16-zte-com-cn/memcg-add-per-memcg-ksm_rmap_items-stat/20250914-181132
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20250914180351288rcLuZnPAMUej48nuTc7KV%40zte.com.cn
+patch subject: [PATCH v2 1/5] memcg: add per-memcg ksm_rmap_items stat
+config: parisc-randconfig-001-20250914 (https://download.01.org/0day-ci/archive/20250914/202509142147.WQI0impC-lkp@intel.com/config)
+compiler: hppa-linux-gcc (GCC) 8.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250914/202509142147.WQI0impC-lkp@intel.com/reproduce)
 
-Thanks!
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202509142147.WQI0impC-lkp@intel.com/
 
-> Signed-off-by: Jinchao Wang <wangjinchao600@gmail.com>
-> ---
->  arch/x86/include/asm/hw_breakpoint.h | 2 ++
->  arch/x86/kernel/hw_breakpoint.c      | 9 +++++++++
->  2 files changed, 11 insertions(+)
-> 
-> diff --git a/arch/x86/include/asm/hw_breakpoint.h b/arch/x86/include/asm/hw_breakpoint.h
-> index aa6adac6c3a2..c22cc4e87fc5 100644
-> --- a/arch/x86/include/asm/hw_breakpoint.h
-> +++ b/arch/x86/include/asm/hw_breakpoint.h
-> @@ -21,6 +21,7 @@ struct arch_hw_breakpoint {
->  
->  enum bp_slot_action {
->  	BP_SLOT_ACTION_INSTALL,
-> +	BP_SLOT_ACTION_REINSTALL,
->  	BP_SLOT_ACTION_UNINSTALL,
->  };
->  
-> @@ -65,6 +66,7 @@ extern int hw_breakpoint_exceptions_notify(struct notifier_block *unused,
->  
->  
->  int arch_install_hw_breakpoint(struct perf_event *bp);
-> +int arch_reinstall_hw_breakpoint(struct perf_event *bp);
->  void arch_uninstall_hw_breakpoint(struct perf_event *bp);
->  void hw_breakpoint_pmu_read(struct perf_event *bp);
->  void hw_breakpoint_pmu_unthrottle(struct perf_event *bp);
-> diff --git a/arch/x86/kernel/hw_breakpoint.c b/arch/x86/kernel/hw_breakpoint.c
-> index 3658ace4bd8d..29c9369264d4 100644
-> --- a/arch/x86/kernel/hw_breakpoint.c
-> +++ b/arch/x86/kernel/hw_breakpoint.c
-> @@ -99,6 +99,10 @@ static int manage_bp_slot(struct perf_event *bp, enum bp_slot_action action)
->  		old_bp = NULL;
->  		new_bp = bp;
->  		break;
-> +	case BP_SLOT_ACTION_REINSTALL:
-> +		old_bp = bp;
-> +		new_bp = bp;
-> +		break;
->  	case BP_SLOT_ACTION_UNINSTALL:
->  		old_bp = bp;
->  		new_bp = NULL;
-> @@ -187,6 +191,11 @@ int arch_install_hw_breakpoint(struct perf_event *bp)
->  	return arch_manage_bp(bp, BP_SLOT_ACTION_INSTALL);
->  }
->  
-> +int arch_reinstall_hw_breakpoint(struct perf_event *bp)
-> +{
-> +	return arch_manage_bp(bp, BP_SLOT_ACTION_REINSTALL);
-> +}
-> +
->  void arch_uninstall_hw_breakpoint(struct perf_event *bp)
->  {
->  	arch_manage_bp(bp, BP_SLOT_ACTION_UNINSTALL);
-> -- 
-> 2.43.0
-> 
-> 
+All errors (new ones prefixed by >>):
 
+   mm/ksm.c: In function 'memcg_stat_ksm_show':
+>> mm/ksm.c:3345:2: error: implicit declaration of function 'seq_buf_printf'; did you mean 'seq_bprintf'? [-Werror=implicit-function-declaration]
+     seq_buf_printf(s, "ksm_rmap_items %lu\n", ksm_stat.ksm_rmap_items);
+     ^~~~~~~~~~~~~~
+     seq_bprintf
+   cc1: some warnings being treated as errors
+
+
+vim +3345 mm/ksm.c
+
+  3329	
+  3330	/* Show the ksm statistic count at memory.stat under cgroup mountpoint */
+  3331	void memcg_stat_ksm_show(struct mem_cgroup *memcg, struct seq_buf *s)
+  3332	{
+  3333		struct memcg_ksm_stat ksm_stat;
+  3334	
+  3335		if (mem_cgroup_is_root(memcg)) {
+  3336			/* Just use the global counters when root memcg */
+  3337			ksm_stat.ksm_rmap_items = ksm_rmap_items;
+  3338		} else {
+  3339			/* Initialization */
+  3340			ksm_stat.ksm_rmap_items = 0;
+  3341			/* Summing all processes'ksm statistic items */
+  3342			mem_cgroup_scan_tasks(memcg, evaluate_memcg_ksm_stat, &ksm_stat);
+  3343		}
+  3344		/* Print memcg ksm statistic items */
+> 3345		seq_buf_printf(s, "ksm_rmap_items %lu\n", ksm_stat.ksm_rmap_items);
+  3346	}
+  3347	#endif
+  3348	
 
 -- 
-Masami Hiramatsu (Google) <mhiramat@kernel.org>
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
