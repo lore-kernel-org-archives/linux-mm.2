@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 879FECAC58F
-	for <linux-mm@archiver.kernel.org>; Sun, 14 Sep 2025 08:15:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 981EECAC58F
+	for <linux-mm@archiver.kernel.org>; Sun, 14 Sep 2025 08:20:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A33468E0006; Sun, 14 Sep 2025 04:15:27 -0400 (EDT)
+	id E5D768E0005; Sun, 14 Sep 2025 04:20:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A0BD98E0001; Sun, 14 Sep 2025 04:15:27 -0400 (EDT)
+	id E0EFF8E0001; Sun, 14 Sep 2025 04:20:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 949958E0006; Sun, 14 Sep 2025 04:15:27 -0400 (EDT)
+	id D24B98E0005; Sun, 14 Sep 2025 04:20:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 84ADD8E0001
-	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 04:15:27 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 642C11A02AF
-	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 07:39:53 +0000 (UTC)
-X-FDA: 83887056666.15.1E9F308
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BA37F8E0001
+	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 04:20:27 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B8B361A02BB
+	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 07:03:46 +0000 (UTC)
+X-FDA: 83886965652.14.AB7F1E9
 Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 973E7A0004
-	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 07:39:51 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=uPLdtK0Y;
-	spf=pass (imf25.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	by imf22.hostedemail.com (Postfix) with ESMTP id B0272C000D
+	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 07:03:44 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=tqa9yjtO;
+	spf=pass (imf22.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757835591;
+	s=arc-20220608; t=1757833425;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Zy0rMvTD99DiIN/7fqVO3cDPxdU5/1ohHPv1dsMlt9Q=;
-	b=wpSlkmFYVnRspx3cvwAbFfyEkf4RDNZizRR+i10xkDHqxCWS7tafxIW+Cex6HJNTXX5fvT
-	r8bVM2rWeaF0Cgux0OBU+kQhuZMoEm+A6VFP3YmomlPgc03qL1+FCur1EitaVhJYHJ6bGf
-	1aR5Hg/+pEjJIKaDg1w3M1B8jNA7994=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757835591; a=rsa-sha256;
+	bh=1SBr7YTYHDvS3STNvioAQqSYjCCaY8tahzoq1n3/n0Q=;
+	b=XWvCbFHD16UzkgKK7lSV+5FQXGF9dQ4Xvd5PNMJlzalzLhy8qah+RBoPFAvVOijYp/4pwN
+	e5i//OI9cvt9k5SgOr7PXrRa743EARMeUxp9ieBa3WsBCPLsblZVyxgQddjyIsA7epJ9Me
+	ct9KZ0r0nwYCeNllp7VhJbePpfD7NUw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757833425; a=rsa-sha256;
 	cv=none;
-	b=N3pmjMMySpDaOqOtIbM+3tdWaKHT6aO6Q3zse1XKhNFC4VQdPUdU2KLaq6CungIeV/XPgG
-	W8Z4mU4Bc24OrnrLKGYjW1YWqQYK54I378LZszQxjqQ4KSjkrzP9dVyd5ZJECgT3IaDpC3
-	bR24GRXxZfyoddhVxFEwYs1MK2d1JxM=
+	b=e4TiJEOh6SsYClVvMAVzV4pHqUGcWZXwhtX+4QOS4EKSbqqqQb0VHIPyFuyv/OtDE2Yh/H
+	34hXiSG5ewKCcm+vqHAYmJ498PC8sfpZTTxN793000FYjY7S0sFtWUZmtQoAx9FXyF6a9z
+	+icllujaOp4kL0VVTsqfwqS6XIyHb+Q=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=uPLdtK0Y;
-	spf=pass (imf25.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=tqa9yjtO;
+	spf=pass (imf22.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <0beea647-24cd-47ff-9124-1ab88fc43535@linux.dev>
+Message-ID: <cf5d6ff7-faa4-469e-9e32-b90c75b8194f@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1757835589;
+	t=1757833422;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Zy0rMvTD99DiIN/7fqVO3cDPxdU5/1ohHPv1dsMlt9Q=;
-	b=uPLdtK0YsAHaLVYa9QTI+V1BLlJ9lJQWQqyYxoMdn2BcGElKs4kXlKefIgPzj/WUCUqNAB
-	9g+hYV8MgQGuETgNPeCx12vgRfIxHSLsCtW0y7jfZfeddzPyXYLIipr850jJHpEI9V7OeE
-	mY0pDcA6TB6zBv8FwkvzbMfKVuy3bqI=
-Date: Sun, 14 Sep 2025 15:39:41 +0800
+	bh=1SBr7YTYHDvS3STNvioAQqSYjCCaY8tahzoq1n3/n0Q=;
+	b=tqa9yjtOsatRIhbP8nB/MAj6tBzhYbcOf2/rGtw62bmQhqbhU/9QBIKsZPO6njSvtX/caE
+	D32294AGw73O6YTfU/EInJ6LgMp105ggkB7oBs//eCL3283sA3IyKOIcueedZPl515tLMS
+	7R+cGZoHCFgMNXDY+Q72P/pU5WAswC8=
+Date: Sun, 14 Sep 2025 15:03:31 +0800
 MIME-Version: 1.0
 Subject: Re: [PATCH] mm/mm_slot: make sure slot is the first element of its
  wrapper structure
 Content-Language: en-US
-To: Dev Jain <dev.jain@arm.com>, Wei Yang <richard.weiyang@gmail.com>
+To: Wei Yang <richard.weiyang@gmail.com>, Dev Jain <dev.jain@arm.com>
 Cc: linux-mm@kvack.org, lorenzo.stoakes@oracle.com,
  akpm@linux-foundation.org, chengming.zhou@linux.dev, npache@redhat.com,
  ryan.roberts@arm.com, xu.xin16@zte.com.cn, baohua@kernel.org,
@@ -73,22 +73,20 @@ Cc: linux-mm@kvack.org, lorenzo.stoakes@oracle.com,
  baolin.wang@linux.alibaba.com
 References: <20250914000026.17986-1-richard.weiyang@gmail.com>
  <ae30fc02-c573-46bc-a5f6-935f256149e2@arm.com>
- <cf5d6ff7-faa4-469e-9e32-b90c75b8194f@linux.dev>
- <463716f5-be12-4d78-9432-779e3f11460c@arm.com>
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <463716f5-be12-4d78-9432-779e3f11460c@arm.com>
+In-Reply-To: <ae30fc02-c573-46bc-a5f6-935f256149e2@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: kcx1xrjyf5nxhoczq8uakbhsmfwkx9f4
+X-Stat-Signature: uijkzu7qu4xt4o1ofkyanozqxexkazjg
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 973E7A0004
+X-Rspamd-Queue-Id: B0272C000D
 X-Rspamd-Server: rspam10
-X-HE-Tag: 1757835591-171423
-X-HE-Meta: U2FsdGVkX1/VWNdk1/shBqHzZysnxyj18SGC0Q48plQhQdc8l6FP3eNpWasLFCM4OF7ylUvxi87DB7KSGqbVf4F30D8jThbA9Z/tppVyz3MDH9h9C+GhFpQyz97Q8JEusXv+qzWDpEFgMY01Ox4UH9pmY0Q+ZF0y/UzY8t3ueaSS5CeD16voGUpkXFfLo5HiYQmN53ki45TbEOv+BfSe8vi5cixNt3zZh10Ew3c+c4xxf0HjVvAz7GaV7ANdpLwk/+Gssa6SFmPMqoH0/OPftn4ebDOJk6IwDxd1QHrspAo/GMqnSvw1u2/TerrOUAxCVpwpgtbr1g133ytXzmEXSmwZxW/NAOCTSzVlDxZNYdQgMWfrOGOU0BkkFL8/RUrgB6IrpEI4EyqrUDMLAtlHkFU2ZUFZ0uEisUeE89ax2Y0klet8B60ohAxqW6Zo0Q/9NIlofkio1WvjC7N8rMwXvCkpuYdGPESUqwudjf6uKfjtqpgWg509EFwpZmrE6mIJ50k+Z22GwWLFjZ8yoooma2q0YV2olP3//ttYP2fF9vRaxxUnxvPHSMhjT1BOUFdPXXHwaM/nP/h0zdueXnQvYdp77SWUsVC/S/bzA73t9nf3Tg3fujkW+vwxiMz8RPBJIdvLeF7RkDbb8iES/5BFNxV9HjE2Rh2ZlfZs3arbJ7a7gmg2sSWzTNWwFKcdl/zLTJjQKfYXwf1wTo+OkX0TaIfqyfjVtzINlSmMLodxg4RAJ6wvEYB0TQ65hZzjPxxV5IRh21BYi2GlFwp5L/IsxOn5/rZId3+L59CGCfXQh+ms7rc0D3mQA1mS68biKrLut+/3LdQRYIyyxt94vu8BFdCotM16cpzn6/JCKunIt6+dDZp9Zv96qohnCXq9yljwlAqAoJuCklzUZ6KROfDFALfpO7MeyNveOtmO9RAUk9RF183p4Xb0J6EsF5u9XcersJjlIOoBL/fx4zvSYTw
- zGDBLb8J
- p85fFUE3n0dRMNjrgW31SIVpzqt416gP6d0NgNAjZcW5H7S7lupdKpVVDLupmr0AijceEyIq76nLJHT1z4HvOMwuaYhHmGwBjVD5C+xV9EtLA6G27Gtxthjb2UvGvxwqp2b6KOPdc3qwZBfHQvH5GeoiYYpiYicMsL+Z4HFsfTQKRUBBj1RglthoIlZco2521h/SJi6L3kyGvOCmEH1b7yxnF69PGGR6gIodpKauBsVIX3J0RN5eN2UTzTQgpgj5oxqiVFKq/JNPONQpPNNkQgjVqU1eBhvWne7e0wwpZjVswEOaYRutCoaVrOScyx+QusZUwS+6/2aNcpaC5c2vG1Ji7h0iXA1JhA6Gm0mXUUH42ZmXDEZ4zZmaKAzCgtzw0Wgxl
+X-HE-Tag: 1757833424-85434
+X-HE-Meta: U2FsdGVkX1+DJsAD6Cx/xZJCzJqBgoY5+UYuOc0xy6YScJZ0oLEeg7VYmmXFR7NPcaxNeXHSfjCelW0QXZplOn5OeeZWbuuHSny5WizxcTZDa4kjz+ouo9jEZYhYcM+mWrcdLRrCZ5BdOGyFeYkR4Do8LSTa6bKOTY7sKQcWyB4SKU9TNDllV4fXKAiMh/2SYUjYoVQ4DBclMwreTApPCDVNs7zmhl8H8W1AAkwkmmCIAXgq/GudwoYWzlZRsiQubqQYCUa8NP83Ed54p+ac9k3J0TjjcYyVzcQVLNZ79hFmV0PkZXF4OJmwXEcliIw9AmyFeyzoRevLlP/e116DkAk2JXxB6JjGbFONzito1AhRbWdwsANbxoLrIguObgZZSyglvjajDAuJaFgjg2umPhdKK8csVeS8QwBh3MMKTim3qxdffYa4B8imtxyCf+pvF8nEhuCvb85WUnx+kQPOJOYp8xkY91jGQCIi2g4Mt73sbcpM2CAYfOKV9g6NNWE032Yb9MN10Vk1jXR5FWwE3YNO8H6A7F7SFZi45XZrmtX+RYOp+xLlFzVPx2DCOZySJhy7SR2QA/pNRK7iuUEFSk46gspHieBSiwC6jBIU/elPAQLlI+iznMPLEXgzSFyoT4xBElGaRQr3Ht9YTjiXBe6Hk0tdka4A8dsAlcoxnjsFFhc2hapjll9E8rbjP9cg3A2lrr+qu6VL9q4lmkOSG0IrjRPJNyohLUkKA2hC3FfQtIB5w5k3qsrjRFzeOGkkoNmyNTh0oVYwf3jQMiNISmBoTv/TzKW95NY+SnopYqIcA3mXlecvKYAtZ1BBHqNa57Z2uj1Y5LffKiFkUvB/8Y13llArkq2p35rPIIlFGCVtq4ApMlzVkSpKd1rDRcwPyzucyYJ3758yqFPGfSm9n/7LmOAGvwYprYeGhAhfYr3rAc62QWE9DF/IfkCcXKjjshxjAXwe2+I2QK4KZkt
+ BAR0ULJs
+ vtM+S8dd33gUhqMfLKXWX3cLXSMpj8yzvV6HF/zfxSe3l0OSjbxlTG2ZpZWZF645nIf58TWnN3nLke5NEdeBqAQ1ziMloC0wz+uQjY0v84S/Xc/blfseNjqWHdWlU/3n8gsrV5UahkBBLMONxb7+AjKaWCI1OwkNUMxoWxxpj/Y8Y/Cd+3lqjJOpJL3UIBsbuU0C/yb5KAC3Ms6e92JF04kXdWfZ1ttJsCiNlR14R6AI7ZUeqtG7OzohI66gsZLYJQystd1IwRwSh4pVIUR5FK1xGNLGp8Lt3e96DMEEywwbln+vVbuz/q0yvLjM68j3KQ9NI/ANcTyU6dbELl7qXaMHexcdC63qYN9Esq/v1D1lUe1lsu/xl+EAu9lHnmKLGRTy5hLXj4F4zJqKfZLEITOmuNuFFPLW70zYDLHSWblry+iURzD74pA4m3X11EjqDw4WM
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,41 +97,103 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2025/9/14 15:29, Dev Jain wrote:
+On 2025/9/14 14:21, Dev Jain wrote:
 > 
-> On 14/09/25 12:33 pm, Lance Yang wrote:
+> On 14/09/25 5:30 am, Wei Yang wrote:
+>> When using mm_slot in ksm/khugepaged, there is code snip like:
 >>
+>>       slot = mm_slot_lookup(mm_slots_hash, mm);
+>>       mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
+>>       if (mm_slot && ..) {
+>>       }
 >>
->> On 2025/9/14 14:21, Dev Jain wrote:
->>>
->>> On 14/09/25 5:30 am, Wei Yang wrote:
->>>> When using mm_slot in ksm/khugepaged, there is code snip like:
->>>>
->>>>       slot = mm_slot_lookup(mm_slots_hash, mm);
->>>>       mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
->>>>       if (mm_slot && ..) {
->>>>       }
->>>>
->>>> This is only valid when mm_slot is the first element of its wrapper
->>>> structure, otherwise a NULL slot would converted to a mm_slot with
->>>> negative value. And current code thinks it is valid and continue.
->>>
->>> Shouldn't you fix the code for the case when you can't find the slot
->>> in the hashtable, i.e slot == NULL? Like, if (!slot) return.
->>
->> Right. For khugepaged specifically, the slot == NULL case in
->> __khugepaged_exit() (only user of mm_slot_lookup) should probably
->> be treated as a kernel BUG for new.
->>
->> But I'm not sure if the same logic applies to KSM ;)
+>> This is only valid when mm_slot is the first element of its wrapper
+>> structure, otherwise a NULL slot would converted to a mm_slot with
+>> negative value. And current code thinks it is valid and continue.
 > 
-> I haven't seen the KSM analogue, but restricting the position of an element
-> 
-> in a struct to make the code work should imply that the code is wrong in
-> 
-> the first place :)
+> Shouldn't you fix the code for the case when you can't find the slot
+> in the hashtable, i.e slot == NULL? Like, if (!slot) return.
 
-Yep, you're spot on :)
+Right. For khugepaged specifically, the slot == NULL case in
+__khugepaged_exit() (only user of mm_slot_lookup) should probably
+be treated as a kernel BUG for new.
 
-[...]
+But I'm not sure if the same logic applies to KSM ;)
+
+> What you are currently doing is just ensuring that if slot == NULL, then
+> we get a legal value of mm_slot, and since the code then operates on
+> the basis of mm_slot, everything will work fine. I really think this
+> is a workaround to the real issue that you got slot == NULL :)
+
+Anyway, an actual fix like "if (!slot) return" for khugepaged would
+be better than this workaround, as Dev mentioned.
+
+Cheers,
+Lance
+
+> 
+>>
+>> Current code works since mm_slot is the first element, but make sure it
+>> won't be disturbed.
+>>
+>> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+>> ---
+>>   mm/khugepaged.c | 5 ++++-
+>>   mm/ksm.c        | 5 ++++-
+>>   2 files changed, 8 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>> index af5f5c80fe4e..668e74ad33b7 100644
+>> --- a/mm/khugepaged.c
+>> +++ b/mm/khugepaged.c
+>> @@ -108,7 +108,7 @@ struct collapse_control {
+>>    * @slot: hash lookup from mm to mm_slot
+>>    */
+>>   struct khugepaged_mm_slot {
+>> -     struct mm_slot slot;
+>> +     struct mm_slot slot;    /* keep it the first element */
+>>   };
+>>
+>>   /**
+>> @@ -2382,6 +2382,9 @@ static unsigned int 
+>> khugepaged_scan_mm_slot(unsigned int pages, int *result,
+>>       struct vm_area_struct *vma;
+>>       int progress = 0;
+>>
+>> +     BUILD_BUG_ON_MSG(mm_slot_entry(NULL, struct khugepaged_mm_slot, 
+>> slot),
+>> +                     "slot should be the first element");
+>> +
+>>       VM_BUG_ON(!pages);
+>>       lockdep_assert_held(&khugepaged_mm_lock);
+>>       *result = SCAN_FAIL;
+>> diff --git a/mm/ksm.c b/mm/ksm.c
+>> index 2ef29802a49b..0d486dbdf7d3 100644
+>> --- a/mm/ksm.c
+>> +++ b/mm/ksm.c
+>> @@ -124,7 +124,7 @@ typedef u8 rmap_age_t;
+>>    * @rmap_list: head for this mm_slot's singly-linked list of rmap_items
+>>    */
+>>   struct ksm_mm_slot {
+>> -     struct mm_slot slot;
+>> +     struct mm_slot slot;    /* keep it the first element */
+>>       struct ksm_rmap_item *rmap_list;
+>>   };
+>>
+>> @@ -3842,6 +3842,9 @@ static int __init ksm_init(void)
+>>       struct task_struct *ksm_thread;
+>>       int err;
+>>
+>> +     BUILD_BUG_ON_MSG(mm_slot_entry(NULL, struct ksm_mm_slot, slot),
+>> +                     "slot should be the first element");
+>> +
+>>       /* The correct value depends on page size and endianness */
+>>       zero_checksum = calc_checksum(ZERO_PAGE(0));
+>>       /* Default to false for backwards compatibility */
+> IMPORTANT NOTICE: The contents of this email and any attachments are 
+> confidential and may also be privileged. If you are not the intended 
+> recipient, please notify the sender immediately and do not disclose the 
+> contents to any other person, use it for any purpose, or store or copy 
+> the information in any medium. Thank you.
+
 
