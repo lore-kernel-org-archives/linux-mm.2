@@ -4,87 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C964CAC58F
-	for <linux-mm@archiver.kernel.org>; Sun, 14 Sep 2025 00:06:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35B5ACAC58E
+	for <linux-mm@archiver.kernel.org>; Sun, 14 Sep 2025 01:56:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A84446B0008; Sat, 13 Sep 2025 20:06:32 -0400 (EDT)
+	id 253396B0008; Sat, 13 Sep 2025 21:56:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A34EA6B000C; Sat, 13 Sep 2025 20:06:32 -0400 (EDT)
+	id 204526B000C; Sat, 13 Sep 2025 21:56:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 94AD96B000D; Sat, 13 Sep 2025 20:06:32 -0400 (EDT)
+	id 0F3546B000D; Sat, 13 Sep 2025 21:56:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7EDA76B0008
-	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 20:06:32 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2192D84C36
-	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 00:06:32 +0000 (UTC)
-X-FDA: 83885914224.27.D04937A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 5F64C140007
-	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 00:06:30 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ANijnlqb;
-	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EA4F06B0008
+	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 21:56:21 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 815E95793F
+	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 01:56:21 +0000 (UTC)
+X-FDA: 83886190962.11.2F32280
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 826991C0007
+	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 01:56:19 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=zWHf84G1;
+	spf=pass (imf18.hostedemail.com: domain of rientjes@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757808390;
+	s=arc-20220608; t=1757814979;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bkLrK7TNTBnQ5aG/G7lCtz6abS8ltUAly85laBw94SM=;
-	b=g3S9Rz8uHDPfQZR7lazvyEYX0MPTfSinwqtoTUIXC3A18c9xvavFdChWIbWILe7xVt3BIq
-	bveupuXvkwTJIeVz5ijz96y94j7GiG4EmTtMW2NOTC8flG3LOCWKpc+OscrcnfbCUUBENs
-	ZojdYRzxEiI+Zb3q6DltMeYPVTzyiAY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757808390; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=vjCs7FIKhGYTaI5MHKlkJ6fq8tqN7U3QyTgSWV87yJY=;
+	b=JkDNDRxtc1uCYeSUhgbe05klPMyjSL5edxaclyACvBWeTzvJV/SY24B+oTDFRGjkM136hv
+	L5qBsbRvHLZGks1IfZYqnBtsSRK2kXhso7M6fKkCC1DWrm00UpQGFDRTGeiwxk72Ey4kOh
+	fFfL1Uom1NuHADjeJAlQIru0G6sisaA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757814979; a=rsa-sha256;
 	cv=none;
-	b=ceUKYC41m2outA6i1Xuepn3DEMgQwLohWOYSTPnBwG+j8ODqXWPNpKzo4etiSwZQTFTXzn
-	i8TWnk/gLxZJIuElDIuBheabcgPrzsuJhDH5dnaa5cTEME7KFsLPTJapBPHrVWvHr7Lcyd
-	GfkGnLxUnn1b0RfhlbTfnd0lQ5Nnl+U=
+	b=hrFco4oDXaXV8f5+CeJyvG0FntArRExp5HOd5686hMcQ8LPO/YcqjAWM7zO/TjpVZEpmKy
+	BSWUuBbIqiNmsV6HMHdvzo79DwG8z7ElTejq0lDB1UEQG9zQ5wHWasuJBjp3ocxsEDcoGI
+	JghOkXHU5viQGVkNzt7O5vlQ6DQoZlg=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ANijnlqb;
-	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 86D30601F5;
-	Sun, 14 Sep 2025 00:06:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16588C4CEEB;
-	Sun, 14 Sep 2025 00:06:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1757808389;
-	bh=ouYjPInHOlfRxlwFI4BxmFmkWpQ2zHtUxhVB1TGP/10=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ANijnlqbF3kZ216A80p19N3GXncBRxeswY6ZgfMqOOs851s6H67Fkxcp7oLM1aO6H
-	 uJ+qCk4CD19qDimwFNH3qyyum/QOZsGd0u0qBGW2GmJ9O2WTxtpc4lrRETYYYuyr1h
-	 kAhi18OCxD+k4pdF4xazg4t+I5sgimC5ADY+Q1qM=
-Date: Sat, 13 Sep 2025 17:06:28 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Balbir Singh <balbirs@nvidia.com>
-Cc: kernel test robot <lkp@intel.com>, oe-kbuild-all@lists.linux.dev, Linux
- Memory Management List <linux-mm@kvack.org>
-Subject: Re: [akpm-mm:mm-unstable 39/428] include/linux/pgtable.h:235:36:
- error: expected expression before 'do'
-Message-Id: <20250913170628.e76ed73413b58aef022aba3c@linux-foundation.org>
-In-Reply-To: <b96ea27d-6e8a-40d9-8fa6-677cd8134363@nvidia.com>
-References: <202509131255.x9EfvIGt-lkp@intel.com>
-	<20250912230313.117341d5491a3145e7bcf311@linux-foundation.org>
-	<b96ea27d-6e8a-40d9-8fa6-677cd8134363@nvidia.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
+	imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=zWHf84G1;
+	spf=pass (imf18.hostedemail.com: domain of rientjes@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2637b6e9149so60895ad.1
+        for <linux-mm@kvack.org>; Sat, 13 Sep 2025 18:56:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1757814978; x=1758419778; darn=kvack.org;
+        h=mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=vjCs7FIKhGYTaI5MHKlkJ6fq8tqN7U3QyTgSWV87yJY=;
+        b=zWHf84G1+eRYHsxsPQrQ7gm7iagfaKvp6LUDw//3KgIv1J2P8laubv8WUnJoI2XVit
+         FFS9Tx8aYv1l4IwPJ63l/C3iODHbdemenIz29vStVWZTBvLUfWBQzRvVxKePEoEFqGmR
+         m9Qp2Gqh8FUuXd//Vo/1WeZt6Yi/4klTGHNLCotbalxgwfHQNlJIlgAVPAvYNhfP0er7
+         Q5G2FG9Lo77msYp8xBWSLJd1QwxTyP7Vh4qYd1PqE9iel4Dho7yvFtq8o76cP9TMiffT
+         VG6jXgFx8ddVNGBD4TgJinTqtmM+R1fSn/sczgK659Q8fkEjUtlUh0M4c/XyodRzlK9L
+         HI5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757814978; x=1758419778;
+        h=mime-version:message-id:subject:cc:to:from:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=vjCs7FIKhGYTaI5MHKlkJ6fq8tqN7U3QyTgSWV87yJY=;
+        b=uzox4Pkx7TniZ6890LNnlnVMTvfx1t2p2EjBNnJ/mPf4CjM1XrQMxzYrn1duGKsDg6
+         WcR7n/eBKsx15JfYVfIy+H1XcVmmta+1bwZ0w9b9g7cDeyNVdSwWk6TyU8oJPKOIz4kB
+         LR7Y46gnKpy0i76R6kLqI29/srGjODz2oY4PMGTHdj/FTfkX0uqaWSZMWNftpg4NXKGU
+         TbcS3/s5RUw3nIZh5/ml4DuoqxnEsc63cWtSFrJEbLOiQ8uCEyJH0T2A5wWvkx0ud/pV
+         RWfqP3lzColwkIGOzT7xh0eV/pu9LteB/kBN7Mxk6nrEzQEUlVEqfSkxRGUxJXOMyR4e
+         PMhA==
+X-Gm-Message-State: AOJu0Yyd+ev4C1jtgDD1AuU3Fbsr3uPT/oFyf6Tiq89tISyleKpBSQib
+	yWHXpJutiGMTq732cpT9JcRVolP9A5+WvmcBBGicqb++ISbSmF6+VxD8ufoKS5SeMA==
+X-Gm-Gg: ASbGncvZ4cZs5LmSekdaDZ2jJ67PTGkPtADMrJ45V1bTJhy85TAD8bOgC+Hd3Oshl5z
+	YywNcgfLhI2/rGnmRi6XeQOtJIQZZYIDdI+l/rDU2+UdjkeWZSXQU7KJ3oWoOTceWnt/IjDmyF2
+	1KTzmCujkm1vVzfbUGQBbyMjGQT0ha9hYstQ9g82nawdEkfljFPLX/h8aFWqSLALnx0odrebP6M
+	jbTHIj9EX6WCWIIP33YxrvR/+aW7p6IUVzfYuAkh73yDpWlnAa7DkS8Y2sRFHAnz4I4F+Dw7GVq
+	Hz2YZT98TXhcf7w8mrtjhxTtn9BF1jVu413gBXhvUR8ZLk/H8UstnQ0/igiesaqDXr2Iwz240Y0
+	FJESyqvpF3TwdZcWzWZ1xpJGTREWDfQUl/GG4dLHxOj3tnHomLPr/6+kikZuipP2awiLPVtVT9h
+	9c9fNye8mIf+VOgQjStC5gSpIV2fGid5JBbq4O9K35dFrTsUTAXIBCzqZRQ+gsB43MGtmkol/Vz
+	iS4
+X-Google-Smtp-Source: AGHT+IGDJa1lL70XMMd5Je6cvOH5zekLB1M06oJvDtXwFRJlN15res7fswi8As8eyCvf7x9Yz50GYw==
+X-Received: by 2002:a17:902:ecd2:b0:264:f533:75d0 with SMTP id d9443c01a7336-264f5337a4amr159305ad.9.1757814977860;
+        Sat, 13 Sep 2025 18:56:17 -0700 (PDT)
+Received: from [2a00:79e0:2eb0:8:9637:d030:f547:d052] ([2a00:79e0:2eb0:8:9637:d030:f547:d052])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-32e0c2863e6sm3512068a91.28.2025.09.13.18.56.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 13 Sep 2025 18:56:16 -0700 (PDT)
+Date: Sat, 13 Sep 2025 18:56:15 -0700 (PDT)
+From: David Rientjes <rientjes@google.com>
+To: Alexander Graf <graf@amazon.com>, 
+    Anthony Yznaga <anthony.yznaga@oracle.com>, 
+    Dave Hansen <dave.hansen@intel.com>, David Hildenbrand <david@redhat.com>, 
+    David Matlack <dmatlack@google.com>, 
+    Frank van der Linden <fvdl@google.com>, James Gowans <jgowans@amazon.com>, 
+    Jason Gunthorpe <jgg@nvidia.com>, Junaid Shahid <junaids@google.com>, 
+    Mike Rapoport <rppt@kernel.org>, 
+    Pankaj Gupta <pankaj.gupta.linux@gmail.com>, 
+    Pasha Tatashin <tatashin@google.com>, Pratyush Yadav <pratyush@kernel.org>, 
+    Praveen Kumar <kpraveen.lkml@gmail.com>, Vipin Sharma <vipinsh@google.com>, 
+    Vishal Annapurve <vannapurve@google.com>, 
+    "Woodhouse, David" <dwmw@amazon.co.uk>
+cc: linux-mm@kvack.org, kexec@lists.infradead.org
+Subject: [Hypervisor Live Update] Notes from September 8, 2025
+Message-ID: <e3935e6b-0475-e780-fad0-85933377aa38@google.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 5F64C140007
-X-Stat-Signature: 517n3uaucjkr8uazu5fkduqh48do1oeo
+X-Stat-Signature: 6gs7biwugc8uqe4ec73kf1yim4mryci8
+X-Rspamd-Queue-Id: 826991C0007
 X-Rspam-User: 
-X-HE-Tag: 1757808390-568755
-X-HE-Meta: U2FsdGVkX1/ZaVrE5VZuZn34Gz77mv+vcVidBzE+DehKLB8ylANIPiTt07Cr15R367Pr4Gb38iwAFFN1Q64QrGlBxX7kOB42qV0aLaOGNuMJ07/XeTKh9ZTmei4EMkQOm95tXjN98lgcdMeMPmmOq9XUcbfE1jE7Cw6/pylfOv4Pq7bc1XjTsr/fstg2WULWPsOuKGIcGfZ6c7IqFWx8w4GealdCQ2CX2njHC43QOqPRQ3SS9tizfFEsLwb/1U68jilej9fXF8mKmofZJTxzUPtYmadht9fhD4QfjWnHkvg2YdW3HGTPBz9antOUijZ7cNKVKftXvLOzuD75YHRA9NOIMeHHV9G9y4deTrnmjAYfN73YXsqgnfewEEzg7f1ba+yOQe93iNqR8dSLRoF0/K7rR8rsuobJYsbbFEitlCtohtwczxH67nVZ/R+WgjPBXdr3GSWHheYdLp8hpzFa1fwUg9zQ2kSfLA7e3WzZDaQcMy/Cr6dN/blpdLtxgVFdrzUT64QoN9vjVHMKW7dAXmhPa5iW2ku5gh2Lhxj2ta5MpOL4wZVi0O4g8yEYbk2jw4DFLLQqYULjbb41jYA1O15Y0+3Fw7zxRY8N9ZE8BRjal3X0nE3Tpg6FEQdVC/x2J7ppzxev1GAT1BVbEl5ttYfNLWvSjVW3Bc6t9Y4BkCw4VzOWAxK0BCvMVvVzJlMheOGlnRTDiNmLKeMRmwnJ6ZdJP10NTX+WhpjoslWe1yqm1/wl8gDamwUBb0a/2kuztvEKg8ehJ3AtykVuRk9wMeDwqTQJsaGRPvw1saaZWs4MExCbwcTH0HLOvnD43xqprYNqW0/KKAenr0WyNYJhnMPZYh1wPggxGzcAaa8OtVfiQUz9IqhCCVXLSHmPpFZxXLRjuMjGlIcEt4zLU+nwjeD9WDABuRANbhL6bOd9nOftFW2rfMlI7cmlWFrwt0iKroXnqmZjYVx8N5Aj2Jz
- Rl9S2BM0
- ad9H9/26dr2gaxoBedzICT464dVvdrpIVqm9HZxPjCOgoUImyK9r4ajCQk/nOzC7vWb6ZjmJMjcN+dUUikh27HcTBm+UXBWikNzzRyTXOlbJBxgnOkg+BwVp+jFMhnnl7xVY8RK9IROXAnbXycOQULaHRt30er8Dgm94y83cNIgvzghu0jDw8Tq6dIYKqMWbxFkJn9cSxTgXYrSJCEs3IEMFUR+JPiUSLYTA+tAzqaHTZJhD2dJdDhA40qLinXDkyM16GH1lZnNSovrdrt0+ZYhTqdWCTHNBsEZHecp/atgdIDzyuibcYCVGIxRZjlvzpjbQiYIQd7if7BFRzzq7u48F1ATudzn4bSWISEIWwAPS9kuo6E//pz2X/iIkgP3xK1tMVbN79xmBndbrTDLn86bnBzax+R+BEPnxezJVIT2dIbx555WgNOIcI24HLEC6NKYK6qPTDzsYbp0dddRDYNGNolOjweqteHmuxgaWxCBGqbmo/v+0H8ukQFieTfdrDasMquJ6s4niaRrUvTxvVyBF0Tg==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1757814979-935646
+X-HE-Meta: U2FsdGVkX185WLrmTwP8ycHlbJ6BTToiZzLl114tTA65RgwMGq7D8kfqfpf+LkmBkbnPYFnszK20qMid7aOr1p9wJehE8wOCs1elNbk3RVWyY+dZEXCp81B9qCY9iTXSz6ysyCNaL4rDHbwHp4U80en586xOg+rZrMsVZcl6K1nqmlbv8iFTJdBtDxBMdG5qvDsW4gR3oZqfV8hQ11iy7i5JY+ACOv7+Bv0HiWUC5gLWLl2h4m0bz+oopb+/HQT0PBdyId3So39xoi0aEzw8PggJmMiLV/W4aj86Hm/7zTE3Ej7QFMwZhJrd+9MVhRQO6cqGxMv20HfB4zaF0uUVvTmp7Q3NUVEsGqnKdgRBSRKm/8mNGH1wl8ErPHtpi264yJNbJoPB891ce8ABvXhynthxpDS8cj6XGQKIb12lr2aC/14awAyO6Exz0D6jbY6rurY9okmTpVIUhZDHNqj53+1AKGE6k97pMfbLMtXA2uKVZWaJ52DiVv8sRd3ZzaKbfrYxgI8q15Gcex0uuOIef7VxkGUC8YZSdNt5pcR2sVYTr4FJK6jcysmZZchT7PYnscz74ZU00HBJre+uaXguM5m9+EqADmzBT5bfI4TgibLznl/xjyjEuZ8aFDhKmbPRhlTBqnHGbvbm158WQ2R/pYFycRolUYe+ePOllpujZdA3AqKCQDjcfnuuXAk+ivd7aKN0baEmiSF/VAdTNvapVFzn+VCXA4bzBHbKTlv65vExy2DoFNGAVyxvMjHQL8cXCbQGSP9gLgi5E3AP+sNBNLInUW5lDgOEYZv1YFJqlQ7zflFd0NSfHeZz8aQMIdxxOPALt98DTO4IFLMsB7iZmKWiRBEDOoE3UKoCX4A5ypm8HUtc5CqmBu7Klms4vVu1PHaEkweA3wLOEZQaaMEN1eUQPZZYugkxqXZ2FZMbThYptBiuvhS4upKHWichSbUPpKWx81CcU9mJCTHhvxD
+ 5Wx2xQ2p
+ yWIka+zlkpLGOJvDJNgAGGTuPPYkMdjjHK5Sb30ioYNasYp1G6gJWsl6cfbvKeY8JDAqdZB/30kngYBIOE4gp3kSlgh6Y1HuCBi9kvsHT6fgolUiQuZ4FtMPZfqNH/cdG/b7FHrOQgfUFRIK/NDKDtgFi/JHHwh82O2yhpFTJvsnKrp3EhoIRiYrcr6eV/Rh7ZRgqoMQmCJ/9gK34alZ5gLc7Hf33gcKU6dsfsz5RIgsSmxAb6dbFqDAcX6gOj03ZQXqj2B7cNokzBMtc9CpWguXJI716mGW+nZVG+M0V+e9DPMZalBDPEWNI50eIQqI97QAWhJcqDr5mmW/zcJYpXOc/pR0yofHOKLJWs+oUc7usdrihw6cd5572vJRZmJ3RLh3pqzOLmfWiybwR00nX1RINX+4eNsb0Tomnhoh1hcm1St1ncy26GifGUtiNK1ueua+ChVTUhW8UjX8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,119 +123,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 14 Sep 2025 08:57:29 +1000 Balbir Singh <balbirs@nvidia.com> wrote:
+Hi everybody,
 
-> On 9/13/25 16:03, Andrew Morton wrote:
-> > On Sat, 13 Sep 2025 12:53:27 +0800 kernel test robot <lkp@intel.com> wrote:
-> > 
-> >> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-unstable
-> >> head:   8ded915c4409a5190b1c9c57c172d62ab5534274
-> >> commit: f6748cc302fdca7c486c6098f315bd4174f5c614 [39/428] kasan: Fix warnings caused by use of arch_enter_lazy_mmu_mode()
-> >> config: s390-randconfig-002-20250913 (https://download.01.org/0day-ci/archive/20250913/202509131255.x9EfvIGt-lkp@intel.com/config)
-> >> compiler: s390-linux-gcc (GCC) 8.5.0
-> >> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250913/202509131255.x9EfvIGt-lkp@intel.com/reproduce)
-> >>
-> >> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> >> the same patch/commit), kindly add following tags
-> >> | Reported-by: kernel test robot <lkp@intel.com>
-> >> | Closes: https://lore.kernel.org/oe-kbuild-all/202509131255.x9EfvIGt-lkp@intel.com/
-> >>
-> >> All errors (new ones prefixed by >>):
-> >>
-> >>    In file included from include/linux/kasan.h:37,
-> >>                     from mm/kasan/shadow.c:14:
-> >>    mm/kasan/shadow.c: In function 'kasan_populate_vmalloc_pte':
-> >>>> include/linux/pgtable.h:235:36: error: expected expression before 'do'
-> >>     #define arch_enter_lazy_mmu_mode() do {} while (0)
-> >>                                        ^~
-> >>    mm/kasan/shadow.c:322:8: note: in expansion of macro 'arch_enter_lazy_mmu_mode'
-> >>      (void)arch_enter_lazy_mmu_mode();
-> >>            ^~~~~~~~~~~~~~~~~~~~~~~~
-> >>    mm/kasan/shadow.c: In function 'kasan_depopulate_vmalloc_pte':
-> >>>> include/linux/pgtable.h:235:36: error: expected expression before 'do'
-> >>     #define arch_enter_lazy_mmu_mode() do {} while (0)
-> >>                                     ^~
-> > 
-> > Huh, thanks.  Another reason why static inlines are better than macros.
-> > 
-> >>    mm/kasan/shadow.c:497:8: note: in expansion of macro 'arch_enter_lazy_mmu_mode'
-> >>      (void)arch_enter_lazy_mmu_mode();
-> >>            ^~~~~~~~~~~~~~~~~~~~~~~~
-> > 
-> > You can't do that with them!
-> > 
-> 
-> [...]
-> 
-> AFAICT, The issue I saw and fixed only occurs on top of 
-> 
-> commit 116191f326bce79aefa0ed540caade5a55fbd33f
-> Author: Kevin Brodsky <kevin.brodsky@arm.com>
-> Date:   Mon Sep 8 08:39:26 2025 +0100
-> 
->     mm: introduce local state for lazy_mmu sections
-> 
-> Which changes the definition of arch_*_lazy_mmu_mode
-> 
-> -#define arch_enter_lazy_mmu_mode()     do {} while (0)
-> -#define arch_leave_lazy_mmu_mode()     do {} while (0)
-> +typedef int lazy_mmu_state_t;
-> +
-> +#define arch_enter_lazy_mmu_mode()     (LAZY_MMU_DEFAULT)
-> +#define arch_leave_lazy_mmu_mode(state)        ((void)(state))
-> 
+Here are the notes from the last Hypervisor Live Update call that happened 
+on Monday, September 8.  Thanks to everybody who was involved!
 
-No, this error happens on maainline + this-patch
+These notes are intended to bring people up to speed who could not attend 
+the call as well as keep the conversation going in between meetings.
 
+----->o-----
+I relayed updates on KHO, LUO, and memfd preservation:
 
-#define arch_enter_lazy_mmu_mode()	do {} while (0)
+ - Jason Miu shared the page table like implementation for stateless KHO
+   to Pasha, Pratyush, and Mike; they'll send this out more widely after
+   iterating on it
 
-plus
+ - Work on LUO v4 continues with session functionality being a work in
+   progress, luod will be able to create the session through fds and pass
+   them to the clients and fds can only be preserved and unpreserved as
+   sessions; this requires an update to the design doc
 
-	(void)arch_enter_lazy_mmu_mode();
+ - Pratyush shared an updated version of memfd preservation; we chatted
+   about the 1GB limitation.  He will be incorporating changes for that
+   into his next patch series.
 
-expands to
+Chris clarified that the work happening on the page table like 
+implementation today are not real page tables that get loaded into the 
+cr3, it's an abstraction different from PKRAM that used real page tables.
 
-	(void)do {} while (0)
+----->o-----
+Chris Li brought up a topic from an internal discussion on whether 
+stateless KHO would support folio split after the page has been preserved.  
+The answer was no, if a folio needs to be split then it needs to be 
+unpreserved and then split before preserving again at the lower order.  
+This has some complications if something under the hood is doing collapse 
+or split.  Chris clarified that this happens during the preservation phase 
+of memory (live update prepare).
 
-which is nonsensical.
+I suggested that things like khugepaged doing collapse could easily be 
+enlightened to avoid this but split is more difficult.  David Matlack 
+asked what actually happens when we try to split folios that has been 
+preserved, i.e. what's the failure mode?  Chris suggested that this isn't 
+handled at all and the new kernel will see the wrong order.  Jason 
+Gunthorpe said this was user error if folios are being split after 
+preservation; after a memfd, for example, has been serialized then you 
+cannot do things like punching holes.
 
+Chris said that the call should return an error when this happens and we'd 
+want to avoid silent errors.  However, the only rules that exist today are 
+that you'd need to unpreserve if splitting the folio before represerving.
 
+----->o-----
+Chris discussed KSerial and the kernel-to-kernel API interface, not a 
+kernel-to-user interface, so it should be considered possible to update 
+later.  Chris mentioned that he was working on incremental helper 
+functions.  There was also discussion about posting patches before any LPC 
+talks as a general best practice.
 
-In fact let's do this:
+For PCI preservation, Chris said he send an updated patch series this 
+week.
 
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: include/linux/pgtable.h: convert arch_enter_lazy_mmu_mode() and friends to static inlines
-Date: Sat Sep 13 05:03:39 PM PDT 2025
+----->o-----
+Andrey Ryabinin noted that he had prepared an update to KSTATE on top of 
+LUO and suggested that KSerial may be too much.  He asked if there was 
+interest in this being shared, and the group echoed that there was 
+interest.  The patches will need a little more work later, but it works.  
+Chris suggested there may be some good collaboration opportunities here.  
+Andrey would also submit an LPC discussion for this.
 
-For all the usual reasons, plus a new one.  Calling
+----->o-----
+David Matlack noted that Vipin Sharma had discussed VFIO support for live 
+update at KVM Forum[1].  He suggested that we may want to have the same 
+talk happen in this meeting series.  There are not patches available yet, 
+but they will be available for LPC.  We planned on setting up about 25 
+minutes in the next meeting for this topic.
 
-	(void)arch_enter_lazy_mmu_mode();
+----->o-----
+Next meeting will be on Monday, September 22 at 8am PDT (UTC-7), everybody
+is welcome: https://meet.google.com/rjn-dmzu-hgq
 
-deservedly blows up.
+Topics for the next meeting:
 
-Cc: Balbir Singh <balbirs@nvidia.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
+ - update on latest status of LUO after v4 and next steps for merge into
+   akpm's tree
+ - any updates on luod based on internal and external feedback
+ - update on memfd preservation and status of 1GB limitation before
+   integration into akpm's tree
+ - discussion on what happens when we split folios while preserved and if
+   there are failure modes when this is attempted
+ - update on the latest status of PCI preservation, registration, and
+   initialization
+ - any updates on VFIO with noiommu as a next step for preservation after
+   Chris's v2
+ - update on status of KSTATE and its integration with LUO
+ - 25 min: VFIO support for live update from Vipin Sharma
+ - later: testing methodology to allow downstream consumers to qualify
+   that live update works from one version to another
+ - later: reducing blackout window during live update
 
- include/linux/pgtable.h |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Please let me know if you'd like to propose additional topics for
+discussion, thank you!
 
---- a/include/linux/pgtable.h~include-linux-pgtableh-convert-arch_enter_lazy_mmu_mode-and-friends-to-static-inlines
-+++ a/include/linux/pgtable.h
-@@ -232,9 +232,9 @@ static inline int pmd_dirty(pmd_t pmd)
-  * and the mode cannot be used in interrupt context.
-  */
- #ifndef __HAVE_ARCH_ENTER_LAZY_MMU_MODE
--#define arch_enter_lazy_mmu_mode()	do {} while (0)
--#define arch_leave_lazy_mmu_mode()	do {} while (0)
--#define arch_flush_lazy_mmu_mode()	do {} while (0)
-+static inline void arch_enter_lazy_mmu_mode(void) {}
-+static inline void arch_leave_lazy_mmu_mode(void) {}
-+static inline void arch_flush_lazy_mmu_mode(void) {}
- #endif
- 
- #ifndef pte_batch_hint
-_
-
+[1] https://www.youtube.com/watch?v=IYfR1jYeM1g&t=1583s 
 
