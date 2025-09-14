@@ -4,96 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0E67CAC587
-	for <linux-mm@archiver.kernel.org>; Sun, 14 Sep 2025 14:17:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DE8ACA0EE8
+	for <linux-mm@archiver.kernel.org>; Sun, 14 Sep 2025 14:38:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E7A5B8E0007; Sun, 14 Sep 2025 10:17:07 -0400 (EDT)
+	id 50F338E0007; Sun, 14 Sep 2025 10:38:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E51E68E0001; Sun, 14 Sep 2025 10:17:07 -0400 (EDT)
+	id 4E7508E0001; Sun, 14 Sep 2025 10:38:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D67678E0007; Sun, 14 Sep 2025 10:17:07 -0400 (EDT)
+	id 423BF8E0007; Sun, 14 Sep 2025 10:38:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C4B858E0001
-	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 10:17:07 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 54F5013A9BD
-	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 14:17:07 +0000 (UTC)
-X-FDA: 83888057694.10.9D879DA
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 87D0E20003
-	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 14:17:02 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2EE4F8E0001
+	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 10:38:05 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BD63D1A0367
+	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 14:38:04 +0000 (UTC)
+X-FDA: 83888110488.12.C1A86C2
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	by imf08.hostedemail.com (Postfix) with ESMTP id EDDA1160003
+	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 14:38:02 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
 	dkim=none;
-	spf=pass (imf03.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
+	spf=pass (imf08.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757859425;
+	s=arc-20220608; t=1757860683;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Es6H2lO7gOvLDqyTkEGFIhb7usSXVx+nm3I9aJ3O7G4=;
-	b=s5czXo9/7Si/ncgBCBsp3q7+bLCMrA/PoImZZ4tGTZnOg2+bgWbM2Or0vtxei7Bn2OOm0l
-	MpBN/tVMY44JEbZmbw5IDqqPZW9tYUSPj1yZr5PiiridOdJpbB93nJkTTHuwcRFgeMLL+p
-	7cdbYIyv6Abj2yJwOrW1RKUq70Srb+A=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=none;
-	spf=pass (imf03.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757859425; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=RmvHTqHdaE7BmVovCvT1+fW6WEaXEbDVIul7sfnvtOY=;
+	b=PvsCsTWtWvgpXLxUSg1IJyNvE8qYJXL4CyaFySWDgr5MFQ0YHPMuXoxZD9ZIhQrRuXUG4U
+	6ofLQx4vre7Xdp6t4e6/tm9eQfTfcOy6GBfp4Jw9/WN9IggoSD6SEUKgzXYTe9vW0WCqT3
+	C33QRiKd4664X4S2SQvh++btOOIOvB8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757860683; a=rsa-sha256;
 	cv=none;
-	b=nA6A6XoTILDyGYeGS9dtwXY/5dLXCLNdrBG4UbV4/ZpQpMewnEnrj+guUoDVOMt3I233bg
-	JOV1ykY6h+jsJ3p1KeDtxLSAG2dciByAIND3Q+2F9nkpl6EAXdjpvsxjQ8GYSn+ic269DW
-	/6I3Evpp3l/5nKzsfvT+0gpcqIaaY9g=
-Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4cPqwp4k00z5BNRd;
-	Sun, 14 Sep 2025 22:16:58 +0800 (CST)
-Received: from xaxapp01.zte.com.cn ([10.88.99.176])
-	by mse-fl2.zte.com.cn with SMTP id 58EEGlgB079444;
-	Sun, 14 Sep 2025 22:16:47 +0800 (+08)
-	(envelope-from xu.xin16@zte.com.cn)
-Received: from mapi (xaxapp02[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Sun, 14 Sep 2025 22:16:50 +0800 (CST)
-Date: Sun, 14 Sep 2025 22:16:50 +0800 (CST)
-X-Zmail-TransId: 2afa68c6ce520b6-07523
-X-Mailer: Zmail v1.0
-Message-ID: <20250914221650565s-lRvSTFZ5aDNSMEDFH6s@zte.com.cn>
-In-Reply-To: <463716f5-be12-4d78-9432-779e3f11460c@arm.com>
-References: 20250914000026.17986-1-richard.weiyang@gmail.com,ae30fc02-c573-46bc-a5f6-935f256149e2@arm.com,cf5d6ff7-faa4-469e-9e32-b90c75b8194f@linux.dev,463716f5-be12-4d78-9432-779e3f11460c@arm.com
-Mime-Version: 1.0
-From: <xu.xin16@zte.com.cn>
-To: <dev.jain@arm.com>, <richard.weiyang@gmail.com>
-Cc: <lance.yang@linux.dev>, <linux-mm@kvack.org>, <lorenzo.stoakes@oracle.com>,
-        <akpm@linux-foundation.org>, <chengming.zhou@linux.dev>,
-        <npache@redhat.com>, <ryan.roberts@arm.com>, <baohua@kernel.org>,
-        <Liam.Howlett@oracle.com>, <david@redhat.com>, <ziy@nvidia.com>,
-        <baolin.wang@linux.alibaba.com>
-Subject: =?UTF-8?B?UmU6IFtQQVRDSF0gbW0vbW1fc2xvdDogbWFrZSBzdXJlIHNsb3QgaXMgdGhlIGZpcnN0IGVsZW1lbnQgb2YgaXRzIHdyYXBwZXIgc3RydWN0dXJl?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl2.zte.com.cn 58EEGlgB079444
-X-TLS: YES
-X-SPF-DOMAIN: zte.com.cn
-X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
-X-SPF: None
-X-SOURCE-IP: 10.5.228.133 unknown Sun, 14 Sep 2025 22:16:58 +0800
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 68C6CE5A.000/4cPqwp4k00z5BNRd
-X-Rspamd-Queue-Id: 87D0E20003
+	b=iPyptOixGHuUmkDB2a0nTZ85KiPga+mAXumAIu0O4BnoCmg17wexgoRvSXlnIyTp0n/4e5
+	WzpFQvni08VCM3vpLWwZN80sZPGrd0DuJ+Lb4XQTWgwgvKpCF/+tj+0IOH5emXQNYDraQR
+	g6K9ZAfpvkxAmjIfCm4ul1dd6K8ZRmU=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=none;
+	spf=pass (imf08.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none)
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-26685d63201so685585ad.0
+        for <linux-mm@kvack.org>; Sun, 14 Sep 2025 07:38:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757860682; x=1758465482;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=RmvHTqHdaE7BmVovCvT1+fW6WEaXEbDVIul7sfnvtOY=;
+        b=e8IdVQ4V16p8/nsZ/t508v9ckUlQWMQOkMikYUhdcI4S4Yl0nfMQOtgQjaEZJxQ1j4
+         eYtN39u+p/wLtpsjfl9y8Z3/XHR51vDfL5pTr7rdobrFdFe8R8luH2tS8AHM/sEvdd3m
+         7T4x7GlOW4K+K94f4fj+2mD4Xb1rMcvL2qf/miLXuJ14yXi6WFkj3r/dtJHqGm58Z3GL
+         OQP157ozuzf7In4AifT2sGzP7A6A7pqu3g+nSwFsl78n89l3mfXXeJxmLUfmv0wRSiyv
+         v5qLiPOKuuB8M+TM2fWmOALeJMUwKVAJe/Bk+8DmuETJZLk4RM7H8s+/WMr/rUmq0bFb
+         HYIQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUXd2Q5AXwsCpsrCgURP+Ak0TQjCY92oRC+heUwFKfcwvVD/qLyPic0Bl9jW8Jt5J94p9XZOKBdJw==@kvack.org
+X-Gm-Message-State: AOJu0Yy6OfR4ZgGOB9RY6QlNVSFjohjT3aiZdwctBMJibo2xdQR3SgJa
+	N1kz/6qdxpQ15xigH0pirBdEmW7GPUZjRz2N3nnsRK6enVlp5HAHwvuc
+X-Gm-Gg: ASbGnctYorqzgpnz+i1XWy5DHe1kloKhvVXeUvV5nZmm04LjiZPFTeWVwhMTjzXP6g9
+	ipCafK0WdiaDgmX2+RloRfMVmyyEJGrheGIyVb7MGE3FP1m3SH4Jxv6ekL9x/Ch43qwadw49Bsg
+	907KyyNxZjVoOc54x2ySeuqdB45y1ZMc0scAeJfClt1pGzMG8fAJgP3DpkiUl4VlItvB/XifPRK
+	jJTl/ktkoR6aLAtI5/Bw0gGo0H3+DAm1VAwIW3P5jxt4yyiascH59w1dGVLs3go0ZaL3HA5f8Ua
+	9m7+GPD6QAqS7zGEagnqeE16G5003U9XjHOcoh+FnB6Oa7XqQWFLTo6AjYwUrfygXfoa5bRbZMi
+	SOS3Pp00oNxSMiR4dLWISV4YJp5O/C+Cz
+X-Google-Smtp-Source: AGHT+IEgy5aUMGrcJq0MScnJLtTMl7Y1Ye9tOVXxymZvMtyMYqBE1aPfDaPaJfRGuGgTJYfRp2tS2w==
+X-Received: by 2002:a17:902:e78f:b0:25c:8005:3efb with SMTP id d9443c01a7336-25d2703b924mr119351345ad.54.1757860681783;
+        Sun, 14 Sep 2025 07:38:01 -0700 (PDT)
+Received: from localhost.localdomain ([2a11:3:200::10b2])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-25c3b0219f9sm102571545ad.123.2025.09.14.07.37.53
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 14 Sep 2025 07:38:01 -0700 (PDT)
+From: Lance Yang <lance.yang@linux.dev>
+To: akpm@linux-foundation.org,
+	david@redhat.com,
+	lorenzo.stoakes@oracle.com
+Cc: ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	ioworker0@gmail.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH mm-new 0/3] mm/khugepaged: optimize collapse candidate detection
+Date: Sun, 14 Sep 2025 22:35:44 +0800
+Message-ID: <20250914143547.27687-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.49.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: EDDA1160003
+X-Stat-Signature: xjroq41jbttesib3d91r3skase6r8uza
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: oxsw4a3g91syfd5pp6hu61r5ftrytpug
-X-HE-Tag: 1757859422-725923
-X-HE-Meta: U2FsdGVkX1/mwstB9zK0tXRlWdm28MizNImxBWMATlhy4CZG8TzvxVSYQzO/3B3HHov5rh/nRinFeZOSYy9kZT/PEjwS0QGm4Y0hc2TYpVkl5eBr87Hg3eI5nsveI/mU59QRq2SQlnVpbGapMPb5a+ud2htDdcDD00RWBTuRssjy8Hg/ucgIRI7RZIpOvjKy/8wHHXeIwvZnAgNunL3l8tKA7+KL7U9IvH4YrFYRJXCY5N+doJtXzP0UFhdmkcSX7MgBYEu4xNUwy4A+uAmmcvH6S3LtGdmlfkP9XAXr9nMvpwTnTp8Y0h2VUQwgcZiLE4+DOR5loVPH05kiW0NBDEIG2kTD8+o63FuFPy+Uq3vrIUb+mVyiNnRv6kRB6XSg6lEfQx7b5NoSKh1EVyl7jjB4FohSk2Nbd6CJmI3Quzfe8OwiwLAJtpxc6bwclo7GQu8uJ1mXxicsMTQpAIGsRimxZ6aHGcSf0B6rxanx4IlS8a+U8KVj912TwLd4CsMc/QG0T18dQvPu3/n1V5244MLyo28tbs6Ck4x7M+THczul3HmWUhTOHR2HrSJMBUe8VIm7XAXunOoPzkbqyS4jr+5935GsEMQQgQmY9sZL1IPfsRtXRcBcKHfJ0wd6jS9cddeAW3Y80lEWdxQL3ThDO5s0YUFPyQ9B1l1FXR6eGpQP9oUdVeh0nUgLjll73MtYqsYwjcn6D7AGSmnbo11FHA42+5uoZSoyNJbT4jkMLhKGN6OrIWkE3gu8G18nT6lx9goUE5p1ZnNxFebWcFZJmiLB4b5NDNLlAHVLFWZkElx5PvQBtIJGZZNhwXWSWWjOQtXHs6JnZ2CPbGdZ7udTxeNcT2HGF4DnAdmZLrqNJVa+hbNXDWOvVNcXu24n0k+bVI17HaAK88iNyUAeVN2hLdISSE29KQahC43oWbt6ihWuvGr+hlxaJkHFJXynuIh/5VfO6eNXQQHs5OVEAHV
- POgKTUqd
- ao59sIDRMq26AETOYA0RT55hjNBNSybOwjvzTqsvd2EOUZAMRaVTgQRMUKSt4CqOeyjgvmuIOANDIXP6f5Wn3bNZDIGz9RufbanCvOIK1UJJyqsG6577Dr7dJY3+mVyDVsfCUQmsq4WY0Hw9ncmICjm3RxLJpCjIv/DuE7Af9R9l7OIpPIRbcQ52UPwhbaALwZnaICdwU26m/Ub79VPZjm2NVk+RPm6mrhAkyUZqbI2hrQaKoUTUPpaR7ixPzh1rDTDCjn94+tR8wwGVg3Z4nS+2aQc0S7naOhIrWjVZeflo3fjcYTTna0qLi0w==
+X-HE-Tag: 1757860682-241908
+X-HE-Meta: U2FsdGVkX196S1NB4aHFyRoZb3Jjdc0WbTuagVoj2GGG4WKBmHLGr2SqS3jQQwTodTb/ptO3tbVM1Kh/izlYKQQtCRkz8JtHN5CbuRUjpE46DprlbYmVPwiveYSd8fEKfVlllexfvEljvAXxRjohVOMjzHRsJzfEsKgBV3Mb79a2xUoYFrLW2s/bC5XR71NfNErkDDQus+lPdxyQlnmGYs2mauL9r99aZnJo2DEHCen5namIJCVX1n1pYjhqf94HNz6R6hLMqBJ67HcIuG1FcU9QgL4Bmj03p8xqQzZmoLr55oakMAi7/q54XfP6TVZoIhbKB1K+FLvEgi3EBWmPxT2opSHQHxiJ9cTqlJdrPWyF2ib2iE1OGVM1ZeX6qBkOH8mNlcMTujPdYCKg3v1FCQZfsZkeG0G1l0JqzyebMFLD9e4Jcu/Qep1odLndvnkWBSJoVG3/ByRQshnj9awcmmBWS8VWMfT5FK17JMVqVz7PTja+B9UCevxZ1+ox8hktXpJNjf/hMFWn29gpVyisN0XZKmmmVA7Vd+ioX1a7TgGpRIqEmpiY6kx+vYF+ywiNG3MkPZfDcg3fGw/r9X4LwofEd4rqIR9pvFhF7Y4jeyipc7zKifuXhgeYI1gCMnZQPfJoqcgmKkCQ8aD272o71tKCVG3oBV5zpwsClstvCgSV4nNfuffvjLXKMHMTm4+MbEw0QgdYRgatWCWJCkOK7nPTtzGqQdns+ZGQ/Y7PDeD/QtN81TodQyVBYkaZIwGZvqIscwqMKqeUz/myAo1gYQGoKNMpO95QsanFT6ptC7bGKTHgdPuFoJDcZfkqRCIzlEyudRTsanniVzNKfH7WWNj1J/77l4+H/p16eJaa3RfGYnvDq5IncprZ0HppEPBJhzaxYplDClhbbthuiTha+NI9Afn5OSHMZuL5/1JZzpPA0uPQVJFRzpe+VXhWJBoOCR4Rjt4iPk9WgUsoZ8f
+ F9b5ajyB
+ 4DYfiaK+ERa93uL2J/W6DDY53EvZMRYxr3p1R/I3t0haoI5eu9vkg8eUoQJxYIil/M+VvLXyCYOM69iF1ANkbFiXZaEOHhiJzU3lMymdBgWX2Stkj2A0btgNj2HFVKeNHUJh6MB6hf37aDfUHTKtf9l+KbkJTDme812SHNL+atHbKJ+hkPpKjNYgtsYqi0t1/LIJn6bG9Sc8Lj9afTXm+dVlkFzkVE//8SfQPX8MEL1AELjoroIYLOHuCutHp9VG5zCERrdW+Khqd1bCOxXiG3i/4JGqqs26JBmDQXie+n0FFndb7AAac8bknqekfjAZBPW2OUV12amI1vW5a8se5nvRrSSDQdCnOSJME70uI/mL38Ws+5cmZc6q9I+cFEtw2ml/CPQER8p5MdFJBSQSyWbp8C8OFpoubTM0NF4gcOKnaCdJKEnnmSWQbBg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,43 +113,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> On 14/09/25 12:33 pm, Lance Yang wrote:
-> >
-> >
-> > On 2025/9/14 14:21, Dev Jain wrote:
-> >>
-> >> On 14/09/25 5:30 am, Wei Yang wrote:
-> >>> When using mm_slot in ksm/khugepaged, there is code snip like:
-> >>>
-> >>>       slot = mm_slot_lookup(mm_slots_hash, mm);
-> >>>       mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
-> >>>       if (mm_slot && ..) {
-> >>>       }
-> >>>
-> >>> This is only valid when mm_slot is the first element of its wrapper
-> >>> structure, otherwise a NULL slot would converted to a mm_slot with
-> >>> negative value. And current code thinks it is valid and continue.
-> >>
-> >> Shouldn't you fix the code for the case when you can't find the slot
-> >> in the hashtable, i.e slot == NULL? Like, if (!slot) return.
-> >
-> > Right. For khugepaged specifically, the slot == NULL case in
-> > __khugepaged_exit() (only user of mm_slot_lookup) should probably
-> > be treated as a kernel BUG for new.
-> >
-> > But I'm not sure if the same logic applies to KSM ;)
-> 
-> I haven't seen the KSM analogue, but restricting the position of an element
-> 
-> in a struct to make the code work should imply that the code is wrong in
-> 
-> the first place :)
+Hi all,
 
-The same to KSM. The slot passed into mm_slot_entry() could not be NULL. Even if NULL,
+This series contains a couple of small optimizations for the scanner. The
+idea is to detect unsuitable collapse candidates, like mlocked VMAs or
+guard PTEs, earlier in the scan and bail out to avoid wasted work ;)
 
-kernel would panic due to NULL dereference in the subsequent procedure, but it has never
+Thanks,
+Lance
 
-happened yet. 
+Lance Yang (3):
+  mm/khugepaged: skip unsuitable VMAs earlier in
+    khugepaged_scan_mm_slot()
+  mm: clean up and expose is_guard_pte_marker()
+  mm/khugepaged: abort collapse scan on guard PTEs
 
-So the patch seems little significant for KSM.
+ include/linux/mm.h      |  6 +++++-
+ include/linux/swapops.h |  6 ++++++
+ mm/huge_memory.c        |  2 +-
+ mm/khugepaged.c         | 26 +++++++++++++++++++++++++-
+ mm/madvise.c            |  6 ------
+ 5 files changed, 37 insertions(+), 9 deletions(-)
+
+-- 
+2.49.0
+
 
