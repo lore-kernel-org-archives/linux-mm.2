@@ -4,122 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E42E5CAC594
-	for <linux-mm@archiver.kernel.org>; Sun, 14 Sep 2025 13:03:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FFBCCAC587
+	for <linux-mm@archiver.kernel.org>; Sun, 14 Sep 2025 13:03:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D81AE8E0005; Sun, 14 Sep 2025 09:03:01 -0400 (EDT)
+	id C72898E0006; Sun, 14 Sep 2025 09:03:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D59818E0001; Sun, 14 Sep 2025 09:03:01 -0400 (EDT)
+	id C498D8E0001; Sun, 14 Sep 2025 09:03:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C96AC8E0005; Sun, 14 Sep 2025 09:03:01 -0400 (EDT)
+	id B86AF8E0006; Sun, 14 Sep 2025 09:03:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B3C9F8E0001
-	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 09:03:01 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2CFC11DDC2D
-	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 13:03:01 +0000 (UTC)
-X-FDA: 83887870962.23.F35E05C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 47C6916000B
-	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 13:02:59 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tfN1I3Sx;
-	spf=pass (imf08.hostedemail.com: domain of mhiramat@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mhiramat@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id A4C468E0001
+	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 09:03:37 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 79F561602BB
+	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 13:03:37 +0000 (UTC)
+X-FDA: 83887872474.22.F915971
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	by imf27.hostedemail.com (Postfix) with ESMTP id C90C24000A
+	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 13:03:34 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="AzZ45/N7";
+	spf=pass (imf27.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757854979;
+	s=arc-20220608; t=1757855015;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OQvwWwEuhKFk13QOyAig49OX2R4iNlJHBcgD+YReILk=;
-	b=U7dPoKjizGCeBFLEqyYK47FJDUxWMfTK+3rhl1unY3MHOfVtA3Ya0UDsBI4FzzMNaGAMyG
-	+ZODZI0JC+NP24HzBNbeDpXOnKjccVKFFyfb5JHHfeEC8LWpF+S352J5nEJml4I7WFkWIP
-	4wYG4dy22QDwBVJ9FBxCo3G0/T7fnWo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757854979; a=rsa-sha256;
-	cv=none;
-	b=PaufFH98pLvQCqzXNSGJ9leDu+pqswGhPi7G+r2dF5qyWA+EZdWpdipHi2a1dIcrqj2ED/
-	wX2WuciG7yQLUQajQIaDs0qMwCkVwzCWXCbfwKnuMwzn6wfdjnWABBtd4nbWrXRECBbbiM
-	LQR0xC2iynuQt7wqQ0cEEfpnKinaqBE=
+	bh=/0hhVShVYhYdWFGJ+R+g6scseHo0/gN3iHrrI50fTkQ=;
+	b=SPgOEHalA01ycKLTj8/fMmeRm9dvkTYAaMjMEd0uGkqxFLcbgntwwTJ6kS7m39vgA23sc5
+	yHsiWVC4oRqrjT5iZQjaePfNHIY5OGUaP9nim7VqVVXuktgJ+1XnuXRDyT2LhoGMD7SAIP
+	4cJF2861hPbrQ0Ep7bSamnk+4am6vmk=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tfN1I3Sx;
-	spf=pass (imf08.hostedemail.com: domain of mhiramat@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mhiramat@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C899543B05;
-	Sun, 14 Sep 2025 13:02:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FC9EC4CEF0;
-	Sun, 14 Sep 2025 13:02:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757854977;
-	bh=YYDp1ijpwWt09S5HVfnu4kiNUYZD0PpGT+F41GYPadw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=tfN1I3SxboPtqg8tVy6FWKrpiKrpPQ9z8Cv44K48WXiEcad4ZNNLZydJ65S/qI29k
-	 EwBkEyHjGDbdx6IiIbX8u+Gc9sh1/7LhYv0KuDenuZg3dAkx920SCHCrx3ejXdB4CZ
-	 kkZv+EZ8tXEH2aLHGTp7G3jfLmgvYXteZnydpp0UsPKMgf3HAzoIv8i/yxHQkoxOSP
-	 75VFXHCUQMfSFW3LEOUGVqLmXvVBvEcw/SnA32l/9OUmQ7vCkJ2ODaCUXeNlxE0Rl4
-	 8f6jp6BUeK9hULpSdxe6NnOO5CuoAwWTcVvlywnTL2AONaQjHYXi1lA376VzJCi5nx
-	 sdvSbzTn6c09A==
-Date: Sun, 14 Sep 2025 22:02:42 +0900
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-To: Randy Dunlap <rdunlap@infradead.org>
-Cc: Jinchao Wang <wangjinchao600@gmail.com>, Andrew Morton
- <akpm@linux-foundation.org>, Peter Zijlstra <peterz@infradead.org>, Mike
- Rapoport <rppt@kernel.org>, Alexander Potapenko <glider@google.com>,
- Jonathan Corbet <corbet@lwn.net>, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
- <hpa@zytor.com>, Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot
- <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel
- Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, Arnaldo
- Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>, Alexander Shishkin
- <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, Ian
- Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>,
- "Liang, Kan" <kan.liang@linux.intel.com>, David Hildenbrand
- <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
- <mhocko@suse.com>, Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers
- <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, Justin
- Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>, Alice Ryhl
- <aliceryhl@google.com>, Sami Tolvanen <samitolvanen@google.com>, Miguel
- Ojeda <ojeda@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>, Rong Xu
- <xur@google.com>, Naveen N Rao <naveen@kernel.org>, David Kaplan
- <david.kaplan@amd.com>, Andrii Nakryiko <andrii@kernel.org>, Jinjie Ruan
- <ruanjinjie@huawei.com>, Nam Cao <namcao@linutronix.de>,
- workflows@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
- linux-mm@kvack.org, llvm@lists.linux.dev, Andrey Ryabinin
- <ryabinin.a.a@gmail.com>, Andrey Konovalov <andreyknvl@gmail.com>, Dmitry
- Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>,
- kasan-dev@googlegroups.com, "David S. Miller" <davem@davemloft.net>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- linux-trace-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 03/21] HWBP: Add modify_wide_hw_breakpoint_local()
- API
-Message-Id: <20250914220242.1e8dc83e011b9568dd7a5ace@kernel.org>
-In-Reply-To: <6b5e5d3e-5db8-44f2-8dca-42f317be8e0d@infradead.org>
-References: <20250912101145.465708-1-wangjinchao600@gmail.com>
-	<20250912101145.465708-4-wangjinchao600@gmail.com>
-	<6b5e5d3e-5db8-44f2-8dca-42f317be8e0d@infradead.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 47C6916000B
-X-Stat-Signature: hq3t7zb9f6sq17eh15k8gz6gag9oaouo
+	imf27.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="AzZ45/N7";
+	spf=pass (imf27.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757855015; a=rsa-sha256;
+	cv=none;
+	b=5NVZd/B50JDm7aDamJYePiyS3EbPKlf+5XTT220g+P/76RDyYPclHfKRFHYnJJI05v7O3S
+	Xy+1s8amU+x51BC+Qt/TQgKoLEdvZiIJFpON0tiWKvm4fLcoap2Mp2kr50ft3ch2lkuaNx
+	jz0z0AGo5KacVA6SkBGR5qay8gMRdkQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1757855015; x=1789391015;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=YvQSGv3+ITrtWtqX0tQjYwlbtPwK+65J7QAVpMnWBSs=;
+  b=AzZ45/N7C73WKynfkHMwZLwlqMK1hBMQM8yqNbmb9axLqcpWXI+Hwu1d
+   HHiMTCC5gNkrcOzDTG8IP+CgGZvbRA/9q2T/6BPS+1pUHwokXaZ3BOr0+
+   KyYJufhx08L2QMB3QPerPUMBKhWMQJ4sF4+sH2S7SC1dWBgHrGjIxPwYB
+   yb0oBXIg/vDa9qrbovb6Trw/nS7lUoTXhNFnloJoGu2JN5wMCVy5D1gZG
+   FVEL1zZptXiNL6g2QoP8ETnpLhiK4s0YlWA2DB5jTabPT0I4+wNfmM/aS
+   rE32dWibY7j0kPeOa4PIbT2v9NnBJkVmSB6V9wMKNPJnSE1acAVFWed2Z
+   w==;
+X-CSE-ConnectionGUID: akTaYlpDSVal4vGkBti4ag==
+X-CSE-MsgGUID: ae6Bu9UkTqCXI6XWYjqAsQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11553"; a="63950942"
+X-IronPort-AV: E=Sophos;i="6.18,264,1751266800"; 
+   d="scan'208";a="63950942"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2025 06:03:33 -0700
+X-CSE-ConnectionGUID: XsGtmFeASWi9vAkPUg6x/Q==
+X-CSE-MsgGUID: /KpYDJz7Tqulsy/cge9/1w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,264,1751266800"; 
+   d="scan'208";a="173941581"
+Received: from lkp-server02.sh.intel.com (HELO eb5fdfb2a9b7) ([10.239.97.151])
+  by orviesa009.jf.intel.com with ESMTP; 14 Sep 2025 06:03:30 -0700
+Received: from kbuild by eb5fdfb2a9b7 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uxmO7-0002PM-1p;
+	Sun, 14 Sep 2025 13:03:27 +0000
+Date: Sun, 14 Sep 2025 21:02:38 +0800
+From: kernel test robot <lkp@intel.com>
+To: xu.xin16@zte.com.cn, akpm@linux-foundation.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	shakeel.butt@linux.dev, hannes@cmpxchg.org, mhocko@kernel.org,
+	roman.gushchin@linux.dev, david@redhat.com,
+	chengming.zhou@linux.dev, muchun.song@linux.dev,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	cgroups@vger.kernel.org, xu.xin16@zte.com.cn
+Subject: Re: [PATCH v2 4/5] memcg: add per-memcg ksm_profit
+Message-ID: <202509142046.QatEaTQV-lkp@intel.com>
+References: <20250914180750448qMRz3iTon78DoExPyZusD@zte.com.cn>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250914180750448qMRz3iTon78DoExPyZusD@zte.com.cn>
+X-Stat-Signature: unzd6xue7tz51csssnepk4atxpz1td11
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1757854979-669658
-X-HE-Meta: U2FsdGVkX1/C3HffkVdShoQRr+WbNROrHf9a+/i8c6mb2/TMwOe3XWYYZg1qhCwGYZJmlx27H51wpmWfcpSBf88T+NwX3vn1nPO1o/qw/Opf32gca/Zxc8jsnIYyxKYwQccasS/FzcB6ENCr2rSYK8enZX+Yh3+5Cv9pN74C/TEipI5Hw2gz4fbLcWKJbsJPTvgoeDiWaKoyirhia0Z+PImMQZVZ2zX6bJzly8GUrLPhconsb5GfzD5rolNzz/BJOZbwShZ7KHMA3mIkhtIBXPuRfPBt4l5c6kC2WFt8pcqjwgYm/OmZ+JsN1u3xkVCRNV+E7YatJMGhLMI1p+a2bZHpS78/zgaYEUsRt19Xp7b69wljyscF22H9G1N9SHK4T94qFHnVqwylNY063lAyJb5ZmSGVcqUPLc5oP/YXFHFtztiJjdO/m/JvOi5/T5pHd8ttZUbUT3qFds8qSDRHbK1Va+f/snlwL7/EWYQaoOVZHCKs9+l96cQaEXwiUuBcmW9VdA9P9N23pQP8MgNLTywcWR63IcqW2ybNNVP20VkUml6vOxfhkL/nGb9sPZekT7sERASS6bTKOTJkYEjJFawupyx13DMk92C84ZanLgdxsxm2+axc4QTDhsopJnYbDcuaHKEmmjleJRW4CJlnqDOE1ak6QD4RqjnEfQEtgT9yLOLjGoW5HhqrOnhMeXXvYxKOWeQis4VVDXOwbEkMs339CBrfaSaH0FNVZChQyoee5gPvFiBROB5nFJA7Cbc6FMfBBeaxKeJ0OMAMDpcDmFbf9zDOA/mgggj63QhtZfToZr3pw/9ONjGup7Iz7qcSFsjcJ4KwRskaNhT2UGZ7j6V4pTir6ozUZE2WA6TlDzIApmSBEGeh2GVhJ13qij2whZrNkTfd3kqsiR/jV5wQBBjhm+fpqnMv2o2yXhZJwlrveiGtST8pKEIQoVZ69rM+u+Zpd9S1VzCv7XHRcgZ
- 1iCIa6gN
- XPAgjsOJpFzeMKEJkc1yoTDIaB/5/4BmVvHm32cBfV5Zq2rDNlCgQQo2iWROeLJpPf5Zr50q3YKPJeobZEe9Wsv6IVJnLZJkoz7oZYTxL/D3S5QyA+NERHdbIKhxuYoSCwMtTFgq1fpzqQNqImtHHmEj1qwZYSELFnAWmxW6KaLwtgKpnMOCH6jatjkCYEcAuviMZQ2kS7seRjIMrwHFktlsGO9mNUPuKDg4BAMI2lvOoSJpKy1b2YCqIT1kFuxhFzb0d/KdKrB1XFGMXJpOjWZRWU6P8WcpzcNPuF5Iyco+lTdMPZDBJDW41BrRuj3qZrUzsZcJtCupg9JJC/u8wqQKWjZB61p2vswDUWr4jqqbEfFC46UGzUnbci1ZvS7ycDw6JEDw2BHtsQNnb7SdYyjMveAZjl79IIzl/okzYpjbCirDvicZXrcjGReBJ4YbYmS1tGYgWbqypyaw=
+X-Rspamd-Queue-Id: C90C24000A
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1757855014-834027
+X-HE-Meta: U2FsdGVkX1+fqDpiT411F7gPL0OHvq8MVRzN/Qqpx8RLZmQ/4PggsczdpX/pR4iFI4XhiWyNRdyj89Td0XNnoZrxwXBRb3ZP5CtOcVxh/Rz7v75mYkWSIPuWkn2kbgWFQL9fFr3wVlNnEEd9jkXoDMLKNeTuhW92TZEsJN9qpMV9pOpGwIq3WhAbuo1xWyyf504gDwxYQ5JYlHZxZhJfRpeIzZIhklRiy88Q9MffXyi1ZekCQSziOytcFtWXdJPn4nJSw9UCbq7Zv8t+NWf6fyz3a7EvZmBsx938Yw7ohpukK3X7ABv++syFqsh4wwMKpMPCqFI/ijnSEKKcF2AAzXvH9+qov06/Be3gYgpEMy7va7JHn0no1gHWdViAnClB/xlmfetCZpO3ncTlQw8AQr3RsWDqRGf/hXrTFWHUUAf1eTFiTT7Z81lLtqNbuNu4ncKT08vzFAQwr6KmIXzcRm3Iat1wDJEeFVcimFcKmZ9q8Cj8qke+OxflF8cI4deSLLmR9M/zLpLr/pAkg/ATjgP26COISlJFeDouz8ER3Q25wqzFeyWjFPGLenLjf6M1fidzm9PjxZhORKsMBn7kegyceCCpJwlOqZbJuEhBBV+otfPMjcIXsL4Sm0/DIXzVOkvfrbgi6SF8kBbzIeT6bgqclJqGMujQ41PuRcoGyR4Dq3jwTSQj5X9crEn+ST1iV2rVNjo2jtfc607tAOw+KTeCNHMmQeIoZzSRhoHJ+8mLz6JoCUZLsotFQBIwuL6J6aYj7lfaSxV8FAxASrgS0Cx+ozWcDkJfqe8qMvIV1pHyyUrXN47sbfw2zAIDdC9tgdlY0qY6yy+pyGaxtI+AnrfkUcFnee4un6fWahF9/oHeqprmV9lrum3pTtzFOYI+nWISKdJBcTIgnD78wpyUp7YNwGh3CCBKvbVEMiFCKJRqi7+pbOjU8ho5pH/X4pk7D1vIHAIZ0O2beDYZ7ve
+ 8d/rMlpR
+ ldgVFLWf6jKE/znIwiI3Q8Mu8hfotynJ/gPQuSVnKjTDGoH72pTV0IsqPZlZ5eCQfPgvIxEU+7ooqipJv0gC6N0Cuco9MpiuEqe3PRq+x53gq1c14WfjR8KQ5NVBkEFGAFdvhj8mIFk0tQ49Gk4+TieTVa4GzZmTe6B8MKDEmp2MePjnPdQm0Qm6QFk237zqws7sc6DWBp2ZWI96VjytYI2gzeKQhmbKcl/ro3eeOBKwcMTwvBhCwlrgDf3KkppkcJksK2au3AGS1LrwgXDUBhN+pSt/Y04TDnHnkGD5zBdxagPCisjzkmA5lFf0TvoQUlhdjEp88WgMua3KwnUnblI1PcFnALpjVttHKLYUUgdcrJyidCGkWfZVCDmj2rl4we/E+yXtujrAtjXO7Qhv6xrOt+eKYT/0n7Ti3pt2Qfy4PMxh3LG2HxQiRi7QC5SbBG7dp8dqZkGmq7Zk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,47 +111,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 12 Sep 2025 21:13:07 -0700
-Randy Dunlap <rdunlap@infradead.org> wrote:
+Hi,
 
-> 
-> 
-> On 9/12/25 3:11 AM, Jinchao Wang wrote:
-> > +/**
-> > + * modify_wide_hw_breakpoint_local - update breakpoint config for local cpu
-> > + * @bp: the hwbp perf event for this cpu
-> > + * @attr: the new attribute for @bp
-> > + *
-> > + * This does not release and reserve the slot of HWBP, just reuse the current
-> 
->                                                  of a HWBP; it just reuses
+kernel test robot noticed the following build errors:
 
-OK,
+[auto build test ERROR on akpm-mm/mm-everything]
+[also build test ERROR on tj-cgroup/for-next linus/master v6.17-rc5 next-20250912]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-> 
-> and preferable s/cpu/CPU/ in comments.
+url:    https://github.com/intel-lab-lkp/linux/commits/xu-xin16-zte-com-cn/memcg-add-per-memcg-ksm_rmap_items-stat/20250914-181132
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20250914180750448qMRz3iTon78DoExPyZusD%40zte.com.cn
+patch subject: [PATCH v2 4/5] memcg: add per-memcg ksm_profit
+config: um-randconfig-001-20250914 (https://download.01.org/0day-ci/archive/20250914/202509142046.QatEaTQV-lkp@intel.com/config)
+compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 21857ae337e0892a5522b6e7337899caa61de2a6)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250914/202509142046.QatEaTQV-lkp@intel.com/reproduce)
 
-OK.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202509142046.QatEaTQV-lkp@intel.com/
 
-Thanks for review!
+All errors (new ones prefixed by >>):
 
-> 
-> > + * slot on local CPU. So the users must update the other CPUs by themselves.
-> > + * Also, since this does not release/reserve the slot, this can not change the
-> > + * type to incompatible type of the HWBP.
-> > + * Return err if attr is invalid or the cpu fails to update debug register
-> > + * for new @attr.
-> > + */
-> > +#ifdef CONFIG_HAVE_REINSTALL_HW_BREAKPOINT
-> > +int modify_wide_hw_breakpoint_local(struct perf_event *bp,
-> > +				    struct perf_event_attr *attr)
-> > +{
-> 
-> -- 
-> ~Randy
-> 
+   /usr/bin/ld: warning: .tmp_vmlinux1 has a LOAD segment with RWX permissions
+   /usr/bin/ld: mm/ksm.o: in function `evaluate_memcg_ksm_stat':
+>> mm/ksm.c:3335:(.ltext+0x163d): undefined reference to `ksm_process_profit'
+   clang: error: linker command failed with exit code 1 (use -v to see invocation)
 
+
+vim +3335 mm/ksm.c
+
+  3324	
+  3325	static int evaluate_memcg_ksm_stat(struct task_struct *task, void *arg)
+  3326	{
+  3327		struct mm_struct *mm;
+  3328		struct memcg_ksm_stat *ksm_stat = arg;
+  3329	
+  3330		mm = get_task_mm(task);
+  3331		if (mm) {
+  3332			ksm_stat->ksm_rmap_items += mm->ksm_rmap_items;
+  3333			ksm_stat->ksm_zero_pages += mm_ksm_zero_pages(mm);
+  3334			ksm_stat->ksm_merging_pages += mm->ksm_merging_pages;
+> 3335			ksm_stat->ksm_profit += ksm_process_profit(mm);
+  3336			mmput(mm);
+  3337		}
+  3338	
+  3339		return 0;
+  3340	}
+  3341	
 
 -- 
-Masami Hiramatsu (Google) <mhiramat@kernel.org>
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
