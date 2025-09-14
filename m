@@ -4,117 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35B5ACAC58E
-	for <linux-mm@archiver.kernel.org>; Sun, 14 Sep 2025 01:56:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E032BCAC58F
+	for <linux-mm@archiver.kernel.org>; Sun, 14 Sep 2025 02:20:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 253396B0008; Sat, 13 Sep 2025 21:56:22 -0400 (EDT)
+	id 3268A6B0005; Sat, 13 Sep 2025 22:20:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 204526B000C; Sat, 13 Sep 2025 21:56:22 -0400 (EDT)
+	id 2D7586B0007; Sat, 13 Sep 2025 22:20:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F3546B000D; Sat, 13 Sep 2025 21:56:22 -0400 (EDT)
+	id 1C61D6B000D; Sat, 13 Sep 2025 22:20:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EA4F06B0008
-	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 21:56:21 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 815E95793F
-	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 01:56:21 +0000 (UTC)
-X-FDA: 83886190962.11.2F32280
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 826991C0007
-	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 01:56:19 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=zWHf84G1;
-	spf=pass (imf18.hostedemail.com: domain of rientjes@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=rientjes@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 07BFD6B0005
+	for <linux-mm@kvack.org>; Sat, 13 Sep 2025 22:20:31 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7EFA7B74CE
+	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 02:20:30 +0000 (UTC)
+X-FDA: 83886251820.13.8114D77
+Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 9C742140002
+	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 02:20:28 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="bWfr/t+u";
+	spf=pass (imf26.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.219.44 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757814979;
+	s=arc-20220608; t=1757816428;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=vjCs7FIKhGYTaI5MHKlkJ6fq8tqN7U3QyTgSWV87yJY=;
-	b=JkDNDRxtc1uCYeSUhgbe05klPMyjSL5edxaclyACvBWeTzvJV/SY24B+oTDFRGjkM136hv
-	L5qBsbRvHLZGks1IfZYqnBtsSRK2kXhso7M6fKkCC1DWrm00UpQGFDRTGeiwxk72Ey4kOh
-	fFfL1Uom1NuHADjeJAlQIru0G6sisaA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757814979; a=rsa-sha256;
-	cv=none;
-	b=hrFco4oDXaXV8f5+CeJyvG0FntArRExp5HOd5686hMcQ8LPO/YcqjAWM7zO/TjpVZEpmKy
-	BSWUuBbIqiNmsV6HMHdvzo79DwG8z7ElTejq0lDB1UEQG9zQ5wHWasuJBjp3ocxsEDcoGI
-	JghOkXHU5viQGVkNzt7O5vlQ6DQoZlg=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=2FLLFKulJIRo/+/A7W+JN2XhQBYj1VMkK/MLnr9PzSo=;
+	b=doRQAM7GLZ2psyiD3sAnMnjNZ2SO5HoIbp0XOBcl5OIW9R5gpQpeXAXzR+BQaVYwsG+55q
+	Jbbf6QFgkdH8fwG9mtRwv6/neho5NI+7GUx+66PA2bxgA7sCTNwO3tSd/oO83k6WI/oo98
+	nr8YNy8IgmHFwkDPsTDzF0YkBL1Fek4=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=zWHf84G1;
-	spf=pass (imf18.hostedemail.com: domain of rientjes@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=rientjes@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2637b6e9149so60895ad.1
-        for <linux-mm@kvack.org>; Sat, 13 Sep 2025 18:56:19 -0700 (PDT)
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="bWfr/t+u";
+	spf=pass (imf26.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.219.44 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757816428; a=rsa-sha256;
+	cv=none;
+	b=qUY1chD9f08jWMixNFXAfVdo6Ng4pC14OkTfhJle9n5Oh/4GMMFYu0BSPYaCYmoXO1PLhA
+	7Uw1cNfeFoOfGn1UHrMmgS1NY4dMS5TNhqQC8L23dcrbpWGh7LyiEq/VyAu4tPUoGQmmT/
+	s6OI1NTC0r23Wcg7DqjisA4nP7fth/g=
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-70fa947a7acso9081876d6.2
+        for <linux-mm@kvack.org>; Sat, 13 Sep 2025 19:20:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757814978; x=1758419778; darn=kvack.org;
-        h=mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=vjCs7FIKhGYTaI5MHKlkJ6fq8tqN7U3QyTgSWV87yJY=;
-        b=zWHf84G1+eRYHsxsPQrQ7gm7iagfaKvp6LUDw//3KgIv1J2P8laubv8WUnJoI2XVit
-         FFS9Tx8aYv1l4IwPJ63l/C3iODHbdemenIz29vStVWZTBvLUfWBQzRvVxKePEoEFqGmR
-         m9Qp2Gqh8FUuXd//Vo/1WeZt6Yi/4klTGHNLCotbalxgwfHQNlJIlgAVPAvYNhfP0er7
-         Q5G2FG9Lo77msYp8xBWSLJd1QwxTyP7Vh4qYd1PqE9iel4Dho7yvFtq8o76cP9TMiffT
-         VG6jXgFx8ddVNGBD4TgJinTqtmM+R1fSn/sczgK659Q8fkEjUtlUh0M4c/XyodRzlK9L
-         HI5g==
+        d=gmail.com; s=20230601; t=1757816428; x=1758421228; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2FLLFKulJIRo/+/A7W+JN2XhQBYj1VMkK/MLnr9PzSo=;
+        b=bWfr/t+uVcO+qawqxPfCV7Ws9ekdxyb7OhDCpZbwM3PAnYNaAzHiAuKOvGPT6rkCje
+         GZOFTr8blJiR3pK12QkmlDx3J5e2MkUWECF1Pqu1WNhJOgrlm2HTLwP9Nox5OKGIsKqb
+         wCZa4WsM0v7HzpRP1+NWd7ltBjUV1jO9rE64Is3ZQdhfZ88LpR3/TvyvSk1xJt2kcXkH
+         qpn9qy3pWmZ6Fkn4qd7rbsxA1OBJmMJnthkibhMF1b2Iq5Q9cBpoQQ8bf+wwq7oW/Y0u
+         LCHq9Cels+NNVYHwsI5vsTg40NYws8uYCtJrcBmFFFaxIpKthXfNcSrkLRZsikA8K9nY
+         T4+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757814978; x=1758419778;
-        h=mime-version:message-id:subject:cc:to:from:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=vjCs7FIKhGYTaI5MHKlkJ6fq8tqN7U3QyTgSWV87yJY=;
-        b=uzox4Pkx7TniZ6890LNnlnVMTvfx1t2p2EjBNnJ/mPf4CjM1XrQMxzYrn1duGKsDg6
-         WcR7n/eBKsx15JfYVfIy+H1XcVmmta+1bwZ0w9b9g7cDeyNVdSwWk6TyU8oJPKOIz4kB
-         LR7Y46gnKpy0i76R6kLqI29/srGjODz2oY4PMGTHdj/FTfkX0uqaWSZMWNftpg4NXKGU
-         TbcS3/s5RUw3nIZh5/ml4DuoqxnEsc63cWtSFrJEbLOiQ8uCEyJH0T2A5wWvkx0ud/pV
-         RWfqP3lzColwkIGOzT7xh0eV/pu9LteB/kBN7Mxk6nrEzQEUlVEqfSkxRGUxJXOMyR4e
-         PMhA==
-X-Gm-Message-State: AOJu0Yyd+ev4C1jtgDD1AuU3Fbsr3uPT/oFyf6Tiq89tISyleKpBSQib
-	yWHXpJutiGMTq732cpT9JcRVolP9A5+WvmcBBGicqb++ISbSmF6+VxD8ufoKS5SeMA==
-X-Gm-Gg: ASbGncvZ4cZs5LmSekdaDZ2jJ67PTGkPtADMrJ45V1bTJhy85TAD8bOgC+Hd3Oshl5z
-	YywNcgfLhI2/rGnmRi6XeQOtJIQZZYIDdI+l/rDU2+UdjkeWZSXQU7KJ3oWoOTceWnt/IjDmyF2
-	1KTzmCujkm1vVzfbUGQBbyMjGQT0ha9hYstQ9g82nawdEkfljFPLX/h8aFWqSLALnx0odrebP6M
-	jbTHIj9EX6WCWIIP33YxrvR/+aW7p6IUVzfYuAkh73yDpWlnAa7DkS8Y2sRFHAnz4I4F+Dw7GVq
-	Hz2YZT98TXhcf7w8mrtjhxTtn9BF1jVu413gBXhvUR8ZLk/H8UstnQ0/igiesaqDXr2Iwz240Y0
-	FJESyqvpF3TwdZcWzWZ1xpJGTREWDfQUl/GG4dLHxOj3tnHomLPr/6+kikZuipP2awiLPVtVT9h
-	9c9fNye8mIf+VOgQjStC5gSpIV2fGid5JBbq4O9K35dFrTsUTAXIBCzqZRQ+gsB43MGtmkol/Vz
-	iS4
-X-Google-Smtp-Source: AGHT+IGDJa1lL70XMMd5Je6cvOH5zekLB1M06oJvDtXwFRJlN15res7fswi8As8eyCvf7x9Yz50GYw==
-X-Received: by 2002:a17:902:ecd2:b0:264:f533:75d0 with SMTP id d9443c01a7336-264f5337a4amr159305ad.9.1757814977860;
-        Sat, 13 Sep 2025 18:56:17 -0700 (PDT)
-Received: from [2a00:79e0:2eb0:8:9637:d030:f547:d052] ([2a00:79e0:2eb0:8:9637:d030:f547:d052])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-32e0c2863e6sm3512068a91.28.2025.09.13.18.56.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 13 Sep 2025 18:56:16 -0700 (PDT)
-Date: Sat, 13 Sep 2025 18:56:15 -0700 (PDT)
-From: David Rientjes <rientjes@google.com>
-To: Alexander Graf <graf@amazon.com>, 
-    Anthony Yznaga <anthony.yznaga@oracle.com>, 
-    Dave Hansen <dave.hansen@intel.com>, David Hildenbrand <david@redhat.com>, 
-    David Matlack <dmatlack@google.com>, 
-    Frank van der Linden <fvdl@google.com>, James Gowans <jgowans@amazon.com>, 
-    Jason Gunthorpe <jgg@nvidia.com>, Junaid Shahid <junaids@google.com>, 
-    Mike Rapoport <rppt@kernel.org>, 
-    Pankaj Gupta <pankaj.gupta.linux@gmail.com>, 
-    Pasha Tatashin <tatashin@google.com>, Pratyush Yadav <pratyush@kernel.org>, 
-    Praveen Kumar <kpraveen.lkml@gmail.com>, Vipin Sharma <vipinsh@google.com>, 
-    Vishal Annapurve <vannapurve@google.com>, 
-    "Woodhouse, David" <dwmw@amazon.co.uk>
-cc: linux-mm@kvack.org, kexec@lists.infradead.org
-Subject: [Hypervisor Live Update] Notes from September 8, 2025
-Message-ID: <e3935e6b-0475-e780-fad0-85933377aa38@google.com>
+        d=1e100.net; s=20230601; t=1757816428; x=1758421228;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2FLLFKulJIRo/+/A7W+JN2XhQBYj1VMkK/MLnr9PzSo=;
+        b=Rie7B7l1TSUzxEcWjj5i/b4UNFn00crrWOqEcz2YtwChYgcXHkNLM1Bs1UpNS6P8H8
+         VZStp4xoGdvQz1+wghA/WqZWvVHjnYq3gH4VG0trtw9JH/+OjLnJE9jYYuS7YHdYasqD
+         dxTQEPbXR2+zwQHq8t+JfG0S+jucbpZxho4JziC619Qug2VF5Sq1FOdssmOurcloJSqn
+         5RDa5oj2MrewBMf9WLODZG+6yxi4DNT2c1uM4uD9qX3PbbMX7v4Y4vSddOHEcn4OBcLN
+         BYmXYDxlg7BLoxBrDgF3bxQtGYYZkNlUaSFUwzgOJcTu3MG1kN3msFWhoS29cn1rAsSA
+         uY5g==
+X-Forwarded-Encrypted: i=1; AJvYcCVqGMYAKqo5MSdN5s9xuS3MndV8QLLUilKkHSJ5hhP6bpcbh/bVPth/eYLonzbj+zIMinf7Jpd21g==@kvack.org
+X-Gm-Message-State: AOJu0YwThsevym2V2gnCqQv0AGIPOfqnpwOLkG3oLP2Siom0NPubqbSQ
+	Fh/+0jWmKle99pw5CVIu3iRU9CPGQHJCqbPyI24+P57qu5kBkwUR9jwIwnNHqCJLsbwIDF0VKuV
+	+Y8qg8bXJRkGuizoEH2GZHBliNGsV+Bg=
+X-Gm-Gg: ASbGncvMID6AqVXrhBkmsHgSJ2rRvW3SrBVKvLYONbtcfiVU2sFRhaXspMpVDmBu3e0
+	zeOOX/xE0tF3ev4+gPLQpIqFEr7xmi7JRQ39jc9o4pPlvQuweayahrB/tW8eWDlsTP6sDrETzP6
+	NfkrTSDiVVcRV0fJ9vGlcddt151tK6ZHfDunaDx0fE5BApJsjY922ttdc9sTQ1VDChEVNJ9VeQv
+	fJTyNzpSf8Z5x4MuZNHFFutoLp+kXS/d0glcHi+
+X-Google-Smtp-Source: AGHT+IHq6u/4AIG+O1oq71Zy5dzM6cZoHuGdo1nSrFvwbC9QDSx6PwHNBUTam12RFvIzhBOryUKFBBcpe/eyu+MXbrU=
+X-Received: by 2002:ad4:5ced:0:b0:77e:dd3e:a0c9 with SMTP id
+ 6a1803df08f44-77edd3ea3d1mr2130156d6.14.1757816427569; Sat, 13 Sep 2025
+ 19:20:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Stat-Signature: 6gs7biwugc8uqe4ec73kf1yim4mryci8
-X-Rspamd-Queue-Id: 826991C0007
+References: <20250910024447.64788-1-laoar.shao@gmail.com> <20250910024447.64788-5-laoar.shao@gmail.com>
+ <a2c122f5-ab6a-4242-9db8-e5175d5b27b3@lucifer.local> <CALOAHbCSudQ9y1UdD4YjuUFGae5bRu8_0bgThJV4WgwLwtcwew@mail.gmail.com>
+ <42226608-bbb1-4d58-9de7-dfbb3a38d064@lucifer.local>
+In-Reply-To: <42226608-bbb1-4d58-9de7-dfbb3a38d064@lucifer.local>
+From: Yafang Shao <laoar.shao@gmail.com>
+Date: Sun, 14 Sep 2025 10:19:51 +0800
+X-Gm-Features: AS18NWBsv--35q_kcFfQDULeKAOuuY0Oif44eGzcMAx_dTI7CPLBxPfXjMJKB3Q
+Message-ID: <CALOAHbAx_Qpt50Knr765Gp63C_ad8m1+kaTFveWkuybhaN3uBw@mail.gmail.com>
+Subject: Re: [PATCH v7 mm-new 04/10] mm: thp: enable THP allocation
+ exclusively through khugepaged
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: akpm@linux-foundation.org, david@redhat.com, ziy@nvidia.com, 
+	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com, 
+	ryan.roberts@arm.com, dev.jain@arm.com, hannes@cmpxchg.org, 
+	usamaarif642@gmail.com, gutierrez.asier@huawei-partners.com, 
+	willy@infradead.org, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, 
+	ameryhung@gmail.com, rientjes@google.com, corbet@lwn.net, 21cnbao@gmail.com, 
+	shakeel.butt@linux.dev, bpf@vger.kernel.org, linux-mm@kvack.org, 
+	linux-doc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 9C742140002
+X-Rspamd-Server: rspam05
+X-Stat-Signature: jqq5aarakjf3cqhyhxcxs8ip7bdg1onm
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1757814979-935646
-X-HE-Meta: U2FsdGVkX185WLrmTwP8ycHlbJ6BTToiZzLl114tTA65RgwMGq7D8kfqfpf+LkmBkbnPYFnszK20qMid7aOr1p9wJehE8wOCs1elNbk3RVWyY+dZEXCp81B9qCY9iTXSz6ysyCNaL4rDHbwHp4U80en586xOg+rZrMsVZcl6K1nqmlbv8iFTJdBtDxBMdG5qvDsW4gR3oZqfV8hQ11iy7i5JY+ACOv7+Bv0HiWUC5gLWLl2h4m0bz+oopb+/HQT0PBdyId3So39xoi0aEzw8PggJmMiLV/W4aj86Hm/7zTE3Ej7QFMwZhJrd+9MVhRQO6cqGxMv20HfB4zaF0uUVvTmp7Q3NUVEsGqnKdgRBSRKm/8mNGH1wl8ErPHtpi264yJNbJoPB891ce8ABvXhynthxpDS8cj6XGQKIb12lr2aC/14awAyO6Exz0D6jbY6rurY9okmTpVIUhZDHNqj53+1AKGE6k97pMfbLMtXA2uKVZWaJ52DiVv8sRd3ZzaKbfrYxgI8q15Gcex0uuOIef7VxkGUC8YZSdNt5pcR2sVYTr4FJK6jcysmZZchT7PYnscz74ZU00HBJre+uaXguM5m9+EqADmzBT5bfI4TgibLznl/xjyjEuZ8aFDhKmbPRhlTBqnHGbvbm158WQ2R/pYFycRolUYe+ePOllpujZdA3AqKCQDjcfnuuXAk+ivd7aKN0baEmiSF/VAdTNvapVFzn+VCXA4bzBHbKTlv65vExy2DoFNGAVyxvMjHQL8cXCbQGSP9gLgi5E3AP+sNBNLInUW5lDgOEYZv1YFJqlQ7zflFd0NSfHeZz8aQMIdxxOPALt98DTO4IFLMsB7iZmKWiRBEDOoE3UKoCX4A5ypm8HUtc5CqmBu7Klms4vVu1PHaEkweA3wLOEZQaaMEN1eUQPZZYugkxqXZ2FZMbThYptBiuvhS4upKHWichSbUPpKWx81CcU9mJCTHhvxD
- 5Wx2xQ2p
- yWIka+zlkpLGOJvDJNgAGGTuPPYkMdjjHK5Sb30ioYNasYp1G6gJWsl6cfbvKeY8JDAqdZB/30kngYBIOE4gp3kSlgh6Y1HuCBi9kvsHT6fgolUiQuZ4FtMPZfqNH/cdG/b7FHrOQgfUFRIK/NDKDtgFi/JHHwh82O2yhpFTJvsnKrp3EhoIRiYrcr6eV/Rh7ZRgqoMQmCJ/9gK34alZ5gLc7Hf33gcKU6dsfsz5RIgsSmxAb6dbFqDAcX6gOj03ZQXqj2B7cNokzBMtc9CpWguXJI716mGW+nZVG+M0V+e9DPMZalBDPEWNI50eIQqI97QAWhJcqDr5mmW/zcJYpXOc/pR0yofHOKLJWs+oUc7usdrihw6cd5572vJRZmJ3RLh3pqzOLmfWiybwR00nX1RINX+4eNsb0Tomnhoh1hcm1St1ncy26GifGUtiNK1ueua+ChVTUhW8UjX8=
+X-HE-Tag: 1757816428-572936
+X-HE-Meta: U2FsdGVkX1/KRTF7DmH550iO9LCZPeSd1vQH0tyMh33yr7EIjUS/X3g/rhWb8UjbNTViVM2Zb+D+Y+Up4ObOeqinCG9SGbPHxagXqdZvpZvUuSsTUJCxmOfivnWn9UGrLCL4lWGfPXdnj8nOeamq2jV3PsiJY3KvufR4ZF8RyjJlyPPhtdc9z/K3qJjkWc6rU5GgwP1vy1BdwPm2gvrj187kN/AFRGwotyWRaGDjf0wiTVA3h542pb3YMdXkmSLPzkMWtaPyts9y99sI+sEcIbcARzkw952aGFlUtG2hFcF235DGeALIirYghg7oFSxst6L4XnUJb6BuK027ijWfEpJdxfVR9m2OgMZNxPCVElT84+UAuk1OJsZFYA/MPGLoIZBoxXQCBIQtO13a/4spSHbdhnBvLvCNN2dI6U4Ei1V5olnfl6NiqFC7BL1WUgTZrJoDz1jaJRRZakfEVZP4WrwqIYfMHTYYA8zk189EI7eWZDARgyE4aCo1HEoQyqZMN/48lHXb6p9Q6NpjrILXtmxR1qm4uOGUUHA76o1RpdD42JBAS1UGml9P7wBOXJBy85a4eJsDMSfbejLyTpskQjDiR+mjQGZB5PzyJuRCzndJ6JGAjJgDOuYamYDLmpN4Ev/1qEt3I331cDUw5IIQtrGqVqGlE7KJ2rRUky/d4PYPSovOlduBYvI502D2S98BavF/J2ZxisZFu/02q8oY/++1e8BTvwnON6NDKJetyvWEZCFMtRFlKeIwY5tVtbUMqeoHf2YrCE3rrCfOrX825KIYDNnIQplBcBY7pHNnwYnxQjk679vyJvv/Yy17W+RXK/0qAo1tK4LIHeykPOlW+gTktOQoaOj2RB23CUUbYCFp4mCk3dlYNlKcHM4H+fkEUpeP0jS4zAyGm5+0Cnrtn6f6DggogsEU4lE+cEITmSTfO2Dkr7A0oUGYtCQGs7fOKQWJg18H3RCCvcZ3CIv
+ 5WXR30BD
+ PXRr+rayQDSgi5iaMCkIfZSJcrMbWNR9PQ70mePRezHe5re+Y8hY3Z5JH9vmRccOjFucwoA0vVVXeeoFcYDgZl74rJKLn/39ZdHV0InZg+rnj++/p+udziFLHh3LD/Aa6p9ETJTDLXi+v+s35+DpPP/pbiMSx00zuYsuFd/UX3a+kiX3eYvSurdYBIHWAxb4Ol+/PHXfp5K1PR2T6R6/rF0BK26VujUnRE6CPFGhzeV0vRm7Y99hlgGfJCa5eRVEzUK3W0RdIqKQQ4/L9LJTA6zMzksgT8yo5Fx3RiIXUoj6rXg0AxD+IkhmGibOZ2qSWOdT2bSnY6LAFuePg/xM1p1CMe0v1yvVx1iF4idvx/3xrGWwOd9mBO+q5K9C6rMr4a/c/HROlOUxjODIci3yDEVQpYUeEAxB0orck
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,106 +125,141 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi everybody,
+On Fri, Sep 12, 2025 at 9:48=E2=80=AFPM Lorenzo Stoakes
+<lorenzo.stoakes@oracle.com> wrote:
+>
+> On Fri, Sep 12, 2025 at 02:17:01PM +0800, Yafang Shao wrote:
+> > On Thu, Sep 11, 2025 at 11:58=E2=80=AFPM Lorenzo Stoakes
+> > <lorenzo.stoakes@oracle.com> wrote:
+> > >
+> > > On Wed, Sep 10, 2025 at 10:44:41AM +0800, Yafang Shao wrote:
+> > > > Currently, THP allocation cannot be restricted to khugepaged alone =
+while
+> > > > being disabled in the page fault path. This limitation exists becau=
+se
+> > > > disabling THP allocation during page faults also prevents the execu=
+tion of
+> > > > khugepaged_enter_vma() in that path.
+> > >
+> > > This is quite confusing, I see what you mean - you want to be able to=
+ disable
+> > > page fault THP but not khugepaged THP _at the point of possibly fault=
+ing in a
+> > > THP aligned VMA_.
+> > >
+> > > It seems this patch makes khugepaged_enter_vma() unconditional for an=
+ anonymous
+> > > VMA, rather than depending on the return value specified by
+> > > thp_vma_allowable_order().
+> >
+> > The functions thp_vma_allowable_order(TVA_PAGEFAULT) and
+> > thp_vma_allowable_order(TVA_KHUGEPAGED) are functionally equivalent
+> > within the page fault handler; they always yield the same result.
+> > Consequently, their execution order is irrelevant.
+>
+> It seems hard to definitely demonstrate that by checking !in_pf vs not in=
+ this
+> situation :) but it seems broadly true afaict.
+>
+> So they differ only in that one starts khugepaged, the other tries to
+> establish a THP on fault via create_huge_pmd().
 
-Here are the notes from the last Hypervisor Live Update call that happened 
-on Monday, September 8.  Thanks to everybody who was involved!
+right
 
-These notes are intended to bring people up to speed who could not attend 
-the call as well as keep the conversation going in between meetings.
+>
+> >
+> > The change reorders these two calls and, in doing so, also moves the
+> > call to vmf_anon_prepare(vmf). This alters the control flow:
+> > - before this change:  The logic checked the return value of
+> > vmf_anon_prepare() between the two thp_vma_allowable_order() calls.
+> >
+> >     thp_vma_allowable_order(TVA_PAGEFAULT);
+> >     ret =3D vmf_anon_prepare(vmf);
+> >     if (ret)
+> >         return ret;
+> >     thp_vma_allowable_order(TVA_KHUGEPAGED);
+>
+> I mean it's also _only if_ the TVA_PAGEFAULT invocation succeeds that the
+> TVA_KHUGEPAGED one happens.
+>
+> >
+> >  - after this change: The logic now executes both
+> > thp_vma_allowable_order() calls first and does not check the return
+> > value of vmf_anon_prepare().
+> >
+> >     thp_vma_allowable_order(TVA_KHUGEPAGED);
+> >     thp_vma_allowable_order(TVA_PAGEFAULT);
+> >     ret =3D vmf_anon_prepare(vmf); // Return value 'ret' is ignored.
+>
+> Hm this is confusing, your code does:
+>
+> +       if (pmd_none(*vmf.pmd)) {
+> +               if (vma_is_anonymous(vma))
+> +                       khugepaged_enter_vma(vma, vm_flags);
+> +               if (thp_vma_allowable_order(vma, vm_flags, TVA_PAGEFAULT,=
+ PMD_ORDER)) {
+> +                       ret =3D create_huge_pmd(&vmf);
+> +                       if (!(ret & VM_FAULT_FALLBACK))
+> +                               return ret;
+> +               }
+>
+> So the ret is absolutely not ignored, but whether it succeeds or not, we =
+still
+> invoke khugepaged_enter_vma().
+>
+> Previously we would not have one this had vmf_anon_prepare() failed in
+> do_huge_pmd_anonymous_page().
+>
+> Which I guess is what you mean?
+>
+> >
+> > This change is safe because the return value of vmf_anon_prepare() can
+> > be safely ignored. This function checks for transient system-level
+> > conditions (e.g., memory pressure, THP availability) that might
+> > prevent an immediate THP allocation. It does not guarantee that a
+> > subsequent allocation will succeed.
+> >
+> > This behavior is consistent with the policy in hugepage_madvise(),
+> > where a VMA is queued for khugepaged before a definitive allocation
+> > check. If the system is under pressure, khugepaged will simply retry
+> > the allocation at a more opportune time.
+>
+> OK. I do note though that the khugepaged being kicked off is at mm_struct=
+ level.
 
------>o-----
-I relayed updates on KHO, LUO, and memfd preservation:
+The unit of operation for khugepaged is the mm_struct itself. It
+processes the entire mm even when only a single VMA within it is a
+candidate for a THP.
 
- - Jason Miu shared the page table like implementation for stateless KHO
-   to Pasha, Pratyush, and Mike; they'll send this out more widely after
-   iterating on it
+>
+> So us trying to invoke khugepaged on the mm again is about.. something ha=
+ving
+> changed that would previously have prevented us but now doesn't?
+>
+> That is, a product of thp_vma_allowable_order() right?
+>
+> So probably a sysfs change or similar?
+>
+> But I guess it makes sense to hook in BPF whenever this is the case becau=
+se this
+> _could_ be the point at which khugepaged enters the mm, and we want to se=
+lect
+> the allowable order at this time.
+>
+> So on basis of the two checks being effectively equivalent (on assumption=
+ this
+> is always the case) then the change is fairly reasonable.
 
- - Work on LUO v4 continues with session functionality being a work in
-   progress, luod will be able to create the session through fds and pass
-   them to the clients and fds can only be preserved and unpreserved as
-   sessions; this requires an update to the design doc
+Yes, that is exactly what I mean.
 
- - Pratyush shared an updated version of memfd preservation; we chatted
-   about the 1GB limitation.  He will be incorporating changes for that
-   into his next patch series.
+>
+> Though I would put this information, that the checks are equivalent, in t=
+he
+> commit message so it's really clear.
 
-Chris clarified that the work happening on the page table like 
-implementation today are not real page tables that get loaded into the 
-cr3, it's an abstraction different from PKRAM that used real page tables.
+will add it.
 
------>o-----
-Chris Li brought up a topic from an internal discussion on whether 
-stateless KHO would support folio split after the page has been preserved.  
-The answer was no, if a folio needs to be split then it needs to be 
-unpreserved and then split before preserving again at the lower order.  
-This has some complications if something under the hood is doing collapse 
-or split.  Chris clarified that this happens during the preservation phase 
-of memory (live update prepare).
-
-I suggested that things like khugepaged doing collapse could easily be 
-enlightened to avoid this but split is more difficult.  David Matlack 
-asked what actually happens when we try to split folios that has been 
-preserved, i.e. what's the failure mode?  Chris suggested that this isn't 
-handled at all and the new kernel will see the wrong order.  Jason 
-Gunthorpe said this was user error if folios are being split after 
-preservation; after a memfd, for example, has been serialized then you 
-cannot do things like punching holes.
-
-Chris said that the call should return an error when this happens and we'd 
-want to avoid silent errors.  However, the only rules that exist today are 
-that you'd need to unpreserve if splitting the folio before represerving.
-
------>o-----
-Chris discussed KSerial and the kernel-to-kernel API interface, not a 
-kernel-to-user interface, so it should be considered possible to update 
-later.  Chris mentioned that he was working on incremental helper 
-functions.  There was also discussion about posting patches before any LPC 
-talks as a general best practice.
-
-For PCI preservation, Chris said he send an updated patch series this 
-week.
-
------>o-----
-Andrey Ryabinin noted that he had prepared an update to KSTATE on top of 
-LUO and suggested that KSerial may be too much.  He asked if there was 
-interest in this being shared, and the group echoed that there was 
-interest.  The patches will need a little more work later, but it works.  
-Chris suggested there may be some good collaboration opportunities here.  
-Andrey would also submit an LPC discussion for this.
-
------>o-----
-David Matlack noted that Vipin Sharma had discussed VFIO support for live 
-update at KVM Forum[1].  He suggested that we may want to have the same 
-talk happen in this meeting series.  There are not patches available yet, 
-but they will be available for LPC.  We planned on setting up about 25 
-minutes in the next meeting for this topic.
-
------>o-----
-Next meeting will be on Monday, September 22 at 8am PDT (UTC-7), everybody
-is welcome: https://meet.google.com/rjn-dmzu-hgq
-
-Topics for the next meeting:
-
- - update on latest status of LUO after v4 and next steps for merge into
-   akpm's tree
- - any updates on luod based on internal and external feedback
- - update on memfd preservation and status of 1GB limitation before
-   integration into akpm's tree
- - discussion on what happens when we split folios while preserved and if
-   there are failure modes when this is attempted
- - update on the latest status of PCI preservation, registration, and
-   initialization
- - any updates on VFIO with noiommu as a next step for preservation after
-   Chris's v2
- - update on status of KSTATE and its integration with LUO
- - 25 min: VFIO support for live update from Vipin Sharma
- - later: testing methodology to allow downstream consumers to qualify
-   that live update works from one version to another
- - later: reducing blackout window during live update
-
-Please let me know if you'd like to propose additional topics for
-discussion, thank you!
-
-[1] https://www.youtube.com/watch?v=IYfR1jYeM1g&t=1583s 
+--=20
+Regards
+Yafang
 
