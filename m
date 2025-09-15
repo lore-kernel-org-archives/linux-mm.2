@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85D72CAC587
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 01:58:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8FA1CAC587
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 01:58:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AE0AB8E000B; Sun, 14 Sep 2025 21:58:19 -0400 (EDT)
+	id E3C318E000E; Sun, 14 Sep 2025 21:58:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F3FA8E000D; Sun, 14 Sep 2025 21:58:19 -0400 (EDT)
+	id D9F848E000D; Sun, 14 Sep 2025 21:58:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 86DE78E000B; Sun, 14 Sep 2025 21:58:19 -0400 (EDT)
+	id BC91F8E000E; Sun, 14 Sep 2025 21:58:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6504A8E000D
-	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 21:58:19 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 304EEC0359
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 01:58:19 +0000 (UTC)
-X-FDA: 83889824718.12.83F9EDF
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A0EBC8E000D
+	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 21:58:20 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7680F58CF2
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 01:58:20 +0000 (UTC)
+X-FDA: 83889824760.28.6AAA93C
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 81F85A000F
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 01:58:17 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DXHmoBRO;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf03.hostedemail.com (Postfix) with ESMTP id D77EB20005
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 01:58:18 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=G5MLt3OX;
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757901497;
+	s=arc-20220608; t=1757901499;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RZXZ18Gl7pil3OydzLqzvTeTOCTsgPhkVGNVNvUy7As=;
-	b=ZtSlVp2uVoiLQwqiqYbPiElhSaWC1ydIDAFN5rSSG1SuP+/dj7XIbup/BE78SdpjVSX2tj
-	3CrOxJomE8pY4ONPun9pidQk+0pNNQ4UAy5B/vXQEupSXN/IpdY6mFXDnSRT0qsdoLLB4n
-	j7NnXiPA+D9kJZNEJoRjk+XusqlLhWs=
+	bh=1D3hbdJYJfsknkSAR9wXsM98cd70RvwaSyDi3uD9E58=;
+	b=BhNritt+mFMRX3o9U/0KuILqcEkt6VV7cpu1rtvsl9ewc+h6ZvIzxpfyGSKpTfQ0ndMHnU
+	hlZ/F27L7b5D0iRf8xG4agK8secW0+htsBgCoP/5q7GsXuYOpRx+3CCXZNHTd2ak1cG5cF
+	8fSKNX+nCWXk+BFElZPziv6zDjiqpAM=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DXHmoBRO;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=G5MLt3OX;
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757901497; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757901499; a=rsa-sha256;
 	cv=none;
-	b=c65XPmP2MHrlsDM2AdieHqt0OI3p/kfwDt5Sx+W5lVEgwno4xketh0HsdOkGwGmSx2RlGs
-	iH3Pj3kSnGssF0fA5/tkNbEvfkAoFSJFr9zktPl+eVl+2jbp8UPYN8Y6HJPvoViPsrHE3N
-	f61qt556QSttRVdIc63KX+CRxUVYGeI=
+	b=1RboF/w3avqV8/Rjrl2XwS8JAaDC2mgpzTtO7pqpFNLi3JZxm2gokeHp1Jk7yDNrnlyTbQ
+	jZ8MoRBSb5M9mWT/9lP4R1rLpLBYfYFEimFImscy7dzalBJ+zAVew2ijH8GD5B7Sv2vRdB
+	U9PlMjskSKOvAZIs80e4oDgfbayuSRk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A08F5444B1;
-	Mon, 15 Sep 2025 01:58:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 602C0C4CEF5;
-	Mon, 15 Sep 2025 01:58:16 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D70534443A;
+	Mon, 15 Sep 2025 01:58:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A4D1C4CEF0;
+	Mon, 15 Sep 2025 01:58:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757901496;
-	bh=3+9qSsAlg4qC3YbAA//ENyr9S8mCKrCXEpzivdstPoU=;
+	s=k20201202; t=1757901497;
+	bh=DAVCpI32krZKX7tAL5BJ72tG+a8Y+Yz9N/KNa3xRsxs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DXHmoBROJvMUvju390O3mU1he2Ful7Ud2Rx4qCKVAXCT2HixYfZFUBVk5mP8DWBK0
-	 dPD6lB7bseP7avTwOdWTmAHf9tIPRRzV0NA725P9X3wnzFqQ/m2ykRBJDHYah1V71x
-	 dWLQ2MWIqxE9Ybeu8yttGKAf5eYZKh3rPHT+70mI4EnN/1xag2HAjL2tsTYt+H/9YX
-	 wk2psPIYwXKb8etxdZ2DJFGgF7+PH6woObe2ym2A4J2AT6axT+Qo+TXZdEi4bli60r
-	 kv8bv5n0Mfk5kCF3gDPT7dtQqW45b9BoryfbsCvplZxtTZK7GbNRa6CIONumtJeKji
-	 cHOCrjNcNxMIQ==
+	b=G5MLt3OXROpxw7J/b2AaPOt6R/868NrvNrr1mvdCZr7cI5wc6vhu0FGpNglEiz3f9
+	 xTYFFjKsXM6lKnhvnnl1Pw5AA/4ExAJ0pEPn8E0oKcW/eTRFr4y/pGWMDtx2vSP02t
+	 B/KhoKiWrPb2qtEYa1vX23oRqcBUEKMFPyQ9D4d56J6s31Sy9aGvCx0XJ9IrTByv0X
+	 mc1KNcJ8ho6ByaGYL+J33n6qqth7KPs0VNSGTStEHeIs0NrXiyHPE64sf//xtzAb9F
+	 n1ESaGXEsqVz+McdvMeZ4yXeqrY80RxDM37WhgogzrzgD/bi+6oSE/ar49zJ754zzB
+	 wLOwGmZDi4+WA==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -79,22 +79,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 4/6] Docs/mm/damon/maintainer-profile: update community meetup for reservation requirements
-Date: Sun, 14 Sep 2025 18:58:05 -0700
-Message-Id: <20250915015807.101505-5-sj@kernel.org>
+Subject: [PATCH 5/6] Docs/admin-guide/mm/damon/start: add --target_pid to DAMOS example command
+Date: Sun, 14 Sep 2025 18:58:06 -0700
+Message-Id: <20250915015807.101505-6-sj@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250915015807.101505-1-sj@kernel.org>
 References: <20250915015807.101505-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: gf4bssyrcfzu8mjmofztpi6zbkkcz1cc
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 81F85A000F
-X-Stat-Signature: zmkscgeenzuaa98d44cd9jzdcydrb5rf
-X-HE-Tag: 1757901497-415656
-X-HE-Meta: U2FsdGVkX19EebXK/vwslyFK3qLu4LdP+BIgHmmngfBnFDlvriNes3z0+6QIZtzmP7EMVodknY+t5IXEAnVzeHEsEO41Ek9BWYUyGhVdfDmlTk+Vao2BaQeUw7vXlLUpq1PbMjFA2hw54Rn1FRu3wSb/J5hyHDcrPgJI5aid6EYB1v8KCnjd+0h2rONDZDBdny4LczGV0Y0LAo+RIm89zhnQbZ9G0ZURZ60yeSz6i1A2HtXPfSTn8qjrKw7c39sA/rYk1P92P5JzLpYqwEgzRQ2sH+xfK/Db6HYZFddgRPuC4wOVU8esleM2GwhJI3fD+8WdAP01f0wep4a798ExXyN1BD4gHC8DAwrdPl3jslz4s7XiTGkkTTI0dpBBO0KF/i5vasOfQL1L7dU4ldt2tkAP/hFe4gLY1bd0cu/dv5apo+WBXhohn7r3DEwA3+7n4fXGjgPvMRPNqHH/APxFUBP4EFemJX6LVNLKgX546u3ZDs0fiSm/uzCUhffYXGYmn1gHByvRq02DcPcGfHza4S0KksjEFSRYc10mPeQWXomI8bxu/FyRl589Mk4HfVW0o60T/nwyHWG9dxbYCHaUlm6gJpxZh99bdH4JVUUBpzdZy/gDDc77OkCc23JYol/rgtrabs27c945N8vSVFn2HvmKDk+3Qlyzir/CYf28/nLRzGAoeAXicqewaFN0fqn0imHL6VobuDU78gloxQqiUNNGxcBOJ1pm6pH5sF4G6P+ISdBDxZoFdZjxOHcy9LkI5Q+2iSKgn2XCJAFUY22f2hbgctr0roEnIA/7jukhZOZs1O/7YWBqONt8FEp9pvUTzH92x6hpZoMfJZRLfEM116YOhDSUdr2KAtOFlvOS8l8ia+AuibEuhYvGh4xi04PfPn6d/lPSeepOqRUm/XW/HPX6V0CKSxY8sncSw/AtJoRe91nMXigp6iD26ciu9LnZDWShMa4ffTV6jIltRLx
- 8TtyucWU
- uQ5wlejG5Lr6LklOi0GXPpIVU6Fn/g5DjLK90cFAIgfWKTZh+1/aHmAZn2BOAhA4CDWeaRmiBzFZI2RDO+a+IBLFWCWAqha+BnyPPFRNY4Qt1s/b/yzI5mtUqYEq4fjql3uYqdAhnBUxYlhB2PxG4WSC5xm6+Xsn4WAEkFDcO1qqcLJb4v25t20e45N9ySoTMfk8y6kFv7ueLwY85w6e+QeP5ghC7JdBYWEZdfA8ul9f1D2Np7oUyhYPnOA==
+X-Rspamd-Queue-Id: D77EB20005
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1757901498-261451
+X-HE-Meta: U2FsdGVkX1841J6gbsf9kCp/QxOirMDDDMolndGR0y4N9Ua1UhCJ4vNwIknwuO03Ume4wKjbN+o2bAllmCVjOKVDIEF8+IODBDxI2HAShQoiD8aiXubbI9iEUP2xjVzpmXeEhdHrXwMw4n9BCfw7Wh6M6dlI/EG4uQScUs95HW+VapSfqWhulpJZ5Fp8N/zghvxWgQSCYI0BNO4nd6OddG9GR8EVlaS7W5dsJDVcqUMhoiUxpezBNGlNNhs20RAIe6X3UwH2GQkzZ16Yci5mX2sMg7n+c4DhUBNCswEsqT+EMYOTa1LBpDdBfEc4jozHDvsmE9Asst0MBshYmrKn5kkgfjcaAy2teMMpGo1s/daC9z/dyLKkkzFImkp42v7emM+J0vBIUG4GK7YD4sRKHscN+d5JIDTALc8bCuJvuDN/rCN5NKRdrdlf0U9gOYlNTWZoGCwIIxKHc4DebiYPRUCWuibOXEoCBqroQ8+U5g5yZfIex26Dsy/akbtsuRdaOf2NJIzZLctB62Ia39DX0exX8kKhkA0Z8KCVBf8fnYEy5O/fyk8PcKz1q4wU32co2eCRZyIpammb4hWZCumkIh2M7V84K2fNw1YAPRsWJ/xHX9oAq6XqriKN5aCAK6QGt5Gog+bdqvspDD+Ek33V8KCR71nqxdBfSys8HmpItRvQtmyU12g5FuiDnykbww283GpSZW0hxKCxfheHXHfDdQ66GnHb71E/WHZtu5OGAqAX8F6+JZh+Sa0CdEv5xqrFo+X01EG6qHC8itlgx9GM1qr8DPj6yd8qz6d0Eal9Dhx3JLokuQc2yb+07VPmLf6LYQCdG3oGrIsypOcSTXuuOooY1B2s4lLXYtCWL3P/VFy0yYgtjJZAQuc1n6HQ68dTZa7SaIvv+OfC6yA9fUVGeVHIPQWUxoFX5qcqjOiXVcBR3d7pt5AqXjmMYoh8dZ+0hgVnzURdW+OCoHspYWh
+ uWnQ2jtM
+ +jRAJCbfBP6JjlSjmEGEtGiu2dPXMwNmkK0P+BPH/CSTQDqBwtk5/MvJMq0k7HpyGiqvWuWgbxpSP/adMWQs1iIvzKkmAPumdVk22RLnopFsVBKHw43DtkVDJzLiHaMCbpKnJnq1O4JfrJyYpBLBEyCbDR2DGYIbvLWQ7czRkdfDWUBh3EdYjX8tiPGnNL4L9P3Fh7u+hsg4NM9KHuKnhBXVa8UyaF31FUud9nAbXwvs+LvxS997ge1+jIFB1Y7BxlrlJWAJl/7sgr0X4YaoWF5HY8BAf4pPOymC/1cv4qE3Lg422kfhCOxYwTQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,45 +103,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMON community meetup was having two different kinds of meetups:
-reservation required ones and unrequired ones.  Now the reservation
-unrequested one is gone, but the documentation on the maintainer-profile
-is not updated.  Update.
+The example command doesn't work [1] on the latest DAMON user-space
+tool, since --damos_action option is updated to receive multiple
+arguments, and hence cannot know if the final argument is for deductible
+monitoring target or an argument for --damos_action option.  Add
+--target_pid option to let damo understand it is for target pid.
+
+[1] https://github.com/damonitor/damo/pull/32
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- Documentation/mm/damon/maintainer-profile.rst | 17 ++++++-----------
- 1 file changed, 6 insertions(+), 11 deletions(-)
+ Documentation/admin-guide/mm/damon/start.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/mm/damon/maintainer-profile.rst b/Documentation/mm/damon/maintainer-profile.rst
-index 5cd07905a193..58a3fb3c5762 100644
---- a/Documentation/mm/damon/maintainer-profile.rst
-+++ b/Documentation/mm/damon/maintainer-profile.rst
-@@ -89,18 +89,13 @@ the maintainer.
- Community meetup
- ----------------
+diff --git a/Documentation/admin-guide/mm/damon/start.rst b/Documentation/admin-guide/mm/damon/start.rst
+index ede14b679d02..ec8c34b2d32f 100644
+--- a/Documentation/admin-guide/mm/damon/start.rst
++++ b/Documentation/admin-guide/mm/damon/start.rst
+@@ -175,4 +175,4 @@ Below command makes every memory region of size >=4K that has not accessed for
  
--DAMON community is maintaining two bi-weekly meetup series for community
--members who prefer synchronous conversations over mails.
-+DAMON community has a bi-weekly meetup series for members who prefer
-+synchronous conversations over mails.  It is for discussions on specific topics
-+between a group of members including the maintainer.  The maintainer shares the
-+available time slots, and attendees should reserve one of those at least 24
-+hours before the time slot, by reaching out to the maintainer.
- 
--The first one is for any discussion between every community member.  No
--reservation is needed.
--
--The seconds one is for discussions on specific topics between restricted
--members including the maintainer.  The maintainer shares the available time
--slots, and attendees should reserve one of those at least 24 hours before the
--time slot, by reaching out to the maintainer.
--
--Schedules and available reservation time slots are available at the Google `doc
-+Schedules and reservation status are available at the Google `doc
- <https://docs.google.com/document/d/1v43Kcj3ly4CYqmAkMaZzLiM2GEnWfgdGbZAH3mi2vpM/edit?usp=sharing>`_.
- There is also a public Google `calendar
- <https://calendar.google.com/calendar/u/0?cid=ZDIwOTA4YTMxNjc2MDQ3NTIyMmUzYTM5ZmQyM2U4NDA0ZGIwZjBiYmJlZGQxNDM0MmY4ZTRjOTE0NjdhZDRiY0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t>`_
+     $ sudo damo start --damos_access_rate 0 0 --damos_sz_region 4K max \
+                       --damos_age 60s max --damos_action pageout \
+-                      <pid of your workload>
++                      --target_pid <pid of your workload>
 -- 
 2.39.5
 
