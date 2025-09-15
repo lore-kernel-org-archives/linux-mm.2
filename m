@@ -4,103 +4,193 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E2ADCAC597
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 15:09:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00B88CAC597
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 15:11:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C7D6B8E0023; Mon, 15 Sep 2025 11:09:43 -0400 (EDT)
+	id 63EE08E0024; Mon, 15 Sep 2025 11:11:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C06C68E0001; Mon, 15 Sep 2025 11:09:43 -0400 (EDT)
+	id 5EF828E0001; Mon, 15 Sep 2025 11:11:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA7818E0023; Mon, 15 Sep 2025 11:09:43 -0400 (EDT)
+	id 4B6F18E0024; Mon, 15 Sep 2025 11:11:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9426F8E0001
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 11:09:43 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4AF83C06C8
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 15:09:43 +0000 (UTC)
-X-FDA: 83891819046.14.3F78930
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 21FD4180002
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 15:09:40 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 371C18E0001
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 11:11:07 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 16C38BA235
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 15:11:07 +0000 (UTC)
+X-FDA: 83891822574.09.437B3A5
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 8765E180016
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 15:11:04 +0000 (UTC)
 Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MnOB47F2;
-	spf=pass (imf16.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=hoxW3BUA;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zBlcqtLn;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=nRdO194U;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=o2m1P6fj;
+	spf=pass (imf16.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757948981;
+	s=arc-20220608; t=1757949064;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D+KzLcfyJT+GLzwBTtuIjKD4F5pNqAdImurMkZObDEc=;
-	b=t1KS3XgKgJhq+AUugrvmeFF3XdZESJrd+xYfcmtjdFVhDCPBed7gyAuUmPgKbnO0pB8Vx/
-	+in6UGaqGAlW/1YuQ13oG6BoFPSros5MLsst/X6d/JKt7eyymMc+3HwwnWVpkATxt/HH/K
-	6u4LnK2rG6NPyH70S61RsLbFZQDp504=
+	bh=p72R/ETpcEsOcIKQa1GrSL0CC8AcpAY1+Kw5v1KsfV8=;
+	b=NDDWCxN8lbKYWNElKX+E97yNSNshFdKfaSrZvW2QOaMfpXo9vIaIeSHXHCED5KTicTc3An
+	0eAl64glssszWEchxVLTipdsNv0KoKAr9Dm9CwZP2KajvBKgMWowTczIwsZmH/Nk258V7m
+	APHu+TurmNOYeDxcgHDyqfyv+I6DqD0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757949064; a=rsa-sha256;
+	cv=none;
+	b=2n++Vm6R5fy4fBrq8OMM7rkltdCCK8dZnvLAXzfcekKwAWk/zD4pyjzp6Espmn285I96gm
+	qaaJJ4dTTzFfNbZyhbg54/OOqMIPlRj30zguiDaTBgUJWgd3eOOVL+Dq36Ff0ppbwdTG9l
+	QlMFIUMleLMF7ZR/3qmVBFpIBfUlza0=
 ARC-Authentication-Results: i=1;
 	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MnOB47F2;
-	spf=pass (imf16.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757948981; a=rsa-sha256;
-	cv=none;
-	b=NfUr6cR2xMbI/JiFXvlzwzyUrwB5Dz8w6nSMK3/DcZ0a4a0RrPgidYhVB4SgFt9lIbqjFY
-	0kd0Kq1UnQfVrLj4bELkWY/iSHmujmROov/+OD0lzOVYRsk8euywfJNoxTpoSyk9qSdcRJ
-	pqKPQfeqnRwnTuirYsGG78oPAyQxoaY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1121A43A81
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 15:09:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1E73C4CEF9
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 15:09:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757948979;
-	bh=sAILtEQ6hGjB1SZc5TaU5PYDq7RHDNmXbwdIprhruRw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=MnOB47F25pAVMRV7B7hOz+/+mz8iKxW4EC1uh2wRJouQGxZ8db9vC80o7Mj0Bcpzc
-	 78sBKRFywdV0HEO5N0KRUHTEeidc2pFutLjUOqTRlnJh3a5e6OLve0pQbYvPEKcNk+
-	 jr/cJzlITPy3WMtZ0BPLskDEXI0ndTO0/ZhyDln/opdykVUfOtRbuMOaXZLPnflZUQ
-	 dsKY0Ytk5+RszljahsY2Bcu0juZU/ngjxGIjupJDtMdOnLtlmdvxOcGvPobcOiRzsT
-	 cPep2YVYK/TETJYRHh306VuADIXZjwjkJwykO/7+6U25dnrm+OcL4lpJXFOX+Q+uhq
-	 MypiuGG5z/9BA==
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-45f29e5e89bso20877275e9.2
-        for <linux-mm@kvack.org>; Mon, 15 Sep 2025 08:09:39 -0700 (PDT)
-X-Gm-Message-State: AOJu0Yy+F67cG0vPdcYIgT7/TrdgwpP+gpndfGBX6QOoGpVrrEGtQXEw
-	caVuVhjHdgPm2XDD5bWCWpPlDYeDCLpzg6TvY+/zvWvAT2pBLGQBwgVlUlXJcV6F6Zmm3yTkR0S
-	ckabk7dIaHnw9L3I0axq+IgDyWsMRoQAtQVxJekQOQg==
-X-Google-Smtp-Source: AGHT+IFZcDUDotIs1MFDsw2dmuzKjvdCb4zDoIEg+yTNJzNFpyVIBaetpEjE4dOCgEJV2HI6RJBat69v2VCnXmjopK4=
-X-Received: by 2002:a5d:55c6:0:b0:3e7:d909:4c1c with SMTP id
- ffacd0b85a97d-3e7d9094ccemr8362992f8f.11.1757948978654; Mon, 15 Sep 2025
- 08:09:38 -0700 (PDT)
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=hoxW3BUA;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zBlcqtLn;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=nRdO194U;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=o2m1P6fj;
+	spf=pass (imf16.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id D760A1F7C8;
+	Mon, 15 Sep 2025 15:11:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1757949063; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=p72R/ETpcEsOcIKQa1GrSL0CC8AcpAY1+Kw5v1KsfV8=;
+	b=hoxW3BUA6Ss/5b+z44dY44anCiRaKAhZdEKWlbdj1726UaTmzEbjMY1BqDNx2UUSHLBdBT
+	mlDm60pQZLYaUP2aJvaui9uN6wA00N5piQ8w0JFsRMi2WMGVdSh75KB3s1aqz3El9+XHlR
+	Z1KS4PfLtDhHXDYir1P4TEd5NJTfSdo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1757949063;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=p72R/ETpcEsOcIKQa1GrSL0CC8AcpAY1+Kw5v1KsfV8=;
+	b=zBlcqtLn9AG1+Z903BJDuPjJCUgaIcL8t9vicGwZ2pfWIg0k1lgI4PqyT+WuuQuRYuvWwW
+	Izc5s0cf3/OC71BA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1757949062; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=p72R/ETpcEsOcIKQa1GrSL0CC8AcpAY1+Kw5v1KsfV8=;
+	b=nRdO194UaI3NDXAFg6AMzN9WVTyLkS7kiyWIpSRLShY3Kcqk/pQfxMHPjD+JwmtoPgYKLB
+	Fc/YCYZjmsKUKv+TUi+ymwqAg6VY92npoehhbCQYNJsMVizHefrBDd44ADL6AL4ZXZ3Br7
+	O03sxP+cnMXkwmeN9THwLChhu7Cl1TU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1757949062;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=p72R/ETpcEsOcIKQa1GrSL0CC8AcpAY1+Kw5v1KsfV8=;
+	b=o2m1P6fjRvc6oje295gpCiYySRavFhL+9Hneps/DC7c7YXHXT2kQSqiGK5JigabXYN9zYD
+	6cHJDXmGFSk6bkAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B92AD1368D;
+	Mon, 15 Sep 2025 15:11:02 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id ULXQLIYsyGg9cAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 15 Sep 2025 15:11:02 +0000
+Message-ID: <75bc0c27-3d08-484d-9d22-59bc70f7ee1d@suse.cz>
+Date: Mon, 15 Sep 2025 17:11:02 +0200
 MIME-Version: 1.0
-References: <20250910160833.3464-1-ryncsn@gmail.com> <20250910160833.3464-11-ryncsn@gmail.com>
-In-Reply-To: <20250910160833.3464-11-ryncsn@gmail.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Mon, 15 Sep 2025 08:09:26 -0700
-X-Gmail-Original-Message-ID: <CACePvbUM1-xmgttL5R06qrULDq_eiHT0jPRpcfrZJX2ch6tZSg@mail.gmail.com>
-X-Gm-Features: AS18NWBTpBv2ceo-93-keDns1VW92yPyG7W7vfAHNpWFmTjFfAIjeCnq2vHXyIM
-Message-ID: <CACePvbUM1-xmgttL5R06qrULDq_eiHT0jPRpcfrZJX2ch6tZSg@mail.gmail.com>
-Subject: Re: [PATCH v3 10/15] mm, swap: wrap swap cache replacement with a helper
-To: Kairui Song <ryncsn@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>, Barry Song <baohua@kernel.org>, 
-	Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@redhat.com>, Yosry Ahmed <yosryahmed@google.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
-	linux-kernel@vger.kernel.org, Kairui Song <kasong@tencent.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH slab v5 5/6] slab: Reuse first bit for OBJEXTS_ALLOC_FAIL
+Content-Language: en-US
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+ Shakeel Butt <shakeel.butt@linux.dev>, bpf <bpf@vger.kernel.org>,
+ linux-mm <linux-mm@kvack.org>, Harry Yoo <harry.yoo@oracle.com>,
+ Michal Hocko <mhocko@suse.com>, Sebastian Sewior <bigeasy@linutronix.de>,
+ Andrii Nakryiko <andrii@kernel.org>,
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Peter Zijlstra <peterz@infradead.org>, Steven Rostedt <rostedt@goodmis.org>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>
+References: <20250909010007.1660-6-alexei.starovoitov@gmail.com>
+ <jftidhymri2af5u3xtcqry3cfu6aqzte3uzlznhlaylgrdztsi@5vpjnzpsemf5>
+ <CAJuCfpGUjaZcs1r9ADKck_Ni7f41kHaiejR01Z0bE8pG0K1uXA@mail.gmail.com>
+ <CAADnVQJu-mU-Px0FvHqZdTTP+x8ROTXaqHKSXdeS7Gc4LV9zsQ@mail.gmail.com>
+ <shfysi62hb5g7lo44mw4htwxdsdljcp3usu2wvsjpd2a57vvid@tuhj63dixxpn>
+ <CAADnVQ+eD7p4i0B9Q2T-OS_n=AqcrrvYZGY57QOOqKEof6SkDQ@mail.gmail.com>
+ <lv2tkehyh4pihbczb7ghvbkkl4l75ksdx2xjtxf2r7lgzam76h@ekkrlady2et3>
+ <CAADnVQLX_mi9WLygRxwp5PtBFG7L_sqm9sL93ejENWqVO3ar7g@mail.gmail.com>
+ <e7nh3cxyhmlxds4b2ko36gnxbdfclcxu3eae5irvrd2m6qzqoj@gor7vopfe47z>
+ <CAADnVQJuAo5K417ZZ77AA1LM5uZr5O2v1dRrEEue-v39zGVyVw@mail.gmail.com>
+ <rfwbbfu4364xwgrjs7ygucm6ch5g7xvdsdhxi52mfeuew3stgi@tfzlxg3kek3x>
+ <CAJuCfpHJEUypV2HWRHqE598kr-1Nz_DokMz_UgrUnq8YkFcb9w@mail.gmail.com>
+ <CAADnVQJQo6+AwJ_LxARVu37J-5T-7tyn1kA5hMVDGDfEyjF6mQ@mail.gmail.com>
+ <e166705a-e838-4c8f-a8cf-64913e120caa@suse.cz>
+ <CAJuCfpGR2tHhUu=p4X2YKPNot4TJbhuFPRiT8BgOHvtcw=j-Ug@mail.gmail.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <CAJuCfpGR2tHhUu=p4X2YKPNot4TJbhuFPRiT8BgOHvtcw=j-Ug@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 8765E180016
+X-Stat-Signature: 9moue9d9ake6crz9hruyebhk84wjx6ki
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 21FD4180002
-X-Stat-Signature: kqkxi4ziowi6szu49kssiws1qm4fp8z1
-X-HE-Tag: 1757948980-437781
-X-HE-Meta: U2FsdGVkX19UGjC3q3WBGIZA3jR9vUZAta53DcDzFczFAQMccqOgcBjPa9DozvULXXwnkLOy7+9P0WSJHWS4iSmOICUIMlv8PCQ7fzF5siaXh2sBFgSgdVZys9GQIWBaTvm0MvLQjj4aYUs458qxZaozeSzEsxYhh5RtqxcfAIqrl5Er5LxddtqoZvOfPah6LJ+XgeGHIEHX1V4tt9qqx1zTopK7yukyZvC2VE4bsDCsaCCDrhOR+ZP0LNME2Dt6WuhQKexCzBkau4Qsjco9gBhP38AJuomOrYiD7ULIJdZUgqbXvkrfvLZKKH2Rjse+HCFg9f96RY8irAUN3LNIC9Ys5XwAbCE46IW8WL3M2l95WZhIf39OVmNpFyC6NIcOwtipLjjdMn2VFa/Wgt17PJVsTNhx3RhrJJFCGY257kpSAT+kcJABvFBKyPBjtWWc3jwq6u44ddj9Kq2p+3K7Y9+ouKHwGmliq1mxErZmug9L/3tR3vCiEjh2JsOTF/pz73r7Ji11rE/+xDMArMvbe97toAQgU9LrO2ZxqRpteJ8Pb5h3AnDZC0FkR/IwJTkTzdBuVT+l+4rVqacpDZwgYlf5trm/ZZXbIOqMtgfzg1fNPEjW61nWsJcTzcNcMhRm3/z6PXE5IO7qI5JVYlYZI0ixSg/w+FSR/fYQxiIXEeYvNoAdP0tOLrBfIYLBOdaTGzFJkkA96kkmYe9I+kfgCEYdsmfKIF1C+zbutvPEaimPZZrV4AtNByxIv2C8A/Yo0aDTMAonvO2GCM0iwv8I+/gTCTpmV8qrc9NbRMnudSO5shkDvpQRGP7ZEZhPpNo2l417BNfAdVNHmXbmDYudhsueuxvvnM9i0XYwbadgNNrRp1MupinD/zCUW6Pco5ox11QdWKWNnYpyYfVjTf1IB3g7rDLF326/kpph3JIJ5BJChtUY8EvjR0l/m3D0Pbopw1OJYEplEKgQbJ3Ckop
- UYrF8W+O
- TTrzvdoHK9u6E5buXFteeiGhDgD5rtmJeqIppxkTuUPjwu3MkSoVJgFOSLka+FVEGXPVBjVeEkWbVB6d2QJtkG8W7WPmAHu1zm8tJ8yOZF0p1qtkG07A8tAtSjnhrR5wh6tnxNqLA82pKxnZQ+NMxIiwQQjuc6oIHeQiR8eF+VUPO3j2Kgf3BkQoHX5svVZAPBDhVO97UmEWfNYZD/q7fxM+ZjITlBqk+sohhUV8+4qonL6xy5tuMCuDIIqhsBwtP9gi60n6Jhily3uzXUuwMG2D1TzKNkwfXCWmKPojpZkqDTU88TF+Krk5C8dH+YWrEmulIWohsoBzJs2y6VWS90AC7EZN9CVjeP47RK5oFCnKT01GHDYmJKpebCtgSSZ1Iu06F
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1757949064-850202
+X-HE-Meta: U2FsdGVkX19pwwXDioNUJRE+BOlSHNLXas7ba9iTnLFRIoWYvDtLcbmBir/xLKFL6uoqEVzbPEK6lhXf7F32OV2on7R80sAz7Rxrzo7xzEaAVFGrYbtLuz5v9EctZW0Q5kuK4YpLBmnBjWyyK7BDSr9t0TRldwvfVil/8XJSJXbgCQ2UW+7wlsi6MYXd0Iv1Fo2St83NU/mdc82bxLS0f9aU+nZiaPsEuRvWtPbG1krEBNPweT/GXXsSrPzod64aK2WbQxVS2n1kQVrxsaFf0CotVbcLDF28w5an68w3D+JtyQ2GdBl8pXi8gXaGgP+MT3uVWD7DgyP9ebixJ851gTWygZZTUWoRlKntfp+aVBzWOCYrr63LXGcyQBJJANzWt+Ptj322CAisXL2dKpGmvkRoy9fRFh7q0iQZZc1hUfnwyvpUe6ymrtWPR1oPGyX8QW1hNnudzs9UVGelVLgsCmgIOEFqoZwiXca8xQp4uTu1/7hhRWjMR/dQnUgtBh5H4Rvwa3Krt53scjAZmWOC8aAnkhqCT2eCZsNfo+2m3mY4RjL06I8x77yWvBtAxF+W3QHbr7infE+nRRJqXj6vJIYh35U7F1OZo0wevsRbp/tpwVu9NKT/lVZ9tjyx/kXhAy+6+o9fDLhrYla7vhuoFnFtUxpfBC8EDaa3bjwhfZQZTa7eFwBpKvYRZD36jNLMStCwXszh1CHKOWGvJZWnE1obcAHKt1UVLLVGH9Ev8mXpyhcS4Tb8qzwqm+jFvl02kkOewJUp9orXox9EBD6gxphC7r531TxlP4IVxYYEqHhHwxykRDB8+OK9hZfURphB8UQG9KQSE7U7pfwb0wVGu2Rm69sdCEnzsBmnQHZb8o+Yy9X3CAodeNftEp9bir/7Z6K/I4yrodtm3/sSnauPiRhbTXQ5Raumdxgo4olg/6LYLgEE+NosLvoL1QZ8MH7aIAsvEQoeMt1t+Y9u+4F
+ 5vjiBNMs
+ oHDYg+fAoKzOVm+B09ZBrUAylI6rjqF0ynKtxM5jFdo4i6/odpFfxXCK1xo08gkEKR63Xux6WYjkeoi2uY8EZHKMYBOhZfhtmMDcQ3AFN3dsak7UcqlpD3M4tS9dmRmX1qbIx7Jv3RIeC2Ih9zpiorR9ZOmbqIhdI7ds+rT8tFoQ7NdEquL+YEf72VYKhlbVQBfBkGgXehfGkB7qEsNA3+DRvn2/KukR6ehJmEYK8a0yuDiT/n9Z/L5vc1J6uLDu0W1gIfzAqAp6HpE5JwWGjLsCYrXEQW51zJ+8BDT2SU2C12o8ReI/76HyEx0qkInglDe4JIRwDciq9ptODupvDJJ6F5NHu3v7MJRI6TF5dxmF/Vrah3N/rfRgE89GQm1BNr5MHWJkK8h2rUhNBTfeXOS++JbpgyqkSn/uaNDXl2DBXHh2ePZGo3aR2DkXy9jzjVpG/0zc0/g86YdxU91YW8LnFYtq361gvERWx7m98FRcXkFcyvfmzaoeirGltQI9Dtn/KOg4GO+K+jmElEBIgIoHbZIvXA9GcfoIXVz1t7wwu0PH+Zjbe8+pRiQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,217 +199,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Acked-by: Chris Li <chrisl@kernel.org>
+On 9/15/25 17:06, Suren Baghdasaryan wrote:
+> On Mon, Sep 15, 2025 at 12:51 AM Vlastimil Babka <vbabka@suse.cz> wrote:
+>>
+>>
+>> Shakeel or Suren, will you sent the fix, including Fixes: ? I can put in
+>> ahead of this series with cc stable in slab/for-next and it shouldn't affect
+>> the series.
+> 
+> I will post it today. I was planning to include it as a resping of the
+> fixup patchset [1] but if you prefer it separately I can do that too.
+> Please let me know your preference.
 
-Chris
+I think it will be better for patches touching slab (only) to be separate,
+to avoid conflict potential. [1] seems mm tree material
 
-On Wed, Sep 10, 2025 at 9:09=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wrot=
-e:
->
-> From: Kairui Song <kasong@tencent.com>
->
-> There are currently three swap cache users that are trying to replace an
-> existing folio with a new one: huge memory splitting, migration, and
-> shmem replacement. What they are doing is quite similar.
->
-> Introduce a common helper for this. In later commits, this can be easily
-> switched to use the swap table by updating this helper.
->
-> The newly added helper also makes the swap cache API better defined, and
-> make debugging easier by adding a few more debug checks.
->
-> Migration and shmem replace are meant to clone the folio, including
-> content, swap entry value, and flags. And splitting will adjust each
-> sub folio's swap entry according to order, which could be non-uniform in
-> the future. So document it clearly that it's the caller's responsibility
-> to set up the new folio's swap entries and flags before calling the helpe=
-r.
-> The helper will just follow the new folio's entry value.
->
-> This also prepares for replacing high-order folios in the swap cache.
-> Currently, only splitting to order 0 is allowed for swap cache folios.
-> Using the new helper, we can handle high-order folio splitting better.
->
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> ---
->  mm/huge_memory.c |  4 +---
->  mm/migrate.c     | 11 +++--------
->  mm/shmem.c       | 10 ++--------
->  mm/swap.h        |  5 +++++
->  mm/swap_state.c  | 33 +++++++++++++++++++++++++++++++++
->  5 files changed, 44 insertions(+), 19 deletions(-)
->
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 26cedfcd7418..4c66e358685b 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -3798,9 +3798,7 @@ static int __folio_split(struct folio *folio, unsig=
-ned int new_order,
->                          * NOTE: shmem in swap cache is not supported yet=
-.
->                          */
->                         if (swap_cache) {
-> -                               __xa_store(&swap_cache->i_pages,
-> -                                          swap_cache_index(new_folio->sw=
-ap),
-> -                                          new_folio, 0);
-> +                               __swap_cache_replace_folio(folio, new_fol=
-io);
->                                 continue;
->                         }
->
-> diff --git a/mm/migrate.c b/mm/migrate.c
-> index 8e435a078fc3..c69cc13db692 100644
-> --- a/mm/migrate.c
-> +++ b/mm/migrate.c
-> @@ -566,7 +566,6 @@ static int __folio_migrate_mapping(struct address_spa=
-ce *mapping,
->         struct zone *oldzone, *newzone;
->         int dirty;
->         long nr =3D folio_nr_pages(folio);
-> -       long entries, i;
->
->         if (!mapping) {
->                 /* Take off deferred split queue while frozen and memcg s=
-et */
-> @@ -615,9 +614,6 @@ static int __folio_migrate_mapping(struct address_spa=
-ce *mapping,
->         if (folio_test_swapcache(folio)) {
->                 folio_set_swapcache(newfolio);
->                 newfolio->private =3D folio_get_private(folio);
-> -               entries =3D nr;
-> -       } else {
-> -               entries =3D 1;
->         }
->
->         /* Move dirty while folio refs frozen and newfolio not yet expose=
-d */
-> @@ -627,11 +623,10 @@ static int __folio_migrate_mapping(struct address_s=
-pace *mapping,
->                 folio_set_dirty(newfolio);
->         }
->
-> -       /* Swap cache still stores N entries instead of a high-order entr=
-y */
-> -       for (i =3D 0; i < entries; i++) {
-> +       if (folio_test_swapcache(folio))
-> +               __swap_cache_replace_folio(folio, newfolio);
-> +       else
->                 xas_store(&xas, newfolio);
-> -               xas_next(&xas);
-> -       }
->
->         /*
->          * Drop cache reference from old folio by unfreezing
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index 5f395fab489c..8930780325da 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -2086,10 +2086,8 @@ static int shmem_replace_folio(struct folio **foli=
-op, gfp_t gfp,
->         struct folio *new, *old =3D *foliop;
->         swp_entry_t entry =3D old->swap;
->         struct address_space *swap_mapping =3D swap_address_space(entry);
-> -       pgoff_t swap_index =3D swap_cache_index(entry);
-> -       XA_STATE(xas, &swap_mapping->i_pages, swap_index);
->         int nr_pages =3D folio_nr_pages(old);
-> -       int error =3D 0, i;
-> +       int error =3D 0;
->
->         /*
->          * We have arrived here because our zones are constrained, so don=
-'t
-> @@ -2118,12 +2116,8 @@ static int shmem_replace_folio(struct folio **foli=
-op, gfp_t gfp,
->         new->swap =3D entry;
->         folio_set_swapcache(new);
->
-> -       /* Swap cache still stores N entries instead of a high-order entr=
-y */
->         xa_lock_irq(&swap_mapping->i_pages);
-> -       for (i =3D 0; i < nr_pages; i++) {
-> -               WARN_ON_ONCE(xas_store(&xas, new));
-> -               xas_next(&xas);
-> -       }
-> +       __swap_cache_replace_folio(old, new);
->         xa_unlock_irq(&swap_mapping->i_pages);
->
->         mem_cgroup_replace_folio(old, new);
-> diff --git a/mm/swap.h b/mm/swap.h
-> index 6c4acb549bec..fe579c81c6c4 100644
-> --- a/mm/swap.h
-> +++ b/mm/swap.h
-> @@ -185,6 +185,7 @@ int swap_cache_add_folio(struct folio *folio, swp_ent=
-ry_t entry,
->  void swap_cache_del_folio(struct folio *folio);
->  void __swap_cache_del_folio(struct folio *folio,
->                             swp_entry_t entry, void *shadow);
-> +void __swap_cache_replace_folio(struct folio *old, struct folio *new);
->  void swap_cache_clear_shadow(int type, unsigned long begin,
->                              unsigned long end);
->
-> @@ -336,6 +337,10 @@ static inline void __swap_cache_del_folio(struct fol=
-io *folio, swp_entry_t entry
->  {
->  }
->
-> +static inline void __swap_cache_replace_folio(struct folio *old, struct =
-folio *new)
-> +{
-> +}
-> +
->  static inline unsigned int folio_swap_flags(struct folio *folio)
->  {
->         return 0;
-> diff --git a/mm/swap_state.c b/mm/swap_state.c
-> index f3a32a06a950..d1f5b8fa52fc 100644
-> --- a/mm/swap_state.c
-> +++ b/mm/swap_state.c
-> @@ -234,6 +234,39 @@ void swap_cache_del_folio(struct folio *folio)
->         folio_ref_sub(folio, folio_nr_pages(folio));
->  }
->
-> +/**
-> + * __swap_cache_replace_folio - Replace a folio in the swap cache.
-> + * @old: The old folio to be replaced.
-> + * @new: The new folio.
-> + *
-> + * Replace an existing folio in the swap cache with a new folio. The
-> + * caller is responsible for setting up the new folio's flag and swap
-> + * entries. Replacement will take the new folio's swap entry value as
-> + * the starting offset to override all slots covered by the new folio.
-> + *
-> + * Context: Caller must ensure both folios are locked, also lock the
-> + * swap address_space that holds the old folio to avoid races.
-> + */
-> +void __swap_cache_replace_folio(struct folio *old, struct folio *new)
-> +{
-> +       swp_entry_t entry =3D new->swap;
-> +       unsigned long nr_pages =3D folio_nr_pages(new);
-> +       unsigned long offset =3D swap_cache_index(entry);
-> +       unsigned long end =3D offset + nr_pages;
-> +
-> +       XA_STATE(xas, &swap_address_space(entry)->i_pages, offset);
-> +
-> +       VM_WARN_ON_ONCE(!folio_test_swapcache(old) || !folio_test_swapcac=
-he(new));
-> +       VM_WARN_ON_ONCE(!folio_test_locked(old) || !folio_test_locked(new=
-));
-> +       VM_WARN_ON_ONCE(!entry.val);
-> +
-> +       /* Swap cache still stores N entries instead of a high-order entr=
-y */
-> +       do {
-> +               WARN_ON_ONCE(xas_store(&xas, new) !=3D old);
-> +               xas_next(&xas);
-> +       } while (++offset < end);
-> +}
-> +
->  /**
->   * swap_cache_clear_shadow - Clears a set of shadows in the swap cache.
->   * @type: Indicates the swap device.
-> --
-> 2.51.0
->
+> Another fixup patch I'll be adding is the removal of the `if
+> (new_slab)` condition for doing mark_failed_objexts_alloc() inside
+> alloc_slab_obj_exts() [2].
+
+Ack, then it's 2 patches for slab :)
+
+Thanks,
+Vlastimil
+
+> [1] https://lore.kernel.org/all/20250909233409.1013367-1-surenb@google.com/
+> [2] https://elixir.bootlin.com/linux/v6.16.5/source/mm/slub.c#L1996
+
 
