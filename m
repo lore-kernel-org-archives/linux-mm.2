@@ -4,125 +4,196 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23F60CAC597
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 11:44:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F73BCAC597
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 11:45:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C6808E000D; Mon, 15 Sep 2025 07:44:33 -0400 (EDT)
+	id B23538E0012; Mon, 15 Sep 2025 07:45:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 79CE58E0001; Mon, 15 Sep 2025 07:44:33 -0400 (EDT)
+	id AFAD78E0001; Mon, 15 Sep 2025 07:45:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 68BCA8E000D; Mon, 15 Sep 2025 07:44:33 -0400 (EDT)
+	id 9EA5A8E0012; Mon, 15 Sep 2025 07:45:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 543FF8E0001
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 07:44:33 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1C49C1605C8
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 11:44:33 +0000 (UTC)
-X-FDA: 83891302026.25.BE40A1C
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf10.hostedemail.com (Postfix) with ESMTP id EC4ECC0005
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 11:44:30 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Hrm3W7WU;
-	spf=pass (imf10.hostedemail.com: domain of toke@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=toke@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8AB288E0001
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 07:45:49 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 20307BA511
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 11:45:49 +0000 (UTC)
+X-FDA: 83891305218.18.F218767
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf18.hostedemail.com (Postfix) with ESMTP id C3FB71C000F
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 11:45:46 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PO9Eef93;
+	spf=pass (imf18.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757936671;
+	s=arc-20220608; t=1757936746;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uSHPRUFaXeFg56s3ZlnqQHiikskw++1DW2WVyVaExKo=;
-	b=g41LuyydyePjax994QOLwxUcx1XGEy0G2eLz3gBy+jRvjJkR742kjPXR/RdsKVK0h0b01c
-	ozqWBAmqla9RseaJkiTHeYeFWe1MijKq83828o8a/bjDJP42Gf+6KTRTMnd+lvmC4c11pP
-	QNGWGVKanO8kY4vOL26nueDTfbqw464=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757936671; a=rsa-sha256;
-	cv=none;
-	b=dCijAGTyh+Ksq3SzSAEHbbRn8sl6r6TysJUvhKi+rEL0U6uzvAcJT6OiwVU/ID/F/kW078
-	loHjKvUkhpwVDVKyKwF6h52/XtBPUMobTlEXOlRzYd2c99FQoAmYprVWWXjUb2O35hLDm+
-	JTfHVN3SatXRrvYU78HVx7K8kTiKVC4=
+	bh=+Ng7yCw1wP5MZtSwh7Wi4NlfzosbrOaxU97IITYT9yU=;
+	b=oTbpzfrjI35sjEb5qDpRV9A32t87rjLBJr8s3opT21ce3xU+UpG8pfq9GAitpM0vEvqkAg
+	aYn67P9NuhL7Z7DwkOIJqOUM7CCQ0XpUbt62T5heu0UCLZC0KwAx9J8QPOdVJOzJfz4xQx
+	o+DG5/2LW6DUuu2ltfV3ooWrbWfNHEk=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Hrm3W7WU;
-	spf=pass (imf10.hostedemail.com: domain of toke@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=toke@redhat.com;
+	imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PO9Eef93;
+	spf=pass (imf18.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757936746; a=rsa-sha256;
+	cv=none;
+	b=m/g1NPqs2MjNxP6hTKkwJI4WFLkT9IKX/Hwbcgnej8HguG6PHX+ivKqvxM/MzirHu8W+sm
+	e6crrHWJpAx2KNmKcKfpv/9+u0Q9yQRKTUb6KYEr6Q0+9hZ7MANsIPc7HvuYPQFClaY4MS
+	425/o7mugM06Pe6XZ1fO7cURjJHbpOs=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757936670;
+	s=mimecast20190719; t=1757936746;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uSHPRUFaXeFg56s3ZlnqQHiikskw++1DW2WVyVaExKo=;
-	b=Hrm3W7WUS1yk3pl7cjFx5wVjX3uUATdEhn5WDdOQ3DqMuIGNmJ4OWB05re+vr9myLKTCkF
-	8absuRKcs80An49xbgxBrOcnoL8rMh9fwicj8q+m1fpJZzPn4KLS6KGeoofYwjsPSb03El
-	WIOV/WezAuhJuLOKt2/+eMvDWAjyx14=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=+Ng7yCw1wP5MZtSwh7Wi4NlfzosbrOaxU97IITYT9yU=;
+	b=PO9Eef93l6e7At5hMF2Z8nkLDG+u8uIMXmkT3rwQtddr2TBj1bEcT8aYAo6/CBt1SC2l+3
+	CmHTNXSB0+m/BAJLJY5LVtyDEOZxmmKl2sBY8v8pxFWO01WGQA3C+jC/Cv7duKPGChnYmi
+	AaBE8wXurVDkigjSRxc7NdfiEyNvGfs=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-526-iXO-0dmFMpWFtiBrwXWEiw-1; Mon, 15 Sep 2025 07:44:28 -0400
-X-MC-Unique: iXO-0dmFMpWFtiBrwXWEiw-1
-X-Mimecast-MFC-AGG-ID: iXO-0dmFMpWFtiBrwXWEiw_1757936667
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-b0ea66f6811so116086666b.1
-        for <linux-mm@kvack.org>; Mon, 15 Sep 2025 04:44:27 -0700 (PDT)
+ us-mta-31-VeJBNzUxMUy44tWkhnOQRg-1; Mon, 15 Sep 2025 07:45:45 -0400
+X-MC-Unique: VeJBNzUxMUy44tWkhnOQRg-1
+X-Mimecast-MFC-AGG-ID: VeJBNzUxMUy44tWkhnOQRg_1757936744
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-45b467f5173so27775565e9.3
+        for <linux-mm@kvack.org>; Mon, 15 Sep 2025 04:45:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757936667; x=1758541467;
-        h=mime-version:message-id:date:references:in-reply-to:subject:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uSHPRUFaXeFg56s3ZlnqQHiikskw++1DW2WVyVaExKo=;
-        b=WwN7Rhg0hu4DBi9nD1cT+B9b5TdhUWnpEerpPdcEcDV5Xs84Cgcer8VtiH46zJnpr+
-         R5/WJrQwh71YRB2DFilUoCOzVudk2Yt6fGWXGhD2QubAKNFdo0X0fUBpC9xZbXsYcy8i
-         8pmjvtbrc+j0hgzAGuuNPwDXpiwS396V7cj/YvtNONs2fdoluzfcv3fyn06G7MxA+Wi0
-         czZjHwyjp60NK7WsU7cNxGPpqSF+W2Ruw9EUWk1LirImD6a1lsIWpVWVElp7gfJmhTd+
-         xnWT7CYUfwNo6UPqJp6dfkDfTdVZikTHEBog0YDvs/qQUlbvKINM3E3TrpVH9LiEHUeB
-         O6FQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUuhjIikeNjUvHFJlw24DMhObiDvGYMmk10auq6khp13P+y2l69rSVxO9ARCQS3odio5xYwTrIprQ==@kvack.org
-X-Gm-Message-State: AOJu0YyRCaZcvzAQJUgiPGF6UhN+h4AzqBfU6S4ePNXZdyfXFEF7yyVE
-	7+UzSzgJ6gAmz7Ma1W5EGLvG7/qikmnvLhqY3JPE2B43tAb9NR9TiXh6njA5+z0sRxWOvq7Dq/z
-	oSBuwkL95QF1Z6utzwDlyr13YqSDxTuRXYnwtLJHCGRJS+c0gT2G/
-X-Gm-Gg: ASbGncslSZcAiyMt1qSC8YbEcDoHM12yFkNcUud3FhtNC+eHG294tT+0oLOEk6U0XCT
-	uelulIcvQja8W/tR+f4BX9/WGwjjI32v2j12utLxY5nqpHVJm03hPFeiWsmgId81BgqbKUNyIm+
-	5zX5RBUJSwhxWkWpQapV4G7ikHXkfCjKka3qZJz3zst7K7TLPC0E06ipjA/DD4TtIGH4XpWbk5k
-	w2zMD1UxujHjRsz0hZc0WKFanc9eGWhTbjGhZuhkyTFBBO+GVFpik4OLpD6/UnV4T8DXI0LeAwm
-	EafkgpIkcZI2rS9dnKZcPvKPnScadDUBnoDp6IbHBSRh2woH5xVtkHcvAYhr9FZa
-X-Received: by 2002:a17:907:3cd4:b0:b04:626e:f43d with SMTP id a640c23a62f3a-b07c386845emr1107738266b.47.1757936666846;
-        Mon, 15 Sep 2025 04:44:26 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGP/rnaPf4TLpT9wQUB5MJEnJsUtYxAdTzEBrkYO+7lF79YJ4d63LszUhAd2mHJ20+wHOss3Q==
-X-Received: by 2002:a17:907:3cd4:b0:b04:626e:f43d with SMTP id a640c23a62f3a-b07c386845emr1107735566b.47.1757936666370;
-        Mon, 15 Sep 2025 04:44:26 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b07b30da289sm914339566b.17.2025.09.15.04.44.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Sep 2025 04:44:25 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-	id 9FC69215498; Mon, 15 Sep 2025 13:44:24 +0200 (CEST)
-From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To: Helge Deller <deller@kernel.org>, David Hildenbrand <david@redhat.com>,
- Jesper Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas
- <ilias.apalodimas@linaro.org>, "David S. Miller" <davem@davemloft.net>,
- Linux Memory Management List <linux-mm@kvack.org>, netdev@vger.kernel.org,
- Linux parisc List <linux-parisc@vger.kernel.org>, Andrew Morton
- <akpm@linux-foundation.org>
-Subject: Re: [PATCH][RESEND][RFC] Fix 32-bit boot failure due inaccurate
- page_pool_page_is_pp()
-In-Reply-To: <aMSni79s6vCCVCFO@p100>
-References: <aMSni79s6vCCVCFO@p100>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date: Mon, 15 Sep 2025 13:44:24 +0200
-Message-ID: <87zfawvt2f.fsf@toke.dk>
+        d=1e100.net; s=20230601; t=1757936744; x=1758541544;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+Ng7yCw1wP5MZtSwh7Wi4NlfzosbrOaxU97IITYT9yU=;
+        b=beyDTSqbuIccSMSm4t02Kfbe9+TtbMLJmd/98SD9Uh5wtEje7pT/nKzZLgf5XfvvGO
+         bhrCUYiaMztc5dqAN4DAKYUbd7d9nmqwoaskUC8AHHickRUJt9wxg64CJF485CJ2UxA9
+         joBAIin0xRTTHoBS74qD2dZ596T2zij8ZNd8w5dgO/Y2eQp912Otm9l/OrkaBXuLlpGp
+         /tA/BpqbyPsr/CRvjRwzldACTacl+4rC+qoPng/Hpk+INig4SXvKC1dLdLLmmRcE00mE
+         /HQnH/cJUHdqxdK1ef/b97yFuP8H9dHkTDgfCne3jVogrx47X4cuFadp7OLKeLG5DCKG
+         8JPw==
+X-Forwarded-Encrypted: i=1; AJvYcCWGxut6HCZe6phGknfR47AO4xSSNnrpvBgjXW+AjCivMjhd97+kLG9ppOvqihveRLYskboFsqGFRw==@kvack.org
+X-Gm-Message-State: AOJu0YwQN3hAgMEkxDFyD873gHSMj9B0zs1cNLIKYmsXoonnKOgyAgtJ
+	5AbGcC7fvoQIo09zqaGQMu2K2wYTXnUni/1XkpLDoNkqFQJtqR5r/lOdH41jGPTyrcje5OUXo/F
+	dHz0Hc/AY3N2N3ZNkucA1h5G/9OltGSEbObpwRs3xtnFLOSudKJbP
+X-Gm-Gg: ASbGncue1kBlmF1ghF8c15VLprgJ45ScLPC6kkRfTqhYzSFwszeBjidpbk7HLietDlB
+	soBTZPyk4Tw1/+tiVcldFoPWXORU4OwsxmwGFEYdQlRd1g+mhCXMICCaki+AWEW1HvL0+b2bDnv
+	w5p5jaeW0N3eM9/c75ud1gkX7A/XgtWfwi2dgpMFtDgR2lcdABkr780563eWyI2EdP0mylMpIi8
+	mnp5Bs99lDTg6833Chbq7uMTB0st1AIU6DQP4ZRmsxelLpbhMRu4M4mB81B0apb+DyXzVPWafvL
+	5oQ48FaLAG+I6SGK3yLtCoBTgwErN4N2nT2LhmWemcdFVk0D+TQXyEEzpWzkuz5+D7K/IpIanjn
+	jQvr5Ue515OcmjgeLDIMZyLWYzcsX7QqrSP5dLfnJGkxbbheooVkbLCyGOsj+fZPPS/0=
+X-Received: by 2002:a7b:c04b:0:b0:45b:81b4:1917 with SMTP id 5b1f17b1804b1-45f211d5d6fmr95730265e9.10.1757936743672;
+        Mon, 15 Sep 2025 04:45:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHHWeQtRmvajOk6PjvNrrZnGwcCmKaM8guZ/XD7rSJpezG2pi0yt91kJg016WDbZLNw0/ir1A==
+X-Received: by 2002:a7b:c04b:0:b0:45b:81b4:1917 with SMTP id 5b1f17b1804b1-45f211d5d6fmr95729955e9.10.1757936743224;
+        Mon, 15 Sep 2025 04:45:43 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f18:f900:e0ae:65d5:8bf8:8cfd? (p200300d82f18f900e0ae65d58bf88cfd.dip0.t-ipconnect.de. [2003:d8:2f18:f900:e0ae:65d5:8bf8:8cfd])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45e017c0643sm172762125e9.23.2025.09.15.04.45.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 15 Sep 2025 04:45:42 -0700 (PDT)
+Message-ID: <6ec80746-2945-485f-930e-8cc34446f9e3@redhat.com>
+Date: Mon, 15 Sep 2025 13:45:39 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v11 00/15] khugepaged: mTHP support
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Kiryl Shutsemau <kas@kernel.org>, Nico Pache <npache@redhat.com>,
+ linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, corbet@lwn.net, rostedt@goodmis.org,
+ mhiramat@kernel.org, mathieu.desnoyers@efficios.com,
+ akpm@linux-foundation.org, baohua@kernel.org, willy@infradead.org,
+ peterx@redhat.com, wangkefeng.wang@huawei.com, usamaarif642@gmail.com,
+ sunnanyong@huawei.com, vishal.moola@gmail.com,
+ thomas.hellstrom@linux.intel.com, yang@os.amperecomputing.com,
+ aarcange@redhat.com, raquini@redhat.com, anshuman.khandual@arm.com,
+ catalin.marinas@arm.com, tiwai@suse.de, will@kernel.org,
+ dave.hansen@linux.intel.com, jack@suse.cz, cl@gentwo.org,
+ jglisse@google.com, surenb@google.com, zokeefe@google.com,
+ hannes@cmpxchg.org, rientjes@google.com, mhocko@suse.com,
+ rdunlap@infradead.org, hughd@google.com, richard.weiyang@gmail.com,
+ lance.yang@linux.dev, vbabka@suse.cz, rppt@kernel.org, jannh@google.com,
+ pfalcato@suse.de
+References: <d0e81c75-ad63-4e37-9948-3ae89bc94334@redhat.com>
+ <CAA1CXcA+pb5KvEnJJqdf1eSjaFiBZ82MRB+KDmyhj3DbiQqOxg@mail.gmail.com>
+ <enrgrocqajwu5d3x34voghja7pbvau45oobxgabawrly44ld4u@ahch3xn6rtq5>
+ <cd8e7f1c-a563-4ae9-a0fb-b0d04a4c35b4@redhat.com>
+ <155c821d-402c-4627-a723-6f8c88a2f65c@lucifer.local>
+ <ae9d88e2-bab9-49fc-a459-d7b9a8fe9351@redhat.com>
+ <ff4b6935-fd13-478e-9187-219fb612aac3@lucifer.local>
+ <e450009a-56c9-4820-bd0c-da1d782d3962@redhat.com>
+ <2757fb07-78bf-4a39-8c60-8ca8be200994@lucifer.local>
+ <a48c8d89-da30-4a7d-96f6-e5e17757b818@redhat.com>
+ <e0580a44-2afc-4f3e-8d3e-d4fe9b2eeb21@lucifer.local>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <e0580a44-2afc-4f3e-8d3e-d4fe9b2eeb21@lucifer.local>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: tP8Za31D_FFwZR55xNRdNbhQrXekftAjH27BuCuld-w_1757936667
+X-Mimecast-MFC-PROC-ID: u9a1c5Y89YZvhzbcNcy_xDt6vsJP0Tjr0M2GMOKNVAY_1757936744
 X-Mimecast-Originator: redhat.com
-Content-Type: text/plain
-X-Rspamd-Queue-Id: EC4ECC0005
-X-Stat-Signature: tjey5rpcpwud3smc41zjmw38g8nonfpj
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1757936670-706235
-X-HE-Meta: U2FsdGVkX19Vvg6b5/1BN6m9E/4/USWQHKqSnmger2Q1RYD2LVFemFfSPCiUuCpilsS5OAoSNTn85onwj5/qhaDVb7l8QufxrOll+gF16S32poomusbaNSeG7vep7ob/9V5ZDTjRU3JYe24VTugywMDf0x2+mQYV9I2UB2uiUliWTx6bC4RGnzmlkGX2KYqeFTPDSuQhYR/Eo6BCzv0IAm76x/rWvVgaLaI8Tdn86waVf9K2JTnCmyek3MYksTDLraeCXmcvLqmAEcvU/ydXYa63PYcHAOmZRRhcoSevTY4IXVdK6Ajz9Es/iQA2Kztu3SFrLgdZdxEzuywJNSvwvhUKy3JPvngcPUEeQMTGfI9pHHIcmX/Xia3Z4Q1YaAQSuO/xj8EbqtVn4MO2KCEiTXDY/7RVMFVjJ/Ts3f/wa8KaXh2fSdkLYPMClIfMM5hRaqUFgbJg0vqqSHNbOKCZ3UZNRUEEQXkc7stqt79eym3LMOe/8SnVldzpG+bkJ/OUB6RrQ6UM0elZB3VoJ6X5vIphYyuKanZhyjgJng8WumiqL4RPv4F4G6xo1Kj+I/ZGORqDb7sOLX3Oug6zOG4osW/MJYDDFwBuAV4Aqm/aTzBoFiNlf0jjMVFtdY5TUHT5cFCINSnFJxIMIeJhLZ5qQ1FOz6He04Dv5OFc6WWbi9nhHi/EI6mgOrhq4e8qwgMcwyrEcTLzk7n/DcVzv7P69KyIuam1Q1quxur0Z25g1109YJ4F6xbl4GCOOos4aKD/TnFjoVsagsILkhc6mMGIC1Sd0rPVwqHLHciyczn1sAiaKGACNCE6D04jUTP9GX7SOUVahbihn6MZ8089bZRZ0ajvkYqpCraPhqTrllopzt09m+G7L52iSibyiWDLsgdGmjG02lOxAJVeEo/n/cD+u4Fxs7D96p35EsjZMgMTV/KjuNHjkCC7YXh25eGjsvLh+pYMD3UkY6TijZrpuFu
- MhgZBDrX
- YDN85kA9WPZDhAr4sKkJFzUxxgWIsijz/WVkJM160YXCa1VSLHLXXmUT+NjRwjTup3o60K1ajcUZqRtIzrzZqh82Bbf25hZMNOpmJIj+ub2lOclLFY1mdozAbUg==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C3FB71C000F
+X-Stat-Signature: af918rbcd5fsg38mdf4f1h3cwdua8jgg
+X-HE-Tag: 1757936746-374634
+X-HE-Meta: U2FsdGVkX18huymTGf40dXU0JsWjGk2AKpST1ybhLSo0zX1CIwEG5isUDt6QZBEVgh2Oiw6/uBEqlvZiBiKGIrZj/aR4aQwOdTG0j00AD9Fe89YGA2Q7EyynmGWCWupRxsBRxceheEpy0kF8BGd3HSWqxO7fqBdXqlgNoZvioSrzXJq4nAUo3plW+N01XLDpKKmgKx5m3tC1cr4MwrzmYQzXiVd/Q7lRjIoxu+4jSDI0vrUrOH6tM29KHIwf304KnPKgHv36vNCUO3mPZzFhgsYv9L7spJnFKBQkYZI+ty8n5QKOgdy1gIqxCH20kRiH7qWRsnZfwxsUkCYvQo5pL88H8ifcNlBb8p/z/rRvANLBpDoidffyDaQ/QkYtL59Rf6y6Zj4vPuaTCyrrMezerrGRdgIIIk+HcNzffrOa1leYnLHgU9O7kJoDRddNTPOT77SI8I1Zp8OFMjYULZLyKZpxHYulHzUQD2vASwpg/T/ulvlt/GJvW/q7SxUTdoLMiusZek67PgijJF1/cqOdvffD6oxPelgtPS/uUjvwpzFBq1CFIq4dWrs0TGM2mIaNOVLPyQr8o24hfcXLakFG9nZ8J/+gFUEafkjiGIQX0xOTnhOn7FO86LraGbkv19d1WUgw9ivAK4mpDBeAPXyEZ0W7SdWgWIr+z0JjoIhRKNGhA91g+Z9UmPO1UVYWKJX7QWGf4Ox8fK0c33v92Loz72wH8JlY1bSyXY9rdDvKCGzBR9Zx6IK7tMY/WutMY8kOvhjEFlaf1PVWkHnxxojyxmsTwug2dTTfN4sUh0B+RYrEvQnFXBwFkrwPf+KOUXSNAn++7shT0fSZKnFD8YsUEfbIWRRPt4rWhznOIeDZlgQfYWgqhvRk04VNLtrq7buQJ3HH/YdhfbhI056UU89xrVKGHfOTcOqxdqLu9cP1eDfHXfoBn/hjWDkYcXv//UqJACDUrT4RLI/aU/PJDCg
+ WNc6dj3t
+ SWuKQmYm174hw4VonzwCm574LJhE6i4P5k/54txFYw4J9dRA3j7XrqESGzhOAtahkU8o5UNXCgJWswfk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,78 +202,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Helge Deller <deller@kernel.org> writes:
+On 15.09.25 13:35, Lorenzo Stoakes wrote:
+> On Mon, Sep 15, 2025 at 01:29:22PM +0200, David Hildenbrand wrote:
+>> On 15.09.25 13:23, Lorenzo Stoakes wrote:
+>>> On Mon, Sep 15, 2025 at 01:14:32PM +0200, David Hildenbrand wrote:
+>>>> On 15.09.25 13:02, Lorenzo Stoakes wrote:
+>>>>> On Mon, Sep 15, 2025 at 12:52:03PM +0200, David Hildenbrand wrote:
+>>>>>> On 15.09.25 12:43, Lorenzo Stoakes wrote:
+>>>>>>> On Mon, Sep 15, 2025 at 12:22:07PM +0200, David Hildenbrand wrote:
+>>>>>>>>
+>>>>>>>> 0 -> ~100% used (~0% none)
+>>>>>>>> 1 -> ~50% used (~50% none)
+>>>>>>>> 2 -> ~25% used (~75% none)
+>>>>>>>> 3 -> ~12.5% used (~87.5% none)
+>>>>>>>> 4 -> ~11.25% used (~88,75% none)
+>>>>>>>> ...
+>>>>>>>> 10 -> ~0% used (~100% none)
+>>>>>>>
+>>>>>>> Oh and shouldn't this be inverted?
+>>>>>>>
+>>>>>>> 0 eagerness = we eat up all none PTE entries? Isn't that pretty eager? :P
+>>>>>>> 10 eagerness = we aren't eager to eat up none PTE entries at all?
+>>>>>>>
+>>>>>>> Or am I being dumb here?
+>>>>>>
+>>>>>> Good question.
+>>>>>>
+>>>>>> For swappiness it's: 0 -> no swap (conservative)
+>>>>>>
+>>>>>> So intuitively I assumed: 0 -> no pte_none (conservative)
+>>>>>>
+>>>>>> You're the native speaker, so you tell me :)
+>>>>>
+>>>>> To me this is about 'eagerness to consume empty PTE entries' so 10 is more
+>>>>> eager, 0 is not eager at all, i.e. inversion of what you suggest :)
+>>>>
+>>>> Just so we are on the same page: it is about "eagerness to collapse", right?
+>>>>
+>>>> Wouldn't a 0 mean "I am not eager, I will not waste any memory, I am very
+>>>> careful and bail out on any pte_none" vs. 10 meaning "I am very eager, I
+>>>> will collapse no matter what I find in the page table, waste as much memory
+>>>> as I want"?
+>>>
+>>> Yeah, this is my understanding of your scale, or is my understanding also
+>>> inverted? :)
+>>>
+>>> Right now it's:
+>>>
+>>> eagerness max_ptes_none
+>>>
+>>> 0 -> 511
+>>> ...
+>>> 10 -> 0
+>>>
+>>> Right?
+>>
+>> Just so we are on the same page, this is what I had:
+>>
+>> 0 -> ~100% used (~0% none)
+>>
+>> So "0" -> 0 pte_none or 512 used.
+>>
+>> (note the used vs. none)
+> 
+> OK right so we're talking about the same thing, I guess?
+> 
+> I was confused partly becuase of the scale, becuase weren't people setting
+> this parameter to low values in practice?
+> 
+> And now we make it so we have equivalent of:
+> 
+> 0 -> 0
+> 1 -> 256
+> 2 -> 384
 
-> Commit ee62ce7a1d90 ("page_pool: Track DMA-mapped pages and unmap them when
-> destroying the pool") changed PP_MAGIC_MASK from 0xFFFFFFFC to 0xc000007c on
-> 32-bit platforms.
->
-> The function page_pool_page_is_pp() uses PP_MAGIC_MASK to identify page pool
-> pages, but the remaining bits are not sufficient to unambiguously identify
-> such pages any longer.
+Ah, there is the problem, that's not what I had in mind.
 
-Why not? What values end up in pp_magic that are mistaken for the
-pp_signature?
+0 -> ~100% used (~0% none)
+...
+8 -> ~87,5% used (~12.5% none)
+9 -> ~75% used (~25% none)
+9 -> ~50% used (~50% none)
+10 -> ~0% used (~100% none)
 
-As indicated by the comment above the definition of the PP_DMA_INDEX_*
-definitions, I did put some care into ensuring that the values would not
-get mistaken, see specifically this:
+Hopefully I didn't mess it up again.
 
-(...) On arches where POISON_POINTER_DELTA is
- * 0, we make sure that we leave the six topmost bits empty, as that guarantees
- * we won't mistake a valid kernel pointer for a value we set, regardless of the
- * VMSPLIT setting.
+-- 
+Cheers
 
-So if that does not hold, I'd like to understand why not?
-
-> So page_pool_page_is_pp() now sometimes wrongly reports pages as page pool
-> pages and as such triggers a kernel BUG as it believes it found a page pool
-> leak.
->
-> There are patches upcoming where page_pool_page_is_pp() will not depend on
-> PP_MAGIC_MASK and instead use page flags to identify page pool pages. Until
-> those patches are merged, the easiest temporary fix is to disable the check
-> on 32-bit platforms.
-
-As Jesper pointed out, we also use this check internally in the network
-stack, and the patch as proposed will at least trigger the
-DEBUG_NET_WARN_ON_ONCE() in include/net/netmem.h. I think a better
-solution would be, as Jesper also alludes to, simply adding more bits to
-the mask. For instance, the patch below reserves (somewhat arbitrarily)
-six bits instead of two, changing the mask to 0xfc00007c; would that
-work?
-
--Toke
-
-diff --git i/include/linux/mm.h w/include/linux/mm.h
-index 1ae97a0b8ec7..17cb8157ba08 100644
---- i/include/linux/mm.h
-+++ w/include/linux/mm.h
-@@ -4159,12 +4159,12 @@ int arch_lock_shadow_stack_status(struct task_struct *t, unsigned long status);
-  * since this value becomes part of PP_SIGNATURE; meaning we can just use the
-  * space between the PP_SIGNATURE value (without POISON_POINTER_DELTA), and the
-  * lowest bits of POISON_POINTER_DELTA. On arches where POISON_POINTER_DELTA is
-- * 0, we make sure that we leave the two topmost bits empty, as that guarantees
-+ * 0, we make sure that we leave the six topmost bits empty, as that guarantees
-  * we won't mistake a valid kernel pointer for a value we set, regardless of the
-  * VMSPLIT setting.
-  *
-  * Altogether, this means that the number of bits available is constrained by
-- * the size of an unsigned long (at the upper end, subtracting two bits per the
-+ * the size of an unsigned long (at the upper end, subtracting six bits per the
-  * above), and the definition of PP_SIGNATURE (with or without
-  * POISON_POINTER_DELTA).
-  */
-@@ -4175,8 +4175,8 @@ int arch_lock_shadow_stack_status(struct task_struct *t, unsigned long status);
-  */
- #define PP_DMA_INDEX_BITS MIN(32, __ffs(POISON_POINTER_DELTA) - PP_DMA_INDEX_SHIFT)
- #else
--/* Always leave out the topmost two; see above. */
--#define PP_DMA_INDEX_BITS MIN(32, BITS_PER_LONG - PP_DMA_INDEX_SHIFT - 2)
-+/* Always leave out the topmost six; see above. */
-+#define PP_DMA_INDEX_BITS MIN(32, BITS_PER_LONG - PP_DMA_INDEX_SHIFT - 6)
- #endif
- 
- #define PP_DMA_INDEX_MASK GENMASK(PP_DMA_INDEX_BITS + PP_DMA_INDEX_SHIFT - 1, \
+David / dhildenb
 
 
