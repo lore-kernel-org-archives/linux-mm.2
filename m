@@ -4,101 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0088CAC597
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 18:06:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68BABCAC592
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 18:12:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 24C1D8E0006; Mon, 15 Sep 2025 14:06:09 -0400 (EDT)
+	id AE6218E0006; Mon, 15 Sep 2025 14:12:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1FBF28E0001; Mon, 15 Sep 2025 14:06:09 -0400 (EDT)
+	id A960F8E0001; Mon, 15 Sep 2025 14:12:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0EAE48E0006; Mon, 15 Sep 2025 14:06:09 -0400 (EDT)
+	id 9AC5A8E0006; Mon, 15 Sep 2025 14:12:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id EE81E8E0001
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 14:06:08 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 98127C05B2
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 18:06:08 +0000 (UTC)
-X-FDA: 83892263616.27.299A7E6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id DFE55100013
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 18:06:06 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tNOOGc5+;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 8B98B8E0001
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 14:12:38 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 31F03565FF
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 18:12:38 +0000 (UTC)
+X-FDA: 83892279996.25.91E70B1
+Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 5FF53140011
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 18:12:36 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=pankajraghav.com header.s=MBO0001 header.b=Vhy4i+tl;
+	spf=pass (imf09.hostedemail.com: domain of kernel@pankajraghav.com designates 80.241.56.161 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com;
+	dmarc=pass (policy=quarantine) header.from=pankajraghav.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757959566;
+	s=arc-20220608; t=1757959956;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/pZF+5lXwJGkwdXB+oEJzWHqIQeBMb7/sMmmJPXlewM=;
-	b=RYAyYgHKsYkVZouEC/qVBv0+wLxPKpk7cMzoXmHAhdoKDJhFJWwdMzCf5uS3f3xEUDyuNF
-	IWEFSbUyzwqcyApMqY+/eFbTxLkbJFlwtlx1ZNj676Yueqlj8nbYtb70vQNvCDv3uTVS0G
-	05Zk2ZoB9h1WUrRajc+EgsfSdUZgkl0=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tNOOGc5+;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757959566; a=rsa-sha256;
+	bh=uabTcZlsJwj8cGPmkeFh4JkdU8A/qF5iN2gRJmC26sQ=;
+	b=szktVWnP8qCZLAo2y8p4PsAZQwUISqICk7Q+uC46FwA92oi3IPW/BoInCqwjb2XIBF0MTB
+	m6ClCgBp6br2azyqIukIrNg3QigSUuVf/3hYM/mU40bkdMJgcq0DgakyAvB+B+VeqonpIr
+	cuUjIlehzuuOfBFhG9onaRe80hf58Fc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757959956; a=rsa-sha256;
 	cv=none;
-	b=qZH+D/Z19GYUhATaweDAs8DoaBUC3FNw1Ul2+u3s/VZY8nonBR0aIrig+QnESXGa5eLzHC
-	CLJMKMvZckdPC6DlGYQu0gCY3O09fJ7Zu2D9BUleHyP0HD0JgemGEnCHDx7vTGxTkdFFc7
-	EP+MoXXpXW+KJB9UNqX8cGKqy3ibRjY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4766E60202;
-	Mon, 15 Sep 2025 18:06:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF298C4CEF1;
-	Mon, 15 Sep 2025 18:06:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757959565;
-	bh=R3K4Y/dSLmEWyD8ymG6km0XDDMmddNGUWTI1tUqPvlw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tNOOGc5+WpUFS+sVqB6MYWVbIYSAtkpW//y6DplI9q2tBqaUiAlCeCpZ8l1VKNjZI
-	 6yEat5zqx6RVXZz9RSb3YEHO0moWzs0cZMpVPf8GBCeLVG3tNjHHaQhvsZU52cttfT
-	 cgCZP67AKz1wOTtsy3hxhaULVL7KuE3IdwYofIqDTHjfSyE0z0jmsOBwtyzYflZoNe
-	 gDNp4Xpktrb9EWPORQf+6ecHnDF2PQMDEz8NGAozxLp8QLSnzmCX6ZHlkx9udhiLh0
-	 FAs6FOOIieu59NalkqA05QfmQkoONC3RepxqOOCjKqBc6yXzRdCm6jkO6Ud9oUbwQ2
-	 o5DgjskJMFldQ==
-From: SeongJae Park <sj@kernel.org>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	Joanne Koong <joannelkoong@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	David Hildenbrand <david@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	damon@lists.linux.dev,
-	kernel-team@meta.com,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 0/6] mm/damon: misc fixups and improvements for 6.18
-Date: Mon, 15 Sep 2025 11:06:02 -0700
-Message-Id: <20250915180602.109892-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250915152823.1605591-1-joshua.hahnjy@gmail.com>
-References: 
+	b=C6kHpB3xTZpjChgQ2FcVv2ljPn4xE949G04RECCGfYWvMuXHLszStuTSzneKMq5CofilDZ
+	92Afrcy1ypJ+hfOwZJOyag/TL63wytEtxExD5rxz9EFL69SfFhniSUmRcm6h4WYe1DvotT
+	cyO+bKo8bNybZjzHzJIJZcjBI8WAJ3s=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=pankajraghav.com header.s=MBO0001 header.b=Vhy4i+tl;
+	spf=pass (imf09.hostedemail.com: domain of kernel@pankajraghav.com designates 80.241.56.161 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com;
+	dmarc=pass (policy=quarantine) header.from=pankajraghav.com
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4cQY681cR1z9tBF;
+	Mon, 15 Sep 2025 20:12:32 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pankajraghav.com;
+	s=MBO0001; t=1757959952;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uabTcZlsJwj8cGPmkeFh4JkdU8A/qF5iN2gRJmC26sQ=;
+	b=Vhy4i+tl0RbgFcusaRlZzpZ5hXU5TXY11dM3DEki/OuRfjmIrMpqWEsyZHdnIdSa61k6AN
+	AmhrTuKLfSuIZV8/TYGLkF5KPhuQmodSoX+s8wha0/xXCUqJPr0N/cbwZyd/BQA2eoh+e/
+	ie5n2SLrHtv7S8ih4XDbLOXhf+QQ0dDAYeuqdw1pCSUE8kb3t26E3mtvDP+33grijYy0qb
+	qNO8KkeWS2TVUWvotMa42zqUxi+qmh4K14Qt02Zf038eC+ZYS5OqergbQqlp3sQKU3gHu8
+	GuPD+y0Nlu7oboyZO28Vzv+qv2aAYjBfPzqRz+oUioCkOfnrZe+TddAZF8MYsg==
+Date: Mon, 15 Sep 2025 20:12:25 +0200
+From: "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Qu Wenruo <quwenruo.btrfs@gmx.com>, 
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, linux-btrfs <linux-btrfs@vger.kernel.org>, linux-mm@kvack.org, 
+	mcgrof@kernel.org, p.raghav@samsung.com, kernel@pankajraghav.com
+Subject: Re: Any way to ensure minimal folio size and alignment for iomap
+ based direct IO?
+Message-ID: <2h2azgruselzle2roez7umdh5lghtm7kkfxib26pxzsjhmcdja@x3wjdx2r6jeu>
+References: <9598a140-aa45-4d73-9cd2-0c7ca6e4020a@gmx.com>
+ <aMgOtdmxNoYB7_Ye@casper.infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aMgOtdmxNoYB7_Ye@casper.infradead.org>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 5FF53140011
+X-Stat-Signature: qjg5fuoj9tfaxpsmo5g8thpi11fsqj8b
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: DFE55100013
-X-Stat-Signature: pg65fhd9m5oh6pwyet5dnskpu3but1y5
-X-HE-Tag: 1757959566-128600
-X-HE-Meta: U2FsdGVkX1+xDt9lhz0oBuKC7ltLx9SXZrzZV0EWrYdBA5IxfzR737rX/udyI51Blo9nWWt+yNUmlOvgVXKQicTODTLr5W3zfraV19f8DE+5kEWS4nN6qJ8y/DeFjxb52zVBjXtavgrOiK7FL8Gg7+V5td6GAumcOc/U9zdoRNMvkKs1f6qqZMngyqRKF4FXNIzjG5VyzpmAnFbPFRRAeUPxHuncusC7Nq5IGeaeqA1DzTSYAHEZ356oU1pmUPxwo5xwbjpeFCZTygWrdFqILBWIiHFU+ylerpalufbS4KnAsV98Gu4vqw0AmyfVQyTco/k2giDzgtFEdrWa5PCmqrK3+V9nPGMcpHeGt5hKk80phCxBe79BYba9dktlEkV8k1QNHWGAt/m2J8qNTn03lVZn+h0U/wq/yYIW/8AakaO/xs4jwzM4c890IXP5YI1mtL44TFbucavl7EKbaApqbn7Pnrksp2j5aD+JW/6yK45U3AaV8mvzL24yycH7b29U6zgJQV/XbT/PewRvSAvd+KIWE4CNpGOauE82rfhD0xiL0gccwXR9DiZ3Ufv0ZayT0j1VeOyY/Qh3pnXiGLp8G2Lz5ih4y9aPKPshhlHhebvf19evQuWAhWTt5NJWg58BKf5rNFoP8nxJ7XQf0SsN3AwRYm2qTD/nhaaDCVdimDdKP0Pf7Gfd/u6p+gm7xIHYtG2o6iC0EFoyB1nwSygE2fTLj0m1viUzoUOvecmYfrtMt4tck+WUzHvCd3CtJwTTDYHl22ffQDZ0TKcaQgW5Y9MV7lNt1GfNbkTjKoWzbIvN1QoIbuxbqR1t0TXXpbOPodyh9nrhemDfWR/8RD1JKF7ppFLgmxLOnL4gcdJFKXU8TcrDuM2VWQvCvxvbfuf4zppXUVOnTIWnKry18rnSdStthr68IVzqq9O1eVW/3GIYdNZaeg7f15yepTssIy64J3nOOMA2CAMQekOWJMv
- J6ETP3Vj
- e9lcEIbkhH48Hm3jpkvGt5Mx/+zVZ6tIeReu20pJ5pZTS8XWFfoQ8jMI9hElmFFs3JImuu+qy6G1zI0r3JrNaZucoS2UmG7OttbI6PYjx4MSBlMr+WHeGRuaTBMO7dV7L7uhCv1mfcx83grNqSzLg8UQGhGGiJtaMd5U3KoKGlnnZbQvWRqs+GFy1HYj92NE3uU3ObgLpGGQZfvPfRxVo7l4MtyMmSojlYbEMt3P9VdrID43FLkJKIUcwgvXnGt0mVlqssT1UOBBipHk+qQzb34VOawnFxvYN7u+IdHIDmTz4S4JAcFu5yDDPkiawbzw0Vb/Tj4qiCJ08hJIKJ2wasTJuRX7bW5HZ71Bqj+DKE1ZSbo8=
+X-HE-Tag: 1757959956-216739
+X-HE-Meta: U2FsdGVkX1/AMtngRqr5cczTptiuzrbdrcvg/NYkkvQ5KaCKrLdlWXojLq0nnWin1MQWk3Q3Zpl4/Mr0olrEgf6IrtmUBbfaaoEkl0MfoQ1g7Hb0FDdhJT4BcjSmEudqyMr8EMeiT3AlPUEqx/ts/edattXhFxqvDqiyzkw4KjYHTdpiKZTEIZI6aldC8Ze3C7fHG8E/bEp/Ohs3WiorIcE5SWwu/QLFMWB7Mvv86qYNnwt57qHQJfaB/rHf9kr7JVZ5U3JjmMMIjSdlRhLwGTACqjIymFwG7+No5YD+3A/bBguT2w/tGxn4OnmX7Z7WQtiF7sjbTpmWQ6+Uh2lgOL2Ag2THB67ub4Q7sjm+9FXRXt3DHtC3+oJJDcT33g+DaZe8VZE3sD5m7EXlfvimLJ7FSBTa2RpXn8IMHqUo40gax249gbQzocLrp7W9zjgedqzg3iKg3zakrukzpGhzxE5KRsErYiB4oXFmTDiGmZ+Bekb74Ozpcg2WEIvOM110jUmrzdOEkm5JSr8WblTjsWmPEHOTko2II+go2Zoj7yP8qifMoKvlmHXDINc8bfmqcY5l1Sv7jV/fYIiWQu4G3IP0TQohDZXh0AGySikaFBqXjx44fpkyzwZ0l06dvcjab7WCRQCqpmIDH/Ov0xLNXMhrM+m7llJ3kcF3IYb1whS8uNn5qAMMm4xtST4uCclWdFx1LnsYyKBjHm6/RtCf1sKMrWlY7UyKG0FTDEhuY+JqhH1QC4yyTlmpnqdcbwixhAKFLbDrLYIhwMEXV2WizpimypKw2xzkcIrNn4vII6uTt+/OLEMrTcR2V9eHo88421N4RSEEj1hFdo5/3eMzXXltr1PFzmmuFrrfXeKbD7Y04rSO8fGfF29qPvP8MzdbUrx9PlP42W1e8uGyJ+WzdC6ue19sEd7KRzAWzwCOxLT/yJRRHIPE+4+/TfOxSHVdwPQwhBTi4FvKff1aSKZ
+ oM/ZS5ku
+ vwBkCSAf18EFVMecTNfVrq24/iqOSB/DtE/bh3XyZH6tDqZ1NInouG8uRn4eqDNpTYtB/8GSbiEfKkJwq34xVM2ZSpPDwjjcHxJCVfH+W1lkriKxiEpSRcXkDz2mr1eKo2aKgEywtGqGQUeN7Sonwsv3QTV0p24hbrjKsPz94bWoyysQAkqcqddjlrRI1AhTtOoVmNCKinQD48O2N9icsk7+38MyWQ2npVX0IcX89l4XmY7wtV/X2b7r7MqQVFUvV3WPK0W+Y4FzAjVD3z0GtTgwdzuwLkY9Iu/yeEF8nrgmhS2ILelBwra3RG4A6h6LxC+Qoy0ZxD+Zejv1L/hOrnEej5eaG5CN0oOc1Nlhq9wJWUt1IoKwq4Glxjn2c/xFcgQq7
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,49 +96,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 15 Sep 2025 08:28:18 -0700 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
-
-> On Mon, 15 Sep 2025 08:25:40 -0700 Joanne Koong <joannelkoong@gmail.com> wrote:
-> 
-> > On Mon, Sep 15, 2025 at 8:08 AM Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
-> > >
-> > > On Sun, 14 Sep 2025 18:58:01 -0700 SeongJae Park <sj@kernel.org> wrote:
-[...]
-> > > > Finally, the sixth patch updates MAINTAINERS section name for DAMON to
-> > > > just DAMON.
-> > >
-> > > Hi SJ,
-> > >
-> > > I was unable to find this sixth patch on the mailing list. Maybe it got dropped
-> > > somewhere? : -)
+> > But unfortunately I can not find any folio allocation for the direct IO
+> > routine except the zero_page...
 > > 
-> > I'm seeing it show up for me, this is the link I'm looking at
-> > https://lore.kernel.org/all/20250915015807.101505-7-sj@kernel.org/
+> > Any clue on the iomap part, or is the btrfs requirement incompatible with
+> > iomap in the first place?
 > 
-> Hi Joanne,
-> 
-> Thanks, it seems like linux-mm wasn't CCed on the 6th patch.
+> It's nothing to do with iomap.  We can't make the assumption that
+> userspace is using large folios for, eg, anonymous memory.  Or if
+> the memory is backed by page cache, we can't assume that the file
+> that's mmaped is on a similarly-aligned block device.
 
-Thanks for sharing these findings, Joshua and Joanne!  I was using
-'get_maintainer.pl' via 'hkml patch format' to fill in the recipients field,
-and it warned me with recipients review step, but I missed this.  I will ensure
-linux-mm@ is Cc-ed from the next version.
+Just to add to willy's point, XFS did not have this requirement when we
+upstreamed block size > page size support. The only thing that XFS does
+is to pad the direct I/O with zeroes if I/O was smaller than block size.
 
-> I should have
-> checked in /all!
+Is it very difficult to add multi-shot checksum calls for a data block
+in btrfs? Does it break certain reliability guarantees?
 
-FYI, if you use hkml, you can list all mails of a thread of a mail using 't'
-key on list screen, or 'm' key on the list screen -> '2: list complete thread'
-item on the menu screen, instead of '/all'.  It should work for cases like
-this.
+Another crazy idea would be to either fall back to buffered I/O if this
+condition is not met or allocate a new folio and copy the contents so that
+it meets the condition of single large folio that matches the block
+size (like we do in bio_copy_user_iov() when we cannot map).
 
-> Have a great day!
-
-You too!
-
-
-Thanks,
-SJ
-
-[...]
+--
+Pankaj
 
