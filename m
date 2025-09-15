@@ -4,176 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0637CAC592
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 14:48:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 164AECAC592
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 14:52:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 03EA68E0002; Mon, 15 Sep 2025 10:48:57 -0400 (EDT)
+	id 724D48E000A; Mon, 15 Sep 2025 10:52:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F31C48E0001; Mon, 15 Sep 2025 10:48:56 -0400 (EDT)
+	id 6FB5C8E0001; Mon, 15 Sep 2025 10:52:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF98D8E0002; Mon, 15 Sep 2025 10:48:56 -0400 (EDT)
+	id 611248E000A; Mon, 15 Sep 2025 10:52:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C9DD48E0001
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 10:48:56 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 78B841A04DA
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 14:48:56 +0000 (UTC)
-X-FDA: 83891766672.21.2BC7B75
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf11.hostedemail.com (Postfix) with ESMTP id F28C240017
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 14:48:53 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=I9O0Sdmh;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="AGoRAb/g";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=I9O0Sdmh;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="AGoRAb/g";
-	spf=pass (imf11.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F2BB8E0001
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 10:52:03 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 069B313B840
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 14:52:03 +0000 (UTC)
+X-FDA: 83891774526.30.D1C15D1
+Received: from mail-yx1-f52.google.com (mail-yx1-f52.google.com [74.125.224.52])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 2759C4000A
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 14:52:00 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="kPN/GG70";
+	spf=pass (imf27.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.224.52 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757947734;
+	s=arc-20220608; t=1757947921;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ap6nhA3/+gtoJHuI04qrOYozdQiOul79wCfN91QZhnU=;
-	b=A2Usdooi1TB8k0OyXJ4tyML0+zGIefFw+jm49VMDxexhAPcLaSxdOTxNk174+J2yKymkyr
-	dDp5YRpUZ9CkgdoOfBIvTcvsynZe9BpVu/ddkCxdlY4IHl84jhFShxCKeh3in589NDPSyj
-	ag5KdgxNCn/bPzeD+I93kgW5EPqHDME=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=I9O0Sdmh;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="AGoRAb/g";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=I9O0Sdmh;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="AGoRAb/g";
-	spf=pass (imf11.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757947734; a=rsa-sha256;
+	bh=8qAlpp2q6p0FpxveyekskbKJV1WmCNzmzFjExvczEyQ=;
+	b=HGVVT+sonP4iOKxRCHncwyCnZHUK233vs27Avmp2s9R2LTyTPaY/tG8lqsmeBzFENFHBUm
+	HR2UqVmPbMJEbzzO19Emr1nVx9//oiEouPWsFcYHZMToohTYbRmrr6pa/SZgMNviuF03Uo
+	nZuU0RPtHeCjwQH5AgUe6x4iDdgQ2Vc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757947921; a=rsa-sha256;
 	cv=none;
-	b=oyWoXqeCPYHweSrljbtG5oaOlELc8r1vDgtHGORB08fifKhkBcNzDnhRDRKmhB3w9FieKB
-	K+ALgKB8+vNm5iPsJ9zgPH23chH2IJOTYjUf3ipahLcy4xdnQGFxakvw3Zii7j8hy/M84V
-	ZIX2Bv3gilCCvsYBuqukGektvywqcME=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 66A27336BF;
-	Mon, 15 Sep 2025 14:48:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1757947732; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ap6nhA3/+gtoJHuI04qrOYozdQiOul79wCfN91QZhnU=;
-	b=I9O0SdmhFZfMKjoBS4nVHp/f3tB8zWPxrX3W8eGXWi0pPT7OaQJ0/eScpxX2VDv9dagloS
-	IeTwmYd3gC7DOw4/s1o9ZMOYWH/aEqPQRISD8mxWU8WdayqQYiG38HZDf3UEZf9+ngRj1k
-	1vuNzKlIcdYY2V5J3Wp+FhVK5dfLvy4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1757947732;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ap6nhA3/+gtoJHuI04qrOYozdQiOul79wCfN91QZhnU=;
-	b=AGoRAb/gfJHfSIapcuEOVPx31VTepMneWehKeaG/KwKsVvSNrdqJ2/73SmYoTmQLHvpDZx
-	f//KV9sF4ZGndTAg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1757947732; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ap6nhA3/+gtoJHuI04qrOYozdQiOul79wCfN91QZhnU=;
-	b=I9O0SdmhFZfMKjoBS4nVHp/f3tB8zWPxrX3W8eGXWi0pPT7OaQJ0/eScpxX2VDv9dagloS
-	IeTwmYd3gC7DOw4/s1o9ZMOYWH/aEqPQRISD8mxWU8WdayqQYiG38HZDf3UEZf9+ngRj1k
-	1vuNzKlIcdYY2V5J3Wp+FhVK5dfLvy4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1757947732;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ap6nhA3/+gtoJHuI04qrOYozdQiOul79wCfN91QZhnU=;
-	b=AGoRAb/gfJHfSIapcuEOVPx31VTepMneWehKeaG/KwKsVvSNrdqJ2/73SmYoTmQLHvpDZx
-	f//KV9sF4ZGndTAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5176D1372E;
-	Mon, 15 Sep 2025 14:48:52 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id wZ1oE1QnyGg9aAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 15 Sep 2025 14:48:52 +0000
-Message-ID: <ba26b2e3-0f90-442d-adba-af04829b0f3e@suse.cz>
-Date: Mon, 15 Sep 2025 16:48:52 +0200
+	b=SyvtEx24kcv2urvw1G4TAvUwoooeneJDL5T4TX6aPPAMvy8Ypux+up6bNaEsoyp8fxvhk5
+	Qb2VkPu35Fl0VXCGn/Oh55AIw56wrooDdDDFVjttNnA09QoODVGG8+nGcQ5xDf9LzPInrm
+	fao+apO03J9iQ+uYY66LZL+9puJ0thM=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="kPN/GG70";
+	spf=pass (imf27.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.224.52 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-63289cc1785so315927d50.3
+        for <linux-mm@kvack.org>; Mon, 15 Sep 2025 07:52:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757947920; x=1758552720; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8qAlpp2q6p0FpxveyekskbKJV1WmCNzmzFjExvczEyQ=;
+        b=kPN/GG701PK/Y23QoEvdEF8KwVK0AselkK5+ukIWKPlmULmKizJUkB3JiLE4q5rCsh
+         o62775inZbN76QyClJV9sztdbSV+1S1/mjsw8y1xr7ciLxwrcJJsVReQfSAtakDf9/dW
+         f/aSkHYEktfz3MNAQSUPLm3Y2aPoKtXNlXU6mXOzHg1N51LLJy7z86h5ixTDEp53cwm1
+         ygZkRTYSjVJh+6jms4q48XRhM+bA1Ou0R68nXa1Zc1Q+r+xKqAfkKNBjY7n3gknqJJ6a
+         R4dltwmYUCUT1sych2oGtysLlTTlZ05isu13GGKAXJpF/q/5xmbOAvQau1xzMk4/gEbc
+         NpaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757947920; x=1758552720;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8qAlpp2q6p0FpxveyekskbKJV1WmCNzmzFjExvczEyQ=;
+        b=RG01QjTkjUQu0qsZRJ2g/58D4spoHgQpA4OZdh58ZjcQKNNALX6H5jwHTnheDq5Iit
+         /+N+vel13+oYY8bqLNk3PthA8lFVwhzYXXQnJ9BVzlGIwazVJJksV+IcshOu07LFz5BQ
+         IXYCjxfSjO8OqFZQ5Lz6x0dl3HHIJELEshDw5stUvVg164YdIt68D0msT1hT2NTPWHWD
+         idRsExLeeGnrhV7N8vqgZcCl36em8ul0K/7lzPqhT9NKiBfT430WthtAPf0VBDLF4eR4
+         epkNP+l90hVytzWtmY8jHlhYUgCbyzGx2gQR3STOZQ3Fk56SH4ehLzCXridSpAT36GyI
+         qA0w==
+X-Forwarded-Encrypted: i=1; AJvYcCUYJ0RlIae+l5yf1TZCkdnCnT5W4El75OiGy/b1pIAc5sb9yfWtMgl2ZSXi82cjGBKiRbN9fNapQw==@kvack.org
+X-Gm-Message-State: AOJu0YyNCAML0VRu6luMp19eo4DSCHf8cVoA1Q+LdhQIbdvU6vF4ML2d
+	WZG6PR0g34m/pSyyc8daqqxUxonrY62Dl1C/Fj9wrnKKXsPdqfw+yV+W
+X-Gm-Gg: ASbGnct3y8SDAtm1EW+yCOQffomQaUR0kWtx/igsgTurLCO5Lk+zm0kXn9VBaHLTL/T
+	adoHeAfytD2Be2sqmXGEGRccocwNEZyBCyHDnfS/KULu7itcXYfboIYKcz+yE6Lo8/Na0bQKbfS
+	4Ph997tHEcdZOK9FWLV+6REOGREBGeTKrvSB0n7EnUOrjY10932Rj7BU/YRGyf4uWP/k4YZzLlA
+	cFjiJAVIFgYmpSWm6vwc0e9CPvGDjF/Jbz2KyZ0MPxudrcOw2iqesF/lHK9Lwc4pkA2ne6DEw0q
+	Pw9ad/amPimFKEkGQNFp1eN+tYEg3nzLFNyNqYTzLGCOrc/DeR6K8hIDfKrixuIdjx4x+0OJvXi
+	9RFpWAyplA8hy/y68FFALmN78HmRuejXOYEzoPz2rDgEnzjjvbNR/20ShAHcWue0=
+X-Google-Smtp-Source: AGHT+IG0/Tp3b8E0G2GYoA6L3RRR00/SCKeeLmJaTBzviTCWD28HNMqArXMoHbpYGOzCSnzzapPt8w==
+X-Received: by 2002:a05:690e:1651:b0:628:10ee:ab85 with SMTP id 956f58d0204a3-62810eeb27amr7094360d50.3.1757947919804;
+        Mon, 15 Sep 2025 07:51:59 -0700 (PDT)
+Received: from localhost ([2a03:2880:25ff:2::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-72f79794201sm32181467b3.62.2025.09.15.07.51.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Sep 2025 07:51:59 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: SeongJae Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	kernel-team@meta.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 1/6] mm/damon/core: reset age if nr_accesses changes between non-zero and zero
+Date: Mon, 15 Sep 2025 07:51:57 -0700
+Message-ID: <20250915145158.1425390-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20250915015807.101505-2-sj@kernel.org>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/6] slab: validate slab before using it in
- alloc_single_from_partial()
-Content-Language: en-US
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20250915-slub-slab-validation-v2-0-314690fc1532@suse.cz>
- <20250915-slub-slab-validation-v2-5-314690fc1532@suse.cz>
- <aMghx7WTJP9NHoNe@hyeyoo>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <aMghx7WTJP9NHoNe@hyeyoo>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: F28C240017
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 2759C4000A
+X-Stat-Signature: 9mein88a3ifzi6udq5o4pmz7ha6ojrtk
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: bfhro7erfdek4erq4j4hchpds17tzfpp
-X-HE-Tag: 1757947733-486360
-X-HE-Meta: U2FsdGVkX18eeDUywicRP0ov6SklJ8BhytyGoDD4iiOS+vlrdWbF3O31rWV7klvsKeFEYWfbs/joHSn/q3ibHv88f59fvLOjlzqaJGIwU2LWfeu5104Wps3xrPToaai84D8NWQzMRVy2+PCytHdtehnFBhiWgtnLj8DoLQU9ns0W+8Fvb5i3m4vH5b4coo3XSJ2MqlDZGY6zAH1gephjxmZvPoEbeBy4ifqaQlmO3WbP40EabC/OEcpPbcU75MyumUU7VDWimKgtTlK8hmstDYBlAQ8nk6g1zFJeSPQ2CEMqX2b1vTlueK5zESGGVuO2CNwco/c7ntgJbrr2OpfDQs7bqr96Hzv7e3oeeCg1Xn/Kz23ABaOTh7md3B1kej0WjIpLjThgGp0hXtY8Naf66id/XQGcF7FGsrW1uQgQJDvEkgzMlVPLM+5EH/URO6WGcYNrFEv4hj2d9qdy/RNqZ2oLzeDiYxylXMQsW3LuLCCYofQTwpX0u+zbox803fwYJyGP3BLRVQ1JvqGfu/w1AKGWGxKdzESi6cTl6cVbQWY1OLpL2pmASB5T6lQQ8FQLYHgkAx9V49GXGkO84uxyU+qRm6FoQSzPUBJkL+BZOIDoVOYwqsA5CZU1DaaUqOQI+WxCgLV4myDOfL1EIOF3MIYk2kHVYq45Mfkr5lSqBTIbwss7serAQ8DVz2ZTGEmYanr957avSMPL5u7O6fXciFL0MgMRb0EcKtbvhvM3apmgAcl1pjeFvgIIP2GpKqC9C+kAYr8xz16B8EsnrGmo40ClRsESlNDC23MqfQQ8qWNK1jXHjSCwQ2cMsb49E0MOojxxAfq0HM759STVFNoeRzleyC/Vk9Go6I3z5rjHXJPHPYtxb6SxPF/aLC6SrlBt4RCaG/z7jc0ZK6zrv6B3FoZ556hPZ/4VmtMFpRy/6sLYs7Wy7SJZm+VJ45s3n8yrioylCuNetCQhVQbgnJQ
- 3/eYdX9m
- 2+Fr2ZaHMuDIBhUW+9ALUTRvasdtD2ZQFpkzMznY6T3yxe+YGLfcXChyBW8g2M1cGBfsSuhab0cs964QlxcMWjFKlcoVDG6a/SBEYznJaEhBNsNCCTPmlXswkRZLc6GXA06n74z2bImJnIG6gtdrR3P5fLAFV2H4gzz83YlRnnRHY6Kf8FGRIgWAPZwdJmsxHZ6QzcsHuye+b75zMsgusXkAiTcs1ZWW/a+umpfv4c5OdAQ3T6YdOokLxfJUdUIjwnW5kB2QvC3//cD6nGiAIjvLTk8k6VqbEFn3xAS9AtcJYPBGwQHc84FMRk+2BcO5csrRrexxECeBriueGR2XlLXprW+P/zIx/p3pM
+X-HE-Tag: 1757947920-642553
+X-HE-Meta: U2FsdGVkX19mUwOMihdFU3EfA0441BIPyUJgTPp+pu9HIqc7ltRcHXFnaW9ye9cD8ofT2a+BkMnvBYRIsSTdwDtZ+Gb15wuiI7WV8ThI6MvTTLm+3W2+ZaLbKNPXErCTGonrurWKAU3DUZ6LlBjk7eF3n8plbbtpmh1NexeKkwIZNTTVph6o9uNp6rr7lYW4mQoum/k06S5FelA9HWyzr5kgAjUz8wztUcDI1pd9OkqgivjiRDMA86hjNqjBz3t+gy9hsdAAub0fjuwBpPKDStUUDu0SEqB/O7oebMAFO0Tw9MxgfM36iUn5nI42loRUyHkF1ImoaJaDRjlZPQkcpnJnGUpj3cVHAd5tytX6eCKmgMPVEyY4SpOSTpKccB/FcpwQEDA96ekaz8jLte+H7ky53v8Ev0+koSVra71c0vq4f6XHkoGUN5AachXCqPbHvCBicKIk/YykgMLlhaf47V7R56HXQYIIJB0+rW+HvYZp5zMurimFiBMTWWHMX946dh7tLWDM+9oQ9j6o6EljuE048xGEvvRKarB1MZWxxAyJfZGsvn2MjcYMnvMaZUekgRTW3ewFb/Wm3IByCsqElgOlmUQOG6DFpxY9IHWgeCwwNUZQ+6xrB17aFei0OiOTmDDm9qmgCOp0deHlrWek4itGVBI+vNqQosboSU4FDpxB2Ubt9Rt6JHL2jdo9MrEcGfpGKGSEytX3CqLUhoKgjvxYzawoxNju/R221vdCyrh0HwVh7SAsOgjE6b6OvQuhIjMIAPjiHeGiLM3y+xULiIJ3UNIiaTqJU44eeSBKUWSr5snUpEg+UI0+6vJke9dtmYHU/9NeooXgkFfUjBCGEXPZ4ricFCFV4nmLFxjRfhZlwK92YahAiAMj1YMjUTKUuVJoXSCbUOCnz14C0kmvIZav6WzQHdewjNcdopRO9kYDuCh0nRBn7czr5LjpyX1d5yL95DzyoC/MCldYcHK
+ s1VbHDCr
+ q++HUIrhdAmkgvWd94J/+O2wzFGmQBGpu+n69L+EKtQZ8Ttd63RR3nHT9TH+YHiX4mxEjQ1SSUW7s7twwVj6YG523i2uGWTAfwpAOfX09U4Rat6uPnAQQs17vhW+/XpquCYh4hw3tnXm34fJC8WKMlLzrmQu0v2510a2p0c9YvFcki/+SnitRGisyZ5ofMnbAsZ9tq0ML0D0dzyiF31lsH5mczf6Awxh3IvcH6nKtvzhnzrX1otu6rj8WihUmF78qqhDGOZPpVCRofn0P5Hp1f5AemyFAMx2lBaLtbDHmVWv71wj9c4upSFlDpAVGBgae/Tb20FU4NhGLYTPGu4Cp/k4Mthku7fCM42+hzplID2U6M7lYlh6LhMwMramrz5sTXITqeBID53Y7M8+UVL5Rl+BSXhYyVm1/hPfWX9MUT1hSPQdF+ll/twAdgWpvq5yKU0LrZDvvtECTYGbL51xAUMbe38Asz5WdlEUOkPoiIttb+PUkEFbxEUg80OmE2wuBJH+TB9ivDNZ2JtmMaxp+jtVRZ+M1xuIa5/49JqFVmJpLPYq2RLivs1IDfk4YkbfNnFS4ysI373GMSVU2FNYtDZjJqA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -182,38 +121,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/15/25 16:25, Harry Yoo wrote:
-> On Mon, Sep 15, 2025 at 03:55:12PM +0200, Vlastimil Babka wrote:
->> @@ -2825,13 +2821,21 @@ static void *alloc_single_from_partial(struct kmem_cache *s,
->>  
->>  	lockdep_assert_held(&n->list_lock);
->>  
->> +#ifdef SLUB_DEBUG
-> 
-> I'm sure you meant CONFIG_SLUB_DEBUG ;)
-> 
-> With that adjusted, looks good to me,
-> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+On Sun, 14 Sep 2025 18:58:02 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-Doh yes, thanks a lot :)
->> +	if (s->flags & SLAB_CONSISTENCY_CHECKS) {
->> +		if (!validate_slab_ptr(slab)) {
->> +			slab_err(s, slab, "Not a valid slab page");
->> +			return NULL;
->> +		}
->> +	}
->> +#endif
->> +
->>  	object = slab->freelist;
->>  	slab->freelist = get_freepointer(s, object);
->>  	slab->inuse++;
->>  
->>  	if (!alloc_debug_processing(s, slab, object, orig_size)) {
->> -		if (validate_slab_ptr(slab))
->> -			remove_partial(n, slab);
->> +		remove_partial(n, slab);
->>  		return NULL;
->>  	}
-> 
+> DAMON resets the age of a region if its nr_accesses value has
+> significantly changed. Specifically, the threshold is calculated as 20%
+> of largest nr_accesses of the current snapshot.  This means that regions
+> changing the nr_accesses from zero to small non-zero value or from a
+> small non-zero value to zero will keep the age.  Since many users treat
+> zero nr_accesses regions special, this can be confusing.  Kernel code
+> including DAMOS' regions priority calculation and DAMON_STAT's idle time
+> calculation also treat zero nr_accesses regions special.  Make it
+> unconfusing by resetting the age when the nr_accesses changes between
+> zero and a non-zero value.
 
+Hi SJ,
+
+Thank you for the patch, I think the goal of the patch makes sesne to me.
+I have a small nit / idea which I think makes the code a bit clearer, at least
+for me. It seems that we basically want to XOR the two values's zero-ness, so
+maybe something like 
+
+(!!r->nr_accesses) ^ (!!r->last_nr_access) or
+(r->nr_accesses == 0) ^ (r->last_nr_access == 0)
+
+Can achieve the goal? I know bitwise operations are sometimes harder to
+understand, so I am just throwing the idea out there : -) 
+
+
+Anyways, the rest of it looks good to me, please feel free to add my review!
+
+Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+
+> Signed-off-by: SeongJae Park <sj@kernel.org>
+> ---
+>  mm/damon/core.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/mm/damon/core.c b/mm/damon/core.c
+> index be5942435d78..996647caca02 100644
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+> @@ -2261,6 +2261,9 @@ static void damon_merge_regions_of(struct damon_target *t, unsigned int thres,
+>  	damon_for_each_region_safe(r, next, t) {
+>  		if (abs(r->nr_accesses - r->last_nr_accesses) > thres)
+>  			r->age = 0;
+> +		else if ((!r->nr_accesses && r->last_nr_accesses) ||
+> +				(r->nr_accesses && !r->last_nr_accesses))
+> +			r->age = 0;
+>  		else
+>  			r->age++;
+>  
+> -- 
+> 2.39.5
+
+Sent using hkml (https://github.com/sjp38/hackermail)
 
