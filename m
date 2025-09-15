@@ -4,116 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96845CAC592
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 23:09:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DA78CAC597
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 23:11:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F28058E000C; Mon, 15 Sep 2025 19:09:20 -0400 (EDT)
+	id D09798E000E; Mon, 15 Sep 2025 19:11:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED8B48E0001; Mon, 15 Sep 2025 19:09:20 -0400 (EDT)
+	id CB96C8E0001; Mon, 15 Sep 2025 19:11:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DC8608E000C; Mon, 15 Sep 2025 19:09:20 -0400 (EDT)
+	id BA88A8E000E; Mon, 15 Sep 2025 19:11:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C5CAE8E0001
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 19:09:20 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5E28316079D
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 23:09:20 +0000 (UTC)
-X-FDA: 83893027680.16.3C91543
-Received: from mail-il1-f175.google.com (mail-il1-f175.google.com [209.85.166.175])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 87E784000B
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 23:09:18 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="e/3SvV+p";
-	spf=pass (imf04.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.166.175 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id A63F48E0001
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 19:11:10 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6B05211AD3E
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 23:11:10 +0000 (UTC)
+X-FDA: 83893032300.21.AD55660
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 8E652140006
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 23:11:08 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=oatDdQyx;
+	spf=pass (imf26.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757977758;
+	s=arc-20220608; t=1757977868;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WLbWhAMesv4kKaa+6wyxIVlE3wCdaMoKHTTeB77fRpw=;
-	b=z3CjqkYPqH5MUux0+JjyTfA5g6c2KuP1FzaJDFvvbIlTIZ+XGPPU72NVmbyzmeEZtCQSB+
-	c3aN2Rxe1ERrvpcCwGUE2OiuX4onEWjE9gbFcHsAI+FpBDm1A4JZfJflLwrjo8OIo6PCci
-	aqPyuxhMEMIKdpvLElX+2om4EEQq+Zs=
+	bh=XsKsrMGZGN6//cTNQ+8/HyCAfqvHtLWhWR4uwDDiSCM=;
+	b=Yykdby/oQYUBbWgQsMCTcwm+EyhQTOeDJeir05AWfuRc4e3DhcpotxxIdBb3ymiZ+1Ev7E
+	8MGXNb7tPk9i1rR2PdvSU7V9tuZjoaxV9AK6LzahWFqLYhJNpdTVDc/xQDdDUd8FbgeewP
+	R5666AsiMZH44ZRsl1yNIDfGteeq4Hs=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="e/3SvV+p";
-	spf=pass (imf04.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.166.175 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757977758; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=oatDdQyx;
+	spf=pass (imf26.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757977868; a=rsa-sha256;
 	cv=none;
-	b=C5btVlMYC2+nEUnizrH2HI3tcbi/RpNxqPo52u5jlU+bKArNARC9W8yL8weXNsLvN/FGeP
-	+arXG9Ly/kW6C2IWZKbVB/D+vPr+JOtHXXc569Gg/7NuoYdSm2mnhLAwgbPxpaFB4DyCkm
-	LRzlMaNYg32O40kQHtL3570qAfJ4hPo=
-Received: by mail-il1-f175.google.com with SMTP id e9e14a558f8ab-4240d243340so8464655ab.2
-        for <linux-mm@kvack.org>; Mon, 15 Sep 2025 16:09:18 -0700 (PDT)
+	b=CYSXspVxijuS/MDM/cVAVNfRxbWt9BkGO30jVHEnNkjJAEF+BrLiZQF3GPwSibbTpW7kPX
+	gdM3SzNR3tyL/u1Q5PHK+HIdwAvLZP20S06hmOO/MFZMH3VjGNefZ8eyP/4DiKrERx2/34
+	eio4xlAxYCRFlZMMxgfqUxvbGVqB74M=
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-267c90c426dso35845ad.1
+        for <linux-mm@kvack.org>; Mon, 15 Sep 2025 16:11:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757977757; x=1758582557; darn=kvack.org;
+        d=google.com; s=20230601; t=1757977867; x=1758582667; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=WLbWhAMesv4kKaa+6wyxIVlE3wCdaMoKHTTeB77fRpw=;
-        b=e/3SvV+pFIEj8+Au+cGYLPIcFut/MNU4zRqIIhcvUDpRGKJFLBuWIh2I45FAQxJ456
-         rApev8fA/Qcp3inSjzAOyvkV+/wBI/O+Yr402iH6EBXgYaqoP74xQvu+kiQTzR9S3bh/
-         aKzRinwoyDLpevXHIuAPDfjbUPl17CmsSndvJWouyAlWdreu4jmvTIhZuyXVTsI0uiSb
-         BwrpiWfiJbMvqFY8uiMYPQSd/3MqQNeEXDs92Lj+8V4OI97y3venJa8X8IGiusHrTWXp
-         gEFQhTrkOO9yWgl9879ayKoHhTBQNwLfWPYKO5PSzZBXKkV7oaIbk+O7J1P68HPAVABV
-         FaAw==
+        bh=XsKsrMGZGN6//cTNQ+8/HyCAfqvHtLWhWR4uwDDiSCM=;
+        b=oatDdQyxu3HC+1LBk7THY0/nQueozX00czMukLuDBotBPGeHCncQox4h9piKpGhMnw
+         OacpzsMc2yzqkb1I9ks6Rz1O6qrzYPxSuOWUbwUGaTPZn93b5O1BqeKnCAJtoNaBMZG7
+         ESxqi+EY5Qh6TkXTmfwRDwrAj9SdbYW+pkt2okuCo3wlz3vB22vaZISa5DUg5SAqoZD8
+         MHfpRtuEBKfJRiIN2CZ/x3TpOJ5jl+jVfIngh7D46vZml1GOX2ZQCYiw1zl3pfgsd2UX
+         UJvYCoNV0/wIChJ5QUn+rwJy0uCqjP/AIYRQnHJ4gOYn9ttub/mdHdALKV6VxJPmtF6/
+         UdNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757977757; x=1758582557;
+        d=1e100.net; s=20230601; t=1757977867; x=1758582667;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=WLbWhAMesv4kKaa+6wyxIVlE3wCdaMoKHTTeB77fRpw=;
-        b=U96hxuS8heQy11/axejlwzAZclOC2duOH6wKv+j6xLGqrljMC4AdJRZNlCBCY62koA
-         kvssIdppKsZ5PTsJgPvsB3jHDeVKpR31RrLms1Jufz9/M9ZAqitMveXJlRlL0BZ4KU4+
-         aONgQmhJXO1IAtFdZLYHahmZxL3XWN8ywHTQtk1ZgBR4XubvMcp9JdHs7JER0Ek5g+SI
-         KUlGDx/XXDvoopP2OaCtMgBvNT08q01b1S9lhOsRUcHnwhk8xEbLmW2+tExiKf6SLGFu
-         bKPAkdHmuud3tO/pWaOCvOVupCP1usxhF3H/fYOb3Qkf0/7e733aBbYM6HS6uWA+svQn
-         pKhw==
-X-Gm-Message-State: AOJu0Yxit4xq5DokcWFrLf29nzC0U9BgQ5TE6YXeR1Q0O87XVZmVvbX9
-	ZhA0DRM8Z4KAJZYDt5cZsXsTxQxlLN54JTfpT0yTfmmAj5pOFyqPecZJDGKSbYxKnFS8fNhkOMw
-	3YKFWJANyFwgals24BOCfFGzKvsPJIJY=
-X-Gm-Gg: ASbGncsfLoDqgUoTUimmZQRz3w+6DU+TzNqB4egcWZVG5kuN7bF18EUTVx64gyv768G
-	CcbFn0JIfHL5A3sSL3+nAwoOBve5xIuhdUGHUgJiF9BclGI2aTOxAYNHk8ofDIGkrh/L3WHjmk7
-	37v0HVmRy5OTiRDYCin0+eI2yw7cyRXCxCFKfzPVfzlZOMoLe+KAugd4lizQDN4+52x65wgJp3v
-	euExBu4ykBvqx7qqY0nLx4=
-X-Google-Smtp-Source: AGHT+IFp3liNs3Z+nFgrEioDQId/p34S3BC+hmkTnRmQ4IrAAwtvqtnLQxqXEVQVeneOsYmUK/aEj62swSXyCr/2+Hs=
-X-Received: by 2002:a05:6e02:19ce:b0:416:75eb:265e with SMTP id
- e9e14a558f8ab-420a4ee1eb0mr152917625ab.23.1757977757566; Mon, 15 Sep 2025
- 16:09:17 -0700 (PDT)
+        bh=XsKsrMGZGN6//cTNQ+8/HyCAfqvHtLWhWR4uwDDiSCM=;
+        b=NgFO4DCzkXpzw1d4xfsVV6czDt1nOzkaiBW5YIr9/YIqblPji0gTpcNIjqfrbQowKG
+         tbwGIRR88Wv8ngNa96+ztQ7YWN5u3m8r0wHE6itByrG58hgeclrC1YV5sNw2YTiviwTb
+         xb7QioK0k+ZsqyU2kZFTL5mfHLCPbescDg6P/IJX70Z2m47TSglNRRcB6ctY/6goJ31O
+         HGabu5p+3ogeaaeMxOtBR67D1v+tQ7Tus6l04P2ihMIpCsdtg53DVzm4fOoJsZA8mMmZ
+         0a09dnw+27HN/B8una9zhomBUk3zC7Ycp4xiiU3zgCFMr7zgjH585CbLikg2mXBLt0vQ
+         cqyw==
+X-Forwarded-Encrypted: i=1; AJvYcCX875HiyBi3lJNo/5Mtn7o1RnDbwir6hkkyC7V7CN2xLzTxsktqpW3aagphOcMjHurD61BhCcsO9w==@kvack.org
+X-Gm-Message-State: AOJu0Yybv8LPbGUUNeknxGnj6c/+flm2Ks/tf6kolKeZvnZIIqDE4pnA
+	MbzkL3haEnLklB5+ifZMEGnlkSAUXB+VLnLCJyjIZIvAZoQapflzVPpxAcBydySOwN71VvmEu/X
+	CJaHLkvWBpi2Okuncr2EsyoO26MfiZlmoHboJvyzB
+X-Gm-Gg: ASbGncu6EVaC8rAQK4lkrp0ch04YTYtuXdYMc7cUmJ1cn269mg3siGbc6kjexSuiNot
+	Q/FUnGrOZRm6bpnd/NmyYvhyylk7UBoWUrbDRLBTWNui402rxrBdL3KQ0+vP+2n/iwBVuQSj6GV
+	cYQW5e1nzX/iKfV5Fr89ao7VwKsalDFcQ8THC5ycEnBw1AUfJz9cd9NgUlrEyHxmkaUal2sOgTj
+	8UF0O/qEhp3zB5YiZ+/4FBnjgnLeYt2XZAoWGdxxzPkp9HhNKhL3EE=
+X-Google-Smtp-Source: AGHT+IEkitpGEz8BMKWmLGPZ3W85vqrSP9MG29lIbMnJb9upndiATYfQPV08S+weYTCqY9YvT87o5wWIohG6pp/8rq4=
+X-Received: by 2002:a17:903:181:b0:246:a8ac:1a36 with SMTP id
+ d9443c01a7336-267c1903062mr2169965ad.2.1757977867063; Mon, 15 Sep 2025
+ 16:11:07 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250910160833.3464-1-ryncsn@gmail.com> <20250910160833.3464-6-ryncsn@gmail.com>
-In-Reply-To: <20250910160833.3464-6-ryncsn@gmail.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Mon, 15 Sep 2025 16:09:06 -0700
-X-Gm-Features: AS18NWAiTIOL-zvLV53DEWjgUqSxzatSBuQJjKN1Ir0R0nY_PrW4ch_NsTyGp2E
-Message-ID: <CAKEwX=M6PpOQvqBK3hqfdVubdLE_hdnFHnsBMkxP3RJRmCZ3iw@mail.gmail.com>
-Subject: Re: [PATCH v3 05/15] mm, swap: always lock and check the swap cache
- folio before use
-To: Kairui Song <ryncsn@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>, Chris Li <chrisl@kernel.org>, 
-	Barry Song <baohua@kernel.org>, Baoquan He <bhe@redhat.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@redhat.com>, Yosry Ahmed <yosryahmed@google.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
-	linux-kernel@vger.kernel.org, Kairui Song <kasong@tencent.com>
+References: <20250915163838.631445-1-kaleshsingh@google.com> <20250915153401.61cbd5120871ee7a4e5b9cae@linux-foundation.org>
+In-Reply-To: <20250915153401.61cbd5120871ee7a4e5b9cae@linux-foundation.org>
+From: Kalesh Singh <kaleshsingh@google.com>
+Date: Mon, 15 Sep 2025 16:10:55 -0700
+X-Gm-Features: Ac12FXwVYGcBZT9d6NPCct-EK04uGWSzFyRbMpRKe55ZXQp9Zltcw49n-TJl9YM
+Message-ID: <CAC_TJvd=zwhRZcXTvDPfuzdjYV7j_jvZKZ--eKDRTsE+LBmASA@mail.gmail.com>
+Subject: Re: [PATCH v2 0/7] vma count: fixes, test and improvements
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: minchan@kernel.org, lorenzo.stoakes@oracle.com, david@redhat.com, 
+	Liam.Howlett@oracle.com, rppt@kernel.org, pfalcato@suse.de, 
+	kernel-team@android.com, android-mm@google.com, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Kees Cook <kees@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
+	Dietmar Eggemann <dietmar.eggemann@arm.com>, Ben Segall <bsegall@google.com>, 
+	Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, Jann Horn <jannh@google.com>, 
+	Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-trace-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: ozwsaytism3hi48hfietjmsgc3qc5ke8
+X-Rspamd-Queue-Id: 8E652140006
+X-Stat-Signature: qy3x1du7ohrn7sioxfrpxrkkc1fx587d
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 87E784000B
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1757977758-513467
-X-HE-Meta: U2FsdGVkX1+clv1MFwRtJQDv57AQoCrQZvhTu+lA7pOwuj0x/jEDcbB42E2+ugr+yKguWfXetWjAynWE238X5MT5OHOwo3E5tD6cGmqJkQptL9KeDBnnCU4jNSG4ZzWpCfCKcDc0M9PjMqlERwMYIYSv9RMi2LU7a6QKbPGXdvqq+uI97S4hrYAYdVcnqIypLzzCPJwVW6/fVXiG4OwTO5bAcY9Gj36/L6ZoFZY0Zum13Qsk0LG3boi+AGBcqo+1yd30tcaWV3uEvyebc039xPKN5CEjcfwt864Frz74lI12FzTRgqradO+lnZ3JB1TvrGq4vEFBIr+ALE5ZT4ydoWOOCgR/M5MdmG2jfvBoHf5e9Gjn9R4xHC38QkdkDTRBrqYchqP+osGJA7s3NpqtuB70L9Qkhds+OX70Ct0qbwX//HJvj8L8KNUWVkJe+K4+QzaBbCzZkXwQs73D+DqZ9DtKtx/ut3BAZAGjcaKm8UjLA0ONWRyl5JYBdEl4CnMkSOtTYeVZZ3mGQULQ0xavAl4kyrNKpHeXQioA+jR/1C7HkzNos57GFXx7mwam/JNCWPpUuDwisW/IXPXFoKWIR2xzSo6sTYXIHIkJWvzFuuSMZ84ExGVN6v29ERTURW0SbYNJJf0tB5X9dU/daibOjsY2dCvKyyKUpbWw1fptq3r7s+eRnJ17J+B0hWiBCjMoWT3/2hs04hgRK9k6FVU+1sIqpMxV6M7wlh7xRxblAyD0JN4Hq2QzJ6XGGfJvA56OaEaan0lHkY5x7vkd+xXJEkQhB/qaIMPmgcCiq0ONaCYaUlMb4yf5+rNOzHORSrG9yxBVkwxffFnWcybLU9GHo75WWw5PIPIRIMNvi8iw/vctRayfifv1xAYb0h+GqCAc3iKdWlaOJ97Jp82kSOwfuZs5db2i6TTHJu5sZhBp3qRJANU0EI1vLIy7kvaO9VIakts4AELd88pOgZGNzP7
- EtX7Ohlr
- G7pVYvzge63IlRu3HXUjpeowyI9bkaByE9zMzCkKfIDd3ygGWRtlmZSUxJR4KW4On8PEP80htz6LFN2J+BxxpGZF1HcVmw2ByEmBbdmsjeBK6lXCEciNE6hvOcwqefSRm9ljoreO7M+WoqM6s1whT0dHBsbtu1OjCg9rIpfMB8zdxWzrpbjBTekG7LH02twfSG5jDBpPdzQwj4ARjvRwuEMFr7jDUvTeis08uCm2gLkHpKDJGT7tHQsfslnFGmgvV2l2SajL/ZFIZV4XFvq/EozOH25tSliMTNldoJ0FcRg7vpwFPvJXjCzMC2oi80pzWclxzQ9RTZTEjMjs6l85LKgXCw5734rcW0ceVit1k8GRQ31OURCKsoLsV8mfZh8rvF0c6H+Z8qTFCPvmgLLFPPf8mrA==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1757977868-651589
+X-HE-Meta: U2FsdGVkX1+QKtE6RlW3tvw0IrzlTfY8v4dlDYANG3l86S8Ze8Pq8P1MaScTW+l3UkKjKOrhRu8tBJa1mAykERUyvs5sUXcHa0bCdZr6kST5YPSlI7gUzl1rjya1RYVX2VmX/BQhygoeLocXrTJ83D4g65SGCVQhj6aWZt759ZnNoK0mh1365ax7ocBUH/sQvPD+aBWUTh55Xaw8+jPg6Y9cSzitg+b44kusb1SCUX5AfnGn+DAQM9C7oIUJLyJHRAy8q2w/FFVeXupAfuf50X2IL64G1f+hOLLWSAWICiKqCrMJ3ORmC84nZSYJrO5lLKWrdT2vLBspuMxSrqq3vCgZtB7D3nyAF3Hry9GtasojEnaMH4uqp8gklRThZEvpXSTnmJWxNTk39f+QxZVUvzSvFVeXoQx4DT2GdC5PPwx8RFYbaU/c9INrtdFhuwse5VUh/LxS+iT8Xan4t3HgVbqbO1QUYTzF867648SYBNNKs37/KLU/rdPLK9XT9F8meXzwPgTJQ9fdjVZPRyVXvV5IEvCJ+sxuP6vt2aO8Ka04Ivl5m7wtZUbaivORsK33JPphs5neS0eNP3UPLvstjXX23sifQ81ITpHCHekNOemRZTKTA8fU37YFA2SToloGbcIYUhGqhTfHjGtSHJR7Drank/KlqEXkDAzad3z1OFixsLNJaFsl7F5U0hlOp8qXejpx5+4bEkcCtzPAlteM4ttWXkrT1CCFV+g5Ol7mFle4dvJG2T2eup/j0hLUMbfX/u/hBbXAHUtQk2Jpq/J9DxrKJWLLLs4DyM8D1VkzcJksaTuU5HoZaNZiuT2aAuhLr7ymDpn0hmbP8LzJROA+FMdd5Ope/yxxl5GBGb3QvcXX6EIa9Y2VG6oPLoZi4U3lY93yXiY4krFr7QjG92Y0l5AlUxUKfp/8dWTQDBYfUfQQ5bi3UR8QVop+Or4dH3CAT6Q4qqnZ4LH4d3LGwox
+ NX9V/cBn
+ Xp4Y/OWuk4LPP9ZB9AvENC/7ULzpxklOndzb+Q3Z7FcRbEnZ1i/KIBbBElOWcpl+O8qZ4Ci52/Zrvm10NTiStGKQkgtPQ3loBQD9p/rdpt0KAfUX8YMCxB9AsVl+rOlGUrCBRxaQZyPIc+4jKExUeARzUPMQfKXxn1ROIwNCkDys4AQsUQx8Lr2gfYNzYZLs3ffEafrVB6x4EhDcgW/iELBd1Q+SmgEjW6Hp2gXbuQxVPXFpACDmFjGT1NMfCo1mR/hqBWYNEu96eJdGivizQoQSn4U1HaWDCE5KK9KmPxLapKdE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,33 +128,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 10, 2025 at 9:09=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wrot=
-e:
+On Mon, Sep 15, 2025 at 3:34=E2=80=AFPM Andrew Morton <akpm@linux-foundatio=
+n.org> wrote:
 >
-> From: Kairui Song <kasong@tencent.com>
+> On Mon, 15 Sep 2025 09:36:31 -0700 Kalesh Singh <kaleshsingh@google.com> =
+wrote:
 >
-> Swap cache lookup only increases the reference count of the returned
-> folio. That's not enough to ensure a folio is stable in the swap
-> cache, so the folio could be removed from the swap cache at any
-> time. The caller should always lock and check the folio before using it.
+> > Hi all,
+> >
+> > This is v2 to the VMA count patch I previously posted at:
+> >
+> > https://lore.kernel.org/r/20250903232437.1454293-1-kaleshsingh@google.c=
+om/
+> >
+> >
+> > I've split it into multiple patches to address the feedback.
+> >
+> > The main changes in v2 are:
+> >
+> > - Use a capacity-based check for VMA count limit, per Lorenzo.
+> > - Rename map_count to vma_count, per David.
+> > - Add assertions for exceeding the limit, per Pedro.
+> > - Add tests for max_vma_count, per Liam.
+> > - Emit a trace event for failure due to insufficient capacity for
+> >   observability
+> >
+> > Tested on x86_64 and arm64:
+> >
+> > - Build test:
+> >     - allyesconfig for rename
+> >
+> > - Selftests:
+> >       cd tools/testing/selftests/mm && \
+> >           make && \
+> >           ./run_vmtests.sh -t max_vma_count
+> >
+> >        (With trace_max_vma_count_exceeded enabled)
+> >
+> > - vma tests:
+> >       cd tools/testing/vma && \
+> >           make && \
+> >         ./vma
 >
-> We have just documented this in kerneldoc, now introduce a helper for swa=
-p
-> cache folio verification with proper sanity checks.
+> fwiw, there's nothing in the above which is usable in a [0/N] overview.
 >
-> Also, sanitize a few current users to use this convention and the new
-> helper for easier debugging. They were not having observable problems
-> yet, only trivial issues like wasted CPU cycles on swapoff or
-> reclaiming. They would fail in some other way, but it is still better to
-> always follow this convention to make things robust and make later
-> commits easier to do.
+> While useful, the "what changed since the previous version" info isn't
+> a suitable thing to carry in the permanent kernel record - it's
+> short-term treansient stuff, not helpful to someone who is looking at
+> the patchset in 2029.
 >
-> Signed-off-by: Kairui Song <kasong@tencent.com>
+> Similarly, the "how it was tested" material is also useful, but it
+> becomes irrelevant as soon as the code hits linux-next and mainline.
 
-Apologies for the slow response. Swap code is dense, so it takes me
-awhile to read each patch :(
+Hi Andrew,
 
-Anyway, this LGTM!
+Thanks for the feedback. Do you mean the cover letter was not needed
+in this case or that it lacked enough context?
 
-Acked-by: Nhat Pham <nphamcs@gmail.com>
+>
+>
+> Anyhow, this -rc cycle has been quite the firehose in MM and I'm
+> feeling a need to slow things down for additional stabilization and so
+> people hopefully get additional bandwidth to digest the material we've
+> added this far.  So I think I'll just cherrypick [1/7] for now.  A
+> great flood of positive review activity would probably make me revisit
+> that ;)
+>
+
+I understand, yes 1/7 is all we need for now, since it prevents an
+unrecoverable situation where we get over the limit and cannot recover
+as munmap() will then always fail.
+
+Thanks,
+Kalesh
 
