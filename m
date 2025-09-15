@@ -4,92 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 962F6CAC597
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 22:33:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 743E3CAC597
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 22:34:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA41A8E0005; Mon, 15 Sep 2025 18:33:57 -0400 (EDT)
+	id D52188E0008; Mon, 15 Sep 2025 18:34:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B7BF08E0001; Mon, 15 Sep 2025 18:33:57 -0400 (EDT)
+	id D29DA8E0001; Mon, 15 Sep 2025 18:34:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A91838E0005; Mon, 15 Sep 2025 18:33:57 -0400 (EDT)
+	id C66D98E0008; Mon, 15 Sep 2025 18:34:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A3A28E0001
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 18:33:57 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2B813C0793
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 22:33:57 +0000 (UTC)
-X-FDA: 83892938514.30.5D1DDAD
-Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 49DFE180007
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 22:33:55 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=lwn.net header.s=20201203 header.b=kQiGC45J;
-	spf=pass (imf06.hostedemail.com: domain of corbet@lwn.net designates 45.79.88.28 as permitted sender) smtp.mailfrom=corbet@lwn.net;
-	dmarc=pass (policy=none) header.from=lwn.net
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B6FA08E0001
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 18:34:07 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4F2E716077D
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 22:34:07 +0000 (UTC)
+X-FDA: 83892938934.20.37EFAB8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 94006140002
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 22:34:05 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Rh6tW0PI;
+	dmarc=none;
+	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757975645; a=rsa-sha256;
+	cv=none;
+	b=kBJgqSxFYoVgZmU+QEma7uYBgz3Qi6b68MAdAnUo30KFh44kb2BjIwKxQ3nculkNbqC8Px
+	x28ohAA4u0PddZTWUwI8nZjuNob7OBqhrc5t7WqaDTcj84vR+pWz2NO0HkTIQCqChvrLgA
+	ZlH9+bLI6K6h/f3Sr/5fwJ1H8WmEjns=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Rh6tW0PI;
+	dmarc=none;
+	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757975635;
+	s=arc-20220608; t=1757975645;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QmIdxnQAy5/6n2wVzqJZbhh0D7EAUnPeuQk7BYKKuBs=;
-	b=t0qe3vGN6ZoUTxCw7lkPgjIG6V6TE+7RZtqY6kRFTM7HAf1GikdRxVJ5EXh1jPpIXE1YYj
-	WsSlXFJTWSo7ehSr0kRyt6xkQgNSeYyEQbxCKWMHda4W7cbWBP7nnuWgOKce1W4ztvS/TP
-	xH53b4bVdJgZqDwL7Mwrto6Xwn6Nvxk=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=lwn.net header.s=20201203 header.b=kQiGC45J;
-	spf=pass (imf06.hostedemail.com: domain of corbet@lwn.net designates 45.79.88.28 as permitted sender) smtp.mailfrom=corbet@lwn.net;
-	dmarc=pass (policy=none) header.from=lwn.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757975635; a=rsa-sha256;
-	cv=none;
-	b=kdwxUdyKQyLtEhjwMZx5vPoj2UXWQY7X5xfcnKRjhUZejWOwW9tXG4iglDDUBUlxrDczDI
-	xEwJF4zmPP+0nYekrAjbnBVSZ7gkUG5jk6SOw649zAZI49PFqBXcuJdHS15S3Xo+CLv2wV
-	Dc4UFzlXvWCHO47TrSiP4ke0o+p6N6o=
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 3671140AF9
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1757975633; bh=QmIdxnQAy5/6n2wVzqJZbhh0D7EAUnPeuQk7BYKKuBs=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=kQiGC45Jj4zPN3+SDKLUz3VE3xbiYaBZRjcUA9tF1yR1GqYAb3CKdNtYUtLK7sssH
-	 Y5O2dwB2bA/MZbXT7enkg010ih9TiqQRob4Lw3UgL4dNdZ83mZPUrxod4e9kfQwz+9
-	 WT/x9g907sMya8UD3Yt2pzMhZ+7sJMVB9pfPiZXFKebC5IJ+r8PPOVlp/K29nSO/hs
-	 ZMkjS7BAXCdpcE7UJIpK/UaAoZKl5QRbycKgJGdVUaXw0irVjUGv2pT0nwHI/Kp1dT
-	 C+y8oYX9tK6kOl3WWl2/ZMk6OT7i9utbmvst4UPNMTacnIa/miHarEwYgmjhz3utMA
-	 k6aFf/Y8k/STw==
-Received: from localhost (unknown [IPv6:2601:280:4600:2da9::1fe])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id 3671140AF9;
-	Mon, 15 Sep 2025 22:33:53 +0000 (UTC)
-From: Jonathan Corbet <corbet@lwn.net>
-To: Gabriele Paoloni <gpaoloni@redhat.com>, shuah@kernel.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, gregkh@linuxfoundation.org
-Cc: linux-mm@kvack.org, safety-architecture@lists.elisa.tech,
- acarmina@redhat.com, kstewart@linuxfoundation.org, chuckwolber@gmail.com,
- Gabriele Paoloni <gpaoloni@redhat.com>
-Subject: Re: [RFC v2 PATCH 1/3] Documentation: add guidelines for writing
- testable code specifications
-In-Reply-To: <20250910170000.6475-2-gpaoloni@redhat.com>
-References: <20250910170000.6475-1-gpaoloni@redhat.com>
- <20250910170000.6475-2-gpaoloni@redhat.com>
-Date: Mon, 15 Sep 2025 16:33:52 -0600
-Message-ID: <878qifgxbj.fsf@trenco.lwn.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+	bh=7wQ+1wl/LkgElSlkrOY+ZM30a68u6YqZZltlat84xTk=;
+	b=0JTdhADoSplFbiHL1DCyzR5rmho8JW3onwVyvKrtTshgl30ko9rohyEDIEX9ql+TCsCrnl
+	M+D1yCkSWrjqYpduOevBsXJ1VzHL3xFdHhSPtEkznzJ2/tdVC7LjOLjqBycLRp3Ov68BXP
+	KwylLeETKZfr/AtMF9sjdlhXpnzNF8c=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 76474600AC;
+	Mon, 15 Sep 2025 22:34:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95992C4CEF1;
+	Mon, 15 Sep 2025 22:34:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1757975644;
+	bh=Stv7c8b21tAoRvHnLcswUUt7FKb98hyMbg/pjdBteec=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Rh6tW0PI2bUr3YphPyaqLZMRahxrmrHJA4vmKG+cCDGnzQ5wdpxsjt30Ofyx7EOra
+	 XgccpGxXANJbzL3iUnHWy/wFP9bY80F8jPHHo3GMadzGP1bbBbS17S2C0iXHWDfbIC
+	 q+8BTw/8ahYs5HQFL/4BC19smyPMw5+optpIBBE8=
+Date: Mon, 15 Sep 2025 15:34:01 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Kalesh Singh <kaleshsingh@google.com>
+Cc: minchan@kernel.org, lorenzo.stoakes@oracle.com, david@redhat.com,
+ Liam.Howlett@oracle.com, rppt@kernel.org, pfalcato@suse.de,
+ kernel-team@android.com, android-mm@google.com, Alexander Viro
+ <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara
+ <jack@suse.cz>, Kees Cook <kees@kernel.org>, Vlastimil Babka
+ <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+ <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Juri
+ Lelli <juri.lelli@redhat.com>, Vincent Guittot
+ <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, Valentin
+ Schneider <vschneid@redhat.com>, Jann Horn <jannh@google.com>, Shuah Khan
+ <shuah@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-trace-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v2 0/7] vma count: fixes, test and improvements
+Message-Id: <20250915153401.61cbd5120871ee7a4e5b9cae@linux-foundation.org>
+In-Reply-To: <20250915163838.631445-1-kaleshsingh@google.com>
+References: <20250915163838.631445-1-kaleshsingh@google.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 94006140002
+X-Stat-Signature: xjc71dsea8fid4upktjzwcyo3qzuw571
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 49DFE180007
-X-Stat-Signature: 6wo8379zqpcfn9fjpkrwwmb3jcxqa5pu
-X-HE-Tag: 1757975635-416998
-X-HE-Meta: U2FsdGVkX18ZDzJ3RinpGIajNov1Z8fiDdS682jE0jTtnHr2XvKzotZin0gbQziGZzw1tkpEJ0VsOHzvwMcDuAU77F3P04aPCTih4dIbfGI6rI0AbticqLA/pyhxnUPjZRmEIo6KyfeKrIrD1SIjlTy+nUSk31xKXKkQTjrX2QXCO7+1USdZlwBZbkn3c2PRmRd/DWkPF5uPsvlhvjsH0IkT5S6Ws5jIRlb5lfvCAcr9p+ZU2exE+MuzkaKm6PPu3e4Ywz2+kX0/zPBh+5On8hsdy2TLkC0905mNZec2J+L79z5hHupuCFcCO1RsTTXvl3+NbFkluNwbqCEYPkznXDWw/hJhOm44hMCrzVxV0nYOv4Zk7ikjbNcjPVsF2m5FONlRk+p7TmKVHcGP6tuLEEBa85kjQtAb6aB0rGLmSD6ddTjWlvHQTV4SLHCyIJxTNwTL7yArYXfBPZSL/qVLTi0FSPxcxlJgUws82axSdMIWTEND8Ma3LO4FBRg6GoJxOgD5SAuwWBkw9KlG0BatyoQRIkbJAiq43bXoVOVM+aqq0CXxcUuw3Gp/QCVzkU38k992ACGQsra2RDoXsLEcKPv/+kZEIMShhdc8oqqVfmCIWbCm5UKzA9nWQp6VlZDz+As9GqpbS0wtD2mRA25zCHbZnEvvpJi3n3uX/MH9E4n5zAAgOWcG/q7X09nkHh5sWmy39Y+8+gxCrc5FfPXM5HxhOCVmZ25AOMYTqe1Kda5pLUoYwTjxwf/q5uaYT+kswVAtbfA51bUn5U92ebQrIYZZsfcXBSZxJTIW2hpkWg/DtLVyxIr7ozNuHfHM8g2Q8T3XnhoC2L0yRV3a4UT5dwssJq7vlNmElzbjwuL0RILoy0jxYs217RDgtDyWLkfbITMFVLC1MF/sEPkwy5pkmtDty157Beu/+VZQ9wRBH4FtfDm60cWl2qlrAdEz47dr20xaB2JofgjyqWhFe2f
- n6dABXJ1
- wOc5YGyOOyAXYJOC87FdD30cphUXn2kfC7IOoum9NSh+ygZPQ30g4zVbZqllsBXSFSOj+Nya3Ys1dWJrvFb3dPFGA5m93FoPu/OPAtJWkSN+MQ2knu6qLBjmY7d1O2ClROpsuVU9l9itCiQAQ3eVITtimxmBo7jqOHKSXZZAq9p51nbbXZh1k0SAIghRiktw1UVTCyOmPtU04tyilzcjqJUhldhZvHtOr7tZZQ3pZz6ZoKaCkpSAHmrPMEPLb2B16dDkxjbLov7OuCIOF2sdR2egOrHsaxowYPjOS3/XJS8S8vEVYgO5O6opYYawQ2EH0PiFYStalxo7dJCAwSsxduRagIcVkn6qzDbN3IZr2BBrlXde9QD0TXg7LYqP9xlPIDni5sOA2f/YZd7KorjSXfOyKmXCmEh2sR/4zddHxC+bfprQ66x9Uy8x0DfM9/bpJK5Ju
+X-HE-Tag: 1757975645-812605
+X-HE-Meta: U2FsdGVkX193w/7eq/APxb3lO2LuEhEV9AaxyfWmQ3BOeNebWGQp7q2o4xxQWpx3DLPtymedtYbU59sPjCfNL41wDbzZN2sJigslh0dREB4nQ6PF0gabhEkWdRaDJEEHGhCycGQfHU0HyMnmyGDbVTSfrUegR6a0wj3j1WLmWBFWCEyesYCRu0renhu7LOrY9KkI7SjY8IEJlZ2FTHphuBNlki9j/UdN6J0xTN9ucKvxlovGHha/JZh6Y/0sVCnsuHjIgtt/q9nT7GD3EMsu+eZgc8pyZE5vWWy8cJ56zQ5TyoQHy+G84AEqFPH9hsCoLN3SXoikX9rO4I8zHQSQZVm1Ry3IQo/utsFvg8ZqdjgwZsn0NrY1mkgdoi1jg8Drkrx83LjAqqSEJ5SwFl82iHkJxYrydyj5OaUeO4XaP9DzDo4/M72cAoPRJV7e6WuWRvG+q1Xg+98423lBbqPeS79uhFPiMWSpAYLao1VGreml8omEBElBn/VoMzEoqszxXSg5hYwtNqNKj0Sacc5Hhb0SMDRrIKkkeODjHuULzHHlkEk7hybCDxSboUTGlttMNW9TtM9CxQSI7+xAIbsr3ePz3O0IzYX6R1w9HrZi0nGlw6+6hkjM9s0CPr5Pa7yc7+8QHAXVIil9lc8qjJmtKJoeHXBOpUc5k8FFUzkRKFWArdC9epAZNqf7BzVwRGydXALgbm+EMLvYQ0xp34RTGezxu9NjasBNO2SSfA9nPKuIgbnA7hLAGU9PjaxfqVC5QL5Z+QVHg1srctHa/PxYR+vRxujKqOV7iNxqaV7XEKjG8DRZgIpoOYbnHFnHxKDCTaOciyD1WmXVfu+5IBQatQWYP5k4Q6KpA6RARxSdX4sLzbEPSFDwt0Uw25CGqiBHpT9SO13UfckOfP5UGmvGWwnTjDQ5aIndOn64L9LlruT28xUP8hRAGRPoLigm6qILcwfcqPSsqAmwrLQ41jj
+ IYHCb97P
+ RPMq2BwUzR0BpwsV3/rbMFiGYGuF4KmGkg/y1eDFImvKZek0tIgEStRXKZTtsrQzGHtOjRYS5EeeI4QlrbAksKZGzX/W7vKt2VYd10n9q1ofGD+XR6YnSD++auIXV/NfaN3h+6TWE5lq4cYSpBYG6sOtBDQq/m/QAfYMxWUGoFi1sB/mmTrv8KXKZ17KQMuhn/JOZ+F1nOTOrUHjVAQNODv3yBnSXJgd3O/X85bUiHTbazUuaODjr3MNZ/DzfLG/oVqS5rZDHKZPgL4TJbRTcmlZuoHMyFqDzc1JQBEsUTCz31d0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,71 +104,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Gabriele Paoloni <gpaoloni@redhat.com> writes:
+On Mon, 15 Sep 2025 09:36:31 -0700 Kalesh Singh <kaleshsingh@google.com> wrote:
 
-[Taking a quick look...]
+> Hi all,
+> 
+> This is v2 to the VMA count patch I previously posted at:
+> 
+> https://lore.kernel.org/r/20250903232437.1454293-1-kaleshsingh@google.com/
+> 
+> 
+> I've split it into multiple patches to address the feedback.
+> 
+> The main changes in v2 are:
+> 
+> - Use a capacity-based check for VMA count limit, per Lorenzo.
+> - Rename map_count to vma_count, per David.
+> - Add assertions for exceeding the limit, per Pedro.
+> - Add tests for max_vma_count, per Liam.
+> - Emit a trace event for failure due to insufficient capacity for
+>   observability
+> 
+> Tested on x86_64 and arm64:
+> 
+> - Build test:
+>     - allyesconfig for rename
+> 
+> - Selftests:
+>       cd tools/testing/selftests/mm && \
+>           make && \
+>           ./run_vmtests.sh -t max_vma_count
+> 
+>        (With trace_max_vma_count_exceeded enabled)
+> 
+> - vma tests:
+>       cd tools/testing/vma && \
+>           make && \
+> 	  ./vma
 
-> The Documentation/doc-guide/kernel-doc.rst chapter describes
-> how to document the code using the kernel-doc format, however
-> it does not specify the criteria to be followed for writing
-> testable specifications; i.e. specifications that can be used
-> to for the semantic description of low level requirements.
->
-> This patch adds a guideline that defines criteria to formally
-> describe developers=E2=80=99 intent at the function and subfunction
-> level in the form of testable expectations.
->
-> Signed-off-by: Gabriele Paoloni <gpaoloni@redhat.com>
-> Signed-off-by: Chuck Wolber <chuckwolber@gmail.com>
-> Signed-off-by: Kate Stewart <kstewart@linuxfoundation.org>
-> ---
->  .../doc-guide/code-specifications.rst         | 208 ++++++++++++++++++
->  Documentation/doc-guide/index.rst             |   1 +
->  2 files changed, 209 insertions(+)
->  create mode 100644 Documentation/doc-guide/code-specifications.rst
->
-> diff --git a/Documentation/doc-guide/code-specifications.rst b/Documentat=
-ion/doc-guide/code-specifications.rst
-> new file mode 100644
-> index 000000000000..dee1b4f089e1
-> --- /dev/null
-> +++ b/Documentation/doc-guide/code-specifications.rst
-> @@ -0,0 +1,208 @@
-> +.. title:: How-to write testable code specifications
-> +
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +How-to write testable code specifications
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +
-> +Introduction
-> +------------
-> +The Documentation/doc-guide/kernel-doc.rst chapter describes how to docu=
-ment the code using the kernel-doc format, however it does not specify the =
-criteria to be followed for writing testable specifications; i.e. specifica=
-tions that can be used to for the semantic description of low level require=
-ments.
+fwiw, there's nothing in the above which is usable in a [0/N] overview.
 
-Please, for any future versions, stick to the 80-column limit; this is
-especially important for text files that you want humans to read.
+While useful, the "what changed since the previous version" info isn't
+a suitable thing to carry in the permanent kernel record - it's
+short-term treansient stuff, not helpful to someone who is looking at
+the patchset in 2029.  
 
-As a nit, you don't need to start by saying what other documents don't
-do, just describe the purpose of *this* document.
+Similarly, the "how it was tested" material is also useful, but it
+becomes irrelevant as soon as the code hits linux-next and mainline.
 
-More substantially ... I got a way into this document before realizing
-that you were describing an addition to the format of kerneldoc
-comments.  That would be good to make clear from the outset.
 
-What I still don't really understand is what is the *purpose* of this
-formalized text?  What will be consuming it?  You're asking for a fair
-amount of effort to write and maintain these descriptions; what's in it
-for the people who do that work?
+Anyhow, this -rc cycle has been quite the firehose in MM and I'm
+feeling a need to slow things down for additional stabilization and so
+people hopefully get additional bandwidth to digest the material we've
+added this far.  So I think I'll just cherrypick [1/7] for now.  A
+great flood of positive review activity would probably make me revisit
+that ;)
 
-How does an author determine whether the specifications they have
-written are correct, both gramatically and semantically?
-
-Thanks,
-
-jon
 
