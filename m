@@ -4,97 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45F6FCAC597
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 16:36:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DB2DCAC59A
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 16:45:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A5C628E0015; Mon, 15 Sep 2025 12:36:36 -0400 (EDT)
+	id 985AA8E000B; Mon, 15 Sep 2025 12:45:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A33DC8E000B; Mon, 15 Sep 2025 12:36:36 -0400 (EDT)
+	id 95CFD8E0008; Mon, 15 Sep 2025 12:45:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 970F88E0015; Mon, 15 Sep 2025 12:36:36 -0400 (EDT)
+	id 899E88E000B; Mon, 15 Sep 2025 12:45:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8628B8E000B
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 12:36:36 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 30F5959A14
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 16:36:36 +0000 (UTC)
-X-FDA: 83892037992.06.EE4B723
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 8322740011
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 16:36:34 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iBuxdlii;
-	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 772A58E0008
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 12:45:40 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 025BC1406FA
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 16:45:39 +0000 (UTC)
+X-FDA: 83892060840.28.D0BCF43
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 3123914000B
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 16:45:38 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=y8uJXANR;
+	spf=pass (imf23.hostedemail.com: domain of 3sELIaAsKCKMNDOHVKVLQJKJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--kaleshsingh.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3sELIaAsKCKMNDOHVKVLQJKJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--kaleshsingh.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757954194;
+	s=arc-20220608; t=1757954738;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kVfY8snGhae1gNVF6XV+gVpmXREYRrkvAAv7AFGFTJ0=;
-	b=nkvfedm5EVMWdeEz14gEjFhLQHZ/AyiPVaZU/0py9suFfTmya14chAGjZH9ByJf//xlAqY
-	z5cTDWMOgArYxfOWk469WqJZZtJs33JqPFWBC7XfMP9S6ffpNQYaNvXaNFdl/R37pCKc7n
-	takCjOo865pKgcBvBUh1OIJR1OtFp5w=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=rV+XG5RFGGx0WSlVed1inCLN42/DoGgCGt9RoOWZ17Y=;
+	b=3KLYUpWN9EeiUlbQAX84huWRYxiEa9LX+ipae/U2sE9gZbQpC2uFy/GaU4mXBh4rtnqTCD
+	yxLLYoyLzIPpEFP9cdzkqEsfMT3Y3Z5lCrWgLf4HJiUsRR1toVa585CP+p+AZwSNdgEQcI
+	72ATYaSgTq1ll8FSiK/gI1rgefM76cg=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iBuxdlii;
-	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757954194; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=y8uJXANR;
+	spf=pass (imf23.hostedemail.com: domain of 3sELIaAsKCKMNDOHVKVLQJKJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--kaleshsingh.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3sELIaAsKCKMNDOHVKVLQJKJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--kaleshsingh.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757954738; a=rsa-sha256;
 	cv=none;
-	b=am2d5+C7WfXiSj+KqXeKzEvEjmJ40pXcU+Gp1764K9ZQUfNxgXNQrALX2HVwE6kYP8HVHa
-	TW7S7n91hdgm0A//1uzjIfcPhW8vR6fkxB+iMhXBdJfKm64C/bEPmg/TG1Dg8m8XEGBr/1
-	E4vkNJpWtI4/XwtXF3CfA9nZry3Qy38=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1148043797;
-	Mon, 15 Sep 2025 16:36:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FC6DC4CEF1;
-	Mon, 15 Sep 2025 16:36:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757954192;
-	bh=sFKlwRvnlnlP6/mO1ynOhYF6GOBs7Psz7KEyq9qFIiM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iBuxdliijQWhpI3RVo+U8XJ/DnLZLfEukHRGl5721bxVKLIRHJVBjVfEKt6DfjfDS
-	 whr5dFX9GZ6VWpSc7K8qe7RgRSh8AXt/Q9HJ1GOX6YTcO1FC3RNKjKiHZwf8/HVKE2
-	 3IS/132qNOkP3R4c+xN7DObUcd757ZWC0tV0bAEPWBtvibWJzv3Vo7rHUchhvjxPpE
-	 yR0ebyLV07fhRUVR22SpSRPYQCADdXGxUyGjlbPrZ8H5U/+j5jG67Q+Q6uG22akisP
-	 uiJSaBX5O+jYoSOPl+t1jkI+dfk5sXJv05nhJq47C05CIAauKvtVfNqS9SVy8s1ptQ
-	 m7BXo/kR5iHyw==
-Date: Mon, 15 Sep 2025 19:36:25 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Pratyush Yadav <me@yadavpratyush.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Alexander Graf <graf@amazon.com>, Baoquan He <bhe@redhat.com>,
-	Changyuan Lyu <changyuanl@google.com>, Chris Li <chrisl@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	kexec@lists.infradead.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] kho: add support for preserving vmalloc
- allocations
-Message-ID: <aMhAiR6qnXMA-c8r@kernel.org>
-References: <20250908103528.2179934-1-rppt@kernel.org>
- <20250908103528.2179934-2-rppt@kernel.org>
- <mafs0ldmon784.fsf@kernel.org>
- <mafs0ldmnlmq0.fsf@yadavpratyush.com>
- <aMgey9qEC_XUejXm@kernel.org>
- <20250915144335.GL1024672@nvidia.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250915144335.GL1024672@nvidia.com>
+	b=nV1MeWu7b6cYxsRhttV7MFm6RL9CcUbkbWbzvRwFQqwZwS7jhNPzXxW0rEOUbbKarQS42G
+	NG7kgFD/sczt44CxZwtr5IyCAHlp1pNYDCYNw9FzHKnPB0famHTNwPLKDis9Qu3JjgOvSh
+	5oz//sBMWh1CFwc7dtSucnwncGoeLL0=
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-b4f8e079bc1so3094181a12.3
+        for <linux-mm@kvack.org>; Mon, 15 Sep 2025 09:45:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1757954737; x=1758559537; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=rV+XG5RFGGx0WSlVed1inCLN42/DoGgCGt9RoOWZ17Y=;
+        b=y8uJXANR7qwv1hcYoVLVyWxwxoMlBAKkA/YpkE1jVGeeDaFqwiTUD0hAqcFMaTOiWX
+         JT9G74glXXBSzHxUk4txM2bSM9xsGIsfrRPPF2HkGSO2SdirC5p85rR0N5Rzjrv2LrMz
+         +xlMPVxjDoeU98EDaZpIXdp8QJ/rZ2col01C1ZbOx3Hml9qV4lQSTaijrcySQQWe/4uU
+         tYomt/7U+s1oKEtbZlOkndgV7dN8tINMghaq0wGc8bKwk/AOL32XsAp9DDKMfnERzHEX
+         0+BSu/KvWZAx5lCmwAlboa1rgp9npr7qhTNBobKufbRpwzfghP5bh4ueY6uciccjNHgG
+         nBkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757954737; x=1758559537;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=rV+XG5RFGGx0WSlVed1inCLN42/DoGgCGt9RoOWZ17Y=;
+        b=vbcGvYKOdxH8ZnuthyGwulOmfpzBG+3g2XDc3M82yVxdlGV/S7R+IXgBaGV1xWbele
+         e0b2GRgiOt8klOF4+DGt5JUbZe6ht5vpwxKPdD92e6k57fdi0tt4BM2ntIhzg+FK9slf
+         5tDdsRAzqp4frr0iiskCYaEur86PS6SDEHqwvqsaFjslvrQtrcqR/b/t4epWXwYMyFn/
+         /ZB2gwijzNkWm5Z9o31/At7EfIgRcQr8p8Ai1BjjDQ0GbL3pf+k3ltDjH83kLCgPlnV/
+         90/D3IY4YkpSUbnGlI8XcqvoUtPQRIk/VkNqF4LLPoPY+J6Grp37zsHxc+Da00TdFSqi
+         7ztg==
+X-Forwarded-Encrypted: i=1; AJvYcCUhHoanr12RCbJKQ/aNb8MsDb3i55s54ysX09cjxUzpaXyk1bV2HHw0Cz8sDzKarGVHfKDPzfXEWA==@kvack.org
+X-Gm-Message-State: AOJu0Ywnbugtrp//xRh4i+Iq9WtwQuPo5W+e14VAVi19laeGBkXA4v8/
+	ekAudmxR4KsW0qy/7V1757gIgPt/03miXOwNJOuoROrNnRiK7655oNqrvY+PvsDEzwjRpiNePhf
+	gNkVZOrV6g2U7iW8R36PD1U0z6g==
+X-Google-Smtp-Source: AGHT+IEAgY6VkXbGhl6l9muDNqmcvsiv9qd7+stbRvW4guJMBZCDnQLACUz038WuYWTWZXakBxrH9BGqLG7UDujvDA==
+X-Received: from pjk14.prod.google.com ([2002:a17:90b:558e:b0:32e:27d9:eda1])
+ (user=kaleshsingh job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a20:2449:b0:25b:d1a8:5ccf with SMTP id adf61e73a8af0-2602a593791mr17106705637.21.1757954736574;
+ Mon, 15 Sep 2025 09:45:36 -0700 (PDT)
+Date: Mon, 15 Sep 2025 09:36:31 -0700
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.51.0.384.g4c02a37b29-goog
+Message-ID: <20250915163838.631445-1-kaleshsingh@google.com>
+Subject: [PATCH v2 0/7] vma count: fixes, test and improvements
+From: Kalesh Singh <kaleshsingh@google.com>
+To: akpm@linux-foundation.org, minchan@kernel.org, lorenzo.stoakes@oracle.com, 
+	david@redhat.com, Liam.Howlett@oracle.com, rppt@kernel.org, pfalcato@suse.de
+Cc: kernel-team@android.com, android-mm@google.com, 
+	Kalesh Singh <kaleshsingh@google.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Kees Cook <kees@kernel.org>, 
+	Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Ingo Molnar <mingo@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
+	Valentin Schneider <vschneid@redhat.com>, Jann Horn <jannh@google.com>, Shuah Khan <shuah@kernel.org>, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 3123914000B
+X-Stat-Signature: ziaj991ksa5brn664a7dqxeyux4ad75b
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 8322740011
-X-Stat-Signature: odzj6c4nxou8oikkosost81aajzea563
-X-HE-Tag: 1757954194-584254
-X-HE-Meta: U2FsdGVkX1/tapLvCqz7lbNRBUyr3n4+Xds4ezt/MEfqFXs0cUtxjNoJw/+rOvZIqUIVUcuoGJd6W0ZZZPer28ie249jpZOkdeFHZrc2cugt55Zq/Zt/qnVILxse/u65yKcwkYIHOjeCj/6rngesmFkupZsKxxYOVkC2n4W0APaurFoLiWLR1Hh4a22m4TgjWoa9/3oRadUVNFHvvYvey44U0bFuB/TcFCyHJZ2cNB7Uny27NwGdd72L2MW8400mSpf88rwDf+es0Wxl85S7rTp5UBS7801GFBqygqc600lrGkTTpOZ1mRGITPeO+R7WJ7SPMsG8zTT931Dn6bxawnSJtd/U03GbA/6N41Nvloqs4/3MoqkupEBE5vxDe7wMzpt+2+f4mrgzkhTB6ysy2SNuoEnhmL7Ti9rERZZVXThh9sH38sF9L0ovSxoRqv8/8HTGNKrxtj1gsKcXLT7HtSsDbqj4lxRPdCoeoJiCmLok4b3OudljjqMFU3+HQX4WuhOoK0irN04MrCjt33ZgRJMe5a+mpLNWSqg+aDXydyG/OqWk0IDt7rG04H356MqFLQDiBiUJpb8JGNBZzohGdWoZlnzQZYC3GDxzZA2Gp9c9F8J3xI0Va3LBHtYErP3vs279JdiLeMdlvq9fKd7zDm7ET5fFCacXn6lBCAgzZo2G8IbEI2UYVYFrq06DeNMga5ZmmEX6p+N6W/7KhP6qQLPiD2LgSqmd4eH8YRkunInbX8yRQyDBO6hiy00JcsG8oLttLCngfWydbnmwwBkuE037M7dAYQphcSq/8vcmVJjlHhlXoTg9JjSWaSyjsnM3ifjRwEcjdwe95mgZNUKK/fsrwyavi2fqvss+qOvsnRdl6Uyve816FuDoVRDDR1jojVwbfBVZbGWNH9whG+4+31IC3ybkmjF+UIrWSrVZJnrXVTyxaOv3sfCWeev97JWmL0jCfvnUKER/hse5/Fs
- Whc4CFol
- dDvGJX3H9ONCnf4DTKF2rhO+JkL5nW09HNrXGWU5sihJ4Om45mHrvLtX2eogogc+IlTyYRDs5NNJpkZeWJaygN+upESRxkOWOJDo8dr83uiojzA/SNIyM90UOWkSoSwPshIWLm5h56X0Ubyhx2J2uArIG4pAwwopNcC4h0r8K3T6WP5dCodSUiN6qipjo8/a63yTkO1fSI0tFQxPy6t5mKgPf607bboKlH41tnFdT5kwVekZEW+C+2J7mnUOJ4WtEtIWj
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1757954738-17721
+X-HE-Meta: U2FsdGVkX18LGt/4XVBM8FafOROzFJ832yuXOTHVsBkn9udjxiq7vZACDMXOi4zLk+aKRFB6+Hv23eeYqTIFqQSP+JCrzr1qVcCAUFX834OAUaFf6Hkt+JbMoIwum6KYypQZ6HbHAUFSPeWxIQ/Y3wOvZGFaZfffvaK5yy0n/E+CmSUBEZkntTKmA5s9ps5g4/YL+B7DEeJYcta5rC3tGJiKgW60TBY0A9R8x9OzuuPbt6w/DSqfWaiIhM9I1dKEa4cBP6xdxjj+1J/jc9wVnpeJXP69KAVBdKxwb0Wr5se2+vtnXkwnbIchpcyDKDvqNYbUfK/i6dUBBzkW7qxikw6Is0ZOwwAdoT6S5BI3X8ML/MDU2hSD+uD+WP1BNOtGzZ3wU7I9TmQzlcn+2xyMFT4dLzasYhYpAP11Gl/mh/wCKC+wFKcxOIxp0E6LJjTylOXF7DFWNaitLbSwUBPAubJ902/nvTorVzUhPOfjJIrztaMFNbgdLaLEsECV1KLGJ6igcmE3pQytrUxok/KtgYT2jXwXjhgms+VN+c52hG3u3EJyGcY+XB51gUNO/7N8NBDhyMt08bjFnVv96PqtoY6QjkzqkEWr0eB4RrEORbMVvCR3pdIwEZqOulbblZEJ4YaoxtPC3VCBiqc/E0PPTsCUCzNkqsjo0o8FdJzqgb5xd61Imr3Rzp99mNZgBsd+23TNxYSZXh5zsp5Dpe+HNIb5C3whx/u4IIWnETK9zruIAvKbonE9pJ61BlYWZTqc3SyhfzQ91M2CM5YXE9MzH08XPiNgC9El8bYjXSUVUM9RVI5aHvA9DzmhugcAyBnoRrWsh6sOji2p+1IVB5fZV44eI6+IF0DhAaK0ymSz1RZMDe5yaB99xYUCD647Bk1wBDE8iFSdmCjq40xIwvjk7Abu7TKp+NkSDnTNteJqV7DjG2KzJveQiZzXO8OOiYV1IeWJxtmucRiTIF+BNED
+ GS5JftFn
+ 1VSCHhoRss1FErt76j6mp0zAfbBvnEgQgeSFHdvVqyU+7tIMm5iVjP/I4DWJxdsbjTVNljAM9IhYoMF+VI9sXwrL+wILipVpxsuviBeciftnYz35d2RCjaXjT4rqxtPzSE7bIdw2l7G06q80VaZL2bSXoOgj/x3J7pkEtQDWm6NgEZoJZhRmHVs+S+N6US/yunEkp0cfWr+UGCTDo8R7KVqE/TjTFf8Qrs/IUtX8ZjOQ8QsKd36QnuaImyUZcu844qKt9pET3FzsFdHILT2sf8O60iJGE2XiX3RHULETQtbKyTyEK1jMqp/LArjzrr85qnBNwM7NH02nBukx2P8pJEtvK4Di4Dd2INihfp70WQdR3m4ss0KhzA17Vtm8L8ljJ2zqolPhWpItwttBuARgnr3BiCPs/o1VTtaJGAFGoMeniaS/qnVIu51nIwkKEIfUHnj3llM2nkX8RRz/VPYV7CMOMgboE4TQYl8T0Vu1sT5SHvpCb9ZAMWSgjP946+wipMoUCgn6ROLCkGOPh1fw50QFRlNeoIqSUs0BGRLzi3aEVnor+pbyl+p60ha2KtYrwlGRHCOnyyJuEgQUBiC2lLRgMVFVwCBexGPKN
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,32 +118,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 15, 2025 at 11:43:35AM -0300, Jason Gunthorpe wrote:
-> On Mon, Sep 15, 2025 at 05:12:27PM +0300, Mike Rapoport wrote:
-> > > I don't suppose I'd insist on it, but something to consider since you
-> > > are likely going to do another revision anyway.
-> > 
-> > I think vmalloc is as basic as folio.
-> 
-> vmalloc() ultimately calls vm_area_alloc_pages() -> alloc_pages_bulk_node_noprof()
-> 
-> KHO should have functions that clearly pair with the low level
-> allocators struct page related allocators, alloc_pages(order),
-> folio_alloc(), etc etc
-> 
-> ie if you call this allocator X then you call this kho preserve, this
-> kho restore, and this free function Y.
-> 
-> Under the covers it all uses the generic folio based code we already
-> have, but we should have appropriate wrappers around that code that
-> make clear these patterns.
+Hi all,
 
-Right, but that does not mean that vmalloc preserve/restore should use the
-public KHO APIs and avoid using internal methods.
- 
-> Jason
+This is v2 to the VMA count patch I previously posted at:
 
+https://lore.kernel.org/r/20250903232437.1454293-1-kaleshsingh@google.com/
+
+
+I've split it into multiple patches to address the feedback.
+
+The main changes in v2 are:
+
+- Use a capacity-based check for VMA count limit, per Lorenzo.
+- Rename map_count to vma_count, per David.
+- Add assertions for exceeding the limit, per Pedro.
+- Add tests for max_vma_count, per Liam.
+- Emit a trace event for failure due to insufficient capacity for
+  observability
+
+Tested on x86_64 and arm64:
+
+- Build test:
+    - allyesconfig for rename
+
+- Selftests:
+      cd tools/testing/selftests/mm && \
+          make && \
+          ./run_vmtests.sh -t max_vma_count
+
+       (With trace_max_vma_count_exceeded enabled)
+
+- vma tests:
+      cd tools/testing/vma && \
+          make && \
+	  ./vma
+
+Thanks,
+Kalesh
+
+Kalesh Singh (7):
+  mm: fix off-by-one error in VMA count limit checks
+  mm/selftests: add max_vma_count tests
+  mm: introduce vma_count_remaining()
+  mm: rename mm_struct::map_count to vma_count
+  mm: harden vma_count against direct modification
+  mm: add assertion for VMA count limit
+  mm/tracing: introduce max_vma_count_exceeded trace event
+
+ fs/binfmt_elf.c                               |   2 +-
+ fs/coredump.c                                 |   2 +-
+ include/linux/mm.h                            |  35 +-
+ include/linux/mm_types.h                      |   5 +-
+ include/trace/events/vma.h                    |  32 +
+ kernel/fork.c                                 |   2 +-
+ mm/debug.c                                    |   2 +-
+ mm/internal.h                                 |   1 +
+ mm/mmap.c                                     |  28 +-
+ mm/mremap.c                                   |  13 +-
+ mm/nommu.c                                    |   8 +-
+ mm/util.c                                     |   1 -
+ mm/vma.c                                      |  88 ++-
+ tools/testing/selftests/mm/Makefile           |   1 +
+ .../selftests/mm/max_vma_count_tests.c        | 709 ++++++++++++++++++
+ tools/testing/selftests/mm/run_vmtests.sh     |   5 +
+ tools/testing/vma/vma.c                       |  32 +-
+ tools/testing/vma/vma_internal.h              |  44 +-
+ 18 files changed, 949 insertions(+), 61 deletions(-)
+ create mode 100644 include/trace/events/vma.h
+ create mode 100644 tools/testing/selftests/mm/max_vma_count_tests.c
+
+
+base-commit: f83ec76bf285bea5727f478a68b894f5543ca76e
 -- 
-Sincerely yours,
-Mike.
+2.51.0.384.g4c02a37b29-goog
+
 
