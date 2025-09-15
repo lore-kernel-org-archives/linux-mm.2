@@ -4,115 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52B96CAC597
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 16:47:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E74B9CAC592
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 16:51:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B0F718E001C; Mon, 15 Sep 2025 12:47:28 -0400 (EDT)
+	id 524A88E0015; Mon, 15 Sep 2025 12:51:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC02B8E0008; Mon, 15 Sep 2025 12:47:28 -0400 (EDT)
+	id 4FC968E0008; Mon, 15 Sep 2025 12:51:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9FD568E001C; Mon, 15 Sep 2025 12:47:28 -0400 (EDT)
+	id 439958E0015; Mon, 15 Sep 2025 12:51:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 8FE438E0008
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 12:47:28 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 429DC1A0697
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 16:47:28 +0000 (UTC)
-X-FDA: 83892065376.02.B34238B
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 7258BA0008
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 16:47:26 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=uyL3vyqx;
-	spf=pass (imf25.hostedemail.com: domain of 3HUPIaAsKCBI2s3wAzA05yzy66y3w.u64305CF-442Dsu2.69y@flex--kaleshsingh.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3HUPIaAsKCBI2s3wAzA05yzy66y3w.u64305CF-442Dsu2.69y@flex--kaleshsingh.bounces.google.com;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 318838E0008
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 12:51:32 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DC049140711
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 16:51:31 +0000 (UTC)
+X-FDA: 83892075582.17.8FC4116
+Received: from mail-il1-f171.google.com (mail-il1-f171.google.com [209.85.166.171])
+	by imf26.hostedemail.com (Postfix) with ESMTP id E8F6B140012
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 16:51:29 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=W66XhLs3;
+	spf=pass (imf26.hostedemail.com: domain of zokeefe@google.com designates 209.85.166.171 as permitted sender) smtp.mailfrom=zokeefe@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757954846;
+	s=arc-20220608; t=1757955090;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=59uH0/Rs24hPqNuUZQXolv8jQt8VsNO5VNNB4W0XCmc=;
-	b=K190hN22v4inlHJWVRxpGQGUex5OXtolK4SF6Hn6QD9FiuxENHqPvqUM/uGdpqphq7wnVw
-	zKfAhiKH+xi/JQZ8l7bNGu7UH5pFZmsmgWJDQsrl1fm7V3UdVw9UFWpuco+weqLDnJs04V
-	Zx1CkVHbrx4ApBGig1+Bs6QfH7ouXUQ=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=uyL3vyqx;
-	spf=pass (imf25.hostedemail.com: domain of 3HUPIaAsKCBI2s3wAzA05yzy66y3w.u64305CF-442Dsu2.69y@flex--kaleshsingh.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3HUPIaAsKCBI2s3wAzA05yzy66y3w.u64305CF-442Dsu2.69y@flex--kaleshsingh.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757954846; a=rsa-sha256;
+	bh=1WKzLzikogNH32wmrUmUUjepaN9aH5XtDkSaOMnQ89g=;
+	b=pDDq3mJHxT3nfxqFaFAVCEkRa/Loa8PpMdI0F1MMbUw/ihJoEGarIAllGdtUj/IMSb8W6P
+	c1ASy5c5OWPOAXw+12wI6OlgJNp8qqmB7/uWtwkf9/PUqq72Raerx/KazAwO7bilLMUXFK
+	zbQy0GOoalSNq/om6XmguChQosNlE48=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757955090; a=rsa-sha256;
 	cv=none;
-	b=XyIU5oc3V85ZO48brt5u1CB58g892Jt+V6YpxdpaxI0qczOz6qlL9fEyz2ArieX3t8Gxml
-	eT/JNXZPUBy9skZH7SEab82Y5JHL8LMxCG4U89PSPmEB0hmTQQ4OJO19y2OQR9vf7aHPnA
-	eeMZjAx1xCit9aOS1cF8Z3qGLz8NtjM=
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-26776d064e7so9434735ad.2
-        for <linux-mm@kvack.org>; Mon, 15 Sep 2025 09:47:26 -0700 (PDT)
+	b=nRR+E03JenC/wuWGHQM40zjfxj8ZO76B8PLNJSzPp8voZgm5xOXkM7EtiC6VOFrP7SPIN2
+	KkbTLVp9i9wlmw7GUsbHLuihR5ZTyCub20t4fvZCUjv9/XhqnZ5b9IlOh0vuCDt8CW0cIw
+	0v8IH45chIBdduw1RhK+QBuGJpKjUDI=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=W66XhLs3;
+	spf=pass (imf26.hostedemail.com: domain of zokeefe@google.com designates 209.85.166.171 as permitted sender) smtp.mailfrom=zokeefe@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-il1-f171.google.com with SMTP id e9e14a558f8ab-424077143d9so685ab.1
+        for <linux-mm@kvack.org>; Mon, 15 Sep 2025 09:51:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757954845; x=1758559645; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=59uH0/Rs24hPqNuUZQXolv8jQt8VsNO5VNNB4W0XCmc=;
-        b=uyL3vyqx6nYuozKHHjay4kn9uAffGTJIfMbnm4FATap8epxmcXqfbnYYgMyyQCAVHm
-         Daqd5k/M8qHepoSoCDKNLGYyksWTjAdqeIurqln23JhO2eqvDP9hR3GMYmc66ep5Exqm
-         SZOIb8MOLauAI/fNWD152ovP4YQZ/z4TzeKXcL+00eVdf0DuCu0z4hi/rVbSEsZLymxa
-         SXY9ELX0GobOyu8z+ws0PDf1DoPbYzdn+V5j//6T2csIFyAOcwqCeiS79QZXfcM0wjP0
-         OHCK9Gg0TCWHIUMYD9xzGZqRbTqTNB28g9TR1FTQLVOHEBVc3D0PQSN7+apRWKVIZRT1
-         E4nA==
+        d=google.com; s=20230601; t=1757955089; x=1758559889; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=1WKzLzikogNH32wmrUmUUjepaN9aH5XtDkSaOMnQ89g=;
+        b=W66XhLs3i8FDd0YMfU9tJljTMbQVdaWxggYDiam0V387bOYbROuZa18q4ewM0wH5O7
+         urFsO+ZOzb8141EM5S2v+Ir/uTKAKMlA4mzu6ecW+nxBJM94qfKTEexbQ0QiiCPOGDkI
+         KkKVtGm5FNIM8h6kwu9yu7YL+0i23TVaX7ICN586omJMcyXzep2w43yWCj3POhy3JCHl
+         bQIJ2KT53WR3N5zTAprm9BX5Ukr11J2qQLzotdbn90TFkcLkFOhaCxKU38eJc+VTrpPu
+         fVDe4Ldn+weg+j554y2w221S9hnEbaJeuasUx7v5rMxancV/3fkTaSnI1GO9V67AxqE1
+         eAxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757954845; x=1758559645;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=59uH0/Rs24hPqNuUZQXolv8jQt8VsNO5VNNB4W0XCmc=;
-        b=fiNe7hc3yX7152TZfk/JAbbRwXMlTvlmlj88yJbfkVLq/D6i+jjYF6SiLAyL2/IOnI
-         1ulkyOmiml7DkDNRJx0CUq3VNFCO82UTsuyPnY86nJFl2qjoExINXvuTyHFQGp1IoCFn
-         nieIlZwEG72pdZP4xkRXAg+X1jhpNouCdf7hXofZjsUZ08lbuagbDI5CVfzxgV/SeS4T
-         h1wf1Lr3RwB5P7mo4V1aMHc0H+RlnEM6V1YNlus4+gXkgcoPvdfM4vErHt9LX8F8D/x1
-         w5UX52Ev9mMhNPoy+A9w3zJ914pTPfs6O0mTH14emrM5YH2G/W0anJZcmBD1pUhloRXp
-         urpg==
-X-Forwarded-Encrypted: i=1; AJvYcCWGQE7VR5goB/HCKCRmWoYkfr62pMDT9V9g1r6zfubRk2QvARRh1h5wzVPPkXvLtF95VAKuujEfSA==@kvack.org
-X-Gm-Message-State: AOJu0YwQ7JWQPj5fnVB3e57M7kFYYdbAA5YiYSPfnVcHLCXPpR7xVa7u
-	K4SZO3DvcWwgdQZrKUmbKJACva4qPVJFA52/7kv1QOYWW8b6/gtm3AcyBTO/UrA1nETLvSfWVEg
-	AttlMLC09iq6RP14mbSTMOI0D2A==
-X-Google-Smtp-Source: AGHT+IHzc/fMWSswS4eA5+I14M9qXHKcg1jQwLLx5RpIwI8nZ9BGgFMV8dLNy7m9xz0Qp5xRzbGmEY4nirx7Uqh/jg==
-X-Received: from plhs1.prod.google.com ([2002:a17:903:3201:b0:24c:b6df:675e])
- (user=kaleshsingh job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:902:d552:b0:260:df70:f753 with SMTP id d9443c01a7336-260df70fbdcmr125334005ad.38.1757954845285;
- Mon, 15 Sep 2025 09:47:25 -0700 (PDT)
-Date: Mon, 15 Sep 2025 09:36:38 -0700
-In-Reply-To: <20250915163838.631445-1-kaleshsingh@google.com>
-Mime-Version: 1.0
-References: <20250915163838.631445-1-kaleshsingh@google.com>
-X-Mailer: git-send-email 2.51.0.384.g4c02a37b29-goog
-Message-ID: <20250915163838.631445-8-kaleshsingh@google.com>
-Subject: [PATCH v2 7/7] mm/tracing: introduce max_vma_count_exceeded trace event
-From: Kalesh Singh <kaleshsingh@google.com>
-To: akpm@linux-foundation.org, minchan@kernel.org, lorenzo.stoakes@oracle.com, 
-	david@redhat.com, Liam.Howlett@oracle.com, rppt@kernel.org, pfalcato@suse.de
-Cc: kernel-team@android.com, android-mm@google.com, 
-	Kalesh Singh <kaleshsingh@google.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Kees Cook <kees@kernel.org>, 
-	Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Ingo Molnar <mingo@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
-	Valentin Schneider <vschneid@redhat.com>, Jann Horn <jannh@google.com>, Shuah Khan <shuah@kernel.org>, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 7258BA0008
+        d=1e100.net; s=20230601; t=1757955089; x=1758559889;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1WKzLzikogNH32wmrUmUUjepaN9aH5XtDkSaOMnQ89g=;
+        b=IDf8U0/G2zcaOPAvzX1Z+7Uixm7Xye26PFqxEc9WdRMVFVF9Y1HTfNn5Xsq4htmRce
+         9BALkrxO/dhl/V6jGzyhJzpuAcSULjha+0MKQt/fFbhqeF/F3aH6XVPQ7o/zSBr6o2k1
+         roq2gsoCid6eAPln9+CRxr+vp8NTJ2gCiJoXOYzHD8Nsc5F8V0zekajde5zDbYhdGCBU
+         3spObTqvHHMGr6llyqoYbf1XACo/lbIz9qLnwsFeWC/uqbO5y5OesqG6fl3m9tVKybs3
+         0SybrCyXAAsTHI6MkEcPNI8DjD/tWQDScTodNKIBFiRdVcxGSpEQWdcoOALalayIgPE0
+         x4ZA==
+X-Forwarded-Encrypted: i=1; AJvYcCVj9cU0B2j/hWJCDqtzenj8DBMIPK4yTSo5HmBgOYs3QncuLqwcNcilsizQP1UY7wRsqyAVv3WBmw==@kvack.org
+X-Gm-Message-State: AOJu0Yz+U/glPH0KJwkzopXlCg0WT88spDB+xjDxFZWYUyKKiAOVgbeC
+	5oaXvpJL5t42xAUCKj+mF1Jug4m0CqRA0j5A7bAt9JWs/UdUcMqPCFmBZEA68qC+6NCBFycAoih
+	mom2YwLmdN39l0pPk4tVGWZoq375Gg/qoqdi7RBbH
+X-Gm-Gg: ASbGncs4b84R+MCz7zEb74ZE+tbywFCAWev8X59oxCrNW27PG65sTdciMKzpuFIxn2S
+	+tFLbHhh4aGlaj7H7qodfOzkCaLS6pIOSGUeRur044C0HdN/iVy8sIPKB4sHEOV/KoejMpeySOQ
+	8Oj747LmZFCr7g9CO8If+EkEPY5bXm+V9P8cF5ZhPBO+PAzAq0pKibo2ZmYLBcYMiB6w8C8xdfq
+	4NrvaxVG6nO176E7C8W1Cw0ka2cPTNaQmm8wd1izED9p5X5Vrx2tOFQLg==
+X-Google-Smtp-Source: AGHT+IGYZhPQ7aaQfY82+/f7fuogDWYxeFZ/njIEyFDDoBbZH0LDkwMmu/QB3vxG1xvwbImrFrx85GmycWUmxXD6xf8=
+X-Received: by 2002:a05:6e02:144c:b0:3f6:6806:ab6d with SMTP id
+ e9e14a558f8ab-423b29a07d7mr10276305ab.13.1757955088513; Mon, 15 Sep 2025
+ 09:51:28 -0700 (PDT)
+MIME-Version: 1.0
+References: <v5ivpub6z2n2uyemlnxgbilzs52ep4lrary7lm7o6axxoneb75@yfacfl5rkzeh> <63CFCF33-B334-446F-B6AE-EADB24A9F8CD@nvidia.com>
+In-Reply-To: <63CFCF33-B334-446F-B6AE-EADB24A9F8CD@nvidia.com>
+From: "Zach O'Keefe" <zokeefe@google.com>
+Date: Mon, 15 Sep 2025 09:51:16 -0700
+X-Gm-Features: AS18NWARX-2vUoN7zOqg5BtUxNfMaZv7wXbIjpCBhxdh461bPLWdHFfVGw0JB-o
+Message-ID: <CAAa6QmT-x4MmpMRigx_T3kwn2MTApotz1sr_RKze-k94kXwiOA@mail.gmail.com>
+Subject: Re: [PATCHv2] mm/khugepaged: Do not fail collapse_pte_mapped_thp() on SCAN_PMD_NULL
+To: Zi Yan <ziy@nvidia.com>
+Cc: Kiryl Shutsemau <kirill@shutemov.name>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: multipart/alternative; boundary="00000000000095e04a063ed9d0f4"
+X-Rspamd-Queue-Id: E8F6B140012
+X-Stat-Signature: xjjaugt5nbj89ibhqj585n1usrfw4bnm
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: bagibhx79ionzfxy6ey4uxsjt3bymu9t
-X-HE-Tag: 1757954846-731286
-X-HE-Meta: U2FsdGVkX1+amGBWWf5ECRSJBFqoZ7wqxIlDMaQyL6Sxk8TgpAJyozLB//n51dYwDZVWvPGkKFSrsbGDPle7mjv8IsXKzmQLSXxWAHKJRoaIxoswR31MqF5BdzVCTaUi8WulRhS/7Mr179jsq669Ge5tP37vhO8sc0gHyTGsW3cgrk+UjZmrpBIT2Nt0rwpRoeQvBvo1hVuOfXNVdaJEatHz9OZMtSeMvGqtP8XXDj+mJ4VkbmZkjmmmkOjoJdIYh+oVofT34nwHEmNMOCSSc9KL2IA6QEXTJTxvRSfgo4dyf7TfCuBaF8VhyN7m+00VnVrq3+zBeXMrL4OLmhKiF6x+oo/cqltCP5ughkxGVd91u+9zLDovIOa+HQ7v12p2TR7IBIUREeLkZN3i9rrp9kCKfBShVVpD6XLQviWI12aNA4PzqELqAuub577ewMSVtFetXLhOVNc0tXrc3rWFvDws7Kjc7PQWMyJBFQOdoTFiib/pISZ4qK2N7Rk6JV8xyvS5wAJJwcYauZIAXo4R2FCJYkDJddpCEuWyNs3WI3o6o+zifKx5dpXr8rQ/VszQ+gi+EHqJ35GuSnuHQIX8ZKq+5I41WlWmFYnxOROlnZXboHDVIw4XIAL8+ElYSc7j2G2QHSd6mu+Ii3nbNprapJsAI1f7vGu9vzjFe194tDoHFNT3Ffw14ygB+EKFRCP4exGgTD5vxL07aoTyaWDfcE3uEhu1YQjVHjkgzJ2C97MNKmqS0H0l+ANjxbisnjF6xBrrhy/9ArnlF5fhi2gs4bwVTHxTQcxbast+JJZqUBWFj6PaHIcQM9aWArrZXmsrYPGGasc4OzyoSAnLY95AnKVpW7KskcWnDmj9VVRyKFaKo/jxBeErYpwYoRSbedmsq4325wUlqJtv+lhGwO9CHQo0b11oYloq+7XJpzL9uebPmzl/4jtF452JK+wpAfJj4qcxABvhlsZrooU79lF
- euE1Sqxq
- wfI7IGLmwe2/kh7fcWRFkpssqvpD0xMzAdOnJaDTVS5tpsu6fEzUKFyxRtX+ATDUyfUTOSsXCGjk769PdoaNFH2vxaX5nIwYb3uiL7zbG/8VvUMmpxJKsPCNmXeG5Vp7QmIbZ1THz2UZjdRLNWzqJmgspo739Ljfy39ywJNXRb0FL1hs+h5eqfb0XIBNbjo/K3aRSZopFBlDRhA4HW6I7i/qdk8u0lpgGF0bOwELmxJ6iVik/uFDP/uTfhCzpIp4FMDYEv/nqjR/TkXkoUnJqSlCFZjnfwoMr9p0F5cMMSFnD/umGrh69+h/4fv10EqHqVqC2qYNSusfWj8K/OgR0GfAygUSst9ofAGDBAw9Lx4TcV341E4UQEMLGwkPvPayk8elvpDnnGabcKbyxOfyxFKr033rbzM/gLCGHDNtujoEsOYgWa2SDEQ8SQxhkGnhb+1Tek52Fiv9l+Fsgkuc3RuMlYrf1h+qVnUuFC6VqOm6GlkoKIDuc/w69Hl5nf6GdrXFYli0kxVhATup43H/uv/28sd/udUv99dX87XmURGcXblAvhKA6bvW2JQnM+ceX4X+EwZQICqOmo2bBGIptPiuTsEkOT+AugayPwXbJH2gusw0LoZd6vBNJBO85C2aHAIWYRQjLY6Sgd8lS4MgYQ1LTYSHXC2rTLDg4+Nwwbcy8ZI2ms/MBJ7rLoQG1IEWAQa1WtG8lj4w7ivGnKSAYtX+Y/Kw3sLojS6VrCRO+/H2pZWcStS2ZrtAMh8rhhVxqmH6h4LOCai0kPMJxqtbYRoD1T7ec6EuvPJiF
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1757955089-985341
+X-HE-Meta: U2FsdGVkX18BG0F7ASRVeJRgbY39isL4MIl6it24xF6PZoMJWpGlROLgV/wF5fmz/+fD+ksaIejheoVqIHv5mfqT57Kjyn1rbI4yPoTNeFlxcyc1NGMr1uVAVFw7Was6a/3UWxXoVOjXbj3Tml0PBEkVfc3HwLu8kffxn6+Tx602+EpQ7zSSA1J1f5M1jMSeJa0yi/o9ofKRMFEXWXTVXzRI7oywRairdui5JCzd/qH0YNR1xYCmdkUo3vTbvO287B/Efp6b1KlA2Z+ISiYhNjPXYy6mFQ8mx5yiYgRVZfmja894pkt/X58vXLwvCokto+NcWuMEnaqXLQf13ge7lF00FyLNVdmld0QhrhIhIv1Riiqa3vj8rLYBZ6qk/P5mZ83QGLA4/pyg5ZMHyFnsutpkCRAf0YjEfxPPPo2u+Q+wjtNpaixgXZRQ4rS5RAW2EMyi1UjA9gtws9StP/iBtJDIEKdAqmnETMARTKplY4g9XEsirODwdgQFzO7YBBTK8HssGZu2yifZ1+8ETe61uvVN9wG65MNMG1wGl3eaZ1jjk/bbBxvA7zQecKd7p0r3wk0rGEHkf3GqJmMsSevozx1zcX9ahM35ZkU0YX3e6i48mutCsZfi/Izk7DbCEEn3RV7G/bKN8eaP1O8owHn8PACTdaCXyHUpYVAVhgn/NI6m+RyvTnhRbUXBIJxTTnz4qnjEJsGK0oqPQd5GecFCR3yJ59ok2KqJZ4zeDE1YXAaDRDPQwBpnQbUL7iwZVlqsu23vAII554wsIq7TBWYQmaheyw2wn+y/ZBOTD9vFKuprIxCgOGtZwCxHnYWXH1eWGAqiCQUdSaiOzv0pF+65mQY3wRJWerS+IrBTV1mPWy8rVMcWt7s8m/XQ5uLeuyUX1QBuwrlPqaS6sjKVEQhlOCo9kdHZdiF+GM2GkHLrO0atWioF+f2uBNyXk2zxXHZdM6/hxiicCrKsNXEBMoU
+ n73Gfci7
+ 8KWXQH5ssVIfQ/cdpYAx4zHGcgwlDXVGm3bEhqORR6yQNNbnOOBBxjuy4t/K2vw1QBxztl28n88CJywfH5ngNay44E3LwpYsmJHF3yekaiBxyzj+zh7LFr7xgXZflA+K4PumJOl2Y3uIYSEpjzwXadLYMo0HVhwpeXn8828i2h3ynnBf/8zpJHQ3f2WP/lg4NZhnjegJTFi8Tmu8Qe1QCqtdak1Mq6Z+vll1nR/ICd6NGOGQuBXUsKjqP8iomvILjzNuQHBJ2QdcEMpa1xO2GlIta0X2XtqDepdxshUc7j2P+qa42z/wBBlJucN0JbdJCN8TQyNdMLJRIK132uZ4fMcN3sb0+qzdfLtVnXRUeHLUY/lKpwVrRz7NZoMT5XdQSFYb6nr9RpZvODhE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,187 +116,168 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Needed observability on in field devices can be collected with minimal
-overhead and can be toggled on and off. Event driven telemetry can be
-done with tracepoint BPF programs.
+--00000000000095e04a063ed9d0f4
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The process comm is provided for aggregation across devices and tgid is
-to enable per-process aggregation per device.
+On Mon, Sep 15, 2025 at 8:35=E2=80=AFAM Zi Yan <ziy@nvidia.com> wrote:
 
-This allows for observing the distribution of such problems in the
-field, to deduce if there are legitimate bugs or if a bump to the limit is
-warranted.
+> On 15 Sep 2025, at 9:52, Kiryl Shutsemau wrote:
+>
+> > From: Kiryl Shutsemau <kas@kernel.org>
+> >
+> > MADV_COLLAPSE on a file mapping behaves inconsistently depending on if
+> > PMD page table is installed or not.
+> >
+> > Consider following example:
+> >
+> >       p =3D mmap(NULL, 2UL << 20, PROT_READ | PROT_WRITE,
+> >                MAP_SHARED, fd, 0);
+> >       err =3D madvise(p, 2UL << 20, MADV_COLLAPSE);
+> >
+> > fd is a populated tmpfs file.
+> >
+> > The result depends on the address that the kernel returns on mmap().
+> > If it is located in an existing PMD table, the madvise() will succeed.
+> > However, if the table does not exist, it will fail with -EINVAL.
+> >
+> > This occurs because find_pmd_or_thp_or_none() returns SCAN_PMD_NULL whe=
+n
+> > a page table is missing, which causes collapse_pte_mapped_thp() to fail=
+.
+> >
+> > SCAN_PMD_NULL and SCAN_PMD_NONE should be treated the same in
+> > collapse_pte_mapped_thp(): install the PMD leaf entry and allocate page
+> > tables as needed.
+>
+> Why does collapse code want to know the difference between SCAN_PMD_NULL
+> and
+> SCAN_PMD_NONE? Both seems to be treated as =E2=80=9Cnothing here, install=
+ a PMD
+> leaf=E2=80=9D. One difference is that madvise_collapse() will continue
+> on SCAN_PMD_NULL but bail out on SCAN_PMD_NONE.
+>
+> I wonder if we could have SCAN_PMD_NULL_OR_NONE instead.
+>
+> Zach, since you added both, can you share some insight? Thanks.
+>
+> >
+> > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> > ---
+> >
+> > v2:
+> >  - Modify set_huge_pmd() instead of introducing install_huge_pmd();
+> >
+> > ---
+> >  mm/khugepaged.c | 20 +++++++++++++++++++-
+> >  1 file changed, 19 insertions(+), 1 deletion(-)
+> >
+>
+> The changes look good to me. Reviewed-by: Zi Yan <ziy@nvidia.com>
+>
+> Best Regards,
+> Yan, Zi
 
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: Pedro Falcato <pfalcato@suse.de>
-Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
----
 
-Chnages in v2:
-  - Add needed observability for operations failing due to the vma count limit,
-      per Minchan
-    (Since there isn't a common point for debug logging due checks being
-    external to the capacity based vma_count_remaining() helper. I used a
-    trace event for low overhead and to facilitate event driven telemetry
-    for in field devices)
+Thanks Zi. Hugh had also looped me into this. Travelling today but will
+respond tomorrow. Generally though, this is a behavioural cleanup I=E2=80=
+=99d had
+been meaning to do for a while, but didn=E2=80=99t realize it=E2=80=99d be =
+so
+straightforward. Thank you,
+Kiryl
 
- include/trace/events/vma.h | 32 ++++++++++++++++++++++++++++++++
- mm/mmap.c                  |  5 ++++-
- mm/mremap.c                | 10 ++++++++--
- mm/vma.c                   | 11 +++++++++--
- 4 files changed, 53 insertions(+), 5 deletions(-)
- create mode 100644 include/trace/events/vma.h
+>
+>
 
-diff --git a/include/trace/events/vma.h b/include/trace/events/vma.h
-new file mode 100644
-index 000000000000..2fed63b0d0a6
---- /dev/null
-+++ b/include/trace/events/vma.h
-@@ -0,0 +1,32 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#undef TRACE_SYSTEM
-+#define TRACE_SYSTEM vma
-+
-+#if !defined(_TRACE_VMA_H) || defined(TRACE_HEADER_MULTI_READ)
-+#define _TRACE_VMA_H
-+
-+#include <linux/tracepoint.h>
-+
-+TRACE_EVENT(max_vma_count_exceeded,
-+
-+	TP_PROTO(struct task_struct *task),
-+
-+	TP_ARGS(task),
-+
-+	TP_STRUCT__entry(
-+		__string(comm,	task->comm)
-+		__field(pid_t,	tgid)
-+	),
-+
-+	TP_fast_assign(
-+		__assign_str(comm);
-+		__entry->tgid = task->tgid;
-+	),
-+
-+	TP_printk("comm=%s tgid=%d", __get_str(comm), __entry->tgid)
-+);
-+
-+#endif /*  _TRACE_VMA_H */
-+
-+/* This part must be outside protection */
-+#include <trace/define_trace.h>
-diff --git a/mm/mmap.c b/mm/mmap.c
-index 30ddd550197e..0bb311bf48f3 100644
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -56,6 +56,7 @@
- 
- #define CREATE_TRACE_POINTS
- #include <trace/events/mmap.h>
-+#include <trace/events/vma.h>
- 
- #include "internal.h"
- 
-@@ -374,8 +375,10 @@ unsigned long do_mmap(struct file *file, unsigned long addr,
- 		return -EOVERFLOW;
- 
- 	/* Too many mappings? */
--	if (!vma_count_remaining(mm))
-+	if (!vma_count_remaining(mm)) {
-+		trace_max_vma_count_exceeded(current);
- 		return -ENOMEM;
-+	}
- 
- 	/*
- 	 * addr is returned from get_unmapped_area,
-diff --git a/mm/mremap.c b/mm/mremap.c
-index 14d35d87e89b..f42ac05f0069 100644
---- a/mm/mremap.c
-+++ b/mm/mremap.c
-@@ -30,6 +30,8 @@
- #include <asm/tlb.h>
- #include <asm/pgalloc.h>
- 
-+#include <trace/events/vma.h>
-+
- #include "internal.h"
- 
- /* Classify the kind of remap operation being performed. */
-@@ -1040,8 +1042,10 @@ static unsigned long prep_move_vma(struct vma_remap_struct *vrm)
- 	 * We'd prefer to avoid failure later on in do_munmap:
- 	 * which may split one vma into three before unmapping.
- 	 */
--	if (vma_count_remaining(current->mm) < 4)
-+	if (vma_count_remaining(current->mm) < 4) {
-+		trace_max_vma_count_exceeded(current);
- 		return -ENOMEM;
-+	}
- 
- 	if (vma->vm_ops && vma->vm_ops->may_split) {
- 		if (vma->vm_start != old_addr)
-@@ -1817,8 +1821,10 @@ static unsigned long check_mremap_params(struct vma_remap_struct *vrm)
- 	 * the threshold. In other words, is the current map count + 6 at or
- 	 * below the threshold? Otherwise return -ENOMEM here to be more safe.
- 	 */
--	if (vma_count_remaining(current->mm) < 6)
-+	if (vma_count_remaining(current->mm) < 6) {
-+		trace_max_vma_count_exceeded(current);
- 		return -ENOMEM;
-+	}
- 
- 	return 0;
- }
-diff --git a/mm/vma.c b/mm/vma.c
-index 0e4fcaebe209..692c33c3e84d 100644
---- a/mm/vma.c
-+++ b/mm/vma.c
-@@ -7,6 +7,8 @@
- #include "vma_internal.h"
- #include "vma.h"
- 
-+#include <trace/events/vma.h>
-+
- struct mmap_state {
- 	struct mm_struct *mm;
- 	struct vma_iterator *vmi;
-@@ -621,8 +623,10 @@ __split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
- static int split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
- 		     unsigned long addr, int new_below)
- {
--	if (!vma_count_remaining(vma->vm_mm))
-+	if (!vma_count_remaining(vma->vm_mm)) {
-+		trace_max_vma_count_exceeded(current);
- 		return -ENOMEM;
-+	}
- 
- 	return __split_vma(vmi, vma, addr, new_below);
- }
-@@ -1375,6 +1379,7 @@ static int vms_gather_munmap_vmas(struct vma_munmap_struct *vms,
- 		 */
- 		if (vms->end < vms->vma->vm_end &&
- 		    !vma_count_remaining(vms->vma->vm_mm)) {
-+			trace_max_vma_count_exceeded(current);
- 			error = -ENOMEM;
- 			goto vma_count_exceeded;
- 		}
-@@ -2801,8 +2806,10 @@ int do_brk_flags(struct vma_iterator *vmi, struct vm_area_struct *vma,
- 	if (!may_expand_vm(mm, vm_flags, len >> PAGE_SHIFT))
- 		return -ENOMEM;
- 
--	if (!vma_count_remaining(mm))
-+	if (!vma_count_remaining(mm)) {
-+		trace_max_vma_count_exceeded(current);
- 		return -ENOMEM;
-+	}
- 
- 	if (security_vm_enough_memory_mm(mm, len >> PAGE_SHIFT))
- 		return -ENOMEM;
--- 
-2.51.0.384.g4c02a37b29-goog
+--00000000000095e04a063ed9d0f4
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+<div><br></div><div><br><div class=3D"gmail_quote gmail_quote_container"><d=
+iv dir=3D"ltr" class=3D"gmail_attr">On Mon, Sep 15, 2025 at 8:35=E2=80=AFAM=
+ Zi Yan &lt;<a href=3D"mailto:ziy@nvidia.com">ziy@nvidia.com</a>&gt; wrote:=
+<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8=
+ex;border-left-width:1px;border-left-style:solid;padding-left:1ex;border-le=
+ft-color:rgb(204,204,204)">On 15 Sep 2025, at 9:52, Kiryl Shutsemau wrote:<=
+br>
+<br>
+&gt; From: Kiryl Shutsemau &lt;<a href=3D"mailto:kas@kernel.org" target=3D"=
+_blank">kas@kernel.org</a>&gt;<br>
+&gt;<br>
+&gt; MADV_COLLAPSE on a file mapping behaves inconsistently depending on if=
+<br>
+&gt; PMD page table is installed or not.<br>
+&gt;<br>
+&gt; Consider following example:<br>
+&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0p =3D mmap(NULL, 2UL &lt;&lt; 20, PROT_READ =
+| PROT_WRITE,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 MAP_SHARED, fd,=
+ 0);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0err =3D madvise(p, 2UL &lt;&lt; 20, MADV_COL=
+LAPSE);<br>
+&gt;<br>
+&gt; fd is a populated tmpfs file.<br>
+&gt;<br>
+&gt; The result depends on the address that the kernel returns on mmap().<b=
+r>
+&gt; If it is located in an existing PMD table, the madvise() will succeed.=
+<br>
+&gt; However, if the table does not exist, it will fail with -EINVAL.<br>
+&gt;<br>
+&gt; This occurs because find_pmd_or_thp_or_none() returns SCAN_PMD_NULL wh=
+en<br>
+&gt; a page table is missing, which causes collapse_pte_mapped_thp() to fai=
+l.<br>
+&gt;<br>
+&gt; SCAN_PMD_NULL and SCAN_PMD_NONE should be treated the same in<br>
+&gt; collapse_pte_mapped_thp(): install the PMD leaf entry and allocate pag=
+e<br>
+&gt; tables as needed.<br>
+<br>
+Why does collapse code want to know the difference between SCAN_PMD_NULL an=
+d<br>
+SCAN_PMD_NONE? Both seems to be treated as =E2=80=9Cnothing here, install a=
+ PMD<br>
+leaf=E2=80=9D. One difference is that madvise_collapse() will continue<br>
+on SCAN_PMD_NULL but bail out on SCAN_PMD_NONE.<br>
+<br>
+I wonder if we could have SCAN_PMD_NULL_OR_NONE instead.<br>
+<br>
+Zach, since you added both, can you share some insight? Thanks.<br>
+<br>
+&gt;<br>
+&gt; Signed-off-by: Kiryl Shutsemau &lt;<a href=3D"mailto:kas@kernel.org" t=
+arget=3D"_blank">kas@kernel.org</a>&gt;<br>
+&gt; ---<br>
+&gt;<br>
+&gt; v2:<br>
+&gt;=C2=A0 - Modify set_huge_pmd() instead of introducing install_huge_pmd(=
+);<br>
+&gt;<br>
+&gt; ---<br>
+&gt;=C2=A0 mm/khugepaged.c | 20 +++++++++++++++++++-<br>
+&gt;=C2=A0 1 file changed, 19 insertions(+), 1 deletion(-)<br>
+&gt;<br>
+<br>
+The changes look good to me. Reviewed-by: Zi Yan &lt;<a href=3D"mailto:ziy@=
+nvidia.com" target=3D"_blank">ziy@nvidia.com</a>&gt;<br>
+<br>
+Best Regards,<br>
+Yan, Zi</blockquote><div dir=3D"auto"><br></div><div dir=3D"auto">Thanks Zi=
+. Hugh had also looped me into this. Travelling today but will respond tomo=
+rrow. Generally though, this is a behavioural cleanup I=E2=80=99d had been =
+meaning to do for a while, but didn=E2=80=99t realize it=E2=80=99d be so st=
+raightforward. Thank you,=C2=A0<div><span style=3D"font-size:16px;font-styl=
+e:normal;font-weight:400;letter-spacing:normal;text-indent:0px;text-transfo=
+rm:none;white-space:normal;word-spacing:0px;text-decoration:none;float:none=
+;display:inline!important;background-color:rgba(0,0,0,0);border-color:rgb(0=
+,0,0) rgb(0,0,0) rgb(0,0,0) rgb(204,204,204);color:rgb(0,0,0)">Kiryl</span>=
+</div></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0=
+.8ex;border-left-width:1px;border-left-style:solid;padding-left:1ex;border-=
+left-color:rgb(204,204,204)" dir=3D"auto"><br>
+</blockquote></div></div>
+
+--00000000000095e04a063ed9d0f4--
 
