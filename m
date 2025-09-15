@@ -4,117 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7ABFACAC592
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 16:35:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45F6FCAC597
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 16:36:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D670D8E000E; Mon, 15 Sep 2025 12:35:35 -0400 (EDT)
+	id A5C628E0015; Mon, 15 Sep 2025 12:36:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D3EE98E000B; Mon, 15 Sep 2025 12:35:35 -0400 (EDT)
+	id A33DC8E000B; Mon, 15 Sep 2025 12:36:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C55058E000E; Mon, 15 Sep 2025 12:35:35 -0400 (EDT)
+	id 970F88E0015; Mon, 15 Sep 2025 12:36:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B0DA68E000B
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 12:35:35 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 61E9B1606B3
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 16:35:35 +0000 (UTC)
-X-FDA: 83892035430.21.BF412A9
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 814C01C000B
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 16:35:33 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=m4NGgNHB;
-	spf=pass (imf20.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8628B8E000B
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 12:36:36 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 30F5959A14
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 16:36:36 +0000 (UTC)
+X-FDA: 83892037992.06.EE4B723
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 8322740011
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 16:36:34 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iBuxdlii;
+	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757954133;
+	s=arc-20220608; t=1757954194;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kaS+4e9CD9qq/qcfYA/NkZS+Q4I1Jtxyn3M0VBK+Z8M=;
-	b=aKNO5SrD1adb2rvFtW3vOJTaFbWUJZn4DIjFJ3HD1ecn/OmTqKxnK8YAaF0+eE4BqggtDY
-	YVnOsCve/a1TKAZxFPlyL4Gz6yp+pjKvxAc29izNjmqQVzm4VCFO2gf68zf8CaQMsbJlSD
-	hSKaSDcWXJ5pD4Z7JoTLftd3AwxvbNU=
+	bh=kVfY8snGhae1gNVF6XV+gVpmXREYRrkvAAv7AFGFTJ0=;
+	b=nkvfedm5EVMWdeEz14gEjFhLQHZ/AyiPVaZU/0py9suFfTmya14chAGjZH9ByJf//xlAqY
+	z5cTDWMOgArYxfOWk469WqJZZtJs33JqPFWBC7XfMP9S6ffpNQYaNvXaNFdl/R37pCKc7n
+	takCjOo865pKgcBvBUh1OIJR1OtFp5w=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=m4NGgNHB;
-	spf=pass (imf20.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757954133; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iBuxdlii;
+	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757954194; a=rsa-sha256;
 	cv=none;
-	b=HPdBmjZBNOJo6yaa2flyLMXdSUShx8dwXgqXEy1rrZCBttx0d6rkQWkFLWuHwMlpL5hLgp
-	zjr08NVTbHL/zGt/EKZjfiE6XsZHoUKGrxI15A8Vmcik8+MiEdMH5EVAyd4T1M3IBEiISg
-	ET8vvQZA3JOJ2kOzqPhpeccGeJUBk3E=
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-62f330eeb86so2332611a12.2
-        for <linux-mm@kvack.org>; Mon, 15 Sep 2025 09:35:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757954132; x=1758558932; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kaS+4e9CD9qq/qcfYA/NkZS+Q4I1Jtxyn3M0VBK+Z8M=;
-        b=m4NGgNHBqUcIcJHgWdJlOnuJYDNdNyIEH1i8fVUw0spm2+klcNKhAfV2+ZMahfvw2J
-         Yq8W2MA4XAJS6LTb/IyNegnU55ihY0Xs9X4uwRZEpP4CN8q66aQoCdX8KR/16no+qfmW
-         kNYU4CppypvD489QGV7oEcRqyVtcMcXjBidL0OTHHNF/jlTHcbT5tVYfq1ROwV7JBhEO
-         2I27woB2sel/254nB/9QsaC5HjG9iYAcK1KFr8w2Um+Tum8UJURCW1G38BzDqPWyRzQY
-         mpvLL35YcPe8nUkYoEG0GpguvBeFgKwAVv1ZR/m34OwuyXQFmMyH0gjmnZsdYIkh5cXi
-         8nqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757954132; x=1758558932;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kaS+4e9CD9qq/qcfYA/NkZS+Q4I1Jtxyn3M0VBK+Z8M=;
-        b=IawOpCheobs4Eu/CfPONMnaJwmvN0rEIccTiNMEHbwXFb7Hxn8HV/f3k36y8aZRsQL
-         XRx9jJ/x6REdZRUT4cHPErN/KHgIrx4QYSS6eBj10BTgeszSsTMuJSZnbVbJzpvprnk/
-         hjjqndCJO0Sjy5otWn+B7wG1QH1YRuYiYvYQSnZxsiykLd/KR9XC0Lg0c9Doo8vkguXn
-         cqPhWBaY84l1ZAZADPVAUuDUkuM14wVyXwZ6BkBKUNkOUp1svE+Fo48Yk8edMd86ClfT
-         1HlnsL2f6QRRNrplgAg6BXbgdqn6yPyA3fgPYBzkGtd6yLk1yNSnBWk3eBwtw3hSm2AG
-         Mxdw==
-X-Gm-Message-State: AOJu0YzhA4ZasFbi21jTfx/Urg+RM08qO4zQX3mz8CseA6dYCvteyXzk
-	ZsQ73AYXvXWY42jhlDMZWcUQeoE+SjnV+mQkzvcaQr9IHEUl+t3vqDYnEmLBoeRDwq9uV6TYUwm
-	+faSW6pk+0Sh1E3DRJZlO6Ao+luDjNig=
-X-Gm-Gg: ASbGncupUiVYK/UWqwteIYKCAJbLfkMXZN6ESwKvqXh3B3C/X1uzSwkCgVR1DN8A6QJ
-	jMkN3WaHEKnF4DHeb9ZGuMYGa3YraOdljKrPWxO7/IXGTy28qxZIjvwwVUO+Pg5yMoKxaGMuR6L
-	9APupzB9IUBO89fkTB3PL+qi0BVnya9oN/+HcoWhb4AWOxE2mvmjg5J2KWFJMrL0uruSnwS89cZ
-	fun3m2wmTBN/DcT0pMruw==
-X-Google-Smtp-Source: AGHT+IHVXEBwPC51SnFdwQUYw9y7HhXwNvoyENyaB1Bz3o6IJeGXsQsiMQQNhelK9xiWwWQe8BzplsMVrUd6qgL2l6M=
-X-Received: by 2002:a05:6402:1e93:b0:62e:dd2b:b700 with SMTP id
- 4fb4d7f45d1cf-62edd2bb931mr11812400a12.2.1757954131625; Mon, 15 Sep 2025
- 09:35:31 -0700 (PDT)
-MIME-Version: 1.0
-References: <20250910160833.3464-1-ryncsn@gmail.com> <20250910160833.3464-6-ryncsn@gmail.com>
- <CACePvbX4juhR5jry0Bi202qo=nfFVZkztHzo8KxKMW_yKBseyA@mail.gmail.com>
-In-Reply-To: <CACePvbX4juhR5jry0Bi202qo=nfFVZkztHzo8KxKMW_yKBseyA@mail.gmail.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Tue, 16 Sep 2025 00:34:55 +0800
-X-Gm-Features: AS18NWDf-XutQXVyGUmemggoHy9lplrAX8RvyMvG0-69Mvw2smNEDJTjC4BRwgY
-Message-ID: <CAMgjq7Cddet5BQorsc5gaLbNKJrZhCwi5qifpHz=sd6gb9dQ8g@mail.gmail.com>
-Subject: Re: [PATCH v3 05/15] mm, swap: always lock and check the swap cache
- folio before use
-To: Chris Li <chrisl@kernel.org>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>, Barry Song <baohua@kernel.org>, 
-	Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@redhat.com>, Yosry Ahmed <yosryahmed@google.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
+	b=am2d5+C7WfXiSj+KqXeKzEvEjmJ40pXcU+Gp1764K9ZQUfNxgXNQrALX2HVwE6kYP8HVHa
+	TW7S7n91hdgm0A//1uzjIfcPhW8vR6fkxB+iMhXBdJfKm64C/bEPmg/TG1Dg8m8XEGBr/1
+	E4vkNJpWtI4/XwtXF3CfA9nZry3Qy38=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1148043797;
+	Mon, 15 Sep 2025 16:36:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FC6DC4CEF1;
+	Mon, 15 Sep 2025 16:36:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757954192;
+	bh=sFKlwRvnlnlP6/mO1ynOhYF6GOBs7Psz7KEyq9qFIiM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=iBuxdliijQWhpI3RVo+U8XJ/DnLZLfEukHRGl5721bxVKLIRHJVBjVfEKt6DfjfDS
+	 whr5dFX9GZ6VWpSc7K8qe7RgRSh8AXt/Q9HJ1GOX6YTcO1FC3RNKjKiHZwf8/HVKE2
+	 3IS/132qNOkP3R4c+xN7DObUcd757ZWC0tV0bAEPWBtvibWJzv3Vo7rHUchhvjxPpE
+	 yR0ebyLV07fhRUVR22SpSRPYQCADdXGxUyGjlbPrZ8H5U/+j5jG67Q+Q6uG22akisP
+	 uiJSaBX5O+jYoSOPl+t1jkI+dfk5sXJv05nhJq47C05CIAauKvtVfNqS9SVy8s1ptQ
+	 m7BXo/kR5iHyw==
+Date: Mon, 15 Sep 2025 19:36:25 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Pratyush Yadav <me@yadavpratyush.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Alexander Graf <graf@amazon.com>, Baoquan He <bhe@redhat.com>,
+	Changyuan Lyu <changyuanl@google.com>, Chris Li <chrisl@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	kexec@lists.infradead.org, linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v3 1/2] kho: add support for preserving vmalloc
+ allocations
+Message-ID: <aMhAiR6qnXMA-c8r@kernel.org>
+References: <20250908103528.2179934-1-rppt@kernel.org>
+ <20250908103528.2179934-2-rppt@kernel.org>
+ <mafs0ldmon784.fsf@kernel.org>
+ <mafs0ldmnlmq0.fsf@yadavpratyush.com>
+ <aMgey9qEC_XUejXm@kernel.org>
+ <20250915144335.GL1024672@nvidia.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250915144335.GL1024672@nvidia.com>
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 814C01C000B
-X-Stat-Signature: jdpgzfs6fzd5jbiuy5dcnngiwh899ra1
-X-HE-Tag: 1757954133-370201
-X-HE-Meta: U2FsdGVkX188QbZDVU4b7nIUGoH6/kr64/LLT1VEtdg68zaKyxrK1FNllSo+IavQjHUfOn99lnkwo3IYfgZQaMttSq67v3gCLnuDGYTvRMrX2rpl9jiZnRgW2IXcude2VauhMenZQYdHkE6k0xgw87fXOKerAeDOyHg0m4zjRmnailUTlaRlaMtGQ+GPlSNi6782y1e/1YpKZGdS7iGSEoyJkqQyjhV3TrlKL88YyR8ZhuewJcbKfSTdfX6hJqOYlRJRaX6+ucNqUFG0/D8QA3CBuayvdcL5mO6zaV7T9FToh1iO6+URcbLHOIel9twPrYpS0lkzDFhlaf0Jj2fztA29fAiOn51VnPiOditLMdrH0AmzGiR4bbLF0ExNBqSAHuvd2LZn7OVQHu1b6ZQPlxZ8EIhLa7zmLxydzYykDCDIvBDmyTrFukJZYetqwFb9BAP8T+O1lJTtgbnU1BG6tgR8pkeIgipMVBt4ws8TiplFmzMAmLtkx7Yuf0jv4tmoR/OK655jJ4GZpOlI/mbT/w/OHwlFLQboHCDQI4S7bhZtKwv4NWsDlGTpabX08qhvkaO4HsioS5r4OI8Afiv9WNoySoTX0Hm1P5+We9JArHiucbvPjL/G+g0HNkl28TYI4afflTjOQ5jF8GNwn413Z9ZDpFU27N+Lo5R5GJKTbTxhwQQ2aZcIgwhZ5Mnxy61G3uz3Tg/CTr8XWVME1uu6OKlm7EBI1gnztY7ZZNZTjScgD6pMVIXhQ0OWI0R/FP693UgwS+en0QHdOT3SWCZFMLIQk9H0gFwritjHvIGrXEbU+a4TbRYP3W8kSHdcE/4Ir+jeyhjoFOPB/d4DotFAYcsLA7pvhFOUiieTDbNJZgwqXn2go5z87354oOll5MI4U2wsJo0T6DsjRcWvx5HQQbEdCxBxZdNP7QiIA6BsH7I7LIAUwefrLZ/HIobEnibtDqc8WnLlcWrKiqheHFj
- +KCvfE8m
- 2LF6vK5+rAAWs9jV/Y87BvObjRoMlxYL+5xEp08AqsZtyJ3fFwhXmaNaMcYw2x/E9DTT9yYmAu9Ejgs2nTSUDy089riJdZZM3AHgqQ3a2XItzSAeGTm/H3iJU5h0g2cBmkYHbYkskjKXaKK53Ua3UtXpTrQ2akKiPzI5KNtn1QRo205dMkA1zFx64m/vYPy8yKb/LDCc4kfsi735wlj1rHdbOaSZ+8K7+C3N/T7+IsJd/b2uos1JLUCDcNRQqZ5icWIu3r6njnNVxhgbK6qzRt+9INU47qaqix9zA3yot7WPFtreE7y8hrnQbB4yuTJsNIFkImm6Ci44X2OrODqAc5oswD+4gn3ENu0Dj6Feb+epn7f5ii0e0flVx1A==
+X-Rspamd-Queue-Id: 8322740011
+X-Stat-Signature: odzj6c4nxou8oikkosost81aajzea563
+X-HE-Tag: 1757954194-584254
+X-HE-Meta: U2FsdGVkX1/tapLvCqz7lbNRBUyr3n4+Xds4ezt/MEfqFXs0cUtxjNoJw/+rOvZIqUIVUcuoGJd6W0ZZZPer28ie249jpZOkdeFHZrc2cugt55Zq/Zt/qnVILxse/u65yKcwkYIHOjeCj/6rngesmFkupZsKxxYOVkC2n4W0APaurFoLiWLR1Hh4a22m4TgjWoa9/3oRadUVNFHvvYvey44U0bFuB/TcFCyHJZ2cNB7Uny27NwGdd72L2MW8400mSpf88rwDf+es0Wxl85S7rTp5UBS7801GFBqygqc600lrGkTTpOZ1mRGITPeO+R7WJ7SPMsG8zTT931Dn6bxawnSJtd/U03GbA/6N41Nvloqs4/3MoqkupEBE5vxDe7wMzpt+2+f4mrgzkhTB6ysy2SNuoEnhmL7Ti9rERZZVXThh9sH38sF9L0ovSxoRqv8/8HTGNKrxtj1gsKcXLT7HtSsDbqj4lxRPdCoeoJiCmLok4b3OudljjqMFU3+HQX4WuhOoK0irN04MrCjt33ZgRJMe5a+mpLNWSqg+aDXydyG/OqWk0IDt7rG04H356MqFLQDiBiUJpb8JGNBZzohGdWoZlnzQZYC3GDxzZA2Gp9c9F8J3xI0Va3LBHtYErP3vs279JdiLeMdlvq9fKd7zDm7ET5fFCacXn6lBCAgzZo2G8IbEI2UYVYFrq06DeNMga5ZmmEX6p+N6W/7KhP6qQLPiD2LgSqmd4eH8YRkunInbX8yRQyDBO6hiy00JcsG8oLttLCngfWydbnmwwBkuE037M7dAYQphcSq/8vcmVJjlHhlXoTg9JjSWaSyjsnM3ifjRwEcjdwe95mgZNUKK/fsrwyavi2fqvss+qOvsnRdl6Uyve816FuDoVRDDR1jojVwbfBVZbGWNH9whG+4+31IC3ybkmjF+UIrWSrVZJnrXVTyxaOv3sfCWeev97JWmL0jCfvnUKER/hse5/Fs
+ Whc4CFol
+ dDvGJX3H9ONCnf4DTKF2rhO+JkL5nW09HNrXGWU5sihJ4Om45mHrvLtX2eogogc+IlTyYRDs5NNJpkZeWJaygN+upESRxkOWOJDo8dr83uiojzA/SNIyM90UOWkSoSwPshIWLm5h56X0Ubyhx2J2uArIG4pAwwopNcC4h0r8K3T6WP5dCodSUiN6qipjo8/a63yTkO1fSI0tFQxPy6t5mKgPf607bboKlH41tnFdT5kwVekZEW+C+2J7mnUOJ4WtEtIWj
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,62 +103,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 15, 2025 at 11:07=E2=80=AFPM Chris Li <chrisl@kernel.org> wrote=
-:
->
-> On Wed, Sep 10, 2025 at 9:09=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wr=
-ote:
-> > @@ -2004,6 +2002,13 @@ static int unuse_pte(struct vm_area_struct *vma,=
- pmd_t *pmd,
-> >         bool hwpoisoned =3D false;
-> >         int ret =3D 1;
-> >
-> > +       /*
-> > +        * If the folio is removed from swap cache by others, continue =
-to
-> > +        * unuse other PTEs. try_to_unuse may try again if we missed th=
-is one.
-> > +        */
->
-> It took me a while to figure out why we add a
-> folio_matches_swap_entry() check here but we don't have an existing
-> check for folio swap entry matching in this function. Can you confirm
-> that if a race has happened causing the folio swap entry mismatch,
-> then try_to_usue() MUST try again rather than "may" try again. It
-> seems to me that it is a MUST rather than "may". I am curious in what
-> condition the mismatch happens and the try_to_unuse() does not need to
-> try again.
+On Mon, Sep 15, 2025 at 11:43:35AM -0300, Jason Gunthorpe wrote:
+> On Mon, Sep 15, 2025 at 05:12:27PM +0300, Mike Rapoport wrote:
+> > > I don't suppose I'd insist on it, but something to consider since you
+> > > are likely going to do another revision anyway.
+> > 
+> > I think vmalloc is as basic as folio.
+> 
+> vmalloc() ultimately calls vm_area_alloc_pages() -> alloc_pages_bulk_node_noprof()
+> 
+> KHO should have functions that clearly pair with the low level
+> allocators struct page related allocators, alloc_pages(order),
+> folio_alloc(), etc etc
+> 
+> ie if you call this allocator X then you call this kho preserve, this
+> kho restore, and this free function Y.
+> 
+> Under the covers it all uses the generic folio based code we already
+> have, but we should have appropriate wrappers around that code that
+> make clear these patterns.
 
-It depends, I think it may, because: for example here we are unusing
-folio A with entry S1, and a raced process just swapin folio A then
-remove it from swap cache. If the raced process didn't swapout the PTE
-again, then there is no need to retry as we are dong with this PTE.
+Right, but that does not mean that vmalloc preserve/restore should use the
+public KHO APIs and avoid using internal methods.
+ 
+> Jason
 
-There are many races, someone else swapped out folio A again using S2.
-Then here we will see a !folio_matches_swap_entry. And that's OK.
-
-But there have been many other subtle race conditions in other places,
-e.g. another folio occupied the same PTE and got swapped out using S1,
-causing PTE =3D=3D S1 and here got a wrong folio A installed. This isn't
-happening here, because we have removed the !SWP_WRITEOK flag from the
-si during swapoff...
-
-It's really complex and fragile, so just make it easier, check
-folio_matches_swap_entry and abort early, is safer and follows the
-convention.
-
-> BTW, this function has three types of return value, 1, 0, and negative
-> for error. The 0 and 1 are ignored by the caller, the caller only
-> cares about the negative value. Overall this unuse_pte() and
-> try_to_unuse() walk feels complicated and maybe a candidate for later
-> clean up. That is not your patch's fault. I am not requesting a
-> cleanup in this series.
-
-Right, totally agree, we can cleanup the swapoff part later.
-
-> With that Nitpick,
->
-> Acked-by: Chris Li <chrisl@kernel.org>
-
-Thanks!
+-- 
+Sincerely yours,
+Mike.
 
