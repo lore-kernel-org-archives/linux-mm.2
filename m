@@ -4,112 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C49A8CAC592
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 17:16:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D68DCAC592
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 18:03:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 18C7F8E001A; Mon, 15 Sep 2025 13:16:56 -0400 (EDT)
+	id 922978E0005; Mon, 15 Sep 2025 14:03:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 164298E0001; Mon, 15 Sep 2025 13:16:56 -0400 (EDT)
+	id 8FA398E0001; Mon, 15 Sep 2025 14:03:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A1318E001A; Mon, 15 Sep 2025 13:16:56 -0400 (EDT)
+	id 810768E0005; Mon, 15 Sep 2025 14:03:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F0C658E0001
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 13:16:55 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6370D11A794
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 17:16:55 +0000 (UTC)
-X-FDA: 83892139590.30.77827BD
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 6A79C1A0009
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 17:16:53 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=TaXxouBW;
-	spf=pass (imf19.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 704928E0001
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 14:03:16 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id F392EBAA8F
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 18:03:15 +0000 (UTC)
+X-FDA: 83892256350.11.AB3CB90
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 13533140014
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 18:03:13 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=b6gQHAwN;
+	spf=pass (imf09.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757956613;
+	s=arc-20220608; t=1757959394;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RAiJK2ZmQHbf+XsggTwiJACjPN/xnPzz5AX7w8mTZs8=;
-	b=D/xmxrjjVJ6h5y8gNWvEWcNDz+oovIK/KWoAhkEzcKQ4at8jWqif474V2NGpnoZr9L43XM
-	YdPyQuExnSbPXn9H22wJ8esYNC/0L40N7Ox0/MKIQAvI/HjY/SGA+bN/jGt3BpBuZb+fdC
-	iVzsV2zLDztJSaUcW+B9dlttdha7f6E=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757956613; a=rsa-sha256;
+	bh=95JKLG4VxpoRRKdB6YDz5z9F+dIRiRX8Vh+WVp1fuog=;
+	b=Zw+HarX+Y9J2ySFj5lgl+Aao6u1dcyxTqoEMmfAg5ajbTv7alFVkqFf+TicX36s/OoTJTK
+	uIRbVOhecJioz8Iv/iZzkVGRZSC0wmhJap6LpL/102+G/r8Kw5Dz8RT6Ay5W0XluDl2gFq
+	p9VFtPGtxUmim7rl5KqS5gdmJ3ExwTw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757959394; a=rsa-sha256;
 	cv=none;
-	b=pbynINrS74rm96mjLNT6obaY/64eofrxVE6/mdemS+ZXZuZVZ0bTj/g3BFgg3f4CvT6gnb
-	29iWbNt8AXkkzwOPbu2iGjZ3CYaPlS+3r6MHd4SnDYPVSs/HpUnc8a6QpWRnpvNbmaFvdR
-	PUrQCcQoUV1pQ4PrjIagKXQBf1cNMlU=
+	b=gDRco6LpwHfIgRIo5PIkpgye1STriMHDJv9rBcLag22UUlAtOrdMhrZ2YIhm0H7ugQ0srU
+	6Ux1Gcn/+0Pf/dGzLXJcuhLUHUGzA+YSCc6GBLIH6jEO/l+YR8wJ2cUGsb6ukYjkcuZnVL
+	DKfZRdulUdruNwhpbVkkz5B1m450vMI=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=TaXxouBW;
-	spf=pass (imf19.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-b03fa5c5a89so706220866b.2
-        for <linux-mm@kvack.org>; Mon, 15 Sep 2025 10:16:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1757956612; x=1758561412; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=RAiJK2ZmQHbf+XsggTwiJACjPN/xnPzz5AX7w8mTZs8=;
-        b=TaXxouBWN44/nwMtgzCmwYooxv0R9hQcv5WhI6jsRGWX/CiCsHzfgZWkJ/MUb3fc3N
-         WiG+DpTr7k1ZB1ulCEpIcUp/njnNFiaMGt7CPDYVDwFhq2+MN7dX5w1sYyAp4fS9p0Bh
-         halcU/I6vrPHoLJzNsghViuu1p3/m7OD16XpcY8Zgjj92/xVnukH3S2AMqZXgxJ+Pg1M
-         nLI8MN7wfM2pMS4euOJ7gSHjJjyB/DYX7EaD6arQIgPYtKs0MyZsqzlIwcjZJbpYq6cc
-         dHCHemHy49+yg/cG3zH5N9S8nOQzov9vcaCbtjJO/vkW6ti8itQRVeowtjxzCkoyBHt7
-         CMwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757956612; x=1758561412;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RAiJK2ZmQHbf+XsggTwiJACjPN/xnPzz5AX7w8mTZs8=;
-        b=c5+0EsyzpHKqq9D7p0kdVASKvjbonKyFoys/7jUJKyEYZgRIpvN8Q80d7i6HWiGBDm
-         DoLTRo4j6VzJiqoQI4RdC1nzCZB9YNO6j645BediWZZI70ubSUVLVwxt64Frb+Ga/QYx
-         0FNwobnPWqnrfLRSaqWIctlLHkg2YBriE2O6Z6rZ94d5Qol/Jc9H1s61c+eDZa8f8wuc
-         cuFWXtckK/6umTWM5bpdbo2kVu+cnjkik5NvDXMRY6TtyF3cRp4spFIBqLJNVflyvoYH
-         o4zWvpIk8+IixzwtO5E+fL4RR1qWlbsTk5/TnJdFR/Q943GMrfYXQjtV53/gUOiQdpMK
-         TAZA==
-X-Gm-Message-State: AOJu0YwsZHfGSW5zBhwa8Q87piZOvoAZ0XIz4CAPGX+c++Ya1m7I7IKj
-	FGo/wwu7SjObD/bS1uW0FgOOvFcWsy42taMhTW1hBwPDnJKtHPBoBfmDsYEm0NnVVtk=
-X-Gm-Gg: ASbGnctr7YE2Fd4W9pJ77KU1yOJw99tg/g6mt1Z45sK4qWDReu+rW19gFQ2ZeXOAmAk
-	dlFkU769ebIkpyA67XvQ4gRDCDFT/j8RAFZAHsCH6cT0UqTltlVEgO7/eZUFBactovGPay+mNPP
-	Ure6s//QjJEeHcU63IvLWWXFnE9juM2TW5ns3ZOtig1KqAqYzMl74Cz4AP1yB7uV81B/vosSKIV
-	jMgy2jdGAErlKslkeiGI9D697nohUzKQL2DS0Z51Xp0ljDCYaxaDW0gaEC7qofgjTimKfagHDX5
-	KMufnt/v0AHGaM1Q6No5o3xyhcq+ANTyc1AeDO5i+o0IVX4kWsUS6/Npp5n/fG0PvWO+yMLsOLu
-	EiR7JuQT69P3PIViWALrEvle3UTPVqlgjJg==
-X-Google-Smtp-Source: AGHT+IEPlhCgQvXW5ecZ05x3+ZOUWzRhnk1+vdpPKMe6IRBsIEOhPs7lQfUxpzPTmduP+XwEQYObNg==
-X-Received: by 2002:a17:907:9301:b0:b0c:6cae:51b9 with SMTP id a640c23a62f3a-b0c6cae670fmr760718166b.45.1757956611928;
-        Mon, 15 Sep 2025 10:16:51 -0700 (PDT)
-Received: from localhost (109-81-31-43.rct.o2.cz. [109.81.31.43])
-        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b07b3347b6fsm990538866b.111.2025.09.15.10.16.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Sep 2025 10:16:51 -0700 (PDT)
-Date: Mon, 15 Sep 2025 19:16:50 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <bhe@redhat.com>, LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 09/10] mm: Skip might_alloc() warnings when
- PF_MEMALLOC is set
-Message-ID: <aMhKAnO1MmkKHTO-@tiehlicka>
-References: <20250915134041.151462-1-urezki@gmail.com>
- <20250915134041.151462-10-urezki@gmail.com>
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=b6gQHAwN;
+	spf=pass (imf09.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2BCC7601F3
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 18:03:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBD08C4CEF7
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 18:03:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757959392;
+	bh=95ccvwynTPPBJ3VSneLqZ1zP/VaVb+UaV3d2KQZYJkQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=b6gQHAwNSHIM0m1optIKYBL3uLR1WmN984EcPGAyGqBs2pGtAsY++vKO03EZkFIwV
+	 +tRMRu5ftNCsop4lkHoIxHLopYpvorUXj/i0l1Q0NLY8RVi0PxAvrmS6Ubc1tYJbQ5
+	 dGRJysVxxfW8HtC2AgEEkXlEPB7dhWgScZezzJWvV1M+62hGmJ5PW1oT6877zcFZ4M
+	 8VipDL+Z3vuvQOsA0EPPdWRsBW8M6ME4wekPiGZ+8upRDpollWrgHgJyNwKyDS6rF2
+	 9X++AR7AI9cFawDF4VpooBVn/NrPr3dWNXN0g0mAFEtWBfcxPsCkxdEtyZhL9psuAJ
+	 FXRPzbT8IjBMw==
+Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-60170e15cf6so3013809d50.0
+        for <linux-mm@kvack.org>; Mon, 15 Sep 2025 11:03:12 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU/gEK8gLyLTSASOK2Mpq2K/MFYib0RL0Z36DGr8r7qUmrre581H3zHW8EzcPD4u1lc8sa3LTDShQ==@kvack.org
+X-Gm-Message-State: AOJu0YzFaUPwe/qBygY+DwsLHGkasYnOxAaX0THgmhE1aJyvtvZGJz4c
+	GTFG96k6zW9/bOS+HN2SqNzULI274qCCuQj8rLShmykHL4nU9vzxl2Gok69AfDK6y4XVc9ySvm0
+	WYrAKRslXI8okHzcSDm8k3bJmcesLUW3BPgBhQPIUZw==
+X-Google-Smtp-Source: AGHT+IGznbxlru4z1wgEjBBcYPzKTJKderdVTriUrpm7drfmb1ZVpveUFgHxH+0dDwR+fAkdCmzAq4G/cfPwxyeMIDE=
+X-Received: by 2002:a05:690c:3388:b0:729:46de:38bf with SMTP id
+ 00721157ae682-73064febdc6mr119361847b3.29.1757959392031; Mon, 15 Sep 2025
+ 11:03:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250915134041.151462-10-urezki@gmail.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 6A79C1A0009
-X-Stat-Signature: rnheqpfeue4s6yktofe1absut3ahjtj5
+References: <20250910160833.3464-15-ryncsn@gmail.com> <20250915150719.3446727-1-clm@meta.com>
+ <CAMgjq7A1hqQ+yboCtT+JF=5Tfijph2s4ooSqNwnexQ9kwJOCtA@mail.gmail.com>
+ <6466a351-4c3a-4a02-b76f-8785daf36c0b@meta.com> <CACePvbUWGNq=TW2aP2zvcp9=Xt86hBPi3Ga1SLqjeZcyaKApoQ@mail.gmail.com>
+In-Reply-To: <CACePvbUWGNq=TW2aP2zvcp9=Xt86hBPi3Ga1SLqjeZcyaKApoQ@mail.gmail.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Mon, 15 Sep 2025 11:03:01 -0700
+X-Gmail-Original-Message-ID: <CACePvbWiGZEuR1xHorjS2mXE-=Z4ZfpR8U_1jSMGMBe8PFnU_g@mail.gmail.com>
+X-Gm-Features: Ac12FXzKV5l_rqhgwUM_R0cj5e126WLF3vMosZkwhTpDsrGF8h_VyiI2EGR56GM
+Message-ID: <CACePvbWiGZEuR1xHorjS2mXE-=Z4ZfpR8U_1jSMGMBe8PFnU_g@mail.gmail.com>
+Subject: Re: [PATCH v3 14/15] mm, swap: implement dynamic allocation of swap table
+To: Chris Mason <clm@meta.com>
+Cc: Kairui Song <ryncsn@gmail.com>, linux-mm@kvack.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, 
+	Hugh Dickins <hughd@google.com>, Barry Song <baohua@kernel.org>, Baoquan He <bhe@redhat.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@redhat.com>, 
+	Yosry Ahmed <yosryahmed@google.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Zi Yan <ziy@nvidia.com>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 13533140014
+X-Stat-Signature: xzgpjt14c8e4ymayqx4my57sco6gpgpn
 X-Rspam-User: 
-X-HE-Tag: 1757956613-585569
-X-HE-Meta: U2FsdGVkX1/vKEeC5PGiOvkOf7+4lem9q1KheaktjWpq2kHVznS8NLSzHXBot6dLLgULraZrIP1v0tLVXXeg6IkK4deylbZb/YnWl00Krymbzgg4TV3osSQG7RAUuzQ6M4egFNOq5fk6LV8fCrbEwhXp3RjDvyazuXq1L4uLyiEmKjBlNGckpy3Ws2E4dtDaOxA9N4AOl//KAzUZohqMdN0i8LtRCjw8l8y8+/IIZQqeE+tCPpfcQ59d/JzBPk4P6dfEeL6B5zLrVMJJeI3F+gUZx0vsWYsmKvL3vmOX3hjXECxHtFInTdeP2jnJvUgofnx3ogQ6/kZSdRPj4Ynzfb2eTxuVCCJE5yRngnRIOcFPUPxOJ1K8SdS9BQKJyjzxGJqrl8gzGiP+CQKNox+yCAZPj6UHH8QyYbHdAAbF+v19gWTwsymLk+3Xj5Vu3TivUb02upOD75EYM/a76V75rDFhBuBPuDUz1wTXBRGLnB4Q2RTwhjaz4K4VnfA/kYNyinXQ4nVYOivAdIXkfTyD8yQKfVmWfa/0YghKMMjR/wUt+BuarRMsMFethyJmvxjBjDPlomfKOlugq5BqiKKhK411fI62Z2kTlv7+1pNuFwplgCXkkclSajV6poWK2tvzdVKa4iigcIxqqmIm70UwNfoLLy2SDrzl/kl1cob87l7c413obBX4lSeW5G2t3g3PejF2fhjaXXzUiFpz/DGGLa+MIz+IuaA6VONqsC7UFNSssBkKDfiUlScsIQlOuuqVgwQIi92vpcyJS6rZZCslwXZ9SDbLvOL2eZPpyT8JBOEmeKKi2NEzZQO35d/pDYmj4ZjYEbMH196nubveOlaWrWlWZYP7GT2xNVEDFr+q9ECYezHJPo2gkbeE58JzgItERICkzOgLmxMdxjxhMXgbZCRHpOXCLGDuU3fHxSFs6y+8/Rd4TUZdQABg2fl4JBFMmN7C4Jkg6eqA3UEfxXD
- BQlZgE+5
- ed9LsRPQzuHfqGIT1ewOpAvw12ufAo1h5TWy8KB1CYtR7LqyB1pc3CFgWWCIYTJLCS115lNGjENUtUbslh+uSJ71zW3tqjjOU6zx/Abug2T62xd4ZUA+9pfLYY1tbWh8sSC6EftEDvsfXuxlzYvsj6NgkT2Faix86qM3Mo1IKD4Rsj0irKbqOivZJH/rRPAosWFPBHSBt3ZQSogqK8Lx+pfhLZc29uGs2p1EoKsmBYu2GF/2f5acSia2XXNXn02CZbRDWnf0IoFtNBmUFZz8isEhsdNyffigQ+nELb8DrxDvuVBeKoOM63up5KhTI3wCtMHrIcqFPpc9Qg8Gvqqus/fW/t7j8SKnLfuT+OBgm0vAo7UHQbfme4VbY7HC8hCsyUgBLXv3/BZUj5NCoTEqXRpe2DrkrQT14T5R9WzXXjqPAsfAYN+cjQRlJWiwVIoahoJvX
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1757959393-976813
+X-HE-Meta: U2FsdGVkX18Jd0KZ4fViRqs+yihyrB9XRnnSr1KiiuxDcfZLJKBkh34EEIKwRViszAXxpgqSTQhxpvnI0AmyAXNRDhyX6HOo+1oyOhJ6ZkTGHmqMeHsjgbmvMnZi0IQ18PByyAnAl9UKZPaQLPRPGXn55Jm/CqleFInn1oOC+WjWR87GWHoJZw5wHnEXnuip0/g+XGoAVgDNoCMCOBP0GWDZ4vfz9protA+ScnWqT7ZpbKEih05VennzqLYHTqMbmQFnggr+r2wH+LiLwD8kHSlI9XH3SHqj3SwoTyAlN+HpaB9uMYAfrqApVwt6Woy861UEoWKjhyg+rlOr0+TRgk3A9RERX+Y8lFNZq+9kWOV2758azrE6eA5wZrHbShiJ/48CdNRTWDu+PK6lBmkS7VJ5h6wz3UpvjZ06rHaV/wW4u91FlOPjOoZLizqSQYXuf8QAZCTPVXb2oWxbb2DcaqA7TyY/t5R/UoraIM3PKxrW2twSh4J/6gQBPg0Y4NsLruhfYafUNGf1hIl+e+qPXBHTFTGQk27VgP8wEOGCKIa5nC6coRoita0GZo5b9MHGhDZw7CTirlmTXF/j6mRUum3WFOSftJiGpfaTmibRNYSPqhu5D67xV2axrg6whet4JA2qSxE9lUx7iLivXDDt1nv0Aaa8++GGZjJHm1XRVxyvfmdOMYz7YHzKE0MyTPdpzwBU56yo7cKbV9AFK+HfNUbKn3LuBKRuDhUdSZYWSR8V89SGr5a6jNzdXlEQ4fEszm+060qCm/TwS0eRsnA2wiWwgd1QEQ2VAbDXHNdIS8Wuqrh++qcUO9SYNK55d2GrUjuIr1wQ3X1roO79IDJeYZgpcAtyJm0/eBqteVCXENplshKy5PlrjbMpUIHQIjp4Lj9xMW8QJcQ5GYD3PoooAiVS5JVWQAlGdqRnhtE2YnNjlrE0E8wc8vQcalQ6scp3gePABy6XRJc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,47 +110,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 15-09-25 15:40:39, Uladzislau Rezki wrote:
-> might_alloc() catches invalid blocking allocations in contexts
-> where sleeping is not allowed.
-> 
-> However when PF_MEMALLOC is set, the page allocator already skips
-> reclaim and other blocking paths. In such cases, a blocking gfp_mask
-> does not actually lead to blocking, so triggering might_alloc() splats
-> is misleading.
-> 
-> Adjust might_alloc() to skip warnings when the current task has
-> PF_MEMALLOC set, matching the allocator's actual blocking behaviour.
-> 
-> Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+On Mon, Sep 15, 2025 at 10:14=E2=80=AFAM Chris Li <chrisl@kernel.org> wrote=
+:
+>
+> On Mon, Sep 15, 2025 at 10:00=E2=80=AFAM Chris Mason <clm@meta.com> wrote=
+:
+> >
+> >
+> >
+> > On 9/15/25 12:24 PM, Kairui Song wrote:
+> > > On Mon, Sep 15, 2025 at 11:55=E2=80=AFPM Chris Mason <clm@meta.com> w=
+rote:
+> > >>
+> > >> On Thu, 11 Sep 2025 00:08:32 +0800 Kairui Song <ryncsn@gmail.com> wr=
+ote:
+> >
+> > [ ... ]
+> >              spin_lock(&si->global_cluster_lock);
+> > >>> +     /*
+> > >>> +      * Back to atomic context. First, check if we migrated to a n=
+ew
+> > >>> +      * CPU with a usable percpu cluster. If so, try using that in=
+stead.
+> > >>> +      * No need to check it for the spinning device, as swap is
+> > >>> +      * serialized by the global lock on them.
+> > >>> +      *
+> > >>> +      * The is_usable check is a bit rough, but ensures order 0 su=
+ccess.
+> > >>> +      */
+> > >>> +     offset =3D this_cpu_read(percpu_swap_cluster.offset[order]);
+> > >>> +     if ((si->flags & SWP_SOLIDSTATE) && offset) {
+> > >>> +             pcp_ci =3D swap_cluster_lock(si, offset);
+> > >>> +             if (cluster_is_usable(pcp_ci, order) &&
+> > >>> +                 pcp_ci->count < SWAPFILE_CLUSTER) {
+> > >>> +                     ci =3D pcp_ci;
+> > >>                        ^^^^^^^^^^^^^
+> > >> ci came from the caller, and in the case of isolate_lock_cluster() t=
+hey
+> > >> had just removed it from a list.  We overwrite ci and return somethi=
+ng
+> > >> different.
+> > >
+> > > Yes, that's expected. See the comment above. We have just dropped
+> > > local lock so it's possible that we migrated to another CPU which has
+> > > its own percpu cache ci (percpu_swap_cluster.offset).
+> > >
+> > > To avoid fragmentation, drop the isolated ci and use the percpu ci
+> > > instead. But you are right that I need to add the ci back to the list=
+,
+> > > or it will be leaked. Thanks!
+> >
+> > Yeah, the comment helped a lot (thank you).  It was just the leak I was
+> > worried about ;)
+>
+> As Kairui said, that is not a leak, it is the intended behavior. It
+> rotates the listhead when fetching the ci from the list to avoid
+> repeatedly trying some fragment cluster which has a very low success
+> rate. Otherwise it can stall on the same fragmented list. It does look
+> odd at the first glance. That is the best we can do so far without
+> introducing a lot of repeating rotation logic to the caller. If you
+> find other ways to improve the reading without performance penalty and
+> make code simpler, feel free to make suggestions or even patches.
 
-I would probably just bail out early for PF_MEMALLOC to not meddle with
-might_sleep_if condition as it seems to read better but I do not insist.
-Acked-by: Michal Hocko <mhocko@suse.com>
-Thanks
+Sorry I take back what I just said. There might be a real leak as you
+point out. My bad.
 
-> ---
->  include/linux/sched/mm.h | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/linux/sched/mm.h b/include/linux/sched/mm.h
-> index 2201da0afecc..dc2d3cab32ef 100644
-> --- a/include/linux/sched/mm.h
-> +++ b/include/linux/sched/mm.h
-> @@ -318,7 +318,8 @@ static inline void might_alloc(gfp_t gfp_mask)
->  	fs_reclaim_acquire(gfp_mask);
->  	fs_reclaim_release(gfp_mask);
->  
-> -	might_sleep_if(gfpflags_allow_blocking(gfp_mask));
-> +	might_sleep_if(gfpflags_allow_blocking(gfp_mask) &&
-> +		!(current->flags & PF_MEMALLOC));
->  }
->  
->  /**
-> -- 
-> 2.47.3
-
--- 
-Michal Hocko
-SUSE Labs
+Chris
 
