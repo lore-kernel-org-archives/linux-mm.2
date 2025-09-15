@@ -4,120 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5D05CA0EE8
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 01:47:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 476E6CAC587
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 01:48:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0922A8E0002; Sun, 14 Sep 2025 21:47:45 -0400 (EDT)
+	id 943848E0005; Sun, 14 Sep 2025 21:48:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0416A8E0001; Sun, 14 Sep 2025 21:47:44 -0400 (EDT)
+	id 920E58E0001; Sun, 14 Sep 2025 21:48:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E98BB8E0002; Sun, 14 Sep 2025 21:47:44 -0400 (EDT)
+	id 8582A8E0005; Sun, 14 Sep 2025 21:48:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D3DCE8E0001
-	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 21:47:44 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 078A9B9652
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 01:47:44 +0000 (UTC)
-X-FDA: 83889798048.06.A70B2BE
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	by imf29.hostedemail.com (Postfix) with ESMTP id F09E8120004
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 01:47:41 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=dHYM9iM9;
-	spf=pass (imf29.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 734B08E0001
+	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 21:48:03 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 503C5119ED8
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 01:48:03 +0000 (UTC)
+X-FDA: 83889798846.30.601BB6B
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 43C0040005
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 01:48:01 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="0/GiSBfZ";
+	spf=pass (imf04.hostedemail.com: domain of surenb@google.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757900862;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1757900881;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xQxAXFXvHzbJf8Ay+yszvZmMUoKWGZnWDec6bGDOzf8=;
-	b=pMXzOPxbvMV+YTmlWmWzG5vmeHSbMhybRXNTHTgvkuRO+fvx+YchQo8cccc84YUL9sPCgN
-	V1tEsw0lwn+xX3OuogJO+5xKRexAWp26LHw2xhdti8ADWpF5TY31jW277T2mGbRIrnVhi+
-	+fazjWYyus3mMK7okWgt9lTcjZ0ZHdI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757900862; a=rsa-sha256;
-	cv=none;
-	b=ILFLMNDP4c/khfkZXWkF45u7QqHGA6A4GJLPwCxKCBQgnEkW4jpDGeqkOnMGK/NWP5bpIM
-	/aWD8YVlPa5CZ8jo28aVLyrURXPu0tEUPTilRbA36SSe/0k0A1Aecfn0gThJR83j0AyhV2
-	eRc9SSnVyi8PvYbeebARWo8RxX4cYSQ=
+	bh=FIXX03yHmfXV7hPctk1QY3phtIy2gG2kRyctwix/uK0=;
+	b=zCZxhxRiEh3pwnr1gf/ioElGNFU0zMDNhgWOKVMpdIIZ2TSEX1h541OXUyNliTQ5XBFW3T
+	iqVmuBugLa+hEHpVPgPmyeNqQUWyqH7YI7rtfErCywOROi2K7oOnPnWsj09QD/mVXOUwZH
+	DM+nMPPKDD52SSHCtIIl9pvLcbIWvzQ=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=dHYM9iM9;
-	spf=pass (imf29.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-62f1987d44fso1652057a12.0
-        for <linux-mm@kvack.org>; Sun, 14 Sep 2025 18:47:41 -0700 (PDT)
+	imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="0/GiSBfZ";
+	spf=pass (imf04.hostedemail.com: domain of surenb@google.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757900881; a=rsa-sha256;
+	cv=none;
+	b=oMiDdy7QW163jHPg9bu4LNrVhkTUV4Y4Wyt9BJboEKiLOIRR8PRp1J6lTySSkodOSbb7pZ
+	9mxqlM0drPLELRswQWyrTJRyBgjKp7USptF4oIlIyyYajo2eLksb4pgH6nkneUkX3UIrlp
+	Alb2mZh3soEhxpqbMkMqRZKXQiYbiHU=
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-4b78657a35aso366141cf.0
+        for <linux-mm@kvack.org>; Sun, 14 Sep 2025 18:48:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757900860; x=1758505660; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1757900880; x=1758505680; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xQxAXFXvHzbJf8Ay+yszvZmMUoKWGZnWDec6bGDOzf8=;
-        b=dHYM9iM9fuEuh7L31oxCOO1DOns8YhgatKWPPuMyJ2hIUPog76DldqDbQZAdOoBdeu
-         NY4cMe8WyRq2AEYmnfPKR2qBlg0qX9QKinzmXkC14/rrGB1OIogUSpdTsSElqIH7TIbW
-         OYql6d2yk357K1jgKbm7KXde/XHuFgWie//kpHxM/aXmWWBR1/ITGzBT7V3m4kg7vW46
-         3kI4Gczfi9sdapWa8w5jpulX1HlD6LK50kardKgivoH+n6YOkvKWi5ea8FKY/NMs+Zx9
-         DNi5pfEPI+e/NIhFJU6Ene0enOVnpuBvnChMvLgqMH9o7R6ObYtzanFBrD32kJ2m7Lpn
-         xhUw==
+        bh=FIXX03yHmfXV7hPctk1QY3phtIy2gG2kRyctwix/uK0=;
+        b=0/GiSBfZPjSOPiB+gxLfEj3vYHZyqUphxTI/OlgXegIHSrAXcIRAeuJ8xHsXkB2xVo
+         sNXq1lYrC+jdwknRZNLIAXJxiLLkxN5ieuOMqqnGdn8d4UT7/IrlNuflv1J/L8idG7h9
+         r5vEinN50GRMHp0kaKATCBdtquVprIG688QsKVqGmTN9x2WUWrXujnqCji6RdWXUMVfN
+         P9CE29g0/yIzr7+A/7M7AipoeLMaiPWvkSpM2swOWRKDhDEPOVg/1gK9IcEPXbL+Qh2i
+         Ak2oWFNPly61+imXNNIV9DgSKpT3fmeOoute09D+j5VueQNGjb6O8HLEvDFWnY5un2UL
+         rE/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757900860; x=1758505660;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=xQxAXFXvHzbJf8Ay+yszvZmMUoKWGZnWDec6bGDOzf8=;
-        b=elb8ZZeOn6iNpBWpuIdOJceR4+1IkGJEK8jS3yIytexpRGQqvCg+qNFhrIehanWEzM
-         RGPA91o9qkLXHEYclwuGHOb+FYi683IO4A3ARPX3QYLRjOprFW8CRtGdDphopZ+CxkC6
-         16G0dF90zlNty6jIUyrPu2V3rBEo49kjJbS1jrl9MMcoxT48wWpVdDwtA/PBloOF9ppF
-         f5Pjxn7CDuzebWXFn4jsbhEa4+xX1ppHCa50dJDQqcMmjMi8CPP1W/d5pX1U0WD11tsG
-         9fxJX09qx64ZrJ77rKjwaEWfDuXs9LH1jQLRSIXG++wzi52O51ZJQ7CC5rJDhFi8Lctc
-         T8ow==
-X-Forwarded-Encrypted: i=1; AJvYcCWEZTNoftufjvCKtaXQxZiF8prmmeMYZ9iu1tBvl4Q54CrPa1fiFpD2S6PIR2elAyUpCRg95Gi+eQ==@kvack.org
-X-Gm-Message-State: AOJu0Yxb8fz48CmJ7Sd6ZQZRQ9BJhqijaDWnyyfV4dRvmR1P0BOd2nNh
-	bzrs41lVhbJFwMlSmH/PWrc3YKcte8Irdzc2ZgPa5P1hg7ezRHDDRt1q
-X-Gm-Gg: ASbGncvWwcFr8zepmdZBq7QGPBafeuh3aIJat+YWNKG/naoZ9w0QBdk1j950TTMjAbK
-	zl+678sdQYGh26EPEMwyvzz3iJfVzHNW+K6szxxi66AdL7DTws3EQx2/jRV+5RGimostW4/RwVN
-	Xdt3CobOE5DuUmUrua7uxktR8GkCvxvRpytEVE+GGb9lZkRs44I9yIGUPfvb2AoExUABOt8eM9B
-	8TPYEBZcVKR0OWGDhPcfGmUxnvC/4CCl9UUXnQsuF8/08j6pOMjvnRcqZtApm15IDPnNLDCUBYS
-	kuMqNbuu4+PAB+K8ewjkl3beooh8CfP4aMnQz/rFv3mD2dLZ3BX1RW7hpzGOnp4gLALMBGSkH9O
-	pWcF+dJ0G/5i01W+9pD9QfB0vJh8Ud4Kk
-X-Google-Smtp-Source: AGHT+IGfnZOpM6fv3eUoPc9AKceDiYWqHL7Iysryg7Hh++APbFGpVUpk+aDRF/cb5DeqbxWM7K17XA==
-X-Received: by 2002:a05:6402:a0cf:b0:62d:f340:24b0 with SMTP id 4fb4d7f45d1cf-62ed823e6d3mr10487516a12.3.1757900860050;
-        Sun, 14 Sep 2025 18:47:40 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-62ec33ac2efsm7832533a12.12.2025.09.14.18.47.38
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Sun, 14 Sep 2025 18:47:38 -0700 (PDT)
-Date: Mon, 15 Sep 2025 01:47:38 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: Wei Yang <richard.weiyang@gmail.com>, linux-mm@kvack.org,
-	chengming.zhou@linux.dev, ryan.roberts@arm.com, baohua@kernel.org,
-	xu.xin16@zte.com.cn, dev.jain@arm.com, npache@redhat.com,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
-	akpm@linux-foundation.org, ziy@nvidia.com, david@redhat.com,
-	baolin.wang@linux.alibaba.com
-Subject: Re: [PATCH] mm/mm_slot: make sure slot is the first element of its
- wrapper structure
-Message-ID: <20250915014738.slkw4nwihb4aavas@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20250914000026.17986-1-richard.weiyang@gmail.com>
- <3a1adf4c-9931-4cdb-a024-37c856b1702b@linux.dev>
+        d=1e100.net; s=20230601; t=1757900880; x=1758505680;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FIXX03yHmfXV7hPctk1QY3phtIy2gG2kRyctwix/uK0=;
+        b=r+1fdPQ0tf+e0kBFXx1K9XeBtYSdWEb+2HJMJUfcwvxtsrloF6kyIUWrJXVsA5WGut
+         NPEZ3TFqDAb72fQqYKMh43lLU4yLXr9uo/iFGMp8KwxlbR+9H3D5sN/EVtb8zdWmzQeI
+         lOMij5PuKwaCb6ZkaKmI8TqvVfVsKC3zvOI+fM6uYDmjahZxdJqrizZ2yhmap810Na+j
+         SwxkzSxHRrZzgkjnMqJp0T/meg/spZM3KdBDa1V8Ph9kmVwfJbDB8b3duiymxiNSDxkc
+         F4NwZs1ESkeTWOScSqtI1AnQMA88v6dMUkih5HQ/1PzrN3Xg9BMrG4xrie8zJ2TXK8xT
+         Mfog==
+X-Forwarded-Encrypted: i=1; AJvYcCVl7sTOvwAv6A/zPtP7A42XGjSImQsw/oiP/HMSH+IKnV/21YCF50mucgxC4JlEdSa3SouYRzxnpw==@kvack.org
+X-Gm-Message-State: AOJu0Yxh8zd8vamVGdqwhfTSpLL+2KSHC7lpWQugV5rJU+losCFbTVhz
+	It4ryCjK0kmBVN8ofYqdY4ZltKHbeEUFcUhxUtb18Nd2kXuKcUEAy6IocUc6jhk5WZweGtyejnG
+	5DoWWUTrQZA8hcZYoGyFnd3KepQOh397eL7UyoRT9
+X-Gm-Gg: ASbGncs2eKDq00LqHt7hpeXNfqS3Qiub9UC1NLFfdXPojgljnaVz8S3Z+bxeP9enCGy
+	HCqlflE7RhuD3JhqOR8jHtAz1kPLEi+8eDA/gr6/1b1qQjmvjyZwASCdzP4wVPvfQic3NDzIKel
+	hreN26u9V/vSUHDZFyAPZaDhYkQkzF/2acCMa4wW9OMCp9qQfjcqNr/jKtQx8dUQPGiUOj/lEf1
+	m9zEeZfskTg
+X-Google-Smtp-Source: AGHT+IGDStSCrDGIkYi6IBxzwcIRB3/ZX1YMHfaP+6xZGT7Z/qilK9xJ3n0aXQvoLpi+zVKoffQnExVOt+6U9nbESss=
+X-Received: by 2002:a05:622a:c5:b0:4b7:9a9e:833f with SMTP id
+ d75a77b69052e-4b79a9e86f7mr4747141cf.7.1757900879867; Sun, 14 Sep 2025
+ 18:47:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3a1adf4c-9931-4cdb-a024-37c856b1702b@linux.dev>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: F09E8120004
-X-Stat-Signature: e8xtbwnnnewesx816o6ar9khyoiu88ot
+References: <CAGsJ_4x=YsQR=nNcHA-q=0vg0b7ok=81C_qQqKmoJ+BZ+HVduQ@mail.gmail.com>
+ <aMdVcH7KCXBvLtFP@casper.infradead.org> <CAGsJ_4xDRB_F-T42WnhqpmwLyiZRwLGqx9vDf_d5TFALsCRX4A@mail.gmail.com>
+In-Reply-To: <CAGsJ_4xDRB_F-T42WnhqpmwLyiZRwLGqx9vDf_d5TFALsCRX4A@mail.gmail.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Sun, 14 Sep 2025 18:47:48 -0700
+X-Gm-Features: AS18NWCJdJ-ZvvU3DQc-AbjElHYpRhDtbtyHuV8mCqxji2O65VfpejGAAIaTPtc
+Message-ID: <CAJuCfpG1DHeLtsTcD3A46vDV5BwBDAD7B-EVG4TQEY-GSvzfeg@mail.gmail.com>
+Subject: Re: [DISCUSSION] anon_vma root lock contention and per anon_vma lock
+To: Barry Song <21cnbao@gmail.com>
+Cc: Matthew Wilcox <willy@infradead.org>, Nicolas Geoffray <ngeoffray@google.com>, 
+	Lokesh Gidra <lokeshgidra@google.com>, David Hildenbrand <david@redhat.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Harry Yoo <harry.yoo@oracle.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Rik van Riel <riel@surriel.com>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>, 
+	Linux-MM <linux-mm@kvack.org>, Kalesh Singh <kaleshsingh@google.com>, 
+	SeongJae Park <sj@kernel.org>, Barry Song <v-songbaohua@oppo.com>, Peter Xu <peterx@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 43C0040005
+X-Stat-Signature: i9ib1ob53bbwmwdrfqtei8j67zzn6333
 X-Rspam-User: 
-X-HE-Tag: 1757900861-929087
-X-HE-Meta: U2FsdGVkX1/+YC1psIV/bmDYC1wpsfMX+nA22CIQDgyUtYhZTxToUnxWFPBsDUnMpe4cg3No7onZplX+2LvWRzxVdEIIY0fEeySe2BHgv+GnGSB/sVbcb4GeCTtxeQk1MuhA+MI3L6Ai7/riAwfdh5HV/ZpVqotEJeZdxSTGtx29cx+UOvIp6SckDBGqU00MxeOhYZnfk10XYxnWHx/W5mAobmWi1YJCGsjDZvDRxYzpaCHG3Fm9vCvm50VDZ2GRlHPhPvyV/03HxhuuF8P6P/L8eC1noRE63riSI4cymy5le2GkZdOvW0NOcDwA48yNwOuomgs4+UeBQOQOcZHsdKvOFN0GCJF3ZKRq7M8frT7sUnE52fp/tw7j1WIZrOz+nPWUFth7HqafFG0C+39BxvgdQNLV9OUKFlXHaHhO8uSTShTA8XwNVmy8j0EHxB+IdWI/AqtZe/cEkCwsY2rNZU7mF7zP21PJT6VIkzmIBzSZsbeVdrdMmKUACvxzAEGghnKd6vtq8Jw8LhHff3Ub2eKetC5NRBj2f+MSgXe2fLAB3negWqMdzLPjpb0vxiLI6kFPMDpTbT/zQclH83CiYuXSlK0DwaOYhpoUBhZMXQa34Ga1r/GMWHcI9gMhOe694ixfOGDMKqFvYIrtiKST3X1AAYs7Dr+Qd0Zi8KrhHjb2YJ1C8194m3yCpKIE7avBus8nhjLOOfXghK4Z1B7TMqf1WXp0wkeezeFPELU3MWWXAeKbXMrFpU8cyrrFKMqlAhBOk6616dL8CsR/dgt/Om//98oqTEF4mx1uhGfAhn69CxZITVSkaJD7fC2b/Mlzc1jvfUQDDZU/Y0B/wwvKhK9gOe2wpguByFie0ZDXCkCNwaXOgxuzQrgkPooDvBd5wgcLBpUP8zWJbvLg3t3G33yyZ7wYmvWZpQ7Af3/B273wfyliRy0+U5vfHsQGekDth7AA8ca5IA9RgNWmiIW
- sF2cW7xS
- NNkCDvnZbQtBPLsWR+tuGexZ2BfbumCnXUqUSxCgu0Wq9LqGfMoDXSLaiBqxotsdL2wXXt01h/+kEd58oXpxA94hze7sOm0jS04vE8reLfn3NkrU9dUNcaBdnCggxp00fwsj4mw8sS1ZD9+sMkYKr5EtfTwSeR0LV+uAMUVrKBLwNRDeaUIobeH8vYfXuBv1+LL5ys1IsvdHZxC7X0DYaIE44NpikGUfSB/0Nd//yQ2b3GI74HAfBuVSi1ao0JyrgdtAMGI8Azv2EU2LhRtefsrsb9o6cZokrgh06wwqYN6nmm+SoTMCADQxbpabeUscAb8tUA7kBHEzVkrir8B0+Nv4SgBc8cMEsQOImLvhl5nYUOr/6wkQwMH/Q19TstgfJ3INEmn8WV/bjzStEMSuM7R5OHI6dwwr1fFG63Kwyttos4kXhpEi7cK9TFfkkNKrewAInGta3HIngpo83/9avgocWuNqiSzdXwaH6V91SErCNsljJxHNPxCEHD+HUfIV/MbIREMZ2tH7txqH006PPxulcJwrbk/TxuQESI5YCqSXfDa04TLoWgNkGoDg5/prcyrJ3S8b5Ixt7BvVjlOGcSTuBLGip0mPx3kNjbTRWRxspfxfvVElSJup0u3CMz5Y50HROwIMYkTntwnpv/V/kLAi/BLAHIskJPt6VJiaG3KXWnkGiIw7hJc125vMyaTUgmU+ep5k+aTr9/DwceSVtVOqegx5030VC0pIrvFzQaewzrEjBcSA4n6V4bkqs6WcoWeRKe58RuJ/GLNKJiuUTP7GCoYC3D8G31Jbjjyg2mSNWnTPsJnlYgf1f0uHSWWk1mPmDBFC719R9lsq86iUtGibvBw==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1757900881-911561
+X-HE-Meta: U2FsdGVkX1/hZt/D9Ovh0iUKr4NyPYw9Kp4xkDQzK3Tc36WdnKtE/vc9gqFexFHdphwrelq9qPfBov67pbKZXkflaBjuwj7oOu1YSSIwMCJlLsn6HwI6U2QYZnvFxzIhbl8Ohvd5Yx/AFsG9VqNflu+uGFfPnAOhH9Er0FzUTbzz9prCWW1GdGYqn6Vha+q2fiSQqXpKP4IhAY6KW86sm3bCG4TaVq6a3urjaf5ACcMESVB/hUs2c/TgBO02SNvbvHCtZDwGxU9p84JI2U9aan+a+UFCvy6TnQxR3YEbUNXbPBzmQTZr0nLS4xbH7ay8DPqlcuvuMiTn6Bd5WSWJxNry1zZiO9DfQ61QWB2rJvd+DYMbYy1kn/NOEImh9/hjanHYLYxodniE6A+qY0UzUi9I42PiCyf0QlHX12wQuv3UzbCwiy1n52aLbt+GB9wbU6OBi6kY6gXr6IWcZ23JIQPUylXO43yEeTjPltKadEHdDlcOtfIsRPzsbkc6bcuVfgwieAcJFafCkXd6h1A/cia+2DyJ2f4fekj3hjSs4Kulbh0hxyIaXW8ryx4yxy/ucck0mdCUJRN1IT0V7hPRvSvVUhPGSr31/Zfzpc+1347NGa/lZkld+o2vAXtYiK8JDi7wCrJEshUGz+czgLBxXQ2LzQAl1Hfea8mDQLY4YV4b7ayLbCz5IR8RyytRmOpk0vIXNTV2Ua7GsZV+Ew4NJ5vzf6A7iTeNmCxf9JQD8L1jmESO1JQivM8iSFgdZ8I3tqfHM2WXPQ7m8mT7Guy4r3W1VTFXO32+az7pvoDEe9YPu9/vS7mbZEn7Q1VebioxMXMqn1MPNkIevBoDJoPFvCtMjYHzuai3dIqnOWcneq6GoVkL7k1sF6/16nnG2RoemXvdz3Q1dS7JqbpFAoIoJ+fYIHcA4d0fmyGw9zD6Y4jnmoV8kglatWRcDd8xFi6YlLKuf2LdWcxVs7hRa5n
+ 7Dz8l0l7
+ bPjpMee0GL7Kl8qXkoTUVul8sPPSbxcMHH9c2HF6ERIvMW0nxweiegRlaKTMNVTfwIQVYSOYeg1oU3BA9A1hvfqCbRXUCRIRIpZrXwmoC8BIJl1JEpwYE06hmFsqhC+WTVYik2aVvQZOicfZZOzvRiZ8lKhm2Mr50HZWrx0HbY7QoLuH+i24IdnExJizW7NBK1DPSp7/YcblgGYFgVz9vn+8gxHlgpH2wIFbIUfjpGT4NXUl3pH57GHgbsmqGBgOfhmm+CkXbqfAUeaD8yF7vt1l4hg5KYpirAfbEIFXRWUtvwF+55yhCjoVl9uUFXZrmn7rx
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,90 +122,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Sep 14, 2025 at 01:05:48PM +0800, Lance Yang wrote:
->Hi Wei,
+On Sun, Sep 14, 2025 at 5:23=E2=80=AFPM Barry Song <21cnbao@gmail.com> wrot=
+e:
 >
->On 2025/9/14 08:00, Wei Yang wrote:
->> When using mm_slot in ksm/khugepaged, there is code snip like:
->> 
->> 	slot = mm_slot_lookup(mm_slots_hash, mm);
->> 	mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
->> 	if (mm_slot && ..) {
->> 	}
->> 
->> This is only valid when mm_slot is the first element of its wrapper
->> structure, otherwise a NULL slot would converted to a mm_slot with
->> negative value. And current code thinks it is valid and continue.
->> 
->> Current code works since mm_slot is the first element, but make sure it
->> won't be disturbed.
+> On Mon, Sep 15, 2025 at 7:53=E2=80=AFAM Matthew Wilcox <willy@infradead.o=
+rg> wrote:
+> >
+> > On Thu, Sep 11, 2025 at 07:17:01PM +1200, Barry Song wrote:
+> > > In the process tree, many processes may share anon_vma->root, even if
+> > > they don=E2=80=99t share the anon_vma itself. This causes serious loc=
+k contention
+> > > between memory reclamation (which calls folio_referenced and try_to_u=
+nmap)
+> > > and other processes calling fork(), exit(), mprotect(), etc.
+> > >
+> > > On Android, this issue becomes more severe since many processes are
+> > > descendants of zygote.
+> >
+> > I'm not nearly as familiar with anon_vma as, well, the rest of you
+> > are.  As I understand this situation, usually after fork(), a process
+> > calls exec() and the VMAs evaporate.  Android is different in that afte=
+r
+> > the zygotecalls fork(), there is no exec() and so the VMAs stay COW.
+> >
+> > I wonder if we could fix this by adding a new syscall:
+> >
+> >         mremap(addr, size, size, MREMAP_COW_NOW);
+> >
+> > That would create a new VMA that contains the COWed pages from the
+> > old VMA, but crucially no longer attached to the anon_vma root of
+> > the zygote.  You wouldn't want to call this for every VMA, of course.
+> > Just the ones which are likely to be fully COWed.
+> >
+> > Maybe this isn't practical, but I thought it worth suggesting.
 >
->Good catch! That's indeed quite brittle ;)
+> Thank you for the suggestion, Matthew.
 >
->Just one nit below.
+> Lorenzo suggested possibly unlinking the child anon_vma from the root onc=
+e all
+> folios have been CoW-ed:
 >
->> 
->> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
->> ---
->>   mm/khugepaged.c | 5 ++++-
->>   mm/ksm.c        | 5 ++++-
->>   2 files changed, 8 insertions(+), 2 deletions(-)
->> 
->> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->> index af5f5c80fe4e..668e74ad33b7 100644
->> --- a/mm/khugepaged.c
->> +++ b/mm/khugepaged.c
->> @@ -108,7 +108,7 @@ struct collapse_control {
->>    * @slot: hash lookup from mm to mm_slot
->>    */
->>   struct khugepaged_mm_slot {
->> -	struct mm_slot slot;
->> +	struct mm_slot slot;	/* keep it the first element */
->>   };
->>   /**
->> @@ -2382,6 +2382,9 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
->>   	struct vm_area_struct *vma;
->>   	int progress = 0;
->> +	BUILD_BUG_ON_MSG(mm_slot_entry(NULL, struct khugepaged_mm_slot, slot),
->> +			"slot should be the first element");
->> +
+> "Right now, even if you entirely CoW everything in a VMA, we are still
+> attached to parents with all the overhead. That's something I can look at=
+.
+> "
 >
->I wonder if this BUILD_BUG_ON_MSG() in khugepaged_scan_mm_slot() would
->be better placed in khugepaged_init(), like you did in ksm_init()?
+> My concern is that it=E2=80=99s difficult to determine whether a VMA has =
+been completely
+> CoW-ed, and a single shared folio would prevent the unlink.
+> So I=E2=80=99m not sure this approach would work.
+>
+> You seem to be proposing a forced CoW as a way to safely unlink from the =
+root.
+>
+> A side effect is the potential for sudden, heavy memory allocation,
+> whereas CoW lets asynchronous tasks such as kswap work concurrently.
+>
+> Another issue is the extra memory use from folios that could have been
+> shared but aren=E2=80=99t=E2=80=94likely minor on Android, since only a s=
+mall portion
+> of memory is actually shared, based on our observations.
+>
+> Calling mremap for each VMA might be difficult. Something applied to the
+> whole process could be more practical=E2=80=94similar to exec, but only
+> performing CoW and unlinking the anon_vma root.
+>
+> On the other hand, most anon folios are not actually shared, yet
+> folio_referenced and try_to_unmap still take the entire root lock.
+> In reality, they only care about their own node=E2=80=94no need to iterat=
+e
+> the whole tree.
+>
+> I still think optimizing from that angle could be a better entry point :-=
+)
 
-khugepaged_mm_slot is defined in khugepaged.c, maybe we don't want to export
-it.
+Hi Barry,
+Thanks for raising this issue. I think technically the optimization
+you are suggesting is possible and it does look similar to per-vma
+locking in that:
+- The reader tries to read-lock a specific interval and on failure
+falls back to locking the entire tree (root);
+- The writer write-locks the root first and then one or more
+individual nodes in the tree. Once the writer is done it unlocks all
+the nodes it locked and then the root.
+But as Lorenzo pointed out, this will not be pretty, as it adds yet
+another lock and more locking/unlocking into the writer path.
+In the case of the pagefault path, improving its performance at the
+expense of the writers was not questioned due to pagefault being such
+a hot path. I'm not sure reclaim will be given the same benefit...
+Something to consider.
+In any case, I'm very interested in continuing this discussion and
+would love to test a POC or discuss this at LPC.
+Thanks,
+Suren.
 
 >
->Cheers,
->Lance
->
->>   	VM_BUG_ON(!pages);
->>   	lockdep_assert_held(&khugepaged_mm_lock);
->>   	*result = SCAN_FAIL;
->> diff --git a/mm/ksm.c b/mm/ksm.c
->> index 2ef29802a49b..0d486dbdf7d3 100644
->> --- a/mm/ksm.c
->> +++ b/mm/ksm.c
->> @@ -124,7 +124,7 @@ typedef u8 rmap_age_t;
->>    * @rmap_list: head for this mm_slot's singly-linked list of rmap_items
->>    */
->>   struct ksm_mm_slot {
->> -	struct mm_slot slot;
->> +	struct mm_slot slot;	/* keep it the first element */
->>   	struct ksm_rmap_item *rmap_list;
->>   };
->> @@ -3842,6 +3842,9 @@ static int __init ksm_init(void)
->>   	struct task_struct *ksm_thread;
->>   	int err;
->> +	BUILD_BUG_ON_MSG(mm_slot_entry(NULL, struct ksm_mm_slot, slot),
->> +			"slot should be the first element");
->> +
->>   	/* The correct value depends on page size and endianness */
->>   	zero_checksum = calc_checksum(ZERO_PAGE(0));
->>   	/* Default to false for backwards compatibility */
-
--- 
-Wei Yang
-Help you, Help me
+> Thanks
+> Barry
 
