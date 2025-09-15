@@ -4,188 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97C22CAC597
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 15:44:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 695B8CAC592
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 15:55:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 04A828E001D; Mon, 15 Sep 2025 11:44:01 -0400 (EDT)
+	id B39B58E0002; Mon, 15 Sep 2025 11:55:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 021708E0001; Mon, 15 Sep 2025 11:44:00 -0400 (EDT)
+	id B0FC58E0001; Mon, 15 Sep 2025 11:55:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E52F28E001D; Mon, 15 Sep 2025 11:44:00 -0400 (EDT)
+	id A25A48E0002; Mon, 15 Sep 2025 11:55:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D3CAB8E0001
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 11:44:00 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 81FCB1DF179
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 15:44:00 +0000 (UTC)
-X-FDA: 83891905440.03.418F77F
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012027.outbound.protection.outlook.com [52.101.53.27])
-	by imf15.hostedemail.com (Postfix) with ESMTP id BC9ADA0007
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 15:43:57 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=oXRC3H0i;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf15.hostedemail.com: domain of ziy@nvidia.com designates 52.101.53.27 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757951037;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8EFF38E0001
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 11:55:07 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 40E6959C87
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 15:55:07 +0000 (UTC)
+X-FDA: 83891933454.28.2B5CAFF
+Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 2573E140011
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 15:55:04 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b=BErcVIUL;
+	spf=pass (imf09.hostedemail.com: domain of "prvs=5353faf606=clm@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=5353faf606=clm@meta.com";
+	dmarc=pass (policy=reject) header.from=meta.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1757951705;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I5tcBY4ur9/6leYKkUjbpVldqBwxy8tCTajwneT4R/s=;
-	b=hUcF3FAbE15y1no4ApvdK9bFczGd7ydDPDRWWawvg6Yeq87xWXYTCc0E0TFawsUWxSe22N
-	/wo4UzVIg1DXUOjiLGYYi0mJ//N968Ynu89dzLrr4E49GXxdw5PXj1muk9wSI+lWY9BvvO
-	1fa029gdwCUzFBz0gkjPjs9XRg6EL3c=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1757951037; a=rsa-sha256;
-	cv=pass;
-	b=1bHJ5QiTVFD04jP7Ahm4ZVi9RGtI8OGy4NxKkXU8XDik7PGm7vPhkOxpMExYZ5S3kCBsak
-	8IYJBU+T2C7Yj6BCzaiKdPyth6YRy8mxBIS+/9/zLYj8MftYsA6PE0kdKrJx6JXCnLtF1e
-	wE36LOV5e6jCn8bxpczlCi+NBF6UOK8=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=oXRC3H0i;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf15.hostedemail.com: domain of ziy@nvidia.com designates 52.101.53.27 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dBb8jUdCdgixBJdgIgWMc7YNMX+HIApKaYtQpB/yP6cAIELdm0tKnMdrMBm2Gaff+pW7wn4fPKYlWzYNag2SCpvCwgCyAgwiG6iKCCPRYxgrKBddZM3Q+nzHfzwlXASzOTtAfktZs9D3Wz0l7A8dLBIFRCYA5DjXQ/mHbU27Uv7Zcf3Rp3VZ6a1o/fFQZaiSfRChdLjUEO6gA/iB2ERQrRMcGyRVdEBuAmc9d0cwESgyZURXP5ck3mwxWffYnfPua2rfnxF3vhRjglu98DUaf1OJLKuyq4cUMukg5HjxnwXiJhwVz7Tq0k4nGWbQprY9vwZ5hPSKZ/SX77Fm025cNA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=I5tcBY4ur9/6leYKkUjbpVldqBwxy8tCTajwneT4R/s=;
- b=QwDrZAqARSAm2t5U10NwOAIVx1Eyo6h5RpvGyHCcgwquG7PEaehBXbjL1UgFpkjgopoDQvhHyXXcRoX6+GeQoFCLZsP31Kciln1zld95n7mNEeRAH6OslY0hAEAw4loGCoo9mOYaRIKkvp3VaME76/BzaOpdD7ZhTTHh1bN08guK2nE12N3QMQNqxWSVNwJtn62VrYx9RFQV5RMOWv3MMpwyRRprLu1Ut8EV/6bFi+Gi36A4PYdbCDNDhf9ZdLJPLg48Ay4QL5/8srfgYdorqdv2oIR29xRQwTu6UWlDCqmtmUpZ3C/Vk2uyFLmlIHahHvwHXBk1DyAQ81KHf/U/Aw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=I5tcBY4ur9/6leYKkUjbpVldqBwxy8tCTajwneT4R/s=;
- b=oXRC3H0indyBDqMci720adwFJ4j8RjIeZh/xRMKYtFfbZGMp3FMV7kNTVVHAzxKZbVoToT21tW6hc64gwQjK2f0SelW78XWwfhFgYdq4CIxkJffllHjxUiwzchP6lUB9DxKVqffv4JomFWJRSJrr/Gax1bM7N2R9VGPkSqDEMXEBVi+HBdz70sEhyETOkrI71UkE6nA4v8ALAznVnSbJhA7/MoHFwmEvtyZUu94IVLm8GIaeuuroTeWH9cQomMkAoYmiwWxkMVbEsl9IuBahVRLnS2/SLrY+Dfh6aUhR+9bpScKc/++cRYFWzmZn3XRBpkF1Iqfjt1uu2n+WLkZIbg==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- SJ0PR12MB5612.namprd12.prod.outlook.com (2603:10b6:a03:427::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9115.21; Mon, 15 Sep
- 2025 15:43:54 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a%6]) with mapi id 15.20.9115.020; Mon, 15 Sep 2025
- 15:43:54 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- Leon Romanovsky <leon@kernel.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, kernel@collabora.com,
- Sidhartha Kumar <sidhartha.kumar@oracle.com>,
- Kevin Brodsky <kevin.brodsky@arm.com>
-Subject: Re: [PATCH 1/2] selftests/mm: Add -Wunreachable-code and fix warnings
-Date: Mon, 15 Sep 2025 11:43:51 -0400
-X-Mailer: MailMate (2.0r6272)
-Message-ID: <DFA3B46F-F29B-4A74-9684-51A10692B97A@nvidia.com>
-In-Reply-To: <20250912123025.1271051-2-usama.anjum@collabora.com>
-References: <20250912123025.1271051-1-usama.anjum@collabora.com>
- <20250912123025.1271051-2-usama.anjum@collabora.com>
-Content-Type: text/plain
-X-ClientProxiedBy: BL1PR13CA0359.namprd13.prod.outlook.com
- (2603:10b6:208:2c6::34) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	bh=4HsEdErpHybfhXWy+tJAsZuMRVLTSOg/mwZq3x+RPLY=;
+	b=tDQ1GTpCKTM5vz8+AJXfJkBwAups3B/3LqGS/ZI5I+EwxQn33AuOFoCDN9DFt9/Ogp1JNY
+	Ka91QdX/lLrCJsYDjfQOwMJ42LcuHN/Lxtoz/+hbkvAy58gUdhXFugmtCx/B86Ux5YZsf9
+	goCMMDsC5nZDi8JtdO4NVoqFgxgpLmE=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b=BErcVIUL;
+	spf=pass (imf09.hostedemail.com: domain of "prvs=5353faf606=clm@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=5353faf606=clm@meta.com";
+	dmarc=pass (policy=reject) header.from=meta.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757951705; a=rsa-sha256;
+	cv=none;
+	b=wkQN9Fxt0U/OQh/EYlah5jjrXJFu2LAuIruCOUWG7Gj57y/vWYWH4bdFpqqmOh6TF8e6Ov
+	RBzZ85XDe/2Teq/l7FwXFxo0s1UKIovM/iXcuTtnhKaQH4YFH3KyUGUEOzgUntv9yjtPP6
+	8QdAIiSAB0opWoYXtPxK5A4jM8uDrqw=
+Received: from pps.filterd (m0109332.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 58FBa6A11938139
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 08:55:04 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=4HsEdErpHybfhXWy+tJAsZuMRVLTSOg/mwZq3x+RPLY=; b=BErcVIULombT
+	uIKbPTsrFAiJDhXFWkbD5XPsxuOQpaNISeJ7hnhILjKZKq0dUDvBt3es190Fjy+G
+	cHcCL23/mzmnZH5i/sz8I4mJQ9Z+MSLEDFQICMugpQyO35hA3r4wY48a44ogToss
+	sZ+jggMMRHkG0S5+2tfC6nBxjpBATNs4cvGNxkWRDgTKpVE9tSduY4J3e7CnlO0I
+	9Nfgf9j7Udyft/swCaeGxVptuHh9MeX6P74KxiiwD/quAhk1NJuY+YQ+qw6nEaO1
+	8gjR2pn/Scf4v20VluRSCIxQB3/fhUS/XpTfs0EyRKVKOVYzzk1zh224w3bZnF4h
+	xSzP2lxGSA==
+Received: from maileast.thefacebook.com ([163.114.135.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 496j2s1y8u-6
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 08:55:03 -0700 (PDT)
+Received: from twshared25257.02.ash9.facebook.com (2620:10d:c0a8:1b::8e35) by
+ mail.thefacebook.com (2620:10d:c0a9:6f::237c) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.20; Mon, 15 Sep 2025 15:55:00 +0000
+Received: by devbig091.ldc1.facebook.com (Postfix, from userid 8731)
+	id D01C025CCA63; Mon, 15 Sep 2025 08:07:22 -0700 (PDT)
+From: Chris Mason <clm@meta.com>
+To: Kairui Song <ryncsn@gmail.com>
+CC: Chris Mason <clm@meta.com>, <linux-mm@kvack.org>,
+        Andrew Morton
+	<akpm@linux-foundation.org>,
+        Matthew Wilcox <willy@infradead.org>, Hugh
+ Dickins <hughd@google.com>,
+        Chris Li <chrisl@kernel.org>, Barry Song
+	<baohua@kernel.org>,
+        Baoquan He <bhe@redhat.com>, Nhat Pham
+	<nphamcs@gmail.com>,
+        Kemeng Shi <shikemeng@huaweicloud.com>,
+        Baolin Wang
+	<baolin.wang@linux.alibaba.com>,
+        Ying Huang <ying.huang@linux.alibaba.com>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        David Hildenbrand <david@redhat.com>,
+        Yosry Ahmed <yosryahmed@google.com>,
+        Lorenzo Stoakes
+	<lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
+        <linux-kernel@vger.kernel.org>, Kairui Song <kasong@tencent.com>
+Subject: Re: [PATCH v3 14/15] mm, swap: implement dynamic allocation of swap table
+Date: Mon, 15 Sep 2025 08:05:57 -0700
+Message-ID: <20250915150719.3446727-1-clm@meta.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20250910160833.3464-15-ryncsn@gmail.com>
+References:
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|SJ0PR12MB5612:EE_
-X-MS-Office365-Filtering-Correlation-Id: 11949a40-9178-49ff-0467-08ddf46eacf4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?jBM2rn5pcRYpyM0PgWP+rSwsLsTLjnHxqTtAXTXoiIIOzklW1J7Yx2TZxOAj?=
- =?us-ascii?Q?lP4iz0oahHyozQdLvjXW6agrkPRN/gcEEkahtkV79DNZIA8M8Q6nUDhODs8C?=
- =?us-ascii?Q?UjPlVHlRUxpqqjIpEMdilOG4i4v4pHbb5PvtO3wb9EZf4VnEr+DUBHINE7Jx?=
- =?us-ascii?Q?L8YJCxnMwAUM/dQtpEomQzRAzNIyZO2Jbhg4RLuhR+vnTi1brmzWThNI3Ysc?=
- =?us-ascii?Q?ZkScz7ckiInE1v/5XaEAZ+OMzDMRM3NItdv+i5RRNIuOKynxP4XsasDbPF2D?=
- =?us-ascii?Q?OHEfKVN99U9Lqpe1hH36YgcG9/jFpWKziCNFTbrCtlww+uTptg2A5EqhP2Ky?=
- =?us-ascii?Q?o3T1zFPxvMQNmts/U4FY6Lw6JX3lgZuXEf/tLMUK2ShGfPFuK842yfhSsfgv?=
- =?us-ascii?Q?8sCDIiHkQabEh0810wrvBFwawJ0c/amnnTfDuiRFYFGNQzC5eTu4adzy3xnz?=
- =?us-ascii?Q?5IhVyP5apivPYXl8CWG+LCdDC5mYi/seGLlomoYK/LP3k4OL2XFOR1Gaf8lr?=
- =?us-ascii?Q?Vw9NFFVLU1UoCzbuaslwGponPVKAQfvoqlXI5LdI7cdT9Sv0hy0J6fWugoLM?=
- =?us-ascii?Q?q5rNeTUT2i5BWRVkZQQxDDqkiPwk0wB5O4F+F/etarZ338vCsOM7AlQPtLRs?=
- =?us-ascii?Q?CTNTREIqIIhksjsHIERVxjJkKGe6cNUZVUG3KiVfKRMGeQr4ncpDeXKJuuHJ?=
- =?us-ascii?Q?3EXDsLS4+uAbogrVbjzoGS9PJ+DBtPDogRMED3gCHcnqsnouo3gl83X0hGQ5?=
- =?us-ascii?Q?lTLav8SkBEtHNYpFR6sG6pvqJ8tyPY8TragHlaeritTjEGb0Iw+rrOAChz6l?=
- =?us-ascii?Q?RdXBk8fP0wNLN60I7FxzRhpM+lAg4sOUzjL4pySTIvnWK/AygnPS0iuSWpMd?=
- =?us-ascii?Q?jvFGvN32E8nz63tFb+WkIlYBmwVSfSkOwvZe3as6wSHP8ca3lSYFgZZjx3zw?=
- =?us-ascii?Q?7DZfXI8/70ekeD9JBrcTWqoX9J/lwQ0Pnznh66UQkF63mmCeJ8alZ1IWjSgo?=
- =?us-ascii?Q?zxuJ7gclmZGqTfuX7Bb5UCJO4+7HkaL0kpToC1g27v7a7bsTL/mQbLL3GXkq?=
- =?us-ascii?Q?i1GAGfaEiZF0EwjlnuwEyWr6IxpE3ZKgl1zqTYllfFgka/aEz9crVYQ1ayOx?=
- =?us-ascii?Q?n/+m6bsXyLOhCHUHYlIvJf1kLtcxU4blPIbQR3jHsL9r3BFwJ4giEuTEDNVu?=
- =?us-ascii?Q?Nzmv0mC/ut0Zl/SEDuurNwe5SutY+5D56hLalEr4AGXYDV/5Ni3V3WPlL/kU?=
- =?us-ascii?Q?tjiuIFT7lHzVVkRhyXOmkLVefz1N1PeYm3+34r+Y+WksxQ8wZRrb/Bk0WNQV?=
- =?us-ascii?Q?WzB1r5LogKDziMGxJrK6c8eCKBZxOLjPcDTD2QEGuMCCIePvoM2dKiheokqp?=
- =?us-ascii?Q?QeFkPTYSC1SVgiZd1zTfbtvt+/Tv3OlQV1eEayyKDwO5pjTuEKLNbtonZvcq?=
- =?us-ascii?Q?rwYdwDP1qbg=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?dD0b5iHTPU0WVo98AIJFvpXFVHd+s1TIIxEa581nyHMl5FIPWOdBoNaYtenL?=
- =?us-ascii?Q?xUeEUbyDW966CTSwtcD+48k6vuTnYp+vA4vNUYhJH6RfLDRKLur3NBjgrlqr?=
- =?us-ascii?Q?JcmNspTwFM6qN8QNk19BBnCMY3NzZtwv/ydbzJNYYX7l57Ili5E64U8S6VpX?=
- =?us-ascii?Q?pFbQ2AKJnNCMoyk8cW2D3vL0sYH5KBs/ySnXIQuMJD1BAbOWT1xgff3fq2ML?=
- =?us-ascii?Q?4x6WqS8EQCIx2MyEiZG2DgI7lv4ZSP8eYZKVzlkfCB8XF0HX4Dvb2BHJEf9u?=
- =?us-ascii?Q?sowY5ckXe6d67XJIGfgH+Qsw5lN8an9EvMbXLyezgEnq43idmlurw60YOeax?=
- =?us-ascii?Q?oNCJg7i3gSEA0x+k6Vgg/xsoUyFiuHpcYCLCLxIcYop/WVhU3GlL6YTCKi5V?=
- =?us-ascii?Q?timVoPnsi/ufwi24Igr8AeeJvBgFQOesbUdopOsyKHcOvnl+MNrk6Zduq1H5?=
- =?us-ascii?Q?goIVHV2kkAOa8R5vnIXWxu2QdzRhV3lkZH5SUzDJgOZL8weYDbPGX2swvP8h?=
- =?us-ascii?Q?pNcYBe+CtBz7/XAvoiFG9B2L7nm5H+P4xDgjqfWtY4pZEoD/ukOtKB1d/Z+y?=
- =?us-ascii?Q?v7YTmWARYc2u79UnJMSGb8sjYZinevrzzBVva/Xps/Lxh/nHY9B9OE3bWaC1?=
- =?us-ascii?Q?OkgFUDu2easKrj86LciFdYCa6o9jGtUfZw0VGwf+7n5OeyKoSqdv9ZkUWyk/?=
- =?us-ascii?Q?T44/j93qxwVDjbma4xsBMQyRwkjLlcDyfYCCvjnBUyNymMOnkC63NyHD7Lde?=
- =?us-ascii?Q?XeJYwmDaveB2pd/hxEQ2eruzJ1hwgKAjR9Pm04A+Hok4PRQgRvpr32+NhvB4?=
- =?us-ascii?Q?b6dfGFLaPfN4khFlZoc9vyxazHRC1xitwNd3ZW4VW0G/Um56falWiY+DasFr?=
- =?us-ascii?Q?l2arMEzH0rGrFlHKfvaTNPVyJtCLosF0MTSYOG8zB53QRNlRnrwPszY9HZLR?=
- =?us-ascii?Q?OyFlP9mDkGGmHxFN4CQ5wgen1ENkWQX2hsaRBDJHCc24ce5orr114OkO7kXk?=
- =?us-ascii?Q?i+wSI18Pq/4HCJ7bZ3pc1lV7UsZLbBqlzxdWHv7h0qvDaUFKJgn/oWvb81mm?=
- =?us-ascii?Q?tkIx9hrZEV6JJHKdEfpkPC+LH3jlI19uo6U1Ok3VOeYF7anvPOysR2v+laZq?=
- =?us-ascii?Q?E8te0vbakwrvJo1FIdTbdwGz+yazjjGrN/Nelp+9CcmzOnwZvy7G2oohz+A1?=
- =?us-ascii?Q?HlRvFpcHGwgcfFN1Vdj7vICcpKBSn35e0TisltkQsu9B6krFagHH6bEgIORO?=
- =?us-ascii?Q?TMIQmF+GkG0dtAF0HhaaUnmyWJSM6PJeSYx7LLphJh6QYpRpIm/xDuXeoXyU?=
- =?us-ascii?Q?AuvG3P+QkFsla821Ov7yI/WFKNQMX+Y3Qvu2gVTsKIlN2hZifo7kBc5wZ/A6?=
- =?us-ascii?Q?qru3lDCwS4/KnzKXEKIb5XYKkx2uZhTSCOwCRD1+7r54QO1VgccwkZ1RyLTA?=
- =?us-ascii?Q?nTWUZhRLnRyLVFTqhrtlF296XgMtUe6WBs+uy0Wc9H0xW/v6ejeQfizPKRe1?=
- =?us-ascii?Q?pbcZvMrIT1QW9iqFkzwoEnearukxh64u4sVsIyZDUyndsk7T03hlaVgWSUvb?=
- =?us-ascii?Q?ToQip6T29zoZA/Sq45p4Qn0+OZY3adc6svpnC9Vm?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 11949a40-9178-49ff-0467-08ddf46eacf4
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Sep 2025 15:43:54.3202
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: iLh6q4rNLdwqgPIYGUwaS62eVFBFst62fb4xwo5UV571mzyELLzFPov42kAXi6dy
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB5612
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: BC9ADA0007
-X-Stat-Signature: 3q7pmh5sdnxr3pk36y6xch5bzofrxyi9
+Content-Transfer-Encoding: quoted-printable
+X-FB-Internal: Safe
+Content-Type: text/plain
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE1MDE1MSBTYWx0ZWRfX8bbs7J1pUNzn
+ kdBP8hEtXIzzpa2wHy9Ilk3cG+FhhFxXK2CfEW/YclkbknN1eEtOte6KwCAtaJbKhfXIg5BSdVl
+ BfVQB1xyhZOSd3rHgCUFwnKab/f4OKmRbYv1+iGN8JwYYqzs5GcrPqmBJ1eQiNk5wxdXkEF+9Aw
+ sdEH9+yoIom4bEko0tCmTh/sRdOUOsm8UWke/h8DQd9QplwIX7Dkh5lCau0J6jLZ1sZa6poRapu
+ fKeqWSwGx7v6eDPx684VGJOMJcKOEv44xAV1Ur1bQXP6Brr2vqdr5TZqLbjr/aCIzxXAB+2iCSH
+ 98F2aQyE6At9t6mgIAVcNb8ro8+O3vSY1YcIqLll082CzYKjQVW7akgu5zUImQ=
+X-Proofpoint-ORIG-GUID: W3lwQZsJyvOgNs9xFO0GR4Nj1nSCsTij
+X-Proofpoint-GUID: W3lwQZsJyvOgNs9xFO0GR4Nj1nSCsTij
+X-Authority-Analysis: v=2.4 cv=J5Wq7BnS c=1 sm=1 tr=0 ts=68c836d7 cx=c_pps
+ a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
+ a=yJojWOMRYYMA:10 a=pGLkceISAAAA:8 a=GvQkQWPkAAAA:8 a=VwQbUJbxAAAA:8
+ a=iKxxSpktlHM9fi6nY4MA:9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-15_06,2025-09-12_01,2025-03-28_01
 X-Rspam-User: 
-X-HE-Tag: 1757951037-667906
-X-HE-Meta: U2FsdGVkX1/2OFmbgsEElAiObY6l8kFhZTe2qDN6wI1vDmOqJmTbSlmv8GIR+7TM8nXg4ZsGIquqcozUa8E9diZ+x52UFngv4WN/ANKQ/wxE8vWQp8cE3yLmlkGp1NA8fjIuqiK2cJ9vP3LMtiRFYT0UQST14kiGcFGTP4MkHIVs4dFgu+kfaJIgk5xkmAXdN+RKoUvMOMJ4Mjsi2bhYn/lFPBnAZ+MOs5mf35aAcShWBr4DvkJ46THP5Ud1DPUmm5Mn1euT9hcZjeCIlgtnalQxkNIwaDUBwXMKnI7la9hkwaNuAgSIABDPIk6QeVp284CP25EqGRAi6MwHEDMevsO3gPJ66RnNQ/SnVy+XqcHCBHgrQ39PGUvjzJT6V+TvjbOYMrC1eVeafzHrul2sdOJpjbw5q539obyC2wdSXpYlG1ZZ/RCcFEquW/ee3HE9Bac6f2S5NdPV2Vzsm57CM/R4yoPD6YsC/hD+b+bU6iboO2L9oRWnIOcPuKbSRAW5jdT1NWE0sMVvOVgoY3bHYzqFbE18ESEhax6i95vXnrlgCIvSZiZWbAy5gt/LecwdOjuPy1bN1jJIcF22nfkyJ2witZ+1zW1sigDNre4kirBsMVT8QOOByh9TW8EfIkvEfSQRS1XMm/OmjyK4TeElVA4q4HuQ/+DOpKavQvDk2tZsuH3yalEKI/ZWSvrgJ/t6laqshmfbtngnzjBTCuPs5SnM1LTZa0Es4iaOFsC16teXQPmExNDLYslvdVSiA0wUq9+bJYCoEcNEyA+qBiaSBbVvl91Zu/UCFhhuUtPuushPG/1yE5jVVCn7DzIKIbB3e5mMiSH5QlhiMrryz0o8eE1lbHbCCKKOoVGG67AqgcVT5SevmB2htPvINb4SSVpSE0ttQTOCbfQ98FQnv/PHUmEQgJnEJd533tBqxIqb1qkYuROJep4KIVJDQ+2K4DbP1Iriwr1HsbstLUc7m1/
- vx6I3YO6
- 7DNo0tEMrppS4YuzfBSPSYn85nKEIOPHt6a6w8uF9MJC6vtFtbB9QjH8d0F6XBdcBYguo38FYLzvVLyfHix1xXDH1hjIgoKa1vtSGsl02O5Va9w4zzkMjzN0qWNtrR/iWiST6bi5gWjK6zusiE3ACen/Rftx6aDr11CZi0uJpBAXL7E43S38n05K3nXtf87umSN7Z4IRn+8Ecy17/NSY26fPHhwQ4F+86bft9+1/1ErYWzSBMFu9RMuhdxYH7p5HbM9Ah5zSwS8/ELza9crl/6qAs2CnuVSDKjqc5+Kga58ch8XF+4bq96ay+XarYiox141H9DlBwxMA38T/MWmN8rfUZmfDS4Yuo457V/l/lPYRTfaHfDpbbED/lGWAq71/24UIml0TuFeHyJJR+dPFfLq1hGVkbwmGBFM8L+JcO3wMlnYETkvZzWGfc+utMoHS+KDFUgme9J83cwH9TC31Tqge22N3CA2HYiPtFP1sfScaiMctPxbNaIBPJVjHh3pjXOpK9x3WOJYd1y5fVKqhr5Z2FOW3PzqKIkZ3xPIe3NBk2yC+1EiS8HCC+kl5jx8exArhbwQV5ijPa9+o=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 2573E140011
+X-Stat-Signature: hxciwdecynw4qdhgiuy7r9gb7m8667ie
+X-HE-Tag: 1757951704-120997
+X-HE-Meta: U2FsdGVkX18JasF058AsxhGtH+pVd7aQBIlyR7ozXdlra3jqd12d3h7SW5dg+CZxbg8IXSGhS8fUw6H02KQGPk6CBt/ej/kSLIWlEfDuPSdCZk4tPPwSMebXbNUSTCASawN8IxYoxvGgCstR9c8YMj9roC3XA+wdJQA90X+AJ8C3PlL2oAMkQ4JpBfJ/u/GPX8V3Kcsx2h0p1pRxtLcf7M1QqGdLtElKzkl2GtC+YM45iVjxdrzH6XZKliz31hoF8G+PGimOTOrk5IWu+MPMh/CKLtFemdA6XafZXWTEkySui3AgB4CuWpBCMNXQ58Z8Cq6hGsTfmvkGFt+vHe5q213rhzHoWbkLwRn3Hgf/Ki93+ziLGQk2sKLQRrffojO5qnTWgoOJiSHdge6QYr3/wMb4DWewazzqZkZtJHoCK1lLc0wYGmavvARlGQPxzTnRMIjXm4qJkGSnmWH3OR5A4SY+PcgOxvKBvdnXp0oRNrVcKDO0nWgB8BrunyJECtdfnOLFZMy7vM7nP4eOcSaf/joS8kMD24kFEEMbTRbskzLrdFkiiJm3SAbrxmpPK4QDq5ke7YOVzNQz7pqiE7F0JlPhHDd6WyxnZrvjs5xC+FZWwF7VRX9ddSCBeJCqkN6jdeUh5j7V2G/2xmL7+qrz49rbYNM6YaQLn87vxyguThLG0f3Qfj+TD4+mR7uFUhz4vMG/lwd7m2HGdA7E02G/CmdT3LiDMSILt/UpNTST9gndYet/K+484dV9G5KDqpCOCU5GHH4ceh+O094cFYpxDZvHU5qxDm7BJZwHDz6op2MwXM5ecVSCA4xAD5XgNvAKQnmS83wCHIZjqeKOo50IzbRsdGtHxGqW5KNn9uqRcz2CRhSc67iCARX2SsoLFwwj0VajRPTIX5qlYQMLslnplehcms2JacYSVpOJ2DcjEgSlVN3LNf0ISgE323sDQg17vY4C2MyFOkoSUU0UZY7
+ X+uJdoft
+ aavjTq+18JrRTrPFUK5vcbZybYTEpG18fObTC9oHaLtJhkB0pyxsB6yg41ygcQehNsNUh5ULt4IdtHwbIONr2weToArBvRYtCMDWs5oCH7IkCSSSbdeZunTV9IA7Ph7TDdeGgE09wwingmIr7D0Kjp9GdEEghDFH/upBhP03uy6ZqCwBzMlg3hx3I7+rnBFx9P4EdHn/rIIJIPS4CWsMAytMNC6lvHSK++zxvHmewqZfRyuVX8raEFCVGwAEsCGpz02slbPEEmZVk3nPFlo06TFHhindT6N+U5lmDFeY/qW3onga5n8TNsnMJ32uGyadtPsrnbP/CzrF4LKcTvBNXqNmqyXrN2wIHeayfArusRk9ILP5amoZXygZn8/mlbTgRmA5MfOVBdCZL2LCmo+DT1VBSPopOcDGMH0M8FNNdaEuxSDQG3prOXbbB/A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -194,40 +134,174 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12 Sep 2025, at 8:30, Muhammad Usama Anjum wrote:
+On Thu, 11 Sep 2025 00:08:32 +0800 Kairui Song <ryncsn@gmail.com> wrote:
 
-> Enable -Wunreachable-code flag to catch dead code and fix them.
->
-> 1. Remove the dead code and write a comment instead:
-> hmm-tests.c:2033:3: warning: code will never be executed
-> [-Wunreachable-code]
->                 perror("Should not reach this\n");
->                 ^~~~~~
->
-> 2. ksft_exit_fail_msg() calls exit(). So cleanup isn't done. Replace it
->    with ksft_print_msg().
-> split_huge_page_test.c:301:3: warning: code will never be executed
-> [-Wunreachable-code]
->                 goto cleanup;
->                 ^~~~~~~~~~~~
->
-> 3. Remove duplicate inline.
-> pkey_sighandler_tests.c:44:15: warning: duplicate 'inline' declaration
-> specifier [-Wduplicate-decl-specifier]
-> static inline __always_inline
->
-> Reviewed-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
-> Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
-> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+> From: Kairui Song <kasong@tencent.com>
+>=20
+> Now swap table is cluster based, which means free clusters can free its
+> table since no one should modify it.
+>=20
+> There could be speculative readers, like swap cache look up, protect
+> them by making them RCU protected. All swap table should be filled with
+> null entries before free, so such readers will either see a NULL pointe=
+r
+> or a null filled table being lazy freed.
+>=20
+> On allocation, allocate the table when a cluster is used by any order.
+>=20
+> This way, we can reduce the memory usage of large swap device
+> significantly.
+>=20
+> This idea to dynamically release unused swap cluster data was initially
+> suggested by Chris Li while proposing the cluster swap allocator and
+> it suits the swap table idea very well.
+>=20
+> Co-developed-by: Chris Li <chrisl@kernel.org>
+> Signed-off-by: Chris Li <chrisl@kernel.org>
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> Acked-by: Chris Li <chrisl@kernel.org>
 > ---
->  tools/testing/selftests/mm/Makefile                | 1 +
->  tools/testing/selftests/mm/hmm-tests.c             | 5 ++---
->  tools/testing/selftests/mm/pkey_sighandler_tests.c | 2 +-
->  tools/testing/selftests/mm/split_huge_page_test.c  | 2 +-
->  4 files changed, 5 insertions(+), 5 deletions(-)
->
-LGTM. Reviewed-by: Zi Yan <ziy@nvidia.com>
+>  mm/swap.h       |   2 +-
+>  mm/swap_state.c |   9 +--
+>  mm/swap_table.h |  37 ++++++++-
+>  mm/swapfile.c   | 202 ++++++++++++++++++++++++++++++++++++++----------
+>  4 files changed, 199 insertions(+), 51 deletions(-)
+>=20
 
-Best Regards,
-Yan, Zi
+[ ... ]
+
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index 89659928465e..faf867a6c5c1 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> =20
+
+[ ... ]
+
+> +/*
+> + * Allocate a swap table may need to sleep, which leads to migration,
+> + * so attempt an atomic allocation first then fallback and handle
+> + * potential race.
+> + */
+> +static struct swap_cluster_info *
+> +swap_cluster_alloc_table(struct swap_info_struct *si,
+> +			 struct swap_cluster_info *ci,
+> +			 int order)
+>  {
+> -	unsigned int ci_off;
+> -	unsigned long swp_tb;
+> +	struct swap_cluster_info *pcp_ci;
+> +	struct swap_table *table;
+> +	unsigned long offset;
+> =20
+> -	if (!ci->table)
+> -		return;
+> +	/*
+> +	 * Only cluster isolation from the allocator does table allocation.
+> +	 * Swap allocator uses a percpu cluster and holds the local lock.
+> +	 */
+> +	lockdep_assert_held(&ci->lock);
+> +	lockdep_assert_held(&this_cpu_ptr(&percpu_swap_cluster)->lock);
+> +
+> +	table =3D kmem_cache_zalloc(swap_table_cachep,
+> +				  __GFP_HIGH | __GFP_NOMEMALLOC | __GFP_NOWARN);
+> +	if (table) {
+> +		rcu_assign_pointer(ci->table, table);
+> +		return ci;
+> +	}
+> +
+> +	/*
+> +	 * Try a sleep allocation. Each isolated free cluster may cause
+> +	 * a sleep allocation, but there is a limited number of them, so
+> +	 * the potential recursive allocation should be limited.
+> +	 */
+> +	spin_unlock(&ci->lock);
+> +	if (!(si->flags & SWP_SOLIDSTATE))
+> +		spin_unlock(&si->global_cluster_lock);
+> +	local_unlock(&percpu_swap_cluster.lock);
+> +	table =3D kmem_cache_zalloc(swap_table_cachep, __GFP_HIGH | GFP_KERNE=
+L);
+> =20
+> -	for (ci_off =3D 0; ci_off < SWAPFILE_CLUSTER; ci_off++) {
+> -		swp_tb =3D __swap_table_get(ci, ci_off);
+> -		if (!swp_tb_is_null(swp_tb))
+> -			pr_err_once("swap: unclean swap space on swapoff: 0x%lx",
+> -				    swp_tb);
+> +	local_lock(&percpu_swap_cluster.lock);
+> +	if (!(si->flags & SWP_SOLIDSTATE))
+> +		spin_lock(&si->global_cluster_lock);
+> +	/*
+> +	 * Back to atomic context. First, check if we migrated to a new
+> +	 * CPU with a usable percpu cluster. If so, try using that instead.
+> +	 * No need to check it for the spinning device, as swap is
+> +	 * serialized by the global lock on them.
+> +	 *
+> +	 * The is_usable check is a bit rough, but ensures order 0 success.
+> +	 */
+> +	offset =3D this_cpu_read(percpu_swap_cluster.offset[order]);
+> +	if ((si->flags & SWP_SOLIDSTATE) && offset) {
+> +		pcp_ci =3D swap_cluster_lock(si, offset);
+> +		if (cluster_is_usable(pcp_ci, order) &&
+> +		    pcp_ci->count < SWAPFILE_CLUSTER) {
+> +			ci =3D pcp_ci;
+                       ^^^^^^^^^^^^^
+ci came from the caller, and in the case of isolate_lock_cluster() they
+had just removed it from a list.  We overwrite ci and return something
+different.
+
+> +			goto free_table;
+> +		}
+> +		swap_cluster_unlock(pcp_ci);
+>  	}
+> =20
+> -	kfree(ci->table);
+> -	ci->table =3D NULL;
+> +	if (!table)
+> +		return NULL;
+> +
+> +	spin_lock(&ci->lock);
+> +	/* Nothing should have touched the dangling empty cluster. */
+> +	if (WARN_ON_ONCE(cluster_table_is_alloced(ci)))
+> +		goto free_table;
+> +
+> +	rcu_assign_pointer(ci->table, table);
+> +	return ci;
+> +
+> +free_table:
+> +	if (table)
+> +		kmem_cache_free(swap_table_cachep, table);
+> +	return ci;
+>  }
+> =20
+>  static void move_cluster(struct swap_info_struct *si,
+
+[ ... ]
+
+> @@ -513,13 +584,19 @@ static struct swap_cluster_info *isolate_lock_clu=
+ster(
+> =20
+>  		list_del(&ci->list);
+>  		ci->flags =3D CLUSTER_FLAG_NONE;
+> -		ret =3D ci;
+> +		found =3D ci;
+
+We've pulled ci off the list here.
+
+>  		break;
+>  	}
+> -out:
+>  	spin_unlock(&si->lock);
+> =20
+> -	return ret;
+> +	if (found && !cluster_table_is_alloced(found)) {
+> +		/* Only an empty free cluster's swap table can be freed. */
+> +		VM_WARN_ON_ONCE(list !=3D &si->free_clusters);
+> +		VM_WARN_ON_ONCE(!cluster_is_empty(found));
+> +		return swap_cluster_alloc_table(si, found, order);
+
+swap_cluster_alloc_table() may have switched for a different ci? What
+happens to the one we pulled off the list?
+
+-chris
+
 
