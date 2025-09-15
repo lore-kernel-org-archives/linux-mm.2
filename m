@@ -4,68 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DE79CAC597
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 16:30:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3538CAC59A
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 16:30:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C71218E0001; Mon, 15 Sep 2025 12:30:00 -0400 (EDT)
+	id 415178E0012; Mon, 15 Sep 2025 12:30:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B84D58E000E; Mon, 15 Sep 2025 12:30:00 -0400 (EDT)
+	id 2F9CE8E000E; Mon, 15 Sep 2025 12:30:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 940888E0001; Mon, 15 Sep 2025 12:30:00 -0400 (EDT)
+	id 1E9AB8E0012; Mon, 15 Sep 2025 12:30:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 78C288E0001
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 12:30:00 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 27CAB160600
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 16:30:00 +0000 (UTC)
-X-FDA: 83892021360.05.AA35679
-Received: from mta22.hihonor.com (mta22.hihonor.com [81.70.192.198])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 5DA3D20011
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 16:29:56 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=honor.com header.s=dkim header.b="DiMtGw/u";
-	spf=pass (imf03.hostedemail.com: domain of zhongjinji@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=zhongjinji@honor.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EC2928E000E
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 12:30:01 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B985E1DF358
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 16:30:01 +0000 (UTC)
+X-FDA: 83892021402.24.78DDE68
+Received: from mta22.hihonor.com (mta22.honor.com [81.70.192.198])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 6DFF8C000C
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 16:29:57 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=honor.com header.s=dkim header.b=QyiWEnFU;
+	spf=pass (imf28.hostedemail.com: domain of zhongjinji@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=zhongjinji@honor.com;
 	dmarc=pass (policy=none) header.from=honor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757953798;
+	s=arc-20220608; t=1757953800;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=q+Rz01jnhZrKhL2yDuA2zWsb7SrFCfsHx3X9jrl/ySE=;
-	b=Is1uaEbDobcPJaBSddpTpJ8LwkmAXM3SA2j1U5MIVRLPtEFeBcct9S6B3R1aYSvgOH/o6Z
-	VzxWpkoQrON/oxoxvTkQhb+p6TutQwCl32SANQe9L/6FrDZtgSenfkGgQvGEurQTqU6wG8
-	ZzcDvjEFuum2boyoOQkYXZoyn9+kffA=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=r4ridvdVFjNgW7hlKtSiyRIVq3lyiXCccE9PXxhmbvk=;
+	b=4zyv4/aCYo0i539zJYyRZCpLBXs5sEfiXNklxsPnBz0by+F/dmyntk9+PsSvxtk905vIwF
+	a1IF8wIRkc1rvDLD+qnhqbz7yQyUpOnm3jYyR6KR1/EQPDXZOlC51mO4W+CxvqZYckHlUv
+	mWveU9ut4+xJ58isjPdHoBRHqYw8PmU=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=honor.com header.s=dkim header.b="DiMtGw/u";
-	spf=pass (imf03.hostedemail.com: domain of zhongjinji@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=zhongjinji@honor.com;
+	imf28.hostedemail.com;
+	dkim=pass header.d=honor.com header.s=dkim header.b=QyiWEnFU;
+	spf=pass (imf28.hostedemail.com: domain of zhongjinji@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=zhongjinji@honor.com;
 	dmarc=pass (policy=none) header.from=honor.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757953798; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757953800; a=rsa-sha256;
 	cv=none;
-	b=QPw58efEBc8hbEqZ236SOBh5dKiok781CgQVL0JN3AEmUIBrzXQ47NbX5pdvFqJefSU7je
-	8jenCtLLsrO0hcPsS9NcCRO1WurM/kJY/nv7daq5HGP2za2RCGY2WjWq3bh9oTUYDPgtCm
-	QJZpgeGSCrIULReaKJOUd+G6JWu3W10=
+	b=kq7F5UjqlrnsDkw1nmZivvY5GYyoqvvDNVOCdjqfolU4yzc9rWLjFPaU9Kz7cqTAlLucDX
+	M2mNImGdNl1C+to2pa+lx2TNJFp6K0ZcvRTG7or2/i4j+yYYFMbknyUiPLSH/z/XISfcy7
+	/PKiR18Q6H35d73wu5nrzhfpxlHqUP8=
 dkim-signature: v=1; a=rsa-sha256; d=honor.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=To:From;
-	bh=q+Rz01jnhZrKhL2yDuA2zWsb7SrFCfsHx3X9jrl/ySE=;
-	b=DiMtGw/unnVszkGXeB0iAIK0NMPg16E/Fmf/kqDkPOJQPQero0Jvm1OSLsw4Lgg4LlmX+huEg
-	vIJWo5vsYzMLXNZ7CN5vsKWBI704t6GN1v+BVwlkxF8BX4+Ruod3DJjVMTuUMnhsq6uea6RM66j
-	7nj5OtvzoGYw2Vfpdm025Bw=
-Received: from w012.hihonor.com (unknown [10.68.27.189])
-	by mta22.hihonor.com (SkyGuard) with ESMTPS id 4cQVqJ0GrCzYlBF4;
-	Tue, 16 Sep 2025 00:29:32 +0800 (CST)
-Received: from a018.hihonor.com (10.68.17.250) by w012.hihonor.com
- (10.68.27.189) with Microsoft SMTP Server (version=TLS1_2,
+	bh=r4ridvdVFjNgW7hlKtSiyRIVq3lyiXCccE9PXxhmbvk=;
+	b=QyiWEnFUV/ExnSYALnvXb1M/jH8oiPiNC1VRhLS2ogMGSlqwovaMjMYk3mO8z5goVoYM9XXVn
+	MIlc4NWH4ivtQtXXb1kuxR6C2sP5BMFuxIsdrQ0nYTQQV5niNokdDW9EWHscyE620HzP1rNAjDK
+	bMSjjX4CJii+REUiuBkMhV8=
+Received: from w001.hihonor.com (unknown [10.68.25.235])
+	by mta22.hihonor.com (SkyGuard) with ESMTPS id 4cQVqH4r1rzYlBF4;
+	Tue, 16 Sep 2025 00:29:31 +0800 (CST)
+Received: from a018.hihonor.com (10.68.17.250) by w001.hihonor.com
+ (10.68.25.235) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 16 Sep
  2025 00:29:51 +0800
 Received: from localhost.localdomain (10.144.20.219) by a018.hihonor.com
  (10.68.17.250) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 16 Sep
- 2025 00:29:51 +0800
+ 2025 00:29:50 +0800
 From: zhongjinji <zhongjinji@honor.com>
 To: <mhocko@suse.com>
 CC: <rientjes@google.com>, <shakeel.butt@linux.dev>,
@@ -74,25 +73,23 @@ CC: <rientjes@google.com>, <shakeel.butt@linux.dev>,
 	<rafael@kernel.org>, <pavel@kernel.org>, <linux-mm@kvack.org>,
 	<linux-pm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
 	<liulu.liu@honor.com>, <feng.han@honor.com>, <zhongjinji@honor.com>
-Subject: [PATCH v10 2/2] mm/oom_kill: The OOM reaper traverses the VMA maple tree in reverse order
-Date: Tue, 16 Sep 2025 00:29:46 +0800
-Message-ID: <20250915162946.5515-3-zhongjinji@honor.com>
+Subject: [PATCH v10 0/2] Improvements to Victim Process Thawing and OOM Reaper Traversal Order
+Date: Tue, 16 Sep 2025 00:29:44 +0800
+Message-ID: <20250915162946.5515-1-zhongjinji@honor.com>
 X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20250915162946.5515-1-zhongjinji@honor.com>
-References: <20250915162946.5515-1-zhongjinji@honor.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [10.144.20.219]
 X-ClientProxiedBy: w003.hihonor.com (10.68.17.88) To a018.hihonor.com
  (10.68.17.250)
-X-Stat-Signature: fcx9pjqye67bu13hw4icrg1cudjhanaa
+X-Rspamd-Queue-Id: 6DFF8C000C
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 6abch4efurnunb6sx4wkd9jg184h3nzf
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5DA3D20011
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1757953796-939350
-X-HE-Meta: U2FsdGVkX18dH5TalL2WxSHCbC9GknlLbwmww4nyAc0k2Eez7OVf0t/B7ZsBWnyn8nTFTzSB/yVB1Q6Zq4U1forOMWjC8lezda6cObgRlfvPrRY2ekYdiOaKpAE4pLAV67YsFPiXjrfItMFhICccImqJHevHyrLMSKsYPai3ZzZRYl6DIixFgT/tqLTClFbpFLRnl0fgSoK11y2XXF7/hU9zIYiR4FXil7gme3CsfhEE811N9ug6nKZB0KV4mRhrcVne0Kmrmvp2BkzAElWVQglKVY9TJkMWZvwrm/MCSzTonEdoCKcgj2Z8zANcWXbu/zHWEbakYIqGepJbOlopk6TvHOQFGBYuRlamqCX8EoGI0aXPGSWJ1gtdBzawaP9wZzeAOy9yVZi7rw6E9l0jO/pJ+FXmBj9fMAodr1rANzd+ScqC/ngxCUTvo5BLpzeWFk/+x0/WgH4lU8J9v2SDMSFX5Ii2gYHfPwnuNQRDgWN7ZBtbp5kd91aTKJYYv6VMyRCHffbshb4RAM9VhAXmQWOuEZZinzMDZt/dcSuGO3uSBO8Npa1sq7odzczu9K615PrbmSjiaIiuyQjBvFdqwlen4udpflht4odyYpwShCC47UUfalrb/IXJL74h6eeYxsYJ3xNg81mFN6bK06euNDjD4VMMKIhGOGXlF34hrBRsSnx/Suo0Pju03yhUQCg91fKOVX/HtOlKdc3eyqgZm1J7O3aBnR2ddtEfq8cikD7I13o75gsLUEbUdStfmwm1fhl8t0ccr209TsIp2SZij461oPAVKt+2JX+l9DhVBed7iTNWtYgmJs5ApmbHAouPYv2G/M6gh7d9hZPvSznz3Hc1gwiqSk7nLgg8hebVGThD4iq3ZRJo9hQ4y34pxD6//QFc6E1pDJYyyRhe9Vr2AHYAi+GR4ui8tom7dEEPv9FOVEN8RtpwYDbPwOd52vF3SJpbgvQPqTRpl0yeNak
- 4rRl+Uug
- X/Sr1uk9487F3FWywZ2njpuRRTGwYQ/nqTYl8KQp8tMRWgGGWomzQScJIPqvgnGXFeF9Qa2w8PbMdvdZO5S3qZKSfK6fKmgknR9gXVxGL/WdPkGiF2PACm/kUcidt+BtBiJVFw/EU9hVtK1dYe0ad1nsTLVsWNxZvhyG9f6pdOoUTNfEIw5RMSDmlKP83EKuTlUe9n6jf+7dVDfl0aM2UtSmxbB6tA8HEiysNjVWILlGaUJ1q0y3Hiqo6dBRiCtOHeskVS84xVnzd1XBRXJLNvCeh9Txhy/tQQbOiyBVSbZAeq8srTWrYCkGTHQjD48yR9FV55UFOtkNl3jqnpGCBmY5wrfxGzn2WrtOXqQ/E5gepc+l7Lmr6ROUleJPJen6QGOtCv6B+ipIPhoLDoRpNUOzjzzK7EOSjD+vYLZz6m+3lA7/RqC6KPGepOASuuehfYFux
+X-HE-Tag: 1757953797-273819
+X-HE-Meta: U2FsdGVkX1+2FZVgY95m1NLwWBMUMHgP1/xqHpidQD6JhkvPddfZJt0E7ht1aIWxOExJq2MOL+ryh9otYi1e1aob3PV+U6WIlevRwNfpwTJDuKrFnZAw0sshjw4O1pXmDXFcXbYggVfYLCg6R+22w27vdV+T+98vpxuECK50C7Fh51DTzIce7TzG7+ZnfMvWh677dwiYOYUQi2EZQ34OVMW3AE9WvqIZpx2rKrkDsXltX5xgShgTuuzx34fesD0YnyAdCaxNljNAdCcNEc5V3WJbEnKj1zzZif0i9+P2IxDNp8lK3RJggCu3BtNB1NcZrdRs6lVUPcljohUHkRLeSZc4fcfb/uVmhziZleCwNowhdjmcRqFoWufLnKUPSHVHtj22tfDrgZ67EQbPjRs7Lyz2ZZokQvg/Wv3hhDjvY6iHQs2b9XRqS1F7ty6Lw7JQdGZnmX5BhNogyWK96Mlr4OIbTqk7YttSMi+ezmBn1hHB3gXKn/uNApsnV4E/sNDRT3zln7sXkLh7tasOkwzOAWk6r2VF9eexXIqGTfAu/suT9xCnybnCJI38GbqilWWb9wU5HMBkZGnJoue9dtq53oPBAkZ6o6kfcoMCJCWLzGNAtTfPlp4YjU41c09eGVRS/cD4ngQP6lfHbXbHqhZNVwC0wOM1aRt3zhOu8S4YTFRqo7l3hpMSwmFpkb5sansFZ7Sa9QYPNqNezPl+2hfu8kHprEvB8JDNtGaRPUAu8soG2quibsRa4HHN6av1pO3LI0OOk8ghjzUIzUmXTUeuDSWI4SwNTaxlfHvXLMd4+ARCfs1vF1r92uabS7VDLhCk9L+3csvwcFulLjXWskHRy1uhF5me/U2H4b5uZz7h+RCMD0Nao78Pv+zgq0WVZzJGhJPe/5HR2Iz+N8IqkBHqJIvixNE3qoID58mgOp2YH4YchrkQwkD8MExMNroQvJysAy81na6cuHe3Ga8YbP3
+ BYMR8ymP
+ q2hODE6cUG5Yz7NNV83fVk0Qw+MtyImn7hhvypD683lUQnjnsZASzZHj8Dh3x3L2fdzsfsWtd1ahsXnz9oZyxRcXfpZuuJ8rLSo6cCaGvo04q1yjn4Ayo5JaCZ0rwGupNM3dDm87urALiqjMhFpKCBjFFgeSuBkGmrshZix+ccAxRCDur/qzFWccDOPdz3zhFULjBq8KFQdPO4ZB44wY1YB4nRDhw3Fk+GkY62OwYLf2iLOPjNKB8U4fAaSwdgy7STycWQhpccDB0fWcT863rANKkbbCsBPPYPvql
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,110 +98,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Although the oom_reaper is delayed and it gives the oom victim chance to
-clean up its address space this might take a while especially for
-processes with a large address space footprint. In those cases
-oom_reaper might start racing with the dying task and compete for shared
-resources - e.g. page table lock contention has been observed.
+This patch series focuses on optimizing victim process thawing and refining
+the traversal order of the OOM reaper. Since __thaw_task() is used to thaw a
+single thread of the victim, thawing only one thread cannot guarantee the
+exit of the OOM victim when it is frozen. Patch 1 thaw the entire process
+of the OOM victim to ensure that OOM victims are able to terminate themselves.
+Even if the oom_reaper is delayed, patch 2 is still beneficial for reaping
+processes with a large address space footprint, and it also greatly improves
+process_mrelease.
 
-Reduce those races by reaping the oom victim from the other end of the
-address space.
-
-It is also a significant improvement for process_mrelease(). When a process
-is killed, process_mrelease is used to reap the killed process and often
-runs concurrently with the dying task. The test data shows that after
-applying the patch, lock contention is greatly reduced during the procedure
-of reaping the killed process.
-
-The test is conducted on arm64. The following basic perf numbers show that
-applying this patch significantly reduces pte spin lock contention.
-
-Without the patch:
-|--99.57%-- oom_reaper
-|    |--73.58%-- unmap_page_range
-|    |    |--8.67%-- [hit in function]
-|    |    |--41.59%-- __pte_offset_map_lock
-|    |    |--29.47%-- folio_remove_rmap_ptes
-|    |    |--16.11%-- tlb_flush_mmu
-|    |--19.94%-- tlb_finish_mmu
-|    |--3.21%-- folio_remove_rmap_ptes
-
-With the patch:
-|--99.53%-- oom_reaper
-|    |--55.77%-- unmap_page_range
-|    |    |--20.49%-- [hit in function]
-|    |    |--58.30%-- folio_remove_rmap_ptes
-|    |    |--11.48%-- tlb_flush_mmu
-|    |    |--3.33%-- folio_mark_accessed
-|    |--32.21%-- tlb_finish_mmu
-|    |--6.93%-- folio_remove_rmap_ptes
-|    |--0.69%-- __pte_offset_map_lock
-
-Detailed breakdowns for both scenarios are provided below. The cumulative time
-for oom_reaper plus exit_mmap(victim) in both cases is also summarized, making
-the performance improvements clear.
-+----------------------------------------------------------------+
-| Category                      | Applying patch | Without patch |
-+-------------------------------+----------------+---------------+
-| Total running time            |    132.6       |    167.1      |
-|   (exit_mmap + reaper work)   |  72.4 + 60.2   |  90.7 + 76.4  |
-+-------------------------------+----------------+---------------+
-| Time waiting for pte spinlock |     1.0        |    33.1       |
-|   (exit_mmap + reaper work)   |   0.4 + 0.6    |  10.0 + 23.1  |
-+-------------------------------+----------------+---------------+
-| folio_remove_rmap_ptes time   |    42.0        |    41.3       |
-|   (exit_mmap + reaper work)   |  18.4 + 23.6   |  22.4 + 18.9  |
-+----------------------------------------------------------------+
-
-From this report, we can see that:
-1. The reduction in total time comes mainly from the decrease in time spent
-on pte spinlock and other locks.
-2. oom_reaper performs more work in some areas, but at the same time,
-exit_mmap also handles certain tasks more efficiently, such as
-folio_remove_rmap_ptes.
-
-Here is a more detailed perf report. [1]
-
-link: https://lore.kernel.org/all/20250915162619.5133-1-zhongjinji@honor.com/
-
-Signed-off-by: zhongjinji <zhongjinji@honor.com>
-Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-Acked-by: Michal Hocko <mhocko@suse.com>
 ---
- mm/oom_kill.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+v9 -> v10:
+- Just update the changelog. [15] [16]
 
-diff --git a/mm/oom_kill.c b/mm/oom_kill.c
-index 88356b66cc35..28fb36be332b 100644
---- a/mm/oom_kill.c
-+++ b/mm/oom_kill.c
-@@ -516,7 +516,7 @@ static bool __oom_reap_task_mm(struct mm_struct *mm)
- {
- 	struct vm_area_struct *vma;
- 	bool ret = true;
--	VMA_ITERATOR(vmi, mm, 0);
-+	MA_STATE(mas, &mm->mm_mt, ULONG_MAX, ULONG_MAX);
- 
- 	/*
- 	 * Tell all users of get_user/copy_from_user etc... that the content
-@@ -526,7 +526,13 @@ static bool __oom_reap_task_mm(struct mm_struct *mm)
- 	 */
- 	set_bit(MMF_UNSTABLE, &mm->flags);
- 
--	for_each_vma(vmi, vma) {
-+	/*
-+	 * It might start racing with the dying task and compete for shared
-+	 * resources - e.g. page table lock contention has been observed.
-+	 * Reduce those races by reaping the oom victim from the other end
-+	 * of the address space.
-+	 */
-+	mas_for_each_rev(&mas, vma, 0) {
- 		if (vma->vm_flags & (VM_HUGETLB|VM_PFNMAP))
- 			continue;
- 
+v8 -> v9:
+- Replace thaw_oom_process with thaw_process. [13]
+- Use tsk_is_oom_victim() to check whether a task is an OOM victim in
+  freezing_slow_path(). [14]
+
+v7 -> v8:
+- Introduce thaw_oom_process() for thawing OOM victims. [12]
+- Use RCU protection for thread traversal in thaw_oom_process.
+
+v6 -> v7:
+- Thawing the victim process to ensure that it can terminate on its own. [10]
+- Since the delay reaper is no longer skipped, I'm not sure whether patch 2
+  will still be accepted. Revise the Changelog for patch 2. [11]
+- Remove report tags
+
+v5 -> v6:
+- Use mas_for_each_rev() for VMA traversal [6]
+- Simplify the judgment of whether to delay in queue_oom_reaper() [7]
+- Refine changelog to better capture the essence of the changes [8]
+- Use READ_ONCE(tsk->frozen) instead of checking mm and additional
+  checks inside for_each_process(), as it is sufficient [9]
+- Add report tags because fengbaopeng and tianxiaobin reported the
+  high load issue of the reaper
+
+v4 -> v5:
+- Detect frozen state directly, avoid special futex handling. [3]
+- Use mas_find_rev() for VMA traversal to avoid skipping entries. [4]
+- Only check should_delay_oom_reap() in queue_oom_reaper(). [5]
+
+v3 -> v4:
+- Renamed functions and parameters for clarity. [2]
+- Added should_delay_oom_reap() for OOM reap decisions.
+- Traverse maple tree in reverse for improved behavior.
+
+v2 -> v3:
+- Fixed Subject prefix error.
+
+v1 -> v2:
+- Check robust_list for all threads, not just one. [1]
+
+Reference:
+[1] https://lore.kernel.org/linux-mm/u3mepw3oxj7cywezna4v72y2hvyc7bafkmsbirsbfuf34zpa7c@b23sc3rvp2gp/
+[2] https://lore.kernel.org/linux-mm/87cy99g3k6.ffs@tglx/
+[3] https://lore.kernel.org/linux-mm/aKRWtjRhE_HgFlp2@tiehlicka/
+[4] https://lore.kernel.org/linux-mm/26larxehoe3a627s4fxsqghriwctays4opm4hhme3uk7ybjc5r@pmwh4s4yv7lm/
+[5] https://lore.kernel.org/linux-mm/d5013a33-c08a-44c5-a67f-9dc8fd73c969@lucifer.local/
+[6] https://lore.kernel.org/linux-mm/nwh7gegmvoisbxlsfwslobpbqku376uxdj2z32owkbftvozt3x@4dfet73fh2yy/
+[7] https://lore.kernel.org/linux-mm/af4edeaf-d3c9-46a9-a300-dbaf5936e7d6@lucifer.local/
+[8] https://lore.kernel.org/linux-mm/aK71W1ITmC_4I_RY@tiehlicka/
+[9] https://lore.kernel.org/linux-mm/jzzdeczuyraup2zrspl6b74muf3bly2a3acejfftcldfmz4ekk@s5mcbeim34my/
+[10] https://lore.kernel.org/linux-mm/aLWmf6qZHTA0hMpU@tiehlicka/
+[11] https://lore.kernel.org/linux-mm/aLVOICSkyvVRKD94@tiehlicka/
+[12] https://lore.kernel.org/linux-mm/aLg0QZQ5kXNJgDMF@tiehlicka/
+[13] https://lore.kernel.org/linux-mm/aL_wLqsy7nzP_bRF@tiehlicka/
+[14] https://lore.kernel.org/linux-mm/aMAzkQQ4XAFh9xlm@tiehlicka/
+[15] https://lore.kernel.org/linux-mm/aMJ619kjFm00c4OP@tiehlicka/
+[16] https://lore.kernel.org/linux-mm/aMGWAg5jIitYCXdZ@tiehlicka/
+
+The earlier post:
+v9: https://lore.kernel.org/linux-mm/20250910143726.19905-1-zhongjinji@honor.com/
+v8: https://lore.kernel.org/linux-mm/20250909090659.26400-1-zhongjinji@honor.com/
+v7: https://lore.kernel.org/linux-mm/20250903092729.10611-1-zhongjinji@honor.com/
+v6: https://lore.kernel.org/linux-mm/20250829065550.29571-1-zhongjinji@honor.com/
+v5: https://lore.kernel.org/linux-mm/20250825133855.30229-1-zhongjinji@honor.com/
+v4: https://lore.kernel.org/linux-mm/20250814135555.17493-1-zhongjinji@honor.com/
+v3: https://lore.kernel.org/linux-mm/20250804030341.18619-1-zhongjinji@honor.com/
+v2: https://lore.kernel.org/linux-mm/20250801153649.23244-1-zhongjinji@honor.com/
+v1: https://lore.kernel.org/linux-mm/20250731102904.8615-1-zhongjinji@honor.com/
+
+zhongjinji (2):
+  mm/oom_kill: Thaw the entire OOM victim process
+  mm/oom_kill: The OOM reaper traverses the VMA maple tree in reverse
+    order
+
+ include/linux/freezer.h |  2 ++
+ kernel/freezer.c        | 13 ++++++++++++-
+ mm/oom_kill.c           | 20 +++++++++++++-------
+ 3 files changed, 27 insertions(+), 8 deletions(-)
+
 -- 
 2.17.1
 
