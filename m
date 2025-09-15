@@ -4,127 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7CF3CAC592
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 15:06:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D1CBCAC592
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 15:07:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 153168E0018; Mon, 15 Sep 2025 11:06:42 -0400 (EDT)
+	id CEC9D8E001C; Mon, 15 Sep 2025 11:07:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 12AF68E0001; Mon, 15 Sep 2025 11:06:42 -0400 (EDT)
+	id CC42A8E0001; Mon, 15 Sep 2025 11:07:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 068168E0018; Mon, 15 Sep 2025 11:06:42 -0400 (EDT)
+	id C01B38E001C; Mon, 15 Sep 2025 11:07:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E898C8E0001
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 11:06:41 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 806BA1DF5CD
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 15:06:41 +0000 (UTC)
-X-FDA: 83891811402.25.41C0F66
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 91011100009
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 15:06:39 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=mf4f5MiS;
-	spf=pass (imf14.hostedemail.com: domain of surenb@google.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id AF8578E0001
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 11:07:07 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 66A74BA207
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 15:07:07 +0000 (UTC)
+X-FDA: 83891812494.24.309757D
+Received: from mail-yx1-f54.google.com (mail-yx1-f54.google.com [74.125.224.54])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 6F449A000A
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 15:07:05 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=gOecaxZd;
+	spf=pass (imf25.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.224.54 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757948799;
+	s=arc-20220608; t=1757948825;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z9WWi/ihcO4oKOZe+uMVsUK9rCWPwUBkVuax2VPkCyw=;
-	b=WUjtdY92NevJ/KVeR7S4Nc/Bbu4P+IT0GxT/mjUwVUYSQ+PGRz40i/su4UESiTDAmbKDdF
-	xnPU8ChDQi0Et/pLpJ50EuDFsS6Z9OWJgp3qdF0jRGyUg0GUmj0TbovLFnjTeM1Mmnj+2j
-	HsKSgmbaYv/VN1uiuNTjJfYL5xTrAhQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757948799; a=rsa-sha256;
-	cv=none;
-	b=YZdA7j+TYKmiQKacRl1S9Zh3FecbZMLaJDKTvoZBR/bqISbdqDS+RtvYED4p6jOU/bjEQa
-	L7LJausmpIYGb8zBMQ0R2uTMaAZ+zksPCVXiT2rRDeff2w83eI+luDLFCE0DR4Euokjf11
-	eLPD9L80c+02BR8+2Gv2EfpsiGkNChY=
+	bh=nDVeU4L3YG1TiJ1MEpll75Z/ltEov2CndLJiRR2rTQE=;
+	b=M03+xo2CoEcCdgvqv1/wFF4tXhqMEOcv+3OSRdGeaAWY44jQ5TmZu90RRFWp81BVdVg07Z
+	90JKO8zXkxV5p2O8lA84wN0mqw3B73QgMdV5Z9C3p331h6dpHKqBGO4WhPPDhIugZIuDHn
+	Q/m+nVgaHxIlBrWLUD+6I9baklPqOP8=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=mf4f5MiS;
-	spf=pass (imf14.hostedemail.com: domain of surenb@google.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-62f37300fcbso7779a12.1
-        for <linux-mm@kvack.org>; Mon, 15 Sep 2025 08:06:39 -0700 (PDT)
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=gOecaxZd;
+	spf=pass (imf25.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.224.54 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757948825; a=rsa-sha256;
+	cv=none;
+	b=D1gSu9ORgIfsTQO3s435L34NwwPScDITITbLXDK5nalW2EEYY1FruYLxgIyA327yihQrE6
+	WktdYDru4yCMyJWHjTf80nuZuAW976ZlAacHHHK/iOCOuyVhExPhMvcvks+KFY7zgO2Jyf
+	FYrsQcTfEufTtU9XWDU7VBRgj63vZ6A=
+Received: by mail-yx1-f54.google.com with SMTP id 956f58d0204a3-62f9c2df5a3so572906d50.1
+        for <linux-mm@kvack.org>; Mon, 15 Sep 2025 08:07:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757948798; x=1758553598; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1757948824; x=1758553624; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=z9WWi/ihcO4oKOZe+uMVsUK9rCWPwUBkVuax2VPkCyw=;
-        b=mf4f5MiS63LPiGgqYMRgzT2VaXehMjGtnKE3BLck2b1GK2Z/y2KfZv9l0J4k92EL2O
-         A5uFb743j7S/Hno7yfrQ7abgc3FoDt08XM0QZaKI2klsIZ+0j/BeNkkP0p+JCAvY8VSZ
-         zH9fkHgsHju3sc6Q0x/TE64+sBXOLn0gVlkjj4iJIWll4/R61v3I0vXL0QAbf/ByOZ+9
-         +ksSdUSCtNjEsrlcKZs+E+DTHJfzUiG+iLI76BSQXSN7AzKzSU0TJpQGDs4ut78f4RLH
-         HfwGZwk0dMx4s3gzdgBNTGfN4vF0Wlg3lkQ3WaXCxiqgJ/p5DzMRd+HYhV/JRM04LEBV
-         FSlA==
+        bh=nDVeU4L3YG1TiJ1MEpll75Z/ltEov2CndLJiRR2rTQE=;
+        b=gOecaxZdRBG85GtWuu4OK4Y4d8lgtekwpmCEuw8gtBGPNdgcS48euYlh/YNh+E6tJc
+         wrY7b/Rv90Ip33BTMzydeJWqfrJkbCAedEIrEbCnrrpwaRWyvZTaFhotOJUCWzTjDkFl
+         wlDg7WK9HRfZH2YtD1D/Vj1N2X6/Shk3dmHoa3tpzcO3PGSQNNnJ6MvYEpF7V70TDjNf
+         joaN+Q7kb6GPG8GjehB5zcmQxmay8pPlwFl9xpz8ynkqdRM+VbI5yMCU0TG3mbHo+46L
+         K4A6/+jmnE1WRNM3m3FjqxCoktnmNB49XDzd+ek7Fd0a0WZH5sGgQpocWLCgEmr8YYyD
+         jM9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757948798; x=1758553598;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1757948824; x=1758553624;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=z9WWi/ihcO4oKOZe+uMVsUK9rCWPwUBkVuax2VPkCyw=;
-        b=egG3jtAHYhXKlGUk7dNWl1hBWA22wvEV2muOnv3oHzf71gmSo0TD9TOziklMQVy52Z
-         z60u7qBp406kHYwXrqExeb9r2q+YCP92IHtFCyprloHU4hssEEUc1l+sJ/03AiIFa8t8
-         OWEb9bmKqueYp9LRBGJ3nxF/pcWqbbzfSJEq0LsJnKPWkqASg0b1OdeXSbctdToFenhr
-         +juC69jJJlQhFkzheA2SYeobhCJ+AQrxN7luqe3OYD5UOCGoa+ultGFFE8AI8zSnwSK1
-         q298TXArAecRLfmXxIp72bR72OJcCxDUTmTjV0ON+usneKGViw8gZf3oFMC8KCHnNz+j
-         Xhyg==
-X-Forwarded-Encrypted: i=1; AJvYcCWPugHEkBSiRCXR0REKJxgsXd2SWNi8F3jdC4Sg2JvKUbEx5DE1aRJquVpbQp+7yMwOlS4SBvzWAw==@kvack.org
-X-Gm-Message-State: AOJu0YzZREfQmcLqSrlhC7LVaW7tluB1L18KSAWtflW/vDjR0w6kNu/a
-	zVvv7z12/exfFV8p8mmfV4FRh84nBGvLdXBIoOhHd1jYMYseuclcjyjzTnXw+DWmhQ8fk/+egZB
-	JVSp12Yuc5vVcYIwg4n71dNis8Sytp4TWoa3vU2F/
-X-Gm-Gg: ASbGncvBLdWClXc4veUBIuKhihkNpyqc/VlrC5c2sMWfx2VgT1jS0TZGdo5M3Byw5A9
-	JR0PWYWbI9mDdUBUX+BA4BIemsp7ZSWmfS7l/DclGzK1iufIN9duZu6G8Sek1nP5wabpHJ5Psgl
-	HoaWKYYLI6kxNja+CXsN9b4uGAx14Kg4Vvcdu6Z2AHGYEXdUY3WCJ3ELtAbFj8J03tQFOnXYm4a
-	JXC71uA1SUE
-X-Google-Smtp-Source: AGHT+IGjXi1PFjJ4mYxVJND0ubUCMLSxglAxJpNOn5/9ShV7QOetbvNvu0dB8FJs+cORTcGH5C8xzIQjtHMDsoJbcW8=
-X-Received: by 2002:a05:6402:562f:b0:624:45d0:4b33 with SMTP id
- 4fb4d7f45d1cf-62f02779419mr123720a12.7.1757948797375; Mon, 15 Sep 2025
- 08:06:37 -0700 (PDT)
+        bh=nDVeU4L3YG1TiJ1MEpll75Z/ltEov2CndLJiRR2rTQE=;
+        b=bpgEdCVwlNS09wYI9NcEYH3bjr9FYYAIyhDbgM+IV8IUW7dgQFt1HkbTusUCGuoEpi
+         O08j7qHQBwvQ92Q/RBJ+F5PvG1SlOkwpzL3U5VrSXqhmgSKkP7VzhCszhsyLvM0/5Kll
+         0REqkX5V4u29bGM+YlwENBRCztMPDYmN5I3D4DWZsEjBTpnSpNWyqi4CGCE7KRms6bLI
+         9YrGJb/H30kV/JszuSQ/MHBrrLm4aCY4M5BaAVCtGtcEFuYiIw0UTI4dDK6pdPA2Z02k
+         yLUWSG2io+BLeb1Goe7JbFsBeMUk2IyMjxCLDlwrf09w2AbR5Hsh0tn+OiFR/FZ3pIPC
+         8g6A==
+X-Forwarded-Encrypted: i=1; AJvYcCU78IIegWNEIQfeckDHq64TZ0SHMi1QRkZv2aRXh3sypagISCkBJcewWyqTAu8r5yNYaelMuxNcZg==@kvack.org
+X-Gm-Message-State: AOJu0YzMsqbz/1NnFoBUQHxCVeiwbQu0V2mM3eUOIAe5B0UvpwJJS4hI
+	VC5R+4gDCdwVHKYdFLLGyXdES5FP4OPWJ2vL0IV5MVGAhw6Y74Hzll5R
+X-Gm-Gg: ASbGncu7X7oRbENEkPxN/IRjeLXwW3yUZKlELNbsPsFFKRrM74TOW+Bfbadvjha2LXj
+	h+Sydxv8MR5Cyu0dCEaSNuqVe2YCEXrelQVUH+c81dSlUkYQrWyWeJRzFMGKK+B2caf31HDJhc6
+	YmAM/jrpe8WAwERdOKlYOHwInhkugNfRTUN/YCYbhJCcQcBBK9Zlfa6j/SClsbYCNscAriWPX0n
+	HerRD1qqqapPdQUWTD88DbceyBCaTH3Xz+HN5Cuk3f9Xb06uMtXJpfNmMLhnRHKoarvmysYvWhQ
+	KLlmA2YxRki/23lFdgdZNcgGJ7UaHGByChsfyPaN4zQDdXe82Z+EI8yqDqrVb9lO1zmbOIRYiN6
+	v/jGephgQtxhshbRlKJZkQTU/D+aeHJXWUdhzxkk4zU30+ECK2rKh10T1NMgwk3n0
+X-Google-Smtp-Source: AGHT+IH7pt4IX2Xw7+CU3ZHlHQK6hR4lJhRz8r+4QNMMkKKZ9nkGgDixZer0GbSaS8MxEPVoUip+3w==
+X-Received: by 2002:a05:690c:3388:b0:721:5b31:54be with SMTP id 00721157ae682-730650e0036mr114848797b3.39.1757948824149;
+        Mon, 15 Sep 2025 08:07:04 -0700 (PDT)
+Received: from localhost ([2a03:2880:25ff:5c::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-72f76238392sm32913737b3.1.2025.09.15.08.07.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Sep 2025 08:07:03 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: SeongJae Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	David Hildenbrand <david@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	damon@lists.linux.dev,
+	kernel-team@meta.com,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 4/6] Docs/mm/damon/maintainer-profile: update community meetup for reservation requirements
+Date: Mon, 15 Sep 2025 08:07:01 -0700
+Message-ID: <20250915150702.1499965-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20250915015807.101505-5-sj@kernel.org>
+References: 
 MIME-Version: 1.0
-References: <20250909010007.1660-6-alexei.starovoitov@gmail.com>
- <jftidhymri2af5u3xtcqry3cfu6aqzte3uzlznhlaylgrdztsi@5vpjnzpsemf5>
- <CAJuCfpGUjaZcs1r9ADKck_Ni7f41kHaiejR01Z0bE8pG0K1uXA@mail.gmail.com>
- <CAADnVQJu-mU-Px0FvHqZdTTP+x8ROTXaqHKSXdeS7Gc4LV9zsQ@mail.gmail.com>
- <shfysi62hb5g7lo44mw4htwxdsdljcp3usu2wvsjpd2a57vvid@tuhj63dixxpn>
- <CAADnVQ+eD7p4i0B9Q2T-OS_n=AqcrrvYZGY57QOOqKEof6SkDQ@mail.gmail.com>
- <lv2tkehyh4pihbczb7ghvbkkl4l75ksdx2xjtxf2r7lgzam76h@ekkrlady2et3>
- <CAADnVQLX_mi9WLygRxwp5PtBFG7L_sqm9sL93ejENWqVO3ar7g@mail.gmail.com>
- <e7nh3cxyhmlxds4b2ko36gnxbdfclcxu3eae5irvrd2m6qzqoj@gor7vopfe47z>
- <CAADnVQJuAo5K417ZZ77AA1LM5uZr5O2v1dRrEEue-v39zGVyVw@mail.gmail.com>
- <rfwbbfu4364xwgrjs7ygucm6ch5g7xvdsdhxi52mfeuew3stgi@tfzlxg3kek3x>
- <CAJuCfpHJEUypV2HWRHqE598kr-1Nz_DokMz_UgrUnq8YkFcb9w@mail.gmail.com>
- <CAADnVQJQo6+AwJ_LxARVu37J-5T-7tyn1kA5hMVDGDfEyjF6mQ@mail.gmail.com> <e166705a-e838-4c8f-a8cf-64913e120caa@suse.cz>
-In-Reply-To: <e166705a-e838-4c8f-a8cf-64913e120caa@suse.cz>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Mon, 15 Sep 2025 08:06:24 -0700
-X-Gm-Features: AS18NWB87vwLHWOm_ZFhLCV5OSwUHRhJoQJhrbB2IlJ2yzZsuK8epBGSVT0Yb4c
-Message-ID: <CAJuCfpGR2tHhUu=p4X2YKPNot4TJbhuFPRiT8BgOHvtcw=j-Ug@mail.gmail.com>
-Subject: Re: [PATCH slab v5 5/6] slab: Reuse first bit for OBJEXTS_ALLOC_FAIL
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Alexei Starovoitov <alexei.starovoitov@gmail.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	bpf <bpf@vger.kernel.org>, linux-mm <linux-mm@kvack.org>, 
-	Harry Yoo <harry.yoo@oracle.com>, Michal Hocko <mhocko@suse.com>, 
-	Sebastian Sewior <bigeasy@linutronix.de>, Andrii Nakryiko <andrii@kernel.org>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Roman Gushchin <roman.gushchin@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: dy4bu7dentwxdbqrt1mbpofk5py6z95p
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 91011100009
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1757948799-711124
-X-HE-Meta: U2FsdGVkX18EuT7xXjTVb369yuESUJnhPbWkbTFCaFXYMyXGnWwZuXIsNX5rya9kFng05QavQlGj4EuQYvSuMZFj8irFn7xDtSKDsSMNbKQ3bA+pjXL9ervgmUMD8sErA03ZLdNUO0YPex/tKrDVwCD+FF6F08qio6Wi3u5Jn1XHMJVFt3zusR90dZhedUrdPFdFN+h72hsoUw19ijvMVLXarfknvfbjQ3vJcVfNnNOWm410hvqIyxMhWp4unmBOY30/Q0TwNXbqeHDiTkbKrImQX+IftCUIllyZ515g7kEmBU3YpURFp1fSwsbQgMho9VZPiGUEVH3tJd/X9oWhWEmI3dLrMtefNjXaOlyojJvOmi2CpRVGB1U7gPESA7+SvEJjJ66wWhqqgsyVdvE8/x+at1JmdhjX0COsc44UvRSNrrdK9smXPkKbWxnYrI/tRbeTdT21hD+/NYMWMMXg9vEOcRqsGGtTncENB99fzimbVGGvt8blQZf2UTNlWgdWmOpULuucyY2V19AHMnz+JeHb6WN5X7ZeQrhyoV8BrHY4BBR+/XdeTrS1Jl7+lrhCQM+czx8K8uX4Gono2rGI26WMpzPLB7e9l5RUPmdt5Qt9kbWH6rkq7b095wMI7mhT7hmS0epf9q7inQfb9+hmtwU2lNUH+WfT9Yab4ph8ovMUZRWz9ExHxn+tcpIkUQYlvc6J2bas5FLhEcI6n0tRvVTph/W/nQAHGE4+TYQRCN6fpjYzA6eFDrlX7rleoxz6w5AQY4KiTgX0rmASG1YZMMYvb1+/CQy1GFAIfIdKPxzYfeG5b2iFr1omUBGmay9Wjxifzc5hVS8143wqzbxAolWzRcn431aXbHoZ2373GD2SW58sxuCMGyaEiOxuiSbrWo2oSRhnflJBhwtY6SwROyzfxaH21iSsYBgx0QgBhwRZ7Ily07Y/jo92TR83z0gnCFc8LkXYOXeH+Y6SMk9
- aOAAfb/s
- x23TvM9G+02KFi7BFMTeo+t5Jd+zSrVvE5ZZ27yliHvoewAqGVn6dyfAMko+aIoU3T+90nsF/ZP37QTr+m3b47u15ocBlkygLiAGdXeR2bBBhyVaRwPRmy+bMIFa7Pgq3/YNGhRp8NGjUnp9JvqWI5qoc/vFZ2zFdFGVywdz1crNV5UHCPfHrjS2Ibsx57x9oCxhjC88gaF3nSiHpaMDr4yMltKI8DVDp+4WEMUhota8I5Vseeg0ndpt7+hqswsRLYUPhzVxAnU18XpXtsQT8fJziAFq/x0OYsXNT5G3AuNP/glwsCyROOpfypP3U1LezT6tKKx6bN/JLPXmryFLsoo+N8gEqbnrYoj/mNdk43uRyFdShbvQdIdoJhTjnKezcu/EldORFaPyEuXZYb+cd7sWAkujkoW24hAj+
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 6F449A000A
+X-Stat-Signature: edwdg7x6j9j1gqp9yw7mibu54o6ewoax
+X-HE-Tag: 1757948825-455912
+X-HE-Meta: U2FsdGVkX1/lFOSaXc4W/kZwKHULZ3sYdm0Im5UddCYBnblKamhh46b2C3WYs19oveRfkaHrmKRAozQQO7bhP9okO+KDMSpC+0D9tM2nB+wbwbIrRYVOZXp8jOk/c0Y4YXHJUPWkE7hSnjwBCi4+VmVkAXYuOjf2e87XC832dsxTXdJlsABGH3O+ZkEc1r7Xcx9IgOlSQGMnBw6t2gTMmRcC6s4PTRNY6AMnYi0S4DwuG1AABtP0068Z0/P4q5QYS1vy37ZXTyLb7UVYaKYJMv2sVCjy1jph9KRuLp/KAxu1eXVXF+pybVdtuqs7FlpSGPE45TidfAtAwZA4CwXdNu8hhQwP+r9xaQsFARlZLA2Q7IVv88yCqu7r2k/nM20dwCmg5qQSFCi143ewMV1vdxWpEIrX6tN9/89bA8jXyFMsbJBeQ8QU9lvDAQNgiwOkndRBEhir0qVfuWVeU/PY+erisv9CS1Oxpu5km3mboO7SPnrKRXj6vPctjY0Jg37idXHtxp+Vh7olSXYFXVWpmeKl9SvcPu3JvvDi5siMW+j6bmR3GYdQKYjP8NynxmNGnkdF5F5jCnDUn2xJTKf755lTqIy4c+BE/Ed9tOnOYXaXqHer7HkOFtuyuPjU9RWXWIcA/YWMafeoyoVgPGe6R+y4aS7eUEAq2cmjbbUyXDbfkEhdQymjb0+OtfVPa7KrC3v35/DSjxl/iAMXhEQTSz9wnaEWk3qeyF+VQiJDWQwse0wmgriVKvBQQfl26fwHb2Y3D2ENgczKGyn+qVJAxODIfULgnjh2x5z9gtI7mx/cXFLQO6LYbmfaz5JOUz6DdZhyMtUqwYoWX8t5xRXcV0TbfpP3OzV3duIziuo94W9waHOO4iXtqUiADIhPicnFkPi6y9XeP1sASeYbuRkHk4qUNrXIAG5kMasXeJQGIae7P73PiVL6h+LsK7B4RSrTTXOUPnplBauld6SEvW6
+ sskJNVB0
+ zoZuJF5ubZsexWrlRFzfI59RJqb1W92voyc4jUMVf2pZzSz39ry+r7YB5N2RasZJAmYL72QP8s+i+ejjnNhRwdKSKep/T6AlCpEyLt2fB0pBDjWoD2PTL0qMxpmPEzT8fmaXHk0BWiDViMwxbrl8pw7XdcosLCNxoqjwZSZ9X7MzDDRILBQI9WK0OJCH3IsshxnxGg43bloUdIcENxpI0PqSqgwiRy9vVvRSHsXdSBoxEBc/RRBDUeTEW5tVO9Gs/ks8+2wmWgKaAOD9GBNPFBARI3PEvZGUtwcoXSgjWVlxZjhrPhr95ftJd72IXWYpPTc6wz66kvaaNwqHCbTE1nl/W7OSlXZ7i1XzmeWq1hGPGA1GmrlMI2SBtHoE88JhciGG0UfhEggW4/ltiY4Sn74zCC/IKZI2WlO7iNzj7kCBXP4WBnmH1c06Ro5ZF7jhuT323fsj2BlX23Y6TOlFnwztwZhhzv3VK5olbSp0smX2bv1/aJXt6s6fY7Zr2oN1OqVGhtmv0TYO3+98253lDyIsd8QPrrjTX3LXbIKZPmYtzr1M=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,80 +130,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 15, 2025 at 12:51=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz> w=
-rote:
->
-> On 9/13/25 03:12, Alexei Starovoitov wrote:
-> > On Fri, Sep 12, 2025 at 5:36=E2=80=AFPM Suren Baghdasaryan <surenb@goog=
-le.com> wrote:
-> >>
-> >> > > > Suren is
-> >> > > > fixing the condition of VM_BUG_ON_PAGE() in slab_obj_exts(). Wit=
-h this
-> >> > > > patch, I think, that condition will need to be changed again.
-> >> > >
-> >> > > That's orthogonal and I'm not convinced it's correct.
-> >> > > slab_obj_exts() is doing the right thing. afaict.
-> >> >
-> >> > Currently we have
-> >> >
-> >> > VM_BUG_ON_PAGE(obj_exts && !(obj_exts & MEMCG_DATA_OBJEXTS))
-> >> >
-> >> > but it should be (before your patch) something like:
-> >> >
-> >> > VM_BUG_ON_PAGE(obj_exts && !(obj_exts & (MEMCG_DATA_OBJEXTS | OBJEXT=
-S_ALLOC_FAIL)))
-> >> >
-> >> > After your patch, hmmm, the previous one would be right again and th=
-e
-> >> > newer one will be the same as the previous due to aliasing. This pat=
-ch
-> >> > doesn't need to touch that VM_BUG. Older kernels will need to move t=
-o
-> >> > the second condition though.
-> >>
-> >> Correct. Currently slab_obj_exts() will issue a warning when (obj_exts
-> >> =3D=3D OBJEXTS_ALLOC_FAIL), which is a perfectly valid state indicatin=
-g
-> >> that previous allocation of the vector failed due to memory
-> >> exhaustion. Changing that warning to:
-> >>
-> >> VM_BUG_ON_PAGE(obj_exts && !(obj_exts & (MEMCG_DATA_OBJEXTS |
-> >> OBJEXTS_ALLOC_FAIL)))
-> >>
-> >> will correctly avoid this warning and after your change will still
-> >> work. (MEMCG_DATA_OBJEXTS | OBJEXTS_ALLOC_FAIL) when
-> >> (MEMCG_DATA_OBJEXTS =3D=3D OBJEXTS_ALLOC_FAIL) is technically unnecess=
-ary
-> >> but is good for documenting the conditions we are checking.
-> >
-> > I see what you mean. I feel the comment in slab_obj_exts()
-> > that explains all that would be better long term than decipher
-> > from C code. Both are fine, I guess.
->
-> I guess perhaps both, having "(MEMCG_DATA_OBJEXTS | OBJEXTS_ALLOC_FAIL)" =
-in
-> the code (to discover where OBJEXTS_ALLOC_FAIL is important to consider, =
-in
-> case the flag layout changes again), and a comment explaining what's goin=
-g on.
+On Sun, 14 Sep 2025 18:58:05 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-Yes, exactly what I had in mind.
+> DAMON community meetup was having two different kinds of meetups:
+> reservation required ones and unrequired ones.  Now the reservation
+> unrequested one is gone, but the documentation on the maintainer-profile
+> is not updated.  Update.
 
->
-> Shakeel or Suren, will you sent the fix, including Fixes: ? I can put in
-> ahead of this series with cc stable in slab/for-next and it shouldn't aff=
-ect
-> the series.
+LGTM!
+Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
 
-I will post it today. I was planning to include it as a resping of the
-fixup patchset [1] but if you prefer it separately I can do that too.
-Please let me know your preference.
+> Signed-off-by: SeongJae Park <sj@kernel.org>
+> ---
+>  Documentation/mm/damon/maintainer-profile.rst | 17 ++++++-----------
+>  1 file changed, 6 insertions(+), 11 deletions(-)
+> 
+> diff --git a/Documentation/mm/damon/maintainer-profile.rst b/Documentation/mm/damon/maintainer-profile.rst
+> index 5cd07905a193..58a3fb3c5762 100644
+> --- a/Documentation/mm/damon/maintainer-profile.rst
+> +++ b/Documentation/mm/damon/maintainer-profile.rst
+> @@ -89,18 +89,13 @@ the maintainer.
+>  Community meetup
+>  ----------------
+>  
+> -DAMON community is maintaining two bi-weekly meetup series for community
+> -members who prefer synchronous conversations over mails.
+> +DAMON community has a bi-weekly meetup series for members who prefer
+> +synchronous conversations over mails.  It is for discussions on specific topics
+> +between a group of members including the maintainer.  The maintainer shares the
+> +available time slots, and attendees should reserve one of those at least 24
+> +hours before the time slot, by reaching out to the maintainer.
+>  
+> -The first one is for any discussion between every community member.  No
+> -reservation is needed.
+> -
+> -The seconds one is for discussions on specific topics between restricted
+> -members including the maintainer.  The maintainer shares the available time
+> -slots, and attendees should reserve one of those at least 24 hours before the
+> -time slot, by reaching out to the maintainer.
+> -
+> -Schedules and available reservation time slots are available at the Google `doc
+> +Schedules and reservation status are available at the Google `doc
+>  <https://docs.google.com/document/d/1v43Kcj3ly4CYqmAkMaZzLiM2GEnWfgdGbZAH3mi2vpM/edit?usp=sharing>`_.
+>  There is also a public Google `calendar
+>  <https://calendar.google.com/calendar/u/0?cid=ZDIwOTA4YTMxNjc2MDQ3NTIyMmUzYTM5ZmQyM2U4NDA0ZGIwZjBiYmJlZGQxNDM0MmY4ZTRjOTE0NjdhZDRiY0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t>`_
+> -- 
+> 2.39.5
 
-Another fixup patch I'll be adding is the removal of the `if
-(new_slab)` condition for doing mark_failed_objexts_alloc() inside
-alloc_slab_obj_exts() [2].
-
-[1] https://lore.kernel.org/all/20250909233409.1013367-1-surenb@google.com/
-[2] https://elixir.bootlin.com/linux/v6.16.5/source/mm/slub.c#L1996
+Sent using hkml (https://github.com/sjp38/hackermail)
 
