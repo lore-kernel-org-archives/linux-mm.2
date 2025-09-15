@@ -4,91 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B755CAC58E
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 07:39:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67F17CAC58E
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 07:42:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B4748E0003; Mon, 15 Sep 2025 03:39:34 -0400 (EDT)
+	id C0DF58E000B; Mon, 15 Sep 2025 03:42:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 465198E0001; Mon, 15 Sep 2025 03:39:34 -0400 (EDT)
+	id BBEB18E0001; Mon, 15 Sep 2025 03:42:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3538F8E0003; Mon, 15 Sep 2025 03:39:34 -0400 (EDT)
+	id AADB48E000B; Mon, 15 Sep 2025 03:42:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 183BB8E0001
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 03:39:34 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A7DC111A353
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 07:39:33 +0000 (UTC)
-X-FDA: 83890684626.26.24AFD13
-Received: from mail-il1-f207.google.com (mail-il1-f207.google.com [209.85.166.207])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 2D9B6180007
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 07:39:32 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf16.hostedemail.com: domain of 3s8LHaAkbAKQWcdOEPPIVETTMH.KSSKPIYWIVGSRXIRX.GSQ@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.207 as permitted sender) smtp.mailfrom=3s8LHaAkbAKQWcdOEPPIVETTMH.KSSKPIYWIVGSRXIRX.GSQ@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757921972; a=rsa-sha256;
-	cv=none;
-	b=sZX8IxYDqvq+b+X9HmHzoCGMPfpJ+zm87lXVSL+i6d8xLXL0lPRl6OlfKLSsKJMHk/72tD
-	Bg43p+Z3tr1FRT8OVwI3wdmtqOii9fLCgzk8Ly5HeUj0hJb8R9VdJnfcj4WckLMrbn5Qha
-	u02yX0H3hfo78qG8soMRUjCGoxOC5N8=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf16.hostedemail.com: domain of 3s8LHaAkbAKQWcdOEPPIVETTMH.KSSKPIYWIVGSRXIRX.GSQ@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.207 as permitted sender) smtp.mailfrom=3s8LHaAkbAKQWcdOEPPIVETTMH.KSSKPIYWIVGSRXIRX.GSQ@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 985888E0001
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 03:42:36 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2A2E3B99ED
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 07:42:36 +0000 (UTC)
+X-FDA: 83890692312.20.DD0ADEF
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 2E7CA40004
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 07:42:33 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=LlQJnNYE;
+	spf=pass (imf12.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757921972;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=dySGFBgkjVikd0fQbO38RWU4Co2WfmuOPRpUI/qZ7rY=;
-	b=8PNEbWm7Nk0azIiYi23Cv9rDjClCvFKOuizfINRDgmJBwGKf/JsfFChpU0ypwIHc+O7dzr
-	aJ2u+AeOTwW4mvrgBfkmFHygIBCVImCGNbtHuXCVTY2fssLhp8kiFfrgl9LkRGpdxDMY5k
-	CB2aAhRSdscXz/WDeL4Z/+X3oMOxuXI=
-Received: by mail-il1-f207.google.com with SMTP id e9e14a558f8ab-42404bb4284so9466225ab.0
-        for <linux-mm@kvack.org>; Mon, 15 Sep 2025 00:39:31 -0700 (PDT)
+	s=arc-20220608; t=1757922154;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=dU39viXD9o1Vds9b/Q3cia74+JnHatGhLBFawrOwC2g=;
+	b=KUnUoWfAVxW+G559umTuyJWej4I3IqdgOVzy6VG5+c12esof8sggnchDExCTta2LXw8zTh
+	WQzwbVYcHNFxsgY1DqTdvD0LRDcX6t5AkxUJhwacWfuIM9t0t/rWREoKwvgevQ29A6hZJV
+	oQ97b1EtRwI+OCxBHyqirj1XOtXpvRQ=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=LlQJnNYE;
+	spf=pass (imf12.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757922154; a=rsa-sha256;
+	cv=none;
+	b=YWoz1NAZ3iNlS6QXTw/uYdDuHneIQeyW1BSzqbOH+LVbMSdNicxVUhjxbKExHPV0bQc2vX
+	CI1msUsZ6yKoaWeYFXEpoqvKnabpueBFUOuQCBkFMsahmTB6mRc2DP/Z4KujW118ITD5xL
+	isalyY9L/6zgscOYgYfNJCG7aa+WiM4=
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b042cc3954fso694012866b.0
+        for <linux-mm@kvack.org>; Mon, 15 Sep 2025 00:42:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757922152; x=1758526952; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dU39viXD9o1Vds9b/Q3cia74+JnHatGhLBFawrOwC2g=;
+        b=LlQJnNYErAear6PljdXLRToAPmuXQDO481ZMcDnJlhlQ276T22jGKbSDev6LargT1V
+         JR5GRI4wOph8mHxz/h0cVVSQWII6WjuhMmDYmx6Jn90s/f0REX4ycQLVmyA0r9cU5BIg
+         lr5zUOel8kSGIld8IPbbOc2KAGDDddE64v/Y647zYspjK66Kjau5+SIEvg6kAypaJ3na
+         x3QBA6zkpcf1kBGW7NnbaYTPAMwrU5++gIuD2TLVdQkN7LYjLFP7X08+XN4A5BLMsxjD
+         njh363qb2X0l3qYbjp4scvHwIxoWrKdBwuEPmtQOPwXLwzgK3O1m/YQs2xER5Ip1Rl5m
+         yrUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757921971; x=1758526771;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=dySGFBgkjVikd0fQbO38RWU4Co2WfmuOPRpUI/qZ7rY=;
-        b=vE67oHEsxBJDO19/xEBjCBmX/u/3NjGGNBEGJBM84B09r3jE+J40HoZR7ygqm6lUXA
-         ASPxY599lNCbFBd/CMwctg+9gPVZ2OAh+TeSF/jVjUOsrWxqziHbTwTb66kRaxn9ekEA
-         BNK9q9e8WTu9+//6PPXrlAKrAPnOYv0NLfkQI/cH6MMJKTnzrj7l08nCpnHGLAjFhbWq
-         WYGe2pLOFSq8G1vse38GtqPsZb/11zbW5i1/wS3z8pzomc9BtgFDK6AYwB3Za5efBxxb
-         Dx9huXnTW2p08bEndjSww/+iMwesspO1VqvYiGwCA1K5Y7lrq2EE1DjDcR4mxEC/EOQV
-         nwJA==
-X-Forwarded-Encrypted: i=1; AJvYcCVOO+xs8Bt9Pb+uzmneWEpzJC9YmpAl+LU0kb1gukLoz/E2WI3k8YqQDDX32U5i6HyH9ZptqQmosw==@kvack.org
-X-Gm-Message-State: AOJu0YyZPM4UpA09HES+JjEJ2Jx+c8kEoQDPAEqLyXXSLUu12ojbonEA
-	oPE5E0THMDJD2R9EKv96mVj8SD94njfkwg6ndS8pZ4RDQ0ENhbEisO/3WyQ4ACAunO6Zadg29Rq
-	cNTaXHI+2Y8Y1NEXUFWC7Oxf5nrRT+imKaVDNjRDoyXABeT7e07xuVwTrp0k=
-X-Google-Smtp-Source: AGHT+IFdD8J1/tqennnnYbtE6aacxehX04c8H9Jsk4npPASwTOfAeBWIMgByP67zeYFcRb+dBaZUY3fTma0MjIalYfWiA8NPZ/2e
+        d=1e100.net; s=20230601; t=1757922152; x=1758526952;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=dU39viXD9o1Vds9b/Q3cia74+JnHatGhLBFawrOwC2g=;
+        b=IMv0/pcprdK/NbUyKbwJkb/oFnMUsgV6UQ+AO/rNWgyfBL6CSxmXzsRUCvo+QED3NG
+         yo+LOfZ9MFPQ+++z4DEJm1Mb++BjWvZ8wktUWCnrW33/qnoF8eIbnH/jddTc99ttZOd0
+         ZjD1TWOdfhGsEAMT5p5jniZFftOiN0ZhSdw3507uqameEk6/M2+S42mcex8XiJcTSthV
+         KggcCQQEPBXZfVo3/JYsCcDaMKPhQuQH92z6DwAM2FRuvw/tvyYTIwcfq/yGVaUQi8T1
+         KcGBtcJkO42vsIq+m097Yufqui9V+swn3Uk0+MG0iZUKR8bwWmQSCJdWOHyiNb54UVzs
+         Adxg==
+X-Forwarded-Encrypted: i=1; AJvYcCXMp+CvkymuvMvpLFHR5cWIROfgozo+e4z0RvI1DFeEfEwvfGjjbRKNPc4JU7o/qsBgQPcDfr+L2Q==@kvack.org
+X-Gm-Message-State: AOJu0Yxk/f+xbkNNROJmsTn68aqOy+3qfWP6EZcY4DNi8ptZgpg4LEY9
+	GpkkYCmZdMMiEB50ZRXTr12rXLFaf4xwm/CUKp7fgyMTzmeQq1NTNppu
+X-Gm-Gg: ASbGncu4bHVqLGHQsOUvHWi1W3YpslIueTaSYs6fdfPPLR/0xOA9zScUKeq2dyNdqV0
+	/THucSERnMRxIgBX04H6Phd4lAwZmyaDb2Nl/sUd2ICgnJUFtncerNCobxeMo9t+xaFz6OGn6lp
+	40KoQbWii0q9/guTCPE+6uvYQe1x8W4au1f4yErXYOE9NLqQEfxjeSLE+z+YPLips08AkIP/RDr
+	0Y8TPGdg7QhKxo71oIxG+GyxDfWngfIemaOrlK2o7C9VpzEIdDHgHDQfUk2gJyRCxcQBIjE8jN0
+	1ZYeZ//pfdP9xYltn7IeuaqMDQ2rknpMTicWs6NhkGfJjMSr8esmUSlLh/z12QG0u5LPMaKx/Mw
+	VRxWu5qwYcjVjgMMvz2PDGJxPS9cHGigf
+X-Google-Smtp-Source: AGHT+IEkTEqk7ovUaAeG8O31BDNJk+nacYF3ASrLEXOOif+lNEKszX2YKu82m6jZoE3imLYpI2xgdQ==
+X-Received: by 2002:a17:907:d08:b0:b09:6e9:cbac with SMTP id a640c23a62f3a-b0906e9ce3dmr787398766b.56.1757922152333;
+        Mon, 15 Sep 2025 00:42:32 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b07c59a963bsm703494366b.42.2025.09.15.00.42.31
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 15 Sep 2025 00:42:31 -0700 (PDT)
+Date: Mon, 15 Sep 2025 07:42:31 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: Wei Yang <richard.weiyang@gmail.com>, Lance Yang <lance.yang@linux.dev>,
+	linux-mm@kvack.org, chengming.zhou@linux.dev, ryan.roberts@arm.com,
+	baohua@kernel.org, xu.xin16@zte.com.cn, dev.jain@arm.com,
+	npache@redhat.com, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, akpm@linux-foundation.org, ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com
+Subject: Re: [PATCH] mm/mm_slot: make sure slot is the first element of its
+ wrapper structure
+Message-ID: <20250915074231.xnjzoqozqihqetwm@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20250914000026.17986-1-richard.weiyang@gmail.com>
+ <3a1adf4c-9931-4cdb-a024-37c856b1702b@linux.dev>
+ <20250915014738.slkw4nwihb4aavas@master>
+ <e368ffcc-0de9-4c8c-8e9c-6cbf8cdd22ee@redhat.com>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1a2f:b0:423:f9af:b8c9 with SMTP id
- e9e14a558f8ab-423f9afbb98mr49790265ab.18.1757921971229; Mon, 15 Sep 2025
- 00:39:31 -0700 (PDT)
-Date: Mon, 15 Sep 2025 00:39:31 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68c7c2b3.050a0220.3c6139.0d0d.GAE@google.com>
-Subject: [syzbot] [mm?] WARNING in ext4_mb_load_buddy_gfp
-From: syzbot <syzbot+fd3f70a4509fca8c265d@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, apopple@nvidia.com, byungchul@sk.com, 
-	david@redhat.com, gourry@gourry.net, joshua.hahnjy@gmail.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, matthew.brost@intel.com, 
-	rakie.kim@sk.com, syzkaller-bugs@googlegroups.com, 
-	ying.huang@linux.alibaba.com, ziy@nvidia.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2D9B6180007
-X-Stat-Signature: jay1ntttmzf43asyxfmdrpyms6xfuqqp
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e368ffcc-0de9-4c8c-8e9c-6cbf8cdd22ee@redhat.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Rspamd-Queue-Id: 2E7CA40004
+X-Rspamd-Server: rspam05
+X-Stat-Signature: gi9aogsnrec6d4ads69971gcxwpx7mej
 X-Rspam-User: 
-X-HE-Tag: 1757921972-335001
-X-HE-Meta: U2FsdGVkX19GjVo0Kb8KrbSTNLo0Jo6HWLig8BTZaNSf2ZEfj2hVkQHLCY3YEUg/KovhQOOh1dyW+3FZeYmH2rv+8Zyyel8+QHnAYdDkDgW255pAj46ixAncHsS5mK3iDP5XOAh3+5WtFn6f1Mu5u2VehD3u8RSIcUW5SlT2sIPvx1nxWIuYq/DM9gXZMzyWG8dwyIHAVm2LkYnrfqKtDEluclqifBoQG1oD5L0Vl25Mw9qSt+I95AD0HzUhP1BCqDSPCdPwNZWnzMZBfZt78BishT3BKLLPEg2enrspZR9wzeO1mFjPRitj5JOjbejbf/Eb/XaynFtlIVtrf6CZhFFZ/ZgDTC6EYPC6+YeLq/RZF2/LGssilVXc3UDSWb5lQ553nQqLuwQU6NTAoLG4CXb0aiEh3+7iUKilVVIoCgzJir/AeCLvyLbWVP07RdCfCtpgEldPlEEsq0qi+Q0JEaWP/GJ6tNNBVXwDc60hSTJFCzj8IEMufcsA2AO25Vpm0LrLV8pcf1q79ZpKEEHnSPcc6zojR4rS0NqPY4RvMdFilRjoFeXOhop8z4GJ+9Mmc5GSmLgHXwqNNtz2rUnmoqG9/Q5UTWCkl70hru6pGZsrYC7JtyxOzwzudNNLRcMA5lb4HxU2wCO08ywOWsKpzUE7QilY4rReG+vmwXNsWOcpfFo9FKD3Rq7Ynfj7DKLfnkt5QrdinnsNx1IAfYIhFe3hK6P0/9iCk+ZfrK/AltzJ0PBOrzvxDXRmxw4ZE+Jqx7P8WKdhEJY0YtKUojcBG9qGE3BqyvunauskeAti7+7waALjUHKogb+VHbKm8JBZ3d0GxYLHl+gJh1F/b+LzmXKsMsegxRC0JNE1RBPu4XYXnstmhsTIiCoIoi+5jdjCf9Qh3OQtM9g6bHPQAfgIPwILbT/JqhNvkwGT/BmwwQ3NsygleCKS8coeCznDG2xdoK9FYKXrJawwXPYhdY0
- 5+IIaBUo
- DVAvE3HVwd3Blvc1xzjrV5MpFDQHn1UTp3vxjqU7n9bHyT/wsfZl9IpjulAL7c1H3DPGJchx00BAxp7d8Ao0Bv9Cv9tmF/PERqOGuYpMTnHitVsTh+ttOwA92DRGJ5HTFVEd7+9jD5YHjXpmjvD4hssuGUaFuD8tDjV5klpw3UxJn9l5/BlFD5Um4r8cIQS/X0hJNhDCri5V9gtw/aIblQxHiNCoc7MpfuVLZael7A/Y88cPopJLKxHbBFrIC3QZMVcfC0K8dvK7eoWueOtSwNb4J6rc3n8pJ61NzOVgq25CPIHB3aMQkXWmfVoKjbbDgIut+3NQFTuUGUIGmeny1a7cBYddX+99ndu2wKHDaFA8zK0WyIjRWGJWMpiOWvGs004FYPRtJO4C2/ILAu+m+WuMiAz+xm3vZkuL4iCaxgpCrgZISm2vkrYueMnX71Ei2G1rvHo3fIsZ7qok5PIYyL8kAuukzj6NJla2LjSSzr7RuymB/T4mWG/u0JV0/Ght+u0ly+BuLd6pwVL55czrTMEhCEtc1uw+oI/5kBPzyUssq99pw+qLuZ7Pessl/4Nl8W7tqXImnXU/oM1uao6D8iBI70w/XuInG065HVKUT3HveDfHJOl2ifXR0jBeO3boY0nHzTpQvpPgrlSymZyGWHVUVN9GC3gzbzFE6lse0cZVKjhc8TS4lt/XFvjVu5OdPi9aJ7SuGAItGcr60XLi+nlx/5xNn5nNOQO24Ws4mPtKK5mRlztyHHNs7/7odmb9RXDgJ+g965axj5/FKqEIRNoVTXpbzFxx/yz/jn8yxk6UOCQNPrxz6I788AQ==
+X-HE-Tag: 1757922153-636896
+X-HE-Meta: U2FsdGVkX1+uCTa5XRdtk8oQ0bvMVb7Ds+6wFwkxeMllu6wwsI+rJeda5qeLiRcfUG97W/4i8SvEGSPl6bYGITl9APenp55SDguuYjtdFGWKgX8Oj9mf5b2KPIf46lbNqoLF0s4aGR08Kay7eIX3KlQp1q+zApKWe3GzQKkgFBolI+PpdNmpttBE37pol2Zp2MGcOQzAvgawc5jVdW8imYtZxakufSksYywaFiV6kw6IgokqoZvCvoA73cDo6h0mPH/5+2thjIwK2nIRY6dbnqM8E8/495Kgc15r0o3yGpbbsKe/Ehc/+HyoGpoD7OIxffJruj6VPYp/3eTbYc9cMDYDk1RPs8+spGnAJZJDZF/SH6v8ynoA66IMnuCtf3m5nor78E2jRr7wALgKHmUhq6U39udK0NDUGY6hW4PHDOf76Laik7ryIxKUnvMVsaIZVcOQRSzeqjBajbL7aVtI6YD2jfts74azJbsCKVmyjrWvBY5xRnC64J+/fiZp9T3FLvMlm/gQp8kV5Cnb8e4tx5VlyYWyl6f0ou6t9hlcMOZKTt9Im+yVe+JL8kV+ljcM0IOZ/N+3lCxnQ5zCjYGJ9Aoga7Y8tWbhb3zcfXSsTuyCwMsc9xvfkq2NdBKlOn/h1IF0x/Te5cWZMw5dKXbdVqIt7PiUyAx/QmZtcrrt9BqDrcX/A2HOP6/KrpqudlH0g8A42RvyzYrwnsC7erWzjuegNy9qvwp0frFLkNy/EZxS3E3KL6OU7Pgy2vb25s8xEYfmorwJcFjof7hVNr9INGOS993q91dLev+y0stSbyAOs8g3GyDEVkqKvAT21qgc3b43ZDqiJUsHXReZAEwuo2o0CnmZq6mYAIJ8fp2KRSUizi6C/QQruO4BlDA/Lv5QfMxhP6cOMIhgdBuzuKZ+01kFFsw51DsGsGJtFWFEIK0QXPA3Cc7K242c4FwAworLOiZsVhY6boTCd/NTSyl
+ 1ptPHYCB
+ v+y0vUyZxyWpHqMu4cvdaIY8zSPSKRRu8dRXYaaOSlogxgiQvlDb/kYD0AEiJ+8SSvZ0FueUuume5HLocAkTTjmkqXlsHXq5A3F6ALIlpsSX07/IZMuI8lX3EBzY9lnZUsZ0Lt8xCz0I8nSV/VpKNPweOfzczUWoSypnJOAd1Dxwx+X5pCmimLYZOAl5SiSnLAzHskKbtPcPxXV6GQcJLGosO5r1Ase29s8cxG4Brw4sOXHB5QGmxOrnLb2C79Dvjrwp7FfKrvzAy2bQ3W8fEkiobe8mzTTxhU12BVUaUvvATKtC2crABpH/FJeBDJct4Y9mGERushMqz1SmFidbRsBNIPMT8bcDTbNhsVEbd7PFQMsorgAhZf4lLMjWH6VLyumwUeuCOiVZT2NimITnUc2gG2MZ+6Wsx0ewe795l4NalbQMXhLokpFvDBjj7xHdbSB+7sEbWgSn7fyniIdmd8m+JStdrjWXD6/xwGVkFGbKnIw8+2AWfBKOGjvThVQTw5IZnXief42DTczP/8yXy9GG8Ya6jd9WnZ03F3hSfXWdmoz03z8EHlEf0JgUQtdxdUdqjneU9sTDQfWtLzKjcKJ0H6d0wNJkKqZTrlRISpiBnG/bHHf15p4kkfBfMYGfVrjdZgYly9L+eBlKxVxMmQnk5YHloVeVktlX2rNkah/HlS3jq/J3V/9uHGkecUjxH+QQPEI7ds75qN/qksBHCSpkMcTQntmqdX5SNpZx8p46GpKfE9Z3VdziCXnOWNSTyTzKYnPlKrbvXVBfdPXjhv7GWBJDLzkRK2z4sjkjjkueVe9JWlfpr3v7fww==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,134 +128,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On Mon, Sep 15, 2025 at 09:32:27AM +0200, David Hildenbrand wrote:
+>On 15.09.25 03:47, Wei Yang wrote:
+>> On Sun, Sep 14, 2025 at 01:05:48PM +0800, Lance Yang wrote:
+>> > Hi Wei,
+>> > 
+>> > On 2025/9/14 08:00, Wei Yang wrote:
+>> > > When using mm_slot in ksm/khugepaged, there is code snip like:
+>> > > 
+>> > > 	slot = mm_slot_lookup(mm_slots_hash, mm);
+>> > > 	mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
+>> > > 	if (mm_slot && ..) {
+>> > > 	}
+>> > > 
+>> > > This is only valid when mm_slot is the first element of its wrapper
+>> > > structure, otherwise a NULL slot would converted to a mm_slot with
+>> > > negative value. And current code thinks it is valid and continue.
+>> > > 
+>> > > Current code works since mm_slot is the first element, but make sure it
+>> > > won't be disturbed.
+>> > 
+>> > Good catch! That's indeed quite brittle ;)
+>> > 
+>> > Just one nit below.
+>> > 
+>> > > 
+>> > > Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+>> > > ---
+>> > >    mm/khugepaged.c | 5 ++++-
+>> > >    mm/ksm.c        | 5 ++++-
+>> > >    2 files changed, 8 insertions(+), 2 deletions(-)
+>> > > 
+>> > > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>> > > index af5f5c80fe4e..668e74ad33b7 100644
+>> > > --- a/mm/khugepaged.c
+>> > > +++ b/mm/khugepaged.c
+>> > > @@ -108,7 +108,7 @@ struct collapse_control {
+>> > >     * @slot: hash lookup from mm to mm_slot
+>> > >     */
+>> > >    struct khugepaged_mm_slot {
+>> > > -	struct mm_slot slot;
+>> > > +	struct mm_slot slot;	/* keep it the first element */
+>> > >    };
+>> > >    /**
+>> > > @@ -2382,6 +2382,9 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
+>> > >    	struct vm_area_struct *vma;
+>> > >    	int progress = 0;
+>> > > +	BUILD_BUG_ON_MSG(mm_slot_entry(NULL, struct khugepaged_mm_slot, slot),
+>> > > +			"slot should be the first element");
+>> > > +
+>> > 
+>> > I wonder if this BUILD_BUG_ON_MSG() in khugepaged_scan_mm_slot() would
+>> > be better placed in khugepaged_init(), like you did in ksm_init()?
+>> 
+>> khugepaged_mm_slot is defined in khugepaged.c, maybe we don't want to export
+>> it.
+>> 
+>
+>We should probably just use a static_assert right nxt to the struct and make
+>sure that offsetof(struct khugepaged_mm_slot, slot) == 0 ?
+>
 
-syzbot found the following issue on:
+I am ok with this, but Dev suggest to fix in the code.
 
-HEAD commit:    22f20375f5b7 Merge tag 'pci-v6.17-fixes-3' of git://git.ke..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=1252eb62580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=bf99f2510ef92ba5
-dashboard link: https://syzkaller.appspot.com/bug?extid=fd3f70a4509fca8c265d
-compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=154ed642580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=17af7362580000
+Hmm... both works to me.
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-22f20375.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/ecd89a64f115/vmlinux-22f20375.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/73fd42b48d3c/bzImage-22f20375.xz
-mounted in repro #1: https://storage.googleapis.com/syzbot-assets/3c9e74db5034/mount_6.gz
-  fsck result: OK (log: https://syzkaller.appspot.com/x/fsck.log?x=114ed642580000)
-mounted in repro #2: https://storage.googleapis.com/syzbot-assets/1c25a03fc55a/mount_8.gz
-  fsck result: failed (log: https://syzkaller.appspot.com/x/fsck.log?x=13af7362580000)
+>-- 
+>Cheers
+>
+>David / dhildenb
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+fd3f70a4509fca8c265d@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 5744 at mm/page_alloc.c:4630 __alloc_pages_slowpath+0xca5/0xce0 mm/page_alloc.c:4630
-Modules linked in:
-CPU: 0 UID: 0 PID: 5744 Comm: syz.5.31 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-RIP: 0010:__alloc_pages_slowpath+0xca5/0xce0 mm/page_alloc.c:4630
-Code: 48 8b 1c 25 08 60 a1 92 48 83 c3 2c 48 89 d8 48 c1 e8 03 0f b6 04 08 84 c0 75 2e f6 43 01 08 48 8b 14 24 0f 84 a2 f3 ff ff 90 <0f> 0b 90 e9 99 f3 ff ff e8 1e 55 64 09 90 0f 0b 90 f7 c5 00 04 00
-RSP: 0018:ffffc9000d656050 EFLAGS: 00010202
-RAX: 0000000000000000 RBX: ffff888000bba46c RCX: dffffc0000000000
-RDX: ffffc9000d656160 RSI: 0000000000000000 RDI: 0000000000048c40
-RBP: 0000000000048c40 R08: ffff88801b2f30cf R09: 1ffff1100365e619
-R10: dffffc0000000000 R11: ffffed100365e61a R12: ffffc9000d656160
-R13: 1ffff92001acac28 R14: 0000000000048c40 R15: dffffc0000000000
-FS:  00007f7ccbb366c0(0000) GS:ffff88808d20a000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f94b93a8638 CR3: 0000000042c26000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- __alloc_frozen_pages_noprof+0x319/0x370 mm/page_alloc.c:5161
- alloc_pages_mpol+0x232/0x4a0 mm/mempolicy.c:2416
- alloc_frozen_pages_noprof mm/mempolicy.c:2487 [inline]
- alloc_pages_noprof+0xa9/0x190 mm/mempolicy.c:2507
- folio_alloc_noprof+0x1e/0x30 mm/mempolicy.c:2517
- filemap_alloc_folio_noprof+0xdf/0x470 mm/filemap.c:1007
- __filemap_get_folio+0x3f2/0xaf0 mm/filemap.c:1981
- ext4_mb_load_buddy_gfp+0x281/0xeb0 fs/ext4/mballoc.c:1709
- ext4_discard_preallocations+0x66b/0xec0 fs/ext4/mballoc.c:5660
- ext4_clear_inode+0x40/0x1c0 fs/ext4/super.c:1503
- ext4_evict_inode+0xa67/0xee0 fs/ext4/inode.c:321
- evict+0x504/0x9c0 fs/inode.c:810
- dispose_list fs/inode.c:852 [inline]
- prune_icache_sb+0x21b/0x2c0 fs/inode.c:1000
- super_cache_scan+0x39b/0x4b0 fs/super.c:224
- do_shrink_slab+0x6ef/0x1110 mm/shrinker.c:437
- shrink_slab_memcg mm/shrinker.c:550 [inline]
- shrink_slab+0x7ef/0x10d0 mm/shrinker.c:628
- shrink_one+0x28a/0x7c0 mm/vmscan.c:4954
- shrink_many mm/vmscan.c:5015 [inline]
- lru_gen_shrink_node mm/vmscan.c:5093 [inline]
- shrink_node+0x314e/0x3760 mm/vmscan.c:6078
- shrink_zones mm/vmscan.c:6336 [inline]
- do_try_to_free_pages+0x668/0x1960 mm/vmscan.c:6398
- try_to_free_pages+0x8a2/0xdd0 mm/vmscan.c:6644
- __perform_reclaim mm/page_alloc.c:4310 [inline]
- __alloc_pages_direct_reclaim+0x144/0x300 mm/page_alloc.c:4332
- __alloc_pages_slowpath+0x5ff/0xce0 mm/page_alloc.c:4781
- __alloc_frozen_pages_noprof+0x319/0x370 mm/page_alloc.c:5161
- alloc_pages_mpol+0x232/0x4a0 mm/mempolicy.c:2416
- folio_alloc_mpol_noprof mm/mempolicy.c:2435 [inline]
- vma_alloc_folio_noprof+0xe4/0x200 mm/mempolicy.c:2470
- folio_prealloc+0x30/0x180 mm/memory.c:-1
- alloc_anon_folio mm/memory.c:4997 [inline]
- do_anonymous_page mm/memory.c:5054 [inline]
- do_pte_missing mm/memory.c:4232 [inline]
- handle_pte_fault mm/memory.c:6052 [inline]
- __handle_mm_fault+0x2ab9/0x5440 mm/memory.c:6195
- handle_mm_fault+0x40a/0x8e0 mm/memory.c:6364
- faultin_page mm/gup.c:1144 [inline]
- __get_user_pages+0x1699/0x2ce0 mm/gup.c:1446
- __get_user_pages_locked mm/gup.c:1712 [inline]
- faultin_page_range+0x240/0x8d0 mm/gup.c:1932
- madvise_populate mm/madvise.c:979 [inline]
- madvise_do_behavior+0x2e7/0x550 mm/madvise.c:1883
- do_madvise+0x1bc/0x270 mm/madvise.c:1978
- __do_sys_madvise mm/madvise.c:1987 [inline]
- __se_sys_madvise mm/madvise.c:1985 [inline]
- __x64_sys_madvise+0xa7/0xc0 mm/madvise.c:1985
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f7ccad8eba9
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f7ccbb36038 EFLAGS: 00000246 ORIG_RAX: 000000000000001c
-RAX: ffffffffffffffda RBX: 00007f7ccafd5fa0 RCX: 00007f7ccad8eba9
-RDX: 0000000000000017 RSI: 0000000000c00000 RDI: 0000200000000000
-RBP: 00007f7ccae11e19 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f7ccafd6038 R14: 00007f7ccafd5fa0 R15: 00007ffd394e0938
- </TASK>
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+-- 
+Wei Yang
+Help you, Help me
 
