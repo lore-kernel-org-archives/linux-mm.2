@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FC01CAC597
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 15:03:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC115CAC592
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 15:03:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B4DA8E000D; Mon, 15 Sep 2025 11:03:29 -0400 (EDT)
+	id 0AFA18E0012; Mon, 15 Sep 2025 11:03:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 78C208E0001; Mon, 15 Sep 2025 11:03:29 -0400 (EDT)
+	id 087A28E0001; Mon, 15 Sep 2025 11:03:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A2678E000D; Mon, 15 Sep 2025 11:03:29 -0400 (EDT)
+	id EDFC58E0012; Mon, 15 Sep 2025 11:03:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 594088E0001
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 11:03:29 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 016DB13B4D7
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 15:03:28 +0000 (UTC)
-X-FDA: 83891803338.01.6EE60A7
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DE1978E0001
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 11:03:33 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8CDDC5A2FE
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 15:03:33 +0000 (UTC)
+X-FDA: 83891803506.02.EB6CC60
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 5A701180003
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 15:03:26 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b="P4KvE/Pj";
-	spf=pass (imf06.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
+	by imf07.hostedemail.com (Postfix) with ESMTP id 54F5E40009
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 15:03:30 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=VjQcyFpo;
+	spf=pass (imf07.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
 	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757948606;
+	s=arc-20220608; t=1757948611;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qmdNsGBOZCkUMkcwKu0VTm354ODoqN+DZWqUieU9Sjg=;
-	b=tN+bA4nhTrjZ5rH9nELb0grR+z63ZNTvqgxgDvYIpxv3qieqNlAGP/WTE5vngaxSKlR81d
-	FPMUUILzjQYT1EH3Zmyiwr7TooH2/2Q1NrIphPSiB0OmKSYpoeIKfajTTTgnPsgqJRSTUP
-	d8DpLrY6mxSQhR9hKb+KRjkOrvyxd28=
+	bh=Mw9l3ATox05SMSrOaVD6dql5/r3vydDIVDHsMiAYBH0=;
+	b=NfdEH1DI48XUiG+xW3kPxdiLOjNBSvlV0l7D8mofWUTfOfCENhpNdAgTh9X+kY2SiKEAIE
+	UAoIoIFmcSj4xXmAii1UkrFg0DxdkVVdLMaOeKZ5+lVOqF8ujvpG1EZIe7hPNaNuDjMTn0
+	fsxHZvU7gl8TJYaCkUZwKtuV7tjhG9U=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b="P4KvE/Pj";
-	spf=pass (imf06.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
+	imf07.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=VjQcyFpo;
+	spf=pass (imf07.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
 	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757948606; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757948611; a=rsa-sha256;
 	cv=none;
-	b=WPiFrMjZGLm+LDVQ/qvAZlFQmwB4FteKQ93lNdnX1T1TTOeYac6P9v8wq0visSS6XpZ3MP
-	axKNWeTYanNXjt835pM48r17bBW4SmMheNrUAmOm+ZBcLpBbXKlZ8qEBB6Fy92eFzydWlW
-	lurKtJs3ffSrJ9i8UMh9jT2/KDndkLc=
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58FELwsp024260;
-	Mon, 15 Sep 2025 15:03:23 GMT
+	b=Vq7lHRcBO8HpOUgd8H1JNpSXIiM6PPbSTE4SupnoYmI3XJkvFGhu3U8ERy/IdW045kE3ju
+	cxLNwSxRJLAeUctSiVj+zJEWzfUxoKbugJ1k2witUUSPAiAXsS+rIU1PUHkxvbpEnLsLnK
+	MZ82bfQz3ti8Z1qJMArhn3nixjTNgmg=
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58F9b9TH018951;
+	Mon, 15 Sep 2025 15:03:28 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=qmdNsGBOZCkUMkcwK
-	u0VTm354ODoqN+DZWqUieU9Sjg=; b=P4KvE/PjXmQhcYMQ/92z+lJ+SPbkepgsg
-	qQVTQRDaPi+IJVTj+XWVi49alUNqJkVI5SBgbR3Luvg/kB+IIYkEvXDcA7DUYel0
-	mOPa6ZMXRydjjxukpQpz1NzSlEUr87jTGsb+LzznOFHjxZV1e/nq+t9y1LSPwZvE
-	2BX4NGWKJ0A42v5O6yuVJ1do+QTMjKYllajtJy80TsHxZd4moxt8eaMOgeE66NJa
-	HWVZZROJR+AsgxijjHOCPcG2cJzJyCy8zRw+jBtD7WBAemJbgMx/MNeCQSyWj+pM
-	XOk81pQq5pOSZqN9G50nd8U9PP0xUsQxZZEm//DC6x3wj00XXeIaQ==
+	:mime-version:references:subject:to; s=pp1; bh=Mw9l3ATox05SMSrOa
+	VD6dql5/r3vydDIVDHsMiAYBH0=; b=VjQcyFpoA1Ov14qYqNziq/EnNCZ6O3cbR
+	TdIKtbvqH0w180I0vqhxd7QgbpHnN6Lo58oNPCK2mRnce7VStmEMt7Ehh1m4oYr2
+	/GZtcrWVI6LzcYr+nVehpSpEYTdAJEetQA5gEii705h/uv3YUq1deX7H0oCMvMGl
+	JKzH0LX50OWJxwEqleXlr+m6lX0YLpJTSIi1RJyHSWn0Zlb0BByXlx6HjKcC65Fq
+	Ok5A+0v2NUvVpL4zOnJOW2fNwLy8UPOooZR1LG5bxVkPjYU9N7ie0XdHjjtzpoV9
+	yVg6dOCxfZ5Gv9oBtFbfhlxc+rWUpvfgXNNoVTqjBhouDdjnRUy/w==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 496avnkbfe-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 496gat1pyy-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 15 Sep 2025 15:03:23 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58FEq3EU014559;
-	Mon, 15 Sep 2025 15:03:23 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 496avnkbf5-1
+	Mon, 15 Sep 2025 15:03:28 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58FF0UUB032168;
+	Mon, 15 Sep 2025 15:03:27 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 496gat1pyf-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 15 Sep 2025 15:03:22 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58FBalnG022328;
-	Mon, 15 Sep 2025 15:03:20 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 495kxpf11f-1
+	Mon, 15 Sep 2025 15:03:27 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58FBWauU027276;
+	Mon, 15 Sep 2025 15:03:25 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 495memxxr7-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 15 Sep 2025 15:03:20 +0000
+	Mon, 15 Sep 2025 15:03:24 +0000
 Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 58FF3GSJ31785440
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 58FF3Kim51052992
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 15 Sep 2025 15:03:16 GMT
+	Mon, 15 Sep 2025 15:03:20 GMT
 Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A7E922004B;
-	Mon, 15 Sep 2025 15:03:16 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id C08CD20043;
+	Mon, 15 Sep 2025 15:03:20 +0000 (GMT)
 Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AF91B20040;
-	Mon, 15 Sep 2025 15:03:13 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 01F6720040;
+	Mon, 15 Sep 2025 15:03:18 +0000 (GMT)
 Received: from li-218185cc-29b5-11b2-a85c-9a1300ae2e6e.in.ibm.com (unknown [9.109.215.183])
 	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 15 Sep 2025 15:03:13 +0000 (GMT)
+	Mon, 15 Sep 2025 15:03:17 +0000 (GMT)
 From: Donet Tom <donettom@linux.ibm.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
         David Hildenbrand <david@redhat.com>
@@ -100,44 +100,44 @@ Cc: Ritesh Harjani <ritesh.list@gmail.com>, Xu Xin <xu.xin16@zte.com.cn>,
         Aboorva Devarajan <aboorvad@linux.ibm.com>, linux-mm@kvack.org,
         linux-kernel@vger.kernel.org,
         Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>,
-        Donet Tom <donettom@linux.ibm.com>, stable@vger.kernel.org
-Subject: [PATCH v2 1/3] mm/ksm: Fix incorrect KSM counter handling in mm_struct during fork
-Date: Mon, 15 Sep 2025 20:33:04 +0530
-Message-ID: <4044e7623953d9f4c240d0308cf0b2fe769ee553.1757946863.git.donettom@linux.ibm.com>
+        Donet Tom <donettom@linux.ibm.com>
+Subject: [PATCH v2 2/3] selftests/mm: Added fork inheritance test for ksm_merging_pages counter
+Date: Mon, 15 Sep 2025 20:33:05 +0530
+Message-ID: <f07c901d4b6b1d1c15a8c1bbd324367d6135d0a3.1757946863.git.donettom@linux.ibm.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <cover.1757946863.git.donettom@linux.ibm.com>
 References: <cover.1757946863.git.donettom@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: -V2HJDoKY9xomFcL3raGfCvo050dAgzB
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE1MDAyOCBTYWx0ZWRfX/rzsfviO1d4H
- x7GrWJ8Mgk29wL51Ja/QDFwGSYeT2UMO8mDUHrVq3g1uDW9k25Kh76YPgVs+ejYuAJ2/D/Uxgfc
- wF/2VXG+sF7URzatS/dGVrOZPS5f+5ogJ5N0d7I119X/0pKBbXm9EMlmyb9lSCJU329Hrdz3dMe
- pdRONcod6ss1TUFV/ciSbM6Bn31fKTFOBIYez+Idr6EcnEItn4IhYJsNZnY7VGllfUcIW1zih1M
- yUqBPIq7Qw+QjAJYgUQLoQ4s9hA7pleiqwJ5x76u8ZuZFi4Xze7kAf2Go94vUYkTw+b45zOKHxG
- WPFwc1LoehS/7C9BBcPQBkzU7rIBbQyuQEzvCDpKwoxbMcZTLqV7EtS62lzlkwyt0f0lXXUw7LR
- cB8VQkB4
-X-Authority-Analysis: v=2.4 cv=HecUTjE8 c=1 sm=1 tr=0 ts=68c82abb cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=rGnqKr3d-3nbiQ24QTYA:9
-X-Proofpoint-GUID: Swr6_VKceyeMYbvkO6k7QhlnGOpy66FD
+X-Authority-Analysis: v=2.4 cv=BKWzrEQG c=1 sm=1 tr=0 ts=68c82ac0 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=kDUdi5sUuU8vu5WplE8A:9
+X-Proofpoint-GUID: j3U2VRkqQn4XzAtJobpMyJIcM65S50IL
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE1MDA4NiBTYWx0ZWRfX+owsqfDsyOJT
+ wra/dfkNFMg0Aty67SOAVFn9WPu+ZedniDZ1oBpVSg2IO4QeaJMdd1d8CABWjTR8imZ7wyY3FNY
+ kcDXuTvCPt7L3gvm8I079Djz4yVUEKvkTbb+Egj2wXAX6UzpJi7CuWy64jl9eLjD7RcQl8KgF0l
+ G9gLpuM1x4xYLKWKxbfSYOdKBOw5QXqoy6Ot/oy1RURKb9a/XoI3WwlivENzn8kd1Va+wVH/+qH
+ x5oTE/kfbFC/KThIl7iGI1heWEj7V4tBBCTRzWJFxvrYexNIW3Gu1NkowN97kE3HNURwuYdpupl
+ 7tO2/IHhEy1CafLDNgUIlB0oPznV6OBo2rlvuO1lREtdh+4fKWDUqn2Cmiq4wxjuBqW8CXHH2VH
+ XBCQKQj4
+X-Proofpoint-ORIG-GUID: UVh9NO6MTXzI6hFy_IMba7QcotMBbCPF
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-09-15_05,2025-09-12_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 adultscore=0 spamscore=0 priorityscore=1501 suspectscore=0
- malwarescore=0 bulkscore=0 impostorscore=0 clxscore=1015
+ spamscore=0 clxscore=1015 malwarescore=0 priorityscore=1501 adultscore=0
+ suspectscore=0 impostorscore=0 bulkscore=0 phishscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509150028
-X-Rspamd-Queue-Id: 5A701180003
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509150086
+X-Stat-Signature: yz3sbwbo9knangeah3gsrdgkypzgicj9
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 4jjhoxzh1oa3cu7rni9bu4ot43wiegur
-X-HE-Tag: 1757948606-193664
-X-HE-Meta: U2FsdGVkX18+SVfdQ9N8Z2Xb8hjihiJoyKO4HoJ/wDqplB/b4NOqJ5BgEqXECWNN6PhEd85nGNNGzzyGcwv4dAqCTv2OqozQR6w7cg9OFTOVt70zHNU1mIEY58COLroSu8DbR8tMkOWfynI0+i/2n30Xp1hJ6ls0rRySM/nuVmVFUYTyRpqsaDj8amCx79bhZVply0+7paSR7IGh5LL+qX6dLD1Xqsb8MOK/GplVMbDYEfiXV80TBEyJT1eIxg0I8dNnBhYtauH/iJGcadSJz875nipYP6uYC5LuUyumm91v2C1DclEXK5JEdUQXbholJ8PhScZEwui2IHaeCo/TnTmDVsUPCncQkmMlm6muHlForSF09Al0kCqnDua2p/yYCVCdmflGxMHzpekYAAXg/Evc8p4BJJWjiYiU+9qBAHmf2daRRgjozjUQODP65SyMEOm3TpREMm3mloy2YCgotbE6XkubXDdqgRDpDnbWLw9VN7kCiJ7WhMqZ4XNoXZKnE39YWw9g61/M2XpgYkWDRZ0HDvjXrsWVq32WnXFkRS1Jj5LINdNr4ycK66K5XVE5DiyIhMT5PZiLCnljGSCgxg3mLXZGeUXGEiPpqY3OjRfsOa3NknofCS52rF/2ORMImIkp0pAwnO+Xn3p2AN7r9qPoWcAaJItlrspRf/FC+5PWRem0tHC+lUXuYtmBKbzgTg0GQ7uJznltoe1J2qYhVwG4l6SXexcSJ0E9jyQ3PeT89iwKoifOyfjXYY2CnJgvh+H2jccu0T/1lmkwUuQz2oLQ4mgV9rsVg5RyycWL8XC1Em7dWFDGRM+x5qCD7OdXa5b+aKRmLCqNqTT1V++8xDDyG5E5mn3zyTU7ha+43f03IlI9FYRH3m4pH8b3lrW+czj5rYt7kI0HaoSmJ1j4Md03ZYSn0dgZH0L/pvrYXZWRz8rU1XsWYFYZF9tLlQuhX4o59XHoScd2tQgYuAk
- csjtrwQJ
- LCI+ZlzbZ5gXIGwzUHGUcdiQlj/bBYsI9lZKJftg8amSLhvE=
+X-Rspamd-Queue-Id: 54F5E40009
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1757948610-401368
+X-HE-Meta: U2FsdGVkX1/xBd9H7f+RFaKmprhfLzIxQYQUH+ROTgFCk5q6d4vS2n6ni8W2tx/HMsaWSCe7LDquRRpYhglMwK023dkiJROXcOi5xSxWlt/2JLuOeXLv3QLhMA5xgIaBncMg+afl79S34gdH27ko3QO9eev+zmIS8OGh66P+0nGT4PTLV7YWEFjRmFOrwY2ef6HzMqlkWPf5enl+fSz09V6DWmu/Hlztymogxwz8mXaR2e2rtXwHifSNlmp9kMg5n4La4t0/bNTdigp2t8aI3HsDTrzGbN0ShL4QXr0vvLOBwPNBnAb4+fL5t++m1pOHCEBfPFHltjzw9VxFyJv7f3q93yUcHhPEVOcorNJ77ctTNzWIL4N0NTv2zmwt1NvqRM2sKni3Igjrkdk3Z8/lxc5FeQgS5TUA1aOFnk7ZSGMgx6c1jNVH9Zo7wEIsQCyLpz7eWu385SBvjjkRvFsfReCwYwxaahQnvhJzXQYDTXrgkAGt2Xwjw9Z0J1mZmQMc26idz7MjQGAN72FFuGYVg0pXe6Fa1nseRiQLSUhJk5LxdhSRlrqD6X8YhLysWWmed+AYq1WHxzc0z6cQhQADWryY+RrEhOvSMccw9GaKHWVrOY/xCQmojw5cMXPLbmdQ6gLhTvizXUY1P68nUx17ohSNQRuSoSALic/rKQUkssvjZMVT3rABKMY0r5aMfhvLKaIT0No1/Jhmb8oAnizPPM11ve95JJMbw/gyPo4G4QMCHYeCHCgCmN1cyD1vAZNe6etMwF2DNdgx9diETTq9wVfozTtEPpZAUZZR3yU2Bmx1lMYL56u9Q4lHLzEX2vt6HXRYqrZJftIkv7wl+WJflNMNQj0iIZLRPFX8hrJFf4cTLRa4TFNfSfffFdRiFJe78J6dMaFfSVhRaj7DVugsgi5sxsHcpTNB9ksVLwCM2D6GIISEbFF0+KNvSVs5rJyTr4Rl/eRgssSdHYEkAuE
+ 3R0KQfqn
+ Weme8lBySI+Kk96Xk80rBVkbAHHVUGQKX9IkbbvRnG/qNGgmrIbVCsSSrTGn737VwXL3XY/KJb8rW2jsQz9YROBfoD7+oygndIM5ZoM6OoBahIYeark8UIFRVas+oTWxSY/q8akNIvq08ZWnlhamSoJ43KksQBIbpyaeI51GbS9FECfsm2JRItnniZO1e7kjEl5SteBfe8aXmwXk0/bFHa9Gkpuv5nQmOEICKam5YcazkmBG4O755njjluVKciIb3+2sp/d7WKnFOl0iMNmhC4bR4qyHoOlrcBz0UF/MODI8LSHljk1H2ylQHjGcyfxBQLdYC
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -146,62 +146,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, the KSM-related counters in `mm_struct`, such as
-`ksm_merging_pages`, `ksm_rmap_items`, and `ksm_zero_pages`, are
-inherited by the child process during fork. This results in inconsistent
-accounting.
+Added a new selftest to verify whether the `ksm_merging_pages` counter
+in `mm_struct` is not inherited by a child process after fork. This helps
+ensure correctness of KSM accounting across process creation.
 
-When a process uses KSM, identical pages are merged and an rmap item is
-created for each merged page. The `ksm_merging_pages` and
-`ksm_rmap_items` counters are updated accordingly. However, after a
-fork, these counters are copied to the child while the corresponding
-rmap items are not. As a result, when the child later triggers an
-unmerge, there are no rmap items present in the child, so the counters
-remain stale, leading to incorrect accounting.
-
-A similar issue exists with `ksm_zero_pages`, which maintains both a
-global counter and a per-process counter. During fork, the per-process
-counter is inherited by the child, but the global counter is not
-incremented. Since the child also references zero pages, the global
-counter should be updated as well. Otherwise, during zero-page unmerge,
-both the global and per-process counters are decremented, causing the
-global counter to become inconsistent.
-
-To fix this, ksm_merging_pages and ksm_rmap_items are reset to 0
-during fork, and the global ksm_zero_pages counter is updated with the
-per-process ksm_zero_pages value inherited by the child. This ensures
-that KSM statistics remain accurate and reflect the activity of each
-process correctly.
-
-Fixes: 7609385337a4 ("ksm: count ksm merging pages for each process")
-Fixes: cb4df4cae4f2 ("ksm: count allocated ksm rmap_items for each process")
-Fixes: e2942062e01d ("ksm: count all zero pages placed by KSM")
-cc: stable@vger.kernel.org # v6.6
 Signed-off-by: Donet Tom <donettom@linux.ibm.com>
 ---
- include/linux/ksm.h | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ .../selftests/mm/ksm_functional_tests.c       | 42 ++++++++++++++++++-
+ 1 file changed, 41 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/ksm.h b/include/linux/ksm.h
-index 22e67ca7cba3..067538fc4d58 100644
---- a/include/linux/ksm.h
-+++ b/include/linux/ksm.h
-@@ -56,8 +56,14 @@ static inline long mm_ksm_zero_pages(struct mm_struct *mm)
- static inline void ksm_fork(struct mm_struct *mm, struct mm_struct *oldmm)
- {
- 	/* Adding mm to ksm is best effort on fork. */
--	if (mm_flags_test(MMF_VM_MERGEABLE, oldmm))
-+	if (mm_flags_test(MMF_VM_MERGEABLE, oldmm)) {
-+		long nr_ksm_zero_pages = atomic_long_read(&mm->ksm_zero_pages);
-+
-+		mm->ksm_merging_pages = 0;
-+		mm->ksm_rmap_items = 0;
-+		atomic_long_add(nr_ksm_zero_pages, &ksm_zero_pages);
- 		__ksm_enter(mm);
-+	}
+diff --git a/tools/testing/selftests/mm/ksm_functional_tests.c b/tools/testing/selftests/mm/ksm_functional_tests.c
+index 712f43c87736..645cefba2126 100644
+--- a/tools/testing/selftests/mm/ksm_functional_tests.c
++++ b/tools/testing/selftests/mm/ksm_functional_tests.c
+@@ -602,6 +602,45 @@ static void test_prot_none(void)
+ 	munmap(map, size);
  }
  
- static inline int ksm_execve(struct mm_struct *mm)
++static void test_fork_ksm_merging_page_count(void)
++{
++	const unsigned int size = 2 * MiB;
++	char *map;
++	pid_t child_pid;
++	int status;
++
++	ksft_print_msg("[RUN] %s\n", __func__);
++
++	map = mmap_and_merge_range(0xcf, size, PROT_READ | PROT_WRITE, KSM_MERGE_MADVISE);
++	if (map == MAP_FAILED)
++		return;
++
++	child_pid = fork();
++	if (!child_pid) {
++		init_global_file_handles();
++		exit(ksm_get_self_merging_pages());
++	} else if (child_pid < 0) {
++		ksft_test_result_fail("fork() failed\n");
++		return;
++	}
++
++	if (waitpid(child_pid, &status, 0) < 0) {
++		ksft_test_result_fail("waitpid() failed\n");
++		return;
++	}
++
++	status = WEXITSTATUS(status);
++	if (status) {
++		ksft_test_result_fail("ksm_merging_page in child: %d\n", status);
++		return;
++	}
++
++	ksft_test_result_pass("ksm_merging_pages is not inherited after fork\n");
++
++	ksm_stop();
++	munmap(map, size);
++}
++
+ static void init_global_file_handles(void)
+ {
+ 	mem_fd = open("/proc/self/mem", O_RDWR);
+@@ -620,7 +659,7 @@ static void init_global_file_handles(void)
+ 
+ int main(int argc, char **argv)
+ {
+-	unsigned int tests = 8;
++	unsigned int tests = 9;
+ 	int err;
+ 
+ 	if (argc > 1 && !strcmp(argv[1], FORK_EXEC_CHILD_PRG_NAME)) {
+@@ -652,6 +691,7 @@ int main(int argc, char **argv)
+ 	test_prctl_fork();
+ 	test_prctl_fork_exec();
+ 	test_prctl_unmerge();
++	test_fork_ksm_merging_page_count();
+ 
+ 	err = ksft_get_fail_cnt();
+ 	if (err)
 -- 
 2.51.0
 
