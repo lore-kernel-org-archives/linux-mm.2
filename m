@@ -4,104 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68736CAC592
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 23:02:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 668C7CAC592
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 23:04:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE4A78E0002; Mon, 15 Sep 2025 19:02:31 -0400 (EDT)
+	id 9ECCD8E0008; Mon, 15 Sep 2025 19:04:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BBBB58E0001; Mon, 15 Sep 2025 19:02:31 -0400 (EDT)
+	id 9C41E8E0001; Mon, 15 Sep 2025 19:04:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF8F38E0002; Mon, 15 Sep 2025 19:02:31 -0400 (EDT)
+	id 901708E0008; Mon, 15 Sep 2025 19:04:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F90E8E0001
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 19:02:31 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 36C565B35E
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 23:02:31 +0000 (UTC)
-X-FDA: 83893010502.05.FC8480E
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 6E68140019
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 23:02:29 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=LKmG2od8;
-	spf=pass (imf27.hostedemail.com: domain of 3BJvIaAYKCKkbdaNWKPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--surenb.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3BJvIaAYKCKkbdaNWKPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--surenb.bounces.google.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 823598E0001
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 19:04:21 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 34DCD11AD9E
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 23:04:21 +0000 (UTC)
+X-FDA: 83893015122.01.6ACADF0
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 52C9AA0012
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 23:04:19 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=yAhinT07;
+	spf=pass (imf15.hostedemail.com: domain of surenb@google.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=surenb@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757977349;
+	s=arc-20220608; t=1757977459;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=jlHw7peG2S0Qi11j14sbZpDivsG7e2/czsSbkXojmRs=;
-	b=A2f8Mh7SHya+vG2+tn65YJh8BeSNKoKacYFwUWyCMmwt21TTR/HpNcHKqlzFGa+z7JDAWZ
-	GKBEjKQVFeJLKea/OG9vxCCyLCskzW6U/6QxSeWLtuCztM60m8KXWTjPqeSMoIXR35Wzhu
-	+VJ89HHVSkqOuQopWblAIt9j4xzrM2M=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757977349; a=rsa-sha256;
-	cv=none;
-	b=733mWwUcEzIyvMcRuTJYYO7+O1mJVkjaf+r8QTYpjFkurYMJkIIpxDZ52E/qS53hyP0hAt
-	/6zDFibe2DSkcyfgRxZDZasj56DBKLQOhjAIif2FUs37vxKWSMJx5hpz88Pqw1V+nVisXb
-	oVRHn9FRKf3wAiH0LC1LnvNxpgKiHKY=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=p4xhFRKYQhwXJkuDc/EEUioctulqeJUCai7qoY8dBkE=;
+	b=v4AWchOqbzNp+fw9V1aK+9KF1pEoYdvq4QZELpj6RZ24Y9PQFfbPaMVH2uXbCop/hMtOjN
+	kHTfSa6ne2GhoeKqjObNbLRDeENYFn928LBYKjsTF04htRjhpYy1Kx93E7c44mRWvhtBTj
+	sziRMNGOFVc1eLEK2/9J63tJ8pJ5IcY=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=LKmG2od8;
-	spf=pass (imf27.hostedemail.com: domain of 3BJvIaAYKCKkbdaNWKPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--surenb.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3BJvIaAYKCKkbdaNWKPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--surenb.bounces.google.com;
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=yAhinT07;
+	spf=pass (imf15.hostedemail.com: domain of surenb@google.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=surenb@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-26776d064e7so12572855ad.2
-        for <linux-mm@kvack.org>; Mon, 15 Sep 2025 16:02:29 -0700 (PDT)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757977459; a=rsa-sha256;
+	cv=none;
+	b=D68T+a81tjKod4VcrZGEOXplZ2pu0K1KcgkgQmMplrbUyawBT2J3DMtF9owiwZIcyxQPYs
+	Yz46Hizw0f9lr1M80xZD062QgdoHuL8kwmOIu//2Vr3UnhAhEUbeRE6cV8PVTfl+iJVo6v
+	2AUg2rrq7h3inajC+KSu6w1eyx42H/A=
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4b78657a35aso49471cf.0
+        for <linux-mm@kvack.org>; Mon, 15 Sep 2025 16:04:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757977348; x=1758582148; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=jlHw7peG2S0Qi11j14sbZpDivsG7e2/czsSbkXojmRs=;
-        b=LKmG2od8cYhzsmyEllrP+SbsM0+UhyfijQunfml3aElOQhMDscfkn33EJCOIfyh4+7
-         X/5Sx5dASW/thIvttEHLx3Dry3VfJBstWHUikIAhgTVHOzTCVgGcLjfVpQ4uGmrcHRQC
-         D0v7G0ARzgW8PvasXW2P2kBCpaDnCCyuu31fmhsf/1y4Asl7GvVjrCKbqgSh+mKUv5bj
-         P3xHLz5jCGH8J13J+o/4NM9PTNI/WTmbSEbWl9TtFdnmRqx/jfe2vtp5bLky4lpYS/xL
-         okPRgpwQLtOwnJsih1pP4T0c6kBPaDEbMlUedyY6/FW+nAwaSy1G2crqnxsHGqFBkxxX
-         QkLQ==
+        d=google.com; s=20230601; t=1757977458; x=1758582258; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=p4xhFRKYQhwXJkuDc/EEUioctulqeJUCai7qoY8dBkE=;
+        b=yAhinT07hGuMPxRM2pZKUuZvvdWFcNBWHfZjfAtgcXN2+ZK4W4XO2/J6YmlS75OONJ
+         HSoSRbpkawj9Fbh2//49eDDc5BjQUwRZqoZCkT+jXSgFXCYGK17OXyI/b/Avdlx20d0Q
+         YtSxG9REGkGutO5pdXQEVGjSIAK0ekhu3ahLpHVcUCYCbxNY2DyXMymf1818/1mZoTey
+         h9f8KuCGomiPERJbjHrTTTYoVETnV9a14rGSk4E06kWmHiDxcuHBG2cptNs334iaIJoQ
+         S52RVFCM5MJW+C2tXLX92829PZzkxkz1j1bbmYT/f+lI3QzpLxTt0jleD0PGP3X1KsST
+         kKuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757977348; x=1758582148;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=jlHw7peG2S0Qi11j14sbZpDivsG7e2/czsSbkXojmRs=;
-        b=PweaNymgFL5rWp4xQ7/DkRf3N672xOOYvXRPILP6LdquwO0qHttbBCV4lvrXsLm6Yh
-         MtO1Cgj7t1iEqMU/taz/N1Yma3RFYkof+b0iPTZyg3wcQWsJiwJFI6DXhtVmkZZ+8b6b
-         MMzqnriNEzM3MEtt4J7wzfO+Zfow3RcmNK6t0SM+KU3ikZjSW+bgjjuOx8B+VjFMjfcP
-         qjYQp5vPleKd4X5nc3+cck7svfQYPjdVc4ECGOeX2d72Kygs+ye+6XENOi2bUlI88Vuq
-         c8+86m1oqE/1TcBgrwVdh24hGoFCbtu+ha6lPfAh6FRMHdjVhQcWZ59Ltejv3B84UuLU
-         8Etw==
-X-Forwarded-Encrypted: i=1; AJvYcCX4hl857Q6QwQGkE93oiN7jZVp1FraT2ND8isGyknC8+vgal6AmOprH00x4NwphaHB6TBerpGB3sg==@kvack.org
-X-Gm-Message-State: AOJu0YxB6xK+R4x+fJ9BGse8f8XrT4wjVNSUkhCaPt520C9phkeUP01V
-	SIr+23QBerl/R6j7E77s6ElCBiKMKkktHvRzDNdfjJgNICUpfa67COqzDXlI2wUCyGIcn9pZYu5
-	PyLH1YA==
-X-Google-Smtp-Source: AGHT+IEa1X3jMZjRLKCtcr+A3H7RIfpidT0aOh+QBF0f2k8RzePHSyK+dGRZKFa2h4fT/nJO233GwItZfIQ=
-X-Received: from plii18.prod.google.com ([2002:a17:902:eb52:b0:25d:510:6240])
- (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2f0f:b0:24b:1589:5054
- with SMTP id d9443c01a7336-25d250961b0mr172831595ad.23.1757977348111; Mon, 15
- Sep 2025 16:02:28 -0700 (PDT)
-Date: Mon, 15 Sep 2025 16:02:24 -0700
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.51.0.384.g4c02a37b29-goog
-Message-ID: <20250915230224.4115531-1-surenb@google.com>
-Subject: [PATCH v2 1/1] alloc_tag: mark inaccurate allocation counters in
- /proc/allocinfo output
+        d=1e100.net; s=20230601; t=1757977458; x=1758582258;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=p4xhFRKYQhwXJkuDc/EEUioctulqeJUCai7qoY8dBkE=;
+        b=lQQ1yN3hXgivIl+l6eX1n75Iwy5mXGbMs9cCkE2phtXAikQDiWVJEVSO8+4zD9SYOc
+         Kr2ygTd1DrmVr+iLI8BrriR2SskKHW53oBCLDHrnZVKeyN8hSemaXD5pDHUfe/RiPZuT
+         RQAvjwKBbiPkkSf7EXdqNVtdH+pXYAerMsmfNI5mbKekcW7/DS16+D1wHTZm9I9o7fxc
+         CpJuQCIxNE3Hvsry6oGC2ZSQjFjNChAOZ/OJ+ksjpY1sq2ip6pCQucvCkR1y/Nl3VGaP
+         DynqzY3C/txRgdzRrFPzrrbSeMxbZFPAv83YHpgM0/EBS1rD1FEpF0U3+ou6favNjR0B
+         J7cQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVTjL/NoMU7Al4DCEWz84+nxvezxPnCjX85cwFnMC5MClNnhIePpGwhRhwTVdBJ34J6QKtd+3fhjg==@kvack.org
+X-Gm-Message-State: AOJu0Yxw71f1GmT5REHJk8rZN2UjI9jiJ6fe6wy9Q08PlqFyRAFo6TvK
+	xQK3KegboPgMHBWoJ2Vs8qNCNM5Ml2Eo1Rnlkz0fSZ/D7yxJhdXNgDCfOSmYSyPZdTFZ6ue4o2e
+	HgZvoT6ujrW2SD2GhYijzrVLlbvmg8AKrT7YSw2Oq
+X-Gm-Gg: ASbGncvsWB/J1ZXzLeSVHEu8KXNU4+6CYLKS2XrwrsUwqhtT/RiJM5sTpdZlpmKDn87
+	YXIXpBa0Y4Ew6jYLpxfrDD8yCoWD79XXNqo2cH3Wwtz06goMxxlVud4KGstCNEAFQ+pL46RdHjt
+	GZsnXSjbAgS2g8u7CfczMiu9i/GdESteaR6McsFusyM3TczvV6NGrVrusVHXi8Ji6q8pdQtsNNA
+	/5LFfwoNWmK1JiCGieNctajavJXLBIqj0LWY3EfSghP
+X-Google-Smtp-Source: AGHT+IFHHkGyyY8CB0ND1VTmYtN2gUUS8oMVbxVprvwqGNNzj2Kgq8bXC60x7DfHID1D8kjmNG6duvd5/ZOeDEgLVlE=
+X-Received: by 2002:ac8:7c56:0:b0:4b3:1617:e617 with SMTP id
+ d75a77b69052e-4b7b2d81b34mr1194421cf.11.1757977457970; Mon, 15 Sep 2025
+ 16:04:17 -0700 (PDT)
+MIME-Version: 1.0
+References: <20250909234942.1104356-1-surenb@google.com> <20cafc1c.a658.199394de44e.Coremail.00107082@163.com>
+ <aMLvCCZbmpSE/aql@devbig569.cln6.facebook.com> <902f5f32-2f03-4230-aab0-a886fd8e4793@gmail.com>
+ <20250911143132.ca88948c48df874f71983218@linux-foundation.org>
+In-Reply-To: <20250911143132.ca88948c48df874f71983218@linux-foundation.org>
 From: Suren Baghdasaryan <surenb@google.com>
-To: akpm@linux-foundation.org
-Cc: kent.overstreet@linux.dev, vbabka@suse.cz, hannes@cmpxchg.org, 
-	usamaarif642@gmail.com, rientjes@google.com, roman.gushchin@linux.dev, 
-	harry.yoo@oracle.com, shakeel.butt@linux.dev, 00107082@163.com, 
-	pyyjason@gmail.com, pasha.tatashin@soleen.com, souravpanda@google.com, 
-	surenb@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Date: Mon, 15 Sep 2025 16:04:06 -0700
+X-Gm-Features: AS18NWBsZ6p05tPWyvjbKjMLvzq3s3vldcjpufEELtGglP0Q6Ltxk0Uz6ecdD3E
+Message-ID: <CAJuCfpF7NaUJk7fwPQ7-V6DPaTo4eqL-5Xxs7iO0nzNDS9N7nQ@mail.gmail.com>
+Subject: Re: [PATCH 1/1] alloc_tag: mark inaccurate allocation counters in
+ /proc/allocinfo output
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Usama Arif <usamaarif642@gmail.com>, Yueyang Pan <pyyjason@gmail.com>, 
+	David Wang <00107082@163.com>, kent.overstreet@linux.dev, vbabka@suse.cz, 
+	hannes@cmpxchg.org, rientjes@google.com, roman.gushchin@linux.dev, 
+	harry.yoo@oracle.com, shakeel.butt@linux.dev, pasha.tatashin@soleen.com, 
+	souravpanda@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 6E68140019
-X-Stat-Signature: qhw6utcanzyh1iigkyouo7tqo97xw1ki
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: wqeruwdosocheahbaybnyaabtfpyoq5d
 X-Rspam-User: 
-X-HE-Tag: 1757977349-526381
-X-HE-Meta: U2FsdGVkX19WXw77L1vYm3bWsYghVObI4PS+8q5m1MgTbHxy8BK6K796nYcHsyVZpRcnE0ZS2996f2SiITr2LPF9PtKhM9jKMsyY/ADkgzodLIiEh+zXo3Q6dkkiFkdngNQ1aURHKuyUXOoHq/rqTRBTSGLvYVL8NOLB9YEIIV8ONuaBPSJ1sd3e480Gp7DNGXdzhKIbWM6fJBZIutCMdWNLiaIlCzECkvIKhSw1FnJpvISvldZ2+FKTmR6DSbkxZ/ahTWDmhE1ZD4c0WTjO4808ySc7+hCKHZYQpmeU8yDDhdSJJp6XTGFBbpDwDWYJaizfWUZK1sf53jignJp3fboqqnAYCa6sAFGWyUarAXNrvmVSQRONd4UxegvaO3vxQLmPW41j3GUlCGoRY7/NqboXyFImxubtMn+8zgUnx7YufdUYVmQxVBttBpviKegToRCuQOSnCP+EB1wPUQu6jqFp3589ZAA/BVInhdhAiwop+46fYarhZysx46JX2LvAls0xVyUW8s/pgTn9+Bjbp1d7WeXSbDPSEcWY/DNIkXE0VcWH3PRFBr92qurn76VAlcK/B1Jza/SFe0gyLo6q1Yfa3v5ybaNfdz3iZhZVnyLNOaGbFqLUPLDQSCQ9IuF1ua2gQgF4GDKoadX9x7apfHZDeBfSheGoj+4fi3YWsSV4RzCOelRSoMbg1XL+9avyj9S0QDweDL3FFuvOcJIItG1DFdeHWQZ8AWbbCzR3cQunv8Z08DeB43xDSIU8G49A19dXMWlwQq/1Xe8vE+v6hoo7lyava68kpJOk546ztSKjHf7ULdmSN036w8y+cU2dCoXCfy400fegYT+i1zRevaCvBN2CWt5olqYBOmEoM4FfpTctjx+IKQuwYJuqP5D0qorGbXi78etFxH1aEF6gA1Zk61yzHcpOzGvNDLaZ0ihPEfIeLop6giyv9pO7QRQU8eVSAO3D2Lc+9ir21W1
- wS/KLSGx
- iGXvyVUGbtd1tDZm9ryJNEwA2aHLBPajWK2vPFUuYpZrBKDe9b6Jr0CJ9Da/xU7gHiAyc5akkYYRFS4Uedx9DRl05wNSSGl7SHfcJ8Q0M49zEczb85TFCBna/9jsB+f1EjegABOTe40uhpEhoyIf6prZgwbxgow+rl1vL7lbezkEa/ylfjJLufDxzf3cfgW4KzbhEBI+0DevRPYMykrQWb5lksS59GoBOLh+FbajlsGrqNWmBL06EDetPqJM3PhjK/xk/r3tRD01FTr4wDwxem3hmQAuDb7U6NLyKHm8Mv/pSSkRq4dFCvgDKwvUXC2MxA/9iBlj4cwJM/yj8sOzt9fWXBpA+7ZH6W2nCux+uAc+qphGVZEiV6k2/oOBZFfkb8yz7rubIKGQ+G0lX2Ak5MZZcQpyDB0LHVIYR9I/c6ABL5mnVVB4K+OBT9akQwxfgRZl4/G3fWIqwppRmdtlGdx3zYC3wsD7zxJoSrANWEMTRAfgj7iV5v3M6hJjy+V5lZfopA9JPhct2SXPvot6lCngWiiCH8QrQs/xo8Dx3wtWiQqWy/zi9zTJAKauaA5uPZfXGxpkTGbrcpP5hHxmOx2G5OJQhMdlNsftjFxPidGuboF+DGV2lekkcmmZsUX8w54CUFJ+5Q2/UUwtSL7OPTFMsbo5W9iyUig0cBY3UQL5bZyzYk28Szl0j4hHgB9mX5iIA
+X-Rspamd-Queue-Id: 52C9AA0012
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1757977459-835264
+X-HE-Meta: U2FsdGVkX18wcK8CUdwyxIbJZR7DKUcghSLuftgYu8fEZTRaL5ISK8UogmaB125reG2S+XvR9I4faPP4lIzQAJX5Sscxxz0YsyccTS7+TrJZwyrKFNCgenyRJg5e/tfWU//lFfacnEl1fFIOOUwsb4PHvzDsjK2K2hKGnR4fCh4yHD+5+4FCA5saTPhillRQzVNhZDkCOR8EP+R93EYb1ST8yG6g68AqXRIm+1hCwUD9DEfli0473B9nohg+bKH/U0mSnFvY3cTOaz67VcqyS3X6ukzu9rS5Aw6G10K6eVd3YnheQWHJVQqo2Th+2zCXIzfLBlkrsxIQsxFkA6DZm4OLY9GjYDxMAFtZEtYKgiTCgV8UNPkdoccBXkKpjc7ZnBXBQnYwvDHzboLn0ApsYivQnQh7qAwS8nnISE9hhMgUSL3URc0q/D6QWETFq9gEIbuWr3j2YLiQdrGv/hVz3a1JuJnXfJ8k63j5icMqBhlKXprVzB6HSHyIZDbiik6/VW3qTRA6Zv3ogBQUqp3wgYuCi85aoujj8Cp/0Ipme9NN+9a2lkfQwoJlroidABYLkgnp623ICoMWx8l5Dsmc+RewyPH1/H+jjlGrNTClu7L+qi5maZQFDV3cHEOPsRzqfi3mW/mnDpf7UmXLc/dBV6sibHnfptT7WK33pfl4S54BddmGionOdmKNHs1Rplm7z/sCWMEfnu3ZvL5HKVFkfkl4nL8FyROdzaUr46LPW5vxmrcy7LjJ+DqFtniT3lfi1rHnSJ/KKvunGEkO/C7P4XxGbCt+L5rP+Cc3rK1HEJ4llTHUeM2TFCl1xYqx1eLf9CoWSs8EfFd6o3v/AoFQq05iJem+rZqbk3jju8YOO+oxKoSAXjTfvqoslWWuGDlx+NlvY5TcOb8rOM45B6ofAhYWron12DpOH0YRis565yE/wOcUuzODeRza3BQycHKVEtHUo3OuD47PQIrb39O
+ 0Ul9OJKL
+ BmEJ5njdbynEz2sZJ3GiEzSGITjfuAA78w5V0iHePzgW3KDIRqPlUxSOYV4semzbCxpEXp79aGb8fueTAkZuNut4MdqWiRl/iXwTSij8zvGDvMK08oFz5T30He5G61Q1wFJIjWJ9mFd1u1D766CHtegVl2kKbcVaHw+SWYwA7YeKD3NEbvS/J9nnzPBoLJ4LqWDnY0nccWjaO51aMmWidHTeRxbjHnX+LfZNK4PdedCFkiegIkCGx/4LEQybjTChqsBV/P8jsN29fbMlTDIb7PZQmBed4HED6oc38YBU39FT8eUXhyUQuWrTRsXSqCd5HB5tPAhLxq6z1eTNpenjG83xxdl+vZYX4wFnMhqOmVOxNjcQ2eWac7UdY6g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,153 +122,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-While rare, memory allocation profiling can contain inaccurate counters
-if slab object extension vector allocation fails. That allocation might
-succeed later but prior to that, slab allocations that would have used
-that object extension vector will not be accounted for. To indicate
-incorrect counters, "accurate:no" marker is appended to the call site
-line in the /proc/allocinfo output.
-Bump up /proc/allocinfo version to reflect the change in the file format
-and update documentation.
+On Thu, Sep 11, 2025 at 2:31=E2=80=AFPM Andrew Morton <akpm@linux-foundatio=
+n.org> wrote:
+>
+> On Thu, 11 Sep 2025 12:00:23 -0400 Usama Arif <usamaarif642@gmail.com> wr=
+ote:
+>
+> > > I think simply adding * to the end of function name or filename is su=
+fficient
+> > > as they are already str.
+> > >
+> >
+> > Instead of:
+> >
+> > 49152*      48* arch/x86/kernel/cpu/mce/core.c:2709 func:mce_device_cre=
+ate
+> >
+> > Could we do something like:
+> >
+> > 49152      48 arch/x86/kernel/cpu/mce/core.c:2709 func:mce_device_creat=
+e(inaccurate)
+>
+> Can we add another row, saying "the previous row was inaccurate"?  I
+> guess that would break parsers also.
+>
+>
+>
+> I don't know if this was by design, but the present format does provide
+> extensibility.  It is basically
+>
+>         NNNN NNN name:value name:value
+>
+> one could arguably append a third name:value and hope that authors of
+> existing parsers figured this out.
+>
+>
+> Whatev.  I'll drop this version from mm.git.
 
-Example output with invalid counters:
-allocinfo - version: 2.0
-           0        0 arch/x86/kernel/kdebugfs.c:105 func:create_setup_data_nodes
-           0        0 arch/x86/kernel/alternative.c:2090 func:alternatives_smp_module_add
-           0        0 arch/x86/kernel/alternative.c:127 func:__its_alloc accurate:no
-           0        0 arch/x86/kernel/fpu/regset.c:160 func:xstateregs_set
-           0        0 arch/x86/kernel/fpu/xstate.c:1590 func:fpstate_realloc
-           0        0 arch/x86/kernel/cpu/aperfmperf.c:379 func:arch_enable_hybrid_capacity_scale
-           0        0 arch/x86/kernel/cpu/amd_cache_disable.c:258 func:init_amd_l3_attrs
-       49152       48 arch/x86/kernel/cpu/mce/core.c:2709 func:mce_device_create accurate:no
-       32768        1 arch/x86/kernel/cpu/mce/genpool.c:132 func:mce_gen_pool_create
-           0        0 arch/x86/kernel/cpu/mce/amd.c:1341 func:mce_threshold_create_device
-
-Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-Acked-by: Usama Arif <usamaarif642@gmail.com>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
----
-Changes since v1[1]:
-- Changed the marker from asterisk to accurate:no pair, per Andrew Morton
-- Documented /proc/allocinfo v2 format
-- Update the changelog
-- Added Acked-by from v2 since the functionality is the same,
-per Shakeel Butt, Usama Arif and Johannes Weiner
-
-[1] https://lore.kernel.org/all/20250909234942.1104356-1-surenb@google.com/
-
- Documentation/filesystems/proc.rst |  4 ++++
- include/linux/alloc_tag.h          | 12 ++++++++++++
- include/linux/codetag.h            |  5 ++++-
- lib/alloc_tag.c                    |  4 +++-
- mm/slub.c                          |  2 ++
- 5 files changed, 25 insertions(+), 2 deletions(-)
-
-diff --git a/Documentation/filesystems/proc.rst b/Documentation/filesystems/proc.rst
-index 915a3e44bc12..1776a06571c2 100644
---- a/Documentation/filesystems/proc.rst
-+++ b/Documentation/filesystems/proc.rst
-@@ -1009,6 +1009,10 @@ number, module (if originates from a loadable module) and the function calling
- the allocation. The number of bytes allocated and number of calls at each
- location are reported. The first line indicates the version of the file, the
- second line is the header listing fields in the file.
-+If file version is 2.0 or higher then each line may contain additional
-+<key>:<value> pairs representing extra information about the call site.
-+For example if the counters are not accurate, the line will be appended with
-+"accurate:no" pair.
- 
- Example output.
- 
-diff --git a/include/linux/alloc_tag.h b/include/linux/alloc_tag.h
-index 9ef2633e2c08..d40ac39bfbe8 100644
---- a/include/linux/alloc_tag.h
-+++ b/include/linux/alloc_tag.h
-@@ -221,6 +221,16 @@ static inline void alloc_tag_sub(union codetag_ref *ref, size_t bytes)
- 	ref->ct = NULL;
- }
- 
-+static inline void alloc_tag_set_inaccurate(struct alloc_tag *tag)
-+{
-+	tag->ct.flags |= CODETAG_FLAG_INACCURATE;
-+}
-+
-+static inline bool alloc_tag_is_inaccurate(struct alloc_tag *tag)
-+{
-+	return !!(tag->ct.flags & CODETAG_FLAG_INACCURATE);
-+}
-+
- #define alloc_tag_record(p)	((p) = current->alloc_tag)
- 
- #else /* CONFIG_MEM_ALLOC_PROFILING */
-@@ -230,6 +240,8 @@ static inline bool mem_alloc_profiling_enabled(void) { return false; }
- static inline void alloc_tag_add(union codetag_ref *ref, struct alloc_tag *tag,
- 				 size_t bytes) {}
- static inline void alloc_tag_sub(union codetag_ref *ref, size_t bytes) {}
-+static inline void alloc_tag_set_inaccurate(struct alloc_tag *tag) {}
-+static inline bool alloc_tag_is_inaccurate(struct alloc_tag *tag) { return false; }
- #define alloc_tag_record(p)	do {} while (0)
- 
- #endif /* CONFIG_MEM_ALLOC_PROFILING */
-diff --git a/include/linux/codetag.h b/include/linux/codetag.h
-index 457ed8fd3214..8ea2a5f7c98a 100644
---- a/include/linux/codetag.h
-+++ b/include/linux/codetag.h
-@@ -16,13 +16,16 @@ struct module;
- #define CODETAG_SECTION_START_PREFIX	"__start_"
- #define CODETAG_SECTION_STOP_PREFIX	"__stop_"
- 
-+/* codetag flags */
-+#define CODETAG_FLAG_INACCURATE	(1 << 0)
-+
- /*
-  * An instance of this structure is created in a special ELF section at every
-  * code location being tagged.  At runtime, the special section is treated as
-  * an array of these.
-  */
- struct codetag {
--	unsigned int flags; /* used in later patches */
-+	unsigned int flags;
- 	unsigned int lineno;
- 	const char *modname;
- 	const char *function;
-diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
-index 79891528e7b6..12ff80bbbd22 100644
---- a/lib/alloc_tag.c
-+++ b/lib/alloc_tag.c
-@@ -80,7 +80,7 @@ static void allocinfo_stop(struct seq_file *m, void *arg)
- static void print_allocinfo_header(struct seq_buf *buf)
- {
- 	/* Output format version, so we can change it. */
--	seq_buf_printf(buf, "allocinfo - version: 1.0\n");
-+	seq_buf_printf(buf, "allocinfo - version: 2.0\n");
- 	seq_buf_printf(buf, "#     <size>  <calls> <tag info>\n");
- }
- 
-@@ -92,6 +92,8 @@ static void alloc_tag_to_text(struct seq_buf *out, struct codetag *ct)
- 
- 	seq_buf_printf(out, "%12lli %8llu ", bytes, counter.calls);
- 	codetag_to_text(out, ct);
-+	if (unlikely(alloc_tag_is_inaccurate(tag)))
-+		seq_buf_printf(out, " accurate:no");
- 	seq_buf_putc(out, ' ');
- 	seq_buf_putc(out, '\n');
- }
-diff --git a/mm/slub.c b/mm/slub.c
-index af343ca570b5..9c04f29ee8de 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -2143,6 +2143,8 @@ __alloc_tagging_slab_alloc_hook(struct kmem_cache *s, void *object, gfp_t flags)
- 	 */
- 	if (likely(obj_exts))
- 		alloc_tag_add(&obj_exts->ref, current->alloc_tag, s->size);
-+	else
-+		alloc_tag_set_inaccurate(current->alloc_tag);
- }
- 
- static inline void
--- 
-2.51.0.384.g4c02a37b29-goog
-
+v2 is posted at:
+https://lore.kernel.org/all/20250915230224.4115531-1-surenb@google.com/
+Thanks!
 
