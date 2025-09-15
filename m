@@ -4,89 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BCD4CAC597
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 19:33:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8870DCAC592
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 19:37:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E80C28E0008; Mon, 15 Sep 2025 15:33:18 -0400 (EDT)
+	id E3B5C8E000A; Mon, 15 Sep 2025 15:37:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E31968E0001; Mon, 15 Sep 2025 15:33:18 -0400 (EDT)
+	id E12C88E0001; Mon, 15 Sep 2025 15:37:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF9208E0008; Mon, 15 Sep 2025 15:33:18 -0400 (EDT)
+	id D28B28E000A; Mon, 15 Sep 2025 15:37:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B87668E0001
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 15:33:18 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 22822870E2
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 19:33:18 +0000 (UTC)
-X-FDA: 83892483276.21.5A77797
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
-	by imf13.hostedemail.com (Postfix) with ESMTP id EC91820006
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 19:33:15 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=H2T0lmJ0;
-	spf=pass (imf13.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BBA0F8E0001
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 15:37:08 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 54249BA166
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 19:37:08 +0000 (UTC)
+X-FDA: 83892492936.29.48D56EF
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 6979518000D
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 19:37:06 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hdxpg6HJ;
+	spf=pass (imf24.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757964796;
+	s=arc-20220608; t=1757965026;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UVv4w1jtg4ojHbR2lrrdyh2MgDQjPgMUDgj4NVC4Ao8=;
-	b=rKW8S9uGgo1hVRoVs9W4s2vE3DxdvCPAeKhMmSoKEiSYLCzip9YNzHuYp4qdn1xfCurBJy
-	zxUw+W83FIOXeqjyUu7iRrGMZAITPLSaw80fLbWxv601kpgoecEmH2Cs6iqcfaJuEbkwCg
-	Say/X86dRu0SWWnCfB5EU565LzAfuPQ=
+	bh=GXeOMSLnAh+Y5BeziIMqNMvsY4xASMxyysnTBr1a6P8=;
+	b=7IN9fnyQNlfllFLyDh6jfsP1GiMVVqL13dJkFCXz0mP0VTiOYeIAjhj8920agsEX8LoLQU
+	sinR0gVMtc8Q8QNrq2kOf4b6IvO5NkEIsebVi8H20FnNdwnMS6h03VjqfLwELdU9bSIs/L
+	oHz5HVy51jOCGJtl8Nhc3LEjSeamZfU=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=H2T0lmJ0;
-	spf=pass (imf13.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hdxpg6HJ;
+	spf=pass (imf24.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757964796; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757965026; a=rsa-sha256;
 	cv=none;
-	b=zD5mctToOaz+pRkG5hB5ULR8wUM6usCeOR1z8CalwHsb/zNL0xeE17+aDF/70yNnFcDMXF
-	t3jANoyl/EJKx47F8KMuHWW/DA7EU7/WQ8X5wX5l4zRnHUb5532PTlajha/qgWOkLRb8lw
-	i8r+8OPz6NZz6blU9l0P9AoscppWNdM=
-Date: Mon, 15 Sep 2025 19:33:08 +0000
+	b=YSXGhLSxBipPbotu61NSF+THhgr5y0EkshGQZ+7SNEyoxtHQgDvKwEw2zNMRy/566MFEze
+	L5ZGj5Tyx2X9uHtPfJv10wZCviULu4EHGqq6SRj8hBEdyOe7sLEDoktnxv/B4CHzil0KTO
+	25EbvmS+TJuEecSh6YXTslruKMGYPgg=
+Date: Mon, 15 Sep 2025 19:37:00 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1757964793;
+	t=1757965024;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UVv4w1jtg4ojHbR2lrrdyh2MgDQjPgMUDgj4NVC4Ao8=;
-	b=H2T0lmJ0fQrfvBo5DS9iOk5zIjLls+m1jXijYlY+VEb+TQfas+wpUQiArrjWuFrjcnxTFP
-	+wS/uAp1LZ/LCVEw6gphTx8jOZgd8JmpL6ADyUAUHqZMViz14TRa/+J2rm8YEfXsOpruWK
-	wtHFI4O8MruNWckyp0Jq1xOBw+R2eDo=
+	bh=GXeOMSLnAh+Y5BeziIMqNMvsY4xASMxyysnTBr1a6P8=;
+	b=hdxpg6HJbWKd4pRTY2Hd5oB70cnSFLXa36br3d7dKMYl72300kdFaP5zfRq7Q6q4nlRaEA
+	4DOx7PlgtzfHi2setFqia0My7+dt9YTX2+tk1l0wIUwOL50fBEgDJmx2i7rzH5wy+Nk5e/
+	cnTCzEoFO7YEnZjk+RxhybjIQYLYQA8=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Yosry Ahmed <yosry.ahmed@linux.dev>
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Nhat Pham <nphamcs@gmail.com>, Chengming Zhou <zhouchengming@bytedance.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/3] mm: zswap: interact directly with zsmalloc
-Message-ID: <pduxj3r37ufwsbe2jxtx262dikjbbnwmzkagwfot5j4tajxmaf@4z3slwpmdsl4>
+To: Vitaly Wool <vitaly.wool@konsulko.se>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Vlastimil Babka <vbabka@suse.cz>, hannes@cmpxchg.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Christoph Hellwig <hch@infradead.org>
+Subject: Re: [PATCH 0/3] mm: remove zpool
+Message-ID: <fui4gqm6pealaxooz3xv3dnnqxscefyvhw5bhntedwh4tgjvdq@ootmbuoc3dpa>
 References: <20250829162212.208258-1-hannes@cmpxchg.org>
- <20250829162212.208258-2-hannes@cmpxchg.org>
- <r3dzlbqyvhaho5zuac7eba6pxz47zy3cz4lopxza3ls3ibadlh@6evm5aryyuxp>
- <20250909150156.GB1474@cmpxchg.org>
- <46xtfjznexpdlemxjwykin5k74oqomedb2fyli5jrb4xnquuke@ztcmxhmhlkx7>
- <20250910134240.GA1111@cmpxchg.org>
- <f5hn4awbmkelckl6khlaosw3tbfrwzvf5l7kn6mnqpbastsdnh@77mqvfjzyfys>
- <20250915153640.GA828739@cmpxchg.org>
+ <20250904093325.2768507-1-vitaly.wool@konsulko.se>
+ <7b1ca42d-1b89-44f4-bffb-e6b09f86fdc5@suse.cz>
+ <1d42c513-cc83-4f08-a10c-cbd6206070f4@konsulko.se>
+ <girukcvvzgbtkxt4aftfz3lw3glvf2qsof4mx6wf5perolck5n@vaxlrtaeuzw7>
+ <dh74mr7bjtpzk7frviv6iqqno2u2b27p7jiagp2dtnsz2wrfhr@wlb5vqg4majs>
+ <tbvushbdn7nzitey3uy6humdndd6247r4544ngqkds3cr447e6@prnla4edwxmk>
+ <f3ufcsjvvxhi5gzw2wglkpedgyyi6tiaje7em3tbxkzhklphvh@sv3dbo4yba5p>
+ <98B3AFB0-EBD5-4779-A5DB-FFA6717E83C3@konsulko.se>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250915153640.GA828739@cmpxchg.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <98B3AFB0-EBD5-4779-A5DB-FFA6717E83C3@konsulko.se>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: EC91820006
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 1zqqtapt43sdr5u7gjm9hxg5ja1bnb4i
 X-Rspam-User: 
-X-HE-Tag: 1757964795-74058
-X-HE-Meta: U2FsdGVkX19+Pdw9StarN+IZ5iTARbj88YfrFCvShsfX/4J0KQYxiuUzHNZ9t6jexgmA7OD2/1mizDOwDzYEd9zZqppnaVTWddAg2WfI0zjFC3gIz7ESaPoNrbjoeq6kWFaELUSUcGNIr6WBnAMcXJQ44GBMfZDd/4h7pDwHKNo5IFNO60iHOXaWkGTxOqJ9bxOqAL/8MKNmwdTaT4gnOzbNj5mgF5o5fzjGy1OyjhbrmC2keg06nHC6jXoEiK7my/fX9UWtz5HrbuVwXn9FAHg0E9NgJ1EgtDTLisuu9QnTEz4PAU5vqomhsd7WtoTTf2X0ER2fWhHgdRrHNq9wvFsVmyXc8J6+TSd/zdzdgc9k+ll4EQVexhxIYtkcxnN8lYS/ei4vLwjvcLb8XeGLqHERzlbFUW5vSPecyAYzvJojK5F6EvoQexsZ1j8ptfKtChRrKJcuIjtuhw05A5rFUvmU176+LA9U1yjIML8JqLll0fNiV/D2NDcFgthVpqMgO3tMq1isAH2oxJesFuI5Oj5THAq5s/UH1onxss+W7gjzzppcPXSdhyJUprrWXmu2gxR/9Kg/A9Ic4iaxqWP+AqIQ4DgGeDOFPkN2LSiuzUW/9f5cOhzdVTxlmaVQ2JpSSofK0ZpbgkW8JERORoI5HYLUDbE4qLlAwCDP0S1Zm9xMIE21HUTvdJ9zj8G4LXVKr7hVa1HUw1b4NNc8NRiefyBMv0cGWOjXxaL4iv5sjixdJkk0QPHSIO9yS5j/1J3icjPr5ZbXYzF44l2RTEiocIDFv59dwmsk00fy3xXbHap1VWKd7YPvytePa6O6Y2h5Dfppip0aOcp2l/tI8y86fY5Diw+j08luEGecQEZe5UXIMyUQsMp3v85sKxv9To12Yr54A8+TpSqopUQRA4gbbp9ZrOV9srQUaGs6rpWBIpU6dzBM3tBAy7JlLccVIo2gjareuQrSPhfm8cB4QC3
- wxH31FS9
- 41w0yt49iJZ5+E6eEQ/MT2KUmQjOXhUA/l/HdLugnAqcInG4EkSqofkjUrZaPlUoop7YPKcML6z/ps5inj7DM2kcbtw2fznrfUD1JUL5tmvMCJFAc4wQEDYEBB1jA+atXGun3WNdkU0yzb93LwSwO9V22humKaOjB4GiHvF2CbpnqC7egMccwsyc1sStGD0f32Kda+XmMYeze/0dBqShdlZ9gnSjB7Cn6yeLI9nfpwRJJCepx87Zw5eUjE00gHya5lxR3pRIC1aeVQVU=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 6979518000D
+X-Stat-Signature: dibet3caksysk4ux1jmfg769i48uc7jg
+X-HE-Tag: 1757965026-859260
+X-HE-Meta: U2FsdGVkX19Cc+XM2+5WD3VKMG4Vu9JCyUlM9hNKqvnrfhyV7PeWdPKFQ0m+LKEalAf1J4v3dNQlLlOHCYmJLzgjROQ8iSH6pLf82ZLBvigkBDYYcXpRlqZgmXqjrpvDc4HCgYW/GRjx8gYSBdL1APDOdqUdPdlS+F+8G0T76Nuqe5kRpE4P5qDvzdMv3oEL9pIPmQK6HsUOuILTdXcilZM5V/a0TrpVhuOpDGX1IhUR3ba/6/7Vf/FA/eHs3XdoK1tenljnttvRW2T8J2s4wHCF4gpJ0lRnn3XmiVzFNTHJ8LnhZ9W2z4IDkVo067EdjsajyW0FxOje7MM+5aarjVNhExi/29kn7q5rctIgX5ywsmk8Yxu6b3fIKiWv0IgyRqBgbZd3CAruiqBlT/Fuh8F3N5CE0Xob6q7jko5yd8W5qtzGT+R/Q2vDfTov537L0/3JRxCqTlnnYCFaGulJHlTeJxdCXcmtxs2OOGoZh7xdwdZjbqZCqDp4nkGmpVOLvxSZTixKKM1BsLPfj3uCzNcCX1FkTP9Zgp7cYIU7nQ5QfwXFgESJg9DqBSsRpW58RNfCtSrn/BZHY7Xci877HMabipjOIdBtc/0JqxnFr29EJe+wvE9kuhWv7zoVCr6zCH54MpSHWnIBDnXnCS2JDhMQCzBF/rV/EuSbye0eoYDIa46RM/5iO6Snj2cpwllV+cHg2fw08jQCiMyxDKgi1v/du8q/3KCmawDd8cOgNSAxfjaBrgYSvDK/LDXEQCu/joR7RvSanSpKZEgObR6L2sAfeiZUyM5vKgA6+8arBw8Whe4V5C3MCPjVEc9/LckTYb8VcP4Dx3bpqOLAn9B7REdEqEhoIRzZOp3kJgeiv9210ztDFFsTP/BAAH1WWBe52knzGlgVQmhyktAFEU5bWqhEcQzWGc+ZbThWCGedH2s5EjfOj1Qm83v7+rzvouzyH9geaHTxlB6sVpoGLjO
+ hi1/nN18
+ APpXxjW81OWKUCnpcLiWoSYOplitSB8GYx5HaY/LCQgM0a27VbdoVg7LltB0PJWWqRN6qgLLLsd7Z8bdCqKDMEFd4gH4TocrZu4MXQje/hUZhxQBEYkXSe/fKMmTlwL3UOom7QQTlJcd71V/lpkamh/WgbHuBDOrjg6srjMQj8PK0DFKFjpqc0mh0z50DH3HtuV+8gIgEBJWxp71yyKv1LQQcmf7xnIcDAstQDk3/gYBq480=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,108 +100,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 15, 2025 at 11:36:40AM -0400, Johannes Weiner wrote:
-> On Thu, Sep 11, 2025 at 02:30:31PM +0000, Yosry Ahmed wrote:
-> > On Wed, Sep 10, 2025 at 09:42:40AM -0400, Johannes Weiner wrote:
-> > > @@ -314,6 +314,10 @@ static struct zswap_pool *__zswap_pool_create_fallback(void)
-> > >  		}
-> > >  	}
-> > >  
-> > > +	/* Kconfig bug? */
-> > > +	if (WARN_ON(!crypto_has_acomp(zswap_compressor, 0, 0)))
-> > > +		return NULL;
-> > > +
-> > >  	return zswap_pool_create(zswap_compressor);
-> > >  }
-> > 
-> > Sure, looks good, although I think it's clearer (and smaller diff) to
-> > preserve the old structure instead, up to you:
-> > 
-> > diff --git a/mm/zswap.c b/mm/zswap.c
-> > index c88ad61b232cf..bbfc087792648 100644
-> > --- a/mm/zswap.c
-> > +++ b/mm/zswap.c
-> > @@ -300,18 +300,21 @@ static struct zswap_pool *zswap_pool_create(char *compressor)
-> > 
-> >  static struct zswap_pool *__zswap_pool_create_fallback(void)
-> >  {
-> > -       if (!crypto_has_acomp(zswap_compressor, 0, 0) &&
-> > +       bool has_comp = crypto_has_acomp(zswap_compressor, 0, 0);
-> > +
-> > +       if (!has_comp &&
-> >             strcmp(zswap_compressor, CONFIG_ZSWAP_COMPRESSOR_DEFAULT)) {
-> >                 pr_err("compressor %s not available, using default %s\n",
-> >                        zswap_compressor, CONFIG_ZSWAP_COMPRESSOR_DEFAULT);
-> >                 param_free_charp(&zswap_compressor);
-> >                 zswap_compressor = CONFIG_ZSWAP_COMPRESSOR_DEFAULT;
-> > -               if (!crypto_has_acomp(zswap_compressor, 0, 0)) {
-> > -                       pr_err("default compressor %s not available\n",
-> > -                              zswap_compressor);
-> > -                       zswap_compressor = ZSWAP_PARAM_UNSET;
-> > -                       return NULL;
-> > -               }
-> > +               has_comp = crypto_has_acomp(zswap_compressor, 0, 0);
-> > +       }
-> > +       if (!has_comp) {
-> > +               pr_err("default compressor %s not available\n",
-> > +                      zswap_compressor);
-> > +               zswap_compressor = ZSWAP_PARAM_UNSET;
-> > +               return NULL;
-> >         }
+On Sat, Sep 13, 2025 at 03:55:16PM +0200, Vitaly Wool wrote:
 > 
-> No objection to moving the branch instead of adding another one. I'd
-> just like to retain the warning, since it shouldn't happen. And ditch
-> the bool, IMO it pointlessly splits the test from the consequences.
 > 
-> If you're fine with this Yosry, Andrew can you please fold it?
+> > On Sep 9, 2025, at 10:12 PM, Yosry Ahmed <yosry.ahmed@linux.dev> wrote:
+> > 
+> > On Mon, Sep 08, 2025 at 09:18:01PM +0900, Sergey Senozhatsky wrote:
+> >> On (25/09/06 14:25), Sergey Senozhatsky wrote:
+> >>> On (25/09/05 19:57), Yosry Ahmed wrote:
+> >>>> I think Android uses zram+zsmalloc with 16K pages. Perhaps Sergey could
+> >>>> confirm.
+> >>> 
+> >>> I'm not working on android directly,
+> >>> 
+> >>> I can confirm that android uses zram+zsmalloc.  As of 16K pages, there
+> >>> was a way to toggle 16k pages on android (via system settings), I don't
+> >>> know if this is the default now.
+> >> 
+> >> While I don't know what zsmalloc struggles Vitaly is referring to in
+> >> particular, off the top of my head, zsmalloc does memcpy()'s for objects
+> >> that span multiple pages, when zsmalloc kmap()'s both physical pages and
+> >> memcpy()'s chunks of the object into a provided buffer. With 16K pages
+> >> we can have rather larger compressed objects, so those memcpy() are likely
+> >> more visible.  Attacking this would be a good idea, I guess.
+> > 
+> > Yeah I personally think attacking whatever problems zsmalloc has with
+> > 16K pages is the way to go.
+> 
+> Well, there is a way out for 16+K pages, that being:
+> * restricting zsmalloc to not have objects spanning across 2 pages
+> * reworking size_classes based allocation to have uneven steps
+> * as a result of the above, organising binary search for the right size object
+> 
+> This will effectively turn zsmalloc into zblock, with some extra cruft that makes it far less comprehensible.
 
-LGTM, with this folded:
-Acked-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+I think the way to go would be this, identifying problems with 16K on
+zsmalloc, and addressing them one by one in a data-driven way.
 
-Thanks!
+I don't believe there will be opposition to this, or even adding more
+tunables / config options to alter zsmalloc's behavior based on the
+environment. If there's indeed extra cruft, we can either clean it up or
+hide it behind config/tunabels so that it's only enabled when needed.
 
 > 
-> ---
-> 
-> From b8fa4c7edd4f3c84853665b47acec8cebb4f4899 Mon Sep 17 00:00:00 2001
-> From: Johannes Weiner <hannes@cmpxchg.org>
-> Date: Mon, 15 Sep 2025 10:56:15 -0400
-> Subject: [PATCH] mm: zswap: interact directly with zsmalloc fix
-> 
-> Yosry points out that the default compressor check only applies when
-> something else is configured and we fall back, but not if it was
-> configured out of the box but isn't available. Move the test. Kconfig
-> should not permit this, so replace the pr_err() with a WARN.
-> 
-> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
-> ---
->  mm/zswap.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
-> 
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index cba7077fda40..c1af782e54ec 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -309,12 +309,12 @@ static struct zswap_pool *__zswap_pool_create_fallback(void)
->  		       zswap_compressor, CONFIG_ZSWAP_COMPRESSOR_DEFAULT);
->  		param_free_charp(&zswap_compressor);
->  		zswap_compressor = CONFIG_ZSWAP_COMPRESSOR_DEFAULT;
-> -		if (!crypto_has_acomp(zswap_compressor, 0, 0)) {
-> -			pr_err("default compressor %s not available\n",
-> -			       zswap_compressor);
-> -			zswap_compressor = ZSWAP_PARAM_UNSET;
-> -			return NULL;
-> -		}
-> +	}
-> +
-> +	/* Default compressor should be available. Kconfig bug? */
-> +	if (WARN_ON_ONCE(!crypto_has_acomp(zswap_compressor, 0, 0))) {
-> +		zswap_compressor = ZSWAP_PARAM_UNSET;
-> +		return NULL;
->  	}
->  
->  	return zswap_pool_create(zswap_compressor);
-> -- 
-> 2.51.0
-> 
+> Another option would be to leave zsmalloc do its job on 4K pages and use zblock for bigger pages. But it is not possible at the moment because zpool api has been removed. Thats’s why I NACK’ed the zpool removal, at least until we have a replacement for it ready.
+
+I think having a separate allocator that's better for each page size is
+not a good option tbh.
 
