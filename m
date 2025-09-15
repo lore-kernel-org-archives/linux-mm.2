@@ -4,104 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D73ACAC597
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 19:52:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA7A3CAC598
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 19:52:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C61458E0019; Mon, 15 Sep 2025 15:52:35 -0400 (EDT)
+	id 70A5D8E001A; Mon, 15 Sep 2025 15:52:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B75A28E0010; Mon, 15 Sep 2025 15:52:35 -0400 (EDT)
+	id 6BFF98E0010; Mon, 15 Sep 2025 15:52:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A3D708E0019; Mon, 15 Sep 2025 15:52:35 -0400 (EDT)
+	id 5826E8E001A; Mon, 15 Sep 2025 15:52:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 853838E0010
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 15:52:35 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 26B6E1A0734
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 19:52:35 +0000 (UTC)
-X-FDA: 83892531870.10.7E320D5
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 5289E80009
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 19:52:33 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=c9DJAWga;
-	spf=pass (imf30.hostedemail.com: domain of 3gG7IaAQKCMswCu2x55x2v.t532z4BE-331Crt1.58x@flex--fvdl.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3gG7IaAQKCMswCu2x55x2v.t532z4BE-331Crt1.58x@flex--fvdl.bounces.google.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4176B8E0010
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 15:52:37 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EBF6D140764
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 19:52:36 +0000 (UTC)
+X-FDA: 83892531912.26.CC2C2AC
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 1D832A0008
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 19:52:34 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="dP/fcaL8";
+	spf=pass (imf25.hostedemail.com: domain of 3gW7IaAQKCMwxDv3y66y3w.u64305CF-442Dsu2.69y@flex--fvdl.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=3gW7IaAQKCMwxDv3y66y3w.u64305CF-442Dsu2.69y@flex--fvdl.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757965953;
+	s=arc-20220608; t=1757965955;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5DjbF4KpmP4NywIoDsroRavthjlO6MqxRwXYsW+YSfA=;
-	b=RopvPsVvXxEwe4FP21QrDdMDgEHCc3hsDWpCr/OrmxX+Oy9G38S0Hs9V89No/C+BB+LVsA
-	sSRR7ApYnaSmA8F0jZRFSjHZ33SpePF8w7OiyNjB7PckJo7sXINACF9mWCMeS2Hkd7dzCM
-	i/W4dr8kPRZkhPdx/6ZJ7dtJrFIctG4=
+	bh=2MjOcVaMGZCYXnwmJQZ57Yx+f6ZupaH/8SoD2+GME4k=;
+	b=oxEZFTJA+bK8KWXHg2wEBmvJooLt8sePGk8kMS5dI7MvE4tyoGP5rWtoyeTipVm4An64HA
+	8NiYUnCBftLRQg5BnbHxAXHcu4q41vLI2A80TQIObGCcRgIMVyapTa8iETAKQAr1YANIn5
+	2+qHHcD6++/5KdhAgDZD5lprToc/r6E=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=c9DJAWga;
-	spf=pass (imf30.hostedemail.com: domain of 3gG7IaAQKCMswCu2x55x2v.t532z4BE-331Crt1.58x@flex--fvdl.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3gG7IaAQKCMswCu2x55x2v.t532z4BE-331Crt1.58x@flex--fvdl.bounces.google.com;
+	imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="dP/fcaL8";
+	spf=pass (imf25.hostedemail.com: domain of 3gW7IaAQKCMwxDv3y66y3w.u64305CF-442Dsu2.69y@flex--fvdl.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=3gW7IaAQKCMwxDv3y66y3w.u64305CF-442Dsu2.69y@flex--fvdl.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757965953; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757965955; a=rsa-sha256;
 	cv=none;
-	b=7jqPBYd+5MnnUwllwsMP35K0T85Q1CO/nVec5BA4tVoBx8XKDWmcf71JPNskRsnP7Ti0iT
-	ky/CWlGQbWh7DPHldcgfaIB55wBYjgoKwGFRWK2Se9fnCw84T6/E1RnauDg+RL8FGVuAEq
-	WXW1yOk6s052/p+lmxoMKCm3BMHeH3E=
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-24458345f5dso54808275ad.3
-        for <linux-mm@kvack.org>; Mon, 15 Sep 2025 12:52:33 -0700 (PDT)
+	b=b/EW6J1vKaDA+H5Lqot1n+mHggFi7fcylmf/aIbs8bego7TpWmdH9sEvG+6u+1nX/iCiFW
+	BJUqBVxXtrHGGOSYN7QN9Tjr2UuhsLobn44QMsndbbkqJ6/9Stwp35qivPZxKRBytjUrQW
+	zv+TtzaCXtJgv1oTkpKMlZqlOsDsMS0=
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b4e796ad413so6109599a12.2
+        for <linux-mm@kvack.org>; Mon, 15 Sep 2025 12:52:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757965952; x=1758570752; darn=kvack.org;
+        d=google.com; s=20230601; t=1757965954; x=1758570754; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=5DjbF4KpmP4NywIoDsroRavthjlO6MqxRwXYsW+YSfA=;
-        b=c9DJAWgaeHUbPZRCdp2SFVsB+XUI1q3O7zMOjo1Xz3nAEw4mFJnpWEqZCUeTVae9Xp
-         bq8vxTdEc+6fwzvLo7Ijix+rMMSbF7U9JoeWkjSK2RMjgY1PI7asFAgqjxjXXDzshebv
-         DDUv4Y2mBNeU+yI2M42T0b4QwFeL5Py/GSxJKW4Bl5qMQD9PbRFHbs987TX6CPG8KM7W
-         j3ctNplynJO1pIsBjtqan/e3XEy6QNAHKseffp1m8NqZD3hPZjgFjdLMgaK/58sM6moY
-         EvJuj2MMFqawL65/A/rFKsHMtCgW8Zfx6M/biYyv6HeNEf+lchoZn2fEcqYyQBK4eB0f
-         GgPQ==
+        bh=2MjOcVaMGZCYXnwmJQZ57Yx+f6ZupaH/8SoD2+GME4k=;
+        b=dP/fcaL80d9kKvTe59E/+nDoZQK0hl3OFWE+47lzEy1Fb21XUMz4FcUUIL0jlZwyBD
+         s/MOWX7tgwma/AxIo8W37UDO+mnQnt2ukJi+n1YwuChnM/Le7uWMdsJQkEPCXqD2PI4y
+         Om89TvHhuKyb/y3kFr66YIxOw04K7Y3Y1OEn/aqey/7Mot84U9g65LTlSR7GbxUgHVPl
+         fUaBcpoX4l6bKg1elfkqIGlOmHcZigesPgmpOZV2rnaVIlUNx8UTfI28OyFD45gdwW0l
+         IjojSWtqvt8ZxHmbmyNFA2fkmbvh/39aB3TVr0q5MkzDOHgzAHXehiyBc8x7/bioNCa3
+         emxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757965952; x=1758570752;
+        d=1e100.net; s=20230601; t=1757965954; x=1758570754;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5DjbF4KpmP4NywIoDsroRavthjlO6MqxRwXYsW+YSfA=;
-        b=RlNn/+WOUbdyP3QQyh/v3bK97+WfXxOylPGFzvcie77rQ5ldh7dD6vm3eVDEW8JFpN
-         WBWFZEetc/OhQjWtv5mJow8RWEg2kNjmnNbzwYN/zFSa2MTzk2jJmXrpMuSXaCzCL3YI
-         7Bh6JJlitbIWxulJhlHgNLYiMHaqdkCbaTgFtY8COjGOxsJXjoszr0+d5RpoBpnmFvgE
-         cJd4Zy4Hx7v32qRk7Jj+FkKMG1Rnurj74kzLgQAgF6rV/2RWkOpxH+I2YAG+h/G7786Y
-         /xCPwEG+JG8ZO6z/ZppOk4PKm9g+/z0oZ6tbQ7ulBwFBBgasQHAHG/9T4UXK1XwcnMf4
-         z2yA==
-X-Forwarded-Encrypted: i=1; AJvYcCUT3uUNjdr3I/oz3teeAVDjfsIeIxADtebT8khSLz6ROMHhBgOLEkzeCr98vygaRIRes2ZQ6tshpQ==@kvack.org
-X-Gm-Message-State: AOJu0YwQ6+ngHeShJmxjC8lY25koh8Swe59YIvzGujfstthXLa31Zy6H
-	Xyi/OZJHnbZgjyZWZaL/E8gkRJI5/2ibaxRjN36po1PH0Ali/UVW0rJ4xHtcJ1vPI5xlykftjg=
+        bh=2MjOcVaMGZCYXnwmJQZ57Yx+f6ZupaH/8SoD2+GME4k=;
+        b=plGRdy+PhXpjMzDHNM07qpc2KtEv9VW5rJLfFEj4QM3pvgzFl/aLtMS2Yx5zopy62f
+         hTccCAN3AUohm+u1NdBLQ/g51+D1QvpmMV4ZuYw5IPsxx7zGrNJRukpZ2nCoLKDdkK+y
+         x1+DTLawr8lQjMZ++TcyWL2FFAU6K3R39cUU+vTq1AyZXSWKZ+MVyW+4kNRPSt4duGAo
+         XZs4rvcxOtoMSpHjocTNWp5xOEDYfSQrz2VQeG1NQ+ntHPqiQAZKYF8no3MDfWDIAwC1
+         uMcAdWf0BGnJLzvnwd7NTWXeHxyCXX9ctg32MvFbTAlS8UU6aookrIdDdZ0Zpi4xT6K2
+         isSQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW8KAB/BgwxxmUJSJiZvpBR3TrQIEiwQ+hbA3DUDJZ48IPRKKUj91BTFFJn0AMsY1fi7i1GZyWbDw==@kvack.org
+X-Gm-Message-State: AOJu0YyIJ5E6LUFFgZv0xpBUAep2GdXil2Yh0/ylBdHXb3ak4J2polwO
+	0eOhBL4R6+W8fOZ2SfQAJOAMmAYzt++vG4cM2nXJJaD3WWMwALSlSQndOMjtg21Xa9fEeG7ipw=
 	=
-X-Google-Smtp-Source: AGHT+IF8O+VLtGgAGnPoMFPwPtML+wPGmo10/Gb9GlzY+4KfLm4QkQw7DA2FoDyUrRDSv5yLbXqWtzOk
-X-Received: from plbiz4.prod.google.com ([2002:a17:902:ef84:b0:24c:863e:86a3])
- (user=fvdl job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:dacd:b0:25d:8043:781d
- with SMTP id d9443c01a7336-25d804381bcmr162786945ad.21.1757965952236; Mon, 15
- Sep 2025 12:52:32 -0700 (PDT)
-Date: Mon, 15 Sep 2025 19:51:50 +0000
+X-Google-Smtp-Source: AGHT+IG992kJ91SBgyRztXEp8ayRWD1xxYpYbjOHc4swJ2FjbvDWoErXzOXlzWzoeDsx/LEygczXUUjX
+X-Received: from pjbqd5.prod.google.com ([2002:a17:90b:3cc5:b0:32e:6866:664])
+ (user=fvdl job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4f86:b0:32e:18b2:5a45
+ with SMTP id 98e67ed59e1d1-32e18b25f33mr9160181a91.5.1757965953984; Mon, 15
+ Sep 2025 12:52:33 -0700 (PDT)
+Date: Mon, 15 Sep 2025 19:51:51 +0000
 In-Reply-To: <20250915195153.462039-1-fvdl@google.com>
 Mime-Version: 1.0
 References: <20250915195153.462039-1-fvdl@google.com>
 X-Mailer: git-send-email 2.51.0.384.g4c02a37b29-goog
-Message-ID: <20250915195153.462039-10-fvdl@google.com>
-Subject: [RFC PATCH 09/12] mm/cma: introduce CMA balancing
+Message-ID: <20250915195153.462039-11-fvdl@google.com>
+Subject: [RFC PATCH 10/12] mm/hugetlb: do explicit CMA balancing
 From: Frank van der Linden <fvdl@google.com>
 To: akpm@linux-foundation.org, muchun.song@linux.dev, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org
 Cc: hannes@cmpxchg.org, david@redhat.com, roman.gushchin@linux.dev, 
 	Frank van der Linden <fvdl@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: 98sczqzz6njoucj6jwo6uhfn5so648h7
+X-Rspamd-Queue-Id: 1D832A0008
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5289E80009
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1757965953-685692
-X-HE-Meta: U2FsdGVkX1+m7Gyw5SMCfUtsTkd06SaRhoTck40WL1JfGWmc+n7DR/UUxm165jDDCnFqaomA3xux3/0XuTy4lWDkdk+WyhuoAwGba+0oTAQn23A2wqtescge0arlllcqyOHazHdQFHJvA22mEB1t8WMUddan2EvV44Uc5b24Qwtcz71uN3sCQhtPBTmv3TuJRDOeMiYqJ3BWXH5Y6vTBc/YV7RG2bV+IkGFkksc3MKmJIeqOrYjbLtDOldRbRrlJ8J0EvbJjIgVtiT0tT0OOYUZd5MaPUZ1/gITB4Lt+jr1gwbmPp0mvcpW2oEuzReLEkzlnRosexGxBFU3HEMhSNVJNdR7q65xfIl1ySAmFBvznbnUU6bTy+gd1cc9EfJvZzoh7Za6nspNp6MmU6IeOoX60O+lZVFdynx77HWPHwoyDUFsfd8b01MkPYphcstHQ+k8yLgLRp8wHspnaHsSzSeUPfR4xJ5cInWXNccxVhP/L77dtthxx2sNuzOsgq84ZNgAVIeOL5YKX05iRTX7cvXhdHDG9AyQWX96FScW2WxYXqhZJuRcGU9xVSBircO4LadTGh3POKzM8acBU9SeS1xYpkxMChB9Oxh46tsQA4xEAvLFKv+qqxOfQEf2ZfaB3zqElgVdySJNXdsL4a91h9mhtIw9eqZKJ2YdZJ6AQSfJ3vyjV4Dv0MUHFJNJHOHkvMDsmj31teulCd28tTgpAUs7yzIgDiwrg4bjATSnQDzXGpXPQi4fXPh8U8gfCWhveXFf+6w60mqapWRIS4zymNZ0lca/k6T4mUy0ZVuk8mzM0D+0x2gqEKRlY5AH/YarhSWWXq5eoGoeHUjeJnCW4OfmMMvbX0MC/dddL2AH/dW/1JsiEGybu4aViN+sRaeSqdZd7UR8SKG4jdWSt97NxaHgnyIWkQnHjg/t8vr6IW3Drb6JB/kByoYHEZy9pGIF2CJxWDfjqkVqB/EHt/UW
- jgmFSTtH
- +Df0AIX2Z7kJhr87X3P1R+dGj5F9m/OBBoJcQuOZUuy/ZjOL8irLueRrSJgRt/fsPtBTxarHvA4gCLS+Hz6DNDrw0zEwIGAtn5QZYrRd9OxidhGFRZonTE658FiTbmmcxM86UlnCR3GZjIDQ9npEUcDYO8K01L3vq3vQ602dh6I/Kot8Kn2S/HtoawHz6K7UTJzDfq+6T1VzXcTLuR0JcqeM0F68w2YN6Nrp7O1gZJ4h63Wo/HMIeO5uB7cRtnzE8oAHQ9S11hKHp3xCOcDC3UHR6J/judeT5gpSbLQzKdTxyOtfevnulZF9npI7N1r1hYudz0W4NB/+Ad+fka6FngfZTXA8o/QicF9QQ5dYVrj9AfvsRcdb1XXDiwA/5l9P+YgPkzCm17G1st9Tda/hH0TYfmPQBoDCUT1WofoVUXDCXErrNz0vnQm+yAZLQNDw73siY0/HpmywVNiF30nRJjIl8hLF0OAbAzSRBbiGBM1LguKKMQuxwLKQrOB2FxolauPmruFwzzhvbb+38EB4e4KgHlYF1KqY6i3+DZPMTeKhqncAf34ysYouGNQ==
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 1oj11idbbba8nxgomjxgdfkoyiktopwc
+X-HE-Tag: 1757965954-211785
+X-HE-Meta: U2FsdGVkX19Pvy7jf41C1IBqNsJ2ZZMqhjyrvN4HrNn7fPorHDmcl5v/2OZUC/Va32l1bYKXLwt45DTEGxKVSaDSH0NFg2ozviBtFp1VvpZFs0nKR+kWl9rJoRc8MKNIidBXEEuPc0LRdfgwhMxzxYn0I04pKnhVi7PvsfWx4Cv/R6qhebc1DmKuvk/E21LYSA7UK1FaGpCidftCEOmAiwfr72J0EBXz1VqJoqGgS0wJ2u0jEwK/X9kT2apesZs/HVKfugrKYHdFbqKxSe73g9JkQqmagayKBNC2rMBuDUMwnAmxB5GExitxFiITA2Xg3M21jD53L70Q0QtAfyXrAdlzyduBlhRtdsHMeM+9unD7tTg2MYJ2TKnCCTG9RjetgVXPz8Pd6/pO1fmhSasj/bq0xwICMk/klxpOfOGAN1eARNsGaxIEXNJlvsD+UsNHmvJUbevFXx0pCu7vF/J57SH0i5pRSY44lV2ebyHrHK0D+KsYAhc8vS2us9bj1gsXP9ZBHm6p4gLwLqEMYTab2COtp15RWlSrU7V8GLgu6PKAWfikgTvth0nLQlZGuobOU9dUc0sMucqPJXG7y/Fp6PwKW/FNBGy/y/wWkS4ATBWl7/iTPWzeUO3mw58Tljo4Nk/PK2TvGuvKb/zbb/x7cIFGu7r4Jk6TwCiHzknaS5vzPXdkQNaFflVNhVVLYu3D7yRkZw6C3DMtc8kpzv6D8tKAbffEGBSpf6fbqIC1xRsbqj1TpdooXK+/9elXQtlfISG7q1RJk0Vjg6VA4/K7rapyxGrdzoNDfpFnmVC6LFthj8Czw9OzJLNRgZeAzSR0TJC/wyo+uvZjXgI3XAe6heLDWxpBYaCjwYAKQPZGXTgLl95VH1dLAZ0QfLMIpvYcrcizh22LJSkAGMqmHQz/+z8Y3XPodU60DdpFPrQHSBfWjMI8HpRoI6FZNJqdgt/v4BQkh1hmPKnGjugInZ/
+ tUQdtaGK
+ i4lDCR/iCItGON9oMQwpaMdlptq2gCky4fKJc/TaFK6LzZ1tJeaIcVfFXoXOFHI9KbeIZgkqUcB8/KwZeUZXRQeuUXrV4+y27RSlCZLeDHM0W3Q0vqO1eclaSzrtPX/mrjUL+Tvro3m5r4lQHlbOWpzH/15sNuU/6va9iSjja9FgPuIlyCtqoWTq3HE6MxX/wUnPCrBqWWZxBXtNAoCoSbB+aZSos4ZPkctYwP2dUNbtKA8bnr4modLe3Dj7hUtAHH99PJVDOaey3ZGN0uI6TDQuR7fN+5N5YO4bvF1Q7w7+Zy5zVEsXoJsfQF02zROFgWM78bnmqLuRzFjSUjKMk4auFOSGOsCjzLLCFoPOfFy8ZNyg9ncGh0reiC7AFcjzMPkmSURN5E9lhfzIRv/jAAUAEHrcFPhb6ooRmAvFE/67TaSGIfYJfbL3n7TBwZBKxX0Y+6gi1ZHaioJ0AfWuVBrw2/PrmDecvpQX7jxF9RUcdV//D0Tn89roIUB5I8QLbp244LzrHGcDYpIYJ6odo9D05P9TcSd7TGk8deSfVITD1x00vrw2xwFjY/Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,291 +110,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A longstanding problem with having a lot of CMA pageblocks in
-the system (through hugetlb_cma), is that this limits the amount
-of memory that the kernel can use for its allocations. Kernel
-allocations are unmovable and can not come from CMA pageblocks.
+CMA areas are normally not very large, but HugeTLB CMA is an
+exception. hugetlb_cma, used for 'gigantic' pages (usually
+1G), can take up many gigabytes of memory.
 
-This can lead to situations where kernel allocations cause OOMs,
-when in fact there might still enough memory available. There
-isn't much that can be done if the non-CMA part of memory is
-already taken up by unmovable allocations. That scenario can
-be considered a misconfigured system. But if there are movable
-allocations in the non-CMA areas, they are unnecessarily
-taking away space from the kernel.
+As such, it is potentially the largest source of 'false OOM'
+conditions, situations where the kernel runs out of space
+for unmovable allocations, because it can't allocate from
+CMA pageblocks, and non-CMA memory has been tied up by
+other movable allocations.
 
-Currently, the page allocator tries to avoid this scenario
-by allocating from CMA first if more than half of free pages
-in a zone come from CMA. But that's not a guarantee.
+The normal use case of hugetlb_cma is a system where 1G
+hugetlb pages are sometimes, but not always, needed, so
+they need to be created and freed dynamically. As such,
+the best time to address CMA memory imbalances is when CMA
+hugetlb pages are freed, making multiples of 1G available
+as buddy managed CMA pageblocks. That is a good time to
+check if movable allocations fron non-CMA pageblocks should
+be moved to CMA pageblocks to give the kernel more breathing
+space.
 
-For example, take the case where a lot of memory is being
-taken up by 1G hugetlb pages, allocated from hugetlb_cma, and
-that the hugetlb_cma area has been fully used by hugetlbfs.
-This means that new movable allocations will land in the
-non-CMA part of memory, and that the kernel may come under
-memory pressure. If those allocations are long-lasting,
-freeing up hugetlb pages will not reduce that pressure,
-since the kernel can't use the new space, and the long-lasting
-allocations residing in non-CMA memory will stay put.
+Do this by calling balance_node_cma on either the hugetlb
+CMA area for the node that just had its number of hugetlb
+pages reduced, or for all hugetlb CMA areas if the reduction
+was not node-specific.
 
-To counter this issue, introduce interfaces to explicitly
-move pages in to CMA areas. The number of pages moved
-depends on cma_first_limit. It will use that percentage to
-calculate the target number of pages that should be moved.
-
-A later commit will call one of these interfaces to move pages
-to CMA if needed, after CMA-allocated hugetlb pages have been
-freed.
+To have the CMA balancing code act on the hugetlb CMA areas,
+set the CMA_BALANCE flag when creating them.
 
 Signed-off-by: Frank van der Linden <fvdl@google.com>
 ---
- include/linux/migrate_mode.h   |   1 +
- include/trace/events/migrate.h |   3 +-
- mm/compaction.c                | 168 +++++++++++++++++++++++++++++++++
- mm/internal.h                  |   4 +
- 4 files changed, 175 insertions(+), 1 deletion(-)
+ mm/hugetlb.c     | 14 ++++++++------
+ mm/hugetlb_cma.c | 16 ++++++++++++++++
+ mm/hugetlb_cma.h |  5 +++++
+ 3 files changed, 29 insertions(+), 6 deletions(-)
 
-diff --git a/include/linux/migrate_mode.h b/include/linux/migrate_mode.h
-index 265c4328b36a..3e235499cd73 100644
---- a/include/linux/migrate_mode.h
-+++ b/include/linux/migrate_mode.h
-@@ -25,6 +25,7 @@ enum migrate_reason {
- 	MR_LONGTERM_PIN,
- 	MR_DEMOTION,
- 	MR_DAMON,
-+	MR_CMA_BALANCE,
- 	MR_TYPES
- };
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index eed59cfb5d21..611655876f60 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -3971,12 +3971,14 @@ static int set_max_huge_pages(struct hstate *h, unsigned long count, int nid,
  
-diff --git a/include/trace/events/migrate.h b/include/trace/events/migrate.h
-index cd01dd7b3640..53d669ee26be 100644
---- a/include/trace/events/migrate.h
-+++ b/include/trace/events/migrate.h
-@@ -23,7 +23,8 @@
- 	EM( MR_CONTIG_RANGE,	"contig_range")			\
- 	EM( MR_LONGTERM_PIN,	"longterm_pin")			\
- 	EM( MR_DEMOTION,	"demotion")			\
--	EMe(MR_DAMON,		"damon")
-+	EM( MR_DAMON,		"damon")			\
-+	EMe(MR_CMA_BALANCE,	"cma_balance")
+ 		list_add(&folio->lru, &page_list);
+ 	}
+-	/* free the pages after dropping lock */
+-	spin_unlock_irq(&hugetlb_lock);
+-	update_and_free_pages_bulk(h, &page_list);
+-	flush_free_hpage_work(h);
+-	spin_lock_irq(&hugetlb_lock);
+-
++	if (!list_empty(&page_list)) {
++		/* free the pages after dropping lock */
++		spin_unlock_irq(&hugetlb_lock);
++		update_and_free_pages_bulk(h, &page_list);
++		flush_free_hpage_work(h);
++		hugetlb_cma_balance(nid);
++		spin_lock_irq(&hugetlb_lock);
++	}
+ 	while (count < persistent_huge_pages(h)) {
+ 		if (!adjust_pool_surplus(h, nodes_allowed, 1))
+ 			break;
+diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
+index 71d0e9a048d4..c0396d35b5bf 100644
+--- a/mm/hugetlb_cma.c
++++ b/mm/hugetlb_cma.c
+@@ -276,3 +276,19 @@ bool __init hugetlb_early_cma(struct hstate *h)
  
- /*
-  * First define the enums in the above macros to be exported to userspace
-diff --git a/mm/compaction.c b/mm/compaction.c
-index 2e6c30f50b89..3200119b8baf 100644
---- a/mm/compaction.c
-+++ b/mm/compaction.c
-@@ -24,6 +24,7 @@
- #include <linux/page_owner.h>
- #include <linux/psi.h>
- #include <linux/cpuset.h>
-+#include <linux/cma.h>
- #include "internal.h"
- 
- #ifdef CONFIG_COMPACTION
-@@ -2512,6 +2513,173 @@ compaction_suit_allocation_order(struct zone *zone, unsigned int order,
- 	return COMPACT_CONTINUE;
+ 	return hstate_is_gigantic(h) && hugetlb_cma_only;
  }
- 
-+#ifdef CONFIG_CMA
 +
-+static void
-+isolate_free_cma_pages(struct compact_control *cc)
++void hugetlb_cma_balance(int nid)
 +{
-+	unsigned long end_pfn, pfn, next_pfn, start_pfn;
-+	int i;
++	int node;
 +
-+	i = -1;
-+	end_pfn = 0;
-+
-+	next_pfn = end_pfn = cc->free_pfn;
-+	start_pfn = 0;
-+	while (cc->nr_freepages < cc->nr_migratepages) {
-+		if (!cma_next_balance_pagerange(cc->zone, cc->cma, &i,
-+						&start_pfn, &end_pfn))
-+			break;
-+		for (pfn = start_pfn; pfn < end_pfn; pfn = next_pfn) {
-+			next_pfn = pfn + pageblock_nr_pages;
-+			isolate_freepages_block(cc, &pfn, next_pfn,
-+					cc->freepages, 1, false);
-+			if (cc->nr_freepages >= cc->nr_migratepages)
-+				break;
++	if (nid != NUMA_NO_NODE) {
++		if (hugetlb_cma[nid])
++			balance_node_cma(nid, hugetlb_cma[nid]);
++	} else {
++		for_each_online_node(node) {
++			if (hugetlb_cma[node])
++				balance_node_cma(node,
++						 hugetlb_cma[node]);
 +		}
 +	}
-+	cc->free_pfn = next_pfn;
 +}
-+
-+static void balance_zone_cma(struct zone *zone, struct cma *cma)
-+{
-+	struct compact_control cc = {
-+		.zone = zone,
-+		.cma = cma,
-+		.isolate_freepages = isolate_free_cma_pages,
-+		.nr_migratepages = 0,
-+		.nr_freepages = 0,
-+		.free_pfn = 0,
-+		.migrate_pfn = 0,
-+		.mode = MIGRATE_SYNC,
-+		.ignore_skip_hint = true,
-+		.no_set_skip_hint = true,
-+		.gfp_mask = GFP_KERNEL,
-+		.migrate_large = true,
-+		.order = -1,
-+	};
-+	unsigned long nr_pages;
-+	int order;
-+	unsigned long free_cma, free_pages, allocated, allocated_noncma;
-+	unsigned long target_free_cma;
-+	int rindex, ret = 0, n;
-+	unsigned long start_pfn, end_pfn, pfn, next_pfn;
-+	long nr_migrated;
-+
-+	if (zone_idx(zone) == ZONE_MOVABLE)
-+		return;
-+
-+	if (!cma && !cma_numranges())
-+		return;
-+
-+	/*
-+	 * Try to move allocated pages from non-CMA pageblocks
-+	 * to CMA pageblocks (possibly in a specific CMA area), to
-+	 * give the kernel more space for unmovable allocations.
-+	 *
-+	 * cma_first_limit, the percentage of free pages that are
-+	 * MIGRATE_CMA, is used to calculcate the target number.
-+	 */
-+	free_pages = zone_page_state(zone, NR_FREE_PAGES);
-+	free_cma = zone_page_state(zone, NR_FREE_CMA_PAGES);
-+	if (!free_cma)
-+		return;
-+
-+	target_free_cma = (cma_first_limit * free_pages) / 100;
-+	/*
-+	 * If we're already below the target, nothing to do.
-+	 */
-+	if (free_cma <= target_free_cma)
-+		return;
-+
-+	/*
-+	 * To try to avoid scanning too much non-CMA memory,
-+	 * set the upper bound of pages we want to migrate
-+	 * to the minimum of:
-+	 * 1. The number of MIGRATE_CMA pages we want to use.
-+	 * 2. The space available in the targeted CMA area (if any).
-+	 * 3. The number of used non-CMA pages.
-+	 *
-+	 * This will still likely cause the scanning of more
-+	 * pageblocks than is strictly needed, but it's the best
-+	 * that can be done without explicit tracking of the number
-+	 * of movable allocations in non-CMA memory.
-+	 */
-+	allocated = zone_managed_pages(zone) - free_pages;
-+	allocated_noncma = allocated - (zone_cma_pages(zone) - free_cma);
-+
-+	nr_pages = free_cma - target_free_cma;
-+	if (cma)
-+		nr_pages = min(nr_pages, cma_get_available(cma));
-+	nr_pages = min(allocated_noncma, nr_pages);
-+
-+	for (order = 0; order < NR_PAGE_ORDERS; order++)
-+		INIT_LIST_HEAD(&cc.freepages[order]);
-+	INIT_LIST_HEAD(&cc.migratepages);
-+
-+	rindex = -1;
-+	start_pfn = next_pfn = end_pfn = 0;
-+	nr_migrated = 0;
-+	while (nr_pages > 0) {
-+		ret = 0;
-+		if (!cma_next_noncma_pagerange(cc.zone, &rindex,
-+					      &start_pfn, &end_pfn))
-+			break;
-+
-+		for (pfn = start_pfn; pfn < end_pfn; pfn = next_pfn) {
-+			next_pfn = pfn + pageblock_nr_pages;
-+			cc.nr_migratepages = 0;
-+
-+			if (!pageblock_pfn_to_page(pfn, next_pfn, zone))
-+				continue;
-+
-+			ret = isolate_migratepages_block(&cc, pfn, next_pfn,
-+					ISOLATE_UNEVICTABLE);
-+			if (ret)
-+				continue;
-+			ret = migrate_pages(&cc.migratepages, compaction_alloc,
-+					    compaction_free, (unsigned long)&cc,
-+					    cc.mode, MR_CMA_BALANCE, &n);
-+			if (ret)
-+				putback_movable_pages(&cc.migratepages);
-+			nr_migrated += n;
-+			if (nr_migrated >= nr_pages)
-+				break;
-+		}
-+
-+		nr_pages -= min_t(unsigned long, nr_migrated, nr_pages);
-+	}
-+
-+	if (cc.nr_freepages > 0)
-+		release_free_list(cc.freepages);
-+}
-+
-+void balance_node_cma(int nid, struct cma *cma)
-+{
-+	pg_data_t *pgdat;
-+	int zoneid;
-+	struct zone *zone;
-+
-+	if (!cma && !cma_numranges())
-+		return;
-+
-+	if (nid >= MAX_NUMNODES || !node_online(nid))
-+		return;
-+
-+	pgdat = NODE_DATA(nid);
-+
-+	for (zoneid = 0; zoneid < MAX_NR_ZONES; zoneid++) {
-+
-+		zone = &pgdat->node_zones[zoneid];
-+		if (!populated_zone(zone))
-+			continue;
-+
-+		balance_zone_cma(zone, cma);
-+	}
-+}
-+
-+#endif /* CONFIG_CMA */
-+
- static enum compact_result
- compact_zone(struct compact_control *cc, struct capture_control *capc)
- {
-diff --git a/mm/internal.h b/mm/internal.h
-index ffcb3aec05ed..7dcaf7214683 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -857,6 +857,8 @@ void memmap_init_range(unsigned long, int, unsigned long, unsigned long,
- 
- #if defined CONFIG_COMPACTION || defined CONFIG_CMA
- 
-+struct cma;
-+
- /*
-  * in mm/compaction.c
-  */
-@@ -887,6 +889,7 @@ struct compact_control {
- 	unsigned long migrate_pfn;
- 	unsigned long fast_start_pfn;	/* a pfn to start linear scan from */
- 	struct zone *zone;
-+	struct cma *cma;		/* if moving to a specific CMA area */
- 	unsigned long total_migrate_scanned;
- 	unsigned long total_free_scanned;
- 	unsigned short fast_search_fail;/* failures to use free list searches */
-@@ -938,6 +941,7 @@ struct cma;
- #ifdef CONFIG_CMA
- void *cma_reserve_early(struct cma *cma, unsigned long size);
- void init_cma_pageblock(struct page *page);
-+void balance_node_cma(int nid, struct cma *cma);
+diff --git a/mm/hugetlb_cma.h b/mm/hugetlb_cma.h
+index f7d7fb9880a2..2f2a35b56d8a 100644
+--- a/mm/hugetlb_cma.h
++++ b/mm/hugetlb_cma.h
+@@ -13,6 +13,7 @@ bool hugetlb_cma_exclusive_alloc(void);
+ unsigned long hugetlb_cma_total_size(void);
+ void hugetlb_cma_validate_params(void);
+ bool hugetlb_early_cma(struct hstate *h);
++void hugetlb_cma_balance(int nid);
  #else
- static inline void *cma_reserve_early(struct cma *cma, unsigned long size)
+ static inline void hugetlb_cma_free_folio(struct folio *folio)
  {
+@@ -53,5 +54,9 @@ static inline bool hugetlb_early_cma(struct hstate *h)
+ {
+ 	return false;
+ }
++
++static inline void hugetlb_cma_balance(int nid)
++{
++}
+ #endif
+ #endif
 -- 
 2.51.0.384.g4c02a37b29-goog
 
