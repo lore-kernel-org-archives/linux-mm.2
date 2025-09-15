@@ -4,90 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68BABCAC592
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 18:12:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8631DCAC597
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 18:26:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AE6218E0006; Mon, 15 Sep 2025 14:12:38 -0400 (EDT)
+	id 9A6E28E000A; Mon, 15 Sep 2025 14:26:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A960F8E0001; Mon, 15 Sep 2025 14:12:38 -0400 (EDT)
+	id 957718E0001; Mon, 15 Sep 2025 14:26:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9AC5A8E0006; Mon, 15 Sep 2025 14:12:38 -0400 (EDT)
+	id 894E78E000A; Mon, 15 Sep 2025 14:26:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8B98B8E0001
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 14:12:38 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 31F03565FF
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 18:12:38 +0000 (UTC)
-X-FDA: 83892279996.25.91E70B1
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 5FF53140011
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 18:12:36 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=pankajraghav.com header.s=MBO0001 header.b=Vhy4i+tl;
-	spf=pass (imf09.hostedemail.com: domain of kernel@pankajraghav.com designates 80.241.56.161 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com;
-	dmarc=pass (policy=quarantine) header.from=pankajraghav.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 785A38E0001
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 14:26:58 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 07DDAC0722
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 18:26:58 +0000 (UTC)
+X-FDA: 83892316116.02.18BD6F5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 72D1C1A0013
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 18:26:56 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="a0R/xPtq";
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757959956;
+	s=arc-20220608; t=1757960816;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uabTcZlsJwj8cGPmkeFh4JkdU8A/qF5iN2gRJmC26sQ=;
-	b=szktVWnP8qCZLAo2y8p4PsAZQwUISqICk7Q+uC46FwA92oi3IPW/BoInCqwjb2XIBF0MTB
-	m6ClCgBp6br2azyqIukIrNg3QigSUuVf/3hYM/mU40bkdMJgcq0DgakyAvB+B+VeqonpIr
-	cuUjIlehzuuOfBFhG9onaRe80hf58Fc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757959956; a=rsa-sha256;
+	bh=hIxbcTD5nYLMJpUhdAZcHPRLYbJ4sAToaaMaZ0lPCQ8=;
+	b=TwyxBZb/Z1hzUVoAEOjg/vAW6zctUECAo3NDkFKnPsxcc8ATAv6bnZFl8Am6wDvXLG/cM2
+	zrmPDZSPXD/Su4MUyxXscvdS7SkNJfk35c/AF2rSnVz0HZYqgj0k7cuFMjZB+WEqyZ7qRC
+	f2xjxEIWiEma4ZS+FEiK3wpzmBZvTXw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757960816; a=rsa-sha256;
 	cv=none;
-	b=C6kHpB3xTZpjChgQ2FcVv2ljPn4xE949G04RECCGfYWvMuXHLszStuTSzneKMq5CofilDZ
-	92Afrcy1ypJ+hfOwZJOyag/TL63wytEtxExD5rxz9EFL69SfFhniSUmRcm6h4WYe1DvotT
-	cyO+bKo8bNybZjzHzJIJZcjBI8WAJ3s=
+	b=glvjDqS+FxZgQQaY7K2qiKbCikVTbIBkVd/HSnhkoP3DJ9JkQfLP22GpDxtQlDpoDxicFs
+	sNw8O4K3fXE/yzc5FSKTCHW6IJyogXLwfoCdsgKnOjqv2bz3ypRgkF4wynZ7PA8A49Uw7u
+	rO+q68xugAeNic8bP8QkDneoT6U4qoU=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=pankajraghav.com header.s=MBO0001 header.b=Vhy4i+tl;
-	spf=pass (imf09.hostedemail.com: domain of kernel@pankajraghav.com designates 80.241.56.161 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com;
-	dmarc=pass (policy=quarantine) header.from=pankajraghav.com
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4cQY681cR1z9tBF;
-	Mon, 15 Sep 2025 20:12:32 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pankajraghav.com;
-	s=MBO0001; t=1757959952;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uabTcZlsJwj8cGPmkeFh4JkdU8A/qF5iN2gRJmC26sQ=;
-	b=Vhy4i+tl0RbgFcusaRlZzpZ5hXU5TXY11dM3DEki/OuRfjmIrMpqWEsyZHdnIdSa61k6AN
-	AmhrTuKLfSuIZV8/TYGLkF5KPhuQmodSoX+s8wha0/xXCUqJPr0N/cbwZyd/BQA2eoh+e/
-	ie5n2SLrHtv7S8ih4XDbLOXhf+QQ0dDAYeuqdw1pCSUE8kb3t26E3mtvDP+33grijYy0qb
-	qNO8KkeWS2TVUWvotMa42zqUxi+qmh4K14Qt02Zf038eC+ZYS5OqergbQqlp3sQKU3gHu8
-	GuPD+y0Nlu7oboyZO28Vzv+qv2aAYjBfPzqRz+oUioCkOfnrZe+TddAZF8MYsg==
-Date: Mon, 15 Sep 2025 20:12:25 +0200
-From: "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Qu Wenruo <quwenruo.btrfs@gmx.com>, 
-	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, linux-btrfs <linux-btrfs@vger.kernel.org>, linux-mm@kvack.org, 
-	mcgrof@kernel.org, p.raghav@samsung.com, kernel@pankajraghav.com
-Subject: Re: Any way to ensure minimal folio size and alignment for iomap
- based direct IO?
-Message-ID: <2h2azgruselzle2roez7umdh5lghtm7kkfxib26pxzsjhmcdja@x3wjdx2r6jeu>
-References: <9598a140-aa45-4d73-9cd2-0c7ca6e4020a@gmx.com>
- <aMgOtdmxNoYB7_Ye@casper.infradead.org>
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="a0R/xPtq";
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id BBE1D60233;
+	Mon, 15 Sep 2025 18:26:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43BE0C4CEFA;
+	Mon, 15 Sep 2025 18:26:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757960815;
+	bh=ZlwLFFbUZ7SUw1fTcU2d+newTqMg71wB985Uf0+wEDk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=a0R/xPtqF4vOpA4RsS+6m6W4efIbgihjPzTJWDO46T7vsYoTolCa/wg0cQQZWjwLn
+	 V2JX80luxNk04KPKMTnH+CAwOfnQxhwHnFZx1PKfnVymKNDkYFdpYVDpBY6dteG5MB
+	 wjzEDW/UGZ3Yhp4cYIN6O7GSF5Q2lRCcB5JFUFr3+bK0j1M39jIq77VGseOnszyrY1
+	 a4mAfVrEPGTli/BV6+K+v5bLMAba/0PZyRvrswH49qnpGiBpR2lMe3G/RZOfWQBk24
+	 286/JS2abr8+pOLycaIxHjnPvD1mt1rKG5s7sYjze3aWO5+tKOs9Rgo6WQo/rRZKEP
+	 Zdk05PZeVrtSg==
+From: SeongJae Park <sj@kernel.org>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	kernel-team@meta.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 1/6] mm/damon/core: reset age if nr_accesses changes between non-zero and zero
+Date: Mon, 15 Sep 2025 11:26:51 -0700
+Message-Id: <20250915182652.110173-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250915145158.1425390-1-joshua.hahnjy@gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aMgOtdmxNoYB7_Ye@casper.infradead.org>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 5FF53140011
-X-Stat-Signature: qjg5fuoj9tfaxpsmo5g8thpi11fsqj8b
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 3wi3i1np5ym66auqmowrgtnprwyys9qu
+X-Rspamd-Queue-Id: 72D1C1A0013
 X-Rspam-User: 
-X-HE-Tag: 1757959956-216739
-X-HE-Meta: U2FsdGVkX1/AMtngRqr5cczTptiuzrbdrcvg/NYkkvQ5KaCKrLdlWXojLq0nnWin1MQWk3Q3Zpl4/Mr0olrEgf6IrtmUBbfaaoEkl0MfoQ1g7Hb0FDdhJT4BcjSmEudqyMr8EMeiT3AlPUEqx/ts/edattXhFxqvDqiyzkw4KjYHTdpiKZTEIZI6aldC8Ze3C7fHG8E/bEp/Ohs3WiorIcE5SWwu/QLFMWB7Mvv86qYNnwt57qHQJfaB/rHf9kr7JVZ5U3JjmMMIjSdlRhLwGTACqjIymFwG7+No5YD+3A/bBguT2w/tGxn4OnmX7Z7WQtiF7sjbTpmWQ6+Uh2lgOL2Ag2THB67ub4Q7sjm+9FXRXt3DHtC3+oJJDcT33g+DaZe8VZE3sD5m7EXlfvimLJ7FSBTa2RpXn8IMHqUo40gax249gbQzocLrp7W9zjgedqzg3iKg3zakrukzpGhzxE5KRsErYiB4oXFmTDiGmZ+Bekb74Ozpcg2WEIvOM110jUmrzdOEkm5JSr8WblTjsWmPEHOTko2II+go2Zoj7yP8qifMoKvlmHXDINc8bfmqcY5l1Sv7jV/fYIiWQu4G3IP0TQohDZXh0AGySikaFBqXjx44fpkyzwZ0l06dvcjab7WCRQCqpmIDH/Ov0xLNXMhrM+m7llJ3kcF3IYb1whS8uNn5qAMMm4xtST4uCclWdFx1LnsYyKBjHm6/RtCf1sKMrWlY7UyKG0FTDEhuY+JqhH1QC4yyTlmpnqdcbwixhAKFLbDrLYIhwMEXV2WizpimypKw2xzkcIrNn4vII6uTt+/OLEMrTcR2V9eHo88421N4RSEEj1hFdo5/3eMzXXltr1PFzmmuFrrfXeKbD7Y04rSO8fGfF29qPvP8MzdbUrx9PlP42W1e8uGyJ+WzdC6ue19sEd7KRzAWzwCOxLT/yJRRHIPE+4+/TfOxSHVdwPQwhBTi4FvKff1aSKZ
- oM/ZS5ku
- vwBkCSAf18EFVMecTNfVrq24/iqOSB/DtE/bh3XyZH6tDqZ1NInouG8uRn4eqDNpTYtB/8GSbiEfKkJwq34xVM2ZSpPDwjjcHxJCVfH+W1lkriKxiEpSRcXkDz2mr1eKo2aKgEywtGqGQUeN7Sonwsv3QTV0p24hbrjKsPz94bWoyysQAkqcqddjlrRI1AhTtOoVmNCKinQD48O2N9icsk7+38MyWQ2npVX0IcX89l4XmY7wtV/X2b7r7MqQVFUvV3WPK0W+Y4FzAjVD3z0GtTgwdzuwLkY9Iu/yeEF8nrgmhS2ILelBwra3RG4A6h6LxC+Qoy0ZxD+Zejv1L/hOrnEej5eaG5CN0oOc1Nlhq9wJWUt1IoKwq4Glxjn2c/xFcgQq7
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1757960816-31799
+X-HE-Meta: U2FsdGVkX188kha7dACbwS/Qf6IP2Q71ywj81TKHpiSGgpsBpl2a02M7s5vn/0AcO77wj/kwwOL3PhE31oC7m2sFKXFSlp3LFvmZCQaBmDrwyxt82A3Ftf8ZzWwPWDM+N03TsVLwnwAkR0q4zp9fGMHSEXuYjSoTaGrrv2w1iaVp8V0k+/lLjhE8D2qjR1asqhSVm58q02ZUzakwnzssCJMaiEE2dYrnqFPDerUOTvIyLPEkFiAu1gT/JzUu064C5iQfxnYW8v4/g2jEtXkCUP/W98F5+uacSu/QCrfflGGGQtMpfvx0IEuhs9A84uIIFzqUQ6xn3iLPjVgluiNHLfwlQO5mBuBZ27i/KsA3fd3itq7BG4PANz3UrNot96yUfqsuHZ7upLbjUX7AGcIa91oxshNZZbTFh9bttTOSReEDuT2cbcQIFxTjuZJCynuYuKpx04JDtPMEUZLFCL2AM/pOEeArBlGZqB2M8aM2MsN3TrjeHDZpJASobUnsc91bWBN0/sJ5IBDor4l08gtv/t4kToPEHeTtnYZXCIkSncEvG0I+Z2rZYHFLa3d5IjXcD/A9RSq107r9miYHrmHJbZXkkJwbOrRF6wHGopwS1UWHjeDdR0mgdiVMJGn4X798GeegycEE3bzG4T++aNvv2qABGTFkOhBpZq8hfVE7jI9/AEjSwnIeifTqH5vu+KD24AVTMUSrp3yzDRVJyQpAOWg/WQkjh7qxzOBA4hnLn2cgf0ShT6cSzDmD+4CYTarkH5jbCltGCV1JJ/zl9MpVoHYNScDUbqbXrCi1fFtKgRu8Qaf+gHON/pvjdTcp0d2MFOCw+xY5xg+fGKISthHhtVepXmom2w0CxOxlOYDJx77iG/HIqjY7byuMYgkLQqRQwUWG+zOk5KK1MPvJMlaA+ZFCb8Sxnog9Zywe404fs9ed/MrrMAd9b4MmzzGtHgAZ8vZpdoqYY3W/fa7NcfW
+ KKhjQMlx
+ y9+3FoI0Lx3Wg23xI3UsgM7lO4pEgd36jg/xJt5Mou9fTS4X5c0KPjzn+05UTQXLfjWkU04eSl0cwltc29KPhbNRqU9YdJRIc+/qlcjhRFZZGz1ACGBIVQdisIr7aCsQh9far2I1XUQjQteB/+dk/VmKEPekWrc0e5RC7yQs+vGcjUlL+9cCHc+QYYncTYhiaUx3QSWThqEC7K3a9zKBJtW5ITGbveJy/eMovhri4e0libJerHicA2tZVYRictpPTb5PDfVabzjMF23FW3rzstPWCC4InhA//ZKijRgmCWwOw7fe7HidMprboYv/FV1zY5655mTX9aBincbZMGK35lbPL/sNVbRRfNwWotvUNE6lGqWh7W9bNEgTCGjdAxFZGp6n4Qr9D8Pb8jQc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,29 +95,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > But unfortunately I can not find any folio allocation for the direct IO
-> > routine except the zero_page...
-> > 
-> > Any clue on the iomap part, or is the btrfs requirement incompatible with
-> > iomap in the first place?
+On Mon, 15 Sep 2025 07:51:57 -0700 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
+
+> On Sun, 14 Sep 2025 18:58:02 -0700 SeongJae Park <sj@kernel.org> wrote:
 > 
-> It's nothing to do with iomap.  We can't make the assumption that
-> userspace is using large folios for, eg, anonymous memory.  Or if
-> the memory is backed by page cache, we can't assume that the file
-> that's mmaped is on a similarly-aligned block device.
+> > DAMON resets the age of a region if its nr_accesses value has
+> > significantly changed. Specifically, the threshold is calculated as 20%
+> > of largest nr_accesses of the current snapshot.  This means that regions
+> > changing the nr_accesses from zero to small non-zero value or from a
+> > small non-zero value to zero will keep the age.  Since many users treat
+> > zero nr_accesses regions special, this can be confusing.  Kernel code
+> > including DAMOS' regions priority calculation and DAMON_STAT's idle time
+> > calculation also treat zero nr_accesses regions special.  Make it
+> > unconfusing by resetting the age when the nr_accesses changes between
+> > zero and a non-zero value.
+> 
+> Hi SJ,
+> 
+> Thank you for the patch, I think the goal of the patch makes sesne to me.
+> I have a small nit / idea which I think makes the code a bit clearer, at least
+> for me. It seems that we basically want to XOR the two values's zero-ness, so
+> maybe something like 
+> 
+> (!!r->nr_accesses) ^ (!!r->last_nr_access) or
+> (r->nr_accesses == 0) ^ (r->last_nr_access == 0)
+> 
+> Can achieve the goal?
 
-Just to add to willy's point, XFS did not have this requirement when we
-upstreamed block size > page size support. The only thing that XFS does
-is to pad the direct I/O with zeroes if I/O was smaller than block size.
+Thank you for the idea, this makes sense!
 
-Is it very difficult to add multi-shot checksum calls for a data block
-in btrfs? Does it break certain reliability guarantees?
+> I know bitwise operations are sometimes harder to
+> understand, so I am just throwing the idea out there : -) 
 
-Another crazy idea would be to either fall back to buffered I/O if this
-condition is not met or allocate a new folio and copy the contents so that
-it meets the condition of single large folio that matches the block
-size (like we do in bio_copy_user_iov() when we cannot map).
+To be honest I'm one of people who are not familiar with XOR.  I had to spend a
+minute to understand the above.  Maybe we can replace '^' with '!=', and it is
+easier to read for me.  If you don't mind, I will use below in the next
+version:
 
---
-Pankaj
+   else if ((r->nr_accesses == 0) != (r->last_nr_accesses == 0))
+
+Please let me know if I'm missing something or you have other opinions.
+
+> 
+> 
+> Anyways, the rest of it looks good to me, please feel free to add my review!
+> 
+> Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+
+Thank you!
+
+> 
+> > Signed-off-by: SeongJae Park <sj@kernel.org>
+> > ---
+> >  mm/damon/core.c | 3 +++
+> >  1 file changed, 3 insertions(+)
+> > 
+> > diff --git a/mm/damon/core.c b/mm/damon/core.c
+> > index be5942435d78..996647caca02 100644
+> > --- a/mm/damon/core.c
+> > +++ b/mm/damon/core.c
+> > @@ -2261,6 +2261,9 @@ static void damon_merge_regions_of(struct damon_target *t, unsigned int thres,
+> >  	damon_for_each_region_safe(r, next, t) {
+> >  		if (abs(r->nr_accesses - r->last_nr_accesses) > thres)
+> >  			r->age = 0;
+> > +		else if ((!r->nr_accesses && r->last_nr_accesses) ||
+> > +				(r->nr_accesses && !r->last_nr_accesses))
+> > +			r->age = 0;
+> >  		else
+> >  			r->age++;
+> >  
+> > -- 
+> > 2.39.5
+> 
+> Sent using hkml (https://github.com/sjp38/hackermail)
+
+
+Thanks,
+SJ
+
+[...]
 
