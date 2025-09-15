@@ -4,97 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78E4DCAC593
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 03:30:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35854CA101F
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 03:36:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F073F8E0005; Sun, 14 Sep 2025 23:30:22 -0400 (EDT)
+	id 8D43E8E0006; Sun, 14 Sep 2025 23:36:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EDFC78E0001; Sun, 14 Sep 2025 23:30:22 -0400 (EDT)
+	id 884D08E0001; Sun, 14 Sep 2025 23:36:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA7878E0005; Sun, 14 Sep 2025 23:30:22 -0400 (EDT)
+	id 79A418E0006; Sun, 14 Sep 2025 23:36:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C350F8E0001
-	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 23:30:22 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 91394119E28
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 03:30:22 +0000 (UTC)
-X-FDA: 83890056684.04.A8174D6
-Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 561051C0009
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 03:30:19 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=wk3j2myo;
-	spf=pass (imf21.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 672C88E0001
+	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 23:36:42 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 19754160423
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 03:36:42 +0000 (UTC)
+X-FDA: 83890072644.06.9DDAED8
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+	by imf25.hostedemail.com (Postfix) with ESMTP id F07BEA000A
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 03:36:39 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=tBNKvV6S;
+	spf=pass (imf25.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757907021;
+	s=arc-20220608; t=1757907400;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aV55o1PrOMi1ewOa19IO6mFfTMCoyqv5bAgN6SrTF+U=;
-	b=lMV7D6STsT1ptA7sWMproUNuv2BZHiwLfVAJdXGy5H7D6XzskF3jz8ziEYipfYbkRzgsml
-	HcXjoEYZ9e4uZpGzihSkq4HKuj1mKFtjPA3qayuZ1BT45SE6KsQR+yIex0ed0G6w+MsOF9
-	kbWYi8XFyKHk+SOhV8ZTsg5vobvbSe4=
+	bh=XOq3tAKiSS4SZqaYiFMa6a3N6kv3gCmuXSnB/b8DG10=;
+	b=FUsc3tz2vNplHR3uhHLnBApgFg3mReAwTeOURLAIpukpIwxokxMFp0KshmAQm8vKjv/p/I
+	+cZfgbkeNp5C7H16zkA+X05ynFfZE/4wwF3v09PJ/aUgCtMh0S/RkMzj21hoEd2OURJK5B
+	x7OWu3L1ecbR2+c+JVCULSiACzIsGeE=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=wk3j2myo;
-	spf=pass (imf21.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757907021; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=tBNKvV6S;
+	spf=pass (imf25.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757907400; a=rsa-sha256;
 	cv=none;
-	b=dhOSTW9ajJgWyp4DDyQpMMS8s0JKF+J6lhX0/7TWoOCYGcmfFhB1BjRGztBMCh53K3IhyN
-	qKSduJtgkcHA/oXRbRAI6v6lS/lWAIJ7ca8ommfwyQcpDL6bYXg7vEHDGSZcAWs6i/tiEp
-	JsNmBmi8g6VjYuLilcOE0y9r5+SSFWY=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1757907016; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=aV55o1PrOMi1ewOa19IO6mFfTMCoyqv5bAgN6SrTF+U=;
-	b=wk3j2myo9GH5+xDPmX2vOWpcBIvXaxtopOu7O9ADgunYTN+v/Z1XQtg4zmnNk67hZek2QZCuop1CrWnBACGQIymo93Aa1Ep7a3cUAC/dAynb8D3Z2JaEi328x/oNvS2rPzKkiQV58WoGoflUNwMWWh9OjDrQ1cKxcYfQy43lS4g=
-Received: from localhost.localdomain(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0Wnx2CMj_1757907014 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 15 Sep 2025 11:30:15 +0800
-From: Huang Ying <ying.huang@linux.alibaba.com>
-To: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>
-Cc: Huang Ying <ying.huang@linux.alibaba.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Yang Shi <yang@os.amperecomputing.com>,
-	"Christoph Lameter (Ampere)" <cl@gentwo.org>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Kevin Brodsky <kevin.brodsky@arm.com>,
-	Yin Fengwei <fengwei_yin@linux.alibaba.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH 2/2] arm64, tlbflush: don't TLBI broadcast if page reused in write fault
-Date: Mon, 15 Sep 2025 11:29:46 +0800
-Message-Id: <20250915032946.33203-3-ying.huang@linux.alibaba.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250915032946.33203-1-ying.huang@linux.alibaba.com>
-References: <20250915032946.33203-1-ying.huang@linux.alibaba.com>
+	b=vOYsBFPlDPqzgTxBHOXLk6ZbPJ4paKC1GFmcRFPZdW2haqcZOqmlAajRRyK2JGMo16etpu
+	F4atCGh5Vl+cGZqVqDIgSEMo2lkwKSsu41F9spVME+GIYCcD98nbchqvglofbtyJLH1l6s
+	nF5Xesf8XRdcfovR5xGWsCXaAyhdRbE=
+Message-ID: <c9d4d761-202f-48ce-8e3d-fb9075671ff3@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1757907397;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XOq3tAKiSS4SZqaYiFMa6a3N6kv3gCmuXSnB/b8DG10=;
+	b=tBNKvV6SZaIls4AXk4gIFyG3o230C77+N2DZwtS9pXCUvz6lsvQeQHICJB9R5dxFrK8gM8
+	uXnIAkjTZJ0S+mF6qaMqKrZBiG9lw68joa3qKdLmq/yfOJvP/kdOIrP3s/CJ/A6NjZS93q
+	tpUnkLgdwseB7YLAZGp+rMcdf4pG3/w=
+Date: Mon, 15 Sep 2025 11:36:29 +0800
 MIME-Version: 1.0
+Subject: Re: [PATCH mm-new 3/3] mm/khugepaged: abort collapse scan on guard
+ PTEs
+Content-Language: en-US
+To: Dev Jain <dev.jain@arm.com>
+Cc: ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+ npache@redhat.com, lorenzo.stoakes@oracle.com, ryan.roberts@arm.com,
+ baohua@kernel.org, ioworker0@gmail.com, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, akpm@linux-foundation.org, david@redhat.com
+References: <20250914143547.27687-1-lance.yang@linux.dev>
+ <20250914143547.27687-4-lance.yang@linux.dev>
+ <750a06dc-db3d-43c6-b234-95efb393a9df@arm.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <750a06dc-db3d-43c6-b234-95efb393a9df@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: xgqsxtm9h9b3dw886kwkr9u349my8aa5
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: F07BEA000A
+X-Stat-Signature: hamtwyxdfhykd7nxcpkbe5r4y66daneb
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 561051C0009
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1757907019-631326
-X-HE-Meta: U2FsdGVkX1/DjpUAD094dJHnrUQNM2/8yRdcT5m0yH4Novz5Xe44oG5uyOnxjONovV+9aqPZ+tGaLki+bzhFcvCkjd26hZGP6QZqpmS7UcJ/DBbH9ZqVrLw5PFicbiFgR70MP7AFY8sbs9cs5yf6VtDB8zG5th/ry7HjOYExo/t4l/30Ba2lnbxqx4l9x80RIjun75FFV1G08uH1D5rZm4LqQno8FBE/0JR6Yc+XbWBEbdIDC0bp6RwMctQcPSN5eq1eCq1TDbktRiOrwDtLhuPECYUjuZMyACRGrumi5ELvyGrenklXBkqlrYKoeiV1YSpOy6MFbUs4jX4FgIwwB14r1RJ0FsIiY37rQeqFisCG0OeibPM2SfXIM7PbSISSxMEGI0JA96doINn+5LtKAvqXiqolpk7rwmDJvPdu1u28hvGrxA651ZGBFr1cDXAaxpKcfCl/+JjdajXdiThpwY9vfNUcA4ngc9RrGbrQR17SWPnBY1saeePB9/WYyuHxPh/HhxHiEJFA60ybi3PqOeGwPujJdgZRFy2Mrp5u7SLIMA1vMZzIHUTmceFnqAMw+PiLvRm6HlLZr32TNQ/3o9dej5tpH8+Fvlg+gNsHX/pG9Dc2FKklHdTp/UQSrOit75J/DEASgmBfHYlxCEQuUFmpz73l7qogSD+6EfOeYuHV2trXF7k/LNpPSZzAMiC1e1IlkGQxUFQXi/OuMLN6S8dkNmp8294ysUyjphtYKbN/TbRIX9GwrkDOPME0mPkSS/xRFsaMS43GWiDOF1cnImTgE2iBdjRtyayudiZsGXQWynw8O8+/uuXDsswM4rSFHHSdWBHpxicrF7z4BhqH6cjhGvgQUIXsEXSwEco7SGu5xkg6j4z1bjhU6pBVy8pUXw0Rs9nMhpwZ0J73RMuIuDjIeajtJvEfRfaHepSDJ8PO6PSgYqdAtCI9Ph3KKNxJT60putx1z+VIgRYPm5D
- /cTF7weX
- YwdvuGrjuIWWj3s5FQSRKzzKYP7NGhNgcvsurssX+bd+LVZ4TvDijHKFCrDaQhj8sI0JRBfitQGL/O6Aylln1x5kq/swdlyBMjWdjkaJHunHSgrw9lnyRsz99wjv6w1/el0geuJ9k4zuqdy4IroAy1/gE6Xn48klZlBMOV3bJm0+/LeyAeImBUnVRdiOD1KFOaKZI8/Da8CxX604TcxGY8MEi3Ka7XApZ5uS13IaXipaqb7nOKIJui1wVqSWBuBAiJYl1W1MGAhEl1rNYQrpgWHW4Jczl5x0QrxNLuQGH0HiOO4KyuZBnVQOmZwXTYpxuGTsh7NtmHY624ABalu9NvoIYZExKazN44LEl8Ynl5cZkdfExuzdVpEVm4RmFun0vChIcSg8Cgd5l8stJUAYZ5R3oNE22/oKSSsUW86nkRDw/GQ/fAc5liuixGo59s+RtpflKBdZRO6qB0Ti7IaFvAvm42RgsLIHSEHl/aq8X4iLeUN9FMGgt2j8F2EQ5HWXroU8oCSK2xXkQCb/wdh6l8MjRHNLNGmdM2jKcjCoYymJIZI4Ukeq1vSB8rOhNsZV3q1v5S7PYP0r39i/ZvALyTqNHXEiU8QvOGmJyG0tWydc39OxKCL0st0CjxXuiRTVYA8h/3cH46iQLfqxq4nI32vxxX0yHws4DEtRZFBjdKqzxGLFr+OSw/dEz1qKAYjqJIXXu9IDoHPjZrwdOxsNqJUMj+lT3RLm/RKOkgYDnpv4lAdH+gzs/Sh4p8ZsIHYcnzZV9Wfy4INajgIY/MOsykR1yrg==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1757907399-91213
+X-HE-Meta: U2FsdGVkX1+v0zg6vcbJLtEhwRsqPzFwOpoCqeFWGbC+mKI7iRI3DMynOAw6WQZNP5lHWg7vLlDuDXa5Fvn1voPxwhmFsAPOJExtEJWy2uq7gsGdbBDHxJwYYzHZZ70vuYaJtBz7tmKrb3RBSscHBEc6k5rXrcJSP9JhUzKeSw5u0BV7Rlv9dCm6mWnYNMULKbfDp5wKcM9wZHXlkN4NKoEmyzXgYG5au0gsQwuurtc4a3zlmBUpc4sAJl3XSrk9/taCWQZgrXacLr5Jh1WfxlEvBnOm5HgclHx/HQt+N74lX8kUcHxk2p1O211dSXlXDs738aD5QVjWR7G2KI91n6HmUR5ait8jl6qaye69a3bxtJuA3xF+RkcSFZ+TOrshUXca7AKH00oJai8ms64OYnn/BSGCmUpnkEUzD6mk2EFWCWkCGoyf3O52lAX/9V21ZOHofOVLqE0NBXpCXwOdrGGIbpUBHnhvIZtexj61gYF6VbqP+/wtObL4Xn2gG5D+sqnqVy3Gi/NBmX8N9ITnKzE6kppynucv4xaxd1hu2A0XEmLg95zfyaVSCjE3Hc/sP5qjSDSwfDEpq2pF4jYmD6jYUhUp+SHL3Igv/aMnEiVu7MlmFaApCYAZScfdUzbzwaK07I86sIq0wfuwyaARwOcsNwWsCC2+LQjLYLHRtflsSzCYGg5vqNp/lnQoORo03Z9Cad30moKzXatwB7VqUJ8WFHvjG0ob7oLZ0fWeedrgzQE1e6UdFLD05+RGaH4zg04PjTjzP5NStKfDQ2xNoyLbrw+lC/9Sebe22oEGOQIxHeFSqD333eotNl7hQPlRYXYOuvnBNWdzaymVAFiKZGLxAOVFqvPS+erltO6eT4yULy6/HZDpSnlBKzNv2tRzW+kbkwsb/m8XQmkZ9KU41liqiA5XYBGgRWPgOykIUBtKo+gbynV1/g+p6PGiN/Yl/KK6sU/sp3/TruiduCW
+ 9GLAq6Oa
+ wMKSydA+Am90SR/NW76f3iUcwkaHdp5q98RJbdJX+eBr83DIE8Ffrq0PcFf7C9Ui1wA3vXQo1UAyZbgmJpeeYmn+e8lCCFBGV3cDRTjZH0LTRwmh/FgWT9JTjZumOFqHmy4dH1jWV8+85l9T8wR6J8Qz/EEJDLu5YLrkNB5GyapzoQxjpr+PKLJRo74QqrQIOlF+Klku2g4qV20NoicWS8GVlqIR/1QMF1bLIMj6Zv/SoEhEXwvJL5ZmLnWaIX2wvtW9erjxKQuAOwdpwP7u/RmpEQ8XH+fv82/mqHPRIxeefyLNTPGfajiBOgObVNbwfG5xe
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,153 +95,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A multi-thread customer workload with large memory footprint uses
-fork()/exec() to run some external programs every tens seconds.  When
-running the workload on an arm64 server machine, it's observed that
-quite some CPU cycles are spent in the TLB flushing functions.  While
-running the workload on the x86_64 server machine, it's not.  This
-causes the performance on arm64 to be much worse than that on x86_64.
 
-During the workload running, after fork()/exec() write-protects all
-pages in the parent process, memory writing in the parent process
-will cause a write protection fault.  Then the page fault handler
-will make the PTE/PDE writable if the page can be reused, which is
-almost always true in the workload.  On arm64, to avoid the write
-protection fault on other CPUs, the page fault handler flushes the TLB
-globally with TLBI broadcast after changing the PTE/PDE.  However, this
-isn't always necessary.  Firstly, it's safe to leave some stall
-read-only TLB entries as long as they will be flushed finally.
-Secondly, it's quite possible that the original read-only PTE/PDEs
-aren't cached in remote TLB at all if the memory footprint is large.
-In fact, on x86_64, the page fault handler doesn't flush the remote
-TLB in this situation, which benefits the performance a lot.
 
-To improve the performance on arm64, make the write protection fault
-handler flush the TLB locally instead of globally via TLBI broadcast
-after making the PTE/PDE writable.  If there are stall read-only TLB
-entries in the remote CPUs, the page fault handler on these CPUs will
-regard the page fault as spurious and flush the stall TLB entries.
+On 2025/9/15 01:03, Dev Jain wrote:
+> 
+> On 14/09/25 8:05 pm, Lance Yang wrote:
+>> From: Lance Yang <lance.yang@linux.dev>
+>>
+>> Guard PTE markers are installed via MADV_GUARD_INSTALL to create
+>> lightweight guard regions.
+>>
+>> Currently, any collapse path (khugepaged or MADV_COLLAPSE) will fail when
+>> encountering such a range.
+>>
+>> MADV_COLLAPSE fails deep inside the collapse logic when trying to swap-in
+>> the special marker in __collapse_huge_page_swapin().
+>>
+>> hpage_collapse_scan_pmd()
+>>   `- collapse_huge_page()
+>>       `- __collapse_huge_page_swapin() -> fails!
+>>
+>> khugepaged's behavior is slightly different due to its max_ptes_swap 
+>> limit
+>> (default 64). It won't fail as deep, but it will still needlessly scan up
+>> to 64 swap entries before bailing out.
+>>
+>> IMHO, we can and should detect this much earlier ;)
+>>
+>> This patch adds a check directly inside the PTE scan loop. If a guard
+>> marker is found, the scan is aborted immediately with a new 
+>> SCAN_PTE_GUARD
+>> status, avoiding wasted work.
+>>
+>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+>> ---
+>>   mm/khugepaged.c | 12 ++++++++++++
+>>   1 file changed, 12 insertions(+)
+>>
+>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>> index e54f99bb0b57..910a6f2ec8a9 100644
+>> --- a/mm/khugepaged.c
+>> +++ b/mm/khugepaged.c
+>> @@ -59,6 +59,7 @@ enum scan_result {
+>>       SCAN_STORE_FAILED,
+>>       SCAN_COPY_MC,
+>>       SCAN_PAGE_FILLED,
+>> +    SCAN_PTE_GUARD,
+>>   };
+>>   #define CREATE_TRACE_POINTS
+>> @@ -1317,6 +1318,16 @@ static int hpage_collapse_scan_pmd(struct 
+>> mm_struct *mm,
+>>                       result = SCAN_PTE_UFFD_WP;
+>>                       goto out_unmap;
+>>                   }
+>> +                /*
+>> +                 * Guard PTE markers are installed by
+>> +                 * MADV_GUARD_INSTALL. Any collapse path must
+>> +                 * not touch them, so abort the scan immediately
+>> +                 * if one is found.
+>> +                 */
+>> +                if (is_guard_pte_marker(pteval)) {
+>> +                    result = SCAN_PTE_GUARD;
+>> +                    goto out_unmap;
+>> +                }
+>>                   continue;
+> 
+> This looks good, but see below.
+> 
+>>               } else {
+>>                   result = SCAN_EXCEED_SWAP_PTE;
+>> @@ -2860,6 +2871,7 @@ int madvise_collapse(struct vm_area_struct *vma, 
+>> unsigned long start,
+>>           case SCAN_PAGE_COMPOUND:
+>>           case SCAN_PAGE_LRU:
+>>           case SCAN_DEL_PAGE_LRU:
+>> +        case SCAN_PTE_GUARD:
+>>               last_fail = result;
+> 
+> Should we not do this, and just send this case over to the default case. 
+> That
+> would mean immediate exit with -EINVAL, instead of iterating over the 
+> complete
+> range, potentially collapsing a non-guard range, and returning -EINVAL. 
 
-To test the patchset, make the usemem.c from
-vm-scalability (https://git.kernel.org/pub/scm/linux/kernel/git/wfg/vm-scalability.git).
-support calling fork()/exec() periodically.  To mimic the behavior of
-the customer workload, run usemem with 4 threads, access 100GB memory,
-and call fork()/exec() every 40 seconds.  Test results show that with
-the patchset the score of usemem improves ~40.6%.  The cycles% of TLB
-flush functions reduces from ~50.5% to ~0.3% in perf profile.
+That makes sense to me ;)
 
-Signed-off-by: Huang Ying <ying.huang@linux.alibaba.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Yang Shi <yang@os.amperecomputing.com>
-Cc: "Christoph Lameter (Ampere)" <cl@gentwo.org>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Yicong Yang <yangyicong@hisilicon.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: Yin Fengwei <fengwei_yin@linux.alibaba.com>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org
----
- arch/arm64/include/asm/pgtable.h  | 14 ++++++++-----
- arch/arm64/include/asm/tlbflush.h | 33 +++++++++++++++++++++++++++++++
- arch/arm64/mm/fault.c             |  2 +-
- 3 files changed, 43 insertions(+), 6 deletions(-)
+> I do not
+> think we should spend a significant time in the kernel when the user is 
+> literally
+> invoking madvise(MADV_GUARD_INSTALL) and madvise(MADV_COLLAPSE) on 
+> overlapping regions.
 
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index abd2dee416b3..a9ed8c9d2c33 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -130,12 +130,16 @@ static inline void arch_leave_lazy_mmu_mode(void)
- #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
- 
- /*
-- * Outside of a few very special situations (e.g. hibernation), we always
-- * use broadcast TLB invalidation instructions, therefore a spurious page
-- * fault on one CPU which has been handled concurrently by another CPU
-- * does not need to perform additional invalidation.
-+ * We use local TLB invalidation instruction when reusing page in
-+ * write protection fault handler to avoid TLBI broadcast in the hot
-+ * path.  This will cause spurious page faults if stall read-only TLB
-+ * entries exist.
-  */
--#define flush_tlb_fix_spurious_fault(vma, address, ptep) do { } while (0)
-+#define flush_tlb_fix_spurious_fault(vma, address, ptep)	\
-+	local_flush_tlb_page_nonotify(vma, address)
-+
-+#define flush_tlb_fix_spurious_fault_pmd(vma, address, pmdp)	\
-+	local_flush_tlb_page_nonotify(vma, address)
- 
- /*
-  * ZERO_PAGE is a global shared page that is always zero: used
-diff --git a/arch/arm64/include/asm/tlbflush.h b/arch/arm64/include/asm/tlbflush.h
-index 18a5dc0c9a54..607b67d8f61b 100644
---- a/arch/arm64/include/asm/tlbflush.h
-+++ b/arch/arm64/include/asm/tlbflush.h
-@@ -282,6 +282,39 @@ static inline void flush_tlb_mm(struct mm_struct *mm)
- 	mmu_notifier_arch_invalidate_secondary_tlbs(mm, 0, -1UL);
- }
- 
-+static inline void __local_flush_tlb_page_nonotify_nosync(
-+	struct mm_struct *mm, unsigned long uaddr)
-+{
-+	unsigned long addr;
-+
-+	dsb(nshst);
-+	addr = __TLBI_VADDR(uaddr, ASID(mm));
-+	__tlbi(vale1, addr);
-+	__tlbi_user(vale1, addr);
-+}
-+
-+static inline void local_flush_tlb_page_nonotify(
-+	struct vm_area_struct *vma, unsigned long uaddr)
-+{
-+	__local_flush_tlb_page_nonotify_nosync(vma->vm_mm, uaddr);
-+	dsb(nsh);
-+}
-+
-+static inline void __local_flush_tlb_page_nosync(
-+	struct mm_struct *mm, unsigned long uaddr)
-+{
-+	__local_flush_tlb_page_nonotify_nosync(mm, uaddr);
-+	mmu_notifier_arch_invalidate_secondary_tlbs(mm, uaddr & PAGE_MASK,
-+						(uaddr & PAGE_MASK) + PAGE_SIZE);
-+}
-+
-+static inline void local_flush_tlb_page(struct vm_area_struct *vma,
-+					unsigned long uaddr)
-+{
-+	__local_flush_tlb_page_nosync(vma->vm_mm, uaddr);
-+	dsb(nsh);
-+}
-+
- static inline void __flush_tlb_page_nosync(struct mm_struct *mm,
- 					   unsigned long uaddr)
- {
-diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-index d816ff44faff..22f54f5afe3f 100644
---- a/arch/arm64/mm/fault.c
-+++ b/arch/arm64/mm/fault.c
-@@ -235,7 +235,7 @@ int __ptep_set_access_flags(struct vm_area_struct *vma,
- 
- 	/* Invalidate a stale read-only entry */
- 	if (dirty)
--		flush_tlb_page(vma, address);
-+		local_flush_tlb_page(vma, address);
- 	return 1;
- }
- 
--- 
-2.39.5
+I'm just a bit unsure because the MADV_COLLAPSE man page[1] describes it
+as a "best-effort" collapse. This patch follows that idea, collapsing what
+it can.
+
+        MADV_COLLAPSE (since Linux 6.1)
+               Perform a best-effort synchronous collapse of the native
+               pages mapped by the memory range into Transparent Huge
+               Pages (THPs).  MADV_COLLAPSE operates on the current state
+               of memory of the calling process and makes no persistent
+               changes or guarantees on how pages will be mapped,
+               constructed, or faulted in the future.
+
+A hard-fail on a guard PTE marker might go against that.
+
+Well, I'm open to either approach. What do other folks think?
+
+[1] https://man7.org/linux/man-pages/man2/madvise.2.html
+
+Cheers,
+Lance
+
+> 
+>>               break;
+>>           default:
+
 
 
