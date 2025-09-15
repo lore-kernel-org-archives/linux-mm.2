@@ -4,105 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49BB1CAC592
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 17:05:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E258CAC597
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 17:11:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B09B8E000E; Mon, 15 Sep 2025 13:05:38 -0400 (EDT)
+	id 06FAA8E0014; Mon, 15 Sep 2025 13:11:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 988448E0001; Mon, 15 Sep 2025 13:05:38 -0400 (EDT)
+	id 0464C8E0001; Mon, 15 Sep 2025 13:11:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C52B8E000E; Mon, 15 Sep 2025 13:05:38 -0400 (EDT)
+	id EC5B18E0014; Mon, 15 Sep 2025 13:11:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B3D28E0001
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 13:05:38 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 35725BAD00
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 17:05:38 +0000 (UTC)
-X-FDA: 83892111156.21.4BD8B6A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 871E3100018
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 17:05:36 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="C/zc5hBL";
-	spf=pass (imf05.hostedemail.com: domain of conor@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=conor@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id D7B1D8E0001
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 13:11:32 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8875A1405E5
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 17:11:32 +0000 (UTC)
+X-FDA: 83892126024.16.329380B
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 1B2141C000F
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 17:11:29 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=GPspb9vh;
+	spf=pass (imf20.hostedemail.com: domain of mhocko@suse.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757955936;
+	s=arc-20220608; t=1757956290;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QCcSyLKtRBEpOKVEnWbAIl+bl/ydhsIKcxdyT8tetGc=;
-	b=o0G0NbkkYDeXhUKwM0tbO25GPGS0Xk+9G3Dd8ecckTI5pZxC2bPjyu7KLKuegcs0PSX5cY
-	HvjebfyOEmQWKDyjExPPBhkKfrmemBE6CV2SWeGWxK18ERJ4sBBCzxhXLXZIVZxjSx7aVg
-	UHdjUcgODTM3n7RtAALhC0E0dEQK0lg=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="C/zc5hBL";
-	spf=pass (imf05.hostedemail.com: domain of conor@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=conor@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757955936; a=rsa-sha256;
+	bh=/Tl/RXGMAL1JqyStv0MTAwh9nUwRE5C//Qnl70T6OQM=;
+	b=M+nMoNwlQcxY2dGIS3KP7/gnJj3D0AIK0TiQTcyOPjDUkEwBzEsOYyY22W/IS8KkO4fMsi
+	8I+yrPFr+/pbIZTKFBo9F56zVZYTo8/2IGi+jAZf68DYStxTuCw5n1WbIg+mnWqlVMN7xP
+	/G/ZatD5ntU/MEIHeULEK2lVELd/Qgg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757956290; a=rsa-sha256;
 	cv=none;
-	b=5qEzg32vN31xFmL+Rkn6Vs94lUQ0cPmZ0JqS/V9wRsSWg04bBdr6QPqg+yMLPWgfgKZXAR
-	uIl/ukdjWNmujJFoVFPuFRSBUkf1iB+SSibsHp27C1z7llIi6PjrSj3E96f+nI3AtmOG2k
-	kaI1L4vJOfINI4aJihwXoc5FlUF+qVk=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 732A043FB6;
-	Mon, 15 Sep 2025 17:05:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 836BFC4CEF1;
-	Mon, 15 Sep 2025 17:05:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757955935;
-	bh=QCcSyLKtRBEpOKVEnWbAIl+bl/ydhsIKcxdyT8tetGc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=C/zc5hBL1H1uKA4zJpx6r2zWCbmwpMbns8eHIZm3ik363b1+81TX9PT1Et+dcMVca
-	 w5QytMmZb+apJkySW4bNBKMo6lJ3C6r0mxa9HhzqitrKeMYletMYV0wimqQwlVQoXQ
-	 N6HxFlT+W1d3WFv+EgRZu2E7FypYIKsgnAr6I8ouQlHTgB7epnj7gUoxW7Zh4VeH4L
-	 48iv8rQ0flOx/+9ZQi1ko6TpmEXZAgBJqVM/I5UYFPfiiqr0i+1sQJwdfZ7YYx4dYz
-	 /bUezOy7NhnEmdEHrIp8RvW0e8uuL4z1ozgWA0KqTJhdZfbeEkNq5C3Ak9Jr90kdqW
-	 vtLU5IWoHfkhQ==
-Date: Mon, 15 Sep 2025 18:05:28 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Chunyan Zhang <zhangchunyan@iscas.ac.cn>
-Cc: linux-riscv@lists.infradead.org, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Deepak Gupta <debug@rivosinc.com>,
-	Ved Shanbhogue <ved@rivosinc.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Peter Xu <peterx@redhat.com>, Arnd Bergmann <arnd@arndb.de>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Chunyan Zhang <zhang.lyra@gmail.com>
-Subject: Re: [PATCH V12 2/5] mm: userfaultfd: Add pgtable_supports_uffd_wp()
-Message-ID: <20250915-borrower-crusher-7a9e9121a1b0@spud>
-References: <20250915101343.1449546-1-zhangchunyan@iscas.ac.cn>
- <20250915101343.1449546-3-zhangchunyan@iscas.ac.cn>
+	b=OWbzrefIQTJlLxKWWj+pgEN5337uE6oJWhCx//iwbV7YupcDNKAudS2vUBbKaUY/AQ8X5C
+	KZ3PM98Ta2MgdCCWxEX1GDq0xjedgH6nb0ILqAuClGfxo0QYk4PT1gxbBBImRFPARwGzB+
+	WOlralMb+bVQa5NUSTZA4JNgTJA3iM8=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=GPspb9vh;
+	spf=pass (imf20.hostedemail.com: domain of mhocko@suse.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-62f0411577aso4477134a12.1
+        for <linux-mm@kvack.org>; Mon, 15 Sep 2025 10:11:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1757956288; x=1758561088; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=/Tl/RXGMAL1JqyStv0MTAwh9nUwRE5C//Qnl70T6OQM=;
+        b=GPspb9vhfzCwRCR/5yelWa4eOPJMuh4beWZXjlhzl8FU7OaJ5iFofanBG50if+nEW6
+         TLt7zvzxTLj3UKGYhoqrGoU4WMP3B4nepuYTSbLcObz3dImPxSsIZ/79mgYYlb0hVQlW
+         Hs4NDzCRni3cpdxof/TM568/57Z2wvRVsF2RUqrS+erX3Xbl16rhnet2ZjSRh0WNaYzW
+         PFVrcX253HfNd44lfiYsxg9+ltpHS5fBC55YNw4/IEFwfKnL4C3ktJ323SQvBiPhg5to
+         hsDrPWKGIoNs2nuqJTnaH//AdIUoCkMPTxrYJHbqMSz6Z6y2UZUe9mp2Zg3ELXJNi4tw
+         yflw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757956288; x=1758561088;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/Tl/RXGMAL1JqyStv0MTAwh9nUwRE5C//Qnl70T6OQM=;
+        b=mQu6gsP83Ar/g5lH9qhGpU5db5kHIlUWExU/kH45pv2+bQCyR9A5tHwVT0LHN7SMq3
+         aD9UD1t+hLehdmROhHb3vekSD2AaZFoczIQOZwUyIAAkXFqCxud56alfwCrt1Tlm4u7H
+         b65HWli0HH0BpjSnA5Q+Ike9e/AMcDbIJv2AVmoIY+3XEneXXIGvX87bBOUUjvMsuz6Q
+         2EwBF82sWFaQ9X+1VmigcUHR9XvX9PjxCvi9UmzSrSbjAOiPTdNUKd/e43THttx8vyEY
+         1PVg7WKVqosgM2uwXF+um/MqEimAGZMai7YN0dqKhm8XYLrFNqKOPpFyJG/Xv4osaSRq
+         6u+A==
+X-Gm-Message-State: AOJu0YzKzhQykludREFLdUDBgt04MZ98DredBCbFIL7P8xE3HRIqwAGc
+	WTyBh8I9nxwvL20W1RFHh0dSly5UTiPBXj+4JVSsX84GQDnyBLLA2At3gFFLF8BIb4xb21m+XgJ
+	UaxmP
+X-Gm-Gg: ASbGncv+3cdJyRJT1I8zugOemam9DCY8odYqIeBXNXYOB2w190s05j9CcF3fFVocr7L
+	rN1ukMokAOPgbULF645GtQgBqeC3MotOfwoCLrCAgGzC3DvK7rjdLxRNakS5f23kEM491gY01gk
+	lJJ7ycwK+oPG67/296lpOXNEhuCzU5YMZK5O3PnLRL+memDs0aPoClv1d4I0RVIaRDslaAczXGn
+	4SYnj+/GKmI4LtGEuBWLiNLshQr0K9kXxHdrNZOJIYjZ/p18tqHN/lnFK6p4NVH82ZszUrRBamG
+	odKbKNRH7DalTpFxpaxFccxZfOOpRtM9x/jC1PhDKwRqpryVrMilvKrna2451bVvUejNvXOawPy
+	TAsGZ/oAjZyQs1RtIJ1tQbAvchnWsvRtTdg==
+X-Google-Smtp-Source: AGHT+IEU141ppPHC0f43WV7Mu6b53qnsOKX1PToxTJqKeIfoSyv68wG7aiLv2qvPkXtSZcUgUGL70A==
+X-Received: by 2002:a05:6402:2714:b0:62f:50ff:b675 with SMTP id 4fb4d7f45d1cf-62f50ffb8a6mr1585266a12.33.1757956288538;
+        Mon, 15 Sep 2025 10:11:28 -0700 (PDT)
+Received: from localhost (109-81-31-43.rct.o2.cz. [109.81.31.43])
+        by smtp.gmail.com with UTF8SMTPSA id 4fb4d7f45d1cf-62f11390075sm5158227a12.40.2025.09.15.10.11.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Sep 2025 10:11:28 -0700 (PDT)
+Date: Mon, 15 Sep 2025 19:11:27 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+	Baoquan He <bhe@redhat.com>, LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 04/10] mm/vmalloc: Avoid cond_resched() when blocking
+ is not permitted
+Message-ID: <aMhIv3HfRMyjlSec@tiehlicka>
+References: <20250915134041.151462-1-urezki@gmail.com>
+ <20250915134041.151462-5-urezki@gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="/gi+eTVpaGnrTG3f"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250915101343.1449546-3-zhangchunyan@iscas.ac.cn>
-X-Rspamd-Queue-Id: 871E3100018
+In-Reply-To: <20250915134041.151462-5-urezki@gmail.com>
+X-Stat-Signature: rgn3s98zgpxoxwdgpbjf8nzoeo67185k
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: x3eewu99g6kupn7atsoz7sc3j1g8exot
-X-HE-Tag: 1757955936-533462
-X-HE-Meta: U2FsdGVkX19RQ9rR9PvaCXrmANefmf0Jf7eKUxGYPgv6Vi82E1SL9+yWYyGSyz9HBoSrORQ/xGDNWmnGl7Gn5xd0U9tjM9Et+8qu2315QeKLjPfTe1NT/IEM4hjNUFjpaQIqp5djor+FU1d+uRBX0KsEntWOjI95zMU+FnTlcnQOXNfNROpHicNXOJCNv4WhKVDqR6RTi2mNAJTfOTGftUtMaM6r08h3iCRF3r7zohHoqCDZn2i4CmQqXMlsB02ym68yTgNz0meipaapSBEdS7ERXa96mVr1xEQIp7pP9G3beUwjFXr/HsK1QRNhxoEL7D8jDvh+Hwd1eWqfxsgN7oJGB9qhuYuqPRufQhv0RvZLARNw8HsqPhuDe5JcJvuHV3Vk0PLew04YbnWu3HeIdk1kx7HpCnv5AKrCeKOR37qNCfz6M2tvTQ7YBHmroK8rhRe5TQbz2JCGI/27+T9M9H7kCVDV/nXS7rvHhmNohVy7ZxTr72TrGdHQDHK+skjS/duNgUB37Xpnl7H/GASv7Vmu8l2O+h+u+T64AUjD2VO15LeIpLYNoDsVTy4wmgms0sMiD44iMh2nm2nfKt/4nD6gyuSIVBz41IhhrUgstQmY5+asWZKvRLg18O5sq/Fxeo+SIXDcf8Mwgytbv4eRf3i9QQ2dUnTGXdXlQYfz9f+Lj8U9CZUuxGgU0lWWaN5kn/nwKY1yGDh3L6ZZZzsCGHqe+w7rD3RKVUhlBoYS2iD2OW05HnvdeNP26kFLbsRVWd6hfIuugZlrjcPBoIpisEKfhJjpVNtt8BBOsyF6lmN+CZjOB7ZISDGM7E8GpcI60+yciYQgC5ceHBwZ6MQidaeqiSe54gSbrq4a3De4e10DaaPpLUJLYO3cGhCgNXDDwv+tgCzDAgwm1M+iBptjGLKgcdPYBOu4GjCYrXFsDTio39IpC+UCHyoCtwFvYUi6eVHUntjB3xSo2/B7gBW
- NScT2494
- evKG8w0h7esiJBlYYcl8ATODQxCDboFbHTW4mQ/mjXQGHFGqx3vFXPJvo9uTToA4tfNShVOhMbffK1JBih1j8jvZ7fqaUeDH4hE2ZV2pQoHQ8RGX4/DWecvPdHQLiROsZtGf6zDCojJPTYN2fN1yngOGmb6TNzK4ceaIEdVkM+iUuzi+oyZeZO+QYwAQuzPSPyomEoXY8ex3FgA69drqwtgWhBmPHN7S1BgnAlpKkLN9iYZ/zm4PY/KMZMohsXo7LzhAMDfuGnQiOWXM5bWK4sKhXi+9cqOYV5D9ztcxEH8Dvj8jc9GZJ9bIZFWi0I9BRPi1OlkyoWcudWgh+9Hes50yw85jMunjVpG83TixOftkrFQNXLwQbGMES4UebAgOkLf3JZ6bLJFycsEf+e5ii1uc7FgGr9ZJQjzSdPMDjcR9p+4T3slyLXK3phkTF/GtK/Bk0iH/ElxYVGuH4WkFYj4xGmA==
+X-Rspamd-Queue-Id: 1B2141C000F
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1757956289-266767
+X-HE-Meta: U2FsdGVkX18h619CsVlqCiauEYG7YHENbDgSrVmAXH9rF/aZ2V3+8eDyz0mCTRDsEHYibdX/QbNW8HFq2rEfhyL1I/XAQanZQfeceA9oxlacos7ojOcbm9spTBsVLssShZ8nqVJAOXULyiMIkzzvItkFwh/VlhOcS9OgmQYwolQMueMy/WB61KrrKxtlUYGmdNJ9gtGUDWJ21oPQZ8kt0wNHA0aMPcxlcqaGoe/zx4LQ8g2L6FgUq0Nv7AoOvG9e3IpKNjC/EfNJhfprcUHI4lPcQOVSIBUnD8fF1oAOkLM60PbEz3LGd3eyxOis/mle6QxMMHM/OIA7rPS+Ru6L1CmZdIpmq7WcC92U88sfCYU1To+4ATncgxKyPikGQxAFQSZb6cqQ1cjO+OxIcOZmB3QJjRPOkhkLp1gfqi+xEwoH9T74MUJg0EQ7sJyPF6a1D790IFjl2yrJXQAtfMC6HM6Jti9deQxqd1Il79uSTBY7IoPZWrb199qv1+PekZWHNgoyxQ9ZklOXjyYOKQw4OLa+fY58dSfA9x/PzfG4GHL2Z31MTqHcMkNdB+3Q+MDk/Iit//qFWTQOuiAOgRvdPFE6KUJo4XgP8+MbdejHJjd7grWGcwcA1LFw7i2w1lyZE7twixuhrDfr7zK0++1GIWoMJtvudspVdPgGMRh40CGEIQk5pxoH7MeamoabA+lcK2ivqsOytiX53XVCveenaxUt6EJJrhQQVp0OydA7L/vbS5MtXxftrrI/djRtmtDcH82u9KZoT50MPo6wae1zPrqTnfQP3yD+tO+76J0t2Yn+DpI6Pqhj9iiwbfuuE9f7JP3VjAjVVQTtrp3UryZ6l1AfEXdIA6VCCtCwsOEABJaZlOXnVWNSx10/vAairQfBpxjwoo2vIgmWN+sIW9ZBzqtJCfQHDU+7L51IVN3fs5sy2FC1p/EwfX7LnRpb3qtZi83tuB+g60xq7Q0Ki8v
+ V24X+4vy
+ u0xk6Y2zib/2Z9ZaoLb+qy5N1kpoBIWIuCkmCku+p6iUDkLBB0De8odM9W2aTrZ6PaXRobqguy6/v7Yv5aHfUViAfpVQDUBQGBrzsbBN5hIPl0KEOGEYX3OSjb59npgFSfMHLYdbwQGi2UwI48WiE0jVDj4iiwUGM6+xIbDeuWtvm4sUYmK84WiLdJBDe12oCfC7Qx88k2bMPgvKokZobmPZDdkdcEP+KdeONdL3nhx1ioP5eSMKJS368+2ndN2xTJkVK0LzQ0RgVXCxswl6KfvvtyjH1THqUD+41C0zyCZzI7H3rqvM2kwV+51p4yjScnrQijokrq9mxFy1eW2gApA9sJSPVQK4pLq3FoUJ4D5BLdgQw1MNtcefJRZdCELB/hirf
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,34 +119,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon 15-09-25 15:40:34, Uladzislau Rezki wrote:
+> vm_area_alloc_pages() contains the only voluntary reschedule points
+> along vmalloc() allocation path. They are needed to ensure forward
+> progress on PREEMPT_NONE kernels under contention for vmap metadata
+> (e.g. alloc_vmap_area()).
+> 
+> However, yielding should only be done if the given GFP flags allow
+> blocking. This patch avoids calling cond_resched() when allocation
+> context is non-blocking(GFP_ATOMIC, GFP_NOWAIT).
 
---/gi+eTVpaGnrTG3f
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+We do have cond_resched in the page allocator path, right?
+So unless I am missing something we can safely drope these. I thought we
+have discused this already.
 
-On Mon, Sep 15, 2025 at 06:13:40PM +0800, Chunyan Zhang wrote:
-> Some platforms can customize the PTE/PMD entry uffd-wp bit making
-> it unavailable even if the architecture provides the resource.
-> This patch adds a macro API that allows architectures to define their
-> specific implementations to check if the uffd-wp bit is available
-> on which device the kernel is running.
->=20
-> Signed-off-by: Chunyan Zhang <zhangchunyan@iscas.ac.cn>
+> Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+> ---
+>  mm/vmalloc.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index 49a0f81930a8..b77e8be75f10 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -3633,7 +3633,9 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+>  							pages + nr_allocated);
+>  
+>  			nr_allocated += nr;
+> -			cond_resched();
+> +
+> +			if (gfpflags_allow_blocking(gfp))
+> +				cond_resched();
+>  
+>  			/*
+>  			 * If zero or pages were obtained partly,
+> @@ -3675,7 +3677,9 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+>  		for (i = 0; i < (1U << order); i++)
+>  			pages[nr_allocated + i] = page + i;
+>  
+> -		cond_resched();
+> +		if (gfpflags_allow_blocking(gfp))
+> +			cond_resched();
+> +
+>  		nr_allocated += 1U << order;
+>  	}
+>  
+> -- 
+> 2.47.3
 
-According to patchwork CI for riscv, this doesn't build for 32-bit
-defconfigs or the no-mmu defconfigs.
-
---/gi+eTVpaGnrTG3f
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHQEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaMhHWAAKCRB4tDGHoIJi
-0g3AAPYyMr0sKk1q17lwf8rI9IXyUkgSilhSi7k0qTds4n0KAP4iPiualM+L6H88
-quoylo0zyBkFOvt7aPxdrFyH/BhuAw==
-=Y8mB
------END PGP SIGNATURE-----
-
---/gi+eTVpaGnrTG3f--
+-- 
+Michal Hocko
+SUSE Labs
 
