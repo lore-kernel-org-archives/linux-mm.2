@@ -4,136 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7006FCAC598
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 10:26:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FCD7CAC597
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 10:29:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CB0B68E000B; Mon, 15 Sep 2025 06:26:07 -0400 (EDT)
+	id D06F28E0003; Mon, 15 Sep 2025 06:29:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C61388E0001; Mon, 15 Sep 2025 06:26:07 -0400 (EDT)
+	id CDEF78E0001; Mon, 15 Sep 2025 06:29:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B4F768E000B; Mon, 15 Sep 2025 06:26:07 -0400 (EDT)
+	id BCE348E0003; Mon, 15 Sep 2025 06:29:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A032B8E0001
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 06:26:07 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4719A1A056B
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 10:26:07 +0000 (UTC)
-X-FDA: 83891104374.06.5F09A74
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A94068E0001
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 06:29:58 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 627A6C0560
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 10:29:58 +0000 (UTC)
+X-FDA: 83891114076.15.3EDB1DD
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf19.hostedemail.com (Postfix) with ESMTP id DE9251A000C
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 10:26:04 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FN6rJGQ+;
-	spf=pass (imf19.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	by imf20.hostedemail.com (Postfix) with ESMTP id EF14E1C0006
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 10:29:55 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=K8dsV9qM;
+	spf=pass (imf20.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757931965;
+	s=arc-20220608; t=1757932196;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LuOSdM7sr2GcJV/vZB5X+Ju1uYPsXPA3FO1S8oXCojA=;
-	b=BLgqsLFAvtuicQEx9jqjUo+c8u5UrU3aP+PyKbe0IpxwM53kqRPGuSdiDlXb/PIvzYfHnP
-	u7xJyRtLrZheZjBrdIof8AVOtFpSnGqr/GzF8anYBKULYwgLI3VH9y/H0OeWK0+idmqSjJ
-	EAq49oKSLZNMiUWfK9j3co3vkACjGhU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757931965; a=rsa-sha256;
-	cv=none;
-	b=hysbN5jwlAPnIlwR5r4trAzMja6m8B4LPtoDtH2LPMu2U3OcdAMbaf/hL3J9B3eYXmECUS
-	olpzuPrwVeMDDcBls79ZWOrhjAnvQ42cUXDPl0KcwDaMQNB/gW1jbSFI2RRRGGFm3j2lKz
-	TnOVLvLkeRABU4TdM82z8g31/8odvXI=
+	bh=PebzKIAGBeQ8UR0riCzpqXgEfEfj9FktP+eiMg1gg0s=;
+	b=eGl0BmFhwTmWZguZcmPcXXqN7ZW5Mtw0zc4UXQbubyTijxNomxY+Nu65PM6lYtNl4ysJgv
+	A6p4POHQYLaQkbKLtaAQupGd2pxoOVTIXeROVE/gFVE6hAkbv5MaGAibBU4DKsIcfbP9PW
+	yGitt48JrmdivA0qjxBAH5ArRPxr0aQ=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FN6rJGQ+;
-	spf=pass (imf19.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	imf20.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=K8dsV9qM;
+	spf=pass (imf20.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757932196; a=rsa-sha256;
+	cv=none;
+	b=uH2MbtyiGVDqFMfMarwZMUl62P/FIxaovk+QWFQIxvFuOzwYElVRb58cvC1vbhsEFUkoum
+	pEBIi44pfMDIhS/dwMZaz89fMSPSKw+D6VJIZvxrkOqH206rFDF+jopW6DtlPiZG1Ld0FE
+	qMdUcZMcOmcWG6Z9OphnZPwXZK5eZrM=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757931964;
+	s=mimecast20190719; t=1757932195;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=LuOSdM7sr2GcJV/vZB5X+Ju1uYPsXPA3FO1S8oXCojA=;
-	b=FN6rJGQ++0xyxk8NhGImzebP5PPZV+hZLON8yaw/oHHdwMV7mdlg4xeB8rtHERgi+qSALx
-	M20pF77RyV22NeRMfieErTUP5oENCO4QHziO1AQaxOvyUmX5D44NWG5glOnbhAr2JNIm/X
-	z9Nphc3Dvd/KfncGJi/XVpMCgoyHUW8=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=PebzKIAGBeQ8UR0riCzpqXgEfEfj9FktP+eiMg1gg0s=;
+	b=K8dsV9qMEZQBLmviir0fijmYqL5nnHDsh5JI+icCaabBm8EI+0SluijSvwzH7eHRamqORt
+	7hcXgIgvaeq658YuUp8SNRvLMPNfinH0n/WjXTZsDe/+ao0m3AU+W9wtRU47KyK3MbaghT
+	mDvYx2MPYfaeOufNtM7yTc8Tsuimp3Y=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-55-CTGkaDDENQyrZ0cWhYi8zg-1; Mon, 15 Sep 2025 06:26:02 -0400
-X-MC-Unique: CTGkaDDENQyrZ0cWhYi8zg-1
-X-Mimecast-MFC-AGG-ID: CTGkaDDENQyrZ0cWhYi8zg_1757931962
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-45cb604427fso23948595e9.1
-        for <linux-mm@kvack.org>; Mon, 15 Sep 2025 03:26:02 -0700 (PDT)
+ us-mta-475-Nt2IIAdsPzetMBKIfQnjDg-1; Mon, 15 Sep 2025 06:29:54 -0400
+X-MC-Unique: Nt2IIAdsPzetMBKIfQnjDg-1
+X-Mimecast-MFC-AGG-ID: Nt2IIAdsPzetMBKIfQnjDg_1757932193
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-45de07b831dso21865825e9.1
+        for <linux-mm@kvack.org>; Mon, 15 Sep 2025 03:29:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757931962; x=1758536762;
+        d=1e100.net; s=20230601; t=1757932193; x=1758536993;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=LuOSdM7sr2GcJV/vZB5X+Ju1uYPsXPA3FO1S8oXCojA=;
-        b=RAN8F2Z9NhoEgLd11GGU22mzrQzFmt7TLZNAWSndgj/kAS7rCrg1YPGPMHzSNnxHug
-         1utw9bVaYJHfohFuYDxmgs4NMCQAMJqkSS4sAe1s1HxGcr9azJA3Bi2F4wRa8J+LpBU6
-         3nY//xes4ZBE0kLOV1Dr65CgLPrO7nH5TKknkDP2O7dqRdZsx8aywIY2iNLQH0ZPdIhF
-         gIdvgfop2Z7MuXdKydZMY0IoSCGw/AhaO8oo5rdej2wqaMN2tTxR1nDMxDSLf8F9Vrhf
-         PXlMg2Ht8LWFr493+wNe5D15G8yuNNOlzeN0uj7zvTfYB6C+dHK21m1svlMl4mHMx3y7
-         44HA==
-X-Forwarded-Encrypted: i=1; AJvYcCXW55xgqq6ZLSTdNBgkAXwA7xwTYoFU0BGnPOUN6Dd0FTEq2boGBwH6CZ+2g1JET9GJTlBuafuTAQ==@kvack.org
-X-Gm-Message-State: AOJu0YwIzBuqqKMzPtTBqSMt6c746o62CHKGA0HniU7EOYp71Q+vqukJ
-	vy3wAxgC1XOzcnI5h4evl4qdqwOWEv9JzFKAY4y3ODZ/zK5ccHie/cA7FNp3w98c7OIcgUcIrRg
-	ZYVMo3l1UZ9ts/Y4/4PcTjxWmg4gb9AOtPnHQBGLosN62i//CEKMA
-X-Gm-Gg: ASbGncu2SleqM/L7Tsgft5UWqj7j20Lcxgowf8L1XCGYdquruy2P0TaCfnUWfJ/NMIh
-	DWHotLRFV+RKSD7geOq9IWHrap2cued7nTdq78jHKM5s4189CSZ5+yjjg+CCUexK/NNBPWGO0Ez
-	w69JDDzpjli8avd8JPOXaWfHqLekBoVoFGoWvD3zyxSgbwh0c7qkhpJL4WjXgsc90MqO7SltivA
-	WhoxBcYGv0Xa52UDivsF2r5uslCBwjjL4uo2VIBo+fxWSfYyRsYnYP+WCytpdGpR9tGtIfoJUG1
-	hGjRnwkydm9TW5x1IupYNHlw3Mc1MeQ+ihA7Y0hIFvnG+8A52YLCCN5KhF8C5BN+OjzZHszhc8g
-	kZqUZ9n0PJ+pMFuxmpmXezMAzm9FheBAaGwICy+EtJFa6sQGOEZw/8azWDo2V/EEJ0RU=
-X-Received: by 2002:a05:6000:26c5:b0:3e7:6197:9947 with SMTP id ffacd0b85a97d-3e765a2675fmr9795887f8f.53.1757931961431;
-        Mon, 15 Sep 2025 03:26:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEITkGGGz76cys5swmSEelvVvlXnf7rFrqKHK6hXOsBMYdCsiJrRwiLPBM7GrXfuGS8fKwr2Q==
-X-Received: by 2002:a05:6000:26c5:b0:3e7:6197:9947 with SMTP id ffacd0b85a97d-3e765a2675fmr9795840f8f.53.1757931960953;
-        Mon, 15 Sep 2025 03:26:00 -0700 (PDT)
+        bh=PebzKIAGBeQ8UR0riCzpqXgEfEfj9FktP+eiMg1gg0s=;
+        b=Hke0NeaHOVpsfwm4/xD0bNvfeYVgfDeg8/GWqsPV5vZS0cfeTKYqjP+8RpfnnWR9bK
+         kRXDO0MDqS3zb5txtoK41dBEVNx2FPhhcc/Dl2iLTTMZNC1gP6KSuebCd8oMmLhdydJ+
+         R8im9LWqF9J93nrCdejM6OoYAMP3sbg4mBZAaBK9edIIHzPRFwClKYC+MZOAlNnRwHTP
+         NbHFnUFwnaB1AkIM6oqM+tiIgU8aC36xnnPwI9GWzyfOmdsth+lloGqyOrMzVAF/nMKy
+         wY5DPcDLYWpHcBMvvn+o5PLe93kqJwPTt1OJcQvuXHYxxRo+nUOlhM5IXl1dKNKiAIUf
+         ug8g==
+X-Forwarded-Encrypted: i=1; AJvYcCW03L9MRZytBXlJcmseDaMGGC1VX0K+oKqid4FQEffuw847KM9AihbsLQC+b19MpVmcgLegRyzy3A==@kvack.org
+X-Gm-Message-State: AOJu0YzvHyV7cYLSqUBJFnnPa6R7lVGpG5tj+GkA/cL/nGLHNiPrWqRd
+	9TPfEexyjc3KvE9bOLLf3OLcaXEePGcvE4XPcpGvR9RD93YHFOvpnWzNdGCuB/YvqdGOgjx1E1R
+	4RWOz+Ldn/PNe6ZFFJ36l7ao4qa1X+bAVO+1PvS/2ckfleOmq+lbsjATfXUgL
+X-Gm-Gg: ASbGncuCDE2FtSvRYcgNft83PtRK1fhd8/mX76f6zbw4U4mRVypKDMLQRM6a9i4WeAm
+	LEA+nGlnKr48AhCivW1I4+z/FeBwRFeQsVUb2sSO+pH1ftJ6WKv831k3j1BR41D3q8ang9IVgly
+	0iTa/cBCUz76sDa8VOWpax8uR7gB7I4GhoroYVvSp1JF9YV4cRmiohmzfPeLwqQ1/gXmwqQTePE
+	YoreiuI920uhI9NLdx096Gu2wqLRvww7ofQ5ouG8T5J79dsrUSri8w6t9koVDdw38OcjKNBdqGD
+	w8iJW/Vg+uLrUAH9ZXTp8mUzmw4fk5YuoUdaZhd3qXxjRI/VtWMQBe50TRZnKzlZCog2tdIdLC1
+	vBZYrtm6qb25uWqQRo2NApn6M3LUMVoGv7y8AjBuYviszb5TUzs8Phyn1y5E1cJ+fXEU=
+X-Received: by 2002:a05:600c:3651:b0:45c:b53f:ad9 with SMTP id 5b1f17b1804b1-45f21201ec8mr80363995e9.33.1757932192812;
+        Mon, 15 Sep 2025 03:29:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE3bZLos3DfRvtT9BsWuTlXLHXo+egMc2YXhmHVbe7uN303AIQ6yQhhCgX44uqWOFSwoO/JaA==
+X-Received: by 2002:a05:600c:3651:b0:45c:b53f:ad9 with SMTP id 5b1f17b1804b1-45f21201ec8mr80363685e9.33.1757932192307;
+        Mon, 15 Sep 2025 03:29:52 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f18:f900:e0ae:65d5:8bf8:8cfd? (p200300d82f18f900e0ae65d58bf88cfd.dip0.t-ipconnect.de. [2003:d8:2f18:f900:e0ae:65d5:8bf8:8cfd])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45e037c4490sm172678095e9.19.2025.09.15.03.25.55
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45e017b2a32sm175369305e9.18.2025.09.15.03.29.51
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 15 Sep 2025 03:25:59 -0700 (PDT)
-Message-ID: <78d75263-e0ab-4dcd-ae97-5c5c9bb10193@redhat.com>
-Date: Mon, 15 Sep 2025 12:25:54 +0200
+        Mon, 15 Sep 2025 03:29:51 -0700 (PDT)
+Message-ID: <8fa35236-23f6-4cb3-8e8b-268bd1aa09ba@redhat.com>
+Date: Mon, 15 Sep 2025 12:29:50 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 00/15] khugepaged: mTHP support
+Subject: Re: [DISCUSSION] anon_vma root lock contention and per anon_vma lock
 To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Kiryl Shutsemau <kas@kernel.org>, Nico Pache <npache@redhat.com>,
- linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
- ryan.roberts@arm.com, dev.jain@arm.com, corbet@lwn.net, rostedt@goodmis.org,
- mhiramat@kernel.org, mathieu.desnoyers@efficios.com,
- akpm@linux-foundation.org, baohua@kernel.org, willy@infradead.org,
- peterx@redhat.com, wangkefeng.wang@huawei.com, usamaarif642@gmail.com,
- sunnanyong@huawei.com, vishal.moola@gmail.com,
- thomas.hellstrom@linux.intel.com, yang@os.amperecomputing.com,
- aarcange@redhat.com, raquini@redhat.com, anshuman.khandual@arm.com,
- catalin.marinas@arm.com, tiwai@suse.de, will@kernel.org,
- dave.hansen@linux.intel.com, jack@suse.cz, cl@gentwo.org,
- jglisse@google.com, surenb@google.com, zokeefe@google.com,
- hannes@cmpxchg.org, rientjes@google.com, mhocko@suse.com,
- rdunlap@infradead.org, hughd@google.com, richard.weiyang@gmail.com,
- lance.yang@linux.dev, vbabka@suse.cz, rppt@kernel.org, jannh@google.com,
- pfalcato@suse.de
-References: <20250912032810.197475-1-npache@redhat.com>
- <ppzgohmkll7dbf2aiwhw7f4spf6kxjtwwe3djkx26pwy4ekrnd@mgeantq5sn2z>
- <43f42d9d-f814-4b54-91a6-3073f7c7cedf@redhat.com>
- <ab8c2e03-53fb-402c-a674-c2c6ab11f54e@redhat.com>
- <rapl4xr55zv2nq3jh5ulk4wvfyxa2kmbnnb4uram6q43y4cbwn@dv5m52ocyqne>
- <80c50bf4-27b1-483c-9977-2519369c2630@redhat.com>
- <7ri4u7uxsv6elyohqiq2w5oxv4yhk2tyniwglfxtiueiyofb3n@l4exlmlf5ty4>
- <59641180-a0d9-400c-aaeb-0c9e93954bf5@redhat.com>
- <c5bcecb8-13e7-4db5-849e-2120c69b2af5@lucifer.local>
- <ed784d6c-6c2a-4e0b-ad2f-e953bf310ce8@redhat.com>
- <dcfc7e27-d3c8-4fd0-8b7b-ce8f5051d597@lucifer.local>
+Cc: Matthew Wilcox <willy@infradead.org>, Barry Song <21cnbao@gmail.com>,
+ Nicolas Geoffray <ngeoffray@google.com>,
+ Lokesh Gidra <lokeshgidra@google.com>, Harry Yoo <harry.yoo@oracle.com>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Rik van Riel <riel@surriel.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
+ Linux-MM <linux-mm@kvack.org>, Kalesh Singh <kaleshsingh@google.com>,
+ SeongJae Park <sj@kernel.org>, Barry Song <v-songbaohua@oppo.com>,
+ Peter Xu <peterx@redhat.com>
+References: <CAGsJ_4x=YsQR=nNcHA-q=0vg0b7ok=81C_qQqKmoJ+BZ+HVduQ@mail.gmail.com>
+ <aMdVcH7KCXBvLtFP@casper.infradead.org>
+ <CAGsJ_4xDRB_F-T42WnhqpmwLyiZRwLGqx9vDf_d5TFALsCRX4A@mail.gmail.com>
+ <aMd-2argDQCHww_Q@casper.infradead.org>
+ <18361483-5089-4414-b974-4c481189b9fa@redhat.com>
+ <585b0ca3-cc56-4f74-9950-800d6faf8012@lucifer.local>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -179,21 +166,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <dcfc7e27-d3c8-4fd0-8b7b-ce8f5051d597@lucifer.local>
+In-Reply-To: <585b0ca3-cc56-4f74-9950-800d6faf8012@lucifer.local>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: tTHhrA2xy1SVBV32XXRy0sgWbKcA-6ZHPjIaJvbuGCI_1757931962
+X-Mimecast-MFC-PROC-ID: jCfJl9sg1wuvFiI06U4VyvbvCMS-Tci17s0CTVYbEOs_1757932193
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: DE9251A000C
-X-Stat-Signature: uiaw6ooprnkoby7bbur3u1e9p8nfou6i
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: EF14E1C0006
+X-Rspamd-Server: rspam05
+X-Stat-Signature: duenphq3t1eb3geeq94fse9q6gmwnm6k
 X-Rspam-User: 
-X-HE-Tag: 1757931964-760197
-X-HE-Meta: U2FsdGVkX1/Ujlcn89mgLtpwSY4TbIbTIW/2bF+ECrfQqMx6S6Da2LttLipfUhDb/9fYR1tTPoyT7EKrfGCk5pz1Oxn1toFBrbkCZH5rUA4S4wgM+K12L09ZC3lnMqrlvYacBke/9/+Ozy+05QyeDlbMtacDLUB2RIDwoulMq+jDi+mBC+1C6+ng0SE/PKWOPn2+/XJkDimNelMEgiBqiDQDqLOmbPYwPcFlFLH7faTJrt06EcCt1CxGbdyAjUFLbhFOIqNM2OvmoniUfnwYr4SZ2f8VW2wbpPKoTGS74y9XQhQEpJWkebC1ltldDKfaxhgAevhx49EGV4PbPB/slcJTQsCkcVp+THiqTCgsve5o9Nr5t9syVQw7lV581kwkQXyjJu09PKk0XdoIN00hhb+BCkT8ZiDuYiNUyfF4zqWjphN5aUyzVvvaKL6fAhbWBVTtaCgvAbdvGX7EcDd0f5VLNxuQA49F6hMZgtyWAIMMk/R299jat6KLVupvkIa6IjI6PKyZ+36tuv/X0ckTKTy3SyeHh7fB1/iBCaMwOGNkw9YIyOtjCWB0JEe5jXYPuedQ672K6hfjfsfqw7RCI1qfEa58YJJygC9d90izQ7Fa3MyDmFLCJstjYjEF6pn7chBbTb/JFSqi0nkD+XCZKDAKD5TJbcaG4Jt1N2I+9B9/OU6Ql8bt0HqH9QVHmHo/5EJU80HYBOwx7vHin80DFYm33D/Bp9QFYik7LJztvqWEfzV7jyMqGL/J6KsAOqAjben8KPHXhzRIRNEwkANOm6HkkW+p4Ey53oXEEGeOKEPv2nLSCax2fPNB/Y1VhUU7dqNYS7LXVbIryvg/P+djeOcQpm5LdFen3SV9/Ba9vzZwGDvSDsJkGElXluIKcxJU83KeKt9TOfnImCNuqzM1i0AMiQtd7BJCIK3BybhTzcdtYDQu0E049pvoX6DRSQXND9V4k+utFSH7V4mCA3e
- MT2Y5JAa
- GfrCNiv8eE5jtU7bsDqE7h9DkzizlRoWIhDwIPO9zjq73lfLDKWIJUzlr1eYVZnNkMTuYd/dQNDgsDTrwhUvO+VAA+J+Uc+0rKHNuJsr0lDknMZx/VwJYWTVMurtOXUir6NU/d3TDVLZiUyJU5ktmYLBUm2HiA01wS/5TDqxXHunWaVINlXr0hPKfwTjLhKFnGZ7L08tGC96tVI0cxE/i9g2DOy7N0Buq9JfEf130VgUAWF7v6ydU/PHvwdMSH6CTSmtm9tNuGJoT1/DEshrAAjI902BrGt0ANjU0mkXO+c2jh1+O4koBNsDbfRR5hX6sS3xebpKBhqBUu6nO0vpEyO0wsmKXr0oCuZkrCSx3iKuUu3fVNf2JJu7gSCjBoNMJdBq63eNmE/8O4WNOYZMTjx+uC94DbA9c2KQyJUzRTddY52rNOtmWJq6BPGWe8x60v+ZOuljISs9I7jxeS+ojljgALuqYNSJLCAfJybxJ81rWBlEHc00NEVmiaA==
+X-HE-Tag: 1757932195-68587
+X-HE-Meta: U2FsdGVkX19x9HOzgtIGLwZD7oDfRD3YPjMNvhNDFun9QBDHNaFqqcaKn4+jEab9KDU5vKCu3Y55mAKmFUKPvvgNggGPLUDlKLw4uwMJk0rZEz7CG4xDnsdW/aKWaY4JiMl+BYYTe1g5Xu8UqAKCdlQqhezJW0/SzuAvPiX5JUqLo3t4LJHI9CXegVfUXhsGXQDOQdwY0dE+h1MPhteZjCcF8L62MAb/XCrM+nLGVgbjKMCwLVP8hwkxnAvSpMjgwk1kQ/6MoYrIOJwX5oR+jJybfcSwiTtcBfatXhtbqD4R4GD/klN5qYHGZ4wmWrXES/r8rVVeGwOwXQgNz32JwuluqM/VRak7DaSnS9aiAoycYJjRycgiUyn0tWWJPgaOZxYz2lM3RzAMv2M0EF5tZAk9Uu8njkxd/SGCBQ49kO3BrTmqVcHpY/2d/VCsp1wXa1BuKRKW/mBsdrgugLiOVR51I9QfM2OU5FG11Np9ge1eH5R2Sg+EmwCrxSdkdA87EFSDFAMRbJW2NITKAPsnx/1NP6QqtYThCK1MHUooZamnetskqBTrqcuMEVefbF8P8Y29CZD4Hk6OPbBgamKuelxZauCiI2+TPIvLMypaS2A6vrBvur8X9TzriKF4YmE8mIAyxy2k/pOhoZ0dNFq/Kpf3oHM5fr7p8TFB5Sdr99Jk1teutqoCBQqm3Qr6TOTZsPvWunOIdusFUqW29S6ov17a2gdHCL5EA/QcM75m0bKNdmHBS+G9GkUBcb5pe+EDZCaFcSsiz5+asovDcLVVDYKxGucxA7YsJ1UfHUfIv0InjjGmBmhjIiS/IIALNbht2GbZGIMjRewcuPwD6hrax6BA7DUlpiPS4oJQ04JWHiyAGggNK8aYWajaZC/ZGLKl24tAqU8D4/ix8MbJuEpNO/mmOFF9yb2Vm2fzmKG8Yp0+r5tfh9uHuYS4tBO6ifuwGHCtFXqch/eFbkKGAeq
+ tcQ1A3nX
+ ka7YngV/ujYs/PnNaTUjhZseXSpYKGndWbadOueEu84kbHj0PRwwKcx7PkCAu5m8Qhqr0GBfOPgrDIOaTpF/0TyghdkmK0byzQviYqJmz2/4EixuinaCfhrgDQYLuqfe5NyhgUr4ZTTJfRC+Em5EQ/rFTrVYCGPVwqHlxLxRnyKrTK/5iWm5RecQGH+SBdRlDhfWkiYOGyISr6vEj6/o/MTBS0swfOkYRMH5QTCJVj4tUZc3qRwdW1AVWPQsae9Ypq9ibrBYJklpaYEtaR+aqAyguKJR/KvWTvo3UcZxnKI8Lugv+DlLJKka+XWwdDvELSxeTZBpgZnRfEON4gwxkcY+yaltOfgfbXCCKeJHQrYt+HkoDW8kIu7RHrpslfLI6gqs8VWN8sQDK+aeBGqIgUfVSC6jLboRLY6OUUTDyi8tVx4TFpy/OOzRDSbUeMlB81x0B0NvuWWib1xC6LZfwJ2N+J3oNFct4NJYUIoO7wWSOUyXQmXwX3Am4Fg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -202,32 +189,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 15.09.25 11:42, Lorenzo Stoakes wrote:
+> On Mon, Sep 15, 2025 at 07:17:41AM +0200, David Hildenbrand wrote:
+>> On 15.09.25 04:50, Matthew Wilcox wrote:
+>>> On Mon, Sep 15, 2025 at 08:23:38AM +0800, Barry Song wrote:
 >>
->> I would just say "The kernel might decide to use a more conservative approach
->> when collapsing smaller THPs" etc.
+>> A couple of notes:
 >>
+>>>>> I wonder if we could fix this by adding a new syscall:
+>>>>>
+>>>>>           mremap(addr, size, size, MREMAP_COW_NOW);
+>>>>>
+>>>>> That would create a new VMA that contains the COWed pages from the
+>>>>> old VMA, but crucially no longer attached to the anon_vma root of
+>>>>> the zygote.  You wouldn't want to call this for every VMA, of course.
+>>>>> Just the ones which are likely to be fully COWed.
 >>
->> Thoughts?
+>> MADV_POPULATE does that for writable vMAs (excluding the rmap opt, but that
+>> could likely be implemented).
+>>
+>> A student of mine implemented a MADV_UNSHARE that achieves the same by
+>> triggering unshare-faults even for non-writable VMAs (again, excluding the
+>> rmap opt).
 > 
-> Well I've sort of reviewed oppositely there :) well at least that it needs to be
-> a hell of a lot clearer (I find that comment really compressed and I just don't
-> really understand it).
+> I think the rmap bit is non-trivial as per my other replies.
+> 
+>>
+>> We used MADV_UNSHARE to break COW asynchronously to the already-running
+>> workload to keep fork() still short but avoid the overhead of COW faults
+>> later.
+>>
+>> [ insert usualy comment about no weird mremap flags ]
+> 
+> Yup
+> 
+>>
+>>>>>
+>>>>> Maybe this isn't practical, but I thought it worth suggesting.
+>>>>
+>>>> Lorenzo suggested possibly unlinking the child anon_vma from the root once all
+>>>> folios have been CoW-ed:
+>>>>
+>>>> "Right now, even if you entirely CoW everything in a VMA, we are still
+>>>> attached to parents with all the overhead. That's something I can look at.
+>>>> "
+>>>>
+>>>> My concern is that it’s difficult to determine whether a VMA has been completely
+>>>> CoW-ed, and a single shared folio would prevent the unlink.
+>>>> So I’m not sure this approach would work.
+>>>
+>>> I'm concerned that tracking how many folios remain shared may be
+>>> inefficient.  Also that information needs to be gathered in both parent
+>>> and child.
+>>
+>> Yeah, not a fan. Tracking per MM might work, tracking per VMA is problematic
+>> due to the possibility for VMA splits.
+> 
+> Well, I think it's possible (maybe)... with a rework :>)
+> 
+> "Lorenzo's grand rework" etc. etc.
+> 
+>>
+>>>
+>>>> You seem to be proposing a forced CoW as a way to safely unlink from the root.
+>>>>
+>>>> A side effect is the potential for sudden, heavy memory allocation,
+>>>> whereas CoW lets asynchronous tasks such as kswap work concurrently.
+>>>
+>>> Perhaps you could help us out with some stats on that -- how much
+>>> anonymous memory starts out shared between the zygote and a newly
+>>> spawned process?
+>>>
+>>>> Another issue is the extra memory use from folios that could have been
+>>>> shared but aren’t—likely minor on Android, since only a small portion
+>>>> of memory is actually shared, based on our observations.
+>>>>
+>>>> Calling mremap for each VMA might be difficult. Something applied to the
+>>>> whole process could be more practical—similar to exec, but only
+>>>> performing CoW and unlinking the anon_vma root.
+>>>
+>>> That seems like it would be worse for memory consumption than doing it
+>>> on the VMAs in question.
+>>
+>> MADV_UNSHARE we implemented simply took a range and one could apply it to
+>> the full process by supplying the full range.
+>>
+>> But yeah, the downside in any case is that you lose
+> 
+> You just lose? :P I assume you forgot to finish this thought :>)
 
-Right. I think these are just details we should hide from the user. And 
-in particular, not over-document it so we can more easily change 
-semantics later.
+"you lose the memory savings of COW" -- was still tired there.
 
 > 
-> I guess I didn't think about people reading that and relying on it, so maybe we
-> could alternatively make that succinct.
+> I wonder from rmap point of view whether you could actually simply check to
+> see if you're fully CoW'd.
 > 
-> But I think it'd be better to say something like "mTHP collapse cannot currently
-> correctly function with half or more of the PTE entries empty, so we cap at just
-> below this level" in this case.
+> E.g.:
+> 
+> 	madvise(..., MADV_ISOLATE_COWED)
+> 
+> And have it take the anon_vma write lock from root, have it walk the rmap,
+> go and check to see if every folio in the VMA is now CoW'd, and if so,
+> detatch the CoW'd anon_vma from its parent/root?
 
-IMHO we should just say that the value might be reduced for internal 
-purposes and that this behavior might change in the future would likely 
-be good enough.
+TBH, this all feels like things we should be optimizing internally somehow.
+
+And don't get me started on
+
+MADV_ISOLATE_COWED eww
+
+NO_COWS eww
+
+COW NOW eww
+
+> 
+> This would be a sort of after-the-fact thing, but maybe could be done
+> periodically.
+> 
+> Of course then if you had one folio that was not yet CoW'd, that'd prevent
+> this from completing.
+
+[...]
+
+>>>
+>>> Another point in favour of COW_NOW or EAGER_COW is that we can choose to
+>>> allocate folios of the appropriate size at that time.  Unless something's
+>>> changed, I think we always COW individual pages rather than multiple
+>>> pages at once.
+>>
+>> Yes. khugepaged will soon starting fixing that up later asynchronously I
+>> hope.
+> 
+> But only at mTHP granularity a. once the relevant series lands and b. if
+> mTHP is enabled (I mean for sub-PMD sized/aligned ranges) :>)
+
+Well, we need khugepaged in one form or the other form mTHP in any case :P
+
+And the glorious future will have all sizes enabled as default.
 
 -- 
 Cheers
