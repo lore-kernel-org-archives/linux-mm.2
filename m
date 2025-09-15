@@ -4,185 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20F79CAC592
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 15:43:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA3DACAC592
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 15:43:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7E95D8E0011; Mon, 15 Sep 2025 11:43:13 -0400 (EDT)
+	id 26BBD8E0018; Mon, 15 Sep 2025 11:43:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C15E8E0001; Mon, 15 Sep 2025 11:43:13 -0400 (EDT)
+	id 21CA18E0001; Mon, 15 Sep 2025 11:43:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6AFE08E0011; Mon, 15 Sep 2025 11:43:13 -0400 (EDT)
+	id 1327B8E0018; Mon, 15 Sep 2025 11:43:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 54D9D8E0001
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 11:43:13 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2DD11B9E3A
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 15:43:13 +0000 (UTC)
-X-FDA: 83891903466.01.E4D8326
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012071.outbound.protection.outlook.com [52.101.43.71])
-	by imf12.hostedemail.com (Postfix) with ESMTP id A17C540007
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 15:43:10 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=QLvV3nKk;
-	spf=pass (imf12.hostedemail.com: domain of ziy@nvidia.com designates 52.101.43.71 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757950990;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 028EB8E0001
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 11:43:34 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id AD56E11A5DE
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 15:43:34 +0000 (UTC)
+X-FDA: 83891904348.07.2517954
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	by imf16.hostedemail.com (Postfix) with ESMTP id B0F3C180011
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 15:43:32 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=hn74nRZn;
+	spf=pass (imf16.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1757951012;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bqN1cuflBe1KfAsjSmv5jFx3bnWan+yMBJmBafZpYYQ=;
-	b=KcZeNCtKOaUPTAt7DcEeHAiTs31pLrJh4mVa4Uq0JYIiqKUirXYU3YriR5pxw3RhpzHj7q
-	J416KOAaAgGnLYNOSRc0W445waXpv93lupCS7grHDW2I7SBQEs3yfg/v0qxGbcBISHuHc5
-	dEKj7grO5OO8j+3ll/PcHiOqOjZUaRI=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1757950990; a=rsa-sha256;
-	cv=pass;
-	b=Y+D5oHzADi5cqx9b3iMl4o6pEHggnPBr0NUiTY6QIoqZV8+lBrt94pqVM95639aD/lyHBB
-	QdvEGWWhQk6f5na1j/FoioH6WXWM4hWhS3qxeynRddHom3aXp6+cdlUObtdXn39hhVg2ZG
-	XV4n+pWAjtT0hSmB4nHAFdgbmxnU2fk=
-ARC-Authentication-Results: i=2;
-	imf12.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=QLvV3nKk;
-	spf=pass (imf12.hostedemail.com: domain of ziy@nvidia.com designates 52.101.43.71 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mnLIOuSgh7A9MMD72ON8nB1XF31uqeX5v88D/facbEw1ylGTvybW80Dn5hwdPrh8tG2/cVmRe8uOivhDGpgbsLQqA25p0hzVJyOGnib6RWoxU4wODBSX5kQOTK/H3Tv1B9cH6PGSwdDxRP3bJ8DjaGX8xQSwO/FY8kI6PySoLt5tORUQ9V3t1dsE+5MqoyIUxFjK33Bjh12bRgSXO8jb1HshBE2jt1IxSKolKNMA26ZGsIzdI+Osquqylwy5JjrP435EBtDP59knZMptsAQK7gGARc9HkiAnLWhgHsLsP8YPoGKtxxxtFFHRWb7eEfluMfcM1+/Uu9hC8CEkRBBMLA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bqN1cuflBe1KfAsjSmv5jFx3bnWan+yMBJmBafZpYYQ=;
- b=A1Y4wBWfrZLDFsKscgvm2STw9WvmkCxMToD/mPW7+iClXWgsWugpXJYheQcEioOF141gWN2oPKM2FVfGLMzSv3QgaH395dmyd7jAoNZJGaI9Uacl4PaxjAQEVx8t4N2lFtNnJpEI6tFSZjT7IJFRtyN4sAibIohG43svGB7YnKs+pLoAM3K/xj6yVvvZ7uZzCN/+ypihOijXmGUWcIXRgUsdeRY0QwqHh6W2qnlYzQUy+Up5ObPQ2nc2wLpx4J+2+VqjGAFcRQoWZSCUgTR96gOVNUmISuPT2HDwob6w0BV1c+g756+nQaJ4CppHiNuqTT5mUFYBBBloD9mozYw2Hw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bqN1cuflBe1KfAsjSmv5jFx3bnWan+yMBJmBafZpYYQ=;
- b=QLvV3nKkAMwgcG1UnzInpq3GPy8zuY72abECrNdRrKlcr+3MbpgUaBzIaPj798+N6rx3wfTaOFV7f2fICPAe8QJElktqDAHuIOB92EGfVbwRvUIEn2t0aEYBusXNSrTgWgUUWoV+qWYgNWBU/o77gDR8IoHAYagF3mQpMWLfRrk0pvdw0UkCG2fqdFylz02JS7fkbLwqYhBs1P6t2eDaK/OnM+u1Y4yYDfWUz7yv1FCmscsCDPnZ0QE2sVD+tGj9zs10fpSHUr0OIEw6xoDutGWnUrehhITG2LyOC/3uapKOQvEdyHVhZiKWhYKfk7dtgESqmYkjMBEtEsPWZ4JTIg==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- SJ0PR12MB5612.namprd12.prod.outlook.com (2603:10b6:a03:427::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9115.21; Mon, 15 Sep
- 2025 15:43:06 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a%6]) with mapi id 15.20.9115.020; Mon, 15 Sep 2025
- 15:43:06 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- Leon Romanovsky <leon@kernel.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, kernel@collabora.com,
- Sidhartha Kumar <sidhartha.kumar@oracle.com>
-Subject: Re: [PATCH 2/2] selftests/mm: protection_keys: Fix dead code
-Date: Mon, 15 Sep 2025 11:43:03 -0400
-X-Mailer: MailMate (2.0r6272)
-Message-ID: <8BE96B0B-01DB-4629-A671-044E74680F1E@nvidia.com>
-In-Reply-To: <20250912123025.1271051-3-usama.anjum@collabora.com>
-References: <20250912123025.1271051-1-usama.anjum@collabora.com>
- <20250912123025.1271051-3-usama.anjum@collabora.com>
-Content-Type: text/plain
-X-ClientProxiedBy: BL1P221CA0034.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:208:5b5::18) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	bh=a4TpjbuEkSI9D7sI2TIuMaUkLm3RGFxmBSKlWPmE/RE=;
+	b=5OREi7mFWDgjWYhwTKWcZ8a4J8VqVGdCg43Rq7XFhJIOBTBdpkshQoqg5jOcWcPRwXePAp
+	QFb5khRW/GJwiyS0UkBBcg4XSwTICO3sLAsqBtKk+cgP07i1UAjFwshABcXe90uXYYsVLK
+	TpcKBNfqTLpPn+7MOfo9aSsxMZVVO4I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757951012; a=rsa-sha256;
+	cv=none;
+	b=bPdpFsMnaRNAQpswCYZgdK+Z5alpuXgk8xX4jl8KVYF51bGPm93k+6x28nH5lc8sWMQI/u
+	N0XiAz3NqkvZhWZmx0SjzSheoW87kyAza8FMLKjSK4vHIAbJXC3E9dYcQR+vAeO4gSMJwj
+	v57yfPSgMoOZm3ZKA32nhCHDhfGo+HE=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=hn74nRZn;
+	spf=pass (imf16.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3ebc706eb7bso437673f8f.3
+        for <linux-mm@kvack.org>; Mon, 15 Sep 2025 08:43:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757951011; x=1758555811; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=a4TpjbuEkSI9D7sI2TIuMaUkLm3RGFxmBSKlWPmE/RE=;
+        b=hn74nRZnhonWRc0kFSSgbl9ToFG/z6alX8ZlNOjhVjwpoSCnPd3TevfFiChDwyrCol
+         wnFZdZ6s1rcDHdlWEwZJGs7Es3gJ9TccEJeYT+VfnFyzt5vHQ88sGIiXLebcHtyFx4Ll
+         9+yii4e3b0Hr6pSk89EBS9BSENHTpW8UfyQxVfqbDDStlydF2V/giikVHdjWcLqyCBYj
+         oTcgxynubbDNuuNBA6rGfxtBBxTA4Th0V9jeVVOMtb8xlD9NY/pKO8vghht0hfLry4w4
+         hxJJeHjdf9OEXXfOSgxysc4Tb8zUQRGW7HpL4Bk7gBvzRBhwYvyHI5/Q7IyTv1fKxXn1
+         RAYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757951011; x=1758555811;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=a4TpjbuEkSI9D7sI2TIuMaUkLm3RGFxmBSKlWPmE/RE=;
+        b=oQ6jMjeloLBFTzxtfM66xgKApv90k2IAc3SN+GmPsEoDDtu6yZ2Y4uThaWZwZM2o8H
+         zHbJHZJZpkeOQaTZKUK4fq6rKa5g3VLbRmktgNxcLcWG59xhzbTyG0uBGG50Kcg5pUK2
+         uQMeb4SkASzX6+Fw89pGerqDC8Zyz8Xu3flhEW+IsfFJv529vZjlXKV1DYZRFVqWSjo7
+         F77Jw81Ag1ky4M1fkWZhP0wM2z9H5yXgHF6y4Uas/PpKtblyzuX7mewbM5glMdI00CJb
+         A01HpHTtiBQ/s+NX9TsR3Wo8M3ndFYksy0NfKAf4stNxqlmn+AqEEz5wzZi3xmfxp8O7
+         2ugQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVo9fyseywEIE0ArMMhDY8XtUqpyDHXsDqJQrrJpc226KEDkMfJxc2P83dCFG9eiDQgSoeICsfbYw==@kvack.org
+X-Gm-Message-State: AOJu0YwLuwvZPTLDkNdHl/K8bvH8FCgewcrLxjv3KGIp/gQc53loHA6e
+	ysDdssUQYCKVMlRmY44CgxY+3JGYdoaX6MgGSaM20rg4XqY8jwnsZhbc
+X-Gm-Gg: ASbGnctOMPiw4IPrIS7BfvNNGdM1seIl9P4K+qjv+/cSnsBviHsZNCPSN/XYuSarCM8
+	xFxEKwnC+2djMCSNw8AbtkP4wqChf32KdwIGBkctn8iUHC2UiZVD0wgEeEoWeXTMlmqzS1u8Bf3
+	tOJUSdVoWCKke2YwsYgImWoj/KXBH0xnETzsASDH0nyUTpD/jmxivbWav+5qWRRBXoPQE0yCTu1
+	exWDyLUqmrrtdY3qzkSglRX4LkO15p1U/WgmTuu76ENqr9bV/ufqnqpKPocKstUWMF4iFO5qbO5
+	CwyQ/R89OCA8/bzINu1OEyw/u4wMTafEKR1dC2b0IDweVX0NfGdOevzQ258RUyTQ6myN6MLdvuD
+	r6SOgirl4kdMcillDHiuBxIwrS9s4Jf4o5M/CtM3MeHiRF4oph3CXzJSxqMYMkbHZ9EpKe2nH6i
+	BhHQS3uNqEPA==
+X-Google-Smtp-Source: AGHT+IHo8rprzs2lnPAlHcfPi3gQ8kIkTHbVdYwaA2RYfhtKfLsiiB/E1MXC3I20/8ZIV3TcLzdQDw==
+X-Received: by 2002:a05:6000:26c1:b0:3ea:ab6b:3873 with SMTP id ffacd0b85a97d-3eaab6b39damr2657222f8f.30.1757951010719;
+        Mon, 15 Sep 2025 08:43:30 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45f3105510csm5969895e9.6.2025.09.15.08.43.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Sep 2025 08:43:30 -0700 (PDT)
+Date: Mon, 15 Sep 2025 16:43:13 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, Linux Trace Kernel
+ <linux-trace-kernel@vger.kernel.org>, Linus Torvalds
+ <torvalds@linux-foundation.org>, linux-mm@kvack.org, Kees Cook
+ <keescook@chromium.org>, Aleksa Sarai <cyphar@cyphar.com>, Al Viro
+ <viro@ZenIV.linux.org.uk>
+Subject: Re: [PATCH] uaccess: Comment that copy to/from inatomic requires
+ page fault disabled
+Message-ID: <20250915164313.42644914@pumpkin>
+In-Reply-To: <20250910161820.247f526a@gandalf.local.home>
+References: <20250910161820.247f526a@gandalf.local.home>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|SJ0PR12MB5612:EE_
-X-MS-Office365-Filtering-Correlation-Id: 19b3a4f9-5a20-46c4-3d2d-08ddf46e903a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?+VmIZzO036roLYCaIWPt8iWsFxge06w793UZxknSNMXNt30T7pFH/u5bV2Cr?=
- =?us-ascii?Q?bGVZiAJ6PwXZGEejjqE6pP8DkZ0/jBbZZBcAmYz5zMJWz75hDUZScfFpScdQ?=
- =?us-ascii?Q?kC6qRxejamN4kSXYdDiNQ8CoG2SvUE3O17WBczZw5IY8KBK4Gicg+O2qfQeD?=
- =?us-ascii?Q?U/lQ2Tr9TvuAOKKyv3xS9yhxYhFnOURbJ+jaUuIQkO4kJtQuxlRrZonqk0v/?=
- =?us-ascii?Q?5wV6oAlhttFn+sbsUiG2ng82kBrkzfOJKKbXigeGnzJaVflHbKTcyCPZrdRj?=
- =?us-ascii?Q?/LjNDjONYPqrKTGX7LgQAK1tn8L1aNUZbhzoLSGHIou4lbieDKs517hElroN?=
- =?us-ascii?Q?yzDIHR/g0MQHqvUHG0ezOLjZYhWduJDB5VWbFwIyo5rhbuI4kgN/yv3QMAY5?=
- =?us-ascii?Q?tzq/RflD/g12bvyZEuW7L2GwqO4GKeN+UjVIEIz6ookl6xBaQ0t+gVsdwh1T?=
- =?us-ascii?Q?bCJ7pi7Xf5cBKeQmuS6Esit5N6qFcX2Cyg/bE+R4gEXT3u+sNksJyq3M4zmS?=
- =?us-ascii?Q?n4RlAmrp1SZgOvEaG0oWBIKh2taTvlH1gLNgC9AFjEVXtH+UG+kniLMEHYJE?=
- =?us-ascii?Q?elWmALU8RpXxSjgTcG0kYsJsMcPoWzBSS++ySEQiSXqXwceBGy4L+XjOGlJ7?=
- =?us-ascii?Q?wmtrb9phQgdqXkACuuPWNId4poq+CwLa6O+oURM3hl4K+BapBSr5bE8aWc7Y?=
- =?us-ascii?Q?xi2KExpkSRoEPDLEI75V5P4Cf/bZTyLxbB8QMwFSF09xUPh6FsjmQ2Yw+CiW?=
- =?us-ascii?Q?ieCDO138pYdwkWph0leFg2CWAq90ha5Z+WEQjcN/45G/6GwNoFqnxg715Zrd?=
- =?us-ascii?Q?QNzJuMmtcxJSBKuBmRzP/ayHJbwmBtA3PVZ0Yom/OLTUa8/uwMEeDdcMk4Cq?=
- =?us-ascii?Q?WBHfdwULd9IYBiy3RaA9Qp1Z/+F8XtW7+Vyd/fttagRoI4zHjN0sAXi0YQ5n?=
- =?us-ascii?Q?Whr7AE2RhwNgoN/DbV8enQGJ+EXLwhvHUJzVegL6n1qrRCA7SYzJ4MBQ2fEI?=
- =?us-ascii?Q?xSENDuGXNYYKzEcYKCiEEkqaomfZaCAc6EmvrnaYp4a47gtPySlMkij1E7j7?=
- =?us-ascii?Q?dkYcfOeaujjurEeGWxiPkkntBjWJXaVBFTRE7kyOA9LdVtv16DBkL3Hxv2LU?=
- =?us-ascii?Q?0mOBZ/LF9aehG2l8pL3/aAjEHiCZH5aljjAZ7plYe24/sH9+B9FOj3ZhVzL4?=
- =?us-ascii?Q?VAyPDlHAm/Q5oCW2Xhz+FdFyW0tl1si9mdw06f+3Fd5UBv+1TUwCYFOeonD0?=
- =?us-ascii?Q?fsN8Ukfk29o4agupcyDdSHuG4au5S9sbtHLFdAb0WFbNARi3F0eRZqR+7OXx?=
- =?us-ascii?Q?roMg4shvJXdtmh384NQtTuxjQYWZRdh6Y2X6A1smwbDI9m+9K6bCi8LwAtVJ?=
- =?us-ascii?Q?pZBGdVlydw4PLT9RNK+CNSSCAonw13MKVe0BHa9po475uQ3Fj5HaL6A/5ghQ?=
- =?us-ascii?Q?GlAs2Tf+mIA=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?AXAfmOrBygkC67Uqbhgqrg1B9TAy9N3a3Y7RwscabHSYGvmDwUAkMZ3OoX3h?=
- =?us-ascii?Q?YwiTAGG+UA0usrO4uczKKFDgpNatlzGHoW5O3+Ye3Vjb/YBvLZ703caHlNzf?=
- =?us-ascii?Q?S74VsPZ1AuQ9pP1QzxBMTwwONVR6m84R6C6EZ2Ag3amG2vWEm7R1Gn12Jniw?=
- =?us-ascii?Q?PSDiGHhBwVqN7MC3Mk0UgtfHDq9Oey2014h3b50yJ7FrGUopPJ1YDbZA+rHl?=
- =?us-ascii?Q?jkFXkGJ3AeayYInp7bmHytYvCgBYYef45nPY6JM4AB6AD+BUlwXmBTjHmcaa?=
- =?us-ascii?Q?ioQBSd5wZgl12xZZTjdNhKLBFHhi2jz5jmHt8hxf3iNJF6j+nGL5Askjca8c?=
- =?us-ascii?Q?kjEKeSohLCxqqVnyOK6HquphlgyiUsmghWuf920rMeP0loe+1pr3g8REzqpf?=
- =?us-ascii?Q?ZmycMXwWIKFOMrrnKHqWTiOxtDg/8g1V1kU/bLSRgmbnQwb940jPBKNX9I6h?=
- =?us-ascii?Q?HVIDaBBjQ0cqb6FvpqU588dt3D1Al6NRE24MKHmxX9k1nUhPRiyruxRpM34s?=
- =?us-ascii?Q?0DE1wxhaKCJBoVJzkp/HM42rWWiDVLoGC2wZhc1RAVGhGjjSttiwXvTx+6Fy?=
- =?us-ascii?Q?ktASSQ0LnWP1UT+qjP8pGEQ9haD3MK+VejMLNhNrQEPkpkEAKAxKWN1S6fGL?=
- =?us-ascii?Q?F01URq+lfhJrreie8n84J/ixNSecUV3itGDGX6SnI41Vzustg0NltP3IH8f2?=
- =?us-ascii?Q?2k51gW4oqRSLCabJGwiaM2zdZeSenjZi+YVxU/erEFhKR8mocEJieRfVJKbk?=
- =?us-ascii?Q?hwlR4xNTrj9r29rvxxPh18R4EJ1c3iiSth/SkIj4NI//TbXjnJE6ZiNj8vt3?=
- =?us-ascii?Q?d/MqVN145GOd72AkErAHDJRA4EdFGB1GEBz9zAcZBFEX1/o5fGf6MLqddoKn?=
- =?us-ascii?Q?f/DhJqob1w83/DNjBuT0UsLD0BkwAJ84nKX1brGXTSY6eJISmRaUmgAY9MT/?=
- =?us-ascii?Q?yRsamnfIk/eyttA4l97Lik72XKjzXLvCehqjKqnaQZoaM6dcErf0ZfzidwnG?=
- =?us-ascii?Q?rFa/8Zp78iUjcwsVwbEZFY/mr0BR6mG4OjZ3bBJJD+4FIyduLmOlN8BflkpI?=
- =?us-ascii?Q?4RZWkgA+AuqzmO3nsXNhTicCBDOXEEx9fdxzMuFbF6AWbsEtNH4YNuLKjaHr?=
- =?us-ascii?Q?z+lhWAzERAun0XZUlSHRLVRR3nM1byxCmTGtqcKrp6MydBscXXH+XpPlGDZR?=
- =?us-ascii?Q?mv5KkwaXlFEK2wz8T5v4gTdkS+Q4DUll1g2iDdhN9qUs2i7kuUsnMSwlZ5gY?=
- =?us-ascii?Q?yTO4OmDpocBD0nCo4BA7XEDXpfRjb7fGylbrDUmF8/6Mzwzycp04kALhP3bQ?=
- =?us-ascii?Q?+yiufaF83/UnVrsF7k7fGi2tbl4flTTuRZeVRoMXsetiGdGqzR8aX7QDSX3v?=
- =?us-ascii?Q?jL+TyFax2cqN26tRlMhi52qKUjouJrdpEMT4MjHcfuF9pqO2bOmCn8gyJBog?=
- =?us-ascii?Q?8f5RqB+qB4LXe6PQ00gZvh3KLX9fR3UtKoxY5/uHMDnn5Exc9TME5XEEZFYE?=
- =?us-ascii?Q?7bdr7fD4PFbaD9Yk6OfM945vtsQX70iBsOAMJUA2CVo5Y9cizwEQ+UVCSlC4?=
- =?us-ascii?Q?QngQ7uVRioeoqttJEcs9k5cExxD+JntJuyix0iiO?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 19b3a4f9-5a20-46c4-3d2d-08ddf46e903a
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Sep 2025 15:43:06.0979
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: m5SVs7e+0PRGctUkXB29Bu5xCXqcaqYcYbSIdiuIhLtdET6htcl85jqkg9Is8bQR
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB5612
-X-Rspamd-Queue-Id: A17C540007
-X-Stat-Signature: ej973zmaarh9n3w63mwd3fajym6hty57
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: B0F3C180011
+X-Stat-Signature: d55o7rf9a7kj3sb9exseoaehanzciwbw
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-HE-Tag: 1757950990-311443
-X-HE-Meta: U2FsdGVkX19/3AO9gxLKQvVUj2PYhbyqg4BsTKgJDLSCbuL4l5pE40BAP1x4xj+Y/x+xqLsmoXNt33dXQN0IV4ivyWC30e6Vpe1T85sJUCazBt12GEnxcogrXLzXkTAE8ChEKWoLg/ni5zN6FPMwRq4tAO3WOt1Oha0FX3YAtlm0idjp2qA+nLf+vdO4x5CM7uzBLSn5VcGQLRynH7FxgKLcMTZ67UitTIKTTg/fZTjQApr5Bcc/oDui7ww75Td/8VWn9yt6Oa4hcPX+mbI/2oOJiE0HBH58/SwdiQ4QTnK70Zk6WGtTawrefzTqEHTwVg0Kms14kHXVlFGGhceJu+EK0j19R4YSxla89CP4hPlQqDPPDNlBOulRAoOYxBhBAUcqiQiiO2TuEpDxkZsYufPxUTutxbRIEDkIyNgTfEK49zKyTye8skNTNOJcQh87p8X93K3lNM4wU2GBUUNDmv1DbX+IhPwMPDxSY9f3PliNQbEldi2toDhQcXVz4XLw/SWsgGiEd8spLdzKvSAQiW5XA7crjc8nw3K+y7ucurPnwvSJwlClhAmXJQSyBIaxcCeEbiWzxI0qUbaH1ih75t3sGga24DqHvJgWZBj8E6yM8gKYGSKZdgCMTt5ZxtFKmcgAOmXBxjG5BFUGtc6TDNcIOeEkTyEQ8DUeGlqRpB/8xPjWIe2x2L/zbAzRnZvbKN46zPF6q4P3K69C+pvm9xtTF3NYiNut4buBETVWynKFwWHErkD4BbgE/rPu5tD5Bx5JpksKP1tQMCEBSgg6EXPngUsMGsDznUXtb1QncnVetULD0EvXwo/FiO7t40aP3ofZYNF1E8U2jPC+7Dg1lqSYopkxCFOXcyiTOWNJX+oEcR9NpQuuACnqfo/0os5DvYRNwj/BBuAp+oFWU9lRFH3pebw/aCQGLQFu+g+Ct0z9tsI93Dvk0I8CazGIw9bu31ol+owCPYw=
+X-HE-Tag: 1757951012-755745
+X-HE-Meta: U2FsdGVkX1+88gcH/a+NPZVe6EZJ0ORHCFNyhfcjxDWrW64VTtDSfvyXXq2DxHBOwYMl8mMwf67KFzNzgq0whfq46YDT5HpDIssT+8jXUlgMZA+qYfpB/dhyQTlZojpSVwsS0E8PBc817FD5XvkTrlTmVmVNZ2rvLfxNZM9Vdxg8xGkITA7K7E4mnDDvuxppkQNz8TFhoTCD3savOW91zFAre+0XdL8p7vDe9Jflu8hcIdYzjLkmjqaNEgf06dP40SLuPwK4Ws07tMvzZpobpI2ucEv77LKNVJk87oKdlA6PiFbC91wvbU0U/L+ZWihN/qa+mmBLkpSR/ir8gBpzmG88fWhgoztwOKxq2oSoLgAZ6W6KXRFIz6DWhU5j/1hg0c6DyKoDVfmCTbff82WfpIOjXrm1LAOaynLuqmFhBvTtH1j0IC3rj1/FcxlIpKMd3fh0t/QUVg4z3D8LnCPmrYH8CQcKd/8G3i4L1vATEKaZRWV8Chjt8E4G+kWOFmLHgVpGIe3OmkGrxz3qcnry3yqmPpLmB1c/q119Upgmu9lRMGm7i9j+r4RigzGavHhHjvKaDeIP4sb06RVA3CF5wqHnutwX4Z0iAh6oBM8Z8eeWuUHowltqkJYa3ZBe+a1ZOEqZ7jfMCRuLPeiZp4g/bZ26Rt1gWG4zE/MnpPInuxNJNMfEAwBealQCWmXndWoM2OAdNrEwdO3v8MPYr3xbBzIYmnhJ/kxaP5F98iqQ/fuyEV8Mqd432gR8okajyryHG+akt6eKBgIt+OBKgHasOXa6x80rzzURlcgj+OsroAC7pg6/4mZdVnS638X+JLL21I+s/tBM8jc6dRlP7r/nwqY6sLh8inmxPspUeH6cCclbt2eIjxi+LnCg3P5yGOeQXmmggEo2JuDfIKsRW4Yy/fjxngGFKmUxIS9P2qZsUtrnW0+A7qM56GCfhPTkr0gG4uPcINCMPt4tu4DHLQb
+ abgbjK1W
+ +AHeNxoirJOe2KTQ/b4gOQNghG7Y99l6A4aeLnjjE/YcSNkczGMQfJU4UxvF0Q8F/NV3V31NvIqlfZmGlsuQ/fUom3lAXVw3ilgCqKmXGvjQFGcQ1yp8XG3HZwbG1U0AD4XTA1kG7eu9V2KoTaofRBDrRd3L+1XEimmUcF8Jzg6yBwKlsftRs3YMk+0HmJnvAelsJqyqHJldofhbdd8+x8fUlFg3D6WICLDtyQPwP89deu1sBUuqdPXYUhwM07A8R1QXclgn0oM0SxXqctgsqdxGAYOo7iS15+5V/RMgHsOs7Y+jLOT5CSvb51ZiytffJiqv9zmjx32vYBAPqWXTDAPHy/G8zQQGNqhHkFyTO3uBG0q2c/YLg6VqYYXMzLliBbdugb4ErkXtL0ugeg7PLK/EY3HTPvHXDdF2sy+W/sWswaME2dCmCoXSEvUwvTYjEvRzAB+aceTdjSPz5w9t9O2avjOGtNSAz45xKpLte26lTNML1nNU6HigWqpwZTlMU/hahmeW12XRpLwS+LoOFEHLfEQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -191,26 +125,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12 Sep 2025, at 8:30, Muhammad Usama Anjum wrote:
+On Wed, 10 Sep 2025 16:18:20 -0400
+Steven Rostedt <rostedt@goodmis.org> wrote:
 
-> The while loop doesn't execute and following warning gets generated:
->
-> protection_keys.c:561:15: warning: code will never be executed
-> [-Wunreachable-code]
->                 int rpkey = alloc_random_pkey();
->
-> Let's enable the while loop such that it gets executed nr_iterations
-> times. Simplify the code a bit as well.
->
-> Reviewed-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
-> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+> From: Steven Rostedt <rostedt@goodmis.org>
+> 
+> The functions __copy_from_user_inatomic() and __copy_to_user_inatomic()
+> both require that either the user space memory is pinned, or that page
+> faults are disabled when they are called. If page faults are not disabled,
+> and the memory is not present, the fault handling of reading or writing to
+> that memory may cause the kernel to schedule. That would be bad in an
+> atomic context.
+> 
+> Link: https://lore.kernel.org/all/20250819105152.2766363-1-luogengkun@huaweicloud.com/
+> 
+> Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 > ---
->  tools/testing/selftests/mm/protection_keys.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
->
+>  include/linux/uaccess.h | 9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
+> index 1beb5b395d81..add99fa9b656 100644
+> --- a/include/linux/uaccess.h
+> +++ b/include/linux/uaccess.h
+> @@ -86,6 +86,12 @@
+>   * as usual) and both source and destination can trigger faults.
+>   */
+>  
+> +/*
+> + * __copy_from_user_inatomic() is safe to use in an atomic context but
+> + * the user space memory must either be pinned in memory, or page faults
+> + * must be disabled, otherwise the page fault handling may cause the function
+> + * to schedule.
+> + */
+>  static __always_inline __must_check unsigned long
+>  __copy_from_user_inatomic(void *to, const void __user *from, unsigned long n)
+>  {
+> @@ -124,7 +130,8 @@ __copy_from_user(void *to, const void __user *from, unsigned long n)
+>   * Copy data from kernel space to user space.  Caller must check
+>   * the specified block with access_ok() before calling this function.
+>   * The caller should also make sure he pins the user space address
+> - * so that we don't result in page fault and sleep.
+> + * or call page_fault_disable() so that we don't result in a page fault
+> + * and sleep.
 
-LGTM. Reviewed-by: Zi Yan <ziy@nvidia.com>
+It is worse than that - it must avoid a COW fault as well.
+I suspect the comment should really be that these are not the functions you
+are looking for, you probably want the 'nofault' variants.
 
-Best Regards,
-Yan, Zi
+Even if the code thinks it has pinned the user buffer it has to be better
+to use the 'nofault' variant.
+
+The only exception might be in code that already has page faults disabled.
+But even then it would have to be pretty performance critical for normal code.
+
+	David  
+
+
+>   */
+>  static __always_inline __must_check unsigned long
+>  __copy_to_user_inatomic(void __user *to, const void *from, unsigned long n)
+
 
