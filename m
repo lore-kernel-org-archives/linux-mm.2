@@ -4,119 +4,185 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1B4CCAC597
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 15:36:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20F79CAC592
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 15:43:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0FB968E0011; Mon, 15 Sep 2025 11:36:49 -0400 (EDT)
+	id 7E95D8E0011; Mon, 15 Sep 2025 11:43:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0ACB18E0001; Mon, 15 Sep 2025 11:36:49 -0400 (EDT)
+	id 7C15E8E0001; Mon, 15 Sep 2025 11:43:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E68A78E0011; Mon, 15 Sep 2025 11:36:48 -0400 (EDT)
+	id 6AFE08E0011; Mon, 15 Sep 2025 11:43:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id CD99E8E0001
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 11:36:48 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7FBE21A0204
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 15:36:48 +0000 (UTC)
-X-FDA: 83891887296.27.1329C58
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 7901B14000C
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 15:36:46 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b=FQCr6WJ+;
-	spf=pass (imf09.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.178 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757950606;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 54D9D8E0001
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 11:43:13 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2DD11B9E3A
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 15:43:13 +0000 (UTC)
+X-FDA: 83891903466.01.E4D8326
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012071.outbound.protection.outlook.com [52.101.43.71])
+	by imf12.hostedemail.com (Postfix) with ESMTP id A17C540007
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 15:43:10 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=QLvV3nKk;
+	spf=pass (imf12.hostedemail.com: domain of ziy@nvidia.com designates 52.101.43.71 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1757950990;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0q1aTmJzhVKCzLEtotPA3ZHCkECo3p9tyTLfevkeiSY=;
-	b=zY+8f5NsOcOTgdfGTqhO3peHqdzPo66n7idtV4xIEOX9H6SrLonbI8C1eH+2jc4K2titjX
-	6FR8i6xcwH8AQhIAiuLge/jK9UBVmfUUMfw8/GZSJZjOlxkOGLpTpd01xZq+bo5/p1SOzJ
-	oy5h4B71rwgXVxADDcj+y2xdfEPqooE=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b=FQCr6WJ+;
-	spf=pass (imf09.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.178 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757950606; a=rsa-sha256;
-	cv=none;
-	b=4Lk4tCeERFA1QiChuuLp0VfqgX1bke7GwjcQjxLMfFuob20KVl7sKFKnqYQBCo5EHrLujE
-	VZQS7wsZD6etkhCf4B5PG/Ruvg9e41D1rCjAiQ0cKrmCZfBVlgHYu2wDAy/DDhwpIEpEhv
-	SGABtlxqMZyvVttezvkNKB9JP9uAmsg=
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-828d8d06630so168074785a.1
-        for <linux-mm@kvack.org>; Mon, 15 Sep 2025 08:36:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg-org.20230601.gappssmtp.com; s=20230601; t=1757950605; x=1758555405; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0q1aTmJzhVKCzLEtotPA3ZHCkECo3p9tyTLfevkeiSY=;
-        b=FQCr6WJ+E3xXpoeAFY3iDfVezoUKdcfTuBEI613aNLXF97PKFY6YFKGHgM3c3P3dUg
-         FWy9V8fXGkvKq3EA2DpreZjAbFz+NJ502LmErzbvJ9LACC33Tj1DjHseGi47qU5U4o7F
-         YlZM8hZsD7CH07HWlOUtRqfvNy5WQQrhNuvRppVvtsDd9gI3sm6Oe7ztFhi8pyTtdjVi
-         oIf2IO2qr6No/7xC0PjMhtaLhkm0QgO42m+txzRypG6ALI6jPpj48+lS/qDNMKr4lR3v
-         1CC9tHVS6uPhX0sEAWyceWmjdFm6b4+nXf5xD89BG2kT4ukEWrFAINrbS8Cz6FRVLsy6
-         vh7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757950605; x=1758555405;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0q1aTmJzhVKCzLEtotPA3ZHCkECo3p9tyTLfevkeiSY=;
-        b=CZENGYf0opf01nFzZi5LgtLM3fVVwcJCQqgQhz7Alz4iszC+dMbwRUOCMbNJluBEuv
-         eRYEY9jUFjZFKnXRujuJ5gyfAA1UtBNZ1Q2Qaqds1o/bCtyxHPjdP9jFnUyfpan2tW2M
-         Ya1HX66FmWo5quhZbWNA8WWuVqegH8Tw8D1r8v4Hy6beQxdZ1xEkC+1g4ZzBRcOaKsO9
-         G9UZ89LzpP7dpPFDvMycTVd/ckAmerQdb3UKfulvmpIckEZjIxP2wdAmkBRWPzAW9dNB
-         htKwkj8eKjX9X+qMpVi5Fuis2gcsmy1LwAV9YiDt2TBpOqGoWGd5iz7oOzWwZE6Weg5e
-         AwJw==
-X-Forwarded-Encrypted: i=1; AJvYcCWDUkWqmj4jTNoXmlyoNCqHwNJxBGc1cJiOEzF12H+s47UUBbcbOKyNmLslF97khubIPss281wVSw==@kvack.org
-X-Gm-Message-State: AOJu0YzpvBsGxUDZe0f9okWbUO6nfA3qf+1tuqJ07C+BpUU5h9Dc7sVn
-	BDiCE/HheLnxt7SKdWURCfSlPecOeRehB3nMy4qUU8J09pUgl49cpdcHmykP4nYowvs=
-X-Gm-Gg: ASbGncu5MXQgr2TBf2kW6vMjP1rBxqc4wY43pk4bR/0Hu22FD3kXFCl4GllB9smjnTZ
-	R5KRenc+uaYgmAGl4JJSLqSRg7RWs/C2tYMrbSuvmwkLGZivCyo09+vjDY4HmBI8DGZbJqdI7HY
-	KYeicJVprtvh2b+EJfOZRkAggz3mKjdCasXfHJTn+ddt7o7DeW936qLgyKOR5A0TRY0YZwW9KPE
-	T71+xUmRbec0Zdq/zNzPefAHtol0PulYnMu1HzLeHJc3xo4qW84lEImWor3rOO9mA+E/Q8Y7F/L
-	rTGm9rVyUhBUIebv84K+WapkvUib3ITFvoCfx59t1II+Bm+yMNOKjpPxTWUcORnltNkqk4D4xbU
-	udOU88cOlXfvKMALM4P9E7ZGs4zPW0Ys4EJISSwMogzI=
-X-Google-Smtp-Source: AGHT+IFW9KnCKRb5PDF5V208B6P3t0e7Q6CTOoRS/R//UBWQOsBJCExtXlGpi3IUSyGz8irfB7JJTg==
-X-Received: by 2002:a05:620a:6f0d:b0:82b:269a:f201 with SMTP id af79cd13be357-82b269af209mr72205685a.10.1757950604983;
-        Mon, 15 Sep 2025 08:36:44 -0700 (PDT)
-Received: from localhost ([2603:7000:c01:2716:929a:4aff:fe16:c778])
-        by smtp.gmail.com with UTF8SMTPSA id af79cd13be357-8290e22eef4sm294192285a.49.2025.09.15.08.36.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Sep 2025 08:36:44 -0700 (PDT)
-Date: Mon, 15 Sep 2025 11:36:40 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Yosry Ahmed <yosry.ahmed@linux.dev>
+	bh=bqN1cuflBe1KfAsjSmv5jFx3bnWan+yMBJmBafZpYYQ=;
+	b=KcZeNCtKOaUPTAt7DcEeHAiTs31pLrJh4mVa4Uq0JYIiqKUirXYU3YriR5pxw3RhpzHj7q
+	J416KOAaAgGnLYNOSRc0W445waXpv93lupCS7grHDW2I7SBQEs3yfg/v0qxGbcBISHuHc5
+	dEKj7grO5OO8j+3ll/PcHiOqOjZUaRI=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1757950990; a=rsa-sha256;
+	cv=pass;
+	b=Y+D5oHzADi5cqx9b3iMl4o6pEHggnPBr0NUiTY6QIoqZV8+lBrt94pqVM95639aD/lyHBB
+	QdvEGWWhQk6f5na1j/FoioH6WXWM4hWhS3qxeynRddHom3aXp6+cdlUObtdXn39hhVg2ZG
+	XV4n+pWAjtT0hSmB4nHAFdgbmxnU2fk=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=QLvV3nKk;
+	spf=pass (imf12.hostedemail.com: domain of ziy@nvidia.com designates 52.101.43.71 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=mnLIOuSgh7A9MMD72ON8nB1XF31uqeX5v88D/facbEw1ylGTvybW80Dn5hwdPrh8tG2/cVmRe8uOivhDGpgbsLQqA25p0hzVJyOGnib6RWoxU4wODBSX5kQOTK/H3Tv1B9cH6PGSwdDxRP3bJ8DjaGX8xQSwO/FY8kI6PySoLt5tORUQ9V3t1dsE+5MqoyIUxFjK33Bjh12bRgSXO8jb1HshBE2jt1IxSKolKNMA26ZGsIzdI+Osquqylwy5JjrP435EBtDP59knZMptsAQK7gGARc9HkiAnLWhgHsLsP8YPoGKtxxxtFFHRWb7eEfluMfcM1+/Uu9hC8CEkRBBMLA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=bqN1cuflBe1KfAsjSmv5jFx3bnWan+yMBJmBafZpYYQ=;
+ b=A1Y4wBWfrZLDFsKscgvm2STw9WvmkCxMToD/mPW7+iClXWgsWugpXJYheQcEioOF141gWN2oPKM2FVfGLMzSv3QgaH395dmyd7jAoNZJGaI9Uacl4PaxjAQEVx8t4N2lFtNnJpEI6tFSZjT7IJFRtyN4sAibIohG43svGB7YnKs+pLoAM3K/xj6yVvvZ7uZzCN/+ypihOijXmGUWcIXRgUsdeRY0QwqHh6W2qnlYzQUy+Up5ObPQ2nc2wLpx4J+2+VqjGAFcRQoWZSCUgTR96gOVNUmISuPT2HDwob6w0BV1c+g756+nQaJ4CppHiNuqTT5mUFYBBBloD9mozYw2Hw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=bqN1cuflBe1KfAsjSmv5jFx3bnWan+yMBJmBafZpYYQ=;
+ b=QLvV3nKkAMwgcG1UnzInpq3GPy8zuY72abECrNdRrKlcr+3MbpgUaBzIaPj798+N6rx3wfTaOFV7f2fICPAe8QJElktqDAHuIOB92EGfVbwRvUIEn2t0aEYBusXNSrTgWgUUWoV+qWYgNWBU/o77gDR8IoHAYagF3mQpMWLfRrk0pvdw0UkCG2fqdFylz02JS7fkbLwqYhBs1P6t2eDaK/OnM+u1Y4yYDfWUz7yv1FCmscsCDPnZ0QE2sVD+tGj9zs10fpSHUr0OIEw6xoDutGWnUrehhITG2LyOC/3uapKOQvEdyHVhZiKWhYKfk7dtgESqmYkjMBEtEsPWZ4JTIg==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ SJ0PR12MB5612.namprd12.prod.outlook.com (2603:10b6:a03:427::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9115.21; Mon, 15 Sep
+ 2025 15:43:06 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a%6]) with mapi id 15.20.9115.020; Mon, 15 Sep 2025
+ 15:43:06 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Muhammad Usama Anjum <usama.anjum@collabora.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Chengming Zhou <zhouchengming@bytedance.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/3] mm: zswap: interact directly with zsmalloc
-Message-ID: <20250915153640.GA828739@cmpxchg.org>
-References: <20250829162212.208258-1-hannes@cmpxchg.org>
- <20250829162212.208258-2-hannes@cmpxchg.org>
- <r3dzlbqyvhaho5zuac7eba6pxz47zy3cz4lopxza3ls3ibadlh@6evm5aryyuxp>
- <20250909150156.GB1474@cmpxchg.org>
- <46xtfjznexpdlemxjwykin5k74oqomedb2fyli5jrb4xnquuke@ztcmxhmhlkx7>
- <20250910134240.GA1111@cmpxchg.org>
- <f5hn4awbmkelckl6khlaosw3tbfrwzvf5l7kn6mnqpbastsdnh@77mqvfjzyfys>
+ David Hildenbrand <david@redhat.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Leon Romanovsky <leon@kernel.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kernel@collabora.com,
+ Sidhartha Kumar <sidhartha.kumar@oracle.com>
+Subject: Re: [PATCH 2/2] selftests/mm: protection_keys: Fix dead code
+Date: Mon, 15 Sep 2025 11:43:03 -0400
+X-Mailer: MailMate (2.0r6272)
+Message-ID: <8BE96B0B-01DB-4629-A671-044E74680F1E@nvidia.com>
+In-Reply-To: <20250912123025.1271051-3-usama.anjum@collabora.com>
+References: <20250912123025.1271051-1-usama.anjum@collabora.com>
+ <20250912123025.1271051-3-usama.anjum@collabora.com>
+Content-Type: text/plain
+X-ClientProxiedBy: BL1P221CA0034.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:208:5b5::18) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f5hn4awbmkelckl6khlaosw3tbfrwzvf5l7kn6mnqpbastsdnh@77mqvfjzyfys>
-X-Stat-Signature: 3fdzt7uciown19xruhfa3fuycojfe9rn
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|SJ0PR12MB5612:EE_
+X-MS-Office365-Filtering-Correlation-Id: 19b3a4f9-5a20-46c4-3d2d-08ddf46e903a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?+VmIZzO036roLYCaIWPt8iWsFxge06w793UZxknSNMXNt30T7pFH/u5bV2Cr?=
+ =?us-ascii?Q?bGVZiAJ6PwXZGEejjqE6pP8DkZ0/jBbZZBcAmYz5zMJWz75hDUZScfFpScdQ?=
+ =?us-ascii?Q?kC6qRxejamN4kSXYdDiNQ8CoG2SvUE3O17WBczZw5IY8KBK4Gicg+O2qfQeD?=
+ =?us-ascii?Q?U/lQ2Tr9TvuAOKKyv3xS9yhxYhFnOURbJ+jaUuIQkO4kJtQuxlRrZonqk0v/?=
+ =?us-ascii?Q?5wV6oAlhttFn+sbsUiG2ng82kBrkzfOJKKbXigeGnzJaVflHbKTcyCPZrdRj?=
+ =?us-ascii?Q?/LjNDjONYPqrKTGX7LgQAK1tn8L1aNUZbhzoLSGHIou4lbieDKs517hElroN?=
+ =?us-ascii?Q?yzDIHR/g0MQHqvUHG0ezOLjZYhWduJDB5VWbFwIyo5rhbuI4kgN/yv3QMAY5?=
+ =?us-ascii?Q?tzq/RflD/g12bvyZEuW7L2GwqO4GKeN+UjVIEIz6ookl6xBaQ0t+gVsdwh1T?=
+ =?us-ascii?Q?bCJ7pi7Xf5cBKeQmuS6Esit5N6qFcX2Cyg/bE+R4gEXT3u+sNksJyq3M4zmS?=
+ =?us-ascii?Q?n4RlAmrp1SZgOvEaG0oWBIKh2taTvlH1gLNgC9AFjEVXtH+UG+kniLMEHYJE?=
+ =?us-ascii?Q?elWmALU8RpXxSjgTcG0kYsJsMcPoWzBSS++ySEQiSXqXwceBGy4L+XjOGlJ7?=
+ =?us-ascii?Q?wmtrb9phQgdqXkACuuPWNId4poq+CwLa6O+oURM3hl4K+BapBSr5bE8aWc7Y?=
+ =?us-ascii?Q?xi2KExpkSRoEPDLEI75V5P4Cf/bZTyLxbB8QMwFSF09xUPh6FsjmQ2Yw+CiW?=
+ =?us-ascii?Q?ieCDO138pYdwkWph0leFg2CWAq90ha5Z+WEQjcN/45G/6GwNoFqnxg715Zrd?=
+ =?us-ascii?Q?QNzJuMmtcxJSBKuBmRzP/ayHJbwmBtA3PVZ0Yom/OLTUa8/uwMEeDdcMk4Cq?=
+ =?us-ascii?Q?WBHfdwULd9IYBiy3RaA9Qp1Z/+F8XtW7+Vyd/fttagRoI4zHjN0sAXi0YQ5n?=
+ =?us-ascii?Q?Whr7AE2RhwNgoN/DbV8enQGJ+EXLwhvHUJzVegL6n1qrRCA7SYzJ4MBQ2fEI?=
+ =?us-ascii?Q?xSENDuGXNYYKzEcYKCiEEkqaomfZaCAc6EmvrnaYp4a47gtPySlMkij1E7j7?=
+ =?us-ascii?Q?dkYcfOeaujjurEeGWxiPkkntBjWJXaVBFTRE7kyOA9LdVtv16DBkL3Hxv2LU?=
+ =?us-ascii?Q?0mOBZ/LF9aehG2l8pL3/aAjEHiCZH5aljjAZ7plYe24/sH9+B9FOj3ZhVzL4?=
+ =?us-ascii?Q?VAyPDlHAm/Q5oCW2Xhz+FdFyW0tl1si9mdw06f+3Fd5UBv+1TUwCYFOeonD0?=
+ =?us-ascii?Q?fsN8Ukfk29o4agupcyDdSHuG4au5S9sbtHLFdAb0WFbNARi3F0eRZqR+7OXx?=
+ =?us-ascii?Q?roMg4shvJXdtmh384NQtTuxjQYWZRdh6Y2X6A1smwbDI9m+9K6bCi8LwAtVJ?=
+ =?us-ascii?Q?pZBGdVlydw4PLT9RNK+CNSSCAonw13MKVe0BHa9po475uQ3Fj5HaL6A/5ghQ?=
+ =?us-ascii?Q?GlAs2Tf+mIA=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?AXAfmOrBygkC67Uqbhgqrg1B9TAy9N3a3Y7RwscabHSYGvmDwUAkMZ3OoX3h?=
+ =?us-ascii?Q?YwiTAGG+UA0usrO4uczKKFDgpNatlzGHoW5O3+Ye3Vjb/YBvLZ703caHlNzf?=
+ =?us-ascii?Q?S74VsPZ1AuQ9pP1QzxBMTwwONVR6m84R6C6EZ2Ag3amG2vWEm7R1Gn12Jniw?=
+ =?us-ascii?Q?PSDiGHhBwVqN7MC3Mk0UgtfHDq9Oey2014h3b50yJ7FrGUopPJ1YDbZA+rHl?=
+ =?us-ascii?Q?jkFXkGJ3AeayYInp7bmHytYvCgBYYef45nPY6JM4AB6AD+BUlwXmBTjHmcaa?=
+ =?us-ascii?Q?ioQBSd5wZgl12xZZTjdNhKLBFHhi2jz5jmHt8hxf3iNJF6j+nGL5Askjca8c?=
+ =?us-ascii?Q?kjEKeSohLCxqqVnyOK6HquphlgyiUsmghWuf920rMeP0loe+1pr3g8REzqpf?=
+ =?us-ascii?Q?ZmycMXwWIKFOMrrnKHqWTiOxtDg/8g1V1kU/bLSRgmbnQwb940jPBKNX9I6h?=
+ =?us-ascii?Q?HVIDaBBjQ0cqb6FvpqU588dt3D1Al6NRE24MKHmxX9k1nUhPRiyruxRpM34s?=
+ =?us-ascii?Q?0DE1wxhaKCJBoVJzkp/HM42rWWiDVLoGC2wZhc1RAVGhGjjSttiwXvTx+6Fy?=
+ =?us-ascii?Q?ktASSQ0LnWP1UT+qjP8pGEQ9haD3MK+VejMLNhNrQEPkpkEAKAxKWN1S6fGL?=
+ =?us-ascii?Q?F01URq+lfhJrreie8n84J/ixNSecUV3itGDGX6SnI41Vzustg0NltP3IH8f2?=
+ =?us-ascii?Q?2k51gW4oqRSLCabJGwiaM2zdZeSenjZi+YVxU/erEFhKR8mocEJieRfVJKbk?=
+ =?us-ascii?Q?hwlR4xNTrj9r29rvxxPh18R4EJ1c3iiSth/SkIj4NI//TbXjnJE6ZiNj8vt3?=
+ =?us-ascii?Q?d/MqVN145GOd72AkErAHDJRA4EdFGB1GEBz9zAcZBFEX1/o5fGf6MLqddoKn?=
+ =?us-ascii?Q?f/DhJqob1w83/DNjBuT0UsLD0BkwAJ84nKX1brGXTSY6eJISmRaUmgAY9MT/?=
+ =?us-ascii?Q?yRsamnfIk/eyttA4l97Lik72XKjzXLvCehqjKqnaQZoaM6dcErf0ZfzidwnG?=
+ =?us-ascii?Q?rFa/8Zp78iUjcwsVwbEZFY/mr0BR6mG4OjZ3bBJJD+4FIyduLmOlN8BflkpI?=
+ =?us-ascii?Q?4RZWkgA+AuqzmO3nsXNhTicCBDOXEEx9fdxzMuFbF6AWbsEtNH4YNuLKjaHr?=
+ =?us-ascii?Q?z+lhWAzERAun0XZUlSHRLVRR3nM1byxCmTGtqcKrp6MydBscXXH+XpPlGDZR?=
+ =?us-ascii?Q?mv5KkwaXlFEK2wz8T5v4gTdkS+Q4DUll1g2iDdhN9qUs2i7kuUsnMSwlZ5gY?=
+ =?us-ascii?Q?yTO4OmDpocBD0nCo4BA7XEDXpfRjb7fGylbrDUmF8/6Mzwzycp04kALhP3bQ?=
+ =?us-ascii?Q?+yiufaF83/UnVrsF7k7fGi2tbl4flTTuRZeVRoMXsetiGdGqzR8aX7QDSX3v?=
+ =?us-ascii?Q?jL+TyFax2cqN26tRlMhi52qKUjouJrdpEMT4MjHcfuF9pqO2bOmCn8gyJBog?=
+ =?us-ascii?Q?8f5RqB+qB4LXe6PQ00gZvh3KLX9fR3UtKoxY5/uHMDnn5Exc9TME5XEEZFYE?=
+ =?us-ascii?Q?7bdr7fD4PFbaD9Yk6OfM945vtsQX70iBsOAMJUA2CVo5Y9cizwEQ+UVCSlC4?=
+ =?us-ascii?Q?QngQ7uVRioeoqttJEcs9k5cExxD+JntJuyix0iiO?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 19b3a4f9-5a20-46c4-3d2d-08ddf46e903a
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Sep 2025 15:43:06.0979
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: m5SVs7e+0PRGctUkXB29Bu5xCXqcaqYcYbSIdiuIhLtdET6htcl85jqkg9Is8bQR
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB5612
+X-Rspamd-Queue-Id: A17C540007
+X-Stat-Signature: ej973zmaarh9n3w63mwd3fajym6hty57
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7901B14000C
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1757950606-874028
-X-HE-Meta: U2FsdGVkX185w91AQleeoNybKflREqjbjH/aCciWcCwMgN+sx0SPsVw6nbMGyFGvxwVShcT738uikby99aJ3/CvCAY0ebzZOqNlEUwrujEp7nesWS9PojEVTu09EQTm3QF4w1PsxJUtrIpriamEkH7uAArswfQO5gmR5xrJWJhAMNEZ4+U1+DOgeoVKBnoggmEP/1d0zia9LQRhzgYLYMrrIPUrsHxKdFCuxkhJ5+T1sw6FcpqBG3yu6pPfUXjuOiuTjbI93L6xQUPe1xl0YGLLoG76FLfFB2HTw33BiCQ38A9vm+DXbYNQMjx3XtpJKH1yiwZGueq4fSwK9TwAHUxT9gyDjGSyzg/J3YPS6aeFNELAYosQPCpf2pZDUFsisNf2Own9+q5wgwTTdj35oKclEPynxYdtL+KuoFAWoEqhZeRY5N+EIX6iSD0N9Er6ygKF9NAjumoblavPhCg/U9cdJI4hllAqonANZojnY98U/TI5hhzum0MwmfTXCVLuKU/2mCXHwonGbRXa3SKPxCSQAAkw7aWqNjlwC+L7Mv3UtxfaUE53/uSpLXowAwa/HN6VHYFA1o72cBKWE+JQmUj5zrwYcYtmyrJKX5dX3DdwSR4CQhCP44RPFlDLwGtiPA+GVe1Qhv/cSOUnywNM7VnnwANuYoJuvpaRlJ6MD5073o/NYJo3aj2C6c2gjxcV2X09cLebVxSugenSSSo41WOiDloNwCPQCViSneXJyvcPDvQuNNF27+B8VFLxOqmnm1ceEEYK/9DUzz/2BBL6A9a4alw8yNLgyZV5tlANnsisYGiuMr2v1HBZcVByIMGaDATk6EQ29WMrQfsc2TR/qRn8QrfLF1BD0Po2zhyN02CdOuLVp4YPhSVUDLcV+HwFEXLttrlmX+yujyhZEhBJ7TOZZUMcLuDDQZf1ulsDM6JgOirWr10MiHicAQ2WLkkXgxTP7UdFkGh2x9N+JMKy
- sDzzRhwX
- f05gerQWXaXu54CNqt3BJtnzzexYBbg01/2qOO3u98q4Rjvz9Lf0QCws/Hbhwf2wqmjGX3pnt15HRd0IthPk/ljCZCTVJMEpIYG97clDRBeaLAdyuaw/5tQhDiVA8yfd+FtqDSjQsATTCZ1+T16TM1x1C/BVLPSausJ9IfusGcxMLzPKS2ZTeevi37vyi1L8ztYCEvXHCIKa57kzRjhcIV1QiAVNR3aFOuo73wHuAtvie4472hlTZeWyLl3cB8to89BJ/ybdievitm0cbIEd+MDMEVJ+98lDA7dhquIEFWLxNzAd5TL8wH3jQUaX4VmdtFgTDtJDXkbQ8gU9W9qKd529/3UkqYNWia79PU2Ebw10tcv1afE7AokdOtVjK5Bm0F44LIyEu2cdm98GHTDM6jdMC8QrGgxRixh5PX0/BaZYnr0aiM1s6tnFehKTbslBuKP+7BZgIfMU810PB91b13UJ+tUQ+QUZZwq+IHfwyCwnL87Tj5wINHwqSClwrC/fG5HE/ksuFnDTZnaA=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1757950990-311443
+X-HE-Meta: U2FsdGVkX19/3AO9gxLKQvVUj2PYhbyqg4BsTKgJDLSCbuL4l5pE40BAP1x4xj+Y/x+xqLsmoXNt33dXQN0IV4ivyWC30e6Vpe1T85sJUCazBt12GEnxcogrXLzXkTAE8ChEKWoLg/ni5zN6FPMwRq4tAO3WOt1Oha0FX3YAtlm0idjp2qA+nLf+vdO4x5CM7uzBLSn5VcGQLRynH7FxgKLcMTZ67UitTIKTTg/fZTjQApr5Bcc/oDui7ww75Td/8VWn9yt6Oa4hcPX+mbI/2oOJiE0HBH58/SwdiQ4QTnK70Zk6WGtTawrefzTqEHTwVg0Kms14kHXVlFGGhceJu+EK0j19R4YSxla89CP4hPlQqDPPDNlBOulRAoOYxBhBAUcqiQiiO2TuEpDxkZsYufPxUTutxbRIEDkIyNgTfEK49zKyTye8skNTNOJcQh87p8X93K3lNM4wU2GBUUNDmv1DbX+IhPwMPDxSY9f3PliNQbEldi2toDhQcXVz4XLw/SWsgGiEd8spLdzKvSAQiW5XA7crjc8nw3K+y7ucurPnwvSJwlClhAmXJQSyBIaxcCeEbiWzxI0qUbaH1ih75t3sGga24DqHvJgWZBj8E6yM8gKYGSKZdgCMTt5ZxtFKmcgAOmXBxjG5BFUGtc6TDNcIOeEkTyEQ8DUeGlqRpB/8xPjWIe2x2L/zbAzRnZvbKN46zPF6q4P3K69C+pvm9xtTF3NYiNut4buBETVWynKFwWHErkD4BbgE/rPu5tD5Bx5JpksKP1tQMCEBSgg6EXPngUsMGsDznUXtb1QncnVetULD0EvXwo/FiO7t40aP3ofZYNF1E8U2jPC+7Dg1lqSYopkxCFOXcyiTOWNJX+oEcR9NpQuuACnqfo/0os5DvYRNwj/BBuAp+oFWU9lRFH3pebw/aCQGLQFu+g+Ct0z9tsI93Dvk0I8CazGIw9bu31ol+owCPYw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,101 +191,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 11, 2025 at 02:30:31PM +0000, Yosry Ahmed wrote:
-> On Wed, Sep 10, 2025 at 09:42:40AM -0400, Johannes Weiner wrote:
-> > @@ -314,6 +314,10 @@ static struct zswap_pool *__zswap_pool_create_fallback(void)
-> >  		}
-> >  	}
-> >  
-> > +	/* Kconfig bug? */
-> > +	if (WARN_ON(!crypto_has_acomp(zswap_compressor, 0, 0)))
-> > +		return NULL;
-> > +
-> >  	return zswap_pool_create(zswap_compressor);
-> >  }
-> 
-> Sure, looks good, although I think it's clearer (and smaller diff) to
-> preserve the old structure instead, up to you:
-> 
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index c88ad61b232cf..bbfc087792648 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -300,18 +300,21 @@ static struct zswap_pool *zswap_pool_create(char *compressor)
-> 
->  static struct zswap_pool *__zswap_pool_create_fallback(void)
->  {
-> -       if (!crypto_has_acomp(zswap_compressor, 0, 0) &&
-> +       bool has_comp = crypto_has_acomp(zswap_compressor, 0, 0);
-> +
-> +       if (!has_comp &&
->             strcmp(zswap_compressor, CONFIG_ZSWAP_COMPRESSOR_DEFAULT)) {
->                 pr_err("compressor %s not available, using default %s\n",
->                        zswap_compressor, CONFIG_ZSWAP_COMPRESSOR_DEFAULT);
->                 param_free_charp(&zswap_compressor);
->                 zswap_compressor = CONFIG_ZSWAP_COMPRESSOR_DEFAULT;
-> -               if (!crypto_has_acomp(zswap_compressor, 0, 0)) {
-> -                       pr_err("default compressor %s not available\n",
-> -                              zswap_compressor);
-> -                       zswap_compressor = ZSWAP_PARAM_UNSET;
-> -                       return NULL;
-> -               }
-> +               has_comp = crypto_has_acomp(zswap_compressor, 0, 0);
-> +       }
-> +       if (!has_comp) {
-> +               pr_err("default compressor %s not available\n",
-> +                      zswap_compressor);
-> +               zswap_compressor = ZSWAP_PARAM_UNSET;
-> +               return NULL;
->         }
+On 12 Sep 2025, at 8:30, Muhammad Usama Anjum wrote:
 
-No objection to moving the branch instead of adding another one. I'd
-just like to retain the warning, since it shouldn't happen. And ditch
-the bool, IMO it pointlessly splits the test from the consequences.
+> The while loop doesn't execute and following warning gets generated:
+>
+> protection_keys.c:561:15: warning: code will never be executed
+> [-Wunreachable-code]
+>                 int rpkey = alloc_random_pkey();
+>
+> Let's enable the while loop such that it gets executed nr_iterations
+> times. Simplify the code a bit as well.
+>
+> Reviewed-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+> ---
+>  tools/testing/selftests/mm/protection_keys.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+>
 
-If you're fine with this Yosry, Andrew can you please fold it?
+LGTM. Reviewed-by: Zi Yan <ziy@nvidia.com>
 
----
-
-From b8fa4c7edd4f3c84853665b47acec8cebb4f4899 Mon Sep 17 00:00:00 2001
-From: Johannes Weiner <hannes@cmpxchg.org>
-Date: Mon, 15 Sep 2025 10:56:15 -0400
-Subject: [PATCH] mm: zswap: interact directly with zsmalloc fix
-
-Yosry points out that the default compressor check only applies when
-something else is configured and we fall back, but not if it was
-configured out of the box but isn't available. Move the test. Kconfig
-should not permit this, so replace the pr_err() with a WARN.
-
-Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
----
- mm/zswap.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/mm/zswap.c b/mm/zswap.c
-index cba7077fda40..c1af782e54ec 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -309,12 +309,12 @@ static struct zswap_pool *__zswap_pool_create_fallback(void)
- 		       zswap_compressor, CONFIG_ZSWAP_COMPRESSOR_DEFAULT);
- 		param_free_charp(&zswap_compressor);
- 		zswap_compressor = CONFIG_ZSWAP_COMPRESSOR_DEFAULT;
--		if (!crypto_has_acomp(zswap_compressor, 0, 0)) {
--			pr_err("default compressor %s not available\n",
--			       zswap_compressor);
--			zswap_compressor = ZSWAP_PARAM_UNSET;
--			return NULL;
--		}
-+	}
-+
-+	/* Default compressor should be available. Kconfig bug? */
-+	if (WARN_ON_ONCE(!crypto_has_acomp(zswap_compressor, 0, 0))) {
-+		zswap_compressor = ZSWAP_PARAM_UNSET;
-+		return NULL;
- 	}
- 
- 	return zswap_pool_create(zswap_compressor);
--- 
-2.51.0
-
+Best Regards,
+Yan, Zi
 
