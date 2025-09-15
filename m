@@ -4,112 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DB2DCAC59A
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 16:45:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 932F5CAC597
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 16:45:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 985AA8E000B; Mon, 15 Sep 2025 12:45:40 -0400 (EDT)
+	id F03998E0014; Mon, 15 Sep 2025 12:45:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 95CFD8E0008; Mon, 15 Sep 2025 12:45:40 -0400 (EDT)
+	id EDBB28E0008; Mon, 15 Sep 2025 12:45:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 899E88E000B; Mon, 15 Sep 2025 12:45:40 -0400 (EDT)
+	id E18D98E0014; Mon, 15 Sep 2025 12:45:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 772A58E0008
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 12:45:40 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 025BC1406FA
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 16:45:39 +0000 (UTC)
-X-FDA: 83892060840.28.D0BCF43
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 3123914000B
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 16:45:38 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=y8uJXANR;
-	spf=pass (imf23.hostedemail.com: domain of 3sELIaAsKCKMNDOHVKVLQJKJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--kaleshsingh.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3sELIaAsKCKMNDOHVKVLQJKJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--kaleshsingh.bounces.google.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D15B68E0008
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 12:45:55 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7BC9D59610
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 16:45:55 +0000 (UTC)
+X-FDA: 83892061470.25.C6AD966
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	by imf04.hostedemail.com (Postfix) with ESMTP id AD39A40003
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 16:45:53 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="J/gmuKIP";
+	spf=pass (imf04.hostedemail.com: domain of 3wELIaAsKCLMdTeXlalbgZaZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--kaleshsingh.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3wELIaAsKCLMdTeXlalbgZaZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--kaleshsingh.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757954738;
+	s=arc-20220608; t=1757954753;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=rV+XG5RFGGx0WSlVed1inCLN42/DoGgCGt9RoOWZ17Y=;
-	b=3KLYUpWN9EeiUlbQAX84huWRYxiEa9LX+ipae/U2sE9gZbQpC2uFy/GaU4mXBh4rtnqTCD
-	yxLLYoyLzIPpEFP9cdzkqEsfMT3Y3Z5lCrWgLf4HJiUsRR1toVa585CP+p+AZwSNdgEQcI
-	72ATYaSgTq1ll8FSiK/gI1rgefM76cg=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=8Dh1IS3JVHOf86RTcG+zb9g2w/Ys+63vuY/qru+PreQ=;
+	b=TLPJ5k32NFfILrFcpm429QGZVLUGcXXniIF2PQyo/3/MrBHW7eVjZnuAOg3lU5stzhmwdQ
+	vW64MhzaNR3pTbsgajmr8QkDAaCloQhR/pF/a6X8XC3Gxe85SAbK9Ng1p10bxdV6PmKSpF
+	6PCR8pwZKMi4HVncxBtTlg6CWQxkKPc=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=y8uJXANR;
-	spf=pass (imf23.hostedemail.com: domain of 3sELIaAsKCKMNDOHVKVLQJKJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--kaleshsingh.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3sELIaAsKCKMNDOHVKVLQJKJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--kaleshsingh.bounces.google.com;
+	imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="J/gmuKIP";
+	spf=pass (imf04.hostedemail.com: domain of 3wELIaAsKCLMdTeXlalbgZaZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--kaleshsingh.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3wELIaAsKCLMdTeXlalbgZaZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--kaleshsingh.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757954738; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757954753; a=rsa-sha256;
 	cv=none;
-	b=nV1MeWu7b6cYxsRhttV7MFm6RL9CcUbkbWbzvRwFQqwZwS7jhNPzXxW0rEOUbbKarQS42G
-	NG7kgFD/sczt44CxZwtr5IyCAHlp1pNYDCYNw9FzHKnPB0famHTNwPLKDis9Qu3JjgOvSh
-	5oz//sBMWh1CFwc7dtSucnwncGoeLL0=
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-b4f8e079bc1so3094181a12.3
-        for <linux-mm@kvack.org>; Mon, 15 Sep 2025 09:45:37 -0700 (PDT)
+	b=y93rKaJufzi8kwaY8adAd6Lznx/BeVWhpCsYbahkbDuiNpTCB0KXc3gGzfROurubQidABW
+	+NNjjqt6rFONv52ch7xI4vSeU//UIJ1BXMClrqfJ53DmaXxujs1GnwyOnYK9Zacu6cASH3
+	6uWftH8CFbCh9D1brgj0Tt5wBh3t05M=
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-244570600a1so48031345ad.1
+        for <linux-mm@kvack.org>; Mon, 15 Sep 2025 09:45:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757954737; x=1758559537; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=rV+XG5RFGGx0WSlVed1inCLN42/DoGgCGt9RoOWZ17Y=;
-        b=y8uJXANR7qwv1hcYoVLVyWxwxoMlBAKkA/YpkE1jVGeeDaFqwiTUD0hAqcFMaTOiWX
-         JT9G74glXXBSzHxUk4txM2bSM9xsGIsfrRPPF2HkGSO2SdirC5p85rR0N5Rzjrv2LrMz
-         +xlMPVxjDoeU98EDaZpIXdp8QJ/rZ2col01C1ZbOx3Hml9qV4lQSTaijrcySQQWe/4uU
-         tYomt/7U+s1oKEtbZlOkndgV7dN8tINMghaq0wGc8bKwk/AOL32XsAp9DDKMfnERzHEX
-         0+BSu/KvWZAx5lCmwAlboa1rgp9npr7qhTNBobKufbRpwzfghP5bh4ueY6uciccjNHgG
-         nBkw==
+        d=google.com; s=20230601; t=1757954752; x=1758559552; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=8Dh1IS3JVHOf86RTcG+zb9g2w/Ys+63vuY/qru+PreQ=;
+        b=J/gmuKIPgFspRwxh3e3vkO22RZSa5rmzOPxMpDnADkN9lyz1POLDQtgPElFX5swPfX
+         Krv9t+BGU74B6yLy/ppZMsneXrNOWP/sCfMnr/nnyyMiSi5elQfOVNtJ2myEm4PjHfoj
+         obPLgqonkcmu8gTMq4vkqMhHLbeVbxhX1hsQDCjiAqax5IVR3KUNtwb9bqdaAXJEqNJ0
+         DAtBJtgobRHXNCod15O7NI1QBN3EK+3pBfeESaKNEnCNacXLlcZ7eHZ4KDFqWMCrmSfD
+         QfIfUp5FrLE0/t8Di+HMgiIy1sny+ffiROQ2304+eIX+iR5qRZRIysAwcqvTjhIZvttx
+         SzLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757954737; x=1758559537;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=rV+XG5RFGGx0WSlVed1inCLN42/DoGgCGt9RoOWZ17Y=;
-        b=vbcGvYKOdxH8ZnuthyGwulOmfpzBG+3g2XDc3M82yVxdlGV/S7R+IXgBaGV1xWbele
-         e0b2GRgiOt8klOF4+DGt5JUbZe6ht5vpwxKPdD92e6k57fdi0tt4BM2ntIhzg+FK9slf
-         5tDdsRAzqp4frr0iiskCYaEur86PS6SDEHqwvqsaFjslvrQtrcqR/b/t4epWXwYMyFn/
-         /ZB2gwijzNkWm5Z9o31/At7EfIgRcQr8p8Ai1BjjDQ0GbL3pf+k3ltDjH83kLCgPlnV/
-         90/D3IY4YkpSUbnGlI8XcqvoUtPQRIk/VkNqF4LLPoPY+J6Grp37zsHxc+Da00TdFSqi
-         7ztg==
-X-Forwarded-Encrypted: i=1; AJvYcCUhHoanr12RCbJKQ/aNb8MsDb3i55s54ysX09cjxUzpaXyk1bV2HHw0Cz8sDzKarGVHfKDPzfXEWA==@kvack.org
-X-Gm-Message-State: AOJu0Ywnbugtrp//xRh4i+Iq9WtwQuPo5W+e14VAVi19laeGBkXA4v8/
-	ekAudmxR4KsW0qy/7V1757gIgPt/03miXOwNJOuoROrNnRiK7655oNqrvY+PvsDEzwjRpiNePhf
-	gNkVZOrV6g2U7iW8R36PD1U0z6g==
-X-Google-Smtp-Source: AGHT+IEAgY6VkXbGhl6l9muDNqmcvsiv9qd7+stbRvW4guJMBZCDnQLACUz038WuYWTWZXakBxrH9BGqLG7UDujvDA==
-X-Received: from pjk14.prod.google.com ([2002:a17:90b:558e:b0:32e:27d9:eda1])
+        d=1e100.net; s=20230601; t=1757954752; x=1758559552;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8Dh1IS3JVHOf86RTcG+zb9g2w/Ys+63vuY/qru+PreQ=;
+        b=GdhlZFOd8dt9ncbw1HF4jPu5JL0zT+SnyxLk/6PmqxvDRGiOwQUO80MRvFKUVBCzI9
+         5AWaWxu6+WW2yGzXITEX+NtvX/uAwqElBpk8dOTQzUS1haqJQ+giVxPHYRJDjpprqw8t
+         2elDS3gmMCgFfAYsYuUU18YraxJxScRusKBFg4FsG/KVBj5zWVBYYnWteLXcCNkmX5jg
+         4v33CLUMs1fTvSPVcZHemCUywnoC6ZI9RpYB3g1m5UxrOxux5zt3G/vmFokXjPDbyipC
+         za55Tym4cbN/JzZGXARc0RlWqvSgZyHKheEu81EuAHx3PNhc1YBtWruWyfDOLz4OmsvD
+         Bwhw==
+X-Forwarded-Encrypted: i=1; AJvYcCVptt6B1EYQphlDWKHG/loQwpCM0nJP2bBNJ0rhvxIHH6fpn4CZ26RQ6iTl9tAO0qoYlROPQ5qZlA==@kvack.org
+X-Gm-Message-State: AOJu0Yx6OiebQS+EnKA3yqfCOx9A3JFG500s2oPJk6Jt4zPpDuf11/ar
+	RDkf4/qbt+qBhGs8RqbLx9tr/4Iaot9XIMSlmdauFHXFy6fSxD3Mrd3oosfFidxOZPg0VhOKC9p
+	Qz2bonKMtFztl/0C+CttT+MeFdw==
+X-Google-Smtp-Source: AGHT+IETeFsnzxOgNLMCiDHUaYpnu2vRB/Fb66R7+b7xgDA1s+PPQqB4+bTMKY9LvQ479LuxEWFmKDI75ZPJsp8Xlg==
+X-Received: from plkb5.prod.google.com ([2002:a17:903:fa5:b0:264:7b3c:4fe4])
  (user=kaleshsingh job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a20:2449:b0:25b:d1a8:5ccf with SMTP id adf61e73a8af0-2602a593791mr17106705637.21.1757954736574;
- Mon, 15 Sep 2025 09:45:36 -0700 (PDT)
-Date: Mon, 15 Sep 2025 09:36:31 -0700
+ 2002:a17:902:dac2:b0:24b:1585:6350 with SMTP id d9443c01a7336-25d2ac3c545mr185756655ad.11.1757954752355;
+ Mon, 15 Sep 2025 09:45:52 -0700 (PDT)
+Date: Mon, 15 Sep 2025 09:36:32 -0700
+In-Reply-To: <20250915163838.631445-1-kaleshsingh@google.com>
 Mime-Version: 1.0
+References: <20250915163838.631445-1-kaleshsingh@google.com>
 X-Mailer: git-send-email 2.51.0.384.g4c02a37b29-goog
-Message-ID: <20250915163838.631445-1-kaleshsingh@google.com>
-Subject: [PATCH v2 0/7] vma count: fixes, test and improvements
+Message-ID: <20250915163838.631445-2-kaleshsingh@google.com>
+Subject: [PATCH v2 1/7] mm: fix off-by-one error in VMA count limit checks
 From: Kalesh Singh <kaleshsingh@google.com>
 To: akpm@linux-foundation.org, minchan@kernel.org, lorenzo.stoakes@oracle.com, 
 	david@redhat.com, Liam.Howlett@oracle.com, rppt@kernel.org, pfalcato@suse.de
 Cc: kernel-team@android.com, android-mm@google.com, 
-	Kalesh Singh <kaleshsingh@google.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Kees Cook <kees@kernel.org>, 
-	Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Ingo Molnar <mingo@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
-	Valentin Schneider <vschneid@redhat.com>, Jann Horn <jannh@google.com>, Shuah Khan <shuah@kernel.org>, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
+	Kalesh Singh <kaleshsingh@google.com>, stable@vger.kernel.org, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Kees Cook <kees@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
+	Dietmar Eggemann <dietmar.eggemann@arm.com>, Ben Segall <bsegall@google.com>, 
+	Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, Jann Horn <jannh@google.com>, 
+	Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-trace-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 3123914000B
-X-Stat-Signature: ziaj991ksa5brn664a7dqxeyux4ad75b
+X-Rspamd-Queue-Id: AD39A40003
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1757954738-17721
-X-HE-Meta: U2FsdGVkX18LGt/4XVBM8FafOROzFJ832yuXOTHVsBkn9udjxiq7vZACDMXOi4zLk+aKRFB6+Hv23eeYqTIFqQSP+JCrzr1qVcCAUFX834OAUaFf6Hkt+JbMoIwum6KYypQZ6HbHAUFSPeWxIQ/Y3wOvZGFaZfffvaK5yy0n/E+CmSUBEZkntTKmA5s9ps5g4/YL+B7DEeJYcta5rC3tGJiKgW60TBY0A9R8x9OzuuPbt6w/DSqfWaiIhM9I1dKEa4cBP6xdxjj+1J/jc9wVnpeJXP69KAVBdKxwb0Wr5se2+vtnXkwnbIchpcyDKDvqNYbUfK/i6dUBBzkW7qxikw6Is0ZOwwAdoT6S5BI3X8ML/MDU2hSD+uD+WP1BNOtGzZ3wU7I9TmQzlcn+2xyMFT4dLzasYhYpAP11Gl/mh/wCKC+wFKcxOIxp0E6LJjTylOXF7DFWNaitLbSwUBPAubJ902/nvTorVzUhPOfjJIrztaMFNbgdLaLEsECV1KLGJ6igcmE3pQytrUxok/KtgYT2jXwXjhgms+VN+c52hG3u3EJyGcY+XB51gUNO/7N8NBDhyMt08bjFnVv96PqtoY6QjkzqkEWr0eB4RrEORbMVvCR3pdIwEZqOulbblZEJ4YaoxtPC3VCBiqc/E0PPTsCUCzNkqsjo0o8FdJzqgb5xd61Imr3Rzp99mNZgBsd+23TNxYSZXh5zsp5Dpe+HNIb5C3whx/u4IIWnETK9zruIAvKbonE9pJ61BlYWZTqc3SyhfzQ91M2CM5YXE9MzH08XPiNgC9El8bYjXSUVUM9RVI5aHvA9DzmhugcAyBnoRrWsh6sOji2p+1IVB5fZV44eI6+IF0DhAaK0ymSz1RZMDe5yaB99xYUCD647Bk1wBDE8iFSdmCjq40xIwvjk7Abu7TKp+NkSDnTNteJqV7DjG2KzJveQiZzXO8OOiYV1IeWJxtmucRiTIF+BNED
- GS5JftFn
- 1VSCHhoRss1FErt76j6mp0zAfbBvnEgQgeSFHdvVqyU+7tIMm5iVjP/I4DWJxdsbjTVNljAM9IhYoMF+VI9sXwrL+wILipVpxsuviBeciftnYz35d2RCjaXjT4rqxtPzSE7bIdw2l7G06q80VaZL2bSXoOgj/x3J7pkEtQDWm6NgEZoJZhRmHVs+S+N6US/yunEkp0cfWr+UGCTDo8R7KVqE/TjTFf8Qrs/IUtX8ZjOQ8QsKd36QnuaImyUZcu844qKt9pET3FzsFdHILT2sf8O60iJGE2XiX3RHULETQtbKyTyEK1jMqp/LArjzrr85qnBNwM7NH02nBukx2P8pJEtvK4Di4Dd2INihfp70WQdR3m4ss0KhzA17Vtm8L8ljJ2zqolPhWpItwttBuARgnr3BiCPs/o1VTtaJGAFGoMeniaS/qnVIu51nIwkKEIfUHnj3llM2nkX8RRz/VPYV7CMOMgboE4TQYl8T0Vu1sT5SHvpCb9ZAMWSgjP946+wipMoUCgn6ROLCkGOPh1fw50QFRlNeoIqSUs0BGRLzi3aEVnor+pbyl+p60ha2KtYrwlGRHCOnyyJuEgQUBiC2lLRgMVFVwCBexGPKN
+X-Rspamd-Server: rspam07
+X-Stat-Signature: mqkxdedkoatq5tk51yj7f9m6gntgkdx9
+X-HE-Tag: 1757954753-276663
+X-HE-Meta: U2FsdGVkX1/XGIg9jLlSM4ZSehbUhigaut5QlqG5w427xPTGXoa2/kAdsyg37vJZYyIS2xHzvqK5xjILbX1llPAFw5MBQynrIVqX39Qp+BBZTmwOuJnGOPdmFW+GH8JUEwgmilBCCE/fFPRgK4SFV07nwcOPZlwMf3c2wCuntBLa3R2xHoWtHSNKu/cQGmfbLqwfee2MUp4CJj1Enjt3WSzizJ9G7COf1qN/Ty5Kf2ZjQdZp61pFp6PMfrgW9QAJT8M59FoKbXbAYIZTv8Xcjt1l3nJW+rU8/pzinK8sJufH5KzF15bBFiUXascw6mMUJk3nuNVA9dnNXTZIQOtmMtXI2dvwsUxslXJDT1fpgsHN2En7erAtYUfyp5Uja7e+VR5+PKmmg2XnWOElLmYTtG2XRMuHIprgkIFFEN1a0RnXnwp0uxLfRtpst9qlXQI+XkeY01AllSXFz6YBsHgheBN4p8AaVnhaxwFwpPP7RF4ZcIHYT9z4+CeuNhWhVmYVqB9vpPBPyR9ElJTj+OIfFuARnQwsc02PgBGnhaRmgQBSa+lUPhg45hWESj4dwhMyL0eRO36Wqzlf9OmhmrPC0ZfZ/3wQ2xCWnjtg2Kds4F6pqZYEvf1JDK/0l9PN6lWldZN01fFmSzqenlFSP2IW2VlLD+rTfEaNvMI56659OSBwCt+OWLeWi+FqtbKbZvK5ty3aNDBKjHrX+QRtmm6JAx4fnEpJpDWeO7nGcpKtLfgsVaOVpcfycsgYT6Uq3QQq7ZpVrzqYhkA3ln8/Pl1ZfnTGB5y6GMe9LJtb5X471vqTZnhYSho4JW0/xJ0PBYKN+FjYaDRMqdDmnhUu+zuPdDYjPq5PfWFQgWuXwqc+dzGYsgF4NSJBwf0gho/JAwLCmYWjCDaJbz2Rzr6o4Wt0qDakL98iJz6COSltbbezjE7VOlablUX+62yry9a0SchQ05LndRDJfeMbMitj7tx
+ se/28pam
+ dwQ9E9ZpS8W9KTvSgMyOxEThdyBeAPGN8o7L+dWYuPTQuKtwwAsSO7Qm9shAZNY8wOz5lWKb0Z5HkGibV9DWpeZElAKQenRUvwwEX/hzEJBZC4reE6tnC4Gtn3JzO1wPi50g6mToyVOk0k6/VDiCMaktBXQB2kuV4jr7GSW0A8z7gQljjgXanbb+PyQTUzbQD1+ZO8McwWXpoN4ExKJk2VBd2koeEBQ/2TR6tM/ag5r9wu7UlcoJ2HteAPNVCxXcUORhzIvE0RT+oh527hukVUj/lUK1/EaBzzrDHypmNe0aQ0JjQE5loEDZ4WktmK+6KjMddJmaYTuSRaL5Mrckpj189Kx412Ulhwtu2ZwLg4tp4Lh+sIKUaAuu/7fbMJslPc7UtkYsoU4sfIvKA35s5xtDh+3w7/mCbRtSGkX54gPzHT1ia8PFGs/7zr4XVnMc0P/7iW4yYJ0Cq5b/jSk175TcuqwgemuAFzZWh+hBNOTamIM5mAkSuraIEky2tMeCLE98Aeks00zk+OYZb6GOJV+53qQvRzq1AczEkBxISBnDW5QvsTtV2/m9iXCGl0sfq652XgrRMpvtg/Qx2w//YqLslOQSpbvXwoUqgKNWP/QmZXvYwxgsQvHk4BOInntbBrXE/nlAvXOulIrCIocP+rYuDJDDKB7AhWKgPZeK/IYQSyc8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,77 +121,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi all,
+The VMA count limit check in do_mmap() and do_brk_flags() uses a
+strict inequality (>), which allows a process's VMA count to exceed
+the configured sysctl_max_map_count limit by one.
 
-This is v2 to the VMA count patch I previously posted at:
+A process with mm->map_count == sysctl_max_map_count will incorrectly
+pass this check and then exceed the limit upon allocation of a new VMA
+when its map_count is incremented.
 
-https://lore.kernel.org/r/20250903232437.1454293-1-kaleshsingh@google.com/
+Other VMA allocation paths, such as split_vma(), already use the
+correct, inclusive (>=) comparison.
 
+Fix this bug by changing the comparison to be inclusive in do_mmap()
+and do_brk_flags(), bringing them in line with the correct behavior
+of other allocation paths.
 
-I've split it into multiple patches to address the feedback.
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: <stable@vger.kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: Pedro Falcato <pfalcato@suse.de>
+Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
+---
 
-The main changes in v2 are:
+Chnages in v2:
+ - Fix mmap check, per Pedro
 
-- Use a capacity-based check for VMA count limit, per Lorenzo.
-- Rename map_count to vma_count, per David.
-- Add assertions for exceeding the limit, per Pedro.
-- Add tests for max_vma_count, per Liam.
-- Emit a trace event for failure due to insufficient capacity for
-  observability
+ mm/mmap.c | 2 +-
+ mm/vma.c  | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-Tested on x86_64 and arm64:
-
-- Build test:
-    - allyesconfig for rename
-
-- Selftests:
-      cd tools/testing/selftests/mm && \
-          make && \
-          ./run_vmtests.sh -t max_vma_count
-
-       (With trace_max_vma_count_exceeded enabled)
-
-- vma tests:
-      cd tools/testing/vma && \
-          make && \
-	  ./vma
-
-Thanks,
-Kalesh
-
-Kalesh Singh (7):
-  mm: fix off-by-one error in VMA count limit checks
-  mm/selftests: add max_vma_count tests
-  mm: introduce vma_count_remaining()
-  mm: rename mm_struct::map_count to vma_count
-  mm: harden vma_count against direct modification
-  mm: add assertion for VMA count limit
-  mm/tracing: introduce max_vma_count_exceeded trace event
-
- fs/binfmt_elf.c                               |   2 +-
- fs/coredump.c                                 |   2 +-
- include/linux/mm.h                            |  35 +-
- include/linux/mm_types.h                      |   5 +-
- include/trace/events/vma.h                    |  32 +
- kernel/fork.c                                 |   2 +-
- mm/debug.c                                    |   2 +-
- mm/internal.h                                 |   1 +
- mm/mmap.c                                     |  28 +-
- mm/mremap.c                                   |  13 +-
- mm/nommu.c                                    |   8 +-
- mm/util.c                                     |   1 -
- mm/vma.c                                      |  88 ++-
- tools/testing/selftests/mm/Makefile           |   1 +
- .../selftests/mm/max_vma_count_tests.c        | 709 ++++++++++++++++++
- tools/testing/selftests/mm/run_vmtests.sh     |   5 +
- tools/testing/vma/vma.c                       |  32 +-
- tools/testing/vma/vma_internal.h              |  44 +-
- 18 files changed, 949 insertions(+), 61 deletions(-)
- create mode 100644 include/trace/events/vma.h
- create mode 100644 tools/testing/selftests/mm/max_vma_count_tests.c
-
-
-base-commit: f83ec76bf285bea5727f478a68b894f5543ca76e
+diff --git a/mm/mmap.c b/mm/mmap.c
+index 7306253cc3b5..e5370e7fcd8f 100644
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -374,7 +374,7 @@ unsigned long do_mmap(struct file *file, unsigned long addr,
+ 		return -EOVERFLOW;
+ 
+ 	/* Too many mappings? */
+-	if (mm->map_count > sysctl_max_map_count)
++	if (mm->map_count >= sysctl_max_map_count)
+ 		return -ENOMEM;
+ 
+ 	/*
+diff --git a/mm/vma.c b/mm/vma.c
+index 3b12c7579831..033a388bc4b1 100644
+--- a/mm/vma.c
++++ b/mm/vma.c
+@@ -2772,7 +2772,7 @@ int do_brk_flags(struct vma_iterator *vmi, struct vm_area_struct *vma,
+ 	if (!may_expand_vm(mm, vm_flags, len >> PAGE_SHIFT))
+ 		return -ENOMEM;
+ 
+-	if (mm->map_count > sysctl_max_map_count)
++	if (mm->map_count >= sysctl_max_map_count)
+ 		return -ENOMEM;
+ 
+ 	if (security_vm_enough_memory_mm(mm, len >> PAGE_SHIFT))
 -- 
 2.51.0.384.g4c02a37b29-goog
 
