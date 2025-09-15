@@ -4,95 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90034CA0EE8
-	for <linux-mm@archiver.kernel.org>; Sun, 14 Sep 2025 23:53:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC126CA0EE8
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 00:11:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F6B68E0002; Sun, 14 Sep 2025 19:53:31 -0400 (EDT)
+	id 09F448E0002; Sun, 14 Sep 2025 20:11:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A76B8E0001; Sun, 14 Sep 2025 19:53:31 -0400 (EDT)
+	id 04F8F8E0001; Sun, 14 Sep 2025 20:11:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2BD3B8E0002; Sun, 14 Sep 2025 19:53:31 -0400 (EDT)
+	id EA7A58E0002; Sun, 14 Sep 2025 20:11:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 115528E0001
-	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 19:53:31 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 78F0F160377
-	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 23:53:30 +0000 (UTC)
-X-FDA: 83889510180.29.7C409D9
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 11F8F40008
-	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 23:53:27 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=AtRLT+ee
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D04288E0001
+	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 20:11:57 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9C83FC0385
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 00:11:57 +0000 (UTC)
+X-FDA: 83889556674.28.CAC3553
+Received: from mail3-163.sinamail.sina.com.cn (mail3-163.sinamail.sina.com.cn [202.108.3.163])
+	by imf09.hostedemail.com (Postfix) with ESMTP id B1A47140002
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 00:11:54 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=sina.com header.s=201208 header.b="BQuu1/Ua";
+	spf=pass (imf09.hostedemail.com: domain of hdanton@sina.com designates 202.108.3.163 as permitted sender) smtp.mailfrom=hdanton@sina.com;
+	dmarc=pass (policy=none) header.from=sina.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757894008;
+	s=arc-20220608; t=1757895115;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tRf2yBTFB7K+YiWiR9r+uDpoUGy8yq8gE022o+wsars=;
-	b=JFarRLFAwUha1Z+n+6kTVrg3Sw/v491lgc2Eq8Tt4C2qzlQhaGYbWDYhpMnkWmDtrT4Xxh
-	9/+fT0gTXW73/RLM2y1+7qDHaHMMrsCvQA9x+FOZa6mwx/bvuARnXTjPoUJrKEeoO+OiWD
-	3vknL+Xi37+0D2BaVRTMCYIAkhKTvTY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757894008; a=rsa-sha256;
-	cv=none;
-	b=Pg3fksYWqeD9UL1CMHV0RJPB+ZYr+UZkaxyVCgkyscQbFJNsUbGVYnzGenAAo/s41mZLFu
-	fvRaZiyGbYhYgmS1sQm9zj3QbMWZDOkLvEwsalnClqsXp1mqPlyTF4mVIrhkH00QLWMEpe
-	ne7KzguqBoqAWxG5NDU7n9AGLO782nQ=
+	bh=5wZeKHLWAwfFq1meT4JSzn5DJcnCf93wpV/LX6CmoEk=;
+	b=IC+d3BcydbKEDSfJiIevrjw85uDPsbq1R6mLOTGZz8nicJlcHNoFoSyn45Uz79ZYyDKr9d
+	gfb0Z06BcO8ARLV9ZTYoquzz7RPqS4NOB/9XR05A4Pzz9xUS76ej80ZlaHOfIJsaFP0xYe
+	SaTeYbhZOZOp4XmVZC/ASIWqG5HeHrg=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=AtRLT+ee;
-	spf=none (imf01.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=none
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=tRf2yBTFB7K+YiWiR9r+uDpoUGy8yq8gE022o+wsars=; b=AtRLT+eeKAnNWEJ1w8CDHYx1fJ
-	r73RqXQ6HWPSiqvmK0TnPGyNtp2yUMV6/NmINqsQJqRCTFYp6AucduMheBjmk91cXKGXgaw97LeIe
-	ultmQMah4pSZdxmAljomGoCLsJuIv47zCX50sWlEZtaIbTVs3wTxVx0pKlHpGXwc9DF0Zy88lrC6R
-	E/KjYld41LYNM0ryxyGQkcgqU7+r9iudbhFtURFMmdjsTTOn4x97Xtu4ThyQjX+mcM7dJNe00Tda7
-	Xo72BRO+F6T5gsxpnoyX2TSkBzAmI/7UTyFodrYDSh/+ewpuK9KlkKGXRr0kG49se01QUpURDPygt
-	RNopwmVg==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uxwX2-00000003BMz-0ufd;
-	Sun, 14 Sep 2025 23:53:20 +0000
-Date: Mon, 15 Sep 2025 00:53:20 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Barry Song <21cnbao@gmail.com>
-Cc: Nicolas Geoffray <ngeoffray@google.com>,
-	Lokesh Gidra <lokeshgidra@google.com>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Rik van Riel <riel@surriel.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
-	Linux-MM <linux-mm@kvack.org>,
-	Kalesh Singh <kaleshsingh@google.com>,
-	SeongJae Park <sj@kernel.org>, Barry Song <v-songbaohua@oppo.com>,
-	Peter Xu <peterx@redhat.com>
-Subject: Re: [DISCUSSION] anon_vma root lock contention and per anon_vma lock
-Message-ID: <aMdVcH7KCXBvLtFP@casper.infradead.org>
-References: <CAGsJ_4x=YsQR=nNcHA-q=0vg0b7ok=81C_qQqKmoJ+BZ+HVduQ@mail.gmail.com>
+	imf09.hostedemail.com;
+	dkim=pass header.d=sina.com header.s=201208 header.b="BQuu1/Ua";
+	spf=pass (imf09.hostedemail.com: domain of hdanton@sina.com designates 202.108.3.163 as permitted sender) smtp.mailfrom=hdanton@sina.com;
+	dmarc=pass (policy=none) header.from=sina.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757895115; a=rsa-sha256;
+	cv=none;
+	b=P7DowQEsNbCqwtiR9VDYOW+mBXej0vLpZHYqk8UScPLBereeYGRScslTCXyqRLP8shf1+m
+	RkXo9K6qSTlpym+nJLe4b6ciYeSWa5WfG5t6TpHm6l/Cd8I08j/kXAFmGcmY5+GRbv8kcf
+	10DPhUno3WUvIUoKnsDWtkVbGm4UftI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1757895115;
+	bh=5wZeKHLWAwfFq1meT4JSzn5DJcnCf93wpV/LX6CmoEk=;
+	h=From:Subject:Date:Message-ID;
+	b=BQuu1/UabooQLnyAvj4TYTz7H3M55vNFUL1wtbQwgWOlikrwaBzgG8fHsnJK16Q4J
+	 b9x+jgSlPyIFoaxZ5tedG8FQry/eITYR83kTb/XWN8RpsuBAviqTMqN5o+c0xqSDJy
+	 WfzUj9+wS0666T5TZoQBjDRq5WJ4oPvjsXdysq1w=
+X-SMAIL-HELO: localhost.localdomain
+Received: from unknown (HELO localhost.localdomain)([114.249.58.236])
+	by sina.com (10.54.253.34) with ESMTP
+	id 68C759C500006D5A; Mon, 15 Sep 2025 08:11:50 +0800 (CST)
+X-Sender: hdanton@sina.com
+X-Auth-ID: hdanton@sina.com
+X-SMAIL-MID: 9332576292041
+X-SMAIL-UIID: 82896157B1B5426AAAB2321325B5AA6B-20250915-081150-1
+From: Hillf Danton <hdanton@sina.com>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 01/14] slab: add opt-in caching layer of percpu sheaves
+Date: Mon, 15 Sep 2025 08:11:37 +0800
+Message-ID: <20250915001139.7101-1-hdanton@sina.com>
+In-Reply-To: <bbdb72e1-ada9-44e2-9ec1-53fd6ed92e84@suse.cz>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGsJ_4x=YsQR=nNcHA-q=0vg0b7ok=81C_qQqKmoJ+BZ+HVduQ@mail.gmail.com>
-X-Stat-Signature: iesq891uzkmzgj1twdaqt9m5z4wxp19h
-X-Rspamd-Queue-Id: 11F8F40008
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1757894007-384234
-X-HE-Meta: U2FsdGVkX19FeGe7T7PlyoB4UQSUOCsJsV7PWibJQKloLxDnlHqfNkgakybpfCt4m5WRkE3/yEW6VR5dBz+y5y4TIVBh2yiZRzWHP0q2PHmpOKZS/IqOKAkxvOfCacWZH9Ct3qHUoXW0j7aAgQHl0CWIxUCK4EQN1jqacOxRvjqon0re7L6/31ZjaIbUm5TGsUo3wI6HqO54YA3XNMWVjbpdrMB0QQdQDyzv/v8D4ZLr6f56vKKzYWyfaBDCo7p7m3F0KqIQWbsVJ2hjoUXUakC+8EEZf1p7Fr3j7WeNTk3pL/5mXLIUcG7RCetwb0Vofq+e32zJ3el9VQUe0Rc7RFu926k8H0zexnS3cJ6jFczEbuAMLPT6Q5EZ46WsJ771+QORGCrRLFl9euBulXGiqK/e67Rx7Wzxlv3KrsYEwAXK/zRCZBz8txcxz5+S9vPpYYLeolyvpVKN7gnfKdvfDW9MWTisUbNBB7Nn1poMV8bcdwg0or6ZqBqV0FsV7oghjx5nN9tH2p5BZRPNsOdE3JnTHkewHDC1GJH2u6LRhMURjbCgKUj/OYTDXBlhlfaZcJb+tMCCh7ReRkpHFPS3y5FquDn1RsCvYpJ/xxqwSO0/acaUsg0q8Dt4bcWAEhhIkSyaIcsIHYIbx82UugxZazavW1+bOi97Z9d989HsPvrAdn3/H5xIvFMzqK2VT2+ip4y9n4UVk5gGw6W2AQlRZtLjLCR18GFubyjV2O78m02VUihylGl4s3PKvJtnk44cDUiR0iBzi0awKn+Vcz/LYGNp44T2FfY+A1n1EXP9dAtEQi3P1aHdXEaL3/0LZTLshxdO2szp6P1wKFvNQb8PoapMvBofdHydYRH9kx0zGw1uNYV7MGMb25vv2UMxcUT+stMQWk3kIMdBNXYSC0EcEIg3C7HUGmzsJdjgF+B3YkESGihTERF1WGEG1q1mibXdr7tt2oHaBCsOonFOvge
- myKyQXew
- zQuWlS9hfoPQcftapIyypGPLDtAqUDFK2h4bJRHyzwL41l2OwyRuQcOoV50A/v/GbF/B2hotjBjIyY/xjpozaUfVLA0SHJ7JAxg8MpfVQPaHnnuA9euLWFjEh/da6zh77FiwtyCRndHsxr3HJ3YQ6tDiV78p8D/mDiZ5/QIET/PTKqMbbbWGwtYwK4q1AkhR9uY/jbf/DtA5BIrlBufDP1eeL9w==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: B1A47140002
+X-Stat-Signature: awiihes4ibykpn8w9a9th8tfihekxhmo
+X-HE-Tag: 1757895114-670379
+X-HE-Meta: U2FsdGVkX1+z5CL19h0wSZTiM2V/MpOvcapP8oVt3uL5dNuOpBUO2tWHJXhADuis24gkC6nTD/rqgF8piOHFQv8BXdUvRRmBmKDfIoQGiEpE7z3kF6w5tByXl7YmWriuz6za6cxpd26M7Mi/eVOuzJCWQlkJy0SK/M4RZiWQeXVXECjObbZhkAd8lQr+fLeviF5SfRs8jmYCQIGZF2kdCA08nNAnFpEf+tZKd0/WKY8b31lRLEEwfGrWiaH/t1SM817HFxRgfkqudwbZWlfc9+PuPjGPGnq/KHq41iWG+Ptna6dAkipXEn7o+57cw8X/2KIELp0EgLHLbf3wm2ccBrj09OgxT9A2BtsqrygHYr2ka3849MbWeb+WD6Nxay9F1V0TwKlCDUdt2sMDZqEZkNGfoYm87TxocgQQv3MbI7i1yzOVwWmr6sIPxbza0OFlzNMdhvDFUlvBuREj2P4vyd4jio5ETALwjkhVjaO85MlnarulbAi8qpB6e5I7EZ7JOhS8hyRYbxoeljmo0mWrpDp41RSB6wJ2V1W1HYIq53Dk/6jczhLh9E2uuySlh4cdQT3KlBxIwqD4ssD+HKMguHC/lKo5e4bOamqkK9wv7inuKQm3HFICSOSSCvNmO/i1q/OBUQGS0qZmf8PhRyFqDpMip3zt6DKvcTVuQ9hwKoHAMvcQ1haOosN1z9TqjqNmwU5FIfAl/JmeljJWNBe9ikYnE02vvu5BpvochiL8a/lZh9KNFDDULovBXjw6I4XHPUwtqnEn3xdhzvCmSWsT9LmZK1GZwyi6de+TRV6ydkbLvfTfHe96uxXOFzUYmMQk1D1Iaq5FfKF9pfj0DK+zwjnlYEPmzcddipS7bxZSFVrZx2JsdruGkoJQ9EIGlRXeQy1HTdEeVhhVJFLMCeo8BI5HwuPRP8X+gVJg4LMdyiokISlSIZUyDfvjaralNd2Dtd+W0uIhqEYXraD1K95
+ GL6dbWVq
+ Qrv0cSR9gJ2fE1C6ris+ayLAIu9zlcQRJtFofz+S1bdUyjmwd3/fBDTS1EqOIlJJ+leQkOXNW/eiy/vx9IRysFS5WmLWpZa4SN3p2tC7M76x+hBJrksmkGTa7cscBBydOqrpIyJWldjgveaApDLt8FUhaUnmIZu4ezm+K/2HDUY2s0JyigrQB9OFGwbJ/5r7z62v/Xdr4il/2Tp+51jvwAEN8WsKJPjxE0Ksdx8UzlW7CtMGSdwhtwufqsXRFEN3uw1/vq31V30WY6DGcH5ItTFdCGMeeM9Utnh0NAMvx7X2972ZMYxfsrI25hA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,28 +89,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 11, 2025 at 07:17:01PM +1200, Barry Song wrote:
-> In the process tree, many processes may share anon_vma->root, even if
-> they don’t share the anon_vma itself. This causes serious lock contention
-> between memory reclamation (which calls folio_referenced and try_to_unmap)
-> and other processes calling fork(), exit(), mprotect(), etc.
-> 
-> On Android, this issue becomes more severe since many processes are
-> descendants of zygote.
-
-I'm not nearly as familiar with anon_vma as, well, the rest of you
-are.  As I understand this situation, usually after fork(), a process
-calls exec() and the VMAs evaporate.  Android is different in that after
-the zygotecalls fork(), there is no exec() and so the VMAs stay COW.
-
-I wonder if we could fix this by adding a new syscall:
-
-	mremap(addr, size, size, MREMAP_COW_NOW);
-
-That would create a new VMA that contains the COWed pages from the
-old VMA, but crucially no longer attached to the anon_vma root of
-the zygote.  You wouldn't want to call this for every VMA, of course.
-Just the ones which are likely to be fully COWed.
-
-Maybe this isn't practical, but I thought it worth suggesting.
+On Sun, 14 Sep 2025 22:24:19 +0200 Vlastimil Babka wrote:
+>On 9/14/25 04:22, Hillf Danton wrote:
+>> On Wed, 23 Jul 2025 15:34:34 +0200 Vlastimil Babka wrote:
+>>> +
+>>> +/*
+>>> + * Caller needs to make sure migration is disabled in order to fully flush
+>>> + * single cpu's sheaves
+>>> + *
+>> This misguides, see below for a workqueue case.
+>> 
+>>> + * must not be called from an irq
+>>> + *
+>>> + * flushing operations are rare so let's keep it simple and flush to slabs
+>>> + * directly, skipping the barn
+>>> + */
+>>> +static void pcs_flush_all(struct kmem_cache *s)
+>>> +{
+>>> +	struct slub_percpu_sheaves *pcs;
+>>> +	struct slab_sheaf *spare;
+>>> +
+>>> +	local_lock(&s->cpu_sheaves->lock);
+>>> +	pcs = this_cpu_ptr(s->cpu_sheaves);
+>>> +
+>>> +	spare = pcs->spare;
+>>> +	pcs->spare = NULL;
+>>> +
+>>> +	local_unlock(&s->cpu_sheaves->lock);
+>>> +
+>>> +	if (spare) {
+>>> +		sheaf_flush_unused(s, spare);
+>>> +		free_empty_sheaf(s, spare);
+>>> +	}
+>>> +
+>>> +	sheaf_flush_main(s);
+>>> +}
+>>> +
+>>> @@ -3326,30 +3755,18 @@ struct slub_flush_work {
+>>>  static void flush_cpu_slab(struct work_struct *w)
+>>>  {
+>>>  	struct kmem_cache *s;
+>>> -	struct kmem_cache_cpu *c;
+>>>  	struct slub_flush_work *sfw;
+>>>  
+>>>  	sfw = container_of(w, struct slub_flush_work, work);
+>>>  
+>>>  	s = sfw->s;
+>>> -	c = this_cpu_ptr(s->cpu_slab);
+>>>  
+>>> -	if (c->slab)
+>>> -		flush_slab(s, c);
+>>> +	if (s->cpu_sheaves)
+>>> +		pcs_flush_all(s);
+>>>  
+>> Migration is not disabled.
+>
+> Can you elaborate how it's not? There's a comment above the function saying
+> "Called from CPU work handler with migration disabled." and we have relied
+> on this before sheaves. queue_work_on() says it will run on the specific
+> cpu. AFAIK the workqueue workers are bound which is effectively disabled
+> migration (we hold the cpu hotplug lock).
+>
+CPU affinity and migration_disable() are two different things regardless of
+queue_work_on(), no?
+I think you are right in accident rather than by design in this case.
 
