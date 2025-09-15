@@ -4,120 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78FC4CAC58F
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 07:57:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BE10CAC58E
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 08:02:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB5818E0010; Mon, 15 Sep 2025 03:57:11 -0400 (EDT)
+	id 536988E000C; Mon, 15 Sep 2025 04:02:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D8CDB8E0001; Mon, 15 Sep 2025 03:57:11 -0400 (EDT)
+	id 50DE48E0001; Mon, 15 Sep 2025 04:02:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA3248E0010; Mon, 15 Sep 2025 03:57:11 -0400 (EDT)
+	id 3FCE18E000C; Mon, 15 Sep 2025 04:02:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B6FED8E0001
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 03:57:11 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 809EA1DF00D
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 07:57:11 +0000 (UTC)
-X-FDA: 83890729062.30.238B160
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 385B7180002
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 07:57:09 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=D7MbTvt8;
-	spf=pass (imf16.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2D64A8E0001
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 04:02:43 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DD4DEC04F1
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 08:02:42 +0000 (UTC)
+X-FDA: 83890742964.02.4469E52
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 636C210000F
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 08:02:40 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=b0qZ9GjH;
+	spf=pass (imf05.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757923029;
+	s=arc-20220608; t=1757923360;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E1c28EhTL7tG3KqgG16Uo9RE5dwVO0G0af+YuouslNs=;
-	b=YcmgxNuEovBkLYd1WKEGkjUnS+BNXrqKD+UBM+Ydk95YZ46LX6LOg56c2SmttNv5xOsJnG
-	KNPL1j+9wYRNLNnQpKFWIoOB5WyT77QOoLDHSWm+GLmgXi9ETeePiL3QSttSSMEpcMiJCW
-	W1hjtZJEPglRoLvpQwHETxF4gY5oWbs=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=D7MbTvt8;
-	spf=pass (imf16.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757923029; a=rsa-sha256;
+	bh=NCGW5vXi3KzhsYVXIY0kjzcv0eF0LSLQelXGRAlgR0Q=;
+	b=SZwMTDP1JF5s2cIrd2+7HSqacHFUlKyyNJVm+uCWL50BMyfRGbm33p4FCfjZgjhTHvBhvT
+	wLznAr8G98aGhIawAaITwpxu+31fATIIBiPH6gixOosfic1Y0OqxabmoMJUsJ3PwRa4i/s
+	0pI+gmy8tXC911bBBBxQp6VU6anENOk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757923360; a=rsa-sha256;
 	cv=none;
-	b=rglfmyU3/yZQiuC9jIX/odQEQJWhQUahsdZ/PM1f6cyT2eZrkluV2Y/smEIz6PCLKtxjGW
-	e10Hv17EJ5hb/s7kkC5wMSdbAmP+99Filu3cPJpQ75XrA5gsB3tQ2dP5uuSOVT0hJypOOD
-	PBi+GLAswKERPDeY9xplRNn6pMgW20o=
+	b=KLJ2B/kf5h6fm6pOfn2qPEhih45jTlnE0a29boza9ECrK6HtJFXm+YvX5XbnLzFnifDS2k
+	aJ6jArktxEy4ZMEbgKhRFTdby9JoyoVJu9P1HKj7AEW5NltN10ZW9aqY8UjmRG8NFfMTPK
+	a6BKeSSecUEAH3dnobDpM8ejGb/60F4=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=b0qZ9GjH;
+	spf=pass (imf05.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757923028;
+	s=mimecast20190719; t=1757923359;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=E1c28EhTL7tG3KqgG16Uo9RE5dwVO0G0af+YuouslNs=;
-	b=D7MbTvt8ZRgb3H8pDuyMw2a6acWdV531DUDxWHA/JXE4kminvAcUUtQbMytpTbyIrR4IPO
-	+yajyO8fOEC9/F+Zmc5MvpyEug5fbJyDjXMP5qRCb0xhZsnjHkXYZr6ixY7b26T6NYa7Oy
-	ryFuwlSUuQ67p7gHEx8pKjARIV/0tz8=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=NCGW5vXi3KzhsYVXIY0kjzcv0eF0LSLQelXGRAlgR0Q=;
+	b=b0qZ9GjHLPnsuBU9vTjoBox9FmL9y/e91MAse325e33+x12rUWXp608wp8xS/WG2LcUC2Q
+	CJrKlDW6pz/dyaNlHv4+uBtR2Ufvz85my1ruPQeMsZL/fwtRv1SoXhZ1jdJoqJgC2H4YIj
+	owA21E4NaiYq56JtGDsjilDExYC8sf4=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-6-8iNWMuspOX29iqY_nllHUA-1; Mon, 15 Sep 2025 03:57:05 -0400
-X-MC-Unique: 8iNWMuspOX29iqY_nllHUA-1
-X-Mimecast-MFC-AGG-ID: 8iNWMuspOX29iqY_nllHUA_1757923024
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-45b986a7b8aso28281735e9.0
-        for <linux-mm@kvack.org>; Mon, 15 Sep 2025 00:57:05 -0700 (PDT)
+ us-mta-695-oyhInI1GPxKMSGXmC3fH7A-1; Mon, 15 Sep 2025 04:02:38 -0400
+X-MC-Unique: oyhInI1GPxKMSGXmC3fH7A-1
+X-Mimecast-MFC-AGG-ID: oyhInI1GPxKMSGXmC3fH7A_1757923357
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-45de07b831dso20899555e9.1
+        for <linux-mm@kvack.org>; Mon, 15 Sep 2025 01:02:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757923024; x=1758527824;
+        d=1e100.net; s=20230601; t=1757923357; x=1758528157;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=E1c28EhTL7tG3KqgG16Uo9RE5dwVO0G0af+YuouslNs=;
-        b=Y9MzWEdU7MT+ZdaVJEbvCaJHoma+eHZVaUcRnX/ViKoMV9pH7rbV+RF/M9D+iYYMWf
-         /qLXc3EVrJ/OYOLdfk3CNNQw/wUqqP4AHXWaAzg+nmIDt8eWoPwD/Ab2BI42PjH/HI5Q
-         8BvcCTuBImaDtL6CYwoM99iETsvNnMhmLD6dNTcZd8wYSeZx72EiI4to1ciMfBWjemIv
-         lHRS9GXXsV++IYq8MEEx9GbCLDgGLnXfzueAmMzonBVNvABm/jUqNPBf4DYlrXZtaKso
-         F8Hdlj7dIevotLaqFYUfWHP+axWQOgD7OCEMmDSr3iLKvIVNs3hiFk8bwF+DnavMeSBj
-         dFzQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVw9oolWnq5kWswlfsPfs1sbdYVKSWYrFwgs1sRCtZzBHiJRb6n9aIFN+soloAs1oI4oUGnHD4uaA==@kvack.org
-X-Gm-Message-State: AOJu0Yx/ofs37c5l4D86fEtm/73HlyCYCAFWEQcbhjQVct7BLFaQSk49
-	Xk6kAtlXLBzWxHtvYPRKA/Dk/dgvhhBZVs87BMl5rXzc9sTugDSAmAyrLR0gzQNlezsdaNhrNLH
-	C8IlN253Sb4CtyH9+qWGbxv0XLm6uuNoOTgnmuVoGEyoZCwDOh7c+
-X-Gm-Gg: ASbGnctn4DSeW0StO33d8njjQu1zcWrQ664HH1Tgd4HIHcKru1hGEbZ3iYaDxOyg5+j
-	7sbdO/yOVeBPJBQfJb5CETRryh8tIssULL0mIOiQSX2ZJAzkXsvRkIYLw9uHz5PD2vNJgKS0yYy
-	vP/QpynumY/2+AcVIMpQ5Zd4ObFl4TevEM//qmsUHW+/6mpGolJSiGjI3xFCycxFC5p6H3Mm/ZP
-	B5cum/Ddx1OIkNBbmOU+OsqWWQnmKRrgj1+ywS66tfJ3zwJdJVQRkLxAqeOHUFtMNt5el1h+wNR
-	42GDZsxNhD90Sf30h2vrgErTfhV7vUWpcjYKE7B/3zh8iDEHhw1wVFs3Tp1IIhSOf5rTfqq8813
-	KKSm0ZIamNbhM1rcjTLLNlfxTUsLkJw5RkPID/qq9SV2o/EyWQ228pDQmyj/+5ONxuec=
-X-Received: by 2002:a05:6000:2389:b0:3e7:535e:986c with SMTP id ffacd0b85a97d-3e7657811f8mr8531021f8f.2.1757923024014;
-        Mon, 15 Sep 2025 00:57:04 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG8fcewFR1w4v8718PUAih9PAmU6/SHdNLxzJ6sJguAVJjIFGNHRLiOuWrh4rEGUvfsTBRECQ==
-X-Received: by 2002:a05:6000:2389:b0:3e7:535e:986c with SMTP id ffacd0b85a97d-3e7657811f8mr8530990f8f.2.1757923023537;
-        Mon, 15 Sep 2025 00:57:03 -0700 (PDT)
+        bh=NCGW5vXi3KzhsYVXIY0kjzcv0eF0LSLQelXGRAlgR0Q=;
+        b=nEuEV+HS5WB/NAjOc4y820DCzYqeQS+nAvK7KLRcfE0+cs4z5hwdNjUGJ3i+v8djug
+         I5WiouR3K7GvS1Ri+dsR4uq3SVpGuuI0+I6xUW2YPBXJX4nfRqBDJS5TYexhwvCI5KnN
+         lZ/StBYWpj26Qlqper0ERuOTjYkzTkkHbLtgUdZ5ZZSAnc8pxKQofai1aQkNpCwx81rZ
+         PECPibKFt7c8pXTCjtLQsiJRZIZFqNNPB3KFbz7eBXfhKjbHWiwvvDAayVmmBzOnmCnu
+         6vXaPo75DkXFhJ3jPA400lF5K4TT6G7DWzN4ggjsgLmIFMaXktlO74YhiG8G/gGNvCd8
+         90qw==
+X-Forwarded-Encrypted: i=1; AJvYcCUZzXw53ZVfGjRHBO+zsZ7n90Hm0Lb8hIIhyS4u/ndT37ybwvx643WpNmbN58N8nJPSD1AMxMQRYA==@kvack.org
+X-Gm-Message-State: AOJu0YzNi39FVIn+itmXbOqrC6cc51q6cVRcOLPytX2uTrWXE8s/u5cO
+	FKDK6vghZyZq/BfLkdKKFYXZ6NRYQ2IInr8PIV5jYawyKYJRO8Z0W8SDLGmX1Nxzdwdwf/e3XVb
+	LEwZdz8TKcXNIG5lIrcdfL/Nm3nxM2Gr2hlIryVFc0gC1snyXYEmC
+X-Gm-Gg: ASbGncvIw4nCNvmRO2zZAdC99ntCxSm945/ZkIFdfKcRjdOvRm3zeoAb5JIDZK7MiKy
+	6Ucbiw1pBZAZ9lkqcaz/3IVRvAhjleDCsF/jywGPYw3BIo6XARduDPw2CSMKqEE62rqh3v6wrDv
+	Tzyyq8nsfKKcMjcerRplbUBEqigxFE7u9TuioNyvGsKy1p7hm8748hgc0Fx2f27BaqxOzrrI7gc
+	XQt2idmGhcbSrS47le78Mw/DBe7i3uf3M2vESyz6IGDDqlrFulfb3doISO6ekEAeRHO2VGCfR5W
+	iiTXGiMgf4K76rmh22P/AfJHTKjuNE3iAS0qnEYKS+AUkqQ3xw/911b90pFAx7Aot0Jr3yaAdIy
+	IToLqSpD1E1zw6L4BEQl5MB189E2xqbAqPLHz8K6V0ZYnpVWnyFG0wUAHmBzKNUGH974=
+X-Received: by 2002:a5d:64e9:0:b0:3e7:6367:2bc6 with SMTP id ffacd0b85a97d-3e765a358a4mr10536449f8f.56.1757923357059;
+        Mon, 15 Sep 2025 01:02:37 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF6s+X3rp+DWpbnXK5djiT/Xw4QD8km1FPeMVJ/NnzfceueHx+G34YL2pTs/L+001A0RK0YgA==
+X-Received: by 2002:a5d:64e9:0:b0:3e7:6367:2bc6 with SMTP id ffacd0b85a97d-3e765a358a4mr10536396f8f.56.1757923356354;
+        Mon, 15 Sep 2025 01:02:36 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f18:f900:e0ae:65d5:8bf8:8cfd? (p200300d82f18f900e0ae65d58bf88cfd.dip0.t-ipconnect.de. [2003:d8:2f18:f900:e0ae:65d5:8bf8:8cfd])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e976b5dfdasm6277318f8f.4.2025.09.15.00.57.02
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e813eb46f3sm10069239f8f.23.2025.09.15.01.02.33
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 15 Sep 2025 00:57:03 -0700 (PDT)
-Message-ID: <a3ab662e-0b16-49c3-978c-0374fef5afef@redhat.com>
-Date: Mon, 15 Sep 2025 09:57:02 +0200
+        Mon, 15 Sep 2025 01:02:35 -0700 (PDT)
+Message-ID: <053aa2ec-c112-415b-94b6-e4677262d117@redhat.com>
+Date: Mon, 15 Sep 2025 10:02:32 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/mm_slot: make sure slot is the first element of its
- wrapper structure
-To: Wei Yang <richard.weiyang@gmail.com>, Dev Jain <dev.jain@arm.com>
-Cc: Lance Yang <lance.yang@linux.dev>, linux-mm@kvack.org,
- lorenzo.stoakes@oracle.com, akpm@linux-foundation.org,
- chengming.zhou@linux.dev, npache@redhat.com, ryan.roberts@arm.com,
- xu.xin16@zte.com.cn, baohua@kernel.org, Liam.Howlett@oracle.com,
- ziy@nvidia.com, baolin.wang@linux.alibaba.com
-References: <20250914000026.17986-1-richard.weiyang@gmail.com>
- <ae30fc02-c573-46bc-a5f6-935f256149e2@arm.com>
- <cf5d6ff7-faa4-469e-9e32-b90c75b8194f@linux.dev>
- <463716f5-be12-4d78-9432-779e3f11460c@arm.com>
- <20250915015722.z4w23d6ralc2y7mk@master>
- <daead4f9-aa50-41bc-901a-8dfbdbd896c5@arm.com>
- <20250915074614.tsezftgt2uks3l5z@master>
+Subject: Re: [v5 01/15] mm/zone_device: support large zone device private
+ folios
+To: Balbir Singh <balbirs@nvidia.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+Cc: damon@lists.linux.dev, dri-devel@lists.freedesktop.org,
+ Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, Oscar Salvador <osalvador@suse.de>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lyude Paul <lyude@redhat.com>,
+ Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Ralph Campbell <rcampbell@nvidia.com>,
+ =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Francois Dugast <francois.dugast@intel.com>
+References: <20250908000448.180088-1-balbirs@nvidia.com>
+ <20250908000448.180088-2-balbirs@nvidia.com>
+ <8c5267ec-cc85-4eff-b890-eb705472e2b2@redhat.com>
+ <f98d3149-9cc1-4211-af8f-e49547134b8c@nvidia.com>
+ <244005a2-4796-4985-853e-f916bdfd096a@redhat.com>
+ <ce40579b-4ded-473b-8fdb-a41d5b5021d5@nvidia.com>
+ <3674bdb2-0e59-4f0d-8adf-4794a6db546c@redhat.com>
+ <227ee2b2-3c1f-449f-98f1-29bde663bfdf@nvidia.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -163,21 +176,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20250915074614.tsezftgt2uks3l5z@master>
+In-Reply-To: <227ee2b2-3c1f-449f-98f1-29bde663bfdf@nvidia.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: AvSZc-ztXJ2veB1Q3D3BVdt8b-VdY-ffYj2aA883yJE_1757923024
+X-Mimecast-MFC-PROC-ID: zmy2lR7hVpJz141sDNwf-O13e_ohH6UNrpbdZZT8C4Y_1757923357
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 385B7180002
-X-Stat-Signature: 14ahtyfu5toijdjcpo8dgibdcydjwnxf
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 636C210000F
+X-Stat-Signature: 1b9tcco3w8ax94nxut93zpmxugyukhmi
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1757923029-695767
-X-HE-Meta: U2FsdGVkX18RQAV+43DkNKe3oN/+BhCuuSVigRo2l3qxeyNGtGrd1dORXqnife5yks/xXuCZLHOYCdn588s/0dU/0FKqGQfxlYK56FmBDMz+gpXNvvLNzIAohDwAIGHh0YxUDUvOoYGKagMU5DJonAf1vEygon5SYZAxFb3odJylLpZc/EYulC5SWy68hjAvllCFYu7LVYT25djjvIN74wrHMHUh5MUwr3Kik6kGrkF4q0B1aZhCS3UF5BvJkJLyJEMhI02tvSn46ZeSsOkQRPE4dG7feNaLuebagrdG/I7z3q/ET9QnjZ1JUhQMTxwn9sLubXufc61FZkkl7GgCRkVQ8VlX97bSfBTizSVU6khJ0jaV1ZudjcsVQByHB0bUJ8zsoe5nJ8awjLTHI51xZXegDYK/8muiRlU3HgMjlZIFO3BAXgxHVUUjqttCXyFkXrka0fAwAjhhdPemCs/ySt3p13AfCPqihk1JW8/Z0OB29rpVtaDAsM6JAJythAodMm7jfCJRpstNWhv4HuuG0nK+LU/k4ih4UBygHRXpwrpwOXnzuUS6qcgHv4YrSi0nBvGl2HmesSJ7bE24rc91qWUOBZ2mcGrXrVSlTg9bleZtqah16diVDa8v7kCIpZffaCHOrxXaDpQEmTvX2Xq9PTmVLzicUhUVIWVPTeHOCj4o5mDAPEkTb3+0TqVxGxOZHzYcSgaV8kGuTRH83iZY7YDX6YRG4qGNsfehEOsTPpFZ21Ij6q4b9Tq7nNrjFEhdskgirvjt4eXSKwSGuoGzO35v6Q9G2mI5kYDWECs+/jNkbcchHMxWBwWwI8l/JFWCY6V43l4zUp9joFa3JyeaB2RjFl+eZPo/JMyZo7wv4/YHPaRHQVF/2YBfGZK1CoT9pudb4LfG0x0jidyXLLhMuCef8FZ2P7AXNCow8rADSMye1rRb0pe8kLhuAcTnHA0maOjS4MIdo3BrfRBQtM9
- aohW5Ll4
- nmkIFd3TriC6DqFWkr0M0RAvF/kMgBHCCc/lMT3UTM8xHdhNGfpbjf7valzRsDONxaX3+xpen+3iIhKpfG4uhlQP8DNPWpytqs7oEb+g2pzy58izHaXGk1nn7YcKPvGp0Y4OHvEET1C7lpbTZfLL7ER2FNoJ54k3LETNTEFizD9u6ngKRG43H+k0Mhq71uJOKnvbpeDpMgmJkwVQ8582iTIfGRmAypC/ylq2GWGOhjMdQGd+kgA+f7stZc/B/jnb+ikrKDM0v7O/yoW24DKql5ard9E86Nm7E118+IVDTYualETqpm7t/580xX1OlM30Zi/AFtSoDxC5723SVy0v/evElQvvKoN5BmrmzP3hzLQlcNuLWI5KotFgMJOJZbk4IwitviTPK9MkOz2GkxyW5v5DeT1pbOF5SF5rdDz8qw2oqRvgBm6MjRsZhBd88jMGQSJU6fMCBuPHCP4lWWEWvDdmUXEx7uZGsomnzNR8QLn/u7sAu3GLirZZAZyK+t/VmsbPMwk4PPd35DK2ztBfQRGiIfn9fYkLfyUZ79yC+6NbpYIXm7+2/1fTfS91KWR3RBBunGCgD+KlYsqk=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1757923360-341783
+X-HE-Meta: U2FsdGVkX19OCjsc+pnMGxxcySti2v05DXOHiKnuJ/3eCiNCR4Ca+O9PlqqahT2LavbsEU4gTdCx7TOuq4dbeWMvDcVACfb69VRsL6FmDeYkd+F93CaVCOqCFwkDjiVQQLDk17bazxb70hewFDSG269gdKIM5B4P7LlOgnZJLatQPqaZ2A6IZQgalqvRY0NQ7SxBYiGO/eQnQi82riaNC1lpZt8giXeHBjGbs6NT1FttyLVzPkNLYdx1yaP3CTU0sm+J9UWOzPmru8T8bkmoZajzWZfEZ0x1nzeM439oxdRGpwgjywsyowQpaNsnhawdWUBuBsxdXEQUbts21hPsf1rrSZcguBx4cWios+O8GVNOF7RJHKXn/NvVlEM8VF/ovIhTlGKHKFWgyKCIM/bMLy7LOj7IPyNWTGtMxcxAvX2XrLAGbywt9qE7UJBeK3NVGxDh30bFjcBjuvaRVBpDwHqhf4aRFpnZilKhwiCyyL+RImVYGevcHcdBCtfi9u/Oa4RtcmBIXFF/FLabRmTyISB/eaKiehRQYP8fhDQY2XL0LAOseuLZii1Ls3pNXPY+/E2IR7xBiLBBWLT2xEzsobTZIYE1YX18ehkL4yaa5reUsoh6X91NhRAKwIk7aZtReqpq6clARaH4Ku7hZkNRqC4LMmmaReIY/lwoea/YkxnjjC398o0DV4dh2DTZ879RfQKkBQ5ThphYYQMGPYAjF8Vb7i0f5Vey8xz4xxjmZSA0zhXkD2zt/aZxgIRaA/bCq51Vks+TWTw5VPVKo0gbYk68nMNUADSNSWk0vnkwOMgdaL/J9ia456cbYeq3y4fo/Pw1dNEuic3zT1ZxHdzjZ2Awi17L5bmkkHTj2LmT2FwX/reGCHgFSq9FnXawkWDkWUU8Zf4YRlNZ7qYJpqIuxpc9d27R23wUuhH2un8EOmWrGzDbXCBvw3zCkkGJAEVacCJlFLUAa97kKaIzbxb
+ o9USYxs0
+ lk52EW7wX3aRVLBsVa3r37B8UOXJgJuvcwb8lnNKxpe8kkWljEGvuveHzTZ9TMr3m/xdI1a/GXhumeMEVk65XIv1Q7ky6RjbO4y4uhjmNvkVd5kgy8rnQ6kcEiILYCEPjOqIKWAvySagJgnZuNvI9qWO2UBu5+zAGVycGDV42twb8Hf1aIF/535mq4xUvSLVfUGLW59AH5thFN6GNe1wvIrTXiiH4gwSVgLqIseuWIA6OLtOE+XM78jZSEc/iyOW1jLU8PKH/kqe5+mAvGYuJbDJt7hWiQOpm672zU+w0pAxLBMEsxGDNQu4niQWnMWEe6zReGiuf4rFT6wx4aU5Wvr0nQEQZrbsrAOrUBO9XbM8xqcAkZBCLhDZ15XID/VfF3E3JBSqD5cg0nWikN0+5lksqEGJEzlg/6XfOWt4KWZdNfEDPjuoHkiNuGXqGXan1lCNW3TxucHB7Bp+YgAZz7gyvZI91Q9T4HE2y3iuP05T6ey0beD0Yf6u+kZMxw+YgBDiNLHMOFKBmbibRXMAC4rtpLxG8fy7BbSoUxJcNh3ORtAr5dYsA+XoeIEfWIL5CtnOLrSVSAuFNfWwxhFBElASaHBV+QXUs1nKdKYriwngPJnNm/RBW719l2lGcxNmPiiwVqVcU8gTucsAx2rMD/JsysI0WHnvN1GRf3AdYg4yLXSqEbIM5eQ9t9JshdjaMM+GhmwDEYZD5+wMfZpf46fXZand/Xx+I2mCf9H7Vulm0TSURc+qV/CRb31xAOkO0jOTBP4QGkvB2eeMIDsJM8Nv4WfskJ36smUN9n7Xps2PtNJePUKzU9RS0bKndfaBEWVAHJxFQ6aCiu9LezR5EEkmsNQVKNN1kwcC4Ql9IGC/BRyQBv+id2SDRawWmVS/L3rUwrGho0gIeDTKR1w+VMGiSTx9Km4p6wKSPNHoaPc3qFbNpFbcagM/+aA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -186,59 +199,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 15.09.25 09:46, Wei Yang wrote:
-> On Mon, Sep 15, 2025 at 09:19:55AM +0530, Dev Jain wrote:
->>
->> On 15/09/25 7:27 am, Wei Yang wrote:
->>> On Sun, Sep 14, 2025 at 12:59:33PM +0530, Dev Jain wrote:
->>>> On 14/09/25 12:33 pm, Lance Yang wrote:
->>>>>
->>>>> On 2025/9/14 14:21, Dev Jain wrote:
->>>>>> On 14/09/25 5:30 am, Wei Yang wrote:
->>>>>>> When using mm_slot in ksm/khugepaged, there is code snip like:
+On 13.09.25 01:14, Balbir Singh wrote:
+> On 9/12/25 19:20, David Hildenbrand wrote:
+>> On 12.09.25 06:49, Balbir Singh wrote:
+>>> On 9/11/25 22:52, David Hildenbrand wrote:
+>>>> On 11.09.25 14:49, Balbir Singh wrote:
+>>>>> On 9/11/25 21:45, David Hildenbrand wrote:
+>>>>>> On 08.09.25 02:04, Balbir Singh wrote:
+>>>>>>> Add routines to support allocation of large order zone device folios
+>>>>>>> and helper functions for zone device folios, to check if a folio is
+>>>>>>> device private and helpers for setting zone device data.
 >>>>>>>
->>>>>>>         slot = mm_slot_lookup(mm_slots_hash, mm);
->>>>>>>         mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
->>>>>>>         if (mm_slot && ..) {
->>>>>>>         }
+>>>>>>> When large folios are used, the existing page_free() callback in
+>>>>>>> pgmap is called when the folio is freed, this is true for both
+>>>>>>> PAGE_SIZE and higher order pages.
 >>>>>>>
->>>>>>> This is only valid when mm_slot is the first element of its wrapper
->>>>>>> structure, otherwise a NULL slot would converted to a mm_slot with
->>>>>>> negative value. And current code thinks it is valid and continue.
->>>>>> Shouldn't you fix the code for the case when you can't find the slot
->>>>>> in the hashtable, i.e slot == NULL? Like, if (!slot) return.
->>>>> Right. For khugepaged specifically, the slot == NULL case in
->>>>> __khugepaged_exit() (only user of mm_slot_lookup) should probably
->>>>> be treated as a kernel BUG for new.
+>>>>>>> Zone device private large folios do not support deferred split and
+>>>>>>> scan like normal THP folios.
+>>>>>>>
+>>>>>>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>>>>>>> Cc: David Hildenbrand <david@redhat.com>
+>>>>>>> Cc: Zi Yan <ziy@nvidia.com>
+>>>>>>> Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+>>>>>>> Cc: Rakie Kim <rakie.kim@sk.com>
+>>>>>>> Cc: Byungchul Park <byungchul@sk.com>
+>>>>>>> Cc: Gregory Price <gourry@gourry.net>
+>>>>>>> Cc: Ying Huang <ying.huang@linux.alibaba.com>
+>>>>>>> Cc: Alistair Popple <apopple@nvidia.com>
+>>>>>>> Cc: Oscar Salvador <osalvador@suse.de>
+>>>>>>> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>>>>>>> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+>>>>>>> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+>>>>>>> Cc: Nico Pache <npache@redhat.com>
+>>>>>>> Cc: Ryan Roberts <ryan.roberts@arm.com>
+>>>>>>> Cc: Dev Jain <dev.jain@arm.com>
+>>>>>>> Cc: Barry Song <baohua@kernel.org>
+>>>>>>> Cc: Lyude Paul <lyude@redhat.com>
+>>>>>>> Cc: Danilo Krummrich <dakr@kernel.org>
+>>>>>>> Cc: David Airlie <airlied@gmail.com>
+>>>>>>> Cc: Simona Vetter <simona@ffwll.ch>
+>>>>>>> Cc: Ralph Campbell <rcampbell@nvidia.com>
+>>>>>>> Cc: Mika Penttilä <mpenttil@redhat.com>
+>>>>>>> Cc: Matthew Brost <matthew.brost@intel.com>
+>>>>>>> Cc: Francois Dugast <francois.dugast@intel.com>
+>>>>>>>
+>>>>>>> Signed-off-by: Balbir Singh <balbirs@nvidia.com>
+>>>>>>> ---
+>>>>>>
+>>>>>> You missed my comments of this patch in v3.
+>>>>>>
 >>>>>
->>>>> But I'm not sure if the same logic applies to KSM ;)
->>>> I haven't seen the KSM analogue, but restricting the position of an element
+>>>>> Hi, David
+>>>>>
+>>>>> Looks I missed your comments, just checked those were largely about alignment and
+>>>>> integrating the code for DEVICE_COHERENT and DEVICE_PRIVATE cases into similar looking
+>>>>> bits for zone device folio free and code-alignment. I'll take a look and update as needed.
 >>>>
->>>> in a struct to make the code work should imply that the code is wrong in
+>>>> Yes, and the confusing folio->mapping = NULL that I cannot connect to THP support.
 >>>>
->>>> the first place :)
->>>>
->>> Ok, if so, I think this should be a patch with Fixes tag and cc stable? And it
->>> supposed to be two patches, since it fixes two different commit. Am I right?
+>>>
+>>> I can remove that, let me reunify those bits, seems relatively straight forward
 >>
->> I don't think this is a fix which needs to be backported, the current code works.
->> What we need is a VM_BUG_ON() or a WARN_ON_ONCE() when slot == NULL, because that
->> just shouldn't happen, and then safely exit.
+>> BTW, I was wondering when we invalidate folio_test_anon() by clearing folio->mapping int he current code flow?
+>>
+>> I mean, this must happen at some point when freeing device folios.
 >>
 > 
-> You mean sth like this?
-> 
-> @@ -2940,7 +2940,7 @@ void __ksm_exit(struct mm_struct *mm)
->          spin_lock(&ksm_mmlist_lock);
->          slot = mm_slot_lookup(mm_slots_hash, mm);
->          mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
-> -       if (mm_slot && ksm_scan.mm_slot != mm_slot) {
-> +       if (WARN_ON_ONCE(slot) && ksm_scan.mm_slot != mm_slot) {
->                  if (!mm_slot->rmap_list) {
->                          hash_del(&slot->hash);
->                          list_del(&slot->mm_node);
+> The free_zone_device_folio() code does that. Lines 434 onwards there is a comment that explains it
 
-See my other reply, I think this can happen if mm_slot_alloc() fails.
+Ah okay. So it's not required at all in your case because 
+MEMORY_DEVICE_PRIVATE is handled through
+
+	if (pgmap->type != MEMORY_DEVICE_FS_DAX &&
+	    pgmap->type != MEMORY_DEVICE_GENERIC)
+		folio->mapping = NULL;
+
+
+You using "folio->page.mapping" instead of "folio->mapping" added a bit 
+more confusion :)
 
 -- 
 Cheers
