@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08A0FCAC597
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 17:04:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49BB1CAC592
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 17:05:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 603588E0008; Mon, 15 Sep 2025 13:04:04 -0400 (EDT)
+	id 9B09B8E000E; Mon, 15 Sep 2025 13:05:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B38E8E0001; Mon, 15 Sep 2025 13:04:04 -0400 (EDT)
+	id 988448E0001; Mon, 15 Sep 2025 13:05:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C9E58E0008; Mon, 15 Sep 2025 13:04:04 -0400 (EDT)
+	id 8C52B8E000E; Mon, 15 Sep 2025 13:05:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 39F998E0001
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 13:04:04 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DE50A1DF529
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 17:04:03 +0000 (UTC)
-X-FDA: 83892107166.02.CADDA43
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B3D28E0001
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 13:05:38 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 35725BAD00
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 17:05:38 +0000 (UTC)
+X-FDA: 83892111156.21.4BD8B6A
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 16DAE120003
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 17:04:01 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ECx+Kj5w;
-	spf=pass (imf29.hostedemail.com: domain of conor@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=conor@kernel.org;
+	by imf05.hostedemail.com (Postfix) with ESMTP id 871E3100018
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 17:05:36 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="C/zc5hBL";
+	spf=pass (imf05.hostedemail.com: domain of conor@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=conor@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757955842;
+	s=arc-20220608; t=1757955936;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+LFeAe1ArwBGBNsi4MTIvvnMDyOJFlsOMyTtwxc5Pfk=;
-	b=XINd0E5U5EXzYKOfKlc0b1N+K9s/qmtvEF/4ILj5ssmVRTWZ7MLb0MSznoooZ2dFI5tI+h
-	uANZLguqDd3O0la57Ga//xmBbsudwOv+QWpGnJFjDVQ+qZzDJbrZN8h5WSipBCAzFpJRAu
-	onl0/ZHR2ZXUsxHTKUlJUetFL/dtxag=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757955842; a=rsa-sha256;
-	cv=none;
-	b=Fx6FwMJFmtJTeV8ACUmjNWoiuTkSVc7Ff2Mi8C67ATpxEfEUWxgL+643cY29vMeL7DzFw2
-	4kbyFSIZaxF7lIpr9eqKE6nNnqRyrwF3Du8evBwd4u4SZrDdOxTxtDvQYOCv1bjlBny6hK
-	inpJEmQRsZWwVXtFPDJLv2+KJUB3JqA=
+	bh=QCcSyLKtRBEpOKVEnWbAIl+bl/ydhsIKcxdyT8tetGc=;
+	b=o0G0NbkkYDeXhUKwM0tbO25GPGS0Xk+9G3Dd8ecckTI5pZxC2bPjyu7KLKuegcs0PSX5cY
+	HvjebfyOEmQWKDyjExPPBhkKfrmemBE6CV2SWeGWxK18ERJ4sBBCzxhXLXZIVZxjSx7aVg
+	UHdjUcgODTM3n7RtAALhC0E0dEQK0lg=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ECx+Kj5w;
-	spf=pass (imf29.hostedemail.com: domain of conor@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=conor@kernel.org;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="C/zc5hBL";
+	spf=pass (imf05.hostedemail.com: domain of conor@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=conor@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757955936; a=rsa-sha256;
+	cv=none;
+	b=5qEzg32vN31xFmL+Rkn6Vs94lUQ0cPmZ0JqS/V9wRsSWg04bBdr6QPqg+yMLPWgfgKZXAR
+	uIl/ukdjWNmujJFoVFPuFRSBUkf1iB+SSibsHp27C1z7llIi6PjrSj3E96f+nI3AtmOG2k
+	kaI1L4vJOfINI4aJihwXoc5FlUF+qVk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D95D344D94;
-	Mon, 15 Sep 2025 17:04:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBA0DC4CEF1;
-	Mon, 15 Sep 2025 17:03:55 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 732A043FB6;
+	Mon, 15 Sep 2025 17:05:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 836BFC4CEF1;
+	Mon, 15 Sep 2025 17:05:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757955840;
-	bh=181A4EhfptUEgvkmfyOG1EPOfLyDWETtVkYBcXrHa9Y=;
+	s=k20201202; t=1757955935;
+	bh=QCcSyLKtRBEpOKVEnWbAIl+bl/ydhsIKcxdyT8tetGc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ECx+Kj5wt0FqonvHZaoVS7UFjqUwTm7Wn3cnoSf4DK1LNun8/l9DlZJwILZFIXfh+
-	 3w72zJ+PJ69uWw4UjqiTh9EKRbyxq5hsK7Bdt47WA44OnfB2oakBECDKiAwoncE5DU
-	 zUdEPIWGxdbwhHJzZHnmfApdsTz/VQ9TEm4BOwNSBTYt3eBmxO9aB0O1oHHNocczZ/
-	 /7ayJCAboiKBVT9Sv59fgnd+DxCUl+K/8YfrDkrtA/9Q3CFfiuuplm88pDf5IpQZMD
-	 BrTFlYLhObQ7aqM8UhzUPBsjj4CYlrh/EsdjQHZuQleXs83Y+22NrNXZYGFuAF0Pgt
-	 +BBkvp8qVwh6g==
-Date: Mon, 15 Sep 2025 18:03:53 +0100
+	b=C/zc5hBL1H1uKA4zJpx6r2zWCbmwpMbns8eHIZm3ik363b1+81TX9PT1Et+dcMVca
+	 w5QytMmZb+apJkySW4bNBKMo6lJ3C6r0mxa9HhzqitrKeMYletMYV0wimqQwlVQoXQ
+	 N6HxFlT+W1d3WFv+EgRZu2E7FypYIKsgnAr6I8ouQlHTgB7epnj7gUoxW7Zh4VeH4L
+	 48iv8rQ0flOx/+9ZQi1ko6TpmEXZAgBJqVM/I5UYFPfiiqr0i+1sQJwdfZ7YYx4dYz
+	 /bUezOy7NhnEmdEHrIp8RvW0e8uuL4z1ozgWA0KqTJhdZfbeEkNq5C3Ak9Jr90kdqW
+	 vtLU5IWoHfkhQ==
+Date: Mon, 15 Sep 2025 18:05:28 +0100
 From: Conor Dooley <conor@kernel.org>
 To: Chunyan Zhang <zhangchunyan@iscas.ac.cn>
 Cc: linux-riscv@lists.infradead.org, linux-fsdevel@vger.kernel.org,
@@ -86,23 +86,23 @@ Cc: linux-riscv@lists.infradead.org, linux-fsdevel@vger.kernel.org,
 	Axel Rasmussen <axelrasmussen@google.com>,
 	Yuanchu Xie <yuanchu@google.com>,
 	Chunyan Zhang <zhang.lyra@gmail.com>
-Subject: Re: [PATCH V12 3/5] riscv: Add RISC-V Svrsw60t59b extension support
-Message-ID: <20250915-landowner-parsnip-d6778ee7208f@spud>
+Subject: Re: [PATCH V12 2/5] mm: userfaultfd: Add pgtable_supports_uffd_wp()
+Message-ID: <20250915-borrower-crusher-7a9e9121a1b0@spud>
 References: <20250915101343.1449546-1-zhangchunyan@iscas.ac.cn>
- <20250915101343.1449546-4-zhangchunyan@iscas.ac.cn>
+ <20250915101343.1449546-3-zhangchunyan@iscas.ac.cn>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="W4tzl3gVaVkMEf2q"
+	protocol="application/pgp-signature"; boundary="/gi+eTVpaGnrTG3f"
 Content-Disposition: inline
-In-Reply-To: <20250915101343.1449546-4-zhangchunyan@iscas.ac.cn>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 16DAE120003
-X-Stat-Signature: 3fzuueun6hpopj43ion98y6xhkmhs5za
+In-Reply-To: <20250915101343.1449546-3-zhangchunyan@iscas.ac.cn>
+X-Rspamd-Queue-Id: 871E3100018
 X-Rspam-User: 
-X-HE-Tag: 1757955841-57979
-X-HE-Meta: U2FsdGVkX19+L0n/YepuhEPGRCwUbHGf7wdAxi+WFGkn6RTWRHt69T3M56UusSmFjB9WbwXrI6+jDMg3pebOoeqnLEmwhQSuSxn1eQM1Ne88Iucnt4dhH9+zldRVQasz9tqmJ7f+cN8KEmLhslY6P2ASr46Z3AHMjyepGtM9TfDH0lzv1NZn1rjNR+9D9ZJ4mWcwI1vDg9ki1aHRP/Wl5jzpdq7W/r8kOPNwXDFAfn6t6usvhLC+rQJad55NUOrQHkXpfBuTxr6Pz3G7H/oA1PdtF3gjxO4a2ZLoL/qvUxgONpL2Y6yZM5Prw80+hg45yYWRpxU4vHBnY0iaVFPzdhN+ocuHmGwD+I+mkQ3J+VbnpG0AJBLgZEpGVbW8DEgu6HalKk2C2fKLBCXGKIJmDGmDZGXk2/ZZYcGYLK24+DzTayWD+uBrk+KyJXNFHsHXUa4xuHJH/7bXxxjXL/TbQxWZunxDQ935M4Bn+57gjaSqXyZv6FJhAxJm8Eb40AL3v84T6pWlIgg5Lxt9qHotW9bGkvLxkI7ma1CcnwZkLVVLjJRto09GU4fPK45o0UaFKTk5GSYCBxtJxLMeBcYOH+e+bNCW7mH0rlXFedU8yUiw8JWIszd2w8I0McrZK4uN4yvQ9a9XSRDFk8xqdSpZuw/KY1IJVK3XssyXPQrx1Ch5mM+qSyiAy2T9OTolCTlUZVq6N7FVsttND7fFRuDQGze4/+UAJLRArcwkeJWyJvhlIavktB7GpkzerRkYhAkNOrIbIvXWlQxDnFwe//+mxrd5qY4hTfnbOJnEqo8Kzcwt2ojj99ugkCKAQy5abdlZZeTTc3CFVcA8FwhuXf8EC9To/cA/VlEAQSuSISda49LveviOvkwyj4SSTye08+Qe+vvEOkcnRr3y30PndlHXhGd3OrrA1/o44yRywGf8bXHGrIS1phGR/WCZjbOvvfSjEXDvKgHgSdg+Kuxfu/j
- DfXmqWt6
- ekjMT0pWXtCjkk3n7vaWyA706zFtHKBGDRP6eWUEdkF6JIBu3CFF5b9AN6ejARSh6q2Rd0adkU6vb/y2ggPrhxn0neTcr/CS67xXRG0JUvDcvBmqr463u39XTUOMH7bWJlAXodUNdWxNZmCp0u15mPeSdU6AwIs5Xs4NyhR0uBgh3a8/YA9yK/k9szjkdNnAzOCHv4hdmKBN1lW+mjNA+JpZ9ZZIoGawgghVnAYUJgXC0xBGZb7kH0cGHJidE+yVu+6L6UhRCFfVX8nD4NqzYXfVKm9SRNmcTSLyVZqqLS7O/ebPdmQHeDKg1IAgWQmoqjxp1T4GfepvVYGv76YnaelMs3zOWU5oWGlDM9HYfm+TdRLewiH+Ue6hQeXNOtXigE7/kuKPXklVAulzF82RQ4aw80ZAo3/ZydxgnMsW6xmnnZh1UHvJjVGaGw/M3SFHJI0um2FMjzNSzuf4TlNBEZnjaMY1y/kYtazmZC+mSRMDz0GO0IWHOR3M1Z3HaYJWCSAq91x2DnGLzBc64CV8qDni5MmHql6rf14ve9QHM3kkdGXGMEUnYkMezxiQMgnxey9fx4bZ2bAjVDDQlPRmYO3nDBpmuvlxZlQ9v
+X-Rspamd-Server: rspam07
+X-Stat-Signature: x3eewu99g6kupn7atsoz7sc3j1g8exot
+X-HE-Tag: 1757955936-533462
+X-HE-Meta: U2FsdGVkX19RQ9rR9PvaCXrmANefmf0Jf7eKUxGYPgv6Vi82E1SL9+yWYyGSyz9HBoSrORQ/xGDNWmnGl7Gn5xd0U9tjM9Et+8qu2315QeKLjPfTe1NT/IEM4hjNUFjpaQIqp5djor+FU1d+uRBX0KsEntWOjI95zMU+FnTlcnQOXNfNROpHicNXOJCNv4WhKVDqR6RTi2mNAJTfOTGftUtMaM6r08h3iCRF3r7zohHoqCDZn2i4CmQqXMlsB02ym68yTgNz0meipaapSBEdS7ERXa96mVr1xEQIp7pP9G3beUwjFXr/HsK1QRNhxoEL7D8jDvh+Hwd1eWqfxsgN7oJGB9qhuYuqPRufQhv0RvZLARNw8HsqPhuDe5JcJvuHV3Vk0PLew04YbnWu3HeIdk1kx7HpCnv5AKrCeKOR37qNCfz6M2tvTQ7YBHmroK8rhRe5TQbz2JCGI/27+T9M9H7kCVDV/nXS7rvHhmNohVy7ZxTr72TrGdHQDHK+skjS/duNgUB37Xpnl7H/GASv7Vmu8l2O+h+u+T64AUjD2VO15LeIpLYNoDsVTy4wmgms0sMiD44iMh2nm2nfKt/4nD6gyuSIVBz41IhhrUgstQmY5+asWZKvRLg18O5sq/Fxeo+SIXDcf8Mwgytbv4eRf3i9QQ2dUnTGXdXlQYfz9f+Lj8U9CZUuxGgU0lWWaN5kn/nwKY1yGDh3L6ZZZzsCGHqe+w7rD3RKVUhlBoYS2iD2OW05HnvdeNP26kFLbsRVWd6hfIuugZlrjcPBoIpisEKfhJjpVNtt8BBOsyF6lmN+CZjOB7ZISDGM7E8GpcI60+yciYQgC5ceHBwZ6MQidaeqiSe54gSbrq4a3De4e10DaaPpLUJLYO3cGhCgNXDDwv+tgCzDAgwm1M+iBptjGLKgcdPYBOu4GjCYrXFsDTio39IpC+UCHyoCtwFvYUi6eVHUntjB3xSo2/B7gBW
+ NScT2494
+ evKG8w0h7esiJBlYYcl8ATODQxCDboFbHTW4mQ/mjXQGHFGqx3vFXPJvo9uTToA4tfNShVOhMbffK1JBih1j8jvZ7fqaUeDH4hE2ZV2pQoHQ8RGX4/DWecvPdHQLiROsZtGf6zDCojJPTYN2fN1yngOGmb6TNzK4ceaIEdVkM+iUuzi+oyZeZO+QYwAQuzPSPyomEoXY8ex3FgA69drqwtgWhBmPHN7S1BgnAlpKkLN9iYZ/zm4PY/KMZMohsXo7LzhAMDfuGnQiOWXM5bWK4sKhXi+9cqOYV5D9ztcxEH8Dvj8jc9GZJ9bIZFWi0I9BRPi1OlkyoWcudWgh+9Hes50yw85jMunjVpG83TixOftkrFQNXLwQbGMES4UebAgOkLf3JZ6bLJFycsEf+e5ii1uc7FgGr9ZJQjzSdPMDjcR9p+4T3slyLXK3phkTF/GtK/Bk0iH/ElxYVGuH4WkFYj4xGmA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,88 +112,33 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
---W4tzl3gVaVkMEf2q
+--/gi+eTVpaGnrTG3f
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 15, 2025 at 06:13:41PM +0800, Chunyan Zhang wrote:
-> The Svrsw60t59b extension allows to free the PTE reserved bits 60
-> and 59 for software to use.
+On Mon, Sep 15, 2025 at 06:13:40PM +0800, Chunyan Zhang wrote:
+> Some platforms can customize the PTE/PMD entry uffd-wp bit making
+> it unavailable even if the architecture provides the resource.
+> This patch adds a macro API that allows architectures to define their
+> specific implementations to check if the uffd-wp bit is available
+> on which device the kernel is running.
 >=20
-> Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-> Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 > Signed-off-by: Chunyan Zhang <zhangchunyan@iscas.ac.cn>
-> ---
->  arch/riscv/Kconfig             | 14 ++++++++++++++
->  arch/riscv/include/asm/hwcap.h |  1 +
->  arch/riscv/kernel/cpufeature.c |  1 +
->  3 files changed, 16 insertions(+)
->=20
-> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-> index 51dcd8eaa243..e1b6a95952c4 100644
-> --- a/arch/riscv/Kconfig
-> +++ b/arch/riscv/Kconfig
-> @@ -862,6 +862,20 @@ config RISCV_ISA_ZICBOP
-> =20
->  	  If you don't know what to do here, say Y.
-> =20
-> +config RISCV_ISA_SVRSW60T59B
-> +	bool "Svrsw60t59b extension support for using PTE bits 60 and 59"
-> +	depends on MMU && 64BIT
-> +	depends on RISCV_ALTERNATIVE
-> +	default y
-> +	help
-> +	  Adds support to dynamically detect the presence of the Svrsw60t59b
-> +	  extension and enable its usage.
-> +
-> +	  The Svrsw60t59b extension allows to free the PTE reserved bits 60
-> +	  and 59 for software to use.
-> +
-> +	  If you don't know what to do here, say Y.
-> +
->  config TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
->  	def_bool y
->  	# https://sourceware.org/git/?p=3Dbinutils-gdb.git;a=3Dcommit;h=3Daed44=
-286efa8ae8717a77d94b51ac3614e2ca6dc
-> diff --git a/arch/riscv/include/asm/hwcap.h b/arch/riscv/include/asm/hwca=
-p.h
-> index affd63e11b0a..f98fcb5c17d5 100644
-> --- a/arch/riscv/include/asm/hwcap.h
-> +++ b/arch/riscv/include/asm/hwcap.h
-> @@ -106,6 +106,7 @@
->  #define RISCV_ISA_EXT_ZAAMO		97
->  #define RISCV_ISA_EXT_ZALRSC		98
->  #define RISCV_ISA_EXT_ZICBOP		99
-> +#define RISCV_ISA_EXT_SVRSW60T59B	100
-> =20
->  #define RISCV_ISA_EXT_XLINUXENVCFG	127
-> =20
-> diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeatur=
-e.c
-> index 743d53415572..2ba71d2d3fa3 100644
-> --- a/arch/riscv/kernel/cpufeature.c
-> +++ b/arch/riscv/kernel/cpufeature.c
-> @@ -539,6 +539,7 @@ const struct riscv_isa_ext_data riscv_isa_ext[] =3D {
->  	__RISCV_ISA_EXT_DATA(svinval, RISCV_ISA_EXT_SVINVAL),
->  	__RISCV_ISA_EXT_DATA(svnapot, RISCV_ISA_EXT_SVNAPOT),
->  	__RISCV_ISA_EXT_DATA(svpbmt, RISCV_ISA_EXT_SVPBMT),
-> +	__RISCV_ISA_EXT_DATA(svrsw60t59b, RISCV_ISA_EXT_SVRSW60T59B),
->  	__RISCV_ISA_EXT_DATA(svvptc, RISCV_ISA_EXT_SVVPTC),
 
-If this is not ACPI only, than you need to document this in the
-extensions dt-binding.
+According to patchwork CI for riscv, this doesn't build for 32-bit
+defconfigs or the no-mmu defconfigs.
 
---W4tzl3gVaVkMEf2q
+--/gi+eTVpaGnrTG3f
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaMhG+QAKCRB4tDGHoIJi
-0owvAP9m+kVfXRCCjk7NRGmDZkEWZQj0HAJD4FE/4xEk8z9WfAEAkX7zbB5CNqiz
-ha+ygzCsG/SA9BdVUSZUo2x+PGGLIgo=
-=YrBp
+iHQEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaMhHWAAKCRB4tDGHoIJi
+0g3AAPYyMr0sKk1q17lwf8rI9IXyUkgSilhSi7k0qTds4n0KAP4iPiualM+L6H88
+quoylo0zyBkFOvt7aPxdrFyH/BhuAw==
+=Y8mB
 -----END PGP SIGNATURE-----
 
---W4tzl3gVaVkMEf2q--
+--/gi+eTVpaGnrTG3f--
 
