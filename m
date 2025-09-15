@@ -4,94 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8870DCAC592
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 19:37:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5DD3CAC597
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 19:52:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E3B5C8E000A; Mon, 15 Sep 2025 15:37:08 -0400 (EDT)
+	id E36058E000E; Mon, 15 Sep 2025 15:52:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E12C88E0001; Mon, 15 Sep 2025 15:37:08 -0400 (EDT)
+	id E0CDA8E0001; Mon, 15 Sep 2025 15:52:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D28B28E000A; Mon, 15 Sep 2025 15:37:08 -0400 (EDT)
+	id D4A618E000E; Mon, 15 Sep 2025 15:52:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BBA0F8E0001
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 15:37:08 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 54249BA166
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 19:37:08 +0000 (UTC)
-X-FDA: 83892492936.29.48D56EF
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 6979518000D
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 19:37:06 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hdxpg6HJ;
-	spf=pass (imf24.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id C37248E0001
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 15:52:20 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 70E44BA166
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 19:52:20 +0000 (UTC)
+X-FDA: 83892531240.12.261D8BD
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	by imf03.hostedemail.com (Postfix) with ESMTP id A651B20008
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 19:52:18 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=4wIq8sxb;
+	spf=pass (imf03.hostedemail.com: domain of 3cW7IaAQKCLwhxfniqqing.eqonkpwz-oomxcem.qti@flex--fvdl.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=3cW7IaAQKCLwhxfniqqing.eqonkpwz-oomxcem.qti@flex--fvdl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757965026;
+	s=arc-20220608; t=1757965938;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GXeOMSLnAh+Y5BeziIMqNMvsY4xASMxyysnTBr1a6P8=;
-	b=7IN9fnyQNlfllFLyDh6jfsP1GiMVVqL13dJkFCXz0mP0VTiOYeIAjhj8920agsEX8LoLQU
-	sinR0gVMtc8Q8QNrq2kOf4b6IvO5NkEIsebVi8H20FnNdwnMS6h03VjqfLwELdU9bSIs/L
-	oHz5HVy51jOCGJtl8Nhc3LEjSeamZfU=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hdxpg6HJ;
-	spf=pass (imf24.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757965026; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=MhJHKPv2MqpneSVyivCmQMh/OX2F4LBu0RtU4TyI0z4=;
+	b=zwtkLc3W61332R1Vug4cYJptweHF3Ifde1dZ1weKHRL/JSU/U+XfMtKR+rV1sxvClDxrsa
+	yfWk3cwvxuIk8dcdY4QkiPDHwZupKJhz2AvYn6DEwnqB7G7JtjacxJYbxVAUIFAJuXIwdW
+	mjvJ3qtGaEAPvRxNoCwo6HBaEP2G1aU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757965938; a=rsa-sha256;
 	cv=none;
-	b=YSXGhLSxBipPbotu61NSF+THhgr5y0EkshGQZ+7SNEyoxtHQgDvKwEw2zNMRy/566MFEze
-	L5ZGj5Tyx2X9uHtPfJv10wZCviULu4EHGqq6SRj8hBEdyOe7sLEDoktnxv/B4CHzil0KTO
-	25EbvmS+TJuEecSh6YXTslruKMGYPgg=
-Date: Mon, 15 Sep 2025 19:37:00 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1757965024;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GXeOMSLnAh+Y5BeziIMqNMvsY4xASMxyysnTBr1a6P8=;
-	b=hdxpg6HJbWKd4pRTY2Hd5oB70cnSFLXa36br3d7dKMYl72300kdFaP5zfRq7Q6q4nlRaEA
-	4DOx7PlgtzfHi2setFqia0My7+dt9YTX2+tk1l0wIUwOL50fBEgDJmx2i7rzH5wy+Nk5e/
-	cnTCzEoFO7YEnZjk+RxhybjIQYLYQA8=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
-To: Vitaly Wool <vitaly.wool@konsulko.se>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Vlastimil Babka <vbabka@suse.cz>, hannes@cmpxchg.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Christoph Hellwig <hch@infradead.org>
-Subject: Re: [PATCH 0/3] mm: remove zpool
-Message-ID: <fui4gqm6pealaxooz3xv3dnnqxscefyvhw5bhntedwh4tgjvdq@ootmbuoc3dpa>
-References: <20250829162212.208258-1-hannes@cmpxchg.org>
- <20250904093325.2768507-1-vitaly.wool@konsulko.se>
- <7b1ca42d-1b89-44f4-bffb-e6b09f86fdc5@suse.cz>
- <1d42c513-cc83-4f08-a10c-cbd6206070f4@konsulko.se>
- <girukcvvzgbtkxt4aftfz3lw3glvf2qsof4mx6wf5perolck5n@vaxlrtaeuzw7>
- <dh74mr7bjtpzk7frviv6iqqno2u2b27p7jiagp2dtnsz2wrfhr@wlb5vqg4majs>
- <tbvushbdn7nzitey3uy6humdndd6247r4544ngqkds3cr447e6@prnla4edwxmk>
- <f3ufcsjvvxhi5gzw2wglkpedgyyi6tiaje7em3tbxkzhklphvh@sv3dbo4yba5p>
- <98B3AFB0-EBD5-4779-A5DB-FFA6717E83C3@konsulko.se>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <98B3AFB0-EBD5-4779-A5DB-FFA6717E83C3@konsulko.se>
-X-Migadu-Flow: FLOW_OUT
+	b=EW0dTTesq5Yar8kQWK3700wZwks9IGMclDykrnbGPFfGluXkplFM+Uh43b3PXINJYuXMuz
+	tP+nwMkknukCgq61Cu7GvolLUjQgZB9ZmctgQye27ygaLt/i+Ml3fvpafVQR2crF22Llxv
+	XHvs7j5U800xed6D6Tki8faSOwxaNG0=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=4wIq8sxb;
+	spf=pass (imf03.hostedemail.com: domain of 3cW7IaAQKCLwhxfniqqing.eqonkpwz-oomxcem.qti@flex--fvdl.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=3cW7IaAQKCLwhxfniqqing.eqonkpwz-oomxcem.qti@flex--fvdl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-32e120e0e48so2265864a91.3
+        for <linux-mm@kvack.org>; Mon, 15 Sep 2025 12:52:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1757965937; x=1758570737; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=MhJHKPv2MqpneSVyivCmQMh/OX2F4LBu0RtU4TyI0z4=;
+        b=4wIq8sxb06Kw8kQB7yi1c7S7g1716r5THF5TTfa8c0IrTHBpEX833rslRjav9mCNIf
+         3oIvfaN/lfWjgVDnm4SyEeAeSJdKX0qXaDsDkS6fMrw581IttGUj8RBSxCsmYzPhhz/d
+         aCerjQi2GlqQyZZcThFhllx7b44fu9DR1rFO11UhVN5dJQzayBqH578J7yiTG/NLThJ+
+         2N1LQ0LBQQtlIwOMnJtWbLi3YRbs18aMeXc0+2vGbY+NQACYjrjB+pDhI8oU5beb/j4F
+         VJeouT+rSlBXFtY0ZjnUqRx5j+m5auk/PypRozci+/n/e/jdgihO8fF8a/QrqwSNOG9i
+         NZCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757965937; x=1758570737;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=MhJHKPv2MqpneSVyivCmQMh/OX2F4LBu0RtU4TyI0z4=;
+        b=u3P6KotonN6HsQwIGZpTvLCB82n/6B56Ksskkdvi965av8X9pm2m934NDKaziXUzal
+         kG0MGyYQSb+UJ5jqttdVZ3P66tZrShfA6SCts5tEIUbFhJeCy9z0qHuJUwKVnFdpDYuU
+         IunX/kbLyU5WuidM9xtiGM5UeCsupcJjzvlw9LDics+utqjLc37TZn+RAnjRUP1qOcRt
+         XZjRpoR07qc5ZSbVmxF5jeFcqxBf0YepxmR/ar+jZ8/rqOHeC2fL267BvrlL9/1Gp1XF
+         VmSUHDV84idkA9fhM4frylVzVDPtfKZv/TBfaiUjYEpcATkHsBLfNwuYNQfaWWW1ekcd
+         G3Bw==
+X-Forwarded-Encrypted: i=1; AJvYcCXsSTNSzsiGNEb3rpkdHuvJK55xNOkf8/wdUs7+AM6sqC4EZVEfixy8WhUM6hiWxADNE/MANCV/Ew==@kvack.org
+X-Gm-Message-State: AOJu0YyBBA0cHjHozeVSi0PtVzzH7cUVga/V74RonvQu6m2tHEZjy2uh
+	9cY7fkl/5eSMj3SMrJ6JP+G0t0gxISQ3EWfjgGcYNS11G7W0RMW/p3zmR8JNS7U9hLX2DPPA3A=
+	=
+X-Google-Smtp-Source: AGHT+IH443Pb4Fka+zvTA5ISbMaozV02kT9kJzPLosmG6Oq62zqdFEn6rcQHRY5FXaXgRwsk70oLGZtW
+X-Received: from pjk14.prod.google.com ([2002:a17:90b:558e:b0:32e:27d9:eda1])
+ (user=fvdl job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4d0e:b0:32b:dbf1:31b7
+ with SMTP id 98e67ed59e1d1-32de4e7e37emr15999610a91.2.1757965937444; Mon, 15
+ Sep 2025 12:52:17 -0700 (PDT)
+Date: Mon, 15 Sep 2025 19:51:41 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.51.0.384.g4c02a37b29-goog
+Message-ID: <20250915195153.462039-1-fvdl@google.com>
+Subject: [RFC PATCH 00/12] CMA balancing
+From: Frank van der Linden <fvdl@google.com>
+To: akpm@linux-foundation.org, muchun.song@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Cc: hannes@cmpxchg.org, david@redhat.com, roman.gushchin@linux.dev, 
+	Frank van der Linden <fvdl@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: wphxnioqqo1o6tinjkau3w9o54msjq9x
+X-Rspamd-Queue-Id: A651B20008
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 6979518000D
-X-Stat-Signature: dibet3caksysk4ux1jmfg769i48uc7jg
-X-HE-Tag: 1757965026-859260
-X-HE-Meta: U2FsdGVkX19Cc+XM2+5WD3VKMG4Vu9JCyUlM9hNKqvnrfhyV7PeWdPKFQ0m+LKEalAf1J4v3dNQlLlOHCYmJLzgjROQ8iSH6pLf82ZLBvigkBDYYcXpRlqZgmXqjrpvDc4HCgYW/GRjx8gYSBdL1APDOdqUdPdlS+F+8G0T76Nuqe5kRpE4P5qDvzdMv3oEL9pIPmQK6HsUOuILTdXcilZM5V/a0TrpVhuOpDGX1IhUR3ba/6/7Vf/FA/eHs3XdoK1tenljnttvRW2T8J2s4wHCF4gpJ0lRnn3XmiVzFNTHJ8LnhZ9W2z4IDkVo067EdjsajyW0FxOje7MM+5aarjVNhExi/29kn7q5rctIgX5ywsmk8Yxu6b3fIKiWv0IgyRqBgbZd3CAruiqBlT/Fuh8F3N5CE0Xob6q7jko5yd8W5qtzGT+R/Q2vDfTov537L0/3JRxCqTlnnYCFaGulJHlTeJxdCXcmtxs2OOGoZh7xdwdZjbqZCqDp4nkGmpVOLvxSZTixKKM1BsLPfj3uCzNcCX1FkTP9Zgp7cYIU7nQ5QfwXFgESJg9DqBSsRpW58RNfCtSrn/BZHY7Xci877HMabipjOIdBtc/0JqxnFr29EJe+wvE9kuhWv7zoVCr6zCH54MpSHWnIBDnXnCS2JDhMQCzBF/rV/EuSbye0eoYDIa46RM/5iO6Snj2cpwllV+cHg2fw08jQCiMyxDKgi1v/du8q/3KCmawDd8cOgNSAxfjaBrgYSvDK/LDXEQCu/joR7RvSanSpKZEgObR6L2sAfeiZUyM5vKgA6+8arBw8Whe4V5C3MCPjVEc9/LckTYb8VcP4Dx3bpqOLAn9B7REdEqEhoIRzZOp3kJgeiv9210ztDFFsTP/BAAH1WWBe52knzGlgVQmhyktAFEU5bWqhEcQzWGc+ZbThWCGedH2s5EjfOj1Qm83v7+rzvouzyH9geaHTxlB6sVpoGLjO
- hi1/nN18
- APpXxjW81OWKUCnpcLiWoSYOplitSB8GYx5HaY/LCQgM0a27VbdoVg7LltB0PJWWqRN6qgLLLsd7Z8bdCqKDMEFd4gH4TocrZu4MXQje/hUZhxQBEYkXSe/fKMmTlwL3UOom7QQTlJcd71V/lpkamh/WgbHuBDOrjg6srjMQj8PK0DFKFjpqc0mh0z50DH3HtuV+8gIgEBJWxp71yyKv1LQQcmf7xnIcDAstQDk3/gYBq480=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1757965938-764187
+X-HE-Meta: U2FsdGVkX196CDt8Bp987Ft0MtiYF33s506uGqabQog4SS7hwxDFM8MhHkKE+GE1TtreIJ22XFk6PiXO44T/MEuiEXOo4FkRrS2M81JaTnkFkA/+JImKEePsjPIeCD/MNMICeGrN/Ozb9k8xDsHtnu0br0CIYNKO07PFFyW5Z+QKqR9fB9cMYM10NTBL2/Cj+FFeohhw3VqmPcaVJOhKYlwn93kFxBSn7vPoP6Djd8o77qLYueKO2g0h7fe/+jSLCJyR/5UcyS/0BGqLcl7ssa0NYI5uSxyqjbS8XQc1pXUx+K2Gmzsk/EKhRnKKkCCs+HFm8y7E2f7BV13Iml1mzrU2yQHQ5VElMqMBTGbu1BZ0XDQN+usI1uePwMli5puBE10XUaTnX/LrTvnhgvCHGied5Nv5MvWouLDIEAM6zfu7Z1uBF3FL7ChLIF/uI8rpiQ2OJwLyQSTX0yPkgrb17onnLvh3G/lfPREM2PX3+uZQ+3EG2EOv01k5dWOim8aYYr7AvvMF7yZ8n8lxQv4kvREGfukI0lrzyt8Gvtu5v/WPg3YpnQEQ9ZxfCU8+P0Lbq2QIwbS3KwtvZ0g/YS8A5D1xWZNn0PScg+v7yXh9W6Uwk7kN5e+vqXInbMAYea8AQlWj9uy4lT70DHs/6TG6W8FWz68yc27uxDPzhI9ubd5LrnQCANSn5xqCa1w49oqa0KCeQPEJUvHCmQOd8MvDt0lEhNoERdvcS7AiZrN1bLh1O95xFIbpYE8VyYA6DuRdbdkaAaf+qtGP94cdb9mhDbCpvXyOEsBfW7f5WfkNKdBB43HOx4tF5UcHBdhYkRDFhzM1txAvPkypTSuZC8DeaMglDfR9HOEKF+9buFqaGdpuwDx0nyvFfqkI0DIVK6Y9SKWJGn+uMTKBvvxlM81mgzf/rlxwn0X4ESMxe/Tlb90Q1CtoORUxBYV5bZQbL3NaIMcox6eyqEpXUvnWSdJ
+ nrGOcUFd
+ N+oDXbjyjHPfpP9crQfFUfhABAt7johZXSXczQNTiorqzkqFi0gbbldfEdMZ+Wna0EEtgcgR6JmdjLswRcYjot0mSQXszyEFXnjAsBxv6JyO0Xvrq8S1FptSWqvpVIxQntrZ/0cioR2yITMAXKk3bMiwKP3fKKN5CtZr+306jTQCT59W0xyWGjWXREutRDTMVLXE5TKptMJNRCHW/L7TSgwcN7ySINzANjT38ZFWtDlvUX65RlH0ym++BR3nlUT8r2ZVM+BC8y0VcPcGt++ZXnCSaD3u/9SFUj+4FgrAT5RYs3Tt9Un9tKBGS5oqwt4Zy45uApJx373TyUePNgfpWHayfX7RyB44ZQ+IvC9jN65ZRTM/TV0GejskZQyRczUUjHUW/6/nUcsrNvHe6rYfcO3wxVWU78dh6dn7OxwSKqnwpFSA87A/d1S0jHCy/ZQUOwFwwqIEqtt9PygWa33/C0MW1vPC4xkUirlsuYaje9Ud43NDW7dysmD3G7b83FhVgeb9pBYRE9mraSItaOCX5Axe/OMXVqL8vu17M
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,51 +107,147 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Sep 13, 2025 at 03:55:16PM +0200, Vitaly Wool wrote:
-> 
-> 
-> > On Sep 9, 2025, at 10:12 PM, Yosry Ahmed <yosry.ahmed@linux.dev> wrote:
-> > 
-> > On Mon, Sep 08, 2025 at 09:18:01PM +0900, Sergey Senozhatsky wrote:
-> >> On (25/09/06 14:25), Sergey Senozhatsky wrote:
-> >>> On (25/09/05 19:57), Yosry Ahmed wrote:
-> >>>> I think Android uses zram+zsmalloc with 16K pages. Perhaps Sergey could
-> >>>> confirm.
-> >>> 
-> >>> I'm not working on android directly,
-> >>> 
-> >>> I can confirm that android uses zram+zsmalloc.  As of 16K pages, there
-> >>> was a way to toggle 16k pages on android (via system settings), I don't
-> >>> know if this is the default now.
-> >> 
-> >> While I don't know what zsmalloc struggles Vitaly is referring to in
-> >> particular, off the top of my head, zsmalloc does memcpy()'s for objects
-> >> that span multiple pages, when zsmalloc kmap()'s both physical pages and
-> >> memcpy()'s chunks of the object into a provided buffer. With 16K pages
-> >> we can have rather larger compressed objects, so those memcpy() are likely
-> >> more visible.  Attacking this would be a good idea, I guess.
-> > 
-> > Yeah I personally think attacking whatever problems zsmalloc has with
-> > 16K pages is the way to go.
-> 
-> Well, there is a way out for 16+K pages, that being:
-> * restricting zsmalloc to not have objects spanning across 2 pages
-> * reworking size_classes based allocation to have uneven steps
-> * as a result of the above, organising binary search for the right size object
-> 
-> This will effectively turn zsmalloc into zblock, with some extra cruft that makes it far less comprehensible.
+This is an RFC on a solution to the long standing problem of OOMs
+occuring when the kernel runs out of space for unmovable allocations
+in the face of large amounts of CMA.
 
-I think the way to go would be this, identifying problems with 16K on
-zsmalloc, and addressing them one by one in a data-driven way.
+Introduction
+============
 
-I don't believe there will be opposition to this, or even adding more
-tunables / config options to alter zsmalloc's behavior based on the
-environment. If there's indeed extra cruft, we can either clean it up or
-hide it behind config/tunabels so that it's only enabled when needed.
+When there is a large amount of CMA (e.g. with hugetlb_cma), it is
+possible for the kernel to run out of space to get unmovable
+allocations from. This is because it cannot use the CMA area.
+If the issue is just that there is a large CMA area, and that
+there isn't enough space left, that can be considered a
+misconfigured system. However, there is a scenario in which
+things could have been dealt with better: if the non-CMA area
+also has movable allocations in it, and there are CMA pageblocks
+still available.
 
-> 
-> Another option would be to leave zsmalloc do its job on 4K pages and use zblock for bigger pages. But it is not possible at the moment because zpool api has been removed. Thats’s why I NACK’ed the zpool removal, at least until we have a replacement for it ready.
+The current mitigation for this issue is to start using CMA
+pageblocks for movable allocations first if the amount of
+free CMA pageblocks is more than 50% of the total amount
+of free memory in a zone. But that may not always work out,
+e.g. the system could easily run in to a scenario where
+long-lasting movable allocations are made first, which do
+not go to CMA before the 50% mark is reached. When the
+non-CMA area fills up, these will get in the way of the
+kernel's unmovable allocations, and OOMs might occur.
 
-I think having a separate allocator that's better for each page size is
-not a good option tbh.
+Even always directing movable allocations to CMA first does
+not completely fix the issue. Take a scenario where there
+is a large amount of CMA through hugetlb_cma. All of that
+CMA has been taken up by 1G hugetlb pages. So, movable allocations
+end up in the non-CMA area. Now, the number of hugetlb 
+pages in the pool is lowered, so some CMA becomes available.
+At the same time, increased system activity leads to more unmovable
+allocations. Since the movable allocations are still in the non-CMA
+area, these kernel allocations might still fail.
+
+
+Additionally, CMA areas are allocated at the bottom of the zone.
+There has been some discussion on this in the past. Originally,
+doing allocations from CMA was deemed something that was best
+avoided. The arguments were twofold:
+
+1) cma_alloc needs to be quick and should not have to migrate a
+   lot of pages.
+2) migration might fail, so the fewer pages it has to migrate
+   the better
+
+These arguments are why CMA is avoided (until the 50% limit is hit),
+and why CMA areas are allocated at the bottom of a zone. But
+compaction migrates memory from the bottom to the top of a zone.
+That means that compaction will actually end up migrating movable
+allocations out of CMA and in to non-CMA, making the issue of
+OOMing for unmovable allocations worse.
+
+Solution: CMA balancing
+=======================
+
+First, this patch set makes the 50% threshold configurable, which
+is useful in any case. vm.cma_first_limit is the percentage of
+free CMA, as part of the total amount of free memory in a zone,
+above which CMA will be used first for movable allocations. 0 
+is always, 100 is never.
+
+Then, it creates an interface that allows for moving movable
+allocations from non-CMA to CMA. CMA areas opt in to taking part
+in this through a flag. Also, if the flag is set for a CMA area,
+it is allocated at the top of a zone instead of the bottom.
+
+Lastly, the hugetlb_cma code was modified to try to migrate
+movable allocations from non-CMA to CMA when a hugetlb CMA
+page is freed. Only hugetlb CMA areas opt in to CMA balancing,
+behavior for all other CMA areas is unchanged.
+
+Discussion
+==========
+
+This approach works when tested with a hugetlb_cma setup
+where a large number of 1G pages is active, but the number
+is sometimes reduced in exchange for larger non-hugetlb
+overhead.
+
+Arguments against this approach:
+
+* It's kind of heavy-handed. Since there is no easy way to
+  track the amount of movable allocations residing in non-CMA
+  pageblocks, it will likely end up scanning too much memory,
+  as it only knows the upper bound.
+* It should be more integrated with watermark handling in the
+  allocation slow path. Again, this would likely require 
+  tracking the number of movable allocations in non-CMA
+  pageblocks.
+
+Arguments for this approach:
+
+* Yes, it does more, but the work is restricted to the context
+  of a process that decreases the hugetlb pool, and is not
+  more work than allocating (e.g. freeing a hugetlb page from
+  the pool is now as expensive as allocating a new one).
+* hugetlb_cma is really the only situation where you have CMA
+  areas large enough to trigger the OOM scenario, so restricting
+  it to hugetlb should be good enough.
+
+Comments, thoughts?
+
+Frank van der Linden (12):
+  mm/cma: add tunable for CMA fallback limit
+  mm/cma: clean up flag handling a bit
+  mm/cma: add flags argument to init functions
+  mm/cma: keep a global sorted list of CMA ranges
+  mm/cma: add helper functions for CMA balancing
+  mm/cma: define and act on CMA_BALANCE flag
+  mm/compaction: optionally use a different isolate function
+  mm/compaction: simplify isolation order checks a bit
+  mm/cma: introduce CMA balancing
+  mm/hugetlb: do explicit CMA balancing
+  mm/cma: rebalance CMA when changing cma_first_limit
+  mm/cma: add CMA balance VM event counter
+
+ arch/powerpc/kernel/fadump.c         |   2 +-
+ arch/powerpc/kvm/book3s_hv_builtin.c |   2 +-
+ drivers/s390/char/vmcp.c             |   2 +-
+ include/linux/cma.h                  |  64 +++++-
+ include/linux/migrate_mode.h         |   1 +
+ include/linux/mm.h                   |   4 +
+ include/linux/vm_event_item.h        |   3 +
+ include/trace/events/migrate.h       |   3 +-
+ kernel/dma/contiguous.c              |  10 +-
+ mm/cma.c                             | 318 +++++++++++++++++++++++----
+ mm/cma.h                             |  13 +-
+ mm/compaction.c                      | 199 +++++++++++++++--
+ mm/hugetlb.c                         |  14 +-
+ mm/hugetlb_cma.c                     |  18 +-
+ mm/hugetlb_cma.h                     |   5 +
+ mm/internal.h                        |  11 +-
+ mm/migrate.c                         |   8 +
+ mm/page_alloc.c                      | 104 +++++++--
+ mm/vmstat.c                          |   2 +
+ 19 files changed, 676 insertions(+), 107 deletions(-)
+
+-- 
+2.51.0.384.g4c02a37b29-goog
+
 
