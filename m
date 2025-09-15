@@ -4,114 +4,188 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E27DCAC598
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 10:14:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E254FCAC598
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 10:22:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 36B9F8E0014; Mon, 15 Sep 2025 06:14:34 -0400 (EDT)
+	id 3592E8E0013; Mon, 15 Sep 2025 06:22:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EDF438E0015; Mon, 15 Sep 2025 06:14:33 -0400 (EDT)
+	id 3099E8E0012; Mon, 15 Sep 2025 06:22:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE78F8E0018; Mon, 15 Sep 2025 06:14:33 -0400 (EDT)
+	id 1D1028E0013; Mon, 15 Sep 2025 06:22:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 628BB8E0017
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 06:14:33 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1242211A5B4
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 10:14:33 +0000 (UTC)
-X-FDA: 83891075226.19.82F4142
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	by imf28.hostedemail.com (Postfix) with ESMTP id BAE92C0010
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 10:14:29 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	spf=pass (imf28.hostedemail.com: domain of zhangchunyan@iscas.ac.cn designates 159.226.251.84 as permitted sender) smtp.mailfrom=zhangchunyan@iscas.ac.cn
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 074FF8E0012
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 06:22:18 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9E31A5960E
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 10:22:17 +0000 (UTC)
+X-FDA: 83891094714.23.C572314
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 36159C0005
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 10:22:15 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JuR1f03T;
+	spf=pass (imf10.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757931271;
+	s=arc-20220608; t=1757931735;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fLuuFp06WURzUBfulwpd7KS014cbAelogi3ljOJAQl8=;
-	b=dYmXYuUxyySN11cVCfcbkHviBsMH1rjvxSDyI2Jah5uTMXb5EBb5DpoL6n2Pjiu/s4s+03
-	SLj87UYtjScICHjyGD4WMUqrAIv8EwXIaW52jgaSDmugksUQZy9+WSK3ZJsPeZ6TgEvQQw
-	mXbPYGh/UgFwkD0INYO0hw1IDrW7AF8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757931271; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=tfmpc2B5EjLEtaoBAE2WUDTDXpz+5rNlMUp/3jDUjRA=;
+	b=eJtuIWcMoGmTTYP+KqFyWPs4PJBSoXdDEjokpUbSiZS6H7MzgPrlrWx/RZYYgbL9RUOyhI
+	XNt2sdS4it837/dZt6cQiGHaDRLATPZby9p3J5KQJs+9JKrS3hMOJrz7zsEAhcjMissK1I
+	XOIclnq0dx8Fr7RSIcAdsV0IwGi8+58=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757931735; a=rsa-sha256;
 	cv=none;
-	b=s7+ARRfrjCWx5YM4uNVaHvV65tEecooMMFZrA0Xv9hAouorAlWcvQxNHTKk/MQ0P5ov3CH
-	z/Q2bxTdbKKIwbOHWvF6U2raumWSoGEpixGne4ds6X/RYCIuloeEcsh2jqz0AOpUTKbQ2v
-	JpTLo25zfMdcNjB0DlrwzW7Esy79k94=
+	b=wuYS5C6QNsoOQ0jkoAMVUqaPeJsPVIh++QoSIdywBtObJqmYXKWH4+zQw8XFs2b3LzmtUv
+	vr3kd12nMBq6HnInciwQst4d/ygRuHdG/o8R31u5MMcYwgul4LaBv67n2gMlpS4Th0oxO7
+	5WdHTkW+nFdBgEAI28GxCF3jmR+VJ1Q=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=none;
-	spf=pass (imf28.hostedemail.com: domain of zhangchunyan@iscas.ac.cn designates 159.226.251.84 as permitted sender) smtp.mailfrom=zhangchunyan@iscas.ac.cn;
-	dmarc=none
-Received: from ubt.. (unknown [210.73.43.101])
-	by APP-05 (Coremail) with SMTP id zQCowAD3lxHf5sdoHWn3Ag--.53429S4;
-	Mon, 15 Sep 2025 18:13:55 +0800 (CST)
-From: Chunyan Zhang <zhangchunyan@iscas.ac.cn>
-To: linux-riscv@lists.infradead.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Deepak Gupta <debug@rivosinc.com>,
-	Ved Shanbhogue <ved@rivosinc.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Peter Xu <peterx@redhat.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Chunyan Zhang <zhang.lyra@gmail.com>
-Subject: [PATCH V12 2/5] mm: userfaultfd: Add pgtable_supports_uffd_wp()
-Date: Mon, 15 Sep 2025 18:13:40 +0800
-Message-Id: <20250915101343.1449546-3-zhangchunyan@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250915101343.1449546-1-zhangchunyan@iscas.ac.cn>
-References: <20250915101343.1449546-1-zhangchunyan@iscas.ac.cn>
+	imf10.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JuR1f03T;
+	spf=pass (imf10.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1757931734;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=tfmpc2B5EjLEtaoBAE2WUDTDXpz+5rNlMUp/3jDUjRA=;
+	b=JuR1f03TUUrT87ZefD9iPUnLQGJj5S3EzEZBAcWFrOKT2e66FeFj5Ps0wuT5XkyyQpvOFJ
+	QuFhr9cYNIlPlSFFbvzQu8mvFYcF8zsnCtwYHrvVpSC6KISRNB+HxHrmlMhK0GP3IQFBlo
+	vpkNvrzH2upjd5clhpY71Km+D3THT+g=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-533-F_RPiL8ZNdmsQYMCF8atOA-1; Mon, 15 Sep 2025 06:22:13 -0400
+X-MC-Unique: F_RPiL8ZNdmsQYMCF8atOA-1
+X-Mimecast-MFC-AGG-ID: F_RPiL8ZNdmsQYMCF8atOA_1757931732
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-45b9a856d58so35764085e9.0
+        for <linux-mm@kvack.org>; Mon, 15 Sep 2025 03:22:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757931732; x=1758536532;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=tfmpc2B5EjLEtaoBAE2WUDTDXpz+5rNlMUp/3jDUjRA=;
+        b=duLMv0dGhS73bYLsOn8QiIgHrfL2qQ8ZLRC6iL08kDYX8Cu8QMOtKTXL7eknVSd++1
+         rBkdGY7y4X9Vxz9UW6Wpuhcn5+KMnXiAM0dEAFeiMEGtwHTPqKBCa3PhKcHuiZWayQQE
+         2uK64T1gzoEI/+OHvc/8qRBf2mlLMi0Pa1HRz/R5lJU0oEq/cKZVi5sZjU2XJKGwt/K7
+         d0LbRFb4XoN7/PSqChvIlVKjza2I3WvL/SoL0AfhVlfnEiNike+5rUVQ+uiTvX3TLdWZ
+         rH+wV5dq+5s4ZygULAPx5FA5M7BDq4ALFyJVLLxRRX2PSLDMY0jviTtZ+9enCyCA1+b8
+         IiJQ==
+X-Gm-Message-State: AOJu0YwW9G70VwvhFDkDXqaCbByM+tHhh4krS9dLF6DGrrChJPmteO82
+	ru5chGVvqROijj9CfwMoeG9lcM1GagnfHgD27xlO2ddgufNOO4VTzo04+QqlYsCzDYecTZlNN/5
+	a2LxBlE/kWOr6FJhLn29lg3jjjYDGUIhXgpsv1DfSr+8/BrYqRC4z
+X-Gm-Gg: ASbGncsiu9PHg7myjBB8zpMRCEJRS/bREwCWZMPZONGiHdCSKAYBxJ1rLChTm+YUYk/
+	hsre/d2FMqhKDmW1pTCMkwHE5vPaZs7otJDN75xrYoUWrLAPGu1XWA2WdkkdOcskUdWsWA50zVJ
+	X9NJgEtTmvaVLcFPsuhH35oPXlUNx+HpNvPPWXTb6/+TTP6HgU6C5V1zkspnu3824ifVrOQgZto
+	Eawpkc1h2gRh1wF3S1/Pv9dM5iKh+ggEhIaP35IBqmibSdJYrHfzguHhmZq/oX6MlMEEmveH1WZ
+	0sAVaMQCPe176KzcvEUMHl9HFFGeC/WG7IpJEGweE65qsJ2qElipG6EkFwalfv043h+MJUjZEdf
+	p+VCQRiHfSrDSecSH+LJp3vIqYDfpXCKXeOOeuAe6pKX9m5Ek+ubE6VwlwtLQd4Xpg34=
+X-Received: by 2002:a05:600c:1387:b0:45c:17a:4c98 with SMTP id 5b1f17b1804b1-45f211f8ed1mr95801205e9.19.1757931732009;
+        Mon, 15 Sep 2025 03:22:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEy+yAeVMTpk3VfeLuvmpLt8Pnw7jlIdxjQEeHLZ9ljjFZymYPOAoBhKJl9mxQWLD5TBFtZ/w==
+X-Received: by 2002:a05:600c:1387:b0:45c:17a:4c98 with SMTP id 5b1f17b1804b1-45f211f8ed1mr95800505e9.19.1757931731471;
+        Mon, 15 Sep 2025 03:22:11 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f18:f900:e0ae:65d5:8bf8:8cfd? (p200300d82f18f900e0ae65d58bf88cfd.dip0.t-ipconnect.de. [2003:d8:2f18:f900:e0ae:65d5:8bf8:8cfd])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e76078708bsm17596191f8f.15.2025.09.15.03.22.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 15 Sep 2025 03:22:10 -0700 (PDT)
+Message-ID: <cd8e7f1c-a563-4ae9-a0fb-b0d04a4c35b4@redhat.com>
+Date: Mon, 15 Sep 2025 12:22:07 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v11 00/15] khugepaged: mTHP support
+To: Kiryl Shutsemau <kas@kernel.org>, Nico Pache <npache@redhat.com>
+Cc: linux-mm@kvack.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ ziy@nvidia.com, baolin.wang@linux.alibaba.com, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, ryan.roberts@arm.com, dev.jain@arm.com,
+ corbet@lwn.net, rostedt@goodmis.org, mhiramat@kernel.org,
+ mathieu.desnoyers@efficios.com, akpm@linux-foundation.org,
+ baohua@kernel.org, willy@infradead.org, peterx@redhat.com,
+ wangkefeng.wang@huawei.com, usamaarif642@gmail.com, sunnanyong@huawei.com,
+ vishal.moola@gmail.com, thomas.hellstrom@linux.intel.com,
+ yang@os.amperecomputing.com, aarcange@redhat.com, raquini@redhat.com,
+ anshuman.khandual@arm.com, catalin.marinas@arm.com, tiwai@suse.de,
+ will@kernel.org, dave.hansen@linux.intel.com, jack@suse.cz, cl@gentwo.org,
+ jglisse@google.com, surenb@google.com, zokeefe@google.com,
+ hannes@cmpxchg.org, rientjes@google.com, mhocko@suse.com,
+ rdunlap@infradead.org, hughd@google.com, richard.weiyang@gmail.com,
+ lance.yang@linux.dev, vbabka@suse.cz, rppt@kernel.org, jannh@google.com,
+ pfalcato@suse.de
+References: <20250912032810.197475-1-npache@redhat.com>
+ <ppzgohmkll7dbf2aiwhw7f4spf6kxjtwwe3djkx26pwy4ekrnd@mgeantq5sn2z>
+ <d0e81c75-ad63-4e37-9948-3ae89bc94334@redhat.com>
+ <CAA1CXcA+pb5KvEnJJqdf1eSjaFiBZ82MRB+KDmyhj3DbiQqOxg@mail.gmail.com>
+ <enrgrocqajwu5d3x34voghja7pbvau45oobxgabawrly44ld4u@ahch3xn6rtq5>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <enrgrocqajwu5d3x34voghja7pbvau45oobxgabawrly44ld4u@ahch3xn6rtq5>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: CdRPYi1W3KR-mT5iCmZoBUgsiIJuBpBVH-N57z9mx30_1757931732
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowAD3lxHf5sdoHWn3Ag--.53429S4
-X-Coremail-Antispam: 1UD129KBjvJXoW3Gr1DGFWrJr1DWr15Xw15XFb_yoWxZFyUpF
-	4rGw43Xw4ktF97Ga93JF48C3s8Zw4xGFyDGryF9a18A3W3t39YvFyFkF1rKr97Jr4kWry3
-	tF17trZ3Cr42vF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUmvb7Iv0xC_KF4lb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I2
-	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI
-	8067AKxVWUXwA2048vs2IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28CjxkF
-	64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW8JVW5JwA2z4x0Y4vE2Ix0cI8IcV
-	CY1x0267AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIE
-	c7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I
-	8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCF
-	s4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACI402YVCY1x02628vn2kIc2xKxwCY1x
-	0262kKe7AKxVW8ZVWrXwCY02Avz4vE14v_Gw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC
-	6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWw
-	C2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_
-	JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26F4j6r4UJwCI42IY6xAIw20EY4v20xvaj40_Jr
-	0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUv
-	cSsGvfC2KfnxnUUI43ZEXa7IUnaXdUUUUUU==
-X-Originating-IP: [210.73.43.101]
-X-CM-SenderInfo: x2kd0wxfkx051dq6x2xfdvhtffof0/1tbiCRAGB2jHtda7WAAAs3
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: BAE92C0010
-X-Stat-Signature: x5jb9n8eqt336p4dt6sbd9pe96r5xadq
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 36159C0005
+X-Stat-Signature: oqph6fgism8mrgmeidt11ft7kdwnc4gd
 X-Rspam-User: 
-X-HE-Tag: 1757931269-184524
-X-HE-Meta: U2FsdGVkX18+DrrwGniEtOg2vDeLyIqvAsgUPbmVOm5xYMCgjanLOzWyyRxTCtkT8cflTc8sYc8IVuEHcb88VxwxDXxX7ay57jAYWPAALuwwme23CA73UYY5lnTZtjtX4S2msCH/0HvCO8QB55E5B7ju5vEs5DZhAkN2TeIAv5leaBJqTzf8VJzuVMKrJI/ZgQW1195/hMwK6O1ojTvjLavOFl9uDFOFxvUZXhvp1bgPH5WYHOWhwLC26urhtzlkYVLVJICNAPCuk63hLebl6KpJZ7UeF/7viYx4T1Nr55HDk2JM+p45qo6bq7iWAhxuanZPer8T4fSqOEXkGlWuFB5y6tFyp1CkWuBZ3ysREKSv9glYWdhtRHJD/GLlZrrQ19o1VQRpBCvCOlSv21Z4I+kcZq1ESTYcMWDmduBuxGfHL3CgrPBQnwZGYc8g69OlWB+dQubKi76hSHG1GIk0NO85Av9WB/GC+E/jU0p/ZNBMl1z7GhePBhaIJsAmjn0+Lu5SCzo6mVHUumOEnWRIlUJFwKXS2s4znxVUtOIrR5cwb48sreT8tmOxNIBvNEOmurYF0q21MHrRw2rnGVqjPXqrhoaOpY7Lm+OId1KnXPxTmrNjCiNIEhooPBMExa6KPGk9qmchgzncBdU/c3lub2IBkxgvyLvwdA15qbXuIkXX+8PUDt5RAQORZQP0jYF+kl50iOkX3X1yWHvuTz5CsHLqzFu2gEOUEQtb01w/hgPiJJWZYILdZix3qu/PZX2pkNuo8RfvDf5ILlE1OWlA6QSx+zoB2xiGPDlffC+CsxGzy5wh73J5alT3EUO7LCUHzY/yVrL/OmNnga7K+ruNx9obAPUdzvAm6Sc62hxGK8Qt48Mt1+m30p4Gldo1ajFryb4BEe7q1jRf0GyfIxhiueUN1trx372OGVagQDuwM3VTsAPs+CaNnOtKu3rrAQO9EhMAp8a4xwexFfNAjHr
- zv+RFPo3
- icpC/eQCeDzWpcZvZKEA35ElbA0TR4DKJ/rbJhWigiJttrOME8CFwr9aAIH/7DhZJWbgGDVIWIqHt24+y0jXGwMj2/s/bYW1MFArOasUDEcD1HtBC3GAz9+mHGNLs3ExQkKVVaMzF4mjzczR5Koxs+DFh1EYYrxuYCztn7CtLs1wlxVlvVy3Bl/QZttQeqWfEkgblS9efJzSTwpcU07UhzeMos4AabBr5iVdMY+qCy5J5aPyofaw/sJeZs9V4jKcO/HNTUlFbCSYEVSZnq/1StDZWgPSlrtBeAYNXGyXwzhdSwmQnrqqohzh6WW7idrtPLn7T
+X-HE-Tag: 1757931735-131520
+X-HE-Meta: U2FsdGVkX18F3GGMC5fNdexKa30BJQwj1ulsbBHrRUb/UIaG0Pl4MyqQmpbzRG/QNTKDVeDfUOHAICVJBS6nNxw4sf1SSEDsIv6ds4mVBetPeXDI0WCN5UxmpZVJTT3T1e5BTFkpfDEMjzQrl3x/m9RQrLQBqIsb7/4bC9SVsKs/x2qBmC/RXutJfO3EJRrieBIVhZaEQ4gW2HJ5c6gjiE7Jyvj14lsmV6giN+4NbhA+IJTKwq+uTtoMLVl2voymUoZTl7XdnOougSo/1AkyTE7AdaVWtdrrIasF5Gs1+QFuRsJTJ2Jc16HaTqydmZPTWDvNPazGxhT0zAUbzmIhNLp/cOoi07tW1fICqydFRfYMAPGzsmFPbvz6yKXLHIsQPXwsaFrrTeSUGKqGm+60ZNjofNPhgDdxOqaGaWS7uOknPtIvXe7YEGDa3xz0EwtNchGQelwLFFA4oaXTePsXtlD6miHEELSIQfWnt96gNnnBFczVmI7TtqWgzpCge3ArZnhGl8RWhK2eoAvuIo54z2DDozvm6A39EKvgUWPhCgz0IKiLj9P1ylwQRNMsqFAyhkpeN2Ql5RKXywnAaBRWpJ7pHckQAdGgdA9tEuOglnBLsYIjusq+OO50uYO3a4GIAo+Z3CDGrWVVqo4Vzear0lcHy8V4hY4XoHjkNO12zBfL0B3Mxr1HJJW9q8+Xi9KiDKNs8ktq0pxh3isLd6SKg8O+O2IF2eZxagfGjZz9Bo97JCHAW7LY2Qy8rMla7tWVMD+1bk6Tt501Ji80Q+qaU2EoQ9c5DyRj4hiidBawD3D8fiIpXuSsy/rCuQf6mOTQVRvCum7UvRPxPILDuIee5JBLN7FfGfSNp3PTLAHds0p5VyAehHlyuFa21u14RHIIMAsZbyyn3GArsT30/2rZb3XAJ9CtseApR5k+8MgDxN2lg1pjDBcj2aWQw2YfFsAiljwf3rBwzsnZY8Qhigb
+ IDFqU/6m
+ vg/pHqt3IQKOICFgyJe3TpY20jcSSmjMZDHLVztUQVKvltgzzXT1GeKyMcGrtDrE6xVgxUM+ab4REDuqucykT21UB+5SjfFkJUdPgc304JW1xedIf5mzSx1KumwLPUqbZKR1ObjDksXMXSDoEfz/DFZ9nE+G4oe5ILsA5ojTEc6+4ZY7nw/02aiR4h7LFSD7jSqWv8yrTj+rT7uHiSe8DQPxFIHq2xW7u2/+aaNkCPbk6h4kFqGGy+adG5LUt6/K3C5hLpKaDGcxy+O4u4qSqEnHOhu2qCzPpWpozu1rl9pJXik44C9rL9RhClP0/mhsGS49NWgERoAeJFRKxGPRA/l3rEZmGL6F9HuwJFI4LBPIBKpS/6abnqiyazhMz9EsZGu+NNbhdFzINc8s3tjRjTVveaGoH3+yiGRCdsLEux4vggzdvCCID3YzC/wG33cXv+AWUKG3onh3mTfIDDIr4dal+soWmgdEX9NlZKnasozjCNffXof2BY7EhmB1jQUp4XE+e
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,222 +194,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Some platforms can customize the PTE/PMD entry uffd-wp bit making
-it unavailable even if the architecture provides the resource.
-This patch adds a macro API that allows architectures to define their
-specific implementations to check if the uffd-wp bit is available
-on which device the kernel is running.
+On 15.09.25 11:22, Kiryl Shutsemau wrote:
+> On Fri, Sep 12, 2025 at 05:31:51PM -0600, Nico Pache wrote:
+>> On Fri, Sep 12, 2025 at 6:25 AM David Hildenbrand <david@redhat.com> wrote:
+>>>
+>>> On 12.09.25 14:19, Kiryl Shutsemau wrote:
+>>>> On Thu, Sep 11, 2025 at 09:27:55PM -0600, Nico Pache wrote:
+>>>>> The following series provides khugepaged with the capability to collapse
+>>>>> anonymous memory regions to mTHPs.
+>>>>>
+>>>>> To achieve this we generalize the khugepaged functions to no longer depend
+>>>>> on PMD_ORDER. Then during the PMD scan, we use a bitmap to track individual
+>>>>> pages that are occupied (!none/zero). After the PMD scan is done, we do
+>>>>> binary recursion on the bitmap to find the optimal mTHP sizes for the PMD
+>>>>> range. The restriction on max_ptes_none is removed during the scan, to make
+>>>>> sure we account for the whole PMD range. When no mTHP size is enabled, the
+>>>>> legacy behavior of khugepaged is maintained. max_ptes_none will be scaled
+>>>>> by the attempted collapse order to determine how full a mTHP must be to be
+>>>>> eligible for the collapse to occur. If a mTHP collapse is attempted, but
+>>>>> contains swapped out, or shared pages, we don't perform the collapse. It is
+>>>>> now also possible to collapse to mTHPs without requiring the PMD THP size
+>>>>> to be enabled.
+>>>>>
+>>>>> When enabling (m)THP sizes, if max_ptes_none >= HPAGE_PMD_NR/2 (255 on
+>>>>> 4K page size), it will be automatically capped to HPAGE_PMD_NR/2 - 1 for
+>>>>> mTHP collapses to prevent collapse "creep" behavior. This prevents
+>>>>> constantly promoting mTHPs to the next available size, which would occur
+>>>>> because a collapse introduces more non-zero pages that would satisfy the
+>>>>> promotion condition on subsequent scans.
+>>>>
+>>>> Hm. Maybe instead of capping at HPAGE_PMD_NR/2 - 1 we can count
+>>>> all-zeros 4k as none_or_zero? It mirrors the logic of shrinker.
+>>>>
+>>>
+>>> I am all for not adding any more ugliness on top of all the ugliness we
+>>> added in the past.
+>>>
+>>> I will soon propose deprecating that parameter in favor of something
+>>> that makes a bit more sense.
+>>>
+>>> In essence, we'll likely have an "eagerness" parameter that ranges from
+>>> 0 to 10. 10 is essentially "always collapse" and 0 "never collapse if
+>>> not all is populated".
+>> Hi David,
+>>
+>> Do you have any reason for 0-10, I'm guessing these will map to
+>> different max_ptes_none values.
+>> I suggest 0-5, mapping to 0,32,64,128,255,511
+> 
+> That's too x86-64 specific.
+> 
+> And the whole idea is not to map to directly, but give kernel wiggle
+> room to play.
 
-Signed-off-by: Chunyan Zhang <zhangchunyan@iscas.ac.cn>
----
- fs/userfaultfd.c                   | 22 +++++++++++-----------
- include/asm-generic/pgtable_uffd.h | 17 +++++++++++++++++
- include/linux/mm_inline.h          | 10 ++++++++--
- include/linux/userfaultfd_k.h      | 27 +++++++++++++--------------
- mm/memory.c                        |  6 ++++--
- 5 files changed, 53 insertions(+), 29 deletions(-)
+Initially we will start out simple and map it directly. But yeah, the 
+idea is to give us some more room later.
 
-diff --git a/fs/userfaultfd.c b/fs/userfaultfd.c
-index 54c6cc7fe9c6..e41736ffa202 100644
---- a/fs/userfaultfd.c
-+++ b/fs/userfaultfd.c
-@@ -1270,9 +1270,9 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
- 	if (uffdio_register.mode & UFFDIO_REGISTER_MODE_MISSING)
- 		vm_flags |= VM_UFFD_MISSING;
- 	if (uffdio_register.mode & UFFDIO_REGISTER_MODE_WP) {
--#ifndef CONFIG_HAVE_ARCH_USERFAULTFD_WP
--		goto out;
--#endif
-+		if (!pgtable_supports_uffd_wp())
-+			goto out;
-+
- 		vm_flags |= VM_UFFD_WP;
- 	}
- 	if (uffdio_register.mode & UFFDIO_REGISTER_MODE_MINOR) {
-@@ -1980,14 +1980,14 @@ static int userfaultfd_api(struct userfaultfd_ctx *ctx,
- 	uffdio_api.features &=
- 		~(UFFD_FEATURE_MINOR_HUGETLBFS | UFFD_FEATURE_MINOR_SHMEM);
- #endif
--#ifndef CONFIG_HAVE_ARCH_USERFAULTFD_WP
--	uffdio_api.features &= ~UFFD_FEATURE_PAGEFAULT_FLAG_WP;
--#endif
--#ifndef CONFIG_PTE_MARKER_UFFD_WP
--	uffdio_api.features &= ~UFFD_FEATURE_WP_HUGETLBFS_SHMEM;
--	uffdio_api.features &= ~UFFD_FEATURE_WP_UNPOPULATED;
--	uffdio_api.features &= ~UFFD_FEATURE_WP_ASYNC;
--#endif
-+	if (!pgtable_supports_uffd_wp())
-+		uffdio_api.features &= ~UFFD_FEATURE_PAGEFAULT_FLAG_WP;
-+
-+	if (!uffd_supports_wp_marker()) {
-+		uffdio_api.features &= ~UFFD_FEATURE_WP_HUGETLBFS_SHMEM;
-+		uffdio_api.features &= ~UFFD_FEATURE_WP_UNPOPULATED;
-+		uffdio_api.features &= ~UFFD_FEATURE_WP_ASYNC;
-+	}
- 
- 	ret = -EINVAL;
- 	if (features & ~uffdio_api.features)
-diff --git a/include/asm-generic/pgtable_uffd.h b/include/asm-generic/pgtable_uffd.h
-index 828966d4c281..200da65262a8 100644
---- a/include/asm-generic/pgtable_uffd.h
-+++ b/include/asm-generic/pgtable_uffd.h
-@@ -1,6 +1,23 @@
- #ifndef _ASM_GENERIC_PGTABLE_UFFD_H
- #define _ASM_GENERIC_PGTABLE_UFFD_H
- 
-+/*
-+ * Some platforms can customize the uffd-wp bit, making it unavailable
-+ * even if the architecture provides the resource.
-+ * Adding this API allows architectures to add their own checks for the
-+ * devices on which the kernel is running.
-+ * Note: When overriding it, please make sure the
-+ * CONFIG_HAVE_ARCH_USERFAULTFD_WP is part of this macro.
-+ */
-+#ifndef pgtable_supports_uffd_wp
-+#define pgtable_supports_uffd_wp()	IS_ENABLED(CONFIG_HAVE_ARCH_USERFAULTFD_WP)
-+#endif
-+
-+static __always_inline bool uffd_supports_wp_marker(void)
-+{
-+	return pgtable_supports_uffd_wp() && IS_ENABLED(CONFIG_PTE_MARKER_UFFD_WP);
-+}
-+
- #ifndef CONFIG_HAVE_ARCH_USERFAULTFD_WP
- static __always_inline int pte_uffd_wp(pte_t pte)
- {
-diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-index 89b518ff097e..d6526a7f034b 100644
---- a/include/linux/mm_inline.h
-+++ b/include/linux/mm_inline.h
-@@ -570,9 +570,15 @@ static inline bool
- pte_install_uffd_wp_if_needed(struct vm_area_struct *vma, unsigned long addr,
- 			      pte_t *pte, pte_t pteval)
- {
--#ifdef CONFIG_PTE_MARKER_UFFD_WP
- 	bool arm_uffd_pte = false;
- 
-+	/*
-+	 * Some platforms can customize the PTE uffd-wp bit, making it unavailable
-+	 * even if the architecture allows providing the PTE resource.
-+	 */
-+	if (!uffd_supports_wp_marker())
-+		return false;
-+
- 	/* The current status of the pte should be "cleared" before calling */
- 	WARN_ON_ONCE(!pte_none(ptep_get(pte)));
- 
-@@ -601,7 +607,7 @@ pte_install_uffd_wp_if_needed(struct vm_area_struct *vma, unsigned long addr,
- 			   make_pte_marker(PTE_MARKER_UFFD_WP));
- 		return true;
- 	}
--#endif
-+
- 	return false;
- }
- 
-diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
-index c0e716aec26a..c19435863076 100644
---- a/include/linux/userfaultfd_k.h
-+++ b/include/linux/userfaultfd_k.h
-@@ -228,15 +228,14 @@ static inline bool vma_can_userfault(struct vm_area_struct *vma,
- 	if (wp_async && (vm_flags == VM_UFFD_WP))
- 		return true;
- 
--#ifndef CONFIG_PTE_MARKER_UFFD_WP
- 	/*
- 	 * If user requested uffd-wp but not enabled pte markers for
- 	 * uffd-wp, then shmem & hugetlbfs are not supported but only
- 	 * anonymous.
- 	 */
--	if ((vm_flags & VM_UFFD_WP) && !vma_is_anonymous(vma))
-+	if (!uffd_supports_wp_marker() && (vm_flags & VM_UFFD_WP) &&
-+	    !vma_is_anonymous(vma))
- 		return false;
--#endif
- 
- 	/* By default, allow any of anon|shmem|hugetlb */
- 	return vma_is_anonymous(vma) || is_vm_hugetlb_page(vma) ||
-@@ -436,28 +435,26 @@ static inline bool userfaultfd_wp_use_markers(struct vm_area_struct *vma)
- 
- static inline bool pte_marker_entry_uffd_wp(swp_entry_t entry)
- {
--#ifdef CONFIG_PTE_MARKER_UFFD_WP
-+	if (!uffd_supports_wp_marker())
-+		return false;
-+
- 	return is_pte_marker_entry(entry) &&
--	    (pte_marker_get(entry) & PTE_MARKER_UFFD_WP);
--#else
--	return false;
--#endif
-+	       (pte_marker_get(entry) & PTE_MARKER_UFFD_WP);
- }
- 
- static inline bool pte_marker_uffd_wp(pte_t pte)
- {
--#ifdef CONFIG_PTE_MARKER_UFFD_WP
- 	swp_entry_t entry;
- 
-+	if (!uffd_supports_wp_marker())
-+		return false;
-+
- 	if (!is_swap_pte(pte))
- 		return false;
- 
- 	entry = pte_to_swp_entry(pte);
- 
- 	return pte_marker_entry_uffd_wp(entry);
--#else
--	return false;
--#endif
- }
- 
- /*
-@@ -466,7 +463,9 @@ static inline bool pte_marker_uffd_wp(pte_t pte)
-  */
- static inline bool pte_swp_uffd_wp_any(pte_t pte)
- {
--#ifdef CONFIG_PTE_MARKER_UFFD_WP
-+	if (!uffd_supports_wp_marker())
-+		return false;
-+
- 	if (!is_swap_pte(pte))
- 		return false;
- 
-@@ -475,7 +474,7 @@ static inline bool pte_swp_uffd_wp_any(pte_t pte)
- 
- 	if (pte_marker_uffd_wp(pte))
- 		return true;
--#endif
-+
- 	return false;
- }
- 
-diff --git a/mm/memory.c b/mm/memory.c
-index 0ba4f6b71847..607e14177412 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -1465,7 +1465,9 @@ zap_install_uffd_wp_if_needed(struct vm_area_struct *vma,
- {
- 	bool was_installed = false;
- 
--#ifdef CONFIG_PTE_MARKER_UFFD_WP
-+	if (!uffd_supports_wp_marker())
-+		return false;
-+
- 	/* Zap on anonymous always means dropping everything */
- 	if (vma_is_anonymous(vma))
- 		return false;
-@@ -1482,7 +1484,7 @@ zap_install_uffd_wp_if_needed(struct vm_area_struct *vma,
- 		pte++;
- 		addr += PAGE_SIZE;
- 	}
--#endif
-+
- 	return was_installed;
- }
- 
+I had something logarithmic in mind which would roughly be (ignoring the 
+the weird -1 for simplicity and expressing it as "used" instead of 
+none-or-zero)
+
+0 -> ~100% used (~0% none)
+1 -> ~50% used (~50% none)
+2 -> ~25% used (~75% none)
+3 -> ~12.5% used (~87.5% none)
+4 -> ~11.25% used (~88,75% none)
+...
+10 -> ~0% used (~100% none)
+
+Mapping that to actual THP sizes (#pages in a thp) on an arch will be easy.
+
 -- 
-2.34.1
+Cheers
+
+David / dhildenb
 
 
