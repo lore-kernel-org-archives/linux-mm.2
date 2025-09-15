@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA1E7CAC587
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 01:58:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 270F3CAC587
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 01:58:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2541B8E000A; Sun, 14 Sep 2025 21:58:16 -0400 (EDT)
+	id 2CBE18E0001; Sun, 14 Sep 2025 21:58:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 205038E0001; Sun, 14 Sep 2025 21:58:16 -0400 (EDT)
+	id 205018E000B; Sun, 14 Sep 2025 21:58:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 07EBB8E000A; Sun, 14 Sep 2025 21:58:15 -0400 (EDT)
+	id 0F1B08E0001; Sun, 14 Sep 2025 21:58:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D74B88E0001
-	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 21:58:15 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9D44713AC56
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 01:58:15 +0000 (UTC)
-X-FDA: 83889824550.22.B28B2B2
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E4C508E0001
+	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 21:58:16 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9D14186332
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 01:58:16 +0000 (UTC)
+X-FDA: 83889824592.15.31E1D2D
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 1F2A5160002
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 01:58:13 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DvG8ia4q;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf25.hostedemail.com (Postfix) with ESMTP id 1C0CFA0004
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 01:58:14 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZSIXbF3H;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757901494;
+	s=arc-20220608; t=1757901495;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MIaS1XYBqGgcMgz3YvX9sFTiJ5xxVeyVMlnnDJ4d+lg=;
-	b=e58synbqurXmylVWX00wiuZEiXGyLKCf2DbvmMuSDb/xDk+k+2Ecbfo5b0uZs0/DGKRhM2
-	WDsoqiXpfLKBexM7qUPPQ9W+9ftb5eFolPdEgfr88izwVBazimv3AooZDmWG9LzzpqBWEA
-	U3hu3HSsRgafhtJpnjXthJsEFpRM0C8=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DvG8ia4q;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757901494; a=rsa-sha256;
+	bh=HOqbBgATsgkiNjljOq0z+jAMYENNMSO380m9PEMhE7E=;
+	b=vivXcELNxFypxWWDA50oNmn6sJlaxKrOckWGuYvG1bS7IiSlI3gKI+4bVmi7r43eWAChcV
+	mEnD7DEEujyuh7hQ9S14Gck8p1XNWq4jYzquokiZuFoR3i8HLvnhkkaj7LglD7xAJQCQxA
+	HqhKnjK+nU/835f2InuBzowTO5tQqw8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757901495; a=rsa-sha256;
 	cv=none;
-	b=EJWaUeqNclH6g+JCJDs0iPCin7+R3FxzFuaYT7Fr0F0dB+S9LywC3DA0sFMNBrJxCubg7C
-	wKUcvM6oXLbALA7CegWGxjTS403T7Yc07AsGuMQzdNYRxXLGCo91fKh4l+ddGZNX3gk6uG
-	O+BqtJ1125DPKPKP8MtDkvVza6auaVQ=
+	b=J+t9wJd4TOHYRlh+KQIXS3VN7KZqN8W361HC3XjHWgt+mB8A6Z7WLL9rlKJJTTsqKWBq19
+	hewcC8jJfGJL0PbDTNKajKNUhKPcQpXmjBs16sIFn6bQNfDAwenO0m9834E6PXnM2VRf54
+	8gQGdDnJ99MLoxqlu4D4A4QyyrZWYzM=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZSIXbF3H;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 88279601D2;
-	Mon, 15 Sep 2025 01:58:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C31CC4CEF0;
-	Mon, 15 Sep 2025 01:58:13 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 93F86601F7;
+	Mon, 15 Sep 2025 01:58:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 364D4C4CEF7;
+	Mon, 15 Sep 2025 01:58:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757901493;
-	bh=LPyFMKB43zMlbHRsGJfXl3nVz2GmOh2C7PouLJ938HM=;
+	s=k20201202; t=1757901494;
+	bh=lwwcDoDvfbiO59qIbS3KSPJx7Imyoi3zWNGgCLtUpbA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DvG8ia4qP38O3NEYaj64HpSn7dn2Ni8E73J+n/o/qiKCt9lL2wdZ+8AeAegbzg4gW
-	 aR7iX7LuMoaliorim7TJQ42HGMNIJ6cPJp3hfa5IBm5HBYXqRxR7DKqmbwOALUnrJt
-	 A6JP1Fgen11hlDQhrUlLmbVcKU1QP2azOug0XQUf5NmMeegrjy+5DXCIqFuc2AfbuV
-	 zWxau/gxB1FW9xmbOU+xmQkkf6HWLv59i4K0Iky1VVflnkJm58lkyCUMQpBNFNkLKQ
-	 qXIkN17/to6ZB2MUz8VXNlwIgQQPb+K2Cno1KtZx5r1RmPWggl9i7GmiHUzmymcTN8
-	 Jz70PbzrgdzTg==
+	b=ZSIXbF3HQeUNsua7xhtgFRxmM6uwD27cHJsPA39zVIJ/+b3Ow/J4bj0OOcEX4fJ4G
+	 Y+XpVVmglbAYHNkFqCHnhQU18w8/VG3Q5/hEmJDoRjpNFBW7URJ1069oRmhd0/Ia2/
+	 Z7ZW8nqBQwozDkEZrLk6VcJUsvdzrDCpNlO7raHromB0ltWaAI7bx+bEUojsG91SS4
+	 F4ZcgZ3YDVafcHivFxGBBPSvOV2/pmgQsoRvkR3RR+OZCtezxsKQLiFqLDhWyQVM0g
+	 jrnAT9GqKej3Z0pySZC0hFxbsYR8YnNAdBHE8m0HBH9rA/NoXUYwDzymi63vEshrw7
+	 J4p0cL7kj7BXw==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -70,22 +70,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	kernel-team@meta.com,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 1/6] mm/damon/core: reset age if nr_accesses changes between non-zero and zero
-Date: Sun, 14 Sep 2025 18:58:02 -0700
-Message-Id: <20250915015807.101505-2-sj@kernel.org>
+Subject: [PATCH 2/6] mm/damon/core: set effective quota on first charge window
+Date: Sun, 14 Sep 2025 18:58:03 -0700
+Message-Id: <20250915015807.101505-3-sj@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250915015807.101505-1-sj@kernel.org>
 References: <20250915015807.101505-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1F2A5160002
-X-Rspamd-Server: rspam05
-X-Stat-Signature: qmtchgakdu5h1k5xqci3wswe9qr6wxx6
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 1C0CFA0004
+X-Stat-Signature: 3scc6inwinxo6hatcahpwrdfpgfk4utu
 X-Rspam-User: 
-X-HE-Tag: 1757901493-163454
-X-HE-Meta: U2FsdGVkX18FrIraeADk+0GpScnYp9icUwIu3zMiTy+h/LT0ExNOR0looswQhFoNaZEmj2ODVTf9T9xj1KSZa3uwqM5sete7WEPYeqk9kqOunvQ/XsVQOLOdJNyk0kzFmdpt9Bv8st4Xcb9fBqgDAMTQPnLZpOAW+UBTVUkqUHvNDofTiO8XW5rrlLxN2qBfFKsBEW5sRFSrAyCfcFU+AYYVVjJQQHpWXXyXZkFFTLdgmWRaBhmkqUZUlNtLepzzX7rMtQDurhNo5HoFEE2dERTG4iDsRGuC0LkSps7oOgOrhYpMZpz/UPW7EBEOfLyCkrBLHgilt0PGYU6wJa/DNUk/HxF3XBXOem3aqfa1Iwg3grJBsrlF7mmVe2lq96H4V4UXRR7ZnCIo+hT2b++rX0b4BdoE6LUH+OPJvvSmKAeuF+z8QeNz/nTd4quIiGoVSWiBvpZ4XE3WNqQNzSAUQ09QegesdmrRX5N718uwqlPlqA/1kwx7WvO9o3gR7MP2mqqbiCpIGt0lAUqYbf/Ag3DKJZlWs8Mp6I/hYHOZ1HTMzIlNrKKGuKVIi6NqHJWCdQMkbYQ5IqElk95E8Gk1ZOJESuGpstBzu9ZtTgCdyFOidvDSByRE8cgAfVM8llw3uP0MyHBpLgFFX40LZzO/jch99Yf1xx5oGAGElPVl7mgAelkw1WUKqMcZ39MtjEZrvsf2ZwYfsQ5+qEEYvmd+iyZ274dGzVsZvsvMSFSlpBIyxKZNCfTT2aCilyFRgggHkh4rr8JlpSxt1GzvBArq0cLgQvqWAkAFxOPzq2w0H79INBPrtB/tNnGJJdDVIGE78ptZdycxq84Ibigz71yBBWdkhauG9z8iysNX996ZeifvAvvlA7dvrpNGqR6wRJHB2eFuGBGvZhGySWOEhYCn1vNXlcZyzbfh7B4XR6YLLk3PAtoHaus1bGMuRv611NiAQtKQPwd6aJVWMwdsLcM
- SxJnMq3a
- Yb+ohiWzCriOaCQW0bZsR4kl6wtAk4QUwxh6tXWaQWj1b7/7atN2YEq9hXGcXt0klpgGaq5ca901KlF41Qk0tBElce5dmP4q2YPqeyb1kr90Z0Z2vW2H01tS9/mygHxUoMItrGIRhjd7B7HWeciI7IZ9NNqaS1BTYI50GZcViz5GPuPBD3vmPQrFu8tQJ5jhTN4hS6eUIVW70gRCLjAjYfDoyYb/6Xlmz5I1pXlcNcMLK4bvUs67DAQsGaq1oY2j3Xd18usi8hmTGQ9+mozygVufwyw==
+X-HE-Tag: 1757901494-931395
+X-HE-Meta: U2FsdGVkX180MW/BhmL6E19xVJey/yyJqG29k2eVyJLCz+CUXUWWW2A9SksAxsx0AAbTvMKxh7qjA4CKgoPv9CgHP20EtY8ctuLpa14EJ7UGgcvim1Fs7cgGA00Dzt3wEWZuTy1pwSWzY6lIxXp3pfNHl4tBpzI/wSkHb8hoQtUQcL2zh6152JyVkxdMrs7lJ8N4EqbJ9HNPRUR3b+lth9vWQPd4bCmMHlve03wY7KvhpjsIjrK9iDpTSV+iNdnUaFTErnodN0/2JGR8IkhWM/mn4E/2+chyQxYqCA3jNHGf6u05yBImJ10AvJglepy+KggOkfb7xFYgUKaSJmX7NSx2TA705eFSGUovWeMaT0tqhiv3KsQqDEme9ELxHCnOrfeL/NvB16z6pxdfqRmPuk4HQglDX6KOl6hiI6KJZB+6Q8/I/b4kC4EesMsJ4mBk+smqIcnKwXqIAH4bu5TBsTYVmGHOjOZdjJw9LkxmqtyGR4anQFUuyzxpEuCdinExyy0q/kawVgiZOMVxjNqp/XdW3o6Bo/gpFor1IcBKzgbhtWqqF8xNSerArpunksLXUpHx1apkx/Er2LF1LiDFbmeSGPLtwRvggboeVRhy1wOUrOj50yJKsDsjLwqLCxFPle+jtB115SKyTM6pdvY/COp7nB6BwoEqmJF+Fq2rmQ0SiHEi0l9amXMiKiK1zZ7VbkvK7ESmLync2pXCvP/FMQ8xCSuDcNZYo5ZXvu/Rj5l2thiO9HdHx+uDfqIE+/7yNGXEWiGeegjgKmw5tnF0a+0a+jicthxvBdt+obzuNPFkj5hyL/c9BHI4Jo3YwEpXN042dIdgwwgJRj837Les5+fbDjUg64H7YS66eyu7rKd+A/3m7fLCFV0CJjbUYfQV6lLHkUUn4uC6A5D2LljXbMuVRCr77hI6N4v1YeE8qTmt3q18m+MtDR6eg1WI/xz88f/2xLnOEj74fepOMFw
+ 6BSgovMY
+ E2kR+qgd8EmlKEWwdInbexs4OiRv1YeN3cHHXxjMFaka57M4mHYeykHn5K5GqsKnu7Z0M6WuK1ssnStYO8+3NHzW3YBi7ZJGp2AsEWrpm0Y3XrbufrOyIuivyoy3szdU9IYN08LmAfbEQJb5dO75BZFM32XlG4SjZdqJ2Qt7ntxdIH++7n/N4vCknsC+1bV5dX9Qc
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,36 +94,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMON resets the age of a region if its nr_accesses value has
-significantly changed. Specifically, the threshold is calculated as 20%
-of largest nr_accesses of the current snapshot.  This means that regions
-changing the nr_accesses from zero to small non-zero value or from a
-small non-zero value to zero will keep the age.  Since many users treat
-zero nr_accesses regions special, this can be confusing.  Kernel code
-including DAMOS' regions priority calculation and DAMON_STAT's idle time
-calculation also treat zero nr_accesses regions special.  Make it
-unconfusing by resetting the age when the nr_accesses changes between
-zero and a non-zero value.
+The effective quota of a scheme is initialized zero, which means there
+is no quota.  It is set based on user-specified time/quota/quota goals.
+But the later value set is done only from the second charge window.  As
+a result, a scheme having a user-specified quota can work as not having
+the quota (unexpectedly fast) for the first charge window.  In practical
+and common use cases the quota interval is not too long, and the
+scheme's target access pattern is restrictive.  Hence the issue should
+be modest.  That said, it is apparently an unintended misbehavior.  Fix
+the problem by setting esz on the first charge window.
 
+Fixes: 1cd243030059 ("mm/damon/schemes: implement time quota") # 5.16.x
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ mm/damon/core.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/mm/damon/core.c b/mm/damon/core.c
-index be5942435d78..996647caca02 100644
+index 996647caca02..84de1cea5440 100644
 --- a/mm/damon/core.c
 +++ b/mm/damon/core.c
-@@ -2261,6 +2261,9 @@ static void damon_merge_regions_of(struct damon_target *t, unsigned int thres,
- 	damon_for_each_region_safe(r, next, t) {
- 		if (abs(r->nr_accesses - r->last_nr_accesses) > thres)
- 			r->age = 0;
-+		else if ((!r->nr_accesses && r->last_nr_accesses) ||
-+				(r->nr_accesses && !r->last_nr_accesses))
-+			r->age = 0;
- 		else
- 			r->age++;
+@@ -2142,8 +2142,10 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
+ 		return;
  
+ 	/* First charge window */
+-	if (!quota->total_charged_sz && !quota->charged_from)
++	if (!quota->total_charged_sz && !quota->charged_from) {
+ 		quota->charged_from = jiffies;
++		damos_set_effective_quota(quota);
++	}
+ 
+ 	/* New charge window starts */
+ 	if (time_after_eq(jiffies, quota->charged_from +
 -- 
 2.39.5
 
