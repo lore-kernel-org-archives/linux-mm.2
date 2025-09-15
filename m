@@ -4,124 +4,163 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED810CA101F
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 06:20:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07949CAC58E
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 06:29:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0097E8E0003; Mon, 15 Sep 2025 02:20:20 -0400 (EDT)
+	id 501E88E0008; Mon, 15 Sep 2025 02:29:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EFC5B8E0001; Mon, 15 Sep 2025 02:20:19 -0400 (EDT)
+	id 4D8DD8E0001; Mon, 15 Sep 2025 02:29:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DC3C28E0003; Mon, 15 Sep 2025 02:20:19 -0400 (EDT)
+	id 3C7518E0008; Mon, 15 Sep 2025 02:29:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C24B28E0001
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 02:20:19 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 498861404C5
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 06:20:19 +0000 (UTC)
-X-FDA: 83890484958.28.0572726
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 13F8220009
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 06:20:16 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Qk5FjaMF;
-	spf=pass (imf13.hostedemail.com: domain of coxu@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=coxu@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 262298E0001
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 02:29:43 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B9F8111A281
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 06:29:42 +0000 (UTC)
+X-FDA: 83890508604.01.17A34F9
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 41F5C40006
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 06:29:40 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=jaZLS26l;
+	spf=pass (imf12.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757917217;
+	s=arc-20220608; t=1757917780;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9cBtHKBe6RRB8Snk7hpO1mjWCGkijKsQ31tvgy2vEzE=;
-	b=55MP8Azlgc+ICaJprP90mzOMZczkW6IvJNpI8xMLsoaULCYnW9/vg3Wv6wncoOOvHWVApC
-	nPOUOEamV2kJseXGufDdzxp7pWiKx6936zUQIwilRrasCPr26FjzIxriFxFrABvbEQXuWi
-	HOAFfq0Z9MohipF253JB3bOZRBXJ+iA=
+	bh=M/xuln62q5zfY1XqnOkzluoH/jhmqhYNwkmp3WpUxjM=;
+	b=K5oxOOT90eb/xTlz52pHxZ/Y/QeFuyXgKTlWktfMTdL6Fms6I/7FTsn0VrFgJC8THOhpY7
+	i7n31ERxWTrWXIfab+zv0KU25gm30whCpN8lZ3rXAWZjowhMWIqWrax/Lgn3gUFSfU/YwB
+	J3wFxaxXB/72UzdgByHgz5An95H4LZ0=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Qk5FjaMF;
-	spf=pass (imf13.hostedemail.com: domain of coxu@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=coxu@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757917217; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=jaZLS26l;
+	spf=pass (imf12.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757917780; a=rsa-sha256;
 	cv=none;
-	b=ZgKUBWeZRI5mCLlbgGgmU9RVpZ8+Gle94K4XaNJTbox1yzTY/+XMyNsiMLzIq/1zX9Num4
-	IW1MNTimuXnzlHFV7PSkBu37h9Fw2APNXchCkvMSXWDZqccycvpy1CYVxZ1R0mXgYjKYOr
-	lpRLAxwlt+CLvDRU42jR/UeW0eiDBik=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757917216;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9cBtHKBe6RRB8Snk7hpO1mjWCGkijKsQ31tvgy2vEzE=;
-	b=Qk5FjaMFFz47s8zMcazcG+eLpj9pOno6+YtjDmQODpFIWTUtB/0wZEyin9bCQfMtGtcc/o
-	5PgRzSAmyNx9JfpK2zd5lCnUVzWXRkjM0GIqFCivnPw36OX85VRalyVgNBSrJaCTAglwbF
-	bHFm/oPOYddyZxAErZLB7RcwPzdNfto=
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
- [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-356-K68UhoBpNXK52Oldy9h9Zw-1; Mon, 15 Sep 2025 02:20:15 -0400
-X-MC-Unique: K68UhoBpNXK52Oldy9h9Zw-1
-X-Mimecast-MFC-AGG-ID: K68UhoBpNXK52Oldy9h9Zw_1757917214
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-b54d0ffd172so363528a12.0
-        for <linux-mm@kvack.org>; Sun, 14 Sep 2025 23:20:14 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757917214; x=1758522014;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9cBtHKBe6RRB8Snk7hpO1mjWCGkijKsQ31tvgy2vEzE=;
-        b=Ha6naREqRlZAf4gY9pfN1nXoBvgtGzv7K9OlA5PS/HVoe6Ha+CbuPWHZAb397V+xAW
-         nJJ2xC1xJN2TUWCT9jk76GeZ8dPyIYGV054FHssHCDU0o6sEeD+gj3QtlTqMlBUnyK5o
-         rtEM/vE5Qj4jar5WiT7cUBKpjCcx9126iGsMjJlg6M/GOQvswialOnTHiTMquICcp3jL
-         5YKCMjKgTWV8FUAzaoYXnOk985Wj52Pxkpxk6RSxkp9AsV816hsqHvDUidhdC6jT0kXN
-         1dg08utRyCGVi5xBzhiOFNIGSKWaAt7ZaWrop6wI7wrgnXAPmH70SBHwUKDe4TelfgUP
-         m28A==
-X-Forwarded-Encrypted: i=1; AJvYcCVrLDqiK0lW+vS6AzAXZ7nRIPqm78vGjoUvf0rkmFH2a6gnx7Rc/Z9lQZzo1mOsSoZ0x1ePwiooWg==@kvack.org
-X-Gm-Message-State: AOJu0YzPMhPi1cY070pGpbWx4opRSyCnD9kVohiseQr3EYkXo2rmnL6q
-	H6sVrTdxB1APLI1dplHqbRn4u1GELSrZC31Obv272TxomOl29Npdvbq7jEFb1m1e8ihnj4L2dDr
-	C0k6FiHFhVdGW2iF8FuHerE2D0/IZ4gjGAcqG9P1HLhc+7TLsdX5r
-X-Gm-Gg: ASbGnctPJdR2I1d/Jq/fMJpOU1d3Sb6UhV5LktsquC7kcFppGtkHqeG6S+IoDbvHV2Y
-	gqi99aJAj6PeM+v0u8Xj+hU6Jt1EolZ0G9wbQNMvGqSQKXIAV7WF9FWtOSvzubXOJhATzrhy/XX
-	C2wjcJ9ywW0V4n2/oFOsrscTDOstZNM8EMzex81i/HkV9vagMfOx8IzplnZvghD2FHBILTxCusH
-	KKCLgwH4PbbYk8PU6beHy+8zP1t5qCNuDJlgA3XckqJn33Iw41BymBmnVH569qXwpecKikqZj66
-	+WA7PKwfUc0fmy6ZuJRLrrcuglzVT7s=
-X-Received: by 2002:a05:6a20:7d86:b0:243:b92d:72c1 with SMTP id adf61e73a8af0-25cdefc7abbmr21753633637.0.1757917214012;
-        Sun, 14 Sep 2025 23:20:14 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IErivlYOqYNMD1uzOOLvIYOeSFyGjheTCp4Vv8Fmhsfn/ts4DA9nnO0VA6qrA0q8hxFLJc/yg==
-X-Received: by 2002:a05:6a20:7d86:b0:243:b92d:72c1 with SMTP id adf61e73a8af0-25cdefc7abbmr21753609637.0.1757917213616;
-        Sun, 14 Sep 2025 23:20:13 -0700 (PDT)
-Received: from localhost ([209.132.188.88])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b54b169f2edsm7546506a12.19.2025.09.14.23.20.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 14 Sep 2025 23:20:13 -0700 (PDT)
-Date: Mon, 15 Sep 2025 14:17:51 +0800
-From: Coiby Xu <coxu@redhat.com>
-To: kernel test robot <lkp@intel.com>
-Cc: kexec@lists.infradead.org, llvm@lists.linux.dev, 
-	oe-kbuild-all@lists.linux.dev, fuqiang wang <fuqiang.wang@easystack.cn>, x86@kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Linux Memory Management List <linux-mm@kvack.org>, 
-	Baoquan He <bhe@redhat.com>, Vivek Goyal <vgoyal@redhat.com>, Dave Young <dyoung@redhat.com>, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 2/2] crash: Add KUnit tests for crash_exclude_mem_range
-Message-ID: <x33mpzp6bhnx2awnszjymuyfhgmtvq5hhfs6aoyvuoo6opsbqr@tkegmqv3lucp>
-References: <20250904093855.1180154-2-coxu@redhat.com>
- <202509090415.cOytgte4-lkp@intel.com>
+	b=hAw+W9CUfdcW1nDiXR2GlUvh6DZyTeUBe3h4v3/uIXoWTI3MPeODJup7ShV9HuhnM9uBXa
+	wcEjwhOWk2yWCfLbUMZw2098BxMlswbwYnoEEmvWDTH/wKftqQLaMAObSjbBo+a6Gr15c5
+	I5O2t6txfS5uoPD5GroefTc6snAzrJs=
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58EH2k6T008844;
+	Mon, 15 Sep 2025 06:29:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=M/xuln
+	62q5zfY1XqnOkzluoH/jhmqhYNwkmp3WpUxjM=; b=jaZLS26lBDtzg2fecSZHqg
+	vv5wXs+Q/QWPzoKutrrQc6JlTQgh9S++0kG1xYTEEhhACxrSaEwrVcmFNUrm5aqi
+	OtK0MYRXJHIvOwUxdJDVmGllntU+dWQ/n1X9T0qND7U13HpIsA/bx3E95xS6zSiA
+	G61SjiM2ehKgCwcxj/d9UyDG2/tPRNmRQ1Hbt9E+RCa/4Ymom5k7ti/+qmaBBf+f
+	VEyzVGOhzGaTidXPVx4X8SSv3dIj5Oxjs0qsGj5K8mF92mOvsSCfHnnElObmQvvm
+	y7XvEJjXSIurhHceuMaFZFx9Txg7BTX7q6CqqSlAH22dER7OpbB+bhODUu/v3N6w
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49509y0tk9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 15 Sep 2025 06:29:00 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58F6NRje019684;
+	Mon, 15 Sep 2025 06:29:00 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49509y0tk4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 15 Sep 2025 06:29:00 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58F2ZLlc029484;
+	Mon, 15 Sep 2025 06:28:58 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 495kb0n5uq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 15 Sep 2025 06:28:58 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 58F6SuNA58458606
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 15 Sep 2025 06:28:56 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8B80F20043;
+	Mon, 15 Sep 2025 06:28:56 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5171820040;
+	Mon, 15 Sep 2025 06:28:54 +0000 (GMT)
+Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.87.136.34])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 15 Sep 2025 06:28:54 +0000 (GMT)
+Date: Mon, 15 Sep 2025 08:28:52 +0200
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: David Hildenbrand <david@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, Andreas Larsson <andreas@gaisler.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+        Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ryan Roberts <ryan.roberts@arm.com>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
+        Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
+        linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+        sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org,
+        Mark Rutland <Mark.Rutland@arm.com>
+Subject: Re: [PATCH v2 0/7] Nesting support for lazy MMU mode
+Message-ID: <5a0818bb-75d4-47df-925c-0102f7d598f4-agordeev@linux.ibm.com>
+References: <20250908073931.4159362-1-kevin.brodsky@arm.com>
+ <20250908191602.61160a7990b9ea418de758c7@linux-foundation.org>
+ <d1b4ff2a-052f-4556-91ae-273962edbed0@redhat.com>
+ <338ef811-1dab-4c4e-bc5f-8ebd8cb68435@arm.com>
 MIME-Version: 1.0
-In-Reply-To: <202509090415.cOytgte4-lkp@intel.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: zB2cho5PSCksimBzgSayeOV8oxL1CN1cZUXD9QAanpE_1757917214
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <338ef811-1dab-4c4e-bc5f-8ebd8cb68435@arm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTEzMDAyMCBTYWx0ZWRfX4Cx2ngBEYL5c
+ roZzmS41YuVlUSpSRef2KxL4WggODwY/soRMJpx2gg7kNLdYMyZvXNoqxYULYholGjNDiAVT4t6
+ ukIUbG+OX0a4imqOK2lAsyx5041sIs8EVQMQ06NsJGnBzkaxygCee6tTvsutuzI9wnG+eg3PA/v
+ F5e7gPnCVAvuDEchpnbMPDdE4TzdeZAArCZTLOmkY9Xd7mYwn00cbVETqAT3ckHgDdrWLphTxSN
+ y5ALHiTawyw3ojSiUQHSaHqzU+geaiqg5gb2LGGBqmnxp5igHqNKf3fjoaJ0BgJ2I38Ya10WbMS
+ bYUlmQ5btypMVlGwBcuKVUODKwIOxTQn2bBDW8olvvXBnB4V+w9kPSd+TVwMJmnqFMZo71QBQkH
+ T1vGkEV/
+X-Authority-Analysis: v=2.4 cv=OPYn3TaB c=1 sm=1 tr=0 ts=68c7b22c cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=8nJEP1OIZ-IA:10 a=yJojWOMRYYMA:10 a=nkFB8puKy1KDrdvMtSoA:9
+ a=3ZKOabzyN94A:10 a=wPNLvfGTeEIA:10
+X-Proofpoint-GUID: dbH_inTMwHRH6BHBdGMtY8_aObQAr3rR
+X-Proofpoint-ORIG-GUID: XMRhk7th-c6XacqgLmk45pWkcqEsR17O
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-15_02,2025-09-12_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 clxscore=1015 phishscore=0 suspectscore=0 spamscore=0
+ bulkscore=0 malwarescore=0 impostorscore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509130020
+X-Rspamd-Queue-Id: 41F5C40006
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 13F8220009
-X-Stat-Signature: mdhot39abcca4ujexw9i9wt4gfkmrs5j
-X-HE-Tag: 1757917216-110338
-X-HE-Meta: U2FsdGVkX18L+tFg7BK6YUTP8Juiyzoz/C0STvcmKZ3ifLksZPicc+vlbDahDSh1Zsf4SroEIsfdIuFah/NytpZa6y93q4FYHLmsaOnntis7nJGe080o7j+O14e4p2Bv6VrqxsfdzW5C7jB1f9vwFVTaHg8a7kvXkxnB4QpCN5LiS5BSkpLJugRZ/O6842t5OMWDR2JFKgLW3dquJFaeflX+a7YJnnPlZNectd0xUXo0OaYMURB4SIIU8ER8zTGswSKKk1vMkfkJ9r0Vf+yIeQCBvj0w4Mq1rGiw0qfPthXCibt6lQE0P+R0FifDc/AiaYVXjR4G1AnQllGp82r9hBU6IZao/pHvADIYd0tJuiw/2Gz9iCTJ0P8Fuf2WP0NZo5C9DPxUu89qyZbrcyhjP2mKikykvjYvm09U1FhlhGNAZ2mPIxFxbvY8ItsR77zyE+8rAvH2g5b6Yt1Hg+3SCeNRLgiiaC7iaVG1HedoV0gKN+OGAXu7LWKMLTVVYmcJYE1IJcZRIfDGVmSB8H/ehkf7zeLuuu052UlEKwJ78iIECdPDXYTb52e9LD/U3KOLJtPXcuV+ZjrJ4Cc7Mg98fxkmTCeMz93gv20WI8/fGv7EjAItEZmdwBjvs72Nakhes836CH9uDtqp6a0kFuoynTjDFW/CYVfx3OOpAyD2fuZYSMz/x6Rq0pbQZyJJwtwTAE1xz6fMTj19Z6tqj4Gl/JhSbw0rEnL9GLUZHUgJPB0LS/AgQ65E8IuaDXySWvRoqEFHy4MxsiB/0KE6L2Z7P372iHSBufZ7Mr9KxOasQSkJHt0GQxa41p6hWLEN9Nh2WOJlgI8cxlAwRlwGv6L9j1FTiPkMpX4UbrFwaTT5xkfE8gRnDcNnyruWfNWd5MOR59GtWJv1o582HyguDUqUTrpEpKIYar9Dt++7QbujWVSI38FvTVyHVKpvlW/edOidTHaCFULU0IH8UARsSEu
- wijF4qqM
- ce35kNogMXTOfKT4rpQ5jyHxGfl7iDxAng7j86TRLGlaYLszZfiUj4JcaZ/0GwLbMo/43CiniSVSD4g4fC+zAdEKVBYNwKOU7L5ssOx7FNBIvWpB7lLHAx7rt1ktfjq+Lt6sh0M/QA0fY/ufMHudQjsfWGqVy9dCZOcSv8I8mq+WSqWKL3WOS36mpKKGx3Dl3aqTcD92zBLJI4eFiSXzCwID/pcZle5k9TTn/3/mHI6HqHdaquwMvS9Nw/KhDQhDASgyzmE4GGEVpB8sXFrf6FepB81LMPS6TJQRXyverTTXcd9hNthLLr2FZaZFTdIL8Ug0P6p/cambihMTyP90UK/KuK4yzcsZYSZdhApIW8PeLNQIO+vwjpEYM3m9GVEn/UV4odom5GM15RldWcG8Zj4kb0Uz4TeDrxe4dBZZWr+nUnbYpHbs82dAjHN4VplCbJ+Xn4LyIdXot9qN4mG2v6bWre9zdI3YqRL3LEI4GMhFzrx4hUF6QWZA5ZFIZEZePwKgqQXI1wIb+avqF9ULQFXqVpV9ZO+p4TZ+jm1BPqKRvNXHETbFbzMKclQ2PWx4UPuU97iOXtZan8E0rPoxWVHIFHcibJZLj3pWOWdk0Q1fSWckj5OjgzbXJ3Q==
+X-Rspamd-Server: rspam07
+X-Stat-Signature: y3fsbtdco9wgybntpd1iihtf88c7k6ac
+X-HE-Tag: 1757917780-318664
+X-HE-Meta: U2FsdGVkX195Y2VVI4cAfNAag7CVuRSzlvXelgP7Kry6M4z5Jh+EljvQklXtehINMA3hd8PdXQXgk9TZK0WuNA0FaZ5i/zn5b/BVuqZtFnuZVaM4i4MQnK1HEpVaM5cWjaRwKBQHj38WQ4v3bgCsTOqOB730cJdCYTO5XoVpG5J/sGb9j0mdcOxKDF1ME4/9s8FbRwHHrr39T36zSCrSt1s9RU15K+th0hRPX976baB3/rqTzMNbuBWwr2s0FzJF+LdiKWhZSGPj6+4wJEAju0R7jpy0WmKuXK/3wswnjyqjsgnmHp5C+816seMFvmDTFEKxSUysJ5AXKv3+otA2gpBUds9G/yfyc3p5nN/RXHHtOHlGnTqNoO9q+VdFcyuJPwKBjknkbjPRgnmuls/TxNdljqGMli3kcxGTzYFwO8NJX7Xz+rrL1IcFDUoyhy7xa/BA4InRMf2LMNX43tI2YCLDfPHRvB7tB0crrXwB7ZR4UwIGzP/F2RzAVCmKtS3ehJJirkK2BqZs5S6ej94wAGTiJ6kF823gw4XXCD7etNUJWLFFdGg+B2NRM7P2XxRUjre1Cz/AzcfwCHleOUnEA7f/BBmbVJrNqqcdPE93fnUb9rnMyRrWEhlbHL7Vk1gdDGF3D+8bObLZor7mvzesLnY57uhEEM81cZ2HtfLoolHCpTmYJKuH02GTV/AML4ykstz40oa0i+Iwpmkf/0jkIP0wGvtSuJRAhECiY2nBopHJpknx1NZcTEro85xw3kut0Yj8uF0xZBqYGG5/oJyEhjaGFveRptk6PoqUoTRhJQoqyxOlUIwpbTE0FFJUUuKUbWeQIsW7O3Vo/UD0Bt+Juqa5tldQo9umWfOLgo9Yhj42mufyI8tahWa0Osrb6gHGvPJLCvknpmSu2HNGxu6NmWyNIsoHpY/ebj4yzp+IchpyJ95W6tSBEZCmS6nQRxcCreH/mp3lIp/ALkzc8h7
+ cQRmiqSs
+ bqH3DxwukkXbG2hVch+GATunYB80T3z+2WkbUcjRSbuUBFF5Guf9eQCPKKAdi7h5Eth922RLpUHx/HKCu+yZ1unnaVXnQJf40cU6j9LDBdEjm3c0Nq7KoZPltP7flu6Ip84ZVft94yumgn0hQsmPzFPZKUgKlrJiTy+maJrppbJM7HPuA1E8hjCHzlzoHgi1pwX8kZNApg6usQ/tplklq1zkfyhkZC8NZcNBf3WN7rycIMjrwLZ5fEEw76Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,50 +169,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 09, 2025 at 05:25:17AM +0800, kernel test robot wrote:
->Hi Coiby,
+On Fri, Sep 12, 2025 at 05:25:27PM +0200, Kevin Brodsky wrote:
 
-Hi,
+Hi Kevin,
 
->
->kernel test robot noticed the following build errors:
->
->[auto build test ERROR on b320789d6883cc00ac78ce83bccbfe7ed58afcf0]
->
->url:    https://github.com/intel-lab-lkp/linux/commits/Coiby-Xu/crash-Add-KUnit-tests-for-crash_exclude_mem_range/20250904-174105
->base:   b320789d6883cc00ac78ce83bccbfe7ed58afcf0
->patch link:    https://lore.kernel.org/r/20250904093855.1180154-2-coxu%40redhat.com
->patch subject: [PATCH v6 2/2] crash: Add KUnit tests for crash_exclude_mem_range
->config: x86_64-randconfig-073-20250908 (https://download.01.org/0day-ci/archive/20250909/202509090415.cOytgte4-lkp@intel.com/config)
->compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
->reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250909/202509090415.cOytgte4-lkp@intel.com/reproduce)
->
->If you fix the issue in a separate patch/commit (i.e. not just a new version of
->the same patch/commit), kindly add following tags
->| Reported-by: kernel test robot <lkp@intel.com>
->| Closes: https://lore.kernel.org/oe-kbuild-all/202509090415.cOytgte4-lkp@intel.com/
->
->All errors (new ones prefixed by >>, old ones prefixed by <<):
->
->>> ERROR: modpost: "crash_exclude_mem_range" [kernel/crash_core_test.ko] undefined!
+> Based on the outcome of the discussion with David on patch 2 [1p], there
+> is indeed an alternative approach that we should seriously consider. In
+> summary:
+> 
+> * Keep the API stateless, handle nesting with a counter in task_struct
+> * Introduce new functions to temporarily disable lazy_mmu without
+> impacting nesting, track that with a bool in task_struct (addresses the
+> situation in mm/kasan/shadow.c and possibly some x86 cases too)
+> * Move as much handling from arch_* to generic functions
+> 
+> What the new generic infrastructure would look like:
+> 
+> struct task_struct {
+>     ...
+> #ifdef CONFIG_ARCH_LAZY_MMU
+>     struct {
+>         uint8_t count;
+>         bool enabled; /* or paused, see below */
+>     } lazy_mmu_state;
+> #endif
+> }
+> 
+> * lazy_mmu_mode_enable():
 
-Thanks for reporting this problem. This issue has already been fixed by
-Andrew [1][2] earlier.
+This helper is parameter-free, assuming the MMU unit does not need any
+configuration other than turning it on/off. That is currently true, but
+(as I noted in my other mail) I am going to introduce a friend enable
+function that accepts parameters, creates an arch-specific state and
+uses it while the lazy mmu mode is active.
 
-This issue happens because the KUnit tests can be built and run as a
-kernel module. 
+That does not impact your design (AFAICT), except one change below.
 
-[1] https://lore.kernel.org/mm-commits/20250905031921.E0A26C4CEF0@smtp.kernel.org/
-[2] https://lore.kernel.org/mm-commits/20250914001748.77104C4CEEB@smtp.kernel.org/
+>     if (!lazy_mmu_state.count) {
+>         arch_enter_lazy_mmu_mode();
+>         lazy_mmu_state.enabled = true;
+>     }
+>     lazy_mmu_state.count++;
+> 
+> * lazy_mmu_mode_disable():
+>     lazy_mmu_count--;
+>     if (!lazy_mmu_state.count) {
+>         lazy_mmu_state.enabled = false;
+>         arch_leave_lazy_mmu_mode();
+>     } else {
+>         arch_flush_lazy_mmu_mode();
+>     }
+> 
+> * lazy_mmu_mode_pause():
+>     lazy_mmu_state.enabled = false;
+>     arch_leave_lazy_mmu_mode();
 
->
->-- 
->0-DAY CI Kernel Test Service
->https://github.com/intel/lkp-tests/wiki
->
+This needs to be arch_pause_lazy_mmu_mode(), otherwise the arch-specific
+state will be lost.
 
--- 
-Best regards,
-Coiby
+> * lazy_mmu_mode_resume();
+>     arch_enter_lazy_mmu_mode();
 
+Conversely, this needs to be arch_resume_lazy_mmu_mode(). And it can not
+be arch_enter_lazy_mmu_mode(), since a lazy_mmu_mode_resume() caller does
+not know the parameters passed to the lazy_mmu_mode_enable(...)-friend.
+
+>     lazy_mmu_state.enabled = true;
+...
+
+Thanks!
 
