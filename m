@@ -4,190 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1405CAC58F
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 07:51:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 324B9CAC58F
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 07:51:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB9C48E000F; Mon, 15 Sep 2025 03:51:26 -0400 (EDT)
+	id 56B778E0010; Mon, 15 Sep 2025 03:51:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E6A918E0001; Mon, 15 Sep 2025 03:51:26 -0400 (EDT)
+	id 543658E0001; Mon, 15 Sep 2025 03:51:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D323F8E000F; Mon, 15 Sep 2025 03:51:26 -0400 (EDT)
+	id 480128E0010; Mon, 15 Sep 2025 03:51:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C02C08E0001
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 03:51:26 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7358CC04AC
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 07:51:26 +0000 (UTC)
-X-FDA: 83890714572.03.D2C93A7
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf11.hostedemail.com (Postfix) with ESMTP id C639640011
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 07:51:23 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=TMyhhUjH;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=A4A26eiB;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=TMyhhUjH;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=A4A26eiB;
-	dmarc=none;
-	spf=pass (imf11.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757922684; a=rsa-sha256;
-	cv=none;
-	b=qpeA73touqOkSFMed7E08dbzU6L8GfTnZdgoMhUgMp6q+kyNyRppkEgILsDKwCbRkWWS5I
-	PBCYqxF+YsAAx9biXrMHZPC8U4v9/Ez4jP/YGOL7AGQq+eftz0U3ZwTD/fViZNbGlP6bk8
-	6tBB8PvMKx3f5iQXNhbJ9qmQE6Oht/w=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=TMyhhUjH;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=A4A26eiB;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=TMyhhUjH;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=A4A26eiB;
-	dmarc=none;
-	spf=pass (imf11.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 39A498E0001
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 03:51:33 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CA21B1604B6
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 07:51:32 +0000 (UTC)
+X-FDA: 83890714824.18.1FA6EA8
+Received: from a3.inai.de (a3.inai.de [144.76.212.145])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 5FB311C000C
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 07:51:29 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	spf=pass (imf20.hostedemail.com: domain of ej@inai.de designates 144.76.212.145 as permitted sender) smtp.mailfrom=ej@inai.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757922684;
+	s=arc-20220608; t=1757922691;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w1II8JwH5N5skoHHG9OMK3O2Q+vtcUlDHwhtvu+iE+c=;
-	b=sEDKZKNw1X6aPe0turfxcIb8zDBhaD6+oABCpE0qhkfUJ76THS+aHC6QSTP9+ZEXlh+9JF
-	VTyt/Js8vFx8gg6GU9Qdy8p91bTx0B+chJdXOzwm59Vi9dXOPSkNzBW/lo8+xNw2dpqNFb
-	nQBTVH52ORo2gj/5bcYEPenvd9mfYtU=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 483491F7EC;
-	Mon, 15 Sep 2025 07:51:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1757922682; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=w1II8JwH5N5skoHHG9OMK3O2Q+vtcUlDHwhtvu+iE+c=;
-	b=TMyhhUjHZ07q8NdOAHO1mMhPm0o0xuvPgjneWVFebHZVB/P7V8SejIG+Lvl/Wh/jmbOihP
-	g11QC9dnhUjp7aQWdHqtMlNp74Y3jZ/EVsrLBXj3gyvcX/mDaJPaTcZz7zLMZEJMqHB1of
-	0xcrH7eRY7RpgfRwoAo3vUi0TLsBPvA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1757922682;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=w1II8JwH5N5skoHHG9OMK3O2Q+vtcUlDHwhtvu+iE+c=;
-	b=A4A26eiBz+CksO/yp2GEOsBLuM8+5V7UBmmhUEF2bjkYk6Y5UE2sdOqAdKWrAgRmS65pos
-	QDDe0VGxgctyOaAw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1757922682; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=w1II8JwH5N5skoHHG9OMK3O2Q+vtcUlDHwhtvu+iE+c=;
-	b=TMyhhUjHZ07q8NdOAHO1mMhPm0o0xuvPgjneWVFebHZVB/P7V8SejIG+Lvl/Wh/jmbOihP
-	g11QC9dnhUjp7aQWdHqtMlNp74Y3jZ/EVsrLBXj3gyvcX/mDaJPaTcZz7zLMZEJMqHB1of
-	0xcrH7eRY7RpgfRwoAo3vUi0TLsBPvA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1757922682;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=w1II8JwH5N5skoHHG9OMK3O2Q+vtcUlDHwhtvu+iE+c=;
-	b=A4A26eiBz+CksO/yp2GEOsBLuM8+5V7UBmmhUEF2bjkYk6Y5UE2sdOqAdKWrAgRmS65pos
-	QDDe0VGxgctyOaAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 26FA51368D;
-	Mon, 15 Sep 2025 07:51:22 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id pUmEB3rFx2h3WwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 15 Sep 2025 07:51:22 +0000
-Message-ID: <e166705a-e838-4c8f-a8cf-64913e120caa@suse.cz>
-Date: Mon, 15 Sep 2025 09:51:21 +0200
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FaHOOwh1hgtN9HchsuyuECIgsly2pf6Xt/UIYhL8zwM=;
+	b=NbOapnqNAFyoY9Lj4cX+pfVlRkhxsw2nMG7g47EgqFrVnVWnW9dxZc7Ocd3K8leIB9RKsw
+	q4AOGkN6DDV3A8JJ8nGV3Bm02QAolaNaW8/LXyIzKTYstm8Og1VvY+5+iUy7Xa6r3I46IC
+	997oFC5gVIc5UkMK0zm4Z1T+kBxI6pQ=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=none;
+	spf=pass (imf20.hostedemail.com: domain of ej@inai.de designates 144.76.212.145 as permitted sender) smtp.mailfrom=ej@inai.de;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757922691; a=rsa-sha256;
+	cv=none;
+	b=COwhTUYh1AFNOmU/JW4nTja2FjtWoAkOoyE+87+wcijlgEnIk9xjJhn0ABUBVxmQW58Qm2
+	ENNa2uALrgwMm2cjH1DGx8BZkFCaRBGvmCCuXYKV7pTMwGt+TD82QBe2kRo7PHfx0sbOPy
+	N80rXndsxusLPxwScgMz0dWsuN8CcXM=
+Received: by a3.inai.de (Postfix, from userid 25121)
+	id A5C131003CDBE2; Mon, 15 Sep 2025 09:51:25 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by a3.inai.de (Postfix) with ESMTP id A56C5110020B40;
+	Mon, 15 Sep 2025 09:51:25 +0200 (CEST)
+Date: Mon, 15 Sep 2025 09:51:25 +0200 (CEST)
+From: Jan Engelhardt <ej@inai.de>
+To: Sudarsan Mahendran <sudarsanm@google.com>
+cc: vbabka@suse.cz, Liam.Howlett@oracle.com, cl@gentwo.org, 
+    harry.yoo@oracle.com, howlett@gmail.com, linux-kernel@vger.kernel.org, 
+    linux-mm@kvack.org, maple-tree@lists.infradead.org, rcu@vger.kernel.org, 
+    rientjes@google.com, roman.gushchin@linux.dev, surenb@google.com, 
+    urezki@gmail.com
+Subject: Re: Benchmarking [PATCH v5 00/14] SLUB percpu sheaves
+In-Reply-To: <20250913000935.1021068-1-sudarsanm@google.com>
+Message-ID: <qs3967pq-4nq7-67pq-2025-r7259o0s52p4@vanv.qr>
+References: <20250723-slub-percpu-caches-v5-0-b792cd830f5d@suse.cz> <20250913000935.1021068-1-sudarsanm@google.com>
+User-Agent: Alpine 2.26 (LSU 649 2022-06-02)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH slab v5 5/6] slab: Reuse first bit for OBJEXTS_ALLOC_FAIL
-Content-Language: en-US
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>,
- Suren Baghdasaryan <surenb@google.com>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>, bpf <bpf@vger.kernel.org>,
- linux-mm <linux-mm@kvack.org>, Harry Yoo <harry.yoo@oracle.com>,
- Michal Hocko <mhocko@suse.com>, Sebastian Sewior <bigeasy@linutronix.de>,
- Andrii Nakryiko <andrii@kernel.org>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Peter Zijlstra <peterz@infradead.org>, Steven Rostedt <rostedt@goodmis.org>,
- Johannes Weiner <hannes@cmpxchg.org>,
- Roman Gushchin <roman.gushchin@linux.dev>
-References: <20250909010007.1660-6-alexei.starovoitov@gmail.com>
- <jftidhymri2af5u3xtcqry3cfu6aqzte3uzlznhlaylgrdztsi@5vpjnzpsemf5>
- <CAJuCfpGUjaZcs1r9ADKck_Ni7f41kHaiejR01Z0bE8pG0K1uXA@mail.gmail.com>
- <CAADnVQJu-mU-Px0FvHqZdTTP+x8ROTXaqHKSXdeS7Gc4LV9zsQ@mail.gmail.com>
- <shfysi62hb5g7lo44mw4htwxdsdljcp3usu2wvsjpd2a57vvid@tuhj63dixxpn>
- <CAADnVQ+eD7p4i0B9Q2T-OS_n=AqcrrvYZGY57QOOqKEof6SkDQ@mail.gmail.com>
- <lv2tkehyh4pihbczb7ghvbkkl4l75ksdx2xjtxf2r7lgzam76h@ekkrlady2et3>
- <CAADnVQLX_mi9WLygRxwp5PtBFG7L_sqm9sL93ejENWqVO3ar7g@mail.gmail.com>
- <e7nh3cxyhmlxds4b2ko36gnxbdfclcxu3eae5irvrd2m6qzqoj@gor7vopfe47z>
- <CAADnVQJuAo5K417ZZ77AA1LM5uZr5O2v1dRrEEue-v39zGVyVw@mail.gmail.com>
- <rfwbbfu4364xwgrjs7ygucm6ch5g7xvdsdhxi52mfeuew3stgi@tfzlxg3kek3x>
- <CAJuCfpHJEUypV2HWRHqE598kr-1Nz_DokMz_UgrUnq8YkFcb9w@mail.gmail.com>
- <CAADnVQJQo6+AwJ_LxARVu37J-5T-7tyn1kA5hMVDGDfEyjF6mQ@mail.gmail.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <CAADnVQJQo6+AwJ_LxARVu37J-5T-7tyn1kA5hMVDGDfEyjF6mQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: C639640011
-X-Stat-Signature: twsga5jcn9ostn1o4sw61hu86ka5pxu3
+Content-Type: text/plain; charset=US-ASCII
+X-Rspamd-Queue-Id: 5FB311C000C
+X-Rspamd-Server: rspam05
+X-Stat-Signature: ebi7paecmhhm88z3p6poaumd5zn8xyo1
 X-Rspam-User: 
-X-HE-Tag: 1757922683-727526
-X-HE-Meta: U2FsdGVkX1/dav5FyaO9zAIOrR+ExRb+9JC/cGPapRDplYvnvjW/hBwCYEVHG4zUsXYOCTbETmMmm8pZxgUuz34spFgBD6KMyG72k+LZj95nuarZSV6mHPOsxxV6GTmtwbUQl489C/GDCbnkFEWEQgzCLvsLrvQj+/iuj+3fNko1ey3mLMOoSZWDJVofwt44mcPh4VaF0LRjITuRf8kHYlCQ8HgOnlwRTmUTn0kzLlDADjZ9LBqHN91t8u+8Ktbc4kTYiLLeUrYV84awu2p60RnBrIbXuUPFhsJBFhK+UpVipvGqe1+55AdaoEiZldr1LYoQcsfMLL40kMSm/uQf949XjGcbQ1HakKncNJbr4OKmz/oKr9YFPTVEP0vNyTL7qCFXHWCdWq+NBxElpztC2SAiN4iUSLSDa1GkyPcAO0h8n+ohEcmg5RQwb6za51s9AAK/915pKPURy05zKlGtZsqYH7l7Gke/LEnzTBk4dV/Qaa4iqyS5yHNY1v33yT233yQv48WMcNBLPPv8Ts/DiB/ZFk/kf/OQqnuveSh9VMSm/lgMKCMDXHORdAl899XIUCNzzfCXdGTmqgeqTpiCg++wjHbjJE1HeOLnYp2zoSUxDhDJe75CSQnXLUhzJwGUMGK77hlPd+tLYWmN5zvmmdQzGk/hx8Y0SUkFLyDY0fWy1UyvFXPRG684EOQCCn992kQYtD71vZZSXkz2EKSxVihKC4lnRCsTVYz/YEZpcJaGct8xTpE9zesJqrifNmrTAJRKhfUXexIGSSR/w4YS09z4hiYy1fjDg2L6sc1D7K7Mn24eMKUFxsKQ5eN53o21RBstwmYdgggP2004YuDgoLrhI5LDpr3saHGLrF2i5V8xyL4xK2+Bfq9XWZmFRSlToPFbeMocsGMTb4qvKgRtbKDTEw321Fw21Ee9OOZYnd74zdiQseyNmPwgKI1/3J2b2el0Hm5/mK5ydH8KTnA
- wwoRReGO
- CsDXO5tne56gnCm68B2wR0rq3CDQ43SnHnVMLOjrHb3I25l5b+e0k+j5/9lGjA94fvkoyZANH5w0HM0W9pt2GbzTxchvTpBRNT+KvdzXXbCHAC35dxSvSEiNAaED7qyN1mhK/Ec5dqKq2w2yK9rA8pmDLjfE/wHTa57sovOZ6ndx0PWBpuaQdZh4Zrtg7tEeNy4PUsS8V0br4QCZHxAz59wdHGzbcgP12z7r4SgaaV574/nXPUV7PhWarBrUwX4PxT99tHSGdA8D4BJ0CGnVSKP/VgovRRRqxtmIJEV1cL91gu36exAzJ33dHkkrj1lFmfNFPFZqxN4Sv4pn9RLZyI3DVtaIh/7iD/CYx3WMkN05aKjTcvYl69fqI2zIuE25lLKiWCBI2htBRACoG5f0Ws6lG8mglGFE1BhHjXi1LK+UwJ+oBHyUutSOrG9YLKYdjmnG9H0nR2zJ5z7Y=
+X-HE-Tag: 1757922689-765548
+X-HE-Meta: U2FsdGVkX19Pkt/M1y01ls0Wx1E1yE0UP6IRzxfRPqCPzfxSOuJvlC6vevdnHNYGTCH1Ce0lOt2VFh2x5wGwhkMV8b0gWzbzFNbK1uj/YcTMmRbn3l9uWLPR5I7aJObE5i/z1DDifxh1SwKTdYZ1FgcNF2yWg5glGvh4E0xQRseWZhdmU5B9QaWyToIQ9JSxdz2WZbYDY/Mi6WrZw8gFrDxWhDngCeZASghs01pN28AMvMoFrUdnFPQbZYdweej9RehsfaW0jDhOOVDqjS/UZ8a82KrkUly7xpSzapK3i6cyLnrwe+qh5MvgNaTamH220c+fclBcq+Kn34kp2f3+drjRgtVH2oCFoEQIYzwBooUxg0NzrbO+s/q8xK8so9ks9rmVCTcdc8FdYSUNi2HQsieAkbVMYzuIi53QBJfqcjFPhhm5QD10Bkd6xmGN5t1FbOkmv6tLmYxo+oyLfE1O1MMA0rJmxpTgwg2pkq01sPwOIKhrcy0yBFRkPZ6zKUVQeFYveRU4W45++1O1d/dFf2ia/82w/J5s6L7rmJIvWQ+oY1pkDhfbd461XqngxJUuJp/Qev9QD5tUfmGsUx5a/A+wnmw6bCt/Pv7HBU9oA3FvgIZ1pUXq/D6C3LVgdnUxvwDVzemhyhkjN62BiePbUHJBKb2tiWFsarZBch1/asKd4Yx9KN/fqU4gvRn4OvnEcSNS2dOiztNxGSiT38ef5g0ME5mGe/hfGIWrx/56c8jhfyv8PUQXBXqoIoHdvHeQcV0q+npmDqyYSvxT7k6Q3xOqHN19jobtRK8QO219LZDEEt8LdR5sXdy/9/OUC3fUwkrYB+w/rRgy0M6JRfaEoX4ogJ3v5WmTnhIXGz8P5CiDeTeHhtcTBq8aejzQoxtTYUQxO7JsldzJ6V9QUGIhzSe7xGsovBZVaDa3ysSbkvGUyzi6rzG+HemqyDi8O1TV0RizZf4pRUWkknRRFas
+ WhakR9Ie
+ hJFhX
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -196,51 +82,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/13/25 03:12, Alexei Starovoitov wrote:
-> On Fri, Sep 12, 2025 at 5:36 PM Suren Baghdasaryan <surenb@google.com> wrote:
->>
->> > > > Suren is
->> > > > fixing the condition of VM_BUG_ON_PAGE() in slab_obj_exts(). With this
->> > > > patch, I think, that condition will need to be changed again.
->> > >
->> > > That's orthogonal and I'm not convinced it's correct.
->> > > slab_obj_exts() is doing the right thing. afaict.
->> >
->> > Currently we have
->> >
->> > VM_BUG_ON_PAGE(obj_exts && !(obj_exts & MEMCG_DATA_OBJEXTS))
->> >
->> > but it should be (before your patch) something like:
->> >
->> > VM_BUG_ON_PAGE(obj_exts && !(obj_exts & (MEMCG_DATA_OBJEXTS | OBJEXTS_ALLOC_FAIL)))
->> >
->> > After your patch, hmmm, the previous one would be right again and the
->> > newer one will be the same as the previous due to aliasing. This patch
->> > doesn't need to touch that VM_BUG. Older kernels will need to move to
->> > the second condition though.
->>
->> Correct. Currently slab_obj_exts() will issue a warning when (obj_exts
->> == OBJEXTS_ALLOC_FAIL), which is a perfectly valid state indicating
->> that previous allocation of the vector failed due to memory
->> exhaustion. Changing that warning to:
->>
->> VM_BUG_ON_PAGE(obj_exts && !(obj_exts & (MEMCG_DATA_OBJEXTS |
->> OBJEXTS_ALLOC_FAIL)))
->>
->> will correctly avoid this warning and after your change will still
->> work. (MEMCG_DATA_OBJEXTS | OBJEXTS_ALLOC_FAIL) when
->> (MEMCG_DATA_OBJEXTS == OBJEXTS_ALLOC_FAIL) is technically unnecessary
->> but is good for documenting the conditions we are checking.
-> 
-> I see what you mean. I feel the comment in slab_obj_exts()
-> that explains all that would be better long term than decipher
-> from C code. Both are fine, I guess.
 
-I guess perhaps both, having "(MEMCG_DATA_OBJEXTS | OBJEXTS_ALLOC_FAIL)" in
-the code (to discover where OBJEXTS_ALLOC_FAIL is important to consider, in
-case the flag layout changes again), and a comment explaining what's going on.
+On Saturday 2025-09-13 02:09, Sudarsan Mahendran wrote:
+>
+>Summary of the results:
+>
+>- Significant change (meaning >10% difference
+>  between base and experiment) on will-it-scale
+>  tests in AMD.
+>
+>Summary of AMD will-it-scale test changes:
+>
+>Number of runs : 15
+>Direction      : + is good
 
-Shakeel or Suren, will you sent the fix, including Fixes: ? I can put in
-ahead of this series with cc stable in slab/for-next and it shouldn't affect
-the series.
+If STDDEV grows more than mean, there is more jitter,
+which is not "good".
+
+>|            | MIN        | MAX        | MEAN       | MEDIAN     | STDDEV     |
+>|:-----------|:-----------|:-----------|:-----------|:-----------|:-----------|
+>| brk1_8_processes
+>| BASE       | 7,667,220  | 7,705,767  | 7,682,782  | 7,676,211  | 12,733     |
+>| TEST       | 9,477,395  | 10,053,058 | 9,878,753  | 9,959,360  | 182,014    |
+>| %          | +23.61%    | +30.46%    | +28.58%    | +29.74%    | +1,329.46% |
+>
+>| mmap2_256_processes
+>| BASE       | 7,483,929  | 7,532,461  | 7,491,876  | 7,489,398  | 11,134     |
+>| TEST       | 11,580,023 | 16,508,551 | 15,337,145 | 15,943,608 | 1,489,489  |
+>| %          | +54.73%    | +119.17%   | +104.72%   | +112.88%   | +13,276.75%|
 
