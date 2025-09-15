@@ -4,58 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF6E2CA101F
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 03:30:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78E4DCAC593
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 03:30:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 591F38E0003; Sun, 14 Sep 2025 23:30:21 -0400 (EDT)
+	id F073F8E0005; Sun, 14 Sep 2025 23:30:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 47F1E8E0001; Sun, 14 Sep 2025 23:30:21 -0400 (EDT)
+	id EDFC78E0001; Sun, 14 Sep 2025 23:30:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3BBFA8E0003; Sun, 14 Sep 2025 23:30:21 -0400 (EDT)
+	id DA7878E0005; Sun, 14 Sep 2025 23:30:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 281918E0001
-	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 23:30:21 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E6DCA119F47
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 03:30:20 +0000 (UTC)
-X-FDA: 83890056600.13.F62E3C5
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C350F8E0001
+	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 23:30:22 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 91394119E28
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 03:30:22 +0000 (UTC)
+X-FDA: 83890056684.04.A8174D6
 Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
-	by imf19.hostedemail.com (Postfix) with ESMTP id D0A791A000A
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 03:30:18 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=FVLTOjrJ;
-	spf=pass (imf19.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	by imf21.hostedemail.com (Postfix) with ESMTP id 561051C0009
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 03:30:19 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=wk3j2myo;
+	spf=pass (imf21.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757907019;
+	s=arc-20220608; t=1757907021;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EltDD6XaVHb4ywefi6tfTUXJyF6xjUHuaP+jJuKR6OU=;
-	b=Uj7D/20DepsF/dZbvfp4ulHMUuS4+QltbrorB2caJ7amVgWPoCNzmuys47s6ASkKCMo3WS
-	N2zrA+cXcdBYMi9fArjFOKtbYJq4FdiozLoBe5cMsUTq1ujdn19UcyAfcJd1ASc7MuWSqC
-	ax8/065iuSwJjruMGpylUTqJFAfggs8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757907019; a=rsa-sha256;
-	cv=none;
-	b=Z/SL0mk7F1Q6zWOWxH/duSitDARzOzxGgchJsCaktCHnyVJ1dKLzY5xMu8CjhG4P9NSp8P
-	ZFsy8JcJBKFqZj/Cf3le2zmZoR9FBfV5F8BcHzYw7MYadecyZC6bUYzvOw17IIvCzQLMS8
-	EkH154wPL6vHQyVK4l9dAwEHu6qPjo8=
+	bh=aV55o1PrOMi1ewOa19IO6mFfTMCoyqv5bAgN6SrTF+U=;
+	b=lMV7D6STsT1ptA7sWMproUNuv2BZHiwLfVAJdXGy5H7D6XzskF3jz8ziEYipfYbkRzgsml
+	HcXjoEYZ9e4uZpGzihSkq4HKuj1mKFtjPA3qayuZ1BT45SE6KsQR+yIex0ed0G6w+MsOF9
+	kbWYi8XFyKHk+SOhV8ZTsg5vobvbSe4=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=FVLTOjrJ;
-	spf=pass (imf19.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=wk3j2myo;
+	spf=pass (imf21.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757907021; a=rsa-sha256;
+	cv=none;
+	b=dhOSTW9ajJgWyp4DDyQpMMS8s0JKF+J6lhX0/7TWoOCYGcmfFhB1BjRGztBMCh53K3IhyN
+	qKSduJtgkcHA/oXRbRAI6v6lS/lWAIJ7ca8ommfwyQcpDL6bYXg7vEHDGSZcAWs6i/tiEp
+	JsNmBmi8g6VjYuLilcOE0y9r5+SSFWY=
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1757907015; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=EltDD6XaVHb4ywefi6tfTUXJyF6xjUHuaP+jJuKR6OU=;
-	b=FVLTOjrJFABFdizVlxbn8PKNiLtOx78GUqPS8BabpPDUARSC8qNyoBsmqCNJlcQqVBt6OdQsZK40FE0u/n/3DgREyoclwpmfNnom/lRiQ93+Tb3zzxCv4jDPaT+1a6UuhwuLYUtUlYiy8sj0WFoiq4X9XHGsSY2SDr9KxplEj2w=
-Received: from localhost.localdomain(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0Wnx2CMR_1757907013 cluster:ay36)
+	t=1757907016; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=aV55o1PrOMi1ewOa19IO6mFfTMCoyqv5bAgN6SrTF+U=;
+	b=wk3j2myo9GH5+xDPmX2vOWpcBIvXaxtopOu7O9ADgunYTN+v/Z1XQtg4zmnNk67hZek2QZCuop1CrWnBACGQIymo93Aa1Ep7a3cUAC/dAynb8D3Z2JaEi328x/oNvS2rPzKkiQV58WoGoflUNwMWWh9OjDrQ1cKxcYfQy43lS4g=
+Received: from localhost.localdomain(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0Wnx2CMj_1757907014 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Mon, 15 Sep 2025 11:30:14 +0800
+          Mon, 15 Sep 2025 11:30:15 +0800
 From: Huang Ying <ying.huang@linux.alibaba.com>
 To: Catalin Marinas <catalin.marinas@arm.com>,
 	Will Deacon <will@kernel.org>,
@@ -79,22 +79,22 @@ Cc: Huang Ying <ying.huang@linux.alibaba.com>,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH 1/2] mm: add spurious fault fixing support for huge pmd
-Date: Mon, 15 Sep 2025 11:29:45 +0800
-Message-Id: <20250915032946.33203-2-ying.huang@linux.alibaba.com>
+Subject: [RFC PATCH 2/2] arm64, tlbflush: don't TLBI broadcast if page reused in write fault
+Date: Mon, 15 Sep 2025 11:29:46 +0800
+Message-Id: <20250915032946.33203-3-ying.huang@linux.alibaba.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250915032946.33203-1-ying.huang@linux.alibaba.com>
 References: <20250915032946.33203-1-ying.huang@linux.alibaba.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: D0A791A000A
-X-Stat-Signature: maqwwx7hbo4ga8dwwgersi191gmd1abi
+X-Stat-Signature: xgqsxtm9h9b3dw886kwkr9u349my8aa5
 X-Rspam-User: 
-X-HE-Tag: 1757907018-702999
-X-HE-Meta: U2FsdGVkX1+GHo23whowGZ7EjARwHzFzGW/Ze8kCXLDNdNGLhfycw0SNwXDzajuc0DtjlpQ1b1QOqrC372MIxk0AY4XXh2FAQYcFhlWC9RYXUH6aJDeK3ScToCZicSMZP9hJyqGrzB+n7gLnmHvhoeiW4h6opyHWVPdw79JwS3X7ECjWJcooT1IrzRhdTy5vgFBRu8oOk33jMFpeorpRk/H5z5leMYZS3FHgGNgpMQFWqap66Kg2dkJ4PXbn9Miy2s4QelbyKVVldctEJi++bFczd+Fe1sah3aD57cWVJz5lxeUuTmWzFjZAHIFgLhpPXqp7Ldvs18wdjG9d7yQZ6tF1wNl7MEeMoK8Uu5gDPQva/RrqHOUF1Awz2SwLVdJ2TQ9SS/ho7e3dc61qWsz5VRLeX7//up0eZ2WbailbR0PrOrHzZmfPzrfPV8BwtFdcS/P8olgzUhrkGimmYbWQuGou75QGvPNft+GDGFYZ+tVGfh8Hn48ZNcsYCiQ7zJpnkDf/dSpVeYcx2Ib90sOiZoCYOYUi/k6l3ugMU6Valjj/XZojbbyJIl2CUT9OC5zWgt7JF/xw6VdJbn/acb/vOz2U5UySTtv7gZYrEklllvjdB0g/Nf3OIb124wOeiCl81LhQQdcUhhPLG1VkcFzFv4/TlMYaBOKnkQgcRdO81bGFDze+PTW9GkeyEaNqvWhJY8UCxTYE7h4jeJo1T+1FmgqyNcT08QDV+tmPICqj8bpB/tCCfwBX1Ihi8EJE5cFxH+6WpGjbfX8IjPRj1jW0Q7l04mJtqbExS9gMatpEcjRHY2NowBNSEIsUcZjeoViPV9EJBaVat6dsraOle3h6qr00zQnJitzolWtU2VhSOB0HZAGtfaUd8PEvthD2Nvqihc3QidE76aE2bl1Uv9jEuTTEE1SKi6Dq1vd2bgAkg7+JrvDRcXGw9SsuZeH/AZ/T+jbl5LswVej2WEPEmU0
- VvtsryRS
- a5NgdKi5sRfuFuowb3khWMFNLPb5XzfEC0GnvDA457UZGDgaPKGX0CWJ9lPzSETxiHlvvPN+YoZd54UV2MWbz18oQv/d+sZ8wqCl6y+f1NhA+FCiEncDEZrKAnnF4I8XZUVh71X4LdEHvN7HdV1jYjEYbmnOVvQ32BwpfHaBfyHhmx0eBU3+gDJ8XHcoHrbyf4YTH+G5wuSc3HCO5UKmR7N+97Kr2DObt4QBJk3e4LE2pqB558hZJFyTIj4ar3LAraJ5wTK+W4cnYVC8tIOj47JRpdGFTSImM7Dc/u5JQUoTaOxfidPsRl9mRdKjktqQjNJ0+rKz+Q9QFDYODjFm9tm8PQlWAghgAq9NOb0Yl0fAKg7VpKQq6mdLIMQZgmJCfoUI+2Jm/DWgv8TGLn2tmVOivqI6k3jH/aGd4sqsW7Y/2v1QBWpcbyxfaicdsVMjSSCdPsr1XS3GlLh+5Ifa5Sb2+NSpLwmee48Bnfw4GDrv+eeteGWqOBXejehF8RTZC1YCNVJHVpW+XedBYhItzW9Rlknpv2PIuesszOpow3blIUkpHO/LKxEdUccCdPgLEBwOaKMf8w8odwftSimsqTpGvD/od09+JksEOxc+lR496pVtjV0RAh97Vs9eKr6796RUj4WzWBmlqUq9+cuBud8iZ/edNBgOq/3gq3QHB9kCBXJoA9rw95MSLslrjsOUpuOCqNJpWGxpd83wzgcLhQz0H1xH2aE+h+dqdcC4Yj0S4BzQHuxfHpKRDaBLpnEiqQqTw2wkjleT2yelJSyqUvJj/cwoBQB79hQmh72U+bU+hIn55PBL8mkHD2A==
+X-Rspamd-Queue-Id: 561051C0009
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1757907019-631326
+X-HE-Meta: U2FsdGVkX1/DjpUAD094dJHnrUQNM2/8yRdcT5m0yH4Novz5Xe44oG5uyOnxjONovV+9aqPZ+tGaLki+bzhFcvCkjd26hZGP6QZqpmS7UcJ/DBbH9ZqVrLw5PFicbiFgR70MP7AFY8sbs9cs5yf6VtDB8zG5th/ry7HjOYExo/t4l/30Ba2lnbxqx4l9x80RIjun75FFV1G08uH1D5rZm4LqQno8FBE/0JR6Yc+XbWBEbdIDC0bp6RwMctQcPSN5eq1eCq1TDbktRiOrwDtLhuPECYUjuZMyACRGrumi5ELvyGrenklXBkqlrYKoeiV1YSpOy6MFbUs4jX4FgIwwB14r1RJ0FsIiY37rQeqFisCG0OeibPM2SfXIM7PbSISSxMEGI0JA96doINn+5LtKAvqXiqolpk7rwmDJvPdu1u28hvGrxA651ZGBFr1cDXAaxpKcfCl/+JjdajXdiThpwY9vfNUcA4ngc9RrGbrQR17SWPnBY1saeePB9/WYyuHxPh/HhxHiEJFA60ybi3PqOeGwPujJdgZRFy2Mrp5u7SLIMA1vMZzIHUTmceFnqAMw+PiLvRm6HlLZr32TNQ/3o9dej5tpH8+Fvlg+gNsHX/pG9Dc2FKklHdTp/UQSrOit75J/DEASgmBfHYlxCEQuUFmpz73l7qogSD+6EfOeYuHV2trXF7k/LNpPSZzAMiC1e1IlkGQxUFQXi/OuMLN6S8dkNmp8294ysUyjphtYKbN/TbRIX9GwrkDOPME0mPkSS/xRFsaMS43GWiDOF1cnImTgE2iBdjRtyayudiZsGXQWynw8O8+/uuXDsswM4rSFHHSdWBHpxicrF7z4BhqH6cjhGvgQUIXsEXSwEco7SGu5xkg6j4z1bjhU6pBVy8pUXw0Rs9nMhpwZ0J73RMuIuDjIeajtJvEfRfaHepSDJ8PO6PSgYqdAtCI9Ph3KKNxJT60putx1z+VIgRYPm5D
+ /cTF7weX
+ YwdvuGrjuIWWj3s5FQSRKzzKYP7NGhNgcvsurssX+bd+LVZ4TvDijHKFCrDaQhj8sI0JRBfitQGL/O6Aylln1x5kq/swdlyBMjWdjkaJHunHSgrw9lnyRsz99wjv6w1/el0geuJ9k4zuqdy4IroAy1/gE6Xn48klZlBMOV3bJm0+/LeyAeImBUnVRdiOD1KFOaKZI8/Da8CxX604TcxGY8MEi3Ka7XApZ5uS13IaXipaqb7nOKIJui1wVqSWBuBAiJYl1W1MGAhEl1rNYQrpgWHW4Jczl5x0QrxNLuQGH0HiOO4KyuZBnVQOmZwXTYpxuGTsh7NtmHY624ABalu9NvoIYZExKazN44LEl8Ynl5cZkdfExuzdVpEVm4RmFun0vChIcSg8Cgd5l8stJUAYZ5R3oNE22/oKSSsUW86nkRDw/GQ/fAc5liuixGo59s+RtpflKBdZRO6qB0Ti7IaFvAvm42RgsLIHSEHl/aq8X4iLeUN9FMGgt2j8F2EQ5HWXroU8oCSK2xXkQCb/wdh6l8MjRHNLNGmdM2jKcjCoYymJIZI4Ukeq1vSB8rOhNsZV3q1v5S7PYP0r39i/ZvALyTqNHXEiU8QvOGmJyG0tWydc39OxKCL0st0CjxXuiRTVYA8h/3cH46iQLfqxq4nI32vxxX0yHws4DEtRZFBjdKqzxGLFr+OSw/dEz1qKAYjqJIXXu9IDoHPjZrwdOxsNqJUMj+lT3RLm/RKOkgYDnpv4lAdH+gzs/Sh4p8ZsIHYcnzZV9Wfy4INajgIY/MOsykR1yrg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,12 +103,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In the current kernel, there is spurious fault fixing support for pte,
-but not for huge pmd because no architectures need it. But in the
-next patch in the series, we will change the write protection fault
-handling logic on arm64, so that some stale huge pmd entries may
-remain in the TLB. These entries need to be flushed via the huge pmd
-spurious fault fixing mechanism.
+A multi-thread customer workload with large memory footprint uses
+fork()/exec() to run some external programs every tens seconds.  When
+running the workload on an arm64 server machine, it's observed that
+quite some CPU cycles are spent in the TLB flushing functions.  While
+running the workload on the x86_64 server machine, it's not.  This
+causes the performance on arm64 to be much worse than that on x86_64.
+
+During the workload running, after fork()/exec() write-protects all
+pages in the parent process, memory writing in the parent process
+will cause a write protection fault.  Then the page fault handler
+will make the PTE/PDE writable if the page can be reused, which is
+almost always true in the workload.  On arm64, to avoid the write
+protection fault on other CPUs, the page fault handler flushes the TLB
+globally with TLBI broadcast after changing the PTE/PDE.  However, this
+isn't always necessary.  Firstly, it's safe to leave some stall
+read-only TLB entries as long as they will be flushed finally.
+Secondly, it's quite possible that the original read-only PTE/PDEs
+aren't cached in remote TLB at all if the memory footprint is large.
+In fact, on x86_64, the page fault handler doesn't flush the remote
+TLB in this situation, which benefits the performance a lot.
+
+To improve the performance on arm64, make the write protection fault
+handler flush the TLB locally instead of globally via TLBI broadcast
+after making the PTE/PDE writable.  If there are stall read-only TLB
+entries in the remote CPUs, the page fault handler on these CPUs will
+regard the page fault as spurious and flush the stall TLB entries.
+
+To test the patchset, make the usemem.c from
+vm-scalability (https://git.kernel.org/pub/scm/linux/kernel/git/wfg/vm-scalability.git).
+support calling fork()/exec() periodically.  To mimic the behavior of
+the customer workload, run usemem with 4 threads, access 100GB memory,
+and call fork()/exec() every 40 seconds.  Test results show that with
+the patchset the score of usemem improves ~40.6%.  The cycles% of TLB
+flush functions reduces from ~50.5% to ~0.3% in perf profile.
 
 Signed-off-by: Huang Ying <ying.huang@linux.alibaba.com>
 Cc: Catalin Marinas <catalin.marinas@arm.com>
@@ -133,92 +161,94 @@ Cc: linux-arm-kernel@lists.infradead.org
 Cc: linux-kernel@vger.kernel.org
 Cc: linux-mm@kvack.org
 ---
- include/linux/pgtable.h |  4 ++++
- mm/huge_memory.c        | 25 +++++++++++++++++++++----
- mm/internal.h           |  4 ++--
- 3 files changed, 27 insertions(+), 6 deletions(-)
+ arch/arm64/include/asm/pgtable.h  | 14 ++++++++-----
+ arch/arm64/include/asm/tlbflush.h | 33 +++++++++++++++++++++++++++++++
+ arch/arm64/mm/fault.c             |  2 +-
+ 3 files changed, 43 insertions(+), 6 deletions(-)
 
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index 2b80fd456c8b..d7604ad34d36 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -1232,6 +1232,10 @@ static inline void arch_swap_restore(swp_entry_t entry, struct folio *folio)
- #define flush_tlb_fix_spurious_fault(vma, address, ptep) flush_tlb_page(vma, address)
- #endif
+diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+index abd2dee416b3..a9ed8c9d2c33 100644
+--- a/arch/arm64/include/asm/pgtable.h
++++ b/arch/arm64/include/asm/pgtable.h
+@@ -130,12 +130,16 @@ static inline void arch_leave_lazy_mmu_mode(void)
+ #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
  
-+#ifndef flush_tlb_fix_spurious_fault_pmd
-+#define flush_tlb_fix_spurious_fault_pmd(vma, address, ptep) do { } while (0)
-+#endif
-+
  /*
-  * When walking page tables, get the address of the next boundary,
-  * or the end address of the range if that comes earlier.  Although no
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 9c38a95e9f09..0e2ef6b007c2 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -1650,8 +1650,8 @@ vm_fault_t vmf_insert_folio_pud(struct vm_fault *vmf, struct folio *folio,
- EXPORT_SYMBOL_GPL(vmf_insert_folio_pud);
- #endif /* CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD */
- 
--void touch_pmd(struct vm_area_struct *vma, unsigned long addr,
--	       pmd_t *pmd, bool write)
-+int touch_pmd(struct vm_area_struct *vma, unsigned long addr,
-+	      pmd_t *pmd, bool write)
- {
- 	pmd_t _pmd;
- 
-@@ -1659,8 +1659,12 @@ void touch_pmd(struct vm_area_struct *vma, unsigned long addr,
- 	if (write)
- 		_pmd = pmd_mkdirty(_pmd);
- 	if (pmdp_set_access_flags(vma, addr & HPAGE_PMD_MASK,
--				  pmd, _pmd, write))
-+				  pmd, _pmd, write)) {
- 		update_mmu_cache_pmd(vma, addr, pmd);
-+		return 1;
-+	}
+- * Outside of a few very special situations (e.g. hibernation), we always
+- * use broadcast TLB invalidation instructions, therefore a spurious page
+- * fault on one CPU which has been handled concurrently by another CPU
+- * does not need to perform additional invalidation.
++ * We use local TLB invalidation instruction when reusing page in
++ * write protection fault handler to avoid TLBI broadcast in the hot
++ * path.  This will cause spurious page faults if stall read-only TLB
++ * entries exist.
+  */
+-#define flush_tlb_fix_spurious_fault(vma, address, ptep) do { } while (0)
++#define flush_tlb_fix_spurious_fault(vma, address, ptep)	\
++	local_flush_tlb_page_nonotify(vma, address)
 +
-+	return 0;
++#define flush_tlb_fix_spurious_fault_pmd(vma, address, pmdp)	\
++	local_flush_tlb_page_nonotify(vma, address)
+ 
+ /*
+  * ZERO_PAGE is a global shared page that is always zero: used
+diff --git a/arch/arm64/include/asm/tlbflush.h b/arch/arm64/include/asm/tlbflush.h
+index 18a5dc0c9a54..607b67d8f61b 100644
+--- a/arch/arm64/include/asm/tlbflush.h
++++ b/arch/arm64/include/asm/tlbflush.h
+@@ -282,6 +282,39 @@ static inline void flush_tlb_mm(struct mm_struct *mm)
+ 	mmu_notifier_arch_invalidate_secondary_tlbs(mm, 0, -1UL);
  }
  
- int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
-@@ -1857,7 +1861,20 @@ void huge_pmd_set_accessed(struct vm_fault *vmf)
- 	if (unlikely(!pmd_same(*vmf->pmd, vmf->orig_pmd)))
- 		goto unlock;
++static inline void __local_flush_tlb_page_nonotify_nosync(
++	struct mm_struct *mm, unsigned long uaddr)
++{
++	unsigned long addr;
++
++	dsb(nshst);
++	addr = __TLBI_VADDR(uaddr, ASID(mm));
++	__tlbi(vale1, addr);
++	__tlbi_user(vale1, addr);
++}
++
++static inline void local_flush_tlb_page_nonotify(
++	struct vm_area_struct *vma, unsigned long uaddr)
++{
++	__local_flush_tlb_page_nonotify_nosync(vma->vm_mm, uaddr);
++	dsb(nsh);
++}
++
++static inline void __local_flush_tlb_page_nosync(
++	struct mm_struct *mm, unsigned long uaddr)
++{
++	__local_flush_tlb_page_nonotify_nosync(mm, uaddr);
++	mmu_notifier_arch_invalidate_secondary_tlbs(mm, uaddr & PAGE_MASK,
++						(uaddr & PAGE_MASK) + PAGE_SIZE);
++}
++
++static inline void local_flush_tlb_page(struct vm_area_struct *vma,
++					unsigned long uaddr)
++{
++	__local_flush_tlb_page_nosync(vma->vm_mm, uaddr);
++	dsb(nsh);
++}
++
+ static inline void __flush_tlb_page_nosync(struct mm_struct *mm,
+ 					   unsigned long uaddr)
+ {
+diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+index d816ff44faff..22f54f5afe3f 100644
+--- a/arch/arm64/mm/fault.c
++++ b/arch/arm64/mm/fault.c
+@@ -235,7 +235,7 @@ int __ptep_set_access_flags(struct vm_area_struct *vma,
  
--	touch_pmd(vmf->vma, vmf->address, vmf->pmd, write);
-+	if (!touch_pmd(vmf->vma, vmf->address, vmf->pmd, write)) {
-+		/* Skip spurious TLB flush for retried page fault */
-+		if (vmf->flags & FAULT_FLAG_TRIED)
-+			goto unlock;
-+		/*
-+		 * This is needed only for protection faults but the arch code
-+		 * is not yet telling us if this is a protection fault or not.
-+		 * This still avoids useless tlb flushes for .text page faults
-+		 * with threads.
-+		 */
-+		if (vmf->flags & FAULT_FLAG_WRITE)
-+			flush_tlb_fix_spurious_fault_pmd(vmf->vma, vmf->address,
-+							 vmf->pmd);
-+	}
+ 	/* Invalidate a stale read-only entry */
+ 	if (dirty)
+-		flush_tlb_page(vma, address);
++		local_flush_tlb_page(vma, address);
+ 	return 1;
+ }
  
- unlock:
- 	spin_unlock(vmf->ptl);
-diff --git a/mm/internal.h b/mm/internal.h
-index 45b725c3dc03..743ce97c7248 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -1406,8 +1406,8 @@ int __must_check try_grab_folio(struct folio *folio, int refs,
-  */
- void touch_pud(struct vm_area_struct *vma, unsigned long addr,
- 	       pud_t *pud, bool write);
--void touch_pmd(struct vm_area_struct *vma, unsigned long addr,
--	       pmd_t *pmd, bool write);
-+int touch_pmd(struct vm_area_struct *vma, unsigned long addr,
-+	      pmd_t *pmd, bool write);
- 
- /*
-  * Parses a string with mem suffixes into its order. Useful to parse kernel
 -- 
 2.39.5
 
