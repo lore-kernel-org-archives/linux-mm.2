@@ -4,98 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FC80CAC597
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 18:34:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 272BACAC597
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 18:43:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 809498E0012; Mon, 15 Sep 2025 14:34:15 -0400 (EDT)
+	id 733378E0003; Mon, 15 Sep 2025 14:43:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E0F58E0001; Mon, 15 Sep 2025 14:34:15 -0400 (EDT)
+	id 6E3D68E0001; Mon, 15 Sep 2025 14:43:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6F6B18E0012; Mon, 15 Sep 2025 14:34:15 -0400 (EDT)
+	id 5F9B78E0003; Mon, 15 Sep 2025 14:43:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E2ED8E0001
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 14:34:15 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1A584BAF60
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 18:34:15 +0000 (UTC)
-X-FDA: 83892334470.13.72F4027
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 58C541C0012
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 18:34:12 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="izOqhM/D";
-	spf=pass (imf20.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 508368E0001
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 14:43:14 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id EB12087112
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 18:43:13 +0000 (UTC)
+X-FDA: 83892357066.15.A15F4EF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 27A5D1C0012
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 18:43:11 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=e2HwtNAQ;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757961253;
+	s=arc-20220608; t=1757961792;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=YNqKk620ewXGknZa3uh9Ff/B1oqvR1Huk8EUzdnUaRQ=;
-	b=ZV4RBszNlGPzqweXuI1Px1O4O9Gbv6/OLxiU1sl0DPPbyRt3Mqb4bnNrRwcEjOmM8dRtbV
-	MQtf1oObbH50CgsDMjfNUaKEmPrFbdPpNx7TRFK9/8F+InsBAdoPhms8uY5GmzeEDo8N69
-	ZdDXJMhLVqp5BkFtAlzfyG+e9w9Js5E=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=zR/8EbwwcJ0K6UgVTMyrQprv5o7ydaEf7t7fV1qU78I=;
+	b=L8rwNwtHn/dihWL4oAZcq1t4Ivlhzt214azsTkPrecZehHNF03/IBSLZ0WNOKqngkJ6JEs
+	AlJawfe4sJki8u6mcwBoktaUOxXNja45iodw/gs5I7o6VNHT14Tf59KooW42QQukdqF8C0
+	myO/Ex9AvobweUi78U3OnyGzXi80P5k=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="izOqhM/D";
-	spf=pass (imf20.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757961253; a=rsa-sha256;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=e2HwtNAQ;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757961792; a=rsa-sha256;
 	cv=none;
-	b=5HAKoZwuoOidNRhq7Y0r5HaCEMqfSXDURRGtj3LQk9+Y3F5DA7klUUSyQS/5cPm/FeeCWC
-	0ubicGKlQd5J9EwgXlWqlmunbGIAfP5Sq87UjUB9vaY/Pd3QC+MvPOHOGHtg4ghjJjpsHL
-	u40OWyt4IOXvrUdEV4d3LDXUqoxhc9g=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757961252; x=1789497252;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=TZC+H6eRGc+Z3JEU3E9ernW85DbRAtUT36rFei+847E=;
-  b=izOqhM/DEOZdQwl7+ZOPsG7k4Erk9iWsl618CE7mukQYTXPksxnkJDJA
-   UMkHCyhCzbRo2lhXVk7JSrV1Dnn0DYufQI1qRVryrTCjOJoKHBmMdKfrR
-   S6tCId5WHSRK7k5tuu2EUWckX8ugqUp3CccQT9m/SbR4HgPtFiWr3AZkQ
-   Hh53Jyswm2Qc6dSU7qb//npmNsOZdRM3mVd+Y1T2WAoJvyhlc/Msq3AwL
-   pnwOnG4nD+rWEqQOHgCSR5vfKwlEl0hyclnDidvpWH+tc9NNkJdJ/jQSA
-   4wT0MsHYQ9bsgT6NZpAxBBkcXXmGjVZ3ZYQGIJvx+AkZgZAnMX5uU6x40
-   A==;
-X-CSE-ConnectionGUID: 1cK/oW5ISQSYIUUaxpvH0Q==
-X-CSE-MsgGUID: aFMB2LHFSiqi+lj0wS49aQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="64036631"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="64036631"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2025 11:34:11 -0700
-X-CSE-ConnectionGUID: 8/5D6YqKSJu/tMIX803gYA==
-X-CSE-MsgGUID: lcODT8ceRA2A5kunGGrhTQ==
-X-ExtLoop1: 1
-Received: from lkp-server01.sh.intel.com (HELO 5b01dd97f97c) ([10.239.97.150])
-  by fmviesa003.fm.intel.com with ESMTP; 15 Sep 2025 11:34:09 -0700
-Received: from kbuild by 5b01dd97f97c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uyE1e-0000ZT-2x;
-	Mon, 15 Sep 2025 18:34:06 +0000
-Date: Tue, 16 Sep 2025 02:33:42 +0800
-From: kernel test robot <lkp@intel.com>
-To: Balbir Singh <balbirs@nvidia.com>
-Cc: oe-kbuild-all@lists.linux.dev,
+	b=ljxTY2E6RTF9Cy96MgTU8Dk+F1cLQhErF7FVzDljX6yniv51MUgpiaBAIgdgJ6iGHGYNQH
+	9zJOSXGeBxqV+1hfywOiMjo9IR7rPsbyxvRo2ZpqZgIRxmRrZ/jRXjUGvYLOu3iiT2aSr/
+	w9V+HMLv8zT7BSUq8KB3MKh0sDLREbA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id BD21F40563;
+	Mon, 15 Sep 2025 18:43:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B85AC4CEF1;
+	Mon, 15 Sep 2025 18:43:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757961790;
+	bh=aeSPb7UYuvV9fS41JrUTDI2+bisGhOXstOy+yk8seuc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=e2HwtNAQTxZUrWnS7dLonZJwz1gbzG0AwzJ+pVU4HVSml+vssWgfxld1bAUZtyRS4
+	 KWbXINTvCZLgmCDZOdr8oosrGiFKG0pNZjW776jebqfR2oTINGZkdu20EVa6eZdoqf
+	 ZREVi0bsHGfJvWNupHnPrkZUF2Td/QxiAatf1H+ud1wRFaVIAfM+yPHumFvKwOXWLF
+	 rhIBSZFkUr1OupbGGfyjz0OhurfPoR3Xq1BWvAQoIn5S0CTBlNoGurI2qt5y21NURL
+	 Gy9jHuBgVKtauKpLjEvltrqGYU4gxLpMXT2oaSmKPS7Wf+uJ6CzCYAEmGxj8sw3ywS
+	 LCRUjUApIpuvg==
+From: SeongJae Park <sj@kernel.org>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	SeongJae Park <sj@kernel.org>
-Subject: [akpm-mm:mm-unstable 187/225] arch/m68k/include/asm/page.h:20:27:
- error: lvalue required as unary '&' operand
-Message-ID: <202509160214.gDtkbWC8-lkp@intel.com>
+	damon@lists.linux.dev,
+	kernel-team@meta.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 3/6] mm/damon/lru_sort: use param_ctx correctly
+Date: Mon, 15 Sep 2025 11:43:06 -0700
+Message-Id: <20250915184306.110418-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250915150548.1486984-1-joshua.hahnjy@gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Stat-Signature: yqio8fffb6rd8wuzidm88fnqneygsjmu
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 27A5D1C0012
+X-Rspamd-Server: rspam05
+X-Stat-Signature: gjbhosqesn6w8ksomirpropqw5osgabp
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 58C541C0012
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1757961252-170316
-X-HE-Meta: U2FsdGVkX1/KgFHvPgVGYyMhfsLxI/qyt1sQ/I4IycZgPz3rvF9JxmEcXYHp6Qmp+9PJgeax22VI0hZj0APUsTcA0V6uu3CZkiW196chvvzzPf6TUR88sbOHDHIWtgyUwuU9U49j+Twes8HmR4m3bSpzvpWkf1mFf27L1nbPjuoat1fOW8sSzRYsQedQO//Xm8TD8IvgF5UL59N+46rWYlZSyUvOS0wco/ffOIKGHpMf6kXcEYIo5mWhN7AefiUMpniRMT6uEj9ZpooUTuznWAHSZRQfy3cQ0I8tVWA7WGk/ZpYnyyJN8Z8ZOJSziM7a5hrfJ7vYC0MT1tlSYZvuZMDBok1L+BNNR5pKcRcUcUsm2SphcaQMzj/cae18NPm6ceefkt/0NLfq4FJ2i+mCkasrVWC8HxJkpJb8kyqq7r5MaEl4pOywUe4hYMBsp34aA+oq1w48zypTsvYVHAs/vkQv/H1stigvn9GbdNXbNzRuWm3jTLLVaS5EcMHf9NdK0u8/Ebl8AP7nXNXXrgWcZ8LEIL4K/8rRkLKdMpayjicITz7Vp5BZt21RTYBUphGjASoeiI+HiSSkOZwwIm/pbp8f9H5tpHJ5JolTV5+Z/okpIEaMTRrOOU239MZtxnxCT1qGM+b0kZcJVS4GO9ahAv9bRGh1vCZ0Q+ATVadUDyaDd/sFjHuVOz2AsrOo2gmyElv1O629WH2i6wL351CpGRO0pmULld0nwEvy67xy157z1k1eLhmgiqhLw2LmXU2+CDHVhgGPTCAoI4HEqBG58tQiVJn/5uCI2iPMNWJugzvZG7W5IkKkm9+XNZ4Q3vvWmsGOJEifTYLrYamzK/4N+w9ODP3tkVjefpZFaPF4de1M/YUYL1QG0xbuPdLN4Gt5cbi+WVHNglJct4M2Jld9M4GCT+kBuPyzSbHrVHNd6QC6ynzIse645FljALywMPN6csL7DN4EZvmRPnvRP72
- vOP3bjXx
- Mi9RedVA0tbcCrBQEa9BU+ShZpHV2Lzz4G2LpF4R70nyBH6rlwZiXM8VkKAQXDTEoFB90Yq8G866EpzVhIa6vevHMdmmOVbvaixG5M4Vfovfp5u9w1cm7DcpvwwhFvTKxAgU+PufbnOrJMDUSbZiUA0jZUoe8z9eg7zEnAssV1B9mjI80HMCqIHM1HF0AIfqusq5mt1jQw1vc0Mj9vYS1OTwqILbPjYEfloYsmlQaJHupGLlC0fPoGe+HOpdoBuOJA2FNKA+lbmsdwrdjqLfyTuDGcLe4OSl7qs5i0YWiyCBWrANfoLqok6djiwKmFkci0oWb42TGA1LiRecgy7g7a/CcsyKtOp1DkFxxodOxXMLuP3whW5sJ9ggg/iAFuiLmkf4zdVf8xaV+xTODmHGado585W4f7gkPhfs6XDBVrxvTseRnTQdNPWEJ7YmN4ZLDkiSR
+X-HE-Tag: 1757961791-484268
+X-HE-Meta: U2FsdGVkX1+nWZmGbRwvpp075kzlqViP33HpQZtcMO8f8kMfyXeCObK9dwTIlsCuxrUGrS+wofxnvNDEtVXCYzwTuU8PbYo70cwYIJ3VD67F+7VWlHWdUdqeGd+FkjnmBFN+pdzJrzKX80PWk8xPBQwmUIoAaqh1l6Y5qqjxl14/BW9a55Me51a5TuEeY8fJDiWm0oHak+bzxhrXQz29I1JMxmgMfu53aVCNvvvlR78DlMerpqeaG7ZavIR0dxAyMP5mOS9uFEzahQnFXQkc+toGIFSNmBkn/NWh75G/GspY5HlGVEl5BBnrPlN+EhK45MvHJBbznJYDPC1cyxB5enf9ySl6SP8VbSc6eztLphVRBUHWhqTIJnQBo9odhN6bpe2IZbeaTtSz2NrBVLcn4jseZIVG9RsH+eq9nyo3+7PviwDcnAH0GTKnWU4mnWxfTC47Ew8NFl+ZGzVQQ+RDtqs9ga6PzhNgMr/xVGbs7nH2tSYwUuNj0nlgmequvGncF+4g7VfP6I3w15GXJocKsnpDIn1vNVsHICYq+QmR/EQDapT57IpwTqfQ3DrohrI0Vk/e+A5DoHVNBIFV6v6SwGelqOswXfOws+BCMZbpE+jU8xYxxHaowKzV/+NqrX43qAIZYWe2MfP8xG2E9F+38Rf73ANNO54VfqS81jblQbrGO2dR19BfgNlE28tGU9aj8v6oa6bSVkdvazhcykPefMxNOpRX+dkmR9tewCnUDod5zlDpjn8Wj96G2HjSzX9smhqpJb6qZH8mTZJkZMvrqQRKddePAzenA7GNf+yrS8dnZ3qIeBuOinARLtcQetD91+Y6HGjUSqV17G49Ztp3EpmnbGJq03A5c+PDeIcAphS+yzeaH3cwWacRCD5FfiiW+gTNR96plomGwtHvOK1UxupT3KmXavKPQdHrLrxbYNBVWS0n4XVwCpWiQOWihGI+ec0MWGKt0Ryyu83G3YZ
+ MyrR7ulp
+ vIaO16VqFfTBLG316j9XqE/2G8FiHJYfIvSITe6kJgEA3ehegQl3HKVYMSW3YRSeDBRePJtdZ3wjCQtoPdAhyRfn05CBR9yNghOCLktV/f7IiJyPN807SFG7MkdfpR1RAslJ6EKrkUxGnSXzKH8jBb8YAJl3eX5bmi8fdlYE/d/RihaGIBRox9R6HZiVWweL+1t6ZtTQq4c9wrMqNa3/W0P0VrIvhsetU6qYOd02Vouf5jhZMBD9eSbCWEEtbWgpAobEcm7N4w3ib50m5D/PND2EaBJg8i17emH8bc4Dsa9fd/+bf15ccF9YTlwnx5DdomY3yHtBvKZcMi/XzMvVo38xMAKLx1Cta/KyiCAOqiFGXZ2RediHV4MDwVQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,58 +95,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-unstable
-head:   0f409ed671a46de4b172899f7814a5bf37a33d86
-commit: 00cd88c03fd1c3242be5726998b3bf47afbf17a1 [187/225] mm/rmap: extend rmap and migration support device-private entries
-config: m68k-allmodconfig (https://download.01.org/0day-ci/archive/20250916/202509160214.gDtkbWC8-lkp@intel.com/config)
-compiler: m68k-linux-gcc (GCC) 15.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250916/202509160214.gDtkbWC8-lkp@intel.com/reproduce)
+On Mon, 15 Sep 2025 08:05:47 -0700 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202509160214.gDtkbWC8-lkp@intel.com/
+> On Sun, 14 Sep 2025 18:58:04 -0700 SeongJae Park <sj@kernel.org> wrote:
+> 
+> > damon_lru_sort_apply_parameters() allocates a new DAMON context, stages
+> > user-specified DAMON parameters on it, and commits to running DAMON
+> > context at once, using damon_commit_ctx().  The code is, however,
+> > directly updating the monitoring attributes of the running context. This
+> > doesn't cause a real user problem but apparently this is an
+> > unintentional mistake that can cause code review confusions and future
+> > real problems.  Fix the wrong use of the parameter context.
+> 
+> Hi SJ,
+> 
+> Thank you for the patch! I am a little bit confused by the behavior in
+> damon_lru_sort_apply_parameters. I was hoping that you could help me understand : -)
 
-All errors (new ones prefixed by >>):
+Thank you for sharing this Joshua!
 
-   In file included from include/linux/build_bug.h:5,
-                    from include/linux/init.h:5,
-                    from mm/page_idle.c:2:
-   mm/page_idle.c: In function 'page_idle_clear_pte_refs_one':
->> arch/m68k/include/asm/page.h:20:27: error: lvalue required as unary '&' operand
-      20 | #define pmd_val(x)      ((&x)->pmd)
-         |                           ^
-   include/linux/compiler.h:76:45: note: in definition of macro 'likely'
-      76 | # define likely(x)      __builtin_expect(!!(x), 1)
-         |                                             ^
-   arch/m68k/include/asm/motorola_pgtable.h:116:34: note: in expansion of macro 'pmd_val'
-     116 | #define pmd_present(pmd)        (pmd_val(pmd) & _PAGE_TABLE)
-         |                                  ^~~~~~~
-   mm/page_idle.c:74:36: note: in expansion of macro 'pmd_present'
-      74 |                         if (likely(pmd_present(pmdp_get(pvmw.pmd))))
-         |                                    ^~~~~~~~~~~
+> In particular, I think that this patch fixes two possible user visible errors.
+> 
+> My understanding is that we want to make changes to the param_ctx first,
+> validate the changes, and commit these changes to the global ctx struct at the
+> end. In the middle in the errors, we can abort the operation without committing,
+> and ctx will remain unchanged.
+> 
+> So to me, it does seem like the current code could lead to some visible effects
+> from the user's perspective (error-handling case).
+
+damon_set_attrs() has its own parameters validation.  If the validation fails,
+it returns an error.  damon_commit_ctx()'s internal validation for damon_attrs
+parameters also depend on the validsation of damon_set_attrs().  If the given
+parameter is invalid, damon_set_attrs() will return an error without committing
+the change, so there should be no user-visible behavioral difference.
+
+> 
+> Also, I am a bit confused by how the commit is currently called. We have
+> err = damon_commit_ctx(ctx, param_ctx), where the first argument is the
+> destination and the second argument is the source. There is a bit of a mismatch
+> because in the current code we have the following:
+> 
+> +------------------------------------------------+
+> |              ctx                    param_ctx  |
+> +------------------------------------------------+
+> | New &damon_lru_sort_mon_attrs                  |
+> |                                     New scheme |
+> | attrs overwritten to NULL	  <--            |
+> | scheme rewritten to new scheme  <--            |
+> +------------------------------------------------+
+> 
+> So in particular, the global ctx will never have the correct attrs pre-patch,
+> since it will always be rewritten by param_ctx, which never had its attrs
+> initialized.
+> 
+> I hope this makes sense : -) All of this is just to say that this patch does
+> more than just improve review confusions -- I think there at least two errors
+> that this fixes for the user. So perhaps a more descriptive commit will be
+> helpful in the future, since we are also adding a fixes tag?
+
+Makes sense, thank you for finding this Joshua!  I will send v2 of this patch
+with updated commit message!
+
+> 
+> Thank you again for the patch, SJ! Feel free to add:
+> Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+
+Thank you!
 
 
-vim +20 arch/m68k/include/asm/page.h
+Thanks,
+SJ
 
-138ff3462f53a7 Greg Ungerer   2010-09-07  14  
-138ff3462f53a7 Greg Ungerer   2010-09-07  15  /*
-138ff3462f53a7 Greg Ungerer   2010-09-07  16   * These are used to make use of C type-checking..
-138ff3462f53a7 Greg Ungerer   2010-09-07  17   */
-60e50f34b13e9e Mike Rapoport  2019-12-04  18  #if !defined(CONFIG_MMU) || CONFIG_PGTABLE_LEVELS == 3
-ef22d8abd876e8 Peter Zijlstra 2020-01-31  19  typedef struct { unsigned long pmd; } pmd_t;
-ef22d8abd876e8 Peter Zijlstra 2020-01-31 @20  #define pmd_val(x)	((&x)->pmd)
-ef22d8abd876e8 Peter Zijlstra 2020-01-31  21  #define __pmd(x)	((pmd_t) { (x) } )
-60e50f34b13e9e Mike Rapoport  2019-12-04  22  #endif
-60e50f34b13e9e Mike Rapoport  2019-12-04  23  
-
-:::::: The code at line 20 was first introduced by commit
-:::::: ef22d8abd876e805b604e8f655127de2beee2869 m68k: mm: Restructure Motorola MMU page-table layout
-
-:::::: TO: Peter Zijlstra <peterz@infradead.org>
-:::::: CC: Geert Uytterhoeven <geert@linux-m68k.org>
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+[...]
 
