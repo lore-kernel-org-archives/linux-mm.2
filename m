@@ -4,101 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F588CAC597
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 22:36:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E1A2CAC597
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 22:39:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D5D68E000E; Mon, 15 Sep 2025 18:36:47 -0400 (EDT)
+	id 98DAD8E0005; Mon, 15 Sep 2025 18:39:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9AD718E0001; Mon, 15 Sep 2025 18:36:47 -0400 (EDT)
+	id 93DEF8E0001; Mon, 15 Sep 2025 18:39:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8EA748E000E; Mon, 15 Sep 2025 18:36:47 -0400 (EDT)
+	id 805528E0005; Mon, 15 Sep 2025 18:39:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 811BF8E0001
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 18:36:47 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 44833C0793
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 22:36:47 +0000 (UTC)
-X-FDA: 83892945654.25.36DF07C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id A42F24000A
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 22:36:45 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=XD41Em6O;
-	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 689518E0001
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 18:39:14 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 12B5E1A078D
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 22:39:14 +0000 (UTC)
+X-FDA: 83892951828.11.C0082EF
+Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 4CE2340006
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 22:39:12 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=lwn.net header.s=20201203 header.b=W8GTES4x;
+	spf=pass (imf12.hostedemail.com: domain of corbet@lwn.net designates 45.79.88.28 as permitted sender) smtp.mailfrom=corbet@lwn.net;
+	dmarc=pass (policy=none) header.from=lwn.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757975805;
+	s=arc-20220608; t=1757975952;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ylWCf7mn++QEdplcms6pMXryBGpylSj+eyDc/Pa9P1s=;
-	b=TLoTEoUjJFrBRcUqQHAq2PoQbVkDpoClz/mOg429do4tXaCgd22qA4r69FzLOQzr7+J8Ej
-	VHP6o3fPuO/u98mcH3lO4qBArfFASpbH7LgprgmXtI5E8PSKpyXcMLQJa1w1mtOq1P7nFv
-	YaMR3RaUntVvdkXt3QbTMAHw8bL2hb4=
+	bh=4Nh9YPajpzLkLNtov0lA1KMD/BkPyBkqgsXpZ3McHVM=;
+	b=e+C3OttC6FAj8L1btJK8YDccNgnN2toVijTfbnDMJ8HhAEUPdEF24Ym+aTGwLYpjL6w/BN
+	ohPBlMRrm9/g/A2SqAkVMQ1VdMFz2xk2mFOJg/NXXIXo1c6QNykST+kS3z5h9yB9LhKg3H
+	9/Q7qieKDVW4woAJq/Dp79kJO+2ob1c=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=XD41Em6O;
-	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757975805; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=lwn.net header.s=20201203 header.b=W8GTES4x;
+	spf=pass (imf12.hostedemail.com: domain of corbet@lwn.net designates 45.79.88.28 as permitted sender) smtp.mailfrom=corbet@lwn.net;
+	dmarc=pass (policy=none) header.from=lwn.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757975952; a=rsa-sha256;
 	cv=none;
-	b=kyy622LZH6SOCMhPsiRvleUEhMB/cNllbxlvKSlkZRwTw0sGcgXqrb1042g1gfPIXUf/rP
-	P+eiwmyo1GmfdzWoPAj2IMnznsRrUs7q1lFonYyAyz7bIJxhfbE8TYkVlkF3j2yj2VT1wT
-	mR9T6ahf+1i+9pR17Hdb1Y73f+n5fwA=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 06AEA600AC;
-	Mon, 15 Sep 2025 22:36:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39092C4CEF1;
-	Mon, 15 Sep 2025 22:36:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1757975804;
-	bh=ylWCf7mn++QEdplcms6pMXryBGpylSj+eyDc/Pa9P1s=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=XD41Em6OmVs/HoC8kKF4blvfGChKvN0hV2kHafNbdfw7lxTmLwGmw/DqpX6A5BsrR
-	 HUDbr829kBnmqQtUMiyeZGsD9I3AGTqn13vd4Lod1ocker4JYMSk1Z/HoSLo4sATDE
-	 MZ77dRrPipxfDZKn4KoHAdPIpv1J26ShiMCw8YHs=
-Date: Mon, 15 Sep 2025 15:36:42 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Kalesh Singh <kaleshsingh@google.com>
-Cc: minchan@kernel.org, lorenzo.stoakes@oracle.com, david@redhat.com,
- Liam.Howlett@oracle.com, rppt@kernel.org, pfalcato@suse.de,
- kernel-team@android.com, android-mm@google.com, stable@vger.kernel.org,
- Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner
- <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Kees Cook <kees@kernel.org>,
- Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
- <mathieu.desnoyers@efficios.com>, Ingo Molnar <mingo@redhat.com>, Peter
- Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann
- <dietmar.eggemann@arm.com>, Ben Segall <bsegall@google.com>, Mel Gorman
- <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, Jann Horn
- <jannh@google.com>, Shuah Khan <shuah@kernel.org>,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v2 1/7] mm: fix off-by-one error in VMA count limit
- checks
-Message-Id: <20250915153642.7f46974a536a3af635f49a89@linux-foundation.org>
-In-Reply-To: <20250915163838.631445-2-kaleshsingh@google.com>
-References: <20250915163838.631445-1-kaleshsingh@google.com>
-	<20250915163838.631445-2-kaleshsingh@google.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: A42F24000A
-X-Stat-Signature: s6rju5w89ojeaggp6nekymhcw9gxbxbf
+	b=DzBsL6rwbXl+jOCl8smFJqj9559YSw/99RBI3vPiMvo6Hx/2ZTlFh6VKpkSeCZRX6514Xd
+	tXzGNHLAk93/LaQurHfK3JyC8CT4K8yzjcJ3CZunjkmVY5tQUpAZCTEd0JSPFvYgOCDF32
+	DaS4rEDvecZomnLO244jIBFo4zK3KHA=
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 74BCB40B03
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+	t=1757975950; bh=4Nh9YPajpzLkLNtov0lA1KMD/BkPyBkqgsXpZ3McHVM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=W8GTES4xWoBx2OrfPfrQJu3grT8gHU5iYD5t+TK2UoDH598lLADT30pTACZmhGNBK
+	 GShI0VMfHp0OQIIYCBOI7lHYhdFP47VA+mjQ4j7Ew27oe5rWOqYyPW/cLmGaXcXghu
+	 d9RUr918h66cM2CcVCTdv8NoqjzJSRPXs7zDy6rw0urFrrZioFw7yCNSvxqhUWlXp7
+	 +Au/Ib+tYcIjZtYSC3URmsA1wWemVHTfoeW9cBs59RPuY84G712tfAsQYi4l72mi6/
+	 jmGFOq2DNKOP1yGtIeDyVXECig2whGbJPtL0VHIHp1lx6ZL9cyhVewbCg7znloPx2J
+	 Xp1QtPGoXjAJg==
+Received: from localhost (unknown [IPv6:2601:280:4600:2da9::1fe])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ms.lwn.net (Postfix) with ESMTPSA id 74BCB40B03;
+	Mon, 15 Sep 2025 22:39:10 +0000 (UTC)
+From: Jonathan Corbet <corbet@lwn.net>
+To: Gabriele Paoloni <gpaoloni@redhat.com>, shuah@kernel.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, gregkh@linuxfoundation.org
+Cc: linux-mm@kvack.org, safety-architecture@lists.elisa.tech,
+ acarmina@redhat.com, kstewart@linuxfoundation.org, chuckwolber@gmail.com,
+ Gabriele Paoloni <gpaoloni@redhat.com>
+Subject: Re: [RFC v2 PATCH 2/3] /dev/mem: Add initial documentation of
+ memory_open() and mem_fops
+In-Reply-To: <20250910170000.6475-3-gpaoloni@redhat.com>
+References: <20250910170000.6475-1-gpaoloni@redhat.com>
+ <20250910170000.6475-3-gpaoloni@redhat.com>
+Date: Mon, 15 Sep 2025 16:39:09 -0600
+Message-ID: <874it3gx2q.fsf@trenco.lwn.net>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1757975805-43287
-X-HE-Meta: U2FsdGVkX19atstTEe0WNX2M1135Ml9+hYLR+2BkjqQLPlj9yOKdSuOZPHs1RS7ZEuQEkpNYDzHXsLBJcTBipLFXdmgyUaHqm1fLfR87O1c9reaIlWUYwMvezpV+jrVcUuBaMuF9SC7bWQ0tCzJe6WFWIcPTOEn4s/HKFh7L5ye2iqU0If7knzEfNK7KrhKD4VwAfXuCtJiR+pRWk8xto94pzZQUpg+AHwHOpSUjzfof3COB6pyWWX+SSivn6+XFj+NEw2Zi1ome8Lx5JrznFQiSG/CJtS2Bf1jeskLqWhLhtSfrro97xishf7ceNYojgWUz3Kg+FM23ZC5jZFTNbQaee1yOvHy/2AyFf1uNb6cKIUq2ne/Zjd8budc082Z1h2GfQOx4sVYgOiIKsFvf7UQSUVvWacywogZknktCasMRcjpm3/v3EwX7Xsge/ri/fz8tFJDLM+/bCerdgVDjzVvgI1OMX97mrVgkdUrUSftAUUTYFCDufyewls6CO8mVHsWvxtoL1mADa34BseNXhbyDjz8eeuo5rerA+GRyaHONczkIBZ9E7FlTBx2Nn5gI7gvhTo5fOCezvZcMYEI8y39bZftENmpotKrVyhhMLXFkYJR6ns7d1oC6zfB19k4dGmiJoo10+Ha6dxNSwPg9eze1L7AR84Sf27efxW2QA5m9HHMjjoe+I1YCyT3r1fQu3RGt571TEeg+mvuiBZTP+dhwWPdDKSOQIFaasaE7RVYcHNQsQrLcqGeaBhdEycbklNKsM6QusUNQlpnSHXKzeCGOsJlwTQbGurvj6oMLurRqPam5xaepps1yrzkEDrqTpMAK6dFcv5LyHj9YEVh7CJ5D30evrcz1CCmt6DXT0Ul1ei60cHlGVxLjp1m4bgkF0FEZplHEisLUccPPV9ykh5ryH15xxBoPYbAv2bt0jAZbQpMxt3Qf97aUKiHr4R8sPwtLoZsN3ztd+yUCsQD
- 3Q9pby0V
- 09tF9Eg+KRnSsnl6PN+LKtS5Gq+lftNhi3XfPgIMn3xBfjwGxtBe0LGUG1AeEgMsSrnyQbu1bNdXjhhSH5Ma6+LtknaiTxEXnlaSPqkOdvYbnsGZRW28iB3Uje3y2lAzGwtYxoHoWf2zvlkGUXI3xn/k0/PEaoEdis8d8QSqNAdbDmue+bjyz7Dn+1CJIAW95vwf1AB4TjyUcZzTMOZ5zic5d8DEwOnHhnNlDm2+WJjBm+8XwZ+dtjDhGH7u0cIznWdew
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 4CE2340006
+X-Stat-Signature: khzoizc9h78mdmk77wkbt4xxmysy717y
+X-HE-Tag: 1757975952-155796
+X-HE-Meta: U2FsdGVkX1/y9vcrKyRZCnCNupoJKu5iVw524Tg824LHJ1frgUj1HTa0K6GfkyVDrY4YF5jwOoapOgpkbTB7dzRd1Hksq/9jZzLkKN/9EW3giN740dZaUo0iFT3nv7nIt/gIWucWs/xfLy9xjvn0rIG9QIFio/RXQ9MfB8um4yfiXze+RNrmxhO5Vj8u9rhtk2RzqVGYNwfzSI31SjCf46Wmz3mH1Qa8EZmx5+AZxBlN3tUzvvgWhxB0CyxG6gEn3nT2In8wDdQDhSPF8U+fyWxMqaK0PmE7JpbJugfikoycPyRd2DU4CUp0u5wVAFsdFxfAeicYyI0I4P4hwFtLRMXIBM6AMnMVEPP1zUgyTNs7uLn8ig9nH2/bpYCH1u4pP3X5+ANDQqT7GWMyC4/K6zWzVp4GqURBat0YcEkhx9diEi+QWlos+E/Xpf+ZCPht/ngzZIcmmZj7R1YgsrXLc/7eny+DhYou3n3IoE0hs88g4j1XNDi9oetZ59OKG+Njn6Ysf5rXThv08AbwdLDjz8MTxjRk/nRzS5ToMGGEFa90wJv45HB/UbMHLkSJUapFd/rCOJZLewLVdeHotI6M/jEefwhvo9+EoogHI2sf2ZejIyg0iPux4Cqo1eMtYTl2l6o43tWQrVSMehdv7fRnISq4SlViN4HHPy/cBtUF/wSMSLVl0hcjjqS1tXko/bL+dDIEjbsuxs//QJtB51VXJAjEa1EJJjBKhnO99BuIu4PMKftfbOPg9y3yBAN1XnWKEgq5iuWoCR6KxFUBbhznipdgiBDzLytdpN28EJv3LjNvupSN0nYVxV9G+zFPMe17K0Q0ZMRf0XvevBNtlonUnC3em2UsW96YiGNY8KJ/FZtaUVCoMFRLqrQxxEcdLrfrp1+wDDk9cT6gHdVu0PHvOeZKM9XE3g5yJ+9do2VhQqmonpPHz3nLSIW0RxeHt4xnhw1tEuDoioel6SbkPg6
+ stfJ+xPm
+ Bex33M+CKlyrVdb/zSAbrO1uayJo6x1O7OYz0D91GyDu3KKKZD7YLLbUG5cizZ3BFIYe1A0S947qx9/uYBSZ0weUZGBXKIQflNJAdSgoMnTAxSSvQd2bphKvebjqSi5izTFkD2AYRX8Qw3krTNEipxIOAB2Go7hldm8XDya6BnoNFky4dIRtQoT6YWhpJWl5LiZYC44E9q8SeN9fVMzYDFCV+cQJD2SkXRI4eWLNFyj7CodaWo4M0kdqiuk++gAxIr0GD2KjZgifsknNq7sKEJ0nmOk+nD3R6W8ui0mWtIrovLiYL8bKIb3KlKqSjkBBJsL2fB1RSh9ZTSiwu8ZMNfWFK23YcaODrLOWff2sCsv7H31o=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,15 +96,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 15 Sep 2025 09:36:32 -0700 Kalesh Singh <kaleshsingh@google.com> wrote:
+Gabriele Paoloni <gpaoloni@redhat.com> writes:
 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> This patch proposes initial kernel-doc documentation for memory_open()
+> and most of the functions in the mem_fops structure.
+> The format used for the specifications follows the guidelines
+> defined in Documentation/doc-guide/code-specifications.rst
 
-lol.
+I'll repeat my obnoxious question from the first patch: what does that
+buy for us?
 
-x1:/usr/src/25> grep "Fixes.*1da177e4c3f4" ../gitlog|wc -l
-661
+> Signed-off-by: Gabriele Paoloni <gpaoloni@redhat.com>
+> ---
+>  drivers/char/mem.c | 231 +++++++++++++++++++++++++++++++++++++++++++--
+>  1 file changed, 225 insertions(+), 6 deletions(-)
+>
+> diff --git a/drivers/char/mem.c b/drivers/char/mem.c
+> index 48839958b0b1..e69c164e9465 100644
+> --- a/drivers/char/mem.c
+> +++ b/drivers/char/mem.c
+> @@ -75,9 +75,54 @@ static inline bool should_stop_iteration(void)
+>  	return signal_pending(current);
+>  }
+>  
+> -/*
+> - * This funcion reads the *physical* memory. The f_pos points directly to the
+> - * memory location.
+> +/**
+> + * read_mem - read from physical memory (/dev/mem).
+> + * @file: struct file associated with /dev/mem.
+> + * @buf: user-space buffer to copy data to.
+> + * @count: number of bytes to read.
+> + * @ppos: pointer to the current file position, representing the physical
+> + *        address to read from.
+> + *
+> + * This function checks if the requested physical memory range is valid
+> + * and accessible by the user, then it copies data to the input
+> + * user-space buffer up to the requested number of bytes.
+> + *
+> + * Function's expectations:
+> + *
+> + * 1. This function shall check if the value pointed by ppos exceeds the
+> + *    maximum addressable physical address;
+> + *
+> + * 2. This function shall check if the physical address range to be read
+> + *    is valid (i.e. it falls within a memory block and if it can be mapped
+> + *    to the kernel address space);
+> + *
+> + * 3. For each memory page falling in the requested physical range
+> + *    [ppos, ppos + count - 1]:
+> + *   3.1. this function shall check if user space access is allowed (if
+> + *        config STRICT_DEVMEM is not set, access is always granted);
+> + *
+> + *   3.2. if access is allowed, the memory content from the page range falling
+> + *        within the requested physical range shall be copied to the user space
+> + *        buffer;
+> + *
+> + *   3.3. zeros shall be copied to the user space buffer (for the page range
+> + *        falling within the requested physical range):
+> + *     3.3.1. if access to the memory page is restricted or,
+> + *     3.2.2. if the current page is page 0 on HW architectures where page 0 is
+> + *            not mapped.
+> + *
+> + * 4. The file position '*ppos' shall be advanced by the number of bytes
+> + *    successfully copied to user space (including zeros).
 
-we really blew it that time!
+My kneejerk first reaction is: you are repeating the code of the
+function in a different language.  If we are not convinced that the code
+is correct, how can we be more confident that this set of specifications
+is correct?  And again, what will consume this text?  How does going
+through this effort get us to a better kernel?
 
+Despite having been to a couple of your talks, I'm not fully
+understanding how this comes together; people who haven't been to the
+talks are not going to have an easier time getting the full picture.
+
+Thanks,
+
+jon
 
