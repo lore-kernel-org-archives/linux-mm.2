@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59D87CAC587
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 01:58:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85D72CAC587
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 01:58:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 47C1E8E000C; Sun, 14 Sep 2025 21:58:19 -0400 (EDT)
+	id AE0AB8E000B; Sun, 14 Sep 2025 21:58:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 427D68E000B; Sun, 14 Sep 2025 21:58:19 -0400 (EDT)
+	id 9F3FA8E000D; Sun, 14 Sep 2025 21:58:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 33DAD8E000C; Sun, 14 Sep 2025 21:58:19 -0400 (EDT)
+	id 86DE78E000B; Sun, 14 Sep 2025 21:58:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 16A818E000B
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 6504A8E000D
 	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 21:58:19 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A9E7D58CF2
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 01:58:18 +0000 (UTC)
-X-FDA: 83889824676.24.8C9B33F
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 304EEC0359
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 01:58:19 +0000 (UTC)
+X-FDA: 83889824718.12.83F9EDF
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 19994140006
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 01:58:16 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="LZ/a/13l";
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf25.hostedemail.com (Postfix) with ESMTP id 81F85A000F
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 01:58:17 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DXHmoBRO;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1757901497;
@@ -34,58 +34,67 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+St7/AleCHhAQAespUrE1tvHNwdZXMFCB4woky125So=;
-	b=OtvjSfwoqMr4n1U+TuNuX1modf8OjsFrOzlVO9O49xfj0q01SpOWPowYStJcuAi32VVn2q
-	T7B6s0B3N3q0UStXaJWcnGukWwFKcAN35RZMOqgttRzFdBG5v/MQ68j7IxFA0gpR4vcmfi
-	Dfp7erUjUiHFZkCSrRobYVnJsEsuqkI=
+	bh=RZXZ18Gl7pil3OydzLqzvTeTOCTsgPhkVGNVNvUy7As=;
+	b=ZtSlVp2uVoiLQwqiqYbPiElhSaWC1ydIDAFN5rSSG1SuP+/dj7XIbup/BE78SdpjVSX2tj
+	3CrOxJomE8pY4ONPun9pidQk+0pNNQ4UAy5B/vXQEupSXN/IpdY6mFXDnSRT0qsdoLLB4n
+	j7NnXiPA+D9kJZNEJoRjk+XusqlLhWs=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="LZ/a/13l";
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DXHmoBRO;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757901497; a=rsa-sha256;
 	cv=none;
-	b=J0GkgogUL2aV2oxonx79EwGRKeYQFx2byBdk+i6F4n10nELqB5MLTILh68dREBnk0KYYcr
-	4D7l7CFyA8svYw4YQHcYYLxaktFqkR+/fe+wYNEKCygnXmKWKu5JqyvNp68Ufnazk/1c0W
-	srVnRgCRFG8kID56tX6bDllpxbbC4QA=
+	b=c65XPmP2MHrlsDM2AdieHqt0OI3p/kfwDt5Sx+W5lVEgwno4xketh0HsdOkGwGmSx2RlGs
+	iH3Pj3kSnGssF0fA5/tkNbEvfkAoFSJFr9zktPl+eVl+2jbp8UPYN8Y6HJPvoViPsrHE3N
+	f61qt556QSttRVdIc63KX+CRxUVYGeI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id AD03C44401;
-	Mon, 15 Sep 2025 01:58:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DD88C4CEF0;
-	Mon, 15 Sep 2025 01:58:15 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A08F5444B1;
+	Mon, 15 Sep 2025 01:58:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 602C0C4CEF5;
+	Mon, 15 Sep 2025 01:58:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757901495;
-	bh=nGvVrC45Vt9+6E5tO/9Zsq1bOPvFtQ8UtnVHJOeO4A4=;
+	s=k20201202; t=1757901496;
+	bh=3+9qSsAlg4qC3YbAA//ENyr9S8mCKrCXEpzivdstPoU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LZ/a/13l/K1JrCtefJnoQGLam5FR90aUMxEBXcPo0pELUkzQl4QrS7ftW9oXrJLi8
-	 pWAoUwc0TlelI102Agga97Ef8ZDzF7aVSKqyMeeQ5KDOFGcHD9+Y7U7U0dtR/BJdGV
-	 crJbVH/nQ6DMcg9zGbuj9W7O0t9Fq2yHw6CWkQ89jdo7rIzA1XjE7eksYZoKEDdSqX
-	 WmIX0rW+eVn26eQKBvwXJTbgDvjGGXgmRIrkjf8iBNKvI7cVlBJtlTHhiSeH5Y4cG/
-	 Wk0LxcLfvHmZQ3ZRmSAWcnXxWjfu868XaqaR8H4K8JmqVUQBPyPJrsWJkesyatSjw+
-	 jxS1ZjVbZ5kaw==
+	b=DXHmoBROJvMUvju390O3mU1he2Ful7Ud2Rx4qCKVAXCT2HixYfZFUBVk5mP8DWBK0
+	 dPD6lB7bseP7avTwOdWTmAHf9tIPRRzV0NA725P9X3wnzFqQ/m2ykRBJDHYah1V71x
+	 dWLQ2MWIqxE9Ybeu8yttGKAf5eYZKh3rPHT+70mI4EnN/1xag2HAjL2tsTYt+H/9YX
+	 wk2psPIYwXKb8etxdZ2DJFGgF7+PH6woObe2ym2A4J2AT6axT+Qo+TXZdEi4bli60r
+	 kv8bv5n0Mfk5kCF3gDPT7dtQqW45b9BoryfbsCvplZxtTZK7GbNRa6CIONumtJeKji
+	 cHOCrjNcNxMIQ==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	David Hildenbrand <david@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
 	damon@lists.linux.dev,
 	kernel-team@meta.com,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 3/6] mm/damon/lru_sort: use param_ctx correctly
-Date: Sun, 14 Sep 2025 18:58:04 -0700
-Message-Id: <20250915015807.101505-4-sj@kernel.org>
+Subject: [PATCH 4/6] Docs/mm/damon/maintainer-profile: update community meetup for reservation requirements
+Date: Sun, 14 Sep 2025 18:58:05 -0700
+Message-Id: <20250915015807.101505-5-sj@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250915015807.101505-1-sj@kernel.org>
 References: <20250915015807.101505-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 19994140006
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: z5ctmjdhkkzcrwngj7aozc8u8xc88q3m
-X-HE-Tag: 1757901496-521433
-X-HE-Meta: U2FsdGVkX185TPErH0oJoeOq7MTaorCRLRAOiY2/7+GrpSLTI3+Se30F4t5Bd0yHMFyWIii8AyI27JNmu3s/1JsawkGjeF+LyE3k074nRjb1hOOyNDGv8Yt78r/KuchCpVb7CTq/6IuO7mu8Xo8e9BbgfttZRgv1oeelWUfLCnKEfDKQyM9whEcXan5WdkwwK4lolfQKohKy5zLjYndHe+OSp3u+mAXyi9xgzKLCDhjPtQ3jTOhq/e75aYXgXgIWpfE/iqO7qvHfCCePgWNGRiW0ucZFNC1ANPTAX5H3Lie7RM5DjHtjjPO6/Gq/oODA1JZJ2oiNTgKHtsPW0uBII+Lnol8v3ak9jxuquqNWhavBYbv/wEWeY9DfjEBWN52+DYlx9Q5vvy4d6OGw8lhPk9GeeCvhfutLKSB1UykBA5qwpjbm091Wht4wAa/dqVHwAJhBlyW9pIntJ0jv3DfhIr6Ofl9PjqNX4BGGl6nvc/n6pZzpKn47+hHJ/DDe04/wpEIZNOihkLLEQZvVV3dJkwten5BGNYsMasPWWp3FGCWNzeBqXEuq1TB0QlyhGDbihqP/+KVo1WGSUbKWuzfWXVULZf4PRFjDdz8ls+2YEOzWDjmaWWNvRTrtrbKUi31F8b79d2qphx5BN1obAvubmp9/Wl8y5bzviu3FVrd20FXMEmBZWqAM1Sgysaj3J0d6qCHhk1CgRoZYAG5OjFtbNsvTEOm1PrBWcOASvZowZQC6SBuFtoy2bQZH0crFrpCb90L9MLRto49dV8qXyYeQwIwSH6lGxxCfaOF98CzB1jnah5M+LKH9W2+lwS6lpcak8ipanebZe2jGDOLgkt8MD/go0zhLvxYPNlSJNs0tmE7uu6DFgc/i9bB06j8ECAnfHqwhRuANcgDj2EghxU07qKcvpXnP+SQVzdnnJgKEDcErTb+1CtWYDiTMyEAmR+UngA7nKXvz7Wj5sfQVzcK
- pGJ5B3ho
- AuDTbND4AQLBEZ1qmPU2KYMfKha+GIxSdcj9dJqikIy/icJPu6MtZVDKEOcnde5cdfb2VByFic/+5DhI7xfmHAwiW1alB0TObN0d73neoKwTIQcZ3QuvQPj4EbFwgtqPGt/zv/0vlleMfXYMhaF5xGimQSlaM24SUM2+1bQUKvvcA41v7jIRSIdA0ZiM3kUu9ngajiKy04u+q0tw6Dh0R42slYRZwY8u4tODZFKxeHchv2g4vTUmvqamGcKGoEIg4kW8Fy2QOxg3OhdiqD2FwG9KACQ==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 81F85A000F
+X-Stat-Signature: zmkscgeenzuaa98d44cd9jzdcydrb5rf
+X-HE-Tag: 1757901497-415656
+X-HE-Meta: U2FsdGVkX19EebXK/vwslyFK3qLu4LdP+BIgHmmngfBnFDlvriNes3z0+6QIZtzmP7EMVodknY+t5IXEAnVzeHEsEO41Ek9BWYUyGhVdfDmlTk+Vao2BaQeUw7vXlLUpq1PbMjFA2hw54Rn1FRu3wSb/J5hyHDcrPgJI5aid6EYB1v8KCnjd+0h2rONDZDBdny4LczGV0Y0LAo+RIm89zhnQbZ9G0ZURZ60yeSz6i1A2HtXPfSTn8qjrKw7c39sA/rYk1P92P5JzLpYqwEgzRQ2sH+xfK/Db6HYZFddgRPuC4wOVU8esleM2GwhJI3fD+8WdAP01f0wep4a798ExXyN1BD4gHC8DAwrdPl3jslz4s7XiTGkkTTI0dpBBO0KF/i5vasOfQL1L7dU4ldt2tkAP/hFe4gLY1bd0cu/dv5apo+WBXhohn7r3DEwA3+7n4fXGjgPvMRPNqHH/APxFUBP4EFemJX6LVNLKgX546u3ZDs0fiSm/uzCUhffYXGYmn1gHByvRq02DcPcGfHza4S0KksjEFSRYc10mPeQWXomI8bxu/FyRl589Mk4HfVW0o60T/nwyHWG9dxbYCHaUlm6gJpxZh99bdH4JVUUBpzdZy/gDDc77OkCc23JYol/rgtrabs27c945N8vSVFn2HvmKDk+3Qlyzir/CYf28/nLRzGAoeAXicqewaFN0fqn0imHL6VobuDU78gloxQqiUNNGxcBOJ1pm6pH5sF4G6P+ISdBDxZoFdZjxOHcy9LkI5Q+2iSKgn2XCJAFUY22f2hbgctr0roEnIA/7jukhZOZs1O/7YWBqONt8FEp9pvUTzH92x6hpZoMfJZRLfEM116YOhDSUdr2KAtOFlvOS8l8ia+AuibEuhYvGh4xi04PfPn6d/lPSeepOqRUm/XW/HPX6V0CKSxY8sncSw/AtJoRe91nMXigp6iD26ciu9LnZDWShMa4ffTV6jIltRLx
+ 8TtyucWU
+ uQ5wlejG5Lr6LklOi0GXPpIVU6Fn/g5DjLK90cFAIgfWKTZh+1/aHmAZn2BOAhA4CDWeaRmiBzFZI2RDO+a+IBLFWCWAqha+BnyPPFRNY4Qt1s/b/yzI5mtUqYEq4fjql3uYqdAhnBUxYlhB2PxG4WSC5xm6+Xsn4WAEkFDcO1qqcLJb4v25t20e45N9ySoTMfk8y6kFv7ueLwY85w6e+QeP5ghC7JdBYWEZdfA8ul9f1D2Np7oUyhYPnOA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,33 +103,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_lru_sort_apply_parameters() allocates a new DAMON context, stages
-user-specified DAMON parameters on it, and commits to running DAMON
-context at once, using damon_commit_ctx().  The code is, however,
-directly updating the monitoring attributes of the running context. This
-doesn't cause a real user problem but apparently this is an
-unintentional mistake that can cause code review confusions and future
-real problems.  Fix the wrong use of the parameter context.
+DAMON community meetup was having two different kinds of meetups:
+reservation required ones and unrequired ones.  Now the reservation
+unrequested one is gone, but the documentation on the maintainer-profile
+is not updated.  Update.
 
-Fixes: a30969436428 ("mm/damon/lru_sort: use damon_commit_ctx()")
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/lru_sort.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/mm/damon/maintainer-profile.rst | 17 ++++++-----------
+ 1 file changed, 6 insertions(+), 11 deletions(-)
 
-diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
-index 14d31009c09e..ab6173a646bd 100644
---- a/mm/damon/lru_sort.c
-+++ b/mm/damon/lru_sort.c
-@@ -219,7 +219,7 @@ static int damon_lru_sort_apply_parameters(void)
- 		goto out;
- 	}
+diff --git a/Documentation/mm/damon/maintainer-profile.rst b/Documentation/mm/damon/maintainer-profile.rst
+index 5cd07905a193..58a3fb3c5762 100644
+--- a/Documentation/mm/damon/maintainer-profile.rst
++++ b/Documentation/mm/damon/maintainer-profile.rst
+@@ -89,18 +89,13 @@ the maintainer.
+ Community meetup
+ ----------------
  
--	err = damon_set_attrs(ctx, &damon_lru_sort_mon_attrs);
-+	err = damon_set_attrs(param_ctx, &damon_lru_sort_mon_attrs);
- 	if (err)
- 		goto out;
+-DAMON community is maintaining two bi-weekly meetup series for community
+-members who prefer synchronous conversations over mails.
++DAMON community has a bi-weekly meetup series for members who prefer
++synchronous conversations over mails.  It is for discussions on specific topics
++between a group of members including the maintainer.  The maintainer shares the
++available time slots, and attendees should reserve one of those at least 24
++hours before the time slot, by reaching out to the maintainer.
  
+-The first one is for any discussion between every community member.  No
+-reservation is needed.
+-
+-The seconds one is for discussions on specific topics between restricted
+-members including the maintainer.  The maintainer shares the available time
+-slots, and attendees should reserve one of those at least 24 hours before the
+-time slot, by reaching out to the maintainer.
+-
+-Schedules and available reservation time slots are available at the Google `doc
++Schedules and reservation status are available at the Google `doc
+ <https://docs.google.com/document/d/1v43Kcj3ly4CYqmAkMaZzLiM2GEnWfgdGbZAH3mi2vpM/edit?usp=sharing>`_.
+ There is also a public Google `calendar
+ <https://calendar.google.com/calendar/u/0?cid=ZDIwOTA4YTMxNjc2MDQ3NTIyMmUzYTM5ZmQyM2U4NDA0ZGIwZjBiYmJlZGQxNDM0MmY4ZTRjOTE0NjdhZDRiY0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t>`_
 -- 
 2.39.5
 
