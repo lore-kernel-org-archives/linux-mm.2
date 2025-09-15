@@ -4,116 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4558CA0EE8
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 00:23:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12355CAC587
+	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 00:44:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C2C998E0003; Sun, 14 Sep 2025 20:23:52 -0400 (EDT)
+	id EF30D8E0005; Sun, 14 Sep 2025 20:44:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BDD4E8E0001; Sun, 14 Sep 2025 20:23:52 -0400 (EDT)
+	id EA3E38E0001; Sun, 14 Sep 2025 20:44:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B1A9A8E0003; Sun, 14 Sep 2025 20:23:52 -0400 (EDT)
+	id DB9448E0005; Sun, 14 Sep 2025 20:44:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 991F38E0001
-	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 20:23:52 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3798258A8F
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 00:23:52 +0000 (UTC)
-X-FDA: 83889586704.09.845611F
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 663D6A000A
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 00:23:50 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="ST/sKE9f";
-	spf=pass (imf25.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.174 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C03C18E0001
+	for <linux-mm@kvack.org>; Sun, 14 Sep 2025 20:44:08 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6276485ED3
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 00:44:08 +0000 (UTC)
+X-FDA: 83889637776.10.49D3EE3
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 9171720004
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 00:44:06 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=I+Bpsr6s;
+	spf=pass (imf03.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757895830;
+	s=arc-20220608; t=1757897046;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UcJP0Bb8MgL3O1dOQkWmOWNZKcXmOln3+pSRtBF0Y0c=;
-	b=Bg08A11fUoMMSWqi70wmGf14L+ihr1hkasv7yxnh7dJLHP71pnwk7s03vo9nrnQpgfFs9t
-	YPEwyl4IRi2/1JeTA91JcSbJBlxyA64GdjnsPI6szi7RKKtk4h9Cm0+/5sWANFx4eeKBim
-	fSiYqCnDGZcbaH6nSJ9O5nVO0v7r+0c=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757895830; a=rsa-sha256;
-	cv=none;
-	b=jX4gHDvU+mBk1hKZtOU9MmGUCbqlwoCK+J/8FURrFcJMJc0l8C+t5CT5ttaU4NIb7BaoAG
-	neXzqp04j//90rNm0Aucn3dFQX+b6Vp+WRkkHaHtUseXzfmpOTL+s9+v1K86pUk//QM16f
-	m4OtkND15rCeAc/WoT+u++Fky016emc=
+	bh=V9JaDewgxuozpkxda6xKseXUycmdfaWorgRDXhlzyRo=;
+	b=W7t0qky11NoPAWtPOHIq0eAcNCw/kqsCGo7xTudx/2xZchFutOTaQ+cS/oS8Wm93R+LKlM
+	6BUp4qNlR+EyZOg6aFo5pLWlqf4/UF1PVzSx2mfLRqxtYldnD9rWapGKPqsZRTuJ0sjqAl
+	QN7FjHB3wn/gqZEBVt+9N66tLGAndh0=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="ST/sKE9f";
-	spf=pass (imf25.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.174 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-80e33b9e2d3so334870285a.2
-        for <linux-mm@kvack.org>; Sun, 14 Sep 2025 17:23:50 -0700 (PDT)
+	imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=I+Bpsr6s;
+	spf=pass (imf03.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757897046; a=rsa-sha256;
+	cv=none;
+	b=gep/5IMCgS3WIgZ/Bl2glCjorRMBnz3248PudztE2ucdtTeNf6mplyhxGXrGuoSWdTF/xf
+	A8450/TDr6c4lrJp4A72ZfiwfYawYxiYuvOPle+ptHS+KOVVTCF/9+z2k5uTYxRX1qbEZt
+	eMBRLwcNz0Aw2kPKeDfoQzfKp7tjqbk=
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-4b796ff6d45so358871cf.1
+        for <linux-mm@kvack.org>; Sun, 14 Sep 2025 17:44:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757895829; x=1758500629; darn=kvack.org;
+        d=google.com; s=20230601; t=1757897045; x=1758501845; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=UcJP0Bb8MgL3O1dOQkWmOWNZKcXmOln3+pSRtBF0Y0c=;
-        b=ST/sKE9fwBbLMoxlYRzfe+Fxfyeyr7ykB9jvsBhwc+3ffC8XYhfP3f7kzgW+SPFq7Z
-         F824zHik333k07Xs/Tq9JLZwBH4QVrkjGeFlpdUSVsUXUAqaqM5ealGMlL5Ei5F7FALI
-         /JfwvTjrSoIL0ZMM1nry4qx6g2mO11JdGMonDrRrBnltqso4Mfp8j2PtH9rzTYUYFEZ8
-         cCkEH1FE5wMFZR0FyFfmVe5LDukMGTbDxS/6c/GpVc185OhT0WJUc7NZPQDDj+SS6fFO
-         d+OEB4f8FWKO9jIMm9P0QgkJdY7AVx2GaCouQAPDbvg0k7vna/lRyU43UkZCmKRJdcVV
-         Ludw==
+        bh=V9JaDewgxuozpkxda6xKseXUycmdfaWorgRDXhlzyRo=;
+        b=I+Bpsr6s8NoqHDWLRab8AoNumd/qgbtcTq60XLkJn4VqmUoLgJYVHU6/MX0gOkdToP
+         H0L9MrTNjuF1Yrge6UWLc4bHA5izXD0lkCCXI9yDxa/SQOKZ7/diU9OuSAgAPN+Zcsg9
+         6CRg7uWSBv13KDZj0i4xcLvhLVZwTXUNc6vp2E5zEpV6tyazAQLhTxy4ZuZwqEq4T1+k
+         Yd3AWNjOcj1Fu6VMmBpJTVq1/8dupEsjHPXmw26dZd3WgyIenA5JRaIeNJ5abQHWctjo
+         YYOfvCTjW7QTAfsF7y/bXkPTAP3Sei9V//qKQEEEryuBpPfQD432VbcHQaSm/L6TpKPN
+         BPAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757895829; x=1758500629;
+        d=1e100.net; s=20230601; t=1757897045; x=1758501845;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=UcJP0Bb8MgL3O1dOQkWmOWNZKcXmOln3+pSRtBF0Y0c=;
-        b=ZyYLNfkUOEkY+3C9YWeYaMCKfVK1sk+FofZYwpaHpzqrUD3UhVmNapS3pIGKwJste6
-         fcjyDsNGeI9c2obca05fzcuYdWyV0t+w4OHR5n0EnEzz2BHq8zkw0sBncpgMLLAya+BQ
-         XWckTsn6VQuHNzjG/Sw0pR78Lq/E+9m4kVMo52+7UBGXD9xNY0p7ay6lau9vrD6eb5j9
-         w4XbyHeiJqST4Tlwfr0myQrn5q2fbJuvEZl1IgmwGVTtrZJDSsMH26T0Wz9kJe/Y4Xps
-         DGlQw85EFtVbNYOP7E9KbSFpa5WSL55PHIlybvV/lFcrSf1MinroV4BdFtm1Wn4Dv/wt
-         H5Kw==
-X-Forwarded-Encrypted: i=1; AJvYcCVwVLjDDyCmCQc5zZwJGs5ufE2EeG4JUOUa3SejGN33svqFaGGRjQ7DcNqVz+J/QwTWoU0Gy0FJrw==@kvack.org
-X-Gm-Message-State: AOJu0YyHVWSMoX7MvfwPZyKSyMTlYud7OSm6o943s1ISZywCB/3NEn1G
-	dvO8L/14hdRTcfsvIbSV0r0lDrTfr2pAozLRIUD902bwTTmj2zVUpZdHRiVISSb9K0cF2Rv9kz3
-	IJ6rIILvKIZb0Jfkpf0NGypICeeWNdTQ=
-X-Gm-Gg: ASbGncuzpINuw1e1n5X1Tp3hk+b8naYRh5MpDcxiGyEEOkWkHBJh/+pHNAT1ABTGgx4
-	YXEaPznKYfU2HsWLNgjW/EaDrA2nqruwmP3HTFfReHhScxmSxUUfk0sVwPymmQ+xkX5fe6jvq3R
-	yp8oROuXJBfFEtMm00/b2IH0zKnRB5UvNH6ClpxNccrdsTn6BTHBrcZ441jD/qzPJoeDCRzt21A
-	QPUo9+B3NUbdcavxg6SUvZ3dLzqlz32vwo1zBgtkSLBy6CmOQ==
-X-Google-Smtp-Source: AGHT+IHb3Lv0DVzAyqFGzvGiDL0zwLBpDfi/NWT16B6t9go1IhLtS1hSYFJOl04m1pIlpk5NgQNVA/AEA5bNsfk8nds=
-X-Received: by 2002:a05:620a:1a02:b0:813:73d2:7dde with SMTP id
- af79cd13be357-824013d9c1dmr1266349885a.58.1757895829288; Sun, 14 Sep 2025
- 17:23:49 -0700 (PDT)
+        bh=V9JaDewgxuozpkxda6xKseXUycmdfaWorgRDXhlzyRo=;
+        b=RuCqQA99jv5HmMVRpNL/9ebYELbtfa8phZuvzyX09A6Qy2oHmrSGjf42ycFGhT4Zht
+         t9yC9f/fvvw7zBGdDbPVbgkaPoe/kOQ8HDYbCIyFA75pz1OFdcWFiTcRnQJNoXQzHtWN
+         1/4aWzlXGWsU6XWX5pKubQ1cxqDZLpLNBzjuFKf+xG7NdKwWNbQCf9uTNAPSU2hklHuw
+         6owQYlnc2dekuaSY7s/5HARiE7qq9Pup6b4fH/thODwbohlNN8reiUi2u9KeGc+RqMvD
+         GvpJRDsRQq+tlrGbf0jMl1tXgldjtechDpXPk1avJHgTzpG/rPVBE5ZYqNbD7951/qNR
+         JiOA==
+X-Forwarded-Encrypted: i=1; AJvYcCVsggaLqYg4TKszLHjMO3CD/UjOM5o+2c2xrlcX7C2jTOLmhJwLDnEpPxk2hZ5PzN00tp1J0tEVwg==@kvack.org
+X-Gm-Message-State: AOJu0Yx1v/eciQQHOMbg6dtQ6d/jSycbeivx1kQPLMOWuElTasQSjTST
+	NqKJOIWDflX4nffAy/Exm5Ijw0wu+w2zHNUwhRPRIAB8z5oF8ixcDGXHVKkl11qJOAgFBz5KbHP
+	dDl4dAqdPJBysMkEa0c2hw1V+AzH/Myw8VQEzVPkD
+X-Gm-Gg: ASbGncsJvNwtjgkd1Ch8F8dy8UhYkcqstZeVsfMY5wIuZvqaXJMewNVHLq0sFbpqXZr
+	uzl7WfTsvfQpJQocZgkWSNUIP4/v0rTAsCItpCh6gsPOTIJY4Y7MllDZWYITWB9lp3LFGbo4RJR
+	wSbcb+MTgwcn/7O4HwFc563KWQm41IwI4W/t+p4qPpUNGLKECKMFY0WYBk135jr2F9AxAQVuSSz
+	X2ZO2jMmtUd+32Mx0QWzcs=
+X-Google-Smtp-Source: AGHT+IEezB3iSLbeJTHsIwywK29EKKbUJtnk62B10GeCdyT9bGxf+jf23KN9V20U3FFXbSgM6H7iFnxQMLHkzklqJuw=
+X-Received: by 2002:a05:622a:900f:b0:4b3:7533:c1dd with SMTP id
+ d75a77b69052e-4b78b98e1ecmr8313771cf.1.1757897045275; Sun, 14 Sep 2025
+ 17:44:05 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAGsJ_4x=YsQR=nNcHA-q=0vg0b7ok=81C_qQqKmoJ+BZ+HVduQ@mail.gmail.com>
- <aMdVcH7KCXBvLtFP@casper.infradead.org>
-In-Reply-To: <aMdVcH7KCXBvLtFP@casper.infradead.org>
-From: Barry Song <21cnbao@gmail.com>
-Date: Mon, 15 Sep 2025 08:23:38 +0800
-X-Gm-Features: Ac12FXzHPCq6RYifkMlZVr53pX3qADYoIVfU1q4sHaiHL4LF64p37214KvqtzBo
-Message-ID: <CAGsJ_4xDRB_F-T42WnhqpmwLyiZRwLGqx9vDf_d5TFALsCRX4A@mail.gmail.com>
-Subject: Re: [DISCUSSION] anon_vma root lock contention and per anon_vma lock
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Nicolas Geoffray <ngeoffray@google.com>, Lokesh Gidra <lokeshgidra@google.com>, 
-	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Harry Yoo <harry.yoo@oracle.com>, Suren Baghdasaryan <surenb@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Rik van Riel <riel@surriel.com>, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>, 
-	Linux-MM <linux-mm@kvack.org>, Kalesh Singh <kaleshsingh@google.com>, 
-	SeongJae Park <sj@kernel.org>, Barry Song <v-songbaohua@oppo.com>, Peter Xu <peterx@redhat.com>
+References: <20250808152850.2580887-4-surenb@google.com> <20250914114308.3024033-1-clm@meta.com>
+In-Reply-To: <20250914114308.3024033-1-clm@meta.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Sun, 14 Sep 2025 17:43:54 -0700
+X-Gm-Features: AS18NWCmk4aMAnU5waOHNrHwd6qTif_tgIS8NTe99BvH87FvfzNuXoMxBTE1cSY
+Message-ID: <CAJuCfpGuvyRj6zxPuJDzCcGz_-x7feycsCkNQT0+Nzn4oUYcSA@mail.gmail.com>
+Subject: Re: [PATCH v4 3/3] fs/proc/task_mmu: execute PROCMAP_QUERY ioctl
+ under per-vma locks
+To: Chris Mason <clm@meta.com>
+Cc: akpm@linux-foundation.org, Liam.Howlett@oracle.com, 
+	lorenzo.stoakes@oracle.com, david@redhat.com, vbabka@suse.cz, 
+	peterx@redhat.com, jannh@google.com, hannes@cmpxchg.org, mhocko@kernel.org, 
+	paulmck@kernel.org, shuah@kernel.org, adobriyan@gmail.com, brauner@kernel.org, 
+	josef@toxicpanda.com, yebin10@huawei.com, linux@weissschuh.net, 
+	willy@infradead.org, osalvador@suse.de, andrii@kernel.org, 
+	ryan.roberts@arm.com, christophe.leroy@csgroup.eu, tjmercier@google.com, 
+	kaleshsingh@google.com, aha310510@gmail.com, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org, SeongJae Park <sj@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: akxck5rw7h13zkgi7yy84rws8agnio5f
+X-Rspamd-Queue-Id: 9171720004
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 663D6A000A
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1757895830-210589
-X-HE-Meta: U2FsdGVkX1+DBP6NEQUcGdwB5AnMVt7DrjNUKOa9taCLHwT6HNfr7muvvhC5f51ZDdbMFytWHtnERdM29t/N4WZO1bT6PNb9fowA/D0pzGH7dfFMBhlbKXb4gYO12qktR33MPepT6+SYPOvh85y8RbevXfa+3kx+gPiOnKQEb43GE9p+Hb1w/+/Ifclg4ty/h5FcJN71JyfUeSRIBe4aelt+zL/bycNtE4/6xDKIElu3aOrGdw/fFaBMFVz8v2KvOs2s1/e1hZr57c2pCnjeXkIxFpSRCe/OTQCCFsVuYOaRVEHwQLk/Hzar9FCelNhOm2Yhnd3bFEOmDpGvtxyY3hLx8RfqdFvat8fCwZDkoSgxpjzDBw3h+gU0Gitdn49Qlb4fLj7eJZlxTpq3D9LsIT19Vye3LUOTFEUQANnXpPU7XXeakc/rn1+6vw9CvlnCn855pEcOpCVQe0Ut6Oa/IaXy3KU30T28KG/cUFJag7cdofoNoztCUDvKaJjBCU00SYVAt40nZsUDn3TVIzuzeZ5nSTc1Q+qxWiocz6O35fcy8Z/bWdlh/a9FVgpH7M/ZqsVol2oAWVy9YVLm4tEfcIylArjHGOWhI7vKg5UXrQWu5bKRWcdFWrBIlEJh5dBzF9EtsBQYHsZ8fy2srqBm557ECAuWj9ox9hS/Kd5vz7pBaPE/r+iGL6ylM/ScM3uHSfShbQOEBlZM2/Dz9NlJ6rzWnloxFJM+GPQ+gJJQD5spV0ZH6lvpyI1r63SCIYhfGsxppW8GS7Eg96kxNLx2g2cstnBSVrqwXTP4pcC1XPqYPmdPNLrHcMV/4Xtn5BvkyVWqWvC73sObsEwANXqGSRgbeEkK5LJJifivpWjNoKiS47cAlrChuNceKz6Y1ln5W5PGTjpYvZQ8/kY4ahyWqXcTr5JQlGIC1MHj6k6+dd97KUuhwUzm/2MPZhu4oKCXRshJXN621V9YqKp6P2l
- chNQLfAO
- fSoZU3Mm4jpEPQSOl1+E5E3UPWElO9Z5uOf0pPRRvX4IIfem2uWJAtTVDoksY8fnEeY8vY2lfJK3NqZii5UHXPFlksvz1x6F8a7JkAW8DlVaXJiFGzw8Ju2G6xQttlWWEC5hoITsfxBXZNWap5hfC+EZQDfNXjfsF4mHZN+e/RGWwmxXopTlJsW5OzXvDJPNJMSmTvf1zn9qLV4g7wnds15PyWRujaKRslPWHNfSFNLGf46itWdrQM4s9eUloyeYXTIMcwefwCp4tCo/AyHHrAwG/Bv1gjvNT8m9sud8ep9wBoBmP9Wm9coYjlImMWsyvGXGSFbxJbEfcwcoF+BN1lk5lhmU7+33qxibAjph01HWZH94/Pm3rkeFTLEqyEDS5K1tJ/zUTkwSRsQlu7CWaic5hGVoUDWOsrADFgMKQ8OUtDIp7dwRY4wSmXVtkoNVluD8jEvewXi01ODHltbbzuCjXkA==
+X-Rspamd-Server: rspam07
+X-Stat-Signature: mc9imniy8zgg4t4rrsq134s9f6s5bqa1
+X-HE-Tag: 1757897046-665063
+X-HE-Meta: U2FsdGVkX1/kQP/ZLAi+4GKxua/HpFhMHnmswl1nVQdAy8D7S1Ft3+5+doJhHPgvYgYFi4lkEumz/01LEetz920TDSiqvxMS4wNak8CVNhdzkfD51oeXsmtC+mEPN8urlGjhY0K2dvgzbyxm3T4UxDXJ6XaLvd49JBqGgT5WF5Ux1g06wgWgbjAybZ+KdSgVIGyWWwvYcy8yVVvExBSN7KUMVUXc78FIa2eEirW6S+U6J3tRCc7iBi7KD/V9YaHeOxgxlGP8/wclZH6MQ2m4BYJm6UT0Fvl45q14M2UbzAmaCSRPGATF+GsFSCpPpV150lM6+MR6VlxpBXvE7WAwUFhbwDgOI+sy8KkGa+xni7brZvpwChWioSmxh7bIP177WTu3GJouQvCOLN5uHrIzF/3X2DFf48dH0ZsQzXwhBNIy8uM7g4L8MzcNo7NZzjpDJlJPhDgLa1/9hKc0raHX5GOD1Jx+j0PiScSL4n+zC8JkEngmr9hfnqkxoHsYZY8kidZmxXq/ihx/C8MlBTKcQFy56vV6Vp8mmW2CwNX2taaK+t03lqwQmmuvfa01ETxG/JOY3PcQkmZoPrsCxJVbWQ01l+LGIUqOgHM6vX03bIud6FCgFgRal7hQ9DR7wMfEARt8XuOSC2Ad3Ag3ilFFe8ZqoPx5BGBmyZu3ztHs3HNQP5ka5CAFR3s24HAUmEDSMoIvnTZcQVXWC8iCdJR6YcrB87qmYEaWeCheE96EB0So3/dBZAAB1BrFiGISiojRH/xMRh5MdrAnn6D8UFFaWZGK7rVGyIhUQXLTYa7Fd87bBZj4jSkOv+vJiEzISUIb1Wqxolhoir7qM/OO5FtP2t+ZJSpMWaPomDirL2fUOkGNZdXhjl0wh+AytCF0g19uSABzbJNvLOMeLBzMdNEzU1Z5WzIvl1T1KIeF94Ze3x65O6+ZuKgSYcoIui2lqQFvpzRZAHqfAnU4PwuNPRi
+ siQkcx40
+ FtprK9fNehGfm/kFjrpoH2US/BAaJCYbxFf0qaOOkI3glkLeBj+sDPlq9/eX4LUk49PdyMVkxt+ztLu2kdQDqJnNLYgOV/l/3cJl2FCBSyNy5pC8ZFV1MPTAxNFatjuTQ8+gmqd7qAAs715BpHjFSVqDfA1UIPeg6uYC+ntzAWVuJGVXpUccWKV0eEOqb4uQvOlERKUhsge7I14JKEosDHR1xQEavMIcNwZrhGfpiYqiNHbIUNwoXeWGcXPcvWDE6H4f2FHnjbZP4vhn9UJjSACCQObDTQ92PtF/bLFkoo+pPDg4u+ulAtJFQKw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,73 +125,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 15, 2025 at 7:53=E2=80=AFAM Matthew Wilcox <willy@infradead.org=
-> wrote:
+On Sun, Sep 14, 2025 at 6:24=E2=80=AFAM Chris Mason <clm@meta.com> wrote:
 >
-> On Thu, Sep 11, 2025 at 07:17:01PM +1200, Barry Song wrote:
-> > In the process tree, many processes may share anon_vma->root, even if
-> > they don=E2=80=99t share the anon_vma itself. This causes serious lock =
-contention
-> > between memory reclamation (which calls folio_referenced and try_to_unm=
-ap)
-> > and other processes calling fork(), exit(), mprotect(), etc.
+> On Fri,  8 Aug 2025 08:28:49 -0700 Suren Baghdasaryan <surenb@google.com>=
+ wrote:
+>
+> > Utilize per-vma locks to stabilize vma after lookup without taking
+> > mmap_lock during PROCMAP_QUERY ioctl execution. If vma lock is
+> > contended, we fall back to mmap_lock but take it only momentarily
+> > to lock the vma and release the mmap_lock. In a very unlikely case
+> > of vm_refcnt overflow, this fall back path will fail and ioctl is
+> > done under mmap_lock protection.
 > >
-> > On Android, this issue becomes more severe since many processes are
-> > descendants of zygote.
+> > This change is designed to reduce mmap_lock contention and prevent
+> > PROCMAP_QUERY ioctl calls from blocking address space updates.
+> >
+> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> > Acked-by: SeongJae Park <sj@kernel.org>
+> > ---
+> >  fs/proc/task_mmu.c | 103 +++++++++++++++++++++++++++++++++++++--------
+> >  1 file changed, 85 insertions(+), 18 deletions(-)
+> >
+> > diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+> > index c0968d293b61..e64cf40ce9c4 100644
+> > --- a/fs/proc/task_mmu.c
+> > +++ b/fs/proc/task_mmu.c
+> > @@ -132,6 +132,12 @@ static void release_task_mempolicy(struct proc_map=
+s_private *priv)
 >
-> I'm not nearly as familiar with anon_vma as, well, the rest of you
-> are.  As I understand this situation, usually after fork(), a process
-> calls exec() and the VMAs evaporate.  Android is different in that after
-> the zygotecalls fork(), there is no exec() and so the VMAs stay COW.
+> [ ... ]
 >
-> I wonder if we could fix this by adding a new syscall:
+> > +static struct vm_area_struct *query_vma_find_by_addr(struct proc_maps_=
+locking_ctx *lock_ctx,
+> > +                                                  unsigned long addr)
+> > +{
+> > +     struct mm_struct *mm =3D lock_ctx->mm;
+> > +     struct vm_area_struct *vma;
+> > +     struct vma_iterator vmi;
+> > +
+> > +     if (lock_ctx->mmap_locked)
+> > +             return find_vma(mm, addr);
+> > +
+> > +     /* Unlock previously locked VMA and find the next one under RCU *=
+/
+> > +     unlock_ctx_vma(lock_ctx);
+> > +     rcu_read_lock();
+> > +     vma_iter_init(&vmi, mm, addr);
+> > +     vma =3D lock_next_vma(mm, &vmi, addr);
+> > +     rcu_read_unlock();
+> > +
+> > +     if (!vma)
+> > +             return NULL;
+> > +
+> > +     if (!IS_ERR(vma)) {
+> > +             lock_ctx->locked_vma =3D vma;
+> > +             return vma;
+> > +     }
+> > +
+> > +     if (PTR_ERR(vma) =3D=3D -EAGAIN) {
+> > +             /* Fallback to mmap_lock on vma->vm_refcnt overflow */
+> > +             mmap_read_lock(mm);
 >
->         mremap(addr, size, size, MREMAP_COW_NOW);
+> I know it's just a (very rare) fallback, but should we be using
+> mmap_read_lock_killable() for consistency?  I can see this impacting oom
+> kills or other times we really want to be able to get rid of procs.
+
+That's a good idea. From a quick look it seems safe to fail with
+-EINTR here, which will propagate all the way to do_procmap_query().
+Do you want to post a fixup patch?
+Thanks,
+Suren.
+
 >
-> That would create a new VMA that contains the COWed pages from the
-> old VMA, but crucially no longer attached to the anon_vma root of
-> the zygote.  You wouldn't want to call this for every VMA, of course.
-> Just the ones which are likely to be fully COWed.
->
-> Maybe this isn't practical, but I thought it worth suggesting.
-
-Thank you for the suggestion, Matthew.
-
-Lorenzo suggested possibly unlinking the child anon_vma from the root once =
-all
-folios have been CoW-ed:
-
-"Right now, even if you entirely CoW everything in a VMA, we are still
-attached to parents with all the overhead. That's something I can look at.
-"
-
-My concern is that it=E2=80=99s difficult to determine whether a VMA has be=
-en completely
-CoW-ed, and a single shared folio would prevent the unlink.
-So I=E2=80=99m not sure this approach would work.
-
-You seem to be proposing a forced CoW as a way to safely unlink from the ro=
-ot.
-
-A side effect is the potential for sudden, heavy memory allocation,
-whereas CoW lets asynchronous tasks such as kswap work concurrently.
-
-Another issue is the extra memory use from folios that could have been
-shared but aren=E2=80=99t=E2=80=94likely minor on Android, since only a sma=
-ll portion
-of memory is actually shared, based on our observations.
-
-Calling mremap for each VMA might be difficult. Something applied to the
-whole process could be more practical=E2=80=94similar to exec, but only
-performing CoW and unlinking the anon_vma root.
-
-On the other hand, most anon folios are not actually shared, yet
-folio_referenced and try_to_unmap still take the entire root lock.
-In reality, they only care about their own node=E2=80=94no need to iterate
-the whole tree.
-
-I still think optimizing from that angle could be a better entry point :-)
-
-Thanks
-Barry
+> -chris
 
