@@ -4,113 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80748CAC592
-	for <linux-mm@archiver.kernel.org>; Mon, 15 Sep 2025 23:51:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A233ACAC597
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 00:05:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C2C788E000A; Mon, 15 Sep 2025 19:51:39 -0400 (EDT)
+	id BD7A98E0008; Mon, 15 Sep 2025 20:05:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C03FD8E0001; Mon, 15 Sep 2025 19:51:39 -0400 (EDT)
+	id BAF368E0001; Mon, 15 Sep 2025 20:05:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B41018E000A; Mon, 15 Sep 2025 19:51:39 -0400 (EDT)
+	id AEC068E0008; Mon, 15 Sep 2025 20:05:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A33038E0001
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 19:51:39 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 655DC1A07A3
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 23:51:39 +0000 (UTC)
-X-FDA: 83893134318.25.FC636AC
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 6D6CC160005
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 23:51:37 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9EA5D8E0001
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 20:05:56 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DBC9187285
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 00:05:55 +0000 (UTC)
+X-FDA: 83893170270.29.C8FE022
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 2C169160003
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 00:05:53 +0000 (UTC)
 Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=lV5H0KZx;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf08.hostedemail.com: domain of almasrymina@google.com designates 209.85.167.47 as permitted sender) smtp.mailfrom=almasrymina@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757980297; a=rsa-sha256;
-	cv=none;
-	b=Ft7jZBMxRD9PPbMQX7ldrHoGu6miFPcaqcXiJZ+y1xnnyqlWwI8sitoZbc2gajI2r9gI7m
-	nAWh2fFM8trLTkvaihQXV0bmG45vOCOtORMtcVWcE4hA4ObWwcsomgv6C56ykp3N2ZinS9
-	tUZovZILwsgK14HCaH/y7lT/7jZFBsY=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=lV5H0KZx;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf08.hostedemail.com: domain of almasrymina@google.com designates 209.85.167.47 as permitted sender) smtp.mailfrom=almasrymina@google.com
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Iczv0H88;
+	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757980297;
+	s=arc-20220608; t=1757981154;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+AW5j7gH90N0KHAK5Rp1VJX/iqgngX55U8vMWYrXM/c=;
-	b=Fg/hpvgPcKp9d5OHc2B+uc4kR4NFqGIUD6juDX+UTpfNtxrkVsnOgr2nQlDQy1eI/x9xfa
-	4dhR3UkqzulDJkFuRYNAEpoxWOYVSN+r/lC9LuU11vkanwmC3lzpzuEssuobqEVBgNAaEx
-	z4DJ185Qo99cZzJQp+EZgRn6JRy2DsI=
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-560885b40e2so3993e87.0
-        for <linux-mm@kvack.org>; Mon, 15 Sep 2025 16:51:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757980295; x=1758585095; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+AW5j7gH90N0KHAK5Rp1VJX/iqgngX55U8vMWYrXM/c=;
-        b=lV5H0KZxVAYwEMyGuHli11tLDk//4txywM4zRbSVmXR8Aod37Id6qr8DDaMnfPojMp
-         ZDk0NdjyfSvjKG9gWur8oyRnVqG6xHb1Z010CbHq4H49sNEbnlQNg1nG/PNw2MUv/cYu
-         VjZYisDyHa2fBobkYS+75SqB/j5pYqkcdQO9xa7uRYya3heSJ3/5XnZOBt+SHgYHBOpg
-         CuExcbyP6zodkWfihb4SRPfAxSkhJdlgZk1/XzWsJmPvvzF8MxjcRBBr3VS418Q8NfsQ
-         uOgo/w5aVkzoyJvfiksTmUzcffbRfYV0udfgBsmrMUm5NF0QBIP1UIAa/MsmjLexz6LN
-         21fg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757980295; x=1758585095;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+AW5j7gH90N0KHAK5Rp1VJX/iqgngX55U8vMWYrXM/c=;
-        b=MPvoheCx/OBeho7djsECPxOY9gRfy2batLhYpYdgjRzJ4CYVnmZbtV46i+lwRk5VJp
-         au6WIRBiQMrU8If/m1XgpL0N+WlvL8a6K9K5bAPwVKNrR+BImxAQJfsVsB52EuNC51OS
-         cH1siQFff0kJGNORgTBX0oJnQmFIwR19gRnw41y+J1Pd3hhaxhO7HdzTGVvTWzh6f7B+
-         q+HQPkArU1K8m07hvy6NIoCSMgm1BVKjO1WEwzvB5ERdulZXdPjzBvYRPZwNnsLc5j23
-         +l0dQHrTC775h7QzsSQ9E4XF+aSG9/3zVuoDgSykTDBW0yki7mcyHbAMxnb5BldrlBcH
-         HtPg==
-X-Forwarded-Encrypted: i=1; AJvYcCUwGVe8iFpb/IjZ/fUCtTiVrXa12GVP+Pk8P2D1MvYFi54wnfEOkWDGLxKWjvIduimIHGhPCN4/Ag==@kvack.org
-X-Gm-Message-State: AOJu0Yxk/Tz3r3y6UYaYqTUxzhq5Dy189oUPTfx+87SqrLgX75Uz+MUd
-	bvkRv9oXV7BgCebY5S4CJX9X3ZirHEWaC4oyXImNUmovd/6MKdiiXSeq4jZVGQRKO8al85Y72HQ
-	chOyGtxMz4uz60ejA5hXTpE2525bvq0ETVWdZZqhz
-X-Gm-Gg: ASbGncvR0FIV1VAvNL9vPpcZfjZbtjmnfegvmqnnB+SxwCJEAGhr9cbrSo90S/QLV9B
-	jZxQ/FxKRYcvu7fat1zDM0jkI3XqgY/3c5GyLmGAu7sqTwhQk09QibEZBkBBu2sp/1qK7TKHz8W
-	SKBBcEgC681dtOOAI/MlFz0LaUAUK4BPGXwnOs+YoHZCEAsHtKYoCcQyNY1i38i1HhMxEEjY58T
-	yNFXbHFB9s3dUnnuLUSXYYLvmSe19Mp7C3lQzfQmKlkqET+z2amuNM=
-X-Google-Smtp-Source: AGHT+IHxvjAgcwmbl7i4qIGx4IZFATPmsddKAtgs9jLnh4/bbrdOaxSwmwp0X3FOGMej3r5ilGUywPi3vDMfM91nRr8=
-X-Received: by 2002:ac2:58eb:0:b0:56c:8abf:2f84 with SMTP id
- 2adb3069b0e04-575f17cd140mr128995e87.6.1757980295277; Mon, 15 Sep 2025
- 16:51:35 -0700 (PDT)
-MIME-Version: 1.0
-References: <aMSni79s6vCCVCFO@p100> <87zfawvt2f.fsf@toke.dk> <f64372ec-c127-457f-b8e2-0f48223bd147@gmx.de>
-In-Reply-To: <f64372ec-c127-457f-b8e2-0f48223bd147@gmx.de>
-From: Mina Almasry <almasrymina@google.com>
-Date: Mon, 15 Sep 2025 16:51:23 -0700
-X-Gm-Features: AS18NWBQSIQoWON_0Lqkp-hzdof6vglmBL66-QqAsvHEfvhsjjn3e7ulAH9_zlI
-Message-ID: <CAHS8izMjKub2cPa9Qqiga96XQ7piq3h0Vb_p+9RzNbBXXeGQrw@mail.gmail.com>
-Subject: Re: [PATCH][RESEND][RFC] Fix 32-bit boot failure due inaccurate page_pool_page_is_pp()
-To: Helge Deller <deller@gmx.de>
-Cc: =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>, 
-	Helge Deller <deller@kernel.org>, David Hildenbrand <david@redhat.com>, 
-	Jesper Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
-	"David S. Miller" <davem@davemloft.net>, Linux Memory Management List <linux-mm@kvack.org>, netdev@vger.kernel.org, 
-	Linux parisc List <linux-parisc@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 6D6CC160005
-X-Stat-Signature: 1yngc7tmjyimbg15tcjbbbe6dto7eou4
+	bh=iQp4jRks7xCRbdMH62HvMOA2apHYM74ZPv44U9cHEsE=;
+	b=X/UcuzrkgMm19o6EAPY+mDJaF0IU29Mn/VoFPpYyKZHuc0/t/8E8VW/lt2P4eGrQWym7ZZ
+	bn1q31zGnwpoEmeNKP+pnNYts9iwiR+lGCpoHOnjUj5Bgg1ZFj2kAS0Qet5axSkBXsSgmr
+	ODWSVjp+ddrVknzOyX7mnj7O+VsYumQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757981154; a=rsa-sha256;
+	cv=none;
+	b=D6DuIlPAZtLI5W9Wmw5pw1Xo3ceb37aRxsoDARzVFQ+6SdfKVxBlm7D0VoMt1HbvxHpBTV
+	GpdOteLMn6fXa8aXh4POeTJtPkAQzC7PRiB98IpDf3bvBNlyHvs6qWoXt8pok01dNDLLXF
+	VUQ4qKQzOzPCTKJVCZEkDtcCT+Bmn10=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Iczv0H88;
+	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id B5334433CD;
+	Tue, 16 Sep 2025 00:05:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46B8CC4CEF1;
+	Tue, 16 Sep 2025 00:05:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1757981152;
+	bh=OrGMt8ZJZs6DqpGv5H4cRS8nHNx4Zw/bJfWF3GfNAOE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Iczv0H888igvWGUByqVbrWfrf6G3GY2J4VQsxfEn4SpHTrABJNatZiX460FGXwyu9
+	 UThpMkOFY+oL8O5ygbc6eeVd02t4JQWS8lvFzQaSNEkWe9gYW7FfidDfrUFqbvKe/R
+	 9CSRdsVBjB/BpTMY+Ju4lnmK9fKSoI3p38HtCCeg=
+Date: Mon, 15 Sep 2025 17:05:50 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Kalesh Singh <kaleshsingh@google.com>
+Cc: minchan@kernel.org, lorenzo.stoakes@oracle.com, david@redhat.com,
+ Liam.Howlett@oracle.com, rppt@kernel.org, pfalcato@suse.de,
+ kernel-team@android.com, android-mm@google.com, Alexander Viro
+ <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara
+ <jack@suse.cz>, Kees Cook <kees@kernel.org>, Vlastimil Babka
+ <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+ <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Juri
+ Lelli <juri.lelli@redhat.com>, Vincent Guittot
+ <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, Valentin
+ Schneider <vschneid@redhat.com>, Jann Horn <jannh@google.com>, Shuah Khan
+ <shuah@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-trace-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v2 0/7] vma count: fixes, test and improvements
+Message-Id: <20250915170550.f24bfb96514835154e8d1633@linux-foundation.org>
+In-Reply-To: <CAC_TJvd=zwhRZcXTvDPfuzdjYV7j_jvZKZ--eKDRTsE+LBmASA@mail.gmail.com>
+References: <20250915163838.631445-1-kaleshsingh@google.com>
+	<20250915153401.61cbd5120871ee7a4e5b9cae@linux-foundation.org>
+	<CAC_TJvd=zwhRZcXTvDPfuzdjYV7j_jvZKZ--eKDRTsE+LBmASA@mail.gmail.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 2C169160003
+X-Stat-Signature: fcscysbnt5i96cg13ucqxfgyecnefixo
 X-Rspam-User: 
-X-HE-Tag: 1757980297-13963
-X-HE-Meta: U2FsdGVkX191HTKQa3QlYoQWd+BO5RUnbMEvK85RFWRZ6HtlsRgQrx8VjiNFNHggeVYp8vkHk5azszoqhOS600XEogYKVUEr3US7CShiMpNau8BjlU5UHmsrY0BB3E3cWZkhUgNYZsZQcwcub3m0mr/HP+e8uKBS+6J6eoysGc7VlXcifY0dRffFHlgbBRbYd+JPXKEjYcfrPgB80BoiVze+UZ4UF6HixI1HKMNtQsnrWFyFp5zO9PJhhHvzcizeu2n/zyNiR5/gEeDXDrnWA3kOJW2LYW5HnaR8kjH315rXDUXL/oOUAuh7nMV1uQBVNUmYzzBi0tqPNY6WoGwoAFBnNMnyjVASwMPXMk9ULTFyWc2KHdL5dwSViCIQk12vuiudsFoOXZ0rchIpktxAeyUM9gEpjVK00mykcbMrWqtVW80y7bzrKddaUhInidSFg/wY9IDe5z/3zQw6dbSNgixwCntZW3/LZftKCHKEY4OLJQpBdFLlwW5KE+undVLIE0YscpcplzTWSCPOEeU1LwwFCpmd5e9xunNmYQc2EfvUN2FxqT2HhQ1DWxjOj3gfEpE5CVYSh5hJJ5AsJinjNjIMxZFGLjAQcbiJn/mUzPBmumCB2CFTQVD+P0Dxmyqdx8q5Op+3yk9QdgrwHP0jmY39zDBlpqCPJdoF/5pDxNoKJC/zMtgXciXYO8qZO3N2cdXUvt5jxfExTYkQ1cQIoXhDP2WwtwiuPDKjP1i/gHF2XwXRaJqVzjnMkXV2oS58oyPUjWBcBAx0JhToVmDSLiUlU5ToEDLH9JT+v+XdrXE4M3r9jSAYFwTmFQhCJZ7danmLKgTs9+MxfpyjagNNEzKnEcRTM9n22fdrifVtmCWnPKDhxcj52GWDn8/RE1A01MF0MCpx/a3CIelEOcoRQofdECAzQM3SFGIqkheW2GWzIhZ+VfkyW5aZABUO7oymNFbYNYFz+uuu8YSWVnv
- BDUwXUdI
- QHiq2AnZYJdE1Hwwon3uh24OV6GCrW3K+gMCTgJsGzVMxygtCmBHGwNh4DDLg19hyGdQh4yihAQ5sP+O2pT1qh8bedDt0Dqc6rERIl6sF53rlWLiS2/p8e/SzUNK7gIEAFFDMEcx/rYk2dU28DjR2q3lwMDYXBMXz/ZCKAJIIt+g92m/xo1qy8r0dLeEL9RIdyiV9nGKg2dIw6w1Xg+IL4n12yxlm37P5MLXXFhUSvTs0DFUKzjrYHf9MN1VbasjiTLo/YAry+di0Meg=
+X-HE-Tag: 1757981153-377817
+X-HE-Meta: U2FsdGVkX18qQFomS2Y3X0vBWbW9dMDUGiMv9BSaT3V1oMSYKgapHs1RahXoe6S1yryx0P7WM2Yead3I4m75M65KTVu2dJw6R/vTXWxSllqki01jSJ636pKgNu3E5ADDBHtZGHaDvOOIcq5x5PHPDa3tSiSq9TCblyRx4hmFha7TNjR+33jdv1fRnYsUS6+c0Egl6jtF1VWAcmW5vXtecF6ynLzZlRjNQ4tOOe+3R/zuVLYPJ92VYuAIDTWRAphN3f5ixpx606cXEpY+uoEuAYxgywgHgxoYQ8v/m/2yLjSBwIF0Q00f4stwBa7d+MqmQ37TKtHyMhxV9gUJNJw2B0KNQ94FcFqM6s2qKzQ2npcAJ4SzC3vF7ay5JRPARQw1xg1CReodIHbKEwiBFOK6xodkLCOz1Zm/qY9bTNxB1Zs4z2iTDj3/MWf/fY2pslhLSBOV+qgpHtXoHww1pk8lViYl81NRHyl18jzxebhiO53wbai3B4wBMLEbSTEKjRMtHwy7qx4GHhnxsCgxpxFN724VCDif9jFNCdkuNcF3Nf9FBx6ZrGVs8gYOsmc9OFDFg+0KvC5DBmymsT6tuwBw39plhVOR/xxR60G86U2YR6uCb7/fcra831B8c3ms2olRyuVw/yYeGUFwOt5N/KE720EqtEUrCT/WpVekasWQKYQRkpfL8OzEm2eguZCykS5KN27BU9Jv8XTWyok9pr6Qi1nIdRbFFs//UJ28csOGeNbbESaCucOFD4/ozCAUm8LmOi3z/8ILOroLNpJA7KAPsX1G4LdjLtpdkWABCPan+IzLURNqrSZNAUlDUxu+8ngUjauFRKKsT6XzrSXzuN4Sz4BOgwNmczXTl9EPZY6EIHJQI/41W13Y4uN9P0DdCuOAahb2VpUUYK3TySzLLs3dbCQSCzCVZb0gwL67OOAHBhuWuz/YhUTL5BbGPbP7HfU9VRUiCVA8PTYao3SZ+em
+ IQgp8UQH
+ 0OMgJDQLw4MfYTHQN03AHF+/hVqn23gxF5pgDJtuqy0nVy9YY+r1Dg3Tb77MBz7kn1lsONoH940sXFc/afnFmoUOaBusdX1VhRYnfA3HOH9mkvZuihNtyL/u6IHCZciolaAnHXNTOljMKal0ngIOWyijR3DlSwnqMPJ5doCXorHWSLu18dWNMixn+XP63S1Zp3NRznvTReNCP8YEXYCebaw8FgFkvneSXD5nbl8cBkd3w8GI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,69 +106,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 15, 2025 at 6:08=E2=80=AFAM Helge Deller <deller@gmx.de> wrote:
->
-> On 9/15/25 13:44, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
-> > Helge Deller <deller@kernel.org> writes:
+On Mon, 15 Sep 2025 16:10:55 -0700 Kalesh Singh <kaleshsingh@google.com> wrote:
+
+> > fwiw, there's nothing in the above which is usable in a [0/N] overview.
 > >
-> >> Commit ee62ce7a1d90 ("page_pool: Track DMA-mapped pages and unmap them=
- when
-> >> destroying the pool") changed PP_MAGIC_MASK from 0xFFFFFFFC to 0xc0000=
-07c on
-> >> 32-bit platforms.
-> >>
-> >> The function page_pool_page_is_pp() uses PP_MAGIC_MASK to identify pag=
-e pool
-> >> pages, but the remaining bits are not sufficient to unambiguously iden=
-tify
-> >> such pages any longer.
+> > While useful, the "what changed since the previous version" info isn't
+> > a suitable thing to carry in the permanent kernel record - it's
+> > short-term treansient stuff, not helpful to someone who is looking at
+> > the patchset in 2029.
 > >
-> > Why not? What values end up in pp_magic that are mistaken for the
-> > pp_signature?
->
-> As I wrote, PP_MAGIC_MASK changed from 0xFFFFFFFC to 0xc000007c.
-> And we have PP_SIGNATURE =3D=3D 0x40  (since POISON_POINTER_DELTA is zero=
- on 32-bit platforms).
-> That means, that before page_pool_page_is_pp() could clearly identify suc=
-h pages,
-> as the (value & 0xFFFFFFFC) =3D=3D 0x40.
-> So, basically only the 0x40 value indicated a PP page.
->
-> Now with the mask a whole bunch of pointers suddenly qualify as being a p=
-p page,
-> just showing a few examples:
-> 0x01111040
-> 0x082330C0
-> 0x03264040
-> 0x0ad686c0 ....
->
-> For me it crashes immediately at bootup when memblocked pages are handed
-> over to become normal pages.
->
+> > Similarly, the "how it was tested" material is also useful, but it
+> > becomes irrelevant as soon as the code hits linux-next and mainline.
+> 
+> Hi Andrew,
+> 
+> Thanks for the feedback. Do you mean the cover letter was not needed
+> in this case or that it lacked enough context?
 
-I tried to take a look to double check here and AFAICT Helge is correct.
+The latter.  As I've split up the series, please put together some
+words to describe the remaining 6 patches if/when resending.
 
-Before the breaking patch with PP_MAGIC_MASK=3D=3D0xFFFFFFFC, basically
-0x40 is the only pointer that may be mistaken as a valid pp_magic.
-AFAICT each bit we 0 in the PP_MAGIC_MASK (aside from the 3 least
-significant bits), doubles the number of pointers that can be mistaken
-for pp_magic. So with 0xFFFFFFFC, only one value (0x40) can be
-mistaken as a valid pp_magic, with  0xc000007c AFAICT 2^22 values can
-be mistaken as pp_magic?
-
-I don't know that there is any bits we can take away from
-PP_MAGIC_MASK I think? As each bit doubles the probablity :(
-
-I would usually say we can check the 3 least significant bits to tell
-if pp_magic is a pointer or not, but pp_magic is unioned with
-page->lru I believe which will use those bits.
-
-AFAICT, only proper resolution I see is a revert of the breaking patch
-+ reland after we can make pp a page-flag and deprecate using
-pp_magic. Sorry about that. Thoughts Toke? Anything better you can
-think of here?
-
---=20
-Thanks,
-Mina
+Thanks.
 
