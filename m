@@ -4,93 +4,217 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00536CAC599
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 15:37:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D936CAC598
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 15:41:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5DBE98E001B; Tue, 16 Sep 2025 11:37:22 -0400 (EDT)
+	id A77BC8E001B; Tue, 16 Sep 2025 11:41:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 58CBF8E0002; Tue, 16 Sep 2025 11:37:22 -0400 (EDT)
+	id A4F9C8E0002; Tue, 16 Sep 2025 11:41:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C9DD8E001B; Tue, 16 Sep 2025 11:37:22 -0400 (EDT)
+	id 93DE78E001B; Tue, 16 Sep 2025 11:41:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C2618E0002
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 11:37:22 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 07C5F81FE6
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 15:37:22 +0000 (UTC)
-X-FDA: 83895517524.12.2876A3A
-Received: from smtp86.iad3a.emailsrvr.com (smtp86.iad3a.emailsrvr.com [173.203.187.86])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 09FD040010
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 15:37:19 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=none;
-	spf=pass (imf04.hostedemail.com: domain of dpreed@deepplum.com designates 173.203.187.86 as permitted sender) smtp.mailfrom=dpreed@deepplum.com;
-	dmarc=pass (policy=none) header.from=deepplum.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758037040;
+	by kanga.kvack.org (Postfix) with ESMTP id 854B78E0002
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 11:41:00 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 501B0C0166
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 15:41:00 +0000 (UTC)
+X-FDA: 83895526680.10.F7D08C8
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011003.outbound.protection.outlook.com [40.107.208.3])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 7BA461C000B
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 15:40:57 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=PQqmStqF;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf20.hostedemail.com: domain of jgg@nvidia.com designates 40.107.208.3 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1758037257;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eVIBonDL1i8S2GZxAxbIaWwsaa+4l98pdsotRH06Oc8=;
-	b=Bba87RNmMUKQBetx13uTFwSt/RJk+Wybg9n1jM8+SrF3Ew5nCu/H7XPgE+tJc7YGe+2Ftu
-	oYWTWqIRYf/2/GAnEgR2nQTx6ZmkfjmF3ty7mLkCPZhYj9LbUYo5GZrsUWfLyMpU60n2Xk
-	qE5zflbotmAAMZNaQst+EkBXI5jjF98=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=none;
-	spf=pass (imf04.hostedemail.com: domain of dpreed@deepplum.com designates 173.203.187.86 as permitted sender) smtp.mailfrom=dpreed@deepplum.com;
-	dmarc=pass (policy=none) header.from=deepplum.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758037040; a=rsa-sha256;
-	cv=none;
-	b=TNn4eYsDHbMyhQNdGpuN4p0aWX+J7nqRJSpJ2mbj+bz6lKZsRdXn9t/P9DxPipuz4yBAt+
-	1pX9HzW+MZ9dQOU14kGyPiOSndgt8zlp/Kl7UQ0I26lg1SBATBVutLc3lGChBfZroH/9ei
-	fPQfLD+faCxEFTPwl9Tw8yhzS87tz3w=
-Received: from app32.wa-webapps.iad3a (relay-webapps.rsapps.net [172.27.255.140])
-	by smtp35.relay.iad3a.emailsrvr.com (SMTP Server) with ESMTP id 327D5618F;
-	Tue, 16 Sep 2025 11:37:19 -0400 (EDT)
-Received: from deepplum.com (localhost.localdomain [127.0.0.1])
-	by app32.wa-webapps.iad3a (Postfix) with ESMTP id 16046E10B4;
-	Tue, 16 Sep 2025 11:37:19 -0400 (EDT)
-Received: by apps.rackspace.com
-    (Authenticated sender: dpreed@deepplum.com, from: dpreed@deepplum.com) 
-    with HTTP; Tue, 16 Sep 2025 11:37:19 -0400 (EDT)
-X-Auth-ID: dpreed@deepplum.com
-Date: Tue, 16 Sep 2025 11:37:19 -0400 (EDT)
-Subject: =?utf-8?Q?Re=3A_PROBLEM=3A_userfaultfd_REGISTER_minor_mode_on_MAP=5FPRIVA?=
- =?utf-8?Q?TE_range_fails?=
-From: "David P. Reed" <dpreed@deepplum.com>
-To: "James Houghton" <jthoughton@google.com>
-Cc: "Andrew Morton" <akpm@linux-foundation.org>,
- linux-mm@kvack.org,
- "Peter Xu" <peterx@redhat.com>,
- "Axel Rasmussen" <axelrasmussen@google.com>
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=VltkXuJ0ImjrM7c7KPvn1ZthaTNj+cKDQbDPexFsIHc=;
+	b=M/5gV5s7ga0cmj+LLiSyo4grJzkLP1VPnhn4lBris7CWI/Yf/k2TA/8x18Fc7Nsifr2Gs0
+	11SkXKeM60m/0cCZy16LXsW6rMQlRNT0aIpKw1DXrBD7w1jklli63hhyZ6Jr7c2e9dfR7I
+	ypLwIRX9OpqMSReFhAp6oWe5l1Fx7k4=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1758037257; a=rsa-sha256;
+	cv=pass;
+	b=MtKO0RKw9+5cps6DspsdxNfHKhqdIbnOtu8t6QOeJO0P96Ev1nj37M34PnrXDtAUznfvHj
+	zgIVHYx0OVPW1lAWSW7BSjhahIWm2a1ms6WLovu/k4YhO9hlVtUG3PKy4D/j//05GE95kc
+	ogw5gn+WMJdMDLeRMjgk42FNEBY3O/w=
+ARC-Authentication-Results: i=2;
+	imf20.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=PQqmStqF;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf20.hostedemail.com: domain of jgg@nvidia.com designates 40.107.208.3 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bLTwAynldedBX4sZgt1byCkrI4NnigL/A7j1qBqTSpBywBw/BOZCfuIl7ASkL9aRAUrVVx4/yVW6KCTbHeUeJrcnxn5gZfKTQBM4kkQB51bYWHIl41s4OjoX0O2lL59TmbltVUW2wS9cBVz09PWMmx1qv/VV66sI0dJhDqz8whJbw1p9CIc+kfUmuPwut60mU5HK+DLgdzb2ChXO1VygXANDErqh1B2U6/abM9nCBRZz9AzRF194X4LiJ/q9P03mlXGDFm7In03BQOdUC8LaTdqYZ+8WEHj/x1U7AsMH0brtT+qg3o8ZJXeU/NcRK9FryxfitCEeQpP5cpoVmVRBwQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VltkXuJ0ImjrM7c7KPvn1ZthaTNj+cKDQbDPexFsIHc=;
+ b=ugBAz+TpMPWChM+jQZdxSTyTQtDgX5BPaHxB927KXFsbW+IPmssmVRDmYpdHkYM0a6RikFe9dUvHxXkp2BMcg+x2xKnm1gwDDe19Uktbb1RPckG9hpH2m49xJ2cIMeVzY9RFHyI2MVU90ub+GJJR51Rdmntk93oztnrPdaFjPV/VBp4la9uaK6y/QWY0Emg//xvBYmi37gVaV3i69dgDDHu4Eue09wT84I+/z+RUTEy/jfzQOBaml4s5hpDQe/CqmcaeSJnljLfw0sOqgRNrC3gBkjridGZo+q/SeFFSntWTA2OtxBc6EChmGz9xPx53kJsx1nBKcjYGrshYcEXWRA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VltkXuJ0ImjrM7c7KPvn1ZthaTNj+cKDQbDPexFsIHc=;
+ b=PQqmStqFR1riMJhY2Gs3m/Ox5iTgRu51ZhZePJNBr52GUbyqMrdvPsfibmllQd09vLv4V7WAHNQpbcC9J8YAUkt/xZimp5AeKISI1YnyW+S1YSLHVsTmdaneP6Mjgu/pmFKe5gCd1B3WttfPbAdxNqGC39KyJj/1hRM1spng5AV7cYDmMPUhkQ9u8hSoZ+Nk5fVOIQNBnBl+JUvjWHH7ONvNMc93rTGwOnlihiXvkE1xriNLU1zsOx5cT1wEaZjWMcFTRBeUS4nT9+Je4nDpQC4vGzM9ds8OFPACwQIEGScuzO6s6ymrlBES1nWPPspwtWH0W91Sj6ljesL0eqPSiw==
+Received: from PH7PR12MB5757.namprd12.prod.outlook.com (2603:10b6:510:1d0::13)
+ by SJ2PR12MB8884.namprd12.prod.outlook.com (2603:10b6:a03:547::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Tue, 16 Sep
+ 2025 15:40:50 +0000
+Received: from PH7PR12MB5757.namprd12.prod.outlook.com
+ ([fe80::f012:300c:6bf4:7632]) by PH7PR12MB5757.namprd12.prod.outlook.com
+ ([fe80::f012:300c:6bf4:7632%2]) with mapi id 15.20.9115.022; Tue, 16 Sep 2025
+ 15:40:50 +0000
+Date: Tue, 16 Sep 2025 12:40:48 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Matthew Wilcox <willy@infradead.org>, Guo Ren <guoren@kernel.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>, Nicolas Pitre <nico@fluxnic.net>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@redhat.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Baoquan He <bhe@redhat.com>, Vivek Goyal <vgoyal@redhat.com>,
+	Dave Young <dyoung@redhat.com>, Tony Luck <tony.luck@intel.com>,
+	Reinette Chatre <reinette.chatre@intel.com>,
+	Dave Martin <Dave.Martin@arm.com>,
+	James Morse <james.morse@arm.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-csky@vger.kernel.org,
+	linux-mips@vger.kernel.org, linux-s390@vger.kernel.org,
+	sparclinux@vger.kernel.org, nvdimm@lists.linux.dev,
+	linux-cxl@vger.kernel.org, linux-mm@kvack.org,
+	ntfs3@lists.linux.dev, kexec@lists.infradead.org,
+	kasan-dev@googlegroups.com, iommu@lists.linux.dev,
+	Kevin Tian <kevin.tian@intel.com>, Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>
+Subject: Re: [PATCH v3 13/13] iommufd: update to use mmap_prepare
+Message-ID: <20250916154048.GG1086830@nvidia.com>
+References: <cover.1758031792.git.lorenzo.stoakes@oracle.com>
+ <59b8cf515e810e1f0e2a91d51fc3e82b01958644.1758031792.git.lorenzo.stoakes@oracle.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <59b8cf515e810e1f0e2a91d51fc3e82b01958644.1758031792.git.lorenzo.stoakes@oracle.com>
+X-ClientProxiedBy: SJ0PR03CA0226.namprd03.prod.outlook.com
+ (2603:10b6:a03:39f::21) To PH7PR12MB5757.namprd12.prod.outlook.com
+ (2603:10b6:510:1d0::13)
 MIME-Version: 1.0
-Content-Type: text/plain;charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Importance: Normal
-X-Priority: 3 (Normal)
-X-Type: plain
-In-Reply-To: <CADrL8HX78-oh0k2qAgqPvNVAhi4ESYvjRsScPGR2P2Dts13Bfw@mail.gmail.com>
-References: <1757967196.153116687@apps.rackspace.com> 
- <CADrL8HWGcj1oANGY=qAzpYi_-E-Xbi=L28Bmyyf8H7auVix=QQ@mail.gmail.com> 
- <1757977128.137610687@apps.rackspace.com> 
- <CADrL8HX78-oh0k2qAgqPvNVAhi4ESYvjRsScPGR2P2Dts13Bfw@mail.gmail.com>
-X-Client-IP: 209.6.168.128
-Message-ID: <1758037039.08578612@apps.rackspace.com>
-X-Mailer: webmail/19.0.28-RC
-X-Classification-ID: e71446f4-8c90-4900-a2e9-9746bf0e7bd4-1-1
-X-Rspamd-Queue-Id: 09FD040010
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5757:EE_|SJ2PR12MB8884:EE_
+X-MS-Office365-Filtering-Correlation-Id: ee55a480-3326-4e41-f0be-08ddf53769b2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?ce2Mz8DSMAopEgZmeIDmN4byvpznM16vBRcdr1M2kl3tp4iZ3yWiXbDc5cin?=
+ =?us-ascii?Q?SblfAJFTzErsaTtl0IJJRrZ61QuQ7FgSKy7UE5OZOLhcUwBaPC53t8QVs9hH?=
+ =?us-ascii?Q?hUVYJ+DkE6C6OdmNrD8BNowE0+uUVOnH56MQBd57PtJ4/z/VMho/GsqcuTX0?=
+ =?us-ascii?Q?WNbysaDBV50/gGBDvspW6JYIC6mEXX/OsHP7IyDuWltQElc2nAZ+PEDBAC8q?=
+ =?us-ascii?Q?xQYX4Tbuj/tcKjspANRGBxwNEn0U3LzoQt1MKXKEbXmxLYSWR1dZRpXDeoay?=
+ =?us-ascii?Q?29+np9q6c3bn6K8zDsmBAkNNR8m2L13+St4V1WheFwaTBgLbxZgnTnhypvav?=
+ =?us-ascii?Q?t9gnRyy9Ssr+vYn/SfsKl855y/hgigVlWp0wBA9tQRVelBJegE0pMoA8ifql?=
+ =?us-ascii?Q?CJP04TD7TGLatoUYpORNEONZq/17ahR42gcXVp1kTuffd/5ORgN3iax98FGY?=
+ =?us-ascii?Q?0q7//+GQOoTZfhJ+y37r+7LRbdN3RTJFCfshMZ85p2tVGf6RySWB89SRSXOR?=
+ =?us-ascii?Q?Werz8s4nlCEnv97Y3zszyylskny4yy8QbvlogLY8S5I+kJ3wfF6BcfuRdvos?=
+ =?us-ascii?Q?os2mS/qIjBAmthpUsDxu9X0/4SpYMLNENMlF/sjNeHMazSZm97bmGl5Nlz2Z?=
+ =?us-ascii?Q?gChnUyU6jYIqDLRacOJFWOPij1OJu2w3YAyzOkb7MOppmiDfgxA/ZpEaWY4t?=
+ =?us-ascii?Q?p8js/vd+q40BdR/qBxqKev9x6duAAeQ/HX/GdGibHVfHzqAhFDzip0vw7urz?=
+ =?us-ascii?Q?+TSSG0tkMgE4GTDmlPPLBFKd5NBwuh3y46BLUUa0ZQZb7lZxUYsepB4nWgLk?=
+ =?us-ascii?Q?nkqM8EYRlG5kDm4+/ZTmGfXCAi5/LGLdUuOUm8Hz7z3VWVXnQuX9JmbRM1V6?=
+ =?us-ascii?Q?d4TWWgH5ANoTRAyu6iTsqscylg1n4O8NCmBsdAPfTLSFIIh0l79pOm0XOrZd?=
+ =?us-ascii?Q?Cpc6ZB7PCce+lxEcn1uQemTGV7i/ZOXylNbec3huSiz8mazuHvBd9LdiS/tP?=
+ =?us-ascii?Q?H6rQz86PkinNQWx/PkELOE+i7iCkZImrhstqMJMcQfoFumQskVBSsUDlFE9q?=
+ =?us-ascii?Q?PKS9QxV713ki7dsilxDz5jb1tvg49dbKNimSL19CLYVf0L9xwDz7z+4vInQs?=
+ =?us-ascii?Q?fTU4l9xlg8ZDSTh7xJ+gy9aYP/GDHAsTix/ihaXQHmudeWmAlohcbqnkHrdw?=
+ =?us-ascii?Q?XTkFCecB+tw4xgnqf1GUOiDZjFNfv9aSah/54LQSFDItN/LCe3F/er/yZKbN?=
+ =?us-ascii?Q?zcYQyLdZe0oguLFS6PL3ZjK1pf1lja07nxrmEjVbuse31STM1+Dc8fi5jRQ9?=
+ =?us-ascii?Q?CT56QP3kHpnQ3vpKVGLDjt/BKSEyElZMI4eh6rIjWVYowuBiop91PI8MyZ+V?=
+ =?us-ascii?Q?LZbUQFaWxgNO8+/pbAJB9QT5FE/PFbE7SEGCFVksha1xn4Ct5Xi4csoPTRjx?=
+ =?us-ascii?Q?T+tR4jnOJuY=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5757.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Tp0myZQNRFAOhXwaW47uk2WNGg0VUX3LAp82/xqo4uaMpEEzGMLFqXRtGiSR?=
+ =?us-ascii?Q?q1Jg+KONxrN04RRHtMY3BYaalRQsiG7hApre/FzQ9wG6eF8q4Ufo7FbMPzfX?=
+ =?us-ascii?Q?FzXuth7YOq5Fz/AoxH4zgXdwKvIfMVZoIl/wPjJuhjYtaCa3Xtz4drDBe85/?=
+ =?us-ascii?Q?fwAtttqYA5SdxYSR6WkVp4Ow/Ho3+gjKuq5JyM8h2sLhYtocWF4gWlAd5AOz?=
+ =?us-ascii?Q?vNwcuGqR6/a9C3NKp3wptjcT4EcvCwJR900gaaAwm6qn3fzNgRK6Dkbx3qp6?=
+ =?us-ascii?Q?GoIdUhpSug2eeh04R4em9NYcgot7QzlTAFGt2nI1B6wHjUS51z5C++0f/1/x?=
+ =?us-ascii?Q?ytzS3/Duw9ftOkfriclKgL1k+9j4NSs3wQYCMlg/oSxFukaLUGNCTSg9EjUD?=
+ =?us-ascii?Q?BR1Bh1jOQatCJ21sqt01f7TSoBtXM9EnpeZHQJntfMg9wblz4MCmhAvsOMvc?=
+ =?us-ascii?Q?WAjxNroqqc7OYxwLL5Whq5qwGF9/M4iyicQskWWjmsUacBDy0kYkSzK6rQUc?=
+ =?us-ascii?Q?Iskr5PRP72IcAjq6VUnsNrDciejKwQO7drOwSyGBlqVBp0cwifwrQHoD5SEZ?=
+ =?us-ascii?Q?yL4grKZTDuTkonTGJ8n9XxYkQhmIWM7ipCooPanH4j38GpymE8Sx09ZkcrzP?=
+ =?us-ascii?Q?KoW+r7QuPPsotonAl0tISayRdEPCDVQPdch7AAMiXIcIiazgzXhTcjtkM0eR?=
+ =?us-ascii?Q?R2vzkEwPaBoaioR52H2aoAcWdtgdQrEpUJb0UgCEEnl+Xrc+F7pU8UpeN9eV?=
+ =?us-ascii?Q?/VQD3hPNVnKMnljB8AFjEYG+PP733CCNYtpt3iyNn1pJXna5FRzUemH0MN8Y?=
+ =?us-ascii?Q?UWDCA3OoRdpoZCe2uJ320lROnZ+Ur92xC1IOYGmB1sL01i66YSh0M0PfbN5/?=
+ =?us-ascii?Q?vmlKBLker0171p8tKQFe5hZfKTT6wN5CDF5Koou24Fj8ePWy67BWUYpzviG3?=
+ =?us-ascii?Q?DSvRgmpix0LMoQ94aY1y82KkfCIrezsOZmliPoydIhjTeIOvPE1mzIUZVKYU?=
+ =?us-ascii?Q?8vJJUkgxZ2pNoC15H6ak2cBWkp2CYm/NXrXw2FuYV/09E6bFq3wAvj+Nvumg?=
+ =?us-ascii?Q?vRorUnsaQb3V9o23FSnuEjBTuVS0m90bosNwiFTZKF00C1V2/LIWyxu3tK3e?=
+ =?us-ascii?Q?XFhGU2MgUPCq2kLf2dYRf3y/Ncv+ZjJyWzLvaZ8sdZvPAot4XWRtCq73ELI1?=
+ =?us-ascii?Q?oBq1CcLrsqpBRPcgPIyVr0DZwIAKopjdRp9SZzjqB7MD4YaoHjjrEoyQUp78?=
+ =?us-ascii?Q?sk0r0cQwvvokvzCRHP1E1nG4EnKTxCcJ6a4vrohFJQwREtPkD7Gs7hCtGLBQ?=
+ =?us-ascii?Q?4Oqs9YbCe0TCPdtvLc/dAAn7IBMje5gkm/yx2X6UBEkQhRMtgBbbZLInGIwm?=
+ =?us-ascii?Q?r2SCRo601ytkfK8FxrTuaOkWSDN15WpevyzoLM86sHf9OpMU/ws4b3Mj7Psq?=
+ =?us-ascii?Q?vxGU/qgFnNNayzGTFveGvqGNLlnf/HH06cx+Vfv1bIGRgDqoJZLnDWB33ftT?=
+ =?us-ascii?Q?He3g+db924waeyc0lJM/YlOTWF2t+wI4dG40Lw8I9Iy3d97rG3SI+edw4vBJ?=
+ =?us-ascii?Q?3chGd/hixYsZCf9Bfw8lU8Sn76pxBtbOiyccrUfW?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ee55a480-3326-4e41-f0be-08ddf53769b2
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5757.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2025 15:40:50.3991
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0T6KufBqHiV0EbtumXr/qd8XAxcjvD2Ozn4M7Wg66C3o2g9lfgFNYf0WMI2c4rm8
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8884
+X-Stat-Signature: bscazrcjtrc7bf5yzocyornxmrkj9tju
+X-Rspamd-Queue-Id: 7BA461C000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: dipc8h5fj6cmtiqzj4uqwg5g3gjfgysr
-X-HE-Tag: 1758037039-949563
-X-HE-Meta: U2FsdGVkX19ySKaZYiXaeV0MHnwjVyKRmGvD4douhshEkU5oIbxPAtwE2w29xjqYIJeG1RtTobYv2O0UsZRuU80cz2TTlA6l5nHwkur67pEnlMpzuma2EB5hnTVIhfxIjynUhZ7LVU+4c6U6aiet3pEkjWh/jS4qMbgev0eMO/HGlsodrMK5DGJLYMOpzp0CqX6+QDYEyrK7AAssjgOaB/c6SKgsE6ZdCcQYIY1P7yybjEs22T3CB6wj9tHDyaRGf7LiwTRc6Uwx73w8reXVnGX1aSF8T7ioNsJMoN8DJA2feKku3rUUU9w3w9m50k39L9TMX13rGJ3DIwBdL+adFlYgRsPt46rode50eFiXhYMYuw2BAhzZNiSRPxQl59SdZ2JMhuQqnrehbpcMxgZ9nfT+gk6Xn/Mt8TzS7he/gUYhaVemF7YDxq3myJaOESEad+JWZ6DLny/JqKSLwwJUsBQzoeG/j70AbUUcMJBnRg7eDF1Mb3T+ym1nnjA77I52TWA0giiBpPXYgsmVzsxr2+O8qaxVdocWtctfxakMU3UJ//Gd8IvNgVXpSjpRHxyv90c9dSc05wN/B2JF+IgJLEm2z9Yq0wD0vEHgiqxXSJv0gzS9bL7JmewZytSVdlrqc3NDi6zyUivlrfQB80CfC1tuKj9YiEUc7VbtudlDVeANuslj6hNssPblii+ekSfeMW0cJ1eYoPyxkE2cU7WG31uHqRrmRry+kULjIXa3RvPilmu7eu+UJy3M+HktExoDXwWazpnnA5ZmG6+TObxkklmH/EkM9rzSkDfkLz4pvnrjqOPIEV7Fffithu9URHT0E714AxZEAi63dir+psCbExIlV4nnU8wppxolcDQ1Rxu+m/1xoSdC6a57TsbI7e2t5FGqeuFliOUtg1OtoC0bflxTvuin60Lg/P9o/JMjFrTzYF0hHC2PU18q+ww5gyd8s2djre/cyiClpg2FGve
- oNZ/Ee5g
- xH2/omJIbTbPkJoneVncfbmQrPPXSX49YSIwzC6nfSIkxxZkJdEI4iV+I8rW3LRIGGdupak8mJFLMVaBMcbnh6ynwnif3Cyg5tFHZv9X53hbc8KhH6oOxhq1VBan3tVBprZ26PegTWUZMUfA+Tw7YIDtuenGuRli0jGqB1LvzSu2hA8/STuzrFkYvenuH1lM82bZp2FCRAbc8CiQghD4MFaeDpu8PWMOIKye9PMYKlK0lvZ+7Dv5if5o7OA==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1758037257-106792
+X-HE-Meta: U2FsdGVkX1+miJ6VeqswCZQ4GGs8uC8gqMVwekoW71YKlor4JJ8aFd+XDmok6DtXbTKJ5YKEl5Yu5ic4nFeDOThPiREJ2rWLwy05NovM+hpNkiMpr6nBJ2l74Zxr3563eD+4/w5dxtUIujKdqS8p7lAeJbbra963aNG5lYd6PSPDi2x+cg7xpldHAdnszje2vkaJm6a+0xGtc81gr+fvrhoKgKtBCNyE23ueCDSJ4iEPPGZ0OWHisAjtjBGE0Rn+sxWTSCTapGNIROjBCLvWE+vYMarmCNHTBfmlTJYXbJYRFucMwUfV7JXMmm678z6V05TS63O3GgpfvsbXFGan1saxxf5Txshuk4QbYa5U3Jk8nL262gXetDnr7/qeoMVmb9ZiUVEpID2/Lae3DjqxaN63KI1K88bOgXMnH/gL3ebnEBlryYBLrsGyBhEzFpTkSVmjF8BO11PDsYNlJpsUuDNeZfxbswvP+S2fCCy4rJUwzh/6DOgBTMQHqfMVatHiXTF3fohXXYA5z6SITR1ABBTXdfEsu2pyKZChD+6K4uyuC1w9nNPtgh0x3FtET2pn+PpPuNqK/ypadE0v33Ik8PSugeZqHXo9gwPwmjB8h3XiFjhuIWc/xU/HCMYUWhXbMZ7NjJwPvSh8BcAXLcnk8o/NceriP+KH4YIKfUM/QFQm7Vy2tgbF1eOqdQFbqNAyCV4DvKxOKo7khx7T/rU9ZiSHGhBA6+o1VUGPKdcI3Lef0JkVbeQYwu8vUlst0Sg6zLu9pYkckgQwZUQzt3++uWYraNb5SylGrXkZxj2qyjxKyX5MlJczc8HPKs+HYGzGQjbZoTUROz0sAXHiqWnanyKMk4kv4dEGqP5MMi3HwDMbTb2FcnlDyGy7tV6j//Jkwa1HS8b0aJslRJ9+lC+LcvDsA8gOC9WiGT2ap9DhDhOzpbidaBQ+CvVFDfJarl68hAtJNKfe8hkdCLYeiKP
+ /mYqd9zZ
+ KdiZ50PeFo6cj9gba+X6wLhNQGHRSAlypveuCDr+8RxBjPxBPUIPhv5G9Y8KDazTvCf3cKu3VouMWDOfqX7qFpU3N0uBewRfkIcXIp0vMDzX2d4TBkqb138CsvmhVT9aYL5DcgNXvQwnrV0jm2uhto0AkvUzevAP0szjAJF6sCNM/lF3exJv1uaRln90gjWJIY8u1CBg1+Xu9uad7zvRKqnMSuzCwGQgU//u838UvVeLpONIYgS3yjPhJEa1Ev9Or3s0LXQNoiO0DDTzdegxIrlKXqb+mvXttc0bsPs832dMI5LZx4vZxI+1ZlVCW8dtK/paDT77phOedAqMW5ACJj/jq6V+qmNcR++3HWYCNtOiXZOYaPFSjiP2aLiADfDYyfOo8/gMtexl43N0iMqELl7eIGFnlbOtuYaTV1+pMFCfRsvqGx/5HLHohZ+GugXDDPbpQewHk3I5tlZHmqG0fzM5s+20Gz61zdyxBJE+0nVoA7PMnKXOcpZ8dhBXkdDgzY5N1qYZhQNYVNp9yBei4Z2L/uqlMKN56ZBObmnu6d3oplFkX/kzOZlPH4Ovz4PQ2ayyKeMYkJYxlJqc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,115 +223,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-=0A=0AOn Monday, September 15, 2025 20:31, "James Houghton" <jthoughton@goo=
-gle.com> said:=0A=0A> On Mon, Sep 15, 2025 at 3:58=E2=80=AFPM David P. Reed=
- <dpreed@deepplum.com> wrote:=0A>>=0A>>=0A>>=0A>> On Monday, September 15, =
-2025 16:24, "James Houghton" <jthoughton@google.com>=0A>> said:=0A>>=0A>> >=
- On Mon, Sep 15, 2025 at 1:13=E2=80=AFPM David P. Reed <dpreed@deepplum.com=
->=0A>> wrote:=0A>> >>=0A>> >>=0A>> >> [1.] One line summary of the problem:=
- userfaultfd REGISTER minor mode on=0A>> >> MAP_PRIVATE fails=0A>> >> [2.] =
-Full description of the problem/report:=0A>> >> The userfaultfd man page an=
-d the kernel docs seem to indicate that an area=0A>> >> mapped=0A>> >> MAP_=
-PRIVATE|MAP_ANONYMOUS can be registered to handle MINOR page faults on=0A>>=
- >> regular pages.=0A>> >> However, testing showed that not to work. MAP_SH=
-ARED does allow registration=0A>> for=0A>> >> MINOR=0A>> >> page fault even=
-ts, though.=0A>> >> Either the documentation or the code should be fixed, I=
-MO. Now reading the=0A>> code=0A>> >> that rejects=0A>> >> this case in the=
- kernel source, the test in vma_can_userfault() that rejects=0A>> this=0A>>=
- >> is this=0A>> >> line:=0A>> >>         if ((vm_flags & VM_UFFD_MINOR) &&=
-=0A>> >>             (!is_vm_hugetlb_page(vma) && !vma_is_shmem(vma)))=0A>>=
- >>                 return false;=0A>> >> which probably should include !vm=
-a_is_anonymous(vma).=0A>> >>=0A>> >> Or maybe the COW that might happen if =
-the program were forked is something=0A>> that=0A>> >> can't be handled, wh=
-ich seems odd.=0A>> >=0A>> > UFFDIO_CONTINUE, the resolution ioctl for user=
-faultfd minor faults,=0A>> > doesn't have defined semantics for MAP_PRIVATE=
- mappings. The=0A>> > documentation is unclear that MAP_PRIVATE + userfault=
-fd minor faults=0A>> > is invalid, but this is intentional behavior.=0A>> >=
-=0A>> > What would you like UFFDIO_CONTINUE on MAP_PRIVATE to do? Should it=
-=0A>> > populate a read-only PTE? Should it do CoW and populate a writable=
-=0A>> > PTE? I'm curious to hear more about your use case (and why UFFDIO_C=
-OPY=0A>> > doesn't do what you want).=0A>> >=0A>>=0A>> Well, I was just exp=
-ecting to UFFDIO_CONTINUE to do whatever "normally" gets=0A>> done. So, the=
- normal case for MAP_PRIVATE|MAP_ANONYMOUS, if the page is in the=0A>> swap=
- cache and thus takes a minor fault, would depend on whether the access was=
- a=0A>> write or a read.=0A> =0A> This minor fault is not a *userfaultfd* m=
-inor fault, and even if=0A> registering UFFD_REGISTER_MODE_MINOR on this VM=
-A were allowed, you=0A> wouldn't get userfaults. This is because swap-outs =
-for MAP_ANONYMOUS=0A> VMAs leave behind a swap entry (!pte_present() && !pt=
-e_none()).=0A> UFFDIO_CONTINUE cannot resolve this condition, so no minor f=
-ault is=0A> generated in the first place.=0A> =0A> Why can't UFFDIO_CONTINU=
-E resolve this condition? Well UFFDIO_CONTINUE=0A> only populates pte_none(=
-) PTEs; it will not and should not obliterate=0A> a swap entry. And no one =
-has a use-case for making it trigger a=0A> swap-in.=0A=0AWell, it's not a p=
-age-missing fault, because the page may be in the swap cache and not yet on=
- disk, which the documentation says is not a major (page missing) fault. Ma=
-ybe it's a documentation problem, if "userfault minor" and "minor fault" ar=
-en't the same?=0AAs I note in the report, the documentation is pretty uncle=
-ar on this point (and also on why MAP_PRIVATE doesn't work).=0A=0A> =0A> Th=
-e same logic applies to CoW; CoW faults are not (minor) userfaults=0A> beca=
-use UFFDIO_CONTINUE cannot resolve them.=0A> =0A>> For a read, the page jus=
-t gets installed in the page map from the swap cache.=0A>> For a write, if =
-the page hasn't yet been copied, a copy is made of the swap cache=0A>> cont=
-ents of that page at that point, and the new copy is installed into the pag=
-e=0A>> table of the writing process.=0A> =0A> Sure, but if this is the beha=
-vior you want, why do you want/need userfaultfd?=0A=0ABecause I am tracking=
- page creation events. The COW case creates a new page, and UFFDIO_COPY isn=
-'t able to express "just proceed". If the COW is silent, then I won't see p=
-age creation by COW. Maybe we need another "mode" besides "missing" and "mi=
-nor" that gets triggered by COW?  (note that write-protect isn't quite the =
-same as that, because it gets triggered by writes that don't cause COW, als=
-o - if it is even allowed for the case of MAP_ANONYMOUS|MAP_PRIVATE.=0A=0A>=
- =0A>> However, the problem I'm reporting is that I can't even register suc=
-h a page for=0A>> minor page faults.=0A> =0A> I understand; I find it easie=
-r to speak in terms of the behavior of=0A> the resolution ioctl (it is equi=
-valent).=0A>=0AHow is it equivalent to the REGISTER rejecting a mode?=0A =
-=0A>> Now there is a question of the meaning of UUFIO_COPY should be (not c=
-ontinue). If=0A>> page is MAP_PRIVATE, MAP_COPY is like writing to the page=
- at the time of the=0A>> minor fault. So the version of the data in the swa=
-p cache for the page should be=0A>> ignored, replacing the  local version m=
-akes sense. Any other process that still=0A>> has the original version from=
- the time of the fork() that shared the page should=0A>> not be affected, I=
- would think.=0A>>=0A>> There is a confusing possibility, however, with the=
- file descriptor for uffd. In=0A>> the case of a fork(), the file descripto=
-r would be shared, and so either fork=0A>> could end up listening via poll/=
-select.=0A>>=0A>> It's hard to decide what is right semantically, because t=
-he normal use of=0A>> userfault is to monitor from another process, though =
-you can use read() in the=0A>> same process as the faulting one - this seem=
-s to be because either fork or a=0A>> unix-socket can be the path for sendi=
-ng the file descriptor to another process.=0A>> But this is just definition=
-al, the actual user design would have to handle faults=0A>> in one place or=
- another.=0A>>=0A>> Now in this case, whichever process does the first read=
-() on the file descriptor=0A>> would get the information about the minor fa=
-ult. (I assume both would NOT, but=0A>> I'm early in my use of userfaultfd)=
-. So it could continue or copy, as desired.=0A>>=0A>> Generally, anyone usi=
-ng userfaultfd would understand the nuances of fork() and=0A>> file handle =
-duplication. So they would probably close the fd in one process or=0A>> the=
- other, as appropriate. (I admit I haven't tested what happens if both fork=
-s=0A>> try to use the file descriptor, but I can imagine it might be useful=
- if they=0A>> coordinate carefully).=0A> =0A> I am not really following how=
- the above connects to not being able to=0A> use userfaultfd minor faults f=
-or MAP_PRIVATE.=0A> =0A>>=0A>> Now, if many forks end up sharing the uffd f=
-ile descriptor and also end up with=0A>> copy-on-write shared pages in the =
-MAP_PRIVATE region, the above definitions of=0A>> the continue and copy wou=
-ld continue to make sense - to me anyway.=0A>>=0A>> Hope this helps=0A> =0A=
-> I still don't have a solid grasp of what your use case is.=0A> =0A=0AMy u=
-se case is simple, and has been described elsewhere by others. Creating a u=
-serspace paging monitor process that can catch page faults in userspace, ei=
-ther tracking them or modifying their behavior.  Not being able to handle a=
-nonymous, private pages at all seems to make it useless for that purpose. (=
-doing research on using that fault info to drive madvise LRU management for=
- certain cases). (I can do this with kretprobes thru a kernel driver, but s=
-ince the mm code is rapidly evolving, it's not anything like an ABI that wo=
-rks across versions).=0A=0AIt's interesting that anonymous private huge pag=
-e minor fault mode is not rejected, just regular page. (The code snippet ab=
-ove is what rejects regular pages but not huge pages mapped privately).=0A=
-=0AJust curious - are you a designer or maintainer of userfaultfd? You aren=
-'t listed as a maintainer. I would be able to provide a patch set that "fix=
-es" the behavior to be the way I believe would be the most useful, but the =
-point of reporting this as a problem is to avoid rejection by the maintaine=
-r, Andrew Morton, if somehow I've missed a subtle concern that isn't explai=
-ned in the documentation. =0AI could also provide a documentation patch to =
-clarify the MAP_PRIVATE|MAP_ANONYMOUS rejection of minor fault handling doe=
-sn't work.
+On Tue, Sep 16, 2025 at 03:11:59PM +0100, Lorenzo Stoakes wrote:
 
+> -static int iommufd_fops_mmap(struct file *filp, struct vm_area_struct *vma)
+> +static int iommufd_fops_mmap_prepare(struct vm_area_desc *desc)
+>  {
+> +	struct file *filp = desc->file;
+>  	struct iommufd_ctx *ictx = filp->private_data;
+> -	size_t length = vma->vm_end - vma->vm_start;
+> +	const size_t length = vma_desc_size(desc);
+>  	struct iommufd_mmap *immap;
+> -	int rc;
+>  
+>  	if (!PAGE_ALIGNED(length))
+>  		return -EINVAL;
+
+This is for sure redundant? Ie vma_desc_size() is always page
+multiples? Lets drop it
+
+> -	if (!(vma->vm_flags & VM_SHARED))
+> +	if (!(desc->vm_flags & VM_SHARED))
+>  		return -EINVAL;
+
+This should be that no COW helper David found
+
+> -	/* vma->vm_pgoff carries a page-shifted start position to an immap */
+> -	immap = mtree_load(&ictx->mt_mmap, vma->vm_pgoff << PAGE_SHIFT);
+> +	/* desc->pgoff carries a page-shifted start position to an immap */
+> +	immap = mtree_load(&ictx->mt_mmap, desc->pgoff << PAGE_SHIFT);
+>  	if (!immap)
+>  		return -ENXIO;
+>  	/*
+>  	 * mtree_load() returns the immap for any contained mmio_addr, so only
+>  	 * allow the exact immap thing to be mapped
+>  	 */
+> -	if (vma->vm_pgoff != immap->vm_pgoff || length != immap->length)
+> +	if (desc->pgoff != immap->vm_pgoff || length != immap->length)
+>  		return -ENXIO;
+>  
+> -	vma->vm_pgoff = 0;
+
+I think this is an existing bug, I must have missed it when I reviewed
+this. If we drop it then the vma will naturally get pgoff right?
+
+> -	vma->vm_private_data = immap;
+> -	vma->vm_ops = &iommufd_vma_ops;
+> -	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
+> +	desc->pgoff = 0;
+> +	desc->private_data = immap;
+> +	desc->vm_ops = &iommufd_vma_ops;
+> +	desc->page_prot = pgprot_noncached(desc->page_prot);
+>  
+> -	rc = io_remap_pfn_range(vma, vma->vm_start,
+> -				immap->mmio_addr >> PAGE_SHIFT, length,
+> -				vma->vm_page_prot);
+> -	if (rc)
+> -		return rc;
+> +	mmap_action_ioremap_full(desc, immap->mmio_addr >> PAGE_SHIFT);
+> +	desc->action.success_hook = iommufd_fops_mmap_success;
+>  
+> -	/* vm_ops.open won't be called for mmap itself. */
+> -	refcount_inc(&immap->owner->users);
+
+Ooh this is racey existing bug, I'm going to send a patch for it
+right now.. So success_hook won't work here.
+
+@@ -551,15 +551,24 @@ static int iommufd_fops_mmap(struct file *filp, struct vm_area_struct *vma)
+                return -EPERM;
+ 
+        /* vma->vm_pgoff carries a page-shifted start position to an immap */
++       mtree_lock(&ictx->mt_mmap);
+        immap = mtree_load(&ictx->mt_mmap, vma->vm_pgoff << PAGE_SHIFT);
+-       if (!immap)
++       if (!immap) {
++               mtree_unlock(&ictx->mt_mmap);
+                return -ENXIO;
++       }
++       /* vm_ops.open won't be called for mmap itself. */
++       refcount_inc(&immap->owner->users);
++       mtree_unlock(&ictx->mt_mmap);
++
+        /*
+         * mtree_load() returns the immap for any contained mmio_addr, so only
+         * allow the exact immap thing to be mapped
+         */
+-       if (vma->vm_pgoff != immap->vm_pgoff || length != immap->length)
+-               return -ENXIO;
++       if (vma->vm_pgoff != immap->vm_pgoff || length != immap->length) {
++               rc = -ENXIO;
++               goto err_refcount;
++       }
+ 
+        vma->vm_pgoff = 0;
+        vma->vm_private_data = immap;
+@@ -570,10 +579,11 @@ static int iommufd_fops_mmap(struct file *filp, struct vm_area_struct *vma)
+                                immap->mmio_addr >> PAGE_SHIFT, length,
+                                vma->vm_page_prot);
+        if (rc)
+-               return rc;
++               goto err_refcount;
++       return 0;
+ 
+-       /* vm_ops.open won't be called for mmap itself. */
+-       refcount_inc(&immap->owner->users);
++err_refcount:
++       refcount_dec(&immap->owner->users);
+        return rc;
+ }
 
