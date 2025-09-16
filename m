@@ -4,132 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77FA5CAC599
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 09:27:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 110D3CAC599
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 09:29:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 947498E0018; Tue, 16 Sep 2025 05:27:50 -0400 (EDT)
+	id 309088E001B; Tue, 16 Sep 2025 05:29:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 91ED98E0001; Tue, 16 Sep 2025 05:27:50 -0400 (EDT)
+	id 2E05F8E0001; Tue, 16 Sep 2025 05:29:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 834B08E0018; Tue, 16 Sep 2025 05:27:50 -0400 (EDT)
+	id 1F6A98E001B; Tue, 16 Sep 2025 05:29:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 72DA98E0001
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 05:27:50 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id F2B881DFC89
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 09:27:49 +0000 (UTC)
-X-FDA: 83894586258.29.1F91AE2
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf16.hostedemail.com (Postfix) with ESMTP id A967A180002
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 09:27:47 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ejzW+gt0;
-	spf=pass (imf16.hostedemail.com: domain of toke@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=toke@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0F3238E0001
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 05:29:18 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 763DDBC058
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 09:29:17 +0000 (UTC)
+X-FDA: 83894589954.26.81BF8DE
+Received: from fout-a7-smtp.messagingengine.com (fout-a7-smtp.messagingengine.com [103.168.172.150])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 6203E140007
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 09:29:15 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="O xq/qRB";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=YXX6VCaB;
+	spf=pass (imf09.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.150 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758014867;
+	s=arc-20220608; t=1758014955;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3jQ2xIOlZcY5kkEacuWoU5YrT4TbiuRFkDjU2o439/o=;
-	b=75efFc6fyd1LQdILM3PwLtF7Yu78s10Eac5vQb/MIl4i1ON7Rtvkrgp62wYyMZk61eSJaB
-	UpulETdNiROr2dwDi95nSKm9r18Fht+19UhOKlmZJPYvIVQ7o1jvZPedGSoPm66GDyNyVV
-	51c6hsqkJyo/A2orePRBKkv3p7mXffs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758014867; a=rsa-sha256;
+	bh=5RahN1nKreb/kWvqsVS3VXXptJiVPO4DE4jLNfb+LCo=;
+	b=JdSEO1L//juYDXRabX7f6kDvZJFHBWCrFkqIMWT8pYQIUYNvOmDgcIVCXJQpemGsuw/g7C
+	k0bsutL//bV9WtF+Wq0iKSuVuyRXDHN9Ya4837p4ETkYV+8h4wLQDx+K04sgEPpVb3AhbE
+	SiasOn5vGXYcZPZb7hXX3G7A+ipEcbM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758014955; a=rsa-sha256;
 	cv=none;
-	b=fqUbOwihWliRbHy5cMd3BU4/rR0MV5e+tqsJFOjvj56y9dWMshwsv/RqRyGQAkHYUvrIfn
-	+6aa+o0rPDmah0CEnhmWKZ+wiMj6xWLkmHqvskhWE47GTujvPLPC4vZz1nkRr39MpVNF5V
-	funSlhLFTGLDdXL8OQ8vMBFnN+zYVp0=
+	b=q8MsiBRukV7t8gPIgLAQTOm/WMFTCyZyeZr+SeP0a+ko2xxeXKMfeq0z0LhxAH5F3Wrhf2
+	/1CdrwiR5nXAwhg8+xrPC7n92oWf2jpbFI/Dov6kSOKpBCuvB56rTwl11Y+Bdjxtp0Ht9h
+	azKt7Skeej4nsuH54768VBvog9QEcHg=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ejzW+gt0;
-	spf=pass (imf16.hostedemail.com: domain of toke@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=toke@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758014867;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3jQ2xIOlZcY5kkEacuWoU5YrT4TbiuRFkDjU2o439/o=;
-	b=ejzW+gt0j4opwT/qu0TrAtWdbagsx2NnIQnpSkBHm3kCWV3Bk6EYCOmUEjdJHz6jIsou3n
-	UPM4SghQjmcjyOKonu61MbL1oXEIRJk8ZBT4/ZcB5raN/maaGLWplTYkOM4simnR/4ljCK
-	lWuOv6i8H/2sSj39zB7Llw7kAL0zKCw=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-600-QS0rt7jYOXugZul_rQExqg-1; Tue, 16 Sep 2025 05:27:45 -0400
-X-MC-Unique: QS0rt7jYOXugZul_rQExqg-1
-X-Mimecast-MFC-AGG-ID: QS0rt7jYOXugZul_rQExqg_1758014865
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-afe81959e5cso504884466b.1
-        for <linux-mm@kvack.org>; Tue, 16 Sep 2025 02:27:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758014864; x=1758619664;
-        h=content-transfer-encoding:mime-version:message-id:date:references
-         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=J59OiJgG+nalIV3FMKbGlZSlucF0/CWesH+hT77dSmU=;
-        b=ZoaQa9bWMNA8M8AlHW56T2NlRCUNZX6jQSnMZRqFU9CMh1j6qKnDCzXqftXqIvLapF
-         o3OKd37l5uHykPVCnFM2AGeKHugEp/0920jd4efABMt3N8gErk1B97LPWE6wWPt0K4aT
-         mR6SyiPklGML06GQPW0jcf1Z0PAYCtlb0jcWKkAA/awOOLEWpC3w+yV23l9Mf2CiCfSC
-         p0He/QXvXXVwx4HRL80XBcAK4R5hO1/alp6khtwLGPzuNyOauQwlqKsVpsslwF8DtT73
-         iCa31xM/LNYKxiVdladmjknV0zu150zZFkRsMTTyV0c9oeTxI8GbMpztPDo3OT6tw6vv
-         6BvA==
-X-Forwarded-Encrypted: i=1; AJvYcCWC39Yyx0tWe5bzY3ipiI7+OEDZfhozRA5vgUnqk0+X2O83yvNJLSCNZkiSzwFqTjQ4pWZhJAK/FQ==@kvack.org
-X-Gm-Message-State: AOJu0YyNbySwwDw4mijhDw0sNLMkINyeWy6PR2V4Qfi1pH3DjFpIo1TW
-	+2SkwEoxx0EmZdAGnlQJbAX0zPqGSPi5Mrw9w750ceEBAMTAiRBoxyks5X10tQjTgHOBIugDM2K
-	E4bvw65oABFccTdVyzw4agy162cFqH1JeYk8g2fLlG25SaNYRCZAB
-X-Gm-Gg: ASbGncsbzXb4HRjE+jN1mSgFCJIOoCuQbbEZ7R4qToXcV5rFtVpndZMiZZCA1UehQLh
-	OlB+5QpegQviS/0LYqgiywlVHLrrIbaFNWqCpkbsCl7oEvQWKshnDGexDIKVRIwDrSc8u8cSoC2
-	088C8/c5ttGdg1J/AOmGbt+w6A7IcMxXiknivufhOFnD3VhFugTQvK8ks+Tx1q9HNmISgO/CoSn
-	UEDEXmEgcqORAsOSiTt9m9XvydPUA7WeWo/ruXzikcCGPRoqj++oGissZq88V+0C4mgSsYnCHu3
-	KNRf1VRpxVO64llu1+/U2B8mYOjOwCwOvMdv1H9WJ2mc+lO677k6vAHIZluzLM1/
-X-Received: by 2002:a17:906:b310:b0:b07:de2c:1268 with SMTP id a640c23a62f3a-b07de2c15famr931578566b.5.1758014864434;
-        Tue, 16 Sep 2025 02:27:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGk1ALl6UsSbSFvHQ00Kgc7RvzsxEkP3PZF56LrtF0J0ob9LrtksUQ3RV5zpsIq7u1tOeNfbg==
-X-Received: by 2002:a17:906:b310:b0:b07:de2c:1268 with SMTP id a640c23a62f3a-b07de2c15famr931576466b.5.1758014864011;
-        Tue, 16 Sep 2025 02:27:44 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b07b333437bsm1107159566b.95.2025.09.16.02.27.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Sep 2025 02:27:43 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-	id 0EDB025C5AA; Tue, 16 Sep 2025 11:27:42 +0200 (CEST)
-From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To: Mina Almasry <almasrymina@google.com>, Helge Deller <deller@gmx.de>
-Cc: Helge Deller <deller@kernel.org>, David Hildenbrand <david@redhat.com>,
- Jesper Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas
- <ilias.apalodimas@linaro.org>, "David S. Miller" <davem@davemloft.net>,
- Linux Memory Management List <linux-mm@kvack.org>, netdev@vger.kernel.org,
- Linux parisc List <linux-parisc@vger.kernel.org>, Andrew Morton
- <akpm@linux-foundation.org>
-Subject: Re: [PATCH][RESEND][RFC] Fix 32-bit boot failure due inaccurate
- page_pool_page_is_pp()
-In-Reply-To: <CAHS8izMjKub2cPa9Qqiga96XQ7piq3h0Vb_p+9RzNbBXXeGQrw@mail.gmail.com>
-References: <aMSni79s6vCCVCFO@p100> <87zfawvt2f.fsf@toke.dk>
- <f64372ec-c127-457f-b8e2-0f48223bd147@gmx.de>
- <CAHS8izMjKub2cPa9Qqiga96XQ7piq3h0Vb_p+9RzNbBXXeGQrw@mail.gmail.com>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date: Tue, 16 Sep 2025 11:27:42 +0200
-Message-ID: <87y0qerbld.fsf@toke.dk>
+	imf09.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="O xq/qRB";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=YXX6VCaB;
+	spf=pass (imf09.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.150 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
+	by mailfout.phl.internal (Postfix) with ESMTP id 92C2BEC02A4;
+	Tue, 16 Sep 2025 05:29:14 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-09.internal (MEProxy); Tue, 16 Sep 2025 05:29:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1758014954; x=
+	1758101354; bh=5RahN1nKreb/kWvqsVS3VXXptJiVPO4DE4jLNfb+LCo=; b=O
+	xq/qRBsbLho52vgHeWVbG2UJWCayG7TLcwZHKz5S1S5pGQwQtx4Du8OVrtA56b1J
+	RZXL+tohI5GYmR60L7dXKVvgpn18OqOiWPlKGnfohAKtUWtpwpfwTpUehYvPptXx
+	NIPX1fxa8tUFvvFPSQ1inI6CfSbne3jLW9RCoNpFOkBE71EFmG8VOz2GheqvF6nB
+	sLRp4SEtCepRN/dE6R9IagOJixgRF4CeB20ZUrmHxD9Py/oZCLKThxPhRwbiZVOE
+	vlQ0aeBtzSCY1ah2m4a+qZt0xugn5MuySnMxMiW9XwQfwDMvBliD2nCy+wDw5X4R
+	Rp3U+YRPWNVXzr7e/uj8g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1758014954; x=1758101354; bh=5RahN1nKreb/kWvqsVS3VXXptJiVPO4DE4j
+	LNfb+LCo=; b=YXX6VCaBKueNu/Lsxgj0HauU9xiScWgLahxrR2WqlgF15ymBnlj
+	G+44ldfKUVHRL0zT/2LrWUmTGWX6wHdwJ8qhpBU7gYT50Iu3NeOvxCzrlCgpo9e4
+	n6/Y97VLbVSLWNMlA6E3S6gSuDPQK6I0jXJ9SmsKuBmfCS2CbT+NrDkV1o/qancL
+	911hS8E2HK7kEMdfDve3sZ1zRisRB/W94p0pNj7afPVr6x5LPp9mtsB2mVVhLyjU
+	n1qzcrNb3P8gGXP7XMQrliOpk2u0Ib08IofsCKCunc9wO3PysjfeSlD2bKsSNMMH
+	jAREwwiJwUyplZu1JJJIYYD1gjgjOaMwHhA==
+X-ME-Sender: <xms:6S3JaGwmOnh-AqDdFuT3whhLqr0u6ajgMukZckrk-FWMusBEu0h3zg>
+    <xme:6S3JaEqKSWbTUjEoqu7lJ6JXhCxs_L1vXgPT6urzr5-HpMquh_hM7O4uzJkMFgh0Z
+    In9Xf9-zwp0bwsOG-w>
+X-ME-Received: <xmr:6S3JaBlfWUHLtTVTa6H0PR4C7hyA-Ou3IOm9or1qPfXSgLkfGxWvZ5HY8FjWBQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdegtddvudcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdfstddttddvnecuhfhrohhmpefmihhrhihlucfu
+    hhhuthhsvghmrghuuceokhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvqeenucggtf
+    frrghtthgvrhhnpeejheeufeduvdfgjeekiedvjedvgeejgfefieetveffhfdtvddtledu
+    hfeffeffudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhroh
+    hmpehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgdpnhgspghrtghpthhtohepfedt
+    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehlrghntggvrdihrghngheslhhinh
+    hugidruggvvhdprhgtphhtthhopehhuhhghhgusehgohhoghhlvgdrtghomhdprhgtphht
+    thhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoh
+    epuggrvhhiugesrhgvughhrghtrdgtohhmpdhrtghpthhtoheplhhorhgvnhiiohdrshht
+    ohgrkhgvshesohhrrggtlhgvrdgtohhmpdhrtghpthhtohepiihihiesnhhvihguihgrrd
+    gtohhmpdhrtghpthhtohepsggrohhlihhnrdifrghngheslhhinhhugidrrghlihgsrggs
+    rgdrtghomhdprhgtphhtthhopehlihgrmhdrhhhofihlvghtthesohhrrggtlhgvrdgtoh
+    hmpdhrtghpthhtohepnhhprggthhgvsehrvgguhhgrthdrtghomh
+X-ME-Proxy: <xmx:6S3JaPqeSgPOCfaX2QbBr8B5U-EEHZGMHYEZHCK4dEwfBpdLxTLn7w>
+    <xmx:6S3JaKZVhQ2Kj8EpSlxkWZkBEKThm7uZ8qajDh96BqObdZZ5_KHEtA>
+    <xmx:6S3JaFHLhaNsFzBVAupFxxPpiwbn3BLueHfVyXX3nNVKHkbf2UkuZw>
+    <xmx:6S3JaKzt7MYYHCompAFtPR0V_pjgr-igjGoObeIFdSElYa8LtDIJig>
+    <xmx:6i3JaMNL22lJiUEyjS6wpOSMECdzy-s97p_RkvSvF9f9vPc1UH8sA0jW>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 16 Sep 2025 05:29:13 -0400 (EDT)
+Date: Tue, 16 Sep 2025 10:29:11 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: Lance Yang <lance.yang@linux.dev>
+Cc: Hugh Dickins <hughd@google.com>, akpm@linux-foundation.org, 
+	david@redhat.com, lorenzo.stoakes@oracle.com, ziy@nvidia.com, 
+	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, 
+	dev.jain@arm.com, baohua@kernel.org, ioworker0@gmail.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH mm-new 1/3] mm/khugepaged: skip unsuitable VMAs earlier
+ in khugepaged_scan_mm_slot()
+Message-ID: <ol447ofo44vwtyfwg3zrdtcdlkfzzmx4rre6qhyotmwvecnec4@usa3nonuk2sn>
+References: <20250914143547.27687-1-lance.yang@linux.dev>
+ <20250914143547.27687-2-lance.yang@linux.dev>
+ <bc86d5f7-5b23-14fb-0365-b47f5a6f13c9@google.com>
+ <a0ec4014-384b-4c04-bf0b-777c989eabcb@linux.dev>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: LjJo5d5byW6Ry3ZL1kLswmnB5t2l8BaD1lhefyfdJR8_1758014865
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: w1mbn716pt38hzhseixh3cc4bhkzgsie
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a0ec4014-384b-4c04-bf0b-777c989eabcb@linux.dev>
+X-Rspamd-Queue-Id: 6203E140007
+X-Stat-Signature: rqn9t7f7dhfbp8siwe9oi59ao6411749
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A967A180002
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1758014867-326998
-X-HE-Meta: U2FsdGVkX19PEkJTmgRFLnPyKyWLyKLLlt6BbXyNbVeeT5IDS14XOhjuH0AN413rSRi4nmcIpvnd4BQsSjjt/26HTk++SGKceU4ecoUbZTjvpdY5NJxHST6j1KRLHy9BAh4S796P6dI9zsMO8UWoRKdfc3IYHQ/I+Lwbf2RWmAsuDML+jpYcMTGeV7TmUlTpv9SYOPjQESMFr0wginfCfYYpHjhcvIvF7PN9hskmelgFOzocnPoSfB3grkGCLRaKheecQs9ELQzhrBM4+u65zL/ao8dzkgANab/Nz4oZS2JnwEqYXD5Ma0JyrPhN/32zWm/uOKdZnun7Nq9xb+guKidHdLYrQcqBlIJ/bbthGjpw0ngNhpphpIiFdsKjuBuXgfDUW/WXUkn0V19hgxOanN/BLx7tyeQkCFoXw0mmeJ4yJpXtPYUlvWCgZkaT1QNyPt8bOPo9XXjbIWYQzpdUZE88QhasavpF8JG0jayg8NkTzM4zqw7Vq+dXzTfzWS8Vq1QXPVfZChc1ONdslcOh9DnCqPYHCypgOFLEUh7KItj1D7GmQJ0DxZv8sidCyzTJdqiPvlorZhbckqSJxwm3QIPPWWiE5VaP8Nxm9uvHeRZkjDQ3f1SHCndkBIY7hDtBmKNGN0A2F7MEIk7YhUMxCmTFnMAGobyNDx0Lxz7N9YR8rejM61vlOctT09O4csgWRtkwsdUaGMZGquTfVw2WJ77E5JUthuAJoLLGI6zMD7KLsBq3RazWZnUUrXaFl72xzSaEHgPHOi5zRKwJmUe38xM8K3aBtccd2/dMjV7bkCKeM/mW3cH2gVpGybtyk0BWQ9erzcWHEP7vUBu57rOkNxurFq5QDQj5Ng/w0PO0hk94mcstOcOxesUemgFmfdjUiOQKbVYdXBNrdVxPnJeeBwS7N/NPFoXZLiF+Q04xNTHl6/ehnQrwGHmHUi3Vb+KCqFEDz/ict/6LhaKlWlU
- 7/UKAnkl
- gQcRW9rIgT1cZ0mLHykQF0lN7DNugEKo+Dk8n7WZ3nGvabbMw9Z2ZDnl0lq2jiG5H2p3tt3zgtpZaJzBhmy+Sq1T6cbkvrHhUHD+ZVXPy740rvH+g0noz6nk0fqQf+0EIz7hk8tz4WxHBJXM9pnKvuAhCSpyU9OK/1d1aALOzT0m8tjbfTgfLU+yAsmcl7lyYO7p43noykUo9b6bWMuuzmIIDNMq1Bg9O/iDmMbrDH8Vjyezw44Pdhy9J8SGE+n87JQpARsQvlfhPQz6SuuQ43WmvVPcAi2RLCU01TfJfWGZlsGF0f9d3LJ0TYevD5WaDFrY7Ok9xXaZMMRYJv3kdxZmlbZa5sY5bMuzyb3wB7N+5wq8zdEdQXfag+kkkKLm8YUY/b1wRrh9GQiJ7FZJ9GvFe1LZ1vpU7vI7wUEX60YlsWXs3JFEwA6+iImKzvHa7+vG4ZiH5k7isuzMMO5LSFb7il4MFHER6TSJyVBWhmEQQ/XrmtVE8UOeURHczpvtUYloz
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1758014955-664009
+X-HE-Meta: U2FsdGVkX1+dgcM1RGbNzw4WJFTxZXjBgoCQgPH3EhzGJc9k6uohOKDLIrEyaO3ieymGleWiNFx63OhbZl/gXkyS5PZl6JMVNv+4ftd2Q84Q5xT6oUHUv15JM+jsBXvdFBT+hxA4A85/cmDKOwn74r8oYpWJQVYVLcHa1hCkVlhO1lNL1ofO2mGbeYUwfiGBuaalYaxhq1nkyICuCaZBxAiTd5s5xFgY3GdTYDty+jAo9iJT/0ltb1QCu/CYPSPfadHuxIEwVansciUlHWYH60BVgM74Q4D5ZRk6YtWzWNPw+AkgiMYvNV1XVR9lzbsWIFzE2BCGQo+DrDThxQR77YZif6GmznAHFfVkIrQ89qNRbN8q1/tWrA6VmU27FCcyDLKSlF6P1S0rgjsj/hlSVcrQYmgnAlQ32hf4PgI2s1c6Tassd9rxNWUZEued3VsLD+jqfSHl8GcVZeNk1lTTrH/7LzCk/mjlj1LHtoJCiigbK0H+eU7kzg6MnHWY07dRnDM7m+EG7AEXHCQpuA7y+Bc7JrcD2ylngUSQek1Of+nDxEZfhIfyVeGeaaGXmei+hZVpO/5GzeeVWV/GPqGKl2ytG4Bi+CjLdkDCehZ6EDu2zfR2Hu8Y/ASlV4maY8IKKF4b+pQVyZFRoEwQhOWr2qir3VAvpwkbC2Ps6Wcpxs9BLv2EWL/LngSZZnmAhJ15Cwn0LmZIj4+evYw1GrTHEA6RTFoMbAV/TiWIesOKQtPRWT8y41uX7ZFxYzOwX6h5VRv+vWU5sF4j3W2n+ijSfFhwypZCT0x4pq0FPJgRQ3UlVK/ZNl4j1wTsVdALEd/MaSecc56OpERNNqGjBdpiQVbMCRJ9BLuVzDPxlr07mnBkkU7iVOzYYJYT0R5LCJJHNaA/23U+uyfmA8zkfcYP39MIm5vPM3WeqLqn3WfZifs/b29AeHedKblqNc2MenYkSMJIB+rwvyWIFf8VilM
+ GuOa6xdm
+ W9G9M3dqg/zNqLhjrIzKE9weKTQz+sbHppKgK2W1H7c0NfSIIJlHUj0NTEO3OG2GgLvbak+R/JYwvOmx3EAqJPaCd57aSvtXvYRX5bVSec1n5ZhLIkZ6tVW7zbHCt7VcFxkC1Z8SymKejpMOyXughcJbn7YbhYEOktOexEe3qCb0qYmCabuYNT6sY0H2kGjAHyH9oGPGb5ksLcxACI5fo07L59/Bcqj5EpFPAJoFW2I9hMhXpsxlXn7v4rulSnoVh87HkSAunhPz6UBl32dXpd4Koat0i93y/6Q6c+mbm1zzw3BUkZOoEiDenrqgsXITtE7SE4WVPVtgRONQbxC8vJ2LGKXJjWP9XTsFZ2EMAH7ZQ1xYitzt16JxxIR7Sbnhov2Y3NfSv2qhkkgkBEXR6eZLbXZ5vuxzAzx0RqgzGGGlZdWQcDQmwlhaqDg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,184 +141,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Mina Almasry <almasrymina@google.com> writes:
+On Tue, Sep 16, 2025 at 02:21:26PM +0800, Lance Yang wrote:
+> Users of mlock() expect low and predictable latency. THP collapse is a
+> heavy operation that introduces exactly the kind of unpredictable delays
+> they want to avoid. It has to unmap PTEs, copy data from the small folios
+> to a new THP, and then remap the THP back to the PMD ;)
 
-> On Mon, Sep 15, 2025 at 6:08=E2=80=AFAM Helge Deller <deller@gmx.de> wrot=
-e:
->>
->> On 9/15/25 13:44, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->> > Helge Deller <deller@kernel.org> writes:
->> >
->> >> Commit ee62ce7a1d90 ("page_pool: Track DMA-mapped pages and unmap the=
-m when
->> >> destroying the pool") changed PP_MAGIC_MASK from 0xFFFFFFFC to 0xc000=
-007c on
->> >> 32-bit platforms.
->> >>
->> >> The function page_pool_page_is_pp() uses PP_MAGIC_MASK to identify pa=
-ge pool
->> >> pages, but the remaining bits are not sufficient to unambiguously ide=
-ntify
->> >> such pages any longer.
->> >
->> > Why not? What values end up in pp_magic that are mistaken for the
->> > pp_signature?
->>
->> As I wrote, PP_MAGIC_MASK changed from 0xFFFFFFFC to 0xc000007c.
->> And we have PP_SIGNATURE =3D=3D 0x40  (since POISON_POINTER_DELTA is zer=
-o on 32-bit platforms).
->> That means, that before page_pool_page_is_pp() could clearly identify su=
-ch pages,
->> as the (value & 0xFFFFFFFC) =3D=3D 0x40.
->> So, basically only the 0x40 value indicated a PP page.
->>
->> Now with the mask a whole bunch of pointers suddenly qualify as being a =
-pp page,
->> just showing a few examples:
->> 0x01111040
->> 0x082330C0
->> 0x03264040
->> 0x0ad686c0 ....
->>
->> For me it crashes immediately at bootup when memblocked pages are handed
->> over to become normal pages.
->>
->
-> I tried to take a look to double check here and AFAICT Helge is correct.
->
-> Before the breaking patch with PP_MAGIC_MASK=3D=3D0xFFFFFFFC, basically
-> 0x40 is the only pointer that may be mistaken as a valid pp_magic.
-> AFAICT each bit we 0 in the PP_MAGIC_MASK (aside from the 3 least
-> significant bits), doubles the number of pointers that can be mistaken
-> for pp_magic. So with 0xFFFFFFFC, only one value (0x40) can be
-> mistaken as a valid pp_magic, with  0xc000007c AFAICT 2^22 values can
-> be mistaken as pp_magic?
->
-> I don't know that there is any bits we can take away from
-> PP_MAGIC_MASK I think? As each bit doubles the probablity :(
->
-> I would usually say we can check the 3 least significant bits to tell
-> if pp_magic is a pointer or not, but pp_magic is unioned with
-> page->lru I believe which will use those bits.
+Generally, we allow minor page faults into mlocked VMAs and avoid major.
+This is minor page fault territory in my view.
 
-So if the pointers stored in the same field can be any arbitrary value,
-you are quite right, there is no safe value. The critical assumption in
-the bit stuffing scheme is that the pointers stored in the field will
-always be above PAGE_OFFSET, and that PAGE_OFFSET has one (or both) of
-the two top-most bits set (that is what the VMSPLIT reference in the
-comment above the PP_DMA_INDEX_SHIFT definition is alluding to).
+Also it is very similar to what compaction does and we allow compaction
+of mlocked VMA by default, unless sysctl vm.compact_unevictable_allowed
+is set to zero.
 
-The crash Helge reported obviously indicates that this assumption
-doesn't hold. What I'd like to understand if whether this is because I
-have completely misunderstood how things work, or whether it is only on
-*some* 32-bit systems that this assumption on the range of kernel
-pointers doesn't hold?
-
-> AFAICT, only proper resolution I see is a revert of the breaking patch
-> + reland after we can make pp a page-flag and deprecate using
-> pp_magic. Sorry about that. Thoughts Toke? Anything better you can
-> think of here?
-
-We can just conditionally disable the tracking if we don't have enough
-bits? Something like the below (which could maybe be narrowed down
-further depending on the answer to my question above).
-
--Toke
-
-
-diff --git i/include/linux/mm.h w/include/linux/mm.h
-index 1ae97a0b8ec7..3e3b090104d9 100644
---- i/include/linux/mm.h
-+++ w/include/linux/mm.h
-@@ -4175,8 +4175,8 @@ int arch_lock_shadow_stack_status(struct task_struct =
-*t, unsigned long status);
-  */
- #define PP_DMA_INDEX_BITS MIN(32, __ffs(POISON_POINTER_DELTA) - PP_DMA_IND=
-EX_SHIFT)
- #else
--/* Always leave out the topmost two; see above. */
--#define PP_DMA_INDEX_BITS MIN(32, BITS_PER_LONG - PP_DMA_INDEX_SHIFT - 2)
-+/* Can't store the DMA index if we don't have a poison offset */
-+#define PP_DMA_INDEX_BITS 0
- #endif
-=20
- #define PP_DMA_INDEX_MASK GENMASK(PP_DMA_INDEX_BITS + PP_DMA_INDEX_SHIFT -=
- 1, \
-diff --git i/net/core/netmem_priv.h w/net/core/netmem_priv.h
-index cd95394399b4..afc5a56bba03 100644
---- i/net/core/netmem_priv.h
-+++ w/net/core/netmem_priv.h
-@@ -38,6 +38,7 @@ static inline void netmem_set_dma_addr(netmem_ref netmem,
-=20
- static inline unsigned long netmem_get_dma_index(netmem_ref netmem)
- {
-+#if PP_DMA_INDEX_BITS > 0
- =09unsigned long magic;
-=20
- =09if (WARN_ON_ONCE(netmem_is_net_iov(netmem)))
-@@ -46,11 +47,13 @@ static inline unsigned long netmem_get_dma_index(netmem=
-_ref netmem)
- =09magic =3D __netmem_clear_lsb(netmem)->pp_magic;
-=20
- =09return (magic & PP_DMA_INDEX_MASK) >> PP_DMA_INDEX_SHIFT;
-+#endif
- }
-=20
- static inline void netmem_set_dma_index(netmem_ref netmem,
- =09=09=09=09=09unsigned long id)
- {
-+#if PP_DMA_INDEX_BITS > 0
- =09unsigned long magic;
-=20
- =09if (WARN_ON_ONCE(netmem_is_net_iov(netmem)))
-@@ -58,5 +61,6 @@ static inline void netmem_set_dma_index(netmem_ref netmem=
-,
-=20
- =09magic =3D netmem_get_pp_magic(netmem) | (id << PP_DMA_INDEX_SHIFT);
- =09__netmem_clear_lsb(netmem)->pp_magic =3D magic;
-+#endif
- }
- #endif
-diff --git i/net/core/page_pool.c w/net/core/page_pool.c
-index ba70569bd4b0..427fdf92b82c 100644
---- i/net/core/page_pool.c
-+++ w/net/core/page_pool.c
-@@ -495,6 +495,7 @@ static bool page_pool_dma_map(struct page_pool *pool, n=
-etmem_ref netmem, gfp_t g
- =09=09goto unmap_failed;
- =09}
-=20
-+#if PP_DMA_INDEX_BITS > 0
- =09if (in_softirq())
- =09=09err =3D xa_alloc(&pool->dma_mapped, &id, netmem_to_page(netmem),
- =09=09=09       PP_DMA_INDEX_LIMIT, gfp);
-@@ -507,6 +508,7 @@ static bool page_pool_dma_map(struct page_pool *pool, n=
-etmem_ref netmem, gfp_t g
- =09}
-=20
- =09netmem_set_dma_index(netmem, id);
-+#endif
- =09page_pool_dma_sync_for_device(pool, netmem, pool->p.max_len);
-=20
- =09return true;
-@@ -688,6 +690,7 @@ static __always_inline void __page_pool_release_netmem_=
-dma(struct page_pool *poo
- =09=09 */
- =09=09return;
-=20
-+#if PP_DMA_INDEX_BITS > 0
- =09id =3D netmem_get_dma_index(netmem);
- =09if (!id)
- =09=09return;
-@@ -698,7 +701,7 @@ static __always_inline void __page_pool_release_netmem_=
-dma(struct page_pool *poo
- =09=09old =3D xa_cmpxchg_bh(&pool->dma_mapped, id, page, NULL, 0);
- =09if (old !=3D page)
- =09=09return;
--
-+#endif
- =09dma =3D page_pool_get_dma_addr_netmem(netmem);
-=20
- =09/* When page is unmapped, it cannot be returned to our pool */
-
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
