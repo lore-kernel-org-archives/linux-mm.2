@@ -4,119 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCF73CAC598
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 21:23:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B09ACAC592
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 21:24:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D4C938E0006; Tue, 16 Sep 2025 17:23:07 -0400 (EDT)
+	id 3FF9E8E0008; Tue, 16 Sep 2025 17:24:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D24998E0001; Tue, 16 Sep 2025 17:23:07 -0400 (EDT)
+	id 3D7428E0001; Tue, 16 Sep 2025 17:24:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C14328E0006; Tue, 16 Sep 2025 17:23:07 -0400 (EDT)
+	id 314288E0008; Tue, 16 Sep 2025 17:24:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B30E68E0001
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 17:23:07 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5DDF114018C
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 21:23:07 +0000 (UTC)
-X-FDA: 83896388814.08.579B7F3
-Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com [209.85.219.173])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 9976C20008
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 21:23:05 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=wFpC6U7L;
-	spf=pass (imf03.hostedemail.com: domain of hughd@google.com designates 209.85.219.173 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 22A198E0001
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 17:24:06 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D02B0160306
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 21:24:05 +0000 (UTC)
+X-FDA: 83896391250.19.8CC7FF7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 1C111C0010
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 21:24:03 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Qyml6Vna;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of will@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=will@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758057844; a=rsa-sha256;
+	cv=none;
+	b=hUgSwMmlE2NX2BXD4g6vi0N4vE33eTPcd88oFIaAuUD2VvbR1SPBuSNz96E9OXOYEVuw0+
+	f9e5bHj23sxVvkp8zwTTkePRMx9oPeiKTMDxwDbB8TCz0OPrOvlRzZWluUVtN4YTHg6q8g
+	mztc3ozHe11rynHltF4/W8iw6yQD0V8=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Qyml6Vna;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of will@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=will@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758057785;
+	s=arc-20220608; t=1758057844;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1/ZO0MqZiDI6fHTwbXd86RNAJbgLdrJ10yQLcCe1K2k=;
-	b=lM2sYpML+UuIUNAlgU3qH0EVjsVihUx6v/7Fr+BuOh2drJ23RZsg8Tz4MSHda+eyEUjjw4
-	rQlUanKffNmOlyyocmXrVN7xnY+uMTOfT69bwzkFzn8MPqSXv6blfGvhCGCiBr0+E0GsK+
-	KtF3sAL6mg9TnLSew8tUcT70cVphCCg=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=wFpC6U7L;
-	spf=pass (imf03.hostedemail.com: domain of hughd@google.com designates 209.85.219.173 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758057785; a=rsa-sha256;
-	cv=none;
-	b=zCv4tXAUd6Dn5robQONv7L1DqW8ko2/o0tryiGx5Q2sNpuWUREMUFwcKRedTuirM14zwY1
-	sEBfbtHfoKQf6KBQIYnHCI86AioQ1VfqENw7akVQTtc3T6PPtf6b/o7NUgTklahmV7R8sk
-	TmCUSGvD6aO22PAXkXY0E22NuC7mjWw=
-Received: by mail-yb1-f173.google.com with SMTP id 3f1490d57ef6-e96e1c82b01so3661073276.1
-        for <linux-mm@kvack.org>; Tue, 16 Sep 2025 14:23:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758057784; x=1758662584; darn=kvack.org;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1/ZO0MqZiDI6fHTwbXd86RNAJbgLdrJ10yQLcCe1K2k=;
-        b=wFpC6U7LzeQA4N5tRGAj+agI7szj7yzREPwfGXi4/K2LG3sHX85hz8LPPHBK0wsbK4
-         zX0dded08lAAn0zZQyKsFBoxUl00LQgK5YsdJLGLe/t7mDcz6truWKAtJtyevYB9Nc1j
-         f2N7HIzzu3mxPEc+en0Zfre1TMiaqqrxfH2ARKc8SHEOOwsDZe/SJOdhHMePciwBwYaD
-         xxg7nHmSsO0CpO+Y672RrBzxZHpx+NZu7dQ9iAnwewMOI+HzVzwPiaIvrk442KT97Qfn
-         PSDsJ00gsRt8oNJqs3QYCRFYPW2Vq8KxYVS9ZlotRPhn97PV4goRYRd7M+jz6W8emMVV
-         LM0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758057784; x=1758662584;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1/ZO0MqZiDI6fHTwbXd86RNAJbgLdrJ10yQLcCe1K2k=;
-        b=N9VQ/UyShrr6dpvpfnNeOjpc5BaiKWpvg1bvhA1OLu2/Cic2wjDlOIHLNKCyZhcPWh
-         6nh5fAkRgWhxHYU2vVR43ayf4sAVy378CrsS9wv4yKoKkh9zaGglE9VvDYi7/O/05O8K
-         U2flvA/X6IWEPVMlVRQKrwk/VMw9T80ujrHlM/Qvg0OdtPvDu4FCnlpiU6V95MrMkR2Y
-         3fkPa5YFxzfUuJGiIPlaiPulfwJvXs0EJj0/p+46OjSMWry/WysBpxhXrLN2VEzU+bKu
-         KQLUWrxZS+/UBgVhFtaNQKybBTW69RWoX/oGcKQwyqz7/OH/Wk5C7b9VGvH86rDqNIkf
-         QLZQ==
-X-Gm-Message-State: AOJu0YwKT5M4OWfqWP1ETrsvWPa4JGJmpkPqXObE7Kx8FZHZYFM7kuJq
-	6tXA6fYgRa19oegmARKzLaqklqFvrovbHQpPGg8tJ+d2uHIynsxQeEXARlop3Jk49w==
-X-Gm-Gg: ASbGnctn/T0BMqevVZPQED1LWskP0F5ksVcOd0CewWwVIa7O3WiIT6kHdGFn1u6eHBP
-	5Q5U89HoZRoCMYmxedgrVaW5Ccga27Hg62Yims0quxf99AnObSNvxAN/JjYJTVDqRSztHMZW/BG
-	SL58qls87Px7lXdMV4irHOnz/Xw5Qh95UaLo48W2mnPM+arTEfiQgVEIvCsZRFIsF3A0JolTV7b
-	zwK2ZMDkIIqFrPY+s1AFgqbn6mlnxmfC81xoEjtj9tjFxCyIx5v85YlmXU4T7uf916EuET58W1V
-	OpsKIcd0k0ZXPPa+xOcMk+1xJtXpUHmMVSw7Z66Zhp9P3UXtRg5kzdbwx5MFYtwQ5u6NJvxs0cc
-	Z5pV57uJjwFuF86vft7wxPDJ3kHRaJHa+mfo8Mj5RoQxtBHMc2bpxOeGi7m41t8abHIWrKLU8tL
-	M6RzC0aSKA2tzQPw==
-X-Google-Smtp-Source: AGHT+IF9km1aJwEt+1aGPxCzX4qDZv8bfQl194903OwDWSZ+8/On9Gh9pLdqJIZx54NMGgPjHY2hVg==
-X-Received: by 2002:a05:6902:4203:b0:e90:6ed1:ec51 with SMTP id 3f1490d57ef6-ea3d9a34108mr13441041276.14.1758057784374;
-        Tue, 16 Sep 2025 14:23:04 -0700 (PDT)
-Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-ea3f0fe5fcesm3633731276.29.2025.09.16.14.23.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Sep 2025 14:23:03 -0700 (PDT)
-Date: Tue, 16 Sep 2025 14:22:51 -0700 (PDT)
-From: Hugh Dickins <hughd@google.com>
-To: Kairui Song <ryncsn@gmail.com>
-cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-    Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>, 
-    Chris Li <chrisl@kernel.org>, Barry Song <baohua@kernel.org>, 
-    Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
-    Kemeng Shi <shikemeng@huaweicloud.com>, 
-    Baolin Wang <baolin.wang@linux.alibaba.com>, 
-    Ying Huang <ying.huang@linux.alibaba.com>, 
-    Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@redhat.com>, 
-    Yosry Ahmed <yosryahmed@google.com>, 
-    Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
-    linux-kernel@vger.kernel.org, Kairui Song <kasong@tencent.com>
-Subject: Re: [PATCH v4 00/15] mm, swap: introduce swap table as swap cache
- (phase I)
-In-Reply-To: <20250916160100.31545-1-ryncsn@gmail.com>
-Message-ID: <99f57a96-611a-b6be-fe00-3ac785154d1c@google.com>
-References: <20250916160100.31545-1-ryncsn@gmail.com>
+	bh=NrK6H5TeIHD81mFHQs75Jltr0eszG6u3DdurAUYQRw8=;
+	b=xALh+Vu06hEYHZMGsiIZl19sbVSeRK5RsWidrGd0nVRZLj5dXeR5l5ElypV8TNn8pI4oyW
+	xlrKNxVYABxwueR9wq0OniegV2YnQ58wXZE3N85mOuH7maSxhwKkXCSJHmU3TtwnaJrzkx
+	5y25a8qlWRAQ2jbUusvfz6Z3DuvZ6Sw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id BE09A41928;
+	Tue, 16 Sep 2025 21:24:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA7D9C4CEEB;
+	Tue, 16 Sep 2025 21:23:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758057842;
+	bh=Bsn4ypPMfuiV5NKNpmlXvY24AALUkCPIKhmhGYho/EQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Qyml6Vna2GlmWkaHpV2CzqTk/TiBPjZFisqocFlAqeSVjcfs9QIL2KzoA2KrY5pth
+	 b7MhxxY7U5YhZNnxStCjrINja9Rv8OsCLHAjxZEYv5tOw0bmp30+g9oKjw02QZIG+6
+	 mkHMJpbEAVYH3laODVT6tYnMxROLMQDMQ252ByfrlVf/HnMeJqzvTO9vXw7TDhY9bn
+	 rQo5KY91IqevgCelioj87QElpShoX32TVqKGe5FU68bOYlLZm/o2FzLy19YpqJWfaW
+	 OXGbe76phmRsRCy/t3kTfprp4UeQQd6ea5WaxuMFsTEZ2SdWulXiPZH852bB7Mj7KU
+	 Yu5AuBqGksktg==
+Date: Tue, 16 Sep 2025 22:23:54 +0100
+From: Will Deacon <will@kernel.org>
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: ryabinin.a.a@gmail.com, glider@google.com, andreyknvl@gmail.com,
+	dvyukov@google.com, vincenzo.frascino@arm.com, corbet@lwn.net,
+	catalin.marinas@arm.com, akpm@linux-foundation.org,
+	scott@os.amperecomputing.com, jhubbard@nvidia.com,
+	pankaj.gupta@amd.com, leitao@debian.org, kaleshsingh@google.com,
+	maz@kernel.org, broonie@kernel.org, oliver.upton@linux.dev,
+	james.morse@arm.com, ardb@kernel.org,
+	hardevsinh.palaniya@siliconsignals.io, david@redhat.com,
+	yang@os.amperecomputing.com, kasan-dev@googlegroups.com,
+	workflows@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v7 1/2] kasan/hw-tags: introduce kasan.write_only option
+Message-ID: <aMnVarvAvQuJCWXy@willie-the-truck>
+References: <20250903150020.1131840-1-yeoreum.yun@arm.com>
+ <20250903150020.1131840-2-yeoreum.yun@arm.com>
+ <aMm69C3IGuDHF248@willie-the-truck>
+ <aMnGUr9zeutyPpAg@e129823.arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Stat-Signature: bnz8kk1e7xabyhowhbimizmqi3m3j61k
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aMnGUr9zeutyPpAg@e129823.arm.com>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 1C111C0010
+X-Stat-Signature: mgo9uducu93k98tuphjkkm8itjriyn3s
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9976C20008
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1758057785-874633
-X-HE-Meta: U2FsdGVkX19FGAUdErIuQCfi/pe3IJDPUQHvMmMhdOAsxDT26tigEaI6RnUviURwrwoS/1VDBsH+eQfiSzBltDQjNdUR1SRzEQjLHW/lqa+CJx1Nltsnn17YEk+6MA0POTsjA+y6ehqSdMXfzztCLUa3FbogNaARBOUCB++D71BRxRP7ukET5VV5ERh3uAm7zFRLN3FTiQ9OfObNf6alfxm496myEZ6j7yHGBvFqGNfCP+Ka28D7i5xcx7NGmd8AnRpBx70viORaxb6+KXZFUa99M1WzMiN322ZCnJflILXAc6A4YBKCihuY+Mq+/ntHIeUrrPERdQktFpDpyjN7795nJPUPNreKPQovwXg0mEsln/kbjvLyzwTrIDMNxBD5lkHCtX5cXqDP0Pf3vSUOAZQCrbrX82vGFV6pKUUoK5tOdWuvOKUj/sad3jnVaNpXZBpBAUyklMrXWqw6DZsT+DAvf7ygjFU5MdlUhpuIvH11k7P0XF4xAUKeLTVIfK/eUHEgbGGA2fXa3IrzdlKi9aFhJRVlMwGf1gfJaGXUFeP1Ey8xdy4MpD/14MSQH2zJAah6CoSps35hnD4QCMd8rUt8MMKnIxvEBa8Njyn3bR4/3aY1F0mKyeMmv3CsMwiqSWGlv2DRxTlOId+wCvI0QcbUeGy7pNWkJKwnzpSvfOZOmshI1yvqgRHWFnPTwN4rt7dFJXBB4nBnFLmwZe+nfhJvsoeZWYpUkkFhQODEeTETXAppzQVUBkn2sgAVdx7rsUxtsHkiofa2+XbEGYgzBf1t72PFWExllwcPI5kWvKsHHJZ3cs9HHE8hxYktd4oJXBIzyaemuV5Dw8iKBHCoBi6RoqCXsG/epc74UcDgGIFMyrQxteCdJhXfwSFyrfLTRoEqZjeT8RZu1eWbKHdKkJWBfu2USpilbBy48eCFrkJLmwmp8TUvP4KkqH7VqBWbaYlWqPXNoDpKaUXXHsn
- GcPWXAUx
- zml/VvYkHWN74eXhk8DVRUagUzI4PqHp0ED/EPUf1fiLMU3AiWfTqBKS7Qf8C9Jx6lQMRg3yqLOlPKX4ID5fEUjLUQRu5wjd3PhKRNl/0urXJNgnPT8RdZJDH1P3zQDPVZbRfXqUHwXHmCjUfuS74TTL//yX1apoqvZdLesvwHRv4AIuuNOGPFY//Bn4uvXCrTowGlRQ/12Fg9blWuhPhFnHs3HzFo7e7UMLGF66Gto+tWz+LakvUbuipLF/6M6i04JXB/AyA5NUI4DBouV765wYsR5XW8JA4+Rkxtg1K/3HtyIdkiKteRaAf3bAUc0G/73U26c5kAzloyGwUznymoPn4vY4uUNRiZuYW9eul1tQ6xTFiLIE8hzuBtFVZ4m1DiNmzrLiii7Ck5ukRktGcnmi9Tzt3SdO8wCtr
+X-HE-Tag: 1758057843-709808
+X-HE-Meta: U2FsdGVkX1+hHm1owLZTQG/iYJS0XMNqeEQqeZClQErYyaIPM25koAWz7IzHBjv19y3gyC+XNOkj0kK5v44jPwxib5LO3laUZKLInx0udRHtLdqkIf963Hozn1ZjopclrpckYSp8tnztfCMmmRMvXOsy4GkCLZczyRN6h01uQP7DdJe/srN1H/Sqd31WuQBEefHX2EfVGdJWXvhWwqc4HD/KoOhXZabqPO+3yvRy+S3jYm+jlF5iVYK1mno/FfKT4TKqiW6uBrnPYG05PJT9JtDgP7A6pWE3MIxpEng/GjVgjHhjTD2VKz/btYz4z/PElWzcnfWDNjgKE+3QkDffZDWEZDOH3IAbzx8/yLZcpBlKG3Dakuxt5FW51UAz3LTjBUxGZYZcuLjE0X0o1CtCVoybDffnI0c5JclYTwfzN6MZCrNENMwmN+2u0TgbefnBGBByVSbufSNsb6XFuIHovpwaBBVAlLgSGXSm0CvNaaq7uGKN/QoLH0xNtE0j/kovtBySjflsoFnFa9iMsJ+qyDOtOZKCxHq+0FvOTDtiHpybp65C7+2JXJsYbW5xvMYOyUtv/XVU2lu8xPgW2rhMPC87qgD8yQuMYcql2+dxA3e7caFZgfWCADJh+YdHp6M2gRbOju+ejU8arRQsy2P6h+RAhdNQmjkeUMph68U834TIocaJSUBsrPZMBaKMpheVeKvOwaf//zIhT5b/go+Lz7ZhRdzaMDQfb/8v9uPYWfl1+MpijP89dIp3ofAX7+XjguWEF2xq6yqIRMQovDfFKQV+ZL78I9RZSkx/+sJuaP91cAPvrvQhO0nXUF3Jh/pm0wmgvb8yjCY2IlKzrbKNHaPAOV03Cw8H/BQ1Db318kKCaE3f0u30w0ES0aK8x/I5UlfJ01X1P/rzN8MsJAIar5/RpqSVUn/GxWHpfaNfUwgL2xVtXaYjcHkGUOg0pzj/QANApN7O84MvPs4Nt56
+ RgiLiwQV
+ fTlRwenrkyPHBq8Zq2+ZY+vlcYDfgE2ZhYlI0zBCed3B2caSwq9ccfgdEs0sazqwvmJ91dK2RpTvXealtEL0a1YSie4OgR1BU+y/91s7aL2Qcyq0JuwwV67YtWpAQm6oGUYXBMhjai3FC72Ol0emZ+xBMpM0CFaEv9NmQAsPBzGMJhxX3mfAITnWwatAx00ixDkcvo3IhTYQeWtFAK6TVMtTgx0n1dRIm84G5iWWba5Yht/yFgQEg4gNbBmxY+lp34ds5IF0yx3zDQKnAXTzr2BcDJt44rtjGk6ZJVz6GIMu6o2r8TbaF2xa5kUyfpOoZCHUchlgKoUAHj7/wr0YlwlKKwJgn+62sQKPbSncwtI+l9pUKFj7+joJswg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,30 +104,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 17 Sep 2025, Kairui Song wrote:
-> V4 changes:
-> - Patch 14: fix potential cluster leak when attemp a sleep allocation of
->   swap table: Just remove the logic that check and return the percpu
->   cluster, it was trying to avoid fragmentation, which wasn't very
->   successfully and may not work at all if there are multiple devices.
->   The fragmentation is not a serious issue and given the chance of
->   hitting that race is extremely low, let's just ignore that [ Chris Meson ].
+On Tue, Sep 16, 2025 at 09:19:30PM +0100, Yeoreum Yun wrote:
+> > On Wed, Sep 03, 2025 at 04:00:19PM +0100, Yeoreum Yun wrote:
+> > > +	switch (kasan_arg_write_only) {
+> > > +	case KASAN_ARG_WRITE_ONLY_DEFAULT:
+> > > +		/* Default is specified by kasan_flag_write_only definition. */
+> > > +		break;
+> > > +	case KASAN_ARG_WRITE_ONLY_OFF:
+> > > +		kasan_flag_write_only = false;
+> > > +		break;
+> > > +	case KASAN_ARG_WRITE_ONLY_ON:
+> > > +		kasan_flag_write_only = true;
+> > > +		break;
+> > > +	}
+> > > +
+> > >  	kasan_init_tags();
+> >
+> > I'm probably missing something here, but why have 'enum
+> > kasan_arg_write_only' at all? What stops you from setting
+> > 'kasan_flag_write_only' directly from early_kasan_flag_write_only()?
+> >
+> > This all looks weirdly over-engineered, as though 'kasan_flag_write_only'
+> > is expected to be statically initialised to something other than 'false'.
+> 
+> For the conherent pattern for other options.
+> Since other options manage arg value and internal state separately,
+> I just followed former ancestor.
 
-And in Patch 11 I can see that you've made an important fix to the
-!folio_ref_freeze() block in __folio_migrate_mapping(): there had been a
-swap_cluster_unlock(ci) which you've fixed to swap_cluster_unlock_irq(ci):
-I was going to report that, with the WARNING and "BUG: sleeping function"s
-it caused, but you're ahead of me.
+I'm not sure it's the best option to blindly follow the existing code
+here. To pick another kasan "mode" at random, 'kasan_flag_vmalloc' is
+initialised differently depending on CONFIG_KASAN_VMALLOC and so
+allowing for the default value to differ based on the kernel
+configuration makes sense.
 
-Thanks also for fixing the shmem_replace_folio() locking and stats
-update, which I'd noticed too (but never hit): looks good now.
+But that doesn't apply here.
 
-Hugh
+I'd recommend starting simple and just having the 'flag', especially as
+you already made a small mistake because of mixing up the 'flag' with
+the 'arg'.
 
-> - Patch 8 & 9: move some changes from Patch 9 to Patch 8 to avoid build
->   error, no code change. [ Baolin Wang ]
-> - Patch 9: Fix locking section issue, should protect the shmem statistic
->   update with spin lock irq. Also fix an warn on condition.
-> Link to V3:
-> - https://lore.kernel.org/linux-mm/20250910160833.3464-1-ryncsn@gmail.com/
+Will
 
