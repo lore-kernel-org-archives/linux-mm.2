@@ -4,104 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FC55CAC599
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 14:20:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3ABE0CAC599
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 14:34:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F41728E0005; Tue, 16 Sep 2025 10:20:19 -0400 (EDT)
+	id 501E68E0003; Tue, 16 Sep 2025 10:34:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F18F18E0003; Tue, 16 Sep 2025 10:20:19 -0400 (EDT)
+	id 4B2798E0002; Tue, 16 Sep 2025 10:34:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E55888E0005; Tue, 16 Sep 2025 10:20:19 -0400 (EDT)
+	id 3EF298E0003; Tue, 16 Sep 2025 10:34:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D58038E0003
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 10:20:19 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 88B10118732
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 14:20:19 +0000 (UTC)
-X-FDA: 83895323358.02.3703B2D
-Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
-	by imf27.hostedemail.com (Postfix) with ESMTP id C5C8240016
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 14:20:17 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=lwn.net header.s=20201203 header.b=ZmjL6RjW;
-	spf=pass (imf27.hostedemail.com: domain of corbet@lwn.net designates 45.79.88.28 as permitted sender) smtp.mailfrom=corbet@lwn.net;
-	dmarc=pass (policy=none) header.from=lwn.net
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 24C928E0002
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 10:34:22 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 971F614013B
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 14:34:21 +0000 (UTC)
+X-FDA: 83895358722.08.372D3D9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id E1A7FA0011
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 14:34:19 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QYE8Efn+;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758032418;
+	s=arc-20220608; t=1758033260;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zYbUqQqq5gBAL5NIx7a64DWZNoB49w8Fp0Gj3T0pxnM=;
-	b=6dwkYw2zIBI4ujX4zec3lf1sIk0fDzNxb+2ALjaEK+vWvqQev7lkJGrkzKIDRyRtXJP28h
-	GI3aGdIyiH/rFQ3KotK4fUMz4nu1LE6gnqiU09mqHe5wQvwzQ6sAPN1wRzcRFy4YsRehrU
-	Xmt28by3x8+A6O9n7vbiqym6aQeKqK8=
+	bh=lP+hEXGVxPwkOMM7p2V+b+lQoPvNSqOTwc7tNn5pKYI=;
+	b=C2B9n3LQWSxHTJU6m+J/s6CNAnCnVUCZDhVa5s9E7jx1+K7d8BmM7zM0NYYjWjswtcG9p+
+	51F9QqDf8eOB9hnRUoW1Mp+dzs6V4SXyqNJro6fTnR5LYtiuoKZBtsOxZ82qyWDxGx1KAC
+	Fy5gGjsGYs0Rn+mAitvrYBa8LE0Kzs0=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=lwn.net header.s=20201203 header.b=ZmjL6RjW;
-	spf=pass (imf27.hostedemail.com: domain of corbet@lwn.net designates 45.79.88.28 as permitted sender) smtp.mailfrom=corbet@lwn.net;
-	dmarc=pass (policy=none) header.from=lwn.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758032418; a=rsa-sha256;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QYE8Efn+;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758033260; a=rsa-sha256;
 	cv=none;
-	b=57X3W8bGrk3BE2TcC5aBIkh8O/kjHAXm7mvp54pOmkd9D9935Lzzvv/E6+TEUEWS2qBHFU
-	Pu+hZv+gEKGU456Rm/nSVzKCbaMDxLlrmjI+X3rd3rJJcoLgcOLy6CYz0g4XPnUeL8JGHT
-	Z9ViPg8Yj4DDWO9BebiuUyJ77j6NiW4=
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 6F8B140506
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1758032415; bh=zYbUqQqq5gBAL5NIx7a64DWZNoB49w8Fp0Gj3T0pxnM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=ZmjL6RjWsOZ3eAjNFWsOuzjJ0Ru9j9OUpBRNBMRLLKNfG48ZXDy7L1DBpuUggW6Sb
-	 Kchk7t0p0giMOvQ+nErBhBHHuOMLmgD2X0Os32s4ZIHYuaOxRxO95RmmZmombPAI6x
-	 VnU5WL1lASRpwAuGmchNSyDbfhNSbjgWo95ypTGez30DhV5nm91BcgQrda0Fc34U/0
-	 X14t+pZGhwYrqfWabPVAD1U+rr8gEiYrdFwLfCtkOMSSbfMIOyv5m5HgVyts62/am/
-	 E1zv0QBP7UDkqON3AtqWjJI0Wa2A6d5d4VTIaaxZMvOTJYdeTACO+Jawj+JyfdW1fg
-	 eH5UgPsER07pA==
-Received: from localhost (unknown [IPv6:2601:280:4600:2da9::1fe])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id 6F8B140506;
-	Tue, 16 Sep 2025 14:20:15 +0000 (UTC)
-From: Jonathan Corbet <corbet@lwn.net>
-To: Andrew Morton <akpm@linux-foundation.org>, Kalesh Singh
- <kaleshsingh@google.com>
-Cc: minchan@kernel.org, lorenzo.stoakes@oracle.com, david@redhat.com,
- Liam.Howlett@oracle.com, rppt@kernel.org, pfalcato@suse.de,
- kernel-team@android.com, android-mm@google.com, stable@vger.kernel.org,
- Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner
- <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Kees Cook
- <kees@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Steven Rostedt
- <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, Mathieu
- Desnoyers <mathieu.desnoyers@efficios.com>, Ingo Molnar
- <mingo@redhat.com>, Peter
- Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann
- <dietmar.eggemann@arm.com>, Ben Segall <bsegall@google.com>, Mel Gorman
- <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, Jann Horn
- <jannh@google.com>, Shuah Khan <shuah@kernel.org>,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v2 1/7] mm: fix off-by-one error in VMA count limit checks
-In-Reply-To: <20250915153642.7f46974a536a3af635f49a89@linux-foundation.org>
-References: <20250915163838.631445-1-kaleshsingh@google.com>
- <20250915163838.631445-2-kaleshsingh@google.com>
- <20250915153642.7f46974a536a3af635f49a89@linux-foundation.org>
-Date: Tue, 16 Sep 2025 08:20:14 -0600
-Message-ID: <87v7lifpi9.fsf@trenco.lwn.net>
+	b=ZO82tPA9geDswZyCe7Pf8i7+wTTZU4kBI+dP1X96kroMf1TdDXTeSbHFU2l/Tc+YYRe3P4
+	W7qVAidxAtghUTEB5P4YE+q2+MRf6qs84n48SbyiJZl5ZKNKvNQcBepesOX2tY+FNMTJ66
+	B8bQtK0irTrlXn5SVXbpiuNgCIrhnT8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8EE2F44964;
+	Tue, 16 Sep 2025 14:34:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AF58C4AF09;
+	Tue, 16 Sep 2025 14:34:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758033258;
+	bh=3MH7gD+Tsr6/+WWbc5XNbhhMDRlAVwAmSiICzgleW9A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QYE8Efn+Rtz49VyeXFT+OA9QWcbqM6ZXeDrJnDya8oYEdZbQzubfb9N/1S8hoNNCX
+	 gp9rau+XytOIg1+un9Mguc/q1TX8w4O/yPllotB9qGt5PXIOpqIXJjaVFVSKy5T/Js
+	 hRokgc0yIP2bQL9tlVDvbUDm6WUC6w22W6TJv3jNOc6eznzrEo36jFDnLYTKiXnvCx
+	 gsRzOcL5ehCcUdEQDnpGsSGqwV9EdD+BaSUTy2xuxwEU8JRJutD7k2bDjreQ6HIXdT
+	 utIlA1mGCdnleTYeWeuuFajS3OxCIufVPpSy4JBfMgNdWXy+4bXnz5Gk7otR7W0T7n
+	 ym5FukQVNHB5w==
+Date: Tue, 16 Sep 2025 17:34:10 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Pratyush Yadav <me@yadavpratyush.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Alexander Graf <graf@amazon.com>, Baoquan He <bhe@redhat.com>,
+	Changyuan Lyu <changyuanl@google.com>, Chris Li <chrisl@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	kexec@lists.infradead.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] kho: add support for preserving vmalloc
+ allocations
+Message-ID: <aMl1Yj7_iw1kCU2D@kernel.org>
+References: <20250908103528.2179934-1-rppt@kernel.org>
+ <20250908103528.2179934-2-rppt@kernel.org>
+ <mafs0ldmon784.fsf@kernel.org>
+ <mafs0ldmnlmq0.fsf@yadavpratyush.com>
+ <aMgey9qEC_XUejXm@kernel.org>
+ <20250915144335.GL1024672@nvidia.com>
+ <aMhAiR6qnXMA-c8r@kernel.org>
+ <20250916130516.GB1086830@nvidia.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: C5C8240016
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250916130516.GB1086830@nvidia.com>
+X-Rspamd-Queue-Id: E1A7FA0011
+X-Rspamd-Server: rspam05
+X-Stat-Signature: kobr64s7g1jy8wdicx69tin5faypuxgh
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: hyppqzdcbs4kkigm5yf8h6hwbghyjx8e
-X-HE-Tag: 1758032417-161425
-X-HE-Meta: U2FsdGVkX1+wMxcBb96Jj9FIz9yIZdNnU1OZ5mdsp/LbSI1IImyl+8VUKNffF+ENJuzxolgenr7aYObglFYQRA+qayy2RHPR0mFAomBygPqHhJiDnXuhqd0OpMyUtAuzKX+LSvAzCtNMbUldTTKKSMFcLs2zA2dTMJ7jnwD/xjfwSCVhXqAYl30tYG5jb6D8K3b7NK6YGQRR3q0gc3vKIdktUgiHfc4H4AGSrNnCCgvwuMY2dScupYbemQst4RzzktmFeaaCJjmpUf8WGFc+sJigLtT3oKU2lKqgxS9JuZoZi8Ixdd5qwtghpwKejneTSM/n2WULjVZc2kASpT0SuRGqEkh3LFisQ29MFo5h7LUElnoucGSTNxrXn7eNuFgeHduYzhnT2+VeRXMZFBzauFHNaxeFJrC2EZ9UlvsipbQ0cE6sI5GiXUw4WvlGgCcsvDsEWkqh0mfYYyCocG0OTaS0ZR4HNT8CUyDIdfMiqJthy6ArK4IBYTPdfDkrPUlwafmgJXXveXoH7vHiOHerI7I0eoO7oshtlvoK46ln2Kw9FsJ9j5Iq4FvCgDg2ged7Aey79gLmfRLjtdTR5YIlhyhnT73l/u/euT6ITz51508JyUf2DNDuJ8WlvEsosHds+A1rrrRkpffMIM3KRXMt68qgtp0VNlpLM5z+6NPIXxGnFbyJP7NxMbsPByhO31OCkO1NInlwXlU7B358M8yed6MKsvCiJP/vI2AnbSMx5DCsxNOO9HaJhNDP2nZTJfYFcoM25pPdsfzYSkX1UYoN1aX8SnjfjjXEB8aXaX2ZuYZRH90snLOrqYDSshmDkvKoiMHnb1Ypli4XTVxRHb8wFcl903TATEgLR1RcW+JFViKyGu0afteqCTYXzbUCiHEVqrUQxA9Fm9xogqHr8T/Birn1Stj/7YyrdEYyfDsBmgC4mXc4QMbKoIZlO/3QPd7V962k+M7aPVuItdvz5y7
- HbA6ybW5
- SbjgjVR8S3oy3iCFp0+399A0EhxSHiadevDIBCYM/sR/YnhfaD/4AHEkAWOmmzwSdfEcnfpmZvMhbZid2huNgBF84jI44hMLzLy3ESFqPIfzxWx99vZ9fKqAphTNkSlUGL5TagI/huO/YWBcHvaPkzANV9wkGWfwGx3QKBFd2BZgBAdfiMN6kwA9nFlKirQvstzImb7jUayG2WgNEMKayuTTcTELZAzxrzSJri7G/mDw37SR5s0vLPJR5rNoDuLRdpdGYe0BowozxC0OX+PAv/zdPHxLV5jKVdCVr9m1Ld1EE+cOeuAEzmLwIqn0kpC9ZDT10bHNKlHwRgypUiNz/vEuKE4houZ5LxzcytV88xFGJWfUlcVIRH3NV0hnebeobRJ8OctxvBHKBPvFYDFiOmFUmrv4Ltjrc9+AOhTBqt4aiRMqRkCBIb1029g==
+X-HE-Tag: 1758033259-595720
+X-HE-Meta: U2FsdGVkX1/iuCqVp5sy/5FJ32H5iZ4LX702JRWqAbqf5UP4IHeD3iTx8H97R0Z0b9YgOVrn8aZ0kuV9JvrcyXNxe2c9KB04mbiAvK4RrnTk6j8wUFiPsEDc7rqWlhT5YQBG4+RS+qlEdTGDvTrQJ4/7PQ8awmGliVVguGETXmWwIZSUDBIzcgH4YJZ9osYpXu3aiDmftuQevlyl9ZuzfF2C+fgQQR3oC1kfAV9zLdp5F7Zl48QkVWDsO9lJn/Qa99vHBrwWlmMTA3PAs7cBl+G5ZQYrzInWyxVf+V0kMF8p9p4hW/flyxFOME+vJpNDkyiOEhh2htjiRmRMgDTCttYjeQW2cjVrDG3Zc140cuJ8mkrJeoBxoD5oNpauAk2+cK8ek5axovnuGLOuujGwSCj849ozF7MSTg3SHat4P6yYqzDt0A+UqqQmJJGLBu/z7omcpu95/bDDNrQxY8Q30IFmqhPSGrDSe4YjnTbLEeJFHqH+nKrcIByUgAVZxtxLVDhwlA2J1SH0skoQV9WEeO3Cs2DvgwZaSqkE8YDCVFQehfXIVYOteA0K/2nxW9CFhPC/AQCC+3fGD/bwdjuUc2DvMCrnCEJgJg8hWAx4rN5L4ZfusLfkp2V9dbeHVe/hjqRn37F01k4Ipw+lyAKMidNZcm1gHGwijcukXb7bckl6qMxwUg8n2vgKyO8cKjpIiPggisndSmyJrQR36hLCW18XwHYDJ2PPMFfUVwZJc7lrIfKAum/HjO3Q0QSm7Dce/agmK/Zx2SaG4IAtdof35gbX3cuLVSf5mhKqaaV0jS26vdotzLMfDJlsdHMUi5Hf2bpkQiYaZEsNijYP9SOM8ExiIltR6VvZmiMX7fbPrh0tDvvafbOtiAR3ZyOVGwXJk2RkhKysRFZtyxdy/wat5Oc/IARBaGjSvv8uxKCmg5EMCStjNtBeWqX+YTWLAjbiqQvvju5qnZtFpGsO01b
+ F9dc25mL
+ OSaDWbkPn5STZ28Rj2dofNx8/OyeMjksxjJzbtSXUZWu8MbgQ836qtd34aw6U06DIWx/0ZcW/zqyFL7kGca++vretRFcbpXzixf+xluxv/CoWQUHjwETiTcKfDoLqSRGczOcXwp/dq3dVcJQ+FQxkGmzycgAfWaduJHH5Oy7wKyGa6pt8DyoNwtCxuIwYApyRPj3o3GkYrYVGQinDIMggAGBIu5GL+vtj4jhc/IO/tzTtWrD8gxjE9P0gvAeFYxLsljqOsYpiVP7bi7Sdxy/956Uing==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,26 +105,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Andrew Morton <akpm@linux-foundation.org> writes:
+On Tue, Sep 16, 2025 at 10:05:16AM -0300, Jason Gunthorpe wrote:
+> On Mon, Sep 15, 2025 at 07:36:25PM +0300, Mike Rapoport wrote:
+> > > Under the covers it all uses the generic folio based code we already
+> > > have, but we should have appropriate wrappers around that code that
+> > > make clear these patterns.
+> > 
+> > Right, but that does not mean that vmalloc preserve/restore should use the
+> > public KHO APIs and avoid using internal methods.
+> 
+> I think it does, the same way vmalloc is layered on top of the buddy
+> allocator. Why wouldn't you build things in clean understandable
+> layers like this?
 
-> On Mon, 15 Sep 2025 09:36:32 -0700 Kalesh Singh <kaleshsingh@google.com> wrote:
->
->> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
->
-> lol.
->
-> x1:/usr/src/25> grep "Fixes.*1da177e4c3f4" ../gitlog|wc -l
-> 661
->
-> we really blew it that time!
+Here it's more like __vmalloc_node_range_noprof() and get_vm_area() calling
+__get_vm_area()
+ 
+> Jason
 
-A few years back I made a list of the most-fixed commits in the kernel
-history; unsurprisingly that one (I call it the "original sin") came out
-on top:
-
-  https://lwn.net/Articles/914632/
-
-Perhaps the time has come to update that analysis.
-
-jon
+-- 
+Sincerely yours,
+Mike.
 
