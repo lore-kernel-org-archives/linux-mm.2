@@ -4,115 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB404CAC592
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 22:00:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02045CAC592
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 22:02:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 11D588E0008; Tue, 16 Sep 2025 18:00:11 -0400 (EDT)
+	id 58EDC8E000A; Tue, 16 Sep 2025 18:02:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F4D58E0001; Tue, 16 Sep 2025 18:00:11 -0400 (EDT)
+	id 53F5C8E0001; Tue, 16 Sep 2025 18:02:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 030C88E0008; Tue, 16 Sep 2025 18:00:10 -0400 (EDT)
+	id 42DF18E000A; Tue, 16 Sep 2025 18:02:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E67E78E0001
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 18:00:10 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 93D5CB81FF
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 22:00:10 +0000 (UTC)
-X-FDA: 83896482180.18.A15C6E3
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
-	by imf21.hostedemail.com (Postfix) with ESMTP id B4FF01C0015
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 22:00:08 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=DhPZty4r;
-	spf=pass (imf21.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.172 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2F3658E0001
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 18:02:36 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D86DCC032C
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 22:02:35 +0000 (UTC)
+X-FDA: 83896488270.01.A1D646B
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+	by imf02.hostedemail.com (Postfix) with ESMTP id DD3568000D
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 22:02:33 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=Y2KbupYl;
+	spf=pass (imf02.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.169 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758060008;
+	s=arc-20220608; t=1758060154;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ThoOhf+6dHZWhwOpzvQ+ee+2qRgrSoe6WcpIwwuJkt4=;
-	b=yZpIVlzLllDPIlDjsFWyZe8HowyXZ56OU1AKVN7vHitDfHLxVP0v6QzfcBGNwXddwuoGZU
-	JnRe7YXo8YlgeD3Ga8xuVyBAV80myd4qqTCXmOAx4XYva7SaNorbOho7NZ4G+v65+MqBo9
-	O66bn7yp3bXd5BzvqSx4++/baSeqgwk=
+	bh=xQ8K4gFLQK8N3VAF0ow1iMWGtXpNTgEuNC+GqpxwwNg=;
+	b=33AroLxbNDyP1w9htNJ+4JaZ1nDWDmV16e7CHLn8Kz5aAY8JWLiRgtQHE+C+Y8aynPFoxN
+	GwZlXIXYEHXuWN7hlEgfT7C5kN2q4++fzcoGreX381tS4ZhZgowPqEUwafe+x96qO7mojS
+	eZKkm0NXIfoqKE4vx1UuepaiYJ1Y4fM=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=DhPZty4r;
-	spf=pass (imf21.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.172 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758060008; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=Y2KbupYl;
+	spf=pass (imf02.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.169 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758060154; a=rsa-sha256;
 	cv=none;
-	b=QZj+qDshvIfKcyjPfAg1e1rFZw3meHDCEka909CDFGhfdFGNaNDb9BDtCDEp/dCKSj4K6u
-	7JlHD5Bam4enPlPjidWeIDpmumsvpcu60X6y97GKPIAcQpyCcOBo6vEWtfmLbtJ0O1LQHE
-	LAUHRuGPSd4W+fe0yW5mLvI4Ldzt4Ho=
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-828d8d06630so35281185a.1
-        for <linux-mm@kvack.org>; Tue, 16 Sep 2025 15:00:08 -0700 (PDT)
+	b=ueuAoxpuOr4mWembTwAVsh5JCrYuFoeLPUL4JdEiDRvnZc1YrlLMTjgDCvL1ozbTe9CUIB
+	XJMLD9+OI9jIuUX0ZEzk0bpbid5gnjp/dUe/paO1695H2MF2B1OrrClGEaYrztvUy78b27
+	qc4bEHmxIwN3XBiSrDFMSMTr2+ISHP0=
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-81076e81aabso497240185a.3
+        for <linux-mm@kvack.org>; Tue, 16 Sep 2025 15:02:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758060008; x=1758664808; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ThoOhf+6dHZWhwOpzvQ+ee+2qRgrSoe6WcpIwwuJkt4=;
-        b=DhPZty4rjWMa1nlxD1ABRKWbri7471X5sVDDR90esQc4cSmUyEIZw3e/VMABQozKZR
-         zJeYdLRf4mBJzOEqJcnzPHtPM6GNjJckfFpGxdWWcHNGUM6I65EgizFzEQ0d7pIxZvgJ
-         Z0FjEv5LPhG9db3ZDpOL1fG2t5H36KpT/lW2uBiHOZGAusPb6qgDawh9YhEbu+jq8Sle
-         fs9ylyyglQ4Xug7YDJE4qtA3Qn/PIaO18p3jflpOK9uIQyvakIB0R1oCFMXwZs9zW3/E
-         ibiIC+HMM6RJ+roadpoJD3OyCveTePWMXPdwEAwUNsMfDVc3oXq9Qq/MZTweFELj5RWd
-         ZdDQ==
+        d=gourry.net; s=google; t=1758060153; x=1758664953; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=xQ8K4gFLQK8N3VAF0ow1iMWGtXpNTgEuNC+GqpxwwNg=;
+        b=Y2KbupYlrIRXESfHDFMZ4DrBYKReor3XnEwFJ2Iu9flCDbIASNKrXr7krPSzJaq/5P
+         hHdfvZoWE36e9rrUSSOhnf+C3lfmFMDKQrJ6ajFLAXMXk7+/USlVTQWb2cp3hAcefzNa
+         i4T5oEeC1YKgvE3IDby6J3M/T1mMf23Xq3I7nA12CnXD2/JrPVAufBt2M6Nt/zO0ZLAh
+         o0OTrsQ+88VywcUuwIa9jAg5ooUay6zbCEeYuTRS6w2zttkVABMensdu36tUlvpvaWZF
+         84c/RTbqNtEZAywJV3IsMDb2Xjt1P50cA7nQIzj3E+WdqYpUidNUq5L5p0mCH/UpEirT
+         ycTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758060008; x=1758664808;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ThoOhf+6dHZWhwOpzvQ+ee+2qRgrSoe6WcpIwwuJkt4=;
-        b=EOtvbnXVauu87SglUqPzJNaYEwYOC3k5y01YG303JXlZk3q+2PxCkEHogN09RkfBd6
-         XWEOJn8ktKDRBYoLsIHVLcSL9Xp1cOPfJrVGnFmbw4MDAscAvqkzULpEG3yaeD074M45
-         Bg8wShwArWKRH6etwkZdZPdjKPCQAxD6V9NRgxUoHzxCnlLBnpcZm8ofw3UF130p6ly8
-         5QlkK8DQPNHvpZhVWwu1jFfYsPrB4tA9u0vrWCTpTIRs8jbogZcWBTd1Dx1ePdX60i+X
-         9+ZLoHV/J/yS0Sl+uNRDrBwsBxaXTU5xftSp99c9E4m0z4oMARYJ6hs/EJpBFIgCUwcj
-         5eBQ==
-X-Gm-Message-State: AOJu0Yxp2+e6V664eNJpJTN2UY7rBhvQWNd9pHSMkTzGZc59JkWSDcrt
-	CZ0om/FhlngnHp7Z4pgPNOTzwqDv5UdWbhjT+MQMFGXGywPlZijDRt/7UY3UfUrnxqbanM9YrBP
-	vnPnO1UlZDOmiHBz8OJrKqCgDIZlAAzw=
-X-Gm-Gg: ASbGncvm2iIb2r0S7ElSRr6PTj5X6tc/Fm2nf5OHJiqZ7F0F1ggwzcr3CsX14VpshJI
-	yQ5pwiDG7OxSo9VwCbrSpuk00vDR5J2KSIGtmsRZ0zUvJuqpC7H3hoV9PMpeiBHSVtpyklp4wdN
-	Cr1KD5unMzWbju9OYuygcx3ENKm8TZYOIbNQ8iy03XpoeOD05os+modx6LNffhLSglqhJVruvlr
-	HKrnh9qfHZdcbv/HXCU3I3Qp+7AA25iiAGf42rKZA==
-X-Google-Smtp-Source: AGHT+IFp40UDIihRYk9syb9JZvodewOvILFSFFVd5xhGvihtX7lMBcvp+BijPssbXYsS+F+G32VtT7aS7hCYn23A500=
-X-Received: by 2002:a05:620a:3729:b0:809:b21:5421 with SMTP id
- af79cd13be357-82b9d9d342fmr496291585a.39.1758060007615; Tue, 16 Sep 2025
- 15:00:07 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1758060153; x=1758664953;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xQ8K4gFLQK8N3VAF0ow1iMWGtXpNTgEuNC+GqpxwwNg=;
+        b=GfslwV5oKMEoi8bdVUhpxdeoIb+RS9Y1gw7QhIrOAIqLx9YRz2oSUqdFYENtAIFpp3
+         hve9kPV58s5ogxazBXOQi//eKKUrcyOqXq4HXHo1NsrfOEtlnNTzplPT9VBwlSIsBt1u
+         WkEEgA1hDxOtzG/iAhZ2ViWbQEfbVGO81AsLShblXfW2zcfwq7qfHsd3j3YwADKIVwuu
+         KxQQ/PdPbFkhAeWHiFg2xgXxKqfBwr04WP75zp2B5KZ0GlnN7hzNkWgEkqBzpNuYZz1O
+         Vtg77jlc2elhqe4wV0fkd0Uj4toBDTbfjDJwUI0mnmDN/sRWVWiDSdq7O/dqRV6SmlYM
+         M36w==
+X-Forwarded-Encrypted: i=1; AJvYcCVryuVkw34ZrzdPNAighjTsYgaoMk38niituVqtfJlng38MohRUd9OI3934UIrO2OQfJRZx++BeLQ==@kvack.org
+X-Gm-Message-State: AOJu0YxDEfQKI8bI3GRWCkYAIGzVCS/Au5S+3ufg1UsB6gNvj+fZZQof
+	Tp1LKRde+9VQTw4+qWiV/8QYMtK3XBtt22JCCj6bhwe0vUFydeJEZHavFeoCB9pwxIo=
+X-Gm-Gg: ASbGncvlN9UnTB3gCny/GXWh8J5gTyLCIsp8PKkvxKizCMYDtLQmh8m3zYS839ZAuzM
+	MRMa0yyY8aDktyRNiR2yfjwvtK4Hqph0uDJExpvVtwYDIjckF/FRTyX3XR2TV5EQy+CuvQrle8g
+	vwpWg6qx94djEBRPSXdnejDzPZuTPLK70ZCYWj8ToSgBiLsF98df7Q9f0N11nE0tlue4ISIpV6l
+	qayvP+V0qcXMXL+efBm5a2dqN00+T4OL6Ou0YRj4nD7nmiA+Xj59Ovaw+ts25sdSNqbvgFGKnJ9
+	I9a+xjw2gOXI6Lqof1qMC2ibbZw97MK60TjJdqAk867nd0ZHQsm2IkqkGmjEgXM/OuJzkQCka4O
+	GO7BGoiDxzlRG5j36ujo/Oc1IIndmRv3cnWi7UZkNR5Sw1xEXUhB1RdHhqvgumpMBCd7bGTS7GZ
+	IHhTw=
+X-Google-Smtp-Source: AGHT+IHE7xHsOsLEaNHRsG77KnmSH05/ThEIDM5eGgWVC4AoyZnlllTOGd/v1EC79Ig1+Af+801yew==
+X-Received: by 2002:a05:620a:7013:b0:827:fa83:ec0b with SMTP id af79cd13be357-827fa83eddbmr1358277085a.52.1758060152617;
+        Tue, 16 Sep 2025 15:02:32 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-42.washdc.ftas.verizon.net. [96.255.20.42])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-820c8ac45a3sm1040371885a.5.2025.09.16.15.02.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Sep 2025 15:02:32 -0700 (PDT)
+Date: Tue, 16 Sep 2025 18:02:29 -0400
+From: Gregory Price <gourry@gourry.net>
+To: David Rientjes <rientjes@google.com>
+Cc: Matthew Wilcox <willy@infradead.org>, Bharata B Rao <bharata@amd.com>,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	Jonathan.Cameron@huawei.com, dave.hansen@intel.com,
+	hannes@cmpxchg.org, mgorman@techsingularity.net, mingo@redhat.com,
+	peterz@infradead.org, raghavendra.kt@amd.com, riel@surriel.com,
+	sj@kernel.org, weixugc@google.com, ying.huang@linux.alibaba.com,
+	ziy@nvidia.com, dave@stgolabs.net, nifan.cxl@gmail.com,
+	xuezhengchu@huawei.com, yiannis@zptcorp.com,
+	akpm@linux-foundation.org, david@redhat.com, byungchul@sk.com,
+	kinseyho@google.com, joshua.hahnjy@gmail.com, yuanchu@google.com,
+	balbirs@nvidia.com, alok.rathore@samsung.com
+Subject: Re: [RFC PATCH v2 0/8] mm: Hot page tracking and promotion
+ infrastructure
+Message-ID: <aMnedTTmmpuvDxzt@gourry-fedora-PF4VCD3F>
+References: <20250910144653.212066-1-bharata@amd.com>
+ <aMGbpDJhOx7wHqpo@casper.infradead.org>
+ <aMGg9AOaCWfxDfqX@gourry-fedora-PF4VCD3F>
+ <7e3e7327-9402-bb04-982e-0fb9419d1146@google.com>
 MIME-Version: 1.0
-References: <20250916160100.31545-1-ryncsn@gmail.com> <20250916160100.31545-2-ryncsn@gmail.com>
-In-Reply-To: <20250916160100.31545-2-ryncsn@gmail.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Wed, 17 Sep 2025 05:59:54 +0800
-X-Gm-Features: AS18NWBZzepHycNk5Ebg4834edrTcub9sHWJBZ1C11nD4dWKjdfFZmTFEHRW--8
-Message-ID: <CAGsJ_4w2GqGj8HZMfwndsWu7qkORqsnaw9WwhmQS=pW4gR7nEA@mail.gmail.com>
-Subject: Re: [PATCH v4 01/15] docs/mm: add document for swap table
-To: Kairui Song <ryncsn@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>, Chris Li <chrisl@kernel.org>, 
-	Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@redhat.com>, Yosry Ahmed <yosryahmed@google.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
-	linux-kernel@vger.kernel.org, Kairui Song <kasong@tencent.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 5k1t4a49y91hwz3htym5c3nqrmkcs8ch
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7e3e7327-9402-bb04-982e-0fb9419d1146@google.com>
+X-Rspamd-Queue-Id: DD3568000D
+X-Stat-Signature: iw9c6ryefh53uagz1xcnb1k3orxk8myi
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B4FF01C0015
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1758060008-643568
-X-HE-Meta: U2FsdGVkX1/SAVsB++S8ExSRF8TLXb2rhSI7C86hm/LwYYS3IL5KCR+awBFdDs/R+yFDDo+jp2HOfsv8lTY3k1OuDCQnokmIYhX0COizkKsvRIABR1RMG5J1In2jXg7D353WIpp6+MVt2MdZdx6SnbhYXXm2v/2GhafaY3yli5BRaxKkSAFkm5ESZr0qQjX2gOumzLKne6ufpq1kq73/fto8fEsJj01wt5/vbqgmO2fmcJCrdiex/DusLnQfMfVq7mFostNPe50kFD7vK/N3qsZvty9zJCmhMBe1R6RmP2pCNYVgVI6vY6y8P7rXZeLFL8vfC89CA8UzhjAIx8dS0bQoH7PzlAs4ZTyIKyEqi3zrqfrP/a9kHJkFwoeropBjRTz67mpfk1YSadR4uo53uF3fJHPQaXYA/4J8JjA5jdmk53skrUXjZz1xRaqdWoHpt6H0XXjQgmtByqXYPvbR92Xg9++b421SnOVGp0lW7cpRQ9xw6oUOBSn5gBDgVVFsKZMfcnLryDlREUMweTRwOCfS32tUs1JAMaWFja7kFnZjJUzio+r7O3wJl+qdBkV3fzXlCmv97lGNt32Uqn2I9uQgLaqy7crpMdU8+mXIoV0eO2Bq5eXqINCwKNdijOXw7YLySKHpGpoNPZ9tA3EznRPqylCCb+nBpqSrmKUDy0fKhuBak2p0NJOKmX2I8T3eiv/hXh9Zwj2RnG69ydaqQyLchyrbl4IFh8xV1/yU/guhWqt0NoyUbzx/jV9lCARxQMm54vtFV6z52Y4WyvUftVzwuOVGC/p3nlxuZNYvkbuI/hudHicsganGujhVdHlUbbSFsC1SRetVERW8inZNb/1fkBlCTo2rh+SEhp8IExMA3frDDgGJmHvGzEwbFDTyD4J5YuMgmBCTES/Fi48tsFtj0bt3YHsuifhjtGqIP1s1lmw7nesflTA/nZosfL7LFVS/acESu27J2G8Wl7u
- bbq1dMmn
- E8PRk/a2jnemPzDFr7hXz5HtHUEemYCi04KANijG4kCLSmQf0zypjkkxuvY7AAo9onoXR45eq6jNtc/1X5PnQLDHHnDzFJDeJG0Akj53DdaY/FjCokRIhKzxcb20SrpcD3ee/l2JvqQWxQW3/bN34m69+X0D48vjMxwxLoEFXe+jZdFXTdqdLbxhryO0gDKBfpV+e9CeDKI/mxixFgpvpW7NNkQTY/97BdcQxwsEfyRmwpwyIiJil/mqQSmnMzVnNZ1s8/8M9q7zs+FFUoo2iXWrF181IFfSFpHhNm4uPlj2Ep+MsdRgTPzvVA8PnuTNkm0Xm1FPZctRfD+aNKQM9EhC+L6vvu1GYNkD24UKcsbxeuJ49iZx73YQ0ZifTJWxBZVAaqHnmhTj1dGoz/ldTdSmZMdRcuvuEEfsRkwpsuz00gMY=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1758060153-943387
+X-HE-Meta: U2FsdGVkX1/9Dp9tE9xGU4tQsbhBmY84Foqm/YBJio516yJXosgboad3e9rFL362vSEtH42JuCkfQOXmhiNB4YZWpRLi0MSb4rcHGl6yPUgPUCoN9Ed/WgTRfCNAUbViIV1d3kCQBjlU9mYs0MSUwkRer9Y5379JHMO86ii2/dEDT3mtVjII+4JJfudJDNIFk7LxcAnIOYDqlqhb7oigsieOsUoCC3TS3AOn4NTrVOdhnrTDb4PNxFp+W00I+pHDap86Zk9T2Dqrp54ks1ISCS6EwppdHgr6P39ul52MCoHurgRr4S8n8ZdjDYRhF1D1uSnUsmmK3AqK8SMVKM8xgaqfq1ZNpRdFEpNT53OgyAFJONygUXWBMKvH3IYqQy4V+9brv5rcYkHnFFEe19YqYZ4T+lnrnDkXSrfmSoSE7wzZWE/d0ePkNSxfiZKfLsQ38SMHZm5nB3O1p7YxgbCh8zeRB7Z4HteqXDwp2M3m+xtsaMNT7wHfE40Kcki3vyybH1YIu2chjfw3R3oRd1EklRtPKc/wfsSaherFoW3vOGS1rnPqvO7FnJCv3JZljJiL5zGMU78MvFlpPVVdpgv1Kf8quuFDy9p3XIxkUndEOLfuum8lX+RvPyCqcNz/LBa/3MHI8qRT1BirZm1MIK8G5eTtgymwqUFyrckWyg1GT/EmuRUhtsbLG0CmUI7jLIQWyqHp7COmwskSy6hbZ7R0XuuhubD7WKlcY2pfgv7Py1rumMpkcWYn6kXiy/wqUxq3W6U5sYqUdPnVdHLfDDruRlsuA15X3x8OV4gOruNKtGgFPOzuUhzDvFLONoc7uJIC/vnorikpTI6RqJUnPPBLgl8m1l05kI2LIpGudHUTAD8IFzZ95WTuVjVMcJw2zqDauamwtThag3jV5wfLhjvidRzna9Ifb3HcYWZjIoSgGxcuyzKF/TEYgf47Mpj79lPOi8OAoLN8dVQhKRMA++x
+ 1RCSEr4o
+ jA7kvPD4H9VVql6sJPg4dQlq4vHJVsg+UgDVKx9ol3KAflw6OFM9O/cr38oYttfAdbq2L4eo+bJUG8L7DIdWdlz34q3ZygtRQ8hjMx1rh7a18H6lQrvMYpBZcEiXltJPApY4OBuCqyncNLZRDfAmMMM/vyqZyTKPoJq/vZNfkg+FQ53B/7817Yh9Fqk8M1z/9roJ31mymmtGGBcdr7YDTp3TFLetWOeq2ycGYMCUcXHt+2Z9/Xwv04803gbCEAi+rcobiNZdQHk3E8zDk9n5kOp3M4x+tbW5Vtuid0W8Xi/+TaZo3MQ+8ceuvnpZPKeRtXTC2bbbtLFzcySKVFipv30ljfWsvR6COtkvUrwz6iDyGC7vMA5EFNLAxs0mNdz3iTTmtRCoHCrUpU1QonbDWkslLkQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,126 +131,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 17, 2025 at 12:01=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wro=
-te:
->
-> From: Chris Li <chrisl@kernel.org>
->
-> Swap table is the new swap cache.
->
-> Signed-off-by: Chris Li <chrisl@kernel.org>
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
->  Documentation/mm/index.rst      |  1 +
->  Documentation/mm/swap-table.rst | 72 +++++++++++++++++++++++++++++++++
->  MAINTAINERS                     |  1 +
->  3 files changed, 74 insertions(+)
->  create mode 100644 Documentation/mm/swap-table.rst
->
-> diff --git a/Documentation/mm/index.rst b/Documentation/mm/index.rst
-> index fb45acba16ac..828ad9b019b3 100644
-> --- a/Documentation/mm/index.rst
-> +++ b/Documentation/mm/index.rst
-> @@ -57,6 +57,7 @@ documentation, or deleted if it has served its purpose.
->     page_table_check
->     remap_file_pages
->     split_page_table_lock
-> +   swap-table
->     transhuge
->     unevictable-lru
->     vmalloced-kernel-stacks
-> diff --git a/Documentation/mm/swap-table.rst b/Documentation/mm/swap-tabl=
-e.rst
-> new file mode 100644
-> index 000000000000..acae6ceb4f7b
-> --- /dev/null
-> +++ b/Documentation/mm/swap-table.rst
-> @@ -0,0 +1,72 @@
-> +.. SPDX-License-Identifier: GPL-2.0
-> +
-> +:Author: Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>
-> +
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +Swap Table
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +
-> +Swap table implements swap cache as a per-cluster swap cache value array=
-.
-> +
-> +Swap Entry
-> +----------
-> +
-> +A swap entry contains the information required to serve the anonymous pa=
-ge
-> +fault.
-> +
-> +Swap entry is encoded as two parts: swap type and swap offset.
-> +
-> +The swap type indicates which swap device to use.
-> +The swap offset is the offset of the swap file to read the page data fro=
-m.
-> +
-> +Swap Cache
-> +----------
-> +
-> +Swap cache is a map to look up folios using swap entry as the key. The r=
-esult
-> +value can have three possible types depending on which stage of this swa=
-p entry
-> +was in.
-> +
-> +1. NULL: This swap entry is not used.
-> +
-> +2. folio: A folio has been allocated and bound to this swap entry. This =
-is
-> +   the transient state of swap out or swap in. The folio data can be in
-> +   the folio or swap file, or both.
+On Tue, Sep 16, 2025 at 12:45:52PM -0700, David Rientjes wrote:
+> > I'm hoping to share some of this data in the coming months.
+> > 
+> > I've yet to see any strong indication that a complex hotness/movement
+> > system is warranted (yet) - but that may simply be because we have
+> > local cards with no switching involved. So far LRU-based promotion and
+> > demotion has been sufficient.
+> > 
+...
+> 
+> I've been pretty focused on the promotion story here rather than demotion 
+> because of how responsive it needs to be.  Harvesting the page table 
+> accessed bits or waiting on a sliding window through NUMA Balancing (even 
+> NUMAB=2) is not as responsive as needed for very fast promotion to top 
+> tier memory, hence things like the CHMU (or PEBS or IBS etc).
+> 
 
-This doesn=E2=80=99t look quite right.
+I feel the need to throw out there that we need to set some kind of
+baseline for comparison that isn't simply comparing new hotness tracking
+stuff against "Doing Nothing".
 
-the folio=E2=80=99s data must reside within the folio itself?
-The data might also be in a swap file, or not.
+For example, if we assume MGLRU is the default, we probably want to
+compare against some kind of simplistic system that is essentially:
 
-> +
-> +3. shadow: The shadow contains the working set information of the swappe=
-d
-> +   out folio. This is the normal state for a swapped out page.
-> +
-> +Swap Table Internals
-> +--------------------
-> +
-> +The previous swap cache is implemented by XArray. The XArray is a tree
-> +structure. Each lookup will go through multiple nodes. Can we do better?
-> +
-> +Notice that most of the time when we look up the swap cache, we are eith=
-er
-> +in a swap in or swap out path. We should already have the swap cluster,
-> +which contains the swap entry.
-> +
-> +If we have a per-cluster array to store swap cache value in the cluster.
-> +Swap cache lookup within the cluster can be a very simple array lookup.
-> +
-> +We give such a per-cluster swap cache value array a name: the swap table=
-.
-> +
-> +Each swap cluster contains 512 entries, so a swap table stores one clust=
-er
-> +worth of swap cache values, which is exactly one page. This is not
-> +coincidental because the cluster size is determined by the huge page siz=
-e.
-> +The swap table is holding an array of pointers. The pointer has the same
-> +size as the PTE. The size of the swap table should match to the second
-> +last level of the page table page, exactly one page.
+if tier0 has bandwidth room, and
+	if tier1 is bandwidth pressured, then
+		promote a chunk from tier1 youngest generation LRU
+		("hottest") and demote a chunk from tier0 older LRU
+		("coldest") [if there's no space available].
 
-On a 32-bit system, I=E2=80=99m guessing the swap table is 2 KB, which is a=
-bout
-half of a page?
+Active bandwidth utilization numbers are still a little hard to come
+by, but a system like above could be implemented largely in userland
+with a few tweaks to reclaim.
 
-> +
-> +With swap table, swap cache lookup can achieve great locality, simpler,
-> +and faster.
-> +
-
-Thanks
-Barry
+~Gregory
 
