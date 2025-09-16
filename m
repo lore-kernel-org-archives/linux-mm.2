@@ -4,116 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 397C1CAC592
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 22:25:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BDC1CAC598
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 22:26:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F65A8E0005; Tue, 16 Sep 2025 18:25:30 -0400 (EDT)
+	id D8D558E0005; Tue, 16 Sep 2025 18:26:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8CE0E8E0001; Tue, 16 Sep 2025 18:25:30 -0400 (EDT)
+	id D3C808E0001; Tue, 16 Sep 2025 18:26:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 80A768E0005; Tue, 16 Sep 2025 18:25:30 -0400 (EDT)
+	id C526F8E0005; Tue, 16 Sep 2025 18:26:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 72F4C8E0001
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 18:25:30 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0DD55160356
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 22:25:30 +0000 (UTC)
-X-FDA: 83896546020.22.CA09948
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 69CFF1C0008
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 22:25:28 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=oqzIvYd8;
-	spf=pass (imf21.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B32038E0001
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 18:26:25 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4D3785723E
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 22:26:25 +0000 (UTC)
+X-FDA: 83896548330.14.8641CD9
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 71B3B1A0009
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 22:26:23 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=ZS1ZCg44;
+	spf=pass (imf19.hostedemail.com: domain of surenb@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758061528;
+	s=arc-20220608; t=1758061583;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EpnzCP8uSc8b5yaT1O27jIs9rdJQpLF3MRQKCDW0kmg=;
-	b=DLHO5lBE/ryjZbzv2IRFjFQR8M9K8h2crhVTj0LWyGL0SKd1qsTSGTNQhH4XIyE722Hvve
-	0s29zTL5RaIdbo1mH5om6ViyJt6j2dy9A/SRvuftBIOhekUyhlL4VAuotnDTDcyE+72L7v
-	5b15vCUso62M2+HMK8/egR+OR0POUsM=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=oqzIvYd8;
-	spf=pass (imf21.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758061528; a=rsa-sha256;
+	bh=jvSjwFL8UuYKuZG1WOg7NuAXvGpOFQScQAyDoq9s588=;
+	b=02FAiPOr/F4iS/5LZw5ADSgHuOYnpzaPyYL7D4lAyS9vSDQep5Haimt76CG72nK/qYY5Mr
+	0sKGEklGcpsl4IVL2BDa9oTX8+vhotUI/5oGqecodzrUaumlYiJKVhMzpQbFAzqJPFSxdq
+	x/kOgB36aPyIwxMW+N81CyQWzz4K4MU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758061583; a=rsa-sha256;
 	cv=none;
-	b=cXFo2uZwhu1+uGO55eg/fsbXgvvcw/n4xzUH1aD8OTUMCsYRH2EwOh/9NUN9BONsLTTOUx
-	3Ql8WT1U/PeMxRXPfRgUFKTp3fF7K9YNHmsinV3aUhxRgmz+qweBcPSkcauDoeq0K0KY5A
-	xZJwp+bgFwNylWfBkvsDUuUUlCvvqnM=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=EpnzCP8uSc8b5yaT1O27jIs9rdJQpLF3MRQKCDW0kmg=; b=oqzIvYd87kYcLEuUk2b2Qxsr7n
-	qktNtNiL5V1ttnaxOOly/JG+6gQfKC/liziphY10g5MeQgS6OYWYLCvKz5uc5mnVr6Imi068vXEEe
-	WA4dRGyWJn+PqxNIM1earWyF85v0IymWB5cmCx963Npz1oJRa4fuOf/VsM2LmK7fPsLMHTdQjJ2I5
-	4u5IJETf+S+jhrYuUm85mc13kUAy1QMqtgzYx+RS6PUjyOGD3Pymb0c5nGcL6vEPag4iIVGwo7lil
-	6TnO2KJFqJALrP+mtCFRNxUfnXaFOFcUur2ODFbYdSEg39ae9A/SRKsvbdTw3xJmX9dLqgfHqFDrk
-	k4Bow7/A==;
-Received: from fangorn.home.surriel.com ([10.0.13.7])
-	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <riel@surriel.com>)
-	id 1uye6p-0000000017J-1HX2;
-	Tue, 16 Sep 2025 18:25:11 -0400
-Message-ID: <40b0f059bbb62e4bd6fed33b3990def3d2aed124.camel@surriel.com>
-Subject: Re: [RFC PATCH 04/12] mm/cma: keep a global sorted list of CMA
- ranges
-From: Rik van Riel <riel@surriel.com>
-To: Frank van der Linden <fvdl@google.com>, akpm@linux-foundation.org, 
-	muchun.song@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Cc: hannes@cmpxchg.org, david@redhat.com, roman.gushchin@linux.dev
-Date: Tue, 16 Sep 2025 18:25:11 -0400
-In-Reply-To: <20250915195153.462039-5-fvdl@google.com>
-References: <20250915195153.462039-1-fvdl@google.com>
-	 <20250915195153.462039-5-fvdl@google.com>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
+	b=Owa0LDG0YMsXdFpwTdmzQitsy8OwuJ50cAM4yaTONfVWtm1HSGoNPykBpfcXtRM3BiIXsP
+	+0U+xJ6Dvk6JtH60rn2PtTKHmwRvXVQR+D68vAHHEoK5xzuc0QsPoNWA7l0U2E45vBg+0p
+	IJQlp0U+8XCqNrdD9DjFjECcK9aT9co=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=ZS1ZCg44;
+	spf=pass (imf19.hostedemail.com: domain of surenb@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-4b4bcb9638aso212711cf.0
+        for <linux-mm@kvack.org>; Tue, 16 Sep 2025 15:26:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1758061582; x=1758666382; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jvSjwFL8UuYKuZG1WOg7NuAXvGpOFQScQAyDoq9s588=;
+        b=ZS1ZCg44R2OPJAXQ8f6n4veQL6iCo5TboWIZiF5r/9nutuMGnOwLk2jGdbyOWJXXe6
+         fGejzv697JHVH3uE3ZBqFPSIbtS3fa8DF3bk91aYvTHOFxeR3R+T10BQoLlCwm/GDu/N
+         2XQSIBdoK14ySCDzxJ90SP/dZv3rBObfNRwxVYYr5GxGlNTxaTyIA2gO4UMBOSIPP2W1
+         De01Z8avBMJmslAy5kV5cjG7t2g6K1c8IpMrKhKnnb5r3oK2VRHgegKAfp0Wz7vpumiB
+         vG4c5cWG1yx7BPGxndxDStnI8HgEiSTGQm+eEVWgwUj7yzGM4qpqjysqGemOh7H2XvIg
+         LSTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758061582; x=1758666382;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jvSjwFL8UuYKuZG1WOg7NuAXvGpOFQScQAyDoq9s588=;
+        b=DgQM4VRzV1l+RcB4oS8eY5uZqUG7cCqr8WbQszUISeDKdbq5zuEH8ojGFavuERsYQ7
+         3YMNJ4ybxBWUsA5qRXVnye9af5fSml0o/OB8e6Gi0FSBGMFPtb+kQ4uo09PMvuJNPxqT
+         0FnhxX1U80RiHnOWCZn4vwv/pNrcP9cnHedLVBaoiKn4NBKi92onsPzasQacgj8aQg+r
+         QhxmG0T42cB2eoaSGMwGC7HBwyr+vuCmr2T+Lpe4jhUTC9EuCNiHBKQiW3FKC+u0C7jG
+         E6h1IvVRUiPXuKV70OOmMc0XuM6Ki0m1DQs+9cMEiZWD5BB8EaiJ1q/zR879HAhPpdCe
+         0Vaw==
+X-Forwarded-Encrypted: i=1; AJvYcCWSkgAZ8OTv8ZP8v6voTiALDUoIV9hxiaGsqfiXjgrEKLjKw9/v7RaFsyTSKrQ5vlv191aB1weQnw==@kvack.org
+X-Gm-Message-State: AOJu0YwkzsOfMlv9OC2EAZ4I/XujF8cjJ3DQk+Pu+HWrC4HwFJRwFAm9
+	3I4ACT95taeiJE3ItzP32kcHXkzeUgi1aTnZJoIiceX9iYwpmUYc0/lDA1m+DHYm3OPDNRiXaeD
+	B4125TU8wd6SS4IUov6Q0JlogFFDD3GVuSpD29Ydg
+X-Gm-Gg: ASbGncuAHQocK/xn6d2nsWoKv+CYdk6tHmpsmC/Z77d6cgDlBQpO46O9C21mbOeOMNy
+	ob+p4Sf91pZZeLjbq1u2AjbrishasdBHdDKuNyrauLlmFcrieYZxOohimnl5u/RPnxgUd3jLGNz
+	JL7MmQQJGLk8mWsaUJMEUnryCOMljRA20kHzHWlxfQPtBD4mFjepIjkajQ4dXvDHnDr02ZiJtxP
+	gyGbGq4Xv+xcAqnJRqBVjCz1yTqeZbLkHtqBegs0BG1XbyAQaoE
+X-Google-Smtp-Source: AGHT+IFZ5jUYQu6B8QCw74ApfQyzcnqjHFyeE6dxECfr9tGK65ubPC2uIrlJX9wgihBhc3eo1SpLLjs5WriW+JmFBNM=
+X-Received: by 2002:a05:622a:1652:b0:4b3:1d1:fddd with SMTP id
+ d75a77b69052e-4b9de80cacfmr1899361cf.18.1758061581913; Tue, 16 Sep 2025
+ 15:26:21 -0700 (PDT)
+MIME-Version: 1.0
+References: <20250915230224.4115531-1-surenb@google.com> <2d8eb571-6d76-4a9e-8d08-0da251a73f33@suse.cz>
+ <CAJuCfpHXAhGZb1aOPyHOPiTWSwQJi570THqJQcjrVPf=4Dt3xQ@mail.gmail.com>
+ <a8519bca-ae16-4642-84a1-4038b12e8bb0@gmail.com> <CAJuCfpFJabb02OK8Rj08d7WU_7AM674i=vsZxzfw7i7h-PGftQ@mail.gmail.com>
+ <e5e3d96a-d0aa-4466-8303-5a7e8f96bbe5@gmail.com>
+In-Reply-To: <e5e3d96a-d0aa-4466-8303-5a7e8f96bbe5@gmail.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 16 Sep 2025 22:26:10 +0000
+X-Gm-Features: AS18NWAHK6b7mJpKB5w6xp3zfsHo4ykhOEb2aPzZQjR1oXKBScQCFYr1qTsDmd4
+Message-ID: <CAJuCfpEULVxMixDjrk_xg7+3+97dkcMmkDd++BaR17X4tDSs6Q@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] alloc_tag: mark inaccurate allocation counters in
+ /proc/allocinfo output
+To: Usama Arif <usamaarif642@gmail.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>, akpm@linux-foundation.org, kent.overstreet@linux.dev, 
+	hannes@cmpxchg.org, rientjes@google.com, roman.gushchin@linux.dev, 
+	harry.yoo@oracle.com, shakeel.butt@linux.dev, 00107082@163.com, 
+	pyyjason@gmail.com, pasha.tatashin@soleen.com, souravpanda@google.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
-MIME-Version: 1.0
-X-Rspamd-Queue-Id: 69CFF1C0008
-X-Rspamd-Server: rspam05
-X-Stat-Signature: jdct63ebj7xrtbtq8rp4tef5fw3uoxm7
+X-Rspamd-Queue-Id: 71B3B1A0009
+X-Stat-Signature: fk3wqwpagi7ozhyb59u7shhgtw6o5w8i
 X-Rspam-User: 
-X-HE-Tag: 1758061528-67882
-X-HE-Meta: U2FsdGVkX18ENTx7t4xOxvbfUHcGwgHE0nbSPF9QQyf5JkclRnNCF6lLoNrCFRzlF7KcySCf+dEJ2eTldgBZ/D77qO6WOa3mbe0kvsO+QdIaiK5mfEq6DlNFeMBh5BRWOcSQbGMmq9Yid9lqrdmLt/6E3zVJ4YvgULNxyewxLayW7uR8isyBz3Uq/nJwZNJo54tBbZJMzkTIqvl23RExo6oM75Gy05mSTsI1z+xhWjXJP6CDywcDc7EdKTbI1t1VbLtSc5VvmqSidxKRO6O1kUqozY4/4H44HRoChzhWq8oVttJ2Dll12ltNT7LicR5MHtMpuIFFQEGbeuP4H+sDxmzpI8By23RExeMRuryCm+VxR9oSW2yysNpV90INltKhCz0Nt+d5AylYiLfCB9H/o5Xpp1H6lgtPGVLg3oP19EXK0KATPSAwqAHIQQqjuBAlLNXPn1VFlFygWnBhlmFtmiWb/3++IN8xLK0Lp3nVFSyxwz4TF+Mfk+TmqYYwOJsKrcmFgzDFlqWeupT16AyUjeiIE2vNw4QI4LnIdq0LtkLnog6xg4tD2+uian4jSBtsLw+23Ti3Sa1O4oMyMkLLscF1n9fXK93fLmQTtILgFQJDTFsXE7A66HUMnLEyQJz02WxCnTe5cHa/L4uPHyOo7pvTySEC8wXF6waSswM9KrGrN24GIsxquoEfZ63MpodO6GcoCmcN5MbvsM8AIjs1wjc5sCnxwgcvf3CqZ0zEa+ZsGliJZ7TaLVt/6xxpAoc/B/Z75XoIj+utY7d2UaXegeiJILXMGRvU6vfEImi7FN6/1FX+JWREb7b9RHu/Ad8wkAX4YNUfKmMBB6mHtjB/MyPCh4k0LIHZ9r7H65tbPTQiy58lHKuScfmJRlWC/eGJwUuEyv+0DpwMxfDePXOt8RE9yBVTPxNJt4eFuVXc9ClSMEepI4a7xPSqAZhNlAsK4xGzGvWVgSz7vClVMH+
- 6xNdsqih
- f9rK8FMCck/Nn7E/aJOzTfAyR27b3NPtDc/Bm0iaHK7y9QGOxMxVrnNPfILhHXVcco3HySvO8ZyGdX6C9ctv3Byqb4H6i5Y2ZXT3dBEFqlA04TZKtSnS5C+PMsmtXWL2bIvjqFNJ34W/N7JvNryAL6J4+jRIZd5MB1DewidBOlNg7c8SFWUZm5IJfSpN3PZtgmzpG3CopcX3qsnw=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1758061583-862287
+X-HE-Meta: U2FsdGVkX1/7+VH9YFqnkJyHI6qcm/2UVAdkfzV3XPdoecsHi7L1e8jp1QTjM7FpOc9/RcnkIxIw97bvNb5YuziXIqZ2/tBYdWp6ahftpfjvX6C+raotE5UsC1b50Cuq7O7MBe9tHSp+yyXPiPkoREqcPq37naGt8mFRBYFEPspek1WFWnESbgAfnkRRBpzeEudpuWRbxveilTGmriCJjAq58xc0cKbuczihW+jXRE5LoweaikKcXIgSYUmhUToDL1jBRtz3W1Ry9WfXujUgIKXekkO4jBwQNFZWUVwXIFkwhbKfo2l0Dx+sVtqbHq8J0lgRLqCyIKiG58PE5GJO3Xtff+y1qRfAiRwcD7aMmwm531F0BEOM7t/y3edeA0T//xMGwEukzlVU8rZG1pLIAeX4CWp4Wl9wLWO8DTaCMtahgimEsWJEu3RKvFhW8qoPUPwjmjQBRZ5iOvqtbqnePlkGxTF7dgSENYX0PAmJBiZtjzmMIkRT6ILi+ysinNGee5dSAjkROUAPyf3GTW7fMTFKYhLwhRlcRY0GN3fNfCg0n+J4zCNoyNiuLtl18pTIrXn7KYnS0uiUzVZT9GvKervKlEL6LLKttYALgsqJ9PPXf1wzmat97hh98CW4RM7w6Y0PwT9PrOBwdOuJIe0TifrzgyGqkd7oqmvJZMWE02MpTdXG2Clp30jjnuHosFy+M7lbVwh/+sbWrdNC2dcTc62mPMjMDYYnLCW9/R1WVW9SB0YWuxzXeJfhoFcyaUaX3EiYM1w+8zwwwrDOY/lDO7fjn+dOIhNWfcI6rbqycL7pTZxXzh0uqjdo7jVo7yKF+jB07m7aHMk36kubCek84lfwkzQez9gUAMX5QAmgReiZIkmbGjzAn5xY0SYerBLKKfdAEMCiaanFOsNG3VNq31eTecIfcMy0tUnScRNZ+C4SoW7ygM6GrhGFKyRZ1MZDLCs7TC58kZUnjMQ7DYv
+ 0MSNeE44
+ HxypRnvOwT5QlVDpiW2bELWmFAV20XDv7iXjNb5jqw1UgOnBvX1MrxmU0ba+OHdXxw6TKzGpRp4R3D8H2j0lykIA6vA9NXBdcVhMMDK+FQzAyYu2JOQ2lkhD4LqtfjZRGBwNLJSeNtHMTsDkyMJYwkTqDts2fOLIsuV6xf9qnK1X7WrKO9GL0HJMktNQweG+YDuBdEdsEeRMlnAslUnJdjJ9kzQI9FB1RCOJWTbaY78r7j5sWYWX8jpjaQoRdRFM/VR+mXBhtyl73dmF5MwvvbFMT1lY7OX0vkcB4rdFa6MBw0ebjUY4PF45wFc/Roz4QC9rAI050P5fEAsYbB1ymMvUHpNiBSYwBBv8j
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,66 +123,147 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 2025-09-15 at 19:51 +0000, Frank van der Linden wrote:
-> In order to walk through CMA areas efficiently, it is useful
-> to keep a global sorted list of ranges.
->=20
-> Create this list when activating the areas.
->=20
-> Since users of this list may want to reference the CMA area
-> the range came from, there needs to be a link from the range
-> to that area. So, store a pointer to the CMA structure in
-> the cma_memrange structure. This also reduces the number
-> of arguments to a few internal functions.
->=20
-> Signed-off-by: Frank van der Linden <fvdl@google.com>
->=20
+On Tue, Sep 16, 2025 at 9:52=E2=80=AFPM Usama Arif <usamaarif642@gmail.com>=
+ wrote:
+>
+>
+>
+> On 16/09/2025 22:46, Suren Baghdasaryan wrote:
+> > On Tue, Sep 16, 2025 at 2:11=E2=80=AFPM Usama Arif <usamaarif642@gmail.=
+com> wrote:
+> >>
+> >>
+> >>
+> >> On 16/09/2025 16:51, Suren Baghdasaryan wrote:
+> >>> On Tue, Sep 16, 2025 at 5:57=E2=80=AFAM Vlastimil Babka <vbabka@suse.=
+cz> wrote:
+> >>>>
+> >>>> On 9/16/25 01:02, Suren Baghdasaryan wrote:
+> >>>>> While rare, memory allocation profiling can contain inaccurate coun=
+ters
+> >>>>> if slab object extension vector allocation fails. That allocation m=
+ight
+> >>>>> succeed later but prior to that, slab allocations that would have u=
+sed
+> >>>>> that object extension vector will not be accounted for. To indicate
+> >>>>> incorrect counters, "accurate:no" marker is appended to the call si=
+te
+> >>>>> line in the /proc/allocinfo output.
+> >>>>> Bump up /proc/allocinfo version to reflect the change in the file f=
+ormat
+> >>>>> and update documentation.
+> >>>>>
+> >>>>> Example output with invalid counters:
+> >>>>> allocinfo - version: 2.0
+> >>>>>            0        0 arch/x86/kernel/kdebugfs.c:105 func:create_se=
+tup_data_nodes
+> >>>>>            0        0 arch/x86/kernel/alternative.c:2090 func:alter=
+natives_smp_module_add
+> >>>>>            0        0 arch/x86/kernel/alternative.c:127 func:__its_=
+alloc accurate:no
+> >>>>>            0        0 arch/x86/kernel/fpu/regset.c:160 func:xstater=
+egs_set
+> >>>>>            0        0 arch/x86/kernel/fpu/xstate.c:1590 func:fpstat=
+e_realloc
+> >>>>>            0        0 arch/x86/kernel/cpu/aperfmperf.c:379 func:arc=
+h_enable_hybrid_capacity_scale
+> >>>>>            0        0 arch/x86/kernel/cpu/amd_cache_disable.c:258 f=
+unc:init_amd_l3_attrs
+> >>>>>        49152       48 arch/x86/kernel/cpu/mce/core.c:2709 func:mce_=
+device_create accurate:no
+> >>>>>        32768        1 arch/x86/kernel/cpu/mce/genpool.c:132 func:mc=
+e_gen_pool_create
+> >>>>>            0        0 arch/x86/kernel/cpu/mce/amd.c:1341 func:mce_t=
+hreshold_create_device
+> >>>>>
+> >>>>> Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
+> >>>>> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> >>>>> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+> >>>>> Acked-by: Usama Arif <usamaarif642@gmail.com>
+> >>>>> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+> >>>>
+> >>>> With this format you could instead print the accumulated size of all=
+ocations
+> >>>> that could not allocate their objext (for the given tag). It should =
+be then
+> >>>> an upper bound of the actual error, because obviously we cannot reco=
+gnize
+> >>>> moments where these allocations are freed - so we don't know for whi=
+ch tag
+> >>>> to decrement. Maybe it could be more useful output than the yes/no
+> >>>> information, although of course require more storage in struct codet=
+ag, so I
+> >>>> don't know if it's worth it.
+> >>>
+> >>> Yeah, I'm reluctant to add more fields to the codetag and increase th=
+e
+> >>> overhead until we have a usecases. If that happens and with the new
+> >>> format we can add something like error_size:<value> to indicate the
+> >>> amount of the error.
+> >>>
+> >>>>
+> >>>> Maybe a global counter of sum size for all these missed objexts coul=
+d be
+> >>>> also maintained, and that wouldn't be an upper bound but an actual c=
+urrent
+> >>>> error, that is if we can precisely determine that when freeing an ob=
+ject, we
+> >>>> don't have a tag to decrement because objext allocation had failed o=
+n it and
+> >>>> thus that allocation had incremented this global error counter and i=
+t's
+> >>>> correct to decrement it.
+> >>>
+> >>> That's a good idea and should be doable without too much overhead. Th=
+anks!
+> >>> For the UAPI... I think for this case IOCTL would work and the use
+> >>> scenario would be that the user sees the "accurate:no" mark and issue=
+s
+> >>> ioctl command to retrieve this global counter value.
+> >>> Usama, since you initiated this feature request, do you think such a
+> >>> counter would be useful?
+> >>>
+> >>
+> >>
+> >> hmm, I really dont like suggesting changing /proc/allocinfo as it will=
+ break parsers,
+> >> but it might be better to put it there?
+> >> If the value is in the file, I imagine people will be more prone to lo=
+oking at it?
+> >> I am not completely sure if everyone will do an ioctl to try and find =
+this out?
+> >> Especially if you just have infra that is just automatically collectin=
+g info from
+> >> this file.
+> >
+> > The current file reports per-codetag data and not global counters. We
+> > could report it somewhere in the header but the first question to
+> > answer is: would this be really useful (not in a way of  "nice to
+> > have" but for a concrete usecase)? If not then I would suggest keeping
+> > things simple until there is a need for it.
+> >
+>
+> I think its a nice to have. I can't think of a concrete usecase at presen=
+t.
+>
+> I guess a potential usecase is if you are trying to use memory allocation
+> profiling to debug OOMs and the missed objects size is very large. I gues=
+s we
+> wont know until this happens, but I would hope this number is usually sma=
+ll.
 
-> =C2=A0static int __init cma_init_reserved_areas(void)
-> =C2=A0{
-> -	int i;
-> +	int i, r, nranges;
-> +	struct cma *cma;
-> +	struct cma_memrange *cmr;
-> +
-> +	nranges =3D 0;
-> +	for (i =3D 0; i < cma_area_count; i++) {
-> +		cma =3D &cma_areas[i];
-> +		nranges +=3D cma->nranges;
-> +		cma_activate_area(cma);
-> +	}
-> +
-> +	cma_ranges =3D kcalloc(nranges, sizeof(*cma_ranges),
-> GFP_KERNEL);
-> +	cma_nranges =3D 0;
-> +	for (i =3D 0; i < cma_area_count; i++) {
-> +		cma =3D &cma_areas[i];
-> +		for (r =3D 0; r < cma->nranges; r++) {
-> +			cmr =3D &cma->ranges[r];
-> +			cma_ranges[cma_nranges++] =3D cmr;
-> +		}
-> +	}
-> =C2=A0
-> -	for (i =3D 0; i < cma_area_count; i++)
-> -		cma_activate_area(&cma_areas[i]);
-> +	sort(cma_ranges, cma_nranges, sizeof(*cma_ranges), cmprange,
-> NULL);
->=20
+Hmm. Missing a large allocation and not knowing about it can be a problem..=
+.
+I'll start sketching a patch to see if tracking such a global counter
+has any drawbacks and in the meantime I'm open to suggestions on how
+to expose it to the userspace.
 
-I am guessing that this is safe because cma_init_reserved_areas
-is an initcall, which is only called once?
+About concerns on the IOCTL interface, would it be more usable if we
+get the alloctop [1] or a similar tool which can be used to easily
+issue such commands into kernel/tools?
 
-Is that correct?
+[1] https://android-review.git.corp.google.com/c/platform/system/memory/lib=
+meminfo/+/3431860
 
-Is it worth documenting why this function creates
-a sorted array of CMA ranges?
-
-> =C2=A0
-> =C2=A0	return 0;
-> =C2=A0}
->=20
-
-
---=20
-All Rights Reversed.
+>
 
