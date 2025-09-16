@@ -4,86 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BAA8CAC592
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 03:08:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA02ECAC592
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 03:15:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E0FD98E0010; Mon, 15 Sep 2025 23:08:19 -0400 (EDT)
+	id 287E38E0007; Mon, 15 Sep 2025 23:15:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC0B38E0001; Mon, 15 Sep 2025 23:08:19 -0400 (EDT)
+	id 25F878E0001; Mon, 15 Sep 2025 23:15:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CAF208E0010; Mon, 15 Sep 2025 23:08:19 -0400 (EDT)
+	id 19C2A8E0007; Mon, 15 Sep 2025 23:15:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B6DBC8E0001
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 23:08:19 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7B27EC07FF
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 03:08:19 +0000 (UTC)
-X-FDA: 83893629918.15.3997387
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id DD16A40006
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 03:08:17 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=N8A+NpMj;
-	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 094FC8E0001
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 23:15:56 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 98D74BB557
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 03:15:55 +0000 (UTC)
+X-FDA: 83893649070.19.ACC1F21
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 3AA08A0003
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 03:15:54 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ghnep31B;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757992097;
+	s=arc-20220608; t=1757992554;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O1ch+TLn78TGl226hk/YBzIfpivaXLG3ewt/ogjQADY=;
-	b=xNtFQ6mv+MMEpY1WvU/sFv05CNaPE/pWW+rc6xG31yFKnyvgKFMCIt8AOa1wuFyfwp8Bj4
-	ys2M+upqpcZqk0Bu5Ri63WNCXTKQWmyN4bLPVH1e6bKzdg0OS+WB06f8uZfRuDMKurcE/1
-	C258fxGKhltCGEcv/+DJ8b2atCk5i44=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757992097; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=1s/T1eAhD4PSqIytNe/Nt1BbKYeNNug3kg0LKTqWzSY=;
+	b=74g0zQ3/VM6qprnLvIitGjDhaMUSoamGBaADWrEfBdhhhRYeZxRnrwGMD60ZTcC1sBSg6K
+	YRGVcy3nf/TVubdxoZynKuJfx5jhk95wap3bhtt6ksSvq9KRNdnyiyA7TRj1O81Ol+PSk5
+	o5JCDamYd09viSShhntCPdMEgJ6DJYk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757992554; a=rsa-sha256;
 	cv=none;
-	b=j7OD2WUpvh5ivIkZ1PN8BGVGvEeLAQUuaPgDgXj5PclWOGpzRbL0qgWsVC0108aJTVCC5T
-	c9I0kk7zMC0z7auVpi+P8yh8B8x0or8RmICr9D8e/5Ej2r379SIjjEqr3zdmxT1t+6djmM
-	tJA/5gKKiaMhi2M8TcGiq1sIANgIbko=
+	b=Tm7z8d0iJyKTtymKYmp842zn9PBD/+jTF+kDQbhfsfVN8f/XUwGKMIOBZpJEdmuYLFwnHk
+	HhdbUgKn/vptEnHH3SLIExUVEH2DOmVuQXEr+alCqRptsFU4inwTU8+h6hmE1iQ/9RUVJ+
+	LSeB1XQBqbY3TUM+LRR3q6lxmOR3/lA=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=N8A+NpMj;
-	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ghnep31B;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3B11360054;
-	Tue, 16 Sep 2025 03:08:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90EC9C4CEF1;
-	Tue, 16 Sep 2025 03:08:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1757992096;
-	bh=SzU9zd6gKPgO0BdktrwqDgUBQcmLllVJGEvbli/LrUs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=N8A+NpMjB+OO2qFkCikHUYaXyurnUzhTBVaKoQWOUESt4QplPSf6y5gNUrLZdTnzH
-	 NJHtWZhaZ92UXB7/08B/2cODdTaYBEELsRs1Okg4QdAKEJQVeQ3prjctU0f7uZBUuA
-	 xZZ6jGQOsShojE+eX88M6C+jgKtO7J0y2OQceE3o=
-Date: Mon, 15 Sep 2025 20:08:15 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Jane Chu <jane.chu@oracle.com>
-Cc: david@redhat.com, harry.yoo@oracle.com, osalvador@suse.de,
- liushixin2@huawei.com, muchun.song@linux.dev, jannh@google.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] mm/hugetlb: fix copy_hugetlb_page_range() to use
- ->pt_share_count
-Message-Id: <20250915200815.e2b844e0a3291fa994d333b4@linux-foundation.org>
-In-Reply-To: <20250916004520.1604530-1-jane.chu@oracle.com>
-References: <20250916004520.1604530-1-jane.chu@oracle.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 3menpffoki75yqekt5dkpbiakwmcceoi
+	by sea.source.kernel.org (Postfix) with ESMTP id EB1224413C;
+	Tue, 16 Sep 2025 03:15:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A34A3C4CEEB;
+	Tue, 16 Sep 2025 03:15:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757992552;
+	bh=Q+ZVTVz4mEvUkB+hpSZhEe9TJff7bsWdkkhr92sx/0Y=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ghnep31BqKD/QI5//aXn+PGWVlVVqTd59xS+nluKGfAIZ2K3QjLcqmB32MYENgJ9D
+	 Xg8c8wHroj1Bo5EpTAI/BnZPZlOlx6dCgy+1tEKeO4Ujcr2L+GAS2YwfRlYf1KbgzL
+	 HEfe97qgyByZ+uwppvRb77tgTQRBewjDhMNTUqkP0z42fyZNj6NVoH6Ye6GHw16JVv
+	 zgl9KdctOri1oNyLuPJzUj4foa1118dkP7vsLvXNPanvBnq1M/2/wgmd1WMaDdHKlT
+	 QnsNQIlLALMy0G9nj+m4QK7RQ+2toIK1do3l/X83c30uWiy9pWkxHaYIquYelERVkV
+	 46Myp3LxWK+sg==
+From: SeongJae Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	"# 6 . 11 . x" <stable@vger.kernel.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Joshua Hahn <joshua.hahnjy@gmail.com>
+Subject: [PATCH] mm/damon/lru_sort: use param_ctx for damon_attrs staging
+Date: Mon, 15 Sep 2025 20:15:49 -0700
+Message-Id: <20250916031549.115326-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 3AA08A0003
+X-Stat-Signature: tocznysbyc1j6yiym473netd33zj3rho
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DD16A40006
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1757992097-15217
-X-HE-Meta: U2FsdGVkX19neo0AVmDARB4bWFzvLL8liOr0KVs8mZ+7kQnL4VpsR5hnUOfKyO+BgAC8X7X8jHaRMCOjB95Qvj9ajd0qqTFrRfjdtXmTL2fLEdnPVex72QsxoMtPkHQhqT+BCue3dZNzqw5cu+hsn07WW5fCH/R3i7AgkZcRS48Ughd82b41IV2lE4sA3U9AJQcxEct/4QSMGHhAJvwuuyBrzx8oiV791BAWJlWostmw09ZJ/21PQ2Om2Zdrme7/WHYCNMS8mi3nVR2l2vv5Sd+P7rOZ4P/99lG6ypJxT4eRZh/B/vq367o2pdh4i7w8MkiCQP7zm+EE3r6Hh41zj+rulXP2cJ4pXO9FEKJjLt7kkuDt19XaZ5L/kc9F1d3y4qtcH1npXcRb2zWKLLd8Dq8P8/NCUbEuGY5bcE0CqizVav7P6jO98Cv92cXqA03boyuj2BtaYgfyON2fBmRUoA5YLjqarfs03S+WwRy3gQ+f4aqR/xfXFUcKl7yxWuK9ovutYis8C37iJrlTxMR4FENYFxo/DHF7A5bHqxZUb2wsAYKukVz/6OoA0EDZuDzXl6NCHPx40EIlq/1CHJNNNuxoGwrP5Q0G/semPEDNHKjgrjmHqu3V+ZXnVudTDiUmewK6x8UTaltbSnTs6nX9GJ8li4ync9MI7bQ/LB+vXfNFVFWgiPiVu90PaZAYZA30LPL/DUZsP17Pb8z14b+ctyxQjr4HZ+N2/UTzaaZdP0j5rHyXPC5xo6Gw6COssiSK6SQ4/JKxbdMJL1NDSkUVWIfkC8lkWDWMfv2rFurQ4dN/qiIQCpCPZBIlCAQ809oAlaasLDsyMzdnL0Yh2lQJvgYN9ByFQjiLA4kv9nGgiGaGvvgbRQ0DD3sm1AfhyjXzLoXWXDfGDn6eTOFMqy53Lc2AO5OWSmvPmPeL0UAmkk2PYa4ZM4cl8S/g4Sthm/3tq7BXYB8Lq7xyocHDfy1
- 56Kt3etv
- R1m0jxrI8smJwznt4uq1AXzZfO+7Gi3eZGrOhicrUS7FgHU6t21K/7vbzvIlLuZMjmrHntPm+e/ylLXmHhNHXnfftYHE07dUxvGyoF2vOkdyR2pydcON81s/893F4bohlbsspbbrIbg10NTbNFqcLpZVoVjJe/ncLFvUw2UrSM54/JsYAMVLSLYNStsiN0iXAVeDfohkkxC8QJDsJIwJEbznG+m+Oqq6AY9y/6d/vmt9F9C0It1WCFIzC/fW4aeVNnBrEdbVz2Y7XL58T651X4y7cTL8xf8oqS6zBxqMomO7tYOVFCqoNUPOWgj3fF3HaoJ2y3i8SSNtFyqQWyELv7y7JQBAtEladr6Z1
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1757992554-733967
+X-HE-Meta: U2FsdGVkX1++KD5Qw3YGFBEQLd4c+gRy6sY17XcvVZkbybmczaTwee7liLW53/YPZz5oWJZeyp9c7MSgSZuDAyGzShZxddayYtn7vKQUNDNlKsZgJdLjK+XXkXtaE/IE/Yb1gwEC3xAS/nQa5BtsCQGGAgdMTFWEsMH3gqvYi3Ks6Rno0Y16fFp8S6jboZdt9jVKAMwflMYoHhRiTZseSzadGUHJ87ZwyVdreB77wvkqRuXLxWLgr1NOhe2LhZkDpceQOtho8Bf5zqGR3LG7jVV4YiXcTuncAo0AmdMwB4+UqZorauTwIMJy8DravCwo4KZkZ3j5Bvh+KJekX3QiWNOhKpfMHsqjlnukJVEMmrGvJxP21LIDj3s/+52HV+nGp0x39tQUq5sMutlJU1rVqXWdCwbnJdmDYLT4wd/O2TEJKc3MZWUWJKSL3+K4eXD1obMI2Qb5lbPCiFbz+rU5sgz1VolAEhdhu7QRnTziop4Cv7zxz9ZusT1PQL6IVKILKP9haC50Uu7tEV2HZT3rdzEQkbzMAEOhaAfFZApDqk2XmnPD8fT/y8iR4dEzohQRVSPLWCf7AvYaSg+2OxIsjG+D0xMmnBU5aFiSxWmR7veQ42kG5dpaZmBFm09Us8u3+L6d9NPe490kAVQYekwG/MUZ5FbMfDvtusB3jvJp2yugJOOFrbiIgp+I1Qw884sC+ZCH6aWjusdp+zFfbfWOg8FVyv6QZ+qkoUZBq5raMMySAP9/82K4WQW2VfEtw6qFoff02gfw1BbUp7hTMmMwG3OsDSbyq9sLMm2nqM2ecs2W0htV9LBIA8TxBYJLYBrqw+OemB9aJnFcJQehZpNUGyi+nIccIR61JCnJIA1dVlEyJocNFDGfrlD8xcf/gJZfrDvCag/Kpo0Opd3lwttXatQJVeCIhUjvvvq/TBx8LG58mmjk5RqDGX1r7tydt0xKlZK/n68yIHmBKUO4y78
+ qB9lIjbP
+ Hq9x8yUDLaISI/jU9klzDG777VC1AsE/wI+VAdNsf/FOWFH8l1l3z1VrsE/Cj361fZ8mW3IV5dqEjX80=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,98 +93,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 15 Sep 2025 18:45:20 -0600 Jane Chu <jane.chu@oracle.com> wrote:
+damon_lru_sort_apply_parameters() allocates a new DAMON context, stages
+user-specified DAMON parameters on it, and commits to running DAMON
+context at once, using damon_commit_ctx().  The code is, however,
+directly updating the monitoring attributes of the running context.  And
+the attributes are over-written by later damon_commit_ctx() call.  This
+means that the monitoring attributes parameters are not really working.
+Fix the wrong use of the parameter context.
 
-> commit 59d9094df3d79 ("mm: hugetlb: independent PMD page table shared count")
-> introduced ->pt_share_count dedicated to hugetlb PMD share count tracking,
-> but omitted fixing copy_hugetlb_page_range(), leaving the function relying on
-> page_count() for tracking that no longer works.
-> 
-> When lazy page table copy for hugetlb is disabled, that is, revert
-> commit bcd51a3c679d ("hugetlb: lazy page table copies in fork()")
-> fork()'ing with hugetlb PMD sharing quickly lockup -
-> 
-> [  239.446559] watchdog: BUG: soft lockup - CPU#75 stuck for 27s!
-> [  239.446611] RIP: 0010:native_queued_spin_lock_slowpath+0x7e/0x2e0
-> [  239.446631] Call Trace:
-> [  239.446633]  <TASK>
-> [  239.446636]  _raw_spin_lock+0x3f/0x60
-> [  239.446639]  copy_hugetlb_page_range+0x258/0xb50
-> [  239.446645]  copy_page_range+0x22b/0x2c0
-> [  239.446651]  dup_mmap+0x3e2/0x770
-> [  239.446654]  dup_mm.constprop.0+0x5e/0x230
-> [  239.446657]  copy_process+0xd17/0x1760
-> [  239.446660]  kernel_clone+0xc0/0x3e0
-> [  239.446661]  __do_sys_clone+0x65/0xa0
-> [  239.446664]  do_syscall_64+0x82/0x930
-> [  239.446668]  ? count_memcg_events+0xd2/0x190
-> [  239.446671]  ? syscall_trace_enter+0x14e/0x1f0
-> [  239.446676]  ? syscall_exit_work+0x118/0x150
-> [  239.446677]  ? arch_exit_to_user_mode_prepare.constprop.0+0x9/0xb0
-> [  239.446681]  ? clear_bhb_loop+0x30/0x80
-> [  239.446684]  ? clear_bhb_loop+0x30/0x80
-> [  239.446686]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> 
-> There are two options to resolve the potential latent issue:
->   1. warn against PMD sharing in copy_hugetlb_page_range(),
->   2. fix it.
-> This patch opts for the second option.
-> While at it, simplify the comment, the details are not actually relevant
-> anymore.
+Fixes: a30969436428 ("mm/damon/lru_sort: use damon_commit_ctx()")
+Cc: <stable@vger.kernel.org> # 6.11.x
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+---
+This was a part of misc fixes and improvements for 6.18 [1], but Joshua
+thankfully found this is fixing a real user visible bug.  So sending this
+separately as a hotfix.
 
-Thanks.  I dropped the v2 patch from mm-hotfixes-stable and added this.
+[1] https://lore.kernel.org/20250915015807.101505-4-sj@kernel.org
 
-> Fixes: 59d9094df3d79 ("mm: hugetlb: independent PMD page table shared count")
-> Signed-off-by: Jane Chu <jane.chu@oracle.com>
-> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-> ---
->  include/linux/mm_types.h |  5 +++++
->  mm/hugetlb.c             | 15 +++++----------
->  2 files changed, 10 insertions(+), 10 deletions(-)
-> 
+ mm/damon/lru_sort.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-It's conventional (and useful) to explain (beneath the "---") what
-changed since the previous version.
-
-Here's the v2->v3 diff, which appears to be based on David's review
-comments:
-
---- a/include/linux/mm_types.h~mm-hugetlb-fix-copy_hugetlb_page_range-to-use-pt_share_count
-+++ a/include/linux/mm_types.h
-@@ -631,6 +631,11 @@ static inline int ptdesc_pmd_pts_count(s
- {
- 	return atomic_read(&ptdesc->pt_share_count);
- }
-+
-+static inline bool ptdesc_pmd_is_shared(struct ptdesc *ptdesc)
-+{
-+	return !!ptdesc_pmd_pts_count(ptdesc);
-+}
- #else
- static inline void ptdesc_pmd_pts_init(struct ptdesc *ptdesc)
- {
---- a/mm/hugetlb.c~mm-hugetlb-fix-copy_hugetlb_page_range-to-use-pt_share_count
-+++ a/mm/hugetlb.c
-@@ -5595,8 +5595,8 @@ int copy_hugetlb_page_range(struct mm_st
- 		}
+diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
+index 14d31009c09e..ab6173a646bd 100644
+--- a/mm/damon/lru_sort.c
++++ b/mm/damon/lru_sort.c
+@@ -219,7 +219,7 @@ static int damon_lru_sort_apply_parameters(void)
+ 		goto out;
+ 	}
  
- #ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
--		/* If the pagetables are shared don't copy or take references. */
--		if (ptdesc_pmd_pts_count(virt_to_ptdesc(dst_pte)) > 0) {
-+		/* If the pagetables are shared, there is nothing to do */
-+		if (ptdesc_pmd_is_shared(virt_to_ptdesc(dst_pte))) {
- 			addr |= last_addr_mask;
- 			continue;
- 		}
-@@ -7597,7 +7597,7 @@ int huge_pmd_unshare(struct mm_struct *m
- 	hugetlb_vma_assert_locked(vma);
- 	if (sz != PMD_SIZE)
- 		return 0;
--	if (!ptdesc_pmd_pts_count(virt_to_ptdesc(ptep)))
-+	if (!ptdesc_pmd_is_shared(virt_to_ptdesc(ptep)))
- 		return 0;
+-	err = damon_set_attrs(ctx, &damon_lru_sort_mon_attrs);
++	err = damon_set_attrs(param_ctx, &damon_lru_sort_mon_attrs);
+ 	if (err)
+ 		goto out;
  
- 	pud_clear(pud);
-_
 
+base-commit: ea93a9235c1c6e61cfa6e5612b7b6b3fc41e79e1
+-- 
+2.39.5
 
