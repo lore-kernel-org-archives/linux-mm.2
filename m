@@ -4,97 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20975CAC592
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 17:47:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B900CAC592
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 17:47:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 79BBA8E0006; Tue, 16 Sep 2025 13:47:42 -0400 (EDT)
+	id 886208E000A; Tue, 16 Sep 2025 13:47:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7735B8E0001; Tue, 16 Sep 2025 13:47:42 -0400 (EDT)
+	id 8370D8E0001; Tue, 16 Sep 2025 13:47:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B0D68E0006; Tue, 16 Sep 2025 13:47:42 -0400 (EDT)
+	id 6FF898E000A; Tue, 16 Sep 2025 13:47:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5A5F78E0001
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 13:47:42 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 08E7F1A02D4
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 17:47:42 +0000 (UTC)
-X-FDA: 83895845964.05.01271F3
-Received: from relay.hostedemail.com (unirelay07 [10.200.18.70])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 472E88000A
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 17:47:40 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	none
+	by kanga.kvack.org (Postfix) with ESMTP id 5CF108E0001
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 13:47:45 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2B658B7E3B
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 17:47:45 +0000 (UTC)
+X-FDA: 83895846090.07.4C6BE2D
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 4428F4000E
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 17:47:43 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=LgfPcPOm;
+	spf=pass (imf07.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758044860;
+	s=arc-20220608; t=1758044863;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8Luzzkyt6Hnwy2sFnprSs3yb5dkNaDvgMVbJE/r2jec=;
-	b=DWLJtF+v1yTSYFyBImlcAn1HZTzQum0rlXdgqG9AfpxIUHR4KolNPpaq82/Unp2IAVc2w3
-	aXRPS7RtaoBbmWgIH/ZVNcYdilz535aRTSFFUNF5uLmxn4IjXkkKiQjIy+6GFItvwO+vbC
-	HVCjxYnra5tzHIh5q2Icb3o7mJb6bGI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758044860; a=rsa-sha256;
-	cv=none;
-	b=LfPg1TL7/I5QJa7f28s/ujzxlOECLESQzVHIQIJLhpvSBGJnGnK0wpQ38qp9YyfLYU9n4g
-	0MAmZRQRyHmt8vYiYHYbcLn14bTjbABPfXNTJRkIzxrq6YXnl6U42Q9XTOBIPNa3T0qj4w
-	BgVTKbsx+D/yLBvE9uPMueRzmldSJFk=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=WV8PZeNRScOuv4YluUBiR/tynYHUDyQLkirKhaJTO4E=;
+	b=CGqWwsxvV/Jv1udkAHs1+zHKWxaOuwdf5S8nDf97FErLeEY+ZBX3tilCc8sVWR7uwfV7oZ
+	0OkhiIbuDAViQOmzOqqDXtvYvAuqe8BSrlPqh0F2HR1KpFsXMCUnbvMXdrjkZwcKkkqTfK
+	qTg9RXD8fmwaDXMMJHsX7axxPfbR/eg=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	none
-Received: from omf15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2F291160281;
-	Tue, 16 Sep 2025 17:47:37 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf15.hostedemail.com (Postfix) with ESMTPA id EA69C1B;
-	Tue, 16 Sep 2025 17:47:29 +0000 (UTC)
-Date: Tue, 16 Sep 2025 13:48:33 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Kalesh Singh <kaleshsingh@google.com>
-Cc: akpm@linux-foundation.org, minchan@kernel.org,
- lorenzo.stoakes@oracle.com, david@redhat.com, Liam.Howlett@oracle.com,
- rppt@kernel.org, pfalcato@suse.de, kernel-team@android.com,
- android-mm@google.com, Alexander Viro <viro@zeniv.linux.org.uk>, Christian
- Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Kees Cook
- <kees@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Masami Hiramatsu
- <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Juri
- Lelli <juri.lelli@redhat.com>, Vincent Guittot
- <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, Valentin
- Schneider <vschneid@redhat.com>, Jann Horn <jannh@google.com>, Shuah Khan
- <shuah@kernel.org>, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v2 7/7] mm/tracing: introduce max_vma_count_exceeded
- trace event
-Message-ID: <20250916134833.281e7f8b@gandalf.local.home>
-In-Reply-To: <CAC_TJvdkVPcw+aKEjUOmTjwYfe8BevR51X_JPOo69hWSQ1MGcw@mail.gmail.com>
-References: <20250915163838.631445-1-kaleshsingh@google.com>
-	<20250915163838.631445-8-kaleshsingh@google.com>
-	<20250915194158.472edea5@gandalf.local.home>
-	<CAC_TJvconNNKPboAbsfXFBboiRCYgE2AN23ask1gdaj9=wuHAQ@mail.gmail.com>
-	<20250916115220.4a90c745@batman.local.home>
-	<CAC_TJvdkVPcw+aKEjUOmTjwYfe8BevR51X_JPOo69hWSQ1MGcw@mail.gmail.com>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=LgfPcPOm;
+	spf=pass (imf07.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758044863; a=rsa-sha256;
+	cv=none;
+	b=PTct6JSJxd79uVV3UbjXti1GNlS65pmlpRIV+u5ddzx577g9QEyUQhcBe3S/W5tn9jzAUs
+	cTTfvuLYo6i+5SEixjixo2ohTVC1kSB739oDoyWPAINbqWWFiMB7KRH9onYZxh8JNAZdvQ
+	6T6qvT7jXhcKxCJrCCKCI3PfiLb6cPQ=
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-267c90c426dso18335ad.1
+        for <linux-mm@kvack.org>; Tue, 16 Sep 2025 10:47:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1758044862; x=1758649662; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WV8PZeNRScOuv4YluUBiR/tynYHUDyQLkirKhaJTO4E=;
+        b=LgfPcPOm4A7/KpEOO7FuYhMkxvUTT6NLvPiWfskSa5PUHWdF1YqCY7fjeCHOH9LBEJ
+         NXBKmh2bSKVcnOZjSvzNErQSLwdIWOK9qArRRDHLqQokmpnD3g1b2ZzYyDnjJj9unjAo
+         J440vqwaEaZI9y1jkUsJo98b9u7DxrHWMj4MAN/wyvjcWIE3xlGuNmUoB8yIXj3ACSSu
+         mTXHbpJINgNDbp3NbYOJMGN2xpOieCM5EIfW8CmD5qbwXRTqhVm/Mui6wj1P2gMrdebx
+         sI17cpcTMX9BzjSLz7ueTD6A8VgZ3ACxkbRm/SZGHYn0H0rh5sHAfWiXDnrfBEFOHIQw
+         pQIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758044862; x=1758649662;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WV8PZeNRScOuv4YluUBiR/tynYHUDyQLkirKhaJTO4E=;
+        b=gh4UvoZHK+0+DJxlmiNGKsPezTekX66PkqL3mvjYBVAHsL+I3WVsrfhj8HxnudCbwh
+         pZFb4vmy6QvISfGqYFz8giQJN6KlUgMG82pMBYGcdZjvGXiSkO+Xjvuj7lc3szjD7K2R
+         yJA16wjkUYuudVlsJi4rtQ+E6AAhrBmg9I3PCVVeBoPf4wilBuhY9Fz+jJVrVSwoq//8
+         ICZLyKBIEhywwI/UGp0YFmLVdEORuRo87L6lzDzF5vAnkr0S13xzBrMMi8MhnBiygRjG
+         tTPyFzKJFcjL8N8+u3/mxsoWg4YSLo+QqYH0xAmNyPrJWV2pljcfgGvAw75CHQhnwtaV
+         NuYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWMRKYe+FUZV1pPvJj032a1TR+TMONb4BQ2E4TzIqtjiApXezslpAk1z83ARMGZzgtKckRmr//eQQ==@kvack.org
+X-Gm-Message-State: AOJu0YxaIvZJSMNFxUuo79DCtU7hkLfBOD++mQu8VyDuIZO8ZDAoTaEW
+	YCn3vVJL7uuS8NaoM7Alf7YN49j+QC+2rqaOCc0kSL4uZqxxF0aTttYCPegEkrf0m9v53qZaqgn
+	6vcfRjZO97dtEetBvTqBEp6L0Llkljv0L7IrmoOJB
+X-Gm-Gg: ASbGncv9D70sy+EvBCu4Q1IbYkbKzEf5FoAxxJTP+Pvcy7ROZ7HYxmlId3+5v+DdxkG
+	ff1AUkH2qA/2+CwMsSzOteFgNPf7zp9j2ySOelJUjPMuTyPPgnistrHI3HAtuBQfKc2ovaUq+xy
+	Y0m+zc9/fgjNaUaJ8fhk2tVr7fgswkzFJPrLWrjCi5tsi4Ckc1gu/nErCUU1wppyQfkOx6AF/C8
+	/0IKNwttG6GKrrIeA4MCxzKfcZhiZD4qTKwd4brnK4NGRMP9kbSvG8=
+X-Google-Smtp-Source: AGHT+IH481Ptt6TGK3gOl1kWB0jZ6sD/yNX/MW49IQWxuVmUns01xHRPJ06rIkyHQhotda3n4zze0byfKtMf1L55b6o=
+X-Received: by 2002:a17:902:ea06:b0:267:912b:2b4d with SMTP id
+ d9443c01a7336-26801263c77mr123545ad.7.1758044861731; Tue, 16 Sep 2025
+ 10:47:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX19fYVEo+TQfqoFVoPY0drWwFJ5ox6HfaHo=
-X-HE-Meta: U2FsdGVkX18pAhXbWHugGNFQkb4HsbkpHA3LSK9XLE+vsmwTM7qPsZjE2Q1AkokCaSSM3kECB5AtJoNuafNVa4c24DllJqRZBRvH3Zmhy5wNh7TxTIkWD37LWX+bmFtCcebRBnxRuw3/k7vvz39wmpkcHu/7IwevVpAu7R0GogngimDsXGbeq53gsFUSv11MEKrEXvPbk4fw2Y+CyjjJq7TcrXucdUHUeHf7eiqw5uLSPBWimQmNj30QjsGtyMec/D0hb09wfSYgY56Wz5pEFnLq6GYNKSiHSG5mPzJ0+9udgkbbXo4zTaOyLKWUXBfDcE7VEMWXx80P+tQi6apDTcgD1TYy32eR2VKzLPG+ZszbApg+pHDZug==
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 472E88000A
-X-Stat-Signature: 5uqotgt5cqbtb693tzenck8fsp784zbq
-X-HE-Tag-Orig: 1758044849-648048
+References: <20250915163838.631445-1-kaleshsingh@google.com>
+ <20250915153401.61cbd5120871ee7a4e5b9cae@linux-foundation.org> <aa95777a-8012-4d08-abcf-7175f9e2691c@lucifer.local>
+In-Reply-To: <aa95777a-8012-4d08-abcf-7175f9e2691c@lucifer.local>
+From: Kalesh Singh <kaleshsingh@google.com>
+Date: Tue, 16 Sep 2025 10:47:30 -0700
+X-Gm-Features: AS18NWAFaSQqFXRnUy8iH8cngSLpkM9xdFvTXyHLo_pUfxdfSq_22GyY9mLtXWo
+Message-ID: <CAC_TJvdwt_66v_A3RnuUBS_XJ7xMwWhEwHEEeLpu2_M5aVQ=Fg@mail.gmail.com>
+Subject: Re: [PATCH v2 0/7] vma count: fixes, test and improvements
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, minchan@kernel.org, david@redhat.com, 
+	Liam.Howlett@oracle.com, rppt@kernel.org, pfalcato@suse.de, 
+	kernel-team@android.com, android-mm@google.com, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Kees Cook <kees@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
+	Dietmar Eggemann <dietmar.eggemann@arm.com>, Ben Segall <bsegall@google.com>, 
+	Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, Jann Horn <jannh@google.com>, 
+	Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-trace-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: t4pb4ibykhg4airjkwcwsxac19bzqq1c
 X-Rspam-User: 
-X-HE-Tag: 1758044860-297276
-X-HE-Meta: U2FsdGVkX18q+IXjAE2ZfotHUQ8MSvBGrYDJ+5Ozcmeg8RBG2yzvxN9NGmnfcUAvnFZOnfgwenlkjgI1FnSqVLJKTmgfkGNSvnRMZz4xLrUpCaYQLg6g9sk6r3b3XAc8iNus5Dtn0/kDOGqwOGzZwpi+wjaojpL0Kke3Jjl12HgafA+d/dV6zG6TOb7VojJe8K4Li60brCuAKVAQyhoLUCF+R1d0VtC2a8xuvXihMsz5RGycRoj4BnVAxeJ1X9t0aP94bMB6p13saRyvd5pdWFEGRdZ7e39LTnHRPW38RQdCnlmJ1QEpQmuQMCWxGMzOy8VQwKeOPBBLtoGzK+KyHMeGPpzI0U5Iu73MJ1FbL43ITpS2+odah3nWt2VPAXuN3kSDbZFmh8qSSMvYj/5qm3FEdjjlPWX8dTmDD4fNBwZP5YL6LzrLJ7HMepX6u0uj1X74ocZl55UvBJv0Rs0Ir3dPc6r0sSrVD4z87+IbwDW6Onm97dD6bG4NyeeOjHoAx1LLeKL5HdubuhgEAbN9QqfTXfvdk1Vjq9gHHm/Tl7q1+BeBgOFiwiBZQtrqxwByUSdYVEXHwjlRmPAoCUqaAT3gGEEZArjvvKh271aWPhRs7NyxncPgUpgfXATSwymRjEs8YKZKrmWFQt15Ac0FBfi4YewOFo0fOlHfH3Z/ictsaYsf/SNisC6RVbg56879tFVDZDQRquo3t6XaT3MtcNVli0YIsPOJbN11vM3tAkDt9zG5V5SRZBDcVdzXNEe2o4XiMNjD/yXRc4SwD3xGJHyjg2OxVzP+UP7odrmllgqtBKIxbEelYEajjX4GoL9JkmiO93rypMLq30xNLuRI/wgXb2PrZCvooofU+dtvnwUMTNr5abE4ip0ylmJ8d9u+2My6/4ZwA8fvKtrDoViS1huWIXZCDsDaXOPjlEUmP2XpIWIwTqwSKsQZSe3pcUJohft6KbtKb9vv+ZDF7jz
- D6yeQVXj
- KcSNMMT7PHIu8vSacfPM86li24z53mJMZBOYH
+X-Rspamd-Queue-Id: 4428F4000E
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1758044863-755789
+X-HE-Meta: U2FsdGVkX1/e4YlY8gQnae2swVLjghXn9vIlnOkKn9kkptVdj+fgdwT+kocyTsm6Y7u2Cqz27TZ0mA1efjbsaVfqjEmJnRuZQh+drhu++d+H4eFA8ALo7xILgtlcgMkhBC0ls2i/dkneFg9fqfgO1pt4yCzHMU7fPCUjuBKIzHvJwcGHF77yrdEsAgaUaui9YRefhhpBR5FLkNFvNM3KzBV33rGiEUMldEbylnKhVNgL8fPj2Tw5cGrPKp14x1ubL9HifoUjaSaZ31XUnvk2Wt6vwZLEpsoCtSmbD+Fz0Hm8IlUoKKP64TH1nGfDakNphL8xd0c6Kfv4SpirkTw5ITdfhwkjdNrHSia2ukTMntDWoELBNhHXz1ZUOxtYoA5+M0goNUitblNwOENXiA3e1nbvbly6C5EEznIQthrRTlSO+XaAHVbBWDXx//elniH9V42bqOupS5kh4XcpdSYocCYiuL2Ps4K9vQmZd8YZzUt5ImbJz46NcRxq/oD/QSD+bsMz1T/JG485dMf8ahxwkQRCkkD54HtgF6BOXtJg3GMyra0UH9hg5wNHExohQpcYxXXpXSrfEeMornWK+KQ1P/2fNbMPbLCE4kDDdUqA6R3jBDx6oxwEZnak3IkK8DsdrcybqQIaWO2ejlId+gE02tvlvU9FPE88RaxNMW298jQQzCZdfLTsaddOJDoAo5tYM5V6oE7Ovu5bebB1+vS1julwN+Kh+QqcVV8/uquPYKFCRLz1AW+QRPXVCzmbYRihTqAOiaGTc9/t7UoeVJzUcHg/nYWlE247g21Vj0OAUj20MtS4oyetq+fLQeYF01r8uYTX3Imf2ekVfHIVaGqa2Zx6/JVLw/xigiGYZNIVqvti7NOUn3qpKe0e3mGeQzQV6wIhBBd+Q6mBd8AvcAzploQSLYtD+trA0pFgpxjymKOMWdN4OQXy3kLtIkQwHnQTI5uQQFlVranwyMaBMwp
+ a4P/Tqqb
+ OXpjuLagVVx03sLRCsZ6YlY91gm0tzCUyuFxRFA5O29EgU/2Q64cHXe4dEVENdelhnZVtYuVD6yYjkn6onNuhKOvCYtTaNYKwcWNA12ax0zBdFGsgtEQ3NzUOxPhXjrU1FeqdxXXJ1Zd/2DuUdrpBMp332L8fuHEGhtkgQzzplw5iX2g3NETXfxPQQlBtsAU2akwKsSBIgB0wFWlIB9zS6tr84Y/srMF11367
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,43 +129,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 16 Sep 2025 10:36:57 -0700
-Kalesh Singh <kaleshsingh@google.com> wrote:
+On Tue, Sep 16, 2025 at 3:12=E2=80=AFAM Lorenzo Stoakes
+<lorenzo.stoakes@oracle.com> wrote:
+>
+> On Mon, Sep 15, 2025 at 03:34:01PM -0700, Andrew Morton wrote:
+> > Anyhow, this -rc cycle has been quite the firehose in MM and I'm
+> > feeling a need to slow things down for additional stabilization and so
+> > people hopefully get additional bandwidth to digest the material we've
+> > added this far.  So I think I'll just cherrypick [1/7] for now.  A
+> > great flood of positive review activity would probably make me revisit
+> > that ;)
+> >
+>
+> Kalesh - I do intend to look at this series when I have a chance. My revi=
+ew
+> workload has been insane so it's hard to keep up at the moment.
+>
+> Andrew - This cycle has been crazy, speaking from point of view of somebo=
+dy
+> doing a lot of review, it's been very very exhausting from this side too,
+> and this kind of work can feel a little... thankless... sometimes :)
+>
+> I feel like we maybe need a way to ask people to slow down, sometimes at
+> least.
+>
+> Perhaps being less accepting of patches during merge window is one aspect=
+,
+> as the merge window leading up to this cycle was almost the same review
+> load as when the cycle started.
+>
+> Anyway, TL;DR: I think we need to be mindful of reviewer sanity as a fact=
+or
+> in all this too :)
+>
+> (I am spekaing at Kernel Recipes then going on a very-badly-needed 2.5 we=
+ek
+> vacataion afterwards over the merge window so I hope to stave off burnout
+> that way. Be good if I could keep mails upon return to 3 digits, but I ha=
+ve
+> my doubts :P)
 
-> I completely agree with the principle that static tracepoints
-> shouldn't be used as markers if a dynamic probe will suffice. The
-> intent here is to avoid introducing overhead in the common case to
-> avoid regressing mmap, munmap, and other syscall latencies; while
-> still providing observability for the max vma_count exceeded failure
-> condition.
-> 
-> The original centralized check (before previous review rounds) was
-> indeed in a dedicated function, exceeds_max_map_count(), where a
-> kprobe/fprobe could have been easily attached without impacting the
-> common path. This was changed due to previous review feedback to the
-> capacity based vma_count_remaining() which necessitated the check to
-> be done externally by the callers:
-> 
-> https://lore.kernel.org/r/20250903232437.1454293-1-kaleshsingh@google.com/
-> 
-> Would you be ok with something like:
-> 
-> trace_max_vma_count_exceeded(mm);
-> 
-> TP_STRUCT__entry(
-> __field(unsigned int, mm_id)
-> __field(unsigned int vma_count)
-> )
-> 
-> mm_id would be the hash of the mm_struct ptr similar to rss_stat and
-> the vma_count is the current vma count (some syscalls have different
-> requirements on the capacity remaining: mremap requires 6 available
-> slots, other syscalls require 1).
-> 
+Hi Lorenzo,
 
-BTW, why the hash of the mm pointer and not the pointer itself? We save
-pointers in lots of places, and if it is the pointer, you could use an
-eprobe to attache to the trace event to dereference its fields.
+Absolutely, take care of yourself. We all appreciate the  amount of
+work you put into reviewing :)
 
--- Steve
+Have a good talk and enjoy your vacation. Don't worry about the backlog.
+
+-- Kalesh
+
+>
+> Cheers, Lorenzo
 
