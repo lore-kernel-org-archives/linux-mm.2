@@ -4,117 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27C9DCAC592
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 04:39:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99D4BCAC592
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 04:41:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 823F68E0012; Tue, 16 Sep 2025 00:39:17 -0400 (EDT)
+	id E43538E0014; Tue, 16 Sep 2025 00:41:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7FBDC8E0003; Tue, 16 Sep 2025 00:39:17 -0400 (EDT)
+	id E1B058E0003; Tue, 16 Sep 2025 00:41:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 739048E0012; Tue, 16 Sep 2025 00:39:17 -0400 (EDT)
+	id D57AF8E0014; Tue, 16 Sep 2025 00:41:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 619BA8E0003
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 00:39:17 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id F291CC0840
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 04:39:16 +0000 (UTC)
-X-FDA: 83893859112.26.B599CBC
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 29429A0006
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 04:39:14 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=DLYWJV0J;
-	spf=pass (imf15.hostedemail.com: domain of surenb@google.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C500A8E0003
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 00:41:21 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 67DC511A581
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 04:41:21 +0000 (UTC)
+X-FDA: 83893864362.28.3D90C54
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id AD3E880009
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 04:41:19 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=kfde2bCK;
+	dmarc=none;
+	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757997679; a=rsa-sha256;
+	cv=none;
+	b=UZlq0Ptou3tkGwCLiaXGl/BLri+q6Y0KxKj/w6hOV5dwt2UWSx4/69F0012JpL19EYATdu
+	XJ1BqmGsRwDHp5eDaUxyptl/1sNPatUiswjhCw4NUf6MuXdKQY/9f4zfkhimvP1ucUJTKI
+	9JJSjotdkRAJtNMXwFwQ/0mRiyFSm80=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=kfde2bCK;
+	dmarc=none;
+	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757997555;
+	s=arc-20220608; t=1757997679;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9R6kQ9nEgywpeDIkgPPLCORIQ6RGJTSFvVt66zj4n+8=;
-	b=ZJdcCAuhTiB6Zezk7Ks1x7imJDF/WJEqxge1zI6dnp9FrbVJ3Ayh3LQ2gp7NP4+EgZj19C
-	H/Vv5qQlR8APsHu7yjYchzvex+dGdph1Mll+tOi8OstVxMtc4vNqH5wL71gLWUAH6o5+O6
-	wmHILnmZbWM334lTQSCZSXe3Z8rEMB4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757997555; a=rsa-sha256;
-	cv=none;
-	b=KjRlGTSkzNTuISJNMrOsCY77IvZ/f+iWKPc+y6vAfREROORv6CZSWtt1iS0ChoTvcjvYlp
-	SuYwKdGRR6YCO1sT8ZReCifb9Jl2Q0MD41VvotWjwj5oMuWVRC6N2x0vU+4mSHRcYManps
-	Z1qyKRDAPkKc8TgJQLQCEz5fo1orV9M=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=DLYWJV0J;
-	spf=pass (imf15.hostedemail.com: domain of surenb@google.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4b796ff6d45so147931cf.1
-        for <linux-mm@kvack.org>; Mon, 15 Sep 2025 21:39:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757997554; x=1758602354; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9R6kQ9nEgywpeDIkgPPLCORIQ6RGJTSFvVt66zj4n+8=;
-        b=DLYWJV0JVtyH3GX+p1lIAn12fpF/MILIpqZvby6DqitSDzdBzn7bOZnnJ51Y+vSODQ
-         TwtCW48HsV5RJfQio/LNo364p7voeco3qarR4QTEEbMnBaw9Db7ojiEZbqwWOlt0s/n8
-         BfuibYKTAWp2CMdKghkU+lOn1uGlbFUQNbMJgu63Y3aeqqybipA8uCJBdwiSiMGy7Xuv
-         NbblZ0PMjjxXkKJ2W9fTUfhx8DkbCFbNrRb8ZvRQ+W37HE5KQ0IL+NoGiOBylIXxsR1s
-         ODN0Sjnq+g291v2CaNJBUsD+KfX++aJmsnKrOmwsgJcDumUJtMOyXO8lD+5lw1F2nWR6
-         mgHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757997554; x=1758602354;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9R6kQ9nEgywpeDIkgPPLCORIQ6RGJTSFvVt66zj4n+8=;
-        b=Qa/0myikB8Q3CyG8+xMwx9EO7pCQrhYFtgcDVGMB0/lV7toiVINSRP1UtVdzt4ESI/
-         8wEnmvIKKrLlzw6D/chUhlserQUdiGUiCLaiZW4RsOZek8OA809Rc7SaC8TvYtpFMOcL
-         oCRxP38k8fnzEunbNLFYzaLnGZM66E1/io4i8nwLl2wO/NRsiT97EaFtuUdZbaeEixok
-         +0KYFX9xTquZnXN+5XOfOdBfq8AIr1BbKyZT4CtZbnmmwS/goDt47o70YRhvwHgE+DTo
-         7Z2kswWLZJOGuR9YTWK7pcr1p2cMXrP8fA0ISeu9atxwFnH83DLBWy2zVMEHTkU6B37f
-         gD1w==
-X-Forwarded-Encrypted: i=1; AJvYcCWgU2yM26omtVlvdKMYrQX8eQyg6y+2C2nSqt+mf3jUydbLn7/uRHGTXXsi2znldzib4KBmD8y5Nw==@kvack.org
-X-Gm-Message-State: AOJu0Yx/BdKGbXnLYI8i/jLqi4+7wjmdRAk29AMCeE1/yvvlHgPgSNKY
-	Us3pF953YABfaDU8FiDapbK1W++2gUdzfPMnh8w/s85DaZSOHF81lKf/kEJra54eCnPh2eyfORX
-	a0dkzT21Ku8QLiYcPhmlqHVSc42xpZnzFlkCKQIvB
-X-Gm-Gg: ASbGncvifsL+LtKYfQsUSijSqWllY9vcAdG5ILDQjKUXnkNFlsdmEEz2v8e0m0/iWQE
-	2k7NrVCVxPvPjUlcAVm8SPkX3ENygf6uycnyogbmeRSnmyiEtaJIPmKuHgyLIKQ+/Mu/qfMbGjt
-	0MQ1uTmZq9M+8DVMnYOMWZMWBSPwSHwAq5KSqNL1gOQKIw1vXEWhZP69Rh77F7sLcOIGaYGHLJl
-	Gi7RsjJQUIb
-X-Google-Smtp-Source: AGHT+IGy2zUeUVgUuFT4t7VWEdEjde2wG3xmJbbzOEgNSuq/gMX0RcKVbdjrWT5skjoaUgdj+RMigu48osKUGCiYUHg=
-X-Received: by 2002:ac8:5846:0:b0:4b5:e600:3d6a with SMTP id
- d75a77b69052e-4b7b1d8295amr3905351cf.12.1757997553736; Mon, 15 Sep 2025
- 21:39:13 -0700 (PDT)
-MIME-Version: 1.0
-References: <20250915230224.4115531-1-surenb@google.com> <20250915171112.f71a7606a7f9fd3054662bed@linux-foundation.org>
- <CAJuCfpFQCgQLSrzfVjV+J4tkYbOx_W9v-kWmoo-rmh5hs9gEXA@mail.gmail.com>
- <20250915195633.96236cecebd8777243a770bc@linux-foundation.org>
- <CAJuCfpH1JW8vwOFF2H2SOxZqoJHadXsTc6C=LUS_=twcf=k9qQ@mail.gmail.com> <20250915212133.de5b8522137a5ed30efe956e@linux-foundation.org>
-In-Reply-To: <20250915212133.de5b8522137a5ed30efe956e@linux-foundation.org>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Mon, 15 Sep 2025 21:39:02 -0700
-X-Gm-Features: AS18NWDHXLFv3lNg4PYk4Bb_peo44MLmDzNlQvZH7VM8bIBPMPrwoAZZ-W4no6M
-Message-ID: <CAJuCfpFonUPE0FL5XGm0paYp9ZXeAKK6mjHO_8hUkyxfyduL=Q@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] alloc_tag: mark inaccurate allocation counters in
- /proc/allocinfo output
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: kent.overstreet@linux.dev, vbabka@suse.cz, hannes@cmpxchg.org, 
-	usamaarif642@gmail.com, rientjes@google.com, roman.gushchin@linux.dev, 
-	harry.yoo@oracle.com, shakeel.butt@linux.dev, 00107082@163.com, 
-	pyyjason@gmail.com, pasha.tatashin@soleen.com, souravpanda@google.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: kxuzo5ejqfuef4wi7i5job8ru4f3an4t
+	bh=vr7cwIp3QBIJVPaN1FtLApmx8KvjKOf/9Z3lhiC3NZA=;
+	b=KzEf6yjurILeKelI2izlayMTgJ9VXcLwp+98KGMK5uj/CJxV/i2bjtqEW4ov1oXBxJksua
+	LQ81520yjyjPKVhq7YlX88RkD4peiIpP1eT/ICSyD4K6fVOPGmLpbzYT8gD3kFLwdjqpxn
+	c4R4WFCMyCBsJHqL8tRpW8Uvf8OypPA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id ED57560054;
+	Tue, 16 Sep 2025 04:41:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37F91C4CEEB;
+	Tue, 16 Sep 2025 04:41:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1757997678;
+	bh=sNER0piXqThOPvVZ2lFH5TPIw7AbRv56V9c6OrCJQ9A=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=kfde2bCK6bSYDIyOsrhYTuiq9ts/r+Q8UslL3g+/PNOzNfNI9QUaZ2gNWFz8JRet0
+	 saavCH1g6XV2gUOYRLpDvPtr1OvySz2puf6DKyAIeu10hnBDjiHtAc6mOGUCtra3m7
+	 zNoUgcL3ii6ytSLE8fbvUvOyjN8FxGCBcTMqjPq4=
+Date: Mon, 15 Sep 2025 21:41:17 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Sasha Levin <sashal@kernel.org>
+Cc: Donet Tom <donettom@linux.ibm.com>, David Hildenbrand
+ <david@redhat.com>, Ritesh Harjani <ritesh.list@gmail.com>, Xu Xin
+ <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>, Wei Yang
+ <richard.weiyang@gmail.com>, Aboorva Devarajan <aboorvad@linux.ibm.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, Giorgi Tchankvetadze
+ <giorgitchankvetadze1997@gmail.com>, stable@vger.kernel.org, Joe Perches
+ <joe@perches.com>
+Subject: Re: [PATCH v2 1/3] mm/ksm: Fix incorrect KSM counter handling in
+ mm_struct during fork
+Message-Id: <20250915214117.5117d339669e091b1d3fa96d@linux-foundation.org>
+In-Reply-To: <aMjohar0r-nffx9V@laps>
+References: <cover.1757946863.git.donettom@linux.ibm.com>
+	<4044e7623953d9f4c240d0308cf0b2fe769ee553.1757946863.git.donettom@linux.ibm.com>
+	<20250915164248.788601c4dc614913081ec7d7@linux-foundation.org>
+	<aMjohar0r-nffx9V@laps>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: AD3E880009
+X-Stat-Signature: gir6nypjx5togawtb3taxqzaa4tohyxi
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 29429A0006
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1757997554-660009
-X-HE-Meta: U2FsdGVkX196jTX3LbYpDJT6VplpgioGxlPKqhA8zTJhggR9qV5LbRAVd/v5vN25EK7qOCO0j9ndAR1CycH1vKGe0qV3aKJXz89glS0Yxat4tQGI7Hyt16G5AfFSiRCI7tkmiNw49s7VK+stBuXDG3qOXw9usSUELNhDw+1cWz5E1NQSetk3rXgJ8/wgi3rRszRISUMhRDgQcBoAWlQz59bvWpgagQ1fTIbdtUI7dq8W358371srC+umBmkfYZtZiYt5+Eonfc+UcJdyIVsMp65gFgd/VURqSz7XWYlV4QnrA6cZ73k1svc9svscGGAATzqtFWeGaAnHAVegbO8Bh0JUPDgrzv0gdy5bASC5Xa9TanEsDv8pXf0UOKPCX4c3f1/OA8iLFscKXIbCWQ4wBUZ624hFGtPm7S673RA/mvdzW/uWIatC8K0oeFp88OpgNepUGXg9xzrtmu8mU1L4i3yiBaZZQL5GSQaV8HpKUrt3myuGW64wzdVHN+VoXUIUAjamrkvgVbIcE21IBfBT4AlwM5bvxAz7aMkEzI5px7hgBKaF5D1QymDvmLoAWhBH7JXS45Ckp2X/dQLswt6sVDKOxb9Et3YCGJWsBFVZ9ioOg68vlPFLRPtUKCuNr2pHJ2EWpUb4i9P2fx4lJMngqlrZ21aBe3m2gGEB0G3yZlc/R2wcLFQo3jvuWvQkQsbfnXF3xB6CP6peImbrbkyjNi/o0/DS/krY7FRKgrB4wOaXUlbZHZv1dKJFmQVMed5Y0CPBEYzgTeAzv4wSCB9dNQw4Xf5FgZq7hkqLJkf0falQ7Ft6n/iILSdSlpFgtgA8nGoeZWncUh5W/APF2+iXWIKr9RG+vHEbN9RXVjcQ7y5TV/g3E0aeJR08U6DNkSCz1VAtJBf7f0U+3NwgTdRUm3yACzOot93IX3LTIxu/EUPCwAyIdhh6xuomXEE4NTvKpBmixND0nkrYBla2HXi
- Zz/0hUtI
- dCZDtFRBmBFpnf1vctLs65ee+50DfJylT3XNoK7+vqi6y3mDDnxveqot12zGHHUG0hGIF9+JgFwTeUbAZiqiBX0eNuVBvD65Bdwl2Oc2InggJ9y00k+irhyfccUbvxhST2q8GQBqqLTHJo4hbzMyoKypycTQJzorzCIa+UYOsTfiU5km4jQ0rHTmpmI0a/gQJ1+rC/B6T4oInf53uWcqUDG3J61T3t5fxLy9/mLQrRSUA+xSqB04jgXC7karAiCCah52i3Jg2nA2AyneW7Af8RiqmKrDmFtx0wNz/y2PCkNErBUQsxkGujTY7Fs4HLIVefIHS
+X-HE-Tag: 1757997679-623702
+X-HE-Meta: U2FsdGVkX19QyDEAc/lLIxjrVBV3LbnqrHiDcEa67TZfMlIZvlBG5MUAXqicfkLpr/cf+kUGnAPPkrqTPfz+oQBYSEqX+9gEFi9rMOIlQUaA5+jNJ1xWzk0NHXqp5ufCtOFms91nvfahz2Vh7MyQt1HzkqnY8OyHMHNhAhN36TJQUOS/s1PxQyxG++rfc+A6e/GBcrKvfCL27v9TTsO33woecq2ixwJLtHcRGSc+qlZ9wXH4LFhBbWvpJzG8j9xOCkTbuJwzc1gLG5r9CJ6twVX7BtwQWa1J8FeD00IaWZkpXU4I4ouUZc5aGwMx0Ml+fH3laSJaOuZiX3zxcj3oSudK6L4DOFvPGkzl5XObmpM6nklCHQWN61r903ctmINetdvtP5V36x7KRraKe8pGat3DVvr5egQQfKxiSqQgHtcZkdpswwitNr/pnLUqqmTR2KmuYwkMoFRHTqqkLbeAZkOiVcJHrEbGI+b8MsBI79Qb2MZwFDn+woURiJKYBcdIA1wEfdiYzH3pzTDrRtKz1o/CwzHIynnoytcfXA0ZyvE3oulgh2NpoYIH2FKNn1Nta9VZqFIHm9JUyvYnt1aDQ3PdDB+CrRN2hVu+T9ILk/NUYRg1OU5eIigUt7gLP0GeXwiC4cGcYLOLHoVYDD904dqPM8oIWBnjzDurQy7HxEk6H8g49GjgxtPPt7a+RjhXrT+aZHi6IQAxNnNyEY3RhiXL9WSJbZX0U+DZpZt4arPPd0nBFOR1kCT65ZltnzB4P9iKPOlFR3k1EP+w+Ad0FA0vyp1nlI2fApZ256D+eLQpnxWogWwGzQgUqIwaDOX1BBkoGLyPO88W+L45BVf+1PydbXs9J86MBOUwWUDM8hen5BL6y1skuurMX0Iqig8nHtMLTKfZxMYciaSnkgb1WWRw+HoQ3jZLxqNWeEAJyY866MmxPtuijGGOzsVWgzODdUtwliWe/ZkBUdWkCVP
+ i76etnfv
+ MFn3a01DXXHml961NRuUZ+v53KS6UpEMsHMwrvrympuGSkFJk/9NaJPMwa+XTpBLJMQAGYSVHaj6E3pmZafYAlPQsdxVyyV4YwajGmTNHqo5wGDSdwrQq7tLFE2KURXZ/GxKCH6QvwnvG6Ubo2QENBOgbbrcIdiw2nXr5pdYXXGl3OXz2BeaeljjVh4A2/zIkaub92TWE9CcmBfqUI7rvOqd/mslTJmB4ZfRbBT3IXN+2ECeyNk7IJDzRlUi9HWA+8t51PDg7TPfHPMvCs4XguE5i51pWffFkSN6El22yGs7jpDReP2InvJHIjBlckoJGzBGBkn60O6WtlmYoEIoj0dO38I5rpi5pIX0tAvKpP2QmddfWwp7Lab9TD/i6yyuvnx7S3HKfaWWcar2alA9zMwhSSZDsKmJcEHG3
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,25 +99,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 15, 2025 at 9:21=E2=80=AFPM Andrew Morton <akpm@linux-foundatio=
-n.org> wrote:
->
-> On Mon, 15 Sep 2025 20:34:33 -0700 Suren Baghdasaryan <surenb@google.com>=
- wrote:
->
-> > >
-> > > > could you fold it into the existing patch or
-> > > > should I respin?
-> > >
-> > > A little fixlet would be preferred (by me, at least).
+On Tue, 16 Sep 2025 00:33:09 -0400 Sasha Levin <sashal@kernel.org> wrote:
+
+> On Mon, Sep 15, 2025 at 04:42:48PM -0700, Andrew Morton wrote:
+> >On Mon, 15 Sep 2025 20:33:04 +0530 Donet Tom <donettom@linux.ibm.com> wrote:
 > >
-> > Ok, should I post a fixup patch or you will do that in-place?
->
-> I think the former, please.  Your intent is preferable to my
-> interpretation of your intent and we get all the nice patch metadata to
-> track everything.
+> >> Currently, the KSM-related counters in `mm_struct`, such as
+> >> `ksm_merging_pages`, `ksm_rmap_items`, and `ksm_zero_pages`, are
+> >> inherited by the child process during fork. This results in inconsistent
+> >> accounting.
+> >>
+> >> When a process uses KSM, identical pages are merged and an rmap item is
+> >> created for each merged page. The `ksm_merging_pages` and
+> >> `ksm_rmap_items` counters are updated accordingly. However, after a
+> >> fork, these counters are copied to the child while the corresponding
+> >> rmap items are not. As a result, when the child later triggers an
+> >> unmerge, there are no rmap items present in the child, so the counters
+> >> remain stale, leading to incorrect accounting.
+> >>
+> >> A similar issue exists with `ksm_zero_pages`, which maintains both a
+> >> global counter and a per-process counter. During fork, the per-process
+> >> counter is inherited by the child, but the global counter is not
+> >> incremented. Since the child also references zero pages, the global
+> >> counter should be updated as well. Otherwise, during zero-page unmerge,
+> >> both the global and per-process counters are decremented, causing the
+> >> global counter to become inconsistent.
+> >>
+> >> To fix this, ksm_merging_pages and ksm_rmap_items are reset to 0
+> >> during fork, and the global ksm_zero_pages counter is updated with the
+> >> per-process ksm_zero_pages value inherited by the child. This ensures
+> >> that KSM statistics remain accurate and reflect the activity of each
+> >> process correctly.
+> >>
+> >> Fixes: 7609385337a4 ("ksm: count ksm merging pages for each process")
+> >
+> >Linux-v5.19
+> >
+> >> Fixes: cb4df4cae4f2 ("ksm: count allocated ksm rmap_items for each process")
+> >
+> >Linux-v6.1
+> >
+> >> Fixes: e2942062e01d ("ksm: count all zero pages placed by KSM")
+> >
+> >Linux-v6.10
+> >
+> >> cc: stable@vger.kernel.org # v6.6
+> >
+> >So how was Linux-v6.6 arrived at?
+> 
+> e2942062e01d is in v6.6, not in v6.10 - I suspect that this is why the "# v6.6"
+> part was added.
 
-Will do first thing in the morning. Thanks!
+OK.
 
->
+> 
+> >I think the most important use for Fixes: is to tell the -stable
+> >maintainers which kernel version(s) we believe should receive the
+> >patch.  So listing multiple Fixes: targets just causes confusion.
+> 
+> Right - there's no way of communicating if all the commits listed in multiple
+> Fixes tags should exist in the tree, or any one of them, for the new fix to be
+> applicable.
+
+So what should we do in this situation?
 
