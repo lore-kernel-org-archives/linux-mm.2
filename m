@@ -4,130 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB87BCAC598
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 07:15:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C008CAC599
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 07:18:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1955E8E0008; Tue, 16 Sep 2025 03:15:29 -0400 (EDT)
+	id 630AB8E000C; Tue, 16 Sep 2025 03:18:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 146728E0001; Tue, 16 Sep 2025 03:15:29 -0400 (EDT)
+	id 607F18E0001; Tue, 16 Sep 2025 03:18:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 035098E0008; Tue, 16 Sep 2025 03:15:28 -0400 (EDT)
+	id 51E458E000C; Tue, 16 Sep 2025 03:18:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E13318E0001
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 03:15:28 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 82B101DF71C
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 07:15:28 +0000 (UTC)
-X-FDA: 83894252736.02.7284006
-Received: from mx0b-002e3701.pphosted.com (mx0b-002e3701.pphosted.com [148.163.143.35])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 87A59A0012
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 07:15:23 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=hpe.com header.s=pps0720 header.b=gzCEr1zr;
-	spf=pass (imf15.hostedemail.com: domain of kyle.meyer@hpe.com designates 148.163.143.35 as permitted sender) smtp.mailfrom=kyle.meyer@hpe.com;
-	dmarc=pass (policy=reject) header.from=hpe.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 41BAB8E0001
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 03:18:38 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 02A93C08CA
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 07:18:37 +0000 (UTC)
+X-FDA: 83894260716.30.CC82354
+Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 2E8F81C0010
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 07:18:33 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=yRkJtSdR;
+	spf=pass (imf21.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758006923;
+	s=arc-20220608; t=1758007116;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bXxgqdEdSOzYOwQL2w5UISvG0TGek76RcB1QClzkCaE=;
-	b=nGuRnvE69g/bmecFiQsXTHKnhXIbI8izA1EhOEGSfehQJi5TfWRiuGClcJCzma7J66YgxF
-	0VbA+/pTfYTOGJyzTqJlVYmqksn+kCUryIFQ/fal4crXhGiUIzRoXI6u3G3/odeeocsyrl
-	9uHUCsmvVMEO2J7Qt+d9mdBNSnXXJ6s=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758006923; a=rsa-sha256;
+	bh=jEIJopGBHha5mxI192yQ8swZlaL8UDF92y3iDqtrvSw=;
+	b=U9/XhqOWe+iP/kaYbQxXK9XMqm+6i00UXJFaEPK7bp3VImPD5zdKwnUH9TA7F32mGo61ry
+	FnlZbHPI6suleiziK3ebVk6UkBykNP0Zr6f4tx+q2MeS7F7OqpXq5abLIvO70wGS9Q92qh
+	eIO6ASNNHX9OpbeWhD5uuQlmDAnupiA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758007116; a=rsa-sha256;
 	cv=none;
-	b=qmIRNXy5wotn7I6U91gel6dlY8yUTtdH1J2iA/5DImoHjF4RRtnBW3bgQdkDJ7K8ULw/e9
-	Nu3nk4zdq684TAMbb/4dc+bWzqs4t8OCfcXMGpki3TxfrlkVF+7vIsY888clpTAdEBbfxl
-	Yd9fmUxehK3aCNpqooopYsJ16+mNEHE=
+	b=74iQxW7vlwR+AnG+TawkCQ/W/xugU4XsJ/WoFvY+B1m4c2M+jTeC2fxoA7AypFGdw3Q3Xk
+	Cl7IdN1Ea6cu/y3UUyIDbWv1NJ5DqJxP3uxci16UMM3Iqfn9rGjE2ESfe+LnmxvHKtz80N
+	WNlOdPObvuxNY22zooeJWlZUrZSOaQ4=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=hpe.com header.s=pps0720 header.b=gzCEr1zr;
-	spf=pass (imf15.hostedemail.com: domain of kyle.meyer@hpe.com designates 148.163.143.35 as permitted sender) smtp.mailfrom=kyle.meyer@hpe.com;
-	dmarc=pass (policy=reject) header.from=hpe.com
-Received: from pps.filterd (m0134423.ppops.net [127.0.0.1])
-	by mx0b-002e3701.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58G6r2OR028366;
-	Tue, 16 Sep 2025 07:14:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pps0720; bh=bXxgqdEdSOzYOwQL2w5UISvG0T
-	Gek76RcB1QClzkCaE=; b=gzCEr1zrEMw5QI4COvPhj9vnEAdw8clFMy0uUvpy+T
-	LDc8ZLjsAVUmtceIeVN+zJo/fqj4P8qMCObtEcq9YhowTfiSiziEGx2oonZEDsEO
-	gp/TqzMa/Q4Z3eqG1Vrm3zfKL7cb1vAQ0hL+AYUTnpwZ0Q6SSdvR/t8CrE2n84yo
-	1wFUKjP4OcHjs5RBXHKZSd7vTk8xIbFfM/BAgvR9SBs2u6rywcKllWP0rNSbKAm0
-	ELnhL6N6mDA/1fRZ4Q/8sgcQYCzDj3sLIvQ9QHZtYRmq0Wvg0tqNpoK7bRJIsCl1
-	uzFc6PajWs9xu5ZGsgUO7VdFWbCCMuQNs+cnP1vkIPLQ==
-Received: from p1lg14879.it.hpe.com (p1lg14879.it.hpe.com [16.230.97.200])
-	by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 49730x84ps-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Sep 2025 07:14:28 +0000 (GMT)
-Received: from p1lg14885.dc01.its.hpecorp.net (unknown [10.119.18.236])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by p1lg14879.it.hpe.com (Postfix) with ESMTPS id 0FD0B130D0;
-	Tue, 16 Sep 2025 07:14:27 +0000 (UTC)
-Received: from HPE-5CG20646DK.localdomain (unknown [16.231.227.39])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by p1lg14885.dc01.its.hpecorp.net (Postfix) with ESMTPS id 9B2B980898D;
-	Tue, 16 Sep 2025 07:14:21 +0000 (UTC)
-Date: Tue, 16 Sep 2025 02:14:17 -0500
-From: Kyle Meyer <kyle.meyer@hpe.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: corbet@lwn.net, david@redhat.com, linmiaohe@huawei.com, shuah@kernel.org,
-        tony.luck@intel.com, jane.chu@oracle.com, jiaqiyan@google.com,
-        Liam.Howlett@oracle.com, bp@alien8.de, hannes@cmpxchg.org,
-        jack@suse.cz, joel.granados@kernel.org, laoar.shao@gmail.com,
-        lorenzo.stoakes@oracle.com, mclapinski@google.com, mhocko@suse.com,
-        nao.horiguchi@gmail.com, osalvador@suse.de, rafael.j.wysocki@intel.com,
-        rppt@kernel.org, russ.anderson@hpe.com, shawn.fan@intel.com,
-        surenb@google.com, vbabka@suse.cz, linux-acpi@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2] mm/memory-failure: Support disabling soft offline for
- HugeTLB pages
-Message-ID: <aMkOCmGBhZKhKPrI@hpe.com>
-References: <aMiu_Uku6Y5ZbuhM@hpe.com>
- <20250915201618.7d9d294a6b22e0f71540884b@linux-foundation.org>
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=yRkJtSdR;
+	spf=pass (imf21.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1758007110; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=jEIJopGBHha5mxI192yQ8swZlaL8UDF92y3iDqtrvSw=;
+	b=yRkJtSdRa4nNTuUhn6dBrl4BnP1fbPlCCgA61veAq/5eOI9wFb7iabiu2DpxgKwFIHheVFOtzgjfoP+xrW3P1hVaJEE6GvjoQGj6fgkZktMdEicuzWeV81VCEumUILnAharjPdkzsg50rhTbi6X/fakF6rpT4opAX8ywMloQ7jM=
+Received: from 30.74.146.196(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wo7PMF3_1758007109 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 16 Sep 2025 15:18:29 +0800
+Message-ID: <6ebb5cd0-0897-4de7-9303-422d0caa18cb@linux.alibaba.com>
+Date: Tue, 16 Sep 2025 15:18:28 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250915201618.7d9d294a6b22e0f71540884b@linux-foundation.org>
-X-Authority-Analysis: v=2.4 cv=KaTSsRYD c=1 sm=1 tr=0 ts=68c90e54 cx=c_pps
- a=5jkVtQsCUlC8zk5UhkBgHg==:117 a=5jkVtQsCUlC8zk5UhkBgHg==:17
- a=kj9zAlcOel0A:10 a=yJojWOMRYYMA:10 a=MvuuwTCpAAAA:8 a=QyXUC8HyAAAA:8
- a=_fVqCaFjEFPFEyr0NywA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-GUID: aDOt515-H__Hl3R9V07wPh5jXDwBK7cM
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE2MDA2NSBTYWx0ZWRfXxAY3BPV9SJA6
- yOok/WQpFEjJYGXprFhNvjR/MSlEPJF8gQD+4iCExdPx/MUr0x833mkvOuHKlTeKIBoAjRLyExx
- T1D3ZDzlDFNSXfVciL1ZS43a5lWeWLSl+Qm5BBGhojcd3MR3tK4dnjyM1r+8nfdur5U22Z1nWnp
- BOqPtmAezj/CPAQTwQOht+sjD82CQtE5HH8kUuszEVLtcQuoNZwYgjGbEZRSx7ud5T+cs9Ajrlo
- Zdr3sFE7xNwfT0kvHltnSQk86vhd+J9mFAIfo4GXZKolTeRqPTORud7OzdD9Ryn2qLB7uc5993r
- egpIJ+gjBaKykyay/cEipeEu8sl4ZXGHcWsvQBz4WPsQmGWyLsNUcS7ntdTgf3z+JbhL/mpeyzc
- Et4+cJQw
-X-Proofpoint-ORIG-GUID: aDOt515-H__Hl3R9V07wPh5jXDwBK7cM
-X-HPE-SCL: -1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-16_02,2025-09-12_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 priorityscore=1501 phishscore=0 impostorscore=0 clxscore=1015
- spamscore=0 adultscore=0 suspectscore=0 malwarescore=0 classifier=typeunknown
- authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2509160065
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] mm: vmscan: remove folio_test_private() check in
+ pageout()
+To: Hugh Dickins <hughd@google.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>, akpm@linux-foundation.org,
+ hannes@cmpxchg.org, david@redhat.com, mhocko@kernel.org,
+ zhengqi.arch@bytedance.com, lorenzo.stoakes@oracle.com, willy@infradead.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <cover.1757648598.git.baolin.wang@linux.alibaba.com>
+ <b8c0fe71982aa1cafafd59d8e71064efaac16007.1757648598.git.baolin.wang@linux.alibaba.com>
+ <qe56xt2natnxnkht7wgknsb5nqjhinaaajomvvvgnfpwry2jih@hsj2w5zqj6wv>
+ <02798d6c-1ad3-4109-be3a-e09feb5e4eda@linux.alibaba.com>
+ <9b01a2cc-7cdb-e008-f5bc-ff9aa313621a@google.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <9b01a2cc-7cdb-e008-f5bc-ff9aa313621a@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 87A59A0012
-X-Stat-Signature: 9b5joucnyutw76xsqcszfe8p34uu1yz7
+X-Rspamd-Queue-Id: 2E8F81C0010
+X-Stat-Signature: fqmpb7qw5491zkk1caqpesqchkp4yps1
 X-Rspam-User: 
-X-HE-Tag: 1758006923-378493
-X-HE-Meta: U2FsdGVkX18Ac8dAhf/qSxRGh/D+qNkQfNl3YLNmAhCYooDvUW1YyYBs9LFBqX0rUpYgGKXA5mlIgbo8pvnZvIy8X1SIIBJQiaJB0kpwOmMe3rjmBAC8GGBRe8aEf7V4t5/PPJrQvvIIJFmOMN1WTOXnJXtdgJY8TcznRJYHokgpGm1/g3ZrE1rZG9HOUNpHCFzpVPry82sd0RY3ipYBBymAkspwwq8IlPqBJxUE6W9zosOFQeUnPgwWj8g6D2r4f6auFJrJ4F/YJq7tG2hPo25FhEgFlUxl3EII8OIS2gL1gZV/D4LvDVMs+geWBHQK0yZhjzJfQI3tRpwCQ82KaL29gOO/uzgzyW+rc7R/i3ysoLjbyB07H9wW0wvw+txhAlBVPIWtt0i/qIEZYuxtxWr7cdEhljaugbLVj+LJvl4rVhiTT9MYyrk3/l3lk351y9LBpVxx0WpSkJTQt+/0bBwuuB+YkNhYKdeFLMCqM4V7jmAv7XdtTfEAQ1hCV8tdQ8x57x0ef2C+92Yh8eYJzsTwqm33tmlB6IRR0kpLa3qS8SH06WDs7+xgsuRjTtIuDju+7tatTBhU7498PlH7Q/RmyQFSAtvrWiRyr6T+VsTjxE3f28LF2eVzrqLV+Q/c+HLwz9+coT5rweizdbC/Q+6+/wfDVQjxGmHYItwWIu7HaSuA7097+x7WI4+KNaGiW21uba7vD6BAAiWlLuN5bO0ndpO0j019jtbhP6D7+Z9p6pL5k+MXE/UNYyeTFXOHEYjjIuFtDGmJAUqTQVVfeMopnR5cCzD/m4gt2MFiSbM9KoKR52ChKMji5/LFBqs64rqYP6GECdoDBjxId6PbGRceWMS2h7TIpz52idRZ9++IlgDepRy5hoc1lmid7len3lNx8woAQ2lZaMBtx0lpt4zwjjoJX5sbbfrKrkKvreUmVyXnq5ZxEahp3a11+LL7ebMputpPaWSP7l8o7ts
- VdujlI7D
- vMY+BkCvl0tf0JsZIrSt1mwpoX53zjfuh45QqxGlv0xlaaYqOFNRMRfbxo9dYbxYQ5Ow/zc3BsgUF9smdHzTmOwurH5g1S3ICZR2lRCCJwb0Ax9913c8CHdrPnXP0DauXsJM8v+IVgENMtJe7DUE4DvmxirlB6N4XYrCtTmxfnhvHd0AAV0Dc8hhD4qar1VXlGqfzxfEkraEZ7y2aVifXAfkcdgqag/uBi+6k3DrzQ9/BobbG1TSlKuqerWuR8xiM7Kya60XqrFwBl5j8XmJ5Lmwgb8zryuk7jMw/RCDBVynT5J4nMPpdPzuceGZ9TjwSbQxuvoeoiNG1qeYFwzxk2BtL5jpZP8I1vPgs
+X-HE-Tag: 1758007113-185217
+X-HE-Meta: U2FsdGVkX1+9I3FCOFz8q+wWVqwfNbxGcZqRMF/0IgV6nSg2M0nBxXGNtTCntJcgrD1FUlp0C+so8JcV8MbrlAOes6HcBPxUVUCAE2x6uYDOLr/I80dqQtHmRL/QCeFuXyYYWhY2tfBtkK410ak/5XgkuGJnQcjqwteDYnyyBQZe/cIfaY2IixURphNk7+og1rx95sDg90afVfYrYhRFv6aW6zP0IxWw1+DF1kTkSjCSXRPF/yrEp2zMZa4TcBRF1BookOd7IR1fNf+yPbwCXG3aK8eXVaIL9ySEs+8nIcZU9QGgxTIAAHTtUpX1BKlIo1CmFMJvGcNXFD0M9bpGiX8NmXaNwnsfq061YuKJTa7LDWwRUR/yu3q+Nes6hXjsTeYBFnZbqCZn+R94LwvTt0grQjr+rbP20KFms5wyZXhRQP3zJWkMUACWCRQBeGPw0re5105YupU5xRn0kBdTTGFhz9R5czrGSg0GkKKMw8LFzVfOeuGTTjNLIPwJA7y9Oxv7UmJQWW3sOcU4lRsHVOZ2vyhsZrrfbao9JvwjNMy5CLaINU7Uq3McmTNnPitygQFRpnjJUe5yGd79jVrEqwDfPOa3lR415XmnXPVY67BVwr/tNozFC/gJYSOSxp94lCF9VzC9YUqFJWXMY4+kD14v6P81veUKPEz+4KKyg48pS7SvhhuiKjaTQFlEIpEuM3SttpGRxApBi9o07fiON/pt0U1yUqQBiCzdkXEIFfxX66ocbwmF7I+6LiU5iAwotRapoUdgDGN68p1o0lsfgSOzalRvzsk9vjR3FkhnVbZ0/x7EIMovljmJdmKptgfm1tM6YHIkkS8AEwxRbRDv/eukOibTDPkliJc8MHsIxb0RYDZzVV9RV4zYLIDwL4EOby5gsa10Ahcmim5mAcVwzmL1dzYC8zJNfgrgNw+5viEHu/bpijI6PHjr+/ODXwMW+92BVy7jwzE7BndiZZx
+ BeqgUTZ9
+ h6h0j/wFzhKN++4gSM3t4lVqyOQHRGtd3UHSHHq7MIUiCQD3zgvkeOB2cxtdzpO8RHfxe9ekp31aYxBy23gUYBmJDTfuZpN/bjbIUMJwFTDUIwwROmIPKxBdzzN82ezjizcdISz0m67yUGA+aXX+D/4Fp2ZHDvKxc7piwy9byHcalKq2RhSficvdqL/rjHYlTS69p4SYggYIHLS1VLZ2lFoGvYnPt+CwMVhcm2knKkQQiEkzEdNHkdfJT2GGFXIf+5V45tIOaAvTG+lI3YYmTj572zU+nhippBgCkPFu9n9dITnymvXRuLcX4ZAYJ994BrUwsXYbVSN9rQqEdK2TUzDNeTKN54Y7pkA24iRs9Z3WVQOF0wEFdEvxRxA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,81 +93,118 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 15, 2025 at 08:16:18PM -0700, Andrew Morton wrote:
-> On Mon, 15 Sep 2025 19:27:41 -0500 Kyle Meyer <kyle.meyer@hpe.com> wrote:
+
+
+On 2025/9/16 12:00, Hugh Dickins wrote:
+> On Sat, 13 Sep 2025, Baolin Wang wrote:
+>> On 2025/9/13 00:13, Shakeel Butt wrote:
+>>> On Fri, Sep 12, 2025 at 11:45:07AM +0800, Baolin Wang wrote:
+>>>> Currently, we no longer attempt to write back filesystem folios in
+>>>> pageout(),
+>>>> and only tmpfs/shmem folios and anonymous swapcache folios can be written
+>>>> back.
+>>>> Moreover, tmpfs/shmem and swapcache folios do not use the PG_private flag,
+>>>> which means no fs-private private data is used. Therefore, we can remove
+>>>> the
+>>>> redundant folio_test_private() checks and related buffer_head release
+>>>> logic.
+>>>>
+>>>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>>>> ---
+>>>>    mm/vmscan.c | 16 +---------------
+>>>>    1 file changed, 1 insertion(+), 15 deletions(-)
+>>>>
+>>>> diff --git a/mm/vmscan.c b/mm/vmscan.c
+>>>> index f1fc36729ddd..8056fccb9cc4 100644
+>>>> --- a/mm/vmscan.c
+>>>> +++ b/mm/vmscan.c
+>>>> @@ -697,22 +697,8 @@ static pageout_t pageout(struct folio *folio, struct
+>>>> address_space *mapping,
+>>>>      * swap_backing_dev_info is bust: it doesn't reflect the
+>>>>      * congestion state of the swapdevs.  Easy to fix, if needed.
+>>>>      */
+>>>> -	if (!is_page_cache_freeable(folio))
+>>>> +	if (!is_page_cache_freeable(folio) || !mapping)
+>>>>    		return PAGE_KEEP;
+>>>> -	if (!mapping) {
+>>>> -		/*
+>>>> -		 * Some data journaling orphaned folios can have
+>>>> -		 * folio->mapping == NULL while being dirty with clean
+>>>> buffers.
+>>>> -		 */
+>>>
+>>> Can this case not happen anymore and try_to_free_buffers is not needed?
+>>
+>> For dirty file folios, pageout() will return PAGE_KEEP and put them back on
+>> the LRU list. So even if mapping = NULL, background workers for writeback will
+>> continue to handle them, rather than in shrink_folio_list().
 > 
-> > Soft offlining a HugeTLB page reduces the HugeTLB page pool.
-> > 
-> > Commit 56374430c5dfc ("mm/memory-failure: userspace controls soft-offlining pages")
-> > introduced the following sysctl interface to control soft offline:
-> > 
-> > /proc/sys/vm/enable_soft_offline
-> > 
-> > The interface does not distinguish between page types:
-> > 
-> >     0 - Soft offline is disabled
-> >     1 - Soft offline is enabled
-> > 
-> > Convert enable_soft_offline to a bitmask and support disabling soft
-> > offline for HugeTLB pages:
-> > 
-> > Bits:
-> > 
-> >     0 - Enable soft offline
-> >     1 - Disable soft offline for HugeTLB pages
-> > 
-> > Supported values:
-> > 
-> >     0 - Soft offline is disabled
-> >     1 - Soft offline is enabled
-> >     3 - Soft offline is enabled (disabled for HugeTLB pages)
-> > 
-> > Existing behavior is preserved.
+> You've persuaded everyone else, but I'm still not convinced:
+> what are those "background workers for writeback",
+> that manage to work on orphaned folios with NULL mapping?
+
+Sorry for not being clear. The ‘background workers for writeback’ here 
+refer to the workers responsible for handling the writeback of dirty 
+data (see wb_workfn()).
+
+> I think *this* is the place which deals with that case, and you're
+> now proposing to remove it (and returning PAGE_KEEP not PAGE_CLEAN,
+> so it misses the filemap_release_folio() below the switch(pageout())).
 > 
-> um, why?  What benefit does this patch provide to our users? 
-> Use-cases, before-and-after scenarios, etc?
-
-Thank you for the feedback.
-
-Some BIOS suppress ("cloak") corrected memory errors until a threshold
-is reached. Once that threshold is reached, BIOS reports a CPER with the
-"error threshold exceeded" bit set via GHES and the corresponding page is
-soft offlined.
-
-BIOS does not know the page type of the corresponding page. If the
-corresponding page happens to be a HugeTLB page, it will be dissolved,
-permanently reducing the HugeTLB page pool. This can be problematic for
-workloads that depend on a fixed number of HugeTLB pages.
-
-Currently, soft offline must be disabled to prevent HugeTLB pages from
-being soft offlined.
-
-This patch provides a middle ground. Soft offline can be disabled for
-HugeTLB pages while remaining enabled for non-HugeTLB pages, preserving
-the benefits of soft offline without the risk of BIOS soft offlining
-HugeTLB pages.
-
-> > Update documentation and HugeTLB soft offline self tests.
-> > 
-> > Reported-by: Shawn Fan <shawn.fan@intel.com>
+> There's even a comment over in migrate_folio_unmap():
+> "Everywhere else except page reclaim, the page is invisible to the vm".
 > 
-> Interesting.  What did Shawn report? (Closes:!).
-
-Tony or Shawn, could you please point me to the original report? Thanks!
-
-> > Suggested-by: Tony Luck <tony.luck@intel.com>
-> > Signed-off-by: Kyle Meyer <kyle.meyer@hpe.com>
-> >
-> > ...
-> >
-> >  .../ABI/testing/sysfs-memory-page-offline     |  3 ++
-> >  Documentation/admin-guide/sysctl/vm.rst       | 28 ++++++++++++++++---
-> >  mm/memory-failure.c                           | 17 +++++++++--
-> >  .../selftests/mm/hugetlb-soft-offline.c       | 19 ++++++++++---
-> >  4 files changed, 56 insertions(+), 11 deletions(-)
+> And your argument that the code *afterwards* rejects everything but
+> shmem or anon, and neither of those would have folio_test_private(),
+> certainly did not convince me.
 > 
-> I'll add it because testing, but please do explain why I added it?
+> Please persuade me.  But I've no evidence that this case does or does
+> not still arise; and agree that there must be cleaner ways of doing it.
 
-Thanks,
-Kyle Meyer
+I did some further analysis, and seems you are right. The flush worker 
+does check the folio mapping when writeback, but it does not further 
+release the private data, for example, in mpage_prepare_extent_to_map():
+
+/*
+  * If the page is no longer dirty, or its mapping no
+  * longer corresponds to inode we are writing (which
+  * means it has been truncated or invalidated), or the
+  * page is already under writeback and we are not doing
+  * a data integrity writeback, skip the page
+  */
+if (!folio_test_dirty(folio) ||
+     (folio_test_writeback(folio) &&
+      (mpd->wbc->sync_mode == WB_SYNC_NONE)) ||
+     unlikely(folio->mapping != mapping)) {
+	folio_unlock(folio);
+	continue;
+}
+
+This is somewhat beyond my expectations. I expected the flush worker 
+could handle such cases, allowing page reclaim to skip from handling 
+dirty file folios to improve reclaim efficiency. Obviously, I overlooked 
+this corner case.
+
+Additionally, I'm still struggling to understand this case where a folio 
+is dirty but has a NULL mapping, but I might understand that ext3 
+journaling might do this from the comments in truncate_cleanup_folio().
+
+But I still doubt whether this case exists because the refcount check in 
+is_page_cache_freeable() considers the pagecache. This means if this 
+dirty folio's mapping is NULL, the following check would return false. 
+If it returns true, it means that even if we release the private data 
+here, the orphaned folio's refcount still doesn't meet the requirements 
+for being reclaimed. Please correct me if I missed anything.
+
+static inline int is_page_cache_freeable(struct folio *folio)
+{
+         /*
+          * A freeable page cache folio is referenced only by the caller
+          * that isolated the folio, the page cache and optional filesystem
+          * private data at folio->private.
+          */
+         return folio_ref_count(folio) - folio_test_private(folio) ==
+                 1 + folio_nr_pages(folio);
+}
+
 
