@@ -4,97 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D498FCAC599
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 09:35:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3FE4CAC599
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 09:39:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E14108E0014; Tue, 16 Sep 2025 05:35:36 -0400 (EDT)
+	id 25C2E8E0019; Tue, 16 Sep 2025 05:39:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DEBA78E0001; Tue, 16 Sep 2025 05:35:36 -0400 (EDT)
+	id 20C938E0001; Tue, 16 Sep 2025 05:39:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D280E8E0014; Tue, 16 Sep 2025 05:35:36 -0400 (EDT)
+	id 0FBC08E0019; Tue, 16 Sep 2025 05:39:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C0B308E0001
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 05:35:36 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 727F55BC3F
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 09:35:36 +0000 (UTC)
-X-FDA: 83894605872.09.1A8F794
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
-	by imf23.hostedemail.com (Postfix) with ESMTP id C4B1F14000B
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 09:35:34 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=y7fKK+B0;
-	spf=pass (imf23.hostedemail.com: domain of glider@google.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=glider@google.com;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id E81C08E0001
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 05:39:02 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8345214095F
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 09:39:02 +0000 (UTC)
+X-FDA: 83894614524.20.F00E200
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 993288000A
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 09:39:00 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=OSEeA2Qm;
+	spf=pass (imf02.hostedemail.com: domain of glider@google.com designates 209.85.222.177 as permitted sender) smtp.mailfrom=glider@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758015334;
+	s=arc-20220608; t=1758015540;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ItFEEUKNnd6JDkvIGqIsrhAmf5lSlmXXN6ieayVKa88=;
-	b=HNIsCWcoaH86rFBJWJP5yAVtQbofSpvsSkuOKe1sLUco52oadQ39KZPYGPpk7+VYr1vB+Z
-	7LMmPqD8gKNT6wRE8NOTZUGzepkx/+KeCpppdeeY+zyILslbFxIatxVnK53fRL/AEA1mlv
-	RAQ0UZg63PovGrqZz8xzYJUhvhSJ6ZI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758015334; a=rsa-sha256;
+	bh=UMmgtmyqL3pSVlf5uAfBg8YLZnU4eepFksA8tWxfUtY=;
+	b=suHb+4K6uG63XdYS/GC4BVy8lBhIzKwYqwS/SIeYa3w/01YxIyPJasQW7Jcqsm+DL+oGiz
+	cSpCY0Bzas+iHazwX2l9BHBIOdGAmf8lE7VbijAskfQq4CXEcwnYIh3vIYCPAUdLeLL0f/
+	0LpY5e17a7jRAbY9y6rqgmUODpWorKA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758015540; a=rsa-sha256;
 	cv=none;
-	b=ebsrdjrV1oRb71+bIZ7WlKrmYVYqhs7GH5ULXd0D/XgpXbMH3d3l7bdcwDJ5j7H3gO22jw
-	PKKdrBJWsTnY/K5qQafjVbQjTu7bMPuFedSc7oq06m4avC94N3pnEaJkS+bDvChdEv5tiz
-	W/sOT1KEd8xhrlR3sS0iPUOyNpzc680=
+	b=0pe5jtzRdrwcLRa4s+r6ZQAFk/iLGFMBX/TTU3kogRLh/lr6qKNdTGuxuUEMQVoP9brRQH
+	SPRL/bQ2xbdvGJUPWOZ7IRR6mLH4cSZwZQPTAJiHxhSh1hftf/GH3kZSPVgSUodHowwiN/
+	0LmCJ2VXWuyp0keGwPterH7qMXe6Ggw=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=y7fKK+B0;
-	spf=pass (imf23.hostedemail.com: domain of glider@google.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=glider@google.com;
+	imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=OSEeA2Qm;
+	spf=pass (imf02.hostedemail.com: domain of glider@google.com designates 209.85.222.177 as permitted sender) smtp.mailfrom=glider@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4b79773a389so24154201cf.1
-        for <linux-mm@kvack.org>; Tue, 16 Sep 2025 02:35:34 -0700 (PDT)
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-82884bb66d6so277157885a.0
+        for <linux-mm@kvack.org>; Tue, 16 Sep 2025 02:39:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758015334; x=1758620134; darn=kvack.org;
+        d=google.com; s=20230601; t=1758015540; x=1758620340; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ItFEEUKNnd6JDkvIGqIsrhAmf5lSlmXXN6ieayVKa88=;
-        b=y7fKK+B0OY5jXCaFjPSIzHTw6Q/99jLz4ghHOxl0whtb/wVDo8qahMtmK8t9XupfM2
-         2swNcEQsRzEB39W/JDvmiScZz+e/hzdI62WtG/myFqBHFFcf58j+/X/flV0pYvBmj6Gw
-         3PQPJJw/AItt008t1rrgo0sog30FAEp2Xj0LJr9f3w6u8yQgG+xXMb4s5dbdY8W+lQUF
-         ZPTjYMPvqX7z8qfUa9Dp8EuPd7QNTRx1BsJT/fxfAZUsjAzRNh397QSiS2aQOeURpBfg
-         Tr7ReDrIxm9x1GDnjrKccuF7qG9LZyhU5gCXwLaqU8DmoI+0O9nKqFDGZBT1go2P4X4U
-         jVoQ==
+        bh=UMmgtmyqL3pSVlf5uAfBg8YLZnU4eepFksA8tWxfUtY=;
+        b=OSEeA2QmQ6zjp3MphwiygY4vGmt3zHWi86enJ83WWe/eI0WlrHA6T1nu91orq5Sb4h
+         HzzalP/70yFeVm7o9a1Bs0wX86b6dXwWGtz3uCMV6W7CYoHqYbKriLyy9EbjowshUUaR
+         PfxAfxr5N7MY++BaGzOnG0ebrp8NdwfkQiylI4zqhf7HIt2qK4ZI2ZJdGWTj97dXJmIy
+         AcPmdrFauTN3n6zLDeleWuODMCyd4CCnnwwZmcya20xT946fCa1Gicn6SFs0Xd4FY0+h
+         L168+lWAOITvVRoRZ0Ly+Yo0BT0ROPITMyF83r71SbX3xQE61tQl3lzLabAfY9YrL9jd
+         nulQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758015334; x=1758620134;
+        d=1e100.net; s=20230601; t=1758015540; x=1758620340;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ItFEEUKNnd6JDkvIGqIsrhAmf5lSlmXXN6ieayVKa88=;
-        b=nr5u9jDG/2l7tXIY+rT9xWehu7AbSZlYwafPwnNnqLgXZG3Cc6zVm+eieM4EUigHYf
-         SnlzH1g/vUXu3cxaHs0p7zHlMSuduwYec1bOqCojDk12Cf9lzklcSGq7bPy0vAzJ6RP3
-         IDq7yzQhj4wR8nD1+1nDV5NKPMsy7lphWxr0tMlpHvLrUpQ4W6yPkQFQco95xrDXx07b
-         0bKSHuv2ptFm2XD4awx6e6mrJZR1iDV1NM69DqB+9sIMFM/jj/qsQ4AA56EOV+IJLgC2
-         aa7p9iIW29ZqSV8BltDOJao28QuxRuP0ZECc18FoQF5fAAcCJZ3G7H/O9vCsoRHLQbq6
-         2+6g==
-X-Forwarded-Encrypted: i=1; AJvYcCWjO8QEw6pqCZMsdp9BtsQkXWvJEulcYoFLul+pGTYOO41VZT6giUa/KQC02wA3hYenVM9rmJR1WQ==@kvack.org
-X-Gm-Message-State: AOJu0YxGlx+c6vyOTsKoP2t6qS03aqXx2jOPFXCUTbhmEZTmt6fF11vB
-	Ctpp6cqJMR4BmAye7r9XVbpKsDbPl5HWx7wm6UYY6Izql0nFIwpBC9ANzDxGTHr7NlQXPdw81gF
-	NDALbFtGdX1BObp5cLHYGeS8q9zuUDg8c8Kk8J8/L
-X-Gm-Gg: ASbGncteHJltrwnojTtmZkVTOLrFSmrLHo4gp50VrbGMPmZ/3PejqYE1K/tiqAtQwJ+
-	/D+JdLrElx1KNWNuc/wN+V4KoowD1tGkL5c0Xxo+uNHCClIcX7sdG5cHwHVk8OuVWy9EXCvpe/P
-	sw17dacPnLxdyCh8MQF9s4jm0IFnM0cAlhiunRXw0ZcpdsSqtN8SdJJWsRMz+oVBCAmN93CJr97
-	UEO1Fz0xSdmVVCi/Lw6gohHHyYR/ATzqgbqrcH6PYKH2otRxKAHbGA=
-X-Google-Smtp-Source: AGHT+IEoi69t7mYkGM64faWfanIG3G+aZjIxCT9T7NbXrz1Tm5ebO1fIisC59kXZkBUKvdy4EFZyz1T9cHFhC09CFbA=
-X-Received: by 2002:a05:622a:17ce:b0:4b7:9438:c362 with SMTP id
- d75a77b69052e-4b79438e5dcmr151588411cf.33.1758015333543; Tue, 16 Sep 2025
- 02:35:33 -0700 (PDT)
+        bh=UMmgtmyqL3pSVlf5uAfBg8YLZnU4eepFksA8tWxfUtY=;
+        b=rBIvEEid3JD/B3Jcxav1on3vbEM1dcB87JXdX4sJWuhv2Q2K6YlW7An5QZcuvIlP7j
+         dlcfvtBBt9t2uFBkowUeEz39gxtaKSILxbO+aHKCv1YXcA6zt0tB1SztVBSj/0Hx/2Ri
+         +GaP0pwHl0zWmH/DNFBbbDAQk131UIolAw4bLkQnAt6OrzOKLXJe7WmfMBJqMjQSaR79
+         t+be8y5Q6glchO3/TmL9zRG0xU4MrwpBzmGcX66r98/jAdMKEU+7o5A/brf/OmfgjZvD
+         UjAVH18dQRdOPUnTe+5XAe9sgL0qTeZ9v3B3E1oadiZYNN8hQhmSt2SOFNwvHnh6GHix
+         avqw==
+X-Forwarded-Encrypted: i=1; AJvYcCW1RqJX3KgFjzx8DB3ACG3ltDm6licKykQeRaPrtD/YZkuQURE4hnGJwlz3gA3sm/UiBV6GuzTK/A==@kvack.org
+X-Gm-Message-State: AOJu0YxHHINoijZ+ufJBXxRHRZe39QhyOxUVevHbqFQ363QIWP6C8Ubm
+	YO0RDs1T+FBKz1vCn/kjkekRkJCadNMz9GgfpuVSQ6GEg8GL+1r3SUVN2TF22Aw4iT6ieTFkLjl
+	J7fnuW256TA6AfdmOfTgrG5lt7ss/YvY+qpBXcYbg
+X-Gm-Gg: ASbGncviRd5EQRlriTdsLtxKL7orUeguBXI6WmVMxNmAy5GsMHJ4U4FaBOFfd3RfTlA
+	u6JWuwJp4q31Yq5CPhF6aY0QYZXlYZLS/cIjNZtyxlB+21OGxdJ1n8oq5N+6RtvKeTiv4DF+fGp
+	9frbv5bwIUmDOrUvLtqOYI67P6V4ArfQPzh8cuLqyoneLqF0AGAMKYSvB5UXvW97z3nOn/qvapR
+	ELeRcrkqT0EOf/65OZomx9iEd6zys8jyDTJhZ7903b+N9eUcVRwCw8=
+X-Google-Smtp-Source: AGHT+IGpUtzKURh5f5eNEdht+Fw3FifoSxUl0tHxuZWY/z6ZGb7OmyvobO6UGWMj43Uq8+koYYCVKrSUCM9X3xc1Gas=
+X-Received: by 2002:a05:620a:17a8:b0:805:d2df:54b2 with SMTP id
+ af79cd13be357-82b9be9cb55mr140912985a.6.1758015539317; Tue, 16 Sep 2025
+ 02:38:59 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250916090109.91132-1-ethan.w.s.graham@gmail.com> <20250916090109.91132-2-ethan.w.s.graham@gmail.com>
-In-Reply-To: <20250916090109.91132-2-ethan.w.s.graham@gmail.com>
+References: <20250916090109.91132-1-ethan.w.s.graham@gmail.com> <20250916090109.91132-11-ethan.w.s.graham@gmail.com>
+In-Reply-To: <20250916090109.91132-11-ethan.w.s.graham@gmail.com>
 From: Alexander Potapenko <glider@google.com>
-Date: Tue, 16 Sep 2025 11:34:56 +0200
-X-Gm-Features: AS18NWAeZ0I8Ql6T2VXhNmbi0_zOyyX9JImpZH4pIDJbyS4OHq46p0yv6zBf1BI
-Message-ID: <CAG_fn=U-SH5u4Lv3CcqKVHnK1ewrF46AF3JU1eiAh-JYxj86sg@mail.gmail.com>
-Subject: Re: [PATCH v1 01/10] mm/kasan: implement kasan_poison_range
+Date: Tue, 16 Sep 2025 11:38:22 +0200
+X-Gm-Features: AS18NWDPNjOn1tpd4dh2PjA_D9sETIOVojzQySxiayXszkU2oRRijwgocF7cJt0
+Message-ID: <CAG_fn=U-pYHi7R3Bq0zd_n7uzaw1vkL1RM=oyF1Or1Ovx_q1Tw@mail.gmail.com>
+Subject: Re: [PATCH v1 10/10] MAINTAINERS: add maintainer information for KFuzzTest
 To: Ethan Graham <ethan.w.s.graham@gmail.com>
 Cc: ethangraham@google.com, andreyknvl@gmail.com, andy@kernel.org, 
 	brauner@kernel.org, brendan.higgins@linux.dev, davem@davemloft.net, 
@@ -107,14 +107,14 @@ Cc: ethangraham@google.com, andreyknvl@gmail.com, andy@kernel.org,
 	tarasmadan@google.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: C4B1F14000B
-X-Stat-Signature: tufuf9337pmxxf5yxrofauui8sqeq1jx
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 993288000A
+X-Stat-Signature: r46r1ze1hy4s75d4wsq4nprsgofe7189
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1758015334-236042
-X-HE-Meta: U2FsdGVkX19MBL28J2Zm2sdLDr1i7+09Yc1psSuRl+L9WaKeQxp5CFBtuoCGcXwdGYOFrjahMgXQKd0y4or7nifDqy5ATf80uRRLCCU8IggHCjhZfm3VCAZYuHEpX1ry8JgLM9Z9Wjf642FD8voq7UEX8i8C9YhZxa3o/s+Nx8sex8ENVIe3jwTqv0c5n9v7WEMO6wffzv+nPmKCAAtAJtdJ/12/FjWle8VzuPyWYWBq/4vozDC16iyHM2uYokZvcmTf8yMdXGzYju2dgy2Si8ezMHblUwVEbxdAImINMhDKfWGtPOHHctckt2v3AsuzfhOr3Um3SOr0lmUXx9121Ip2OXqrUlfQ2xn81QzV8GedtLVZbLjvOq2yQgCFiEAv74AnltmUTozvAxU/OtWIR+QJSAJzXRzBU0KQPFinVHSrV8PWnjSzP5AuLI0zJDdIm30aUAotO37Az7n1RKVlOSwpwWg86gwCIy9IhrJ4QuWIT4Hk6HfruTy6O1V8JvLb9bOVbzbS65lBIxxaf2TrfwsvIa7WboNwYU1Niw90C+x876WY+ZdAzJJZHHHAli65E6Nd55ymippVn5KMxhCZTzA6K/HvOOyv8X/l8oz4WiKtq54NztCA+fcccOaNKleXwoqQooEr71bWwO4Auwiugw8vzrhN/cch74bJ5ux9JUCY0yczk4ENhpu4Y3iRLsyCWMsF5P87qu8Y+m/gJ5PUlaRa2zN5NmE52BH7rjI7vhXMplsvuaNd2PPWOD5bcMbcbTYQ4XSekpNFu4z2Q0DRSKXOEGdQZmLm2OiVMKS5MyGMflyXOAT0y2voK8wWVvPQ8gpClZpO40+jnRBFZqqu2XRDOUXPAYcZKMEys17YrRFYhGky0jbzjm2HvU1R9SCYgFVJQeysO6vzKCNMspZEDNvEfmHzDkPs1GxLCt8+XGWq4N656oSxzTXhqsd05LS5CzLxD5e7RRIQABHq7Zz
- BcDHv4QF
- x/YZTItv8YybcyRdKfmxQ2ECTNIsjNkbcDFYrYtSiZH7Kg5ekSKkrLLU3UQ==
+X-HE-Tag: 1758015540-48365
+X-HE-Meta: U2FsdGVkX1/CDz8r28hTWsVfQWQsSSe8Xmas0hu2L9NQSe+RrRWM73zKZKZBn+1bCvE2QeSdCMgSneNHBvfA3AmnAtQW6ieXP6OKAbBUWMb+wFmpUZP+bTGXzDtH2IfDfRkpsBWmCz40zRF3TI8dYbrmt3hTNkKZDGg8JMhToEdEFicvvnQrYMhRhFV1eUx5b89Au0W0FclLJtFa+hpIGu8bQ7j36Gcbo9NVl5lCKNSQ464Iqj5lKhtZKnU9t+5qoxpwrC7Sl0VkI+cIxpA5dewKavDiL4u2i04VuXuOtdnhno6AODPdRAIA99SZKVqVLNF06yMWiQlNQSgd9zey98c27D88ufNyeRm73mXt4WOZG+hZ63exHAyotKKECNC98TyJ9G4lsotmWOqnCf8zcWLB2rMwOE0xabzcVsK/FG2VqFGOMQcvp27UdCf1odiRdTQELpYojHAokUcc+gXBBuuWitzFLDK1g+rXETWFqKcy3F3lHfOUNT5+nus0zpJZnzrrnLgW3oCISaHdeyflPYOLbxPhbfB8oZiYZ6RAfh6xBh92LwvHn6Exz/TuxjM4rol82E+0kTcbr1uzcbHP1DB8qTy+gjKSPRym6ByOSvq8dFhmHetHgaxQVIwTk/mnitZJ4abFWh8piZRkdFCFC8jPwiRQpUMwR7dh/BPSwmRejSJ+2KOUgkuaw+lIoDuhHg0QUZlwGaPHsohevAIUGTilDNALmQNfRQTewFJVb/s3rJMLtYV8REgAqovwd3Dr+Qu3maEQcOU9gcFl53CzwnGpfWfHN96idHbKKKxxvvvZUutZ1TwRyayxAJbyWuByyzlnsB5xY5ZDzzCLEswCQ8HeHFukCkZ8ABsis0PaWUGYPfDxG1EWom827yMaIcvLlI16upFt782MEFWXmFQjgGo5RIKu+Qu9HzCbrFi4jy983GejnshcH86wNYQmGUbVpAi/QJU1461wzvHfi26
+ i5hnwULb
+ 4HSGgrgjvdRaT+kaMo6g/WsaVZ6ExwpHlkh0i/wuEuA0RnExTJ3H3gq4eoX5SC6uifYtQsgLdb2yJ0QysIHrfQxdWJbqRWyOTFgzwYRlMF+4JVUR7wwOf7OGiQ8/tDitvoc5rt1o4zjiky29rkr0FCLsDYcXjPYockrkoFaB45yTrgkXr4ssgdPr5ChBZa0gqzP/RuRBVSnQJZpW+NE0xAh41O9E1JGhsL14kofXOSX5BDEB84Vb7/GD+Xo3JFwo3JsTqSDEZt7V1Fo7VNUxcn0n8LrFh6vYHvqqgig75oGHRgjPUVeSRK41D60pmVT9eJYWzSYFEdLAtCfIM62KD+Jw2hZaitGgjU9UTzXz8vS9LSZlzQw2VdneYRi8KK+9Ti+NpsieRpT4COcI1CnOLDbqO0F+B+9zclEhFQgdfKc4r2vI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,22 +128,51 @@ On Tue, Sep 16, 2025 at 11:01=E2=80=AFAM Ethan Graham
 >
 > From: Ethan Graham <ethangraham@google.com>
 >
-> Introduce a new helper function, kasan_poison_range(), to encapsulate
-> the logic for poisoning an arbitrary memory range of a given size, and
-> expose it publically in <include/linux/kasan.h>.
->
-> This is a preparatory change for the upcoming KFuzzTest patches, which
-> requires the ability to poison the inter-region padding in its input
-> buffers.
->
-> No functional change to any other subsystem is intended by this commit.
->
+> Add myself as maintainer and Alexander Potapenko as reviewer for
+> KFuzzTest.
+
+This patch is missing your Signed-off-by: tag.
+
+Otherwise:
+
+Acked-by: Alexander Potapenko <glider@google.com>
 > ---
-> v3:
-> - Enforce KASAN_GRANULE_SIZE alignment for the end of the range in
->   kasan_poison_range(), and return -EINVAL when this isn't respected.
-> ---
+>  MAINTAINERS | 8 ++++++++
+>  1 file changed, 8 insertions(+)
 >
-> Signed-off-by: Ethan Graham <ethangraham@google.com>
-Reviewed-by: Alexander Potapenko <glider@google.com>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 6dcfbd11efef..14972e3e9d6a 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -13641,6 +13641,14 @@ F:     include/linux/kfifo.h
+>  F:     lib/kfifo.c
+>  F:     samples/kfifo/
+>
+> +KFUZZTEST
+> +M:  Ethan Graham <ethan.w.s.graham@gmail.com>
+> +R:  Alexander Potapenko <glider@google.com>
+> +F:  include/linux/kfuzztest.h
+> +F:  lib/kfuzztest/
+> +F:  Documentation/dev-tools/kfuzztest.rst
+> +F:  tools/kfuzztest-bridge/
+> +
+>  KGDB / KDB /debug_core
+>  M:     Jason Wessel <jason.wessel@windriver.com>
+>  M:     Daniel Thompson <danielt@kernel.org>
+> --
+> 2.51.0.384.g4c02a37b29-goog
+>
+
+
+--=20
+Alexander Potapenko
+Software Engineer
+
+Google Germany GmbH
+Erika-Mann-Stra=C3=9Fe, 33
+80636 M=C3=BCnchen
+
+Gesch=C3=A4ftsf=C3=BChrer: Paul Manicle, Liana Sebastian
+Registergericht und -nummer: Hamburg, HRB 86891
+Sitz der Gesellschaft: Hamburg
 
