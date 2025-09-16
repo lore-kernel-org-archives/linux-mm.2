@@ -4,104 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8815CCAC597
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 02:00:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A98ACAC597
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 02:14:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5DC138E0005; Mon, 15 Sep 2025 22:00:34 -0400 (EDT)
+	id 649E88E0005; Mon, 15 Sep 2025 22:14:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B3C48E0001; Mon, 15 Sep 2025 22:00:34 -0400 (EDT)
+	id 621638E0001; Mon, 15 Sep 2025 22:14:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F0768E0005; Mon, 15 Sep 2025 22:00:34 -0400 (EDT)
+	id 55E0F8E0005; Mon, 15 Sep 2025 22:14:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3EA838E0001
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 22:00:34 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 05F2386B48
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 02:00:34 +0000 (UTC)
-X-FDA: 83893459188.23.75F92FD
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 0B9C94000E
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 02:00:31 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Fs8qO5nX
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 426098E0001
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 22:14:55 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CF4D7115DC5
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 02:14:54 +0000 (UTC)
+X-FDA: 83893495308.22.6E07D90
+Received: from relay.hostedemail.com (unirelay03 [10.200.18.66])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 2C3EC2000C
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 02:14:53 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757988032;
+	s=arc-20220608; t=1757988893;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1vLbiGQX0AC9H7KluJOU/q9glSrJZnzHnZoclCwUWks=;
-	b=u7Aokl0usX2DR9hLvP+I6oLiyO98yOFhKBGbhirDeEYS0BI/njMRovdBVsxEUcEKRKqPZH
-	3rddZmqxUB6bkge4cYi9u06fm9Nyq5lHLjfUZ4QdeTtsuIVo+w4MJu3ErtQHTdslq0EXZ9
-	rZoFuw85JSFK3KxuRjzNIvA+oMBKyO0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757988032; a=rsa-sha256;
-	cv=none;
-	b=KiwrDzIYgSoh6N2Q3R0QMbqW9r+Z9VHEEon9lbc0z5Iip50co94XBiXFdIEftVAMTj2OFe
-	2Gq5A3cFCXimj+5pXGFx2Ig12hqwv5mntfT9Au23CIwekNkKPUrsyxBJFttKH/dSK/VX2K
-	IsOTyc568WE1Yp5lZ2c9pt6clZailNM=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Mx/zo9diUemrWkYL1MF07u5H7GX+A2bBUipecaXpVmM=;
+	b=stwTkjeLDsj/YUY66uMOIwM2c64kBzq774tE/1Jgmd3mliSWONKUSyLBFHLqb7ZZIbd3nb
+	3ebSj7ui8dkWPXyTyJ5vL9xWqGSUdAWRe9UfA29TgQ6OFLKophh6wAL8K1leEBT1+LCC+F
+	ZmzCHdUNpyW036XDNiSspjkSq83VN8Q=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Fs8qO5nX;
-	spf=none (imf27.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=none
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=1vLbiGQX0AC9H7KluJOU/q9glSrJZnzHnZoclCwUWks=; b=Fs8qO5nXlZ6sLXrQWKCVDzYpAb
-	D8rXf2rGYfMLMaQ/39ZY+LeLb8A5U3uUT63WR2SwmCRc5OjcXtuiH9o6Q5heD/6OTRRSybgaSeXcm
-	UdPI0elIYFXp4LNQNDiQwn9HKkNmdylzrAf7huSt712ThMHxInXeNNrcdrCC+MdkO++mCoFLjkLvr
-	XXPtwewEvN3slr+xBJltB7k8btx2kgWhOcdRrQ5fyyfmSVjFws7nmbW/jVZzalMG5+BrTMvIzF39O
-	VurlrYO7JWMpan+hRPOqON+fROn/mOP0ctcNs5l2OJRtniph+xYhlObgtQCaxN8KHHZ9cNGvnpMZr
-	lNZBXHAw==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uyKzX-0000000BcoG-1EAX;
-	Tue, 16 Sep 2025 02:00:23 +0000
-Date: Tue, 16 Sep 2025 03:00:23 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: "Kalyazin, Nikita" <kalyazin@amazon.co.uk>
-Cc: "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	"david@redhat.com" <david@redhat.com>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>,
-	"seanjc@google.com" <seanjc@google.com>,
-	"viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>,
-	"brauner@kernel.org" <brauner@kernel.org>,
-	"peterx@redhat.com" <peterx@redhat.com>,
-	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
-	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
-	"vbabka@suse.cz" <vbabka@suse.cz>,
-	"rppt@kernel.org" <rppt@kernel.org>,
-	"surenb@google.com" <surenb@google.com>,
-	"mhocko@suse.com" <mhocko@suse.com>, "jack@suse.cz" <jack@suse.cz>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-	"jthoughton@google.com" <jthoughton@google.com>,
-	"tabba@google.com" <tabba@google.com>,
-	"vannapurve@google.com" <vannapurve@google.com>,
-	"Roy, Patrick" <roypat@amazon.co.uk>,
-	"Thomson, Jack" <jackabt@amazon.co.uk>,
-	"Manwaring, Derek" <derekmn@amazon.com>,
-	"Cali, Marco" <xmarcalx@amazon.co.uk>
-Subject: Re: [RFC PATCH v6 1/2] mm: guestmem: introduce guestmem library
-Message-ID: <aMjEt1JKjf789o24@casper.infradead.org>
-References: <20250915161815.40729-1-kalyazin@amazon.com>
- <20250915161815.40729-2-kalyazin@amazon.com>
+	imf13.hostedemail.com;
+	none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757988893; a=rsa-sha256;
+	cv=none;
+	b=Fy1KC0aAG+0wbBGp+jGh5lgapo0LvwpheTdveEhHksuJse94DyJaukWm5B9vrqO9zFkPGA
+	ky1uwZrC4P627K5Ov2BUtLVbbOZUoEweOsT/CRQAUZc6+vlB2c9V2Tk1F5bFEdr9yqxt6n
+	4SdYt2hI21ykR8DPU5fEHzn9DbTuGxM=
+Received: from omf16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DDB32BA978;
+	Tue, 16 Sep 2025 02:14:51 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf16.hostedemail.com (Postfix) with ESMTPA id AF5EA2000D;
+	Tue, 16 Sep 2025 02:14:48 +0000 (UTC)
+Message-ID: <8d7be334af3944f990b56c80a70b7691763c3af8.camel@perches.com>
+Subject: Re: [PATCH v2 1/3] mm/ksm: Fix incorrect KSM counter handling in
+ mm_struct during fork
+From: Joe Perches <joe@perches.com>
+To: Andrew Morton <akpm@linux-foundation.org>, Donet Tom
+	 <donettom@linux.ibm.com>
+Cc: David Hildenbrand <david@redhat.com>, Ritesh Harjani
+ <ritesh.list@gmail.com>,  Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou
+ <chengming.zhou@linux.dev>, Wei Yang	 <richard.weiyang@gmail.com>, Aboorva
+ Devarajan <aboorvad@linux.ibm.com>, 	linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Giorgi Tchankvetadze	
+ <giorgitchankvetadze1997@gmail.com>, stable@vger.kernel.org
+Date: Mon, 15 Sep 2025 19:14:47 -0700
+In-Reply-To: <20250915164248.788601c4dc614913081ec7d7@linux-foundation.org>
+References: <cover.1757946863.git.donettom@linux.ibm.com>
+		<4044e7623953d9f4c240d0308cf0b2fe769ee553.1757946863.git.donettom@linux.ibm.com>
+	 <20250915164248.788601c4dc614913081ec7d7@linux-foundation.org>
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250915161815.40729-2-kalyazin@amazon.com>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 0B9C94000E
-X-Stat-Signature: jdyj7idanhii35fyrop3wef9cgnxm6up
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Session-ID: U2FsdGVkX1/i3wGdkIngDc5k8Zy9mtT9x0Jsae1TNBU=
+X-HE-Meta: U2FsdGVkX1/IiBxbokcBHqtrQxfWaIRW4VWdsUC4FwYwqm/5zOBA2s+BAamLDGjQe/aFn7eBn854xpZKTPl8Wiqn/QcEF1vW1Uw9OEf52Pq+BOiart5k8W/VWobc0YHPYAPa4IVrDZmy3fHGH3BpBjcbEdEWDGQmJjOtMGIzrjc3tILATrQm7nwc1uKHx+JcqgAznSoxX7cKwV7EPr2tidUMIg8gL8JbTGaEds0GlD1ZHzRpVayCEXOIeQkyC/QDmBqTc62s1mLNjBkegG/SNdySVqPcY1LGTpuF+NTwpqDHAcGbgn9UhoIgfN0RwdJYa8T1wPf1L17l0gkGKTV/OizrBdeJxMW/eLt/a54CB26/tlJXQ5NQ2g==
+X-Stat-Signature: igx396pe9dmf1s33sa9rh78tnb4q9if3
 X-Rspam-User: 
-X-HE-Tag: 1757988031-309971
-X-HE-Meta: U2FsdGVkX1/U/do07Wl1e4J3iD9y62GwOiVGoIuA8ubZuxtf+HyO38OCR+kMyiV4gzHQNF3NzxoOqUiZ2YOcHIzRrOV2e4NmnEgnBxo90HqeYBIkG48OtZ4o6DJFD8G+TAGbJwPVTMr3ofKvS8qMSHdn8jr2/tJ8e9ajeK5XG8CTkjBN8SAwanQA4ImhluZRyMhRubJwfpMFj+Kh01grPvcSlApOSDSOca2i6RgqMQw9F4dAaITO2q2j/dm9R9gibvV3aU9JsInN0voQ9Vs1t7YLcXjsL7r54SCcjWawRMlZVjiTPbvZ/svIiaVVav/lrBTq4eH8G4ryw3vckGqg3os8LjcXpF6sUUp0jiHZhzEKKQXKnekhXw6o0W/6UuKJZ+hSnojEzob9iJ2WnwIy08K8+MdI332QiSMDpwfsYyhxufcdzSI0HGMA7xfkYO9/W123QmJQqjPYvYvZ0PKfPUQrrxxAgMeNQ8++ubhnkCkq1406D4I8P57HeWq5GcoSmXJ3F1UHcVsP7Yk9UjkAo7Sf6EhEVtK1nX4v8w80JMO82PqzIZAHmP7mwxPAfYglW5/l+1d7rr6tXmK5zSBSmhJ3CNJE01HPbmPloOQGRjfArAPNvFfAtRRHQz/ImKwffLfBPZ6SA/u8eO6VoPtMpGyEoqoUAgbMHyw78HmfmcLO/Ar0xYKOhMM/LoGsLHIYOdJaP7V2lo7XkghxXLEuus+uqGHMThoQsl1tvTDnp9uXkz5W1ZYnIKpZxi60eioPujkehRE8ISn6ntXAunpzSTd+s4xPQWuKEqVFktRgE8zyfOrYwgUHdf5UWv8pML/OlWBw1Qpk0OsL118MGabT6yh56wj76cswa1Hcj7c5iosdsfPdyIm/+/S68rbajQ4+rxQOT2bg5AIxw+O7J1nflTkpFm3iHY+HgVwYu4HeXo7Ok12JMNb9+qhR5Ah1l57xQKaa9keeTUybZKkdvWK
- mig682i5
- cR300DQ7hYbw3Bq2HruYT1tqpQ6tIxgyjlWeme7+9KGoyyeKCBS/8ItfMhjfo4JvGLauEw4R0Noj5yQ0d2YkpfkB3itDGi59PQstI/RAopa+OUn06oDXtuSBvzaaO/7jt3OI1ydvjhnoAS9kx6cyjUy7EMCRtfrzge3YudL0iGWXFl2jn5XOs/WkNm/OtaMQoQ89VSfCVjSdBgxlUNhubzCKns5vL8ztPQXuwSWwDK1/XfDK1QCeTEtDipFmuu8iiDqk9QFm8QQMtxvOpspKvnAmeb3MNfGXqJOY7MAniwx6Us82f3Zpl07JDmsZcQIPvtk/n
+X-Rspamd-Queue-Id: 2C3EC2000C
+X-HE-Tag-Orig: 1757988888-560775
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1757988893-779529
+X-HE-Meta: U2FsdGVkX18HOzAt6PViIEzssJupBSshoYTVcgaQ16Wm7ZQNuPbMDk06K6bDD6IxUB8NJQjl2kunkyidNls70MIzybxrK39DJqrkijdVYxe2H7ey/W5DNgI111SC2T93/0BlLRID0oOlnBe3pldalhTOecs6XfuP/Ina1MzKRn43UbL4ZNMp9RHDYLYRFXStj8IJ47RlTq8sdLweP3S1WZJAUdnD2CWaUMwXh7V3ahwNw6Z0k+3e/8JbT7ElVxWXLVwj0aCBmKxPczF7QicukLWvxnbbPn4OmTFwA636W+aoDuJjBMARawKBYdmxokWmeYu65gPpi4c7sYNz7Io3XDBH1+WVIRfHlhaHrdcJf0AMsBhEkYXGvmKeGUVxPP13plvYKuW9qA0z7a1KWNYpNaZtZo9bA4jtKBUgYcKZ4IGCtD36mrTxflTfjk5jxFOPqCT23aETQdXnN0ax9W/B0BGmvnVxCNjmfDDj7DSpCY6taRXrIRGQ4FmFwvz2WDgCkO52idAv3XfJ5mjIM2Jo4eChtino+UPVIPTMgbs4NAiklwVTTjXiD35/c5irSGQyCB8VdFMqZYU+Rx9pHfEttO1xwoLP4XxRX2cQ84skZrHA2kVxJI3+I7+nSHMCVRyQXUjo+ozFIsJVD2aniOQyEtnpSyzq0Y0ilpXw98KoOosruqo54Isewty7gy9/ctfxEdFvP3rWUKqfhGjYbURfIWTIlX0fmQHP87H6ppzERUDJY9XnlWyofNl+kwQx2xPRzoMeFbnwN9Wy7KCft7BgBpAwiR90ngMXhiltVdyTW+D+xP7+zGLg8lVVLq5WZY8PmCSRNghOdMM/5cz0b257CWYFgPg2cL6ZwjAQomQOtam+qIwl0G9lF32QdHcFGT3PJhrOftaY84hqIwWuIDaTEGHsaA2diRk5NBdnlo2qet88orSL7LfQye3zeAggILOOBgK494mDYgRuqLG/3DH
+ /6lVFoMo
+ hRfZQmilxQRlE/OLhwIivcQtIInsLpudJCxS1z4mRM3dgbpEtIhWGqNN5o4QYmdFJamoNMPnVHIp7VRWiYOo964fX65zdUs9UAmDAgsQKxm74iRt87+OAQaQ6o7XR6SfPpHN8QPKkxnQzqHI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,16 +91,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 15, 2025 at 04:18:27PM +0000, Kalyazin, Nikita wrote:
-> From: Nikita Kalyazin <kalyazin@amazon.com>
-> 
-> Move MM-generic parts of guest_memfd from KVM to MM.  This allows other
-> hypervisors to use guestmem code and enables UserfaultFD implementation
-> for guest_memfd [1].  Previously it was not possible because KVM (and
-> guest_memfd code) might be built as a module.
+On Mon, 2025-09-15 at 16:42 -0700, Andrew Morton wrote:
+> On Mon, 15 Sep 2025 20:33:04 +0530 Donet Tom <donettom@linux.ibm.com> wro=
+te:
+[]
+> > Fixes: 7609385337a4 ("ksm: count ksm merging pages for each process")
+>=20
+> Linux-v5.19
+>=20
+> > Fixes: cb4df4cae4f2 ("ksm: count allocated ksm rmap_items for each proc=
+ess")
+>=20
+> Linux-v6.1
+>=20
+> > Fixes: e2942062e01d ("ksm: count all zero pages placed by KSM")
+>=20
+> Linux-v6.10
+>=20
+> > cc: stable@vger.kernel.org # v6.6
+>=20
+> So how was Linux-v6.6 arrived at?
+[]
+> (Cc Joe.  Should checkpatch say something about this)?
 
-https://lore.kernel.org/kvm/Z0DOdTRAaK3whZKW@casper.infradead.org/
-remains un-addressed.
-
-ie this entire approach is garbage.  throw it away and start again.
+Probably not. Parsing variants of versions seems, umm, difficult.
 
