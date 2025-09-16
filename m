@@ -4,217 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D936CAC598
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 15:41:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABD0ACAC59B
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 15:52:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A77BC8E001B; Tue, 16 Sep 2025 11:41:00 -0400 (EDT)
+	id BEE238E0002; Tue, 16 Sep 2025 11:52:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A4F9C8E0002; Tue, 16 Sep 2025 11:41:00 -0400 (EDT)
+	id B9F018E0001; Tue, 16 Sep 2025 11:52:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 93DE78E001B; Tue, 16 Sep 2025 11:41:00 -0400 (EDT)
+	id A8DBC8E0002; Tue, 16 Sep 2025 11:52:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 854B78E0002
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 11:41:00 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 501B0C0166
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 15:41:00 +0000 (UTC)
-X-FDA: 83895526680.10.F7D08C8
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011003.outbound.protection.outlook.com [40.107.208.3])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 7BA461C000B
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 15:40:57 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=PQqmStqF;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf20.hostedemail.com: domain of jgg@nvidia.com designates 40.107.208.3 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758037257;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8FFD08E0001
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 11:52:06 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4129F1601FF
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 15:52:06 +0000 (UTC)
+X-FDA: 83895554652.01.EB69609
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 593301C000E
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 15:52:04 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=x6xFVGAC;
+	spf=pass (imf18.hostedemail.com: domain of surenb@google.com designates 209.85.160.176 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1758037924;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VltkXuJ0ImjrM7c7KPvn1ZthaTNj+cKDQbDPexFsIHc=;
-	b=M/5gV5s7ga0cmj+LLiSyo4grJzkLP1VPnhn4lBris7CWI/Yf/k2TA/8x18Fc7Nsifr2Gs0
-	11SkXKeM60m/0cCZy16LXsW6rMQlRNT0aIpKw1DXrBD7w1jklli63hhyZ6Jr7c2e9dfR7I
-	ypLwIRX9OpqMSReFhAp6oWe5l1Fx7k4=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1758037257; a=rsa-sha256;
-	cv=pass;
-	b=MtKO0RKw9+5cps6DspsdxNfHKhqdIbnOtu8t6QOeJO0P96Ev1nj37M34PnrXDtAUznfvHj
-	zgIVHYx0OVPW1lAWSW7BSjhahIWm2a1ms6WLovu/k4YhO9hlVtUG3PKy4D/j//05GE95kc
-	ogw5gn+WMJdMDLeRMjgk42FNEBY3O/w=
-ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=PQqmStqF;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf20.hostedemail.com: domain of jgg@nvidia.com designates 40.107.208.3 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bLTwAynldedBX4sZgt1byCkrI4NnigL/A7j1qBqTSpBywBw/BOZCfuIl7ASkL9aRAUrVVx4/yVW6KCTbHeUeJrcnxn5gZfKTQBM4kkQB51bYWHIl41s4OjoX0O2lL59TmbltVUW2wS9cBVz09PWMmx1qv/VV66sI0dJhDqz8whJbw1p9CIc+kfUmuPwut60mU5HK+DLgdzb2ChXO1VygXANDErqh1B2U6/abM9nCBRZz9AzRF194X4LiJ/q9P03mlXGDFm7In03BQOdUC8LaTdqYZ+8WEHj/x1U7AsMH0brtT+qg3o8ZJXeU/NcRK9FryxfitCEeQpP5cpoVmVRBwQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VltkXuJ0ImjrM7c7KPvn1ZthaTNj+cKDQbDPexFsIHc=;
- b=ugBAz+TpMPWChM+jQZdxSTyTQtDgX5BPaHxB927KXFsbW+IPmssmVRDmYpdHkYM0a6RikFe9dUvHxXkp2BMcg+x2xKnm1gwDDe19Uktbb1RPckG9hpH2m49xJ2cIMeVzY9RFHyI2MVU90ub+GJJR51Rdmntk93oztnrPdaFjPV/VBp4la9uaK6y/QWY0Emg//xvBYmi37gVaV3i69dgDDHu4Eue09wT84I+/z+RUTEy/jfzQOBaml4s5hpDQe/CqmcaeSJnljLfw0sOqgRNrC3gBkjridGZo+q/SeFFSntWTA2OtxBc6EChmGz9xPx53kJsx1nBKcjYGrshYcEXWRA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VltkXuJ0ImjrM7c7KPvn1ZthaTNj+cKDQbDPexFsIHc=;
- b=PQqmStqFR1riMJhY2Gs3m/Ox5iTgRu51ZhZePJNBr52GUbyqMrdvPsfibmllQd09vLv4V7WAHNQpbcC9J8YAUkt/xZimp5AeKISI1YnyW+S1YSLHVsTmdaneP6Mjgu/pmFKe5gCd1B3WttfPbAdxNqGC39KyJj/1hRM1spng5AV7cYDmMPUhkQ9u8hSoZ+Nk5fVOIQNBnBl+JUvjWHH7ONvNMc93rTGwOnlihiXvkE1xriNLU1zsOx5cT1wEaZjWMcFTRBeUS4nT9+Je4nDpQC4vGzM9ds8OFPACwQIEGScuzO6s6ymrlBES1nWPPspwtWH0W91Sj6ljesL0eqPSiw==
-Received: from PH7PR12MB5757.namprd12.prod.outlook.com (2603:10b6:510:1d0::13)
- by SJ2PR12MB8884.namprd12.prod.outlook.com (2603:10b6:a03:547::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Tue, 16 Sep
- 2025 15:40:50 +0000
-Received: from PH7PR12MB5757.namprd12.prod.outlook.com
- ([fe80::f012:300c:6bf4:7632]) by PH7PR12MB5757.namprd12.prod.outlook.com
- ([fe80::f012:300c:6bf4:7632%2]) with mapi id 15.20.9115.022; Tue, 16 Sep 2025
- 15:40:50 +0000
-Date: Tue, 16 Sep 2025 12:40:48 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Matthew Wilcox <willy@infradead.org>, Guo Ren <guoren@kernel.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>, Nicolas Pitre <nico@fluxnic.net>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@redhat.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Baoquan He <bhe@redhat.com>, Vivek Goyal <vgoyal@redhat.com>,
-	Dave Young <dyoung@redhat.com>, Tony Luck <tony.luck@intel.com>,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Dave Martin <Dave.Martin@arm.com>,
-	James Morse <james.morse@arm.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-csky@vger.kernel.org,
-	linux-mips@vger.kernel.org, linux-s390@vger.kernel.org,
-	sparclinux@vger.kernel.org, nvdimm@lists.linux.dev,
-	linux-cxl@vger.kernel.org, linux-mm@kvack.org,
-	ntfs3@lists.linux.dev, kexec@lists.infradead.org,
-	kasan-dev@googlegroups.com, iommu@lists.linux.dev,
-	Kevin Tian <kevin.tian@intel.com>, Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>
-Subject: Re: [PATCH v3 13/13] iommufd: update to use mmap_prepare
-Message-ID: <20250916154048.GG1086830@nvidia.com>
-References: <cover.1758031792.git.lorenzo.stoakes@oracle.com>
- <59b8cf515e810e1f0e2a91d51fc3e82b01958644.1758031792.git.lorenzo.stoakes@oracle.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <59b8cf515e810e1f0e2a91d51fc3e82b01958644.1758031792.git.lorenzo.stoakes@oracle.com>
-X-ClientProxiedBy: SJ0PR03CA0226.namprd03.prod.outlook.com
- (2603:10b6:a03:39f::21) To PH7PR12MB5757.namprd12.prod.outlook.com
- (2603:10b6:510:1d0::13)
+	bh=8+oASOLPx95oNqK0F5924YvyG+WYdsyr2luDMG22ugY=;
+	b=eEVy11Iise+d4Wm30pct3+CwXx2fX8XSyNkE9g+tAS5A9xEJOG4wAUFwOaK+KHlz4iT8Do
+	llRrjoKnVY16XxGVPvJeeOak/a7pqfIJMhHenOB+tz4rDHjRNO+LlfYntc7NDoioKaXPXu
+	Fa+Z9hNCvNDPGyGIpRdV7bxZCrwUh0o=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=x6xFVGAC;
+	spf=pass (imf18.hostedemail.com: domain of surenb@google.com designates 209.85.160.176 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758037924; a=rsa-sha256;
+	cv=none;
+	b=M9cJSGv5smONgul2m9Ql1zVhw4MvpHVHW48PA6zxp5DSA0TJB5Ox/V+Pc/6KjjsDwhMUPA
+	waSbS8kVAMsFv4mQU3bAGoYE+HKmnZ+pK6Da+KSEu2f/8WmwMb11iJhhMb/fBWcMZfuVOP
+	yD8ZUdU8V+378QqAlOlHzj0P1tPFtdc=
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-4b4bcb9638aso531211cf.0
+        for <linux-mm@kvack.org>; Tue, 16 Sep 2025 08:52:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1758037923; x=1758642723; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8+oASOLPx95oNqK0F5924YvyG+WYdsyr2luDMG22ugY=;
+        b=x6xFVGACwOijY/Irsv7JjmxWPIQPM7huBpC0uHzeyc5SceLXuqRX6knAP2eAWRIw2w
+         gpRVHPFXuvf/2WZ+xW/pUOhyUc2KBrAAM9Qic83nToCHJ6S143dwA49OtM3RFXDTiTel
+         tpC+oGeJy0wreM3QqGgipETJBrxEDKiLjedVEEhGOFDK4Fo6qut4DjVhKNf2KhBHrF7f
+         G7nQoWHzRCv7zpxjAPGPeFNgtyk2msVNFS6QNR0h3fDMwvXfsZA1f73qFYMTHj3o6Jk6
+         yVpCFzk4xgOisl3EZO5vHxOsfeh2WzByJ2vgT/v/WqTAPDN9r4+jUS9sVpdSZgCgeAx4
+         +Tjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758037923; x=1758642723;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8+oASOLPx95oNqK0F5924YvyG+WYdsyr2luDMG22ugY=;
+        b=cmVG0xuQnB7vYpU1g0hKXqMSoRfVhalh/XTTmhWgJ1AgRhRRqhe9j0tHSFkrrt+8NZ
+         3pDi7XjiV3FBNiePT01LwnKmZTjN5H04L3Wshdip1RDUssNjlOCHXP+hM6W1CQGBgzua
+         mYrd/IA2HDZSMbpAytCIEBdsdkuHCF6DQOxaGsgScXffOxZhbtO3Hrjjoo5YE96w3UKM
+         XoISq6/OoO/SDlK5P3IFzhORGxeHP7YiWeF9oAO2zsEprbLi5RnHIKsDwbyFmh+s2yvo
+         S9nlXoU4cIbOfC9gS2Kya/ywiYPExZo+SScogPIUv6YRz/0AeWs20ESZltWaHmzWMA0i
+         W8FA==
+X-Forwarded-Encrypted: i=1; AJvYcCXUrbNBWEnDC9WXPquUfIlUW0XRCSHmoLZ7leHROg+64LSQWX1ZsTGPv93HXTb0tYkIvYkqGnHhrA==@kvack.org
+X-Gm-Message-State: AOJu0Yyv5EMgNCmxZncm+pUfajM7jIiM7tsewIWRas5BJZ36fuLfKtzc
+	Vn80ThEJazBPqt3NDW1OWIKq7c1hwkv5STel7amsFQ8TAJFAB4zoQvSc7jLQmadzf/xj0EMZMA2
+	DqiCRCjKl3xJnfLLAuRcgeWJ7mCsVZr1dZ82uZ5OE
+X-Gm-Gg: ASbGnctRlANU9VSHae3WmEOUhD+kcgA6dE+prgeGWKlhxXe/nuPTHXVqMUZlNswYT9W
+	smTU4uc4fqNtl7CqwHB/EEq4q1Jeywfmmur0Wqg0zgcsN7bolgijumGOZsslRKYUgmDGez3HDgb
+	aANQdq6pKKT8QIRBeGa40W6+cYzJKKkGxGl5eeENYMn/vWTbIpf/5XXPc/IpCnRgWFf56+iPv9+
+	KWMo2yQ1JBNadbXFnDtUNP5zt7iEk7KGxMJP2QpboTk
+X-Google-Smtp-Source: AGHT+IGQjGkUGRtAuf74uHX8AQBwF11GPpY2256/5dvWRpDeCbKTt5r9xOaAnclS0s+qrjOTODrM7eRbOWkwcSu0DaY=
+X-Received: by 2002:a05:622a:1882:b0:4b5:d6bb:f29b with SMTP id
+ d75a77b69052e-4b7b1cc603emr7225521cf.8.1758037922864; Tue, 16 Sep 2025
+ 08:52:02 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5757:EE_|SJ2PR12MB8884:EE_
-X-MS-Office365-Filtering-Correlation-Id: ee55a480-3326-4e41-f0be-08ddf53769b2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?ce2Mz8DSMAopEgZmeIDmN4byvpznM16vBRcdr1M2kl3tp4iZ3yWiXbDc5cin?=
- =?us-ascii?Q?SblfAJFTzErsaTtl0IJJRrZ61QuQ7FgSKy7UE5OZOLhcUwBaPC53t8QVs9hH?=
- =?us-ascii?Q?hUVYJ+DkE6C6OdmNrD8BNowE0+uUVOnH56MQBd57PtJ4/z/VMho/GsqcuTX0?=
- =?us-ascii?Q?WNbysaDBV50/gGBDvspW6JYIC6mEXX/OsHP7IyDuWltQElc2nAZ+PEDBAC8q?=
- =?us-ascii?Q?xQYX4Tbuj/tcKjspANRGBxwNEn0U3LzoQt1MKXKEbXmxLYSWR1dZRpXDeoay?=
- =?us-ascii?Q?29+np9q6c3bn6K8zDsmBAkNNR8m2L13+St4V1WheFwaTBgLbxZgnTnhypvav?=
- =?us-ascii?Q?t9gnRyy9Ssr+vYn/SfsKl855y/hgigVlWp0wBA9tQRVelBJegE0pMoA8ifql?=
- =?us-ascii?Q?CJP04TD7TGLatoUYpORNEONZq/17ahR42gcXVp1kTuffd/5ORgN3iax98FGY?=
- =?us-ascii?Q?0q7//+GQOoTZfhJ+y37r+7LRbdN3RTJFCfshMZ85p2tVGf6RySWB89SRSXOR?=
- =?us-ascii?Q?Werz8s4nlCEnv97Y3zszyylskny4yy8QbvlogLY8S5I+kJ3wfF6BcfuRdvos?=
- =?us-ascii?Q?os2mS/qIjBAmthpUsDxu9X0/4SpYMLNENMlF/sjNeHMazSZm97bmGl5Nlz2Z?=
- =?us-ascii?Q?gChnUyU6jYIqDLRacOJFWOPij1OJu2w3YAyzOkb7MOppmiDfgxA/ZpEaWY4t?=
- =?us-ascii?Q?p8js/vd+q40BdR/qBxqKev9x6duAAeQ/HX/GdGibHVfHzqAhFDzip0vw7urz?=
- =?us-ascii?Q?+TSSG0tkMgE4GTDmlPPLBFKd5NBwuh3y46BLUUa0ZQZb7lZxUYsepB4nWgLk?=
- =?us-ascii?Q?nkqM8EYRlG5kDm4+/ZTmGfXCAi5/LGLdUuOUm8Hz7z3VWVXnQuX9JmbRM1V6?=
- =?us-ascii?Q?d4TWWgH5ANoTRAyu6iTsqscylg1n4O8NCmBsdAPfTLSFIIh0l79pOm0XOrZd?=
- =?us-ascii?Q?Cpc6ZB7PCce+lxEcn1uQemTGV7i/ZOXylNbec3huSiz8mazuHvBd9LdiS/tP?=
- =?us-ascii?Q?H6rQz86PkinNQWx/PkELOE+i7iCkZImrhstqMJMcQfoFumQskVBSsUDlFE9q?=
- =?us-ascii?Q?PKS9QxV713ki7dsilxDz5jb1tvg49dbKNimSL19CLYVf0L9xwDz7z+4vInQs?=
- =?us-ascii?Q?fTU4l9xlg8ZDSTh7xJ+gy9aYP/GDHAsTix/ihaXQHmudeWmAlohcbqnkHrdw?=
- =?us-ascii?Q?XTkFCecB+tw4xgnqf1GUOiDZjFNfv9aSah/54LQSFDItN/LCe3F/er/yZKbN?=
- =?us-ascii?Q?zcYQyLdZe0oguLFS6PL3ZjK1pf1lja07nxrmEjVbuse31STM1+Dc8fi5jRQ9?=
- =?us-ascii?Q?CT56QP3kHpnQ3vpKVGLDjt/BKSEyElZMI4eh6rIjWVYowuBiop91PI8MyZ+V?=
- =?us-ascii?Q?LZbUQFaWxgNO8+/pbAJB9QT5FE/PFbE7SEGCFVksha1xn4Ct5Xi4csoPTRjx?=
- =?us-ascii?Q?T+tR4jnOJuY=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5757.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Tp0myZQNRFAOhXwaW47uk2WNGg0VUX3LAp82/xqo4uaMpEEzGMLFqXRtGiSR?=
- =?us-ascii?Q?q1Jg+KONxrN04RRHtMY3BYaalRQsiG7hApre/FzQ9wG6eF8q4Ufo7FbMPzfX?=
- =?us-ascii?Q?FzXuth7YOq5Fz/AoxH4zgXdwKvIfMVZoIl/wPjJuhjYtaCa3Xtz4drDBe85/?=
- =?us-ascii?Q?fwAtttqYA5SdxYSR6WkVp4Ow/Ho3+gjKuq5JyM8h2sLhYtocWF4gWlAd5AOz?=
- =?us-ascii?Q?vNwcuGqR6/a9C3NKp3wptjcT4EcvCwJR900gaaAwm6qn3fzNgRK6Dkbx3qp6?=
- =?us-ascii?Q?GoIdUhpSug2eeh04R4em9NYcgot7QzlTAFGt2nI1B6wHjUS51z5C++0f/1/x?=
- =?us-ascii?Q?ytzS3/Duw9ftOkfriclKgL1k+9j4NSs3wQYCMlg/oSxFukaLUGNCTSg9EjUD?=
- =?us-ascii?Q?BR1Bh1jOQatCJ21sqt01f7TSoBtXM9EnpeZHQJntfMg9wblz4MCmhAvsOMvc?=
- =?us-ascii?Q?WAjxNroqqc7OYxwLL5Whq5qwGF9/M4iyicQskWWjmsUacBDy0kYkSzK6rQUc?=
- =?us-ascii?Q?Iskr5PRP72IcAjq6VUnsNrDciejKwQO7drOwSyGBlqVBp0cwifwrQHoD5SEZ?=
- =?us-ascii?Q?yL4grKZTDuTkonTGJ8n9XxYkQhmIWM7ipCooPanH4j38GpymE8Sx09ZkcrzP?=
- =?us-ascii?Q?KoW+r7QuPPsotonAl0tISayRdEPCDVQPdch7AAMiXIcIiazgzXhTcjtkM0eR?=
- =?us-ascii?Q?R2vzkEwPaBoaioR52H2aoAcWdtgdQrEpUJb0UgCEEnl+Xrc+F7pU8UpeN9eV?=
- =?us-ascii?Q?/VQD3hPNVnKMnljB8AFjEYG+PP733CCNYtpt3iyNn1pJXna5FRzUemH0MN8Y?=
- =?us-ascii?Q?UWDCA3OoRdpoZCe2uJ320lROnZ+Ur92xC1IOYGmB1sL01i66YSh0M0PfbN5/?=
- =?us-ascii?Q?vmlKBLker0171p8tKQFe5hZfKTT6wN5CDF5Koou24Fj8ePWy67BWUYpzviG3?=
- =?us-ascii?Q?DSvRgmpix0LMoQ94aY1y82KkfCIrezsOZmliPoydIhjTeIOvPE1mzIUZVKYU?=
- =?us-ascii?Q?8vJJUkgxZ2pNoC15H6ak2cBWkp2CYm/NXrXw2FuYV/09E6bFq3wAvj+Nvumg?=
- =?us-ascii?Q?vRorUnsaQb3V9o23FSnuEjBTuVS0m90bosNwiFTZKF00C1V2/LIWyxu3tK3e?=
- =?us-ascii?Q?XFhGU2MgUPCq2kLf2dYRf3y/Ncv+ZjJyWzLvaZ8sdZvPAot4XWRtCq73ELI1?=
- =?us-ascii?Q?oBq1CcLrsqpBRPcgPIyVr0DZwIAKopjdRp9SZzjqB7MD4YaoHjjrEoyQUp78?=
- =?us-ascii?Q?sk0r0cQwvvokvzCRHP1E1nG4EnKTxCcJ6a4vrohFJQwREtPkD7Gs7hCtGLBQ?=
- =?us-ascii?Q?4Oqs9YbCe0TCPdtvLc/dAAn7IBMje5gkm/yx2X6UBEkQhRMtgBbbZLInGIwm?=
- =?us-ascii?Q?r2SCRo601ytkfK8FxrTuaOkWSDN15WpevyzoLM86sHf9OpMU/ws4b3Mj7Psq?=
- =?us-ascii?Q?vxGU/qgFnNNayzGTFveGvqGNLlnf/HH06cx+Vfv1bIGRgDqoJZLnDWB33ftT?=
- =?us-ascii?Q?He3g+db924waeyc0lJM/YlOTWF2t+wI4dG40Lw8I9Iy3d97rG3SI+edw4vBJ?=
- =?us-ascii?Q?3chGd/hixYsZCf9Bfw8lU8Sn76pxBtbOiyccrUfW?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ee55a480-3326-4e41-f0be-08ddf53769b2
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5757.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2025 15:40:50.3991
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0T6KufBqHiV0EbtumXr/qd8XAxcjvD2Ozn4M7Wg66C3o2g9lfgFNYf0WMI2c4rm8
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8884
-X-Stat-Signature: bscazrcjtrc7bf5yzocyornxmrkj9tju
-X-Rspamd-Queue-Id: 7BA461C000B
+References: <20250915230224.4115531-1-surenb@google.com> <2d8eb571-6d76-4a9e-8d08-0da251a73f33@suse.cz>
+In-Reply-To: <2d8eb571-6d76-4a9e-8d08-0da251a73f33@suse.cz>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 16 Sep 2025 08:51:51 -0700
+X-Gm-Features: AS18NWA1aMQcro0nHI_awSa8XDDhwp0fYBTaz-bm5DsoeJH_N8UZACj67AWvxw0
+Message-ID: <CAJuCfpHXAhGZb1aOPyHOPiTWSwQJi570THqJQcjrVPf=4Dt3xQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] alloc_tag: mark inaccurate allocation counters in
+ /proc/allocinfo output
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: akpm@linux-foundation.org, kent.overstreet@linux.dev, hannes@cmpxchg.org, 
+	usamaarif642@gmail.com, rientjes@google.com, roman.gushchin@linux.dev, 
+	harry.yoo@oracle.com, shakeel.butt@linux.dev, 00107082@163.com, 
+	pyyjason@gmail.com, pasha.tatashin@soleen.com, souravpanda@google.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1758037257-106792
-X-HE-Meta: U2FsdGVkX1+miJ6VeqswCZQ4GGs8uC8gqMVwekoW71YKlor4JJ8aFd+XDmok6DtXbTKJ5YKEl5Yu5ic4nFeDOThPiREJ2rWLwy05NovM+hpNkiMpr6nBJ2l74Zxr3563eD+4/w5dxtUIujKdqS8p7lAeJbbra963aNG5lYd6PSPDi2x+cg7xpldHAdnszje2vkaJm6a+0xGtc81gr+fvrhoKgKtBCNyE23ueCDSJ4iEPPGZ0OWHisAjtjBGE0Rn+sxWTSCTapGNIROjBCLvWE+vYMarmCNHTBfmlTJYXbJYRFucMwUfV7JXMmm678z6V05TS63O3GgpfvsbXFGan1saxxf5Txshuk4QbYa5U3Jk8nL262gXetDnr7/qeoMVmb9ZiUVEpID2/Lae3DjqxaN63KI1K88bOgXMnH/gL3ebnEBlryYBLrsGyBhEzFpTkSVmjF8BO11PDsYNlJpsUuDNeZfxbswvP+S2fCCy4rJUwzh/6DOgBTMQHqfMVatHiXTF3fohXXYA5z6SITR1ABBTXdfEsu2pyKZChD+6K4uyuC1w9nNPtgh0x3FtET2pn+PpPuNqK/ypadE0v33Ik8PSugeZqHXo9gwPwmjB8h3XiFjhuIWc/xU/HCMYUWhXbMZ7NjJwPvSh8BcAXLcnk8o/NceriP+KH4YIKfUM/QFQm7Vy2tgbF1eOqdQFbqNAyCV4DvKxOKo7khx7T/rU9ZiSHGhBA6+o1VUGPKdcI3Lef0JkVbeQYwu8vUlst0Sg6zLu9pYkckgQwZUQzt3++uWYraNb5SylGrXkZxj2qyjxKyX5MlJczc8HPKs+HYGzGQjbZoTUROz0sAXHiqWnanyKMk4kv4dEGqP5MMi3HwDMbTb2FcnlDyGy7tV6j//Jkwa1HS8b0aJslRJ9+lC+LcvDsA8gOC9WiGT2ap9DhDhOzpbidaBQ+CvVFDfJarl68hAtJNKfe8hkdCLYeiKP
- /mYqd9zZ
- KdiZ50PeFo6cj9gba+X6wLhNQGHRSAlypveuCDr+8RxBjPxBPUIPhv5G9Y8KDazTvCf3cKu3VouMWDOfqX7qFpU3N0uBewRfkIcXIp0vMDzX2d4TBkqb138CsvmhVT9aYL5DcgNXvQwnrV0jm2uhto0AkvUzevAP0szjAJF6sCNM/lF3exJv1uaRln90gjWJIY8u1CBg1+Xu9uad7zvRKqnMSuzCwGQgU//u838UvVeLpONIYgS3yjPhJEa1Ev9Or3s0LXQNoiO0DDTzdegxIrlKXqb+mvXttc0bsPs832dMI5LZx4vZxI+1ZlVCW8dtK/paDT77phOedAqMW5ACJj/jq6V+qmNcR++3HWYCNtOiXZOYaPFSjiP2aLiADfDYyfOo8/gMtexl43N0iMqELl7eIGFnlbOtuYaTV1+pMFCfRsvqGx/5HLHohZ+GugXDDPbpQewHk3I5tlZHmqG0fzM5s+20Gz61zdyxBJE+0nVoA7PMnKXOcpZ8dhBXkdDgzY5N1qYZhQNYVNp9yBei4Z2L/uqlMKN56ZBObmnu6d3oplFkX/kzOZlPH4Ovz4PQ2ayyKeMYkJYxlJqc=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 593301C000E
+X-Stat-Signature: 5phjmqi33j4en8wzegq9pikdofpf3zx1
+X-HE-Tag: 1758037924-191538
+X-HE-Meta: U2FsdGVkX18tTlUcoPppTiMP4W0V4Rbz3/X/Fc8G0nxAASI7kd67PGHDX5DlweUqyACOBL9yDnp8Y7bFGnqB/hsVcIH/LeZ+F6QNjTqo5B6a8hhJ8FpphnpKwFgSmBTxsZbvU/pDO+BdZI+A/tnYLkdKpm4kaZ8cXC9lAMx1GXzaadcyybM3V5siEvp90rzuIBY5wMFRQsQFERsRn80s9NfhBcNoSNDOBOqYrdeUDXQlmUHfTSIfYEBQfm2IY3YDBaJqx1UM92/Cj8/md2rH4HK5LZqMGLNpetwGlde4sPGRDO6eBwB0I1kQgjZwZtL3vsYYPR0jwCTZiUTNFAR3MovUGym1VOTxlTWItH/wOu2KERSzTBTS0CGSygWPIn5z4NdswgyY8103kBg10zZgGwSGXpHiipHCZB8GqMAwjRhw5NWFoExw/kz5uGiIWS0EBSF16iKRdazhlCkDSotJlUh+OE9xCIThLHjQNlnywhIZCDK6VfNryjhBQ2Q8Ju2bIsNp0gLEDrLa21pC2iROAPWNu740alVIO6ttSF/zqQqB4kSb+/pAwqMVTDD+SxggahttoL1TMo47vuUnh9feDe1iPQJDXBqaKGhmTvW1mOWYziNRohhv59IVHhXaPk2bPqdIKsTfZWMQNBBQU4PvAm3kpbJqXNRNHylmLKe+LOOBAi2fhAbceGj6QwKtjlgIxushWzf9kTpl5NQC5PYQB4C2PIu4DBMdEHHTDqMnyrGNNeYN7XwmBces6K21s7mPNweSf+iXHCsmHoaAbDnB3ulZNthIk58Oc4ox3BVNYjrKhFUFcMjdXS3VQsyOHG7GVbmUJGz06+ZXSj5vFZyG9vUx4Qn35jYzCfN36psoQgEAEBUMBmJo1FuzChTn2dpfsCI/BvGgWM01WuJkyfUaL/sguvOLx6F3fUuMyTCLsWilG46W9KfDh4UcEMMY1DhC3Wh5IwJ/vuD811pw/QQ
+ fDeViAhA
+ Rp6U9R2IoainMy5YwqSzUCi5kE48FaRLo8XldLdpJ1762/IgvoOpZ6Jdwn8VVIGS5x3gR7BadzJ7OZi7D8BswfsQd/1u8HBpp1nICZ6PmgU57dj/0FqwZC4okpx3RZB6alYVK6rSexwSFpJhRTQKaOKzNRvjSkDqfizXnsedSgSa2UFc7OHdl1aF2s32GFFNI3OlEbrm9Neb+YUcowotWVW4/lz/TZI9yTulBwVdLhCF6oNjAI5GqKXAbpdpUQSctfpZpb+wYr7pcAahmFMgzaRtvuj3lmfMTyd8HTw7B4J9hbCzADRGn5P6kINTU12J8ODgiR0xSXDMN/nYgJpFFLOGzWt+HWqrv8xIbvdghS+tC5MZBeMn8qDFukg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -223,111 +120,222 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 16, 2025 at 03:11:59PM +0100, Lorenzo Stoakes wrote:
+On Tue, Sep 16, 2025 at 5:57=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz> wr=
+ote:
+>
+> On 9/16/25 01:02, Suren Baghdasaryan wrote:
+> > While rare, memory allocation profiling can contain inaccurate counters
+> > if slab object extension vector allocation fails. That allocation might
+> > succeed later but prior to that, slab allocations that would have used
+> > that object extension vector will not be accounted for. To indicate
+> > incorrect counters, "accurate:no" marker is appended to the call site
+> > line in the /proc/allocinfo output.
+> > Bump up /proc/allocinfo version to reflect the change in the file forma=
+t
+> > and update documentation.
+> >
+> > Example output with invalid counters:
+> > allocinfo - version: 2.0
+> >            0        0 arch/x86/kernel/kdebugfs.c:105 func:create_setup_=
+data_nodes
+> >            0        0 arch/x86/kernel/alternative.c:2090 func:alternati=
+ves_smp_module_add
+> >            0        0 arch/x86/kernel/alternative.c:127 func:__its_allo=
+c accurate:no
+> >            0        0 arch/x86/kernel/fpu/regset.c:160 func:xstateregs_=
+set
+> >            0        0 arch/x86/kernel/fpu/xstate.c:1590 func:fpstate_re=
+alloc
+> >            0        0 arch/x86/kernel/cpu/aperfmperf.c:379 func:arch_en=
+able_hybrid_capacity_scale
+> >            0        0 arch/x86/kernel/cpu/amd_cache_disable.c:258 func:=
+init_amd_l3_attrs
+> >        49152       48 arch/x86/kernel/cpu/mce/core.c:2709 func:mce_devi=
+ce_create accurate:no
+> >        32768        1 arch/x86/kernel/cpu/mce/genpool.c:132 func:mce_ge=
+n_pool_create
+> >            0        0 arch/x86/kernel/cpu/mce/amd.c:1341 func:mce_thres=
+hold_create_device
+> >
+> > Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
+> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> > Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+> > Acked-by: Usama Arif <usamaarif642@gmail.com>
+> > Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+>
+> With this format you could instead print the accumulated size of allocati=
+ons
+> that could not allocate their objext (for the given tag). It should be th=
+en
+> an upper bound of the actual error, because obviously we cannot recognize
+> moments where these allocations are freed - so we don't know for which ta=
+g
+> to decrement. Maybe it could be more useful output than the yes/no
+> information, although of course require more storage in struct codetag, s=
+o I
+> don't know if it's worth it.
 
-> -static int iommufd_fops_mmap(struct file *filp, struct vm_area_struct *vma)
-> +static int iommufd_fops_mmap_prepare(struct vm_area_desc *desc)
->  {
-> +	struct file *filp = desc->file;
->  	struct iommufd_ctx *ictx = filp->private_data;
-> -	size_t length = vma->vm_end - vma->vm_start;
-> +	const size_t length = vma_desc_size(desc);
->  	struct iommufd_mmap *immap;
-> -	int rc;
->  
->  	if (!PAGE_ALIGNED(length))
->  		return -EINVAL;
+Yeah, I'm reluctant to add more fields to the codetag and increase the
+overhead until we have a usecases. If that happens and with the new
+format we can add something like error_size:<value> to indicate the
+amount of the error.
 
-This is for sure redundant? Ie vma_desc_size() is always page
-multiples? Lets drop it
+>
+> Maybe a global counter of sum size for all these missed objexts could be
+> also maintained, and that wouldn't be an upper bound but an actual curren=
+t
+> error, that is if we can precisely determine that when freeing an object,=
+ we
+> don't have a tag to decrement because objext allocation had failed on it =
+and
+> thus that allocation had incremented this global error counter and it's
+> correct to decrement it.
 
-> -	if (!(vma->vm_flags & VM_SHARED))
-> +	if (!(desc->vm_flags & VM_SHARED))
->  		return -EINVAL;
+That's a good idea and should be doable without too much overhead. Thanks!
+For the UAPI... I think for this case IOCTL would work and the use
+scenario would be that the user sees the "accurate:no" mark and issues
+ioctl command to retrieve this global counter value.
+Usama, since you initiated this feature request, do you think such a
+counter would be useful?
 
-This should be that no COW helper David found
-
-> -	/* vma->vm_pgoff carries a page-shifted start position to an immap */
-> -	immap = mtree_load(&ictx->mt_mmap, vma->vm_pgoff << PAGE_SHIFT);
-> +	/* desc->pgoff carries a page-shifted start position to an immap */
-> +	immap = mtree_load(&ictx->mt_mmap, desc->pgoff << PAGE_SHIFT);
->  	if (!immap)
->  		return -ENXIO;
->  	/*
->  	 * mtree_load() returns the immap for any contained mmio_addr, so only
->  	 * allow the exact immap thing to be mapped
->  	 */
-> -	if (vma->vm_pgoff != immap->vm_pgoff || length != immap->length)
-> +	if (desc->pgoff != immap->vm_pgoff || length != immap->length)
->  		return -ENXIO;
->  
-> -	vma->vm_pgoff = 0;
-
-I think this is an existing bug, I must have missed it when I reviewed
-this. If we drop it then the vma will naturally get pgoff right?
-
-> -	vma->vm_private_data = immap;
-> -	vma->vm_ops = &iommufd_vma_ops;
-> -	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
-> +	desc->pgoff = 0;
-> +	desc->private_data = immap;
-> +	desc->vm_ops = &iommufd_vma_ops;
-> +	desc->page_prot = pgprot_noncached(desc->page_prot);
->  
-> -	rc = io_remap_pfn_range(vma, vma->vm_start,
-> -				immap->mmio_addr >> PAGE_SHIFT, length,
-> -				vma->vm_page_prot);
-> -	if (rc)
-> -		return rc;
-> +	mmap_action_ioremap_full(desc, immap->mmio_addr >> PAGE_SHIFT);
-> +	desc->action.success_hook = iommufd_fops_mmap_success;
->  
-> -	/* vm_ops.open won't be called for mmap itself. */
-> -	refcount_inc(&immap->owner->users);
-
-Ooh this is racey existing bug, I'm going to send a patch for it
-right now.. So success_hook won't work here.
-
-@@ -551,15 +551,24 @@ static int iommufd_fops_mmap(struct file *filp, struct vm_area_struct *vma)
-                return -EPERM;
- 
-        /* vma->vm_pgoff carries a page-shifted start position to an immap */
-+       mtree_lock(&ictx->mt_mmap);
-        immap = mtree_load(&ictx->mt_mmap, vma->vm_pgoff << PAGE_SHIFT);
--       if (!immap)
-+       if (!immap) {
-+               mtree_unlock(&ictx->mt_mmap);
-                return -ENXIO;
-+       }
-+       /* vm_ops.open won't be called for mmap itself. */
-+       refcount_inc(&immap->owner->users);
-+       mtree_unlock(&ictx->mt_mmap);
-+
-        /*
-         * mtree_load() returns the immap for any contained mmio_addr, so only
-         * allow the exact immap thing to be mapped
-         */
--       if (vma->vm_pgoff != immap->vm_pgoff || length != immap->length)
--               return -ENXIO;
-+       if (vma->vm_pgoff != immap->vm_pgoff || length != immap->length) {
-+               rc = -ENXIO;
-+               goto err_refcount;
-+       }
- 
-        vma->vm_pgoff = 0;
-        vma->vm_private_data = immap;
-@@ -570,10 +579,11 @@ static int iommufd_fops_mmap(struct file *filp, struct vm_area_struct *vma)
-                                immap->mmio_addr >> PAGE_SHIFT, length,
-                                vma->vm_page_prot);
-        if (rc)
--               return rc;
-+               goto err_refcount;
-+       return 0;
- 
--       /* vm_ops.open won't be called for mmap itself. */
--       refcount_inc(&immap->owner->users);
-+err_refcount:
-+       refcount_dec(&immap->owner->users);
-        return rc;
- }
+>
+> > ---
+> > Changes since v1[1]:
+> > - Changed the marker from asterisk to accurate:no pair, per Andrew Mort=
+on
+> > - Documented /proc/allocinfo v2 format
+> > - Update the changelog
+> > - Added Acked-by from v2 since the functionality is the same,
+> > per Shakeel Butt, Usama Arif and Johannes Weiner
+> >
+> > [1] https://lore.kernel.org/all/20250909234942.1104356-1-surenb@google.=
+com/
+> >
+> >  Documentation/filesystems/proc.rst |  4 ++++
+> >  include/linux/alloc_tag.h          | 12 ++++++++++++
+> >  include/linux/codetag.h            |  5 ++++-
+> >  lib/alloc_tag.c                    |  4 +++-
+> >  mm/slub.c                          |  2 ++
+> >  5 files changed, 25 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/Documentation/filesystems/proc.rst b/Documentation/filesys=
+tems/proc.rst
+> > index 915a3e44bc12..1776a06571c2 100644
+> > --- a/Documentation/filesystems/proc.rst
+> > +++ b/Documentation/filesystems/proc.rst
+> > @@ -1009,6 +1009,10 @@ number, module (if originates from a loadable mo=
+dule) and the function calling
+> >  the allocation. The number of bytes allocated and number of calls at e=
+ach
+> >  location are reported. The first line indicates the version of the fil=
+e, the
+> >  second line is the header listing fields in the file.
+> > +If file version is 2.0 or higher then each line may contain additional
+> > +<key>:<value> pairs representing extra information about the call site=
+.
+> > +For example if the counters are not accurate, the line will be appende=
+d with
+> > +"accurate:no" pair.
+> >
+> >  Example output.
+> >
+> > diff --git a/include/linux/alloc_tag.h b/include/linux/alloc_tag.h
+> > index 9ef2633e2c08..d40ac39bfbe8 100644
+> > --- a/include/linux/alloc_tag.h
+> > +++ b/include/linux/alloc_tag.h
+> > @@ -221,6 +221,16 @@ static inline void alloc_tag_sub(union codetag_ref=
+ *ref, size_t bytes)
+> >       ref->ct =3D NULL;
+> >  }
+> >
+> > +static inline void alloc_tag_set_inaccurate(struct alloc_tag *tag)
+> > +{
+> > +     tag->ct.flags |=3D CODETAG_FLAG_INACCURATE;
+> > +}
+> > +
+> > +static inline bool alloc_tag_is_inaccurate(struct alloc_tag *tag)
+> > +{
+> > +     return !!(tag->ct.flags & CODETAG_FLAG_INACCURATE);
+> > +}
+> > +
+> >  #define alloc_tag_record(p)  ((p) =3D current->alloc_tag)
+> >
+> >  #else /* CONFIG_MEM_ALLOC_PROFILING */
+> > @@ -230,6 +240,8 @@ static inline bool mem_alloc_profiling_enabled(void=
+) { return false; }
+> >  static inline void alloc_tag_add(union codetag_ref *ref, struct alloc_=
+tag *tag,
+> >                                size_t bytes) {}
+> >  static inline void alloc_tag_sub(union codetag_ref *ref, size_t bytes)=
+ {}
+> > +static inline void alloc_tag_set_inaccurate(struct alloc_tag *tag) {}
+> > +static inline bool alloc_tag_is_inaccurate(struct alloc_tag *tag) { re=
+turn false; }
+> >  #define alloc_tag_record(p)  do {} while (0)
+> >
+> >  #endif /* CONFIG_MEM_ALLOC_PROFILING */
+> > diff --git a/include/linux/codetag.h b/include/linux/codetag.h
+> > index 457ed8fd3214..8ea2a5f7c98a 100644
+> > --- a/include/linux/codetag.h
+> > +++ b/include/linux/codetag.h
+> > @@ -16,13 +16,16 @@ struct module;
+> >  #define CODETAG_SECTION_START_PREFIX "__start_"
+> >  #define CODETAG_SECTION_STOP_PREFIX  "__stop_"
+> >
+> > +/* codetag flags */
+> > +#define CODETAG_FLAG_INACCURATE      (1 << 0)
+> > +
+> >  /*
+> >   * An instance of this structure is created in a special ELF section a=
+t every
+> >   * code location being tagged.  At runtime, the special section is tre=
+ated as
+> >   * an array of these.
+> >   */
+> >  struct codetag {
+> > -     unsigned int flags; /* used in later patches */
+> > +     unsigned int flags;
+> >       unsigned int lineno;
+> >       const char *modname;
+> >       const char *function;
+> > diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
+> > index 79891528e7b6..12ff80bbbd22 100644
+> > --- a/lib/alloc_tag.c
+> > +++ b/lib/alloc_tag.c
+> > @@ -80,7 +80,7 @@ static void allocinfo_stop(struct seq_file *m, void *=
+arg)
+> >  static void print_allocinfo_header(struct seq_buf *buf)
+> >  {
+> >       /* Output format version, so we can change it. */
+> > -     seq_buf_printf(buf, "allocinfo - version: 1.0\n");
+> > +     seq_buf_printf(buf, "allocinfo - version: 2.0\n");
+> >       seq_buf_printf(buf, "#     <size>  <calls> <tag info>\n");
+> >  }
+> >
+> > @@ -92,6 +92,8 @@ static void alloc_tag_to_text(struct seq_buf *out, st=
+ruct codetag *ct)
+> >
+> >       seq_buf_printf(out, "%12lli %8llu ", bytes, counter.calls);
+> >       codetag_to_text(out, ct);
+> > +     if (unlikely(alloc_tag_is_inaccurate(tag)))
+> > +             seq_buf_printf(out, " accurate:no");
+> >       seq_buf_putc(out, ' ');
+> >       seq_buf_putc(out, '\n');
+> >  }
+> > diff --git a/mm/slub.c b/mm/slub.c
+> > index af343ca570b5..9c04f29ee8de 100644
+> > --- a/mm/slub.c
+> > +++ b/mm/slub.c
+> > @@ -2143,6 +2143,8 @@ __alloc_tagging_slab_alloc_hook(struct kmem_cache=
+ *s, void *object, gfp_t flags)
+> >        */
+> >       if (likely(obj_exts))
+> >               alloc_tag_add(&obj_exts->ref, current->alloc_tag, s->size=
+);
+> > +     else
+> > +             alloc_tag_set_inaccurate(current->alloc_tag);
+> >  }
+> >
+> >  static inline void
+>
 
