@@ -4,117 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E712CCAC592
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 19:13:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08F45CAC59B
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 19:27:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3EEF88E0005; Tue, 16 Sep 2025 15:13:27 -0400 (EDT)
+	id 3E7218E0006; Tue, 16 Sep 2025 15:27:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 39F9F8E0001; Tue, 16 Sep 2025 15:13:27 -0400 (EDT)
+	id 3BE2F8E0001; Tue, 16 Sep 2025 15:27:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2B5518E0005; Tue, 16 Sep 2025 15:13:27 -0400 (EDT)
+	id 2AD0E8E0006; Tue, 16 Sep 2025 15:27:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1ABC88E0001
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 15:13:27 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BBE371402F4
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 19:13:26 +0000 (UTC)
-X-FDA: 83896062012.01.698DCBE
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 7E2AD180004
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 19:13:24 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=CSijAOus;
-	spf=pass (imf24.hostedemail.com: domain of jane.chu@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=jane.chu@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 142A28E0001
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 15:27:15 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8F5015723E
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 19:27:14 +0000 (UTC)
+X-FDA: 83896096788.23.DDF701A
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	by imf04.hostedemail.com (Postfix) with ESMTP id C03B94000B
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 19:27:12 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=kSdM4GVR;
+	spf=pass (imf04.hostedemail.com: domain of rientjes@google.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758050004;
+	s=arc-20220608; t=1758050832;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=MunF14CLFqIG3RSLyPiI8/fZ9x1E9YDtogF7TGE4kB0=;
-	b=qE8EW69URB/SnMzaF3N5yFQN75mgo1jSFVqbBw+UrI/V4Jy0Pz4KyGNE509JBDdBgHY++9
-	mhsx8XKXZLhnRlJ4twjiX2LcK7tdpyw7dTnSnDHNS1PnhrIdfdOcDNeT+bVEp89PnKaaUa
-	3zq2nDJLr5hkMGy0QO0s/b8uf+G2CtI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758050004; a=rsa-sha256;
-	cv=none;
-	b=c6eA9j1kiQiUwxi+TPzQTtRdYSF2Nn8QE4aaXV/EZ5k0GkSbC+CUSmbD7rPlhfm1a+5NIp
-	faTF64FiFr+WTc4vhqv5ET9XnrJJy/iXdh3fgjjI2E2QqzJI6iIYtTBmwQR8wNmJtmQE+k
-	Td3UesuiMAJ5bEzZa1V32kuzFsm/gVw=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=e+88pAM765ByhxxTvIHtdee+u4rcNPCpXp45pnbq2P4=;
+	b=AGLtWvvcKek94NX9Py4rJ1FnixUQLm//IRQJ8C8FWXrV6hDzHXKZAxlvcG9v1eeyY19Tr0
+	LCkofuScGe+sdxdxSk00DzNIgk927iueuMzCj/tfiaF3mDjbSU1cOQ2yPRPm4PVOnabOYH
+	/Ro3Q3HAkUAJvJBbBKjOUNub9gLt5CM=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=CSijAOus;
-	spf=pass (imf24.hostedemail.com: domain of jane.chu@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=jane.chu@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58GIMnjx029335;
-	Tue, 16 Sep 2025 19:13:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
-	content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=corp-2025-04-25; bh=MunF14CLFqIG3RSLyPiI8/fZ9x1E9
-	YDtogF7TGE4kB0=; b=CSijAOusNkY6bysbvzvfqMCAWo5ffK9ZnIbgpPvLz7UOX
-	P4LN/brN1622cX8q+Tl7O/w5amX7j29Xq9WNVZv7VAtJnls/1fKBFtcRgVhjVxck
-	6by7khLUWsl/5rn3/vGAolXHAKkUAVAFc1U5NQ1tH1LB6uRulnuJAE47TILXvPqg
-	YfKrJIFbMHMWTpLHJnsFLe9xGCOYAqPixxdochi83qpGADsocuLs4I2YCIgdZ3Xo
-	sjHPe1m31sOx5bJIKQgF6pB+WZ1O6r+ZapgGgwGk2hj1wRXmo6FgdMrccLXxknbO
-	n2ZHBzGJVtplSL/13C7s7eMZpgfzD9n2Yxqp/xyxQ==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4950gbnb16-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 16 Sep 2025 19:13:15 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 58GILDXC027241;
-	Tue, 16 Sep 2025 19:13:14 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 494y2k3j0b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 16 Sep 2025 19:13:14 +0000
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 58GJDDqG000676;
-	Tue, 16 Sep 2025 19:13:13 GMT
-Received: from brm-x62-16.us.oracle.com (brm-x62-16.us.oracle.com [10.80.150.37])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 494y2k3htk-1;
-	Tue, 16 Sep 2025 19:13:13 +0000
-From: Jane Chu <jane.chu@oracle.com>
-To: david@redhat.com, harry.yoo@oracle.com, osalvador@suse.de,
-        liushixin2@huawei.com, muchun.song@linux.dev,
-        akpm@linux-foundation.org, jannh@google.com, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v3 RESEND] mm/hugetlb: fix copy_hugetlb_page_range() to use ->pt_share_count
-Date: Tue, 16 Sep 2025 13:12:52 -0600
-Message-ID: <20250916191252.1653993-1-jane.chu@oracle.com>
-X-Mailer: git-send-email 2.43.5
+	imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=kSdM4GVR;
+	spf=pass (imf04.hostedemail.com: domain of rientjes@google.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758050832; a=rsa-sha256;
+	cv=none;
+	b=UcybqwpkKafHEUUItiiNtMlSkvQzSWaZs6972KO+iyzbODsSb8e6V9aqsD8XuftI0UqUB1
+	Z8SUGiC8ubazd5iqrBsYf2v5fxfHhnWwA9pVuE7YXlVhgXoeWPFnSclJtOFmGIOzVbEF2m
+	DJiRm1vkRw/0DC9n8l5FnI0/ow3O5D4=
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-265f460ae7bso35465ad.0
+        for <linux-mm@kvack.org>; Tue, 16 Sep 2025 12:27:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1758050831; x=1758655631; darn=kvack.org;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=e+88pAM765ByhxxTvIHtdee+u4rcNPCpXp45pnbq2P4=;
+        b=kSdM4GVR83ZZVvjE5rT+fRuGWi4Zk9fmyxatxSPzdmvnI/mNBlGaMoPRfaON6VHhP6
+         ZmGobDxVd32p30xCwNPQlD6sSx9rdaw0OOVqNvdVh3HkA3+kdV2WZ5iXM6YAA2fzkCj6
+         BiaFtsr9NvLA8bJBSvA70tYaSj/T2YBVpfDHJRZKE3GUzv1mZgDo1wzAAsHFTi1exNnO
+         hPLdq69rQOMLPMFOVB6wKhz+qaX64CZCLtFxCLKU7ST6gsaTCcfUIAlV2otuxdpxcK3S
+         z7fM4ahTNgSJbkX2VvnGbnHdSyDagiOT9nfNGf6QsIMZfBDwkXPuCjQv+AV2MF3ckw+J
+         0pGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758050831; x=1758655631;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=e+88pAM765ByhxxTvIHtdee+u4rcNPCpXp45pnbq2P4=;
+        b=exHV2EUVKaJIdvnUxTMsRyv1VIEF3cEyCzyma4IAGc7PM2lAqhZEqGGIvKMFIphhOq
+         3PNpvuuG5S/DoqtC4idY7SaAz7XlMS2qe71h6a2Zdxj358ZWMEJc48IfXsFUmSEJEstj
+         6S7PCCwQB+m54NTgPDRCXL97K/U4bSZtrVQyCYp87XM+4G6rNd5yQwnnldONbdtnC3Gd
+         CKpvPGp3U/3jGC5JLeCrYVPAu5mdF9DV5bk5x2+P/KuZscHfzAl27ACFmETfVEIy0oFN
+         qpFMTV0moOBYLaMKb0+t+2kXB8eHiI3f/HRlZ/lylKizmLaPbfStbjWEy0Ive+wUFCvt
+         NBpQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUK33E/cZ/3D3bbXSX6E6j9Ridfd4felFmugc7THPJjqs5D/4vmdYzjRRtNNtCVIVDrhviFmXKHzw==@kvack.org
+X-Gm-Message-State: AOJu0Yw9SfavCuV2H/U9YpoxP+BjBwQwmEY15hhisxwPGWANYB2B60l6
+	tJ1WCd5XIXv3kH9lsNVNTqNBxQ9v1lzDJH9w0UowWQBolXI1BODfr4wja86Efvschw==
+X-Gm-Gg: ASbGncu094OpTm2Oadb0vMC8hf/nAAS+pvaEnptF+IJ9VbrvJBZWNySuhyLLYHt3b1C
+	4Hosrx26kjo2nCCfKg/vddcS2RLGc5SO0RRtFuri5v4pKF3hH0Pj0cIqknMtyfnIuB9jytQWkOp
+	OuPeQXGmoNF2n/Fvi61iGCXjj7nhZbioFIVTq0fcaWvoXHULw3RpnQI4HTzufdreRflHaTZ81MA
+	CQRoab1HcFcFM220eliXtwDnp73fA0bHzSkg0PWd0oSDTifD36dS66cYaT9Opdzvsj1nW6SR+EE
+	7JnywMxsSPZzm+TpSHeh7jFWn9vPksleAYLgr2OuOC06giu0SDrPFFKGvDAshsln9NVLxn40FUU
+	wnlNfKAHt20rhhhS1285dfPGKsRgq287UCemh2gSxQ3ftKc8FvpxMuJXjodfXqMHO2wAOTr/Mqr
+	nnyDiJaDXtl2DsTmmZzK2hSGHgayOFwuCPFXIntHwmb5EV6trEP7sxDe/IKelcI7u9hw==
+X-Google-Smtp-Source: AGHT+IFVhu1HB0ZSCofGaztjxsqj3Wgml8yyzA3KFYUh8Azzl2s2++2gyAKdXri+mmOv8BeFKDU3UA==
+X-Received: by 2002:a17:902:e751:b0:231:f6bc:5c84 with SMTP id d9443c01a7336-26800f6615emr852675ad.8.1758050831246;
+        Tue, 16 Sep 2025 12:27:11 -0700 (PDT)
+Received: from [2a00:79e0:2eb0:8:3226:ed0a:4c73:99d2] ([2a00:79e0:2eb0:8:3226:ed0a:4c73:99d2])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-77607b346dasm17161924b3a.68.2025.09.16.12.27.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Sep 2025 12:27:09 -0700 (PDT)
+Date: Tue, 16 Sep 2025 12:27:08 -0700 (PDT)
+From: David Rientjes <rientjes@google.com>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+cc: Eugen Hristev <eugen.hristev@linaro.org>, 
+    Matthew Wilcox <willy@infradead.org>, Amit Shah <amit@infradead.org>, 
+    Andrew Morton <akpm@linux-foundation.org>, 
+    Aneesh Kumar <AneeshKumar.KizhakeVeetil@arm.com>, 
+    Christoph Lameter <cl@linux.com>, Dave Hansen <dave.hansen@intel.com>, 
+    David Hildenbrand <david@redhat.com>, Davidlohr Bueso <dave@stgolabs.net>, 
+    Hugh Dickins <hughd@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+    John Hubbard <jhubbard@nvidia.com>, Kirill Shutemov <k.shutemov@gmail.com>, 
+    Mel Gorman <mel.gorman@gmail.com>, Michal Hocko <mhocko@suse.com>, 
+    Mike Rapoport <mike.rapoport@gmail.com>, Peter Xu <peterx@redhat.com>, 
+    Raghavendra K T <rkodsara@amd.com>, 
+    "Rao, Bharata Bhasker" <bharata@amd.com>, Rik van Riel <riel@surriel.com>, 
+    Roman Gushchin <roman.gushchin@linux.dev>, Shivank Garg <shivankg@amd.com>, 
+    Sterling Alexander <stalexan@redhat.com>, 
+    Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>, 
+    Vlastimil Babka <vbabka@suse.cz>, Yang Shi <shy828301@gmail.com>, 
+    Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org, rdunlap@infradead.org
+Subject: Re: [Invitation] Linux MM Alignment Session on kmemdump on
+ Wednesday
+In-Reply-To: <nglllfwopxgz3fye3grko3hmbvpmfhewj36qg6lbh3b66bjpvz@foxfjulayqst>
+Message-ID: <08c0b550-0a78-0b25-308d-18b143999599@google.com>
+References: <426751f4-428b-ed01-509b-d13e719a2006@google.com> <aMhgoUvziLPNt_vI@casper.infradead.org> <cfac2d98-2214-4bd3-a4cb-9b319acb462f@linaro.org> <aMlS9Kb6_x3fqsLG@casper.infradead.org> <50b566d6-aeda-48cc-bd67-362cb29b214a@linaro.org>
+ <nglllfwopxgz3fye3grko3hmbvpmfhewj36qg6lbh3b66bjpvz@foxfjulayqst>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-16_02,2025-09-16_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 bulkscore=0
- mlxlogscore=926 suspectscore=0 malwarescore=0 spamscore=0 phishscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2508110000 definitions=main-2509160179
-X-Proofpoint-GUID: jDbrp8mDSSrnQmOt6l0GCFpGavaTTqlE
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTEzMDAyNyBTYWx0ZWRfX6em316BjdP3l
- Zwi2STcgv2DglaxLU2IojuA8M5CBYmEJCXha6GXlscNAXcNf6kR3Bx2xw17AM5bBZopX0ceB/lN
- cS7mOy/pYdeOUpGjLznSLN4VkTKhj+d6NgasMwzrl38/Mp107adgQMG3kY4Xe1fsFijDwlpOPfj
- bmfN9zvSHytPHkoFb3lLF2rep9DKlEDXYHPRtzSUEnwiawljxtB+mtetWuhY62bOtXesy5m6udP
- zRLXZ8/Rh9nbqzmCW/X+xsws90fJ2lwJpqPWOKtgxOpfSrzC/TBDTTM8nuIO6FNGA62EdICZaW1
- eEchO7B5Jy4TjquhOjusS3q8fZncPndTzBz+qdRKKWw2jXzXzKtpTib1agdy5gC/obnK2jsabxS
- 0zP41C4rspn69IuqIhO0eaXTENol7w==
-X-Authority-Analysis: v=2.4 cv=QIloRhLL c=1 sm=1 tr=0 ts=68c9b6cc b=1 cx=c_pps
- a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
- a=yJojWOMRYYMA:10 a=yPCof4ZbAAAA:8 a=9LJWlUjqVvmiLGY7KaoA:9 cc=ntf
- awl=host:12083
-X-Proofpoint-ORIG-GUID: jDbrp8mDSSrnQmOt6l0GCFpGavaTTqlE
-X-Rspamd-Queue-Id: 7E2AD180004
-X-Stat-Signature: j9317jhg3u6gx91j86abfdmnmssmpujn
+Content-Type: text/plain; charset=US-ASCII
+X-Rspamd-Queue-Id: C03B94000B
+X-Stat-Signature: pssqw5hmune1u7qodky1xkz5s4jtss8x
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1758050004-949728
-X-HE-Meta: U2FsdGVkX1/XB+OwVtx2sKE0t6vyg9dJfHvgx1yxSU61RQ0yzWTpqkldoiG2F4qpVxkmL5KM3GEON7UHH7r3g6XUx70jikmgc3JKYzexExCxPVbfFRivgq9xFJkCblzct2ulN7m9ytT+qPUtrepRgL7J2/1EU7o6uNlOaJDQxeRsQ6+Ti/CYahtn8k6EdDXaJbDNz+5lb0pDM/4EJv9fNnu/SU+1KupsSed1wQdMnIqUbqqZ7+Nv5dQAn2Nz6rJT7ksEobTCaSgunHgyMN9hBLWxhZmaao8ZOCEJdF80kvuV4r/vXQgjyaI3vu7/SnE+InzKqMXQUHUXG07RIXKFFni8k7o3LxmDC/mCXCpbFUjHIIen41SOp7q/yR2DuFlOG40uCykrs8G6A1PIzEhO4G4sp2UsBNcb0QRgx1xnG9mn7HmA1SJQjPqqcre8jaGxWncYIMhfguWQvq7PGrRJKd+XyfDsYMoOYoKojZLiFyQb8r4Hx/iN0OyDC++ZK1+S5pdX5CpNZewyB3qLsJjWKkqNBVrDtz4NkPagOBV0shguA9Q7zLPUYVdlveeen7+c2wR1GmEl8MdJ7MlgUQrf8UwDWCPexmfhdhhk5f0nLkrRNwcqYeHcOC2oJzvTIyBEPqEQe7e6tzxxrJ3wgKXrRoWoZH0lO1TSxYInuVtNRTIgCtf83r3CHHC2K5LH5+m8QJ7mGrwSRD9DqS5/LEpb7mm5zDA6mGh5lXfYwsamPb7SZ4obPcI40CHEJKq3IG29+n2/WLdCFCQD8SVwNIpynZltXpQG0Q3MRAx9AuJrjIku/L8Lh+8L8ncWuINz4fRQFmGFKSISwim9zprtNAXzK7dhVdiUAYg0yt5Ne/lSbqphdVcMm5k0VPUTfpZ2ITPKq6obJGl0kRozCThKvTyhn4YTUTB9TcEKxy+l0ONMpxT0mRBGady7xEFQvjIDUPjse2DjD0w7EesFSmpPSQh
- CHuKMapY
- Sh18Lvz9dGf3UHpsqrs2ZO4LThAXMj3pYK3PuCJzzJRdIIH9gQu2bGcl5tr1vfoGLTUxbNvs9S9pxLC2QqLPCaJAExTsMUsnpfxssPvCjWvTTMnQA2DNrxBRSJPZ6d6ZIzPOKqfjpNFSC+vncBh05RfkJ941f/bouqk40CGs9Y5Jow8zNDrQ7v1yROPaWKGGfXWB7skbCFih9ycMTiqjnSOP94Dg5KyimcZckfhd8W3tdMgiiEcvwq9ID3MdzeS1FHzbD+tTjwXE22O9cnLUpWAmNx85quRgtVTDRsj/O8atcqbAJlXCkUUqzupFnbZxF/ARzLUJqaDjf08LsYN3mC+Wp0x1Ye4S+ECp0
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1758050832-736244
+X-HE-Meta: U2FsdGVkX1/I5osv3AeVDFlKzAK4NBpLPtftM9UlCb8PqcMyWFnTWh2xxwJYs/mwmGxu7k0Kb4CxzVoS2AllNNtD5CFTthGShGtKqQxMOZMR4xbgWfUzr6wDt8TfPWP1HzFue7y5eYD4jZyC3d1eoMezSDvyovaWLat7gWLXr7WmqMJ0H6PzlncFqCeVOUFrF/sKlV/0xaQXbiU3rA/ZCx+Cs1HmFYd93mLv3G0X6J9iKowdYOsQoRbq+gb+xhebNptzc7YGROdUOPjVBBoyCrcy4P/m4ivzZ4oEHVKAj7DYXnS/ZBT5XlFpvRU8bwy5lw0HwmMpq3K5UYroRMFOTx83mO68/oD5yKl81KBufxR1XtnAaq0iagQdbXZGkdMbatb6wnr3B5I7ohAkhJkMVlDVTZdoxiqeNcJIQ7fPlZJmu4VHUNxR+EOdGAO3E6Mrs+JpvWuFwXthqZVJgIekbSx9ZofU2wrF6745hjegqytRouWPNVMITTl0AM2yzgX7dONjR24WU8AEWvzlzFLa3Mld40FINl7gFckTLiFYDofl887tr+G3W3a6i2QqqpWOQ0brOYDq3WY1GBmoDeZ6XI+ElUpfK/BVN+h0Q1bGLtAxWBFiB4C5KuSklYzQYuIabIcq/bgtPBFpWNnh/GCOfl4FGFBJc7PpwEeyFimAWxcH9f9MJa26l1F9+5u5etT8ANdCfxfbNV+OiU4hiCerJB7qGQ2VQ/Kc5uxWnKzV4JcNP00+kTlG9wgYKkoIw/bIE5mix4S+mhHG+EHZXsUbcBt51UN5FjJxeKaK4/ipsoaN+tJEFw70ahHkx4K7NTKc5ptHE46Xqm2blLalPRfEi9bHjw+7dnQJfFD7dJCCmWA0nLC5688HgZW18+j2J1T3dni8ApMpdm8UAjeIY8hiMPIdSsdTRK95lzFecEsjnn1MndDT/ah2BpfUsoAooQEcwLkxqUb+appdG+0osjJ
+ bUVzjJzA
+ 2agACBmAcilJ0qHYb2Wb4KOga0mP0oo2qDkMtJsn1PwFM2hzD6GgVAtYHmnw9gvG2T+pvWgE0EjCeO1x7Ag1S/c6cn1zP1XVyyxj74nAE/IBeuzvRr1maRbfBQFdbcAMR97kGkdNumnVu5DtuZgIihiqo0/348mncBWMcUgiNBnHYoZz/p+pLbl2UlgTH+x7KF6lnO55kULl01LU/35e77EsW5S+HlOarhSktuQjfpRQz0QPcm36wB2HHB50pYlUMQoC/hiDdaPtCh2vVWUU1UjWJEyU7vpHPFfSuln1bYJTgRpC48EclQLPZ327rvlfmhwnO+U3kC+S2tUMMloTHfYRzDXItSRq+hzKvKno7wwchXMaToTvmPBpaNyYqCUMSaIVa1tT+frcqTZzgCbl2TckTfkJaNqlz7faZHGKXcdbnrIOrnDRAPMmrAtrEmzgj2uktYpGoKacl2LCDzeac86dsbEOBnDtCmrWTDD3MLWXw1nK+4HtkdXtAHcMglN5k4/TkACyY5kVtpDoqoJBtoBI2srkOXjrcHm/4/Lb/KA/GuRmESLdojfnamF+9kCvpFQl35RtUlzrZMN7349AqBRdBAyHXODej8a0g1nQnquBP28s/69OzoYIJs2kCUQJAF/KN0WRNmxWegAY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,111 +133,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-commit 59d9094df3d79 ("mm: hugetlb: independent PMD page table shared count")
-introduced ->pt_share_count dedicated to hugetlb PMD share count tracking,
-but omitted fixing copy_hugetlb_page_range(), leaving the function relying on
-page_count() for tracking that no longer works.
+On Tue, 16 Sep 2025, Shakeel Butt wrote:
 
-When lazy page table copy for hugetlb is disabled, that is, revert
-commit bcd51a3c679d ("hugetlb: lazy page table copies in fork()")
-fork()'ing with hugetlb PMD sharing quickly lockup -
+> > >>>> This week's topic will be kmemdump led by Eugen Hristev.  See the latest
+> > >>>> proposal at https://lwn.net/Articles/1031319/.
+> > >>>
+> > >>> I don't understand what this has to do with mm, to be honest.
+> > >>> It looks like a debugging aid.
+> > >>
+> > >> It was suggested to move it to mm/ :
+> > >>
+> > >> https://lore.kernel.org/all/0fa9e4e7-1247-4c82-8c0b-fa65b7fbb56d@infradead.org/
+> > > 
+> > > I feel like you should be able to explain this rather better than
+> > > "somebody else told me to move it".  As of this moment, I still don't
+> > > know what kmemdump even is.
+> > > 
+> > >>>
+> > >>> https://lore.kernel.org/lkml/20250422113156.575971-2-eugen.hristev@linaro.org/
+> > >>>
+> > >>> is a great example of how to write a lot of documentation that doesn't
+> > >>> actually tell the reader what anything is.
+> > >>>
+> > >>>
+> > >>
+> > >> Here is a link to the v3 where I changed it a little bit :
+> > >>
+> > >> https://lore.kernel.org/all/20250912150855.2901211-1-eugen.hristev@linaro.org/
+> > >>
+> > >> I am eager to improve the documentation to make more sense out of it, I
+> > >> am happy with suggestions.
+> > > 
+> > > Start by telling me what it is.
+> > 
+> > A way to select memory areas from the kernel that can be used to debug
+> > the kernel, instead of saving the whole memory dump which is mostly not
+> > of interest and takes a lot of space.
+> > Anyone can register a pointer and a size, these are placed into a list,
+> > and a dedicated firmware can parse it and save it in case of a crash.
+> > Does this make sense ?
+> 
+> Is it only for kernel or is available for userspace as well? And the
+> crashes here, we are talking about kernel crashes or includes process
+> crashes as well?
+> 
 
-[  239.446559] watchdog: BUG: soft lockup - CPU#75 stuck for 27s!
-[  239.446611] RIP: 0010:native_queued_spin_lock_slowpath+0x7e/0x2e0
-[  239.446631] Call Trace:
-[  239.446633]  <TASK>
-[  239.446636]  _raw_spin_lock+0x3f/0x60
-[  239.446639]  copy_hugetlb_page_range+0x258/0xb50
-[  239.446645]  copy_page_range+0x22b/0x2c0
-[  239.446651]  dup_mmap+0x3e2/0x770
-[  239.446654]  dup_mm.constprop.0+0x5e/0x230
-[  239.446657]  copy_process+0xd17/0x1760
-[  239.446660]  kernel_clone+0xc0/0x3e0
-[  239.446661]  __do_sys_clone+0x65/0xa0
-[  239.446664]  do_syscall_64+0x82/0x930
-[  239.446668]  ? count_memcg_events+0xd2/0x190
-[  239.446671]  ? syscall_trace_enter+0x14e/0x1f0
-[  239.446676]  ? syscall_exit_work+0x118/0x150
-[  239.446677]  ? arch_exit_to_user_mode_prepare.constprop.0+0x9/0xb0
-[  239.446681]  ? clear_bhb_loop+0x30/0x80
-[  239.446684]  ? clear_bhb_loop+0x30/0x80
-[  239.446686]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+Yeah, I think understanding the scope of this work, both in the current 
+RFC as well as the long term vision, is going to be useful.
 
-There are two options to resolve the potential latent issue:
-  1. warn against PMD sharing in copy_hugetlb_page_range(),
-  2. fix it.
-This patch opts for the second option.
-While at it, simplify the comment, the details are not actually relevant
-anymore.
+In this case of kmemdump, which I agree is not core mm, it's likely best 
+to use this alignment session to first describe the problem statement: 
+what are we trying to solve?  The reference to dedicated firmware above 
+piques at least my curiosity.
 
-Fixes: 59d9094df3d79 ("mm: hugetlb: independent PMD page table shared count")
-Signed-off-by: Jane Chu <jane.chu@oracle.com>
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
----
-v2 -> v3:
-  Comments from David: 1. provide wrapper ptdesc_pmd_is_shared() wrapper for
-  ptdesc_pmd_pts_count(), 2. mention comment simplification.
-v1 -> v2:
-  Comments from Harry: explain why backport to stable isn't needed.
-  Fix the sha lines.
----
- include/linux/mm_types.h |  5 +++++
- mm/hugetlb.c             | 15 +++++----------
- 2 files changed, 10 insertions(+), 10 deletions(-)
+I see some interaction on the latest RFC, asking questions, and deciding 
+the interaction with pstore, I think the goal of this session would be to 
+determine if (1) the problem is worth solving, (2) if there are existing 
+mechanisms that can already get us there, and (3) if the current approach 
+makes sense long term or if any pivots are needed.
 
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 08bc2442db93..a643fae8a349 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -631,6 +631,11 @@ static inline int ptdesc_pmd_pts_count(struct ptdesc *ptdesc)
- {
- 	return atomic_read(&ptdesc->pt_share_count);
- }
-+
-+static inline bool ptdesc_pmd_is_shared(struct ptdesc *ptdesc)
-+{
-+	return !!ptdesc_pmd_pts_count(ptdesc);
-+}
- #else
- static inline void ptdesc_pmd_pts_init(struct ptdesc *ptdesc)
- {
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index eed59cfb5d21..6cfe0b43ab8f 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -5594,18 +5594,13 @@ int copy_hugetlb_page_range(struct mm_struct *dst, struct mm_struct *src,
- 			break;
- 		}
- 
--		/*
--		 * If the pagetables are shared don't copy or take references.
--		 *
--		 * dst_pte == src_pte is the common case of src/dest sharing.
--		 * However, src could have 'unshared' and dst shares with
--		 * another vma. So page_count of ptep page is checked instead
--		 * to reliably determine whether pte is shared.
--		 */
--		if (page_count(virt_to_page(dst_pte)) > 1) {
-+#ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
-+		/* If the pagetables are shared, there is nothing to do */
-+		if (ptdesc_pmd_is_shared(virt_to_ptdesc(dst_pte))) {
- 			addr |= last_addr_mask;
- 			continue;
- 		}
-+#endif
- 
- 		dst_ptl = huge_pte_lock(h, dst, dst_pte);
- 		src_ptl = huge_pte_lockptr(h, src, src_pte);
-@@ -7602,7 +7597,7 @@ int huge_pmd_unshare(struct mm_struct *mm, struct vm_area_struct *vma,
- 	hugetlb_vma_assert_locked(vma);
- 	if (sz != PMD_SIZE)
- 		return 0;
--	if (!ptdesc_pmd_pts_count(virt_to_ptdesc(ptep)))
-+	if (!ptdesc_pmd_is_shared(virt_to_ptdesc(ptep)))
- 		return 0;
- 
- 	pud_clear(pud);
--- 
-2.43.5
-
+Hopefully an interactive discussion will save time in the long term by 
+ensuring alignment in this area even if the feedback turns out to be "no, 
+we're not doing this."  That would likely best be done by first 
+describing, thoroughly, the problem statement before jumping into 
+implementation specifics.
 
