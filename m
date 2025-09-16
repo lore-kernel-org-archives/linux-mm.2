@@ -4,86 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BF7DCAC592
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 03:52:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B48D3CAC592
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 04:00:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 98F088E0005; Mon, 15 Sep 2025 23:52:28 -0400 (EDT)
+	id E35548E000C; Tue, 16 Sep 2025 00:00:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 93C278E0003; Mon, 15 Sep 2025 23:52:28 -0400 (EDT)
+	id E0D1E8E0003; Tue, 16 Sep 2025 00:00:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 851828E0005; Mon, 15 Sep 2025 23:52:28 -0400 (EDT)
+	id D22F88E000C; Tue, 16 Sep 2025 00:00:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B73F8E0003
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 23:52:28 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1BE051A07D8
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 03:52:28 +0000 (UTC)
-X-FDA: 83893741176.18.F869238
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 67B54140002
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 03:52:26 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id BB3568E0003
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 00:00:22 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6BBD85B717
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 04:00:22 +0000 (UTC)
+X-FDA: 83893761084.07.441C5EF
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 76092140008
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 04:00:20 +0000 (UTC)
 Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=OsQN2Jzt;
-	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	dkim=pass header.d=google.com header.s=20230601 header.b=CeMZQUWH;
+	spf=pass (imf26.hostedemail.com: domain of hughd@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757994746;
+	s=arc-20220608; t=1757995220;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TQUMt/ieU0Tbp1m5VKz3kdeCSSzpRQ/Rq9O0zG8lLug=;
-	b=VYDmYjU8lZ9bS/wnjuBCj0vV2TbQ9ri66XCMfBIQJ8ForJRMDUOfP3iGSMT16/zVf1I4Pl
-	9g8CjVUY8qPb1bt4BZ5KF+ELUx9hJ1F9CwTCVy7UGBUZHRVfmD9GB7PN807mhrNZeQBdTs
-	tsfOHDep7okc2a7jxTfZ6SIcidJkUd4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757994746; a=rsa-sha256;
-	cv=none;
-	b=sgsfGOyaU1468kaCvT8oalj6Voqhz+iIrGqBstBl3eFH6Y6obxBammHmBPqf3PT0UG35tN
-	cu9Sd4GlM4TJDFKWtgRnRafIumgaV2uUV30KPh4656uQgAcNs9YvQeyr3Dc3LKBftgjGFA
-	dMws9Xb358booMxa8kC2rlHvQ8wEi54=
+	bh=MNJEtVfq2GcQ0AyVudDE40VF7bLdO7axK4ZeL2S3GZw=;
+	b=YFursmiHUGcI0pBojvg3b0riygdsufKADJYtsy8I5V1eIwZnD+OEBg/zYKExiY+M+cJni8
+	cObjULaptjS6xVrFbg2B8zvLps7R/S0ACm37/a7NC7iqTlCLoyy4cx+YNJVNhfxtEvDDHP
+	qGN9cV2iPrNqVUJmNRTMNr4nkwPwEyY=
 ARC-Authentication-Results: i=1;
 	imf26.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=OsQN2Jzt;
-	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5500740C39;
-	Tue, 16 Sep 2025 03:52:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0802AC4CEEB;
-	Tue, 16 Sep 2025 03:52:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1757994745;
-	bh=U6JxDMkVHB3XlX/9cQ/I2sPNKBRRoZiFmbtNoTrXKa4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=OsQN2JztTjwkSYM58ujeukp87a4ECEkelesp8ge0DINPmvZSy5h/p1xe4h9mURfSv
-	 FQiqDNxLHR4XatBx12+aIJ0QPxbZlpILve6PDnMXpemSMLwq91AIpoPya0owAU45WA
-	 b9ZaFNFNdB7wMxMhO0pbZYH7WY269Sbd9PMrOpEA=
-Date: Mon, 15 Sep 2025 20:52:24 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>, damon@lists.linux.dev,
- kernel-team@meta.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 1/6] mm/damon/core: reset age if nr_accesses changes
- between non-zero and zero
-Message-Id: <20250915205224.aa2de8de6dad1bb4c048cec8@linux-foundation.org>
-In-Reply-To: <20250915182652.110173-1-sj@kernel.org>
-References: <20250915145158.1425390-1-joshua.hahnjy@gmail.com>
-	<20250915182652.110173-1-sj@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
+	dkim=pass header.d=google.com header.s=20230601 header.b=CeMZQUWH;
+	spf=pass (imf26.hostedemail.com: domain of hughd@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757995220; a=rsa-sha256;
+	cv=none;
+	b=F/XfMJWx6I/6LbuulDBBiQcZWin9DQnebczYnHJLaKUIAW/SsyumdvltC8o57a4RYqNwf6
+	XpaGBP5Vbuabg8N/yR/YEpfWoRnLLb6KL67VXalPbTD2TffCytlkZZTNOaneSh0qi5Gg1m
+	ikM5nSSBglG78KtWXs8QR2UR3RH1Oys=
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-25caef29325so43369515ad.2
+        for <linux-mm@kvack.org>; Mon, 15 Sep 2025 21:00:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1757995219; x=1758600019; darn=kvack.org;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=MNJEtVfq2GcQ0AyVudDE40VF7bLdO7axK4ZeL2S3GZw=;
+        b=CeMZQUWHlk/R5VvyUziLqmynlHEgjnsojpxnHy7G5WzISj+tZCLZbImvdXfVwDyUnJ
+         gyU0eDYEVdTlj+FPst8Ijb19l5eywS89zeGGjeBSdI6lkRKHdm8EMmDEhofP2UMrOfBD
+         2qqORrYCmvO2/2IGbMZ32oNZQeb9Ftzy6WLOJ71TVNpw7YVOu5pQIqEqmTSmYhl1yJvK
+         Tdfq/18EpFvxbR+3Mb7Yz3mJEn41jKbLEhToiVERatcTq0pgTX4VyGqdBYv1CS8CCptm
+         g463Bgn4dKZuS30HF7lePF362pRescDse5lXn9pWZwPgi0JniAlcjPhWw6qHJMueunjx
+         ZLIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757995219; x=1758600019;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=MNJEtVfq2GcQ0AyVudDE40VF7bLdO7axK4ZeL2S3GZw=;
+        b=sZPh7dUA2PvTDkxVFUTXlYr43i5H4juEqQ9Ds302nuUuO2olZOUCITWnH+RE/xWefk
+         3g6l/SjHuTF7CWUoOBki88dXiyYKtOUmKLisaSzWfJjfSf4+malY3dCkMOp0YgeIhRUE
+         ojkyz+K5fhEy+R/kQyLdyk4dlMyzuf6LFmRB24wxUUSIJxscvwQArP/j8pmeW7JHHI3B
+         aQEWEwgvKocMbwOf5mnL9ycJcUj+ZMWXXzxzn/qepA+jzQiFevmC1H5EjRFPGBMEv7CJ
+         GLlizlT+NTzAvVosfQfpbpqYJ2mBBk/+8r7CUhNbeGp//Nk+ow8DQhPszqNJx/3+A+In
+         5NaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWq9GwFd15K4qhV8vbkewjSevgRmGX63ncuqYtx3YG6YcJ1ABW2prD65OIGbnY9tQG7yqAzSdrWyA==@kvack.org
+X-Gm-Message-State: AOJu0YxKVFpPHAS7bJLsnZFgO6FC5bGRCINcocUoyZWXKiRXrisc1qx3
+	SQ2kMhlbPDwLCijWawCnb/zl2BOgqBtl+g5WdCtUSg0Lxa1o+Ec0fBONKVGsXCd72Q==
+X-Gm-Gg: ASbGnctxlQ6Ty+OqMoJgL4jKS7alFPXgvMVzO4naaheGkuoB0fJlu0JDp1fNLUsJAXE
+	XqPs88sbhMNMWfFIpnBFW9vU82fiUwT/NJLfKfdc/EEZTsr161YoJRHwki4lPwWlelp+6/Sr4AE
+	7/WUXQ88plTrMLhumlcp+qFsRPguK9NMM7xkxSAQxo/ZUSLVgAGuvGUsii0myrsYFnNCjgRvf0X
+	4cEYdMw9aTfZfOiqVm8tBx3sDokV1qxqjBki8lTNaj/0get3GMyx1ockdp/ru5VVlbuJHgrfpu5
+	voJJTVorUNP1JNbmYFUvo9EJ7Wx8NG/PseU80w1RbgcfMACPPzF+WOPdWPTWhw8xWw9O6R0NK+7
+	J+8P7kYi5Jmhh+rmyrapwUTLFhgAvYGf+xUeJSp28ym/q584dm0kkVU9zuI0Yd9DNftk7xeYCc3
+	iVM+q4uzsGx5UXL917ZlmrJIIG
+X-Google-Smtp-Source: AGHT+IG53T40RNUouBo3s/mXkbMb2lD7TO6r4nQUvRGb2r6am8D5LXotHvJ3Vh5+L4tCmKOg3d7KJg==
+X-Received: by 2002:a17:903:234f:b0:24c:8984:5f9c with SMTP id d9443c01a7336-25d26470152mr168660115ad.36.1757995218820;
+        Mon, 15 Sep 2025 21:00:18 -0700 (PDT)
+Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2631e29e60fsm71657895ad.137.2025.09.15.21.00.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Sep 2025 21:00:16 -0700 (PDT)
+Date: Mon, 15 Sep 2025 21:00:07 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+cc: Shakeel Butt <shakeel.butt@linux.dev>, akpm@linux-foundation.org, 
+    hannes@cmpxchg.org, david@redhat.com, mhocko@kernel.org, 
+    zhengqi.arch@bytedance.com, lorenzo.stoakes@oracle.com, hughd@google.com, 
+    willy@infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] mm: vmscan: remove folio_test_private() check in
+ pageout()
+In-Reply-To: <02798d6c-1ad3-4109-be3a-e09feb5e4eda@linux.alibaba.com>
+Message-ID: <9b01a2cc-7cdb-e008-f5bc-ff9aa313621a@google.com>
+References: <cover.1757648598.git.baolin.wang@linux.alibaba.com> <b8c0fe71982aa1cafafd59d8e71064efaac16007.1757648598.git.baolin.wang@linux.alibaba.com> <qe56xt2natnxnkht7wgknsb5nqjhinaaajomvvvgnfpwry2jih@hsj2w5zqj6wv>
+ <02798d6c-1ad3-4109-be3a-e09feb5e4eda@linux.alibaba.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 67B54140002
-X-Stat-Signature: j75hnzhkg9o443kgwwad35m7hyxd5tjn
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1757994746-551468
-X-HE-Meta: U2FsdGVkX1+f/KgOOJVLBCQP/4wTo0t8EBVhnKcPWl2IlnHlVGEsHa2UcaBSW9SELJTtzRAsfEntRG0e8GPrI/3nCGCt9YlieIPO9NA5v2hcIYilloTX04z6bwbP+2Hf923EXnvdUbokDp4mv+VUMGdvAQe/fcvwNlbpXV0gZdzDOjntAJ/O7xh0JmVhv1rTY8SE+xxVjSZ2nDGBQLH7WzSocZdAjdsqSe1gCkmuIzDfO8j7P76FRuUA14nM+MB2h+4PV4UWF91fgNOxQZ5YnkIrEAtoSzvlsjMMYsJU41KxZ1tequbRxYdEWK6ywfzd2LSLrdE1vtvOFwK9r9XQINX7KrkoQ6tNqZCoSL9K512yHs+qx+/yUlo/yWltkJrNcOP4+YGVDOn+R4QfbogypRCFpCY8yg/ZvDdoqShjkJdv77ihZeMBz1Kbm93qjkB8KhVX9JZpUPLHm3IxLuh+bvaFwcFIjp4e4TiiRqDxUr4CEeKXgmApPbBGRqhAvjqVlMvihXz2ohvcyrn5fp0nErDxeB8n7aaYQVpg/dedliBDwO6HTRUc+Lh3AFAzlHkGL514pk1cQuQ43EotfYFO/2yL5LzOBvuv1wXCKX/ZN8uyZ4z7CauRmevC0XWwhLFWe/BBXC9w1tamulK2KjmZwr0IFS8YvRvkcTROd101Jmoshl0OH7xGHSpFMhkFO6eX5i85Q4PhlqpwA7VWAF1UG4/oFNrPO5fUzXo1RJ3lhqLvPtU5wMGo1yaXYFYf8l6gTy/K3419tlzDm/u+rII+NX18SdgqgRxcaqxRAWg1aoPo1GNENH9S4fqzi0cbeIe72HGLopvINdrU643luGk4z+pS8hm6KxLAf+ra4zC66OWUsoSnnvzhPaJshhIQdABjRIIjSKFQMjHYKd0FA2LrFfFcBEEparjVmJXTD9cKuMOP+quWStItrWWo1BTidsBxlL5vIhYbIgxXDKe3VdQ
- j3H5I+Jw
- 6s0/hDMsBOAkeiOTSL7eaD+NYzdl6whSwmlrEIUUuQJR+oVyI9AiBMwrFGJBPoXKNY/AEopLfJS310ILHCMRznc8GzuE/HIl0IuNO9wJfOFY1mLLVOC+xL9JQzFJbJNtMxbo9KHQOgN4xegto9CZsnz6IRM2OrPxtzG4ELvjlTg6JBSl61inB4jW+nML9ndccIKpTlpycMHjKX/1y6u2BAIMgecVIVfYZXVa/YdqFdoPbXBT4YGp87HfJgUMz2kyEmt5+QpOeCm7S1sOWyKH78SeJeVdiN38S+LvyGJG+dA52B+HV9E1xsn1zIjbblaH7RwTOe3VP+NgK4Eqlz9f8stPMe/OPzybjzAR4e5lXpf/ADd6p9XGaIURyMqbEWTsSlrZdT58s3s4oz9s=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 76092140008
+X-Stat-Signature: 84cfu36irumug634b5136k19qrgtcsmf
+X-HE-Tag: 1757995220-398177
+X-HE-Meta: U2FsdGVkX1+4vzpe3kwyMekrv2glL9jQn9otz1Qw7fupxDvmht8rd+jbV3R91+4dyy7H19NWuaCifVH0MStnu+F7X23NeYxTBGbkQIuLNBmWaOvnASPkJMRc7D+ofOu+vmuYjOxpGMwDPMasFYe4bQ6jbF/GiZCcaJv0H/20XfaahlS9m4uzmFx+kcifr8TN79NsFLPuyKdTjVvjksOi2crGlhZE2VNGTqGRfNNunqN3w0ix8JKO9QfHe96Yfb6KAZsg2H/xXtFxC6SiKymrbTlbro4MpZqZzD5uC6t1RGooD+CEDDcU60ZWX4IS/+l2+5pY2ZEdFzh3S+NpSUb02Nm4gzH3lnoNI3dJm5eQ7pu5bGmDv5WGfWQZfXcoa4iMkNe4QHpG/QkVH5jLTb73rGzKXtqbD4oEr90JDMdMp+YslYodLPHl3W6mbSK3SNtkqwY/64MOoKh0RRtMBsVOComWy04HmQSbgPNGSS/sbgrIIpLA3VsmlSnKon7POSRGfQ91zZLY9yP+qKSC5stTuiSTxU55C2Vxi/mCBbyUAVNJTnhw5y0Sgfrk27rHmkOV/rslwZuRvAjAaDpOARTwY0N2C118Cw1cxFym2u5mAett0n0W+Ozu7e+/BTLLcuRi3/o2B6a5sMR8evfRqz/GHc+A6Ejk5C67qonjLNTEFVDW/A5JdHYTvf663dFwmI0wZ+eGFXNfkxhgu6HukhYi6GZjwUDbdtplfPbMYm+e2CqO3t+fNrMmMUkFr9LaEHsg3hepP4Ql28V/9RLn6PCJIxTfXqJ6qLcqpu5CifqUuwkAtFNdLmr0jFq1O5dZCx2og/o+vklmR9lI2ag1W8RfFJMXXYc7gZ8QSL34HxlyWXcQSWeaYQpkf/a+c12CrpGcI+zhdeZDiXOsoLLhNHoXrBr0OWrB9hELuHS0+d1aRvInDxPyJX7XD3ZzVu2arhYKSDNsafO9xGNYZC9Zx74
+ qByrQnDk
+ opDu9AJhNQZ81xLreWnjxCZmSFGPQpZD/gzT3PtUnP3sMOPyTndND9OUtoKIsv17QlfLkL1la6H92Bkxozl7qBADEknObylRk2wycgqEtlxCfQfL1rVCc2GK3W5l9K8MITufGLoWxRd7NfEmA5KV2si4SlKNg+9kyVkMFa0Wf8jMy4G/gXlRwFLVFP1eJ0rqGxgEfVWeOIuHWbQQpsdco9NnAjcuF/wj3lxxfzWTLl0wb8/TsCQpcYvA9/8pFeqV37oFyCP5By5l58+GMWJCCVN4qPUKeG3di/0ZNJY2RgRkd45Zy+mq8wBpZrlUHicF4ENsNAz7/emwXWspjFw/6G2K69IhXI8AiayEGfJQkYXfRTVxmBq0g8l+9XyPdTDDkq0E8OnTl4u+4hbrifv5FfiLjQJD/HD7NwLSilAN1NjeDXok+jgleu1oFJA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,38 +120,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 15 Sep 2025 11:26:51 -0700 SeongJae Park <sj@kernel.org> wrote:
-
-> > Thank you for the patch, I think the goal of the patch makes sesne to me.
-> > I have a small nit / idea which I think makes the code a bit clearer, at least
-> > for me. It seems that we basically want to XOR the two values's zero-ness, so
-> > maybe something like 
+On Sat, 13 Sep 2025, Baolin Wang wrote:
+> On 2025/9/13 00:13, Shakeel Butt wrote:
+> > On Fri, Sep 12, 2025 at 11:45:07AM +0800, Baolin Wang wrote:
+> >> Currently, we no longer attempt to write back filesystem folios in
+> >> pageout(),
+> >> and only tmpfs/shmem folios and anonymous swapcache folios can be written
+> >> back.
+> >> Moreover, tmpfs/shmem and swapcache folios do not use the PG_private flag,
+> >> which means no fs-private private data is used. Therefore, we can remove
+> >> the
+> >> redundant folio_test_private() checks and related buffer_head release
+> >> logic.
+> >>
+> >> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> >> ---
+> >>   mm/vmscan.c | 16 +---------------
+> >>   1 file changed, 1 insertion(+), 15 deletions(-)
+> >>
+> >> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> >> index f1fc36729ddd..8056fccb9cc4 100644
+> >> --- a/mm/vmscan.c
+> >> +++ b/mm/vmscan.c
+> >> @@ -697,22 +697,8 @@ static pageout_t pageout(struct folio *folio, struct
+> >> address_space *mapping,
+> >>     * swap_backing_dev_info is bust: it doesn't reflect the
+> >>     * congestion state of the swapdevs.  Easy to fix, if needed.
+> >>     */
+> >> -	if (!is_page_cache_freeable(folio))
+> >> +	if (!is_page_cache_freeable(folio) || !mapping)
+> >>   		return PAGE_KEEP;
+> >> -	if (!mapping) {
+> >> -		/*
+> >> -		 * Some data journaling orphaned folios can have
+> >> -		 * folio->mapping == NULL while being dirty with clean
+> >> buffers.
+> >> -		 */
 > > 
-> > (!!r->nr_accesses) ^ (!!r->last_nr_access) or
-> > (r->nr_accesses == 0) ^ (r->last_nr_access == 0)
-> > 
-> > Can achieve the goal?
+> > Can this case not happen anymore and try_to_free_buffers is not needed?
 > 
-> Thank you for the idea, this makes sense!
-> 
-> > I know bitwise operations are sometimes harder to
-> > understand, so I am just throwing the idea out there : -) 
-> 
-> To be honest I'm one of people who are not familiar with XOR.  I had to spend a
-> minute to understand the above.  Maybe we can replace '^' with '!=', and it is
-> easier to read for me.  If you don't mind, I will use below in the next
-> version:
-> 
->    else if ((r->nr_accesses == 0) != (r->last_nr_accesses == 0))
-> 
-> Please let me know if I'm missing something or you have other opinions.
+> For dirty file folios, pageout() will return PAGE_KEEP and put them back on
+> the LRU list. So even if mapping = NULL, background workers for writeback will
+> continue to handle them, rather than in shrink_folio_list().
 
-I have to say, using xor as a shorthand for what-was-really-intended
-always bursts my brain.  I have to stop, think about it and mentally
-turn the implementation back into what-was-really-intended.  Maybe
-that's just me.
+You've persuaded everyone else, but I'm still not convinced:
+what are those "background workers for writeback",
+that manage to work on orphaned folios with NULL mapping?
 
-Ditto less-than-utterly-trivial :?  expressions.  Perhaps it's because
-if-then-else best suits how our minds work.
+I think *this* is the place which deals with that case, and you're
+now proposing to remove it (and returning PAGE_KEEP not PAGE_CLEAN,
+so it misses the filemap_release_folio() below the switch(pageout())).
 
+There's even a comment over in migrate_folio_unmap():
+"Everywhere else except page reclaim, the page is invisible to the vm".
+
+And your argument that the code *afterwards* rejects everything but
+shmem or anon, and neither of those would have folio_test_private(),
+certainly did not convince me.
+
+Please persuade me.  But I've no evidence that this case does or does
+not still arise; and agree that there must be cleaner ways of doing it.
+
+Hugh
+
+> >> -		if (folio_test_private(folio)) {
+> >> -			if (try_to_free_buffers(folio)) {
+> >> -				folio_clear_dirty(folio);
+> >> -				pr_info("%s: orphaned folio\n", __func__);
+> >> -				return PAGE_CLEAN;
+> >> -			}
+> >> -		}
+> >> -		return PAGE_KEEP;
+> >> -	}
+> >>   
+> >>    if (!shmem_mapping(mapping) && !folio_test_anon(folio))
+> >>   		return PAGE_ACTIVATE;
+> >> -- 
+> >> 2.43.7
 
