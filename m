@@ -4,88 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 047ACCAC598
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 05:55:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36822CAC599
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 05:56:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5EA878E000B; Tue, 16 Sep 2025 01:55:04 -0400 (EDT)
+	id 96E058E0011; Tue, 16 Sep 2025 01:56:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5999B8E0001; Tue, 16 Sep 2025 01:55:04 -0400 (EDT)
+	id 91DF38E0001; Tue, 16 Sep 2025 01:56:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4AF0D8E000B; Tue, 16 Sep 2025 01:55:04 -0400 (EDT)
+	id 834A98E0011; Tue, 16 Sep 2025 01:56:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 38DC08E0001
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 01:55:04 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BF484140852
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 05:55:03 +0000 (UTC)
-X-FDA: 83894050086.17.736239D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 3A23140014
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 05:55:02 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=X65Ls3C+;
-	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 721308E0001
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 01:56:05 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id ED33D140852
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 05:56:04 +0000 (UTC)
+X-FDA: 83894052648.18.D3FD649
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	by imf06.hostedemail.com (Postfix) with ESMTP id AFB6D180005
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 05:56:02 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="b1QXa/un";
+	spf=pass (imf06.hostedemail.com: domain of lkp@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758002102;
+	s=arc-20220608; t=1758002163;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=npE8NwlYm7oGiYwu/TvzvBqLyuZK9+6yoZoqX4R0iPM=;
-	b=4CePAVAGB9PmcaGla9dZj8QXKevKLhXGb/7I8ELzT7aILFXBv6g9wFTBsPE+ziAckTln5b
-	4awsabiQS76m09amEFa/Q9b3VK+C1EVdXghnGEihlkBDJdNSWVduQgXAos8P6Zgdj0Sm3h
-	2wWa6jtIsrgaQuH1y/d1JyZDdi02RpI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758002102; a=rsa-sha256;
-	cv=none;
-	b=HoSHX7h/7N59chf3QxAYf/04E5kCw2D4zkHt7UOLJc0T/emoe+tfwzWjiDgmyKt1P9WHUj
-	riz51uCSynTcrs3f36sFciT7Jw0jWpGV8iykhfI293Q/Bi2vsg39OKX6Mm47F3E6RWSAj1
-	ooRPLBlz/dZZEZdhNhOh+/3b4yEjvqU=
+	bh=7hgfjV2PnbYT09anTqO8cvi/R0m1PzPvur0flcW0+lc=;
+	b=oAQfMdoSe+90t9y57PwH/5kZfS080z+YscFeZ+JOMtk0rirh85t239nXHPSlDMPGOj4BfX
+	BFBK6RU6W4jVW6TyyPp0gaGt08cM8z2Ui0FH2gAID7LAk5kwRsFwpoLwiAWd0EUoqSNN0k
+	Nf8Neq3jAbWEsCEIBOKSv7z4ERIWSV0=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=X65Ls3C+;
-	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A961060054;
-	Tue, 16 Sep 2025 05:55:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 321B9C4CEEB;
-	Tue, 16 Sep 2025 05:55:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758002101;
-	bh=G1s+w5/epe5dweVcgrOSpM0OcqT3aFt3572hnVdOnOY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X65Ls3C+eQ/thh83WoE9yI3nadq4ds7VGgb6X+0TnQ1j4cm2jIWFXYSuyHhjta0zw
-	 JA9nyuqVKM7o/g5oJes8OMPiUHmD4x4NPSmqHklfErth3+ggkiKUz/MrG+WDA8FI2o
-	 maXklA1mRL3PSO4HBPfpH1FQ/kqkdcNr5W39VkCCgSo+4CvRoZzal2gzjVjK2jiiHr
-	 zMqdZwGMQ7DLt0AQIBk3g1lF2EMbhpXvZITWx5oIqXS7V4wFyFcXhi8FKX/3ar022y
-	 UHLkNt2Vj0I8FaK8Q8+UwCXaH5wIC/1PE6+rG4DlYwErkfan0bWJagg+wFH1zZwIIT
-	 4jlxL+oWvqTfg==
-From: SeongJae Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	kernel-team@meta.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 0/7] mm/damon: define and use DAMON initialization check function
-Date: Mon, 15 Sep 2025 22:54:57 -0700
-Message-Id: <20250916055458.118498-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250915213312.12892156442f3a795a0a01f5@linux-foundation.org>
-References: 
+	imf06.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="b1QXa/un";
+	spf=pass (imf06.hostedemail.com: domain of lkp@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758002163; a=rsa-sha256;
+	cv=none;
+	b=KernxXrdYq4Nxr1V9yjUL0engEqBBVVuSxO1ze6JruApIbGoOWfBoobvXnpfwoy04N99hi
+	3qBJP+1CSDOWmzMU4u/L5SqroV7G1SHgMvdnMpnJOdp9Sdzt/knxKuljorF6bKXHPHodzQ
+	g2Vklx07qQuMDqTDC8fMVHQUXo5Vy8Y=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1758002163; x=1789538163;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=TI1GQ9/fie5SEXhyuw4/SGhlUqJfUF1ZYY8Qg3rWUHs=;
+  b=b1QXa/unCpTME2AQ8h9XKMMvOLmxGcC9QOtFffvJOyLGNorApcHWjncf
+   HwCGQMsYJmG2sm9TCVmC0lknHG1RhMAitVnSWYcgmvxJIFY1f4/BEDRqh
+   8QfFHBBasIm2gYfpftj3rLFUbAZtMpVhBRRBLkw1bSTA1A97NEEGDPpch
+   9+cPrHyN0w7msH6FkPqiaU9Mj9MH/Ha4hJsQXGGjb+nrCyffKTGERJJGh
+   oNpyphFqe5qCiwcHagMuGb+hvg9DROcH1mWvhW0b7dihLEfz290q8Vfhq
+   Kb8g7F6KNrqS6q/1vrj09TQjJJvvvEIMOAqqXcXJFWFhtmDFCoE+8fr77
+   A==;
+X-CSE-ConnectionGUID: yYMjX0o7Q+eAkpJUVer5Gw==
+X-CSE-MsgGUID: idJtgZEgSNyebbzZsdRnog==
+X-IronPort-AV: E=McAfee;i="6800,10657,11554"; a="70520756"
+X-IronPort-AV: E=Sophos;i="6.18,268,1751266800"; 
+   d="scan'208";a="70520756"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2025 22:56:01 -0700
+X-CSE-ConnectionGUID: 4bV9z9nLQ3WfqI99ueea9g==
+X-CSE-MsgGUID: LxHVe4F5R4ioJetCgS766w==
+X-ExtLoop1: 1
+Received: from lkp-server01.sh.intel.com (HELO 5b01dd97f97c) ([10.239.97.150])
+  by fmviesa003.fm.intel.com with ESMTP; 15 Sep 2025 22:55:55 -0700
+Received: from kbuild by 5b01dd97f97c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uyOfQ-00012O-2o;
+	Tue, 16 Sep 2025 05:55:52 +0000
+Date: Tue, 16 Sep 2025 13:55:38 +0800
+From: kernel test robot <lkp@intel.com>
+To: Chunyan Zhang <zhangchunyan@iscas.ac.cn>,
+	linux-riscv@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Deepak Gupta <debug@rivosinc.com>,
+	Ved Shanbhogue <ved@rivosinc.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Peter Xu <peterx@redhat.com>, Arnd Bergmann <arnd@arndb.de>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Chunyan Zhang <zhang.lyra@gmail.com>
+Subject: Re: [PATCH V12 2/5] mm: userfaultfd: Add pgtable_supports_uffd_wp()
+Message-ID: <202509161304.mQnxOxhS-lkp@intel.com>
+References: <20250915101343.1449546-3-zhangchunyan@iscas.ac.cn>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: kmy88j8yke9tbojm63nhbqh3uac7759i
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250915101343.1449546-3-zhangchunyan@iscas.ac.cn>
+X-Rspamd-Queue-Id: AFB6D180005
+X-Rspamd-Server: rspam05
+X-Stat-Signature: fako8u9q4ukgf91hxcpc38otro354459
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3A23140014
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1758002102-424772
-X-HE-Meta: U2FsdGVkX1/PHlfsiw4uv64LYfyX44VXhW9XEnSJVjh01LVO3yX6TWgFh5VC6l2kQcW4KCf/Caok4uGutpwa+Rd48dakZj4CNbkGU/Jjolfs24qHJUbjrRKylmoYjNQMBEplul1Fy79JfYu5KYwAnCEproqcDfWWKmf/lI4xNh7Mb5dgEXQlGSCWPfEzhE5ztoZACDaq/EIv4WRRz+FZVCGQHN7zpx4i3hItAkxSsbKQ2tbAUK537DZt6vGo5RNEJ4WC074qIvaZEvNAVDfxo9gdQnZs4Ssewb64oKfW5HFwSZysQIq8Mu7DO4D05i73m9ZWcO2hmvRxzvCjHQXLHiXukVv7oUdNdwOnBpIEFi6wK/T+rzSXP8ywGhv7dA4PUkHvTu7Oy1uWwq8jWCrRLctypYn+/FfOFzq/Z+XHifKe1N7y9hMM8XrHJ+9yNx7ohgeFCRDcNYKTJ5A9iwmftMXYenmEqn+dTmjHN0sSrUo/6KePGtYDCbSxbA+Pj85DGX0urNS+diEWrZ7p8b7WHp8zCW88QkjcbyiXsF122kFtlO/gCU1Zk7+Ap6Jd323LUC20DSbhIFMTR2p7lhYK4CYDaEB3kAd6SdmGFruqghCaqjsawOyLUXGgftpXnn8+ad3m0Rb87TqTE1E3DXFtcYRrGI66uJTCnYBlndhQVRkv9WW4P8W81ahgYkAvQzbg+3vCN4II5SLiOucnkBZ4pcs3Ptga4PbTgWIA03cu5OMb6ybYWFFajuqlE6rRxIDOPhYVYuqVfHF8yz3XKwIjiYeG8kQuJIJSODJzY9Qud2GoxcMKQCuDWaz5813de+XgyFPngNDgofCHbrf5UBR9pdLhidyUl4mwdVUDc28M+/KDStM0twHCC4Fj/vRMCQztRFDsshyYJUaEc6tXV1PGWn/xyNpDHCeUeAI0KOHNfl09AJwxPjAeZohjs6uviIW0zLB0LWWvVwFc1kCOQ5K
- UjReO5/O
- aKnboO85e9pvP1Oxn7EzbSMLhrzK3MVOJHtWEdO5mQ/b97zs2eqzE4RmUKtjY3TJbhl9sHSg46aFkRCrBJhObgoBHear5DsqPCTs/JSJ/b85GE2OE8JMo3Nikbjy2YSB0LeEmWTnF98F0vK2Z99+uluSmX+1n6I9JaZocQRB72kzKCmYnflTYQFT6+VPuSXkQODDLUU4uA2iCpC/ndK7BWXam2WENuuieLb8lltPFh1b73sosqriXxVBMivq5w2iS5Y9c5wzADM6Zzojd825bDkp1fSiTy9TmW0rU
+X-HE-Tag: 1758002162-299323
+X-HE-Meta: U2FsdGVkX19GECXKBGNWqoidUTRhWqdmrpqAA41hXLnoU5jootwCcHHwTNMnQmHZL/l5vBYUmn3axBtfPBkspDOfin1T98M/2X2jISOiX0UIym6c/kpmBrgMPRBO1GYbBIgKbT8eKbO77lrTZMlJb8UT4RodsfNB0uR2X1bLM4vlHu+y+WH/bx/Yf+/MK6qGRL8GcfQe4/GlNb08Q0FK/b2K7Fcss3zrwQR4EQDfIeWcBuWVMg84o5LMVA4RDJ7fNswkXfcpdyplbPtsPWkW9z9V8jI3cMeNQKy4t54mao6eNl96alsmgClMrX3RUFvddfF7p2TdlGx1xuawaoWgHOMz3A18QlFbZ64voexxhSJLmng5t3uggCg8keQ3yRMOxXR8YlXSdvp7h3El/FL6ALYItIzvQZ+0Tp4Lr7FdswLNUqSFOe7KE7lsTWDOTkoifTsAX/y2ui9cLosjArXn+6S3NjUUKbhNY+oxjOwOpIO9g/1KyuVBfT5uxpdIn0qVqO4sbqyu8hD0TGKRMD5Fpirl8lvwzutoLSQQBLyZUdTZluGGaQtMMYu1gHFfhBO62nGQxJpyiO/GALiHSd5hfv2tRWKEBII2geilGCxOP61B76Ihsf5L0sE7IlD4X5fZTz8h305fbTnQdu9//40uTvdqbKso487WEZS1ngQ6lVYwMaZXqo/+qp2S9y5ReygqC5BsoMSYqFOmWy3IjqWddJPBo4EIgLkk5F7/18Qy36MwK7S+9fKvftLZsoxNjGKt9LLxcTjYEyWwfD/w075kCuO3FXhZjnT0ATnRd9RjIszU/fLavDUtDlbZ02glVst6xdGp0IsxuBDTsvsiZCR24WLimOyDB3Z84s5T4LbK04Yx5OHFsHdP94zwZ1wDuCqLOw8YU+XXka/+49UUvK5is1W1bpvv1r5fcgwVPVjlbQziabTPYEJQEDyNzWJGxmalFd23p3IFFrdlX1ct9eo
+ i5NdpAnE
+ Op4NraEFFAU9VHZ5qO06AiMKKieCkwoi3XdU03S3xR0ztpzQ2iEr78nqMW86MN/27pqjjmmpLmTQmVj/L/3mEYAgxvT9Jh+DmW4wGkQJFllKFJ+85hKRLKwakRfWU9YsdRmvUZtDVL+ljEXS4ec52GaS4fVqxwuyHGeWVfKIdpWQ0/+v6Hwp6tD6vMRd9CP+YnNgfYLQAovtQU7QkUKeo5XOHHUttIDAfL5AnO6LJ82ZLjiymXXr6MNb9b14BhEachb4HzWhSsX0Le/9N+gAU7y+316Ste1ayo/WmWpJFb59y+VBnId+2ioRx1k431RagKK+Lw6LsORgoeJj626ddT5BZXMWObazmYiB3ojRCOXTClP8gUIdMo4xeVnKvcFYvskowSHBdYQo6QT5+qYquSFHNTAmnsmQE7EhyqlddwCV4jnQUlK8t4E/+rv0o5VVDsf9dbXarI8dw/+YZm2asDuhWDNh2a3bagkamj2TUyob8QCriVXcNvmKnFC19Rz0mcZ2B
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,70 +124,207 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 15 Sep 2025 21:33:12 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
+Hi Chunyan,
 
-> On Mon, 15 Sep 2025 20:35:04 -0700 SeongJae Park <sj@kernel.org> wrote:
-> 
-> > If DAMON is tried to be used by its API callers when it is not yet
-> > successfully initialized, the callers could be crashed.  Such issues
-> > actually happened and were fixed [1].  DAMON API callers are therefore
-> > having their own hacks for seeing if it is safe to use DAMON or not.
-> > Those built on an untreliable assumption that DAMON should be ready to
-> > be used on module init time.  DAMON initialization could fail if
-> > KMEM_CACHE() fails, though.
-> 
-> Wait.  Is there any realistic expectation that KMEM_CACHE() will fail
-> when DAMON uses it?
+kernel test robot noticed the following build errors:
 
-Not really.  The commit message is saying just a theoretical and unlikely
-possibility.
+[auto build test ERROR on brauner-vfs/vfs.all]
+[also build test ERROR on kees/for-next/execve linus/master v6.17-rc6]
+[cannot apply to akpm-mm/mm-everything next-20250915]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-> We do have the convention of assuming that
-> __init-time allocations do not fail.  If they do, an oops or panic is
-> an acceptable response.
-> 
-> Are these problems actually real-world demonstrable things, or has
-> someone been playing with fault injection or, ...?
+url:    https://github.com/intel-lab-lkp/linux/commits/Chunyan-Zhang/mm-softdirty-Add-pgtable_supports_soft_dirty/20250915-181826
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git vfs.all
+patch link:    https://lore.kernel.org/r/20250915101343.1449546-3-zhangchunyan%40iscas.ac.cn
+patch subject: [PATCH V12 2/5] mm: userfaultfd: Add pgtable_supports_uffd_wp()
+config: riscv-randconfig-002-20250916 (https://download.01.org/0day-ci/archive/20250916/202509161304.mQnxOxhS-lkp@intel.com/config)
+compiler: riscv32-linux-gcc (GCC) 10.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250916/202509161304.mQnxOxhS-lkp@intel.com/reproduce)
 
-I don't have a way to demonstrate it.  The commit message was only for
-discussing a theoretical and unlikely case.  Maybe it was better to just not
-mention.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202509161304.mQnxOxhS-lkp@intel.com/
 
-> 
-> > Also those are basically duplications that
-> > make their maintenance difficult.
-> 
-> Unclear.  This means that the client hacks are no longer necessary after
-> these changes?
+All errors (new ones prefixed by >>):
 
-You're correct.
+   In file included from include/linux/mm_inline.h:10,
+                    from mm/internal.h:13,
+                    from mm/page_frag_cache.c:21:
+   include/linux/userfaultfd_k.h: In function 'pte_marker_entry_uffd_wp':
+>> include/linux/userfaultfd_k.h:441:9: error: implicit declaration of function 'is_pte_marker_entry' [-Werror=implicit-function-declaration]
+     441 |  return is_pte_marker_entry(entry) &&
+         |         ^~~~~~~~~~~~~~~~~~~
+>> include/linux/userfaultfd_k.h:442:10: error: implicit declaration of function 'pte_marker_get' [-Werror=implicit-function-declaration]
+     442 |         (pte_marker_get(entry) & PTE_MARKER_UFFD_WP);
+         |          ^~~~~~~~~~~~~~
+>> include/linux/userfaultfd_k.h:442:34: error: 'PTE_MARKER_UFFD_WP' undeclared (first use in this function)
+     442 |         (pte_marker_get(entry) & PTE_MARKER_UFFD_WP);
+         |                                  ^~~~~~~~~~~~~~~~~~
+   include/linux/userfaultfd_k.h:442:34: note: each undeclared identifier is reported only once for each function it appears in
+   include/linux/userfaultfd_k.h: In function 'pte_marker_uffd_wp':
+>> include/linux/userfaultfd_k.h:452:7: error: implicit declaration of function 'is_swap_pte'; did you mean 'is_swap_pmd'? [-Werror=implicit-function-declaration]
+     452 |  if (!is_swap_pte(pte))
+         |       ^~~~~~~~~~~
+         |       is_swap_pmd
+>> include/linux/userfaultfd_k.h:455:10: error: implicit declaration of function 'pte_to_swp_entry' [-Werror=implicit-function-declaration]
+     455 |  entry = pte_to_swp_entry(pte);
+         |          ^~~~~~~~~~~~~~~~
+>> include/linux/userfaultfd_k.h:455:10: error: incompatible types when assigning to type 'swp_entry_t' from type 'int'
+   In file included from include/linux/mm_inline.h:11,
+                    from mm/internal.h:13,
+                    from mm/page_frag_cache.c:21:
+   include/linux/swapops.h: At top level:
+>> include/linux/swapops.h:124:19: error: static declaration of 'is_swap_pte' follows non-static declaration
+     124 | static inline int is_swap_pte(pte_t pte)
+         |                   ^~~~~~~~~~~
+   In file included from include/linux/mm_inline.h:10,
+                    from mm/internal.h:13,
+                    from mm/page_frag_cache.c:21:
+   include/linux/userfaultfd_k.h:452:7: note: previous implicit declaration of 'is_swap_pte' was here
+     452 |  if (!is_swap_pte(pte))
+         |       ^~~~~~~~~~~
+   In file included from include/linux/mm_inline.h:11,
+                    from mm/internal.h:13,
+                    from mm/page_frag_cache.c:21:
+>> include/linux/swapops.h:133:27: error: conflicting types for 'pte_to_swp_entry'
+     133 | static inline swp_entry_t pte_to_swp_entry(pte_t pte)
+         |                           ^~~~~~~~~~~~~~~~
+   In file included from include/linux/mm_inline.h:10,
+                    from mm/internal.h:13,
+                    from mm/page_frag_cache.c:21:
+   include/linux/userfaultfd_k.h:455:10: note: previous implicit declaration of 'pte_to_swp_entry' was here
+     455 |  entry = pte_to_swp_entry(pte);
+         |          ^~~~~~~~~~~~~~~~
+   In file included from include/linux/mm_inline.h:11,
+                    from mm/internal.h:13,
+                    from mm/page_frag_cache.c:21:
+>> include/linux/swapops.h:429:20: error: conflicting types for 'is_pte_marker_entry'
+     429 | static inline bool is_pte_marker_entry(swp_entry_t entry)
+         |                    ^~~~~~~~~~~~~~~~~~~
+   In file included from include/linux/mm_inline.h:10,
+                    from mm/internal.h:13,
+                    from mm/page_frag_cache.c:21:
+   include/linux/userfaultfd_k.h:441:9: note: previous implicit declaration of 'is_pte_marker_entry' was here
+     441 |  return is_pte_marker_entry(entry) &&
+         |         ^~~~~~~~~~~~~~~~~~~
+   In file included from include/linux/mm_inline.h:11,
+                    from mm/internal.h:13,
+                    from mm/page_frag_cache.c:21:
+>> include/linux/swapops.h:434:26: error: conflicting types for 'pte_marker_get'
+     434 | static inline pte_marker pte_marker_get(swp_entry_t entry)
+         |                          ^~~~~~~~~~~~~~
+   In file included from include/linux/mm_inline.h:10,
+                    from mm/internal.h:13,
+                    from mm/page_frag_cache.c:21:
+   include/linux/userfaultfd_k.h:442:10: note: previous implicit declaration of 'pte_marker_get' was here
+     442 |         (pte_marker_get(entry) & PTE_MARKER_UFFD_WP);
+         |          ^~~~~~~~~~~~~~
+   cc1: some warnings being treated as errors
+--
+   In file included from include/linux/mm_inline.h:10,
+                    from mm/mremap.c:12:
+   include/linux/userfaultfd_k.h: In function 'pte_marker_entry_uffd_wp':
+>> include/linux/userfaultfd_k.h:441:9: error: implicit declaration of function 'is_pte_marker_entry' [-Werror=implicit-function-declaration]
+     441 |  return is_pte_marker_entry(entry) &&
+         |         ^~~~~~~~~~~~~~~~~~~
+>> include/linux/userfaultfd_k.h:442:10: error: implicit declaration of function 'pte_marker_get' [-Werror=implicit-function-declaration]
+     442 |         (pte_marker_get(entry) & PTE_MARKER_UFFD_WP);
+         |          ^~~~~~~~~~~~~~
+>> include/linux/userfaultfd_k.h:442:34: error: 'PTE_MARKER_UFFD_WP' undeclared (first use in this function)
+     442 |         (pte_marker_get(entry) & PTE_MARKER_UFFD_WP);
+         |                                  ^~~~~~~~~~~~~~~~~~
+   include/linux/userfaultfd_k.h:442:34: note: each undeclared identifier is reported only once for each function it appears in
+   include/linux/userfaultfd_k.h: In function 'pte_marker_uffd_wp':
+>> include/linux/userfaultfd_k.h:452:7: error: implicit declaration of function 'is_swap_pte'; did you mean 'is_swap_pmd'? [-Werror=implicit-function-declaration]
+     452 |  if (!is_swap_pte(pte))
+         |       ^~~~~~~~~~~
+         |       is_swap_pmd
+>> include/linux/userfaultfd_k.h:455:10: error: implicit declaration of function 'pte_to_swp_entry' [-Werror=implicit-function-declaration]
+     455 |  entry = pte_to_swp_entry(pte);
+         |          ^~~~~~~~~~~~~~~~
+>> include/linux/userfaultfd_k.h:455:10: error: incompatible types when assigning to type 'swp_entry_t' from type 'int'
+   In file included from include/linux/mm_inline.h:11,
+                    from mm/mremap.c:12:
+   include/linux/swapops.h: At top level:
+>> include/linux/swapops.h:124:19: error: static declaration of 'is_swap_pte' follows non-static declaration
+     124 | static inline int is_swap_pte(pte_t pte)
+         |                   ^~~~~~~~~~~
+   In file included from include/linux/mm_inline.h:10,
+                    from mm/mremap.c:12:
+   include/linux/userfaultfd_k.h:452:7: note: previous implicit declaration of 'is_swap_pte' was here
+     452 |  if (!is_swap_pte(pte))
+         |       ^~~~~~~~~~~
+   In file included from include/linux/mm_inline.h:11,
+                    from mm/mremap.c:12:
+>> include/linux/swapops.h:133:27: error: conflicting types for 'pte_to_swp_entry'
+     133 | static inline swp_entry_t pte_to_swp_entry(pte_t pte)
+         |                           ^~~~~~~~~~~~~~~~
+   In file included from include/linux/mm_inline.h:10,
+                    from mm/mremap.c:12:
+   include/linux/userfaultfd_k.h:455:10: note: previous implicit declaration of 'pte_to_swp_entry' was here
+     455 |  entry = pte_to_swp_entry(pte);
+         |          ^~~~~~~~~~~~~~~~
+   In file included from include/linux/mm_inline.h:11,
+                    from mm/mremap.c:12:
+>> include/linux/swapops.h:429:20: error: conflicting types for 'is_pte_marker_entry'
+     429 | static inline bool is_pte_marker_entry(swp_entry_t entry)
+         |                    ^~~~~~~~~~~~~~~~~~~
+   In file included from include/linux/mm_inline.h:10,
+                    from mm/mremap.c:12:
+   include/linux/userfaultfd_k.h:441:9: note: previous implicit declaration of 'is_pte_marker_entry' was here
+     441 |  return is_pte_marker_entry(entry) &&
+         |         ^~~~~~~~~~~~~~~~~~~
+   In file included from include/linux/mm_inline.h:11,
+                    from mm/mremap.c:12:
+>> include/linux/swapops.h:434:26: error: conflicting types for 'pte_marker_get'
+     434 | static inline pte_marker pte_marker_get(swp_entry_t entry)
+         |                          ^~~~~~~~~~~~~~
+   In file included from include/linux/mm_inline.h:10,
+                    from mm/mremap.c:12:
+   include/linux/userfaultfd_k.h:442:10: note: previous implicit declaration of 'pte_marker_get' was here
+     442 |         (pte_marker_get(entry) & PTE_MARKER_UFFD_WP);
+         |          ^~~~~~~~~~~~~~
+   In file included from include/linux/mm_inline.h:10,
+                    from mm/mremap.c:12:
+   include/linux/userfaultfd_k.h: In function 'pte_marker_entry_uffd_wp':
+   include/linux/userfaultfd_k.h:443:1: warning: control reaches end of non-void function [-Wreturn-type]
+     443 | }
+         | ^
+   cc1: some warnings being treated as errors
 
-Sorry for the poor cover letter message.  If I have to post a new version of
-this patch series, I would update the cover letter message as below.  Does it
-look better?  If so, could you please update the cover letter part of the
-commit on the mm tree?
 
-"""
-DAMON is initialized in subsystem initialization time, by damon_init().  If
-DAMON API functions are called before the initialization, the system could
-crash.  Actually such issues happened and were fixed [1] in the past.  For the
-fix, DAMON API callers have updated to check if DAMON is initialized or not,
-using their own hacks.  The hacks are unnecessarily duplicated on every DAMON
-API callers and therefore it would be difficult to reliably maintain in the
-long term.
+vim +/is_pte_marker_entry +441 include/linux/userfaultfd_k.h
 
-Make it reliable and easy to maintain.  For this, implement a new DAMON core
-layer API function that returns if DAMON is successfully initialized.  If it
-returns true, it means DAMON API functions are safe to be used.  After the
-introduction of the new API, update DAMON API callers to use the new function
-instead of their own hacks.
+2bad466cc9d9b4c Peter Xu      2023-03-09  435  
+1db9dbc2ef05205 Peter Xu      2022-05-12  436  static inline bool pte_marker_entry_uffd_wp(swp_entry_t entry)
+1db9dbc2ef05205 Peter Xu      2022-05-12  437  {
+564509f441b4695 Chunyan Zhang 2025-09-15  438  	if (!uffd_supports_wp_marker())
+564509f441b4695 Chunyan Zhang 2025-09-15  439  		return false;
+564509f441b4695 Chunyan Zhang 2025-09-15  440  
+1db9dbc2ef05205 Peter Xu      2022-05-12 @441  	return is_pte_marker_entry(entry) &&
+1db9dbc2ef05205 Peter Xu      2022-05-12 @442  	       (pte_marker_get(entry) & PTE_MARKER_UFFD_WP);
+1db9dbc2ef05205 Peter Xu      2022-05-12  443  }
+1db9dbc2ef05205 Peter Xu      2022-05-12  444  
+1db9dbc2ef05205 Peter Xu      2022-05-12  445  static inline bool pte_marker_uffd_wp(pte_t pte)
+1db9dbc2ef05205 Peter Xu      2022-05-12  446  {
+1db9dbc2ef05205 Peter Xu      2022-05-12  447  	swp_entry_t entry;
+1db9dbc2ef05205 Peter Xu      2022-05-12  448  
+564509f441b4695 Chunyan Zhang 2025-09-15  449  	if (!uffd_supports_wp_marker())
+564509f441b4695 Chunyan Zhang 2025-09-15  450  		return false;
+564509f441b4695 Chunyan Zhang 2025-09-15  451  
+1db9dbc2ef05205 Peter Xu      2022-05-12 @452  	if (!is_swap_pte(pte))
+1db9dbc2ef05205 Peter Xu      2022-05-12  453  		return false;
+1db9dbc2ef05205 Peter Xu      2022-05-12  454  
+1db9dbc2ef05205 Peter Xu      2022-05-12 @455  	entry = pte_to_swp_entry(pte);
+1db9dbc2ef05205 Peter Xu      2022-05-12  456  
+1db9dbc2ef05205 Peter Xu      2022-05-12  457  	return pte_marker_entry_uffd_wp(entry);
+1db9dbc2ef05205 Peter Xu      2022-05-12  458  }
+1db9dbc2ef05205 Peter Xu      2022-05-12  459  
 
-[1] https://lore.kernel.org/20250909022238.2989-1-sj@kernel.org
-"""
-
-As always, please let me know if there is anything I can help.
-
-
-Thanks,
-SJ
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
