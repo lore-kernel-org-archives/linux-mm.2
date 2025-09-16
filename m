@@ -4,115 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A68ACAC598
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 17:09:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EA2FCAC598
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 17:09:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 597CF8E0008; Tue, 16 Sep 2025 13:09:34 -0400 (EDT)
+	id CC4088E000A; Tue, 16 Sep 2025 13:09:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5217D8E0001; Tue, 16 Sep 2025 13:09:34 -0400 (EDT)
+	id C4EAA8E0001; Tue, 16 Sep 2025 13:09:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E8E48E0008; Tue, 16 Sep 2025 13:09:34 -0400 (EDT)
+	id B15E48E000A; Tue, 16 Sep 2025 13:09:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 26BDD8E0001
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 13:09:34 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C5FDD13A2A8
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 17:09:33 +0000 (UTC)
-X-FDA: 83895749826.10.BED6ECD
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	by imf16.hostedemail.com (Postfix) with ESMTP id E26C8180007
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 17:09:31 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=ZyFKzqTj;
-	spf=pass (imf16.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 970F78E0001
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 13:09:46 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4C9E71DD8EC
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 17:09:46 +0000 (UTC)
+X-FDA: 83895750372.26.CA64584
+Received: from smtp112.iad3a.emailsrvr.com (smtp112.iad3a.emailsrvr.com [173.203.187.112])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 4D57D140006
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 17:09:43 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=none;
+	spf=pass (imf09.hostedemail.com: domain of dpreed@deepplum.com designates 173.203.187.112 as permitted sender) smtp.mailfrom=dpreed@deepplum.com;
+	dmarc=pass (policy=none) header.from=deepplum.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758042571;
+	s=arc-20220608; t=1758042584;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5nObP271o7zKWD/o6CXr8B27todJQZZ/TCUsecAu7bQ=;
-	b=N4hPOIRJQgGsT3uAXh0sdaJWrOjMnQnr05CjqbTqDz6+7F4vOE/AAm9ljgECCQtJDrHqC0
-	PKMxngvy7IG4JJrQAywwuUeTI98bSERnkYR4TLjvYuA2/M9ioZqyDYA/hKt6ffpmYL7pNV
-	exqnY9oLZiK+xzU/1/fDpNXjCsTZ1h0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758042571; a=rsa-sha256;
-	cv=none;
-	b=G05+BnPaicJEOQDrnd9ho1BY/Y5pmUElQd735EXQSAeZXMWwJ7bSR8rvlqMabzMwt0NLYZ
-	QiEJJZd6AWxLxN6v2M/6ZZ6p6Has+i6JyyWIygxw1ly2X20EvRuCXB6D3LJLXjeN3ecuI6
-	gQ4c/nrqahh78JQjNg4hxEmsv5/4WDg=
+	 in-reply-to:in-reply-to:references:references;
+	bh=jp0lGQUO6tKCulfsQ8dirXWIEhTA1ZW1LFSxcp2oA/M=;
+	b=xZJqf7C75wl11mEtxv3AbxEgyoBVmB20F3QDGsOGj04UHGhEoOuCJcAo6N7EXkMKJ+VgXq
+	CI6H8yoZjhSytBdEGxNXTOHOaNxLIEoyVTuzITbdDUteEPU7HDiDJXocqUNFYnt6f1b++N
+	YNLbUk7aE8xvovxqlZyqNresyeej4p8=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=ZyFKzqTj;
-	spf=pass (imf16.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4b796ff6d45so18281cf.1
-        for <linux-mm@kvack.org>; Tue, 16 Sep 2025 10:09:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758042571; x=1758647371; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5nObP271o7zKWD/o6CXr8B27todJQZZ/TCUsecAu7bQ=;
-        b=ZyFKzqTju7UobgCJpjG9J/ynxJlK+vy28KstXgPHqNL+5K+NNG/Tl71Aex0vOe8SLo
-         fvMseq7uO082ea83c7f5R8R9tagauzh8SN/SpzHIKUcz66bWjuLqQ/FfrjDI0cvQrGjN
-         zOqZ4YvBMb30kESNYNbK5BTY3RSRvVULJE3AtJptk9RzZUASq4dfKNkqRZkyms3d8tUu
-         Jbaoyw0DtGYylEhpnQlcvHK8IEip+VBcmytUgcQsi0sWmQvhKfMYPtbE/hsPiZsElzlr
-         dD3anoFr9/YErHqXhSiRKFTW2SuhNuGxgrMgC9DR3kaFLZ2ZYKcA8R+5rLF+K0FXY6GI
-         pHgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758042571; x=1758647371;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5nObP271o7zKWD/o6CXr8B27todJQZZ/TCUsecAu7bQ=;
-        b=lWy8PSBZD4VqxMshH0KtaNtZKwUjtWQHoBbycPEnHg6YkiXrRvI5/RynR1qS6VZZDz
-         8t+CAaQjixMQNFoRwNYmga4Xi4YAF0nCGlQlQkgxjRQ1yWXeGOZuxjwDivWHxZFOIbLO
-         sMkqzxBlPxploy5bbw3id8NbXbIiENDBzk8XZjuzWKRjazHgjQ7P5VSwCK46t8jETSL2
-         iBX4Mk8HeyTGUpqFcdv0W6mALL/oDVkw2Cxott2oqdwbrwWUjRe5GAkIUmxioguTlP6P
-         knNpn6K5ewvMpbc7JNaAMeszlqxbHnWD7tCBv+T4BQKcoHROp4VNTlfgJWVZzSD6AhSd
-         rsxQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU1Vjtly6q82cWC9Nf6yZoWiaZ2mvoaoudpsE6kiTGLwCoaUjVfSAwo/WqvMJECWw36IDvFu6GtEQ==@kvack.org
-X-Gm-Message-State: AOJu0Yx5px5E3SmQ/sZ7QBdf1mI2g5WRwwDNZHer7rl9OM2TLcy+8GQK
-	bnhgWTLbqD9Ab+wlV/cegbW2SqLxTcyRQS4Z/WfUbQddiEqXvFvaGRXCX/MvjBcId2gSi6VtBYz
-	KHnq0JhfzBwVHi5OqAoczU3mZ6uzsgcr9tPx5gcSS
-X-Gm-Gg: ASbGncsMmHPC8uaSe6nGZvb77lDDpAleCtmS8wZ2yA/voaKMjFiPkOFlTG7HYxTM8nh
-	WVN8ft2ZKcMOoDDNnYsyt4BbuS9lya76zIcyfSHpYQCZsPCf/XINebau5t6mBBxjGfDMuUjPYfT
-	cLu8vvls/f6bBBqLZT2K8sXMn62jHAWTXL7AVgQPdO6ZuhcOKKi5N5oEKyoJhZSPFgW7CSveVcZ
-	daJoVPNPxfZnv1tLaDOaTBGz1+hzVaR2sqKU/7bvTlM
-X-Google-Smtp-Source: AGHT+IHlnZD0xzveloqY1NwivFqIQ3M/IVLjLUBP4FRJ+7Uqzu5AIbMylt6KL7+KR956Bl7yUYehkcOeC/F8nnahyEY=
-X-Received: by 2002:ac8:7c56:0:b0:4b3:1617:e617 with SMTP id
- d75a77b69052e-4b7b2d81b34mr6548031cf.11.1758042570374; Tue, 16 Sep 2025
- 10:09:30 -0700 (PDT)
+	imf09.hostedemail.com;
+	dkim=none;
+	spf=pass (imf09.hostedemail.com: domain of dpreed@deepplum.com designates 173.203.187.112 as permitted sender) smtp.mailfrom=dpreed@deepplum.com;
+	dmarc=pass (policy=none) header.from=deepplum.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758042584; a=rsa-sha256;
+	cv=none;
+	b=O8M0Xi+TF18sDqS/GrVKTuVYsw4FeQkTOYL1yHKEtgpz7zZyQIb3Q7xp9DTwLSefYGMIi7
+	O9zPqP2WbLuLsOb669yeXL7krimyMWceb/Xjp/kj3Nb02N7U5G8pu9LM8YbCa+LixKMovm
+	Ax6R053gWLucqJmKtMBOXb/BFMYA08s=
+Received: from app57.wa-webapps.iad3a (relay-webapps.rsapps.net [172.27.255.140])
+	by smtp39.relay.iad3a.emailsrvr.com (SMTP Server) with ESMTP id 3ACF65808;
+	Tue, 16 Sep 2025 13:09:43 -0400 (EDT)
+Received: from deepplum.com (localhost.localdomain [127.0.0.1])
+	by app57.wa-webapps.iad3a (Postfix) with ESMTP id 1B8B3E00C6;
+	Tue, 16 Sep 2025 13:09:43 -0400 (EDT)
+Received: by apps.rackspace.com
+    (Authenticated sender: dpreed@deepplum.com, from: dpreed@deepplum.com) 
+    with HTTP; Tue, 16 Sep 2025 13:09:43 -0400 (EDT)
+X-Auth-ID: dpreed@deepplum.com
+Date: Tue, 16 Sep 2025 13:09:43 -0400 (EDT)
+Subject: =?utf-8?Q?Re=3A_PROBLEM=3A_userfaultfd_REGISTER_minor_mode_on_MAP=5FPRIVA?=
+ =?utf-8?Q?TE_range_fails?=
+From: "David P. Reed" <dpreed@deepplum.com>
+To: "Peter Xu" <peterx@redhat.com>
+Cc: "James Houghton" <jthoughton@google.com>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ linux-mm@kvack.org,
+ "Axel Rasmussen" <axelrasmussen@google.com>
 MIME-Version: 1.0
-References: <20250723-slub-percpu-caches-v5-0-b792cd830f5d@suse.cz>
- <20250913000935.1021068-1-sudarsanm@google.com> <qs3967pq-4nq7-67pq-2025-r7259o0s52p4@vanv.qr>
- <f5792407-d2b9-42b3-bc85-ed14eac945ec@paulmck-laptop> <d1ef1cbb-c18d-4da6-b56b-342e86dca525@suse.cz>
-In-Reply-To: <d1ef1cbb-c18d-4da6-b56b-342e86dca525@suse.cz>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Tue, 16 Sep 2025 10:09:18 -0700
-X-Gm-Features: AS18NWBm5mFEewsCE7hgqPbGCMob1rkMeU0y4GD4Rj9Jw-SRj0_ytqyTNwX9TZE
-Message-ID: <CAJuCfpEQ=RUgcAvRzE5jRrhhFpkm8E2PpBK9e9GhK26ZaJQt=Q@mail.gmail.com>
-Subject: Re: Benchmarking [PATCH v5 00/14] SLUB percpu sheaves
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: paulmck@kernel.org, Jan Engelhardt <ej@inai.de>, 
-	Sudarsan Mahendran <sudarsanm@google.com>, Liam.Howlett@oracle.com, cl@gentwo.org, 
-	harry.yoo@oracle.com, howlett@gmail.com, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, maple-tree@lists.infradead.org, rcu@vger.kernel.org, 
-	rientjes@google.com, roman.gushchin@linux.dev, urezki@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain;charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: E26C8180007
-X-Stat-Signature: 7nihc4bt6ykg3mhprc7r3aa6hijk9r7j
+Importance: Normal
+X-Priority: 3 (Normal)
+X-Type: plain
+In-Reply-To: <aMmMnfU-Koopc9mL@x1.local>
+References: <1757967196.153116687@apps.rackspace.com> 
+ <CADrL8HWGcj1oANGY=qAzpYi_-E-Xbi=L28Bmyyf8H7auVix=QQ@mail.gmail.com> 
+ <1757977128.137610687@apps.rackspace.com> 
+ <CADrL8HX78-oh0k2qAgqPvNVAhi4ESYvjRsScPGR2P2Dts13Bfw@mail.gmail.com> 
+ <aMl4qLyNovWHhty9@x1.local> <1758037938.96199037@apps.rackspace.com> 
+ <aMmMnfU-Koopc9mL@x1.local>
+X-Client-IP: 209.6.168.128
+Message-ID: <1758042583.108320755@apps.rackspace.com>
+X-Mailer: webmail/19.0.28-RC
+X-Classification-ID: 9dcbf7fb-7473-485f-8f3b-e7a452678835-1-1
+X-Rspamd-Queue-Id: 4D57D140006
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1758042571-374692
-X-HE-Meta: U2FsdGVkX18Kc4QzkYQ+Sg314HdwgBSXOBnIDWAIPBoETYO3FOGb+zAp6ZbluCYm0ZuPq+lBIAWj7n7xONqbNImedxvxyTQqc04gOs1CDzmA5j8yOT+a2nJ4XSxnrVJ/0hCfKPT+KL6ZujWqy3l+NZZNWY8cCJx+grC4CT3QUUuq1JsQq78GCVLJqSsqFl44iJrxQLY7TKVv0/nyAHBysjqFxdosytaNBaR15+byuwl8IWaNOYoHn0VwBUx9OoxtGV9TAmRx/UI0v05hSibEGcm+JhLnzbrLaTvChLcWQVUSK7uSbcY1LetRL+D355PWA7WHsJxByvL6sPAVvAcpiw2Zy0qsh/aslZivk7HnibH01jHSuhMvAm09ithVbqAOIDIp/jN/vyLBt5dX7SWT39gy6sZIiySrtBHTw6Fd/WerQgnoLh3ZMv4OsASWa0TZLVR+fbUuw5AlJ7YSVgCj3QNNAVaSRTV06zsnY+p+LzW1ZGlZ2AVEYPaJDpgtGi7r1nMJckMFi/aq/yT+TeOjWZ/RMZCP/2fcQstit4ClRHj+okAJ3J5NfVPZAzjTWOqlHP6Vc/pfhH9hRyGE7pLa9KLtqv5gsIdlIxoZFa/RfES2wOS6Zv9j92QuXXLXeFS3CZUW50HBw7GPbecfXYjEbDuo4ogFdFcuzHmwLa5ZHBz/FdaViXSVLo72dEVu/F9AC+5FXkv+ncNHIkpbHuNGpmdkJfvErZHlMa6XxI67Gx+iMsbFLkwvxJ6/742F9nx5MlzI7ckiOB4737X8q1cBtbNQfCEDXuoYAhRh7HM9+1YpRT5fqIdewvHUHB3xHTq14U3DNQ/FPjRcHVQ3uMzNjiZH5ehP09LTqcldl35ksKFHrZBuwuT9mNmGT/d6gPEimkl53Z7c70ztbWqCzrlpRpd9+c2KMDGMqw7LavFguM6BziNbuOqDBcgXZEZnX/Yc54f5ubmbEyQVOsxJiaS
- O8V9SpTe
- WgRRsgHNhYOVy4XacAacfFPYidAal8nesB8iVxTp3bGLpUtBsE3KYrge+E3XyMxGWo0tsYGJGDf+fqpuU/3wnWFZkGIV1thwukbwIbJXrP4Cixv47rfv2PvxYqCzQ1ezmG1YoGeLsflynZ20EwSNy/f++Yw==
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 6rmnzeqtu49mzbm5pypmq3hihbuwxekh
+X-HE-Tag: 1758042583-473517
+X-HE-Meta: U2FsdGVkX18g8t4V03mUN+xqfCRVflOKzSdLpMsUGQoUfNKn6mo/VVRl/h40g53GL+Qkuwte5NwsVtfl9FRx/buQAlvj2/QTJYCkTXygu8dUNekmFvlxB4Q4ixRLimiIko87Nx3l60SNF+1gMVzMqAHZZlhteEQABZ5cPwSNotlzYE0oQv0uLDYBKkak2NQyMe6SNr43IWDZxrNuySegSLUvomUeHAE77tpa2WfJ36bWgS2ACXGwr1EIiEaWUsryFjOEVYzxf1C8WHTcsDmcqSzddq4F9QYV2n9r0aR1ouLCsEdoZGSfA16xA69U2kiFInyOVWVdSiEZP+nRuU/3/t8U+e7XuJoT6EBzZ6gliFNbqcyjWC4ruJDNVIl3aXs2oU3MWdpH6VNcaq4QkJMuFeu5SYM1ZtdVq60eANq0Y1kehhtrVPKrkibgJ8xm4OMDnva4pSk9vJW5sM9gxIDKbBOJwh5aHiRQ4uedOYnMHcStBSGLARAgQMcMHZBYAN0clJYCui9eVsllw6fhxOF2bijEmF9dXPLdOWI2jFGRktksN17STeooMnnI23h4Ef7LHU8GiMQFsJ+rScV8BCbTq4YjdZdwJEtDCqul40X2cwndAyBOmud8dGtm+c++nOVpcIQXhyLpoIfSPRF1gwS8ClUVZOPLZSScWYwMNwiK1thOBhDxxz9QrZ+RpkuZ1XGmevsl4aCL3lrIK9fkVvGyzjTL/3x8e2DY2gbMy78P5VULH3iqO+JUK02sPtAwlgPzSVfY0/mN9/ZUxIjNA3owCN72AHsHDZrN282zZkZsqmHLaeKlas+xxgjVhSBFA5ao0TFDE5ZMEZf8zo5WluT3d0yDHq5/+D42oEilyxhArqhdeTuv9JTod1BkSYHCU76/eqdLeH3yWYv4wztApoPqv498WrDEnyhVXfh5MSKK/iXyspUjHCcA/0jYa1U+kA2V++W8mDpHdG1j8ECYz02
+ F+wj6Tzl
+ SUygx3FJIo8KQS3mGGSwqswhJJ7CRLSs7Gs2Me3w37IV7i/6W6q597PLZVE87VojZLQO6iOSOEQxc8ctePpUkc35sJPnrtQHIlxFc4XiKI2hp0VuRob+apGyU7puTk/l76sqtm00qZUALizQfsyKbMQ9267X+MCHYlpJ1iDYGfgvgc32TmFtizyzfWCxEk4RwJRPyAxg8dKznxuYBabpZJnSxM7tPJ8L7TPv5QQZKXPnyQuH2xZ37w5PmQQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,138 +101,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 15, 2025 at 8:22=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz> wr=
-ote:
->
-> On 9/15/25 14:13, Paul E. McKenney wrote:
-> > On Mon, Sep 15, 2025 at 09:51:25AM +0200, Jan Engelhardt wrote:
-> >>
-> >> On Saturday 2025-09-13 02:09, Sudarsan Mahendran wrote:
-> >> >
-> >> >Summary of the results:
->
-> In any case, thanks a lot for the results!
->
-> >> >- Significant change (meaning >10% difference
-> >> >  between base and experiment) on will-it-scale
-> >> >  tests in AMD.
-> >> >
-> >> >Summary of AMD will-it-scale test changes:
-> >> >
-> >> >Number of runs : 15
-> >> >Direction      : + is good
-> >>
-> >> If STDDEV grows more than mean, there is more jitter,
-> >> which is not "good".
-> >
-> > This is true.  On the other hand, the mean grew way more in absolute
-> > terms than did STDDEV.  So might this be a reasonable tradeoff?
->
-> Also I'd point out that MIN of TEST is better than MAX of BASE, which mea=
-ns
-> there's always an improvement for this config. So jitter here means it's
-> changing between better and more better :) and not between worse and (mor=
-e)
-> better.
->
-> The annoying part of course is that for other configs it's consistently t=
-he
-> opposite.
+Than -=0A=0AThanks for your interest. Some clarifications on my current use=
+ case are interposed below. =0A=0AOn Tuesday, September 16, 2025 12:13, "Pe=
+ter Xu" <peterx@redhat.com> said:=0A=0A> On Tue, Sep 16, 2025 at 11:52:18AM=
+ -0400, David P. Reed wrote:=0A>> synchronous would be better. But what I w=
+ant to do is at least get=0A>> notifications of swapin events (including th=
+e case when the page is in=0A>> swap cache). Also, using UFFDIO_COPY can be=
+ useful for the swap in case=0A>> might make sense (but rarely, because the=
+re's no way to access the data=0A>> that was swapped out).=0A> =0A> Some mo=
+re info on the use case might be helpful.  I can start with some=0A> more q=
+uestions if that helps.=0A> =0A> - If it's about page hotness / coldness, h=
+ave you tried existing facilities=0A>   (page idle, DAMON, etc.)?  If so, w=
+hy they won't work?=0A=0AYes. Those functions are just summarizers, giving =
+counts and averages. They provide zero detail about specific pages to the a=
+pplication running in the process.=0A=0AI can clarify my use case focus by =
+pointing out what inspired me to use userfaultfd for application specific m=
+emory management (which is, after all, what userfaultfd was promoted for on=
+ Linux Weekly News a while back when it first came out). This 2024 paper is=
+ along the same lines as what I'm researching, and was published in 2024 Us=
+enix proceedings.=0AExtMem: Enabling Application Aware Virtual Memory Manag=
+ement for Data Intensive Applications=0Ahttps://www.usenix.org/conference/a=
+tc24/presentation/jalalian=0A=0ASee figure 3 of the paper for their perform=
+ance problem with userfaultfd vs. their kernel modifications (upcall). =0A=
+=0AThey had tried using userfaultfd for their work, and found it was "too s=
+low" compared to what they call the "upcall" technique they achieved by mod=
+ifying the kernel page fault handling path. (see paper for details - and Ja=
+lalian't thesis dives into it more deeply).=0AI could code up an equivalent=
+ to their "upcall" - but that would mean completely non-standard (and fraug=
+ht with security issues, as well as not being able to use a separate manage=
+ment process).=0AFor me, the performance concern is less problematic - I'm =
+doing application analysis and experimentation. And I don't want to have to=
+ maintain a kernel patch set.=0A=0ANote that I expect to use madvise() and =
+process_madvise() to manipulate page coldness and swapping as well.=0A=0A> =
+=0A> - Assuming it's async reports that can be collected, what do you plan =
+to do=0A>   with the info?  Do you care about swap outs prior to swap ins?=
+=0A=0ADetailed application paging measurements, modeling, and so forth.=0AI=
+'m not asking for a big enhancement to userfaultfd - just expecting it shou=
+ld (as is) basically work, if the UFFDIO_REGISTER actually allowed to regis=
+ter the minor page fault mode,=0A=0A> =0A> - How sync events would be bette=
+r in this case?=0A=0ASimpler to coordinate the interaction with the faultin=
+g process by far.=0A=0A> =0A> Than=0A> =0A> =0A
 
-Hi Vlastimil,
-I ran my mmap stress test that runs 20000 cycles of mmapping 50 VMAs,
-faulting them in then unmapping and timing only mmap and munmap calls.
-This is not a realistic scenario but works well for A/B comparison.
-
-The numbers are below with sheaves showing a clear improvement:
-
-Baseline
-            avg             stdev
-mmap        2.621073        0.2525161631
-munmap      2.292965        0.008831973052
-total       4.914038        0.2572620923
-
-Sheaves
-            avg            stdev           avg_diff        stdev_diff
-mmap        1.561220667    0.07748897037   -40.44%        -69.31%
-munmap      2.042071       0.03603083448   -10.94%        307.96%
-total       3.603291667    0.113209047     -26.67%        -55.99%
-
-Stdev for munmap went high but I see that there was only one run that
-was very different from others, so that might have been just a noisy
-run.
-
-One thing I noticed is that with my stress testing mmap/munmap in a
-loop we get lots of in-flight freed-by-RCU sheaves before the grace
-period arrives and they get freed in bulk. Note that Android enables
-lazy RCU config, so that affects the grace period and makes it longer
-than normal. This results in sheaves being freed in bulk and when that
-happens, the barn gets quickly full (we only have 10
-(MAX_FULL_SHEAVES) free slots), the rest of the sheaves being freed
-are destroyed instead of being reused.
-
-I tried two modifications:
-1. Use call_rcu_hurry() instead of call_rcu() when freeing the
-sheaves. This should remove the effects of lazy RCU;
-2. Keep a running count of in-flight RCU-freed sheaves and once it
-reaches the number of free slots for full sheaves in the barn, I
-schedule an rcu_barrier() to free all these in-flight sheaves. Note
-that I added an additional condition to skip this RCU flush if the
-number of free slots for full sheaves is less than MAX_FULL_SHEAVES/2.
-That should prevent flushing to free only a small number of sheaves.
-
-With these modifications the numbers get even better:
-
-Sheaves with call_rcu_hurry
-            avg                            avg_diff (vs Baseline)
-mmap        1.279308                       -51.19%
-munmap      1.983921                       -13.48%
-total       3.263228                       -33.59%
-
-Sheaves with rcu_barrier
-            avg                            avg_diff (vs Baseline)
-mmap        1.210455                       -53.82%
-munmap      1.963739                       -14.36%
-total       3.174194                       -35.41%
-
-I didn't capture stdev because I did not run as many times as the
-first two configurations.
-
-Again, the tight loop in my test is not representative of a real
-workloads and the numbers are definitely affected by the use of lazy
-RCU mode in Android. While this information can be used for later
-optimizations, I don't think these findings should block current
-deployment of the sheaves.
-Thanks,
-Suren.
-
-
->
-> > Of course, if adjustments can be made to keep the increase in mean whil=
-e
-> > keeping STDDEV low, that would of course be even better.
-> >
-> >                                                       Thanx, Paul
-> >
-> >> >|            | MIN        | MAX        | MEAN       | MEDIAN     | ST=
-DDEV     |
-> >> >|:-----------|:-----------|:-----------|:-----------|:-----------|:--=
----------|
-> >> >| brk1_8_processes
-> >> >| BASE       | 7,667,220  | 7,705,767  | 7,682,782  | 7,676,211  | 12=
-,733     |
-> >> >| TEST       | 9,477,395  | 10,053,058 | 9,878,753  | 9,959,360  | 18=
-2,014    |
-> >> >| %          | +23.61%    | +30.46%    | +28.58%    | +29.74%    | +1=
-,329.46% |
-> >> >
-> >> >| mmap2_256_processes
-> >> >| BASE       | 7,483,929  | 7,532,461  | 7,491,876  | 7,489,398  | 11=
-,134     |
-> >> >| TEST       | 11,580,023 | 16,508,551 | 15,337,145 | 15,943,608 | 1,=
-489,489  |
-> >> >| %          | +54.73%    | +119.17%   | +104.72%   | +112.88%   | +1=
-3,276.75%|
-> >>
->
 
