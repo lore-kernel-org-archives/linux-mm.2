@@ -4,100 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A233ACAC597
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 00:05:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3570CCAC592
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 00:07:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BD7A98E0008; Mon, 15 Sep 2025 20:05:56 -0400 (EDT)
+	id 28AF78E000C; Mon, 15 Sep 2025 20:07:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BAF368E0001; Mon, 15 Sep 2025 20:05:56 -0400 (EDT)
+	id 23BD98E0001; Mon, 15 Sep 2025 20:07:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AEC068E0008; Mon, 15 Sep 2025 20:05:56 -0400 (EDT)
+	id 151F68E000C; Mon, 15 Sep 2025 20:07:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9EA5D8E0001
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 20:05:56 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DBC9187285
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 00:05:55 +0000 (UTC)
-X-FDA: 83893170270.29.C8FE022
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 2C169160003
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 00:05:53 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Iczv0H88;
-	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 02BC98E0001
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 20:07:10 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A875D11AD98
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 00:07:09 +0000 (UTC)
+X-FDA: 83893173378.16.A2D5A73
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+	by imf10.hostedemail.com (Postfix) with ESMTP id E5C2CC0005
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 00:07:07 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=YrfnqQ9W;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757981228; a=rsa-sha256;
+	cv=none;
+	b=HUizj1wFUqe78MU24qxbv5gsr6ASfhbu1MjJVcKlOe9qChiVTc3KORuAriSldqSJitSykN
+	WmBaX4fG5DeKkSf+ZVriVnMRCKNvL45PdoetUJvLg7ZOcJLv5bYB900Gn9CbYk9xKXaVZu
+	Rr3n7uPYm6Or7phs5olTdI5RJBFMEC8=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=YrfnqQ9W;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757981154;
+	s=arc-20220608; t=1757981228;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iQp4jRks7xCRbdMH62HvMOA2apHYM74ZPv44U9cHEsE=;
-	b=X/UcuzrkgMm19o6EAPY+mDJaF0IU29Mn/VoFPpYyKZHuc0/t/8E8VW/lt2P4eGrQWym7ZZ
-	bn1q31zGnwpoEmeNKP+pnNYts9iwiR+lGCpoHOnjUj5Bgg1ZFj2kAS0Qet5axSkBXsSgmr
-	ODWSVjp+ddrVknzOyX7mnj7O+VsYumQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757981154; a=rsa-sha256;
-	cv=none;
-	b=D6DuIlPAZtLI5W9Wmw5pw1Xo3ceb37aRxsoDARzVFQ+6SdfKVxBlm7D0VoMt1HbvxHpBTV
-	GpdOteLMn6fXa8aXh4POeTJtPkAQzC7PRiB98IpDf3bvBNlyHvs6qWoXt8pok01dNDLLXF
-	VUQ4qKQzOzPCTKJVCZEkDtcCT+Bmn10=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Iczv0H88;
-	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B5334433CD;
-	Tue, 16 Sep 2025 00:05:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46B8CC4CEF1;
-	Tue, 16 Sep 2025 00:05:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1757981152;
-	bh=OrGMt8ZJZs6DqpGv5H4cRS8nHNx4Zw/bJfWF3GfNAOE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Iczv0H888igvWGUByqVbrWfrf6G3GY2J4VQsxfEn4SpHTrABJNatZiX460FGXwyu9
-	 UThpMkOFY+oL8O5ygbc6eeVd02t4JQWS8lvFzQaSNEkWe9gYW7FfidDfrUFqbvKe/R
-	 9CSRdsVBjB/BpTMY+Ju4lnmK9fKSoI3p38HtCCeg=
-Date: Mon, 15 Sep 2025 17:05:50 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Kalesh Singh <kaleshsingh@google.com>
-Cc: minchan@kernel.org, lorenzo.stoakes@oracle.com, david@redhat.com,
- Liam.Howlett@oracle.com, rppt@kernel.org, pfalcato@suse.de,
- kernel-team@android.com, android-mm@google.com, Alexander Viro
- <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara
- <jack@suse.cz>, Kees Cook <kees@kernel.org>, Vlastimil Babka
- <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
- <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Juri
- Lelli <juri.lelli@redhat.com>, Vincent Guittot
- <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, Valentin
- Schneider <vschneid@redhat.com>, Jann Horn <jannh@google.com>, Shuah Khan
- <shuah@kernel.org>, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v2 0/7] vma count: fixes, test and improvements
-Message-Id: <20250915170550.f24bfb96514835154e8d1633@linux-foundation.org>
-In-Reply-To: <CAC_TJvd=zwhRZcXTvDPfuzdjYV7j_jvZKZ--eKDRTsE+LBmASA@mail.gmail.com>
-References: <20250915163838.631445-1-kaleshsingh@google.com>
-	<20250915153401.61cbd5120871ee7a4e5b9cae@linux-foundation.org>
-	<CAC_TJvd=zwhRZcXTvDPfuzdjYV7j_jvZKZ--eKDRTsE+LBmASA@mail.gmail.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 2C169160003
-X-Stat-Signature: fcscysbnt5i96cg13ucqxfgyecnefixo
+	bh=x0DdPvJAHN5ISH/pdtLfXa5UzPfO/utNQwjegoSkVR0=;
+	b=7xbpn4NCB71sG3xqbjublXolhw7zjZq88h1RuVKYhJ6QpbkwfarN+Uf2+uqg2QN2niJ2xa
+	ZXdgqLXHnmYIHtPI4p3AJSz+FXbLnr+HGXgCv6XXYo8ewR0i4fsgLJ0pzwrLXG9MWNRavN
+	RATRXAZexqhTXwZZgihAUnzgveg8ufw=
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-b49b56a3f27so2842122a12.1
+        for <linux-mm@kvack.org>; Mon, 15 Sep 2025 17:07:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757981227; x=1758586027; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=x0DdPvJAHN5ISH/pdtLfXa5UzPfO/utNQwjegoSkVR0=;
+        b=YrfnqQ9WHHVHzaSKiaOA5Zq6UqjhwnFUph1OlOaaA7wFxnsltNhWvlRAnvUtzOlV43
+         yfUOm+egjMM2ExMvbAauLN9QSAnzqAxd5YA/a/Y2MPoTQwFrAxU79eFOkavFk0ZxayYd
+         47bHoU4F5XDVLvoYERcZ56K0CWHuDF7gHCXteahbplye8tj8BmI1wNUfVCxjwpjv8ylj
+         lpcVTcye8FB4AmPkZZK7tyinrVF3Mmq5+3RiPSa2rxVMjtUrDj3MB4741NfvfAjqdalU
+         LGU4yDuPA3tNxgr4haq6QPGcYfXtYcRqX+/MtFxTudsSR2vF3dRkGVXSgQGAD5fvDjJp
+         YL/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757981227; x=1758586027;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=x0DdPvJAHN5ISH/pdtLfXa5UzPfO/utNQwjegoSkVR0=;
+        b=OOy28tV26NaXLjMkCVbM/leLOYPDijE3Go+oKdIXqKENKg4dyoBQ72TwtCn9akTpU3
+         OfobA7BoT5Hav7g+yEmvNWT/AH5z6zjzbHezEIK3sGeK+ipb5TZ7NysH3OVNPKhPPAb6
+         O0Nsy4G56WEWZjEKSsRrV+Jl34V1Ohnso14/qgmYV6uo091z++LjIEwPBjDH8o/HKAH0
+         FPKCUcX2Mx34aqhEZLVf9rgouf9ELqgzLAG/hxPdVJ0QhBeCEr7U6WMyDzkNGbc9gd/B
+         aVzBaaq1akcBdZQNjrOBPZgCZYCzOIEiOC3KatxYLc/f7wgyqrOSSTUTJIhGGrLYQTcR
+         Mw1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWZbViwHdgrfMD9FE0hb+8nOcfYBx6yBhSqFEulXBxOiL6W3xKdnULfhzlrMeEcgUf21M7IVF0ASw==@kvack.org
+X-Gm-Message-State: AOJu0YyI7l4EpL0gLTeBiDIsWSDAbibqvH5ozi032izmaE3oY6Hh9PWy
+	oHFft+zILOjL+mAWhNe2NBRrfbPGqXIAQKjYlfw2EHX9dSkUiw40JtOd
+X-Gm-Gg: ASbGncuAZNYg+EN8LI0WNMcKoHBA5jWbqiIgogZVPCgiKOUxdhZZyg+VY4Z9ClqkYeF
+	5YbpU7zprLm9lgxB3c9JN8SyAfjyZUvAWDvX2DVW1FCG4Q+UHynhvoTId2VW/U80iMG02mHcJex
+	swCsdIBUWEygKa3qW4dSkifanHhc81v1lEz+LgrpW9bpZqvpQijXsOLZPDIDQA+X7UAhLPIhJ8T
+	Vk3jgOJs8IeeFD6Rmyt2/QTp3c3/ftveDL28Y8UmmZC55I9Y6Qw01JasZAfioew1MBXNtuR8iVB
+	g7dRDDIYpbOs/LY7aclX8aQvxHSGad2gmdp/OajH5FYmL/aNrQcVa5xsPVo0AmDOy8P+i2gOpQH
+	jpQjQFIy0Z6xSruPbVcSPwyUyapywOR3Tjhq5wBuDoKFDNjX9jiIg01tRd6PftAmt
+X-Google-Smtp-Source: AGHT+IFqBn3aPuuGIwsNUKiW5043CHGfJxBjK7/JYETlzi1z3QlkzRgLa+sscFn02uU8Sj4jKSkSIw==
+X-Received: by 2002:a17:902:f64f:b0:250:999f:31c6 with SMTP id d9443c01a7336-25d26d4d96emr158911255ad.32.1757981226722;
+        Mon, 15 Sep 2025 17:07:06 -0700 (PDT)
+Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-26124cb9460sm83251345ad.106.2025.09.15.17.07.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Sep 2025 17:07:06 -0700 (PDT)
+Date: Mon, 15 Sep 2025 17:07:03 -0700
+From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: David Hildenbrand <david@redhat.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH v2 7/7] virtio_balloon: Stop calling page_address() in
+ free_pages()
+Message-ID: <aMiqJ4UcAfU3W107@fedora>
+References: <20250826205617.1032945-1-vishal.moola@gmail.com>
+ <20250826205617.1032945-8-vishal.moola@gmail.com>
+ <5ee2b684-94d9-40be-b01c-b0538ced33bc@redhat.com>
+ <aK9Ogjn71JoOM3w3@fedora>
+ <20250915184514-mutt-send-email-mst@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250915184514-mutt-send-email-mst@kernel.org>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E5C2CC0005
+X-Stat-Signature: a69i6y4ot88yf7hjjywjnwq4nymyyy6a
 X-Rspam-User: 
-X-HE-Tag: 1757981153-377817
-X-HE-Meta: U2FsdGVkX18qQFomS2Y3X0vBWbW9dMDUGiMv9BSaT3V1oMSYKgapHs1RahXoe6S1yryx0P7WM2Yead3I4m75M65KTVu2dJw6R/vTXWxSllqki01jSJ636pKgNu3E5ADDBHtZGHaDvOOIcq5x5PHPDa3tSiSq9TCblyRx4hmFha7TNjR+33jdv1fRnYsUS6+c0Egl6jtF1VWAcmW5vXtecF6ynLzZlRjNQ4tOOe+3R/zuVLYPJ92VYuAIDTWRAphN3f5ixpx606cXEpY+uoEuAYxgywgHgxoYQ8v/m/2yLjSBwIF0Q00f4stwBa7d+MqmQ37TKtHyMhxV9gUJNJw2B0KNQ94FcFqM6s2qKzQ2npcAJ4SzC3vF7ay5JRPARQw1xg1CReodIHbKEwiBFOK6xodkLCOz1Zm/qY9bTNxB1Zs4z2iTDj3/MWf/fY2pslhLSBOV+qgpHtXoHww1pk8lViYl81NRHyl18jzxebhiO53wbai3B4wBMLEbSTEKjRMtHwy7qx4GHhnxsCgxpxFN724VCDif9jFNCdkuNcF3Nf9FBx6ZrGVs8gYOsmc9OFDFg+0KvC5DBmymsT6tuwBw39plhVOR/xxR60G86U2YR6uCb7/fcra831B8c3ms2olRyuVw/yYeGUFwOt5N/KE720EqtEUrCT/WpVekasWQKYQRkpfL8OzEm2eguZCykS5KN27BU9Jv8XTWyok9pr6Qi1nIdRbFFs//UJ28csOGeNbbESaCucOFD4/ozCAUm8LmOi3z/8ILOroLNpJA7KAPsX1G4LdjLtpdkWABCPan+IzLURNqrSZNAUlDUxu+8ngUjauFRKKsT6XzrSXzuN4Sz4BOgwNmczXTl9EPZY6EIHJQI/41W13Y4uN9P0DdCuOAahb2VpUUYK3TySzLLs3dbCQSCzCVZb0gwL67OOAHBhuWuz/YhUTL5BbGPbP7HfU9VRUiCVA8PTYao3SZ+em
- IQgp8UQH
- 0OMgJDQLw4MfYTHQN03AHF+/hVqn23gxF5pgDJtuqy0nVy9YY+r1Dg3Tb77MBz7kn1lsONoH940sXFc/afnFmoUOaBusdX1VhRYnfA3HOH9mkvZuihNtyL/u6IHCZciolaAnHXNTOljMKal0ngIOWyijR3DlSwnqMPJ5doCXorHWSLu18dWNMixn+XP63S1Zp3NRznvTReNCP8YEXYCebaw8FgFkvneSXD5nbl8cBkd3w8GI=
+X-HE-Tag: 1757981227-241626
+X-HE-Meta: U2FsdGVkX1/9x6UfwvQwI3oQR4rQxkIKxfVJ60Kjk0jFpIo0VtxNYk6/j5b2372flrG9Mr3luVAMrsGKJOLee/+qbbpU6b55A1DhDLvOHmSVQgjzSzVukjhgT1LG6wSyBX0oQGMxtgmXnYoqI9OK3ldEQvidFIuRN/z/HetOVEYLxlQLxz+WOzlVBYKLb2Qlv4aUwquEq4Nc6PKHVOB7ZAWqvpNci3BYl4FtU8S/2XFMfJPa1t+my5As/QgoxAS/pNnngBSD9JVSK8T6r8bGAyNFtuD4ajH/8nh/pg5k9+ROmyWfmvu1pBqy2BcCHw6zgaLBVlBmA289Sx7SEy662nGhk4U+wid21ydIaF1N761NIt452HQLFwdqQZ8AU8bGaetqJrujXtxL+HeoyfH2OnM3pbn0ytujATT/K7nmz6UbFAJl0h745P5s6aHepJaBG5Su6jPqLjAWiOEZBy89ZS3G8yss499uGvwQVXHuMkBltdvbF1ZhrMgN/45kfzr6XN1xZ5CIOqibbe3J3RQfjQT6v6zs0ci83WqVyLf7sz9z9KYfCIVhHRZ+/mjMzsGfdg/yoVF5xbTt3DWuSxppdTGHdvGQQFI8z/Sqm0k1qBY5vMvc0Xo5EZYIPn2n4eJFj+vyYMGl2x6vDmA9/lq0dVhZAVpVIE3V1UT9EyhRC2lAsYjW/QbRJlAtxNlGnQAreF1O6c3o1g2Z4WteGFMM4NFF0hUG0/g57UMkOk8fU18Y0tX4EChUA24iOUoiB+YXcWnJAGwic8gQB9JKVEXkWe/IWJn+u1WovJjD9PegRsw8tHw7XYPmCtqDjLiTGKI5WpoHh4p2/NFThep3AeqALwXpP/FBnmU1ITQs3ULxdFioKk+m7uYu1ZZPKtvcos7HA26kQYb1u4oZxO2WolebGDOJPZ4xPJmPB8iMlHxFGpYs68jeZ/2v+/pqP0XJCCowZ/N64RUbz7SX1l5QpwL
+ LJx64l8/
+ 6YzeCgVJ/BMGUXJvzbTR/5gHm6A6dGOmewrp04DEMiapfbFXpPy/o9+AJGAlx9EJO+mCfTAXeijYVfoxrHl+l+X9T68QHxp5btImkA20aBNlDiOPDz1QiSTP2NLSVIapef1rw
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,25 +123,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 15 Sep 2025 16:10:55 -0700 Kalesh Singh <kaleshsingh@google.com> wrote:
-
-> > fwiw, there's nothing in the above which is usable in a [0/N] overview.
-> >
-> > While useful, the "what changed since the previous version" info isn't
-> > a suitable thing to carry in the permanent kernel record - it's
-> > short-term treansient stuff, not helpful to someone who is looking at
-> > the patchset in 2029.
-> >
-> > Similarly, the "how it was tested" material is also useful, but it
-> > becomes irrelevant as soon as the code hits linux-next and mainline.
+On Mon, Sep 15, 2025 at 06:45:51PM -0400, Michael S. Tsirkin wrote:
+> On Wed, Aug 27, 2025 at 11:29:22AM -0700, Vishal Moola (Oracle) wrote:
+> > On Wed, Aug 27, 2025 at 02:01:01PM +0200, David Hildenbrand wrote:
+> > > On 26.08.25 22:56, Vishal Moola (Oracle) wrote:
+> > > > free_pages() should be used when we only have a virtual address. We
+> > > > should call __free_pages() directly on our page instead.
+> > > > 
+> > > > Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+> > > > ---
+> > > >   drivers/virtio/virtio_balloon.c | 3 +--
+> > > >   1 file changed, 1 insertion(+), 2 deletions(-)
+> > > > 
+> > > > diff --git a/drivers/virtio/virtio_balloon.c b/drivers/virtio/virtio_balloon.c
+> > > > index eae65136cdfb..d4e6865ce355 100644
+> > > > --- a/drivers/virtio/virtio_balloon.c
+> > > > +++ b/drivers/virtio/virtio_balloon.c
+> > > > @@ -488,8 +488,7 @@ static unsigned long return_free_pages_to_mm(struct virtio_balloon *vb,
+> > > >   		page = balloon_page_pop(&vb->free_page_list);
+> > > >   		if (!page)
+> > > >   			break;
+> > > > -		free_pages((unsigned long)page_address(page),
+> > > > -			   VIRTIO_BALLOON_HINT_BLOCK_ORDER);
+> > > > +		__free_pages(page, VIRTIO_BALLOON_HINT_BLOCK_ORDER);
+> > > >   	}
+> > > >   	vb->num_free_page_blocks -= num_returned;
+> > > >   	spin_unlock_irq(&vb->free_page_list_lock);
+> > > 
+> > > I think you missed another nastiness of similar kind in
+> > > get_free_page_and_send() where we do
+> > > 
+> > > 	p = page_address(page);
+> > > 
+> > > Just to call
+> > > 
+> > > 	free_pages((unsigned long)p, VIRTIO_BALLOON_HINT_BLOCK_ORDER);
+> > 
+> > Thanks for catching that. Andrew can you fold the attached patch into
+> > this one please? It looks like the page_address() call is needed for other
+> > things, but since we're changing the file we might as well clean these
+> > up as well.
+> > 
+> > I imagine theres more of these lingering in the kernel, but theres so
+> > many callers and I only looked for the ones that were calling
+> > page_address() inline :(.
 > 
-> Hi Andrew,
+> Confused what is folded where.
+> If you want me to apply these things please just fold whatever
+> you want folded and post.
+> Thanks!
+
+Hi Michael, you shouldn't need to worry about this as Andrew will take
+all patches in the patchset through the mm tree. See v3 for the updated
+version that will be merged:
+https://lore.kernel.org/linux-mm/20250903185921.1785167-8-vishal.moola@gmail.com/
+
+I get why you might've gotten confused. The 'fold' patch I was referencing
+was included as an attachment rather than inline (but I've figured out a
+way to inline things for the future).
+
 > 
-> Thanks for the feedback. Do you mean the cover letter was not needed
-> in this case or that it lacked enough context?
-
-The latter.  As I've split up the series, please put together some
-words to describe the remaining 6 patches if/when resending.
-
-Thanks.
+> > >From a7d439154c7990418da976e5864b91fce9d49d58 Mon Sep 17 00:00:00 2001
+> > From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+> > Date: Wed, 27 Aug 2025 11:10:22 -0700
+> > Subject: [PATCH] virtio_ballon: Call __free_pages() in
+> >  get_free_page_and_send()
+> > 
+> > free_pages() should be used when we only have a virtual address. We
+> > should call __free_pages() directly on our page instead.
+> > 
+> > Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+> > ---
+> >  drivers/virtio/virtio_balloon.c | 5 ++---
+> >  1 file changed, 2 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/drivers/virtio/virtio_balloon.c b/drivers/virtio/virtio_balloon.c
+> > index d4e6865ce355..7f3fd72678eb 100644
+> > --- a/drivers/virtio/virtio_balloon.c
+> > +++ b/drivers/virtio/virtio_balloon.c
+> > @@ -718,8 +718,7 @@ static int get_free_page_and_send(struct virtio_balloon *vb)
+> >  	if (vq->num_free > 1) {
+> >  		err = virtqueue_add_inbuf(vq, &sg, 1, p, GFP_KERNEL);
+> >  		if (unlikely(err)) {
+> > -			free_pages((unsigned long)p,
+> > -				   VIRTIO_BALLOON_HINT_BLOCK_ORDER);
+> > +			__free_pages(page, VIRTIO_BALLOON_HINT_BLOCK_ORDER);
+> >  			return err;
+> >  		}
+> >  		virtqueue_kick(vq);
+> > @@ -732,7 +731,7 @@ static int get_free_page_and_send(struct virtio_balloon *vb)
+> >  		 * The vq has no available entry to add this page block, so
+> >  		 * just free it.
+> >  		 */
+> > -		free_pages((unsigned long)p, VIRTIO_BALLOON_HINT_BLOCK_ORDER);
+> > +		__free_pages(page, VIRTIO_BALLOON_HINT_BLOCK_ORDER);
+> >  	}
+> >  
+> >  	return 0;
+> > -- 
+> > 2.51.0
+> > 
+> 
 
