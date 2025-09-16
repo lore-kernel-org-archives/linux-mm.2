@@ -4,175 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1872BCAC598
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 13:13:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5697CAC598
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 13:20:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E04C8E0005; Tue, 16 Sep 2025 09:13:42 -0400 (EDT)
+	id DF59D8E0003; Tue, 16 Sep 2025 09:20:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 690A78E0001; Tue, 16 Sep 2025 09:13:42 -0400 (EDT)
+	id DCD038E0001; Tue, 16 Sep 2025 09:20:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5589F8E0005; Tue, 16 Sep 2025 09:13:42 -0400 (EDT)
+	id CE2C48E0003; Tue, 16 Sep 2025 09:20:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3DC038E0001
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 09:13:42 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E2F6F83A51
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 13:13:41 +0000 (UTC)
-X-FDA: 83895155442.06.FF551C5
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 39CDA1C0004
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 13:13:38 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=LPyX9AI5;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9BhiQLFY;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=LPyX9AI5;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9BhiQLFY;
-	spf=pass (imf21.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id BB1FA8E0001
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 09:20:57 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 55D0A14019C
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 13:20:57 +0000 (UTC)
+X-FDA: 83895173754.28.073987E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id BF6CDA0006
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 13:20:55 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=H7OhipGo;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758028855; a=rsa-sha256;
+	cv=none;
+	b=ocPRn7lkU5bMs1lqT4N6JzOX1YPgROPJBsVD0CJy+ygLJnfvZFgV1mqix+vudrZ8OWGmeI
+	72szfAePvLAOBLDnmTHk0QyeTRh42Dpv/nbciU8jduS2JqKdZBNKQQrqJcBcKA+aKzVpf7
+	laAvfyLucqNfXpKgpTN+Z+Fhg1S5wHw=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=H7OhipGo;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758028419;
+	s=arc-20220608; t=1758028855;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wTE/HGV+1nQSTiQBPspjYtsWmlzNpej7zVyZftOFzwE=;
-	b=1rFKSBaWB45/SIOJGLp+rVlEZ+wwTO5qgCComPrlWvmV3ZTZ/0fSi5GcD3r1clFqS6xx6M
-	KPmG9WRFdr7du2mwSv+uFj44mtJ9ZXlsoDyOQ+KspMmjfCEpl//rq1D0BkD6nwJEF4pgIu
-	r7eWla6LbS5gw3L/rLhR7j2qChRNYoI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758028419; a=rsa-sha256;
-	cv=none;
-	b=TEbo2KJ1ZSrMwBjOZ6Qe03iXMst4UylyO4scQ7QCrU81jGK8MwvmFtEkZ9BWoaBfxkmEVz
-	Bt/7hgOdNV7ZYi2m9O6JHozfPVat/2bdwFYsGEKeh2DM4nsNqP3SX1niB+DrYj+8wUeq9V
-	yIVlry8STtQrcWNv9SXUjTGNmlJgsIA=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=LPyX9AI5;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9BhiQLFY;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=LPyX9AI5;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9BhiQLFY;
-	spf=pass (imf21.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 7BB1422747;
-	Tue, 16 Sep 2025 13:13:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1758028417; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=wTE/HGV+1nQSTiQBPspjYtsWmlzNpej7zVyZftOFzwE=;
-	b=LPyX9AI5JH5nZRJFfqegQ2S+NznsnoAOOgIaVHjOimyc0i+Q6QJrqyQDBoUfkdEImTIIB8
-	xtVA9a1QOBRFFiayPTId5fhdbeminYDct7LfM5JGHxF+WihHTduHsVbVOW5UjqfHNFbD6H
-	x8KsO4Ld6VQBt45Dpv2n7IfjlBPclN0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1758028417;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=wTE/HGV+1nQSTiQBPspjYtsWmlzNpej7zVyZftOFzwE=;
-	b=9BhiQLFYzya6HzL3QU0jynLrrGXIe9G0EXMVMTEL0BxkRZOQ6AcCEjr3KZjFrVbCiliN1u
-	gsJkkFqPH7gKp0DQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1758028417; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=wTE/HGV+1nQSTiQBPspjYtsWmlzNpej7zVyZftOFzwE=;
-	b=LPyX9AI5JH5nZRJFfqegQ2S+NznsnoAOOgIaVHjOimyc0i+Q6QJrqyQDBoUfkdEImTIIB8
-	xtVA9a1QOBRFFiayPTId5fhdbeminYDct7LfM5JGHxF+WihHTduHsVbVOW5UjqfHNFbD6H
-	x8KsO4Ld6VQBt45Dpv2n7IfjlBPclN0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1758028417;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=wTE/HGV+1nQSTiQBPspjYtsWmlzNpej7zVyZftOFzwE=;
-	b=9BhiQLFYzya6HzL3QU0jynLrrGXIe9G0EXMVMTEL0BxkRZOQ6AcCEjr3KZjFrVbCiliN1u
-	gsJkkFqPH7gKp0DQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 568F3139CB;
-	Tue, 16 Sep 2025 13:13:37 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id D2PNFIFiyWjwDAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Tue, 16 Sep 2025 13:13:37 +0000
-Message-ID: <e7d1c20c-7164-4319-ac7e-9df0072a12ad@suse.cz>
-Date: Tue, 16 Sep 2025 15:13:37 +0200
+	bh=EM3YSkqrS+wD1DSZ8rxCwrnJyCPkgkPjNIyUR3FKILQ=;
+	b=Iwm6t6wiEU7VpPBKngMwC+cihGqflu6b8QlGZn/zoPF61a9xNNa9mm/vxOo+U0FMphsY/5
+	n7O5uhu8RrG/EVcP8TRERTOlpCQtMgm2C+MTWnzq5iNtJ8tV5F2kX6/6H6Yp9dXBclc+4M
+	43q/hVpQ08lOvBxCw6QhmJnCox1yVJQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 114E8601DF;
+	Tue, 16 Sep 2025 13:20:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1E2EC4CEEB;
+	Tue, 16 Sep 2025 13:20:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758028854;
+	bh=NkEqYgbQHqBRppulOAwQLkXQ/kR/tGJDaQ28SAU/ZbE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=H7OhipGoDJaVVg75Xy37xy/Gb3iNzhFXsIZqgKxxxy99QyXG14oqvwpdXzjYB6oOB
+	 Pz0Ho367YOVHIksobf0Fxb4ZsK60vbtto3ZzcXGgUjpOegEmLGYTKfR6zvX5IjCkd9
+	 +tC4O4jsuvaMlEQFuqv+ByjyZyCQFXOWFNhqDza+bRlT125FRjJ7uKyQn5HSMP5DAo
+	 b/dhH2ac393YhcPbCsP+ya3oU1SARvXXSUcAJK7L8L68mer45+vP+YZbuNVoJ7X+TZ
+	 9f4CvU+15dVkWB1BOrKADvt9Hkr7LyZIVSmneOlNsis/TIKe3K10+EKR11q58Ud2ek
+	 e315dV4Chy44w==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Pratyush Yadav <me@yadavpratyush.com>,  Matthew Wilcox
+ <willy@infradead.org>,  Pratyush Yadav <pratyush@kernel.org>,  Alexander
+ Graf <graf@amazon.com>,  Mike Rapoport <rppt@kernel.org>,  Changyuan Lyu
+ <changyuanl@google.com>,  Andrew Morton <akpm@linux-foundation.org>,
+  Baoquan He <bhe@redhat.com>,  Pasha Tatashin <pasha.tatashin@soleen.com>,
+  Chris Li <chrisl@kernel.org>,  Jason Miu <jasonmiu@google.com>,
+  linux-kernel@vger.kernel.org,  kexec@lists.infradead.org,
+  linux-mm@kvack.org
+Subject: Re: [PATCH] kho: make sure folio being restored is actually from KHO
+In-Reply-To: <20250910155546.GB922064@nvidia.com>
+References: <20250910153443.95049-1-pratyush@kernel.org>
+	<aMGc-ExhkqwAyY_C@casper.infradead.org>
+	<mafs08qimjoez.fsf@yadavpratyush.com> <20250910155546.GB922064@nvidia.com>
+Date: Tue, 16 Sep 2025 15:20:51 +0200
+Message-ID: <mafs0zfauh6to.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH slab] slab: Disallow kprobes in ___slab_alloc()
-Content-Language: en-US
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Alexei Starovoitov <alexei.starovoitov@gmail.com>, bpf@vger.kernel.org,
- linux-mm@kvack.org, shakeel.butt@linux.dev, mhocko@suse.com,
- bigeasy@linutronix.de, andrii@kernel.org, memxor@gmail.com,
- akpm@linux-foundation.org, peterz@infradead.org, rostedt@goodmis.org,
- hannes@cmpxchg.org
-References: <20250916022140.60269-1-alexei.starovoitov@gmail.com>
- <47aca3ca-a65b-4c0b-aaff-3a7bb6e484fe@suse.cz> <aMlZ8Au2MBikJgta@hyeyoo>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <aMlZ8Au2MBikJgta@hyeyoo>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 39CDA1C0004
-X-Stat-Signature: wjiaabwje1yas38bzpcokhgdhoxpqtmh
+Content-Type: text/plain
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: BF6CDA0006
+X-Stat-Signature: j5m9nzzj7rps9qogymcs8m4iua36cbh1
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1758028418-634228
-X-HE-Meta: U2FsdGVkX1+jO8wjq9SaYZuYjDuOfZvcN92wkxGIcfRiH5lCX+9JhVn3LfLI12pRbaAOXcfT1gNbF+iIw5jD/zC8SHrrw/n1sBkf0jYZt1P6FYv3zcTRAmyvW1UIjcXVtVG0wz4GEwTOxHw/Hq4XfnbpbeDonSO7WPdneQXToGPk8oskwTh1Q0PiE6fwaqBH9Y+Cx2g/KbIYXKwiDOa0U1czdIMdn2+ymrSxNQq14S3keODNMdRGwoRp/MmvkftL9JokBMXyrrhqYSRNzdDvDydyPSxOEM3urt5OCa+F9rDVOEXGf8Djzp8EZJU3a3jrx1oWXq8T1RQUrt+uY1+Fv/G9Eln1fK6Vjjhy7OUl4GEpXoL3UjLvCYNyioEUO5kJC0a0IDKay7ZSGUtj0KJXMdsJpDmBFTjpdpYGzAApSn9D2bH1TEUxsclOCR9+IQzxQ8l6arLi8dizXmMx1v4SRaRl26+HDR9/jg6N94X36z+uYdI9nhdTugRqmvaQJS6NPzsLcSW5jCUP646IO2pEgk9GgSosj0ynanRpjVr93GHqUSPIMKin2lE3umjsDm5h5JnGK35xfHmxfi3Eni7mCnejVqaymUAs4+SGUDy+xqwWwtcJUhUvP7JgyNNILo6LSr0hAoQQ4T+C4a4LC7WnhtfPXqBjMfNG0IOEc9o+plNqtydk3nrs4QHvz8lvQ3LKDZ9dGIFQYHw2czCaHQv6xazGJCOtbjO5geBubk/63ommk+Rgpk4CIB8Fddho2mA+6VhoDs7KNC/dJyGa9roloOXjkd8nzturI2Gs9pu3/WsghnxqdDHKKBUUsbZE91VwdQCcEJnMSOT7154ygY31AJ1tnIpV+CHKhn5ccqQaN0QfDs52inelKuPPhhrlkWmd+eY9350wADXj7mxeOi1846iFhiPJF/kg59Gl9TYzLeEbF0eNn8zyqjGAAGcHqEVhsAmxnk9NuLgshA1MVBK
- UshGyHwx
- AcMzyYj0P5TNA+CNqD3+oQiSLPjtbRQgTWwmW7AApqVpAGejDvfRlpgJgGcWfGR3d9zwPoaL/SGEoqa1Yp8XIKVmNq069xJeRTc4OM9AXNJ96OliwO3P2b4X0B4f7USjJarWklmNYkFc3sqMuoKfaJkxLKUUAGqUU5RasYJ7lxs/61UgT6J44aNSlBcaPmp2c9FewTpapVPGK0HQ41OBmm1MTW9RycGVkyXaGtKgmVv4raRDRUCRTmBVPgMBO7WKbZjsEoTVHKUm8W7GZlewr1LBPtvmCZWSsgHG0oCPKsHHd7KRgIYxUptQuqrNxlEQr7RI6Kuk4auVZ8d4PTejj3ldyR/0YtO0v4cmsdWqF8b6hGpdrzn8mJvh/nc96fhL6O98IKME+NkSJmJIdfjAdLolf6px+lAtZ8DD6SD3aAHAc6/A=
+X-HE-Tag: 1758028855-928130
+X-HE-Meta: U2FsdGVkX1/XTtouHWE4qERCMmnK8FzvjEphYwlRGjFQHmfvcaufWPRw4oDjaP9ItfEXW9qkHqEyoWzbRVmbtQJQMD11OQsTJFd9eIiJwNZjoFcr4nqnuTEFIQQpbOipFvIJeJs1uxLP3PBfkpAk5qrIifIgJP72gtBvO1U+43MSD+BxccwD5MxGTRsTEjO+C0R7TiyXKJYD5Ke0e3acAGf4zJDEKT0bBhxl5PRyklYQa3/PQmuudJD0lr5s5lw1zTb5qPQ3vAHLJ8KS7ITI6d+bLfA4g0h1uySYXOeqQr5lbcrkX1FiWI8z/EFmr3QV9LPfGwTBoV+/yOoEsGLYT2b6N4qH179mpJ9BB2Zc+9c6ilCj1qOAxCn9mZntu4QPqFpDenBryRZNboikImjM7eFSq+Bo+2bMFg7VXybZ9ZGniF4TLE1Aq5qJlnKttP1UxfeA8BaSIxOPi7jRSZtJQ652TSn6Hs0vwPVpX/BsCEKLrfTY1rYPoc27uSI9COQw88VPK7C1KlCHCGISVULoInXxk/twH1pLEykpS9T5PI4NJW/kbVk9v5DT4EQsuyC9trlxBQy/n0DTLvPcGDpYav1H3wNX4TOe8TJIn0Glpmzqst4QGk257OEoGYOR1mmBVEaT1psegLPtPO0pGxi5e4lHi0Qzc2DgP2wBC5tyHuST1gZOBJoyAchxZrRMN8bYTElVA0x6u/GFrKvBgMCkMohv5w1BPjt0eQWYlOHNdNA2+S91mAHumD+3gHdWx4tFYhvdMUVjJadDFIBJTNSgCugY6LPaTfB2euIeQ2ZjyJywDSPS2LQUtB3tsyCmUOWRCUVaLC1Ijb+zeylSS/ism2+776zBnF3O5LAKHwoZS43vHkOdnJ2RVg6F6hyjzQqXpk6bb828MLhKY2UovEQjZZK/4XQO6HE79SdHQYAfXZnAiqgukyOYjc2YBt236xskgzd8Ilxwt0K6U4L4N9e
+ eaCKzUBA
+ ssWAGDwfzaTuTYtxCDucjx5T4ML+EVCUHLKh86YEAZohLBt2yMYk5jsclEEC+cwm+hV92DO/8h77FTiLAK4aR1XM4sT21nEYS2eyfKTfXQISWxxPVBKoUewoCEpu+o0xHv942iMl33fVgA8VWoTHnJZHXFBo0VJNFDIqCVXGmnnVlDLk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -181,143 +99,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/16/25 14:58, Harry Yoo wrote:
-> On Tue, Sep 16, 2025 at 12:40:12PM +0200, Vlastimil Babka wrote:
->> On 9/16/25 04:21, Alexei Starovoitov wrote:
->> > From: Alexei Starovoitov <ast@kernel.org>
->> > 
->> > Disallow kprobes in ___slab_alloc() to prevent reentrance:
->> > kmalloc() -> ___slab_alloc() -> local_lock_irqsave() ->
->> > kprobe -> bpf -> kmalloc_nolock().
->> > 
->> > Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+On Wed, Sep 10 2025, Jason Gunthorpe wrote:
+
+> On Wed, Sep 10, 2025 at 05:52:04PM +0200, Pratyush Yadav wrote:
+>> On Wed, Sep 10 2025, Matthew Wilcox wrote:
 >> 
->> I wanted to fold this in "slab: Introduce kmalloc_nolock() and kfree_nolock()."
->> and update comments to explain the NOKPROBE_SYMBOL(___slab_alloc);
+>> > On Wed, Sep 10, 2025 at 05:34:40PM +0200, Pratyush Yadav wrote:
+>> >> +#define KHO_PAGE_MAGIC 0x4b484f50U /* ASCII for 'KHOP' */
+>> >> +
+>> >> +/*
+>> >> + * KHO uses page->private, which is an unsigned long, to store page metadata.
+>> >> + * Use it to store both the magic and the order.
+>> >> + */
+>> >> +union kho_page_info {
+>> >> +	unsigned long page_private;
+>> >> +	struct {
+>> >> +		unsigned int order;
+>> >> +		unsigned int magic;
+>> >> +	};
+>> >
+>> > KHO is only supported on 64-bit?
 >> 
->> But now I'm not sure if we still need to invent the lockdep classes for PREEMPT_RT anymore:
+>> Yes. Currently only x86_64 and ARM64. It is mainly for hypervisor live
+>> update so there isn't much reason to support it on 32-bit platforms.
+>
+> Presumably this will eventually change to use some special coding on the memdesc
+> pointer?
+
+Maybe. I didn't think that through yet.
+
+>
+>> >> @@ -210,16 +226,16 @@ static void kho_restore_page(struct page *page, unsigned int order)
+>> >>  struct folio *kho_restore_folio(phys_addr_t phys)
+>> >>  {
+>> >>  	struct page *page = pfn_to_online_page(PHYS_PFN(phys));
+>> >> -	unsigned long order;
+>> >> +	union kho_page_info info;
+>> >>  
+>> >>  	if (!page)
+>> >>  		return NULL;
+>> >>  
+>> >> -	order = page->private;
+>> >> -	if (order > MAX_PAGE_ORDER)
+>> >> +	info.page_private = page->private;
+>> >> +	if (info.magic != KHO_PAGE_MAGIC || info.order > MAX_PAGE_ORDER)
+>
+> All the impossible checks shoudl be WARN_ON()
+
+The mental model I have is that the place that introduced the
+"impossible" situation should get the WARN(). So for an incorrect phys
+address (leading to magic mismatch) or incorrect order (say preserved
+big range using kho_preserve_phys() and restoring it using
+kho_restore_folio()), the caller is responsible so it should do the
+WARN(). Does that make sense?
+
+>
+>> >>  		return NULL;
+>> >>  
+>> >> -	kho_restore_page(page, order);
+>> >> +	kho_restore_page(page, info.order);
+>> >>  	return page_folio(page);
+>> >
+>> > This all looks very confused.  Before your patch as well as after it.
+>> > I don't see anything in the current KHO code that requires the
+>> > phys_addr_t to be order-aligned.
 >> 
->> > /*
->> >  * ___slab_alloc()'s caller is supposed to check if kmem_cache::kmem_cache_cpu::lock
->> >  * can be acquired without a deadlock before invoking the function.
->> >  *
->> >  * Without LOCKDEP we trust the code to be correct. kmalloc_nolock() is
->> >  * using local_lock_is_locked() properly before calling local_lock_cpu_slab(),
->> >  * and kmalloc() is not used in an unsupported context.
->> >  *
->> >  * With LOCKDEP, on PREEMPT_RT lockdep does its checking in local_lock_irqsave().
->> >  * On !PREEMPT_RT we use trylock to avoid false positives in NMI, but
->> >  * lockdep_assert() will catch a bug in case:
->> >  * #1
->> >  * kmalloc() -> ___slab_alloc() -> irqsave -> NMI -> bpf -> kmalloc_nolock()
->> >  * or
->> >  * #2
->> >  * kmalloc() -> ___slab_alloc() -> irqsave -> tracepoint/kprobe -> bpf -> kmalloc_nolock()
->> 
->> AFAICS see we now eliminated this possibility.
-> 
-> Right.
-> 
->> >  * On PREEMPT_RT an invocation is not possible from IRQ-off or preempt
->> >  * disabled context. The lock will always be acquired and if needed it
->> >  * block and sleep until the lock is available.
->> >  * #1 is possible in !PREEMPT_RT only.
->> 
->> Yes because this in kmalloc_nolock_noprof()
->> 
->>         if (IS_ENABLED(CONFIG_PREEMPT_RT) && (in_nmi() || in_hardirq()))
->>                 /* kmalloc_nolock() in PREEMPT_RT is not supported from irq */
->>                 return NULL;
->> 
->> 
->> >  * #2 is possible in both with a twist that irqsave is replaced with rt_spinlock:
->> >  * kmalloc() -> ___slab_alloc() -> rt_spin_lock(kmem_cache_A) ->
->> >  *    tracepoint/kprobe -> bpf -> kmalloc_nolock() -> rt_spin_lock(kmem_cache_B)
->> And this is no longer possible, so can we just remove these comments and drop
->> "slab: Make slub local_(try)lock more precise for LOCKDEP" now?
-> 
-> Makes sense and sounds good to me.
-> 
-> Also in the commit mesage should be adjusted too:
->> kmalloc_nolock() can be called from any context and can re-enter
->> into ___slab_alloc():
->>  kmalloc() -> ___slab_alloc(cache_A) -> irqsave -> NMI -> bpf ->
->>     kmalloc_nolock() -> ___slab_alloc(cache_B)
->> or
->>  kmalloc() -> ___slab_alloc(cache_A) -> irqsave -> tracepoint/kprobe -> bpf ->
->>    kmalloc_nolock() -> ___slab_alloc(cache_B)
-> 
-> The lattter path is not possible anymore,
-> 
->> Similarly, in PREEMPT_RT local_lock_is_locked() returns true when per-cpu
->> rt_spin_lock is locked by current _task_. In this case re-entrance into
->> the same kmalloc bucket is unsafe, and kmalloc_nolock() tries a different
->> bucket that is most likely is not locked by the current task.
->> Though it may be locked by a different task it's safe to rt_spin_lock() and
->> sleep on it.
-> 
-> and this paragraph is no longer valid either?
+>> Right, good point. I can send that as a follow up patch. But I think
+>> this patch stands on its own without that fix too.
 
-Thanks for confirming! Let's see if Alexei agrees or we both missed
-something.
+Actually, on another look, this patch implicitly makes sure that
+unaligned phys always fails. This is because deserialize_bitmap() only
+sets the magic on the head page which is always aligned by the order.
+For any unaligned phys, the magic will not match.
 
->> >  * local_lock_is_locked() prevents the case kmem_cache_A == kmem_cache_B
->> >  */
->> 
->> However, what about the freeing path?
->> Shouldn't we do the same with __slab_free() to prevent fast path messing up
->> an interrupted slow path?
-> 
-> Hmm right, but we have:
-> 
-> (in_nmi() || !USE_LOCKLESS_FAST_PATH()) && local_lock_is_locked()
+Still, would be a good idea to do a KHO_DEBUG check for alignment if
+this implicit thing ever changes.
 
-Yes, but like in the alloc case, this doesn't trigger in the
-!in_nmi() && !PREEMPT_RT case, i.e. a kprobe handler on !PREEMPT_RT, right?
+>
+> Maybe it is worth adding some KHO_DEBUG kconfig to protect some of
+> these extra checks?
+>
+> phys should be pfn_valid, phys should be aligned, the page should be
+> in the right state, order should be valid, etc. All worth checking.
 
-But now I think I see another solution here. Since we're already under
-"if (!allow_spin)" we could stick a very ugly goto there to skip the
-fastpath if we don't defer_free()?
-(apparently declaration under a goto label is a C23 extension)
+Makes sense. Do you suggest the magic and order checks to also be under
+KHO_DEBUG, or should they always be done? I am of the opinion that it
+makes sense to do them always, but I can also understand the argument
+for disabling them in production for better performance.
 
-diff --git a/mm/slub.c b/mm/slub.c
-index 6e858a6e397c..212c0e3e5007 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -6450,6 +6450,7 @@ static __always_inline void do_slab_free(struct kmem_cache *s,
- {
-        /* cnt == 0 signals that it's called from kfree_nolock() */
-        bool allow_spin = cnt;
-+       __maybe_unused unsigned long flags;
-        struct kmem_cache_cpu *c;
-        unsigned long tid;
-        void **freelist;
-@@ -6489,6 +6490,9 @@ static __always_inline void do_slab_free(struct kmem_cache *s,
-                        return;
-                }
-                cnt = 1; /* restore cnt. kfree_nolock() frees one object at a time */
-+
-+               /* prevent a fastpath interrupting a slowpath */
-+               goto no_lockless;
-        }
- 
-        if (USE_LOCKLESS_FAST_PATH()) {
-@@ -6501,8 +6505,7 @@ static __always_inline void do_slab_free(struct kmem_cache *s,
-                        goto redo;
-                }
-        } else {
--               __maybe_unused unsigned long flags = 0;
--
-+no_lockless:
-                /* Update the free list under the local lock */
-                local_lock_cpu_slab(s, flags);
-                c = this_cpu_ptr(s->cpu_slab);
-
-
-
-
-
-
- 
-
+-- 
+Regards,
+Pratyush Yadav
 
