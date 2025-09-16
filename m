@@ -4,98 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCCB4CAC599
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 12:45:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB608CAC598
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 12:49:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 391818E0008; Tue, 16 Sep 2025 08:45:32 -0400 (EDT)
+	id 176DD8E0010; Tue, 16 Sep 2025 08:49:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 342128E0001; Tue, 16 Sep 2025 08:45:32 -0400 (EDT)
+	id 1276F8E0001; Tue, 16 Sep 2025 08:49:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 230918E0008; Tue, 16 Sep 2025 08:45:32 -0400 (EDT)
+	id 03C778E0010; Tue, 16 Sep 2025 08:49:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0ABD68E0001
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 08:45:32 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9BD731A0159
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 12:45:31 +0000 (UTC)
-X-FDA: 83895084462.27.5C06B1F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 068961C0011
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 12:45:29 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ptuA/Ovl";
-	spf=pass (imf18.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id E31628E0001
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 08:49:01 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 875E014018E
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 12:49:01 +0000 (UTC)
+X-FDA: 83895093282.16.594FB7E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id C7D7AC000D
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 12:48:59 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vG3T6Zf8;
+	spf=pass (imf28.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758026730;
+	s=arc-20220608; t=1758026940;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HymIZo67sGlVYXnFH95OqFEjuVubkP0PwFCYhDrJOj4=;
-	b=p4mrRZrinjpg3JH7Ait/Wsj+OVXmdpTO/HbKSgZP3HzkafthYCef76+DWZqcyY9LNd5WM9
-	6fX1qcvWDwmdQMAKEm70BRyS33+fOTOaLpuojKfpmCI14E5NMoF/FECaxIDtazxeEKNRhl
-	X/WYPWAcUVyy7ca2+Ymekx+UbALjrOo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758026730; a=rsa-sha256;
-	cv=none;
-	b=TGGVB8P3ODs/lSHH7xx8D8uUt66F37WLxWzigbtT7iv+Vli9VdoiIi587MSN7d4L5zuNRN
-	77Y/uHlg+pikmvzKeM9xXO7Uh3q6ypMzaazoldUtFO7GyFO4zXqi5tlh9u/2gVQ6nX1VpS
-	8BmGXwZomoUDDyxVyXLVDHKXfp7EDOk=
+	bh=Fprz1xZ/mcGg42/AgPY7FztcFyFx3gVlKE+V0o3eZVo=;
+	b=Kv4wQa51gPsf961Ovylf6xe20qM87OBFoWillWnOqoOH6Xgd/Ixzo19M/MD9XOXJ7+qyWy
+	Fp+ft3zvmVYtjvaT+Qg/HbQ3z8FxI7mfr0oPEWdr2nMyMAm9h0hgc5yWcPBhL1mZIUlKzI
+	y0RH+gb4O6d5HohaYZQhW9UEO/Qi3pc=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ptuA/Ovl";
-	spf=pass (imf18.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vG3T6Zf8;
+	spf=pass (imf28.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758026940; a=rsa-sha256;
+	cv=none;
+	b=XnyTq4bAVktXt3V5oRC4AUdkxl/jvFxCl7I6yl5TVui3nK5ffvdWhcGHeu9Oke7jLACDNY
+	7H8ogJML/V0R97kuQtkTlx2Gzp8opJPdLNQ3XiUrdnpRj+QKRiGV3R6F/Fc2oQf6hDYUdJ
+	gAVaG0s/atHl53O18IhKF4OxvHR5dG0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7D67F6013B;
-	Tue, 16 Sep 2025 12:45:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06FB2C4CEF0;
-	Tue, 16 Sep 2025 12:45:28 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4DF104385A;
+	Tue, 16 Sep 2025 12:48:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22E8FC4CEFB;
+	Tue, 16 Sep 2025 12:48:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758026729;
-	bh=Q8b3LidWHXwy7z60vkFZIq9N/I8zXE5IsO+IFYXOuW4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ptuA/OvltuPdVFVrhaioHbpDtjjM/9DLVoKZRVx29LpT6Lc27PzSLHnMoWj+LabK/
-	 eSB+1RL4IAAJL4T1VXQJ5+iYTsn7JXgyGlOH4hzbM11KXJFo6qB4aU5mlTE/iTrs37
-	 aPkgsNTYjGHXOq3fe79+sF/CACO/9Myq4aFvNdzvvbjDzHUL52XDc12HUyqe478iBS
-	 fXIPutO5ul1uTbTGhX5oNMA15xV/XnW2crYH7vx7LIJdw293p9Y/CN0DlDz2CUlZBd
-	 g4BCf7eHVj2CB4TlEPmfSE7rQ80+8IFDAiIdOnz3FV3vdCPukB3fyUoG7YXfQAV+Bb
-	 hJlsJninGzF8A==
-Date: Tue, 16 Sep 2025 08:45:27 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Donet Tom <donettom@linux.ibm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Ritesh Harjani <ritesh.list@gmail.com>,
-	Xu Xin <xu.xin16@zte.com.cn>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Wei Yang <richard.weiyang@gmail.com>,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>,
-	stable@vger.kernel.org, Joe Perches <joe@perches.com>
-Subject: Re: [PATCH v2 1/3] mm/ksm: Fix incorrect KSM counter handling in
- mm_struct during fork
-Message-ID: <aMlb5x0eWA4rpVKe@laps>
-References: <cover.1757946863.git.donettom@linux.ibm.com>
- <4044e7623953d9f4c240d0308cf0b2fe769ee553.1757946863.git.donettom@linux.ibm.com>
- <20250915164248.788601c4dc614913081ec7d7@linux-foundation.org>
- <aMjohar0r-nffx9V@laps>
- <20250915214117.5117d339669e091b1d3fa96d@linux-foundation.org>
+	s=k20201202; t=1758026938;
+	bh=4YrNCsR+tG6pZaieZYZjT9mkupyBVaPEFfVB53YgEk8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=vG3T6Zf8eW6m6XVKvRviu1cHQLljMJq5lwAFbzIkX5FUvGZ4IpWXPGB+bfYW8Opw+
+	 x+2weGhsEjE6UQyH4e+9ijZMK7z7o79BmY6/6ylGHainjNYeL2+p+ufqOaN9Elhptk
+	 a5vP7PNrFKMzSQYZDyzuYtHHJ1sSxIw3JmmEo78UwhABYMMSaUJZKTZ9pX4nEOTLf5
+	 gB/PKSYEaJen/ooKrHcipAnXazTz3u27GESDjb8ZV/ByfIFKApWEsXPM0FirrZaNO5
+	 dLT0zncbTLr1XqK/ibIDwWC3ARmDV3C6/TR03oFFTVLlRb4KKj5S1yyISWRJELS4pe
+	 vbrsWgY0cJB5A==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Pratyush Yadav <me@yadavpratyush.com>,  Pratyush Yadav
+ <pratyush@kernel.org>,  Andrew Morton <akpm@linux-foundation.org>,
+  Alexander Graf <graf@amazon.com>,  Baoquan He <bhe@redhat.com>,
+  Changyuan Lyu <changyuanl@google.com>,  Chris Li <chrisl@kernel.org>,
+  Jason Gunthorpe <jgg@nvidia.com>,  Pasha Tatashin
+ <pasha.tatashin@soleen.com>,  kexec@lists.infradead.org,
+  linux-mm@kvack.org,  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] kho: add support for preserving vmalloc allocations
+In-Reply-To: <aMgey9qEC_XUejXm@kernel.org>
+References: <20250908103528.2179934-1-rppt@kernel.org>
+	<20250908103528.2179934-2-rppt@kernel.org> <mafs0ldmon784.fsf@kernel.org>
+	<mafs0ldmnlmq0.fsf@yadavpratyush.com> <aMgey9qEC_XUejXm@kernel.org>
+Date: Tue, 16 Sep 2025 14:48:55 +0200
+Message-ID: <mafs0bjnaimvc.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20250915214117.5117d339669e091b1d3fa96d@linux-foundation.org>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 068961C0011
-X-Stat-Signature: bggdqmp9axngjsx6tdyjpciipku7f8rx
+Content-Type: text/plain
 X-Rspam-User: 
-X-HE-Tag: 1758026729-609660
-X-HE-Meta: U2FsdGVkX1/IV9S5pjAQkuB3br55mINqWO0Sfn8941IQNNHj2Rs0VyALX/5K5Uo06PzzuSPMJnpfgm9ycrAWWYyVuc9lbGAOhhdX2RZwSBMx3s5dlfMGCgfpSTASUGGOLqd5iaeFFNhRlU4AqfXDm6LlGbUvV1VMbyYjPjjqFY7SQ9OJLXbnN9P3/yYRUPmErKaOGb0jJv1X7BV5xMXGNoN+/5idrxnaa0y5Wvoc/n057GOASQg9sICd1HSizaAHMz+QSeY+WxAIPcLzhoWpVQI3nckTNJnQuml+tEc6hSGbGL1CqPybouGLAXG+wVh+eda3i+o2g/xTj5ROrTgmdffn3Qkc0EsQCtmKGc6wn8C5VpTqj9V2Bc0ZYLClSRshPw8KlpVdLEZms9CFAqezEYRUZtYeqBB7IbXTzbYMgM6EpGLpuUAHJeHcJNLnfSCWyZi0kXJ97JncMieowJxOn7lur95qg7ty2wIfPV24b3nGEs8vOWLdIYCqHWH5RRAnDvSScYC7VSUhoZu8EyjZJIHkI2/xKaINX9nAZDeZKQB3Mgf9OQYKxr5vV+MyOHWNPnbkEh57ewIENq7aCzoP2keolHNmYCpXQnyqutCDEcbpJpW/uqpfOB2nNeN69iv7l77QplvfTvZfX6nk8uOScMHhRaqpZRtapzTXfrUwS88lChupE7LVoDuzX15Q7yi+l96QM9kUEpWo8PmxBNKTqXCQYg+YqgRcp4so+X6M151Sn1QOyNfiioqocIqyUKtOA2fjjE9G5lVPU5EECzS7SFjdXXSCkDAeJSKcFlTGpov6BUJAkEQudJS2jGlY7PdCLi+9TLARnjlGXQltqeI5D1NXK3HBKuOy3bpqWasUsAqgctEKAx8AcEnQjP8vE+1XO0WXwBO6VINtBhApk0Pk0SzpCzHT+s/wltRYAxvGzL8SghrRIraW6+7T9AV8JD5/IErZzNoo3u6WUtpZa89
- 8QctMzO8
- 0n/UXYYY4itTkQF8QV0qh9UZmuZBkVpq/YDFcvtqjXIRYlrME62ZWRm8+rcyBFTrDrXHkrA++rFF9A+3nhLmMCAyEaKRbpL125TnA+rW3LWY8UYM2ZIi9mUogoIK8fCNjGKG1li/G4JLqpKSEk+mtV/XQzyam4PzLBcNuwb2uO7wGEKhGbn/383jY0OUA3J3Toiv7rT3NEA77hCtY+J4xv9GuTOsBZQEPMHA4PS8xNJeWhjw214KrCuez6dY7v9xM+Dv2AShNymzpkWWqtJmtfWuQT/1AKO7cpvjEXYPs5g87DzS36MwEOUOKTRkqcQFHCS06YldaZAgxLBNGYlUyHRd6/Hkj6DzAaODb37nXfS0kNmF4QM/y/gIdOI3yHVLVe8zTKKsSXnhpi7Q=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: C7D7AC000D
+X-Stat-Signature: 8s89tf9mmspb1ryoh4rwkw6kimcnijft
+X-HE-Tag: 1758026939-829781
+X-HE-Meta: U2FsdGVkX1/hdqsSMjR+J6YqocXAAoAzGEkX3yyH0XbgGwekEqCdzBpY2Bsx325pQE9Duek/OqJMC16DwuikXDlWqMDsOSfEIccsLtKpA/iSLeAyffDbpj8hiPQLD/L+cu8jqIFHnu73+8S5zQQVAH1aoYpA3zm/NRjxIzsh+YwztdeGL6/StY6+/dW2ibXRRLwbCuHr8dHyqYBP5CKdMhoa/+YWvIGdYeIdCGU+cQwnACJayGOHgCJMssbi+RyA5uuLAV7RGZKB0imx8SL5OPNLE7p6GgmdMhMRn/NMm91YlX8MhTaa/3/IXLLV80R/E/Xf10ohChx08linXlirSzqZGOYo5UiVWMIslL9zh8thbAnU1kfIKrag9oILM5H2b/hJ3r4AmreSXMyyAT7PNxUBpjo48M5pJHDHYeHA3H9otPRJEdWjGNxPn1UM9Ek5RTD1i9tw0WEhq1vsbob+FTL6k5DNjrDg/9L+YBcGOpfncycXyi7xzX48dod+0eSyCNQSts2Kqdy7L2Zk1UgC276wf35H3kvRFxSn1QhM3k00GjKogb15OyRNdwEwmALLzbYQj5S2B95WqVoDeiLUXJPU7+sKv0YgvUSpQQDuvndL+zbB5iIN7nwLJzZwmonHXRE6XA7r6YPYQ13G2M01t0KeojTcPx0Ntg4whWv9PoRjWjjz583CacDo9M124mkUJ5GqGuriuADGnAWBWD0kDlmJEnlR0o2NXfyNm262FhZV1loEJhROWgb93TuRGaMdYIo5P/hZOj4iRLRfWXCCC+C6J/LQS7o1Id1Sb1M7Es+AljNqGxNB2b78u3CBkw5SE/X56igWu6xJguBDLvB8Fsf+386LBW923QCW2mXm89sHn3InV/BjmXxFlevIGYqoqmGWr5RUyuOP5KWxbIB2l6mrroiGJXHYRK8n8g5E4sEak0X8W9edPE8p+m9uZZshXtbyF+wJbJILEQz+Y9u
+ HOqGhb4O
+ ggOkDnDWu0e4T/2WfJprUDclk51qukLHuFI6yM/EuOE+EKLWKlCiHWvJbNb+8MNYiLsZ9QHjQ9Ur6uc5nW83mtEeupRuh9I/giWYhQsxiAxV0HUwHoIcNYNld5LzSDXE0/1Eicf/v+HUEFFAPvVu6LQaMl7WtQPIzc4YxAik4WGggjdpm/RC75hRt06MFpS8V5sq2
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,24 +98,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 15, 2025 at 09:41:17PM -0700, Andrew Morton wrote:
->On Tue, 16 Sep 2025 00:33:09 -0400 Sasha Levin <sashal@kernel.org> wrote:
->> On Mon, Sep 15, 2025 at 04:42:48PM -0700, Andrew Morton wrote:
->> >I think the most important use for Fixes: is to tell the -stable
->> >maintainers which kernel version(s) we believe should receive the
->> >patch.  So listing multiple Fixes: targets just causes confusion.
->>
->> Right - there's no way of communicating if all the commits listed in multiple
->> Fixes tags should exist in the tree, or any one of them, for the new fix to be
->> applicable.
->
->So what should we do in this situation?
+On Mon, Sep 15 2025, Mike Rapoport wrote:
 
-For us, ideally point to the oldest commit fixed by the new commit with a
-Fixes: tag, and then a note along with the stable tag if this is a more complex
-scenario that we need to consider.
+> On Tue, Sep 09, 2025 at 04:33:27PM +0200, Pratyush Yadav wrote:
+>> Hi Mike,
+>> 
+>> Couple more thoughts.
+>> 
+>> On Mon, Sep 08 2025, Pratyush Yadav wrote:
+>> > On Mon, Sep 08 2025, Mike Rapoport wrote:
+>> >> +
+>> >> +	while (chunk) {
+>> >> +		struct page *page;
+>> >> +
+>> >> +		for (int i = 0; i < chunk->hdr.num_elms; i++) {
+>> >> +			phys_addr_t phys = chunk->phys[i];
+>> >> +
+>> >> +			for (int j = 0; j < (1 << order); j++) {
+>> >> +				page = phys_to_page(phys);
+>> >> +				kho_restore_page(page, 0);
+>> >> +				pages[idx++] = page;
+>> >
+>> > This can buffer-overflow if the previous kernel was buggy and added too
+>> > many pages. Perhaps keep check for this?
+>> 
+>> Thinking about this a bit more, I think this should check that we found
+>> _exactly_ chunk->hdr.total_pages pages, and should error out otherwise.
+>> If too few are found, pages array will contain bogus data, if too many,
+>> buffer overflow.
+>
+> Sure, I can add the checks, but it feels superfluous to me.
+
+See my reasoning in the other reply:
+https://lore.kernel.org/linux-mm/mafs0frcmin3t.fsf@kernel.org/
+
+>  
+>> Also, I am not a fan of using kho_restore_page() directly. I think the
+>> vmalloc preservation is a layer above core KHO, and it should use the
+>> public KHO APIs. It really doesn't need to poke into internal APIs. If
+>> any of the public APIs are insufficient, we should add new ones.
+>> 
+>> I don't suppose I'd insist on it, but something to consider since you
+>> are likely going to do another revision anyway.
+>
+> I think vmalloc is as basic as folio. At some point we probably converge to 
+> kho_preserve(void *) that will choose the right internal handler. like
+> folio, vmalloc, kmalloc etc.
+
+Sure, but do you need to use the internal APIs? Because doing this way
+would miss some improvements for the public APIs. See my patch for
+adding more sanity checking to kho_restore_folio() for example:
+https://lore.kernel.org/linux-mm/20250910153443.95049-1-pratyush@kernel.org/
+
+vmalloc preservation would miss this improvement since it uses the
+internal API, even though it will clearly benefit from it.
 
 -- 
-Thanks,
-Sasha
+Regards,
+Pratyush Yadav
 
