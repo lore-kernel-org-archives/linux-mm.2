@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37B90CAC592
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 18:31:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F815CAC592
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 18:31:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E9EC8E000B; Tue, 16 Sep 2025 14:31:35 -0400 (EDT)
+	id 280408E0010; Tue, 16 Sep 2025 14:31:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 84BD28E0001; Tue, 16 Sep 2025 14:31:35 -0400 (EDT)
+	id 20A168E0001; Tue, 16 Sep 2025 14:31:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6ED0E8E000B; Tue, 16 Sep 2025 14:31:35 -0400 (EDT)
+	id 083B28E0010; Tue, 16 Sep 2025 14:31:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 552E08E0001
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E15028E0001
 	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 14:31:35 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id EDDC913A507
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 18:31:34 +0000 (UTC)
-X-FDA: 83895956508.28.46CA85F
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 987D357855
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 18:31:35 +0000 (UTC)
+X-FDA: 83895956550.16.53339F8
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 5290F180004
+	by imf30.hostedemail.com (Postfix) with ESMTP id E653D8001A
 	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 18:31:33 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MoQXHer3;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="dO9D/T+U";
+	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758047493;
+	s=arc-20220608; t=1758047494;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=62alQzlC7NfTK2oYF69NPAp0DaceyKSnenQ6ahPuFMI=;
-	b=JtsxoC52N6ZF865mjJL3LhPgjF+/7XPXEjp6cCln7Us8HEbh14hM3zGWuPx13LFHRFT83f
-	3mm9Cr4zzQP1xd/zeWuQmm9edaugfBqDfcHo48GKPY5Y/ZbtrxmNFiPE0M355NtvQrovBV
-	rEAWb2nnMhi34sE1wgumDbIE8p+S67w=
+	bh=ng6LVEHSPB3L3UtYO8HDzOniP8/TCGttBdeT0UayR8E=;
+	b=d55TmqUZ+WwBuu4ssZK5gtxLwiRlnVzbPGKUjys71dFmIs9m8c5qOX75slHgLAHP1MdF4D
+	yjaRTCyYm3xoBOs6ujieLNojOR/tfE47z5njZ7whDb++xr4k0wGJ8N9ZpUhLMo0wASeklW
+	i9g4h0U15DmX2rOTLVjXWfOs3PPJLSM=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MoQXHer3;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="dO9D/T+U";
+	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758047493; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758047494; a=rsa-sha256;
 	cv=none;
-	b=UNj34PAD1wzx/k0hl4PtmA6Y9YasRkE8Z1JpDbi6i8hqjnp5MiNWGWOz4jQ7NB/x1yFix6
-	wJ7HCc1gOyPuIcaTa8ybf9JhWkiz63S5VpOkZVNtPEXm9SkDLXqfQu8HLuNlQPd5cso4Eg
-	17ACDk1U6/LGhdHmCIvMACfbKDG/svk=
+	b=wzn6fBDfN6pBLXbinz+JDM+kQ7vnhW7En8PTjIDGV6Jl23PjnZ6n1+RuivFeGc3i7Kx7GL
+	6B9rL0xuMmYetHUF9sjtG4AJm0oVqCcXXpd/+vMCbOzIyXLO+pI+bmQ516sWDrEX0+7ZRG
+	ww1/i2TDztrr19qKj84OS1lCxFBUv6I=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0778B4486E;
+	by sea.source.kernel.org (Postfix) with ESMTP id 0C34144B94;
+	Tue, 16 Sep 2025 18:31:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B657BC4CEF7;
 	Tue, 16 Sep 2025 18:31:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6DDBC4CEF9;
-	Tue, 16 Sep 2025 18:31:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758047491;
-	bh=BVPIvvATKe2I5aamkuVMwHJN/okxBP1F7amj6w2lqa0=;
+	s=k20201202; t=1758047492;
+	bh=7h0SXCHIrLtkJvqCMts1fDwLssCc9jFcz1TwtN1yTk0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MoQXHer3AtMIRfigqulPv6i5Mkb+ktfl4XK7TU1Ai5vW1g6Pp6u/gKs/5BKnGDkQs
-	 lTSekckm0rCrJzkLz/QOwdRP+1gtL3NCsrShjfBLgIxSTIc5pOhFCqqmd626C/3wA6
-	 G8g+OFcc6n0/XWjudponNYf58faEGX9AZ0Nc4s7ulD1GjoRGoYWNAIW/W7TzCv0nLg
-	 Jat5H6VcbTLyBj6sRlzvaC1DQCkvfB86S2CbZItmg53Cz4r7oDfkpmuQSHPVdZ+2dm
-	 9AgyjmUs+8pJDiGVmfHlWSH3TqrPeq3OtQ5xtQlTQrzdbDJxUwxN4q+djN0/ksi6RI
-	 UREY/Vn4s2z9w==
+	b=dO9D/T+U4fIXZoWGmqq+0hnaP8FRrEocTXAw1wplxnxtODrrLMbq8X1Vo7D+lQI+3
+	 1da6zj9EYZ1qZBXD0o6QzbrW6opZDO3SXX45YZxOx/WilrvFKiknqBmue7zKZN8+jq
+	 7ALnwCVH8qH8Sqz3J0eI8mbBKPXxM+MdGK0x0SqvIl9Lpo36pF3BG6EmYz+IVMsmtd
+	 uLbJG0ue1r/EVSEuiMbhf3YI/rF/aBBv9ArHcsoO9ReUl2XHrAr5LN+fhUyJ1r3sQu
+	 TlLrPXWzfY+VYeTCsd16jZsv7YiTnteGkLmGTRbcVsmeCxmrnODNYwz0eaTAvInpC/
+	 rAjfH+zMNu/1g==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -70,22 +70,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	kernel-team@meta.com,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 1/2] mm/damon/stat: expose the current tuned aggregation interval
-Date: Tue, 16 Sep 2025 11:31:26 -0700
-Message-Id: <20250916183127.65708-2-sj@kernel.org>
+Subject: [PATCH 2/2] mm/damon/stat: expose negative idle time
+Date: Tue, 16 Sep 2025 11:31:27 -0700
+Message-Id: <20250916183127.65708-3-sj@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250916183127.65708-1-sj@kernel.org>
 References: <20250916183127.65708-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 5290F180004
-X-Stat-Signature: bp15ywo5yz71t7zr948wi5iigz9a1fab
-X-HE-Tag: 1758047493-442095
-X-HE-Meta: U2FsdGVkX19oT5kSnLej5FTszfGhMgzEHSzY0L2OrTRnzmhk+EL3r9HtzavPAjqQDcc+JAPbD5OcnU7u+QFGYREezPj1zB63u4v0ZDSJ4ZvnQZFLDfdJ5f+41nD/TB+nWfkueKOKOxmReov+YFI9Ro9LEVYj5gj2+5ikDLUxhZIMZgFtZkmMV+aYmBuPyJZaGj6d7Pr5E6oMhTC397HdFu2qjbH287GxBleY+t6Hlf7Ca37Wrm7bf/wTPIlHOEcd/1YQNJQ5EL/ViZiGHB+fzz1PUV1dw9bOwA+JWGVxTxLU0lVrGMkUhXwzlxByie0lBOmfxTqQ0S3EwNtySSs2hvUxw/UsoSnS6einXj1VK6IqYbspQ+7EZSFn0aNqEERP85/bFxZdiVQqeNzsjcPx2pW1yfPGbkueEQg6EUE4FTGceoIith0ZVyXI9gWrHG3fOTEabDhvfbp5ZlReaHeZynvkEYmgcPF3rcSQGSvLiWe3Ll5UvHWqtEiGxo2KNALBYbI0qODTdLHVjJSQkz0H4f3p+zfz9v9KOu1/ZowjnXsudW0plCHoBZXQu/22Ub59wSYY+LLZcgWIYFEcyCE/Gs4UJJLdyea28XGEX+XswiSoZ7gaGmXPAReQ8ema2wfYRHnLcRutOn3kW0jjXFFd6Yrnt5ST9HmLP96omQghBqhcN5dc4RdTN3qECYMsSFUssLF4VO8ydXQ/DLM+JCNHkpjTfJHL90tqlpPQWSHr/Frazul1HiaIR719nWlwCd0HBdZ2WR69dmko4ykbpvrxF2sWHkiMqJaqWujyfcrgsmuL9s+ikwwEg20b8+HcTUmMaejOF0URtLgqYGWSMy1LX4teniwV0Lb8xCStb6Xa5hwRPhmklXHzXoA2NE23UGZO6529ppKxYFHS9s/ezHB8K1toVnyyuDRTWXBUefDs8xAzh60NDEpGgKxNA8kSjl+i0fOjQ3XS6CZpyq3imvr
- IXHA4fPF
- mkRosl/9hirqw9ThF+fjmEIJkJb1yF65H9ArHtutbvxZbgCwyr5jIg9NLsvWFNvxxR3YCZKQL1JjntQqX2GD6fGGkw2cEcCNwUNhsYFhc9XbgudD0T435QbbdkYMJZyUNb2vcCHOCId/yUacVb21hhYLHjIfuUMv6yOMqEqEdiG8KKHHTn/pBpFu6sBg6sPkqAIq+bMcHsL45QbCVmVQLOivls70ucLyNgpZRR8ns01yuoQ8=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: E653D8001A
+X-Stat-Signature: q75ks1dmycfo139cubt1dqpiw35whzsm
+X-HE-Tag: 1758047493-356011
+X-HE-Meta: U2FsdGVkX19ZKuyxZHcu/hDBUBhc6UX1PqGNCPkFg7IPXHYVT1GBOQnfVcfelJoGPRQH+avx+9IWgT5fpEhyM80u2OfbMor/ubEfRancgoQ+o0He/IBgULTnHJ5mlRdrAbnXs9N10Vxnp/kTWtJARDTYtHKEpM+sC0DN7xkrc0xU9v+zO5EPMTtgvOZCyy/p5YBPTcAChW+LUlNtxeHSxbiommSzCkOdHBN+geEgbXTFxBgGtjzONH6cEnI3t1d1yhYfcuDongBzSUTa24BeAdIf6LvTGhmKnpb2N36i1GkxILuV6iewcFBZyT+4ipg6upnvyJ6U+7UhDD1cdyPvktzDeRt0tDDP9kiXOJRenNkYL4jfWv9re7s2YtIVjc8uJH05KmArbhNfqOVzkcgbCZ5FnbeoFExFmoxgt8nsxoGe0W7fk+37YkfRJvxbO47xutpQTnVdiEueXUxkeI5BXIbECKWzVFtdiFpbsH3YH1PQWe5oGOrBH0oOTFVTNzikIerxarC6S8Pqp+v6Lq6Xsbh9XXwC4J0JtVExurPVP3+n9mSIiYBpDubjCIEkPjGHeV/MX2/I6eJsxdtoFTldMDihNzJb7mZUicAo1WGuWUQ3oo9wuYXGJ+a68fAZ4l9LCWd48ub+YkzuJpFdjpF0HqpZHBqjDTjXs0s4l2IYN2Y+vOK4DNnEAn+rcC5gc86J+rTioC0azhpU/ePGfXyI0ScNH7mtb3ud+slxz8lktY2uFD3PaKJ9d3I4dc/CYVJXYtPvXz1eeKy1GZUeGcHykLBNWxCo50dnyYcnyB/rgx5kzqODzi7arzUJppx2EUK3I6yrVshtryvOrxnBbqY/pKmCtjm7eujiq9LJnQqQsWJCnUl68DVz9OEEtBCyN1ijDmInCO8tba8SkF+7aEdx+FfWw44cm4q+GRQH3TP4WIbbtQc294kNAjGjSBwaAomFO/G58rmv9OBfoWEN9kq
+ /13sRp8S
+ C0Rk8AvBj4JBKTTCBmuwAvpa1XwF9s3JSUs6Q0S6jdEWWvPqEhKBT3FQdPWFNDBNGKFmQaLEOtm9d9fKa7VdG4JB3nZco6qkPO15Z3MUQfDxfXucAcyt9GWLBc8rjTKgJmocgn9hAIjNBgUsoGHyz3ahv6490k+BTTOuaZm3odhkqNhgrv+xKKpQkQn5YpipraWKFoX4XsbgnY+JYEgwZKL3QQLWi6WLPe8HrMQ4nlhq3wkQzE2uZIBovJapYwJE5ZFVWl/Mg/jHjBcY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,43 +94,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMON_STAT calculates the idle time for a region as the region's age
-multiplied by the aggregation interval.  That is, the aggregation
-interval is the granularity of the idle time.  Since the aggregation
-interval is auto-tuned and not exposed to users, however, users cannot
-easily know in what granularity the stat is made.  Expose the tuned
-aggregation interval in microseconds via a new parameter,
-aggr_interval_us.
+DAMON_STAT calculates the idle time of a region using the region's age
+if the region's nr_accesses is zero.  If the nr_accesses value is
+non-zero (positive), the idle time of the region becomes zero.
+
+This means the users cannot know how warm and hot data is distributed,
+using DAMON_STAT's memory_idle_ms_percentiles output.  The other stat,
+namely estimated_memory_bandwidth, can help understanding how the
+overall access temperature of the system is, but it is still very rough
+information.  On production systems, actually, a significant portion of
+the system memory is observed with zero idle time, and we cannot break
+it down based on its internal hotness distribution.
+
+Define the idle time of the region using its age, similar to those
+having zero nr_accesses, but multiples '-1' to distinguish it.  And
+expose that using the same parameter interface,
+memory_idle_ms_percentiles.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/stat.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ mm/damon/stat.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/mm/damon/stat.c b/mm/damon/stat.c
-index c4fbd8cfa5eb..1a8465abef4a 100644
+index 1a8465abef4a..d8010968bbed 100644
 --- a/mm/damon/stat.c
 +++ b/mm/damon/stat.c
-@@ -39,6 +39,11 @@ module_param_array(memory_idle_ms_percentiles, ulong, NULL, 0400);
+@@ -34,8 +34,8 @@ module_param(estimated_memory_bandwidth, ulong, 0400);
+ MODULE_PARM_DESC(estimated_memory_bandwidth,
+ 		"Estimated memory bandwidth usage in bytes per second");
+ 
+-static unsigned long memory_idle_ms_percentiles[101] __read_mostly = {0,};
+-module_param_array(memory_idle_ms_percentiles, ulong, NULL, 0400);
++static long memory_idle_ms_percentiles[101] __read_mostly = {0,};
++module_param_array(memory_idle_ms_percentiles, long, NULL, 0400);
  MODULE_PARM_DESC(memory_idle_ms_percentiles,
  		"Memory idle time percentiles in milliseconds");
  
-+static unsigned long aggr_interval_us;
-+module_param(aggr_interval_us, ulong, 0400);
-+MODULE_PARM_DESC(aggr_interval_us,
-+		"Current tuned aggregation interval in microseconds");
-+
- static struct damon_ctx *damon_stat_context;
+@@ -61,10 +61,10 @@ static void damon_stat_set_estimated_memory_bandwidth(struct damon_ctx *c)
+ 		MSEC_PER_SEC / c->attrs.aggr_interval;
+ }
  
- static void damon_stat_set_estimated_memory_bandwidth(struct damon_ctx *c)
-@@ -133,6 +138,7 @@ static int damon_stat_damon_call_fn(void *data)
- 		return 0;
- 	last_refresh_jiffies = jiffies;
+-static unsigned int damon_stat_idletime(const struct damon_region *r)
++static int damon_stat_idletime(const struct damon_region *r)
+ {
+ 	if (r->nr_accesses)
+-		return 0;
++		return -1 * (r->age + 1);
+ 	return r->age + 1;
+ }
  
-+	aggr_interval_us = c->attrs.aggr_interval;
- 	damon_stat_set_estimated_memory_bandwidth(c);
- 	damon_stat_set_idletime_percentiles(c);
- 	return 0;
+@@ -122,7 +122,7 @@ static void damon_stat_set_idletime_percentiles(struct damon_ctx *c)
+ 		while (next_percentile <= accounted_bytes * 100 / total_sz)
+ 			memory_idle_ms_percentiles[next_percentile++] =
+ 				damon_stat_idletime(region) *
+-				c->attrs.aggr_interval / USEC_PER_MSEC;
++				(long)c->attrs.aggr_interval / USEC_PER_MSEC;
+ 	}
+ 	kfree(sorted_regions);
+ }
 -- 
 2.39.5
 
