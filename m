@@ -4,90 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 893EFCAC598
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 14:37:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 711D6CAC599
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 14:41:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B72B58E000A; Tue, 16 Sep 2025 10:37:30 -0400 (EDT)
+	id 894858E0010; Tue, 16 Sep 2025 10:41:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B49C38E0002; Tue, 16 Sep 2025 10:37:30 -0400 (EDT)
+	id 86C7A8E0002; Tue, 16 Sep 2025 10:41:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A86A28E000A; Tue, 16 Sep 2025 10:37:30 -0400 (EDT)
+	id 7A93B8E0010; Tue, 16 Sep 2025 10:41:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9191B8E0002
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 10:37:30 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5A89214019B
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 14:37:30 +0000 (UTC)
-X-FDA: 83895366660.02.5497260
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 857FE4000F
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 14:37:28 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZN1ct+08;
-	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 694088E0002
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 10:41:27 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 141E01601E7
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 14:41:27 +0000 (UTC)
+X-FDA: 83895376614.05.CC95CC2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 6237C40009
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 14:41:25 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YZu3ijss;
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758033448;
+	s=arc-20220608; t=1758033685;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zm/y1D7s43WyhF0XeZWL5HSiuUb+YLhCe29XHDsKitM=;
-	b=KKIG77zkMQtvf7u80fWx5ExHv4J4UNEJg9PGG9uPn8OkhOJ//cG8SHnb6p0lZJoeIqrg+d
-	loPPhjGFPLJEeN1nxO/2fGPPpvvPhMIhh2j9KhOIpIaBfWhu2ILs21rku10r1ckJ/kUZFK
-	zda8Lv3NxihE/vMk+yx3ksuALr2xt4U=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZN1ct+08;
-	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758033448; a=rsa-sha256;
+	bh=Rl3PfUKjl2JoVNJ191B+kLBbdZ4ITYuMp+Nygsw33BQ=;
+	b=S6cFmXIPKxqI8AUcLUWV3B5EbOEZIfvbrzRnU7VjrMm+tVjvkMlpjiVf8BbBJs64WqeBJF
+	FRf2X2f4FvacZfEwwPwyexjhkIAY1Q5NCRGWmZPMroxrWAd5Xrv/n7osvk/e7AjMgvcmDz
+	Vfw6tYM3O3SBQCo3XcAc7akDrnSQNVQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758033685; a=rsa-sha256;
 	cv=none;
-	b=yyVxMnBxe12SNVsVB3KW7L1+RUQ0Bt8z8Cak6MSg6hSSvnSY2xVodcj1geCJ2jsDO85RJe
-	Q5LQMX379oRj8b3DnTmpuLYTG+P78hM1nCNtbTaK7VxjstnXB/tznTS66YRtH+b5BOIP3J
-	dfNVjQtQ/5qGg2pcuPPJMGUbCttvMtA=
+	b=fmYl9FXZL2urXSkGqQVE+squYYyDop5JV8PbfbiMcJsL42BpbbfVRtCntZN59YyeIp0rCR
+	y8GstEnIHeQqtismfyTiKzdSucU3HL5nv6E8FiZm08SzNXHEDtLwHexOafqiypc+heo2zX
+	KWvyEwQ6TK53mDN5o5k1C8RFa/4Yu3c=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YZu3ijss;
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E2061601DF;
-	Tue, 16 Sep 2025 14:37:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74623C4CEEB;
-	Tue, 16 Sep 2025 14:37:23 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 416234375D;
+	Tue, 16 Sep 2025 14:41:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B066C4CEEB;
+	Tue, 16 Sep 2025 14:41:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758033447;
-	bh=LgO5/yIM681jTrDMpq8xGFhrw1pnS2TvOssqGdcDUCI=;
+	s=k20201202; t=1758033684;
+	bh=pmJ6FNI376ycjtQaaN8sACRuV+7IyNdiBXbvSGwTn4I=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZN1ct+08J2HGLhNlNLuFWoe5C1alwpgQhtMeSmLSwH9dlwRSe6s3/oXgwOLOzbBlQ
-	 PXzXEd86PJ9ccKF0e8Qpla8hYUK4grbeGFjGSOb9K8AXPMkJLiDDIvnraAWyyYlZaA
-	 3yMAqc6xK3vhvitPcAQ247EwtzG/RPw8JG3N7cbBJm57zZ3CBZ9lOulbeA1Px/h2s+
-	 RXuYmEWymSRiUoLadgIGLtH40Jj6EH/zUUkJIw1tqvgnPAghpo+5BW2ZySzqHEAKRL
-	 B+bEFypAX1aQFvcNUbgVJC88obupLOi9uZCERwx4xTeog6t+8o7/+21q5bc5zMdfTK
-	 LwJLKBnL+qljg==
-Date: Tue, 16 Sep 2025 17:37:19 +0300
+	b=YZu3ijssENglOnURSerpM3JLIbhS9/hpMCoVqQhWFCXpniBu2lgaawd2xNTfv4uK0
+	 JnpYYuGXLpWk90+FMLagcSonqqfnaooTN9wEe9SRLGVNu26OLG9/JRjYxIHB70L4ab
+	 YXcPZ5kYoapZGdwLZ4Trt5SFbW87F/uh+1nvgYFBk1X+pCOKe1FNROUDL0QkytGNTI
+	 bidl46eVofmaBxLtcF0hKniskx0ZHbbsOSS/rk8TwLp3AvHc5bzZf50IGO5UI9iUFg
+	 +P5V7b9EmaXQS7OfqIuJS3aQY0MnuaV+3wOzcKhCmp38KfTNapAH6JJpnioAoJuN/F
+	 Sg7urIoXBE0Sw==
+Date: Tue, 16 Sep 2025 17:41:15 +0300
 From: Mike Rapoport <rppt@kernel.org>
 To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Alexander Graf <graf@amazon.com>, Changyuan Lyu <changyuanl@google.com>,
+Cc: Pratyush Yadav <me@yadavpratyush.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <bhe@redhat.com>,
+	Alexander Graf <graf@amazon.com>, Baoquan He <bhe@redhat.com>,
+	Changyuan Lyu <changyuanl@google.com>, Chris Li <chrisl@kernel.org>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Chris Li <chrisl@kernel.org>,
-	Jason Miu <jasonmiu@google.com>, linux-kernel@vger.kernel.org,
-	kexec@lists.infradead.org, linux-mm@kvack.org
-Subject: Re: [PATCH] kho: make sure folio being restored is actually from KHO
-Message-ID: <aMl2H3BLpH3xFCOw@kernel.org>
-References: <20250910153443.95049-1-pratyush@kernel.org>
+	kexec@lists.infradead.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] kho: add support for preserving vmalloc
+ allocations
+Message-ID: <aMl3C-jSa1_TBv0K@kernel.org>
+References: <20250908103528.2179934-1-rppt@kernel.org>
+ <20250908103528.2179934-2-rppt@kernel.org>
+ <mafs0ldmon784.fsf@kernel.org>
+ <mafs0ldmnlmq0.fsf@yadavpratyush.com>
+ <aMgey9qEC_XUejXm@kernel.org>
+ <mafs0bjnaimvc.fsf@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250910153443.95049-1-pratyush@kernel.org>
+In-Reply-To: <mafs0bjnaimvc.fsf@kernel.org>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 6237C40009
+X-Stat-Signature: fnkcjyh7exx4h419dstyk1hjenkun9rz
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 857FE4000F
-X-Stat-Signature: kuwecs89knu7qry1z5sj3g3awpuicfgs
-X-HE-Tag: 1758033448-529257
-X-HE-Meta: U2FsdGVkX18aDsh0SiOta7pi3SJ3EU0jM5U/spZIfxDmfrLFM16xmI+AQhdt/1QM+ORqCeweGg1vqKoMPKla/SAfFa30du6ADdHRsLqyr1nQV1TNcZdRAnizt2lSEamLZo1PpdrZXL9eJOvxPXWAG6SnIk2ry84GRN2uUO+4RsO0A2FSLvh52HYlM4D8+MkMAZg7H6wIbudSkxdEmjpJ+AuI/YGgENN71Cp6FgrjdxL+IyC8ppP3sR9dBQ1g8zPQgu4ohnxNFQ5K9rUvLKoOZN1w/cUKKXMZnOcijp+CeMvKTUnhETLWYJIo7oGAwih7mwvVI+C48rKr9WCBuT9aCVEyw9KIta+PCHlThMXeVyQMrqaV8kJrC9AYEMXWslOsGZDY2gr+WEfFgn0LS5NB9o2pRzNNO4G4th5g0CWHH/ijRiQRV4iJNbGsgC2+FPnXhga/3SLXo+fo+sSjBz0PCarIxSaezeLIqCV99+UEPpc6doMeMm1Asg6z0Lccc24n5bAKGYOpTMO+FRC9Zd7ut3OorvD3PdQXSf86ocmFtGWIrloMzm6bDGl1HFplQbx3vaybpYQC22hKrvfK94ypjUjqik5gi0zWLTZn8AB+VnAJxlzV9SPzfRXtxrDOVQp5VlrLp+F4qrhPHZZ4y2iJxYH2wNHUSnvz/oOlLrqJpPfBE5voNRrikKAYOfwWP5ht5mFKhMaBfAsFVbaW0Ro1BeHVjNv58gdeBJl3vh72hInE+57vTzVE4HXuhgm5NYeScxrdtMyNrT8NoCmatsLsRtzGq+XYWJbYKRZieoszX5b87fGTLxLJ1FCjqB42NZnJUDXmtXFKAdShB/333+Jq4rrKZXY8keEsdloi2xscK/HW4+6HDg2i1DPZivt+u0jmZHcl/88RDTn91qPuSiS4yRGW8O/bqj5lpf/LpKy8yVsJ4IkEt3+Dmdeh+Vio/VyJIMD+bryau2KneGz7b6u
- skz6g6Wf
- WRcQWRGosGplUX25Sev8tY6aPumZF0m6h1wCGLVbOcV9Hc0iMYgdWvvKpPTK1z3Z3U1B64un+ClnkRxlmffVyypsn5KHByv6tAJ8b43E9v+LZT8EL/p8EMV096K8ImlXx/cWKAL5r91RffqnBbJdwqn9IexpF7cruKyVmls+rUoMIOFeMbti7LQjfgIS6oi35Dv2jBKIZ2etgLwPTFzR8kz5IFnQuzBKt8uVuDHsCujVaP0Y2CGlmJ5d5UI/uEo/HU4QWC2Fk2JvkUAZtRWQt2gZdng==
+X-HE-Tag: 1758033685-141421
+X-HE-Meta: U2FsdGVkX1/rUwBZ9JTAareN/l8oziGPPQ/3RaHXnST5SC6Mq/TeyCDWwLTdHnswpfRSj8I/SCFcObrXOFkacpVMRoHOiMAseIatH+7Jv/IjxPeAk6kEF10+R0SRwk2tknrfF310m6/YfCraha9f32QRqqltQbERt6QxrAaALoTPLbA72pzP8oFQ+QBK6a36PNw1wWHDI5YnLsFSKkxw7CuNwP1AvxVd1c0vqn6wkGfsn3oFYsks+3dcP959pGeXJ+tJ2Nlsof+O0838HTDQcaC9rHkaL3tpp1lZ+tgD+pBTNbwAewb19BTcSRM/7qZA/AJ/v/IgCfIENZg28RV4lafl3e/+1Z46WvSBfLtj+lr6GcZWrSALYgU1X9Ozfu9xaYicU+4a7hGvvyZLfgAZUWIsEPUPkwvT3hf05gI7SlIY3Vl6QxeW1BZfJbtc3MzDiMYHRenQn9hcvw63EaRSNbHaTZNaJUcyt3HGfniPxD8SoMqqdGI6Ks7A/5auCend+J+VmCMlUip1K6pJK+5LEnbGCkkN8azxInqlPbFUSvHV2NhAMxcBMpi+n/c0v6HhJGy0ZRM9ykalrKSEWmyadErLnyVAfFfpevHYuXVd5hNFMj1hpkcOY5V+cfOiILgAgqjsY0yN/GDjsLeNdPB9Qtwv6Y5uGEZxXNK4mgfQR1D0ZToB9HvuhUw6ERFxYWQzf3eSzm7dqpHzMF0KR+CYxh9p1i5vvajP988lO8rfbCseGTfi5fuHWaxByWg5zt3+RBh8Aub+1PrUYSaEU5rYQ/8lEpmHuhgAMsgoqE76X1f6KErWZzduaBDtkpQ8y+S8O35iHY6WyjDSR9r75XcKNHF/4CWU/e7+5jDpCHc3bJUefn0cgQMhY2pW5aDv1ggbp2+CORVshzm3SIlJo4VIsMJo6kISADAqfNQ7nUGb5Lvtfo2S77DurMsKTcYtJhyTqxjTJAWQFdaFfeS766W
+ llM4nID+
+ olMtvJ5mkX9RwEPwyClUVkUnfwTfwlBHveuAwp0eZv1vw2CsPsP3FoN8Tji7b6kXFfNwx3fFmrifwk9ujJ8CtcvHTQw/U27dCEgZZcxCUMiAXpjJN0QhLD9fKStcRJyR4I2IV3NES79hijorcwoMfOl84T5nrdWxof8FPciPkG8dgLJhvIiN6kL7SDK4CSk+f44h3Q5bLw3qHqCqneRgGDqVuVKpUnS7U/qB2RDFTEM7nGcHWoGPPnUHivzp4RwAS5OzwthuvjQcfdCi1nqszfgWfkg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,27 +103,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 10, 2025 at 05:34:40PM +0200, Pratyush Yadav wrote:
-> When restoring a folio using kho_restore_folio(), no sanity checks are
-> done to make sure the folio actually came from a kexec handover. The
-> caller is trusted to pass in the right address. If the caller has a bug
-> and passes in a wrong address, an in-use folio might be "restored" and
-> returned, causing all sorts of memory corruption.
+On Tue, Sep 16, 2025 at 02:48:55PM +0200, Pratyush Yadav wrote:
+> On Mon, Sep 15 2025, Mike Rapoport wrote:
 > 
-> Harden the folio restore logic by stashing in a magic number in
-> page->private along with the folio order. If the magic number does not
-> match, the folio won't be touched. page->private is an unsigned long.
-> The union kho_page_info splits it into two parts, with one holding the
-> order and the other holding the magic number.
+> > On Tue, Sep 09, 2025 at 04:33:27PM +0200, Pratyush Yadav wrote:
+> >> Hi Mike,
+> >> 
+> >> Also, I am not a fan of using kho_restore_page() directly. I think the
+> >> vmalloc preservation is a layer above core KHO, and it should use the
+> >> public KHO APIs. It really doesn't need to poke into internal APIs. If
+> >> any of the public APIs are insufficient, we should add new ones.
+> >> 
+> >> I don't suppose I'd insist on it, but something to consider since you
+> >> are likely going to do another revision anyway.
+> >
+> > I think vmalloc is as basic as folio. At some point we probably converge to 
+> > kho_preserve(void *) that will choose the right internal handler. like
+> > folio, vmalloc, kmalloc etc.
+> 
+> Sure, but do you need to use the internal APIs? Because doing this way
+> would miss some improvements for the public APIs. See my patch for
+> adding more sanity checking to kho_restore_folio() for example:
+> https://lore.kernel.org/linux-mm/20250910153443.95049-1-pratyush@kernel.org/
+> 
+> vmalloc preservation would miss this improvement since it uses the
+> internal API, even though it will clearly benefit from it.
 
-I think the sanity checks belongs to the core kho_restore_page() function
-and kho_restore_folio() should be a thin wrapper for that, at least until
-we'd need to allocate struct folio there.
- 
-> Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
-> ---
->  kernel/kexec_handover.c | 29 ++++++++++++++++++++++++-----
->  1 file changed, 24 insertions(+), 5 deletions(-)
+The core restore API is kho_restore_page() and the improvements should land
+there, IMO.
+
+Then whatever uses that core API will benefit from them.
 
 -- 
 Sincerely yours,
