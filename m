@@ -4,104 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84DAECAC592
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 16:01:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9865DCAC599
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 16:01:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9DE378E0005; Tue, 16 Sep 2025 12:01:17 -0400 (EDT)
+	id 042EB8E000C; Tue, 16 Sep 2025 12:01:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A64D8E0001; Tue, 16 Sep 2025 12:01:17 -0400 (EDT)
+	id 01A868E0001; Tue, 16 Sep 2025 12:01:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 794F88E0005; Tue, 16 Sep 2025 12:01:17 -0400 (EDT)
+	id E73218E000C; Tue, 16 Sep 2025 12:01:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5FF0F8E0001
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 12:01:17 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1029B140249
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 16:01:17 +0000 (UTC)
-X-FDA: 83895577794.08.40A0B8B
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 209D240024
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 16:01:14 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id D49CF8E0001
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 12:01:21 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AC3511DD234
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 16:01:21 +0000 (UTC)
+X-FDA: 83895577962.15.A4ACF14
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+	by imf01.hostedemail.com (Postfix) with ESMTP id B57E940007
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 16:01:19 +0000 (UTC)
 Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=OipuWBah;
-	spf=pass (imf01.hostedemail.com: domain of 3yYnJaAYKCFAAC9w5ty66y3w.u64305CF-442Dsu2.69y@flex--surenb.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3yYnJaAYKCFAAC9w5ty66y3w.u64305CF-442Dsu2.69y@flex--surenb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=iAa4eBOS;
+	spf=pass (imf01.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.222.180 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758038475;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1758038479;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=16noxQnX0KIlK98rjBFjGAUY+DX3PGXWiRxf/Pcl2t8=;
-	b=l1LYSJ1IQ4fiFJ+VTyUSg0VFOvAwPOQ18Q/jXuKJxEkoOZXBbCR7g5uSsu1rVVhnun/S7E
-	EczBI7ZLPctbCE9vsoQZcJb5D4fNFKLLryTIuJwGe5l0LGWXHJ27n9Yn3IKMJEvFlUgubj
-	3jylfwA6BCTE63vWOcspPgR1eCGvLJk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758038475; a=rsa-sha256;
-	cv=none;
-	b=ZVA9skEb7U428W3BH9hihVRrprsi4JNSWLFDgnsASRiCNybKJTWCW/zuDYTmFn/ZueRtlu
-	Qm7iv1Gs8ntx0HZ45N4Gb42I8ZaZZyIY9VzKdhXjeYzfwT2eTilCiwXgu0jOknqApZYnjg
-	+6SH9FYtYKWvkIZsnWyxOOj3Ix3/GcM=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=y/10HhICLTBAM9DGxW+AJtzORYwGHaxVefpsLmsvFfE=;
+	b=jIFsYl0uCN+m4A1Jb/cOpiYn6WuSUC+o0qPA0PWWd3n7uAA8JcvAIz60+oliCw90fSx9Wo
+	u5n5dFk16z95Z8pS/ZGhHHV7UgVUHIZctIKH9FBKZn51kOl7k+PDMyMPYs52U6rPxBgbMh
+	l2KZ5KmBb+M1R9D/kWajjOzVVoBBw5I=
 ARC-Authentication-Results: i=1;
 	imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=OipuWBah;
-	spf=pass (imf01.hostedemail.com: domain of 3yYnJaAYKCFAAC9w5ty66y3w.u64305CF-442Dsu2.69y@flex--surenb.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3yYnJaAYKCFAAC9w5ty66y3w.u64305CF-442Dsu2.69y@flex--surenb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2621fab9befso34927195ad.2
-        for <linux-mm@kvack.org>; Tue, 16 Sep 2025 09:01:14 -0700 (PDT)
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=iAa4eBOS;
+	spf=pass (imf01.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.222.180 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758038479; a=rsa-sha256;
+	cv=none;
+	b=enb1NUDGVGuoFR3U1Ypytx+jN/bOMz9B33s14NJeGaMQc0QwzJ/57ENiYj2WK+yVYFS4bo
+	LD37SOUN8DEDmeB7oidDNPBlpgHhOu4J0cJ/xLaBSqm3ek0miaEawWvutll3oQZEpkWa1u
+	x7dNjQmuyEvwaRAjdsduk4Ao8QtFMos=
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-8112c7d196eso596082285a.3
+        for <linux-mm@kvack.org>; Tue, 16 Sep 2025 09:01:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758038474; x=1758643274; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+        d=gmail.com; s=20230601; t=1758038478; x=1758643278; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:reply-to:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=16noxQnX0KIlK98rjBFjGAUY+DX3PGXWiRxf/Pcl2t8=;
-        b=OipuWBahiLZdtU5vUr38mXB15AMdGoBtscAh5fOlZjjIhYOfH4o3aq/NkDmLutGV8h
-         1mCpHjtSlYK2kEgKbWxdWi2lhw128WiJD84vJZGSUS08yLSmJ/JzUDoFz+bh+PGDH96y
-         AWRJGS+wlnRSqPnTfyQcCtrkgCeiCzLYAgzu0ach9xkVC1qOCC/kMFEVd99YMDOMq9kK
-         WZc9MUE7GvCuwbvyU3z9Z4tHVN/sjjFFEehHB/iLoFLheBkiq1jjiFyOqsI5sv41RKLV
-         Xsz3pezgks9wGP3kI60Kn5hgwqKNiXjTjsdWKvjRj59V+B3nyAJynnZTAL2ldz4cEC1o
-         BEAg==
+        bh=y/10HhICLTBAM9DGxW+AJtzORYwGHaxVefpsLmsvFfE=;
+        b=iAa4eBOSxWtEMlkptNUXBvl1/y+LnQrsVz8ajyCXXnWuN7Q41yiEWIKsEAfhmUj2ap
+         y6exX8iXykdLbT0OPYbIjkvS9ORab2U371nOsihQzSqqJEh6goQ3hvULtiFgeDFDlxNR
+         nurT8rbYgDe8AmH1xiGTj0ItehE17MfJ0zWupn0700quV2p1JZQ+L8/kYPYDmfza+LRe
+         KGT66b6l0ILCxBNzzi4Z1n4LbKZDq0TODlTowIPnTk1LwP+JihKVw7jBiOBCYws/tHZx
+         KZAibufGWk6FaEAL6ZnoUsxFGQLg7Y7RsV8qL/csYu0jcp8oJ8eZKonIRIqaBoobQb5F
+         eFBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758038474; x=1758643274;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+        d=1e100.net; s=20230601; t=1758038478; x=1758643278;
+        h=content-transfer-encoding:mime-version:reply-to:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=16noxQnX0KIlK98rjBFjGAUY+DX3PGXWiRxf/Pcl2t8=;
-        b=TSkVrlP5LaXJLxrWI/2/5lN+Khd9bxYoNkwY+4iLFoSQRkaqMbwjRS1DgnYbEwcrPx
-         5UYHrU9zyI3AOSt57VKOjMwYwABU4+kmU+9/6g+N7c+O8aK/PWbLmwQ0g3Nfnzz+P6iy
-         N6lfRWGQWLKtlg3PRd80mTxbYh1TcurhwAlUGjq8B/4pla76WmL16Vv/x1pISpAucLgB
-         jtSYDBgyl75mtycMUv6ypDLmclOYRp2P2s+wRV+Pa2ZFZ33J7ExZPhW+GDMEc+3Udj9Z
-         PkEX1p6uNptQdUlZNnWe89X618s9LAe0+uaNHTJ+gO6xtzP8OLq1CqAa5dBztbLaXbdr
-         XcNQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX0iDIMsrxXdZOL0WNPmEso+2oNsDB+x5ls7AYGqQLcgfPZSNTx1KP8kXq+ZBlDrTSNCci8VyO5Gw==@kvack.org
-X-Gm-Message-State: AOJu0YwQmi+6NbcUzaDKB8KDL7t6/NrUO5g3Pl25yo5swJGle3jLJEsn
-	C6xtza2weyZLfN+BoGd2VRI+bTXbu4wFPqnwzhyz8Mn+wPN2ipmt+sPbccedzmHOAklHKSAO5PQ
-	y0Cmtbw==
-X-Google-Smtp-Source: AGHT+IFd7myaxOXphUd/MVgrf6Fz4tV4x05UEurwdAPSr2crZiMufGY/rfW5WckYFeXemaVy5X/Dfq/hQv4=
-X-Received: from plkv16.prod.google.com ([2002:a17:903:1a30:b0:267:ea8a:35da])
- (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ef11:b0:235:e8da:8d1
- with SMTP id d9443c01a7336-25d24caa073mr179675535ad.8.1758038473731; Tue, 16
- Sep 2025 09:01:13 -0700 (PDT)
-Date: Tue, 16 Sep 2025 09:01:10 -0700
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.51.0.384.g4c02a37b29-goog
-Message-ID: <20250916160110.266190-1-surenb@google.com>
-Subject: [PATCH 1/1] fixup: alloc_tag: mark inaccurate allocation counters in
- /proc/allocinfo output
-From: Suren Baghdasaryan <surenb@google.com>
-To: akpm@linux-foundation.org
-Cc: kent.overstreet@linux.dev, vbabka@suse.cz, hannes@cmpxchg.org, 
-	usamaarif642@gmail.com, rientjes@google.com, roman.gushchin@linux.dev, 
-	harry.yoo@oracle.com, shakeel.butt@linux.dev, 00107082@163.com, 
-	pyyjason@gmail.com, pasha.tatashin@soleen.com, souravpanda@google.com, 
-	surenb@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: 5cy5uxt9w7f4sef8h5jczcaohsuwfysc
+        bh=y/10HhICLTBAM9DGxW+AJtzORYwGHaxVefpsLmsvFfE=;
+        b=g/nvvFS81Wq0ybh5cHIb6aleGJSjkaCbtaBrknOkssNuz06suhcwJ0tnI4UALaMpk1
+         T/GnKLWI+A6jjGVFrRNl/O7QfS1KJsqqxAxj1wT96pP8lVeLwRaY6V10XqLS4toDtblp
+         GRc2aGtEKlU8Wao36RGe4U9DKW1aoz0n/ZUC4niCYcv52s7Jw8hbFCg4NShfinL984Nz
+         aGtM4W3WRaAHI5XjHNiYkq4o06skr6AzwX9KLCta05alRW6e05ukGwNMyV8wF6M7jy/b
+         UJnpIBcYGF4JPyvQHLjkmrFGq9JI64SPMxxB2YbX759Z3T4mTAI3z68l9wsgyaFgyvYi
+         aFuQ==
+X-Gm-Message-State: AOJu0Yyki3XemtEeOdCfnetCpbZpnVeDmL0iMu8+h96eZgLNwU+NwgUX
+	+gluRfSZQ6o6AXqT7PDUR/UpQ1NFN5ZejENXHxuxog9t6cki6Lri6rpPEvu8GqSCUtM=
+X-Gm-Gg: ASbGncuxfSWMEga0jve46ko8EtlQRd+BHRNBEAUi52HQYMnZCy0nImzOSTl+9mILVkx
+	Lm9K5z12yjsfvNf/1kJTuTEooyvbfVMf0eUB3UaWYOBgvX1aF/odetvz8dbEiir2wMKWb4eT4Gu
+	UK/aLHzpJ5qZxjlPnWq6cxlRY4pSuuhK4e56aW0DRysdu7fKB6wnG7vyueuoeUw/qlqtLEhEJnX
+	g2rYF7h+BTjRVaeAhddaGKdBW42XRat/ffa0rNlDVaodB3wQHG8Kc5nL8DHK8OFOV89Srz5cQaX
+	uHY8Kxty3Lo5IKlFUihzbcawzvl4Nbibkmv9PYLtWzBkHsXOHvpOQyxO44Uw6mrymSEsRfRorXM
+	RAleIwCSuGV2cUXgv+NXPlE5bZ0t45GOunh4vtIpvx9OLQNI=
+X-Google-Smtp-Source: AGHT+IEk/B7drObHLtIjBOcJtdSnUnQFiVQtqdOA5y3ysTkFfJWgXvqapxngSvusLiINI+bB9tXJnQ==
+X-Received: by 2002:a05:620a:7112:b0:82f:4be4:3788 with SMTP id af79cd13be357-82f4be438e1mr36800185a.45.1758038477821;
+        Tue, 16 Sep 2025 09:01:17 -0700 (PDT)
+Received: from KASONG-MC4.tencent.com ([101.32.222.185])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-820cd703f54sm969765485a.37.2025.09.16.09.01.11
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 16 Sep 2025 09:01:17 -0700 (PDT)
+From: Kairui Song <ryncsn@gmail.com>
+To: linux-mm@kvack.org
+Cc: Kairui Song <ryncsn@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Hugh Dickins <hughd@google.com>,
+	Chris Li <chrisl@kernel.org>,
+	Barry Song <baohua@kernel.org>,
+	Baoquan He <bhe@redhat.com>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	David Hildenbrand <david@redhat.com>,
+	Yosry Ahmed <yosryahmed@google.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Zi Yan <ziy@nvidia.com>,
+	linux-kernel@vger.kernel.org,
+	Kairui Song <kasong@tencent.com>
+Subject: [PATCH v4 01/15] docs/mm: add document for swap table
+Date: Wed, 17 Sep 2025 00:00:46 +0800
+Message-ID: <20250916160100.31545-2-ryncsn@gmail.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20250916160100.31545-1-ryncsn@gmail.com>
+References: <20250916160100.31545-1-ryncsn@gmail.com>
+Reply-To: Kairui Song <ryncsn@gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: B57E940007
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 209D240024
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1758038474-183156
-X-HE-Meta: U2FsdGVkX1/Ma0hQQGaWr65Ff2OcHsuLKFdo/cQVXJIOfUfYVBpkfNIw1iYiw9tDQmVVFmnsHrS/krMdDfUbxLxemaU2OZq0V+fwIdzutGTO0X0ouw3p+I6DvtHHJPwYY0codXpXAFsl14AY3R/Y6bjxppumAY1NP8T8x3vFBVBfjeoyslhpWzJG3Chwgxkw+aDh1YyYQevwkyS0jjH38Nr4a+Nj/TL0UQXrQtqnI367Uhar/DRNY7MDvFjSrBgla0i6p1Ofigtj02b1Q4FrwXIC/Nhwx1AgQE5ToRKIKbvPOX2xGjV8RktcWgAW+CATuYIaOFfHGzu2Zwm7hZgdA4ytHZMjO9fwqhZIZwJXcr8wELSwHaj7wDW0s/7Xyy0oS3torPGbpPDHpDmVjCbFfGdScCs7FAqpgle73Wk+cR+K6haGwZ5FupY19knToZunFLcAE0fBmfzVZT9rhmAHRuM6jnT/CO1Of5MnuytzpLLVhJcScDwgQxIN139RIjzLufRq/melwNhyVctA3Z9fMV0cPvdOjT6/c3/232agP2QHCCKTx/w47Xi9jmJOD4ShdOon/YSA5SNFEuKMmZdo0Xhn/sIj67oxHenXA/BhJnEIDAN72POpDXI19wqX8MRqarJ7iBOtK/xTH14mY1PWEt27Lz++7eDAgPbIUynWFUH5pvtZOM3TWzX3uJZNQ/b9LrLNKvbb99vgp5wAfdKnIIA0kl9nC35HMFPhb23tsFruN6l1x59Xon499LAIhtSEZ0O4ltZxVzONmBSz6oEk6E6HQ47Yq44mGACfbBXrXMEI7xMaDf8Lb9xsBcT4Lms2aXGFlgk6TDjeOMfM6UDCz6PMBcm1wVE0hKLGe3bIrS4K6H0MsDuvbMZK26qhrGsBdu5JdNiSNTSzfFmdLk+s4YJwewIthpE9os7/p9JM3QvKsOjCvwbFsJIa1Uly9MYFknJkFFvGsj0FAwbAfy7
- VHjTNLKQ
- DrCzakm5ipXP4GGE9az5sXRNVe8ODJ2dYJZJQb3EGpVJT8U+aY/hqbsEWr2n5+I+4dWZReFMsllNWRXm78tzxehdeJB93DERIZE9lqw9NNP1TuOjBtOSQ7PRw/pG9xOQG48IgyogzJoeVZBrSHimuc54zlr4aHY08DvWIPBGje5Wy5+Q3cCbzB3/MpQNT6JMSRhF2So+auaX3ssl8ei1Lp7APmvjNmn/cK5FL5dWjA5mzIs5oOfOzkg+Q19fCX8pKu1YyQcJtq3Ji21o1lNAz2ENzWd11iCjRXUIJYwjY5hEC7w6H30HRuKx+Hj42bBUlo6+QRHP0gcWyQd6ZeOZSyDC/zyk+QKNng5puPtE9POdw8DZV6YbVei3dxm2Jo+Wsbc/1tqbkZ6EEsBmhlApRtpMmGZQBGmLo6sVG3qPzkdtQTOl0/YAiSBRuh0LETs6pidC5GbtPtGOIwQa9z0ENoDwANXca5on71v3Bs6tJcAdEFEjqeRVG4sGJipm1ogeBrH2NVl3xBaj5KLW03I5lKArHD7MsloCWzbdqNPtB4zgpngv53DTmcyS8DYlkB+ClwsymO4pM9KrZg6G9cH7qZFwZ/h4RC+ptlAqXql1VQK4vTeCT3w0bQLMgm00iy7MifkGeIglfMc3C3wI=
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 458g8irzt7y8nk66ysw5di1ofd5qbzad
+X-HE-Tag: 1758038479-526748
+X-HE-Meta: U2FsdGVkX1/pDj+0M1Yyqj3C7NlJEaSuFwh4e8Kr+CVPV5echwJ3pWSwpzu2hhx+qR8j3BMnc/69Hy1lz0DikyoWEJR3Nhx8D2BDMIW0cArHDAr9XHRDWcS6VmX49M9QDQ3tM7K0pcp5RkYbzoNhv/55EZEg/4ag4pkhqzkNLBudLJqboq/bNWzntJIvRVHd2laXiOK3DD7aSm/UH0kzWoPS1fGwoap4rtBfGjK6Z97uG2YY7QiVeindGMNoftcUPurFA0X9VgMuTtgtFSIVXlzWg007e/A1JYA4NMQDMUzziVxxkLd4Ctz4ZsgROK6jH5f2BlDc7gSi+ENWdWPoqmBXYXxXx6PvmSr5Br4qR5YZTbjl6jt4ejhQilAAa9jKzhp+5EmoNe7dfYooqeGNmGbHd1UAWRmea8DhTOB+TQ1NKbr2PP1DgPSPIBaefHapeAnSPtbYNrA1hI0FeLq+5wMbs76WPWsutQsQFCPV0Y4/KirCS6sIwR7E95aL3TVKRb7p3MDkqEaPMSYmhDAPgiJeQKX++J6fkVeDXbS9c/Bi3meBm+pDtwcUoRmKdwGilD2fIGiUZWPxElcBRh3bQ+rNQzhvugWNNH5wv52gUDhorulwf2FR1PvwS5VPXo13hhhz0xGgEOK0cNq1vkF66iDROLhahwhm6OW6n+3ovxaFoANfz4hNfIDvEb9r/VKOeNPnqKoP6BxJh9LSqOfidKbG9SnmG0oMhlIELNYUkMHCXWpmMARMU5YwDIoPl9UNzdvqqZwegKK32P3v04aXw52s/LdONSOyBOwxznwQJEXht5F7NqEN5iPGI6DFdIBN1sxaGBXF7ysfEz3kei5fQI2o9ip4lJntlD911w2vhswvV0WX7cm74f4VMonL1NlAXVSaiwJl9KLPFClscFODR2/4MJIoUIqMMPobA+lQziyXMjfDHjmt8mmhcixJnHqvm3AzTerIEPcNd1ejTSB
+ YNzB33lC
+ e+oPOB2iQaEIyuJumcnMBU28jADPRpebdf2/LIYKqURm5smvHzJbrvYQtaf2qpvMZqBmACcIu8I2kIXXrWjN0Fv4ohond+2uta+9jpP/eaQneHVYt1Hof1doCvs3u8shJGb1Knpil1PocQ9GuOGOV7MyDdnsv2404cZXmM7uM7np74yBgt7iU6R5milx7H/1fX3KAN9Z8WyamJQQ7qSEd1p1vvm7zgq37lwMhh17yU0VaQ0IjAxc0PMPahQwLzGCG+OXksn7RwUZlf7eeP8awbolHa5SdFFloeDb10vB1cH3Fw8OyPdz+zKX5RQzqZaJfj55eG62isbEgF8Jiax0jLciKE2OOKdXpMkGF3hRpGJMstCsSHFmtANXGtcYWxSEUh/Wu7Hjh/03i8VGxKxOQ5Cv++VlVulRK0hAzRnPueEF6PwcqEXMIeFaW54Foc7FTdK1CvayqJ/DykM6vjw/qZO3dFNlL2VO3Eujzq7toeRS6CiTweAEYWVslw2/pO4Uo0bLq5VGQ/YK/SVPXkeD8t6YUtFKFfdNrzHqy6GASr2jHMbBMsrOhVeYA2ZgYpJEAab2wnyMSMcEE4b6vTzb1Wmg+LQGfd/z8yYDz
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,39 +134,122 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Document new "accurate:no" marker.
+From: Chris Li <chrisl@kernel.org>
 
-Fixes: 39d117e04d15 ("alloc_tag: mark inaccurate allocation counters in /proc/allocinfo output")
-Suggested-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+Swap table is the new swap cache.
+
+Signed-off-by: Chris Li <chrisl@kernel.org>
+Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
-Based on mm-new
+ Documentation/mm/index.rst      |  1 +
+ Documentation/mm/swap-table.rst | 72 +++++++++++++++++++++++++++++++++
+ MAINTAINERS                     |  1 +
+ 3 files changed, 74 insertions(+)
+ create mode 100644 Documentation/mm/swap-table.rst
 
- Documentation/filesystems/proc.rst | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/Documentation/filesystems/proc.rst b/Documentation/filesystems/proc.rst
-index 1776a06571c2..17668f82ff1c 100644
---- a/Documentation/filesystems/proc.rst
-+++ b/Documentation/filesystems/proc.rst
-@@ -1014,6 +1014,14 @@ If file version is 2.0 or higher then each line may contain additional
- For example if the counters are not accurate, the line will be appended with
- "accurate:no" pair.
- 
-+Supported markers in v2:
-+accurate:no
-+              Absolute values of the counters in this line are not
-+              accurate because of the failure to allocate storage required
-+              to track some of the allocations made at this location.
-+              Deltas in these counters are accurate, therefore counters
-+              can be used to track allocation size and count changes.
+diff --git a/Documentation/mm/index.rst b/Documentation/mm/index.rst
+index fb45acba16ac..828ad9b019b3 100644
+--- a/Documentation/mm/index.rst
++++ b/Documentation/mm/index.rst
+@@ -57,6 +57,7 @@ documentation, or deleted if it has served its purpose.
+    page_table_check
+    remap_file_pages
+    split_page_table_lock
++   swap-table
+    transhuge
+    unevictable-lru
+    vmalloced-kernel-stacks
+diff --git a/Documentation/mm/swap-table.rst b/Documentation/mm/swap-table.rst
+new file mode 100644
+index 000000000000..acae6ceb4f7b
+--- /dev/null
++++ b/Documentation/mm/swap-table.rst
+@@ -0,0 +1,72 @@
++.. SPDX-License-Identifier: GPL-2.0
 +
- Example output.
- 
- ::
-
-base-commit: 199236646ffd82b5a5bcf2bca1579ea06cb0ae74
++:Author: Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>
++
++==========
++Swap Table
++==========
++
++Swap table implements swap cache as a per-cluster swap cache value array.
++
++Swap Entry
++----------
++
++A swap entry contains the information required to serve the anonymous page
++fault.
++
++Swap entry is encoded as two parts: swap type and swap offset.
++
++The swap type indicates which swap device to use.
++The swap offset is the offset of the swap file to read the page data from.
++
++Swap Cache
++----------
++
++Swap cache is a map to look up folios using swap entry as the key. The result
++value can have three possible types depending on which stage of this swap entry
++was in.
++
++1. NULL: This swap entry is not used.
++
++2. folio: A folio has been allocated and bound to this swap entry. This is
++   the transient state of swap out or swap in. The folio data can be in
++   the folio or swap file, or both.
++
++3. shadow: The shadow contains the working set information of the swapped
++   out folio. This is the normal state for a swapped out page.
++
++Swap Table Internals
++--------------------
++
++The previous swap cache is implemented by XArray. The XArray is a tree
++structure. Each lookup will go through multiple nodes. Can we do better?
++
++Notice that most of the time when we look up the swap cache, we are either
++in a swap in or swap out path. We should already have the swap cluster,
++which contains the swap entry.
++
++If we have a per-cluster array to store swap cache value in the cluster.
++Swap cache lookup within the cluster can be a very simple array lookup.
++
++We give such a per-cluster swap cache value array a name: the swap table.
++
++Each swap cluster contains 512 entries, so a swap table stores one cluster
++worth of swap cache values, which is exactly one page. This is not
++coincidental because the cluster size is determined by the huge page size.
++The swap table is holding an array of pointers. The pointer has the same
++size as the PTE. The size of the swap table should match to the second
++last level of the page table page, exactly one page.
++
++With swap table, swap cache lookup can achieve great locality, simpler,
++and faster.
++
++Locking
++-------
++
++Swap table modification requires taking the cluster lock. If a folio
++is being added to or removed from the swap table, the folio must be
++locked prior to the cluster lock. After adding or removing is done, the
++folio shall be unlocked.
++
++Swap table lookup is protected by RCU and atomic read. If the lookup
++returns a folio, the user must lock the folio before use.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 68d29f0220fc..3d113bfc3c82 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -16225,6 +16225,7 @@ R:	Barry Song <baohua@kernel.org>
+ R:	Chris Li <chrisl@kernel.org>
+ L:	linux-mm@kvack.org
+ S:	Maintained
++F:	Documentation/mm/swap-table.rst
+ F:	include/linux/swap.h
+ F:	include/linux/swapfile.h
+ F:	include/linux/swapops.h
 -- 
-2.51.0.384.g4c02a37b29-goog
+2.51.0
 
 
