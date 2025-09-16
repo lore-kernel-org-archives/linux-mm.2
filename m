@@ -4,83 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F64CCAC598
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 18:14:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B777FCAC592
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 18:23:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 89B5D8E001C; Tue, 16 Sep 2025 14:14:28 -0400 (EDT)
+	id 1842E8E000F; Tue, 16 Sep 2025 14:23:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 872F38E0001; Tue, 16 Sep 2025 14:14:28 -0400 (EDT)
+	id 15B4E8E0001; Tue, 16 Sep 2025 14:23:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B01E8E001C; Tue, 16 Sep 2025 14:14:28 -0400 (EDT)
+	id 0989A8E000F; Tue, 16 Sep 2025 14:23:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 68EE08E0001
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 14:14:28 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2A8AC1602BD
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 18:14:28 +0000 (UTC)
-X-FDA: 83895913416.27.9303B0D
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 7CF0520010
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 18:14:26 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=FPptwNAT
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id ED06E8E0001
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 14:23:21 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B8EB3119391
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 18:23:20 +0000 (UTC)
+X-FDA: 83895935760.04.E2C7976
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	by imf11.hostedemail.com (Postfix) with ESMTP id C7A1D4000E
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 18:23:18 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=NZDa1RpM;
+	spf=pass (imf11.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758046466;
+	s=arc-20220608; t=1758046998;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cZV7El7YGxmlz108yuF8N3muYpMbWywieV23Vjsw9B0=;
-	b=pPGBMza7/IPmN29NIRk/narLt7EnL58kGXhKeDYqmHzVTpJENsBeZz0OQg3v00Yo+ZeEdp
-	BCarjaxgdIlfLoNCzjNqdr0FTlMyQZW5PwBL1mWDYfOVfpHZcaoPoa4c9pdsdy8oj7l5y/
-	B3x2M1ywTvw3moJ9SG2K7Zk4Ib22GPs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758046466; a=rsa-sha256;
+	bh=VxUZE7TC0xZyMAyFa+6mdSBsb32RFob5X99goi87Xdw=;
+	b=H7t3PsQoe+rcpbjPvLDQ9prMJl+PLplBOdzUrzqhXPAg+vDcrRRYwargy2QysJgdrM1yJW
+	kIin2N5Imv85NJVigoLYKMBNIWJW1ZjiV2FHyMOn6PbW1/EcHcJ7tRgoj6LKL7/GvmXqr3
+	fOEXZlk3BL0iBnC6zycmLDn60E5ReAI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758046998; a=rsa-sha256;
 	cv=none;
-	b=ozMWxK0JBJ7c0+AoTlDjifUZH+NgmFOrxqtgijHfo0hvk716QhAUNPTK8gdDyoS2x1H6II
-	L7Dy33hG0Xv85xqLwfyYG9zGWKR5H1lEsKsVpyFaWSFjqr/SOMdkWn0GA2kCrXPWbN5imM
-	Or/hIau48i0GQzn9HtdEwfRoD5vqs80=
+	b=DcMjTo5z48SpfCmTs6KwRFrtO9nQp2k2znAfCYUk2ELJFp7XsXRPPfwtNhwtJyIVc9ev6A
+	k0yzcc966tTvfIw7VCq7azButPw1xFGjL6VWbHhLFeZmuPFj07tAP0eRjGjSN3m9MOMQeY
+	KmJhb0BT7nXJjxD/l5tjskErkgVKJVQ=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=FPptwNAT;
-	spf=none (imf03.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=none
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=cZV7El7YGxmlz108yuF8N3muYpMbWywieV23Vjsw9B0=; b=FPptwNATr3c1vKuLLVIxeSk5FE
-	poxZ6Rh1dvntHrkbjN54U04RbWtn+QIHQjEuhzBGuCFu4QFLlHX7J3BHAqAhsykgyDrpdUVpQVznu
-	ONkmZXbrTlJemrlaKzfpL4ZKcSDuzz4apP3CfaeXkge45UXAa9Dyb0W1ue50BbTBN343R2ekH2ymC
-	qSryiQJEaTX/1y+YlbMdpp/PnKipYgyIZVEukrAXvKG8Ng+zuzWapTVrY9oR860lM9RaQzWGM2o6M
-	aZhb2eOQ0R5pKZKUYyuoY7igXRcKblMD1RuRiNzs0g3TYeGucnypeWGnis9X8vFJVx3Sj1g3Ml5/G
-	mHaoM5BQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uyaC6-0000000A6m8-0zbY;
-	Tue, 16 Sep 2025 18:14:22 +0000
-Date: Tue, 16 Sep 2025 19:14:22 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Longlong Xia <xialonglong@kylinos.cn>
-Cc: akpm@linux-foundation.org, david@redhat.com, xu.xin16@zte.com.cn,
-	chengming.zhou@linux.dev, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 1/1] mm/ksm: remove page_stable_node() and use
- folio_stable_node() directly
-Message-ID: <aMmo_oXbKsed--QV@casper.infradead.org>
-References: <20250916080533.2385624-1-xialonglong@kylinos.cn>
+	imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=NZDa1RpM;
+	spf=pass (imf11.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-265abad93bfso23045ad.0
+        for <linux-mm@kvack.org>; Tue, 16 Sep 2025 11:23:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1758046997; x=1758651797; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VxUZE7TC0xZyMAyFa+6mdSBsb32RFob5X99goi87Xdw=;
+        b=NZDa1RpMCNhrjDMkboDkAZWaGO7aYqdw1LZjLWGAxK86prfetEfT0Iwkk30uPu2Zcn
+         RM7IKIQNv40ixxEUAMXhVqQEDdmAwLb2Gz7qciV5fu7hrHMDHFu/ty0s6v2V2dgqRedP
+         yuxj0Pl3/2ZaguVqzjQdGBoJmfJjYBrNV5iDxNqe+Pt6koliSM/Xb40HGKR0HJ3YwM85
+         Owrgv8MjujEIxBG/YmcYdXrmfWHH8hBN6KjwXMixrDrVOejLIcYGiVE56bmIJmmYTQL4
+         cX4JTCdQ4PHQa8xqaeRtOk4AY/DINlFFTOYBqFNY3bfe2r5TL4OMtNz5haZ0c2Edk2d1
+         nizA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758046997; x=1758651797;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VxUZE7TC0xZyMAyFa+6mdSBsb32RFob5X99goi87Xdw=;
+        b=SlCdvwCaGXNhorkxVOJ7WxiqMmM4WkTEiMY/73/JiwSRsmAnGe9dxb5FmIDPrCyGO7
+         20Qs9F3Czua206KDqyHutbCDISMNxWSAnvtGeVXfF2PJK+AJVbiDb5vuvL8JaVVsC7Fo
+         JwqnXTEv/E+sMUDO8smOHNUuR8B8HpIo/96+iOs338EPTQBZ2mAv/QvE/b3G3sQ82l3k
+         pDyH858LP90xxyt2l4jsKakKARmxLcTwRxbwIqO42ruOWQEiIxjn/iFvu7RtJmK6gZG9
+         LQw0T+/VawKWJeJNNKdrl8ryF7Zr95SJTGdKNmhoFRtwX0GkKswsrbHu9g2bS95OEXUT
+         g4wA==
+X-Forwarded-Encrypted: i=1; AJvYcCXc09Ev/hntvs0zsp0P7YRusmOBSkmme+yVCEd6sohBcNmbQfX/1pCs8nM4SUcgkH6cc7mK6OUOKQ==@kvack.org
+X-Gm-Message-State: AOJu0YzOieT/jbaEIy9ddRNOYleHGZdQyMOfNAwuZGVIHgLWchOJjPe3
+	wB1dgJ2W8CHVmgqIj55SAeux28VGJfFuubRQaN0N/F82jpnxkYfX4mMDJtpbd/umUJZBM8wTSQK
+	nX08/7iAgrAYU/zeou4CAQtZy/ji0Z5JgyUut3Dpw
+X-Gm-Gg: ASbGnct8phMXjFI4xGsifupa7uCfGguEfcDWQ9pB7/Cn2JijedUG1v+c5fveBJIsm7S
+	1/XlNiizr0zXakYBSLKS1vX+hqjjDD0gE2n1BHTwDE5k50J5qFHG4Cbk9P9GhWSJY3HJ8fOeyZz
+	MMWblwozcMBOaHc+PqP7tKGFjI3RDJiiY4YK+bC98iHsRFMfXwS2gmkuUcY5Vaj5YojtrTf+xtF
+	qDHNFd/m/xfQ0LIkkkblf/Pw1z4Dp7jSJLOA6f1L/GFpTKX/j1DVo4=
+X-Google-Smtp-Source: AGHT+IFeMeqAy+cuIfy8BDPUr07CVnLWSx0isY1COTxmQUhbfeHhUc/gJKs+z9vTXpQo6NDvDMpWAnnnlJDkjgySN7E=
+X-Received: by 2002:a17:902:d2c9:b0:266:b8a2:f605 with SMTP id
+ d9443c01a7336-2680120ed16mr333025ad.3.1758046996934; Tue, 16 Sep 2025
+ 11:23:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250916080533.2385624-1-xialonglong@kylinos.cn>
-X-Stat-Signature: dnyxsbdww1k6ccqj3qzd7qu9tnahuhci
-X-Rspamd-Queue-Id: 7CF0520010
+References: <20250915163838.631445-1-kaleshsingh@google.com>
+ <20250915163838.631445-8-kaleshsingh@google.com> <20250915194158.472edea5@gandalf.local.home>
+ <CAC_TJvconNNKPboAbsfXFBboiRCYgE2AN23ask1gdaj9=wuHAQ@mail.gmail.com>
+ <20250916115220.4a90c745@batman.local.home> <CAC_TJvdkVPcw+aKEjUOmTjwYfe8BevR51X_JPOo69hWSQ1MGcw@mail.gmail.com>
+ <20250916134833.281e7f8b@gandalf.local.home> <CAC_TJvc6aqjBRZ05wyGb49AU+-aKpSph=ZSk3fdV2xraXi-_nQ@mail.gmail.com>
+ <20250916140245.5894a2aa@gandalf.local.home>
+In-Reply-To: <20250916140245.5894a2aa@gandalf.local.home>
+From: Kalesh Singh <kaleshsingh@google.com>
+Date: Tue, 16 Sep 2025 11:23:03 -0700
+X-Gm-Features: AS18NWDeydKXZzxWqGElteJppqO6QozHlpb4s_Ylp5BcEhKGMmDvVoyYUojBOGg
+Message-ID: <CAC_TJvfAQDiL9PydWnKE6TDMcCzw0xrsLMZVZLe6eO0R1LODhA@mail.gmail.com>
+Subject: Re: [PATCH v2 7/7] mm/tracing: introduce max_vma_count_exceeded trace event
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: akpm@linux-foundation.org, minchan@kernel.org, lorenzo.stoakes@oracle.com, 
+	david@redhat.com, Liam.Howlett@oracle.com, rppt@kernel.org, pfalcato@suse.de, 
+	kernel-team@android.com, android-mm@google.com, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Kees Cook <kees@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Ingo Molnar <mingo@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
+	Valentin Schneider <vschneid@redhat.com>, Jann Horn <jannh@google.com>, Shuah Khan <shuah@kernel.org>, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: uaxsbo7hkou74ngj9431y61menm4mjhp
+X-Rspamd-Queue-Id: C7A1D4000E
 X-Rspam-User: 
 X-Rspamd-Server: rspam03
-X-HE-Tag: 1758046466-242768
-X-HE-Meta: U2FsdGVkX19mG8hxzN05Y3yBIbe7yesG8b839L+lF+uquH/MaDwNKWbTcSC/9V/CGhRsoqC4IQMbhVgnwO5CCfKdzM/8ws5RK063p8KE3i2+NWpPyRMzzZQhObrt1yNqoHVgWyVhwZf1aF9IH02hLnuwKLIcs0xlDr1JjgbuJ+gbZcTf11KRk+7GjIF47arBH2cpKsOsxvc41fRpo2nuoKiWgjZM7zxLMvrJPR9NSAM86Wp75AeZr88UtF7SMwAjaeBT3h3cssuX00P/OCyCJykQv2NvL5t2BTH0KJq+tjo1BJBnpj2ZIg3N2ekK00EVWvOESVhqI6r5UmUK7FIOlnZMrbZmImvSFj449V7SH5oRY0AYcMroms4BaRs4pZKGBMA8zc0t0f9LpND6KcXAErClfgXTWwMYB9b2XzXKrBZDP63qR2b/1+j2gHYs8fpJhq5NJ80pjmHDy3vYBbbzQ9/G06M4ZnPJvCiEv2xbcN5jyWlpGAkdoukgWQcNlxTKdQ6BoJbw2LDEpeDYiyabNaKwA7ZlUlgbiKxJsd15iSmMEBJ6sDM5ebRiRTD2vQT4hBJ1Dd3GWydgKCt/kM01C0SEMhP6nX6wZAHZeYWR4e3uDlM8jji9Pob+Ce8RNeua5077jGK/Fkr4r0fBlMys3hfZlh5gEMl/+ZkMh1JicomyUehmyYLeNVbDu32nsfib1P+oLC8dS9ADANidZI4cagcSuGHdBCUrCaetJdFlX1OtapndJWoDb/bj890Et+YLKflO4S4Uqc691urq1hPFf3gA19xuUprrruZ/rgacEhUvRoDEYQqPAihhHpUmZ7OSqTyf1bPzEmLdvTL/h6Hqf2vLvsjN7JWf5xQh8cT1kQ45pU7e67JsQClIiHNDbsaP9a9ffsFrCCWzZ3NEkKfrAdA71zQ1ZO6ZSfAZYr3WSI+Jvjy7MLf5iG89C0oltA3jsB5auDc0Bc0+C2S3dlG
- W+plhq6n
- IEuhH1oxYdrI5cTCo3c+xKyBcDQgRALDbqwZLsBURjT5hbgvZQFUHOr60SzXzeSfSUbKW1DTWXrOyL8YbIX4sjjK+6lpV58IzoicGJ/YlBIIfjt4dmSjP9d8mUMgWJcUMPKc+cycIqaMG8A81dgdP4EWaJygBDCyiogL6+pRAMfvUcfRTz8rZYAAydLkTSRr2vBqlxteRD8nJIq/24UQRrGRfq9Mq+eivxQMi
+X-HE-Tag: 1758046998-432391
+X-HE-Meta: U2FsdGVkX1+eaRzwm7GUvkhOX8W+RMwudMvLo/6OepBuPmfGVVJN30CESIQJQYbXvNqTP7EXG+OEi+xRuGlF0Mv30hqPEEwC51yweBDslLyDn3E1beHtT3Jdp3b2p4dRJqpKjW6lLJObnzVJ++UBnvmheDsgxqqLiCcjj3BMjR8mwZV60QzVLVzB8pKMLNCx2uIKG3Sa78RJzADu2zhAVIEpKMHIHBWQdFk9jVLyiQnARlwIgkuwF1hXvlbLDzBtX1Rv+8J1LVE0nNzrLJn65D+ZnX4/2Vv+syNCebzVeG5yH7wVaSo8PPRifBVvopFC58dwjm672YvLoqa3aCBTQCYx9yiJDgy2KUP3rE9VBTEn22AVOJylNJTOMhD62XU+k+3v6PDkeIfwEW5Z/NpZXlR3yku83nQc0ywIxtRcd8yUYlVrNHZJMSIG1SU1sEb7v9zz3BhRCu3vjbeOXH4+vJg0gNQLTxJe8p/TErTl78Zwg1bzmg06b3Nu8cYcOkGbHthIfh12ilYLHUFDZpGZ3+H/Fs4/8vz26jSbEijzPliHW8FmNHYANq0nIYF1LvHPExK+fhTu3kvAmNP5jlSW+ccz243A0V6scVmlQBmOUTDm+G2TCoDBjtAQxKnwM+VKmKS9tOG+fuXCeF+cwvPXvmPk2Wjeoa7pv6vGvHVyBLYoRJRjuCTWKFPtn7jlPVKEk5L1qctF2t3i22hwYZO48DI7etSqm9lRbOqHDPUufSLBwez8efETGH8GnsMpcR8Z2W29wyqd70WS6gxDV2/gvDi+ZOXj0dz+A+hWQ0OEY5xhSzDjdj1zzAjetNoTi/9OUrh+MWpBMU07/AkKQl2mzqmFZPzQGckJvoRFSnbYEIV1PtJ+JdBbWIDeR6SzqMKV/z07YEQYSttX/UouFRE0Smz3zA66Au0XT+NmPGsmRwQPBX8lQYHcE3UDtLjRwzqaoDk2IQkdcHXSy7wikFP
+ RkXdnz91
+ o4Gy0lyBg1WQ3RkYAzu//OGs/cjT1aDQWadzm9sy8K1hrYKGXSlzDvyyRNiN4XT0bTMXRDZ0WnV1elVcSVEyug75c6xVtdzFqLypAJ5XdE3HGs1/CekqqZtIjLPiCwsOQHFn0GFzWLcK+581lqIPrI5EGEEKetutW4dbEt/gwv2VXgwGesvI7sj1JZnzLhFWg36iuIxmHyIi1vw86dHsDj9B4MlfTSa7VZuqNy7T4WxmcuOSMWTO9l9awjnw1wpyKK3ZTvrWrY9BzrBXJuqjVEdN6vFUfgCab52nMwVY0RjpvbFD6M3cjLTmATXgY8cCQIJlZ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,14 +133,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 16, 2025 at 04:05:33PM +0800, Longlong Xia wrote:
-> The page_stable_node() function was a trivial wrapper around
-> folio_stable_node() that had only one call site. Remove this
-> unnecessary helper and call folio_stable_node(page_folio(page))
-> directly at that site.There is no functional change.
+On Tue, Sep 16, 2025 at 11:01=E2=80=AFAM Steven Rostedt <rostedt@goodmis.or=
+g> wrote:
+>
+> On Tue, 16 Sep 2025 10:57:43 -0700
+> Kalesh Singh <kaleshsingh@google.com> wrote:
+>
+> > > BTW, why the hash of the mm pointer and not the pointer itself? We sa=
+ve
+> > > pointers in lots of places, and if it is the pointer, you could use a=
+n
+> > > eprobe to attache to the trace event to dereference its fields.
+> >
+> > In Android we try to avoid exposing raw kernel pointers to userspace
+> > for security reasons: raising /proc/sys/kernel/kptr_restrict to 2
+> > immediately after symbols are resolved for necessary telemetry tooling
+> > during early boot. I believe this is also why rss_stat uses the hash
+> > and not the raw pointer.
+>
+> When it comes to tracing, you already lost. If it goes into the ring buff=
+er
+> it's a raw pointer. BPF doesn't use the output of the trace event, so you
+> are exposing nothing from that. It uses the proto directly.
 
-I just sent a replacement for this patch as a reply.  I've been sitting
-on it since last December as it didn't really feel important nough to
-send, but if people are going to try to do this kind of thing, may as
-well do it properly.
+My understanding is that the BPF tracepoint type uses the trace event
+fields from TP_STRUCT__entry(); whereas the raw tracepoint type has
+access to the proto arguments. Please CMIW: Isn't what we'd be adding
+to the trace buffer is the hashed mm_id value?
+
+>
+> Heck, if you enable function tracing, you are exposing every function
+> address it traces via the raw data output.
+
+Right, security doesn't allow compiling CONFIG_FUNCTION_TRACER  in
+Android production kernels.
+
+Thanks,
+Kalesh
+
+>
+> -- Steve
 
