@@ -4,120 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82A33CAC59B
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 19:45:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98ABFCAC592
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 19:47:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE93A8E0002; Tue, 16 Sep 2025 15:45:58 -0400 (EDT)
+	id F373C8E0005; Tue, 16 Sep 2025 15:47:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C99F58E0001; Tue, 16 Sep 2025 15:45:58 -0400 (EDT)
+	id EE7DA8E0001; Tue, 16 Sep 2025 15:47:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BD6AB8E0002; Tue, 16 Sep 2025 15:45:58 -0400 (EDT)
+	id DFD398E0005; Tue, 16 Sep 2025 15:47:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A801B8E0001
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 15:45:58 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2B21B56CF2
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 19:45:58 +0000 (UTC)
-X-FDA: 83896143996.26.7F89FB9
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 4B6F140009
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 19:45:56 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=d6X+iPLA;
-	spf=pass (imf07.hostedemail.com: domain of rientjes@google.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=rientjes@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id D1BE98E0001
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 15:47:43 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A667C1DDEDD
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 19:47:43 +0000 (UTC)
+X-FDA: 83896148406.06.F868D86
+Received: from smtp78.iad3a.emailsrvr.com (smtp78.iad3a.emailsrvr.com [173.203.187.78])
+	by imf12.hostedemail.com (Postfix) with ESMTP id B1CD240007
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 19:47:41 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=deepplum.com;
+	spf=pass (imf12.hostedemail.com: domain of dpreed@deepplum.com designates 173.203.187.78 as permitted sender) smtp.mailfrom=dpreed@deepplum.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758051956;
+	s=arc-20220608; t=1758052061;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WXM3OherOxXkqWIyrsQ9zL8fL1brdbQvLSDZy9IQvPI=;
-	b=f24BPLw4psfRy3r0wLAQ1Vfg6JBRP7mjREh28l1w+f0XU6d+kDbGNFPE/uLNmC5gQ8zs4u
-	7PsVbLg/g6tEdRdVeEwsGhiZFrmJW38pw4nkUOioHSAL4khV+Bl6u5KfNP5ehegIrn6Vym
-	JmSWFhFJAU6QL5zWGpx9Wi4uzA485ic=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758051956; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BXpJcrdNgVxtvdMbqiu3WYLYsFbIJJYvBL1ItJ6+8eo=;
+	b=HKcxECKTATFOIwrlwt2f94nPzfP4Qkbh1hgv3py230okxhgZpKlfl8UAaRqVClCM4j+jLy
+	uT/pxPrmIaHkXpwsmJ/+xDGzWKuDYZWhvmOodWOwh8ftMNq7tp1SNRRrPoQ9xDp+ppTF9x
+	uN9nBg8u4YOS4nzRQxeaND8BeegRfWE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758052061; a=rsa-sha256;
 	cv=none;
-	b=guupfBs1xPmHyFdumlW65RkLzyk8jFCaPN/q1IJlYnUJRUNRK5J+At25L/iSeFspXVzuRj
-	fJ41E6+jjB4My1eLyuC+F5kvaec+klnYedHaWhJIMHtXKUj6hZSvN+jJ22FRdOYGN7zgZI
-	/gm9mbcdlq0JXM+2cH/mJwCn2RzNzkY=
+	b=IqKmzb6zOl8PaG6gKsQ93MeOIZcBmZ8VmnuzlNsEiIQt7a4PjYkcQhzyTfiGX0fMFl0/Iq
+	gwJkkGm/SS2oMoDYTaKMMDCdSS+JBpBMXj/hOUddXKqJCPfxe4fIEEZr1xuxKPfccH67jw
+	mnVLG1k+TXvQluGqKjKwVAVpjAsH7m0=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=d6X+iPLA;
-	spf=pass (imf07.hostedemail.com: domain of rientjes@google.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=rientjes@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-265f460ae7bso38515ad.0
-        for <linux-mm@kvack.org>; Tue, 16 Sep 2025 12:45:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758051955; x=1758656755; darn=kvack.org;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=WXM3OherOxXkqWIyrsQ9zL8fL1brdbQvLSDZy9IQvPI=;
-        b=d6X+iPLAvaXZdD7CgIZ0GOC5mg7gJhOZ0vnpZ3qS+49AlFTaE70BpOeH8y9KtWTCFA
-         ENYKk6Veb1sHzl0mc5mbkiMQjasfQiXm0xDzyihfX305sAbrj0K9Z4JHMcGFnci8ZE4s
-         AQ4DL2CA/SCA5R0a+JB2bz5T6S6VjGiwcLChToh/ct8ErCvJTt4PSavSqZDZ405Y5s++
-         /RDVRbEEX0nmvptD+8cA8kW7guVaOgnddrP3iaMHVf9aGaDlDptBTJdEQWl9b0VWvBx+
-         mKDmb3dtAl6K88VoA0JJYN4Qkt7j2UCrbxC/CTO+h9dxwIp80lnJqwNul083KIk1X48D
-         ykiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758051955; x=1758656755;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WXM3OherOxXkqWIyrsQ9zL8fL1brdbQvLSDZy9IQvPI=;
-        b=ADNq8Nw/CsJriScDyrKjb0wKsMeJsAH+lFtj54T7fc8tEcGVDOBhUQ35SjC0qxqvz6
-         oicyxtouhbZWDgPOJP6YZe18h26r6OwT5kfG0gckGCCFxpKAYeZQUgZEvsENgR2wmTAG
-         pc6QkEywc9c983qe/znoU/4fP1nqJmMl/8rRkQs8kGOGLrkCSdJYZ+rI4yoesTll6gpq
-         Ed/VVJfWCywPU55NRO/cYJ/Z+azBn54USco4UBa7gRVHVPa4YC/lRvppFZfQPjD0v8wd
-         7EcGtyMnONVjr+RcAjCPPGsFo3FXCRJUFQr1y8N5PDuadLjdTBYjuz823ev6ji1Gydxm
-         YjhA==
-X-Forwarded-Encrypted: i=1; AJvYcCWx26f8kMAVS/GWtcQ0fcZrRnm+yg/UNzrx3evlzQ87JIRzmFqVD8vI7ifbS0Qqx2kilEErwz6gRQ==@kvack.org
-X-Gm-Message-State: AOJu0YyVLt12wK++UvDzJfIjSG44IgdfXJmz6HZ5jmXX/ktM+oaGELA4
-	Hhxf9mIlpwRqcXRpzy09fWNcDmgJc4Aiw5Cd+irsIRcTzs3q+y2u8cOlKhGLtMl58Q==
-X-Gm-Gg: ASbGncu1uj2MtM9tCbNIpkRL+PDxKN+a2nV2YRLnzqw1SeVS8dMmr+GR3sZ5IKpiQJ3
-	/T+aS4aayC34iOe2mkjRDTkgoJAId9wM+5N+W7Gb2iJCna2RxYE5ZCLXiTiCq1prB2GqLJBxXaN
-	CULZrM8wEFWLcPruBKs1N+cFtqlgLgi9cbAxdG40uUJk3LfWnpFZiss14wOtq7uot8eRIG01HNV
-	No2F3ffEeC/ThMd2yhkIMSDGcfNRbaZC440T78lwC0M2MLCkbkM12fDVeEDXYyBz6of40las450
-	A5MLxBLqHZ5l3/Fgb7Ay1uFKBREhQi0/Gd/0CXNN/yPEpKqhGmA8s7kWNPeLyNDD2ELXY4nMo5b
-	cbfLtuFYBnkKzyRGYv6Rlu3N+QX9NscwWi9jvrR+S3h22EB0O5hmB50jUajwwpgm12P3u9ijAT6
-	VstX1YbBNvKIyY/2HMh1FMCwLsJjkuiv9OJBCx+DEVTl0Eal+29TO9EnU=
-X-Google-Smtp-Source: AGHT+IGjPGu9s+AIR2l3SAAz572RtyzuJretv9YBUb86Qie1/rNMrtg4jD6x3++QZ4cS6ZRI4s1Hjg==
-X-Received: by 2002:a17:902:d4c2:b0:248:a039:b6e3 with SMTP id d9443c01a7336-26800f661e8mr985795ad.10.1758051954838;
-        Tue, 16 Sep 2025 12:45:54 -0700 (PDT)
-Received: from [2a00:79e0:2eb0:8:3226:ed0a:4c73:99d2] ([2a00:79e0:2eb0:8:3226:ed0a:4c73:99d2])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2651ca217d2sm79165505ad.43.2025.09.16.12.45.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Sep 2025 12:45:53 -0700 (PDT)
-Date: Tue, 16 Sep 2025 12:45:52 -0700 (PDT)
-From: David Rientjes <rientjes@google.com>
-To: Gregory Price <gourry@gourry.net>
-cc: Matthew Wilcox <willy@infradead.org>, Bharata B Rao <bharata@amd.com>, 
-    linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-    Jonathan.Cameron@huawei.com, dave.hansen@intel.com, hannes@cmpxchg.org, 
-    mgorman@techsingularity.net, mingo@redhat.com, peterz@infradead.org, 
-    raghavendra.kt@amd.com, riel@surriel.com, sj@kernel.org, 
-    weixugc@google.com, ying.huang@linux.alibaba.com, ziy@nvidia.com, 
-    dave@stgolabs.net, nifan.cxl@gmail.com, xuezhengchu@huawei.com, 
-    yiannis@zptcorp.com, akpm@linux-foundation.org, david@redhat.com, 
-    byungchul@sk.com, kinseyho@google.com, joshua.hahnjy@gmail.com, 
-    yuanchu@google.com, balbirs@nvidia.com, alok.rathore@samsung.com
-Subject: Re: [RFC PATCH v2 0/8] mm: Hot page tracking and promotion
- infrastructure
-In-Reply-To: <aMGg9AOaCWfxDfqX@gourry-fedora-PF4VCD3F>
-Message-ID: <7e3e7327-9402-bb04-982e-0fb9419d1146@google.com>
-References: <20250910144653.212066-1-bharata@amd.com> <aMGbpDJhOx7wHqpo@casper.infradead.org> <aMGg9AOaCWfxDfqX@gourry-fedora-PF4VCD3F>
+	imf12.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=deepplum.com;
+	spf=pass (imf12.hostedemail.com: domain of dpreed@deepplum.com designates 173.203.187.78 as permitted sender) smtp.mailfrom=dpreed@deepplum.com
+Received: from app50.wa-webapps.iad3a (relay-webapps.rsapps.net [172.27.255.140])
+	by smtp26.relay.iad3a.emailsrvr.com (SMTP Server) with ESMTP id C902A579E;
+	Tue, 16 Sep 2025 15:47:40 -0400 (EDT)
+Received: from deepplum.com (localhost.localdomain [127.0.0.1])
+	by app50.wa-webapps.iad3a (Postfix) with ESMTP id A698E600C0;
+	Tue, 16 Sep 2025 15:47:40 -0400 (EDT)
+Received: by apps.rackspace.com
+    (Authenticated sender: dpreed@deepplum.com, from: dpreed@deepplum.com) 
+    with HTTP; Tue, 16 Sep 2025 15:47:40 -0400 (EDT)
+X-Auth-ID: dpreed@deepplum.com
+Date: Tue, 16 Sep 2025 15:47:40 -0400 (EDT)
+Subject: =?utf-8?Q?Re=3A_PROBLEM=3A_userfaultfd_REGISTER_minor_mode_on_MAP=5FPRIVA?=
+ =?utf-8?Q?TE_range_fails?=
+From: "David P. Reed" <dpreed@deepplum.com>
+To: "James Houghton" <jthoughton@google.com>
+Cc: "Axel Rasmussen" <axelrasmussen@google.com>,
+ "Peter Xu" <peterx@redhat.com>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ linux-mm@kvack.org
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Stat-Signature: 8d6atqxgoq84xtbw8wntsxnrbynyp3gx
-X-Rspamd-Queue-Id: 4B6F140009
+Content-Type: text/plain;charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Importance: Normal
+X-Priority: 3 (Normal)
+X-Type: plain
+In-Reply-To: <CADrL8HWS7h0e0AcjbE0npoVwqvWK6c_aqML4T+MJnTkCz5AcNg@mail.gmail.com>
+References: <1757967196.153116687@apps.rackspace.com> 
+ <CADrL8HWGcj1oANGY=qAzpYi_-E-Xbi=L28Bmyyf8H7auVix=QQ@mail.gmail.com> 
+ <1757977128.137610687@apps.rackspace.com> 
+ <CADrL8HX78-oh0k2qAgqPvNVAhi4ESYvjRsScPGR2P2Dts13Bfw@mail.gmail.com> 
+ <aMl4qLyNovWHhty9@x1.local> <1758037938.96199037@apps.rackspace.com> 
+ <aMmMnfU-Koopc9mL@x1.local> <1758043654.112619688@apps.rackspace.com> 
+ <CAJHvVciL-6OLMPDGQjZ=VGDwvwKJznq0BL49uSj+DSq63LOUYQ@mail.gmail.com> 
+ <CADrL8HWS7h0e0AcjbE0npoVwqvWK6c_aqML4T+MJnTkCz5AcNg@mail.gmail.com>
+X-Client-IP: 209.6.168.128
+Message-ID: <1758052060.67927840@apps.rackspace.com>
+X-Mailer: webmail/19.0.28-RC
+X-Classification-ID: 09f52ec7-76ad-48f0-a45c-f6dc4f05a901-1-1
+X-Stat-Signature: peirox3i4b9rdeox66dfc1o8rrhood7c
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1758051956-425775
-X-HE-Meta: U2FsdGVkX1+s+ZInBYLznRbgvlbMFphXqtgHfaI9OjCpeZKaki+l9aUL5E5zmedo9EGmUp7FYJZ5mQD85pohd2LAMEi4jlj+ArTn2iXAExqfy7m9savjISv++4dSN5cCA3UnbHt8NJUKkQSndrKpd/Arbqcb9sSustsU4Go1RhNGXmfUDtdbmyfnvoYy28c+qMWrAUnIJCQwtum6rAmQ0+18VQDKoDmgL5yUsN/aG/JJyj1Zw0tXiPEbolG2qdl9DfmCuHrTit2tFTevACFJslWrAp+DuRegaxaBmsuixbu6P3TM4B9UGiMk9SjBsL+tpLs6KvoNJLaVPJmwqGOENq0UB3XcSmpCXAWyFNSrvTesusX32Oq6ZIzdP4y6qt4RH/CuccF7NECGHulSvuErPO0MX62o7ZOE8DOPE3EDfDTqJhqtFc/m7AIRq9w9xV6VBinoBG0XZvC9/SJI+D/wWOeJF3gGMk872NdRWHN8+avSSSyU4gjOAO+vQ6NdMjdNO/YDUWKzO+uPqsT/clOYDUdL7EdydpaGieV/SXNZ6hKygabwwrJVLfG7ilSmGKlJE0XEUk4juwdUburNtdrnuCB/Mjo+J/s1CcuNSmjroKjPfR6terGvOrh/8YCzZEzVANDJwMTdsVRnR1RVvsB8lI5V5c0durMQ6F8O0jw68hNmKnAFO6SGWaAq/fdM5Ns6bcWPJPkUeWNgjFZsTEpD+wPPlomngcJBcg2ljAlJ9qO6PQSImtoApRE9O1pWTl6Wqjpd9L0pA3WPPCbhl2namhyISAbCE0DIXwEBu0utkSb5wpEU3ibyleUNgLJqAJNv4Sm5R8p56Y+CLkDva9Kw60hDwY7ChUVMBuTTMKtPZdMCquHAaqoKNMgnDPfOhFpzG9DlhbhWpAd7w/icdvIWyUXzKCjn8PzB4leQbXdhebMRcZPNGhUouegDl6tJWm0y0mGJ2IzHsinlWZsCUTj
- T0zzMlVo
- 7nQP0yTWRjACHp85L/t5YNoYMzG9NoYTD3oJ6V6u7CiezdQwbMLy+uMIEZYT0d+G0+xBHXDn03qyxL4kMCfYiWDAzah7yXQT1jGa57V5TKxMh50AGn6kxylhYUjRnX7Mwglh0/wdXwkUtngPUdKIrJ+aBBlf6FZjuZU3oOEnSk3NUGpdk0PflJAhNZPr1dsWa/j6A0AbnwqV6GWSmgufUvEzMZPzkjZaDP+oW1sejg+vvEU2KOwkx0K6QYvOG0HEYZagvrB+HZhM6WrLV6Xko74j9+Sy9Dyqz3a6B4N6DQouIL4d6EZCW3Mcl4Lru+81cvd88FD2s9iQiDaGhhLCMDwf/15S1T7Y3ajWkt4O7fzseWTUAPbsj8C93HA2Df8839LMURfIsxjk5dicvNc5ARTqmXGOmO72tIGEvtCOdXEHY9uqMVn0lexnKBA==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-Rspamd-Queue-Id: B1CD240007
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1758052061-835014
+X-HE-Meta: U2FsdGVkX1863Vd2NjP3g/nxIzhEAy3N5Lc7dctK6Feu6OJxPpczswBZALUh9IeX25BDiODq3ehj7Vyw0hc80BvSiQsv9sW7R/C1wO64e9XkdOjt3ogeSGH1Nuvy+kTRIDp6cds6i7wxsMiHKVKrCv+xA+Ss+SFyl7Wvd2eKyUMBHfGdKOzzCiSqQbN34tOUeARcjwsnZcl7X9e/YJTfjq4s7BJddre8jIbwn+Y544MKgZ6WGwd8fSKMxOqr73Bteb8SE0F/n/ed8Iav6mg2MG+Z5ds1QHdKj90UAawykitXuxep8RSVSk6tAqV2MQ+jKcAWtUEWHZ7KkOnWZZZWUd3tyBmOGS5qwOA6Q7nJ1ElLIP8qf0LAHwUqb50+TD72mB2eHleNfFzaaaE8qgECx+3rBASKkTkxHQ9SFvh60086mQqmi6Wgdjct85KVpHv+JVxBBptQho0Z7zleLrlV8+61MgwE0f7vUG3aaLOgs8sAXUXpzo5GraY12QYetuDbMgneNW9hg8SedQ+9yXPompqwKFIvWYlAetzYYoeCptdvhTvzmsrVNsmRaz5H/kvpZ0PgkXrBegqZeL6NDgdMtZFN1Ptb3FW66rQ+xqa9BRp/jQaVM7GBsgQ3Ppn8YaSBkIXuSgpAeX1tTqF+jPP9SXNEfELUKSFyxBJ8+WU83UkEbux4NscpC4GA/BqAU+jksb7tBg2wHTPhJS7ikK2RcmBN4ENdjtEGiS0X/Q37kKEAgd/42IGBNuGI6/MtLwS8qZAIcBAo7RPcEP7mGFw4KYJ1ihZ+Fn3Bof2G8Nlk3b4PmzugoQnIrUaGEDrA3wgT9ZWcl2XaNd0AgciS6QWtMcYQ3/Tsxug2o90KqLO8hEMTBt6brLdTfxrsjFFu+gKVGoMU8Qr0/7rOcRK6ZyFBXC7fyI60+mnuARqMSqFf33fBK+KwKUjy/5e3PbEtfURurRVRx4Uzs0KLhs8x4N7
+ REJqg4bg
+ T+aXWlW30LdffBcNiK9t7RWRNd2KbudnMuFwZjcpx2Sd2cOge5ZUBYXAXahLlIO8kwu7Zuv7ZLv2GojFaTpxtoLhrs/TH76gWmFe/XOg1/bqRxBNC2ynBRBuJXwlUzBNECLn0FndlxNB1zNXerFSQrk49B2J+wz1cNhIRSoCFlzH90DEdhVUfj6oV3xf0AuP3RZq2uiR6B4ovGWo=
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.001625, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,95 +103,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 10 Sep 2025, Gregory Price wrote:
+=0A=0AOn Tuesday, September 16, 2025 15:10, "James Houghton" <jthoughton@go=
+ogle.com> said:=0A=0A> On Tue, Sep 16, 2025 at 11:35=E2=80=AFAM Axel Rasmus=
+sen=0A> <axelrasmussen@google.com> wrote:=0A>>=0A>>=0A>>=0A>> On Tue, Sep 1=
+6, 2025 at 10:27=E2=80=AFAM David P. Reed <dpreed@deepplum.com>=0A>> wrote:=
+=0A>>>=0A>>> Than -=0A>>>=0A>>> Just to clarify -=0A>>> Looking at the man =
+page for UFFDIO_API, there are two "feature bits" that=0A>>> indicate cases=
+ where "minor" handling is now supported, and can be enabled.=0A>>> UFFD_FE=
+ATURE_MINOR_HUGETLBFS and UFFD_FEATURE_MINOR_SHMEM=0A>>> In my reading of t=
+he documents, these seem to imply that before they were added=0A>>> as new =
+features, that MAP_PRIVATE|MAP_ANONYMOUS mappings were supported, and=0A>>>=
+ that the "new" additions to the MINOR mode were just for HUGETLBFS and=0A>=
+>> MAP_SHARED cases.=0A>>=0A>>=0A>> Actually minor fault support didn't exi=
+st at all before those two features were=0A>> added. :)=0A>>=0A>> You are r=
+ight that userfaultfd's use of "minor fault" is (unfortunately) slightly=0A=
+>> different from the meaning in other contexts. I think the more normal me=
+aning is,=0A>> faults which do not incur I/O (i.e., swap faults and file fa=
+ults [i.e., faults on=0A>> non-swap-backed pages] are major, other faults a=
+re minor).=0A>>=0A>> For userfaultfd, a minor fault is a fault where the pa=
+ge already exists in the=0A>> page cache, but the page table entry wasn't s=
+etup. I don't think that scenario=0A>> can ever happen for anonymous, priva=
+te mappings, so it doesn't really make sense=0A>> to be able to register su=
+ch mappings in this mode. If you create a mapping with=0A>> mmap(MAP_ANON|M=
+AP_PRIVATE) and then access it (read or write), that fault=0A>> requires al=
+location of a new page, so userfaultfd does not consider that a "minor=0A>>=
+ fault". My recollection though is if you make a file on tmpfs or hugetlbfs=
+,=0A>> fallocate() it or whatever, and you MAP_PRIVATE that file, *that* re=
+gistration=0A>> will work.=0A> =0A> Ah! You're right... MAP_PRIVATE *is* su=
+pported (for tmpfs and=0A> hugetlbfs only), and UFFDIO_CONTINUE will, upon =
+finding the page in=0A> the page cache, install a RO PTE for it.=0A> =0A> B=
+ut what happens when the write comes after installing the RO PTE? My=0A> re=
+ading of the code today makes me think that we'd get a minor=0A> userfault =
+and then be unable to continue...! (The only reasonable=0A> behavior is tha=
+t CoW is done without triggering a userfault... I=0A> assumed/thought this =
+was the behavior today. I wish I had time to test=0A> this -- I hope I'm mi=
+sreading it.)=0A> =0A> :( Here I was thinking I understood how userfaultfd =
+minor faults worked.=0A> =0A=0ASo did I. It's kind of confusing. I suppose =
+`git blame` might suggest when the code that doesn't like MAP_PRIVATE|MAP_A=
+NONYMOUS pages in the UFFDIO_REGISTER minor call was introduced... I know t=
+hat MAP_SHARED|MAP_ANONYMOUS pages allows minor faults to be registered on =
+them - and the only difference really is the passing of the mapping to fork=
+ed clones (and the COW behavior resulting from sharing until written, but m=
+inor mapping has nothing to do with write faults particularly - reading can=
+ cause minor faults too).=0A=0A
 
-> On Wed, Sep 10, 2025 at 04:39:16PM +0100, Matthew Wilcox wrote:
-> > On Wed, Sep 10, 2025 at 08:16:45PM +0530, Bharata B Rao wrote:
-> > > This patchset introduces a new subsystem for hot page tracking
-> > > and promotion (pghot) that consolidates memory access information
-> > > from various sources and enables centralized promotion of hot
-> > > pages across memory tiers.
-> > 
-> > Just to be clear, I continue to believe this is a terrible idea and we
-> > should not do this.  If systems will be built with CXL (and given the
-> > horrendous performance, I cannot see why they would be), the kernel
-> > should not be migrating memory around like this.
-> 
-> I've been considered this problem from the opposite approach since LSFMM.
-> 
-> Rather than decide how to move stuff around, what if instead we just
-> decide not to ever put certain classes of memory on CXL.  Right now, so
-> long as CXL is in the page allocator, it's the wild west - any page can
-> end up anywhere.
-> 
-> I have enough data now from ZONE_MOVABLE-only CXL deployments on real
-> workloads to show local CXL expansion is valuable and performant enough
-> to be worth deploying - but the key piece for me is that ZONE_MOVABLE
-> disallows GFP_KERNEL.  For example: this keeps SLAB meta-data out of 
-> CXL, but allows any given user-driven page allocation (including page
-> cache, file, and anon mappings) to land there.
-> 
-
-This is similar to our use case, although the direct allocation can be 
-controlled by cpusets or mempolicies as needed depending on the memory 
-access latency required for the workload; nothing new there, though, it's 
-the same argument as NUMA in general and the abstraction of these far 
-memory nodes as separate NUMA nodes makes this very straightforward.
-
-> I'm hoping to share some of this data in the coming months.
-> 
-> I've yet to see any strong indication that a complex hotness/movement
-> system is warranted (yet) - but that may simply be because we have
-> local cards with no switching involved. So far LRU-based promotion and
-> demotion has been sufficient.
-> 
-
-To me, this is a key point.  As we've discussed in meetings, we're in the 
-early days here.  The CHMU does provide a lot of flexibility, both to 
-create very good and very bad hotness trackers.  But I think the key point 
-is that we have multiple sources of hotness information depending on the 
-platform and some of these sources only make sense for the kernel (or a 
-BPF offload) to maintain as the source of truth.  Some of these sources 
-will be clear-on-read so only one entity would be possible to have as the 
-source of truth of page hotness.
-
-I've been pretty focused on the promotion story here rather than demotion 
-because of how responsive it needs to be.  Harvesting the page table 
-accessed bits or waiting on a sliding window through NUMA Balancing (even 
-NUMAB=2) is not as responsive as needed for very fast promotion to top 
-tier memory, hence things like the CHMU (or PEBS or IBS etc).
-
-A few things that I think we need to discuss and align on:
-
- - the kernel as the source of truth for all memory hotness information,
-   which can then be abstracted and used for multiple downstream purposes,
-   memory tiering only being one of them
-
- - the long-term plan for NUMAB=2 and memory tiering support in the kernel
-   in general, are we planning on supporting this through NUMA hint faults
-   forever despite their drawbacks (too slow, too much overhead for KVM)
-
- - the role of the kernel vs userspace in driving the memory migration;
-   lots of discussion on hardware assists that can be leveraged for memory
-   migration but today the balancing is driven in process context.  The
-   kthread as the driver of migration is yet to be a sold argument, but 
-   are where a number of companies are currently looking
-
-There's also some feature support that is possible with these CXL memory 
-expansion devices that have started to pop up in labs that can also 
-drastically reduce overall TCO.  Perhaps Wei Xu, cc'd, will be able to 
-chime in as well.
-
-This topic seems due for an alignment session as well, so will look to get 
-that scheduled in the coming weeks if people are up for it.
-
-> It seems the closer to random-access the access pattern, the less
-> valuable ANY movement is. Which should be intuitive.  But, having
-> CXL beats touching disk every day of the week.
-> 
-> So I've become conflicted on this work - but only because I haven't seen
-> the data to suggest such complexity is warranted.
-> 
-> ~Gregory
-> 
 
