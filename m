@@ -4,180 +4,235 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A537CAC599
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 09:55:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF471CAC599
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 09:58:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8780B8E0014; Tue, 16 Sep 2025 05:55:31 -0400 (EDT)
+	id 12D718E000A; Tue, 16 Sep 2025 05:58:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8500A8E0001; Tue, 16 Sep 2025 05:55:31 -0400 (EDT)
+	id 0DDF38E0001; Tue, 16 Sep 2025 05:58:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 73EB88E0014; Tue, 16 Sep 2025 05:55:31 -0400 (EDT)
+	id EC0618E000A; Tue, 16 Sep 2025 05:58:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 605F88E0001
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 05:55:31 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 187055B7DF
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 09:55:31 +0000 (UTC)
-X-FDA: 83894656062.13.766BD3F
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf21.hostedemail.com (Postfix) with ESMTP id C7DEE1C0009
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 09:55:27 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=1XFXVOIL;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=nIP6wj4Z;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=YaW+78fD;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="/Z/C1UNi";
-	spf=pass (imf21.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758016528;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id DAAE38E0001
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 05:58:54 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8958616093A
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 09:58:54 +0000 (UTC)
+X-FDA: 83894664588.27.F5046C7
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 1DB3C1C0007
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 09:58:50 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="Y5W9e/UU";
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=xsgyFtuE;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf18.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1758016731; a=rsa-sha256;
+	cv=pass;
+	b=MomCIuOoCo5NGlV4NxqKiJusPO8/zMUKOCc4GbPFrxriXvVdDz32uWtcLmp7wTM/CFHQPE
+	JJwVL3v1rE8+LxPqSPRb5ALhsZjOqH1Hy3XXukTOYwgmcn9BuZAbv6m9bNw/zh7XeJjSvi
+	1ytzXky9jV7PlvdwPyV1kJFZ+A8+ouY=
+ARC-Authentication-Results: i=2;
+	imf18.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="Y5W9e/UU";
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=xsgyFtuE;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf18.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1758016731;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aEBJvYw8cZ03rwlviK+kd9RPYiv0iQqHcg/5M1QVNls=;
-	b=XLlrV88lHjJXFcGju32Nyd7ViA6EmYXETJfbHn30l8FFJGrlGOO+9jptXjzQ6uFfn+4UWr
-	wY03re/FbuTDKAX4I4Kx/Dv0M0lcBP59wtgtc4vLV7wWNbZVaBwgxdWRwjSGHUPu5d0YZq
-	Wn3SYGfLO91qrscymYijoMQ42c4wq6M=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758016528; a=rsa-sha256;
-	cv=none;
-	b=dkNdgRiky3O2HajY50RMz/LIPn1OP/BOkhMFb9M0evsJ+8LOAq1l+TA/CNDMmeDQVymVRd
-	87wvp+JyZ1goZ94D8nTiyQ4s3BxBg6hCBCFzjp3CzChN1ibGxivLybbyAoRlnYDuWLEhF0
-	23W44m73IYVTUCFfBx30sBje+uc457M=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=1XFXVOIL;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=nIP6wj4Z;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=YaW+78fD;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="/Z/C1UNi";
-	spf=pass (imf21.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id D0BE41F8A6;
-	Tue, 16 Sep 2025 09:55:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1758016525; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=aEBJvYw8cZ03rwlviK+kd9RPYiv0iQqHcg/5M1QVNls=;
-	b=1XFXVOIL12H3Jbz7H5wiPXW4j9FiML8NwFo42F/3pzmHYMCOSsqg4pVOlE5v/BWE4aCPcf
-	KXRgTI8yxN6ApQg+FMNagp2iwwzPIr0ar/Uh9KCNljbccqYR/y10fksCMTqC0H+SyXUnVu
-	AylCHyAA82B3t9/Ni4ft1ACZONZbtcY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1758016525;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=aEBJvYw8cZ03rwlviK+kd9RPYiv0iQqHcg/5M1QVNls=;
-	b=nIP6wj4ZcdfuQsjG9Rsmq6/mhtu4LWRvSVzXsAZ1zDiHoMKLePKzwDumCbdL5Qy350TASd
-	fOEnMRQHSdxPvGDg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1758016524; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=aEBJvYw8cZ03rwlviK+kd9RPYiv0iQqHcg/5M1QVNls=;
-	b=YaW+78fDUn64M24Ax6E2NtCLHY01mgdtVZdPMRX4Qq+LH0MrwVryRuy4z7PUrhfNKoB9fr
-	NjkcupTmmqGZXv0NhdtcYhTICKKsI7lzbi8TcqbzTrhhz55m6AT1jLGrvEKAhqzldLePOu
-	cVNDmhKUzlC56F7Ih/dfNlVKTT2s1YM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1758016524;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=aEBJvYw8cZ03rwlviK+kd9RPYiv0iQqHcg/5M1QVNls=;
-	b=/Z/C1UNik5uDDJcInYTlBjlggPl++kwqwhM4X4aTDWPJ8rMr5AFF8m1CGn7iOxHJWamAUt
-	TrEcgyjtqCCnc/DQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B6A7113A63;
-	Tue, 16 Sep 2025 09:55:24 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id nBNKLAw0yWiXQgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Tue, 16 Sep 2025 09:55:24 +0000
-Message-ID: <fbadc3e8-7086-4423-9e45-07a46d6510b8@suse.cz>
-Date: Tue, 16 Sep 2025 11:55:24 +0200
+	bh=6icQ/YfvyIDtaBeNWH0k9n2hJi2Yam+XWL9yketywP8=;
+	b=u0iN2N7f3sptkSbygSJX8opzsI/mWA+UQibWQ/70xhCzG0OAp1a6AF1n3oFv2NrJSsTJBj
+	0O5r/wDncr3Zszd6VzwlB0GJhf01YwYytG/Z4XAeOGuJKGMukzkhOH5H5jg4GJgH+6imiE
+	5uZrDvm9NifvonysjcNBy9+HTt4l/wg=
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58G1fvIG002105;
+	Tue, 16 Sep 2025 09:58:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=6icQ/YfvyIDtaBeNWH
+	0k9n2hJi2Yam+XWL9yketywP8=; b=Y5W9e/UUChBWtBFy4RabauUHGY18Nv9Rca
+	igR24RWIt9/RlixhgNhE3Rqe/LUpoVoTn6lwqXBgsRsIk/ECfr6/3elZRIJ/nJH/
+	GKgqayD8Qkv0hGUDVCCKctuzuU19Gtg4g7MM3lBgi593chS0G2dbPu1+KRaZDjt4
+	xG2zvA29+++Dbk05kZ2OxT2D6wGCt6J9jc8M6C96K34I9Blc15/2fQyXA0XsqWR/
+	+OMAGlBlY/qtCWeNr86JuPiNwQpW1H+M8KXlKQqjKvwnHDv9+eGM/bkehUvoh1k4
+	Do0LqQHYnGP1SjUd8Yxp6kF8D/QTngwcjWBWbF78rdmopnJNAozQ==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4950nf4bbg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 16 Sep 2025 09:58:44 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 58G9cKTZ028746;
+	Tue, 16 Sep 2025 09:58:43 GMT
+Received: from ch5pr02cu005.outbound.protection.outlook.com (mail-northcentralusazon11012047.outbound.protection.outlook.com [40.107.200.47])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 494y2c5cjv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 16 Sep 2025 09:58:43 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vymgSWgBpqkvtUIBGo8E4m5stkoUmPJXNp8/BBFBKiRDpveIjpPdxdvWbLA4ucOzY74VqvI66bSeOWFgMDIPjPUPAZJBPuSjs94/AzQyGLUebTpGk23sd9Flh4OMZuSgHPdn5y4HZfPbAG+py3DCCn7BJY2QA5qbSeLvvmqkZiCXKkthaly1LrAUBJOG9q8hWBcPD2RIpiOjDmD5i3DsVmfT3WLzVtqVfwb889gHK4aQW/X67LKeajyAR5AW4hhkWFdNyvzEX0mVs2lLfNtkabb7eH7FSX/yyBKDxcYUWuC00nYcUzZavwn7V1quYDPnvNuNX3BYxqJBElkFvlOLNQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6icQ/YfvyIDtaBeNWH0k9n2hJi2Yam+XWL9yketywP8=;
+ b=VaIJwGMbtIBUooKnSnCxckGM95Jj7nT53TnDWAY4B3+gMFkEnBWynRcK6LN44ebmRac6zHPZiaQzI/qnprNZv8zVFVuI4MYkK30WLCg8Bvhw+pOwUO3XYa/guDdWet6gZyPqrmAnVURcO9WIevFyj7uyGN7rQXWgwqeVU3ADERViQarunXq6NIlMk4B5MzBVJNQWe+WzYNMQDKNzcL5G8pz1esxFtRyLRpnU18UimPUTSF+sBzkLNix/+YTEZ7/IoDbOl9j/ZdxfX4s9dz+o/lusWCuw5Oi3L2JNkla0XAaLeo8SjPoaIBFiE2AilA1LAbMYijUI0TexmYNVX5osQw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6icQ/YfvyIDtaBeNWH0k9n2hJi2Yam+XWL9yketywP8=;
+ b=xsgyFtuESBJ1woRluy0viQvwbJPUqUqoiT/e4JSloonQe6EicU0GHFmL9hTlzRBZFs1B1o4GnO8qhienrREBeuDC05fMzWOcU9SOWYNnM8SZ76+GuY1Rkc/22T6DsBO1Sq9/RMxUiBJNe9ZO13cEpZz3DqlkJgzAxQsSBRfyFEs=
+Received: from BL4PR10MB8229.namprd10.prod.outlook.com (2603:10b6:208:4e6::14)
+ by CY8PR10MB7291.namprd10.prod.outlook.com (2603:10b6:930:7e::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9115.22; Tue, 16 Sep
+ 2025 09:58:40 +0000
+Received: from BL4PR10MB8229.namprd10.prod.outlook.com
+ ([fe80::552b:16d2:af:c582]) by BL4PR10MB8229.namprd10.prod.outlook.com
+ ([fe80::552b:16d2:af:c582%3]) with mapi id 15.20.9115.022; Tue, 16 Sep 2025
+ 09:58:40 +0000
+Date: Tue, 16 Sep 2025 10:58:37 +0100
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
+        akpm@linux-foundation.org, david@redhat.com, ziy@nvidia.com,
+        baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+        npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+        baohua@kernel.org, ioworker0@gmail.com, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org
+Subject: Re: [PATCH mm-new 1/3] mm/khugepaged: skip unsuitable VMAs earlier
+ in khugepaged_scan_mm_slot()
+Message-ID: <8cd717a3-b149-4eb9-88d2-ea4b9b1112f5@lucifer.local>
+References: <20250914143547.27687-1-lance.yang@linux.dev>
+ <20250914143547.27687-2-lance.yang@linux.dev>
+ <bc86d5f7-5b23-14fb-0365-b47f5a6f13c9@google.com>
+ <a0ec4014-384b-4c04-bf0b-777c989eabcb@linux.dev>
+ <ol447ofo44vwtyfwg3zrdtcdlkfzzmx4rre6qhyotmwvecnec4@usa3nonuk2sn>
+ <2466c068-ccd7-41a1-bef7-6f3fefc6ff55@lucifer.local>
+ <3az7vzkhpa2pup3td5pbrek6ti2fij574qimtnbpecums7ixyl@upabkyqmtiaf>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3az7vzkhpa2pup3td5pbrek6ti2fij574qimtnbpecums7ixyl@upabkyqmtiaf>
+X-ClientProxiedBy: LO4P123CA0136.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:193::15) To BL4PR10MB8229.namprd10.prod.outlook.com
+ (2603:10b6:208:4e6::14)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH slab v5 6/6] slab: Introduce kmalloc_nolock() and
- kfree_nolock().
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: Harry Yoo <harry.yoo@oracle.com>, bpf <bpf@vger.kernel.org>,
- linux-mm <linux-mm@kvack.org>, Shakeel Butt <shakeel.butt@linux.dev>,
- Michal Hocko <mhocko@suse.com>, Sebastian Sewior <bigeasy@linutronix.de>,
- Andrii Nakryiko <andrii@kernel.org>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Peter Zijlstra <peterz@infradead.org>, Steven Rostedt <rostedt@goodmis.org>,
- Johannes Weiner <hannes@cmpxchg.org>
-References: <20250909010007.1660-1-alexei.starovoitov@gmail.com>
- <20250909010007.1660-7-alexei.starovoitov@gmail.com>
- <aMgMIQVYnAq2weuE@hyeyoo> <451c6823-40fa-4ef1-91d7-effb1ca43c90@suse.cz>
- <CAADnVQKC=BA73ifNnyiE2c8ExtzS4LjR00--m5Xe8pqPLSGJfA@mail.gmail.com>
-Content-Language: en-US
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <CAADnVQKC=BA73ifNnyiE2c8ExtzS4LjR00--m5Xe8pqPLSGJfA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 777w6xhuuj4ezgrwx8gjbx86pnpqmboe
-X-Rspamd-Queue-Id: C7DEE1C0009
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL4PR10MB8229:EE_|CY8PR10MB7291:EE_
+X-MS-Office365-Filtering-Correlation-Id: e410eea3-8156-499e-a469-08ddf5079cbd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|7416014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?+UEHiJjNKbNrEeuKo68gmrHJ4hRcxj7IVE/wex8ArRfKUPsDEwdw9TdVxb1U?=
+ =?us-ascii?Q?8T6ZaUFQYdGpv7gtRXmR5BJ94NmcXFD7QS9X5oJ12adxpOVEFr1sBDcwdKQd?=
+ =?us-ascii?Q?SC2cIyEd6uG4NPGpvOf3JjmzEoUBqMoUxC05Y5Ofy7dpdMFhaeNUyQ4mQia9?=
+ =?us-ascii?Q?TWHUASjKC90jheeYJQfnrccPJThFY/29DWAQs3BmAYiwlpxzV45MpT4Hgp9P?=
+ =?us-ascii?Q?Q2ifmRlK77lt3HcjYmzkqSKzDu1f+0q6ubVwTw1O6cYRBvxO1OZ2tug/Xsu8?=
+ =?us-ascii?Q?RrR4kU2emAKMbAp8HJnx6GyE52zj2L40aZiWwsTJXNMnZWsDTawEvHVJA6x0?=
+ =?us-ascii?Q?Y/cIJjuT/F7c48+L78l8yyWHcwQGVp7RjMECrEMUCHA7kTKBWIMKEs4EV6zz?=
+ =?us-ascii?Q?yLp0W4+IQuNYEuowTHCoQYTqaZJvPY4JVRy5h+aWuezcWIdlP4WYk5XHXsR8?=
+ =?us-ascii?Q?DxkuroYIFXOFGwMd2Vh4G1fDTNv3J+yz5EkJDgagEkG/1PfKEpRzSk3QTjUV?=
+ =?us-ascii?Q?GZQ54Li0o3et7Gb6/o0Bm/J4LvVQn67mMgOM1LnmbZTZRD978+ZVYXMxQqJr?=
+ =?us-ascii?Q?msQ2SXc8C9zu8bbdZ+ZW5k1iYf4kIL37SSfR8dLTQsc4UgYu9VTQxvZBAaYS?=
+ =?us-ascii?Q?SQ6VpOPzDHGf2QclIvUKFbmiqUw/9Qnr203VCSunQiEJbNIe82OIbgVOvbQ/?=
+ =?us-ascii?Q?pkZmue4OFTrPXFpBtbf5P+WpmmxMz0onu+vKZuRydznsVT5URKzwjIk5RuoS?=
+ =?us-ascii?Q?OVHo53BJKRVnnVlhzR73C3dolChzy1TpjNwpsWuygBaCKnRoJ3pUfLp3a5+3?=
+ =?us-ascii?Q?INLlxOt5DL1wIlCiSlIVTB6NbjPVFNadAAtrgoxhu1yR+yQP+ItHth8G5r32?=
+ =?us-ascii?Q?FA/5onmGenZ7i8wRrk/18wVyrOE/T7rKH5Zf07JE1Lj2TArsECk24o8piOrX?=
+ =?us-ascii?Q?PzGbZb+HLvQVSX/Sn68ZgQ0+YlCpAOkBVDUeOgLxAYYjbQpSFRkAta/bb+xv?=
+ =?us-ascii?Q?yWReRYc6rUwZzLNV0Y4Y3SK3KmgiaDwguP40R9wwQQNYPRCwgkw9N6TOkanP?=
+ =?us-ascii?Q?S2JgbsQILXgXypfydLf36f0ciF0p8+Dg3NUASPfqkUk/0kGxFRGQVNmb3tug?=
+ =?us-ascii?Q?Q2GanPgrnJvf4MbOu+sM3HYJF7G6mwjV1kPEd+NuzzKYFbDN2XnHakkEeIhQ?=
+ =?us-ascii?Q?ojrng1R1FW3s7Zq6YnJx3py31MCtPLiwnkj4/qb031WHg11NaVdb0wbDWcz4?=
+ =?us-ascii?Q?avJiEHPMoz3UpX/HKTzldyyfXSnaJTjGVtAwVarzebeMOSUwzIgh+ju4qpMD?=
+ =?us-ascii?Q?HRtKaXRz+TYH1G4jfIIZqFyXVQ7u3XHFp0Rb9aUmgTGmgwdYXcwxfPauq/R1?=
+ =?us-ascii?Q?lhUVkSxen6emWxueISuhQyccSqPA1hpGNTajPo+ja7OHhHQV3Q=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL4PR10MB8229.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?6e7NaLcth/9e80hW+8uguwPZNk6CMqlB+YkmtKX3+ZYYHvNR3kWOXsmMjBVW?=
+ =?us-ascii?Q?g0Q0RPrN8Rij43+qhsyeARpvkousN1j8Oz+JNM2p0gMySA+XklV6K1xb2OfW?=
+ =?us-ascii?Q?0IhMo/P7zMTB0oDpaIwo1UKs71yQRqHyJDUhjMPHRLs5Ik+q0mv8DsxtZdjQ?=
+ =?us-ascii?Q?1+BNNwgfX8gGP1ByjgVvWKttr+CIdKa8BadPta7zrhGqNmKLdqf++QNq68Ie?=
+ =?us-ascii?Q?uoqAQgy0/AvfjfRW0r8vyS/cpLTdflr8kOSwJK1UDMzZnzmVGXHaSKW7DaDn?=
+ =?us-ascii?Q?MUnwRveVv4HI0UoTx3B9hyGhbChglUkc1djJ7sXuOo33HTgsZ5Jqi4/a1Rpo?=
+ =?us-ascii?Q?yfhH5N5x7YMGSDPGR1Uul8TDRfZhT3Wvzw+kzLeB4hdLuJpa4RNSGOgU848E?=
+ =?us-ascii?Q?WVwNfHuIEwiHVpRTysh+neAaWux5YiPWMULGMtQhTDqdRGCXuDNqalDHyPwM?=
+ =?us-ascii?Q?sjRdmNDmJqObAuk+FnbchA8v7AEDszg8ggmI5a9EwzoCsBmeD59ODnm+AMA/?=
+ =?us-ascii?Q?7t9CS4WnLPqG4c4WoZFYjuUCJpaUawx/kfVEECfEeDwXuiNTm1Bs8uyNIUNB?=
+ =?us-ascii?Q?BPw1IMIamcwFyWjEgANzbgBFQXJLClblIjmyB+gjMjDVbjLOWngbfFkynjn2?=
+ =?us-ascii?Q?JtCH5TGfgoch5S67vLjx4ZYlJ39sswdAn6CR1RVK29J3mGngrHX0Hks+gq0j?=
+ =?us-ascii?Q?1ek+s6r7z5hlZaEP9kT7rdLShilEaG4+I4BUIK4g1YsDBBMs8gePdye+Jtbk?=
+ =?us-ascii?Q?cn35XCPU4OE8X2UvoofAHH+b9fCSCV2EX6P8Xfh2X9qBYPzJbUPY/cJnImFF?=
+ =?us-ascii?Q?BZzV8NS3sInQBDRPX3p0JaurS+BjH9EGPrjPSY3UVRhq+HL07M9tiX42/Dp/?=
+ =?us-ascii?Q?gZlKRyB2yi3yXBhJZY0InkuGEAxNhlQpR7X1Idyxpo7DnOSnQFciFd2Knjtd?=
+ =?us-ascii?Q?9//EWAJQd+PJd6NYiiytTS3pzD+4829AaCeLY1qDebFBZu71iaXrR212tgxQ?=
+ =?us-ascii?Q?ruMtBQ6DJ3PqcOxRfcRJLl7Lp8ZR+6EWGaOXnQlRKPiO2kITLQJDlPrw0vHF?=
+ =?us-ascii?Q?LR5TbnCd3pk4Aa+s4WwNTGpc5cEX+RTs9/4zLUyHer0/X6S2vYj15GkqdorA?=
+ =?us-ascii?Q?JS1/uh4pRcEIE5kLzvi0cGo1nWqfwuqQt7HG0jZJEZwGAZvQtpEn9geyciz0?=
+ =?us-ascii?Q?BL29rKminp4KUiup/sn22xVxDvkpKinWEyR9NOfiE09J1N4ihfchIA8SJREc?=
+ =?us-ascii?Q?XLNgiezcBt1VJG0h9Zi+p7tg3LmhQmDOgZ6uu3jK0f8zxj+1AjrALlcokZSJ?=
+ =?us-ascii?Q?MgAX6bKMGVEt1Ws4b4+eWeIwxPC10/+vUse1gRolrmYWJqs9xvaXCkgYA3DC?=
+ =?us-ascii?Q?GDL+OwC8m0TeCGleV8pJ2SQFk1RIjXaRDyNRoCSr5yyOWwg+csO1AfSsI0u6?=
+ =?us-ascii?Q?CkTMEfXTMEivOkO4B/JStal+7VpA6xrYrMi61SO92O/WDGbSkohKKv8iBsoM?=
+ =?us-ascii?Q?gDYKxG3OOgyyMITIYnYL258MqtoIn6jCXdgA43NRlgF1z+cHDqf+Rg5Hb6Z+?=
+ =?us-ascii?Q?sfJKzFNlGU2R9E77642GigqIwO4jneuUzpc7B8U7/LcaCnDKIuMr+lEP5hBy?=
+ =?us-ascii?Q?6Q=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	WiKPsTnu4Rd/NbBWEIymC5Wgh7waFU1l7oP1eLME7lubI4CjmBbu4jkB0nazg6JnRfJFqtp7JHzjQ/OrStVPw6LauqAFH7MpDgBDnDyVXMANcE5MLGCmIM7fTphrnPIni+96iXUuqsj7ySLIZC7ot/qhgxLmzCzBcfHWdPSH77M9L09gha3cgnwVsC+bH/fs3vv0GLRJBI9Z7Rd1BzKJ/Bk2dAaz4+uCYwbtvAas+wK+VieSm6usIALzEV0MaMDI6AffjWjLImVcUou/mHk91kCp+/yYt70H+0eSZWlIltF4jPNMGbdDx6jugfMNgIgF3tWUI9oy1dn5KNXo9Fv4uMyUYJ/rhSDgLXmD0Lyqvzl37HEj8Q1qMJqk7InMNcEbCuZ2bEdqn71FsRDV3AzChOupsgOOn0Nx32bbGZ3fE3GogNK+KFiG/q0GypurTjxA38JglzDQxytsWJskYnT/rCOKQzr07kR9L9iRbo5Rk295NWzUpAwW4qIGCqsMxQ7OiHxc5rMikXwfl4HS5xzVyRd6cLJIXDNdd7B3Cdyb40K65Khw5Y3vvU7YHxwSWi+3CKWMSMq5lfs0jnt6rgT5Z4Vpkbm5Pu58hlmMKlivS0E=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e410eea3-8156-499e-a469-08ddf5079cbd
+X-MS-Exchange-CrossTenant-AuthSource: BL4PR10MB8229.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2025 09:58:40.0202
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0/vWmb+8/Go+MTtJFgggGtLBNrTNlZHzEvly2MmIN2Kqvbjwb96HzLdZgk35tPHzEvJZfsLskBnFKKxYi4Q573pZZ6Q/ds+hQwnZjeYz28M=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR10MB7291
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-16_02,2025-09-12_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=1 malwarescore=0 spamscore=1 phishscore=0
+ bulkscore=0 mlxscore=1 suspectscore=0 mlxlogscore=192 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2508110000
+ definitions=main-2509160096
+X-Authority-Analysis: v=2.4 cv=S7vZwJsP c=1 sm=1 tr=0 ts=68c934d4 cx=c_pps
+ a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
+ a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=yJojWOMRYYMA:10 a=GoEa3M9JfhUA:10 a=7Be9DysMmW3qWg5aml8A:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTEzMDAyOSBTYWx0ZWRfX1zf1DRKzOjl1
+ WyaAdm1zDDgXPaOQ+nv5aH5BjzBaJb0y/66Se54aLI94GTrB+NQsKy7HYhkm6NKWSfJA+w1yOHB
+ irWNPCt+FisOokSvL3PDXOSVjyrvp/sBq/2x4fmnBn1j7n4GPcQKOU1wctxk+jArBrTkBjZSTyq
+ vH+gdEHjY1Qj+Xx7wNg7A2uWVifAzORrNCFJwlldEn/qXioayxLUKBnLlrg2zo4/KPN5hAYdr9d
+ jC2hYov7/ilqfqbLYTO7kp8N6b3/6G2Zn4VbHmiM9k0/H7qaQBnBgWDeFPjYK/7kE5vobX1rdxt
+ FQcuwHQk8AhjUIdBjWGL/KK+A8eqX6fldkqN6/OhF+b4j193rZZXRv0OKmTZ6nS3MtluiNEFVKF
+ 4P+8oVq/
+X-Proofpoint-ORIG-GUID: tdMcSKih7S7lXZkYDIHZsYjJO8WAVp2_
+X-Proofpoint-GUID: tdMcSKih7S7lXZkYDIHZsYjJO8WAVp2_
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 1DB3C1C0007
+X-Stat-Signature: tabpnmt5tqnp51ruhjniynrgnx3qum4q
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1758016527-902084
-X-HE-Meta: U2FsdGVkX18qxQ5TViFXP3yM1tg3tcA46BdTPo5/Pqne131zhX/nNNQFHLqVyV4Qsa1j9/Fgo2g7gXnvFjlJ5Jwn1D9PsebKDGVVHaT9hTvKZ/oDqLMvjHJYjAbUp5dwfSBfew1YOrp2jYkeSnx9bFCiTpukxFdt5nVWIWyOzHJ1KyhjXVqonbQ5U1icgaai85lUtPLv31emzCic+KDJ/gwiD06NFbnJqumGgsytbCMVrfNpx/yVm5yKIuWqp8KCEn2ZhDQpQMLJNAoCJGvRirVMiE8qbYJ0mCxgFy4AbOWJuM2zj8cylCVlnMdxZXQRbIcCPveeimwgyS4Sgyvfo1lNJTFaJermiuaaSeJuU3ccx9hGwaxaA0p/647IpfQIjMpueNh/Ww+7Sjcc8Uyr5+ih/ELDP1s/57ZLwWUxSFEuOUV51quN1ulhmoHnHgltC0TQfNF+iFwskQmudyAW2icVbzIq89XBOByrwmAg+gymGAKG3TffQhD+1liQpBd7d+LnrlJ7hrx9le9Qh3XaR9+svh1G8verty3yInY7OGj7kuKghOwCwFGRRp5nZlrRW4lwwQ6SCoSwcuwf1X3jzq1qi+mIbeD6nEEHdeKFuA/AZx3gJ2EAmrr4qexjPBJ9tzLHIqYo8BBRhtT1zZRfsPVceHwxm7zwfaX6WigwPeS9TEfxnapBobYcfqOIX942C6QuIQXwrOx4j+K5tVtHJTR9+QHG0jbLZ4B1jomeh/c06MMv0N7OH7DQPS3JjMTrD2b+wc+LmwL3P39C4aY2lDKtEdlJbUvzlKyHezM/lOkMLvXDbUf5/sM+0dmYTK7XeWFeBUWyx2/6/2fhGEa4t6XtYWeDjjJjGt88VtOkcKn3cALUnN4wgBrsyntCzPN/ai9gp0dxVFmuLebXlWKT/d9GMaVgeXEqhlHHgwA5bNmhWmJMqSLu+lV2ptjDYVEJZbq/8osqVNiUAB5L6eh
- bnlhVo33
- oWJ9BPsyaDwxpugfKj/R69zrDIS2FiJ5SuueJ6VVE/UL1jiY8+XBH0fk+xZhk0s5Dyiv3MeW8/NuSO37fo3WY3mmB51V4j7ZY5sfVsaqj29L4qgEd7I8dd6FZh/ojj1YqOvme0AEbsYKkN95PgTFf5BRJNHZcpB9qU9Ou6wxvIMOZ1cWLcnVqNYmSdfywxrttlU6S9csd9DUOtcZTpa88TQQvrrDcSdOOc9YnAMTpdkV6eODGR3r+s1/S0ABIOfsSya5dxYgqPOL3RlltTvcnct/uCnAjCo8B/MaJm9wdpudMpv04Y5JyzEIAU0bsGN6YC1pVzPk7bXJSNliv9A1wdrqynN5LlJ+UeFE9PVyDS0vbuElDko7uAZMEaWoiEcKhtkANAAA9+6uxyiTZK+C685BYy/ZIYhRzUMdKjPEtfkiQssdTVaeQCNCf+B0BmT6+Jm76E2EniXVML98=
+X-HE-Tag: 1758016730-305398
+X-HE-Meta: U2FsdGVkX1+1cISRMWu0EoCsQev1BIaZ+HeFNeJFGU7f/GRwLzaZgBUvclJsQlNqMVsEyNpVqCqGAEopJq38Yd9DeQpf5KwzHc0/BVFoGcCTuWMXAFEYDGnrnRu4bt9RaTBAj9jUT6w8wx3ReNmDb4cOMQIgk+Eq1Y7Fe5alytuA+9MjJCGneFM4x98oEPwZCmzDI5pSaVra415Ika5SXs/iF0fW99AzZoc1uteDxp47E8X+6FafoISRnkVzTkZbvPKzT9Qeu0gKBauR2oWdC4WCWHBbmjVUFdBe3FI+e3qDE/W8BofIwmSAVRKomjvoOqC8xoQeLak1umMq44vGVURe3dYXCxyKeWSolM7FJDQY2zrso8fjao0YfzaUmEMXR9KooWH6I32oLYNw7qUyYMhw0AVqYsIen2Vln00uoPO8aMX1BAOmmxk5qBC0SOCpzs/yTer8RAhea7fnj0noLLforBpOaNPDF93UmszNZU2rJj3jSjAW4fkO2PZ+1KhZngpIsQ4cAhlTJvRKSzMn39RO6OLaD9K1moNVVD0cBZ6dov6RBofZY6bE/V82jlrQsoZt0XvIbK6rhqOkRCl2VSZqZ58RG+dVxctW2BaEDStVMfQMJlQLjlUVnq1e6F4kfEQj0MtXwg34D60MxLSs4+qlX3OEX5VoczS7PJhVqw3ThPuaYQmaApMdip9bm7/Td7dZC4AO/qNvXwPc89FdjPptSrtYCaGr7fzt3h0nIosQbjwWCLMUdSF05lPx4QRFeXom19e00r97rjbM+OpJsCwA/OEdOQfj8UNtd8cXxVuQhNEjQdE9RMZsF5anaUNeT+n+WyqghrynSYXDm7mmz+HD+L2g225Uz6Vqw2AjXJe/OLebOyWHEFRVKpm1SpH8arGJWpqN3ncg0sgMGZY+/mm+YM4r5siNmJb8SNZLKP4XiZiT4afWEWzxipzkBDR2Q50ZwsqH9iaTD2+siqm
+ FimHIUgV
+ y9xbkErs0qqi8DsX+Lu0O3gQf3aYcVWQXLWRUTcC9nvzVTeeu8ehcnW8YKP0x9+lmMynxwLA2plRqofJ3DQYbMvW6VfIi0M6uxJCQHBgoeMMYZkZcPu3tbrrdgmZfKg90USIl2i3X/0LCm/oWn4LaUIdrtngg77F0ih6Z4joER8eTLZx5sQK8bnAqBuxujCMP98a5HPDXgSS/nbVTUPH/XqGnTgtPZE0YxEP20vTrWwF5lAoqgl6WEVTsz1h5/7m8Siay+d4JN9xhcjHQhRfN4IuwaFaobOvChpYVsRHh0CDzI/M9NTc3u0si4licZGvLq1o4DvJWXmAwk7zz+TpegDJNmwcB4V7QkWz7D7fd5oMLMPm5ebfbQSkUg5l59uXWh8aH/Z/YGNRM5Vj/JkMjCRidOOWslCOY3GIt2XNv+QQlvjI0eO/zRLpXy2fxsAAeLed9AN2Bd2Iz4MwWaVTpwtvYHvhgKOgbOWv5dofN95yWXuCjqfwvRI69MXdzIswMAiLKSF5Y2gu6B2ep/d2/XR8xH608tUwQuWwDomV14euMNJ/jkEjwvPxwsQ6HzuFAVNRpP73ZtgZ9jvwDdOZQYwWy/UERXrVFXnC+cnD1efSMZNL/RByfGCUEPMWGf2SZRzsfyuwrhzpDOVnTzxA//m9B0LTDaPfzpzaGxL5HJqoF/92k7UDqRfpadQggTJfR5uNQTec8dZf/ZCA3FTouYmN8eid5rH1v+yb5
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -186,187 +241,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/16/25 02:56, Alexei Starovoitov wrote:
-> On Mon, Sep 15, 2025 at 7:39 AM Vlastimil Babka <vbabka@suse.cz> wrote:
->>
->> On 9/15/25 14:52, Harry Yoo wrote:
->> > On Mon, Sep 08, 2025 at 06:00:07PM -0700, Alexei Starovoitov wrote:
->> >> From: Alexei Starovoitov <ast@kernel.org>
->> >>
->> >> kmalloc_nolock() relies on ability of local_trylock_t to detect
->> >> the situation when per-cpu kmem_cache is locked.
->> >>
->> >> In !PREEMPT_RT local_(try)lock_irqsave(&s->cpu_slab->lock, flags)
->> >> disables IRQs and marks s->cpu_slab->lock as acquired.
->> >> local_lock_is_locked(&s->cpu_slab->lock) returns true when
->> >> slab is in the middle of manipulating per-cpu cache
->> >> of that specific kmem_cache.
->> >>
->> >> kmalloc_nolock() can be called from any context and can re-enter
->> >> into ___slab_alloc():
->> >>   kmalloc() -> ___slab_alloc(cache_A) -> irqsave -> NMI -> bpf ->
->> >>     kmalloc_nolock() -> ___slab_alloc(cache_B)
->> >> or
->> >>   kmalloc() -> ___slab_alloc(cache_A) -> irqsave -> tracepoint/kprobe -> bpf ->
->> >>     kmalloc_nolock() -> ___slab_alloc(cache_B)
->> >>
->> >> Hence the caller of ___slab_alloc() checks if &s->cpu_slab->lock
->> >> can be acquired without a deadlock before invoking the function.
->> >> If that specific per-cpu kmem_cache is busy the kmalloc_nolock()
->> >> retries in a different kmalloc bucket. The second attempt will
->> >> likely succeed, since this cpu locked different kmem_cache.
->> >>
->> >> Similarly, in PREEMPT_RT local_lock_is_locked() returns true when
->> >> per-cpu rt_spin_lock is locked by current _task_. In this case
->> >> re-entrance into the same kmalloc bucket is unsafe, and
->> >> kmalloc_nolock() tries a different bucket that is most likely is
->> >> not locked by the current task. Though it may be locked by a
->> >> different task it's safe to rt_spin_lock() and sleep on it.
->> >>
->> >> Similar to alloc_pages_nolock() the kmalloc_nolock() returns NULL
->> >> immediately if called from hard irq or NMI in PREEMPT_RT.
->> >>
->> >> kfree_nolock() defers freeing to irq_work when local_lock_is_locked()
->> >> and (in_nmi() or in PREEMPT_RT).
->> >>
->> >> SLUB_TINY config doesn't use local_lock_is_locked() and relies on
->> >> spin_trylock_irqsave(&n->list_lock) to allocate,
->> >> while kfree_nolock() always defers to irq_work.
->> >>
->> >> Note, kfree_nolock() must be called _only_ for objects allocated
->> >> with kmalloc_nolock(). Debug checks (like kmemleak and kfence)
->> >> were skipped on allocation, hence obj = kmalloc(); kfree_nolock(obj);
->> >> will miss kmemleak/kfence book keeping and will cause false positives.
->> >> large_kmalloc is not supported by either kmalloc_nolock()
->> >> or kfree_nolock().
->> >>
->> >> Signed-off-by: Alexei Starovoitov <ast@kernel.org>
->> >> ---
->> >>  include/linux/kasan.h      |  13 +-
->> >>  include/linux/memcontrol.h |   2 +
->> >>  include/linux/slab.h       |   4 +
->> >>  mm/Kconfig                 |   1 +
->> >>  mm/kasan/common.c          |   5 +-
->> >>  mm/slab.h                  |   6 +
->> >>  mm/slab_common.c           |   3 +
->> >>  mm/slub.c                  | 473 +++++++++++++++++++++++++++++++++----
->> >>  8 files changed, 453 insertions(+), 54 deletions(-)
->> >> @@ -3704,6 +3746,44 @@ static void deactivate_slab(struct kmem_cache *s, struct slab *slab,
->> >>      }
->> >>  }
->> >>
->> >> +/*
->> >> + * ___slab_alloc()'s caller is supposed to check if kmem_cache::kmem_cache_cpu::lock
->> >> + * can be acquired without a deadlock before invoking the function.
->> >> + *
->> >> + * Without LOCKDEP we trust the code to be correct. kmalloc_nolock() is
->> >> + * using local_lock_is_locked() properly before calling local_lock_cpu_slab(),
->> >> + * and kmalloc() is not used in an unsupported context.
->> >> + *
->> >> + * With LOCKDEP, on PREEMPT_RT lockdep does its checking in local_lock_irqsave().
->> >> + * On !PREEMPT_RT we use trylock to avoid false positives in NMI, but
->> >> + * lockdep_assert() will catch a bug in case:
->> >> + * #1
->> >> + * kmalloc() -> ___slab_alloc() -> irqsave -> NMI -> bpf -> kmalloc_nolock()
->> >> + * or
->> >> + * #2
->> >> + * kmalloc() -> ___slab_alloc() -> irqsave -> tracepoint/kprobe -> bpf -> kmalloc_nolock()
->> >> + *
->> >> + * On PREEMPT_RT an invocation is not possible from IRQ-off or preempt
->> >> + * disabled context. The lock will always be acquired and if needed it
->> >> + * block and sleep until the lock is available.
->> >> + * #1 is possible in !PREEMPT_RT only.
->> >> + * #2 is possible in both with a twist that irqsave is replaced with rt_spinlock:
->> >> + * kmalloc() -> ___slab_alloc() -> rt_spin_lock(kmem_cache_A) ->
->> >> + *    tracepoint/kprobe -> bpf -> kmalloc_nolock() -> rt_spin_lock(kmem_cache_B)
->> >> + *
->> >> + * local_lock_is_locked() prevents the case kmem_cache_A == kmem_cache_B
->> >> + */
->> >> +#if defined(CONFIG_PREEMPT_RT) || !defined(CONFIG_LOCKDEP)
->> >> +#define local_lock_cpu_slab(s, flags)       \
->> >> +    local_lock_irqsave(&(s)->cpu_slab->lock, flags)
->> >> +#else
->> >> +#define local_lock_cpu_slab(s, flags)       \
->> >> +    lockdep_assert(local_trylock_irqsave(&(s)->cpu_slab->lock, flags))
->> >> +#endif
->> >> +
->> >> +#define local_unlock_cpu_slab(s, flags)     \
->> >> +    local_unlock_irqrestore(&(s)->cpu_slab->lock, flags)
->> >
->> > nit: Do we still need this trick with patch "slab: Make slub local_(try)lock
->> > more precise for LOCKDEP"?
->>
->> I think we only make it more precise on PREEMPT_RT because on !PREEMPT_RT we
->> can avoid it using this trick. It's probably better for lockdep's overhead
->> to avoid the class-per-cache when we can.
-> 
-> yes.
-> 
->> Perhaps we can even improve by having a special class only for kmalloc
->> caches? With kmalloc_nolock we shouldn't ever recurse from one non-kmalloc
->> cache to another non-kmalloc cache?
-> 
-> Probably correct.
-> The current algorithm of kmalloc_nolock() (pick a different bucket)
-> works only for kmalloc caches, so other caches won't see _nolock()
-> version any time soon...
-> but caches are mergeable, so other kmem_cache_create()-d cache
-> might get merged with kmalloc ? Still shouldn't be an issue.
+On Tue, Sep 16, 2025 at 10:48:22AM +0100, Kiryl Shutsemau wrote:
+> On Tue, Sep 16, 2025 at 10:39:53AM +0100, Lorenzo Stoakes wrote:
+> > On Tue, Sep 16, 2025 at 10:29:11AM +0100, Kiryl Shutsemau wrote:
+> > > On Tue, Sep 16, 2025 at 02:21:26PM +0800, Lance Yang wrote:
+> > > > Users of mlock() expect low and predictable latency. THP collapse is a
+> > > > heavy operation that introduces exactly the kind of unpredictable delays
+> > > > they want to avoid. It has to unmap PTEs, copy data from the small folios
+> > > > to a new THP, and then remap the THP back to the PMD ;)
+> > >
+> > > Generally, we allow minor page faults into mlocked VMAs and avoid major.
+> > > This is minor page fault territory in my view.
+> >
+> > Hm, but we won't be causing minor faults via reclaim right, since they're
+> > not on any LRU?
+>
+> PTEs are still present when we do THP allocation. No reclaim while the
+> access is blocked. We only block the access on copy and PTEs->PMD
+> collapse.
 
-I think we mostly don't merge them, maybe in some configs it's still
-possible. We should probably just do it unconditionally as they are special
-enough. But it still shouldn't be an issue for this case, as we wouldn't
-ever merge such caches that would need a different lockdep class, AFAICS.
+Right indeed, esp. with compaction being allowed for mlock, I agree with you
+that this patch should be dropped :)
 
-> I guess we can fine tune "bool finegrain_lockdep" in that patch
-> to make it false for non-kmalloc caches, but I don't know how to do it.
-> Some flag struct kmem_cache ? I can do a follow up.
+>
+> --
+>   Kiryl Shutsemau / Kirill A. Shutemov
 
-Yeah there's now SLAB_KMALLOC and is_kmalloc_cache(). We can do followup, it
-shouldn't be urgent.
-
->>
->> Hmm... seems a good point, unless I'm missing something.
-> 
-> Good point indeed.
-> tracepoints are not an issue, since there are no tracepoints
-> in the middle of freelist operations,
-> but kprobe in the middle of ___slab_alloc() is indeed problematic.
-> 
->>
->> > Maybe check if interrupts are disabled instead of in_nmi()?
-> 
-> but calling if (irqs_disabled()) isn't fast (list time I benchmarked it)
-> and unnecessarily restrictive.
-> 
-> I think it's better to add 'notrace' to ___slab_alloc
-> or I can denylist that function on bpf side to disallow attaching.
-> 
->>
->> Why not just check for local_lock_is_locked(&s->cpu_slab->lock) then and
->> just remove the "!in_nmi() ||" part? There shouldn't be false positives?
-> 
-> That wouldn't be correct. Remember you asked why
-> access &s->cpu_slab->lock is stable? in_nmi() guarantees that
-> the task won't migrate.
-
-Ah right.
-
-> Adding slub_put_cpu_ptr() wrap around local_lock_is_locked() _and_
-> subsequent call to __slab_alloc_node() will fix it,
-> but it's ugly.
-> Potentially can do
-> if (!allow_sping && local_lock_is_locked())
-> right before calling __update_cpu_freelist_fast()
-> but it's even uglier, since it will affect the fast path for everyone.
-
-Agreed.
-
-> So I prefer to leave this bit as-is.
-> I'll add filtering of ___slab_alloc() on bpf side.
-> We already have a precedent: btf_id_deny set.
-> That would be one line patch that I can do in bpf tree.
-> Good to disallow poking into ___slab_alloc() anyway.
-
-Yeah it sounds like the easiest fix and won't limit anything.
+Cheers, Lorenzo
 
