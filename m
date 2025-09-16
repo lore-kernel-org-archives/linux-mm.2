@@ -4,110 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA65BCAC592
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 18:35:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D662CCAC59B
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 18:46:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 45E7A8E0007; Tue, 16 Sep 2025 14:35:51 -0400 (EDT)
+	id 2A1EE8E0007; Tue, 16 Sep 2025 14:46:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 40F5E8E0001; Tue, 16 Sep 2025 14:35:51 -0400 (EDT)
+	id 252148E0005; Tue, 16 Sep 2025 14:46:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2FDD48E0007; Tue, 16 Sep 2025 14:35:51 -0400 (EDT)
+	id 148218E0007; Tue, 16 Sep 2025 14:46:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1C3D18E0001
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 14:35:51 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E24CBC0289
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 18:35:50 +0000 (UTC)
-X-FDA: 83895967260.15.71C9E37
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 103EA18000C
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 18:35:48 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=gvY42MzB;
-	spf=pass (imf24.hostedemail.com: domain of axelrasmussen@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=axelrasmussen@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 01FF58E0005
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 14:46:20 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id AAA11584AE
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 18:46:20 +0000 (UTC)
+X-FDA: 83895993720.21.8C37029
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	by imf20.hostedemail.com (Postfix) with ESMTP id B99C81C000C
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 18:46:18 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=kGbbALAp;
+	spf=pass (imf20.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758047749;
+	s=arc-20220608; t=1758048378;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Jv7oaIHfrPnWolRAUwMAHrfSaRXeenaXfJ1eWBHIqYI=;
-	b=mZCbXpGKWXepfsMzvIo77vByBsf2AD3ppUM5YOzuo8J0FmpRqmmjgd7Svd7Y8g+ZK272ZU
-	hJFcn1DD0pd22eSTw40cX/++lf3n2Km5+jbMEkx4cn/xJgokAi9keDwz4adLfMNXTner9E
-	1wbuQYuhbV1TXqBKxl+RtQaH4zv4DVw=
+	bh=FIfHkkN0KymLLDe2RxUNHtpRmvEkAgg1GpcLf9403Ls=;
+	b=H81r//VH3gOQ9jwkOc85dJcV4UAq+SsY4UnbDBvaDnBp+1ISd7UkVJeL7nSZhoEL9VpHsZ
+	RdHEIsrlk+YeT2BeHhIaHw9DjrQzZaQB4veQeCT24FnDOpmZpmfaPPhyZUejo9TvIZO2HW
+	N7D6JooffAoQH/y2p+/xyeJGdQrF4Qk=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=gvY42MzB;
-	spf=pass (imf24.hostedemail.com: domain of axelrasmussen@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=axelrasmussen@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758047749; a=rsa-sha256;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=kGbbALAp;
+	spf=pass (imf20.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758048378; a=rsa-sha256;
 	cv=none;
-	b=rQvz3TEnOI871nf7bj8a/T+dns9aX3eyXZrEmQ/MKGyht2mpF5T7L3ukzi3HgNkok3AKcS
-	tQOewsmCne0X2vhFaljKGW2Zv5tgXcakiLrkVSFgP560s64LmmzXMaSYGgyjD/o+GH4Y8l
-	98Ak0VrWrhv+FFuaqE1AKJ+R5++wcKQ=
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-265abad93bfso25305ad.0
-        for <linux-mm@kvack.org>; Tue, 16 Sep 2025 11:35:48 -0700 (PDT)
+	b=a7+K9ZcHwCbii2dPIgxF3VWesZbPW85WOXcFoKl0NsaDzrMXdtdEy/D2hFi9N27wxMqQMR
+	ZNf3MvB+oJhCvdo1jZp8Nxhi/TPoHrxFC02uk6yhraWCtLemo/uYJmhtxqJVsYHCbKLrvh
+	8Pmz3ykitu4XsMLlZupnZAGUIA5CQ7Q=
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-45b9c35bc0aso51844255e9.2
+        for <linux-mm@kvack.org>; Tue, 16 Sep 2025 11:46:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758047748; x=1758652548; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Jv7oaIHfrPnWolRAUwMAHrfSaRXeenaXfJ1eWBHIqYI=;
-        b=gvY42MzBD/ZHwfI+if3bybC/yEtmG3R4p5izCiJAt2REUohbx5zfsHntwCZdHBBxtQ
-         MMpQcdnREQDTbDPlWFO+O8pSNvpQZHDYnWTTr1dCSfS8feh761vjNPe/ACt2timp3am+
-         Lgu01uzvFGPnVtRikBsYPL9BT243thYqtxqGAabRUtJR5lhTJFMjBPghpxLH4dts4s1g
-         Ad2HAL1rodr4ej0go36XHWFKhMAwXzQvPaVdmQHQnsI9M57nnQZ18qqL2zW1jAriAU4m
-         Dn5Nc7EXE5iEkEViurLcsISRmPJvS0xZxyaDDvl2GeuTn15r5nUKM8WaUPccUP0JS1sv
-         08Og==
+        d=gmail.com; s=20230601; t=1758048377; x=1758653177; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FIfHkkN0KymLLDe2RxUNHtpRmvEkAgg1GpcLf9403Ls=;
+        b=kGbbALApFuCGFA2n9WfLWwqGqVDfzsdVmUgblFzUIF7zyoDpEnRSL/4r+XmQ0RzFO+
+         vSlIycITVisUAI0klM/7o5CrK9CRvZgK05Ii8Ko3KJUomGR5kcYBPMT8C+NWWGPb+l5t
+         SkHMMGISWOGdwzBN6Mn/s6vks2pyZfg5KMZwuEwkhniUpFaK1WTr3XCuqT0i/6GsspFH
+         sYSJoNGALdCksLZ8LbgsJFCA8gBLqPxLoDJdGk4KrjdMR43K6ET69xLaxYsWVLi3BkBf
+         87b4REika+yvzketInVyabC19m8SQYF0j6r6FhhWnoIJcbdIr41cUv99XMtRvCVUgmUu
+         Rx9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758047748; x=1758652548;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Jv7oaIHfrPnWolRAUwMAHrfSaRXeenaXfJ1eWBHIqYI=;
-        b=VqBtKvX9R+vg5NF5bOgnWGPim+VGgho2Rurk2UE0D3K++NKgxoxMUrvxePGHdxNy4q
-         ld1iMksxEtJfqSCcgMyIubJl8dNkg6PQ424YCQn8gXYtZvuePh+FieZRAAy6InrhFRaH
-         958V3RUsGn2nJthOFyLxGTxUU01CZPMEhjXlC2HEnVcbahO+Heao1qZtqQlkYxIkZSZR
-         W3h8o6lKQ8T93UetPIOsvEHP8Z3S+D7Z+GbZZ/I/RcDomY7hgs8dn2u5F0jHvu6iRqAi
-         iZSMDP8GKTuakb9DHDFLavKtb9ZmoHuRKY2VXddiA1jym3sZf9s2O8lW5iQpSqxW33iB
-         OcAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVrUgGuTA7QHn/+6wDZZAMaWaDfrPTID9lOsBf5RlGdY6whFlmIVsZyi83g9mrd+DAzrqM1APr7dg==@kvack.org
-X-Gm-Message-State: AOJu0Yz6k393rJaP2OgHONuYWkD/CFryaX4FtfuSRq/b9hN6YXESNvIw
-	3Y5RY4+dBwyttJcOD2RlYuehRJNzRtnZDzSi4iUjZ/xo39AQJQoaoyrTU5l9JEYf7XG9wXdp0LL
-	HAvw1aS5GgfKtNIFwZzB+GfsSFel3BaiNamBLSGYK
-X-Gm-Gg: ASbGncugylH7Zr+FGy/cajARJdmRxIIwQb7uXnciMja7IqtHFVxjJksOPWmXfWjvnUD
-	w2l1gvKUFGUfi1x9Y+dyqv/zKFYeiumyyYopu6cdou/7GdvQjkHhUzmQT1T4TTxUjMb0iIYwlkV
-	giyiCc+pcSj3P+E3rNSjwMQMjzgxHhGBxQ0kJebFbmPdjRpsrdCmitfmJEY8AOf+cYo4X3EHb2g
-	rDu+B7R2Z+K+LSrul4cYEI=
-X-Google-Smtp-Source: AGHT+IFnKdQWUrwHGQSkrPdf0moMjXXZ1A+IYR70daX42QbAE1wkKGvYulE4QW6KE+iPeTxeubVCpV/5g/TSwJVO+Ps=
-X-Received: by 2002:a17:903:41c3:b0:25d:c405:132e with SMTP id
- d9443c01a7336-26800f4d873mr614075ad.12.1758047747512; Tue, 16 Sep 2025
- 11:35:47 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1758048377; x=1758653177;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FIfHkkN0KymLLDe2RxUNHtpRmvEkAgg1GpcLf9403Ls=;
+        b=aqzvNV4oDn2EOzCn2Jk3eOFzLwWbo7lgMM5dVcaZKCGFBlekYme3vEUavo5erl8iqr
+         DptcQhYgyEr5ZuFOvzwUuNzgPtM/lS5ZeHhyYCIABQfcWpLsTYPmmzQ+xpea6OAJSz0r
+         IW6ZCvXswgP+dP1kDIM+i9XwtJGuMTkEunWuKWbdfXnJotNLr6VV5Fh4PShSwFHEM5MR
+         Ufjg8viCsJjWhDhiAzbG1Q4G1t12Ka6ip4rvDbZ1vi5oN90ZFBwazeS6U2Gwm8XaS1ZC
+         q//MiU7plGbw6KJU7qgetKFU38ThTltx3IdsBBqIQzVG1vfu1BKO4+C5KeMOoxZHt1X7
+         oUDA==
+X-Forwarded-Encrypted: i=1; AJvYcCWtokccrkXNkBPLX/w4ET8n8cMuZWiOX09rFj9haug9mJcBOsUjy3MNvSJO+JJvSkFKpBPuiar7Sw==@kvack.org
+X-Gm-Message-State: AOJu0YwakQ7NXqbnlsOZRlo/jAtaX2/+d9HoDiDAfRYmHv1aNuSfIGfB
+	QH73J4MphtCQ8JjhNPIFrjgDYSsJYrtBmk7yZvFo+7/UVnP3NVK8Xti8hFzG+hb5/nIh+oDn5Wz
+	bKZ6PJGUKcPuBeFpO5zeaHnSLaYUalhA=
+X-Gm-Gg: ASbGncv2oPk6q972qV7wK5lV+dB1KvPGWD5kxmATyO8O+aJ+8akDajyM2H4msgoQBCV
+	fn41b0SWgvAHKXgoiS1eQ+uCrYhggD/w0CLDduLUhBsrtRJzl8NHcufo4cIBuP28tZkp9ROi6q4
+	qwQpncYuBoY/xNRknhElh0B55lhk4l9CoSDfMKbAo+N4x2Pd0Zibhnqn0bYbswDCu0XHPS7Ph5A
+	AkXGx0lHjlPCvyZHP8wJA==
+X-Google-Smtp-Source: AGHT+IG33XVggnQTCWyt+uISmmOdR25xYnNt8+Yi6eqJTmHqOpfm4zbSvcmiDKC06vULGm1Y1ykX5yVSimFu6NJYlIY=
+X-Received: by 2002:a05:600c:1552:b0:45f:2cb5:ecff with SMTP id
+ 5b1f17b1804b1-45f314c15d6mr62874075e9.31.1758048376981; Tue, 16 Sep 2025
+ 11:46:16 -0700 (PDT)
 MIME-Version: 1.0
-References: <1757967196.153116687@apps.rackspace.com> <CADrL8HWGcj1oANGY=qAzpYi_-E-Xbi=L28Bmyyf8H7auVix=QQ@mail.gmail.com>
- <1757977128.137610687@apps.rackspace.com> <CADrL8HX78-oh0k2qAgqPvNVAhi4ESYvjRsScPGR2P2Dts13Bfw@mail.gmail.com>
- <aMl4qLyNovWHhty9@x1.local> <1758037938.96199037@apps.rackspace.com>
- <aMmMnfU-Koopc9mL@x1.local> <1758043654.112619688@apps.rackspace.com>
-In-Reply-To: <1758043654.112619688@apps.rackspace.com>
-From: Axel Rasmussen <axelrasmussen@google.com>
-Date: Tue, 16 Sep 2025 11:35:10 -0700
-X-Gm-Features: AS18NWAuGmVDtmu7cFXTApXqzr3q5Tq2DoxGYq9oUzEdbp5Pw6i8ZbcG8LePA9o
-Message-ID: <CAJHvVciL-6OLMPDGQjZ=VGDwvwKJznq0BL49uSj+DSq63LOUYQ@mail.gmail.com>
-Subject: Re: PROBLEM: userfaultfd REGISTER minor mode on MAP_PRIVATE range fails
-To: "David P. Reed" <dpreed@deepplum.com>
-Cc: Peter Xu <peterx@redhat.com>, James Houghton <jthoughton@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
-Content-Type: multipart/alternative; boundary="0000000000007db140063eef631c"
-X-Rspamd-Queue-Id: 103EA18000C
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 6cqaogeqqibbbe9wcu3drok3sqe9sett
+References: <20250916022140.60269-1-alexei.starovoitov@gmail.com>
+ <47aca3ca-a65b-4c0b-aaff-3a7bb6e484fe@suse.cz> <aMlZ8Au2MBikJgta@hyeyoo>
+ <e7d1c20c-7164-4319-ac7e-9df0072a12ad@suse.cz> <CAADnVQLNm+0ZwX2MN_JK3ookGxpOGxEdwaaroQk+rGB401E8Jg@mail.gmail.com>
+ <0beac436-1905-4542-aebe-92074aaea54f@suse.cz>
+In-Reply-To: <0beac436-1905-4542-aebe-92074aaea54f@suse.cz>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Tue, 16 Sep 2025 11:46:03 -0700
+X-Gm-Features: AS18NWCSLewPB96ssRVHAm1hP_pc692yCwKaHpAAYlQc7dk2NoKof6uxKdPFMiU
+Message-ID: <CAADnVQJbj3OqS9x6MOmnmHa=69ACVEKa=QX-KVAncyocjCn1AQ@mail.gmail.com>
+Subject: Re: [PATCH slab] slab: Disallow kprobes in ___slab_alloc()
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Harry Yoo <harry.yoo@oracle.com>, bpf <bpf@vger.kernel.org>, 
+	linux-mm <linux-mm@kvack.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Michal Hocko <mhocko@suse.com>, Sebastian Sewior <bigeasy@linutronix.de>, 
+	Andrii Nakryiko <andrii@kernel.org>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Steven Rostedt <rostedt@goodmis.org>, Johannes Weiner <hannes@cmpxchg.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: B99C81C000C
+X-Stat-Signature: p56hnneryrd8w3gt4um5jnks9qx5riio
 X-Rspam-User: 
-X-HE-Tag: 1758047748-483312
-X-HE-Meta: U2FsdGVkX1+PuhN6KII62MJ7NanWccvN/m1uXRTDD4K12Q678Bt/ej4BzL4SMTyBBhKg5ZEFpk6IsAim6nXpd4rI1ZagbWHdcpoiVnXffQHb8aTOpYZXWetU/RM3B/JqxrOA+515vDIBwEjPgmFYWef7QzXxpAeztICo7SRuCorBdYHxqHxlUDHzp9+x9rXVJ9FUN+LH0oMHIrXJRovXgRhcWYfpr6UBgfD0W8xWppyjjlYjR+J36zRCE3lmGcAcHZ0JwYJ9snrk//v5CegFFJxAKYFVA6G7nwUnzCmOdRfdO6jPMsPYn2wozW+QUjNZhlxKLBCCS7UFvSsD9oSKTilU6Po26snVaOhh09yamLlzwCfaJnhhuB2xVTH5RrHcHTz0CUk3zagnqK1tEgQ1AMHwiMjJ79gkKPjiryKyOTnWRfZ7sKtMJw5ctMW5LWx/PZQDcALDaY7pWZOdnFEIOvrzNnQGjUpl0ZAth8Z1UTSdu0iotSS0FbO11oJvmZ4x/cq7DfFX+dR/xGiUaUzsNyC/7DAYdYJ7ADc7Ntw/DXQ34ZroepqyoTYEWXEZF1bCXXgv4ROQhy/PxZIK0t1fIH+1x/IY2LZJPxp2ibifjuM1g9TkP4u7yNW//VyiwmMblJgmF+tRYvAbYcG23itWV6nZgymXoDKlTRiBBHnCs+vXyHcXI33+EieRYBcsvctY7n59leALpzXsQps0ENHBP8GTjlrNoUu8iXq1SPmXfEicRv1tc4VrjclD3ksLorCnIfcoA3eQhflJCHsfFBzcHrT577PLWDBe2oRTF7t25tgZYJYg1yYuegv6If22Ro2lQlx7hSXnM2d3aoo3zNgzgOQey/i1Jq1CNJHmaS8aBPp4s8tBsxtDyLgjjtUOJRvhr0D1/At1gt0fMgN42gLiTMYI3rgoC1rFnYf9fuuZKAB7r+ggBwTpdh5FC9a2tnrox3dhOIPoJR+8MDDZKGa
- IxXV5wEJ
- w5JukoMqOHhL+FDkgLKQN2DcthgvP9H9/t9QwBfrDwZnQjUDkVBmmVZYg7rEt1Ypp+6fz8NexhoNUx5kSCnDKqbIOoMKHhIgY30cVTHARYj7leIuXZZBTMLnkCOUIsDAd9b7Murapd7Dw6CK17nnsoGzY5LtgXiyuI66WrczIzU0l3saChk4vjK0XPPQLIKbmcNPsYRaHIo8H06+DY22xgfpp7+bGRd961HosccbF8TYaP/9tmmzlGJ86YrPwz28F8YJr/xJMvccCHWSla293hieHMBNH8gOOEm2i+kKkNyFohicqCxvrLKsqPChvU2Hzx90OoKnSsLXXUl/6SclXtfoN303ofdtX3yZsekP7CAuhSPz7dN0xwNxQAOr9aMSIjSSHj6/1CppqcAYJzfW+yU3u8A==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1758048378-91509
+X-HE-Meta: U2FsdGVkX1/8l8TAnWgGH2Cxe7jX/yn9nCEhKYhk2O5ev8PRCu9SfCsqFqzEnnRT0xqzRb/qAcGpWeq9hICLc/P/h7xKJcLhSJTGMNY0PF0kYNEujMBueWEdh8wD03PNOJsq5yVvC2X4ScVttbLrUbCP6I4W5L9Tv6+jpXmQfBdxccNqg0yOwdpd8b8icwcTw4cDjJDrrJUC0z4v7R2yO1b5jblYIj2sp2u/Os/RKv7UCMGq7V5rxJ2q9A2LKU8/Mr5YZHb7LXKrh6MbqZkzqeVVRB6hBjSTrL++v0cCbFfYjzQGNpL09lAKC/2WAvxWwMyoZ/c0Ojv6EyCpU3oI2C3ZmfFhux02Pup3o+Q3h4UcxJYlJH0nBWWTH4NvOjBLFNMzrfAXSdZAwgTZxH2S43WjFRvEsSGQk6O6Dwh1KhoFQP8zs7GcBQiSpTpbXkopwLMMGLWATm+i9YzoI0cW9u2LLif8clZlFzpA/oAhdKPa9621GG/HVa5+6gpI9BlMrnbbSNFaMpnTLZi/OEUeppDm2JfW4ccz5/p/e49q2xvN1s5TjDo05v73lxcoLnURQyLegS8TMuMPSOAVU0WJSrUGuQiPNps2/M05MtpHJVT+YYDo+TQMAJS44vE4FXPUvkKMVHDVHQnQ574AxdVAsbYe/uNlmA+Td1GlZFaylx+zQGMKVxxlOBUP0L2wSeFfkVEJkbIiMd7PS1/eXBZfXN1BiI+JMPUsdU+gZePNGU8dZennUdzaTyl+vnKN0sIjh/M2s5jICrz9daSjMGJNNsqrDdDNtzkIER5IhkPvFbjpqWL/Qv9RmXk+FLLIOi1mCYRkr+FrZVZNvd3YaIUT2BasnJ8kl0QRXW+upH3xFM0zBzWS2sGA+vBoRqWzjvehopEC3Dxr/8bA5+rZbaUe9obo3PUWhs60DofdK/SiX5fc+rCEDs92vhLhJRVW89t4CHb/4nDgufmPJIXsqup
+ tgxr82b/
+ nWsyKuzqx5HphaSGJlZNkCGJMWjVp1rFWqYfh7np35hRzfcZmuRyYUE8x71c1j0n75Y7/anedD6VkYTkYt2HLWPk1EhUR9eMWl6JpIi7WfDPu2Jt8L4WNFcyHaUx4gZf/4Xm2In9VJIZMv54spSwgUxMutAapksSyuHjC1v42lk6XghicDcCy/OcDXrudU3H+9080Yx9ROybyN5yBWNUXuylQbkR9ySPXocLW7dItrv4AqsP6xHuvE5MWpepU0S8HrucRp+U82XKwO9ELONBxckO3hJbMFVfGaArc4gymOEGkAcFVoxO/lRjk/xt+DmEv9J06grU9QMveRb/SnHDJMLPRmBcDr2GdBThObBBa2ewd8Gebe57woebO0mORujcweIqDqNWwNwQ5gxFmjuNZ4kk5Kkn1GanlSlIBOGvgF/2ouyKnPmrFrfTPv+7prh1Nvo6N8ZFalHEM8Vg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,102 +123,225 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---0000000000007db140063eef631c
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Tue, Sep 16, 2025 at 10:27=E2=80=AFAM David P. Reed <dpreed@deepplum.com=
+On Tue, Sep 16, 2025 at 11:12=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz> w=
+rote:
+>
+> On 9/16/25 18:18, Alexei Starovoitov wrote:
+> > On Tue, Sep 16, 2025 at 6:13=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz=
 > wrote:
-
-> Than -
+> >>
+> >> On 9/16/25 14:58, Harry Yoo wrote:
+> >> > On Tue, Sep 16, 2025 at 12:40:12PM +0200, Vlastimil Babka wrote:
+> >> >> On 9/16/25 04:21, Alexei Starovoitov wrote:
+> >> >> > From: Alexei Starovoitov <ast@kernel.org>
+> >> >> >
+> >> >> > Disallow kprobes in ___slab_alloc() to prevent reentrance:
+> >> >> > kmalloc() -> ___slab_alloc() -> local_lock_irqsave() ->
+> >> >> > kprobe -> bpf -> kmalloc_nolock().
+> >> >> >
+> >> >> > Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+> >> >>
+> >> >> I wanted to fold this in "slab: Introduce kmalloc_nolock() and kfre=
+e_nolock()."
+> >> >> and update comments to explain the NOKPROBE_SYMBOL(___slab_alloc);
+> >> >>
+> >> >> But now I'm not sure if we still need to invent the lockdep classes=
+ for PREEMPT_RT anymore:
+> >> >>
+> >> >> > /*
+> >> >> >  * ___slab_alloc()'s caller is supposed to check if kmem_cache::k=
+mem_cache_cpu::lock
+> >> >> >  * can be acquired without a deadlock before invoking the functio=
+n.
+> >> >> >  *
+> >> >> >  * Without LOCKDEP we trust the code to be correct. kmalloc_noloc=
+k() is
+> >> >> >  * using local_lock_is_locked() properly before calling local_loc=
+k_cpu_slab(),
+> >> >> >  * and kmalloc() is not used in an unsupported context.
+> >> >> >  *
+> >> >> >  * With LOCKDEP, on PREEMPT_RT lockdep does its checking in local=
+_lock_irqsave().
+> >> >> >  * On !PREEMPT_RT we use trylock to avoid false positives in NMI,=
+ but
+> >> >> >  * lockdep_assert() will catch a bug in case:
+> >> >> >  * #1
+> >> >> >  * kmalloc() -> ___slab_alloc() -> irqsave -> NMI -> bpf -> kmall=
+oc_nolock()
+> >> >> >  * or
+> >> >> >  * #2
+> >> >> >  * kmalloc() -> ___slab_alloc() -> irqsave -> tracepoint/kprobe -=
+> bpf -> kmalloc_nolock()
+> >> >>
+> >> >> AFAICS see we now eliminated this possibility.
+> >> >
+> >> > Right.
+> >> >
+> >> >> >  * On PREEMPT_RT an invocation is not possible from IRQ-off or pr=
+eempt
+> >> >> >  * disabled context. The lock will always be acquired and if need=
+ed it
+> >> >> >  * block and sleep until the lock is available.
+> >> >> >  * #1 is possible in !PREEMPT_RT only.
+> >> >>
+> >> >> Yes because this in kmalloc_nolock_noprof()
+> >> >>
+> >> >>         if (IS_ENABLED(CONFIG_PREEMPT_RT) && (in_nmi() || in_hardir=
+q()))
+> >> >>                 /* kmalloc_nolock() in PREEMPT_RT is not supported =
+from irq */
+> >> >>                 return NULL;
+> >> >>
+> >> >>
+> >> >> >  * #2 is possible in both with a twist that irqsave is replaced w=
+ith rt_spinlock:
+> >> >> >  * kmalloc() -> ___slab_alloc() -> rt_spin_lock(kmem_cache_A) ->
+> >> >> >  *    tracepoint/kprobe -> bpf -> kmalloc_nolock() -> rt_spin_loc=
+k(kmem_cache_B)
+> >> >> And this is no longer possible, so can we just remove these comment=
+s and drop
+> >> >> "slab: Make slub local_(try)lock more precise for LOCKDEP" now?
+> >> >
+> >> > Makes sense and sounds good to me.
+> >> >
+> >> > Also in the commit mesage should be adjusted too:
+> >> >> kmalloc_nolock() can be called from any context and can re-enter
+> >> >> into ___slab_alloc():
+> >> >>  kmalloc() -> ___slab_alloc(cache_A) -> irqsave -> NMI -> bpf ->
+> >> >>     kmalloc_nolock() -> ___slab_alloc(cache_B)
+> >> >> or
+> >> >>  kmalloc() -> ___slab_alloc(cache_A) -> irqsave -> tracepoint/kprob=
+e -> bpf ->
+> >> >>    kmalloc_nolock() -> ___slab_alloc(cache_B)
+> >> >
+> >> > The lattter path is not possible anymore,
+> >> >
+> >> >> Similarly, in PREEMPT_RT local_lock_is_locked() returns true when p=
+er-cpu
+> >> >> rt_spin_lock is locked by current _task_. In this case re-entrance =
+into
+> >> >> the same kmalloc bucket is unsafe, and kmalloc_nolock() tries a dif=
+ferent
+> >> >> bucket that is most likely is not locked by the current task.
+> >> >> Though it may be locked by a different task it's safe to rt_spin_lo=
+ck() and
+> >> >> sleep on it.
+> >> >
+> >> > and this paragraph is no longer valid either?
+> >>
+> >> Thanks for confirming! Let's see if Alexei agrees or we both missed
+> >> something.
+> >
+> > Not quite.
+> > This patch prevents
+> > kmalloc() -> ___slab_alloc() -> local_lock_irqsave() ->
+> >     kprobe -> bpf
+> >
+> > to make sure kprobe cannot be inserted in the _middle_ of
+> > freelist operations.
+> > kprobe/tracepoint outside of freelist is not a concern,
+> > and
+> > malloc() -> ___slab_alloc() -> local_lock_irqsave() ->
+> >    tracepoint -> bpf
+> >
+> > is still possible. Especially on RT.
 >
-> Just to clarify -
-> Looking at the man page for UFFDIO_API, there are two "feature bits" that
-> indicate cases where "minor" handling is now supported, and can be enable=
-d.
-> UFFD_FEATURE_MINOR_HUGETLBFS and UFFD_FEATURE_MINOR_SHMEM
-> In my reading of the documents, these seem to imply that before they were
-> added as new features, that MAP_PRIVATE|MAP_ANONYMOUS mappings were
-> supported, and that the "new" additions to the MINOR mode were just for
-> HUGETLBFS and MAP_SHARED cases.
+> Hm I see. I wrongly reasoned as if NOKPROBE_SYMBOL(___slab_alloc) covers =
+the
+> whole scope of ___slab_alloc() but that's not the case. Thanks for cleari=
+n
+> that up.
+
+hmm. NOKPROBE_SYMBOL(___slab_alloc) covers the whole function.
+It disallows kprobes anywhere within the body,
+but it doesn't make it 'notrace', so tracing the first nop5
+is still ok.
+
+> > I thought about whether do_slab_free() should be marked as NOKPROBE,
+> > but that's not necessary. There is freelist manipulation
+> > there under local_lock_cpu_slab(), but it's RT only,
+> > and there is no fast path there.
 >
+> There's __update_cpu_freelist_fast() called from do_slab_free() for !RT?
 
-Actually minor fault support didn't exist at all before those two features
-were added. :)
+yes.
+do_slab_free() -> USE_LOCKLESS_FAST_PATH -> __update_cpu_freelist_fast.
 
-You are right that userfaultfd's use of "minor fault" is (unfortunately)
-slightly different from the meaning in other contexts. I think the more
-normal meaning is, faults which do not incur I/O (i.e., swap faults and
-file faults [i.e., faults on non-swap-backed pages] are major, other faults
-are minor).
-
-For userfaultfd, a minor fault is a fault where the page already exists in
-the page cache, but the page table entry wasn't setup. I don't think that
-scenario can ever happen for anonymous, private mappings, so it doesn't
-really make sense to be able to register such mappings in this mode. If you
-create a mapping with mmap(MAP_ANON|MAP_PRIVATE) and then access it (read
-or write), that fault requires allocation of a new page, so userfaultfd
-does not consider that a "minor fault". My recollection though is if you
-make a file on tmpfs or hugetlbfs, fallocate() it or whatever, and you
-MAP_PRIVATE that file, *that* registration will work.
-
-
+> >>
+> >> >> >  * local_lock_is_locked() prevents the case kmem_cache_A =3D=3D k=
+mem_cache_B
+> >> >> >  */
+> >> >>
+> >> >> However, what about the freeing path?
+> >> >> Shouldn't we do the same with __slab_free() to prevent fast path me=
+ssing up
+> >> >> an interrupted slow path?
+> >> >
+> >> > Hmm right, but we have:
+> >> >
+> >> > (in_nmi() || !USE_LOCKLESS_FAST_PATH()) && local_lock_is_locked()
+> >>
+> >> Yes, but like in the alloc case, this doesn't trigger in the
+> >> !in_nmi() && !PREEMPT_RT case, i.e. a kprobe handler on !PREEMPT_RT, r=
+ight?
+> >>
+> >> But now I think I see another solution here. Since we're already under
+> >> "if (!allow_spin)" we could stick a very ugly goto there to skip the
+> >> fastpath if we don't defer_free()?
+> >> (apparently declaration under a goto label is a C23 extension)
+> >>
+> >> diff --git a/mm/slub.c b/mm/slub.c
+> >> index 6e858a6e397c..212c0e3e5007 100644
+> >> --- a/mm/slub.c
+> >> +++ b/mm/slub.c
+> >> @@ -6450,6 +6450,7 @@ static __always_inline void do_slab_free(struct =
+kmem_cache *s,
+> >>  {
+> >>         /* cnt =3D=3D 0 signals that it's called from kfree_nolock() *=
+/
+> >>         bool allow_spin =3D cnt;
+> >> +       __maybe_unused unsigned long flags;
+> >>         struct kmem_cache_cpu *c;
+> >>         unsigned long tid;
+> >>         void **freelist;
+> >> @@ -6489,6 +6490,9 @@ static __always_inline void do_slab_free(struct =
+kmem_cache *s,
+> >>                         return;
+> >>                 }
+> >>                 cnt =3D 1; /* restore cnt. kfree_nolock() frees one ob=
+ject at a time */
+> >> +
+> >> +               /* prevent a fastpath interrupting a slowpath */
+> >> +               goto no_lockless;
+> >
+> > I'm missing why this is needed.
+> >
+> > do_slab_free() does:
+> >                 if ((in_nmi() || !USE_LOCKLESS_FAST_PATH()) &&
+> >                     local_lock_is_locked(&s->cpu_slab->lock)) {
+> >                         defer_free(s, head); return;
+> >
+> > It's the same check as in kmalloc_nolock() to avoid invalid:
+> > freelist ops -> nmi -> bpf -> __update_cpu_freelist_fast.
+> >
+> > The big comment in kmalloc_nolock() applies here too.
 >
-> It seems odd that anonymous page faults and COW would not be handled,
-> given that context.
+> But with nmi that's variant of #1 of that comment.
 >
-> Anyway, that's unclear in any of the documentation. This just adds to my
-> last response where I explain my use case.
+> Like for ___slab_alloc() we need to prevent #2 with no nmi?
+> example on !RT:
 >
+> kmalloc() -> ___slab_alloc() -> irqsave -> tracepoint/kprobe -> bpf ->
+> kfree_nolock() -> do_slab_free()
 >
+> in_nmi() || !USE_LOCKLESS_FAST_PATH()
+> false || false, we proceed, no checking of local_lock_is_locked()
 >
+> if (USE_LOCKLESS_FAST_PATH()) { - true (!RT)
+> -> __update_cpu_freelist_fast()
+>
+> Am I missing something?
 
---0000000000007db140063eef631c
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote g=
-mail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Tue, Sep 16,=
- 2025 at 10:27=E2=80=AFAM David P. Reed &lt;<a href=3D"mailto:dpreed@deeppl=
-um.com">dpreed@deepplum.com</a>&gt; wrote:<br></div><blockquote class=3D"gm=
-ail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,=
-204,204);padding-left:1ex">Than -<br>
-<br>
-Just to clarify - <br>
-Looking at the man page for UFFDIO_API, there are two &quot;feature bits&qu=
-ot; that indicate cases where &quot;minor&quot; handling is now supported, =
-and can be enabled.<br>
-UFFD_FEATURE_MINOR_HUGETLBFS and UFFD_FEATURE_MINOR_SHMEM <br>
-In my reading of the documents, these seem to imply that before they were a=
-dded as new features, that MAP_PRIVATE|MAP_ANONYMOUS mappings were supporte=
-d, and that the &quot;new&quot; additions to the MINOR mode were just for H=
-UGETLBFS and MAP_SHARED cases.<br></blockquote><div><br></div><div>Actually=
- minor fault support didn&#39;t exist at all before those two features were=
- added. :)</div><div><br></div><div>You are right that userfaultfd&#39;s us=
-e of &quot;minor fault&quot; is (unfortunately) slightly different from the=
- meaning in other contexts. I think the more normal meaning is, faults whic=
-h do not incur I/O (i.e., swap faults and file faults [i.e., faults on non-=
-swap-backed pages] are major, other faults are minor).</div><div><br></div>=
-<div>For userfaultfd, a minor fault is a fault where the page already exist=
-s in the page cache, but the page table entry wasn&#39;t setup. I don&#39;t=
- think that scenario can ever happen for anonymous, private mappings, so it=
- doesn&#39;t really make sense to be able to register such mappings in this=
- mode. If you create a mapping with mmap(MAP_ANON|MAP_PRIVATE) and then acc=
-ess it (read or write), that fault requires allocation of a new page, so us=
-erfaultfd does not consider that a &quot;minor fault&quot;. My recollection=
- though is if you make a file on tmpfs or hugetlbfs, fallocate() it or what=
-ever, and you MAP_PRIVATE that file, *that* registration will work.</div><d=
-iv>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0p=
-x 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
-<br>
-It seems odd that anonymous page faults and COW would not be handled, given=
- that context.<br>
-<br>
-Anyway, that&#39;s unclear in any of the documentation. This just adds to m=
-y last response where I explain my use case.<br>
-<br>
-<br>
-</blockquote></div></div>
-
---0000000000007db140063eef631c--
+It's ok to call __update_cpu_freelist_fast(). It won't break anything.
+Because only nmi can make this cpu to be in the middle of freelist update.
 
