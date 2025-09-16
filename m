@@ -4,94 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2F18CAC597
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 03:16:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0364DCAC592
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 03:23:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3C1A18E000E; Mon, 15 Sep 2025 23:16:23 -0400 (EDT)
+	id 30DDA8E0005; Mon, 15 Sep 2025 23:23:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3995E8E0001; Mon, 15 Sep 2025 23:16:23 -0400 (EDT)
+	id 2E52A8E0001; Mon, 15 Sep 2025 23:23:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D6788E000E; Mon, 15 Sep 2025 23:16:23 -0400 (EDT)
+	id 221A68E0005; Mon, 15 Sep 2025 23:23:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1CB5D8E0001
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 23:16:23 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A6FD411ADBF
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 03:16:22 +0000 (UTC)
-X-FDA: 83893650204.03.A026E08
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 109288E0001
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 23:23:49 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A1813C0805
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 03:23:48 +0000 (UTC)
+X-FDA: 83893668936.21.06F5D54
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 15D6340002
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 03:16:20 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=qLiL7R0f;
-	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf13.hostedemail.com (Postfix) with ESMTP id 3410220003
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 03:23:47 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ULJFTSLE;
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757992581;
+	s=arc-20220608; t=1757993027;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=su8v0JJisc5ExLw2TdJKF8rbpdBFuukhtFLzQevQ5cw=;
-	b=xRmMpY7noRpr69OaEqFWBfsVqM39CqQdkehDGc6YV4pPlid3yVEWYp65qa692QzChBK/2C
-	4mpvnwqMYmsmpaVmom3MulkdnpodNMbAhlDpdqgVj7DM9d2HYIDr20nLveotzmy+BlnmbQ
-	eIFE/XKe+IfCLY+1CVHZ3d7tmpOP9Eo=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=qLiL7R0f;
-	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757992581; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=RZNXQchncEh6YZP8UPNPAxyjnSFPIeBSxhTNgs0G2Lo=;
+	b=K5BRBfEr+rS+4clMtj7PmCrs4QByv7PCurcLeFs/ZjsS+t3s1YewFdBFXVMwzDZM8+2gxY
+	E6Dlq3s4b40AoRSUW+ejLBBuuE2wOZPmRVq6k2elaNG+oQRRUZZHgLb+WYKUC/7HEwc18A
+	mdSZ4lcHGQZb/pewGwZgSlJegZOHJ+U=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757993027; a=rsa-sha256;
 	cv=none;
-	b=qpwzNk9RBIoHu4KlS/vcby9FTnVeFEv/O5+BWkvqoWxcIoFNQjh9SZrwiD9mFi6CDuOuBD
-	BoSiaWLN6D5oQ4mGscphjEChlREaLbwCT5raRp6adPDxyhzB8NjTreIPs4hMVM2nSpQOgI
-	iCP7PAw6xkPs38o+mkvobS6O196LNlU=
+	b=3fC+dP+WIUEySKPEamnxwCahIkDsYLBFWJd+yXrXRzoxxwpBCHZnXvfzLSzoSG7Yo/i9xj
+	wEMiIUDT3tiO7w7uIzoHsLnLYMsbOzs7j8RlHC7swcUADr4n5wQhlX2emyMklRV7Sg/pUE
+	Abuk+SfVOdEffA443fGjHswfa3L7rbU=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ULJFTSLE;
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 442316013B;
-	Tue, 16 Sep 2025 03:16:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE8A2C4CEF0;
-	Tue, 16 Sep 2025 03:16:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1757992579;
-	bh=KQgIDFeYj6BfahlWkfqkbzH/E4fZL8fqkKbPwk5VHm8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=qLiL7R0fKERFaeUDekpvnT0bCQ6X1MJ36FqoZwhuZrNzvtGm9MkQu9m08+MI4WZwM
-	 TzBCMurJMdOsYoEgNdNN3ZGQpUPubYUYOjWvvM/9imNNEYhG6BNYZqtqjDxf7V2NNc
-	 F/gly7u3moLwHxdh8lc10HKrP88+9PrO3jsPjU6s=
-Date: Mon, 15 Sep 2025 20:16:18 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Kyle Meyer <kyle.meyer@hpe.com>
-Cc: corbet@lwn.net, david@redhat.com, linmiaohe@huawei.com,
- shuah@kernel.org, tony.luck@intel.com, jane.chu@oracle.com,
- jiaqiyan@google.com, Liam.Howlett@oracle.com, bp@alien8.de,
- hannes@cmpxchg.org, jack@suse.cz, joel.granados@kernel.org,
- laoar.shao@gmail.com, lorenzo.stoakes@oracle.com, mclapinski@google.com,
- mhocko@suse.com, nao.horiguchi@gmail.com, osalvador@suse.de,
- rafael.j.wysocki@intel.com, rppt@kernel.org, russ.anderson@hpe.com,
- shawn.fan@intel.com, surenb@google.com, vbabka@suse.cz,
- linux-acpi@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mm@kvack.org
-Subject: Re: [PATCH v2] mm/memory-failure: Support disabling soft offline
- for HugeTLB pages
-Message-Id: <20250915201618.7d9d294a6b22e0f71540884b@linux-foundation.org>
-In-Reply-To: <aMiu_Uku6Y5ZbuhM@hpe.com>
-References: <aMiu_Uku6Y5ZbuhM@hpe.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	by tor.source.kernel.org (Postfix) with ESMTP id 94CFE60054;
+	Tue, 16 Sep 2025 03:23:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F03CAC4CEEB;
+	Tue, 16 Sep 2025 03:23:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757993026;
+	bh=4jBYgC3B4Dhd303wNeVwtug9xXIozvpiLACdj/mfJYQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ULJFTSLEjhLTnYaJ8VomtdHFO0MK/5GOkZ22GgT+1bTFxtoBt8+GSa5nq8l+JSY1f
+	 2Y0nDf2wb4/7+ttj3lRbssKPjo1MyXHGF6inHxMejvMLrP3n68iBYHREs7X8G7V1lm
+	 giNsIqwwFwaan3hOhWzCB4mcR7KcQcrr1gbTrrXRImM3lBqj8zTPva1CSisUxEvZcs
+	 OuaEHZ0w6ex5GE50uPoNp7Jc4lHxS7dtNYdI+H14S62t31ACopua7aXA0HeOCFxyoM
+	 CjYlfVciNMpRRP7LEVbC461b4yb1YyeKbGHkZAUuKIB3+tkJglb3ilx64ZhE/QwyPp
+	 o8S6g+oqUbS6g==
+From: SeongJae Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	David Hildenbrand <david@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	damon@lists.linux.dev,
+	kernel-team@meta.com,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v2 0/5] mm/damon: misc fixups and improvements for 6.18
+Date: Mon, 15 Sep 2025 20:23:34 -0700
+Message-Id: <20250916032339.115817-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 3410220003
+X-Stat-Signature: p8gjuyc66898nck7xcmq793icbjnjo75
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 15D6340002
-X-Stat-Signature: maa1howeouc7u13zagrd8g94k4n5qabz
-X-HE-Tag: 1757992580-185678
-X-HE-Meta: U2FsdGVkX18ThPHul3oEypt6ERRdGaVOfZBgG6Ji4XZqVrIzL+sq3uoItIfkNDR2yGaICpw2AMi/1eiJfxe8+F9Eo63nsvoS8FHWjnexPuPcVkrnXi7hLW/V1w/1g/M4LmMpvAu2vxSOWumYtNFf3Ue1ia3ZMbFoKqQDHS8zIb5L7/cC1MqsB7OMlC8J2mSpRlbgBXXjmgfZbDpQlR0R9m78spbRkm53phQw6TOJodtETg4BNcP5xmqYHg17exyNnLWMDy1wdbBQ0iQ9OwO4UPWijoEejhCJl24YKsAHk3galAp/+RMWK4+qB8vxI9AQV5bd8nt0XhiJe4LXqRC6C0BUWKmSF2W4zsJD6MERzWEualHCd58dMeBcp+Mu1O/ySdPdX4Umms3EPZKc8v3Ly4pBuU7vM6W3IppEkTciUq4AW1j6YX0jlYG433g9ApxHLANL5OUVaEiwcUa7u1/3TU08KdMUqg9t5QfTzFElZwXY56p1rgvdtvPP/vTAtC2T+wrHxXDcva2RJy7mPi5BmAAuevj+tstcRXyXYwhIkeEDLJKCi1hFGPhLZJ6URoUwqHhfOA0Cp8qx3zgzCqHEDH3c4NU5AyP7LR/RPNXwSRq4RIOjxNKMqSZHm+uW9OFHVMsULT/yqvAl0/gFnB37WgWd/qtsPIJCadOsh3wwuDv3cNBpO5mWAOKkAF/fNLerWfXbnkL+hXTDAfa/cOdxgmixtt62crdUs8038v9SEpjxcQ2LuWN+AqA/zvrnhOzxzFVH083Gd2sW/D3DqCV9llSccjcxm1vdAcVwXKBhCmPgxK02CjzYgmd5F6xZb9yGjGiB2KBPpQ8a88qFsRNUYEGWlr4O2Vy+nX3sANrP417TZKcFtJoBGqyVeDFmf0etwAyHfNJIKubA7Iq60pFVD2SY/dVDr/T2OGXFsFaizuCPD3C5HI8k61aMx7TNQHpt9MOBwHAo4gl833hIg/e
- HkQ2louW
- cYMS2ucTJ1ecdp/oT0XCINMNX/TM9sEx0Tw8UmR5RgzbQeezxfST/ify2TOByc/yGoD2MUWDXJu7K1+dxTMiZdvhWpuN8nAzCFM7aVaVlCKBKSN0QveccmHF2+zlPEHk9iDkWevd8J2PwofET1jLdljCxc9OMnCvMFLtBKusgBJcKKPGBQwec7WBO/XD4J11KFkigWaorOzbq20q4xoTcBS8b4LPKeBW/IFemDPmjBvg9x1rZ1uKSotzsGT3YS6ATU98oyNEDjvj6AUhm58PyMqKjbBzudMP+SSBJWaZQEAyY3yb1Ofd6C9oVa97XTsIkCLFh576X9jKIY65obU1CCjxGwDVA+yCQEKBFfkdgeA2ZZAqHu9ivkbOi/g==
+X-HE-Tag: 1757993027-923869
+X-HE-Meta: U2FsdGVkX18T6cr20mMyBmO9hbIm58ZqRYRJDaPln4r0W2VjQ3AjRRk9r7dQ8tZKql0J4IpXpMtYWgbUNy3hspvTZhejY7gGzdoj3N/k/6T8Uc9m+pEgiF9pJl001WK6NTxsrX0oMYUaaymi560I6SetjdtelkqBNel5yP3BtnaJehEf8wf/Hfz9pb/TvoS05t51w3qDUg9axfX6SOVkv5RqUwTrvIpplMUufBhQtHTZLxB9UUqgq1ugU2aO7JnJeGz2XhfOp6jESSc9NkGRkZyH39YByr5VIPQKpcNvttoh/oNZ2n5q7gkUFJdUFyxJXJzyiMfhJS5WunV6OylNYUAJeGuEDBXk2L4NoFdMjwDnYXFA4ogsOCWL0+g7eKbt5+3MaiqSgHO/oTa2RhWFskgVebO/vofZN+182pmUFd0tNHggeutHmHaKNcAJItnMYrUEVsja2fZDzXX/pwFlD+6vek3XxjIBnYJVj4S7Uts25qpbYeyjZoQPYPt3x7w+3QjPSWNzUCMnVca6cDn3H4m+IXJ5husa/UjAFPiEB9kHC1cgw0LV8OF8C8ri+AElEveKGo3jaf0tqqvmnvOrmVpNUK0lAHl8xm+OwZnhSBbrXmSUT1xlU5zszvqrVzf1jMgVdQF6rAMsnwdgLItXrPqb+mVQgxdjLgYkUV6+pKpfcFAH9xTkFBV8Vr7lVuRIUJmdD5zyMTcHIz02XIe6ADy7WbwKXsrp30md0cS2O0d8mh8KTeFSWdgWCUM0aAZd1MNr2McPR54pFm1Q4vmrtHb1KVmdQaUKofzRvr77a+/nbg7RlV9L1R9fZE4mE/0zaxhYuQS1iIXTi0iXSdRiGldz0Z0BW3hkzH6DrL/hIKLPkKxbSjdeOeUFa5DGJU5mmuwdhoY1Ew2PQAPRa15Piz0GsI1lsra+ipktDHdbEeG/wCf2Drmv8UCAgNI9y8Pf0M7zi0a3qlhHPBpVxH6
+ mEtYjCvs
+ D5WA+IK+2knRc/mTi/jVTjbLc2MIJsDldrCiqQ2VqlqGdc4BLlHN9tTqDxKPubDiaHsNxO61ApUMZ7s5MgliukLfduDB9wSKOyTICjBnv373KgOSgLJdpsInqcTzcKVew0UBzr/qqMONIdb2K9g2E5hbX6fMFhKW1Pnm1v0pMt8tIYCPGjM8egbXiT9If6LWbj0DyZkFvtow9TPfMMG2NmTrFpX5swFgcqOjggNSlaKf2fMo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,55 +101,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 15 Sep 2025 19:27:41 -0500 Kyle Meyer <kyle.meyer@hpe.com> wrote:
+Misc fixes and improvements for DAMON that are not critical and
+therefore aims to be merged into Linux 6.18-rc1.
 
-> Soft offlining a HugeTLB page reduces the HugeTLB page pool.
-> 
-> Commit 56374430c5dfc ("mm/memory-failure: userspace controls soft-offlining pages")
-> introduced the following sysctl interface to control soft offline:
-> 
-> /proc/sys/vm/enable_soft_offline
-> 
-> The interface does not distinguish between page types:
-> 
->     0 - Soft offline is disabled
->     1 - Soft offline is enabled
-> 
-> Convert enable_soft_offline to a bitmask and support disabling soft
-> offline for HugeTLB pages:
-> 
-> Bits:
-> 
->     0 - Enable soft offline
->     1 - Disable soft offline for HugeTLB pages
-> 
-> Supported values:
-> 
->     0 - Soft offline is disabled
->     1 - Soft offline is enabled
->     3 - Soft offline is enabled (disabled for HugeTLB pages)
-> 
-> Existing behavior is preserved.
+The first patch improves DAMON's age counting for nr_accesses zero
+to/from non-zero changes.
 
-um, why?  What benefit does this patch provide to our users? 
-Use-cases, before-and-after scenarios, etc?
+The second patch fixes an initial DAMOS apply interval delay issue that
+is not realistic but still could happen on an odd setup.
 
-> Update documentation and HugeTLB soft offline self tests.
-> 
-> Reported-by: Shawn Fan <shawn.fan@intel.com>
+The third and the fourth patches update DAMON community meetup
+description and DAMON user-space tool example command for DAMOS usage,
+respectively.
 
-Interesting.  What did Shawn report? (Closes:!).
+Finally, the fifth patch updates MAINTAINERS section name for DAMON to
+just DAMON.
 
-> Suggested-by: Tony Luck <tony.luck@intel.com>
-> Signed-off-by: Kyle Meyer <kyle.meyer@hpe.com>
->
-> ...
->
->  .../ABI/testing/sysfs-memory-page-offline     |  3 ++
->  Documentation/admin-guide/sysctl/vm.rst       | 28 ++++++++++++++++---
->  mm/memory-failure.c                           | 17 +++++++++--
->  .../selftests/mm/hugetlb-soft-offline.c       | 19 ++++++++++---
->  4 files changed, 56 insertions(+), 11 deletions(-)
+Changes from v1
+(https://lore.kernel.org/20250915015807.101505-1-sj@kernel.org)
+- Separate [1] damon_attrs param_ctx usage as a hotfix patch
+- Make nr_accesses reset condition easy to read
+- Collect Joshua's Reviewed-by tags
 
-I'll add it because testing, but please do explain why I added it?
+Changes from RFC
+(https://lore.kernel.org/20250909034353.7064-1-sj@kernel.org)
+- The RFC was only for the first patch
+- Rebase and wordsmith the first patch
+- Add a few misc fixes and improvements for 6.18 to the series
+
+[1] https://lore.kernel.org/20250916031549.115326-1-sj@kernel.org
+
+SeongJae Park (5):
+  mm/damon/core: reset age if nr_accesses changes between non-zero and
+    zero
+  mm/damon/core: set effective quota on first charge window
+  Docs/mm/damon/maintainer-profile: update community meetup for
+    reservation requirements
+  Docs/admin-guide/mm/damon/start: add --target_pid to DAMOS example
+    command
+  MAINTAINERS: rename DAMON section
+
+ Documentation/admin-guide/mm/damon/start.rst  |  2 +-
+ Documentation/mm/damon/maintainer-profile.rst | 17 ++++++-----------
+ MAINTAINERS                                   |  2 +-
+ mm/damon/core.c                               |  6 +++++-
+ 4 files changed, 13 insertions(+), 14 deletions(-)
+
+
+base-commit: 4178fb3b4a5145053746caab556b1c5f5538bf3f
+-- 
+2.39.5
 
