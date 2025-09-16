@@ -4,119 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C1B6CAC592
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 20:48:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1258ECAC598
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 20:50:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 388698E0002; Tue, 16 Sep 2025 16:48:04 -0400 (EDT)
+	id 563DF8E0006; Tue, 16 Sep 2025 16:50:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 360138E0001; Tue, 16 Sep 2025 16:48:04 -0400 (EDT)
+	id 53B808E0001; Tue, 16 Sep 2025 16:50:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 275698E0002; Tue, 16 Sep 2025 16:48:04 -0400 (EDT)
+	id 450C58E0006; Tue, 16 Sep 2025 16:50:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 111AA8E0001
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 16:48:04 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id ABEAB13A960
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 20:48:03 +0000 (UTC)
-X-FDA: 83896300446.24.2634BCE
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	by imf02.hostedemail.com (Postfix) with ESMTP id ACD7C8000E
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 20:48:01 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=d7Rp+Wxj;
-	spf=pass (imf02.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 344AF8E0001
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 16:50:57 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9C910119899
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 20:50:56 +0000 (UTC)
+X-FDA: 83896307712.23.8E3DB49
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 9085E4000F
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 20:50:54 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=nsbURf3C;
+	spf=pass (imf17.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758055681;
+	s=arc-20220608; t=1758055854;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wnUpZJEnRBwm4SA8hacWkv0qxtpcVpis+ipIASBsxLg=;
-	b=KOS0A8tjxnTYaebhhFGOqI33xpz6dxCdoRUY8yt1A/xnlf4r1p7vDasOqm0cb8id01yi8U
-	obEm5eCvk2nq9EF46x0un/T24p6l3xHeNYdIlbLl2dpYnNsRGTpxRPkJbFPqbwf0hOHUce
-	YwPjw2RxuuTsQYQkl4TfYfTwKYulW7U=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758055681; a=rsa-sha256;
+	bh=UvbfcOQ83kSu2crutVh7QYmuTH9yOcGKqLy75e7Rd7s=;
+	b=0gWgLCLeLMC67jXyviuc6dgJMu4RzdEbZ0Gd4FjbR1lrjZQ/KtDCXokINCdARyoSVSlO9h
+	jTN1WC1mWMVsNF82A3OW2i/gbvbj8FvW2hXJFMGT4u1gfd12/NDP7wxDyQtXRIYZW58Qrp
+	G+i9XNLa7ZYQ9dy7Z9emKsgkZ0LOUXI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758055854; a=rsa-sha256;
 	cv=none;
-	b=hOPWEn/zcu5Iwvbocg2H5xOQB2pUzsa4wjyKxkylIOJqFzG4gSwTzHIWIQU+mRs4uYywf4
-	7JU6UhtuSF3t2PAx52uNpalFGnYPqPyRScVg0LRfHTpCKo/YRSpBXSc01OS9R1w+HbNcPW
-	FYbi+e68SX2WmfNcYCQ5oQbqT881IDo=
+	b=F6y9cfTkLeOzt77Cq81hxpQc52dwZ6uiTeFywZ5WuPrJRoc4GRiYTi9+mhEVKUKjdiXkT9
+	efdzMQ0sltb7PZF/2hwowjOgO+s5/kzzIwVHOv4r3VZCgJ/xq60DKib3F4s7XlHUO4qX4J
+	/x30pgvtUC9v00sqOBhas3GFKCQTezw=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=d7Rp+Wxj;
-	spf=pass (imf02.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=nsbURf3C;
+	spf=pass (imf17.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-45dec026c78so60049105e9.0
-        for <linux-mm@kvack.org>; Tue, 16 Sep 2025 13:48:01 -0700 (PDT)
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-45f2f7ae386so19886855e9.3
+        for <linux-mm@kvack.org>; Tue, 16 Sep 2025 13:50:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758055680; x=1758660480; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1758055853; x=1758660653; darn=kvack.org;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=wnUpZJEnRBwm4SA8hacWkv0qxtpcVpis+ipIASBsxLg=;
-        b=d7Rp+WxjW2Tyzb9jPUwOkOq25I515MnYI9JYF6NVVQa2hVN+qG+OEo7WMy3GnigJl/
-         sY1eWMxA70BWLfl6U6FLbVWvEezxvEIQcDrd86QY3fcoTeKnEQL5vnbOxnXAwlIpFm4L
-         VQleshgDMx5I52Zow4fWWeJvp5TAuUDcxsVCvsrxNqIRgadAMYB2q5NVPnechdbJQfTa
-         BJMmoiNRZCTYfZ/w9Kmcd8tJWNdX8f009yawKi49o0kE34uGOHDC+TSmeTdzginOm1MK
-         VR6XOkoKkLTuWoendCfyoMmf21jubHf+XHWpCHI5c4zbj4Ht7EKIs9YcPlcQ1gd+2gkc
-         Zm7Q==
+        bh=UvbfcOQ83kSu2crutVh7QYmuTH9yOcGKqLy75e7Rd7s=;
+        b=nsbURf3Cqfm1B/bGPusx31Vchn46wAib1vlx78r9qKT2GpvkSbLLLFXxFMpSAFxRuo
+         VWDbrqdz+rMP/wXC5xtsL380U8xeRu27c+i+3r9iHEAJ6sCi3j0STOwvjFBFuFYe635d
+         PAWoPC5dnuC5zQqiHCgzI3QI182N9XOMiWS7njTg/qg5a5LFcmkC/83AqP3DM4i1AV5O
+         4hfaPwS0LqQHe9Z2EZiwsSkGYWqHKKxYf6SrUtnAhrl1vxc4OmkQYiLws69TRvLRvm8u
+         9Ra1++YScNEC4iMp0lywIDfdiyjzox3wiaPYLgai51MUDpJclh9kLC+wFdVMBeQ13rzh
+         in3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758055680; x=1758660480;
+        d=1e100.net; s=20230601; t=1758055853; x=1758660653;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wnUpZJEnRBwm4SA8hacWkv0qxtpcVpis+ipIASBsxLg=;
-        b=eabBfw39J0oxMlECID6SmVo4F9oajHr3M6fIusdiqC8Gg1S99AhuBk2c23ETBxm6SE
-         PCHmZ68+j1U69pWezHel+xIJNVmzZDTmsSpILvQqJok+TJmMk7dTJoQLyVBI4CdU3vCk
-         C6M2+QFvHCgDxn2kO66TOPeIT0AVQpM5WQBWWsNNtq3rXkomGWz9uiyRmaHaVCoG+gHK
-         sKF5JZ1bDdBp5F3daTDqf/jmYALUJhPuHgKb1hM6IzHT5y/hz8EtKZgS565qg43rc/+H
-         jrDGrFDcFfvcInT4MEALqI9EXMzyi9lqDTsPbN0c370REt/yMPUg+raIPTIwxyNPDCWw
-         kZkQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUqnZCJ2TVxRuhLe4ykL10tYwiKhrmRnSTVfy8fZwgOqXt3BkbHzdiAk/9mG2OMjQ6cjM0zz+uu9A==@kvack.org
-X-Gm-Message-State: AOJu0YxdLTAPlljlVKuuMIp8cBzbOozyoaTfDhbcwhzwKZ525fTM9ybx
-	Imzq4GSL+lWpoY3uHDcVi7GbBNmIgcU3rWRmNLPueVo6sMqMuCX0Xa+U
-X-Gm-Gg: ASbGncvR47Gb+qZEdkdavYhHOHAMi7fT/zX+95HlR72zPzQuXIcC6y17mRbFfR3PmnQ
-	rz32tppV9EriK6p+5stHMddCJba5Ry5gheXDupFin459g0gykI7aKI6IoIBc3ZdL6dSrcrvnVEx
-	D8qzgTTT3vcKbijRCmKdT5951V45ssxMUfCDsS7WtOzMCw80njIKymlNjmmcV+EUlWg0WH0ZRc9
-	H8ZJIdIgF6jNO9Sh15JJtTVVoE7m+WCvYwzfVsbWiKBd8//+nsmPvQwpB9YkWCv/pAq0eMMSge7
-	Ho6MQK/WRbqozP3NZDi3izkakhK3KIv3A9ddrTk3ElXKlxEgPVt43IzNlugyFd5DUq1L2gYQQq8
-	7ayW8JHFBQ1Ya23zRIqkCFPkVvPaOVU2uEyZD6vPw6f/CfmfU8oUhZ3GAdkJATyTE4s4+XllQ7l
-	qP0PMHgt1VDZdDRv8FvA==
-X-Google-Smtp-Source: AGHT+IEkxcTio6GGFoM3muCkeaaC3BaAbrW6vbBnnuCs4pDQo46lP6f91xDpDnWdbW4d1+fTPKzarQ==
-X-Received: by 2002:a05:6000:18a7:b0:3d4:eac4:9db2 with SMTP id ffacd0b85a97d-3e765782b5fmr20202818f8f.5.1758055679917;
-        Tue, 16 Sep 2025 13:47:59 -0700 (PDT)
+        bh=UvbfcOQ83kSu2crutVh7QYmuTH9yOcGKqLy75e7Rd7s=;
+        b=J8YmMJWQmFO1zAMzNRevwQlgNZ6q7kzc2SII/WZCbaou5w2S+mhiLyjd756hym5lpT
+         XQ+JAxo7H3qQWn1QdpZ9Y/olAMGucO4bJ+6xsr9XoekQGMJCuyHVVOChA4+lMkIor9WD
+         SFb91MnBiKZtpfrLAsILudw3LBD9JQ1DMNMKn/BJM3niFUPf4SoxBISjKq7VVdLkKTZK
+         g3wNrl2gdnPlWv0cDsJCiZ7yoPwO1w0J0lasLu8BV3Rb/nwTEEAH8eoaAgCIX+4rqRZq
+         njWLOZzOTU/WMlGnhSEFL12RpFH9wOJdSSDDFvvivRMb7pFSOPeAVlAxa9V1DC8CvPVx
+         PUcg==
+X-Forwarded-Encrypted: i=1; AJvYcCU6Hqw9EGch0Izl9JJiJ0L5nBa332t5qHFl4IkV+RFU0cymjn2L1Tk11UJv8bZXyb5VYl/hPO+Nng==@kvack.org
+X-Gm-Message-State: AOJu0YxgyKDND783Zk5exu0behX3jmsfSmGhRZXnvh/UGfgTPt5a7ie8
+	/Ahg4eptf0zhwUg2OjDaj+pRu1C0CVJVWxqdQof5oj+5vO3IhoeAerXk
+X-Gm-Gg: ASbGnctc6wreZjPqhaMuUZneuILApSO43DvBMHi8zD6s+iPrHpala45FN0DmpglOty8
+	vreG7n5PPlDFxvie8raZRP6Pqup6/No9gWq8ca/o+z8RNXJR6x9I27gRxC3NXQNAZRpyNMZtNkM
+	FQOEx77fK2kABRku0AxVdRJu8kum+MqGCyNo+chFc0yadDIQDahm726CLZWHDrnAhG+bw1Fl83V
+	SDJnl0quoHeJTSiWghu3j5HKxGUb5KAX5yL1KhTz3TSAH2uKT2ppjEzjVTGfk+LB2pCmtev6gV2
+	ZkKzxlhVWNUzlQkJFz7XOcSafZIDJID/JfsJkzM6MFLQvgDkkBtn2UqalAag/h/W0MF3VFJ4tu2
+	G8WKzb+n5/TagRe0hLP7opruQ7jSIbBhaHTlSani9m+iTy0DFehvE2+1GcR3cAW+FKOSrLDxn9m
+	ZjM5OSa+IlJiksRf6XlQ==
+X-Google-Smtp-Source: AGHT+IHjaMedUvutln+TjYg3sLFd6itsoE7Nvpt3KUzyJzf+b+6hQAzmwMYEn4kLYImnrBTnPQl7sA==
+X-Received: by 2002:a05:600c:6c86:b0:45d:d2d2:f081 with SMTP id 5b1f17b1804b1-45f211f6b0amr115679015e9.20.1758055853080;
+        Tue, 16 Sep 2025 13:50:53 -0700 (PDT)
 Received: from ?IPV6:2a02:6b6f:e759:7e00:1047:5c2a:74d8:1f23? ([2a02:6b6f:e759:7e00:1047:5c2a:74d8:1f23])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3ecdb0a2752sm2366465f8f.56.2025.09.16.13.47.58
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4613930bdd8sm7809815e9.19.2025.09.16.13.50.51
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 16 Sep 2025 13:47:59 -0700 (PDT)
-Message-ID: <4429cad8-5363-4bd0-8b7a-36396d322464@gmail.com>
-Date: Tue, 16 Sep 2025 21:47:58 +0100
+        Tue, 16 Sep 2025 13:50:52 -0700 (PDT)
+Message-ID: <4c4e97c1-7f93-4c09-a235-ab169a998ef0@gmail.com>
+Date: Tue, 16 Sep 2025 21:50:51 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] alloc_tag: avoid warnings when freeing
- non-compound "tail" pages
+Subject: Re: [PATCH 1/1] fixup: alloc_tag: mark inaccurate allocation counters
+ in /proc/allocinfo output
 Content-Language: en-GB
 To: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org
 Cc: kent.overstreet@linux.dev, vbabka@suse.cz, hannes@cmpxchg.org,
- shakeel.butt@linux.dev, 00107082@163.com, pasha.tatashin@soleen.com,
- souravpanda@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20250915212756.3998938-1-surenb@google.com>
- <20250915212756.3998938-4-surenb@google.com>
+ rientjes@google.com, roman.gushchin@linux.dev, harry.yoo@oracle.com,
+ shakeel.butt@linux.dev, 00107082@163.com, pyyjason@gmail.com,
+ pasha.tatashin@soleen.com, souravpanda@google.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20250916160110.266190-1-surenb@google.com>
 From: Usama Arif <usamaarif642@gmail.com>
-In-Reply-To: <20250915212756.3998938-4-surenb@google.com>
+In-Reply-To: <20250916160110.266190-1-surenb@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: ACD7C8000E
-X-Stat-Signature: ckfs6espb5ng48xpuodshct6ex4cii4k
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9085E4000F
+X-Stat-Signature: zducdgj7jq17m63mg3nbxkj7usx1no3i
 X-Rspam-User: 
-X-HE-Tag: 1758055681-43728
-X-HE-Meta: U2FsdGVkX18RPqGHgWF7HKo47LSYvn3FKTgGJhVqmcwxFVz7vYz7eognxyxMwFLuz3zA0gfUGR+YFyP8fDuEt1rXkAVc1NbWp/drlooGp3UuE+NfwsjydDZdaLDeA/yqxkZkeC6nym8pMkjxq93wvZy/vVO+V34Tq8CQg/7pqgsdp2Iw8q5jLQYJKHabHi/O9vWZX7smcqBxuUiyHrn22JG1WvBkd7CA4pEEqDV/yFgfDQnPXB5k/eYlUkvKRWbBAzYP6/yYbR9ynUfioRA+Z7AGii1IZw3XeuvNMN24UNG02s1oxw62NENl09F8NCYJajcXTWowwhdxgTJTfB2lHrRnMxYYY9upB8GznBOtFGohMQrX2miImC3R3Olaw6h7xLgAE5D2G1tDefIB/naLg8T/yrUekPI8bt+6dEiDrvg23vlh7YUvUBUXzp+Gthd1t0v2nGoXioRYdfbKanT4lGtKD2PtvXUU1A8OX1xxAzLlGJ1CWXy7y7C4JetG6W2sdviwF1PEiNgu0zy2oY/nYNT5d4HGrWOUNGi8MP1GG5gkGZcJuQzKHSZBy1MRVpwdqiD8oel/uIWraxQw6XWCLcyAfIkBFdf8SJXUEuxpV3EFiI+midjkAP6IDFDnl8Sk/TDTcNE+/HwDjdwtMJ88k0/5EuhtuKS4nVE8w9+h5zyXrhDwkyL2Nn7CFlOF/+bU43Tu3qUHabkmz7T6vYH+WjeZMKGKnfSKUGjdETqUwctcFbM+tW97lImIM2DlAe6dD+Ohev+QuNdSeRMpLBEe7DjNsrH2zF6XmA9x+k0DIMApiA73FKzVcIRjn1f80/OsGyLD+3T7XVJggQY5GJ2eTuQ/w5Zm9WE4dNVJqCye9OVyY2xjG1svQkuGHMOdtuCul6jbaVEU/2sIi8QjoRHFexttmHmGaT2hrC7ayyHEcQh3Wu6vZtD/1IOJ8iLumtjZK9HIwr9HE0SyxkR0rRk
- XYPJ5pCW
- a/SSPTwIJ/ITWKbbnSpIB9Gkafv+Pl7ju5xXpQvOvampnj9r+LUqjt50VZmh/CUSP1XtelgZMFxi8K6lb40CEKJHJ0r+mll5oO0dj+IyRCndu7PjmvQsteicq8xCfwBhZ5VuO7c7NWwu/iycWB0tOAe2jL/Pjvtf7qiD2vJ9mN5qV49zX7AP1rOpzVwqZFdJq0vyic78h2SvMVLSEtIfjh0TflhfV735Ir26Qso7qcp8kxFb7ffXaM1CLMcut8PziPqyU6YtfE3P6K+NxErqcqD/EqrpdNgqm1+oxYlgI1meIyP2iAKRRLTn265mDGDzbCLX4o5xXDJjjmKUiNrX0LC4PB4z7Ma/H0OhHAo7d4cTlsnRTEtbr8npyg3UVqr+6jhN9FaNTShV8YXhfirmZBdU+s9zTfqNzhfxm61aFd/jzv+snpjjmF3MCgxCO+FgSZFBtb6H30pNCo5n27pShB7hBqH4n1dONxnxt4vCEpwkrkmS1smfkv1Jw3zSdWqXxlwZ6SnPTvI0zgaO8m00LMQYnd+TorfzQMQzojpDvvreTKKgPOlPbMPYofUusFsL3PkYeEI0Ig+MTsdUKM2AriFackyV+lmwvIWmJ7D0G6k39qfA=
+X-HE-Tag: 1758055854-728683
+X-HE-Meta: U2FsdGVkX1+OJtfxxE4djPXhUhR5c5TgI7YwVC48nXhYIhZ2SzGanRf1opgWOeOdDsVzKEi2ezLF2XBzp1VedqNQEPNcwW4nNDA0f8ZyYDlDmsHnRZMM1U+ga6QnSgEAkLidI5fkflsQ2iX1XusQ8fDBOwEDIIj22eAVHA3Z9nmgbUfW973D0ix48L0/1Jh+ThSkhxNJsiJA0GgJ8iA9MnWoG6x6d8C0/cz+gBdMtMhefea7VC2njYmkEaqv5aPPihYZsrk+8o8vdmBGjYetsiftDDpCRukXJHAElkxg5CPcexFf7xAIt6xdUSBxGx9/F6D08CALvEjxKIkdfitNWBPtEPp4l0c6THUAsYVMSbecNCtglTy+GT16ACKmfHRwkQEtG8RDAouCHPKpPO4rk1kqO0gzWnkv88WBzECYJWCUv6h7VQqDvshX8feqczaaQzmWC6DiysQc4GzVUyL1aQU+4aOvNDcrbD3ONmPSl/8ZAfJcFZ8fnl1158LXiNFJSoPC55SnHysd7+SVTW8CpEiK/y6aap8JLG08+x0XJTComv9hrGi95Xscm5WapA5K431pKinssn87+eEmNglfbOCJxsqcJu7LQfSSjCEv5xorRx58NeDrPTm8rakJCDUEpd8tgeNHuB/0UVXv4wb84AeaRBdOSwCmumG1h6Jks2gVPE9aH4sFKgDOIIaZTpXsMzCq7Db/GA/XoTI5nnqjq5QwRcgbEp4vFTxmqozgjTvaaSapFH0SS5q0Ky4wIN5OBXIKR+FRyZcJCmoN8EljZw5OVD9Rkp9n8+PerM9V/4D5sTuSRJuuH/2wxDdFrIfVJTvZZCR+3DZSlk8HUgs2MWW62ewnMSXDnPmVw9kb3Ub2sfYOnMooKhE05J83kXgKvM7noOxajTrBj5rU+yAMkNamiQvSQPBZZ/nAYs2MxRMZpft4w037bI5E9Z4vrGtv9fHI7gBZ9bz2Mrl/1PE
+ MIvN4kz5
+ vWCOBqbiUfvZVX/9ifaUYYHBYXriEHuKNIhcaLC/p0BUxTNjWy3VCz8b5nJas04uSUogyJrCIcAQlTqWlELfpaW9VTVGPpWmXaOOOMwpKew7xIT6H/2E11jCNdaUCTrNxqJ5pSERn7a6QHAvMB6729/mIzJUYNPdKjiB+e+Qq0A7GxKIKeR3kcaSRKxCf4EaR28sigOmhGgjYtka0cWTPJ6ads8c01pr8atu/hYbkxMkuaoQqbDh+XwgU6uD/qFoVansdBZ60x362BWdAS+6aAZM+M0Bjkbk4o3u4hV/yhGmA3JCz8x8Cs1L0IwZhVdAycExm83cIj1lCCClmL+SUkKs10kBNE+MDTjjwEpccvi1ZYu+K+CV9d0voJYLNHgbHee3Y6prMnunHqpyDPOPtPiCxk0Ojz8gL+BK2yStD8Vv+KIyCZzxqhj1gxnsuSi2O2yUNN69ZIkkKbOTsoUwiV498wqSleZRjDwFOPMWABQhGGnPYCvfXVG65IJhK0mrrGSfVQ3x9sfG4W7D5Y39xR1UNORi//AG7wiWpu+54YFCtn/t52nd89dwOyWjRRNPrl2CC9pQkmOgfZIZse9sXLjm3KtofliiH3yEAgWINt9Jx9bDfge/0SMIXsIRBa0sR6OSk
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,25 +128,43 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 15/09/2025 22:27, Suren Baghdasaryan wrote:
-> When freeing "tail" pages of a non-compount high-order page, we properly
-> subtract the allocation tag counters, however later when these pages are
-> released, alloc_tag_sub() will issue warnings because tags for these pages
-> are NULL.
-> This issue was originally anticipated by Vlastimil in his review [1] and
-> then recently reported by David.
-> Prevent warnings by marking the tags empty.
+On 16/09/2025 17:01, Suren Baghdasaryan wrote:
+> Document new "accurate:no" marker.
 > 
-> [1] https://lore.kernel.org/all/6db0f0c8-81cb-4d04-9560-ba73d63db4b8@suse.cz/
-> 
-> Suggested-by: David Wang <00107082@163.com>
+> Fixes: 39d117e04d15 ("alloc_tag: mark inaccurate allocation counters in /proc/allocinfo output")
+> Suggested-by: Andrew Morton <akpm@linux-foundation.org>
 > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 > ---
->  mm/page_alloc.c | 9 ++++++++-
->  1 file changed, 8 insertions(+), 1 deletion(-)
+> Based on mm-new
 > 
+>  Documentation/filesystems/proc.rst | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> diff --git a/Documentation/filesystems/proc.rst b/Documentation/filesystems/proc.rst
+> index 1776a06571c2..17668f82ff1c 100644
+> --- a/Documentation/filesystems/proc.rst
+> +++ b/Documentation/filesystems/proc.rst
+> @@ -1014,6 +1014,14 @@ If file version is 2.0 or higher then each line may contain additional
+>  For example if the counters are not accurate, the line will be appended with
+>  "accurate:no" pair.
+>  
+> +Supported markers in v2:
+> +accurate:no
+> +              Absolute values of the counters in this line are not
 
-Acked-by: Usama Arif <usamaarif642@gmail.com>
+s/values/value/ maybe? :)> +              accurate because of the failure to allocate storage required
+
+s/storage required/memory/
+
+> +              to track some of the allocations made at this location.
+> +              Deltas in these counters are accurate, therefore counters
+> +              can be used to track allocation size and count changes.
+> +
+
+>  Example output.
+>  
+>  ::
+> 
+> base-commit: 199236646ffd82b5a5bcf2bca1579ea06cb0ae74
 
 
