@@ -4,127 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08F45CAC59B
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 19:27:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2278CAC592
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 19:31:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3E7218E0006; Tue, 16 Sep 2025 15:27:15 -0400 (EDT)
+	id 4B2718E0006; Tue, 16 Sep 2025 15:31:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3BE2F8E0001; Tue, 16 Sep 2025 15:27:15 -0400 (EDT)
+	id 48A408E0001; Tue, 16 Sep 2025 15:31:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2AD0E8E0006; Tue, 16 Sep 2025 15:27:15 -0400 (EDT)
+	id 3C70F8E0006; Tue, 16 Sep 2025 15:31:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 142A28E0001
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 15:27:15 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8F5015723E
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 19:27:14 +0000 (UTC)
-X-FDA: 83896096788.23.DDF701A
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	by imf04.hostedemail.com (Postfix) with ESMTP id C03B94000B
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 19:27:12 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=kSdM4GVR;
-	spf=pass (imf04.hostedemail.com: domain of rientjes@google.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=rientjes@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 279C88E0001
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 15:31:12 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C9F4C586B2
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 19:31:11 +0000 (UTC)
+X-FDA: 83896106742.14.7F8D91E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 38FB3180008
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 19:31:10 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AlDQEdc0;
+	spf=pass (imf16.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758050832;
+	s=arc-20220608; t=1758051070;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e+88pAM765ByhxxTvIHtdee+u4rcNPCpXp45pnbq2P4=;
-	b=AGLtWvvcKek94NX9Py4rJ1FnixUQLm//IRQJ8C8FWXrV6hDzHXKZAxlvcG9v1eeyY19Tr0
-	LCkofuScGe+sdxdxSk00DzNIgk927iueuMzCj/tfiaF3mDjbSU1cOQ2yPRPm4PVOnabOYH
-	/Ro3Q3HAkUAJvJBbBKjOUNub9gLt5CM=
+	bh=0xFsZI8OPS+4kV2H8RyqcgVFs/zzzOZHJrs+93uaEC4=;
+	b=5CLlg2LtRCrogN9XY6hYQOSlSVf49/RMTllSInHWc1FbRXufGrxYoVNScjjh4byhLuIXY3
+	/ln8XlKIrCXi3UojG+Yz3WO6cEQli8shbAxbIJKyqEy/+uS8DXWEFYH6VC4vskDrWkgWiD
+	OxNSUloAlZ3MSA51s6fBH5FLlW3zJS4=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=kSdM4GVR;
-	spf=pass (imf04.hostedemail.com: domain of rientjes@google.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=rientjes@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758050832; a=rsa-sha256;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AlDQEdc0;
+	spf=pass (imf16.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758051070; a=rsa-sha256;
 	cv=none;
-	b=UcybqwpkKafHEUUItiiNtMlSkvQzSWaZs6972KO+iyzbODsSb8e6V9aqsD8XuftI0UqUB1
-	Z8SUGiC8ubazd5iqrBsYf2v5fxfHhnWwA9pVuE7YXlVhgXoeWPFnSclJtOFmGIOzVbEF2m
-	DJiRm1vkRw/0DC9n8l5FnI0/ow3O5D4=
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-265f460ae7bso35465ad.0
-        for <linux-mm@kvack.org>; Tue, 16 Sep 2025 12:27:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758050831; x=1758655631; darn=kvack.org;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=e+88pAM765ByhxxTvIHtdee+u4rcNPCpXp45pnbq2P4=;
-        b=kSdM4GVR83ZZVvjE5rT+fRuGWi4Zk9fmyxatxSPzdmvnI/mNBlGaMoPRfaON6VHhP6
-         ZmGobDxVd32p30xCwNPQlD6sSx9rdaw0OOVqNvdVh3HkA3+kdV2WZ5iXM6YAA2fzkCj6
-         BiaFtsr9NvLA8bJBSvA70tYaSj/T2YBVpfDHJRZKE3GUzv1mZgDo1wzAAsHFTi1exNnO
-         hPLdq69rQOMLPMFOVB6wKhz+qaX64CZCLtFxCLKU7ST6gsaTCcfUIAlV2otuxdpxcK3S
-         z7fM4ahTNgSJbkX2VvnGbnHdSyDagiOT9nfNGf6QsIMZfBDwkXPuCjQv+AV2MF3ckw+J
-         0pGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758050831; x=1758655631;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=e+88pAM765ByhxxTvIHtdee+u4rcNPCpXp45pnbq2P4=;
-        b=exHV2EUVKaJIdvnUxTMsRyv1VIEF3cEyCzyma4IAGc7PM2lAqhZEqGGIvKMFIphhOq
-         3PNpvuuG5S/DoqtC4idY7SaAz7XlMS2qe71h6a2Zdxj358ZWMEJc48IfXsFUmSEJEstj
-         6S7PCCwQB+m54NTgPDRCXL97K/U4bSZtrVQyCYp87XM+4G6rNd5yQwnnldONbdtnC3Gd
-         CKpvPGp3U/3jGC5JLeCrYVPAu5mdF9DV5bk5x2+P/KuZscHfzAl27ACFmETfVEIy0oFN
-         qpFMTV0moOBYLaMKb0+t+2kXB8eHiI3f/HRlZ/lylKizmLaPbfStbjWEy0Ive+wUFCvt
-         NBpQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUK33E/cZ/3D3bbXSX6E6j9Ridfd4felFmugc7THPJjqs5D/4vmdYzjRRtNNtCVIVDrhviFmXKHzw==@kvack.org
-X-Gm-Message-State: AOJu0Yw9SfavCuV2H/U9YpoxP+BjBwQwmEY15hhisxwPGWANYB2B60l6
-	tJ1WCd5XIXv3kH9lsNVNTqNBxQ9v1lzDJH9w0UowWQBolXI1BODfr4wja86Efvschw==
-X-Gm-Gg: ASbGncu094OpTm2Oadb0vMC8hf/nAAS+pvaEnptF+IJ9VbrvJBZWNySuhyLLYHt3b1C
-	4Hosrx26kjo2nCCfKg/vddcS2RLGc5SO0RRtFuri5v4pKF3hH0Pj0cIqknMtyfnIuB9jytQWkOp
-	OuPeQXGmoNF2n/Fvi61iGCXjj7nhZbioFIVTq0fcaWvoXHULw3RpnQI4HTzufdreRflHaTZ81MA
-	CQRoab1HcFcFM220eliXtwDnp73fA0bHzSkg0PWd0oSDTifD36dS66cYaT9Opdzvsj1nW6SR+EE
-	7JnywMxsSPZzm+TpSHeh7jFWn9vPksleAYLgr2OuOC06giu0SDrPFFKGvDAshsln9NVLxn40FUU
-	wnlNfKAHt20rhhhS1285dfPGKsRgq287UCemh2gSxQ3ftKc8FvpxMuJXjodfXqMHO2wAOTr/Mqr
-	nnyDiJaDXtl2DsTmmZzK2hSGHgayOFwuCPFXIntHwmb5EV6trEP7sxDe/IKelcI7u9hw==
-X-Google-Smtp-Source: AGHT+IFVhu1HB0ZSCofGaztjxsqj3Wgml8yyzA3KFYUh8Azzl2s2++2gyAKdXri+mmOv8BeFKDU3UA==
-X-Received: by 2002:a17:902:e751:b0:231:f6bc:5c84 with SMTP id d9443c01a7336-26800f6615emr852675ad.8.1758050831246;
-        Tue, 16 Sep 2025 12:27:11 -0700 (PDT)
-Received: from [2a00:79e0:2eb0:8:3226:ed0a:4c73:99d2] ([2a00:79e0:2eb0:8:3226:ed0a:4c73:99d2])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-77607b346dasm17161924b3a.68.2025.09.16.12.27.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Sep 2025 12:27:09 -0700 (PDT)
-Date: Tue, 16 Sep 2025 12:27:08 -0700 (PDT)
-From: David Rientjes <rientjes@google.com>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-cc: Eugen Hristev <eugen.hristev@linaro.org>, 
-    Matthew Wilcox <willy@infradead.org>, Amit Shah <amit@infradead.org>, 
-    Andrew Morton <akpm@linux-foundation.org>, 
-    Aneesh Kumar <AneeshKumar.KizhakeVeetil@arm.com>, 
-    Christoph Lameter <cl@linux.com>, Dave Hansen <dave.hansen@intel.com>, 
-    David Hildenbrand <david@redhat.com>, Davidlohr Bueso <dave@stgolabs.net>, 
-    Hugh Dickins <hughd@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-    John Hubbard <jhubbard@nvidia.com>, Kirill Shutemov <k.shutemov@gmail.com>, 
-    Mel Gorman <mel.gorman@gmail.com>, Michal Hocko <mhocko@suse.com>, 
-    Mike Rapoport <mike.rapoport@gmail.com>, Peter Xu <peterx@redhat.com>, 
-    Raghavendra K T <rkodsara@amd.com>, 
-    "Rao, Bharata Bhasker" <bharata@amd.com>, Rik van Riel <riel@surriel.com>, 
-    Roman Gushchin <roman.gushchin@linux.dev>, Shivank Garg <shivankg@amd.com>, 
-    Sterling Alexander <stalexan@redhat.com>, 
-    Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>, 
-    Vlastimil Babka <vbabka@suse.cz>, Yang Shi <shy828301@gmail.com>, 
-    Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org, rdunlap@infradead.org
-Subject: Re: [Invitation] Linux MM Alignment Session on kmemdump on
- Wednesday
-In-Reply-To: <nglllfwopxgz3fye3grko3hmbvpmfhewj36qg6lbh3b66bjpvz@foxfjulayqst>
-Message-ID: <08c0b550-0a78-0b25-308d-18b143999599@google.com>
-References: <426751f4-428b-ed01-509b-d13e719a2006@google.com> <aMhgoUvziLPNt_vI@casper.infradead.org> <cfac2d98-2214-4bd3-a4cb-9b319acb462f@linaro.org> <aMlS9Kb6_x3fqsLG@casper.infradead.org> <50b566d6-aeda-48cc-bd67-362cb29b214a@linaro.org>
- <nglllfwopxgz3fye3grko3hmbvpmfhewj36qg6lbh3b66bjpvz@foxfjulayqst>
+	b=39IkP40CkQNo9TG0i3qgR9vragTpyiIxEgJm6LRWNn31qOsaoXhH1+YMcVgtGKzbsU0UkD
+	KnvrwQbV8UBrq89dyjjuOCv/V39HaSCQzHcHjOWizbMkkafZUjvPEzxzl6Le4o1YDks3Ae
+	qk/GQEGbp1FO/P7PLmcZJLZNKLus3Cs=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 79715601B3;
+	Tue, 16 Sep 2025 19:31:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1697BC4CEEB;
+	Tue, 16 Sep 2025 19:31:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758051068;
+	bh=N49H9fou0UCpbCTf6jTtg2kx/FPk8dM2Ik20j+Oj/oc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AlDQEdc09HmzC/9s1VCr8wF2BT2hvOdmrkUyhzvIQqlAdft1VDLtl5Ho1w4XzEihL
+	 8FGJo8hZJnyWVj0xRfE84U6wZ50Ji1FWF+kZ1o7PtJLb3HxZOmvfU7pbErjFyG4LcX
+	 Un2pOqeAhX5/Nn8T6HjAhV0AJ3hcopqnycaRB0hYiOwkKKC/qSHYy/WV4avw/wisrX
+	 Uf0mKamMoW34VAyRsuzsrBK/Wp5Zx917SXGKep2jYh7TGbuG2kJpj+fTFWwm56S9Fi
+	 uUTNIADkGV6RBGXVj0H+wNvDPN7Bx40u5EdY9iqS4wj9VEJTUW33iP//U0nT2wTVE4
+	 DnbICveY3izOw==
+Date: Tue, 16 Sep 2025 20:31:00 +0100
+From: Will Deacon <will@kernel.org>
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: ryabinin.a.a@gmail.com, glider@google.com, andreyknvl@gmail.com,
+	dvyukov@google.com, vincenzo.frascino@arm.com, corbet@lwn.net,
+	catalin.marinas@arm.com, akpm@linux-foundation.org,
+	scott@os.amperecomputing.com, jhubbard@nvidia.com,
+	pankaj.gupta@amd.com, leitao@debian.org, kaleshsingh@google.com,
+	maz@kernel.org, broonie@kernel.org, oliver.upton@linux.dev,
+	james.morse@arm.com, ardb@kernel.org,
+	hardevsinh.palaniya@siliconsignals.io, david@redhat.com,
+	yang@os.amperecomputing.com, kasan-dev@googlegroups.com,
+	workflows@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v7 1/2] kasan/hw-tags: introduce kasan.write_only option
+Message-ID: <aMm69C3IGuDHF248@willie-the-truck>
+References: <20250903150020.1131840-1-yeoreum.yun@arm.com>
+ <20250903150020.1131840-2-yeoreum.yun@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Rspamd-Queue-Id: C03B94000B
-X-Stat-Signature: pssqw5hmune1u7qodky1xkz5s4jtss8x
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250903150020.1131840-2-yeoreum.yun@arm.com>
+X-Rspamd-Queue-Id: 38FB3180008
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1758050832-736244
-X-HE-Meta: U2FsdGVkX1/I5osv3AeVDFlKzAK4NBpLPtftM9UlCb8PqcMyWFnTWh2xxwJYs/mwmGxu7k0Kb4CxzVoS2AllNNtD5CFTthGShGtKqQxMOZMR4xbgWfUzr6wDt8TfPWP1HzFue7y5eYD4jZyC3d1eoMezSDvyovaWLat7gWLXr7WmqMJ0H6PzlncFqCeVOUFrF/sKlV/0xaQXbiU3rA/ZCx+Cs1HmFYd93mLv3G0X6J9iKowdYOsQoRbq+gb+xhebNptzc7YGROdUOPjVBBoyCrcy4P/m4ivzZ4oEHVKAj7DYXnS/ZBT5XlFpvRU8bwy5lw0HwmMpq3K5UYroRMFOTx83mO68/oD5yKl81KBufxR1XtnAaq0iagQdbXZGkdMbatb6wnr3B5I7ohAkhJkMVlDVTZdoxiqeNcJIQ7fPlZJmu4VHUNxR+EOdGAO3E6Mrs+JpvWuFwXthqZVJgIekbSx9ZofU2wrF6745hjegqytRouWPNVMITTl0AM2yzgX7dONjR24WU8AEWvzlzFLa3Mld40FINl7gFckTLiFYDofl887tr+G3W3a6i2QqqpWOQ0brOYDq3WY1GBmoDeZ6XI+ElUpfK/BVN+h0Q1bGLtAxWBFiB4C5KuSklYzQYuIabIcq/bgtPBFpWNnh/GCOfl4FGFBJc7PpwEeyFimAWxcH9f9MJa26l1F9+5u5etT8ANdCfxfbNV+OiU4hiCerJB7qGQ2VQ/Kc5uxWnKzV4JcNP00+kTlG9wgYKkoIw/bIE5mix4S+mhHG+EHZXsUbcBt51UN5FjJxeKaK4/ipsoaN+tJEFw70ahHkx4K7NTKc5ptHE46Xqm2blLalPRfEi9bHjw+7dnQJfFD7dJCCmWA0nLC5688HgZW18+j2J1T3dni8ApMpdm8UAjeIY8hiMPIdSsdTRK95lzFecEsjnn1MndDT/ah2BpfUsoAooQEcwLkxqUb+appdG+0osjJ
- bUVzjJzA
- 2agACBmAcilJ0qHYb2Wb4KOga0mP0oo2qDkMtJsn1PwFM2hzD6GgVAtYHmnw9gvG2T+pvWgE0EjCeO1x7Ag1S/c6cn1zP1XVyyxj74nAE/IBeuzvRr1maRbfBQFdbcAMR97kGkdNumnVu5DtuZgIihiqo0/348mncBWMcUgiNBnHYoZz/p+pLbl2UlgTH+x7KF6lnO55kULl01LU/35e77EsW5S+HlOarhSktuQjfpRQz0QPcm36wB2HHB50pYlUMQoC/hiDdaPtCh2vVWUU1UjWJEyU7vpHPFfSuln1bYJTgRpC48EclQLPZ327rvlfmhwnO+U3kC+S2tUMMloTHfYRzDXItSRq+hzKvKno7wwchXMaToTvmPBpaNyYqCUMSaIVa1tT+frcqTZzgCbl2TckTfkJaNqlz7faZHGKXcdbnrIOrnDRAPMmrAtrEmzgj2uktYpGoKacl2LCDzeac86dsbEOBnDtCmrWTDD3MLWXw1nK+4HtkdXtAHcMglN5k4/TkACyY5kVtpDoqoJBtoBI2srkOXjrcHm/4/Lb/KA/GuRmESLdojfnamF+9kCvpFQl35RtUlzrZMN7349AqBRdBAyHXODej8a0g1nQnquBP28s/69OzoYIJs2kCUQJAF/KN0WRNmxWegAY=
+X-Rspamd-Server: rspam07
+X-Stat-Signature: qq377s1k6xyzbhgzzyc5mzs7o6cdym3x
+X-HE-Tag: 1758051070-124230
+X-HE-Meta: U2FsdGVkX189KJbZ8YVpMFFgXSk5AOuUHrCt5nCurBVPsK8RKwFBhSj1+hoe5MdMrH2TXLA+OBDemlRSAEkcmchnW87OTa5KAJztPFFIfHHZvZ81ele4mqclQSeIPv/zcfFrlxcaBvEZPg3RtdlG34ihp43iGHTTpZMrWn9kbY8ycGGX7XOqenU88AvU5tp56H4WOa9bBGUczmd6lIJLgnawkksi6qBGaPq1xgH+f+Qw5FDwfvTpZItds7VGVgeAkAz8BDnOrtN7ns82CqifgSu1MovfJb+m6M1YuuAqVdP8HGtBVmnfauqbSM3e6rTbCRP/rdiIqjgloUFjZLypmj/vlpkjjWbrwbp+h24gpjWTR6tc1oQyCIZDnS8CB7tqIXiFHPJxtO65yBLtJ+pF+VIXxIlJ+Qv4F35ph2IgM0oRyUMH8ErLgseCmGl8JPEllt+WK5BoHyyw3cWqm+9R3izb99QS+QUDEK0rBVtGZMsZdgdVmvN5Ww/ooi5HIRHWVASJ6UWxQP8kPpSsRt6oJHGHNE9CArN/jyjul/YMiC5alZnIm2rZXcDlwqp7x3U7NRT5K8byKgRD0lMPTVjqu908yGIPlTNmp5hzaENH0VNkxwZDnqsxUKP5HKkO+nJHK9HBONidJH/i/JLnaJ/kvmN91QlHMBnBiAohaqfiHREUD4Ev9+aB8zZZZ7JxzeAuNitCEHgqopsMdOIBTcz7rEgr6qU2Rnqr+aOo9Lwqc40gQQrYelAiYS8DLewMpICM7XbwhSebgvYDNAldYx1++beE6B3NFBzBn12XsRoz+rzTyK+f5RUx3wjuDlDPdBs5deTep9NrtwC1aiKZyHq2O+Q0XH4rE8h6o49qX/KxgEI22k8u436ESav/Qn3Izr6dzw4AHvZ60rewF+UJ4b4tFha9iX2+G19bq1iHI3YyD62JHsS6XV6YxtmUZK2kdev5BNwwZQdPhqoKLywbNp6
+ +ydvsJaW
+ FFgkIU5DVry5xlXw7vtp4/tg/aH/5VBxFOT3CUIjNWuXifGVQMS8hXkRClM9qnS/lBzSeXp3poQ39+OR1N6JbuDb2ymdhXKB1oTfslIAGm0WnUPPWPePf14AyPXs6Yu+CzdaIKhzuB21Y36lG4H9v2GKiUKLFFT5bSZWbsLmH/URMzYsUr7wsP+z6cjOioSGPKEYcxofM+FEhO+KBHvz54xTG6vskht/bSPcj0qWEtbk1ow3Z5igRyd+x8IflIRdh4CVdfK4jw/mmtdXqW3W+lZ9t3oBOCJJJgxaCCdmOwXE1jBCZgZZIdHYcxkZA3zcAD1ZR8KmxiuUktl9wL4ZptAs35O9pIor0B7TTPkrUbpiRhYCLOQ9nMBm+Y/2nQ7ZWI3FpppE2Bed1CcKzjYRQKXjv+0GSb6V9l3NBUiZ/fzQuIWHmaLh70XAO61I7B1cZ3nLlFcpjMWqBizo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,68 +102,135 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 16 Sep 2025, Shakeel Butt wrote:
+On Wed, Sep 03, 2025 at 04:00:19PM +0100, Yeoreum Yun wrote:
+> Since Armv8.9, FEATURE_MTE_STORE_ONLY feature is introduced to restrict
+> raise of tag check fault on store operation only.
+> Introcude KASAN write only mode based on this feature.
 
-> > >>>> This week's topic will be kmemdump led by Eugen Hristev.  See the latest
-> > >>>> proposal at https://lwn.net/Articles/1031319/.
-> > >>>
-> > >>> I don't understand what this has to do with mm, to be honest.
-> > >>> It looks like a debugging aid.
-> > >>
-> > >> It was suggested to move it to mm/ :
-> > >>
-> > >> https://lore.kernel.org/all/0fa9e4e7-1247-4c82-8c0b-fa65b7fbb56d@infradead.org/
-> > > 
-> > > I feel like you should be able to explain this rather better than
-> > > "somebody else told me to move it".  As of this moment, I still don't
-> > > know what kmemdump even is.
-> > > 
-> > >>>
-> > >>> https://lore.kernel.org/lkml/20250422113156.575971-2-eugen.hristev@linaro.org/
-> > >>>
-> > >>> is a great example of how to write a lot of documentation that doesn't
-> > >>> actually tell the reader what anything is.
-> > >>>
-> > >>>
-> > >>
-> > >> Here is a link to the v3 where I changed it a little bit :
-> > >>
-> > >> https://lore.kernel.org/all/20250912150855.2901211-1-eugen.hristev@linaro.org/
-> > >>
-> > >> I am eager to improve the documentation to make more sense out of it, I
-> > >> am happy with suggestions.
-> > > 
-> > > Start by telling me what it is.
-> > 
-> > A way to select memory areas from the kernel that can be used to debug
-> > the kernel, instead of saving the whole memory dump which is mostly not
-> > of interest and takes a lot of space.
-> > Anyone can register a pointer and a size, these are placed into a list,
-> > and a dedicated firmware can parse it and save it in case of a crash.
-> > Does this make sense ?
+Typo ^^
+
 > 
-> Is it only for kernel or is available for userspace as well? And the
-> crashes here, we are talking about kernel crashes or includes process
-> crashes as well?
+> KASAN write only mode restricts KASAN checks operation for write only and
+> omits the checks for fetch/read operations when accessing memory.
+> So it might be used not only debugging enviroment but also normal
+> enviroment to check memory safty.
 > 
+> This features can be controlled with "kasan.write_only" arguments.
+> When "kasan.write_only=on", KASAN checks write operation only otherwise
+> KASAN checks all operations.
+> 
+> This changes the MTE_STORE_ONLY feature as BOOT_CPU_FEATURE like
+> ARM64_MTE_ASYMM so that makes it initialise in kasan_init_hw_tags()
+> with other function together.
+> 
+> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+> Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
+> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+> ---
+>  Documentation/dev-tools/kasan.rst  |  3 ++
+>  arch/arm64/include/asm/memory.h    |  1 +
+>  arch/arm64/include/asm/mte-kasan.h |  6 +++
+>  arch/arm64/kernel/cpufeature.c     |  2 +-
+>  arch/arm64/kernel/mte.c            | 18 ++++++++
+>  mm/kasan/hw_tags.c                 | 70 +++++++++++++++++++++++++++++-
+>  mm/kasan/kasan.h                   |  7 +++
+>  7 files changed, 104 insertions(+), 3 deletions(-)
 
-Yeah, I think understanding the scope of this work, both in the current 
-RFC as well as the long term vision, is going to be useful.
+[...]
 
-In this case of kmemdump, which I agree is not core mm, it's likely best 
-to use this alignment session to first describe the problem statement: 
-what are we trying to solve?  The reference to dedicated firmware above 
-piques at least my curiosity.
+> diff --git a/mm/kasan/hw_tags.c b/mm/kasan/hw_tags.c
+> index 9a6927394b54..d5b5fb47d52b 100644
+> --- a/mm/kasan/hw_tags.c
+> +++ b/mm/kasan/hw_tags.c
+> @@ -41,9 +41,16 @@ enum kasan_arg_vmalloc {
+>  	KASAN_ARG_VMALLOC_ON,
+>  };
+>  
+> +enum kasan_arg_write_only {
+> +	KASAN_ARG_WRITE_ONLY_DEFAULT,
+> +	KASAN_ARG_WRITE_ONLY_OFF,
+> +	KASAN_ARG_WRITE_ONLY_ON,
+> +};
+> +
+>  static enum kasan_arg kasan_arg __ro_after_init;
+>  static enum kasan_arg_mode kasan_arg_mode __ro_after_init;
+>  static enum kasan_arg_vmalloc kasan_arg_vmalloc __initdata;
+> +static enum kasan_arg_write_only kasan_arg_write_only __ro_after_init;
+>  
+>  /*
+>   * Whether KASAN is enabled at all.
+> @@ -67,6 +74,9 @@ DEFINE_STATIC_KEY_FALSE(kasan_flag_vmalloc);
+>  #endif
+>  EXPORT_SYMBOL_GPL(kasan_flag_vmalloc);
+>  
+> +/* Whether to check write accesses only. */
+> +static bool kasan_flag_write_only = false;
+> +
+>  #define PAGE_ALLOC_SAMPLE_DEFAULT	1
+>  #define PAGE_ALLOC_SAMPLE_ORDER_DEFAULT	3
+>  
+> @@ -141,6 +151,23 @@ static int __init early_kasan_flag_vmalloc(char *arg)
+>  }
+>  early_param("kasan.vmalloc", early_kasan_flag_vmalloc);
+>  
+> +/* kasan.write_only=off/on */
+> +static int __init early_kasan_flag_write_only(char *arg)
+> +{
+> +	if (!arg)
+> +		return -EINVAL;
+> +
+> +	if (!strcmp(arg, "off"))
+> +		kasan_arg_write_only = KASAN_ARG_WRITE_ONLY_OFF;
+> +	else if (!strcmp(arg, "on"))
+> +		kasan_arg_write_only = KASAN_ARG_WRITE_ONLY_ON;
+> +	else
+> +		return -EINVAL;
+> +
+> +	return 0;
+> +}
+> +early_param("kasan.write_only", early_kasan_flag_write_only);
+> +
+>  static inline const char *kasan_mode_info(void)
+>  {
+>  	if (kasan_mode == KASAN_MODE_ASYNC)
+> @@ -257,15 +284,28 @@ void __init kasan_init_hw_tags(void)
+>  		break;
+>  	}
+>  
+> +	switch (kasan_arg_write_only) {
+> +	case KASAN_ARG_WRITE_ONLY_DEFAULT:
+> +		/* Default is specified by kasan_flag_write_only definition. */
+> +		break;
+> +	case KASAN_ARG_WRITE_ONLY_OFF:
+> +		kasan_flag_write_only = false;
+> +		break;
+> +	case KASAN_ARG_WRITE_ONLY_ON:
+> +		kasan_flag_write_only = true;
+> +		break;
+> +	}
+> +
+>  	kasan_init_tags();
 
-I see some interaction on the latest RFC, asking questions, and deciding 
-the interaction with pstore, I think the goal of this session would be to 
-determine if (1) the problem is worth solving, (2) if there are existing 
-mechanisms that can already get us there, and (3) if the current approach 
-makes sense long term or if any pivots are needed.
+I'm probably missing something here, but why have 'enum
+kasan_arg_write_only' at all? What stops you from setting
+'kasan_flag_write_only' directly from early_kasan_flag_write_only()?
 
-Hopefully an interactive discussion will save time in the long term by 
-ensuring alignment in this area even if the feedback turns out to be "no, 
-we're not doing this."  That would likely best be done by first 
-describing, thoroughly, the problem statement before jumping into 
-implementation specifics.
+This all looks weirdly over-engineered, as though 'kasan_flag_write_only'
+is expected to be statically initialised to something other than 'false'.
+
+>  	/* KASAN is now initialized, enable it. */
+>  	static_branch_enable(&kasan_flag_enabled);
+>  
+> -	pr_info("KernelAddressSanitizer initialized (hw-tags, mode=%s, vmalloc=%s, stacktrace=%s)\n",
+> +	pr_info("KernelAddressSanitizer initialized (hw-tags, mode=%s, vmalloc=%s, stacktrace=%s, write_only=%s)\n",
+>  		kasan_mode_info(),
+>  		str_on_off(kasan_vmalloc_enabled()),
+> -		str_on_off(kasan_stack_collection_enabled()));
+> +		str_on_off(kasan_stack_collection_enabled()),
+> +		str_on_off(kasan_arg_write_only));
+
+It's also confusing, because now you appear to be passing the funny new
+'enum' type to str_on_off(), which expects a bool.
+
+Will
 
