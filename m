@@ -4,92 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10836CAC599
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 09:01:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE658CAC598
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 09:01:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2EFDA8E0003; Tue, 16 Sep 2025 05:01:23 -0400 (EDT)
+	id 90A498E000F; Tue, 16 Sep 2025 05:01:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C73D8E0001; Tue, 16 Sep 2025 05:01:23 -0400 (EDT)
+	id 8E1D78E0001; Tue, 16 Sep 2025 05:01:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1DD3E8E0003; Tue, 16 Sep 2025 05:01:23 -0400 (EDT)
+	id 7F7888E000F; Tue, 16 Sep 2025 05:01:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 087AD8E0001
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 71C338E0001
 	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 05:01:23 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7700713BC5B
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 09:01:22 +0000 (UTC)
-X-FDA: 83894519604.21.FC27FF2
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 978051C0008
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2C28311B06E
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 09:01:23 +0000 (UTC)
+X-FDA: 83894519646.04.1E61A6F
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 3327540019
 	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 09:01:20 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="fFdIzly/";
-	spf=pass (imf21.hostedemail.com: domain of ethan.w.s.graham@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=ethan.w.s.graham@gmail.com;
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=gZ7IdpQK;
+	spf=pass (imf01.hostedemail.com: domain of ethan.w.s.graham@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=ethan.w.s.graham@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758013280;
+	s=arc-20220608; t=1758013281;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=upMhvQF//L2bSGTsud4VXsSZCTKFm60OzLUP07Pokt0=;
-	b=CJa6YAj0IDSJt5HfBsg7l36g6rPe/KsoSxiynYUjoinjVuE10EPupJmI+/qFs5igAGlolV
-	FHIxIvx6j2jt9eRmPsUaZU9tfbJmzPgFPZyJ+HRXvATUH2dAOiIpPVYMYZm66pW96fe3X0
-	jt+1Ida0VSZQEExTMQYI6TTJ0nOz/Nc=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="fFdIzly/";
-	spf=pass (imf21.hostedemail.com: domain of ethan.w.s.graham@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=ethan.w.s.graham@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758013280; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=2yrCmffzlGuEExOPu+2JuPwFc40pU2sHK0rUuIT3g74=;
+	b=254ajz5BZLPPhQfmTvyAN1MGuDmxePjOcTQjTjq6rQDgbO4mPYbf/QXqucccLJivVsco5h
+	CZWWTGHQGtSgljGx2FY5vfyMn4wNtwZ/bAfo7A+6aC46yvVbD/k/Wo9ZXtku8XZDGr3d0o
+	RhveRxZwNKHDh12suXyU4Gid/fFOzLI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758013281; a=rsa-sha256;
 	cv=none;
-	b=uNtq1+Wy7gJJ0vZZbgtkmZqCdhSGJY1uOsKL5wka8zc4hvvJS5prd74qqiaLLrr+i8lJNu
-	Uupo4cmDpJhs+xfhG5dL9JDuY45HXAIyDHXRg0dhKaNkutD5lVyIDNCUXUsZiLkIzBXNdr
-	HlkqFHjc3fu/THFyDjyMHCahkfqncxo=
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-45f2c4c3853so10529885e9.2
+	b=8kc6TtN2+qbu5BuK2Gty/ou2oVcS4V6t4q9Twe/WyqvaRAI1lsdS+xvcBDtUlWMPmBOWNk
+	JaBBnxM61Tj+Uo2l13Loh/XzbDttI0VDxE2wX8/R6yXvNCvIjH0I+u31zkH1pSzELRhsme
+	4rkylKMdG2KDsN0ZXjvh7dH9B+P9hGc=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=gZ7IdpQK;
+	spf=pass (imf01.hostedemail.com: domain of ethan.w.s.graham@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=ethan.w.s.graham@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-45dd505a1dfso41102715e9.2
         for <linux-mm@kvack.org>; Tue, 16 Sep 2025 02:01:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758013279; x=1758618079; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=upMhvQF//L2bSGTsud4VXsSZCTKFm60OzLUP07Pokt0=;
-        b=fFdIzly/aueUpnMdz3rsUQ9kYlSb7nqHP6vNOYFCc8I53NSEeFiqZsl7ZJGfXUVxfa
-         qF4JzT8od+4JkBMEJQjPxn5CfynslBieFWD8Xz1evIw5SjYjhGMkAMkCHPoPtKRGEDjk
-         jtBgygnyDD7wPYgZSL/rZ11nn0O9v3agMvnv6n/5SXAeTKD7K9/RWHzvUfHTXVxwwExd
-         v+Dg+hpx6Jmqx6R+VbyESan3qf7scDjeItBBezS9YtWaKTRItc2T677OiOUXtNQdDp5q
-         pVhYwArhzMdD1s1rEXBCOaE1xu/OUOprUCIRPZWqPQjMuSA85oswKjMz8GBQUXPIQvoe
-         JlyQ==
+        d=gmail.com; s=20230601; t=1758013280; x=1758618080; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2yrCmffzlGuEExOPu+2JuPwFc40pU2sHK0rUuIT3g74=;
+        b=gZ7IdpQKz7MOMxtDnHuLu5JKY5JaSB9Wc/Atc7EtUqn2PsdBTdUtO76qUj8RbWHpfx
+         EYU/8cmrqVM8lpbCoLlcctv/TWBjI0PyujCF5aybwagx+EHKIp14JEEijs8uAkxYVoAJ
+         GTiAN5pxR0jjqkLd8TIyg/gDz+Hy1bFQFJgFcLTRDvNYCX6SfPyz76WWIARm2WygbwhN
+         DzAky0L+NhRBcnxJkZM5d3F2Eld7Zb5O1sCSQYXMf0yvftkVhxOl0yXGTeI/G//EhBLS
+         yvQIw+SYSEet2l3MKPfj9sJ/JquWGRzhsiDq43LE1UrRnpQFgxJaGu3ZbgizgDBCnh6F
+         aOPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758013279; x=1758618079;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=upMhvQF//L2bSGTsud4VXsSZCTKFm60OzLUP07Pokt0=;
-        b=Ys4lhQS5OpG7uiiqfz19D2NiPvHLX+hMxK3uYxRUTb4xGp3a+Gh2Ba3GwhNvTx/pBM
-         jrbFv6KFya7v4unSj6GjOH7UYd4WszH6L8pxLeBLOuaJR9uDuCihJ0H7koN2iWdgegTR
-         l8uL5dzHhF18CIGusmAJQMGXfVGmqhSTGQj7DCqE+rr3cyZsqryIh0HiCBsG+9qPQOEK
-         2m54T+mHXZ5SnjRUcA3hKLxwJzmfjd6oWm0gEoR9sBloblCY2pu9/9PXXwwYloZvtG8r
-         XLsijmgjp4x0Y4jAxc7rD1PSQSDn2PPEvOwM77rcGdvva7AXFEIwwyL+drEkwNDtbP4x
-         Lnww==
-X-Forwarded-Encrypted: i=1; AJvYcCUZ9BFJI00y/OrEcpSPBnEnaEwBZp5MYC1n1NJPaPHbaEOHnA8ZCy2jUuop1/UQWp1bbmkzUGk3Qg==@kvack.org
-X-Gm-Message-State: AOJu0YyXxEKEavPLiaLVoYd2gIcKhm+lZ6QqT9K8oHNiOXuRN9qMo/bS
-	sV1h1NRHU4NvYMMQf6v6xWXgaLcyBJ3uUb69WNWZ4HViS9hlVAxfuN+4
-X-Gm-Gg: ASbGncsmqPX8bmJUTNhSXrTJpIfPqA2RM1Z3xq8sq8PfmD5nIeRa0sNsufMjFpieRwA
-	y4uehb3HvVlU3u7smAqblX99IqXrtvoiKMs8E8aY4hdfF6c+/DKPjlrkHbfqkPBTG6J0mgDKll9
-	MZC6o9ExuHi4jigHO7Gq0m2HjBtX4ox+fTTqzgFVB1sM33lVS5025E1plxjayy3eyRXF9s3vsoz
-	aKqvrP6YvHdYedMRyu4Y7jjIfRP0kR1XzwRTyRTgZ10MT45gsTvbI9SRLyqW5iKtCXg7qUhF2gq
-	yEPPHWAn1SFyfakSMtPhbdxtZUZPx6kUr1PiOzPde8AYSormrPp1AB1lwfUQ0vFs0ESTsLg6zJR
-	cLJher8LW9y4Q6ky1Srfi9TLz9kfUv5YV+i3RWNLOQaGjqgfAVW0mATKyKD8okZisGgOI7J+2gf
-	BUo0ZXQkweo4C6WU4A/gd/vTY=
-X-Google-Smtp-Source: AGHT+IFclWAKbjGgLv2K4m6q+aAL6mre53m9qB7bPaj17wvwDzoWsbTz12D9JPu/yEQ6xkF20lstyw==
-X-Received: by 2002:a05:600c:a0b:b0:45b:74fc:d6ec with SMTP id 5b1f17b1804b1-45f211ca9dbmr161780395e9.8.1758013278551;
-        Tue, 16 Sep 2025 02:01:18 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1758013280; x=1758618080;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2yrCmffzlGuEExOPu+2JuPwFc40pU2sHK0rUuIT3g74=;
+        b=H+NwVaVafqyK7BB2Ckdu4DU22GX4s2Pij5UqukpDzcpy2LtJD+jCzH6TmFJuEMyiuC
+         7ho8QeSKw6AMQAHrFP2GtMbU6vRHSfVym/8tpncfSj0oz6pTykFyhiXQ/NKesnRmkl0I
+         iDThljFZ68jwV+v0RAuv6OT8pKkW9vy6Me/uMHgJvSsBxK4y6cV2FTx6rCsM1Z7K2VJi
+         Sik2KFn7TzVXVjlBAhv5vrMwc27yVBvjlBcoi7h9feZtQrHaVfy010O2MlvwUHNksZKC
+         4sZ+K+HsonOHfNLZJ4Ta9OHH9fB+oBq6Keu4ori450OgLkJt+e2d6R7an/59biTvmZSY
+         elWA==
+X-Forwarded-Encrypted: i=1; AJvYcCWIdAkosUGg1zZ+/t1/v3STyHWV0f+c4ihOQcUr5L0UJV0aOj+7dUmc5YTcnT++k+XP4oVQsp86Cw==@kvack.org
+X-Gm-Message-State: AOJu0YyZXKWPSM9Je9A8orKvmOsM0Smz3lNlmOPPkItZa2F2KLpC5nTM
+	S2tBNwtgqjVzVgdiFg4zpp1laNZdZjVceKcPZyfA3lfb3HQDYirg4zJl
+X-Gm-Gg: ASbGncsYpiAQmUuTKRUf+hbCsYiymm4t9omF6LRQS1d8lQorWNBnf20DAtfYYNEVrZB
+	uOzfViSRKq/O7mM8Dvp8lZdhNMNi2TaAL5mQXz0aubGxe1OujUo1L+lL2uJjyXf2OkKlr69QmZ1
+	JLIffQAEuVMoxXj9TJV1hCoBecenFe3N7DQ+lAZryBA04hECM7nRez3++uOImb+EhToJe2fez6Q
+	hdllxve/klWom4YHsKNinNfIi6/ixfU8M20KVBVrI16yuXP8eMpVG7kXKqTSortsD0afT5V6oSC
+	XAcTEv+TdSvA1hTfzVLcypIovPpZDHBTomEyWV6kIuWIS/zzT6BNlwdmXpaFHlTH2zTx9PnaRR3
+	QW6IZ7OkUOdP5MA9FXiDsfjV8XxQiBtQIwLdYlV6Zdt7B1zTfEwOQvRkJiRT4YSUE9+BHj9S6Io
+	rZkPt7nziWZTS4tASprClSyxk=
+X-Google-Smtp-Source: AGHT+IG5iZ2HWUjjmWFwCC/GHnLa6bpp4pAlSd7iyIhSqBHOTc39tKRs7gflZ9w5k6y0UE7LS5O+zA==
+X-Received: by 2002:a05:6000:250e:b0:3ec:d789:b35e with SMTP id ffacd0b85a97d-3ecd789b5b1mr817634f8f.8.1758013279529;
+        Tue, 16 Sep 2025 02:01:19 -0700 (PDT)
 Received: from xl-nested.c.googlers.com.com (42.16.79.34.bc.googleusercontent.com. [34.79.16.42])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45e037186e5sm212975035e9.5.2025.09.16.02.01.17
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45e037186e5sm212975035e9.5.2025.09.16.02.01.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Sep 2025 02:01:17 -0700 (PDT)
+        Tue, 16 Sep 2025 02:01:18 -0700 (PDT)
 From: Ethan Graham <ethan.w.s.graham@gmail.com>
 To: ethangraham@google.com,
 	glider@google.com
@@ -117,20 +118,22 @@ Cc: andreyknvl@gmail.com,
 	rmoar@google.com,
 	shuah@kernel.org,
 	tarasmadan@google.com
-Subject: [PATCH v1 0/10] KFuzzTest: a new kernel fuzzing framework
-Date: Tue, 16 Sep 2025 09:00:59 +0000
-Message-ID: <20250916090109.91132-1-ethan.w.s.graham@gmail.com>
+Subject: [PATCH v1 01/10] mm/kasan: implement kasan_poison_range
+Date: Tue, 16 Sep 2025 09:01:00 +0000
+Message-ID: <20250916090109.91132-2-ethan.w.s.graham@gmail.com>
 X-Mailer: git-send-email 2.51.0.384.g4c02a37b29-goog
+In-Reply-To: <20250916090109.91132-1-ethan.w.s.graham@gmail.com>
+References: <20250916090109.91132-1-ethan.w.s.graham@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 3327540019
+X-Stat-Signature: 6qb1wtpr7kbom6dhnyazh7ymp3p3j449
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 978051C0008
-X-Stat-Signature: 47wmrx3yc1btwfweehsi81hutgq5hgzn
-X-HE-Tag: 1758013280-72253
-X-HE-Meta: U2FsdGVkX18hqqnmUjUAHDmaSIbud6q7iL1XjXezGR0yNf+YdOv+5ksRfMZGzu5rd0gu3EWf3gcg8XjHLZVLDbChrABW54Cay2LHg3US1DPTerJvP3idDda7zhiBLyxr2KlEtMzll8Jy6O15a1qe8mM2iJzs7z6B4e6e+uYQXMH9hPNUJuQM5VXYGDRF44qhT/+EHgK8RDTdS7SxSyfPBXOP5fziiUWc9DYQD8bpBrdWWpSINsYuqQbyDqTiXQmSVw93pV++jy2tTzeC0Y/cSch767gA1ibdds6c1ugxCA8Vb2JGuBhvJx1uNoZ9SP88fFV3rxhGY86a5lplQKuB3qG9kyP5hNqWDycfkiGb9Ikdb97Cvpe4HKLb0Id+pEreDRoDB83tI6ICXjan3mAyqJZe+JtWBTFGGakHeeKShIxaPuqYq97SALhT1fWJo84pT6CBN2h5HCLM3X7DLK+OY3RULb8iDlJRLM+5PRGpLAuc0PK8jclbfH4lehOsPts6jugB1LFX3PLIWSraYjCdLbqyL47NHFuEbRRMNo3SBGrdVFH6FMTarUDfc1wrpus2QMc/SWNWJiGBbF7tjsYzL0IaT3aynNXYtXGTF7jqn4tJycIhkLXF8R54RMfs0BTt6wh/L5fMrHiTTT7EqBVRJZeR/UxFBWeNiqM3CisKkw+NmzE8f8sLB8jONjJACg5cNDbEL35175EONoEtaKRQBmYHEZP998mteRSteKpiCKvnh7n7xnXYjWQkYN2P7BBSiFSjyr51onVkM6JtJ6FkXdlG4lzuDDpPnWXZN7FesfKcahQW/UOE5WBMwncfE/bY6a54BBfzfxtbFh8Bn2LmeUWFZ1yC1gcO9tpbuYLfLq3MCUBjJw+/gOXgtForBmKiP5BRK3cZhtGMCId87ssKBKhw18epngnJQ/lGh9sNskpN8DHNWk5A1YE04aKarm3Zo+0tnnoQT8oW4C0SgsM
- TFzqgs54
- 0qQiI0yivyUJPYT2mW0HNLKrqRQvqkf9CTo0yeghFPZVNDsPbYUaoyQ1hcAr14R1Zaa7Cgg1DjYIxgAK6M7zXJBshq5VhVq15x6HdM/57e7Yz9lv8cTnlVOWFpYFsgdYJebAAbzWwFl98BruJIiT7wiAD0ZUt/6GKLyESjSgMVbfUxE27wzBiCnoH6Rnv3/AZCvmWXjYVnFjd4WtWDJRCj+xtRvPkE/AYBb6z7sj8wnvIX7EDP9w8ShIjJrZSD8eXyGrbxTudlRb20nD08K6e/3elPulns+gZhp1So3Nk4DZU6/huNxOjDwhHMxxWxGevjJ1xb1GCNBZ2t4dLnq2fKI//A4szQLcZoAhVBLpUUO+hXuVGEziOvJQMAwcoyZ7pBqHWlNioIkMr4h0T9u/8D3bvIlgLNClobWFAD2weHdaPVJvtBSIyu7N5yn9R75+meuYP
+X-HE-Tag: 1758013280-267525
+X-HE-Meta: U2FsdGVkX18Y6Mix6+Tv6TvgAjoOQNoRzqTa2Vz7xSUsICYRota+wpzZKdH4C17J3GcaQAGaQg/t+esJSCt10atNzlLsjU7L1DvXyldMFMapulSrZzXtk0Yy+6j1s7mz03b1MGr771h/YJlARbrpN5k9L8e2WP63QXFa/WSGJyCYrd3YzGgtWKN1lGtny64VzcDea/zjsJ8SMSs53JENiOAnAUqsg5HaDte6UO1lEYJxvtQ/gfvkXQ0V1ku5GvXCq4b2mMwNvO3au32GuqaMEZ/nyzbPAYAzQnxNGSH4W/8lNilWDOrlzfVP1SWHmj3JfS913H3/31UxUF9OpcNfnd/+4i4m95wiOP2oGs/J3AKL56UQwQ0X1zMaqXww3jSOqd6/OJTX8X0ieuy5/5+17daec89uTdBYNSrb6gRy4hhOFPfvhjhZZp1PECmNB/TX/Fh7Oy1A9DsHtpgcnIaJnFhtF80n07yfrG+TiOYVUISK2IPgvPCzN5Ap7/FP17FOq/Lk00zIOQElAY1/eCfjsLG3RUj7fv/Ay5mraRDFE/GV5/Vv8BjROVY1Je3zPfn7AWpuJ5bstb7Rlc5v9vzlxP7kglmLMu66EBcc0AC/QbWcsjigl5snN3Mhi2QC7JIUjr+W1q+slhIMQum4X/3Qm3LwLt4vb1y/vwgd8cT8y42lfyrF01DxIBkhWWdWAXf3+GJrMkPx5FSkeFpUQWQeUxtAAh6F6JHCajhen1dG9DPqLu6C7TGebJQR1gI8gh66UsdknvgZd+YtBg8tFvewR82J0Bte4d6/War4qkdmJ4gT9bpeaWRv1vdMBAwo5m6T1g2RIS8US0UcCAv5zVnwtBLa6iGAxhCGu+uSda75o7h7JYC/qjtGhMQMv5Zdkdwntq9obOBXdZiGpQAFId4gtkJFVMiaKlt27MLUh/GHNqYawTbkfIgvhMSqWUyKU5KjAhLZwFXQ7lO3f0hJusd
+ NIDhnkzg
+ MPVBAWXb3JkdfpHwxSIAQbMD18bKCgRAoWB5kyEaiL0nB2aO74YEr26hxfn3322c/eZKMGB04+Lo/XyDfF1xCTz8iAZru+j0AR9E1CVXykaVfAPZlcfOz0oQ/RormvNcwUw9D+Z6Q4OmAjGFfh/pLI9uPcFcpBpcahI5eSOxRLp8Mm/corXr6VP2k4XXYCnjEZ2Qioyu54U//oc1Ii39F+CCebNUkiZ/HiAHuqfrViX00bk5Ah6jh0ctd3b3wXqpHLadII4uHBCtDKIotBn+Gkkie3S/D7AUXTVLUcfCYdF3/0Ar529/j2F2gDxEu0UvnZcxIUa8U1bnbx/SzvAEg+O90PisaoMEcOPvVcjKzeKBduoyV3rN0FKeQMFmz8Ak6v+AhogNj08IfRKxKSOIYYaf++kA1RPe8nqqNYsVcXNzEL/cXThbUDH0IIEPxh/hrK/JsUPe/TcUQA5YvqiRGj78Tpcxj2J8Eg3tZqhd0yw+NtLVZF92E6PPCOR+8EVrvc9TUkdijf0SPzxnt0OoS9dMJQQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,157 +144,102 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ethan Graham <ethangraham@google.com>
 
-This patch series introduces KFuzzTest, a lightweight framework for
-creating in-kernel fuzz targets for internal kernel functions.
+Introduce a new helper function, kasan_poison_range(), to encapsulate
+the logic for poisoning an arbitrary memory range of a given size, and
+expose it publically in <include/linux/kasan.h>.
 
-The primary motivation for KFuzzTest is to simplify the fuzzing of
-low-level, relatively stateless functions (e.g., data parsers, format
-converters) that are difficult to exercise effectively from the syscall
-boundary. It is intended for in-situ fuzzing of kernel code without
-requiring that it be built as a separate userspace library or that its
-dependencies be stubbed out. Using a simple macro-based API, developers
-can add a new fuzz target with minimal boilerplate code.
+This is a preparatory change for the upcoming KFuzzTest patches, which
+requires the ability to poison the inter-region padding in its input
+buffers.
 
-The core design consists of three main parts:
-1. A `FUZZ_TEST(name, struct_type)` macro that allows developers to
-   easily define a fuzz test.
-2. A binary input format that allows a userspace fuzzer to serialize
-   complex, pointer-rich C structures into a single buffer.
-3. Metadata for test targets, constraints, and annotations, which is
-   emitted into dedicated ELF sections to allow for discovery and
-   inspection by userspace tools. These are found in
-   ".kfuzztest_{targets, constraints, annotations}".
+No functional change to any other subsystem is intended by this commit.
 
-To demonstrate this framework's viability, support for KFuzzTest has been
-prototyped in a development fork of syzkaller, enabling coverage-guided
-fuzzing. To validate its end-to-end effectiveness, we performed an
-experiment by manually introducing an off-by-one buffer over-read into
-pkcs7_parse_message, like so:
+---
+v3:
+- Enforce KASAN_GRANULE_SIZE alignment for the end of the range in
+  kasan_poison_range(), and return -EINVAL when this isn't respected.
+---
 
-- ret = asn1_ber_decoder(&pkcs7_decoder, ctx, data, datalen);
-+ ret = asn1_ber_decoder(&pkcs7_decoder, ctx, data, datalen + 1);
+Signed-off-by: Ethan Graham <ethangraham@google.com>
+---
+ include/linux/kasan.h | 11 +++++++++++
+ mm/kasan/shadow.c     | 34 ++++++++++++++++++++++++++++++++++
+ 2 files changed, 45 insertions(+)
 
-A syzkaller instance fuzzing the new test_pkcs7_parse_message target
-introduced in patch 7 successfully triggered the bug inside of
-asn1_ber_decoder in under 30 seconds from a cold start. Similar
-experiements on the other new fuzz targets (patches 8-9) also
-successfully identified injected bugs, proving that KFuzzTest is
-effective when paired with a coverage-guided fuzzing engine.
-
-A note on build system integration: several new fuzz targets (patches
-7-9) are included by conditionally importing a .c file when
-CONFIG_KFUZZTEST=y. While this may seem unusual, it follows a pattern
-used by some KUnit tests (e.g., in /fs/binfmt_elf.c). We considered
-defining macros like VISIBLE_IF_KFUZZTEST, but believe the final
-integration approach is best decided by subsystem maintainers. This
-avoids creating a one-size-fits-all abstraction prematurely.
-
-The patch series is structured as follows:
-- Patch 1 adds and exposes kasan_poison_range for poisoning memory
-  ranges with an unaligned start address and KASAN_GRANULE_SIZE aligned
-  end address.
-- Patch 2 introduces the core KFuzzTest API and data structures.
-- Patch 3 adds the runtime implementation for the framework.
-- Patch 4 adds a tool for sending structured inputs into a fuzz target.
-- Patch 5 adds documentation.
-- Patch 6 provides sample fuzz targets.
-- Patch 7 defines fuzz targets for several functions in /crypto.
-- Patch 8 defines a fuzz target for parse_xy in /drivers/auxdisplay.
-- Patch 9 defines a fuzz target for load_script in /fs.
-- Patch 10 adds maintainer information for KFuzzTest.
-
-Changes since RFC v2:
-- Per feedback from Ignat Korchagin a fuzz target has been defined for
-  the load_script function in binfmt_script.c, and all fuzz targets are
-  built with CONFIG_KFUZZTEST=y rather than a specialized configuration
-  option per module.
-- Per feedback from David Gow and Alexander Potapenko, KFuzzTest linkage
-  definitions have been moved into the generic linkage header so that
-  the framework isn't bound to x86_64.
-
-Ethan Graham (10):
-  mm/kasan: implement kasan_poison_range
-  kfuzztest: add user-facing API and data structures
-  kfuzztest: implement core module and input processing
-  tools: add kfuzztest-bridge utility
-  kfuzztest: add ReST documentation
-  kfuzztest: add KFuzzTest sample fuzz targets
-  crypto: implement KFuzzTest targets for PKCS7 and RSA parsing
-  drivers/auxdisplay: add a KFuzzTest for parse_xy()
-  fs/binfmt_script: add KFuzzTest target for load_script
-  MAINTAINERS: add maintainer information for KFuzzTest
-
- Documentation/dev-tools/index.rst             |   1 +
- Documentation/dev-tools/kfuzztest.rst         | 385 ++++++++++++++
- MAINTAINERS                                   |   8 +
- crypto/asymmetric_keys/Makefile               |   2 +
- crypto/asymmetric_keys/tests/Makefile         |   2 +
- crypto/asymmetric_keys/tests/pkcs7_kfuzz.c    |  22 +
- .../asymmetric_keys/tests/rsa_helper_kfuzz.c  |  38 ++
- drivers/auxdisplay/charlcd.c                  |   8 +
- drivers/auxdisplay/tests/charlcd_kfuzz.c      |  20 +
- fs/binfmt_script.c                            |   8 +
- fs/tests/binfmt_script_kfuzz.c                |  51 ++
- include/asm-generic/vmlinux.lds.h             |  22 +-
- include/linux/kasan.h                         |  11 +
- include/linux/kfuzztest.h                     | 498 ++++++++++++++++++
- lib/Kconfig.debug                             |   1 +
- lib/Makefile                                  |   2 +
- lib/kfuzztest/Kconfig                         |  20 +
- lib/kfuzztest/Makefile                        |   4 +
- lib/kfuzztest/main.c                          | 240 +++++++++
- lib/kfuzztest/parse.c                         | 204 +++++++
- mm/kasan/shadow.c                             |  34 ++
- samples/Kconfig                               |   7 +
- samples/Makefile                              |   1 +
- samples/kfuzztest/Makefile                    |   3 +
- samples/kfuzztest/overflow_on_nested_buffer.c |  71 +++
- samples/kfuzztest/underflow_on_buffer.c       |  59 +++
- tools/Makefile                                |  15 +-
- tools/kfuzztest-bridge/.gitignore             |   2 +
- tools/kfuzztest-bridge/Build                  |   6 +
- tools/kfuzztest-bridge/Makefile               |  48 ++
- tools/kfuzztest-bridge/bridge.c               | 103 ++++
- tools/kfuzztest-bridge/byte_buffer.c          |  87 +++
- tools/kfuzztest-bridge/byte_buffer.h          |  31 ++
- tools/kfuzztest-bridge/encoder.c              | 391 ++++++++++++++
- tools/kfuzztest-bridge/encoder.h              |  16 +
- tools/kfuzztest-bridge/input_lexer.c          | 242 +++++++++
- tools/kfuzztest-bridge/input_lexer.h          |  57 ++
- tools/kfuzztest-bridge/input_parser.c         | 397 ++++++++++++++
- tools/kfuzztest-bridge/input_parser.h         |  81 +++
- tools/kfuzztest-bridge/rand_stream.c          |  77 +++
- tools/kfuzztest-bridge/rand_stream.h          |  57 ++
- 41 files changed, 3325 insertions(+), 7 deletions(-)
- create mode 100644 Documentation/dev-tools/kfuzztest.rst
- create mode 100644 crypto/asymmetric_keys/tests/Makefile
- create mode 100644 crypto/asymmetric_keys/tests/pkcs7_kfuzz.c
- create mode 100644 crypto/asymmetric_keys/tests/rsa_helper_kfuzz.c
- create mode 100644 drivers/auxdisplay/tests/charlcd_kfuzz.c
- create mode 100644 fs/tests/binfmt_script_kfuzz.c
- create mode 100644 include/linux/kfuzztest.h
- create mode 100644 lib/kfuzztest/Kconfig
- create mode 100644 lib/kfuzztest/Makefile
- create mode 100644 lib/kfuzztest/main.c
- create mode 100644 lib/kfuzztest/parse.c
- create mode 100644 samples/kfuzztest/Makefile
- create mode 100644 samples/kfuzztest/overflow_on_nested_buffer.c
- create mode 100644 samples/kfuzztest/underflow_on_buffer.c
- create mode 100644 tools/kfuzztest-bridge/.gitignore
- create mode 100644 tools/kfuzztest-bridge/Build
- create mode 100644 tools/kfuzztest-bridge/Makefile
- create mode 100644 tools/kfuzztest-bridge/bridge.c
- create mode 100644 tools/kfuzztest-bridge/byte_buffer.c
- create mode 100644 tools/kfuzztest-bridge/byte_buffer.h
- create mode 100644 tools/kfuzztest-bridge/encoder.c
- create mode 100644 tools/kfuzztest-bridge/encoder.h
- create mode 100644 tools/kfuzztest-bridge/input_lexer.c
- create mode 100644 tools/kfuzztest-bridge/input_lexer.h
- create mode 100644 tools/kfuzztest-bridge/input_parser.c
- create mode 100644 tools/kfuzztest-bridge/input_parser.h
- create mode 100644 tools/kfuzztest-bridge/rand_stream.c
- create mode 100644 tools/kfuzztest-bridge/rand_stream.h
-
+diff --git a/include/linux/kasan.h b/include/linux/kasan.h
+index 890011071f2b..cd6cdf732378 100644
+--- a/include/linux/kasan.h
++++ b/include/linux/kasan.h
+@@ -102,6 +102,16 @@ static inline bool kasan_has_integrated_init(void)
+ }
+ 
+ #ifdef CONFIG_KASAN
++
++/**
++ * kasan_poison_range - poison the memory range [@addr, @addr + @size)
++ *
++ * The exact behavior is subject to alignment with KASAN_GRANULE_SIZE, defined
++ * in <mm/kasan/kasan.h>: if @start is unaligned, the initial partial granule
++ * at the beginning of the range is only poisoned if CONFIG_KASAN_GENERIC=y.
++ */
++int kasan_poison_range(const void *addr, size_t size);
++
+ void __kasan_unpoison_range(const void *addr, size_t size);
+ static __always_inline void kasan_unpoison_range(const void *addr, size_t size)
+ {
+@@ -402,6 +412,7 @@ static __always_inline bool kasan_check_byte(const void *addr)
+ 
+ #else /* CONFIG_KASAN */
+ 
++static inline int kasan_poison_range(const void *start, size_t size) { return 0; }
+ static inline void kasan_unpoison_range(const void *address, size_t size) {}
+ static inline void kasan_poison_pages(struct page *page, unsigned int order,
+ 				      bool init) {}
+diff --git a/mm/kasan/shadow.c b/mm/kasan/shadow.c
+index d2c70cd2afb1..7faed02264f2 100644
+--- a/mm/kasan/shadow.c
++++ b/mm/kasan/shadow.c
+@@ -147,6 +147,40 @@ void kasan_poison(const void *addr, size_t size, u8 value, bool init)
+ }
+ EXPORT_SYMBOL_GPL(kasan_poison);
+ 
++int kasan_poison_range(const void *addr, size_t size)
++{
++	uintptr_t start_addr = (uintptr_t)addr;
++	uintptr_t head_granule_start;
++	uintptr_t poison_body_start;
++	uintptr_t poison_body_end;
++	size_t head_prefix_size;
++	uintptr_t end_addr;
++
++	if ((start_addr + size) % KASAN_GRANULE_SIZE)
++		return -EINVAL;
++
++	end_addr = ALIGN_DOWN(start_addr + size, KASAN_GRANULE_SIZE);
++	if (start_addr >= end_addr)
++		return -EINVAL;
++
++	head_granule_start = ALIGN_DOWN(start_addr, KASAN_GRANULE_SIZE);
++	head_prefix_size = start_addr - head_granule_start;
++
++	if (IS_ENABLED(CONFIG_KASAN_GENERIC) && head_prefix_size > 0)
++		kasan_poison_last_granule((void *)head_granule_start,
++					  head_prefix_size);
++
++	poison_body_start = ALIGN(start_addr, KASAN_GRANULE_SIZE);
++	poison_body_end = ALIGN_DOWN(end_addr, KASAN_GRANULE_SIZE);
++
++	if (poison_body_start < poison_body_end)
++		kasan_poison((void *)poison_body_start,
++			     poison_body_end - poison_body_start,
++			     KASAN_SLAB_REDZONE, false);
++	return 0;
++}
++EXPORT_SYMBOL(kasan_poison_range);
++
+ #ifdef CONFIG_KASAN_GENERIC
+ void kasan_poison_last_granule(const void *addr, size_t size)
+ {
 -- 
 2.51.0.384.g4c02a37b29-goog
 
