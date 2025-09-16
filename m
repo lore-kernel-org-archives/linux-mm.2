@@ -4,114 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9789CAC59B
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 13:43:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1382CAC598
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 13:59:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 378D38E0008; Tue, 16 Sep 2025 09:43:37 -0400 (EDT)
+	id D39FD8E0013; Tue, 16 Sep 2025 09:59:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 350978E0001; Tue, 16 Sep 2025 09:43:37 -0400 (EDT)
+	id D114F8E0001; Tue, 16 Sep 2025 09:59:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 266828E0008; Tue, 16 Sep 2025 09:43:37 -0400 (EDT)
+	id C4E318E0013; Tue, 16 Sep 2025 09:59:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 131F48E0001
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 09:43:37 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 97D0F1401CE
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 13:43:36 +0000 (UTC)
-X-FDA: 83895230832.14.BBA5586
-Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
-	by imf13.hostedemail.com (Postfix) with ESMTP id B98E920009
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 13:43:34 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=ztTm6n9v;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf13.hostedemail.com: domain of glider@google.com designates 209.85.219.51 as permitted sender) smtp.mailfrom=glider@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758030214; a=rsa-sha256;
-	cv=none;
-	b=Auvc0vEYBmZoGURFJiQxG44Dx6hh4fQwZf6+yC8AsYvctud1i/Mzt6NCXl6CCtnS5qoVNc
-	Sg1XS3hNtt64IuW1kO/+XFo5YLMTvki82u+G88HeXB2jR+cpuWY9pHn9gQ5hMhyZmCPRPL
-	o0UY2PlHTDL1i5GDtkslElPOi6TN1Kk=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=ztTm6n9v;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf13.hostedemail.com: domain of glider@google.com designates 209.85.219.51 as permitted sender) smtp.mailfrom=glider@google.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B3EC98E0001
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 09:59:24 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 514B51188BE
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 13:59:24 +0000 (UTC)
+X-FDA: 83895270648.26.1CF2770
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 6E4D91A0014
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 13:59:22 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=vLzesQEt;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=IvnXF+cQ;
+	spf=pass (imf19.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
+	dmarc=pass (policy=none) header.from=linutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758030214;
+	s=arc-20220608; t=1758031162;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WFMguP23bZIISRu8P8L8i4YMMkZ2fq1VcnZsxEVckmk=;
-	b=1c8X/9Tl02jaQu7D7AhxoCHOWuPPRxus3xf+LNn+WbNvbNN8KqBYOTbREpn2WGnXDmn7a8
-	pHYEeFeZ64Y8B6Gqm0+EaMs1brH8MwcYj0v+rjYJRdMU8ZQxROsA5JV6irr76qPI4cPxNV
-	7zqp07SiSVsNDLXvJL+dkyHpgDVKpDw=
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-78cce797cc2so7338116d6.2
-        for <linux-mm@kvack.org>; Tue, 16 Sep 2025 06:43:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758030214; x=1758635014; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=WFMguP23bZIISRu8P8L8i4YMMkZ2fq1VcnZsxEVckmk=;
-        b=ztTm6n9v4KcH1XIN9awCvkr2FFtw9rwCBZ/w+3hDvYLzeGU/l/VqeAJeELKCj9XtTH
-         OM9FwxDCUELfzCgigG0JM3JsVL/pKYtXexE1Ln97MEauhCs5D0zwsKwZyHrWlor966m8
-         N1CQil+0tRnsXFBM54ac26rBCAH/Pn+U4V53wXwjh7dQlrMeho4hVN0X6LRJ05wwFnxq
-         69wCdzYQvjfVEdeNv8uGhZSE+Dy1aqlrsD3WroDzAFw6+qPKehY9+sCXo/PbIHSbCZ24
-         eMRQx8j7wTDKHJas2V3P6LFNlu2qRHpZUhE8tOoik2JVyMKiygHCAGxKaK0f4AirtE9A
-         4axA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758030214; x=1758635014;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=WFMguP23bZIISRu8P8L8i4YMMkZ2fq1VcnZsxEVckmk=;
-        b=rxSUzEbdUK0gR/wFhrbMMw5vSDZqOmjHy6a3Qhp2gZSTUMaKJrwyep1iUsMmu4gwWD
-         l5ntzG2+2XtTUfnssC6SfGVK2c/qGQkVtyVcsYTJCBg/AikVYEw6cgMNMdXTeBWsIFLN
-         eqnj/SlrcNEtSYA2fwcVN6/2GyjXjZZPvL2Z7WQ5QCCPeS4XD0Qw9umE0Huy04xtm5AJ
-         A4C7HtzcbNaZisvNPkEmvOpeiGe+E/BFKJIN6YJhKvipS66xF6D1CMj7z06TvveBFZd9
-         fDY7c5cnPvBagRg8mDFElxIWUcm7R5HE5U6EyVEPFwXdhE5NwroTpG4P280HQJ5g5Wgr
-         i+zQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXZZJ0HX+r/9DJ3hbrKSYRMzR916DQljdlsjelYuXc7xWST6TOl10YwXBpZnYhUwD7pXxLhsL+aBw==@kvack.org
-X-Gm-Message-State: AOJu0Yzd6SGVAUvC5UygV6JurXSBlnYLooQ9x/Q7ZxTB0Aa71LaF94KQ
-	QL7dSpiW5auGvpZZy3b8gJCAuzdJ3FMFkKt5cUAhR3E+IY9O5YX+5+H77QZ6rlAknayUFKApDBc
-	g4LtUWxRRWRAJbjJ01sE5lMmNtMV2Na6sVGWive/3
-X-Gm-Gg: ASbGncvPsKliX9E+ddBFvytg1JvCaI/ZIycaQyvsHL3RDpOGcOuu/wh+KDWbwtYiojf
-	vidb/3j6EpZIl2UsiJZzDUYanIv4Uj0WEMZct0fqBkunzYq3La5sGtQoVXir0ZPEiJpIvzCXVLg
-	JiC8WO0nG5WNomXXKzegCuPVHbLNY/19A64RC0dM9huYq2+rEC5IfM1Z3VCuPSOGsNNGrryMIU9
-	xKXyfhvXpJKLFAqICr37GfPX6LTcCpzYAbI8WfVWe+6
-X-Google-Smtp-Source: AGHT+IFhDI3DiXQjQ2M/pDauu4pj8WaE92jep/q+QEEg6eNCMk/WVoS5e7N/U3EzJP+zE2T6dly3yK42LO8dPZ3MnPk=
-X-Received: by 2002:a05:6214:2624:b0:71c:53c0:5674 with SMTP id
- 6a1803df08f44-767bb3b5cc7mr189377726d6.7.1758030212716; Tue, 16 Sep 2025
- 06:43:32 -0700 (PDT)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=eEokiboM8tmZkAlMvBN1bGzcqO+asQMBDxG4dhVmeBk=;
+	b=teA0xhWixcYRqyN1Qji6qaoM1lC/GCEnIow94Qmio7rglPSVKS+RGsuVROl5WTiAyDNsrJ
+	4MJqbG+/+uZzBd3JjJZwbgs/8dzF3VIt8BVrjWQgdrgZW7hb6o4wvkXm8JRaJhZJlkFFup
+	ZWXWzkvmxMAe3Xl/n6NX/HD88jovkRw=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=vLzesQEt;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=IvnXF+cQ;
+	spf=pass (imf19.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
+	dmarc=pass (policy=none) header.from=linutronix.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758031162; a=rsa-sha256;
+	cv=none;
+	b=8V63bFJady7jphWCOVVjLTr+GkFOtqi7k+vjdF3QGsuh6iFie2eta6HxDv1ZrcIk0ybRNf
+	Xkc7oSGtR9UQQRNcc8KGblDFLy6x9+Gm0OV7uM3rDc/BD/YRClaXSlsXdV8MzfbLxHFqOS
+	YkOZgOmi/mh01bFvpw0ViJb3rbcXd5g=
+From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1758031160;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=eEokiboM8tmZkAlMvBN1bGzcqO+asQMBDxG4dhVmeBk=;
+	b=vLzesQEt79T9vEZS87nGJ3oFPBeJCNAwazyD667XiAI5WjR+RUthQ62DZrdqo9F5Z9bfyy
+	FirvLO7u0l0zhVJM7WM43Isrg/X2my+VsK7/rHQrfzQBqW+nRMM0YsdkgSviK3jMlJM0yy
+	KvCUjWsxCTQIymli3/xxvksfN7ecZOMGfvo47kycpMkwbU9pOeWhHk4Z/0EBccFWMSQ1TO
+	wijnI2Sh/Up55tPS/3d4NspG7ZMlMxm5X5YGdi9penOHevjsoWyg4vEBtzBkCwOrzNgU3m
+	Ekt/vfw/gyZfcEL+B80tBc7HiqJeXXQ4gh2O+qjTAUmXY3lNG8/k/APY3HEqIQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1758031160;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=eEokiboM8tmZkAlMvBN1bGzcqO+asQMBDxG4dhVmeBk=;
+	b=IvnXF+cQPlSxoKRVcUugTsHSI4/Vc/Y8F9duk+4CtplOWJFnS/t5Gyv9LT/FrCqazDviWB
+	uQ8o/S7i8gq6igBg==
+Date: Tue, 16 Sep 2025 15:59:08 +0200
+Subject: [PATCH] mm: forward declare struct rcuwait together with
+ rcuwait_wake_up()
 MIME-Version: 1.0
-References: <20250916090109.91132-1-ethan.w.s.graham@gmail.com> <20250916090109.91132-5-ethan.w.s.graham@gmail.com>
-In-Reply-To: <20250916090109.91132-5-ethan.w.s.graham@gmail.com>
-From: Alexander Potapenko <glider@google.com>
-Date: Tue, 16 Sep 2025 15:42:55 +0200
-X-Gm-Features: AS18NWDFPFWnjGnn0Ya31_ptvZRyrk4s5Sg6fkIlAJtVA6vYI3uU8Zv2xeIdCLw
-Message-ID: <CAG_fn=UJsV1ibxSf6D+QU4ds1mHUG77NWJ5TR3sVs3f696RgiA@mail.gmail.com>
-Subject: Re: [PATCH v1 04/10] tools: add kfuzztest-bridge utility
-To: Ethan Graham <ethan.w.s.graham@gmail.com>
-Cc: ethangraham@google.com, andreyknvl@gmail.com, andy@kernel.org, 
-	brauner@kernel.org, brendan.higgins@linux.dev, davem@davemloft.net, 
-	davidgow@google.com, dhowells@redhat.com, dvyukov@google.com, 
-	elver@google.com, herbert@gondor.apana.org.au, ignat@cloudflare.com, 
-	jack@suse.cz, jannh@google.com, johannes@sipsolutions.net, 
-	kasan-dev@googlegroups.com, kees@kernel.org, kunit-dev@googlegroups.com, 
-	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, lukas@wunner.de, rmoar@google.com, shuah@kernel.org, 
-	tarasmadan@google.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B98E920009
-X-Stat-Signature: cd9b668ikwpge918wyxwmfuwp3n4z4ip
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20250916-mm-rcuwait-v1-1-39a3beea6ec3@linutronix.de>
+X-B4-Tracking: v=1; b=H4sIACttyWgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDS0Mz3dxc3aLk0vLEzBJdA+Nk07RUS9M0Y7MUJaCGgqLUtMwKsGHRsbW
+ 1AH9cvMNcAAAA
+X-Change-ID: 20250916-mm-rcuwait-03c5fe95f36d
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ Suren Baghdasaryan <surenb@google.com>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+ Vlastimil Babka <vbabka@suse.cz>, Shakeel Butt <shakeel.butt@linux.dev>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1758031154; l=1328;
+ i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
+ bh=ZNw6/Pkl7XVlQGnaKL39G6YlmhiimA7IoIxBZICvlEw=;
+ b=n9IUalFfEZypJVfZ5xG9sKuoLwQY6WLapbIL5Tsm0Ihq9HdJyfjSxomCoNNvVRfzoRMRKlwwU
+ w2RMLjLCyeTCivvRtUHgdpP5S2lf2S+ufnTX1SHxylc6FYfu3OKX7LE
+X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
+ pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
 X-Rspam-User: 
-X-HE-Tag: 1758030214-440061
-X-HE-Meta: U2FsdGVkX1/CpZbsMYQIW3jHudBdMKn7MSgDKzbTIJkOqcTHC6Z7bV0yCI9I4zVY4Y15tfgvyon7nxQF4F0e+kT07c5zkJ4Xk0ao1Om0h7lR6Dlqi1n0kx84c/+YIVP0YTL28tudE3SDPBaeeTQlD/1dRSzIbRyM36DaEMLF884HPOusdpGr5g0pNfm2mcLpTbvxg3pt9MlsXka9OZVRu5JWdB5PCEL70LJwXTT0/sOOloAOh1+UloWFRExkZkX6UfdDeRsa+qV82nG5rMyfYU/r0B5CvofWyegjOgZScU/e70lDktQoXBpcn98nDGIW5Pt9tbu0kwwSEW5TEzWYxOCENW0zykwWpClr+G/7U3t5NIi/+uti2s9uOLuCl2R5drBwzi668rc9P7ZfsReTBKQtaVgjLqpCM5uL87tHgvcJ+7qywRk2xy7yb+GIwiRH8Wv92UJmvtrSRegwmW3M93IU/2Vxqk9dlRTIdw+oRobWh0FW3oOLJaO0FLaPMezXk9ARmKPARThLsQHSWA4eF7SdvsDeJUblsxINeZzR5S7l5p1mIv0w/+8PjCilRyQbJGVS52lsNY35OH5UJNEaoqETXGPRgJsB+kUe4rrpYUN2TdSELO8jTG3GtuvThxmUBjt6fr0FV/DQtEBST/9zzS6IvADlHcTWtHRusWHVaQhRRl8LwlEoBjGdw8Ixh7wDXkjY/wUs6lRuSfDF41rQQtuTtIgSvbbshQ0Ke4GVNNOrV2TXPIlFqWhPZ3XRCjjWUDjKgvREbPNeFH0RvtE49zMr9xXru6k1/dGujGRjg1nYC7TQNiS2l4wHoKKYfpqz2yyjQ8pOUaZIGuiECGIOVq9lzR+4h/WNyTAjjchzrzaxpNUe4P+SQzNIxg0+yD/Kf8PApRRz2fqHYDNbHk0wzf62Y+yxd5beRMnJXp6Mo06Zjd0JlP1ea5an6iGT033Zt1MMkO42j+NgP0PWZNF
- BFitz7Pn
- qMQufU6O5bUA3CRKZmB6gyRbj+b1kcAXnA9DGjL/GSTnh9xREvQkqKpk9K/boUCRii2wa/PaqoFYGexyPF1iwRV5uRvg+vKDIJpJHQucZDj/SQizn4HuqDMEyZLI3PXG+uozJKcs4Ho/S+WiePsPa81XSeLotpAdA2lVoNdYx1rP2Z5HAuzzb+1Sizv49V9XR4ZxKKGV7r2phRQ55TrG+mvIRE4v7F6QM2s6hvFVo33r7ynSscniD8VWFIdMGaFdRWVycvHsykADX1rA=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 6E4D91A0014
+X-Stat-Signature: ck9kg3xu168ferot583hmwbooo55cwne
+X-HE-Tag: 1758031162-68368
+X-HE-Meta: U2FsdGVkX18RAGjoz+N3GLp1U4Y9ctB+wD+ADiwLH4ofxtGxgROymRUlcrNsM0vONPXFIK2ZOQd1wXXWeVCMVQLAVlKU6x0JPrJUThCsI9cJ1dEfCAQi5A9/31GQ0JWZ6A10w5zz11LCG+2wC/Qsyqascc2Ce+oXLHKIt20Sq3IKJKgEOfIf+u96o0eZJoH4+XIU5OHL6Eul7kK5HH8y5fKzNW8K4l4jT7c37MBbwvEG7h8CPn3nTfksJ4pVguk4+cv8wOZOFuNKyO5OchK6UBOIrP+fiZM+kxWxNbBrXBGm6RZlkvm29HhWF4/twVnuOsXm9gMLQKJrV8lwQ8Rq9URytYgDsU0foRgweLkYgckH6Z8CFWTLjofLL+3DefGnkpgi9KrWChQ8osMpVUaNrBtRY4KX6j3g/HQ2vvcfb8rqrhgo5dZ6maK8GMrWaVT6o9TxOGUbCG8ckNFJF3oNELAacehSDrg2ujfZXnXqxupIdEL2AAyPxl+GfWDGXvfZZ7NpE2Z+fkFpzszQi2gmst3+bJB9js9DQ6nVr6Sf/8+PsIEl/ZtnERWQzkxevjJMjGQ6D6uDSqSJ5hOFYujELBm/VWDWv8KH8ZztbSwiglueccBdsxAWjC9CH+OdXYXO4147qeHfVrlXOCmwlv9kHEXmJuZfEd8ES5VaEzvslhIStFNr46zu6ICSM+RgnVLx/mbdKXcE5v6sPUidQBfxD0lyA93gIObcSGSfa9Hw0bH7aTsMGhHMcBR6QDTebRO6cmbMYRbT52+0Eu0YIZ1xWwzKnDIs9xwzdhXoSumFmY4Enmt+dZB7cNNtShep8HWPLvrTSYllAaFU8nNJtl2tcm8DUkT094n9oIokFUj7qarN7esZZm0vZU02DtRWDJPj1FL5Rcl2B0ZLTE2OyGG2MotJ1ojBmEMc39TjuSt7CtnDvmoZYQL46ancpfrRBGV1nI3D0kGkeYtZJEq5ypL
+ 0cP2QVCe
+ DhE1O1ixNITfPC1s8IlD3CJIyPqDnQSBguocZ+xONWYWKzcqfONQKWfMqN9wxMZEYCAoCGJE1mJl4TfNiD/NUULZXfJhXTzp5F7wVxprudXuvCQpwuMqv54i1XtHgpXWOMgyTuPNy54ni4l8JrPSbRF68svO0RX+cBRYZL3VrQIMYnD8d3nUBGQXqncWvls+obNaM5Qdm+NwOq1OTyw5tPipKAhu4DEg1ep3yegDh8u12Cdd/PSgQk8hJr4lWJMglTGFuX0v3bos8weSdsAdqR0DMdwRJp90KniOxy6XfOURnrHrWmyYXhmbUXd4r+tp836PXiS3XbB3TOMUkW9ekyCqDzPM1jS5Dc0CQvI8RFT0C7oWeF3FcKYAQkDaCPkdvSIgW93UAOZUalh8JN+xSncYWwIvRlh1pAhUZ9GbS0VLAKrBrppB7xVn3MdXXRQWR5Jv1e5rQXmbGcElIjHe7HFK/scWl9UHKuQoJyO5B8+CYr75L/Y03FrYP2CgyeQoJ608L
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,110 +111,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> ---
-> v3:
+At the point of the forward declaration of rcuwait_wake_up()
+in mmap_lock.h 'struct rcuwait' may have not yet been declared,
+leading to compiler errors.
 
-Please change the version number to something like "RFC v3" (here and
-in other patches)
+Add an explicit forward declaration for the struct.
 
+Fixes: 75404e07663b ("mm: move mmap/vma locking logic into specific files")
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+---
+This doesn't seem to break any in-tree code right now.
+I stumbled upon it while building a series for the next cycle.
+Instead of putting this fix into my series and spamming all the mm
+maintainers with it, maybe this could be part of the last mm bugfix pull
+for this cycle.
+---
+ include/linux/mmap_lock.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-> +
-> +static int invoke_one(const char *input_fmt, const char *fuzz_target, const char *input_filepath)
-> +{
-> +       struct ast_node *ast_prog;
-> +       struct byte_buffer *bb;
-> +       struct rand_stream *rs;
-> +       struct token **tokens;
-> +       size_t num_tokens;
-> +       size_t num_bytes;
-> +       int err;
-> +
-> +       err = tokenize(input_fmt, &tokens, &num_tokens);
-> +       if (err) {
-> +               fprintf(stderr, "tokenization failed: %s\n", strerror(-err));
-> +               return err;
-> +       }
+diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
+index 11a078de9150df1beff4f0bfb16e199333767614..9792dd4fff0ff73829833aae8ea3229a31757d61 100644
+--- a/include/linux/mmap_lock.h
++++ b/include/linux/mmap_lock.h
+@@ -3,6 +3,7 @@
+ #define _LINUX_MMAP_LOCK_H
+ 
+ /* Avoid a dependency loop by declaring here. */
++struct rcuwait;
+ extern int rcuwait_wake_up(struct rcuwait *w);
+ 
+ #include <linux/lockdep.h>
 
-You should be freeing `tokens` somewhere.
+---
+base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
+change-id: 20250916-mm-rcuwait-03c5fe95f36d
 
-> +
-> +       err = parse(tokens, num_tokens, &ast_prog);
-> +       if (err) {
-> +               fprintf(stderr, "parsing failed: %s\n", strerror(-err));
-> +               return err;
-> +       }
-> +
-> +       rs = new_rand_stream(input_filepath, 1024);
+Best regards,
+-- 
+Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-You need to bail out here if `rs` is NULL, otherwise encode() will crash.
-
-> +       err = encode(ast_prog, rs, &num_bytes, &bb);
-
-`ast_prog` also needs to be freed at the end of this function.
-
-> +int main(int argc, char *argv[])
-> +{
-> +       if (argc != 4) {
-> +               printf("Usage: %s <input-description> <fuzz-target-name> <input-file>\n", argv[0]);
-> +               printf("For more detailed information see /Documentation/dev-tools/kfuzztest.rst\n");
-
-This should be Documentation/dev-tools/kfuzztest.rst without the leading slash.
-
-> +static int read_minalign(struct encoder_ctx *ctx)
-> +{
-> +       const char *minalign_file = "/sys/kernel/debug/kfuzztest/_config/minalign";
-> +       char buffer[64 + 1];
-> +       int count = 0;
-> +       int ret = 0;
-> +
-> +       FILE *f = fopen(minalign_file, "r");
-> +       if (!f)
-> +               return -ENOENT;
-> +
-> +       while (fread(&buffer[count++], 1, 1, f) == 1)
-> +               ;
-
-What's the point of this loop, why can't you read sizeof(buffer)-1
-bytes instead?
-(note that the loop also does not validate the buffer size when reading).
-
-> +       buffer[count] = '\0';
-> +
-> +       /*
-> +        * atoi returns 0 on error. Since we expect a strictly positive
-> +        * minalign value on all architectures, a return value of 0 represents
-> +        * a failure.
-> +        */
-> +       ret = atoi(buffer);
-> +       if (!ret) {
-> +               fclose(f);
-> +               return -EINVAL;
-> +       }
-> +       ctx->minalign = atoi(buffer);
-
-Why are you calling atoi() twice?
-
-
-> +       ret = malloc(sizeof(*ret));
-> +       if (!ret)
-> +               return -ENOMEM;
-> +       ret->type = NODE_LENGTH;
-> +       ret->data.length.length_of = strndup(len->data.identifier.start, len->data.identifier.length);
-
-This strndup() call may fail.
-
-
-> +       if (!consume(p, TOKEN_RBRACE, "expected '}'") || !consume(p, TOKEN_SEMICOLON, "expected ';'")) {
-> +               err = -EINVAL;
-> +               goto fail;
-> +       }
-> +
-> +       ret->type = NODE_REGION;
-> +       *node_ret = ret;
-> +       return 0;
-> +
-> +fail:
-
-parse_type() may allocate strings using strndup(), which also need to
-be cleaned up here.
 
