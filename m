@@ -4,107 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED31ECAC599
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 11:16:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99EB8CAC598
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 12:07:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C87D8E0007; Tue, 16 Sep 2025 07:16:13 -0400 (EDT)
+	id AAE2F8E0002; Tue, 16 Sep 2025 08:07:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 052C48E0001; Tue, 16 Sep 2025 07:16:13 -0400 (EDT)
+	id A5ED18E0001; Tue, 16 Sep 2025 08:07:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EAA1C8E0007; Tue, 16 Sep 2025 07:16:12 -0400 (EDT)
+	id 974738E0002; Tue, 16 Sep 2025 08:07:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DA2068E0001
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 07:16:12 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8EAA4C09C1
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 11:16:12 +0000 (UTC)
-X-FDA: 83894859384.17.94E403A
-Received: from mailrelay-egress16.pub.mailoutpod3-cph3.one.com (mailrelay-egress16.pub.mailoutpod3-cph3.one.com [46.30.212.3])
-	by imf01.hostedemail.com (Postfix) with ESMTP id F34C540012
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 11:16:09 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=konsulko.se header.s=rsa2 header.b=jjnHESx7;
-	dkim=pass header.d=konsulko.se header.s=ed2 header.b=WncKLC5s
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 859F28E0001
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 08:07:37 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 47D1E14016C
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 12:07:37 +0000 (UTC)
+X-FDA: 83894988954.19.9766BD4
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 45933140007
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 12:07:34 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="uRd6Y/mK"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758021370;
+	s=arc-20220608; t=1758024455;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pP90yeaFqjeMBYG9e5yov+4PvbWY+bRrEFrDgqvDYnU=;
-	b=D3GR13ZtN3tSG5Xhacw4Vh0KiueV+pxLBU6xLf6rxZfagqFfK4ENZY24ENCyJovXxDTfk7
-	CWuuypcinIHJsvAp+sn16HGeGcFtI8U7ZNRv9wIoZ5OR976S7SC1Tj4dxvDu0psBfTKDyk
-	2Ke1wNFs8ET8/y4Q1gX4aXBSDEwawWk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758021370; a=rsa-sha256;
-	cv=none;
-	b=P7XpDnhVyLOKMPfUL0rfw2q9R5b/zDdtyDmDsyfuooIeQOfsPD+yrZvtunY7sF+jCm0w+G
-	37W7Fc4NaFTAlJGoN6KarzGt65mc5LwgfGKlDGtbrmH/x0qhZMHDiSd454GnNdARMDpLl5
-	dKKzVNEPpE8a1k0JACYlP6n1qQ8lvpw=
+	bh=1GM7+wkMx+bII2CbdBQ/esqPJ/DUnTMg1OYFS2n5wbU=;
+	b=vA+uMv8VdiFOZM/csmYuU7gb1tBW8pJiN+mAlOf4C4os1hrAug9bZQMis2cgRf7TDo4QxJ
+	668GlzVHCTZRfaKdT5VVz7zOhfcfhbzlGNlion8FwwFJGtSwlZp7778+q2TbL8WCRx3MQh
+	UscTPCXXXW2+aakh7gxe/fxy9wYj2L0=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=konsulko.se header.s=rsa2 header.b=jjnHESx7;
-	dkim=pass header.d=konsulko.se header.s=ed2 header.b=WncKLC5s;
-	spf=none (imf01.hostedemail.com: domain of vitaly.wool@konsulko.se has no SPF policy when checking 46.30.212.3) smtp.mailfrom=vitaly.wool@konsulko.se;
+	imf26.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="uRd6Y/mK";
+	spf=none (imf26.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
 	dmarc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1758021367; x=1758626167;
-	d=konsulko.se; s=rsa2;
-	h=content-transfer-encoding:content-type:in-reply-to:from:references:cc:to:
-	 subject:mime-version:date:message-id:from;
-	bh=pP90yeaFqjeMBYG9e5yov+4PvbWY+bRrEFrDgqvDYnU=;
-	b=jjnHESx7Xjtip5gTpkigaliDQOOBC0kGJQS07xdIR8XEv8pp5RYgYARz6asFJfCdI2FGtMhMNPG9Y
-	 w68YhrJkkNldZQ7FHueWY+TnDkA1WSaUS7aEg9pqDDFpEReEn/NET0e87B0yPFZAlLye2UdISqxQpb
-	 4pC+FA0H2FTvU3gHPCw4MF3Ei1zhtpOHORvHyva/+7qLZJ9rkTt1t+Q6zivSB+9kV8TduUmkOQZ3Bp
-	 PRxVkf9JhNvouhKn5SPa+CwKnAFt6TmoLbIPsfIXGS1r6vSuO+1L+Xm64yUNldJMYjMqXC5ZiKxB0v
-	 CB0hRWwONCp0ohcGGidW1LHU/K7qE+g==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1758021367; x=1758626167;
-	d=konsulko.se; s=ed2;
-	h=content-transfer-encoding:content-type:in-reply-to:from:references:cc:to:
-	 subject:mime-version:date:message-id:from;
-	bh=pP90yeaFqjeMBYG9e5yov+4PvbWY+bRrEFrDgqvDYnU=;
-	b=WncKLC5sQQIoPcUhDtoVTqr2wAuEUC4ig2CqozfmaMPwCyyXFHcSxy3Hp4qqUAuQGZxDwUzsX4jBN
-	 l73vdKIDw==
-X-HalOne-ID: 8932b5ba-92ee-11f0-aadb-494313b7f784
-Received: from [192.168.10.245] (host-95-203-13-255.mobileonline.telia.com [95.203.13.255])
-	by mailrelay6.pub.mailoutpod2-cph3.one.com (Halon) with ESMTPSA
-	id 8932b5ba-92ee-11f0-aadb-494313b7f784;
-	Tue, 16 Sep 2025 11:16:06 +0000 (UTC)
-Message-ID: <be7fbc94-cd3b-41b3-ac20-5c46aad9aa84@konsulko.se>
-Date: Tue, 16 Sep 2025 13:16:06 +0200
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758024455; a=rsa-sha256;
+	cv=none;
+	b=P49WI5BlOAwSXLNZE5+IZSfpDZzJCzP+xUZ6NIr5CELkRZVUjlSys1s5FiCud7ZESAbZGk
+	AepLcB3YkAlGh81zw+TWYr2uq+rOxpVwcjfcXU1RYjhofzV0gkiq9hHtjGKBu2XFHMQBFm
+	JT7sFp2F+GmC/kvIL/n6gXe1HhR1/Mw=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=1GM7+wkMx+bII2CbdBQ/esqPJ/DUnTMg1OYFS2n5wbU=; b=uRd6Y/mKIzR5xhWcpmTmtLLSBK
+	plznkN5eTPnemH2BHnAxlpx+cBHnf4Zk9dcezBkU5VeWht8LPc6Pxke4iGWaTtO1QoOPXG5rq42h2
+	FoG0QPRXu8aONj/akzbqnS2eeiHWIxDSfwIMFYGoB9VC4O7jzkcDd3em66niWe75IBXIYIWq1/Keu
+	pEoLBiTA3r7pWwL18eCyMy9b/yF1+wpKFCYl9IdAWpKMli0KFu+9gcac6ICeol+sdyfBTvHzJsJxg
+	mY9MFDL3Npw88FmEDIaFakjE2SUG2nl+LyWYcFSkhwkf7isCMM6cIz2MzbFBK36qT+3h3bWNVYatx
+	bGhnqy2Q==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uyUSr-00000003qKH-0jhR;
+	Tue, 16 Sep 2025 12:07:17 +0000
+Date: Tue, 16 Sep 2025 13:07:16 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Eugen Hristev <eugen.hristev@linaro.org>
+Cc: Amit Shah <amit@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Aneesh Kumar <AneeshKumar.KizhakeVeetil@arm.com>,
+	Christoph Lameter <cl@linux.com>,
+	Dave Hansen <dave.hansen@intel.com>,
+	David Hildenbrand <david@redhat.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Hugh Dickins <hughd@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Kirill Shutemov <k.shutemov@gmail.com>,
+	Mel Gorman <mel.gorman@gmail.com>, Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <mike.rapoport@gmail.com>,
+	Peter Xu <peterx@redhat.com>, Raghavendra K T <rkodsara@amd.com>,
+	"Rao, Bharata Bhasker" <bharata@amd.com>,
+	Rik van Riel <riel@surriel.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Shivank Garg <shivankg@amd.com>,
+	Sterling Alexander <stalexan@redhat.com>,
+	Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
+	Vlastimil Babka <vbabka@suse.cz>, Yang Shi <shy828301@gmail.com>,
+	Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org, rdunlap@infradead.org,
+	David Rientjes <rientjes@google.com>
+Subject: Re: [Invitation] Linux MM Alignment Session on kmemdump on Wednesday
+Message-ID: <aMlS9Kb6_x3fqsLG@casper.infradead.org>
+References: <426751f4-428b-ed01-509b-d13e719a2006@google.com>
+ <aMhgoUvziLPNt_vI@casper.infradead.org>
+ <cfac2d98-2214-4bd3-a4cb-9b319acb462f@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] mm: remove zpool
-To: Yosry Ahmed <yosry.ahmed@linux.dev>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>,
- Vlastimil Babka <vbabka@suse.cz>, hannes@cmpxchg.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Christoph Hellwig <hch@infradead.org>
-References: <20250829162212.208258-1-hannes@cmpxchg.org>
- <20250904093325.2768507-1-vitaly.wool@konsulko.se>
- <7b1ca42d-1b89-44f4-bffb-e6b09f86fdc5@suse.cz>
- <1d42c513-cc83-4f08-a10c-cbd6206070f4@konsulko.se>
- <girukcvvzgbtkxt4aftfz3lw3glvf2qsof4mx6wf5perolck5n@vaxlrtaeuzw7>
- <dh74mr7bjtpzk7frviv6iqqno2u2b27p7jiagp2dtnsz2wrfhr@wlb5vqg4majs>
- <tbvushbdn7nzitey3uy6humdndd6247r4544ngqkds3cr447e6@prnla4edwxmk>
- <f3ufcsjvvxhi5gzw2wglkpedgyyi6tiaje7em3tbxkzhklphvh@sv3dbo4yba5p>
- <98B3AFB0-EBD5-4779-A5DB-FFA6717E83C3@konsulko.se>
- <fui4gqm6pealaxooz3xv3dnnqxscefyvhw5bhntedwh4tgjvdq@ootmbuoc3dpa>
-Content-Language: en-US
-From: Vitaly Wool <vitaly.wool@konsulko.se>
-In-Reply-To: <fui4gqm6pealaxooz3xv3dnnqxscefyvhw5bhntedwh4tgjvdq@ootmbuoc3dpa>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: r7n8ahhts5pa96tgk864wrakinoio58e
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cfac2d98-2214-4bd3-a4cb-9b319acb462f@linaro.org>
+X-Rspamd-Queue-Id: 45933140007
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F34C540012
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1758021369-38805
-X-HE-Meta: U2FsdGVkX1+CIbb0pKqr7g0weXWH8J/n6O1gVJ75MP9n1wLjt0qLSyXuaSzUdk3egj1Cal2HDbjBh9TyZoaTLCgsFV8+vZO0n1xwphvhYa7RiY+LsFYMeAJf3r+ww6NTykZPCHZmA3qvb+LzIiTUsBEy8osWa4PC5986fqsiLUjIDxu41qtSagucK3GUcBgu/tItjmwTWREHJdYj3Bf4GdFgXM58pG/ubkaXlUGio4eSTiUHg006q12jcF9rTevrkcyZAc9TNgZg6dtslKQFkLSTH9D57L42u9enjTKAkj0Wypr/py5fU6CmuMsr4BOTwnNuUIZE615dSkKDOYKxrmzxtmx5BRdSxc7jBZ61BUSvQu8HstHRMg1qF3iSYpydQeWez4IY9LEOM9RhSbiPjswVO0RjBoXJyV5XjnfJt4Su2xkkJHpCyMbUaMv0UW0JVHHqTYV6/MwehoAWhTu38zMRrMFEMQc4yywJPfk8DhwGZjluYYqbiMPt//u8sqyZDlfJtbGFxGJ6GlPzweOT1EWZ4zAftAVMZkdd3nUotEcIlOU3uij0b4e6JnD/6N84PPZ4YHbVyahy+ETwA0mHt0ZMHitEjP1Lfxk9lx9ECAIrJlEJYkolLeRB3oZbVpMoNei1k+6IUAsJXeQLu9x/KvqTYYAYck+Ucbqf6wVhRgR62CJvyzGxGmd3NO4qjok8LcCxgenYL7qDd7JTlOmy8zsrUuo+E4IUdi812BzOH8rlcSmn/tOA2EpFPMZpWw43jM/kQ8lLaj5FIXpMBMZc0ReT/60ltHBg7tCG5xoVdawQpdFrUgO0WzKP05LmoyhJRIsZkHYSOB9BHjQHWXVq1gOAo28KBBLiXiJ2Bml9VDkTtj8V7cpkcy/jtblnLsk9xBvxW6sYHNTyc6D5vE6HPr+XLwS5iUeAi1yCUHa9wtEmkwRbhT/VRdd4zDyuNH8wc9W5ozFZid3S+MstPmu
- bM+qVJOe
- W1CN3ILB8825Af52gZZWlxJmr8efJmqX6Sqq/zACp9S3IOMh/nPjMjidSmJGPkgRzpKTxLrlsLAiMnJUD2wLw5WGv0q6pl2PNLwJFotMFd+zUWbF/kdBKkLQW6l0cA2evdDmcOGm/B2SKjKiZbAhypqT1ubWmZqvOpuURC4enYz1BJmoQaqZOvuVFrJ6Lemv8JWfMwyjK6+lTJ7Awm0N1QhgX8Q==
+X-Rspamd-Server: rspam07
+X-Stat-Signature: gneqstp8ykbnng17erah86zyxpt4krnn
+X-HE-Tag: 1758024454-949288
+X-HE-Meta: U2FsdGVkX1/rLsdqy++k6IJdo0U988RKvtehOSMB4daEjVHhv63JZ/Wlq2f0hBS3bNh+8bDGSTmzYpKnTU4Pv62v8bSW+7fcDFEWj68Clf9YFJmCIqLkJ1lNR5eVFQ+/eWVsY06uriA8az9PmJjnfcRIOSrvpYFhzgizqRVv17LCH4syfGnQAVat75e7S8tnrvztr1rS9RK4ItaflEnGyXtii+n3GHB93CAXgRo7xkla7zx7ZHlwKKYZ02pdvNc4Jotm+qXJV/VlJpP6cj/KB+wBD2v3QaoFl5tkHlSt9zUmBVNjfpsxXf8hAyWTGXNXfXEv8MiDcewTUsq41Ru2XBGcEIQcW6pBJC+kw9BSGfbelOwdlw6dYpsov/yq1kQ/3wp068rIjm681RzTj+8OlV2VJoZoTeqsObosrbXATYvXlmIQ28wjIkkGXoUh2QzzVOZnFhe+v6mXmaKOEIuVDFFP9Lvx7jX383R52ESrpXcp9eNi7gw9iWihSY81DjK1MdGdN6VSkHmdrL1697hThwITAQ+mz5gd6ze3DvYPyU4JbmpLLaWr1dq64cfw4ggmBbJYrC90fVRb4D/Y4J4sAoVnJG+orRsJvFT+SdmDtT0gXwBBKyLgeEB05o46BpknuTfWGlRlohZn2eMQx9u8Olz+EA42bd+bzCSnfi17Fzq2gK6zrfPfQHrngU7zj8JHP9/w6aJb7tMP06pGMdOR2HVLBJaHA1icMO/M0Wl3kvkHgo7AWEmnnJEXzC1ScxmQ+C3urZzrNyZ0kZ5v4kOi2u+or9Q6pZT2xazsbV8C6fGX3jT4q+gVtrtBetDEDkncDmL9c8HER3GsEnjpkFsszhjTi7BAW0yNDHzmDguM9OVh7NuswVntBfI+RN/+rcubSXiZH9fI3zSaa7+WaHTXSjHlYWIoJoJYo5OfvoiP1ABkQiZzbfkMGYX4mrD8EsKWQs8NYl69IHXznNyc9ZT
+ Tt8xJLH4
+ PbFB8XPuNpGYZksFIRMQaw+zk0VyCwpM42uVUc8yo+f6Mtv+7OlGiiRNOKp7SLn/HjUfo0rSlqXFLJ1o3sbMTMMtrbCEVpQ3f5k/l4OTvbPjbHdeY3X6srDq2CGr4Sre8Q8toOaDdfNHvb77KYnIP1DA38g3fo1Gg+CB3cp4MBW/kOUj9/f/ByGolXa4KaCpC/lliB3fsgG8Sjt7h8MCaPtrqg8kt0xbPUjuXtUc5fcP3RrnxJrOVFk/za6uUfPOAJrgoFoQGDHHNraLP4a2+siEDVeeoYQpXXm0/3hFz/cllJCe14XfXBFWYCy4lbD4VrfNCnmOxmjbzWMrR2RuiUND9y8SjMQMZfehOFXL8qEepVJJQAIiICCwbeedtMci7Emut6cUAGaQZQopN26/462ffpfhuqxUpDAvMFlzwhptHrfdXtKCSEFBz2ttO6lqD8QuA
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,59 +111,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Sep 16, 2025 at 11:49:35AM +0300, Eugen Hristev wrote:
+> On 9/15/25 21:53, Matthew Wilcox wrote:
+> > On Mon, Sep 15, 2025 at 08:58:35AM -0700, David Rientjes wrote:
+> >> This week's topic will be kmemdump led by Eugen Hristev.  See the latest
+> >> proposal at https://lwn.net/Articles/1031319/.
+> > 
+> > I don't understand what this has to do with mm, to be honest.
+> > It looks like a debugging aid.
+> 
+> It was suggested to move it to mm/ :
+> 
+> https://lore.kernel.org/all/0fa9e4e7-1247-4c82-8c0b-fa65b7fbb56d@infradead.org/
 
+I feel like you should be able to explain this rather better than
+"somebody else told me to move it".  As of this moment, I still don't
+know what kmemdump even is.
 
-On 9/15/25 21:37, Yosry Ahmed wrote:
-> On Sat, Sep 13, 2025 at 03:55:16PM +0200, Vitaly Wool wrote:
->>
->>
->>> On Sep 9, 2025, at 10:12 PM, Yosry Ahmed <yosry.ahmed@linux.dev> wrote:
->>>
->>> On Mon, Sep 08, 2025 at 09:18:01PM +0900, Sergey Senozhatsky wrote:
->>>> On (25/09/06 14:25), Sergey Senozhatsky wrote:
->>>>> On (25/09/05 19:57), Yosry Ahmed wrote:
->>>>>> I think Android uses zram+zsmalloc with 16K pages. Perhaps Sergey could
->>>>>> confirm.
->>>>>
->>>>> I'm not working on android directly,
->>>>>
->>>>> I can confirm that android uses zram+zsmalloc.  As of 16K pages, there
->>>>> was a way to toggle 16k pages on android (via system settings), I don't
->>>>> know if this is the default now.
->>>>
->>>> While I don't know what zsmalloc struggles Vitaly is referring to in
->>>> particular, off the top of my head, zsmalloc does memcpy()'s for objects
->>>> that span multiple pages, when zsmalloc kmap()'s both physical pages and
->>>> memcpy()'s chunks of the object into a provided buffer. With 16K pages
->>>> we can have rather larger compressed objects, so those memcpy() are likely
->>>> more visible.  Attacking this would be a good idea, I guess.
->>>
->>> Yeah I personally think attacking whatever problems zsmalloc has with
->>> 16K pages is the way to go.
->>
->> Well, there is a way out for 16+K pages, that being:
->> * restricting zsmalloc to not have objects spanning across 2 pages
->> * reworking size_classes based allocation to have uneven steps
->> * as a result of the above, organising binary search for the right size object
->>
->> This will effectively turn zsmalloc into zblock, with some extra cruft that makes it far less comprehensible.
+> > 
+> > https://lore.kernel.org/lkml/20250422113156.575971-2-eugen.hristev@linaro.org/
+> > 
+> > is a great example of how to write a lot of documentation that doesn't
+> > actually tell the reader what anything is.
+> > 
+> > 
 > 
-> I think the way to go would be this, identifying problems with 16K on
-> zsmalloc, and addressing them one by one in a data-driven way.
+> Here is a link to the v3 where I changed it a little bit :
 > 
-> I don't believe there will be opposition to this, or even adding more
-> tunables / config options to alter zsmalloc's behavior based on the
-> environment. If there's indeed extra cruft, we can either clean it up or
-> hide it behind config/tunabels so that it's only enabled when needed.
+> https://lore.kernel.org/all/20250912150855.2901211-1-eugen.hristev@linaro.org/
 > 
->>
->> Another option would be to leave zsmalloc do its job on 4K pages and use zblock for bigger pages. But it is not possible at the moment because zpool api has been removed. Thats’s why I NACK’ed the zpool removal, at least until we have a replacement for it ready.
-> 
-> I think having a separate allocator that's better for each page size is
-> not a good option tbh.
+> I am eager to improve the documentation to make more sense out of it, I
+> am happy with suggestions.
 
-I don't think anyone has been talking about a separate allocator for 
-each page size. The idea was that zsmalloc (as a well-tested and 
-well-performing _on 4K pages_ allocator) stays the default option for 4K 
-pages, and zblock becomes the default for other page sizes.
+Start by telling me what it is.
 
