@@ -4,87 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA02ECAC592
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 03:15:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2F18CAC597
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 03:16:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 287E38E0007; Mon, 15 Sep 2025 23:15:56 -0400 (EDT)
+	id 3C1A18E000E; Mon, 15 Sep 2025 23:16:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 25F878E0001; Mon, 15 Sep 2025 23:15:56 -0400 (EDT)
+	id 3995E8E0001; Mon, 15 Sep 2025 23:16:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 19C2A8E0007; Mon, 15 Sep 2025 23:15:56 -0400 (EDT)
+	id 2D6788E000E; Mon, 15 Sep 2025 23:16:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 094FC8E0001
-	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 23:15:56 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 98D74BB557
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 03:15:55 +0000 (UTC)
-X-FDA: 83893649070.19.ACC1F21
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 3AA08A0003
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 03:15:54 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ghnep31B;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1CB5D8E0001
+	for <linux-mm@kvack.org>; Mon, 15 Sep 2025 23:16:23 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A6FD411ADBF
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 03:16:22 +0000 (UTC)
+X-FDA: 83893650204.03.A026E08
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 15D6340002
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 03:16:20 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=qLiL7R0f;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757992554;
+	s=arc-20220608; t=1757992581;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=1s/T1eAhD4PSqIytNe/Nt1BbKYeNNug3kg0LKTqWzSY=;
-	b=74g0zQ3/VM6qprnLvIitGjDhaMUSoamGBaADWrEfBdhhhRYeZxRnrwGMD60ZTcC1sBSg6K
-	YRGVcy3nf/TVubdxoZynKuJfx5jhk95wap3bhtt6ksSvq9KRNdnyiyA7TRj1O81Ol+PSk5
-	o5JCDamYd09viSShhntCPdMEgJ6DJYk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757992554; a=rsa-sha256;
-	cv=none;
-	b=Tm7z8d0iJyKTtymKYmp842zn9PBD/+jTF+kDQbhfsfVN8f/XUwGKMIOBZpJEdmuYLFwnHk
-	HhdbUgKn/vptEnHH3SLIExUVEH2DOmVuQXEr+alCqRptsFU4inwTU8+h6hmE1iQ/9RUVJ+
-	LSeB1XQBqbY3TUM+LRR3q6lxmOR3/lA=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=su8v0JJisc5ExLw2TdJKF8rbpdBFuukhtFLzQevQ5cw=;
+	b=xRmMpY7noRpr69OaEqFWBfsVqM39CqQdkehDGc6YV4pPlid3yVEWYp65qa692QzChBK/2C
+	4mpvnwqMYmsmpaVmom3MulkdnpodNMbAhlDpdqgVj7DM9d2HYIDr20nLveotzmy+BlnmbQ
+	eIFE/XKe+IfCLY+1CVHZ3d7tmpOP9Eo=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ghnep31B;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=qLiL7R0f;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757992581; a=rsa-sha256;
+	cv=none;
+	b=qpwzNk9RBIoHu4KlS/vcby9FTnVeFEv/O5+BWkvqoWxcIoFNQjh9SZrwiD9mFi6CDuOuBD
+	BoSiaWLN6D5oQ4mGscphjEChlREaLbwCT5raRp6adPDxyhzB8NjTreIPs4hMVM2nSpQOgI
+	iCP7PAw6xkPs38o+mkvobS6O196LNlU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id EB1224413C;
-	Tue, 16 Sep 2025 03:15:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A34A3C4CEEB;
-	Tue, 16 Sep 2025 03:15:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757992552;
-	bh=Q+ZVTVz4mEvUkB+hpSZhEe9TJff7bsWdkkhr92sx/0Y=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ghnep31BqKD/QI5//aXn+PGWVlVVqTd59xS+nluKGfAIZ2K3QjLcqmB32MYENgJ9D
-	 Xg8c8wHroj1Bo5EpTAI/BnZPZlOlx6dCgy+1tEKeO4Ujcr2L+GAS2YwfRlYf1KbgzL
-	 HEfe97qgyByZ+uwppvRb77tgTQRBewjDhMNTUqkP0z42fyZNj6NVoH6Ye6GHw16JVv
-	 zgl9KdctOri1oNyLuPJzUj4foa1118dkP7vsLvXNPanvBnq1M/2/wgmd1WMaDdHKlT
-	 QnsNQIlLALMy0G9nj+m4QK7RQ+2toIK1do3l/X83c30uWiy9pWkxHaYIquYelERVkV
-	 46Myp3LxWK+sg==
-From: SeongJae Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	"# 6 . 11 . x" <stable@vger.kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Joshua Hahn <joshua.hahnjy@gmail.com>
-Subject: [PATCH] mm/damon/lru_sort: use param_ctx for damon_attrs staging
-Date: Mon, 15 Sep 2025 20:15:49 -0700
-Message-Id: <20250916031549.115326-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3AA08A0003
-X-Stat-Signature: tocznysbyc1j6yiym473netd33zj3rho
+	by tor.source.kernel.org (Postfix) with ESMTP id 442316013B;
+	Tue, 16 Sep 2025 03:16:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE8A2C4CEF0;
+	Tue, 16 Sep 2025 03:16:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1757992579;
+	bh=KQgIDFeYj6BfahlWkfqkbzH/E4fZL8fqkKbPwk5VHm8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=qLiL7R0fKERFaeUDekpvnT0bCQ6X1MJ36FqoZwhuZrNzvtGm9MkQu9m08+MI4WZwM
+	 TzBCMurJMdOsYoEgNdNN3ZGQpUPubYUYOjWvvM/9imNNEYhG6BNYZqtqjDxf7V2NNc
+	 F/gly7u3moLwHxdh8lc10HKrP88+9PrO3jsPjU6s=
+Date: Mon, 15 Sep 2025 20:16:18 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Kyle Meyer <kyle.meyer@hpe.com>
+Cc: corbet@lwn.net, david@redhat.com, linmiaohe@huawei.com,
+ shuah@kernel.org, tony.luck@intel.com, jane.chu@oracle.com,
+ jiaqiyan@google.com, Liam.Howlett@oracle.com, bp@alien8.de,
+ hannes@cmpxchg.org, jack@suse.cz, joel.granados@kernel.org,
+ laoar.shao@gmail.com, lorenzo.stoakes@oracle.com, mclapinski@google.com,
+ mhocko@suse.com, nao.horiguchi@gmail.com, osalvador@suse.de,
+ rafael.j.wysocki@intel.com, rppt@kernel.org, russ.anderson@hpe.com,
+ shawn.fan@intel.com, surenb@google.com, vbabka@suse.cz,
+ linux-acpi@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mm@kvack.org
+Subject: Re: [PATCH v2] mm/memory-failure: Support disabling soft offline
+ for HugeTLB pages
+Message-Id: <20250915201618.7d9d294a6b22e0f71540884b@linux-foundation.org>
+In-Reply-To: <aMiu_Uku6Y5ZbuhM@hpe.com>
+References: <aMiu_Uku6Y5ZbuhM@hpe.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1757992554-733967
-X-HE-Meta: U2FsdGVkX1++KD5Qw3YGFBEQLd4c+gRy6sY17XcvVZkbybmczaTwee7liLW53/YPZz5oWJZeyp9c7MSgSZuDAyGzShZxddayYtn7vKQUNDNlKsZgJdLjK+XXkXtaE/IE/Yb1gwEC3xAS/nQa5BtsCQGGAgdMTFWEsMH3gqvYi3Ks6Rno0Y16fFp8S6jboZdt9jVKAMwflMYoHhRiTZseSzadGUHJ87ZwyVdreB77wvkqRuXLxWLgr1NOhe2LhZkDpceQOtho8Bf5zqGR3LG7jVV4YiXcTuncAo0AmdMwB4+UqZorauTwIMJy8DravCwo4KZkZ3j5Bvh+KJekX3QiWNOhKpfMHsqjlnukJVEMmrGvJxP21LIDj3s/+52HV+nGp0x39tQUq5sMutlJU1rVqXWdCwbnJdmDYLT4wd/O2TEJKc3MZWUWJKSL3+K4eXD1obMI2Qb5lbPCiFbz+rU5sgz1VolAEhdhu7QRnTziop4Cv7zxz9ZusT1PQL6IVKILKP9haC50Uu7tEV2HZT3rdzEQkbzMAEOhaAfFZApDqk2XmnPD8fT/y8iR4dEzohQRVSPLWCf7AvYaSg+2OxIsjG+D0xMmnBU5aFiSxWmR7veQ42kG5dpaZmBFm09Us8u3+L6d9NPe490kAVQYekwG/MUZ5FbMfDvtusB3jvJp2yugJOOFrbiIgp+I1Qw884sC+ZCH6aWjusdp+zFfbfWOg8FVyv6QZ+qkoUZBq5raMMySAP9/82K4WQW2VfEtw6qFoff02gfw1BbUp7hTMmMwG3OsDSbyq9sLMm2nqM2ecs2W0htV9LBIA8TxBYJLYBrqw+OemB9aJnFcJQehZpNUGyi+nIccIR61JCnJIA1dVlEyJocNFDGfrlD8xcf/gJZfrDvCag/Kpo0Opd3lwttXatQJVeCIhUjvvvq/TBx8LG58mmjk5RqDGX1r7tydt0xKlZK/n68yIHmBKUO4y78
- qB9lIjbP
- Hq9x8yUDLaISI/jU9klzDG777VC1AsE/wI+VAdNsf/FOWFH8l1l3z1VrsE/Cj361fZ8mW3IV5dqEjX80=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 15D6340002
+X-Stat-Signature: maa1howeouc7u13zagrd8g94k4n5qabz
+X-HE-Tag: 1757992580-185678
+X-HE-Meta: U2FsdGVkX18ThPHul3oEypt6ERRdGaVOfZBgG6Ji4XZqVrIzL+sq3uoItIfkNDR2yGaICpw2AMi/1eiJfxe8+F9Eo63nsvoS8FHWjnexPuPcVkrnXi7hLW/V1w/1g/M4LmMpvAu2vxSOWumYtNFf3Ue1ia3ZMbFoKqQDHS8zIb5L7/cC1MqsB7OMlC8J2mSpRlbgBXXjmgfZbDpQlR0R9m78spbRkm53phQw6TOJodtETg4BNcP5xmqYHg17exyNnLWMDy1wdbBQ0iQ9OwO4UPWijoEejhCJl24YKsAHk3galAp/+RMWK4+qB8vxI9AQV5bd8nt0XhiJe4LXqRC6C0BUWKmSF2W4zsJD6MERzWEualHCd58dMeBcp+Mu1O/ySdPdX4Umms3EPZKc8v3Ly4pBuU7vM6W3IppEkTciUq4AW1j6YX0jlYG433g9ApxHLANL5OUVaEiwcUa7u1/3TU08KdMUqg9t5QfTzFElZwXY56p1rgvdtvPP/vTAtC2T+wrHxXDcva2RJy7mPi5BmAAuevj+tstcRXyXYwhIkeEDLJKCi1hFGPhLZJ6URoUwqHhfOA0Cp8qx3zgzCqHEDH3c4NU5AyP7LR/RPNXwSRq4RIOjxNKMqSZHm+uW9OFHVMsULT/yqvAl0/gFnB37WgWd/qtsPIJCadOsh3wwuDv3cNBpO5mWAOKkAF/fNLerWfXbnkL+hXTDAfa/cOdxgmixtt62crdUs8038v9SEpjxcQ2LuWN+AqA/zvrnhOzxzFVH083Gd2sW/D3DqCV9llSccjcxm1vdAcVwXKBhCmPgxK02CjzYgmd5F6xZb9yGjGiB2KBPpQ8a88qFsRNUYEGWlr4O2Vy+nX3sANrP417TZKcFtJoBGqyVeDFmf0etwAyHfNJIKubA7Iq60pFVD2SY/dVDr/T2OGXFsFaizuCPD3C5HI8k61aMx7TNQHpt9MOBwHAo4gl833hIg/e
+ HkQ2louW
+ cYMS2ucTJ1ecdp/oT0XCINMNX/TM9sEx0Tw8UmR5RgzbQeezxfST/ify2TOByc/yGoD2MUWDXJu7K1+dxTMiZdvhWpuN8nAzCFM7aVaVlCKBKSN0QveccmHF2+zlPEHk9iDkWevd8J2PwofET1jLdljCxc9OMnCvMFLtBKusgBJcKKPGBQwec7WBO/XD4J11KFkigWaorOzbq20q4xoTcBS8b4LPKeBW/IFemDPmjBvg9x1rZ1uKSotzsGT3YS6ATU98oyNEDjvj6AUhm58PyMqKjbBzudMP+SSBJWaZQEAyY3yb1Ofd6C9oVa97XTsIkCLFh576X9jKIY65obU1CCjxGwDVA+yCQEKBFfkdgeA2ZZAqHu9ivkbOi/g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,43 +100,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_lru_sort_apply_parameters() allocates a new DAMON context, stages
-user-specified DAMON parameters on it, and commits to running DAMON
-context at once, using damon_commit_ctx().  The code is, however,
-directly updating the monitoring attributes of the running context.  And
-the attributes are over-written by later damon_commit_ctx() call.  This
-means that the monitoring attributes parameters are not really working.
-Fix the wrong use of the parameter context.
+On Mon, 15 Sep 2025 19:27:41 -0500 Kyle Meyer <kyle.meyer@hpe.com> wrote:
 
-Fixes: a30969436428 ("mm/damon/lru_sort: use damon_commit_ctx()")
-Cc: <stable@vger.kernel.org> # 6.11.x
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
----
-This was a part of misc fixes and improvements for 6.18 [1], but Joshua
-thankfully found this is fixing a real user visible bug.  So sending this
-separately as a hotfix.
+> Soft offlining a HugeTLB page reduces the HugeTLB page pool.
+> 
+> Commit 56374430c5dfc ("mm/memory-failure: userspace controls soft-offlining pages")
+> introduced the following sysctl interface to control soft offline:
+> 
+> /proc/sys/vm/enable_soft_offline
+> 
+> The interface does not distinguish between page types:
+> 
+>     0 - Soft offline is disabled
+>     1 - Soft offline is enabled
+> 
+> Convert enable_soft_offline to a bitmask and support disabling soft
+> offline for HugeTLB pages:
+> 
+> Bits:
+> 
+>     0 - Enable soft offline
+>     1 - Disable soft offline for HugeTLB pages
+> 
+> Supported values:
+> 
+>     0 - Soft offline is disabled
+>     1 - Soft offline is enabled
+>     3 - Soft offline is enabled (disabled for HugeTLB pages)
+> 
+> Existing behavior is preserved.
 
-[1] https://lore.kernel.org/20250915015807.101505-4-sj@kernel.org
+um, why?  What benefit does this patch provide to our users? 
+Use-cases, before-and-after scenarios, etc?
 
- mm/damon/lru_sort.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> Update documentation and HugeTLB soft offline self tests.
+> 
+> Reported-by: Shawn Fan <shawn.fan@intel.com>
 
-diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
-index 14d31009c09e..ab6173a646bd 100644
---- a/mm/damon/lru_sort.c
-+++ b/mm/damon/lru_sort.c
-@@ -219,7 +219,7 @@ static int damon_lru_sort_apply_parameters(void)
- 		goto out;
- 	}
- 
--	err = damon_set_attrs(ctx, &damon_lru_sort_mon_attrs);
-+	err = damon_set_attrs(param_ctx, &damon_lru_sort_mon_attrs);
- 	if (err)
- 		goto out;
- 
+Interesting.  What did Shawn report? (Closes:!).
 
-base-commit: ea93a9235c1c6e61cfa6e5612b7b6b3fc41e79e1
--- 
-2.39.5
+> Suggested-by: Tony Luck <tony.luck@intel.com>
+> Signed-off-by: Kyle Meyer <kyle.meyer@hpe.com>
+>
+> ...
+>
+>  .../ABI/testing/sysfs-memory-page-offline     |  3 ++
+>  Documentation/admin-guide/sysctl/vm.rst       | 28 ++++++++++++++++---
+>  mm/memory-failure.c                           | 17 +++++++++--
+>  .../selftests/mm/hugetlb-soft-offline.c       | 19 ++++++++++---
+>  4 files changed, 56 insertions(+), 11 deletions(-)
+
+I'll add it because testing, but please do explain why I added it?
 
