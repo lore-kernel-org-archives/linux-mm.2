@@ -4,94 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10D07CAC599
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 08:24:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A943CAC598
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 08:49:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0AB918E0013; Tue, 16 Sep 2025 04:24:54 -0400 (EDT)
+	id 5BCD98E000B; Tue, 16 Sep 2025 04:49:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 05C2C8E0001; Tue, 16 Sep 2025 04:24:54 -0400 (EDT)
+	id 546918E0001; Tue, 16 Sep 2025 04:49:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB3138E0013; Tue, 16 Sep 2025 04:24:53 -0400 (EDT)
+	id 435858E000B; Tue, 16 Sep 2025 04:49:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D3CD08E0001
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 04:24:53 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6517C11B072
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 08:24:53 +0000 (UTC)
-X-FDA: 83894427666.22.48DDCFC
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 2950A1C0009
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 08:24:50 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=none;
-	spf=pass (imf21.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2BB2D8E0001
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 04:49:42 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A4FD21A08EE
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 08:49:41 +0000 (UTC)
+X-FDA: 83894490162.24.9109C4E
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 62B1DC0002
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 08:49:39 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=JGFqWYlz;
+	spf=pass (imf28.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.218.41 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org;
+	dmarc=pass (policy=none) header.from=linaro.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758011091;
+	s=arc-20220608; t=1758012579;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PWZBDigLOa2cx6/5Tu47dZ4P+Y0RlDmXPQo5pmrJZ4k=;
-	b=U3z6D3jIbyIaYmHAFKS9E1OsgyxL6Qe27249PtWsKHROAz1fTBdElpVbXQATCBa6TX9Ccq
-	njWmax518XvzDoyw5VDXZZSly+5W0V7utfBP/iweGVXl0Hs6oUM8AjMKI0CeoAHGwWYjDE
-	OSApRKWp6C+NtYFFUhcJS3lu+aMJFqY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758011091; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=b+l7njxo9rNJ/JdOr5wwUgtJsmJqQjeAK2bVQeoji1o=;
+	b=i9A1xeg120qI88lgGqDGHtHr1X6WVPadq4wZndJUey9QZVOe13/nP1Xm3MK0R7YoyNEXrR
+	wvQWC6KQ4Romvqfb8p+6kdNoIavQB+tdhLgqi2NwpjSz7/2FuFfJKRxe9VJqEMCNKudh6a
+	krV/9yv3k68emIoG4PKPUDnq/8GTIXM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758012579; a=rsa-sha256;
 	cv=none;
-	b=J84Y26PJlRxEe0NfcTxBHl/m8vFw0rboNiirgKe0pudO5Nwd1PaGS3K9CgoocnKYJ2XvDr
-	MVuHfKXSTLaPo7xp/jDvw7nH0wvKIYZDO/bbfZp/ddLAgEiAJ5Bb+SBEaD2XaMjQu8KR4h
-	hVDNHeJ5lPRBJkJfaFge4RkKz58zNb0=
+	b=4aE09y+BBl8OJY9wznSRm2H2HdEZcyURyqPknhPYeI76zkyJEcAMjuiY39nnnwFccnQuKd
+	RhscG/eMCqyKnrYwCNeDHAETIaBOjsVG5FCPl1YxBoOtd9HjdifX3jfqW2zUWlvf0qg/pX
+	JxNC5eT/yJTZ0oLbcaGyEQJjH01nbzg=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=none;
-	spf=pass (imf21.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CD4F912FC;
-	Tue, 16 Sep 2025 01:24:41 -0700 (PDT)
-Received: from [10.57.94.248] (unknown [10.57.94.248])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EB8983F673;
-	Tue, 16 Sep 2025 01:24:46 -0700 (PDT)
-Message-ID: <46dcddec-88a9-4b22-920c-8a3edeb2f027@arm.com>
-Date: Tue, 16 Sep 2025 09:24:45 +0100
+	imf28.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=JGFqWYlz;
+	spf=pass (imf28.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.218.41 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org;
+	dmarc=pass (policy=none) header.from=linaro.org
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b07883a5feeso890760566b.1
+        for <linux-mm@kvack.org>; Tue, 16 Sep 2025 01:49:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1758012578; x=1758617378; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=b+l7njxo9rNJ/JdOr5wwUgtJsmJqQjeAK2bVQeoji1o=;
+        b=JGFqWYlz1uxVDNeSUvu3Otb4F6jcZI/x3jRuCJgN5ldT3S5OuqwQJ4GY9ufqymSHYl
+         8q07K40ggOIPZvYbhFMyv00bYFTBPDPplsVBvc7OT6SO160MOgR+Tu8RV2+ce7Pd1Hi+
+         oFfm9z+3ZTSLCATG/9b6qimWEaPVWBDFTaiFPwNqD64yuP01EExVBdbSKu0QInLNNDMg
+         X/9JStWBu943i18vCUALY9YpUOsFJ9aU7I5FcjqSWu2D6PxqIIing3N7dKH6VOFR/jSh
+         9r6SuC9Gy5ddMfDdpChBPW6j/ZkRRgb74b3wpJZbkXtufjUZZvcO24lFzGCnwieisA/0
+         w2kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758012578; x=1758617378;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=b+l7njxo9rNJ/JdOr5wwUgtJsmJqQjeAK2bVQeoji1o=;
+        b=bXOKjPCsG8CUqq1fWYbWpTsX2pv3Za59R32GbiAs9j4Wsp71XuGJ0Km2VzN3eJSZGO
+         Q242Zvjhphhmnk6IAqlp70vQoKVs7mJs7WL+zzzhmo6OU3VYAtCW+XUfgiWSxtxYXhgN
+         XXxcX7Exu5wioc88xkYCNBwzYZuJI+I3eXVx4gRCA6zJQEzZvOn9OylCIdO+n+ADApIb
+         yg9MAbGBOc7NausSOqAjKvyWg+BrO6z9Wri5JXNNRTBBM/TcbUcmobiHBg7xC/a0iuJ2
+         eKWlKP7DpkuskCpgc1LHN59rG/qyRQnmrRyBQsFV6paSPm4w3668zmSPZGBq3NKYdgyi
+         VjEw==
+X-Forwarded-Encrypted: i=1; AJvYcCVJBGJREpcdxLKBLYVmmsunvm2qhGg/pA83i0GFTmODRCBFpWQxUJIEDVyqYr5SckKiOARJKkfK0g==@kvack.org
+X-Gm-Message-State: AOJu0YyTKhKLqhQ1HKlsFIm6JKAp1i6k80dAZXHpZO+3qrAZEbuH7+rz
+	SnI2bkRCtnXZ2nI9o6pjKF+SJhv827aw+74T/Yl26sRgIAW0BRA9+UvlQ0pPsH7DmSo=
+X-Gm-Gg: ASbGncvfE1VHCHuqg+iCOis3sITNHqD3YUBSX/ViPY9/+8EjPAq1TZqgyZg7GKajrnB
+	NJfuavKRtcsyt+hod+Xg8SgHuNKVVU124nPsWkvf4Uvx1Cun9kMam0FpcYtjCVc3Q5j82XODyC1
+	1Z0S1nZAC6FU4wwSmdPGgyoB3TBgI6cEnxwLDJtZ9TxsbuUb8CD9gElS3h7o6xn4WDjfvxlnqo4
+	djeHd4BsOrc/XtnL1iIetZJdgt2NVoKrse0RLE14r4qrttZq/SN7OaATW23u251/noeboiclTwI
+	RkJeXQfZO6E9sm99uafmuRcVtWP8lGjAaIeBIsVCej7+BXZNw8jZR3W4F10H3t9uS34GLHIdqZF
+	uf7geMEP/ZV5ptAg0EFAJbd+HNrZN4A==
+X-Google-Smtp-Source: AGHT+IHgOJAo7l09zx6lpq7OA5lmd4gKsoEYN3davPlaYm9h05DvCWk5g9RP3GfF8M4IyLBJxoxo4w==
+X-Received: by 2002:a17:906:6a1d:b0:b0f:a22a:4c3c with SMTP id a640c23a62f3a-b0fa22a5935mr830824466b.48.1758012577619;
+        Tue, 16 Sep 2025 01:49:37 -0700 (PDT)
+Received: from [192.168.0.24] ([82.76.24.202])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b07b32dd601sm1106547066b.60.2025.09.16.01.49.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 16 Sep 2025 01:49:37 -0700 (PDT)
+Message-ID: <cfac2d98-2214-4bd3-a4cb-9b319acb462f@linaro.org>
+Date: Tue, 16 Sep 2025 11:49:35 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 2/2] arm64, tlbflush: don't TLBI broadcast if page
- reused in write fault
-Content-Language: en-GB
-To: Huang Ying <ying.huang@linux.alibaba.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Yang Shi <yang@os.amperecomputing.com>,
- "Christoph Lameter (Ampere)" <cl@gentwo.org>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Anshuman Khandual
- <anshuman.khandual@arm.com>, Yicong Yang <yangyicong@hisilicon.com>,
- Kefeng Wang <wangkefeng.wang@huawei.com>,
- Kevin Brodsky <kevin.brodsky@arm.com>,
- Yin Fengwei <fengwei_yin@linux.alibaba.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-References: <20250915032946.33203-1-ying.huang@linux.alibaba.com>
- <20250915032946.33203-3-ying.huang@linux.alibaba.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <20250915032946.33203-3-ying.huang@linux.alibaba.com>
+Subject: Re: [Invitation] Linux MM Alignment Session on kmemdump on Wednesday
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Amit Shah <amit@infradead.org>, Andrew Morton
+ <akpm@linux-foundation.org>, Aneesh Kumar
+ <AneeshKumar.KizhakeVeetil@arm.com>, Christoph Lameter <cl@linux.com>,
+ Dave Hansen <dave.hansen@intel.com>, David Hildenbrand <david@redhat.com>,
+ Davidlohr Bueso <dave@stgolabs.net>, Hugh Dickins <hughd@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, John Hubbard <jhubbard@nvidia.com>,
+ Kirill Shutemov <k.shutemov@gmail.com>, Mel Gorman <mel.gorman@gmail.com>,
+ Michal Hocko <mhocko@suse.com>, Mike Rapoport <mike.rapoport@gmail.com>,
+ Peter Xu <peterx@redhat.com>, Raghavendra K T <rkodsara@amd.com>,
+ "Rao, Bharata Bhasker" <bharata@amd.com>, Rik van Riel <riel@surriel.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Shivank Garg <shivankg@amd.com>,
+ Sterling Alexander <stalexan@redhat.com>,
+ Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
+ Vlastimil Babka <vbabka@suse.cz>, Yang Shi <shy828301@gmail.com>,
+ Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org, rdunlap@infradead.org,
+ David Rientjes <rientjes@google.com>
+References: <426751f4-428b-ed01-509b-d13e719a2006@google.com>
+ <aMhgoUvziLPNt_vI@casper.infradead.org>
+Content-Language: en-US
+From: Eugen Hristev <eugen.hristev@linaro.org>
+In-Reply-To: <aMhgoUvziLPNt_vI@casper.infradead.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: abzu5nsatzm339nd1477o71ueytc45eu
-X-Rspamd-Queue-Id: 2950A1C0009
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 62B1DC0002
+X-Stat-Signature: x7ccmoyknr5mqp3w7zdtmmzfjh3rhz48
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1758011090-327760
-X-HE-Meta: U2FsdGVkX1+ZdkVM29gFbn3PcPE7zNPABgZwxNGyPNrY/RqvhLbjZOd+WH0+UzQMVdKbgacw7rtIADpk53o/eoEs+Glwo1tHS6FnB5zUZcKbQVznDcrs+JkAW9oW1QDhW261P90cXPEAuPd8ecg5BJGbHT4/p1xOCD345bnnYBxHi5NDZXHqT845gZiNv2l5nbLq2uTf0jWzKHkluYUOOhEs1vVP9hORrBW9e9y8IXoRzTB7oGZUQeCaYp+dEiDTAfro/K9RcJ9DwrQFT4PU1CqhLqi42MeTgQKPSAgq3VZwZxgRR8bUWZ/IiA6RpqHtJZmFFp72d0nNzwN3zYY2EZZaBZ1uy3lqGRDiENVizmJ+9CF69LYj6A/ELqsPrCRHyk3kRSpJmAsZ64mX72Sd0j3eSB+UbXlJuq92CMkupCc8oTvZYk6dzX2aNkyV3bX628EfhmkMbLrkR+o7/yK1F7cE3ebrAg82FapaPBHEH0x2fMNS6ZyzljIp/UBqMNgmR7vLAr2zsjQT7uINURww1/5oIlSyynTbDT+XKrM1CMDQfGDsXke8zZoOlB5httR/+9p3q1TbZKHWlkBjMWi3ThgbTjD8HQLew8E25vIWmZJVIMjzyXK/BIi/diNT+3a/yKwvui7rC+5SUh67p2BF3SDxPrkf9r771ME39xM93+RN25beCMQZG49aUzpVQ/EQR+npAlcFXcRyideS+XTLDYZE1TAAmpAwMBXndtRwhALGWIdWhVHxXL7YPZj78jL6AElCDhgEuw4n0RRg3F7g91uZmRotjX87/fiNJc/CqTL79QO8al9dhs11MBUanaM5icivOxlm81c/6X5Mvr0RcqUT4veHxCyk0NM6649Ife8ZRFlIrxNFxiVIvZcPDpqYtmKZzUxEbOljrK4bpIJnvMsvosrCdZRc83ng2UyBm3hQIa5ZsF0WeMbw0jBjxMmEipD1QB6cbkCvmYN3Yrf
- q/YumNWU
- 7TpmiWWzasEh/RmeVJz5WnYzsBuU2vdZcWro/fh5XyvALWpo3ceXrUH/v7raVtZpUPnUNLQBJrcinvjmJp2+S0BNFAjRHs/SDnU8w07nHEG17R7jUJoCs6PyHGZBWOy90TZtx5B6Gd/9UVmTw3A/5MJPfrhu0CzdCBvsQ/DZkfiY9w+QfPoATuIetUX76aSECoE06EnNQF5HYipBXbcCXy/sFKzgDPAOv06UnUTI6Lk5RDkPzT+17iYCoMQX6jmoKEkp7FnspAaKxbGfhhMDQd9ihmzZl2mvgWniqqkQONivKbpljkVFvFOvdEtCiyGH/XjNaYZUUSblKHRjak/tZWocx9rq6Z6YxHBpZbIyzT54x2IAczYprBirRxh2WB3D7ic7a9Be8qy02GA0BB4yNnjDjtK9ylia6K25bu8eoSYu8QfjlP6OESRKfpkVtfirmAyDDyTL+1wTxflK95ry2TfCD5Gj6lNfqWuOZowwTlVUBcjBUqYgllaXYxlw0+hG7boRvGcMjFJHPkeCthQjPJFulCKeog+NIZQeZUpeOQ9+wfHLDiuxyWKMnWu6QZjFaYDl8dhcGf+DEBiayM2PIWgV18nYGEGxX7DWxPIuSHULyKkr44/vpB7tumWYaRxLcikgNXEK0PR+23ClDxcjUztyq5uulpdoIaeJfbKXlDVNliqSrwxYKpfr894q482JT7elO
+X-HE-Tag: 1758012579-625460
+X-HE-Meta: U2FsdGVkX19LU5mm9rC41rm1C6jaTE8GcdLh3v0QZ1HOhGzWMY7QMlzW0gkpAk5SjUheF/o9NvqnFqWG7WeYsBpYCgdDvo0dlNZyYWbtSsvzb4CzzsKY0xEG9zkLwuYT80UzOW2re+owXwIFISfepDoD9jrxe+0rb7DaJxSvoCT+UV68zMHq9165dVmAkb8X4w3MsIK3bS1uIPE16Eakt1url1igqwHXiwpdnMObitjgJKnGCzAEzQLVenWIbLfcTyuFCwTvimS4Slhkm23/xL0HXQvVhGQ/25vrosRYIyLH2sj6g+BD8Lt2gma/35WOkxVlyordQaefpfXzHv0i/QnMINdxNyMXYT5X2CJQF9X1Lbxg/np1tc91RP98HXZqDPyZMRaHxPmoC90NRbsU6BDnujcxYvyCYPoGL1F1tAI6yZq1HmUviwpARpHj4hYPsfmLHCC1raVQ1qk9yMfN/GPl3hz/1Po9ZqgjDMorPwqDl90eW24RWsYaQ0jor67dAd9/esn3FC8yeRoTxpCeZWuheM1PkiSFeg4tISKKS6gQiWCFYzovIlfzMFOByKGvqoY5XqXZ3LRyv/JuG4GAQ9/32a6ZRw13q0Kq573vwujDKjDAk3VRg6VLwCINj5xwX5XiDIbN5f2zXPZ4EoBFjgcOcq5SzKL55Yntd7/fYlwlU6uE+kRO0gsZYv2HDkqcin4mNMG2rpV+iCL178i5JiNZNgf5PJkp9LrwZsHFvbcDdlTPP/0FbFk6T9O9s98lXAQbC+tlf462D5XhOIFSuoAkFbX4E1my96883OSArzTtgVttv3jEn3sNLqS7KeVbbUdcgSxRl/X9H9PjrkIMvLzZmFSG2JRLPJrs7wqf6CyLp1bO7OHD5rhTB17WuX2lF3uLSiobE+W2798kvSSb3ngsYbu81p5aHbI+e8y+xYrGkKc4YwdkWBVGfXVKl/EIwHSxxsa0/iTlBgpeZuT
+ tbXmEcOC
+ AcZ+t65rIzyLKl7kGpx1AfgLtgkMom3fkP3wa+CWPQpNAn0FGWfRMeqiLPZKRMipk+bOnaB1Tfx2Tac0ZeB88+/OOIItTJLXviBD3snkNj64g7AHMlHm+nR9sxSCmHu7s2Lwc+jXPWg+wzkDtiWFpPVA5i/OGjS3IIxRPxm549PqwkdNeIH5gqVjQphK5sTR1fT4lPhv20wIBkHIv+yna3Se+riroOqktNkufgPF+1P6dwB87pp38bzgNyeIunhEuuhxgdWYlPx3CerUTBr7g7gJzc1OE2zGNFt4GUOoW4qqIiYJ00Gr2twzFstFSZPB+F9rLaPGd+Ske1fnJYv/h2iMkNGZVvPZ72dI2hzKEd29KXSoeQOM9vSAYnD1UE8Re1s0HDRO7bar4sV6JdfqTJJelRgcB03tCoBmM+hOoaNi1djtnjJxSamCY/R9NFTx/0/GruqHxezt9lXmnllPbl7/j5hETJDT3psTlVeicaodu1hg1BZZVJuNe+9r5fRo/h6LaHAGuIr5AaZ5RSsIHVh5SXeb1slDTIt++UIXIyzQXfszqH3VqiPytMwBJgHNo8nrx/s3YOkfUc4j6zTA66iR/k1bscwzciGhztp5fR2xEGmM3W2u3zXAd7BkgoJFkerPWYObuk0f8Trp59qjKWTlW7vnJ1Zy7hE0wRhL36Z/j9yI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,213 +137,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 15/09/2025 04:29, Huang Ying wrote:
-> A multi-thread customer workload with large memory footprint uses
-> fork()/exec() to run some external programs every tens seconds.  When
-> running the workload on an arm64 server machine, it's observed that
-> quite some CPU cycles are spent in the TLB flushing functions.  While
-> running the workload on the x86_64 server machine, it's not.  This
-> causes the performance on arm64 to be much worse than that on x86_64.
-> 
-> During the workload running, after fork()/exec() write-protects all
-> pages in the parent process, memory writing in the parent process
-> will cause a write protection fault.  Then the page fault handler
-> will make the PTE/PDE writable if the page can be reused, which is
-> almost always true in the workload.  On arm64, to avoid the write
-> protection fault on other CPUs, the page fault handler flushes the TLB
-> globally with TLBI broadcast after changing the PTE/PDE.  However, this
-> isn't always necessary.  Firstly, it's safe to leave some stall
-> read-only TLB entries as long as they will be flushed finally.
-> Secondly, it's quite possible that the original read-only PTE/PDEs
-> aren't cached in remote TLB at all if the memory footprint is large.
-> In fact, on x86_64, the page fault handler doesn't flush the remote
-> TLB in this situation, which benefits the performance a lot.
-> 
-> To improve the performance on arm64, make the write protection fault
-> handler flush the TLB locally instead of globally via TLBI broadcast
-> after making the PTE/PDE writable.  If there are stall read-only TLB
-> entries in the remote CPUs, the page fault handler on these CPUs will
-> regard the page fault as spurious and flush the stall TLB entries.
-> 
-> To test the patchset, make the usemem.c from
-> vm-scalability (https://git.kernel.org/pub/scm/linux/kernel/git/wfg/vm-scalability.git).
-> support calling fork()/exec() periodically.  To mimic the behavior of
-> the customer workload, run usemem with 4 threads, access 100GB memory,
-> and call fork()/exec() every 40 seconds.  Test results show that with
-> the patchset the score of usemem improves ~40.6%.  The cycles% of TLB
-> flush functions reduces from ~50.5% to ~0.3% in perf profile.
 
-Overall, this looks like a simple and useful performance optimization - thanks!
-I'm running this through our performance regression suite to see if it spots any
-workloads where the change slows things down and will report once we have the
-results.
+
+On 9/15/25 21:53, Matthew Wilcox wrote:
+> On Mon, Sep 15, 2025 at 08:58:35AM -0700, David Rientjes wrote:
+>> This week's topic will be kmemdump led by Eugen Hristev.  See the latest
+>> proposal at https://lwn.net/Articles/1031319/.
+> 
+> I don't understand what this has to do with mm, to be honest.
+> It looks like a debugging aid.
+
+It was suggested to move it to mm/ :
+
+https://lore.kernel.org/all/0fa9e4e7-1247-4c82-8c0b-fa65b7fbb56d@infradead.org/
+
 
 > 
-> Signed-off-by: Huang Ying <ying.huang@linux.alibaba.com>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: Zi Yan <ziy@nvidia.com>
-> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Cc: Ryan Roberts <ryan.roberts@arm.com>
-> Cc: Yang Shi <yang@os.amperecomputing.com>
-> Cc: "Christoph Lameter (Ampere)" <cl@gentwo.org>
-> Cc: Dev Jain <dev.jain@arm.com>
-> Cc: Barry Song <baohua@kernel.org>
-> Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-> Cc: Yicong Yang <yangyicong@hisilicon.com>
-> Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-> Cc: Kevin Brodsky <kevin.brodsky@arm.com>
-> Cc: Yin Fengwei <fengwei_yin@linux.alibaba.com>
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-mm@kvack.org
-> ---
->  arch/arm64/include/asm/pgtable.h  | 14 ++++++++-----
->  arch/arm64/include/asm/tlbflush.h | 33 +++++++++++++++++++++++++++++++
->  arch/arm64/mm/fault.c             |  2 +-
->  3 files changed, 43 insertions(+), 6 deletions(-)
+> https://lore.kernel.org/lkml/20250422113156.575971-2-eugen.hristev@linaro.org/
 > 
-> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-> index abd2dee416b3..a9ed8c9d2c33 100644
-> --- a/arch/arm64/include/asm/pgtable.h
-> +++ b/arch/arm64/include/asm/pgtable.h
-> @@ -130,12 +130,16 @@ static inline void arch_leave_lazy_mmu_mode(void)
->  #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
->  
->  /*
-> - * Outside of a few very special situations (e.g. hibernation), we always
-> - * use broadcast TLB invalidation instructions, therefore a spurious page
-> - * fault on one CPU which has been handled concurrently by another CPU
-> - * does not need to perform additional invalidation.
-> + * We use local TLB invalidation instruction when reusing page in
-> + * write protection fault handler to avoid TLBI broadcast in the hot
-> + * path.  This will cause spurious page faults if stall read-only TLB
-> + * entries exist.
->   */
-> -#define flush_tlb_fix_spurious_fault(vma, address, ptep) do { } while (0)
-> +#define flush_tlb_fix_spurious_fault(vma, address, ptep)	\
-> +	local_flush_tlb_page_nonotify(vma, address)
-> +
-> +#define flush_tlb_fix_spurious_fault_pmd(vma, address, pmdp)	\
-> +	local_flush_tlb_page_nonotify(vma, address)
+> is a great example of how to write a lot of documentation that doesn't
+> actually tell the reader what anything is.
+> 
+> 
 
-It's not really clear to me how important doing local tlb flushes for pmds is
-for the performance improvement? I'm guessing most of the win comes from the pte
-level? I suspect you have only added spurious pmd fault handling because the
-arm64 implementation of __ptep_set_access_flags() actually handles both pte and
-pmd levels?
+Here is a link to the v3 where I changed it a little bit :
 
-Given the core kernel didn't previously have support for pmd spurious faults, I
-wonder if it would be simpler to drop the first patch and rejig
-__ptep_set_access_flags() so that it has a pgsize parameter and can
-differentiate based on that? I'm on the fence...
+https://lore.kernel.org/all/20250912150855.2901211-1-eugen.hristev@linaro.org/
 
-If you do end up taking this approach, there is a style I introduced for
-hugetlb, where the function is suffixed with _anysz and it takes a pgsize param:
+I am eager to improve the documentation to make more sense out of it, I
+am happy with suggestions.
 
-int __ptep_set_access_flags_anysz(struct vm_area_struct *vma,
-				  unsigned long address, pte_t *ptep,
-				  pte_t entry, int dirty, unsigned long pgsize);
-
->  
->  /*
->   * ZERO_PAGE is a global shared page that is always zero: used
-> diff --git a/arch/arm64/include/asm/tlbflush.h b/arch/arm64/include/asm/tlbflush.h
-> index 18a5dc0c9a54..607b67d8f61b 100644
-> --- a/arch/arm64/include/asm/tlbflush.h
-> +++ b/arch/arm64/include/asm/tlbflush.h
-> @@ -282,6 +282,39 @@ static inline void flush_tlb_mm(struct mm_struct *mm)
->  	mmu_notifier_arch_invalidate_secondary_tlbs(mm, 0, -1UL);
->  }
->  
-> +static inline void __local_flush_tlb_page_nonotify_nosync(
-> +	struct mm_struct *mm, unsigned long uaddr)
-> +{
-> +	unsigned long addr;
-> +
-> +	dsb(nshst);
-> +	addr = __TLBI_VADDR(uaddr, ASID(mm));
-> +	__tlbi(vale1, addr);
-> +	__tlbi_user(vale1, addr);
-> +}
-> +
-> +static inline void local_flush_tlb_page_nonotify(
-> +	struct vm_area_struct *vma, unsigned long uaddr)
-> +{
-> +	__local_flush_tlb_page_nonotify_nosync(vma->vm_mm, uaddr);
-> +	dsb(nsh);
-> +}
-> +
-> +static inline void __local_flush_tlb_page_nosync(
-> +	struct mm_struct *mm, unsigned long uaddr)
-> +{
-> +	__local_flush_tlb_page_nonotify_nosync(mm, uaddr);
-> +	mmu_notifier_arch_invalidate_secondary_tlbs(mm, uaddr & PAGE_MASK,
-> +						(uaddr & PAGE_MASK) + PAGE_SIZE);
-> +}
-> +
-> +static inline void local_flush_tlb_page(struct vm_area_struct *vma,
-> +					unsigned long uaddr)
-> +{
-> +	__local_flush_tlb_page_nosync(vma->vm_mm, uaddr);
-> +	dsb(nsh);
-> +}
-> +
-
-You're introducing more variants than you're actually using here. I think you
-just need local_flush_tlb_page() and local_flush_tlb_page_nonotify(); you could
-keep __local_flush_tlb_page_nonotify_nosync() and drop
-__local_flush_tlb_page_nosync() since it's not really adding much?
-
-But I'm also wondering if we should tidy up this API in general; we have local
-vs broadcast, sync vs nosync, notify vs nonotify. And page is really just a
-special case of a range. So perhaps it is better to rework the range API to take
-some flags and we can tidy up all of this. I know Will also posted an RFC to
-convert a lot of this to c functions, which should also be included. Not a
-blocker for this change, I don't think, but there should definitely be some
-follow up work to tidy it up. (I'm happy to take it on).
-
->  static inline void __flush_tlb_page_nosync(struct mm_struct *mm,
->  					   unsigned long uaddr)
->  {
-> diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-> index d816ff44faff..22f54f5afe3f 100644
-> --- a/arch/arm64/mm/fault.c
-> +++ b/arch/arm64/mm/fault.c
-> @@ -235,7 +235,7 @@ int __ptep_set_access_flags(struct vm_area_struct *vma,
->  
->  	/* Invalidate a stale read-only entry */
->  	if (dirty)
-> -		flush_tlb_page(vma, address);
-> +		local_flush_tlb_page(vma, address);
-
-Given this is called for both pmds and ptes, it's a bit of an abuse to flush a
-*page*. Yes it is architecturally safe, but it's not exactly self-documenting.
-If we pass in the pgsize (as per above) it could be optimized given we know the
-level and we only want to invalidate the last level. e.g. the local equivalent to:
-
-__flush_tlb_range(vma, address, address + PMD_SIZE, PMD_SIZE, true, 2);
-
-or
-
-__flush_tlb_range(vma, address, address + PAGE_SIZE, PAGE_SIZE, true, 3);
-
-Again though, perhaps that is part of some follow up tidying work?
-
-
-contpte_ptep_set_access_flags() currently does a (broadcast) __flush_tlb_range()
-on the (pte_write(orig_pte) == pte_write(entry)) path. I think that should be
-changed to a local range invalidation to be consistent with this change.
-
-Thanks,
-Ryan
-
->  	return 1;
->  }
->  
+Eugen
 
 
