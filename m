@@ -4,84 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74BABCAC598
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 12:21:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF05ACAC598
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 12:22:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C09E38E0008; Tue, 16 Sep 2025 08:21:57 -0400 (EDT)
+	id 1355A8E000D; Tue, 16 Sep 2025 08:22:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B93868E0001; Tue, 16 Sep 2025 08:21:57 -0400 (EDT)
+	id 0E60F8E0001; Tue, 16 Sep 2025 08:22:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A0DCF8E0008; Tue, 16 Sep 2025 08:21:57 -0400 (EDT)
+	id EC8998E000D; Tue, 16 Sep 2025 08:22:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8825C8E0001
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 08:21:57 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5DDB3138524
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 12:21:57 +0000 (UTC)
-X-FDA: 83895025074.01.0C5D0BC
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013001.outbound.protection.outlook.com [40.93.201.1])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 805EBA000C
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 12:21:54 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=oTWJJWAA;
-	spf=pass (imf15.hostedemail.com: domain of balbirs@nvidia.com designates 40.93.201.1 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
+	by kanga.kvack.org (Postfix) with ESMTP id D193A8E0001
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 08:22:10 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A85A65648B
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 12:22:10 +0000 (UTC)
+X-FDA: 83895025620.23.35BC451
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010061.outbound.protection.outlook.com [52.101.56.61])
+	by imf16.hostedemail.com (Postfix) with ESMTP id BB4B6180008
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 12:22:07 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=alLmTMBM;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf16.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.56.61 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
 	dmarc=pass (policy=reject) header.from=nvidia.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758025314;
+	s=arc-20220608; t=1758025327;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hALjG/gGUN8TXNS63afq9VN9N360lq3Oij07SHwtIXM=;
-	b=8dl48zTJSfGeTBdVJFNjdtHx90DDPvjkSnk0RY+jwi822aY2vNHOO9j5nRjVZROw4vo6Tt
-	ssUd0ORCe7sSkfYcsbqp1o7ZzLrvQ106VlXFQi6x7r4V6rtdKH+/gbi+gtqR6bbe1Ff3ZK
-	ya8PlBkquDPUxiEub+tVRxC4HUVkdGM=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=oTWJJWAA;
-	spf=pass (imf15.hostedemail.com: domain of balbirs@nvidia.com designates 40.93.201.1 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1758025314; a=rsa-sha256;
+	bh=BkJsayUQ9WeqaHEAG5BVnhagrGHSvPSfdVHrNe53WI8=;
+	b=GASy036TlyqYvHCSDU0UQH66LSxos4PqUSv51eG5GM5cKyxopvg5hjAraPXg5gwtBzZ5h9
+	SrjxL8Vrw4hbJ0n3k6aqKnXd1qOt8tk9qEw12EpkNMrwJalLYT3Hd90EwloYJ+bLdIIE8j
+	aX07I3r0Jst38MCuJVuD19X5h3yAjrk=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1758025327; a=rsa-sha256;
 	cv=pass;
-	b=OOmmlwtLHfEoM05ZInEM0TrTwBjA0ZD5EMolhDZGRHVnH3/nc4kWCwnqPzK9JXUKBd6VSt
-	gSeEFYDzVDB9UwV2JoZxc2fUtDH+eGqpyxktkSuntHleD9P9BDKcow2XNACrkBqZORVAww
-	935/oAeasScUl5lzp0skImikKDLQxy0=
+	b=B+Jw6Wzb12k7oQAfYkJDb6kVv268iMH6SX0KK2KMfyZXTJY1RO6+6hEfKlRoX7tKeGwVBZ
+	Z2ne2P/FziI02ElfTrpvPzzWhVLQd/XZMCGX7cLz7R/CZA0aNK+4Icw+nfb98HzBIGPUWq
+	X0SJ+ABDYsiLJv1yAtlHKoY/9jyvYMY=
+ARC-Authentication-Results: i=2;
+	imf16.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=alLmTMBM;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf16.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.56.61 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qzKMsaVKWRWFyx0/17h9xWYZf4Rpd2Jwv6dLEwwiBS8451Kel84G1t2P6vS9A+vpIDbA3Vswzm+kV0Z6uX7+p32kcnXyAgdTxaEkOhXWwkZQoN8/ml3bbdwEu/sw98st5eMIBlW+94Qh8TUI8BfWmh4CUM1Vhe06H9sBYQKlH5fl8rsXDpHo6uDAjiY/SKWfEaXPSmxfMp/MbsANywG6RirHFuGI2xUkZwmu0zn6A+hgfVsO74GSXwFxsqu/q8Htc8UJJVG0SL+rvLBNJOFfCnRlcmTbW10wewQDFcorwaDXwxZzvEEqlmaxxUUXmMdirrQkrpHPPcN38vCdPAifKA==
+ b=GSt+WazzKBm0O596zQvjwJsKUc/USZ1FMmPyzBZbTnnttqa7DyNub2sRFx8BgEcdAAR0T0tA+IphsbQJSJHUmSf6sjr2xcO2xZy4G2HlbFYKcA6dpAnGHx/9bV4RyFI0/9oNAvj/+cPJbB8LYhYxzNKS1gW8qC2osHjhaxNAqU6gSj1uMLUEve5+NG5TQvOMV3kmFTpUSv2mYQa4kOpWrcrw6R19m0qfZcc+Vb9c5X9WLgipU5mctiNpSXNzGidoUCehqH6eqRnBzv/Mp+uC0h/NAiVXRtQGhjwscslR0umMDfZOD3/B/bQ5jJD9mGGloJdx9gjur66FuwpjMGQeBA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hALjG/gGUN8TXNS63afq9VN9N360lq3Oij07SHwtIXM=;
- b=t++zQT6XFl0X5TrdrFKUEopA9S5PPmYjmUZS5j31usmWUWwY0W+o6RCXQyLb6FNRBBXyXeJGJBGgsBwS0p2k34otpX4K7+0PaonrxA1aH5HBrNYtJSZdYwXJZhDd0AUkPOCvt/O0J0JjpJXOH57y27ipOjOziYRgaoHpLbzxiOAEMNgalu9nF4DkkAjyvwJACM1fk2e1S7ACvQPQh5xWAXSpbH+uVIsguReDwpseaL6XjL5orzInyJ6OoF0S4rqou3N5xOc419l3HnEonCen6M8WnueYLE/BzyesFVfX2j765Ey9PrZvfhm3SuDi4v0L7P3/0e6/akqOukwqygqmNQ==
+ bh=BkJsayUQ9WeqaHEAG5BVnhagrGHSvPSfdVHrNe53WI8=;
+ b=QDr8tdd5rDqeErur9PwZ6UXgkC6ZwCz3meNeQvU56h2scONgTtbUra4gIEDnJ0V7uo0Nze9/DhBQrq9OP/OwrY4k69r4jdgDZABvS21MJ0t7kepmnLh481sps42pveeSCXDPTHHvCWGSCSnB0K0lprNMvF/QqNhyeUxHJ8zM4FYjh1FA2XGdYsMyUJjNeLMl2b+tG1JSLc/DBIT/PDGawLSGCzkcRXoPqa7MI8k83gbWRfHnBMGXofhCd1VRtYei5JeKkeNu0zysK3Kvv5GdG+dH0TAG0wKLk3H88x6iDyMXAXtclk30OHpuoYdoqgYW8iZQjiCVRBcBmhe5ho3BPg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hALjG/gGUN8TXNS63afq9VN9N360lq3Oij07SHwtIXM=;
- b=oTWJJWAAMnEYk7woNr1Qlet3pfpNWtzW8hIY7HCaArj8eXu13qwWwSlHV5vjKxqu5bGSk1ai5yQbO8demB640WM8mNEWJAom0HGV6LSuVZ5JaVmn0Mj4kGOz+BqvbkzpWwoLb5o1HY7IuXBv34c4Gi4aaBswWwt2qJi1q5RFjT5ZKVBAGZCBuObBhVaLTN51C65hjjjb82Pj96v1w2UFk75qRdII211d4Rxkj0j/sIPHr7a8fmY8shCsnQH9z620lpXdAxVZ3ykfY9a/YstlJUgnsaYmlrRm04KgDdJtViI0dyqYsIO54wtELxJaZDm/2PY/lzozyEZ5vCEHX/QeKA==
+ bh=BkJsayUQ9WeqaHEAG5BVnhagrGHSvPSfdVHrNe53WI8=;
+ b=alLmTMBMjAV4KjZrEuDNsTAIfn8YX4JAgE8pCzZJMK1SW5ji/Okbcq0MthGrYII306oA1ScwobPt3Y9x800robVIXuuftoTSlG4JW/TlUUfOqkc02tOIkynPRWMWBt9BH9eBFBSIvemnK2KDVWWZ73AMAGmf21prZ17CccLx38IV0qOD86HwiY6484SIiPux+cIBB0M+AicDCzWRqlWYTB4sMefO4CSp/kl5Nl7cQvxLf+O/d4j1armQgPCyeLkcpHImKzU7CNIhJFotAG7jLo8IEL6g4lPeg66eKclkR42nLTXGX5x3oC17yVEjJQwz5vFaxsCJhcOjet3PCClxrA==
 Received: from PH8PR12MB7277.namprd12.prod.outlook.com (2603:10b6:510:223::13)
  by PH8PR12MB7373.namprd12.prod.outlook.com (2603:10b6:510:217::16) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Tue, 16 Sep
- 2025 12:21:42 +0000
+ 2025 12:21:49 +0000
 Received: from PH8PR12MB7277.namprd12.prod.outlook.com
  ([fe80::3a4:70ea:ff05:1251]) by PH8PR12MB7277.namprd12.prod.outlook.com
  ([fe80::3a4:70ea:ff05:1251%7]) with mapi id 15.20.9115.018; Tue, 16 Sep 2025
- 12:21:42 +0000
+ 12:21:49 +0000
 From: Balbir Singh <balbirs@nvidia.com>
 To: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
 Cc: damon@lists.linux.dev,
 	dri-devel@lists.freedesktop.org,
 	Balbir Singh <balbirs@nvidia.com>,
-	Matthew Brost <matthew.brost@intel.com>,
 	David Hildenbrand <david@redhat.com>,
 	Zi Yan <ziy@nvidia.com>,
 	Joshua Hahn <joshua.hahnjy@gmail.com>,
@@ -104,121 +103,121 @@ Cc: damon@lists.linux.dev,
 	Simona Vetter <simona@ffwll.ch>,
 	Ralph Campbell <rcampbell@nvidia.com>,
 	=?UTF-8?q?Mika=20Penttil=C3=A4?= <mpenttil@redhat.com>,
+	Matthew Brost <matthew.brost@intel.com>,
 	Francois Dugast <francois.dugast@intel.com>
-Subject: [v6 02/15] mm/huge_memory: add device-private THP support to PMD operations
-Date: Tue, 16 Sep 2025 22:21:15 +1000
-Message-ID: <20250916122128.2098535-3-balbirs@nvidia.com>
+Subject: [v6 04/15] mm/huge_memory: implement device-private THP splitting
+Date: Tue, 16 Sep 2025 22:21:17 +1000
+Message-ID: <20250916122128.2098535-5-balbirs@nvidia.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250916122128.2098535-1-balbirs@nvidia.com>
 References: <20250916122128.2098535-1-balbirs@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SJ0PR13CA0100.namprd13.prod.outlook.com
- (2603:10b6:a03:2c5::15) To PH8PR12MB7277.namprd12.prod.outlook.com
+X-ClientProxiedBy: BYAPR03CA0012.namprd03.prod.outlook.com
+ (2603:10b6:a02:a8::25) To PH8PR12MB7277.namprd12.prod.outlook.com
  (2603:10b6:510:223::13)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PH8PR12MB7277:EE_|PH8PR12MB7373:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0b2963ff-fba0-4826-df9a-08ddf51b9817
+X-MS-Office365-Filtering-Correlation-Id: e0f96ec9-4c42-4746-011f-08ddf51b9c26
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|1800799024|376014|7416014|10070799003|366016;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?T1l5TThwZGptV05tYWUrU1dkRHRoQ0J0cUFlTUlZRS9TQmJmV29BeEdDbCtK?=
- =?utf-8?B?cllHeW1tbUZaRWsrL3RxK1NwSEpjK2NEb0pKdFpXTU1wbXQ4OVNWVkhQZWxm?=
- =?utf-8?B?TDd3N2JhNDNpZU9CanFZN0lsUmpSTXVHV1ovK1JhRlRuZlB4eDFiUnJrY3hI?=
- =?utf-8?B?dXZUSEdPcnIvTDVMT3pycDVYQTNsbERFWEs0N1JQVmVLajhZVWRoT3R1cWo4?=
- =?utf-8?B?SllSbnIvZlRkTlZLcXVrN2xYM1F5ODhrbUZKVGhwRlZFWWFmMTdQNVExYkFJ?=
- =?utf-8?B?RzB1M3NvaDlHZnFZUExISytNYzlidFMyZEpkbU1IRzhmeWlaWEFhTUFoVEJZ?=
- =?utf-8?B?bkRnc2s3Z1YzaGFiZzlMY1U5dVpWck91ZDMrd3AvVXo2b0ZIQWFSQ0pRemx5?=
- =?utf-8?B?d1ZuZTBWa3pBTDZPZko5M09zbllpOE4ySG9XcHhQYWQ2RFFwL1pwbjhIVUxQ?=
- =?utf-8?B?cGQ2Q3BNMW9aUHd6dmgwNmlSeS9XdlYxV3RaLzVkUG5LbDlqWXN0Ukk5OEc0?=
- =?utf-8?B?VE53Y2N3ZGVORjJKUktzVzluTGtHRDcvcWNocFRHaWcxNzFaZWozQlhuVER6?=
- =?utf-8?B?Nk4ycjVzaWI5bVlKZlo2bVlvUUV3cFloUmxjZHhmUkNKNzVtVG01ZlkrQWJX?=
- =?utf-8?B?dEJ1VHd1T1M4L3NOREV5d0JJSUo5ZEU4eHJDVkpIcWFXWXFlM0dYekI3SUdp?=
- =?utf-8?B?SWN3eWpaeEw0MFNYdGsvREZVMUYwU2pLZ1BuZFFxUUhNZ3IxcmFOcnc0V0F0?=
- =?utf-8?B?S0Z2YUFHOEdGTHU1MHJvOWd2ZFdPMXZyOWd4Z3dBL3VFZjJaVGk5SkZlL2Jt?=
- =?utf-8?B?NWgxVERvYWlBMUx6UERaWDNEQVViZk9WR25jU2FqdU0vdnFxNkJkRHNQZHFL?=
- =?utf-8?B?cXRXTldNN1lUMEZzQm5yMmFzenM2OHhieDlRazAyTXNrbHgzWEpocThrR201?=
- =?utf-8?B?REtxWHphU3F3eVB3RTBnNzZyMkRyMDQ2UFlQYzZVOE9Cc0gzOHJDVmlxd1NK?=
- =?utf-8?B?Sjl3SkYzU0JuK2E4ZlR0UmtTM2NTK3JEbEFQRXE1Q0VtYXJ5SEl6UlhzY0hu?=
- =?utf-8?B?dU5rUEV2ZUExU3FpLzlYYVNhT0p3ZWQ3TkdLR05veTh2WGRSSndUd1E0Skpp?=
- =?utf-8?B?cHVjYk93dVVCY1haMVdVSndMVTJlK0pvZXB4VjdtVDJnRGoxNEMrSE5QK0NL?=
- =?utf-8?B?S3g5dWlOaDQ0aGkzWXhwUEZVeVNlZ1JRUnB4emFCdURrVGNxLzNDbGpFQXpi?=
- =?utf-8?B?bDFqTW5GU0NJZFp2VHpoTmdrbjhIM1RZRlJnNkRRb1RzMC9jQ1pUVDdhTThB?=
- =?utf-8?B?cFpvUGpMWXZ5dUswRkR0WkdIUVR6MnRUYSswd3VRdWtuQzgyZ083WFp3VEty?=
- =?utf-8?B?ZDlaamFqUVdiK1dsYXF6WE1ubnpDQ1N4SUNIWFdwcnJaWUtKNFdMTThYeWFi?=
- =?utf-8?B?d1FHYjZScjZuOGk2T3VsSWplT1YvSG02NE4rdEJHQ3JPU3pIaXNaaVZGbHlp?=
- =?utf-8?B?cWFJQUxjMzJEdHdVZWdKTDZ5aUNvTGpYZEJPdVRyUnNndGhoaU5zSHlBS1lk?=
- =?utf-8?B?ZjdnM3U3OGh5R21HZmdlVVRRUmp6bUJFeW5wM21PbzgrRU9BeUdIUUJiQVhT?=
- =?utf-8?B?TlZQVFRoSmFKYWhWaVhVQjlaaGVmbXdxeTJTVXN3OEJuMGd4dWFOQUdjelJC?=
- =?utf-8?B?ZnBGWHJEWktVWTdVeE9nSkFhMjRsV2dhWDVHdXlZOGs0ajM1NWlyeTkvdGZW?=
- =?utf-8?B?SkhYcHhBWHhNSzk0dWlKWFcvWVBqZmFJMWRUbjZBbVFUbWlrdGRucmIvM0tk?=
- =?utf-8?B?aGtEaTVZK3RpYkFvQ3dwZU94c0I3b2hXN3pET2VSU3A1OEJTM0d3OHBhWURO?=
- =?utf-8?B?YXQzUndPd2VEYmNKdW5TaDN5bzRuSzZRT1JtZWFQSnZtZFA3WGpSZXhVYW5D?=
- =?utf-8?Q?mpMHwnrrXus=3D?=
+	=?utf-8?B?anRieE1YbFZOY0ZzRUtrK2tnZmgwNkV3Nkd0d0xkWURxSXErTW1wdVhLLy9x?=
+ =?utf-8?B?bmNOOEdxRlRXSGJIZTQ0VExqRW9uWGNPUXdBR1NXb21aQWxZNmdzOUJML3E0?=
+ =?utf-8?B?S2lYcThDN2p5N1VrbFBKNC9RMW9ldktqNTlvQ1dvZGQwWjY5Y2RrZ0l2RDMr?=
+ =?utf-8?B?MGFVVUFMYnovdUJEMGtldWl6Yyt3VHIzbHl1WHhzOVJWZlVTMmkwNnFZZlly?=
+ =?utf-8?B?dU9GNlFBdW1vYnYxLzBmOTNWaXBrTW05dkw3Y2NnYkNVV1VWWWlPS3Z0WXlx?=
+ =?utf-8?B?SlFaQ0RFaDVTb2htTzBIUU5rbm4vaXp4TjgzeGgwc3I4WWVQNmppRkpNek1C?=
+ =?utf-8?B?ZWVoU0gxZWd1dG5ETldrTnN4dGJFdnlkQVFJOUZGcmgrS3Rtb3hRcVV2eHpK?=
+ =?utf-8?B?MStRMk9zM2Y1QkR5blB0ZVdKcmR3alJxWWFXS0d2Sm9LWEl4MzFLeUg1Vy9h?=
+ =?utf-8?B?Vzg2ZG0wZW8weVp1RGlFZ0NadEJQekk1aGQwUFg2emRRcXA1cG9KemhMc1ZR?=
+ =?utf-8?B?R1lUenErVWxUV1RYaHRXd0pkOEZvcGlFTDYwdDR4MzZCcWd6dEEvMjBqcUFn?=
+ =?utf-8?B?ZUNNUXJQVGNEVW9hdWtPZnlxMmxobEVFalc3N1MxMWZNYjRqM0hHdlpiZERD?=
+ =?utf-8?B?QnlsRVREcWp1MzFaZ29DRUdnOHQ4S2hhWm45b1NlRFcwNHhLUlFJVmxGZGRV?=
+ =?utf-8?B?d0RKNk52RU5STS9kMnpNZDhYdlMzcDRkM1BmRTE1ckRFVjlqMnUva0prdjA1?=
+ =?utf-8?B?aitiQUthWE84LzRVNlVsZHNtQzRReFo4RXBNWDk5SGZyWUc2ajY4c0d3S0dM?=
+ =?utf-8?B?SldOS2xpcGFrUzlMdDYxMmJZam9hVThqZGVHQmhxcVF6S0Mvd3Irc1htNERv?=
+ =?utf-8?B?ZXM0S1ZuTVVXdXNUUDdTRWZhNzZkQXU3bC9hU3ZKYWJEN0NWdWtaS2JESGJx?=
+ =?utf-8?B?Vk9WbHVoS3VLK0tob0xmdjlGUjRyVTBFUmlIeXJDQ05UNXRtYjJiT3FPaGNT?=
+ =?utf-8?B?eGJQZDlSalFOSW4yeVBHSGZ4QUkyK2VVMlhtVUlvdmF6dDdzeFFycXlLUU5F?=
+ =?utf-8?B?NUVJYy9NaVdmUm1NVUpTWFBrOStaNkMyWndSai9meXpLTytXMmxxc0ExSXZw?=
+ =?utf-8?B?TjhpNUxCUEFTWmVWTUU4WGovam80RUpEazQ4U2h1VlUzVkN3bmJPeUZnVkZC?=
+ =?utf-8?B?UHZmdnRjK1IzZGhJUVdXRWVNTVdreWJ0a3NDRFVLTGRWYllvYzdkbGFhODlB?=
+ =?utf-8?B?UzFKYzBRLy9GQ2F2UkEzUTdFTGFZaURrZHMxa0ovcXhKVVRseG04bXIxVytm?=
+ =?utf-8?B?N0ZhY3NnRlBrcGI2aXpwclR2aENTbDVIME9iYVZkRm1WTnJLS0FPTndoQ2c3?=
+ =?utf-8?B?Z1BBaTB5eTVVSTd0c1VNRWlldzVJMXRhNDhmM1BJTlFHNU8zcHhNSjhtSXpD?=
+ =?utf-8?B?YUxCQmU5NUwrWXZnaXl3ZDM3ZkdxbU1XQVhvcTlwUTBZUzJtbWFJaG01RU9W?=
+ =?utf-8?B?ZUN2SDdyL3VSNk1kUnc3K1M3ekF4aUNRVy9nQk1RTlhoSXFWOWNZM21uamU2?=
+ =?utf-8?B?bjVPTCtRUXB0aXlZNjBBVFNvbDIwbHFsdDdva1ROajJ1eGV5QkpZbC9rY1lk?=
+ =?utf-8?B?cEl1ejhuWlNWcnFhTE02cTAybnhGb0xzUGthZlhjSGhjc1NUTlJvK28vMlk5?=
+ =?utf-8?B?ZkZuLzgwOGg3emxGNUFWQUg0eTZsbDVZVWVXREpKeFNQQlhyZTZ1QUNZbElL?=
+ =?utf-8?B?TkFLTmUyaFl4V1hkNlNQaDdnbUVoRkI2TmRqZ1F3elB3dWNiWE5UUGM5UFkx?=
+ =?utf-8?B?S1dvamhtQm8zVUNEYnBmazdUbDFsTnUwc05vcXR5QlIycGtlYkVMY3RYK1RF?=
+ =?utf-8?B?VmRFYURaWkNNUzZ1MzVPZ242UDNINVVRSElUaFZhRUJobjFjeW1tSnpFRGVG?=
+ =?utf-8?Q?jB4P8CSoxPg=3D?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR12MB7277.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(10070799003)(366016);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?YkFtSUlDQVE2eE8zRzhUZFdBMUVJS1B3ZXdLdlZIeWg5VDAzUzRQcHMxTVpr?=
- =?utf-8?B?TWdBVjJ4ZVpRTGMwU2hZZG4rYjFTS1ZnY1JlWFd3c0dkeGxSSk5HTzRQSHRm?=
- =?utf-8?B?Y0lsRWNLcEtac3hjc09ONDlBbXlqamtMY3Y2WllINHNrekZ2dHdkYXBzaU9G?=
- =?utf-8?B?UDNZR3crajJ2bCtOSWRZR3g2djFlTDhwTHhSODkvS1haZ3VJMC9Ld1BXcmJL?=
- =?utf-8?B?WXdXY205bjZWdGs4aG5LRlg4V0xxOGRiQWdrcDRTZ2VxOWlBRHd3dGFDbGJm?=
- =?utf-8?B?VXQyNEUzZnJqUHdxWUVISXVUaXBiZkl2MmZiVWVlMUxSZHFwWVBNZEJ0bEtx?=
- =?utf-8?B?ZXh6cytNSk5oZnFEYTJuWjhxd2hjYjZITzg5WEZrZXQybkJNVWhnVGErZ1hB?=
- =?utf-8?B?TEJSZmtmZTRxMWJDMGdFV3l6VkhEMEhwZllOb1UxRXgraHBkSU1zcElkWGJC?=
- =?utf-8?B?KzNnSGhIcXF2TCtSTnQ5RGs5a0IvdWNHOEg1dXc5VFE5VlAwRlNESkFERjBp?=
- =?utf-8?B?WEVFRTR2dDM4V2s5disvcFBBOHNsVXFiZjFua0JlMDl1QkM5MGZNWFFpblRN?=
- =?utf-8?B?R0FiMzVKY09keGpwcEFGR2FEbkhlLzA5VkpQcHZyNXQrUnFQWnZmd1ZaK3ph?=
- =?utf-8?B?U0pqbDZETm1EWWxrUVd0T0VwWEtRYWRPYXNxbXMwZkh5MzgzL2oxYjFuem0x?=
- =?utf-8?B?MHlZakd0KzRHb3ZuVXVIZHVKK21BSlFlcGEvMGNRWEJ2VDA1QlM1Sk11clRa?=
- =?utf-8?B?bHp2Q1NKRkxReU8wNVJqQ1FMVHBJTyt4Zzc5NkxlM1dQQU9aR05PQVB4UkZh?=
- =?utf-8?B?MnBqeGRpZjF0UDFuczlGQXY4RjEwaXhMRTJKcm5zd2V3MTNmRU9xS2dtWUZJ?=
- =?utf-8?B?QzZYZm1EUDdnSUxJSDc5akw2SzVWcHg2dm5nTXp2ZDBqZVVSTWpCUFFScXJt?=
- =?utf-8?B?Uy92a3czZjZlbFFFOW1BWmxtUDZYWVdCZWJOdkZBeEhFUXovTlZXVS83d0Fh?=
- =?utf-8?B?ajVVRHBFT2cxdlNGVWR6TGpxMFhnbGQ4Q1dKUGtkYXd3Y0s5anZqdW9sblIz?=
- =?utf-8?B?M1hZQkVLTUR5SXFObUxWL2t4UytYdDYwR3lWYVVxMFdzV2h0M3FaeFJWNzZX?=
- =?utf-8?B?dmxudFYrcjBybnI4S2hNZTE4Y0MxL0ZvQjRCdTJFMkR6QVFrdHFTVWR0eUx6?=
- =?utf-8?B?Rm95ZGxpbnAvL2o2eWRmVmZJK3FEVXArZUdkek50cmwzQjIyT1RVeGQ0VWU3?=
- =?utf-8?B?K1B0VmdKQ2JNby9SUDVNeGwvaWN5ek13QVExQmY4bHZHbWthY3hlZ0RZdE03?=
- =?utf-8?B?UkppR1pIT3lraXNDNTB2N2pFUDB6Ny9COUJUYlAwZjdmQzJvKzBURnJ1R1lB?=
- =?utf-8?B?RkhiN2I5UDI0YUJpa1JaMXY2N3daTFgvWktrRHp1QlVuZUlZekNkVHd2R2VJ?=
- =?utf-8?B?UDdTUjdMc1cvMlpxYjNhTVNTc1FESzFPd283NjBWYkdweGdlQXUzbHMvc0Z1?=
- =?utf-8?B?ZjdVOFd5VUZBS3Rhc2VHcnZ5djRtMGh2VjhuOTVRNjhiY3ZFNUFwUXJYRHdN?=
- =?utf-8?B?Ym5sNVdxVWNwR2JyZ0JMVko5UkRpUmU0ams2RHllYU1waG5aQnA1NmRvMER5?=
- =?utf-8?B?cWVVUXBGSTFSbkovWXVlV1E2U1VtT0dubTlhN2xPdWtYQXRXU1lEVzIxZUtB?=
- =?utf-8?B?ZjcrNHZha3MxZVcvNnR2Sm5ublZXT0pTVjROaEpYOERyQWtHcC9CaEJ0WFdG?=
- =?utf-8?B?YU1OWGtoU0d5UGN0cmhHdUQ4WW1BUDFOMUc2dU1DOWliL0p2MjlHa2FBK1BF?=
- =?utf-8?B?S0xJT1FlU2luaFh6a2Z1bjRJbXdNSDBQT1FmSERlU3E2MUxmZkgwQlNsbUxT?=
- =?utf-8?B?Q2Q5V3AvWVZMc0hRYkUyTFhPN1grQWYybmdmaXFPSWFXb09TQytvZmlSRHg5?=
- =?utf-8?B?eHFLMkQyR3hiVmFnOTJ2MC9WZXRzTGllb0dySUk2RkFRTmQ3ekhHbklRZkVK?=
- =?utf-8?B?YjFaVnk0NllTd1ZxNkptTi9jQnpQY0NGM1ZiczAyMGNacEVmR05GdXRmcVhI?=
- =?utf-8?B?L1NsdmdxNWllK1AzUG91cytBOUczUWRmdTZQdUg0YUc0OXhpTWhnY2N2ZzFJ?=
- =?utf-8?B?M3BjVmRUbFJIS0VESHhUY2VBVjYvZVdGMXpZTWIwWGpBNC9OTG9vZ0xySWFi?=
- =?utf-8?B?RVE9PQ==?=
+	=?utf-8?B?RG9IMTAzbnJJR2Z0ZnY4ZEpWUkU0WnNZZzFoYXZYYS9QZFlWMHdyME81L1V4?=
+ =?utf-8?B?bzdwVkgzQXZjTWpKMWpIbjJ1bWpXa3M1SHlPejd2TXdxZXV0VVptOWtUbUZC?=
+ =?utf-8?B?V3J3Z2xjeDBkaVBjSVlUK2kvSFdMUUF4NU5QcXJnNW80N3ZPcElNUE0wcWxj?=
+ =?utf-8?B?cjM2Rld4dGlhRjM1MVNWL0NsTnFvTFhZclp2M25MMHRvY00wU25WZVNRNUEz?=
+ =?utf-8?B?K1NSRldUdEk3aDBpUDRPYnQ4ZlJsTm5GaFFLcFZwQTV3a1V4WEQya095Q2V3?=
+ =?utf-8?B?ODRVRlh0c0Q0SWdaRW81TEo4TWpuM2ppdXRMTEdhVGJ5L3RPNk1VSEd6akcr?=
+ =?utf-8?B?Z3JqcnMwbU9YQ0pmWUIzM25Ncy9qWUxsN1FOSWxLNVZMYnlIcDUyRGwxSGdG?=
+ =?utf-8?B?ZlNnUHdVMmlPdTQySUNsTEhaKzVyUXU4bDduc2VZbkNZUlVNUUttVm9mS3A4?=
+ =?utf-8?B?ZHFvbkIrSmJZVC93MUh0UGJvZDVrT1J3WStTc0N6enRYNUZCa1V1QmlVeTky?=
+ =?utf-8?B?enpSQTl4aVlCZ1FqSmxscW90aU1rZzNmZURia21NVXdKWGk1N0hLVlV1TGFB?=
+ =?utf-8?B?Z2V6MUFEL3FwMUJnVE9GcFJ6OXpDL3NXSng1ZmF0eGIrTmc1WC8yU0JoaDd5?=
+ =?utf-8?B?bGF0akhPL0dVdmNuVWNVbUFqb3oyaTlDa2ZheU5oYzVJQy93MkI4YmYyMGNh?=
+ =?utf-8?B?aXJGM081MnBsQ2dTUys4dlRQd2dHWEkrUmlCYnN6d2IxTWlCMXR2WEwvbzFM?=
+ =?utf-8?B?R0RFOWdyRXcza2UrUEpZQzcwVFNyS044cWY0SWVVMTZscHdGZ2pRb3lDWWtM?=
+ =?utf-8?B?a1JoMzlUYUNFajFUbitUMEJWVElvNXdzNEpVTFFkRmhVcmIwNm9PMjJtY253?=
+ =?utf-8?B?V05rb1h4YmljdC9WdGx6cVRFclFGYTllTDdWblVkbnoxcXoxWTF6NDg1TkEv?=
+ =?utf-8?B?cys1aENmK3VLeGpublN6Sm5QZG1ZSnFyUlFnYi8xdU1jVTBnUExCdHFDcHll?=
+ =?utf-8?B?SmdES2h3NXlwa3BTekFjMExTeWRJMlBjc2I4RU5heEhUL3RrSkNjcGJFM080?=
+ =?utf-8?B?RUFMclRRVi9iK2xPSXNLNW5uMmJoRXlLdTlaZUlRTytIbHY0ZlN0RlNnSHRK?=
+ =?utf-8?B?eml2LzI4b2p1Z1k1SlpsVGtKUFlXTzdZTFRBZDFVODgyMWdwWjJCR1pvaWQ3?=
+ =?utf-8?B?bmlueXJXR2duSWpkMTQ5c05tWTlwK0RxVTcxbVVZNDFFcmJDdFYyNnllY3FN?=
+ =?utf-8?B?a3JNTkk5NXAzZFBacldablBJaWU2WkJaNHgwQkZrN3NnMnQ3QnMyMDNkT2F6?=
+ =?utf-8?B?VnVXY1lIbHhqTERkVi81RGhJR0IxSGhvakI4cUQvTDVVR2FadmphUExrd1N6?=
+ =?utf-8?B?OFdndVpwWVE2bG5KdWVxdkVpTjRYQURyckdpQjNYWVMrdXBXZGk1bS9CKy8r?=
+ =?utf-8?B?emJORHBBb0VLQzA3UWp4UUJMcm9iaW5tTy81UlJuMjRDMGREOVE3UGhjdHFj?=
+ =?utf-8?B?cFZra3NYNkRLQitCVG9xM05KU3pJdEk2a2dld2V2ME5lbzZDczhFTlQyNU9N?=
+ =?utf-8?B?dXZUcGcyOTRmckZzK2tnNHU0Mk1EWGttSUZFQmIvaTlLaHY4NGdjajQ2YmVO?=
+ =?utf-8?B?L2VnVTI5MmdqSzdxR3lnNlM3WGRxNEJlbkJxRkNsV3A1QTI5MGNNVlJWd3Rx?=
+ =?utf-8?B?YjlpNDY3QkJSNEtteExlM2xJL2t5UjhMYnpDNGxWWXpqc2lPZ3kySDJESXVY?=
+ =?utf-8?B?WmMzK21DUzBTdEllRTNTeWluT05wcEFrQWlHTjlGb09qaHRtWEtnN281VjdK?=
+ =?utf-8?B?aEY2Tk5OUkVkY01jOTAvd01BbjBhQzFVc2FySlFMdmpMY1h5TW9MQ1pLNEFF?=
+ =?utf-8?B?RzR2T1NZdThmbzF2OXRzV1pSenJyMXgrR293dXNTejFuSCszSFlpcGRkOTh4?=
+ =?utf-8?B?WnlCQzJ0RTJCZUxQZGNvRXBTVlRKeHpLamw4TWpra0ZLM3JuUTdVRi9pU1lS?=
+ =?utf-8?B?WVowbHlIM1FESDRiTDVxY2VtNG9KWkd3VTZRNnUxN2Q1Z2RybmpWOVVDNnNw?=
+ =?utf-8?B?bVgwVXV1VUJSbEhxRjNMK1RIQkhpQjNKQzR6dFgwY3pIbFZqOURqNG9ZMzJj?=
+ =?utf-8?B?MktTNzNuL3BITlpIRVY2Z0t1NXBiSmhqV1ZIMnlqc2I2SGt3NnF1eExVSklL?=
+ =?utf-8?B?b3c9PQ==?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0b2963ff-fba0-4826-df9a-08ddf51b9817
+X-MS-Exchange-CrossTenant-Network-Message-Id: e0f96ec9-4c42-4746-011f-08ddf51b9c26
 X-MS-Exchange-CrossTenant-AuthSource: PH8PR12MB7277.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2025 12:21:42.5827
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2025 12:21:49.1848
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: fJSkG3QCsDIJC6hnZTlIEyDTICZEG0uSXvKErAWlSwiSB5uw1MKDCad6ma7+4TcJDw92hagplwTICwa1c+hZng==
+X-MS-Exchange-CrossTenant-UserPrincipalName: ZU3ceYu0PH23/BqxTot3Xau2Vi6lCq2kI4PP6E4ry/UtVx12KHCn80CWVPvE7G9L0n0jhFvcuj/T7pY4CEmySA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7373
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: BB4B6180008
+X-Stat-Signature: jzetbr4484wg1y1w8819uu46oymnnajo
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 805EBA000C
-X-Stat-Signature: erg35q8kjknje9oy7cnq8jmcrunqxtkg
-X-HE-Tag: 1758025314-543433
-X-HE-Meta: U2FsdGVkX1/o7YEUHJFwchy0/GzJbFV0yw2tnQBE17rrQzmc26gCw00asIF5BwvhVaurNqCBtXCsvSDm9qnOCKV7tRTSqYTIw5HJb+HFkULbPBZMJR5ir5PeWn1XNeYH9qzEerTiW5hHJKqRwdHCSgyK/TZl0ybdXtc6Xm5KTsJGbSOIhcGn/6q8TjCXCF8dBN8TBlyquvNE4Spsg5wu8+pbtFzh6igbpdN0tRVBiwLoaf1L4C29AMUFpaiFIPEwD5Q41v0hYwcFkKV34oyXAD6dtqmFLH4yqxrD2gekVC8kfBgRkisvPbLH6ojzqKE6yDKxaWl0dZw8jin+U1fIT93SkDAHeqgUTMrERDobrkjaET/dSq6OYp7zDezJpsi6a+QjzGPM8VOOTMdZd/CaEVzRd5M05gO937ACDCZF37ZHvo18O/sXY9IJzaivqjIyekneNJYipKCWYpS5S3fha7aQwHQShNwNpOs60XdU6TX6TrD44oj4sHbLWv7e0o6twIT8SJEc8RfUgk7lK3auvksIh9t0i7gSVugCsl3U63j32PtM6hvy+XB0eTQt58Hi68dHyAkAaOgkCXvTOKODp7Ba9LMfWfWqyBh6YkkkgHTpMTw3P7q+nhJuCBEmsAJfSLWsUnsYhpFzeNurkzSccR14Ns3m2/UWkWTW8lKQN6PTJkuf5F8Bi1kV26hX4SCcbMuH76fHxSJ+5eT1b0UHT7K3McOq6FSjm2WFEJL2MIbO4WYW5cQFoBCpxTiERyTor6fVbb+sb1Ka5guLjuisBrY9A/FPRGA6vYW71Bhj9vE86Uczp8kjdekY576ZGLYVrAmvsbKYIl0ALEBFN8Nr8NxC79SkLVgO6Ly+pxUO5LMM2PvqyjRVCbAJ1wyrd6h2kWX5A70511y4F/hqzFdeD2lVBwrz0eW0sYJ35C1KaPx6a3VYcSh1PrSSr6re93Aa5DxjLlx+Ja2/I5g7vPq
- xlRtOord
- 7VzZ1dMJl8gW9QbZZ2Jz4T7luI149xmMavC+uHN2wZ5R2Mu3myaIQiQ8WA40X61876Y4TnnYNHMTCs2Fn7uOL/1OfJxQA0qK70+frUFotl18Sn84kxGXRTseoBjRED8kWy1zSiV1HoIN4YG14tK5v/eo46BpZn2juthlei5XfjjpyJ3ZeYrW7iA1834IATCwX1qcgn/qfTgUQAz4j006C8TqEW1vQk25Cbpl+8UpnfC2MYSH1t1ne8Xo37eXDAHgD0oPjjlCCW7FmqCyq+kBZZW4wDHypPzahrHXQjlD+f1eExhwqDwDE4OQzTHS4ftFcQ+OYYJeeNZuNkaAsftTMwRF/tzOOQrWCke2gRZXbqazVgH85mlBWN6POuVVflJOoS1FsJUfkjXuEvRP7W/oD6ntnhBrWUT2X9sRJAoHxTfhgmYYmWRKYDXKbQWsy45Lno/ozr7pSFL75V94V8V6rzQ1Q314q7WAzOCapGRF0qnaHNMv2z+hTjiY5K6fjxnUUvsrdTvnTpj+hkL7Q9sWpBzLGw7p0uUJSkHpwtyXxoRtZSKeDaIvohY1OlqrN8owHZJxYS1lQ4HaFZNtwK49X7hnWQGP1MAUH2xY/CjHuoWtJT7XeJ3r/mWoFXBSV2Vjv6N+d7POTi6AzUHz0shMnJxI4mYLWXDa2sWa3lhjBX8DhhQJ2iY422d7ZjQj6XbqqzeBzUu00azdo4aF53+BuchSJt1cocjB/QVGIV7bMACma3PMLuO2bDZ4eZDeCYWf4klaQI+DysAShjnZdaKTL0oSYRSxi0kUmCLfgOknNTMS1/2os2IWMZQs2xbyXLntJrXdUrsuh39Hz5eWhsXkWW0ymOGPPXbtlz15EZ4KN06VgfxnqjRm+gGjqMNk7yGh58pAgbAbnSU3bZSETurxwh/bMSWsoNPDwx9D75p+e9tDKyB38ykqssZbdKPdavpRj/HH15abZURGRR8zjEFbDiU+AamxS
- MEhxHYvA
+X-HE-Tag: 1758025327-347478
+X-HE-Meta: U2FsdGVkX1+258l5CchPMPh08R0zyjEHDalCWY8R5qZM/5ZiZ17y2Qd1kBjqWPV9LPE9smwdnAAE5HY6FqkOvMqp1tw80FajaM07MIo2C7jwRWWIAsjj++/lhqLlC/amVbD7ntGsG/LqRJyAPmVxKwhs/GuVI02Y7EDMQNYTeYdknJJgDS587TEYmUbksDwAGxK3Lco9TO1XIlRHc424G8dPOrVULZtj52KXTlMnEm63JYYRPprxOaVTJLBXsWZAZO/1L+R5zGM1jBl6qq9Y7xqoF4kqcXU5GGCS8DjFiT4D/ILPo1BIn7OYIR6aRrhXQbZSHPEyJgalb8xN1YOMBLsB4RzRQmPn+MbjEToGiidQ5dOxt8eIJ50JBrq+K6MqvRp2f+JIN19jVPxqywU14J9jL8kupVd2MtxF2HFg/VLpMuaK98WWPBNzOdmJ8QII+8Jti52ctxNizq1J2TwWIL/IsiIqmxfJJ3TV7oT2b/SIWqGxwlywejXAKTHG/URXoIwFyO48zU4Vp/G1yduBYKziLF2OjWw6JC8lEeljeBBn5gVVXJL6d2u6SuQLJEkWh65Lzzk3nW2gO1i5RuelOWLkkdzlNanUYmiTTraj8IwSjrCTXE7hJb4TnIjkBOxVGUy6Z7yBoHaq+laVeI5WXRjXJrGXOiVDiXPqGolg/bmm2lsmxJpfdl8kqGgpTHqslqwop+X7upzHQmQcdVKO+auUDkjoMLHkqllW2vuwLrVG3w+/Eo0WDA8XGAGiBEZw6XNApQnO9h/x5ecBP4dpnW/v9yW8qRTyKpZqx70muwioidb32kaFFQb5Int8apZeGt286LXqtl6kM4anCh1CbZxIlKu8Y5noKM1SQXq7ZlqlC59TSej6yZwEzqwCh65R5Wgn/Ok49ip0VcrZGDAw2cgcaAN2X/5eDn/UztsN6t5tdnsV2HU4nVtsECL2uFwSDeCOYcsuZrOR8FqrEjB
+ 6CORE5CP
+ TWmIur9/q/VM66z26sDEfqdZrVOPkzv+AxDmpL6MverGtJz02yYPgcqX5Tfz8aC87LT5/hVm2aYAXzpQAjarryEKGoctryTcdD92xnlc+yaC6BucNqERB8Ex6J/ozrLNqs4kiXAGmzOkh3H6DRkZ9CicrwHKuBRYJJnD8k0YhO7T7tDcUJhToFcVZ3ME4ewvwC7HeVwWHoNyBTXuPh5my4Fes26mc46NPmP1tHkMC1EP+tfECWdx21f/m+EyuvWjr+XfT5sO+vPSFhPqlAgUlQsbNpopJPDesHfNvfGUsm8T6wdWpw/CBC43j76h9wSpudAO7Gxi+TQbISo7jrAfyXuNUqL2vs5hpDQ3OHsSGwZ0ifMqaLXVWrqZs1cQcTBKTBZBQ9Q/cIX6TbhJrs/v91ne2h2WLQfQ+JrahBQnsyyuOYaQ24ziSFFdernlF19JsGjaWP1miIK7rRRmwdaciFBigtUF5Ra8nGztMcy4Sq6eyLCpevXrLK6C6pbFy0x4QCvA3Th/DnpE6KVggDrnrcdupSe/9+1/OpMJZrZgomg7VbxtNiiK01FFs/WUYY9GEYaWqwqFHf3sekPSHu/jq8z9Gt4AHWz3+shswvPjdgMMUJ+i/+y0TGcFGov8uwyhLSThAjXfIW/NHv+P7YPobdEydBTw3P7qtlt6C24+ldHCHwqp+Qdv9hzrqvzGh5hpJTaWY6EGYoUO7KsOxIZTQnrlk5TJ+iBTewYDgw6g3Wr//cUPZwuSM90IL9PjOMmnnep02BS+8/QbDMXJUc7Bb5dVjbxlDgPtjU94fWgaDwCBW0H7xOxZzUEicUaNktNARWtSXn42d2bpEy4e+9C2+UDq3iiPyF7Sl9qaK/9VK3L48xus/D3PrQlP9KmXIH1/siNBnToWlyKNLLhQBpOeJoXrWvzhZSsMcfh2gwk2lFnf/HxL6x2MHqkbCG4ru+9PA+OZw
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -227,18 +226,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Extend core huge page management functions to handle device-private THP
-entries.  This enables proper handling of large device-private folios in
-fundamental MM operations.
+Add support for splitting device-private THP folios, enabling fallback
+to smaller page sizes when large page allocation or migration fails.
 
-The following functions have been updated:
+Key changes:
+- split_huge_pmd(): Handle device-private PMD entries during splitting
+- Preserve RMAP_EXCLUSIVE semantics for anonymous exclusive folios
+- Skip RMP_USE_SHARED_ZEROPAGE for device-private entries as they
+  don't support shared zero page semantics
 
-- copy_huge_pmd(): Handle device-private entries during fork/clone
-- zap_huge_pmd(): Properly free device-private THP during munmap
-- change_huge_pmd(): Support protection changes on device-private THP
-- __pte_offset_map(): Add device-private entry awareness
-
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
 Signed-off-by: Balbir Singh <balbirs@nvidia.com>
 Cc: David Hildenbrand <david@redhat.com>
 Cc: Zi Yan <ziy@nvidia.com>
@@ -265,178 +261,214 @@ Cc: Mika Penttilä <mpenttil@redhat.com>
 Cc: Matthew Brost <matthew.brost@intel.com>
 Cc: Francois Dugast <francois.dugast@intel.com>
 ---
- include/linux/swapops.h | 32 +++++++++++++++++++++++
- mm/huge_memory.c        | 56 ++++++++++++++++++++++++++++++++++-------
- mm/pgtable-generic.c    |  2 +-
- 3 files changed, 80 insertions(+), 10 deletions(-)
+ mm/huge_memory.c | 138 +++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 98 insertions(+), 40 deletions(-)
 
-diff --git a/include/linux/swapops.h b/include/linux/swapops.h
-index 64ea151a7ae3..2687928a8146 100644
---- a/include/linux/swapops.h
-+++ b/include/linux/swapops.h
-@@ -594,10 +594,42 @@ static inline int is_pmd_migration_entry(pmd_t pmd)
- }
- #endif  /* CONFIG_ARCH_ENABLE_THP_MIGRATION */
- 
-+#if defined(CONFIG_ZONE_DEVICE) && defined(CONFIG_ARCH_ENABLE_THP_MIGRATION)
-+
-+/**
-+ * is_pmd_device_private_entry() - Check if PMD contains a device private swap entry
-+ * @pmd: The PMD to check
-+ *
-+ * Returns true if the PMD contains a swap entry that represents a device private
-+ * page mapping. This is used for zone device private pages that have been
-+ * swapped out but still need special handling during various memory management
-+ * operations.
-+ *
-+ * Return: 1 if PMD contains device private entry, 0 otherwise
-+ */
-+static inline int is_pmd_device_private_entry(pmd_t pmd)
-+{
-+	return is_swap_pmd(pmd) && is_device_private_entry(pmd_to_swp_entry(pmd));
-+}
-+
-+#else /* CONFIG_ZONE_DEVICE && CONFIG_ARCH_ENABLE_THP_MIGRATION */
-+
-+static inline int is_pmd_device_private_entry(pmd_t pmd)
-+{
-+	return 0;
-+}
-+
-+#endif /* CONFIG_ZONE_DEVICE && CONFIG_ARCH_ENABLE_THP_MIGRATION */
-+
- static inline int non_swap_entry(swp_entry_t entry)
- {
- 	return swp_type(entry) >= MAX_SWAPFILES;
- }
- 
-+static inline int is_pmd_non_present_folio_entry(pmd_t pmd)
-+{
-+	return is_pmd_migration_entry(pmd) || is_pmd_device_private_entry(pmd);
-+}
-+
- #endif /* CONFIG_MMU */
- #endif /* _LINUX_SWAPOPS_H */
 diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 5acca24bbabb..a5e4c2aef191 100644
+index 78166db72f4d..5291ee155a02 100644
 --- a/mm/huge_memory.c
 +++ b/mm/huge_memory.c
-@@ -1703,17 +1703,45 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
- 	if (unlikely(is_swap_pmd(pmd))) {
- 		swp_entry_t entry = pmd_to_swp_entry(pmd);
+@@ -2872,16 +2872,18 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+ 	struct page *page;
+ 	pgtable_t pgtable;
+ 	pmd_t old_pmd, _pmd;
+-	bool young, write, soft_dirty, pmd_migration = false, uffd_wp = false;
+-	bool anon_exclusive = false, dirty = false;
++	bool soft_dirty, uffd_wp = false, young = false, write = false;
++	bool anon_exclusive = false, dirty = false, present = false;
+ 	unsigned long addr;
+ 	pte_t *pte;
+ 	int i;
++	swp_entry_t swp_entry;
  
--		VM_BUG_ON(!is_pmd_migration_entry(pmd));
--		if (!is_readable_migration_entry(entry)) {
--			entry = make_readable_migration_entry(
--							swp_offset(entry));
-+		VM_WARN_ON(!is_pmd_non_present_folio_entry(pmd));
+ 	VM_BUG_ON(haddr & ~HPAGE_PMD_MASK);
+ 	VM_BUG_ON_VMA(vma->vm_start > haddr, vma);
+ 	VM_BUG_ON_VMA(vma->vm_end < haddr + HPAGE_PMD_SIZE, vma);
+-	VM_BUG_ON(!is_pmd_migration_entry(*pmd) && !pmd_trans_huge(*pmd));
 +
-+		if (is_writable_migration_entry(entry) ||
-+		    is_readable_exclusive_migration_entry(entry)) {
-+			entry = make_readable_migration_entry(swp_offset(entry));
- 			pmd = swp_entry_to_pmd(entry);
- 			if (pmd_swp_soft_dirty(*src_pmd))
- 				pmd = pmd_swp_mksoft_dirty(pmd);
- 			if (pmd_swp_uffd_wp(*src_pmd))
- 				pmd = pmd_swp_mkuffd_wp(pmd);
- 			set_pmd_at(src_mm, addr, src_pmd, pmd);
-+		} else if (is_device_private_entry(entry)) {
-+			/*
-+			 * For device private entries, since there are no
-+			 * read exclusive entries, writable = !readable
-+			 */
-+			if (is_writable_device_private_entry(entry)) {
-+				entry = make_readable_device_private_entry(swp_offset(entry));
-+				pmd = swp_entry_to_pmd(entry);
++	VM_WARN_ON(!is_pmd_non_present_folio_entry(*pmd) && !pmd_trans_huge(*pmd));
+ 
+ 	count_vm_event(THP_SPLIT_PMD);
+ 
+@@ -2929,20 +2931,47 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+ 		return __split_huge_zero_page_pmd(vma, haddr, pmd);
+ 	}
+ 
+-	pmd_migration = is_pmd_migration_entry(*pmd);
+-	if (unlikely(pmd_migration)) {
+-		swp_entry_t entry;
+ 
++	present = pmd_present(*pmd);
++	if (is_pmd_migration_entry(*pmd)) {
+ 		old_pmd = *pmd;
+-		entry = pmd_to_swp_entry(old_pmd);
+-		page = pfn_swap_entry_to_page(entry);
+-		write = is_writable_migration_entry(entry);
++		swp_entry = pmd_to_swp_entry(old_pmd);
++		page = pfn_swap_entry_to_page(swp_entry);
++		folio = page_folio(page);
 +
-+				if (pmd_swp_soft_dirty(*src_pmd))
-+					pmd = pmd_swp_mksoft_dirty(pmd);
-+				if (pmd_swp_uffd_wp(*src_pmd))
-+					pmd = pmd_swp_mkuffd_wp(pmd);
-+				set_pmd_at(src_mm, addr, src_pmd, pmd);
++		soft_dirty = pmd_swp_soft_dirty(old_pmd);
++		uffd_wp = pmd_swp_uffd_wp(old_pmd);
++
++		write = is_writable_migration_entry(swp_entry);
+ 		if (PageAnon(page))
+-			anon_exclusive = is_readable_exclusive_migration_entry(entry);
+-		young = is_migration_entry_young(entry);
+-		dirty = is_migration_entry_dirty(entry);
++			anon_exclusive = is_readable_exclusive_migration_entry(swp_entry);
++		young = is_migration_entry_young(swp_entry);
++		dirty = is_migration_entry_dirty(swp_entry);
++	} else if (is_pmd_device_private_entry(*pmd)) {
++		old_pmd = *pmd;
++		swp_entry = pmd_to_swp_entry(old_pmd);
++		page = pfn_swap_entry_to_page(swp_entry);
++		folio = page_folio(page);
++
+ 		soft_dirty = pmd_swp_soft_dirty(old_pmd);
+ 		uffd_wp = pmd_swp_uffd_wp(old_pmd);
++
++		write = is_writable_device_private_entry(swp_entry);
++		anon_exclusive = PageAnonExclusive(page);
++
++		if (freeze && anon_exclusive &&
++		    folio_try_share_anon_rmap_pmd(folio, page))
++			freeze = false;
++		if (!freeze) {
++			rmap_t rmap_flags = RMAP_NONE;
++
++			folio_ref_add(folio, HPAGE_PMD_NR - 1);
++			if (anon_exclusive)
++				rmap_flags |= RMAP_EXCLUSIVE;
++
++			folio_add_anon_rmap_ptes(folio, page, HPAGE_PMD_NR,
++						 vma, haddr, rmap_flags);
++		}
+ 	} else {
+ 		/*
+ 		 * Up to this point the pmd is present and huge and userland has
+@@ -3026,32 +3055,57 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+ 	 * Note that NUMA hinting access restrictions are not transferred to
+ 	 * avoid any possibility of altering permissions across VMAs.
+ 	 */
+-	if (freeze || pmd_migration) {
+-		for (i = 0, addr = haddr; i < HPAGE_PMD_NR; i++, addr += PAGE_SIZE) {
+-			pte_t entry;
+-			swp_entry_t swp_entry;
+-
+-			if (write)
+-				swp_entry = make_writable_migration_entry(
+-							page_to_pfn(page + i));
+-			else if (anon_exclusive)
+-				swp_entry = make_readable_exclusive_migration_entry(
+-							page_to_pfn(page + i));
+-			else
+-				swp_entry = make_readable_migration_entry(
+-							page_to_pfn(page + i));
+-			if (young)
+-				swp_entry = make_migration_entry_young(swp_entry);
+-			if (dirty)
+-				swp_entry = make_migration_entry_dirty(swp_entry);
+-			entry = swp_entry_to_pte(swp_entry);
+-			if (soft_dirty)
+-				entry = pte_swp_mksoft_dirty(entry);
+-			if (uffd_wp)
+-				entry = pte_swp_mkuffd_wp(entry);
++	if (freeze || !present) {
++		pte_t entry;
+ 
+-			VM_WARN_ON(!pte_none(ptep_get(pte + i)));
+-			set_pte_at(mm, addr, pte + i, entry);
++		if (freeze || is_migration_entry(swp_entry)) {
++			for (i = 0, addr = haddr; i < HPAGE_PMD_NR; i++, addr += PAGE_SIZE) {
++				if (write)
++					swp_entry = make_writable_migration_entry(
++								page_to_pfn(page + i));
++				else if (anon_exclusive)
++					swp_entry = make_readable_exclusive_migration_entry(
++								page_to_pfn(page + i));
++				else
++					swp_entry = make_readable_migration_entry(
++								page_to_pfn(page + i));
++				if (young)
++					swp_entry = make_migration_entry_young(swp_entry);
++				if (dirty)
++					swp_entry = make_migration_entry_dirty(swp_entry);
++
++				entry = swp_entry_to_pte(swp_entry);
++				if (soft_dirty)
++					entry = pte_swp_mksoft_dirty(entry);
++				if (uffd_wp)
++					entry = pte_swp_mkuffd_wp(entry);
++				VM_WARN_ON(!pte_none(ptep_get(pte + i)));
++				set_pte_at(mm, addr, pte + i, entry);
 +			}
-+
-+			src_folio = pfn_swap_entry_folio(entry);
-+			VM_WARN_ON(!folio_test_large(src_folio));
-+
-+			folio_get(src_folio);
-+			/*
-+			 * folio_try_dup_anon_rmap_pmd does not fail for
-+			 * device private entries.
-+			 */
-+			folio_try_dup_anon_rmap_pmd(src_folio, &src_folio->page,
-+							dst_vma, src_vma);
++		} else {
++			for (i = 0, addr = haddr; i < HPAGE_PMD_NR; i++, addr += PAGE_SIZE) {
++				/*
++				 * anon_exclusive was already propagated to the relevant
++				 * pages corresponding to the pte entries when freeze
++				 * is false.
++				 */
++				if (write)
++					swp_entry = make_writable_device_private_entry(
++								page_to_pfn(page + i));
++				else
++					swp_entry = make_readable_device_private_entry(
++								page_to_pfn(page + i));
++				/*
++				 * Young and dirty bits are not progated via swp_entry
++				 */
++				entry = swp_entry_to_pte(swp_entry);
++				if (soft_dirty)
++					entry = pte_swp_mksoft_dirty(entry);
++				if (uffd_wp)
++					entry = pte_swp_mkuffd_wp(entry);
++				VM_WARN_ON(!pte_none(ptep_get(pte + i)));
++				set_pte_at(mm, addr, pte + i, entry);
++			}
  		}
+ 	} else {
+ 		pte_t entry;
+@@ -3076,7 +3130,7 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+ 	}
+ 	pte_unmap(pte);
+ 
+-	if (!pmd_migration)
++	if (!is_pmd_migration_entry(*pmd))
+ 		folio_remove_rmap_pmd(folio, page, vma);
+ 	if (freeze)
+ 		put_page(page);
+@@ -3089,7 +3143,7 @@ void split_huge_pmd_locked(struct vm_area_struct *vma, unsigned long address,
+ 			   pmd_t *pmd, bool freeze)
+ {
+ 	VM_WARN_ON_ONCE(!IS_ALIGNED(address, HPAGE_PMD_SIZE));
+-	if (pmd_trans_huge(*pmd) || is_pmd_migration_entry(*pmd))
++	if (pmd_trans_huge(*pmd) || is_pmd_non_present_folio_entry(*pmd))
+ 		__split_huge_pmd_locked(vma, pmd, address, freeze);
+ }
+ 
+@@ -3268,6 +3322,9 @@ static void lru_add_split_folio(struct folio *folio, struct folio *new_folio,
+ 	VM_BUG_ON_FOLIO(folio_test_lru(new_folio), folio);
+ 	lockdep_assert_held(&lruvec->lru_lock);
+ 
++	if (folio_is_device_private(folio))
++		return;
 +
- 		add_mm_counter(dst_mm, MM_ANONPAGES, HPAGE_PMD_NR);
- 		mm_inc_nr_ptes(dst_mm);
- 		pgtable_trans_huge_deposit(dst_mm, dst_pmd, pgtable);
-@@ -2211,15 +2239,16 @@ int zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 			folio_remove_rmap_pmd(folio, page, vma);
- 			WARN_ON_ONCE(folio_mapcount(folio) < 0);
- 			VM_BUG_ON_PAGE(!PageHead(page), page);
--		} else if (thp_migration_supported()) {
-+		} else if (is_pmd_non_present_folio_entry(orig_pmd)) {
- 			swp_entry_t entry;
+ 	if (list) {
+ 		/* page reclaim is reclaiming a huge page */
+ 		VM_WARN_ON(folio_test_lru(folio));
+@@ -3885,8 +3942,9 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
+ 	if (nr_shmem_dropped)
+ 		shmem_uncharge(mapping->host, nr_shmem_dropped);
  
--			VM_BUG_ON(!is_pmd_migration_entry(orig_pmd));
- 			entry = pmd_to_swp_entry(orig_pmd);
- 			folio = pfn_swap_entry_folio(entry);
- 			flush_needed = 0;
--		} else
--			WARN_ONCE(1, "Non present huge pmd without pmd migration enabled!");
+-	if (!ret && is_anon)
++	if (!ret && is_anon && !folio_is_device_private(folio))
+ 		remap_flags = RMP_USE_SHARED_ZEROPAGE;
 +
-+			if (!thp_migration_supported())
-+				WARN_ONCE(1, "Non present huge pmd without pmd migration enabled!");
-+		}
+ 	remap_page(folio, 1 << order, remap_flags);
  
- 		if (folio_test_anon(folio)) {
- 			zap_deposited_table(tlb->mm, pmd);
-@@ -2239,6 +2268,12 @@ int zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 				folio_mark_accessed(folio);
- 		}
- 
-+		if (folio_is_device_private(folio)) {
-+			folio_remove_rmap_pmd(folio, &folio->page, vma);
-+			WARN_ON_ONCE(folio_mapcount(folio) < 0);
-+			folio_put(folio);
-+		}
-+
- 		spin_unlock(ptl);
- 		if (flush_needed)
- 			tlb_remove_page_size(tlb, &folio->page, HPAGE_PMD_SIZE);
-@@ -2367,7 +2402,7 @@ int change_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 		struct folio *folio = pfn_swap_entry_folio(entry);
- 		pmd_t newpmd;
- 
--		VM_BUG_ON(!is_pmd_migration_entry(*pmd));
-+		VM_WARN_ON(!is_pmd_non_present_folio_entry(*pmd));
- 		if (is_writable_migration_entry(entry)) {
- 			/*
- 			 * A protection check is difficult so
-@@ -2380,6 +2415,9 @@ int change_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 			newpmd = swp_entry_to_pmd(entry);
- 			if (pmd_swp_soft_dirty(*pmd))
- 				newpmd = pmd_swp_mksoft_dirty(newpmd);
-+		} else if (is_writable_device_private_entry(entry)) {
-+			entry = make_readable_device_private_entry(swp_offset(entry));
-+			newpmd = swp_entry_to_pmd(entry);
- 		} else {
- 			newpmd = *pmd;
- 		}
-diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
-index 567e2d084071..0c847cdf4fd3 100644
---- a/mm/pgtable-generic.c
-+++ b/mm/pgtable-generic.c
-@@ -290,7 +290,7 @@ pte_t *___pte_offset_map(pmd_t *pmd, unsigned long addr, pmd_t *pmdvalp)
- 
- 	if (pmdvalp)
- 		*pmdvalp = pmdval;
--	if (unlikely(pmd_none(pmdval) || is_pmd_migration_entry(pmdval)))
-+	if (unlikely(pmd_none(pmdval) || !pmd_present(pmdval)))
- 		goto nomap;
- 	if (unlikely(pmd_trans_huge(pmdval)))
- 		goto nomap;
+ 	/*
 -- 
 2.50.1
 
