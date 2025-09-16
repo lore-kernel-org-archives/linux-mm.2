@@ -4,95 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EA2FCAC598
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 17:09:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A42DCAC592
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 17:10:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC4088E000A; Tue, 16 Sep 2025 13:09:46 -0400 (EDT)
+	id EC2548E000D; Tue, 16 Sep 2025 13:10:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C4EAA8E0001; Tue, 16 Sep 2025 13:09:46 -0400 (EDT)
+	id E72D18E0001; Tue, 16 Sep 2025 13:10:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B15E48E000A; Tue, 16 Sep 2025 13:09:46 -0400 (EDT)
+	id D61A88E000D; Tue, 16 Sep 2025 13:10:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 970F78E0001
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 13:09:46 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4C9E71DD8EC
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 17:09:46 +0000 (UTC)
-X-FDA: 83895750372.26.CA64584
-Received: from smtp112.iad3a.emailsrvr.com (smtp112.iad3a.emailsrvr.com [173.203.187.112])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 4D57D140006
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 17:09:43 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=none;
-	spf=pass (imf09.hostedemail.com: domain of dpreed@deepplum.com designates 173.203.187.112 as permitted sender) smtp.mailfrom=dpreed@deepplum.com;
-	dmarc=pass (policy=none) header.from=deepplum.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BF0408E0001
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 13:10:49 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 888A5B7A41
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 17:10:49 +0000 (UTC)
+X-FDA: 83895753018.05.41CA923
+Received: from pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.42.203.116])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 6062F160007
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 17:10:47 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=HhqBEFP6;
+	spf=pass (imf08.hostedemail.com: domain of "prvs=34776310f=ajgja@amazon.com" designates 52.42.203.116 as permitted sender) smtp.mailfrom="prvs=34776310f=ajgja@amazon.com";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758042584;
+	s=arc-20220608; t=1758042647;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jp0lGQUO6tKCulfsQ8dirXWIEhTA1ZW1LFSxcp2oA/M=;
-	b=xZJqf7C75wl11mEtxv3AbxEgyoBVmB20F3QDGsOGj04UHGhEoOuCJcAo6N7EXkMKJ+VgXq
-	CI6H8yoZjhSytBdEGxNXTOHOaNxLIEoyVTuzITbdDUteEPU7HDiDJXocqUNFYnt6f1b++N
-	YNLbUk7aE8xvovxqlZyqNresyeej4p8=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Yj/co0t5Iw8d47vXLDniXY4H2qDpIH8uba9JHqJdO8s=;
+	b=cPSn+TcZCzM70wIVrrV/E+e5tKC5F7RRxXsKQyO2XEvodCowTvozQS4TFAlB2m2MoIBbPY
+	W2VXqTssutWt4vTpgn3xzWEAZ/fatDhsybJb3WBUSg0mzaxCGG7H69iUmCsH8tnROrNuT3
+	HIx8R5SnHfJ17P9rhF3mZfwC6B3ajFo=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=none;
-	spf=pass (imf09.hostedemail.com: domain of dpreed@deepplum.com designates 173.203.187.112 as permitted sender) smtp.mailfrom=dpreed@deepplum.com;
-	dmarc=pass (policy=none) header.from=deepplum.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758042584; a=rsa-sha256;
+	imf08.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=HhqBEFP6;
+	spf=pass (imf08.hostedemail.com: domain of "prvs=34776310f=ajgja@amazon.com" designates 52.42.203.116 as permitted sender) smtp.mailfrom="prvs=34776310f=ajgja@amazon.com";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758042647; a=rsa-sha256;
 	cv=none;
-	b=O8M0Xi+TF18sDqS/GrVKTuVYsw4FeQkTOYL1yHKEtgpz7zZyQIb3Q7xp9DTwLSefYGMIi7
-	O9zPqP2WbLuLsOb669yeXL7krimyMWceb/Xjp/kj3Nb02N7U5G8pu9LM8YbCa+LixKMovm
-	Ax6R053gWLucqJmKtMBOXb/BFMYA08s=
-Received: from app57.wa-webapps.iad3a (relay-webapps.rsapps.net [172.27.255.140])
-	by smtp39.relay.iad3a.emailsrvr.com (SMTP Server) with ESMTP id 3ACF65808;
-	Tue, 16 Sep 2025 13:09:43 -0400 (EDT)
-Received: from deepplum.com (localhost.localdomain [127.0.0.1])
-	by app57.wa-webapps.iad3a (Postfix) with ESMTP id 1B8B3E00C6;
-	Tue, 16 Sep 2025 13:09:43 -0400 (EDT)
-Received: by apps.rackspace.com
-    (Authenticated sender: dpreed@deepplum.com, from: dpreed@deepplum.com) 
-    with HTTP; Tue, 16 Sep 2025 13:09:43 -0400 (EDT)
-X-Auth-ID: dpreed@deepplum.com
-Date: Tue, 16 Sep 2025 13:09:43 -0400 (EDT)
-Subject: =?utf-8?Q?Re=3A_PROBLEM=3A_userfaultfd_REGISTER_minor_mode_on_MAP=5FPRIVA?=
- =?utf-8?Q?TE_range_fails?=
-From: "David P. Reed" <dpreed@deepplum.com>
-To: "Peter Xu" <peterx@redhat.com>
-Cc: "James Houghton" <jthoughton@google.com>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- linux-mm@kvack.org,
- "Axel Rasmussen" <axelrasmussen@google.com>
+	b=CDEbmLN5F6W7TO/lxX+mhXghBE6mk6KyM6BSq8d7K693pxAAp4W+FnqIFH67JcJKZsUBJK
+	a+9IjEutgqzeamhQ0alr0HvRag4PjN/PvQ2pACAWhxuQsZHGvdldxkcbhOdwOPvvFVsH/l
+	gzPT52WmzP/D2tigbtPxQYQ2l9txHD0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1758042647; x=1789578647;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=Yj/co0t5Iw8d47vXLDniXY4H2qDpIH8uba9JHqJdO8s=;
+  b=HhqBEFP6bgsPv85UWEZkX2Rw5SaZB6pXxbzeVwg/nB1ejSOB7S00wRu8
+   D6BROG+4aM0yjaF7MNU+UuAgmuseejEmuCQ+SO4NMpSJ72qokE2GRkC20
+   7CGsi+kY+PB8bSPP6t5KLb/9QuMOu7qgDvLQtz//1/C1wPoZhM8QG1lAA
+   fAExiiZupRfKAFKJKOjqn3FPAy3POE95WvyP3/bQM1rjInQlXJHLmuqUw
+   M91Y3Eb3Aj0eDDqOd9SO+Xu/f2Wxo6GLAJg3qtVvtgCYfO2qVN/5lvI0G
+   t9o7NkoszgCVMCbNABFV3qV3Ccf/Zz4oneiSlEM42H+HXmLP79w16TOJD
+   w==;
+X-CSE-ConnectionGUID: r2MH0a+nShCa9LtTSfPqNg==
+X-CSE-MsgGUID: KgO2vHhiQHyJRTkCEVp8IQ==
+X-IronPort-AV: E=Sophos;i="6.18,269,1751241600"; 
+   d="scan'208";a="3085197"
+Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
+  by internal-pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2025 17:10:46 +0000
+Received: from EX19MTAUWA002.ant.amazon.com [10.0.7.35:56726]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.25.219:2525] with esmtp (Farcaster)
+ id a8e25940-f42e-4026-bea0-0929d2af846d; Tue, 16 Sep 2025 17:10:46 +0000 (UTC)
+X-Farcaster-Flow-ID: a8e25940-f42e-4026-bea0-0929d2af846d
+Received: from EX19D032UWA001.ant.amazon.com (10.13.139.62) by
+ EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Tue, 16 Sep 2025 17:10:45 +0000
+Received: from dev-dsk-ajgja-2a-6a9b5603.us-west-2.amazon.com (172.22.68.79)
+ by EX19D032UWA001.ant.amazon.com (10.13.139.62) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Tue, 16 Sep 2025 17:10:45 +0000
+From: Andrew Guerrero <ajgja@amazon.com>
+To: <gregkh@linuxfoundation.org>
+CC: <ajgja@amazon.com>, <akpm@linux-foundation.org>,
+	<cgroups@vger.kernel.org>, <gunnarku@amazon.com>, <guro@fb.com>,
+	<hannes@cmpxchg.org>, <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<mhocko@kernel.org>, <muchun.song@linux.dev>, <roman.gushchin@linux.dev>,
+	<shakeel.butt@linux.dev>, <stable@vger.kernel.org>, <vdavydov.dev@gmail.com>
+Subject: Re: [PATCH] mm: memcontrol: fix memcg accounting during cpu hotplug
+Date: Tue, 16 Sep 2025 17:10:40 +0000
+Message-ID: <20250916171040.12436-1-ajgja@amazon.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <2025091216-purveyor-prior-2a81@gregkh>
+References: <2025091216-purveyor-prior-2a81@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain;charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Importance: Normal
-X-Priority: 3 (Normal)
-X-Type: plain
-In-Reply-To: <aMmMnfU-Koopc9mL@x1.local>
-References: <1757967196.153116687@apps.rackspace.com> 
- <CADrL8HWGcj1oANGY=qAzpYi_-E-Xbi=L28Bmyyf8H7auVix=QQ@mail.gmail.com> 
- <1757977128.137610687@apps.rackspace.com> 
- <CADrL8HX78-oh0k2qAgqPvNVAhi4ESYvjRsScPGR2P2Dts13Bfw@mail.gmail.com> 
- <aMl4qLyNovWHhty9@x1.local> <1758037938.96199037@apps.rackspace.com> 
- <aMmMnfU-Koopc9mL@x1.local>
-X-Client-IP: 209.6.168.128
-Message-ID: <1758042583.108320755@apps.rackspace.com>
-X-Mailer: webmail/19.0.28-RC
-X-Classification-ID: 9dcbf7fb-7473-485f-8f3b-e7a452678835-1-1
-X-Rspamd-Queue-Id: 4D57D140006
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [172.22.68.79]
+X-ClientProxiedBy: EX19D037UWC004.ant.amazon.com (10.13.139.254) To
+ EX19D032UWA001.ant.amazon.com (10.13.139.62)
+X-Rspamd-Queue-Id: 6062F160007
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-Stat-Signature: 6rmnzeqtu49mzbm5pypmq3hihbuwxekh
-X-HE-Tag: 1758042583-473517
-X-HE-Meta: U2FsdGVkX18g8t4V03mUN+xqfCRVflOKzSdLpMsUGQoUfNKn6mo/VVRl/h40g53GL+Qkuwte5NwsVtfl9FRx/buQAlvj2/QTJYCkTXygu8dUNekmFvlxB4Q4ixRLimiIko87Nx3l60SNF+1gMVzMqAHZZlhteEQABZ5cPwSNotlzYE0oQv0uLDYBKkak2NQyMe6SNr43IWDZxrNuySegSLUvomUeHAE77tpa2WfJ36bWgS2ACXGwr1EIiEaWUsryFjOEVYzxf1C8WHTcsDmcqSzddq4F9QYV2n9r0aR1ouLCsEdoZGSfA16xA69U2kiFInyOVWVdSiEZP+nRuU/3/t8U+e7XuJoT6EBzZ6gliFNbqcyjWC4ruJDNVIl3aXs2oU3MWdpH6VNcaq4QkJMuFeu5SYM1ZtdVq60eANq0Y1kehhtrVPKrkibgJ8xm4OMDnva4pSk9vJW5sM9gxIDKbBOJwh5aHiRQ4uedOYnMHcStBSGLARAgQMcMHZBYAN0clJYCui9eVsllw6fhxOF2bijEmF9dXPLdOWI2jFGRktksN17STeooMnnI23h4Ef7LHU8GiMQFsJ+rScV8BCbTq4YjdZdwJEtDCqul40X2cwndAyBOmud8dGtm+c++nOVpcIQXhyLpoIfSPRF1gwS8ClUVZOPLZSScWYwMNwiK1thOBhDxxz9QrZ+RpkuZ1XGmevsl4aCL3lrIK9fkVvGyzjTL/3x8e2DY2gbMy78P5VULH3iqO+JUK02sPtAwlgPzSVfY0/mN9/ZUxIjNA3owCN72AHsHDZrN282zZkZsqmHLaeKlas+xxgjVhSBFA5ao0TFDE5ZMEZf8zo5WluT3d0yDHq5/+D42oEilyxhArqhdeTuv9JTod1BkSYHCU76/eqdLeH3yWYv4wztApoPqv498WrDEnyhVXfh5MSKK/iXyspUjHCcA/0jYa1U+kA2V++W8mDpHdG1j8ECYz02
- F+wj6Tzl
- SUygx3FJIo8KQS3mGGSwqswhJJ7CRLSs7Gs2Me3w37IV7i/6W6q597PLZVE87VojZLQO6iOSOEQxc8ctePpUkc35sJPnrtQHIlxFc4XiKI2hp0VuRob+apGyU7puTk/l76sqtm00qZUALizQfsyKbMQ9267X+MCHYlpJ1iDYGfgvgc32TmFtizyzfWCxEk4RwJRPyAxg8dKznxuYBabpZJnSxM7tPJ8L7TPv5QQZKXPnyQuH2xZ37w5PmQQ==
+X-Stat-Signature: ewyzmsfhrqjoj7ysmmpoduc8xzq67fu7
+X-HE-Tag: 1758042647-216007
+X-HE-Meta: U2FsdGVkX1/8ZIZX7Wcs+xW0KJKnOa3FiJGqRap9LJEEHjmzMrw+51I4grHiIrxU0TVTbA9tLGiSrTVXJ/4jiXihQixOIhPYuFXwTeqOTEJqboLw9arXILRPbykZrddIOH1vHHmmfm30hFt61/u5Um2NBj1Zj37rrlpLH+9AfpVIbtaYQ19HlsLhr1qbvZsmNRYHbzCdd0GTjIEJReu68qgmas2WgfDTjUoH9nyvQrpQ12qr8rt+pZESsG6pRhj5hzXTULkJ7VBJWLNMbM2IQ7Gh9Z4e+82cXI8ZryMGDqnMdDLgA/j/BJ3r3IfKfrUNE5DJIugp90WI7mCJcsmpmYq27ImpfkqWbLiytkIURyR6uQacD9VAmGo2XrihtTVsUTiw7lTfKwSRKEdLr1qnpQlrHGeX8tdLmFEPqHCC1gVDglem7eaOeF88O1U1VQW2x/zF8oj66NOv3WlMmbcDH3zIM8ItIK4/1Nw+dUl3Z2f2Dl7ssJR/evqhg0yU0mMctoUJ2FqLSjIcQz4vgiRtOTS5zET3If3Ze/wVRw9Q+Q+dcBgXWcXXDK2ROFE6ahx/yyZra9trXug2D0aRgodCdQ/pq843qDqUGHUCi5TO19MyfP/ox9UALC0p25uZKmJKpMxe5GcN/tH3GdwFsLpex2LDSaTAMtYB9l1dJ3e5+t1Zy1iRcplw3OF5N72X7TlsTFxZiHYZjiPNQJzHH2V34e9xysFg1SwOfSE/AANqFj9opSuGYC/bR2RqA4+vWdzx1pYN42hVKwKPpkF2WmNr6JLBr9KibajlK5BLiToKkFouBTw/g0VOlexMqQXocnKNhI7cXR38wVwR6cQfyjR2vRnRKv0eoA2/Z4O5/78La0zGRDf3yju/LRQOvBv8WuB+HnTBq5GEtu1gm6ueYwBExq/3l5Wa0C42jRoase9yxq792aNt1HMRssRKW2Vakza5PuzBV5mIP0IdY1kBow1
+ zzjq1zRu
+ rct/y7khmdWm6lGVkRNYUcWl9wX8Iw3i8XD4Fk+4Uz6x3D/JVwt0/EmGhivdWmdenCTu/uuZdCdeUe+Sy5zsf6fHhtIfsK0goRTgMmYWNalJBS2AiBvY4/Sa1FAp9l1jlxBQ0qpNjasHQBPo8AoUTH2A339qGXeRv+3iBK5xx8aHEIfiireCruUD1/6Cvrx767C3GdBPbSdkVDs7liz02zeurTr3eNT8wgF6NMq90QJgfRtQDl+65Y1EqJLiH1Ef6O2TbM41F/0XKozRx4djr2OQ+irG6qsxW80HU4uXZSfJpwLN0HnrzBiYq4HBv+zLOaa3rfaG8uv9s0VX4+hejR9BaNk4qIbJmJ9Y5uHcJU+2XKqj1mxdA7XqM625F1Nww4AxQPltxGg63rGUiwreMr6FqBZlj9olAJikAdMAKCOEJe3nxtrtGtcywDtahsYKgZ0lOvbGNAcgdX88iO3p9VEpIPgrT/4cdf63GseYH6ynJLDa+89ZJuw2UapZFhLsmudkR35ucn8nrkUy4Nb/v5AI03oJcenJcEUqo7muxDzP9eHjVu72SrrWDACBgmeLelhSGzibtcHFFmPMjeIapMsSpJVa7nvLmPn2Nr6FPVR1b6CQhxuQGnGySM1zKwjzOHQvs2vfZeWu61A7ltp1gAWo6WKnT9PeLVKWo4wk+motVA5j1PBM//jstkktm1UFA9ZIdxbkrhmUT6CnLSi6d85gEG+Ko6VyuONY9sHvy1pYjeQ7GeO5ho7+lu9YZCyGwQwlxG5RulyVnWPZxgRsB7vSte21pzKTsLXT4zgYMcvEosxFHqbVnV3o+l8e9oIIRolej
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,45 +115,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Than -=0A=0AThanks for your interest. Some clarifications on my current use=
- case are interposed below. =0A=0AOn Tuesday, September 16, 2025 12:13, "Pe=
-ter Xu" <peterx@redhat.com> said:=0A=0A> On Tue, Sep 16, 2025 at 11:52:18AM=
- -0400, David P. Reed wrote:=0A>> synchronous would be better. But what I w=
-ant to do is at least get=0A>> notifications of swapin events (including th=
-e case when the page is in=0A>> swap cache). Also, using UFFDIO_COPY can be=
- useful for the swap in case=0A>> might make sense (but rarely, because the=
-re's no way to access the data=0A>> that was swapped out).=0A> =0A> Some mo=
-re info on the use case might be helpful.  I can start with some=0A> more q=
-uestions if that helps.=0A> =0A> - If it's about page hotness / coldness, h=
-ave you tried existing facilities=0A>   (page idle, DAMON, etc.)?  If so, w=
-hy they won't work?=0A=0AYes. Those functions are just summarizers, giving =
-counts and averages. They provide zero detail about specific pages to the a=
-pplication running in the process.=0A=0AI can clarify my use case focus by =
-pointing out what inspired me to use userfaultfd for application specific m=
-emory management (which is, after all, what userfaultfd was promoted for on=
- Linux Weekly News a while back when it first came out). This 2024 paper is=
- along the same lines as what I'm researching, and was published in 2024 Us=
-enix proceedings.=0AExtMem: Enabling Application Aware Virtual Memory Manag=
-ement for Data Intensive Applications=0Ahttps://www.usenix.org/conference/a=
-tc24/presentation/jalalian=0A=0ASee figure 3 of the paper for their perform=
-ance problem with userfaultfd vs. their kernel modifications (upcall). =0A=
-=0AThey had tried using userfaultfd for their work, and found it was "too s=
-low" compared to what they call the "upcall" technique they achieved by mod=
-ifying the kernel page fault handling path. (see paper for details - and Ja=
-lalian't thesis dives into it more deeply).=0AI could code up an equivalent=
- to their "upcall" - but that would mean completely non-standard (and fraug=
-ht with security issues, as well as not being able to use a separate manage=
-ment process).=0AFor me, the performance concern is less problematic - I'm =
-doing application analysis and experimentation. And I don't want to have to=
- maintain a kernel patch set.=0A=0ANote that I expect to use madvise() and =
-process_madvise() to manipulate page coldness and swapping as well.=0A=0A> =
-=0A> - Assuming it's async reports that can be collected, what do you plan =
-to do=0A>   with the info?  Do you care about swap outs prior to swap ins?=
-=0A=0ADetailed application paging measurements, modeling, and so forth.=0AI=
-'m not asking for a big enhancement to userfaultfd - just expecting it shou=
-ld (as is) basically work, if the UFFDIO_REGISTER actually allowed to regis=
-ter the minor page fault mode,=0A=0A> =0A> - How sync events would be bette=
-r in this case?=0A=0ASimpler to coordinate the interaction with the faultin=
-g process by far.=0A=0A> =0A> Than=0A> =0A> =0A
+On 2025-09-12 12:45 UTC, Greg KH wrote:
+> On Mon, Sep 08, 2025 at 09:09:00PM +0000, Andrew Guerrero wrote:
+> > On 2025-09-07 13:10 UTC, Greg KH wrote:
+> > > On Sat, Sep 06, 2025 at 03:21:08AM +0000, Andrew Guerrero wrote:
+> > > > This patch is intended for the 5.10 longterm release branch. It will not apply
+> > > > cleanly to mainline and is inadvertantly fixed by a larger series of changes in 
+> > > > later release branches:
+> > > > a3d4c05a4474 ("mm: memcontrol: fix cpuhotplug statistics flushing").
+> > > 
+> > > Why can't we take those instead?
+> > > 
+> > > > In 5.15, the counter flushing code is completely removed. This may be another
+> > > > viable option here too, though it's a larger change.
+> > > 
+> > > If it's not needed anymore, why not just remove it with the upstream
+> > > commits as well?
+> > 
+> > Yeah, my understanding is the typical flow is to pull commits from upstream into
+> > stable branches. However, I'm not confident I know the the answer to "which
+> > upstream commits?" To get started,
+> > 
+> > `git log -L :memcg_hotplug_cpu_dead:mm/memcontrol.c linux-5.10.y..linux-5.15.y`
+> > 
+> > tells me that the upstream changes to pull are:
+> > 
+> > - https://lore.kernel.org/all/20210209163304.77088-1-hannes@cmpxchg.org/T/#u
+> > - https://lore.kernel.org/all/20210716212137.1391164-1-shakeelb@google.com/T/#u
+> > 
+> > However, these are substantial features that "fix" the issue indirectly by
+> > transitioning the memcg accounting system over to rstats. I can pick these 10
+> > upstream commits, but I'm worried I may overlook some additional patches from
+> > 5.15.y that need to go along with them. I may need some guidance if we go this
+> > route.
+> 
+> Testing is key :)
+> 
+> > Another reasonable option is to take neither route. We can maintain this patch
+> > internally and then drop it once we upgrade to a new kernel version.
+> 
+> Perhaps just do that for now if you all are hitting this issue?  It
+> seems to be the only report I've seen so far.
 
+We are hitting this issue only in a stress test, and I think we got lucky with
+experiencing it, so I wouldn't be too surprised if this is the first and only
+report.
+
+Thanks for taking a look!
+
+Andrew
 
