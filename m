@@ -4,83 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B00DCAC587
-	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 04:33:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27C9DCAC592
+	for <linux-mm@archiver.kernel.org>; Tue, 16 Sep 2025 04:39:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5CD718E000F; Tue, 16 Sep 2025 00:33:16 -0400 (EDT)
+	id 823F68E0012; Tue, 16 Sep 2025 00:39:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 52F708E0003; Tue, 16 Sep 2025 00:33:16 -0400 (EDT)
+	id 7FBDC8E0003; Tue, 16 Sep 2025 00:39:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F7968E000F; Tue, 16 Sep 2025 00:33:16 -0400 (EDT)
+	id 739048E0012; Tue, 16 Sep 2025 00:39:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 30B068E0003
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 00:33:16 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 619BA8E0003
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 00:39:17 -0400 (EDT)
 Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 967A4871FD
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 04:33:15 +0000 (UTC)
-X-FDA: 83893843950.26.2D6367A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 229224000A
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 04:33:13 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ffhRuEUS;
-	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id F291CC0840
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 04:39:16 +0000 (UTC)
+X-FDA: 83893859112.26.B599CBC
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 29429A0006
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 04:39:14 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=DLYWJV0J;
+	spf=pass (imf15.hostedemail.com: domain of surenb@google.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757997194;
+	s=arc-20220608; t=1757997555;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2HHvZRG2IRMlzZFiZKra782KbSGLNhZmtNIao6482y8=;
-	b=Mqlse2tTS3NGZ554FaVW8IQGZ8HwLfIUBpllHA2e0oja29eS46k1f48o1hd7X225fHq9Te
-	5ccX/xLVdcnXDX+eFPtuOW0y2c3CZhAY3qq49caTq9MqR0mPQLvsHa01jofuPYd629ha5L
-	cAmxMStW+HoZ/wdFkmVwc0CpBZDjbiw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757997194; a=rsa-sha256;
+	bh=9R6kQ9nEgywpeDIkgPPLCORIQ6RGJTSFvVt66zj4n+8=;
+	b=ZJdcCAuhTiB6Zezk7Ks1x7imJDF/WJEqxge1zI6dnp9FrbVJ3Ayh3LQ2gp7NP4+EgZj19C
+	H/Vv5qQlR8APsHu7yjYchzvex+dGdph1Mll+tOi8OstVxMtc4vNqH5wL71gLWUAH6o5+O6
+	wmHILnmZbWM334lTQSCZSXe3Z8rEMB4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757997555; a=rsa-sha256;
 	cv=none;
-	b=NNCcUTtiwUGAf1sTzB5LEWyoKmH+HZPOhWzh3YPU0PdL1SgAIVCx+98akpHN+TE7XiqWGL
-	P2M1SGLTlA3LtjINRkkDbhkzWqZB6q9o3yU7YHmwZJVwDe0eaJi/jJHQZtOrhpUKYYTv7N
-	l/ty3//BgjgRjcDsRLmcPS0/3giTuOw=
+	b=KjRlGTSkzNTuISJNMrOsCY77IvZ/f+iWKPc+y6vAfREROORv6CZSWtt1iS0ChoTvcjvYlp
+	SuYwKdGRR6YCO1sT8ZReCifb9Jl2Q0MD41VvotWjwj5oMuWVRC6N2x0vU+4mSHRcYManps
+	Z1qyKRDAPkKc8TgJQLQCEz5fo1orV9M=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ffhRuEUS;
-	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6FBA4601AB;
-	Tue, 16 Sep 2025 04:33:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB161C4CEF7;
-	Tue, 16 Sep 2025 04:33:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1757997193;
-	bh=RFJkSWDFhqm9IbEFagXwquv4UPK9KKARrTLze/LmtU8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ffhRuEUSl+esw54iNYqPLjXZkB7pm9/qU6PwF7PfqZ0m7i4oOU94h54q9jAHt/nS4
-	 s+f9QUzJNC2ahUAeHoEjZ3N44lirm2epKio2vvbtZatpjoIm0CqJ1pGpaX0G3knn/D
-	 6VCEkQjCFe6KZvDs/IDzmvGpZi1wTL3t2fx/haT8=
-Date: Mon, 15 Sep 2025 21:33:12 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: damon@lists.linux.dev, kernel-team@meta.com,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 0/7] mm/damon: define and use DAMON initialization check
- function
-Message-Id: <20250915213312.12892156442f3a795a0a01f5@linux-foundation.org>
-In-Reply-To: <20250916033511.116366-1-sj@kernel.org>
-References: <20250916033511.116366-1-sj@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 229224000A
-X-Stat-Signature: smh7qtnyzm5p3hfa7twurxs3dhufxqud
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=DLYWJV0J;
+	spf=pass (imf15.hostedemail.com: domain of surenb@google.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4b796ff6d45so147931cf.1
+        for <linux-mm@kvack.org>; Mon, 15 Sep 2025 21:39:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1757997554; x=1758602354; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9R6kQ9nEgywpeDIkgPPLCORIQ6RGJTSFvVt66zj4n+8=;
+        b=DLYWJV0JVtyH3GX+p1lIAn12fpF/MILIpqZvby6DqitSDzdBzn7bOZnnJ51Y+vSODQ
+         TwtCW48HsV5RJfQio/LNo364p7voeco3qarR4QTEEbMnBaw9Db7ojiEZbqwWOlt0s/n8
+         BfuibYKTAWp2CMdKghkU+lOn1uGlbFUQNbMJgu63Y3aeqqybipA8uCJBdwiSiMGy7Xuv
+         NbblZ0PMjjxXkKJ2W9fTUfhx8DkbCFbNrRb8ZvRQ+W37HE5KQ0IL+NoGiOBylIXxsR1s
+         ODN0Sjnq+g291v2CaNJBUsD+KfX++aJmsnKrOmwsgJcDumUJtMOyXO8lD+5lw1F2nWR6
+         mgHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757997554; x=1758602354;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9R6kQ9nEgywpeDIkgPPLCORIQ6RGJTSFvVt66zj4n+8=;
+        b=Qa/0myikB8Q3CyG8+xMwx9EO7pCQrhYFtgcDVGMB0/lV7toiVINSRP1UtVdzt4ESI/
+         8wEnmvIKKrLlzw6D/chUhlserQUdiGUiCLaiZW4RsOZek8OA809Rc7SaC8TvYtpFMOcL
+         oCRxP38k8fnzEunbNLFYzaLnGZM66E1/io4i8nwLl2wO/NRsiT97EaFtuUdZbaeEixok
+         +0KYFX9xTquZnXN+5XOfOdBfq8AIr1BbKyZT4CtZbnmmwS/goDt47o70YRhvwHgE+DTo
+         7Z2kswWLZJOGuR9YTWK7pcr1p2cMXrP8fA0ISeu9atxwFnH83DLBWy2zVMEHTkU6B37f
+         gD1w==
+X-Forwarded-Encrypted: i=1; AJvYcCWgU2yM26omtVlvdKMYrQX8eQyg6y+2C2nSqt+mf3jUydbLn7/uRHGTXXsi2znldzib4KBmD8y5Nw==@kvack.org
+X-Gm-Message-State: AOJu0Yx/BdKGbXnLYI8i/jLqi4+7wjmdRAk29AMCeE1/yvvlHgPgSNKY
+	Us3pF953YABfaDU8FiDapbK1W++2gUdzfPMnh8w/s85DaZSOHF81lKf/kEJra54eCnPh2eyfORX
+	a0dkzT21Ku8QLiYcPhmlqHVSc42xpZnzFlkCKQIvB
+X-Gm-Gg: ASbGncvifsL+LtKYfQsUSijSqWllY9vcAdG5ILDQjKUXnkNFlsdmEEz2v8e0m0/iWQE
+	2k7NrVCVxPvPjUlcAVm8SPkX3ENygf6uycnyogbmeRSnmyiEtaJIPmKuHgyLIKQ+/Mu/qfMbGjt
+	0MQ1uTmZq9M+8DVMnYOMWZMWBSPwSHwAq5KSqNL1gOQKIw1vXEWhZP69Rh77F7sLcOIGaYGHLJl
+	Gi7RsjJQUIb
+X-Google-Smtp-Source: AGHT+IGy2zUeUVgUuFT4t7VWEdEjde2wG3xmJbbzOEgNSuq/gMX0RcKVbdjrWT5skjoaUgdj+RMigu48osKUGCiYUHg=
+X-Received: by 2002:ac8:5846:0:b0:4b5:e600:3d6a with SMTP id
+ d75a77b69052e-4b7b1d8295amr3905351cf.12.1757997553736; Mon, 15 Sep 2025
+ 21:39:13 -0700 (PDT)
+MIME-Version: 1.0
+References: <20250915230224.4115531-1-surenb@google.com> <20250915171112.f71a7606a7f9fd3054662bed@linux-foundation.org>
+ <CAJuCfpFQCgQLSrzfVjV+J4tkYbOx_W9v-kWmoo-rmh5hs9gEXA@mail.gmail.com>
+ <20250915195633.96236cecebd8777243a770bc@linux-foundation.org>
+ <CAJuCfpH1JW8vwOFF2H2SOxZqoJHadXsTc6C=LUS_=twcf=k9qQ@mail.gmail.com> <20250915212133.de5b8522137a5ed30efe956e@linux-foundation.org>
+In-Reply-To: <20250915212133.de5b8522137a5ed30efe956e@linux-foundation.org>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Mon, 15 Sep 2025 21:39:02 -0700
+X-Gm-Features: AS18NWDHXLFv3lNg4PYk4Bb_peo44MLmDzNlQvZH7VM8bIBPMPrwoAZZ-W4no6M
+Message-ID: <CAJuCfpFonUPE0FL5XGm0paYp9ZXeAKK6mjHO_8hUkyxfyduL=Q@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] alloc_tag: mark inaccurate allocation counters in
+ /proc/allocinfo output
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: kent.overstreet@linux.dev, vbabka@suse.cz, hannes@cmpxchg.org, 
+	usamaarif642@gmail.com, rientjes@google.com, roman.gushchin@linux.dev, 
+	harry.yoo@oracle.com, shakeel.butt@linux.dev, 00107082@163.com, 
+	pyyjason@gmail.com, pasha.tatashin@soleen.com, souravpanda@google.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: kxuzo5ejqfuef4wi7i5job8ru4f3an4t
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1757997193-499821
-X-HE-Meta: U2FsdGVkX19HMcDKPg4n1utk9jzSjosKX9Yjp9s0vwzCxTBgFknZD8cDJgnT0t5Uu40sAbzMhTEK+scyA/oi+Rv07AL8cKUehMmpu6Se9icGAOyzUPC/XbuUeD83twPVfdGdFHmTV6H1vNi6VWlJKXPjfMQkYhJhvHJvEqfQJRoGrpzKZDmedDYiKbXT2eVJEuTHGg3cpxcyWEK8UuLYJmPXvibcKsp3ZGPrlDmKa+usRj7uCFN9IKzewtClGZO6LbZr/+zzgAHb8KR7SMSo0UJYPSTNuXMvdFK6HIAgLOCcxHKwqDyf6/a8oL4kzLb7QJNLeW+5NFWrrBZ7VabGxCrNLpMlSrZqD6kq7WgjDoA/KQgdMPV2JNhTikDnVr2WVvxaDc33GBVgK0v6ZM6USBhrCRhQfCWAXxGRxqIEGGCaAuM0A0b+ugvrbhSP3RzKIi1nVt3Hop9h1PtO1EneSHOXke82+MrKQsi9KZDvEzpqlBMCnU4Eb/2qhe3FzD/E7Fa0K3haAQ8241LPnF8RHUGRS23D7H1fMY1PPIFYasjYBDOkQIaIOT+QWHmS7T4ueRgx82ERcrA101HhB3NEY/y9pt/ZrY6IF+83n4EqryYwzVLzIP3zaskAxzYxqQeZtrei8ow3YzwL2Cg9mG8gISJqs0KQ+ZSIiYobSUrJ5oMfpfEQZXaeyWXnLVhU+heRG7+VDt1S1IOd+Mbzj2p336uXQv0tt1ux+wanOjANpl8cSZxtxsqRN4HHjK3OMwGMp9G8fHKEIrwTOt7qeWxbA4OjnlLSg6OXmdr+8ChQmq1IsGuSEBfbkTaO6KWscHkJaIb4Ds8XCbNyjWRZqnYPrzTqC0T+Ga59oePEydTQOwU6MidDen7yAvUOadoCk9WCODuWSb4+tAS1+C1b3Mt7E3aZO1o6mUR7TulzaaJxM4w=
+X-Rspamd-Queue-Id: 29429A0006
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1757997554-660009
+X-HE-Meta: U2FsdGVkX196jTX3LbYpDJT6VplpgioGxlPKqhA8zTJhggR9qV5LbRAVd/v5vN25EK7qOCO0j9ndAR1CycH1vKGe0qV3aKJXz89glS0Yxat4tQGI7Hyt16G5AfFSiRCI7tkmiNw49s7VK+stBuXDG3qOXw9usSUELNhDw+1cWz5E1NQSetk3rXgJ8/wgi3rRszRISUMhRDgQcBoAWlQz59bvWpgagQ1fTIbdtUI7dq8W358371srC+umBmkfYZtZiYt5+Eonfc+UcJdyIVsMp65gFgd/VURqSz7XWYlV4QnrA6cZ73k1svc9svscGGAATzqtFWeGaAnHAVegbO8Bh0JUPDgrzv0gdy5bASC5Xa9TanEsDv8pXf0UOKPCX4c3f1/OA8iLFscKXIbCWQ4wBUZ624hFGtPm7S673RA/mvdzW/uWIatC8K0oeFp88OpgNepUGXg9xzrtmu8mU1L4i3yiBaZZQL5GSQaV8HpKUrt3myuGW64wzdVHN+VoXUIUAjamrkvgVbIcE21IBfBT4AlwM5bvxAz7aMkEzI5px7hgBKaF5D1QymDvmLoAWhBH7JXS45Ckp2X/dQLswt6sVDKOxb9Et3YCGJWsBFVZ9ioOg68vlPFLRPtUKCuNr2pHJ2EWpUb4i9P2fx4lJMngqlrZ21aBe3m2gGEB0G3yZlc/R2wcLFQo3jvuWvQkQsbfnXF3xB6CP6peImbrbkyjNi/o0/DS/krY7FRKgrB4wOaXUlbZHZv1dKJFmQVMed5Y0CPBEYzgTeAzv4wSCB9dNQw4Xf5FgZq7hkqLJkf0falQ7Ft6n/iILSdSlpFgtgA8nGoeZWncUh5W/APF2+iXWIKr9RG+vHEbN9RXVjcQ7y5TV/g3E0aeJR08U6DNkSCz1VAtJBf7f0U+3NwgTdRUm3yACzOot93IX3LTIxu/EUPCwAyIdhh6xuomXEE4NTvKpBmixND0nkrYBla2HXi
+ Zz/0hUtI
+ dCZDtFRBmBFpnf1vctLs65ee+50DfJylT3XNoK7+vqi6y3mDDnxveqot12zGHHUG0hGIF9+JgFwTeUbAZiqiBX0eNuVBvD65Bdwl2Oc2InggJ9y00k+irhyfccUbvxhST2q8GQBqqLTHJo4hbzMyoKypycTQJzorzCIa+UYOsTfiU5km4jQ0rHTmpmI0a/gQJ1+rC/B6T4oInf53uWcqUDG3J61T3t5fxLy9/mLQrRSUA+xSqB04jgXC7karAiCCah52i3Jg2nA2AyneW7Af8RiqmKrDmFtx0wNz/y2PCkNErBUQsxkGujTY7Fs4HLIVefIHS
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,28 +123,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 15 Sep 2025 20:35:04 -0700 SeongJae Park <sj@kernel.org> wrote:
+On Mon, Sep 15, 2025 at 9:21=E2=80=AFPM Andrew Morton <akpm@linux-foundatio=
+n.org> wrote:
+>
+> On Mon, 15 Sep 2025 20:34:33 -0700 Suren Baghdasaryan <surenb@google.com>=
+ wrote:
+>
+> > >
+> > > > could you fold it into the existing patch or
+> > > > should I respin?
+> > >
+> > > A little fixlet would be preferred (by me, at least).
+> >
+> > Ok, should I post a fixup patch or you will do that in-place?
+>
+> I think the former, please.  Your intent is preferable to my
+> interpretation of your intent and we get all the nice patch metadata to
+> track everything.
 
-> If DAMON is tried to be used by its API callers when it is not yet
-> successfully initialized, the callers could be crashed.  Such issues
-> actually happened and were fixed [1].  DAMON API callers are therefore
-> having their own hacks for seeing if it is safe to use DAMON or not.
-> Those built on an untreliable assumption that DAMON should be ready to
-> be used on module init time.  DAMON initialization could fail if
-> KMEM_CACHE() fails, though.
+Will do first thing in the morning. Thanks!
 
-Wait.  Is there any realistic expectation that KMEM_CACHE() will fail
-when DAMON uses it?  We do have the convention of assuming that
-__init-time allocations do not fail.  If they do, an oops or panic is
-an acceptable response.
-
-Are these problems actually real-world demonstrable things, or has
-someone been playing with fault injection or, ...?
-
-> Also those are basically duplications that
-> make their maintenance difficult.
-
-Unclear.  This means that the client hacks are no longer necessary after
-these changes?
-
+>
 
