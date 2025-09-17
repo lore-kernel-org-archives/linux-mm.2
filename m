@@ -4,102 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 399EFCAC598
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 18:58:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AAEACAC598
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 18:59:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6171E280010; Wed, 17 Sep 2025 14:58:55 -0400 (EDT)
+	id 666C2280011; Wed, 17 Sep 2025 14:59:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5EF01280002; Wed, 17 Sep 2025 14:58:55 -0400 (EDT)
+	id 63DDB280002; Wed, 17 Sep 2025 14:59:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 52C28280010; Wed, 17 Sep 2025 14:58:55 -0400 (EDT)
+	id 57B2C280011; Wed, 17 Sep 2025 14:59:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 3EA59280002
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 14:58:55 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C2750BA7C6
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 18:58:54 +0000 (UTC)
-X-FDA: 83899654188.26.0DC3A6D
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 7C4571C0010
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 18:58:52 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=none;
-	spf=pass (imf21.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 480C4280002
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 14:59:13 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DFCF311AAA6
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 18:59:12 +0000 (UTC)
+X-FDA: 83899654944.13.99E07E3
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 1DB3680009
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 18:59:10 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=LFStaZ8V;
+	spf=pass (imf02.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758135533;
+	s=arc-20220608; t=1758135551;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fe6MMyezrpEMFfpdK9szCBHQyXGkvJKTY5DNaPLALKM=;
-	b=I5oAIRhmCCe1vOKQ+y6OcYuSAv/J35pPQVzfFhK8iY1NnQCUyqWXZVKo2tYpPDTADZEuba
-	RO8N6+NRjD0BShxcmi1SuE+qIDjUBXO1Mdc6mr0LjFGj+H968ZOodlxMhLnzgYATNgzD8a
-	agKTooq19ZON98bdtj/pBzp7fFxTrwI=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=none;
-	spf=pass (imf21.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758135533; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=PBW7HlnBnHXsZV43FxLiqGMyPVmVlz0PSTx6u3WdsDs=;
+	b=f8fr75UmwqzabNkLiHjaJlLukqQkJ/ly+QAvr5ii7ezBopaeVf5ciBDROqXFecoZTuVCDe
+	ZgJcJt+ZHvZ3liBCdlTAQVOj0mwdT4SslQJxZtAooLi95bDqqsAxzvH2G5/S09GHA10zhd
+	+NqkXlrgKhXldoGzauucG2Ng98p6HWA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758135551; a=rsa-sha256;
 	cv=none;
-	b=VzAcPhScFyRDBeq7HN02kR+2X9JaQtrqS04LGq0bmPD1CKU59NtjJBf/EaoLeclCwIDhdz
-	FU/MEr/M4zBfKFkTUgd5SHos7/RZNqz/IQswONoUZUKrB4tmvD9Po1zAk7eB+jHLrZAlTq
-	XvpTLuu6IWkhV403jZaRN7LPXtNm0tw=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 285D52696;
-	Wed, 17 Sep 2025 11:58:43 -0700 (PDT)
-Received: from [10.57.80.26] (unknown [10.57.80.26])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9ECE13F694;
-	Wed, 17 Sep 2025 11:58:49 -0700 (PDT)
-Message-ID: <047c0f7b-e46d-4a3f-8bc0-ce007eac36a7@arm.com>
-Date: Wed, 17 Sep 2025 19:58:48 +0100
+	b=PXllPMfDZQTghSRNTPzRyC546OlAjH6RMCnYHc5lNARO+Ua1j5sNFOW1/zsfaCLMBnpJTK
+	oFcamiodNR1KcRtr23DO0vZzGma2QBkGLbz61X3HckEEFxLs6a+SuiNhcqdY0lGv/p+awf
+	gA9m0/Eg7M+Inegm5LgD4lTsp/FphuY=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=LFStaZ8V;
+	spf=pass (imf02.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-578a8bd4bd2so147061e87.1
+        for <linux-mm@kvack.org>; Wed, 17 Sep 2025 11:59:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758135549; x=1758740349; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=PBW7HlnBnHXsZV43FxLiqGMyPVmVlz0PSTx6u3WdsDs=;
+        b=LFStaZ8VAcVANaMyaQJdmGJASeEZboXPy4pwCvPMoOKmPvNiaXnMjCtmj7DgxmeuqG
+         GjTyGTS1b3garf29o1ixnFefqHkSKY6jZ8C/dhwsC4Mv0odwCcOqmYf8Dv894dY7ejuY
+         bIH32frYQ56AHGue2oNvYTxHx+n17jPRJ7bDRJIM1Ebow6nbsz9aadVPLTG0t7sEqvKz
+         j0ac4y42RSVNne9yJRcWesTvztvuL1Na5hZc25H8QlN2rCHADTTww8FLTI3qn4IAYcT4
+         b9AwwQkhvUkbGqeTUjc8gJ5y1Kt5DVv6vSJociimeFMqFHQHrUY+km4F2AgIoLQ8mfvj
+         8Z/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758135549; x=1758740349;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PBW7HlnBnHXsZV43FxLiqGMyPVmVlz0PSTx6u3WdsDs=;
+        b=v/TAMyG2iVxehGIVydbWdDVAEOBofCePXKADMCklKtgIe10fsoRj0y//ZIOLzIFlKm
+         PaQknkmJCJReg7BjoYk/ldqCEyzQUV7h/4zrLVfRkvh+h7RzEY7stwXcUe97CTCPjA+u
+         awKfUbAvzqA9xOR55tYYbLOsKJvK70kD5mKCM3Wn+8FvdqA0daYP04hLTSBccQsaHDQK
+         0gacRDKiqR1IjEAMWQIXqdgxt94BlqE70STjOw/6sc93oboLJ2UnWEk/1Kn072SVnolm
+         WAG536fanRB1mE6PRVn/SxpkPX7F9qDRbqIKK/YGd4Z22cBkmJg8+LXIkAFXJyiJ+XhC
+         DEkg==
+X-Gm-Message-State: AOJu0YzQ8E9ptOVyGw7L8J9vxmUKLYed9oP4dn0G3CvUnU/kqN1n8I1s
+	O1jDDuGnVFy/kjJqQ7Td/IoFLe/GcxAjCfq+7BUF5zfp4a6FxdZY1OE/xXRMtgSI
+X-Gm-Gg: ASbGncsg4QMZ7r78QaWIto0JI9HPEhsyvy5ahJ7zAy2kW6szpyxlOpXL78kYW7DVfhR
+	5NalizFekwFR86QXZZ5jAFmU5r9Z86XW+7XdHM2cjqkcqxzsDUo0Ex7K5PkAUb5QHZeybD3NCZZ
+	qOzXsiAiwNaUHswfmj15dDBEDW91pbiK+rkUOCQJ1/NGhs+wkCiFGV80VoUDncjEHTNCG/E0468
+	WpGOb+TbflAOnY10wQD7//POGCq0ySX4mWR2AOYupB+ugKgbg0s3pIH59Z/6zItIEY+1/ibIR9X
+	UFyXGbRwH/i+a7SXL4jp9bialqueaC57r3lyaxAHu1eo5kP/nyE0EbKt5Wi1osQ1F2nKKXP6p42
+	Oyq9iWr46d9lqzZiO4dc9/eOCxfOBkPuJLrY=
+X-Google-Smtp-Source: AGHT+IGa8vKcBgMPTv3VCQG18vLMJP9gPf1BC7QGZ2WiTb9J1yWYwEmirgaUnxIIH6tWYsC0zdnrrw==
+X-Received: by 2002:a05:6512:3b8e:b0:570:a8d4:a7c3 with SMTP id 2adb3069b0e04-577970368femr1384222e87.14.1758135548886;
+        Wed, 17 Sep 2025 11:59:08 -0700 (PDT)
+Received: from localhost.localdomain ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-578a5f4472asm80895e87.5.2025.09.17.11.59.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Sep 2025 11:59:08 -0700 (PDT)
+From: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+To: linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Michal Hocko <mhocko@kernel.org>,
+	Baoquan He <bhe@redhat.com>,
+	LKML <linux-kernel@vger.kernel.org>,
+	Uladzislau Rezki <urezki@gmail.com>
+Subject: [PATCH] mm/vmalloc: Move resched point into alloc_vmap_area()
+Date: Wed, 17 Sep 2025 20:59:06 +0200
+Message-ID: <20250917185906.1595454-1-urezki@gmail.com>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 0/6] arm64: support FEAT_BBM level 2 and large block
- mapping when rodata=full
-Content-Language: en-GB
-To: Yang Shi <yang@os.amperecomputing.com>, Dev Jain <dev.jain@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Ard Biesheuvel <ardb@kernel.org>, scott@os.amperecomputing.com, cl@gentwo.org
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-References: <20250829115250.2395585-1-ryan.roberts@arm.com>
- <e722e49a-d982-4b58-98f7-6fef3d0a4468@arm.com>
- <dd242f5b-8bbe-48e8-8d5f-be6a835a8841@arm.com>
- <aeb76956-f980-417f-b4e7-fe0503bb5a2b@os.amperecomputing.com>
- <612940d2-4c8e-459c-8d7d-4ccec08fce0a@os.amperecomputing.com>
- <1471ea27-386d-4950-8eaa-8af7acf3c34a@arm.com>
- <f8cf1823-1ee9-4935-9293-86f58a9e2224@arm.com>
- <bf1aa0a4-08de-443f-a1a3-aa6c05bab38c@os.amperecomputing.com>
- <39c2f841-9043-448d-b644-ac96612d520a@os.amperecomputing.com>
- <d7cd4004-bacf-47b0-9cd8-f99125e02238@arm.com>
- <fe52a1d8-5211-4962-afc8-c3f9caf64119@os.amperecomputing.com>
- <8c363997-7b8d-4b54-b9b0-1a1b6a0e58ed@arm.com>
- <4aa4eedc-550f-4538-a499-504dc925ffc2@os.amperecomputing.com>
- <1cfda234-1339-4d83-bd87-b219fbd72664@arm.com>
- <55a79826-48e3-41c0-8dbd-b6398e7e49a6@os.amperecomputing.com>
- <92719b15-daf8-484f-b0db-72e23ae696ad@os.amperecomputing.com>
- <e86e2aa5-c66c-41a9-a56d-74451df0d105@arm.com>
- <f8898c87-8f49-4ef2-86ae-b60bcf67658c@os.amperecomputing.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <f8898c87-8f49-4ef2-86ae-b60bcf67658c@os.amperecomputing.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 7C4571C0010
-X-Stat-Signature: na6zjowrw9upx3571zg11m9bufz89896
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 1DB3680009
+X-Stat-Signature: kk6xdmc36u5t3iexrag8bn7wkiqn9ebx
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1758135532-884795
-X-HE-Meta: U2FsdGVkX19HDQMdzyb/53Zy0uBJebK8GGDWWWU6297h2XrmBjtQ3/KnqJ2ZtaU2b4fCRFKlQDznJlW7vJRIwSzFLvrX3R493IPFDLZCmRSSlxOWHHT1L2vGxRooItE6JsVF8Ol/4AyfzxXwsqJE0LkIUPMMULxX6PHJiHTEeZZYX7a6ZHocq+XkBKOVnyPbGROW4j4i7d03nvaxwWf3tvw18rJMb0xFMapmWhe6GwWQulgaDm1cJfEx3Gkts3k7rJCbSXaKErugoKLdeTYUohNA9w7Qb7NSibN3soInPdgFfABAJANrHdEv5IeHHZFSg5gMOjMyOHx91L0IV24t/q19jtjVEcBuXTMt61paE6NQsmkEChWH8MjGMXj1cmmhhtefSep+X4PlJ4cdmah1uK4uj8nuYoQgyE6MJuSCMgMLPA6WTKzfip2k2RN308T9w9I68/cAJG6Jlxe27vrRi09ntXSG+A0gt9pVrsw93t7KrJvZgcTimZw1h7W+B0q+txWQzMeCBK9f4WLODaRoppa/eOx1vLfpNWab0OmsbOpVGUCrUxTVG/XK1teywmdn9TSmA2nm2JMbL4wNip0NY0LtcZPtNG8bnmM/yX3ztDBGvpDSJNkLHRW5KW4F21aBnggFKGGDoC4ZH4heoMX8L6vuUKr22JJZkZBplR+s7ekkajLlGuEzcIw7yB+4k2eeTsh4Q9GNnws/uNniDtqn7R7fN3ipnrnqiyYMN6mJg5NVQYj29geS9CiXdkgE05SWKnS4LMeVJiSWA7U9aoe5BmWlmcnBLNzkLwLz5r5Iv6Dl1/8y328/SlNXi2qhyde8rduOxEcQ8ojRTqkhYAeTzu/45Hs95rcnBd2NjPkTqH2CvQNoir//TEqT2B8w47F+OwA8gB5rIx4wXyj68hNCel6ZF/nfRRqFt4BC1/Y8PbS2+vqBea43jlEB8VSJObJMySsCykHDdnOZ9hzCn4+
- m1eVGaH9
- ChQCp5ETfg7Vn69WRVozVeK5yJ9sAQ4qeQNYsgs9uo5dc+3k00XEge7lTvD7DWr4lo9NnNXTx0de0TlWqBVlCp229XT9xzn15lle05nZhWMKhzi0Gsnk81z4yEqBD3eCEWb5xGdnuzt9P72AxE7c49YOcBfTaQkqonI94GNPmjsw6kXlDBoUtW0DJy2OwhnQ7Q3roYG57L/k1PwoRLaxMZvCWvQ==
+X-HE-Tag: 1758135550-735125
+X-HE-Meta: U2FsdGVkX1/0StCAYwkuJOgdQU/CmdYLiRCM0RYT5b6/zbJemnssTEElIzOZOncfHZJBmtgc66hwl0+pZMv9dg6fhUtPqHnN41PR2Xgq5inMo95wkjDjQHWiHFdS2/JArDB9G3VJXolVpjFt9SR5tMS9uCzwl3rutw2zpXv8sqsKHw68WS99Xma20TVqKla80rRXlw/IiEeAm01Gh1PwXM9XHJlqVthC4X46xaT7XU2tzoC9v3UL0198h0/qKZT1yq8/n+0IBg5ms02bYR39p+97rXbum+Et0rThgWtaoSAnOQKI3j09xoypse5l5V+S4CJAwkIRAjiOH6ADZCVD5H95bkqnVwZhSBS6e8o1HqtD+teiItPpH+pyB0A7ZYvagZhVtOWSdGMQ1LSGc33pxxPkG6hVG+zEmnwiHf+0MCCJt5qWgVASs2HYcsQG5uywFRk4qBG0+qDiC+7naXaFSRt02xTUOmAOLZP7YLtFJFU8Gr2QetwMhZp9sJ6YxTngN5RUodZee1Hpf2VS+JltzU4HUnZvEuFSQXt7Q83UZIS5FvhSV5DGVrLMn/tYSlJKtXV2RUzfoUfsWp4UORD7kOEAYUB6MRk5N17iw8f2JedXC339X5o9cXWWJi22wNH+qNoTTyCpjGKnrVtbVHuj704KIdmB8GS5ZJO5B45ZYKRyXrt8Ax1frhmPQ4+TMop6whU1FZn/flJARGwAk9sKQuYHUuCdHkdXSRANFD55uDc4TuWOf4Gzht8fRDotBgYv5jl/4aMRcCVf9U/qhNyCHhUli+wozGotyIB7PfBcENsGIrQVa/fPKgyV6ZGHk+qB2LBIJ0DuNRJcUCU8uO44eAob33U9QM5yeX9ngMgdc+skgDxBudzrQEaoKfRS4iWoqk3dRqxKU5Lns8OlS9jWiqQdBPxkIV9QTaO0M4jXaROABegR0bmqBWBxwijZDo8mHEAy1RkWsWcoWtRf2mN
+ y2mB74Jy
+ Z0to1maOGMcI34dOcZthnBNhp8DJT7p8sDLY46rUk+OvaqCLy9qGa8yuZ8wR5V6p5m46ORC6cUI71A7EzCXlMSD1H/r2ltD3B2KzJC/GtRhmvq+47kN1SvvEKwHle/c99SU+LA32tVuVAXOkggl6zhCqZfXOk47sIvOU/SxyKRTU0LBcb1vphH5C8QcaPxiox3B40btEDMwjPHYSbht7t1U/VZL02I9V8DAFmN5RVef9GYvlcJpS6BrtpwmDan/Q5xbNT+qRYCcBU2vya9nYRnrmKHVrDnOokl/Bk4w8sJxFXpSMTIkS3AvV8N/ie28/I5AZ/4bQhINCW0wuLHw+2MVmD1S/MHQFrIgWE0OoESwsgr3TbCnOtxnA0f+JAjJMS3Ii0t+PraXA2BjN0cwyni/ukg1Jf7no7yVIneoMuM6p3lZ+DVVy+NXVuTO7RC5oD+Y3+Khv2l1VRdqbWFf8CWl8GLkd1av/2I7dxIYvKD1HdKNJKuOHtKEgNww==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,139 +117,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 17/09/2025 18:21, Yang Shi wrote:
-> 
-> 
-> On 9/17/25 9:28 AM, Ryan Roberts wrote:
->> Hi Yang,
->>
->> Sorry for the slow reply; I'm just getting back to this...
->>
->> On 11/09/2025 23:03, Yang Shi wrote:
->>> Hi Ryan & Catalin,
->>>
->>> Any more concerns about this?
->> I've been trying to convince myself that your assertion that all users that set
->> the VM_FLUSH_RESET_PERMS also call set_memory_*() for the entire range that was
->> returned my vmalloc. I agree that if that is the contract and everyone is
->> following it, then there is no problem here.
->>
->> But I haven't been able to convince myself...
->>
->> Some examples (these might intersect with examples you previously raised):
->>
->> 1. bpf_dispatcher_change_prog() -> bpf_jit_alloc_exec() -> execmem_alloc() ->
->> sets VM_FLUSH_RESET_PERMS. But I don't see it calling set_memory_*() for
->> rw_image.
-> 
-> Yes, it doesn't call set_memory_*(). I spotted this in the earlier email. But it
-> is actually RW, so it should be ok to miss the call. The later
-> set_direct_map_invalid call in vfree() may fail, but set_direct_map_default call
-> will set RW permission back. But I think it doesn't have to use execmem_alloc(),
-> the plain vmalloc() should be good enough.
-> 
->>
->> 2. module_memory_alloc() -> execmem_alloc_rw() -> execmem_alloc() -> sets
->> VM_FLUSH_RESET_PERMS (note that execmem_force_rw() is nop for arm64).
->> set_memory_*() is not called until much later on in module_set_memory(). Another
->> error in the meantime could cause the memory to be vfreed before that point.
-> 
-> IIUC, execmem_alloc_rw() is used to allocate memory for modules' text section
-> and data section. The code will set mod->mem[type].is_rox according to the type
-> of the section. It is true for text, false for data. Then set_memory_rox() will
-> be called later if it is true *after* insns are copied to the memory. So it is
-> still RW before that point.
-> 
->>
->> 3. When set_vm_flush_reset_perms() is set for the range, it is called before
->> set_memory_*() which might then fail to split prior to vfree.
-> 
-> Yes, all call sites check the return value and bail out if set_memory_*() failed
-> if I don't miss anything.
-> 
->>
->> But I guess as long as set_memory_*() is never successfully called for a
->> *sub-range* of the vmalloc'ed region, then for all of the above issues, the
->> memory must still be RW at vfree-time, so this issue should be benign... I think?
-> 
-> Yes, it is true.
+Currently vm_area_alloc_pages() contains two cond_resched() points.
+However, the page allocator already has its own in slow path so an
+extra resched is not optimal because it delays the loops.
 
-So to summarise, all freshly vmalloc'ed memory starts as RW. set_memory_*() may
-only be called if VM_FLUSH_RESET_PERMS has already been set. If set_memory_*()
-is called at all, the first call MUST be for the whole range.
+The place where a CPU time can be stolen is a VA-space search in the
+alloc_vmap_area(), especially if the space is really fragmented using
+synthetic stress tests, after a fast path falls back to a slow one.
 
-If those requirements are all met, then if VM_FLUSH_RESET_PERMS was set but
-set_memory_*() was never called, the worst that can happen is for both the
-set_direct_map_invalid() and set_direct_map_default() calls to fail due to not
-enough memory. But that is safe because the memory was always RW. If
-set_memory_*() was called for the whole range and failed, it's the same as if it
-was never called. If it was called for the whole range and succeeded, then the
-split must have happened already and set_direct_map_invalid() and
-set_direct_map_default() will therefore definitely succeed.
+Move a single cond_resched() there, after dropping free_vmap_area_lock
+in a slow path. This keeps fairness where it matters while removing
+redundant yields from the page-allocation path.
 
-The only way this could be a problem is if someone vmallocs a range then
-performs a set_memory_*() on a sub-region without having first done it for the
-whole region. But we have not found any evidence that there are any users that
-do that.
+Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+---
+ mm/vmalloc.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-In fact, by that logic, I think alloc_insn_page() must also be safe; it only
-allocates 1 page, so if set_memory_*() is subsequently called for it, it must by
-definition be covering the whole allocation; 1 page is the smallest amount that
-can be protected.
-
-So I agree we are safe.
-
-
-> 
->>
->> In summary this all looks horribly fragile. But I *think* it works. It would be
->> good to clean it all up and have some clearly documented rules regardless. But I
->> think that could be a follow up series.
-> 
-> Yeah, absolutely agreed.
-> 
->>
->>> Shall we move forward with v8?
->> Yes; Do you wnat me to post that or would you prefer to do it? I'm happy to do
->> it; there are a few other tidy ups in pageattr.c I want to make which I spotted.
-> 
-> I actually just had v8 ready in my tree. I removed pageattr_pgd_entry and
-> pageattr_pud_entry in pageattr.c and fixed pmd_leaf/pud_leaf as you suggested.
-> Is it the cleanup you are supposed to do? 
-
-I was also going to fix up the comment in change_memory_common() which is now stale.
-
-> And I also rebased it on top of
-> Shijie's series (https://git.kernel.org/pub/scm/linux/kernel/git/arm64/
-> linux.git/commit/?id=bfbbb0d3215f) which has been picked up by Will.
-> 
->>
->>> We can include the
->>> fix to kprobes in v8 or I can send it separately, either is fine to me.
->> Post it on list, and I'll also incorporate into the series.
-> 
-> I can include it in v8 series.
-> 
->>
->>> Hopefully we can make v6.18.
->> It's probably getting a bit late now. Anyway, I'll aim to get v8 out tomorrow or
->> Friday and we will see what Will thinks.
-> 
-> Thank you. I can post v8 today.
-
-OK great - I'll leave it all to you then - thanks!
-
-> 
-> Thanks,
-> Yang
-> 
->>
->> Thanks,
->> Ryan
->>
->>> Thanks,
->>> Yang
->>>
-> 
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 5edd536ba9d2..58204728123d 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -2057,6 +2057,13 @@ static struct vmap_area *alloc_vmap_area(unsigned long size,
+ 		addr = __alloc_vmap_area(&free_vmap_area_root, &free_vmap_area_list,
+ 			size, align, vstart, vend);
+ 		spin_unlock(&free_vmap_area_lock);
++
++		/*
++		 * This is not a fast path. Check if yielding is
++		 * needed. This is the only one reschedule point
++		 * in vmalloc() path.
++		 */
++		cond_resched();
+ 	}
+ 
+ 	trace_alloc_vmap_area(addr, size, align, vstart, vend, IS_ERR_VALUE(addr));
+@@ -3622,7 +3629,6 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+ 							pages + nr_allocated);
+ 
+ 			nr_allocated += nr;
+-			cond_resched();
+ 
+ 			/*
+ 			 * If zero or pages were obtained partly,
+@@ -3664,7 +3670,6 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+ 		for (i = 0; i < (1U << order); i++)
+ 			pages[nr_allocated + i] = page + i;
+ 
+-		cond_resched();
+ 		nr_allocated += 1U << order;
+ 	}
+ 
+-- 
+2.47.3
 
 
