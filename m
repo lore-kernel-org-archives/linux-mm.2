@@ -4,88 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A8D6CAC59F
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 22:22:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68CB0CAC59F
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 22:30:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DA6768E0087; Wed, 17 Sep 2025 18:22:00 -0400 (EDT)
+	id BBDA58E0088; Wed, 17 Sep 2025 18:30:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D7DE78E006B; Wed, 17 Sep 2025 18:22:00 -0400 (EDT)
+	id B6EBC8E006B; Wed, 17 Sep 2025 18:30:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CBA7C8E0087; Wed, 17 Sep 2025 18:22:00 -0400 (EDT)
+	id A84998E0088; Wed, 17 Sep 2025 18:30:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B7AB28E006B
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 18:22:00 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 47976C06A1
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 22:22:00 +0000 (UTC)
-X-FDA: 83900166000.04.680A90B
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 9713D8E006B
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 18:30:51 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 04799BAD85
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 22:30:50 +0000 (UTC)
+X-FDA: 83900188302.21.1FE41C8
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 816C840002
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 22:21:58 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=oReXAf6E;
-	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	by imf16.hostedemail.com (Postfix) with ESMTP id 4C2B7180008
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 22:30:49 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=eXNgK4cm;
+	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758147718;
+	s=arc-20220608; t=1758148249;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xDBgDrq/ZdlJVCNF4nW1jMUOWPiNkvEIGqsYFzgifCs=;
-	b=WYklgH79Ihp+FpIdg4YIe4JXPxbfW+9FdhlijQHKmW5+e6eFwwvDLr7VfCHsvKu64QU2yH
-	tmutYKezHcH1x2aE3KxZd9b8FKkU1bzCGzFr/zklWWTVqf5QdXBuPLorWCGZ70aXbC84+7
-	nVOZFtYpPX3/g/N4HKklm9URUSY0pzw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758147718; a=rsa-sha256;
-	cv=none;
-	b=4eTZU0W/COhjPgallwPMAUKUz1qwrjK4Sngz/jEPi+iK0siI4VuIf2o1IxIjDGsbJ32jv7
-	PbKb50RygpHM9yhP9ystQeftisDlx4oAMWsxAzzVhIHKV3ubKJ68np5pjoRpv9GAkhyZwC
-	Aq5YnrCfC5z4jnGT72xqrE3ak8M1c9o=
+	bh=HUFtZXM/OgJf4aAO4WVIl6fE6/75GK5R4uLIt6+l5hE=;
+	b=yrp0dMx7y/ssR1noVkVeLIF90Smj6I6cH8c/Q60HH4BfoZuk+H768BtJ9j9FBBujw/rJs2
+	vkVqNuLTfQo8A/J673TKfM6TWGibK75X6B5eHL6Etuz3xHPjkOE7UKfavR8aZI/hQwdZLA
+	hDcJqqx2WM6ie8YLiCDyh3nCfdTTGQg=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=oReXAf6E;
-	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=eXNgK4cm;
+	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758148249; a=rsa-sha256;
+	cv=none;
+	b=AtiaN+XmPYvhmV4WiRX7ixF8jSPdxaNzLCnt8LPfFtmxezvZhI4j/pxiPRJtV/pFBhFVBk
+	QYfydiTLkXJjVqxvjWIoWTbmRhWLHKG3vP2yoRZH/eAIIMPkTRMrg8lXD4FYWcIrS43fs6
+	CbfGG17TjUuscafBHGwtlLIFBXjQBHg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 359D7406A0;
-	Wed, 17 Sep 2025 22:21:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C461C4CEE7;
-	Wed, 17 Sep 2025 22:21:56 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1550B401FA;
+	Wed, 17 Sep 2025 22:30:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 776C6C4CEE7;
+	Wed, 17 Sep 2025 22:30:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1758147717;
-	bh=d/I3F+SuENOGih+oN2UVEhi35uxE/59IR/7jTobGBAo=;
+	s=korg; t=1758148247;
+	bh=dUgGbvrbudlHAHGgS6P3LAmsFzYQs7U4CkzBsdK7Mpc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=oReXAf6EmxNcQZWKaO7t+7pSa5yMM6yptNscf4mqfORdLrgSUCzidDzZDoR3ky8k5
-	 N2PIHnKVw/AQONA3R4TF56W77cO4xyJFsi/i9DsQVMqM8YOwWvQs9ixvxNuey3WrSA
-	 fwIuB3wx9d9gaza+5Ag52wG4vAP30CwSbBNYIt4s=
-Date: Wed, 17 Sep 2025 15:21:55 -0700
+	b=eXNgK4cmDv7XJTS1oWEzWXMxh8n7EBjOMAGzglifT0bN8XMW9nLS2uilzRxJp+bsu
+	 g4/YPHBElGlqtcd/bTJA/uDk/y0E9jkysWKYImMOIRQBc5z+qABFxHAuFx5d4e7OSF
+	 kllisVZyIoZlbs9F/NzIhvx5Hw68vA6hZhXSIiw8=
+Date: Wed, 17 Sep 2025 15:30:46 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Julian Sun <sunjunchao@bytedance.com>
-Cc: cgroups@vger.kernel.org, linux-mm@kvack.org, jack@suse.cz,
- tj@kernel.org, muchun.song@linux.dev, venkat88@linux.ibm.com,
- hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev,
- shakeel.butt@linux.dev, Lance Yang <lance.yang@linux.dev>, Masami Hiramatsu
- <mhiramat@kernel.org>
-Subject: Re: [PATCH v6] memcg: Don't wait writeback completion when release
- memcg.
-Message-Id: <20250917152155.5a8ddb3e4ff813289ea0b4c9@linux-foundation.org>
-In-Reply-To: <20250917212959.355656-1-sunjunchao@bytedance.com>
-References: <20250917212959.355656-1-sunjunchao@bytedance.com>
+To: Lance Yang <lance.yang@linux.dev>
+Cc: david@redhat.com, lorenzo.stoakes@oracle.com, shuah@kernel.org,
+ ioworker0@gmail.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v3 1/1] selftests/mm: skip soft-dirty tests when
+ CONFIG_MEM_SOFT_DIRTY is disabled
+Message-Id: <20250917153046.b781f65ea9a54875f4ddd02e@linux-foundation.org>
+In-Reply-To: <20250917133137.62802-1-lance.yang@linux.dev>
+References: <20250917133137.62802-1-lance.yang@linux.dev>
 X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: hb9yxchnehs586pm4yiyrdm6ci3wf4r8
-X-Rspamd-Queue-Id: 816C840002
+X-Rspamd-Queue-Id: 4C2B7180008
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1758147718-43883
-X-HE-Meta: U2FsdGVkX182jczuinYB2Vfc2vtrgjM2JcqXPts3xgz4+d6SOMuMUVNe8fKhAGtL4kOPdOdEyTbyhdeAhw2gHRVsgdYeb/uEL5hpk9TOC/mvMAOnMDB4NbYrX2/Nyuc9znOKd4KS7rOxHMw3lNE7qPEQQ1kgbBwIYx+3BCbIXCp1RTXRANHTTNxdqojOONJPe8ZPUmePhllYmhKbsiixVpFUWclDyG17gN9Y2tAgdZ+ck2DOH6yjfJ9Sbi2N59vvY7sFe5AIfWcc3AEBC3asKTVzrIyxQgStZ5ztL5CuieDVTlnDovGWmwKo+ey8N81GGN2t4q+dp0DAvDIhZVdQun2CZ7R1m/iOQRKfmwIcjHLFNyScL8a2mIErM2BDwbbCspw11M7cOXwiDvfpV/5bn09Lbjq5al5pJ8suN+MXf5wIA9rkiH/n9un6nE2rVKKzmkeLAOl4wW0rPjWM25ztWJmOe39e4hRpvVfcv+0+4KT0mSe55Fgxz8z+yfnYiP+Wxqp8EWZ/FsvvycovZO+og67jQpHta0Hm70B83JwFsB5hnEnGvPSBVAZvTp8yqiz5f8aacEEc/xCumZnLuyQpe+9n2x59EIOSpR3b2Ll+rK7CFp7G9kIrSM5K/gtW66VMUAWhN8VHqRPVYwXpZD9u+xnR1ycVG0mnUmTKPC6CocUjH/JpJne9y7oHVY5y/aJVOeNY47ZAAIi40ctg63qNdzFjaLLNyyHlWfxfeMoK0udTlcVrLX7RPwpPRwpry0D/QDyPInLdapfX+18bJCatpzIwwDvKjSa9fL2pbd6tqo3suwIXviPf/rjSBpI49CpZf6Hm1vJ7WRws+QBExkZqS6ZvUqcET4dVQkPVujkmkgc8aVDhDTyh3DijOeLm5Iws+yMGvvYOQbYERTQg9ppGk4t0jyx4fR6EBAtF54e050bF28/wRX9oD2HIne35PUPHeuHMGNNJHTiikIE0mds
- 0CvEs7Mv
- kUA/62fkTwvtM3xS5udRtHBAtTfFaEC0dlhkTrdX3MNw6fg1Nrci27qmU72X/cNNd+kZPycd13ssrhcNGFHIfYN4QtHxAb4VqwsMzLsYD/Dao3GzWHB4xmLNUJybBr0C9T+ewLFUH8vUIgW2YXoXVIj9UAsE1XjXvpm8/3kJzqET3m+mg46whWU0Lckgo1jUbsnZiFZmLwX0EY8Xp2c2O14XUhk2R2dRZqov6n5Wfhc/CTnl0nN7qc2tC3mfOCEKmCDUPF61nLOXwetuCi5IeluuuiQ==
+X-Rspamd-Server: rspam07
+X-Stat-Signature: qnry7mgphn9jwpznyzthjucc9qw69u5t
+X-HE-Tag: 1758148249-998754
+X-HE-Meta: U2FsdGVkX1+GA4HrK5Hk7mW5K1d4Ehagf66jXmWdmZ8HR8o2rI+Pk361ANJLMRXEoZ1xG5AfknBhoXvtFplY/xDxloKF6nBQjKNLH8EGZnnSk0aIEGOKEcHU1U7pxwNjZDvw2kb43WjGIi4U3hcc1E4sECHRXlfE6XEOdC6OTqvPSHGyiU4/W0boZ488ORf3AkLwVP6BcoETPGSDrSyMnZpC9e9Iwoa/cV9A9/aoka2XbT3hQTl7YORHgHgA+jxgxOHSWyQA1E3pktbfiS9cbKjHYAFXWzB3MdZrUur5eWu/YpEy7wb78tduewUGWf8IbxVRziS653sKMY6DftdskbwRw08ZzxPWp3ASaGbzJoNibx7BbDsJDPIXfYdj3s3EC+clMxLCMW5CGsVlN9kofYpIYAGxUL3GbghDcZY0I5LFfwmWsyt/F5P5UQftWo9D+/3v/9pflcXzadZpy0TGdr96+mTU7LvB1MOA/Pu3vGc2FE2hqjvjPO2bpM4qWXC32CV8Fo6PnnkgNMdvnIztYQv6oQPFMlaCvNJhA5zu6VHd9W25ydobZKT5ENwIpQq1DhjnePwGm7k7SAN5D/SimJw1+iS6mueCIA10ieoJ9qILrVG70AaZWP9NkZMVDQ0OmJOBwNdq+CR5NOzzkv46I5ZyUgnuBLr4+2Eql1K9+kcSTSWkHcWgPyqGutGTQBWXt9d4/CwHLDOYWkWV3HmgWzaP5JZvUqr94gPflyDnnESMusSygP1SDrbeex9u3Iq3wRaH2mXJ9S4P2V7XEXBV5+w6pv6erF+mXs2jUgcQ6a3fkrGpq4tugUkZ63++bNHDB3/2PnzS9zGr6OzMo9MfDPgXdjPY4sPbObcub7qi+d5OFKRrfTVLH7UJqOySIwzhxvxtxw9ZCws3oSoHJrbILWNhLds2qcefthQ8TsPDvqD2ht9UD2FrPGtapLXrHYPLTIF5CLm+YUSCXZmnRgX
+ lsd1e5Cp
+ AYNolg201wItp04bUu/iAQBeELvlb0qlojEI5TEZQQ0hpQbbq8hFTwV/dqodTVGSnoo+7AWw9nWVB9ue28LjoA+r37e1qcWhlvAP/mCUcGr9DW4cQ6GqA9vtseRlUW8Gtt7bWYJ6r11pqNxR7377MVmDzjFtpOdZdusvoul14UbiQzsfgN3xKtIVtgoBU+ulcFnXtia7JB0tPfOg7n/UvDyKQWiCbgpOvlP6USBFno4SdvVgLvPscUr6jxgo07TjN5w9SP9tFenWGhT1LXOrE7H/df2IBytxVzD+Qm7ctA6coun4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,60 +92,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 18 Sep 2025 05:29:59 +0800 Julian Sun <sunjunchao@bytedance.com> wrote:
+On Wed, 17 Sep 2025 21:31:37 +0800 Lance Yang <lance.yang@linux.dev> wrote:
 
-> Recently, we encountered the following hung task:
+> The madv_populate and soft-dirty kselftests currently fail on systems where
+> CONFIG_MEM_SOFT_DIRTY is disabled.
 > 
-> INFO: task kworker/4:1:1334558 blocked for more than 1720 seconds.
-> [Wed Jul 30 17:47:45 2025] Workqueue: cgroup_destroy css_free_rwork_fn
->
-> ...
-> 
-> The direct cause is that memcg spends a long time waiting for dirty page
-> writeback of foreign memcgs during release.
-> 
-> The root causes are:
->     a. The wb may have multiple writeback tasks, containing millions
->        of dirty pages, as shown below:
-> 
-> >>> for work in list_for_each_entry("struct wb_writeback_work", \
-> 				    wb.work_list.address_of_(), "list"):
-> ...     print(work.nr_pages, work.reason, hex(work))
-> ...
-> 900628  WB_REASON_FOREIGN_FLUSH 0xffff969e8d956b40
-> 1116521 WB_REASON_FOREIGN_FLUSH 0xffff9698332a9540
->
-> ...
->
+> Introduce a new helper softdirty_supported() into vm_util.c/h to ensure
+> tests are properly skipped when the feature is not enabled.
 
-I don't think it's particularly harmful that a dedicated worker thread
-has to wait for a long time in this fashion.  It doesn't have anything
-else to do (does it?) and a blocked kernel thread is cheap.
+It's pretty sad for us to ship kernels which have known selftest flaws
+like this.
 
-> 3085016 WB_REASON_FOREIGN_FLUSH 0xffff969f0455e000
-> 3035712 WB_REASON_FOREIGN_FLUSH 0xffff969d9bbf4b00
-> 
->     b. The writeback might severely throttled by wbt, with a speed
->        possibly less than 100kb/s, leading to a very long writeback time.
->
-> ...
-> 
->  include/linux/memcontrol.h | 14 +++++++++-
->  mm/memcontrol.c            | 57 ++++++++++++++++++++++++++++++++------
->  2 files changed, 62 insertions(+), 9 deletions(-)
+would
 
-Seems we're adding a bunch of tricky code to fix a non-problem which
-the hung-task detector undesirably reports.
+	Fixes: 9f3265db6ae8 ("selftests: vm: add test for Soft-Dirty PTE bit")
 
-Would a better fix be to simply suppress the warning?
-
-I don't think we presently have a touch_hung_task_detector() (do we?)
-but it's presumably pretty simple.  And maybe
-touch_softlockup_watchdog) should be taught to call that
-touch_hung_task_dectector().
-
-Another approach might be to set some flag in the task_struct
-instructing the hung task detector to ignore this thread.
-
+be appropriate?
 
 
