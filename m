@@ -4,118 +4,218 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3CB9CAC59F
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 21:30:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C96BECAC598
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 21:32:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2AAC88E007C; Wed, 17 Sep 2025 17:30:08 -0400 (EDT)
+	id 2FD7D8E007D; Wed, 17 Sep 2025 17:32:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 25B6D8E006B; Wed, 17 Sep 2025 17:30:08 -0400 (EDT)
+	id 2AE688E006B; Wed, 17 Sep 2025 17:32:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1716B8E007C; Wed, 17 Sep 2025 17:30:08 -0400 (EDT)
+	id 1760E8E007D; Wed, 17 Sep 2025 17:32:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 033038E006B
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 17:30:08 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 766FAC06A5
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 21:30:07 +0000 (UTC)
-X-FDA: 83900035254.06.A4B8687
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 0CB6880012
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 21:30:04 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=ikYd5v6B;
-	spf=pass (imf02.hostedemail.com: domain of sunjunchao@bytedance.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=sunjunchao@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758144605;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 051A78E006B
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 17:32:20 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8D285BAB6D
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 21:32:19 +0000 (UTC)
+X-FDA: 83900040798.09.509163E
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012059.outbound.protection.outlook.com [40.93.195.59])
+	by imf01.hostedemail.com (Postfix) with ESMTP id C825940007
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 21:32:16 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=qDEtYj2r;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf01.hostedemail.com: domain of jgg@nvidia.com designates 40.93.195.59 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1758144737;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=TTKGc8yUnIOhZLLz3jZrfDJbgKc8bNDWHQlSBE8s81M=;
-	b=rtRvG/q+z98zseyVx+DHSSdqiE+MbsS64Qu3JmB8qtbvCzIDrbEy7OHOQKKRwvnBG5ye6F
-	wpItavTEGZ/DDd/kaBNzdxrzt8VP/3jhFEu4qLFZRHnheSTaCULHAi2XArUkW9+J+iQQvd
-	4R0ch60tcHkWdy2xDhKvwrrZ+OFsloI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758144605; a=rsa-sha256;
-	cv=none;
-	b=rPq76PuIegQK4clIS977f3cpOhqeS5dXyPL5zXUm0/ThCNVanvgNPp+RYggyv0/7ZjQoN/
-	j8XuY8hfaSr8Oq+AhI7C1aDVU4jbIV0a7P4FLnE4UXe/zQgP9VMpC1FnDr8E9s+y8pxJbb
-	gQxKbtfyj6pT6ES3VgJuS9MEf8XiIyg=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=ikYd5v6B;
-	spf=pass (imf02.hostedemail.com: domain of sunjunchao@bytedance.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=sunjunchao@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-3306b83ebdaso8502a91.3
-        for <linux-mm@kvack.org>; Wed, 17 Sep 2025 14:30:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1758144604; x=1758749404; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=TTKGc8yUnIOhZLLz3jZrfDJbgKc8bNDWHQlSBE8s81M=;
-        b=ikYd5v6BSwUcSauqwRgNnwOdYFypdsOsuVMmOLyhLfsFFbTrMUX19eozXEoMeWkzeX
-         S6b1UnoQveUjNLBI/Ji2/iRfueJNkrZL8hgLXCEC70s+IaJkzEp05ocTUKf0t9SQxGAG
-         bvunHEVAGEXHsFWLsdPp9dDugrqbiZWRZhuY6BmwG5uSKGGNzfJhQssgBTi+YmKfNL9H
-         tfMjnu6+Cplw0L+G4xLB9FEl59/Ug61uGztSvONcVKVnbewqlwle4E6CaeA6OzBKjB/k
-         Yo+PNcZ67jv3wEwWuCS4taJCBuXxBAlDAROtG0AevIhXs+8TKUi/+xtyj4HfpRFTPqe+
-         auZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758144604; x=1758749404;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TTKGc8yUnIOhZLLz3jZrfDJbgKc8bNDWHQlSBE8s81M=;
-        b=qQwTVvfX1sa35zXSSG1H9oAZ9oiW6oyHruT1ZRufHnanEEw9LWSyYJZrxAwSaWocWn
-         GofLMjZkF1X7bvYI67SMqOwJOQHwwHfx7odzKPH3VTGVmoNCitwqOzu3pI5JHQsIILcp
-         3/y77BPOLhBdDdbtFbXuFnlPgDpzvSQfcgEiC1Jz4dRg6tonkBzU1JKwI8gBdE4OWoyh
-         Q6QDoGOua4vaS2kSowgSa9IkEj68NUQR1ErLfseKXDFFbURJyKK4BNWr8hYAPskqgBzT
-         0LG87MfBZaCLxe+nBZND3p5DBNtFSCW8QxL5Xt2utC5HHrqDVhxWXA9WupUh6f3VsM4j
-         7U3g==
-X-Forwarded-Encrypted: i=1; AJvYcCVLZmBw0xTK4xaE6ENvPB4ldFTxCN1SigJ2+GDFeMWmxRdbEeeGTxAahck+7zBrTUydEUkjyA16wg==@kvack.org
-X-Gm-Message-State: AOJu0YxEwGhWJTNz7uu9oSHnaB+ppPAewODu5dqkAgXDQYD05ODt9UDJ
-	05btgOk6Zspx3uUDYlumjpL3OTBQSNTt7buDLBwEnDrsME+3qZ+jAgpDBkCb+GfKa6ssPqGjbbK
-	QkplaevCHiQ==
-X-Gm-Gg: ASbGncsZGpdt8RpXrG7wWMrpmGX6OpvX8nHtONP+VB7q/vQTKtduD2C5Jdzzg9oQrCg
-	0vEPywm1tnGCBUnNzsZCz4pYNeQT79fqT7oX9OJs/KlHvVsaXBRkI9/P71puZlgg2JNOrW7D1Gf
-	jM1Opts0Bl9ZyasalfX3xyq3AlxgXd7mnCzJhHW1v5itv2AfrzslTn5o2jtvvQKZ9SxOngyGBwl
-	v3+l0ZLuyKARweU6W0HAkFpbD/MZWVZlpnxV79vEdg7XJbkoABXPUx5hKrte5BJMtKKsU6gKoQh
-	5LV3q8Z4y+PeLrcAmVoVwqt9dUetQwVqw3hoo/sQs9h3kLvhf8+RK6S1NkCAq6OzKEB/C78dW4U
-	o4jJUKFe1OXK7it/wV1pt1jJVJY2HppjzKrsSbEUxyA==
-X-Google-Smtp-Source: AGHT+IGDhJnULOHslKrpZ1PH63RDEs3+poCntiJ1uXWg6h4a4Y8H/NO/ci03aY1C2K79gg4IrkFAmA==
-X-Received: by 2002:a17:90b:268b:b0:32e:32e4:9775 with SMTP id 98e67ed59e1d1-32ee3ed1932mr4707208a91.12.1758144603506;
-        Wed, 17 Sep 2025 14:30:03 -0700 (PDT)
-Received: from localhost ([61.171.213.183])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-330607f0deasm407961a91.23.2025.09.17.14.30.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Sep 2025 14:30:03 -0700 (PDT)
-From: Julian Sun <sunjunchao@bytedance.com>
-To: cgroups@vger.kernel.org,
-	linux-mm@kvack.org
-Cc: jack@suse.cz,
-	tj@kernel.org,
-	muchun.song@linux.dev,
-	venkat88@linux.ibm.com,
-	hannes@cmpxchg.org,
-	mhocko@kernel.org,
-	roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev,
-	akpm@linux-foundation.org
-Subject: [PATCH v6] memcg: Don't wait writeback completion when release memcg.
-Date: Thu, 18 Sep 2025 05:29:59 +0800
-Message-Id: <20250917212959.355656-1-sunjunchao@bytedance.com>
-X-Mailer: git-send-email 2.39.5
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Fg+98tTegNerBM263uZEtTcom+RrVSGH9ZWZ4syminU=;
+	b=ozHcQar5fdOhBhaQaXD5qRznPKtymNpnXkixO1O87NG8GxuwdnyZXcfgIchkG9QFyPS6C7
+	tR5zGwQjbpzeMI42oajgYu+SM0cfWwwzv7JQM6o9ZjXK77Vqdn8fwd1jESDVbwr+508CE0
+	3nGsowSqn98bKA/aw68NQZb9u+VoMwQ=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1758144737; a=rsa-sha256;
+	cv=pass;
+	b=Tz4N0Zd283x3kjBKR5FcEjo5eSh5ABcLGv9r3TnSb7HdklcGGsMkctNwPtVSMW7O9FEigY
+	0hEd/ap37w58uCIOg4f2a/p0Bk+NECZ8Q07D9and9jTvZT56U7XtjhVyi95mTUtjlcFNSK
+	tPS385QY2HeB0evCy/ly28aDQKDNmmY=
+ARC-Authentication-Results: i=2;
+	imf01.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=qDEtYj2r;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf01.hostedemail.com: domain of jgg@nvidia.com designates 40.93.195.59 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=zJyBWfxHS9tnvWzVqZzFkI7OaTGQGREs89pigQCPKRvvx9uMFUYQMDaFEBTkfGy6DnaP2kZgfraazi/7hCej0BYILtlRs/FZM6G2PK/xToMdw6Vr08sl8qwkMrqx8+qIVO0q6OUqjlThkrBqKdpKqJ9oc9EC+gyBZt2pkAw+XBfb+ZyRcBLoE5zAkYGMW+0KodKYoqDN/tyW8WOi9VzQVvdKI/fsZbsMe047w5lFKe7nm7LIp8PXY+6LkcGzVOZlELZ/fkxwfgnX8maG9M6k6K0gn4Dc522bqY41KNuOWQ0V+FE72Dlp+P6vb4OmX9CVCXboIk4mm4XoX416UvoIbA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Fg+98tTegNerBM263uZEtTcom+RrVSGH9ZWZ4syminU=;
+ b=xTEOzTgyhdiIDIbuXE/lx8apcXJFoOe/GdcBtETJtuTedmhBhuqp5/6vDDWP8coS5WaNxUozwia4Bo7U7eOpaFfFfsg1cgCLpAWVFUSOLPUTHvv55clI5bAI59u845bGrT2HlqxalVgM/zIVu0rBQNF1nnv8t5b4YqSRhHfqTHSvxk6tVleDQYPDMT3JLD4kuIUFcPc+7HwP5xum2f1Q1W9gepjte2hCNA6WnY4ZuCmxQyl1WbupfaYX+q8pw8wflboo5dNKXBU81cw6w+S4BJQFDlNCISJ71j5/KvZpxUG7q4jGQd5NPlEHiIMVJpelZWtgOriLunX53nlVsIITmA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Fg+98tTegNerBM263uZEtTcom+RrVSGH9ZWZ4syminU=;
+ b=qDEtYj2rb7Fwr6uk4g4xQjiHfdmHGRkyc8Tk0Yzlq/OGt6iAdPDIJo7/QvSpOJC206pUWbAALSbOK4PK+S2pNeg1POPKCGiQel8QjF7IdfZrU4zpZHcdUV4TOYq6Bric33AlwwRKp0q/20yDQokU9hy+9ZwN0lfWbFhhfCBkISy/j5T2nyCT15ISVnEUP12udJpXq0ekrfc/9bhuLsJm+3iF34ZZAYlc2fJoVXZI/Tc26eWDqaCgv7oi6lfdtC00LT1oA2uyAqqBz4i6fBCWjKpCWAvJlRstuuMPtfm/eGS98mpbYqtLt9QKfzFKgaRZHcT+YpUPIShensR13/zg/g==
+Received: from PH7PR12MB5757.namprd12.prod.outlook.com (2603:10b6:510:1d0::13)
+ by IA1PR12MB6579.namprd12.prod.outlook.com (2603:10b6:208:3a1::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9115.23; Wed, 17 Sep
+ 2025 21:32:11 +0000
+Received: from PH7PR12MB5757.namprd12.prod.outlook.com
+ ([fe80::f012:300c:6bf4:7632]) by PH7PR12MB5757.namprd12.prod.outlook.com
+ ([fe80::f012:300c:6bf4:7632%2]) with mapi id 15.20.9115.022; Wed, 17 Sep 2025
+ 21:32:11 +0000
+Date: Wed, 17 Sep 2025 18:32:09 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Matthew Wilcox <willy@infradead.org>, Guo Ren <guoren@kernel.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>, Nicolas Pitre <nico@fluxnic.net>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@redhat.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Baoquan He <bhe@redhat.com>, Vivek Goyal <vgoyal@redhat.com>,
+	Dave Young <dyoung@redhat.com>, Tony Luck <tony.luck@intel.com>,
+	Reinette Chatre <reinette.chatre@intel.com>,
+	Dave Martin <Dave.Martin@arm.com>,
+	James Morse <james.morse@arm.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-csky@vger.kernel.org,
+	linux-mips@vger.kernel.org, linux-s390@vger.kernel.org,
+	sparclinux@vger.kernel.org, nvdimm@lists.linux.dev,
+	linux-cxl@vger.kernel.org, linux-mm@kvack.org,
+	ntfs3@lists.linux.dev, kexec@lists.infradead.org,
+	kasan-dev@googlegroups.com, iommu@lists.linux.dev,
+	Kevin Tian <kevin.tian@intel.com>, Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>
+Subject: Re: [PATCH v4 06/14] mm: add remap_pfn_range_prepare(),
+ remap_pfn_range_complete()
+Message-ID: <20250917213209.GG1391379@nvidia.com>
+References: <cover.1758135681.git.lorenzo.stoakes@oracle.com>
+ <ad9b7ea2744a05d64f7d9928ed261202b7c0fa46.1758135681.git.lorenzo.stoakes@oracle.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ad9b7ea2744a05d64f7d9928ed261202b7c0fa46.1758135681.git.lorenzo.stoakes@oracle.com>
+X-ClientProxiedBy: YT4PR01CA0271.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:109::18) To PH7PR12MB5757.namprd12.prod.outlook.com
+ (2603:10b6:510:1d0::13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 0CB6880012
-X-Stat-Signature: t6f7mpfyb9bwrjpxfewz6z4jpsn6xum5
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5757:EE_|IA1PR12MB6579:EE_
+X-MS-Office365-Filtering-Correlation-Id: 639f8dc2-f2a8-47e8-7b0e-08ddf631a955
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?pJ45+/caKWnRywXZqrPOiqlVU6nevB5xbvSc8DLBDVGHRFHHyljnqTcf5GOT?=
+ =?us-ascii?Q?rsPfO9RnTE/mE/MkkR+tceKjcHo1s9Ulf3PAr1vH6JXJMalF5yYvnOkIU8Ra?=
+ =?us-ascii?Q?rD9MS4OuUgdcIdt0t6PiJ2ZOQhR3E9nB7MMRS2q27b7gB82kckh9djmHpQV4?=
+ =?us-ascii?Q?w5PznvCz5l1Ph4WHmEkyGR3ezBt3OQc8XqfLTPodJhXIhKH6ZUKEldRsCNsi?=
+ =?us-ascii?Q?UYscqIJRKbYu6Nz2qMYEpN1dpPOciK9RSxsSZ24AB4L6c9PJdSPQJ7uJ4NHX?=
+ =?us-ascii?Q?20cbg1MRziQ5853xTjiHpNlm7LaV5OGldmWlhexeCOuBzR2tanh/jvNOA2Bn?=
+ =?us-ascii?Q?/e+1i/0yY0yR/QQMy6GHz4TF7dUs16w2CoXPPfbg4Ej4I23xkU7InqPpksr8?=
+ =?us-ascii?Q?yRMEQJtrrHcEnuMvz9CqYKjRCn9gKQ8XaNhG6OXs8I8nGptxydJ1VsSFffsx?=
+ =?us-ascii?Q?xZrYBTkkMvJGIYJV2TZSoenVY/Tv8aT+LVIrzb0W87ILOWkJmCDc0czItESO?=
+ =?us-ascii?Q?2kIcr4q+KI1Z5ToMovxnbbwQPQRt0MsbYGfhtGfWsui8LWNdm3YYxoLwI4n9?=
+ =?us-ascii?Q?uBf0KlwEeXZMWgO2Cjotc7oAq93HbmKcZRJA7MqCXqmhDeE61kgPJmaD/P/D?=
+ =?us-ascii?Q?HcGffUn11gpadt7FbEAsYFxy0Y5gLAnywgbi/+GHgEF0sLho6aGVN6eg2yDD?=
+ =?us-ascii?Q?uyBIc8DeQK7r0dF129eLA+JobVobSgTKytnjSiKml0HQ2z+8FHdTb89qytfw?=
+ =?us-ascii?Q?cQRxVHBdHs6dtDaCsuHdieyIdQ2BW7Vrigu+cTsxd6w3fUZkM5U7Hm3EnwaV?=
+ =?us-ascii?Q?gbsZDpmAzTd42rFaUMVJqOyZtou/gkH+NsQj32dI2CsvQ10GNnh7r+9f10Rf?=
+ =?us-ascii?Q?aGfDGGK1metNFvB/UP5AX65z7+6l7wC6yMLmL2m+47MEG6UtukdJz3xkZQh1?=
+ =?us-ascii?Q?nGDbHGQk1MSJEjVdxaf0/yFarq4ZqwddcbSqMagjfERypdcEDxgmrm0S5mLK?=
+ =?us-ascii?Q?VACPDV6K0SxyhBtud2LZP3dd4YdKKkGhHKwFcHK7b9mFYyBokSEyTE2Vdvtq?=
+ =?us-ascii?Q?j57q8zEUGCTS0pEb76sTeMnLwTT4FfdbnKOsjLOImqNNOXafkJi8YD6SRKsK?=
+ =?us-ascii?Q?vj3b6JCusav6BJhPXxPJhjvP6iqEQFn04YiA/tQX6HJtiJgyO2MYhrsFYf2w?=
+ =?us-ascii?Q?Y9ZUSLG6ST/tT+4El5EwvMV+nEq99hqsYr8DYJ8xpoObtalMrkpBOU/fRNHT?=
+ =?us-ascii?Q?S9Bm+uO7u+CNtDHhOQNgcAF/JBCtuIaGsN5W6z3Mikmc+qcXfh3SAIuQN8cV?=
+ =?us-ascii?Q?DYZqhtaEn3Dy+ALokq8j1ow/vTYrc1ureU1Bgh37pxOm6Dx0cJsxSy3yR/iI?=
+ =?us-ascii?Q?B/CjGoyZEmTKhBBOa/B06WsfkKCzwgTU7HHVYyTsCdYy4iz5vYsSJRoMXxlu?=
+ =?us-ascii?Q?hyjR2yisLLA=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5757.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?VE1M5nI7CHqGhXFCR1h3SwjboeR9TDhDAS6cltLkVKUjpaIkBBbyPp2Jo5+o?=
+ =?us-ascii?Q?latx4mQqsG9ecOG51PfljBdbnzY7l38GrDWxEOF7UzocMJoGftMPw1iOxStL?=
+ =?us-ascii?Q?3v15sl8ieDcT1EprXi3L0Q78WVFzWsQZHPSCKOwOwh+9o8RmTFZTqZGdWPdp?=
+ =?us-ascii?Q?DrOmhbT2icS1L3vqZeNvz//AJNxvM0pZiRi+3pqic7dZslLDX8D63Q9b1pH8?=
+ =?us-ascii?Q?u5ljrzOdOxj3+urb2zEER00p8IN5mGFiMF3Ga0TEPDI5lBqJ3VTWMgWmZDu3?=
+ =?us-ascii?Q?x7EEG9/IqF7bmn3s3uvOQ99M6zyG0nTt1xPxvjB/Si1+iVBbd+qyGs4l6O2Y?=
+ =?us-ascii?Q?nqYb7p1Beav/QI0mHKQn8+iCE/N40x4xeW3XtSkOF6sc8HQmaK1ufm75aogN?=
+ =?us-ascii?Q?NcPRSBm6REouUZjnjG/5QIssRxoR1t2nLUEYIVUDtd76nUQS8+/vZZ47ppRJ?=
+ =?us-ascii?Q?lEcZHm4XykgwpXdWKT8SXEPe0/r4uYjBym5xX5XRHPinIOSdwVixEWkAYmey?=
+ =?us-ascii?Q?upUv9g71WfHdiw1ae6hDOJ0GrjqNMZxAP8SkU2upAyKbxuiajxnZuTiLMY8R?=
+ =?us-ascii?Q?yS2dPHOEt0B05GrENhkPsuP3W/o9D7tu5jlP+nnHMqRZ/UW3CBLKaa4DldqV?=
+ =?us-ascii?Q?osLVZXydG8/Rwb9hqg4ej3ZQJmmTlZWi7lHJ1v+BWmw/5m6V77YrPQGILUcZ?=
+ =?us-ascii?Q?LD4UtmWi8XgobvxKKdHMMNJAAn9Px+WKSfQBXorYfEYwcMJnk03pPuE7EiNg?=
+ =?us-ascii?Q?BifZTNEj85cmfPE89Y64xekY67l8sjNel0b69w18IROAidmpjciB6vlbtVPp?=
+ =?us-ascii?Q?VXt5vG6hOhXpCavjsOAyT5V/Bl7vTcofMAr3NWEV8YToZMwHg3Nnqjisroyx?=
+ =?us-ascii?Q?F8K5c9dlvAu4TTUDr1fAxDqR2SPGd8Neaqz20cipL4j5UJt+ngnBH8b4KgrP?=
+ =?us-ascii?Q?YhwGaa/8R4DXH0/lGTsmLP7MdtddR5ZGTr5iDVvFNQ6RmtRpBau10aUDl+I2?=
+ =?us-ascii?Q?Hah8i4UMSHMmfENjVmPoM31phoMydeVgdtB6xT+10ZSP4jeaNAvLAVcC68MJ?=
+ =?us-ascii?Q?i8zv8CsrrpUK3SCQiM49hoawkzn/bKJatXLykgAvIoSytQjre2HaNg9ePD2q?=
+ =?us-ascii?Q?dg5/QUXlXUPYXGGZMibnTLT3JSVS8ZkOjFc/qrjNDq8lQJ9cH/H9FdFCCm1m?=
+ =?us-ascii?Q?Qc8N7VzXKbJgHS8OjRJT9yEE5CNgW6Nd0M++z70EbhAVChljO63x1XOwB32H?=
+ =?us-ascii?Q?EM1lfmGv/HKp+r945cXAO+HvwK9o+zPKTxAMX7zV6UVFhzVaNP0PODsD/ZQv?=
+ =?us-ascii?Q?YYGL77PB+TtQcbOEK7UZBf3zVlVQ9lA1y6dg31hFMdYkvFESxtn2KnQEPLG/?=
+ =?us-ascii?Q?toSm3wb6pEA987Q81quh7fvcFaDsg/7ZbLxiiWFPE62IjuON+VUjMsoIXkvu?=
+ =?us-ascii?Q?Rr5f7O2c06w2UZmpuwjn/8PkqC71dg5xbFH9zvvUyCh+LIn6sQHsodz+yKWY?=
+ =?us-ascii?Q?/fMSKupUMVb5ANSXU2ObnwjaN910ovIAy/qy11MIs/7v2lcedwR6Pb2Y5Bx6?=
+ =?us-ascii?Q?SRjW+JDilZdPwP7qKEY=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 639f8dc2-f2a8-47e8-7b0e-08ddf631a955
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5757.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2025 21:32:11.2905
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: hAcPgQzT+7q+cXbQ14vQdUdeWVMtd4UMmJsscqqOXQ+L5WAf+ODkmvyg93UIg6II
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6579
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C825940007
+X-Stat-Signature: 15mfwuegzzo63pype5up36tiz4zdko4f
 X-Rspam-User: 
-X-HE-Tag: 1758144604-807814
-X-HE-Meta: U2FsdGVkX1+JZ5NxU0ssHo5ztVg0uDITsMtcXe5rh9vOog/mfqfzaJNx5QU+d5jnwSLjDMt6a1M2c+ViQ4T3VTDOyV0ZVBKxnIG3BFuuk1zVD5xTark+Ntc4/Tp//zrL44W9js5Xxbv4oDXVARcpJgDuE4mJF83wDjpa4gzPkN3Lwm4gf1U2aG0Xf6F8fnz4lMY2W/QXnfhrqkgaZRQjCDGKGT5ZIUj4u9811BjfmM9QShz5md/PAF+SsgwzCx5kAwyqN+ISxcy2eOWxNCLsY3sbgW8XdnHxGSIH1dniTLR9MbbwDfPAZAL6QmE2bD00RA2B0+Tc/ChfsMBHsHsm0S6TBJqa40HdKVOE9S50GzUT5TJqvOzEOIU6gqPGAvXuDd2wJy4Pvg18MWBTp/du5sOQ6cyKzh86nSWqg5ts51M6CqC39AH1qnMzLpmkeKgyKgil62xQPpwt+qfXHYKP7LyoE9hcWlx2F5SybFL9xKNQWBrDiMzTXn9GwzzFkRjjVBwHa3UydC5nSd8up1z3GMQj9JL1dYXMd43t5aU2kDni42Yg834ded0egV3S+QftjdTOJ8jZNRldurHwG3R8j1VQNlPHOQXP5NzMTu/jBIZehIeG90H6tzHr6+DZehhXrSCokmbECeJg7Sir85viUlSx8+yI/OGIsFSQyT6nPJqpyMs5MWAve5g1lPNBy3BX2hWU0B1Bb7+I99zp/NIhnSRIgnm9Y9UlBLi1ZhSHBD42HvadjsyW4PmvZu05AXG9I5P1Qgx0urnQ2x/Qfde1Nf3LLgVfkI9klFJq4T9RlmfaobwltbHB1+vkELhji3mGIHce76AJFpVQuqJqTO7pAyhhZAKNl7OXfFR2X1m4LBa97EAeHaqP97As+g9hYRnIhVHjMpRovHY/7C3mCVo30fFfZGpJfB1z5OYe73MCIzzGdY6Zw/3zZUQrm2lDbCyJeDudWk4tYAoYlikohJx
- W3G7vInP
- 2s+MGOE6toPF9+FSpGmlsMvSUoJKcbqGKi/5rLnc58ZYh9ufSK5eDYaFLehCm/SiuyhCDUK4RCG22B10lPrXAyXtiYA==
+X-HE-Tag: 1758144736-725183
+X-HE-Meta: U2FsdGVkX1+1ufB0y3kg+HcCDHeb8SYKJRulh4ijnR81TUZnxrQyJqwJ2vsUzIYXEV+DIQRI4GZQkjq76ECesYfSNTVAVj7BBqCqndDy3sjzk0jobdOiRi3lhIjPU6swuwV+hmTrAJyeilmn/FKJXC5CwAX/ySdlBkwhpg9pwz8M+GXCff0jBl2HCPcgVzK25YAsYKKFQiFSGMUjJOQqnPXSgMIjaVhZ+b3e3hUBtYs1GJt1jN4URorkxMkLZnCWrT3zRQNcfV0A4Adv9jDmCAdelA78RfkeadUa9HbuErUj7KrMAoDw6sTqhNx8GLkUCVsYZAZIIpfGHLO5rxJ4ijSU/udDIPptLhntPnRkio+Hps7sjn0xd860OvWR5h7aNhFYzRVm+vIivZ1tx0jsRbngywDwaJgIBnRJ2d6P31W2dt8Jk7VoJceeuPmuio02mTBpxjikmf1GBwpq+ZGI//yAGyA3T3SH1NCrOfmRPwFECM4EcpdKZO+SPXAYxQnujz1MqCEwtMfpbpFEOlkcH4twUlnoeQPJX6+4s/ShnCXTfQ9IUOuShzcSd56I1dnKU7OpyYT8Bs1o8hKGNd0n1CtMbAzmE8JHWIWer6bTAAdXc6nk8MhR+wHSnBzdMqYNF/Cb11bTreiGE9+CWEHzs9cCmMozsJduT0bwyX9SrGmX7KJTNA417C0Xj9KpDlS7eTGWxzxmkFuTPMV35N2sTBSQAuguTm7YRVwXFzK6qEMjCSllkBGfvhSIE6ofjHHEAQ7o/ekuhpR+sE+uhlVLt6+2nAHb9JXxc5Bdoql5aLRezWqqmofhluToHGUq4+hB3j46s3yx2tiwjdtuqp4o8/GU4y2C0RZQUmk+fvOUL0V3iq2NvIW4XyEYRQyDdEyXQ/M2qtrDUnyPs0iS1K1JYJVU7djfSxztGGrY+4Spxevo2DMsEBww6xrTzfBM3+LLEKzib3uGFZmCDuTUdhh
+ OPI3E+Fe
+ 81DgRNma2MxjHi8BBk28nEYUnaciuDSp2hBNSdXKiEprIRYBXsugsho8ILoZzbmTnW1nyvRAQ4qkWbRcATFu4WQvHwPprFmDuLlV33K5DvV8ymNDdp1p66Fb7A6d8I471ZIVeqH3BW4TMbBivRQt32Gqh5ts9yijm698daUmdXaEYPhS7RC4xzNDwWv3mSpr3Z2XN3Ih+9CjfOfVt4Ikhh2ApufpgLz4I9mgmTKlmshF1PzcwcRlX3EyowlIc3XW8P6jKBLxCxsiJ6drBfNutL0qSPWQIgZ8KUK8q4OyOPrqY4YAWNx5ZQrn3DjrcXIcGzKS7rPHG8u4yeg9Lql8AQLN2nSeKBwqkWNR1WyNCeariNo49/TV63VmYeghVueuAvFQHHieF6Fmuw314FQfvu0jTJI+acf6A8CgF+jwTWL+7YcuKE4x3aTw6qDYQN468/5pvVCe6ERg4/StdFh8Zul3qR2qqdmtzDKVm5k1ZMyN2EVztUA7hopFDlk1QmWCudhmu/DWvP/feYcY+/Uyu7jkj9OHWYq3rv/Zs9Fa1nf9+BPggJHwti4eijuzukdxboexodt9UKNszE/c=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,249 +224,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Recently, we encountered the following hung task:
+On Wed, Sep 17, 2025 at 08:11:08PM +0100, Lorenzo Stoakes wrote:
+> -int remap_pfn_range_notrack(struct vm_area_struct *vma, unsigned long addr,
+> +static int remap_pfn_range_notrack(struct vm_area_struct *vma, unsigned long addr,
+>  		unsigned long pfn, unsigned long size, pgprot_t prot)
+>  {
+>  	int error = remap_pfn_range_internal(vma, addr, pfn, size, prot);
+> -
+>  	if (!error)
+>  		return 0;
 
-INFO: task kworker/4:1:1334558 blocked for more than 1720 seconds.
-[Wed Jul 30 17:47:45 2025] Workqueue: cgroup_destroy css_free_rwork_fn
-[Wed Jul 30 17:47:45 2025] Call Trace:
-[Wed Jul 30 17:47:45 2025]  __schedule+0x934/0xe10
-[Wed Jul 30 17:47:45 2025]  ? complete+0x3b/0x50
-[Wed Jul 30 17:47:45 2025]  ? _cond_resched+0x15/0x30
-[Wed Jul 30 17:47:45 2025]  schedule+0x40/0xb0
-[Wed Jul 30 17:47:45 2025]  wb_wait_for_completion+0x52/0x80
-[Wed Jul 30 17:47:45 2025]  ? finish_wait+0x80/0x80
-[Wed Jul 30 17:47:45 2025]  mem_cgroup_css_free+0x22/0x1b0
-[Wed Jul 30 17:47:45 2025]  css_free_rwork_fn+0x42/0x380
-[Wed Jul 30 17:47:45 2025]  process_one_work+0x1a2/0x360
-[Wed Jul 30 17:47:45 2025]  worker_thread+0x30/0x390
-[Wed Jul 30 17:47:45 2025]  ? create_worker+0x1a0/0x1a0
-[Wed Jul 30 17:47:45 2025]  kthread+0x110/0x130
-[Wed Jul 30 17:47:45 2025]  ? __kthread_cancel_work+0x40/0x40
-[Wed Jul 30 17:47:45 2025]  ret_from_fork+0x1f/0x30
+Stray edit
 
-The direct cause is that memcg spends a long time waiting for dirty page
-writeback of foreign memcgs during release.
-
-The root causes are:
-    a. The wb may have multiple writeback tasks, containing millions
-       of dirty pages, as shown below:
-
->>> for work in list_for_each_entry("struct wb_writeback_work", \
-				    wb.work_list.address_of_(), "list"):
-...     print(work.nr_pages, work.reason, hex(work))
-...
-900628  WB_REASON_FOREIGN_FLUSH 0xffff969e8d956b40
-1116521 WB_REASON_FOREIGN_FLUSH 0xffff9698332a9540
-1275228 WB_REASON_FOREIGN_FLUSH 0xffff969d9b444bc0
-1099673 WB_REASON_FOREIGN_FLUSH 0xffff969f0954d6c0
-1351522 WB_REASON_FOREIGN_FLUSH 0xffff969e76713340
-2567437 WB_REASON_FOREIGN_FLUSH 0xffff9694ae208400
-2954033 WB_REASON_FOREIGN_FLUSH 0xffff96a22d62cbc0
-3008860 WB_REASON_FOREIGN_FLUSH 0xffff969eee8ce3c0
-3337932 WB_REASON_FOREIGN_FLUSH 0xffff9695b45156c0
-3348916 WB_REASON_FOREIGN_FLUSH 0xffff96a22c7a4f40
-3345363 WB_REASON_FOREIGN_FLUSH 0xffff969e5d872800
-3333581 WB_REASON_FOREIGN_FLUSH 0xffff969efd0f4600
-3382225 WB_REASON_FOREIGN_FLUSH 0xffff969e770edcc0
-3418770 WB_REASON_FOREIGN_FLUSH 0xffff96a252ceea40
-3387648 WB_REASON_FOREIGN_FLUSH 0xffff96a3bda86340
-3385420 WB_REASON_FOREIGN_FLUSH 0xffff969efc6eb280
-3418730 WB_REASON_FOREIGN_FLUSH 0xffff96a348ab1040
-3426155 WB_REASON_FOREIGN_FLUSH 0xffff969d90beac00
-3397995 WB_REASON_FOREIGN_FLUSH 0xffff96a2d7288800
-3293095 WB_REASON_FOREIGN_FLUSH 0xffff969dab423240
-3293595 WB_REASON_FOREIGN_FLUSH 0xffff969c765ff400
-3199511 WB_REASON_FOREIGN_FLUSH 0xffff969a72d5e680
-3085016 WB_REASON_FOREIGN_FLUSH 0xffff969f0455e000
-3035712 WB_REASON_FOREIGN_FLUSH 0xffff969d9bbf4b00
-
-    b. The writeback might severely throttled by wbt, with a speed
-       possibly less than 100kb/s, leading to a very long writeback time.
-
->>> wb.write_bandwidth
-(unsigned long)24
->>> wb.write_bandwidth
-(unsigned long)13
-
-The wb_wait_for_completion() here is probably only used to prevent
-use-after-free. Therefore, we manage 'done' separately and automatically
-free it.
-
-This allows us to remove wb_wait_for_completion() while preventing
-the use-after-free issue.
-
-Fixes: 97b27821b485 ("writeback, memcg: Implement foreign dirty flushing")
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Signed-off-by: Julian Sun <sunjunchao@bytedance.com>
----
-  Changes in v6:
-    * Add comment to explain reason and usage of 
-      struct cgwb_frn_wait.
-
-  Changes in v5:
-    * Protect operation on wq_head with spinlock.
-
-  Changes in v4:
-    * Check done->cnt in memcg_cgwb_waitq_callback_fn().
-    * Code cleanups as Tejun suggested.
-
-  Changes in v3:
-    * Rename cgwb_frn_wq_entry to cgwb_frn_wait.
-    * Define memcg_cgwb_waitq_callback_fn() only when
-      CONFIG_CGROUP_WRITEBACK is defined.
-    * Embed wb_completion into struct cgwb_frn_wait.
-
-  Change in v2:
-    * Use custom waitq function to free resources
-
- include/linux/memcontrol.h | 14 +++++++++-
- mm/memcontrol.c            | 57 ++++++++++++++++++++++++++++++++------
- 2 files changed, 62 insertions(+), 9 deletions(-)
-
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index 785173aa0739..1568121d25ca 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -157,11 +157,23 @@ struct mem_cgroup_thresholds {
-  */
- #define MEMCG_CGWB_FRN_CNT	4
- 
-+/*
-+ * This structure exists to avoid waiting for writeback to finish on
-+ * memcg release, which could lead to a hang task.
-+ * @done.cnt is always > 0 before a memcg is released, so @wq_entry.func
-+ * may only be invoked by finish_writeback_work() after memcg is freed.
-+ * See mem_cgroup_css_free() for details.
-+ */
-+struct cgwb_frn_wait {
-+	struct wb_completion done;
-+	struct wait_queue_entry wq_entry;
-+};
-+
- struct memcg_cgwb_frn {
- 	u64 bdi_id;			/* bdi->id of the foreign inode */
- 	int memcg_id;			/* memcg->css.id of foreign inode */
- 	u64 at;				/* jiffies_64 at the time of dirtying */
--	struct wb_completion done;	/* tracks in-flight foreign writebacks */
-+	struct cgwb_frn_wait *wait;	/* tracks in-flight foreign writebacks */
- };
- 
- /*
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 8dd7fbed5a94..110937c3671a 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -3459,7 +3459,7 @@ void mem_cgroup_track_foreign_dirty_slowpath(struct folio *folio,
- 		    frn->memcg_id == wb->memcg_css->id)
- 			break;
- 		if (time_before64(frn->at, oldest_at) &&
--		    atomic_read(&frn->done.cnt) == 1) {
-+		    atomic_read(&frn->wait->done.cnt) == 1) {
- 			oldest = i;
- 			oldest_at = frn->at;
- 		}
-@@ -3506,12 +3506,12 @@ void mem_cgroup_flush_foreign(struct bdi_writeback *wb)
- 		 * already one in flight.
- 		 */
- 		if (time_after64(frn->at, now - intv) &&
--		    atomic_read(&frn->done.cnt) == 1) {
-+		    atomic_read(&frn->wait->done.cnt) == 1) {
- 			frn->at = 0;
- 			trace_flush_foreign(wb, frn->bdi_id, frn->memcg_id);
- 			cgroup_writeback_by_id(frn->bdi_id, frn->memcg_id,
- 					       WB_REASON_FOREIGN_FLUSH,
--					       &frn->done);
-+					       &frn->wait->done);
- 		}
- 	}
- }
-@@ -3702,13 +3702,29 @@ static void mem_cgroup_free(struct mem_cgroup *memcg)
- 	__mem_cgroup_free(memcg);
- }
- 
-+#ifdef CONFIG_CGROUP_WRITEBACK
-+static int memcg_cgwb_waitq_callback_fn(struct wait_queue_entry *wq_entry, unsigned int mode,
-+					int flags, void *key)
-+{
-+	struct cgwb_frn_wait *frn_wait = container_of(wq_entry,
-+						      struct cgwb_frn_wait, wq_entry);
-+
-+	if (!atomic_read(&frn_wait->done.cnt)) {
-+		list_del(&wq_entry->entry);
-+		kfree(frn_wait);
-+	}
-+
-+	return 0;
-+}
-+#endif
-+
- static struct mem_cgroup *mem_cgroup_alloc(struct mem_cgroup *parent)
- {
- 	struct memcg_vmstats_percpu *statc;
- 	struct memcg_vmstats_percpu __percpu *pstatc_pcpu;
- 	struct mem_cgroup *memcg;
- 	int node, cpu;
--	int __maybe_unused i;
-+	int __maybe_unused i = 0;
- 	long error;
- 
- 	memcg = kmem_cache_zalloc(memcg_cachep, GFP_KERNEL);
-@@ -3763,9 +3779,17 @@ static struct mem_cgroup *mem_cgroup_alloc(struct mem_cgroup *parent)
- 	INIT_LIST_HEAD(&memcg->objcg_list);
- #ifdef CONFIG_CGROUP_WRITEBACK
- 	INIT_LIST_HEAD(&memcg->cgwb_list);
--	for (i = 0; i < MEMCG_CGWB_FRN_CNT; i++)
--		memcg->cgwb_frn[i].done =
-+	for (i = 0; i < MEMCG_CGWB_FRN_CNT; i++) {
-+		struct memcg_cgwb_frn *frn = &memcg->cgwb_frn[i];
-+
-+		frn->wait = kmalloc(sizeof(struct cgwb_frn_wait), GFP_KERNEL);
-+		if (!frn->wait)
-+			goto fail;
-+
-+		frn->wait->done =
- 			__WB_COMPLETION_INIT(&memcg_cgwb_frn_waitq);
-+		init_wait_func(&frn->wait->wq_entry, memcg_cgwb_waitq_callback_fn);
-+	}
- #endif
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
- 	spin_lock_init(&memcg->deferred_split_queue.split_queue_lock);
-@@ -3775,6 +3799,10 @@ static struct mem_cgroup *mem_cgroup_alloc(struct mem_cgroup *parent)
- 	lru_gen_init_memcg(memcg);
- 	return memcg;
- fail:
-+#ifdef CONFIG_CGROUP_WRITEBACK
-+	while (i--)
-+		kfree(memcg->cgwb_frn[i].wait);
-+#endif
- 	mem_cgroup_id_remove(memcg);
- 	__mem_cgroup_free(memcg);
- 	return ERR_PTR(error);
-@@ -3912,8 +3940,21 @@ static void mem_cgroup_css_free(struct cgroup_subsys_state *css)
- 	int __maybe_unused i;
- 
- #ifdef CONFIG_CGROUP_WRITEBACK
--	for (i = 0; i < MEMCG_CGWB_FRN_CNT; i++)
--		wb_wait_for_completion(&memcg->cgwb_frn[i].done);
-+	spin_lock(&memcg_cgwb_frn_waitq.lock);
-+	for (i = 0; i < MEMCG_CGWB_FRN_CNT; i++) {
-+		struct cgwb_frn_wait *wait = memcg->cgwb_frn[i].wait;
-+
-+		/*
-+		 * Not necessary to wait for wb completion which might cause task hung,
-+		 * only used to free resources. See memcg_cgwb_waitq_callback_fn().
-+		 */
-+		__add_wait_queue_entry_tail(wait->done.waitq, &wait->wq_entry);
-+		if (atomic_dec_and_test(&wait->done.cnt)) {
-+			__remove_wait_queue(wait->done.waitq, &wait->wq_entry);
-+			kfree(wait);
-+		}
-+	}
-+	spin_unlock(&memcg_cgwb_frn_waitq.lock);
- #endif
- 	if (cgroup_subsys_on_dfl(memory_cgrp_subsys) && !cgroup_memory_nosocket)
- 		static_branch_dec(&memcg_sockets_enabled_key);
--- 
-2.39.5
-
+Jason
 
