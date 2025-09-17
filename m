@@ -4,88 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D19BCCAC59A
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 14:27:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04563CAC599
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 14:31:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3BAC28E002A; Wed, 17 Sep 2025 10:27:50 -0400 (EDT)
+	id 488118E002B; Wed, 17 Sep 2025 10:31:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3926B8E0003; Wed, 17 Sep 2025 10:27:50 -0400 (EDT)
+	id 45F218E0003; Wed, 17 Sep 2025 10:31:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2CF918E002A; Wed, 17 Sep 2025 10:27:50 -0400 (EDT)
+	id 39C018E002B; Wed, 17 Sep 2025 10:31:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1BB0B8E0003
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 10:27:50 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CB4A3BA150
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 14:27:49 +0000 (UTC)
-X-FDA: 83898971058.01.73F232C
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 284418E0003
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 10:31:54 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C097286ED0
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 14:31:53 +0000 (UTC)
+X-FDA: 83898981306.07.85A91B2
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 1FFB8C000D
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 14:27:47 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VRhST95e;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758119268; a=rsa-sha256;
-	cv=none;
-	b=xrycP/ddLeDQwOidY7yhzwCsrNm+uFib7jYZfyZWkk7eYIqUdNOttJ5dhg2DJjFeu8hxj3
-	+BUTuyqawYyicOuXpBbZO7CJCWtdEbOVmJnzcGvBk7Blq8cq8oZmX/7kasmoGRzS9GQd0a
-	+rztwsQSlE1ZpZzg92fGrT9jVx/1MMo=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VRhST95e;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	by imf08.hostedemail.com (Postfix) with ESMTP id 5835B16000A
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 14:31:52 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sQEqNcn0;
+	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758119268;
+	s=arc-20220608; t=1758119512;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q2F1whqw3f8oSfwZw5QkxhptwD3fG5ea5Q8QE4Ni/oE=;
-	b=jxfgzA97kFw+OY+hGi8HYOoK2iPm3pyhyL/hQOsmXYe3safuNEEt3hrawcOMuuyD8gHxcu
-	ynB7v9DlACgIhOtYooHMYEeY9B8nq8A4+8hAK8O6IZuzAvaszLHKIpBqUX8uLhJyKDKSDV
-	9T2BxeVq9axl4KORaaPB7pnPtFWOAKU=
+	bh=IQjHIFDkC1WkWh0EEfJ/NlvfY0iZZfOI5h7O8E+zWgQ=;
+	b=P8Bar41gonLjmzllrlu/UNJZF7KNaSg9ABRuNS8eCWbJaE1xkG1rmhZqnC7Y97lQv+Rh2r
+	DrwzW5/PmUxaKaLf5Bcfu92IbePjjVcJTAp/CN8W3UB18Sv8zG4igS6sQCB57Xu2hLPtDZ
+	9/X2HuGhOlDo+xVJiQVBWX6rkrynyac=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758119512; a=rsa-sha256;
+	cv=none;
+	b=rPyn3svDdOfGhHldXIy/Y+dChlqk5na3D2S5saBDcym4vCae6wP11/54OdVnCLU0F5DuhD
+	Ce9V1bfMUu1HICu0JahGBSjDFptJAFOPOuv2rVzZM9VHshOcnzeohWo8bTu4Jvu3dctEGl
+	iaC8m+8RPWo0k+2dYcM0KRIyfqevVz4=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sQEqNcn0;
+	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 84C69601ED;
-	Wed, 17 Sep 2025 14:27:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEF49C4CEE7;
-	Wed, 17 Sep 2025 14:27:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id BC83860240;
+	Wed, 17 Sep 2025 14:31:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FADCC4CEF5;
+	Wed, 17 Sep 2025 14:31:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758119267;
-	bh=/EeIQi0ansmbb7h7cdFJIsa+CD2IvLgTaCfE6ZaIlxc=;
+	s=k20201202; t=1758119511;
+	bh=k9cG3kz/ofV3MOY4tO3NxTa8C0lQ0KwhYvMThaTJklY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VRhST95e6M0ImbIkRf5j2AWy3ejUWuNIjebo0Vt5MgW06Upoza4JsMhq27JsHn87h
-	 yKsPubiKosrsh2UtkoE3UBwZpfyR0LGuOX7YdXCPVJpxq0Ob4OqZGNn08bkEjo1q+x
-	 2gyHdVlX/zSQmvXVJs3gWIU59dKdulFyf3wG0CKQct2Ql/jg71r+KX3AK9noMREomn
-	 2mDHcEa8IHiKzxJ0/hgs4GCC1spb4cBkSykP3thbZlneN5IaTzXevesTClml/8oRio
-	 ntlD4I58un7kW10VNqX1FvWuV7OPi6imYkRWWiCDcupgRQ77X11nIAJ1OtVwacduZz
-	 1K8D2iqyPVcew==
-Date: Wed, 17 Sep 2025 17:27:40 +0300
+	b=sQEqNcn0RVU/IcZMKtRGuPfTEkCa0ftTy/KsYvzMc3vySV8NIyQSfoyOOB2AZ0qf7
+	 uvKDbh8G2D1egXCoXYyAkAROQqrV/L6uYZ7WwgHjGV6vU8XN/U2gdNN/81/ykgz74x
+	 BKM5zcBdLMGa9+WaH5hvAylH3sHfMjkc4ahHvOAvCLfYgVwBPOFIVTbNicQsvWEIor
+	 nkYqUQw2pr2C/CaUkc+/SWb3ZjvoyWXxJZ8jQhUlkTcGlL0mShtgbI6PzxxuQVbuiO
+	 duNhZzx8ephb7lWkr8DQmTnrYbA5pTXGmjtpRlB4u3M1eBQqoK/0aWk+CWHFSahNCV
+	 GweR5D4v6nbEA==
+Date: Wed, 17 Sep 2025 17:31:43 +0300
 From: Mike Rapoport <rppt@kernel.org>
-To: Alexander Potapenko <glider@google.com>
-Cc: akpm@linux-foundation.org, david@redhat.com, vbabka@suse.cz,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, elver@google.com,
-	dvyukov@google.com, kasan-dev@googlegroups.com,
-	Aleksandr Nogikh <nogikh@google.com>
-Subject: Re: [PATCH v1] mm/memblock: Correct totalram_pages accounting with
- KMSAN
-Message-ID: <aMrFXOTrlcgPhqjo@kernel.org>
-References: <20250917123250.3597556-1-glider@google.com>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Alexander Graf <graf@amazon.com>, Changyuan Lyu <changyuanl@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Baoquan He <bhe@redhat.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Jason Gunthorpe <jgg@nvidia.com>, Chris Li <chrisl@kernel.org>,
+	Jason Miu <jasonmiu@google.com>, linux-kernel@vger.kernel.org,
+	kexec@lists.infradead.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2 1/2] kho: move sanity checks to kho_restore_page()
+Message-ID: <aMrGT9IyHBFe5-nH@kernel.org>
+References: <20250917125725.665-1-pratyush@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250917123250.3597556-1-glider@google.com>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 1FFB8C000D
-X-Stat-Signature: p1imwgpg9ya8swa56ihhqf8qgwx4r3rb
+In-Reply-To: <20250917125725.665-1-pratyush@kernel.org>
+X-Rspamd-Queue-Id: 5835B16000A
+X-Stat-Signature: owdqdxt95w5d958jwy888h9m3b1g9f5k
 X-Rspam-User: 
-X-HE-Tag: 1758119267-291882
-X-HE-Meta: U2FsdGVkX19uLel6D1MT2l6qMKHZRSOSpedtpcQAWY3IZ/vkUJY76Sp+cnBLxY4fWPCbei67vBbQNsHdXk/psYAIAPw0fo4V+GJYNSx5hS4FPeMHbuAxHIKBseWu90rONduo7jMaZvzCdJvY0rfS894sNSDISXFaXqxkYvKKtNONuekpBfZuJqJGZ3Ep4Jpa8Fh0aZkCjlDEMTXkSsW+sLswwy8j2Q1dEMazVSF9JJGYEo0NmGa4yLHpeb5+gzg33p98pfpLGPO6+dbzhh7JEBH6/Qu3pIiXdQ3Usaj2qQuGWEokj/CNa+HxV83IyET4J+2DMe0rHRtXrt9LlIBrTWJsKjx0zpQq3nHneDXcaK2w4tLJAhxYeNWZFjpSdlhFKzEbBO6gi5izEtJcLfjuh0tIT4geBY6gptVU8bDoT3LSfi/z2iVQ7vKfjTi7BxFrYpoDNQm9oubD23ndKmRBZEK667nSMoZB9SSLJZ9UOSRdthN2yduN/NHUlgOJTXrtw8xcZlBeaJm/UfJrZqhKp9oJU3Pjz6ySXGBJPzsrBipda5kroZgyIg4bcJxGXVx27mg7S/0HdQn2cAzLM2ZRVe3QE4PiN01XwgoRGmNEgJowme4dDv5ZqV3UooocCp7l8w6mlZgcKcflfP735p50GRYLq1VwGy6M8WXhfjmwxYXmSEQ7/4Yxki3rjP8eb+ZNcYPcVkdfJHbDLxN9lQrVTZzNWf8yPDbiXTZ+WtT6D3TFWGdma141trJfQDtPStztQH5edS+H2s9gOvd0L4uDM52MdQ2Hiqb7hu5smpgnDFx8rwrNbugoBUsVxFi3C9tLS9nw/9CfDYHZmyGzGr9HfOwBEfKwZdX0VEe+N15JtNLrdHlZ60guziCa1CgQB6XFCjpVSRwlICwzTrv2omXjph20meGwqd8xdCsnCywsGIMsc6dnce46PsOHuKqBtb6DcemFRe11OgtK2IsMykp
- wVd3+x2b
- SWclshLyWLwJMB2urO7ODaKf6Bs1fqC+pSrWSQ+Db9LWeFfhxuxO9oOY7iKcbsgArZrQLTAZ6TnmOceC9iYaQyVqSa4HDmFD7MOCFrsMMDyD0zVdZl4w0SVsw6wzE70+JFxr7tlmEYC1w4mD4nyizXwJITlZdG4gzZUEZblbDBFIUCUSWFFXbG9G/pvvw1NWxbiyS9WDbcNk/SbRC0FpFkQ58ZskK7W7lUiluoweijb/Jf4iqPhKMI6HiOwFthrsXuatxmz3q4LauTds9YmxqaAGmlgOznCjNFqEc2YbBuCfvX30XqW9nfoi2UTFzYSgLljCq4nR4g6Bo8EQ=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1758119512-485226
+X-HE-Meta: U2FsdGVkX1/+FmXPFYW8tzYieTE3R9pUqubyMVu4emPrLVRCZ9qyUtaHgMdOu0kzBC4H2HSAmP9sPcAMjCxuO7mx3iUaWKyYgtfYCpGLbWn1DpdrKnIHqtmJ82srZZnFhYakV0CfVd9UX5Iy27I52whzZupz29vlwKN56MI+VVWxJISUL4WrgPj6x6LMv8cp4b1+Z+YTBi6nudm6xeBvpXWfNZj+NMRrJQnV+0XmRj8cj8A9dlcXu31VeozHEE2fLiENGzyF8N6xWrGypm7+zfyaVXkWxU1A7JztLqqKmpPjuHaNoIryMWQvjyoMQDtO3H4F+vJOhOPCFDSw9tR/CHwx+wv56NKj1zN6uCGkSzfRbPROtftSvp+MZJ6gB+clBIWrzT+BfEUYEClDG80l9qFASMDFOdOiobpnfZ0m/zt3M+jLu3OUCfA4eW3Kj4BFEeSoojcx0Wr1F2QxnQ2UfF8XJEEUEbG9dLFo4HbFvLI48ymiZ5qI1+Ex6xRq8uksbnvPTUk04soyjw5fRV8CfxKeD8vhzPVDPMaLwvYcBmv/W52u+6gA0LrrT2am4KGvhM8RF4Q5J3Wh/UVPMI24rCFB3hlwDzshHjqrCr2BgZYcm/SVGmOWEoLVxJ8377XQfLd7/1YIhj5YBUZhBEWnS7376dVHllLqngo51rXtImDLwDCKbwsLpug55627D41+SaWoo12h4V+LUhgTRKhnMiFVszQj1NjnR0eHyiR34kKQMUXWuU5boVQ05iaq7F/8NuS/+i5ATsULNfRr42by5PXYpN0XfSQgu+b7lx1nm64aZ8plOzVN1WrBKbNCQYFJMLhvUVS166XmP1h0hJoKLLA3LkS4bpAoi4rtmI0UNZHVo2PoQQDPLFWgeICT7RUVdY7J4YFNjmCz2Pm/s72aQrVN+lDvR2TcJghYcKNmQJLKb1znOQsUm18HgCEINYx9QjevDiRYTyElsp8FBoD
+ 9LxsJmml
+ 14BFC
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,142 +96,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 17, 2025 at 02:32:50PM +0200, Alexander Potapenko wrote:
-> When KMSAN is enabled, `kmsan_memblock_free_pages()` can hold back pages
-> for metadata instead of returning them to the early allocator. The callers,
-> however, would unconditionally increment `totalram_pages`, assuming the
-> pages were always freed. This resulted in an incorrect calculation of the
-> total available RAM, causing the kernel to believe it had more memory than
-> it actually did.
+On Wed, Sep 17, 2025 at 02:56:53PM +0200, Pratyush Yadav wrote:
+> While KHO exposes folio as the primitive externally, internally its
+> restoration machinery operates on pages. This can be seen with
+> kho_restore_folio() for example. It performs some sanity checks and
+> hands it over to kho_restore_page() to do the heavy lifting of page
+> restoration. After the work done by kho_restore_page(),
+> kho_restore_folio() only converts the head page to folio and returns it.
+> Similarly, deserialize_bitmap() operates on the head page directly to
+> store the order.
 > 
-> This patch refactors `memblock_free_pages()` to return the number of pages
-> it successfully frees. If KMSAN stashes the pages, the function now
-> returns 0; otherwise, it returns the number of pages in the block.
+> Move the sanity checks for valid phys and order from the public-facing
+> kho_restore_folio() to the private-facing kho_restore_page(). This makes
+> the boundary between page and folio clearer from KHO's perspective.
 > 
-> The callers in `memblock.c` have been updated to use this return value,
-> ensuring that `totalram_pages` is incremented only by the number of pages
-> actually returned to the allocator. This corrects the total RAM accounting
-> when KMSAN is active.
+> While at it, drop the comment above kho_restore_page(). The comment is
+> misleading now. The function stopped looking like free_reserved_page()
+> since 12b9a2c05d1b4 ("kho: initialize tail pages for higher order folios
+> properly"), and now looks even more different.
 > 
-> Cc: Aleksandr Nogikh <nogikh@google.com>
-> Fixes: 3c2065098260 ("init: kmsan: call KMSAN initialization routines")
-> Signed-off-by: Alexander Potapenko <glider@google.com>
+> Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
+
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+
 > ---
->  mm/internal.h |  4 ++--
->  mm/memblock.c | 18 +++++++++---------
->  mm/mm_init.c  |  9 +++++----
->  3 files changed, 16 insertions(+), 15 deletions(-)
 > 
-> diff --git a/mm/internal.h b/mm/internal.h
-> index 45b725c3dc030..ae1ee6e02eff9 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -742,8 +742,8 @@ static inline void clear_zone_contiguous(struct zone *zone)
->  extern int __isolate_free_page(struct page *page, unsigned int order);
->  extern void __putback_isolated_page(struct page *page, unsigned int order,
->  				    int mt);
-> -extern void memblock_free_pages(struct page *page, unsigned long pfn,
-> -					unsigned int order);
-> +extern unsigned long memblock_free_pages(struct page *page, unsigned long pfn,
-> +					 unsigned int order);
-
-No need for extern, the inconsistency is fine here.
-
->  extern void __free_pages_core(struct page *page, unsigned int order,
->  		enum meminit_context context);
->  
-> diff --git a/mm/memblock.c b/mm/memblock.c
-> index 117d963e677c9..de7ff644d8f4f 100644
-> --- a/mm/memblock.c
-> +++ b/mm/memblock.c
-> @@ -1834,10 +1834,9 @@ void __init memblock_free_late(phys_addr_t base, phys_addr_t size)
->  	cursor = PFN_UP(base);
->  	end = PFN_DOWN(base + size);
->  
-> -	for (; cursor < end; cursor++) {
-> -		memblock_free_pages(pfn_to_page(cursor), cursor, 0);
-> -		totalram_pages_inc();
-> -	}
-> +	for (; cursor < end; cursor++)
-> +		totalram_pages_add(
-> +			memblock_free_pages(pfn_to_page(cursor), cursor, 0));
+> Notes:
+>     Changes in v2:
+>     
+>     - New in v2.
+> 
+>  kernel/kexec_handover.c | 28 ++++++++++++++--------------
+>  1 file changed, 14 insertions(+), 14 deletions(-)
+> 
+> diff --git a/kernel/kexec_handover.c b/kernel/kexec_handover.c
+> index ecd1ac210dbd7..69cab82abaaef 100644
+> --- a/kernel/kexec_handover.c
+> +++ b/kernel/kexec_handover.c
+> @@ -183,10 +183,18 @@ static int __kho_preserve_order(struct kho_mem_track *track, unsigned long pfn,
+>  	return 0;
 >  }
 >  
->  /*
-> @@ -2259,9 +2258,11 @@ static void __init free_unused_memmap(void)
->  #endif
->  }
->  
-> -static void __init __free_pages_memory(unsigned long start, unsigned long end)
-> +static unsigned long __init __free_pages_memory(unsigned long start,
-> +						unsigned long end)
+> -/* almost as free_reserved_page(), just don't free the page */
+> -static void kho_restore_page(struct page *page, unsigned int order)
+> +static struct page *kho_restore_page(phys_addr_t phys)
 >  {
->  	int order;
-> +	unsigned long freed = 0;
+> -	unsigned int nr_pages = (1 << order);
+> +	struct page *page = pfn_to_online_page(PHYS_PFN(phys));
+> +	unsigned int nr_pages, order;
+> +
+> +	if (!page)
+> +		return NULL;
+> +
+> +	order = page->private;
+> +	if (order > MAX_PAGE_ORDER)
+> +		return NULL;
+> +	nr_pages = (1 << order);
 >  
->  	while (start < end) {
->  		/*
-> @@ -2279,10 +2280,11 @@ static void __init __free_pages_memory(unsigned long start, unsigned long end)
->  		while (start + (1UL << order) > end)
->  			order--;
+>  	/* Head page gets refcount of 1. */
+>  	set_page_count(page, 1);
+> @@ -199,6 +207,7 @@ static void kho_restore_page(struct page *page, unsigned int order)
+>  		prep_compound_page(page, order);
 >  
-> -		memblock_free_pages(pfn_to_page(start), start, order);
-> +		freed += memblock_free_pages(pfn_to_page(start), start, order);
->  
->  		start += (1UL << order);
->  	}
-> +	return freed;
+>  	adjust_managed_page_count(page, nr_pages);
+> +	return page;
 >  }
 >  
->  static unsigned long __init __free_memory_core(phys_addr_t start,
-> @@ -2297,9 +2299,7 @@ static unsigned long __init __free_memory_core(phys_addr_t start,
->  	if (start_pfn >= end_pfn)
->  		return 0;
->  
-> -	__free_pages_memory(start_pfn, end_pfn);
+>  /**
+> @@ -209,18 +218,9 @@ static void kho_restore_page(struct page *page, unsigned int order)
+>   */
+>  struct folio *kho_restore_folio(phys_addr_t phys)
+>  {
+> -	struct page *page = pfn_to_online_page(PHYS_PFN(phys));
+> -	unsigned long order;
 > -
-> -	return end_pfn - start_pfn;
-> +	return __free_pages_memory(start_pfn, end_pfn);
+> -	if (!page)
+> -		return NULL;
+> -
+> -	order = page->private;
+> -	if (order > MAX_PAGE_ORDER)
+> -		return NULL;
+> +	struct page *page = kho_restore_page(phys);
+>  
+> -	kho_restore_page(page, order);
+> -	return page_folio(page);
+> +	return page ? page_folio(page) : NULL;
 >  }
+>  EXPORT_SYMBOL_GPL(kho_restore_folio);
 >  
->  static void __init memmap_init_reserved_pages(void)
-> diff --git a/mm/mm_init.c b/mm/mm_init.c
-> index 5c21b3af216b2..9883612768511 100644
-> --- a/mm/mm_init.c
-> +++ b/mm/mm_init.c
-> @@ -2548,24 +2548,25 @@ void *__init alloc_large_system_hash(const char *tablename,
->  	return table;
->  }
->  
-> -void __init memblock_free_pages(struct page *page, unsigned long pfn,
-> -							unsigned int order)
-> +unsigned long __init memblock_free_pages(struct page *page, unsigned long pfn,
-> +					 unsigned int order)
-
-Please either align this with 'struct' or drop spaces and keep only tabs.
-
->  {
->  	if (IS_ENABLED(CONFIG_DEFERRED_STRUCT_PAGE_INIT)) {
->  		int nid = early_pfn_to_nid(pfn);
->  
->  		if (!early_page_initialised(pfn, nid))
-> -			return;
-> +			return 0;
->  	}
->  
->  	if (!kmsan_memblock_free_pages(page, order)) {
->  		/* KMSAN will take care of these pages. */
-> -		return;
-> +		return 0;
->  	}
->  
->  	/* pages were reserved and not allocated */
->  	clear_page_tag_ref(page);
->  	__free_pages_core(page, order, MEMINIT_EARLY);
-> +	return 1UL << order;
->  }
->  
->  DEFINE_STATIC_KEY_MAYBE(CONFIG_INIT_ON_ALLOC_DEFAULT_ON, init_on_alloc);
+> -- 
+> 2.47.3
+> 
 
 -- 
 Sincerely yours,
