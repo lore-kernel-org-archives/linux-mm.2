@@ -4,113 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92BE8CA0EE8
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 03:30:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8256ACA0EE8
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 03:37:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D7CD68E0005; Tue, 16 Sep 2025 23:30:43 -0400 (EDT)
+	id D8BB68E0005; Tue, 16 Sep 2025 23:37:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D53B78E0001; Tue, 16 Sep 2025 23:30:43 -0400 (EDT)
+	id D63C98E0001; Tue, 16 Sep 2025 23:37:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C90708E0005; Tue, 16 Sep 2025 23:30:43 -0400 (EDT)
+	id CA0348E0005; Tue, 16 Sep 2025 23:37:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B8DBC8E0001
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 23:30:43 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 63881C03ED
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 03:30:43 +0000 (UTC)
-X-FDA: 83897315166.22.0FFD743
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf22.hostedemail.com (Postfix) with ESMTP id CD02FC0004
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 03:30:41 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=Kry9SWYt;
-	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758079841; a=rsa-sha256;
-	cv=none;
-	b=SyrBn313WZHgkvt6Y3lh6IT6aSRRIq3OJkGh4UJuAtYyntWEuW2KDShz+MJK+jXqOBho+7
-	A8UNBv6w7Pmlu8jiPnfxrWSx9vsETESrPWIEzjTJlCqxd8c/gyXDf/Ykz4/bHCBfylwruO
-	DKm4OJOZ3WxdELXrq47Y8bfSnUCJpmY=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=Kry9SWYt;
-	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B9EC58E0001
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 23:37:37 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4E5AA86481
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 03:37:37 +0000 (UTC)
+X-FDA: 83897332554.25.1145A45
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	by imf06.hostedemail.com (Postfix) with ESMTP id EBC32180004
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 03:37:33 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	spf=pass (imf06.hostedemail.com: domain of zhangchunyan@iscas.ac.cn designates 159.226.251.81 as permitted sender) smtp.mailfrom=zhangchunyan@iscas.ac.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758079841;
+	s=arc-20220608; t=1758080255;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UAVDs1VLham54ZqxWN+SHa6U1EiRrERwJc+azYqy1+I=;
-	b=eOypaw4kVeEkeUskaLqeoPqkn0hrM1+OrnhZOSnuoctA6jxbO40itRicgvymXbIHDyodtA
-	KyYRw4/Re6f1s4UlJZulzHbdl7ORQHJJ2UWXEUyeTDddIGwKI8MrES+5GJXUqnWT2JyVfx
-	tH8iZ6ohIpI8rdUWlWz1mAv91YJDnKw=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=UAVDs1VLham54ZqxWN+SHa6U1EiRrERwJc+azYqy1+I=; b=Kry9SWYtgvdutxvXmjz7kw2FjM
-	D4Mh+YtXTIKEFOeFDFrG/Bs5kNB2DI0eCiJBF9ohZNNXeq4rT2h4WQ0Mj5VddscfGpMjkhpwEzPP1
-	k9Jk65lptDjMFQ1n5wKbUMNl1cixjK1hCGT6sKxuL8UM5OU/jEohuJWv9W9ps8HAFECu5rVSE9aH3
-	GALfPULwTqOmjtJc4lj7X1HCOeVELOJdXDob2cfiPWUFqNI7Ats4xtjXF4GBCoRkFydXdbkBZJIj/
-	AcIpXLmHIVtcxTGBJ2bxNRsE5RWsJ/lfck6GQAtXFo5td7mpCKI9ouhrnjaeETlwY/KZkNaKQ6hNB
-	vWMBRKoA==;
-Received: from fangorn.home.surriel.com ([10.0.13.7])
-	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <riel@surriel.com>)
-	id 1uyis8-000000003qc-1Q3q;
-	Tue, 16 Sep 2025 23:30:20 -0400
-Message-ID: <190cd3842bc0776611c73a439e49ba57c86849d1.camel@surriel.com>
-Subject: Re: [RFC PATCH 06/12] mm/cma: define and act on CMA_BALANCE flag
-From: Rik van Riel <riel@surriel.com>
-To: Frank van der Linden <fvdl@google.com>, akpm@linux-foundation.org, 
-	muchun.song@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Cc: hannes@cmpxchg.org, david@redhat.com, roman.gushchin@linux.dev
-Date: Tue, 16 Sep 2025 23:30:20 -0400
-In-Reply-To: <20250915195153.462039-7-fvdl@google.com>
-References: <20250915195153.462039-1-fvdl@google.com>
-	 <20250915195153.462039-7-fvdl@google.com>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=KPlE/vsugxggjRotq0Uk5XiaQXBrOcjLHImguP+bP3g=;
+	b=uY+8tFP6QqW7B3TT7qaOwDx/CJVh/IprLCgaViSL0G6GOT24NstOGdRIDHus6vZ7dXUrid
+	meiQ23LC0sblFGpBrTkVukCJMY6Dx8n6UWsFMG3u8HbNIr9uzVMAaD2zgjyLFVCi37Wlyy
+	cpeTejwBLSOea+ID1JKhyx63Q+4Keuo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758080255; a=rsa-sha256;
+	cv=none;
+	b=Is6b137AHWZJTrZswIzP8jE13AEU9iwBchYrvYpgJiIvGSPQRJeK7AAlyw4APpuCN43JX8
+	SeBtj6kRyGCSRpeFVP5r2HV396h/GWn89JXWTeAERPOyQAMb6SlOzWcRm7/TgQlI11MJno
+	QYrOFm7pTuWtnfAKFXi6DjP3KCazmic=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=none;
+	spf=pass (imf06.hostedemail.com: domain of zhangchunyan@iscas.ac.cn designates 159.226.251.81 as permitted sender) smtp.mailfrom=zhangchunyan@iscas.ac.cn;
+	dmarc=none
+Received: from ubt.. (unknown [210.73.43.101])
+	by APP-03 (Coremail) with SMTP id rQCowABnsXvsLMpojtxAAw--.607S2;
+	Wed, 17 Sep 2025 11:37:17 +0800 (CST)
+From: Chunyan Zhang <zhangchunyan@iscas.ac.cn>
+To: linux-riscv@lists.infradead.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Cc: Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Conor Dooley <conor@kernel.org>,
+	Deepak Gupta <debug@rivosinc.com>,
+	Ved Shanbhogue <ved@rivosinc.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Peter Xu <peterx@redhat.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Chunyan Zhang <zhang.lyra@gmail.com>
+Subject: [PATCH V13 0/6] riscv: mm: Add soft-dirty and uffd-wp support
+Date: Wed, 17 Sep 2025 11:36:57 +0800
+Message-Id: <20250917033703.1695933-1-zhangchunyan@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: CD02FC0004
-X-Stat-Signature: xbh9qdj6r3xa5rrqngwdu7i6sf5usaoh
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowABnsXvsLMpojtxAAw--.607S2
+X-Coremail-Antispam: 1UD129KBjvJXoW3Wr18CrW3AF1rtw1rZFWDurg_yoW7AFy5pF
+	4UGry3tr4rtF1Ig393Jw109a1Yqan5t343Gw1rX34rA3y2k3Wjvrna9a1rGF1DJr48WryS
+	qryYkr9I934qyaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9vb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I2
+	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
+	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xII
+	jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I
+	8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
+	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8Jw
+	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkI
+	wI1lc7CjxVAaw2AFwI0_GFv_Wrylc2xSY4AK67AK6r48MxAIw28IcxkI7VAKI48JMxC20s
+	026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_
+	JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14
+	v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xva
+	j40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JV
+	W8JrUvcSsGvfC2KfnxnUUI43ZEXa7IUYS2MUUUUUU==
+X-Originating-IP: [210.73.43.101]
+X-CM-SenderInfo: x2kd0wxfkx051dq6x2xfdvhtffof0/1tbiBwkIB2jJ8O30wgAAsL
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: EBC32180004
+X-Stat-Signature: f139qogrz3o8hcxp1x64dha45fuqgwdk
 X-Rspam-User: 
-X-HE-Tag: 1758079841-581087
-X-HE-Meta: U2FsdGVkX1+wEqi2Sdl9RWp9ifar4zXFrYhPB+5y8dokn2XqLp3OW4K3aSWi9cH1cFqtddVgV+GgmN59Jul4EMZx1kNkrrcC1yLSUL6SvKWaLBKdE0WeRyvRUHxXygui0u02GInXO20668AE/GJoWREDAZU0nj0+gevURgW7kdvpsU3UF7dZeBSm/q3rb5l1Ox2HqdNGnWyITkS0KKqSOGHnucaXfaHGdPQFQdRzsO4yusrBDTYdUdJtEghom/koPDVNd1p0FhLoYziUajmcB9y0l6uQTX/WAl8xAA9Rz4XnrB/VpH62g412ehlDKxiZTg4L1xZTKvPwSfj57dJk3GvLkJW8CcU5Y9VMPY9xRIO6WCY4C8Omk2P4gaE1blmymPna75brnFGkbohXW+rYqb1/lbZS+KDyHXXojWxEAUlhjDOJWyUeQBjmsqE7m1RMHesDQJlbEegvaUWOQ6HwsbhhaACNQA/XrOOSwYBJyn0TIeIcNdpLzRuN1vTi1wT7LfQsT22Iu68poBQGvletTBu5ZLyG2xpeBW0upZPQEh/pJQ1xNXsxotsLDUWm9KiuQwtlh/s/kSL1tsbMr/WVqVb3vG5LSOnpz0tKJ+0Ayq9kqSz5CfSDjC4q9sIKGq30tFyPl2HUZgmuYA404vP4U2FQ3pEDCMLnkPsfjDqlsnZmuOFuetCfarEPVWhKAZ3IvkKuzzHLm5srGReldwoZVI+RRCiTrjJm9ogG3azNtF1BZAxvqhbx4AFzvNCmUSFcX+tcxq8zxwOanbtw6iXjKXjy0aWAaUk9phhJanZcXnE2QEIoyeQmXpC8/eu6hB2H83qv+pmj3y9f89TdxwKbQmSMW6EkE7sTm07L+RS5DJFB0W1gDv4Z6MeGHJAANlysvuPnyF8+nc8u2vOASjuVdvu/7xAaVdAx4wVjWaMdwTOL8fc6X8PGrmM9X1LgVZH7
+X-HE-Tag: 1758080253-798809
+X-HE-Meta: U2FsdGVkX194HQEUkHwLlnCE+RbejPAJyPebiWnyTMS+JuGaN0O91yx/p9J61bS1QKGBrfPs5S/ON9K5O+SV9QaHqFHib7spVy3A+GfkoJlOPSaE12RYuwLI5loY10/5ZKD/ep+9FOX2Z4bfJmAovtKFHYEtMFUHI7u2RtWoTnFGqLtoV+5R548REIdfip8xo2I1SluWQipjIM+m5ofFix3zDROEdBrfuDS9tc6S24fjshDyuPSst47i/PZwsI7Gx1c2n3IjnYlcY5nEbjXUdjulS0+Pp8mNpDNanr+krpOtE57SDBgUDudfAnLFgm+1mzZ3y5o+qq7O+qEJ3ysSSiTL4QYiD0GuMiMxSeOGJGIdn/f15Ux7gOFmRJ2UklnHfRFAK7KufdtsP4IWTRrXj0/aKUj5KiDR9zDn77JgyGxXTc7xCiXbX1hcrt4uAubnOXIn7lQ4ehgQGAhiGsYVk5qCCL53fgvFPycNMc/pV4ONhe9AkTER4mdRCF3P5vKFyjTwV48R7eFEK+1QYKsCdlBHBPq0LPuAHSqg/j9W9c811QARX9thcTlvqjk0BFKC2mLPn9g7lc5DgPNch4qUd0Oko4bunwX9PpwjXGKFVR4y0385hUcnGb3APrrowLwUxfTk7ntIE0eC72aKHaVYb+IX1Z4L+QoUZsqDKJ0OniMjepbjNk51f74UKO/dzpPevryq9tmEHZPw7rsJHYUvj6IQF9uv9J5OX2oTIpZuUVWhwaf/WXW6C114i625qntSdrLIg2zC15I0AEpo734ahFJib0XUYDBHI3NjnS1XjNmY3EOGExwni1SuD9DPj0DpwUjax/LSNvJwIPpMhkaCkmz8iVBE3OPYMGbYJVMqHq7YQ/u7G4rT4HpiOa1CkX4w6OtZlHduiW7/gFShRm/6EMneSQTLWZvYXu3WW1i8/TJmAHLtd1p1Du9hoyHZqezsXui6AJWnJFgXg+scGE+
+ klb2xqBB
+ XJlkqkxJSyjFOypJNBDuF9KoIotiFEd1nEO5VU+SpG4wsV3BLfv1vgxKBEque8SPWmzBmwFJreC5cL+rPSkJKtC/ME34f7v7tJTwTD2C2S20rEUqYlUe7nPguLsKDyvTOwmc+GfkUZMqXMkClKtQoYnEZ2L6IxVDGgrpN6QY6b/K7UtPm6to2shebdc1gFjXvZuGlIz/iSLnKjGqPq6Way6YFjcVLYLZ5OHg8leVsHDrczuay0YHCyGEQxgJg2Nj18B1NwQcZEUq45lpXHx8fRxrMY67kA72K0BB7DcVlbhKl1As=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,57 +117,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 2025-09-15 at 19:51 +0000, Frank van der Linden wrote:
->=20
-> @@ -851,7 +862,10 @@ int __init
-> cma_declare_contiguous_multi(phys_addr_t total_size,
-> =C2=A0	list_for_each_safe(mp, next, &ranges) {
-> =C2=A0		mlp =3D list_entry(mp, struct cma_init_memrange,
-> list);
-> =C2=A0		list_del(mp);
-> -		list_insert_sorted(&final_ranges, mlp, basecmp);
-> +		if (flags & CMA_BALANCE)
-> +			list_insert_sorted(&final_ranges, mlp,
-> revbasecmp);
-> +		else
-> +			list_insert_sorted(&final_ranges, mlp,
-> basecmp);
-> =C2=A0		sizesum +=3D mlp->size;
-> =C2=A0		if (sizesum >=3D total_size)
-> =C2=A0			break;
+This patchset adds support for Svrsw60t59b [1] extension which is ratified now,
+also add soft dirty and userfaultfd write protect tracking for RISC-V.
 
-Wait, what is this supposed to do when presented
-with a mix of CMA_BALANCE and !CMA_BALANCE ranges?
+The patches 1 and 2 add macros to allow architectures to define their own checks
+if the soft-dirty / uffd_wp PTE bits are available, in other words for RISC-V,
+the Svrsw60t59b extension is supported on which device the kernel is running.
+Also patch1-2 are removing "ifdef CONFIG_MEM_SOFT_DIRTY"
+"ifdef CONFIG_HAVE_ARCH_USERFAULTFD_WP" and
+"ifdef CONFIG_PTE_MARKER_UFFD_WP" in favor of checks which if not overridden by
+the architecture, no change in behavior is expected.
 
-I can't convince myself this would always keep
-the CMA_BALANCE range near the top of the list,
-and the others near the bottom.
+This patchset has been tested with kselftest mm suite in which soft-dirty, 
+madv_populate, test_unmerge_uffd_wp, and uffd-unit-tests run and pass,
+and no regressions are observed in any of the other tests.
 
-Also, does the regular compaction code pay any
-attention to the order of this list?
+This patchset applies on top of the lastest mm-new branch.
 
-I have the feeling I am overlooking something big
-in how this patch is supposed to work, but I am
-not sure what that would be...
+[1] https://github.com/riscv-non-isa/riscv-iommu/pull/543
 
-> @@ -866,7 +880,12 @@ int __init
-> cma_declare_contiguous_multi(phys_addr_t total_size,
-> =C2=A0	list_for_each(mp, &final_ranges) {
-> =C2=A0		mlp =3D list_entry(mp, struct cma_init_memrange,
-> list);
-> =C2=A0		size =3D min(sizeleft, mlp->size);
-> -		if (memblock_reserve(mlp->base, size)) {
-> +		if (flags & CMA_BALANCE)
-> +			start =3D (mlp->base + mlp->size - size);
-> +		else
-> +			start =3D mlp->base;
-> +
-> +		if (memblock_reserve(start, size)) {
-> =C2=A0			/*
-> =C2=A0			 * Unexpected error. Could go on to
-> =C2=A0			 * the next one, but just abort to
->=20
+V13:
+- Rebase on mm-new branch;
+- Fixed build errors;
+- Add more exactly descriptions in commit message in patch 1-2;
+- Replace '__always_inline' with 'inline' for uffd_supports_wp_markeruffd_supports_wp_marker();
+- Add description to the extensions dt-binding in patch 6.
 
---=20
-All Rights Reversed.
+V12: https://lore.kernel.org/all/20250915101343.1449546-1-zhangchunyan@iscas.ac.cn/
+- Rename the macro API to pgtable_supports_soft_dirty/uffd_wp();
+- Add changes for setting VM_SOFTDIRTY flags conditionally;
+- Drop changes to show_smap_vma_flags();
+- Drop CONFIG_MEM_SOFT_DIRTY compile condition of clear_soft_dirty() and clear_soft_dirty_pmd();
+- Fix typos;
+- Add uffd_supports_wp_marker() and drop some ifdef CONFIG_PTE_MARKER_UFFD_WP.
+
+V11: https://lore.kernel.org/all/20250911095602.1130290-1-zhangchunyan@iscas.ac.cn/
+- Rename the macro API to pgtable_*_supported() since we also have PMD support;
+- Change the default implementations of two macros, make CONFIG_MEM_SOFT_DIRTY or
+  CONFIG_HAVE_ARCH_USERFAULTFD_WP part of the macros;
+- Correct the order of insertion of RISCV_ISA_EXT_SVRSW60T59B;
+- Rephrase some comments.
+
+V10: https://lore.kernel.org/all/20250909095611.803898-1-zhangchunyan@iscas.ac.cn/
+- Fixed the issue reported by kernel test irobot <lkp@intel.com>.
+
+V9: https://lore.kernel.org/all/20250905103651.489197-1-zhangchunyan@iscas.ac.cn/
+- Add pte_soft_dirty/uffd_wp_available() API to allow dynamically checking
+  if the PTE bit is available for the platform on which the kernel is running.
+
+V8: https://lore.kernel.org/all/20250619065232.1786470-1-zhangchunyan@iscas.ac.cn/)
+- Rebase on v6.16-rc1;
+- Add dependencies to MMU && 64BIT for RISCV_ISA_SVRSW60T59B;
+- Use 'Svrsw60t59b' instead of 'SVRSW60T59B' in Kconfig help paragraph;
+- Add Alex's Reviewed-by tag in patch 1.
+
+V7: https://lore.kernel.org/all/20250409095320.224100-1-zhangchunyan@iscas.ac.cn/
+- Add Svrsw60t59b [1] extension support;
+- Have soft-dirty and uffd-wp depending on the Svrsw60t59b extension to
+  avoid crashes for the hardware which don't have this extension.
+
+V6: https://lore.kernel.org/all/20250408084301.68186-1-zhangchunyan@iscas.ac.cn/
+- Changes to use bits 59-60 which are supported by extension Svrsw60t59b
+  for soft dirty and userfaultfd write protect tracking.
+
+V5: https://lore.kernel.org/all/20241113095833.1805746-1-zhangchunyan@iscas.ac.cn/
+- Fixed typos and corrected some words in Kconfig and commit message;
+- Removed pte_wrprotect() from pte_swp_mkuffd_wp(), this is a copy-paste
+  error;
+- Added Alex's Reviewed-by tag in patch 2.
+
+V4: https://lore.kernel.org/all/20240830011101.3189522-1-zhangchunyan@iscas.ac.cn/
+- Added bit(4) descriptions into "Format of swap PTE".
+
+V3: https://lore.kernel.org/all/20240805095243.44809-1-zhangchunyan@iscas.ac.cn/
+- Fixed the issue reported by kernel test irobot <lkp@intel.com>.
+
+V2: https://lore.kernel.org/all/20240731040444.3384790-1-zhangchunyan@iscas.ac.cn/
+- Add uffd-wp supported;
+- Make soft-dirty uffd-wp and devmap mutually exclusive which all use
+  the same PTE bit;
+- Add test results of CRIU in the cover-letter.
+
+Chunyan Zhang (6):
+  mm: softdirty: Add pgtable_supports_soft_dirty()
+  mm: userfaultfd: Add pgtable_supports_uffd_wp()
+  riscv: Add RISC-V Svrsw60t59b extension support
+  riscv: mm: Add soft-dirty page tracking support
+  riscv: mm: Add userfaultfd write-protect support
+  dt-bindings: riscv: Add Svrsw60t59b extension description
+
+ .../devicetree/bindings/riscv/extensions.yaml |   6 +
+ arch/riscv/Kconfig                            |  16 ++
+ arch/riscv/include/asm/hwcap.h                |   1 +
+ arch/riscv/include/asm/pgtable-bits.h         |  37 +++++
+ arch/riscv/include/asm/pgtable.h              | 143 +++++++++++++++++-
+ arch/riscv/kernel/cpufeature.c                |   1 +
+ fs/proc/task_mmu.c                            |  15 +-
+ fs/userfaultfd.c                              |  22 +--
+ include/asm-generic/pgtable_uffd.h            |  17 +++
+ include/linux/mm.h                            |   3 +
+ include/linux/mm_inline.h                     |  12 +-
+ include/linux/pgtable.h                       |  12 ++
+ include/linux/userfaultfd_k.h                 | 114 ++++++++------
+ mm/debug_vm_pgtable.c                         |  10 +-
+ mm/huge_memory.c                              |  13 +-
+ mm/internal.h                                 |   2 +-
+ mm/memory.c                                   |   6 +-
+ mm/mmap.c                                     |   6 +-
+ mm/mremap.c                                   |  13 +-
+ mm/userfaultfd.c                              |  10 +-
+ mm/vma.c                                      |   6 +-
+ mm/vma_exec.c                                 |   5 +-
+ 22 files changed, 365 insertions(+), 105 deletions(-)
+
+-- 
+2.34.1
+
 
