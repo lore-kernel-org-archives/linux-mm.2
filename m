@@ -4,103 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0BD1CAC59A
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 19:12:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09796CAC59F
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 19:12:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 08F9128001C; Wed, 17 Sep 2025 15:12:00 -0400 (EDT)
+	id 301C628001D; Wed, 17 Sep 2025 15:12:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 04056280002; Wed, 17 Sep 2025 15:11:59 -0400 (EDT)
+	id 26619280002; Wed, 17 Sep 2025 15:12:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DAF8F28001C; Wed, 17 Sep 2025 15:11:59 -0400 (EDT)
+	id 0199C28001D; Wed, 17 Sep 2025 15:12:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BB173280002
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 15:11:59 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7A627140646
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 19:11:59 +0000 (UTC)
-X-FDA: 83899687158.06.BB81B2F
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D738D280002
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 15:12:00 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 943381DE3E6
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 19:12:00 +0000 (UTC)
+X-FDA: 83899687200.04.194DBC6
 Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 51CB0C0016
+	by imf26.hostedemail.com (Postfix) with ESMTP id EFF6C140002
 	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 19:11:56 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="SvqhhI/d";
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=OkwbVwO5;
-	spf=pass (imf28.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=bHu0b6Lr;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=ZmUJ+sXS;
+	spf=pass (imf26.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758136316;
+	s=arc-20220608; t=1758136317;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=W1DbtbJcDWMh9bkVnPjTAPguBV5ySqOLxt9f4a5AmWQ=;
-	b=Yv/kZYK63k/PB1yTWGDVVGOqOwPfVhM+z5dLwVXj49+dwUiMWp8lbXIBpN2YZB3C08n0K9
-	8OC+R9KQ5Uj9f5fNEdvAw/2rJqFaObWPpWPhTBs6+7ZckBdYhXg3G2f/lnhl7IiO0UKGfe
-	mAD8apFeJwlljptrcpzuuJwmTCnfDSk=
+	bh=dIlBonpzpBuI8Nh/1IICJAlRCKSS6BU3sWWec56GXQw=;
+	b=CoV+bRpOeUG3lagIcaPE/2iWMQuV9CPI5MnuPJQIsyN18XxjvPHhxQqfQ+sSinWtqiQU82
+	V6xEVPkZS//NfO+Lr8lp185PQd249EYsxvCZRp6ayaaFaN9mR77TagaIDrv7Wii6Lvxmkt
+	YZW1QJz881suDCA2dSLUAqANdaGO+po=
 ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="SvqhhI/d";
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=OkwbVwO5;
-	spf=pass (imf28.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1758136316; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=bHu0b6Lr;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=ZmUJ+sXS;
+	spf=pass (imf26.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1758136317; a=rsa-sha256;
 	cv=pass;
-	b=gLjUzabNxIDCqBGjlOZj4IAiYmtR/p6w8cxWD04O/Nz4DngpWjeGRZInCEEHe6NZy2ACJL
-	9tAtpNrkIfK4KPUoXDdKe6jJcACYTHxj/HIJNRsKcdzBcix7X20Ys/6bPEaJ9BjSepeYVH
-	tFUT2G5XVmttdMQhjCfIBjJC1dAycPI=
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58HEIRmq001776;
-	Wed, 17 Sep 2025 19:11:34 GMT
+	b=1WtQCI3HVTVSSkNSAcPPlhwNRO0a/5hWuiOe6DCJAXdSLdLWCHzsYSyOC77cNiZJGbvYU3
+	s37X+NY/1M/6TT9Ra2iz4azJbzLPRzkkZANLW01HYDlqIGl2fZxppFuFiHissdb+E2Nj63
+	LdSswWvsqy4BE6cJY1yoe5IIKNQztJg=
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58HEIV3K008351;
+	Wed, 17 Sep 2025 19:11:39 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=W1DbtbJcDWMh9bkVnPjTAPguBV5ySqOLxt9f4a5AmWQ=; b=
-	SvqhhI/dq8m+0zlqGMjJ1+4211FtRGjJ3CORbhY0/v8TUW30yfgTRIMy5FvsR6bB
-	jVnzVkitdZBvbjQ73WjRJwdmgKIHrWe99KCw/CdpTUk8262/6CRhc/p9UQKnmpAJ
-	hBUYS8SLHcQOMTjzAV1GmqzynaASLq3n/hoKDFa0cciiQWjxIG36zC6edhPTMGEc
-	Tg+z2uLF/PwMOFLe2lhaOEXiIeAT2gINteJb3gCUEZ/1+oA8Enfyq38df6cdSP2y
-	+UdVFtUQ9gK5mhj8sk8nEodppomH2Zu4+N1owfsb3mf3QWMyvsSlzxlMceKl0DQQ
-	et/iO7vUWswIBqJk04SQ5w==
+	corp-2025-04-25; bh=dIlBonpzpBuI8Nh/1IICJAlRCKSS6BU3sWWec56GXQw=; b=
+	bHu0b6LrJ10oycvtih2RH+pbANslb128U/M69pZYQxmyzC0e7NW/7XI7gR2exV68
+	eyCkWk40DWJT75yyccQbcibtya6Vj11qWkI+5wU/h8O0nCR6PfscBYyW6K+cnaXR
+	/yGqctQjDfLFUteEzObvoHbI4ej4khtWf6911bq7DzkHKNi1N4h9KNAcYO5Ormp0
+	T0ruBh9cg3bW42kB9HMPskbkMD2ivvIPU/CfZO1TSGIQHyu+IkgNDqzCSTi9FQEa
+	+Eor12ZX6GtY2ugItrK7B17ypiIozY4HoasGhr++nK1FHp+VIoL9SWWOt/hxSiEM
+	hFXVp9Q/cEB4DbZFF+4STA==
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 497fxd2073-1
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 497fx8hxnc-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 17 Sep 2025 19:11:34 +0000 (GMT)
+	Wed, 17 Sep 2025 19:11:38 +0000 (GMT)
 Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 58HHmk6U001628;
-	Wed, 17 Sep 2025 19:11:32 GMT
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 58HHmk6a001628;
+	Wed, 17 Sep 2025 19:11:37 GMT
 Received: from ch4pr04cu002.outbound.protection.outlook.com (mail-northcentralusazon11013068.outbound.protection.outlook.com [40.107.201.68])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 494y2edr1x-1
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 494y2edr1x-4
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 17 Sep 2025 19:11:32 +0000
+	Wed, 17 Sep 2025 19:11:37 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=IUOsSKa5FU+yU5x/5xcyW4T57k2EYWSQgImTcWWr5yyswehxQqOit4OQOD42sJZ0uf17c9X1iG4BIo4czhO0mb8OAATSKjRFURsvU/WhDzlfWBc46VgQDcuvVuBsLZQ1MMtu8+GzXM8u9WjLe7Yf0hdRoHTf/PJx8TAmVctn9hqj2QzXp9AGR+LtFnROeN7ns7usiIXT7Vt2uG0fYe+rLvYRz8aWgGz9B17QJC6j2/shuH6yZ0O94hhuBOXgQjBt9kVsvDvq/pN3MiMUlJKyRx8dz6a57OQiL0AxuoPHpEkBsZkNtr2bA36N+KkjqeiU9ulPkeE7mmqMxuiVrukIEg==
+ b=W4ZST5UCiuQTW0pSBWto1euqggAAc7NcRb9D66KiyMMQGLMOg/DMCK1I2Fely6rDnK2AH7urgW/caNvqttkRFmnKE1zQUFi6FAlHKt4tUTiyf3vL7QtQdGHauIPejJwDypBqcLQgKa2GhPRljWkvM2GH3P1Dr1uaNGZVaJqlUP+kSqgHGg/Ihl6mWirx5x/ORsrKdWY5vwLzG5f84JTQ/OCAT0IQdIvbRKxXLg9yGNgJHiV7/TKi+3A02YQVb/Fiuqcj8ufxKWMHfQpeRZgybxeDBmXWvnTVSz9kNaJrGot5Dbqtygi/XpwYldG1IPKNnQjo4R1++5tN5O+TcakBFA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=W1DbtbJcDWMh9bkVnPjTAPguBV5ySqOLxt9f4a5AmWQ=;
- b=Cx/K+XDH+zVWH+8bqu8piq75oQIdver1T8Dxr+VE8D6300LiThtMJjbulQMDpv7G01OLcAQAgcftNun7hLKNT3D/CdgOpRWMKCg9sdD8aMhLnMxl3KXSPxTrOu4ZkX1BPZt8N4APnv7Yo4RO4Taj08BHsaBkeedzccsUc9RahHCDjrcKwO2sJU/dq4ZItWZ7YknlSHClVI2nqYgum11vu/t3QTSCszzsNrWJsvNExA0uZKRYTQAWAUPv1pGyC0xDkXaBLEy2jrY4WuCZyGomHB1IORpyDMOxUbJFGDI+yKquP6U+CSTFlLc0f9gBc0ROBp9/F5ZurLG79sE1CL3ZMg==
+ bh=dIlBonpzpBuI8Nh/1IICJAlRCKSS6BU3sWWec56GXQw=;
+ b=nAvyWR0AvSdu7zeGW/IYTGIjbMcKwyqZ2QqIvlfc6QimXudV38lgL+7tHljNymV561b5csQeZCvohRnaPQoAX6Obkp9ymMzMt24hqXrQ7enf820EIGwse0N0i9UMeN64Aeyad/oC6F3XpGa5VbWWsOmuvsw8/tr3UE2PfdBmrXWb5UKgBhyx28VLkD9CE9FeNDVDoJdUGUVrWBWF3UC+iIR79X787qAGIM2do7ZGXztM/qtHI6pppjrbOamZZQMZFfm2ri8QRkYhAV/zvRlGPKauYI9yoV2o9cmCkC9vg95Da/8VQLuR1YFefemf+4dKYDd9TcFrwgcZc/8Fs6+Z3g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
  dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=W1DbtbJcDWMh9bkVnPjTAPguBV5ySqOLxt9f4a5AmWQ=;
- b=OkwbVwO5ihtVhK0/ClcD8M+aZV5M+nGG5iHtFBDUxYYOs0yxrG1s5seQ4J9UFM+9vhwiNT5SauCUasNCTEtnpfRUcBP66FZzqejKcu7bAoEmUPwZ5FHCRwuFeDxFrvGuuV5uXhO1B3wcC1Mcf+zVnFsJeRiQQeeETqIT+Gn9qu0=
+ bh=dIlBonpzpBuI8Nh/1IICJAlRCKSS6BU3sWWec56GXQw=;
+ b=ZmUJ+sXSVx2dGRodDDK3mh+6z6USh4L9hSpQEHo6V0WJm2z6CyeTr4dTmWr6pS3BfXrHipKl9HLGYXs3g5dNwvL3BJv04D+QMzqyz6t/dh0cVP82ncBSgYDttW1rjbg+tB5GgdFF/cauAtuX6/usi8MBN5wEke5lR9kP5o7r7lg=
 Received: from BL4PR10MB8229.namprd10.prod.outlook.com (2603:10b6:208:4e6::14)
  by CY5PR10MB6189.namprd10.prod.outlook.com (2603:10b6:930:33::20) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Wed, 17 Sep
- 2025 19:11:27 +0000
+ 2025 19:11:33 +0000
 Received: from BL4PR10MB8229.namprd10.prod.outlook.com
  ([fe80::552b:16d2:af:c582]) by BL4PR10MB8229.namprd10.prod.outlook.com
  ([fe80::552b:16d2:af:c582%3]) with mapi id 15.20.9115.022; Wed, 17 Sep 2025
- 19:11:27 +0000
+ 19:11:33 +0000
 From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Jonathan Corbet <corbet@lwn.net>, Matthew Wilcox <willy@infradead.org>,
@@ -143,95 +143,95 @@ Cc: Jonathan Corbet <corbet@lwn.net>, Matthew Wilcox <willy@infradead.org>,
         kasan-dev@googlegroups.com, Jason Gunthorpe <jgg@nvidia.com>,
         iommu@lists.linux.dev, Kevin Tian <kevin.tian@intel.com>,
         Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>
-Subject: [PATCH v4 03/14] mm: add vma_desc_size(), vma_desc_pages() helpers
-Date: Wed, 17 Sep 2025 20:11:05 +0100
-Message-ID: <5fa007dc4905c863abe6fe97de1238c30b1958ff.1758135681.git.lorenzo.stoakes@oracle.com>
+Subject: [PATCH v4 06/14] mm: add remap_pfn_range_prepare(), remap_pfn_range_complete()
+Date: Wed, 17 Sep 2025 20:11:08 +0100
+Message-ID: <ad9b7ea2744a05d64f7d9928ed261202b7c0fa46.1758135681.git.lorenzo.stoakes@oracle.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <cover.1758135681.git.lorenzo.stoakes@oracle.com>
 References: <cover.1758135681.git.lorenzo.stoakes@oracle.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: LO4P123CA0638.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:296::18) To BL4PR10MB8229.namprd10.prod.outlook.com
+X-ClientProxiedBy: LO0P265CA0014.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:355::16) To BL4PR10MB8229.namprd10.prod.outlook.com
  (2603:10b6:208:4e6::14)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: BL4PR10MB8229:EE_|CY5PR10MB6189:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6371dcdd-74ce-4322-0987-08ddf61e00a9
+X-MS-Office365-Filtering-Correlation-Id: a7766dc4-57d2-4ac1-35ee-08ddf61e03c8
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?IMr4ADZQ188vB5IA5SSEnfaIxlXcD4al6d8bTXTTe8vP0jB1s+FTU4V3r3LZ?=
- =?us-ascii?Q?Dtjt0mu1LbT6Zl9W7YRRgBVjkvzJOSz8aPki3H4xAHiMPyaQThgStNIwIU1A?=
- =?us-ascii?Q?sUoC907T0hBgGZD+eVmu+RveRwAFKg5W6/RHRvXj//M7lgoabCt+xbwrCogD?=
- =?us-ascii?Q?QT0IxvmDTg3q0bMhzkH3DCz7IztaA+G+ehl6VJSyiwFHBPSHICyl7/yMVBzX?=
- =?us-ascii?Q?u4iDBf1P7K2Ld2UHbkgKD8c64rWn4UFrskp3elxZNbggp+yf17FZSj6KDDWh?=
- =?us-ascii?Q?Pg4GcOx/uiY77fi7TGSqyKl70M/z+PA7eXdtOg/Zxk4wmGr/XmksOWTCmFWB?=
- =?us-ascii?Q?gkNuPCCpUUt4/qaKOB2EllcGacnexr5wLcZ3ulUpbafQ32+iPdH6IOWODhEp?=
- =?us-ascii?Q?8bXj9fj331W41a1dO/SanB6GG6we2eKpM3hlBC/nVvFO/F6yJUSqyUJ+FKwP?=
- =?us-ascii?Q?e19+Oj2L+QgbuPHuvbbRhkB6iuCvpcu5MzK+e2syWozsWnsFTDL79KKyG0K6?=
- =?us-ascii?Q?wUCt+jwFKsdGuc8oL47pG0R7zJlYiMittsaNIpPKvasVBnNjh/N40+osNWGY?=
- =?us-ascii?Q?P0F9dwzzsoUQ3tqDdUDqZiYQ5gVBWefTnVw8On5c71rPyvTB9Q+CysMgCsdG?=
- =?us-ascii?Q?HO/GsuTR0CZIZMpK1zzVc3P8/LgG/9KzLS+OxFjJx8fX+IIknoZ1RonrSJk0?=
- =?us-ascii?Q?yRI8t2uvhIgxSwKf4thwPlXvOwIU0VP2knMdhbt3AzpNwqRpmBYUiQGO6qEs?=
- =?us-ascii?Q?EZaFsO64W4YaudrPBIt9IxmwxOv2L8CqNUxpMExrWxtdnj2aVXo2tvbZ084U?=
- =?us-ascii?Q?QaCp1V7WdX8F/iq5aonGw6/pt0nGk2HNeZHOEChybY3Ta520f94Woob8Oq/r?=
- =?us-ascii?Q?OUEplsQvIdnfu2Wedlf/FtLEMJdOxKDI/xsA/eBdzpJTgON0LNiay7Ygnzl8?=
- =?us-ascii?Q?+hiR+Yy7LwP7M4sQySXpggCDdCVQUJ23WEnC7E+1C85SUa/zgWMsHCznfvLL?=
- =?us-ascii?Q?rp946+JvGRkqjgu8QukkcYUWUgIq5tOM3XaMl23ZGZUHxLcfPf1gYxfwe8vl?=
- =?us-ascii?Q?e3DN6cH8znkyVktlAY8WSo8NNEXfxen2rX9XJrlEzXyp6S/VdxBBfJ1h0+nA?=
- =?us-ascii?Q?KLCLSC6W80H+Zt/q4s8/4+P0YtcZuDlI8cCzwBFyRc/Oj9oxd6XOlrrWxo2A?=
- =?us-ascii?Q?/TzmtSEZjPewVOpxoLFEEvuxM8zYzG6KFo2avwvu2uVb01xyJqdMPiv34yoV?=
- =?us-ascii?Q?IpAttKeHd5nPEHpvHwdLOZ1cvvpr1nLk4Z1iMhDiO8URZ3PEj7WmMTxS2/Jy?=
- =?us-ascii?Q?XLg77eI4buqCXacMQrR1oJ9B1HLMEKPGriYjqv578Z6Wieks/v7YMq/ANU/C?=
- =?us-ascii?Q?LSSUN+6D4AZC3zI0suBnmzw4PKEAPj64WuW6jcUTHAmLOAoBat6/97dCqK8A?=
- =?us-ascii?Q?PswphvOQ/CU=3D?=
+	=?us-ascii?Q?bDqAbRMjatjAX2nr/xCsbYemcIGicxOqqPOKNMMfUHlGxvTs/B0k6rzrOI9c?=
+ =?us-ascii?Q?HgLXgNY2YTZDKDspqISduWEKgsjLRHFD4TPU8G39g1ZjJTlv9v4wGBLupGAs?=
+ =?us-ascii?Q?5OFyeOc4pSkkTCXIddS6fsaP0xDC3J6bA3+a8CbTxUKdDFYYH6GWf1l8HkGA?=
+ =?us-ascii?Q?6eDhf7QEKtb+VDTItvA+zGAp4WoW2w147KVXv8mcZ8+cje209EAiJqxA4gVU?=
+ =?us-ascii?Q?Blim1TG9N9LE+GfI4hcJn4HJWV5dGF2sQj0mkhD4sSA+opqhneR7hXyn6WZL?=
+ =?us-ascii?Q?UpiAdLubJU8j9O8O2q6MLY1+YPRIsE/BWBh5G95wAPuCOWSl2DNDeMXtdRX/?=
+ =?us-ascii?Q?0eigKC1bZpXwLgtpRbOODsMGjD+lSqm9YM90N7pawwx3pRecp53lSLtlEE8I?=
+ =?us-ascii?Q?mPYD/rO/9aPLxZHlZ6+VxVvCH844UgP2WqFS41oliM8sCObuPYyoyg4o9sY9?=
+ =?us-ascii?Q?zILBa1gcCNKVb1NLYSvW4NlXJPEHgy49NBK+G2vnIAbsuTDo1QjVk8iSiZ2u?=
+ =?us-ascii?Q?QcaYX3GuvlCYwb2kjQ7bxPpnzHSyQ2bUamK264Z+Ord84NXdURDMFOzOjCqA?=
+ =?us-ascii?Q?vd8X2Vb/IWNc5tqlVASoe+ZIIQFXJht2OsjNBdzs4pGmdyy4ppM7xTaJI8zl?=
+ =?us-ascii?Q?Qga4rG+npGQ+99TUc+1h3QmKlPaeoHyRuF6Y7jzF64+qfF53hVSSlz4LjLC5?=
+ =?us-ascii?Q?QLuh6Y46Cfic2kFzeLa1m0HFKvYLkBX8F+GxkD0nXgeSElMWP1M8F7xSAGQi?=
+ =?us-ascii?Q?9C0Xf0+XZnZtqvtUwOsb9pNIMfBcPmBPxtYOjbYumwTD6ldwBbATaCQGrVGh?=
+ =?us-ascii?Q?QYEMbVFwv8lXtFzicUq3LG5fuOHiuxOC0SyA576KLcPSuQKzRAsNOJHvKVLu?=
+ =?us-ascii?Q?9916mHDx6t0HMNbURJYaOvZhKkIy9/spkVgZi3cLWzyUuv5qFDBfFr3xznI2?=
+ =?us-ascii?Q?hFS4TAs/kCbSJJx5BrgvhZTbuS561YweGic+iEqSjODyU9jUJqCWexZbRkln?=
+ =?us-ascii?Q?5wrjymeWKdV8wzY+GZzr52OIYiAtr5wg9hvdycM/HLzKIao0+cArkDYjZFAg?=
+ =?us-ascii?Q?+jk/oZ+LAFRJaENnTSiQnAEHhAvGvg7jn3lvMBmeVvKR+3f0u2Rr7TXYBnzz?=
+ =?us-ascii?Q?FjUgS4BVbYfD7pkNqO6+5JSxYudUa/yB9to9/Xiew5sTO6IkcK58LC5S+lP+?=
+ =?us-ascii?Q?wC2OhimpY9mgSgc3NJdfzhm5aCJ+09BctzfpvHYcKHhQzIv+l8u0PQfVvtFN?=
+ =?us-ascii?Q?yEZ48C7DdC5pDlNZUCm4nWyB44+d9pfIuqtjP04BH+/c8NwyeCHItJg7KEkJ?=
+ =?us-ascii?Q?mKWLJOfjdbrvNJng9QnRha2wUbP85GxfZJCWi/QRInuYuV0vAxVwi49Uzqa0?=
+ =?us-ascii?Q?FsoG65uKdqszbcjOlAK0DKI312rJb2Z6HrjpWrWaKvC9g+fADj4J99ZSdxnM?=
+ =?us-ascii?Q?nOGhyWgoS0g=3D?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL4PR10MB8229.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?+xjl7vmhgfh5O9ZxSzTMH6LYon9cDJcBEezgtkSA0/5sZSBXl+PIjzvRUQlm?=
- =?us-ascii?Q?FFRoI1cy+FoXOChEUUyhVbJCFAELiXc80bW9Rm8vMyZPWvlV35OG7ukZe5H+?=
- =?us-ascii?Q?Mq2ygWozwF/BlHL6qiwgzAiW3vJiySiSCLQPnZH0RaaWiPB+jjXjYgvRqy2y?=
- =?us-ascii?Q?rF9BvdWu6qIHCoJEqxsz06uRTLWsGfEvcFH5Qlf7jPJhBrzx8dTFMJ6Wbral?=
- =?us-ascii?Q?7ONojhiND4ZMBb4zxieOAmBxUJVNRP1kd4KCWnd3Jee8ZOG3GSbQqyyBLdoX?=
- =?us-ascii?Q?fI+t6EjOJHwj3HHTFoupR90S9fvnCk5K1DAKgHb8oiLtYKOn4K+p4ZYNEjfP?=
- =?us-ascii?Q?DrcM3ATRKBPntA9weYYz0vAnMrwm6rLrV77mcIK+eHjZp6TN+8f5Gk/APBTE?=
- =?us-ascii?Q?T9JeukIUMEUpZau5bLXcXtfKC133SLA8nCUPvtGRmnrxnkhpha90UPkTlDjO?=
- =?us-ascii?Q?QgL2/DZwGhbE4ju3HuOypeRtD2GIYs3PVKh/M7em00T/09h0TjCRjt0BAhwZ?=
- =?us-ascii?Q?ZZzSMB9900XV/TkCTlxUyTGjMP5GRrsRou5A0LJEd8NgofdSfZ0j+iwxzzs8?=
- =?us-ascii?Q?76/hIDdgiFhNNwAex0q3bnv9b2KWFFiQ86IrcDzKsGl5FONkp+qFN4BLvtRW?=
- =?us-ascii?Q?m7HvinbUd/4Imi6lNAiuTK+L2aORY2nqooYWaA+gMX+qY96WHFp6/v5qkkMq?=
- =?us-ascii?Q?NU/zBuaxNatYtL3l9++kneMWro1ZlzXfV79OWI2RlBUlsJYbQxX9Z4Gd2ugP?=
- =?us-ascii?Q?QzbVzY47XPSpEX5QjWBV6FYOd0LDiBZMcPTt0OprvezAlAaXxSOBLBH6WF0b?=
- =?us-ascii?Q?E/8n5QifpWqFvW5wZu2/AtGJaSf46dUSgZeZN6LARXkph0a3Y92uugg9xkRS?=
- =?us-ascii?Q?B8HZRvF559eamkHFe4M6be1Dc/Aai4qdrKu7xQy/jp7RTZSLyeIUVOKjrMTY?=
- =?us-ascii?Q?mZf2HYRoX/sQ7mo2UXOmPVJp01BIxlcJ+gIFJLIIzXrRpx/4l+E4tmJWIB0i?=
- =?us-ascii?Q?ZgVxYBn8U5CRd/DN2OeZfU+CFCmnPkp2BvIT7uSCRW0QvLQwc+VcliwngcpL?=
- =?us-ascii?Q?KaaroXl+YOMBd9Euj+xTpzQeyE+yFn6sopJv8PVOdYM6Ab3hSCLZDNdhQy4Q?=
- =?us-ascii?Q?wkhlvvQkrZjK8KzYBpLHde5Fuu8LL7H9jBol71iwBLUVVJi164e7Q/yWOI0P?=
- =?us-ascii?Q?hryoD7EySffb6JaCGKIpymxhARBZ6/BzOHtdL/vMsnOI0jAVUSlUalib7fzK?=
- =?us-ascii?Q?pUsPq4a1/g5CH3cAdMRXxKbZFcVvsBVypbX9P19B2IwvyUJTIu38s63YWNjp?=
- =?us-ascii?Q?D6MKbUyjBuB9JfCdgpfPtP0oQw98WHBe3J7uGHhiT6rmSBVxOY0Y85zgyI/h?=
- =?us-ascii?Q?mjPOxLhO086mTFpGjDfbyuw1xEKZQOFEjbWHB5E+e6eiWEfc11lMvNC0Veu2?=
- =?us-ascii?Q?c2snv+J/kJMV0t4yNzRv7SjN0F0zLTKZWAoQ2zxOS+XQr4SMavwGv5ZBZ/Q7?=
- =?us-ascii?Q?EWVAqTSyKLbeArLuphey9MK1S+CvVlE/EG1GC8jwJTEW1TgMFLEBzafWfcfC?=
- =?us-ascii?Q?j/GpqG3xrxOqmmlW1O/T/+qCjvsdej82pfRkFScjIjPY4otBSHIUbJvNz72q?=
- =?us-ascii?Q?SA=3D=3D?=
+	=?us-ascii?Q?K0kVxfjf9YE3Akp/wPfb8sYjXLU0U7ZbB9cnhZXBvBO4KC0uO2wHTBlsxgbQ?=
+ =?us-ascii?Q?ow6H4C/cF0i5NFB/W5uyI89rGC32p48Kcv6YSdK7aRii4Uk/doA1lzeGPtLY?=
+ =?us-ascii?Q?H0fi6XpwzFHHSZbGorcZJQUri8o5Ukrwh+Iasq5U7LGcoQlxt8RrAc+7080g?=
+ =?us-ascii?Q?OpVWRqom2vur/xsPyqx59Z07y1YUWvKXmZJqWJx7RXqPiDOdFj0w2eg4TG7X?=
+ =?us-ascii?Q?esVszBzk6vGw7R3C5MeqcneWSx2vSIQDu8q2IgZkY4XNWH7CvU2opM/TPlg/?=
+ =?us-ascii?Q?i3Du1aVfnPTNjsRY779tn0CUi9cTCTU0iztz6neBy12z1EwWUyhsuwomVuok?=
+ =?us-ascii?Q?i4xFBIV3h0kiT3NKhE+Ya/Wrei0IcvKkiqimm7sGQJaHh6kJ/Lh+d50MlYwo?=
+ =?us-ascii?Q?XlKLpoqA62FC56gXlAAZeu2CKl3yOjsNVe41h9mFetO/2bwLRZySHe9P9a3p?=
+ =?us-ascii?Q?R4DSmRJ2GXUzgpL3TnOt6MK3ekDTm8B3k9ilsn39l/s5Vhex6FxbLfeiXGlh?=
+ =?us-ascii?Q?14kmu7new+2QNjKrm4j20utw1D9xRLBVB+ZG6xFM/XvHdGVrAoDlTb/sob/G?=
+ =?us-ascii?Q?Vf5qLvCKfjJcGyAkcy9Xe2qkSZeD977pkNSQxd4RDmvykuhpv1AWn7eTax3p?=
+ =?us-ascii?Q?9/0DJ1rSdxvFa0OtPyaxdePQ6Ma+YNoYxL2W2YYYjfV7/6FsGr7y2r4uKmdq?=
+ =?us-ascii?Q?8JDAHg106qTpZnXbR7s94Po/PktwRrMkbwXr63NIoqIrgOhAUGywRnsfoqAf?=
+ =?us-ascii?Q?AOrBuKg9FS50Ju5QVtUMFvPgN175fNCyq3Eh6EdmUEGDyN3/WWlRjdEFUM46?=
+ =?us-ascii?Q?cP3bMWeuGciqBjVuYJx0Qh2vQU4qa5Me+wTAhPHDZkl2QjGd+I1dPYU22dFo?=
+ =?us-ascii?Q?IK3cli2iGX+nGMfYxGc7OhBylcJ+Dg09YNxZnv879Fmm+VoD/VF2INWcpxyh?=
+ =?us-ascii?Q?Aqzy/SEAWwcgiJRX8CTP6x6/k4b3eN5QzmoTw1wSXia2/m6ABuyxyN985vFf?=
+ =?us-ascii?Q?lRxAWa083Iv5M0b6gMGQxtXIk6aHvNH6cSamJgyZ1BqFzT/2NLuYV+Euk0QG?=
+ =?us-ascii?Q?sV5vKCvT3PXi2S4kDDoPNLhVTLCjrafksT6uE+qLXw0hWuK6n3tuucZW+1Pa?=
+ =?us-ascii?Q?UegRRGb2PiT4qM6aN/ZnYArYNsWdETWQDT9Gz2Mc1WoP0MEtyW3wHtf5affR?=
+ =?us-ascii?Q?BOjCYjcntZJ+ATEyCx/xKG8n02HA5k3Xjcy4a+DwbNLOcysd4OBSKMTgeyh7?=
+ =?us-ascii?Q?PZSauYi64aIzd/jhFWq6KxlgTQsRFBGEvkUVkhmyjqjcAFfNY7M2vHBiux9m?=
+ =?us-ascii?Q?fqKmxj1VpBOA71WhoK6qvnan9KnqaSF6KcRDJ0hhawUBtDEo0IF6klyKFkdV?=
+ =?us-ascii?Q?nHTP+S63xVzmxGDn6vyp7wXwgNH9/XqLGyBWnAkQ5j5HCDQC+2Expq8fLYs3?=
+ =?us-ascii?Q?TALjIyAlTixuechDbeS7k0PtO1LweNTdHyd9Si8QwGYRgAIThz5ilauD3Ci3?=
+ =?us-ascii?Q?Hbt0VsxFg3r2lghsvQ6JLnKYw3y55ftH2Im+/aoDSL/78RXDktS9asHAemOB?=
+ =?us-ascii?Q?k6UP3nk+9yuqyOIUFWVnPnve/50HQL02mrk7ZIrlydpJsBnKr1MM0tvGe7FL?=
+ =?us-ascii?Q?yQ=3D=3D?=
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	6XMvTLZ4rCSlPz72VJxyJePgHJi5A6FlUQDMURa8qugBiBRKw+PyXYMxUh+3T8m4omRZ0hZzoDg4frvUJKIn2bb95YNFv6nv3qW63hFpOFZ4NPFiQ7/28hHULCGuPercdpTwPYH4zGKDgkm+Mwx/MBhQRf6WTq1vFfWecVBJm5EKTAo/vlUzqel3c8XbRhRS7x4+rU9B2IyL+VI6uvqkyYvbE0XrPkEIESmaMh9R+uOp+zbbrr7FfKudPLg6Wmmslxj8oPSGEEtTNvr7xbHy05zDvl11+YoRltGj2mZEofEiJWZWfgQLrd7SPEoaUt/gNjVR4KSs4wNV/HEYfMba1j4E8F3UU+W2SOIBrCsRSwHeDBg1n57Bkdl9owlAm0KagPc7IyH+FX3LnRXwe40nDFMEYUaM55IOHr9PwcQRu5dQO8m3Z7DRZA1jPpTCUDLHG2LR7yxDrPCpgVq9bHvvnhhhjTJWpHhGZYqAwaBqhXpnqzOKdo942E0blM7gwQmol0dW7tii3RFLuA8mhyhsBZBsf0yIqEeNt1ifDKpljFH4QpXw+BsW5EAoYdw7U8S8kw4SrCUfUj2lEuj1qsaVBT3R5njotfRWZhFtNRPqV+o=
+	zC4uA32LqU8rRzKlE666zL5buXwBSsuzdc1zilkiKsuu/piXC1aXI8FE43gYYgXqUHnRdhNvC6plnMKCmf6Gm8aHvelfdwdBdBIlPbw8nc2DNpzbntiOhfaj/Z1H1Z+mUNnO+ka27kcZ7dHXik6G7hWLxWyKpfR4tOaM0ahHQZm36xG3UqlaoNGi0PGY/AceSTrw++O682n+4TOgwyDpr/I5k0iiBakJ0nQqN/5/YcijRz9CY6S2K51hj6l6uDanHjaajig5SegvR7HwSRyT0yZVso0a7gsCG0m6ZBzwqM4NSNnBBjjchQvLxHnhmemVrytGCqZ9iDzZfBwIATtMa6cFTlWAlITiD9qiNLDDRdA2IX4+taiKCLol7IvU7jDwhFwswIECyVMcHrMCscTWe/mXkjBVG6oGZwlpSWtm91APmHoVVZsce6qiSgn9YwTtQO6PelfhhY2y8aEZj0L6CtelX5O0aI4VPDNv72GMkyOrZsc5J4JtKQz4+Hiz4mgYRzVFTlIxpb7CtYxI3bBzWSzpTANmOsyg+JE5pjABiA4mQBffVOeEL3jAkPqHG0wjWH4/aTEf8MOAw24drXIx+Qqb9ttGc6TFnZpZpneEqAU=
 X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6371dcdd-74ce-4322-0987-08ddf61e00a9
+X-MS-Exchange-CrossTenant-Network-Message-Id: a7766dc4-57d2-4ac1-35ee-08ddf61e03c8
 X-MS-Exchange-CrossTenant-AuthSource: BL4PR10MB8229.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2025 19:11:27.7538
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2025 19:11:33.0660
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 7ao1Wt/WLMPlNgFsVKfW6SddlGeYTVuIAeQh0br7rK2Y5Sw5h5+IhjHWRl7lq8ruo8zff79QBfTb8inVMIWimQ+ER9XY7ccDzTYyxZUj3G0=
+X-MS-Exchange-CrossTenant-UserPrincipalName: llczs6P3tk7pmlOzA2ourIgQNKNI47GD6U5NEhPfU5YZXaCIIwy8TA+GTSPpQUb3WE9IsbzVuw8EysglnD7bJa1WAWUe1zf+W+FG2ogZB94=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR10MB6189
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
@@ -240,30 +240,29 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 ph
  suspectscore=0 spamscore=0 mlxscore=0 adultscore=0 bulkscore=0
  mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2508110000 definitions=main-2509170187
-X-Proofpoint-GUID: 3ncm_bUCDgasLYZgmdDx9Lsq6L6_pFNq
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE2MDIwMiBTYWx0ZWRfX6QTHInmyos0u
- TOe0JTWtHrRVTBxL2eQKndgObQDF4uCqYm+1V05vA1AOtIbv08YRyL7uEeYUHXQkNeVEykvyzpT
- 6aFHR8Z9nAsR8qkO7NAfPWE9QRT0f/DJ3tCdIkZipBznMwl1PaVeZ+qiXCEYdIw5pDQJ4TNZ6vX
- wzjnZeKXVkGYqO80rStIMR3CMwkU59rnYONjzPbt8PXAAKHy6KdU0pllvwVYg+FtE+/TkANewpA
- NYmGpR6efFyMS/ink7yV6SqJjvxzUTl0XvebriXVoNEIsKgSSNDlAGUFZa7cCWyT7x/Y8piboL6
- +FPOnrVjjxf1kdUncvf8Ue+ODo8lzgpq5xfCY6QFVkfVcqHvpQE6ArVX327i4ZIQgNbaahXVp8I
- Qbo1JGfE
-X-Authority-Analysis: v=2.4 cv=cerSrmDM c=1 sm=1 tr=0 ts=68cb07e6 cx=c_pps
+X-Authority-Analysis: v=2.4 cv=JNU7s9Kb c=1 sm=1 tr=0 ts=68cb07ea cx=c_pps
  a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
  a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
  a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
  a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=yJojWOMRYYMA:10
- a=GoEa3M9JfhUA:10 a=yPCof4ZbAAAA:8 a=20KFwNOVAAAA:8 a=Ikd4Dj_1AAAA:8
- a=V8PVCHvh7cpLA54rH4kA:9
-X-Proofpoint-ORIG-GUID: 3ncm_bUCDgasLYZgmdDx9Lsq6L6_pFNq
+ a=GoEa3M9JfhUA:10 a=yPCof4ZbAAAA:8 a=Ikd4Dj_1AAAA:8 a=AjtsbyE0BD3NTU5drM4A:9
+X-Proofpoint-ORIG-GUID: 3Jm5M0sOtmcUr9UARYG2sJm3tDuyWkls
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE2MDIwMiBTYWx0ZWRfX5Ipu2ODG2TaZ
+ 9+Th79zwsIi04K44Nr+U32XPgs52IeDmMZBOn0HccDUeskSU/jl+bdpibEZshuaNEGbaa/yaXfD
+ kNq2150YV+letupKFzRsJH8u8VAC4XZtxX1GUlAJKIP8eET5G1pcRzJudErzGWg/jvcNBO1aW/A
+ 9VVGm9YcjZ63E92p/bzDw26N+nhyFb+tEftOYdeCzTpHURnPTXJuSl2Q6lVCCiGNsIwSrs1VM9U
+ PdZGxG2ETgE9rRq332NqZhaf6nAgd+ZkSaEMg4XUx/07rabBfOz6EVqx1xqBub6epgwDXKipT63
+ CTSnScg+cAU3VahFhBLOtrx33c6OfBzhIb+1X9nfKNQG0hxG5OfqGe6uFYNaoZwj9xYcqCwNEW2
+ hrVdfh7Y
+X-Proofpoint-GUID: 3Jm5M0sOtmcUr9UARYG2sJm3tDuyWkls
+X-Stat-Signature: c37nizwofzia8bb5o55ze6fkgbgcijbc
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 51CB0C0016
-X-Stat-Signature: 4rz7t9wtdrgif78uzqqrcyywnndb9i8i
-X-HE-Tag: 1758136316-192203
-X-HE-Meta: U2FsdGVkX1/kiKEXmCY57CyC1qNJ5+VigiQzRxGvhhoqCaXPbgtSDIHKRcFWJkKYnwVGWeXIz27qsWMpqDE7Blb4faMAdmY9gQYMCoqEdWzWJDCVLfPn127+ueeW1ZNSHIpwOGJuI14jXCekcqHCnsQhgnZXoZyLxobGomq93Ke7dxlXm7msXfMr6qSYPJyqOaR7g2I0c3bkSOVw9SBG948UvPhjNVNdXwqTIxFybllP40pZSMRhhbgbYEN64cSfvsBt8LzF540V/qEPsCWv7L9iPUfEhtzeajz9oF0TI4kULu0aIs8jKrjHWpmyWTV7QiW19S2LNiDtwPX2eGzlF4SXxiLaLX8an1xEZuMbiEXYfQAC2KCljhgKZoCgkkUiH1s2w+Ll0gFDxlMvO9MlI8V8VTennKy1M+arYT8EmR5Vlp4uUDCFRdnrr3D8e8oT+lGryt57XYvs3GbZs+e1nZzfYMbUDkxYi9tDanBOHVK4eCHMJx23VrtYGcOr8r2Psiurd2PjVCb9q+1QBbWFJgU5ACPYrbb4cAlCYpu3MpGnPB3umJzryU7ijOZIzulwZ2HqhZ9829hhwK4GeVeg2TfT/TtwWmVYBjXqkAj0WPY2h7kfYVhSqoCMmoKUWtGvONHdYDJx1Y4/W71Td3B4MpDlWmQnlWd8O5bkltbD/Pfq8hua7Vrj/2QjiEMFAVXMT6QlPU0vL22L4/GqDduujlPZ8Sd2p7oMyI3mwCloXH51K+ZvGhJjZnKdMEXq3g0LQPQayd4Bsh+gLT/V+QDXJcw6D27yRWxIOqGG8ZprcmEJ7bbxSBAdoJhgDMiSz7F2mdtAsLy0EZBEJv5NN745rxevdckj/LKocQ4eMRNFG1gmafMpe+LS5UJqBFYKnSDXYbw0CWQfjbisRnQBAi+0pC8yBXNWpTAB8GJZcaRx1MdApEupYS1ZGc06t55Iu3nIUGZRYC2cVX0yok/j4xZ
- DtXkeGbS
- AHZcgfr53L7cwhz7m+OL5OPq2wpfTY6yUs2eo54Yi1KrT7KLTbQAQH28S0UDa72KWYasWl4l57l39UFc64zRPkx0cCX81AcT85tKeyDiLY/btCFs10/swKRA91oXdJgSBV95b+rzUkMVqVc8LKrEA0p29jJuyth2wBuBRdZ5Sbt8eOAuHdonJzRXn8XM1S7HKD584Dzjt7n8oPjs=
+X-Rspamd-Queue-Id: EFF6C140002
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1758136316-906652
+X-HE-Meta: U2FsdGVkX19+yD5DjTqSt01SYE59aapEhPmMfCGtTXHKzSyO4Tsbiu6SkauNiO5rlHMGADeB1Qym07AHc+UO1QDfUJO2f9GlBkk2UWp8r8GnugFnd2b7Rqh58eGtos36mx9WRFmbliAXTeH9Py2oWIxXXVLuMCsZexcmapxtFOLOTwyjCXOluuswMDjDe+yq0viCe2WpykCPFKgf2Ll25LbYFi10whT59M8V9qpP9xyrzLbQngv5gdmqKjIJQCOyr+3+Kg1eVoBNb0JBMiu/VbeKb+QqUofqQP4EEHJYGGIR7ZuezC5PJMPzz3OseAOsotWdtLMnSXYk8jXJTE6MCL4JEDSpvWD5c9hgjmgMXSYItDLhw5TAFIqoOPJ5Vc/nASKF2akPcwUiEZsANLRrkzPYyYuLzfZVwecSyPmdlUcOwg4h4OSGl6tzhkP4sRAN6YAMqr4X1AQ9Cc8sJ7LPHeNiVimfphde77zdplaL73K3jML1UVn7ujW5brWnhG4rU6sgsRRRK4m8BaHiUwl2xvpdswoJ269axWr8hD835lpTnHU331dNiAyK3s6cPgQ0XOISkzKC0Mrb2w1t7CvxVfEDMpNxcxH2x2E+FzO/Ph8jnyU7BCC7rwOIaewGL68BxpGNkQvUzNooWHr9HYQ4uB0YrqAHxOmWR5AkXjKI8Wei2siZh23vMmJ4HJ9lDvfJl585+fw3U9eNZwhJmRYot5JUCK3gAWuXjv/6eQHTHg/Eef7zxihGLN/1LLzl64iFYQKMDIGiij7C7VJuYvbtyV3N5iDUSA6eoMzwD4mdPRDE2VXUYk5vBEhXmuiWydzKaLbWZRs881qYshT6BPOlvyiOTUtJDg8jZyvqajEZZblmhD/OeeAu4Io8rw6V+6XUHm039PH7xkp/X57MB+HW0Rnc2J3iLgIz02SJZQlCEEJVCuUwPbX7gTf15ZxDwIk84s1hxN/ICWyZfZ56Onp
+ 7q6uQ9wx
+ 4JPRaCS2H68lO3uiPM4NzT7zXIwQbDiqOa0ObXNY1adj+fkKZLR+JEgN+XJXESA/DdBcYxN0dOasUJVPoUznzF7mQKTrhm6S3PQupxDSmSFs88vg501kLVPzm6sJPw30DU4bzSGFfjJT3MvZ7/pGfdwOznX6PM95X9nMIZ4xnDZErXWJNIhFo4bPXDXKU1YKaxG3YjfqSBYtG53KfNY3AyjX4uX+GrfAQ8LdwSj57MO074fZBVjgBwAZcAEmlz0nQn7O/6X68ZC5E8JjGeHht09q2X9PslARVXJCyXMcvxlLBr4Rdw8kuBsR00OAmWcwXVYuVhlrcUObnDOjHFZmblzEHP8Op9UgcOsAkMdHuxGr6H4dceEEQSDfsjy6mO7Q/x9ZVI/fdWppY08npxYekEOprbXKmyjrZIirJC9zWc256K22cgUuRL7IZ0VLYGGyvh7s1koKWtPhmoq4UTUlrOCZpG4gPvALocvn1QOlGHeAYAkrk70n8JceNqX+MRm4kmFEg5cCxa7nYMvq+5q1QcscNDJtV2IwTk6VxmiZnm7xkO/DSZRobZ4+qYeNDTAql0YRMQDapOq/gYoWfBavgEgbYXbtVB4brqMGsmnt4o5Cwi6+Rm3B67f5eqAu4uDAxEKrMz9wYK00hINpGlV6w4byu/6HWHqYpopXLtXMhUtQ3DqaiY7eP9Rpbe8/ZanO1bqBMr8DjVRvNoFm8kcqe1AIbICfGklQb4VKb5lnhp0tAxPyZcvg4fGvCePCl7RuyVBdLiVHISVcCJAp1TrtA0SwQvuGmkzlw3nD1GZ2ISNGF/00=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -272,68 +271,272 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-It's useful to be able to determine the size of a VMA descriptor range
-used on f_op->mmap_prepare, expressed both in bytes and pages, so add
-helpers for both and update code that could make use of it to do so.
+We need the ability to split PFN remap between updating the VMA and
+performing the actual remap, in order to do away with the legacy f_op->mmap
+hook.
+
+To do so, update the PFN remap code to provide shared logic, and also make
+remap_pfn_range_notrack() static, as its one user, io_mapping_map_user()
+was removed in commit 9a4f90e24661 ("mm: remove mm/io-mapping.c").
+
+Then, introduce remap_pfn_range_prepare(), which accepts VMA descriptor
+and PFN parameters, and remap_pfn_range_complete() which accepts the same
+parameters as remap_pfn_rangte().
+
+remap_pfn_range_prepare() will set the cow vma->vm_pgoff if necessary, so
+it must be supplied with a correct PFN to do so.
+
+While we're here, also clean up the duplicated #ifdef
+__HAVE_PFNMAP_TRACKING check and put into a single #ifdef/#else block.
+
+We keep these internal to mm as they should only be used by internal
+helpers.
 
 Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Acked-by: David Hildenbrand <david@redhat.com>
 Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+Acked-by: Pedro Falcato <pfalcato@suse.de>
 ---
- fs/ntfs3/file.c    |  2 +-
- include/linux/mm.h | 10 ++++++++++
- mm/secretmem.c     |  2 +-
- 3 files changed, 12 insertions(+), 2 deletions(-)
+ include/linux/mm.h |  22 ++++++--
+ mm/internal.h      |   4 ++
+ mm/memory.c        | 133 ++++++++++++++++++++++++++++++---------------
+ 3 files changed, 110 insertions(+), 49 deletions(-)
 
-diff --git a/fs/ntfs3/file.c b/fs/ntfs3/file.c
-index c1ece707b195..86eb88f62714 100644
---- a/fs/ntfs3/file.c
-+++ b/fs/ntfs3/file.c
-@@ -304,7 +304,7 @@ static int ntfs_file_mmap_prepare(struct vm_area_desc *desc)
- 
- 	if (rw) {
- 		u64 to = min_t(loff_t, i_size_read(inode),
--			       from + desc->end - desc->start);
-+			       from + vma_desc_size(desc));
- 
- 		if (is_sparsed(ni)) {
- 			/* Allocate clusters for rw map. */
 diff --git a/include/linux/mm.h b/include/linux/mm.h
-index da6e0abad2cb..dd1fec5f028a 100644
+index dd1fec5f028a..8e4006eaf4dd 100644
 --- a/include/linux/mm.h
 +++ b/include/linux/mm.h
-@@ -3571,6 +3571,16 @@ static inline unsigned long vma_pages(const struct vm_area_struct *vma)
- 	return (vma->vm_end - vma->vm_start) >> PAGE_SHIFT;
+@@ -489,6 +489,21 @@ extern unsigned int kobjsize(const void *objp);
+  */
+ #define VM_SPECIAL (VM_IO | VM_DONTEXPAND | VM_PFNMAP | VM_MIXEDMAP)
+ 
++/*
++ * Physically remapped pages are special. Tell the
++ * rest of the world about it:
++ *   VM_IO tells people not to look at these pages
++ *	(accesses can have side effects).
++ *   VM_PFNMAP tells the core MM that the base pages are just
++ *	raw PFN mappings, and do not have a "struct page" associated
++ *	with them.
++ *   VM_DONTEXPAND
++ *      Disable vma merging and expanding with mremap().
++ *   VM_DONTDUMP
++ *      Omit vma from core dump, even when VM_IO turned off.
++ */
++#define VM_REMAP_FLAGS (VM_IO | VM_PFNMAP | VM_DONTEXPAND | VM_DONTDUMP)
++
+ /* This mask prevents VMA from being scanned with khugepaged */
+ #define VM_NO_KHUGEPAGED (VM_SPECIAL | VM_HUGETLB)
+ 
+@@ -3622,10 +3637,9 @@ unsigned long change_prot_numa(struct vm_area_struct *vma,
+ 
+ struct vm_area_struct *find_extend_vma_locked(struct mm_struct *,
+ 		unsigned long addr);
+-int remap_pfn_range(struct vm_area_struct *, unsigned long addr,
+-			unsigned long pfn, unsigned long size, pgprot_t);
+-int remap_pfn_range_notrack(struct vm_area_struct *vma, unsigned long addr,
+-		unsigned long pfn, unsigned long size, pgprot_t prot);
++int remap_pfn_range(struct vm_area_struct *vma, unsigned long addr,
++		    unsigned long pfn, unsigned long size, pgprot_t pgprot);
++
+ int vm_insert_page(struct vm_area_struct *, unsigned long addr, struct page *);
+ int vm_insert_pages(struct vm_area_struct *vma, unsigned long addr,
+ 			struct page **pages, unsigned long *num);
+diff --git a/mm/internal.h b/mm/internal.h
+index 63e3ec8d63be..c6655f76cf69 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -1653,4 +1653,8 @@ static inline bool reclaim_pt_is_enabled(unsigned long start, unsigned long end,
+ void dup_mm_exe_file(struct mm_struct *mm, struct mm_struct *oldmm);
+ int dup_mmap(struct mm_struct *mm, struct mm_struct *oldmm);
+ 
++void remap_pfn_range_prepare(struct vm_area_desc *desc, unsigned long pfn);
++int remap_pfn_range_complete(struct vm_area_struct *vma, unsigned long addr,
++		unsigned long pfn, unsigned long size, pgprot_t pgprot);
++
+ #endif	/* __MM_INTERNAL_H */
+diff --git a/mm/memory.c b/mm/memory.c
+index 41e641823558..daa7124d371d 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -2900,6 +2900,25 @@ static inline int remap_p4d_range(struct mm_struct *mm, pgd_t *pgd,
+ 	return 0;
  }
  
-+static inline unsigned long vma_desc_size(const struct vm_area_desc *desc)
++static int get_remap_pgoff(vm_flags_t vm_flags, unsigned long addr,
++		unsigned long end, unsigned long vm_start, unsigned long vm_end,
++		unsigned long pfn, pgoff_t *vm_pgoff_p)
 +{
-+	return desc->end - desc->start;
++	/*
++	 * There's a horrible special case to handle copy-on-write
++	 * behaviour that some programs depend on. We mark the "original"
++	 * un-COW'ed pages by matching them up with "vma->vm_pgoff".
++	 * See vm_normal_page() for details.
++	 */
++	if (is_cow_mapping(vm_flags)) {
++		if (addr != vm_start || end != vm_end)
++			return -EINVAL;
++		*vm_pgoff_p = pfn;
++	}
++
++	return 0;
 +}
 +
-+static inline unsigned long vma_desc_pages(const struct vm_area_desc *desc)
-+{
-+	return vma_desc_size(desc) >> PAGE_SHIFT;
-+}
-+
- /* Look up the first VMA which exactly match the interval vm_start ... vm_end */
- static inline struct vm_area_struct *find_exact_vma(struct mm_struct *mm,
- 				unsigned long vm_start, unsigned long vm_end)
-diff --git a/mm/secretmem.c b/mm/secretmem.c
-index 60137305bc20..62066ddb1e9c 100644
---- a/mm/secretmem.c
-+++ b/mm/secretmem.c
-@@ -120,7 +120,7 @@ static int secretmem_release(struct inode *inode, struct file *file)
- 
- static int secretmem_mmap_prepare(struct vm_area_desc *desc)
+ static int remap_pfn_range_internal(struct vm_area_struct *vma, unsigned long addr,
+ 		unsigned long pfn, unsigned long size, pgprot_t prot)
  {
--	const unsigned long len = desc->end - desc->start;
-+	const unsigned long len = vma_desc_size(desc);
- 
- 	if ((desc->vm_flags & (VM_SHARED | VM_MAYSHARE)) == 0)
+@@ -2912,31 +2931,7 @@ static int remap_pfn_range_internal(struct vm_area_struct *vma, unsigned long ad
+ 	if (WARN_ON_ONCE(!PAGE_ALIGNED(addr)))
  		return -EINVAL;
+ 
+-	/*
+-	 * Physically remapped pages are special. Tell the
+-	 * rest of the world about it:
+-	 *   VM_IO tells people not to look at these pages
+-	 *	(accesses can have side effects).
+-	 *   VM_PFNMAP tells the core MM that the base pages are just
+-	 *	raw PFN mappings, and do not have a "struct page" associated
+-	 *	with them.
+-	 *   VM_DONTEXPAND
+-	 *      Disable vma merging and expanding with mremap().
+-	 *   VM_DONTDUMP
+-	 *      Omit vma from core dump, even when VM_IO turned off.
+-	 *
+-	 * There's a horrible special case to handle copy-on-write
+-	 * behaviour that some programs depend on. We mark the "original"
+-	 * un-COW'ed pages by matching them up with "vma->vm_pgoff".
+-	 * See vm_normal_page() for details.
+-	 */
+-	if (is_cow_mapping(vma->vm_flags)) {
+-		if (addr != vma->vm_start || end != vma->vm_end)
+-			return -EINVAL;
+-		vma->vm_pgoff = pfn;
+-	}
+-
+-	vm_flags_set(vma, VM_IO | VM_PFNMAP | VM_DONTEXPAND | VM_DONTDUMP);
++	VM_WARN_ON_ONCE((vma->vm_flags & VM_REMAP_FLAGS) != VM_REMAP_FLAGS);
+ 
+ 	BUG_ON(addr >= end);
+ 	pfn -= addr >> PAGE_SHIFT;
+@@ -2957,11 +2952,10 @@ static int remap_pfn_range_internal(struct vm_area_struct *vma, unsigned long ad
+  * Variant of remap_pfn_range that does not call track_pfn_remap.  The caller
+  * must have pre-validated the caching bits of the pgprot_t.
+  */
+-int remap_pfn_range_notrack(struct vm_area_struct *vma, unsigned long addr,
++static int remap_pfn_range_notrack(struct vm_area_struct *vma, unsigned long addr,
+ 		unsigned long pfn, unsigned long size, pgprot_t prot)
+ {
+ 	int error = remap_pfn_range_internal(vma, addr, pfn, size, prot);
+-
+ 	if (!error)
+ 		return 0;
+ 
+@@ -3002,23 +2996,9 @@ void pfnmap_track_ctx_release(struct kref *ref)
+ 	pfnmap_untrack(ctx->pfn, ctx->size);
+ 	kfree(ctx);
+ }
+-#endif /* __HAVE_PFNMAP_TRACKING */
+ 
+-/**
+- * remap_pfn_range - remap kernel memory to userspace
+- * @vma: user vma to map to
+- * @addr: target page aligned user address to start at
+- * @pfn: page frame number of kernel physical memory address
+- * @size: size of mapping area
+- * @prot: page protection flags for this mapping
+- *
+- * Note: this is only safe if the mm semaphore is held when called.
+- *
+- * Return: %0 on success, negative error code otherwise.
+- */
+-#ifdef __HAVE_PFNMAP_TRACKING
+-int remap_pfn_range(struct vm_area_struct *vma, unsigned long addr,
+-		    unsigned long pfn, unsigned long size, pgprot_t prot)
++static int remap_pfn_range_track(struct vm_area_struct *vma, unsigned long addr,
++		unsigned long pfn, unsigned long size, pgprot_t prot)
+ {
+ 	struct pfnmap_track_ctx *ctx = NULL;
+ 	int err;
+@@ -3054,15 +3034,78 @@ int remap_pfn_range(struct vm_area_struct *vma, unsigned long addr,
+ 	return err;
+ }
+ 
++static int do_remap_pfn_range(struct vm_area_struct *vma, unsigned long addr,
++		unsigned long pfn, unsigned long size, pgprot_t prot)
++{
++	return remap_pfn_range_track(vma, addr, pfn, size, prot);
++}
+ #else
+-int remap_pfn_range(struct vm_area_struct *vma, unsigned long addr,
+-		    unsigned long pfn, unsigned long size, pgprot_t prot)
++static int do_remap_pfn_range(struct vm_area_struct *vma, unsigned long addr,
++		unsigned long pfn, unsigned long size, pgprot_t prot)
+ {
+ 	return remap_pfn_range_notrack(vma, addr, pfn, size, prot);
+ }
+ #endif
++
++void remap_pfn_range_prepare(struct vm_area_desc *desc, unsigned long pfn)
++{
++	/*
++	 * We set addr=VMA start, end=VMA end here, so this won't fail, but we
++	 * check it again on complete and will fail there if specified addr is
++	 * invalid.
++	 */
++	get_remap_pgoff(desc->vm_flags, desc->start, desc->end,
++			desc->start, desc->end, pfn, &desc->pgoff);
++	desc->vm_flags |= VM_REMAP_FLAGS;
++}
++
++static int remap_pfn_range_prepare_vma(struct vm_area_struct *vma, unsigned long addr,
++		unsigned long pfn, unsigned long size)
++{
++	unsigned long end = addr + PAGE_ALIGN(size);
++	int err;
++
++	err = get_remap_pgoff(vma->vm_flags, addr, end,
++			      vma->vm_start, vma->vm_end,
++			      pfn, &vma->vm_pgoff);
++	if (err)
++		return err;
++
++	vm_flags_set(vma, VM_REMAP_FLAGS);
++	return 0;
++}
++
++/**
++ * remap_pfn_range - remap kernel memory to userspace
++ * @vma: user vma to map to
++ * @addr: target page aligned user address to start at
++ * @pfn: page frame number of kernel physical memory address
++ * @size: size of mapping area
++ * @prot: page protection flags for this mapping
++ *
++ * Note: this is only safe if the mm semaphore is held when called.
++ *
++ * Return: %0 on success, negative error code otherwise.
++ */
++int remap_pfn_range(struct vm_area_struct *vma, unsigned long addr,
++		    unsigned long pfn, unsigned long size, pgprot_t prot)
++{
++	int err;
++
++	err = remap_pfn_range_prepare_vma(vma, addr, pfn, size);
++	if (err)
++		return err;
++
++	return do_remap_pfn_range(vma, addr, pfn, size, prot);
++}
+ EXPORT_SYMBOL(remap_pfn_range);
+ 
++int remap_pfn_range_complete(struct vm_area_struct *vma, unsigned long addr,
++		unsigned long pfn, unsigned long size, pgprot_t prot)
++{
++	return do_remap_pfn_range(vma, addr, pfn, size, prot);
++}
++
+ /**
+  * vm_iomap_memory - remap memory to userspace
+  * @vma: user vma to map to
 -- 
 2.51.0
 
