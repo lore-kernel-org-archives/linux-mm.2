@@ -4,79 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5A81CAC599
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 15:23:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAFFDCAC599
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 15:23:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2CFDE8E0038; Wed, 17 Sep 2025 11:23:11 -0400 (EDT)
+	id 544298E0039; Wed, 17 Sep 2025 11:23:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A8068E0003; Wed, 17 Sep 2025 11:23:11 -0400 (EDT)
+	id 51A8A8E0003; Wed, 17 Sep 2025 11:23:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1BDB98E0038; Wed, 17 Sep 2025 11:23:11 -0400 (EDT)
+	id 430778E0039; Wed, 17 Sep 2025 11:23:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A3898E0003
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 11:23:11 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D3AEE59B8D
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 15:23:10 +0000 (UTC)
-X-FDA: 83899110540.19.7CE01D3
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 31FB78E0003
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 11:23:46 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CFE8859BED
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 15:23:45 +0000 (UTC)
+X-FDA: 83899112010.25.FDEDDA1
 Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 3FBC44000E
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 15:23:09 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=CwU4Ch8L;
-	spf=pass (imf11.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	by imf20.hostedemail.com (Postfix) with ESMTP id 2C62E1C000F
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 15:23:43 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=Ng+nOdOv;
+	spf=pass (imf20.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758122589;
+	s=arc-20220608; t=1758122624;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cQU70G0zFUhPGUvEQuHcfAfzttzbDI2NDOfl36y9O2c=;
-	b=p5JvJObwt0vB7DWO89zUEWulokUZE6wnXlfoOHCuWcucRk8uk3NGlvYBjVDWkEBcCquu/P
-	G1Q0eqmE/gzlpxlxpssxlq1ywocaMDBhujUMIoOG6vz/oRbwetwmpnViTNu1i52inZcutb
-	2wROFT2PfuJBcbqPV7aAJbzq0WA+T38=
+	bh=ISiQrcVdWLeRJhsxH1iqkkyhKFxhbNjQMJSoqqRl0Qw=;
+	b=6M45Ztv8VB6ak55decAjSAobtQqob/yfYcoCsDA62drQpzRUQHCtqPW90BUz/NQKybpiNS
+	Y+rtMAQVUR0iqUSA39dbNbC6UFEWoOuuCBMOWYA7uZUuLUozyVVmHigb1l1Y/zAGjV+CMC
+	hmshli+6OfGrBYclfyhgw07MjvqjMaA=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=CwU4Ch8L;
-	spf=pass (imf11.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	imf20.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=Ng+nOdOv;
+	spf=pass (imf20.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758122589; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758122624; a=rsa-sha256;
 	cv=none;
-	b=GjsTQlomEAkVw7WEeOCRkTjFX535r9stweoGOnuH2PUtWDAE/Dq0fZX1gkUor4vruKf+XQ
-	6YMOec1ITGKvyThdTRsvmQbbG445RSBiGPUdxlgcv4eZ4NAL/p3ZgdqaPEGgV1hLor04Ln
-	kJ5z3VqinFtOF+zTC2bpWGTUB3CrDfE=
+	b=2KQM78eOi60t07J5l4OJHGVyZuzOKAGSOtvKv8rVgcqkg5zX2Vx6JBdXH374+Huxsy07NN
+	8OSuRq1yvBEBTAMP3dBTQGgnQ36HWJFOM3nYnCFju2MR/QSQ4j9us5hPrWnQCuTWwaA4qA
+	YAuZPxrXdr9+FQ5RlYhfzFF4TsLflBo=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
 	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
 	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=cQU70G0zFUhPGUvEQuHcfAfzttzbDI2NDOfl36y9O2c=; b=CwU4Ch8L5+MTlP1kZMMACEdHum
-	zIsW2X75R2t8AzmHNLa4iDvZGYl+9cU5ZoCI/1OzxMvLag/xUc8B/taWLIZPXih6CbFsLURKZKOdd
-	ADhEGrtJPevOwsKftjR+GAFVwMCTuksWp/6Y5q0Dn4CPKD5Kn1dDLUYnbcll/OHZou2IQPg8qSs/R
-	ZgQh8ErELHDr1QlpfGYDN2VNi72Vz+sgItjr3tyqNS9hdqSG/VG3GPo15mLr5m4niYcN2Qa643Mnl
-	B9V8T+5+euFQL8A4NKRimCOw3sUUyzQUqWP+BQRGdV+nGkS7s8bIrUh3lcJnQWu0ti+CAVdjTcJWj
-	nMnr9puQ==;
+	bh=ISiQrcVdWLeRJhsxH1iqkkyhKFxhbNjQMJSoqqRl0Qw=; b=Ng+nOdOvgJJASAaP4YgZLM/a66
+	Je3VLwcz1rtLpZXJ117EJswsQcpcsnV4XcrcKn7KlZhPQIo00nUxQDHUuutrZzbmtu6/XNGOl95fn
+	y6DY+QcliaAW2+5RO7r4vWydfIk/ie78ohPllI3iE3OmzQSxz8R33OgfgDA5kzgub4c+Guirat1Xf
+	rCoo7Dpau0+SO2YcTTd2UK/YIuJJp08TQWT3h3tzs0TyJDVx7PbVz8miYLq73Ajd3ha/Cx+7W7V9X
+	OPLiNSIAwbLLZqdVbYJmrxkcZTc+s0z7y9D2kD8/lIW34uoFVrM6cqwFSPEkJ8U6vehJ7gnIiw0Uj
+	7I36BhRg==;
 Received: from fangorn.home.surriel.com ([10.0.13.7])
 	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.97.1)
 	(envelope-from <riel@surriel.com>)
-	id 1uytzh-000000001BW-1m8q;
-	Wed, 17 Sep 2025 11:22:53 -0400
-Message-ID: <9dd63161c07c1c56522e3941ea59142fbd54c4ee.camel@surriel.com>
-Subject: Re: [RFC PATCH 12/12] mm/cma: add CMA balance VM event counter
+	id 1uytz5-000000001B6-1fYM;
+	Wed, 17 Sep 2025 11:22:15 -0400
+Message-ID: <1c799faa2a1b6d79080f4ad378b5a1d583813c2f.camel@surriel.com>
+Subject: Re: [RFC PATCH 11/12] mm/cma: rebalance CMA when changing
+ cma_first_limit
 From: Rik van Riel <riel@surriel.com>
 To: Frank van der Linden <fvdl@google.com>, akpm@linux-foundation.org, 
 	muchun.song@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
 Cc: hannes@cmpxchg.org, david@redhat.com, roman.gushchin@linux.dev
-Date: Wed, 17 Sep 2025 11:22:46 -0400
-In-Reply-To: <20250915195153.462039-13-fvdl@google.com>
+Date: Wed, 17 Sep 2025 11:22:15 -0400
+In-Reply-To: <20250915195153.462039-12-fvdl@google.com>
 References: <20250915195153.462039-1-fvdl@google.com>
-	 <20250915195153.462039-13-fvdl@google.com>
+	 <20250915195153.462039-12-fvdl@google.com>
 Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
  keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
  eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
@@ -105,14 +106,14 @@ Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: 3FBC44000E
-X-Stat-Signature: rdx7s51k79fpd4y5ce4m4xt64w8ne9zn
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1758122589-197423
-X-HE-Meta: U2FsdGVkX1/+Yl8xVG7Rdjk1eBKWq32m0RX987HFuFKiQSTnbj0QHBrURT4JOvcPjPWGAFUlKcRXEpn2OfBy6rv3nWA9yIXC+4NEMuHEGUTNJtDifracSAmaAOz5Opy30LKN3R7jKbOn6GTM3mwLrTFeIXLuUbH3xLHFcYzATOW8KaCCgaxBNeL6fuzRdPQRWRRRzlMMcrgc28PvgvOxMsscEqBlJag142bcmpWpKucZ7qlnK5RvxuK/NCxYmyilSApd5ID9KikQECPktyna0A6QzHG1FEfHGIQ8U6JaqA8noBE+wummUkhQMi2o1fXFxD7y2fxwKbqQYIblOLfBMf6FjfIJsZungTjtbGgzp534yRgk8LpnYpD12eXYxOBGrVJvGH7CzMKDgwn9YBViRMT05sPaz/MWNU8nX22g6Xyd/tbQsEyaV0B8qOvXN5V1cv6bDaTsFMJR2y1Ytvz4H1Pr3mLJbgdDaCnHxQwb2zO4/OmESuFme1FbQmnh08/ZlZ2FtACHblMZmTcXT3AZwZImRVQMSVluAIu0vQuddQzXHENzsaULlC4F/f+l1M+YWFmdnvrP1mWPl6W1JM7HvDRElUld8xEEEVCuDOjyQaSQuDLENigSvW0cVR61dgSXdx0yf7gDNpuQDn4gzBYEHNhQx7d7frgfg1cE+XylgtUlaVssu52bdpd+kgGR5To24ZLu3tSxJcpnKcdPzb5kOHh8XYcRQgpllL0Rv6ZGVhFB34qvjauwgPDO3E52R2locPUH65oSZcIr9oOnnABT4iTtDmKBpAGT7gp5JZAXnbl4ciK485viprx4NgTeMWN2f3KMW4jPz1XiX4ef8fzhj766rZazx9/irEaJ99cvKHIwBw5yyF/UjMOt/6an6UexzlYXqbfsY5vNX2jdhlsvJwOCby3n5svYlavoJkXFZ2acuf/OXdNZ5Mcc60iiY8j5GqpXujt5N2RpPGIbEEi
- M0Unwtsr
- /BscV02UXlaHdOkBR9gptIZlUnt3ZoGjtoT7hCjrcbCd5BNtaZ6YdsDoqYXyZQzozNJi+Is3Bb1Y32zBqBfniOGEClttHo9mJtAkHhb9FbSk6pVjd6n1VqSktzVLbaAPKPrSlVVXdaNzXPidF6o7opQj2Nm1yBY/HD3f1boLaIvVwKc9Ek6vqJ3nrfHQC8Cru0Lv6nAPDrGY5aN8NPeFWm/MzXIPosJlUZP0A6YRCswbE1AYJHcUSVFSNVnw0peNYd0ap11zOtFn0A/LQNWokrTrxYu/Rw6EvYOGYGoI4YCOxh6Er3QNiLWpGMg==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 2C62E1C000F
+X-Stat-Signature: t144ooj18kb418e1tjk4pcp549sx3197
+X-HE-Tag: 1758122623-891428
+X-HE-Meta: U2FsdGVkX18gSaC1H/2xv7qr0I6BvTlz8g6fQZgykZ8jQbs0iTtpm6MlC0qpvl4lPn1o39Pyn/396b/D4fEF4NJYOR1Rn+TbBQ1kVfjF+PYLzP0QWmf/EMhCSgzYdXotDoIwTz+wQ769aO87czq31kDEMHYQP/BKEOcbDAzhn7TRiyBheCjmOAOO48Nd5k4iJlhpwn8/hXy7S6PmR5OezWS4CY6bV0URQbEnXuZqEVSJPGx9mFA5N2FNDhXtHUZGRGVVsBf5qOE3CSjqn/3qJFF/TlglStoSxJUb51bwANvJh60p2nsON5SdyLpxNFy5X5t2epPApdDnlBYg3rBXLyaugQ3b1NaAlAVyNiccLET1JXmsq98zPap5OCuO7Aaenz29APYG8zNcwzWN/ovOQmc5BzG49fyfYrsKwLbAu9svtdYoDLtV4oVsHQpirK0aI+FHWDuSjAglpYE3DHf1iFhtBofJXwwZRmRbH544OvurOOEP9d57Ngm2C01O/cUPr/GAv7Cgg0Wjae5Fysnx3aJJ8+W3eHHj93L8qqqmm5xWTKfLz6na+hXEhm8nBOyK+S5JmHpsdpcj0UDj3hSW8nXAAhigRH4erQ6Xa2DCv88lwRTWY/6F8LWjaSVAYJjRTjCmqKAe33Eb43hNEOlNnVuNNzhvTFU/DZCtIKrXg1KvKli9SsCE4UVwOnRr4XVIuNNATjPPCIL2UZqJcYMZ+BTQSZBAUjVUxplPMuHzluCkw9dPgfKWZWlLDaOqCuST0BtcyabgudmsuBfezWPvDCdjtK252DRk5WpVMI0KgGm4vVk50sumf3Uq50A58rCThWn4cOMOiBiuDYt2B0FYNawfGp+mqNvOZs85k2+TLxbu6McjVPBjhTSyAdQFru/to1D86eNh2neLihVMAhXCkW+jAUdPJlMQIhxyyisvqaWGLtqBkLKcJdTz/XJvCSkgGfGFyVfONMYPSJY/0ju
+ o/Yykyd3
+ jNqNpmw9/x0eAzoUhNDWyfHLzke2pZyd29rMXXp/Qp3V8ndEkn5kVgh7XFPaBtiILMex3AmjaVEm61kxOgJaZUJ7RM+hOC2ienuXWs+vpVRcUxtXgcvKiRWKt6hSFftM+vGA4NghyPdVn2Wur8pLbfFx16O97XbqPL12kJcno2ocXtIOOyv8l0wbGF9JiwqRomWUIQNJ5xsr9aP4kOvN8uV+whs+mSVoSjjmOJrAYDxAfbxvGAArPGC3F/ly3cQgveGn8oSUVVmWFCd4lF1N91KHdYs/twDXIfcY88EE+WHKKanm3PqB39cZ/CfSm6Y5tFFDZmMffHnn0ykTKkquoumukWBynyyeYtQuHQcVgw4oDgP37mXnWXkVDZw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,13 +123,13 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On Mon, 2025-09-15 at 19:51 +0000, Frank van der Linden wrote:
-> Add VM counters that record the number of migration
-> success / failures during CMA rebalancing. This is
-> similar to other migrate counters.
+> To keep things consistent, rebalance CMA when changing the
+> cma_first_limit sysctl.
 >=20
 > Signed-off-by: Frank van der Linden <fvdl@google.com>
-
+>=20
 Reviewed-by: Rik van Riel <riel@surriel.com>
+
 
 --=20
 All Rights Reversed.
