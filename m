@@ -4,182 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E58ACAC5A0
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 15:44:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEF11CAC5A0
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 15:48:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 992378E004E; Wed, 17 Sep 2025 11:44:40 -0400 (EDT)
+	id 35A4B8E004F; Wed, 17 Sep 2025 11:48:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 943358E003B; Wed, 17 Sep 2025 11:44:40 -0400 (EDT)
+	id 332418E003B; Wed, 17 Sep 2025 11:48:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 831FA8E004E; Wed, 17 Sep 2025 11:44:40 -0400 (EDT)
+	id 247978E004F; Wed, 17 Sep 2025 11:48:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6AA978E003B
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 11:44:40 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 140871405D7
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 15:44:40 +0000 (UTC)
-X-FDA: 83899164720.22.F0D265A
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 8754D1A0009
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 15:44:37 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=cwkk3W7w;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf19.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758123877; a=rsa-sha256;
-	cv=none;
-	b=xtrdpoy1kTrgDJkz4HsRROqfG/6z7GiKi1o4/2f6RXfPpcYWRlDoIpKZHXwGNiwfUPH/V3
-	7mnwio5REyeJIe/O0rxswPANzuSmFB9caGcJAQ8ykZVBQ37OyuVl3h1877bUKRFKibgvZ3
-	+9k7TPWQkUpRR82YywaXzhGW+lNHO50=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=cwkk3W7w;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf19.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 106728E003B
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 11:48:37 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C3691139FF1
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 15:48:36 +0000 (UTC)
+X-FDA: 83899174632.21.C5DACCA
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	by imf11.hostedemail.com (Postfix) with ESMTP id E619E40003
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 15:48:34 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=iJG6Bods;
+	spf=pass (imf11.hostedemail.com: domain of alexjlzheng@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=alexjlzheng@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758123877;
+	s=arc-20220608; t=1758124115;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NYmqILMx1xlw2m4tQW0RBlUiktKctlRRDbbC0EtpRGc=;
-	b=uQdPgu7jzy3/zlR+7BUVWNfX0VngdSSqtSaqufcSaGH50w571sYCNZfMh8j8x07LUutaHa
-	5n/HYAVjcHsqeerpXpQi+AV7W6AHMa7Nj8Xkz76wPPjRnrHdHhC87wE6tgsk3exiYQeMio
-	gRY06MiEBSb6LlAoPoOOISnbruuOG18=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758123876;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=NYmqILMx1xlw2m4tQW0RBlUiktKctlRRDbbC0EtpRGc=;
-	b=cwkk3W7wqYfsTE3pJwE+zWFsPvzk9U2WG81MTFCDaE9OBSHffX+6aXU3OUY2en6ElvxaYq
-	VQpV3ypV/9NamRM+vFhgqIIA8KCicxSPB7MPy+7CYtm7lWBude10nlnVASim+npPYFiVQQ
-	CVK+CnaaCG3Pt4jqjamfcelHzzZrPcE=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-339-FxeEF4t8P2yOVeJZ4MpR4Q-1; Wed, 17 Sep 2025 11:44:35 -0400
-X-MC-Unique: FxeEF4t8P2yOVeJZ4MpR4Q-1
-X-Mimecast-MFC-AGG-ID: FxeEF4t8P2yOVeJZ4MpR4Q_1758123874
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-45cb604427fso43436995e9.1
-        for <linux-mm@kvack.org>; Wed, 17 Sep 2025 08:44:35 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=k5RPYj2govdLgAJsVUJ2S305q8KB/kIKY0e8R/KfmxA=;
+	b=t7HBYqra+sDnh8UKnPx2bV9XQ/WGV1oVo/90jAYUrkGLQR9muw4Xe83s1Z+XCEl/1Y5Rck
+	qK3hWhiFyuKqIOz2XYyGDWybZiKVbLPDfA/DU8FKM7zIIzt9kdqhKtqdxthOmvZIA/qo6F
+	pXbZLkyPGENoMSpcI3dqp1ENoIUQ26k=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=iJG6Bods;
+	spf=pass (imf11.hostedemail.com: domain of alexjlzheng@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=alexjlzheng@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758124115; a=rsa-sha256;
+	cv=none;
+	b=AiIx5BgWNmyY3YaSm23Xpi4QX9n1RxXx2kSMJhEEIaKojwXMlpkg5pMNlz7nJEwtzlw9Bh
+	TZx6MN2uRHoLEa9Oi3hTsIpYb2zJBVbuP4O8WFH+HxYUPIr8uS44WxpjP47qMKIfwpBX5B
+	xmbvflPwRclJyXDKekNd0PlHh89KNI4=
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2445824dc27so63093895ad.3
+        for <linux-mm@kvack.org>; Wed, 17 Sep 2025 08:48:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758124114; x=1758728914; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=k5RPYj2govdLgAJsVUJ2S305q8KB/kIKY0e8R/KfmxA=;
+        b=iJG6BodsK0bhcAqTlkBtkSW3RCHHTiS6OW6HvYtlwuXoCBLH+Mta7DVNChjjO2JZ9J
+         tr2bplnZh1jzEvypTUi9SpNFSv8GJUcvNjH8+WgyotthFRsXegp+8KYfR8EnIooBsUMG
+         UeJiwr5XKIH5TB8l15l/RF/wLrSD6Q/h24csf3qzAhqfcVOJfZqZ0Q2NffESlKR731Dy
+         LJ6TThREXQ/SaAPD1s72Syhs8WzQEIEBB3/xGdnoK0prg71r97sUtileG0yfL/h0/HJc
+         wxWsJLbRT79yU+y0O+Yk+lQ1tY4n1Ip6KhYrt4LZsq0fhMm6Z9OWY+D5kNoUURh2lvV9
+         vc3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758123874; x=1758728674;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1758124114; x=1758728914;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=NYmqILMx1xlw2m4tQW0RBlUiktKctlRRDbbC0EtpRGc=;
-        b=HXnCwqzRegBkjFva1X2FLUinKUC9fTrExPZ7CrLlfdT2qUDdQeJny2bMf+Jd7QtZ67
-         aQo4Dn/XNYfGZhoInZ9DZm8ANsM7CM/Cy/+/sDCMuy6YEG1iyzdZsHAVIHPvS0emD4SN
-         6XEEq3hoL9vB1FAsp9ZMWMgY/8MNoNrKo56P3SMbQkiCQO2857RFzXfKdcigqAXbjBZZ
-         1VW+BSLZ8rO0hFPOshFCA51Wce2nFUKrxrkBPqxecNeLbCcgUrHy66Jct8sqi7O4kk8a
-         LuWuUETXVRW6Km7OZoRNB5XfwT5aAEPorEtDhOoXAaRP0HQ9rDvURpAGl0JP7ME0RHNk
-         71kg==
-X-Forwarded-Encrypted: i=1; AJvYcCWM5qVNhIGWS3NHprry/2NJSx910UL/Ft/NlPLCdGdgIMcusBCmUW16kWFUmu9oHUAGPSRdzbAlqA==@kvack.org
-X-Gm-Message-State: AOJu0YwczGiDxz3H/vHQtXhU1t0pACPq3nLkh5tUx7LkWsaH+RnNLSFE
-	Xo5tB8jAZiejNu7UBrLaLM9MWZUOL0OWBveDPudsABmjdXXBZDHbhTifwKh1GOA66uUqzGS3skm
-	NANQ9fc5CDma0dv3qc785oNoW+DFP2SzKUZWBV1mCeU6kyPmOtfSe
-X-Gm-Gg: ASbGncuLEfv1iT9DwVP4yUHviGQZuS4wiWt2caCqGSEMP7wQ/ivGIPZFZCdHyIRBuPg
-	iAt9Hx1WwRft6JCPEUlN2UAPscCZNtMua8D7jb92kZ5cas9ZyL2rqgc5NL6NCyFnI+dVxjJwCMB
-	aGwg96Yk9JgFvY71VjuvktZxlqHMMxAVVbDLl3y6+GnEPO6pJ4a2mNjv3qbd1Xjg9r4LLFgVafp
-	aa/M7vfw/yN13EkiuKJdgubxaU1FyYLC6v08ljI9Gbfyf9l/MSupwSQ/qalcP8syNhvQzQG6lin
-	G/IIkS9V9oYgavyEeZmEYHRuUhnbi282sFQ/qF/Zc6Xd6z76cKCMW8gSmI1pDyfjGvoe4CjD3vX
-	XEKmtk8sCVr5UzDL3nLflg0sJp7emAFM7ywgHpA0TMR2GddM03sYoNf5m2mYFZUjl
-X-Received: by 2002:a05:600c:548f:b0:45f:2c7c:c1ed with SMTP id 5b1f17b1804b1-46201f8b0f7mr24718635e9.2.1758123874118;
-        Wed, 17 Sep 2025 08:44:34 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH8g1ZaRN7oJUXl7N8nfBOuCnjfDBEtxRyVeyDn4nu6ScGXDtKea6BR0IkCAuJ/wYcffRSBqQ==
-X-Received: by 2002:a05:600c:548f:b0:45f:2c7c:c1ed with SMTP id 5b1f17b1804b1-46201f8b0f7mr24718205e9.2.1758123873544;
-        Wed, 17 Sep 2025 08:44:33 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f27:6d00:7b96:afc9:83d0:5bd? (p200300d82f276d007b96afc983d005bd.dip0.t-ipconnect.de. [2003:d8:2f27:6d00:7b96:afc9:83d0:5bd])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-462c17c9347sm10474045e9.0.2025.09.17.08.44.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 17 Sep 2025 08:44:32 -0700 (PDT)
-Message-ID: <b532ab38-37a3-46d0-8a14-d7395421130d@redhat.com>
-Date: Wed, 17 Sep 2025 17:44:31 +0200
+        bh=k5RPYj2govdLgAJsVUJ2S305q8KB/kIKY0e8R/KfmxA=;
+        b=pXWdzt/jDArybTjtrg2J/C4nuVcQPppf65V42E9deqiNcxPeyCRp/PA+T93zcoc+HZ
+         7GNtg6VUvEayw0RzCdwrMpthRf0+4HgaoVsiA1oMLCMD2dJDxZ66JMZcE6QjVYC3e3b9
+         ibTrn6pwS7u9niZk094Hz7sz4/MOMlEm64NH+jPaWvRX7Q3osAfRcbCcrPZ/oA2Ru5VU
+         uo1nst0TxbbSjui+LzfVuGawjMO+twoHvOaEIWEsdO4RbI/N56dIVGtvxKmb7yZJHV7O
+         Gey/wwo7PgdPv/lUBYHBkksP8haYB0j5vQGRvOjo1kDW5CS03/x4HWjHEQWXCKBrLRoJ
+         lslg==
+X-Forwarded-Encrypted: i=1; AJvYcCWywVPNCOCgslqbOz8BAfVf2IKT1GbX0GkBr6q2QZeQh5GAuw10/iYlRtWr2hN6zfm8JzdkuoWFtg==@kvack.org
+X-Gm-Message-State: AOJu0YzuFR5Vs4RJ5oGSz1wTAtt/o1U8fL6OXXVICwpIFrBPbTl00+4g
+	KHagvsHgHckb7sLqL2pcyQVvkSkAdLNncezKw8OI1tFMioFLJstNaOoK
+X-Gm-Gg: ASbGncst/m4DI/EirCqPOLZGuiclJkW8r0szxohR0q5c3U1RNam8b6E205pLAMfVVxw
+	CVvx7tUzmO54MwQvz4Rhkifz6SqAu/BbztIRaqJkjhiqQn5wCa+Y4gt26fz6r+LvdI3hnr6UwVu
+	DC15Ho6PkuC+/LxrL7sFauM+OadnuaVpNuY8vNtTaxhGKZC3A+Vyxyhx+DyCkzqSVuoQiVeDgNK
+	FfO7Wn8Tv+BD9l//b3Y/Azg0qUGyMZZZt55/ceq4XUpm3mp+BE881M4JvILn8zIvVDay8ICdvEO
+	u4rw2Wal5mys3aO8iiSnHEB2kcSDAw5LqldaIdH2NsuG9SBKVSovazuqSE2lASaPjeuvvGh3Hdo
+	08JuFFW6o/aANC1rhwvTT1agt509s7Fr+Pw==
+X-Google-Smtp-Source: AGHT+IG+Qiac11pmTk0tCinNrp10vTINXiw2GLyFTb6yRHVut739dW6S796H6UTFDPxnHEvjt3sMJg==
+X-Received: by 2002:a17:903:19eb:b0:266:e8c3:4712 with SMTP id d9443c01a7336-26813f198d7mr36117175ad.58.1758124113638;
+        Wed, 17 Sep 2025 08:48:33 -0700 (PDT)
+Received: from VM-16-24-fedora.. ([43.153.32.141])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-32ea0f94005sm2569799a91.1.2025.09.17.08.48.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Sep 2025 08:48:33 -0700 (PDT)
+From: alexjlzheng@gmail.com
+X-Google-Original-From: alexjlzheng@tencent.com
+To: mingo@redhat.com,
+	tglx@linutronix.de,
+	jroedel@suse.de
+Cc: linux@armlinux.org.uk,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	hpa@zytor.com,
+	akpm@linux-foundation.org,
+	david@redhat.com,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	urezki@gmail.com,
+	arnd@arndb.de,
+	vincenzo.frascino@arm.com,
+	geert@linux-m68k.org,
+	thuth@redhat.com,
+	kas@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Jinliang Zheng <alexjlzheng@tencent.com>
+Subject: [PATCH] mm: introduce ARCH_PAGE_TABLE_SYNC_MASK_VMALLOC to sync kernel mapping conditionally
+Date: Wed, 17 Sep 2025 23:48:29 +0800
+Message-ID: <20250917154829.2191671-1-alexjlzheng@tencent.com>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC][PATCH v3 09/16] genirq/irqdesc: Have nr_irqs as non-static
-To: Eugen Hristev <eugen.hristev@linaro.org>,
- Thomas Gleixner <tglx@linutronix.de>, linux-arm-msm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, andersson@kernel.org,
- pmladek@suse.com, rdunlap@infradead.org, corbet@lwn.net, mhocko@suse.com
-Cc: tudor.ambarus@linaro.org, mukesh.ojha@oss.qualcomm.com,
- linux-arm-kernel@lists.infradead.org, linux-hardening@vger.kernel.org,
- jonechou@google.com, rostedt@goodmis.org, linux-doc@vger.kernel.org,
- devicetree@vger.kernel.org
-References: <20250912150855.2901211-1-eugen.hristev@linaro.org>
- <20250912150855.2901211-10-eugen.hristev@linaro.org> <87cy7q9k8y.ffs@tglx>
- <87a52u9jyl.ffs@tglx> <8df2cf28-c15e-4692-a127-6a5c966a965e@linaro.org>
- <2bd45749-e483-45ea-9c55-74c5ba15b012@redhat.com> <87v7lh891c.ffs@tglx>
- <95ff36c2-284a-46ba-984b-a3286402ebf8@redhat.com>
- <24d6a51d-f5f8-44d7-94cb-58b71ebf473a@linaro.org>
- <7f4aa4c6-7b77-422b-9f7a-d01530c54bff@redhat.com>
- <10540b3e-09ca-403d-bc20-b9412a7fe28a@linaro.org>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <10540b3e-09ca-403d-bc20-b9412a7fe28a@linaro.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: acYVw7IHNsT7Cn3jclIOT73Fu6jlJOAgYSdsAcUZXqc_1758123874
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 8754D1A0009
-X-Stat-Signature: wwam5ky8pj1yr7r8jc5zkd3sds9eaab5
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1758123877-848586
-X-HE-Meta: U2FsdGVkX1+M2VBW8WjKa9qW6/HB5rY8vfqFGPQw2JNbVV/dlGSwEYMLNQSPXM8RkYf46v2ofUIit9xPU5Xi/dCgi45lgmh4R9YZhOI9aj3x14ZI9LY0b928z1QXV6tU9cm8DD0tjyYKnuDzm5/g1DrcNba+3CAYhe4YnfCELEKBqt/4NJpR2kBE+lHP877Z8pXqYKKgKK+95NVNI+Vx7Dc74RWFoyiAedb/vf3KBb4hBYHTOOFlHT5mKXGv0C1YN6+0IFK0F5R4015pVUtkaswWXpERufB6nbGn1fvnelM8DzkvzQDEj1Q0uuWM9hwO2ldoVuXNMkl+vQd6PXocMuxdom6FT9g5An0bsXWn5hTQjtvjYbRNDd41aLP1fMH6P+7X1uN+LiiHLRqAeqHlrgDu5+Dq06Nn1Z6lagg6zBAILnJ+Zt/yWL0+bnLP9QBFjK7Lc5v457LRjpCSNxh1CVVx7KM4k4tjnonlN5+EzdQGT2tnBjmA6fUekB/qOZqCSDqSWCnJY7F5TtpOAtaZiMEcEFJ6M1iZgDsBAjK0ihioEl6Ypk9ot++TC7MY1fZMhOqJEA4Ibq1AdSqPlM+ORVpkA43FW+ieLEnz22J4soL5yGhoYqrKkYn9AgXtr2wlPbsWPFn8eDke3BHE7gU76HBa+pm+WFKPwUn+8Ttlh4gzY3apMZoXjHdVBhX+EGwReeGiMuTyAse8ywe+5fSYQ409vINxrIFr4cn1zqYFkwXBy9BQUfrnI51USYJkThRrdLdD/Ktqg5OM4hRMOF4TY7a//u6MrqM8g2CSaK1o8AjH4aVqWrZv4U8F+fOc5QRGRg0XKCGl51HG8e/wClf/RwF01pTAeXfBdKmkwy9fXdq7o9i4saPKCxkzhi9pE6QDjF10xNuXs2wBjcRGOZCTdtTznqsHz9Y1x5FTISgKFUqzFszL5U/FrIJNZwqDqI0OU34BhPd8O5+iTHI24RY
- 36GKGvii
- g6r9iOEh4LvM8yC92SFhitDB/Pcn6+8JyHw7IJRtcWSs3SnW236+rNHo4m+VyUErOlPWwjHu+Udx09/x8R9DRkxuSa7upx8VgXlm6K+79LW1ZEOOWNc/H6v65nQ3ZwDQuIo3C3TDOV8XfXkjoyEV+dd0kcy9fPY9lpDaX1NDgEoZlFZIFXeSLuEFjeUCJc7uC76bzdPp2uOPLS8YbXAMyM/feofyIms9wT+jGcmdLRoq89fuj8lrK4a7ksLN4H5Nu6E9TAZx5a18PJINFCFqP3/cleBDwgWJy8p4fdUumlGNWAt/V6XcnSqpYbmpY+vJd1hZGOP225GJ2c6/IA4/25L/i5whtjR5rUxab1A3whzsb7gfBJs/0WvuWnlzvs6mEkwti7BvIkTSP9H4Pdo0NBzNVE05ul9XWJTHv0wn5sputmdX8Fxuievby4m4r22DVVxTzK3W0wqd0QxVLPuP4IS4HyVN81A4pQKR4
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: E619E40003
+X-Stat-Signature: mhnhpj38ny3ie3sjf9z33p16ckdip61p
+X-HE-Tag: 1758124114-186082
+X-HE-Meta: U2FsdGVkX1+o/KD5nI1D39Ku8LYNjH19Tb81mIn0pywyc8LivIQFOGNULxqPyXNSaKEvYdaJmKFJ4McyNemvbcy9zqBZmfsTcvofN6udv3XN6FsHUZ271U9BdXlujmjQip+TqBeDVm0tPrpTFawlP4+2DPgknCFjT8lNRDWsfECdfPUk7jKuL3XwzYcDGFXxuWEaPup6OmdGtOoyKm54IyJmDlEbFxuyWYk/hD2AHXjLDwSV9+5H8izfvaF95VdSZqgSqA70r7PxgQZEWzu90sF4w6NugcjbPi9dN2Ej+S6GxZJw5rtrRNSc6BjqACAeihUqMSt+gEBUMC59Tz0wE2yAgg3ZP3WsPBWKEkf4VA/RistnX7Qf5Xnkw4JF5ZvJiUjOEOnfpyy1jZ5hGAs8MuRSbOMmYbWjaBTk2LLQhvWnbRz6Vro17QAinqT9do8CbluOe1FkurSJtWMk4uLUdee9RBA1vd6HcZIgTSAcq+efkaxl7iRuK6S1Bh5Z3WVSYYRB/nasOBLXfboa0Y+3W9dE0LPRpcHvhtZwHldebPuF5QPIXAnbu9KNUn2zMkExRDv04ZV5vMAPh8tAEUy+TkzuTSAayCUorO5zMDeMyCkeQh6N6mgitBjhzBM5rOkNIkP1DA6kull5FQgvwO13Ql6aYslD4BSQuMtD12I7uK+UI20wOgoHdGOULa7UzYt3Hmg2dAYtmFQF7IwNaeC/CQ8/VCzbypy5eFwGGAL/uF6uYWr7O5NL6GGOtPGu1tdn9OcReAeizpB6XpSF9PlJQqy4oNi/H6nEC9zX9VhB9N/J/7v9gAgGBmMgjUcqBWBkLCcAYdk/cOjx3I33iMjq9cG59j3Huk6xJDttIFEUWNrtRfxeCrOKsGOxw6hDCaGHfohNWU43fZ6D484oES2J+0v4iOMCnDHYaefbVkAhodLEfgPiI5nE/2n9DBiw8nBdzWFpDQrD8sC1G9/gInj
+ 2MtEpmTM
+ dYXnZvIbylxkmdkjXEIaGmFsNAnuKmFizvx/CpBtwu+GR2uLLWkG99rxQdU0zLxmnqbDwY+7cW+/gDGogHQxcYd6ncZrrafdPsgqHNKQWHwh+RAgqM9hH/SZMwPcJ6Nuyybt89ZtB8A6X+54OVzNyBAX3ZkKFvS2OL1+xqUjZAal+em/pldNX4RBUfka4Ft+j7D1CruW3yXWK/vOm2/LUOSOBa0OhGukwCCz3D0Iq5Log5m76W+b8yXgxDSuzroMHX8wySe+HmeMRZ45PqTfZVah31NOigQ9BaCmbHIaZl11BBgTqgkIVao6p0FjSuNKRK8jGiyJUoTgCfAQn7dh8yARzsq1hFttsbT/AdC9Zv3nMWIhRzrVNJ/LgaNdY5mIFhvP1rkcYXq7L/rT6sAXpEU/GVh+dxgpQeH5err3MVV6M3nSbN8PSjknuK1lUTsHYoDJy
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -188,121 +139,134 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 17.09.25 17:32, Eugen Hristev wrote:
-> 
-> 
-> On 9/17/25 18:18, David Hildenbrand wrote:
->> On 17.09.25 17:02, Eugen Hristev wrote:
->>>
->>>
->>> On 9/17/25 17:46, David Hildenbrand wrote:
->>>> On 17.09.25 16:10, Thomas Gleixner wrote:
->>>>> On Wed, Sep 17 2025 at 09:16, David Hildenbrand wrote:
->>>>>> On 17.09.25 07:43, Eugen Hristev wrote:
->>>>>>> On 9/17/25 00:16, Thomas Gleixner wrote:
->>>>>>>> I pointed you to a solution for that and just because David does not
->>>>>>>> like it means that it's acceptable to fiddle in subsystems and expose
->>>>>>>> their carefully localized variables.
->>>>>>
->>>>>> It would have been great if we could have had that discussion in the
->>>>>> previous thread.
->>>>>
->>>>> Sorry. I was busy with other stuff and did not pay attention to that
->>>>> discussion.
->>>>
->>>> I understand, I'm busy with too much stuff such that sometimes it might
->>>> be good to interrupt me earlier: "David, nooo, you're all wrong"
->>>>
->>>>>
->>>>>> Some other subsystem wants to have access to this information. I agree
->>>>>> that exposing these variables as r/w globally is not ideal.
->>>>>
->>>>> It's a nono in this case. We had bugs (long ago) where people fiddled
->>>>> with this stuff (I assume accidentally for my mental sanity sake) and
->>>>> caused really nasty to debug issues. C is a horrible language to
->>>>> encapsulate stuff properly as we all know.
->>>>
->>>> Yeah, there is this ACCESS_PRIVATE stuff but it only works with structs
->>>> and relies on sparse IIRC.
->>>>
->>>>>
->>>>>> I raised the alternative of exposing areas or other information through
->>>>>> simple helper functions that kmemdump can just use to compose whatever
->>>>>> it needs to compose.
->>>>>>
->>>>>> Do we really need that .section thingy?
->>>>>
->>>>> The section thing is simple and straight forward as it just puts the
->>>>> annotated stuff into the section along with size and id and I definitely
->>>>> find that more palatable, than sprinkling random functions all over the
->>>>> place to register stuff.
->>>>>
->>>>> Sure, you can achieve the same thing with an accessor function. In case
->>>>> of nr_irqs there is already one: irq_get_nr_irqs(), but for places which
->>>>
->>>> Right, the challenge really is that we want the memory range covered by
->>>> that address, otherwise it would be easy.
->>>>
->>>>> do not expose the information already for real functional reasons adding
->>>>> such helpers just for this coredump muck is really worse than having a
->>>>> clearly descriptive and obvious annotation which results in the section
->>>>> build.
->>>>
->>>> Yeah, I'm mostly unhappy about the "#include <linux/kmemdump.h>" stuff.
->>>>
->>>> Guess it would all feel less "kmemdump" specific if we would just have a
->>>> generic way to tag/describe certain physical memory areas and kmemdump
->>>> would simply make use of that.
->>>
->>> The idea was to make "kmemdump" exactly this generic way to tag/describe
->>> the memory.
->>
->> That's probably where I got lost, after reading the cover letter
->> assuming that this is primarily to program kmemdump backends, which I
->> understood to just special hw/firmware areas, whereby kinfo acts as a
->> filter.
-> 
-> If there is a mechanism to tag all this memory, or regions, into a
-> specific section, what we would do with it next ?
-> It would have a purpose to be parsed and reused by different drivers,
-> that would be able to actually use it.
-> So there has a to be some kind of middleman, that holds onto this list
-> of regions, manages it (unique id, add/remove), and allows certain
-> drivers to use it.
+From: Jinliang Zheng <alexjlzheng@tencent.com>
 
-Right, just someone that maintains the list and possibly allows 
-traversing the list and possibly getting notifications on add/remove.
+After commit 6eb82f994026 ("x86/mm: Pre-allocate P4D/PUD pages for
+vmalloc area"), we don't need to synchronize kernel mappings in the
+vmalloc area on x86_64.
 
-> Now it would be interesting to have different kind of drivers connect to
-> it (or backends how I called them).
-> One of these programs an internal table for the firmware to use.
-> Another , writes information into a dedicated reserved-memory for the
-> bootloader to use on the next soft reboot (memory preserved).
-> I called this middleman kmemdump. But it can be named differently, and
-> it can reside in different places in the kernel.
-> But what I would like to avoid is to just tag all this memory and have
-> any kind of driver connect to the table. That works, but it's quite
-> loose on having control over the table. E.g. no kmemdump, tag all the
-> memory to sections, and have specific drivers (that would reside where?)
-> walk it.
+And commit 58a18fe95e83 ("x86/mm/64: Do not sync vmalloc/ioremap
+mappings") actually does this.
 
-Yeah, you want just some simple "registry" with traversal+notification.
+But commit 6659d0279980 ("x86/mm/64: define ARCH_PAGE_TABLE_SYNC_MASK
+and arch_sync_kernel_mappings()") breaks this.
 
-> 
->>
->>> If we would call it differently , simply dump , would it be better ?
->>> e.g. include linux/dump.h
->>> and then DUMP(var, size) ?
->>>
->>> could we call it maybe MARK ? or TAG ?
->>> TAG_MEM(area, size)
+This patch introduces ARCH_PAGE_TABLE_SYNC_MASK_VMALLOC to avoid
+unnecessary kernel mappings synchronization of the vmalloc area.
 
-Just because I thought about it again, "named memory" could be an 
-alternative to "tagged memory".
+Fixes: 6659d0279980 ("x86/mm/64: define ARCH_PAGE_TABLE_SYNC_MASK and arch_sync_kernel_mappings()")
+Signed-off-by: Jinliang Zheng <alexjlzheng@tencent.com>
+---
+ arch/arm/include/asm/page.h                 | 3 ++-
+ arch/x86/include/asm/pgtable-2level_types.h | 3 ++-
+ arch/x86/include/asm/pgtable-3level_types.h | 3 ++-
+ include/linux/pgtable.h                     | 4 ++++
+ mm/memory.c                                 | 2 +-
+ mm/vmalloc.c                                | 6 +++---
+ 6 files changed, 14 insertions(+), 7 deletions(-)
 
+diff --git a/arch/arm/include/asm/page.h b/arch/arm/include/asm/page.h
+index ef11b721230e..764afc1d0aba 100644
+--- a/arch/arm/include/asm/page.h
++++ b/arch/arm/include/asm/page.h
+@@ -167,7 +167,8 @@ extern void copy_page(void *to, const void *from);
+ #else
+ #include <asm/pgtable-2level-types.h>
+ #ifdef CONFIG_VMAP_STACK
+-#define ARCH_PAGE_TABLE_SYNC_MASK	PGTBL_PMD_MODIFIED
++#define ARCH_PAGE_TABLE_SYNC_MASK		PGTBL_PMD_MODIFIED
++#define ARCH_PAGE_TABLE_SYNC_MASK_VMALLOC	ARCH_PAGE_TABLE_SYNC_MASK
+ #endif
+ #endif
+ 
+diff --git a/arch/x86/include/asm/pgtable-2level_types.h b/arch/x86/include/asm/pgtable-2level_types.h
+index 54690bd4ddbe..650b12c25c0c 100644
+--- a/arch/x86/include/asm/pgtable-2level_types.h
++++ b/arch/x86/include/asm/pgtable-2level_types.h
+@@ -18,7 +18,8 @@ typedef union {
+ } pte_t;
+ #endif	/* !__ASSEMBLER__ */
+ 
+-#define ARCH_PAGE_TABLE_SYNC_MASK	PGTBL_PMD_MODIFIED
++#define ARCH_PAGE_TABLE_SYNC_MASK		PGTBL_PMD_MODIFIED
++#define ARCH_PAGE_TABLE_SYNC_MASK_VMALLOC	ARCH_PAGE_TABLE_SYNC_MASK
+ 
+ /*
+  * Traditional i386 two-level paging structure:
+diff --git a/arch/x86/include/asm/pgtable-3level_types.h b/arch/x86/include/asm/pgtable-3level_types.h
+index 580b09bf6a45..272d946a3c7d 100644
+--- a/arch/x86/include/asm/pgtable-3level_types.h
++++ b/arch/x86/include/asm/pgtable-3level_types.h
+@@ -27,7 +27,8 @@ typedef union {
+ } pmd_t;
+ #endif	/* !__ASSEMBLER__ */
+ 
+-#define ARCH_PAGE_TABLE_SYNC_MASK	PGTBL_PMD_MODIFIED
++#define ARCH_PAGE_TABLE_SYNC_MASK		PGTBL_PMD_MODIFIED
++#define ARCH_PAGE_TABLE_SYNC_MASK_VMALLOC	ARCH_PAGE_TABLE_SYNC_MASK
+ 
+ /*
+  * PGDIR_SHIFT determines what a top-level page table entry can map
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index 2b80fd456c8b..53b97c5773ba 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -1476,6 +1476,10 @@ static inline void modify_prot_commit_ptes(struct vm_area_struct *vma, unsigned
+ #define ARCH_PAGE_TABLE_SYNC_MASK 0
+ #endif
+ 
++#ifndef ARCH_PAGE_TABLE_SYNC_MASK_VMALLOC
++#define ARCH_PAGE_TABLE_SYNC_MASK_VMALLOC 0
++#endif
++
+ /*
+  * There is no default implementation for arch_sync_kernel_mappings(). It is
+  * relied upon the compiler to optimize calls out if ARCH_PAGE_TABLE_SYNC_MASK
+diff --git a/mm/memory.c b/mm/memory.c
+index 0ba4f6b71847..cd2488043f8f 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -3170,7 +3170,7 @@ static int __apply_to_page_range(struct mm_struct *mm, unsigned long addr,
+ 			break;
+ 	} while (pgd++, addr = next, addr != end);
+ 
+-	if (mask & ARCH_PAGE_TABLE_SYNC_MASK)
++	if (mask & ARCH_PAGE_TABLE_SYNC_MASK_VMALLOC)
+ 		arch_sync_kernel_mappings(start, start + size);
+ 
+ 	return err;
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 5edd536ba9d2..2fe2480de5dc 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -311,7 +311,7 @@ static int vmap_range_noflush(unsigned long addr, unsigned long end,
+ 			break;
+ 	} while (pgd++, phys_addr += (next - addr), addr = next, addr != end);
+ 
+-	if (mask & ARCH_PAGE_TABLE_SYNC_MASK)
++	if (mask & ARCH_PAGE_TABLE_SYNC_MASK_VMALLOC)
+ 		arch_sync_kernel_mappings(start, end);
+ 
+ 	return err;
+@@ -484,7 +484,7 @@ void __vunmap_range_noflush(unsigned long start, unsigned long end)
+ 		vunmap_p4d_range(pgd, addr, next, &mask);
+ 	} while (pgd++, addr = next, addr != end);
+ 
+-	if (mask & ARCH_PAGE_TABLE_SYNC_MASK)
++	if (mask & ARCH_PAGE_TABLE_SYNC_MASK_VMALLOC)
+ 		arch_sync_kernel_mappings(start, end);
+ }
+ 
+@@ -629,7 +629,7 @@ static int vmap_small_pages_range_noflush(unsigned long addr, unsigned long end,
+ 			break;
+ 	} while (pgd++, addr = next, addr != end);
+ 
+-	if (mask & ARCH_PAGE_TABLE_SYNC_MASK)
++	if (mask & ARCH_PAGE_TABLE_SYNC_MASK_VMALLOC)
+ 		arch_sync_kernel_mappings(start, end);
+ 
+ 	return err;
 -- 
-Cheers
-
-David / dhildenb
+2.49.0
 
 
