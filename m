@@ -4,118 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C70CDCAC598
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 01:32:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57893CAC592
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 02:16:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C86B8E000C; Tue, 16 Sep 2025 21:32:59 -0400 (EDT)
+	id 6B8C88E0003; Tue, 16 Sep 2025 22:16:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 178F48E0001; Tue, 16 Sep 2025 21:32:59 -0400 (EDT)
+	id 668918E0001; Tue, 16 Sep 2025 22:16:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0684B8E000C; Tue, 16 Sep 2025 21:32:59 -0400 (EDT)
+	id 57E528E0003; Tue, 16 Sep 2025 22:16:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E6DEE8E0001
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 21:32:58 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9C686117580
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 01:32:58 +0000 (UTC)
-X-FDA: 83897018436.29.7A56FB6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id E0F822000B
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 01:32:56 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Cz58pDdz;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 4735D8E0001
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 22:16:50 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C0CB486450
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 02:16:49 +0000 (UTC)
+X-FDA: 83897128938.18.1C058E8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 0DD82C0004
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 02:16:47 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=u5BIwCmk;
+	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758072777;
+	s=arc-20220608; t=1758075408;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PvexwmzCNrp51tkFXBAFmsX6wCYeaz9zSCCiWiVuAwY=;
-	b=rSRJG0fWDdyndmd78qImrrgJ7wHQi+u7MWmodv48UaftqbdA74JM7KOwZD55MhW2KKqbgN
-	TVVvFFx3o2PbvJtNofFeTd++1Vb4N/X+jv4h7QFCHQb5u3FWRg89oAJzoM0pkdnHSpREMJ
-	CYSLfTSajQGs/tA5UQm7xvTYobZtYP8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758072777; a=rsa-sha256;
-	cv=none;
-	b=LNPDYFMRUPx7JwxRKtI/YB3IsQNSgvEGjn3CvI9J//LR6ycIu7o+4V2SFXi+ZgMKvKhn5T
-	/oYilq+QQtF6wy0wZHG/HwJXfvHyH3WfQaspNnSCszlhwEAlsWPHy8xbAvjX8ZkYM3yn1W
-	S3uyW2MBVAMhUfbPUGoM0gtPWUtAcP4=
+	bh=ZaVEMS+KznVxr3BopWbagZcv0apUfF0YHHQ2xANPjC8=;
+	b=ulrDoNQH/TOMZyMgC5B2s2jRazw+CrBiJxqfuMlA5g0+gC26d4njCqaSz84wPdnL7LZSt2
+	LSXdEiublL2dgf6euvvAKggNKFSry8Iy5USjSpmRHXMEErN2KzYxCpKsD6fe3ghQOnSfn+
+	G9jMOAnTDOFdq/k5zKLAEvcJYuZ45cU=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Cz58pDdz;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=u5BIwCmk;
+	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758075408; a=rsa-sha256;
+	cv=none;
+	b=79+O1bU03hm5y2/0Y286Y3hmWTqdxbt2ZgQTaCxBMjTQaCjOmKr5VpWvwYJisgPax1mP9w
+	oo4JenovNJQEsAiAjs52QDNqXp7mE+K9vGvdIu+zuxFgx6rTQh2KV+3eZillnA5ezefxIs
+	gwtO9N+OAPz5txKas54Mb1gXASzoAqM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 839A343C6A;
-	Wed, 17 Sep 2025 01:32:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93CFFC4CEEB;
-	Wed, 17 Sep 2025 01:32:53 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2A8FA60285;
+	Wed, 17 Sep 2025 02:16:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B84ACC4CEFB;
+	Wed, 17 Sep 2025 02:16:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1758072775;
-	bh=VPxe/khPNBojBygLvAaLupb67EgQP1yBXlhF6g/LkIY=;
+	s=korg; t=1758075406;
+	bh=Y7E9FgWFmiluyPV1OTAKxPaUN0ogdOZyX5+tdyu3XVE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Cz58pDdzIZYmmzo1HFNNAI/yk1M/cOWjkyECmslTAF0/3PdlsvOf6t+VaaqFMj723
-	 j+22m+BYb06quci5edCqkXAKoOvCNtTOG6bD3BJs854pxcHjlvyZO20jrNXGZ75yS8
-	 WpG/k+1TgXypKIZ6/Ilu+GD9PEv4t2pV2hIAiytM=
-Date: Tue, 16 Sep 2025 18:32:53 -0700
+	b=u5BIwCmk8zcWTJgkEDHluvpFKUJ+aQvEoMt5i7SU0M0JsqTjpt2DrYWLAnJKdQH6Z
+	 7dP4yqdgfiai+hLAEJW9o2X9KCuqnM3sRjwqylWH6wHaT1WnL3QPARHGYvjYGMeV2H
+	 7yZBaedhoZWKOqr6xIHnVhSligT+feIMD27ILX+s=
+Date: Tue, 16 Sep 2025 19:16:45 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
 To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
- Matthew Wilcox <willy@infradead.org>, Guo Ren <guoren@kernel.org>, Thomas
- Bogendoerfer <tsbogend@alpha.franken.de>, Heiko Carstens
- <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev
- <agordeev@linux.ibm.com>, Christian Borntraeger
- <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>,
- "David S . Miller" <davem@davemloft.net>, Andreas Larsson
- <andreas@gaisler.com>, Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Dan Williams <dan.j.williams@intel.com>,
- Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>,
- Nicolas Pitre <nico@fluxnic.net>, Muchun Song <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@redhat.com>,
- Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, Baoquan He
- <bhe@redhat.com>, Vivek Goyal <vgoyal@redhat.com>, Dave Young
- <dyoung@redhat.com>, Tony Luck <tony.luck@intel.com>, Reinette Chatre
- <reinette.chatre@intel.com>, Dave Martin <Dave.Martin@arm.com>, James Morse
- <james.morse@arm.com>, Alexander Viro <viro@zeniv.linux.org.uk>, Christian
- Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, "Liam R . Howlett"
- <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
- <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Uladzislau Rezki <urezki@gmail.com>,
- Dmitry Vyukov <dvyukov@google.com>, Andrey Konovalov
- <andreyknvl@gmail.com>, Jann Horn <jannh@google.com>, Pedro Falcato
- <pfalcato@suse.de>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-csky@vger.kernel.org, linux-mips@vger.kernel.org,
- linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
- nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org, linux-mm@kvack.org,
- ntfs3@lists.linux.dev, kexec@lists.infradead.org,
- kasan-dev@googlegroups.com, iommu@lists.linux.dev, Kevin Tian
- <kevin.tian@intel.com>, Will Deacon <will@kernel.org>, Robin Murphy
- <robin.murphy@arm.com>
-Subject: Re: [PATCH v3 13/13] iommufd: update to use mmap_prepare
-Message-Id: <20250916183253.a966ce2ed67493b5bca85c59@linux-foundation.org>
-In-Reply-To: <a2674243-86a2-435e-9add-3038c295e0c7@lucifer.local>
-References: <cover.1758031792.git.lorenzo.stoakes@oracle.com>
-	<59b8cf515e810e1f0e2a91d51fc3e82b01958644.1758031792.git.lorenzo.stoakes@oracle.com>
-	<20250916154048.GG1086830@nvidia.com>
-	<a2674243-86a2-435e-9add-3038c295e0c7@lucifer.local>
+Cc: Kalesh Singh <kaleshsingh@google.com>, minchan@kernel.org,
+ david@redhat.com, Liam.Howlett@oracle.com, rppt@kernel.org,
+ pfalcato@suse.de, kernel-team@android.com, android-mm@google.com, Alexander
+ Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan
+ Kara <jack@suse.cz>, Kees Cook <kees@kernel.org>, Vlastimil Babka
+ <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+ <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Juri
+ Lelli <juri.lelli@redhat.com>, Vincent Guittot
+ <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, Valentin
+ Schneider <vschneid@redhat.com>, Jann Horn <jannh@google.com>, Shuah Khan
+ <shuah@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-trace-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v2 0/7] vma count: fixes, test and improvements
+Message-Id: <20250916191645.15aae276992acafe7f7e723e@linux-foundation.org>
+In-Reply-To: <aa95777a-8012-4d08-abcf-7175f9e2691c@lucifer.local>
+References: <20250915163838.631445-1-kaleshsingh@google.com>
+	<20250915153401.61cbd5120871ee7a4e5b9cae@linux-foundation.org>
+	<aa95777a-8012-4d08-abcf-7175f9e2691c@lucifer.local>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: E0F822000B
-X-Stat-Signature: fzbug7ce19rgtz4poyc1rfu5bwzd5y4o
+X-Rspamd-Queue-Id: 0DD82C0004
 X-Rspam-User: 
-X-HE-Tag: 1758072776-623738
-X-HE-Meta: U2FsdGVkX19ZTWke15qPwM8s8fe0hHay8PznpqpTr1QhbOHL0XFHbg3KLjnfgatxalHNQO+L6PgVSwTVv6Rr7GWsv1xbTvoq21wfVKEpJDqnuH+ltYK5dwsQIpIUqL1iPfcZpms7HdQIf6xpryE6DdxxSd6oSoxDV6C9tR9yOUqhLpSw1JPF+5T2r1XadAmdugqcRkUGtQB0pSWVQ6vLWxNBjR8SIm8+KWslY1XpUWOevml0EgbBd5TJ104+DuMAK3CqIVzuFvD5ULfVjPeaOt/h457lbmKSwRKYM41lsfdON6VzxgzSNEEvEvfK3MtlFQZF3l/CW1MFC9o26PzblSbwACO40sqLR9l1/DGUH8Eg0a894OdLBgBto+DIoiVE+QHfzJNtVHCIj5i5I/lotyktYqt/G1unRMoj85HkOk+aHtzL1HhwrYExmkuTuK78M+xZbz1Q593TonHl84ivK5TElcf74Q0O6p5MHUoI0NWJbHCbwFeg21stZ17Knd4DG9dVgTQS7exxH0IHv1Raz6J0um/85EAUlV/TG7cPvhqBNjHxMd10jfMm7ybVjgc8pfHoeFYiSC03Q2vIh0nSFBffpyr/MLDb3JPAmoCWCBQfYAM5tncSlJ2uHIXP1h+Si5PAvCohchoBBjT9Ha9KojVt4v6PTuVPgt+nVVdRquIUERePHbw6czYFhQkCNZAwBix6gnRthkrJSFm5h50MtDL5NtHh6i2L1aOIvpi4PJWT1lDtWGWk6p7cfZkp+nKsigAMgiCEcF6FjmgbRAWLby4ulGaLWz0FRJw4976gdnug/sIUN0iIxmE2Fw6dgCyH8SpdedyRNjpSfFrNwmS9hGzuqYqjCF3qo7JfLpn4Mo1TZRziVFkPYKRyJlcWxCnaawe29BYdFiuAWSSF/mQfp7G9bbAKJaVATZ4gf261cmzVECJPoG+1xWxxvhPz+sUwcgvwL60K3wa+Oz50aGW
- oG1RPwBl
- EIvUo+bZ9pQedy3lVqFV1Dluz3vu1i8NB3CwAXN4HnK2ZeOumimNWmNfdws4jbq59FuemdaUD1s20STbeQYUd6QD+kC12vNx2eolkWyJl/xN0D2CLV4/U2DcEjkJim04NlgWdQOYGOeWNcoWMUN5Damd6HQV9WVBKKxiDROI5oZvfysSh/1Nth9FKFdiK9g+9eZ08ZaC7ah/tqrN3oKjT+wzlpc+tF0EfwRDafswzo3bxhDE0QLWd7JHUI2tA1ZpKJDhk1Xv6z1V2KqsZWUO+OSb7hKccn1jOHvQNq9vevu7Ta1ApRze3hXV/5ZzMFDW28e/7aq7aUnRj+Wjktm792Z117UdwYWEJQOlsFWEyOOm9tiE=
+X-Rspamd-Server: rspam07
+X-Stat-Signature: uexp5x885t8ze6qqq51bxwa38t395jpa
+X-HE-Tag: 1758075407-218835
+X-HE-Meta: U2FsdGVkX191AP5ZhEcMOMTqMWo6f1UEvZhSaywjQbNytwrs7iKc9/1pDeQMrKu+W+Mdl3BfAofnyPasUADFLtYhTWKbjxve5SyI+2i2nWqnj1eih7xjQLpQ8MZti68T4nQHlvkd8aKYSdpphdf96co02ZnviZdkJyLhx7ftNuTiXF572Iv6f/qdk+LQ1GKnZyIGq88ISdV51Xl25s0vlsERnzc/jbQAP0NE84J+HyoT1JoxqI/kautAnoeGuQ+uxn0Qn2yDlIXUItDFc/xqGPL4Qqho9QLP630f8A3SguSq3XHO/6eKSIiZbrEHWVq6Q6BhbUxr+q9gBPbS9iU/V6ePVyPtjPIMZaeRmZ1KzDAl5Xrnlx+EYcRN8MxIRf7nTcY2hYO6MPYNVrV06dJbwWb07a9uxKZVHnEO1z2XTdBtS0zJEdTLytSLXBYaR304/noRuaaOAf8iZdc2m20w8gBZ1rFLui/ILcVLVRUm/LaHMHn/OYzJocgtekKrrzd9dUkwu6Eo4Kt8WHYjo09Ep9TG/8Q4O+iRw644SCZMPKfX6TWKY6gFD4ul82EJZCDkbRhznn3GYGUV5HGcaIHnanx1mNq2gk9cakRr+BQaYl3St5LeNkkmvvM4E1sWPvIKFycShwEwgZowcQvdBbL+liug6YU2ZibrlN5gCd6xYUKy593EbxLVGQyEAuhqiDdAx2OP//BEnTEh++TbLwN4dE0+9GSJdLdwUD8LD5NlpnmXQ77domiImLDmKp6Af1UjFM9Auc4ytZ+OJVR9tjM369/OzRYG7WWP36Ba36xm6W8zhhOdeQS+h3DjFqRUvxYlqjrY48koHexdwFjLva72Anco716SCqrAyr73l/4aQWQJXORAwQde7Q0WxQPsGO9AU2bxIufxkF5EJ9MGjBkdI6Lex8jtRnVBQgq/uA2IWx04wAVRuHZHABb9Fl7B7MyUnvun28jZ6B6f0kLtaTF
+ ES4SGTwY
+ 2yJL90mdOMFhzc8ULZ3xzr78t0T/3MEpHIONrQhTiH50IBZBvlTJR70QXaf6+sTfd1Djm3lRJQGUPDoVV2UMFrkqAUlAkSHiOV0MScsIpDCMGyZPlx697+89Gfhrblsjdz8OM7kDuG7QnppQ/yV7/AKlJxXQKSE6C1IHHF6pHZ6oIPr/7ljsR485ajZB+UVyHJwvrMKLcKVNdEmLOAhB84D9o2eD+bikq2H+V+w7wWR7gr/ZgqWyZ/RmwyYoMwTI4bZjRna/laAcdqpA2WXyjzMImhA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,12 +106,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 16 Sep 2025 17:23:31 +0100 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
+On Tue, 16 Sep 2025 11:12:03 +0100 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
 
-> Andrew - Jason has sent a conflicting patch against this file so it's not
-> reasonable to include it in this series any more, please drop it.
+> On Mon, Sep 15, 2025 at 03:34:01PM -0700, Andrew Morton wrote:
+> > Anyhow, this -rc cycle has been quite the firehose in MM and I'm
+> > feeling a need to slow things down for additional stabilization and so
+> > people hopefully get additional bandwidth to digest the material we've
+> > added this far.  So I think I'll just cherrypick [1/7] for now.  A
+> > great flood of positive review activity would probably make me revisit
+> > that ;)
+> >
+> 
+> Kalesh - I do intend to look at this series when I have a chance. My review
+> workload has been insane so it's hard to keep up at the moment.
+> 
+> Andrew - This cycle has been crazy, speaking from point of view of somebody
+> doing a lot of review, it's been very very exhausting from this side too,
+> and this kind of work can feel a little... thankless... sometimes :)
 
-No probs.
+I hear you.  I'm shedding most everything now, to give us a couple of
+weeks to digest.
 
-All added to mm-new, thanks.  emails suppressed due to mercy.
+> I feel like we maybe need a way to ask people to slow down, sometimes at
+> least.
+
+Yup, I'm sending submitters private emails explaining the situation.
+
+Maybe they should be public emails, I find it a hard call.
+
+> Perhaps being less accepting of patches during merge window is one aspect,
+> as the merge window leading up to this cycle was almost the same review
+> load as when the cycle started.
+
+I'm having trouble understanding what you said here?
+
+> Anyway, TL;DR: I think we need to be mindful of reviewer sanity as a factor
+> in all this too :)
+> 
+> (I am spekaing at Kernel Recipes then going on a very-badly-needed 2.5 week
+> vacataion afterwards over the merge window so I hope to stave off burnout
+> that way. Be good if I could keep mails upon return to 3 digits, but I have
+> my doubts :P)
+
+I'd blow that in three days ;)
 
