@@ -4,87 +4,153 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81EA6CAC598
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 11:06:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2934CA0EE8
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 11:08:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D800F8E0002; Wed, 17 Sep 2025 07:05:59 -0400 (EDT)
+	id 08CC78E0007; Wed, 17 Sep 2025 07:08:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D30EB8E0001; Wed, 17 Sep 2025 07:05:59 -0400 (EDT)
+	id 064B18E0001; Wed, 17 Sep 2025 07:08:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C46578E0002; Wed, 17 Sep 2025 07:05:59 -0400 (EDT)
+	id EBC8A8E0007; Wed, 17 Sep 2025 07:08:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AEF418E0001
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 07:05:59 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 590CB868DE
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 11:05:59 +0000 (UTC)
-X-FDA: 83898462438.24.3B7831E
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 325F0C0005
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 11:05:56 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lvRnFj3K;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf10.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758107157; a=rsa-sha256;
-	cv=none;
-	b=x0gqTE9gummDu8DNSYMgFgQgwlsePMxuzQ89KfloIKwno2t4T1UzRAmXHQzFxtCfJrSTs1
-	nE4LDpj1aWAS6M1K8+t28ji/jUyihtgOOWf2bPzBbhDzBUnxhswWrAHe7oqFwl6KmQO8GN
-	n2Dv4pG07IL8x3hs1k3mBz7L8nv1nXM=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lvRnFj3K;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf10.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D8A628E0001
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 07:08:06 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7C4E211A4B9
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 11:08:06 +0000 (UTC)
+X-FDA: 83898467772.30.4559ACF
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 40AD280003
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 11:08:03 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ptkrptGs;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=CuqXr5mf;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ptkrptGs;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=CuqXr5mf;
+	spf=pass (imf02.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758107157;
+	s=arc-20220608; t=1758107284;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TuuVoVWXNYbl+ds4b8F2xNM0nTUIAdxFSHG+zKy+0Ho=;
-	b=dPjOOYe25H8/511h2n6XEYv+Nfl05j3rZ9XfMA7uKUH7BgJL2Li/WO0/LDrgI/O08GMbgW
-	HgE5pFliU7cKUI38BYtiNRmk5vooVSeoAhPIN9LiApzJS2TdgUUD0ZOORJmrvRAxEA2WUH
-	kPU4IRSAKKfftFwoM6QyNujHI7J140s=
-Message-ID: <1e75f092-b3ac-48d9-a304-c980e1d61472@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1758107154;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	bh=8/j+TghCbMxS6Hr+M6Px03nxBiobgKniH+u2vLxerW8=;
+	b=UM3DkF4/wQmGySVHKrrepRkwITYm1VUxQaX1nf+G9No4wdFmQkO/3/PRrf95cjP60coYTV
+	weE13cYv6vNOiYA+3Y3QPAwhxRzovrStp1Jxoq+VHhlK7Yd8/UW03pwnr2puXOBikiKMCW
+	osiCn3xXdy+MR7PbQWhvy5Q/5+LXjdE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758107284; a=rsa-sha256;
+	cv=none;
+	b=DIHQ3irLN3nYZYNHtfqnYpVu7XYO4SIHiaRQPYiDYDfHm/kr1opdc6l8G7mfPVmYjKtsAd
+	GS2iDMe54BlNV0DXKSBVGtC3+QEWAatp7OCzPyHvPP7Eb+RiG6FsNRGaAGswrmkVYYgt/B
+	2Sjbw3L+Zgr6ijsGpIVe9FUe6/07578=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ptkrptGs;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=CuqXr5mf;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ptkrptGs;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=CuqXr5mf;
+	spf=pass (imf02.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 709D02126A;
+	Wed, 17 Sep 2025 11:08:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1758107282; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=TuuVoVWXNYbl+ds4b8F2xNM0nTUIAdxFSHG+zKy+0Ho=;
-	b=lvRnFj3KdzdsDt8rnP8I8JemxUlfemkDZK1FMj4IeOLHK++G2cTWs6v75mkO745sIBJf6g
-	diqCfbSHzhn9dc/JmzXuR5/6qcNySJy+behVS5O9VkOh150PtAMA/kfzNDSpYRHqY+P0d9
-	JsKzG0wdMdDmkN5Hxfa/vhBZ6p8QcPs=
-Date: Wed, 17 Sep 2025 19:05:47 +0800
+	bh=8/j+TghCbMxS6Hr+M6Px03nxBiobgKniH+u2vLxerW8=;
+	b=ptkrptGseCISVsQSxi+p8tUW59Rrjz0N5sPnd1wzkFhKOxrWCHCwTIW4TWDHSpOespuFww
+	1e1PZQAzfRkjbo8bpdzp23GXJKOG2bLZpYH6zuvmfjqFO+esZfZXR+lBVUjtyUWkNHbwAY
+	0UVQEfLseGzXPrwa54eoqUh4Ta4r680=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1758107282;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8/j+TghCbMxS6Hr+M6Px03nxBiobgKniH+u2vLxerW8=;
+	b=CuqXr5mf1f5gVEyVE/lNW/q6XMjuaOaU8Fo7jUe67po6sdGNuF62L3WB6GMPs7nmsIzR+e
+	XeKtsoSUgaSSfvAg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1758107282; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8/j+TghCbMxS6Hr+M6Px03nxBiobgKniH+u2vLxerW8=;
+	b=ptkrptGseCISVsQSxi+p8tUW59Rrjz0N5sPnd1wzkFhKOxrWCHCwTIW4TWDHSpOespuFww
+	1e1PZQAzfRkjbo8bpdzp23GXJKOG2bLZpYH6zuvmfjqFO+esZfZXR+lBVUjtyUWkNHbwAY
+	0UVQEfLseGzXPrwa54eoqUh4Ta4r680=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1758107282;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8/j+TghCbMxS6Hr+M6Px03nxBiobgKniH+u2vLxerW8=;
+	b=CuqXr5mf1f5gVEyVE/lNW/q6XMjuaOaU8Fo7jUe67po6sdGNuF62L3WB6GMPs7nmsIzR+e
+	XeKtsoSUgaSSfvAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D09581368D;
+	Wed, 17 Sep 2025 11:07:58 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 1iOPL46WymikQwAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Wed, 17 Sep 2025 11:07:58 +0000
+Date: Wed, 17 Sep 2025 12:07:52 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Matthew Wilcox <willy@infradead.org>, 
+	Guo Ren <guoren@kernel.org>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, "David S . Miller" <davem@davemloft.net>, 
+	Andreas Larsson <andreas@gaisler.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dan Williams <dan.j.williams@intel.com>, 
+	Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>, 
+	Nicolas Pitre <nico@fluxnic.net>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@redhat.com>, 
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, Baoquan He <bhe@redhat.com>, Vivek Goyal <vgoyal@redhat.com>, 
+	Dave Young <dyoung@redhat.com>, Tony Luck <tony.luck@intel.com>, 
+	Reinette Chatre <reinette.chatre@intel.com>, Dave Martin <Dave.Martin@arm.com>, 
+	James Morse <james.morse@arm.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Uladzislau Rezki <urezki@gmail.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
+	Jann Horn <jannh@google.com>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-csky@vger.kernel.org, linux-mips@vger.kernel.org, 
+	linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, nvdimm@lists.linux.dev, 
+	linux-cxl@vger.kernel.org, linux-mm@kvack.org, ntfs3@lists.linux.dev, 
+	kexec@lists.infradead.org, kasan-dev@googlegroups.com, Jason Gunthorpe <jgg@nvidia.com>, 
+	iommu@lists.linux.dev, Kevin Tian <kevin.tian@intel.com>, Will Deacon <will@kernel.org>, 
+	Robin Murphy <robin.murphy@arm.com>
+Subject: Re: [PATCH v3 06/13] mm: add remap_pfn_range_prepare(),
+ remap_pfn_range_complete()
+Message-ID: <fdkqhtegozzwx3p4fqzkar7dfbzffn7xiz7ht365c3pe4x6hk3@zbfwoktrhci3>
+References: <cover.1758031792.git.lorenzo.stoakes@oracle.com>
+ <7c050219963aade148332365f8d2223f267dd89a.1758031792.git.lorenzo.stoakes@oracle.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH RESEND 1/1] selftests/mm: skip soft-dirty tests when
- CONFIG_MEM_SOFT_DIRTY is disabled
-Content-Language: en-US
-To: David Hildenbrand <david@redhat.com>
-Cc: shuah@kernel.org, ioworker0@gmail.com, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- akpm@linux-foundation.org, lorenzo.stoakes@oracle.com
-References: <20250917055913.49759-1-lance.yang@linux.dev>
- <353bf8f0-d9ad-4800-80d7-4177ae64eb95@redhat.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <353bf8f0-d9ad-4800-80d7-4177ae64eb95@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 325F0C0005
-X-Stat-Signature: a6w75ezzex8qu16wdwo1qgfuysjb9afu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7c050219963aade148332365f8d2223f267dd89a.1758031792.git.lorenzo.stoakes@oracle.com>
+X-Rspamd-Action: no action
+X-Stat-Signature: 9o719km7qzzqdzhiwn8hqyjfea4t5mro
+X-Rspamd-Queue-Id: 40AD280003
 X-Rspam-User: 
-X-HE-Tag: 1758107156-884535
-X-HE-Meta: U2FsdGVkX19g+wWnmYNmiMP5vwf9n7+MjTVesZ3nVYEK4ipEVT3+tWmacafBNQFAenLgmA8l1tv9gh/Kt8Tm41GjrvSJDRj2leY5C1NWw6n6ShOr1WtG5unT8+jFHBwuES85TM6A9qVHIAnQk9aKLwNx5WPcQumbzAovWA571hxwSWE/xvx3DenQ+dWQQH+ZfjW8eG8WCNkmi6S/rWetfNov3H2+XCDfr7HP/aXPQz8kIZZDJX+mJUH+9iTFI31asE+YVW6Ocs8Y//iH4wPH1re+5a2/tG6SMjwgDcSbeCwsS7NctXEihOmZDKagFqN7YRJexovsRTxhG4ztXd9Uauofxwi3gU0POYpWrWW0XW1q8M++maZyzEXI+gmFcU/PrpN+17POJR3L1G6+F91goLeeWjMvgDWeMRubsRf/YrA9x81X6ZZNZiGKgn3gAEpY5Zs4uCgRNvW5BH//8nZQLleBIR/wENjn39TSXQfaEnuzpmIdiYLcdMXmc5BJnTpr8PLe/VxbsN39mftwO0WwM5YikZtTh2k+7Dw7FgMKASLziZLYg+wxOmUFgRZpq9CRS7mEujt5vLFJ1HdxBd6GHPFURVV2pEs0MoJr2Ic2/tSkXUNizNH9Go6NZ5mBYOhdTBKddAGq0WquoFYA5fBLYkUZWoPmDzEHjkXoVDnj7KUqrjfnpiO+ixzy9oK05xXTG1KaxURbqUdIyc3jv6B9ea1hhhpLC37p4c+jCQlRjm059sNtOHY6AD5whMomeZB6wJ/v0nO+u0vuFO1yemnTcY56+Ogw8JvuvX6eLmw+/dhuqAPeI+mrMkLP4WHZCu74vzG1iM9kKpD8t6b2gEUO9VSHKRrDHQF9H9bDSjL2LwZ5Gp65os/T8IR8gLqtIlNtzpJpnCDWtcJK6h6Q+CQSG6Ka44Nk45HdJ6YIrJHSvy2mvS9OMUN0bmwv/h4ZchVCD5WzOB+G5YYJ0K4wov1
- wjG7ozqA
- k7gm00TxhIww8KMhD+rJUAS+/yJJDw3KNQm9S8unN0uAFJeZN4l700IE1x+97alkmUtpgp4iqcqr7a5lA/VGOVVFRw1k0EXMLUaie8F8VGpKtcBz99i/b75BbkG3TjL6QnLrmjhV0gMmV9qKFciKGl499X+BLY3Y3hhdSRYq3ovfc7QcPoJsNoNXe0Zgn/jwO2tnnIC6S5KCyyIjP1Yw29Jn7uA10HHlxojB5pOgLe19xEcr+ic0ZxvZuytBM2b6IW9i676YLZ/8Xcsk/7bkHw2yYK2lDSiRrRuqjW5J8aissYcS3yyAaInYpgg==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1758107283-562883
+X-HE-Meta: U2FsdGVkX18erTXCdk4g8U1QbFIVEHugAqK+RBTV6RY9MnC6sw8SEakktX62+x1EfPUu3CJwabpU71TJ3+wwIYrllp2tCIYPcplItctMr3JYmM6/KdgbVtEG6MSbNee2uQsfUIulC0XLP2mSXITBlDUckgZ5uKuUej6cNbgbeHGaJP6yI8tb5NRpVlpytQY2T+wP6GNZ3Up/R1tbDEIarK/0hkiyLNxSQMPw68/HsKJfA0j+FOAxGKrjb9MvkYAP1nJQzJYXVrHhgyaLgDmbVEQfh1xocrkwYWTfnYnZ1CO2gjFWGaqJKL1RW3Om0zloi0M5WnhBufpdlPM6wniCyBFXq4clw4Ava8KU/Smyd0xmNuy71Ba0AubK9n8DzvR988c06an/iM35Nst0cLQqgHkLWrrShlz0zvdaAGxDRaL78AlbVcR2uLO411gIxCQSnt59DQ9FGMtQSffB3AKy7ghAMgUg7AxNuyDJgNrED+GzKDWsJ5EIAprUbYO9uBFXBs9PtstQivDnr0j1HkPwgNbPIvE1fYQAYkV5dmsHcrmdHzKFCjiAK0o6PF1eHUFshAXA09c2ADroDvCnQhGHYE04cgfIdv6U+nnIrby8RI5Yey4/UUFPCqp6XQeakQz0ygoLmikd/ea6q415bTXMyfzU23GAtUIhW91YSge0fGGdvJi1mk1BtHirxVVNMAsId0Xcu8NlIY8BXJz2PxYAE3NbiFSorPKidNeCfLTuOUPB0NGfFYN8FbFB4jmq9FTUd9DEWH9xZkBYqQ7ePMXoKamqExSrjQUOMP8NyVV4dKdD8HKPaFrlJnsGs/p+nK9gpitGhWXdW8J7nINjUxc6rRxXF3gmG0SODyV9ccqxvxHOBN7Ny5wIaPELhqcXyE5qsOG1fFiOPRat+fX7/oQ9AMjrLamP6ffNIMhjjMxkkrvDN+TDAIPHi2C6tfUCQm6j6H62Q1x79+UUMMPPsVw
+ h6S7VdMI
+ QdcUqPFmfpuMy0jPjj5PprsVmVd31eDFqEjig09ZsX0xKyII+uF4sJEd85v3Kck4uZVuD376Z7GRVFdvhtVZns459IcM4xV421cOy6f79svOObUG8J0n9SHePWlcdZqtKyma961eRdztSt6n49YhjVlqX7jOUFwT6b/WyIZKjlFa3FUzzH29pEUZUHvpZSA0jBG8nRrwZ7ZGEcOc7dgNxAuA097do+JUnUcoYrJJbqbGMEFO+rMAIns+4yFO6Qf43jmQ7lLPj2doDr8GJApwtHYDE1njLLjOkaGXsTEyIfE5cXS98EIUy1Ymna5rCtIzi0arHljSwThXeD3VHFJAOpkZcJdl3j4nfW/P3we6vkX2lgOj9yQzqz1NAR3zvunjZm7PyFnB8FFPa/1+cXOgSSfiJoZt6b8o3pmmU
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,175 +159,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2025/9/17 18:51, David Hildenbrand wrote:
-> On 17.09.25 07:59, Lance Yang wrote:
->> From: Lance Yang <lance.yang@linux.dev>
->>
->> The madv_populate and soft-dirty kselftests currently fail on systems 
->> where
->> CONFIG_MEM_SOFT_DIRTY is disabled.
->>
->> Introduce a new helper softdirty_is_supported() into vm_util.c/h to 
->> ensure
->> tests are properly skipped when the feature is not enabled.
+On Tue, Sep 16, 2025 at 03:11:52PM +0100, Lorenzo Stoakes wrote:
+> We need the ability to split PFN remap between updating the VMA and
+> performing the actual remap, in order to do away with the legacy
+> f_op->mmap hook.
 > 
-> I'll note that tools/testing/selftests/mm/config contains
+> To do so, update the PFN remap code to provide shared logic, and also make
+> remap_pfn_range_notrack() static, as its one user, io_mapping_map_user()
+> was removed in commit 9a4f90e24661 ("mm: remove mm/io-mapping.c").
 > 
->      CONFIG_MEM_SOFT_DIRTY=y
-> 
-> But yes, the current arm64 handling is nasty, because some other archs 
-> (e.g., riscv) also don't support it yet.
-
-Yep.
+> Then, introduce remap_pfn_range_prepare(), which accepts VMA descriptor
+> and PFN parameters, and remap_pfn_range_complete() which accepts the same
+> parameters as remap_pfn_rangte().
+                remap_pfn_range
 
 > 
-> LGTM, some nits below:
+> remap_pfn_range_prepare() will set the cow vma->vm_pgoff if necessary, so
+> it must be supplied with a correct PFN to do so.  If the caller must hold
+> locks to be able to do this, those locks should be held across the
+> operation, and mmap_abort() should be provided to revoke the lock should
+> an error arise.
+> 
+> While we're here, also clean up the duplicated #ifdef
+> __HAVE_PFNMAP_TRACKING check and put into a single #ifdef/#else block.
+> 
+> We would prefer to define these functions in mm/internal.h, however we
+> will do the same for io_remap*() and these have arch defines that require
+> access to the remap functions.
+>
 
-Thanks for taking time to review!
+I'm confused. What's stopping us from declaring these new functions in
+internal.h? It's supposed to be used by core mm only anyway?
 
-> 
->>
->> Suggested-by: David Hildenbrand <david@redhat.com>
->> Signed-off-by: Lance Yang <lance.yang@linux.dev>
->> ---
->>   tools/testing/selftests/mm/madv_populate.c | 21 ++--------------
->>   tools/testing/selftests/mm/soft-dirty.c    |  5 +++-
->>   tools/testing/selftests/mm/vm_util.c       | 28 ++++++++++++++++++++++
->>   tools/testing/selftests/mm/vm_util.h       |  1 +
->>   4 files changed, 35 insertions(+), 20 deletions(-)
->>
->> diff --git a/tools/testing/selftests/mm/madv_populate.c b/tools/ 
->> testing/selftests/mm/madv_populate.c
->> index b6fabd5c27ed..43dac7783004 100644
->> --- a/tools/testing/selftests/mm/madv_populate.c
->> +++ b/tools/testing/selftests/mm/madv_populate.c
->> @@ -264,23 +264,6 @@ static void test_softdirty(void)
->>       munmap(addr, SIZE);
->>   }
->> -static int system_has_softdirty(void)
->> -{
->> -    /*
->> -     * There is no way to check if the kernel supports soft-dirty, other
->> -     * than by writing to a page and seeing if the bit was set. But the
->> -     * tests are intended to check that the bit gets set when it 
->> should, so
->> -     * doing that check would turn a potentially legitimate fail into a
->> -     * skip. Fortunately, we know for sure that arm64 does not support
->> -     * soft-dirty. So for now, let's just use the arch as a corse guide.
->> -     */
->> -#if defined(__aarch64__)
->> -    return 0;
->> -#else
->> -    return 1;
->> -#endif
->> -}
->> -
->>   int main(int argc, char **argv)
->>   {
->>       int nr_tests = 16;
->> @@ -288,7 +271,7 @@ int main(int argc, char **argv)
->>       pagesize = getpagesize();
->> -    if (system_has_softdirty())
->> +    if (softdirty_is_supported())
->>           nr_tests += 5;
->>       ksft_print_header();
->> @@ -300,7 +283,7 @@ int main(int argc, char **argv)
->>       test_holes();
->>       test_populate_read();
->>       test_populate_write();
->> -    if (system_has_softdirty())
->> +    if (softdirty_is_supported())
->>           test_softdirty();
->>       err = ksft_get_fail_cnt();
->> diff --git a/tools/testing/selftests/mm/soft-dirty.c b/tools/testing/ 
->> selftests/mm/soft-dirty.c
->> index 8a3f2b4b2186..98e42d2ac32a 100644
->> --- a/tools/testing/selftests/mm/soft-dirty.c
->> +++ b/tools/testing/selftests/mm/soft-dirty.c
->> @@ -200,8 +200,11 @@ int main(int argc, char **argv)
->>       int pagesize;
->>       ksft_print_header();
->> -    ksft_set_plan(15);
->> +    if (!softdirty_is_supported())
->> +        ksft_exit_skip("soft-dirty is not support\n");
->> +
->> +    ksft_set_plan(15);
->>       pagemap_fd = open(PAGEMAP_FILE_PATH, O_RDONLY);
->>       if (pagemap_fd < 0)
->>           ksft_exit_fail_msg("Failed to open %s\n", PAGEMAP_FILE_PATH);
->> diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/ 
->> selftests/mm/vm_util.c
->> index 56e9bd541edd..3173335df775 100644
->> --- a/tools/testing/selftests/mm/vm_util.c
->> +++ b/tools/testing/selftests/mm/vm_util.c
->> @@ -449,6 +449,34 @@ bool check_vmflag_pfnmap(void *addr)
->>       return check_vmflag(addr, "pf");
->>   }
->> +bool softdirty_is_supported(void)
-> 
-> I'd just call it "softdirty_supported" similar to 
-> "pagemap_scan_supported()".
 
-Got it.
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-> 
->> +{
->> +    char *addr;
->> +    int ret = 0;
-> 
-> bool supported = false;
-> 
->> +    size_t pagesize;
->> +
->> +    /* We know for sure that arm64 does not support soft-dirty. */
->> +#if defined(__aarch64__)
->> +    return ret;
->> +#endif
-> 
-> Just drop this arm special case now.
+The changes themselves look OK to me, but I'm not super familiar with these
+bits anyway.
 
-OK
+Acked-by: Pedro Falcato <pfalcato@suse.de>
 
-> 
->> +    pagesize = getpagesize();
-> 
-> const size_t pagesize = getpagesize();
-> 
->> +    /*
->> +     * __mmap_complete() always sets VM_SOFTDIRTY for new VMAs, so we
->> +     * just mmap a small region and check its VmFlags in /proc/self/ 
->> smaps
->> +     * for the "sd" flag.
->> +     */
-> 
-> /* New mappings are expected to be marked with VM_SOFTDIRTY (sd). */
-
-Cool. Much better!
-
-> 
->> +    addr = mmap(0, pagesize, PROT_READ | PROT_WRITE,
->> +            MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
->> +    if (!addr)
->> +        ksft_exit_fail_msg("mmap failed\n");
->> +
->> +    if (check_vmflag(addr, "sd"))
->> +        ret = 1;
-> 
-> supported = true;
-
-I'll adjust as you suggested ;)
-
-> 
->> +
->> +    munmap(addr, pagesize);
->> +    return ret;
->> +}
->> +
-> 
-
-Cheers,
-Lance
-
+-- 
+Pedro
 
