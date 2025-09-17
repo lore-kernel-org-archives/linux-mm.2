@@ -4,187 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B83AFCAC598
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 10:58:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81EA6CAC598
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 11:06:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 09C898E000C; Wed, 17 Sep 2025 06:58:47 -0400 (EDT)
+	id D800F8E0002; Wed, 17 Sep 2025 07:05:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 04B168E0001; Wed, 17 Sep 2025 06:58:46 -0400 (EDT)
+	id D30EB8E0001; Wed, 17 Sep 2025 07:05:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E55608E000C; Wed, 17 Sep 2025 06:58:46 -0400 (EDT)
+	id C46578E0002; Wed, 17 Sep 2025 07:05:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id CE0688E0001
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 06:58:46 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4AE2186CE6
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 10:58:46 +0000 (UTC)
-X-FDA: 83898444252.04.1B3C0F0
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf02.hostedemail.com (Postfix) with ESMTP id C634C80006
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 10:58:43 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PSMAaLYD;
-	spf=pass (imf02.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AEF418E0001
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 07:05:59 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 590CB868DE
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 11:05:59 +0000 (UTC)
+X-FDA: 83898462438.24.3B7831E
+Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 325F0C0005
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 11:05:56 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=lvRnFj3K;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf10.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758107157; a=rsa-sha256;
+	cv=none;
+	b=x0gqTE9gummDu8DNSYMgFgQgwlsePMxuzQ89KfloIKwno2t4T1UzRAmXHQzFxtCfJrSTs1
+	nE4LDpj1aWAS6M1K8+t28ji/jUyihtgOOWf2bPzBbhDzBUnxhswWrAHe7oqFwl6KmQO8GN
+	n2Dv4pG07IL8x3hs1k3mBz7L8nv1nXM=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=lvRnFj3K;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf10.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758106724;
+	s=arc-20220608; t=1758107157;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7JkjtbRP7dMtBFUCBqCV1SQcXuhyJiXUoZv2gn/Tp1M=;
-	b=UikNLX2U8tiaLSDHr6wnmt1nNKRqaxJn8b8FJJZ1d5oPrbFiljVa4mWCCtcNwbM0scU2J4
-	ItkJnhfKrYEZWIKmTAYzF38FVn8bShrw3tusDiTfPn3OgVM7fE7n5WQsxM/Uqvuz8PVI3R
-	ZBlb5OPAW4uuV4Fk8Jn6iGsI9kKcAkI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758106724; a=rsa-sha256;
-	cv=none;
-	b=cjfRCsdxDtL9um14+Y1KaC2o8Bvht4JlzDItt+pEwVbMShuxd/z+pSjeXpviS7vlWWccRW
-	dyQcijkfVaddEPj0CCMzJhPECa4fVvTRQcbW7L9Y372Ww1DzkA0AckfdA3brs1IR1dtfLW
-	2pVBEw/oUOjQHhmPxpqmAHU15nlwLbE=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PSMAaLYD;
-	spf=pass (imf02.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758106723;
+	bh=TuuVoVWXNYbl+ds4b8F2xNM0nTUIAdxFSHG+zKy+0Ho=;
+	b=dPjOOYe25H8/511h2n6XEYv+Nfl05j3rZ9XfMA7uKUH7BgJL2Li/WO0/LDrgI/O08GMbgW
+	HgE5pFliU7cKUI38BYtiNRmk5vooVSeoAhPIN9LiApzJS2TdgUUD0ZOORJmrvRAxEA2WUH
+	kPU4IRSAKKfftFwoM6QyNujHI7J140s=
+Message-ID: <1e75f092-b3ac-48d9-a304-c980e1d61472@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1758107154;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=7JkjtbRP7dMtBFUCBqCV1SQcXuhyJiXUoZv2gn/Tp1M=;
-	b=PSMAaLYDrU2UF5XnsESWllYqAvAlPdgzq/XNgWhgNviPnoV4RA1zfQrtNaqOzWhV1xAhKJ
-	EmyCq3X4fSVgkqNK21c3kKpAmaGf/wMI8Yhz1CayfQ4xQLDFxEZeLCoRpJSQX03X7KQbhO
-	28VnishYXebFtBRJu1S53M18PW7n9jY=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-468-qQ1Tx0maM261mNREIQiUSg-1; Wed, 17 Sep 2025 06:58:39 -0400
-X-MC-Unique: qQ1Tx0maM261mNREIQiUSg-1
-X-Mimecast-MFC-AGG-ID: qQ1Tx0maM261mNREIQiUSg_1758106719
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-45b990eb77cso6392275e9.0
-        for <linux-mm@kvack.org>; Wed, 17 Sep 2025 03:58:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758106719; x=1758711519;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7JkjtbRP7dMtBFUCBqCV1SQcXuhyJiXUoZv2gn/Tp1M=;
-        b=VL96T592KcHEWaluv7XVFOQdHQeTrzgbw0mCPvr7y1/C2IPlbLWN95eGVM1IMGhO/k
-         +CoLh3RyZn//w+kI0Q+rTjQdCji0SLbrJYk9w9AGRC07aQUWQHKZvp4ohAWh0LoqUa6z
-         PhwAQJZZQmeGKEf8I7OPmNZcTS/gj8P623d61egpu0rBFORXL5zM/r9zr7dr40caEUFw
-         fHijQuDYzCSpQQxmjF3v8XsaiRK6wQ70Xa159jTJTrF4CN6PQcXrIqU6g6VmTETeBc16
-         PDi4+y04peOFQEBFqLwWBgZZTMryGp/qftaVZGYKKibZ/H+08gcvfB0u2G/9waRxErLK
-         P07g==
-X-Forwarded-Encrypted: i=1; AJvYcCV9Q0NZQ/OmlVzCM+hho4n9HDNxYLo5dyHsPHTu6V7rnx/gV5ow2qU9lSZagtE7fxcM0ii7fJwPPg==@kvack.org
-X-Gm-Message-State: AOJu0Yxjv8nt6FmiqxCJ7fCuPojH6wtQGL8RpoZI2BKHgo8fMq7erONF
-	4kMbTjucU3Zh6J6e87LQEy1DXb9zzUmVdKur/f16F2W30XX4QGZdN7rvma9xZbjNXZ7KE4pmGX5
-	B9vLE8TWmJ51dbf78cxxmnEKGtsY9Tmi/zSRSusrVM87jw0Gdi2H9
-X-Gm-Gg: ASbGnctq7thyw/UO7rDI8sXABE5d37uSj8UQS1XI0jKJEKnn7ZZWgcASyOpd3JmviFx
-	Dx+q2a+D3gPswdsTrnEerafbpxG/zTE/T8qBKW7hy6ZfYYr9InxaxYo4sZBYhkwuuw2QBcGaHB9
-	m2cbtQSAeXzxTXqz9Hz+HQieUSczqHs2g4Oy9dR1aZ/ovwfF/yt5OJM51pF9++9qcpoa0mda9z+
-	REnQ3oYZ1UVchvWX26Q3BsO+ND8vAR0fZ1ShX+AYFc7s1S7DkO5P69KTHAkmVS9Z7lun+2BcKt1
-	/tns472WLRNLpukQw3mOD9+R16vSBf3QiElbVbdDR3E6Mo7WsoReHcVH6HVVsheN82IjJ4mHvsl
-	meMsxNVPX8xRZZh+gJqm+XE5z1PJmiAWkhr7WGZwz2gYj4lyt6uJwwpIdOMjaPCbe
-X-Received: by 2002:a05:600c:608b:b0:45d:e775:d8b8 with SMTP id 5b1f17b1804b1-45f32d002bamr64516635e9.1.1758106718658;
-        Wed, 17 Sep 2025 03:58:38 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGYHfjJCnarL426rUzCpUmPlFf0QrjHqktYk5gtQG/LD4ICoTbUxGn3yS+4cVVuXKN0QVM+1w==
-X-Received: by 2002:a05:600c:608b:b0:45d:e775:d8b8 with SMTP id 5b1f17b1804b1-45f32d002bamr64516205e9.1.1758106718247;
-        Wed, 17 Sep 2025 03:58:38 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f27:6d00:7b96:afc9:83d0:5bd? (p200300d82f276d007b96afc983d005bd.dip0.t-ipconnect.de. [2003:d8:2f27:6d00:7b96:afc9:83d0:5bd])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3ece199ad24sm745170f8f.50.2025.09.17.03.58.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 17 Sep 2025 03:58:37 -0700 (PDT)
-Message-ID: <1308de0e-bb5a-481f-a447-ee4440ffb419@redhat.com>
-Date: Wed, 17 Sep 2025 12:58:35 +0200
+	 in-reply-to:in-reply-to:references:references;
+	bh=TuuVoVWXNYbl+ds4b8F2xNM0nTUIAdxFSHG+zKy+0Ho=;
+	b=lvRnFj3KdzdsDt8rnP8I8JemxUlfemkDZK1FMj4IeOLHK++G2cTWs6v75mkO745sIBJf6g
+	diqCfbSHzhn9dc/JmzXuR5/6qcNySJy+behVS5O9VkOh150PtAMA/kfzNDSpYRHqY+P0d9
+	JsKzG0wdMdDmkN5Hxfa/vhBZ6p8QcPs=
+Date: Wed, 17 Sep 2025 19:05:47 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/7] mm/selftests: add max_vma_count tests
-To: Kalesh Singh <kaleshsingh@google.com>, akpm@linux-foundation.org,
- minchan@kernel.org, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
- rppt@kernel.org, pfalcato@suse.de
-Cc: kernel-team@android.com, android-mm@google.com,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Kees Cook <kees@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>, Ben Segall
- <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
- Valentin Schneider <vschneid@redhat.com>, Jann Horn <jannh@google.com>,
- Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-References: <20250915163838.631445-1-kaleshsingh@google.com>
- <20250915163838.631445-3-kaleshsingh@google.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzSREYXZpZCBIaWxk
- ZW5icmFuZCA8ZGF2aWRAcmVkaGF0LmNvbT7CwZoEEwEIAEQCGwMCF4ACGQEFCwkIBwICIgIG
- FQoJCAsCBBYCAwECHgcWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaJzangUJJlgIpAAKCRBN
- 3hD3AP+DWhAxD/9wcL0A+2rtaAmutaKTfxhTP0b4AAp1r/eLxjrbfbCCmh4pqzBhmSX/4z11
- opn2KqcOsueRF1t2ENLOWzQu3Roiny2HOU7DajqB4dm1BVMaXQya5ae2ghzlJN9SIoopTWlR
- 0Af3hPj5E2PYvQhlcqeoehKlBo9rROJv/rjmr2x0yOM8qeTroH/ZzNlCtJ56AsE6Tvl+r7cW
- 3x7/Jq5WvWeudKrhFh7/yQ7eRvHCjd9bBrZTlgAfiHmX9AnCCPRPpNGNedV9Yty2Jnxhfmbv
- Pw37LA/jef8zlCDyUh2KCU1xVEOWqg15o1RtTyGV1nXV2O/mfuQJud5vIgzBvHhypc3p6VZJ
- lEf8YmT+Ol5P7SfCs5/uGdWUYQEMqOlg6w9R4Pe8d+mk8KGvfE9/zTwGg0nRgKqlQXrWRERv
- cuEwQbridlPAoQHrFWtwpgYMXx2TaZ3sihcIPo9uU5eBs0rf4mOERY75SK+Ekayv2ucTfjxr
- Kf014py2aoRJHuvy85ee/zIyLmve5hngZTTe3Wg3TInT9UTFzTPhItam6dZ1xqdTGHZYGU0O
- otRHcwLGt470grdiob6PfVTXoHlBvkWRadMhSuG4RORCDpq89vu5QralFNIf3EysNohoFy2A
- LYg2/D53xbU/aa4DDzBb5b1Rkg/udO1gZocVQWrDh6I2K3+cCs7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <20250915163838.631445-3-kaleshsingh@google.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: mXf5E2t9XUNXMnNAS60alywKHNJ5RFFFl9sy6sEhaHk_1758106719
-X-Mimecast-Originator: redhat.com
+Subject: Re: [PATCH RESEND 1/1] selftests/mm: skip soft-dirty tests when
+ CONFIG_MEM_SOFT_DIRTY is disabled
 Content-Language: en-US
+To: David Hildenbrand <david@redhat.com>
+Cc: shuah@kernel.org, ioworker0@gmail.com, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ akpm@linux-foundation.org, lorenzo.stoakes@oracle.com
+References: <20250917055913.49759-1-lance.yang@linux.dev>
+ <353bf8f0-d9ad-4800-80d7-4177ae64eb95@redhat.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <353bf8f0-d9ad-4800-80d7-4177ae64eb95@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: C634C80006
-X-Stat-Signature: s9owhtwgndsx6yhruysd5wktyxgoxegi
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 325F0C0005
+X-Stat-Signature: a6w75ezzex8qu16wdwo1qgfuysjb9afu
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1758106723-893842
-X-HE-Meta: U2FsdGVkX1+g+hiIlh+oZfxxn+yXqpsMH0paWZmXe7rVMzeNWyn3hGZTR7pnyf2aPkO+E1ZbLRWeQ0KLtZrN/izr0D+WoyhNwDYHHq4rFaStjVY8DYj+qcu1a07D1OGAzccpHU077bi00s3g+fB9HCICiUJuV1uOTsrghOYAf95AlyjBlYSdAZfmtZXMtHX3CjwenQhyz6dOfoQOaBCVNEqwa6vT1BVZp+oIwNN+d4vssBcbjpwQd/etnb3UALwgLwlmm6UntmBEdaIIxypiVHG+h5VGoNBJ7YFJYrZHUNQPmpf45313MMGt39PLba6PnaQT8jlGJozzsNfpeWHa/c304mXeh7kZohFQc/Zj7EzYrUJ59K1TUK16/iku7IutUwcGBlUt+IagXcKY5iR9NzpXucRS+Ig7sTi876lrvOnRGJdmpzqcITsjON5lnxf4SshFSM00d7Bv5uD4BvmfWoBdK00yYcqc3DpqKfUUMfmXupvKugWTkLTw0RpbAt5GGmGy24nmgPK5lXNGIGiTNTOyarLz0QtuRKQkMiqoeWRcUAI/OkVyW7BPqVXFtJDNRbY3tgVayXlT4wzuPyOfcTZsM1hof+2xm3j8Ya7ZboXyUlzcVMY6SXzEYBRKqwDWkbC/bi/Jw6EKjX0+nzB+P8Gt/7Ily/xYH4Hapss/RHwALcrzLjhRmGw5z5/laJsYipkvmjzSvY+ONm4rvyYE5pXKNWifmz26qXtCEnzWwFsplMPGiK1nngYf2UiaIMYEwnGBffYe6+dS0ybYAwwq6SngjjmNn3G/cC9KSeQ/s9tu1QQyeULBfy7wWNVuLUYYVkiYA9/fmdM6njM14dYyPjCjlUOMvQmlxvSa7YfX0UyeRjd2kQh+jy9TN+7uLAFIEVMKKMAGR67pp7lwB3k6ES5V+a0B1TXOfePjLHo1tb5DT5TFgOkQswvl2S5Pp6woqAz8piu1jalnt9IdVyu
- KjReHUIr
- InKwDqAMFWl0ztngDBFTa2ioyhgwD9E4lNB1yFWVq3upgIJg97uitZ+5p8ncEV4Q2V0O5EtvWcGVjr2oklfhID016gKHAJn/iUCzNlaWeRcY1HpTZDhRguAXLZAvBJJtkr2SFQjphqHTLjZln/S53sNUo4T58enVz2jlllzNyheblWBZRNOB/uOPvG7OgccsKuNqAN4yW2e0HE2AIBLp6m8ZffCUcgmG/0BVpWbyu9SdoPizWTN/0sjVoBtj7djvsv8ybQ5M0D4pEBxic+o2OqUvix1u6C7zsyyEVpFLLK5eqdY8XSnPcREOEKaMpM/igdcDZo8jRnsTqKXtyEq8YlR59rIAbeD0pdoXABPkTexV3OnjDFJXaWpx8TTJjpYIrSMks/ukIhAXHe9ZAC2QG/lTuIzXHzdj2LcQgLZziPvTC+O2Essp8HR5FEjjLGsBqZD5GcXvIId+HLa3HWV1GQwsBbAEQyd/QJT6O
+X-HE-Tag: 1758107156-884535
+X-HE-Meta: U2FsdGVkX19g+wWnmYNmiMP5vwf9n7+MjTVesZ3nVYEK4ipEVT3+tWmacafBNQFAenLgmA8l1tv9gh/Kt8Tm41GjrvSJDRj2leY5C1NWw6n6ShOr1WtG5unT8+jFHBwuES85TM6A9qVHIAnQk9aKLwNx5WPcQumbzAovWA571hxwSWE/xvx3DenQ+dWQQH+ZfjW8eG8WCNkmi6S/rWetfNov3H2+XCDfr7HP/aXPQz8kIZZDJX+mJUH+9iTFI31asE+YVW6Ocs8Y//iH4wPH1re+5a2/tG6SMjwgDcSbeCwsS7NctXEihOmZDKagFqN7YRJexovsRTxhG4ztXd9Uauofxwi3gU0POYpWrWW0XW1q8M++maZyzEXI+gmFcU/PrpN+17POJR3L1G6+F91goLeeWjMvgDWeMRubsRf/YrA9x81X6ZZNZiGKgn3gAEpY5Zs4uCgRNvW5BH//8nZQLleBIR/wENjn39TSXQfaEnuzpmIdiYLcdMXmc5BJnTpr8PLe/VxbsN39mftwO0WwM5YikZtTh2k+7Dw7FgMKASLziZLYg+wxOmUFgRZpq9CRS7mEujt5vLFJ1HdxBd6GHPFURVV2pEs0MoJr2Ic2/tSkXUNizNH9Go6NZ5mBYOhdTBKddAGq0WquoFYA5fBLYkUZWoPmDzEHjkXoVDnj7KUqrjfnpiO+ixzy9oK05xXTG1KaxURbqUdIyc3jv6B9ea1hhhpLC37p4c+jCQlRjm059sNtOHY6AD5whMomeZB6wJ/v0nO+u0vuFO1yemnTcY56+Ogw8JvuvX6eLmw+/dhuqAPeI+mrMkLP4WHZCu74vzG1iM9kKpD8t6b2gEUO9VSHKRrDHQF9H9bDSjL2LwZ5Gp65os/T8IR8gLqtIlNtzpJpnCDWtcJK6h6Q+CQSG6Ka44Nk45HdJ6YIrJHSvy2mvS9OMUN0bmwv/h4ZchVCD5WzOB+G5YYJ0K4wov1
+ wjG7ozqA
+ k7gm00TxhIww8KMhD+rJUAS+/yJJDw3KNQm9S8unN0uAFJeZN4l700IE1x+97alkmUtpgp4iqcqr7a5lA/VGOVVFRw1k0EXMLUaie8F8VGpKtcBz99i/b75BbkG3TjL6QnLrmjhV0gMmV9qKFciKGl499X+BLY3Y3hhdSRYq3ovfc7QcPoJsNoNXe0Zgn/jwO2tnnIC6S5KCyyIjP1Yw29Jn7uA10HHlxojB5pOgLe19xEcr+ic0ZxvZuytBM2b6IW9i676YLZ/8Xcsk/7bkHw2yYK2lDSiRrRuqjW5J8aissYcS3yyAaInYpgg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -193,39 +93,175 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> + * test_suite_setup - Set up the VMA layout for VMA count testing.
-> + *
-> + * Sets up the following VMA layout:
-> + *
-> + * +----- base_addr
-> + * |
-> + * V
-> + * +--------------+----------------------+--------------+----------------+--------------+----------------+--------------+-----+----------------+--------------+
-> + * |  Guard Page  |                      |  Guard Page  |  Extra Map 1   | Unmapped Gap |  Extra Map 2   | Unmapped Gap | ... |  Extra Map N   | Unmapped Gap |
-> + * |  (unmapped)  |      TEST_AREA       |  (unmapped)  | (mapped page)  |  (1 page)    | (mapped page)  |  (1 page)    | ... | (mapped page)  |  (1 page)    |
-> + * |   (1 page)   | (unmapped, 3 pages)  |   (1 page)   |    (1 page)    |              |    (1 page)    |              |     |    (1 page)    |              |
-> + * +--------------+----------------------+--------------+----------------+--------------+----------------+--------------+-----+----------------+--------------+
-> + * ^              ^                      ^              ^                                                                  ^
-> + * |              |                      |              |                                                                  |
-> + * +--GUARD_SIZE--+                      |              +-- EXTRA_MAPS points here             Sufficient EXTRA_MAPS to ---+
-> + *    (PAGE_SIZE) |                      |                                                         reach MAX_VMA_COUNT
-> + *                |                      |
-> + *                +--- TEST_AREA_SIZE ---+
-> + *                |   (3 * PAGE_SIZE)    |
-> + *                ^
-> + *                |
-> + *                +-- TEST_AREA starts here
-> + *
->
 
-Just wondering if we could find a different name than "guard page" here, 
-to not confuse stuff with guard ptes
 
-Will the current "guard page" we a valid vma or just a hole?
+On 2025/9/17 18:51, David Hildenbrand wrote:
+> On 17.09.25 07:59, Lance Yang wrote:
+>> From: Lance Yang <lance.yang@linux.dev>
+>>
+>> The madv_populate and soft-dirty kselftests currently fail on systems 
+>> where
+>> CONFIG_MEM_SOFT_DIRTY is disabled.
+>>
+>> Introduce a new helper softdirty_is_supported() into vm_util.c/h to 
+>> ensure
+>> tests are properly skipped when the feature is not enabled.
+> 
+> I'll note that tools/testing/selftests/mm/config contains
+> 
+>      CONFIG_MEM_SOFT_DIRTY=y
+> 
+> But yes, the current arm64 handling is nasty, because some other archs 
+> (e.g., riscv) also don't support it yet.
 
--- 
-Cheers
+Yep.
 
-David / dhildenb
+> 
+> LGTM, some nits below:
+
+Thanks for taking time to review!
+
+> 
+>>
+>> Suggested-by: David Hildenbrand <david@redhat.com>
+>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+>> ---
+>>   tools/testing/selftests/mm/madv_populate.c | 21 ++--------------
+>>   tools/testing/selftests/mm/soft-dirty.c    |  5 +++-
+>>   tools/testing/selftests/mm/vm_util.c       | 28 ++++++++++++++++++++++
+>>   tools/testing/selftests/mm/vm_util.h       |  1 +
+>>   4 files changed, 35 insertions(+), 20 deletions(-)
+>>
+>> diff --git a/tools/testing/selftests/mm/madv_populate.c b/tools/ 
+>> testing/selftests/mm/madv_populate.c
+>> index b6fabd5c27ed..43dac7783004 100644
+>> --- a/tools/testing/selftests/mm/madv_populate.c
+>> +++ b/tools/testing/selftests/mm/madv_populate.c
+>> @@ -264,23 +264,6 @@ static void test_softdirty(void)
+>>       munmap(addr, SIZE);
+>>   }
+>> -static int system_has_softdirty(void)
+>> -{
+>> -    /*
+>> -     * There is no way to check if the kernel supports soft-dirty, other
+>> -     * than by writing to a page and seeing if the bit was set. But the
+>> -     * tests are intended to check that the bit gets set when it 
+>> should, so
+>> -     * doing that check would turn a potentially legitimate fail into a
+>> -     * skip. Fortunately, we know for sure that arm64 does not support
+>> -     * soft-dirty. So for now, let's just use the arch as a corse guide.
+>> -     */
+>> -#if defined(__aarch64__)
+>> -    return 0;
+>> -#else
+>> -    return 1;
+>> -#endif
+>> -}
+>> -
+>>   int main(int argc, char **argv)
+>>   {
+>>       int nr_tests = 16;
+>> @@ -288,7 +271,7 @@ int main(int argc, char **argv)
+>>       pagesize = getpagesize();
+>> -    if (system_has_softdirty())
+>> +    if (softdirty_is_supported())
+>>           nr_tests += 5;
+>>       ksft_print_header();
+>> @@ -300,7 +283,7 @@ int main(int argc, char **argv)
+>>       test_holes();
+>>       test_populate_read();
+>>       test_populate_write();
+>> -    if (system_has_softdirty())
+>> +    if (softdirty_is_supported())
+>>           test_softdirty();
+>>       err = ksft_get_fail_cnt();
+>> diff --git a/tools/testing/selftests/mm/soft-dirty.c b/tools/testing/ 
+>> selftests/mm/soft-dirty.c
+>> index 8a3f2b4b2186..98e42d2ac32a 100644
+>> --- a/tools/testing/selftests/mm/soft-dirty.c
+>> +++ b/tools/testing/selftests/mm/soft-dirty.c
+>> @@ -200,8 +200,11 @@ int main(int argc, char **argv)
+>>       int pagesize;
+>>       ksft_print_header();
+>> -    ksft_set_plan(15);
+>> +    if (!softdirty_is_supported())
+>> +        ksft_exit_skip("soft-dirty is not support\n");
+>> +
+>> +    ksft_set_plan(15);
+>>       pagemap_fd = open(PAGEMAP_FILE_PATH, O_RDONLY);
+>>       if (pagemap_fd < 0)
+>>           ksft_exit_fail_msg("Failed to open %s\n", PAGEMAP_FILE_PATH);
+>> diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/ 
+>> selftests/mm/vm_util.c
+>> index 56e9bd541edd..3173335df775 100644
+>> --- a/tools/testing/selftests/mm/vm_util.c
+>> +++ b/tools/testing/selftests/mm/vm_util.c
+>> @@ -449,6 +449,34 @@ bool check_vmflag_pfnmap(void *addr)
+>>       return check_vmflag(addr, "pf");
+>>   }
+>> +bool softdirty_is_supported(void)
+> 
+> I'd just call it "softdirty_supported" similar to 
+> "pagemap_scan_supported()".
+
+Got it.
+
+> 
+>> +{
+>> +    char *addr;
+>> +    int ret = 0;
+> 
+> bool supported = false;
+> 
+>> +    size_t pagesize;
+>> +
+>> +    /* We know for sure that arm64 does not support soft-dirty. */
+>> +#if defined(__aarch64__)
+>> +    return ret;
+>> +#endif
+> 
+> Just drop this arm special case now.
+
+OK
+
+> 
+>> +    pagesize = getpagesize();
+> 
+> const size_t pagesize = getpagesize();
+> 
+>> +    /*
+>> +     * __mmap_complete() always sets VM_SOFTDIRTY for new VMAs, so we
+>> +     * just mmap a small region and check its VmFlags in /proc/self/ 
+>> smaps
+>> +     * for the "sd" flag.
+>> +     */
+> 
+> /* New mappings are expected to be marked with VM_SOFTDIRTY (sd). */
+
+Cool. Much better!
+
+> 
+>> +    addr = mmap(0, pagesize, PROT_READ | PROT_WRITE,
+>> +            MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
+>> +    if (!addr)
+>> +        ksft_exit_fail_msg("mmap failed\n");
+>> +
+>> +    if (check_vmflag(addr, "sd"))
+>> +        ret = 1;
+> 
+> supported = true;
+
+I'll adjust as you suggested ;)
+
+> 
+>> +
+>> +    munmap(addr, pagesize);
+>> +    return ret;
+>> +}
+>> +
+> 
+
+Cheers,
+Lance
 
 
