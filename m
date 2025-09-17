@@ -4,89 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36769CAC599
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 14:20:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C4DECAC59A
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 14:26:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8DFCB8E0028; Wed, 17 Sep 2025 10:20:13 -0400 (EDT)
+	id F022F8E0029; Wed, 17 Sep 2025 10:26:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 889BC8E0003; Wed, 17 Sep 2025 10:20:13 -0400 (EDT)
+	id ED9BB8E0003; Wed, 17 Sep 2025 10:26:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 779038E0028; Wed, 17 Sep 2025 10:20:13 -0400 (EDT)
+	id DEF408E0029; Wed, 17 Sep 2025 10:26:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 618848E0003
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 10:20:13 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 10E5B1A058C
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 14:20:13 +0000 (UTC)
-X-FDA: 83898951906.05.CEEE598
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 7572A40011
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 14:20:11 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ju8TW1WS;
-	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id CB6828E0003
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 10:26:14 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 814DBC0577
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 14:26:14 +0000 (UTC)
+X-FDA: 83898967068.14.2222FF2
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	by imf11.hostedemail.com (Postfix) with ESMTP id A3C4E4000A
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 14:26:12 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=KCGzWI84;
+	spf=pass (imf11.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.218.53 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org;
+	dmarc=pass (policy=none) header.from=linaro.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758118811;
+	s=arc-20220608; t=1758119172;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=drLEf2q8/O80+2XBQUBylxJhwjKLYp3hBHu2eslb7MQ=;
-	b=eXQ11IPJYSkLdBhrMTKtz9UqH36KcEjkx5Leb8lW4czBjix35bGj3OD7kbnQHjGkoi8xzM
-	MzP2FuuHMc1rb+MudvtPotrpSPFvr1FFkoD8vgkaPR7GSbKBBGHIPPY6yVG9mmZqkqXWtd
-	w4FOU4Awdci2kwBCynwbvS2Rh/Ec6Ek=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ju8TW1WS;
-	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758118811; a=rsa-sha256;
+	bh=10t2Z6sgnABIAwDZkTB26QdFfX0ldYEILJpBIALC4NU=;
+	b=sY0cmPJa01wzBO1LrvAUa7KF71oPYrQEy5w/ynssp9qszUTJ28AvfHG0/YtJRnP80P6SCS
+	1MmaOQuvlqbxTFx64ylIFKeZwDy4m9f3ftUgTVlDPfVJdwbSmYseGEOgGWVTjhvNTzpj7D
+	UOEyG026d6prJ/ON/Tnmxmqur/GqHgw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758119172; a=rsa-sha256;
 	cv=none;
-	b=gCNHnuq6Q3gqORLkbOcQ5LNyJqFPjiItPGHMEP9hPiThX5j73VDreB96K5Q5PYNyfJ0rlo
-	ujVoj3ey5EhixamOcjT72IvFsKckJsv7Z3MKNlxFv0DTsTMY2WocBjj/7VuS8iF9QntMvu
-	4vuiYEjFO89i+jEz9C36u4IEWajAF10=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9986B60233;
-	Wed, 17 Sep 2025 14:20:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2755DC4CEE7;
-	Wed, 17 Sep 2025 14:20:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758118810;
-	bh=1fjNIj619Fl+lLd9OP9BUcAClw93Z2hY3H7Nlzzv4Xc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Ju8TW1WScXt7+y9B+mBjAUjPB6rGDTaKFMxURMULY0VyrjYthHysu2s88SjtAJQpG
-	 mzP4tBVg1zaZTFh3yqoccghCFL1QjSbWjaZW1CqldgddDSlBbXb/wMHtWCZpKSSwRc
-	 2X4S0ARuzdLtzIs1qqD7yN6tNmCSlr0WGuJgPHrAvYLhbrowIQMhFv8rTsEgQX/OiR
-	 aJfA6WGjh5POC9hS56bLHgvApJENr5TlMIYpqBE6VkavRK1t2V1THv+eYVAFXXZGbr
-	 cneR41EUGbtu7cVpMgoh4iQL76Hf0VIQhO4XX1hV1Ol/GApYf7QyTHTD91FKkg4q03
-	 uc22WkIx6j9sw==
-Date: Wed, 17 Sep 2025 17:20:03 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: David Hildenbrand <david@redhat.com>
-Cc: Alexander Potapenko <glider@google.com>, akpm@linux-foundation.org,
-	vbabka@suse.cz, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	elver@google.com, dvyukov@google.com, kasan-dev@googlegroups.com,
-	Aleksandr Nogikh <nogikh@google.com>
-Subject: Re: [PATCH v1] mm/memblock: Correct totalram_pages accounting with
- KMSAN
-Message-ID: <aMrDk9ypD20H6zpx@kernel.org>
-References: <20250917123250.3597556-1-glider@google.com>
- <aba22290-3577-44fa-97b3-71abd3429de7@redhat.com>
+	b=X1MhxtXZqvHs5tx6kznB8Af69QEC4pyzTCQFJLZmeIWgukJ7h0Br1Lcw50ABh6W9m44MoC
+	+aZjz1g+O1XyPfPlilBlBFv0Qr36PL/fsbV04+MB6hzUixu6Jbh3c2ReoXCDyQByAVsmPq
+	mUjzMiy6KPPUOrHoqovpqixQfRdSFvU=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=KCGzWI84;
+	spf=pass (imf11.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.218.53 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org;
+	dmarc=pass (policy=none) header.from=linaro.org
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-b0473327e70so546563066b.3
+        for <linux-mm@kvack.org>; Wed, 17 Sep 2025 07:26:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1758119171; x=1758723971; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=10t2Z6sgnABIAwDZkTB26QdFfX0ldYEILJpBIALC4NU=;
+        b=KCGzWI84/PCatfyaGVpN3tVDeCX9LDoBdRmC+Vg2MRIulRTi5coznHHoYh05VGrwfs
+         yK+QZeWZiV5THABMH0EC7JJAgomIuFuqOOf/Ky033MhJstTtOfyk/HSWvF8CEqPzxVvg
+         QAW5pDCKH4iVgyCizmJiVPTxRdqPTgF3N7NhqOY2L5WMe6Xrs8n0NNairjsMNMTg/iBT
+         iP920ObePETxwFhIcp4XwBTSGx1t+LCjaamLIg6D6yvF1fFyU1dSCn5uSW7uhszUhrQJ
+         /6pQTJJ9G7D8siv1A+exbQx0xLRMaQLbHrv6f0bDJg9bOseChTM1JiseNZsMfgs6ySeq
+         hFzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758119171; x=1758723971;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=10t2Z6sgnABIAwDZkTB26QdFfX0ldYEILJpBIALC4NU=;
+        b=NUGmUdYSO/wuz2V2RwnBJZINAUTohAggn6Nnz5k/eUh7cTAQT9YPaUQyTuDml4c1S0
+         Y9H5H9LzrUip8Z3fZJEAPDvPps/Y3zLey17Z86S/aTmRRflbVdm700hrPp68kdqwYlrx
+         no+NKgKexiHQRGccghMPII3EKxdpAmeaMgGFfNm5KtgqA4zs4jtGGdje4UCsF6CTvlwQ
+         jf531uLptGsSA3lIjnw/5i7vTt+bGJMFAToTKuETUt1CPpq+6/AnKoNHsNQ+gCbLCZAv
+         fJhTRW/TQGdQ5Q0hfKVuDyf1fYiiMo/MgzYv0ncaHMx5G/T/D+GWPhl0mls9DEXGRCjh
+         jy6w==
+X-Forwarded-Encrypted: i=1; AJvYcCUoi/A/gEJts+wTUmc2VSbB2zjKgC8wXvBiFSxGtug4QUEaJH3OPNq4fFmMx4oJwQEq/immav9Oaw==@kvack.org
+X-Gm-Message-State: AOJu0YzgBODiZAQkFax4QR9xjKHB6vpfm4nm4DRCLHMe92wn98Mhb7f0
+	W66IFGsBmFxTBYlcfbMaiU9lPGNlPSER5kxhnpGjL1oHMpAB0F3csmU3VY8LHO3hptk=
+X-Gm-Gg: ASbGncvv4U0MXoUWy1GBPsuFPNdLNvIRjSbTdRhlRMNXChvij+/nOECX6jmtuZ1dICG
+	rIdWru1G2Bl/iyJ89E8SQkTcn4BoO0G9tNHnKfC0HNwP0IcTR8pEJyXSiyUIbi9RRC1h4zrOfQR
+	2Y9Kkr8jPhGkX1zVCznj7oV8ObMLO5caGHmRd5MQrcNvInEO7u/gI+JaNGTXKGbCx7RzbNjQ5yT
+	FYyA1lZIIlVAjo9cVDuQ1+Ymt5ddC5YnpJmSzW6qhmienfEE2jbMBBW80U4eYV84kN1tRyApyL9
+	FIJm37GlylZOJC7dm1mNJnfTKzCyCGjjHwD5oLc6p6OeObqikHlDyKFvloDeHJZ61b937cgVBLS
+	xF050NQ6xFv4RHz3NfKV0ShBzd8xgHbR79Qp0aQ0ULmQ=
+X-Google-Smtp-Source: AGHT+IEaxm2Ezs6X9pAGeZTfGiDeZKKFcv9jYxAWmPiRXScidoOV/iqJhV2uKVKOhqCyY8zfonbwMA==
+X-Received: by 2002:a17:907:970e:b0:afe:c2e7:3705 with SMTP id a640c23a62f3a-b1bb2d0f4fdmr263147466b.22.1758119170855;
+        Wed, 17 Sep 2025 07:26:10 -0700 (PDT)
+Received: from [172.20.10.3] ([109.166.135.151])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b07b3347b90sm1356906866b.109.2025.09.17.07.26.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 17 Sep 2025 07:26:10 -0700 (PDT)
+Message-ID: <b8a0586e-a79a-4e14-87d8-ee156436d1b0@linaro.org>
+Date: Wed, 17 Sep 2025 17:26:08 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aba22290-3577-44fa-97b3-71abd3429de7@redhat.com>
-X-Rspamd-Queue-Id: 7572A40011
-X-Stat-Signature: kxouxi5fr9wno6pdwfqkr35a33cqu7un
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC][PATCH v3 09/16] genirq/irqdesc: Have nr_irqs as non-static
+To: Thomas Gleixner <tglx@linutronix.de>, David Hildenbrand
+ <david@redhat.com>, linux-arm-msm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, andersson@kernel.org,
+ pmladek@suse.com, rdunlap@infradead.org, corbet@lwn.net, mhocko@suse.com
+Cc: tudor.ambarus@linaro.org, mukesh.ojha@oss.qualcomm.com,
+ linux-arm-kernel@lists.infradead.org, linux-hardening@vger.kernel.org,
+ jonechou@google.com, rostedt@goodmis.org, linux-doc@vger.kernel.org,
+ devicetree@vger.kernel.org
+References: <20250912150855.2901211-1-eugen.hristev@linaro.org>
+ <20250912150855.2901211-10-eugen.hristev@linaro.org> <87cy7q9k8y.ffs@tglx>
+ <87a52u9jyl.ffs@tglx> <8df2cf28-c15e-4692-a127-6a5c966a965e@linaro.org>
+ <2bd45749-e483-45ea-9c55-74c5ba15b012@redhat.com> <87v7lh891c.ffs@tglx>
+From: Eugen Hristev <eugen.hristev@linaro.org>
+Content-Language: en-US
+In-Reply-To: <87v7lh891c.ffs@tglx>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: bhyb8tpx1k8hpfcehduq5mfnagdst9rn
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1758118811-381966
-X-HE-Meta: U2FsdGVkX1+UCpDJIJHKhhZ/Eu85t1oOmG2d1UIzv6oHIKVPSMn+IebQjZJCeDaC2hz1LV2NU+dU/2i7lCMvWfhIYtrOPKo9iZTfbOMyhmkjYFqeHKyW+MWot4h9He4h3YisyRxJ0SbWsFmm88P7rFuZMRd1sFlsKjCr8ui1+irqlMluQHnDg+lElMCBsZwSff4CS5PtJFBtgjP45TXhZ4IS997HgBH+w7u0ngeit/sXzrQ10m+GP7hlpqMcIbUpZWrjJOt5+SWZHNszp2yQfxvyUiBmV4hIWW/W+HNLdZBcFkbjFQsP3daR2nPFpNWPO3maabKAtaHeItoLPEewIHhtuUKP7GT2Sn12SuN5UEcX5KuhjBCNv7UsVH9oc0myGm1mR6VA+0ftWjbI1tk08t/mQIO/sEOIiB2Izu16UQW4QhHqGJBDb1U9wVzuxYOy7S1+JoW61OLNW2eC72pTeCI7C3k8B4/mjno+vQ8iqmlWpjGUQiOH1yp6bonf0rSlv5ou7i9fzmdhAi6bOn6EI7iNIl4sdG1hHtO8Crz2CqRd9izfU/HqPWHAZyPQ26eqJxORi8hf1+Zl1fC0A3DIvEN9WGSJZ/BjgJ79wQ5Tx3NKLUpLS4V/6tOZgLe5GWbOugLID31pOQ9JYCaz1LcjnoZEzp7aDZoDR5ljfPTrtSkp0OR9fw9HAjbmTudQQwfIr0fomHYPqIB0UV10QFIABRkS3fwIS6pG8ckAGDyb4JjuuqTvydlIeQLBaZJtoWWK4DyxjzBY002t2028gahD25Phd4WeMgjBJxl2PmkJaZyuIVZRscEKj8ikibtfWELpQZAQOYpYv8ey09yIUl/eqA9moTGVFMcf0sqnXdmguyQ40Thpqnwy/QdnP2ookxMNVznK+pcRc/8UxhDdoXEdFm2Epr0dzSEgvHfINUs2iTT9ZK3G7FNedKP1LYdnPaH87mQmZpnYcIh5H8qehr6
- wwDE6NFP
- Qlp4XEiSglzYGoiDsJC3q9bhLsqY5WdKoDagNm6ypZPjuykUOj8FUXHp2AWWJfTe4Y4Ivcf/+Uq/mX/Z0wbczHPUBDsYbYXAuf1n0T7K653PPh9OyTKrNeYmD2ED51VhT0V2UJQK+LSif8v9yEEoX8LdMhI+7W9XRyhnj5c2Vt9jzxwXuiKGP3Gw6njyH3Tj2AIO1MFiVIhMsUYLT2DpAekFS5A+IOdg8NyPn05iI2f4jvwD2Ce3TL1TYv3plL5PA1hLYbRFYqFeozfROdJq2E73OaCioP2wJ0/W6IpPw6UdkAGQztOkAPN5/LyOTExYKFeKoAopo1VGQX+RM36YFfj3xxg==
+X-Rspamd-Queue-Id: A3C4E4000A
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1758119172-956934
+X-HE-Meta: U2FsdGVkX1+Gq85im44cUW9PdwKCyOkF80QejpJ8FJgsslj4s8J2vpFQY5/FvsiiYsBurCSNQLZLpYPMHUsoYGFtAoYGwfZ3dD076qrRLb26DF0X2I+tW3PhHLd/i+hmC1CSg2sm6wNr4NOFC5GlGXngvEZ9hHMed/gOpmTxUxqgT4VMz3mCGhB62gUjxXiczyTriuykTfFoautmLg6cH4zCrktRvPg3+f4Re7ioUcoKl2KTb7i91NuhulCZk5C7zrykfR1flEZBa+jpuOova7Ju8asffWzXM9O/Kx9xJ4LxOlbCS0kSIqWLDZ8SkgW+3lat3bhrBqncTkZx3Bdij6KXrTyOhQtCB1qgtENEmcEdX9k/tu2oXBRI20iPfJYS+HO8fDf+mXfDBo2rCBA4ziPoNZ6qlP105lGVWf/GeeD+igvC547mYFj3pwTjmzFHYAYrmBE6tnxAhmqXsBRzmvMpAmRgIMsFigD1dOrBXAq/uCJkXAiPAv4g7Kwykwx1bwoAr2p2j6jQJM/xLh+0OHgaQ0tswvS6TqFwGbR8bArIvKpTkjvndnOZ4BsgrKWqvAbbHn9BGGsX030s3Nx9jWHPlYHGSZgo0Ca6JOgdcmAiKo0fT7F45DjXdgDmvz8c5eMiS6Wb3znJs0a4Eo972OQcwv4TV+mRg6JmlapmFo7zxqJzdkVZXF0b1tPLesxCmauRg0qq6OqXiXWfeKEkDCM9T0GBII7Bb0VlhrSLziGt5WlIJgYBU4T3siqmT9D883zUBXbU/Vnjf1sRBNPKxyzq1zUsiYL8xJEF4nwkKyEI/QVCnuzz1gqpG9/zoDdngwbLVKjBpDTUMYtQRmD/fmikwAtQS0DoKbIrV8xgBxY80fIiMfU7FzvBFImMLRwZ4QGR10LpHyeWWY3gq9vKzSA/fTvIyk2jdOydvWVLfN39Rjs8ODcxredOnWEy4QWxK2hAzZ1HM6JZ/M/9RfT
+ vkg+kLKo
+ TohUXeadp9lkKX+FP/8T6CPVuXjUBhJ6Yxvjgf963E3zT/B45XeAs5dnsFKNXlpWs8Ub9yge5BwZ6jcq1JlZ4elAVQxnWJNK6/w8G0mRbqF4UmWzk+SR88RJu5Rv9UwBPZUtdEdlNB7e1KPtJqO0QMiSo8KlvmsUAn+z7eoRKAw5bfgQyDm3OzWCBlQmTeGD/JLBx
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,83 +129,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 17, 2025 at 03:29:51PM +0200, David Hildenbrand wrote:
-> On 17.09.25 14:32, Alexander Potapenko wrote:
-> > When KMSAN is enabled, `kmsan_memblock_free_pages()` can hold back pages
-> > for metadata instead of returning them to the early allocator. The callers,
-> > however, would unconditionally increment `totalram_pages`, assuming the
-> > pages were always freed. This resulted in an incorrect calculation of the
-> > total available RAM, causing the kernel to believe it had more memory than
-> > it actually did.
-> > 
-> > This patch refactors `memblock_free_pages()` to return the number of pages
-> > it successfully frees. If KMSAN stashes the pages, the function now
-> > returns 0; otherwise, it returns the number of pages in the block.
-> > 
-> > The callers in `memblock.c` have been updated to use this return value,
-> > ensuring that `totalram_pages` is incremented only by the number of pages
-> > actually returned to the allocator. This corrects the total RAM accounting
-> > when KMSAN is active.
-> > 
-> > Cc: Aleksandr Nogikh <nogikh@google.com>
-> > Fixes: 3c2065098260 ("init: kmsan: call KMSAN initialization routines")
-> > Signed-off-by: Alexander Potapenko <glider@google.com>
-> > ---
-> >   mm/internal.h |  4 ++--
-> >   mm/memblock.c | 18 +++++++++---------
-> >   mm/mm_init.c  |  9 +++++----
-> >   3 files changed, 16 insertions(+), 15 deletions(-)
-> > 
-> > diff --git a/mm/internal.h b/mm/internal.h
-> > index 45b725c3dc030..ae1ee6e02eff9 100644
-> > --- a/mm/internal.h
-> > +++ b/mm/internal.h
-> > @@ -742,8 +742,8 @@ static inline void clear_zone_contiguous(struct zone *zone)
-> >   extern int __isolate_free_page(struct page *page, unsigned int order);
-> >   extern void __putback_isolated_page(struct page *page, unsigned int order,
-> >   				    int mt);
-> > -extern void memblock_free_pages(struct page *page, unsigned long pfn,
-> > -					unsigned int order);
-> > +extern unsigned long memblock_free_pages(struct page *page, unsigned long pfn,
-> > +					 unsigned int order);
-> >   extern void __free_pages_core(struct page *page, unsigned int order,
-> >   		enum meminit_context context);
-> > diff --git a/mm/memblock.c b/mm/memblock.c
-> > index 117d963e677c9..de7ff644d8f4f 100644
-> > --- a/mm/memblock.c
-> > +++ b/mm/memblock.c
-> > @@ -1834,10 +1834,9 @@ void __init memblock_free_late(phys_addr_t base, phys_addr_t size)
-> >   	cursor = PFN_UP(base);
-> >   	end = PFN_DOWN(base + size);
-> > -	for (; cursor < end; cursor++) {
-> > -		memblock_free_pages(pfn_to_page(cursor), cursor, 0);
-> > -		totalram_pages_inc();
-> > -	}
-> > +	for (; cursor < end; cursor++)
-> > +		totalram_pages_add(
-> > +			memblock_free_pages(pfn_to_page(cursor), cursor, 0));
-> >   }
-> 
-> That part is clear. But for readability we should probably just do
-> 
-> if (memblock_free_pages(pfn_to_page(cursor), cursor, 0))
-> 	totalram_pages_inc();
-> 
-> Or use a temp variable as an alternative.
 
-I prefer this one and totalram_pages_add() after the loop 
- 
-> LGTM
-> 
-> Reviewed-by: David Hildenbrand <david@redhat.com>
-> 
-> -- 
-> Cheers
-> 
-> David / dhildenb
-> 
 
--- 
-Sincerely yours,
-Mike.
+On 9/17/25 17:10, Thomas Gleixner wrote:
+> On Wed, Sep 17 2025 at 09:16, David Hildenbrand wrote:
+>> On 17.09.25 07:43, Eugen Hristev wrote:
+>>> On 9/17/25 00:16, Thomas Gleixner wrote:
+>>>> I pointed you to a solution for that and just because David does not
+>>>> like it means that it's acceptable to fiddle in subsystems and expose
+>>>> their carefully localized variables.
+>>
+>> It would have been great if we could have had that discussion in the 
+>> previous thread.
+> 
+> Sorry. I was busy with other stuff and did not pay attention to that
+> discussion.
+> 
+>> Some other subsystem wants to have access to this information. I agree 
+>> that exposing these variables as r/w globally is not ideal.
+> 
+> It's a nono in this case. We had bugs (long ago) where people fiddled
+> with this stuff (I assume accidentally for my mental sanity sake) and
+> caused really nasty to debug issues. C is a horrible language to
+> encapsulate stuff properly as we all know.
+> 
+>> I raised the alternative of exposing areas or other information through 
+>> simple helper functions that kmemdump can just use to compose whatever 
+>> it needs to compose.
+>>
+>> Do we really need that .section thingy?
+> 
+> The section thing is simple and straight forward as it just puts the
+> annotated stuff into the section along with size and id and I definitely
+> find that more palatable, than sprinkling random functions all over the
+> place to register stuff.
+
++1 from my side.
+
+> 
+> Sure, you can achieve the same thing with an accessor function. In case
+> of nr_irqs there is already one: irq_get_nr_irqs(), but for places which
+
+Not really. I cannot use this accessory function because it returns the
+<value> of nr_irqs. To have this working with a debug tool, I need to
+dump the actual memory where nr_irqs reside. This is because any debug
+tool will not call any function or code, rather look in the dump where
+is the variable to find its value. And nr_irqs is not in the coredump
+image if it's not registered itself into kmemdump.
+So to make it work, the accessory would have to return a pointer to
+nr_irqs. Which is wrong. Returning a pointer to a static, outside of the
+subsystem, is not right from my point of view.
+
+> do not expose the information already for real functional reasons adding
+> such helpers just for this coredump muck is really worse than having a
+> clearly descriptive and obvious annotation which results in the section
+> build.
+> 
+> The charm of sections is that they don't neither extra code nor stubs or
+> ifdeffery when a certain subsystem is disabled and therefore no
+> information available.
+> 
+> I'm not insisting on sections, but having a table of 2k instead of
+> hundred functions, stubs and whatever is definitely a win to me.
+> 
+> Thanks,
+> 
+>         tglx
+
 
