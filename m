@@ -4,117 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D509CAC598
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 05:22:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71209CA0EE8
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 05:23:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6AE918E0011; Wed, 17 Sep 2025 01:22:07 -0400 (EDT)
+	id CF2A88E0012; Wed, 17 Sep 2025 01:23:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 685BC8E0001; Wed, 17 Sep 2025 01:22:07 -0400 (EDT)
+	id CC9D28E0001; Wed, 17 Sep 2025 01:23:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C3548E0011; Wed, 17 Sep 2025 01:22:07 -0400 (EDT)
+	id BE00D8E0012; Wed, 17 Sep 2025 01:23:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B8F68E0001
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 01:22:07 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id DF93613ABC6
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 05:22:06 +0000 (UTC)
-X-FDA: 83897595852.27.3E9C37F
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	by imf04.hostedemail.com (Postfix) with ESMTP id E4E944000A
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 05:22:04 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="bOCBKn1/";
-	spf=pass (imf04.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id ACC998E0001
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 01:23:03 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 64BA7C03B9
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 05:23:03 +0000 (UTC)
+X-FDA: 83897598246.28.518E23E
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 78F7640005
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 05:23:01 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=VslHPNsO;
+	spf=pass (imf27.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758086525;
+	s=arc-20220608; t=1758086581;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J4V0oPOiHcQlvz8Wl1Te3jqJzsEZTBdcCgGtgXa655o=;
-	b=RY6ToDHKasIOws/IqlwoMDZAQNqAiuZXtlteiRpB70sSGncgsWU9VF+snsOXXaH2YM4nLI
-	6r/GLbdi0OP5wPCEQnXtRk7j4SrcVNIk2iZFrrB6MUYxQZLzzknrn0URxgBPr14O9Lc3bX
-	1VZ/4hWKvpYe0Dd97mW/ln9+8B81vrM=
+	bh=VB85/PaNUJMrdnB5pj74aZCvU4kUegAWUrlhOp8yV3A=;
+	b=A7uyIxL3htnZfKvmXzO4m0BUqn0GEcLE618VFAy/C/q/IxdB8iOmhMo+KFi0dc6KI5hTs3
+	GZ5ewgciM9hxo7WJbOI6GrPhy+z9iLsM/UiB/IrYpYMSdcP629nO/phFsr2troNVY4yCk/
+	9erTvsvgOpEIzKtzGGR0loMllgmSLNw=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="bOCBKn1/";
-	spf=pass (imf04.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=VslHPNsO;
+	spf=pass (imf27.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758086525; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758086581; a=rsa-sha256;
 	cv=none;
-	b=J/akpZy8UqjJT0fcr9vsMhtfhZQ5vOwCPQGJqX9byHc1IzxHVg/6QV8Z5D3YnSsSJ1Ty+2
-	XVz+5jq/cCPGMljT6ZyQEmgjdeVAnssLQBS1CAOj/BSG8llIc/jdwQERrro28uDQx2yl6/
-	WGWM+HWB8wTJ3QG3r+nkxvnRry52oVw=
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-55f7b6e4145so6832047e87.1
-        for <linux-mm@kvack.org>; Tue, 16 Sep 2025 22:22:04 -0700 (PDT)
+	b=mDwe7sHR9jv/g7nQh1k4IkNV/xZuOFNuCLS6v0YF01kyZeyx2DRIyXFULELW34GSjSZhZ3
+	+mdyf1FZNNYquiX6UCqxaOQ6GdUz5K5NNCJvM+iBrhYqZzMlAqD/+6W9xrXgnwI+5DbibN
+	rd7WW1Tuk/jfkq7kC7BRPkC+DTFJOpI=
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-62105d21297so11974182a12.0
+        for <linux-mm@kvack.org>; Tue, 16 Sep 2025 22:23:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758086523; x=1758691323; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=J4V0oPOiHcQlvz8Wl1Te3jqJzsEZTBdcCgGtgXa655o=;
-        b=bOCBKn1/cXfMNj0cKDOwugw+58GhL4JEXcaLS+93Xx4s99GYdZJh8jM5CsvmcewOc7
-         0tp7VrXzqtQvFwlTkYTnd6ArEzGbxJyzA82V0ANjYXU4NtK74D9RwReoVpIbI7wCGJ6J
-         OV0Q8SwcpudhdCuLqcmXSqGbJqxsTsQJPlkgXICLBC2AGHFOmdeBYxlXTNZ+diSzjldJ
-         xVDqGWGvWPvRdBXRMP3Pr19Y6VCeYjB+1H00dvBzvrP3h9FHUaQBwSULqHZPAZHbgXwe
-         BlFG9cGkOWCZNYfOtVKlWKHwlMd8bZqnbjKXl7S9uW75lJIZdptM5x8p1QdR5RfNAvpT
-         oKPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758086523; x=1758691323;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1758086580; x=1758691380; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=J4V0oPOiHcQlvz8Wl1Te3jqJzsEZTBdcCgGtgXa655o=;
-        b=ePO0TFmGXvhixmU7SEUCH0UP5U3l44LaHpzONfJgXLmjcnSt2YMQhsfxaZGURPmEJB
-         8lrgARii3HYQW7LNhVEHUhffrHZMo+Ogw0HGd7aFLnZdGDQVF97EQ1ymRR5gtMg69Lui
-         FYsSTGefvIVuH3qEA7JlZxf+D37OZ34mQ6omqa4nWIMytdGBpSpbIMck9wwD9ibrl+9/
-         AsbP2SIm13evpwSlNS11Px1C0gO/A9jdjliBu3XGxOr2/IZ2Wb3mq3cPKuk07VAURiN4
-         aUjTqhYxmd+NhmrZw3dSgCLODwJY4GtR+KqtU9HGLdn3A7zKuYN3mZQFAojfRhJHtiq9
-         8Jig==
-X-Forwarded-Encrypted: i=1; AJvYcCWTyjYieKeDx0t8FhokwfXw7d/8GXGmDFyv+8D0Gox+jM1fbMS6A2pNUerBP2g8mTgkoSzmUiP7xw==@kvack.org
-X-Gm-Message-State: AOJu0YydFH+PzCepG2jzGNQQlGcCK2PcZobgGZ3Gbx+61V5gnb0GA4hW
-	UnjyTlrXmsTeBzTvLArSeHf4s5cQXLvdZDDSJyoFd2d+kYtu+OUwCTiZ
-X-Gm-Gg: ASbGnctuIq9bp/eku4PXDIbe87jjRKI3xFpkVT8ZBmlgZ6MngzLHTkpxuOwnQVaISxr
-	piiW92db2H27M4BEaie3DCrww7M5vJYyvVc3Q3DfUxYqOIdfn9Jlu/HEt/0FMvg1WaU6SAiPOur
-	RGvUBOxzO6OdIGEjevysZ3M7FdJdffOyZP5cJkXGvy76BIm218JzdeeUYFkPcMQKz5EnxXJhMKQ
-	JPNfH308XeJWNTpGEGrvph13PVeYcNFS2z2RcMuiNpW+xc2RvVtvBPjawfWKlAVpnfDs35vvpF6
-	Yn8kt7SYH/uDN+ESFk4wuOh7GxunBCCLXehe5eSkQlHFYbXAgz5VP7zGdb9rHyXe
-X-Google-Smtp-Source: AGHT+IFTd55XpTxH/s8Wj4Dy8CPAx1rIWPrgzoIlER18h3np+V8WcEqUMNnWPJgXqpr93S+bIj9hGg==
-X-Received: by 2002:a05:6512:6382:b0:55b:8afb:e638 with SMTP id 2adb3069b0e04-57799ea77b0mr164452e87.28.1758086522911;
-        Tue, 16 Sep 2025 22:22:02 -0700 (PDT)
-Received: from pc636 ([2001:9b1:d5a0:a500::800])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5779b5d6928sm233405e87.131.2025.09.16.22.22.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Sep 2025 22:22:02 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
-Date: Wed, 17 Sep 2025 07:22:00 +0200
-To: Michal Hocko <mhocko@suse.com>
-Cc: Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <bhe@redhat.com>, LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 04/10] mm/vmalloc: Avoid cond_resched() when blocking
- is not permitted
-Message-ID: <aMpFeIANuJGRc0vO@pc636>
-References: <20250915134041.151462-1-urezki@gmail.com>
- <20250915134041.151462-5-urezki@gmail.com>
- <aMhIv3HfRMyjlSec@tiehlicka>
- <aMmCJOJFMTuCXH3m@milan>
- <aMmnkm_E7hDO_yN0@tiehlicka>
+        bh=VB85/PaNUJMrdnB5pj74aZCvU4kUegAWUrlhOp8yV3A=;
+        b=VslHPNsOOs4b38f5VKTT/qITiDQ/mE4GVVJRt1ws7JIPnRus8In9CroAxfBxIt8EVQ
+         WVUjM/6FH95WgDjXrWXqmPUrUFLkLjEI/owcmiMRYr3tML/vxpab8FpoHpr7hCEMub/z
+         RtO6GN1RAh6Lh1GY7edCQBkB5B4gj7XfzzG7fHhuwlF/rWcYd7cHBWL8SNrzQJac+Pyi
+         +VvsyQFx1oM84o1jm+ocmfTTyUwRcc+6bbcLTwQuqqecCmMuXFeLAY1Rd8o05BXzTVhs
+         306Pql++kUcJPOmGGUIoJZA3R8sSRRalXtooM+uB2fuevxjct3MiHGvdSY8smK9tiHnH
+         1+Ow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758086580; x=1758691380;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VB85/PaNUJMrdnB5pj74aZCvU4kUegAWUrlhOp8yV3A=;
+        b=Ymr1HxRb/QXOoyoOweoxzBleLldKmTLy7kyBH7z6q8vgmxtw5y2wVZRb46j+YSYRSF
+         8qFU29U7m/yX7178vreHHWCMqE78DgUyXt9b0kUDsKQRd76iOjXZRejwrWylbvs5N05I
+         DvWZ5ob0OH5i56r1398fr/pCaGTN1j/Gpj5APBEa9RX1V1xKh+h6GhXbWEbQRtyA4QEM
+         hon+dyW1a87Dn/JzSTDEI4lnDcR14pl3K1nC2PV9jk68Xr8U0b+zfyXS9iwzM1QCt5K7
+         LV+nos4nNxKXW8VvlnnJSbWzN5Nijh9wdQ606OKIUHKS9YIiHscF7g5w8Zgd57ZqSPkI
+         r8OA==
+X-Forwarded-Encrypted: i=1; AJvYcCUlDnCLhMeLeRY4OQ9wY4Sl2bY3GIwSgJuz+UUQNELJS1coSyrSYChnauFCk4v+UDlTeU0UTcSwGg==@kvack.org
+X-Gm-Message-State: AOJu0YwO4hNsrnycPYofJXBT1G3JC2ATmjAy8F4rltA39CpnlwMP0lRr
+	mErhuEFkG+IIUhsWL4uB6zAQmDQ3ppJUMJg73rs7Qm+DfcNb+DfMuCA4phpQUQR2p/NbVO0pXg5
+	sjVgvBCc3RYHGdr5jW9RasfSSDMQBjJY=
+X-Gm-Gg: ASbGncvjuwzUwmwHP/NX2wPNUHPbTqTGBHYbkyMHernLZMfcBooM5MtqIuvfnlVzscv
+	mSzJaM0Oz8AUbEQ/6e+7HCNzzdND45qegmVrl4/DlbvGCbKB07lLGPHWIbqa25P6/wxp6y1UEUu
+	OSZ4dUYv+XAcBvK6bGzhZ9rKmmiLBzRX2gyfdT3jCp5u/cyW34Wjgk+IttDVVkg2929Cz/n7cvs
+	UJ/YZzeY3jC+I0UCFQZzna6Hy344uiM9ku5tfA=
+X-Google-Smtp-Source: AGHT+IGW18xtRuU2GK+tpKtajYwOhrW4O1BhSvambII8KyAv0L3MmzAdTmi7DunDdrqaD8FTROygg/qVkaFANLc30gY=
+X-Received: by 2002:a05:6402:40c8:b0:62f:6706:7772 with SMTP id
+ 4fb4d7f45d1cf-62f8468ec40mr917576a12.34.1758086579371; Tue, 16 Sep 2025
+ 22:22:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aMmnkm_E7hDO_yN0@tiehlicka>
+References: <1eb2266f4408798a55bda00cb04545a3203aa572.1755012943.git.lorenzo.stoakes@oracle.com>
+ <20250916194915.1395712-1-clm@meta.com> <CAGudoHE1GfgM-fX9pE-McqXH3dowPRoSPU9yHiGi+a3mk1hwnw@mail.gmail.com>
+ <36fc538c-4e25-409d-b718-437fe97201ac@lucifer.local>
+In-Reply-To: <36fc538c-4e25-409d-b718-437fe97201ac@lucifer.local>
+From: Mateusz Guzik <mjguzik@gmail.com>
+Date: Wed, 17 Sep 2025 07:22:46 +0200
+X-Gm-Features: AS18NWDTNu0uFCPWXMNYZriE-TkKq3-qYDDJDkS6S-UwtaAG2QuEVfyEtB1SXAM
+Message-ID: <CAGudoHGBedD35u9FnYyPuJV=vT9mUrbtRVREO1P0RdzHhV=1FQ@mail.gmail.com>
+Subject: Re: [PATCH 02/10] mm: convert core mm to mm_flags_*() accessors
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Chris Mason <clm@meta.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, "David S . Miller" <davem@davemloft.net>, 
+	Andreas Larsson <andreas@gaisler.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	"H . Peter Anvin" <hpa@zytor.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Kees Cook <kees@kernel.org>, 
+	David Hildenbrand <david@redhat.com>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, David Rientjes <rientjes@google.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Arnaldo Carvalho de Melo <acme@kernel.org>, 
+	Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
+	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
+	Kan Liang <kan.liang@linux.intel.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Oleg Nesterov <oleg@redhat.com>, Juri Lelli <juri.lelli@redhat.com>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
+	Valentin Schneider <vschneid@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, 
+	Peter Xu <peterx@redhat.com>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Matthew Wilcox <willy@infradead.org>, linux-s390@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 78F7640005
+X-Rspamd-Server: rspam05
+X-Stat-Signature: k5zf3fhwqu1rxecjmik3ffppjkxu4347
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: E4E944000A
-X-Stat-Signature: rmphju7wh6j93fnzqn4kwemaehspui7j
-X-HE-Tag: 1758086524-518251
-X-HE-Meta: U2FsdGVkX18xLnYML3agVZ8f4rrdHWs7JbAeSzucQ8H2xyzjRNJ45JeiVHPviV8vSOuh1o/d8a1MepimM+wrCzthplbCv1E7aoRnWV30mM4KtKqAK6OwCjFv+kzUxTkxUEsOm6Sk+xFauEJ3yyjZRYFpbYm7KPbRhdhKYMUJ9V4BYW2046ff+2j5F2tvAk5xp0H/WrHgRuh4ygDuQ1iYvnpnV6bftqptBOV+3xOX7k/70RQrWJN49TZojJQ3h2xlEFoj4TlkKa4w2JpYA8/bmVV2TgeLVkWaGPaAi6qMdLns6L3JR2Wzmm2JdukZ2IVBOtoJ1u+/ifm07B8niFZrV29KJxIQQsuWfLTqIeoC99dsJRUHY+kAUfpvygMCkCZY/jPVcMxJVkX/i5g5ClJdQhmQGMpmYvxLflrjzeaSGoOJQ33LCKL9YQAhwlavzX1f5szPCsVq8cc2Gn2ay27tJjf6Ql7k75fhM2lhdxXghZC0o37KQkxt6FmAjjS8Rb7ob+1BUjYwPdCJERCYbiVQPXRnFRSKzWM9QHQ3TdFeYrh170+7U4TlSB3RMQ3ix3DdHeEgssjCKqZMwcpI5GAL4xUDyojrsVuFgzhU8wHuisgCVGmDIFdLiFCNcZM4IQvcvyOrQj2tqcdza2WPW3sAeEh3+k86trfHnyW7N3ZJ6uFf4uhJuuYNHVQ4P2NRZzYMOSEGl+cO3FUcg55oPpPx+rqoOT68FVvOX2yh7OV7xQwcDQoS0tb8tPDO4iaZYdT6nxc+06RD6J1KjFKRX0Wq61XyYH7WN6JeaE9tiWVW3q+fh0DccJSx6n5dVlg+eOmRIxCXe9+Nn5BxFZYJAHBg3qlyq0JTU7Bb9JH2AHzLXFpTe2w1Nm78y398QOH2CPRso12zkc+jwqTHJMZdBfdPrP762EMGYB5WwG+0Ioi6C6JSGilQudSAZkJq8jr4ng7r2PG67iorIasj8i7tVXF
- /omH2FyQ
- Qa3aGmpTx0m8uGQndS5/i6EjqlBM1V9iqFHXlcjPvRPMzAhFw4Hha2LuBHBkx73AuyQhvq6eTRA+lxyHv5XYdVga2v9EnKopKvECs4VLATu0htXr/c+6XEv7IFS1/0JgIpv9pVj9hX8O4ApkI0nhv8lu5lDNs3/PoJ52jcKP4hCpvlyn+m3HEjF7w8Y4jUNQY3zpv+Lu54B037s2tS4qB1Q4kgWG5NYcGwAmXQT77soReYymAI9GfYOq7qZiACvSBGk6Y5qjsMe4euM6pV8toI5kN6B+BbcyA2DC0B6tN8YMnL9k0eLMvb0Rkjf9P247C06A521J/9NVQufoo1Qz1Qz5JXoZwFp46TU6k5tASsaXpm7BQA7CCl7r96znkQZJAptVp2eBbHYKQc484YNrpGxv8kJgKEiSJECZFMfT1sR/RiZIYBxLxplTpntNf2TZ+K0UjJZ1OKDY/h/WIrSBQr/DPdA9KLG0a1DGX3xIgW2XVjaw2jnGZSkJ3UKJ/kjRX81B2gt3W/FJ0613MYdsTljEWHBkvezlqNhp6jDW2UT1AcUTgBayHEqEO+XUCNGheVVd2ysZBWRPn1BE=
+X-HE-Tag: 1758086581-376998
+X-HE-Meta: U2FsdGVkX1+oYt7jNWnWx8TQRhc+JICDjB2pRM6R9pn/l7QtRxYLhD+4vpBVOccGYFKR4a+uF5ywY/Gjvfypi6rkHURt28alh1UDRLERNG1wjJNwz4y/WBi4aX/1idxwGsO2iS7j+tWf3nFyjTMhuE0rOGan1rA/4y93TfyCFNspq6mJmNiHg8Y3YLsyY7f4Kv8Xbf/uG6rZxXV94/lk2bCFY9mNsdpPehi+XrBmd4gGVGHk6GElsDAm0o2nBGaYdywo3BcRfC3L9Xa/u1wwLdyNGYLdjerwm/gVVGicL2JRt/UOsO47HP8w6Az0RcMm521XZs1X0cZt00RuVEeuTJ9Hoo3uzUC1IPPCv3DoYQgwiyWnD4NbxEVJMMLvdYBSKt0tza77UheKW8NWIsbin//8AffULCMGFzVPS7iR7O4SNwT7WUwwC33i+ozMqz747eSPjsXCvvSVXY8UaNPkscbYTjob+wtn4H61qw2PyQpEmLDU60F77DPU998iJsMdGWkBI4jpmgeo7nJwwlUzXXMDvBVgrsnAVnHTR2L2nqhks2TWjIZ+BnPojFS7+gPRBw4Y/ov8mpXy3SvBqDnApo1bKeHOExZ4ugY2Q7qlF8Wv1+YdEo/E46u5dgxSpZb26xYCh6ivxpTeTUsJm4z328NT158B7CudWenKs8vXKIrCpXgVZwsSH1Q2LQQN9Cbk57RCuggxp9AtcVIAelxroigQOLtLF4FBCcCFDldmDqkBEBenjcvFXd2M8H4C/YeltJIwmW7Jd04xRr5x3EFTX1LHl2ySY+ZHEV3aB/AvoAnhYsbQOnwLuQ7/671phJqOyM53j43IpEwp5gDTOTJBDsh4jbt7/TQ+TBpcFpWA56l4wWfi7jcB6ZcywNsTOCSWWH27GbVgFHqxL48kYdB57T4GmNZs+2sbF2sX0KBN0gv19wgPZJaBi8RKZS3lMYXScO29l7BEZRUUyVOx2mv
+ 7kP2tKe9
+ JLRrOT0ob5snCpUh1sB2fQovtXXYzigRnQlXuyU0HKBePj4YG3frKda2/OrAr5XaI+a0uWAjvikroLaJxtL1jpcFnlIvT1mIa549IK4YvljCEWpk5aWDC3igbPHDiMcRBjg2hWF7r71lIw/M1xGMSqjlPFQbo0Y9Rb6ndkJP/WRSQE+PIx8KiNoVOp2UlVNbNTQqsWjJyO2xydlz4rYP/rUiht0ipJTlTo8lNtsd87AXD8h6XnbhJX+s2O8WuylNhoWgIfSX1HyjUDrwlo+5gyGt9aPsyIboHK3dGQgfes/d6X1LToMj7es3+e3ccAbiHJO/pp/rrLyuqPjVjXeTRoJvOfbzis7PWW7WEPlb4xBCrAcBLehAUM5wGatSu9FZUpARrVr/l/52IpCo8OlNrYv0pFw2rO8Xn69lMa24GCyOwjds59p+a2zyQujrUwaW09imBybRih3kU/dhttfqAaMrBB3FZRkzGV8TLdC+e4N62SfI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,46 +146,131 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 16, 2025 at 08:08:18PM +0200, Michal Hocko wrote:
-> On Tue 16-09-25 17:28:36, Uladzislau Rezki wrote:
-> > On Mon, Sep 15, 2025 at 07:11:27PM +0200, Michal Hocko wrote:
-> > > On Mon 15-09-25 15:40:34, Uladzislau Rezki wrote:
-> > > > vm_area_alloc_pages() contains the only voluntary reschedule points
-> > > > along vmalloc() allocation path. They are needed to ensure forward
-> > > > progress on PREEMPT_NONE kernels under contention for vmap metadata
-> > > > (e.g. alloc_vmap_area()).
-> > > > 
-> > > > However, yielding should only be done if the given GFP flags allow
-> > > > blocking. This patch avoids calling cond_resched() when allocation
-> > > > context is non-blocking(GFP_ATOMIC, GFP_NOWAIT).
-> > > 
-> > > We do have cond_resched in the page allocator path, right?
-> > > So unless I am missing something we can safely drope these. I thought we
-> > > have discused this already.
-> > > 
-> > Yes, we discussed this. I did some test with dropped cond_resched() for
-> > !PREEMPT kernel and i can trigger soft-lockups under really heavy stress
-> > load.
-> > 
-> > I prefer to keep them so far for consistency. I need some time to
-> > investigate it more. As i noted in commit message, the vmalloc()
-> > path only has those two resched points. Probably i need to move
-> > them into another place later.
-> > 
-> > As for page-allocator, it is in a slow path which i do not hit in
-> > my stress-setup.
-> 
-> OK, so the fast path can trigger the soft lockup? If yes please mention
-> that in the changelog so that we know why this is needed. With that
-> included feel free to add
-> Acked-by: Michal Hocko <mhocko@suse.com>
-> 
-We, in vmalloc(), also have a slow path. Those two points seem to help.
-I will move them later to alloc_vmal_area(), after a slow path serves
-a request.
+On Wed, Sep 17, 2025 at 7:20=E2=80=AFAM Lorenzo Stoakes
+<lorenzo.stoakes@oracle.com> wrote:
+>
+> On Wed, Sep 17, 2025 at 02:16:54AM +0200, Mateusz Guzik wrote:
+> > On Wed, Sep 17, 2025 at 1:57=E2=80=AFAM Chris Mason <clm@meta.com> wrot=
+e:
+> > >
+> > > On Tue, 12 Aug 2025 16:44:11 +0100 Lorenzo Stoakes <lorenzo.stoakes@o=
+racle.com> wrote:
+> > >
+> > > > As part of the effort to move to mm->flags becoming a bitmap field,=
+ convert
+> > > > existing users to making use of the mm_flags_*() accessors which wi=
+ll, when
+> > > > the conversion is complete, be the only means of accessing mm_struc=
+t flags.
+> > > >
+> > > > This will result in the debug output being that of a bitmap output,=
+ which
+> > > > will result in a minor change here, but since this is for debug onl=
+y, this
+> > > > should have no bearing.
+> > > >
+> > > > Otherwise, no functional changes intended.
+> > > >
+> > > > Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> > >
+> > > [ ... ]
+> > >
+> > > > diff --git a/mm/oom_kill.c b/mm/oom_kill.c
+> > > > index 25923cfec9c6..17650f0b516e 100644
+> > > > --- a/mm/oom_kill.c
+> > > > +++ b/mm/oom_kill.c
+> > >
+> > > [ ... ]
+> > >
+> > > > @@ -1251,7 +1251,7 @@ SYSCALL_DEFINE2(process_mrelease, int, pidfd,=
+ unsigned int, flags)
+> > > >        * Check MMF_OOM_SKIP again under mmap_read_lock protection t=
+o ensure
+> > > >        * possible change in exit_mmap is seen
+> > > >        */
+> > > > -     if (!test_bit(MMF_OOM_SKIP, &mm->flags) && !__oom_reap_task_m=
+m(mm))
+> > > > +     if (mm_flags_test(MMF_OOM_SKIP, mm) && !__oom_reap_task_mm(mm=
+))
+> > > >               ret =3D -EAGAIN;
+> > > >       mmap_read_unlock(mm);
+> > > >
+> > >
+> > > Hi Lorzeno, I think we lost a ! here.
+> > >
+> > > claude found enough inverted logic in moved code that I did a new run=
+ with
+> > > a more explicit prompt for it, but this was the only new hit.
+> > >
+> >
+> > I presume conversion was done mostly manually?
+>
+> Actually largely via sed/emacs find-replace. I'm not sure why this case
+> happened. But maybe it's one of the not 'largely' changes...
+>
+> Human-in-the-middle is obviously subject to errors :)
+>
 
-Thank you!
+tru.dat
 
---
-Uladzislau Rezki
+> >
+> > The way(tm) is to use coccinelle.
+> >
+> > I whipped out the following real quick and results look good:
+> >
+> > @@
+> > expression mm, bit;
+> > @@
+> >
+> > - test_bit(bit, &mm->flags)
+> > + mm_flags_test(bit, mm)
+>
+> Thanks. Not sure it'd hit every case. But that's useful to know, could
+> presumably expand to hit others.
+>
+> I will be changing VMA flags when my review load finally allows me to so =
+knowing
+> this is useful...
+>
+
+I ran into bugs in spatch in the past where it just neglected to patch
+something, but that's rare and can be trivially caught.
+
+Defo easier to check than making sure none of the manual fixups are off.
+
+> Cheers, Lorenzo
+>
+> >
+> > $ spatch --sp-file mmbit.cocci mm/oom_kill.c
+> > [snip]
+> > @@ -892,7 +892,7 @@ static bool task_will_free_mem(struct ta
+> >          * This task has already been drained by the oom reaper so ther=
+e are
+> >          * only small chances it will free some more
+> >          */
+> > -       if (test_bit(MMF_OOM_SKIP, &mm->flags))
+> > +       if (mm_flags_test(MMF_OOM_SKIP, mm))
+> >                 return false;
+> >
+> >         if (atomic_read(&mm->mm_users) <=3D 1)
+> > @@ -1235,7 +1235,7 @@ SYSCALL_DEFINE2(process_mrelease, int, p
+> >                 reap =3D true;
+> >         else {
+> >                 /* Error only if the work has not been done already */
+> > -               if (!test_bit(MMF_OOM_SKIP, &mm->flags))
+> > +               if (!mm_flags_test(MMF_OOM_SKIP, mm))
+> >                         ret =3D -EINVAL;
+> >         }
+> >         task_unlock(p);
+> > @@ -1251,7 +1251,7 @@ SYSCALL_DEFINE2(process_mrelease, int, p
+> >          * Check MMF_OOM_SKIP again under mmap_read_lock protection to =
+ensure
+> >          * possible change in exit_mmap is seen
+> >          */
+> > -       if (!test_bit(MMF_OOM_SKIP, &mm->flags) && !__oom_reap_task_mm(=
+mm))
+> > +       if (!mm_flags_test(MMF_OOM_SKIP, mm) && !__oom_reap_task_mm(mm)=
+)
+> >                 ret =3D -EAGAIN;
+> >         mmap_read_unlock(mm);
 
