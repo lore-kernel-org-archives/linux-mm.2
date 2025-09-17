@@ -4,99 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2513CAC59A
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 17:52:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EA60CAC598
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 18:27:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 07B62280007; Wed, 17 Sep 2025 13:52:43 -0400 (EDT)
+	id 18AD8280008; Wed, 17 Sep 2025 14:27:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 02C19280002; Wed, 17 Sep 2025 13:52:42 -0400 (EDT)
+	id 162A3280002; Wed, 17 Sep 2025 14:27:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E5DAF280007; Wed, 17 Sep 2025 13:52:42 -0400 (EDT)
+	id 0787D280008; Wed, 17 Sep 2025 14:27:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D1712280002
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 13:52:42 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 863E61DF8EF
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 17:52:42 +0000 (UTC)
-X-FDA: 83899487364.22.AA3548A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id CA7FD180012
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 17:52:40 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="EcN9R/Tr";
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E9C9D280002
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 14:27:14 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6BB2F871EA
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 18:27:14 +0000 (UTC)
+X-FDA: 83899574388.19.29A6F5F
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 67FCEC0004
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 18:27:12 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=AnEr7Bg8;
+	spf=pass (imf10.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758131561;
+	s=arc-20220608; t=1758133632;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9TFvqjlh2RTZrYKeLF5M597y/SnnQIvAiFkoD/c1uFE=;
-	b=ka4jf/NfT8v+qnUsd4RaqeHpU6ElixYt3SjYEaBj9hEoMUA1hePwUCdgsOvBoR0vJI69UH
-	uOgPGjEFFqoxYtU8XlylyVeufW8nAw+hO/oW+bUNal3r9y+Ka/fBlo8+CVUZlLAsOaOxbs
-	2Q1QaXZT33kW8D1JdGT1YOazAFVUg6k=
+	bh=giOIiZmv6I8DqOhlCekUkvEcCR09Gm73BQos2pe6CNk=;
+	b=72n0vnqFu0bbPHNzArQdYWOSwIoWVWHAoz4tLjCDvrlxaxDPtgweeHZgIzCNCxN0wVdk6H
+	OBJY6ybCDY+jVJCheSbJ6khlkkpUnesJt1EME3ZTXiKq7yGgtjfb9H4rC/Em/hYWjPLF8v
+	MU8d1tjk/T+KLQtkMlnAN/cJCaf+Wqo=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="EcN9R/Tr";
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758131561; a=rsa-sha256;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=AnEr7Bg8;
+	spf=pass (imf10.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758133632; a=rsa-sha256;
 	cv=none;
-	b=BXYGG9tFm7lFa7kSM8UOGtzrFKWa/Ni/SbxYLvdZIfT5OZHfpZLTlujBdsSOAgXteE7+Yf
-	Qe+D7WlCese8/uMSfbFpGwFob0qoayuEQTtGACgHxfL1ti9LCMkFGTOIMdtaPtwFF7VJFf
-	ug6h0SHRYROrj+Lb5vEP+cdH78HzYUA=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4B93C41831;
-	Wed, 17 Sep 2025 17:52:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED9E5C4CEF7;
-	Wed, 17 Sep 2025 17:52:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758131559;
-	bh=0SeyaT8+bz/I8XaOI5kg2LZdHBHQvUyjeoTzR45r53g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EcN9R/TroM+76zuwCRHHlFotgG8u6yNOacYJ/E+M27GlY7UvbEFph9bmCBH5FY0Wv
-	 ZaetVpZzXhfM+zYpEfmtcfxYS0uojPUXq16GufgOBUnOKp1t4oZ6g6zdFECD5yYs2c
-	 TjQAAv1NiqWkSOmcfxuDp77119G5Xmvkk7UTllZwFnb1hMs6maVdA+Ia5SyiG2HllO
-	 qAIFTvFFaiwGIndHs9Jc5s3HK2CNXQ91I+1JQKbrigfQd4RsYibZTPUDIB3luJhX9E
-	 eWhX6/q5eaaai/G5QCu5V4R8p7dFvt5w7NkodxOBhMkEYZomBskwmVV090EUefDbsT
-	 8we5SSr+BgiwQ==
-Date: Wed, 17 Sep 2025 20:52:28 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Jason Miu <jasonmiu@google.com>
-Cc: Alexander Graf <graf@amazon.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <bhe@redhat.com>, Changyuan Lyu <changyuanl@google.com>,
-	David Matlack <dmatlack@google.com>,
-	David Rientjes <rientjes@google.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Joel Granados <joel.granados@kernel.org>,
-	Marcos Paulo de Souza <mpdesouza@suse.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Petr Mladek <pmladek@suse.com>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-	Steven Chen <chenste@linux.microsoft.com>,
-	Yan Zhao <yan.y.zhao@intel.com>, kexec@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [RFC v1 2/4] kho: Adopt KHO page tables and remove serialization
-Message-ID: <aMr1XAKmyfzM8RCc@kernel.org>
-References: <20250917025019.1585041-1-jasonmiu@google.com>
- <20250917025019.1585041-3-jasonmiu@google.com>
+	b=zxEqx5a6cPnf1/Dxz+61btgLNc7E8Ngxe7q4GF373sFANWi3RyProji3OwWaIvFCeF9wxj
+	D5AEwbyQcsYkELINqAyPqvmd+dDgyVYroiB0DvYtpogwbGRzG3pmidwhFS2rXNRPuXx9TZ
+	NOi1AKjB2O5qV8sqKsmoPhr11UAg6+s=
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3eb08d8d9e7so115318f8f.0
+        for <linux-mm@kvack.org>; Wed, 17 Sep 2025 11:27:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758133631; x=1758738431; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=giOIiZmv6I8DqOhlCekUkvEcCR09Gm73BQos2pe6CNk=;
+        b=AnEr7Bg8yoyTD4XH4RrMFUSrYtPQv1Sr7+h0ReXvzowFmEMiBreA7kWFyzlXudaemH
+         IF+Of2kG9dh33Q9OIMtUg+zqLfRuRviJ5WlHdzkgGhRH+vsbnP7up0H18FvZyZTVn0XO
+         owMgbTFdz+ncJKozqt11Yt18Mm3G4Fmy7GhJUj0Z+v2b16Qp93xspS8FR7OnUvuGiSBi
+         JN+RHXpXSVE7vx6oPx4HVwQBjV/oNOvT14BzoUHhoVoBVkF1tqFePhA7e8yjetZlbRnO
+         4EeHc4B1kBqODM7Bfd0+WaquOvhFHk5EHmHzCZhI0Pv9z529B7nrE6CZGj/+qOE0TW6T
+         QzzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758133631; x=1758738431;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=giOIiZmv6I8DqOhlCekUkvEcCR09Gm73BQos2pe6CNk=;
+        b=Bxxa2kWwaZnSI3s6pDD5i2uLK2xyrcaDKHbayiwUGrlRHloyKIem/XbSfkGJcQ8m9s
+         Ezhvt+ebznPyAuXIPWwUwjLjnmq6Qv+x7trwmH3wniCh9dhCFRs5u5Co5tLeU829LMYN
+         GZ07ED8GceTY2m7cm6JXwlaog/BOzmtz64IFx0XkTwKKwM8UU9uWMZW5Aw6KKIxpGbjJ
+         GIOeo5IH9o18emT1qEI0vEJiJnydzbcTWLGGforihAoBO3L9tsWfvgHoyhmQ7ltp4ckN
+         gbU2C/lP/63eetZtZNB7g207AQeEG79dADXbQ/+mlpx2Wfi8m83JLNqnBEA8BIe01QWn
+         F2kw==
+X-Forwarded-Encrypted: i=1; AJvYcCXiGWv/DLF3WiNgOTlrKjs8VUbe62WIJlfsl5D4wBZr8c4SlzyFRY5pDaWaVWXfV/5WjSugmmYfGQ==@kvack.org
+X-Gm-Message-State: AOJu0Ywi4n9cinwVUGMqp4LFWFib9tcm3nMLIkzjmSJ/G9hSKYtSlFWa
+	B/a5n0bDRxSF1LU7pbvyPpAfSoXoaSBbDQe58WiPlHPJpAhVIMeHYJhH5HhsoWB40GOHKUslAtZ
+	toSE3pqHFvN+MiTrilBc7yNfVag2ZCco=
+X-Gm-Gg: ASbGnctg3eRkdRol+e9criJuRo7G7NUelyg454shxTIPUA9amPhmsij6LO+fMBdnsP2
+	2lA1r61MbuEKzTVtSoRACfIalXDMnuyrILALKrWf6rDKL8RYbSURqIKa1RxfUIREwBj7IWVLsfw
+	j0ElHf+jjyYiJ3xNwII+QVK4vKRDDnvNkTsmcUkoAYnR8XoLx/dpk0wVQfBoO+ns2Y/oYA+vUj1
+	V2pyM2DAaxFEdS9es+SVT8wKqoZYlCpWG3MKsQCDvLXdFg=
+X-Google-Smtp-Source: AGHT+IGIjDIE66b7poTQjbUsClk+JTa8i87RedpfgKqXFvYZF5/Mwpf7vxUqOeoC4SPPIS3ebGzBC4ZDuD2hxOymUMo=
+X-Received: by 2002:a05:6000:24c1:b0:3eb:2832:96c with SMTP id
+ ffacd0b85a97d-3ede1c74f09mr448260f8f.31.1758133630484; Wed, 17 Sep 2025
+ 11:27:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250917025019.1585041-3-jasonmiu@google.com>
-X-Rspamd-Queue-Id: CA7FD180012
+References: <20250916022140.60269-1-alexei.starovoitov@gmail.com>
+ <47aca3ca-a65b-4c0b-aaff-3a7bb6e484fe@suse.cz> <aMlZ8Au2MBikJgta@hyeyoo>
+ <e7d1c20c-7164-4319-ac7e-9df0072a12ad@suse.cz> <CAADnVQLNm+0ZwX2MN_JK3ookGxpOGxEdwaaroQk+rGB401E8Jg@mail.gmail.com>
+ <0beac436-1905-4542-aebe-92074aaea54f@suse.cz> <CAADnVQJbj3OqS9x6MOmnmHa=69ACVEKa=QX-KVAncyocjCn1AQ@mail.gmail.com>
+ <c370486e-cb8f-4201-b70e-2bdddab9e642@suse.cz> <CAADnVQL6xGz8=NTDs=3wPfaEqxUjfQE98h5Q2ex-iyRs4yemiw@mail.gmail.com>
+ <aMpdAVKZBLltOElH@hyeyoo> <aMpeADsz1Znaz8AU@hyeyoo>
+In-Reply-To: <aMpeADsz1Znaz8AU@hyeyoo>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Wed, 17 Sep 2025 11:26:57 -0700
+X-Gm-Features: AS18NWAFnsgy5aitphu3UPL49R51UGNv6gxHVzc-JxbR8L-AQ1LExbbnhT_DQj0
+Message-ID: <CAADnVQ+sKKV+-Ee61Bxma+=MN4unGLRypAnfqHuLOtHM6T=HEA@mail.gmail.com>
+Subject: Re: [PATCH slab] slab: Disallow kprobes in ___slab_alloc()
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>, bpf <bpf@vger.kernel.org>, linux-mm <linux-mm@kvack.org>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Michal Hocko <mhocko@suse.com>, 
+	Sebastian Sewior <bigeasy@linutronix.de>, Andrii Nakryiko <andrii@kernel.org>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Steven Rostedt <rostedt@goodmis.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: ppmndsda1x1tznf134c8h35769f6fc3b
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: skjkiynbgqe99jj5h619rqctzos4yzgc
-X-HE-Tag: 1758131560-971763
-X-HE-Meta: U2FsdGVkX1+o2mUz+dMSvE4RUE6Q4K2uw33T8lUldPtBStVp/LgCLb7Lou2OFPyQcha/9roifvh2qZye0Arb6D+zm3MnKPr8Z1LAxTA/SocLJK0qCZ5egXSS4T6NoWmuoTS6BkSorEiY3ByLc/HVeiW+dvcxPyUgYfF4UEMv9l5If3bM3bPZydbhVnhlSaULuf76TbWdpkQMpDkCbPrJC37v3l4DhGbGW3zlH/3aaK5XnAKEJ2Ro94El+KXDUTie/12JPSEJ5KnZiJ4w+LZ4LQJgioNQ2Jy3HZ3ng96fZpeesru/Xzbfpbn73uQNSD3b1IoJXPOTSu+YnRi3qN+KWGHouCSVANw68oOulqvXPWUYqkCqafriZVPFcSab+hHiHyE32S3ZYBgO4Ru3p0eMiaO+DTkZOYnfi6Qttke/mkrCJg5Q79YlflC8DaVKhLJmUMRxrZKrpgBkZFuEglekkFwgt2wAF5SeTBlaUk+Q5wAznh7AxABpQEGrv+tbA+sDgFAZfGecnHLH86O0IxqCdeUZN4rQBIBx5vjuW9JEVRnvSd8L4PqM0gd2nLQyG1g8QOeGk8PCVf4H95Unm/HwANz6v6AiLIxOQK/7zH5lTUBuKfBtbGnJfrCKo2RpPZZnKxje0U94E6uM8KxbXtheLJLFnkyHTlml18D/Y3sBm2H41x5nNnpav6Z0yX5AjiHeDQwnXlQi/AKi4wVd4cMRZA1RPah4kH9AgOGiUFm2w3RKEwCfReEoLgDXgp92HVABJnIblDwF3x5PZlMbpX0xK2FiyYV+qMOvA+q99x7195YBwnK+M3kqvN3IbRv4IXaonYhETySWMrqaZYumIe96JS5yEe/N+0oJqbSXO1ccMP6PXEpdhGFbRa5cgnmeblGl+FU7+i6wwmGxMRKa/NmunqwGqzfUqahSswd7IUrQq5dQ3tXCGf5GPg44bL+8NX6Sap1hw8N0941YIK9KSCH
- FOh5SEg/
- OONmaWGlKkhhXvH4lWzOK/syjNl5eVZbekJVrnlKSC2MRUGpJTWSmxR6Ve2QwcSKfysEDP3wQQGZUvn+RdC4cvmp6Ekw/ioYlmO3YbEqS452gTiGlgOnta5Qgg7I6TIeUb3LbHzeP8YzB7F3AaiVhCvncWwcLnTtjxL2dt8LNU+a+F5oEJG52RqW3sUzqJzLbNayVZjwn+kK7oZY4r0RRgvOxPSn3neRmvaZP7YrmfH8I0lazg4m6N7Whx8wVcVyFEWytZHgnBxYvC2ZrTj37lGSEjg==
+X-Rspamd-Queue-Id: 67FCEC0004
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1758133632-23153
+X-HE-Meta: U2FsdGVkX18/j5E9yVlSSs+ibkqs9o59NodIv87DmVqxQyX+rKkTXMuk3J19sX7EqPmGlI/k7XuJxhZJBPUD/45XLmv72bBXOpWzH/mNhE2PdWUQqGyA6mHeGV/Esquwh5Le3mYIuN03mf4o/Q7La6IDoEkmMrZ2t7Cp5o4ZxGvBzZluHid2vTAkxBxioHX7c8b2Cw8h+8z1LvaO5HNPL5lvLNqUW2YamVPRYPHzE8EvReGWStHvfuarcgHVdBIsKhYDdgmvqFb22a3NFRCAjsy8Z6W6MH8z4uTsxk1Ke5EsD+mItBAYwDdoAEGQN+eDNhutUXJUx/kCA15eh4sGjYyYKwXsl3+9TwHBCNgSxzVfCEwPZERmfxiQELe3sF6CbWfDqCe1k6UgWRVdwLMiH5MjsEEYHhnIPOA24hj+XN6NUR1q1zmJspJb2tltGPdvdvng31AEDJwrDhGe7JdjBI9TnAyjIOdLWKiRmvJjYmiN4NYVSWzNEyWkltduek7OXbiHEw22U9zJV404XbLCSJHoytP13X2MOheknjFjY3ImXn4E9fk94d5bUT1c4pogi6HYbJSBHlnoH5XhTqjwp9dB0vMbxIVt28phx4OWECh+ZOpSSxyeUMy6WdN4gnMVj2/F+7WVOyEC9XNk+OV+dnEIMS2l787UOuBwx+o/uwKJin3TYqaceGdAbk3eN+r3daj1ZAGCCAl2Mjng8SKnQIpblnutmS5v9EY8qN6Xqg3uGO/swu5ZOiKPYekVTXpiLRfIxlmbtEvp2sDeuExD11i2/9cmiXVnr35T4XSWTRdHNuEG0dHvUU7N3czFuxGRkC+QQOKZ+GxFEO0BK0VyalAzO8zr2AZgmwPBMRjngoUmb0jHluOHXtvEa+GnHXchPG9ClzSPf8AipQca4UIlQgl8gg90n6V2/D8l4bBDtK4dSWZ/2kuJHIXm/ND9d5v2aBcx20OBQN41+0fbW5c
+ MEYnHhE9
+ e9095c4m6b4e9C6NYaCrutF6fwCsdwpdeO9eRbHnOTn5MW/16ExzDGDAO823QYprY2qD4eDcdRCy0dN4iDcQqY20P7TLMHMSXLKjY/hnr6b628VWrWb5imTh7OPSdDGBQY/NLE9F6qw3d9oW7Vzrmn3XNBtP8FzhktvttYNM0VH0Upcwi/lZPQl9jm5+cOG6sEsWqsMV9H+Ja3YSOvyIzsZpAw43qBFnaF7V7/5XrFDsVMwKhoam44cCEhGdlp+LpGwTACKY4XCyr5MX1Jz2fX61kowivwuvskeldn4inR9zhWS/Up4z1OHX/8Bea8rsjch7sF2nQqlUUWx/MnTnLxWl8glkd7EklIRkyssi3jpfLmyB9/Atufe8d2R6xWaevC9l5+Gi5NSZo028YUMEgc27YwOylulf1iwTh/eRqcxH7dsTqA3jBt/eeTUmwnSIZx6B35KviIMRMkC4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,84 +125,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Jason,
+On Wed, Sep 17, 2025 at 12:06=E2=80=AFAM Harry Yoo <harry.yoo@oracle.com> w=
+rote:
+>
+> On Wed, Sep 17, 2025 at 04:02:25PM +0900, Harry Yoo wrote:
+> > On Tue, Sep 16, 2025 at 01:26:53PM -0700, Alexei Starovoitov wrote:
+> > > On Tue, Sep 16, 2025 at 12:06=E2=80=AFPM Vlastimil Babka <vbabka@suse=
+.cz> wrote:
+> > > > > It's ok to call __update_cpu_freelist_fast(). It won't break anyt=
+hing.
+> > > > > Because only nmi can make this cpu to be in the middle of freelis=
+t update.
+> > > >
+> > > > You're right, freeing uses the "slowpath" (local_lock protected ins=
+tead of
+> > > > cmpxchg16b) c->freelist manipulation only on RT. So we can't preemp=
+t it with
+> > > > a kprobe on !RT because it doesn't exist there at all.
+> >
+> > Right.
+> >
+> > > > The only one is in ___slab_alloc() and that's covered.
+> >
+> > Right.
+> >
+> > and this is a question not relevant to reentrant kmalloc:
+> >
+> > On PREEMPT_RT, disabling fastpath in the alloc path makes sense because
+> > both paths updates c->freelist, but in the free path, by disabling the
+> > lockless fastpath, what are we protecting against?
+> >
+> > the free fastpath updates c->freelist but not slab->freelist, and
+> > the free slowpath updates slab->freelist but not c->freelist?
+> >
+> > I failed to imagine how things can go wrong if we enable the lockless
+> > fastpath in the free path.
+>
+> Oops, sorry. it slipped my mind. Things can go wrong if the free fastpath
+> is executed while the alloc slowpath is executing and gets preempted.
 
-On Tue, Sep 16, 2025 at 07:50:17PM -0700, Jason Miu wrote:
-> Transition the KHO system to use the new page table data structures
-> for managing preserved memory, replacing the previous xarray-based
-> approach. Remove the serialization process and the associated
-> finalization and abort logic.
-> 
-> Update the methods for marking memory to be preserved to use the KHO
-> page table hierarchy. Remove the former system of tracking preserved
-> pages using an xarray-based structure.
-> 
-> Change the method of passing preserved memory information to the next
-> kernel to be direct. Instead of serializing the memory map, place the
-> physical address of the `kho_order_table`, which holds the roots of
-> the KHO page tables for each order, in the FDT. Remove the explicit
-> `kho_finalize()` and `kho_abort()` functions and the logic supporting
-> the finalize and abort states, as they are no longer needed. This
-> simplifies the KHO lifecycle.
-> 
-> Enable the next kernel's initialization process to read the
-> `kho_order_table` address from the FDT. The kernel will then traverse
-> the KHO page table structures to discover all preserved memory
-> regions, reserving them to prevent early boot-time allocators from
-> overwriting them.
-> 
-> This architectural shift to using a shared page table structure
-> simplifies the KHO design and eliminates the overhead of serializing
-> and deserializing the preserved memory map.
-> 
-> Signed-off-by: Jason Miu <jasonmiu@google.com>
-> ---
->  include/linux/kexec_handover.h |  17 --
->  kernel/kexec_handover.c        | 532 +++++----------------------------
->  2 files changed, 71 insertions(+), 478 deletions(-)
->  
-> -/*
-> - * TODO: __maybe_unused is added to the functions:
-> - * kho_preserve_page_table()
-> - * kho_walk_tables()
-> - * kho_memblock_reserve()
-> - * since they are not actually being called in this change.
-> - * __maybe_unused will be removed in the next patch.
-> - */
-> -static __maybe_unused int kho_preserve_page_table(unsigned long pfn, int order)
-> +static int kho_preserve_page_table(unsigned long pfn, int order)
-
-Just merge this and the previous patch so that the patch will replace the
-current preservation mechanism with a new one.
-
->  {
->  	unsigned long pa = PFN_PHYS(pfn);
->  
-> @@ -365,8 +357,8 @@ static int __kho_walk_page_tables(int order, int level,
->  	return 0;
->  }
->  
-
-...
-
-> @@ -1023,12 +752,8 @@ int kho_preserve_folio(struct folio *folio)
->  {
->  	const unsigned long pfn = folio_pfn(folio);
->  	const unsigned int order = folio_order(folio);
-> -	struct kho_mem_track *track = &kho_out.ser.track;
-> -
-> -	if (kho_out.finalized)
-> -		return -EBUSY;
->  
-> -	return __kho_preserve_order(track, pfn, order);
-> +	return kho_preserve_page_table(pfn, order);
-
-I don't think we should "rename" __kho_preserve_order() to
-kho_preserve_page_table(). __kho_preserve_order() could use the new data
-structure, or call the new implementation, but I don't see a reason to
-replace it.
-
--- 
-Sincerely yours,
-Mike.
+Agree. All that is very tricky. Probably worth adding a comment.
+Long term though I think RT folks needs to reconsider the lack of
+fastpath. My gut feel is that overall kernel performance is poor on RT
+due to this. sheaves might help though.
 
