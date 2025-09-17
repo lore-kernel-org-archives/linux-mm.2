@@ -4,121 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C05DECAC59A
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 19:33:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF0F3CAC59A
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 19:40:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F3D738E000C; Wed, 17 Sep 2025 15:33:02 -0400 (EDT)
+	id 2F2498E000A; Wed, 17 Sep 2025 15:40:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF4098E000A; Wed, 17 Sep 2025 15:33:02 -0400 (EDT)
+	id 2A3128E0068; Wed, 17 Sep 2025 15:40:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB4FC8E000C; Wed, 17 Sep 2025 15:33:02 -0400 (EDT)
+	id 16DC68E000A; Wed, 17 Sep 2025 15:40:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C951F8E000A
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 15:33:02 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 77B381A066D
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 19:33:02 +0000 (UTC)
-X-FDA: 83899740204.14.A13AE65
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 8A92F18000A
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 19:33:00 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=h0GiTCyp;
-	spf=pass (imf16.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id ED5508E000A
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 15:40:49 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 698A11A0670
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 19:40:49 +0000 (UTC)
+X-FDA: 83899759818.28.0FC6A9E
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 9F84C140012
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 19:40:47 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=none;
+	spf=pass (imf23.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758137580;
+	s=arc-20220608; t=1758138047;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6RmLnlfE5wdqHFkwFJDCHGu9ac/98s+fF8hA4wv+ATE=;
-	b=YGFeDQZXX1nAjTppTrSLcAAURtL6MNK6eJ6aC4MvtvmBbJnJGau2ahj0Xv8ZVFonJSYuYX
-	1YhGLM9PNwg41c7SrmX5TBdm0RgVrRx1va4i7QSDmYiI8L7sQG1Sm8M2D+oXLqLFmHS18c
-	UBp+JtCoOLMiPF1/sCRM4lI7F4LxPGQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758137580; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references;
+	bh=J0hPBJsMDSHhtjWW6Qz6GlIph0BIhPgebyqCeNJNb4o=;
+	b=pvK+60175swoCzXOriYEhiMLdtVlr8ypZXxVozb/ukFXq16vXOpddKtclLu5owONZG9XTT
+	D2xewAKqfUnbpU5fQFCZlOXTzs5I7/sH5cYbHnWIgpgWwQcTtsogvcUKGI6nFQbpJako5b
+	6BWhmfMLvanQl1Xnw19RUY4nhlocLQA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758138047; a=rsa-sha256;
 	cv=none;
-	b=3VY6FW0I9n8EOh9V+RwBkkOZ/eUCP49FAqoo7CdDYTle5shrDkv/T/d77iKNHsIcAnNxZ0
-	NHtUS5igbaOAXOPlT5ZbpVRsGeyPpqYZqXKc/rRJ5Bsd5RtA7JPAAxn6XufAKxI5/hnwNV
-	iaRRvE+TlbYarga9Y8no7xYzDsFWOaw=
+	b=IodXabWY3wZLvwZGpCdwPc5VHkhXBUTUL0NQzZPPNqQlJW+wvExG7yCQWRqTIB8EQ4RJ2q
+	JFjUhRNLcEHX6gz4I7t6UDBcZhElHQUixIEzpmyZ2cH/CwEc0vJ9rYjtcmKC0g5QGd0K5/
+	mDS0jeua/lPitxxwIfv9G2EDSiQD3d8=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=h0GiTCyp;
-	spf=pass (imf16.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-45f28aba94cso16375e9.0
-        for <linux-mm@kvack.org>; Wed, 17 Sep 2025 12:33:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758137579; x=1758742379; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6RmLnlfE5wdqHFkwFJDCHGu9ac/98s+fF8hA4wv+ATE=;
-        b=h0GiTCyp2jqXQP0qpSQlfvRPO6EJRoyiVuRRTg6iMHBcks6lnzEYSFU5ie16vpd0N2
-         q/LDQmweepmCmClrYSI9Br9dPLzcXDy6v5GdlRGcT8ibeUXTyONEpcSTc+J+TW905YQV
-         o0x+eHat2bUmyYy9ouE+6jBpS+yFMF0F021nE9MDTqfCFTIQsPAKtJrovGrYlDc8ScCC
-         wHL2SwPltPSSMpNumVDb4pVDqpmyGjUvmkJGuJtN/yaw3hqOV3NcuAVDF2pX0tPgH7ip
-         IavUTf2FA5lLneTYeVxDLC33KC99WGB7+z+aFM2sCI3hlweKLSaPY/9rt4C7emEaKCIB
-         W+Pg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758137579; x=1758742379;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6RmLnlfE5wdqHFkwFJDCHGu9ac/98s+fF8hA4wv+ATE=;
-        b=F7cWUFUBQkGcIWTWqdPKnVhsH+DHkVRJyBJnIBXnJKuRl28EBg8Q2g0huWYydHd/LS
-         nVcfJfx0NWy8mqV5Fy52Sbfx4RkQ/nVGfjbXq1M2hzbvA5AVtQ9adQuPBI06ZNdi3Ih5
-         Nr2W1tDUN4vEiWQU0RHf1gEP8zhgwq23BIKr0c4rhUr/PX7u/tvS/Aeog2xbNySpQNM0
-         Fl30dEGOPBcP26MlAOebdxdctyDXKXvwUDA+rxjHfn3fWW5jH7Ab/3Uhenuc+jE/3Tat
-         bGiq6a7B2tBA01gLIoCADWhFf9foBQjDadgOboXHW7q+rfjk/HW04jrXEMS+dkO0Yu6o
-         mkoA==
-X-Forwarded-Encrypted: i=1; AJvYcCVMhYL5koXln4IaVvKHrl7PoAVFQY1iOq3TzFne0VDv7ywia1yS7OThwyFr8ZwcT1tH5w0SDAkoGg==@kvack.org
-X-Gm-Message-State: AOJu0Ywr2rhB46dwRp94WEyiqjtVPQj8IpiAMR5s3surTTu1cTV9TR0x
-	teeu7zM8u+ggs9Q54OHIaAiiUrmbTCd76Deo/Q5mGvH0Zn9RI8nOa4rVHe19ZiN02AjLlFi+US+
-	TwJQY3gNEow0gfmr4QWc2I7OgK+HAXNa7chL6U60U
-X-Gm-Gg: ASbGncsjdCpLaj3L1eRW/wxpYSQyn9DUIoni0fuowdjgRAKXSIHBD0iLW+mwkkPrA8w
-	zbufAoeDUl1WX6XJjfDcyNDC1OOQJWrKSoyGWwGgqJBfLnb2qRJ7DIVNzmlMvn+4HPOW7KkYEV3
-	mIqx0NQ8HqY9ezaRGmfVx/MYZbDlH145T/Y5kpAGnobvR6+2KvlSy85SitdVMkrMWfRiSRYL+hY
-	x4i6vRZPCEUpfEAROSuxf/jkm4+z5quj/2N59GCfcYq
-X-Google-Smtp-Source: AGHT+IGEb9fQVFGlEJXvdZv7glWzKfh9yb2g3ypJs/1z3YlFmIJ1fCW1zhKyPJig4x9nGqaEce6mvh0neogmq1REEMo=
-X-Received: by 2002:a05:600c:4927:b0:45f:5b02:b0cb with SMTP id
- 5b1f17b1804b1-46149490f52mr1528735e9.0.1758137578779; Wed, 17 Sep 2025
- 12:32:58 -0700 (PDT)
+	imf23.hostedemail.com;
+	dkim=none;
+	spf=pass (imf23.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 803762696;
+	Wed, 17 Sep 2025 12:40:38 -0700 (PDT)
+Received: from [10.57.80.26] (unknown [10.57.80.26])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F053F3F694;
+	Wed, 17 Sep 2025 12:40:44 -0700 (PDT)
+Message-ID: <3cbda17c-4c1c-4c04-a1fe-bd6ea6714de8@arm.com>
+Date: Wed, 17 Sep 2025 20:40:43 +0100
 MIME-Version: 1.0
-References: <aMiu_Uku6Y5ZbuhM@hpe.com> <a99eb11f-a7ac-48a3-a671-c5f0f6b5b491@arm.com>
- <8c3188da-7078-4099-973a-1d0d74db2720@redhat.com> <aMsDJ3EU1zVJ00cX@hpe.com> <cd71fac2-bb9d-4e84-a074-2b695654e655@redhat.com>
-In-Reply-To: <cd71fac2-bb9d-4e84-a074-2b695654e655@redhat.com>
-From: Jiaqi Yan <jiaqiyan@google.com>
-Date: Wed, 17 Sep 2025 12:32:47 -0700
-X-Gm-Features: AS18NWA8ltNJ-1yAPEykUi8kpppNk1zprgJjx3ovrdKhQKA72C47t087_EGFCP8
-Message-ID: <CACw3F52p45t3iSZPjx_Lq9kBn1ZGTDZsxk+iQ-xFA1zdvdqqrw@mail.gmail.com>
-Subject: Re: [PATCH v2] mm/memory-failure: Support disabling soft offline for
- HugeTLB pages
-To: David Hildenbrand <david@redhat.com>, Kyle Meyer <kyle.meyer@hpe.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>, akpm@linux-foundation.org, corbet@lwn.net, 
-	linmiaohe@huawei.com, shuah@kernel.org, tony.luck@intel.com, 
-	jane.chu@oracle.com, Liam.Howlett@oracle.com, bp@alien8.de, 
-	hannes@cmpxchg.org, jack@suse.cz, joel.granados@kernel.org, 
-	laoar.shao@gmail.com, lorenzo.stoakes@oracle.com, mclapinski@google.com, 
-	mhocko@suse.com, nao.horiguchi@gmail.com, osalvador@suse.de, 
-	rafael.j.wysocki@intel.com, rppt@kernel.org, russ.anderson@hpe.com, 
-	shawn.fan@intel.com, surenb@google.com, vbabka@suse.cz, 
-	linux-acpi@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 1cgwdsxyitqabgym7jyt69qom7cyi67b
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 0/6] arm64: support FEAT_BBM level 2 and large block
+ mapping when rodata=full
+Content-Language: en-GB
+To: Yang Shi <yang@os.amperecomputing.com>, Dev Jain <dev.jain@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@redhat.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Ard Biesheuvel <ardb@kernel.org>, scott@os.amperecomputing.com, cl@gentwo.org
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20250829115250.2395585-1-ryan.roberts@arm.com>
+ <612940d2-4c8e-459c-8d7d-4ccec08fce0a@os.amperecomputing.com>
+ <1471ea27-386d-4950-8eaa-8af7acf3c34a@arm.com>
+ <f8cf1823-1ee9-4935-9293-86f58a9e2224@arm.com>
+ <bf1aa0a4-08de-443f-a1a3-aa6c05bab38c@os.amperecomputing.com>
+ <39c2f841-9043-448d-b644-ac96612d520a@os.amperecomputing.com>
+ <d7cd4004-bacf-47b0-9cd8-f99125e02238@arm.com>
+ <fe52a1d8-5211-4962-afc8-c3f9caf64119@os.amperecomputing.com>
+ <8c363997-7b8d-4b54-b9b0-1a1b6a0e58ed@arm.com>
+ <4aa4eedc-550f-4538-a499-504dc925ffc2@os.amperecomputing.com>
+ <1cfda234-1339-4d83-bd87-b219fbd72664@arm.com>
+ <55a79826-48e3-41c0-8dbd-b6398e7e49a6@os.amperecomputing.com>
+ <92719b15-daf8-484f-b0db-72e23ae696ad@os.amperecomputing.com>
+ <e86e2aa5-c66c-41a9-a56d-74451df0d105@arm.com>
+ <f8898c87-8f49-4ef2-86ae-b60bcf67658c@os.amperecomputing.com>
+ <047c0f7b-e46d-4a3f-8bc0-ce007eac36a7@arm.com>
+ <45dc2746-153a-482d-954f-11fe1cd8d18e@os.amperecomputing.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <45dc2746-153a-482d-954f-11fe1cd8d18e@os.amperecomputing.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 6j8b3e8gemqngehmjgyoag8th4w5a9ox
+X-Rspamd-Queue-Id: 9F84C140012
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8A92F18000A
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1758137580-645260
-X-HE-Meta: U2FsdGVkX18vOtMtwfRQbr0ytfiJ34BMRVqY4oC84q5h5LTXpLTQTDl7J3SBUC43PNx8QDChA9a/ROq4l617LiPxVTHDOIozxIYKyqUhwLShti+k3XOGXsYnxaQek9fRvEBhrfujgo6ITdnO0mco7kGdlSqnFH3HwO+AuZyE4kaPwSyTrGQeZsuIrs2mX9lJenmzQdR8s8CidoE4ikv7Ew9Tkem6dKFcYkFfqSoCwB0dLN9HIqSDaPLewsR2uvKbmJajNN5r8FEUmwgyixtubpPsZmrge05bSJHbT0iVdzrJ0TrgVGT6OoTOCEgAR++1y7NWAKEz76TwG7Q1qWBt5T4Pa2mc9vm+jK7g61jE+nVNLFo+vn+URFEEqbsWk/jv2FEncFJRc5x/xULUQqSh2I1zPjQaKPltNmtUe9Lo04WZ+0H9LtHSTiWvPsByrTgK2s5z+MsxQ4Gp20ZrxihqOT/23vm9yP457XgBKYVsu1hPeKBjaDna7EUdtaf5P0PNw0jP5DAex9dj+eUpvsUoCI/AmVR1OutmC5Nf58l7GAwtLr1YH+Yc10wXeOoKnSKcw2VPeOeoe4kPf2+1u7c44WBbml8reIGJ9xmNUCxPPg6WjPClvh1N36VLJjAv67ppeG9A6K7LoxDq3UsQpWEyCqnYh7ybkF4zrnVfAu1sTNxSCMDG/8ZXIXLMu7W1c43zmfLQofwqKgmN3le6FomA/XOnTk+lcbnWyCGvg4K8xXz8ODpAiLKnmHG097QYnl1H3d27bMWDUQaQbONbkOqeqcH/J/mcIXh28R4jnmQLaW29CoikNKg1vmQJek7852V1pmh+QeUeEQHtHfMQyQ+aiwGMEl5XlLJJ3piBIaHR+2cSGqHAwoi/kUJt0wSRP+h1jQjVfX67Y3/o1KY9xJXFSDFVCLIhkmSYvJQwsV2qzksfKbjaPOcS0jJRAJNm/DM3dekh8FfZ/vQP6dubKvs
- 2klQKjmg
- 93wwxg3ycgMuocoI=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1758138047-629653
+X-HE-Meta: U2FsdGVkX18R9kVD+ZxIw0RbMvsnnNkSJd+RNUiLjc1wOaLs7V3vSrnwkDMPTqbHf77SQVdX5xiFy9h51xSraM9gtyRTIBlUfUXrBqUr9TDfgDO23IKgqcirlJ5WLh2cJNLwTVKoYHLyDHficKzxUe9BQXbeVmwdv/pFSnNvyVCbiD6lM2WTsDcS+XvBSuLrLhxMYZ+8+fwn78F887K22+WRoYpiSrZZMX3GrRAWIBfrhwifJ2rDZLNUfaoMYck1ePg0Ce42J3aFpW2TngoUItdxYRACMnfAu437s4a5hgp3htFl8x0e2ZAzX3yQD+l5trhU4Oj6Z2+XRnOoxskzHRDB+57V7RCHdga01P/T8sj7zV72vWuZ0RQknFMlWrrQpyhjAT3MVCM83non36FlCCC3/UzGAhVT8D/OPbdxVtlVZWbSu2/tFhJSQUArOzfIn/8KPxg2Doqu8323lY4YCHG+fWU/9PwajR3apXZZVlZ8G0sGgQjVVbhRyuOzgrX6dXniANij0czdHjJ+kIvPj5Qj8USv4KfNvEs4NtzGYNQCMie5+BJ14FVUSql1SxyZWppE/isPMl2f+4iL76nwou5oqerkg+oSICS/w2prnxVPR5l/hd20wnz2WfjtheBu3HhFBy0Kkz/v8KpIDSXQFsz/fODv8jkUcY7O3tszSaqNi7od1drhZHf6G0a3ZRaOlpmKLE5QVsC7Xm1V1eLhVqbN+JWfrsalDMcKbatPgCKyudvXEcm2vBBIde05OUiREVp2uuZg6HJ5lEklC5PYcfhtcm34fxl3Ew3CD7aMQI4iKZQQ0/dTYNRLJUSMeek7XRpiNgxrmTMycQ4MBZieTMvX56YNGhIPfoM09WkQWL3Pe6/lxqNhUFKfpw9fgPxyfCP9ZY9e4waBUpilRwMag90QxSr9GzRYsayaDFrSfEJKsJUvDhxsuqEbRdp9LA0yRfaMSoVrOk8NOP3IRn1
+ chU8gs/v
+ mepgj9AYrbMH1eaWDvv7oFNdogMeRFI8oQeky43p4qfi0q2XKhYaej4GCu40YWuqftNP/GqeZTnrBhsfb230Lbpjc8GsaVxSxurpbAakq4cCkHDXVfIh3DLvjwu8r8P4MTbksrTtq1vqMGRAt25ucz7CfcfCNOiEnajjdQVmIP+3VdLeyWW0IL0MifzxNCJCZlZLbXxgk07NYTN4D425AUo/gWg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,79 +107,156 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 17, 2025 at 12:05=E2=80=AFPM David Hildenbrand <david@redhat.co=
-m> wrote:
->
-> On 17.09.25 20:51, Kyle Meyer wrote:
-> > On Wed, Sep 17, 2025 at 09:02:55AM +0200, David Hildenbrand wrote:
-> >>
-> >>>> +
-> >>>> +  0 - Enable soft offline
-> >>>> +  1 - Disable soft offline for HugeTLB pages
-> >>>> +
-> >>>> +Supported values::
-> >>>> +
-> >>>> +  0 - Soft offline is disabled
-> >>>> +  1 - Soft offline is enabled
-> >>>> +  3 - Soft offline is enabled (disabled for HugeTLB pages)
-> >>>
-> >>> This looks very adhoc even though existing behavior is preserved.
-> >>>
-> >>> - Are HugeTLB pages the only page types to be considered ?
-> >>> - How the remaining bits here are going to be used later ?
-> >>>
-> >>
-> >> What I proposed (that could be better documented here) is that all oth=
-er
-> >> bits except the first one will be a disable mask when bit 0 is set.
-> >>
-> >> 2 - ... but yet disabled for hugetlb
-> >> 4 - ... but yet disabled for $WHATEVER
-> >> 8 - ... but yet disabled for $WHATEVERELSE
-> >>
-> >>> Also without a bit-wise usage roadmap, is not changing a procfs
-> >>> interface (ABI) bit problematic ?
-> >>
-> >> For now we failed setting it to values that are neither 0 or 1, IIUC
-> >> set_enable_soft_offline() correctly?
-> >
-> > Yes, -EINVAL will be returned.
-> >
-> >> So there should not be any problem, or which scenario do you have in m=
-ind?
-> >
-> > Here's an alternative approach.
-> >
-> > Do not modify the existing sysctl parameter:
-> >
-> > /proc/sys/vm/enable_soft_offline
-> >
-> > 0 - Soft offline is disabled
-> > 1 - Soft offline is enabled
-> >
-> > Instead, introduce a new sysctl parameter:
-> >
-> > /proc/sys/vm/enable_soft_offline_hugetlb
-> >
-> > 0 - Soft offline is disabled for HugeTLB pages
-> > 1 - Soft offline is enabled for HugeTLB pages
-> >
-> > and note in documentation that this setting only takes effect if
-> > enable_soft_offline is enabled.
-> >
-> > Anshuman (and David), would you prefer this?
->
-> Hmm, at least I don't particularly like that. For each new exception we
+On 17/09/2025 20:15, Yang Shi wrote:
+> 
+> 
+> On 9/17/25 11:58 AM, Ryan Roberts wrote:
+>> On 17/09/2025 18:21, Yang Shi wrote:
+>>>
+>>> On 9/17/25 9:28 AM, Ryan Roberts wrote:
+>>>> Hi Yang,
+>>>>
+>>>> Sorry for the slow reply; I'm just getting back to this...
+>>>>
+>>>> On 11/09/2025 23:03, Yang Shi wrote:
+>>>>> Hi Ryan & Catalin,
+>>>>>
+>>>>> Any more concerns about this?
+>>>> I've been trying to convince myself that your assertion that all users that set
+>>>> the VM_FLUSH_RESET_PERMS also call set_memory_*() for the entire range that was
+>>>> returned my vmalloc. I agree that if that is the contract and everyone is
+>>>> following it, then there is no problem here.
+>>>>
+>>>> But I haven't been able to convince myself...
+>>>>
+>>>> Some examples (these might intersect with examples you previously raised):
+>>>>
+>>>> 1. bpf_dispatcher_change_prog() -> bpf_jit_alloc_exec() -> execmem_alloc() ->
+>>>> sets VM_FLUSH_RESET_PERMS. But I don't see it calling set_memory_*() for
+>>>> rw_image.
+>>> Yes, it doesn't call set_memory_*(). I spotted this in the earlier email. But it
+>>> is actually RW, so it should be ok to miss the call. The later
+>>> set_direct_map_invalid call in vfree() may fail, but set_direct_map_default call
+>>> will set RW permission back. But I think it doesn't have to use execmem_alloc(),
+>>> the plain vmalloc() should be good enough.
+>>>
+>>>> 2. module_memory_alloc() -> execmem_alloc_rw() -> execmem_alloc() -> sets
+>>>> VM_FLUSH_RESET_PERMS (note that execmem_force_rw() is nop for arm64).
+>>>> set_memory_*() is not called until much later on in module_set_memory().
+>>>> Another
+>>>> error in the meantime could cause the memory to be vfreed before that point.
+>>> IIUC, execmem_alloc_rw() is used to allocate memory for modules' text section
+>>> and data section. The code will set mod->mem[type].is_rox according to the type
+>>> of the section. It is true for text, false for data. Then set_memory_rox() will
+>>> be called later if it is true *after* insns are copied to the memory. So it is
+>>> still RW before that point.
+>>>
+>>>> 3. When set_vm_flush_reset_perms() is set for the range, it is called before
+>>>> set_memory_*() which might then fail to split prior to vfree.
+>>> Yes, all call sites check the return value and bail out if set_memory_*() failed
+>>> if I don't miss anything.
+>>>
+>>>> But I guess as long as set_memory_*() is never successfully called for a
+>>>> *sub-range* of the vmalloc'ed region, then for all of the above issues, the
+>>>> memory must still be RW at vfree-time, so this issue should be benign... I
+>>>> think?
+>>> Yes, it is true.
+>> So to summarise, all freshly vmalloc'ed memory starts as RW. set_memory_*() may
+>> only be called if VM_FLUSH_RESET_PERMS has already been set. If set_memory_*()
+>> is called at all, the first call MUST be for the whole range.
+> 
+> Whether the default permission is RW or not depends on the type passed in by
+> execmem_alloc(). It is defined by execmem_info in arch/arm64/mm/init.c. For
+> ARM64, module and BPF have PAGE_KERNEL permission (RW) by default, but kprobes
+> is PAGE_KERNEL_ROX (ROX).
 
-+1. Given /proc/sys/vm/enable_soft_offline is extensible, I would
-prefer a compact userspace API.
+Perhaps I missed it, but as far as I could tell the prot that the arch sets for
+the type only determines the prot that is set for the vmalloc map. It doesn't
+look like the linear map is modified at all... which feels like a bug to me
+since the linear map will be RW while the vmalloc map will be ROX... I guess I
+must have missed something...
 
-> would create a new file, and the file has weird semantics such that it
-> has no meaning when enable_soft_offline=3D0.
->
-> --
-> Cheers
->
-> David / dhildenb
->
+> 
+>> If those requirements are all met, then if VM_FLUSH_RESET_PERMS was set but
+>> set_memory_*() was never called, the worst that can happen is for both the
+>> set_direct_map_invalid() and set_direct_map_default() calls to fail due to not
+>> enough memory. But that is safe because the memory was always RW. If
+>> set_memory_*() was called for the whole range and failed, it's the same as if it
+>> was never called. If it was called for the whole range and succeeded, then the
+>> split must have happened already and set_direct_map_invalid() and
+>> set_direct_map_default() will therefore definitely succeed.
+>>
+>> The only way this could be a problem is if someone vmallocs a range then
+>> performs a set_memory_*() on a sub-region without having first done it for the
+>> whole region. But we have not found any evidence that there are any users that
+>> do that.
+> 
+> Yes, exactly.
+> 
+>>
+>> In fact, by that logic, I think alloc_insn_page() must also be safe; it only
+>> allocates 1 page, so if set_memory_*() is subsequently called for it, it must by
+>> definition be covering the whole allocation; 1 page is the smallest amount that
+>> can be protected.
+> 
+> Yes, but kprobes default permission is ROX.
+> 
+>>
+>> So I agree we are safe.
+>>
+>>
+>>>> In summary this all looks horribly fragile. But I *think* it works. It would be
+>>>> good to clean it all up and have some clearly documented rules regardless.
+>>>> But I
+>>>> think that could be a follow up series.
+>>> Yeah, absolutely agreed.
+>>>
+>>>>> Shall we move forward with v8?
+>>>> Yes; Do you wnat me to post that or would you prefer to do it? I'm happy to do
+>>>> it; there are a few other tidy ups in pageattr.c I want to make which I
+>>>> spotted.
+>>> I actually just had v8 ready in my tree. I removed pageattr_pgd_entry and
+>>> pageattr_pud_entry in pageattr.c and fixed pmd_leaf/pud_leaf as you suggested.
+>>> Is it the cleanup you are supposed to do?
+>> I was also going to fix up the comment in change_memory_common() which is now
+>> stale.
+> 
+> Oops, I missed that in my v8. Please just comment for v8, I can fix it up later.
+
+Ahh no biggy. If there is a chance Will will take the series, let's not hold it
+up for a comment.
+
+> 
+> Thanks,
+> Yang
+> 
+> 
+>>
+>>> And I also rebased it on top of
+>>> Shijie's series (https://git.kernel.org/pub/scm/linux/kernel/git/arm64/
+>>> linux.git/commit/?id=bfbbb0d3215f) which has been picked up by Will.
+>>>
+>>>>> We can include the
+>>>>> fix to kprobes in v8 or I can send it separately, either is fine to me.
+>>>> Post it on list, and I'll also incorporate into the series.
+>>> I can include it in v8 series.
+>>>
+>>>>> Hopefully we can make v6.18.
+>>>> It's probably getting a bit late now. Anyway, I'll aim to get v8 out
+>>>> tomorrow or
+>>>> Friday and we will see what Will thinks.
+>>> Thank you. I can post v8 today.
+>> OK great - I'll leave it all to you then - thanks!
+>>
+>>> Thanks,
+>>> Yang
+>>>
+>>>> Thanks,
+>>>> Ryan
+>>>>
+>>>>> Thanks,
+>>>>> Yang
+>>>>>
+> 
+
 
