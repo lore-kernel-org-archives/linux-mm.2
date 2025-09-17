@@ -4,126 +4,206 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9C6ACAC59A
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 15:32:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8179DCAC599
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 15:34:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 335888E004A; Wed, 17 Sep 2025 11:32:49 -0400 (EDT)
+	id DE7FE8E004B; Wed, 17 Sep 2025 11:34:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 30D7C8E003B; Wed, 17 Sep 2025 11:32:49 -0400 (EDT)
+	id DBE718E003B; Wed, 17 Sep 2025 11:34:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 222EA8E004A; Wed, 17 Sep 2025 11:32:49 -0400 (EDT)
+	id CADB38E004B; Wed, 17 Sep 2025 11:34:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1050B8E003B
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 11:32:49 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A54A413B564
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 15:32:48 +0000 (UTC)
-X-FDA: 83899134816.15.2AE7C04
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 5304114000C
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 15:32:46 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=N3n2hgJJ;
-	spf=pass (imf26.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.208.44 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758123166;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B91C08E003B
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 11:34:02 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5DCA6BA329
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 15:34:02 +0000 (UTC)
+X-FDA: 83899137924.21.13FA675
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011022.outbound.protection.outlook.com [52.101.62.22])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 83B621A0013
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 15:33:59 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Suhl82EK;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf19.hostedemail.com: domain of jgg@nvidia.com designates 52.101.62.22 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1758123239;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V4k5J8VkcsZOGowc/PhE+thWQDtpKbu6223a2JTLS/I=;
-	b=VbziEIHGdLZaO/eTHm4fYmL6dRxJl2gsFeGJVgq63uRdQFfuE6k7Ho5nt7fOz3xnrZ2/ng
-	WoH/0v79dBFDglf5/wGDrhk4PQYojOWm+1XlcP5C+B6Po3YKLLZCzehGCYM4qWH+Y+nBDr
-	uuvWgN23NyaWoe7rbtaO/b8vWtpFIPw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758123166; a=rsa-sha256;
-	cv=none;
-	b=rL6zqMmuzGN5gJ8h3HBQIBAD6oAwoteugntCZazHZshHpqZb6UjobCO6OenpSgWtn+7fkz
-	RPhgNcykODkJRxQOPP6/l0XMIGTnoco2nIczcxmU1isI8Nd9o3hE7f/5w1hj6D5dgH8/PU
-	TEEq97i3LYpW/039Kwsue1TXYAgSl9w=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=N3n2hgJJ;
-	spf=pass (imf26.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.208.44 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-62f7bcde405so2182590a12.2
-        for <linux-mm@kvack.org>; Wed, 17 Sep 2025 08:32:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1758123164; x=1758727964; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=V4k5J8VkcsZOGowc/PhE+thWQDtpKbu6223a2JTLS/I=;
-        b=N3n2hgJJQsxX1u9bhISuCzFmCRoRNLMlHEUYtTugFCl/fOI5CV+LerKQtLtGOqycEM
-         riBhcbstSzdB3Eqhw4pRuN01K62motET9b+dLzUR0BtCE1iUjq68fNxonhf+jVIs7pUQ
-         nd/4HLBGBJd3DQS/Ukxwjs4QEzKeZug1aQreFfw4Ol5EuVi49gpnXUo4kCmfWLratGCl
-         mVyUY3ih+NyIO48QB4ZhXivPuQAsvQ84+j4dqtQRfp5FzGpKvPjDksCQp3dYSVlmkk9j
-         1lJB6ADanc0qRyE+XMSQJLvZWH7UqONVs3E9Vah4q2y/7eJjLXjG9QgKkKPa149ocxCX
-         P22g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758123164; x=1758727964;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=V4k5J8VkcsZOGowc/PhE+thWQDtpKbu6223a2JTLS/I=;
-        b=r+HMv46xp7AN8bNGn7OF/zPwEeIpTeBlZYGE6T8cPq5cO1FW1YNn5PLoiUzWpsa0GN
-         AKy85aQl6GXBJlgmnPIQ/NrbJZT4Cn2VSWK50nufYd5ii4Qr7ZWKiD3UNlH4M4s073vQ
-         1GFaPS7Vop6OMwz6ulcoyc6sPHxXS5CGotBqpuJm8qAf2jQfyk2TyDlpUczepBbJHqg9
-         jaosyKG7k8c8BHxN0k7Z3PIOWTp3P6jHJf0v1876dEbsxp1mqXKEZj/sAjO+ylfCLKQZ
-         Aog78ll9mTWUHQtYzL0xULxCdHBK3rWyk5IUcQnPG2wL1vGnkbTPeFYQd3aSD/V6NNEe
-         9g/A==
-X-Forwarded-Encrypted: i=1; AJvYcCUCBVrG6ZtjgtArjIc2w5IDUv1m4s4NXVyk0BHA3V3QBJHIizGz1Xx9MtK9z57xOLr9BT+px3g8uQ==@kvack.org
-X-Gm-Message-State: AOJu0YyeNMaW5sTlKRBTk+7GtTbFDJC4Ta3z7H3e9UhjgO2Rqfx/P+3h
-	JE36UN69wQ8zcTJ6bJXz27+K8u6gQGKwvmrNdR1K7etXBujffTUI3TBxBK20hfuPK70=
-X-Gm-Gg: ASbGnctSuOr7Ab4wJdsNG4AbgMJ0Rw1utxE5jfAgRm7gDBFZgwewGaBESmcPQdjfW+i
-	75vraLmycWFiCO7Bi8aCy021vhvQG+hiwNK+GpoJpL5biA6Z0OUUCf0UUJ7OWy0gIYEUVeD4dbh
-	4YUuxHbOsHs6enAdz3AL/0Q/dU/DWTkOsiwP3l5ROYhSpOA27+WNn5AeSDkAu2GGNl8yDXwMuoK
-	TaGQxgCgvpQUPBwqlaWodr/yxDjaUtXIY+rvHiWXtNno/8HenBc7ysewTMXV745NVLpOdLeJZLW
-	h3d5ESuatro22jzgR1IL5nkU7gmL2jZWbAKGzRGzrf7SNKmKsWA3XLamQ8r3sSsNoschmbWdos+
-	hMVHlOFNnP2stT3gcRDwsgLNCN1Il/uTcwdi/jopGQTM=
-X-Google-Smtp-Source: AGHT+IE8ZMv8HN0yNwSikwv6pMskOhk9zA0LwfuIGCKmhTnIQQy04Vwmljxv3YCiPD4eKH8iHrC6Ug==
-X-Received: by 2002:a17:906:6a09:b0:b04:a1a4:4bec with SMTP id a640c23a62f3a-b1bc020111bmr330491066b.58.1758123164384;
-        Wed, 17 Sep 2025 08:32:44 -0700 (PDT)
-Received: from [172.20.10.3] ([109.166.135.151])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b07b317124esm1395390166b.46.2025.09.17.08.32.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 17 Sep 2025 08:32:43 -0700 (PDT)
-Message-ID: <10540b3e-09ca-403d-bc20-b9412a7fe28a@linaro.org>
-Date: Wed, 17 Sep 2025 18:32:41 +0300
+	bh=eK29BZ3qddyodD6+Fu3+YAeeetBEbX7PmQyPM5XphPA=;
+	b=H188jpR1zfdVIwSWBJAFp3ZREBLTvA/8ck8NcTAcgAtWTMa8ZESbHtlkjo8ZvGkQOf9QwI
+	FCaVfp7w6brXt90f5RclmU8ckx9qpRLA+seevSOngTXeaC6udw/EpnIc7mnHLqpLn6nhdS
+	UFi7lanwG6kQksWVSMGPmXdrf6/mYV4=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1758123239; a=rsa-sha256;
+	cv=pass;
+	b=T02++a6dzE4CRKzCG/aHtY9/tTSEOxTKPD0CAJuD3xryxskliomQqvTzZqEOOmhlbqig1f
+	r+nNujjdnYK2/CRSlCYXtpTJqb5Y4lkZyWp/6ooMzWpZ1d1o1aEbMXPLdXQlTEhTFCWfLD
+	7LFnbocGZ1PUIdEwfoCET1mARZM/dJQ=
+ARC-Authentication-Results: i=2;
+	imf19.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Suhl82EK;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf19.hostedemail.com: domain of jgg@nvidia.com designates 52.101.62.22 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wkXp9rRDmfMHI7M0d24da3+ScPfIxRoFXERssGFZ8Khp/lL1rBgRQH1hXxtjeHc3hRLZ84aVjwmZ8BbZwTb88p78V81aSyk9zB+PygjNQHBfS8cUIcBXZ5BZ/Vd++y/l5Ws08XcLOuzr6rDVN65MyJMV6J2iYVN289D9QHL6wzOTGdaqNl6ENukALj6CCK6mtQURhMYGvemtbja4+LLZTJ9YpKAWvsu61c/CJQ0yQsY3PrBAbY+Zcx87zfYwNR3dMLN2e/G5Kk0nN1AgI5JV6j+GBjoJSgMzY8KXmfodk0fvZks4xgsDnNqEuZVsaxET9vb3g+5RdfNz4jMguSAlUw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=eK29BZ3qddyodD6+Fu3+YAeeetBEbX7PmQyPM5XphPA=;
+ b=tG27Lm4qT5lyrS7Z82eNgRbbdVe37haTOCORj4u/r9K1Hwkrl88B8G+gwFIUJUyMywn4aJEe3L5z9DuC+t2bDBOqsdi0k4ua27VYVcmLp0oRHAy1Ka4/xDJ3OsEuwlPHRIE/Wy9CqhVGOuoyIbrHyfJh+0pKGGRoTMQnqUiswMifhBA87mo35VCwA+BZYfRw++uBqN5m8acluG6TjLqX+8IzTSPT8LQWvAK3pMx+9TznE/HUxMXHWoc+xCsFXZ1qNliHmbXr/9YvFK/jXtW37vjt5ln//aBxo6Ew9Q4nZ/BGIl78/wV1te+r8Zy5q5LAAa19J5tU3Qz5YxJE8kDV8Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=eK29BZ3qddyodD6+Fu3+YAeeetBEbX7PmQyPM5XphPA=;
+ b=Suhl82EKlAb8Op1qv27MFceSvBu3viz6KiKtKZ8IdJvptvstHMA2GxaQGwih7zvxiQrl3qG0X96LYtJgkPbyYQyvWZ0V9nvLtHbKX1fAWRVMuomtyzf1b6zcO2ApdrJTAkv00uCtDArOvcLRRRBaU/a8/0KajVZ5FGXrrtEaeQ92FQ4fM5/6pCUVCsSaTe5wthmRfztENrRcyFn1l+dffpV44PnZ3nUv3fYgyHUb9GzjSuPRBUJt96uuCMAhRwoJkUDNdTinqNxLHUjZVv7T3R52B/FBSvGOOxXCoQZ3c5/gkM5uZbsDRaZbGSEboLvpKThkZxQpUDb/chUcw4Z5ww==
+Received: from PH7PR12MB5757.namprd12.prod.outlook.com (2603:10b6:510:1d0::13)
+ by IA1PR12MB6089.namprd12.prod.outlook.com (2603:10b6:208:3ef::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Wed, 17 Sep
+ 2025 15:32:11 +0000
+Received: from PH7PR12MB5757.namprd12.prod.outlook.com
+ ([fe80::f012:300c:6bf4:7632]) by PH7PR12MB5757.namprd12.prod.outlook.com
+ ([fe80::f012:300c:6bf4:7632%2]) with mapi id 15.20.9115.022; Wed, 17 Sep 2025
+ 15:32:11 +0000
+Date: Wed, 17 Sep 2025 12:32:09 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+Cc: Kees Cook <kees@kernel.org>, Eric Biederman <ebiederm@xmission.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Willy Tarreau <w@1wt.eu>,
+	Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: Re: [PATCH v2 16/16] selftests: vDSO: vdso_standalone_test_x86:
+ Switch to nolibc
+Message-ID: <20250917153209.GA2023406@nvidia.com>
+References: <20250226-parse_vdso-nolibc-v2-0-28e14e031ed8@linutronix.de>
+ <20250226-parse_vdso-nolibc-v2-16-28e14e031ed8@linutronix.de>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250226-parse_vdso-nolibc-v2-16-28e14e031ed8@linutronix.de>
+X-ClientProxiedBy: DM6PR11CA0031.namprd11.prod.outlook.com
+ (2603:10b6:5:190::44) To PH7PR12MB5757.namprd12.prod.outlook.com
+ (2603:10b6:510:1d0::13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC][PATCH v3 09/16] genirq/irqdesc: Have nr_irqs as non-static
-To: David Hildenbrand <david@redhat.com>, Thomas Gleixner
- <tglx@linutronix.de>, linux-arm-msm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, andersson@kernel.org,
- pmladek@suse.com, rdunlap@infradead.org, corbet@lwn.net, mhocko@suse.com
-Cc: tudor.ambarus@linaro.org, mukesh.ojha@oss.qualcomm.com,
- linux-arm-kernel@lists.infradead.org, linux-hardening@vger.kernel.org,
- jonechou@google.com, rostedt@goodmis.org, linux-doc@vger.kernel.org,
- devicetree@vger.kernel.org
-References: <20250912150855.2901211-1-eugen.hristev@linaro.org>
- <20250912150855.2901211-10-eugen.hristev@linaro.org> <87cy7q9k8y.ffs@tglx>
- <87a52u9jyl.ffs@tglx> <8df2cf28-c15e-4692-a127-6a5c966a965e@linaro.org>
- <2bd45749-e483-45ea-9c55-74c5ba15b012@redhat.com> <87v7lh891c.ffs@tglx>
- <95ff36c2-284a-46ba-984b-a3286402ebf8@redhat.com>
- <24d6a51d-f5f8-44d7-94cb-58b71ebf473a@linaro.org>
- <7f4aa4c6-7b77-422b-9f7a-d01530c54bff@redhat.com>
-Content-Language: en-US
-From: Eugen Hristev <eugen.hristev@linaro.org>
-In-Reply-To: <7f4aa4c6-7b77-422b-9f7a-d01530c54bff@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 5304114000C
-X-Stat-Signature: nue7diu96kffgisows5m496sobxsq4fa
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5757:EE_|IA1PR12MB6089:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4160a78f-a605-480e-9c90-08ddf5ff5e7c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?SE4xeFd2L3ZrM0lSSitNY3ZXczBFU0l4OGxqd0tKOWZJUDR6K3Q5YXdYa3Ri?=
+ =?utf-8?B?S0MxbGVPWUM0VlRWYi9xUWRCNXRzTHduUXBTZlcweTgvREo1MFZSUks3Undw?=
+ =?utf-8?B?OUlZM2t3Zk9aTk9rVXA3Y2lFQ2ZhU2N3VURwTXR2Z1U0RTlMM2VpVTJJcGpM?=
+ =?utf-8?B?UFBDTUUrTjBYYWVUaURNZDdTTURiUDhiSnIzcFpuTVF4TFMwU3djQWVpLytU?=
+ =?utf-8?B?RllGL1hlN3VXcVBsdmhUdUFLQUorQ3dGWDRIMzdiREk4ZEp1bG5WRmNpUE5s?=
+ =?utf-8?B?M1d1OXdjVzdQaDFSUUZQRGN3YWdoYWJYMVQ4OVlYOXVVSktJRWUxbDV2MWxl?=
+ =?utf-8?B?MFJsd085ZzJaMlgzYWY5eHA0bHhIWDlZKy9TUzlNdmlFVmxEVlRxbUhTUVhU?=
+ =?utf-8?B?MWZaMUxNSitqK2JTNkV5T05TT0FUYkNjdVpEUHhzaHlyT2h1Qi9vNHBEWUIv?=
+ =?utf-8?B?VElBcmN1NDBHbXNhK1ZDbTY4N2VxeW1KVjBma29BM2hYcFFZekV0RGJSMDhN?=
+ =?utf-8?B?NVU3N0h3TS9mLzdURkVEUU9IZnIxQlZxK2p6MldXQXlYeG4rcGVlQmkvWUxD?=
+ =?utf-8?B?eUVLVkxyNHlOSlcwUXJjMmozL3o4cG9PVjU0YlI0cjlsN0M1bFBscDJWTWtI?=
+ =?utf-8?B?OCt4L0VtNEhEeXBETEY1V2JUWlE2WG1uVGVlamVkUnhXY2Y4K3RTOGtvKzVk?=
+ =?utf-8?B?UGE4Qml5NmhNeHBXakVBdTgzejNxNEREdDNWV2p2V2ZraENmSnlHN0xIckRl?=
+ =?utf-8?B?MGliVXhwNWxKSHp5WlBaay9YRmh5aW53OTYzVGUxL2tBZm0rakU0dUN5c1h6?=
+ =?utf-8?B?R0l2QThNQWh2MkE3U2JBZ3ZDcnZGU0tKWGVMZHlXUjBqdVA0ZWM5Nk56cjBE?=
+ =?utf-8?B?cm5ML1JqcTAyN3MwQWJERklZVW5jeEtGRVlGRm5jeWJ1UDRrM0tjVVY2ckFY?=
+ =?utf-8?B?dU5uZGlTREZZb0dCVzN5NUVFakdYY1ZaUTl2Y05rckFvbmdoMmlVU0FVTUpH?=
+ =?utf-8?B?VXk1QVJNajVTVy9kNVpLNGlzNVBGQkFMUit4YUZTVlVOdkNYU1EvR0hvN2Ni?=
+ =?utf-8?B?dEl5WGUyYVoyOCtWeXJyNm1CWDVIem1xTEZCa2lBcnRHV0pza0JMSFdGTHp3?=
+ =?utf-8?B?RktydzZTQnVTMVp2MFlrYUM0eGJST3JsdG1ZKzR1TllicnFrRE9CZU5rWlZI?=
+ =?utf-8?B?K2RaQzhKRlJTR0dsRTV3NzRWUjdaQW9rWk9KT3A3Smgwb0swQVBKSkpTb2Qx?=
+ =?utf-8?B?bXIwKy9jNVg5eDM3cDU5bDdDaFBSaU5qRDg0YnpXU3AzbE5VU2tteTh5ZVN3?=
+ =?utf-8?B?dkQ2N3FVdHBwR1A1YlBzTzNUR1RRTnhSeThtdTNaV1MyZVZCZHlPdmpsVkFN?=
+ =?utf-8?B?WnIyb2tYdHhNVTlrYjY1QzFGeXB5SFlIREtuTWJkTjV0T1BLQ3o5NzBtWVg5?=
+ =?utf-8?B?OG9xbGdWYVNQMXdUQnk4YlIySE9zUnJpV3h0c3o0UEN5TEJac3dlWXVFTWZK?=
+ =?utf-8?B?d2RBeXVkdEh6ZG9NWFY0a2JvTEVkVVYvSldqZWVnQjc3RFQ4YUZlYUlUQllJ?=
+ =?utf-8?B?T2EyNVl1ck5ZWFBSR0J2YjBmRUtPTXh0cTlpVUNvTnUxZ3ZvcEROdTZDcU1Y?=
+ =?utf-8?B?WUdmeElPYS9VYUYxQ3ZGdE1MeG1BbTdsV09rNG5NWEhpeXhOdTMwQkdUVVFX?=
+ =?utf-8?B?eEJMRWVKUXljRUJWUzl5VXJKQm0zT0NvZHlzQ1BreWd6ZTFpNGZDUTJybDZr?=
+ =?utf-8?B?eXFtVUc2OFh2dkNKQmNRNlJpRFlEbzhDUDBGY2V5cE1YSXY2bkdQMHE3dnZL?=
+ =?utf-8?B?ZzZ0RFNNamZaNXlZcjJEalRsNjI5VzYvTy9JeFFKKzBhZGZGUkI5bEM3WXNt?=
+ =?utf-8?B?amxFLzBLNGVwd2diZENPN1VTUWtrYnlBeGNGaHg1MlN2VkE9PQ==?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5757.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?bjVOYkJyUm4xQXpGMlUxYmUyeFZBZmRRNkN6VHhqVW1Ta2o4Q0o3N0Y5cE5S?=
+ =?utf-8?B?RGF2MzdwVWxoYmxEZlUwWFpjY0N4V3p1cTdmdmE1bXpNekpVdlZDUEhSY1pq?=
+ =?utf-8?B?bjduYndXUWhrRENMT1lDWDVobW4yYnpvaVR2Nk02OVJPdDFKeTdSZFF6MTkr?=
+ =?utf-8?B?c0pOYlpWdVJrVGkyQmpuaDVzN0xqVk5BZmNRNFhDLy9zZGNXN0YrcEpYMUxi?=
+ =?utf-8?B?T2hEM3VBZnlFM2FyTkpOOHcxVjFpeHQ5eUNqVUFzWFU3MlNMOGdpbURXSiti?=
+ =?utf-8?B?S2M3VzZDd2c5MnhFQ1lTYzg3aytlaEJtTnUyS2RodWwxeGUyRGhpL3JMZWJs?=
+ =?utf-8?B?dzdkOGpoNUJjVVdSTkJCMHptcUdWYkgyRkIwYzA1S0F2b0ExM2FWZGtHMTcy?=
+ =?utf-8?B?NFN2cjdJZndFamlpM2RHbFZhWnBPSTNpSHkvUVFiWUpDT0xsMHc1YnlwWEVY?=
+ =?utf-8?B?RjNubzlRMThiTjFYRENQN1QvUG05Tm83RTJzYWF2Sm5TRDVNYUxld3BKOFNq?=
+ =?utf-8?B?QTh0cXpsTkRSRWVEakZ3U0tNenhXanU0NGJwSGNNZ1ArYTg4ME9YRGwwSVI5?=
+ =?utf-8?B?b0Q2amY2a2wrMHYvTE5zL1pUc0phOU5WNXA3U1FGMGlsaWUxT2w1Qzk0UEk3?=
+ =?utf-8?B?K1VocittamRxSGMxQUVRYXJXSTFlekZKL0x4UGxMMWdVYmhOYlFMRGwxVjNz?=
+ =?utf-8?B?Y0VzOVBNckx4VC95K2I5a08xcWxvRmNGNFZEZkxSbGhaWWF1alNWYnU4cDZk?=
+ =?utf-8?B?MGMvMmFYRFBpMWhoam00aE0waVBQd0dDZTg2cExLT3FHWkQzQ3UvVkh4VVgx?=
+ =?utf-8?B?QmxBNUZJYkphS09oUXBtUTZaN2JHWTJoTDhjR0I0VGhFYkFvZDB0dklBWmNk?=
+ =?utf-8?B?OUlHdC94cVpOYjIxTXdUR3UyRG5TYitSRmlFVmhMVzhZa1doRFZ0YlM3M0Fh?=
+ =?utf-8?B?eFNIVmRLNyt5VWZlVkU4dlpSVVhtdlQvbFFGVVQrdGNqUUdaOGlURHdiOGdp?=
+ =?utf-8?B?Q1dTNS9qbkdiYVVuajdtSFo2c2RhK0xnNXlTVjNQazlJemRGeVdPbTFlcm5J?=
+ =?utf-8?B?OHRocTQ4dU1PTUNFR09UZTZvVU0xOE56cnROb295OEU0SWNFWDJkNWQzUURD?=
+ =?utf-8?B?R2ZDRWJDWWZCUkpuVmxtRm45OTBUOXFxd3FseUJrZWNNQnhJZk1rd1FMUWky?=
+ =?utf-8?B?WC9KS1pQTDRMTTkyTlBMU3N2WlNlenlJdndGNVJsNkxZN0N5ejJ1a2xsY3Rj?=
+ =?utf-8?B?K2lHQVJRbDROY0VseEJVVFdrbXZPSWF6Z0hpYnZBWEc5amx3WjQ1VkQ1a0Zi?=
+ =?utf-8?B?bzRYVTZDeEJvSS9KdVZBQkhDSzZGNWlNYkk5NURkK3NGS1liWWxoeE16cUhZ?=
+ =?utf-8?B?MVVzQWhGWk9lRGxsL053b2JBand4TzluVHcvc3NGelZ0OFlLSXA5ZXhrY0NK?=
+ =?utf-8?B?OVdJL1c3NkRpQlpLdFN6VWFoR1dVZkdnSW9BNmhsTTQ4QmhjZjMzK2xHNUEr?=
+ =?utf-8?B?ck1LK1FObTlHa0Yva211SEdZWkZaTUFDWGlQVFB6WExDVlFNREZsdjBPajl3?=
+ =?utf-8?B?cFlNQklhaUV2S1ZzbWJQNmxzdW80YjVLb2dpdmROVEhDNloyZmpRY2xzdTZm?=
+ =?utf-8?B?MGJ0OEwyYUJFamFvRm9jNnNKak5abnFrZlZJb2g1YUJzUWVBU1ptNHp0SDMy?=
+ =?utf-8?B?WEYwcXZScEZST1BndEw2aEVNNVE5cEdac2NXSy9kZHR0RFl1NXRvQk9uNWVh?=
+ =?utf-8?B?M0lodmk4NENpUzNYRzVuZGQ4MmpoNmVOd2JsamJiOWViV3c1VUEzME5rNWVK?=
+ =?utf-8?B?YWJPc2Q3emZCOEtzYi85cFE0SDVRZEY3UDg0cGZ0Q0dVVStXYzJrMUFDU0k2?=
+ =?utf-8?B?OWcyaEN2TWg0OE9XMVVRWWVNU2tLQ0lJZzJoQmI1amNSdGlqWDdET1ppWEZF?=
+ =?utf-8?B?THZoaFZZZmgzRmRKdmd1WWk3eE8vM3l1bEVMSnpOUXdtWW9WUFh3b1I2UnU4?=
+ =?utf-8?B?aVhidkNFb3h2bDZXOFB4bTFETkRqVWwzQjVjR2FGRWJxSE9KZ1RENWRLd2tP?=
+ =?utf-8?B?ZllETG9ENU1HdDdKU0pLVUhvS09aWGM5RWFsb0tVczNRTm1NS3BtQkR2aVJS?=
+ =?utf-8?Q?0EE7wGiGAujnS44LfBLkavZ6o?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4160a78f-a605-480e-9c90-08ddf5ff5e7c
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5757.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2025 15:32:10.9013
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5LfRIWfcGJW6nvu/OHBNJfkCkekR5kNQjp4OQ/6ieDc5ri4b4ZgYzdstcLOI98/O
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6089
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 83B621A0013
+X-Stat-Signature: r4dtjsu1f58n4t9eppcaug454jhqib9n
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1758123166-608555
-X-HE-Meta: U2FsdGVkX18ffWTiM+zB3M21rWMx86yBfq/rMf0NburLCXp/ft4uVchWujoX+sA2cju5MA1Ye75mPjt03LYPE4n5uIkF7mRAyVGnuZ7+gPAE7zBfR7QiRqRYmDyRn4e0+Vmy+vfJ+p9IETshUDLVhw32OIrzPZNvU/aVHwXxxc/hUmrWWzFVnXpwAQvG3Dd4ZCI1wxHMDQaRwBll8M2KtCYZiRxagm4cqGdbMbPZk0f6ukvvzsh2aIb3nGwMMhwsEJhPNHkWjDBA1jkRlGQtCQz/BRWbJ4lO9bjaFEu++kIzr1hNhtQ6bn3qla3cK08cxMG8rff5vfgUKYXPac0kqAshQUCr7I92drq/cdFYUHj/lF9VCsvMz3BdVQ9v5hQoCzNSQOwhhr41jhiCK4ueDSXVyXccD389s8Ru+BN6KsqvIBI8n3gYCmYyZAs3zG8IhTJyh2hc6MDd0mRdhO/+0yoRe3sHxHB1pbQ4n8pT3Axw+rsJhnBVIrlAsXI6BjMBb9C0YTjpyU3XRIAQbV6rrtlwxRGQKOy7i8gKDYgiZTKyWsiikmVuOjFAE0qN79tGql2kdYBxfprd7mivyidXJ8BF2QQSOXbIMJ7xsOCntS07Sj6nSO1Wl3Ln0LpSh4XG6TJG9Gd2BzjPT2ypJ6vYclgnRuUomCJ7ZC/W6F/nzdidM2T3D3MAHs3BfvkRnVxfciXhkmqIEwr4laRR+JyzQFPZiFBwrItJYcurRD3EEu0+pADKPMPLdarKecZeqih4hNesPUlxvnEo9C609BytvP/veQUWJU0pkRdk6Jas04WcLPxa8FsI5QSJxB0wqMvXvTOL+PzSvvB5Lf0qxcc7oLxiKWPODsL7V2DfQKFSnufRavhsU9tcrGPj65f5/yPAI7FmatPD0H4cjbKm+IFcIJLsmFmEbkaNKuaW7iDlXfSV1bSNZWZ8+JsXw6ZhWM2YnQj4oPTBMrVWn/xI3dA
- QFEPD/Ji
- OyjL7TIPJdfp7YSmcGD14vbEHTAYixtYl/trVs06SmFMeR4vHOONJ1yuPSQz3TucgMi6SJE6/o6bOMT85q0MLgDUyh1ZdoL3YugCsBRAlBcgnN8tS3VbATxHEyLPIEvhc+sd7JWj86qq8TJRkUeu6g6OU5tSrQxDI24YnU0W8VRS6/JoHSs1koge2UsL5kUjta8uDp1tL2wxllTBF7sWmBPqsMzyARyQgceGzJMuLvOwKh0ADFCNn+4wj+8OaqBcNBjK+6Zrfl4l4jeSWlTgvf+JKV4BJgigv6LdQ3rjblO4JlgfbZIeZivN7hW2ExJGzrgS690dXr0wx5kdF2J6tz9vpenTsx/CrzWPflGFPoovHnR7JJeAHTpuxHKjgGcedl//MdL/ihkRksiJrmui0mrApU0rq69JDXLJDrzC3/WuGy5eMiRF2UYCAceUN+XwH1W+t95hlSe15Sh0C3+0vlSmlZucVlEkmNG8gGCETT1wswgk=
+X-HE-Tag: 1758123239-50886
+X-HE-Meta: U2FsdGVkX1+Ml5ocCgVAF+MCnkzbJEuCF5tFKeZY8C6noi+AcoMjfcYRXkswU0emWgoXCUCyUqCit0lyiUsVyMqlD4s7nyGrwM6whCHv6yE3mhZDiCsk5RATTMbJbeQt9QiohGoX01aScEu5n4D8HckoC65QCwOHuiZGxI5+cZ0pnAmjSscrFPTSb+d58Y9iuRNi902bMPQlZNMv1n8EGzdVwRDND/v1Fn2mtknC09mBZX61Lri4WxoLqbtJcT2sFM9QDrjgXs53wXp6TPKitUsAhU5u6Gx94f+SunQ7wOfEQli5zF68FbldSjrSRZ95ysLJH+11sD2nCPdrST0Wb7S/9rnONm8THbJTcQsKo9QjAf+uM97l87PW71i+fd/B65ff768TYKl5cr3YhGZyB87LHpPLyYyiZvaqG5ZY/Y6GPGQFsBVkEHxmB/BgsXtttQfl6R/kblywOUZpfRcaPM9E2+OamtTvzyKfa6/BpTwF7S6NluUcb4PPsEItfxRW5jasI3BfhXy4ICWG3qV3NtK1nmjDAlkfM+rTZ4jKA0covQdf4TaF4KvViaiXVyJsvrErqY2GqDJx/8meI09oHlXaT1IKJ0Ok6BVoh/ZRvTkEodLhhhJy07GNO8I5dEAzp7JM6YoQ+JhWVsLIwIljl6mKoBLmq2hpoJ/LNiOe1TS749UiNTBv9cvOeu7vipwVqZhHpqj9Y95Dx+v1vugDDH+3zC7sEWostnJk1rjurUBs7y/I5r/YFlsWOn7Oqxq5ou0FaZWv0yRxXIQfp2QjcF0sta6FrUqKRWuRhS9jyKREY+2Q7TSJGXiLMSNJjhE6XzwOLPH1cacAtKbn2VfLVV17ESQmxbaOZjfKfFbyhYMKRWWhoFYRNVm7eIUMcUxumh+XvkQf6dWHckOH1qFS5SUddIkEBG4ADIgFoBxSjeeU15UUowb9wCoF/ED38SW6X9TLVi6uXKn+y5kFUmJ
+ Qrn7rMUK
+ EBcgzXhbWfcIMaVy/KB+lg9olh7rBj544fO4N2A8iD8LVk5pxtB8NUbgvwgHhpuLffFIKGg5ENyh0K4XNgj7qgFOJJ9hVEwEAQWVzC8pfhksLX8Gd0ASok9qu1KlNRA3mSBMa7rsix38Ia0x3iuzOHTiZSavYh5FJHOhFiB9HPG3/aDGiBwbPXgb7uzc8xdcg9Y2BgqAdU/ha+kYhNPEOGQKCvhlmG2+gH/hra5gqgzzVGl9bVMFNLoNpcVqg4d7kb95mWv/8OEzXgMAjTfb3JsLZ8Tuh55xHhYusKrdsGS3e+7Ri+UJsKoXFJx9Gc2ehuYALEZ8SHtXYivame3E6w501V4Ryw6nIzXBXUE3cV1XPTpL8Kd/xDk6dtHrTIJ/qzTd6ZBigAJx9Nce6L02/qxC57eHDIo0d/EL08IY5oEw0j8A/+g8KdSk6pi0PN8heh6oirCOO8FgIOM78sTh/2Ek9qHnr9tZbwWleWcVOInc/c+tOMzBTSJZKB8ARrTNiYk+AtNZZ6aFp9OUXjAqS/DnVpuyZrpHGDnTZY3Muz8NDDXU00LnrGQYiTYbTF/xWCQIN
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,147 +212,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Feb 26, 2025 at 12:44:55PM +0100, Thomas Weißschuh wrote:
 
+> -$(OUTPUT)/vdso_standalone_test_x86: vdso_standalone_test_x86.c parse_vdso.c
+> -$(OUTPUT)/vdso_standalone_test_x86: CFLAGS +=-nostdlib -fno-asynchronous-unwind-tables -fno-stack-protector
+> +$(OUTPUT)/vdso_standalone_test_x86: vdso_standalone_test_x86.c parse_vdso.c | headers
+> +$(OUTPUT)/vdso_standalone_test_x86: CFLAGS:=$(CFLAGS_NOLIBC) $(CFLAGS)
 
-On 9/17/25 18:18, David Hildenbrand wrote:
-> On 17.09.25 17:02, Eugen Hristev wrote:
->>
->>
->> On 9/17/25 17:46, David Hildenbrand wrote:
->>> On 17.09.25 16:10, Thomas Gleixner wrote:
->>>> On Wed, Sep 17 2025 at 09:16, David Hildenbrand wrote:
->>>>> On 17.09.25 07:43, Eugen Hristev wrote:
->>>>>> On 9/17/25 00:16, Thomas Gleixner wrote:
->>>>>>> I pointed you to a solution for that and just because David does not
->>>>>>> like it means that it's acceptable to fiddle in subsystems and expose
->>>>>>> their carefully localized variables.
->>>>>
->>>>> It would have been great if we could have had that discussion in the
->>>>> previous thread.
->>>>
->>>> Sorry. I was busy with other stuff and did not pay attention to that
->>>> discussion.
->>>
->>> I understand, I'm busy with too much stuff such that sometimes it might
->>> be good to interrupt me earlier: "David, nooo, you're all wrong"
->>>
->>>>
->>>>> Some other subsystem wants to have access to this information. I agree
->>>>> that exposing these variables as r/w globally is not ideal.
->>>>
->>>> It's a nono in this case. We had bugs (long ago) where people fiddled
->>>> with this stuff (I assume accidentally for my mental sanity sake) and
->>>> caused really nasty to debug issues. C is a horrible language to
->>>> encapsulate stuff properly as we all know.
->>>
->>> Yeah, there is this ACCESS_PRIVATE stuff but it only works with structs
->>> and relies on sparse IIRC.
->>>
->>>>
->>>>> I raised the alternative of exposing areas or other information through
->>>>> simple helper functions that kmemdump can just use to compose whatever
->>>>> it needs to compose.
->>>>>
->>>>> Do we really need that .section thingy?
->>>>
->>>> The section thing is simple and straight forward as it just puts the
->>>> annotated stuff into the section along with size and id and I definitely
->>>> find that more palatable, than sprinkling random functions all over the
->>>> place to register stuff.
->>>>
->>>> Sure, you can achieve the same thing with an accessor function. In case
->>>> of nr_irqs there is already one: irq_get_nr_irqs(), but for places which
->>>
->>> Right, the challenge really is that we want the memory range covered by
->>> that address, otherwise it would be easy.
->>>
->>>> do not expose the information already for real functional reasons adding
->>>> such helpers just for this coredump muck is really worse than having a
->>>> clearly descriptive and obvious annotation which results in the section
->>>> build.
->>>
->>> Yeah, I'm mostly unhappy about the "#include <linux/kmemdump.h>" stuff.
->>>
->>> Guess it would all feel less "kmemdump" specific if we would just have a
->>> generic way to tag/describe certain physical memory areas and kmemdump
->>> would simply make use of that.
->>
->> The idea was to make "kmemdump" exactly this generic way to tag/describe
->> the memory.
-> 
-> That's probably where I got lost, after reading the cover letter 
-> assuming that this is primarily to program kmemdump backends, which I 
-> understood to just special hw/firmware areas, whereby kinfo acts as a 
-> filter.
+This addition of "| headers" breaks O=build builds. ie this:
 
-If there is a mechanism to tag all this memory, or regions, into a
-specific section, what we would do with it next ?
-It would have a purpose to be parsed and reused by different drivers,
-that would be able to actually use it.
-So there has a to be some kind of middleman, that holds onto this list
-of regions, manages it (unique id, add/remove), and allows certain
-drivers to use it.
-Now it would be interesting to have different kind of drivers connect to
-it (or backends how I called them).
-One of these programs an internal table for the firmware to use.
-Another , writes information into a dedicated reserved-memory for the
-bootloader to use on the next soft reboot (memory preserved).
-I called this middleman kmemdump. But it can be named differently, and
-it can reside in different places in the kernel.
-But what I would like to avoid is to just tag all this memory and have
-any kind of driver connect to the table. That works, but it's quite
-loose on having control over the table. E.g. no kmemdump, tag all the
-memory to sections, and have specific drivers (that would reside where?)
-walk it.
+$ make O=build-x86 allnoconfig -s -j 14
+$ make O=build-x86 -s -j 14
+$ make O=build-x86 kselftest-all -s -j 16 &> /dev/null || true
+$ make O=build-x86 -s -j 14
 
-> 
->> If we would call it differently , simply dump , would it be better ?
->> e.g. include linux/dump.h
->> and then DUMP(var, size) ?
->>
->> could we call it maybe MARK ? or TAG ?
->> TAG_MEM(area, size)
-> 
-> I'm wondering whether there could be any other user for this kind of 
-> information.
-> 
-> Like R/O access in a debug kernel to these areas, exporting the 
-> ranges/names + easy read access to content through debugfs or something.
+Fails with:
 
-One idea I had to to have a jtag script read the table , parse it, and
-know where some information resides.
-Another idea is to use Uboot in case of persistent memory across reboot,
-and Uboot can read all the sections and assemble a ready-to-download
-coredump. (sure this doesn't work in all cases)
-What can be done in case of hypervisor is to implement there a routine
-that would read it, in case the OS is non-responsive, or even in the
-secure monitor.
-Another suggestion I had from someone was to use a pure software default
-backend in which to just keep the regions stored, and it could be
-accessed through userspace or read by a crash analyzer.
+***
+*** The source tree is not clean, please run 'make mrproper'
+*** in /home/jgg/oss/wip/kselftests_dirty
+***
 
-> 
-> Guess that partially falls under the "dump" category.
-> 
-> Including that information in a vmcore info would probably allow to 
-> quickly extract some information even without the debug symbols around 
-> (I run into that every now and then).
-> 
->>
->> this would go to a separate section called .tagged_memory.
->>
-> 
-> Maybe just "tagged_memory.h" or sth. like that? I'm bad at naming, so I 
-> would let others make better suggestions.
-> 
->> Then anyone can walk through the section and collect the data.
->>
->> I am just coming up with ideas here.
->> Could it be even part of mm.h instead of having a new header perhaps ?
->> Then we won't need to include one more.
-> 
-> I don't really have something against a new include, just not one that 
-> sounded like a very specific subsystem, not something more generic.
-> 
+Because the build now spews stuff outside the build directory that it
+should not do.. Bisection points to this patch and removing the "|
+headers" makes it stop doing that..
 
+Any idea how to fix it?
+
+Thanks,
+Jason
 
