@@ -4,98 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8749CAC5A0
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 16:28:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6109CAC59A
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 16:29:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1B8A88E0059; Wed, 17 Sep 2025 12:28:09 -0400 (EDT)
+	id EDB548E005A; Wed, 17 Sep 2025 12:29:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 169928E0002; Wed, 17 Sep 2025 12:28:09 -0400 (EDT)
+	id EB2D08E0002; Wed, 17 Sep 2025 12:29:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A69A8E0059; Wed, 17 Sep 2025 12:28:09 -0400 (EDT)
+	id DEFB88E005A; Wed, 17 Sep 2025 12:29:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id ED5168E0002
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 12:28:08 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id AB4981DF6F9
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 16:28:08 +0000 (UTC)
-X-FDA: 83899274256.11.751F8B3
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf04.hostedemail.com (Postfix) with ESMTP id A4C6540010
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 16:28:06 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=none;
-	spf=pass (imf04.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D1D518E0002
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 12:29:23 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8B35B1DF522
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 16:29:23 +0000 (UTC)
+X-FDA: 83899277406.26.8C798BB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id CFDBE4000A
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 16:29:21 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Efgoo/3O";
+	spf=pass (imf07.hostedemail.com: domain of acme@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=acme@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758126487;
+	s=arc-20220608; t=1758126562;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DpLXic0MdizHtZPh/KE8ePuqoIhMDWzWKS+7gIsSu2w=;
-	b=t2luSEmbZBklwZocF1KJduE8geve+2nWhVvAuLYpz2AIPNAqdUllvx5ldfWai8bE21r6n1
-	8ewtIa/mlnAPv00yPzIxSwk1/3b9OaNZ+NyUlsVDwJzIMnaXNOfbOZaAXlyTPQ5R9I40It
-	YFHUIvHJb3e0h57HV6/dBxd6/i5es08=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758126487; a=rsa-sha256;
-	cv=none;
-	b=kx/B75weAFYQG0ZotkKfRwmHbL/zZVmpyXqNJY3n08y6w5oiTMuxnj/mq4/n9o5F2Hngxm
-	0aS96k0noJLabI7p2Cz1xZoVDxzjX0NIr1srzT5xZwLU+faNH9JVdq4HBvtKEEb2OVLn1W
-	cSCVv392p1yoE0va6muWh8nosui/fGQ=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=7zIZpqfsiZ4CVgJARmyKbDE6sDykkMIKdlIbnxDb4+Q=;
+	b=C4tYM7/dOLfM7NkYRrE9OtaNa5duni+P4lSxXp2xnfavAGWI5/DdVQ7taxXZG7kvT2jvaC
+	fP004psR3BzfQNkSMilWBKwZeeI7mKf7n0ROuBYmymXMtzoxJPSbOzrtznmsSMuEuAZ6UA
+	eNz++Q5fp/LP/UIxUTmenX2lO/tWmnU=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=none;
-	spf=pass (imf04.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 351AF267F;
-	Wed, 17 Sep 2025 09:27:57 -0700 (PDT)
-Received: from [10.57.80.26] (unknown [10.57.80.26])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B07303F673;
-	Wed, 17 Sep 2025 09:28:03 -0700 (PDT)
-Message-ID: <e86e2aa5-c66c-41a9-a56d-74451df0d105@arm.com>
-Date: Wed, 17 Sep 2025 17:28:02 +0100
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Efgoo/3O";
+	spf=pass (imf07.hostedemail.com: domain of acme@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=acme@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758126562; a=rsa-sha256;
+	cv=none;
+	b=a4LXMYmTgF71dQxnzZc4bOtdf3N0sFFAp0EBtEPKJqjfxH/kqKQY0I3oKcFyFPJS4NmjoS
+	5z7a2Tqbjka2Df2xbXXsQ/w+dgFw4H/5Ii/yxDXC7c73cC8+hndbVmApJAUW/ylSPCwxZ2
+	Y9szVP0gHqS4CsVmEaCwpifPM9xyLwA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id C7B6641821;
+	Wed, 17 Sep 2025 16:29:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 591F7C4CEE7;
+	Wed, 17 Sep 2025 16:29:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758126560;
+	bh=2OcN4+QE4vB9KSX+x87Cdk3l913EKng1ECYM1XJ4iNY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Efgoo/3O0LeCmXH1rE1DrgEshaiVcNwoiGdG8gPR/qVy13CnvZhy67MLqQDbd1Nwu
+	 enTVAYHlzhaquq3xtN8aHEQJ43+ZMLVMdsXkEZIa+HcUfpRIV1k0dv2gdUGFQ4LcPp
+	 MLXKrgn89SIv2BNKLnINxK6b+AQdHaO1/9YvsrzW1bPzB0zZ+PH9NwTAvEnOWPivsk
+	 e1H/U0OCmG9hQDwRJ7dblDd0FZeTJpXJgS/cWqhzztqV2KHa56zWXi5lbfUt7zGwOX
+	 qsfIETUK9/JSo5CI5A/DO3GDqdyjekXMCAuVzOxn4Llo0FK3St0PJRf7PEYyzQJCps
+	 sptrXw5WzO+QA==
+Date: Wed, 17 Sep 2025 13:29:18 -0300
+From: Arnaldo Carvalho de Melo <acme@kernel.org>
+To: Ankur Arora <ankur.a.arora@oracle.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
+	akpm@linux-foundation.org, david@redhat.com, bp@alien8.de,
+	dave.hansen@linux.intel.com, hpa@zytor.com, mingo@redhat.com,
+	mjguzik@gmail.com, luto@kernel.org, peterz@infradead.org,
+	namhyung@kernel.org, tglx@linutronix.de, willy@infradead.org,
+	raghavendra.kt@amd.com, boris.ostrovsky@oracle.com,
+	konrad.wilk@oracle.com
+Subject: Re: [PATCH v7 00/16] mm: folio_zero_user: clear contiguous pages
+Message-ID: <aMrh3h1gCIyYz873@x1>
+References: <20250917152418.4077386-1-ankur.a.arora@oracle.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 0/6] arm64: support FEAT_BBM level 2 and large block
- mapping when rodata=full
-Content-Language: en-GB
-To: Yang Shi <yang@os.amperecomputing.com>, Dev Jain <dev.jain@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Ard Biesheuvel <ardb@kernel.org>, scott@os.amperecomputing.com, cl@gentwo.org
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-References: <20250829115250.2395585-1-ryan.roberts@arm.com>
- <e722e49a-d982-4b58-98f7-6fef3d0a4468@arm.com>
- <dd242f5b-8bbe-48e8-8d5f-be6a835a8841@arm.com>
- <aeb76956-f980-417f-b4e7-fe0503bb5a2b@os.amperecomputing.com>
- <612940d2-4c8e-459c-8d7d-4ccec08fce0a@os.amperecomputing.com>
- <1471ea27-386d-4950-8eaa-8af7acf3c34a@arm.com>
- <f8cf1823-1ee9-4935-9293-86f58a9e2224@arm.com>
- <bf1aa0a4-08de-443f-a1a3-aa6c05bab38c@os.amperecomputing.com>
- <39c2f841-9043-448d-b644-ac96612d520a@os.amperecomputing.com>
- <d7cd4004-bacf-47b0-9cd8-f99125e02238@arm.com>
- <fe52a1d8-5211-4962-afc8-c3f9caf64119@os.amperecomputing.com>
- <8c363997-7b8d-4b54-b9b0-1a1b6a0e58ed@arm.com>
- <4aa4eedc-550f-4538-a499-504dc925ffc2@os.amperecomputing.com>
- <1cfda234-1339-4d83-bd87-b219fbd72664@arm.com>
- <55a79826-48e3-41c0-8dbd-b6398e7e49a6@os.amperecomputing.com>
- <92719b15-daf8-484f-b0db-72e23ae696ad@os.amperecomputing.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <92719b15-daf8-484f-b0db-72e23ae696ad@os.amperecomputing.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: nbf6eaywxxba3j9pgunkyabfc6ts9gxc
-X-Rspamd-Queue-Id: A4C6540010
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250917152418.4077386-1-ankur.a.arora@oracle.com>
+X-Stat-Signature: h6ix6z6n3wccwwkymbqphqyu5y36tx5e
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1758126486-913112
-X-HE-Meta: U2FsdGVkX1+XXUC8JjfJnGhx3UPYmgT1T9RQq4J6LE3ComaqZX+/CZIU7KDK/L8iU5etkm+a0ynEHc8imhI0FyV8YczbVQuOWLf2wxw04h5jaH5TIksgDuXjK7Bi6Gxg4BNW9IC4nIx/n+qhJEty0JGn84DsBIuGLKOq8CAlGX+NvkBzCGG8jntvXjznEDrLuiQWjIZ7qfL5i2cFvAsRMOALZA276nmvlvVYP/VgfGswAfAY+/rUyQN6a7cZxO5D1FsHNge3qYoRAPX8GvEheyXstl737qLKj3XVZQhbZpnWtl8x1wNE6aPy8SZZi97bOSVGKzBtY0axT5Y33dYTsdgUXI5M2ETFwh2Eb0XZJOxwh3JnBmCWEk9kZ3mQS/SBwEqxocsgefZsJK6689/Dv1TJEv9CerT5t3GuKuSyjjAuqJG1T32X3kkjLEY20PTBCbkUoCjme7MA6yfAaNhFR4rf0xGCIhxLEuSwqFY2w0LGcReoz2/AmQWivTjwV3mYi6gb+XlSTKpr1qG+WFknTwTEmOxYEec/kegpqD1RD0q2Vm0qR57hDAGeMxkKbuuRItFrX9hP1gd8uGQmvsqbuNqt/f3Op9lIYdn/NYzeJzO7PuSBRJyPEY8xOqND03CnyDhiPta5bLrp6OTXVqPkYfyg4/oStFS4Ad79Val8UQsfWp3a3Cm6K57fjXPUSOhMq8OWebxyP2ICHItAmiCsTw8Nswi9OuSlDUjgCkyv/kOAIUXeZoIthXgymTT9+OhQx6wuaieGx2l+9DVEjCeHQmRmJtpaqrAXgujYSEgdBXY1JQZQT+UxOOefRZ2aCKLUKGZQPpx5gmKIoPGlTSjwmVoFhMdBCB1k4mOJJiMwlaKZAeNY4ngvaY7mrSjYDofmJyORBce7NHM=
+X-Rspamd-Queue-Id: CFDBE4000A
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1758126561-725569
+X-HE-Meta: U2FsdGVkX1+NRmmkqzcyT7hi0SrpitlYqLqku93+p/UJioxu09UgIopS/EtFXm9CGwt1Yr+HpN7ZboXjMvwzy3BZU05cy9svValul1/vZAqK3V4b8YbvJQjGMp1+c/m/95HagE71zbYyNYHqu/RmMtPJLRiAvnxe/xys06e13Kx5Z0qy1uQcZ8qdKcDhFo0oNgcsR9jH51PCKg58S7e1hcVAWb4LrlLbZ7wU/qx39vlBORMEh6MYgtN+qzipF4Yq+X0LyrHLguZ/DzAU6oZif/fsxJyi1ujujRrKXbbMqJ5iJw2958W1CgXDn50mFhjQQ0G8/OBym8FL/X4A1pgJs6dB5UtHbAiMUXanNNx5KOHLJbmHvuWRfNw8FYoTmnkieGBaa67iQU/96oN6LYW2aArZPEgJdJ8wuYv54rPiHsR+gFrNMiuz77WVWyzZqeUHx3j06MCWhH9Kr18F+pt1y2ENHcq3qJ0BH8PfjniM3+F0ab4EtR8E+tbauq+LasRLoReDni2Lfyvn20fbbvIPzfKyjBSjs1TT1hWMilo2f5WZw89wOcUiNz84Bincby0SgwRU5wcDXBqWErkZEFaj4uPpdh5qkRqzFJlQNpBd0b6Rwiejdeb9KmDB+lXUm1WBmf6787yZr8I9wiUoWhCL0u5QQa9q0KFxekd9SS3BPIIErIa9rFjDP9RKzGLEdANqNg1erMR9VsdkrZ/h7/8nCuoKP0q6q8WLODU4bN3c3JxdWFmdESDVRHZmyoP2KphNrn1pQm4dTvtUBJsEa/3jVbepev+gG9yzvYFBkhSKKStNwuuXznRvTxQ1n6iS9W7R0nyOUpuuGTNyT6gork5JR3gAxaOelfaqyN6cFYQ4Gj+rb180g19TdFmFhcH7vruR8UPFFiXKE2Qn5fp/BehfoKkEmLt6CwqrDkzrFQKW+Lt0VsyVwiLxL6DqjGl3g6cKpI+BiosC9Vnrt6mJqAW
+ EhxNYRBr
+ EepWSMce7lzV9W624fPhQKSLoAVc1wQdGaIqggWx/lw8S+fSyovWZVkCnygiff4SOWYxLBy6H6Is7lb3Lex1kNuefRLGkM2Bb9N1no3JcQsExTgAo9WRaX7BY5PpVRZYijuoJ0agzLRoC7tIjvNW6Wdy+1MK/pZIZU6cAcXNIAHZ428qKyPvB+UWB7Gq9eRuskLyvO/qKpX2wA0RY6OQD7NgLCpYlLX3dBx6sxCQkDzRHJb07cAdudOTCsQdMQwIPjET138EW3v9rMtV141Lz26eNzWs+9911xpG3NGWDUNaUc8q1iM44it7F5z4N+WDEzoYmj4vD5JaZH1i9UFvKHuwWFupktyiV/jmxqbDaKm+G+SREVUimprYCYJlMEPIkvMEvr/Aj6Pxq4+I=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,63 +96,127 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Yang,
-
-Sorry for the slow reply; I'm just getting back to this...
-
-On 11/09/2025 23:03, Yang Shi wrote:
-> Hi Ryan & Catalin,
+On Wed, Sep 17, 2025 at 08:24:02AM -0700, Ankur Arora wrote:
+> This series adds clearing of contiguous page ranges for hugepages,
+> improving on the current page-at-a-time approach in two ways:
 > 
-> Any more concerns about this? 
+>  - amortizes the per-page setup cost over a larger extent
+> 
+>  - when using string instructions, exposes the real region size
+>    to the processor.
+> 
+> A processor could use a knowledge of the extent to optimize the
+> clearing. AMD Zen uarchs, as an example, elide allocation of
+> cachelines for regions larger than L3-size.
+> 
+> Demand faulting a 64GB region shows performance improvements:
+> 
+>  $ perf bench mem map -p $pg-sz -f demand -s 64GB -l 5
+> 
+>                  mm/folio_zero_user    x86/folio_zero_user       change
+>                   (GB/s  +- %stdev)     (GB/s  +- %stdev)
+> 
+>    pg-sz=2MB       11.82  +- 0.67%        16.48  +-  0.30%       + 39.4%	preempt=*
+> 
+>    pg-sz=1GB       17.14  +- 1.39%        17.42  +-  0.98% [#]   +  1.6%	preempt=none|voluntary
+>    pg-sz=1GB       17.51  +- 1.19%        43.23  +-  5.22%       +146.8%	preempt=full|lazy
+> 
+> [#] Milan uses a threshold of LLC-size (~32MB) for eliding cacheline
+> allocation, which is higher than the maximum extent used on x86
+> (ARCH_CONTIG_PAGE_NR=8MB), so preempt=none|voluntary sees no improvement
+> with pg-sz=1GB.
 
-I've been trying to convince myself that your assertion that all users that set
-the VM_FLUSH_RESET_PERMS also call set_memory_*() for the entire range that was
-returned my vmalloc. I agree that if that is the contract and everyone is
-following it, then there is no problem here.
-
-But I haven't been able to convince myself...
-
-Some examples (these might intersect with examples you previously raised):
-
-1. bpf_dispatcher_change_prog() -> bpf_jit_alloc_exec() -> execmem_alloc() ->
-sets VM_FLUSH_RESET_PERMS. But I don't see it calling set_memory_*() for rw_image.
-
-2. module_memory_alloc() -> execmem_alloc_rw() -> execmem_alloc() -> sets
-VM_FLUSH_RESET_PERMS (note that execmem_force_rw() is nop for arm64).
-set_memory_*() is not called until much later on in module_set_memory(). Another
-error in the meantime could cause the memory to be vfreed before that point.
-
-3. When set_vm_flush_reset_perms() is set for the range, it is called before
-set_memory_*() which might then fail to split prior to vfree.
-
-But I guess as long as set_memory_*() is never successfully called for a
-*sub-range* of the vmalloc'ed region, then for all of the above issues, the
-memory must still be RW at vfree-time, so this issue should be benign... I think?
-
-In summary this all looks horribly fragile. But I *think* it works. It would be
-good to clean it all up and have some clearly documented rules regardless. But I
-think that could be a follow up series.
-
-> Shall we move forward with v8? 
-
-Yes; Do you wnat me to post that or would you prefer to do it? I'm happy to do
-it; there are a few other tidy ups in pageattr.c I want to make which I spotted.
-
-> We can include the
-> fix to kprobes in v8 or I can send it separately, either is fine to me.
-
-Post it on list, and I'll also incorporate into the series.
-
-> Hopefully we can make v6.18.
-
-It's probably getting a bit late now. Anyway, I'll aim to get v8 out tomorrow or
-Friday and we will see what Will thinks.
+I'm picking up the tools/perf part for perf-tools-next (v6.18), already
+almost 100% reviewed by Namhyung.
 
 Thanks,
-Ryan
 
+- Arnaldo
+ 
+> Raghavendra also tested v3/v4 on AMD Genoa and sees similar improvements [1].
 > 
-> Thanks,
-> Yang
+> Changelog:
 > 
+> v7:
+>  - interface cleanups, comments for clear_user_highpages(), clear_user_pages(),
+>    clear_pages().
+>  - fixed build errors flagged by kernel test robot
+>  - move all x86 patches to the tail end
+> 
+> v6:
+>  - perf bench mem: update man pages and other cleanups (Namhyung Kim)
+>  - unify folio_zero_user() for HIGHMEM, !HIGHMEM options instead of
+>    working through a new config option (David Hildenbrand).
+>    - cleanups and simlification around that.
+>  (https://lore.kernel.org/lkml/20250902080816.3715913-1-ankur.a.arora@oracle.com/)
+> 
+> v5:
+>  - move the non HIGHMEM implementation of folio_zero_user() from x86
+>    to common code (Dave Hansen)
+>  - Minor naming cleanups, commit messages etc
+>  (https://lore.kernel.org/lkml/20250710005926.1159009-1-ankur.a.arora@oracle.com/)
+> 
+> v4:
+>  - adds perf bench workloads to exercise mmap() populate/demand-fault (Ingo)
+>  - inline stosb etc (PeterZ)
+>  - handle cooperative preemption models (Ingo)
+>  - interface and other cleanups all over (Ingo)
+>  (https://lore.kernel.org/lkml/20250616052223.723982-1-ankur.a.arora@oracle.com/)
+> 
+> v3:
+>  - get rid of preemption dependency (TIF_ALLOW_RESCHED); this version
+>    was limited to preempt=full|lazy.
+>  - override folio_zero_user() (Linus)
+>  (https://lore.kernel.org/lkml/20250414034607.762653-1-ankur.a.arora@oracle.com/)
+> 
+> v2:
+>  - addressed review comments from peterz, tglx.
+>  - Removed clear_user_pages(), and CONFIG_X86_32:clear_pages()
+>  - General code cleanup
+>  (https://lore.kernel.org/lkml/20230830184958.2333078-1-ankur.a.arora@oracle.com/)
+> 
+> Comments appreciated!
+> 
+> Also at:
+>   github.com/terminus/linux clear-pages.v7
+> 
+> [1] https://lore.kernel.org/lkml/fffd4dad-2cb9-4bc9-8a80-a70be687fd54@amd.com/
+> 
+> Ankur Arora (16):
+>   perf bench mem: Remove repetition around time measurement
+>   perf bench mem: Defer type munging of size to float
+>   perf bench mem: Move mem op parameters into a structure
+>   perf bench mem: Pull out init/fini logic
+>   perf bench mem: Switch from zalloc() to mmap()
+>   perf bench mem: Allow mapping of hugepages
+>   perf bench mem: Allow chunking on a memory region
+>   perf bench mem: Refactor mem_options
+>   perf bench mem: Add mmap() workloads
+>   mm: define clear_pages(), clear_user_pages()
+>   mm/highmem: introduce clear_user_highpages()
+>   arm: mm: define clear_user_highpages()
+>   mm: memory: support clearing page ranges
+>   x86/mm: Simplify clear_page_*
+>   x86/clear_page: Introduce clear_pages()
+>   x86/clear_pages: Support clearing of page-extents
+> 
+>  arch/arm/include/asm/page.h                  |   7 +
+>  arch/x86/include/asm/page_32.h               |   6 +
+>  arch/x86/include/asm/page_64.h               |  72 +++-
+>  arch/x86/lib/clear_page_64.S                 |  39 +-
+>  include/linux/highmem.h                      |  18 +
+>  include/linux/mm.h                           |  44 +++
+>  mm/memory.c                                  |  82 +++-
+>  tools/perf/Documentation/perf-bench.txt      |  58 ++-
+>  tools/perf/bench/bench.h                     |   1 +
+>  tools/perf/bench/mem-functions.c             | 390 ++++++++++++++-----
+>  tools/perf/bench/mem-memcpy-arch.h           |   2 +-
+>  tools/perf/bench/mem-memcpy-x86-64-asm-def.h |   4 +
+>  tools/perf/bench/mem-memset-arch.h           |   2 +-
+>  tools/perf/bench/mem-memset-x86-64-asm-def.h |   4 +
+>  tools/perf/builtin-bench.c                   |   1 +
+>  15 files changed, 560 insertions(+), 170 deletions(-)
+> 
+> -- 
+> 2.43.5
 
