@@ -4,79 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 877EACAC598
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 05:56:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C4EECA0EE8
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 05:59:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9E9548E0002; Wed, 17 Sep 2025 01:56:39 -0400 (EDT)
+	id B6F028E0003; Wed, 17 Sep 2025 01:59:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 944998E0001; Wed, 17 Sep 2025 01:56:39 -0400 (EDT)
+	id AF89B8E0001; Wed, 17 Sep 2025 01:59:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 80C388E0002; Wed, 17 Sep 2025 01:56:39 -0400 (EDT)
+	id 9E7658E0003; Wed, 17 Sep 2025 01:59:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 694E58E0001
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 01:56:39 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1A22813ABE4
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 05:56:39 +0000 (UTC)
-X-FDA: 83897682918.08.447C79A
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 3955C4000C
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 05:56:37 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A91F8E0001
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 01:59:25 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3407D1DE8B4
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 05:59:25 +0000 (UTC)
+X-FDA: 83897689890.12.09CB191
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 87F0940009
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 05:59:23 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
 	dkim=none;
-	spf=pass (imf07.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
 	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758088597;
+	s=arc-20220608; t=1758088763;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=4rL2rlM29fREnsY3UP4GCd3w0RbbtqI2tzuuAuaZNNM=;
-	b=TMFwQy3K47CJtpM4rxUyXN1upk2tst/NzhfXRSNOwpwAtmKZqtOSRXRYJ7dwA52OwW9bqq
-	owACBqvEq4HC91gatQwBiK1HQmdTzlca7WSSBobM+4TAlFhBszd74CvtCt6MrMhdWYXLKd
-	FZ2Myt81fDBjuADF5COe7odGarjXSEg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758088597; a=rsa-sha256;
-	cv=none;
-	b=fH7W46hmAgQUWc7XibkwPhaXz+MYUvQvEHnFLxbIk5oHOyEoimS7MMn6H78tVnAQ+QkLOy
-	Gc0BMQzaSpBMSOwRZ6kwXaP7O2wUxGho+xUipllITg/v0KLS8c4tN73CPfJFNBIWt7TdAN
-	q2GLKQ0gK+ob2cprtCZOFohC+UhdA4o=
+	 in-reply-to:references; bh=XlrrbpNOChtNjzl9J83pPts581jGsxoyMpwY2SqwJY4=;
+	b=f9EKVX6/ENJw9GyrdXAk3J70JdXTX0wR0RdSZFdU/dx4BXxsDx5l5z6Yw2sRJ7BR4mU6vG
+	Khy2puQ0sM4wp4niten0mhrXl1mFfYGm3OLzOKDzocdU7nTGs0yFPS6aNszyMhb158dilo
+	kFxaeDIII+ODyoeuefzXSBI1FUnbfuo=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
+	imf17.hostedemail.com;
 	dkim=none;
-	spf=pass (imf07.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
 	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none)
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3ea3e223ba2so2891563f8f.2
-        for <linux-mm@kvack.org>; Tue, 16 Sep 2025 22:56:36 -0700 (PDT)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758088763; a=rsa-sha256;
+	cv=none;
+	b=K5fdBLEkUhf53UBjBTiMdnJs6Z/tOXwOcc4RnDAt1WCo5FqWqW5B4E5YvA7kOKMdPaDlhc
+	3jqPhoRY6MvtVVxf4c2akjbib+gePwmBgC7Uxqdi4O87JMqOPhyv2ZoqcjwcWpPxJyaCbF
+	N4hGgTGjOk/IxXEzTKiUhUIbiwrYRc0=
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-45f2c9799a3so21410755e9.0
+        for <linux-mm@kvack.org>; Tue, 16 Sep 2025 22:59:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758088596; x=1758693396;
+        d=1e100.net; s=20230601; t=1758088762; x=1758693562;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=4rL2rlM29fREnsY3UP4GCd3w0RbbtqI2tzuuAuaZNNM=;
-        b=jvfVpOUOWF2QJQ1BMEUMpLuBvfXDuFMdkMN9eNM8y4I4wpTuu0/vQHlurlo/vtObit
-         VRwe7xmbfCQiB5c5x2cqYDCzN7O+FOh4ontlDU5MCnASwP9VbVkuTmDN0ZtTrT+6GKpm
-         Z6HeSmKvOelhvo6pqKWn2yncyWHUHDZggArkL065OrxEgd5lfqGVMLTf2sE0D1obuBs1
-         SCrG/TKefGMFnnIH3H91UjFAraP6knADwloFlA0XuU1Vsyr+Zg6zZT5m3XX8YNB/6Wnm
-         FmGpSbB5lUiwfK8+pUkbMn2ci+isvJrjWZcDtm0/uDweiTR9yH9GSh7yKOssXibz8+CN
-         gYsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUWXR843R0otb8e9/PhnG9QCjWkbCw3VE2TqYHfL+6Wjnc0X+CHuZWNaEdW48WPbFBRkIcgfgz7kA==@kvack.org
-X-Gm-Message-State: AOJu0YyBU+fY0rU28AZaieUSd+ZZG0olsd+RWEJr83xJ5PNtH7XR1kb4
-	TT5Vft3dFfZntmYjc/EuRw1TcSl9qAU0TS4T5tD8n9GyhEWHMRjTOeJ4
-X-Gm-Gg: ASbGnctNtEg+8krpcCmuaAfMZRtNCXFYm1Ke9gwxv/O+D1IPfNN3M5OFURdQYJra/Xm
-	KIaJUCF/V1X5acw8iyIL0fK1FsZY1+X5iDLGZcGmc2kWrBd7LmzcAJiwPigjCS7WTwGs6T3Ad95
-	l4y3d6fTQsJUYR3APxPLE+8m8lGbSqoSmNQZvdJMovOwmsv9ETUVDb3UdEcXEd1Ssz9mcnmWMPg
-	AiltsxEigJl9cjBcGl4uxHafm/yOss5jirIrTLU5j8rrwnLPJkAuhV6IGMwm9uqPbJFZxrGacnq
-	8/O0+5tCQdz2V5dPnoTfdBFLM48w38rh9uKDQi0OGm3DDtai+cldqKqSHLWhgW6DwrZ3OtuhGOh
-	e9lTqe+Vj
-X-Google-Smtp-Source: AGHT+IGjxHPHG8T6fPu431Ka9rSzcuna7td6QNzojHq1qsMru8NT7pUxzrEnuuQd7KWe/4SL2weFmQ==
-X-Received: by 2002:a5d:64c8:0:b0:3ea:e0fd:28ea with SMTP id ffacd0b85a97d-3ecdfa0d2e6mr682457f8f.39.1758088595501;
-        Tue, 16 Sep 2025 22:56:35 -0700 (PDT)
+        bh=XlrrbpNOChtNjzl9J83pPts581jGsxoyMpwY2SqwJY4=;
+        b=u8dbrqgMMYZxLDBzHF1avsZUymsJcilqBN9Tm3AQQ323B/qEksrOIVvVdeNZ6GABjT
+         lwRLqa8iztyQr318nmvQl1VP+b0FuTK7EXhi8Vt5QxjFUo8cv9wIjLG/CwtoUW08q3ti
+         uJE5cNbeRVOwjaP6L2ztOc5sajWgPoMvXjY7VcxKbKgnUGW4HjUTe/pxmI8LWhsU61wq
+         WcB70hLeyZbWfnT636NssLtStxpzktl9Q9q6gYMP2qxJry5Lm4HLg/MaCZKrmwoiSLeZ
+         ezZMjTyZ7zwB5SG7kK6FB8qLL4/3TOnQChhgY3WmJ4W5foquaUbBR1vd/c4cPpnJrqkc
+         zG4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWL+X9+Sq6O+bDLBYrSEvoMpKiPXFYKnF0S0cbbxZyGlrkYVnuhT3NBcif/wE/kgR8ioWQ3I3xwYQ==@kvack.org
+X-Gm-Message-State: AOJu0YwSaVy9Zqe9v3qIacuj0xw92MV+lvsW9H8vPWR1piwWZFxdNe1x
+	TO4hJMdaV6WfQIxWJpFRg8seihWF1s3e5NFOneeDXPeTZwUerfjp3fca
+X-Gm-Gg: ASbGncvlcO6mYpbn6uiBAwvrED2k3F7mmCoSLRI00Mm0ay9TjfKxGWo+FBU2XrXt72x
+	88HVGhq8kSXZ+yGLEOaoXeuRujvlXhPS6WLzg8nq3l5QR1NmKtVl9BtbgFmpnJur78NUnJvz8G7
+	NN/3H5AIubU21HKhDpHyHXlL0XyAdJtEcbLjQylG1qpITRIMe7EfArrxxEOIzqwcb5Hrrf0d/88
+	JMmq+VOxWN9a2RU+57BZkS04l2GP8yO1983iyR+kqS007jwp/QrxYEVtBizYFWWQeK9mni62RiK
+	F99PBtF+jPHFBmS6x0YiTNvdf+itWNHKQv6jvqbc42nJdTMqlP4G3jrND75Hq5s1CQHK6X4+1Ax
+	sRzEaTTlRpAApDwCgJK8=
+X-Google-Smtp-Source: AGHT+IH9W7esOzFT5IkroJVMwtaxdDK6d7E9R4NeEsWdBedzAfyvLtUnHVT1+OGn9VtvheonzXFrmg==
+X-Received: by 2002:a05:6000:1863:b0:3e7:6474:1b63 with SMTP id ffacd0b85a97d-3ecdfa3d20fmr589203f8f.63.1758088761975;
+        Tue, 16 Sep 2025 22:59:21 -0700 (PDT)
 Received: from EBJ9932692.tcent.cn ([2a09:0:1:2::3086])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3ecdf0bbf24sm1433237f8f.63.2025.09.16.22.56.32
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e7c778f764sm19485191f8f.57.2025.09.16.22.59.19
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 16 Sep 2025 22:56:34 -0700 (PDT)
+        Tue, 16 Sep 2025 22:59:21 -0700 (PDT)
 From: Lance Yang <lance.yang@linux.dev>
 To: akpm@linux-foundation.org,
 	david@redhat.com,
@@ -87,20 +87,20 @@ Cc: shuah@kernel.org,
 	linux-mm@kvack.org,
 	linux-kselftest@vger.kernel.org,
 	Lance Yang <lance.yang@linux.dev>
-Subject: [PATCH 1/1] selftests/mm: skip soft-dirty tests when CONFIG_MEM_SOFT_DIRTY is disabled
-Date: Wed, 17 Sep 2025 13:56:22 +0800
-Message-ID: <20250917055622.46564-1-lance.yang@linux.dev>
+Subject: [PATCH RESEND 1/1] selftests/mm: skip soft-dirty tests when CONFIG_MEM_SOFT_DIRTY is disabled
+Date: Wed, 17 Sep 2025 13:59:13 +0800
+Message-ID: <20250917055913.49759-1-lance.yang@linux.dev>
 X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: fzxopm9weccb69gsy5d4i74b6ceuyjej
-X-Rspamd-Queue-Id: 3955C4000C
+X-Rspamd-Queue-Id: 87F0940009
+X-Rspamd-Server: rspam05
+X-Stat-Signature: qusdhcbfid3uj7j7xndnfndyxfzb9uwf
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1758088597-62477
-X-HE-Meta: U2FsdGVkX1/QsAeAaaeK9YPEgg0Y/bcJWNr+30rwXK5HWK5hI5yCQ44RmIv5Q3oO78rpCmfjv38M1/xdBk5XSgPeyvzBdJVRo9ss4EirAexGwW8TxawC1prjUzZ7+8z8jPEHpcM+lZTJCOeJl409ZDQD1tm3OhZJieaULYHiOJBvHR3jiKnEpmy7KmY2wgwL5QsNclRxSJKrU/ucxhWDjjpAzwUNWmz9hCMCKKnaUayzmXRV4EQjcwNTuF8RWb8NmHt7KyI3LZqD0ZCUzsNEe+RfSHNoRRGeRhs41odXVa9JU/UfMvRdm/mfAd1npXr43UC4W0wpyYL/mm0F51gs1HYWD/NqdIgB7ic2ZrodYgCelviDP/HUht6GuIJtLuBTsZbln4z1VvrsTut4TcHK8Acfqr4uTlPyxhfFkCEdF8ID6CViwATlqPGTTNMy6z4H1M97FWogS3CQ0uiG0paO/6c7HEVy4K5HXXEtOF4HjmYhrlKhtCkF0sWl1SBcijnISzcJ39/Ze+4EgE7Va5HjgeoFpl+DYpfELuyoTm+/2A2j3pSGcib4l+SRODcwfLtOP/duEGZB4rgrNWq2CpHwTio9H0G2w2jP+IljU4e8w+xe96BdVdDxLRX16ykT4HC/kekO/ACk6eSi4Foo5juQLA+elDUyYO9DpygISu8XlvWw/s6xZtpqFE4I5pstk3oOXzp5LRkMH/jNVBy67OaqfNtzYKqSDOixhUMwz+e7ZB4dANoXF+2UjMYgJdTjdGyb4w1zTaL1WH5hNYwvC/osjXuWLucz3EFzLNIbEPWlfJfcRM9JX9c5Qp2TH18kY4SXcyWqwDIbItzB85IMvt+10Ke3S/abAdBP7d4nsEOXZHKHnQgqVdIM81upOkhJluJY/MwyiKKHCXZqxmXyAkLcRLBfhBnkCJ5RLoBl3bcjpBZ9xlz1eH2CXrNvbCubJT0P96EOJuTuM2H6c0h7mR6
- wiKd2mF+
- gIcMvjW15uoqubM3wESdjuuBj3L2ls0PvsPH3OCjgOAyTnPO3oPhhowGO258Vl7IqP1ysBIAhAQpzfa/w24XnTdbv4WztZqCuj+t62vrUul7y/Ol6KRA1dYNTWcqRuZypq32Dhc/EB+cZ+1JXawnJOTIP9ctU2XUkw7H2iDHsl5QAs1P2E8i4dgdR2cTWZpqV62Ojfv6aMPXJifOjWiW1r0cGGwJ7bW14l1tRIxDAssSfyEqNgcf0pTyX8dEQVZ29eu8vl3+eSarwfEgnoXp/LlduhrNHBsDovXeOLaSRCylBUHjreoXFUUrMSRmrVy7Z5rQODiLScSq/1zuKKXjvVy5dS8sw/KV7r13lMc4w7Sgy2umMqHIoKExCtXuhA4x8nmJ6idShva9GLUXSZKcJH7fZu4qV/HuAKJ2fdj+IWvZqgZ+5C+uBwYF59IB9BRWBYBr3ie4AteQj7dF+V5qzYN2IzjZyycCGkqUZThB6Ntq4VDs=
+X-HE-Tag: 1758088763-673866
+X-HE-Meta: U2FsdGVkX19GbLAlJnu8T28Ho2vF/I0nqq7Sjigpf1LPYGT1JLSiFYX+KxB+g71A7T6nVBIqkK7xAqFfik5DxAMqUF5lHSGRXLIhdgd0hQ/BAgIozlPg32n5NipfDqHoohbnqVdeQM4xSorJ0NqjRDlj9Q8DTi0E1FyDsLWGlSmuGgf0nIgTdrUKu3Q3iDZvRvURN272FIcmu5Pw1WUAcsiKgdDqx37LqTCjwCkijxKqZDVJMvbi77A5mjk1rK6eiDqrELhoN7NLNXzorF89p4V+6TsVm1i3ktbHeMRnPhx8XdZ6Gp80eIfahX6HjJbgc0fdsOmj3tsETawakUt0eVCKRsaFQsxXG4ur/x0sHlbXbeqSLDsUb8uuP4TX8wU3pF2vBBHa3+FasJmj3wAd4oap6w+pSb8FKe8BXAtQ3jCbkaf4DKUBlEliBo6glBzQjdXHwipRfXODli4Hg7fMoBp+Lq85U283ee+0qUtOmgI6HwwhBXGeeNiTb79Sf01Ah54w46UuJJRD3yWWxh1lsp/zKjhT65C7CKgcTprvOkDkUiqtLCdYO2OapKTR822xAbY69k4Cf++cdIIz5MHKRhpPn2kuXZ8m5yNdJsCpZgO464EnkI1ISOWPAA21lkuJN5xYDO236VdSvBBJYlFmTUiSL7HvmZSf0MwL97fzO676oCfZNYzMySIHcTGeVIEihHhbRf99XTIblZJMiKJi852mm9U1QW31WceOm5idtbU/UyOOiRwselqzfOsdZMw6I/RsVch22lxBDBSKBerL7BQ5Wgp/jPZ/fAkzer9iBcQw3f/cLzimlSRoyBAdrI7ALlJJRU+HUhcKQ3UqtAYUt8jL9jC9DOx0I8HtA/PTeSmhqRrX3nazBrMVrQKLr27HAeYU/0eqqPdy4/uV7sSJxiF602ZDpYmI8yegh+KEnSgHAT9Z79LSC5FZ3jb/LGQMfOOwlik8Tf1tqhZKYyR
+ 3326Leef
+ 3dWH8VWpuU6XY14dkTLeo4eeou4ZlzM3aoflhLg3QIcw+8wxtIcuuykxT29vDCqrHOv6Urj7tc8YhgGXvKMbUMCAtAqQ6eNhNkte5nEZU9liU4zV3yEeMUxPTe4CwBrj5IZK/MwaYwJsRA7+QV+tcrKkmFvXPjm1oQMwHJFKeiYmC77GcnMWzuTvc4dQ3MigOiKfxaxDhtaVgapcvLSiJZsCOR1Y6p9DJbTom
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,6 +117,7 @@ CONFIG_MEM_SOFT_DIRTY is disabled.
 Introduce a new helper softdirty_is_supported() into vm_util.c/h to ensure
 tests are properly skipped when the feature is not enabled.
 
+Suggested-by: David Hildenbrand <david@redhat.com>
 Signed-off-by: Lance Yang <lance.yang@linux.dev>
 ---
  tools/testing/selftests/mm/madv_populate.c | 21 ++--------------
