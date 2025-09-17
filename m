@@ -4,91 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BE6DCAC59A
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 16:00:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06D5ECAC5A0
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 16:13:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B3EE28E0051; Wed, 17 Sep 2025 12:00:49 -0400 (EDT)
+	id 4F49C8E003B; Wed, 17 Sep 2025 12:13:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B16548E003B; Wed, 17 Sep 2025 12:00:49 -0400 (EDT)
+	id 4A59B8E0002; Wed, 17 Sep 2025 12:13:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A53448E0051; Wed, 17 Sep 2025 12:00:49 -0400 (EDT)
+	id 36D1B8E003B; Wed, 17 Sep 2025 12:13:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 938D08E003B
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 12:00:49 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3A59759E83
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 16:00:49 +0000 (UTC)
-X-FDA: 83899205418.02.6884AB0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 2862940014
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 16:00:46 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rjphx54c;
-	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 215A08E0002
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 12:13:59 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7AE66C0592
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 16:13:58 +0000 (UTC)
+X-FDA: 83899238556.20.1F44183
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 840E512000F
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 16:13:56 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=sHm9pwBj;
+	spf=pass (imf29.hostedemail.com: domain of axelrasmussen@google.com designates 209.85.167.49 as permitted sender) smtp.mailfrom=axelrasmussen@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758124847;
+	s=arc-20220608; t=1758125636;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BiQ4GiKGpa3/5fWxgFr75vNNOju778Z6qrSXjnhrFw8=;
-	b=xUkZZn8tDgQxzWlREUYtvqSECWFCxzg96zLPLpcjue1eVrWwasJZetZkCyoix3sMc2sF3+
-	mAuuE90epGaT9AAKgB74+jQPoVdqyoH7kzJJlQM7Gx+sF4ZKKOX3rKeG/VB0jaSiH9tt8O
-	YfMAkKaFafaGulnO+VW+HtlnJs54bEo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758124847; a=rsa-sha256;
-	cv=none;
-	b=F1GiISfIgVqHgwf33tM3bDergJQbJmqZZUdSdP7g6MqWIECCZv2oLhMEJ4UqRLkCysId89
-	Xdo3K8OWCKPKgkwzbsaK0jn+Cu/T5l9AMlL9eY+yk+kUsgkKsyP7fYDnQrUNDcdX9ZfWPo
-	5x+mAlpZINRGHm9Vd4T8m7iNPgt7ulo=
+	bh=uvJ6bulO45Bcv1bp+4eQlx1OfzhKYrOi/BMPhK5PNY8=;
+	b=3GrroqWfa3PnGY7Nv+I4PUMKBGFxM3pKyw70EFF2lcdXJoRFVV3gW5hM7SRNin14admXub
+	oqV0uU1O+AV8sqrMs5iRbQTTw2+Ki3eJcMtEMqqP2b2rhn3TCTnhV9r29esQaEEktJ1H71
+	d/g3V0j1viuxTnHdbFMrxS94RRx9H/E=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rjphx54c;
-	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 08AF0434BD;
-	Wed, 17 Sep 2025 16:00:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6CA2C4CEE7;
-	Wed, 17 Sep 2025 16:00:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758124845;
-	bh=Xn5cUrhSlYfU8D+L9SzM1MDf0JSuHHuyW2CfS7ldx4U=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rjphx54ch07/tjRjFKkF3By6vtvpnEoUncKbAEpNlvByUm0k6NJiK3Av1UQUAvA7/
-	 LneouAJG8afb9GBos2X2/BHT0+7oWwtTWaYdMGOH27C/1vsA8vR5XCj9KCRigfP3Bo
-	 7ad72wYPbbvz18kBhYzdme8W+ABuQfkCcb/v0HGDCCeUNmkyXDIU8/Cwy0Njj9wTV5
-	 Wt1hoamLPijmJsp5rkEo1Cnd2gpQGLnwFJLpr5vW83Y4IneF8pEqWZhH4R0jD5kiZb
-	 AtwYwkRHy3ufNQZWQM/Ikvip8S9PgWIOiSxcdZ1uHjRAI4dMhBWDg1s/ormnLgbIwE
-	 bLEcc8txhbO6w==
-From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Quanmin Yan <yanquanmin1@huawei.com>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	wangkefeng.wang@huawei.com,
-	zuoze1@huawei.com,
-	Chris Mason <clm@fb.com>
-Subject: Re: [PATCH v3 11/11] mm/damon: add damon_ctx->min_sz_region
-Date: Wed, 17 Sep 2025 09:00:41 -0700
-Message-Id: <20250917160041.53187-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250828171242.59810-12-sj@kernel.org>
-References: 
+	imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=sHm9pwBj;
+	spf=pass (imf29.hostedemail.com: domain of axelrasmussen@google.com designates 209.85.167.49 as permitted sender) smtp.mailfrom=axelrasmussen@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758125636; a=rsa-sha256;
+	cv=none;
+	b=MCnKme31cvorBVwyfURaHfXjNEArHug3bL09rnv1VM6+T7qtn17zC1Neop7OkXQUAc2L/g
+	fr3KMM+EP0j2VvNN+8FTag2/jgnNJiaJ6LsPsH2ZdzHtLivEpcSpG/jKolvHxBeTsslKy1
+	bRJAVDGrOoXPhFX4WzqLvl15nG1Dsts=
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5694f0e29a1so8349e87.1
+        for <linux-mm@kvack.org>; Wed, 17 Sep 2025 09:13:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1758125634; x=1758730434; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uvJ6bulO45Bcv1bp+4eQlx1OfzhKYrOi/BMPhK5PNY8=;
+        b=sHm9pwBjkAviheq7x6gumHPXV4M0ohmczC4Gsr5Pi3NNrL7ZMUxpGSQ/kXckiDlRHB
+         1IK9ai/O+TuQR9/+vu88C67epzfF0b1N9AeebJ/bnHDfXZM8p/IMF4ee3M5BDyefx+0V
+         M+uJllY4Lzj7/aNy8fiqiZ2+uiv+lMMqUuA+D7YWfTsPvQ0sRsDYpWZimzQLV8REHBQd
+         VX9FRWQtY3g3yeAlqCMl3c8Kac8JZmoD30EGNBTRih559y58ikezIXKRzof0CP0mYxi/
+         sqyy8s98TOGw3xh8IYBG1ae+dWBcmL/PH5NSWSDH2IdGw9YVE7ozej2yBxFp9bPnvPo3
+         8zDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758125634; x=1758730434;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=uvJ6bulO45Bcv1bp+4eQlx1OfzhKYrOi/BMPhK5PNY8=;
+        b=FWutPjcScLCn3QXna4ssjxJjUmHkPOqA4njo3KrQ5yFSPTYVSc07LRdrSDk9+tLwwa
+         crC4OIqFmj2w/U5lcHXscdKxjBJDFYsmMtgxvPj6ghIVA0UXHa9ipK3kvzAIb4lUN0jN
+         1c+k7npdeFz933rHH4jNjUxeWWdX4MfRd9lU+8cLozILJm+KOKm1aqLwNMSQp0wIyDtr
+         f3YI0yjbQfKd/gcp00WXoiKMEYWiHMupvSsZ6wiAKIG3o6VTOuL9cJxQCszeK5rlbzsf
+         2g5r4CuncibcDxKx/66BXeSweA6mIz1RmTM1eC9tekcuym38ChBv5l4dBrpQWFpHoj3x
+         zlJA==
+X-Forwarded-Encrypted: i=1; AJvYcCWuhl77eNerWSO7A6NsKN8OO6BG3diTw/HAq96+LieGwYlLr84elnPFnPFm5StBe0RwYT5VmjVTNA==@kvack.org
+X-Gm-Message-State: AOJu0YyxRipwo4XcbW5JR/OM0uAOIoblDHoY5RicfVrYcGy7thGyHG6T
+	40wFFR2A68XVauv6tX40Q3Eb0k7YYpf2xUrnQ+uGBpOh4Qb2qTurz/kAWH9Qkzy1zROSM4uNctr
+	xSAyFh8PZtgKzloo48L6o1L7F9lh6sALn4eGDGPRe
+X-Gm-Gg: ASbGncs3e+WlIGlYOEzc3MCD2mE7ESxfL0Te+gY+GIM0+qsRXpz3C1yqV2xuqDKuzab
+	8gYLXl5hF1tXQ0/cWk18QgP/jurE/QfJ5Vf/8eR+TdIX0Xfgr03H6/Eihgh7KeqL7UB37ozu/mH
+	L/9Gu97AlJe7kwvUDtbopgrwkp9px5JQNUdM06gs7s7rpU8uz2pyS+4ztjuz3nuzGp3nFU3FZN8
+	mO0HRA4YLDQegDrtk6/mUs=
+X-Google-Smtp-Source: AGHT+IEJmlzcZBbZRSOGR180JkXbCfSM+P+quz0IPfNt0JaR6MyxGAR6/PJRtZEtmV3b2qXq9Haz2tuwMDYlTIKdITU=
+X-Received: by 2002:ac2:4e89:0:b0:55b:528c:6616 with SMTP id
+ 2adb3069b0e04-57753052181mr293289e87.6.1758125634224; Wed, 17 Sep 2025
+ 09:13:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 2862940014
-X-Stat-Signature: jrinbjqyr8j4xje1p549zmibug4h8trk
+References: <1757967196.153116687@apps.rackspace.com> <CADrL8HWGcj1oANGY=qAzpYi_-E-Xbi=L28Bmyyf8H7auVix=QQ@mail.gmail.com>
+ <1757977128.137610687@apps.rackspace.com> <CADrL8HX78-oh0k2qAgqPvNVAhi4ESYvjRsScPGR2P2Dts13Bfw@mail.gmail.com>
+ <aMl4qLyNovWHhty9@x1.local> <1758037938.96199037@apps.rackspace.com>
+ <aMmMnfU-Koopc9mL@x1.local> <1758043654.112619688@apps.rackspace.com>
+ <CAJHvVciL-6OLMPDGQjZ=VGDwvwKJznq0BL49uSj+DSq63LOUYQ@mail.gmail.com> <1758052343.971831541@apps.rackspace.com>
+In-Reply-To: <1758052343.971831541@apps.rackspace.com>
+From: Axel Rasmussen <axelrasmussen@google.com>
+Date: Wed, 17 Sep 2025 09:13:14 -0700
+X-Gm-Features: AS18NWCZXzSGtx27SCE2ko6lZk_QVSXJw1pvQMijSAg904iIs0KoucMUcWR3lhg
+Message-ID: <CAJHvVchHKxiVKFjUz4ir4PVDvUihLhiSRMBWqpMEZfwLdereuA@mail.gmail.com>
+Subject: Re: PROBLEM: userfaultfd REGISTER minor mode on MAP_PRIVATE range fails
+To: "David P. Reed" <dpreed@deepplum.com>
+Cc: Peter Xu <peterx@redhat.com>, James Houghton <jthoughton@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1758124846-57376
-X-HE-Meta: U2FsdGVkX1+zkgDBpaDyvuQtaRdj7+7Fvsy8YBX8EOfIUR66wD8TSOxBr2M2ZRRFlJq9a7sG4A05MLZ0kdyEpaMNQOvRpuCKOQ4DdBneVi7tuE+1+SXalTeTPvVys6Wus7hN0d4LxsyDgJ5pNuvrCZ0409QanKM+Wfo4vj5cvQWKMozT5RXw6n+Tj2D1iGmi7XTA7gbZuzWzO8YAaJ3o4FHyJIKUiOOM2Hnhw1vOn1zXv6MT9udT3Dd6GtYW+VwmSk+2MangNrc9guPUheHjzyyp4cArz4HRzBHWN6XKx9IA6n0tDp5wfMl3OojDXl7T0JA+XBp5j5rQ/3PmnEqcPysHxJ0ITSOeORXx9zrQ/8lvWjC0eSUnCKSTaMfr4zc4mwkkG+lYLdrER1XwGzqIyIErOn/n5WkS1P5S8vKl/+uOX+E24UvBz8JB1nPiIYkR3w373h+EtpsHisFlN3toESoj4peFu9FIVBmq2o12bYAZjlDuY0WevI0Nz8D92JeGJTdCqOxl+VHQz6hysFvaCOtztCdHO3xMhKpIH0XZWRNmabgIm48ca+N80E04tsQl4L6S5GGMw/ev4y3yOmaujOMLJQigy731dVozbTbrh+zN0riKINnFYEdjuXSeA6If6ffJwqvAp9DoUQCsO+M2I5yzQCGzQ4+G8pVHsxZxG448pXraENXuiO/3Mxwvh8c7SvUsapOu1W14Cou9CXcxE1NBtF1mZqydZWzexnT77vvoCSaXbDDuEYv5WfM+rn3BZFz16hmqoPCf37w5tR63sU1iuQBhpQx5KtUdZWdl6qnZks0iXkrVurK06DSP2yWCt/2T0hLy/S/56mEh93Nad+E7oBBcoRizJOxYJBHxeetHi2YiMCkCnVLLmVTB4Oeo1Y0kSdFPSm/cvnm3kggNwYOf9Spu42IOR1+qoM+ktbqWRMQc4SvbCXXz+WX3GDA2eNhoIbDfDEQ6KlRGCck
- 7ppFTecu
- I5H4yx+BXGB6wibvevJ/NEHJTG8heiUZbjzyP1vkpPsICpH3aXMEHABKLNK5B1KAqHuhLW1dDb5MO3gtB1O1mX1uEsa0swwOMy450T7/oyT4rZYweV7grtAXxbJ+id1LJKF989ZTBf1GWDmXzRHlu2BXArKIleCrVylEOjF1pGklBjhQNaqHnDBEVHQh5/88rvZ+AlFBTRIhvePuDCMSYuJ2lPkqCtJHUlr2Gbs5HafsZyttf9gzZk3Jo4CQ45LWbT8VrSwFjP+dhs1CLeK/Zr/DbbrnIojgxx1RSfTt8ySPMKMMJrFpj1PjT+Avpw5/vCy1sM0pvQTDe2MM=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 840E512000F
+X-Stat-Signature: toq6bdwyt6trbr6bps1zcdt79tigatxh
+X-HE-Tag: 1758125636-381500
+X-HE-Meta: U2FsdGVkX1/a6q15qBf43OjPCY/ZRKBgWp8ZJL5+vLr9iOtnxFExlVKc1mWE03Rz/8DhoST7yoPQCTR6NzLM1eV81WC/7Elr//JpMC8F8az5wfiKYz3+cr+LdB3Xcjt4+3fbMiB2xHTeauTfDwaX44X9ChU0DOuLHbDAz9ClzwuCQb1HYiuv60wr2K7lpoEAqTmpAGN7QZVFZLI/A7wD4m1Dh+4ld9ZmRfmBRs5V852qIWsaFpCxdrvoUJQnTKmirgAVDnRkCGfQeSrgeVeA1zXNxNnIJaRnFMU2Zmpp5yi87SsJ+z/H7j0C8M+KybASxqX4oOx91/2ApzypN0rFOu99erBIvfVcikjXIvR9VlNS9UGcmOzWEewumBl5ME8qL8CDzHhNKDu4zhx4DZEyBROuGYg/Sz9bxDClYxhLIWc0Co7+FCY5XQkMPqibs3sig2plyTi3QDD9lN2AftOeZJkEJBwbcUiRDfwwmLEIlNSvCrb4qMOoPGJKPL6f34Kol5YxG+00uUw1J4KeW8uTbpirvILVOWQEPJL41gbHjXZvDOXAi0hEO5btMS/zhDeb0uo4rJBedeEGTn8gs7QonsYw7GW5bWYz6qClJZoZQeJ3AhCqwlBHdk67TNc0bQoIDDe8t34ZgPsmWeGoehVac0CLkhEF4DyuH1QkwRLDpm2/UsBq8M94Y3azrMJzSKgnhfRjuma3foKksXLSghzGjsTGZLK+7nBapLMYqargyUQ7AggxUnKGy/DnaMxmXfXeBAsX4tACtVkHKSDxMkjuCMVQF05FqoEzITkbdOvydNjvZCy4tHFz1EllNzgW/QlB+2E/hjmCq0nzlgc0gL0MyWKDVww+jzWFSLQd//QCFDpq3v+Kjaz4bBxBFhknDhAN1uVxCjsTtj/hIYzHK25TrQQWjZUAm9M3k4/Dh9JEFYm8uAmX3nXMxn2M3FYyyLePezIltZYYgQq+ECyjs3S
+ shFXklkL
+ OeGLi3bd24KvUOfZ+VbNYkG4anzASrQVELpPFnxXiT984ohY5w8CgVnqXSwl+tFT+EtZ6WvwKQt3KKc5fOHOEEWkALL1lRdy4T+aGU7Ed10A+J6zhAEolHNXWWr7NhvfGVmqHFSO7UwwIBtYPfk/P4VIgwKWfHRV7ZLKRehqNf4aSKiCcMUc65EW4hgm+0CTXE+8UupFh4oPEt5weOu5TkM1Uv5zHN/NplgFHOi+SgcG5j0q22CkdIi+dE4MilmCc7VODoUHwwRAq57og30VvphQ2f5EA6EtJ29UFEzllNa6iBZqrId1k592yudy8Z8KJ+rFr
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,74 +120,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 28 Aug 2025 10:12:42 -0700 SeongJae Park <sj@kernel.org> wrote:
+On Tue, Sep 16, 2025 at 12:52=E2=80=AFPM David P. Reed <dpreed@deepplum.com=
+> wrote:
+>
+>
+>
+> On Tuesday, September 16, 2025 14:35, "Axel Rasmussen" <axelrasmussen@goo=
+gle.com> said:
+>
+> > On Tue, Sep 16, 2025 at 10:27=E2=80=AFAM David P. Reed <dpreed@deepplum=
+.com> wrote:
+> >
+> >> Than -
+> >>
+> >> Just to clarify -
+> >> Looking at the man page for UFFDIO_API, there are two "feature bits" t=
+hat
+> >> indicate cases where "minor" handling is now supported, and can be ena=
+bled.
+> >> UFFD_FEATURE_MINOR_HUGETLBFS and UFFD_FEATURE_MINOR_SHMEM
+> >> In my reading of the documents, these seem to imply that before they w=
+ere
+> >> added as new features, that MAP_PRIVATE|MAP_ANONYMOUS mappings were
+> >> supported, and that the "new" additions to the MINOR mode were just fo=
+r
+> >> HUGETLBFS and MAP_SHARED cases.
+> >>
+> >
+> > Actually minor fault support didn't exist at all before those two featu=
+res
+> > were added. :)
+>
+> Thanks for commenting. I'm not sure that's exactly true. Why is SNMEM (MA=
+P_SHARED) supported, but not ordinary pages? I wasn't party to the evolutio=
+n here, but so far no one has explained why there's a special difference be=
+tween SHMEM and ordinary VMAs.
 
-> From: Quanmin Yan <yanquanmin1@huawei.com>
-> 
-> Adopting addr_unit would make DAMON_MINREGION 'addr_unit * 4096'
-> bytes and cause data alignment issues[1].
-> 
-> Add damon_ctx->min_sz_region to change DAMON_MIN_REGION from a global
-> macro value to per-context variable.
-> 
-> [1] https://lore.kernel.org/all/527714dd-0e33-43ab-bbbd-d89670ba79e7@huawei.com
+I promise it's true, I wrote the UFFD minor fault handling feature. :)
 
-I think I found an issue of this patch.  Please refer to the attaching patch
-for details.
+As for why... Like I said above, UFFD calls it a "minor" fault if the
+PTE doesn't exist, but the page already exists in the page cache. If
+the PTE does exist, you won't get either a minor *or* a missing fault.
+If the page does not already existing the page cache, you'll get a
+missing fault, not a minor fault.
 
-This patch is in the mm tree and not yet merged into the mainline.  Andrew,
-could you please add the attached patch as a fixup of this one?
+So "ordinary" VMAs are not supported because I don't think there is
+any way to create that condition with them? If you just
+mmap(MAP_ANON|MAP_PRIVATE), those pages will never be in the page
+cache, right? How would you go about doing so? You don't have an fd,
+you can't fallocate it. If you specified MAP_POPULATE, the PTEs would
+also be installed, so you just wouldn't get userfaults at all. If you
+create the mapping, then fork, then write to it in the child, I think
+the pages just get CoWed, I don't think userfaults are generated for
+that, because the PTE was already there (albeit, with RO permissions).
+
+I guess maybe a way to make progress here is, can you list out what
+sequence of steps you believe should result in a UFFD minor fault?
+Like (for example):
+
+fd =3D memfd_create()
+fallocate(fd, 0, 0, size)
+mmap(fd, MAP_PRIVATE)
+/* register mapping for UFFD minor faults */
+/* read or write to mapping */
+
+Now we get a minor fault.
 
 
-Thanks,
-SJ
 
-==== Attachment 0 (0001-mm-damon-sysfs-set-damon_ctx-min_sz_region-only-for-.patch) ====
-From af4a31405f4d8c4e5b32f7244f0cdcf960dce30f Mon Sep 17 00:00:00 2001
-From: SeongJae Park <sj@kernel.org>
-Date: Wed, 17 Sep 2025 08:31:54 -0700
-Subject: [PATCH] mm/damon/sysfs: set damon_ctx->min_sz_region only for paddr
- use case
-
-damon_ctx->addr_unit is respected only for physical address space
-monitoring use case.  Meanwhile, damon_ctx->min_sz_region is used by the
-core layer for aligning regions, regardless of whether it is set for
-physical address space monitoring or virtual address spaces monitoring.
-And it is set as 'DAMON_MIN_REGION / damon_ctx->addr_unit'.  Hence, if
-user sets ->addr_unit on virtual address spaces monitoring mode, regions
-can be unexpectedly aligned in <PAGE_SIZE granularity.  It shouldn't
-cause crash-like issues but make monitoring and DAMOS behavior difficult
-to understand.
-
-Fix the unexpected behavior by setting ->min_sz_region only when it is
-configured for physical address space monitoring.
-
-The issue was found from a result of Chris' experiments that thankfully
-shared with me off-list.
-
-Cc: Chris Mason <clm@fb.com>
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- mm/damon/sysfs.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index fe4e73d0ebbb..883b0d886d68 100644
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -1435,7 +1435,10 @@ static int damon_sysfs_apply_inputs(struct damon_ctx *ctx,
- 	if (err)
- 		return err;
- 	ctx->addr_unit = sys_ctx->addr_unit;
--	ctx->min_sz_region = max(DAMON_MIN_REGION / sys_ctx->addr_unit, 1);
-+	/* addr_unit is respected by only DAMON_OPS_PADDR */
-+	if (sys_ctx->ops_id == DAMON_OPS_PADDR)
-+		ctx->min_sz_region = max(
-+				DAMON_MIN_REGION / sys_ctx->addr_unit, 1);
- 	err = damon_sysfs_set_attrs(ctx, sys_ctx->attrs);
- 	if (err)
- 		return err;
--- 
-2.39.5
-
+>
+> >
+> > You are right that userfaultfd's use of "minor fault" is (unfortunately=
+)
+> > slightly different from the meaning in other contexts. I think the more
+> > normal meaning is, faults which do not incur I/O (i.e., swap faults and
+> > file faults [i.e., faults on non-swap-backed pages] are major, other fa=
+ults
+> > are minor).
+> >
+> > For userfaultfd, a minor fault is a fault where the page already exists=
+ in
+> > the page cache, but the page table entry wasn't setup. I don't think th=
+at
+> > scenario can ever happen for anonymous, private mappings, so it doesn't
+> > really make sense to be able to register such mappings in this mode. If=
+ you
+> > create a mapping with mmap(MAP_ANON|MAP_PRIVATE) and then access it (re=
+ad
+> > or write), that fault requires allocation of a new page, so userfaultfd
+> > does not consider that a "minor fault". My recollection though is if yo=
+u
+> > make a file on tmpfs or hugetlbfs, fallocate() it or whatever, and you
+> > MAP_PRIVATE that file, *that* registration will work.
+> >
+> >
+> >>
+> >> It seems odd that anonymous page faults and COW would not be handled,
+> >> given that context.
+> >>
+> >> Anyway, that's unclear in any of the documentation. This just adds to =
+my
+> >> last response where I explain my use case.
+> >>
+> >>
+> >>
+> >
+>
+>
 
