@@ -4,123 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD471CAC5A0
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 17:10:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7ADE9CAC59A
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 17:12:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EC3788E0063; Wed, 17 Sep 2025 13:10:39 -0400 (EDT)
+	id D426F8E0064; Wed, 17 Sep 2025 13:12:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E9AEC8E0002; Wed, 17 Sep 2025 13:10:39 -0400 (EDT)
+	id D195A8E0002; Wed, 17 Sep 2025 13:12:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB07D8E0063; Wed, 17 Sep 2025 13:10:39 -0400 (EDT)
+	id C56DA8E0064; Wed, 17 Sep 2025 13:12:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id CB2FA8E0002
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 13:10:39 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 61223160635
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 17:10:39 +0000 (UTC)
-X-FDA: 83899381398.06.54794B7
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 87429120007
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 17:10:37 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="p/AC2p0M";
-	spf=pass (imf29.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id B2D708E0002
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 13:12:53 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 76DFD13B6DC
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 17:12:53 +0000 (UTC)
+X-FDA: 83899387026.12.D1C7040
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 88AE91C0006
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 17:12:51 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Zc22X9eD;
+	spf=pass (imf20.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758129037;
+	s=arc-20220608; t=1758129171;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=15u2gJ63Nvc+ryjb04blM2EZvX2JTQ7zkIDCOHZzkRg=;
-	b=ltVVNTQXOWsPGWZ4YJ6Hi2REh2X1MqdGHfPLOhCLw0raJfbjccVHgteJaxG6hW9xgNiEr8
-	NpegM3Y+C+sA3JvwLGF/ka9Wgqwb+riejZfW5+ljXO9EUQoxjQ3p4u8Gj2h1iDs/sGPeRx
-	j1VUnoIZbNCZn65xzQ6c6wuijbr6lvs=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="p/AC2p0M";
-	spf=pass (imf29.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758129037; a=rsa-sha256;
+	bh=tBDy5aQknT2LjcTft4G9rYWB+eajw8KCcFNFSIDc2js=;
+	b=Fl2ntzqVXv2BmeNe+CbBEb1NkMV8S93a+wk67DX/BwXJSWKeEpELisPPOWdORmcL1niEzf
+	eKsQ9/gbGqutPcM+N5+GblNPd73i5LEcmdry9yH7BtrGiThy3dsAC5f6YPjerDG4Hbfu0R
+	DRScv5ORNJiyQhWpCOaYPghxEylU6nI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758129171; a=rsa-sha256;
 	cv=none;
-	b=faSjT6TDB5pcdXDVyRxqAduGimwx6ZDzjm/x0QViZRfwNgmiTH7bmFxeKbfqLT8L6GpYQR
-	3fHTfknjT39oBSt206ZJQ2qg/JCUzb45YUiDyfBwOYd7XmwVv/2m4C514OnNtm6jeAGegd
-	19rajj7Rq8OCMR9rNkA9ZNrISaarA/A=
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2681645b7b6so5225ad.1
-        for <linux-mm@kvack.org>; Wed, 17 Sep 2025 10:10:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758129036; x=1758733836; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=15u2gJ63Nvc+ryjb04blM2EZvX2JTQ7zkIDCOHZzkRg=;
-        b=p/AC2p0Mi5PichnRhADO8fxSg3pBUFVJaw+gj0UtQgJUwfMmRhTwyjwfrdfzgW1m83
-         ekkooJgM8wabO49me7KvTEldueICir/4+p7lkGr7tcbxqEozdzfni1JGjEYx5sTz2gW+
-         cCXbZuB6zVir27CC2k5jDPXqUIMO67pKkKhDFY6UU5F3tYjVgfgfITS6PB4+qAInQKyi
-         V5Vh8g1y5cnTEvLMeK80F8gMOB3K1T5BWjwvcfbZT5NOCL8Vvig6hA2+um7EsE1sihA4
-         N5YmgWusGmduEBuvGAIHco5Ekz5zmOEJnA+UclSB6J/WpvBbUDZqz0Fb+aTlhZf5SFHS
-         0qlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758129036; x=1758733836;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=15u2gJ63Nvc+ryjb04blM2EZvX2JTQ7zkIDCOHZzkRg=;
-        b=mNa5SOp+X8d+hb28y7HtFi6MBClX+rf690NJgS1iyet7HIkVICquZZlBVM0RPcxPKj
-         iuKZQfyTdIJJC7PIdnn/6p3WO8sxadvyJAsoV8JDrF6hma5izoyQm/d2AwOQGHmXLB1w
-         al+fR4zjXN3ptItVNe+54Pk25T1T6qxIh/ptWcx38P3GLbQsFeWuZUzIzkUjcSDsPZ2c
-         h7kH/kV/WOOevw1L+KR/WE3ynEUA/FG2t48+DHibE4lJgnIblSD2ka/mG2KwMNH4bR16
-         PXTDmqLjaxeO9qhqfUAnNulwYHXCOAWfPNGRI6zXeOYlExdxV1ZNgvoipRm5nupJ9hnC
-         xf4A==
-X-Forwarded-Encrypted: i=1; AJvYcCVInGDTvzqMKjntavHnmEpjeQnhTrCJPcIqG0zwNUYVPJ8+rFe40IdZiNpAZGVcXjUNlE+WAAUnEQ==@kvack.org
-X-Gm-Message-State: AOJu0YzHz8TaVBarttdF1og2DX6Q/ahXgFqHAwAVhFJtQrYM7mQq950t
-	aWjPhFomleNfSe2YuriraZNUspeCVZg2zKc5OsSeQ5olB5fb1V2wp0cz1+S3cj55IrG5AOTpSP1
-	UCDo076In+/tUwOJgzlhhtLsD+vy/Uj7D1uuf+hU5
-X-Gm-Gg: ASbGncuuNUIBCb1McEvSA5KE4VIajhAwZQyd3DoJAZav1tSrpmwY/XRw8CDHyM23BuU
-	+14SLlg7WRxmEv+HtYb+lJ1QfcI4yWtqZRO4+34DNrkil4ppAGmJlPJJSR9hyQ9mXXcuXu/wRJt
-	JI4zjiT842hGI898scjK9fVGLNOfGZOigVAlFB/e6Y9jIMRuIQyVBMonHcfOxqTeuqUlxZL1dR7
-	zC5a2hYABj9mvUYtPd/39nzEJ2RKbsLiwDOBwr5tVNe
-X-Google-Smtp-Source: AGHT+IFd4BAxZT/ufICRk+rEAu4Df/3LlVy7dl8wb8UYvf1Vkm7Wii7RkWbyYEbSSxpnLkv8kfjaHMhL5z1X210qqcg=
-X-Received: by 2002:a17:902:d2c9:b0:266:b8a2:f605 with SMTP id
- d9443c01a7336-26808a2fc00mr4248005ad.3.1758129035969; Wed, 17 Sep 2025
- 10:10:35 -0700 (PDT)
+	b=sGqDh9H8OqiITikmtM8duFfSI4VspyRSKLLcx27hdiApE+U5gRLDxQQa7/7vkxcEDXD2Ob
+	46307Ozv96kfvEyM3wAHhUUGs/IhdR6KX3JknpH2Rrx3Pwto8DLz/U12y9CkM52AuaD0Zj
+	ucpJB923fVvc18Qz5y2YGGiIm4cAsVE=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Zc22X9eD;
+	spf=pass (imf20.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7B08844F41
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 17:12:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5678CC16AAE
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 17:12:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758129170;
+	bh=6yuEuVQsyw6TlrxFPqJhgc7eImQajVyZhThJ1SvONOg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Zc22X9eDpdOL4W4eBKizdfaCC0VttxSHXAwiSQtGB3WvAm/uQvG2TQwRUtL3kV9W7
+	 4+efetiASPjcbftC1O/BYj8sk+STgg+zhMHnLgQWh/4VQVSdfYnPQjc7xW0g1biXSi
+	 bzkNVcBIuYl3T/5SHZ6YHA78P3MboYUUodLEdcvgGM5/OjojHxwJ+OUqNVvB9BmJIb
+	 gk+Krxh82BdxEfUhItMAftlmWQgGxgEgec+PU5xCjQSGnwha0xXo8evW+A74WrT3vY
+	 xaC693d7aQ7Ggvwj6eLrrBCTRA9d7RzsTdpoQlxwQf5WCtldaekecAoAyypN0lVcqf
+	 QtOHtsceJmxFg==
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-71d60501806so735147b3.2
+        for <linux-mm@kvack.org>; Wed, 17 Sep 2025 10:12:50 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU6paELWD4rr58DyKlABeA7tyEPprr34CsmoKoLfs+VzsXR2XlemRgnlEV4Uzqrjki2HRTXr8iJLw==@kvack.org
+X-Gm-Message-State: AOJu0Ywf5oHoIprXw4LhcZ+7nmOV6bcbztHxfDHfwVfVxxgYZBkEvuI+
+	sFBZSHBgi0tn7gI1HfHbM+Cf9ETDua2rVkwuIoBBkZ24jRem5/HRIXz2BaWxo0cH+4+qyMB5Rkr
+	XVbMLWwlIY1Z0yK3oFx9Rjsfenj5ncggXm4I7EwaXjw==
+X-Google-Smtp-Source: AGHT+IFd888IRBE4Sf82BHMCQfDhWqTS3ION4XiTCcKYpkm4cn07bM0uPiFHOr4mYnxepbYWwhnWlnLG5H94D/W/SNY=
+X-Received: by 2002:a05:690c:48c5:b0:729:f78b:4261 with SMTP id
+ 00721157ae682-73892549c74mr22655067b3.38.1758129169547; Wed, 17 Sep 2025
+ 10:12:49 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250915163838.631445-1-kaleshsingh@google.com>
- <20250915163838.631445-4-kaleshsingh@google.com> <c6eacb69-86f5-4bdb-9c6b-04e3f7ef7c29@redhat.com>
-In-Reply-To: <c6eacb69-86f5-4bdb-9c6b-04e3f7ef7c29@redhat.com>
-From: Kalesh Singh <kaleshsingh@google.com>
-Date: Wed, 17 Sep 2025 10:10:24 -0700
-X-Gm-Features: AS18NWB7v1zd5wRtV4XjcNUI2Kl7h_0nJ3bBXH5VRcSHiB0MqTNwu-jJe9fGDsw
-Message-ID: <CAC_TJvcXzrxhWFWyE7QEgPVmEJbnfT1W=s4TdgPGGAgCpn=8Og@mail.gmail.com>
-Subject: Re: [PATCH v2 3/7] mm: introduce vma_count_remaining()
-To: David Hildenbrand <david@redhat.com>
-Cc: akpm@linux-foundation.org, minchan@kernel.org, lorenzo.stoakes@oracle.com, 
-	Liam.Howlett@oracle.com, rppt@kernel.org, pfalcato@suse.de, 
-	kernel-team@android.com, android-mm@google.com, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Kees Cook <kees@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
-	Dietmar Eggemann <dietmar.eggemann@arm.com>, Ben Segall <bsegall@google.com>, 
-	Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, Jann Horn <jannh@google.com>, 
-	Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-trace-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+References: <20250916160100.31545-2-ryncsn@gmail.com> <20250917161432.53960-1-sj@kernel.org>
+In-Reply-To: <20250917161432.53960-1-sj@kernel.org>
+From: Chris Li <chrisl@kernel.org>
+Date: Wed, 17 Sep 2025 10:12:38 -0700
+X-Gmail-Original-Message-ID: <CACePvbVq698sKmH_oWi448HybDS0EB8DKXte-pFVB5mwvcNA+w@mail.gmail.com>
+X-Gm-Features: AS18NWCm0IEjP5lKC3pZd8YW-DiiHhyK2Pdy3yyGTDhxAVu8k_fGiPAVahiFVEo
+Message-ID: <CACePvbVq698sKmH_oWi448HybDS0EB8DKXte-pFVB5mwvcNA+w@mail.gmail.com>
+Subject: Re: [PATCH v4 01/15] docs/mm: add document for swap table
+To: SeongJae Park <sj@kernel.org>
+Cc: Kairui Song <ryncsn@gmail.com>, linux-mm@kvack.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, 
+	Hugh Dickins <hughd@google.com>, Barry Song <baohua@kernel.org>, Baoquan He <bhe@redhat.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@redhat.com>, 
+	Yosry Ahmed <yosryahmed@google.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Zi Yan <ziy@nvidia.com>, linux-kernel@vger.kernel.org, 
+	Kairui Song <kasong@tencent.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 87429120007
-X-Stat-Signature: on1petzgn1579eyr8k5bqyrf7wfbqnn9
+X-Rspamd-Queue-Id: 88AE91C0006
+X-Stat-Signature: cfrxwi43ttixahith6uu96pzfs6fjjwi
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1758129037-565166
-X-HE-Meta: U2FsdGVkX18sMOKRrjFcc+rhPi+kg9djTdrYxuJfTAXPVdo/g3BuE3JzcVqehtUzgtaN3NuRJDdcXCLRupTIYQFKpLCm0lvuBJl6uuhnLIyL/WCCRCY0vP+xm2Pc1dxsTCNDqc0fid9Avham6pKPoEpjXssV1SyQRLHNIZ5Jw1lpKDlM4Unt3dQa1/POhUE58oiXkJrauEqfdi6frZqo3npY6D8mUIMDd1KMWXa32n+SQF8gyIkMztFo/5YI2c3oGcsrmvgDcnhBYOZHFE1EbyI0tedNXmOd2je3x6CUuaLm8kQwdt5MIw0DaQ+GTnmlyn9HEU8tEAVwUXZpv24mXGOeM0Yl9iIRn+q0bdC32Ybl5z6Nd/eRa82UylKIM5NvrsmDjp+3tajeiInxfgumtRjW3FrkcqzMlvXT53Wewgvo/8ZGBtKwrncvNVaAv070ZQXuH62uhTDYuOAFKGfyGVAEaJXhJoZ88QEncOIkWN0NfRHw6yvhanZFGtCq8HRk8D/z6CIWcscMBpvpItRfnX+jph9eYU1oNyfTTwkgZoNfJHzMxd0I2uw4kvdsVwt26TzSuOzq4UaU17LARZYcj3v08kQDszwGOjIvrYP0gy2GBqIGNrWqISmUnZMKmi1EMYRkPrBQAx27/pc13gJj7/mHcIK0jGYQrHdZR/v84mHwji40JGIAP/uI60JjuLrVtJ0D1JKrpE6TffJz39tcl6n6EucPlDhi2vfNgcdBU8koqmd5cL5zx9YzeARfIyg8VSVw/iRMH1JGrekCPmkN4j1O21vAt8VXn7nEJpYtUiIfplwJcZ9E4UInhyZ3Ny3RQ0JN0/Ukggee3qjIwOW2wJWI33Zk1J0jZl1z9hvaBXe+woUyjzu8HauLDJYVIrwQF1AEqX6xlE7JU3tlUtxo9yhQEE4l+jc5AdPWM4ROllIha4EnAj/Y/7+vf4RmuhS7qUNm7R5OZg9NCMYKNjn
- SYvcQMtR
- +b0N88SCQ+8IMlQXkGa6Yvq/d+8vvIiQveVQ6YnCeTGQhmC9p3C73d/xXKF4rRtL/Ih+4dTb2dKloSrQqroH6Zwwhsk55s2WwIbVbHWyse+n1LXqAZ1J/JkoelTYbeiMMw7HTXHOaYI3xH6tz+3KKeSwmUpR7IYeV/1uy3/FrFi2nTUne5kaePFO3XigmB96kzuHWeTy/ExuwGX5b378b5SqAzy8XWXbsTUN4P6n5YgD8nLlmpL8vpedx2CY0wHJbItZEl+Xwjkcp27UcUdFZV8jsEQEtE3xwuMsUdul+OvKbWnFMKOK2TJd9+gbvtT6z8GYWTEkHR5p1jzzOZVhkZ8vvixocVnAaB6Ti42un3TNW7PeinB6HZBX572CnM4uGcJHA/RuWNbw7tDA=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1758129171-324390
+X-HE-Meta: U2FsdGVkX1/WwlzYSiXlwAeyk4A7V/RvnJDDjy5egL+jFh9rdFIHkBpaKTK5b8AU18DeEPDsHpesetGzSZafX/T2Ya3fifRcEv5KrpoaDyjdRPFmA3WwbCJFeMczZyX7lk4W3eNHlXLlU1A+kBY8UmGlQOOtz5s/uzvbYq0gX6T6Xo7nkjzsAMq56J1HsCh7YoaIvsNb69+ebE69OlEZ9kvac/8uH0sIhZkmfO6SbqCqtBYQP7CisKlqbi74uSkFYvhVux/nEj2Iu/JudDyiXgFH8G9xpl0XZZNwWun+VsNau4sV9lZrudE3L6Mo97Gyx7qQvLilfjRCdVR9lekZNvLbtlbHYTzzQhhkOH7LWZBdefo5axINVGZkzu/cLlToU+Yw/C3Pg9VT/bszLWVpdZc1CuRY8j/3u1L/EQVAATBwjAN4KQh7bof6TB2iqjA/TBvkLDZkf0sTa3r6a7JYI2m3tpoWW+4Fyl1BqUdkmCbVM5ziBkd5E3/3msHL20dpiz/mc6kxzMLDaI9cgLEJDpL7pgfFcYLc7X2c4gHXOAOMjqEMn0+pBI2Ef9pPEN8TYGzgXI4uT6gY13PYeo1L3IG3ArIg+MqNHotjajeXEtPw5Q4iti8W5jZ9sdKJMwLgHzEOyxfdlXQSVT6kQsdpf8I/Zw6H5hsTV8lwIQ7InTbLZdhEwOJ5P4U/eD4KllQeqmg6X1VySxDJwHZQ8Ovbz8cPXwCXUw09DVtOuKDjsGyodR8cGLdQubSaMRvnA58auytv04quKmspSY/9cJQ+GLXNboR7UGroeAI1qh7ZwQB+LBOT4R6F7vlpUydgfuPXfVb3TuUlzFvttKj7tjx9V2HC8ILU/wvRq1ERYlSx5WAvzarhH/rN3WtYgNBv1WzkOAVq5OLlyqjqyccvwJMYiDDEQoKf29lz41QbRi8AqBy3dlKFx1vXrO4+e4DR/KI13aYNYlyovvg3Yi4PtbO
+ lFQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,102 +110,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 17, 2025 at 6:38=E2=80=AFAM David Hildenbrand <david@redhat.com=
-> wrote:
+On Wed, Sep 17, 2025 at 9:14=E2=80=AFAM SeongJae Park <sj@kernel.org> wrote=
+:
 >
-> On 15.09.25 18:36, Kalesh Singh wrote:
-> > The checks against sysctl_max_map_count are open-coded in multiple
-> > places. While simple checks are manageable, the logic in places like
-> > mremap.c involves arithmetic with magic numbers that can be difficult
-> > to reason about. e.g. ... >=3D sysctl_max_map_count - 3
-> >
-> > To improve readability and centralize the logic, introduce a new helper=
-,
-> > vma_count_remaining(). This function returns the VMA count headroom
-> > available for a givine process.
+> On Wed, 17 Sep 2025 00:00:46 +0800 Kairui Song <ryncsn@gmail.com> wrote:
 >
-> s/givine/given/
+> > From: Chris Li <chrisl@kernel.org>
+> >
+> > Swap table is the new swap cache.
 >
-> s/process/mm/
->
-> >
-> > The most common case of checking for a single new VMA can be done with
-> > the convenience helper has_vma_count_remaining():
-> >
-> >      if (!vma_count_remaining(mm))
-> >
-> > And the complex checks in mremap.c become clearer by expressing the
-> > required capacity directly:
-> >
-> >      if (vma_count_remaining(mm) <  4)
-> >
-> > While a capacity-based function could be misused (e.g., with an
-> > incorrect '<' vs '<=3D' comparison), the improved readability at the ca=
-ll
-> > sites makes such errors less likely than with the previous open-coded
-> > arithmetic.
-> >
-> > As part of this change, sysctl_max_map_count is made static to
-> > mm/mmap.c to improve encapsulation.
-> >
-> > Cc: Andrew Morton <akpm@linux-foundation.org>
-> > Cc: David Hildenbrand <david@redhat.com>
-> > Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-> > Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> > Cc: Mike Rapoport <rppt@kernel.org>
-> > Cc: Minchan Kim <minchan@kernel.org>
-> > Cc: Pedro Falcato <pfalcato@suse.de>
-> > Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
+> Thank you very much for doing this great work!
+
+I only did the prototype. Kairui did the heavy lifting.
+
+> > Signed-off-by: Chris Li <chrisl@kernel.org>
+> > Signed-off-by: Kairui Song <kasong@tencent.com>
 > > ---
->
-> [...]
->
-> >       /*
-> > @@ -1504,6 +1504,25 @@ struct vm_area_struct *_install_special_mapping(
-> >   int sysctl_legacy_va_layout;
-> >   #endif
+> >  Documentation/mm/index.rst      |  1 +
+> >  Documentation/mm/swap-table.rst | 72 +++++++++++++++++++++++++++++++++
+> >  MAINTAINERS                     |  1 +
+> >  3 files changed, 74 insertions(+)
+> >  create mode 100644 Documentation/mm/swap-table.rst
 > >
-> > +static int sysctl_max_map_count __read_mostly =3D DEFAULT_MAX_MAP_COUN=
-T;
-> > +
-> > +/**
-> > + * vma_count_remaining - Determine available VMA slots
-> > + * @mm: The memory descriptor for the process.
-> > + *
-> > + * Check how many more VMAs can be created for the given @mm
-> > + * before hitting the sysctl_max_map_count limit.
-> > + *
-> > + * Return: The number of new VMAs the process can accommodate.
-> > + */
-> > +int vma_count_remaining(const struct mm_struct *mm)
-> > +{
-> > +     const int map_count =3D mm->map_count;
-> > +     const int max_count =3D sysctl_max_map_count;
+> > diff --git a/Documentation/mm/index.rst b/Documentation/mm/index.rst
+> > index fb45acba16ac..828ad9b019b3 100644
+> > --- a/Documentation/mm/index.rst
+> > +++ b/Documentation/mm/index.rst
+> > @@ -57,6 +57,7 @@ documentation, or deleted if it has served its purpos=
+e.
+> >     page_table_check
+> >     remap_file_pages
+> >     split_page_table_lock
+> > +   swap-table
+> >     transhuge
+> >     unevictable-lru
+> >     vmalloced-kernel-stacks
 >
-> If we worry about rare races (sysctl_max_map_count changing?) we should
-> probably force a single read through READ_ONCE()?
->
-> Otherwise one might trick vma_count_remaining() into returning a
-> negative number I assume.
+> The above diff is adding this great document on 'Unsorted Documentation'
+> section.  Could we add the document on the main section?  I think swap.rs=
+t on
+> the main section could be a good place, and wondering what others think.
 
-Agreed, I'll add the READ_ONCE when resending.
+That is a good idea. Will do together with another minor fix reported
+by Barry. I will move it after "swap.rst".
 
-Thanks,
-Kalesh
+Thanks for the suggestion.
 
->
-> > +
-> > +     return (max_count > map_count) ? (max_count - map_count) : 0;
-> > +}
->
-> Nothing else jumped at me.
->
-> Not sure what the buildbot complains about but I'm sure you'll figure it
-> out :)
->
-> --
-> Cheers
->
-> David / dhildenb
->
+Chris
 
