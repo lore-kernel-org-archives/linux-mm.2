@@ -4,177 +4,182 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 182D4CAC59A
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 13:19:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDDE1CAC59A
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 13:21:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5D3C78E001C; Wed, 17 Sep 2025 09:19:33 -0400 (EDT)
+	id 27BF18E001D; Wed, 17 Sep 2025 09:21:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 582E28E0003; Wed, 17 Sep 2025 09:19:33 -0400 (EDT)
+	id 253D78E0003; Wed, 17 Sep 2025 09:21:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 471F58E001C; Wed, 17 Sep 2025 09:19:33 -0400 (EDT)
+	id 1427F8E001D; Wed, 17 Sep 2025 09:21:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 30FA68E0003
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 09:19:33 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D5140B9EA1
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 13:19:32 +0000 (UTC)
-X-FDA: 83898798984.24.4DC6E2D
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 66F274000C
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 13:19:30 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UxWaw7VI;
-	spf=pass (imf27.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 051608E0003
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 09:21:48 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C0090B9E71
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 13:21:47 +0000 (UTC)
+X-FDA: 83898804654.17.9A885D7
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 5DC6D80011
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 13:21:45 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=rRINjgm9;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=oVzuygt4;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=rRINjgm9;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=oVzuygt4;
+	spf=pass (imf30.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758115170;
+	s=arc-20220608; t=1758115305;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GnzUrOdcBemtX94K3X42zgRnlnpIqExLzJ+Ix1CFZmI=;
-	b=5wCYrgM9uICVyiozYMZtJqKJtUhNlBsQihEvSEVGcbstk2TCmwhkydRXHKnbznHlcZD5C2
-	JAmHSpkf2ohWv6gP7MyfV+Bj7AiU+WZLc3NgyOX4BDZDxo0DL3jWSWMZJnDGoEQXUUwbNT
-	Q1OjG3JQLDx7hjOuU1fkQQGzA7rV+Qc=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UxWaw7VI;
-	spf=pass (imf27.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758115170; a=rsa-sha256;
+	bh=x9155gyRlp80SfDBgbiQCHV4RbmEErA6nXhhU6covV8=;
+	b=Eh+HlncdWviKRl42oUGQgnCQdULpwNA14nPiCCIgGxUnqzMMYRQB5Tphqo2s4LIt5XaAn5
+	6iL4Zh+rZfxcXY6I4UC77r5F/wMx75Ph1Z/LqSZcyzy4gMwnmCoz1U+wAnBuFghGqdVcuO
+	fOLs4lhBJ4C16Fv5ZYjTehWCZMOv4vk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758115305; a=rsa-sha256;
 	cv=none;
-	b=4yDzziU2OApp+/UnPuD6x3jK1wdvmTk5ujDTjrEhKdqwkvNm8x9iDSjqv7WnvGaWEPGIAy
-	56ncv/jlFWiTBTf57tmMcArtlV0momJrHJ5WDmCQ3cXz62VP5rWoV/vKFLHIgbbiDBIkr1
-	LwGRaTRJuhDJcnHXQHC/wz6Ov+VL4AA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758115169;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	b=neLIPGH1lTBT+5SZgUe7ALPKI7zGHUb6biAY405ct4t/WnPilL9OcyLolMSYjoXnOR6Ioi
+	tXKeKweBJZe9XztCi32gNKur/bJrOcVHEc6y1AHiienj/CJSH+zxA4WXZTOsFkQ54NaBPJ
+	lpmWHghJUcgFb5c9uMfkFBCksKATqFw=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=rRINjgm9;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=oVzuygt4;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=rRINjgm9;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=oVzuygt4;
+	spf=pass (imf30.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 7B7A1227FE;
+	Wed, 17 Sep 2025 13:21:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1758115303; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=GnzUrOdcBemtX94K3X42zgRnlnpIqExLzJ+Ix1CFZmI=;
-	b=UxWaw7VIqQODfzhCjtPOaq69AsilNsSsK4Oet9ovRomwcTs9C0UoL+6XYU1Omb9zSOXP2n
-	E2bko8lrnYYy7+V6I4EN9s5uHvZ+HjP0pGgwYen6IGMDVriRwEWcczCyBJufPFM0+nRr5j
-	cRLsV3cNnnsETLhuDBVA++ATRYqlGt8=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-257-KiqAUQj8NTWmCHZHddx1Jg-1; Wed, 17 Sep 2025 09:19:28 -0400
-X-MC-Unique: KiqAUQj8NTWmCHZHddx1Jg-1
-X-Mimecast-MFC-AGG-ID: KiqAUQj8NTWmCHZHddx1Jg_1758115167
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-45f2a1660fcso33353445e9.1
-        for <linux-mm@kvack.org>; Wed, 17 Sep 2025 06:19:28 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758115167; x=1758719967;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=GnzUrOdcBemtX94K3X42zgRnlnpIqExLzJ+Ix1CFZmI=;
-        b=unzcOr3p3oVJI35nI5Ud2yUsguO+7Lbx3nJi/sG/KqcUo2bhcunaDR+UnkZ0x28H+7
-         /ygIUqozjv30QHewO6VMce2xjXLo02hMNwr96PSxKdgjsnAOsjDO/6NVGeVWvHayevyl
-         28Ce9bNK6ZlAlqMo4aJ6XbFs3cEQ/VD7hQvmo4E5QnYfhdQiHQMP3Kxg+YbfxLDYRh+E
-         m1NbVqYGsNgJXAEscyUSRGICh51j6shTS8A/5C9rZiA13b2zG/3srkofsuOWgu+2SEOB
-         j6Iv6tgjNCY08REvSoIjT/gqBhZrUV89lZ6k09d5Fpq8V0IONmUjIR/mtn4oVJ4JLH/k
-         ZWBQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW1abJwWcmrzzIAmMGhMhuXARD3Oj2XkdWzYvvkZ6uUR4Jf0B5JooRWWaXsv7VBKRQfhzSqZteikg==@kvack.org
-X-Gm-Message-State: AOJu0YyxgOjYS81cKqJt+OZR16EondKvtHwIHE1gjwYlCcUvnL7p/6Nj
-	5Q0YwtD+AY/txZkECwVY7TpfhX88uKNSOzpiJ+oq6VMfBa4VeyRFD6gz5Fq3uonmbU27JDNiUjG
-	DjtUOxbVX8+n29FVJU2+to2pT5FkiSLAE0MmQYBvIqbNMwzb3LpVP
-X-Gm-Gg: ASbGncsCsV5SEpSd3dZCUYuwPE8qmn9fss5gHFUiYdd7dDXMwfQWrorhygy52F8ppqG
-	+RiC9yrWevbW9crflVFe0ol2//2fwF7c48de1sVfcHdv9tT67lWh8pn/bO2sQwvXCPR8huNPP/L
-	mojE36IbSh2cYrg+ulst6jbG3zFhYO6zzj3wK77YuiOIooSfBoXyeH9N2VyIP3ytfYwoXsmOdAY
-	J/LzmeS7oXE53zR5czpf9w29NwGSq2lLV0BekQYFKVODNtaZ8jlpx941AW0i3xODNcesy7BYIHo
-	xG8w9+h6rjVnWdYm6hDcqZVB5LdAj8C2nY4+Ed9ULN7/nxeH9ilb0ApvpiwiGYa2VrB0JCBFjRV
-	TbDygL2NylHJjW2RplkNqmraTnyRVT/XxB0C+hoqOvE8zhUDOzht0bOeeVeNu9uVT
-X-Received: by 2002:a05:600c:680a:b0:45b:83fe:9cf7 with SMTP id 5b1f17b1804b1-4625a2e5059mr21772365e9.6.1758115167076;
-        Wed, 17 Sep 2025 06:19:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHbHkHsqmSE1TzQcAUHd1ErKND4A6lwO0ygnBDKXF3NTBgJ2UsMnDHnhZBoD2TXSixnzV02Ng==
-X-Received: by 2002:a05:600c:680a:b0:45b:83fe:9cf7 with SMTP id 5b1f17b1804b1-4625a2e5059mr21772025e9.6.1758115166573;
-        Wed, 17 Sep 2025 06:19:26 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f27:6d00:7b96:afc9:83d0:5bd? (p200300d82f276d007b96afc983d005bd.dip0.t-ipconnect.de. [2003:d8:2f27:6d00:7b96:afc9:83d0:5bd])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e7607cd0a7sm25851981f8f.39.2025.09.17.06.19.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 17 Sep 2025 06:19:26 -0700 (PDT)
-Message-ID: <d4988c21-1e1a-4de2-a1c0-7d78525d2939@redhat.com>
-Date: Wed, 17 Sep 2025 15:19:24 +0200
+	bh=x9155gyRlp80SfDBgbiQCHV4RbmEErA6nXhhU6covV8=;
+	b=rRINjgm9XXftmCaFqE42aDxmpGTm2BIkPOrnkkwjG9lrcnauCu+UPkoyNHx60HU59KQ9dk
+	mns/v9v8O83c7irrcJByzpDm36S4ZEcFL6DyEGYUF0qd849sAbAxLTl5ATT24D+R5cdmIF
+	0i6g1uZWnJ8LTeKTEuGzguBcvbqoLVU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1758115303;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=x9155gyRlp80SfDBgbiQCHV4RbmEErA6nXhhU6covV8=;
+	b=oVzuygt4YW03vGLdPSeVFvAVpQWFlQBvv/EAL9t7q1HZe1begUvNrilsf79hgVrA2LQU6u
+	ytwwursrUCx7SECg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1758115303; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=x9155gyRlp80SfDBgbiQCHV4RbmEErA6nXhhU6covV8=;
+	b=rRINjgm9XXftmCaFqE42aDxmpGTm2BIkPOrnkkwjG9lrcnauCu+UPkoyNHx60HU59KQ9dk
+	mns/v9v8O83c7irrcJByzpDm36S4ZEcFL6DyEGYUF0qd849sAbAxLTl5ATT24D+R5cdmIF
+	0i6g1uZWnJ8LTeKTEuGzguBcvbqoLVU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1758115303;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=x9155gyRlp80SfDBgbiQCHV4RbmEErA6nXhhU6covV8=;
+	b=oVzuygt4YW03vGLdPSeVFvAVpQWFlQBvv/EAL9t7q1HZe1begUvNrilsf79hgVrA2LQU6u
+	ytwwursrUCx7SECg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5B116137C3;
+	Wed, 17 Sep 2025 13:21:43 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id vICNFee1ymiQcgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 17 Sep 2025 13:21:43 +0000
+Message-ID: <bf8b4741-1025-4cc8-b9ed-5b566bdcb2d7@suse.cz>
+Date: Wed, 17 Sep 2025 15:21:31 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] selftests/mm: Added fork test to verify global
- ksm_zero_pages counter behavior
-To: Donet Tom <donettom@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Ritesh Harjani <ritesh.list@gmail.com>, Xu Xin <xu.xin16@zte.com.cn>,
- Chengming Zhou <chengming.zhou@linux.dev>,
- Wei Yang <richard.weiyang@gmail.com>,
- Aboorva Devarajan <aboorvad@linux.ibm.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>
-References: <cover.1757946863.git.donettom@linux.ibm.com>
- <5910cb6bfc7c43b169b679a0108667a56d7ebdb8.1757946863.git.donettom@linux.ibm.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <5910cb6bfc7c43b169b679a0108667a56d7ebdb8.1757946863.git.donettom@linux.ibm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: uET8L0xY9vL1ABajIh9ntzoR-jH5r6rVSmvgHuJf9Cs_1758115167
-X-Mimecast-Originator: redhat.com
+Subject: Re: [PATCH v8 04/23] slab: add sheaf support for batching kfree_rcu()
+ operations
 Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Suren Baghdasaryan <surenb@google.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Uladzislau Rezki <urezki@gmail.com>,
+ Sidhartha Kumar <sidhartha.kumar@oracle.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, rcu@vger.kernel.org,
+ maple-tree@lists.infradead.org, "Paul E . McKenney" <paulmck@kernel.org>
+References: <20250910-slub-percpu-caches-v8-0-ca3099d8352c@suse.cz>
+ <20250910-slub-percpu-caches-v8-4-ca3099d8352c@suse.cz>
+ <aMpxnACqmsQl-lp0@hyeyoo> <bbda8c25-b575-4e98-b1ae-b103c6598d38@suse.cz>
+ <aMqcXyKRlZggLxu_@hyeyoo> <6f92eca3-863e-4b77-b2df-dc2752c0ff4e@suse.cz>
+ <aMqyn6nenR8V_p1y@hyeyoo>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <aMqyn6nenR8V_p1y@hyeyoo>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Action: no action
+X-Stat-Signature: daagsiahx1hgxzk1kufxkjjafz5btm39
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 66F274000C
-X-Stat-Signature: z85f7t8u8e1csmfxxy9fhn8qcczwhqt5
-X-HE-Tag: 1758115170-77532
-X-HE-Meta: U2FsdGVkX1/Ht9LoEKx08LtJeGpd9yLqNdNOJv03qFV4GIkAfYxQBut3xInZdvCmN01/jxt/fc306MdzZq7XBhXlc/bOJCrqCACavURqJ5hvLT5CQBdUHa34KEGb+uNXE466lIA9Fd3GWmFIR+e6VOdy5FgyeQZwcu/uapxLwdiBGUL/X7s3jCVvG3fqA1BeZ+2rr8rQK5LPx9cciGHEV694QeCCon8nm49Q/HwnSuhyiDd91iQjBWMCDRPKKt+BvvuX3Raf3/T0VeeoS49/HfLT2j2FNjUkPPB9YsySnpyLoRYU6iAe+3sbXnI6eZv+Gl3zClOdVfeng3nO+64c04bQ4Lx1oT5hblRjvetjEHqdMStOmoY3VMqdV9SnQzf5dEWjzwY6c5ukgHl5knY/mcsQ3NR7LNLQTxsx0DDSbV3XaED9yg2oa8SYodkvsv/8yHCZeY1XUOLhsE7u/lP/UpuRjbWmP6ZZTThY2AUzThtw1Dd9sGRByvg9V1Xg4S7LvRwlsyIhMM05aNkDC6q9mwvSuB4lfifRY1qCpdC9PZcwujCuZtvj6WNGKt/Py4t8YKsWLTBAoA2xJ9TL23tDfJZcnx8LpBJUJEcj7moWq4tn06xjczzWfw9O5p3ySR8TyIUSmdwrCZl81OcrRyzrjIFf95h6B9J48lCDdA0j0rLcbSugL+NfyPtLqsnkKHZlK2+63vldlSsDuPhIoqmdJFO7H+9eO8vAicuenPIqGSwdyUQbg9vDYjMqoFfr03s9V70RK51tHwwOwzUJLIbt7haeowTKR7tCt09l1nIdMJXmjsMCCizDxXyciI3d0iEyv7ds7egYwo4iFmU6swfmtkH+zTSH1ORAcJpQ8AXbw1aIAzHADUZqOAiDyl9V5lLzmx5+J17YbS37ryJ8G317T396rrB8fzbho/viGymleSEcmG1JqJYqC4TDBFVNY4EHDBMO3imy3T/JtL+Iz4k
- eSbDMch9
- WBEZYw/+WQLPvx5AmHes74I4XScq9KzDyyVDUyAHrytKCXpj8/nRlSQc9YoxUPW0JQJTlZzATOY6O69QYBtbWEq+1taP9ihQ5L+a106zxp2MXlqUit3QSIfBHTqilwht4k2CciB6BPtri4qSgFF2msySh9XiQ5UYcXiIZkn2s2wVY+ILS7v8aUynRARpf3/cUyYW3P24/WiGpEriRjdgY75ZDuGXVMEttf7E2C2xHwZ/HDNK8EZ/USu9VZl8EAYkMFsw6BSjb/ZH6M8GwkZ5EdZXQkc/BSAvuU2pucytOjhA5b0Ot0v9LpI5ahUnHET4U+4emZJr/hAsTEtdRykwDC8ZBmnmmzmovhe/JJTCnDi9Rx5AJoHG+4qqffB2yR9s0CNKnBoF2KpwtnIvmqIJEaaWZhwPpqjKBm41+B6GovHGkyLnWOQJOeKDRqe0kebm7jV1PHl1ZTe8D5TQTr600bz0ZUhCsJ4GW9nvhTt+6zUXfxPYqE+dCco7e4cRz772RyWUfuBkoslLxlUslBUC6rz2hXXaIcwKQDVxwyp7UKn885ZOMYYRLzlTHlgTxsf7aeopU
+X-Rspamd-Queue-Id: 5DC6D80011
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1758115305-874472
+X-HE-Meta: U2FsdGVkX18u7wlSvJVmPnk81R8tZ3cE5oirtfOWdGTsJYRp8vZp5C6qmcnIPVuzZ+z16t11qEjS0xn6Vn1aAfvWVYmpsqb/igJp5sj8mJrz6AdmmQxSU/nCySzL5C/9U4gNqFhy3NiKFlpeIjTG/0Db5ZUI8DDQLUxS3vcBn6SerMQqvIcBMUQxLax1A0RrWyobaX4gGwHPE151vScjJP+kQ45uIC6tMpcldORAw5M/UZmDIQA6k5UmFXov5tDS+hNzdMM6Ye+fZUSM+cKs3ZjGaJNN5VSU+m412QOKrEI1a1R79UYtUlF4EAnVjsCc6hcNqoycngFBzN7yRxE2lE4ESJ4U3MsixcYVGfsoRm2C9We7SuTTDwswUieOh4WpFLWx3XCQC+H8svgV2XO++wWKtS0cU8MrnqpkgK05MhSK/Y6AV22bVCs0EOd3HTcTwQDIWlFrJUpRXllvkxQYV7A4QgPcK/fyFRngTs9JV7bqSj10K+I1JE+nmo6wmQzsyonuzfuSQemrodj9wpIZdAb2HGvwITJJsxAyDpQmAXFs7xf5dJU4sS+THwzmXEw6tYKPbmmmMCTB6TYQ8qWqpBwxWYH2rgeLqQI0w973IX2xcAFdmfPRsxkHa2y8LJ0lSQlNCeehCxOzd71YV9LiXs0MRxBSo3xsz6Bguo/9o1Y7pW6I51z8z+dLu1NwbG+rEHWr2L+SSHiw5H2eUdGUxr7t+I57G2j/EkNp+icSQzXs4w56z5FC+7WWyydHOki4+KnwRo/dig0pF2nYdkfwkZdCnYRswm9YGSy1HCsRjsHtB8QvfcQlfXQp31hnH+BAGgaIdXTfqolkI7F1VXyzqViWdBerz+dGoXBTwxM/RCPR9vWropuHQCtenL6ON9873R5IXGZH5p+JRCrXEE7SFRyxpzJPb8dQz1fya/RcNqA9z1lUoJGW/SWSrzMVqz0QzBFleTpKFQIAgWKNEjS
+ unwD4OLd
+ Czj3ULSNqryLOLDdvS6/KDJD0zmpkfUTB1MCIRj7vjEaj4y7v3MuueyikE6D5RFqzpWL+M3d5kbzqqQEjajsAM0Stpe2FoBDvelUK92g8naoxzRo8eLyvS8mjIYCbsbsDN6dOTQu1MWgVkDfFOmjuUbcWZj9IzsBmViy3YEVk0OUNvAm7nGM2AgCHk8JxR8qc4qc768osCv5irkrOZFpfno/J8/blKTWqQUWsTDrT7h+yi0kAhbmNNDLa7HGZxeVSyJCnMIzIj9vNjw5RJ+KdgwtUpZqDuS7dAPKJjOnY9s7rTJOZphG+w+M2XalpdyUYOvgooKkm2TYGBGs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -183,110 +188,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 15.09.25 17:03, Donet Tom wrote:
-> Added a selftest to verify the behavior of the global KSM zero-page
-> counter during fork. When a process forks, the per-process zero-page
-> counter is inherited by the child, and the global counter should be
-> updated with this inherited value. This test ensures that the global
-> counter is correctly updated after fork.
+On 9/17/25 15:07, Harry Yoo wrote:
+> On Wed, Sep 17, 2025 at 02:05:49PM +0200, Vlastimil Babka wrote:
+>> On 9/17/25 13:32, Harry Yoo wrote:
+>> > On Wed, Sep 17, 2025 at 11:55:10AM +0200, Vlastimil Babka wrote:
+>> >> On 9/17/25 10:30, Harry Yoo wrote:
+>> >> > On Wed, Sep 10, 2025 at 10:01:06AM +0200, Vlastimil Babka wrote:
+>> >> >> +				sfw->skip = true;
+>> >> >> +				continue;
+>> >> >> +			}
+>> >> >>
+>> >> >> +			INIT_WORK(&sfw->work, flush_rcu_sheaf);
+>> >> >> +			sfw->skip = false;
+>> >> >> +			sfw->s = s;
+>> >> >> +			queue_work_on(cpu, flushwq, &sfw->work);
+>> >> >> +			flushed = true;
+>> >> >> +		}
+>> >> >> +
+>> >> >> +		for_each_online_cpu(cpu) {
+>> >> >> +			sfw = &per_cpu(slub_flush, cpu);
+>> >> >> +			if (sfw->skip)
+>> >> >> +				continue;
+>> >> >> +			flush_work(&sfw->work);
+>> >> >> +		}
+>> >> >> +
+>> >> >> +		mutex_unlock(&flush_lock);
+>> >> >> +	}
+>> >> >> +
+>> >> >> +	mutex_unlock(&slab_mutex);
+>> >> >> +	cpus_read_unlock();
+>> >> >> +
+>> >> >> +	if (flushed)
+>> >> >> +		rcu_barrier();
+>> >> > 
+>> >> > I think we need to call rcu_barrier() even if flushed == false?
+>> >> > 
+>> >> > Maybe a kvfree_rcu()'d object was already waiting for the rcu callback to
+>> >> > be processed before flush_all_rcu_sheaves() is called, and
+>> >> > in flush_all_rcu_sheaves() we skipped all (cache, cpu) pairs,
+>> >> > so flushed == false but the rcu callback isn't processed yet
+>> >> > by the end of the function?
+>> >> > 
+>> >> > That sounds like a very unlikely to happen in a realistic scenario,
+>> >> > but still possible...
+>> >> 
+>> >> Yes also good point, will flush unconditionally.
+>> >> 
+>> >> Maybe in __kfree_rcu_sheaf() I should also move the call_rcu(...) before
+>> >> local_unlock().
+>> >>
+>> >> So we don't end up seeing a NULL pcs->rcu_free in
+>> >> flush_all_rcu_sheaves() because __kfree_rcu_sheaf() already set it to NULL,
+>> >> but didn't yet do the call_rcu() as it got preempted after local_unlock().
+>> > 
+>> > Makes sense to me.
 > 
-> Signed-off-by: Donet Tom <donettom@linux.ibm.com>
-> ---
->   .../selftests/mm/ksm_functional_tests.c       | 74 ++++++++++++++++++-
->   1 file changed, 73 insertions(+), 1 deletion(-)
+> Wait, I'm confused.
 > 
-> diff --git a/tools/testing/selftests/mm/ksm_functional_tests.c b/tools/testing/selftests/mm/ksm_functional_tests.c
-> index 645cefba2126..f23597ac8066 100644
-> --- a/tools/testing/selftests/mm/ksm_functional_tests.c
-> +++ b/tools/testing/selftests/mm/ksm_functional_tests.c
-> @@ -602,6 +602,77 @@ static void test_prot_none(void)
->   	munmap(map, size);
->   }
->   
-> +long ksm_get_global_ksm_zero_pages(void)
-> +{
-> +	int global_ksm_zero_pages_fd;
-> +	char buf[10];
-> +	ssize_t ret;
-> +
-> +	global_ksm_zero_pages_fd = open("/sys/kernel/mm/ksm/ksm_zero_pages",
-> +								O_RDONLY);
-> +	if (global_ksm_zero_pages_fd < 0)
-> +		return -errno;
-> +
-> +	ret = pread(global_ksm_zero_pages_fd, buf, sizeof(buf) - 1, 0);
-> +	close(global_ksm_zero_pages_fd);
-> +	if (ret <= 0)
-> +		return -errno;
-> +	buf[ret] = 0;
-> +
-> +	return strtol(buf, NULL, 10);
-> +}
-> +
-> +static void test_fork_global_ksm_zero_pages_count(void)
-> +{
-> +	const unsigned int size = 2 * MiB;
-> +	char *map;
-> +	pid_t child_pid;
-> +	int status;
-> +	long g_zpages_before = 0, g_zpages_after = 0;
-> +
-> +	ksft_print_msg("[RUN] %s\n", __func__);
-> +
-> +	/* Unmerge all pages before test */
-> +	if (ksm_stop() < 0) {
-> +		ksft_test_result_fail("KSM unmerging failed\n");
-> +		return;
-> +	}
-> +	/* Get the global zero page count before test */
+> I think the caller of kvfree_rcu_barrier() should make sure that it's invoked
+> only after a kvfree_rcu(X, rhs) call has returned, if the caller expects
+> the object X to be freed before kvfree_rcu_barrier() returns?
 
-That only works when "use_zero_pages" is enabled, no?
+Hmm, the caller of kvfree_rcu(X, rhs) might have returned without filling up
+the rcu_sheaf fully and thus without submitting it to call_rcu(), then
+migrated to another cpu. Then it calls kvfree_rcu_barrier() while another
+unrelated kvfree_rcu(X, rhs) call on the previous cpu is for the same
+kmem_cache (kvfree_rcu_barrier() is not only for cache destruction), fills
+up the rcu_sheaf fully and is about to call_rcu() on it. And since that
+sheaf also contains the object X, we should make sure that is flushed.
 
-> +	g_zpages_before = ksm_get_global_ksm_zero_pages();
-> +	/* Let KSM deduplicate zero pages. */
-> +	map = mmap_and_merge_range(0x00, size, PROT_READ | PROT_WRITE, KSM_MERGE_MADVISE);
-> +	if (map == MAP_FAILED)
-> +		return;
-> +
-> +	child_pid = fork();
-> +	if (!child_pid) {
-> +		exit(ksm_stop());
-> +	} else if (child_pid < 0) {
-> +		ksft_test_result_fail("fork() failed\n");
-> +		return;
-
-Cleanup missing as for patch #2.
-
-> +	}
-> +	if (waitpid(child_pid, &status, 0) < 0) {
-> +		ksft_test_result_fail("waitpid() failed\n");
-> +		return;
-> +	}
-> +	status = WEXITSTATUS(status);
-> +	if (status < 0) {
-> +		ksft_test_result_fail("KSM unmerging failed in child\n");
-> +		return;
-> +	}
-> +
-> +	/* Verify global zero-page count remains unchanged */
-> +	g_zpages_after = ksm_get_global_ksm_zero_pages();
-> +	if (g_zpages_before != g_zpages_after) {
-> +		ksft_test_result_fail("Incorrect global ksm zero page count after fork\n");
-> +		return;
-> +	}
-> +
-> +	ksft_test_result_pass("Global ksm zero page count is correct after fork\n");
-> +	ksm_stop();
->
-
-What stops KSM from merging pages in other processes by accident 
-concurrently and giving false failures?
-
-Likely you would want to stop ksm before the fork.
-
--- 
-Cheers
-
-David / dhildenb
+> IOW if flush_all_rcu_sheaves() is called while __kfree_rcu_sheaf(s, X) was
+> running on another CPU, we don't have to guarantee that
+> flush_all_rcu_sheaves() returns after the object X is freed?
+> 
+>> >> But then rcu_barrier() itself probably won't mean we make sure such cpus
+>> >> finished the local_locked section, if we didn't queue work on them. So maybe
+>> >> we need synchronize_rcu()?
+> 
+> So... we don't need a synchronize_rcu() then?
+> 
+> Or my brain started malfunctioning again :D
+> 
 
 
