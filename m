@@ -4,90 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9ABF2CAC598
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 20:34:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83B67CAC598
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 20:37:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E3F0E8E006E; Wed, 17 Sep 2025 16:34:39 -0400 (EDT)
+	id D80A98E006F; Wed, 17 Sep 2025 16:37:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E14F38E006B; Wed, 17 Sep 2025 16:34:39 -0400 (EDT)
+	id D2FA88E006B; Wed, 17 Sep 2025 16:37:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D52268E006E; Wed, 17 Sep 2025 16:34:39 -0400 (EDT)
+	id C1E8C8E006F; Wed, 17 Sep 2025 16:37:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C24888E006B
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 16:34:39 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6DC5D1DF92D
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 20:34:39 +0000 (UTC)
-X-FDA: 83899895478.14.7EDF099
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf22.hostedemail.com (Postfix) with ESMTP id C89B7C0004
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 20:34:37 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=pXM2EaFe;
-	spf=none (imf22.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+	by kanga.kvack.org (Postfix) with ESMTP id ACD158E006B
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 16:37:03 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 84C505A34C
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 20:37:03 +0000 (UTC)
+X-FDA: 83899901526.09.6505567
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 47B352000F
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 20:37:01 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=ionos.com header.s=google header.b=blcAYM78;
+	spf=pass (imf13.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
+	dmarc=pass (policy=reject) header.from=ionos.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758141277;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1758141421;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i2FyUTSryb04l5gvAh3w6KlExZLY4l7x5oIgcrw5oM0=;
-	b=6y0eI0EGOwnACM/MdAWuXBD+XP2GjAXB45WABcUFZsRF7K8zoPsjIPRYnefAFP/0AhuBx1
-	MOa8WJZKnc0IiL6xcNeIVloNmZmXtUeWpmsMJbhom0LNl2KADpKZ2FkcQOKB4/bfQ/IK05
-	awa3jggjqrDn3U++SyXon/H44uh/o3s=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=pXM2EaFe;
-	spf=none (imf22.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758141277; a=rsa-sha256;
+	bh=Chf7X+qGiFJJFnzlWxmYJPQYQ0EzCnC9UbWxIFQaqrI=;
+	b=mumSwojHkzPY9ctKijN2qlqjirpuKZ9wZTdWbak6HokEwbL8AJS6mKVqKjH0/lKkk5KSxA
+	8x3Nm19pSC1lQhc0tNTryvTmK3p406+jJAjZQ/Us/eVmOVXfaZ4oo6FqLS+FlOb7twFnK2
+	cGBfF7E/+dJNl2VHn6r87RQAAkGzUQE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758141421; a=rsa-sha256;
 	cv=none;
-	b=CEd9bxWVf78Y26/PgPKrlmCUFeIjaFw2yyshgLPdFV4Gi4HC+XoA68QYRS2VOIz9ShoFBd
-	jXll28Qqybn3Npv8XbAc7UFqUabFCKXhMkwCUMOE9DQ+9ndY4yLFgIWcYnSecyD/AU5M2c
-	CrnR8NPOWnxdtS7byiQauhap6LVWomY=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=i2FyUTSryb04l5gvAh3w6KlExZLY4l7x5oIgcrw5oM0=; b=pXM2EaFeZioAqlsirFHgLLE3js
-	Y6ZdJCSBwDng3gOcV5WrmK6EhVOHSK4rJmZpJ51Q2DI8/6SQUpYlrYmV5VTZd0pbu1v5+pd1W+kXn
-	DjAmnWP6aELjliaJecTwfU0LS3+eR9EwDBl5PaZ/Ul8mWoT5gfh8l7J+tn/7CsvdgkazhugGbKKP2
-	uBFJ84s3j+lPkoWBivvqOnnAHKopZTVqkYVyIKLduQOtNYdFYmqcrrPtMuwNtHHNE6cAv/0QSWTn/
-	GxWvdnPe1vccOBexPhYIZTogN+P/3pofZt80l5aSeaLDRtnFZsRTvxhLCkJ2l4OMS624z0RLgm7SD
-	hD18Zszw==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uyyrL-00000007w67-1w83;
-	Wed, 17 Sep 2025 20:34:35 +0000
-Date: Wed, 17 Sep 2025 21:34:35 +0100
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Mateusz Guzik <mjguzik@gmail.com>
-Cc: Max Kellermann <max.kellermann@ionos.com>,
-	linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	ceph-devel@vger.kernel.org
-Subject: Re: Need advice with iput() deadlock during writeback
-Message-ID: <20250917203435.GA39973@ZenIV>
+	b=Y26PWG9M7IYZkmqUEzYLaq0mnZVCiOj4DcY+c9114dkIuypgovfzilppqLIqs7doB6RL29
+	eH6jCsPuk8ywbkFpJ8v5UHoZbZUdv3WWhJeufl5FvwcK3tKQPcc2FP2Uln3O9hKW+d2WQG
+	yQgVHXr00tya5jyznGAtEEIWVEfQmlg=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=ionos.com header.s=google header.b=blcAYM78;
+	spf=pass (imf13.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
+	dmarc=pass (policy=reject) header.from=ionos.com
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-afcb7ae31caso36459166b.3
+        for <linux-mm@kvack.org>; Wed, 17 Sep 2025 13:37:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ionos.com; s=google; t=1758141420; x=1758746220; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Chf7X+qGiFJJFnzlWxmYJPQYQ0EzCnC9UbWxIFQaqrI=;
+        b=blcAYM780ONAsZYn5cqn8x8S3BYnkQv0HD8EA60DFSyPauUPFbetIr/nadxRfNgbFg
+         L06GQJtUDcW4G3xTf+eJGSeVykUYXUppMAF2Wyh89fueYHpyzfwuUsNVHUTd31vwubQP
+         kqETduK6yH/qwG6hxy/Q+7u2oDkDuw5Gznp34kWjA91UktsdpIyXxhvi1G9OrAN8Os7q
+         de5N3rDfWBx3DdczQJ9AdN2Cai4j562wzelrieYwt9Y1yUaKix0H3OkJ2p+3MTJJ6z0p
+         z2Y81NWpBTYp5QT66x5pRPxv7afKfxMVgfyrJdmuCy6h4V6K43NMAxODTk1j0R6a0Z2R
+         oE9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758141420; x=1758746220;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Chf7X+qGiFJJFnzlWxmYJPQYQ0EzCnC9UbWxIFQaqrI=;
+        b=bhEiUt3f7Q1fk2lorhxcScXKbxj/jjyeEJKTF7HEVSU3qGTZt2eBrLmvZVi5zICLUI
+         fYAa5U0bOpEQndQqDT4dndqQPt+qNURgo55GoCTiK3wJL2T569BHMLnleIZINCklLq7R
+         Hqf90IEt3PBuyvDNXJNovNdVWu8NkDG744RVV0Le+p44VYlm0veSW9Y6fuHmm5irw2oH
+         qlKxTGMbr2mKNR4EaxoIh8bTNeZwJlUd5DhPXUruFz9HCx8ESb2Fa377zUq2sV33SK5D
+         BsZv2J2EzKtf36jFIVtVFsQT5C1wim1r+r1oESdc9zVynmwodXLb5Z15PuJbc3fpd7a5
+         eWCQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVxoFrpccxoATkh7YwZjzhNIUR/T0dGLIO67DlR5DFKljkzJFVUVX7eG1RzOxC6j0o0aq1KnABCtg==@kvack.org
+X-Gm-Message-State: AOJu0Yy8dZY43Q2XgzM62o+gHSqZwvOhG2zXBImyiWRWoPUsQS4EbvmJ
+	ymX+Qh/M6wxqirKGx62mXSHXszUm/b5AQ2WVGMBDjb6fw4/eY5xm2YDGsqKMOO8GP6hSnfXyIFL
+	tDgWvatTAuQ0hwx/ORwo7ONzyd5Fm+5s27r2fHhP8Kg==
+X-Gm-Gg: ASbGncvs2ezqnfM7rqg5aCOnNwd4XxaUD+uNCJZBWpq042wBhlTLGjtUs4//fvxR8D8
+	Ry5wsLWEqqkrvJcZ7pwBjlEsaYGGNpNeVQEhr7FFJ2gbtY85QZBxWdNnLv6i52gezKSI0vyW2h3
+	V3gdATD5VIJn1m0r8J0nXNZZ1e1cOJME4Os0asikTATrS9+bKI1QuYpuXcN+O2jg9zI1gphzm1e
+	KZXbgYQFNHR30KZGqWonN0rpMyzuoOgSr0N
+X-Google-Smtp-Source: AGHT+IGfptemIFohfTy+lGP+G94GDKuCT6cuywROwctnniSHmTHsaA0aWmc8jBz7sUxZychQu36GLP7/p/srVhhMhOs=
+X-Received: by 2002:a17:907:dac:b0:afe:e1e3:36a2 with SMTP id
+ a640c23a62f3a-b1bb6beec18mr411560666b.31.1758141419817; Wed, 17 Sep 2025
+ 13:36:59 -0700 (PDT)
+MIME-Version: 1.0
 References: <CAKPOu+-QRTC_j15=Cc4YeU3TAcpQCrFWmBZcNxfnw1LndVzASg@mail.gmail.com>
  <4z3imll6zbzwqcyfl225xn3rc4mev6ppjnx5itmvznj2yormug@utk6twdablj3>
  <CAKPOu+--m8eppmF5+fofG=AKAMu5K_meF44UH4XiL8V3_X_rJg@mail.gmail.com>
  <CAGudoHEqNYWMqDiogc9Q_s9QMQHB6Rm_1dUzcC7B0GFBrqS=1g@mail.gmail.com>
- <20250917201408.GX39973@ZenIV>
- <CAGudoHFEE4nS_cWuc3xjmP=OaQSXMCg0eBrKCBHc3tf104er3A@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAGudoHFEE4nS_cWuc3xjmP=OaQSXMCg0eBrKCBHc3tf104er3A@mail.gmail.com>
+ <20250917201408.GX39973@ZenIV> <CAGudoHFEE4nS_cWuc3xjmP=OaQSXMCg0eBrKCBHc3tf104er3A@mail.gmail.com>
+ <20250917203435.GA39973@ZenIV>
+In-Reply-To: <20250917203435.GA39973@ZenIV>
+From: Max Kellermann <max.kellermann@ionos.com>
+Date: Wed, 17 Sep 2025 22:36:48 +0200
+X-Gm-Features: AS18NWCHuKu5FkRi5MWoSntMnfUkf_rpkIBRpCjAVUQOvwmxI5LYn5BBnB2B2gI
+Message-ID: <CAKPOu+8wLezQY05ZLSd4P2OySe7qqE7CTHzYG6pobpt=xV--Jg@mail.gmail.com>
+Subject: Re: Need advice with iput() deadlock during writeback
+To: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Mateusz Guzik <mjguzik@gmail.com>, linux-fsdevel <linux-fsdevel@vger.kernel.org>, 
+	Linux Memory Management List <linux-mm@kvack.org>, ceph-devel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 47B352000F
+X-Stat-Signature: fo1cftdpgptnpwtpxco353yebtjuma53
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C89B7C0004
-X-Stat-Signature: c5cqbwcofmhcagu9imazt8y69zcuzq5m
-X-HE-Tag: 1758141277-731470
-X-HE-Meta: U2FsdGVkX1+bdJ5U05nPrJGDae2eiG+3IZDr9f198cgUWSJzhm8qYi2wCxPEvqynlIZ1JsYD9X2gnOl/OtTB5HwU9EhWCob2yGrLHKSsV/eIImhgG5QPOTMwserhyitJpMCa3wK+p+R8N7x8vGqZ3eCda/kOgfLoQtRSSnCG7006G8mqUlDHPlWeMvsx0vYw3TSpGKcwBgGIskBnk2f+cULA6vkSUw+1dhsEHQDvxNRfzO/BYJBiECfFj7RppbgO2KMgZxg+Ggi7pxJaPZiI6QQLb3KwCYC+deQh6Xu7PqPopN4VM3wFgOH7h5DxD0tLnCD6gwqM2fegYDXY4meyxPLyFmV0IAQbyRKxAoT6hz3wW4amNaznjoc4ssM4krjnT7fHvxsoTlAjMZZ+IEmY0BEtHGJttxWQJzVbi5RiqKBYdgz2ho74Lki/s3+ZWeaER9TD20saPFaCqukSV+v/35NMCWt5L9TFbrpqPUljaDfm7Gor8xdIfw6xQ1AbmOiYE0lP1bvZnODoUMcBkJ7z4f0ytw8Ehz/pWu1YjFE8A911BaJQ2suOuBHnJ4HWlXDs23hTh/wnv/Ak/50pI3rdxSB7LsJHnkXeUA8QArWprI9CWL75EcifWNKypcvwrTMaoKLHZO3tArYP9CMQRST9zmBRsyOROw34bewQQpPEg3OAl4QRKU2pXoK2dHQFOuW8LWXEp53mzFBaJB2LaXKBxk9feioF9C/qt6kcbmTA6aYFyn+shFjdd4wutk90ELZOC2671iEuJEqhTAZRhZYqrNddMtSXB/FPVHv7gjJQynas1bWR3E9bSaiXTMprtAKLvK9ClK3kUC+vep/H4s50YNBNDj+UHKadXcqiDH60Q86z/P5u9jHY9nDe4QZ9OkmKgaIUveUf7SFeWiAKcbg7qiGB/bAzEZ5ZgE5rve5FFCXhXb2mvzR9jmy4LQkO12Pa6WReJSekg/uuTIT5N0L
- ElxQlQbH
- tk5AJESf7LBoVpksWXLEIaE8pRBXfM46mlY3EqwCMizQDxlIWfOeylmvRE4Y/rXpxuSPmjXM4q1xpzdOo47nWHC52RrmJk4bTRufuAFnU+q3mzkepvHwk8ViPclznHQ/SVt0QE7ue/t/uOCxTY31zKYeQK2f57FKLDjYu3lG+G1weMjX9yivg4Drfr8DO+QbO6AsZkthc4vEHdYNbXs+DBMINwJiKwwwM7VWt7j/DxQPnB3VJy1K2S1t5bccWnqXgORxUT5CfsHHn4feiONM5FW82QfR9dlJYEEawijMDmRxQ1cUmShI/u8UHkzj4myASeGOjNH9jLV59FmYv2k2fLoSrGLJaUIUnkRCVTLdCiVSy0RXUePB87kBjyp+UHp1xdNy2rCShPFFjugFpCzcQ5kUTmS4lGyWbxw+4UAv8NpHWN42aXKlPMYjG/Q==
+X-HE-Tag: 1758141421-744709
+X-HE-Meta: U2FsdGVkX19g4WaB2WWhJywZ6xiJhwvHOMqGpHS6kJ8gXOGgbTI/HJDlEUH1jojCZ9YCiG6Yo4i+VCEpiTLkmxt/sbAD8xa4azh5MnYfzva95wMojkYIAutLtMea0zMs7S1CIVcwljyjWaoUjrYicMFQacIYqrQhFCrLrMr7rb8TqLa/B0ITApmRjfoX2n7o0n7hHytYOWgEnBRRf+R7rbPacurrwUlODRl2cAs5CSElT8zfV9BGjO+/4jmG7ntAqS8aFd0Utb1b3cMTUsXnWCrjmbsphMJzlxPINynh+BFBytnOsTX47v7smleUaCQ0viH/myC2XhRmLhiD7BbodVvi6C2ZZKjd9B5q1KFWjV0DfW0cAvHfSLe14lHasrmvaCaIYrl2YMtZ4+uG+HXx6e2z4zTyrx//+7KnJYHySb0tG8ydseFlerVla4cdbB0zObv3SGTYGFhN6hqeJAlzMFIaWHPNA7bTbjQkLSTseOmGlgn6NKIAsuAOnaxGnMbC2yT79xUX67IdchpUZ2FeWtPUyq8/WyEj2hqnGEhAQ9hagGMYW10Nek/Myogn738FBkgMp9DuGDeFvUr6ffh6A4fOg9Lp2yUOMVLd3gJU/uK+anaNf51HDqqjpCgSJU2dSlL0r+2P+LwCmpXDOt7soK2rTKT1m5jqVfiCCgYJbrTJmF7KDY6g7SJV/nekb/J4rW4AZdo38GSFzQTQKkZkcRTjtVSLZejb0VIZ3W6SkmjsZomsAN8NNl1Zs7PqtMzhgMo3gK8ZH/ztSOHT/bbdJVXOCaM/B4Z2vE45PFXMHxYklY3+/Ulwez0Uv3bJMQIqNbamYRlNINPbfZeTmZfbDN0AJZcty+2vvNxpdkt5PMyJHlpWS7GFpit2qWrEAp5pL4Yw/jNao3mdopW41AXdYxaHcSU7zvyJG140jqqUhHLukWgHJsLbRygh+VlLNsJY36Gcx5d4mFy+G1F9uFL
+ k2PRH08/
+ b73bR68WP2HQhSMLLjdTY749RtERJVi9qfKtITNOyp01g0ApD9YpAGggzLrRbf1hfJKqpjav+9vn93AtgR7axT1rufdZPvtjzzV1SOZCOvYZaQZxgYEXKC6jxK1dtw0ec1dTjf7svf0ahLuIzDmUIXiKQYlFcI6PG7+d1NjncO27hVb/bTt4Ie8rEHGOyHcZdK+LuBD4WdsF1NipNLGBA9lnZXco01H8fbdsdEBr6spUoSKcLMs0OW7bkeA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,23 +121,13 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 17, 2025 at 10:23:00PM +0200, Mateusz Guzik wrote:
+On Wed, Sep 17, 2025 at 10:34=E2=80=AFPM Al Viro <viro@zeniv.linux.org.uk> =
+wrote:
+> Suppose two threads do umount() on two different filesystems.  The first
+> one to flush picks *everything* you've delayed and starts handling that.
+> The second sees nothing to do and proceeds to taking the filesystem
+> it's unmounting apart, right under the nose of the first thread doing
+> work on both filesystems...
 
-> This should be equivalent to some random piece of code holding onto a
-> reference for a time.
-
-As in "Busy inodes after unmount"?
-
-> I would expect whatever unmount/other teardown would proceed after it
-> gets rid of it.
-
-Gets rid of it how, exactly?
-
-> Although for the queue at hand something can force flush it.
-
-Suppose two threads do umount() on two different filesystems.  The first
-one to flush picks *everything* you've delayed and starts handling that.
-The second sees nothing to do and proceeds to taking the filesystem
-it's unmounting apart, right under the nose of the first thread doing
-work on both filesystems...
+Each filesystem (struct ceph_fs_client) has its own inode_wq.
 
