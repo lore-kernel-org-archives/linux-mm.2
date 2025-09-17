@@ -4,103 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C4EECA0EE8
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 05:59:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B24ACCAC598
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 06:13:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B6F028E0003; Wed, 17 Sep 2025 01:59:25 -0400 (EDT)
+	id C9F0C8E0002; Wed, 17 Sep 2025 02:13:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF89B8E0001; Wed, 17 Sep 2025 01:59:25 -0400 (EDT)
+	id C76D58E0001; Wed, 17 Sep 2025 02:13:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E7658E0003; Wed, 17 Sep 2025 01:59:25 -0400 (EDT)
+	id B8C5A8E0002; Wed, 17 Sep 2025 02:13:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A91F8E0001
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 01:59:25 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3407D1DE8B4
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 05:59:25 +0000 (UTC)
-X-FDA: 83897689890.12.09CB191
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 87F0940009
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 05:59:23 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=none;
-	spf=pass (imf17.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A8EE08E0001
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 02:13:00 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4776A832CC
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 06:13:00 +0000 (UTC)
+X-FDA: 83897724120.24.A564A9E
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 527621A000D
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 06:12:58 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=hi5asorW;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=EqiZa9ds;
+	spf=pass (imf19.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
+	dmarc=pass (policy=none) header.from=linutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758088763;
+	s=arc-20220608; t=1758089578;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=XlrrbpNOChtNjzl9J83pPts581jGsxoyMpwY2SqwJY4=;
-	b=f9EKVX6/ENJw9GyrdXAk3J70JdXTX0wR0RdSZFdU/dx4BXxsDx5l5z6Yw2sRJ7BR4mU6vG
-	Khy2puQ0sM4wp4niten0mhrXl1mFfYGm3OLzOKDzocdU7nTGs0yFPS6aNszyMhb158dilo
-	kFxaeDIII+ODyoeuefzXSBI1FUnbfuo=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=none;
-	spf=pass (imf17.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758088763; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Cm3XQGuNpzvU7WALjJ302177aZpCGUI+/SYqtjhnqvQ=;
+	b=D2nfcMYLbbdis6H7+F+q/sp+waO0sKhaCjywZfFoM4EWxk4kyXzSVLdGb8cJpHQ1xhf/cm
+	c5Gj9eM4Vui92VIK6pDQJ6wcVO/cASuvvn1thnpU9a0qllVVpX7FqL7rjwXlYWJcDDK9hO
+	dbQ0Q5fcEwGdGBIlAghtUijj1FQbJOE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758089578; a=rsa-sha256;
 	cv=none;
-	b=K5fdBLEkUhf53UBjBTiMdnJs6Z/tOXwOcc4RnDAt1WCo5FqWqW5B4E5YvA7kOKMdPaDlhc
-	3jqPhoRY6MvtVVxf4c2akjbib+gePwmBgC7Uxqdi4O87JMqOPhyv2ZoqcjwcWpPxJyaCbF
-	N4hGgTGjOk/IxXEzTKiUhUIbiwrYRc0=
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-45f2c9799a3so21410755e9.0
-        for <linux-mm@kvack.org>; Tue, 16 Sep 2025 22:59:23 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758088762; x=1758693562;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=XlrrbpNOChtNjzl9J83pPts581jGsxoyMpwY2SqwJY4=;
-        b=u8dbrqgMMYZxLDBzHF1avsZUymsJcilqBN9Tm3AQQ323B/qEksrOIVvVdeNZ6GABjT
-         lwRLqa8iztyQr318nmvQl1VP+b0FuTK7EXhi8Vt5QxjFUo8cv9wIjLG/CwtoUW08q3ti
-         uJE5cNbeRVOwjaP6L2ztOc5sajWgPoMvXjY7VcxKbKgnUGW4HjUTe/pxmI8LWhsU61wq
-         WcB70hLeyZbWfnT636NssLtStxpzktl9Q9q6gYMP2qxJry5Lm4HLg/MaCZKrmwoiSLeZ
-         ezZMjTyZ7zwB5SG7kK6FB8qLL4/3TOnQChhgY3WmJ4W5foquaUbBR1vd/c4cPpnJrqkc
-         zG4Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWL+X9+Sq6O+bDLBYrSEvoMpKiPXFYKnF0S0cbbxZyGlrkYVnuhT3NBcif/wE/kgR8ioWQ3I3xwYQ==@kvack.org
-X-Gm-Message-State: AOJu0YwSaVy9Zqe9v3qIacuj0xw92MV+lvsW9H8vPWR1piwWZFxdNe1x
-	TO4hJMdaV6WfQIxWJpFRg8seihWF1s3e5NFOneeDXPeTZwUerfjp3fca
-X-Gm-Gg: ASbGncvlcO6mYpbn6uiBAwvrED2k3F7mmCoSLRI00Mm0ay9TjfKxGWo+FBU2XrXt72x
-	88HVGhq8kSXZ+yGLEOaoXeuRujvlXhPS6WLzg8nq3l5QR1NmKtVl9BtbgFmpnJur78NUnJvz8G7
-	NN/3H5AIubU21HKhDpHyHXlL0XyAdJtEcbLjQylG1qpITRIMe7EfArrxxEOIzqwcb5Hrrf0d/88
-	JMmq+VOxWN9a2RU+57BZkS04l2GP8yO1983iyR+kqS007jwp/QrxYEVtBizYFWWQeK9mni62RiK
-	F99PBtF+jPHFBmS6x0YiTNvdf+itWNHKQv6jvqbc42nJdTMqlP4G3jrND75Hq5s1CQHK6X4+1Ax
-	sRzEaTTlRpAApDwCgJK8=
-X-Google-Smtp-Source: AGHT+IH9W7esOzFT5IkroJVMwtaxdDK6d7E9R4NeEsWdBedzAfyvLtUnHVT1+OGn9VtvheonzXFrmg==
-X-Received: by 2002:a05:6000:1863:b0:3e7:6474:1b63 with SMTP id ffacd0b85a97d-3ecdfa3d20fmr589203f8f.63.1758088761975;
-        Tue, 16 Sep 2025 22:59:21 -0700 (PDT)
-Received: from EBJ9932692.tcent.cn ([2a09:0:1:2::3086])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e7c778f764sm19485191f8f.57.2025.09.16.22.59.19
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 16 Sep 2025 22:59:21 -0700 (PDT)
-From: Lance Yang <lance.yang@linux.dev>
-To: akpm@linux-foundation.org,
-	david@redhat.com,
-	lorenzo.stoakes@oracle.com
-Cc: shuah@kernel.org,
-	ioworker0@gmail.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	Lance Yang <lance.yang@linux.dev>
-Subject: [PATCH RESEND 1/1] selftests/mm: skip soft-dirty tests when CONFIG_MEM_SOFT_DIRTY is disabled
-Date: Wed, 17 Sep 2025 13:59:13 +0800
-Message-ID: <20250917055913.49759-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
+	b=fPKxxDVh0dyao/Og3mRQ11d9Mp6aO+QXF5rCXLQyAQ/ktx5K/hUpq9Nu+uflRiPEJLUtn9
+	JrlBJr/HuTmdlW9AcMFc4g/0dhxZlrQjcVGhCJQ4eT252fDQsmMGdcvZKWV+21I68gLzSa
+	mtzYDFz3QDtUAe66l41FnbJeAcvdacw=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=hi5asorW;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=EqiZa9ds;
+	spf=pass (imf19.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
+	dmarc=pass (policy=none) header.from=linutronix.de
+Date: Wed, 17 Sep 2025 08:12:53 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1758089576;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Cm3XQGuNpzvU7WALjJ302177aZpCGUI+/SYqtjhnqvQ=;
+	b=hi5asorW0MRa0dJUiGIVlulXm0HVRXsGvMegW2ksiku98PwZ+5SQkpK4EhEFxBA30Ticru
+	VoWEaVThVfaWZ05ur8DwYDgb0zguVvgVCv+x3ZOiQ1M15ekXNcHozqZAtYyonBnPO1gVbx
+	/vBak0GAB7lM29zCO5kjNdbtcs/FN3wmHd1QxjhyQcxtXYC8cRMz1kCWUDtD9vff7htuIf
+	iF+Mp/E495zzQv5T+TyHWkchwI/Xs57SFU1m6WFhmymBtB44pPH+cgfmY5HRQQKNdY4CB8
+	LyXh9vQPpdxhhXE5EU/jP9MLwBNHLigHwSbiGjhL4Ed6vIajEldeL2YFtyOfbQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1758089576;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Cm3XQGuNpzvU7WALjJ302177aZpCGUI+/SYqtjhnqvQ=;
+	b=EqiZa9dslwzNdZAl+jHOf2eAEfjiihQFIsrRguyTUV0X3CkAj+r5Y2yP6H1pD1ri4GoF6I
+	GPxPX0wkIIfFf5DQ==
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Shakeel Butt <shakeel.butt@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: forward declare struct rcuwait together with
+ rcuwait_wake_up()
+Message-ID: <20250917080725-14901c66-b02d-4d81-8a42-1283333d3966@linutronix.de>
+References: <20250916-mm-rcuwait-v1-1-39a3beea6ec3@linutronix.de>
+ <CAJuCfpE-DPBp-0b0908FHvguSo_PqxE2LdUXvBiMLu1UCd5icQ@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 87F0940009
-X-Rspamd-Server: rspam05
-X-Stat-Signature: qusdhcbfid3uj7j7xndnfndyxfzb9uwf
+In-Reply-To: <CAJuCfpE-DPBp-0b0908FHvguSo_PqxE2LdUXvBiMLu1UCd5icQ@mail.gmail.com>
+X-Stat-Signature: t6hso5kw4fu4zu7gtgzcowqtr1jq97dg
 X-Rspam-User: 
-X-HE-Tag: 1758088763-673866
-X-HE-Meta: U2FsdGVkX19GbLAlJnu8T28Ho2vF/I0nqq7Sjigpf1LPYGT1JLSiFYX+KxB+g71A7T6nVBIqkK7xAqFfik5DxAMqUF5lHSGRXLIhdgd0hQ/BAgIozlPg32n5NipfDqHoohbnqVdeQM4xSorJ0NqjRDlj9Q8DTi0E1FyDsLWGlSmuGgf0nIgTdrUKu3Q3iDZvRvURN272FIcmu5Pw1WUAcsiKgdDqx37LqTCjwCkijxKqZDVJMvbi77A5mjk1rK6eiDqrELhoN7NLNXzorF89p4V+6TsVm1i3ktbHeMRnPhx8XdZ6Gp80eIfahX6HjJbgc0fdsOmj3tsETawakUt0eVCKRsaFQsxXG4ur/x0sHlbXbeqSLDsUb8uuP4TX8wU3pF2vBBHa3+FasJmj3wAd4oap6w+pSb8FKe8BXAtQ3jCbkaf4DKUBlEliBo6glBzQjdXHwipRfXODli4Hg7fMoBp+Lq85U283ee+0qUtOmgI6HwwhBXGeeNiTb79Sf01Ah54w46UuJJRD3yWWxh1lsp/zKjhT65C7CKgcTprvOkDkUiqtLCdYO2OapKTR822xAbY69k4Cf++cdIIz5MHKRhpPn2kuXZ8m5yNdJsCpZgO464EnkI1ISOWPAA21lkuJN5xYDO236VdSvBBJYlFmTUiSL7HvmZSf0MwL97fzO676oCfZNYzMySIHcTGeVIEihHhbRf99XTIblZJMiKJi852mm9U1QW31WceOm5idtbU/UyOOiRwselqzfOsdZMw6I/RsVch22lxBDBSKBerL7BQ5Wgp/jPZ/fAkzer9iBcQw3f/cLzimlSRoyBAdrI7ALlJJRU+HUhcKQ3UqtAYUt8jL9jC9DOx0I8HtA/PTeSmhqRrX3nazBrMVrQKLr27HAeYU/0eqqPdy4/uV7sSJxiF602ZDpYmI8yegh+KEnSgHAT9Z79LSC5FZ3jb/LGQMfOOwlik8Tf1tqhZKYyR
- 3326Leef
- 3dWH8VWpuU6XY14dkTLeo4eeou4ZlzM3aoflhLg3QIcw+8wxtIcuuykxT29vDCqrHOv6Urj7tc8YhgGXvKMbUMCAtAqQ6eNhNkte5nEZU9liU4zV3yEeMUxPTe4CwBrj5IZK/MwaYwJsRA7+QV+tcrKkmFvXPjm1oQMwHJFKeiYmC77GcnMWzuTvc4dQ3MigOiKfxaxDhtaVgapcvLSiJZsCOR1Y6p9DJbTom
+X-Rspamd-Queue-Id: 527621A000D
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1758089578-926669
+X-HE-Meta: U2FsdGVkX1+w+gUE9x1sUy2iKVuAhSRWJzZSBdJQnZ4XyBoUdauMehQ7uammTQ2TJBazJ8JtsvlBGTIj8IM2dWmzP3y/x2DEfw8sOgBQbiaYcdvwi5lfCXit0w+a/gU006Qy4OEMmLvk0nXECF4ADquyaApc5ZMjtlAwVmb3jbDhJXO9/yB9PDi4CImimquudrG+Kmk5Ui9ba9vNmjy5IEvUMa/1VKNXEhhV4JidWcEt8/4rMxfEcw5EP0cwL9lIjtgl7Hp2vKBAgo3VCPJYa2LhaqCN5TXqCqVGvjkbuNWmNiFMgS7TGmH8eFuCsEONCQy6NUsAsghyCXvd1dmyyGuQn7Y/p5epFpY/xH5tU/bWzj4DpfzHsVVg7k62cgXIAVafvA9tSTsejA3BIan3v8zk97e35tey/DHfWnoezUPGXHm43PSivG7DyMXSLMukU4gnG4V+zvQ7JrECg1n2a334GQPT84iz0SXFDIAXAZS6q0K+tJu10f+a3codXAsTRg9eWxg04OVv31rFF16W9nJHzBcPr8JBzQJTs27Vtz9/L+IilDVSVQFqmienRnOO5dbqjg7UG6BYOV7fU2c5zCPT++s2bW7P3L9Trhcg5IbSeybg3G8RZhPvfEOl8dnQyGrsmS7kYmdNd3L+QiMPxmrzATivDx8IQZ+05Ut87RmKSL7I5Erq+oOCmKtMkMT7wpKkIpOc/5hfH2SCdL8exHpfBEEeRXAirIARuxnjcSrf6tYcyxfBR7LPcwCTfeO8Mb3NQwpLzKLcIUQncwYal1DmoMxIAS6r4z9PEoKRLuxdoYvd1LdEPDCDLFFA/BeltzYjWkER8oBSjHj/npINX3cNrydhFLBeoJx/UnpYC0WfiWEZ8xdByQjZmLBgwZ/sgmm7PaC1MhFbBoL+5B/sQ3ZojP1qES4YhITaMGrLyi4uM5EoR3WblIgRD5Y9GOVjge2LMyvTYqzXq2GAJW2
+ A3O89ro/
+ 88xdENpvNbw0LBxL/+OokPbQM3VN33yrzcjfSfTl0yVjlUZEvNu2Fzvok5kF+akjk0C8ZjZ80BmxPcJcyK6PKTTBtLV4UBzlqdgvKL+2rOj4kNdwNd0l77WC6nwgGN3L51vaHyKzrmJt6wyul4bZ3wkobdYjJm7Y/gDZzW96cFi00x3F0X+PoFFMmiMSTfIojTAMiRqU0lBl+My4JdCk6a/LuLevHsEFdpfTWOKZsnf2/UhDHmxcnC21dCVhkq62zq/G3pknI8W6AYUaMro7Z0LgT0017yujnrLJW6wqWM9HMJCeFRc619olVzD7skWxdSbCIUqO8fxvM1TjFIxZbAt/SWKPZtUTMvKz+H8kzJweGFBIeQ+5ID36v/3aY9IxVLpRrjZ7e2ZvaKvwBZ/KgV2+fYBuA7UDi+LXc/Typ/cbSJ4UI/YOaSvijwszu+WdlZ3f0k8Utl1zHbDdjuhtY5Ip/xUSmAMPlbRLxxbuvu4XA2my4YiJ1F8G2fADIne1HWUHHWgJhLCn/MZ5DhgXx04K3pDfMVblAMRzhJMjzmbaMhx1/46jkRzRcscDg2T+0xK3O
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,138 +105,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Lance Yang <lance.yang@linux.dev>
+On Tue, Sep 16, 2025 at 03:04:21PM -0700, Suren Baghdasaryan wrote:
+> On Tue, Sep 16, 2025 at 6:59 AM Thomas Weißschuh
+> <thomas.weissschuh@linutronix.de> wrote:
+> >
+> > At the point of the forward declaration of rcuwait_wake_up()
+> > in mmap_lock.h 'struct rcuwait' may have not yet been declared,
+> > leading to compiler errors.
+> >
+> > Add an explicit forward declaration for the struct.
+> >
+> > Fixes: 75404e07663b ("mm: move mmap/vma locking logic into specific files")
+> > Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+> > ---
+> > This doesn't seem to break any in-tree code right now.
+> > I stumbled upon it while building a series for the next cycle.
+> > Instead of putting this fix into my series and spamming all the mm
+> > maintainers with it, maybe this could be part of the last mm bugfix pull
+> > for this cycle.
+> 
+> `struct rcuwait` is defined inside include/linux/types.h and
+> mmap_lock.h includes that file.
 
-The madv_populate and soft-dirty kselftests currently fail on systems where
-CONFIG_MEM_SOFT_DIRTY is disabled.
+Yes, linux/types.h is included, but only after the usage of 'struct rcuwait'.
+We could also order around the '#include <linux/types.h>' before the
+declaration of rcuwait_wake_up(), but to me my current proposal looks cleaner.
 
-Introduce a new helper softdirty_is_supported() into vm_util.c/h to ensure
-tests are properly skipped when the feature is not enabled.
+> Could you please explain in more
+> detail what exactly failed when you were building it?
 
-Suggested-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Lance Yang <lance.yang@linux.dev>
----
- tools/testing/selftests/mm/madv_populate.c | 21 ++--------------
- tools/testing/selftests/mm/soft-dirty.c    |  5 +++-
- tools/testing/selftests/mm/vm_util.c       | 28 ++++++++++++++++++++++
- tools/testing/selftests/mm/vm_util.h       |  1 +
- 4 files changed, 35 insertions(+), 20 deletions(-)
+With the following change for test purposes:
 
-diff --git a/tools/testing/selftests/mm/madv_populate.c b/tools/testing/selftests/mm/madv_populate.c
-index b6fabd5c27ed..43dac7783004 100644
---- a/tools/testing/selftests/mm/madv_populate.c
-+++ b/tools/testing/selftests/mm/madv_populate.c
-@@ -264,23 +264,6 @@ static void test_softdirty(void)
- 	munmap(addr, SIZE);
- }
+diff --git a/init/main.c b/init/main.c
+index 0d4510a7a5c2..7523786e6ad1 100644
+--- a/init/main.c
++++ b/init/main.c
+@@ -10,6 +10,8 @@
+  *  Simplified starting of init:  Michael A. Griffith <grif@acm.org>
+  */
  
--static int system_has_softdirty(void)
--{
--	/*
--	 * There is no way to check if the kernel supports soft-dirty, other
--	 * than by writing to a page and seeing if the bit was set. But the
--	 * tests are intended to check that the bit gets set when it should, so
--	 * doing that check would turn a potentially legitimate fail into a
--	 * skip. Fortunately, we know for sure that arm64 does not support
--	 * soft-dirty. So for now, let's just use the arch as a corse guide.
--	 */
--#if defined(__aarch64__)
--	return 0;
--#else
--	return 1;
--#endif
--}
--
- int main(int argc, char **argv)
- {
- 	int nr_tests = 16;
-@@ -288,7 +271,7 @@ int main(int argc, char **argv)
- 
- 	pagesize = getpagesize();
- 
--	if (system_has_softdirty())
-+	if (softdirty_is_supported())
- 		nr_tests += 5;
- 
- 	ksft_print_header();
-@@ -300,7 +283,7 @@ int main(int argc, char **argv)
- 	test_holes();
- 	test_populate_read();
- 	test_populate_write();
--	if (system_has_softdirty())
-+	if (softdirty_is_supported())
- 		test_softdirty();
- 
- 	err = ksft_get_fail_cnt();
-diff --git a/tools/testing/selftests/mm/soft-dirty.c b/tools/testing/selftests/mm/soft-dirty.c
-index 8a3f2b4b2186..98e42d2ac32a 100644
---- a/tools/testing/selftests/mm/soft-dirty.c
-+++ b/tools/testing/selftests/mm/soft-dirty.c
-@@ -200,8 +200,11 @@ int main(int argc, char **argv)
- 	int pagesize;
- 
- 	ksft_print_header();
--	ksft_set_plan(15);
- 
-+	if (!softdirty_is_supported())
-+		ksft_exit_skip("soft-dirty is not support\n");
++#include <linux/mmap_lock.h>
 +
-+	ksft_set_plan(15);
- 	pagemap_fd = open(PAGEMAP_FILE_PATH, O_RDONLY);
- 	if (pagemap_fd < 0)
- 		ksft_exit_fail_msg("Failed to open %s\n", PAGEMAP_FILE_PATH);
-diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
-index 56e9bd541edd..3173335df775 100644
---- a/tools/testing/selftests/mm/vm_util.c
-+++ b/tools/testing/selftests/mm/vm_util.c
-@@ -449,6 +449,34 @@ bool check_vmflag_pfnmap(void *addr)
- 	return check_vmflag(addr, "pf");
- }
+ #define DEBUG          /* Enable initcall_debug */
  
-+bool softdirty_is_supported(void)
-+{
-+	char *addr;
-+	int ret = 0;
-+	size_t pagesize;
-+
-+	/* We know for sure that arm64 does not support soft-dirty. */
-+#if defined(__aarch64__)
-+	return ret;
-+#endif
-+	pagesize = getpagesize();
-+	/*
-+	 * __mmap_complete() always sets VM_SOFTDIRTY for new VMAs, so we
-+	 * just mmap a small region and check its VmFlags in /proc/self/smaps
-+	 * for the "sd" flag.
-+	 */
-+	addr = mmap(0, pagesize, PROT_READ | PROT_WRITE,
-+		    MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
-+	if (!addr)
-+		ksft_exit_fail_msg("mmap failed\n");
-+
-+	if (check_vmflag(addr, "sd"))
-+		ret = 1;
-+
-+	munmap(addr, pagesize);
-+	return ret;
-+}
-+
- /*
-  * Open an fd at /proc/$pid/maps and configure procmap_out ready for
-  * PROCMAP_QUERY query. Returns 0 on success, or an error code otherwise.
-diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
-index 07c4acfd84b6..87ad8e0d92c0 100644
---- a/tools/testing/selftests/mm/vm_util.h
-+++ b/tools/testing/selftests/mm/vm_util.h
-@@ -104,6 +104,7 @@ bool find_vma_procmap(struct procmap_fd *procmap, void *address);
- int close_procmap(struct procmap_fd *procmap);
- int write_sysfs(const char *file_path, unsigned long val);
- int read_sysfs(const char *file_path, unsigned long *val);
-+bool softdirty_is_supported(void);
- 
- static inline int open_self_procmap(struct procmap_fd *procmap_out)
- {
--- 
-2.49.0
+ #include <linux/types.h>
 
+
+This is the error:
+
+In file included from .../init/main.c:13:
+.../include/linux/mmap_lock.h:6:35: error: 'struct rcuwait' declared inside parameter list will not be visible outside of this definition or declaration [-Werror]
+    6 | extern int rcuwait_wake_up(struct rcuwait *w);
+      |                                   ^~~~~~~
+In file included from .../include/linux/percpu-rwsem.h:7,
+                 from .../include/linux/fs.h:34,
+                 from .../include/linux/proc_fs.h:10,
+                 from .../init/main.c:21:
+.../include/linux/rcuwait.h:26:12: error: conflicting types for 'rcuwait_wake_up'; have 'int(struct rcuwait *)'
+   26 | extern int rcuwait_wake_up(struct rcuwait *w);
+      |            ^~~~~~~~~~~~~~~
+.../include/linux/mmap_lock.h:6:12: note: previous declaration of 'rcuwait_wake_up' with type 'int(struct rcuwait *)'
+    6 | extern int rcuwait_wake_up(struct rcuwait *w);
+      |            ^~~~~~~~~~~~~~~
+
+> > ---
+> >  include/linux/mmap_lock.h | 1 +
+> >  1 file changed, 1 insertion(+)
+> >
+> > diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
+> > index 11a078de9150df1beff4f0bfb16e199333767614..9792dd4fff0ff73829833aae8ea3229a31757d61 100644
+> > --- a/include/linux/mmap_lock.h
+> > +++ b/include/linux/mmap_lock.h
+> > @@ -3,6 +3,7 @@
+> >  #define _LINUX_MMAP_LOCK_H
+> >
+> >  /* Avoid a dependency loop by declaring here. */
+> > +struct rcuwait;
+> >  extern int rcuwait_wake_up(struct rcuwait *w);
+> >
+> >  #include <linux/lockdep.h>
+> >
+> > ---
+> > base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
+> > change-id: 20250916-mm-rcuwait-03c5fe95f36d
+> >
+> > Best regards,
+> > --
+> > Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
