@@ -4,89 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D796CAC598
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 00:56:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4AF4CAC598
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 01:09:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A77E68E000B; Tue, 16 Sep 2025 20:56:44 -0400 (EDT)
+	id 3B5EF8E000C; Tue, 16 Sep 2025 21:09:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A4F698E0001; Tue, 16 Sep 2025 20:56:44 -0400 (EDT)
+	id 38D7E8E0001; Tue, 16 Sep 2025 21:09:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 964D98E000B; Tue, 16 Sep 2025 20:56:44 -0400 (EDT)
+	id 255958E000C; Tue, 16 Sep 2025 21:09:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 855EA8E0001
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 20:56:44 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 24B231DC7B5
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 00:56:44 +0000 (UTC)
-X-FDA: 83896927128.26.2082673
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 4DFA91C0006
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 00:56:42 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=OVmESGHI;
-	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0FD478E0001
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 21:09:06 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B8BE1B7E8C
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 01:09:05 +0000 (UTC)
+X-FDA: 83896958250.21.29A8EBA
+Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com [209.85.219.173])
+	by imf17.hostedemail.com (Postfix) with ESMTP id E2A0D40008
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 01:09:03 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=kOOJsqVf;
+	spf=pass (imf17.hostedemail.com: domain of hughd@google.com designates 209.85.219.173 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758070602;
+	s=arc-20220608; t=1758071343;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qFqlaPgMmBbBuFNM60YiZSQk7+741HZaf3B4eRGE/6M=;
-	b=q2rZDJvN5prvby3Re+OFmzlePaIHt/Iv3euFzh1hx/a8yTkd4ovgpxx5n4IVyKinHeaDiC
-	N9WIJmwl0nRzGk/CQ5GJxF3/LPw+53gm3Y4imhr/4XP9yioRqQebfcieEzjbJdgvr/ReNB
-	FHtL2ROskQwrbFFKGTp4JKxssAfSsZo=
+	bh=aANTVr5axolQ7BbjwnLuDvhkzbQohdfLxP4+qHFFkZc=;
+	b=Hiub6dxV6X248Y4z0IaNGRchYxHjeLAEAQHw2TbdXaAH8x5RTtaFCjlGtVlCQifDr1l1dE
+	fjtaIrVA0P8OOCz71y9F0Up3mZRS9cg1JgFdVU3MMwqRO6aRqlBjmxr+1aV1Du2/6qO3rd
+	XHuc+XyzekEPxfgOp4FITrrYsKTQmZc=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=OVmESGHI;
-	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758070602; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=kOOJsqVf;
+	spf=pass (imf17.hostedemail.com: domain of hughd@google.com designates 209.85.219.173 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758071343; a=rsa-sha256;
 	cv=none;
-	b=clp4K6W5xdGFGKXCHitopYFygwZaBKw8/EbPjVNI1IkxXuGdWk/4YiTPZqSaMKnXtgLWYX
-	MSvxV2IMkUNxJtUbVwlJ9p4UtSjSxguZ+sCm6DfT++afs1ZRuSA9YWqFroOtC5LoJVXq8k
-	btD8JvcnPvJvih9uqmld6RUz4t8+tI4=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B9B85408F5;
-	Wed, 17 Sep 2025 00:56:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19DAEC4CEEB;
-	Wed, 17 Sep 2025 00:56:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1758070600;
-	bh=kN+NGCVBMUoWfbiflAXY+vstv5YMeUL20qWoyAdAJDQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=OVmESGHIIFGkkDubiKZqf7FYfPatb/hvLIU9LdRirkf41miv4FzHSnGOra9NqM0+L
-	 Gxbh8ztusglpGX8N3oGu87lUBFyWDFQVOBaW14lhJZki8VnxG+f0HpJRC2uFEHu3SV
-	 hmNEq84s6lErCVuE0Ih2XI963DoP3n0vuIJUzzfU=
-Date: Tue, 16 Sep 2025 17:56:39 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Usama Arif <usamaarif642@gmail.com>
-Cc: Suren Baghdasaryan <surenb@google.com>, kent.overstreet@linux.dev,
- vbabka@suse.cz, hannes@cmpxchg.org, rientjes@google.com,
- roman.gushchin@linux.dev, harry.yoo@oracle.com, shakeel.butt@linux.dev,
- 00107082@163.com, pyyjason@gmail.com, pasha.tatashin@soleen.com,
- souravpanda@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/1] fixup: alloc_tag: mark inaccurate allocation
- counters in /proc/allocinfo output
-Message-Id: <20250916175639.2368772636d5e543faa5b13b@linux-foundation.org>
-In-Reply-To: <4c4e97c1-7f93-4c09-a235-ab169a998ef0@gmail.com>
-References: <20250916160110.266190-1-surenb@google.com>
-	<4c4e97c1-7f93-4c09-a235-ab169a998ef0@gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 4DFA91C0006
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 6qiafau5fmnadnwxofnptx6rzopqqiuy
+	b=SI+eC508EvgacKc5L5J1YJvQPWcOccydi40Q12okTFjOnfQI7Fi2zTCBA7KpHxkdcI/ipX
+	gdpwKmsJPi/ce6xZ23Wjl0BTKRSt8JtreWK6/6F1XvKfT4HFr0D0YVvl9UhgRN9ypJor/z
+	rn8++G4RlHlHyFeo4XdTcGYMkbYfTkI=
+Received: by mail-yb1-f173.google.com with SMTP id 3f1490d57ef6-ea3f6ac31d7so2367488276.2
+        for <linux-mm@kvack.org>; Tue, 16 Sep 2025 18:09:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1758071343; x=1758676143; darn=kvack.org;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=aANTVr5axolQ7BbjwnLuDvhkzbQohdfLxP4+qHFFkZc=;
+        b=kOOJsqVfsOApifv/LXF8E0HNl0Z7iQnOJDihLlHAoUghEmkUpGMZ5AVq8o9wjtvOWB
+         lAyhq/pbkk8JUEdwbctGJaX13LSMynaMlqJQvT4GQsFf9B1KezB+MVIdGiArupPlek9n
+         2mC8wBOseWGQ6e632KVJ/d9bq97JzVChTS0ZXALqn6/KYfvi/+nSj4aJea3XiS2AvleK
+         90w/Bvu37iUqkIHXAjFBCnQxKax5cIWYc3hdBb/zIonyoEtQhDdJS6gkq51DqJ9VTLSt
+         iFOdoNswihibqmHZ7WTQRPth2CRP/I6JzA31HbBDs9pgpIkFqHMsXuUyFkkTcyY0HvUv
+         S19g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758071343; x=1758676143;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=aANTVr5axolQ7BbjwnLuDvhkzbQohdfLxP4+qHFFkZc=;
+        b=LpR1CihU11+3wnxOOsCYlC6lweEMvFGh/AiQ3d1uVLbpcHqdX/I3brtsf8I2eCGuzc
+         BFp2+9iECVuHJnCxooC93O6X81oULqmSKtAMPDPeiT1n5vXZjj4fFzH1nxhqF1jul6OW
+         QLO4Kz7XR280NNvyU9muIYjoT6arJBjsdxp4Yc76v303yn/DGVmJ8fcws5aKr1kngLYG
+         7r1HkpVsLO02qkiywI+of1hEVA7JrSudkocp7uznaFb+6b5ZW2XOzPW9uUz9ivpqTCK9
+         xd54VzC3Wo0qCfkq0WdRrxvurue4h/wB6WRCZ8iNlDshgOzp8KUq9NCxT7vieDKQB1UK
+         SB7A==
+X-Forwarded-Encrypted: i=1; AJvYcCU1ABMAX/7K0JUF2RqWxoWTj3zo5WNFkRmepjtkV7YcdTisenR0p0yrTDJFkpGZwmzxXCB3aS3GCg==@kvack.org
+X-Gm-Message-State: AOJu0YwL0cU7ZiEwqA2TVdofu0qFPrZAK2rzNJQ5Jvd1HIbsu6WsAmVz
+	sV1HgfMUUXLs5FCoYY+tSklyQ0HOFn1KUV+8/FX9z3VIsBHZ5JGgU8m++4DYiwIhuQ==
+X-Gm-Gg: ASbGnctvUy3AaWMuyvIBvVaqYoUvW1sUBu+oINK4yIHLSMmhlq4RNjODlgs9LWtTEwq
+	qqbSBoTS9R0jdEQCDD2r6sdvQGYFtqgRxDAwWjj10n75pvS7GLr4gow+BIYYVnBTCWYDtJoBLTZ
+	UMxZ3eItH/g3BljvxQkR8PMTZ4nMwV7PTAEOT7/CcBkEfBh+7vlcFLAZGAS1FtY2RaZmSiXEqCk
+	pIrPgYGD8VKbgcqNyfuuhS1nfkvUixBD5g+z1l+faEuT1dOwIXUch7fJxhq4zO4MlGIzm5kSRE3
+	straHFMPaQkmYDYVXlgJowjToMEKQnRCbbizG2wgOQLPaJ5/6Q70qJ2W1zk8yrjq1PsDeJBY2bs
+	Ae8qsbY4bz/ntJHF0F4XEu2WzlseebvGowvz26szOZvWrwuml5rxmgpq5aFLO2DeR7aW0Az7Wta
+	0204NPAAuWoM2ebI/ssSFKDJmH
+X-Google-Smtp-Source: AGHT+IFGR6+9Hx1aPuBvMpaobAq/qWl23NruMocVjrvxvIXrOI6tSCiwuhhjzQFtoMNgnRtW9cEMWw==
+X-Received: by 2002:a05:690c:dc3:b0:71f:b944:103e with SMTP id 00721157ae682-73892c5726emr2575027b3.47.1758071342433;
+        Tue, 16 Sep 2025 18:09:02 -0700 (PDT)
+Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-73266fe1782sm29375867b3.46.2025.09.16.18.09.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Sep 2025 18:09:01 -0700 (PDT)
+Date: Tue, 16 Sep 2025 18:08:47 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+To: =?UTF-8?Q?Thi=C3=A9baud_Weksteen?= <tweek@google.com>
+cc: Paul Moore <paul@paul-moore.com>, Hugh Dickins <hughd@google.com>, 
+    James Morris <jmorris@namei.org>, 
+    Stephen Smalley <stephen.smalley.work@gmail.com>, 
+    Jeff Vander Stoep <jeffv@google.com>, Nick Kralevich <nnk@google.com>, 
+    Jeff Xu <jeffxu@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+    linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org, 
+    selinux@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH] memfd,selinux: call security_inode_init_security_anon
+In-Reply-To: <CA+zpnLe8Z=2qY3rVCyZXyGPOaO2a0V2BVrdMkuwKs789igGCzw@mail.gmail.com>
+Message-ID: <b266fe61-7a7a-b13f-a73c-f30f5edc22a3@google.com>
+References: <20250826031824.1227551-1-tweek@google.com> <6afc91a9f5caef96b2ca335b6d143670@paul-moore.com> <92255d5e-7e0a-6ca3-3169-114ae7f6247f@google.com> <CAHC9VhQejS05C8AExkh32GidBdzXjauKPP6T_3eSGZDEwfwDuA@mail.gmail.com>
+ <CA+zpnLe8Z=2qY3rVCyZXyGPOaO2a0V2BVrdMkuwKs789igGCzw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="-1463770367-746452338-1758071341=:25424"
 X-Rspam-User: 
-X-HE-Tag: 1758070602-512965
-X-HE-Meta: U2FsdGVkX18UVEpsWZO/hyYiyWIkUOYIoej9bGMEYOA5gP2pVSClyi6bgo2Oq3Zd8yyas0Mzf8Gu1LdcxVq09tHQWJBHbi2S/TfbdwFJMAIsRbTXZ0q0Bj/gvEfB+wdyy92BWCbpYZl9ynI+tOVNGaWY1XSrJbRcrLb8Dcwg4BF0J7I5CXlIUHWH3O72uXdW/jzpmKG9fyxsH1kK7sU+U6Gl9x18b/f1KT8WV8ixOFSjTllIjooYCN1e9ZRgf+4lPSzQcGAu3waymi+M3+ihkDFr3dR5KW4Ykz3WgF59xajK2nuhKdxt7JJhsIQeeoQ7k6jdnYH+oCMBi9lbpHuYteM0tALET8S8+BpXJH8r3mCn+Q01ckOISGc+1lxJlAEG/eqfNYgNuUB3bkwf7AfjIN9wsSEU8MTehAJMDvTGpNt1Un66O7hpZ2IUhaalvu2/T5v4q/Rv9Zhd+oSG+V+0DeO/+HTsn0t1zX6TVk77lwJ4zsFf9UpKogdZOVEWKKNT8b8WJT8pTD1957y0OhPPzV47KgFheWfJkSGojWzvbOfoxGXZb6Uyb8m8g5MtdF0V0Bs8bzrYtdO3tHvT2kD4jQSMxXVFLxnkvRs+0Mh471zoK7f1Nk7XMviteADSM52RAgsdwNhvQXF+UIGx9wHrWrF1IzGGHWypDX3mPmav+szowd1Eew1ljCErM58V7TQmCWHVg9xUv1R4J4VPNVjxqjbDIqHr3h/sOKEkHOjIH42hTTvWCNJu0SUNFgdsZWNm9FKeHdsNM5rIaEk6JDR9BKRHh/CoWbmrK7k8sUEk9nRIuz5KGo21hnI4rxI32V4CYjxFTo0ClbutsSDfz+slwMYXQ93aAWOvkbAxpTHSf0CgKSMgDQTo70xQedH4hp+fwVNi6gbmrlG46A3fHMLwZESih8a6c7Y7zel2nJI0UmO5SE0uleXyQdFn2maOdh2xuZj5fMjV69XxIRWLKw4
- v1IH/L8Z
- oHlhsct6QW/9VuH334bBQ0rsDP5rIxgGbu8YBbg5SDa/J6cigPUTpmP1Yv9Ponq0qVFzTN63CyJc2ee0ByosiFlQh5ZWrk9+VuaqGZCmkV4fNdA5pCDdMIb9Uo3OC3V29lC2ZWp3ZSZSA+lPZpXYfpNtULQ+ahIF61Cb81aR0w9cA63wRGGlWWTA9RHIYGTTiCrjhsPjUydFXr3n1FMQTl78akw01pJTtXL38JYg6Fx475duF+867vo9Bz7hhgq+ajge01edY7bDVQF9slbxe8GuGjO947jQsBX9EwuErF9CvNgTCoBk8dQ0tYetMQEILdSUpBQwqphj72N2FtDzLABeLdk1XYfG2xSJpCcnAaiMDnii87ZH1WYW6YCnuvYdApLJjnhMHQtEBDF9ooPjlrdmHR/+ILMEyb+21Y8y5Q8XnqDwjD0Y6odX5YQCu/ZcYR39bLSf/0x2oq0h8joUuesaIcz5o/jcElBnFbfw/2FTiNFgIC4ZMpWSsUUD/HNb0YbRduu68SiINackAt2QWHI2azWCuMo8Pz4UDaKC09hfmtX4=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: E2A0D40008
+X-Stat-Signature: ybws6gc3xzaik9j66ripy46ch9m49rci
+X-HE-Tag: 1758071343-930451
+X-HE-Meta: U2FsdGVkX19LAdFmHeJ0U9hjT4Sl99bC8KX7njejT7BgELMvGhVAnUBf4CG8vvfmsSiVG3593jzwxyI4YkoGiwbfVPqQP63RL/mUcLA0rU3doZo/QGVLFr+gnVibeWCIfw34jsSe9YO8wHwRzQq5b4cjQGI3/gh49ymAXbMm+57SfA6yTO+6h2UI7TAcoHxzvJ3IP1i/tcDg5XjvGlo1FrgreKPN1wJiJZTQtQu7RRA7VpG7iJ6zn910GecayjphuxLpZTtdK3IGUVfR0wF2jCvam+cnZEFu98/Hz3i9pTpul7N3F37wrIFfBNHpT5/QWQWmsNXosjawJ9HwqA6w3QtMHHrmnG9sexRtyvXs5m/HGfZJdrNgFWFibKhwjNb8WhFDtnxgUx37Fk7bEkftLEQwCawIAvSuDg0aSzDl4gAHg0WdjF923ZCuaITSizfB3y9ujknSf+8XSPLjjrj093fOecmhLOmEfzA1/iLzhAglswPORoXQ782n5grm5sUa2HKj7VStC39FPTzS8TvA2oXhqEltg4L+ZVnsHhrBl+UkF0Ht9vbQumbWkmJwzwy7NxyeMKUD8Maq3NPWvQO7XbNL2esG/OiwXQwLtIAYmWxIUJfF9gi305LhMvJVXhew6Yxke1Kt/cdEM7cRzGmgmE56xNTboY27nZaGrG9g9/P00e2nhmhDUIMxZr/fgtNGuInNLTg/ChSkKTgxOaYM5DjKJ9mfhQAvj2nS3ZxqB8mC351a3bfIiIEY1a3Ay+Tf87rdWvcbBlYYOjrLk/wPhfSUfdbbqjd3RJeoadjq0ZBAStybu/0/I+/5O1VJ5IUushLbj07hEL8RWR39+gigbyZoSVuTUsQryITeGDXJPVuysIkLCmA//9Gy1pSBTF92pUDlzSeNBXglfaEXjqxmrEOErgtURZGgmTJdccTymDDdFsgCEdQR5InPvRy6fCbj0pLtHbaFafCtCHefHlt
+ MJzg8C5d
+ nBr/F3S9ekUBgj9os4P8PVqZl+bNNPoygHsY0lH2jbN/bB/XuUrbxiVYZedxEAmyb6sumXxIPsfJs9TyA0jRXnRsLecO+tLoSuRk7jjBsVApW2Vvkxk4y0oXk6c89KPon1c8oUrVK9On31PucLjyH8YkuH60ZqWvBTB3hoLRE+1P6hWeua1f6l77sirJ8crNUMuOCZKRiLA7rfF1vooY69n3ig8IX8yeZW6fTP1I+xr+TEXyYPhzzS0S14OA/xdFH9GOZvCdaiE1iqrs6IseKaiRjkeUyB47gSRcfnIauuDVRUBk91bxOmlxUXoi9HxSIAeR48OcIO33ZVqHgNk/vh7pJX4n7FeDW6i6rajD05Dz9ZswN0AGDRJZUJbNojApvKm1o9bfRPU8LQQ4hoe4h/A8maFNdsYKigMSpcnnbTy4vCL64utEMr3lUhZgKyT4a7Fo8U2ailJcnC40yF+p1d4SA7y2O7tl+02AFBVln3YSpjy9WBkFxt94ZwpBFtEmVgRdJ+Slr2nYreGyWjSVXIAWP441A6JP/dTRcolTfGlNEx1z90tnhdUA/+0BTim7dnF9Wvut6fccaA9lPp27Jo7FW6tKw064VIR/k
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,87 +122,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 16 Sep 2025 21:50:51 +0100 Usama Arif <usamaarif642@gmail.com> wrote:
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-> 
-> 
-> On 16/09/2025 17:01, Suren Baghdasaryan wrote:
-> > Document new "accurate:no" marker.
-> > 
-> > Fixes: 39d117e04d15 ("alloc_tag: mark inaccurate allocation counters in /proc/allocinfo output")
-> > Suggested-by: Andrew Morton <akpm@linux-foundation.org>
-> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > ---
-> > Based on mm-new
-> > 
-> >  Documentation/filesystems/proc.rst | 8 ++++++++
-> >  1 file changed, 8 insertions(+)
-> > 
-> > diff --git a/Documentation/filesystems/proc.rst b/Documentation/filesystems/proc.rst
-> > index 1776a06571c2..17668f82ff1c 100644
-> > --- a/Documentation/filesystems/proc.rst
-> > +++ b/Documentation/filesystems/proc.rst
-> > @@ -1014,6 +1014,14 @@ If file version is 2.0 or higher then each line may contain additional
-> >  For example if the counters are not accurate, the line will be appended with
-> >  "accurate:no" pair.
-> >  
-> > +Supported markers in v2:
-> > +accurate:no
-> > +              Absolute values of the counters in this line are not
-> 
-> s/values/value/ maybe? :)
+---1463770367-746452338-1758071341=:25424
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 
-That's OK as-is.
+On Wed, 17 Sep 2025, Thi=C3=A9baud Weksteen wrote:
+> On Wed, Sep 17, 2025 at 1:26=E2=80=AFAM Paul Moore <paul@paul-moore.com> =
+wrote:
+> > >
+> > > So far as I can tell, seems okay to me:
+> > > Acked-by: Hugh Dickins <hughd@google.com>
+> > >
+> > > If I'd responded earlier (sorry), I would have asked for it just to u=
+se
+> > > &QSTR("[memfd]") directly in the call, rather than indirecting throug=
+h
+> > > unnecessary #define MEMFD_ANON_NAME "[memfd]"; never mind, that's all=
+=2E
+> > >
+>=20
+> Thanks for the review Hugh. In our case, it is necessary to expose
+> MEMFD_ANON_NAME as there is a string comparison done in
+> security/selinux/hooks.c (see selinux_inode_init_security_anon
+> changes).
+> I would argue it is cleaner to reference the same constant. The
+> alternative here would be to have 2 copies of it, with the risk of
+> them being out-of-sync at some point.
 
-> +              accurate because of the failure to allocate storage required
-> 
-> s/storage required/memory/
+Oh, I'm sorry, I simply misread your patch, and thought that the
+#define MEMFD_ANON_NAME "[memfd]" came at the start of mm/memfd.c,
+whereas it's in include/linux/memfd.h just before mm/memfd.c.
 
-Sure.
+Yes, you're perfectly correct to do it that way then, ignore me.
+(I do have to reflect on why three instances of MEMFD_ANON_NAME
+are safer than two instances of "[memfd]", but you are correct.)
 
+That does lead me to look quickly at the security/selinux/hooks.c
+end of the patch: I don't particularly love what I see there, but
+that's none of my business, you and Paul have constraints to meet
+there which I'm entirely unfamiliar with.
 
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: alloc_tag-mark-inaccurate-allocation-counters-in-proc-allocinfo-output-fix-fix
-Date: Tue Sep 16 05:53:33 PM PDT 2025
-
-simplification per Usama, reflow text
-
-Cc: David Rientjes <rientjes@google.com>
-Cc: David Wang <00107082@163.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Sourav Panda <souravpanda@google.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Usama Arif <usamaarif642@gmail.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- Documentation/filesystems/proc.rst |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
---- a/Documentation/filesystems/proc.rst~alloc_tag-mark-inaccurate-allocation-counters-in-proc-allocinfo-output-fix-fix
-+++ a/Documentation/filesystems/proc.rst
-@@ -1016,11 +1016,11 @@ For example if the counters are not accu
- 
- Supported markers in v2:
- accurate:no
--              Absolute values of the counters in this line are not
--              accurate because of the failure to allocate storage required
--              to track some of the allocations made at this location.
--              Deltas in these counters are accurate, therefore counters
--              can be used to track allocation size and count changes.
-+              Absolute values of the counters in this line are not accurate
-+              because of the failure to allocate memory to track some of the
-+              allocations made at this location.  Deltas in these counters are
-+              accurate, therefore counters can be used to track allocation size
-+              and count changes.
- 
- Example output.
- 
-_
-
+Hugh
+---1463770367-746452338-1758071341=:25424--
 
