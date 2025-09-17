@@ -4,104 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A4DBCAC592
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 01:16:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0287CAC598
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 01:23:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C79878E000D; Tue, 16 Sep 2025 21:16:34 -0400 (EDT)
+	id 0F19D8E000B; Tue, 16 Sep 2025 21:23:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C51438E0001; Tue, 16 Sep 2025 21:16:34 -0400 (EDT)
+	id 0DB828E0001; Tue, 16 Sep 2025 21:23:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B8DDB8E000D; Tue, 16 Sep 2025 21:16:34 -0400 (EDT)
+	id F20F98E000B; Tue, 16 Sep 2025 21:23:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A8BE48E0001
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 21:16:34 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 49A2C1602D8
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 01:16:34 +0000 (UTC)
-X-FDA: 83896977108.07.84C7758
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id AF2DE140002
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 01:16:32 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=jETLQ7fv;
-	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E1CEF8E0001
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 21:23:55 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 89AB013AA2D
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 01:23:55 +0000 (UTC)
+X-FDA: 83896995630.21.8FD7FC3
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	by imf05.hostedemail.com (Postfix) with ESMTP id C94E0100005
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 01:23:53 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=s+V9uJDp;
+	spf=pass (imf05.hostedemail.com: domain of surenb@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758071792;
+	s=arc-20220608; t=1758072233;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=alxbbNtc8tKEFPbSSj8+ewglFO+H6ZsbciE5S2T56zk=;
-	b=H/hhZm8ZwNxMDGaz07RXs+7BBfBAF/0/jlWgT0SJr+nDmR/vZ4Zb57ei/fxd3KGFizybzW
-	ElVGlyXeeFlHMS4XSVj6xSvWFXmkoX6OFu2VXATA67A87Lgqo3pF9dQySzLP8zA6COLTei
-	+bDImyl7hXEKu6iJLqg1+DMMp1kY00Q=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=jETLQ7fv;
-	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758071792; a=rsa-sha256;
+	bh=W+EiXNx8dtxz/+fZsWvTHPG1d2wMczWl/IjgW9ZTzZA=;
+	b=LU2yi2oLK6kd47w3U67wL76nFuF/mQSgVSi6f0iy7b3PRVR7qaWhSHc6lL5IRO3Yva9E2t
+	riKn/HhcvdiZjdGeh/FykJLjABBQMBUEE7YhC+nJ5jQt4D2iviMsx4IMrEx04LAto/8Ee9
+	n4FFAIUn1SphiB6yXfx/eQU4+fSt++0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758072233; a=rsa-sha256;
 	cv=none;
-	b=mKpUerkvg2suZQLyIuefNKYhhM/zEbiL1lmo8rbnRXhIyND8CWNv/gK/EdtD9uY/fhe377
-	oRHOdXczggVHBa48XvVOZLtgb+sJCmcazJ5E37vZG7yEk8xJlJQwxlK9sJ1yfkzn05BavZ
-	7Pdnwj4eC4i66YvsJ4osv0m3GxXbiUE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A38EE601DD;
-	Wed, 17 Sep 2025 01:16:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38DDFC4CEF9;
-	Wed, 17 Sep 2025 01:16:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1758071791;
-	bh=wMm3CU8JnvqVu+XBAyCsMnDcqq+lr/aas70UKFC9ags=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=jETLQ7fv1aaDH+T4cjF2zi7w8e/yIsJ/BiWWWJpQ/wXayVEQCqM/D3zjcfOQUfwhH
-	 p49MzSnmyun7d2WxTOPqMulSgILGL/hz7Tun5oCUrTA4WrU0yrgd+msqH4bHsbTu1Y
-	 86M3t/JpsPX2KUKJyQzPhzKNykBLXleqs1XAmRTg=
-Date: Tue, 16 Sep 2025 18:16:29 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Jonathan Corbet <corbet@lwn.net>
-Cc: Kalesh Singh <kaleshsingh@google.com>, minchan@kernel.org,
- lorenzo.stoakes@oracle.com, david@redhat.com, Liam.Howlett@oracle.com,
- rppt@kernel.org, pfalcato@suse.de, kernel-team@android.com,
- android-mm@google.com, stable@vger.kernel.org, Alexander Viro
- <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara
- <jack@suse.cz>, Kees Cook <kees@kernel.org>, Vlastimil Babka
- <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
- <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Juri
- Lelli <juri.lelli@redhat.com>, Vincent Guittot
- <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, Valentin
- Schneider <vschneid@redhat.com>, Jann Horn <jannh@google.com>, Shuah Khan
- <shuah@kernel.org>, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, Dave
- Hansen <dave.hansen@linux.intel.com>
-Subject: Re: [PATCH v2 1/7] mm: fix off-by-one error in VMA count limit
- checks
-Message-Id: <20250916181629.f4527e6e90d1e620e8d84abc@linux-foundation.org>
-In-Reply-To: <87v7lifpi9.fsf@trenco.lwn.net>
-References: <20250915163838.631445-1-kaleshsingh@google.com>
-	<20250915163838.631445-2-kaleshsingh@google.com>
-	<20250915153642.7f46974a536a3af635f49a89@linux-foundation.org>
-	<87v7lifpi9.fsf@trenco.lwn.net>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	b=cqlRFEu0ApE9X1LtLIJlHgPHC/S/FpnnC0iYtdCd/w+W5xmKkdUJfE1rjIigkZdo2t3QeK
+	ebegya/GD5gZpWuxnL4JlkWagIgr1KgouxEeXSFLPJ8s78oy4yv8RY8b/1Dz1n1uAmbHpU
+	2i1mKD5RHIIHRjPAzQlHMzk9yhCxyGI=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=s+V9uJDp;
+	spf=pass (imf05.hostedemail.com: domain of surenb@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-4b4bcb9638aso271701cf.0
+        for <linux-mm@kvack.org>; Tue, 16 Sep 2025 18:23:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1758072233; x=1758677033; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=W+EiXNx8dtxz/+fZsWvTHPG1d2wMczWl/IjgW9ZTzZA=;
+        b=s+V9uJDp6TqVJDHICDkvcwQgL+YBPNbKERlBpgMYB7DGaU7lui74B5qX1XkxfRKw9Y
+         QL1dnfvh/M9f8JFi7fi7u2tZe+ax7PAYs5MOvMyK4kA3Q7+9Oj5auq/fyAGpOXavuxbY
+         DDoBexvyqyKCbYNNUMbsQdSIwHrZkW90awAL5Tl2L6ZwnO3k3g6dzMiAi3643HzWhGX+
+         4oSJ/FysYPbMSgQ8biTvyEWut9B3SFB5PsbZD0ED8OAjngPzbTR3aiP45HEnr/fhhpJi
+         BLJ+KeEQg35SRuAfWTtURqDdeSeM85pQ/XSkun2KBaw6Y8b6kGB4eklOaex+KCPtkDb4
+         7SOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758072233; x=1758677033;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=W+EiXNx8dtxz/+fZsWvTHPG1d2wMczWl/IjgW9ZTzZA=;
+        b=OHMmzBaSKfnqlw1A6pLRIrnmb00RfSmDM5Fd3aFVHqhdl8hMDQbKmMZ46/3KnBBQ9o
+         M++R5qI7ejMSP/cfFnQ+UgsZ2eu9/o7gBxflx3HURbaVDzk+edtJ1EKuHvraJ4uR7VqN
+         IbCQsuyVnAc5Cf8lbZv2Pskhw+hdhTZ/bUZg8jHZZ8U3HieAidxMCPpSJCBDklu0/2R/
+         YD7QLoLIDCLUXVFaBCtcEAogkjFfLchhKixqxi0RASHlLYwIFESUDYXDoJtqYhw+HZsA
+         ezSJktkpDt0HNGjfLsLIFTiZ3YrZNFHt/lf/J0y1dQZsfAFY96dFZEr1BuEQC9VQnvjk
+         krCw==
+X-Forwarded-Encrypted: i=1; AJvYcCVMxY9brAXrSAidhFDRdf9oFdO/2DRJ4v+nj7ev/YyOdk9fVgTYc2TnztzYv7B9m1PU1WW1VzAOGw==@kvack.org
+X-Gm-Message-State: AOJu0YwfWxWg7ClYKKP4Uz14AknIgpY0ChqwTiKlchtCFrSLmRdPpUIA
+	AQq+jrbsi1+u/RRx07xOcjsadYrjgJ7uMu4HjjEcxtPuGKbts428I9wpI91EUngPPrBT1gq7cEO
+	ZoeCH6kWF/0Dd1x8h3ocpwn6b41fEDt7EglM9D2OW
+X-Gm-Gg: ASbGnctOVQTmaMNwblMNNxOOYnE5ADSDKFV4oFJP1S/ZIiDZF8f8Mpsntx1/T2dFG2m
+	y+rCXWzmM9XF0vGniu6Gdmnguk7eTfVvkBWZzL3Yd5xbWQQDJ9HFqlboqOc/il9k7De4KHl6+SC
+	aPI5ynb8viQVLtKdmYrIoO5GQ9FGs3g+pz3ObuqeEcCjZPlOxVe3ybph5/77zYUTBeaLA/HbiKr
+	0I5S27NzONfD/81d1r66SVmDxYMur0J/KJWB//Zuuw/
+X-Google-Smtp-Source: AGHT+IEGfbNLdY9Zz9j0iuWs6cvtGYaYD+/KMgA+FTecFBbknYC9JaklpTiRGCZw+lM+O/GtymNn4cMAIVCqy8k2pLo=
+X-Received: by 2002:a05:622a:24a:b0:4b7:a203:259f with SMTP id
+ d75a77b69052e-4b9d8d7db1fmr3405451cf.6.1758072232605; Tue, 16 Sep 2025
+ 18:23:52 -0700 (PDT)
+MIME-Version: 1.0
+References: <20250916160110.266190-1-surenb@google.com> <4c4e97c1-7f93-4c09-a235-ab169a998ef0@gmail.com>
+ <20250916175639.2368772636d5e543faa5b13b@linux-foundation.org>
+In-Reply-To: <20250916175639.2368772636d5e543faa5b13b@linux-foundation.org>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 16 Sep 2025 18:23:41 -0700
+X-Gm-Features: AS18NWD0xD4IiCMhfB84LnzUSUy3Z4XU6JKVgWEYvfvpM7oqam2VIITG9wpTel4
+Message-ID: <CAJuCfpHQMcGJBu=qjN6Qy0XqmLikqeWfm6SW+S9orOPk=m21Lw@mail.gmail.com>
+Subject: Re: [PATCH 1/1] fixup: alloc_tag: mark inaccurate allocation counters
+ in /proc/allocinfo output
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Usama Arif <usamaarif642@gmail.com>, kent.overstreet@linux.dev, vbabka@suse.cz, 
+	hannes@cmpxchg.org, rientjes@google.com, roman.gushchin@linux.dev, 
+	harry.yoo@oracle.com, shakeel.butt@linux.dev, 00107082@163.com, 
+	pyyjason@gmail.com, pasha.tatashin@soleen.com, souravpanda@google.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: gnoxmatcs8a1ittk9r37de84uxyiaq35
+X-Rspamd-Queue-Id: C94E0100005
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: AF2DE140002
-X-Stat-Signature: s8khcj6keyse9e781acu5cwhderih4db
-X-HE-Tag: 1758071792-569059
-X-HE-Meta: U2FsdGVkX1/tqvONRHs0Mh3VFinI51DxovXhz1E8zzeYOC/xWBIpntjjFiI67Uau2ERp9MXwRucfK6zi00dwiA6OYnl1WkQrQuW8KXsGIIPMNRz7ezSDuro3ge8G7b8MxOB4CdY4xg54Cxt8rUbYOK0L/tDwnilvvLZuknl+62eYR057WhbP1SA+oKeTE235NQ/8V3Dih+gtWh0jeOhgyA3vfhgNHvqpcnKPtyqXq7vn9QLobYzT3SU5Yi2B52nplPxNnWOZCovd3WK6c7L+KGiCdUjvbxu6aebRPjSrCWaDqk7xqB4yJrVegCf1/5k4PRl852i4SoGskk7o4it+3omxS/EzKFskQg5Ox4mLUAJPSB6J2T//DwTpQsjLNU3H7wKpmYJ3dzmRUFIK6RGLA996E7xtnz8lPZ2sa+P0YASCpyUpuy0Se+PvXkKup+T2rztod6VsaM7IgkhQjUn4rLChgxQmCX2lZZY67By4mqrG7ulFiFI9Nf066c4Em5gG2+jTeiZIAhua2QtGE1nU51ohObrj5z/GWdsd9K01a3K5n6O7zSrj5Fc2/sUcxJ5J5Q89VRD2jmGObzYXpESdrjubQ3z+Y8quYOHPjCQmwGGBCCz/pN/YPQWGOjy8s7lfxdCDmQ5QlQstUteLssNVvkvXFungH/XQcXgF0pHjNldIyIQip4miLU8IH1BDuV/amhF1jKcWM1ByzYVeLTy0MQzlLKu8RHv7MG9m2d0UD2tJOcWPeeVV47nZZHMSr8yciOhKGbJGiy3sN7KdT5hXR6vSpG6ukFPMSKEGD1tQNRiAAzyB8SxC63stv4arFCQQO+P3O75cS67MJ5XMfC6BusDZINQlOjQ5F7PyW2P0YQvHNkYJOCzdjcS62B5IkqXIBjc0RBO0YhRw3KLudFJ3yrYx22FWFZuhLCpGuXBlvg8+w6r7i4Sts63nsYPOmUc2/NIg3Wbvq69dquzEVvn
- fJhFEZLl
- +vbWWpjfrnOCTUcyUIVdEefuKnXu52i5oKYJreYk+osujtK6viIfU2euQDacbMmYuCTUMiC38pXUlJGSoiuhOYqgi/fTHg/48nfSApYCQPUgn8p0X/idBaa7Tl27rnivANoq0JxpCnHcd75je43jUZbc5yDIHnKF9X+5Z1sxMbG6Yj5IavSyvwGkJJQxIs64hHE+mBo3G7sVdsOQ0dUGmRZCIITjD9gQ2vYS7IkEO1ISAvDd7J+fPlsdlTdKi0e7BCWG6i656SJml+JQdnvdO1SA2K7aKXZ8UFtZYrb/R045nXz4B+m6ariKGqH/f1SwJj7Yvpb7ETj2Hyvof7O34AFUSsd1EuNomX4dQ7uEomMmoWXiCceKih8TQa6J39oLiPCVH0F2IrH9UkMI=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1758072233-236069
+X-HE-Meta: U2FsdGVkX18de3dNcsXnYcLi0Pf+xCLaCqRcndO3kIPsWAI0Ta6sreLm6xyzDKYG3BmeNjzTs6zkeGY2o4kl39YoKjyyXjq8W0nEJsQ1U+nNOKM6LXU0b4XNeu31puwfiVKGT0vXZaZDJtVPfBubJMSTtxyNtRZoGEx2yaXtYj3a+mDouZnne6GcSjPa8+an0sDlJXsJ9wqKzXAvwXeOennXvQ/PGW07e0R0JOk0GoqbJdxYQpYkV2GGkgrQyXC/wXRTLXng6G+EihR9MFXx1gaM4Ey6jOHjixXNmSD+2jSwDYB7NWYpYaZkHQA2Cs5nS/ny4L6RawtyskTVKeEnOtfqZD9DobXSquynfuKPD9Ia5r3+8lBrSjQ3wpBH5Cje6Zt5gODnzN6KgoOLiekZl7pmoT4e6hxcUHGgklQGD4gT1+FnaGrOQ4dTzBnFHZn9XKFyelX/vb4HP/BNqYFfT7NgwOAHROgkFIPKMaAlVbP99m3P3YyoUKtskrweZC7VHcwnq5PTAYd3s3Va6JlMWROA8la5/hxmcwgASjNk+jc8W1r3KZjSUps0o1BlbfBFWEdEIqBrS4SFDNJW5O7Up87uvxWCwV+jd8rVbLw/F2w66j3TxvVuvDEzQdD47KeiWFmkWZo93XmYluMN8CWK7x7cB4Vx4mOjftzVECN9R0Awd6guQHPx1JFOibeKYsla65staeRDVRAOnhiUeEhuXj7a7yypcgxBOyltprZZ7G/PovgprDaDwpzyUvJw9KfGbk1ooF8DWweXVjGxUTYvBle3EluT8owk2PNIAOffI2Jid9TY99//Lf7ua5yoBuRdWhKY9661wgKaNLgwQwB2njniNIpWr8grWjwMfps8nlVkyToBD/9VdijTqKhZ7X6iA2597FjOZE/xvTLMoY5BGPRgH0I7z2KpHOdx4UqAYFVSnLhJKcFxsCTU51KK6rBdgzLm8To/JLQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,38 +119,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 16 Sep 2025 08:20:14 -0600 Jonathan Corbet <corbet@lwn.net> wrote:
-
-> Andrew Morton <akpm@linux-foundation.org> writes:
-> 
-> > On Mon, 15 Sep 2025 09:36:32 -0700 Kalesh Singh <kaleshsingh@google.com> wrote:
+On Tue, Sep 16, 2025 at 5:56=E2=80=AFPM Andrew Morton <akpm@linux-foundatio=
+n.org> wrote:
+>
+> On Tue, 16 Sep 2025 21:50:51 +0100 Usama Arif <usamaarif642@gmail.com> wr=
+ote:
+>
 > >
-> >> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 > >
-> > lol.
+> > On 16/09/2025 17:01, Suren Baghdasaryan wrote:
+> > > Document new "accurate:no" marker.
+> > >
+> > > Fixes: 39d117e04d15 ("alloc_tag: mark inaccurate allocation counters =
+in /proc/allocinfo output")
+> > > Suggested-by: Andrew Morton <akpm@linux-foundation.org>
+> > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> > > ---
+> > > Based on mm-new
+> > >
+> > >  Documentation/filesystems/proc.rst | 8 ++++++++
+> > >  1 file changed, 8 insertions(+)
+> > >
+> > > diff --git a/Documentation/filesystems/proc.rst b/Documentation/files=
+ystems/proc.rst
+> > > index 1776a06571c2..17668f82ff1c 100644
+> > > --- a/Documentation/filesystems/proc.rst
+> > > +++ b/Documentation/filesystems/proc.rst
+> > > @@ -1014,6 +1014,14 @@ If file version is 2.0 or higher then each lin=
+e may contain additional
+> > >  For example if the counters are not accurate, the line will be appen=
+ded with
+> > >  "accurate:no" pair.
+> > >
+> > > +Supported markers in v2:
+> > > +accurate:no
+> > > +              Absolute values of the counters in this line are not
 > >
-> > x1:/usr/src/25> grep "Fixes.*1da177e4c3f4" ../gitlog|wc -l
-> > 661
+> > s/values/value/ maybe? :)
+>
+> That's OK as-is.
+>
+> > +              accurate because of the failure to allocate storage requ=
+ired
 > >
-> > we really blew it that time!
-> 
-> A few years back I made a list of the most-fixed commits in the kernel
-> history; unsurprisingly that one (I call it the "original sin") came out
-> on top:
-> 
->   https://lwn.net/Articles/914632/
-> 
-> Perhaps the time has come to update that analysis.
-> 
+> > s/storage required/memory/
+>
+> Sure.
+>
+>
+> From: Andrew Morton <akpm@linux-foundation.org>
+> Subject: alloc_tag-mark-inaccurate-allocation-counters-in-proc-allocinfo-=
+output-fix-fix
+> Date: Tue Sep 16 05:53:33 PM PDT 2025
+>
+> simplification per Usama, reflow text
+>
+> Cc: David Rientjes <rientjes@google.com>
+> Cc: David Wang <00107082@163.com>
+> Cc: Johannes Weiner <hannes@cmpxchg.org>
+> Cc: Kent Overstreet <kent.overstreet@linux.dev>
+> Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
+> Cc: Roman Gushchin <roman.gushchin@linux.dev>
+> Cc: Shakeel Butt <shakeel.butt@linux.dev>
+> Cc: Sourav Panda <souravpanda@google.com>
+> Cc: Suren Baghdasaryan <surenb@google.com>
+> Cc: Usama Arif <usamaarif642@gmail.com>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-Hah, thanks, that's a fun article.
+Perfect, Thanks!
 
-It's a shame it's so recent.  I do recall back in maybe 2002 a fresh
-young developer popped up with a massive rework of the IDE drivers.  I
-promptly took this into my tree because I was having a hate on the IDE
-drivers at the time.  omfg, what a disaster - this was the buggiest
-bunch of junk conceivable and it went away after a few weeks.
-
-I'm glad to say that the developer (email handle at the time was
-"haveblue") has become better since then.
+> ---
+>
+>  Documentation/filesystems/proc.rst |   10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+>
+> --- a/Documentation/filesystems/proc.rst~alloc_tag-mark-inaccurate-alloca=
+tion-counters-in-proc-allocinfo-output-fix-fix
+> +++ a/Documentation/filesystems/proc.rst
+> @@ -1016,11 +1016,11 @@ For example if the counters are not accu
+>
+>  Supported markers in v2:
+>  accurate:no
+> -              Absolute values of the counters in this line are not
+> -              accurate because of the failure to allocate storage requir=
+ed
+> -              to track some of the allocations made at this location.
+> -              Deltas in these counters are accurate, therefore counters
+> -              can be used to track allocation size and count changes.
+> +              Absolute values of the counters in this line are not accur=
+ate
+> +              because of the failure to allocate memory to track some of=
+ the
+> +              allocations made at this location.  Deltas in these counte=
+rs are
+> +              accurate, therefore counters can be used to track allocati=
+on size
+> +              and count changes.
+>
+>  Example output.
+>
+> _
+>
 
