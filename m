@@ -4,222 +4,180 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82A59CAC598
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 09:46:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2770CA0EE8
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 09:55:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BBD888E0007; Wed, 17 Sep 2025 05:46:10 -0400 (EDT)
+	id CBC168E0008; Wed, 17 Sep 2025 05:55:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B97398E0001; Wed, 17 Sep 2025 05:46:10 -0400 (EDT)
+	id C6D008E0001; Wed, 17 Sep 2025 05:55:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A5E0C8E0007; Wed, 17 Sep 2025 05:46:10 -0400 (EDT)
+	id B341C8E0008; Wed, 17 Sep 2025 05:55:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 89D4F8E0001
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 05:46:10 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2719B13B0A6
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 09:46:10 +0000 (UTC)
-X-FDA: 83898261300.25.67D8411
-Received: from TYPPR03CU001.outbound.protection.outlook.com (mail-japaneastazon11012056.outbound.protection.outlook.com [52.101.126.56])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 508D74000C
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 09:46:06 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=vivo.com header.s=selector2 header.b=pdE3oOvi;
-	dmarc=pass (policy=quarantine) header.from=vivo.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf27.hostedemail.com: domain of liulei.rjpt@vivo.com designates 52.101.126.56 as permitted sender) smtp.mailfrom=liulei.rjpt@vivo.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1758102367; a=rsa-sha256;
-	cv=pass;
-	b=lGocshG7PySkZiLf6otzs+mYgKuN3xcTnIFvDbr0/HO0xN0ai25OUcrqoeb8N0QyMObyXc
-	lBwY28369IxY3dqEE+RPi2v20/cafhXnWRN6MF4pGHLufkCcQUkQxeOpz9A3bF+tOMqgs9
-	S1a4cCoKzGjepmuSrxhNoMI1C4PQSYE=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=vivo.com header.s=selector2 header.b=pdE3oOvi;
-	dmarc=pass (policy=quarantine) header.from=vivo.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf27.hostedemail.com: domain of liulei.rjpt@vivo.com designates 52.101.126.56 as permitted sender) smtp.mailfrom=liulei.rjpt@vivo.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758102367;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9A3A48E0001
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 05:55:15 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 08CB6B9A9A
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 09:55:15 +0000 (UTC)
+X-FDA: 83898284190.02.F5A486B
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 7C386C0004
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 09:55:12 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=SY14dfm7;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CMxk7EMV;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=SY14dfm7;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CMxk7EMV;
+	dmarc=none;
+	spf=pass (imf22.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758102912; a=rsa-sha256;
+	cv=none;
+	b=F1EUn3udbqW7X8Vs056L5wXTIoUWnVVCwNx5/Hv3/WFb00eur4vBPIgd5eru1ZiA17RNnN
+	spPUCVGAiE1rzUwV6kUquhTy6qzwpkd7wpsQQQ1B8Uw4E+RY0vPlE1foPQXsdGCwYBFFKH
+	RQjTHOnM0hBn+CT2llGnr2pV5Hk+Chk=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=SY14dfm7;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CMxk7EMV;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=SY14dfm7;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CMxk7EMV;
+	dmarc=none;
+	spf=pass (imf22.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1758102912;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Jn4QX8ke10iA+NARvkVYIvqMWcIAl5zOZH0y0u7E35k=;
-	b=kMMEmh3V/MaNsC8hWrd4cRMYkL0BuQWZkq/1hmhjLgf7Ylbef/ixeQD8Lis60qy6XAUT7z
-	xotWuNNNyvVoRZvS49pNw6pFotwedOKBirAsLlS8z0MSjjgaohAHCev1VmCkgI3nFXkDYy
-	5ma0i69BABP2tvUZranQFJyX9+/67XQ=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eexx3WFXLif+ep+RJ2K2a2Qj2VQytmbugXJkakbPxItXpsaMOJCZnA5u5gCH0EZFvQXloHrfWYjhPQnAwuuHB0J9sG6KQgtzt3rBg8GJ8G9+5vIgbE8cw5aw+8wAhYuN1fyIMByookP3cdTrJz+xoJceS2uf3uw23NqbdJ4i4x7i8vQgIzSHq3w5aI8PyZRzFG1GLIkioNzrNNNVbLEMQd4HJe+8rMjhrDGVk7sBzi32wT5CCHn+kNm3cnrvgzn5nr8kAr5+7bvip0F/rffB4eTqr2EMEE6+64ZmIzBYntCZ9E1Uz8HlxF5ZedFwyb7EL01vBh7XU5UvsQiq8UEyMg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Jn4QX8ke10iA+NARvkVYIvqMWcIAl5zOZH0y0u7E35k=;
- b=ZiDF0gf6UhIUIxKYxMpdQjVHTpZgdPAFfDiRWI8a4c2FoYEG8fPvy4oYvdod4LEcCM01yJRsLk8nbQn0BchbjlhjTI+WcLFbfLmB78huuYQ+YUUrshZVmHjeJUY2BDzEUpt63F3Fc+hL1eEeSw2YuCyHKArTPAWX4CYX4/EzxXxycloR/LsZ7Fww5jpIr5WTGQ/L4HbwszQ7vL+qtQ4RTly/uySh0uOAIDp6rjMjWpuAzLaXg4Aob5i+CGaWidzbckuCtPd933iqi6HfOKKWEn+/bDqYCPzUKM70JOunzzHIWyasJxRtmu6mNNLrqV/mYEPBhrX5nfs33YZ+gNar7w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
- dkim=pass header.d=vivo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Jn4QX8ke10iA+NARvkVYIvqMWcIAl5zOZH0y0u7E35k=;
- b=pdE3oOviA0Bf6aN5UcvSulfW1hooEdJ0PhmkPnaClFsd4E+af51bbJvE56MAuXWjEdz5NMI42+x2pnwkpijyR7+O0fpkfARkfn7G4uBBenanpm9SnGJnR4a/fHd8G1Pj7+4NMS8qT2s1WjwVasGtB88Fql8bk1TQFpSzywjK7Ap0IML9AgIipcQij3hBI3UazIpcnfqu5s9CWzCSwza+2aWswMWdtjtVLESRNBCvQN6+VDjgCLkLj1zrjs2QwIUXLtQfTRWMkchyY8l6BTRvuDyVGnurDLvmjPrm5CJixRo38riyH2qAOa5XCEKnyhwVL2caVl4U+uEGdrIrUjOGvA==
-Received: from SEZPR06MB5624.apcprd06.prod.outlook.com (2603:1096:101:c8::14)
- by PS1PPF97BB1365E.apcprd06.prod.outlook.com (2603:1096:308::25e) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9115.19; Wed, 17 Sep
- 2025 09:45:59 +0000
-Received: from SEZPR06MB5624.apcprd06.prod.outlook.com
- ([fe80::e837:10e3:818e:bdfd]) by SEZPR06MB5624.apcprd06.prod.outlook.com
- ([fe80::e837:10e3:818e:bdfd%5]) with mapi id 15.20.9115.020; Wed, 17 Sep 2025
- 09:45:59 +0000
-Message-ID: <d31a3880-dc7c-4224-b248-085941431abc@vivo.com>
-Date: Wed, 17 Sep 2025 17:45:45 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v0] mm/vmscan: Add readahead LRU to improve readahead
- file page reclamation efficiency
-To: Yuanchu Xie <yuanchu@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Wei Xu <weixugc@google.com>,
- David Hildenbrand <david@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt
- <shakeel.butt@linux.dev>, Kanchana P Sridhar <kanchana.p.sridhar@intel.com>,
- Johannes Thumshirn <johannes.thumshirn@wdc.com>,
- Yosry Ahmed <yosry.ahmed@linux.dev>, Nico Pache <npache@redhat.com>,
- Harry Yoo <harry.yoo@oracle.com>, Yu Zhao <yuzhao@google.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Usama Arif <usamaarif642@gmail.com>, Chen Yu <yu.c.chen@intel.com>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Nhat Pham <nphamcs@gmail.com>, Hao Jia <jiahao1@lixiang.com>,
- "Kirill A. Shutemov" <kas@kernel.org>, Barry Song <baohua@kernel.org>,
- Ingo Molnar <mingo@kernel.org>, Jens Axboe <axboe@kernel.dk>,
- Petr Mladek <pmladek@suse.com>, Jaewon Kim <jaewon31.kim@samsung.com>,
- "open list:PROC FILESYSTEM" <linux-kernel@vger.kernel.org>,
- "open list:PROC FILESYSTEM" <linux-fsdevel@vger.kernel.org>,
- "open list:MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)" <linux-mm@kvack.org>,
- "open list:TRACING" <linux-trace-kernel@vger.kernel.org>
-References: <20250916072226.220426-1-liulei.rjpt@vivo.com>
- <CAJj2-QHy3rTSPpE5uyu4gW9dWe1E5Q28P_N-VX2Uo+xBFauxdw@mail.gmail.com>
-From: Lei Liu <liulei.rjpt@vivo.com>
-In-Reply-To: <CAJj2-QHy3rTSPpE5uyu4gW9dWe1E5Q28P_N-VX2Uo+xBFauxdw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SI2PR01CA0051.apcprd01.prod.exchangelabs.com
- (2603:1096:4:193::6) To SEZPR06MB5624.apcprd06.prod.outlook.com
- (2603:1096:101:c8::14)
+	bh=jDMDJ1YRYJ021yCvgShr7WT3fYONkSGJfo3wVVSz2Pk=;
+	b=mmXlvt+1QNCbA//2ja9GyzrHUQUFrZFGpVOr+KohSsgJqrXXEXb6EamNZDxYb6DWUTxXV4
+	Koi3adMruLIsjUjw+93xhtdvVbiHOuJZVVzczKmZLk1l7xyrweVKYJ3Vt5eRK3nmvbdHEw
+	5OP+sgKJJrPuVyk5hBtUX1ZOjoeOlnc=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 8A5AE220F2;
+	Wed, 17 Sep 2025 09:55:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1758102910; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=jDMDJ1YRYJ021yCvgShr7WT3fYONkSGJfo3wVVSz2Pk=;
+	b=SY14dfm7OHlvUPij+l2PSHFHiu1atOnGFXcD7b4612B7JbbgmC9tJ8TnYwJaCG75maIbGh
+	Gz1JctR1j9E5RSq8bWoZY+fUrHml3gtirnZMn52Lskg7dFqIEx6FHHc6CPTncylMMhggM8
+	nBiUujMOkb3F0hTI27HKjjD5kw8T1Gw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1758102910;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=jDMDJ1YRYJ021yCvgShr7WT3fYONkSGJfo3wVVSz2Pk=;
+	b=CMxk7EMVqabWgrnVYbfOUd5rFE1oMOjZ2PpM7CG5EY4YpFp4LVRCZ+ODTchVZYsJLkpJV0
+	kXoQegng0ii/UaDw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1758102910; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=jDMDJ1YRYJ021yCvgShr7WT3fYONkSGJfo3wVVSz2Pk=;
+	b=SY14dfm7OHlvUPij+l2PSHFHiu1atOnGFXcD7b4612B7JbbgmC9tJ8TnYwJaCG75maIbGh
+	Gz1JctR1j9E5RSq8bWoZY+fUrHml3gtirnZMn52Lskg7dFqIEx6FHHc6CPTncylMMhggM8
+	nBiUujMOkb3F0hTI27HKjjD5kw8T1Gw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1758102910;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=jDMDJ1YRYJ021yCvgShr7WT3fYONkSGJfo3wVVSz2Pk=;
+	b=CMxk7EMVqabWgrnVYbfOUd5rFE1oMOjZ2PpM7CG5EY4YpFp4LVRCZ+ODTchVZYsJLkpJV0
+	kXoQegng0ii/UaDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6FB55137C3;
+	Wed, 17 Sep 2025 09:55:10 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id w3avGn6Fymj0KQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 17 Sep 2025 09:55:10 +0000
+Message-ID: <bbda8c25-b575-4e98-b1ae-b103c6598d38@suse.cz>
+Date: Wed, 17 Sep 2025 11:55:10 +0200
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SEZPR06MB5624:EE_|PS1PPF97BB1365E:EE_
-X-MS-Office365-Filtering-Correlation-Id: cb0e5ca9-e6f7-4572-735c-08ddf5cf0192
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|42112799006|376014|1800799024|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?bk9tclZFWTZSR3NORTVDSVc4QmxBNk9qb3c3MjZJTWxTb1dPM0lBUTh6cUxJ?=
- =?utf-8?B?bEwxbEJYcm80WURVaWRJLzRjK05TeGhVZ0xTZGJ1c0Q1b2VqbFdObDJxMmpX?=
- =?utf-8?B?QVBmSHpVWCtRdmNLYnovSmxKc1dHdXlQOUdqeVdwSGsyc052U2FEUGNhOVYz?=
- =?utf-8?B?QnBSdUZqSmozQlk5VzlrYityWVZFVEE2MjBBa215Z1RaUHFRcis4NmRUVDls?=
- =?utf-8?B?TXhzUEwybGkydEZpRWcyYVBPQjFVaFVPNUNrdm9CKzN1b0FHYnFiWTlLS0ZW?=
- =?utf-8?B?cDREMC9wWlhjQnE0WWxFOTNLRUhDamVjdk9jVHVXeFZZV3N4Y2JlOS85S1lS?=
- =?utf-8?B?MzRWdXp1SDkxMTVjU01OT1dBaktVeVVZZGxBVnVGUlVUa281eHdDb0JXYUtZ?=
- =?utf-8?B?Q2k0K3d4a1paMXpBUUpWZ3ZJOVo0dStnaEhUK3dPZFBCQ3pzUm1YM0tNcVRr?=
- =?utf-8?B?ZUtaOVluNVFScXZTbXFNV0dmZm9oN0t0WU9tOVc1L21wMVhHSWJxVzh3NWY4?=
- =?utf-8?B?SWtzS1pYK1FoWGVzUVRkVWtpRndON1VXMzY4RksxYWVFTmZlWE1pYUVuc0lQ?=
- =?utf-8?B?T2x1Q2J5amJYcm9NRDFKdmNGK3k4d2pxTHBqSUxZbUgwZHFKcUJOT2NiWll2?=
- =?utf-8?B?YmFpWEx2RmxjMkJtT3Yrekp2bG5ybFhXMGNraUxhM041STBQZE9ZTTQ1VTBJ?=
- =?utf-8?B?MzFsZmh3aGVhT3llZmM0blNkTlUvTlhKVnhSb2RFSkFCWjVCdFhXdkN5akRj?=
- =?utf-8?B?SFFSaG1kYlRPRURFUFowbnE1K3kybHlvZHBZcDF4K0RyYUdJL1U1WmJsSlhC?=
- =?utf-8?B?NTNCMDVzOGVzeWs2VG5pdU90TllLd1hjT2RqcTFoY1VSbkdBd3h0RWU0eUY1?=
- =?utf-8?B?OFVIRjcxMENaY1FLbEpsaDhYMCtaUHNnMnE4OFRoRFlHNERFRmVndWd6Q0tC?=
- =?utf-8?B?QUNNQjBWdXdjRVRGNlZFMnRIclZGcDkyZjRQMS85Zkk5bXI0Q2pjTWM0eE04?=
- =?utf-8?B?SnF4amZBejZzMGdPaTNPRENzdTc1azU4SVVIVTRGTHo4MjlJTjZ0Nk9SWDZl?=
- =?utf-8?B?MXVtVER2QnFhemZRdEJTemhHcEpCVDNxU3plaXVNSEVwNHM1VUxhd0hLUGVa?=
- =?utf-8?B?dWlSL1Ria1FIcjZ1QjRQbEZKc3Z3ZS9wczhLOXd0V3hlc3dtcGV5ekJHaWFh?=
- =?utf-8?B?cUdOdDdPaTFhS3hjVkZxa1FWb2NEdVZIemVkU2tyMDRWVEpueUEzL1Arb04x?=
- =?utf-8?B?UWd0MWErUHRBaEFQN1ovQkpqUXJLMTRPYXFLaDRSVlZLNzVjWWZDTkIwdFhm?=
- =?utf-8?B?TUpKUmtCTkNsM0xuc1ZldTlYUEVYMzU0OGczTzRxODZQalBlTzBabVFONjJy?=
- =?utf-8?B?bjkrWDQ0UGplZWkxbjdockRxMTc3eHB2MUErbnBKVFFsUm9WR2NrNlFaUlY1?=
- =?utf-8?B?MDY0N2FsNDZhbnhMQ2MzaGJ2WDhYUm02T0tzaExpd25Fby9jRVQ0dDJrU3BQ?=
- =?utf-8?B?bCt5dDdUQWYyNXp5QktoY3RXbGZ0eis1UUlBQkVaU05NSFRZK25JdG41YVhS?=
- =?utf-8?B?RDRpOC9WdHhYZ2xlUXAzbWxHK3EwWUpWY0JUek9mRG5ZZDNid3d0aWJQS29Y?=
- =?utf-8?B?RVZRSUZuTlkzK09NV0hMWFpxRWRlTWdJQlFtY1JNUFl4MTVkK2YrWVhjUUph?=
- =?utf-8?B?Unl5aWdwUVdLUThndHdMNHMvem04R3g4cXNncWkxRVJNbk1XQ0FKK3RMS0Jr?=
- =?utf-8?B?NC95ZTdjdVVuME51NFlkeWNVYkxTN1VWT29hZDNrUUFKMGFERktqL213R1Yx?=
- =?utf-8?Q?Lt5CAcS17bmYMZXP4KTGQmeVVyqYTwDPdOdJg=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SEZPR06MB5624.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(42112799006)(376014)(1800799024)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NXM4U0NIVlN5Ry80NHNDUnZQQm9DdXEvVFIveXFRV2EzYkU0dmlhZnhKUGd2?=
- =?utf-8?B?WFdYcTNiS0hhUWFJNm1FbUV5NW5GTHR6bGFqR1lVOG9tZ1pUWVBQUll6S20y?=
- =?utf-8?B?WXd1aURRWXJhcUQ4UCsyQnN3ekc0Z2JGSUdBV0xsZ2duT2RjVzE3cnBHOS9R?=
- =?utf-8?B?NjQrdTFnUDVuNEVKVEJhZFdhUHNFalliYkJ2dUZNYXV1ZEt6a1FBZDZqUHhK?=
- =?utf-8?B?SThOL2VqWHI0UGM4KzBWSmhvR0YvVkZvdnJXUFdyUTB5WHNzaDh6VlZMcTYw?=
- =?utf-8?B?NFlDZmhid2pOSWsvS1hEZXBHb2o0NThDRS9KbmhzWE1uRy9wRFdUK1FrMVVr?=
- =?utf-8?B?RHk3UmVYQXlnSHRBaUd6YWFuY09lK2Rqc0F2RTgzbTRYVXRTLzY0a3QvQm82?=
- =?utf-8?B?K2hLd0lxc3M5WW56ZTFRTVlKOU52Sk5XMzZGQTFwdTZlVjRWaEdrQzc4NTRQ?=
- =?utf-8?B?N1RDRDBLY1dHS3NlMktYMitIZno4L09SdEhKOFArVExGaXRjSytvQmNnL04x?=
- =?utf-8?B?VnQvT0F6MW44V3hMUnNTRVRVZlZld2J5WVZmZTZTQ3Q5c0tBempiUTJwZits?=
- =?utf-8?B?M1JDbVcxT1dXclRwRTJqN2tBTXJCck9lZmZvbUwzMjNXMHRld3ZBNUMrZ1Z5?=
- =?utf-8?B?MUZGU3dzVVBNS3pOcGZQRXJEdWZIeS8zc01wQlAxUmsrVTgzRW1kTFl0R1pS?=
- =?utf-8?B?Sk50TTJvRDFibWtaZ2ZSNjd0TnZyenJHek5kc3dUdHJlMHJjbERTWlFrQ3lM?=
- =?utf-8?B?UjBhelBmbjVXQ1VCUFc2eWNiUWVla2pJbmJFRHFPWEoyTkZFZEY2YkUxYlVw?=
- =?utf-8?B?cFN2cUcyMWlORGhnQnlDOEZzcHFraWdFRWtKZVg5T2p2V0hjTGsrRm1jTzZG?=
- =?utf-8?B?c0NzeDUzL2kwdENvWDdmbS9zUEduNU85WWsxM0hrV0t0eUQ5WFNBQ0k5RldW?=
- =?utf-8?B?ZFlzR2xwM2VNcm1GTjdFY3dUZ1Z6eXR3a01DZTFsU1FaRWJSa0RyNkJHTkd4?=
- =?utf-8?B?MnZOaERzcXk2NGs4UkJEODdWcG9QNWs0eEZTc0dPOHM1c1hPWmhONXZtREZt?=
- =?utf-8?B?Y1g2T0t0dmZmTFNTNlgxb1N0YlR1WjNIRlhOR29uaHdrV3lpOGI4dU0rZjNZ?=
- =?utf-8?B?bmZBVWtYUjZUcnA5OVZDUFJoYUtKRUQwUUg1Vmc1RFp2WVFkdk9pQSsyRy82?=
- =?utf-8?B?VENzL0RlZHZTSmV4T1pDYTBsWnNEdURiQlRQdWJQZG5Fc2h1WEg4NGhNK1Fh?=
- =?utf-8?B?alozYmdvNEdGUXhQenNIWGVWVHJUN1JwZ2E0eGRmUXcvYWNjLzh1MnpBOXln?=
- =?utf-8?B?eXI0V0F6QU1KWnh3U1BxVEJiODVjamhNbGlObkdDUExEMkNwVWtaMWtvL1JS?=
- =?utf-8?B?RjJEN1d6ZzhybC9OdHBSOFQ2eTRIT0kzTGhYeTF4bW92b1h4MEZzRmlvRDhQ?=
- =?utf-8?B?NDVvNnlkbUdyaUxWVzRqaENEalRrekRkQWpDNzBoUjEwVGlDanQ1c1JtNDNn?=
- =?utf-8?B?cXFvbEZMbW9kdXM1M0l0RVV1Z2w1ckl2cEFxcmFkTHhleG1Tb0RVb2RaaGh4?=
- =?utf-8?B?WXVLZllGYzlPMGRyenpDWUVaVk1MQ0FaVVdybUU1QThnUExaVnBVOWQvTlFJ?=
- =?utf-8?B?QllUQmEyYkpnRS9SK2cvU1NHRDVycmdlMy92Nk1reGIyTGtvc1FhU1dKcDJP?=
- =?utf-8?B?cVdIY1pWaTJvNWpNNHRYUlFNSnNhMm5PcktNc1d5UDN5WHV5U3lPTlFhMHAv?=
- =?utf-8?B?N05LR2dGRlpabUtFYzhFVUM1bUs4UitlZEtSYXV5TWRTOVV3QlFqM0RHc2t2?=
- =?utf-8?B?QzJnUFdxaCtuZk1uZmJhSGloWGMvTHZKKzZTbGxoT25BYldKeE8ybmRHNmg1?=
- =?utf-8?B?VEN5VFQwNWRFaUNCTkplcTZ4ZVhWUmlPUGtQZTQ4R3FsN0RIT0NlS3FMeHl0?=
- =?utf-8?B?c2ZTMDdpckw4ODdYR0x3Z2JoSlNHYTlSUFE0WGxqUTA4eHJ4bndWWGNhNzZC?=
- =?utf-8?B?b0Z4bzNUQlREdEdPSllycjZSaTc0MEJCdTdrR05QbXUwZFRrbEduS210eGsy?=
- =?utf-8?B?T2svVjFoS255VXJyMm95YXlBNFhEb3E3OENqaVMwSXFIMDNzakpGcnkvcGRn?=
- =?utf-8?Q?/sicCINg1z+8twRExpxB1aKZb?=
-X-OriginatorOrg: vivo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cb0e5ca9-e6f7-4572-735c-08ddf5cf0192
-X-MS-Exchange-CrossTenant-AuthSource: SEZPR06MB5624.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2025 09:45:59.3011
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xuvpdBUDMG3OTTWlgjfEppFntXnJ3nQj+5yoJvec1t/Wjp01WYAHCEmyopnS7RbBAtkjYBxO3z1tiz5CSG4tDA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PS1PPF97BB1365E
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 04/23] slab: add sheaf support for batching kfree_rcu()
+ operations
+Content-Language: en-US
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Suren Baghdasaryan <surenb@google.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Uladzislau Rezki <urezki@gmail.com>,
+ Sidhartha Kumar <sidhartha.kumar@oracle.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, rcu@vger.kernel.org,
+ maple-tree@lists.infradead.org
+References: <20250910-slub-percpu-caches-v8-0-ca3099d8352c@suse.cz>
+ <20250910-slub-percpu-caches-v8-4-ca3099d8352c@suse.cz>
+ <aMpxnACqmsQl-lp0@hyeyoo>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <aMpxnACqmsQl-lp0@hyeyoo>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Action: no action
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 508D74000C
-X-Stat-Signature: 9qcjjyb9qjn1f6euq1ujmum5s9ieix5h
+X-Rspamd-Queue-Id: 7C386C0004
+X-Stat-Signature: nay166r3ccsfkwms99wad3s4zfq8ecfk
 X-Rspam-User: 
-X-HE-Tag: 1758102366-820294
-X-HE-Meta: U2FsdGVkX1+C7MZ52Fb/eeEJ83o69//kr5GJHz8SzT3AKr8vVoPPRZ9OJRUyxzZUrX4BJNwrmjRFw6bmD+EAMV25V6NejhzVfX9Bn/sUgl8x+1FRbee0IcffdH2u6mPjWFL75iOPb2BEokM4WFCwuKscEw+gw5G/9MpKKkvtt3m+KmLdb53W4gktyaW/5CTqxTWo2g2dOfAESMpcXnJvZde1Ilem+sFuec19Hcg3Cg+5nMZPAJbVxZFmQOVXiP2PDzWFFyNq1LtLf00DRz5XJ0Et70kI/zXr+aO5nBN228HvsmZTr8qnNfq2RHC4ARJoooEnFk54isBgRDjpJdojCXX7fn6aUMr0O2S89haUciAtgaM5Tkkma9E8+4hg/XHingPj0fkCpcKUn30OhFoNvlztZYNvF+9jvNolzCqwPNJGpOjZ2SIWWaYKd0gIveyVsnrRvBYg7MykE9RWP2qJY4syUJ03riWWVhLXNkjoK0BIxbu5qG5P3G5EPqGasCiHbYabWORlqCcAruU7vt3KeiNxLlndw679zywSN+c6UATeMErQDxXHDuBqBpsz1D4mBGzVKMK+2W/YIXVytR+C/m/YOx8dauwKi9Vb2/KV4/NaiJooXJ0iySdjYJ3+YbtaMca13GXX9gwfLmc3c6Uq9QZRzLmUtmNVj1NADbSmrkomUuLfzulCpJs8VGLaz91s6twzQSoM5fU5lVF9bhGzP7yaU00DzTli5Vl5wvNKL0txbbAbDyVTpq35fqvIH6+jQwtHGz0AFVzZutmH4u5qnEpTTCOkHMqA2WhriKTR4Riq+SXhmb1zeCQ4vbINQLgCdoA692Cr+vZudGaud1bpR7ng1WHcJlJ1pIDMUXLYh0xMly7SEToydkJ8qAaBhT54r0wQOp1EmPCpLdswMQvqfJIOcu/1L+gK8GpTc62Nu051viIipa8vMPCJKX4Y6YWNjDc5tcwm2fZ5wOZZCmj
- 0BGsfAI4
- Q8doVGxfgScRmL8Q/NzUKQeAoxXdu7uhv8zhERDkmpxPpJpiqh21wT7hdMTYXW/f/a8W2G+eJ7rmJ3u4Wkinw2cSm7ZfluMhGgESPzroXQv0BYAUAp6SZGYE5sKJkYT3m/XJ1DlQ7Dy/1Y7I/2p7AuXQzI191RhdC2+z+MX6F97MzmrymJdVt2foImo5rOiqK3Fj4KWqU4JiMSUTjVx1X1zW8ZgbsSMfrsWgJ0l58BIGXkx2NLZgfQYDOKqWX+mKBW4FW30DXtlZ+oukcV/SXPc+1BcHLJ7UnDNnZIoI7KBOj/xPCGBEdY5fzCXZlzOsKUOX+owDjlMIoy6yfJzBgV/mV89IHMs5Tgb9eqf96Be6JqrtFkdzcrBOv0SwbObZDIZF/kehj/KPhdkmNu8clu+udxiLcvJ94xXe1xaWKMo2J+Dj3ZiLuCkDrl7A5yPRxDkM8DTFcqthTUHj0thvB4SKdR6/nT1cxQgH2ADOSYnuUZcevkgkrVgHs8+YioEpZZk71fiL+HjFTB/nPu+3xpmtyjwkoTipfPLh1cUWH/qM7/+QK1NoP0CsHPW2l5fdPpmJPZpBFyCrNwDLc5138WghbRUOU0isoz9+U1xpYAcWxCf7+eiNn8EBPZMs8zBvloQcjd69J4VUwAz1bscaA4GtZYMG/0Eh98jvGU256fyO5w+aWQeKbR7PKJmLgTMXtFkhMItG1TI87W/D5nPMTRbRX+tSbu4WKWkU+c3RD4udSBmBAyH1ur+YgrsOhX7O7YVp3wou54XzpjE8=
+X-HE-Tag: 1758102912-859425
+X-HE-Meta: U2FsdGVkX19l9YdG7N64kqp5uL+tK5wp7CQtATuEqV7yOioDE40Yhg13bkjO11QpACmsuhfugXsOHBGM96TaBtuwMDfTDaYPZfa2xfGB31rUzAh2fTc0P2RQKrGGUk8bVv8Mr0ps49rHXE7eOxUWDiZ7YPCfdgOYlvPRUniznIWu4cDC4KACmsaZjQ/YpluqvjEh053bAhv9nzI3i01Ud9Dh27lu5iJISqPLlEpV+tTXVghu84u79NP1mdjmMV1uVfqqTDgZVH63lKPjOa0b/G9eVV2UhhHEIfgRdOnOf+yALT5OfOFGrC79mMNryafsM4INMPy2Vz+gnd+QXP6JS7WNjMnFaN1Alh3f4Vx3SIXxSyRGsOEldDVLCXQz2claxbPWb1+B6CvtcJeU+Y6PrMwPUZ+wP0MzzEmT/eyYKyI9ksC1f1Hve2EuoipjKmpZWnMM2XCBLF+fmdlZJekyWbLOwVONQvyDuJa17nAf3VmQVCaL7nV+20mRNH3mv4azEHiIHz3hC8tuGFd3DzwGEsUB3eGdA7PBIv2vhmHW03WgoCL2IS7lKQsU5ACUAfgJDj9XxZK6Gny5jydbNzZTzsUX6IAoxODK68/h2MrGZsoVwUMaPY2mBm54kwIf2Zihiq8OKj7/HmSG1HXRk5UopL91ard/ePBnVUDDE0hcNDYb5kOl4R7IrvBdPwvTIIhRQQ84yllSg3Jpbv7DYJKzu23S2Lwc0tgIUte7P7oPTe5/REjbMxQ1Ef06vMLKDD65ijun/vUFPEQ98zqVJL/kO+2YhBQpxkRZtR8YNRjINR/cIIUheDhc2sAteO99Z3zHqyK5RviXv4vcUe/EOPG6x6/UiAK+cOfjTgA7UmTDOmuRdM9gfXR9UckfYhtTtoETvCWqdJwiZ3uR60wDoOMxf3OHZQkjYQfZAPNNNg+QzSgZRtmLpo5SUfQFuKpF//gcOXB+UWcXIKU16VyWmS+
+ 6csAbIyA
+ N+LUdtbVDEGUS4N82dE5sqP6ws3aGflDzDwafYkTvIFFA3xRqeTqUssB4gAqgpkcIT/u0Hpj4FeyIRb9H0VZv3X73LjrXT2FWpQ6ftOEKWDoGYdgbk8+0ZrfDLspwYi7WN02WU2qgwAKT4A6dOu5Yd4+jXC6oejqw7b76mNd4U+c/0gS89m3ZeKZDg5xeie/QB7uR4n6mL7DhWKVmFGFmxoeQhFMhmZc+hGJ/qr1NMGL4DNsvDHDCptS8pDctVW50BKhfXuQhOo40NW58y3TSCg5WW8+k6nYkLdClJu8gQPMIGz/wPkBBBoYqtSQur6hvdK2E3Zdri6dXZCI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -228,193 +186,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-On 2025/9/17 0:33, Yuanchu Xie wrote:
-> On Tue, Sep 16, 2025 at 2:22 AM Lei Liu <liulei.rjpt@vivo.com> wrote:
->> ...
->>
->> 2. Solution Proposal
->> Introduce a Readahead LRU to track pages brought in via readahead. During
->> memory reclamation, prioritize scanning this LRU to reclaim pages that
->> have not been accessed recently. For pages in the Readahead LRU that are
->> accessed, move them back to the inactive_file LRU to await subsequent
->> reclamation.
-> I'm unsure this is the right solution though, given all users would
-> have this readahead LRU on and we don't have performance numbers
-> besides application startup here.
-> My impression is that readahead behavior is highly dependent on the
-> hardware, the workload, and the desired behavior, so making the
-> readahead{-adjacent} behavior more amenable to tuning seems like the
-> right direction.
->
-> Maybe relevant discussions: https://lwn.net/Articles/897786/
->
-> I only skimmed the code but noticed a few things:
->
->> diff --git a/fs/proc/meminfo.c b/fs/proc/meminfo.c
->> index a458f1e112fd..4f3f031134fd 100644
->> --- a/fs/proc/meminfo.c
->> +++ b/fs/proc/meminfo.c
->> @@ -71,6 +71,7 @@ static int meminfo_proc_show(struct seq_file *m, void *v)
->>          show_val_kb(m, "Inactive(anon): ", pages[LRU_INACTIVE_ANON]);
->>          show_val_kb(m, "Active(file):   ", pages[LRU_ACTIVE_FILE]);
->>          show_val_kb(m, "Inactive(file): ", pages[LRU_INACTIVE_FILE]);
->> +       show_val_kb(m, "ReadAhead(file):",
-> I notice both readahead and read ahead in this patch. Stick to the
-> conventional one (readahead).
->
->> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
->> index 8d3fa3a91ce4..57dac828aa4f 100644
->> --- a/include/linux/page-flags.h
->> +++ b/include/linux/page-flags.h
->> @@ -127,6 +127,7 @@ enum pageflags {
->>   #ifdef CONFIG_ARCH_USES_PG_ARCH_3
->>          PG_arch_3,
->>   #endif
->> +       PG_readahead_lru,
-> More pageflags...
->
-> b/include/trace/events/mmflags.h
->> index aa441f593e9a..2dbc1701e838 100644
->> --- a/include/trace/events/mmflags.h
->> +++ b/include/trace/events/mmflags.h
->> @@ -159,7 +159,8 @@ TRACE_DEFINE_ENUM(___GFP_LAST_BIT);
->>          DEF_PAGEFLAG_NAME(reclaim),                                     \
->>          DEF_PAGEFLAG_NAME(swapbacked),                                  \
->>          DEF_PAGEFLAG_NAME(unevictable),                                 \
->> -       DEF_PAGEFLAG_NAME(dropbehind)                                   \
->> +       DEF_PAGEFLAG_NAME(dropbehind),                                  \
->> +       DEF_PAGEFLAG_NAME(readahead_lru)                                \
->>   IF_HAVE_PG_MLOCK(mlocked)                                              \
->>   IF_HAVE_PG_HWPOISON(hwpoison)                                          \
->>   IF_HAVE_PG_IDLE(idle)                                                  \
->> @@ -309,6 +310,7 @@ IF_HAVE_VM_DROPPABLE(VM_DROPPABLE,  "droppable"     )               \
->>                  EM (LRU_ACTIVE_ANON, "active_anon") \
->>                  EM (LRU_INACTIVE_FILE, "inactive_file") \
->>                  EM (LRU_ACTIVE_FILE, "active_file") \
->> +               EM(LRU_READ_AHEAD_FILE, "readahead_file") \
-> Likewise, inconsistent naming.
->
->> diff --git a/mm/migrate.c b/mm/migrate.c
->> index 9e5ef39ce73a..0feab4d89d47 100644
->> --- a/mm/migrate.c
->> +++ b/mm/migrate.c
->> @@ -760,6 +760,8 @@ void folio_migrate_flags(struct folio *newfolio, struct folio *folio)
->>                  folio_set_workingset(newfolio);
->>          if (folio_test_checked(folio))
->>                  folio_set_checked(newfolio);
->> +       if (folio_test_readahead_lru(folio))
->> +               folio_set_readahead_lru(folio);
-> newfolio
-Understood—I'll revise accordingly.
->
->>   /*
->> @@ -5800,6 +5837,87 @@ static void lru_gen_shrink_node(struct pglist_data *pgdat, struct scan_control *
->>
->>   #endif /* CONFIG_LRU_GEN */
->>
->> +static unsigned long shrink_read_ahead_list(unsigned long nr_to_scan,
->> +                                           unsigned long nr_to_reclaim,
->> +                                           struct lruvec *lruvec,
->> +                                           struct scan_control *sc)
+On 9/17/25 10:30, Harry Yoo wrote:
+> On Wed, Sep 10, 2025 at 10:01:06AM +0200, Vlastimil Babka wrote:
+>> +/* needed for kvfree_rcu_barrier() */
+>> +void flush_all_rcu_sheaves()
 >> +{
->> +       LIST_HEAD(l_hold);
->> +       LIST_HEAD(l_reclaim);
->> +       LIST_HEAD(l_inactive);
->> +       unsigned long nr_scanned = 0;
->> +       unsigned long nr_taken = 0;
->> +       unsigned long nr_reclaimed = 0;
->> +       unsigned long vm_flags;
->> +       enum vm_event_item item;
->> +       struct pglist_data *pgdat = lruvec_pgdat(lruvec);
->> +       struct reclaim_stat stat = { 0 };
+>> +	struct slub_percpu_sheaves *pcs;
+>> +	struct slub_flush_work *sfw;
+>> +	struct kmem_cache *s;
+>> +	bool flushed = false;
+>> +	unsigned int cpu;
 >> +
->> +       lru_add_drain();
+>> +	cpus_read_lock();
+>> +	mutex_lock(&slab_mutex);
 >> +
->> +       spin_lock_irq(&lruvec->lru_lock);
->> +       nr_taken = isolate_lru_folios(nr_to_scan, lruvec, &l_hold, &nr_scanned,
->> +                                     sc, LRU_READ_AHEAD_FILE);
+>> +	list_for_each_entry(s, &slab_caches, list) {
+>> +		if (!s->cpu_sheaves)
+>> +			continue;
 >> +
->> +       __count_vm_events(PGSCAN_READAHEAD_FILE, nr_scanned);
->> +       __mod_node_page_state(pgdat, NR_ISOLATED_FILE, nr_taken);
->> +       item = PGSCAN_KSWAPD + reclaimer_offset(sc);
->> +       if (!cgroup_reclaim(sc))
->> +               __count_vm_events(item, nr_scanned);
->> +       count_memcg_events(lruvec_memcg(lruvec), item, nr_scanned);
->> +       __count_vm_events(PGSCAN_FILE, nr_scanned);
->> +       spin_unlock_irq(&lruvec->lru_lock);
+>> +		mutex_lock(&flush_lock);
 >> +
->> +       if (nr_taken == 0)
->> +               return 0;
+>> +		for_each_online_cpu(cpu) {
+>> +			sfw = &per_cpu(slub_flush, cpu);
+>> +			pcs = per_cpu_ptr(s->cpu_sheaves, cpu);
 >> +
->> +       while (!list_empty(&l_hold)) {
->> +               struct folio *folio;
->> +
->> +               cond_resched();
->> +               folio = lru_to_folio(&l_hold);
->> +               list_del(&folio->lru);
->> +               folio_clear_readahead_lru(folio);
->> +
->> +               if (folio_referenced(folio, 0, sc->target_mem_cgroup, &vm_flags)) {
->> +                       list_add(&folio->lru, &l_inactive);
->> +                       continue;
->> +               }
->> +               folio_clear_active(folio);
->> +               list_add(&folio->lru, &l_reclaim);
->> +       }
->> +
->> +       nr_reclaimed = shrink_folio_list(&l_reclaim, pgdat, sc, &stat, true,
->> +                                        lruvec_memcg(lruvec));
->> +
->> +       list_splice(&l_reclaim, &l_inactive);
->> +
->> +       spin_lock_irq(&lruvec->lru_lock);
->> +       move_folios_to_lru(lruvec, &l_inactive);
->> +       __mod_node_page_state(pgdat, NR_ISOLATED_FILE, -nr_taken);
->> +
->> +       __count_vm_events(PGSTEAL_READAHEAD_FILE, nr_reclaimed);
->> +       item = PGSTEAL_KSWAPD + reclaimer_offset(sc);
->> +       if (!cgroup_reclaim(sc))
->> +               __count_vm_events(item, nr_reclaimed);
->> +       count_memcg_events(lruvec_memcg(lruvec), item, nr_reclaimed);
->> +       __count_vm_events(PGSTEAL_FILE, nr_reclaimed);
->> +       spin_unlock_irq(&lruvec->lru_lock);
-> I see the idea is that readahead pages should be scanned before the
-> rest of inactive file. I wonder if this is achievable without adding
-> another LRU.
->
->
-> Thanks,
-> Yuanchu
+>> +			if (!pcs->rcu_free || !pcs->rcu_free->size) {
+> 
+> Is the compiler allowed to compile this to read pcs->rcu_free twice?
+> Something like:
+> 
+> flush_all_rcu_sheaves()			__kfree_rcu_sheaf()
+> 
+> pcs->rcu_free != NULL
+> 					pcs->rcu_free = NULL
+> pcs->rcu_free == NULL
+> /* NULL-pointer-deref */
+> pcs->rcu_free->size
 
-Hi， Yuanchu
+Good point, I'll remove the size check and simply pcs->rcu_free non-null
+means we flush.
 
-Thank you for your valuable feedback!
+>> +				sfw->skip = true;
+>> +				continue;
+>> +			}
+>>
+>> +			INIT_WORK(&sfw->work, flush_rcu_sheaf);
+>> +			sfw->skip = false;
+>> +			sfw->s = s;
+>> +			queue_work_on(cpu, flushwq, &sfw->work);
+>> +			flushed = true;
+>> +		}
+>> +
+>> +		for_each_online_cpu(cpu) {
+>> +			sfw = &per_cpu(slub_flush, cpu);
+>> +			if (sfw->skip)
+>> +				continue;
+>> +			flush_work(&sfw->work);
+>> +		}
+>> +
+>> +		mutex_unlock(&flush_lock);
+>> +	}
+>> +
+>> +	mutex_unlock(&slab_mutex);
+>> +	cpus_read_unlock();
+>> +
+>> +	if (flushed)
+>> +		rcu_barrier();
+> 
+> I think we need to call rcu_barrier() even if flushed == false?
+> 
+> Maybe a kvfree_rcu()'d object was already waiting for the rcu callback to
+> be processed before flush_all_rcu_sheaves() is called, and
+> in flush_all_rcu_sheaves() we skipped all (cache, cpu) pairs,
+> so flushed == false but the rcu callback isn't processed yet
+> by the end of the function?
+> 
+> That sounds like a very unlikely to happen in a realistic scenario,
+> but still possible...
 
-1.We initially considered keeping readahead pages in the system's 
-existing inactive/active LRUs without adding a dedicated LRU. However, 
-this approach may lead to inefficient reclamation of readahead pages.
+Yes also good point, will flush unconditionally.
 
-Reason: When scanning the inactive LRU, processing readahead pages can 
-be frequently interrupted by non-readahead pages (e.g., shared/accessed 
-pages). The reference checks for these non-readahead pages incur 
-significant overhead, slowing down the scanning and reclamation of 
-readahead pages.
-Thus, isolating readahead pages in a readahead LRU allows more targeted 
-reclamation, significantly accelerating scanning and recycling efficiency.
+Maybe in __kfree_rcu_sheaf() I should also move the call_rcu(...) before
+local_unlock(). So we don't end up seeing a NULL pcs->rcu_free in
+flush_all_rcu_sheaves() because __kfree_rcu_sheaf() already set it to NULL,
+but didn't yet do the call_rcu() as it got preempted after local_unlock().
 
-2.That said, this solution does raise valid concerns. As you rightly 
-pointed out, enabling this LRU globally may not align with all users' 
-needs since not every scenario requires it.
-
-3.For now, this remains a preliminary solution. The primary goal of this 
-RFC is to highlight the issue of excessive readahead overhead and gather 
-community insights for better alternatives.
-
-We are actively exploring solutions without adding a new LRU for future 
-iterations.
-
-Best regards,
-Lei Liu
+But then rcu_barrier() itself probably won't mean we make sure such cpus
+finished the local_locked section, if we didn't queue work on them. So maybe
+we need synchronize_rcu()?
 
 
