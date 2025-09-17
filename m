@@ -4,88 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF12CCAC59A
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 21:50:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04BA2CAC59A
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 22:04:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 32F518E0084; Wed, 17 Sep 2025 17:50:44 -0400 (EDT)
+	id 4F5668E0085; Wed, 17 Sep 2025 18:04:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B0E48E006B; Wed, 17 Sep 2025 17:50:44 -0400 (EDT)
+	id 4A5B48E006B; Wed, 17 Sep 2025 18:04:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C6748E0084; Wed, 17 Sep 2025 17:50:44 -0400 (EDT)
+	id 3BB258E0085; Wed, 17 Sep 2025 18:04:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F3B188E006B
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 17:50:43 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B65F5140557
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 21:50:43 +0000 (UTC)
-X-FDA: 83900087166.04.0AE8B09
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 0D74A80008
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 21:50:41 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uHaypvwN;
-	spf=pass (imf02.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 294758E006B
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 18:04:45 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B51311606E3
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 22:04:44 +0000 (UTC)
+X-FDA: 83900122488.10.6F145F8
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+	by imf21.hostedemail.com (Postfix) with ESMTP id C72621C0014
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 22:04:42 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=kzyHlkMI;
+	spf=pass (imf21.hostedemail.com: domain of fvdl@google.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=fvdl@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758145842;
+	s=arc-20220608; t=1758146682;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3626zjYR6kSuVKvFLDRZwu5RHl5n5ruiIUw8Qv37V8E=;
-	b=aTktjrT5Gw354ojsiTnDceAMJy51MCsnDEL4dKLk0GiKv3hDMCsIbJ/6KfrSwtEWBl06Uw
-	pZ+gFdoqHqCp9a+/kae5u1u0Fj2YYg5v2R2h1eCtIbu9ryNddCzpMe50SUEV8pCk9PWwWa
-	NWyLIVeFZSsq7zD4/mDli+S+rhC4wKI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758145842; a=rsa-sha256;
+	bh=7c037OBepDtABbodeSYdc9GHv27CVVqxlwOzBg6Xtz8=;
+	b=N5Qo7XFfHVB9TJ1PgSKkfCHHICFs1szPFgsK9gfLUZuzQK19C3xe95YtkYyzjLtKpPISBZ
+	mzjXo8szcAO8DAwyMH+cwJbzyWEOZDQ7aHoZX00YNVpvb+lsjs4bcIYBXxSuRF+brUxeAg
+	y2jXEH3zzFlbuIZ1fnS80JUPxPHQDis=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758146682; a=rsa-sha256;
 	cv=none;
-	b=LP/AvHuCrGArYbniht1fgooJyfezVyYM+UWrVJEEnT6R2vyvBlgmY524wVuKczJzRPloag
-	csUTqBPmNJmEvFZRH1CrYmERGr83xaCHYwCqtVJD+wfTIkiuNz2/g+xP8U60BMaIsdZcrS
-	+zOTlTKi5+xPQ+qqCI3MDKTv2v1iTd4=
+	b=IgDSPcJ9oeUJRhlyuSQmvwpdKDmRTmF+K02aRyFs8dVE5BKUOuBYK0IyaR2iBh3bgUfSiQ
+	2xmG0gAhj5ultxFVT2suVbsaJX3TnzYNtzfqHLf9SrtKxGeHjo6bsq0Col9Qc/Q9/43dsB
+	kx4An8wivhsHfWaPI1VBL/eTDcTapwA=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uHaypvwN;
-	spf=pass (imf02.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0B3AF43DEB;
-	Wed, 17 Sep 2025 21:50:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4199C4CEE7;
-	Wed, 17 Sep 2025 21:50:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758145840;
-	bh=PI8Xd/l8ye6DwfFy3MPo+C1Do/Lt5w3dLjCZrDbRvpg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uHaypvwNb8YfyJhz0Bzf2HD0jBCXdV+BPa8TKwZ4bAP4d9B0clPVMoIJ2LdECcuaK
-	 vYekqSwdwddF61t2/8IzWsPqAahBL7CKyeA2+GjxOqG/hHC/rT10mSdDgKCdioqSpS
-	 jeSb5GIMTVqEbT9mnUNof4LLie2y0gl/If21dzXaw67PaBI/j4ymKyf+1WB46sOubQ
-	 qn+LIgjlW3z5eReKvTCxyM0Sw/eNHwUReLk4o/mHB4/hH3C6hxcjv6nhoS61/o3uPU
-	 Uj8EXKZsWlWHsrxe3yaOB1CQy8iUsUvBspSvwXz3wcBYfQOGHRsELV1Ko3J0vjKG+d
-	 y1dP2ZCiivqLQ==
-Date: Wed, 17 Sep 2025 11:50:39 -1000
-From: Tejun Heo <tj@kernel.org>
-To: Julian Sun <sunjunchao@bytedance.com>
-Cc: cgroups@vger.kernel.org, linux-mm@kvack.org, jack@suse.cz,
-	muchun.song@linux.dev, venkat88@linux.ibm.com, hannes@cmpxchg.org,
-	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	akpm@linux-foundation.org
-Subject: Re: [PATCH v6] memcg: Don't wait writeback completion when release
- memcg.
-Message-ID: <aMstLw_ccoveLow-@slm.duckdns.org>
-References: <20250917212959.355656-1-sunjunchao@bytedance.com>
+	imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=kzyHlkMI;
+	spf=pass (imf21.hostedemail.com: domain of fvdl@google.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=fvdl@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-4b78657a35aso116441cf.0
+        for <linux-mm@kvack.org>; Wed, 17 Sep 2025 15:04:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1758146682; x=1758751482; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7c037OBepDtABbodeSYdc9GHv27CVVqxlwOzBg6Xtz8=;
+        b=kzyHlkMIFTR+sbli0BkMpC2tC19o6bh0K92SydfOy2mgPhvOWaReB2+mmLbVo3Wc8g
+         yAa79SoDwKuavDYFJR3dOk2qIW6WTWkVtryrd6zDL4LS1anI05NFXCy919GzEEOB405C
+         WqxeIJc6s4a4dTrQkSvqYSi6TixiIWiQz1bw6iYFnFE6Lry/aPVsf+n/UWj3LCCDShX9
+         F9CtvMoz5vRujePmZk13BNWDB6R0Sy/mgnR5yGCuhOkcvG31Dc3RSmzf/bKSDEKiz8jQ
+         wPJRARPbjW2/1+c1ntbEAjSDHqG5tWi7+OMepOjbgHOSttqgLagVnlNMF/BDue6+j0Yd
+         CNmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758146682; x=1758751482;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7c037OBepDtABbodeSYdc9GHv27CVVqxlwOzBg6Xtz8=;
+        b=RREPXfvHtMwHuwDWbj9RomqJxo7C2B4BCsQ5h/acyyAIL7zcH0hqUi5tM1ivb5UTid
+         R2Czp0jY7BkMr8wI2Sge3/6vHEPT4N5Sy+NmBUkTUfr79kJm0ZDkQiRDasYCP5nBpc1v
+         54tkdA6bRxTse836fCrb/1di38vOiqhS2gw3z/2WL77Xql+JweAFp8ETz7GbkMEqG8cz
+         FMf/HrXyE6+ijttHceCwPCjjPgZog3ogdYSukN3lretaW3X76bmm6Ew+nLTCuUtcp9cl
+         vQMLeJZdToRz/9oHi/LRde2Py9Qoe4GRrhF34hkoFZCFMWSei8BsV+EJKdU1Kl0lCVm8
+         1GNw==
+X-Forwarded-Encrypted: i=1; AJvYcCVCcuOsUuyHXz4LYiuEYlcvR/xYqQN0g3uf9Ju7FeA6GxrqJswIt7WQUF5Ec+ldVhQJSBZFXrGffw==@kvack.org
+X-Gm-Message-State: AOJu0YybC8vybLgIUFiD65Pvv5OmtkKeDGead+5OcMeHSEyDIkVj+w60
+	VwJovyIiu4z2Cbp29BWdG17hfp6abKWT/Z05vqlrEUXXs7vE7/KXS9zcgjwjLBJXLsAIeKg0TIe
+	B0C1mKVBFm0n0psD/59a58DXxeK24wmRHF8Szvgcu
+X-Gm-Gg: ASbGncsYrA1LTVNnQfAKF6gtGFCN13sYQatYd1YJWuwZvCN5FRfvMF12hK5h7PBgMuw
+	2nrMMdyYbAkkDyTh8xyw4oAnn1YRbFfr6ZkZPfIWt2oU3A7gvHyVYOIpCfPHevkhlUbQJns7ga+
+	q7Zy8DYMKzUudiaFn3e9blVAywGNEqVhOC0lUgX+kwXZJ0mAzmXfUVcxpHQ58eZ+6GjMhsNrETY
+	2qi9zTwKfxaIohwpxzPf/kMnvVxtA==
+X-Google-Smtp-Source: AGHT+IGDI6LJLfycjfeE1B/pgIh/9NIsQqEJIx7nxHWRrjhDqG/oq1RUbkZqCENyyqfCAvnUxyLWTbnk2uL801F6uvk=
+X-Received: by 2002:a05:622a:8597:b0:4b7:9b7a:1cfc with SMTP id
+ d75a77b69052e-4bbf022e4f3mr4682571cf.10.1758146681555; Wed, 17 Sep 2025
+ 15:04:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250917212959.355656-1-sunjunchao@bytedance.com>
+References: <20250915195153.462039-1-fvdl@google.com> <7ia4ecs59a2b.fsf@castle.c.googlers.com>
+In-Reply-To: <7ia4ecs59a2b.fsf@castle.c.googlers.com>
+From: Frank van der Linden <fvdl@google.com>
+Date: Wed, 17 Sep 2025 15:04:30 -0700
+X-Gm-Features: AS18NWCkUN2Jz1n68DzLl5mlp3KsVWCGAZPBnGbVyd4mox136r8TgQG5palyZuI
+Message-ID: <CAPTztWYp2yPsdvFfMm6bVB-juwHM11zKAEty9q+J8gy5d-8=KQ@mail.gmail.com>
+Subject: Re: [RFC PATCH 00/12] CMA balancing
+To: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: akpm@linux-foundation.org, muchun.song@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, hannes@cmpxchg.org, david@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 0D74A80008
-X-Stat-Signature: 8foih4c1b8aujyswrokusrjz6k1nptn6
+X-Rspamd-Queue-Id: C72621C0014
+X-Stat-Signature: 6isx6jo9s6k7auxj8uts8cn3h98unb5h
 X-Rspam-User: 
-X-HE-Tag: 1758145841-913436
-X-HE-Meta: U2FsdGVkX19Wl6kBMRTulQmfotQp6Kxi7eNM7314XpleTEM5mO8+dDQtQGnV2/6thoX4O+7g/JjUnzQvFzb9cQTUJ/U8fB191ZmolcTvbHcs9xEwbPh1f+wFI7zFHyISQcXPTUFoqdr30o7JpXriQ9vXvGKfN6uzatCZWWSTx9sFGqXXGUiU7wvPpdyv6b73jFH0Jr+jlcw+7AwZsn41A/I6fhVoUOkBA27vdBCqU4aN/+lRdOiZ56scH/SUn7UXJwoHccfqcizvdPneHgnUxusTUqVaDzbcpp0q8gWBiYdnnYCSPw1vW5VlrmxX0B7kYD10x1m6/3jgmYz8Esx9dELjEUumbRRO8GlAPFrawa/g3uRV51XMPV2ZEQ3L2QouNsUnV5brvymhYT598ITC3APXqOF3mVp5NaNbLr3UOTyY4q47eukCtTvruUbvs+NMklfgPkplcHWlTDFLNVZQ4uzMfQNulN6QXyNTqp64e/vupfF5YhYoS7d8yHoW9t/tgbavhBIs/vT3NOey2NCt66VH5lQY2wttummEPQI2rbIc6hjdTUYx5J1QPKG1yapOvG/Ou2dlrGSa5w4svBThYDpTkolne4WLPIvxCd9K4XFOhTSxIY7LebyJyvg7rqIVSQ7Q9CKV50umO2dxZv+8MmaeYHdAFW4Fas5F34Z3QYCWCegEOx8AlnTKzW9PLd2IEo7YuwtkKDRrAGJxuje06cksHQ7qi35FthEzjyOablZx8T3qwuIskcmIZHbDVq2r0B8Af3kWchMEMuf9/rqDHLqnnIGINqkB4Nh8bIjSMNb9z8z7ZXzq7i99CFtitEhsgpcwYg0jVZmZFgi+q9mLzz9Ywt4NZKitz50d58T7fua54UhVN2nX+qm0g7/2sw2AvmneXU0bqOmM8VjkQxYMT49vMUkdjyxQknZBz66A5Wjm9Xqr8v11tjB1UUg9ZRwIQIOhvEDTFYZOgyw67tH
- YQdsPFr/
- KDzG4m4p96hPa/D21gAGyHyu4mBAr0vUCJO5oofNvSMSIS/PmlzztHMzweYlULQa7kwtzqstAUIZaBuEyb/CQoQomeveOIdtAE9vBbHu6wJa0FM2lI3u/PAjLwZcj+La0AW4bEqWuhZnCueBtYnMM7qSUVxyda9C4MpIF1NGce+ojX5O2HZXLweHLEzZCUfIjscJl4XkcTUYZqKqVrsZMpZVPQ6hyXmIi5Ew2RRLSz4WmQ91tXRRb1m5RJWZ7O6Ji3LIK7m0oCo+Iivm97pRo6GF7dcJIT+WhOMIb
+X-HE-Tag: 1758146682-770585
+X-HE-Meta: U2FsdGVkX18MN1e1KFOVP79fRFr/1RMV3OiEMgG+ypi9f8hZRNE9iI1C6xwfnWsAG8Q38P6F4r0/uGo4UBMM8kIGUSNUw6drpkS0DkuPFZgYjAprIWEBKewNi80x7Br2YQBejBV4m51Fge0OCAYyS4HXa/VzyikfuFeXl+cCNyXw70WXJy2JnLIdljwuysllrYFjWNDfYOMXxj/9nMWc0E1eyaAhatrztMCTuLfmQq/0TRIj5csG1F75CMCMealf9bfRjzKAQcC/W0TUmZA81KsBkUWdWXnXyBsk+t9VakYCoKFAZ/2crP1RM13ncEzXJc4f1mbnvlW9aSvd2LBTI7/UHoOKo1EeC65UymlBNl7T7+Mf9v7Ng2pCwgdmoJwFyf/K7NN/5MdEJwoRow+gIxF3/ThoxSjt36xvk5vwCZA8gOu3NDGuB0XCUAlgf1WJqv4peSiYaEkrHJPH8dDoy1nNZ1vm6mHFQj+LdBerDBAc88CZ0l7IFYwDHk0bRMcMGwamzIOIQM6Uc6XNjxHH/jpQMQjMH3wvUcrTimk7kEhnX8+hd4Vrl2toKXyECRo1b2qBP0tv7i3lf9YmhBazS3Dzf/4xbdwODyq+egfGUm4arS3Af+DUVy48YsVlhmuv/FU/u5Vct5iggMTqc3fAZcEJF8SRH92O7CGX+/TcEKf9pVEIh1ckcixj+F4IdIw4zMh8eOjud+id2DLb8IDHdE0c/gmrIRs4ckRqfvhMLSy24fesPwpJRno2mTJxgk/gi6Q9m+PzS211EWgT42GABGobTS2+J2C1032RbWwgdWIIvQVDF6a96tmytzjIdJPSVBELVm/1aX3Zg800dwQelTmkHZ0sZxkd6qeekWRXmqNN2+R2k2moAO/V+eRBq+/g1OuYaVznLa494oyV1YfGFDMXNVY8rp2kMaXNtKnAgrj2ZrPIf1mtfMWEbPeQUnHqN/215fqV7znpyzbDt4M
+ J8zHGi3l
+ 0jSp2BTEIUu/Z7tb/ei6IocxPu9ZEoMhs2sw6lFbW3ldoNIxSHPNqJvB39dkP0GcHfh5wS6uQGkVsV+znCU1sMBmb1nCC31olR3T36VCdXTbhiDVV1vIxc9rpLupCN88uZzV+n+pIhZeDntJ40FfezgeEIb3+GbA/DqNgZk+nwHu/MURT6sLZNt5ST0NGR5Y8Y3NSMP9zieHabFhYm9SkmlzOoA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,42 +116,162 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On Tue, Sep 16, 2025 at 5:51=E2=80=AFPM Roman Gushchin <roman.gushchin@linu=
+x.dev> wrote:
+>
+> Frank van der Linden <fvdl@google.com> writes:
+>
+> > This is an RFC on a solution to the long standing problem of OOMs
+> > occuring when the kernel runs out of space for unmovable allocations
+> > in the face of large amounts of CMA.
+> >
+> > Introduction
+> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> >
+> > When there is a large amount of CMA (e.g. with hugetlb_cma), it is
+> > possible for the kernel to run out of space to get unmovable
+> > allocations from. This is because it cannot use the CMA area.
+> > If the issue is just that there is a large CMA area, and that
+> > there isn't enough space left, that can be considered a
+> > misconfigured system. However, there is a scenario in which
+> > things could have been dealt with better: if the non-CMA area
+> > also has movable allocations in it, and there are CMA pageblocks
+> > still available.
+> >
+> > The current mitigation for this issue is to start using CMA
+> > pageblocks for movable allocations first if the amount of
+> > free CMA pageblocks is more than 50% of the total amount
+> > of free memory in a zone. But that may not always work out,
+> > e.g. the system could easily run in to a scenario where
+> > long-lasting movable allocations are made first, which do
+> > not go to CMA before the 50% mark is reached. When the
+> > non-CMA area fills up, these will get in the way of the
+> > kernel's unmovable allocations, and OOMs might occur.
+> >
+> > Even always directing movable allocations to CMA first does
+> > not completely fix the issue. Take a scenario where there
+> > is a large amount of CMA through hugetlb_cma. All of that
+> > CMA has been taken up by 1G hugetlb pages. So, movable allocations
+> > end up in the non-CMA area. Now, the number of hugetlb
+> > pages in the pool is lowered, so some CMA becomes available.
+> > At the same time, increased system activity leads to more unmovable
+> > allocations. Since the movable allocations are still in the non-CMA
+> > area, these kernel allocations might still fail.
+> >
+> >
+> > Additionally, CMA areas are allocated at the bottom of the zone.
+> > There has been some discussion on this in the past. Originally,
+> > doing allocations from CMA was deemed something that was best
+> > avoided. The arguments were twofold:
+> >
+> > 1) cma_alloc needs to be quick and should not have to migrate a
+> >    lot of pages.
+> > 2) migration might fail, so the fewer pages it has to migrate
+> >    the better
+> >
+> > These arguments are why CMA is avoided (until the 50% limit is hit),
+> > and why CMA areas are allocated at the bottom of a zone. But
+> > compaction migrates memory from the bottom to the top of a zone.
+> > That means that compaction will actually end up migrating movable
+> > allocations out of CMA and in to non-CMA, making the issue of
+> > OOMing for unmovable allocations worse.
+> >
+> > Solution: CMA balancing
+> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> >
+> > First, this patch set makes the 50% threshold configurable, which
+> > is useful in any case. vm.cma_first_limit is the percentage of
+> > free CMA, as part of the total amount of free memory in a zone,
+> > above which CMA will be used first for movable allocations. 0
+> > is always, 100 is never.
+> >
+> > Then, it creates an interface that allows for moving movable
+> > allocations from non-CMA to CMA. CMA areas opt in to taking part
+> > in this through a flag. Also, if the flag is set for a CMA area,
+> > it is allocated at the top of a zone instead of the bottom.
+>
+> Hm, what if we can teach the compaction code to start off the
+> beginning of the zone or end of cma zone(s) depending on the
+> current balance?
+>
+> The problem with placing the cma area at the end is that it might
+> significantly decrease the success rate of cma allocations
+> when it's racing with the background compaction, which is hard
+> to control. At least it was clearly so in my measurements several
+> years ago.
 
-On Thu, Sep 18, 2025 at 05:29:59AM +0800, Julian Sun wrote:
-...
-> The wb_wait_for_completion() here is probably only used to prevent
-> use-after-free. Therefore, we manage 'done' separately and automatically
-> free it.
-> 
-> This allows us to remove wb_wait_for_completion() while preventing
-> the use-after-free issue.
-> 
-> Fixes: 97b27821b485 ("writeback, memcg: Implement foreign dirty flushing")
-> Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-> Signed-off-by: Julian Sun <sunjunchao@bytedance.com>
+Indeed, I saw your change that moved the CMA areas to the bottom of
+the zone for that reason. In my testing, I saw a slight uptick in
+cma_alloc failures for HugeTLB (due to migration failures), but it
+wasn't much at all. Also, our current usage scenario can deal with the
+occasional failure, so it was less of a concern. I can try to re-run
+some tests to see if I can gather some harder numbers on that - the
+problem is of course finding a test case that gives reproducible
+results.
+>
+>
+> > Lastly, the hugetlb_cma code was modified to try to migrate
+> > movable allocations from non-CMA to CMA when a hugetlb CMA
+> > page is freed. Only hugetlb CMA areas opt in to CMA balancing,
+> > behavior for all other CMA areas is unchanged.
+> >
+> > Discussion
+> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> >
+> > This approach works when tested with a hugetlb_cma setup
+> > where a large number of 1G pages is active, but the number
+> > is sometimes reduced in exchange for larger non-hugetlb
+> > overhead.
+> >
+> > Arguments against this approach:
+> >
+> > * It's kind of heavy-handed. Since there is no easy way to
+> >   track the amount of movable allocations residing in non-CMA
+> >   pageblocks, it will likely end up scanning too much memory,
+> >   as it only knows the upper bound.
+> > * It should be more integrated with watermark handling in the
+> >   allocation slow path. Again, this would likely require
+> >   tracking the number of movable allocations in non-CMA
+> >   pageblocks.
+>
+> I think the problem is very real and the proposed approach looks
+> reasonable. But I also agree that it's heavy-handed. Doesn't feel
+> like "the final" solution :)
+>
+> I wonder if we can track the amount of free space outside of cma
+> and move pages out on reaching a certain low threshold?
+> And it can in theory be the part of the generic kswapd/reclaim code.
 
-  Acked-by: Tejun Heo <tj@kernel.org>
+I considered this, yes. The first problem is that there is no easy way
+to express the number that is "pages allocated with __GFP_MOVABLE in
+non-CMA pageblocks".  You can approximate pretty well by checking if
+they are on the LRU, I suppose.
 
-Minor comments below:
+If you succeed in getting that number accurately, the next issue is
+defining the right threshold and when to apply them. E.g. at one point
+I had a change to skip CMA pageblocks for compaction if the target
+pageblock is non-CMA, and the threshold has been hit. I ended up
+dropping it, since this more special-case approach was better for our
+use case. But my idea at the time was to add it as a 3rd mechanism to
+try harder for allocations (compaction, reclaim, CMA balancing).
 
-> +/*
-> + * This structure exists to avoid waiting for writeback to finish on
-> + * memcg release, which could lead to a hang task.
-                                           ^
-                                           hung
+It was something like:
 
-> + * @done.cnt is always > 0 before a memcg is released, so @wq_entry.func
-> + * may only be invoked by finish_writeback_work() after memcg is freed.
-> + * See mem_cgroup_css_free() for details.
-> + */
+1) Track movable allocations in non-CMA areas.
+2) If the watermark for an unmovable allocation is below high, stop
+migrating things (through compaction) from CMA to non-CMA, and always
+start allocating from CMA first.
+3) If the watermark is approaching low, don't try compaction if you
+know that CMA can be balanced, but do CMA balancing instead, in
+amounts that satisfy your needs
 
-I'm not sure this gives enough of a picture of what's going on. It'd be
-better to expand a bit - briefly describe what the whole mechanism is for
-and how hung tasks can happen.
+One problem here is ping-ponging of memory. If you put CMA areas at
+the bottom of the zone, ompaction moves things one way, CMA balancing
+the other way.
 
-Thanks.
+I think an approach like the above could still work, I just abandoned
+it in favor of this more special-cased (and thus safer) one for our
+use case.
 
--- 
-tejun
+- Frank
 
