@@ -4,133 +4,153 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 791EACA0EE8
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 10:43:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDC6ACAC598
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 10:49:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D6F0A8E000A; Wed, 17 Sep 2025 06:43:16 -0400 (EDT)
+	id 53FA18E0008; Wed, 17 Sep 2025 06:49:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D46E78E0001; Wed, 17 Sep 2025 06:43:16 -0400 (EDT)
+	id 4EFCB8E0001; Wed, 17 Sep 2025 06:49:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C5C848E000A; Wed, 17 Sep 2025 06:43:16 -0400 (EDT)
+	id 3B7538E0008; Wed, 17 Sep 2025 06:49:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B36118E0001
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 06:43:16 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 69CBD1404EA
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 10:43:16 +0000 (UTC)
-X-FDA: 83898405192.20.C553BBB
-Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 375F7100008
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 10:43:13 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="h Fl85Ne";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=JdN24G+t;
-	spf=pass (imf14.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.156 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 252C78E0001
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 06:49:28 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DC3CD160134
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 10:49:27 +0000 (UTC)
+X-FDA: 83898420774.17.E55A9EE
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf30.hostedemail.com (Postfix) with ESMTP id CA47E80009
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 10:49:25 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=niTkxtcE;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=7sXTFmdj;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=niTkxtcE;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=7sXTFmdj;
+	spf=pass (imf30.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758105793;
+	s=arc-20220608; t=1758106166;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=74X70xzEhBM0tW2lzuA0ESFpEqnjRQx9KPWr7O/CNbQ=;
-	b=x4GLmXR+6v7CLZeZnsZEF3WnLF1M7eTU1eLpWUwhBN2HalCOuFKBE6JAvwBs2bPC+7iYhj
-	vcm2+qOgCVeRfUyVTrL8csxSAZWXN9C72m5I90VjmPYWIV68Dn5miW9w89Le0/rGAfwxz4
-	O8qNo6Jj8kNuTmkHdq7PnlvCmRkHk/M=
+	bh=u8t6SHPjmQz0qqNQrQ8pFqlRTGyimMO7f4zNnyjDmnw=;
+	b=d695oaOP4GKQAO0frVTlTBmK8i0ksJWjRm3q3QQLWHcZtiAb9w+PBuZKFKNPXrVP7dnIJE
+	7s5qK00f4vGZDho/TkPN/Qsc7NzOjTz7a8+jfisZBlJWhzy1Z0f69hgPn7k5rfa9gPQuiS
+	QswhAoWqOGR7tjDDOsHs5ZYTlO3egFo=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="h Fl85Ne";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=JdN24G+t;
-	spf=pass (imf14.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.156 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758105793; a=rsa-sha256;
+	imf30.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=niTkxtcE;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=7sXTFmdj;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=niTkxtcE;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=7sXTFmdj;
+	spf=pass (imf30.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758106166; a=rsa-sha256;
 	cv=none;
-	b=8YGjb8BkuCKQkAPavN8CpvEAOioNWPKSdSSnE0BN+MO2zFpU1LxjlnHw7NqgyMkipUONND
-	dKuvNleSM1NfcSfuWYpZZR7QaDCuQLxy02y0mVvGAOZxvODaE0wuOs+VyEZe7GziBq/5qX
-	RI24t8r9uiYTWdVW8KwiNS5Kn9xJxh8=
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 7F16C14001DE;
-	Wed, 17 Sep 2025 06:43:12 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Wed, 17 Sep 2025 06:43:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1758105792; x=
-	1758192192; bh=74X70xzEhBM0tW2lzuA0ESFpEqnjRQx9KPWr7O/CNbQ=; b=h
-	Fl85Ne2Dxf0+e1Zeyn7iSeFwbs1zURwloVh9+uV8sDF5i1ken+c3N4OhSMEE4fQg
-	Rk73PcExtwPGu218/Bbyf4cmiYoD18pMdXqedlDABkGssmJ25oAEZutDusHh3cd3
-	E70xlH9tnyS/RfTocqX1vNRl1qyvU+Yo/0o6ln4GwEZLstIPDTO2pavC5/kusANU
-	xmRNJIutJ5xqpqXfENe6L+5llIO1dQfXBUQS+iPBiBeW83Q24RZ3sTWP6iHBWGDg
-	Q4Z9fIv2mOejCKC3w7mjmAQnk5b8voSGGciJRpicNECWi/sgrtmHOsKNZkLuqS68
-	29uBu41oNwNM7SHHE9kVg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1758105792; x=1758192192; bh=74X70xzEhBM0tW2lzuA0ESFpEqnjRQx9KPW
-	r7O/CNbQ=; b=JdN24G+t3tAtKEaF3xy9/usv8GaFHeYOqrUsOtCLEG6H2AVjKO/
-	z/ppztjGiIb2oTuLYhiWs+2ju8J1UsnTxCuiQbv9++JILxhJT7qoqX4OvGRKdCb5
-	Y/x5WMYXYfptlZ4UZqJZmavoaPQUTghqltZ1eJ7Z05RxKczDbWUmy+O2UmTscZf/
-	cemk+T/thmz/ZDwEygZ0gVZSVF9fWeC42+dv7O02TIlE7m5xdGmNmGuLP0AumUJu
-	zI8cie3GJqgZ8AZ4daWsLEjU70a6WzrXYPOypYn8SScKkXCmbzhHw6Hu7VVFoWyS
-	BFHPfaAgeYkkDxZQDF6SqlFVAC0zNDvbyRQ==
-X-ME-Sender: <xms:v5DKaBRX0yS8FD8qt-AC-V9tRJXQSOqPMmBBXmawkd6AGirEwgFPOw>
-    <xme:v5DKaGpLZXUvscnwH8ZoLoYQu60UwnreKcKWMpLjuSyhpIZUoznDQP5YKSEwe0M2I
-    2plbZmz-0lK9T1uQCA>
-X-ME-Received: <xmr:v5DKaPpoduEQ_2ZSaPZQhsv35CIYWOQYDw7kUpOzkkw_8FNKShG1wLRys9Qjjg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdegfedvgecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdfstddttddvnecuhfhrohhmpefmihhrhihlucfu
-    hhhuthhsvghmrghuuceokhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvqeenucggtf
-    frrghtthgvrhhnpeejheeufeduvdfgjeekiedvjedvgeejgfefieetveffhfdtvddtledu
-    hfeffeffudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhroh
-    hmpehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgdpnhgspghrtghpthhtohepvdeg
-    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehlohhrvghniihordhsthhorghkvg
-    hssehorhgrtghlvgdrtghomhdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhn
-    uggrthhiohhnrdhorhhgpdhrtghpthhtohepuggrvhhiugesrhgvughhrghtrdgtohhmpd
-    hrtghpthhtohepiihihiesnhhvihguihgrrdgtohhmpdhrtghpthhtohepsggrohhlihhn
-    rdifrghngheslhhinhhugidrrghlihgsrggsrgdrtghomhdprhgtphhtthhopehlihgrmh
-    drhhhofihlvghtthesohhrrggtlhgvrdgtohhmpdhrtghpthhtohepnhhprggthhgvsehr
-    vgguhhgrthdrtghomhdprhgtphhtthhopehrhigrnhdrrhhosggvrhhtshesrghrmhdrtg
-    homhdprhgtphhtthhopeguvghvrdhjrghinhesrghrmhdrtghomh
-X-ME-Proxy: <xmx:v5DKaB2h-8I5FINeZ6DBBIlYuR_mhdfk2nOhP7ciKrwWZxmBlZRgdw>
-    <xmx:v5DKaDi56MNn6yD1nQTgCCscQozH7ovo2yNCKXIqJT2yUCfn6qO_Dw>
-    <xmx:v5DKaAlTECDEQqK1XmSv90WalG12KPOQqFTlbRQzWHt-_cfNQyqAvA>
-    <xmx:v5DKaL-fewQ-QpdswZuFxLosxSXD-E6n6etTZSaSiz37hzJuDd1vog>
-    <xmx:wJDKaDk6zs0RS8-cvQBQ7seUyblylVYSAniu0Q5CbRWqR30Q8LGNwC2i>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 17 Sep 2025 06:43:10 -0400 (EDT)
-Date: Wed, 17 Sep 2025 11:43:08 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
+	b=jDdVYHgO4+Rw+/Vr+hdb5oRU8E77hcoTj/KlvJFF6jQTca6ep9s9oEsFUOp+/JNpCtw/ow
+	7d0ihf4z50SeMYXulBE3JC7BPxtq7b6bSCkXlMkQ5HfujJwMP+VmSlUJW7eHajTZ2HSKet
+	yoBQdgR9rh0EiJsrtgtohI1eysiuxOQ=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 054001F7B8;
+	Wed, 17 Sep 2025 10:49:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1758106164; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=u8t6SHPjmQz0qqNQrQ8pFqlRTGyimMO7f4zNnyjDmnw=;
+	b=niTkxtcEsWHMLusW2uhOMmiQ+Zfat7dgrfB4F9HpeVv6d6//vidrvTnU/aJ4FYqBUF6/31
+	S8xdorf8fnri1Yz4VUshF2jJ8nD3YR9xyA5krXG5aE2bhuBHqd5dn3msDcKISdnCbwA/zG
+	3PnSCfyh+pAV2PK+IzaNWAQWDSAuWLw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1758106164;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=u8t6SHPjmQz0qqNQrQ8pFqlRTGyimMO7f4zNnyjDmnw=;
+	b=7sXTFmdjfBvPh9vPl+957gltmt72YVjGoLfmTjzZc9/62+QYrp3JFMXUWd+wQo8Bl2PL++
+	hD8DSBFfFKYnHNBw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1758106164; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=u8t6SHPjmQz0qqNQrQ8pFqlRTGyimMO7f4zNnyjDmnw=;
+	b=niTkxtcEsWHMLusW2uhOMmiQ+Zfat7dgrfB4F9HpeVv6d6//vidrvTnU/aJ4FYqBUF6/31
+	S8xdorf8fnri1Yz4VUshF2jJ8nD3YR9xyA5krXG5aE2bhuBHqd5dn3msDcKISdnCbwA/zG
+	3PnSCfyh+pAV2PK+IzaNWAQWDSAuWLw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1758106164;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=u8t6SHPjmQz0qqNQrQ8pFqlRTGyimMO7f4zNnyjDmnw=;
+	b=7sXTFmdjfBvPh9vPl+957gltmt72YVjGoLfmTjzZc9/62+QYrp3JFMXUWd+wQo8Bl2PL++
+	hD8DSBFfFKYnHNBw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 66CFE1368D;
+	Wed, 17 Sep 2025 10:49:20 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 50PgFTCSymh8PQAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Wed, 17 Sep 2025 10:49:20 +0000
+Date: Wed, 17 Sep 2025 11:49:18 +0100
+From: Pedro Falcato <pfalcato@suse.de>
 To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@redhat.com>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv2] mm/khugepaged: Do not fail collapse_pte_mapped_thp()
- on SCAN_PMD_NULL
-Message-ID: <l6yjv4b2xvcwgpq5q3esyat56jdfj7flcokbqptsxlzgesrwe2@sxxzcp477ldi>
-References: <v5ivpub6z2n2uyemlnxgbilzs52ep4lrary7lm7o6axxoneb75@yfacfl5rkzeh>
- <ecac1e7f-1709-4348-b8ff-fa1c0f087548@lucifer.local>
+	Jonathan Corbet <corbet@lwn.net>, Matthew Wilcox <willy@infradead.org>, 
+	Guo Ren <guoren@kernel.org>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, "David S . Miller" <davem@davemloft.net>, 
+	Andreas Larsson <andreas@gaisler.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dan Williams <dan.j.williams@intel.com>, 
+	Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>, 
+	Nicolas Pitre <nico@fluxnic.net>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@redhat.com>, 
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, Baoquan He <bhe@redhat.com>, Vivek Goyal <vgoyal@redhat.com>, 
+	Dave Young <dyoung@redhat.com>, Tony Luck <tony.luck@intel.com>, 
+	Reinette Chatre <reinette.chatre@intel.com>, Dave Martin <Dave.Martin@arm.com>, 
+	James Morse <james.morse@arm.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Uladzislau Rezki <urezki@gmail.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
+	Jann Horn <jannh@google.com>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-csky@vger.kernel.org, linux-mips@vger.kernel.org, 
+	linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, nvdimm@lists.linux.dev, 
+	linux-cxl@vger.kernel.org, linux-mm@kvack.org, ntfs3@lists.linux.dev, 
+	kexec@lists.infradead.org, kasan-dev@googlegroups.com, Jason Gunthorpe <jgg@nvidia.com>, 
+	iommu@lists.linux.dev, Kevin Tian <kevin.tian@intel.com>, Will Deacon <will@kernel.org>, 
+	Robin Murphy <robin.murphy@arm.com>
+Subject: Re: [PATCH v3 05/13] mm/vma: rename __mmap_prepare() function to
+ avoid confusion
+Message-ID: <jokgdkyv4ca4sb7nl2wjkzxclhzhaee4p4luwj546tsdbylfei@laplfpugf3of>
+References: <cover.1758031792.git.lorenzo.stoakes@oracle.com>
+ <3063484588ffc8a74cca35e1f0c16f6f3d458259.1758031792.git.lorenzo.stoakes@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ecac1e7f-1709-4348-b8ff-fa1c0f087548@lucifer.local>
+In-Reply-To: <3063484588ffc8a74cca35e1f0c16f6f3d458259.1758031792.git.lorenzo.stoakes@oracle.com>
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: CA47E80009
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 375F7100008
-X-Stat-Signature: uqrsw7aczu7ahgq9qdb51ino6t31e85i
-X-HE-Tag: 1758105793-643431
-X-HE-Meta: U2FsdGVkX1/7nDqBXtO0iTv/rATXLjjdP5r77cEMbVxQu//MX0xQFu5AiZ3LlKroY3Mtr+f0tCarm/K7HzD4nVkO31enBJOUI2jENfd9LeR2iEtN5Ib8iuHtLQhzlz5cfPDDhDDlbuX4X2XILK8uSF2NFFT2v4Z+RKArLJZlr2gExX7srhUdwvFwZn1dGjqiSFHr3YNlfAWy6R2Rp795dk5HMU5pj096/1r9tnrc6DMnvIW5LA/V7Ek5f3dIP6mGwtHTaCIVV5qvl0rlUuru2ihPZgz3YFseY5lTG3Vpe6vyhhR1g8wy1rs3hruMnTckZepHRmh+35lkZVFqZIAYi2yfVDnpZPcBz6apAUumb/Ut6XB3lGZzvcmkHHgEpwotZGEKpLXmIBGfSD78NaUCGYI3ndn8Yd1+r8ZFMohj+O1xLj9Yo9a0OdRqPeB3hxGn+zp/8MWQ1k8ddifHV6vwGalutN9T634vHIIAgDMIh/i5MRwtKKk1+67swxvcq9lYdrIQDUIZ590adoE2kztFxmk3VSDV2O7O8ilC2cFD3ZQS7yk5WU14gjvuXcajU/jtyEoTVavgfJ0l2DQtUFlBRuQ2ncG4TrZ1mvZ+dYANahMptmU5I70RLiF1Kf0xBzEAZiYrfBKpscVYYn+PZkBdeG4WWwXR59oMc471UWsHthrIE3lI/EksoaUj9A2DFAEIdm9w7gd9Fq5cXmuQTyRzrOcf1Ik0RR+Pm85Doal3il4Otm89s31+naUBiI9qjfneOucZwi2QaSvNZMEsnSsg8yiOOHfbGcLdq/GJshypMudBBR2IOYBRgQAO7HZSoEyyrwteEBp5eZOhXOXTOQ+22oLOjCy35BpID7AGKNwyUR1/wIe42qgNgOfGtDnlQO48W535ERkUc0ItHAO8a0h07yXJ+t9RkwP2RZAa2pLeq80LCfsPVB6FBfFUr021UA7O6MWN+RklUkeDgF1Q1qc
- fvcQxld+
- GVdDM95IMY3EWlv95idPZW09hDNo4ALpYNHEbr9B2fpaN481x13nNDZl1Px7pM9YMmEe2QjoARQYsJqLG24Io887PBEU9XvUw90fttkSn/phoH4V5O0ZFVIkYMmbzxbRAGLxDHfln/OhHdsYEzMC4RVUX3cDF64HxRHSR3XKtIxiupwrCfmmYyXwcjL9/FTGcv8CSSr2mRcTQpCT0kTFetY2STVmBMUNFk0IApjY1SRx4HH8QTgrtovk6T7t8qVqGrKg3d28FIcCtNHJnFdkVDxzgw9uSlKtkIXJWdwkCO+FQ8IdzeGTIzMDWSHcac9gBajzMd5MAkikIEHe3LOSwNp6sV2Wt3RCMpttBd8PeavQcSbkKZRkTX5IvqTaAJawiF2dWFUCXxOxnSYGrYIcmIsZ68R3gUbj1zAwjo9qxD9gmYrQImczKHSsMwnKpN1vA+7roIcxyrkTFWagYgvPigQvk1DYmWwnREX8dbIpRD5BBMGt7j0GhcPOTDg==
+X-Rspamd-Server: rspam07
+X-Stat-Signature: i86yq7i5un17dat6mejgdk6r4sects7m
+X-HE-Tag: 1758106165-317283
+X-HE-Meta: U2FsdGVkX1+izHZ20HL49saSzw0vYcOVUJM+/W6Kw8bMP+ZHasUg7HcTnRoSfm9PAbM8Iqy+FzM+ZdBBxUWPYpDeW5dQyB+MDsVeI9a8dlAs33oZTAcn/c9P7CpVYNYhuoUjz+WLWiRaxD1vqHH9potbZzMzJRQp32klT7pKWcST9hFt1+B5TZjYCAugg/SrYDpULeTwBmZd2xa+F/XUQUYkdMTdGAWDEFE98jh6PC/EkHFrdU1KvlvJ87M0dJzbU7sq6Q6sJr8LVKPlltKpr/ZS2DBzJG3H0a4XiPYLQ0/K2Ow52xLBeiVS+4Bv+ZHNZoSHm5yGNJARcKboamy/cBkp0TySROMHXv2Ebx3yCRWqHNtUBO86cThW5nupIOgPUNLuZ655qwdeHrU++HRXlbkSBhUxrO6EhvDdTHlDgmXI0C+1PueiBtU689w8tj7Ub6hP9n0CatzBCQiN/JoACEI+kNlWXgLvZsyW4u1/mQjpr4NY9GymvS09dcfska+qI/RTUFdFHAIvA4gkbRSNMDNCYLN2P64XxgQ42bEkpohIdsGtuIG7x6qOnzjYD1+1MVncvDm2vkCjxJm7+TSqfiU769f3yVy02UbO90JCNwp+6EnPrEZ/Zp5BGCDx5ZrTS6dPZv3e4y1ACKOEYoLGVcTKT/0v6ukdh/89A6oXmZ2euNtcEL6lg5czGvFA6rQdW7ux4ITOMms9kzy4fiyiCv3gBHzm9NZVqpZCuBfJWE39JiYZs7pbfB16fXjRQX9POiUSk2agM5pz/S5g2D6PsOikXh7UY68fAbxms+l0jgOVuRxrFQyGvy0cfDEwpDMSmdgcNBIXW4lc4wzRO+lWetzK3zbf+C3JAJhnx9JRQByvoppZEwJdBYjqa6tAMtoVv0VG/EocJSoUGUSOiJcY8OzeXVpo7Zaucdz0NLKCMwiaslyLSf06W6KlEq2g8/9rsZ3kHirMBy/tEJELqJq
+ vuqoEIDg
+ lLMB0HjQQHbmNCOcrxmOAAmz5MZVc6mPDfiONCOTdxNzHOHNNy4FNgfUM/6P8uZ/X2LHI
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,108 +159,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 16, 2025 at 10:54:12AM +0100, Lorenzo Stoakes wrote:
-> On Mon, Sep 15, 2025 at 02:52:53PM +0100, Kiryl Shutsemau wrote:
-> > From: Kiryl Shutsemau <kas@kernel.org>
-> >
-> > MADV_COLLAPSE on a file mapping behaves inconsistently depending on if
-> > PMD page table is installed or not.
-> >
-> > Consider following example:
-> >
-> > 	p = mmap(NULL, 2UL << 20, PROT_READ | PROT_WRITE,
-> > 		 MAP_SHARED, fd, 0);
-> > 	err = madvise(p, 2UL << 20, MADV_COLLAPSE);
-> >
-> > fd is a populated tmpfs file.
-> >
-> > The result depends on the address that the kernel returns on mmap().
-> > If it is located in an existing PMD table, the madvise() will succeed.
-> > However, if the table does not exist, it will fail with -EINVAL.
-> >
-> > This occurs because find_pmd_or_thp_or_none() returns SCAN_PMD_NULL when
-> > a page table is missing, which causes collapse_pte_mapped_thp() to fail.
-> >
-> > SCAN_PMD_NULL and SCAN_PMD_NONE should be treated the same in
-> > collapse_pte_mapped_thp(): install the PMD leaf entry and allocate page
-> > tables as needed.
-> >
-> > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+On Tue, Sep 16, 2025 at 03:11:51PM +0100, Lorenzo Stoakes wrote:
+> Now we have the f_op->mmap_prepare() hook, having a static function called
+> __mmap_prepare() that has nothing to do with it is confusing, so rename
+> the function to __mmap_setup().
 > 
-> There was a v1 with tags, you've not propagated any of them? Did you feel
-> the change was enough to remove them?
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Reviewed-by: David Hildenbrand <david@redhat.com>
 
-I moved code around and was not comfortable to carry tags over.
+I would love to bikeshed on the new name (maybe something more descriptive?),
+but I don't really mind.
 
-> Anyway, LGTM so:
-> 
-> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> 
-> > ---
-> >
-> > v2:
-> >  - Modify set_huge_pmd() instead of introducing install_huge_pmd();
-> >
-> > ---
-> >  mm/khugepaged.c | 20 +++++++++++++++++++-
-> >  1 file changed, 19 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> > index b486c1d19b2d..986718599355 100644
-> > --- a/mm/khugepaged.c
-> > +++ b/mm/khugepaged.c
-> > @@ -1472,15 +1472,32 @@ static void collect_mm_slot(struct khugepaged_mm_slot *mm_slot)
-> >  static int set_huge_pmd(struct vm_area_struct *vma, unsigned long addr,
-> >  			pmd_t *pmdp, struct folio *folio, struct page *page)
-> >  {
-> > +	struct mm_struct *mm = vma->vm_mm;
-> >  	struct vm_fault vmf = {
-> >  		.vma = vma,
-> >  		.address = addr,
-> >  		.flags = 0,
-> > -		.pmd = pmdp,
-> >  	};
-> > +	pgd_t *pgdp;
-> > +	p4d_t *p4dp;
-> > +	pud_t *pudp;
-> >
-> >  	mmap_assert_locked(vma->vm_mm);
-> 
-> NIT: you have mm as a local var should use here too. Not a big deal though
-> obviously...
-
-Do you want v3 for this?
-
-> >
-> > +	if (!pmdp) {
-> > +		pgdp = pgd_offset(mm, addr);
-> > +		p4dp = p4d_alloc(mm, pgdp, addr);
-> > +		if (!p4dp)
-> > +			return SCAN_FAIL;
-> > +		pudp = pud_alloc(mm, p4dp, addr);
-> > +		if (!pudp)
-> > +			return SCAN_FAIL;
-> > +		pmdp = pmd_alloc(mm, pudp, addr);
-> > +		if (!pmdp)
-> > +			return SCAN_FAIL;
-> > +	}
-> > +
-> > +	vmf.pmd = pmdp;
-> >  	if (do_set_pmd(&vmf, folio, page))
-> >  		return SCAN_FAIL;
-> >
-> > @@ -1556,6 +1573,7 @@ int collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
-> >  	switch (result) {
-> >  	case SCAN_SUCCEED:
-> >  		break;
-> > +	case SCAN_PMD_NULL:
-> >  	case SCAN_PMD_NONE:
-> >  		/*
-> >  		 * All pte entries have been removed and pmd cleared.
-> > --
-> > 2.50.1
-> >
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Pedro
 
