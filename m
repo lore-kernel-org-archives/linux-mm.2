@@ -4,119 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EA60CAC598
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 18:27:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E17CBCAC59A
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 18:31:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 18AD8280008; Wed, 17 Sep 2025 14:27:15 -0400 (EDT)
+	id 45272280009; Wed, 17 Sep 2025 14:31:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 162A3280002; Wed, 17 Sep 2025 14:27:15 -0400 (EDT)
+	id 403E3280002; Wed, 17 Sep 2025 14:31:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0787D280008; Wed, 17 Sep 2025 14:27:15 -0400 (EDT)
+	id 3190D280009; Wed, 17 Sep 2025 14:31:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E9C9D280002
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 14:27:14 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6BB2F871EA
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 18:27:14 +0000 (UTC)
-X-FDA: 83899574388.19.29A6F5F
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 67FCEC0004
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 18:27:12 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=AnEr7Bg8;
-	spf=pass (imf10.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 219CA280002
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 14:31:19 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A5EE516066D
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 18:31:18 +0000 (UTC)
+X-FDA: 83899584636.06.7CBF368
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 111A61A000C
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 18:31:16 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KcTTOeFX;
+	spf=pass (imf19.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758133632;
+	s=arc-20220608; t=1758133877;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=giOIiZmv6I8DqOhlCekUkvEcCR09Gm73BQos2pe6CNk=;
-	b=72n0vnqFu0bbPHNzArQdYWOSwIoWVWHAoz4tLjCDvrlxaxDPtgweeHZgIzCNCxN0wVdk6H
-	OBJY6ybCDY+jVJCheSbJ6khlkkpUnesJt1EME3ZTXiKq7yGgtjfb9H4rC/Em/hYWjPLF8v
-	MU8d1tjk/T+KLQtkMlnAN/cJCaf+Wqo=
+	bh=mevL9in9k0o64LzTDwhQ1McAAnZa+W8W/qEwfHXnsVo=;
+	b=qNqrugJSUwbxInSX8guTvOVmO2Iz/vnEiP0xgnC1+3pHQgUlLzlPvKnIzulBezAjJVAGhs
+	Tmyu4nY/0/OYgI73R6w+3d3BSPoyzLBDSGZ2IdVF7IxgxsDMkvWH8Z8rjL8L8kiddd63Aq
+	6uBkt5/aIg3L4KooQLnzxa3WdkJmr8g=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=AnEr7Bg8;
-	spf=pass (imf10.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758133632; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KcTTOeFX;
+	spf=pass (imf19.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758133877; a=rsa-sha256;
 	cv=none;
-	b=zxEqx5a6cPnf1/Dxz+61btgLNc7E8Ngxe7q4GF373sFANWi3RyProji3OwWaIvFCeF9wxj
-	D5AEwbyQcsYkELINqAyPqvmd+dDgyVYroiB0DvYtpogwbGRzG3pmidwhFS2rXNRPuXx9TZ
-	NOi1AKjB2O5qV8sqKsmoPhr11UAg6+s=
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3eb08d8d9e7so115318f8f.0
-        for <linux-mm@kvack.org>; Wed, 17 Sep 2025 11:27:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758133631; x=1758738431; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=giOIiZmv6I8DqOhlCekUkvEcCR09Gm73BQos2pe6CNk=;
-        b=AnEr7Bg8yoyTD4XH4RrMFUSrYtPQv1Sr7+h0ReXvzowFmEMiBreA7kWFyzlXudaemH
-         IF+Of2kG9dh33Q9OIMtUg+zqLfRuRviJ5WlHdzkgGhRH+vsbnP7up0H18FvZyZTVn0XO
-         owMgbTFdz+ncJKozqt11Yt18Mm3G4Fmy7GhJUj0Z+v2b16Qp93xspS8FR7OnUvuGiSBi
-         JN+RHXpXSVE7vx6oPx4HVwQBjV/oNOvT14BzoUHhoVoBVkF1tqFePhA7e8yjetZlbRnO
-         4EeHc4B1kBqODM7Bfd0+WaquOvhFHk5EHmHzCZhI0Pv9z529B7nrE6CZGj/+qOE0TW6T
-         QzzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758133631; x=1758738431;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=giOIiZmv6I8DqOhlCekUkvEcCR09Gm73BQos2pe6CNk=;
-        b=Bxxa2kWwaZnSI3s6pDD5i2uLK2xyrcaDKHbayiwUGrlRHloyKIem/XbSfkGJcQ8m9s
-         Ezhvt+ebznPyAuXIPWwUwjLjnmq6Qv+x7trwmH3wniCh9dhCFRs5u5Co5tLeU829LMYN
-         GZ07ED8GceTY2m7cm6JXwlaog/BOzmtz64IFx0XkTwKKwM8UU9uWMZW5Aw6KKIxpGbjJ
-         GIOeo5IH9o18emT1qEI0vEJiJnydzbcTWLGGforihAoBO3L9tsWfvgHoyhmQ7ltp4ckN
-         gbU2C/lP/63eetZtZNB7g207AQeEG79dADXbQ/+mlpx2Wfi8m83JLNqnBEA8BIe01QWn
-         F2kw==
-X-Forwarded-Encrypted: i=1; AJvYcCXiGWv/DLF3WiNgOTlrKjs8VUbe62WIJlfsl5D4wBZr8c4SlzyFRY5pDaWaVWXfV/5WjSugmmYfGQ==@kvack.org
-X-Gm-Message-State: AOJu0Ywi4n9cinwVUGMqp4LFWFib9tcm3nMLIkzjmSJ/G9hSKYtSlFWa
-	B/a5n0bDRxSF1LU7pbvyPpAfSoXoaSBbDQe58WiPlHPJpAhVIMeHYJhH5HhsoWB40GOHKUslAtZ
-	toSE3pqHFvN+MiTrilBc7yNfVag2ZCco=
-X-Gm-Gg: ASbGnctg3eRkdRol+e9criJuRo7G7NUelyg454shxTIPUA9amPhmsij6LO+fMBdnsP2
-	2lA1r61MbuEKzTVtSoRACfIalXDMnuyrILALKrWf6rDKL8RYbSURqIKa1RxfUIREwBj7IWVLsfw
-	j0ElHf+jjyYiJ3xNwII+QVK4vKRDDnvNkTsmcUkoAYnR8XoLx/dpk0wVQfBoO+ns2Y/oYA+vUj1
-	V2pyM2DAaxFEdS9es+SVT8wKqoZYlCpWG3MKsQCDvLXdFg=
-X-Google-Smtp-Source: AGHT+IGIjDIE66b7poTQjbUsClk+JTa8i87RedpfgKqXFvYZF5/Mwpf7vxUqOeoC4SPPIS3ebGzBC4ZDuD2hxOymUMo=
-X-Received: by 2002:a05:6000:24c1:b0:3eb:2832:96c with SMTP id
- ffacd0b85a97d-3ede1c74f09mr448260f8f.31.1758133630484; Wed, 17 Sep 2025
- 11:27:10 -0700 (PDT)
+	b=iblwi6JAvC1bklhziSmnu1w77badvsrTtEQmgxdSnuxsef32woYtYXrwL3W/ugi/WQEnuE
+	SVKxiK/VYYC3sb1897cjcf6dq/vcST8KarMxE4ysHGdbrinG+VQ2hY+duqFVc9fXBhi9RP
+	1+bzdVGd3Id3Z9+8AKROz4yiN52Umyg=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4D901601E9;
+	Wed, 17 Sep 2025 18:31:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D61E1C4CEE7;
+	Wed, 17 Sep 2025 18:31:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758133876;
+	bh=qc2L6Az/Nqo9MlJoX5qAK3vvs94xYepHejoFP3CW/EQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KcTTOeFXPkJ39QfkZjd1hm+LU1GcwQTEzQRlYvljHLGSvvaSE6LpZD9kBUr5g3flM
+	 3X/tSCXRL2zXvypjdD1V/1mrxWnRn87z4HzsOwZXJqCQQtWGEmOW9hATdqPVmS5JZ6
+	 i1VTt0G4xQh3KBdIDm5nim6cpH+fhAXccliVaZaQEQGeuUt2O4WfdC9+7/Hoj1Ei0E
+	 5wGisV00xMrac9Q/f3OSpzddKDtpLIIRfEa9ZM8B5ibZk5pYBR+39HyX6ZecM9j5Vg
+	 UD0n2+fANWqpqOu754kjZMRglvxPp3c2TbqscV8BfSEGs9HNzIxSbU6YbmhIMhtuWY
+	 UMXzyZa9gPgBw==
+Date: Wed, 17 Sep 2025 08:31:14 -1000
+From: Tejun Heo <tj@kernel.org>
+To: Julian Sun <sunjunchao@bytedance.com>
+Cc: cgroups@vger.kernel.org, linux-mm@kvack.org, jack@suse.cz,
+	muchun.song@linux.dev, venkat88@linux.ibm.com
+Subject: Re: [PATCH v5] memcg: Don't wait writeback completion when release
+ memcg.
+Message-ID: <aMr-chVzDBfU7BvF@slm.duckdns.org>
+References: <20250917150125.331701-1-sunjunchao@bytedance.com>
 MIME-Version: 1.0
-References: <20250916022140.60269-1-alexei.starovoitov@gmail.com>
- <47aca3ca-a65b-4c0b-aaff-3a7bb6e484fe@suse.cz> <aMlZ8Au2MBikJgta@hyeyoo>
- <e7d1c20c-7164-4319-ac7e-9df0072a12ad@suse.cz> <CAADnVQLNm+0ZwX2MN_JK3ookGxpOGxEdwaaroQk+rGB401E8Jg@mail.gmail.com>
- <0beac436-1905-4542-aebe-92074aaea54f@suse.cz> <CAADnVQJbj3OqS9x6MOmnmHa=69ACVEKa=QX-KVAncyocjCn1AQ@mail.gmail.com>
- <c370486e-cb8f-4201-b70e-2bdddab9e642@suse.cz> <CAADnVQL6xGz8=NTDs=3wPfaEqxUjfQE98h5Q2ex-iyRs4yemiw@mail.gmail.com>
- <aMpdAVKZBLltOElH@hyeyoo> <aMpeADsz1Znaz8AU@hyeyoo>
-In-Reply-To: <aMpeADsz1Znaz8AU@hyeyoo>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Wed, 17 Sep 2025 11:26:57 -0700
-X-Gm-Features: AS18NWAFnsgy5aitphu3UPL49R51UGNv6gxHVzc-JxbR8L-AQ1LExbbnhT_DQj0
-Message-ID: <CAADnVQ+sKKV+-Ee61Bxma+=MN4unGLRypAnfqHuLOtHM6T=HEA@mail.gmail.com>
-Subject: Re: [PATCH slab] slab: Disallow kprobes in ___slab_alloc()
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>, bpf <bpf@vger.kernel.org>, linux-mm <linux-mm@kvack.org>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Michal Hocko <mhocko@suse.com>, 
-	Sebastian Sewior <bigeasy@linutronix.de>, Andrii Nakryiko <andrii@kernel.org>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: ppmndsda1x1tznf134c8h35769f6fc3b
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250917150125.331701-1-sunjunchao@bytedance.com>
+X-Rspamd-Queue-Id: 111A61A000C
+X-Stat-Signature: jbyaqx6jer3ew3qcfffxogrb6fwzkb8s
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 67FCEC0004
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1758133632-23153
-X-HE-Meta: U2FsdGVkX18/j5E9yVlSSs+ibkqs9o59NodIv87DmVqxQyX+rKkTXMuk3J19sX7EqPmGlI/k7XuJxhZJBPUD/45XLmv72bBXOpWzH/mNhE2PdWUQqGyA6mHeGV/Esquwh5Le3mYIuN03mf4o/Q7La6IDoEkmMrZ2t7Cp5o4ZxGvBzZluHid2vTAkxBxioHX7c8b2Cw8h+8z1LvaO5HNPL5lvLNqUW2YamVPRYPHzE8EvReGWStHvfuarcgHVdBIsKhYDdgmvqFb22a3NFRCAjsy8Z6W6MH8z4uTsxk1Ke5EsD+mItBAYwDdoAEGQN+eDNhutUXJUx/kCA15eh4sGjYyYKwXsl3+9TwHBCNgSxzVfCEwPZERmfxiQELe3sF6CbWfDqCe1k6UgWRVdwLMiH5MjsEEYHhnIPOA24hj+XN6NUR1q1zmJspJb2tltGPdvdvng31AEDJwrDhGe7JdjBI9TnAyjIOdLWKiRmvJjYmiN4NYVSWzNEyWkltduek7OXbiHEw22U9zJV404XbLCSJHoytP13X2MOheknjFjY3ImXn4E9fk94d5bUT1c4pogi6HYbJSBHlnoH5XhTqjwp9dB0vMbxIVt28phx4OWECh+ZOpSSxyeUMy6WdN4gnMVj2/F+7WVOyEC9XNk+OV+dnEIMS2l787UOuBwx+o/uwKJin3TYqaceGdAbk3eN+r3daj1ZAGCCAl2Mjng8SKnQIpblnutmS5v9EY8qN6Xqg3uGO/swu5ZOiKPYekVTXpiLRfIxlmbtEvp2sDeuExD11i2/9cmiXVnr35T4XSWTRdHNuEG0dHvUU7N3czFuxGRkC+QQOKZ+GxFEO0BK0VyalAzO8zr2AZgmwPBMRjngoUmb0jHluOHXtvEa+GnHXchPG9ClzSPf8AipQca4UIlQgl8gg90n6V2/D8l4bBDtK4dSWZ/2kuJHIXm/ND9d5v2aBcx20OBQN41+0fbW5c
- MEYnHhE9
- e9095c4m6b4e9C6NYaCrutF6fwCsdwpdeO9eRbHnOTn5MW/16ExzDGDAO823QYprY2qD4eDcdRCy0dN4iDcQqY20P7TLMHMSXLKjY/hnr6b628VWrWb5imTh7OPSdDGBQY/NLE9F6qw3d9oW7Vzrmn3XNBtP8FzhktvttYNM0VH0Upcwi/lZPQl9jm5+cOG6sEsWqsMV9H+Ja3YSOvyIzsZpAw43qBFnaF7V7/5XrFDsVMwKhoam44cCEhGdlp+LpGwTACKY4XCyr5MX1Jz2fX61kowivwuvskeldn4inR9zhWS/Up4z1OHX/8Bea8rsjch7sF2nQqlUUWx/MnTnLxWl8glkd7EklIRkyssi3jpfLmyB9/Atufe8d2R6xWaevC9l5+Gi5NSZo028YUMEgc27YwOylulf1iwTh/eRqcxH7dsTqA3jBt/eeTUmwnSIZx6B35KviIMRMkC4=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1758133876-558337
+X-HE-Meta: U2FsdGVkX1+ZIoXk1XvXMeoT3ypUZBo1jAaRL4WHbqkJqh5QLG8yUFZDiXAoF/8qdJ1bLC0KXaUQTW4eMOoPEIm69Wythsmu4x8h9UlymVqCNmVidzg1MVp+tiiGPPBK4njpm/0R97C/LIBfzrGGwwajZWpVvD3kUdWcz7JXJ0TJOgZlwpTmQHnG2+/GtGA0YwSS2xPUW8ED65+DMXnrBSUw4NwuaPvc2Y6Zl0gncXInbk9p6zeXCNpcF49HaP99d0cddOQv07SiU3pn1ZL5QGua7IcH3t2LRQZUkMyqaKHU7Rdij2aPc7Z4/JNI+Vd846ubUHwwncA1ZocafvdspkWjjBy2/xSneuW21D5WbGDkoYW8u7Xb3Tq11uegSVTBuMXHaSYfOf1dI7gvHQpT3/bQWsggPzJXyhPY2PvFpv1M5Y8QHeHDItqwh2gIBVWDBo9djpd55+3Bx2U8G6xgNlMgjrMgqgG3s8Y4NePpV3gxSPxiYkWQFLOHcJTUkmmoN9aMt+tFcJpCLgWYGGvTKOxmLjWzpVVDA4TQi9SKhC+Djh/Ic4NZV8a7VxFqDsTgsuQTbnlrPuFpFomOLw8VOCls+V73B/vXD1vR7n7JbyUSbVoYKjvd1Qw5PalZluLpvSYqzzio56ZBScSJjt0rQIzCGS9INK6UxtfFN2VW2WcRRTeAljikdJNC4Jjyn70mpUEMQm2Kd6zdJ8vHrl/VYJP0LRtIroYjyKxQKkepeP+SR8rQbY9iJxOVWTDeO3d9XZsne/DqHZ3P7DhXKeb6e5XhnThpFsU+q1mr9m4gSGQKwIET1dgWkfnYMjPuEqu2PDnQsKe0ifLhAkGsopaX1vFVt7v3JPYyTPcpi6HzbpYqFbKVWKHnDLA1/Dml3eitbbnOCfMxPj6CI7U4ZB9DARIRUDPAmSkN3v+224kQZblD2VnKNsQL+IB4zZDt6hRTjQOUDV08pA9PN4CN7pO
+ QS1tyqK6
+ yMqfApORcXkq4GQ2LKE5BNSRjJwqs+Z+3+LMCzCNUDrV8gpGxOZmDKER6n9m0veZ8B+bMAS22NcpAf7WxhkzC3DqToHVN4yiW6ahxo9Z092m5HIWIcKep7KPbBws8Q3JQFwFpKrgI2tBJBBHa1tLuCHTdIF6xKSKIBXckzB19RkY0TJIwsSnfCZG06i7vZIBcBf5Ebo+pQGbljN+9ZXYmCRec/g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,47 +92,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 17, 2025 at 12:06=E2=80=AFAM Harry Yoo <harry.yoo@oracle.com> w=
-rote:
->
-> On Wed, Sep 17, 2025 at 04:02:25PM +0900, Harry Yoo wrote:
-> > On Tue, Sep 16, 2025 at 01:26:53PM -0700, Alexei Starovoitov wrote:
-> > > On Tue, Sep 16, 2025 at 12:06=E2=80=AFPM Vlastimil Babka <vbabka@suse=
-.cz> wrote:
-> > > > > It's ok to call __update_cpu_freelist_fast(). It won't break anyt=
-hing.
-> > > > > Because only nmi can make this cpu to be in the middle of freelis=
-t update.
-> > > >
-> > > > You're right, freeing uses the "slowpath" (local_lock protected ins=
-tead of
-> > > > cmpxchg16b) c->freelist manipulation only on RT. So we can't preemp=
-t it with
-> > > > a kprobe on !RT because it doesn't exist there at all.
-> >
-> > Right.
-> >
-> > > > The only one is in ___slab_alloc() and that's covered.
-> >
-> > Right.
-> >
-> > and this is a question not relevant to reentrant kmalloc:
-> >
-> > On PREEMPT_RT, disabling fastpath in the alloc path makes sense because
-> > both paths updates c->freelist, but in the free path, by disabling the
-> > lockless fastpath, what are we protecting against?
-> >
-> > the free fastpath updates c->freelist but not slab->freelist, and
-> > the free slowpath updates slab->freelist but not c->freelist?
-> >
-> > I failed to imagine how things can go wrong if we enable the lockless
-> > fastpath in the free path.
->
-> Oops, sorry. it slipped my mind. Things can go wrong if the free fastpath
-> is executed while the alloc slowpath is executing and gets preempted.
+Hello,
 
-Agree. All that is very tricky. Probably worth adding a comment.
-Long term though I think RT folks needs to reconsider the lack of
-fastpath. My gut feel is that overall kernel performance is poor on RT
-due to this. sheaves might help though.
+A couple minor points:
+
+> +struct cgwb_frn_wait {
+> +	struct wb_completion done;
+> +	struct wait_queue_entry wq_entry;
+> +};
+
+Can you add a comment on top of cgwb_frn_wait to explain how it's used and
+why?
+
+> @@ -3912,8 +3940,21 @@ static void mem_cgroup_css_free(struct cgroup_subsys_state *css)
+>  	int __maybe_unused i;
+>  
+>  #ifdef CONFIG_CGROUP_WRITEBACK
+> -	for (i = 0; i < MEMCG_CGWB_FRN_CNT; i++)
+> -		wb_wait_for_completion(&memcg->cgwb_frn[i].done);
+> +	spin_lock(&memcg_cgwb_frn_waitq.lock);
+> +	for (i = 0; i < MEMCG_CGWB_FRN_CNT; i++) {
+> +		struct cgwb_frn_wait *wait = memcg->cgwb_frn[i].wait;
+> +
+> +		/*
+> +		 * Not necessary to wait for wb completion which might cause task hung,
+> +		 * only used to free resources. See memcg_cgwb_waitq_callback_fn().
+> +		 */
+> +		__add_wait_queue_entry_tail(wait->done.waitq, &wait->wq_entry);
+> +		if (atomic_dec_and_test(&wait->done.cnt)) {
+> +			list_del(&wait->wq_entry.entry);
+
+__remove_wait_queue()?
+
+Looks good to me otherwise. Can you please cc Andrew Morton and memcg
+maintainers on the next post?
+
+Thanks.
+
+-- 
+tejun
 
