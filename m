@@ -4,139 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FC17CAC598
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 00:17:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43D30CAC598
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 00:31:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ADC7B8E0002; Tue, 16 Sep 2025 20:17:11 -0400 (EDT)
+	id 5CBF78E0002; Tue, 16 Sep 2025 20:31:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A8D308E0001; Tue, 16 Sep 2025 20:17:11 -0400 (EDT)
+	id 5A3818E0001; Tue, 16 Sep 2025 20:31:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 97C0E8E0002; Tue, 16 Sep 2025 20:17:11 -0400 (EDT)
+	id 4E0208E0002; Tue, 16 Sep 2025 20:31:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 829BF8E0001
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 20:17:11 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3DCBC8E0001
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 20:31:01 -0400 (EDT)
 Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2D6F2C0191
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 00:17:11 +0000 (UTC)
-X-FDA: 83896827462.22.598E68D
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 3199040003
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 00:17:08 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=f8FyKfj8;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=mjguzik@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758068229; a=rsa-sha256;
-	cv=none;
-	b=vGAAzZa7PPSzyHiVf9DZad1tRsdDPgP/vJGe8K2ywQz11T4OW+yXjQvAz391g8LmB3EEZi
-	XKXqCKdcJdmebM3o9LenvzqVeV8FBQuNfWL1Ydo5Mcfxg7Ct1fuhd7x+rrO+6CmNZpXOja
-	nfchIlHhgJynCYvA5TnM9TuXFdx0FmQ=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=f8FyKfj8;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=mjguzik@gmail.com
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E46F9140384
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 00:31:00 +0000 (UTC)
+X-FDA: 83896862280.22.26D4F4C
+Received: from mail-vs1-f43.google.com (mail-vs1-f43.google.com [209.85.217.43])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 0C2EF8000B
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 00:30:58 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="lxTGq1/1";
+	spf=pass (imf30.hostedemail.com: domain of weixugc@google.com designates 209.85.217.43 as permitted sender) smtp.mailfrom=weixugc@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758068229;
+	s=arc-20220608; t=1758069059;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xXSGAh8chrKBAWdQa4v/8pOW/Kzc0QCjuDzlGtOmWtE=;
-	b=Z3g+2fM7yVyeOUf09P4TsLIEt5NtBM0nYw1Fb2ckR4KoK/pjeBXJuRMWzftML4SI8z8Dtn
-	DXB4fSWHFnZLgO0UQgLcLEEhGJsThvoqtUQNezQTW/zYUX2GLlwON4wa5SLWvNspaMbm7t
-	l+/ckV8hdBZrGreQMjmxRteXpTg015g=
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6228de280a4so3677466a12.2
-        for <linux-mm@kvack.org>; Tue, 16 Sep 2025 17:17:08 -0700 (PDT)
+	bh=CAKa0U7jZSpuvuM4buIty/jYeCtOj2xsvZscq/9Zh0w=;
+	b=QOQVaXYUIykHe7f5fD6ajBRweubsRcb8bY1x2tIAYAGVWbWwps0fhcw6iQDbgW7pbu+EYB
+	sCnEgRWus/LFK7V3o7Cp9bLemz4BSW8IVTnciDMm6NdALWIygdhg7yZGandIvZHfDClYdf
+	QwgokeCL+pGqzWmzzK+urttvaKPY+ig=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="lxTGq1/1";
+	spf=pass (imf30.hostedemail.com: domain of weixugc@google.com designates 209.85.217.43 as permitted sender) smtp.mailfrom=weixugc@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758069059; a=rsa-sha256;
+	cv=none;
+	b=rAKIiBj2+xiuSp90rKk35L3emCx+dmwQk2W7pCZtEMiKeZW1v1RE0g3lEsSTEaNLMofh6P
+	aghpin2jcmlHlaw+kYhPgLtRR8Oj6CccGQlFV3nEpBFJOs5R9vA5jymsu+776lsAsoF9qk
+	roTVQHz4nGq91pHcNMM5vXbaomE69bY=
+Received: by mail-vs1-f43.google.com with SMTP id ada2fe7eead31-52af5df0fdaso2055311137.1
+        for <linux-mm@kvack.org>; Tue, 16 Sep 2025 17:30:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758068227; x=1758673027; darn=kvack.org;
+        d=google.com; s=20230601; t=1758069058; x=1758673858; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xXSGAh8chrKBAWdQa4v/8pOW/Kzc0QCjuDzlGtOmWtE=;
-        b=f8FyKfj894Z3vwH7wWja4uG/TxNC0FYWzlA8/5cn7fJZN8tSBSN9XoOyjpFB0hoSic
-         lpqCZtd4vXr5b3JuMQS6ox4drYUCRIFnJhefk2dmiv1ypblNJ+GhguGpSKwyh1rHaUhZ
-         0tpVzNv/Yg1jB/PeyLqxfdJIhXfNIVszpChj84liSIHJW3fDI6y7DqXQcP7SkWyILIbO
-         v/iC6g+70sE6ebD9xjjEmAAivcW0U0iUnphmKfm1OrEfgAD0qm0jiy0GbqmRHOmiOd86
-         WmdXl9YAALEb4UVcH3xapGgORvzrXh5829m1z4iHqoQfCvwiteirMwANAU58pExbcbwv
-         lTZA==
+        bh=CAKa0U7jZSpuvuM4buIty/jYeCtOj2xsvZscq/9Zh0w=;
+        b=lxTGq1/1jqFody+rWnis6vFkjZ9iykLP/mRqCHaqVO1XoI5NdDkFTyXjoTuEa6WpqY
+         IcJo7h+wCJ4nUyj3+IJ2s6n7+W7FjuCL9kXrC7RClTzcuTDGcR4D9t5cgjssv71jykZk
+         rlA8ySYFg2MrnoCaz8ZFYZRyfdzm5Fsap1XgoBNiXNKgqCN2ptQH7KAS6w2z3ibwKENG
+         EWHR0ByBfzVP//O1ls4VGvA8S0DBJGvV+XSsgVqG1lAQ5mllE3l1Lj9M9T7uWkU9l7b0
+         NBCnCxUxdJkYgfc/B0VJd86JtO77iYQMa1Q1rkk0gkLJhv7hHBk1wW0zlSpzfO+kb4ZK
+         A1TA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758068227; x=1758673027;
+        d=1e100.net; s=20230601; t=1758069058; x=1758673858;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=xXSGAh8chrKBAWdQa4v/8pOW/Kzc0QCjuDzlGtOmWtE=;
-        b=wjrgGNJfvsT4845SPI2gHUMlQYMbNzC/3ta1TUPV5bUMV6ie1EjxCnyg2wRjOuiNtG
-         tSqMgKX+4/M8NFm7hckVYBVqRhZUIvGg4Zq40FD/+ijGOomHSB1YYVsmOJW0r5tL99C6
-         Q6TXKncE9cg3baku4WCm5j8XBnUDrOGlv3HU8IWygnVAoONj4v8x7o5lTDUGXeqjEK3b
-         L5Yu/DwbfgfO6xEvV8SHTQFceFVzyer3QUWcloNt3NI+ZfYKJuRTjvU5k8ZXmUPoXUU+
-         WLH7LXfLTEBo6nFit7riRjYaRLeFrue6BMr1wFWcm9DEwrt/R/002PGgBY+c5ACaEAIW
-         IYxw==
-X-Forwarded-Encrypted: i=1; AJvYcCXN/GJnizwEwreR6kqQtQENNi1OBks62vz7RgN7IJLngI68FL1SAvnplx+/FDQhgFbJvYP95AMfMA==@kvack.org
-X-Gm-Message-State: AOJu0YxW5zFzXcYNpWoOqijxCbX05mYDrQbbewX/+9kBDdPoAGLKXzdz
-	2rRrJ2BtczpUOtHXpIfvLRclQdaxkmrAtk4Foo88GK94OhdiQ7gANg5CRaqikg1AFs1HZv8UB5F
-	71d4alUC5VS6YTDcxvWm/QDAXd28EVOw=
-X-Gm-Gg: ASbGncu4kljwW+Xr5R31fQ47CSvbdYvG8V8xAFsWAq1tsj2zRmtJft36GVePRD3/1KX
-	KtEwBup0vYRDBS03SIhqzIVacj3yclFfJ+C/OWX5YW3sLA4yBAxV4V/wkGC3AZK+2m/jZ9x2QEJ
-	uVZzS4ydjYRqGAzdSlu59/q82xpBKEB51Fd0oPvruRm82iaSVcxMCBnmSck/gXhdL14FTI0jeb9
-	Eq06dhIgig9bZgmpvt9mBBMC2uoFSP9zkxi54o=
-X-Google-Smtp-Source: AGHT+IHkWc8z+1xTqfr6RJDMY4BcUWdUqKw6o2ECW5HvusjoalWjKeML6JPCAbs/M1LUcK6l6vjMuNB824YFNjkP4LM=
-X-Received: by 2002:a05:6402:26c3:b0:62f:2afa:60e6 with SMTP id
- 4fb4d7f45d1cf-62f83c3f396mr486555a12.7.1758068227086; Tue, 16 Sep 2025
- 17:17:07 -0700 (PDT)
+        bh=CAKa0U7jZSpuvuM4buIty/jYeCtOj2xsvZscq/9Zh0w=;
+        b=AoUyVJIEe4U7hUiKFiyOec3MJ4l9pTQ085QbaFozfQnmgN90J6Xt/l7quF6wu1wz8I
+         M5jhS0G4tdZ6LfTy9FjtdoWsL/xrw7qlY5ioJs525m9t+rTqSL4HfjaZZ/x18bIDutWy
+         D08f+l+N3TGreJkaq6wVcVF+LChsmVMYNA4em2WGWET3BISrUCbQ5uJsyTaDEt5hgke3
+         4caCC+0nikM5Gy5pAaBnqj8b4YEWET7FsTq8mFjgEBDogBjBd+ZAJVJn+lxlquV0Zxvt
+         Aan8TxEy2Fng/ncqZtBlIzr3n9Y08mhTokKpkXOJIYAGvI/noHe+4mMWSDogcflgH4GB
+         5ApA==
+X-Forwarded-Encrypted: i=1; AJvYcCVlM8B6Edetr2bwdO56+RXODo+BYmrUtrARZhqkbROn3g77HwBSvIiqcVASoeVbHi5rZePEhjh2cA==@kvack.org
+X-Gm-Message-State: AOJu0YyzglmB40c0hFIfjm7KA7AMA3xwijG+G0m7Ptmvd2Blq6fW412z
+	h61TWmPcOs9bpnAJZIR7ipdKyQUKM2JJakE414BSCu3c3MbJnhCWGFgDTCZLyrh/tkCjV4GlsHn
+	wg5OpFa0bwXtgmooSvLgvfEOytRprI0k68H2RnbMJ
+X-Gm-Gg: ASbGncs1UXgejU9VTFXZwcKvo+NDInfgmxXnUtheqsa9wJnEFyFB4A1JLjuYaxKki6B
+	FY36fKY0PlJKIrJ4pXn9avvQDGnHtAUWRQy6gG6585NQ8CqohLwa+KG5KMZWmR2JL5W5PrdmlvS
+	H8GpK5w8PifR8Tv+UsT25jDzfeDn6dgG1x3TL/ADjdbSb/xni9GUYY/vSxpA+wORgBudZDPKoi9
+	Wjg6TWtqfqBOoIE3mvsbc0qXyLMDjwHjf8J2g7+71VA
+X-Google-Smtp-Source: AGHT+IGpcvzQc7vHHG+kc4oHBhDjO4zKXCvjee+xT79Ol/YyeJ/1u96xFdzMVFkD0elqQQ4hUMuBMrxsaBUf0oG58gU=
+X-Received: by 2002:a05:6102:2c15:b0:522:b5e6:2f46 with SMTP id
+ ada2fe7eead31-56d4d993fdbmr67674137.5.1758069057773; Tue, 16 Sep 2025
+ 17:30:57 -0700 (PDT)
 MIME-Version: 1.0
-References: <1eb2266f4408798a55bda00cb04545a3203aa572.1755012943.git.lorenzo.stoakes@oracle.com>
- <20250916194915.1395712-1-clm@meta.com>
-In-Reply-To: <20250916194915.1395712-1-clm@meta.com>
-From: Mateusz Guzik <mjguzik@gmail.com>
-Date: Wed, 17 Sep 2025 02:16:54 +0200
-X-Gm-Features: AS18NWCoF9toVvfO2cO2nt5EYzoV_mx2NXf7z13bcCNBsYM4N3TAXw98oK0bZL0
-Message-ID: <CAGudoHE1GfgM-fX9pE-McqXH3dowPRoSPU9yHiGi+a3mk1hwnw@mail.gmail.com>
-Subject: Re: [PATCH 02/10] mm: convert core mm to mm_flags_*() accessors
-To: Chris Mason <clm@meta.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, "David S . Miller" <davem@davemloft.net>, 
-	Andreas Larsson <andreas@gaisler.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	"H . Peter Anvin" <hpa@zytor.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Kees Cook <kees@kernel.org>, 
-	David Hildenbrand <david@redhat.com>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, David Rientjes <rientjes@google.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Arnaldo Carvalho de Melo <acme@kernel.org>, 
-	Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
-	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
-	Kan Liang <kan.liang@linux.intel.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Oleg Nesterov <oleg@redhat.com>, Juri Lelli <juri.lelli@redhat.com>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
-	Valentin Schneider <vschneid@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, 
-	Peter Xu <peterx@redhat.com>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	Matthew Wilcox <willy@infradead.org>, linux-s390@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org
+References: <20250910144653.212066-1-bharata@amd.com> <aMGbpDJhOx7wHqpo@casper.infradead.org>
+ <aMGg9AOaCWfxDfqX@gourry-fedora-PF4VCD3F> <7e3e7327-9402-bb04-982e-0fb9419d1146@google.com>
+In-Reply-To: <7e3e7327-9402-bb04-982e-0fb9419d1146@google.com>
+From: Wei Xu <weixugc@google.com>
+Date: Tue, 16 Sep 2025 17:30:46 -0700
+X-Gm-Features: AS18NWA9y0jYxcd9ms5fIx1WiL1jSVSZ98u37raOtlChuyNgOvkjQE1POFTfnB4
+Message-ID: <CAAPL-u-d6taxKZuhTe=T-0i2gdoDYSSqOeSVi3JmFt_dDbU4cQ@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 0/8] mm: Hot page tracking and promotion infrastructure
+To: David Rientjes <rientjes@google.com>
+Cc: Gregory Price <gourry@gourry.net>, Matthew Wilcox <willy@infradead.org>, 
+	Bharata B Rao <bharata@amd.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	Jonathan.Cameron@huawei.com, dave.hansen@intel.com, hannes@cmpxchg.org, 
+	mgorman@techsingularity.net, mingo@redhat.com, peterz@infradead.org, 
+	raghavendra.kt@amd.com, riel@surriel.com, sj@kernel.org, 
+	ying.huang@linux.alibaba.com, ziy@nvidia.com, dave@stgolabs.net, 
+	nifan.cxl@gmail.com, xuezhengchu@huawei.com, yiannis@zptcorp.com, 
+	akpm@linux-foundation.org, david@redhat.com, byungchul@sk.com, 
+	kinseyho@google.com, joshua.hahnjy@gmail.com, yuanchu@google.com, 
+	balbirs@nvidia.com, alok.rathore@samsung.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 3199040003
-X-Stat-Signature: 7958w3r36wmfhu5fd1h6t3fjryhgzpdr
+X-Rspamd-Queue-Id: 0C2EF8000B
 X-Rspam-User: 
-X-HE-Tag: 1758068228-111253
-X-HE-Meta: U2FsdGVkX18jZceTZXVRPyPrdIZb/V197upxQLDv+7m8EIizmuUpcb1ieE4Ec3x/RUOVX48OWgS0tBxSUh6ixLy0p1JXMSwSTVSn2/aSJb0KHSxYy3dPmITNr/kKfFZYvwEbUNLGpm59yTkS426o6mlCfuZ9m5UkSrjwgmX5wHD5MMTCedw49ZC3KCqsNLXrDLQ3vgwe++j6pOxuCpCbQX6/0ZVGkcufyUL2X94R0MqVx1fhe8dshMOUWzlnqppFamWR9TOXT3pq6M90jGpoNbfJ+agwXBFg71y5/U12CxLp601IFoumYH2RXTZjGUIsNdaLJ/z+Z/ekpWkqfUM5CeuxO6YQ6rYxAoqFppqGCnXksRymjjckG6Mg25pPGno1toEo/BPZfjJd6LtJULcRs5XR9yn692hVIKPy0kPpJokHbc8TVEEtufN89DUSDN7qJ73GRQ9CS9Tbfb4wfV+zCEqZxCwRJcop6ZFM2Lw6MMpFLezheOWYKxwmT3YujI6t8Azld/z5D5sR+LtVGthB2VQFrUuT7MmyeWwg62GAl+lgpZ2wFoKPeoyqW2ClU5Uc8XAr3u37jrBvBUsUclmzDFp+5skGLLn6kXM9kM56mzFV5zavWsLupywxJsv8A315It2vUiPX6CZDr5SsWaATHplW6eRJUIpZ2tVkjnT848GjrHraSt7AvpTm0w9asHEDopeWG6pL/v8BNSc2cYbOOq7aF7SkDKRTegOY3F0Y6FEW3iua1jIdemFZ6uPhe2RHL+/8waeZ4HDbY7d1HrPuGz1AQixB9zUteylSk6wspnVBhkVzWjT+gJx68G4JHRqtdVp+9W8s0nkyDmOJT49/LTneYnLKuu7i1MypnvAlFrJhDigE5GlpTURs2G5PW85df3VF50Et2F92lSfE9rxnNUETwjQYH7cHQdr0bjm6LJzc4MTq8qcCaOgOwVxXqC/lMSAhvQ6nn34IzWRU0W7
- dtJe2J0d
- BuwzXnxI3+pOFrCVy193mWlqhAsNQIFHin+7d3aJ/CeEoamE/+sYxYv8SHzUt3lB9myfg1t3Cnk5ZLmGcwoQxuMNHCgUP4y74PP37uq7PmDS3+GqwKGltEKXnik/91NzMWwS4iWGVePszeE4GDArtDwhCwymyzy/mzwsAXnuENMea2qDQ7ASD7dD3ukyMaVjQFQJrLUqqRf/JbL1lo3uEP8aSxiYdRerNFB7kzjhvfRy/e8L1ChidSMIjQxTpOa3mB1j/+v93GmshkXPi2Mg61bXsX4aamXcBuZDrnY9V2AVGE/hUzSWXpCImU1jLcplvMOQv1gVkBT7X+Q6OpT+PjLJ6Ls4yh7wTkKBpkXoFmS7maaCTHFMjVUQtRfoT6P7lXS1K9hOtUnNRuHt2PTh0Vd3DWYckVoe7MadedMPTOKHZHT/cwEEW9d7SlJYKDHJhEhz5WPJDUabTLnXbCclje86MDq+5XTNxqNuZIuRTp0Yo4aI=
+X-Rspamd-Server: rspam07
+X-Stat-Signature: omk17fdwsu1k994o5qzcquj9tmf4xhnz
+X-HE-Tag: 1758069058-125506
+X-HE-Meta: U2FsdGVkX19zLFX1hPGTiiY7kePxl884aYQBs+GDSQZn829v/M3SaqlmBEFc1HGApHIyw1B416aCoMNGsX8tr+bw0cyi1XyeBA6dCFhHusSxkcwsnilefa73nG7s+2s8pfTKrfxShEj+X7xuwDyVRgw0U9sRr4E81TFxArw4Anw2JBV/QEJvZtLqbhcIkLSeqWDT4D9ha9pn5mVkb2w/g7oGidZkTvwv9OTAMZlWoYxyBhcvE2SXIt2hy8vEqPJX89+vsTVnOQieOes4gLj4qFRNXaBJEjFzt5kvBxyy6imtv+QAw45KQnNj6z6G/4fbGLMNeu0RTvjnokacygfidWgk9OB4ilFd8FnJYVNeZGiDqyY2RLcX9zrat1bjZf+bQRfP3y7JvaeSstVdWasdx4d7Wleq4zjzdS4Q6o0N5TJGSpfxtU92fYtFn1i4cS8NWJMnFejbX1m4R6XR3P/AKFx1j50C/bK1x3tCGH+Icrii7g7eOF7KHQbBvEjj6VI3BAhPojny0KOEUYAvMQM/XdNW3DmHxNno095eRbJ1GRHsico+XaiJfidQJbrlvZZFKBIDqb5QgNe3GqueSABeHSQARXJj1Q1UCGHkm1ofM6blpOOAJ5m0YKYJ90tZ5HHKww4Db054IJ9MssFb/UPIofjQx7WKD1FaSAV78HnJVViRSBPSrxJxjEcEE7bUJHcN/zouS125jAQTDLZNbvpvhJ8bV8Hk8ZViJnnsGIMDpoTZXNH+2LHAMDOFy6x8YZQ7/9zukCNnZNAyXSMY2U3Lnsu/rvViGN0sJhFftkwx2RnMs++VkXMy+MEVgCMqJZzi00L7AySUCqKRUXIAancrwRgom9q0U6zDIGKccKHwciXsyT9MGHi19PZ92BkUMmXBKi0rHdGwWBFAWgoXSIUn8C1+J54m4XV6JCa+AiL01kxpqJdNzzQ8DQk4AbMoSanEJcMfKRlAD2AWlxqB2q0
+ xwQFUlUm
+ d1ZiDHZmloP+8JAtV6pKacpJiJ7TlDc2SMg4txaNODfP+IC0tiQ8Tikk7rOTFA0FO82xDeWIcDvuTZNO88vw09Qe5W5qWGeVH1bIpXuAAA6aHxbaoSwivtavngKtt5McNgiPSFyVJkHodYeMDO08Zx0s2QSabsrANoShrlv2pAo8VCZxjYENiIOsBo2g25ccBSdOsqUVzeyezDMtC/OAp7AgRxsz75MCeSIFEExkuCHmk4XmA02jb+cTBPOf00iCTw81TCvczRc7Pba+mSV23iFLDHt6d1r+eDHXu
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,98 +125,122 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 17, 2025 at 1:57=E2=80=AFAM Chris Mason <clm@meta.com> wrote:
+On Tue, Sep 16, 2025 at 12:45=E2=80=AFPM David Rientjes <rientjes@google.co=
+m> wrote:
 >
-> On Tue, 12 Aug 2025 16:44:11 +0100 Lorenzo Stoakes <lorenzo.stoakes@oracl=
-e.com> wrote:
+> On Wed, 10 Sep 2025, Gregory Price wrote:
 >
-> > As part of the effort to move to mm->flags becoming a bitmap field, con=
-vert
-> > existing users to making use of the mm_flags_*() accessors which will, =
-when
-> > the conversion is complete, be the only means of accessing mm_struct fl=
-ags.
-> >
-> > This will result in the debug output being that of a bitmap output, whi=
-ch
-> > will result in a minor change here, but since this is for debug only, t=
-his
-> > should have no bearing.
-> >
-> > Otherwise, no functional changes intended.
-> >
-> > Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
->
-> [ ... ]
->
-> > diff --git a/mm/oom_kill.c b/mm/oom_kill.c
-> > index 25923cfec9c6..17650f0b516e 100644
-> > --- a/mm/oom_kill.c
-> > +++ b/mm/oom_kill.c
->
-> [ ... ]
->
-> > @@ -1251,7 +1251,7 @@ SYSCALL_DEFINE2(process_mrelease, int, pidfd, uns=
-igned int, flags)
-> >        * Check MMF_OOM_SKIP again under mmap_read_lock protection to en=
-sure
-> >        * possible change in exit_mmap is seen
-> >        */
-> > -     if (!test_bit(MMF_OOM_SKIP, &mm->flags) && !__oom_reap_task_mm(mm=
-))
-> > +     if (mm_flags_test(MMF_OOM_SKIP, mm) && !__oom_reap_task_mm(mm))
-> >               ret =3D -EAGAIN;
-> >       mmap_read_unlock(mm);
-> >
->
-> Hi Lorzeno, I think we lost a ! here.
->
-> claude found enough inverted logic in moved code that I did a new run wit=
-h
-> a more explicit prompt for it, but this was the only new hit.
->
-
-I presume conversion was done mostly manually?
-
-The way(tm) is to use coccinelle.
-
-I whipped out the following real quick and results look good:
-
-@@
-expression mm, bit;
-@@
-
-- test_bit(bit, &mm->flags)
-+ mm_flags_test(bit, mm)
-
-$ spatch --sp-file mmbit.cocci mm/oom_kill.c
-[snip]
-@@ -892,7 +892,7 @@ static bool task_will_free_mem(struct ta
-         * This task has already been drained by the oom reaper so there ar=
+> > On Wed, Sep 10, 2025 at 04:39:16PM +0100, Matthew Wilcox wrote:
+> > > On Wed, Sep 10, 2025 at 08:16:45PM +0530, Bharata B Rao wrote:
+> > > > This patchset introduces a new subsystem for hot page tracking
+> > > > and promotion (pghot) that consolidates memory access information
+> > > > from various sources and enables centralized promotion of hot
+> > > > pages across memory tiers.
+> > >
+> > > Just to be clear, I continue to believe this is a terrible idea and w=
 e
-         * only small chances it will free some more
-         */
--       if (test_bit(MMF_OOM_SKIP, &mm->flags))
-+       if (mm_flags_test(MMF_OOM_SKIP, mm))
-                return false;
+> > > should not do this.  If systems will be built with CXL (and given the
+> > > horrendous performance, I cannot see why they would be), the kernel
+> > > should not be migrating memory around like this.
+> >
+> > I've been considered this problem from the opposite approach since LSFM=
+M.
+> >
+> > Rather than decide how to move stuff around, what if instead we just
+> > decide not to ever put certain classes of memory on CXL.  Right now, so
+> > long as CXL is in the page allocator, it's the wild west - any page can
+> > end up anywhere.
+> >
+> > I have enough data now from ZONE_MOVABLE-only CXL deployments on real
+> > workloads to show local CXL expansion is valuable and performant enough
+> > to be worth deploying - but the key piece for me is that ZONE_MOVABLE
+> > disallows GFP_KERNEL.  For example: this keeps SLAB meta-data out of
+> > CXL, but allows any given user-driven page allocation (including page
+> > cache, file, and anon mappings) to land there.
+> >
+>
+> This is similar to our use case, although the direct allocation can be
+> controlled by cpusets or mempolicies as needed depending on the memory
+> access latency required for the workload; nothing new there, though, it's
+> the same argument as NUMA in general and the abstraction of these far
+> memory nodes as separate NUMA nodes makes this very straightforward.
+>
+> > I'm hoping to share some of this data in the coming months.
+> >
+> > I've yet to see any strong indication that a complex hotness/movement
+> > system is warranted (yet) - but that may simply be because we have
+> > local cards with no switching involved. So far LRU-based promotion and
+> > demotion has been sufficient.
+> >
+>
+> To me, this is a key point.  As we've discussed in meetings, we're in the
+> early days here.  The CHMU does provide a lot of flexibility, both to
+> create very good and very bad hotness trackers.  But I think the key poin=
+t
+> is that we have multiple sources of hotness information depending on the
+> platform and some of these sources only make sense for the kernel (or a
+> BPF offload) to maintain as the source of truth.  Some of these sources
+> will be clear-on-read so only one entity would be possible to have as the
+> source of truth of page hotness.
+>
+> I've been pretty focused on the promotion story here rather than demotion
+> because of how responsive it needs to be.  Harvesting the page table
+> accessed bits or waiting on a sliding window through NUMA Balancing (even
+> NUMAB=3D2) is not as responsive as needed for very fast promotion to top
+> tier memory, hence things like the CHMU (or PEBS or IBS etc).
+>
+> A few things that I think we need to discuss and align on:
+>
+>  - the kernel as the source of truth for all memory hotness information,
+>    which can then be abstracted and used for multiple downstream purposes=
+,
+>    memory tiering only being one of them
+>
+>  - the long-term plan for NUMAB=3D2 and memory tiering support in the ker=
+nel
+>    in general, are we planning on supporting this through NUMA hint fault=
+s
+>    forever despite their drawbacks (too slow, too much overhead for KVM)
+>
+>  - the role of the kernel vs userspace in driving the memory migration;
+>    lots of discussion on hardware assists that can be leveraged for memor=
+y
+>    migration but today the balancing is driven in process context.  The
+>    kthread as the driver of migration is yet to be a sold argument, but
+>    are where a number of companies are currently looking
+>
+> There's also some feature support that is possible with these CXL memory
+> expansion devices that have started to pop up in labs that can also
+> drastically reduce overall TCO.  Perhaps Wei Xu, cc'd, will be able to
+> chime in as well.
+>
+> This topic seems due for an alignment session as well, so will look to ge=
+t
+> that scheduled in the coming weeks if people are up for it.
 
-        if (atomic_read(&mm->mm_users) <=3D 1)
-@@ -1235,7 +1235,7 @@ SYSCALL_DEFINE2(process_mrelease, int, p
-                reap =3D true;
-        else {
-                /* Error only if the work has not been done already */
--               if (!test_bit(MMF_OOM_SKIP, &mm->flags))
-+               if (!mm_flags_test(MMF_OOM_SKIP, mm))
-                        ret =3D -EINVAL;
-        }
-        task_unlock(p);
-@@ -1251,7 +1251,7 @@ SYSCALL_DEFINE2(process_mrelease, int, p
-         * Check MMF_OOM_SKIP again under mmap_read_lock protection to ensu=
-re
-         * possible change in exit_mmap is seen
-         */
--       if (!test_bit(MMF_OOM_SKIP, &mm->flags) && !__oom_reap_task_mm(mm))
-+       if (!mm_flags_test(MMF_OOM_SKIP, mm) && !__oom_reap_task_mm(mm))
-                ret =3D -EAGAIN;
-        mmap_read_unlock(mm);
+Our experience is that workloads in hyper-scalar data centers such as
+Google often have significant cold memory. Offloading this to CXL memory
+devices, backed by cheaper, lower-performance media (e.g. DRAM with
+hardware compression), can be a practical approach to reduce overall
+TCO. Page promotion and demotion are then critical for such a tiered
+memory system.
+
+A kernel thread to drive hot page collection and promotion seems
+logical, especially since hot page data from new sources (e.g. CHMU)
+are collected outside the process execution context and in the form of
+physical addresses.
+
+I do agree that we need to balance the complexity and benefits of any
+new data structures for hotness tracking.
+
+> > It seems the closer to random-access the access pattern, the less
+> > valuable ANY movement is. Which should be intuitive.  But, having
+> > CXL beats touching disk every day of the week.
+> >
+> > So I've become conflicted on this work - but only because I haven't see=
+n
+> > the data to suggest such complexity is warranted.
+> >
+> > ~Gregory
+> >
 
