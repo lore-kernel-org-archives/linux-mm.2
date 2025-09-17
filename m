@@ -4,116 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9911CAC59A
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 22:58:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6190CCAC59F
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 23:02:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D0E558E0089; Wed, 17 Sep 2025 18:58:55 -0400 (EDT)
+	id A31378E008A; Wed, 17 Sep 2025 19:02:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CBEEC8E006B; Wed, 17 Sep 2025 18:58:55 -0400 (EDT)
+	id A08BE8E006B; Wed, 17 Sep 2025 19:02:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BD49E8E0089; Wed, 17 Sep 2025 18:58:55 -0400 (EDT)
+	id 945428E008A; Wed, 17 Sep 2025 19:02:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id ABF7B8E006B
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 18:58:55 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4BB881DF286
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 22:58:55 +0000 (UTC)
-X-FDA: 83900259030.17.3E0C1F2
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 6287840004
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 22:58:53 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=aBVql2c8;
-	spf=pass (imf12.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8449F8E006B
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 19:02:36 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0E2135AAF8
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 23:02:36 +0000 (UTC)
+X-FDA: 83900268312.10.A5DCFE9
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 0F15240002
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 23:02:33 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=xAmtbcSr;
+	spf=pass (imf04.hostedemail.com: domain of surenb@google.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758149933;
+	s=arc-20220608; t=1758150154;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=it0hw7STF0VKiuKn78g4szyYtwsB+CgMo5LILw/Kbs0=;
-	b=tfXJlnckVtY7lemeNBP+tDgLvR89cFCA5hGnMYf67njGx8VDPeEGdzeWgdJwtKzJQL8sHL
-	PV4I7rNPKKMc1aSnKOIOWQfyVxNVGvXwVCcHWNCBT/V8oHI5sJ1jFCxgF0nj/wNqg4AzhA
-	8mb+KVBAeg8ncJRFDSSQWsLX716wIdc=
+	bh=pgqaaTpUUF1iWySwtTjmi51gf1ofnrMUlJLbXGuFg1Y=;
+	b=TRTgoIpTZqqcKMtrRahe+d6VrM8HqSqFmGBb0SObRCk1WCW0RF92bdpjYITTfR2OAVTTSr
+	uYTEfxQNkWJSMqypYOK0YAAHA3RFy4c52fsQp5TVN0NaqjztBnMDaHXV7udpIRq4GzK2g6
+	h82yuaJIv62/yoMouI9NX6R41omYgso=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=aBVql2c8;
-	spf=pass (imf12.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758149933; a=rsa-sha256;
+	imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=xAmtbcSr;
+	spf=pass (imf04.hostedemail.com: domain of surenb@google.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758150154; a=rsa-sha256;
 	cv=none;
-	b=eaVmxGKKhr0ruwmimPsBWvfBbU1hYnx1WqkLIYBXyRpN05zZ1qKAWgmjOy8mbzbXO06z/8
-	tpj/kq6O9GqM5UXzgAFto9OyNwGcCAOoJrNIM8EjFWwtaKopQh2rTjLaGu9iQpZLVuRIqX
-	G6UYu9TKq5tKB2TmukL7TVaY6pM6gsU=
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-61cc281171cso438308a12.0
-        for <linux-mm@kvack.org>; Wed, 17 Sep 2025 15:58:53 -0700 (PDT)
+	b=SAHTkOVZDFVb3228lNHWudjH9KKcISVMZkcTbWj7MgBKrsR8xdxSdS0hGLTK6nHGwO2PZf
+	hLOhQAbqp5qAQIUxwGhr6VIQC7WK6DnkO3RLiIeL2to+SdloXJvvAzWb/pQfnDLloHitTs
+	mY1/TJXADguhVIrM3EMhkAilwapcbUM=
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-4b796ff6d45so99201cf.1
+        for <linux-mm@kvack.org>; Wed, 17 Sep 2025 16:02:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758149932; x=1758754732; darn=kvack.org;
+        d=google.com; s=20230601; t=1758150153; x=1758754953; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=it0hw7STF0VKiuKn78g4szyYtwsB+CgMo5LILw/Kbs0=;
-        b=aBVql2c8nkKNn8AaWDBZzZ9eFoE+VtgsOssqx9Dkr8VJvfOy0cfZJxaQr4baCug/Ef
-         8ZRLLXT4Zrvsm2ol94NTiZ5VFcG+kuSHqWW5dt8k73JfUBhWRoIT/d4mGH/1yhCcdrDc
-         SCuUzLQbBxwfRkBv/IaskcOM+6rQEMuCME5fq2dcCcm+88eF7RxonyfZS+uXqIkd6vOC
-         Pxf3NAW0eeuTeZV7O2I8zRVYy4sJKESbuXWefKr51Bt3USHtYySNEfRmN/gMVCHH4bd0
-         nPduSBttphZkHS013pOLoAf6FKroFbqfD5ewRrZTm7jleo/G+/KWQJ06w3sfp9DQHjs0
-         D19w==
+        bh=pgqaaTpUUF1iWySwtTjmi51gf1ofnrMUlJLbXGuFg1Y=;
+        b=xAmtbcSr6uArVUynVjGUwd/HRCENqCFoLs1lUcFhsJGKqIv17M5E/+wjcXBGMptWh4
+         2DlCUa2ZNzwHUtewMNe/TeEsfXUR+EncVJAMy9JFma+Id6+3bH6WZ6fxUR8aTCIqIn2G
+         G37dLkMgbbUVj0wGNFS7YKX3OtjzO+HwpjciYbTHFSJNndNOUdEolPo8NsHhN4xqx2Xm
+         dpBQEzuitWCnpTLS5BORpIg7/R4bbHd9J86+3gdeEgQg5BV0EFQ/67PJrEHjBsZZeeIY
+         b+W4b5e8a3T3RRjbeRcSsJIY/184Xan0SRLL5ZdPBdzR0zexosNHNm3hrAwA5LC3fGCS
+         6jOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758149932; x=1758754732;
+        d=1e100.net; s=20230601; t=1758150153; x=1758754953;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=it0hw7STF0VKiuKn78g4szyYtwsB+CgMo5LILw/Kbs0=;
-        b=G8T1eXxhhJvL2V6YLdy1j79wj/9/vzdCMYKnrG3MyOjAZbinhq/rJzln5N0/qfNeH5
-         DoVQ6MU79LXMVYDdRwZ4E62TN4WQg8JNZ5ZnMeyIZmo4yZvrCI/+FsVluZVBhyvQa/Zn
-         Ti0xVGPTtJ11he/UTK9S+E2vzIc0r4ZimS4N/xyNw79Zdt2Q7XvMyLYGb9eLwS7dimhB
-         Aw7ws1gx3gyd5JZ6lUe7H9eyh9xLQJVRr+PON4Y3SmQJcinYWV2kbEgOPZ3f5bvbZ/wi
-         Yr54lJcbmWlqth8rDFdHCruEm4AAiavpTF3FZz7f2XSMGuJS8ikyj8t0KI8zWKeokom4
-         nKOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXcY8WSjKcjTi3oGHKM4q7coPJw6EdSJBSxbv2Yjd5HKbBWE4WfYXcWTbidF9GZicM5z/0Bmwy8hg==@kvack.org
-X-Gm-Message-State: AOJu0YyrMWYU/7lhKkQWJ7SBlcSFWeJ/3JrH9ihYiuH0fn+AYBIDD1+5
-	xPP7AvOpbnCFunKyJs3Gomto1l7jNrsvCuxB/yyeTnatLMmsmq2ZJosccCLRvFxyRjaN7GjOLtY
-	fLWibrur+TeX3KqViWHoNLBSHaeHFJY4=
-X-Gm-Gg: ASbGncu7Az14fnVvsbCeTEXD2fCd0qzY6RUGCAQflTKMD7WOC0l6cymvMBNuikKHxIp
-	ne7Xhq8Tye4n4FzAgV87s52TQrg1oweybd+kYihH7V2e82xCVxHP6U+mOGSanGIaj+JSNYvHja1
-	yC8/p4+es4LIz8UFvHXfvk4BNFMgwHgHuVa0GUtKP/SBtUfPLPoI40Rx5dWJpYOQD27IRJ1WudD
-	HCMRi/8kUMgQsFkh98wLZFxSuKB03BYtAZJ8H6Ca6NgPq3qZ9J8GxbBbw==
-X-Google-Smtp-Source: AGHT+IF5Oo0BBvrA+aww1rEutWij2SvX5Gh4f+3J9obY0bllBpPQD0meffz5TJgyN0dgQ74slyUif+t8TL+R1MHOPhY=
-X-Received: by 2002:a05:6402:a0c1:b0:61d:249a:43fe with SMTP id
- 4fb4d7f45d1cf-62f842322cbmr3728400a12.24.1758149931621; Wed, 17 Sep 2025
- 15:58:51 -0700 (PDT)
+        bh=pgqaaTpUUF1iWySwtTjmi51gf1ofnrMUlJLbXGuFg1Y=;
+        b=TpNM6i20amdF9zIN24RSv5J+dHnxLnnds5+fKvIK+HWlM9dEdjK03T2KcgUH2bV94M
+         eHnsjjX3WQhek5zZ6wx6/tenlW9OeaPzWYd8sevehuodJbI4FgZ9E9NS3VwSS4b5jEx7
+         30SSilgdQ38mDSNViz5mio0G518/Mvps6/8VYX3T1Duc9PUOL4235M97iUgW6EH3YaY9
+         gwn/We0O+JNTXsUcnkvPG5g0TfSjtIRQeHq4TcXfgkH2kjX6Xk0BXlRlePm8VA2OUg2u
+         5M9ML217n1gzzclTVWCsHIG9TM4djNuhlJB1h3JPLu6uhXywIRsnUwXl0HrrTRjS7jTh
+         v98g==
+X-Forwarded-Encrypted: i=1; AJvYcCXq45A3FN1ck8o+7NJyAPRKJtmYkDPe8yEpyuOh3nHfMj/4frRe3cQnCTEIjo997tmPtlVXCVEtVg==@kvack.org
+X-Gm-Message-State: AOJu0Yz9eN0HZkmeGBK4ghyhsLX3OZikCqxBJJBsQlZOjdAZkY3Pi3tw
+	CJhs7X2Q8Dbf9vFBzKgWbADPKCZNguZ9CdY+ysF4TTUFqcTTV3o6FcFkx2EY6uR4ohbA9l1bu53
+	Q0u2Boe3L7C5B7KQLOkPsmmr5fXPeHsglE1QlSSF6
+X-Gm-Gg: ASbGncshiME6z6AhX0yvYTmo8FHQEae2+mKvqAoD/nDM54V2I2qs02eDii1S4Iq2p4g
+	n/3wYJdXRuj7t1JPI0dqErY8271FHG83JZcBq5aKd62zMzeY/oM5hLnW0R0pRxmkrTkk3r+lSFX
+	qOQ9f1UzgQGQ0f6Lc08Qq5aLa1keiZ9+xIo0LFt3SzboXjletBNSSPfppJgTQe+vMQbToY3xXUZ
+	tonetV9LvFi7wlaMK4Hve/khhp0crM=
+X-Google-Smtp-Source: AGHT+IHfNd/k82j9KQVELxfP/PHIbhVVGF3yc0CdD17H0HaS07rG6JkXznFxGYRKvVp7xhpstaqIEbhS5CNnvvGnMEY=
+X-Received: by 2002:a05:622a:1998:b0:4b7:a2be:bc71 with SMTP id
+ d75a77b69052e-4ba2e66f7c9mr8883171cf.9.1758150152768; Wed, 17 Sep 2025
+ 16:02:32 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAKPOu+-QRTC_j15=Cc4YeU3TAcpQCrFWmBZcNxfnw1LndVzASg@mail.gmail.com>
- <4z3imll6zbzwqcyfl225xn3rc4mev6ppjnx5itmvznj2yormug@utk6twdablj3>
- <CAKPOu+--m8eppmF5+fofG=AKAMu5K_meF44UH4XiL8V3_X_rJg@mail.gmail.com>
- <CAGudoHEqNYWMqDiogc9Q_s9QMQHB6Rm_1dUzcC7B0GFBrqS=1g@mail.gmail.com>
- <20250917201408.GX39973@ZenIV> <CAGudoHFEE4nS_cWuc3xjmP=OaQSXMCg0eBrKCBHc3tf104er3A@mail.gmail.com>
- <20250917203435.GA39973@ZenIV> <CAGudoHGDW9yiROidHio8Ow-yZb8uY7wMBjx94fJ7zTkL+rVAFg@mail.gmail.com>
- <20250917210241.GD39973@ZenIV> <20250917214229.GF39973@ZenIV>
-In-Reply-To: <20250917214229.GF39973@ZenIV>
-From: Mateusz Guzik <mjguzik@gmail.com>
-Date: Thu, 18 Sep 2025 00:58:39 +0200
-X-Gm-Features: AS18NWA2xDDd90TP4hQffjy7fu0y29jV2cuqbrh0s-lIAc7yHea5fW1K7iRdEx8
-Message-ID: <CAGudoHHzZ1DEEg2YHT4_+48-Y1gc7=uW_gOe3c0o6wsm7pWEXQ@mail.gmail.com>
-Subject: Re: Need advice with iput() deadlock during writeback
-To: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Max Kellermann <max.kellermann@ionos.com>, linux-fsdevel <linux-fsdevel@vger.kernel.org>, 
-	Linux Memory Management List <linux-mm@kvack.org>, ceph-devel@vger.kernel.org
+References: <20250915230224.4115531-1-surenb@google.com> <2d8eb571-6d76-4a9e-8d08-0da251a73f33@suse.cz>
+ <CAJuCfpHXAhGZb1aOPyHOPiTWSwQJi570THqJQcjrVPf=4Dt3xQ@mail.gmail.com>
+ <a8519bca-ae16-4642-84a1-4038b12e8bb0@gmail.com> <CAJuCfpFJabb02OK8Rj08d7WU_7AM674i=vsZxzfw7i7h-PGftQ@mail.gmail.com>
+ <e5e3d96a-d0aa-4466-8303-5a7e8f96bbe5@gmail.com> <CAJuCfpEULVxMixDjrk_xg7+3+97dkcMmkDd++BaR17X4tDSs6Q@mail.gmail.com>
+ <af62a2c2-3c01-408d-b694-aa7e95d23c18@suse.cz>
+In-Reply-To: <af62a2c2-3c01-408d-b694-aa7e95d23c18@suse.cz>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Wed, 17 Sep 2025 16:02:21 -0700
+X-Gm-Features: AS18NWC5wZWoJ9h1q0dLcyZhaQxEfSzQ_NlOG7YOUGtZPGOPImgmHsFxTkhQl-o
+Message-ID: <CAJuCfpFAt1jS49R5xR1MELd83oh7MN5GWd2hSMEj2SQVjyJxyQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] alloc_tag: mark inaccurate allocation counters in
+ /proc/allocinfo output
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Usama Arif <usamaarif642@gmail.com>, akpm@linux-foundation.org, 
+	kent.overstreet@linux.dev, hannes@cmpxchg.org, rientjes@google.com, 
+	roman.gushchin@linux.dev, harry.yoo@oracle.com, shakeel.butt@linux.dev, 
+	00107082@163.com, pyyjason@gmail.com, pasha.tatashin@soleen.com, 
+	souravpanda@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 0F15240002
+X-Stat-Signature: pm1k1qerm1kytzorep7ftm7f7y548s4d
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 6287840004
-X-Stat-Signature: qaarmqrbkpym31dqtu9ysu3qzxmdjnfr
-X-HE-Tag: 1758149933-89425
-X-HE-Meta: U2FsdGVkX19VabxFwKM46HBV1nX5aJpwVg7/N0Sdw3un/VFz/wXrQVtfQJW9wMVySz0cBEpZCjg2CD42UOeJE48t6SHq8mF7lRK3V9/qvqFzaBSVAjSPhK7BaCbIdF8utGsiHLyoA4Kd7p4FpcV7IqTtE+X4U63XFgDjhUk37V9y4da9PIJ7c4MolGKVtHhsubKhH7cLQ7/J5i8WRVCsGvFJMVxakAjjuRiJ43PdKdUpM75ToH9PVDIRe3+wi1+jwRI2PUp2ah+dTSTpvxiEoS6apMI8JUtgxJ6zD/zTg+/GEqoPFW1An0kx4huChLRTHYCz23U53R0vgRSSFN0q2XLTRjAqLAS6OIWYiBi791SAx0h1xjLQkd9b2kEnGnk2CkTeJSXuqNf2rXJIl4JsZdL7avdcB/8G3fIzkHRR4+JdwIq8zynK9QmuQpDiB3SCciXoL2GQWu8WB6D2Or0isgvu96Mj3AB4ItLnoF63pli7SZ9dc2+7bl85527BvVIwUuneU+7P2UWw76BFL0KXH7SFddyxuwHDvV71lpx9wvHxsLBJcXlDLNIg4+GbqTZTEgT+p/Dl/0FvZeFJjcdF9x/suOv4RYoJS4YnoJkbqbM2UtnnykoampiLnOIUIlU/JKaa2/k9bBKVXNjwDWi+JlNb5le9l4OI5ZHQlIxfeEFAmU1GPYfTC+RdLB6B+PNVWpy7RL71XRf5V+VSpQUB5aEQWfio96YK7xxnur1FvmlqWWUXz4s6IkerlzVHH/yr8YoQkVEtojuNRjvJX54aWthrUG2depjhR6/iY2o1SL36pny3aI8opq4bvXFT5xoT5b2S2CPbN6c/BJfQQqH2sIzgC2xZA1vjZvOsjouwU4FvnsxlBsWamj55gpmGF4TW9hgSkjf2acKxznWiSSYs2SFEVeIq72T5ulhdYbMoQwOu1d77alLFgbM+VfzqU4bNfr7H5x/cv+LgRlWDQT3
- SY7DhhFz
- uSYZFHNfRCChMlentSI7QiOXUwfAR+C5+L7vVymWyXTrbLtau/EOcnM3J6eQf8vadnbgLv5/MhpHUiR9UPBTmCvlJ/nTopYFHsRWRHQ6hdO0ChJrsZMVnU/l2yRSwxBCHDfgs+AHgeFE20gOXyq4sFN8VyEakxtohSkWJaDeqxHTzMju6xAdQ6m8q2DTuBEi5KrbLB2fmiRAaLXVyAtb4wb8v5Z9rraebHtZSzkFYuhgVfaqSVEo3q37DIVvLFAyb8g+el7VUgdBRtBxyaNq3CbGTjqMyHQxXvU9yOZZSnRjjqbGdzooCHli5gNUDEdePDiGy+frM1xOlXswODbvHbVCz/0cMr7ZxtthbVdOPoAqAfaS6zQxQfU5p1/B4704WGxu7V8UvCnE5+kEiGUJ1LVbKilbkcEaKrHNB
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1758150153-513648
+X-HE-Meta: U2FsdGVkX1/CZGeEkoWZRL7YIaqAQs2IbazY4lYTZb4RRxrdjjUySlI0Pt585ksz8JbegT0f6fCVWWuU2ard6F8s5urMR5rTpHdDZ3f3uBnSBwV2oNLzZg/JMcMib/K0ApAZFWPg/Wfi2JCf9lvDsXAf9frYS69rScg+H5aH9cOqz3VIdSRRvlKFxd+atDXvO/MDoNy0lqDn/UDSe9LJAbm03wqn8c2Ley8lvx8s4ag7rWZ5gSdmpK6zZ0erMKDRiZdELdwAU9PFbG5XX7eQpt9Gdl8N9B3PIcJFvZK0H9/4HXypaSs9s1kRgypHDQKh+tzprHl+hRfgJhbLHKSK2eYarTI4Fo1SN7W/57Btd4F0d9GKrVDjPbmFONGp9zfpybcrfn8u7I7/013kenP/vkHUR7LF14iuEtRZRm/ippt6gYu7k/9GNXvbzM4ypOXX+sbEewI4NEwMQsKodMm/hWKVuTvMEkLfZf2Vb+YdL2nU5TzaffF5uzQFaCMjrBiBbwA8OOn924ELJf5AGM6G+/sbtrj5Ax5AUkENsXy6Qz4F+qlWMht1dtye2q1Gd+rYb/EvwokWODLDcTv2cWUu+K17r+CNPusx9EYiuRUmBr4EMSsc1MbREFbw4ITrVGTHVC7aJbUmrY/3Psiu8A4+RMBu/ASNNzn3g7/OQWzUhQNXiDHZdBB/z7+IkyhuGw8l7tGR9M8ZXZ0WLm9UoBKnPYI0UfBs4XbUHv2cQpCP4Vwryo+ceP0jU9AublCIbGWkY1sFa55+0bu9LLB62A/dnrA/mRux5MIBE17ByfQSfW4egyDxQTW9Ne6EcAehdAOke6h3PI/t+21ShjpyNsiACJXpQz69fNPpARdG6kGtg/wlJFQJvbA4kd5HfqmyfAJlKajy6tlTMoxr+Aej/1w4kwILJDZqfCFwPwH9vEAH3C3RfRV8PvanFQIwXZA9pp3woWBWPxSXKEotlJKZHJT
+ 2Nnh+Rp6
+ BbLVhC2iinZy4zbSQ7BA5wjw31tIaGpdsb7QFTzJqAiWmQRjbo9QBJJ/12Csbjbyw2d8o6ah8zw6Pq66uICMj1FZ6N37w3dfBxK1KArBj/3v1rQm3IWBQVIKqdutRL7zNb8AJdX8ddkX/Oxs/7gJK18vqSk9chG2RxVlm0QayHqfuJzmUgaArnGyzp72z2UtEnBzRRaHKNruxK+p+LyKqxvrgEPnwuBEkIrefRylz83ve7CpGJqjslCzSitdmHmvOjVnNpjxn3WuYgyrSPutzmdF7vohWPBJwjEbi
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,101 +124,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 17, 2025 at 11:42=E2=80=AFPM Al Viro <viro@zeniv.linux.org.uk> =
-wrote:
+On Wed, Sep 17, 2025 at 12:38=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz> w=
+rote:
 >
-> On Wed, Sep 17, 2025 at 10:02:41PM +0100, Al Viro wrote:
-> > On Wed, Sep 17, 2025 at 10:39:22PM +0200, Mateusz Guzik wrote:
+> On 9/17/25 00:26, Suren Baghdasaryan wrote:
+> > On Tue, Sep 16, 2025 at 9:52=E2=80=AFPM Usama Arif <usamaarif642@gmail.=
+com> wrote:
 > >
-> > > Linux has to have something of the sort for dentries, otherwise the
-> > > current fput stuff would not be safe. I find it surprising to learn
-> > > inodes are treated differently.
-> >
-> > If you are looking at vnode counterparts, dentries are closer to that.
-> > Inodes are secondary.
-> >
-> > And no, it's not a "wait for references to go away" - every file holds
-> > a _pair_ of references, one to mount and another to dentry.
-> >
-> > Additional references to mount =3D> umount() gets -EBUSY, lazy umount()
-> > (with MNT_DETACH) gets the sucker removed from the mount tree, with
-> > shutdown deferred (at least) until the last reference to mount goes awa=
-y.
-> >
-> > Once the mount refcount hits zero and the damn thing gets taken apart,
-> > an active reference to superblock (i.e. to filesystem instance) is
-> > dropped.
-> >
-> > If that was not the last one (e.g. it's mounted elsewhere as well), we
-> > are not waiting for anything.  If it *was* the last active ref, we
-> > shut the filesystem instance down; that's _it_ - once you are into
-> > ->kill_sb(), it's all over.
-> >
-> > Linux VFS is seriously different from Heidemann's-derived ones you'll f=
-ind in
-> > BSD land these days.  Different taxonomy of objects, among other things=
-...
+> > Hmm. Missing a large allocation and not knowing about it can be a probl=
+em...
+> > I'll start sketching a patch to see if tracking such a global counter
+> > has any drawbacks and in the meantime I'm open to suggestions on how
+> > to expose it to the userspace.
 >
-> FWIW, the basic overview of objects:
->
-> super_block: filesystem instance.  Two refcounts (passive and active, hav=
-ing
-> positive active refcount counts as one passive reference).  Shutdown when
-> active refcount gets to zero; freeing of in-core struct super_block - whe=
-n
-> passive gets there.
->
-> mount: a subtree of an active filesystem.  Most of them are in mount tree=
-(s),
-> but they might exist on their own - e.g. pipefs one, etc.  Has a refcount=
-,
-> bears an active reference to fs instance (super_block) *and* a reference =
-to
-> a dentry belonging to that instance - root of the (sub)tree visible in
-> it.  Shutdown when refcount hits zero.  Being in mount tree contributes
-> to refcount; that contribution goes away when it's detached from the tree
-> (on umount, normally).  Refcount is responsible for -EBUSY from non-lazy
-> umount; lazy one (umount -l, umount2(path, MNT_DETACH)) dissolves the ent=
-ire
-> subtree that used to be mounted at that point and shuts down everything
-> that had refcounts reach zero, leaving the rest until their refcounts dro=
-p
-> to zero too.  Shutdown drops the superblock and root dentry refs.
->
-> inode & dentry: that's what vnodes map onto.  Dentry is the main object,
-> inode is secondary.  Each belongs to a specific fs instance for the entir=
-e
-> lifetime.  Dentries form a forest; inodes are attached to some of them.
-> Details are a lot more involved than anything that would fit into a short
-> overview.  Both are refcounted, attaching dentry to an inode contributes
-> 1 to inode's refcount.  Child dentry contributes 1 to refcount of parent.
-> Shutdown does *not* happen until the dentry refcount hits zero; once it's
-> zero, the normal policy is "keep it around if it's still hashed", but
-> filesystem may say "no point keeping it".  Memory pressure =3D> kill the
-> ones with zero refcount (and if their parents had been pinned only by
-> those children, take the parents out as well, etc.).  Filesystem shutdown=
- =3D>
-> kick out everything with zero refcount, complain if anything's left after
-> that (shrink_dcache_for_umount() does it, so if filesystem kept anything
-> pinned internally, it would better drop those before we get to that
-> point).  evict_inodes() does the same to inodes.
->
-> file: the usual; open IO channel, as on any Unix.  Carries a reference to
-> dentry and to mount.  Shutdown happens when refcount goes to zero, normal=
-ly
-> delayed until return to userland, when we are on shallow stack and withou=
-t
-> any locks held.  Incidentally, sockets and pipes come with those as well =
--
-> none of the "sockets don't have a vnode" headache.
->
-> cwd (and process's root as well): a pair of mount and dentry references.
+> Could it be made to look like an actual tag in the output?
+> e.g. lib/alloc_tag.c:1234 func:untracked_slab_objects
 
-I groked most of it from my prior poking around, thanks for the write up th=
-ough.
+Technically I think we can do that but it feels a bit hacky... I'll
+keep this option in mind and wait for more suggestions. Thanks
+Vlastimil!
 
-The real question though is how can a filesystem safely manage keeping
-extra refs on inodes vs unmount. Per your explanation the usual safety
-net does not apply. Frankly it makes igrab/iput sound very dangerous
-in their own right.
+>
+> (probably some better name conveying it's uknown due to failure to alloca=
+te
+> objexts)
+>
+> Maybe even implemented in a way that it's not a specially crafted output =
+line.
+>
+> > About concerns on the IOCTL interface, would it be more usable if we
+> > get the alloctop [1] or a similar tool which can be used to easily
+> > issue such commands into kernel/tools?
+> >
+> > [1] https://android-review.git.corp.google.com/c/platform/system/memory=
+/libmeminfo/+/3431860
+> >
+> >>
+>
 
