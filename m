@@ -4,185 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1926FCAC59A
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 18:35:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC287CAC59A
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 18:38:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 742D228000B; Wed, 17 Sep 2025 14:34:59 -0400 (EDT)
+	id F393B28000C; Wed, 17 Sep 2025 14:38:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 718E8280002; Wed, 17 Sep 2025 14:34:59 -0400 (EDT)
+	id F1126280002; Wed, 17 Sep 2025 14:38:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6081128000B; Wed, 17 Sep 2025 14:34:59 -0400 (EDT)
+	id E4E3928000C; Wed, 17 Sep 2025 14:38:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 50594280002
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 14:34:59 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id DD79913B8B3
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 18:34:58 +0000 (UTC)
-X-FDA: 83899593876.11.DCBE193
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 712B2C000E
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 18:34:56 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=np3j22qn;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=OYucnUGm;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=OP6eUHOO;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=+oWY1LXJ;
-	spf=pass (imf28.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id D2C4D280002
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 14:38:56 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A06A28720D
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 18:38:56 +0000 (UTC)
+X-FDA: 83899603872.28.EC8DADF
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	by imf09.hostedemail.com (Postfix) with ESMTP id B15C7140002
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 18:38:54 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=hhI1loJW;
+	spf=pass (imf09.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758134096;
+	s=arc-20220608; t=1758134334;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MFd0G/O72YBJmES7d/dg7RCjBoxZlZ6kvr9UYudRK8E=;
-	b=eKpbWsZHnSSZuKI8mxYZc/BFGi9rfWUBsXaafRrgYnceIPFTMe/0Zb76rHDEN1T0vcyuxO
-	9y9vvV7M7Yo8rbZ/HVTmuqPDZ8C5uDsth+vyIPGYET7eyS0Zc1ZOEn+H1wvGIwp+imF8sD
-	nzuEMQNywUY1rc0KikZ76LeBFOL4YBc=
+	bh=WSe+/0Ppv6md7i7Zvl8mHAv4aY3npVBA8JoXdsiKzcU=;
+	b=TTDkGuxP3BFY6yFfONTHa45SJNZ/fOa0XXSXu/UzqnlCyLxMRZELOpMWYQagVvkljk+Pqv
+	3KeCohl7hjGfSWGWeMrlDPoFa7LwB5V60Zv+wZRD8lSZ954jkR9ocYE8WAEMvsazEwxNJE
+	piaw02OyraUSP0ozSpG/TqSoMvsXtIs=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=np3j22qn;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=OYucnUGm;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=OP6eUHOO;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=+oWY1LXJ;
-	spf=pass (imf28.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758134096; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=hhI1loJW;
+	spf=pass (imf09.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758134334; a=rsa-sha256;
 	cv=none;
-	b=awWyyKAiwEv4/7QYg8eePpT6opsn6J6BDe3xu2qpd1j0PdgFyeTD20ghRMdSJD2XUDTCX5
-	BuORmWi/rDD0EkgrI658AHSeH5kSz4k4RvDzPnJ7ufVW7KnxnRyoffq8RR2jN/hFzHKPsM
-	IRvceFwGHXMtxB3cpMsogqtnxWY4KnM=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id A0F0B5C1CF;
-	Wed, 17 Sep 2025 18:34:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1758134094; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=MFd0G/O72YBJmES7d/dg7RCjBoxZlZ6kvr9UYudRK8E=;
-	b=np3j22qn6jEGMJDRyxRTwMfixe33NGTySi4oZ6P9g0GbJrezcKAeaNTD4EgTCJjNlllHbQ
-	RtMBdOhU0kOi2mej50/k63WJCVnjWGzHVv6CjLJC+N2zM78LTnl0bnXqOkrijOFmUgck+q
-	W69gaE0N5uLXRG9LEsfYfLdjq3oMPTw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1758134094;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=MFd0G/O72YBJmES7d/dg7RCjBoxZlZ6kvr9UYudRK8E=;
-	b=OYucnUGmtgz+O0+jlMmY4Tio3M9VgmZaeCxE5WRwrNSUaZ70zBdVaRS1NTummnnsn1tAFa
-	u8R6g1FN7dvhn1BQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1758134093; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=MFd0G/O72YBJmES7d/dg7RCjBoxZlZ6kvr9UYudRK8E=;
-	b=OP6eUHOOsX8YumGFnLmUrUBlv3Z7I5heJsFelRn15Ji+9F2nMG+VIoFPdubm3r2NTeoMs4
-	42YDU5+mKw+q+989EZihHpNZXVYlJR4nUorgzvY0F2qXZ8XFC80iCMGb0BQFKijyew4ygy
-	R03lvJSD9dFoHrd0qFOW/qhnDhjB+C8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1758134093;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=MFd0G/O72YBJmES7d/dg7RCjBoxZlZ6kvr9UYudRK8E=;
-	b=+oWY1LXJdHjev80VASE9kW340mALsx8oj3jtWoky35wDBJT4i20ZzIFLsFg8iKs3WxQJPT
-	CCXIn8+AiUYe67Aw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7E6BD1368D;
-	Wed, 17 Sep 2025 18:34:53 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id gOByHU3/ymgPVgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 17 Sep 2025 18:34:53 +0000
-Message-ID: <ade5442f-6257-498f-bffd-5fc4b1d5858f@suse.cz>
-Date: Wed, 17 Sep 2025 20:34:53 +0200
+	b=UBWXfxMYpFlVf3bkMro8PU+BEzQcckcm+zOs5Guy6w/ujyiyVucUQ5Uss5Bv9VOFguKS4D
+	shxujzgmIF3KwTGeWKHW0JMAemGz79nAye5Ez10hQ46S+/im7z2pMrd4c1MQCCZ6Qy9RD9
+	YCc9Y2oap9IDRQcARSGrd91vIBZ6gjA=
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-46130fc5326so691595e9.2
+        for <linux-mm@kvack.org>; Wed, 17 Sep 2025 11:38:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758134333; x=1758739133; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WSe+/0Ppv6md7i7Zvl8mHAv4aY3npVBA8JoXdsiKzcU=;
+        b=hhI1loJW+2k0FzG2KNMuIjCl1g/GWh3FAu95jd0f+VceVRHkDkK7/JFUU+EhRj3YgF
+         rXmDbCGvefVIb+aNwjB+fSHa7m6pBip5kdLscZcLuGLxhzEtOirJ9HxBC1zTSS92/OT3
+         VDTy9eKPx3aw0iHZDu+oGdc3ZZPOzJ0PFojlYJSz90sZvhOr81PY4aAtSQLIOwYaEYnD
+         ubcCL7CakpWis9RoykAF7FeDh3g31+dHASodijHoj5AYNXZHDmuglXIzuZvlkQY7+gQ5
+         tJEq0EC8s4pN0XQAS4b4nERy3H7LBi1iUrst6gC6EjCkNX1kkREqNllMReN0Wg1LStzM
+         w2Hg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758134333; x=1758739133;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WSe+/0Ppv6md7i7Zvl8mHAv4aY3npVBA8JoXdsiKzcU=;
+        b=HB7mLkpgfuQnrFc1MdFKdrkYnUGLaphlmTHkW4KkKNOVxQyLTcL/uuj1z74l5iy3SH
+         n4r6x2HShZ2Pbis/Igk0BPTfN5wD8scXFv3Eqgd+W/otm+HkM7/rKnnAA6hp3rptwAr3
+         AAYfFcIdO1xvrsittLfOxn4NM46Uu1rgRIU9XscKaiHo4YkxBO72CRnb9xGLgmwzJ6md
+         aoFDfrzMUfEHkpVXkZ5KIwL+rlf0d1rxdstMjzdDRDOjBIdp1CoRIKI8eqYyiJ0Q1YXE
+         4yk19qsXT+BQXbGeycm25F4ZO254XWmGtHASX0SfgiiQZd7PiNu8baToFfhg67qlzhmD
+         zAMw==
+X-Forwarded-Encrypted: i=1; AJvYcCWG3lMysBQEJwk+Ng6mv/aZjCqd6DnrgHoS9o1OBd6JOA8uXnn9Pu7+BsgCeSfpqCbuRVGiF1f9TQ==@kvack.org
+X-Gm-Message-State: AOJu0YwD+w2Vt3RF5pD9dtCEa7Tj+skISL9uzuqeD0zJFMvVNY18uNof
+	9FnDxpCZx3p0HKDlrZaQlp3AHgme6VWzfiBZXxEROyAHQaQe02qAkRM3R+lxTZCoB4TpXKrxJoB
+	Ptl+EWCD5qrkbpfjSzEEdzxi2ATyzi4Y=
+X-Gm-Gg: ASbGncuExpQ30tWDx2LxUmDmIe/jlz+Re3Na9c6OXjanLneoJkpY82jF1QssIbz8sMg
+	9Odmb3VT12HAMZUQs293uCnTQ+e9wvxYeyr+AmE7Kir6SNZKI5K4/z4MTlEnWLCLwRDp7b4Cnwz
+	08ytVIwzSO9n1eos3I7cK843Pl5s6T1Xnxmuc2deGtRtNht1kw4Gmkih1w/ZKaXpVTBqoFNkL2q
+	xJ+nFqGYaqt3gmNpWpgiOOLMpSerGRDZJXCtNocQFraHGs=
+X-Google-Smtp-Source: AGHT+IH65vHoAWQlQ3QxZg0jgRGWoc8ZKpbjQvB+6DwLthXrDAHZtbRQCJn4p44AxNGvT6W9g4Y7hgPMfFj54oU5Po4=
+X-Received: by 2002:a5d:5d83:0:b0:3e8:f67:894a with SMTP id
+ ffacd0b85a97d-3ecdf9b19b2mr3358067f8f.5.1758134332921; Wed, 17 Sep 2025
+ 11:38:52 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH slab] slab: Disallow kprobes in ___slab_alloc()
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>,
- Harry Yoo <harry.yoo@oracle.com>
-Cc: bpf <bpf@vger.kernel.org>, linux-mm <linux-mm@kvack.org>,
- Shakeel Butt <shakeel.butt@linux.dev>, Michal Hocko <mhocko@suse.com>,
- Sebastian Sewior <bigeasy@linutronix.de>, Andrii Nakryiko
- <andrii@kernel.org>, Kumar Kartikeya Dwivedi <memxor@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Peter Zijlstra <peterz@infradead.org>, Steven Rostedt <rostedt@goodmis.org>,
- Johannes Weiner <hannes@cmpxchg.org>
-References: <20250916022140.60269-1-alexei.starovoitov@gmail.com>
- <47aca3ca-a65b-4c0b-aaff-3a7bb6e484fe@suse.cz> <aMlZ8Au2MBikJgta@hyeyoo>
- <e7d1c20c-7164-4319-ac7e-9df0072a12ad@suse.cz>
- <CAADnVQLNm+0ZwX2MN_JK3ookGxpOGxEdwaaroQk+rGB401E8Jg@mail.gmail.com>
- <0beac436-1905-4542-aebe-92074aaea54f@suse.cz>
- <CAADnVQJbj3OqS9x6MOmnmHa=69ACVEKa=QX-KVAncyocjCn1AQ@mail.gmail.com>
- <c370486e-cb8f-4201-b70e-2bdddab9e642@suse.cz>
- <CAADnVQL6xGz8=NTDs=3wPfaEqxUjfQE98h5Q2ex-iyRs4yemiw@mail.gmail.com>
- <aMpdAVKZBLltOElH@hyeyoo> <aMpeADsz1Znaz8AU@hyeyoo>
- <CAADnVQ+sKKV+-Ee61Bxma+=MN4unGLRypAnfqHuLOtHM6T=HEA@mail.gmail.com>
-Content-Language: en-US
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <CAADnVQ+sKKV+-Ee61Bxma+=MN4unGLRypAnfqHuLOtHM6T=HEA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 712B2C000E
+References: <202509171214.912d5ac-lkp@intel.com> <b7d4cf85-5c81-41e0-9b22-baa9a7e5a0c4@suse.cz>
+ <ead41e07-c476-4769-aeb6-5a9950737b98@suse.cz>
+In-Reply-To: <ead41e07-c476-4769-aeb6-5a9950737b98@suse.cz>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Wed, 17 Sep 2025 11:38:41 -0700
+X-Gm-Features: AS18NWCa5a8ExJYAmvo8581Fjoj9FqLlIlKIfMzQMBKR4Zv-pgzwhyjut6uI-zc
+Message-ID: <CAADnVQJYn9=GBZifobKzME-bJgrvbn=OtQJLbU+9xoyO69L8OA@mail.gmail.com>
+Subject: Re: [linux-next:master] [slab] db93cdd664: BUG:kernel_NULL_pointer_dereference,address
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: kernel test robot <oliver.sang@intel.com>, Alexei Starovoitov <ast@kernel.org>, 
+	Harry Yoo <harry.yoo@oracle.com>, Suren Baghdasaryan <surenb@google.com>, oe-lkp@lists.linux.dev, 
+	kbuild test robot <lkp@intel.com>, kasan-dev <kasan-dev@googlegroups.com>, 
+	"open list:CONTROL GROUP (CGROUP)" <cgroups@vger.kernel.org>, linux-mm <linux-mm@kvack.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: B15C7140002
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-Stat-Signature: ikmhmdxjfc5sj9o3r3y6aetut6kbrm6b
-X-HE-Tag: 1758134096-909838
-X-HE-Meta: U2FsdGVkX18XAv+jQH9FxWBIcyOYCXclRvBJbbAxBjj6maDzKWYoz5VoJsNFZfkbTJuuOmCtQyWq4rVDskc6jAKUheEo9UGNrOFdU8F4iRgcetORB60aTABV4gMVMSHMVD1kCSe5UQIubaliYHyQoLm1iOXLFxe8o9zhQUvrWohBgMdHZyG14HMF52ANZJoSUDneq/DoAlwqCE/DzMLABz+561ZtnUCZxsNjKDnkAZJzUYPuruYbTu01SK+O5OmZVFYJt8uQoMBrFLN5lMvsL98VlSf/D8/w3km2Ervl3194IbMinnAAgpX75GZ7bByCStCYFjHs9HGEcfZcgi6mdNDVLQeKxjJ1BW4i47UKaxkLmkRtZgmXAnu9rTPnW1YKWhHSkuzCnLUw8FvRVkHOpWfS85oIiKfJvpf/UedjLJNi/D7Y00m0/2nDXYpYrqFPpHwavkh3baH4vPEgj1aXwS5V0ARYZviB3cBsUi4cNNVaxAGh+bLs5v7GnqTno5QSEZL91dLP7a7gKHccCj8qgaz3viDM3V8UgmwdUwczdvYEWlSyP3374/HNMX6D8a2IJjmmOz6f4bPFX1oriM96Ln9GKX0wtyLrLo3FF2XEKXf1+XB9yD8mfjdKcajj1AbNb0WkUZYTearJgxwRc/waLu5OLuIukk95IvsT/Lb2zHPjVM5DCsJVoZJFIy4O7arCYgFtewjq1xT7ukSbr+5ARYdHobKT7un4UzuiuiwjaRn3yvJWpxGUZYr+yo/DFeim7ENmq+yVT6/oRPWONUINTVe1ctmKzOn4wY+2hAMy1V0pRQjP5Wei+82eAdRxpD5dWp8TwZRBxYkEyBxNuCr8kyTRh5OYxutFh/Ahb1Is1gesyvFnNhLBfJlwVXBjCocrsPT3ZZfCDcUcyc70KdhTTb1nz5Q1w89BG4cNPquQZ/EIK0d2CUOMD1Rws8B9fZHjErB4z+ovR8BP7S5xkK0
- A9irk+Oh
- d86NV7ywSFbOA4ou+X+GbPlrTyaMcFt0zEN6iIR+rN5kGUUG8okq2fo7Z3SJkUQxpOHPAgG83V1yKzyLZU7tnmy8u04XhGcFW17DWP76p7jHGfQYju5IdtaKRi9mGnq90Xhg2TM31Qwc88mOSGWcUPGca9guLItGZrdiFrGbmTPCux21JSfA4mcNo9Mv5QbRtEyjUJlaHtEPITehpG2iGsV4NVwMYzCTSPYDO/k8i3ZEQASjDQkadD5Q5uqNEA+RGB4pWcWTDFoQqiXRDRrAs0guEVfHEsV5KpQVJZQdklqBy2OZkAhVaPiFw81vLOngby1WaQpLCr+88fRAe034Q3xVEfwub3Cm2/fCcKY4C/MVd0G6qggqTtzKB2dA+wfYo3dThSzvHKR0JD2xqsae00058U8ekWmR+Y1yt4vNegW5A5XUg5J+2aupk07rSdwC6TOy8VuQRVlFz8UU=
+X-Stat-Signature: x894m6ybpifdsat1u1we1545hnrtrwtx
+X-HE-Tag: 1758134334-556971
+X-HE-Meta: U2FsdGVkX1/UrifSvey2wfi+hrT2uLUVf1G3VmBuTa8yatRWoqMM289/T8q06Re/ApAAMKBar37zs0DA6zKu88jOVQ2A3cNJR1/ylJSQn/unNh+QS8tAdwTzCownr1sQIRpxkw2xYhxiv/x5elXULOE6+XBTve8Un3xZ4ENo3wRwo7IV9f8OTgLNyeJ+e2gTqvlcrZg6JQhmH1hNSIh4RgAs0yzDypJf5vFtEQxSIQ4z1fSU9W6CR/+39gaA4+40qcsiYE4zPzr+bBn7tbKhnsDuaJwYS6z/GSq30pNbgZmS31sMRopbGDLKSBZsgXnmNo24k0LSQ7juFv26K+BDRCKzBvnxz4PMr4Mb+P55ERF7xjM6MUkCdUwmehVN+aejQrbOLBQ4c1BrsibYgv5dBHa8Fcg6+3MNhcD5yJVmvbBqioyjwYgbXNDB5vP24UscEPxEGDBI382FdMsLj+4eZnyxc9CI9HcImhTFPLzqevA1RFGtAWL/UHEj3FDD+0xTGRey+kUM7R+C0E83g+uPkKos+NCp+8KDjD4Q4lSvZVPkscyCKKm2H6ZSsdbnYyOi15vrfkHCvQaZnhDSrwwwais8xtOd1su3dCZkD37IkVji1NkGex7s0p3Q3bLajYecSTaHEetjfpNwo8Z4dvai99S79F0q7qbsE5oWzfi8yE16Z7wLAY4rKG7PVZjI7juaTmly8M5+yiD1Ta8fMnwBCyJbkcZo6AiGvZBVx3rAze4fzozKWnhFOEmu0OKe0TOvy3UsMqKF5vvMn/Vo2EyMlSxLgmS7F+T2KRAzmnMyDosIV23oCsavpXPWpr/uoAvDucG1SQbA7nB1aur1aiORN6qdDPq32VRwb5MhTdd19K7OkKHpou9j7J8/guvwp7GWnTqvwkQbLfim4DMpJfUIAIvRWMnjJ4OlvOWIui48s05dqYhsLXHSEpOGOq4sx1VnVZRkr//3RRbjiNcj/oK
+ VKVZnBxk
+ buj2DkPIIn1m7DuQiT3PHfgXHQWZQtY+vNTDh8DtxMmP8j2fgqda9hcQ4A/JHQStQfmuL8PA5a+LeK01T9l1bOS9BmoGAWpffhVCo3KPeA+Qm10zQrE5U5/JPunVDcPPizisvpUy14mIbB+q1Mcgpp3SLYasP8V2qmjZOB/zxLhD0wdctLk6SDt3L5Jp2w1YXBychtsUWolATktSUzVNbzqYYgdGda2ETGKaeuJkuemvCjX9JyVtxQZ/jWUduFwpJRoZj/s/RrUAZ1L5YkrYXzTPr/7tSPaKge1/QxQwUD5TvpW8V3BW8FH75B3SOOWl3D0i15+c0Y54x0T96tqxYWz2X1XbFo78p/g2Otfb7S0RnbmwVVMXaRR+MEspRsFIenG10HTbdtan9WF9OzT7YZXSgHjqDRZ/1c9i7
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -191,61 +119,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/17/25 20:26, Alexei Starovoitov wrote:
-> On Wed, Sep 17, 2025 at 12:06 AM Harry Yoo <harry.yoo@oracle.com> wrote:
->>
->> On Wed, Sep 17, 2025 at 04:02:25PM +0900, Harry Yoo wrote:
->> > On Tue, Sep 16, 2025 at 01:26:53PM -0700, Alexei Starovoitov wrote:
->> > > On Tue, Sep 16, 2025 at 12:06 PM Vlastimil Babka <vbabka@suse.cz> wrote:
->> > > > > It's ok to call __update_cpu_freelist_fast(). It won't break anything.
->> > > > > Because only nmi can make this cpu to be in the middle of freelist update.
->> > > >
->> > > > You're right, freeing uses the "slowpath" (local_lock protected instead of
->> > > > cmpxchg16b) c->freelist manipulation only on RT. So we can't preempt it with
->> > > > a kprobe on !RT because it doesn't exist there at all.
->> >
->> > Right.
->> >
->> > > > The only one is in ___slab_alloc() and that's covered.
->> >
->> > Right.
->> >
->> > and this is a question not relevant to reentrant kmalloc:
->> >
->> > On PREEMPT_RT, disabling fastpath in the alloc path makes sense because
->> > both paths updates c->freelist, but in the free path, by disabling the
->> > lockless fastpath, what are we protecting against?
->> >
->> > the free fastpath updates c->freelist but not slab->freelist, and
->> > the free slowpath updates slab->freelist but not c->freelist?
->> >
->> > I failed to imagine how things can go wrong if we enable the lockless
->> > fastpath in the free path.
->>
->> Oops, sorry. it slipped my mind. Things can go wrong if the free fastpath
->> is executed while the alloc slowpath is executing and gets preempted.
-> 
-> Agree. All that is very tricky. Probably worth adding a comment.
+On Wed, Sep 17, 2025 at 2:18=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz> wr=
+ote:
+>
+> On 9/17/25 10:03, Vlastimil Babka wrote:
+> > On 9/17/25 07:01, kernel test robot wrote:
+> >>
+> >>
+> >> Hello,
+> >>
+> >> kernel test robot noticed "BUG:kernel_NULL_pointer_dereference,address=
+" on:
+> >>
+> >> commit: db93cdd664fa02de9be883dd29343b21d8fc790f ("slab: Introduce kma=
+lloc_nolock() and kfree_nolock().")
+> >> https://git.kernel.org/cgit/linux/kernel/git/next/linux-next.git maste=
+r
+> >>
+> >> in testcase: boot
+> >>
+> >> config: i386-randconfig-062-20250913
+> >> compiler: clang-20
+> >> test machine: qemu-system-x86_64 -enable-kvm -cpu SandyBridge -smp 2 -=
+m 16G
+> >>
+> >> (please refer to attached dmesg/kmsg for entire log/backtrace)
+>
+> Managed to reproduce locally and my suggested fix works so I'm going to f=
+old
+> it unless there's objections or better suggestions.
 
-Ah right, I did add one based on your commit log and this conversation:
+Thanks for the fix. Not sure what I was thinking. __GFP_NO_OBJ_EXT
+is obviously needed there.
 
-+/*
-+ * We disallow kprobes in ___slab_alloc() to prevent reentrance
-+ *
-+ * kmalloc() -> ___slab_alloc() -> local_lock_cpu_slab() protected part of
-+ * ___slab_alloc() manipulating c->freelist -> kprobe -> bpf ->
-+ * kmalloc_nolock() or kfree_nolock() -> __update_cpu_freelist_fast()
-+ * manipulating c->freelist without lock.
-+ *
-+ * This does not prevent kprobe in functions called from ___slab_alloc() such as
-+ * local_lock_irqsave() itself, and that is fine, we only need to protect the
-+ * c->freelist manipulation in ___slab_alloc() itself.
-+ */
-+NOKPROBE_SYMBOL(___slab_alloc);
+> Also I was curious to find out which path is triggered so I've put a
+> dump_stack() before the kmalloc_nolock call:
+>
+> [    0.731812][    T0] Call Trace:
+> [    0.732406][    T0]  __dump_stack+0x18/0x30
+> [    0.733200][    T0]  dump_stack_lvl+0x32/0x90
+> [    0.734037][    T0]  dump_stack+0xd/0x20
+> [    0.734780][    T0]  alloc_slab_obj_exts+0x181/0x1f0
+> [    0.735862][    T0]  __alloc_tagging_slab_alloc_hook+0xd1/0x330
+> [    0.736988][    T0]  ? __slab_alloc+0x4e/0x70
+> [    0.737858][    T0]  ? __set_page_owner+0x167/0x280
+> [    0.738774][    T0]  __kmalloc_cache_noprof+0x379/0x460
+> [    0.739756][    T0]  ? depot_fetch_stack+0x164/0x180
+> [    0.740687][    T0]  ? __set_page_owner+0x167/0x280
+> [    0.741604][    T0]  __set_page_owner+0x167/0x280
+> [    0.742503][    T0]  post_alloc_hook+0x17a/0x200
+> [    0.743404][    T0]  get_page_from_freelist+0x13b3/0x16b0
+> [    0.744427][    T0]  ? kvm_sched_clock_read+0xd/0x20
+> [    0.745358][    T0]  ? kvm_sched_clock_read+0xd/0x20
+> [    0.746290][    T0]  ? __next_zones_zonelist+0x26/0x60
+> [    0.747265][    T0]  __alloc_frozen_pages_noprof+0x143/0x1080
+> [    0.748358][    T0]  ? lock_acquire+0x8b/0x180
+> [    0.749209][    T0]  ? pcpu_alloc_noprof+0x181/0x800
+> [    0.750198][    T0]  ? sched_clock_noinstr+0x8/0x10
+> [    0.751119][    T0]  ? local_clock_noinstr+0x137/0x140
+> [    0.752089][    T0]  ? kvm_sched_clock_read+0xd/0x20
+> [    0.753023][    T0]  alloc_slab_page+0xda/0x150
+> [    0.753879][    T0]  new_slab+0xe1/0x500
+> [    0.754615][    T0]  ? kvm_sched_clock_read+0xd/0x20
+> [    0.755577][    T0]  ___slab_alloc+0xd79/0x1680
+> [    0.756469][    T0]  ? pcpu_alloc_noprof+0x538/0x800
+> [    0.757408][    T0]  ? __mutex_unlock_slowpath+0x195/0x3e0
+> [    0.758446][    T0]  __slab_alloc+0x4e/0x70
+> [    0.759237][    T0]  ? mm_alloc+0x38/0x80
+> [    0.759993][    T0]  kmem_cache_alloc_noprof+0x1db/0x470
+> [    0.760993][    T0]  ? mm_alloc+0x38/0x80
+> [    0.761745][    T0]  ? mm_alloc+0x38/0x80
+> [    0.762506][    T0]  mm_alloc+0x38/0x80
+> [    0.763260][    T0]  poking_init+0xe/0x80
+> [    0.764032][    T0]  start_kernel+0x16b/0x470
+> [    0.764858][    T0]  i386_start_kernel+0xce/0xf0
+> [    0.765723][    T0]  startup_32_smp+0x151/0x160
+>
+> And the reason is we still have restricted gfp_allowed_mask at this point=
+:
+> /* The GFP flags allowed during early boot */
+> #define GFP_BOOT_MASK (__GFP_BITS_MASK & ~(__GFP_RECLAIM|__GFP_IO|__GFP_F=
+S))
+>
+> It's only lifted to a full allowed mask later in the boot.
 
-> Long term though I think RT folks needs to reconsider the lack of
-> fastpath. My gut feel is that overall kernel performance is poor on RT
-> due to this. sheaves might help though.
+Ohh. That's interesting.
 
-Oh they definitely should, thanks for the selling point :)
+> That means due to "kmalloc_nolock() is not supported on architectures tha=
+t
+> don't implement cmpxchg16b" such architectures will no longer get objexts
+> allocated in early boot. I guess that's not a big deal.
+>
+> Also any later allocation having its flags screwed for some reason to not
+> have __GFP_RECLAIM will also lose its objexts. Hope that's also acceptabl=
+e.
+> I don't know if we can distinguish a real kmalloc_nolock() scope in
+> alloc_slab_obj_exts() without inventing new gfp flags or passing an extra
+> argument through several layers of functions.
+
+I think it's ok-ish.
+Can we add a check to alloc_slab_obj_exts() that sets allow_spin=3Dtrue
+if we're in the boot phase? Like:
+if (gfp_allowed_mask !=3D __GFP_BITS_MASK)
+   allow_spin =3D true;
+or some cleaner way to detect boot time by checking slab_state ?
+bpf is not active during the boot and nothing should be
+calling kmalloc_nolock.
 
