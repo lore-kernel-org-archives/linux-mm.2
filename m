@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3E7ECAC59A
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 17:40:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5767FCAC5A5
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 17:40:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB8FB8E0067; Wed, 17 Sep 2025 13:40:43 -0400 (EDT)
+	id B369A8E0002; Wed, 17 Sep 2025 13:40:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E90D28E0002; Wed, 17 Sep 2025 13:40:43 -0400 (EDT)
+	id AE6DE280002; Wed, 17 Sep 2025 13:40:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DCD518E0067; Wed, 17 Sep 2025 13:40:43 -0400 (EDT)
+	id 9D61B8E0068; Wed, 17 Sep 2025 13:40:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CA34A8E0002
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 13:40:43 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7C8A7160635
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 17:40:43 +0000 (UTC)
-X-FDA: 83899457166.28.3AD2970
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8AFDD8E0002
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 13:40:47 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1A26C5A080
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 17:40:47 +0000 (UTC)
+X-FDA: 83899457334.30.1860A74
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id E57E62000A
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 17:40:41 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kS1MQwyX;
-	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf25.hostedemail.com (Postfix) with ESMTP id 6B8B2A0010
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 17:40:45 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="imKc2B/G";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758130845; a=rsa-sha256;
+	cv=none;
+	b=iC7NAMoNXsCufd+e5X472Neik2ZoCH8RYBmQDEkUHMP6lV/tq3VpmakinyGsoybaWFjliw
+	wBCtlum3zaK++uE/kaSRIpm7GFW5CNOuWzIcwz/a2Jva0eOqA8WbapE4NnzzB3nFUO/QOx
+	s/UjcRh/S2IzsqwDx0LJ3iYfDfnPkxA=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="imKc2B/G";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758130842;
+	s=arc-20220608; t=1758130845;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=SV63/ilReAX92FTIhCs/PydSy+8AOlw+EtW3gi5rMQ0=;
-	b=bSFvSqR+HXKlSXurt9LlqtHI0P56RGwZkJsrS2Hk3u0pzsRBBvpLuOxXKql2R0/V45FeXo
-	o98IQrRMpWaeFTNPs+GhIMXWYFbNk/GvJMJvL8AVy8gdC5o7G1LEpqAZAzRzPMm2+F80CZ
-	6R/UNkgJouJb62HRo7ddfRwr5J/5vr4=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kS1MQwyX;
-	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758130842; a=rsa-sha256;
-	cv=none;
-	b=KuUerqGIyXkl407yK2+Zi2GYp08hJPbaSwpe66TKHmeL12HxDAsrJfZcRGPmC3d65pi9/L
-	yuwU2IID3HKC02/xWdzU3zWUikFUhiBcCl/xjvpwggcOK+EpqbfUlHaTpCKAQwlbZYGOJL
-	zTS9M/+kv91r0Pa1LrALrMCUwEm9Pm0=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=bCoLRximDJC7CAzkSmIC7qmkF1kfGQUDayy2Gj1yZaQ=;
+	b=EEovTj+N3+UON2TG4ncVExh1U7ZievVzk6ugqePz84/UuA1ZZ84XipaTT2VjzEePkq3OHO
+	7ozXRdUMRRxifIWoYq4YH1IYm6Vr/A19YBMdfJbyY9e2HosTbw5J5DP26A5f1RehnX7TT9
+	B/79W8aqU+8NnDRTnBouhTTUlME7IdQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 211486023C;
+	by tor.source.kernel.org (Postfix) with ESMTP id CAB386024C;
+	Wed, 17 Sep 2025 17:40:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56019C4CEE7;
 	Wed, 17 Sep 2025 17:40:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95D8AC4CEE7;
-	Wed, 17 Sep 2025 17:40:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758130840;
-	bh=jOruTg3z11MGvKG41cspL9TY7zrdRzOtbVcIJxlzOvE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=kS1MQwyXK7ySaTIUsclw5N1elKou9v0wFY5bhhXUVm1Ppb+EMluIWv5yDaqpDvGlT
-	 /9LbI/nX0xndD+WNdENmR/l5Y+gPjyyESTsaItA/5EVRpcsUfrKv5XtxBiyaukEERO
-	 InKwMtgCmTeJGlM3ExTuc5QRvEa95Bc+qmhOGdmMicogyLGKlW9gvdOGDG/seW2yLK
-	 bJ3Xn5D6S9b9FPUpDxD9YohNab25q5l0hHAJwgmfEwcGJdwmSlwkHvt6SNO5ODGrjx
-	 MgIQoRHBpgLTe885aJf8G/+8WDdjkRjfmPSX4uBU7YEQa9QNhZ22RXJqoY8aTREM5y
-	 HmZKP7Ifjgs7w==
+	s=k20201202; t=1758130844;
+	bh=8S8e7n6CmQnQKabzKFlVH8Uaq/Xv4oQU9mDtf6delh4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=imKc2B/Go7tqGnVzKJxq26RWe2jdsBf9Ed5PIKotck8RwFHLfGS0BBPjt8DjrQzwQ
+	 PoZq1MNENH7vxNPLowth8cqCBY6VFfgrh/wMPvNHtXoc1QdyvzGZ8KBajL+RtHpAKH
+	 BIqzDAu8/OgWWkBn++4a8QixTRL1Z/m4JEbIaMfM7i121nzr00gzHlLgQwfikkq8ZO
+	 /7V0AUJnUyLyc32HBkNk+A9WDN+0OI8eYdqYYVDkT5cugq5KiRquwEcou1kuW/iU7K
+	 1NOiI35NaZo02txKyCoqSbdnRtMfhvXTf4yEpXQS4PPwgGf9N6kV+jGCJhpSJ0ABX5
+	 huHkkfAT7XbvA==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Alexander Graf <graf@amazon.com>,
@@ -76,20 +76,22 @@ Cc: Alexander Graf <graf@amazon.com>,
 	kexec@lists.infradead.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v4 0/4] kho: add support for preserving vmalloc allocations
-Date: Wed, 17 Sep 2025 20:40:29 +0300
-Message-ID: <20250917174033.3810435-1-rppt@kernel.org>
+Subject: [PATCH v4 1/4] kho: check if kho is finalized in __kho_preserve_order()
+Date: Wed, 17 Sep 2025 20:40:30 +0300
+Message-ID: <20250917174033.3810435-2-rppt@kernel.org>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20250917174033.3810435-1-rppt@kernel.org>
+References: <20250917174033.3810435-1-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: r7bmijx6dofihdrju5e3abmuxgz7qas1
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 6B8B2A0010
+X-Stat-Signature: mr9hoxsomfoc4cyz4x8d7hsk9jhoifpq
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E57E62000A
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1758130841-331432
-X-HE-Meta: U2FsdGVkX1+7TL9OT/vhNAAAPolLzBjdB5pe5hBkt22fshRCngQf/yixYjXx9reZEiUYVvHGHXc/Ul6QxxNa16qV4MMfp38irs35/Ylzf+vHA9tAJ40KHKtJ9tKDpyPqPk8jAzM1Fo7Sl4AypAyLBSpjzKc58CqwuQ3dJ+/JffXwcMvAxTQjcAzeZYfUQqcXq8AQcOynDVrdHUrcVNKMWYbjLOfj4jVGwog2QTSb/ToeSAOIMxx4rLroFL9ItFFhrYDdAHrujpr5Vg2on/04D+SrBJQXLmmZQuAz0zsRoGyz6oTu77q70nlTrUf3UAGWERtSrOi97gA5UmIyQuenocZwG2rUEuxfocV76Hhe0+Fuet2Xt1mxClR9qdIjPdVrDNxRyd7rATciVYPPkc6TJ6vrv61nDl3wGiMEtJqDVGC5TTBwQtP6SHmV9/oTayQro9lbTIp+fpnALFka8ly2fPMs/Xd/gkJcN+V7/p4XrNxrizCqR3BZO0SRmi00ecQA+n0Y+JOiJNH3hocwQpcQRvUIO7/uEiG5zGQWup1GNZW43O29dKkARzjzUYcgLSuK0eGLvw0ZkRpYYGQrPjvAGQ7ieJZnm89PlOha4XnLOFoDk7+dj6+bxw+XRfmovpkQU2q/TZf56RAbvk8LSlShEa2jjOgTIFRk94El3cP/TcoceCRl7BfHLbsNnFPkmcAmp7ZtD6Ftcx7pmhVrn0pcaK2YgRcjdN3owozMID7lxjdgIMCnpIANSeQ9K35k8lJjFmhzPMH2dPLoTzA+M/0KVosQaoaSH0niB8rrVZXNcpICKrsD7szpUF5XQ6SDgvqd9C3yvUUlUksf8sGn71IthxrSsRBp4re3I83KhHo0dcYo6Du6I7XP2x3DmI34PCTENy1Lr1Otbx53LfclwkQvSlcAuPf8eqCHsBhZw8XOu/jf6Zi1hS4doj98iDCehJb3/TxjzZYZFknj2dz9kpI
- tq6kpvUy
- e0O5oPfKG7VDjfIz5hmRca8IO2oCnQX9TcCu/pLiw69MGhwDUYsBDaVuUhadRTVWzXRPql6uB6fj2aaN12d9QNOI4GbRsazurfSbNUCE5F57dHaIFrh8yQ2Y5qTT0zDKiRhB4xXXP6adsOtIWAz7LU1h2ZsWW1yh3yIbAPSqHyGTNBGEVY7/xdd5+RyPlVnlcYdNFyGnaCFrr/V2ET51AVKJMfxXsd5SEc1k9Ut2i4dk2TSb3IeGD7ZWXJgfMgCTARN0asgTisqCNCa0jS2eunhU6YaSj45TAsCju
+X-HE-Tag: 1758130845-621654
+X-HE-Meta: U2FsdGVkX199k8q+RjIJV9/j6GMnTLpVJaVeJ9YvDF73pvVUYot1mbJCEsdSjj070KrcHnWaA3quxwAGJQiGHNYSdIqeHwqfMAcUm5dwj62xff4kgxdXPwlWAxt0849Apa2tUa5v49/2J0fh8PKvRV5uJIF1OjATX1Qk+ILMlbMl4lp6S7cNaCXLh3wd5jQVoXrjZ98HduqoPEtdVsRuAgui2RnNm7FASh2CaN7iqMW/wyf6bZX/qhlEq6W8mVD4xCTynTHiTqRnMoXmlQDugQcKu9sBtck3p7AuMcDGSbiVZGsdI3kkE7Tng3yBPtHZDpJaA0APRC7HNKcaLf2CCRLokcqPd/eKhD5AmIoSHAChV95AmoFx3UyRA0GDe87qiXjcXoSRtu/TK3v1VBvo0HriaUJOUDeDSsty4LDG1Je4X1xgUBvMzZoNyHOzzDC9ZQfbaj2qQdNRdgTVP51vKC5ndP8J4fGQuzKaUZ4R1Lg2vxZdJgYXT/jXT4QwgXz0PgbXB9rz73RBLrvcmNrBdz0xUtjydC/aendaNax/UoFV5F3juGM8hq44KLOYSqY6pKIwcGkggWvsF7+LiSzX/BQL9gKzY+zZEySFtJyXHFJntY+HKG6rev0rC2EgwFVtroHI5uYtXTzs95/UOtVfJS4uxqQkkiJq4gfzPqVajL9IzTOvzP+YaGGQ4nUiSrMKv/srw7/i843ETjssKswjwKCTL+HewImD7wnF42UxTqq34YVhJP/OJUTU4PKjtGb7YEgH7wSj9a2F7U9V9ykqJzN4ryxOelUmvv8qnu0tW0PY+ix9GbuJ3ZOQoJ2lNnhIb7mviawJZjeSHr1XJedVXnWFzK+Boxj/iJ2Zzbw3ZqsAEyJdqJCGH4LzVojCmNuljn0R01CZXIBqX8PH3NfUi9Cs3MS6HXEuvUQSHSRXJzXiPQ+CqXwrWOFSkr5NXoHaYbC6uigVqnrRLiEE6O2
+ SIMAPiGI
+ P3fvxCgCgtwVDhsTUgv9KqGFWxpbObKEdz0dtJCTW+Gcfw9wmSSm1zkZlvXV2FaNL/7DKbJA4otFubWmlPT/Nwrl+VaLEEh4KW1ZLLAwShHetqbicDJtmFsFXRO8WhmkSemmgGGsTAS+iO9AzYmK6mr3Vg6sJU59ZZE5wR9+v7YxGRjcU6YbfGsy/pXMLjtB4F5VyJ2BkjgnBQz2+orFzeLdjMsthAHIlArGCIfabCp695On7G1eBFtBBsPfgpjVCQ3r5csPueGKceHmmFBIS4C4WkA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,58 +102,109 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-Hi,
+Instead of checking if kho is finalized in each caller of
+__kho_preserve_order(), do it in the core function itself.
 
-Following the discussion about preservation of memfd with LUO [1] these
-patches add support for preserving vmalloc allocations.
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+---
+ kernel/kexec_handover.c | 55 +++++++++++++++++++----------------------
+ 1 file changed, 26 insertions(+), 29 deletions(-)
 
-Any KHO uses case presumes that there's a data structure that lists
-physical addresses of preserved folios (and potentially some additional
-metadata). Allowing vmalloc preservations with KHO allows scalable
-preservation of such data structures.
-
-For instance, instead of allocating array describing preserved folios in
-the fdt, memfd preservation can use vmalloc:
-
-        preserved_folios = vmalloc_array(nr_folios, sizeof(*preserved_folios));
-        memfd_luo_preserve_folios(preserved_folios, folios, nr_folios);
-        kho_preserve_vmalloc(preserved_folios, &folios_info);
-
-[1] https://lore.kernel.org/all/20250807014442.3829950-30-pasha.tatashin@soleen.com
-
-v4 changes:
-* rebase on mm-stable
-* use 'struct kho_vmalloc' as preservation metadata instead of storing it in the first chunk
-* separate KHO flags from VM_ flags
-* unreserve vmalloc pages on error
-* add checks for under- and overflow of preserved metadata
-
-v3: https://lore.kernel.org/all/20250908103528.2179934-1-rppt@kernel.org
-* rebase on mm-unstable
-
-v2: https://lore.kernel.org/all/20250905131302.3595582-1-rppt@kernel.org
-* support preservation of vmalloc backed by large pages
-* add check for supported vmalloc flags and preserve the flags to be
-  able to identify incompatible preservations
-* don't use kho_preserve_phys()
-* add kernel-doc
-
-v1: https://lore.kernel.org/all/20250903063018.3346652-1-rppt@kernel.org
-
-Mike Rapoport (Microsoft) (4):
-  kho: check if kho is finalized in __kho_preserve_order()
-  kho: replace kho_preserve_phys() with kho_preserve_pages()
-  kho: add support for preserving vmalloc allocations
-  lib/test_kho: use kho_preserve_vmalloc instead of storing addresses in fdt
-
- include/linux/kexec_handover.h |  26 ++-
- kernel/kexec_handover.c        | 324 ++++++++++++++++++++++++++++-----
- lib/test_kho.c                 |  41 +++--
- mm/memblock.c                  |   4 +-
- 4 files changed, 337 insertions(+), 58 deletions(-)
-
-
-base-commit: 103e90626d3a4032d22e8b09ff14600e71cda59c
---
+diff --git a/kernel/kexec_handover.c b/kernel/kexec_handover.c
+index 8079fc4b9189..f421acc58c1f 100644
+--- a/kernel/kexec_handover.c
++++ b/kernel/kexec_handover.c
+@@ -91,6 +91,29 @@ struct kho_serialization {
+ 	struct khoser_mem_chunk *preserved_mem_map;
+ };
+ 
++struct kho_out {
++	struct blocking_notifier_head chain_head;
++
++	struct dentry *dir;
++
++	struct mutex lock; /* protects KHO FDT finalization */
++
++	struct kho_serialization ser;
++	bool finalized;
++};
++
++static struct kho_out kho_out = {
++	.chain_head = BLOCKING_NOTIFIER_INIT(kho_out.chain_head),
++	.lock = __MUTEX_INITIALIZER(kho_out.lock),
++	.ser = {
++		.fdt_list = LIST_HEAD_INIT(kho_out.ser.fdt_list),
++		.track = {
++			.orders = XARRAY_INIT(kho_out.ser.track.orders, 0),
++		},
++	},
++	.finalized = false,
++};
++
+ static void *xa_load_or_alloc(struct xarray *xa, unsigned long index, size_t sz)
+ {
+ 	void *elm, *res;
+@@ -149,6 +172,9 @@ static int __kho_preserve_order(struct kho_mem_track *track, unsigned long pfn,
+ 
+ 	might_sleep();
+ 
++	if (kho_out.finalized)
++		return -EBUSY;
++
+ 	physxa = xa_load(&track->orders, order);
+ 	if (!physxa) {
+ 		int err;
+@@ -640,29 +666,6 @@ int kho_add_subtree(struct kho_serialization *ser, const char *name, void *fdt)
+ }
+ EXPORT_SYMBOL_GPL(kho_add_subtree);
+ 
+-struct kho_out {
+-	struct blocking_notifier_head chain_head;
+-
+-	struct dentry *dir;
+-
+-	struct mutex lock; /* protects KHO FDT finalization */
+-
+-	struct kho_serialization ser;
+-	bool finalized;
+-};
+-
+-static struct kho_out kho_out = {
+-	.chain_head = BLOCKING_NOTIFIER_INIT(kho_out.chain_head),
+-	.lock = __MUTEX_INITIALIZER(kho_out.lock),
+-	.ser = {
+-		.fdt_list = LIST_HEAD_INIT(kho_out.ser.fdt_list),
+-		.track = {
+-			.orders = XARRAY_INIT(kho_out.ser.track.orders, 0),
+-		},
+-	},
+-	.finalized = false,
+-};
+-
+ int register_kho_notifier(struct notifier_block *nb)
+ {
+ 	return blocking_notifier_chain_register(&kho_out.chain_head, nb);
+@@ -690,9 +693,6 @@ int kho_preserve_folio(struct folio *folio)
+ 	const unsigned int order = folio_order(folio);
+ 	struct kho_mem_track *track = &kho_out.ser.track;
+ 
+-	if (kho_out.finalized)
+-		return -EBUSY;
+-
+ 	return __kho_preserve_order(track, pfn, order);
+ }
+ EXPORT_SYMBOL_GPL(kho_preserve_folio);
+@@ -716,9 +716,6 @@ int kho_preserve_phys(phys_addr_t phys, size_t size)
+ 	int err = 0;
+ 	struct kho_mem_track *track = &kho_out.ser.track;
+ 
+-	if (kho_out.finalized)
+-		return -EBUSY;
+-
+ 	if (!PAGE_ALIGNED(phys) || !PAGE_ALIGNED(size))
+ 		return -EINVAL;
+ 
+-- 
 2.50.1
+
 
