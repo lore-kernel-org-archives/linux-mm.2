@@ -4,111 +4,174 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BAC3CA0EE8
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 08:59:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05AABCA0EE8
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 09:18:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7A95E8E000F; Wed, 17 Sep 2025 04:59:41 -0400 (EDT)
+	id 2F5C78E0002; Wed, 17 Sep 2025 05:18:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 759CF8E0001; Wed, 17 Sep 2025 04:59:41 -0400 (EDT)
+	id 2CBE28E0001; Wed, 17 Sep 2025 05:18:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 670068E000F; Wed, 17 Sep 2025 04:59:41 -0400 (EDT)
+	id 1BA748E0002; Wed, 17 Sep 2025 05:18:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 520148E0001
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 04:59:41 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DFFB01DCA77
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 08:59:40 +0000 (UTC)
-X-FDA: 83898144120.17.29631D6
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 0662B40005
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 08:59:38 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=hRX+oIuS;
-	spf=pass (imf04.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 03CBA8E0001
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 05:18:20 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 607B41A0496
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 09:18:19 +0000 (UTC)
+X-FDA: 83898191118.30.07051FB
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 1A09B180004
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 09:18:16 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="TBSD/CJ7";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=p+dXr11a;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="TBSD/CJ7";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=p+dXr11a;
+	spf=pass (imf24.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758099579;
+	s=arc-20220608; t=1758100697;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vOKz7P4HEtYH+i5ElgrU7Bp4EAn43MTUmnEdpQptHBs=;
-	b=3rqCIS4jZbi7DNKzdIM6es0M/7MCG3IK50rw7ROnJMgXEgwkRhDWR8q2rvcMhwS+OgLdYT
-	cNCgOIAOZWw9JI2XE+J003jX4iDUXUmTQp6dJHjB41v1G6JxEdVNKMIMjCxzzRzywKKbbn
-	1FHgEvTxJxsnoWOrjIu2P6ByzQNDrtU=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=hRX+oIuS;
-	spf=pass (imf04.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758099579; a=rsa-sha256;
+	bh=/HdoRh34zKgekx7h76Ak8Vo2WP4hVIe9wi/o5NYVnBo=;
+	b=nhkzFixODKVgcoa6EY141zD/GlIw1pyXGx7bUBTjb+4p2vTHYYku6ZDjPmUzmoyAmmz5M+
+	aFt71PjAu0EhUME07R0uVXigHjc564UTvznKoEew/VNvblKVi5D5IOA9j0u4hG83hwlvqr
+	9n+zpWA9aVWiwCKL7bloZ9YwzN+vC54=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758100697; a=rsa-sha256;
 	cv=none;
-	b=Y5I+O1bosS19kpA/weUdnRcEpqJkcMUozVZl9EeeVfTC+jnCYQWMEJihhIWn7JhbtPyzYz
-	MKTluARzY/ZxPZGU2Ef2nGi8kn1hg+MiohtCV0zqa7EhKq+loR3Fuo66gAhZQUE9+7fKz3
-	+frgSNJNsNdTEPJVKKe5XwXY9E5C0eE=
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-b046f6fb230so143584466b.1
-        for <linux-mm@kvack.org>; Wed, 17 Sep 2025 01:59:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758099577; x=1758704377; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vOKz7P4HEtYH+i5ElgrU7Bp4EAn43MTUmnEdpQptHBs=;
-        b=hRX+oIuShdX7lZzUMTLGBSZwweB7y5SFT1JrQa5LEJxyKFLBNmOLngx7J29Fp0L2i+
-         eG7wtP9yA4PYnNtolfxsJBQ2Pohp3LzHr1FcRB9V5jqDVKaOGU4wIsIcfTgznKz+5+G3
-         BNgW3uPkVa6JhhrPHPSRMJVrCobsjyZngfgnwNPI4gJjWWFcdTYjpVlWV+2vR81iA7oq
-         koTSkawzdc5ObJLVPn3B/DLDVNy3NNMqiRzDyUuL4OA/FLeBIaRVrd2MhGO8GNra0AJm
-         2sPuJh2wC80875vhzjmYLtb5DDSmJKRp2s3aGzxM8c6DHDRskS1cbm/yy5NAJWBWROLY
-         rDcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758099577; x=1758704377;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vOKz7P4HEtYH+i5ElgrU7Bp4EAn43MTUmnEdpQptHBs=;
-        b=CBGxhUPHo97PAPrccV3mjdMb7AvwzRXnJBWA2dryJkfjBg9g1Enu5HNFPQeNB+AnSO
-         +DF/dwIzy3XKfvK7QNoPcmxpxI3Ze1odBuHhuSTT1ecl4rj7gus0PceC5OuuSYJI5TiW
-         V14J98+uOzWjhF/ccELc9zLuKLb7bienR2q3HLQylu5UApIY0mTgiH7IDtJLEv5ipnHG
-         e3bQJJhCbt6cGjel2anTqqRUxXT+9mM3VdID4GDcAFwMbXcqvb8e6WLnWm4v4nOL+7l9
-         2n1OVc+mYkqyp2nwhjZfnT6mq07dWjccDBVkSTGH6lho6SSa13VV68qLW9OBBOBQ0I9X
-         K8mg==
-X-Forwarded-Encrypted: i=1; AJvYcCXBlRjukt6ZkRTQZmGZEUzTLZe834RFzoMYlLu/UGhsAPhWmMU5Qa03wsmyeTpAtQOky71LZ+IoVQ==@kvack.org
-X-Gm-Message-State: AOJu0YzmvlOGs5WVCKto6hbY+v/xL7D7imLKbOqnZ5GnWgAtf3CRNLPP
-	fUPp8mDizPHjMUFmtp624UHNdU2JMH45rdSMqdrS6wwNkpXvv3RYa1jCZDWrly/ivNuw7+1MxXi
-	Kd/eVv+BIeyYTL82ck9vH0XxGH7nu2wc=
-X-Gm-Gg: ASbGncuwnzxCc1wvqWUP7c/0ytYNlLD8evxSOMSPaJ8QhixBciH3Wh2TEPFqsFHbZzM
-	nwZEN9KczQV6cuc9pCDLLxIemk8QDuY0vFX91LTrLhdfAmy2tNax4raX17ByqipjmdLtK9z/uGj
-	eLIX58J+iiZvfREUpE4fd0q/heMrwBMKAFumqByN4RA2GgNhCU8Rdhcs6lbXVw/IUOohTstjU+k
-	Wq60zw+2IK0xTSeTcM86ckdac36LibBfadbdabe5kbz98kq6w==
-X-Google-Smtp-Source: AGHT+IF8FMgkRoO/NnsZ7DpY2fIfWx24GDJaOJTYMMvbCsE2nBH2lhvZ+nLWR7ImqMEp0F3hlSbxGlKaMDHdtZweEec=
-X-Received: by 2002:a17:907:a08a:b0:b07:e348:8278 with SMTP id
- a640c23a62f3a-b168286b0a3mr607388666b.25.1758099577296; Wed, 17 Sep 2025
- 01:59:37 -0700 (PDT)
+	b=2Eop7vNVXGHg607edre8mRA6kuphTQArFiTijSSmr2s+27VnA8annS3MSzPrPu3at+LXQC
+	g6J3ncMJmB8fpBIikUFvckFuq9aNQWlLp1rmHkuzBLakRH9kpM/jY9SRyMtw0U4j2E2fFr
+	5VpVrnWC6798crBB5+7hA5hcPdpVyFI=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="TBSD/CJ7";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=p+dXr11a;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="TBSD/CJ7";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=p+dXr11a;
+	spf=pass (imf24.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 95AEB21DA6;
+	Wed, 17 Sep 2025 09:18:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1758100695; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=/HdoRh34zKgekx7h76Ak8Vo2WP4hVIe9wi/o5NYVnBo=;
+	b=TBSD/CJ7aEAdZOulQqwYzv9ky15Gudyaio1J6JHoIca6qxFC3rHhtZmGW8ivvyANCzo0Rx
+	/uIJRJ0Ee2ztSA+X7Q5XBL034hndjGei79CNFwkZXuOdf1Tch986d1v2GxifMxG1fmR5BY
+	ZUdWzIFk0odFAK/B3bChMKHKvcMJ+/k=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1758100695;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=/HdoRh34zKgekx7h76Ak8Vo2WP4hVIe9wi/o5NYVnBo=;
+	b=p+dXr11aPLofkChHMIFbeHMXb4klD4OvXTq3o2B3Vuah+Bi+9jmnyIa8zmE5/cDauMo5Z3
+	MDNmjUacUjKjJ8Cw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1758100695; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=/HdoRh34zKgekx7h76Ak8Vo2WP4hVIe9wi/o5NYVnBo=;
+	b=TBSD/CJ7aEAdZOulQqwYzv9ky15Gudyaio1J6JHoIca6qxFC3rHhtZmGW8ivvyANCzo0Rx
+	/uIJRJ0Ee2ztSA+X7Q5XBL034hndjGei79CNFwkZXuOdf1Tch986d1v2GxifMxG1fmR5BY
+	ZUdWzIFk0odFAK/B3bChMKHKvcMJ+/k=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1758100695;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=/HdoRh34zKgekx7h76Ak8Vo2WP4hVIe9wi/o5NYVnBo=;
+	b=p+dXr11aPLofkChHMIFbeHMXb4klD4OvXTq3o2B3Vuah+Bi+9jmnyIa8zmE5/cDauMo5Z3
+	MDNmjUacUjKjJ8Cw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 73F26137C3;
+	Wed, 17 Sep 2025 09:18:15 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id D3umG9d8ymhqHAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 17 Sep 2025 09:18:15 +0000
+Message-ID: <ead41e07-c476-4769-aeb6-5a9950737b98@suse.cz>
+Date: Wed, 17 Sep 2025 11:18:15 +0200
 MIME-Version: 1.0
-References: <CAKPOu+-QRTC_j15=Cc4YeU3TAcpQCrFWmBZcNxfnw1LndVzASg@mail.gmail.com>
- <4z3imll6zbzwqcyfl225xn3rc4mev6ppjnx5itmvznj2yormug@utk6twdablj3> <CAKPOu+--m8eppmF5+fofG=AKAMu5K_meF44UH4XiL8V3_X_rJg@mail.gmail.com>
-In-Reply-To: <CAKPOu+--m8eppmF5+fofG=AKAMu5K_meF44UH4XiL8V3_X_rJg@mail.gmail.com>
-From: Mateusz Guzik <mjguzik@gmail.com>
-Date: Wed, 17 Sep 2025 10:59:23 +0200
-X-Gm-Features: AS18NWCmzvVAdt9cnGznBaPer5VswI6NuC9qGL-CKG8mFwH0Gs_2YwiI-pnnOec
-Message-ID: <CAGudoHEqNYWMqDiogc9Q_s9QMQHB6Rm_1dUzcC7B0GFBrqS=1g@mail.gmail.com>
-Subject: Re: Need advice with iput() deadlock during writeback
-To: Max Kellermann <max.kellermann@ionos.com>
-Cc: linux-fsdevel <linux-fsdevel@vger.kernel.org>, 
-	Linux Memory Management List <linux-mm@kvack.org>, ceph-devel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 0662B40005
-X-Stat-Signature: 4nhbgq84wg5amd3tg5cb3iq61dnjhdqm
+User-Agent: Mozilla Thunderbird
+Subject: Re: [linux-next:master] [slab] db93cdd664:
+ BUG:kernel_NULL_pointer_dereference,address
+Content-Language: en-US
+From: Vlastimil Babka <vbabka@suse.cz>
+To: kernel test robot <oliver.sang@intel.com>,
+ Alexei Starovoitov <ast@kernel.org>, Harry Yoo <harry.yoo@oracle.com>,
+ Suren Baghdasaryan <surenb@google.com>
+Cc: oe-lkp@lists.linux.dev, lkp@intel.com, kasan-dev@googlegroups.com,
+ cgroups@vger.kernel.org, linux-mm@kvack.org
+References: <202509171214.912d5ac-lkp@intel.com>
+ <b7d4cf85-5c81-41e0-9b22-baa9a7e5a0c4@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <b7d4cf85-5c81-41e0-9b22-baa9a7e5a0c4@suse.cz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 1A09B180004
+X-Stat-Signature: 1axiywk43ci5jxjxtcw7hiop3pw966s9
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1758099578-319724
-X-HE-Meta: U2FsdGVkX1+g2JTOHvybcjVwczJYW1uQwIrY44Tv40Zxyi9ekQFdSAoi1sbAawFb/fjrKz+Vo7GH/TVoveK9iXkKg5Drt8j69EMEjT5A3BuBVvAzeTSGhUTWVc4exRn3pH2QOONYZ0Bgg3rXXSjzTxbDrEdmdutbC4gWOVKVSa//yp/ACrzthaBBWSZWrFA/BkFg07AvG7MGEpkgIK+o185XMEQawHHT6qbYKIlAihg3fG/CcP2G+gd4T/2Bn8+FDmnCGdLl8Mqyb+i2jCKtxgHR20KZiw3cGMb2Fq0RuWPtRrUznHxfIdclUo7lG6T0LOo52Xc6SGo5bo8VyIXryCsY4BcCKDfMgjeLeblvvtJ6NkZdGHQU0gizi77cuBlVx45X5Su0isgX2LG7L+pwq5OQEIqdaHmMzWgSYCsykCvNri/sCxNw1NPFbPEUv4tPTgd0vp1A57Nl15jllCRdnGvH9Bl33x/1UzrD4PtDIxCeEGp9ia6hzYwN4hX0alvZD9yyOX90Hs3tQUMEKIhNae8wE/EeVhJMV0sia1Q8tJuUzogM1n5rsYxCY9z5GpDsmzSj138NwZp5w4YAgzMe0U4xFPnpfmuVmPgKvEEipEVr7KGyNBMJbxi7aLobUc1nrNDDi4GlNnjL/fjT71vo0NiCrS3GSZK+jQ2/A3auzA1JQ5nLs5zBGb2mPqDuim8KA7/BLOBebyU1w8AQ56P7xRohJBuSkQHvgqePx1gG0zgDzChXcjK1bceygmyKRZ+u4HhykkG5Q02B+tb68XctoQuu42mowN9AXc2VHUVtAS5j4vejDcQcAdpkN3U5XvUQX6jI14xdqDZ6TDtVmqkZbSkmTWsZWBS1Hxx6mLAEb0CLCUuZ3iEUEbYg411BB0dndOQgPPpj4W1MGbUoCpdVM3t59UU4GVdF88ZUha8YcrjqUdyuQiSk8RAsDDGgKBN5DxbTES2q13wfhOZ0wO0
- B86p9yPC
- dpJT05cQetJ83T6rIyrei8Y44NmbYe3vlwG9tJczxGTsD44o83z2gCjQ0+OIWe1L5/mMfhGg+XH/EWBEIZ8D90x1X9sTlfq70TLOxkNHLo9pQuyb49IyeJlW6TA5SJtlXUOx+k8CupNj64n796JEMfqeQoIRZp38N+F0Z1bx3vd4ef4WFrGq4UvWMP5E6PrhIdtwB1cfnxBSvvvpDesJe6Pbs3rGmjo7fkWnbuUIEamfzCEK+DH15YEqO5cOU5TiH4uW6INyhkQvYEdnn9DhKQ95SwnVboviIeEub0dCIiNhNh0DCxw+tKjucGnSaEp1zJ6JIsSQPVyc2u5uGKnfYgRBFs+C8QFiyH5Fq99T/5Nv48npTmsIoKMI35/DGX9R8byCgSPnoNhLJa8p29dhemHgxR2HQ6nv1Bz8lAG9yZ1/+1kSX/60l9Z9GAidpsuby2cfX
+X-HE-Tag: 1758100696-599186
+X-HE-Meta: U2FsdGVkX19D3cXmj74SIp5rwjFHnURfVjCOFAbGwdWrDjTSwGZXkIexxIBlNREJHIufmA6g9MoaHxyeaplTQSxCkLpoiLDEnI3pBaY3HzXwdTUUPO9OTH3PqWlDv/mv9itCjDKiZac/LUiz50bZzkUqINqoi3K0OWDfgrdfGNOL2gs0RaDS469TZYHc6pXPTBKG8tew3w+q8KYRvlQu8fJetHsEd7DnhnKHgSBs0FyUe0+thU9PY4cvS2ipokG4zsCWmviqLMrg1aIXVadkKozV1nWN1S8Z4P9sVxwFM5ALdXnPLfl0jZ4+IMu4JF6WQeE7AyfY2gtvA2iP3TE+i+kXbQPboFtISm0XykXSupfxzTwmWykUOEJk1k2i/BfJnU/auvjjrMYo2wMCwx5C7TYLwgM7rkKyus+1iEFvlIVtnU49o0ZLWzn5iAOJEoUPUxzqdrDA9IbSNM9midXtXc0locMG9n6o1XyB5iES9VRMzfyqG99QfknLGQ8pq6eeeEd7WWShup8Mg6WH2g0lU8c441J001U+ztuyN7hmVCF80mYE2Rhbs7QiADC53O0JZkmeUzn7AvcVyW6z4DRGZuKlc23oCjFNZt21YbHrTqx2KX7SnHlEnCdwukP/GvWRpcgrA+2wnYzem/Ed0dW/YHJb1ZqrV4EEhNokDbpxoxW/tvalpzTBHj3yIveM6wlwQMi8Z4xMdqI1HrZdCW4YH2SEQMTxm1sWths8as73WcNMrw+QxhlhbxmJglNd5QrT+PLCvoOXn4MdHrifNFGd+tu8YgOcQHNzwEHuarFrIRjwARYY7Jk4FtmEVSlCnJzEDj6vE2jWFH/3v8qHiCc2GM7s4JOAayUsKuq3gfSo+9RuPY1XRfYA4NwcPaekQajiLIvaza9Fg/6vZfi01YQwPtLLmjNkVePFik8v6Eg8f+Nab0ndM+JJArFndbTZ8YV8XsAK4kQjrxzu+RCvyi5
+ eYJzyMc3
+ 9Es4Nayu+L7tv2gDNP4S5oFXw+vWmn+YG8zMx/NvJLHe0o+f1pZLw7fk/xtijWGdPLHEXMiR8Vp5zM3W8zDpJMM2urBG1EzSOyabEFakv3fL7zlZsBp1ZGAH0T2JnQAw0iF/D7LVgiBm+KMXyQmIkYF4xB/GVJKnfAVUtbbUEktuk3ciHtuviuKST38wyYmpkjO0egmiw5HjoGTDGxEuMkCuG9VcnDovji5kA7ouuDbwnhZ4ejJUjxFQBf9Z0wwx6LhguVWusr3cbSRscQMJ/KZMGScIUU5JjQowhLm6UnTXzQ4SHlg7sy7HiZx2UKnbn3AqLouc39RumLvov0XUP5hEEM/JxtbJfH8LBzXSH/ZPUH8LszcUgaTXQLa5D97JYyJSa
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,109 +180,159 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 17, 2025 at 10:38=E2=80=AFAM Max Kellermann
-<max.kellermann@ionos.com> wrote:
->
-> On Wed, Sep 17, 2025 at 10:23=E2=80=AFAM Mateusz Guzik <mjguzik@gmail.com=
-> wrote:
-> > One of the ways to stall inode teardown is to have writeback running. I=
-t
-> > does not need a reference because inode_wait_for_writeback() explicitly
-> > waits for it like in the very deadlock you encountered.
->
-> Ah, right. No UAF. But I wonder if that's the best way to do it - why
-> not let writeback hold its own reference, and eliminate
-> inode_wait_for_writeback()? (and its latency)
->
+On 9/17/25 10:03, Vlastimil Babka wrote:
+> On 9/17/25 07:01, kernel test robot wrote:
+>> 
+>> 
+>> Hello,
+>> 
+>> kernel test robot noticed "BUG:kernel_NULL_pointer_dereference,address" on:
+>> 
+>> commit: db93cdd664fa02de9be883dd29343b21d8fc790f ("slab: Introduce kmalloc_nolock() and kfree_nolock().")
+>> https://git.kernel.org/cgit/linux/kernel/git/next/linux-next.git master
+>> 
+>> in testcase: boot
+>> 
+>> config: i386-randconfig-062-20250913
+>> compiler: clang-20
+>> test machine: qemu-system-x86_64 -enable-kvm -cpu SandyBridge -smp 2 -m 16G
+>> 
+>> (please refer to attached dmesg/kmsg for entire log/backtrace)
 
-There happens to be a temporarily inactive discussion related to it, see:
-https://lore.kernel.org/linux-fsdevel/cover.1756222464.git.josef@toxicpanda=
-.com/
+Managed to reproduce locally and my suggested fix works so I'm going to fold
+it unless there's objections or better suggestions.
 
-but also the followup:
-https://lore.kernel.org/linux-fsdevel/eeu47pjcaxkfol2o2bltigfjvrz6eecdjwtil=
-nmnprqh7dhdn7@rqi35ya5ilmv/
+Also I was curious to find out which path is triggered so I've put a
+dump_stack() before the kmalloc_nolock call:
 
-The patchset posted there retains inode_wait_for_writeback().
+[    0.731812][    T0] Call Trace:
+[    0.732406][    T0]  __dump_stack+0x18/0x30
+[    0.733200][    T0]  dump_stack_lvl+0x32/0x90
+[    0.734037][    T0]  dump_stack+0xd/0x20
+[    0.734780][    T0]  alloc_slab_obj_exts+0x181/0x1f0
+[    0.735862][    T0]  __alloc_tagging_slab_alloc_hook+0xd1/0x330
+[    0.736988][    T0]  ? __slab_alloc+0x4e/0x70
+[    0.737858][    T0]  ? __set_page_owner+0x167/0x280
+[    0.738774][    T0]  __kmalloc_cache_noprof+0x379/0x460
+[    0.739756][    T0]  ? depot_fetch_stack+0x164/0x180
+[    0.740687][    T0]  ? __set_page_owner+0x167/0x280
+[    0.741604][    T0]  __set_page_owner+0x167/0x280
+[    0.742503][    T0]  post_alloc_hook+0x17a/0x200
+[    0.743404][    T0]  get_page_from_freelist+0x13b3/0x16b0
+[    0.744427][    T0]  ? kvm_sched_clock_read+0xd/0x20
+[    0.745358][    T0]  ? kvm_sched_clock_read+0xd/0x20
+[    0.746290][    T0]  ? __next_zones_zonelist+0x26/0x60
+[    0.747265][    T0]  __alloc_frozen_pages_noprof+0x143/0x1080
+[    0.748358][    T0]  ? lock_acquire+0x8b/0x180
+[    0.749209][    T0]  ? pcpu_alloc_noprof+0x181/0x800
+[    0.750198][    T0]  ? sched_clock_noinstr+0x8/0x10
+[    0.751119][    T0]  ? local_clock_noinstr+0x137/0x140
+[    0.752089][    T0]  ? kvm_sched_clock_read+0xd/0x20
+[    0.753023][    T0]  alloc_slab_page+0xda/0x150
+[    0.753879][    T0]  new_slab+0xe1/0x500
+[    0.754615][    T0]  ? kvm_sched_clock_read+0xd/0x20
+[    0.755577][    T0]  ___slab_alloc+0xd79/0x1680
+[    0.756469][    T0]  ? pcpu_alloc_noprof+0x538/0x800
+[    0.757408][    T0]  ? __mutex_unlock_slowpath+0x195/0x3e0
+[    0.758446][    T0]  __slab_alloc+0x4e/0x70
+[    0.759237][    T0]  ? mm_alloc+0x38/0x80
+[    0.759993][    T0]  kmem_cache_alloc_noprof+0x1db/0x470
+[    0.760993][    T0]  ? mm_alloc+0x38/0x80
+[    0.761745][    T0]  ? mm_alloc+0x38/0x80
+[    0.762506][    T0]  mm_alloc+0x38/0x80
+[    0.763260][    T0]  poking_init+0xe/0x80
+[    0.764032][    T0]  start_kernel+0x16b/0x470
+[    0.764858][    T0]  i386_start_kernel+0xce/0xf0
+[    0.765723][    T0]  startup_32_smp+0x151/0x160
 
-Suppose you are to get rid of it. In that case you have a corner case
-where the writeback thread has to issue ->evict_inode() for arbitrary
-filesystems, and that's quite a change and I'm not at all convinced
-that's safe.
+And the reason is we still have restricted gfp_allowed_mask at this point:
+/* The GFP flags allowed during early boot */
+#define GFP_BOOT_MASK (__GFP_BITS_MASK & ~(__GFP_RECLAIM|__GFP_IO|__GFP_FS))
 
-> > However, assuming that's not avoidable, iput_async() or whatever could
-> > be added to sort this out in a similar way fput() is.
-> >
-> > As a temporary bandaid iput() itself could check if I_SYNC is set and i=
-f
-> > so roll with the iput_async() option.
-> >
-> > I can cook something up later.
->
-> My idea was something like iput_safe() and that function would defer
-> the actual iput() call if the reference counter is 1 (i.e. the caller
-> is holding the last reference).
->
+It's only lifted to a full allowed mask later in the boot.
 
-That's the same as my proposal.
+That means due to "kmalloc_nolock() is not supported on architectures that
+don't implement cmpxchg16b" such architectures will no longer get objexts
+allocated in early boot. I guess that's not a big deal.
 
-> Almost all iput() calls are fine because they just do an atomic
-> decrement, but all kinds of scary stuff can happen if the last
-> reference is released. Callers that are not confident that this is
-> safe shall then use my new iput_safe() instead of iput().
->
+Also any later allocation having its flags screwed for some reason to not
+have __GFP_RECLAIM will also lose its objexts. Hope that's also acceptable.
+I don't know if we can distinguish a real kmalloc_nolock() scope in
+alloc_slab_obj_exts() without inventing new gfp flags or passing an extra
+argument through several layers of functions.
 
-Note  that vast majority of real-world calls to iput already come with
-a count of 1, but it may be this is not true for ceph.
+>> 
+>> 
+>> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+>> the same patch/commit), kindly add following tags
+>> | Reported-by: kernel test robot <oliver.sang@intel.com>
+>> | Closes: https://lore.kernel.org/oe-lkp/202509171214.912d5ac-lkp@intel.com
+>> 
+>> 
+>> [    7.101117][    T0] BUG: kernel NULL pointer dereference, address: 00000010
+>> [    7.102290][    T0] #PF: supervisor read access in kernel mode
+>> [    7.103219][    T0] #PF: error_code(0x0000) - not-present page
+>> [    7.104161][    T0] *pde = 00000000
+>> [    7.104762][    T0] Thread overran stack, or stack corrupted
+> 
+> Note this.
+> 
+>> [    7.105726][    T0] Oops: Oops: 0000 [#1]
+>> [    7.106410][    T0] CPU: 0 UID: 0 PID: 0 Comm: swapper Tainted: G                T   6.17.0-rc3-00014-gdb93cdd664fa #1 NONE  40eff3b43e4f0000b061f2e660abd0b2911f31b1
+>> [    7.108712][    T0] Tainted: [T]=RANDSTRUCT
+>> [    7.109368][    T0] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+>> [ 7.110952][ T0] EIP: kmalloc_nolock_noprof (mm/slub.c:5607) 
+> 
+> That's here.
+> if (!(s->flags & __CMPXCHG_DOUBLE) && !kmem_cache_debug(s))
+> 
+> dmesg already contains line "SLUB: HWalign=64, Order=0-3, MinObjects=0,
+> CPUs=1, Nodes=1" so all kmem caches are fully initialized, so doesn't look
+> like a bootstrap issue. Probably it's due to the stack overflow and not
+> actual bug on this line.
+> 
+> Because of that it's also unable to print the backtrace. But the only
+> kmallock_nolock usage for now is in slub itself, alloc_slab_obj_exts():
+> 
+>         /* Prevent recursive extension vector allocation */
+>         gfp |= __GFP_NO_OBJ_EXT;
+>         if (unlikely(!allow_spin)) {
+>                 size_t sz = objects * sizeof(struct slabobj_ext);
+> 
+>                 vec = kmalloc_nolock(sz, __GFP_ZERO, slab_nid(slab));
+>         } else {
+>                 vec = kcalloc_node(objects, sizeof(struct slabobj_ext), gfp,
+>                                    slab_nid(slab));
+>         }
+> 
+> Prevent recursive... hm? And we had stack overflow?
+> Also .config has CONFIG_MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT=y
+> 
+> So, this?
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 837ee037abb5..c4f17ac6e4b6 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -2092,7 +2092,8 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
+>  	if (unlikely(!allow_spin)) {
+>  		size_t sz = objects * sizeof(struct slabobj_ext);
+>  
+> -		vec = kmalloc_nolock(sz, __GFP_ZERO, slab_nid(slab));
+> +		vec = kmalloc_nolock(sz, __GFP_ZERO | __GFP_NO_OBJ_EXT,
+> +				     slab_nid(slab));
+>  	} else {
+>  		vec = kcalloc_node(objects, sizeof(struct slabobj_ext), gfp,
+>  				   slab_nid(slab));
+> @@ -5591,7 +5592,8 @@ void *kmalloc_nolock_noprof(size_t size, gfp_t gfp_flags, int node)
+>  	bool can_retry = true;
+>  	void *ret = ERR_PTR(-EBUSY);
+>  
+> -	VM_WARN_ON_ONCE(gfp_flags & ~(__GFP_ACCOUNT | __GFP_ZERO));
+> +	VM_WARN_ON_ONCE(gfp_flags & ~(__GFP_ACCOUNT | __GFP_ZERO |
+> +				      __GFP_NO_OBJ_EXT));
+>  
+>  	if (unlikely(!size))
+>  		return ZERO_SIZE_PTR;
+> 
 
-> I can write such a patch, but I wanted you experts to first confirm
-> that this is a good idea that would be acceptable for merging (or
-> maybe Ceph is just weird and there's a simpler way to avoid this).
->
-
-So the problem here is where to put linkage for the delegated work.
-
-Another issue is that as is nobody knows who set I_SYNC and that
-probably should change on kernel with CONFIG_DEBUG_VFS. As luck would
-have it I posted a related patchset here:
-https://lore.kernel.org/linux-fsdevel/20250916135900.2170346-1-mjguzik@gmai=
-l.com/T/#t
-
-with that in place and debug enabled we can panic early on the first
-iput so you don't have to wait to trigger the problem
-
-I suspect the best short-term fix is to implement ceph-private async
-iput with linkage coming from struct ceph_inode_info or whatever other
-struct applicable.
-
-You can use __fput_deferred() as a reference (put intended). Note this
-one assumes the obj is already unrefed, but for iput_async it would be
-best to also postpone it to that routine.
-
-A sketch, incomplete:
-static DECLARE_DELAYED_WORK(delayed_ceph_iput_work, delayed_ceph_iput);
-
-static void __ceph_iput_async(struct callback_head *work)
-{
-        struct ceph_inode_info *ci =3D container_of(work, struct
-ceph_inode_info, async_task_work);
-        iput(&ci->netfs.inode);
-}
-
-void ceph_iput_async(struct ceph_inode_info *ci)
-{
-        struct inode *inode =3D &ci->netfs.inode;
-
-        if (atomic_add_unless(&inode->i_count, -1, 1))
-                return;
-
-        if (likely(!in_interrupt() && !(task->flags & PF_KTHREAD))) {
-                init_task_work(&ci->async_task_work, __ceph_iput_async);
-                if (!task_work_add(task, &ci->async_task_work, TWA_RESUME))
-                        return;
-        }
-
-        if (llist_add(&ci->async_llist, &delayed_ceph_iput_list))
-                schedule_delayed_work(&delayed_ceph_iput_work, 1);
-}
 
