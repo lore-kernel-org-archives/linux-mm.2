@@ -4,137 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 151BBCAC59A
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 21:39:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C12FCAC59A
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 21:42:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 72D328E0080; Wed, 17 Sep 2025 17:39:47 -0400 (EDT)
+	id 537898E0081; Wed, 17 Sep 2025 17:42:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 705028E006B; Wed, 17 Sep 2025 17:39:47 -0400 (EDT)
+	id 4E85A8E006B; Wed, 17 Sep 2025 17:42:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 61AFA8E0080; Wed, 17 Sep 2025 17:39:47 -0400 (EDT)
+	id 425068E0081; Wed, 17 Sep 2025 17:42:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 518128E006B
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 17:39:47 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 24C8111A58A
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 21:39:47 +0000 (UTC)
-X-FDA: 83900059614.20.BFBCEF9
-Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 1EFA4120004
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 21:39:41 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=hpe.com header.s=pps0720 header.b=TS+ImPEM;
-	spf=pass (imf29.hostedemail.com: domain of kyle.meyer@hpe.com designates 148.163.147.86 as permitted sender) smtp.mailfrom=kyle.meyer@hpe.com;
-	dmarc=pass (policy=reject) header.from=hpe.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 322188E006B
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 17:42:34 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CCFB4C058D
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 21:42:33 +0000 (UTC)
+X-FDA: 83900066586.13.EAF110B
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 13238140005
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 21:42:31 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=fujaylDM;
+	spf=none (imf23.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758145185;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1758145352;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e7aywbVgoWACndDeOW0D7B3YoIkDJpnENYBe2GyDpVE=;
-	b=AbfLQ6LL5L79wFJ2+NGI6S3fGgbUDiRlKjWPriDwDH2ndZyEYVbIJUFxwWOXHjZThOA4i3
-	v8OjaknzQPpBXnrxW7Iatc6N8oQPQVNiDktcXVSuhaLt1utMPM5eGwzkAIM2dFupgi+p4g
-	ereopwCffk4dYIjeZ1Cd0trEFYSA1Ck=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=hpe.com header.s=pps0720 header.b=TS+ImPEM;
-	spf=pass (imf29.hostedemail.com: domain of kyle.meyer@hpe.com designates 148.163.147.86 as permitted sender) smtp.mailfrom=kyle.meyer@hpe.com;
-	dmarc=pass (policy=reject) header.from=hpe.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758145185; a=rsa-sha256;
+	bh=WiA4cNkcVugPJeaGJ538psZmIXMv7YQioKZQ8gTrQT0=;
+	b=TnTaMVD9ZCQvx2RrCvocq2XyB5T7RVVd1+lZckMQWLDsoXG/g8qbe8uI2ty3HT4lu4TCtB
+	YZ2o7KpLrFTF8p0CazGM8WXX0YELNzSTviWFh1ijjw4t4NBPFEWEU+WIAAAFp84dmnkHAs
+	TgkgKQ3nbMIAFazTJepbMpNfqoEsroA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758145352; a=rsa-sha256;
 	cv=none;
-	b=5RDkfpLdscm5ZVVFs1QBD5C4dcqyE/Sov9VQY4d6JW/60j2RT8aq/wQcQXIPWKAlvEI4Oz
-	5w5OlNDRKwfYjiT51HvTqNpKhTqPEh81MSolsKXQCsgX0GC9Ewlc/48Ow9hz8JbFtEGNo0
-	JCU9F52amlBJSYAVMYel0ziY7LTaOD8=
-Received: from pps.filterd (m0150242.ppops.net [127.0.0.1])
-	by mx0a-002e3701.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58HLbTx2031830;
-	Wed, 17 Sep 2025 21:39:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pps0720; bh=e7aywbVgoWACndDeOW0D7B3YoI
-	kDJpnENYBe2GyDpVE=; b=TS+ImPEM9BnHP3pjsIAzoxU99Ze3vLHdShH8ASvMm8
-	FwykYSUvQfUo4b69MoVprjuxbc5xtMnnAggTGlywAy1mRBGpw1hiiy7Pdr+GrtDh
-	mVYloPY8I5cBTrKCxWuGN+hgiJNRayFGiJhC6DOIrhD9QzHvcAz8UjP2qOgKlZpN
-	SQIXDNidMKF9KrtOobcTEPKv8CJ666Eftw+csaSfkhgIOAa4ufr1Oh0YrHveLsvH
-	8RGhGG/OZlOd/qUqz7jZA4r0pLWR3Z1j6G/VprUKBmshuhN32+XIhIu6dVqt/kHB
-	EFsgAN9OvseDuBWr5X/BdwI48sHnuTfa9mXjPp7wosEw==
-Received: from p1lg14878.it.hpe.com (p1lg14878.it.hpe.com [16.230.97.204])
-	by mx0a-002e3701.pphosted.com (PPS) with ESMTPS id 497y4f2xjm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 17 Sep 2025 21:39:12 +0000 (GMT)
-Received: from p1lg14886.dc01.its.hpecorp.net (unknown [10.119.18.237])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by p1lg14878.it.hpe.com (Postfix) with ESMTPS id 0A89D130D6;
-	Wed, 17 Sep 2025 21:39:11 +0000 (UTC)
-Received: from HPE-5CG20646DK.localdomain (unknown [16.231.227.36])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by p1lg14886.dc01.its.hpecorp.net (Postfix) with ESMTPS id 1A621804CDB;
-	Wed, 17 Sep 2025 21:39:08 +0000 (UTC)
-Date: Wed, 17 Sep 2025 16:39:01 -0500
-From: Kyle Meyer <kyle.meyer@hpe.com>
-To: "Luck, Tony" <tony.luck@intel.com>
-Cc: Jiaqi Yan <jiaqiyan@google.com>, David Hildenbrand <david@redhat.com>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        akpm@linux-foundation.org, corbet@lwn.net, linmiaohe@huawei.com,
-        shuah@kernel.org, jane.chu@oracle.com, Liam.Howlett@oracle.com,
-        bp@alien8.de, hannes@cmpxchg.org, jack@suse.cz,
-        joel.granados@kernel.org, laoar.shao@gmail.com,
-        lorenzo.stoakes@oracle.com, mclapinski@google.com, mhocko@suse.com,
-        nao.horiguchi@gmail.com, osalvador@suse.de, rafael.j.wysocki@intel.com,
-        rppt@kernel.org, russ.anderson@hpe.com, shawn.fan@intel.com,
-        surenb@google.com, vbabka@suse.cz, linux-acpi@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2] mm/memory-failure: Support disabling soft offline for
- HugeTLB pages
-Message-ID: <aMsqdesM1ImJp1yt@hpe.com>
-References: <aMiu_Uku6Y5ZbuhM@hpe.com>
- <a99eb11f-a7ac-48a3-a671-c5f0f6b5b491@arm.com>
- <8c3188da-7078-4099-973a-1d0d74db2720@redhat.com>
- <aMsDJ3EU1zVJ00cX@hpe.com>
- <cd71fac2-bb9d-4e84-a074-2b695654e655@redhat.com>
- <CACw3F52p45t3iSZPjx_Lq9kBn1ZGTDZsxk+iQ-xFA1zdvdqqrw@mail.gmail.com>
- <aMsR4Tr9ov1pfucC@agluck-desk3>
+	b=iaSRvjBNPRiUYSM/WSDb8Cs+YgSokIvCLYvG2wB4o/kt1bJ7nVRJibsqNHMSD2B99VMn2J
+	Eu2qMa4dUtodwic9winl+1IMMMSIEi8GHyPHbdMj4srNRIIrFUWIZDFQQeYRhXYWj1P3m4
+	jtIjpHoZLoPWFiDIL90ONqxNdQ3Ue6Q=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=fujaylDM;
+	spf=none (imf23.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=WiA4cNkcVugPJeaGJ538psZmIXMv7YQioKZQ8gTrQT0=; b=fujaylDMlrRZuozd8WGkA8xUs5
+	obML/9dTfJzLt9IZahq8QmdwdaWWQl5tfmd7fCVNCSfVy5C+HY9i7X1NO56ExQdhDkdK6Xv39xACN
+	ZXDE1aty3ryZ1rZuFk5n5/XRYy4/lbHFbwQq3N441qXXfLWfAx6dC6AlsLxy6QiyUwOv0yZVUINox
+	wTbtmE7SJIqu6x/IaMZWGZmSmeLbEQ1XaJu3/x9UIizNdsxmz2vq1WPywbEJeCJTI4+UjF2g37jtX
+	UqsMcs8q0e9m7Q0HBxKxXE98e785EEp7vA1+aJxDokL3q9vjL/Zd88/Y0oXJRQzIy+gxiFcKc9cLB
+	2jFsJGEw==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uyzv3-000000098eu-2Sc6;
+	Wed, 17 Sep 2025 21:42:29 +0000
+Date: Wed, 17 Sep 2025 22:42:29 +0100
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Max Kellermann <max.kellermann@ionos.com>,
+	linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	ceph-devel@vger.kernel.org
+Subject: Re: Need advice with iput() deadlock during writeback
+Message-ID: <20250917214229.GF39973@ZenIV>
+References: <CAKPOu+-QRTC_j15=Cc4YeU3TAcpQCrFWmBZcNxfnw1LndVzASg@mail.gmail.com>
+ <4z3imll6zbzwqcyfl225xn3rc4mev6ppjnx5itmvznj2yormug@utk6twdablj3>
+ <CAKPOu+--m8eppmF5+fofG=AKAMu5K_meF44UH4XiL8V3_X_rJg@mail.gmail.com>
+ <CAGudoHEqNYWMqDiogc9Q_s9QMQHB6Rm_1dUzcC7B0GFBrqS=1g@mail.gmail.com>
+ <20250917201408.GX39973@ZenIV>
+ <CAGudoHFEE4nS_cWuc3xjmP=OaQSXMCg0eBrKCBHc3tf104er3A@mail.gmail.com>
+ <20250917203435.GA39973@ZenIV>
+ <CAGudoHGDW9yiROidHio8Ow-yZb8uY7wMBjx94fJ7zTkL+rVAFg@mail.gmail.com>
+ <20250917210241.GD39973@ZenIV>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aMsR4Tr9ov1pfucC@agluck-desk3>
-X-Authority-Analysis: v=2.4 cv=FoUF/3rq c=1 sm=1 tr=0 ts=68cb2a80 cx=c_pps
- a=UObrlqRbTUrrdMEdGJ+KZA==:117 a=UObrlqRbTUrrdMEdGJ+KZA==:17
- a=kj9zAlcOel0A:10 a=yJojWOMRYYMA:10 a=-yUDYzNKurD68FfYE3YA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-GUID: -t5EYyscZvkXoKgU1Fr4v8bU1oBCB3c2
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE3MDE0NCBTYWx0ZWRfX3tXC0LyiZmGA
- EQSbxobfpqBJ2/TPQVKW8un6ill+kJamYAOG2TNuIPQIDu6vQ4oz/swV8qQUbtXFdefRyu3kzD0
- 0/RqovEVpnKbXv7WT+CSeihWkbOyM3Q26jnL2O0SNy9YpUBnXaDgXQP3fN1ANJRH6/e143PFK+T
- GnGm++4JBCUndCS1f4ekeoy7NuWS7nDFC+12d3b1Poz5lIJYQcxeEnzQtQGg9MTISmoyl3T+5ak
- 2uf60DEbMDNIuFuFx7GIuUHLszdqS7NMXf0Xd/ndH6KyLRmnmoqXKGPbmep0T4d23Pt9VhCo7Xp
- 4/orMAto6QC504pcbM8XW0vX4ybFk+kvdP1UNm7YC3ZKDuFlT8pguL5yvNbe34N6rR5o8EArpd9
- 0RfUBX9b
-X-Proofpoint-ORIG-GUID: -t5EYyscZvkXoKgU1Fr4v8bU1oBCB3c2
-X-HPE-SCL: -1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-17_01,2025-09-17_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 suspectscore=0 impostorscore=0 adultscore=0 bulkscore=0
- malwarescore=0 spamscore=0 priorityscore=1501 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509170144
-X-Stat-Signature: noey5qq9exf3myfw8pa86ugp1tzdityo
+In-Reply-To: <20250917210241.GD39973@ZenIV>
+X-Rspamd-Queue-Id: 13238140005
+X-Stat-Signature: kc3jny4nq8rch7b3tbruteqenwwxrgu8
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1EFA4120004
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1758145181-145626
-X-HE-Meta: U2FsdGVkX19upfZ7JX5r/1S+/Cj6z0YSHMoE7IiYn8nx3U9W+7bbvHPaWfaP40c/llfFjI4oJDXrTZhioo3PJooult9MRd7YVbWV3xDBCI7mtuSk8w5lWGlLXGBagHx5Kom8uXmtdHvBH7G8nw93KhbZeGvXkP7fPIJvxo47O5FFWwWaVvEhVVu4KOwZ/znKvgS/M/QMx2WN4CvnYGq3hgzswLhdOHPKtCP79m58tmPD7Y/7gOiDd0ptyleaq/1A5zizM1vLt5qlmLt3zJmHKQ5yhGWU/fuOikUHZAzf5k1QBL7iY/oOPhOCGU5BS80H9sbPFXrdDhaPYXfPwrZHzcKibm3Udebqru1AevHMSo3vJyyN4ztS5G8zyvsvpjwjoOLp4ocSs9H4/I2lbBT6IsEJ2ZD4G3y2/cXRrBgPylqwPstnk4Qybcv7fEveWmnOyO+1zID/UWlM8MCrCQ9aDtCooQUPWNh6rshPABTWx6fAXc3eoPxoxs4lPpbVAR76Fksrde1SfyFfdXDdmf/O06BA1imT7dgTmRIDIPy2amudhglzkEouL5GTWcS0f0rg3xI0h7RhGzPQEFTvXa2OaxiysM736S8U+7u+ry813TEFOSkDDtX9ow0nNQ2Vylg2d51opnqL9In3ID/VEFtSDWYgYRb2/u3UoaCs6Rg/ysYK6DRNn3Y3bg/wuUmjAqWs2X5PTq1WILRt5+94illmT/fEKmHQV9g0CuqbD9bmsGU4mTi5EjXkQTS/UZJkSY0reBjIQdS8N8nZWdiLFTR3HC+/+GhC4UwzXju8o7O3O90pNltEq+hQGxxNJ1K58JfbEOG+bbHEPPgV123s/fuTc5E9nIvAtpwUp/sfO5E7aTOKe42A7RazfiLXYEOMwk7245eBptHUIvvrkBIdalyjfNVZl7SX6MLMUVuzJKlmV8kFn+auPZb/zhtOEhqLAhMCkyOXMQ4AgZ8iKTCSUzo
- Ur06mTUr
- jaxUQsgkjbyJ0AvE2sGgOh5KellF0f74ePjopW/F85FBs/08sU5I4xeZ0CmWupq6xYrC8CoKKs2RmqEEW1CK2CbAqc3iIkGneNqWMC5KbUanGV+x7Db8Q1QP+KYD/CbPF1Q9URcAG4StAH3AZL+ZuzA5wTA2RjGTwHJeuGqRg/3tIe9P4qMhjFsZawslgnlzOO0rfLhZW4HBuIp56U96HVSK1wPT30qqPMnjwDBH6U0hHbZqH5FfDdhNwIahJaiG5FfXL6qcTCiWmiwG10/X1ie6orgtqstSd98bCC5dkHeE7JQ1ZhbgYdKKhCQ==
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1758145351-485124
+X-HE-Meta: U2FsdGVkX19sQvPNzQxKytjtucAf742P0TyKb7ysY5Hp7nxVUfQ9yhhGbV9lRpqtKR6IU55Cc7rrQo19hN7lKjjGRMP4g6xPd3IT80FHwe5CBfarSCFhmkTVprHR+hvkcUshlWKVUD+lAPsC7F3QzJbizf4H1k2uw7kKRihQ+zYZ9c3usNgyT510PXB3V6SXLoznKPVXzaG44ldyYxpDqiE3uqbc8Cjo+BnqzYrhU5sPR5UZg/9FjuJyoTsnZ16LfShruKUV4S8MyO2NBJ4pR5R80YhuC16qCiGwP5eJo26V4hERm/BhLFlDYY0TyIXdSvEPi5GosaHNt8rCN+mu69lW9jOMZkC+Kte1Her4tj1tdtCGqFREq2xqjZpXwV2yKGVyn9olQzreznxX8tm6/ofDjTM88l8hue4Q8jjtGsm3bEdaYg6yLvxeiEoS+9IjlS38S8U50jEveQoNwCAb2EHQJcwh65iYuztQZB7WlX3ocxx3UqFAffTz4mzKcXiL8OZvbRTK5XJm3xlaZSN1f54xNhz/6I8fdlCxmURtGziRT7KP3msWF5LImtFSzR67fle3FU1JpATqfEHIEPzo9Gvkq1llddaDRmGZqBeyU0cOowDiLy1aYE0cOrvDVZ2DTtaik6mLFzUa6/PZFqH+3TCYPeaOFfW+e4tvGW3bUcFmN27tZMLvd6KgbC27CUG9nJC7UqDPVslmzYnSl0AoDeKTdapzkU8TxVhEC6IwzikA+nqUqg9uJfyM2jfvCuOggjR/g0NDirJ18HaNIst6M9Qd7bdji3iirJqAhvmuYHqGjCc+Sn+SJR+7NKLldq+1O2sh5HlIMjo/6+RpKKE6wKpwBDVnjW8uVmYi5chDBbE9LKyZJA3YyoNKEmTLdccRln1IfyTK6bQR6p7Q8w7l8hvNnGKuLtNWl3V64aORFIMna0jilo1b4IDvOeoYbyZHRKhHtHXOHpJuzULhF5R
+ 7K93+fzO
+ 9IMsQgDwgktCQQ6bnmIoK1kZES2B69nxJOBUBOiCcUJNeBKTT2I5dHILC4Ohh43V9AxcYUrniIraL5dB1E8cdw5g+LCwrowQLPDm1zWgXzNWIUpc3SRAfoNHgdvxaZM+kbL+22MEDx7alFCZSreV4d7Q3OBUx8c/QAAOBLE8R8hDpDfBmSma4C8ljss3q4AenycLOYAWcAKbTGtZwxp0YDton2IgvzNA83CPhn1ztexk/nAR9nGx5V2dpFvmCOgSxETcgA0WPe2nb8uvg3h97pTYineZN8ZQ/Lvxi0Q934VmwRjef/cYXqqR3sHYRdI2CfzOeog1xo3Gs4GIWg5zcDxpbnA1a5dx2a5OmCSqpR+438UxlwYmnd63lpFVZjnpO+GY0RvPBQ1/uZxusF22h1ke9cSP+J7Krbp6awLDfMkQ8cXdRsz7wwGsp3g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,30 +99,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 17, 2025 at 12:54:09PM -0700, Luck, Tony wrote:
-> On Wed, Sep 17, 2025 at 12:32:47PM -0700, Jiaqi Yan wrote:
-> > +1. Given /proc/sys/vm/enable_soft_offline is extensible, I would
-> > prefer a compact userspace API.
-> > 
-> > > would create a new file, and the file has weird semantics such that it
-> > > has no meaning when enable_soft_offline=0.
+On Wed, Sep 17, 2025 at 10:02:41PM +0100, Al Viro wrote:
+> On Wed, Sep 17, 2025 at 10:39:22PM +0200, Mateusz Guzik wrote:
 > 
-> So the expand the bitmask idea from earlier in this thread?
+> > Linux has to have something of the sort for dentries, otherwise the
+> > current fput stuff would not be safe. I find it surprising to learn
+> > inodes are treated differently.
 > 
-> Bit0	0 = soft offline disabled. 1 = Enabled (but see other bits)
-> Bit1	0 = allow offline of 4K pages, 1 = suppress 4K offline
-> Bit2	0 = allow offline of hugetlb, 1 = suppress hugetlb offline
-> Bit3	0 = allow breakup of transparent huge pages to just offline 4K, 1 = suppress transparent breakup
-> Bit4+	Reserved for suppressing other page types we invent in the future
+> If you are looking at vnode counterparts, dentries are closer to that.
+> Inodes are secondary.
 > 
-> Values 0 and 1 keep their original meaning.
+> And no, it's not a "wait for references to go away" - every file holds
+> a _pair_ of references, one to mount and another to dentry.
 > 
-> Value 5 means: offline 4K, keep hugetlb, breakup transparent huge pages.
+> Additional references to mount => umount() gets -EBUSY, lazy umount()
+> (with MNT_DETACH) gets the sucker removed from the mount tree, with
+> shutdown deferred (at least) until the last reference to mount goes away.
+> 
+> Once the mount refcount hits zero and the damn thing gets taken apart,
+> an active reference to superblock (i.e. to filesystem instance) is
+> dropped.
+> 
+> If that was not the last one (e.g. it's mounted elsewhere as well), we
+> are not waiting for anything.  If it *was* the last active ref, we
+> shut the filesystem instance down; that's _it_ - once you are into
+> ->kill_sb(), it's all over.
+> 
+> Linux VFS is seriously different from Heidemann's-derived ones you'll find in
+> BSD land these days.  Different taxonomy of objects, among other things...
 
-Do you happen to have any use cases or reasoning for why someone might want
-to disable soft offline for 4K pages or transparent huge pages? I'd like to
-understand the motivation for adding the extra bits.
+FWIW, the basic overview of objects:
 
-Thanks,
-Kyle Meyer
+super_block: filesystem instance.  Two refcounts (passive and active, having
+positive active refcount counts as one passive reference).  Shutdown when
+active refcount gets to zero; freeing of in-core struct super_block - when
+passive gets there.
+
+mount: a subtree of an active filesystem.  Most of them are in mount tree(s),
+but they might exist on their own - e.g. pipefs one, etc.  Has a refcount,
+bears an active reference to fs instance (super_block) *and* a reference to
+a dentry belonging to that instance - root of the (sub)tree visible in
+it.  Shutdown when refcount hits zero.  Being in mount tree contributes
+to refcount; that contribution goes away when it's detached from the tree
+(on umount, normally).  Refcount is responsible for -EBUSY from non-lazy
+umount; lazy one (umount -l, umount2(path, MNT_DETACH)) dissolves the entire
+subtree that used to be mounted at that point and shuts down everything
+that had refcounts reach zero, leaving the rest until their refcounts drop
+to zero too.  Shutdown drops the superblock and root dentry refs.
+
+inode & dentry: that's what vnodes map onto.  Dentry is the main object,
+inode is secondary.  Each belongs to a specific fs instance for the entire
+lifetime.  Dentries form a forest; inodes are attached to some of them.
+Details are a lot more involved than anything that would fit into a short
+overview.  Both are refcounted, attaching dentry to an inode contributes
+1 to inode's refcount.  Child dentry contributes 1 to refcount of parent.
+Shutdown does *not* happen until the dentry refcount hits zero; once it's
+zero, the normal policy is "keep it around if it's still hashed", but
+filesystem may say "no point keeping it".  Memory pressure => kill the
+ones with zero refcount (and if their parents had been pinned only by
+those children, take the parents out as well, etc.).  Filesystem shutdown =>
+kick out everything with zero refcount, complain if anything's left after
+that (shrink_dcache_for_umount() does it, so if filesystem kept anything
+pinned internally, it would better drop those before we get to that
+point).  evict_inodes() does the same to inodes.
+
+file: the usual; open IO channel, as on any Unix.  Carries a reference to
+dentry and to mount.  Shutdown happens when refcount goes to zero, normally
+delayed until return to userland, when we are on shallow stack and without
+any locks held.  Incidentally, sockets and pipes come with those as well -
+none of the "sockets don't have a vnode" headache.
+
+cwd (and process's root as well): a pair of mount and dentry references.
 
