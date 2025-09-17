@@ -4,102 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 404A0CA0EE8
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 08:07:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 374BBCA0EE8
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 08:18:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7A89E8E000E; Wed, 17 Sep 2025 04:07:26 -0400 (EDT)
+	id 80DA28E000B; Wed, 17 Sep 2025 04:18:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 759C18E0001; Wed, 17 Sep 2025 04:07:26 -0400 (EDT)
+	id 7E4EA8E0001; Wed, 17 Sep 2025 04:18:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 696138E000E; Wed, 17 Sep 2025 04:07:26 -0400 (EDT)
+	id 6D4058E000B; Wed, 17 Sep 2025 04:18:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 48F4A8E0001
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 04:07:26 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id EF12C13B080
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 08:07:25 +0000 (UTC)
-X-FDA: 83898012450.17.BAE5CB2
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	by imf22.hostedemail.com (Postfix) with ESMTP id CB468C0002
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 08:07:23 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=ionos.com header.s=google header.b=iIU3ESEP;
-	spf=pass (imf22.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
-	dmarc=pass (policy=reject) header.from=ionos.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 53F438E0001
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 04:18:54 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C85091DB16B
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 08:18:53 +0000 (UTC)
+X-FDA: 83898041346.25.0035F27
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 988DA140006
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 08:18:51 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=QKy9gYy1;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=QQ98NDyL;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=O9pfrPeR;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=TWhAn3zE;
+	spf=pass (imf26.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758096444;
+	s=arc-20220608; t=1758097131;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=DNRlI7ZexQlRn+KvWa3uWLIRDjuqm7xKDYy7L/4pZwc=;
-	b=KHjmoJ+OVQJh5LerEVPknwBKKKOeL51qfAd1v6NikinbbjHx9zUWZo1sHslKr55qXGtttB
-	9U3gR9z2sYUQ7NuvJpYeuXStKACK5gl6XYG1NZ6W1NYe7wGNYgZUr+P8EgbOY9rAkJ92/l
-	XAS2TWgzBPPRbN0ctAoQSfR7AuoGk58=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=0gIuU9BfAksM0VCnmAs6vvgKEo+iRNtzKZCzt55LcHE=;
+	b=deP4gDrJmcTRFeRnKhnKm2aO3Xb+lzbfNyqGBniehxseeh8Ldl6KLIo0sqMV4T1gOm9Btw
+	FLcycczzs7l+g0BTXGqOpvIpPPGOn339qXSWSYSm6momsYHx8pX2Hr7+xEoopfyLpck/BQ
+	m+zkS4+5WVXA2uoyLofAeNqaDLnoL04=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=ionos.com header.s=google header.b=iIU3ESEP;
-	spf=pass (imf22.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
-	dmarc=pass (policy=reject) header.from=ionos.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758096444; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=QKy9gYy1;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=QQ98NDyL;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=O9pfrPeR;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=TWhAn3zE;
+	spf=pass (imf26.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758097131; a=rsa-sha256;
 	cv=none;
-	b=Y1SQcDGjfGoufHVrghB+AtnXYSBXrcFI3mGya58e7VHMtuLcdFnujzPYNHHy+XDtMdXZLb
-	BW/ASuOHnwTMUxMVwQ+bhXYXGaUrJA5fZcGakTFac2e3H4coHL7ISJCorR+OwgQIz++0qE
-	LsE69SyAZo+iqo6JnQQdGXcT1b1QwwM=
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b07883a5feeso1094593066b.1
-        for <linux-mm@kvack.org>; Wed, 17 Sep 2025 01:07:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1758096442; x=1758701242; darn=kvack.org;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=DNRlI7ZexQlRn+KvWa3uWLIRDjuqm7xKDYy7L/4pZwc=;
-        b=iIU3ESEPlAW5wRSa3SLQybVx3cZSCki2jkNnvBZcDsxp52wIaUAo5M/K0J0WpTlkj4
-         FbizGo1xk7wZoWdtWqbKpc0fl0wNHi+fa6uGW4ZPqcPXOwYvC97uf+W6EwhNgV26idof
-         ikzN9/+VG/6SkuKSYLufggMWrC21Exa63FYlBx6LTzVG2793ukSwhX4FG8eFDYMcnwcb
-         rFJu/QS98XlAroBp/TnSzUOrXMiPGXux8iGL04dbvGxFiT+DFp0hTca881pehKdP6MVS
-         brhy3o2P9g/FVPK/ZaAIcPaI7Ce19dgmJaiB+ImtOJb+wKRjPoaPAyC+CilqOaiDImau
-         atpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758096442; x=1758701242;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=DNRlI7ZexQlRn+KvWa3uWLIRDjuqm7xKDYy7L/4pZwc=;
-        b=ty47s+vJ22jI6D5Qyl1AQapzjJKX/Z1+ohuwVeVTn6V0jx6Hb4nyrI1eDmDivIXik4
-         bDorRri5T7NmmULef3L+PBga75TVlB+58pDZp5iHmV60ps/6Y3wJHCl1kxrTHxuJ4Y6F
-         VlC5RB/AwAz4/r2S6zIH8ETOhsSed6a7BFVNNGCweTylpFTkDbiUCKsMkym3AQirQnHR
-         IGSjQbUBVeMPQgHIah0SnLkjHhCi80Kp8Sv12LtiKR5FVNNkBLlU2BJoI2q/oJ1nsY4E
-         b7paBEjsEWXN2Cm4EDr2Ef7mqCZRrKx1OLQzKZZJ8qo2T6u0ExRqYFJ2aqbCMAc5RX/A
-         5jKQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVXIAMYBSC+xq12mvXPHOh7oCQ8/Azjz3i1yN6p15sohS95oTrLbQ+XpNjEqSkqAPxVCSKfbw5Kzg==@kvack.org
-X-Gm-Message-State: AOJu0YwLzwMMqr2HS7IVGrQHpTgHDTgZXA3+CO1yBaUyRbl3fnuGGf1E
-	o2Eg/vdUcx5XnkmJ2IMuGleIdAgQT07ZuIlXu9nnG/PoBZUM9oSwSre6aF0+UfDDPz5jjoF/2tb
-	rIPmV37lWaXOOGhAPfXxApqvp8cQ1CaL+4u8b+AFzVg==
-X-Gm-Gg: ASbGnct/iIg9YDt+d2EKK4z6fItVLb7MwfZPU8HoKJIcPTg4XyCmErPOAvDcAp04Xml
-	q4rtxwfbapX45qwuyz9sIkjn7Iz+IO8X8cPDwfmkXDih2ovYnEp+7CUNTAamUG0GaiQoqLIleBQ
-	nfGiDNRhbGnOOh+Jt6iGcM6BzTUsEqzU6K4WkkpwvEs6XFXSMwcvmSNT+oyE0auMqpvAbsqSx0j
-	GVNmiKKdmPQZwpvBY6WfEzcUCEA9phek5Ey8G41xEkH2x9xeWXiHvI=
-X-Google-Smtp-Source: AGHT+IGvGeJqz6Q02mqcKbNieydN4sypFy+amTH/8OFJSTbb1lWyRw+kypV83RI9Z/BsTyTx51m2zUmiLCU85daA7Dw=
-X-Received: by 2002:a17:907:7b8c:b0:b04:48c5:352 with SMTP id
- a640c23a62f3a-b1bb5e56dc0mr141453966b.5.1758096442148; Wed, 17 Sep 2025
- 01:07:22 -0700 (PDT)
+	b=Ql7euNTs//BgKYYU2lmdQIRMV3VWmifhy0ESYIVMct0HQCNe7vUdeUcPMcK3v4pIyuTiG8
+	CltVOdoSrPvBiBP7RQraEgAU1OAsFzEUrL9zmoAPG+EJrcDB6S+FK/SZ9kAxcjo0GT75JF
+	zhZZkwXfIkqlpx83fun/SGIDaPtxyzU=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id D9EF9221A4;
+	Wed, 17 Sep 2025 08:18:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1758097130; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0gIuU9BfAksM0VCnmAs6vvgKEo+iRNtzKZCzt55LcHE=;
+	b=QKy9gYy1ComwTc+vQCBzK3bAN4dI0pAG2Q3EfLESztOs+tFGBj0U8DAYF1TqSK4Jpw7V+U
+	T62o8AE25X3FktxqSp4KPYalsKvs5STJLZK+VvVuSxE4u0uewYMaVIVgWgmJdzrdt+MRT0
+	F2Nlk4lHnWqGrzIOchrkGY/UB1CJANk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1758097130;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0gIuU9BfAksM0VCnmAs6vvgKEo+iRNtzKZCzt55LcHE=;
+	b=QQ98NDyL4IE5tPlNNPIwQyIjn4gEX7IDvrZR5d58smXRM3ZBwOfvSQDaafIavRKF4/3i8w
+	VVi2GX0dnULrtwBA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1758097129; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0gIuU9BfAksM0VCnmAs6vvgKEo+iRNtzKZCzt55LcHE=;
+	b=O9pfrPeRKeta0cqOznkr0QMpC4z2NnMdlI88YFcDhieFTcRoAJ/t+qciFLBxCp7d0L7gHx
+	GXOUDFc3yUodTyutNxefB2/W/GRo6ynt9drtotTOIhYOewFOf5zshtGKUCBUlGBvvhhpBZ
+	qgvG9DPoTBkvSa6+4EsUb/CFh7oB16U=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1758097129;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0gIuU9BfAksM0VCnmAs6vvgKEo+iRNtzKZCzt55LcHE=;
+	b=TWhAn3zEp97BkxWyLCYfe2R+zA/uCSQ9cg8Ale7wGXgldTdEbRYPVq5rAvexdSBOJ5Il1E
+	p6I64rVvp3X7APAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 156621368D;
+	Wed, 17 Sep 2025 08:18:49 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id tmJsAeluymhZBAAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Wed, 17 Sep 2025 08:18:49 +0000
+Date: Wed, 17 Sep 2025 10:18:47 +0200
+From: Oscar Salvador <osalvador@suse.de>
+To: Jane Chu <jane.chu@oracle.com>
+Cc: david@redhat.com, harry.yoo@oracle.com, liushixin2@huawei.com,
+	muchun.song@linux.dev, akpm@linux-foundation.org, jannh@google.com,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 RESEND] mm/hugetlb: fix copy_hugetlb_page_range() to
+ use ->pt_share_count
+Message-ID: <aMpu58yNnLWszoqX@localhost.localdomain>
+References: <20250916191252.1653993-1-jane.chu@oracle.com>
 MIME-Version: 1.0
-From: Max Kellermann <max.kellermann@ionos.com>
-Date: Wed, 17 Sep 2025 10:07:11 +0200
-X-Gm-Features: AS18NWBkDW9SAVDvoKJjAZoW5S3gl8FdSLNEHdMZ_rAESAoQoQ8-hAz_wKVvyLI
-Message-ID: <CAKPOu+-QRTC_j15=Cc4YeU3TAcpQCrFWmBZcNxfnw1LndVzASg@mail.gmail.com>
-Subject: Need advice with iput() deadlock during writeback
-To: linux-fsdevel <linux-fsdevel@vger.kernel.org>, 
-	Linux Memory Management List <linux-mm@kvack.org>, ceph-devel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250916191252.1653993-1-jane.chu@oracle.com>
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: CB468C0002
-X-Stat-Signature: oqjs45kd9tqoq18rrnrny9s7qsn1rh9j
-X-HE-Tag: 1758096443-619346
-X-HE-Meta: U2FsdGVkX186EHg1Sz7CnmYw05HZjaC+504URyOPKwrURrWGB09mwrrjM2jnVoA2+YEqzxw3isMAYCOw3KIA7J8RitAUfKgIW+TcQJ4eY6Rv5xR/amPZq2ztQ+fT++lj3VQS/5M27Bu/20bVjL1jyuacHFb/q9MZR2ssed2X8pcs6o4Y+FDbOs62ypp00WUihh3iu2tyGNtojcNjgQqwV4pMZ7oJYZNvQ/zJ6AGpfvFhbqY51EEGxFf5kc/VFvUb516DaCLtgEDlQ0D6ynzHVjnRmdIuv+yfmvcmsOZMnn8zYAAGUTpLkF6ksrrSshNmXWre1BTTqRN1GuyTsoatdWozn0xHo6Xefq5WA6Pfn2kDa2Bog74SlF+YZQ3mi7VZHJzkxStieNH0j8e+3/nrM+LPQkOcHn4uqrabkyChs7l9UR0BxzB9OYBE1HlKEYtSTXf/4rkV7mSudHeBEHHUbuc6+b4Hjl0yPjajNOtaYLxohvbYbEM5Hfp/qAbup7KWLg8MvQcA18vphJbvuqH0AEalY/QnPq5ha/zG2jiQm03VWMq/aOIfZNdfOToK2VOB6WIMtwDq02iw/fNT7IFPzhFX9TixlXskgKmUNTJ/yKPjYyJmrUnbC38dvEzk6k/h9Kl1AP6dUJ5BRMpngegpZBGJViqNUC/xR53VjzEJQwKec8pSlvIskfVi/Sbk60Hiqz/2q+gjyE9pPjzoUbrC09Mooc4D7c7ZFX2nslIZnSSZ7Nu1Unmzmkt5QyHmPcKZGHhu0F8lBMNmjZdSlgpLQzTxLbxKTNWDg6bDJE71mEKoVHj+2SiZzPWgJlZ/4BwwLCedQuhmch8Wa+nLzPdij9MsHl7iawbtovi2ponb8OulGomBp/BqGh4hobkRo5eWc71XwiKZnrUAwr3qgU+zyiqg6ESd7xXjwgVjk34ogkMqJ+vSAVnay3ikBMps+eloGWuuskl85mRmQg2BB4Z
- 1v/uZYHd
- RQ5JgJ5C9/zqHpzethVMPDy2Gz0Ta6GWu+dchY6qydH1e55zJdaBbNkPBEzPfcKQsdYYOgih5Xy8z07SCEg2HF/nylNyw58LcQRXAAyf6mT/6Sy7jXjV401/tIrqyewv10hfjOgc665nvK3A/bhfc3gwssasf1LCTYPKG8DWIKFJpLWICH+ZJWad72w==
+X-Rspamd-Queue-Id: 988DA140006
+X-Stat-Signature: 41q5mse6mx415d6gc19xo3gya71153z5
+X-HE-Tag: 1758097131-713283
+X-HE-Meta: U2FsdGVkX18SWCuM+gZ5VQLq0PkKFeNnHzdm4ETGE+q8Gc3BT2S74Yinbep0E/VkPRWWuwr1yIi0ib6nPejWQl4gymeECRKazzNBlcvJ7Wc5nNr9gAVVILsbrAh67P3HB0ewVvD2toWawZYYwLi4CRlY6KS3cCTpQvT9PfjOmMq9TB8f9ym1EUxHVpF5MdqhZgf3ZAM8DNclCI49dgf4Amad5kmcIgOezFhCbLmZ3kYzbXM62LCpM27kzsUbAQimHIaw4Vj5Z82nve0At/T/iBz8ksTS+27wgaURJaPXXsrwAdQfK7uvaVTe6huxPhhUyOEAoy2tvlScjlnhDzSo1z3O59Zs104FcdZDNV0vc2R5rdqvXOqO1LFk2XrJDUuvi2AUpv6/0RebFteNYAPukBlmtDbigXY3VAoVt8S/idcU5o9mdRWBEqcjfCUwsk623rqnisRTKFKXMtQi+E+1jHHNSTeNoMlBjbWKHKOo0rrSHkPdbI+NzUjI3nuEPd+FwYUzqqOsk9M0PMdKubqIu0S9NeDpyTWMQIjv7HJOas6HfJ2OL9jcAynYau83Ev4NXB5VUfpYEVz4+Z1Sj1dh+qwLP14wv74iyuAKKf3tB3xYZFCR7rGuZzfKTxuYDFPVqrMOjqzEURWK8CVyut/SoRdeHx/SRzEKR+NLNFaQV+3ku1qfJxp5KE2XDwo1hDFPzv58HIZvr0VI7MPy1AByNOwKJjM7fGC2bdm7QD/2rxJF0pyryGFz1bq4lPeFO36IH5bl98ulOgDzWCJU+4MGKRx3D+AQggcU29PB0VYTD1DwEbbQIN0JTcYXH/EEiect5n8uEwNVulr8H3K6JL11zM40+ThWrBMkzCfkXHt1fRc6oBzzjn0VxiNLE2zmta3psO6HqI7jw5R20cbaNAD804fVDj6q518CoAqNiYituMHEHadUvTs1pIeRd5/Cozt4cRUpvXGDSkhnFzByoVk
+ TCB+WeQn
+ QL4XLEvvI493pkTgXMBibASUi6zlu2MRY893HYNwgL9z9ck+7w1UjPIZTKS6+3zUXX1ifgXCWEzjHtEDF2UDQ6S5apo/6oEo0LsTxMfpoIsV8fDAsy6ZoMRZaS5kqhAuQz3lgGvFaRg2tiZE979r5/747YAgy+nCLY6+bWvmYZcwltqg6Wr+UFWLmw895BImrwJSvTESDVDI2d5duaToUPKvXkf/cvudvkYGwfuxvU/x3W6pUyANT2K3uQ1u4x+4l6LrheJFFTl2cazswzHehgm5tVGd+Hdfvmol5aRDJF5usdLenOBG8P2yNvtUSD+cT9bxLdTAJZeeRJzM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,63 +132,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On Tue, Sep 16, 2025 at 01:12:52PM -0600, Jane Chu wrote:
+> commit 59d9094df3d79 ("mm: hugetlb: independent PMD page table shared count")
+> introduced ->pt_share_count dedicated to hugetlb PMD share count tracking,
+> but omitted fixing copy_hugetlb_page_range(), leaving the function relying on
+> page_count() for tracking that no longer works.
+> 
+> When lazy page table copy for hugetlb is disabled, that is, revert
+> commit bcd51a3c679d ("hugetlb: lazy page table copies in fork()")
+> fork()'ing with hugetlb PMD sharing quickly lockup -
+> 
+> [  239.446559] watchdog: BUG: soft lockup - CPU#75 stuck for 27s!
+> [  239.446611] RIP: 0010:native_queued_spin_lock_slowpath+0x7e/0x2e0
+> [  239.446631] Call Trace:
+> [  239.446633]  <TASK>
+> [  239.446636]  _raw_spin_lock+0x3f/0x60
+> [  239.446639]  copy_hugetlb_page_range+0x258/0xb50
+> [  239.446645]  copy_page_range+0x22b/0x2c0
+> [  239.446651]  dup_mmap+0x3e2/0x770
+> [  239.446654]  dup_mm.constprop.0+0x5e/0x230
+> [  239.446657]  copy_process+0xd17/0x1760
+> [  239.446660]  kernel_clone+0xc0/0x3e0
+> [  239.446661]  __do_sys_clone+0x65/0xa0
+> [  239.446664]  do_syscall_64+0x82/0x930
+> [  239.446668]  ? count_memcg_events+0xd2/0x190
+> [  239.446671]  ? syscall_trace_enter+0x14e/0x1f0
+> [  239.446676]  ? syscall_exit_work+0x118/0x150
+> [  239.446677]  ? arch_exit_to_user_mode_prepare.constprop.0+0x9/0xb0
+> [  239.446681]  ? clear_bhb_loop+0x30/0x80
+> [  239.446684]  ? clear_bhb_loop+0x30/0x80
+> [  239.446686]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> 
+> There are two options to resolve the potential latent issue:
+>   1. warn against PMD sharing in copy_hugetlb_page_range(),
+>   2. fix it.
+> This patch opts for the second option.
+> While at it, simplify the comment, the details are not actually relevant
+> anymore.
+> 
+> Fixes: 59d9094df3d79 ("mm: hugetlb: independent PMD page table shared count")
+> Signed-off-by: Jane Chu <jane.chu@oracle.com>
+> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
 
-I am currently hunting several deadlock bugs in the Ceph filesystem
-that have been causing server downtimes repeatedly.
+Acked-by: Oscar Salvador <osalvador@suse.de>
 
-One of the deadlocks looks like this:
+Thanks
 
- INFO: task kworker/u777:6:1270802 blocked for more than 122 seconds.
-       Not tainted 6.16.7-i1-es #773
- task:kworker/u777:6  state:D stack:0     pid:1270802 tgid:1270802
-ppid:2      task_flags:0x4208060 flags:0x00004000
- Workqueue: writeback wb_workfn (flush-ceph-3)
- Call Trace:
-  <TASK>
-  __schedule+0x4ea/0x17d0
-  schedule+0x1c/0xc0
-  inode_wait_for_writeback+0x71/0xb0
-  evict+0xcf/0x200
-  ceph_put_wrbuffer_cap_refs+0xdd/0x220
-  ceph_invalidate_folio+0x97/0xc0
-  ceph_writepages_start+0x127b/0x14d0
-  do_writepages+0xba/0x150
-  __writeback_single_inode+0x34/0x290
-  writeback_sb_inodes+0x203/0x470
-  __writeback_inodes_wb+0x4c/0xe0
-  wb_writeback+0x189/0x2b0
-  wb_workfn+0x30b/0x3d0
-  process_one_work+0x143/0x2b0
 
-There's a writeback, and during that writeback, Ceph invokes iput()
-releasing the last reference to that inode; iput() sees there's
-pending writeback and waits for writeback to complete. But there's
-nobody who will ever be able to finish writeback, because this is the
-very thread that is supposed to finish writeback, so it's waiting for
-itself.
-
-It seems to me that iput() is a rather dangerous function because it
-can easily block for a long time, and must never be called while
-holding any lock. I wonder if all iput() callers are aware of this...
-
-Anyway, I was wondering who is usually supposed to hold the inode
-reference during writeback. If there is pending writeback, somebody
-must still have a reference, or else the inode could have been evicted
-before writeback even started - does that lead to UAF when writeback
-actually happens?
-
-One idea would be to postpone iput() calls to a workqueue to have it
-in a different, safe context. Of course, that sounds overhead - and it
-feels like a lousy kludge. There must be another way, a canonical
-approach to avoiding this deadlock. I have a feeling that Ceph is
-behaving weirdly, that Ceph is "holding it wrong".
-
-I tried to trace ext4 writeback but found the inode reference counter
-to be 1, the only reference being held by the dcache. But what if I
-flush the dcache in the middle of writeback... I don't get it.
-
-FS and MM experts - please help me understand how this is supposed to work.
-
-Max
+-- 
+Oscar Salvador
+SUSE Labs
 
