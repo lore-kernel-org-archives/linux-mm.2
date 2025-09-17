@@ -4,113 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 985C1CAC598
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 20:23:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A2EDCAC59A
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 20:29:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 00AC78E0068; Wed, 17 Sep 2025 16:23:17 -0400 (EDT)
+	id E59028E0027; Wed, 17 Sep 2025 16:29:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE67C8E0012; Wed, 17 Sep 2025 16:23:16 -0400 (EDT)
+	id E090E8E0012; Wed, 17 Sep 2025 16:29:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DFD4E8E0068; Wed, 17 Sep 2025 16:23:16 -0400 (EDT)
+	id D1EC78E0027; Wed, 17 Sep 2025 16:29:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id D0CCE8E0012
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 16:23:16 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5F592160692
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 20:23:16 +0000 (UTC)
-X-FDA: 83899866792.26.60C4EA1
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 7FF5B1C000B
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 20:23:14 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=DuKuUZ8e;
-	spf=pass (imf20.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C58C28E0012
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 16:29:17 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6012ABA7C4
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 20:29:17 +0000 (UTC)
+X-FDA: 83899881954.30.202EB48
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+	by imf26.hostedemail.com (Postfix) with ESMTP id A99DA140004
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 20:29:15 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=wFEBCd+F;
+	spf=none (imf26.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758140594;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1758140955;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FQYyUFKyIMwcbN0Oi1nix7mefhyosUBnMaKUMp/0Uhw=;
-	b=OTFcoAjP/CMtbfaFISDbWPYkgGv/7MGpp9cmpfXEI9Fk06P6bpc2iCFzBubj+hezRY0XN8
-	ziZNyFmfmSeM8oc4DObN286dN0J5iHaRY2vEjQgIAOIH5COk6UdVPIXQlqTUkNIH1WUEDH
-	BPOzTnWIclgk5a1P/JXMNmVBCryXFR0=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=DuKuUZ8e;
-	spf=pass (imf20.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758140594; a=rsa-sha256;
+	bh=w1fulQ0gQjzyFPF7toelr6M7l0Oc8OAf+GJq3MYg+zc=;
+	b=erJj/NV9U1jpsyqOLytf6t2D02t+zkY4IyArxZjyVOmKSBhp+Gl9wYubUuKedTGWVumhiT
+	fOZ2bSeEOFR7co7ZZm+77R937KekZo8FunvjAj/9Ew5wsI+BCmQ2uwDUL4oQcppsGa2oRh
+	bGWzSaAzkQ0Pw+FurcgwQAKqkw9ont4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758140955; a=rsa-sha256;
 	cv=none;
-	b=GWEkzazkL13lDEFc+dR57Cg5kn718xvjcJek1qUvpAgKfXdq/TF3OacME1xZ/AZYd6kvUF
-	3ekr2I/MKNCvtGVQEMZwiBs1pMAz6cF6/r4G2vMp8kfg9egX0H22RPvgMcgjBcmC+vEilG
-	f7PDAk+GWw0nwnd/5r26MAtnob6TjXU=
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-62ee43b5e5bso252247a12.1
-        for <linux-mm@kvack.org>; Wed, 17 Sep 2025 13:23:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758140593; x=1758745393; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FQYyUFKyIMwcbN0Oi1nix7mefhyosUBnMaKUMp/0Uhw=;
-        b=DuKuUZ8ey40KyRA3obxZYYrvI5wOH1gb50mmwIU0rczs9mOONguityGVowgLopJGMx
-         lWIsNx9nSy53+bXwfA2UhQfCmall61+oVdaTnWyxcLmjhyzXfPsojsIZsGJaJPa9uc2s
-         Wc1LLWU4AAFPe5KWGQykhdQ9P5fZqi4bmVoIJ350HSAHJSFJJApwErKdIg9vAweRWBy/
-         wFkHaVPZQFoHKlqGTzvTURb/8rPZ5heL7KwynrgRmd0I5rCZp2JZzkB5Mxrl4tpgmUX/
-         98zkTU8Y1rZAHi881mvUObwASmTze9MRYaWXovJEIN6tv9da8cEKJj4kMbiCyhSGPa0x
-         laPg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758140593; x=1758745393;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FQYyUFKyIMwcbN0Oi1nix7mefhyosUBnMaKUMp/0Uhw=;
-        b=qVsALwNXDctsd9b17wSP0Yr3D2aeDaFRAhvj3Ac7Wg10EK8U+c65CQMAs89yWCVtYA
-         lcJlWWms5ywae831z5mzcRHbO1mXA7muNMZ+0eaQFZJSN0V815UyOQmQ1gTcEpl/yA3w
-         urXN3Rs/2GsAfKB8TYn6hHscVZFhypp+n191m07mB0qJinL8zcwtZ2Wuuk5EiaG7DPK4
-         f4hkCMliAIUvQTMvxUa0MFRgIZBcP2ETttmaHj++WVelSswWvD8LGiq2QYCX3asYqSmw
-         kFjPGn77KlmNILg8B7bJGZ2LIiHm2gskg8nh9V6qup2jb39oIesq2x+AV/DUoPmJjIcg
-         xAWw==
-X-Forwarded-Encrypted: i=1; AJvYcCW+/KPK6fVPD4mGvDP2yhxVKk2owHnm7hd81szMxtEu8GYm1DbQHq+mHhQiqniN+6Ko0XS5WvkO+A==@kvack.org
-X-Gm-Message-State: AOJu0YyvxlGbJ3sDLU3+cAjUXJNV9jqC7uFEHsy9igLJTN4VPHmUmYbg
-	/7qgFt6VWBV/YEki0YF8lx4vnL6BBxndWgzIlI3TXc7bPmCeUSKs/2cLKKsX9zmGbsuvpEFSRD1
-	W2uMu6WRqM7bKyYcM1WCPHgOYslkBqFw=
-X-Gm-Gg: ASbGncupTdc1QwC2OeONKx+Ke8KMK3NJPrdxZa+ktnLUC+XeM+fd9jmn1kgMhA++8E9
-	5Sp5jUdOSh8PZ1Dgi/yZz/GCWzetSBeAAolzCNtf1E9rfUcquogcB09rmAgHma8F6TQlFcvpaYl
-	bRH5PVLuRBC83qG0cs0Hx1nz4nLMLaAuUkZyo7PsU29KJ3Giseu+ssj78n6474uYuRMvXANWFSQ
-	uOjoJX7Nr4VnBdQ6l1G9gKjYIs8ahweRyMq99k/l3Mil05yvtKjqa2LUOCWcAog/IRv
-X-Google-Smtp-Source: AGHT+IGbnxJUuKMIoax9837vUOwFa3uC5z5C8iuy02lVnujR8xNtpFbaO7bRafNJUiDUa0Pb4Cm8O1H0fKv6jLIS6Z0=
-X-Received: by 2002:a05:6402:23cc:b0:61d:2096:1e92 with SMTP id
- 4fb4d7f45d1cf-62f842255b5mr3411840a12.15.1758140592771; Wed, 17 Sep 2025
- 13:23:12 -0700 (PDT)
-MIME-Version: 1.0
+	b=gXYypIIbMIhGYPZdCrDDJT9GGiU5mSIPdsFP4OSGTGGO8k5xGnH7gBMMlaE9o/KcIEn+Ru
+	J+uR1ZXKyP0+iF+1Ws0CUU7P9GKh5cVNORTqunpLmwBCdofa2N0UPFT7GYnKevTPXmwcX2
+	hkIIc5GJCA7mHUzq0ZVdwBu2wE6pKiE=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=wFEBCd+F;
+	spf=none (imf26.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description;
+	bh=w1fulQ0gQjzyFPF7toelr6M7l0Oc8OAf+GJq3MYg+zc=; b=wFEBCd+FzEQc7BlKjb+v53jCY6
+	JCiORP3QCMwGeNazAdH3o3scAQiI4/Z/E0SYboN2gfHysz+J44RBzGMy+qDQpmvcV8Ht+HL/bq3Rj
+	R+D+36kVQPIjBho1YiVAg5qleJ6TyNmitB62iEOnQwU9WoLAnunQdSYXpVfvfFC8q9pAUFEOd0R6a
+	+F/VSP16v1Tavpahim8UWx++scDN+ntaVdlBywL6U9lWWKY4g4vdj8gGGDSHe80YPcebaM/RFUTzi
+	IIkw/O8wQr8ki3yF8y93qUfRAHW/nrRLfSN1CTRYoxiDvjwqP1GZzCcIW9CDoJ9G3itL2R/1htLop
+	RN8WvW5A==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uyymA-00000007q9U-0IXT;
+	Wed, 17 Sep 2025 20:29:14 +0000
+Date: Wed, 17 Sep 2025 21:29:14 +0100
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Max Kellermann <max.kellermann@ionos.com>
+Cc: Mateusz Guzik <mjguzik@gmail.com>,
+	linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	ceph-devel@vger.kernel.org
+Subject: Re: Need advice with iput() deadlock during writeback
+Message-ID: <20250917202914.GZ39973@ZenIV>
 References: <CAKPOu+-QRTC_j15=Cc4YeU3TAcpQCrFWmBZcNxfnw1LndVzASg@mail.gmail.com>
  <4z3imll6zbzwqcyfl225xn3rc4mev6ppjnx5itmvznj2yormug@utk6twdablj3>
  <CAKPOu+--m8eppmF5+fofG=AKAMu5K_meF44UH4XiL8V3_X_rJg@mail.gmail.com>
- <CAGudoHEqNYWMqDiogc9Q_s9QMQHB6Rm_1dUzcC7B0GFBrqS=1g@mail.gmail.com> <20250917201408.GX39973@ZenIV>
-In-Reply-To: <20250917201408.GX39973@ZenIV>
-From: Mateusz Guzik <mjguzik@gmail.com>
-Date: Wed, 17 Sep 2025 22:23:00 +0200
-X-Gm-Features: AS18NWAwEK0xFf7I_pMfTz6YWIzdztaknH-Q6eCKdbOqKCEVDU2t6psEcsI1304
-Message-ID: <CAGudoHFEE4nS_cWuc3xjmP=OaQSXMCg0eBrKCBHc3tf104er3A@mail.gmail.com>
-Subject: Re: Need advice with iput() deadlock during writeback
-To: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Max Kellermann <max.kellermann@ionos.com>, linux-fsdevel <linux-fsdevel@vger.kernel.org>, 
-	Linux Memory Management List <linux-mm@kvack.org>, ceph-devel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 7FF5B1C000B
-X-Stat-Signature: hdzbqjowgfz8uu65of1za7hfoefckakk
+ <CAGudoHEqNYWMqDiogc9Q_s9QMQHB6Rm_1dUzcC7B0GFBrqS=1g@mail.gmail.com>
+ <20250917201408.GX39973@ZenIV>
+ <CAKPOu+_WNgA=8jUa5BiB0_3c+4EoKJdoh9S-tCEuz=3o0WpsiA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAKPOu+_WNgA=8jUa5BiB0_3c+4EoKJdoh9S-tCEuz=3o0WpsiA@mail.gmail.com>
+X-Rspamd-Queue-Id: A99DA140004
+X-Stat-Signature: bhq1ywpa1ycst64nhumfym3ibwbqqs9m
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1758140594-789747
-X-HE-Meta: U2FsdGVkX1/bleXB7TG0hameek78OYuENZlHe21b87hyXdLdWvx/eWeWMpEur8mU7VoZTUoq4erS94Zo9X/O+7/Da7w02j3bV8cd6/WUJ/Bs1cMJLvVof44YNsecKur7OBjOOl8n5blipqpN6pMV2SHpHH6fS8aZS61sXqr0JkUcbZWr+OAfqpn4sRiMEEQD+bUiLie94h9+cFgJTsrvpJ4NCcXNcXNDh4dhsZZJ3RhkbQyTOcvfuSEjLC3dnPkO5br6+aW9Z4oO7S0w4CTL+cQb+Trn3tDyDyIK6REcHI4yZmS10NxnraFn2DkiQFUYTjX3GURPfGSqtxV83RjliXyhV8GONna1bKkiqOAyT9F4sez+4skXKkqRtchbfq7W77iQnnnVmwLQG8YzIVKI6kZhgdXI2NrKhPAz9F4f1IaCCC6+DNtHr33eZaI43QEAjCtcLCqy1A+wvwPBIhv8szn598nyRne9n6tEjkRAumjYWUZqyUsvGHh6X3BUzgP2/+3ri+80x0EfbDfnXp0HS9Pn2mCupvJgyycCc/uTKxziMPYRJK6TiIOcvy6/0JkKjme7p0p6QE5pWJTCq3s75I/LMHLpWh3vmyoZwBdlvSesVg+aU/RfA5l8740VMIfRL8E2scXAUZ+CPl5KmQ/SQt+tBWx7R5LsLxG4qWRgLOmRybPrVf2JkKfI7jTGtrzldPGC5S7nxabFQxtXfi0Pacw7nsdCrG07vuktFSmGo4Syo+qtJdVxEBlRbhAcZsg6OIHUI72ksU0rzlcv1w62Abh312bSguKDH/eoEE4bW7y9jyvrKkZdJtmjcb/JFptmaJEo3aBfK+4CbeT2lGcnqoecKBWx/dAKWHkKlG+umPFaw8RZM6ZerqrrgHq6aqwDdXUyf+mSH6EZ8qyTCjN4CcT9QoDCs+IjC+CMPqnujltTK1NyKPbj7LigX5JjRAlFVRFVmJcdfdKAEEZGqlE
- YhCo/o2X
- rlUr/hksw4OQcz99oQDR94BF//x4e11BHhZJOJADBebksB+TKKmKfWRmAwz+u/hiL0c76s45j2syHfpXYmEH88hvj0PgU7dzl7hQfsP9tVj4yjZ71gtvLWvDFy/QpJf+i61HgDX5Mvk7Xy3UI8YH5Ylz5162XxckstNYImWhkryBSsAGvt+NpcF0w4sQ3EX60NDm73L399MFILnV0+kQQkagXql0KyiQ060p/p7xH1BIirB/g1kcIZ3LXvvyxh2Dj5Q6+dwWbMoBQoh5VCCWTpT539gwrMZuDm5edFNVbH9vbNAXQDnf1wiuf7a4mtBmltUQiVTatrjJzksbFWJf4NYUjA7m32J0ryO3RRZL/SbHDQZ2qFfO0+rRaMQ+Aq2t0mfX6LmfBQIZWexFlw8JurA5gSHWQkJCWojJc
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1758140955-210340
+X-HE-Meta: U2FsdGVkX1+rHO16V41EorJqxwYXqmDIACF87qVUIYdjtSg7Bb0+4Z7dDKb54K12+dYEA21FcZTuWG4AqoUQfP1YDlz75jlSo97Z3v8CxIyh8980j15//mvl7fHGw8ZnLcjxpPcJe4yjRLxIlREe+lBywG3BGRhu7wvu6Rvmx4itKqNgk4X/ssp0RHCUxwPROHZDxmN+YuR7FjYnV92ycsm5tpJ4qVtT9LQVZOVMjCZDfWjktzHyA0HFscFVOZxPwY9QkgB77freEKXZSc86xW7fmFZcrFtC/01hncxoQ2A2pb4bOU5qXPZ5odA9FPcNhJM+jpdmdf5u7MjXiCUV6K/NwSyqjNI4JIbWsoCuherGKKNaNTFRFXbDmczmjZYYEJJJthGLxoovsOPjLwr6SR9t3BqfGycpxj0Vf/PMJv5TMU0I3L+a7mk3+lycv8kSa6iotiCK1UNRQ0bS/q0oL+801YsU8tcpeb6AUAtK82e9Pmsxxf7QxEs+DpkfPZDWPyEXh9Hwbz5Mlfqd0XTG0L376WDYLcoFbnDU6M82OBXmxVe4FHQaG9zYGhMYkkntkIAtLQg4hu2OYttyiUqX3HDsLRmZWQpUOlrrtwSdKhqBb9+3KXn4fzUaz2z7xPn/ywaH2MGJ00hmfwTv1E/4kcLC6JN2+YsCTSNk/FS1mznyNzD7oV/+poXmMKwVoVHmXYTJGjs+JryIgWZOfgGSbuTgou5NQxTCIhNWEYO6i4E7mIkbIQCC9a0d999GRAoxHMbAKhj9JCdkYP7DxEw/+nU4GMxMiuWFMN5enh/QI0LWXZw06587kfycN7wjxuAMfaeMNs6fmiMcDzmoNLfFLmxYF9FA40bINcqp13OoXkaVRAghFNR3Pf/TAd7me04diYUI4rqyelALV2Mvb4kOrwmnmbp2rgPoQZkp8RPM85RmiMG+fsaSJNjz+PwovCJ5RXQKH1/CJesHt0w3+BP
+ 8AQvjJX7
+ JtUu0LWyfJZ/PyOZvQl9HMFKiAHvcXoevpLXWtXfIzTdQTU1XBJxvqOMTf7dx46zVwP8CZWTOVOL8mXKGSkYtPxXBhPoFJ57iY3ZotIBj38E7D5+ZaXNNFCtY16mNgxGY30PodjlZ+1YYMnoU1KQtJO53Pts9GxDNalpsC244aoOBKVs2jDP8bx9CGLgAGMVmNQODJt8B8NLkk83GXl22i23aId4DFNoSR9B6rVH0TMBtvtGAVyHUY6s40Xcv9BF2IcNA7qe7xWjva/7Lsz8wbkfjVa9GPAc/DuK661y2X6CrK9E3qLHb3qNPeDzPRhC8PZKuqjg2UroqKjWweRboN80KK6BJAHmYywokXJ6ys1HanEU7L0slgVn1YujJLNpSipTjusOll2xbAGdG2iou0m6+c75/wD2mMZsEOy8urO8lgHkdV4hcosLq0/wsED1l10z4B3p3kFwSMge5jcv6tdtgPdL+/kildbOaWMo0ZQhaRFENBUIR/AkCFgix+zaD20wW3GBQwWRbP6w=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,49 +98,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 17, 2025 at 10:14=E2=80=AFPM Al Viro <viro@zeniv.linux.org.uk> =
-wrote:
->
-> On Wed, Sep 17, 2025 at 10:59:23AM +0200, Mateusz Guzik wrote:
->
-> > A sketch, incomplete:
-> > static DECLARE_DELAYED_WORK(delayed_ceph_iput_work, delayed_ceph_iput);
-> >
-> > static void __ceph_iput_async(struct callback_head *work)
-> > {
-> >         struct ceph_inode_info *ci =3D container_of(work, struct
-> > ceph_inode_info, async_task_work);
-> >         iput(&ci->netfs.inode);
-> > }
-> >
-> > void ceph_iput_async(struct ceph_inode_info *ci)
-> > {
-> >         struct inode *inode =3D &ci->netfs.inode;
-> >
-> >         if (atomic_add_unless(&inode->i_count, -1, 1))
-> >                 return;
-> >
-> >         if (likely(!in_interrupt() && !(task->flags & PF_KTHREAD))) {
-> >                 init_task_work(&ci->async_task_work, __ceph_iput_async)=
-;
-> >                 if (!task_work_add(task, &ci->async_task_work, TWA_RESU=
-ME))
-> >                         return;
-> >         }
-> >
-> >         if (llist_add(&ci->async_llist, &delayed_ceph_iput_list))
-> >                 schedule_delayed_work(&delayed_ceph_iput_work, 1);
-> > }
->
-> Looks rather dangerous - what do you do on fs shutdown?
+On Wed, Sep 17, 2025 at 10:19:27PM +0200, Max Kellermann wrote:
+> On Wed, Sep 17, 2025 at 10:14 PM Al Viro <viro@zeniv.linux.org.uk> wrote:
+> > Looks rather dangerous - what do you do on fs shutdown?
+> 
+> Sorry, I'm new to this, I don't know how fs shutdown works - stupid
+> question: is my code any more dangerous than what's already happening
+> with ceph_queue_inode_work()?
 
-Can you elaborate?
+umount /wherever/the/fuck/it/is/mounted
 
-This should be equivalent to some random piece of code holding onto a
-reference for a time.
+calls umount(2), which removes the mount from the tree, then calls
+deactivate_super(), dropping the active reference to superblock.
+If it hadn't been mounted elsewhere, that's the last reference and
+we this:
+		shrinker_free(s->s_shrink);
+		fs->kill_sb(s);
 
-I would expect whatever unmount/other teardown would proceed after it
-gets rid of it.
+		kill_super_notify(s);
 
-Although for the queue at hand something can force flush it.
+		/*
+		 * Since list_lru_destroy() may sleep, we cannot call it from
+		 * put_super(), where we hold the sb_lock. Therefore we destroy
+		 * the lru lists right now.
+		 */
+		list_lru_destroy(&s->s_dentry_lru);
+		list_lru_destroy(&s->s_inode_lru);
+
+		put_filesystem(fs);
+		put_super(s);
+At some point ->kill_sb() will call generic_shutdown_super() (in case of ceph
+that's done via kill_anon_super()), where we get to evict_inodes().  Any
+busy inode at that point is a bad problem...
 
