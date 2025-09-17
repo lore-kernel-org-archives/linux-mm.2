@@ -4,100 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4190DCAC598
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 04:26:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8616CA0EE8
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 04:41:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4AB1E8E0006; Wed, 17 Sep 2025 00:26:52 -0400 (EDT)
+	id 1983E8E0006; Wed, 17 Sep 2025 00:41:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 45C728E0001; Wed, 17 Sep 2025 00:26:52 -0400 (EDT)
+	id 148F48E0001; Wed, 17 Sep 2025 00:41:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 372348E0006; Wed, 17 Sep 2025 00:26:52 -0400 (EDT)
+	id 037A68E0006; Wed, 17 Sep 2025 00:41:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 252928E0001
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 00:26:52 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BC925866CF
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 04:26:51 +0000 (UTC)
-X-FDA: 83897456622.12.CBD2C5A
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 04CD9180005
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 04:26:48 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	spf=pass (imf06.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E39668E0001
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 00:41:23 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7EDEAB8E4F
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 04:41:23 +0000 (UTC)
+X-FDA: 83897493246.04.B213CC0
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+	by imf21.hostedemail.com (Postfix) with ESMTP id B35DF1C0004
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 04:41:21 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=L8wXkYVS;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf21.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.174 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758084081; a=rsa-sha256;
+	cv=none;
+	b=MllLHmfKAADvs5hAxz6R1312rVkpEP4EN6YfnGt9X1PUtIAcggZWj+i40YZtYw3tiOaaTA
+	nRzAlaSbeBzBgl4nLn3ezN8msHmmoKSccb2lPdx3iYVGcnnRmdDkQCnWXARZbtYEA5M/t+
+	NyDxZmGTkhtYQ42JBaRDUM68clSEwJ4=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=L8wXkYVS;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf21.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.174 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758083210;
+	s=arc-20220608; t=1758084081;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DAQs4c71zzsKXsFUveiC4TVPuOdzgC0ETIUj0msKxYM=;
-	b=Qqe3pq5FyTrQ/2V+o/mSvKOf5x/Py6hpQ/mZzyLeJGedfYk3wMWDHKCNZ2O2aq9OZbSftL
-	NJR4cyNNpqfN0/TLAQPAjkpTF6lpAQnfidFQFff7yPR0VRqWuz8WwGsMmjwqAx3Y7sdlhp
-	TdzpRBg2pPk4R9Zr09/TBllrNMrtlXI=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=none;
-	spf=pass (imf06.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758083210; a=rsa-sha256;
-	cv=none;
-	b=HWQoCsZ7CcHW/7VALV5xjacoGmFo/azJz5xK1TzXRzosEhzKS5erU3PRhN5CCDcBWTLhKO
-	8ZWZR5Qzx7s7l41uRT2lvuujvsyo9NptMUt0os5eVc6aptfX0KMtA0cJkqiRwFI8CjAkUP
-	HusriVL+YHyoZJRTEREwhmWHsgxntWg=
-X-AuditID: a67dfc5b-c45ff70000001609-1d-68ca38860b96
-Date: Wed, 17 Sep 2025 13:26:40 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: Helge Deller <deller@kernel.org>,
-	Toke =?iso-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@redhat.com>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Linux parisc List <linux-parisc@vger.kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>, kernel_team@skhynix.com
-Subject: Re: [PATCH] Fix 32-bit boot failure due inaccurate
- page_pool_page_is_pp()
-Message-ID: <20250917042640.GA62248@system.software.com>
-References: <aMQ2ZjZNyNwAiUk-@p100>
- <cf235550-f29b-4f22-b5b5-c3e7a576239d@redhat.com>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=gon5BfaqGtVq5KGh55kJh0yGA0JZXCzjrgKlwNh0aHo=;
+	b=oh0cAD3JEso9/UN1eBABeWSepy1THs5+Xpmm9tJdKxeIcMOWO/BH8DuRAz2Dg6M9XZq1OQ
+	O64KVPCOxweWzdki17RF8PXs9r+Wd3TivG0BKbURO189SJUMemnmdMvn4r6uQKFMC/OQ0P
+	NC43Wv4d3M7kPeE8W2QuAZCQqkj05UQ=
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-80b7a6b2b47so593217485a.0
+        for <linux-mm@kvack.org>; Tue, 16 Sep 2025 21:41:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758084081; x=1758688881; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gon5BfaqGtVq5KGh55kJh0yGA0JZXCzjrgKlwNh0aHo=;
+        b=L8wXkYVSE+XYo1Xd+M6uNluhAKSqAGewz0iPOXYEbQX0cuPLadey5l8G4RW/8RNr6A
+         BK4eY66WKjptQ2jQJsvRZmLH75cp2BjLbQ315jjU4CTSADqTTHZV7A1vee2yiOuXCiw2
+         4EjKuYx4lcEJVtR/2KZ8ur7hl7PYgfhZVS8eS2hcmj0xtMFXQSPgNhCuu0cG9H5VXkJC
+         h8HKzw70KenI/Z0eCjakZc7QRO1IMnw6k5hiW9XuWJ7GIyTUCTnACltdZoTonsbPixG0
+         cFvy8xYpSfLhVW/VeCyTui116BJe5sABsS8b32AIEr5KRPfLsEh+6k4ljoJbmKHQTTrU
+         nokA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758084081; x=1758688881;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gon5BfaqGtVq5KGh55kJh0yGA0JZXCzjrgKlwNh0aHo=;
+        b=pShlX6PQ8iPXXYVvieM6dau3Aa7bLDxlMc2C5Qc7jJhjBNjiHiZg09Y4epFt1FQVuV
+         bTU+S4G6fZUNiPkuaJK4a69x2E5FYc9ISABXOlTmazbTsIY54ifYPVCnq8KKaCkLFFUm
+         M4igLp3JaaXXDTOnF1WEi2F0tUPBcr4Usw30fiWzQiuKkcBR9KR2Jckpoynad/ZU3sdf
+         kWxNxP1m0+PlYixgEWkAaa47vcg6N3Dz/HziUY/tlI82/QJl5urb0wLr3neH2dKCiHr/
+         0s2OT7gcv8jD0AXH93s41R9QG0mqASeDKnHxx+9lk3pWNpjgqiYICDctPQgdVpByuYST
+         Jptw==
+X-Gm-Message-State: AOJu0YynoUlg2qObvC5kbHhmxm5BjGMgabduhDNZ5kIEEfJDRUOJZ6ud
+	haF4b5BjCi865+BP24tPDIGxtwoQNhbV4tg3Hp4vhdid4v5veGjuC90XDS0cqhFwsHl/aFEMjMy
+	ydX30FjJk+6yi0A+xyiIpTYTVaR5C9lc=
+X-Gm-Gg: ASbGncvtFJz125NoUzcdcfDxpVpJWW5QUIdU0fjT0hZTLYFIYpyCJa0BwhdJUlRy8k9
+	YYD7uTvmAqGXyt1JeMUAbLLBie8c7UdMd2Ou2H5GCEyVhoLcaEx02dfIq4enH5i+Ui74t4OREaC
+	HpXbeFDn1GFbsHtpnE0Rx7QLZy4ekRC0KVREdr6k+fgom+97yBrAmNKqMg1rqZUNB9y3bSPBaCF
+	Nl2WzyeU9/erbua0TUrhljs93V7mgwclECrcUme1A==
+X-Google-Smtp-Source: AGHT+IHmqnmNEJt9Zp7ueUn+TKxIVVriRysUdeARSQEDPs7LH5hJe/p5khqKRU5SiZkOkKGakYwYphqODKUWjZXhZZ8=
+X-Received: by 2002:a05:620a:2887:b0:811:76d4:6d5f with SMTP id
+ af79cd13be357-8311053c402mr73152285a.60.1758084080693; Tue, 16 Sep 2025
+ 21:41:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <cf235550-f29b-4f22-b5b5-c3e7a576239d@redhat.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrJLMWRmVeSWpSXmKPExsXC9ZZnkW6bxakMg6XnBC3mrF/DZvF1/S9m
-	i8+/DzFb3Fvzn9Xi0akLTBaXDj9icWDz2LSqE0h8msTucWLGbxaP9/uusnl83iQXwBrFZZOS
-	mpNZllqkb5fAldHz9RFrwSqhiq23HzM3ML7i62Lk4JAQMJFYOb2ii5ETzHy84gQbiM0ioCrR
-	ePYJmM0moC5x48ZPZhBbREBDYlPbBiCbi4NZYAqTxJKfP9lBEsICIRLvXxwFK+IVsJBYeWEd
-	K4gtJBAucXvGHEaIuKDEyZlPWEBsZgEdiZ1b77CB3MAsIC2x/B8HRFheonnrbLAxnAJ2Eq8f
-	QdwgKqAscWDbcSaQvRICW9gkPm+fxQ5xtKTEwRU3WCYwCs5CsmIWkhWzEFbMQrJiASPLKkah
-	zLyy3MTMHBO9jMq8zAq95PzcTYzACFhW+yd6B+OnC8GHGAU4GJV4eBNyT2YIsSaWFVfmHmKU
-	4GBWEuFd+uBEhhBvSmJlVWpRfnxRaU5q8SFGaQ4WJXFeo2/lKUIC6YklqdmpqQWpRTBZJg5O
-	qQbG8oNMQbNY5tXsvnd+d2uaJl/q8QvBXdtupC1/kMd/955P/I033VXaAuWPrXILutRYL97q
-	Perw6/k8NiapUv/4pULONy0+S8THTdqysPO87TqNFvUkGbeJfOGXlv6SPPN657lu2TkZz47G
-	SVrFq2cGvUpgMt/iKq76U36OtE/N4sYIc82Xi5iUWIozEg21mIuKEwH+2j59fAIAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrALMWRmVeSWpSXmKPExsXC5WfdrNtmcSrD4L+KxZz1a9gsvq7/xWzx
-	+fchZovDc0+yWtxb85/V4tGpC0wWlw4/YnFg99i0qpPNY9OnSeweJ2b8ZvF4v+8qm8fiFx+Y
-	PD5vkgtgi+KySUnNySxLLdK3S+DK6Pn6iLVglVDF1tuPmRsYX/F1MXJySAiYSDxecYINxGYR
-	UJVoPPsEzGYTUJe4ceMnM4gtIqAhsaltA5DNxcEsMIVJYsnPn+wgCWGBEIn3L46CFfEKWEis
-	vLCOFcQWEgiXuD1jDiNEXFDi5MwnLCA2s4COxM6td4AWcADZ0hLL/3FAhOUlmrfOBhvDKWAn
-	8foRxA2iAsoSB7YdZ5rAyDcLyaRZSCbNQpg0C8mkBYwsqxhFMvPKchMzc0z1irMzKvMyK/SS
-	83M3MQLDeVntn4k7GL9cdj/EKMDBqMTDm5B7MkOINbGsuDL3EKMEB7OSCO/SBycyhHhTEiur
-	Uovy44tKc1KLDzFKc7AoifN6hacmCAmkJ5akZqemFqQWwWSZODilGhivcR8+myy40pdnc/2e
-	dTs/XZ6+vypOrX3zsZs3BTef4u59qsih/0J391WnS27ZMgJXAz61n3vQlrb6TnBdnh9L4pzZ
-	X3mPMer9n+9qsPvNkj/fNzTlXXjweqvEmS1zrFu8pWYqpl1bWz+B+43OXtNb8dsKdjrrRUby
-	NNvw/ppRV9O/cTdX1vwnSizFGYmGWsxFxYkAlYwuzWMCAAA=
-X-CFilter-Loop: Reflected
-X-Rspamd-Queue-Id: 04CD9180005
-X-Stat-Signature: bu9x7ftq9tkkceisyo9zc5d76cgghfyq
+References: <20250916160100.31545-1-ryncsn@gmail.com> <20250916160100.31545-16-ryncsn@gmail.com>
+ <CAGsJ_4yrDFAe-3sMj1K2JeWrqNXCBvYvULY06b6B3ogSYjqasg@mail.gmail.com> <CAMgjq7AJ1=ji4iw03JmdN07MpY8V0CFdtUHpF58mTnSjGf=rGA@mail.gmail.com>
+In-Reply-To: <CAMgjq7AJ1=ji4iw03JmdN07MpY8V0CFdtUHpF58mTnSjGf=rGA@mail.gmail.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Wed, 17 Sep 2025 12:41:09 +0800
+X-Gm-Features: AS18NWCg85JktjCHMlaLqxFptGC1bgva_j3Nzmnq8WvHDBi87jCKk26cFVpIEwo
+Message-ID: <CAGsJ_4wH8ATOQLodxm7fEZb7Nt0oCxeyuiiUcf3ZYBpyC0kiFA@mail.gmail.com>
+Subject: Re: [PATCH v4 15/15] mm, swap: use a single page for swap table when
+ the size fits
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>, Chris Li <chrisl@kernel.org>, 
+	Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@redhat.com>, Yosry Ahmed <yosryahmed@google.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: B35DF1C0004
+X-Stat-Signature: kpcwo87ktxnnatmkejej1t4gromzcp7y
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1758083208-721288
-X-HE-Meta: U2FsdGVkX19zzXrKKelftddfzDHl5V5ZB0oluwfq6xj/uOBexGOKgh4OHJQrp9oHQOOGDEfhS8qLLI69An9CCo3YUKLASZHVyRPn3etHGQOz7Fpy/7YSlAE27kC7WEFhf0KK6hTEnySySqB1eXrlXOEZb3M7QSCs3iuUh1c4TKUj6SN9ppGrBwNwqO1oApgZtavTO9mq0rPTfkoJYqqZo+Is+Q5or22dIiRahiUXCuYhy4gfZO7Rz+w/+mmAWbAY08QDQ4zNOxVfuSOsMp6hk32iPu6Bz2zPHPaYKj/zEt/9G/PBvXhQ5YIHY4r5V7+HcLC6+5YlNyqhstherXE/rzxTsKDtkzPM/91i6ihY2Yj1GjzD1HKRXZQ92JdvaXlSmdSGMOr+fV30TNfRVFns8MCn5Nsw8MkDlUNMoWCQO0fRg24hcYwC99rg7hKgxyqP3IHm2AZNv/C822vnURQORmrR4u7TKnS6TM1UFeDt2jF0jYvBmOsBEGkrIi+Batzdr04uKyeCHnDS15iYPfS983jYyl0+rCQCiaZBjI2xo1cTcWScAU3pwuuXgUUmv/6s0P6G3cPuPyeYO0Ri+OLvpKsaB4hxjAtJI5BkeitaO/IAE1Mn4ht6SJCpRuq7SgtPZXGHhFkVMbXIgB8arXlpVGVWfxwFKJbBS2H1JgxI0F/OGMYWtkW0NfCxcgKsLHBSik66pEiuf97LlHvkKUuezlp6MrnAVwjB4CFB7pJhCL2CWVATPHF7nICyvDh+YK5STUazAyNvayJ9SEOaRpng1jnxPjbKMMH8ygQ2KojF/8/r1hP5xj07r8RKd8FWmCqbx6ZGm6zBXeOBzpfSK2OtkxvGhoYzO+mhmDVCe9K4NCYeVRt7rMl3YDcfsxXxcjPyfVwUyscw+Y5TwIpEEOjjZTyajlbuawPZuzY7dysY3qNDGxDJKa5kXrNHzD9VkRDfF54jrz9MferBafbWgO6
- hbNSn5xu
- j7amcxYzXRistesuXE4WOiirx6Yln4fr+2EL/O8hgcOYh3Wlryq9qhdhaXP0BEas9u6i7AibwKczcyV3A3sEGdWmMMyx40EDPQVBahDOUO3SAfosmYK25fOV7GGLwaYgXBzeihT0Hue7OQTNfXb4mpkhbsSF9PbZghX93C+CiR6Uc2pI3T0dh5Huq2wqIJLclspWZ32yb78Xov0Zw2rZQkCsxOFW1MEQM10HFkjrWkxD1RUY=
+X-HE-Tag: 1758084081-934959
+X-HE-Meta: U2FsdGVkX193pM9WE/aBIWD55x24b71megr7SHT2E4xOCxQ3xb3cQumoiTPhZu0YCsZA3It8LM8o5LqcC6edX5DaGosEiP0kqDnY7+F9dq5Bhf1CCQ7fVSe1kWT8Ji+LpodMSF6AZR7uhrJhkbqn7IS3GGvI7zYNrjlNwNVkLFBYw8icwq8/Lr1zYgPOqQRJTNNlheMiKfDT2kBCCjWTt+x1Mrfe7EpXjXqygVWsG9JMipdNGfOFerRLlXYamMZSMQzYEJGSUSzcJoJk6ci9spRJB4W5tO4KkSeJb4rkJUyDNR7NyClgpGapymWRuVq61dXBzKMIqTkupZaxrpFC2WEsH/g4RjwVljqLpge07HVosxJvM6Ou1aVTgJT4lFg7wBIQK1UpClSJkKz3O1GEIcTdJwfPzfUOkI0w1Gnxx/TIjnhsPYobdbLK8kez2C94ceFIazYVJEC3AkZbAaqatweAp/VG0tan2CA2CANcuFKWdET2NlhP5xJ1KUyoAEMFx6HTcGEA/QpNCYtLC39RT6kQlAtHACKfk1X2t4gC40s/BxkcZVRYQOeP1wx9/+mkYRf97LYK0laHn5zwCuk+uNupOOzn/V/rLX1PU0izP/cRZcYPeZ2a4lL0+0LYjPtQumqiYvri8+G4ZvWvgdKnoB+vI8usTa+kdPK8DNtV0/o8WZtV5C6bg7u3vweqkCnaE6ir/n2mZbeOmJNX+2+50bdCATvZyo/NKLfdizir9D2lDMCihrzaSW5Q3izthO06NEYBXu+e9cYGb6RF6GBlz9wElIvsHWGcCr+5Ua/qMqPAsvwMtEQDp99rlrRJLOBPnZVeSDm4RiPt1MLIt5EfZlO72/oKxC1t/wh5YdTmNLuClzPK+KUTeXQ9UjPbNAJdKrJ8/9Xn0KsAmao/CfgaqnAaY9SDTI+b/yKzaYGqMa161HG5NGoBuimTW2V1kSx5xbRjmnNlOZXGzo+/ost
+ RLWIm8TI
+ +3Y0bnhjfHaPlkv2M/f7/M3QEltA6W3Oj2ibjvzVvqR3AV/k6zQFZO3bH0occ9oRw6pw70EYrySgyQkfcPZCYbECq6uZ93vOk0uGDPU8Em/4seEIi+5ClG15SrFFTVIwrciUa3e7IJ1Ubcb1KW/CML4m2huvh1CEgVgUVL0jJZt53uibrAKeRgnEzhecMVAYKcZV8XXb80JTStOO0SwlYl2Oc+GpNkX5eMa7CZ4wy5tocD+z7tTbya/NiUK7g5SAv919i161d2PcaobsN3AjNkN1GUexvXVQHsHmAYUROXTC83NQk4QWj6waMVyWVMiOgPQMpRO7iRfg0sysMT/jxpnYpS2sXrcZRI1+bF55nGRYE5l5sFd2PutjmD7UPnE4rf+q9iWqV/dwf/xhPmJT1Frn/NLcYNBdyjZgQ1/pwbysz17sTrfH37CzqQqF34ypBzPh14N8J61nqYGKJWQR5Q2FyAA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,65 +123,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 12, 2025 at 05:49:15PM +0200, David Hildenbrand wrote:
-> On 12.09.25 17:04, Helge Deller wrote:
-> > Commit ee62ce7a1d90 ("page_pool: Track DMA-mapped pages and unmap them when
-> > destroying the pool") changed PP_MAGIC_MASK from 0xFFFFFFFC to 0xc000007c on
-> > 32-bit platforms.
-> > 
-> > The function page_pool_page_is_pp() uses PP_MAGIC_MASK to identify page pool
-> > pages, but the remaining bits are not sufficient to unambiguously identify
-> > such pages any longer.
-> > 
-> > So page_pool_page_is_pp() now sometimes wrongly reports pages as page pool
-> > pages and as such triggers a kernel BUG as it believes it found a page pool
-> > leak.
-> > 
-> > There are patches upcoming where page_pool_page_is_pp() will not depend on
-> > PP_MAGIC_MASK and instead use page flags to identify page pool pages. Until
-> > those patches are merged, the easiest temporary fix is to disable the check
-> > on 32-bit platforms.
-> > 
-> > Cc: David Hildenbrand <david@redhat.com>
-> > Cc: Toke Høiland-Jørgensen <toke@redhat.com>
-> > Cc: Linux Memory Management List <linux-mm@kvack.org>
-> > Cc: Linux parisc List <linux-parisc@vger.kernel.org>
-> > Cc: <stable@vger.kernel.org> # v6.15+
-> > Signed-off-by: Helge Deller <deller@gmx.de>
-> > Link: https://www.spinics.net/lists/kernel/msg5849623.html
-> > Fixes: ee62ce7a1d90 ("page_pool: Track DMA-mapped pages and unmap them when destroying the pool")
-> > 
-> > diff --git a/include/linux/mm.h b/include/linux/mm.h
-> > index 1ae97a0b8ec7..f3822ae70a81 100644
-> > --- a/include/linux/mm.h
-> > +++ b/include/linux/mm.h
-> > @@ -4190,7 +4190,7 @@ int arch_lock_shadow_stack_status(struct task_struct *t, unsigned long status);
-> >    */
-> >   #define PP_MAGIC_MASK ~(PP_DMA_INDEX_MASK | 0x3UL)
-> > 
-> > -#ifdef CONFIG_PAGE_POOL
-> > +#if defined(CONFIG_PAGE_POOL) && defined(CONFIG_64BIT)
-> >   static inline bool page_pool_page_is_pp(const struct page *page)
-> >   {
-> >       treturn (page->pp_magic & PP_MAGIC_MASK) == PP_SIGNATURE;
-> > 
-> 
-> As a temporary fix this LGTM.
+> >
+> > > ---
+> > > +static void swap_table_free(struct swap_table *table)
+> > > +{
+> > > +       if (!SWP_TABLE_USE_PAGE) {
+> > > +               kmem_cache_free(swap_table_cachep, table);
+> > > +               return;
+> > > +       }
+> > > +
+> > > +       call_rcu(&(folio_page(virt_to_folio(table), 0)->rcu_head),
+> > > +                swap_table_free_folio_rcu_cb);
+> > > +}
+> >
+> > Can=E2=80=99t it simply be:
+> > virt_to_page(table)->rcu_head ?
+>
+> I'm not sure if we prefer folios when possible?
 
-Sure.  As a temporary fix, why not.
+Not sure either, but even Mathew still sometimes suggests using PAGE:
 
-I need to start the work replacing page_pool_page_is_pp() with using
-page type again tho.
+https://lore.kernel.org/lkml/aLrrQDCBzaMwwmA-@casper.infradead.org/
 
-	Byungchul
+BTW, "(folio_page(folio), 0)" looks quite strange. I mean, why is it 0
+instead of 1?
+Although we know it=E2=80=99s always one PAGE, 0 still seems strange.
 
-> But I want to hear other opinions.
-> 
-> Acked-by: David Hildenbrand <david@redhat.com>
-> 
-> --
-> Cheers
-> 
-> David / dhildenb
-> 
+>
+> Either way is fine, they are identical for this use case.
+>
+
+Thanks
+Barry
 
