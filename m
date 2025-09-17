@@ -4,202 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5698CA0EE8
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 05:01:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3762CAC598
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 05:04:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F33928E000B; Wed, 17 Sep 2025 01:01:53 -0400 (EDT)
+	id F13B98E000C; Wed, 17 Sep 2025 01:04:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0B858E0001; Wed, 17 Sep 2025 01:01:53 -0400 (EDT)
+	id EC45D8E0001; Wed, 17 Sep 2025 01:04:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD2D28E000B; Wed, 17 Sep 2025 01:01:53 -0400 (EDT)
+	id DB3018E000C; Wed, 17 Sep 2025 01:04:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CBC7C8E0001
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 01:01:53 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5B06DB91DB
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 05:01:53 +0000 (UTC)
-X-FDA: 83897544906.23.61D8F67
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 9D30C18000C
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 05:01:49 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=PsN7dAWz;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	spf=pass (imf24.hostedemail.com: domain of oliver.sang@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=oliver.sang@intel.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C1B6E8E0001
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 01:04:56 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 66BEF160217
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 05:04:56 +0000 (UTC)
+X-FDA: 83897552592.16.2D5FD25
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 2D1B080002
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 05:04:53 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=K4HdwQV8;
+	spf=pass (imf02.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758085310;
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1758085494;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=lhpyuXh0iCiCgyANr7TXzRXVOsypmB/kJJdN4f92m4Q=;
-	b=wEfZvKFZi7Vfy0B38VvTGQ7y5wYMsNJsTNZlonM2sl6bRWwmO/FVp/IwB0DzTC5cX+F/sP
-	3ncv27kY5HdB7mA0F/uDqisvPCI8uf+roFGGZNEJE4M5lpjvuRZVpGqdQCrJzZDX6F7rgQ
-	fj8mAOmtsKvaS/9s1c/tbrJbmXeIZJA=
-ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=PsN7dAWz;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	spf=pass (imf24.hostedemail.com: domain of oliver.sang@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=oliver.sang@intel.com;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=XZEz55vnKWns6VDkaWcQmypGBYAaCR3xPOFfGClLlqU=;
+	b=lbZdKPTA2PjQgzRdf8NAefd95l3/qWcwxgXq/u+/On8D2xYsVrcHtbUUtPRtUuqT5aqwhW
+	HF0SEh18kFsvWU7KQ3cpE+oA/xE3wwW0WT9AWUDMZYWaJt2lm+zJCE7DvGiYpP4w93gxwi
+	MOWBBy912OW9rHbAroIh8G091JjDUZg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758085494; a=rsa-sha256;
+	cv=none;
+	b=rnw7UAEOPtj/yll4eFY09Fn5ryjhArREF1ewBtoqWvv01n0IJf/carSUe5BzVkIRQs2BZT
+	nMpuK1qpigeZx9JWBqKfrdR9i1091O8dQ8f/8i0i0ewnblMkhMcK0r7wIb07cKJEAOVHLC
+	HzrysZWHVtDT+Gi8us2F8vSL2KVZA/Y=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=K4HdwQV8;
+	spf=pass (imf02.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1758085310; a=rsa-sha256;
-	cv=fail;
-	b=dhOeEV0Oy5Blojhjbpop83Oz5XpAwjmS1Wrez8QQrv8/OCuujgo6QnwV2FA67iFCyN0DqL
-	++9UkCdx+/y5ZAEiC4NXTvnURWyVcsiUy3TCmM7/GJkb3oWSOrDYp/PzRyfNoShNbuBd7N
-	uktLDU0YKuorPWIZJR543WJw5+2SYFM=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758085310; x=1789621310;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=du7Us7r4FQiH6TArOCG/PUpBC6JijYhWDyZ70YyCg48=;
-  b=PsN7dAWzuUy4Nh/XuEZH1HzGeLgeaap7WvndDM1xwnMr+kEy3SDFqQJR
-   3lkcqR0B+hq2+Eyl4/TT56dRBG6UQHRu1wWg12G+tAoM2tRyz5PYSBFgx
-   kAypQdeQdKt5PixaMHyZht4vmlemZ29DAp0JBmXwPcJqzXQy3syOaq4/z
-   qepIqVw280/RH9bjvLrue6YbgBPkX3ALT4Xj3kj/2bgVXcHtaQvBse7Z+
-   bi5pPASgYzvr2CnOPCUtzNNKfSuUhw5IuuIH7edLHHpYsZ0LB6/xh4XvT
-   oQMVz3h+MUhyhYf4Q6okO/uUq6V3IoJ8Wm/guIyhiHFFE0xBxyd1NOeAH
-   g==;
-X-CSE-ConnectionGUID: 0WKF3DAVSuqLPiGU4JqQJQ==
-X-CSE-MsgGUID: qxjjNOKrScCYkZeo82xROQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="64181197"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="64181197"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2025 22:01:48 -0700
-X-CSE-ConnectionGUID: mlx5w1ORTS6IhkPD0xNiwA==
-X-CSE-MsgGUID: 7zZiHBWySsGHiOMDMZWbLw==
+  t=1758085494; x=1789621494;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=X0Rfb5QCHwBe0RYYo786Yb7JEFiCMsaVK8QtiTrRVxE=;
+  b=K4HdwQV8Dz9yP9OYo0V3OJAxqjIw6tscuLcXweRht/mf4VKrVMfnzXTn
+   T/pT4zubk/iODPno7akNBJ+i9zWE32s1BJvEEJDPbktVqvqzDyjNzhegG
+   mdWFZPKNCovY8/tDtKIcDenyZK+0vha8S3Kxp6xx5Mdna0Ug0Lj0KW65i
+   z8Zk+YhO+Mg9RUyGgQU7xMrB/gKgkX16iC+xpYVPq3ahFaCOSI7tjiYsj
+   RmG7i06nNV/e3W6Urjt0kk6h44sum93J+cI7tjmkoCQ072t3aZs3XsvGN
+   Cl93hQCSFbFCI22K83CtBIIBvEclu7YnENAPH2nZxwPAfLY3C4ndEBVNB
+   w==;
+X-CSE-ConnectionGUID: x/LTKqQ4T8C1Nx+K50kShw==
+X-CSE-MsgGUID: tMwJCiifSwi/6R36tgdacg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11555"; a="71484289"
+X-IronPort-AV: E=Sophos;i="6.18,271,1751266800"; 
+   d="scan'208";a="71484289"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2025 22:04:53 -0700
+X-CSE-ConnectionGUID: sB/NHNXdQIqoO2ykPrcXBg==
+X-CSE-MsgGUID: Jad/lXalRXmHa4vZHqcc7g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,271,1751266800"; 
-   d="scan'208";a="174752068"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2025 22:01:48 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Tue, 16 Sep 2025 22:01:47 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17 via Frontend Transport; Tue, 16 Sep 2025 22:01:47 -0700
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (52.101.43.65) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Tue, 16 Sep 2025 22:01:45 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sCaZCNW5wJuy6YIjCydu0oF+52dBA+LyeBjulN7CkqU/GF6+g27uhYzZl59Iqyvfr7nu2QWniUosJodkDIZ+WwVZ8HWzFlAplQlX2Mx8HJlc6SCaxJo29QB326DLCPFKgfdXl+qb5WlqU9YS+ofk9BJV+OSbPVsVBODCIysA0x70K3723MTo+uYwQoeoEy0fRu3vlW5lBvRM5SqhXWY1KD+0YMbz1fLD9VoBSL0sZk0yijHCNmZAVYH27ihfeD/6OI1lybvcc8ghHU6N9dKLSbyCHRt87Qk2rxiHixQRL6vaSKFrB6QDmaMqM1IRldrAqL5YWoYAFx8KtepRYVf0Pw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lhpyuXh0iCiCgyANr7TXzRXVOsypmB/kJJdN4f92m4Q=;
- b=XFi2ivSiav9WOZNq8MuVfWYTi4Kvoe8ABTNrrTmQkLnjKnjbZfCzRHrBe7Dj2NxGzvYRp3nc91/fBIH27w14p0qOStG9WBrV0R+dm2wWTun5kOx0h4Zsn1lwKiPcTXCKoYiv6tt/Aw/Wqhpoex6K5VkBf2da1Q5u2PFAPhtrRoyEkO+RHhXT6KEm4y89oW4PQouQkbSR8L+PpZbcA5LGgqQEGR4+rp86uf3BlCUy4GLJnEXzbQC7A0RzIpaW/DBb5NsQgdHGYOF4Fc5KzJ9ngoyQxBwJDzu4ch8lptRWjtDqDKPXyST/ZvEXtI3vjwVFD3GI+uuTwIFA8GYayjO46w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SJ2PR11MB8587.namprd11.prod.outlook.com (2603:10b6:a03:568::21)
- by CY5PR11MB6258.namprd11.prod.outlook.com (2603:10b6:930:25::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9115.19; Wed, 17 Sep
- 2025 05:01:42 +0000
-Received: from SJ2PR11MB8587.namprd11.prod.outlook.com
- ([fe80::4050:8bc7:b7c9:c125]) by SJ2PR11MB8587.namprd11.prod.outlook.com
- ([fe80::4050:8bc7:b7c9:c125%5]) with mapi id 15.20.9115.020; Wed, 17 Sep 2025
- 05:01:42 +0000
-Date: Wed, 17 Sep 2025 13:01:34 +0800
-From: kernel test robot <oliver.sang@intel.com>
-To: Alexei Starovoitov <ast@kernel.org>
-CC: <oe-lkp@lists.linux.dev>, <lkp@intel.com>, Vlastimil Babka
-	<vbabka@suse.cz>, <kasan-dev@googlegroups.com>, <cgroups@vger.kernel.org>,
-	<linux-mm@kvack.org>, <oliver.sang@intel.com>
-Subject: [linux-next:master] [slab]  db93cdd664:
- BUG:kernel_NULL_pointer_dereference,address
-Message-ID: <202509171214.912d5ac-lkp@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-X-ClientProxiedBy: SG2PR02CA0126.apcprd02.prod.outlook.com
- (2603:1096:4:188::11) To SJ2PR11MB8587.namprd11.prod.outlook.com
- (2603:10b6:a03:568::21)
+   d="scan'208";a="175224112"
+Received: from lkp-server01.sh.intel.com (HELO 84a20bd60769) ([10.239.97.150])
+  by orviesa008.jf.intel.com with ESMTP; 16 Sep 2025 22:04:46 -0700
+Received: from kbuild by 84a20bd60769 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uykLT-00015t-1z;
+	Wed, 17 Sep 2025 05:04:43 +0000
+Date: Wed, 17 Sep 2025 13:04:11 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ethan Graham <ethan.w.s.graham@gmail.com>, ethangraham@google.com,
+	glider@google.com
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	andreyknvl@gmail.com, andy@kernel.org, brauner@kernel.org,
+	brendan.higgins@linux.dev, davem@davemloft.net, davidgow@google.com,
+	dhowells@redhat.com, dvyukov@google.com, elver@google.com,
+	herbert@gondor.apana.org.au, ignat@cloudflare.com, jack@suse.cz,
+	jannh@google.com, johannes@sipsolutions.net,
+	kasan-dev@googlegroups.com, kees@kernel.org,
+	kunit-dev@googlegroups.com, linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lukas@wunner.de,
+	rmoar@google.com, shuah@kernel.org, tarasmadan@google.com
+Subject: Re: [PATCH v1 09/10] fs/binfmt_script: add KFuzzTest target for
+ load_script
+Message-ID: <202509171240.sw10iAf6-lkp@intel.com>
+References: <20250916090109.91132-10-ethan.w.s.graham@gmail.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2PR11MB8587:EE_|CY5PR11MB6258:EE_
-X-MS-Office365-Filtering-Correlation-Id: d4d2cc52-1325-4a97-9f73-08ddf5a74afd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?USMeaV7qTrvI3H/7TB/PvbpnYN/lpZRnIrY8TpJc7dQmAEd5ctOH6O4U/Xol?=
- =?us-ascii?Q?RJdQqBpXgVJLun8Lt9AZ6Zn4c6euNi2w6eUMNDhJ9AnCvh+8PaExg5keShgs?=
- =?us-ascii?Q?8DZkyG+76pboJiD5pVovFQ1zfFOajLlq7816XEBgir8dgRsqdSYMtv4iVsfv?=
- =?us-ascii?Q?QOjcXO+03qMr64J+keivIspTkNRYpq4VzHeqHRd6eb2F2Y5QC4vC0zSr7Ve3?=
- =?us-ascii?Q?zMib/sYXc5g2NdvZBY9Jldzc0hB1ckPAO5+nGglRMqniNSR8MgS/UD0ajMKW?=
- =?us-ascii?Q?GCDdncL5Pm5LMZHdhlcyZNWUZwnOymVS6iPkNMVrG0meMbUsdt/NKxSLD2jQ?=
- =?us-ascii?Q?ZYzu8iC96yykU1q8XMjEh0E04+nngp4lP+ZlYFtQzSlm+58FemTsT2riYHAp?=
- =?us-ascii?Q?toLQcU7PrF6QF9u4YnRtVwxOKcBjpxSf6bqhE91c9XDikJO4Z8wlBGsMD0fH?=
- =?us-ascii?Q?mMfCfxrxR6aYUkx4waEjCSmHjfBuup6sgdU1p6u73pgMw73a5gVErQuR475F?=
- =?us-ascii?Q?bu1CicnEyxl1gPpnLXZn5CokxUezLmZ734Yrzm7rSwVjtLwQnBHkU6DluOPV?=
- =?us-ascii?Q?LBsISsL80LD2BMQ7KHiF2kFs0VHAzGnW6GHvVIDA9GskCusgrx9ZeIT/pIzy?=
- =?us-ascii?Q?0+x/79tD2Zjsv7TPKDvyFHTmJx0Fk07fyNnP8WklC3mCZ0kNTMHCIv1Aa9y7?=
- =?us-ascii?Q?phM/s+6VE1JpAJWwCtjZi9ZHXEftEeXM4cGKjoSW8KHTY0tKfTa+4Sl7kZdk?=
- =?us-ascii?Q?LqLbbLM9ET4HkbtOq66BhZtkywTHmutA4ihrMrJL++4IyT6KjiYoUpyns8Yh?=
- =?us-ascii?Q?Q349opfolVdVFMwZ6P2kZxgJ4oLxZSf7kem2j3LI8UCREF8gJ58KtqXLgtBD?=
- =?us-ascii?Q?n4RfujFEXqc/ogCYDuC56JSgVa8Pe2hY0aKI6ltnJuAYZsxBeW3376JNPp6P?=
- =?us-ascii?Q?aAYCZFcI084THgG2iBFr4QCAsCIA61P47DB1t01GVF+fpw791wAf1edVM0hO?=
- =?us-ascii?Q?d5rFWiYlGG1r1ocpQiJ2UkYhgqNucBwTRrS9AER2VvDQrVMUaz/R053uRw/s?=
- =?us-ascii?Q?XQwujeIFbIlqoMxZKDHvlljQgsQbmSQ9dCNJIaGN4c+ihpLIvlbiOQ7Tn5/K?=
- =?us-ascii?Q?acF7CcuDdT60s50Nb+er8EnivSaFE5RpOWFu6MUgwvgnXgkXvnLTOZHsro3O?=
- =?us-ascii?Q?5UyGPBHE5aEMiwRNawb07l5FMr1exC9t36iPqgC1rVHD7+B9n4LT/jdNY3dU?=
- =?us-ascii?Q?Pv+obc6xxMniNXwoKlR6U6OBcII32IqJ0lJ2maG6j5SdnKpfuczw8KvYJmGD?=
- =?us-ascii?Q?ZukKLeULTSdgQJAhgOv6o58dzHA0uerjLJ0txBAkR9bzV/i2RCGIajzXQf11?=
- =?us-ascii?Q?zRriBGp0leNsIIC/RafwJfqBdk/E?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR11MB8587.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?ffnI7wKFEHERYtFU3tRMzOdj63kwWunJQbYHGNkkbXiv+lzoeHiv04vUoGCH?=
- =?us-ascii?Q?PLH0Xodjk+LP5ieCzwcsh80gULJDikbaueq4/R/6/BWqBnrpC3wP/J+F1/mY?=
- =?us-ascii?Q?39XAkqfYiYBRUdiZdl0GGSJNUI5CS2/uMQ2bow5U9T+vGiVkpLvlC3LMTTJn?=
- =?us-ascii?Q?w0b3VF8IwvvyhZKgaJXqkH5z2mmz78Z8Vv8kZnOEGYfjPKDLT8YSmNgoU0Ll?=
- =?us-ascii?Q?HgDQ1ue2cDjdTLVoc153TgfirqgCLEKJPzIR82C8jdXc2rilDUcvnYkIfvWp?=
- =?us-ascii?Q?wVK1BlUXuvRQH1ycT8n1TlpOjbwR5dZoIJmdJT82pL6ji/PDVeLge/dKxoAt?=
- =?us-ascii?Q?/sKsGv53xBFfu5vg6yGzUAUtrxRarHRk37ujKOC8TAghSB42b70OQ43owL5/?=
- =?us-ascii?Q?mBRZxCsXKTt7We1eGbACdxb3ynK3AqZNwNIo8MNT3WoDfe++Or3m8tu8LJ6x?=
- =?us-ascii?Q?jFqt/gx/3x0RSKI0eh5Bqj5VFogxk/tPmCej01TTCPED/P8TPSYQoplzigk6?=
- =?us-ascii?Q?5L3VYG7miIR0FW63v5+AM+3Oby+2EMPrtTQcIL6pgC1Igh8vNSfRaA3loI4h?=
- =?us-ascii?Q?TVZE5wjDLKMrYNuaIG7QA/B7a/jZQFV7IX8TrU+R6peUTZf7tV612UrupjaX?=
- =?us-ascii?Q?ziuZlOrjqRLf7q5JYUmvZJFByjuY0uF80juF7kdjiOPBrDSMbasPX4pl9Q55?=
- =?us-ascii?Q?hTnLLVfDcy3iJMDxOXzrbcOg3vDQc9D9cdF/nyQZbjtA2w4emafQwZSIDqz+?=
- =?us-ascii?Q?U0J1lMWBu3aHidR23865SysurfKb2x6+V2U1dCgezSN2nlAQzOszSe0GaK9P?=
- =?us-ascii?Q?5o8liPOv2KMlkTkAvwtHJu7S2TIJN6SJqPozXHh/31WOGCTHBvVPvPBw7WXH?=
- =?us-ascii?Q?mO5n+WHJ63SxIjnBGgZJT2qlbXsqBD1Ovv/pTxVZnKQf5RMesU88IVuSncpq?=
- =?us-ascii?Q?V03p4DfH+OwDvb9zvhFwPx/wt1rLLV4IIXiCTQ5fHnSwHumBN7bTxXVapwkj?=
- =?us-ascii?Q?rquIGNwBTu6/7wCLvtUacd4gQP6I6b16ki9/539fE38kxLU6A0bETkPQaAv8?=
- =?us-ascii?Q?kLRB+si8u3M90ozpjfjKyqo+BmYgZJ7pJjB22RrAyiT3n2TcSG1B+7up7NZR?=
- =?us-ascii?Q?CP26UhHjCob7VLkmEgWCVV7cr/42oOwumqc4SB6Y3jLG/ZzjvuJsAsdTx8Vb?=
- =?us-ascii?Q?hi83myJikOXG5/u2cK7Bz4gTLKI6cGci8rThfundsZH0Lt+s53f6NaDgBtZb?=
- =?us-ascii?Q?W2EFB6NNjzVDPAMmnOarHctEFj6Wu2WpcpjGkm6B4yUpgFOij4oU2eQC7aos?=
- =?us-ascii?Q?SBJ0WzSv1Ze6vOApK90HAgTH3Zexk4HOKaTc47QyPU4HjR3TB0+HxoxtJM4B?=
- =?us-ascii?Q?cuMOvAygPbBqMNf4Cp7MM/azRIXS9V1y+RUECJS4/XTpTKzSIFhIyl+HkLR8?=
- =?us-ascii?Q?sVo45+V/93m72Y3Qlaw0AK271UeM+2F+Laq5Yi+F+luOp9FMBVH20/s0o1DM?=
- =?us-ascii?Q?eOY0g2OeubegN3hcGbb5xjWK/75a2c4STfIXUV3pU/24y8VjYCG6HApnyoLN?=
- =?us-ascii?Q?novzXVE5c442EH7M7sjqtAWj1x3FtIpnBha3Mvt/7bd99ZLzJ/9gKbNS7Tsw?=
- =?us-ascii?Q?ZQ=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: d4d2cc52-1325-4a97-9f73-08ddf5a74afd
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR11MB8587.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2025 05:01:42.5522
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kMwd3llPKZM1TQZfnlZU9waLiMufdnJGeFiHfjzYGb5i85BmIY1ovrhEMgNY0tKvR6yaAJ5HixCIMnlksB3uoQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR11MB6258
-X-OriginatorOrg: intel.com
-X-Rspamd-Queue-Id: 9D30C18000C
-X-Rspamd-Server: rspam05
-X-Stat-Signature: j6anfp4a38ar5occnpc3y7unm51gpy56
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250916090109.91132-10-ethan.w.s.graham@gmail.com>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 2D1B080002
+X-Stat-Signature: iu48i4sce4njr1a7dewaqziu9xke4hqa
 X-Rspam-User: 
-X-HE-Tag: 1758085309-511067
-X-HE-Meta: U2FsdGVkX18j2z3cb3shZV8iIlLtyQleZB60fcxq46v+lmPeWnsQ/iF2/hMuMCfyQd9rFKI9jCMVGnWdkZnR96z2LI1LWFaIRJwUEiS7dxMRu69apbLGTG7sXiNLo27x3MhlsgdKQjCFeciXt0HuRZWpMgnkGil9KmEaIbfyUOYeaehs4Ar4/OQ3OfIf6AVArVR4c2Kkekb75Gue65TdygAzqTEIAMxFhQeix4oQFMjXtXkK0TMXAKqIgBGwZuXnye3Me+cjuG8ljwLBClxAG89klHzlA7uAQX8y6XhYdGg0DpaWZ7YjAsYUOGRsaa/Bf8iFTv2w2sFBCL702xfbi7UeOxPyWIDnXdj3BHEgFBfSPi/Xm0csma9KpSd7rmHbsSoTofqDReE/nyL0wsdM+GLup3bBn3bbgoIUQu2VUIBJBgp6MhkF5dBcfMjQrre7hf1sC0Iv9IAmYI75U1/zIHJT2hfPJsTEBDE2NsJNAupUeAQlnatKIs4zVk1dq65NsyuFez+b/1xxnoa2BYfj7ev3CpIbbhtRTE8KsMgAsZkinshdjVcSeD55W2hd3dscS1Me5IgKVu1KJzZLYJcYbreiN0vpyWXPMwOgfXx4vLK9N7cOp0sQj5jeq1b0Vb4agqD037UwjIwwsdkHgdMBFRgr9Mtc+OpueZzid/ax5GPIGibbDDVqrNuusXfJFlbWyXWxCNnDo+tqhAasibK+MbFIUW1yoCkRpetj+JCe7V5HTpFC1mBi8L7ENXAaAKaQzxG9jgGisF/i7tvtUc57g7/CqgVOtEs2Kha0OdXvsWaFn1OevjKecHu49XrNEuQmbHZfAApY9ay9M0R5/dl8rbxXJ2u7UIyeFKWbhGcvO4L4XkDhnhPWaVe0p8dz4vzUMDraKPRSXTargRm/u0ms7CmAyPu9DibElhUS2/5n9YOxJfXBLtHMEoGaGqZcmstn2NW9WsQB7IuPWd1exak
- H99eyARc
- CBbLJu0Snc+1rOX4nh/PwUMgZ6b+S3Q0Tr7dP
+X-HE-Tag: 1758085493-831923
+X-HE-Meta: U2FsdGVkX18PScMrNCc1CVDPvWsmhtltTLz1IxUkCm1ACPnsE4iDPNFreqN3jo36bF+qYi3Ggqik7EzWpSbhYK4I4S5iB7L67xKNEqqGpN9kIjw8PEKGfiu7nmpoF6kcDe4j2vzXDBYIC9WYp7GLsBxympMYeFlLHSuv8wFh2U2UhsTh0tKWUhLj6oUxCQmMBwE9m0ZK7opPRBQz+lyrTPOJUJctnHIXvAnvJjzMhuEIohQoQphGtY83pMVYq7TDUd9GPAzGgbIpDKD+0yrCDN8FpqZsbGb6aG7PX6rEYA2/fcExsSpJjRrAcDDk3csZVsxYdS1u/4a7PWnci2aArkh3Syd40I1NHR7Jat6UhXVpcKYuuWdGlScP58TnzTIH4HHxDokIFT6AGA2hPiwURIRA1t37GSA7SfB6mdtiIr00MdT3KujcSrEnpVqueqyqHN0ap86iZkW+h3SLpN3e5Ocw8ho3JSpA0ARrXFSxyRILoC8dKGdBQLumIHg+Ki/vECM5OYpjRpuF0VczHts7/00FmFdh/jzC4h/pcCSHmumXtdKHKecUvIhfxLpAUvEy5WyWP8Und71s5PecdrmVhtgTOJxcju4HCHrkSIY9UzbEXVYlzUI2v25ZXS8Tx0+VYZ2Qtnz2NZGINeHJOIj9Kt8oNkrE9qGEYOulw+8j/qB9VSA/m3nmaN7xsP+xRYjMJDjr/pEMQNeJ0i6jUr7QswjEZqnqbRd6ZgIAVpg55NHUiDWilPxsFLUExYhwkeU9PO49tmAfl/W/JNUx6XDUQ6H9lkavH+sOzaUwUKDYQ76HdX/NX4t4ku7DLprofVOfco4IoQJbTE+ksHSB8hNMKU/POkFi/gWxA174GP/FJzxM8EzEBLotPeHHHvKB6E2pAyIWVm4at/ee6iOzUqrJZyBpzPGmtByKJ6HETz+z1r+4tGg3ymlEu2fBHewueQBt7WB2Wxb8IbamC+RtSVV
+ LyGPzSsd
+ CxdzRkYa3gxSlX5MJtXX+lhHDC1Q6SKN1Dr/xVHLk6/0+Twg17haQ/tKrjktnmhXFw2wm1+c8b/3w7hqwAhbo+g0S6GBLn/x4iJvSxsQl/BXh1eqFAQ9QYULKUohpLLfA2a+1vAocV776L1yR1hodlgeFy1jdA1/EkG7kt2aIrdYXkhqonyxnvTUY/GMM+1QITV0z124vzv2Cr6R6ZuvkNsnTlGTRfjYHkEWt+6qA9Q18egiLDH5afZcm8UPrucoh3k09IZRzcA7RsrJ+bmxzRIQ58ymVbKS1dcpGzCKMVlxMBQ8UHVT5cQSvAtituKPdIQGGGlTxi5GShTqX+dDj7X4dbXqyfIG5VtDi0UuZa8s+n6DKA+yR04cS2dCuAbnWEyoiV+1J/NWwbMQe97tc6hBTCd57rh/l+xbo4Qwdqcfwxsu0UyHOZbZpDd93Xe4x/sXcaCu5KJtXQ7xlshEUWUZ2rzMcm6rH/NLdSiFUWAD7XiivAovl3hYFPw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -208,127 +117,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Ethan,
 
+kernel test robot noticed the following build warnings:
 
-Hello,
+[auto build test WARNING on akpm-mm/mm-nonmm-unstable]
+[also build test WARNING on herbert-cryptodev-2.6/master herbert-crypto-2.6/master linus/master v6.17-rc6 next-20250916]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-kernel test robot noticed "BUG:kernel_NULL_pointer_dereference,address" on:
-
-commit: db93cdd664fa02de9be883dd29343b21d8fc790f ("slab: Introduce kmalloc_nolock() and kfree_nolock().")
-https://git.kernel.org/cgit/linux/kernel/git/next/linux-next.git master
-
-in testcase: boot
-
-config: i386-randconfig-062-20250913
-compiler: clang-20
-test machine: qemu-system-x86_64 -enable-kvm -cpu SandyBridge -smp 2 -m 16G
-
-(please refer to attached dmesg/kmsg for entire log/backtrace)
-
-
+url:    https://github.com/intel-lab-lkp/linux/commits/Ethan-Graham/mm-kasan-implement-kasan_poison_range/20250916-210448
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-nonmm-unstable
+patch link:    https://lore.kernel.org/r/20250916090109.91132-10-ethan.w.s.graham%40gmail.com
+patch subject: [PATCH v1 09/10] fs/binfmt_script: add KFuzzTest target for load_script
+config: i386-randconfig-013-20250917 (https://download.01.org/0day-ci/archive/20250917/202509171240.sw10iAf6-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250917/202509171240.sw10iAf6-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <oliver.sang@intel.com>
-| Closes: https://lore.kernel.org/oe-lkp/202509171214.912d5ac-lkp@intel.com
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202509171240.sw10iAf6-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   In file included from fs/binfmt_script.c:166:
+   In file included from fs/tests/binfmt_script_kfuzz.c:8:
+>> include/linux/kfuzztest.h:135:3: warning: format specifies type 'unsigned long' but the argument has type 'int' [-Wformat]
+     134 |         pr_info("reloc_table: { num_entries = %u, padding = %u } @ offset 0x%lx", rt->num_entries, rt->padding_size,
+         |                                                                             ~~~
+         |                                                                             %x
+     135 |                 (char *)rt - (char *)regions);
+         |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/printk.h:585:34: note: expanded from macro 'pr_info'
+     585 |         printk(KERN_INFO pr_fmt(fmt), ##__VA_ARGS__)
+         |                                 ~~~     ^~~~~~~~~~~
+   include/linux/printk.h:512:60: note: expanded from macro 'printk'
+     512 | #define printk(fmt, ...) printk_index_wrap(_printk, fmt, ##__VA_ARGS__)
+         |                                                     ~~~    ^~~~~~~~~~~
+   include/linux/printk.h:484:19: note: expanded from macro 'printk_index_wrap'
+     484 |                 _p_func(_fmt, ##__VA_ARGS__);                           \
+         |                         ~~~~    ^~~~~~~~~~~
+   In file included from fs/binfmt_script.c:166:
+   In file included from fs/tests/binfmt_script_kfuzz.c:8:
+   include/linux/kfuzztest.h:141:37: warning: format specifies type 'unsigned long' but the argument has type 'int' [-Wformat]
+     141 |         pr_info("payload: [0x%lx, 0x%lx)", (char *)payload_start - (char *)regions,
+         |                              ~~~           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+         |                              %x
+   include/linux/printk.h:585:34: note: expanded from macro 'pr_info'
+     585 |         printk(KERN_INFO pr_fmt(fmt), ##__VA_ARGS__)
+         |                                 ~~~     ^~~~~~~~~~~
+   include/linux/printk.h:512:60: note: expanded from macro 'printk'
+     512 | #define printk(fmt, ...) printk_index_wrap(_printk, fmt, ##__VA_ARGS__)
+         |                                                     ~~~    ^~~~~~~~~~~
+   include/linux/printk.h:484:19: note: expanded from macro 'printk_index_wrap'
+     484 |                 _p_func(_fmt, ##__VA_ARGS__);                           \
+         |                         ~~~~    ^~~~~~~~~~~
+   In file included from fs/binfmt_script.c:166:
+   In file included from fs/tests/binfmt_script_kfuzz.c:8:
+   include/linux/kfuzztest.h:142:3: warning: format specifies type 'unsigned long' but the argument has type 'int' [-Wformat]
+     141 |         pr_info("payload: [0x%lx, 0x%lx)", (char *)payload_start - (char *)regions,
+         |                                     ~~~
+         |                                     %x
+     142 |                 (char *)payload_end - (char *)regions);
+         |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/printk.h:585:34: note: expanded from macro 'pr_info'
+     585 |         printk(KERN_INFO pr_fmt(fmt), ##__VA_ARGS__)
+         |                                 ~~~     ^~~~~~~~~~~
+   include/linux/printk.h:512:60: note: expanded from macro 'printk'
+     512 | #define printk(fmt, ...) printk_index_wrap(_printk, fmt, ##__VA_ARGS__)
+         |                                                     ~~~    ^~~~~~~~~~~
+   include/linux/printk.h:484:19: note: expanded from macro 'printk_index_wrap'
+     484 |                 _p_func(_fmt, ##__VA_ARGS__);                           \
+         |                         ~~~~    ^~~~~~~~~~~
+   3 warnings generated.
 
 
-[    7.101117][    T0] BUG: kernel NULL pointer dereference, address: 00000010
-[    7.102290][    T0] #PF: supervisor read access in kernel mode
-[    7.103219][    T0] #PF: error_code(0x0000) - not-present page
-[    7.104161][    T0] *pde = 00000000
-[    7.104762][    T0] Thread overran stack, or stack corrupted
-[    7.105726][    T0] Oops: Oops: 0000 [#1]
-[    7.106410][    T0] CPU: 0 UID: 0 PID: 0 Comm: swapper Tainted: G                T   6.17.0-rc3-00014-gdb93cdd664fa #1 NONE  40eff3b43e4f0000b061f2e660abd0b2911f31b1
-[    7.108712][    T0] Tainted: [T]=RANDSTRUCT
-[    7.109368][    T0] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[ 7.110952][ T0] EIP: kmalloc_nolock_noprof (mm/slub.c:5607) 
-[ 7.112838][ T0] Code: 90 90 90 90 90 89 45 bc 0f bd 75 bc 75 05 be ff ff ff ff 46 83 fe 0e 0f 83 b6 01 00 00 6b c7 38 8b 84 b0 b4 79 d0 b2 89 45 ec <8b> 40 10 a9 00 00 01 00 75 1b 8b 0d ec 28 db b3 31 f6 a9 87 04 00
-All code
-========
-   0:	90                   	nop
-   1:	90                   	nop
-   2:	90                   	nop
-   3:	90                   	nop
-   4:	90                   	nop
-   5:	89 45 bc             	mov    %eax,-0x44(%rbp)
-   8:	0f bd 75 bc          	bsr    -0x44(%rbp),%esi
-   c:	75 05                	jne    0x13
-   e:	be ff ff ff ff       	mov    $0xffffffff,%esi
-  13:	46 83 fe 0e          	rex.RX cmp $0xe,%esi
-  17:	0f 83 b6 01 00 00    	jae    0x1d3
-  1d:	6b c7 38             	imul   $0x38,%edi,%eax
-  20:	8b 84 b0 b4 79 d0 b2 	mov    -0x4d2f864c(%rax,%rsi,4),%eax
-  27:	89 45 ec             	mov    %eax,-0x14(%rbp)
-  2a:*	8b 40 10             	mov    0x10(%rax),%eax		<-- trapping instruction
-  2d:	a9 00 00 01 00       	test   $0x10000,%eax
-  32:	75 1b                	jne    0x4f
-  34:	8b 0d ec 28 db b3    	mov    -0x4c24d714(%rip),%ecx        # 0xffffffffb3db2926
-  3a:	31 f6                	xor    %esi,%esi
-  3c:	a9                   	.byte 0xa9
-  3d:	87 04 00             	xchg   %eax,(%rax,%rax,1)
+vim +135 include/linux/kfuzztest.h
 
-Code starting with the faulting instruction
-===========================================
-   0:	8b 40 10             	mov    0x10(%rax),%eax
-   3:	a9 00 00 01 00       	test   $0x10000,%eax
-   8:	75 1b                	jne    0x25
-   a:	8b 0d ec 28 db b3    	mov    -0x4c24d714(%rip),%ecx        # 0xffffffffb3db28fc
-  10:	31 f6                	xor    %esi,%esi
-  12:	a9                   	.byte 0xa9
-  13:	87 04 00             	xchg   %eax,(%rax,%rax,1)
-[    7.115899][    T0] EAX: 00000000 EBX: 00000101 ECX: 00000200 EDX: 00000000
-[    7.116940][    T0] ESI: 00000009 EDI: 0000000e EBP: b2d07d18 ESP: b2d07cd4
-[    7.118013][    T0] DS: 007b ES: 007b FS: 0000 GS: 0000 SS: 0068 EFLAGS: 00210002
-[    7.119201][    T0] CR0: 80050033 CR2: 00000010 CR3: 03672000 CR4: 00000090
-[    7.120263][    T0] Call Trace:
-[    7.120791][    T0] Modules linked in:
-[    7.121455][    T0] CR2: 0000000000000010
-[    7.122145][    T0] ---[ end trace 0000000000000000 ]---
-[ 7.123070][ T0] EIP: kmalloc_nolock_noprof (mm/slub.c:5607) 
-[ 7.123973][ T0] Code: 90 90 90 90 90 89 45 bc 0f bd 75 bc 75 05 be ff ff ff ff 46 83 fe 0e 0f 83 b6 01 00 00 6b c7 38 8b 84 b0 b4 79 d0 b2 89 45 ec <8b> 40 10 a9 00 00 01 00 75 1b 8b 0d ec 28 db b3 31 f6 a9 87 04 00
-All code
-========
-   0:	90                   	nop
-   1:	90                   	nop
-   2:	90                   	nop
-   3:	90                   	nop
-   4:	90                   	nop
-   5:	89 45 bc             	mov    %eax,-0x44(%rbp)
-   8:	0f bd 75 bc          	bsr    -0x44(%rbp),%esi
-   c:	75 05                	jne    0x13
-   e:	be ff ff ff ff       	mov    $0xffffffff,%esi
-  13:	46 83 fe 0e          	rex.RX cmp $0xe,%esi
-  17:	0f 83 b6 01 00 00    	jae    0x1d3
-  1d:	6b c7 38             	imul   $0x38,%edi,%eax
-  20:	8b 84 b0 b4 79 d0 b2 	mov    -0x4d2f864c(%rax,%rsi,4),%eax
-  27:	89 45 ec             	mov    %eax,-0x14(%rbp)
-  2a:*	8b 40 10             	mov    0x10(%rax),%eax		<-- trapping instruction
-  2d:	a9 00 00 01 00       	test   $0x10000,%eax
-  32:	75 1b                	jne    0x4f
-  34:	8b 0d ec 28 db b3    	mov    -0x4c24d714(%rip),%ecx        # 0xffffffffb3db2926
-  3a:	31 f6                	xor    %esi,%esi
-  3c:	a9                   	.byte 0xa9
-  3d:	87 04 00             	xchg   %eax,(%rax,%rax,1)
-
-Code starting with the faulting instruction
-===========================================
-   0:	8b 40 10             	mov    0x10(%rax),%eax
-   3:	a9 00 00 01 00       	test   $0x10000,%eax
-   8:	75 1b                	jne    0x25
-   a:	8b 0d ec 28 db b3    	mov    -0x4c24d714(%rip),%ecx        # 0xffffffffb3db28fc
-  10:	31 f6                	xor    %esi,%esi
-  12:	a9                   	.byte 0xa9
-  13:	87 04 00             	xchg   %eax,(%rax,%rax,1)
-
-
-The kernel config and materials to reproduce are available at:
-https://download.01.org/0day-ci/archive/20250917/202509171214.912d5ac-lkp@intel.com
-
-
+6f8f11abdf5c57 Ethan Graham 2025-09-16  117  
+6f8f11abdf5c57 Ethan Graham 2025-09-16  118  /*
+6f8f11abdf5c57 Ethan Graham 2025-09-16  119   * Dump some information on the parsed headers and payload. Can be useful for
+6f8f11abdf5c57 Ethan Graham 2025-09-16  120   * debugging inputs when writing an encoder for the KFuzzTest input format.
+6f8f11abdf5c57 Ethan Graham 2025-09-16  121   */
+6f8f11abdf5c57 Ethan Graham 2025-09-16  122  __attribute__((unused)) static inline void kfuzztest_debug_header(struct reloc_region_array *regions,
+6f8f11abdf5c57 Ethan Graham 2025-09-16  123  								  struct reloc_table *rt, void *payload_start,
+6f8f11abdf5c57 Ethan Graham 2025-09-16  124  								  void *payload_end)
+6f8f11abdf5c57 Ethan Graham 2025-09-16  125  {
+6f8f11abdf5c57 Ethan Graham 2025-09-16  126  	uint32_t i;
+6f8f11abdf5c57 Ethan Graham 2025-09-16  127  
+6f8f11abdf5c57 Ethan Graham 2025-09-16  128  	pr_info("regions: { num_regions = %u } @ %px", regions->num_regions, regions);
+6f8f11abdf5c57 Ethan Graham 2025-09-16  129  	for (i = 0; i < regions->num_regions; i++) {
+6f8f11abdf5c57 Ethan Graham 2025-09-16  130  		pr_info("  region_%u: { start: 0x%x, size: 0x%x }", i, regions->regions[i].offset,
+6f8f11abdf5c57 Ethan Graham 2025-09-16  131  			regions->regions[i].size);
+6f8f11abdf5c57 Ethan Graham 2025-09-16  132  	}
+6f8f11abdf5c57 Ethan Graham 2025-09-16  133  
+6f8f11abdf5c57 Ethan Graham 2025-09-16  134  	pr_info("reloc_table: { num_entries = %u, padding = %u } @ offset 0x%lx", rt->num_entries, rt->padding_size,
+6f8f11abdf5c57 Ethan Graham 2025-09-16 @135  		(char *)rt - (char *)regions);
+6f8f11abdf5c57 Ethan Graham 2025-09-16  136  	for (i = 0; i < rt->num_entries; i++) {
+6f8f11abdf5c57 Ethan Graham 2025-09-16  137  		pr_info("  reloc_%u: { src: %u, offset: 0x%x, dst: %u }", i, rt->entries[i].region_id,
+6f8f11abdf5c57 Ethan Graham 2025-09-16  138  			rt->entries[i].region_offset, rt->entries[i].value);
+6f8f11abdf5c57 Ethan Graham 2025-09-16  139  	}
+6f8f11abdf5c57 Ethan Graham 2025-09-16  140  
+6f8f11abdf5c57 Ethan Graham 2025-09-16  141  	pr_info("payload: [0x%lx, 0x%lx)", (char *)payload_start - (char *)regions,
+6f8f11abdf5c57 Ethan Graham 2025-09-16  142  		(char *)payload_end - (char *)regions);
+6f8f11abdf5c57 Ethan Graham 2025-09-16  143  }
+6f8f11abdf5c57 Ethan Graham 2025-09-16  144  
 
 -- 
 0-DAY CI Kernel Test Service
 https://github.com/intel/lkp-tests/wiki
-
 
