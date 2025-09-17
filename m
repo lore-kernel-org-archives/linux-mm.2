@@ -4,92 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A2EDCAC59A
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 20:29:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B37F9CAC59A
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 20:31:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E59028E0027; Wed, 17 Sep 2025 16:29:17 -0400 (EDT)
+	id A71078E0012; Wed, 17 Sep 2025 16:31:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E090E8E0012; Wed, 17 Sep 2025 16:29:17 -0400 (EDT)
+	id A16D88E006D; Wed, 17 Sep 2025 16:31:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1EC78E0027; Wed, 17 Sep 2025 16:29:17 -0400 (EDT)
+	id 7F4898E0012; Wed, 17 Sep 2025 16:31:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C58C28E0012
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 16:29:17 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6012ABA7C4
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 20:29:17 +0000 (UTC)
-X-FDA: 83899881954.30.202EB48
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf26.hostedemail.com (Postfix) with ESMTP id A99DA140004
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 20:29:15 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=wFEBCd+F;
-	spf=none (imf26.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C8928E006B
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 16:31:53 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id F3359C068B
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 20:31:52 +0000 (UTC)
+X-FDA: 83899888464.05.2A34169
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 12A4C2000C
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 20:31:50 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="Guac/vBp";
+	spf=pass (imf13.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758140955;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1758141111;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w1fulQ0gQjzyFPF7toelr6M7l0Oc8OAf+GJq3MYg+zc=;
-	b=erJj/NV9U1jpsyqOLytf6t2D02t+zkY4IyArxZjyVOmKSBhp+Gl9wYubUuKedTGWVumhiT
-	fOZ2bSeEOFR7co7ZZm+77R937KekZo8FunvjAj/9Ew5wsI+BCmQ2uwDUL4oQcppsGa2oRh
-	bGWzSaAzkQ0Pw+FurcgwQAKqkw9ont4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758140955; a=rsa-sha256;
-	cv=none;
-	b=gXYypIIbMIhGYPZdCrDDJT9GGiU5mSIPdsFP4OSGTGGO8k5xGnH7gBMMlaE9o/KcIEn+Ru
-	J+uR1ZXKyP0+iF+1Ws0CUU7P9GKh5cVNORTqunpLmwBCdofa2N0UPFT7GYnKevTPXmwcX2
-	hkIIc5GJCA7mHUzq0ZVdwBu2wE6pKiE=
+	bh=5OBIs0bUsQlBfNz/o3OM/cckvzwG61wfY25aaGHql4M=;
+	b=eNBrSN5cP79iN58EaAAjAccaGWCV1q0DWTXTpfkO2ffgG+UgrQlxYc9TuXwaSulShukxtG
+	L3Ob+/dCBMF7GWBx3q+MHq4HHynEZTzuzAMdiHlossB9mSGvyq0HUuWPwUgnhImMahfEgS
+	mGemRIQrMhSjAZ7TE0WZn+j2n6NkeFo=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=wFEBCd+F;
-	spf=none (imf26.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description;
-	bh=w1fulQ0gQjzyFPF7toelr6M7l0Oc8OAf+GJq3MYg+zc=; b=wFEBCd+FzEQc7BlKjb+v53jCY6
-	JCiORP3QCMwGeNazAdH3o3scAQiI4/Z/E0SYboN2gfHysz+J44RBzGMy+qDQpmvcV8Ht+HL/bq3Rj
-	R+D+36kVQPIjBho1YiVAg5qleJ6TyNmitB62iEOnQwU9WoLAnunQdSYXpVfvfFC8q9pAUFEOd0R6a
-	+F/VSP16v1Tavpahim8UWx++scDN+ntaVdlBywL6U9lWWKY4g4vdj8gGGDSHe80YPcebaM/RFUTzi
-	IIkw/O8wQr8ki3yF8y93qUfRAHW/nrRLfSN1CTRYoxiDvjwqP1GZzCcIW9CDoJ9G3itL2R/1htLop
-	RN8WvW5A==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uyymA-00000007q9U-0IXT;
-	Wed, 17 Sep 2025 20:29:14 +0000
-Date: Wed, 17 Sep 2025 21:29:14 +0100
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Max Kellermann <max.kellermann@ionos.com>
-Cc: Mateusz Guzik <mjguzik@gmail.com>,
-	linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	ceph-devel@vger.kernel.org
-Subject: Re: Need advice with iput() deadlock during writeback
-Message-ID: <20250917202914.GZ39973@ZenIV>
-References: <CAKPOu+-QRTC_j15=Cc4YeU3TAcpQCrFWmBZcNxfnw1LndVzASg@mail.gmail.com>
- <4z3imll6zbzwqcyfl225xn3rc4mev6ppjnx5itmvznj2yormug@utk6twdablj3>
- <CAKPOu+--m8eppmF5+fofG=AKAMu5K_meF44UH4XiL8V3_X_rJg@mail.gmail.com>
- <CAGudoHEqNYWMqDiogc9Q_s9QMQHB6Rm_1dUzcC7B0GFBrqS=1g@mail.gmail.com>
- <20250917201408.GX39973@ZenIV>
- <CAKPOu+_WNgA=8jUa5BiB0_3c+4EoKJdoh9S-tCEuz=3o0WpsiA@mail.gmail.com>
+	imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="Guac/vBp";
+	spf=pass (imf13.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758141111; a=rsa-sha256;
+	cv=none;
+	b=VAa+g5bFRp3uWnFN2aLO94j/MvYjrlm6PH6b9iQhc/OymsyYstG8LUL3UILNpxGzBA6Uyy
+	MEpDrkAbChPl86nhloDPznlxRpn+CqtGB9YbbKbKIBovZc494me60xq3452MTGS28un035
+	p2FM7Ydsq/rIlbxhbMMiLlgFYD1LFwo=
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-265f460ae7bso36415ad.0
+        for <linux-mm@kvack.org>; Wed, 17 Sep 2025 13:31:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1758141110; x=1758745910; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5OBIs0bUsQlBfNz/o3OM/cckvzwG61wfY25aaGHql4M=;
+        b=Guac/vBpJUh7gd5A3CXaxXJXsTMboWrpEASW825kraAKiotQhxtuRtVmKOCiTiysqA
+         3t1NZANEIZZ5IbdEK91KHkfFJUEnl2rUxIIOMoSGlXC4aMVl7usTMM4yWrYdORtqblFv
+         RPPLyvOOKOHji0wkpBXlbnpnqHcVQLJ2YpervqQh50gsr4FqWvzU7R6Z3ujINHnoCgaO
+         Nev04hygVMOqsmqV1gJFgonaT7GhjK+m2CzP7Gmw/5hr7yrrtFxGnWFLQ1n67KP+BcIX
+         KUAvJlhedFwclOimYKa/nBYxzL5GGsLxV/C18gysqsz0nPUoL9f0Ry5jrPqB1jVSaaRM
+         ZsIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758141110; x=1758745910;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5OBIs0bUsQlBfNz/o3OM/cckvzwG61wfY25aaGHql4M=;
+        b=KMCA1B4LJ5vceoGeI5hl+I0atIwj+kH0pfBwCcSyB2CKT0LvohDmT5d59ZyqVe8gNA
+         CTBhSx7xu5dugf94GZMfYFIaufrsavHr2+MWRJ5dzj6gZ/q6kV/dd+eATyodgxxEZLK8
+         z+RVuSPs1k+ByfXC7TJJ4qE7J4VBiJLgHxNam3J5nmlB4FlYFfY1bwKry6FC+4WlRNqk
+         U5EkDPnf8ek6b3ya0MNuS/B8bqp/zwi3i6g+cqdyhkspflB9h/7G402RKroUsGYTRgDU
+         cyxI2FoNbnBCnkdKemeW6FLTcYkqqFO6eqvZ7syI+Pd5oLCct825MubSAiSEdcyC9PPH
+         P7UQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVO5CvXpW6qdrV3Qla5d0gdat5XapVBWOJl++Bf2bgtAzuqJcZy9pDrzHpjWnQYZFFyuWUUg9qUGA==@kvack.org
+X-Gm-Message-State: AOJu0Yz3Vg71kfcf07wTHaf8Ga2U2n8ieo4vWlkkfCgnLwOhRnENnfvq
+	FLf6zUjwD+JCKSgAwcU7ptNZteRWUGsp35r0XY7IWm8I0pchMf7SD+mehEs8fZGQIMbXOLGph4v
+	2RswGrbVqOAcscvwwqJqSKdOGHZZDrs9O/Frp9XQb
+X-Gm-Gg: ASbGncsD6KRU9k52oWI4GQr2Azp/ikuyZ5N4HakNyHIIEJZ81WEOne1I4cVdrPwujIG
+	eE4gFxU7aQVn35pUUqGUFBf53zBbcZLS6LIY8cgiPtKFC7lqwiuNg1wcnsvurT18wIhCcxEOTOu
+	WIkoJho19d+flAv4hBe98aQEduNGVjgXzZEZ0A+jaerc2lUYdYRZFBp2PKKDJYN4sb/4wxkXFJo
+	enzjIkqEbCyAbiMGeotmCCUZF7daIKL/AVxoRjgoRBP2yZUhgAANdsU0xRD8nQ=
+X-Google-Smtp-Source: AGHT+IGi1Cl1cxLljbDRwITE9vfhwz+DrDPsOJguUQv2zzG51+QwzyCb4weDhywo5yliSwxcW6sHs7Lpaphswpsb2Ak=
+X-Received: by 2002:a17:902:e550:b0:24c:f4b1:baaf with SMTP id
+ d9443c01a7336-26808a33cc5mr6423875ad.1.1758141109587; Wed, 17 Sep 2025
+ 13:31:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAKPOu+_WNgA=8jUa5BiB0_3c+4EoKJdoh9S-tCEuz=3o0WpsiA@mail.gmail.com>
-X-Rspamd-Queue-Id: A99DA140004
-X-Stat-Signature: bhq1ywpa1ycst64nhumfym3ibwbqqs9m
+References: <20250915163838.631445-1-kaleshsingh@google.com>
+ <20250915163838.631445-7-kaleshsingh@google.com> <eb7820ed-3351-4cb5-8341-d6a48ed7746f@redhat.com>
+ <CAC_TJvctkyGEKv8mVE83D2DzCd-HiXh9co_DuZfwuF86FJoiJw@mail.gmail.com> <322fd5d2-d7f4-40d8-8a06-6e7c5e9ef180@redhat.com>
+In-Reply-To: <322fd5d2-d7f4-40d8-8a06-6e7c5e9ef180@redhat.com>
+From: Kalesh Singh <kaleshsingh@google.com>
+Date: Wed, 17 Sep 2025 13:31:37 -0700
+X-Gm-Features: AS18NWACcEbm1lm4H8WkQEbyfcTpHlrzU-8yyCAEibl_VJPt8WSVNJn2mY9O19Y
+Message-ID: <CAC_TJvf84Zerwe7-UiRW3AYnC=_Zu3tVSSWTRcaEyoRGEnBHug@mail.gmail.com>
+Subject: Re: [PATCH v2 6/7] mm: add assertion for VMA count limit
+To: David Hildenbrand <david@redhat.com>
+Cc: akpm@linux-foundation.org, minchan@kernel.org, lorenzo.stoakes@oracle.com, 
+	Liam.Howlett@oracle.com, rppt@kernel.org, pfalcato@suse.de, 
+	kernel-team@android.com, android-mm@google.com, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Kees Cook <kees@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
+	Dietmar Eggemann <dietmar.eggemann@arm.com>, Ben Segall <bsegall@google.com>, 
+	Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, Jann Horn <jannh@google.com>, 
+	Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-trace-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: rugay6fmjisxcewq95wri4ng5i5nycna
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1758140955-210340
-X-HE-Meta: U2FsdGVkX1+rHO16V41EorJqxwYXqmDIACF87qVUIYdjtSg7Bb0+4Z7dDKb54K12+dYEA21FcZTuWG4AqoUQfP1YDlz75jlSo97Z3v8CxIyh8980j15//mvl7fHGw8ZnLcjxpPcJe4yjRLxIlREe+lBywG3BGRhu7wvu6Rvmx4itKqNgk4X/ssp0RHCUxwPROHZDxmN+YuR7FjYnV92ycsm5tpJ4qVtT9LQVZOVMjCZDfWjktzHyA0HFscFVOZxPwY9QkgB77freEKXZSc86xW7fmFZcrFtC/01hncxoQ2A2pb4bOU5qXPZ5odA9FPcNhJM+jpdmdf5u7MjXiCUV6K/NwSyqjNI4JIbWsoCuherGKKNaNTFRFXbDmczmjZYYEJJJthGLxoovsOPjLwr6SR9t3BqfGycpxj0Vf/PMJv5TMU0I3L+a7mk3+lycv8kSa6iotiCK1UNRQ0bS/q0oL+801YsU8tcpeb6AUAtK82e9Pmsxxf7QxEs+DpkfPZDWPyEXh9Hwbz5Mlfqd0XTG0L376WDYLcoFbnDU6M82OBXmxVe4FHQaG9zYGhMYkkntkIAtLQg4hu2OYttyiUqX3HDsLRmZWQpUOlrrtwSdKhqBb9+3KXn4fzUaz2z7xPn/ywaH2MGJ00hmfwTv1E/4kcLC6JN2+YsCTSNk/FS1mznyNzD7oV/+poXmMKwVoVHmXYTJGjs+JryIgWZOfgGSbuTgou5NQxTCIhNWEYO6i4E7mIkbIQCC9a0d999GRAoxHMbAKhj9JCdkYP7DxEw/+nU4GMxMiuWFMN5enh/QI0LWXZw06587kfycN7wjxuAMfaeMNs6fmiMcDzmoNLfFLmxYF9FA40bINcqp13OoXkaVRAghFNR3Pf/TAd7me04diYUI4rqyelALV2Mvb4kOrwmnmbp2rgPoQZkp8RPM85RmiMG+fsaSJNjz+PwovCJ5RXQKH1/CJesHt0w3+BP
- 8AQvjJX7
- JtUu0LWyfJZ/PyOZvQl9HMFKiAHvcXoevpLXWtXfIzTdQTU1XBJxvqOMTf7dx46zVwP8CZWTOVOL8mXKGSkYtPxXBhPoFJ57iY3ZotIBj38E7D5+ZaXNNFCtY16mNgxGY30PodjlZ+1YYMnoU1KQtJO53Pts9GxDNalpsC244aoOBKVs2jDP8bx9CGLgAGMVmNQODJt8B8NLkk83GXl22i23aId4DFNoSR9B6rVH0TMBtvtGAVyHUY6s40Xcv9BF2IcNA7qe7xWjva/7Lsz8wbkfjVa9GPAc/DuK661y2X6CrK9E3qLHb3qNPeDzPRhC8PZKuqjg2UroqKjWweRboN80KK6BJAHmYywokXJ6ys1HanEU7L0slgVn1YujJLNpSipTjusOll2xbAGdG2iou0m6+c75/wD2mMZsEOy8urO8lgHkdV4hcosLq0/wsED1l10z4B3p3kFwSMge5jcv6tdtgPdL+/kildbOaWMo0ZQhaRFENBUIR/AkCFgix+zaD20wW3GBQwWRbP6w=
+X-Rspamd-Queue-Id: 12A4C2000C
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1758141110-999893
+X-HE-Meta: U2FsdGVkX19Ijt76dg1Qi34uW8OAGZPgy5ja2T2MAVdBOoxfRxf/3YxcTKH8zrvXk7hknnPKR7L00PeS8jNwsNGWAj7Z1cQZLyObQtyBuArs5RcNMF3O5j8+51D4hlCr96SQtC44tKVKBNwh9OVWqeRpbICUy4md5ygicbBJ75g/Kd0tASH8GFqYxwKgEEqplWWs/o9PSI+fFJNHcfNQ/j0P1E3d8d6g90bEsy9FV2DrcAnCj2y+go9Yu5nzjHgk1bIaTJcMvYwOP/r6QTqelfSr/EWUnKFD81+5qc8sVATWXts4zOwM3wpA03xG+zD8uxZ4kleeEkv3vfsI28MCmFe3Ld5e/lP2RDC7nYSH0tNyyIF1a1QgUwl+RQUNeXWZdr/8rnS6p2Y/T1DzRaG70bkC4xCiyVpgbcVrYOzaqGSb/00EeU4OV8YXt/Ces0UZEetXDTpkgcsywwuMt19GidIxQ4O7e6Dqzc19E6qqJ1owIqWdnx+Rw8r15TUeC6n6o4SuOpkBhiZ/QYYoxLB/a/x6n34YmZzBV4dGvuHXfPOH8WEEHMIPgsly5E+gIWziA0nC9sbXDhNC2RC1K6E2zz7p0fetDbDyBS6jvW4oZ6PY8bZu/Wc8KRzzK6tGOhfe+1GEu4ejJeyV3Uptu+vrVr8CykILldSiew1Cd8aHaedBUiVyT4ZAEMv9angMBpnQQ8gTqoMMHk6f4W4rLpRCqeJ1+AW2wHlMT08TkUzPJ7TJdAqb2UzkIzBEkQ597EVN1FKjyasloqD7z+cPINtVLrpQX0ORiAdrIfWJIV3qPdnmK02BII9pPGLNsIliv6TlT3/lkT0cStDQ4sTiWjRoFGVKBEeVpIVUVq/CRbvyIOKaeuqJvISR1kldkeW+Lr5WJAokuAQk9kBFc6f4QZX7i1tgZjRQJyPIbNLHFkh7HcnSgJJFvEtQNUhRJk0H0bD7H3h/T3eLsSFK2UHDs2w
+ 5G3HnIDO
+ E2G+NXXbSEa5JSkvjYrMd6NoSHSMZYBBBdlAfmQ/njMAZwJOjylK+znoC9foDZmPGcKhryTkiegZXk0a5x6kl1tMGuECNFd9t+rezPVu2gGiQfQimLoBdy3LSiRXxl7dTK9ImKz8vhhNoNLm2zbFsnwV1rw/wNVoeEQlLvzR82vVa63+6aKBoS8oc1hgTh7fU2AQzGuH6gy7B+Lkjq4jm3I86DobHKldLm/SCuAHv0Xn7t35KTnyY0FvuSw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,36 +130,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 17, 2025 at 10:19:27PM +0200, Max Kellermann wrote:
-> On Wed, Sep 17, 2025 at 10:14 PM Al Viro <viro@zeniv.linux.org.uk> wrote:
-> > Looks rather dangerous - what do you do on fs shutdown?
-> 
-> Sorry, I'm new to this, I don't know how fs shutdown works - stupid
-> question: is my code any more dangerous than what's already happening
-> with ceph_queue_inode_work()?
+On Wed, Sep 17, 2025 at 11:34=E2=80=AFAM David Hildenbrand <david@redhat.co=
+m> wrote:
+>
+> >> Can't that fire when changing the max count from user space at just th=
+e
+> >> wrong time?
+> >
+> > You are right: technically it's possible if it was raised between the
+> > time of checking and when the new VMA is added.
+> >
+> >>
+> >> I assume we'll have to tolerated that and might just want to drop this
+> >> patch from the series.
+> >>
+> >
+> > It is compiled out in !CONFIG_VM_DEBUG builds, would we still want to d=
+rop it?
+>
+> Due to the racy nature I think any kinds of assertions would be wrong.
+> Without any such races possible I would agree that the checks would be
+> nice to have.
 
-umount /wherever/the/fuck/it/is/mounted
+Alright I'll drop this in the next revision.
 
-calls umount(2), which removes the mount from the tree, then calls
-deactivate_super(), dropping the active reference to superblock.
-If it hadn't been mounted elsewhere, that's the last reference and
-we this:
-		shrinker_free(s->s_shrink);
-		fs->kill_sb(s);
+Thanks,
+Kalesh
 
-		kill_super_notify(s);
-
-		/*
-		 * Since list_lru_destroy() may sleep, we cannot call it from
-		 * put_super(), where we hold the sb_lock. Therefore we destroy
-		 * the lru lists right now.
-		 */
-		list_lru_destroy(&s->s_dentry_lru);
-		list_lru_destroy(&s->s_inode_lru);
-
-		put_filesystem(fs);
-		put_super(s);
-At some point ->kill_sb() will call generic_shutdown_super() (in case of ceph
-that's done via kill_anon_super()), where we get to evict_inodes().  Any
-busy inode at that point is a bad problem...
+>
+> --
+> Cheers
+>
+> David / dhildenb
+>
 
