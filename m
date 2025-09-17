@@ -4,81 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54C4ECAC598
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 00:51:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D796CAC598
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 00:56:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5FE2B8E0002; Tue, 16 Sep 2025 20:51:12 -0400 (EDT)
+	id A77E68E000B; Tue, 16 Sep 2025 20:56:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D59B8E0001; Tue, 16 Sep 2025 20:51:12 -0400 (EDT)
+	id A4F698E0001; Tue, 16 Sep 2025 20:56:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4EAAA8E0002; Tue, 16 Sep 2025 20:51:12 -0400 (EDT)
+	id 964D98E000B; Tue, 16 Sep 2025 20:56:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 394E18E0001
-	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 20:51:12 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BF0A485BB7
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 00:51:11 +0000 (UTC)
-X-FDA: 83896913142.25.A4E0CB4
-Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
-	by imf04.hostedemail.com (Postfix) with ESMTP id A526840005
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 00:51:09 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Ub44tfdh;
-	spf=pass (imf04.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 855EA8E0001
+	for <linux-mm@kvack.org>; Tue, 16 Sep 2025 20:56:44 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 24B231DC7B5
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 00:56:44 +0000 (UTC)
+X-FDA: 83896927128.26.2082673
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 4DFA91C0006
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 00:56:42 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=OVmESGHI;
+	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758070270;
+	s=arc-20220608; t=1758070602;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ix1AngQu9wwr1vHWjycL6FVEsvwg0DoG70fN3uSSsFM=;
-	b=52JztWaZLA3fMBlbfUUXbCH3u0JAArtNPPuonBsiFp5aFn6k0kFm+lQZ4ILIMMRVRWvHvK
-	nIo43iLffP7idWsrLyUWoV8QbEWn1VqJNmJBi0nbpyAgl+jJVuwD0w7yWzwfRJdsse1hLw
-	doj8G+2q7GjoQ80+9KsBa9ykgpSOBCo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758070270; a=rsa-sha256;
-	cv=none;
-	b=qHN/YxfNMxyHdtozNRe+dWcioBaBNPJ6Or83Q8xwMmvcdt+WHd/2lls9XQo9kCYWZWOi5P
-	bTz47sI8XfDHejAtxxymKkiEMUBmXoKAEqaZ3uvArpCPE2PY1A1gtc1sc17dahCDMHIonI
-	d5xFG6IG8n/TTjtMiMsc0dt1jv7nApE=
+	bh=qFqlaPgMmBbBuFNM60YiZSQk7+741HZaf3B4eRGE/6M=;
+	b=q2rZDJvN5prvby3Re+OFmzlePaIHt/Iv3euFzh1hx/a8yTkd4ovgpxx5n4IVyKinHeaDiC
+	N9WIJmwl0nRzGk/CQ5GJxF3/LPw+53gm3Y4imhr/4XP9yioRqQebfcieEzjbJdgvr/ReNB
+	FHtL2ROskQwrbFFKGTp4JKxssAfSsZo=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Ub44tfdh;
-	spf=pass (imf04.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1758070264;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ix1AngQu9wwr1vHWjycL6FVEsvwg0DoG70fN3uSSsFM=;
-	b=Ub44tfdhevd3WK2x+9vt8V4EzO2QrcDIolJ6Z+ed7sNktk32kP0Vc3BKJCJGSb4doSMY79
-	5LMuLyNRneCDUwVIX/3QtKsuUZQfagEzWuTXGbQOXo+Wj/4H0g9bdG7NeF5yaYIRa3ujm2
-	4SKJg6Gmo+CU4+HMQChS2dgTLDbr3g8=
-From: Roman Gushchin <roman.gushchin@linux.dev>
-To: Frank van der Linden <fvdl@google.com>
-Cc: akpm@linux-foundation.org,  muchun.song@linux.dev,  linux-mm@kvack.org,
-  linux-kernel@vger.kernel.org,  hannes@cmpxchg.org,  david@redhat.com
-Subject: Re: [RFC PATCH 00/12] CMA balancing
-In-Reply-To: <20250915195153.462039-1-fvdl@google.com> (Frank van der Linden's
-	message of "Mon, 15 Sep 2025 19:51:41 +0000")
-References: <20250915195153.462039-1-fvdl@google.com>
-Date: Wed, 17 Sep 2025 00:50:20 +0000
-Message-ID: <7ia4ecs59a2b.fsf@castle.c.googlers.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: upd3wxzkktprxzk4xhri3pdidms63jci
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=OVmESGHI;
+	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758070602; a=rsa-sha256;
+	cv=none;
+	b=clp4K6W5xdGFGKXCHitopYFygwZaBKw8/EbPjVNI1IkxXuGdWk/4YiTPZqSaMKnXtgLWYX
+	MSvxV2IMkUNxJtUbVwlJ9p4UtSjSxguZ+sCm6DfT++afs1ZRuSA9YWqFroOtC5LoJVXq8k
+	btD8JvcnPvJvih9uqmld6RUz4t8+tI4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id B9B85408F5;
+	Wed, 17 Sep 2025 00:56:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19DAEC4CEEB;
+	Wed, 17 Sep 2025 00:56:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1758070600;
+	bh=kN+NGCVBMUoWfbiflAXY+vstv5YMeUL20qWoyAdAJDQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=OVmESGHIIFGkkDubiKZqf7FYfPatb/hvLIU9LdRirkf41miv4FzHSnGOra9NqM0+L
+	 Gxbh8ztusglpGX8N3oGu87lUBFyWDFQVOBaW14lhJZki8VnxG+f0HpJRC2uFEHu3SV
+	 hmNEq84s6lErCVuE0Ih2XI963DoP3n0vuIJUzzfU=
+Date: Tue, 16 Sep 2025 17:56:39 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Usama Arif <usamaarif642@gmail.com>
+Cc: Suren Baghdasaryan <surenb@google.com>, kent.overstreet@linux.dev,
+ vbabka@suse.cz, hannes@cmpxchg.org, rientjes@google.com,
+ roman.gushchin@linux.dev, harry.yoo@oracle.com, shakeel.butt@linux.dev,
+ 00107082@163.com, pyyjason@gmail.com, pasha.tatashin@soleen.com,
+ souravpanda@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/1] fixup: alloc_tag: mark inaccurate allocation
+ counters in /proc/allocinfo output
+Message-Id: <20250916175639.2368772636d5e543faa5b13b@linux-foundation.org>
+In-Reply-To: <4c4e97c1-7f93-4c09-a235-ab169a998ef0@gmail.com>
+References: <20250916160110.266190-1-surenb@google.com>
+	<4c4e97c1-7f93-4c09-a235-ab169a998ef0@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 4DFA91C0006
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 6qiafau5fmnadnwxofnptx6rzopqqiuy
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A526840005
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1758070269-419201
-X-HE-Meta: U2FsdGVkX18YfMlzDeFZB2U2jvI+F3TOTUfo2Fc0Z4mla9C7xNpOSnaDmw64e9mr2KnS3NzNijdbss6Er1auZXls8FrkzSOngFv0LMkJ2P+M2GcN0xDjUW22TnB+TKmBfynHZLfEsG1a2ep/Ix4NOFsly0pMbojTvpX//6gLf4nQ4hd/WVwgDwIDRP9DtbOYua0f0CbEsNIUFi5MushNvWvcrS2RuCV8IUw89KkuvNgUvv0pg6zLYCscK+4PkNmAv0GltY207uSEv6etTIjbbyn9ArRU6QahT52xVYzFwXMa5+Qtm7Vdt537clPVNYyxv1+CAWmdn4hLoj2ew4v5pEpU7TlrQuJSSjtC3fSiQzD1cD42tNwZbbbyzVccAp8Mk5InCbrRDjl6cGRRhFczxNccak1IdgABvk+p82DjNdTuzEdav4TnzyYVnCrkf0RwSX2gGSHvoBvmvViklc6hetna/ZrGbzSJFeUIc7uShhAXkg5D9NtIkbldbO01BK6GrmKYQV+s4S3tFnsiFr4BlbRJbkC1B2IP29q0lm+IyR/UqrAdPHBzonNnx93T3fXm8feKvNtY5TBKo7vcfBH3Dq21rpp5XxwDCrHoWonJYq40+AtuRFRu8pjuznKmxtnDrs3XaxU+DYVK+XjHQvXW1dJJMJqEUv09b3UJ6MTWU8bUECCp73LF7DfbbeHxhz/yiw9ukbWwBZQ6s+HPRyGHwYbg/U2zSGVIrfMIgtBHNxNY6n3hZw7g+gMIw+kN1GlqCmL9j2FZC/8MniuTk5+6J3JD+mqWfuW0qyoupdKeSAo9wqV8GuOyh0wFRO4eN8t7BHe063FmBnjjopobKJUkLs+Ooe6roFIQ0kg19uZqtDLccXssmRN/gJiBUgAFGXnxz3rr5Sp2ijGu+RNlC/eic/iIirVLsBL7EfsMGYrQK0rCRbXXDW7MEx20FHTeOqRI/PewyxY0N+cSjVobCv5
- zC7sujAY
- wixHI8pxq6cFyrSx9uDfHbHqTojTfwdvxw5q7oohln/fcfTHg5PXMutUVYN0dGpUitFMdtuQnD5At8OsNo06xmt2SyiPOd8/H4loHQoTXspHI4WI=
+X-HE-Tag: 1758070602-512965
+X-HE-Meta: U2FsdGVkX18UVEpsWZO/hyYiyWIkUOYIoej9bGMEYOA5gP2pVSClyi6bgo2Oq3Zd8yyas0Mzf8Gu1LdcxVq09tHQWJBHbi2S/TfbdwFJMAIsRbTXZ0q0Bj/gvEfB+wdyy92BWCbpYZl9ynI+tOVNGaWY1XSrJbRcrLb8Dcwg4BF0J7I5CXlIUHWH3O72uXdW/jzpmKG9fyxsH1kK7sU+U6Gl9x18b/f1KT8WV8ixOFSjTllIjooYCN1e9ZRgf+4lPSzQcGAu3waymi+M3+ihkDFr3dR5KW4Ykz3WgF59xajK2nuhKdxt7JJhsIQeeoQ7k6jdnYH+oCMBi9lbpHuYteM0tALET8S8+BpXJH8r3mCn+Q01ckOISGc+1lxJlAEG/eqfNYgNuUB3bkwf7AfjIN9wsSEU8MTehAJMDvTGpNt1Un66O7hpZ2IUhaalvu2/T5v4q/Rv9Zhd+oSG+V+0DeO/+HTsn0t1zX6TVk77lwJ4zsFf9UpKogdZOVEWKKNT8b8WJT8pTD1957y0OhPPzV47KgFheWfJkSGojWzvbOfoxGXZb6Uyb8m8g5MtdF0V0Bs8bzrYtdO3tHvT2kD4jQSMxXVFLxnkvRs+0Mh471zoK7f1Nk7XMviteADSM52RAgsdwNhvQXF+UIGx9wHrWrF1IzGGHWypDX3mPmav+szowd1Eew1ljCErM58V7TQmCWHVg9xUv1R4J4VPNVjxqjbDIqHr3h/sOKEkHOjIH42hTTvWCNJu0SUNFgdsZWNm9FKeHdsNM5rIaEk6JDR9BKRHh/CoWbmrK7k8sUEk9nRIuz5KGo21hnI4rxI32V4CYjxFTo0ClbutsSDfz+slwMYXQ93aAWOvkbAxpTHSf0CgKSMgDQTo70xQedH4hp+fwVNi6gbmrlG46A3fHMLwZESih8a6c7Y7zel2nJI0UmO5SE0uleXyQdFn2maOdh2xuZj5fMjV69XxIRWLKw4
+ v1IH/L8Z
+ oHlhsct6QW/9VuH334bBQ0rsDP5rIxgGbu8YBbg5SDa/J6cigPUTpmP1Yv9Ponq0qVFzTN63CyJc2ee0ByosiFlQh5ZWrk9+VuaqGZCmkV4fNdA5pCDdMIb9Uo3OC3V29lC2ZWp3ZSZSA+lPZpXYfpNtULQ+ahIF61Cb81aR0w9cA63wRGGlWWTA9RHIYGTTiCrjhsPjUydFXr3n1FMQTl78akw01pJTtXL38JYg6Fx475duF+867vo9Bz7hhgq+ajge01edY7bDVQF9slbxe8GuGjO947jQsBX9EwuErF9CvNgTCoBk8dQ0tYetMQEILdSUpBQwqphj72N2FtDzLABeLdk1XYfG2xSJpCcnAaiMDnii87ZH1WYW6YCnuvYdApLJjnhMHQtEBDF9ooPjlrdmHR/+ILMEyb+21Y8y5Q8XnqDwjD0Y6odX5YQCu/ZcYR39bLSf/0x2oq0h8joUuesaIcz5o/jcElBnFbfw/2FTiNFgIC4ZMpWSsUUD/HNb0YbRduu68SiINackAt2QWHI2azWCuMo8Pz4UDaKC09hfmtX4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -87,117 +95,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Frank van der Linden <fvdl@google.com> writes:
+On Tue, 16 Sep 2025 21:50:51 +0100 Usama Arif <usamaarif642@gmail.com> wrote:
 
-> This is an RFC on a solution to the long standing problem of OOMs
-> occuring when the kernel runs out of space for unmovable allocations
-> in the face of large amounts of CMA.
->
-> Introduction
-> ============
->
-> When there is a large amount of CMA (e.g. with hugetlb_cma), it is
-> possible for the kernel to run out of space to get unmovable
-> allocations from. This is because it cannot use the CMA area.
-> If the issue is just that there is a large CMA area, and that
-> there isn't enough space left, that can be considered a
-> misconfigured system. However, there is a scenario in which
-> things could have been dealt with better: if the non-CMA area
-> also has movable allocations in it, and there are CMA pageblocks
-> still available.
->
-> The current mitigation for this issue is to start using CMA
-> pageblocks for movable allocations first if the amount of
-> free CMA pageblocks is more than 50% of the total amount
-> of free memory in a zone. But that may not always work out,
-> e.g. the system could easily run in to a scenario where
-> long-lasting movable allocations are made first, which do
-> not go to CMA before the 50% mark is reached. When the
-> non-CMA area fills up, these will get in the way of the
-> kernel's unmovable allocations, and OOMs might occur.
->
-> Even always directing movable allocations to CMA first does
-> not completely fix the issue. Take a scenario where there
-> is a large amount of CMA through hugetlb_cma. All of that
-> CMA has been taken up by 1G hugetlb pages. So, movable allocations
-> end up in the non-CMA area. Now, the number of hugetlb 
-> pages in the pool is lowered, so some CMA becomes available.
-> At the same time, increased system activity leads to more unmovable
-> allocations. Since the movable allocations are still in the non-CMA
-> area, these kernel allocations might still fail.
->
->
-> Additionally, CMA areas are allocated at the bottom of the zone.
-> There has been some discussion on this in the past. Originally,
-> doing allocations from CMA was deemed something that was best
-> avoided. The arguments were twofold:
->
-> 1) cma_alloc needs to be quick and should not have to migrate a
->    lot of pages.
-> 2) migration might fail, so the fewer pages it has to migrate
->    the better
->
-> These arguments are why CMA is avoided (until the 50% limit is hit),
-> and why CMA areas are allocated at the bottom of a zone. But
-> compaction migrates memory from the bottom to the top of a zone.
-> That means that compaction will actually end up migrating movable
-> allocations out of CMA and in to non-CMA, making the issue of
-> OOMing for unmovable allocations worse.
->
-> Solution: CMA balancing
-> =======================
->
-> First, this patch set makes the 50% threshold configurable, which
-> is useful in any case. vm.cma_first_limit is the percentage of
-> free CMA, as part of the total amount of free memory in a zone,
-> above which CMA will be used first for movable allocations. 0 
-> is always, 100 is never.
->
-> Then, it creates an interface that allows for moving movable
-> allocations from non-CMA to CMA. CMA areas opt in to taking part
-> in this through a flag. Also, if the flag is set for a CMA area,
-> it is allocated at the top of a zone instead of the bottom.
+> 
+> 
+> On 16/09/2025 17:01, Suren Baghdasaryan wrote:
+> > Document new "accurate:no" marker.
+> > 
+> > Fixes: 39d117e04d15 ("alloc_tag: mark inaccurate allocation counters in /proc/allocinfo output")
+> > Suggested-by: Andrew Morton <akpm@linux-foundation.org>
+> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> > ---
+> > Based on mm-new
+> > 
+> >  Documentation/filesystems/proc.rst | 8 ++++++++
+> >  1 file changed, 8 insertions(+)
+> > 
+> > diff --git a/Documentation/filesystems/proc.rst b/Documentation/filesystems/proc.rst
+> > index 1776a06571c2..17668f82ff1c 100644
+> > --- a/Documentation/filesystems/proc.rst
+> > +++ b/Documentation/filesystems/proc.rst
+> > @@ -1014,6 +1014,14 @@ If file version is 2.0 or higher then each line may contain additional
+> >  For example if the counters are not accurate, the line will be appended with
+> >  "accurate:no" pair.
+> >  
+> > +Supported markers in v2:
+> > +accurate:no
+> > +              Absolute values of the counters in this line are not
+> 
+> s/values/value/ maybe? :)
 
-Hm, what if we can teach the compaction code to start off the
-beginning of the zone or end of cma zone(s) depending on the
-current balance?
+That's OK as-is.
 
-The problem with placing the cma area at the end is that it might
-significantly decrease the success rate of cma allocations
-when it's racing with the background compaction, which is hard
-to control. At least it was clearly so in my measurements several
-years ago.
+> +              accurate because of the failure to allocate storage required
+> 
+> s/storage required/memory/
+
+Sure.
 
 
-> Lastly, the hugetlb_cma code was modified to try to migrate
-> movable allocations from non-CMA to CMA when a hugetlb CMA
-> page is freed. Only hugetlb CMA areas opt in to CMA balancing,
-> behavior for all other CMA areas is unchanged.
->
-> Discussion
-> ==========
->
-> This approach works when tested with a hugetlb_cma setup
-> where a large number of 1G pages is active, but the number
-> is sometimes reduced in exchange for larger non-hugetlb
-> overhead.
->
-> Arguments against this approach:
->
-> * It's kind of heavy-handed. Since there is no easy way to
->   track the amount of movable allocations residing in non-CMA
->   pageblocks, it will likely end up scanning too much memory,
->   as it only knows the upper bound.
-> * It should be more integrated with watermark handling in the
->   allocation slow path. Again, this would likely require 
->   tracking the number of movable allocations in non-CMA
->   pageblocks.
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: alloc_tag-mark-inaccurate-allocation-counters-in-proc-allocinfo-output-fix-fix
+Date: Tue Sep 16 05:53:33 PM PDT 2025
 
-I think the problem is very real and the proposed approach looks
-reasonable. But I also agree that it's heavy-handed. Doesn't feel
-like "the final" solution :)
+simplification per Usama, reflow text
 
-I wonder if we can track the amount of free space outside of cma
-and move pages out on reaching a certain low threshold?
-And it can in theory be the part of the generic kswapd/reclaim code.
+Cc: David Rientjes <rientjes@google.com>
+Cc: David Wang <00107082@163.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Sourav Panda <souravpanda@google.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Usama Arif <usamaarif642@gmail.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ Documentation/filesystems/proc.rst |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+--- a/Documentation/filesystems/proc.rst~alloc_tag-mark-inaccurate-allocation-counters-in-proc-allocinfo-output-fix-fix
++++ a/Documentation/filesystems/proc.rst
+@@ -1016,11 +1016,11 @@ For example if the counters are not accu
+ 
+ Supported markers in v2:
+ accurate:no
+-              Absolute values of the counters in this line are not
+-              accurate because of the failure to allocate storage required
+-              to track some of the allocations made at this location.
+-              Deltas in these counters are accurate, therefore counters
+-              can be used to track allocation size and count changes.
++              Absolute values of the counters in this line are not accurate
++              because of the failure to allocate memory to track some of the
++              allocations made at this location.  Deltas in these counters are
++              accurate, therefore counters can be used to track allocation size
++              and count changes.
+ 
+ Example output.
+ 
+_
+
 
