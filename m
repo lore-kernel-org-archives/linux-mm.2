@@ -4,60 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FAABCAC59A
-	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 19:04:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA03FCAC5A0
+	for <linux-mm@archiver.kernel.org>; Wed, 17 Sep 2025 19:04:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B2C47280014; Wed, 17 Sep 2025 15:04:10 -0400 (EDT)
+	id 40267280015; Wed, 17 Sep 2025 15:04:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B03C4280002; Wed, 17 Sep 2025 15:04:10 -0400 (EDT)
+	id 3D88F280002; Wed, 17 Sep 2025 15:04:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F306280014; Wed, 17 Sep 2025 15:04:10 -0400 (EDT)
+	id 2C715280015; Wed, 17 Sep 2025 15:04:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 874E9280002
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 15:04:10 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4FD24140672
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 19:04:10 +0000 (UTC)
-X-FDA: 83899667460.30.AAA807F
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11021109.outbound.protection.outlook.com [52.101.57.109])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 50F2218000B
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 19:04:07 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=os.amperecomputing.com header.s=selector2 header.b=dkkbNyrh;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 1C73F280002
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 15:04:24 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BFB4EBA7C4
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 19:04:23 +0000 (UTC)
+X-FDA: 83899668006.08.AB33CA2
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11023118.outbound.protection.outlook.com [40.107.201.118])
+	by imf02.hostedemail.com (Postfix) with ESMTP id E190D80009
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 19:04:20 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=os.amperecomputing.com header.s=selector2 header.b=bs9evD62;
+	spf=pass (imf02.hostedemail.com: domain of yang@os.amperecomputing.com designates 40.107.201.118 as permitted sender) smtp.mailfrom=yang@os.amperecomputing.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf06.hostedemail.com: domain of yang@os.amperecomputing.com designates 52.101.57.109 as permitted sender) smtp.mailfrom=yang@os.amperecomputing.com;
 	dmarc=pass (policy=quarantine) header.from=amperecomputing.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758135847;
+	s=arc-20220608; t=1758135861;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1PQuksh+R0YLef8NlvlJGXQxuWsA5z4MBi8EjtwI0y4=;
-	b=NotizsySa72gTNtNd9FFuuo5HfURoHwMukLyw7bhA79BnDvWiW37LDgbwdyffM1CW2nZA4
-	4ueM89bhysEptFGXYjwMzqwq9OqLCLTPr/g1AZQ2PyUMvznnOwGl7vzuTPY5oOKKv3LuV+
-	OIGK5O6HZkeRCx2jmTOPkiKGd2vhR88=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1758135847; a=rsa-sha256;
+	bh=BXh54Be3gTyU1t/hTfMqRaGfJ/Y/mGCpnRBAH1QuTC0=;
+	b=v0ktO3V68rMOVdfLOpCopD8rIsZ0+F7fzERiiifLLBSq2aoC8zQiCoi7JLQILIHCcvnXaR
+	ANgsNPUjmZQH6cyVZQVG4Z8l6CKPZOok6AsxFAp6BSradz8isP4fwApMGCveNKs4r1T0zu
+	qUaUTu5PWJhK0MFGLrGEeuSKl3h0on0=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1758135861; a=rsa-sha256;
 	cv=pass;
-	b=DCxuh/voArcRjq1E3WCgjCSyGMccqTLXZwQPmiHHnhZMF2kLWMwp6nOZTKKz369cO3m8XG
-	+oKVVrw5RY3TXzTSB9piGfmh9LJYMrrXeQev2lNsZYJ1cDGUjRm+rQwS4fGUgvDb4GV96P
-	Uok4M3XAMTFj0PmVbV4bufPiTg4H9qI=
+	b=lq4Fe8IYflwps0EqCndStuvCEkcUedneV13N0UH+xZlrVNHxVHex9ZkIkymhH+jYHJYpJc
+	jXXxaPN8fYzLV2tQVDRi3wvyKxfFV5aelN4CB5Oqs52YpSeakOGyXN9GyoZhbTqxElsPyx
+	cCwJ6MPmyH2mYSCMTx/hYqXSMMCg9wc=
 ARC-Authentication-Results: i=2;
-	imf06.hostedemail.com;
-	dkim=pass header.d=os.amperecomputing.com header.s=selector2 header.b=dkkbNyrh;
+	imf02.hostedemail.com;
+	dkim=pass header.d=os.amperecomputing.com header.s=selector2 header.b=bs9evD62;
+	spf=pass (imf02.hostedemail.com: domain of yang@os.amperecomputing.com designates 40.107.201.118 as permitted sender) smtp.mailfrom=yang@os.amperecomputing.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf06.hostedemail.com: domain of yang@os.amperecomputing.com designates 52.101.57.109 as permitted sender) smtp.mailfrom=yang@os.amperecomputing.com;
 	dmarc=pass (policy=quarantine) header.from=amperecomputing.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YuM3EbMB0TFZ1UKei2YDF41+Wk+lyvfpwGSjUCldw3d5Mvx922LQAr3ugfrE44fQhWVuJb++E7foL8UqAZHYoY+P19HOLpfh++J74cqiLIKHl8FrMNqLyT9b1eIYkzUu5oJwAoGM8Ns9gz8nxg2IVJtp+5hE7IMXy3TlM0SA80m+5F5w5AGbXccwWO4BEAUIsB4kD7LeDGnoX9+ANP2i9U97R1bGkI5ARPpZvzO6zf8C6sovMgJUkPl3LvDxw3rtz2sh33umAZifmQ/rJojrzPSkNX53GoPJczMSIwtSI0im6IykadUUmzzrwB2Rte3/GbxvtjtJlajpbuhOIB5isw==
+ b=j5A4hEpYcbTuYpW3zEJJTj/AjMVSCNp0tDDTtlC1cN0DkWo7CMxLYyOUEdOH2OnaGsobBQUsztHq7dhbL11T6SSQGpSixFO1TqWuBc560I+CCw+6aoSVItFkyssOafDd8b6MB10kiOftJ50bNnxlPCALdsuABoyapwdAOIAmqtXrqgdTf+7YciHFPpitcwfzpQuKr1PmUVEeHP74PUlFTkHbhbAA6ubUhLn5KooVLrieFgFCEzDkBSg8zbqP4RdVv5ZoZhHZ1C7rIXW/2c05RIRQFar3UIyC7rWPo/pP2Jesu6giP7cFD0cpQmcD6pWiJq6Wh3EHaratT5YaLsbfHQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1PQuksh+R0YLef8NlvlJGXQxuWsA5z4MBi8EjtwI0y4=;
- b=XZW6SKWAcGNA1n1AROH2rEu4nPWmSzUWNvHhShRWJotNtSyOUFnJjJ7atN0VuSJKS7Pbn+vGjIKRHLluVHoZEFbXON5SALTOGm8kmOpxU7A8Wc4ATYgAuVhiRzr25nEzNxbfvmQTMi8OrZVR8k9wmk47yvcd/Gca+WPpTpbMkAl69in+quasUnFAem0lu32YdUcWzHem6HwFjZkG/IjfiR+RAVDLs8bJKdzoia16lvSEJ2eWK5hXauBlsoiZK1h2RXYmct3nq8VJTS60nfrp13NwGS0JSK83XvyRa4P8W4j906BNZv9l2XEMoHL/dr3uzSDG8Xa+yX9UEjfY3TqDMw==
+ bh=BXh54Be3gTyU1t/hTfMqRaGfJ/Y/mGCpnRBAH1QuTC0=;
+ b=NMeWIMEC9tamfuMNOh/shSgSiJCTQ/E5vBDXpzP0hNWu8Gf6aVrQXbWOOWxm9NlUZGD9dlY4xyjc56MF6H7YVE56G5p+HyEL1l+uJFobFwsb54GXzfKkp5JAbeCNM0jEAMZuB21g+BoKbkFWuF+NmzSMJ792uVcV66/lt+YMlURPIzxd+hdBKQZKmI6jklLo8ebn376ncG9AeEDPq24o4xtLtUZx8ExAwB8QtY9yaV2KFCCgLhr6AMQQ3n2GtznENP4K8FAVF2K7WOsodg/8X8CsxAKE8Q8Pk8Cth6Ux63hkE+s8clQyos78IY5Hulh8ZUGLHuRISqwTbTBlAd4KqA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
  header.from=os.amperecomputing.com; dkim=pass
@@ -65,16 +65,16 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=os.amperecomputing.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1PQuksh+R0YLef8NlvlJGXQxuWsA5z4MBi8EjtwI0y4=;
- b=dkkbNyrh0PlgAmzNP4PaqLJkMj1bNrRYz9Ih8DtD8iE32icv5Jt/WjF+StY5SG4CPsFhQNd1+OHGeCFXkewpWMPkLNpdg1bZUIt4sc+61xv2VnXJufadfH0OJsojGBupsOSBEVYgejhvrvk+uy0nUxyDHUr4hwOqQtWdIc60Reo=
+ bh=BXh54Be3gTyU1t/hTfMqRaGfJ/Y/mGCpnRBAH1QuTC0=;
+ b=bs9evD62m0zIFjApwQ+7uNMAc0YphtUesjVfD2DE1j7s+wyjBAffW2Y5OtzRRlHy5JpvzG7c/PgPWkrm4vvhBnO7fDzEUH8rSbKWq5gyqjdj8bAFRmAT3pNUem8tIu7vtk2nRU0DklEsHlQgZ9z2Kc+EBo93CiTGDyrD+CX+L6o=
 Received: from CH0PR01MB6873.prod.exchangelabs.com (2603:10b6:610:112::22) by
  LV8PR01MB8429.prod.exchangelabs.com (2603:10b6:408:189::13) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9115.19; Wed, 17 Sep 2025 19:04:04 +0000
+ 15.20.9115.19; Wed, 17 Sep 2025 19:04:09 +0000
 Received: from CH0PR01MB6873.prod.exchangelabs.com
  ([fe80::3850:9112:f3bf:6460]) by CH0PR01MB6873.prod.exchangelabs.com
  ([fe80::3850:9112:f3bf:6460%3]) with mapi id 15.20.9137.012; Wed, 17 Sep 2025
- 19:04:04 +0000
+ 19:04:09 +0000
 From: Yang Shi <yang@os.amperecomputing.com>
 To: catalin.marinas@arm.com,
 	will@kernel.org,
@@ -90,9 +90,9 @@ Cc: yang@os.amperecomputing.com,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v8 1/5] arm64: Enable permission change on arm64 kernel block mappings
-Date: Wed, 17 Sep 2025 12:02:07 -0700
-Message-ID: <20250917190323.3828347-2-yang@os.amperecomputing.com>
+Subject: [PATCH v8 2/5] arm64: cpufeature: add AmpereOne to BBML2 allow list
+Date: Wed, 17 Sep 2025 12:02:08 -0700
+Message-ID: <20250917190323.3828347-3-yang@os.amperecomputing.com>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250917190323.3828347-1-yang@os.amperecomputing.com>
 References: <20250917190323.3828347-1-yang@os.amperecomputing.com>
@@ -104,90 +104,90 @@ X-ClientProxiedBy: CY8PR10CA0010.namprd10.prod.outlook.com
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: CH0PR01MB6873:EE_|LV8PR01MB8429:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8ffd7291-99ce-4cf9-b4bd-08ddf61cf81f
+X-MS-Office365-Filtering-Correlation-Id: 588f9dc9-d12d-4a0f-8d33-08ddf61cf8e3
 X-MS-Exchange-AtpMessageProperties: SA
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|52116014|1800799024|38350700014|921020;
+	BCL:0;ARA:13230040|366016|376014|7416014|52116014|1800799024|38350700014|7053199007|921020;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?wFVs/z4QKYJkBqR1f5mCbAQBF5DCYCSsmMi1uKPTzzgykFniWGL4M2LFP2XG?=
- =?us-ascii?Q?ShGBIu0RIs216awpHytc1eB05wqV1DYQOhpDNGoh7jaQK7yBz8XLleC6A6Mg?=
- =?us-ascii?Q?9iEqzXKPfB28GS1ZFuH7jgHp7x0cUAirjndFpifa3Lh78xgPfzfclKf4Yil7?=
- =?us-ascii?Q?wwq+pAElqiCKcMQ0NhNZRFvUbr5j69K2MOYG+sW0ZnDNF5ubPhy+RJkiyrey?=
- =?us-ascii?Q?5nRPQa6GBPZTIbCUz4p5zTnMNh6hmvlFK12t4N+OoNwpr49jUmGfvnTNUNlO?=
- =?us-ascii?Q?/sv7Hn03AJVrqtoqJ92xzdGvxA6FcckMibJvU3OmIRCfNui5lroHMEYm6jd6?=
- =?us-ascii?Q?Q9q27MaxmUxWog6nZL6fT2sPVnUYqNMswq5nYfaXVFcKiKmA3wUlqf0F6L87?=
- =?us-ascii?Q?aOCe2fNz8g0k3GQFHjM8egPy3JtcYiWPHa+fc5nET52XMFfnZFSlTS+aO7iU?=
- =?us-ascii?Q?wb93J8SA+nDzHzd/K4ZydieQWaNBM0r2N+9yUrbaGkOVpBoLyc8fQUoIxE+t?=
- =?us-ascii?Q?J/UxywazUObeZHFbglscM5yGG0Z03PYc5+Fo/VUZI2a6q2NUlKHs39+VxFjM?=
- =?us-ascii?Q?BfQXbXZur+Vev3HZn3xh0ieE7Mu+D9/ckS6+7wMtPSCg6kWJRd4z9OGpbhV0?=
- =?us-ascii?Q?kkMi64XXrOHMNy1y+1hUJESCKoAKqzHyLB7qes5XyHorqKq/Ea6V5v81fF1k?=
- =?us-ascii?Q?x3oig/2DbN3aZwdslanQaOKgnYvi4ny5hekaDvr3ZPB2EoG/+WcPC/mMND91?=
- =?us-ascii?Q?g+yflCkd7mKh4JCpQJ/I75zl5YJhPc0nRTINwPSn+KvQaFwJWj+32xX5Vahq?=
- =?us-ascii?Q?2IwWzMeMHyQCzCIQ/ELWNHYuk0nMzBsDGi8U4o9Nzt0GmWuzu2Shz/N9BEaV?=
- =?us-ascii?Q?ccEK9AC2vPeycJDtL71lXrjysEOS6TYNLWwUC6gBILcBXz11a2uT6psfejKl?=
- =?us-ascii?Q?XE95X9tsgkky5yGKUIOlIfaqZQbflZmNwI6MU4AW8cBl4X9DRJpZtVIV96L0?=
- =?us-ascii?Q?hrbIf0z52AkidDDulKwCf1oPae+HM9DsoSWjinKFK5IK8M2RE8+mTjPG4NxI?=
- =?us-ascii?Q?MmrDStvxjw2VhOg99QI5PzC26VcyaixJ/Kgi+ni6E+aQXZlp7g4j1sMBsz73?=
- =?us-ascii?Q?WMV8ha/71whSpVCJNMJTW+1XXw4DufC+2i9w9E6w2zP4Hi5vVLAPMPPlmCby?=
- =?us-ascii?Q?hq3mb1kCZy0c9jGet3+i/NP/tuaWLPdlm1nsncSnvbKYX6EJ4wilf4eRjbQU?=
- =?us-ascii?Q?3D3Hb4Th1Uya1cXLeCUvs648RufMEEJmiXoZ415Lvk/rHsxha83kgNwZdDv4?=
- =?us-ascii?Q?7w/EcsX/BTtgjvcEsLkSXx1l0pDWsGQFkKdozJQaG424JJMQ3pRnTeYJx26Z?=
- =?us-ascii?Q?2JQY7aXSqWckH0nVM51AEpKFwdH8Ks3COQeXeQrgwlKBLmyuHGEerZEOwu2k?=
- =?us-ascii?Q?7jY1roKJPgS1KseuVYWdw1vn5qHPq9/BE/uiODwS8HtMf+VTstLTXWBcoJzJ?=
- =?us-ascii?Q?bW+XRCJPeQXprUM=3D?=
+	=?us-ascii?Q?/DcPtZetTfQiqrtC2k/HS2Ceuog/Wu9b+VqXQK35siMFYat5lDPZ83qu4VZ3?=
+ =?us-ascii?Q?wNYrJmrbd472HmZm59K3e1ioYW30cGpiNuRUiVHApxg2eIHD+DmXhU5b/TRa?=
+ =?us-ascii?Q?A250F6IiU59paWsOHGtmXmqqaYaGrdQ+26zLtgsbGYtsMXiryvmOh0+HTBKd?=
+ =?us-ascii?Q?dGURHUFHmMpTk7uWnunqpQBVTi/Gt4L+OkhUHxm52fc3wG5NXLZgL0jwOZwE?=
+ =?us-ascii?Q?SxG8KlOYi+gFI2BjszVPB35NEKPEqN/vr9t7q+Y4R25OUxu+2rCpLfd5HUyX?=
+ =?us-ascii?Q?9A0rX7oyYicUXenybcWrWclKkVM8AKgdmSskeEtJVA+8Ecs4baMDn9WnjX9x?=
+ =?us-ascii?Q?kvn7SkYWN3oVa2ecDrMLwZrj/6S4sjbkobOF1KCVt2etP7miUe/cEiyDccS5?=
+ =?us-ascii?Q?IzIiNG+ONu7VAsYDQNwuLljbCYPnDMekxW+3lpY2hRmx3YZ6M3tHU3ACunZH?=
+ =?us-ascii?Q?z1SJvd7AiBYihPDxO1NfF75BoVgFgGM8/AY+RmyP9rUH+ddxguMOcBwKHqGv?=
+ =?us-ascii?Q?+5rj3Ak3J+Sv7OWZ+vGEOdcp5mnXUMVQCJb3R8T7TJRh++amEdh6FD5agwRs?=
+ =?us-ascii?Q?2gYuYReegAuYN5TipWnKozauOOnD92RpuDyQkGiC4pZhP3Fpox5npAvb1gKp?=
+ =?us-ascii?Q?8pXsl/JJibwvtKDBWZbtSeoSpidTuqmfIKUqsiePgYaXOq2hpUIW4gkfw9l4?=
+ =?us-ascii?Q?+QRmDF2tUWV8B6QdNsXCV0Q7HAQGkmo6u8vljppY+Jbc6awlKQ8pWp9oy0NI?=
+ =?us-ascii?Q?XRqRBuL/knAo6e8oERnMDhE8qincrg2dn+ssc/IQRwB6Bw1KSx87XhEIppTb?=
+ =?us-ascii?Q?EyWXVY3a4i8zroTpyW6l0SWU5aChjXvpUHlGfOES+7CXOZ6i7IKmyNEufaMm?=
+ =?us-ascii?Q?OzoCJkhGPPY9dECN8TizLDTmLqjXwifGY9GQFVRwYx0gfg6D/tp6tRB6qQV3?=
+ =?us-ascii?Q?Bab3FHBys0VVAFevctkuz4vZ4fvxriqUNK+bY/xOtDxkIhbg+VWefyxmiJ3O?=
+ =?us-ascii?Q?JKxpj3ambUWp+BEYzfdcDjyZJLkF52bo//mubtrTu+avPdvNbJbe97hw7Fdw?=
+ =?us-ascii?Q?8LpvkA/4Js6mAUdk07qjJqCmUcioHqxI0eq1hPzi1I42cTybOHNVAJkJtX9b?=
+ =?us-ascii?Q?Y0waVQgamDtdOJ52tyxknLrhmpc9JArxh7wGeG82+k3H2znNZSX6WGyUUQph?=
+ =?us-ascii?Q?s41z616VOYZDMIkglwCgh1TnS3eumgxK6MROdHYSlFFxc64BqIJ6kGF3/FU1?=
+ =?us-ascii?Q?WmuDO4GPwlLEs2JuCxNbjBTvFDLoRdyE+En6r97L3BexRHJ/rP7dZ5PHMjqj?=
+ =?us-ascii?Q?H9MvI0u1bSpRNzr7itddHGpHr+dumBgGvHpHiH3tXtOoq5B7yLAcflgMaFdL?=
+ =?us-ascii?Q?OeMXCwLCv+u8J7ktNnfbpZ0W6yAVH9xaIILpjdwhbL5d2BmcxqyjgmtFvnBS?=
+ =?us-ascii?Q?oUwkqHsAd+mnmyDuAmLfKl5RoJqroHCT1L0QFv2cWamfCK4pGGzYyFzOmDAT?=
+ =?us-ascii?Q?gpLGfkbZDureSEc=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR01MB6873.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(52116014)(1800799024)(38350700014)(921020);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR01MB6873.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(52116014)(1800799024)(38350700014)(7053199007)(921020);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?D4/erSutQuunT/43NCnHFkA1koUgGFnqy6g7ix05x161Qdcmnjw34BdvVsJy?=
- =?us-ascii?Q?UL8Y317usqHsrWZobPj9nXljB5l6tzdW4otwsd4/tQhLTfF1AHkppvXGEhyi?=
- =?us-ascii?Q?jEMMie5QcZ2FSSBPfPruEakmIQ67kBLP+HxDYZGIQyqzgaoCdRTTGWpSIXOs?=
- =?us-ascii?Q?bMasL09AhxuUsKfWV5NEz9jPEIWcNkfFcWGnGCBM7Vg/iPWOeXM1Ji2SVQui?=
- =?us-ascii?Q?M3cSC21gPpNb7B0znJX92Yv0fo9w1ltcaoioNaBpN+dMBszgmdKi/O+R29/C?=
- =?us-ascii?Q?dM8FMEzTkFtVe4hZWHN3hJDwsySl8tk2I1k8xD6y40PNSfRAztUddzITrfRD?=
- =?us-ascii?Q?l+csyysfyL3+qAkDkpxa8+76rh7GGeL+XAjW+SaT+qcMkyfMhjLneknQevRA?=
- =?us-ascii?Q?bHOcMoR/zbks+/RPrYYhCJMOEP2YMSkhAcFyGBnohfQ3dnBmYuwgWU8ouzRl?=
- =?us-ascii?Q?QawEaj1iLx53UzVFoNmpYaBYCABKRGORxqCNvA+M4Pss7ny/pEcU/MWkNgQH?=
- =?us-ascii?Q?C4QvLZdzLfcVOncgSs1RVQQJs5L/p1pwoKz4gOe2p2galMUmC1Xmda2LKsZk?=
- =?us-ascii?Q?B5rX81get8y47fayvcUPEY0XO1EuthWdcfh0FLpMHgvJXgH8NfLDBeEJkhme?=
- =?us-ascii?Q?82klB1XGdAqyKLs2mbcGAsNX6+X9ax7kGG06nffr5SUK4uHy9JD+N1Xcqryh?=
- =?us-ascii?Q?1R1R5+3rxwnkNT77I1UKKuOejvfWUZ8LwgC1f8lNbqiKEK2w3wmWlY5GF8hn?=
- =?us-ascii?Q?pN9t2DTK+RlUvmgiFHenol6ku6ALZ7duMO7/NMtgzSn9sBuWJ5XMvqxFTd57?=
- =?us-ascii?Q?rvoR9gcCL9hGBdqklnnplnWn70rSurtqhhagwBUGVjUuT/xRc/AX4k0Z4mnb?=
- =?us-ascii?Q?4k3caJevUOrOyulH68ysXdZ9hhj7DTrdJQg7elHPB5n7Prd6oldF3S4G9W3B?=
- =?us-ascii?Q?SHPLv54SWIWXkj6RgZ4JUp4y2o+mOnJGpon/nnRqixcapeg35dYL5vPelpSo?=
- =?us-ascii?Q?2JfnsUVQKW3licVJ/d0RPo9N81rUWXa+Qfoub0fxUzFwouqJnSVX0XTF1BMp?=
- =?us-ascii?Q?pzhnswsVpm7nJj2lByuVW9AOvFXrbqi5Vlfuwqzd3oycJW0qYou0xkCFJFN+?=
- =?us-ascii?Q?AeXF+Fqiqe7iHKzPgxZyvYHelp3WiFPJuRnmB25JDnGEF3DVW3Uznjguo2J2?=
- =?us-ascii?Q?k9fCnFEeJ5T60Bv4U9XDY+lO34mJn/S9g7znFkQ28+1eVC/KrF9QYhu0Sbg7?=
- =?us-ascii?Q?Av7GwN4iArsj1dmbtyxETdR4YHS99W/kZMs5iaD/JOTAcRIpX6xxqjrSLXVD?=
- =?us-ascii?Q?4lJ75kZoN7d45JK+soGn3ny4NbT/pGApa9gEI/KvxPhvgE+VVzMCYW8V6E7Q?=
- =?us-ascii?Q?4ebipWjS5oO3DvlfnUZOTx5xzG0xT7cUK7LhHkb7gPQnAmz3PpkjtiJMyzGz?=
- =?us-ascii?Q?DLb99ohB9un2MTVuGtdXjBS9obXXGBiewD6iTtbBrmkc4oScsv/2M6B5qbys?=
- =?us-ascii?Q?heIv/CricDeBljAFfnPSl5I4VUo2h8dvvTHJFDp3xwe0nxaLcJYa/fu/sf2p?=
- =?us-ascii?Q?1aO5tadjo3RTQPN7r9bHqppiYU6chESH/wrggFeYBVRzRbccc4+uuaaByfbB?=
- =?us-ascii?Q?eXbR5uY3ldITAwxWyWWbYco=3D?=
+	=?us-ascii?Q?/IM4uC4bX1J50jvU5a883V5Kq0hwSm0sO8Qdrynct9QPGEKeiKx2f+3pu1x+?=
+ =?us-ascii?Q?GRVmhOAY+dh5nP2DN467m9gC1UJ4ktu0wtDHFdzS99fPnlFUcT6GIqz88Ebs?=
+ =?us-ascii?Q?p+aElCRtW71x8mZv4d5WIpLFY5RGVSktWDjgNWv0xpw/z9woPQRcSnTeFSSj?=
+ =?us-ascii?Q?Fkzx+CsGiyvSlVQcU72/WpZEVaLoqyuwdWurrCKjL9uO2cjhjOI7nxRpU7H0?=
+ =?us-ascii?Q?MoUpT8OG6tHnt7LcnJmxtnAKIEEqDgL4IkspQ1dQERzkZc5dNTnQkMHuxTdR?=
+ =?us-ascii?Q?cHl1chcGjRFVkkz4yTH0LmU66WdMF6yXUcGIqPtlx2wBJ+cKb/l4XDBytgFh?=
+ =?us-ascii?Q?xJP4scOnR7yU70YY6NO0imuiSYgor0RTL2G0pp40w5oz6KRacq1IlbyXQU8m?=
+ =?us-ascii?Q?+dYnk4jcngOXfrGFznDudAOQtJzq1uFr0jeuRjaIzpPlwgptOIyD4f+mriwJ?=
+ =?us-ascii?Q?X/FVe4RijH7Al5qk6Tz+/EYr5wIzbV4UqcxkFuK33g7PWwRNcTeSp8cso3lr?=
+ =?us-ascii?Q?Blzcv3naMjnifn3/ebj4j+XkXU2Au3+ZR011qMu0VMBy2R7Kn0Q2V2SdYfC8?=
+ =?us-ascii?Q?R02TzbT5iOse/2wAZc+hZ24SVIbDYsclBnYjtFvVUeoQqMFlD1FuC2q8ZKp2?=
+ =?us-ascii?Q?p8DAb250dfvBoecsFX5nAZX/FS9Iz/68g9kh+bkEueWBiElFYg9p2GAWG9CS?=
+ =?us-ascii?Q?7xLL6B0ROLoC2QvhkH+hk+fkU//cCeNGtmtFf1Usb9HFR8tLalErHFvVQqQn?=
+ =?us-ascii?Q?Sx6vu4cyQIir7Qg8ES3BXHAb1JPxoBDT3Ce6hOV7aelL/QU7TR5whPJBCWXJ?=
+ =?us-ascii?Q?9toMTspQ8YxslnIf03I7Z7xFWhifPLNJSLAcB1B9FLO3GhHg3pEt6kgFMaZI?=
+ =?us-ascii?Q?EL/PokCqivLf5kWag2pviwMd17ERizuMQSBn03gQeFihavJoX5ak1/NVGS+D?=
+ =?us-ascii?Q?uFaCbVO1XaHOiuPbhmE2yPi5YM78MjDeLFqWP6NYw7fLWD1ULRJRfvb2My2b?=
+ =?us-ascii?Q?O4RNyvrxJGgKrsC+mzImYYmyo+PgJhjlXlmqlqw8+WUqhrBxOgeNREVDHs9M?=
+ =?us-ascii?Q?KFVh4Qy4rG9+0SyqlvGuxAp8p2AqGx1oUZMf/pp9301Nh+Jh8xK8yxzigViz?=
+ =?us-ascii?Q?jSzWZ8Mf8cAXX84diwp/e9XJOhlZwaM9xTyvDGYlzyTRMoI2eUq+Qxfk/Yey?=
+ =?us-ascii?Q?EoDSltGQ3ALJWzHoW1dtWOBjHu36rGNPAMThdPQXF8XwePdcadrcgUfk4J9B?=
+ =?us-ascii?Q?0mGaX++9wUHbHLAlbNLIudj1JIe+jMGr90zEGHd3++1C54tSp+DGu3ifKFuz?=
+ =?us-ascii?Q?zBmx84AYgmp0HjE1sfFI34jACrayEeKKuHTZ0kGnq1uxxMQvlYLBwAiZQ0Nk?=
+ =?us-ascii?Q?i/WPrSD0uZ9OfygaZJFfaMNN+EbJOJveH5E472mKlkQDiXT9ftEyQ3fN32ml?=
+ =?us-ascii?Q?YpWB7mObNYjhURa/jsp9liidFo/YJhrWWdJ/DrTGNMkgwOpGGsnD0l/wkPLo?=
+ =?us-ascii?Q?NAn+0kb0BGtSUMkfVlz86HXmZQOtedQlDCOp96cUeKkf+1lZGfYiEn86JCjP?=
+ =?us-ascii?Q?VZUhrNeiAZxfnS2CWer1CxZMC8fJzkN0Vo5OAJ0YfIgUsi9b6YXtOjhJM2sI?=
+ =?us-ascii?Q?TgRM0aKv95SpwK2WS3kjf3o=3D?=
 X-OriginatorOrg: os.amperecomputing.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8ffd7291-99ce-4cf9-b4bd-08ddf61cf81f
+X-MS-Exchange-CrossTenant-Network-Message-Id: 588f9dc9-d12d-4a0f-8d33-08ddf61cf8e3
 X-MS-Exchange-CrossTenant-AuthSource: CH0PR01MB6873.prod.exchangelabs.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2025 19:04:04.0162
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2025 19:04:09.4669
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: oRO1+O7pXIiXQnINdqBQIT4NoS6mMWTulEt5ndbo1CGvmY6CUSOyiIaZnussEtTU9CbKR+tsKIskhToXO8B4LMHnXHI3+/nf48tAp5UMdaw=
+X-MS-Exchange-CrossTenant-UserPrincipalName: C6gN9tXXlvBanIQLcbY3WOguwznL9drqS7lKs4R92CRaV35xNhAHnIfUeuuJe8M+BuBAq2RXGN+DzUmhpnu9ujSDu2PG0J0EGia63qG3lbI=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR01MB8429
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 50F2218000B
-X-Stat-Signature: pr8bahsp8h7ab3udtqhks3h3rrxpdhpn
+X-Rspamd-Queue-Id: E190D80009
+X-Stat-Signature: k7o13afde7dbfw16fd9mcmcoqk41c8rt
 X-Rspam-User: 
-X-HE-Tag: 1758135847-945566
-X-HE-Meta: U2FsdGVkX1/py9FgEX6Pej/yIptchy/1JZJ57waxFNubHXAObIF3w7yWquwySXSzWnfVpxMGDZ1roHJOewXCXO5lwRl7s3kZfWrOjYwEVCvv9GWs/ZIY2NxkkHPLl3rYgFDzg3q9IankbucdsF54sJv3OED63/cilSaO5nYtl7w726TQCldVq3kMOkuTW96yk++kBXBl9wenD71BZs3QcWkupuZEmOwQO4IHir1sZPDtWf0VtYxbV+7FIC8qQSIe4nr20UidzEtrcnLC2u8CLAKuF5ubLHAvZmswhIWf1Y/iwG3iCSvJLE2sS5RfhCYnOiySBa0D9rMdByAoTp+R/DQf9ycu6eg+J/mx20u9Fk7fubClM0teSariiaHCmJ0kPcZfpmHKsocax4jLiDu8jxEbe5vDCYi1qIWGWNdlwenGV7hxrnWPDNaURvs3o1KYyG1gkKjUbey7RVXRB/XY4h4P6G0GmAykVcWAvSYDEc1vch9BQ8KAnFNL5Ra8v/1zAxPS+wSC7RmQkGa0q/gNQ2P2qTWmhTLXZakPwkjkKLr1kmtKR0JGVsnoQ1hKm/j+/2q4TrrbZhWOd/dFpdHt+X4YmPfnwtJcn2IWpjNbffJnwhrGbsRVswdw/Nxfjq1Oe/pUFXSTMr+EBmIW5tGOFMTa12bud82oHU28c2qjBNuF49oKEzyWX9TRJmZAsiCLH2oPhAIWJgCsX4eWHJ6J6sc+IqFE4mfftY6B1YAkgXtPaH8LjFJBdQPdv53ZKBybORi1gZ2lxZG5W9RkYEDAYk8BZ0+FlaIvE9aX5YnEHkrSAtI5gsQdfyfVT2ASJ0pGhXcLVXmg3VPcpHXo5LCRxYtv56E+RRL/vHjFOLF784uGlBrWnzKzcJ/lgEAt8ngxc4D8O95DCEJJg8FRiv68V8Urlo5UJZ4223mlL7r2InBKDXNlIf087fTkNjpLGnTw4EIU2mCmrLSJzsjnEDP
- l4lfCODK
- a+StAzvozMuEa/e53+y8RymxfLRkGzvLkeD2K9W1yrnFnzg3Cjm0ABBTInZkJeA75Lxc3caO9TbjBHfJ4cRLA0JdyeG/INZqTqiEg0PFCQdVQkIUM+5LLrRepGrmYJbZtbXIwQmlvn4aFadumnAscYTU6pqMJVZRAO9tto/CE3jzBjC/7ptO61W2acD/3ZfNFjHBPh6xuhh3NrGMi77ga3KjM9Jbe1PzT/4Tc9zWqnrpVEUrbPVi1FmvRXz/9XPG1FLE1Jsh+u8eYP5lvJ1dKT7vmisAMbnacpHsP33eH04iqIXAW3s120j+8ooa2aHedkDcl3DhzVtzyTqjwC74P8/nMaCKsi1dqKowb/4JxYqm/D1b3aqUUrCbhcqzvI+P4zbD1atQsTzSiBEWcPnPcymGKnbW3Z9igsn1R/fK543u1JBcEn3vC7FMtkgSSMoVYKbd3MePPTOdlUoi7FZG/5TaDr1Z+NLbnOuQ9V8ufKEvFEpEOA2IEQKr+r6wkTRI89ZbrdeITQoyNLEYytioG9Re9LuSkY37+dvOu6zyStm2UDvEqyzhtPvITXNbGzy72xiKVCzuijtoH3rxTAJXUI9jZpN247ZX9iFBnCXm3s115vT31q8H9QaZ9oaRujpT2Kcs1Hynk+lA+cfFwyRfYUHARWqIfMea4X+2tzDoIlE0b0mZPLhNvY3R+hA==
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1758135860-545357
+X-HE-Meta: U2FsdGVkX191uQ53A9PqYlNI7CTqE5Q6xTPp+N70w+mk8jsZ+tZL8OFMozl6PrrrdByDBU6lAbkv9i7Yd1GPFuFRc72F9hxFhU0NgnaTKWtmPuLzpGk931kb+JpHz3g2kwOxAvufzr3gka2SV2kxicQtX94YolpANALgL91+JyMHlLT/adVP/euo7oEDTCuKeHxuDVXRBHwr4KFDRiEQM68iAGDE56VFea5jP95tem29PuZQJJWWB71TZiYgWPSWLuewcA2PObnDhgIpSr9AXD0XqA0jZ3KT6htpuxWocx6UlRi/Ln+akRRCJfYzQ5ESj8FRVxn/o/1l+wFkuJA5Sh2IwE/cK0uHpv0Ax+yqt2V0CF3dJCWwDGa2M0UhaPqcPrsO706w5GWQ0MP+jrhm64lmkVrCWCxuEJpEmJ6+8+AY9MlG0hrZw0EGzx8nJQo7Byvu6xY4nPscjQLJkduQgakSmohTwwnssKfshmmVjUt2hJlvxymcev0Z031DC+zDiOxLuNznw1vqjqd5Hh5vQXJo4azeBo1ZmP228EN/90B95Tuv+uP/sTMNKhoGu/qSNZ3BsUqRioxWfD8MMs4Jt3ZQf/rd2ov6sVQqzatkgCThzoldQBogcoVrjQXNpVKIazZtb354T/VabEXeSz/5AyMoJ6EPUIs6RU6btn/aJX+G36sQKgujMt3ZkoQ5tw1NL5Suzus/LCUeMQ9leC8OiUydMC60ifgyUC30hay4MSiwOiEKgl/ZdSV91U2lBKzE+8XSOi517j0OPqhJuJhfY4icndeZdwNkbfN8hrsZHF//VkfN0Vphie64RK4yJe07M9AJ2dmKJj5xQqr+f99yU1I/e0B6ulRjZMvPNSUYJfoOUW06M9fouEFoJm2onIMd+YBIsYKSVv3jbKPg/5Cqg0BEfQmQCHDxJCBaKK6d4zSFawWvau8UOvzkR9oWZ3tF4B3VDpQsIHUbpweRrza
+ AdUmesxz
+ KeN0e/WA15MmwlVw9YTusBuvXfZGtVM0u4IsWRzPXbVhXZBk01oQTLk42pSd3ulGuWQ7up0jTs6FTymu8jSJ1n7TuJfvS0FUayfES88oPgjsxVztbGIfCQ7Sf/X+FPkbi2s4nGY5U8NKE9roRFP7zZ6Ed98inZJa4ouspDuDwY4V2XD4xOEwtmYGXaYgxiAj3/d+mSj8zK/5uysKAAySxppaQlaiqt3b5J9AK2druQINCNOTLQa1pt8byC4d1MVIWUUPD8mL6b0oWAlzBocr2Gci4sRDQZOZEZ4NtdPL+iVmr7lqrkK3Hyencv95EHGf0DkXYejX4P4xvXBz8NIQW2JmBhPRwGkRJP4BF2UiG4/ipaZFIo5TSXMUCKBJvjHqQvC2hKPrIfaiFYjfNzbVKfDw0xe1S3w2lMqxVn2K74Ve0rHf6Kam3ho2l55/dDwMfyEbUfFEs7KYGyFoVZv+WkVfKw4YhHTu+lnOeLYkO2Dxu2siitL2Jp68GzuaGeozDzdqQPMa2YIFgAmbwJOBhpIi//jgHHPc+lka+lQOpoHukozrmCBr+kR66b3jnWwOS2P9pmpp9ZpOBZoaKhXRHPhT+TQZl6qyRfbCUvxiKTfgbVx01NeNsYiAlPcyHyCt8MDmt7XpRxo/ZjePc8RuAsDOG0Y6iSV34P7wbsNQVy0rg3wnN9Z0QTQq9Cu91OKdFzMsP4knY4FAptopxyjDmig1slg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -196,305 +196,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Dev Jain <dev.jain@arm.com>
+AmpereOne supports BBML2 without conflict abort, add to the allow list.
 
-This patch paves the path to enable huge mappings in vmalloc space and
-linear map space by default on arm64. For this we must ensure that we
-can handle any permission games on the kernel (init_mm) pagetable.
-Previously, __change_memory_common() used apply_to_page_range() which
-does not support changing permissions for block mappings. We move away
-from this by using the pagewalk API, similar to what riscv does right
-now. It is the responsibility of the caller to ensure that the range
-over which permissions are being changed falls on leaf mapping
-boundaries. For systems with BBML2, this will be handled in future
-patches by dyanmically splitting the mappings when required.
-
-Unlike apply_to_page_range(), the pagewalk API currently enforces the
-init_mm.mmap_lock to be held. To avoid the unnecessary bottleneck of the
-mmap_lock for our usecase, this patch extends this generic API to be
-used locklessly, so as to retain the existing behaviour for changing
-permissions. Apart from this reason, it is noted at [1] that KFENCE can
-manipulate kernel pgtable entries during softirqs. It does this by
-calling set_memory_valid() -> __change_memory_common(). This being a
-non-sleepable context, we cannot take the init_mm mmap lock.
-
-Add comments to highlight the conditions under which we can use the
-lockless variant - no underlying VMA, and the user having exclusive
-control over the range, thus guaranteeing no concurrent access.
-
-We require that the start and end of a given range do not partially
-overlap block mappings, or cont mappings. Return -EINVAL in case a
-partial block mapping is detected in any of the PGD/P4D/PUD/PMD levels;
-add a corresponding comment in update_range_prot() to warn that
-eliminating such a condition is the responsibility of the caller.
-
-Note that, the pte level callback may change permissions for a whole
-contpte block, and that will be done one pte at a time, as opposed to an
-atomic operation for the block mappings. This is fine as any access will
-decode either the old or the new permission until the TLBI.
-
-apply_to_page_range() currently performs all pte level callbacks while
-in lazy mmu mode. Since arm64 can optimize performance by batching
-barriers when modifying kernel pgtables in lazy mmu mode, we would like
-to continue to benefit from this optimisation. Unfortunately
-walk_kernel_page_table_range() does not use lazy mmu mode. However,
-since the pagewalk framework is not allocating any memory, we can safely
-bracket the whole operation inside lazy mmu mode ourselves. Therefore,
-wrap the call to walk_kernel_page_table_range() with the lazy MMU
-helpers.
-
-Link: https://lore.kernel.org/linux-arm-kernel/89d0ad18-4772-4d8f-ae8a-7c48d26a927e@arm.com/ [1]
-Signed-off-by: Dev Jain <dev.jain@arm.com>
-Signed-off-by: Yang Shi <yshi@os.amperecomputing.com>
+Reviewed-by: Christoph Lameter (Ampere) <cl@gentwo.org>
 Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Yang Shi <yang@os.amperecomputing.com>
 ---
- arch/arm64/mm/pageattr.c | 119 +++++++++++++++++++++++++++++----------
- include/linux/pagewalk.h |   3 +
- mm/pagewalk.c            |  36 ++++++++----
- 3 files changed, 115 insertions(+), 43 deletions(-)
+ arch/arm64/kernel/cpufeature.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
-index 667aff1efe49..c0648764c403 100644
---- a/arch/arm64/mm/pageattr.c
-+++ b/arch/arm64/mm/pageattr.c
-@@ -8,6 +8,7 @@
- #include <linux/mem_encrypt.h>
- #include <linux/sched.h>
- #include <linux/vmalloc.h>
-+#include <linux/pagewalk.h>
- 
- #include <asm/cacheflush.h>
- #include <asm/pgtable-prot.h>
-@@ -20,6 +21,65 @@ struct page_change_data {
- 	pgprot_t clear_mask;
- };
- 
-+static ptdesc_t set_pageattr_masks(ptdesc_t val, struct mm_walk *walk)
-+{
-+	struct page_change_data *masks = walk->private;
-+
-+	val &= ~(pgprot_val(masks->clear_mask));
-+	val |= (pgprot_val(masks->set_mask));
-+
-+	return val;
-+}
-+
-+static int pageattr_pud_entry(pud_t *pud, unsigned long addr,
-+			      unsigned long next, struct mm_walk *walk)
-+{
-+	pud_t val = pudp_get(pud);
-+
-+	if (pud_sect(val)) {
-+		if (WARN_ON_ONCE((next - addr) != PUD_SIZE))
-+			return -EINVAL;
-+		val = __pud(set_pageattr_masks(pud_val(val), walk));
-+		set_pud(pud, val);
-+		walk->action = ACTION_CONTINUE;
-+	}
-+
-+	return 0;
-+}
-+
-+static int pageattr_pmd_entry(pmd_t *pmd, unsigned long addr,
-+			      unsigned long next, struct mm_walk *walk)
-+{
-+	pmd_t val = pmdp_get(pmd);
-+
-+	if (pmd_sect(val)) {
-+		if (WARN_ON_ONCE((next - addr) != PMD_SIZE))
-+			return -EINVAL;
-+		val = __pmd(set_pageattr_masks(pmd_val(val), walk));
-+		set_pmd(pmd, val);
-+		walk->action = ACTION_CONTINUE;
-+	}
-+
-+	return 0;
-+}
-+
-+static int pageattr_pte_entry(pte_t *pte, unsigned long addr,
-+			      unsigned long next, struct mm_walk *walk)
-+{
-+	pte_t val = __ptep_get(pte);
-+
-+	val = __pte(set_pageattr_masks(pte_val(val), walk));
-+	__set_pte(pte, val);
-+
-+	return 0;
-+}
-+
-+static const struct mm_walk_ops pageattr_ops = {
-+	.pud_entry	= pageattr_pud_entry,
-+	.pmd_entry	= pageattr_pmd_entry,
-+	.pte_entry	= pageattr_pte_entry,
-+};
-+
- bool rodata_full __ro_after_init = true;
- 
- bool can_set_direct_map(void)
-@@ -37,32 +97,35 @@ bool can_set_direct_map(void)
- 		arm64_kfence_can_set_direct_map() || is_realm_world();
- }
- 
--static int change_page_range(pte_t *ptep, unsigned long addr, void *data)
-+static int update_range_prot(unsigned long start, unsigned long size,
-+			     pgprot_t set_mask, pgprot_t clear_mask)
- {
--	struct page_change_data *cdata = data;
--	pte_t pte = __ptep_get(ptep);
-+	struct page_change_data data;
-+	int ret;
- 
--	pte = clear_pte_bit(pte, cdata->clear_mask);
--	pte = set_pte_bit(pte, cdata->set_mask);
-+	data.set_mask = set_mask;
-+	data.clear_mask = clear_mask;
- 
--	__set_pte(ptep, pte);
--	return 0;
-+	arch_enter_lazy_mmu_mode();
-+
-+	/*
-+	 * The caller must ensure that the range we are operating on does not
-+	 * partially overlap a block mapping, or a cont mapping. Any such case
-+	 * must be eliminated by splitting the mapping.
-+	 */
-+	ret = walk_kernel_page_table_range_lockless(start, start + size,
-+						    &pageattr_ops, NULL, &data);
-+	arch_leave_lazy_mmu_mode();
-+
-+	return ret;
- }
- 
--/*
-- * This function assumes that the range is mapped with PAGE_SIZE pages.
-- */
- static int __change_memory_common(unsigned long start, unsigned long size,
--				pgprot_t set_mask, pgprot_t clear_mask)
-+				  pgprot_t set_mask, pgprot_t clear_mask)
- {
--	struct page_change_data data;
- 	int ret;
- 
--	data.set_mask = set_mask;
--	data.clear_mask = clear_mask;
--
--	ret = apply_to_page_range(&init_mm, start, size, change_page_range,
--					&data);
-+	ret = update_range_prot(start, size, set_mask, clear_mask);
- 
- 	/*
- 	 * If the memory is being made valid without changing any other bits
-@@ -174,32 +237,26 @@ int set_memory_valid(unsigned long addr, int numpages, int enable)
- 
- int set_direct_map_invalid_noflush(struct page *page)
- {
--	struct page_change_data data = {
--		.set_mask = __pgprot(0),
--		.clear_mask = __pgprot(PTE_VALID),
--	};
-+	pgprot_t clear_mask = __pgprot(PTE_VALID);
-+	pgprot_t set_mask = __pgprot(0);
- 
- 	if (!can_set_direct_map())
- 		return 0;
- 
--	return apply_to_page_range(&init_mm,
--				   (unsigned long)page_address(page),
--				   PAGE_SIZE, change_page_range, &data);
-+	return update_range_prot((unsigned long)page_address(page),
-+				 PAGE_SIZE, set_mask, clear_mask);
- }
- 
- int set_direct_map_default_noflush(struct page *page)
- {
--	struct page_change_data data = {
--		.set_mask = __pgprot(PTE_VALID | PTE_WRITE),
--		.clear_mask = __pgprot(PTE_RDONLY),
--	};
-+	pgprot_t set_mask = __pgprot(PTE_VALID | PTE_WRITE);
-+	pgprot_t clear_mask = __pgprot(PTE_RDONLY);
- 
- 	if (!can_set_direct_map())
- 		return 0;
- 
--	return apply_to_page_range(&init_mm,
--				   (unsigned long)page_address(page),
--				   PAGE_SIZE, change_page_range, &data);
-+	return update_range_prot((unsigned long)page_address(page),
-+				 PAGE_SIZE, set_mask, clear_mask);
- }
- 
- static int __set_memory_enc_dec(unsigned long addr,
-diff --git a/include/linux/pagewalk.h b/include/linux/pagewalk.h
-index 682472c15495..88e18615dd72 100644
---- a/include/linux/pagewalk.h
-+++ b/include/linux/pagewalk.h
-@@ -134,6 +134,9 @@ int walk_page_range(struct mm_struct *mm, unsigned long start,
- int walk_kernel_page_table_range(unsigned long start,
- 		unsigned long end, const struct mm_walk_ops *ops,
- 		pgd_t *pgd, void *private);
-+int walk_kernel_page_table_range_lockless(unsigned long start,
-+		unsigned long end, const struct mm_walk_ops *ops,
-+		pgd_t *pgd, void *private);
- int walk_page_range_vma(struct vm_area_struct *vma, unsigned long start,
- 			unsigned long end, const struct mm_walk_ops *ops,
- 			void *private);
-diff --git a/mm/pagewalk.c b/mm/pagewalk.c
-index 648038247a8d..936689d8bcac 100644
---- a/mm/pagewalk.c
-+++ b/mm/pagewalk.c
-@@ -606,10 +606,32 @@ int walk_page_range(struct mm_struct *mm, unsigned long start,
- int walk_kernel_page_table_range(unsigned long start, unsigned long end,
- 		const struct mm_walk_ops *ops, pgd_t *pgd, void *private)
- {
--	struct mm_struct *mm = &init_mm;
-+	/*
-+	 * Kernel intermediate page tables are usually not freed, so the mmap
-+	 * read lock is sufficient. But there are some exceptions.
-+	 * E.g. memory hot-remove. In which case, the mmap lock is insufficient
-+	 * to prevent the intermediate kernel pages tables belonging to the
-+	 * specified address range from being freed. The caller should take
-+	 * other actions to prevent this race.
-+	 */
-+	mmap_assert_locked(&init_mm);
-+
-+	return walk_kernel_page_table_range_lockless(start, end, ops, pgd,
-+						     private);
-+}
-+
-+/*
-+ * Use this function to walk the kernel page tables locklessly. It should be
-+ * guaranteed that the caller has exclusive access over the range they are
-+ * operating on - that there should be no concurrent access, for example,
-+ * changing permissions for vmalloc objects.
-+ */
-+int walk_kernel_page_table_range_lockless(unsigned long start, unsigned long end,
-+		const struct mm_walk_ops *ops, pgd_t *pgd, void *private)
-+{
- 	struct mm_walk walk = {
- 		.ops		= ops,
--		.mm		= mm,
-+		.mm		= &init_mm,
- 		.pgd		= pgd,
- 		.private	= private,
- 		.no_vma		= true
-@@ -620,16 +642,6 @@ int walk_kernel_page_table_range(unsigned long start, unsigned long end,
- 	if (!check_ops_valid(ops))
- 		return -EINVAL;
- 
--	/*
--	 * Kernel intermediate page tables are usually not freed, so the mmap
--	 * read lock is sufficient. But there are some exceptions.
--	 * E.g. memory hot-remove. In which case, the mmap lock is insufficient
--	 * to prevent the intermediate kernel pages tables belonging to the
--	 * specified address range from being freed. The caller should take
--	 * other actions to prevent this race.
--	 */
--	mmap_assert_locked(mm);
--
- 	return walk_pgd_range(start, end, &walk);
- }
+diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
+index ef269a5a37e1..ba07eeff2a8d 100644
+--- a/arch/arm64/kernel/cpufeature.c
++++ b/arch/arm64/kernel/cpufeature.c
+@@ -2235,6 +2235,8 @@ static bool has_bbml2_noabort(const struct arm64_cpu_capabilities *caps, int sco
+ 	static const struct midr_range supports_bbml2_noabort_list[] = {
+ 		MIDR_REV_RANGE(MIDR_CORTEX_X4, 0, 3, 0xf),
+ 		MIDR_REV_RANGE(MIDR_NEOVERSE_V3, 0, 2, 0xf),
++		MIDR_ALL_VERSIONS(MIDR_AMPERE1),
++		MIDR_ALL_VERSIONS(MIDR_AMPERE1A),
+ 		{}
+ 	};
  
 -- 
 2.47.0
