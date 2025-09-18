@@ -4,123 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00FF3CA1013
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 15:43:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65059CA1013
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 15:44:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2398F280038; Thu, 18 Sep 2025 11:43:51 -0400 (EDT)
+	id B89A728003B; Thu, 18 Sep 2025 11:44:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 211418E00F6; Thu, 18 Sep 2025 11:43:51 -0400 (EDT)
+	id B39648E00F6; Thu, 18 Sep 2025 11:44:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 12734280038; Thu, 18 Sep 2025 11:43:51 -0400 (EDT)
+	id A4F5328003B; Thu, 18 Sep 2025 11:44:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 00FE98E00F6
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 11:43:50 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B2C98C0246
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 15:43:50 +0000 (UTC)
-X-FDA: 83902791420.08.79525D9
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	by imf08.hostedemail.com (Postfix) with ESMTP id B3A49160015
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 15:43:48 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="sxj5Om/s";
-	spf=pass (imf08.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 93B338E00F6
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 11:44:06 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5337A576E3
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 15:44:06 +0000 (UTC)
+X-FDA: 83902792092.11.4AB475C
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 56464140013
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 15:44:04 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=K+veIzIX;
+	spf=pass (imf23.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758210228;
+	s=arc-20220608; t=1758210244;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DUuz8CD3HO9jmYGP3x/Qi9AVUuWVNLWtlJSdhydOUbQ=;
-	b=JT+BuAa+m0YLP01Jb0WeXomSf6eMWuG6VbHPhKLk/Z0HjwtJEttOEXzKT7xVOn5C4FH1pp
-	jKbcc9cpCvvAlDt4DlPoxIFMYeG/oBog9Dd54avMo8MlVfQ1yxose5gOD+7Y5SowEj8jK+
-	h3sVBS3+OD2yyZ4e5i143wKfQS7f1dE=
+	bh=o+D+JfJ/Jq0/jdAS21NjzfpdXlFqTr3y01BMsRdUEi8=;
+	b=xqhf/vy/sz+VZHXFsCwxapxhWJrhxqjgh9SwrRy3A5eG1O1D11eYrrYCTFF4g8XuBJOWjp
+	0um21oCgLqvlEonvD6e9+8kHgyZSXTHnltPHvRdvctDEdGg9QCFVYmYzwmiMvcWsmBLT5Z
+	V1/MmpX3aEy8dmzpPNmpvVARHCfUX+A=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="sxj5Om/s";
-	spf=pass (imf08.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
+	imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=K+veIzIX;
+	spf=pass (imf23.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758210228; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758210244; a=rsa-sha256;
 	cv=none;
-	b=cCwzKNOCACFrLklCRr4wfmgRuTaZunxN8LvKwcJXoN2nKznVl904+WP6aR7Vj8TsqvCfZn
-	IQC3E3jwsdKoqVwdav/9YO4bhSqwsgCP9/b381sCV+5jptwqBIZAq2DLutvnAyUly6VYYS
-	azETySonB53lkMapGqhN3DWpIidBnmU=
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2699ed6d473so138255ad.0
-        for <linux-mm@kvack.org>; Thu, 18 Sep 2025 08:43:48 -0700 (PDT)
+	b=3Ro9TI0j3OTSNWF3+wpfjdVGLoXmLmCBPmiGlUct3JuUBNqS5SuMH7yZwmkICR78Xrt+Zx
+	/S5fJjbBvl3LCKGyzZTAJ+IRzQ8Ib27VQ3m2y1u9IubiGtwJiu7PeznVNl79WM0qQ+XMzS
+	KiNL84ATzBrEGM7xfR8X/UTBh9+3I20=
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-45f2d21cbabso73555e9.1
+        for <linux-mm@kvack.org>; Thu, 18 Sep 2025 08:44:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758210227; x=1758815027; darn=kvack.org;
+        d=google.com; s=20230601; t=1758210243; x=1758815043; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=DUuz8CD3HO9jmYGP3x/Qi9AVUuWVNLWtlJSdhydOUbQ=;
-        b=sxj5Om/spJLsFA9Jq4vzwRB6MKuUxI8rT7+u+e+NnxSVE/DsCXFQ6R+OdxyNskD1Ra
-         jqHwcagDpnUS5ecZZSJJX6WBU6GN1UVJr0/b9Qv27cjvUcqq2ZYld9zdBV2m+h3LUSQM
-         YffbOiRndkugIE+k5OeOpkz51Uh8Sm8rJoIFpYuy1vgKLjtW0QlOV2Q6vNUUAbIJL5nr
-         fVD5tPGivljoTEY69uQ6X4zdLhARkj4frj/bX5R0cKqIsIpNrt+A/wxcY0p+qR+8ODxi
-         7GjvfCEXmHaQzrLyxu0Xr2gVeq2OM5mxfeFKrRT5qSNjkwQ13n5FLyJ4KRJLkJJGlK/9
-         1Lbg==
+        bh=o+D+JfJ/Jq0/jdAS21NjzfpdXlFqTr3y01BMsRdUEi8=;
+        b=K+veIzIXu2/22tDW2/TBvFcOPFfWmzr/90xQgh5r8+KItWGeI+oJ46b01JslrGFfBu
+         nhQSY1jGIFDgjLuUByBc4t9RL9wWhaZRSiHF9eWYAEaOwTWg3j8tAeMNRgxLWyOC2dYu
+         uPkdRCT12+XPoAb3fO5xkjnIKhson0hnhNqCxTFamCeJx9Iecxpivawx8OXRPwpkg26Y
+         unsZeESqxC8IGLRE/DDIzREJjs0880zIAv3dN7c177a6V4pYrHscyhjXWiek88nm82Om
+         1jUkHUMzpfulSbputD1WNKpLIjyM1+ThCPqJayONHvptcctetHcd9/TuEJmBz0e6k1q0
+         4dKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758210227; x=1758815027;
+        d=1e100.net; s=20230601; t=1758210243; x=1758815043;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=DUuz8CD3HO9jmYGP3x/Qi9AVUuWVNLWtlJSdhydOUbQ=;
-        b=qKc+Xfr30Ws3k0jMk+aGi5TaHdJbaMgOHSIii1Lo/7LUTFMINzrC09U23Or+XtMqTA
-         aKsFoMKeunIJCBve/0ACDig9dnH6UlOQlBtLzA2wM2y5/Jk67R6G8Iw5HrcpMe6i0Cta
-         +5n4rMQpIiAD0u2vJgvwasxEPgo6PtwSYaB6wvOEZwxCl+MsHhzHTaKPz6MsdwOM1/Tw
-         JISPaB8K25W+U8WIPNb8GyUS/jUoeOo1dyWTe6JBxyxeP6nVzlWduddPfxxqglTXSor9
-         WofctdMBfTeqmFRXYs0DYdbJaLMPs7Nv8bdr9IG86eIbKuAsdpj1a6NOfWf5/CVGagvh
-         +4cg==
-X-Forwarded-Encrypted: i=1; AJvYcCXmTqXZj/oI7G6x6c4s1CTbAYKnMy/XTfkyP6t3cReLf65HIqYvbLNqyJwv+1MF03xs0do+ygIz0w==@kvack.org
-X-Gm-Message-State: AOJu0YwSh3VFlAD2xoGE6a6UC1Cti7tOUkYWe8RZQajYW8iYHJ7Atk59
-	R3Hp5P6a2bGTujffnzEmchqij8sfRv8BrgdpgDCT6Fl6dKSk76QV3xwLFb5aEJlxaHgKCmiy9nW
-	Vb5667xpfH8vFQfaMXIT8DV7qf+XW14C3IoH5+gNn
-X-Gm-Gg: ASbGnct/LdG+/o/FS5hPQSxx211LbNAYLfqD4tCXn+ZlyKbQP1VxW8RYbtOICaB7Ei1
-	avTX9bDWzUzBMxSaNbGlxEUsQx0k6aeo5aD0yR1/8hh7rvuR2RwlCJ3xuPMEl8OolO7oBJgo4r8
-	c4KL59rCQMyOWt0S9/xTgNtK6WKW2/R3esmUJR0AusyYOUTe9n8vgUS2G6RY4pI+icmeNK60Bsb
-	TKV7k4+hAvTBuT+ztwpa+y1UUGaIhxXMxDoZPbD7W5eq3C24+9xfu38wWIOAh8=
-X-Google-Smtp-Source: AGHT+IGOWncYtcrhMeRNwklhcx/jRPyb4GflMef3jOYgIJD25j97iYY51RH9RwZkkWDzLf+irjpmRR6Jnws4Dzhi7gI=
-X-Received: by 2002:a17:903:1a68:b0:269:7410:d780 with SMTP id
- d9443c01a7336-2697410e815mr6509485ad.5.1758210227139; Thu, 18 Sep 2025
- 08:43:47 -0700 (PDT)
+        bh=o+D+JfJ/Jq0/jdAS21NjzfpdXlFqTr3y01BMsRdUEi8=;
+        b=Xk08O6WcJ99xLTDGkDb8Q4nwdo/ZOXtvFNhkytp4aM9n5MKB3Vr+3JTHjAnbteBvaj
+         TGj0xDDPs3d6vVVN0yckrRH9qTqRH7Gcb46+C8r7aLxqqU7aiWZq6KJYWNxvYtWs+Gjp
+         b99qtJDpWIejYfgf1xr3wc5baqximqFGyuT3sknLSjebE/UlBqE8v2axt9XDdTDK7B0A
+         S/+dDfn9Au7beaI4OS6mesSLEncppI66aMiHdNpMt2dPZ1kRkIO6bskbHoVCxEH0eOhk
+         enDV8BlrV67meWL7GaQAjtIXTRe6HkcWGLpeeQt6M/h9tge5zeTOOeYfgJSq8WGP9Oge
+         hA4A==
+X-Forwarded-Encrypted: i=1; AJvYcCWVmhvcI2mXsOYj0EsyLsLj7IazivDw0tj0uhJbzcwZAvLZWt8h28/QKJOw8VCDv4djBeWQ0lmiXw==@kvack.org
+X-Gm-Message-State: AOJu0Yx10n2VtquNn0+Tl7C+iqFNozm+tWKbZSoCqZNRXOpLKSE3QWS8
+	slgsermUX1Nsn6xh4YdzyAfn+MuM9smfX4r2vGwBJQa8bsNYWSuml6UsHivaoqCOK8jzKuftZLQ
+	DnyMmFolptMs6XXfAVA9KkHSEDHVBZsS5qVdoD4rq
+X-Gm-Gg: ASbGncv4cjDAKpirK/PiwVrohww82AVpbKFrJEJ4d/abezuS+kguMPsqiDkra7ufPPp
+	+y0STxRat4aHcNsC49oGRZZoMRjksKhB2GsXP+5movSb7ejC7uYVLHSjAsRTeNGII63DVUOsgA8
+	Zx57k2ylHIC/AduGGxGFUnD+hYA8L9egRWw/4bb0p/KikVANB0XbJxVX7Vd7dZWSSO4vNWZkSEk
+	wh9TOWpUBzwBDbYfaq/oygk8GuG14ckGxUNxi4990qmOUehdQV7dpAiQ++qfsNJhg==
+X-Google-Smtp-Source: AGHT+IGKDPhFW7QY2ThA23Eiqh7Jb4gB3IAedet7C/hbJyJis0arTM7d/07UQoRXJ2ALik0wfBJpwlDyK2X2eoThyyw=
+X-Received: by 2002:a05:600c:621a:b0:453:672b:5b64 with SMTP id
+ 5b1f17b1804b1-4616dbbbb8fmr4089715e9.2.1758210242387; Thu, 18 Sep 2025
+ 08:44:02 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250915163838.631445-1-kaleshsingh@google.com>
- <20250915163838.631445-6-kaleshsingh@google.com> <eb254603-edbd-4bc6-a4bd-57b6a85191b5@lucifer.local>
-In-Reply-To: <eb254603-edbd-4bc6-a4bd-57b6a85191b5@lucifer.local>
-From: Kalesh Singh <kaleshsingh@google.com>
-Date: Thu, 18 Sep 2025 08:43:35 -0700
-X-Gm-Features: AS18NWAMaEgzDOdwxwrnrwKqopVJAdtQ-tQlRuAS1rNhBQel6t9gDKbC_aFTnDw
-Message-ID: <CAC_TJvc9HNwBbH9953vnqZQ0zLYvRF4fdZvc1Sp7OYV8bPVOCA@mail.gmail.com>
-Subject: Re: [PATCH v2 5/7] mm: harden vma_count against direct modification
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: akpm@linux-foundation.org, minchan@kernel.org, david@redhat.com, 
-	Liam.Howlett@oracle.com, rppt@kernel.org, pfalcato@suse.de, 
-	kernel-team@android.com, android-mm@google.com, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Kees Cook <kees@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
-	Dietmar Eggemann <dietmar.eggemann@arm.com>, Ben Segall <bsegall@google.com>, 
-	Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, Jann Horn <jannh@google.com>, 
-	Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-trace-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+References: <20250904155720.22149-1-tony.luck@intel.com> <brfqzhbipg35twgv22vnnotbv3t3grwh2dxugvtbgqduuhsvst@f7exibz7i7tk>
+ <aLsHh70jI6BGHjaN@agluck-desk3> <bwu744g3qzbzylxvfgt7v4tnf2k2eosqbkg7alm6u5roa7j3bn@gmut2l5227kw>
+ <aLspJ5Tpqp4qRDk2@agluck-desk3> <cf05bc8e-fc79-49e4-a90a-47e661b4ae69@oracle.com>
+ <CACw3F538k+dshTs1_rxbpYoRdFyX3tLYzfaWj-_d7Lq5Dd2Jsg@mail.gmail.com>
+ <aL8rIgSImDh7Nj7E@hpe.com> <7d3cc42c-f1ef-4f28-985e-3a5e4011c585@linux.alibaba.com>
+In-Reply-To: <7d3cc42c-f1ef-4f28-985e-3a5e4011c585@linux.alibaba.com>
+From: Jiaqi Yan <jiaqiyan@google.com>
+Date: Thu, 18 Sep 2025 08:43:51 -0700
+X-Gm-Features: AS18NWBE_Rh3aqLAP0Y0-SJP8rZCEq2FVPADSEjBbJ_MtsZw23_iRMOUp4qz4C8
+Message-ID: <CACw3F50hU3BCP=A++Dx_V=U8PKvsTvTa1=krULxfQdeK2kVBrw@mail.gmail.com>
+Subject: Re: PATCH v3 ACPI: APEI: GHES: Don't offline huge pages just because
+ BIOS asked
+To: Shuai Xue <xueshuai@linux.alibaba.com>
+Cc: Kyle Meyer <kyle.meyer@hpe.com>, jane.chu@oracle.com, 
+	"Luck, Tony" <tony.luck@intel.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, surenb@google.com, 
+	"Anderson, Russ" <russ.anderson@hpe.com>, rppt@kernel.org, osalvador@suse.de, 
+	nao.horiguchi@gmail.com, mhocko@suse.com, lorenzo.stoakes@oracle.com, 
+	linmiaohe@huawei.com, david@redhat.com, bp@alien8.de, 
+	akpm@linux-foundation.org, linux-mm@kvack.org, vbabka@suse.cz, 
+	linux-acpi@vger.kernel.org, Shawn Fan <shawn.fan@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: B3A49160015
+X-Rspamd-Queue-Id: 56464140013
+X-Stat-Signature: 4wskycxqsbdfz9oqrw5apifjikypyotp
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: tfa8o38kw8g6qm5jinas15zwp6mh5xa1
-X-HE-Tag: 1758210228-179148
-X-HE-Meta: U2FsdGVkX1/iBIgN27xOJFtEA56pjJIGGhBCM8UMTDtwi0hXQosiGUsCRRsjgCElqp8i5DRH3E4c4ns503cq0xPVV+J20gQwzAbwCxZr8gyKIjF8YizThLs1xbhlcLV1Z5IqMYAjcEaS4aCF/5L9WCjMEg7+l0/yOHS8fpByTk3U+vWhAnagxZy6iz38LzMcex795jWI6ig9FdnbkzCb7r9T9t0Q0mBHpPr2S8SC9PmJ6Uv3eBcKK9edmEQ1bfdPwZzqR6grO6Statfr3Zr06d1YcOee0a3XCR43+yeocRGe7/NWtul7PCc3S+6nnyo3aIoGEF+QRjMmBHQOY9eYR14hXiVNCQsEiKoP+zjCCwn+++fbT+pfsArhOsl4qXtP/QeQkB871aY5p5AgPPWyGAyFAp+afA7aMAngjF/+DqJ6hTM1yVX6kPdJKNIBjrS/KlR1y2SEG5U3bCdtt6XtSq38ll30QKHetEdieYvOxP0ecE23hSm5Elk5mAXafpNm0Op8ZyDRAQtA0+3bbJfZ8+tcA57IhvTnNot0ZKdN6R4KeyhA4t0Caq4uwT+JIeRjPKNuy33uJPQUxNQInT8JQruMUCLgT9F4zJC90USRKGAf5BE50XPWc7tbIpIJ98OkQERpiLJJ83iKBP70+Nghmu1Q9qEeloUYJMc9U1kczEHw5FRGXzS0xccOmjNEmAZg0w77krUtfm7TR2HU0IQQnm3B2CRZP5v7hfVbG5NKpVx8uOyXCxWuL9Hcn4Ba5N+NvyDYtFaD9rO1mS5SpQfusiUStwBRQAarIEBKIrbC4+FP0cdVH7j1cQMkYwQD07bPH8Fp1boChFFcwTIBXMKjz6zT6N8rej9D/OutlN5n0tZFDknyK/EWIIfeDnaLInMWlNRhjH27hF5Kbi2i765mzbOpxyGR+6fDmnewLuVCLGoRTd9j55iUF09cYb1KYvUIDUe+caee5wSNiuItLxY
- lbuBgcP7
- EXcKClgQ3jMXadHS6sWJDk9u801+PYSVmznSRn9ydaqw8mWO+zVv4HjxxyT3y/xWaslAluJFZ9RKKUkhvBdQ/euxBZzHgmZlzjkHbhJUV6CIs4FhMD09fVJisXRRT58sr0R6PFb7eptxNVHXU4OviM02Ks37lWn4vp8PIUAimjOkcgo8tvg1QhFzWpAvhzEC6+Atzpd/QpvNsUfp1inB7CMiqc2p+s7vgZr8tMYhVOQInFlREagSiJS8UTUHb3OQBGbSvvn35pxXHvSf3/DFHIQSuv2oonqUPhofrUiihfAy5vSfvqKbddOZRGCBeyrtjGqLSB89jdJ4P0mOXE7lvvb5ogcKXfBcTom5qqz3lIMyH1ibXXjP5jjLLpi/7tHYJNIPbHdHB4b9PlDqlAextCeYLNVLpQJJgWEkXeuhCdZMyvhc=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1758210244-601740
+X-HE-Meta: U2FsdGVkX19EPIzUAvqCgwenO7W0S2lk9BzPZ1Hda/Sgzt3H1+kWQ56/oVWyxJiCtAcruDTUoZ6SQnpjfw0eG4pWxL5H8urbg40X/4lXvHFSq47iHKzOjadjSXuJusxvBV9O8dLaJiTE4lFtoGsel+Nsp3CHzTtlIyBkSBAdkmbNk0AljI9zfHA8EUM4UKoypvVVs0DB8Y7M2usz1fymE9oENaqNH8FSNDdi4EMzVNM6c+a943XT2GmLyn3cx8PMAraQi6f32Cnc3u2pDFB58pzbpsMrJ32g0ks7jl5jlz6fYXVi7mk6gsK20pxu6oskmCMXOF68pRAbL2vjwIAbrSpCKG9bEEGuS8kG7hMls0ufft9s2+aBHamoBX8GsBra4W6N47SoLJBX78olUhu+ABYKD46GpvT1XPMezMoRGxNJR3USfTN4IbpJzvwxwuRcRZ8lMsGX9NmBDBeP5dLSW71S1q+u8qUsWYX02KsOvidfRjlexDcXGjXrCMigwBTeXeChO8kM3EBqXsjpFwbc1R+1uhLer8bH6wEUnuI+iOGiID1j3Q+s54R3d4rSEJqnbXM9TW785ebLShs12+ofv5hdDeQ/3Fe70pmkBQ5s+aPPkJB0yIrWtUDBpE4IqIMnfZhBGZC4R5/fRXh0K74d7YsBIxPtHCi6hMavkXCoKPblkYup317csjYU4l3fa9xhPsxDULV0owOAmyV+nXG1LZg6ayCG9j1YzmVLnFd9067AZxGY/ImGbSUQGL4oNu4zu49bkQFC2D/TF3zhzukU/njaOKVUC/VyjSpgpeXACB1WsxpWRBFq8HKv3EwoYdKfAeTFDIh4huvi3KjGOXCzwr0SoACan4S5IoyztaGfKzk3TWqAlrVz1ODLa8nCThHFqMqhGy5oqRMMT2L0Uqkt0DI5E4KeS4h6hAOwcvIVpXwc4i+OXvBvCuAlfD7tAnfYtpBX5XqWHDof6h7dolk
+ oL9GUm5I
+ urkFBArmcwrDmdg3ULNi8WMJ46bIaiKQdoYQlyck/X+gUtSkO7VaLgOIUR4x2uD7ukolxvJ3/tCq/JJ2vP5p7ChY3LGCi+M/J/JV/71v8yUYmuebHtrJNMptSHKffoctir1i9uWElrRUXOvyO7Y1CmFBzgnkS01GNoiA+NAAkjE/Fu1mb4KmPZdhMeHxftdCe/+iwz7icaF+M1bIetCSvyzdgisen+eHMfNxkx2Kn7HQa/jssxvZX/3dMztjOveDBS+OmrX4YoKn9udlkDjuxxE/QHFsGuSQ7xFj/mhBG2iZP0RfU02aB5OEXPpdfuuAcKUEnna70QazQU1VKuVu2PV2V1slI0auKkrfVQ6sspSfQgt1QYmvowoR6+9J+S+ZNMG4b
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,278 +127,201 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 18, 2025 at 7:52=E2=80=AFAM Lorenzo Stoakes
-<lorenzo.stoakes@oracle.com> wrote:
+On Wed, Sep 17, 2025 at 8:39=E2=80=AFPM Shuai Xue <xueshuai@linux.alibaba.c=
+om> wrote:
 >
-> On Mon, Sep 15, 2025 at 09:36:36AM -0700, Kalesh Singh wrote:
-> > To make VMA counting more robust, prevent direct modification of the
-> > mm->vma_count field. This is achieved by making the public-facing
-> > member const via a union and requiring all modifications to go
-> > through a new set of helper functions the operate on a private
-> > __vma_count.
-> >
-> > While there are no other invariants tied to vma_count currently, this
-> > structural change improves maintainability; as it creates a single,
-> > centralized point for any future logic, such as adding debug checks
-> > or updating related statistics (in subsequent patches).
-> >
-> > Cc: Andrew Morton <akpm@linux-foundation.org>
-> > Cc: David Hildenbrand <david@redhat.com>
-> > Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-> > Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> > Cc: Mike Rapoport <rppt@kernel.org>
-> > Cc: Minchan Kim <minchan@kernel.org>
-> > Cc: Pedro Falcato <pfalcato@suse.de>
-> > Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
 >
-> Hmmm I"m not sure about this one.
 >
-> I think this is a 'we don't need it' situation, and it's making everythin=
-g a bit
-> uglier.
+> =E5=9C=A8 2025/9/9 03:14, Kyle Meyer =E5=86=99=E9=81=93:> On Fri, Sep 05,=
+ 2025 at 12:59:00PM -0700, Jiaqi Yan wrote:
+>  >> On Fri, Sep 5, 2025 at 12:39=E2=80=AFPM <jane.chu@oracle.com> wrote:
+>  >>>
+>  >>>
+>  >>> On 9/5/2025 11:17 AM, Luck, Tony wrote:
+>  >>>> BIOS can supply a GHES error record that reports that the corrected
+>  >>>> error threshold has been exceeded. Linux will attempt to soft offli=
+ne
+>  >>>> the page in response.
+>  >>>>
+>  >>>> But "exceeded threshold" has many interpretations. Some BIOS versio=
+ns
+>  >>>> accumulate error counts per-rank, and then report threshold exceede=
+d
+>  >>>> when the number of errors crosses a threshold for the rank. Taking
+>  >>>> a page offline in this case is unlikely to solve any problems. But
+>  >>>> losing a 4KB page will have little impact on the overall system.
 >
-> I especially hate vma_count_add() and vma_count_sub(). You're essentially
-> overridding the whole concept in these cases to make stuff that's already=
- in
-> place work in those cases
+> Hi, Tony,
 >
-> I don't think this really adds much honestly.
+> Thank you for your detailed explanation. I believe this is exactly the pr=
+oblem
+> we're encountering in our production environment.
+>
+> As you mentioned, memory access is typically interleaved between channels=
+. When
+> the per-rank threshold is exceeded, soft-offlining the last accessed addr=
+ess
+> seems unreasonable - regardless of whether it's a 4KB page or a huge page=
+. The
+> error accumulation happens at the rank level, but the action is taken on =
+a
+> specific page that happened to trigger the threshold, which doesn't addre=
+ss the
+> underlying issue.
+>
+> I'm curious about the intended use case for the CPER_SEC_ERROR_THRESHOLD_=
+EXCEEDED
+> flag. What scenario was Intel BIOS expecting the OS to handle when this f=
+lag is set?
+> Is there a specific interpretation of "threshold exceeded" that would mak=
+e
+> page-level offline action meaningful? If not, how about disabling soft of=
+fline from
+> GHES and leave that to userspace tools like rasdaemon (mcelog) ?
 
-Hi Lorenzo,
-
-Thanks for reviewing.
-
-This was done to facilitate adding the assertions. So I'll drop this
-along with that in the next version.
-
-Thanks,
-Kalesh
+The existing /proc/sys/vm/enable_soft_offline can already entirely
+disable soft offline. GHES may still ask for soft offline to
+memory-failure.c, but soft_offline_page will discard the ask as long
+as userspace sets 0 to /proc/sys/vm/enable_soft_offline.
 
 >
-> (You're also clearly missing cases as the kernel bot has found issues)
->
-> > ---
-> >  include/linux/mm.h               | 25 +++++++++++++++++++++++++
-> >  include/linux/mm_types.h         |  5 ++++-
-> >  kernel/fork.c                    |  2 +-
-> >  mm/mmap.c                        |  2 +-
-> >  mm/vma.c                         | 12 ++++++------
-> >  tools/testing/vma/vma.c          |  2 +-
-> >  tools/testing/vma/vma_internal.h | 30 +++++++++++++++++++++++++++++-
-> >  7 files changed, 67 insertions(+), 11 deletions(-)
-> >
-> > diff --git a/include/linux/mm.h b/include/linux/mm.h
-> > index 138bab2988f8..8bad1454984c 100644
-> > --- a/include/linux/mm.h
-> > +++ b/include/linux/mm.h
-> > @@ -4219,4 +4219,29 @@ static inline bool snapshot_page_is_faithful(con=
-st struct page_snapshot *ps)
-> >
-> >  void snapshot_page(struct page_snapshot *ps, const struct page *page);
-> >
-> > +static inline void vma_count_init(struct mm_struct *mm)
-> > +{
-> > +     ACCESS_PRIVATE(mm, __vma_count) =3D 0;
-> > +}
-> > +
-> > +static inline void vma_count_add(struct mm_struct *mm, int nr_vmas)
-> > +{
-> > +     ACCESS_PRIVATE(mm, __vma_count) +=3D nr_vmas;
-> > +}
-> > +
-> > +static inline void vma_count_sub(struct mm_struct *mm, int nr_vmas)
-> > +{
-> > +     vma_count_add(mm, -nr_vmas);
-> > +}
-> > +
-> > +static inline void vma_count_inc(struct mm_struct *mm)
-> > +{
-> > +     vma_count_add(mm, 1);
-> > +}
-> > +
-> > +static inline void vma_count_dec(struct mm_struct *mm)
-> > +{
-> > +     vma_count_sub(mm, 1);
-> > +}
-> > +
-> >  #endif /* _LINUX_MM_H */
-> > diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-> > index 4343be2f9e85..2ea8fc722aa2 100644
-> > --- a/include/linux/mm_types.h
-> > +++ b/include/linux/mm_types.h
-> > @@ -1020,7 +1020,10 @@ struct mm_struct {
-> >  #ifdef CONFIG_MMU
-> >               atomic_long_t pgtables_bytes;   /* size of all page table=
-s */
-> >  #endif
-> > -             int vma_count;                  /* number of VMAs */
-> > +             union {
-> > +                     const int vma_count;            /* number of VMAs=
- */
-> > +                     int __private __vma_count;
-> > +             };
-> >
-> >               spinlock_t page_table_lock; /* Protects page tables and s=
-ome
-> >                                            * counters
-> > diff --git a/kernel/fork.c b/kernel/fork.c
-> > index 8fcbbf947579..ea9eff416e51 100644
-> > --- a/kernel/fork.c
-> > +++ b/kernel/fork.c
-> > @@ -1037,7 +1037,7 @@ static struct mm_struct *mm_init(struct mm_struct=
- *mm, struct task_struct *p,
-> >       mmap_init_lock(mm);
-> >       INIT_LIST_HEAD(&mm->mmlist);
-> >       mm_pgtables_bytes_init(mm);
-> > -     mm->vma_count =3D 0;
-> > +     vma_count_init(mm);
-> >       mm->locked_vm =3D 0;
-> >       atomic64_set(&mm->pinned_vm, 0);
-> >       memset(&mm->rss_stat, 0, sizeof(mm->rss_stat));
-> > diff --git a/mm/mmap.c b/mm/mmap.c
-> > index c6769394a174..30ddd550197e 100644
-> > --- a/mm/mmap.c
-> > +++ b/mm/mmap.c
-> > @@ -1828,7 +1828,7 @@ __latent_entropy int dup_mmap(struct mm_struct *m=
-m, struct mm_struct *oldmm)
-> >                */
-> >               vma_iter_bulk_store(&vmi, tmp);
-> >
-> > -             mm->vma_count++;
-> > +             vma_count_inc(mm);
-> >
-> >               if (tmp->vm_ops && tmp->vm_ops->open)
-> >                       tmp->vm_ops->open(tmp);
-> > diff --git a/mm/vma.c b/mm/vma.c
-> > index 64f4e7c867c3..0cd3cb472220 100644
-> > --- a/mm/vma.c
-> > +++ b/mm/vma.c
-> > @@ -352,7 +352,7 @@ static void vma_complete(struct vma_prepare *vp, st=
-ruct vma_iterator *vmi,
-> >                * (it may either follow vma or precede it).
-> >                */
-> >               vma_iter_store_new(vmi, vp->insert);
-> > -             mm->vma_count++;
-> > +             vma_count_inc(mm);
-> >       }
-> >
-> >       if (vp->anon_vma) {
-> > @@ -383,7 +383,7 @@ static void vma_complete(struct vma_prepare *vp, st=
-ruct vma_iterator *vmi,
-> >               }
-> >               if (vp->remove->anon_vma)
-> >                       anon_vma_merge(vp->vma, vp->remove);
-> > -             mm->vma_count--;
-> > +             vma_count_dec(mm);
-> >               mpol_put(vma_policy(vp->remove));
-> >               if (!vp->remove2)
-> >                       WARN_ON_ONCE(vp->vma->vm_end < vp->remove->vm_end=
-);
-> > @@ -1266,7 +1266,7 @@ static void vms_complete_munmap_vmas(struct vma_m=
-unmap_struct *vms,
-> >       struct mm_struct *mm;
-> >
-> >       mm =3D current->mm;
-> > -     mm->vma_count -=3D vms->vma_count;
-> > +     vma_count_sub(mm, vms->vma_count);
-> >       mm->locked_vm -=3D vms->locked_vm;
-> >       if (vms->unlock)
-> >               mmap_write_downgrade(mm);
-> > @@ -1795,7 +1795,7 @@ int vma_link(struct mm_struct *mm, struct vm_area=
-_struct *vma)
-> >       vma_start_write(vma);
-> >       vma_iter_store_new(&vmi, vma);
-> >       vma_link_file(vma);
-> > -     mm->vma_count++;
-> > +     vma_count_inc(mm);
-> >       validate_mm(mm);
-> >       return 0;
-> >  }
-> > @@ -2495,7 +2495,7 @@ static int __mmap_new_vma(struct mmap_state *map,=
- struct vm_area_struct **vmap)
-> >       /* Lock the VMA since it is modified after insertion into VMA tre=
-e */
-> >       vma_start_write(vma);
-> >       vma_iter_store_new(vmi, vma);
-> > -     map->mm->vma_count++;
-> > +     vma_count_inc(map->mm);
-> >       vma_link_file(vma);
-> >
-> >       /*
-> > @@ -2810,7 +2810,7 @@ int do_brk_flags(struct vma_iterator *vmi, struct=
- vm_area_struct *vma,
-> >       if (vma_iter_store_gfp(vmi, vma, GFP_KERNEL))
-> >               goto mas_store_fail;
-> >
-> > -     mm->vma_count++;
-> > +     vma_count_inc(mm);
-> >       validate_mm(mm);
-> >  out:
-> >       perf_event_mmap(vma);
-> > diff --git a/tools/testing/vma/vma.c b/tools/testing/vma/vma.c
-> > index 69fa7d14a6c2..ee5a1e2365e0 100644
-> > --- a/tools/testing/vma/vma.c
-> > +++ b/tools/testing/vma/vma.c
-> > @@ -261,7 +261,7 @@ static int cleanup_mm(struct mm_struct *mm, struct =
-vma_iterator *vmi)
-> >       }
-> >
-> >       mtree_destroy(&mm->mm_mt);
-> > -     mm->vma_count =3D 0;
-> > +     vma_count_init(mm);
-> >       return count;
-> >  }
-> >
-> > diff --git a/tools/testing/vma/vma_internal.h b/tools/testing/vma/vma_i=
-nternal.h
-> > index 15525b86145d..6e724ba1adf4 100644
-> > --- a/tools/testing/vma/vma_internal.h
-> > +++ b/tools/testing/vma/vma_internal.h
-> > @@ -251,7 +251,10 @@ struct mutex {};
-> >
-> >  struct mm_struct {
-> >       struct maple_tree mm_mt;
-> > -     int vma_count;                  /* number of VMAs */
-> > +     union {
-> > +             const int vma_count;            /* number of VMAs */
-> > +             int __vma_count;
-> > +     };
-> >       unsigned long total_vm;    /* Total pages mapped */
-> >       unsigned long locked_vm;   /* Pages that have PG_mlocked set */
-> >       unsigned long data_vm;     /* VM_WRITE & ~VM_SHARED & ~VM_STACK *=
+>  >>
+>  >> Hi Tony,
+>  >>
+>  >> This is exactly the problem I encountered [1], and I agree with Jane
+>  >> that disabling soft offline via /proc/sys/vm/enable_soft_offline
+>  >> should work for your case.
+>  >>
+>  >> [1] https://lore.kernel.org/all/20240628205958.2845610-3-jiaqiyan@goo=
+gle.com/T/#me8ff6bc901037e853d61d85d96aa3642cbd93b86
+>  >
+>  > If that doesn't work for your case, I just want to mention that hugepa=
+ges might
+>  > still be soft offlined with that check in ghes_handle_memory_failure()=
+.
+>  >
+>  >>>>
+>  >>>> On the other hand, taking a huge page offline will have significant
+>  >>>> impact (and still not solve any problems).
+>  >>>>
+>  >>>> Check if the GHES record refers to a huge page. Skip the offline
+>  >>>> process if the page is huge.
+>  >
+>  > AFAICT, we're still notifying the MCE decoder chain and CEC will soft =
+offline
+>  > the hugepage once the "action threshold" is reached.
+>  >
+>  > This could be moved to soft_offline_page(). That would prevent other s=
+ources
+>  > (/sys/devices/system/memory/soft_offline_page, CEC, etc.) from being a=
+ble to
+>  > soft offline hugepages, not just GHES.
+>  >
+>  >>>> Reported-by: Shawn Fan <shawn.fan@intel.com>
+>  >>>> Signed-off-by: Tony Luck <tony.luck@intel.com>
+>  >>>> ---
+>  >>>>
+>  >>>> Change since v2:
+>  >>>>
+>  >>>> Me: Add sanity check on the address (pfn) that BIOS provided. It mi=
+ght
+>  >>>> be in some reserved area that doesn't have a "struct page" which wo=
+uld
+>  >>>> likely result in an OOPs if fed to pfn_folio().
+>  >>>>
+>  >>>> The original code relied on sanity check of the pfn received from t=
+he
+>  >>>> BIOS when this eventually feeds into memory_failure(). That used to
+>  >>>> result in:
+>  >>>>        pr_err("%#lx: memory outside kernel control\n", pfn);
+>  >>>> which won't happen with this change, since memory_failure is not
+>  >>>> called. Was that a useful message? A Google search mostly shows
+>  >>>> references to the code. There are few instances of people reporting
+>  >>>> they saw this message.
+>  >>>>
+>  >>>>
+>  >>>>    drivers/acpi/apei/ghes.c | 13 +++++++++++--
+>  >>>>    1 file changed, 11 insertions(+), 2 deletions(-)
+>  >>>>
+>  >>>> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+>  >>>> index a0d54993edb3..c2fc1196438c 100644
+>  >>>> --- a/drivers/acpi/apei/ghes.c
+>  >>>> +++ b/drivers/acpi/apei/ghes.c
+>  >>>> @@ -540,8 +540,17 @@ static bool ghes_handle_memory_failure(struct =
+acpi_hest_generic_data *gdata,
+>  >>>>
+>  >>>>        /* iff following two events can be handled properly by now *=
 /
-> > @@ -1526,4 +1529,29 @@ static int vma_count_remaining(const struct mm_s=
-truct *mm)
-> >       return (max_count > vma_count) ? (max_count - vma_count) : 0;
-> >  }
-> >
-> > +static inline void vma_count_init(struct mm_struct *mm)
-> > +{
-> > +     mm->__vma_count =3D 0;
-> > +}
-> > +
-> > +static inline void vma_count_add(struct mm_struct *mm, int nr_vmas)
-> > +{
-> > +     mm->__vma_count +=3D nr_vmas;
-> > +}
-> > +
-> > +static inline void vma_count_sub(struct mm_struct *mm, int nr_vmas)
-> > +{
-> > +     vma_count_add(mm, -nr_vmas);
-> > +}
-> > +
-> > +static inline void vma_count_inc(struct mm_struct *mm)
-> > +{
-> > +     vma_count_add(mm, 1);
-> > +}
-> > +
-> > +static inline void vma_count_dec(struct mm_struct *mm)
-> > +{
-> > +     vma_count_sub(mm, 1);
-> > +}
-> > +
-> >  #endif       /* __MM_VMA_INTERNAL_H */
-> > --
-> > 2.51.0.384.g4c02a37b29-goog
-> >
+>  >>>>        if (sec_sev =3D=3D GHES_SEV_CORRECTED &&
+>  >>>> -         (gdata->flags & CPER_SEC_ERROR_THRESHOLD_EXCEEDED))
+>  >>>> -             flags =3D MF_SOFT_OFFLINE;
+>  >>>> +         (gdata->flags & CPER_SEC_ERROR_THRESHOLD_EXCEEDED)) {
+>  >>>> +             unsigned long pfn =3D PHYS_PFN(mem_err->physical_addr=
+);
+>  >>>> +
+>  >>>> +             if (pfn_valid(pfn)) {
+>  >>>> +                     struct folio *folio =3D pfn_folio(pfn);
+>  >>>> +
+>  >>>> +                     /* Only try to offline non-huge pages */
+>  >>>> +                     if (!folio_test_hugetlb(folio))
+>  >>>> +                             flags =3D MF_SOFT_OFFLINE;
+>  >>>> +             }
+>  >>>> +     }
+>  >>>>        if (sev =3D=3D GHES_SEV_RECOVERABLE && sec_sev =3D=3D GHES_S=
+EV_RECOVERABLE)
+>  >>>>                flags =3D sync ? MF_ACTION_REQUIRED : 0;
+>  >>>>
+>  >>>
+>  >>> So the issue is the result of inaccurate MCA record about per rank C=
+E
+>  >>> threshold being crossed. If OS offline the indicted page, it might b=
+e
+>  >>> signaled to offline another 4K page in the same rank upon access.
+>  >>>
+>  >>> Both MCA and offline-op are performance hitter, and as argued by thi=
+s
+>  >>> patch, offline doesn't help except loosing a already corrected page.
+>  >>>
+>  >>> Here we choose to bypass hugetlb page simply because it's huge.  Is =
+it
+>  >>> possible to argue that because the page is huge, it's less likely to=
+ get
+>  >>> another MCA on another page from the same rank?
+>  >>>
+>  >>> A while back this patch
+>  >>> 56374430c5dfc mm/memory-failure: userspace controls soft-offlining p=
+ages
+>  >>> has provided userspace control over whether to soft offline, could i=
+t be
+>  >>> a more preferable option?
+>  >
+>  > Optionally, a 3rd setting could be added to /proc/sys/vm/enable_soft_o=
+ffline:
+>  >
+>  > 0: Soft offline is disabled.
+>  > 1: Soft offline is enabled for normal pages (skip hugepages).
+>  > 2: Soft offline is enabled for normal pages and hugepages.
+>  >
+>
+> I prefer having soft-offline fully controlled by userspace, especially
+> for DPDK-style applications. These applications use hugepage mappings and=
+ maintain
+> their own VA-to-PA mappings. When the kernel migrates a hugepage to a new=
+ physical
+> page during soft-offline, DPDK continues accessing the old physical addre=
+ss,
+> leading to data corruption or access errors.
+
+Just curious, does the DPDK applications pin (pin_user_pages) the
+VA-to-PA mappings? If so I would expect both soft offline and hard
+offline will fail and become no-op.
+
+>
+> For such use cases, the application needs to be aware of and handle memor=
+y errors
+> itself. The kernel performing automatic page migration breaks the assumpt=
+ions these
+> applications make about stable physical addresses.
+> Thanks.
+> Shuai
 
