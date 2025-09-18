@@ -4,87 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BF49CAC59F
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 02:43:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2086CCAC59F
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 02:45:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 54C3F280007; Wed, 17 Sep 2025 22:43:52 -0400 (EDT)
+	id 799B78E009D; Wed, 17 Sep 2025 22:45:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4FCD08E006B; Wed, 17 Sep 2025 22:43:52 -0400 (EDT)
+	id 771DE8E006B; Wed, 17 Sep 2025 22:45:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4122A280007; Wed, 17 Sep 2025 22:43:52 -0400 (EDT)
+	id 6AE478E009D; Wed, 17 Sep 2025 22:45:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2BF008E006B
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 22:43:52 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9F060C0450
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 02:43:51 +0000 (UTC)
-X-FDA: 83900825862.21.5C5151D
-Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
-	by imf07.hostedemail.com (Postfix) with ESMTP id B9A1240002
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 02:43:49 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VJFqxKmm;
-	spf=pass (imf07.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 54F028E006B
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 22:45:46 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id AE51516077A
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 02:45:45 +0000 (UTC)
+X-FDA: 83900830650.16.B9C6EAE
+Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 8B7E2140007
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 02:45:42 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=cReQRru3;
+	spf=pass (imf09.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758163430;
+	s=arc-20220608; t=1758163544;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hI0IJw0Wjez1WxyWFmZyWVXd+7wN4CQqoOTQh/J70mY=;
-	b=Y+hW3cUW0qVQ9ru2Row10fzrc+cdn1LnMbhbvqxtaUTf7kOdIGGi5SUdKDJHsa9J5P6L3b
-	qLEb0OEQbDVRV8zCIfrWMEWxQDc0Qq5a7G1xsKU0cpW5Wy0c5ZQvIKi3GMFoz6XUCHSYSG
-	VoJNX0h77bn1ENC0FMN0E/UCz9nQGOk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758163430; a=rsa-sha256;
-	cv=none;
-	b=WJgvLAXoxiTwLhDDpbJ2NvejsGmNZvy96T6vJkOX0gQ5Md0TqGJR45WL0mI3PzdNrMVlcY
-	/iV4/x6hqorgiClo3igrL2IRUiL7Oc2eCYmNX1q5cCXLNk7f+3npUZBGe0iXK+3VE/sWL0
-	hBCvEVo+2NgALaaTWxlqNLs4xfFQh84=
+	bh=edngCZIauCo4tQxaAcmWsONusTDWKBny329eUJIO/dc=;
+	b=Pq3eSgXaAesLiLdVXSE3+nw9jZgCaYmL8+B+HD7GlyclHalIFn5m10lcIbJeTW3//BNBW1
+	QuNmJfLmv6N/SvLqYvXejx+gBwvYI8LKmzkgoxwyleFQqKs+FhQZefnRAjyyt6CEcqcvoo
+	JjxlUDM/6aLTRT9JE+Nw+GYNXIHIyUE=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VJFqxKmm;
-	spf=pass (imf07.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <71d3ec0b-1b91-49f7-b973-6ec8882dd02d@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1758163426;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hI0IJw0Wjez1WxyWFmZyWVXd+7wN4CQqoOTQh/J70mY=;
-	b=VJFqxKmmVe5s2Sd6wvuQStIArfzjFaX0aJ9uz2TPSqjmPYK85oIrR5TYnsew7H/TWnWJFz
-	hk2rvyO9jXKgEahh9gc8MnooUUUHIY/HVVPpVPvreJDvCy4n6vZ2U4scbHimXkZIXVW1BN
-	fLIuQIgqE6ZEdvKOFWvFPWeXcK72Wns=
-Date: Thu, 18 Sep 2025 10:43:33 +0800
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=cReQRru3;
+	spf=pass (imf09.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758163544; a=rsa-sha256;
+	cv=none;
+	b=xpuJK71jbHA8606ELgWaSKf/eo69KzLCK5WG3WCFQZhBB3tBN0yLc0AchC8PY7FSCzfFQz
+	pXoA/tC27dSJyjkreXousPK6OdzjypjPzhq8OnERrOwJvLaRyPfhIe6XXAnHvGIGMAZ+L3
+	wg49HJ5ITLcB5+7bdLbt4spkjb2XIwo=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1758163539; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=edngCZIauCo4tQxaAcmWsONusTDWKBny329eUJIO/dc=;
+	b=cReQRru3JTV5jfiZETOjJcHf343qYMoK9vdrlKtins8s61TzFxdRHAT6VS+fVqTzILh/Dtk1n2RnaU/RMd2h80Vc+K7i04vIvJel5hA5oBtqCfnvTPj9AbXE3OaV4AxBA7Rs8yviVVPY+SuHBm+Ajzqb3pDtdWX9ay4mTgttntI=
+Received: from 30.74.144.125(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WoEIDoH_1758163537 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 18 Sep 2025 10:45:37 +0800
+Message-ID: <41c98144-de4c-4b46-b842-dfc03e3b0cca@linux.alibaba.com>
+Date: Thu, 18 Sep 2025 10:45:37 +0800
 MIME-Version: 1.0
-Subject: Re: [PATCH v6] memcg: Don't wait writeback completion when release
- memcg.
-Content-Language: en-US
-To: Julian Sun <sunjunchao@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: cgroups@vger.kernel.org, linux-mm@kvack.org, jack@suse.cz, tj@kernel.org,
- muchun.song@linux.dev, venkat88@linux.ibm.com, hannes@cmpxchg.org,
- mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
- Masami Hiramatsu <mhiramat@kernel.org>
-References: <20250917212959.355656-1-sunjunchao@bytedance.com>
- <20250917152155.5a8ddb3e4ff813289ea0b4c9@linux-foundation.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20250917152155.5a8ddb3e4ff813289ea0b4c9@linux-foundation.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] mm: vmscan: remove folio_test_private() check in
+ pageout()
+To: Matthew Wilcox <willy@infradead.org>
+Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, david@redhat.com,
+ mhocko@kernel.org, zhengqi.arch@bytedance.com, shakeel.butt@linux.dev,
+ lorenzo.stoakes@oracle.com, hughd@google.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <cover.1757648598.git.baolin.wang@linux.alibaba.com>
+ <b8c0fe71982aa1cafafd59d8e71064efaac16007.1757648598.git.baolin.wang@linux.alibaba.com>
+ <aMQ6bW-OoMWMVEFF@casper.infradead.org>
+ <11629632-c652-460e-b617-3ec0c27969f5@linux.alibaba.com>
+ <aMh7SAlitp5FqR-M@casper.infradead.org>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <aMh7SAlitp5FqR-M@casper.infradead.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: B9A1240002
-X-Stat-Signature: 4q9wm989zx1pasp8eeqxurfpmmy6xqi1
+X-Rspamd-Queue-Id: 8B7E2140007
+X-Rspamd-Server: rspam05
+X-Stat-Signature: kp8tcdox1tysmzonzrnxi961tgmpunuw
 X-Rspam-User: 
-X-HE-Tag: 1758163429-983583
-X-HE-Meta: U2FsdGVkX1+oAKT3wIHnmxsa0OL3nE/dXKphNZOgFguZK+3P1MR9WTpdDKiOdbYQdn6WWI3q55PnsR7I6x7nWnvYNUI2VElShLUXnwSXYfUeXKudZltSzNXbZ5UhcNlXmhRpscjjggofYdYRwy7x2l2DABud9GJls+0cCjY/pVdC73iUG6nHgUrv0nJCWJuIeY/xnGDD9WgziTRLQvl/RU234JVUIXGi6XI05dEcUy72U5Zeb7NVBxPND1x5agpcgkZqQgmty2TH7wGUmbl2UcDg48ddNIsFTtMXf85etZ1omY6pp/nxwsc/McNst6YaAE69TK6QdGYJWFkG/exJfYQzIws+rJojuioCmAJqkVCdsQg1JlpW8OsjDe5N+u+g45z5hTlU7xAEh3S4a/k21NWw8KQFe2UZO/m5/r+ioV/zAibQQhGXqdTkYyeupiy+Ih/uHX8tDpsDZmg+d+4wuCmRcG2lAyY9gyoCNDK+OoQJwozXW7I7+u+4fvvoFvBAe9+ao4j/NvYnz4sbXQg7auivrfjlfz1tMyDK0fNZznm3Sp8l53+Tw14j9IQYNcFv973qxZAY90T16u/ArrByZXADwr6Z3fB2a9einPLlIITx7P3G/DClOEUPUBDuuz2XKKaFpHbXFrQJRw7a34EcyXd72EoVTUZ7E23Z50MwRSiOnU6QXgbs/ap3o07CRmfpjOj3r8NhtzvcDc3N7daAk/ATQbu08sJHpI6LRTogIZ8Vily/8AZPxt/Xsb7jQ6Al515MiK8IYLG+AJUBxYn5Bclco49DAyMsy16qndPozgSLGh9z7UgAliC5XmhqIAI1eNYTvjbODqNVj8N74fWg19jwanH/FYnWEzV+ljaBkNsNaOE3GF8DXg==
+X-HE-Tag: 1758163542-441368
+X-HE-Meta: U2FsdGVkX182NjxvaIJDgK6ywc10jJKQlfJ+bUFB/GJnJk4vlRzGJqkvypymfYZLTY8nhUq7IF8+OJyHG7bED2tgcIp8umzjcso++ru8kGQ3mPu12w71tQJtlvYHJc334nrLrRKhq8547NnWAJOWSZVJRFgapSSCjUO4a89ecnrX2vpfJEAvrxbN4xyztmH0X22ld1AOBe06oLerdqm7q9KgHudAqvNrs06oG1eDc5/FZ+GgJLuzFZf7T1BbaGmDR2FxgcAFaozLyF0WGhpnm3ghkfNAXRSO9bwrDIyWmtzdNRV09utJcFZPyRzFNonSfPIRN4VrRBJSn9oPrVfiZNpFspHFc6xfoAag9F+vDOh+x07jAJ0A4eKMxtZaUJ58+HwfTaVa34/6w9hzr8fMtHELZ5cf+z9hbXFwNOTVDh5jwnrcWjiK+OTdLr90IPaplA8qjvtcozVN5+mTBq4za7zCn+SOtQ1MIjE9X7AUIbfsvxjTl8DHLVbr+GXlK1Z2MgjCSefFApCWMK6j87KB6nFdo6i3bGVmXLejlyMLNs+d9ckzbGuuSVgDQqtWOn61ASL00MfbqmNhP/+Sns0oooehT7mWUy+51O0IEKMXuSxEAGR3fQJLiThoTG8l/JqaBv1kS9yLY4rfPcWN5k4eXGitsG3TsMpuIGcgZaRdG1GXuXU4x/gAYsanYd4Pa6AfaV/OQdejs1/PQ9VSQFX4eQ2NZethmDguuTpmUJzu9YdpsSuu784C3G0Z4ArC/Mzvrz2+VoQxeZB5MRu2xPy+c3BNNCfryJT4isGH65oQM2Ji1bMafl7acamVdtymRBQ0HVv7H+FBgdMXR6lB50/elp11fKGm0PRJHVARSWYdDoW7FRVdqSz5akgi10jZdk+LuCWtmWyLpxgmymoOz6qiQCaCc88uantXi3Wzr/N/ftU60wURuRMuPuBsu3GpuH00NBat9h3OgaoCxOgDOFU
+ iQS/ewzU
+ nyuIG3qujf/gy29jTWSEP2B3HVlbfwzZpO6fdoXqKcJoqjUbYbSkflisnJsgoowYrf03y8U6ai1K9vzayn/Rp1f5mIWxndPPI2HrQkhilbMRli4/s3qBiseMldHhawFaQJjgSN+gi9ryVdqIJU+EmlP9BcmkftCBuIHHrkg9Epw+XkNNa+1ari7Eq92uPd07zw6YLO96otGjMBMcY05eycpLdB8DNRysKeJ+N95bfXtGhQuKivofujlh7ZmRQ58S8ni1LmNuMpotGJSirukcV98/y0QcB7339RjwD6sUoyMJ7MWYZQkKl4YkAQlU0oyqnsM9grPRC9VHndeL2WNUoNbWu/MLsU3aFsXH0fkXTdfn30M/MlqEw1hjrLMntXF6uM2FSjkPoxkGKWpHzikgoLx+FfA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,92 +93,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hey Julian,
 
-On 2025/9/18 06:21, Andrew Morton wrote:
-> On Thu, 18 Sep 2025 05:29:59 +0800 Julian Sun <sunjunchao@bytedance.com> wrote:
-> 
->> Recently, we encountered the following hung task:
->>
->> INFO: task kworker/4:1:1334558 blocked for more than 1720 seconds.
->> [Wed Jul 30 17:47:45 2025] Workqueue: cgroup_destroy css_free_rwork_fn
->>
->> ...
->>
->> The direct cause is that memcg spends a long time waiting for dirty page
->> writeback of foreign memcgs during release.
->>
->> The root causes are:
->>      a. The wb may have multiple writeback tasks, containing millions
->>         of dirty pages, as shown below:
->>
->>>>> for work in list_for_each_entry("struct wb_writeback_work", \
->> 				    wb.work_list.address_of_(), "list"):
->> ...     print(work.nr_pages, work.reason, hex(work))
->> ...
->> 900628  WB_REASON_FOREIGN_FLUSH 0xffff969e8d956b40
->> 1116521 WB_REASON_FOREIGN_FLUSH 0xffff9698332a9540
->>
->> ...
->>
-> 
-> I don't think it's particularly harmful that a dedicated worker thread
-> has to wait for a long time in this fashion.  It doesn't have anything
-> else to do (does it?) and a blocked kernel thread is cheap.
 
-Looking at wb_wait_for_completion(), one could introduce a new helper that
-internally uses wait_event_timeout() in a loop. Something like:
-
-void wb_wait_for_completion_with_timeout(struct wb_completion *done)
-{
-	atomic_dec(&done->cnt);
-	while (atomic_read(&done->cnt))
-         	wait_event_timeout(*done->waitq, !atomic_read(&done->cnt), 
-timeout);
-}
-
-With this, the detector should no longer complain for that specific case :)
-
-> 
->> 3085016 WB_REASON_FOREIGN_FLUSH 0xffff969f0455e000
->> 3035712 WB_REASON_FOREIGN_FLUSH 0xffff969d9bbf4b00
+On 2025/9/16 04:47, Matthew Wilcox wrote:
+> On Sat, Sep 13, 2025 at 11:04:48AM +0800, Baolin Wang wrote:
+>> On 2025/9/12 23:21, Matthew Wilcox wrote:
+>>> On Fri, Sep 12, 2025 at 11:45:07AM +0800, Baolin Wang wrote:
+>>>> @@ -697,22 +697,8 @@ static pageout_t pageout(struct folio *folio, struct address_space *mapping,
+>>>>    	 * swap_backing_dev_info is bust: it doesn't reflect the
+>>>>    	 * congestion state of the swapdevs.  Easy to fix, if needed.
+>>>>    	 */
+>>>> -	if (!is_page_cache_freeable(folio))
+>>>> +	if (!is_page_cache_freeable(folio) || !mapping)
+>>>>    		return PAGE_KEEP;
+>>>
+>>> I feel like we need to keep the comment (assuming it's still true ...
+>>> which it probably is, although there's nobody who would think to update
+>>> this comment if it became no longer true).  I would certainly wonder why
+>>> we can have this !mapping test.
 >>
->>      b. The writeback might severely throttled by wbt, with a speed
->>         possibly less than 100kb/s, leading to a very long writeback time.
->>
->> ...
->>
->>   include/linux/memcontrol.h | 14 +++++++++-
->>   mm/memcontrol.c            | 57 ++++++++++++++++++++++++++++++++------
->>   2 files changed, 62 insertions(+), 9 deletions(-)
-> 
-> Seems we're adding a bunch of tricky code to fix a non-problem which
-> the hung-task detector undesirably reports.
-> 
-> Would a better fix be to simply suppress the warning?
-> 
-> I don't think we presently have a touch_hung_task_detector() (do we?)
-> but it's presumably pretty simple.  And maybe
-> touch_softlockup_watchdog) should be taught to call that
-> touch_hung_task_dectector().
+>> I think the !mapping check is still needed here because the tmpfs/shmem
+>> folios truncation might race with folio reclamation, see shmem_undo_range().
 
-Yes, introducing a touch_hung_task_detector() and having other tasks
-periodically call it for the blocked worker seems like a much cleaner
-approach to suppress the warning, IMHO.
+Sorry for noise. tmpfs/shmem folios will be clean after calling 
+truncate_inode_folio().
 
-> 
-> Another approach might be to set some flag in the task_struct
-> instructing the hung task detector to ignore this thread.
+> I agree that we still need the !mapping check.  But it needs this comment
+> that you're deleting, because it's not obvious why we'd have a dirty
+> folio with a NULL mapping on the LRU list.
 
-Alternatively, the idea of setting a flag for the worker to explicitly
-ignore certain tasks by the detector is also interesting, especially if the
-worker's blocked state is expected and benign ;)
+As I discussed with Hugh in another thread[1], the issue of a folio 
+being dirty but having a NULL mapping was fixed by commit a2b345642f530 
+("Fix dirty page accounting leak with ext3 data=journal"). I can hardly 
+believe this kind of situation can still occur nowadays. Anyway, let me 
+leave a warning comment here.
 
-Well, happy to help explore either of these paths if you'd like to go 
-further
-with them ;P
+[1] 
+https://lore.kernel.org/all/1111883c-974f-e4da-a38f-bb3d337185ad@google.com/
 
-Cheers,
-Lance
+>>>> -		/*
+>>>> -		 * Some data journaling orphaned folios can have
+>>>> -		 * folio->mapping == NULL while being dirty with clean buffers.
+>>>> -		 */
 
 
