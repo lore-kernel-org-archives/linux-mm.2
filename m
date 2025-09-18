@@ -4,106 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68337CA1013
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 18:05:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 198E3CAC59A
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 18:14:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C29B68E013E; Thu, 18 Sep 2025 14:05:31 -0400 (EDT)
+	id 315968E0130; Thu, 18 Sep 2025 14:14:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C01508E00F6; Thu, 18 Sep 2025 14:05:31 -0400 (EDT)
+	id 2ED348E00F6; Thu, 18 Sep 2025 14:14:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B3DD98E013E; Thu, 18 Sep 2025 14:05:31 -0400 (EDT)
+	id 203228E0130; Thu, 18 Sep 2025 14:14:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A56358E00F6
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 14:05:31 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4AA3E1DE4E7
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 18:05:31 +0000 (UTC)
-X-FDA: 83903148462.15.75CFAFD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 81AA840012
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 18:05:29 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TMGdhYSa;
-	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0D72E8E00F6
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 14:14:18 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AC06CC0308
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 18:14:17 +0000 (UTC)
+X-FDA: 83903170554.25.CFE6EF1
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	by imf23.hostedemail.com (Postfix) with ESMTP id DE911140013
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 18:14:15 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="h/m9FklX";
+	spf=pass (imf23.hostedemail.com: domain of manish1588@gmail.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=manish1588@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758218729;
+	s=arc-20220608; t=1758219255;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GRnKUqJQaKQ3qeaLKFBKp0hA9uYit6DuHxmpIDU40sA=;
-	b=iE0kdWz1wQuGibyLfQgf9jP38gCslZNg6wbs/xb4fZ1C8te1bHjFM1u9yV6Tku2VPuD1AR
-	tw+MYcwDwHzOW8z5DkotqDqEUEjNm3gyCR6TS78Yx9AUKTVMP7EKi+cepjBUx2STeQN7yt
-	KZaXO3kbJcA+NY5v3ugs1lpHv1HAuOg=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=wakvOmINFFDIzFIPuPMgLSywd6bmR/VxBmcCPjKbWe0=;
+	b=0FPzCyNELSTkSQLWKzunlWx6+WK0OjEZ8h8bMhJQskMZG/8QR+gAKAfNEaQdCXRhwYr7zv
+	doPY/y5IFqPJaW8WNLjSlYccnuFWZ4sILmIw1W94mkFvrMjQ8Eb9oh8QHw35uSXpnHiA2p
+	2xmhvzdPvasOOEr4P9B3SPdFK4Gfvic=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TMGdhYSa;
-	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758218729; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="h/m9FklX";
+	spf=pass (imf23.hostedemail.com: domain of manish1588@gmail.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=manish1588@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758219255; a=rsa-sha256;
 	cv=none;
-	b=ufHMbqgGDfDbEmao6IcyPvjpLF5r5lw02vfBXTJNTwGYxFUWaXq31hLAONlSo9E7PyFwXU
-	BHOx+hDmJAq8I6cqHLQaq8rGSFRZT6xVUrF2E3Q2aOyk6CcKXx4Xnc0uOWrWjgHQby5Arl
-	KHyOSSouRz9KVKzX4KsFBucizRW3cHE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 30E0844C9F;
-	Thu, 18 Sep 2025 18:05:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 897DDC4CEF0;
-	Thu, 18 Sep 2025 18:05:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758218728;
-	bh=tsq8/KIMhkwr8aDP5CrNQEAVsPpxQpbwsRK0rJgZrGE=;
-	h=Date:From:To:Subject:References:In-Reply-To:From;
-	b=TMGdhYSat7emupYTEzFzD7zPjV5zTJsTc13UxGPYN858mMyT+wcChY7q+MHe9BnYe
-	 159cXvtfGkpYdTvIngkHDfFUAR1+FCkRMHcnJrgc5EpXlTZEXARn7tIzF0IVCUmo9t
-	 oE5ZcASeNwoHJTLochmOaynIvZwKYA9AOaodzf/WRmbHsdBOiWIJZ/QkjYo6zQ2Ppl
-	 dkZLTb+Oj45+lvq0lx41gWBqcyfUKY/Tq+bXIxW9Lg9EhYZL+XUNoVmbyKRFQiMQS4
-	 XaNq1fxOFSk7fn8ogsxXK9euOnaP6s2fz/cWebWuR7D2neYbom+DxLETv7hglTwMHH
-	 8kIodG9lN2gRQ==
-Date: Thu, 18 Sep 2025 21:05:18 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Nikita Kalyazin <kalyazin@amazon.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
-	Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Vlastimil Babka <vbabka@suse.cz>,
-	Muchun Song <muchun.song@linux.dev>,
-	Hugh Dickins <hughd@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	James Houghton <jthoughton@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Ujwal Kundur <ujwal.kundur@gmail.com>
-Subject: Re: [PATCH v2 1/4] mm: Introduce vm_uffd_ops API
-Message-ID: <aMxJ3inEs_RRyqen@kernel.org>
-References: <aGbCbW7hUf3a2do2@kernel.org>
- <289eede1-d47d-49a2-b9b6-ff8050d84893@redhat.com>
- <aGfsaIIzHWfjcNFd@x1.local>
- <e7vr62s73dftijeveyg6lfgivctijz4qcar3teswjbuv6gog3k@4sbpuj35nbbh>
- <930d8830-3d5d-496d-80d8-b716ea6446bb@amazon.com>
- <jxekhkhbn7uk23oe24svxrs3vfuhseae57sqagndqgh2e7h33o@kfkygmrvjb5n>
- <aMp-kW3OLqtZs8sh@kernel.org>
- <du5pzxmfk6lile3ykpaloylwz4eni6disj2oe25eq6ipzqemiw@ybcouflfnlev>
- <aMvEu9m7fJLnj862@kernel.org>
- <4czztpp7emy7gnigoa7aap2expmlnrpvhugko7q4ycfj2ikuck@v6aq7tzr6yeq>
+	b=BPOccxTSTdEi6HWQSyLAz+h5MDs1QDnN46NPGEkAcQPIhjlDVjQ8f2meD2MZ4IRu5QcRVA
+	2yQ7SBVn1Pnq71WdGEih/cWV/HKQrJftAm9y3naN2PE/rDQF9c0xmY9tt/ptEeLkTdK4W5
+	T8w/eA6niguO0CceRU/OkdvaLJmC0DQ=
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-77716518125so744849b3a.3
+        for <linux-mm@kvack.org>; Thu, 18 Sep 2025 11:14:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758219255; x=1758824055; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=wakvOmINFFDIzFIPuPMgLSywd6bmR/VxBmcCPjKbWe0=;
+        b=h/m9FklXuYWaYV3GfVk+qEbr6eBJLgFSVSUFo1A/1CyPK+z1ziFK1McDAnWILhUxYQ
+         g6YC1TyOCrFDRXEnXVtXcu2AIXhCsvK95nQ2KinKWdP57tZIcjcbyABZuIyP3MkT7J67
+         Qmm6qMqEM/5k6FUJ32gqLPo0YVH9IcVnMqnkgYzIXzaGfEcVP5F+0iC7QXjVKCzVNFnD
+         bhVaqyHa6n4xyFj3BoSWj5lVrl6B5ditTBhw5AAgSr1w8JUUuSbRyHqyrX7++8/eJBhu
+         fF4VkNQ1Z5rxOx3gkKjs5OFKIsil2W8+7UWegAyNc2Ka9O8qDST6Gse1XKi2I8eH8zSe
+         VsBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758219255; x=1758824055;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=wakvOmINFFDIzFIPuPMgLSywd6bmR/VxBmcCPjKbWe0=;
+        b=Lk7DXJbDAl1ykula8erG8hfHu2wLln6Wfi5heF83cIVB1XaKZbHR0NxK1vpNrPiMDH
+         Q0vAVW+6SwRHafSntptYmPqSI8RgzXP0FvI5VTT/fzqR5ZAzXBoy6K9nzdB31EI3RQuz
+         L4C30vqTI+QVUL0iJEZvygv/UIhy0uU6tv/4Yhoja1Ct4GjmdTw/+kJFK78bmCv8Q9x4
+         41FXTKSB/tFYoiVgoawuSD7ZSK8IGU3zt8kE7a10tO2j8q013/PiTO07oEmU/sL12sGh
+         oWGRjUzr74lqZQu/7QA+l+r3Tom6S8FV/5aJxMwGW9N4TGnWG5wB4BP48WqCjIfmThdS
+         s3BA==
+X-Forwarded-Encrypted: i=1; AJvYcCWkeUr9acUb3Y6lcdX34OcDAXa3VDoR/J7eTS25sjI/zsLzzrycLgQXSLaFxWUcMCCvI5j4qRGhcQ==@kvack.org
+X-Gm-Message-State: AOJu0Yzu5kPu34P3lhsD+XAQeOpc2YEqIDs3SEIT4vFdRUrMsnZYbrWV
+	HqgccbG31T9vkvar0MTKgOpJWOc0/ZCuVj37HLAbxe8rYtxNO6JM+iIe
+X-Gm-Gg: ASbGnctYvSmrbiiQyjAVxYAPSGsl6dPqmu1yW6/Z1lB280HAPcDUy/fQF6s4wmRLb7U
+	96g03NdE4BcM352IJBikxkWoEJ2+rEWKLl5N/NDu1pEGylJVQxoH216zb1eAdpXCT9QJPQTc5kh
+	bOI+9poeGvglchogCsgAKzFmhEqp/S+AsqKiuq8InKFdZ7cCsII+51LXUWwPGYXg/ipKkfbmwma
+	Ub7SyXBc5E513LYUrDDYGtHQ5Whb4j/5xnQaHqdfpytLRjiGLjkwIfF/QN+1++VNZjAzmojWC+H
+	t2785AFyMW1kwk+cNGYHh+jCNNfAEo7vqvxfEbV3gvRm00f/RyKRJIOJexQNM7a7vw7yl1jwqel
+	n2GCta0cZDI6dGDRqWHofxD6btLPxXcM4VlU4bUej5w==
+X-Google-Smtp-Source: AGHT+IEPsHiDu6beO/Hsry9V80GWYk2DYorDZkppoEyn/lpQz4QbXXFYMRyUp805AG1h5+9l+6cpWg==
+X-Received: by 2002:a05:6a21:6d89:b0:263:4717:564 with SMTP id adf61e73a8af0-2925b41e299mr857221637.6.1758219254627;
+        Thu, 18 Sep 2025 11:14:14 -0700 (PDT)
+Received: from muxbit.. ([2401:4900:1cb8:2c41:4cd2:6b0b:66a7:bdd9])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-77cff22af5asm2927767b3a.100.2025.09.18.11.14.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Sep 2025 11:14:14 -0700 (PDT)
+From: Manish Kumar <manish1588@gmail.com>
+To: akpm@linux-foundation.org
+Cc: vbabka@suse.cz,
+	surenb@google.com,
+	mhocko@suse.com,
+	jackmanb@google.com,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Manish Kumar <manish1588@gmail.com>
+Subject: [PATCH] mm/show_mem: update printk/pr_info messages and replace legacy printk(KERN_CONT ...) with pr_cont()
+Date: Thu, 18 Sep 2025 23:44:03 +0530
+Message-ID: <20250918181403.93812-1-manish1588@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4czztpp7emy7gnigoa7aap2expmlnrpvhugko7q4ycfj2ikuck@v6aq7tzr6yeq>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: DE911140013
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 87iqcrmq3jhqo7w9g9ohxthoyg5dqwip
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 81AA840012
-X-Stat-Signature: qoy9hwgj3hsdynoj5sqikn8ct6ew4dpf
-X-HE-Tag: 1758218729-369494
-X-HE-Meta: U2FsdGVkX1+al18KWjP6j7e+5njnaQRa99Ox39V9zTqVqvV2YMuh8Ll/9Lmcg8MWwV1y4DFCQDIDFeoBIcJ0irYvGHV8RdT/mJyQFIp007Y6XhRossDrCIsrKLvlL6TqMYxeaNsgOYxnocbEvVA4GwDb8HQCzoYR97+1kwx+froSld05vrybfKJ218Qm/4QCAUaoMiqsIIEUeXM7KwMuRT++TZ0dlRGyLOHib2N2KL4XbAV88z+TAcKy8wKy+5BPplqgXh28cmG9GzjGzrY0a+fxYeGpsdtAsdeBE5+TpbVlDjzhbE6tsDYTO+uzXZRd3484jhEbX3JXEo/guvAsvoAr060XmwUguVfAvLYodThEwnkcjgu4kgJKuMkeWQc9aD7hTiqQ9EzIurSCSI9phCaadZxYwAnbYKJMzhmlMh1TJWnZ/ZYuNSYGmLOIhRpkSSelNnrAKhdgktrEE+8skaSxWjjiC2ijTgTIGpkuyHcQK6CU8Nl5h+3nXJsHWgOYHjRXdzBwz2PJ0dCoFrWQPInK7Vt2mompQAiHarwQhsBhwRjnqW0AT5ccN9Qd43U6GSg+iGVCdL6Yvw8bcWAVZVgvBqEkV8t1DJ4+L28ttw5y7hf+oMT6wfFQKZVvU+O95Jo6Tmfe7wUGfstWqLBZ+LUr7jNYAegNCP+M0ukda+FpAvMjWseYvk946gZMYZBPwH8qpPEvef8sUqjut1funC5xTyuj8ZwcD0b+ZttUWU7WkU/YamUVdUN/a4TLAGUyHKCoLfonR/tI5ZYypMmYvD5uyA/RiT18Z8UEkaue0Icf01IDwOdEn5jmZXa9wEIIB2Q2RY/NSRKTOWv0D6YPvDndF8xb6Dw8O56N2lIEA6KX4nLs+HsSEJ0ZrxA0tEfgCxG30RlS5OwQyewFCtksQELyLc/sQuPmYcyb9jw3saxjQ0/Ne34csWxKxz54x0LTRYJ6M4kxelCFVzluBpg
- Hvu550oB
- SErKR/8lqbxv6BgbZSNSzdhmaYgrC2raKjqJWm5XhqrKGY1uzfpRNTsGVJm8T76NPJgsaNB4krjc6+NRSM3lHZO4MVW4RpdQGAfTgEugsbMCTtfDrGXoXuP83QZ7Kr3Z8QwDpddZFVgIthzUvKFy/j0vA5HxFB4de8ir5lWT7gfFvBZfWTm3iCyEirUynjLRUgcXpxOQoA3Vi1xmr1DTmGCWV+xcrGUpN5MHlpO7SBL8zsBbokdOVJnQuQ7p2y5fmYlpbHsLO9esnbGJJnSItuc7Mv1jbZTcOwIgkoNfL8QefEPmjBGAp+PsS+KVrbrSiJ1LYsnjepNhzE+dn/dXg1GaErBCK5zZDUMNVEBXLd4CFiicgaIJeMBfSkjBjiQiqd3CUAapy0J1fk425/OXv4x9i5Mc3Io38Jd5orDM5ZMDw+6XAZLk4OOxweg==
+X-HE-Tag: 1758219255-430276
+X-HE-Meta: U2FsdGVkX1+YvzqDi4JVUaKswY12NM5MLp/uWMD9vslpxv6tXyVyXzvqy07SvkzA27FWKcJb5FguAL4fc7fZjkAbBYXSUs5TX+B7kcF/t91TVYXULjv0SNkIRNnCN6JwHvRz4P7e1/KyMdRR5YCS42z7FXGz/2Wm2xewsnUmTny8zTzRkcG73a5e2k4lQiNpn7BjA3bwlbtbePmQyTYQuZfYCGhWa8iuxEpFRUB8NS2IE4/AO/JFXAzlMCjlxIBq4rkoAh+p+UpavvuPvwqcBz3W6CHvFSGfzR7nwhdHKFnLOcIvziGamkb0T8Q05hbG0MbYZTaIRsqGmegeBJ5umXwbjFBp5NGjIXf4fNIRK6RkuD1KPWZUnhLp+z1ut3VNEyYkXuCmp999CaqL9saa6jzSUQqLnZwvePthmoGsuLDViux2J1HfENnZ0QRzuM2EWcDSuXE681hixvPKp3wlYT+0dWNgQwIgo9jFq6t2kEdiqECjPUSR0AToVielXWyUA4uEto27feWi27TOUkC6FwyjVbG+yPvaDkFVAOxfG8/lphMi3nqyBx5/t0roV8yczT2FSxt0yPXo1fgF/nAP+J0dHU210+D1Ot5akaEFVlltFNDsxT5+t1EEQHT5UfguQiKY12eRJIkdwTUZiF0XL+Z6gYKFh6MlHsbPDkDEEgEcIXccaI3b5el2aSQa6mqIBoxElNzdoFC/+F9rzsB0yvpJ60NYTtphwRRRz2EUtSqZxJHlILoTgU4e4fRlgdShBl6T4TKJqlEHDVjme0hIUyp4xU+W4GQxGQLmFwOSO8Hp0U6Ltv4UMWI64/qu7SdBKkqzXnTfUKgk0NFUU2UFh0bTjGM/Dtj2YTK6HUsYdBtnzs3/vNBU1kiy0LSgoz+LdnzIfXYgFBKlkvyFav7W+MduPpw+TsMoB0RkcEHZuQkZiuAOzQDOqSYJR3/jFE1QK8KJRMEyfHY8Vf6RILC
+ oDUNxL4Y
+ FkrE8mLGv9OpauLecQBvbNtTwwhJfujQMLQsKZouY76d5P/Gp2MzuW55S4kCyezxkJc67xrBJkXimuZIeWtu17PdfFHoSS+xJwUDneGiOdtpuwenZRSqkXgj3Zot5sOBswd56bS+OdajPTaY+jswmmXcmmUjzxC8IggHA/IYg/dU3nrbUixCohms0R1CVrrHeUbYjkd8GVmC8WfClRCEMNkZ8hNL0rID12GwAWdfDoyorgy494BsNI30+os+SAkVKIVh0BOZ6GKgocOQoRbzXGeTXhd92wzXGMhnsh4/DWODIKLHyLsufPJ4jdr6MrNKXCfCay2LYGXax5fptbi0xOgMPDKBEQH5gDy/T4bVane3tBIACS7B9FdAY3VfpjIorg/zMS9pTA4ExILv32YF8BQVNprFCb2ZDxs2/XDkzdWzvSrytvN02HhKh8ZhhzyoWsqu6JzlFEHgFfGz+gbSscCI7Gw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,71 +122,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 18, 2025 at 12:47:41PM -0400, Liam R. Howlett wrote:
-> * Mike Rapoport <rppt@kernel.org> [250918 04:37]:
-> > On Wed, Sep 17, 2025 at 12:53:05PM -0400, Liam R. Howlett wrote:
-> > >
-> > > I disagree, the filesystem vma_ops->fault() is not a config option like
-> > > this one.  So we are on a path to enable uffd by default, and it really
-> > > needs work beyond this series.  Setting up a list head and passing in
-> > > through every call stack is far from idea.
-> > 
-> > I don't follow you here. How addition of uffd callbacks guarded by a config
-> > option to vma_ops leads to enabling uffd by by default?
-> 
-> Any new memory type that uses the above interface now needs uffd
-> enabled, anyone planning to use guest_memfd needs it enabled, anyone
-> able to get a module using this interface needs it enabled (by whoever
-> gives them the kernel they use).  Kernel provides now need to enable
-> UFFD - which is different than the example provided.
+Signed-off-by: Manish Kumar <manish1588@gmail.com>
+---
+ mm/show_mem.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-My understanding of Peter's suggestion is that *if* uffd is enabled memory
-type *may* implement the API, whatever API we'll come up with.
-  
-> > Nevertheless, let's step back for a second and instead focus on the problem
-> > these patches are trying to solve, which is to allow guest_memfd implement
-> > UFFD_CONTINUE (or minor fault in other terminology). 
-> 
-> Well, this is about modularizing memory types, but the first user is
-> supposed to be the guest-memfd support.
-> 
-> > 
-> > This means uffd should be able to map a folio that's already in
-> > guest_memfd page cache to the faulted address. Obviously, the page table
-> > update happens in uffd. But it still has to find what to map and we need
-> > some way to let guest_memfd tell that to uffd.
-> > 
-> > So we need a hook somewhere that will return a folio matching pgoff in
-> > vma->file->inode.
-> > 
-> > Do you see a way to implement it otherwise?
-> 
-> I must be missing something.
-> 
-> UFFDIO_CONTINUE currently enters through an ioctl that calls
-> userfaultfd_continue() -> mfill_atomic_continue()... mfill_atomic() gets
-> and uses the folio to actually do the work.  Right now, we don't hand
-> out the folio, so what is different here?
-
-The ioctl() is the mean of userspace to resolve a page fault and
-mfill_atomic() needs something similar to ->fault() to actually get the
-folio. And in case of shmem and guest_memfd the folio lives in the page
-cache.
+diff --git a/mm/show_mem.c b/mm/show_mem.c
+index 0cf8bf5d832d..798949d10ce1 100644
+--- a/mm/show_mem.c
++++ b/mm/show_mem.c
+@@ -26,7 +26,7 @@ unsigned long totalcma_pages __read_mostly;
+ static inline void show_node(struct zone *zone)
+ {
+ 	if (IS_ENABLED(CONFIG_NUMA))
+-		printk("Node %d ", zone_to_nid(zone));
++		pr_info("Node %d ", zone_to_nid(zone));
+ }
  
-> I am under the impression that we don't need to return the folio, but
-> may need to do work on it.  That is, we can give the mm side what it
-> needs to call the related memory type functions to service the request.
-> 
-> For example, one could pass in the inode, pgoff, and memory type and the
-> mm code could then call the fault handler for that memory type?
-
-How calling the fault handler differs conceptually from calling
-uffd_get_folio?
-If you take a look at UFFD_CONTINUE for shmem, this is pretty much what's
-happening. uffd side finds inode and pgoff and calls to a shmem_get_folio()
-that's very much similar to shmem->fault().
-
+ long si_mem_available(void)
+@@ -156,7 +156,7 @@ static void show_migration_types(unsigned char type)
+ 	}
+ 
+ 	*p = '\0';
+-	printk(KERN_CONT "(%s) ", tmp);
++	pr_cont("(%s) ", tmp);
+ }
+ 
+ static bool node_has_managed_zones(pg_data_t *pgdat, int max_zone_idx)
 -- 
-Sincerely yours,
-Mike.
+2.43.0
+
 
