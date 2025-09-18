@@ -4,106 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0EA6CAC597
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 05:55:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 969B4CAC59A
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 05:56:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2426C8E00B8; Thu, 18 Sep 2025 01:55:19 -0400 (EDT)
+	id E522A8E00B9; Thu, 18 Sep 2025 01:56:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1F30D8E0093; Thu, 18 Sep 2025 01:55:19 -0400 (EDT)
+	id E02528E0093; Thu, 18 Sep 2025 01:56:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0BB138E00B8; Thu, 18 Sep 2025 01:55:19 -0400 (EDT)
+	id CCB598E00B9; Thu, 18 Sep 2025 01:56:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id ECD648E0093
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 01:55:18 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4B33D140792
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 05:55:18 +0000 (UTC)
-X-FDA: 83901308316.02.E2F1E57
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B929B8E0093
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 01:56:16 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6B8B4BB321
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 05:56:16 +0000 (UTC)
+X-FDA: 83901310752.08.307FA65
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf29.hostedemail.com (Postfix) with ESMTP id B276A120007
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 05:55:15 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Guy9/b+K";
-	spf=pass (imf29.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	by imf10.hostedemail.com (Postfix) with ESMTP id 13B72C0005
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 05:56:13 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Ki/D0B4y";
+	spf=pass (imf10.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758174916;
+	s=arc-20220608; t=1758174974;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NKrCYz9xpAzIyzftdIL3V/90piIa1hzvp5f1tzNxkW0=;
-	b=wnkrDP1W83a3Bh/yzFoKWfONN7aL+7HqDaOh+vDhDncCCEnwIm0CiCrV+r6hU3jA8qpgjk
-	hM5jMt5dQdQJ/IXxfL+j5INPgRxBjWin1rOFSlKnaRTZ5t9ARrNfQRX9I8Dbi2cRvS70H3
-	2O4V6g2qE3VytIvV7cro0lU+CS/LY1I=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758174916; a=rsa-sha256;
+	bh=iFodLU7WRNoR8rMYR2p+tFACfC6CQ0VFz+XaBvWZe3Q=;
+	b=K/hOTLqmTLbkS3gKI8MZCHxegkYkEVC0P9InKF80gSVYx7XcWOMJShpQ5XB6yCaJD7U2ZN
+	SCPzfOm3sOFf3+4R1i/xuZaIlcR7st/03vwVlIgrpzg9bUSxbGbq8fin3gb9iAZP5vTYvQ
+	kuBpikudHRNTMLq7X5Vug/Xvd29SGTs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758174974; a=rsa-sha256;
 	cv=none;
-	b=FwCwUd2JvRg3W04/n+Tyu59KHdneOfcgwEQLluD2vXb3O2tX7+mjSnylWNRXWurwjduHL0
-	wra2EKAZYfmhIfkbTekB62JGLQCttF/WLQj87JqD8ioWapKMQOvQ8IsLQNAA87PjKYerlZ
-	swcroQOlIjRG+yAKHTA3F2Oeuq347Oo=
+	b=DJ4snlNAYhk9Je5I2WoArfRXJqaydBvG9IT+lWHYqxyM2J9n7chOQUvrUz3Ca4aBT1t47y
+	W2dftfkdP10RI0ivnJw9ycd+7tFEztmImOCdpAJR6az0EogTYU0hgt3dlVYqtnMgOluVmy
+	2L3DL/SEFRakaiCka1IWlF83QLEajVs=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Guy9/b+K";
-	spf=pass (imf29.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	imf10.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Ki/D0B4y";
+	spf=pass (imf10.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758174915;
+	s=mimecast20190719; t=1758174973;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=NKrCYz9xpAzIyzftdIL3V/90piIa1hzvp5f1tzNxkW0=;
-	b=Guy9/b+KNkNL1jB+7SGAh9adseiMVZxu2aL1SRBwv2UJ1TMWrovVCEC3qJhbZWtg2q1Qs1
-	ecS+7PR1XGg8b8xNdh2NKnt7Us9ZCaWYZKO/aJqt79c+wOUoWw20dSIPJca3mextrfgJOa
-	jjeOZIF5T6YowZmkqEDbCmKP27YMJMg=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=iFodLU7WRNoR8rMYR2p+tFACfC6CQ0VFz+XaBvWZe3Q=;
+	b=Ki/D0B4yQdEX0vaN+W+iDy+CNmW9kkMZ3Ba3WWzGaRNxchvfaNb9dbeQ4Uio345UOUa/qC
+	egG20utAjyQw9NfcvmJMQ2i2wPugQ3ceXanXl2LJsAHOp53AG8JQ8HrkNOzhxX5RStNb2m
+	4AlEof9J38EIZ9Je1wHcmoUt9BlS+Jw=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-389-Eaqo6HteOWatqxJzD-HT2w-1; Thu, 18 Sep 2025 01:55:11 -0400
-X-MC-Unique: Eaqo6HteOWatqxJzD-HT2w-1
-X-Mimecast-MFC-AGG-ID: Eaqo6HteOWatqxJzD-HT2w_1758174910
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-45f2f1a650dso3182695e9.2
-        for <linux-mm@kvack.org>; Wed, 17 Sep 2025 22:55:11 -0700 (PDT)
+ us-mta-35-ko8t7iGEN7WYQW-aKJdNow-1; Thu, 18 Sep 2025 01:56:10 -0400
+X-MC-Unique: ko8t7iGEN7WYQW-aKJdNow-1
+X-Mimecast-MFC-AGG-ID: ko8t7iGEN7WYQW-aKJdNow_1758174969
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-45df9e11fc6so3187135e9.3
+        for <linux-mm@kvack.org>; Wed, 17 Sep 2025 22:56:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758174910; x=1758779710;
+        d=1e100.net; s=20230601; t=1758174969; x=1758779769;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
+         :references:cc:to:from:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=NKrCYz9xpAzIyzftdIL3V/90piIa1hzvp5f1tzNxkW0=;
-        b=Y52Sun4V8rE5piQymPewISN8I8um1oqW7hr3yCSfrVzyhuqsbYfXwpkXT5QvkX4pBg
-         QPwnGi7BftxoREj4GipkBnTqeh/UzBSnlMj/t5Z2azFKrMvKqNzo5qAbIeBkwW12Ssk9
-         z3XPSz2gb5LyshiPYi6f8NIXWIRVT09ESG6tN31LyLI3fMQBFS3BzNxxCjidrDUgyFRb
-         o3GFys9xSg+4nn/faSycAk2z1OXHmvr0AibBf5TcGbrIu1Uw4Xp/Q/UmDIkjtJIdVsez
-         HHELyVefEVMktOeBaugQuNFgfuXe456Tb7ehQ1aXOd+Ikq/czndDleP9byoFZggvH21f
-         UFsg==
-X-Forwarded-Encrypted: i=1; AJvYcCVqQxFJNcDaF7A7nhxI/y309FwK+0Xoj4Zkjn8C1HIbVf1I57up3oaqDaPLx0PIYjlZUwuT+S2OWA==@kvack.org
-X-Gm-Message-State: AOJu0YxYDyHuOWNHgEIHKnGhpipA7IlP8EtUtst5rl/vFoI2oHLRW2hH
-	CxGXX1elq7f9w8+xi0uB9jweVHzZsJvH/q/HWbCMF9y+l7MLYGPwINLCLppiJfW/Tda5XHMd9XL
-	ui6h6kso2JHSQ/F7RdBgO2Lzkb6xVEiHCx4vC4ejxwpt1c2X3ve3V
-X-Gm-Gg: ASbGncvQcaDlz/1bjXMdN6a3ZgfnqAGmIGD9R+0+vrzayRGq0PggKdCFAMJ5i03xWd1
-	0agcBNy9CHDccsHONrSwPcO7eUnZNFhu1V3dxz/0umeqYN5eXZC8RNipXvBnkQ5nnY3YGvi3n8o
-	jg0PHQx0qYJrALIUm5PqOSBwulZrMyM6d0OKggsGK4gfUltVfaZTYt47e9xstyB9QyTFfMPp71f
-	zDtw8rtEart3mOBKmNeSg5QTT9EqXZEqdmA9e8eS/LUSb2Lmk0B/0CsUmIZUgoM+DJGs7i23/sf
-	JtiUolB+gu2ApSmQIii4NV5JPPCQGtycE4eyI1SZA7xI9gEKrqI0M3fXkZDxJX2guV1l0LyhPiZ
-	te9n6s+UyefrXxG3TzVsjOOAJ+I/d2nkoCgTOgUn/iaFyuMzbHt0rEEIsO8FXAL4sAemq
-X-Received: by 2002:a05:600c:4452:b0:45c:b53f:ad9 with SMTP id 5b1f17b1804b1-462072d6ee3mr42901195e9.33.1758174910347;
-        Wed, 17 Sep 2025 22:55:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE+w/U1G077wqX5gf9L/drxt5mqXTgrB2KLVuNXmu3a1/ZafTB85mAnpV2PhRybFjEo929q4A==
-X-Received: by 2002:a05:600c:4452:b0:45c:b53f:ad9 with SMTP id 5b1f17b1804b1-462072d6ee3mr42900825e9.33.1758174909797;
-        Wed, 17 Sep 2025 22:55:09 -0700 (PDT)
+        bh=iFodLU7WRNoR8rMYR2p+tFACfC6CQ0VFz+XaBvWZe3Q=;
+        b=MWTyIT7vj4JUaOr0oVq68CbUNI15wDQRjD+h5Mju6W95M8YF/5/sAZE5zRLZ6UK0Ne
+         ZrLWq1ivslyy4zc7CHblTUynVJKdqdk5FcoiYxc3T/UjoZXQDuE/GcjmGdYWgAMz34n/
+         YuaAUh9zmL2ln8aU9PVfJl798ci+/kyMP0TBKBSde5so8TPecTuHTUvR/C2xLqqFd3t8
+         Oyt/49N2c5FpsGn60JJmcBStJJJaJYb9XrjZnMI7DK6mbKn7mHLsQXhIxOYrY4MM3e6R
+         YvGN2FplV4dUkKjIUSUnoI49QEC/dS2kFhDRoNSjJuvqZ/fy7ol416OJwr5KfkhXJdEm
+         kEFA==
+X-Forwarded-Encrypted: i=1; AJvYcCVcbGElStQ6PjUAlgwjV0vCdVcQWYXIF6uAdPshlXUmnBcICRvfqfZkdtg2G2hPSYzVIjG9l9fiXQ==@kvack.org
+X-Gm-Message-State: AOJu0YyDb+nCxKfPEwM4mX/Ep5K7jGiMdOVGQLtMeMEzOhhNDsiW/5zS
+	E0khgNmuY8nunnFTkS4lQrUwhojkgWmPWIL5Ph9hfqGtJ9uqB4fPR+JkDY2eBXdII1Le7ogxNla
+	c0cUefO6MUlxsFC+HgUM6Obi5honhbx2H7yIRgJde+V6Fd1DR+vtR
+X-Gm-Gg: ASbGncuqe4rmiG8i9YcXvmlQ9ngxlw2N9cVX1zI/9G4Zy+gH1Wza9KgQp4+uxM0M8gG
+	EkC2rHgHoDVtMHIxM1yXp/3HZDJJqEBZjqCPs1eQjA40iFtNqW1atMc2ehsuRPWM/bqj7kWU/qK
+	Pb8dGLMX4SEVpr+e1axtqvJJNlKXdcWkIGhr+LMHftIkU5PYxHyhYkN7wGvAbbji8ss91F31ebY
+	tGkfA5ZwDhCDAGryZtAJdUspllQoudzZWUJL2+wIkke96Nx+7l/NWB8/CjjprK+kdnKU6iuQcfB
+	FZ6c5ytVBNYJhgWPyTFh+zIdg6+EXQFJS/BLz1/YuqkPoHDdbhAVQyj+m3hNS0hO2tDCVgwchMA
+	ZaH6byororWjRoN9Uj+FVK3g2THzHKNbMjslxDPnBgOlh2u6eB0RVu656jmRJiD8K44d/
+X-Received: by 2002:a05:600c:5486:b0:459:d451:3364 with SMTP id 5b1f17b1804b1-46205cc8444mr47905695e9.24.1758174968855;
+        Wed, 17 Sep 2025 22:56:08 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFHa5cFLROHCThsOI4QlMKhK4/G9ymQhSNCWrlhpgmZpLNsf0XK4hUNh/ELW+ARX9uKv36toQ==
+X-Received: by 2002:a05:600c:5486:b0:459:d451:3364 with SMTP id 5b1f17b1804b1-46205cc8444mr47905405e9.24.1758174968484;
+        Wed, 17 Sep 2025 22:56:08 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f07:dd00:ca9c:199e:d2b6:9099? (p200300d82f07dd00ca9c199ed2b69099.dip0.t-ipconnect.de. [2003:d8:2f07:dd00:ca9c:199e:d2b6:9099])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45f321032a1sm57041195e9.2.2025.09.17.22.55.07
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46566f72354sm16617495e9.3.2025.09.17.22.56.07
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 17 Sep 2025 22:55:08 -0700 (PDT)
-Message-ID: <5512b1b6-31f8-4322-8a5f-add8d1e9b22f@redhat.com>
-Date: Thu, 18 Sep 2025 07:55:07 +0200
+        Wed, 17 Sep 2025 22:56:07 -0700 (PDT)
+Message-ID: <7c38e725-f6d5-4691-b211-a22fc67db85c@redhat.com>
+Date: Thu, 18 Sep 2025 07:56:06 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] drivers/base/node: Fix double free in register_one_node()
+From: David Hildenbrand <david@redhat.com>
 To: Donet Tom <donettom@linux.ibm.com>, akpm@linux-foundation.org,
  clm@meta.com
 Cc: Jonathan.Cameron@huawei.com, alison.schofield@intel.com, dakr@kernel.org,
@@ -112,7 +113,7 @@ Cc: Jonathan.Cameron@huawei.com, alison.schofield@intel.com, dakr@kernel.org,
  linux-mm@kvack.org, osalvador@suse.de, rafael@kernel.org,
  ritesh.list@gmail.com, yury.norov@gmail.com, ziy@nvidia.com
 References: <20250918054144.58980-1-donettom@linux.ibm.com>
-From: David Hildenbrand <david@redhat.com>
+ <5512b1b6-31f8-4322-8a5f-add8d1e9b22f@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
  dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
@@ -157,21 +158,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20250918054144.58980-1-donettom@linux.ibm.com>
+In-Reply-To: <5512b1b6-31f8-4322-8a5f-add8d1e9b22f@redhat.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 3UkknWbq-SjOqHSY2dmzQKdmMUop0cg7BimXkQIhSpM_1758174910
+X-Mimecast-MFC-PROC-ID: MfICKOiD4O9Pwk6CuhqjfsNmsOXBlZuAzkusqbr5bEo_1758174969
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: B276A120007
-X-Stat-Signature: phy5gi7rgbc65ixquwrin7hh4hq6jped
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 13B72C0005
+X-Stat-Signature: 86p6m7mwcq55pcmwdtt4ta7w8o5btmek
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1758174915-901394
-X-HE-Meta: U2FsdGVkX1/JsY5lSqwZ/xytu/MMeS+ZdI/gjVAF16GDZWz5VcVkDP54xGJtXZgUrBtusOQ8iLIVIDxtecuJRbnVFCl3teK+eaCNYTsZG/skg1XofxXceRx4x4q9zg86s1ZMMu6DXNahT7DPxA/gRR88zcGGEc6QMBVev2sGyLP6VX5HqIuPr7fsazQCgtiRyD27+Ngw0Oc4u6h7LXA2gTwgwPgSbstZzE+IRiA3B14O5gldbie7vtIOkiM2vsBAkXL/lFEDlIV66Rxgc9pGnTRXsKt6wMwexU1LRPH79P1hI8DiT375pKZTDGMM98pQcO5VTYTS+BDiTrdb41V8QmGh9PjGaozvjkbzWDvlYjaWd3r3TeZZxdFCs+DsqNFGoQn3G7clRObTqROgmWPKV3mKMJLNS8sVhtjit5g32Zv1EH7X3JUENszN+46v96QwQVt9mPMTRzgXCzZoMzdVZ4HwNEfTAJMGdg/omspgEa4vLgVygM+zplXNwGRG+u4q+Qh8S8oBLUJ/YjMkwONTv8Ku3SlX0YvYc+ONP1XMyYOrSZ+NXtwqbHqTO9Zi/Tnyyn2Zvuxw0arjm6m1hW3BK1+LJh8S5cnb61TgUOSvEikfJkT9+oKKOxMzAuvyapxX9E0ZCCcoZLAcp4+1GcI5Zmhhnr13PY2zmGNhEJdBdiPzvjhMH1WI3Nw3/ejRktVOF8e2Fjb6koThDUL2iYzzKR5ZLFliCrJh2DRp8b6v14jwmxyxBaGvKeQhHsarHPiG+iSgHX8L6fO6KDhdckWFOTAIAq555HOmz56FBXzP+jml0ZM9nzmCfva+3Q+f8HnYw0QQ9zl9sAxFdJLIlcANWc8Chz9Kt6/jqti69YkYFZTJYbJ9Xb0W7W8NHI9CubS93opb+1H7aKV9SPE2kAbBbq7KwTOEo5HNsFLQ4bvWMe2d3ee2ngyn+JwRJpPyTq3bfY34mCwcNxSwS/l56uU
- JtMmLWpG
- ytQZQAsHIy5HEApvvtvv0E4OukQqkOJ35b8rXYsj03Zz3Xzs1AFhcDpPXPSMTRBmkr9Pt55kLMPNJamCG5GVIKhdW3L9BjGAVlOYdyY1g4C0arVmwXPzPICRmxZUU2/6JQ46RgxRQCpFsoZb5zz3S5mIGYOjzJ+LvlRqeO7yjmShuOHar0FC5h2FtECIqTAKpYBcnmAwnpy4EYTeze7p7OUgjK55InkmT6fhkq3b4W6GioTDhCuOGedTGnSsu8GJCRUjZ6leA359twH+1FJgfm0XbeNm16PSAiHZzhkl5XiFk2JOAnxYrIEXxbyWZtr7ehsq0Io62Yj9cbimAHh0NGpAx3HtIJdrRuWxlD+z62OsNM0pYAi42nDR3qgLZ+mRvtOXk4645GJFMTQWm0kVQEUfPj8VLaYob0lNloTjM2JJk/csLdvD+Kle9OXfwDGrml2LkoDA4VNW5HJXYu8drBRwEH1IoM9iuuhubouGSvd1WgiRSmZcGRn2AY0OM0J8YmJMBP7OHod6wNEhm7V+5b8gcgepZMvCYmzA6qnSShwmb9GVei8pRV8ucG6NRCMuTLFTt
+X-HE-Tag: 1758174973-385575
+X-HE-Meta: U2FsdGVkX1/LTYF9JMooLj2fcuS+E1XlgQbjhPlrDapLB05cr2hea8itC4wZ0XK5tTQz9V41xLyrSZ/pndUZga9QPMcnnPHRtCPIOGnZuYG72KZIPerxL7dDDEAhAgRRk81AIN/NM/SloiXJOJDv9IbSC1jDH4XQHhwpR9maEi+ksPz1eAQhSeJ9PcX5Je13EOQIBgESf3kba5JLgxIb/30669KryU/9PcIySwH71dyYQCxWcBZcRLJlJnDtWbXTA6SMDpovqLWjxAGNz7gt4EdOhHgbjsCkD/gliwHdiDIJ2F4GREggqSBk264vMMcXj+3gwmoWJfAWsUFgLi4nuAmKyvODhtSHnQAf640Ui3wqyarntWu8fD9U0vXL2rnLTtm4htUjt0nrxLdoVvevlRTqyHpBC4meHsr7PY+xq9pXm9rlydqqo+9VmdmeaoW+Uk2aG9LL/T1FVW2sqaEOhIhzqKllsGBJJpwrrW9JjAKqAtDFhvgKAipv7P7uWu8666GrbnPmkAvOqwnrTqanPlh/Ri8kDEM8eC/kpsvCeJjbS7LwxHE/8826JFsOJdAMryO6OFIz47jkjIIRwxdMSu2JkBg43Pg7rxyND2vMNjJqBpavqsBXjsq6oX0JC0a5hMEEceW9P9dBIZ74vQrw7Od9exrfD+oVACzQny4EFfXTOUHvlFJD+WYmLTnlYYU78hB1acc0fMueydJEHCka+3YjfDUP6IUXe9HY3AAMahtG5k8VVnGt1loLUvpOvNvO3Ubse1EWKZsAtdZJRbQe1xK3t0HqGYrpXmtO4G0teeKU4mC12VpS5i2IGeilGANHg9Lmv7XZTe6wYB9JUZvxZZLW4H5DZLt3Uuy/9rYFBC9UU8B1g7xm5ZhDD1lTKV2HNsHOMdR5YiDwQXRns38slUp813vZ9DSrralAxH/QD6/+tgFB3pxIZLYNiUqJJL3FS7QoTvlXA9MjNRIcftO
+ MJrPfJN2
+ /G18qCJGo9cyFZjHJdV6hSUXyutK/nNCwNb3fEnq1CkOV4CZXsOeIws/VWGqUDJ0X/HHvQXKLdVVsDWabsCGAbiLoiTpyvI2S0LVranJLMDNZWX9zIUb1Ap/LRYl53V+l//P4dIEDcJcWjGd7MCIrwHcMwBjs6kXZjWQmyShgVpipVVSwNB0CShQV1u4ZdaZFdRMchcAFU+kdk6Zgu3Dw3ueIjV9q8JCQV3jU0cnOVOvNAAzRfPGrHj7lCTpF8zOl1krfTP1EPm4l3Kjy0+lA47DOHyuI6dODj636UWEkRO8IH6I9AaU4KEBSn+Nt5b27VNVnDge0h3UrQW1/TJ3QVWM2T98k5MmUJDVJt24rXApxsQ1JiCJA8c1OorIBi+4s2cdsbyseFHsgCfdfBdpnbrFEb2sqlK4y7ArxsSRPCom376CdatxfX71PAb846WC2ivZzXPURZE5waR4gxks3XlMnGjKBBZdd9nuMezDAIwIFxHgNAI9bweVZk39Gw5GVhstaAtRsKmmXhlzNSOXbNkDNLNrOywJh0eETxJOZHWKACfXMr9rfKJozdQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -180,48 +181,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 18.09.25 07:41, Donet Tom wrote:
-> When device_register() fails in register_node(), it calls
-> put_device(&node->dev). This triggers node_device_release(),
-> which calls kfree(to_node(dev)), thereby freeing the entire
-> node structure.
+On 18.09.25 07:55, David Hildenbrand wrote:
+> On 18.09.25 07:41, Donet Tom wrote:
+>> When device_register() fails in register_node(), it calls
+>> put_device(&node->dev). This triggers node_device_release(),
+>> which calls kfree(to_node(dev)), thereby freeing the entire
+>> node structure.
+>>
+>> As a result, when register_node() returns an error, the node
+>> memory has already been freed. Calling kfree(node) again in
+>> register_one_node() leads to a double free.
+>>
+>> This patch removes the redundant kfree(node) from
+>> register_one_node() to prevent the double free.
+>>
+>> Fixes: 786eb990cfb7 ("drivers/base/node: handle error properly in register_one_node()")
+>> Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+>> ---
+>>    drivers/base/node.c | 1 -
+>>    1 file changed, 1 deletion(-)
+>>
+>> diff --git a/drivers/base/node.c b/drivers/base/node.c
+>> index 1608816de67f..6b6e55a98b79 100644
+>> --- a/drivers/base/node.c
+>> +++ b/drivers/base/node.c
+>> @@ -885,7 +885,6 @@ int register_one_node(int nid)
+>>    	error = register_node(node_devices[nid], nid);
+>>    	if (error) {
+>>    		node_devices[nid] = NULL;
+>> -		kfree(node);
+>>    		return error;
+>>    	}
+>>    
 > 
-> As a result, when register_node() returns an error, the node
-> memory has already been freed. Calling kfree(node) again in
-> register_one_node() leads to a double free.
-> 
-> This patch removes the redundant kfree(node) from
-> register_one_node() to prevent the double free.
-> 
-> Fixes: 786eb990cfb7 ("drivers/base/node: handle error properly in register_one_node()")
-> Signed-off-by: Donet Tom <donettom@linux.ibm.com>
-> ---
->   drivers/base/node.c | 1 -
->   1 file changed, 1 deletion(-)
-> 
-> diff --git a/drivers/base/node.c b/drivers/base/node.c
-> index 1608816de67f..6b6e55a98b79 100644
-> --- a/drivers/base/node.c
-> +++ b/drivers/base/node.c
-> @@ -885,7 +885,6 @@ int register_one_node(int nid)
->   	error = register_node(node_devices[nid], nid);
->   	if (error) {
->   		node_devices[nid] = NULL;
-> -		kfree(node);
->   		return error;
->   	}
->   
+> Yes, that matches what other users (staring at mm/memory-tiers.c) do.
 
-Yes, that matches what other users (staring at mm/memory-tiers.c) do.
+I forgot
 
-I wonder if we should just inline register_node() into register_one_node().
-
-Then it's clearer that we perform a put_device() already in there.
-
-On top of that, we could then just s/register_one_node/register_node/
-
-And then we could do a similar cleanup for unregister_one_node / 
-unregister_node where I don't consider the split function really valuable.
+Acked-by: David Hildenbrand <david@redhat.com>
 
 -- 
 Cheers
