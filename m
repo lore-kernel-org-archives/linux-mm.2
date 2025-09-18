@@ -4,106 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E60B0CAC59F
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 08:37:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D84ACAC59A
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 08:38:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B8CE8E00D1; Thu, 18 Sep 2025 04:37:28 -0400 (EDT)
+	id 5F34A8E00D2; Thu, 18 Sep 2025 04:38:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4908E8E0093; Thu, 18 Sep 2025 04:37:28 -0400 (EDT)
+	id 5CAFA8E0093; Thu, 18 Sep 2025 04:38:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3CD3E8E00D1; Thu, 18 Sep 2025 04:37:28 -0400 (EDT)
+	id 4E09D8E00D2; Thu, 18 Sep 2025 04:38:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B6DC8E0093
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 04:37:28 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D19DABB873
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 08:37:27 +0000 (UTC)
-X-FDA: 83901716934.19.9EA616C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 1E02C4000E
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 08:37:25 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lmjJusBy;
-	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 3BCF18E0093
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 04:38:11 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 134DDC0841
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 08:38:11 +0000 (UTC)
+X-FDA: 83901718782.17.35826FE
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	by imf25.hostedemail.com (Postfix) with ESMTP id CA0F6A0002
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 08:38:07 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	spf=pass (imf25.hostedemail.com: domain of zhangchunyan@iscas.ac.cn designates 159.226.251.81 as permitted sender) smtp.mailfrom=zhangchunyan@iscas.ac.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758184646;
+	s=arc-20220608; t=1758184689;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Xsj3kmJPjclPXZOu7JzZ5IC9avscfOhR6+L7qvtvp9c=;
-	b=xGlBOpoKQv8pC6vPGDaC0e4DJZiqZRltnoXaxItP/DvP06lc0DQr0hgPnQMAVkPGdW0RTp
-	jXShZhw+Nfka9KWnoMvHaY3a5AbHlIUnRK0tZN81pf9lT+T1t9yECtaFWK1hd/WjYuG0Zw
-	sJtFzYbLqE7Sn/hCHSmYYvCmipbAdL0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758184646; a=rsa-sha256;
-	cv=none;
-	b=3STFEjaSfYE6gU3L94ofBd0pTN/stt3vL1sg1Qf+JwXDsPFVhglS9NeGK2IZKTPPAi29r+
-	M9oTMBH6Z2QBKu0lt4L7EkrRtADu4LrD8VEBt6PcYEP2SDnCn8UQUn1a1AC/ejIl4rWYob
-	l8tjraHoAVVqJh2uPYqobAuDuUsOE9o=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=8o8T+yh+HA4cJYAOno5O6TRVw/m2iTIrDez/5vnJHoQ=;
+	b=CfOwS0JlrhtnXfb7W9B9LqHg+EHfIMwg/bUqETdAEWahqqCyyZWYCxG+Iy8J6CdYOmL/TL
+	bDvjYkUzpI9QmRX96WrmaIpJnCDExzMbQDBeeTApt2cM+pyOvil5hvWKEYTVcMj6Igj+kS
+	iFcRfrTwmyQWMVnHAcWtwgj55R4+OXE=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lmjJusBy;
-	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 95A7543A69;
-	Thu, 18 Sep 2025 08:37:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 008E7C4CEE7;
-	Thu, 18 Sep 2025 08:37:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758184644;
-	bh=n6pcgK6RYDmP6b6B7FywOHg4pFSmSErWazePBn/crPs=;
-	h=Date:From:To:Subject:References:In-Reply-To:From;
-	b=lmjJusBy6wTjGtDEz47xc5fyU1rL0tf2mSlWWmQ6Jo7TLlPyXizHw94sK2fAqmsX0
-	 RSyFsHeUH1Tb1BdOFygVT8yI1hKcOkOvtfMMPFPXLF/dRtFAI9ewQpjPicQjB1NBvw
-	 /MHhTvdmvf6uxBZ0wBuT2OAkDkNaK/9ajoqJDVShQR4XCRqhmyKfUq4y7jOlK3+rlf
-	 tA+HP2zzpcgg88ES2Ngn89s1SFkxrIO9K9vn8udk/ipblhDOtcu1aOPEj0fCgtrQPm
-	 6TT2NVYBI0mGjZgaETBGQxLI7m0nBqpHnAMhLBX08I539MqR3A9adWhlt9Xax7QIgQ
-	 t1Ayp5bCzKhvA==
-Date: Thu, 18 Sep 2025 11:37:15 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Nikita Kalyazin <kalyazin@amazon.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
-	Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Vlastimil Babka <vbabka@suse.cz>,
-	Muchun Song <muchun.song@linux.dev>,
-	Hugh Dickins <hughd@google.com>,
+	imf25.hostedemail.com;
+	dkim=none;
+	spf=pass (imf25.hostedemail.com: domain of zhangchunyan@iscas.ac.cn designates 159.226.251.81 as permitted sender) smtp.mailfrom=zhangchunyan@iscas.ac.cn;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758184689; a=rsa-sha256;
+	cv=none;
+	b=IYdgqzvI1HkPxyrVXRIUgsWFyVpjgarchrv5LH+HJ0thziVX7yKTI6s/Vg1N2Lebe5du8z
+	pkHe8JTf8okjIX930q4bQ20rNykHkO+d6bfdXsN/NlFwr8v92/EbW1NYnR5IHJJ9hgNWl0
+	sAGEziQNXfml1t+b1Kg8TJQqiRAnm6k=
+Received: from ubt.. (unknown [210.73.43.101])
+	by APP-03 (Coremail) with SMTP id rQCowACnu4XjxMtolHKCAw--.43062S2;
+	Thu, 18 Sep 2025 16:37:56 +0800 (CST)
+From: Chunyan Zhang <zhangchunyan@iscas.ac.cn>
+To: linux-riscv@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Cc: Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor@kernel.org>,
+	Deepak Gupta <debug@rivosinc.com>,
+	Ved Shanbhogue <ved@rivosinc.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	James Houghton <jthoughton@google.com>,
+	Peter Xu <peterx@redhat.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
 	Michal Hocko <mhocko@suse.com>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Oscar Salvador <osalvador@suse.de>,
 	Axel Rasmussen <axelrasmussen@google.com>,
-	Ujwal Kundur <ujwal.kundur@gmail.com>
-Subject: Re: [PATCH v2 1/4] mm: Introduce vm_uffd_ops API
-Message-ID: <aMvEu9m7fJLnj862@kernel.org>
-References: <aGVu1Isy-R9RszxW@kernel.org>
- <aGWMsfbayEco0j4R@x1.local>
- <aGbCbW7hUf3a2do2@kernel.org>
- <289eede1-d47d-49a2-b9b6-ff8050d84893@redhat.com>
- <aGfsaIIzHWfjcNFd@x1.local>
- <e7vr62s73dftijeveyg6lfgivctijz4qcar3teswjbuv6gog3k@4sbpuj35nbbh>
- <930d8830-3d5d-496d-80d8-b716ea6446bb@amazon.com>
- <jxekhkhbn7uk23oe24svxrs3vfuhseae57sqagndqgh2e7h33o@kfkygmrvjb5n>
- <aMp-kW3OLqtZs8sh@kernel.org>
- <du5pzxmfk6lile3ykpaloylwz4eni6disj2oe25eq6ipzqemiw@ybcouflfnlev>
+	Yuanchu Xie <yuanchu@google.com>,
+	Chunyan Zhang <zhang.lyra@gmail.com>
+Subject: [PATCH V14 0/6] riscv: mm: Add soft-dirty and uffd-wp support
+Date: Thu, 18 Sep 2025 16:37:25 +0800
+Message-Id: <20250918083731.1820327-1-zhangchunyan@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <du5pzxmfk6lile3ykpaloylwz4eni6disj2oe25eq6ipzqemiw@ybcouflfnlev>
-X-Rspamd-Queue-Id: 1E02C4000E
-X-Stat-Signature: xd1shstdf7uws3gpuwhcag7wowz3514h
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowACnu4XjxMtolHKCAw--.43062S2
+X-Coremail-Antispam: 1UD129KBjvJXoW3Wr18CrW3AryrKry8Kw1kGrg_yoW7Zr1fpF
+	4UGry3tr4rtryIga93Jw109a1Yqan8tw15Gw1rX34rA3y2k3Wjvrna9a1rGF1DJr4UWryS
+	qryakr90934qyaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvCb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I2
+	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
+	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xII
+	jxv20xvEc7CjxVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwV
+	C2z280aVCY1x0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
+	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Gr0_Cr
+	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4IIrI8v6xkF7I0E8cxan2IY
+	04v7MxkF7I0En4kS14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r
+	1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CE
+	b7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0x
+	vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAI
+	cVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2Kf
+	nxnUUI43ZEXa7IUYDcTJUUUUU==
+X-Originating-IP: [210.73.43.101]
+X-CM-SenderInfo: x2kd0wxfkx051dq6x2xfdvhtffof0/1tbiBwkJB2jLv3UZYwAAsT
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1758184645-358568
-X-HE-Meta: U2FsdGVkX1+B/TvoZDhB1YQ6sorZU7yn1rPA1Nv4kAiAGzoep3FpgyegPSSpgm3qWsd/D6J6OqCFvtbonciL2f/Pps7qxGKzOJ5aloxb7vBJmQRJ8G+F/lY5hJI1Im74aTPUmQ3Yf/zJzATVJBj4xLI9jGudeq6R3PvrfL62jdujYFrmyBndgVFXEzS3Uyeto2Boj8X19qZqtj7Xmp+Bi6eLEIuphefQxRT2lsZfghZNZTP5rR212Vi0kFA6fDL0YcdHLCG22z1R/b374gEPdXJ6grXuogIDtiFFmGFu9g18i9gYe0dAzpAZGIvdyHM78BRX7MCYZ9ruCi8psg1I8a4gfMBvdUPSo/PBGYqBEOwF2I0wlr5UOosVBaVjvdbJlM0vczsfEoC0RfTsN1sVpKLPIidDawcCKvSjL1JF2+FFefbXS9RomyaqzCHmZH3C/aQcCQIu2gej98NvMiDOUkT5zlhHRcuV0Jh5Fk193qZDibp00INXxohiLgHPnTPD6DlMHS4GgopcLa7fh1N0/1I7eVY9nrp1NhnebzAJwJSnk0e/qyZN9stUy9sjfYqN4w0WctacXQDlR4f/uecwvycJS6Wv4FqvkhaYR+aj5lRe9hKmlchOuroPh2GAgLYg61sGqA2g8XN3IuFSZMOPJ+ynPqIa9wgryyXpCkFa5AHWqk0tQ/eivNqetUJ1U5JWpNyIo60QyXQGzuDcUZDR1ixSK/Nvh9mH9ZlQW+8txoVhSJ6lS7K4YsCc34F+3MSVg7BGnx5glFhQSkKKspDC123FyagoYpx344VpdADInxNbgcGISlsU5EnadFGaRokDKLtgMCUlrczRXPdTle/th+ne3TcO2sywwYha6RFc2aOKwGFwOLYuLBbQEzVIbWiwhXhNd22oeLePgIeRfur3TqS7Mh0jsdHfx6C4zmhzCA/FZJLMdywvDXvDCmfK7u3ck5M11HbAF3hFZv0QyHj
- L11QodCi
- BA0aly4aN1u3eaWRk2yL+rn0XdDzFDlkHSRzXxOMTHjtD9Xg84eI3kEsU1OhExVuQk9avDIgIuGYhxlDbmnPUfWxydZNFnqjRffpCCSeqRCESSGSNaYgmRvao0l42U5xJ2RKPC2huoCjZieR4hsw5KaYzTgDKD5Lf7o1IB2XOjcdEYfLQWF0uNqWTUKyJgPLM69oc6Q1jTzeqJGF6Ga8Em2vBKCc2Y+7AKNPJijME7f3IT00GOiLnKNe3WBr/dHl3ERG6XTFOY7JV3Anx8TU5CeZJ09vlqeTEqH9pCVUd8+LtTXa+YU25/4JygR1szyt0SrF9Gas3KeT35LzLxDgabT5TX/7Da0NDTqBXK0KBf1WwU93ZXodSKbmvO40rBeg9TnkrUyvN5VxTmoE=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: CA0F6A0002
+X-Stat-Signature: 4ndi9ohjnxn4jbr9k1x6m9zb8ns33p4i
+X-HE-Tag: 1758184687-162839
+X-HE-Meta: U2FsdGVkX1+ckk/Ylfjx/KEIp4Tn4NS7IcZQEovzYwNu1SNDcye02pOOjJcU10SjPsw0OsoBrsn+/s3JYaP2YavH454UbW/wBDn6fJew2wFI7dXMNCxLxN9RHZ3SpsCkrYQXxnJYt/t5WNfN82VxCFUyyimKKHagFNI9QbDtLow1KfxYKRf53Oa4B7soBn6p3ciubPrx3hD7tEckUqQ3bLG5v8PTNMupHL+OXfwMYi0b5mLQSTFJ+i5K86sC6TaTLbGNisMx4GqtYP8jjy71YH9dVzPN835b1pfudm9RykXxmwsFtiXu6CE2M0dCuAw3Cg7aLHJAqxEo4poIHzm6x74x70uRzUUMtvBftJisrSc41Ol+tiUjBGxYGd2VCy0FAocrt61sjmNlwFQT46y6PP/s4FHxUnJBDMB7D4Vh3lCOW18GvteAxZsNpYWe89lnaMYHqHWqxCoG17Iz6rA+RuXf5To7IqbHYouJOwrx0OVB2A86o7HLOKhz7z2pquNW1GGtKqI9ZCGa5sPglAQyQkpBmJac67nCmzvPbMUV/0GSJFFHbCBgHJDuzDv5NteldvM3w95KRH/nCy5bN27uLNDTK2xkukaFxcrShDZBmM56TvC1jHTqIWMF74148rdKVCu/9Opm5uqvMzg10G++MZnuc2cwtYYdl89g7sd6TkL/jsgVglt0AlX+VpkEajNBDAqUgcdv/UMoWIx6RQMG7K4rSBYv+bZBTlQan0bXdUagyexzNLg6A6K6q2SqDWukiLwTiVLGlsywHAdMuTY8MdYxJS7YJnBZCi3YwbSAWqK9+Q4qli/03fawjezNejarB++Lut2BLxbMgD17LJDKVFPGJnOfe3Eu6eKaUZLCIFd6TtQOHOcM0+lVO7FzSzs9+G14BIrZFwAH8iaLqvron/STMh6N6eR5xM13wMLsECwbCJE38jjg1Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,73 +118,124 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 17, 2025 at 12:53:05PM -0400, Liam R. Howlett wrote:
-> * Mike Rapoport <rppt@kernel.org> [250917 05:26]:
-> > Hi Liam,
-> > 
-> > On Mon, Sep 08, 2025 at 12:53:37PM -0400, Liam R. Howlett wrote:
-> > > 
-> > > Reading through the patches, I'm not entirely sure what you are
-> > > proposing.
-> > > 
-> > > What I was hoping to see by a generalization of the memory types is a
-> > > much simpler shared code base until the code hit memory type specific
-> > > areas where a function pointer could be used to keep things from getting
-> > > complicated (or, I guess a switch statement..).
-> > > 
-> > > What we don't want is non-mm code specifying values for the function
-> > > pointer and doing what they want, or a function pointer that returns a
-> > > core mm resource (in the old example this was a vma, here it is a
-> > > folio).
-> > > 
-> > > From this patch set:
-> > > +        * Return: zero if succeeded, negative for errors.
-> > > +        */
-> > > +       int (*uffd_get_folio)(struct inode *inode, pgoff_t pgoff,
-> > > +                             struct folio **folio);
-> > > 
-> > > This is one of the contention points in the current scenario as the
-> > > folio would be returned.
-> > 
-> > I don't see a problem with it. It's not any different from
-> > vma_ops->fault(): a callback for a filesystem to get a folio that will be
-> > mapped afterwards by the mm code.
-> > 
-> 
-> I disagree, the filesystem vma_ops->fault() is not a config option like
-> this one.  So we are on a path to enable uffd by default, and it really
-> needs work beyond this series.  Setting up a list head and passing in
-> through every call stack is far from idea.
+This patchset adds support for Svrsw60t59b [1] extension which is ratified now,
+also add soft dirty and userfaultfd write protect tracking for RISC-V.
 
-I don't follow you here. How addition of uffd callbacks guarded by a config
-option to vma_ops leads to enabling uffd by by default?
- 
-> I also think the filesystem model is not one we want to duplicate in mm
-> for memory types - think of the test issues we have now and then have a
-> look at the xfstests support of filesystems [1].
-> 
-> So we are on a path of less test coverage, and more code that is
-> actually about mm that is outside of mm.  So, is there another way?
+The patches 1 and 2 add macros to allow architectures to define their own checks
+if the soft-dirty / uffd_wp PTE bits are available, in other words for RISC-V,
+the Svrsw60t59b extension is supported on which device the kernel is running.
+Also patch1-2 are removing "ifdef CONFIG_MEM_SOFT_DIRTY"
+"ifdef CONFIG_HAVE_ARCH_USERFAULTFD_WP" and
+"ifdef CONFIG_PTE_MARKER_UFFD_WP" in favor of checks which if not overridden by
+the architecture, no change in behavior is expected.
 
-There are quite a few vma_ops outside fs/ not covered by xfstest, so the
-test coverage argument is moot at best.
-And anything in the kernel can grab a folio and do whatever it pleases.
+This patchset has been tested with kselftest mm suite in which soft-dirty, 
+madv_populate, test_unmerge_uffd_wp, and uffd-unit-tests run and pass,
+and no regressions are observed in any of the other tests.
 
-Nevertheless, let's step back for a second and instead focus on the problem
-these patches are trying to solve, which is to allow guest_memfd implement
-UFFD_CONTINUE (or minor fault in other terminology). 
+This patchset applies on top of the lastest mm-new branch.
 
-This means uffd should be able to map a folio that's already in
-guest_memfd page cache to the faulted address. Obviously, the page table
-update happens in uffd. But it still has to find what to map and we need
-some way to let guest_memfd tell that to uffd.
+[1] https://github.com/riscv-non-isa/riscv-iommu/pull/543
 
-So we need a hook somewhere that will return a folio matching pgoff in
-vma->file->inode.
+V14:
+- Fix indent inssues in userfaultfd_k.h;
+- Some descriptions and comments minor changes.
 
-Do you see a way to implement it otherwise?
+V13: https://lore.kernel.org/all/20250917033703.1695933-1-zhangchunyan@iscas.ac.cn/
+- Rebase on mm-new branch;
+- Fixed build errors;
+- Add more exactly descriptions in commit message in patch 1-2;
+- Replace '__always_inline' with 'inline' for uffd_supports_wp_marker();
+- Add Svrsw60t59b description to the extensions dt-binding in patch 6.
+
+V12: https://lore.kernel.org/all/20250915101343.1449546-1-zhangchunyan@iscas.ac.cn/
+- Rename the macro API to pgtable_supports_soft_dirty/uffd_wp();
+- Add changes for setting VM_SOFTDIRTY flags conditionally;
+- Drop changes to show_smap_vma_flags();
+- Drop CONFIG_MEM_SOFT_DIRTY compile condition of clear_soft_dirty() and clear_soft_dirty_pmd();
+- Fix typos;
+- Add uffd_supports_wp_marker() and drop some ifdef CONFIG_PTE_MARKER_UFFD_WP.
+
+V11: https://lore.kernel.org/all/20250911095602.1130290-1-zhangchunyan@iscas.ac.cn/
+- Rename the macro API to pgtable_*_supported() since we also have PMD support;
+- Change the default implementations of two macros, make CONFIG_MEM_SOFT_DIRTY or
+  CONFIG_HAVE_ARCH_USERFAULTFD_WP part of the macros;
+- Correct the order of insertion of RISCV_ISA_EXT_SVRSW60T59B;
+- Rephrase some comments.
+
+V10: https://lore.kernel.org/all/20250909095611.803898-1-zhangchunyan@iscas.ac.cn/
+- Fixed the issue reported by kernel test irobot <lkp@intel.com>.
+
+V9: https://lore.kernel.org/all/20250905103651.489197-1-zhangchunyan@iscas.ac.cn/
+- Add pte_soft_dirty/uffd_wp_available() API to allow dynamically checking
+  if the PTE bit is available for the platform on which the kernel is running.
+
+V8: https://lore.kernel.org/all/20250619065232.1786470-1-zhangchunyan@iscas.ac.cn/)
+- Rebase on v6.16-rc1;
+- Add dependencies to MMU && 64BIT for RISCV_ISA_SVRSW60T59B;
+- Use 'Svrsw60t59b' instead of 'SVRSW60T59B' in Kconfig help paragraph;
+- Add Alex's Reviewed-by tag in patch 1.
+
+V7: https://lore.kernel.org/all/20250409095320.224100-1-zhangchunyan@iscas.ac.cn/
+- Add Svrsw60t59b [1] extension support;
+- Have soft-dirty and uffd-wp depending on the Svrsw60t59b extension to
+  avoid crashes for the hardware which don't have this extension.
+
+V6: https://lore.kernel.org/all/20250408084301.68186-1-zhangchunyan@iscas.ac.cn/
+- Changes to use bits 59-60 which are supported by extension Svrsw60t59b
+  for soft dirty and userfaultfd write protect tracking.
+
+V5: https://lore.kernel.org/all/20241113095833.1805746-1-zhangchunyan@iscas.ac.cn/
+- Fixed typos and corrected some words in Kconfig and commit message;
+- Removed pte_wrprotect() from pte_swp_mkuffd_wp(), this is a copy-paste
+  error;
+- Added Alex's Reviewed-by tag in patch 2.
+
+V4: https://lore.kernel.org/all/20240830011101.3189522-1-zhangchunyan@iscas.ac.cn/
+- Added bit(4) descriptions into "Format of swap PTE".
+
+V3: https://lore.kernel.org/all/20240805095243.44809-1-zhangchunyan@iscas.ac.cn/
+- Fixed the issue reported by kernel test irobot <lkp@intel.com>.
+
+V2: https://lore.kernel.org/all/20240731040444.3384790-1-zhangchunyan@iscas.ac.cn/
+- Add uffd-wp supported;
+- Make soft-dirty uffd-wp and devmap mutually exclusive which all use
+  the same PTE bit;
+- Add test results of CRIU in the cover-letter.
+
+Chunyan Zhang (6):
+  mm: softdirty: Add pgtable_supports_soft_dirty()
+  mm: userfaultfd: Add pgtable_supports_uffd_wp()
+  riscv: Add RISC-V Svrsw60t59b extension support
+  riscv: mm: Add soft-dirty page tracking support
+  riscv: mm: Add userfaultfd write-protect support
+  dt-bindings: riscv: Add Svrsw60t59b extension description
+
+ .../devicetree/bindings/riscv/extensions.yaml |   6 +
+ arch/riscv/Kconfig                            |  16 ++
+ arch/riscv/include/asm/hwcap.h                |   1 +
+ arch/riscv/include/asm/pgtable-bits.h         |  37 +++++
+ arch/riscv/include/asm/pgtable.h              | 143 +++++++++++++++++-
+ arch/riscv/kernel/cpufeature.c                |   1 +
+ fs/proc/task_mmu.c                            |  15 +-
+ fs/userfaultfd.c                              |  22 +--
+ include/asm-generic/pgtable_uffd.h            |  17 +++
+ include/linux/mm.h                            |   3 +
+ include/linux/mm_inline.h                     |   8 +-
+ include/linux/pgtable.h                       |  12 ++
+ include/linux/userfaultfd_k.h                 | 114 ++++++++------
+ mm/debug_vm_pgtable.c                         |  10 +-
+ mm/huge_memory.c                              |  13 +-
+ mm/internal.h                                 |   2 +-
+ mm/memory.c                                   |   6 +-
+ mm/mmap.c                                     |   6 +-
+ mm/mremap.c                                   |  13 +-
+ mm/userfaultfd.c                              |  10 +-
+ mm/vma.c                                      |   6 +-
+ mm/vma_exec.c                                 |   5 +-
+ 22 files changed, 361 insertions(+), 105 deletions(-)
 
 -- 
-Sincerely yours,
-Mike.
+2.34.1
+
 
