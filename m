@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EA73CAC597
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 10:34:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED9F8CAC59A
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 10:36:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 71A7D8E00EC; Thu, 18 Sep 2025 06:34:02 -0400 (EDT)
+	id 54B1D8E00ED; Thu, 18 Sep 2025 06:36:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F27F8E0093; Thu, 18 Sep 2025 06:34:02 -0400 (EDT)
+	id 523618E0093; Thu, 18 Sep 2025 06:36:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 62FA18E00EC; Thu, 18 Sep 2025 06:34:02 -0400 (EDT)
+	id 4607E8E00ED; Thu, 18 Sep 2025 06:36:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 53A348E0093
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 06:34:02 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1A43F5B8F5
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 10:34:02 +0000 (UTC)
-X-FDA: 83902010724.06.09B4437
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id AA14520009
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 10:34:00 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BNruJSl8;
-	spf=pass (imf03.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 37F178E0093
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 06:36:10 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id F0DDAA909F
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 10:36:09 +0000 (UTC)
+X-FDA: 83902016058.26.176E8F9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 4C98E4000E
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 10:36:08 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="fz/6zZL0";
+	spf=pass (imf04.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758191640;
+	s=arc-20220608; t=1758191768;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SP9Tkq781weXzJ71+Pgl2qUYzdvsA9gnTsj+eVn6UVU=;
-	b=1oRz9F3kngqcmeywWfJ/LQAc16Xnd9zUd+PwUWGKsa3brW1ErhsRcDUATxNqVQyGj9KreV
-	ZZKLyMYJeMeglmLx27JPTVLCeFT3M3MWrehlfmg+mjGv4rkHl7GY2Fco+gj91ttGURq42K
-	PSaTAFQ5pZAHMsUkkpqr6yLvzTwsEFU=
+	bh=NbpgG0xzDyYfgotSXiIlnajj+xcL9QM94oPCfZKoeW4=;
+	b=dKfrKZpIPHhXITMjo7U4PKyO4M4HVMqgbaTuzrps7FDX6OI2GK6cmygpOkng49wUqfzoxr
+	dCqjW5+ge8ojkWzbTp+WGfjYyAS8k+/p1mCuQf4TJaJkzF+Rin51DM10JtOMmDehtmaD/l
+	dIINVhfAD0RvROE+AaCDdg1C8Fzbyvg=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BNruJSl8;
-	spf=pass (imf03.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="fz/6zZL0";
+	spf=pass (imf04.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758191640; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758191768; a=rsa-sha256;
 	cv=none;
-	b=JwWTKUUBV+tNYj5ZEKv6AqpIU2OqdWgPhwmeos2RTniHSv5CcfvBZjPA6r6oXlFQB5Klfs
-	H7oT3d7HpE/glqRZ6sKMaXCMxuJTzU0bPNOBFqXe0ZOZChrFQ5F/JP9OLYBh5iyeD7FmrH
-	dJqqi6umoK4wJJzZ7gvTbIwB1XiGHFA=
+	b=o0hI+QYKty3GNUtigtXe8+QMysG6djxQ3P20WJVoy3he2L/1ponIFE6sESVcB+Xm5oUU5U
+	uvO1GT/UIYjRs+ko7KkY+uevSrn6pvYCWQsrdgTsIbkp2xq5wMBfrOs8VnNYS8bokv+f3/
+	zcguyiJCuYtayEUm6cPDf8Ia3i1qKgY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E790B60209;
-	Thu, 18 Sep 2025 10:33:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3183C4CEEB;
-	Thu, 18 Sep 2025 10:33:57 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2C25F40A15;
+	Thu, 18 Sep 2025 10:36:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64085C4CEE7;
+	Thu, 18 Sep 2025 10:36:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758191639;
-	bh=OD7Mw5ZrocAdW5s9yeVVSt6xbyWWtkvp2zc8JMWiBZU=;
+	s=k20201202; t=1758191767;
+	bh=mZX5B1t7YSBW9QkRnh+ZDz1Rd/PMlNLLBRIAPafjyqs=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=BNruJSl8/KBB4up6PyP7UWp7d2fZ5VU2Y7JJ1RtQGHBcbm77xK8Nfa5Lpq0oVgeZY
-	 wpAOm0qMeB4ZWzHGR2SFWAEPXE1VE2c3StJdhOyfwfKSs/dSinzWr9/4pyQYgp+8Jp
-	 inT9VKwXqiT20OdmMqpanrVonSLTSVvGE9c/QgevrkvFYrruo6hwR3F8j+9vkz3dvm
-	 y7M/lBBSlTGAPU7sg78PK8tjzGhik4XUg5NzFqMXb9sRa4eAQMncVyvgbPhUH6sVKn
-	 QQfiOzYZBOOG8LEYn0iBVCw7kH3ZFCC12NrIRjeg8RwNp56GSHhX26Xyrv235hMrBZ
-	 XDSxHqb8lOjnA==
+	b=fz/6zZL0PAGE1z0p2ms1Dh2wy28tKMl7oNKY8JwicGiteN5NCKn0g689nlEuCrbzb
+	 NaKK560c/yH7EgZ7p5MM1Tr4LngKm2VDM0u8P36cmot9SSElPNKEf1K3sC5f0C6XUP
+	 4SZ+RDR6NpLCbIAMdogqTjWvzm/XM9yY0k8hgLrGrx4gLYXe4X+tUq5TH324GFCPWT
+	 /KfIS8vbv/qopXT9nsg+YSvPwJPkgJga3b6YKXSjcrvb6tdjvW5mEn7yG7CWPCWqIC
+	 A/1eyl51xk4hfh9iJ0mRVLO3Zdbd9mSPn4gbJnga534wRGJpBuV3ic6sPSeACCNtNM
+	 SIL79ex3q3z4w==
 From: Pratyush Yadav <pratyush@kernel.org>
 To: Mike Rapoport <rppt@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,  Alexander Graf
@@ -71,21 +71,24 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,  Alexander Graf
  <jgg@nvidia.com>,  Pasha Tatashin <pasha.tatashin@soleen.com>,  Pratyush
  Yadav <pratyush@kernel.org>,  kexec@lists.infradead.org,
   linux-mm@kvack.org,  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 3/4] kho: add support for preserving vmalloc allocations
-In-Reply-To: <20250917174033.3810435-4-rppt@kernel.org>
+Subject: Re: [PATCH v4 4/4] lib/test_kho: use kho_preserve_vmalloc instead
+ of storing addresses in fdt
+In-Reply-To: <20250917174033.3810435-5-rppt@kernel.org>
 References: <20250917174033.3810435-1-rppt@kernel.org>
-	<20250917174033.3810435-4-rppt@kernel.org>
-Date: Thu, 18 Sep 2025 12:33:56 +0200
-Message-ID: <mafs01po4gicr.fsf@kernel.org>
+	<20250917174033.3810435-5-rppt@kernel.org>
+Date: Thu, 18 Sep 2025 12:36:04 +0200
+Message-ID: <mafs0wm5wf3or.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Stat-Signature: r4fdpckmjxcajew1zmsojrgtgoam6z1e
+X-Rspamd-Queue-Id: 4C98E4000E
+X-Stat-Signature: fu8pzdk5wi3fe6kzcubj9eszk35eud5x
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AA14520009
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1758191640-589891
-X-HE-Meta: U2FsdGVkX1+vbDPcu4Xmmh1TI9LkH43VM46EPa58JW5Dj/dpkHqPXF79gJFYpD0YkaDSW4piCiYkEqXlvWx7QJX8qQCXrBQ7kvf1BLEpkmTGjXflPtfW7hIHTdpnMzi17jqOdsBH5SgC6Kzb/btUctHw27U4k+ldRjlIJ+YIJyf4vUPuJZhgT7d//zUPZn7jUibBSPmlWZGNb8Ia+PhR2WZjYkE9PQBKdOjx2HgjEd0nKY/SjA8PaABbZmkUJdjL661ZC1RRU9Wp9UEWmKqpRhvHWS3OPonUoWO+H40lRBpQutOPif60XuKDf0g8B7Yvtbdhs7M63roueXgekJmY3V3w8PF3VwGxqDf7+Zn7EA269ob/CtS7BuqsmsTQaTitbvsSb5skkrPbMTa9Hzkz77n1/fWBCMfoj7fh5U6LlgpOqomhmqb1T7RRhOcI0Z+9Ezs+1k5u4cWjhYvur1CiHYljSPGVVbUDdOaAR5E07Q+Ce17qJ/rJLVuE51q32HuOPYiNokeYZ18VSTR0XIuBA6XUm6zd5l+eq00zHevNELHkWT0EAAkxs1AgJKqZ4Nlr7EU/slBnIPmNfmAVP1xPWabINzYVMBsgONc2qtoY3S8tMXGD3TNIqO4l9KXs32mGhDlHPl8iFxeQAotCh4P7ICeoJk4uIxxi3BBVSb7kSbSZTAeC3FvUmSaAwSN2ZTxXBM4+cigGjfeFunaRj0QisspH+wGTWf/kFOH8Xpjc/9VNwjkVNoVyYQ3vWtBnH1+Ti65chB8azaH7P2wVJaxA0DUhT3tWWQUmoxAZHnC0oAs21S5EyynTdtakrrEqmrxxe0c8ZU4Fb7WZCE5MsR10m6e6VnkMUWXEbKUvfm5H2YKECsDmtimC1ngKPnqMl+9cNCkNqh3Kapk=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1758191768-877602
+X-HE-Meta: U2FsdGVkX18/pGidTzjTnNcKgMRxn3TE607LlFUKXmAa9bSuvlNsuk/+WqhcBWHweDrh3E+Hls4zIGNQ4DLmpOHMMvOh3Nmg6MYlK0mwC+Bwu3WVly0IuuDeJJQXHtsCW5cJD2EjA5Pp8QBCKHeWXmSINT5DB2jTz2FBbNrQU2CSE8NGvNSUiNAlWAENvuFSXKkszXI6pTy0iMNeozBZhCctz5r2rCW0BaTMMEDZ0K5JTMFvebzRSweOXB1OzCfM7jaweHAG1HGWASFqYtatieiWSQdrA6Q3qouCq2A0AloeLCVHdRSJqdtonSREK/GRGe67MXn3xn2tO6XMtQhguZip2EaPDohQMMKvSc4qI+dbgE995agNzzpTSTR5msXieJKQXdHkl//rv09Ky7trr7dID3fjNKxbkYys8Opyd3HwgeHWC/X7Z+VuiJZU7V8UgbG5D+/udyFX7k7q4yomg2U4vcMLaNWQ/HRtKfELDBYBtat58353TXDOe7hF/ET23g0N/21z2Ode5/na8m6AdD0VAf8S/Nxx57rQgfumszeqHvWwLvJVhzXDwaEXu+Flfl8r5LkmR4DvHWltjNO6qJltBb9FkQr2GL/KuV43yzTqIfyPrxTxFtOUxznZ8KfQz5bQIZfN6R8GMH9N4KVmMUrbJ2ZyVUPO1Fk5q+tRIEOaEtgzyYJjp4XQatXhkZcnxSuCbIR0wkiH5iC8OZMR+bXkHEwCGHM5DTDBGOqlaaybyRbL7ZmsEbgzO0gN7GjdLM6CUcocdo44R/8XoYplI/9i0p36tZtAMBnUag/7PwmrQM0goJ5kHdNkoeDW3kSL4RwzEMTSDLip9m7DqsDfTsMUPtoejMCWVZG+xkE3bY1icZMG6UogDRItIU58pw/a1tbMw/BpZ9wEF0iPiDPfBLCoGZvsqaDDbEYjXxJy41gaSo2Rv5v4GXKIYKfuloJqXS1cyxD4fD1b5D1kVah
+ BNCbGber
+ RNUeOnEBM1ESCQvVh6kgoqvNRMePNecSXORSPdJYD65L1k5fkpmzxAnho4WHhzzuQYbphYufyP/DFCh1sfI7u1f1+J+oPBCYHxHJCV9cTkmc41EK86wHJyuewKZjQ/raRYqJoQ1ybuTOkQD090jNZZz60Fenh4UqWeVwqCJxedo11QKFQQQkxq3TSavzxXWYdlJAeBj+1qxV19Xu/HwOny39D8Tqh7zVRawQacuJMgw3cvvqDuBXEqPVbLQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,14 +101,13 @@ On Wed, Sep 17 2025, Mike Rapoport wrote:
 
 > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 >
-> A vmalloc allocation is preserved using binary structure similar to
-> global KHO memory tracker. It's a linked list of pages where each page
-> is an array of physical address of pages in vmalloc area.
+> KHO test stores physical addresses of the preserved folios directly in
+> fdt.
+> Use kho_preserve_vmalloc() instead of it and kho_restore_vmalloc() to
+> retrieve the addresses after kexec.
 >
-> kho_preserve_vmalloc() hands out the physical address of the head page
-> to the caller. This address is used as the argument to
-> kho_vmalloc_restore() to restore the mapping in the vmalloc address
-> space and populate it with the preserved pages.
+> This makes the test more scalable from one side and adds tests coverage
+> for kho_preserve_vmalloc() from the other.
 >
 > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
