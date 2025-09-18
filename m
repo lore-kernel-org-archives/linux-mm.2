@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07C68CAC597
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 08:11:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F02DCCAC597
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 08:11:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 457498E00CA; Thu, 18 Sep 2025 04:11:19 -0400 (EDT)
+	id 31E798E00CB; Thu, 18 Sep 2025 04:11:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 406CF8E0093; Thu, 18 Sep 2025 04:11:19 -0400 (EDT)
+	id 2CEF38E0093; Thu, 18 Sep 2025 04:11:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F63A8E00CA; Thu, 18 Sep 2025 04:11:19 -0400 (EDT)
+	id 1E56C8E00CB; Thu, 18 Sep 2025 04:11:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 194988E0093
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 04:11:19 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A65AB13BC6B
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 08:11:18 +0000 (UTC)
-X-FDA: 83901651036.29.A3AC775
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 9339C40005
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 08:11:16 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="E/+787Ig";
-	spf=pass (imf04.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0D39E8E0093
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 04:11:38 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BFCE7BAEF4
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 08:11:37 +0000 (UTC)
+X-FDA: 83901651834.24.D4A0040
+Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+	by imf20.hostedemail.com (Postfix) with ESMTP id F38B41C0013
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 08:11:35 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=M5YnV4AA;
+	spf=pass (imf20.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758183077;
+	s=arc-20220608; t=1758183096;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Gpdf5zd5/ar6nMWB3h3rjQXpfUfe+I/6t4BRZfYK1Fg=;
-	b=qfzrT+oz3gAr2NAsjI58RmxbvFmtFJmF9LIZdWI+WOw/MY6dIuvUJ9D1CuWj7eJz1tJ54y
-	hc4edThEq05xB++jXqt3jCaI13sQ9ScqZSGuUis17s2+Aw2rj+6Y/joBJ16FTTp4oquVpv
-	xeG00iBfDZCGeGdin9c70CVvZ5q6/xc=
+	bh=0hchChWtwLQOxGyljAivB4hYgL0w8MxSX4qQYtSpmXc=;
+	b=hvWrWuatYEVJ8B8b6n9ZMsylN7AChJRAcQTHHqTi2vDnnxVVnIAXVLVq89SGdsZpegLOsN
+	fQq8a3T0HF8PsS3z6CdQlTb5Y3i4Q6HIytUJihE3LXwXaqjBQEU+LZ44mhl3Vyw2CT2TKE
+	0hsnT0y4CRHZzQ7rVgFaoc5UMyiBW9E=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="E/+787Ig";
-	spf=pass (imf04.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=M5YnV4AA;
+	spf=pass (imf20.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758183077; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758183096; a=rsa-sha256;
 	cv=none;
-	b=B5ahjvXuleVelnVOJP2vpZr9rROwEG0P5IFftrWqcL/KlyKEaXgWrMPHSzumuBRjGcb5S7
-	HyE2TZuQ86PJU1ekm0/PQM4KRSJoZZhlymzyhAqzwG6qYsyDYMaNgP5LbzR+mp4NNGVyaS
-	JWblLV2UVYd5mORqskolx/07eVNv7QQ=
-Message-ID: <1a9f44a1-855c-450e-9dc4-415a29b90011@linux.dev>
+	b=gR3RO3NxbeLdqoukeBVSQE1e8lNyY6UJ+Z4m7Z/5zDz9AGoSMz1qauexcYY9DZv70ZI/gN
+	pG7q6qG00DPVQQhndkJtX5I78a64aZH1iPcsaao1+IHAySLF/QYKYTcGJbIiV+TI6oVY4V
+	l6D3n+elOLiCg+uEeGWzFp22zrI2p8o=
+Message-ID: <db182c88-04d6-408a-b36e-a708dc7eb3de@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1758183074;
+	t=1758183093;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Gpdf5zd5/ar6nMWB3h3rjQXpfUfe+I/6t4BRZfYK1Fg=;
-	b=E/+787Igq6FLtq7IBnUzJz8t8JWQ0z9A36rBHkQT1b8XDJtgz16gaPD2eAvx+KcEItNW1u
-	RLTJMqAvXNnHNZv2kMTDYiK+S7IAAbPyrn3iBnCsmmesZCrmLexQKBArkpNMNwaMhU9lFk
-	GsK6teS25ZC/b42u8jTb1xN79kGJ+6U=
-Date: Thu, 18 Sep 2025 16:11:05 +0800
+	bh=0hchChWtwLQOxGyljAivB4hYgL0w8MxSX4qQYtSpmXc=;
+	b=M5YnV4AAlwAIyMsfjkSwpmcD1EeIFgGdofp5XRQmaOtLY8h87Q8IE+iWJg5O4r7HWnqzNP
+	R4Di5InjHFUxI1aeV20Iox2vG1nLWpu66cztX6dN0du3p7c/mD/infBxiQAnTnAlkPMZrd
+	DNc9R+TQ1TST6OUdp3N7fP6+9nVWynI=
+Date: Thu, 18 Sep 2025 16:11:21 +0800
 MIME-Version: 1.0
-Subject: Re: [PATCH] mm/vmstat: add header line to /proc/buddyinfo output
-To: Michal Hocko <mhocko@suse.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>, Ye Liu <liuye@kylinos.cn>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20250918071741.526280-1-ye.liu@linux.dev>
- <aMu01xIkj-3hgW88@tiehlicka>
+Subject: Re: [PATCH mm-new v2 2/2] mm/khugepaged: abort collapse scan on guard
+ PTEs
 Content-Language: en-US
+To: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org, david@redhat.com,
+ lorenzo.stoakes@oracle.com
+Cc: ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+ npache@redhat.com, ryan.roberts@arm.com, baohua@kernel.org,
+ ioworker0@gmail.com, kirill@shutemov.name, hughd@google.com,
+ mpenttil@redhat.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20250918050431.36855-1-lance.yang@linux.dev>
+ <20250918050431.36855-3-lance.yang@linux.dev>
+ <f6073afe-a604-485a-8cea-7aa08e46a0cf@arm.com>
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Ye Liu <ye.liu@linux.dev>
-In-Reply-To: <aMu01xIkj-3hgW88@tiehlicka>
-Content-Type: text/plain; charset=UTF-8
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <f6073afe-a604-485a-8cea-7aa08e46a0cf@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: 3z8mcu8wqz8ep6jixzxjjpi6o75kzny9
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 9339C40005
-X-Stat-Signature: 4pt4rxd5kew1m783tbyb3sswwhk5a67c
-X-HE-Tag: 1758183076-884013
-X-HE-Meta: U2FsdGVkX1/jI1fEGRFVXKmFaYIJ6p58jbrNtNJ3JcJHIoDMg6OSsIzyim6lMmBJDzZsEJlXvsHzWp57NDHxDCInKBfIrcIDpQvzm+beGy5ZfmbgYyoPYXBNXFukqwvpmh0JE3G4Exqa0NsSWzNRuX7efDbJmW9UkIUJt/EPjo6smxT8nZJDT+e7eGiRw0wyQxg+8stxm0ecjaF0CZSY1qeBMr1o8jzmR4ce3DNLNM5ZMdUwJs+bo3Jmrx/LwIgSfC+Rx9z9/6aPkkWvRrvFYFX424DExXafXkddQs3CNXZ8NRxxYLRMgw357UEt3nz2WSppTsFMnpwiuUCZDvd0NyU60n8UAwfHr6VIMlkobXDqNcoOrpicRBfJ9qnBIky3fnG0gXhoaDHQfU/pJW6g3QYUPFqZkKnM6ssu9ew3TPcw3H4i9XmcZwb/udS6Bk0ZuBg3OnjX9vhPI7nOppMM8jkm5q7sZs1RuWqtJWueDlTR7ggiYK3+uZgNG4gRRXjXDR9Vok50LGn72MMBT4MpH+yfV4vi+CUY81/1IAnr+6HpgQdn3FRdOQ+tGcDbqghB6VfrLumsYDEoPR+Zquq89+OwPhbDHZ1/9ztp/8FLgwFoONJ4tMV19tofc93kb9Qlppp8sgV8yuinnwKPPimwCoa5UAs1x0BWTtxLMW0luyEB2lddG/f1LHEVuUcdIU4B9YcnxZJrVtTdzIGxWy9MiXN9iH27Z/BBM2RIkKYZNX9qGi3UffOkk/8gPIAyosvXllaBBMTU/Tqy0P3R1Q78IrNgNwB1Q8wjCMWkOtLyYKv2IpBb8tYctfgUfWVZnHSPaax8jMxZyDTR07S5nB5OsZEneEODo/42h5Ee48bfY+F49epM9MIBzijSxXLZG8e33v1Y48Tr0XOvSJpuHt4hB36vEEPpapwE3WpkDIxBbnjELAByPCDnkIuoAwxUiNRnDLxjRcmGIPTgtvQaAXr
- iMoL2/gR
- 0WpNboFiocCPQBbVPO9Fwaa7+RcjFcm9Y1a3zXiOvXIWwqUzCYFbmiO3WKq7CVzFmxS72DaVlnl9u47++/VjaIqbSMdlX0BDd3ePJZIEHIRefy8AgPtGkieZ9CQZSAjTKXmWga5FBxijXKq409XQiR6XSeIPT14VCoiZW5omjBe5NnOesG4rUrAzxNNtGyhx9SKZ4qle45b9dMW+uQfTfoFNoasZQ1lRBE7fVKJARPKJWkNc=
+X-Rspamd-Queue-Id: F38B41C0013
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1758183095-311546
+X-HE-Meta: U2FsdGVkX18s8HXFfpBooH/f464AWQIKdoS4JLO2zjNFawQ/7W/8jn2sykP8ymv3T1bC0R6t3YYjNjINFnhTq9FP//95t1IgS0G8mXYOB8wrXitOsNw5anBxevdr7Lj7Y+jA8VLGJTGRMA6uobB8d+9VBxjPaIlyf16/fJj62rASbAy8gj9K0fM8IFIFhfG6O7u0EY+iXLnTfP4FwXEU+VINmICuXwZjD23TefQNg2H0iJr5iNfe6GU/Xcse7eeKkwtTJ8pgcaVZR7nGDOEwmrwQfFG8T/Z6O0NYHGtMj/Vgypg7Qezq+mYf7MZzLmp67wS6S2+/HRFE9H+Q3NCVPfMhHDX3DDig+adncfteEtfSf6TYcahcQ+eYw/mAwLP/yKmLJG8OFPpLtZfjNmLZ5ZPCuvj/ZO6uyQ726ff9Yoxqk6Cc3OuhKCUwxWPiUqVDteHJP7Sl0l0Tkk8TzuJzT2bOsmqyio/KS3uvjs0AwWgy31FELcOUdKtTgBACulkwrIOv1+QPWmB7K1z4uhZjJRCKTHIDKdNy2vZ4s+Ls5eBvvZ0W5WMnmx7A+9hxQzCc31L0VzCfYpjMHkW1Xwekeb/3ZHc+DAxWqvBx/cpwq3ia0C8FMCFlRtAskI5Ve1nTDD9LS2I5sTKq8CaYl11cnkRlM9vTvvdpxRN/Wc92TRR2WCDk2TXuWoRtmB/VYLqX/jVBjpBSg72RwNYbHAXVQ7yvF6Ll9t8TEy9DDKr7r57LsOOZMAdKqJ/b1VOOsJhTkn/y4Ntqu3C4QgqX1zYEMAR6RA9kVNsg/FrRNB1laM5AOjCxFgL9LvKh9DwD6pzwQvdJyg658Y6bFYCLO0wlH6QZpQpCgpsgAHpU/mMVtfZIjSw1kjD6bAsKMygapmTCJsGeKhoNNuddJrKgMmfU1TZV6hO5yg+kmIVrR6MZUDy4wKuUvXMQEb/BLQw6Lsf9s+jkbAYdAw5zMlZ4tK3
+ QJSotdCk
+ /OXWsrgp9yWWtyeTp87t41k1dH14BoFq6hhVsKiOPw28LZztc8urAJeAT4RsfsJTJw9L5OhbT5RVogp4IWTWxYoA07suVjnpSuzUxAUycvasNaj792TsrNfUVSkOwokhmAYvBo7/4DVHq8t/YDu66Jxw1D7OlHRPgZkeRTE05yOq17ePDjDT+Mdl2BoRZh33WhbbtHflHEvWyJsLW92QHtz8G9bCiodxp8vY+siD8AQ+g+NX5zrKvLdrgjf2SrKUcfXwQJkNMIscmlLEJ4i87oA2xYBidAsEm5z/CdmsbEnrLub4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,79 +98,83 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-在 2025/9/18 15:29, Michal Hocko 写道:
-> On Thu 18-09-25 15:17:40, Ye Liu wrote:
->> From: Ye Liu <liuye@kylinos.cn>
->>
->> Add a header line to /proc/buddyinfo that shows the order numbers
->> for better readability and clarity.
->>
->> Before:
->> Node 0, zone      DMA      0      0      0      0      0      0      0 ...
->> Node 0, zone    DMA32      5      8      6      6      7      5      8 ...
->> Node 0, zone   Normal   1113    351    138     65     38     31     25 ...
->>
->> After:
->> Free pages per order       0      1      2      3      4      5      6 ...
->> Node 0, zone      DMA      0      0      0      0      0      0      0 ...
->> Node 0, zone    DMA32      5      8      6      6      7      5      8 ...
->> Node 0, zone   Normal   1113    351    138     65     38     31     25 ...
+On 2025/9/18 15:37, Dev Jain wrote:
 > 
-> Why is this needed? And have you considered tha this might break
-> existing parsers of the file?
-> 
-
-Thanks for the review.
-
-The reason for this change is simply to make /proc/buddyinfo self-describing.
-Right now you have to know which column is which order; with a header it’s
-obvious. This is similar to what /proc/pagetypeinfo already does, e.g.:
-
-  Page block order: 9
-  Pages per block: 512
-
-  Free pages count per migrate type at order   0 1 2 3 ...
-  Node 0, zone DMA, type Unmovable             0 0 0 ...
-
-Regarding existing parsers: the patch does not change any of the existing
-“Node … zone …” lines, it only adds a single header line before them. Most
-parsers match “Node” lines and ignore everything else, so the risk should be
-low. If you know of any existing parser that this would break, please let
-me know so I can address it.                                                 
-
-
+> On 18/09/25 10:34 am, Lance Yang wrote:
+>> From: Lance Yang <lance.yang@linux.dev>
 >>
->> Signed-off-by: Ye Liu <liuye@kylinos.cn>
+>> Guard PTE markers are installed via MADV_GUARD_INSTALL to create
+>> lightweight guard regions.
+>>
+>> Currently, any collapse path (khugepaged or MADV_COLLAPSE) will fail when
+>> encountering such a range.
+>>
+>> MADV_COLLAPSE fails deep inside the collapse logic when trying to swap-in
+>> the special marker in __collapse_huge_page_swapin().
+>>
+>> hpage_collapse_scan_pmd()
+>>   `- collapse_huge_page()
+>>       `- __collapse_huge_page_swapin() -> fails!
+>>
+>> khugepaged's behavior is slightly different due to its max_ptes_swap 
+>> limit
+>> (default 64). It won't fail as deep, but it will still needlessly scan up
+>> to 64 swap entries before bailing out.
+>>
+>> IMHO, we can and should detect this much earlier.
+>>
+>> This patch adds a check directly inside the PTE scan loop. If a guard
+>> marker is found, the scan is aborted immediately with 
+>> SCAN_PTE_NON_PRESENT,
+>> avoiding wasted work.
+>>
+>> Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
 >> ---
->>  mm/vmstat.c | 7 +++++++
->>  1 file changed, 7 insertions(+)
+>>   mm/khugepaged.c | 10 ++++++++++
+>>   1 file changed, 10 insertions(+)
 >>
->> diff --git a/mm/vmstat.c b/mm/vmstat.c
->> index bb09c032eecf..e9606457ab91 100644
->> --- a/mm/vmstat.c
->> +++ b/mm/vmstat.c
->> @@ -1574,7 +1574,14 @@ static void frag_show_print(struct seq_file *m, pg_data_t *pgdat,
->>   */
->>  static int frag_show(struct seq_file *m, void *arg)
->>  {
->> +	int order;
->>  	pg_data_t *pgdat = (pg_data_t *)arg;
->> +	/* Print header */
->> +	seq_printf(m, "%-21s ", "Free pages per order");
->> +	for (order = 0; order < NR_PAGE_ORDERS; ++order)
->> +		seq_printf(m, "%6d ", order);
->> +	seq_putc(m, '\n');
->> +
->>  	walk_zones_in_node(m, pgdat, true, false, frag_show_print);
->>  	return 0;
->>  }
->> -- 
->> 2.43.0
+>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>> index 9ed1af2b5c38..70ebfc7c1f3e 100644
+>> --- a/mm/khugepaged.c
+>> +++ b/mm/khugepaged.c
+>> @@ -1306,6 +1306,16 @@ static int hpage_collapse_scan_pmd(struct 
+>> mm_struct *mm,
+>>                       result = SCAN_PTE_UFFD_WP;
+>>                       goto out_unmap;
+>>                   }
+>> +                /*
+>> +                 * Guard PTE markers are installed by
+>> +                 * MADV_GUARD_INSTALL. Any collapse path must
+>> +                 * not touch them, so abort the scan immediately
+>> +                 * if one is found.
+>> +                 */
+>> +                if (is_guard_pte_marker(pteval)) {
+>> +                    result = SCAN_PTE_NON_PRESENT;
+>> +                    goto out_unmap;
+>> +                }
+>>                   continue;
+>>               } else {
+>>                   result = SCAN_EXCEED_SWAP_PTE;
+>>
 >>
 > 
+> I would like to hear everyone else's thoughts on
+> https://lore.kernel.org/linux-mm/750a06dc-db3d-43c6- 
+> b234-95efb393a9df@arm.com/
+> wherein I suggest that we should not continue to try collapsing other 
+> regions
+> but immediately exit. The SCAN_PTE_NON_PRESENT case does not exit.
 
--- 
-Thanks,
-Ye Liu
+Yes! Let's hear what other folks think on that[1].
+
+[1] 
+https://lore.kernel.org/linux-mm/c9d4d761-202f-48ce-8e3d-fb9075671ff3@linux.dev
+
+Cheers,
+Lance
+
+
+
 
 
