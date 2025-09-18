@@ -4,91 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10CB3CAC597
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 10:12:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A09D0CAC59A
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 10:13:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 21AED8E00E0; Thu, 18 Sep 2025 06:12:53 -0400 (EDT)
+	id 056EF8E00E7; Thu, 18 Sep 2025 06:13:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 18CE58E0093; Thu, 18 Sep 2025 06:12:53 -0400 (EDT)
+	id F22DA8E0093; Thu, 18 Sep 2025 06:13:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 07BD08E00E0; Thu, 18 Sep 2025 06:12:53 -0400 (EDT)
+	id E38E08E00E7; Thu, 18 Sep 2025 06:13:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E60A58E0093
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 06:12:52 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 84B5B14085C
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 10:12:52 +0000 (UTC)
-X-FDA: 83901957384.23.06E8E55
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id D6675180006
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 10:12:50 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Q+jbxauw;
-	spf=pass (imf16.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id CEC598E0093
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 06:13:18 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 93B9E1DFD5B
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 10:13:18 +0000 (UTC)
+X-FDA: 83901958476.13.B55AC95
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 1BC1E1C0007
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 10:13:16 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=none;
+	spf=pass (imf18.hostedemail.com: domain of cmarinas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cmarinas@kernel.org;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758190371;
+	s=arc-20220608; t=1758190397;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4lBr/QAzBiWGNGqKC3WJ0+mxOh+6eQYMDMTmyp1Ahq8=;
-	b=TYd+JvuWl8jShE2XChAo0DuPC4//0EPRu6maY3E6msvVqVPx7UXI0qKpVilsoG8Wp/A7Ti
-	jsUW8floC9jziG34m5emzEmoRGbuXYHJpS1v2M+NA14+7eUoCrUAKP0QR3NNb3M4krsEwB
-	9JQy3Sv+CmeZdCz8uIGZCUvjlgU1uuY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758190371; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references;
+	bh=Xxs58C2WtFJ0KGp6PCanbZVXzvtIrGauHJD1iwcYKoI=;
+	b=qvzrTduVTmDBuJEukpFeeF/xKnf2hl/gnnA6TYXKS8g+UK9/SH1tM5QfdhFplm8mD8Fnps
+	dBS3X7blLWQnrAnfg+rKaX7mv3cPENwKjGNX8jSMmDp5c252cAXIxIgZEav6PHzuu0sk1K
+	MSgVgKBFyDqewKBe4uowmi09PNMEyO8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758190397; a=rsa-sha256;
 	cv=none;
-	b=gWZH/QlUh3ogCqmSWVU5LVxpiqQ0nG01M4qsMMzzxVgqGRs+wJB7EJyJzpZlqtRIY5msz8
-	IDrXFJIYWxTAE9B30gfDcsnpUGwQXXRSDRED3jJ+GbDjLJkzNJKeLC66mFu/pvhMUvQAQc
-	fdnooOfFQhxFzZlS2r3OfDpFNaVZ5Js=
+	b=Efo8RTx3xTwKXUAHfAyLKu1rqrcsO/imHPrw74xccehGND8oMerCQ60eDzaxCTpeKY9IcD
+	66Y3jeK5v+JThfkXGJ5RzxEYaRVgEzg5Y5w491hu43QvC+5iiB43AwJY2NfgpKckmyCwmj
+	ZOxzAb5oCOClkikIqUDdtH1EPBn4Fcg=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Q+jbxauw;
-	spf=pass (imf16.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf18.hostedemail.com;
+	dkim=none;
+	spf=pass (imf18.hostedemail.com: domain of cmarinas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cmarinas@kernel.org;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7CF4E44560;
-	Thu, 18 Sep 2025 10:12:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94BCBC4CEE7;
-	Thu, 18 Sep 2025 10:12:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758190369;
-	bh=o1Cwy5VJ6G9kyEavxaxVgKPCYtlXDCW5Fv2OCftslK0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Q+jbxauwtdR3DlNbHbBHKcz5hgE1MjHos4i+oNE1mJHqF5Qjt7KV/JZS934WuliS7
-	 xuey86HpA+fq59AA7iPhj8V3tTwUVGBSBsGfH/6D11xsRXVnkN563o1RbkRkmj7Sb6
-	 d22+zYFiTxbHSr9uYnoClv4geEe7jsUQwdPAce8XCrUFTHdVbzCvmRnc0T8rMvU+FE
-	 9jqz6DonfGwvKKRwFGWPsEMHgySm1ktjfNWDzt5dn+XR2tUWXqTRhobZBotKDgvoyk
-	 taR4TbkICqh+e6ofP4HSEotbrqSEGGvBdDbmcvrd9COPTJzDZMoGcVXjGm+MYsvddl
-	 motQ1jDffkubA==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,  Alexander Graf
- <graf@amazon.com>,  Baoquan He <bhe@redhat.com>,  Changyuan Lyu
- <changyuanl@google.com>,  Chris Li <chrisl@kernel.org>,  Jason Gunthorpe
- <jgg@nvidia.com>,  Pasha Tatashin <pasha.tatashin@soleen.com>,  Pratyush
- Yadav <pratyush@kernel.org>,  kexec@lists.infradead.org,
-  linux-mm@kvack.org,  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 1/4] kho: check if kho is finalized in
- __kho_preserve_order()
-In-Reply-To: <20250917174033.3810435-2-rppt@kernel.org>
-References: <20250917174033.3810435-1-rppt@kernel.org>
-	<20250917174033.3810435-2-rppt@kernel.org>
-Date: Thu, 18 Sep 2025 12:12:46 +0200
-Message-ID: <mafs0a52sgjc1.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3E9726020B;
+	Thu, 18 Sep 2025 10:13:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86177C4CEE7;
+	Thu, 18 Sep 2025 10:13:12 +0000 (UTC)
+Date: Thu, 18 Sep 2025 11:13:10 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: "Huang, Ying" <ying.huang@linux.alibaba.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>, Will Deacon <will@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	"Christoph Lameter (Ampere)" <cl@gentwo.org>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	Yin Fengwei <fengwei_yin@linux.alibaba.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [RFC PATCH 2/2] arm64, tlbflush: don't TLBI broadcast if page
+ reused in write fault
+Message-ID: <aMvbNvCsSxQjA2rq@arm.com>
+References: <20250915032946.33203-1-ying.huang@linux.alibaba.com>
+ <20250915032946.33203-3-ying.huang@linux.alibaba.com>
+ <46dcddec-88a9-4b22-920c-8a3edeb2f027@arm.com>
+ <87o6r833li.fsf@DESKTOP-5N7EMDA>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Stat-Signature: 9utgk8skg1s7mf1riwprkyozppgmiabs
-X-Rspamd-Queue-Id: D6675180006
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87o6r833li.fsf@DESKTOP-5N7EMDA>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 1BC1E1C0007
+X-Stat-Signature: ixqb8mfr39sah5kdpw3fnuaomxu7z1mj
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1758190370-576601
-X-HE-Meta: U2FsdGVkX1/CjZ7LU7tNXuKfMPDu64jXT8RLKwdfvmfNcvATNSxTRVJm28qta3Cyj9wuSSJpB7ef5oKDM5Atb3DpC6C5i7FT0Q6aA23JITTlYhRr8dTCsy+Gr048a/E5lTbIQJ4u19iL3L10HWPgpZ4i/0l3DPE7DtjbTi1XbudabpibENWHM/UVTprXfbwEVlU2ODB1ScDYucyUlrHd8DoPnhzeU4zVe6otbmwRevcTtO1+qL9Yec7p+D2UgTxUiqtbN1IOomDfE3x1gIdjg6K/6pipjEv5MSEObhxvPjfRr1E048Szg9Ew3RpsfI2kZBvTEOqu1zLQ1hNooactema0RMY6jq6TsLHi9bdVMEr2Toz7JUSeHgLSOxm0mU8eYxwAt++bDddnduFetUFAOwXXQGCtCiDYpl4rfs16x+3gvQ52zt6y+BLJ5UIO6Q2OnYX0X7r+3f5WTzUtB/XVqjv/f40L//CNmNdszvr/jOWg3UH29kE21xNiaV8r067M4Hyyha5yGaMNNn/RkU3QPmuWJjvevWC77Kg0jparEAPLwO+nFkV8an+z7JQsUQlcHtsHj5yy3vFWakdGI+WMkHeMeSmZQdrlQCodB2pPlpktSnxS6CHKrEY9LBLOhYwte4ai6DibrDyWKCye06OWFMBpjqB9/2A054XLwuLHHMHFj4Pb+FDLRVVrN8y9zXpmbMz75OIp2VZMrNLEplF/F5qy/Zu+saPw83EqhBE9voBZC/Vklm7J3Omvkk/48Zx8mui8cXeLLkSJQ2shoCjm6/3Q4k+J5b9S4MHPlfvOOS+kRcI1FYYSEvFTDfCZIInCzG5CSSxA57/K8DKQD3k5qg/OpGUMTlxvy/mGPvmrXqUPvRAxs4IPEV3I2pYV3S6it6/yPL2L9ssQxm31H7J/WdYdaEKpG9K842OEJ45Jp1PpPkKFtSDr7LHepqRPvbuBqV+za4l1W+eD7Ov31op
- ZkbHfai3
- vFSKYpaXMaXOzUfUHcdBR3v6CAatB3mJBt4cY2o5jZnPxhGv7cpPApobmMteRJUXiIbCwgkH0GdEYRBgDPdj2uGzw4xAZiZMZM+s3Sjg7I2m2lwgm0ErvJl6zM3bBFCBdxIKewScqDDGQxvv5++IH3cFfPVNx4g8SvXVlhNunHlLxKkXn/EeejeH4nmzVRkB4URFQZQ82u+qnM7IffP1uCcebjz8Z5PFlDFATD/cVeGdpSCBKU/MdnajRR3oMU5F8h2VIBIMGZnEFroQ=
+X-HE-Tag: 1758190396-118252
+X-HE-Meta: U2FsdGVkX1/fwEJUju7Xk2c2rmo/hk25Hd5uqHedLgFkgAEnSWiy9Vqo7GkfY7RdjiAy95o4OshHAAwf53A/kF+720IN0lnnmZTZZtd1HGGw+wPjbi3LdHmQlj5K7rO05amiIKcgVZB6awFyBYth/KLVKBKWPN6VuqF9BT1rwDwRLmx5SwRL8V5qQGyjbM2RNaLf9Nu4V6iQYCI2G9omn/dSnvSAUOLt0w8L+mUEAydv1+gSjcdrdmnagirQbdJdaMhHrtBYnEbvIBsExYRfg2uRk51Sg5WV5zqpwSRdz/YWr2ddkzbNjtk2gD7kR9+6aSi5PXecVevF2KpIYSVsk0jNRnxvuGIItI9erB19MiTFCiBKGl2goK9Z8iLt3nb2ax26Nm0Ug6dRWMJE/ISHaiilq6YCXYo0DgkuXTNz9ZtBtET6KQuwSFEMKZARjYNub8s7al2L0wQlSiHEf6QQB1YOmIwpD4kx4WrRWYfemvvWh/QW8Cl9c98bgxf2PJD64ttWwJCGC4ebg1tTnExKtTrZqpjACfDI8eYoofyEnFlNgwzO+LrOnHJHa0jCG0dRXMUQL2N0GidmGOg6HqH/zaFBgbcObJ6wrh1P+mbw9GF7UZ/NheIdnR1f30A8IbjlzEb79Rl0CyUsj78zHskypkthAxVORqmk9J/RUmilUzWVv+aiAYiYuD5Am1qs3oSMKMoL20dvOcyHOrZGqXGcXXOOx8fOo+OgfCtRv0/4AoToGMqzaj7k9qk0TDx0vC9HQmLFDIgtp1dpHjaNNbAPp97YTp/8jXnBrs0r0MIoEFSG4qSjrOuPaYW1Sq2Fu08ZQAbb1/wQ4uLLkN9G6hQFRQHRG/dEX8uoU7YlmjHu6AUSgQTbE30o155reDouP356AQVUzKQxnFACQMZjtmbbPtMbIxbpUECV4RD6KNTX4VvY1KCCrtL7liMNk3q1jZJSRY/yxH3y8TG24hAhnPN
+ fVDt8DcF
+ 4xMLX3RiV+rl6b/urHBtby03aKAs+Z8qZy1aguslijD0v3hyVKn76ySo1eIHws4N32M243e4zXwglHL757ZbOb8STbCfoouyx72ahqXbX+uyo8gXReSEt4bjkJUSjvhz3Cxp45+oRi1yRKb79j+ezV4ZTiPWGTqi2dxd+/vHbdw+dHW9rJaTJBkoEMpI6VKN8NMDbPL+kyPoUr9f3WAqT4KgIy1w1KO15KNJ2RLKUfyhARtvGqc4wrolRGyKB48yPl6EhWpW023BUSvTqs7o+W+715br/O32ErRH1OUKtnZWTVoyGHvf5aG+mP/kRvnQtraZQH6X+N/IQc3a4OkI3xEL9PD+Y5vbigPHN/NzDF8OJSZLlCxiMPvUVEhFsoISOuqrHPj0gMMEufRXJgEGoA46KSA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,20 +99,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 17 2025, Mike Rapoport wrote:
+On Thu, Sep 18, 2025 at 10:18:49AM +0800, Huang, Ying wrote:
+> Ryan Roberts <ryan.roberts@arm.com> writes:
+> > contpte_ptep_set_access_flags() currently does a (broadcast) __flush_tlb_range()
+> > on the (pte_write(orig_pte) == pte_write(entry)) path. I think that should be
+> > changed to a local range invalidation to be consistent with this change.
+> 
+> Yes.  This should be changed too.  However, it means we need a local
+> variant of __flush_tlb_range() and flush_tlb_mm().  Is it OK to
+> introduce them first and tidy up later?
 
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
->
-> Instead of checking if kho is finalized in each caller of
-> __kho_preserve_order(), do it in the core function itself.
->
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-
-[...]
+If it's just for contpte, we'd never take the flush_tlb_mm() path. So we
+could instead add a specific local_flush_tlb_contpte_range().
 
 -- 
-Regards,
-Pratyush Yadav
+Catalin
 
