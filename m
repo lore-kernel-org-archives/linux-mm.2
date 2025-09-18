@@ -4,101 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F2B0CAC59F
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 03:02:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74AABCAC59F
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 03:03:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8FB868E00A3; Wed, 17 Sep 2025 23:02:43 -0400 (EDT)
+	id C30D48E00A4; Wed, 17 Sep 2025 23:03:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8AB5B8E006B; Wed, 17 Sep 2025 23:02:43 -0400 (EDT)
+	id C08E88E006B; Wed, 17 Sep 2025 23:03:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C2388E00A3; Wed, 17 Sep 2025 23:02:43 -0400 (EDT)
+	id B45958E00A4; Wed, 17 Sep 2025 23:03:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C5748E006B
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 23:02:43 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0AB9FBB2F9
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 03:02:43 +0000 (UTC)
-X-FDA: 83900873406.30.B4EAC6B
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 69DDF8000B
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 03:02:41 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RbnY58KU;
-	spf=pass (imf30.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id A543B8E006B
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 23:03:33 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3333F5B392
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 03:03:33 +0000 (UTC)
+X-FDA: 83900875506.19.DCCB560
+Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
+	by imf25.hostedemail.com (Postfix) with ESMTP id ABC1BA0002
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 03:03:30 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=C1WM8K+1;
+	spf=pass (imf25.hostedemail.com: domain of sunjunchao@bytedance.com designates 209.85.219.174 as permitted sender) smtp.mailfrom=sunjunchao@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758164561;
+	s=arc-20220608; t=1758164611;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ww0rkAHR/bKD96qA8T50xR51LFz53rc6QLvDaZ08jOs=;
-	b=e9kyNOsbFsamPYqJQEz2yjrnOjZwkll2WaQPBKoAXzLT7FsuoHRlEI+33eCw8d+KVxC8dw
-	bLqk9ZGcfjZ1DThuJ7XxdsJTo6l0JhvtRl2wzy1Go2IM8y4F7oYD/qXFLOhCqutrg8og13
-	VNLE5RV5riiRkTg/IykGp0inUKxSjlI=
+	bh=eHpj6BbDwwIXPitsNuyHsVAF3LXrP5LSMuZFLRbzGzk=;
+	b=NkTXrL2eh9zI/M+KizV0XnLd+wu0yIty2V61nldRfwe+21t0dzfWmi5ONphlFxG8frBzHt
+	gs0jyi1dcs2SkVCMSofaM7+uR15GlafRiktn4XQebJhJt8TZobP7QQLZpwOM/h2tzE/G6k
+	nvf/khrjJ34xDX2vhdCJe9m9AcC+KxI=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RbnY58KU;
-	spf=pass (imf30.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758164561; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=C1WM8K+1;
+	spf=pass (imf25.hostedemail.com: domain of sunjunchao@bytedance.com designates 209.85.219.174 as permitted sender) smtp.mailfrom=sunjunchao@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758164611; a=rsa-sha256;
 	cv=none;
-	b=6l/2+PWUb1F9LirTo9DkkzFDeBAWJg86B5L/WDWRk07fFS7ZrurEGMgH45tgKdxG2OhwV4
-	HaMQ+tNUrRC7tM42NvEXr5lRzW8SAlbvbwhQMWjXGQZhxeHbS+ejk6UAqYoYnyJ9BSrIF0
-	spGeKfm6AC5fFo3OOLSTgoOMIpvKVCI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758164560;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ww0rkAHR/bKD96qA8T50xR51LFz53rc6QLvDaZ08jOs=;
-	b=RbnY58KUtW6eFO2/ivzSl2BYVVNpxLdf8kaWgWVunQzv1VKAsO0ok3e+2sTuKU4fvg9795
-	qW8nLHCLNmlp5VZ72eitHYKXhWB1SA16kep/GTMzbVVrXkTfYL9e37k+qQZfVaoLxlzIlR
-	iWFWcmm3xem6CmG2EsNd0jKaHqtnDHA=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-393-eE1y5t-ePTaXnppfXDorKA-1; Wed,
- 17 Sep 2025 23:02:35 -0400
-X-MC-Unique: eE1y5t-ePTaXnppfXDorKA-1
-X-Mimecast-MFC-AGG-ID: eE1y5t-ePTaXnppfXDorKA_1758164553
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8FC3C19560B7;
-	Thu, 18 Sep 2025 03:02:33 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.180])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 73BB719560B1;
-	Thu, 18 Sep 2025 03:02:32 +0000 (UTC)
-Date: Thu, 18 Sep 2025 11:02:28 +0800
-From: Baoquan He <bhe@redhat.com>
-To: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	LKML <linux-kernel@vger.kernel.org>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Alexander Potapenko <glider@google.com>
-Subject: Re: [PATCH v2 07/10] mm/kasan: Support non-blocking GFP in
- kasan_populate_vmalloc()
-Message-ID: <aMt2RBzoKB9iodtR@MiWiFi-R3L-srv>
-References: <20250915134041.151462-1-urezki@gmail.com>
- <20250915134041.151462-8-urezki@gmail.com>
+	b=C8ZQyJvqIa9YKR42JeBMPdxc4Hd5rDRS7gUfNEdt4hicmo4wjE2t7ltgti3AmvVwS41OGx
+	LvalT2VV9PeLJ8SuRQNIISQ6rSCuW8NTaFMnO3nYsyG82Ref0gmjN7LUEJbLVr3dCEzNFX
+	b8w/ZCW7ZCSn5OXCmeBdUMDiuxCA3v0=
+Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-ea5c77525c4so417320276.1
+        for <linux-mm@kvack.org>; Wed, 17 Sep 2025 20:03:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1758164609; x=1758769409; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eHpj6BbDwwIXPitsNuyHsVAF3LXrP5LSMuZFLRbzGzk=;
+        b=C1WM8K+1p6b6itYev/GGMssLMdvqLfn+JNfT20iL5EsZguJ0zYoChBJdC0ndIqxEGG
+         8Rh4UH3MOzNksgWU9jmfVlO2gRvZycWBzwWghYY+lLKigwMSoaMt1/yt19FKuA2FSSBt
+         3EPt35d8EGulM6OLvaO/gVWfrjOZb2AuF0KW3qpzt8r1CvqoNrL9HY//W8cFypIKaN9J
+         SiCPCyozlyt2ZR+y/2To4giYF+mSgI54Wd4+SYsMaI4A2q8XRwQM4VZn5QVInn5TnBk3
+         MyVbDh5obOyF3aWmsBwwB6Eg7qhVPXrnRkBtahUvDUc/lLCUvMrsdd6zO8XvXT2jrXTE
+         ezXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758164609; x=1758769409;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eHpj6BbDwwIXPitsNuyHsVAF3LXrP5LSMuZFLRbzGzk=;
+        b=G7q76UAFYi+Nut75ebCu+gIyPWZB+coC9meC4Ra4ouBxT7rDF8ZHzim3yuy8zmeuLg
+         42pFWRBeGCfj9y5Eq1G/hgAOYo4ZEd3ljEFE5x1f+w+Czu6/U+O7xTQ2oTdN4fTrbn/z
+         0QqPECRfbq1xyvz176U5++8ZfJnSqJa9fFbsr+RKaEMZqXUtPXxT5UZRJuLv8JFmi5eA
+         9lJBTBHwOEWLKTsTcLFwzVmA9FBiMeKIYrUpWbP5QvYCdYxniWZNcZOayRWAV3HT3s9o
+         Y/eMQ5W3yFzus9AfiEFHePxhsOwI1Q+PBXwPiRPk45Ne4w2A7H+6D2EPcYsdAPWfxojB
+         h31A==
+X-Forwarded-Encrypted: i=1; AJvYcCVsDstzYGYBLJFXpHZoHO+K3Xbp8S0DWft5d+7r7jlKm8l0wgCG1fpSaTUMeK/B3TLBGmd5wXYYsw==@kvack.org
+X-Gm-Message-State: AOJu0Yx1/0c9susFNCYrR7Iq7+U//IE0f6otgsvlK7fYH6uvYvGjCeda
+	DhjJEi3EivtXavVO43rgXwmzp2aM568pvCaUG5FWvNchssAXpBFoI/CTRxvC5jdyeFKfBpg5qFy
+	TDewwvZU3KGJjPuhOfI6n6GJT6xKzLaS2ki82bbrJig==
+X-Gm-Gg: ASbGncuqqjXVLaDNrn8OpU7vTzCrlZRQ8YvHBYTBGKiDC6g4iFRD8mQo7oKS0lOKS/X
+	RoRIm07x92IbsPF85j20G9OIO3ovXN8mehsf5x9XPonDGjZKiWinX/3ziNV1t/9d4iw03EnUv71
+	IzeENZfIyoDW8j2IN32QBnKgfzr/qlDDTn74z1/DeKXSNk71YiAtH/sc4Lrt1JrWBzFT9hAFATd
+	gYLnYtWADuIWICmdAKaTsBMxzwX0thc0lctbOgE9Tl4MQ==
+X-Google-Smtp-Source: AGHT+IHCITpJmu2ecNbyMYkgBdyARFalcZTQ2c76f039ZpJlRRLWnUY1w7SMwkwh0HFxl5emiWnN3oHg/pKKMvzfi+s=
+X-Received: by 2002:a05:690c:4d89:b0:723:9d84:4e5a with SMTP id
+ 00721157ae682-7389159bd76mr40982237b3.23.1758164609176; Wed, 17 Sep 2025
+ 20:03:29 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250915134041.151462-8-urezki@gmail.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Stat-Signature: 3cg1bjca4okjq57jju9ixoe8sg97u53s
+References: <20250917212959.355656-1-sunjunchao@bytedance.com> <20250917152155.5a8ddb3e4ff813289ea0b4c9@linux-foundation.org>
+In-Reply-To: <20250917152155.5a8ddb3e4ff813289ea0b4c9@linux-foundation.org>
+From: Julian Sun <sunjunchao@bytedance.com>
+Date: Thu, 18 Sep 2025 11:03:18 +0800
+X-Gm-Features: AS18NWDNMpykuZ-ToHyptz7SoNhYLyL8Wo4PLyJsFMUV3bdV3cR6VduCnMFfMAQ
+Message-ID: <CAHSKhtdt9n-K6KGXTwofpRPo-pH0-YoKFLtEe3Z4CszmNL0rCg@mail.gmail.com>
+Subject: Re: [External] Re: [PATCH v6] memcg: Don't wait writeback completion
+ when release memcg.
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: cgroups@vger.kernel.org, linux-mm@kvack.org, jack@suse.cz, tj@kernel.org, 
+	muchun.song@linux.dev, venkat88@linux.ibm.com, hannes@cmpxchg.org, 
+	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev, 
+	Lance Yang <lance.yang@linux.dev>, Masami Hiramatsu <mhiramat@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: fis41wq5qjj1hbx1tsy9sq8rhepuk8y6
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 69DDF8000B
+X-Rspamd-Queue-Id: ABC1BA0002
 X-Rspamd-Server: rspam04
-X-HE-Tag: 1758164561-116826
-X-HE-Meta: U2FsdGVkX19ZqN254+gHiNTk4UZKNNIoG8yCUg+6IQT4swTCKFv9JzNbev6nUh0+BRLKEiXp33CVgN1sZPxZqtX1COAS0gnPOTIPoajOHUUt+Q2P9HSt/BqwOnYNKunsBuEqcm8dwvxu5vwVYTDyYks2eOzKY88Ahjb08tJjt6j5UVF3/69sOWplTT8oevKO3f3DaJqtG0e+iVVFA3xqfKHr4Uzoyp5WYQ5CY48e+ysdYg2qDAvm3VpknGxbRQ0fIzTYa5opB3bcgZBAioLY/dNPMWvas/gCRgA2a0UX5Z9EHyhg8Q9G5tChebhuT+YnODT3TvMmT0ctpLnCVnDh0DVdmgSaw/BNd5GmLlOgE5ag34nB+IRcrmMJp3BPt4I/2dIzrJoYg6GO/DscnPidGlacHoReCnc6w9kPwMBBOsXQgeMcsfLLzInriY8dwkeBsYpkDJRp3paP/ihUua8aSMJ+MeGdXepj26MYe9V0nzIVzgJjyy6aTzQ/YL7u1dQyPQBC2B6BZ6wwcHTf8yGdz+Xmw35biyGd02KHkc570RDTZ0BV58s6XlsK4CEjPzlXdSLKZ3yR8udB2b5tRFJVBpepfYh85huWut0OAK+DrfOBmBDGg9gyJvCZOBmzMLTY/GX2S3ioLzjvGocFTyIFUwMQsxcpErdO0Yu0mFVyHQvD4ktZ6+Q+chqE05HeecX/+YlRsIm7o8ksxPcPfowitMCWgHG8Ea1wMOfGMarkyPooZQ8SGoXe5zaBjnccYPGRwnvZlmpXTgRBQLMBZbmEKTKOWersyu9v7/evPnMl1zltSpQ4Zjtg7whJu1ah5VfXkxjZ7tAc79gfFCAE5huxiZQTxwqIWgqEivJK0dXRyFZn9VMLcjWF2NKlilhM7BJx4h9zlGWO7kXMNdD2HTgdSUbeKTnyHd7qW+GEIdVQw+7EJS0MNsF7zagBYIQ0GTdF/Cge1NQWoidewLqevNT
- cfnGFoso
- IylOXrNZ8aEIJnZ1xOKu9pNRko0+dPF/b+ANPe+Bq437ET7BkDT+X8CJfZnrIsXN2S79IA1J/YNj4spQria99txoAU16mbK5dQerwzNKYTys4fdERbnIhj5/0ZujinyT1PLj4Ge3DxrlKJ5VJlR/fVs9pDp47IkZ/vVhCSVPQgKrGRZ+VvPPgOzAS+yN9TRiXik4zGqS8LBQaLybFxPDf1sO8vXjTGe/iIi3f
+X-HE-Tag: 1758164610-161626
+X-HE-Meta: U2FsdGVkX19QjmPlMM+Nu7DA2B7L6iG9R+unea0KIg84eO5/1UL4UgLS3/eGYEfkGDKHu68570//XyrMKMV8l4u+lDA1/f6+wmemX4eoslrh/O83jZqOm6vodZB+Ck1zk6JgPbKdf/Sc2FqqHD/WkkpGGtj69OjV6GzJN/N6FlQ0VWDm39t5Egyckxjzp0r1CIKjmqtOGFm3bJ/raCF6XZ0s42CrGLg+X+xpD7kxxOlj5t7K4Rbqch4YvcRcUVnXiT1SJg9QQCKVC8zvNhTulLEJUI1VmGWHsUKu42NCGxIFhvG0GBhrTABGobF2Lc0kW1pA7vcKbvIX8r3IHt8esJIP4signiRKERPOhnXTfG+3G4GX3FatIoCsYIBhGwmi8YbMkj1Dw7ZC+AmAN0n7PfNdF1UVFrFTf7Y9xEdJRNiJD8bXBoWxAoCNqTGiPkjQoPvqATr/7T817tqdLUOYOwM6LYpK4Fw6PUKzI5Q8ohGimL+ngJKK9d+Wj5hW3BYOOJc6R26o8kguC46aYR5EIxW54Nd+BX7iprQ8a7cFi15duuzYxODpNlZhYvjLaH7FObN3kBjgcsFJh3IfQMonIgG6NL09o7WdAWLGOVLZ26gZuCNi4vT6EFZhzfOd/T3LaBr8lBV/WUSh49/IAwAxyjSaQFER+bXK0htFoq03Gtb73cCeTzBe2zX1JCSHlRtbW7JQUZpKQg93oVLlJ32R6b5BuAX0LUtzq+CiENYfnw1jreW8UoBq8om99GIfq5l8ZRWI+DB0nstxSQgJTPhxHlPWiBVdHJEQX0NunM6YTO0upQhjsznZ3NclWJ3uhpHBQ8uZSckdGlRO1d1cqM0LxwxBYG7XFmNRw37rnvhL4U1hMSG0yQwQedp9jsvyM3eXmCie0j+6NZju+tshtxdYYPlsJXHc7QK9zqodI2tSFvdUNAA58gHKe5u6XZ+lZchNo8u9FUT1T1QSZkJqM51
+ WHKd2Gkf
+ sRMBOzJCmfWI2MKAGgqhkPKc7sP5CKO6TnE+5O4qtEvd5FhtIWH/QUODkuPRnK7Eieg4XvVxP5wJ/EKyd8H4Xk5tyedBR8Rg5WHFDLQ8HP79mX7Yy3Z/NzTiZsiXx9QbvaE1YnpcKiPw74wTycpKOLGum2LgwTqUU7lXCKW05kqM/gZW9bch/y9vpZaGyis1E2ZhxvEaFT3RMbBNnusad3AKsmnsWLVeqdkrFaJWbpz7wAhqG1GENIn9nPZBmHnn+dREraMVycAdrH6r0L1rfJV08Yj9+k/RFdnx5
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,54 +119,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 09/15/25 at 03:40pm, Uladzislau Rezki (Sony) wrote:
-> A "gfp_mask" is already passed to kasan_populate_vmalloc() as
-> an argument to respect GFPs from callers and KASAN uses it for
-> its internal allocations.
-> 
-> But apply_to_page_range() function ignores GFP flags due to a
-> hard-coded mask.
-> 
-> Wrap the call with memalloc_apply_gfp_scope()/memalloc_restore_scope()
-> so that non-blocking GFP flags(GFP_ATOMIC, GFP_NOWAIT) are respected.
-> 
-> Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-> Cc: Alexander Potapenko <glider@google.com>
-> Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-> ---
->  mm/kasan/shadow.c | 12 ++----------
->  1 file changed, 2 insertions(+), 10 deletions(-)
+Hi,
+Thanks for your review and comments.
 
-Reviewed-by: Baoquan He <bhe@redhat.com>
+On Thu, Sep 18, 2025 at 6:22=E2=80=AFAM Andrew Morton <akpm@linux-foundatio=
+n.org> wrote:
+>
+> On Thu, 18 Sep 2025 05:29:59 +0800 Julian Sun <sunjunchao@bytedance.com> =
+wrote:
+>
+> > Recently, we encountered the following hung task:
+> >
+> > INFO: task kworker/4:1:1334558 blocked for more than 1720 seconds.
+> > [Wed Jul 30 17:47:45 2025] Workqueue: cgroup_destroy css_free_rwork_fn
+> >
+> > ...
+> >
+> > The direct cause is that memcg spends a long time waiting for dirty pag=
+e
+> > writeback of foreign memcgs during release.
+> >
+> > The root causes are:
+> >     a. The wb may have multiple writeback tasks, containing millions
+> >        of dirty pages, as shown below:
+> >
+> > >>> for work in list_for_each_entry("struct wb_writeback_work", \
+> >                                   wb.work_list.address_of_(), "list"):
+> > ...     print(work.nr_pages, work.reason, hex(work))
+> > ...
+> > 900628  WB_REASON_FOREIGN_FLUSH 0xffff969e8d956b40
+> > 1116521 WB_REASON_FOREIGN_FLUSH 0xffff9698332a9540
+> >
+> > ...
+> >
+>
+> I don't think it's particularly harmful that a dedicated worker thread
+> has to wait for a long time in this fashion.  It doesn't have anything
+> else to do (does it?) and a blocked kernel thread is cheap.
 
-> 
-> diff --git a/mm/kasan/shadow.c b/mm/kasan/shadow.c
-> index 11d472a5c4e8..c6643a72d9f6 100644
-> --- a/mm/kasan/shadow.c
-> +++ b/mm/kasan/shadow.c
-> @@ -377,18 +377,10 @@ static int __kasan_populate_vmalloc(unsigned long start, unsigned long end, gfp_
->  		 * page tables allocations ignore external gfp mask, enforce it
->  		 * by the scope API
->  		 */
-> -		if ((gfp_mask & (__GFP_FS | __GFP_IO)) == __GFP_IO)
-> -			flags = memalloc_nofs_save();
-> -		else if ((gfp_mask & (__GFP_FS | __GFP_IO)) == 0)
-> -			flags = memalloc_noio_save();
-> -
-> +		flags = memalloc_apply_gfp_scope(gfp_mask);
->  		ret = apply_to_page_range(&init_mm, start, nr_pages * PAGE_SIZE,
->  					  kasan_populate_vmalloc_pte, &data);
-> -
-> -		if ((gfp_mask & (__GFP_FS | __GFP_IO)) == __GFP_IO)
-> -			memalloc_nofs_restore(flags);
-> -		else if ((gfp_mask & (__GFP_FS | __GFP_IO)) == 0)
-> -			memalloc_noio_restore(flags);
-> +		memalloc_restore_scope(flags);
->  
->  		___free_pages_bulk(data.pages, nr_pages);
->  		if (ret)
-> -- 
-> 2.47.3
-> 
+It also delays the release of other resources and the update of
+vmstats and vmevents statistics for the parent cgroup. But we can put
+the wb_wait_for_completion() after the release of these resources.
+>
+> > 3085016 WB_REASON_FOREIGN_FLUSH 0xffff969f0455e000
+> > 3035712 WB_REASON_FOREIGN_FLUSH 0xffff969d9bbf4b00
+> >
+> >     b. The writeback might severely throttled by wbt, with a speed
+> >        possibly less than 100kb/s, leading to a very long writeback tim=
+e.
+> >
+> > ...
+> >
+> >  include/linux/memcontrol.h | 14 +++++++++-
+> >  mm/memcontrol.c            | 57 ++++++++++++++++++++++++++++++++------
+> >  2 files changed, 62 insertions(+), 9 deletions(-)
+>
+> Seems we're adding a bunch of tricky code to fix a non-problem which
+> the hung-task detector undesirably reports.
 
+Emm.. What is the definition of 'undesirably' here?
+>
+> Would a better fix be to simply suppress the warning?
+>
+> I don't think we presently have a touch_hung_task_detector() (do we?)
+> but it's presumably pretty simple.  And maybe
+> touch_softlockup_watchdog) should be taught to call that
+> touch_hung_task_dectector().
+>
+> Another approach might be to set some flag in the task_struct
+> instructing the hung task detector to ignore this thread.
+
+To me, this feels kind of like a workaround rather than a real fix.
+And these approaches are beyond the scope of memcg, I'm not sure how
+Tejun thinks about it since he mentioned before wanting to keep the
+modifications inside the memcg. Given the fact we already have an
+existing solution and code, and the scope of impact is confined to
+memcg, I prefer to use the existing solution.
+>
+>
+
+Thanks,
+--=20
+Julian Sun <sunjunchao@bytedance.com>
 
