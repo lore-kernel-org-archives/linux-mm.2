@@ -4,93 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A8E3CA1013
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 14:06:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0048CA1013
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 14:06:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0026C8E012F; Thu, 18 Sep 2025 10:06:20 -0400 (EDT)
+	id 0293C8E0130; Thu, 18 Sep 2025 10:06:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF6568E0112; Thu, 18 Sep 2025 10:06:19 -0400 (EDT)
+	id F1BE08E0112; Thu, 18 Sep 2025 10:06:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E32398E012F; Thu, 18 Sep 2025 10:06:19 -0400 (EDT)
+	id DE4E38E0130; Thu, 18 Sep 2025 10:06:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id CD0AA8E0112
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 10:06:19 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 916E61188B1
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 14:06:19 +0000 (UTC)
-X-FDA: 83902545678.06.8407191
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
-	by imf07.hostedemail.com (Postfix) with ESMTP id A360940009
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 14:06:17 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=u29mdV4e;
-	spf=pass (imf07.hostedemail.com: domain of 32BHMaAUKCHkbisbodlldib.Zljifkru-jjhsXZh.lod@flex--elver.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=32BHMaAUKCHkbisbodlldib.Zljifkru-jjhsXZh.lod@flex--elver.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id C5EF58E0112
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 10:06:22 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8346B1601F6
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 14:06:22 +0000 (UTC)
+X-FDA: 83902545804.10.A58A74B
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 6AE601C0012
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 14:06:20 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=zq1vwbXF;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf18.hostedemail.com: domain of 32hHMaAUKCHsdkudqfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--elver.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=32hHMaAUKCHsdkudqfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--elver.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758204380; a=rsa-sha256;
+	cv=none;
+	b=QEsgEyQLaOBfyjrRgUkcRcs9Cpn2xv06rCBp1eEQ3NtEA4ejz9FrR1TZngSVkRGdwhD93X
+	Rfokd5Jabum4S85Ak1YR+gqH3e7UptfwvpbxJEyMgLbc02zniX2cz24s5n6xPnGup/7jOc
+	5bT7MMD0N//e6emyQYzOQoevLT95r/s=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=zq1vwbXF;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf18.hostedemail.com: domain of 32hHMaAUKCHsdkudqfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--elver.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=32hHMaAUKCHsdkudqfnnfkd.bnlkhmtw-lljuZbj.nqf@flex--elver.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758204377;
+	s=arc-20220608; t=1758204380;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YPOyraitAoGllB7BsvSWOoZaTAjW0zjsOFJLH9vcrlI=;
-	b=kkoIfJ3PvRCPmDEc497CLYD3S0dUmBenNJSubhkn0De5mInK5oo7vY/ry5Q8vEtJvNHU41
-	xjdAN1GlFJ2AhiN28jyP62VbOTnY/y5WljrkPP6GfqfQPD4QUEVXYZ3Aygo2GD1lbEr1ee
-	HzwqT9GPQzhv6lg5pvofxHLF7pWA9GM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758204377; a=rsa-sha256;
-	cv=none;
-	b=cZnR6Ek0zfyJkK+qZ1K61aaqi4lYMUW0mpd+LEv+dzGvskwtk4xUeKPpUugCR5E7iNuiaP
-	XdygQenHsNOxXZqnt81fVWjD+RitYfItGCcfnquMY2O5H0Mf9crkcHBNow620OiM/fyqp7
-	PpH+uA16Q4ujElsVqyhX1mVV5+8Hx8A=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=u29mdV4e;
-	spf=pass (imf07.hostedemail.com: domain of 32BHMaAUKCHkbisbodlldib.Zljifkru-jjhsXZh.lod@flex--elver.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=32BHMaAUKCHkbisbodlldib.Zljifkru-jjhsXZh.lod@flex--elver.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3ea2082db1cso229638f8f.2
-        for <linux-mm@kvack.org>; Thu, 18 Sep 2025 07:06:17 -0700 (PDT)
+	bh=q4us2nxi3JpTZDeL0scdeAdIw4lyPkneoFt53x8qoK8=;
+	b=kyIrYYGfQNzwBHu4/HREIz9Unk31SkOL8mxNAqVf5Wp+mgUeaa4krNEY+FbGMbhg+MpAEK
+	EmS3L6nw2//U/bzoAiLkzZX/jzzqUVb8/ApB51Ms+JuYgcAxlpxbTVhLgSCiFAq/1ZXvSL
+	B2XPPQkXuq8YdCBuNYtx/i/ev4F9Fto=
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3ece0cb7c9cso670141f8f.1
+        for <linux-mm@kvack.org>; Thu, 18 Sep 2025 07:06:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758204376; x=1758809176; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YPOyraitAoGllB7BsvSWOoZaTAjW0zjsOFJLH9vcrlI=;
-        b=u29mdV4eeo7KsKyfQp8qWvY0IE0R6Gg58TRaACa8RjSsNg8i2/L4HwtlIB7SvRo1tA
-         Rlxyy3HJ7ogGhdnk7/nD3vw1LmMtB8okhdtilbFUs1EOpBaZUTAibAZAPblBXK5OPXJ9
-         Js/pgcfZljrpayKUJZNxrR21B/P/YncMSdxzIdYEihiSHlEF/DF0ybv3kemiffE9AgaZ
-         fhRbfypCnrHC/3wtQMbtOU8yXTm43EVeQ9We1WMK3ShKokBqVW1gmiD0QTE7wLskIaRV
-         gLkmqkD6aWtYYPuSw+kPFTbd3S5feyMOKHJXyjNdoHX0gJAnYpRyJSKtiL4ZQjcGPdn1
-         Nt0w==
+        d=google.com; s=20230601; t=1758204379; x=1758809179; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=q4us2nxi3JpTZDeL0scdeAdIw4lyPkneoFt53x8qoK8=;
+        b=zq1vwbXFWMV8vypZeN/NV+1irngl0EwCCgyWTnRTK70XPsvIqHchNZNQvjsPUSDusO
+         Y80XT+4EL4R1mBv4GqayT98v5KXv/smrgylLYxKKKMD+gdRzP+YMjmTg+Iarb7s1Jmu+
+         SwyNiNXxk5LnsSCgkXOrMsILbNf1OzwqUPeUmmiKs73RNZEfRAuUy4cJTRlTrP6136nn
+         b58ylWdY2nKi8BGJpL36LxYsTCrWKyxApilX58bC9F/HM8Mw1TTu/VfEGtBoDD2x6j1l
+         RHdetppQRAPpE00J/euFzCihec6RiakZqJm6AqcT29Ujh17MngWI3rYpXgrhumuhlnBO
+         dZDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758204376; x=1758809176;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=YPOyraitAoGllB7BsvSWOoZaTAjW0zjsOFJLH9vcrlI=;
-        b=Ien9lLvsD3JcZGKcx/zdRBz4L6CUpOPuJUjMomIKfA+8ggux5/+W+b8HVz+2n5iN+2
-         yroZBtP1jbJuq4ObVnIJG1SvjoR35PN8ZiS/C9RV4kzndwRuAGmUNzjvkXXIGpbwH/74
-         UpBnVjWUEGFuIqXs0M8Flasms62Jy493tV7Avyg2p94xaQF7/5nMMc/Ytd4pLuKIz1uS
-         3IRnibJG271p2rqvgASlv3fuspxNrELvsztSSTGmQOXN4ws31o/yKNR/gZJi+Qm1cPuD
-         mamhrSOW1VQjz8qK5N5JXEIs1Gr1Bx0b+RZxbelyvSTnom4t+VMLvgiEyo5n8GVYr+o/
-         jvwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVLzIZXVPAO7ISa4rbhzdBx6I0Ba+KBRbhBW0v8l3YheV3WDIvoZJ/H+Yl+NH1dN5MTjvA0JGtodA==@kvack.org
-X-Gm-Message-State: AOJu0YzI6JiRztJidxF089JXwI8eAz3LP5d8tJnB9YD6viTqo8/16edD
-	7OQH4qgUB710YAG2pJ5YjyrT9fz9OYBQhHoJbRr8IAN54fgROxaU9lIpp58/pEUVtJgjxlsPU3S
-	mZg==
-X-Google-Smtp-Source: AGHT+IF8aLIhn34LgaGAnLK+69nAB2mIA60sJ6OJu7Vgj9ULaNgMfzBmpj6zQNDNkmaJ1Aacoswwf832Yw==
-X-Received: from wrd21.prod.google.com ([2002:a05:6000:4a15:b0:3ec:defc:12db])
- (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6000:4284:b0:3ec:b384:322b
- with SMTP id ffacd0b85a97d-3ecdfa3d37emr5318506f8f.46.1758204376079; Thu, 18
- Sep 2025 07:06:16 -0700 (PDT)
-Date: Thu, 18 Sep 2025 15:59:29 +0200
+        d=1e100.net; s=20230601; t=1758204379; x=1758809179;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=q4us2nxi3JpTZDeL0scdeAdIw4lyPkneoFt53x8qoK8=;
+        b=Bf7OoEE2QQocbw2K8HPYzPE/HJiynWNOxb19KecBO0t/Bc9OQeiDUp046VjVnzBNlO
+         ljE5V3rm4fjdX9AyWBNIXG4ZlhUFrGulc2R0WEs8hCsoNT30gb7E9UEM0jm65AgOZLlh
+         riZJyZ+o+iNsEF79SiVReHcUYpB7n3lNlqEKE0t0ILTBkESgY4Ti+Y7HLLWPNsWhMsWM
+         6/DnW8JwyDWrVpyIKpeUzJyhqXKtCVQ0huEHefpgVuDxRaDNv8xNLdQ/bU1Ntyp7sASt
+         3j9+fWs4WpgrFSiPIwuZMJBFzJMBA0usKzNkW9PGGi5JmHnZWYA1ZQH4R49dRDIPoVLz
+         WB+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUkXFzswkM2TaC8itpLoyY9u9a6W/20V3g1bxL2nmzCVIYx2lwLpnTuD2brz8hie7BlkwlJsLb0Cg==@kvack.org
+X-Gm-Message-State: AOJu0YxxFpjzpaFYWLqmLEs960EQV/DwOuA0XYnay5pVL+7x5LQDujcc
+	KC5gtxBMF8Ap6xUHBWYRDwJMGPXFHpiv6/XW50UzmVFjd3oOYkf53hW7dry079Hyy/YETexOleP
+	Z4w==
+X-Google-Smtp-Source: AGHT+IForSgCnBdMYy4/yrbRoi3Bz0KlZrVTBci3S8BpGG4Qe7XF200pZ2l6iAG+7UNZ0b5azB0o4FG6fw==
+X-Received: from wrml2.prod.google.com ([2002:adf:e582:0:b0:3ec:dab8:7d45])
+ (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6000:2307:b0:3e4:bb5f:ee6d
+ with SMTP id ffacd0b85a97d-3ecdf9bed46mr5359337f8f.15.1758204378633; Thu, 18
+ Sep 2025 07:06:18 -0700 (PDT)
+Date: Thu, 18 Sep 2025 15:59:30 +0200
 In-Reply-To: <20250918140451.1289454-1-elver@google.com>
 Mime-Version: 1.0
 References: <20250918140451.1289454-1-elver@google.com>
 X-Mailer: git-send-email 2.51.0.384.g4c02a37b29-goog
-Message-ID: <20250918140451.1289454-19-elver@google.com>
-Subject: [PATCH v3 18/35] locking/local_lock: Include missing headers
+Message-ID: <20250918140451.1289454-20-elver@google.com>
+Subject: [PATCH v3 19/35] locking/local_lock: Support Clang's capability analysis
 From: Marco Elver <elver@google.com>
 To: elver@google.com, Peter Zijlstra <peterz@infradead.org>, 
 	Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>
@@ -116,15 +113,14 @@ Cc: "David S. Miller" <davem@davemloft.net>, Luc Van Oostenryck <luc.vanoostenry
 	linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org, 
 	llvm@lists.linux.dev, rcu@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: p73k36wwnc7tbhcwxt8m8iugs5xb54u3
-X-Rspamd-Queue-Id: A360940009
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 6AE601C0012
+X-Stat-Signature: aojpa173a66y1rnhanh3xfn493gcrm88
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1758204377-537769
-X-HE-Meta: U2FsdGVkX1+w6GVljCul8yUYC55qrl8daF4o2k1oR3W7ZksH4yjKjKc8HwFpOYXw+fS+uGFhPcF6wkGSSOKnuXCuZce1uxmi1wRAYpRRMqo1HBOgewe/bw5kXlfzIbNEJOdWpeni+iwRuxV2doqnPNUkJ1JundKf+SN+tn96+6kd//5LulAgA7xMXpxIrJ1UZuQOJWyT0ueQT34hgSOlcPu70hmfZG0jnwWufx6gA97LB6TGL+ArcFks7TuiqwAXAGlmmXijeXkBsXpYcwmwX/M9ekrEFERxCJ1eukcmjlKKIME7ReyxL89BE6DsezewWcRuXc4CdEXkKqc3FDnz4axez8Be/9eGz2+dLH9thJ8x6aCyGnN8dVO+Lxiui5p9WLM6uDSO2oChBUe0nmNbHd8pevnP7gWqwLYTRU7GidBjKNeJ5A4eTVB4PmHZ+Eqptfc3MyqwUcRv5wtx8SdPSknnlij1xJhqFwf1UC/QCZjfe/ZwxOfrGt8NvugyzOLpSeLEo2t6dNMzjogQY2Uvwa2GAra/jdXYvT0KExg+sz7ZsUrd3lQdhyqHrX3swIsLigqzUAk3OkUXDtzKbzqgx8gX7Lq3DbLShjyk65kwOK0N1In7NaSr5eh/mkxLugkw2W1LgT064bNpgpqkSuAKunnUynQSHLesLGHfrDtIO1y+mB/UYXpN+/lOQuB40Y4+N5TWTmE7l9RN8CaH50twoVHQi/ipBeiLwh4KNx/thC0TW07NrGoVTnlq1sqoXA8duO01gwOKsAIH+qtPHp4R0BssokOXZfdxZN8gQEC9ym7lcbzM+ZLJByAaHxfQLzW8EDCv0rQOXCFWjKDX3q2QZgk/Qn4uQPTTcheilFqv32+VY5Z1nuPX4+4t9rSPSmwtOhMgIvWhpiTeKMbZCgmetJPwSgNgSm8jeykCEWPJUackWud43JEZXDRZT15F5PFVGxnOWbLvsEuw3XorMZH
- CjKmC1xf
- VThvCSeVc8IdA/W9BiUTORaTjVHBoznmg8PH2TFgaZqHS3frNSptLDRijfPZZiKa8Lf/y4Km+2OW8qdIJbsWhEPo+zt8nFdiU3TsLQyEzD6sOSnldm2l7yyHNGDAMn97FI3hlqfP5REOndR+0/seNGBasrJHu0eLVCZC16gj3RQFZ68Q85Egv0wy5d9lpY0kR9mlpvBOxF7UpiF8yCda1Hebg48Lm7yIZlxQ4uTpR3mUmO5O8ewce1wES/wY8dinywlmSwwGg7JW+1JhmKSAyX70GXi+wyxWOl3NOOYUYr3S3kSuAj1CPEKWQXBzpgAaJGCkmH3y4wlCFZTcWu0khqwiMXunDV+ENgT1FUa2nGKMEzhBXuKgaMpxxtV2vDB0Y7rYHL11vqphnihxraED3f75yMY4A7y+SyCc0H203mTcySkfvAsAtVwCrzLIOV5PHtkkz2wwymo7dWRo2bQ8xjdIA/zhjn85Z7DvGFTcsjGDPAo/O2HU/IAG4ZWeCZN44S2xAzJEoGrqHA6ZdeHSGTRgdNGeRg5a0NcVWYhDoNvxi71k+IHARx/vfRYIJ8wm8gWfyCun9Cg1WbgyWHYrwUVDE0lgO+RXJEkpLXJLdpY1rA6FDSRC9P1a5A2L4RpUR26km5PxWtwxkmq+un4OsvW+VZpG3WLH240Ykb60RgJ7zfiQ7wodr+KZ1OrhA/MQi2BzPviLduBlbZdGNhNzgRjBWAg97vOWyFZXJ
+X-HE-Tag: 1758204380-869898
+X-HE-Meta: U2FsdGVkX1/ca73ZD3tW7SSKDKehYJV9DMlLodyuOLlQZg8nLfXIRA6B/NkUj4A/u76wGgajYlhzqwIuy+lwOjsO44hV1n/YorxYCJ1tQcGiTFvOEQLch1gjWr5ZXKma+SDpkZCIjm4y5XslNX55sUs1nD5jJOF4Re+ZmhpewE1BOSH09oDyYxMH2qJm3ixkJaCbLqi/1TEWLmssznqLPAXC0XpeD0VdRwp2i7PBpn1zfhADjPfZ5SNn9NP2XpUKcW/qtRZ6V4cHn8zSkLzraCHRxeqlmAAFvCojTytqNF6/MpxVvSnq4e2t8o/Je1Dz98ND/jA7T28EPqeSnOBZWm63vDhtjgP6G1c3s3LKYKNl0iiEzciVxHWBs/rG9GRSP3XxusR0P2bWJ02lBcMNgbPauws7w/bOMS+3u1ZbrL5JebeMME6tFuwkizWuu7panox4XhWBSZKIAXu8xjDoX9SL6cOq8qStaGMNseUoLTafoYl/KF37rbdFA/+8WOVNDrQRJOxHPdZ/PYmE6xC4izntxIYqbJjLt41KD/SRWBXPwSzvpAECXMtBXgGeqIlmyhjGqByeshuS6urgArl7NLpXHNUViu3l76Hx4O4EkQ4Rovk9E9yYrIdthyjUCXEbdg9qXTVdbtIn4L3WLG+Zva+XzRJZqjEDUDS2ni2V01etO358FDovWtEEmDSWnTpSB+TtfUjNcXU0n4GapOuGdkP75PWZTZhxI8ZloYcpgWORzB6I9KEAkzXbwMGhoftIHBwn/azO0cK4InFNqYp6Il2aW0I9vV0FRFzQB8V8CZu1GcYzpMhXhVW2VZhPzUENuPESPwnMrLTfz6A2wcbyDPEqXoWnGWdY6tWz87+YIXmdL2Zdx2Am2N9hfeTk4F+IChVA8Ke2Jtaa6J3iZ7INBnTh8CJSzXB7qqaEHox2/Yu29Ooh/nxJjb2IbYUO1tcuCZIG0MTEjDWni54UjhI
+ 0gG0RrrS
+ BAwfaDUHka8uhVvX3LLwz6O44g05mchIJhC7lkjAYLBLdEO/UxP2SWAhWCgL9lkBihNBpXEKS1Dpcn2TkkhkS7OZT6dg3mrh8dhKCfQidcw5tdKVPBEce3H5njI6c7jM4DXRSYbiqk/DvBpyA6k2N6S8jQTwKFnRKgLWJlCOUXdTgNCCc7dSVD+198fiPV8ROWB0jkY/HB7Z8b4Mg6SMkoMfxlk13SuDne68mhNjR0FE0u88MoEZuul0hxqbBSzfXsgkbfaeQa11EnTQpt1Q3E7z3EQZZg6VCzy8avXlTniJpSLd9CZsMhhk6JQb9iXrcqfLQw4IIvFA1cXKgSApC4Zf+/L3FZqoa3VAW+6QXZsTkcAp3Kh6lVNEoxsQOnJPFWqW3QsTF7fW1VayfxaPP4P2h4Aob5hw034a/4UdWkkIDgXQKs3imxT+Y7vSHvKw/Ai7BesPa1rmtYemxL1SNCYCrM5ZWdgkKRmd4Be3j47YFeHYv0TAwNO16P7lKAEXkvt0vhYr8z2KNWVcN5enQoXUG4ZPwfsM0ZV1oa4fGpWnG6KQKIxLtIcwOCzAr3DugK0peYbEuytuDtoyHpdXFwoOD5EPJJ7H/4HZBbh7BpP5sJuM/8hljoaKKUXqwc/zlOn8LMjGHR4DKg7HpgHQm5qC8VhlgK+jQU4QTKBteLiy6fXNWbJLn9HkHu/LVkusqrMT3
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,48 +129,427 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Including <linux/local_lock.h> into an empty TU will result in the
-compiler complaining:
-
-./include/linux/local_lock.h: In function =E2=80=98class_local_lock_irqsave=
-_constructor=E2=80=99:
-./include/linux/local_lock_internal.h:95:17: error: implicit declaration of=
- function =E2=80=98local_irq_save=E2=80=99; <...>
-   95 |                 local_irq_save(flags);                          \
-      |                 ^~~~~~~~~~~~~~
-
-As well as (some architectures only, such as 'sh'):
-
-./include/linux/local_lock_internal.h: In function =E2=80=98local_lock_acqu=
-ire=E2=80=99:
-./include/linux/local_lock_internal.h:33:20: error: =E2=80=98current=E2=80=
-=99 undeclared (first use in this function)
-   33 |         l->owner =3D current;
-
-Include missing headers to allow including local_lock.h where the
-required headers are not otherwise included.
+Add support for Clang's capability analysis for local_lock_t and
+local_trylock_t.
 
 Signed-off-by: Marco Elver <elver@google.com>
 ---
- include/linux/local_lock_internal.h | 2 ++
- 1 file changed, 2 insertions(+)
+v3:
+* Switch to DECLARE_LOCK_GUARD_1_ATTRS() (suggested by Peter)
+* __assert -> __assume rename
+* Rework __this_cpu_local_lock helper
+* Support local_trylock_t
+---
+ .../dev-tools/capability-analysis.rst         |  2 +-
+ include/linux/local_lock.h                    | 45 +++++++-----
+ include/linux/local_lock_internal.h           | 71 ++++++++++++++----
+ lib/test_capability-analysis.c                | 73 +++++++++++++++++++
+ 4 files changed, 156 insertions(+), 35 deletions(-)
 
-diff --git a/include/linux/local_lock_internal.h b/include/linux/local_lock=
-_internal.h
-index d80b5306a2c0..4c0e117d2d08 100644
+diff --git a/Documentation/dev-tools/capability-analysis.rst b/Documentation/dev-tools/capability-analysis.rst
+index 7a4c2238c910..9fb964e94920 100644
+--- a/Documentation/dev-tools/capability-analysis.rst
++++ b/Documentation/dev-tools/capability-analysis.rst
+@@ -82,7 +82,7 @@ Supported Kernel Primitives
+ 
+ Currently the following synchronization primitives are supported:
+ `raw_spinlock_t`, `spinlock_t`, `rwlock_t`, `mutex`, `seqlock_t`,
+-`bit_spinlock`, RCU, SRCU (`srcu_struct`), `rw_semaphore`.
++`bit_spinlock`, RCU, SRCU (`srcu_struct`), `rw_semaphore`, `local_lock_t`.
+ 
+ For capabilities with an initialization function (e.g., `spin_lock_init()`),
+ calling this function on the capability instance before initializing any
+diff --git a/include/linux/local_lock.h b/include/linux/local_lock.h
+index 2ba846419524..cfdca5bee89e 100644
+--- a/include/linux/local_lock.h
++++ b/include/linux/local_lock.h
+@@ -13,13 +13,13 @@
+  * local_lock - Acquire a per CPU local lock
+  * @lock:	The lock variable
+  */
+-#define local_lock(lock)		__local_lock(this_cpu_ptr(lock))
++#define local_lock(lock)		__local_lock(__this_cpu_local_lock(lock))
+ 
+ /**
+  * local_lock_irq - Acquire a per CPU local lock and disable interrupts
+  * @lock:	The lock variable
+  */
+-#define local_lock_irq(lock)		__local_lock_irq(this_cpu_ptr(lock))
++#define local_lock_irq(lock)		__local_lock_irq(__this_cpu_local_lock(lock))
+ 
+ /**
+  * local_lock_irqsave - Acquire a per CPU local lock, save and disable
+@@ -28,19 +28,19 @@
+  * @flags:	Storage for interrupt flags
+  */
+ #define local_lock_irqsave(lock, flags)				\
+-	__local_lock_irqsave(this_cpu_ptr(lock), flags)
++	__local_lock_irqsave(__this_cpu_local_lock(lock), flags)
+ 
+ /**
+  * local_unlock - Release a per CPU local lock
+  * @lock:	The lock variable
+  */
+-#define local_unlock(lock)		__local_unlock(this_cpu_ptr(lock))
++#define local_unlock(lock)		__local_unlock(__this_cpu_local_lock(lock))
+ 
+ /**
+  * local_unlock_irq - Release a per CPU local lock and enable interrupts
+  * @lock:	The lock variable
+  */
+-#define local_unlock_irq(lock)		__local_unlock_irq(this_cpu_ptr(lock))
++#define local_unlock_irq(lock)		__local_unlock_irq(__this_cpu_local_lock(lock))
+ 
+ /**
+  * local_unlock_irqrestore - Release a per CPU local lock and restore
+@@ -49,7 +49,7 @@
+  * @flags:      Interrupt flags to restore
+  */
+ #define local_unlock_irqrestore(lock, flags)			\
+-	__local_unlock_irqrestore(this_cpu_ptr(lock), flags)
++	__local_unlock_irqrestore(__this_cpu_local_lock(lock), flags)
+ 
+ /**
+  * local_lock_init - Runtime initialize a lock instance
+@@ -64,7 +64,7 @@
+  * locking constrains it will _always_ fail to acquire the lock in NMI or
+  * HARDIRQ context on PREEMPT_RT.
+  */
+-#define local_trylock(lock)		__local_trylock(this_cpu_ptr(lock))
++#define local_trylock(lock)		__local_trylock(__this_cpu_local_lock(lock))
+ 
+ /**
+  * local_trylock_irqsave - Try to acquire a per CPU local lock, save and disable
+@@ -77,27 +77,32 @@
+  * HARDIRQ context on PREEMPT_RT.
+  */
+ #define local_trylock_irqsave(lock, flags)			\
+-	__local_trylock_irqsave(this_cpu_ptr(lock), flags)
+-
+-DEFINE_GUARD(local_lock, local_lock_t __percpu*,
+-	     local_lock(_T),
+-	     local_unlock(_T))
+-DEFINE_GUARD(local_lock_irq, local_lock_t __percpu*,
+-	     local_lock_irq(_T),
+-	     local_unlock_irq(_T))
++	__local_trylock_irqsave(__this_cpu_local_lock(lock), flags)
++
++DEFINE_LOCK_GUARD_1(local_lock, local_lock_t __percpu,
++		    local_lock(_T->lock),
++		    local_unlock(_T->lock))
++DEFINE_LOCK_GUARD_1(local_lock_irq, local_lock_t __percpu,
++		    local_lock_irq(_T->lock),
++		    local_unlock_irq(_T->lock))
+ DEFINE_LOCK_GUARD_1(local_lock_irqsave, local_lock_t __percpu,
+ 		    local_lock_irqsave(_T->lock, _T->flags),
+ 		    local_unlock_irqrestore(_T->lock, _T->flags),
+ 		    unsigned long flags)
+ 
+ #define local_lock_nested_bh(_lock)				\
+-	__local_lock_nested_bh(this_cpu_ptr(_lock))
++	__local_lock_nested_bh(__this_cpu_local_lock(_lock))
+ 
+ #define local_unlock_nested_bh(_lock)				\
+-	__local_unlock_nested_bh(this_cpu_ptr(_lock))
++	__local_unlock_nested_bh(__this_cpu_local_lock(_lock))
+ 
+-DEFINE_GUARD(local_lock_nested_bh, local_lock_t __percpu*,
+-	     local_lock_nested_bh(_T),
+-	     local_unlock_nested_bh(_T))
++DEFINE_LOCK_GUARD_1(local_lock_nested_bh, local_lock_t __percpu,
++		    local_lock_nested_bh(_T->lock),
++		    local_unlock_nested_bh(_T->lock))
++
++DECLARE_LOCK_GUARD_1_ATTRS(local_lock, __assumes_cap(_T), /* */)
++DECLARE_LOCK_GUARD_1_ATTRS(local_lock_irq, __assumes_cap(_T), /* */)
++DECLARE_LOCK_GUARD_1_ATTRS(local_lock_irqsave, __assumes_cap(_T), /* */)
++DECLARE_LOCK_GUARD_1_ATTRS(local_lock_nested_bh, __assumes_cap(_T), /* */)
+ 
+ #endif
+diff --git a/include/linux/local_lock_internal.h b/include/linux/local_lock_internal.h
+index 4c0e117d2d08..22ffaf06d9eb 100644
 --- a/include/linux/local_lock_internal.h
 +++ b/include/linux/local_lock_internal.h
-@@ -4,7 +4,9 @@
- #endif
-=20
- #include <linux/percpu-defs.h>
-+#include <linux/irqflags.h>
- #include <linux/lockdep.h>
-+#include <asm/current.h>
-=20
+@@ -10,18 +10,20 @@
+ 
  #ifndef CONFIG_PREEMPT_RT
-=20
---=20
+ 
+-typedef struct {
++struct_with_capability(local_lock) {
+ #ifdef CONFIG_DEBUG_LOCK_ALLOC
+ 	struct lockdep_map	dep_map;
+ 	struct task_struct	*owner;
+ #endif
+-} local_lock_t;
++};
++typedef struct local_lock local_lock_t;
+ 
+ /* local_trylock() and local_trylock_irqsave() only work with local_trylock_t */
+-typedef struct {
++struct_with_capability(local_trylock) {
+ 	local_lock_t	llock;
+ 	u8		acquired;
+-} local_trylock_t;
++};
++typedef struct local_trylock local_trylock_t;
+ 
+ #ifdef CONFIG_DEBUG_LOCK_ALLOC
+ # define LOCAL_LOCK_DEBUG_INIT(lockname)		\
+@@ -81,9 +83,14 @@ do {								\
+ 			      0, LD_WAIT_CONFIG, LD_WAIT_INV,	\
+ 			      LD_LOCK_PERCPU);			\
+ 	local_lock_debug_init(lock);				\
++	__assume_cap(lock);					\
+ } while (0)
+ 
+-#define __local_trylock_init(lock) __local_lock_init(lock.llock)
++#define __local_trylock_init(lock)				\
++do {								\
++	__local_lock_init(lock.llock);				\
++	__assume_cap(lock);					\
++} while (0)
+ 
+ #define __spinlock_nested_bh_init(lock)				\
+ do {								\
+@@ -94,6 +101,7 @@ do {								\
+ 			      0, LD_WAIT_CONFIG, LD_WAIT_INV,	\
+ 			      LD_LOCK_NORMAL);			\
+ 	local_lock_debug_init(lock);				\
++	__assume_cap(lock);					\
+ } while (0)
+ 
+ #define __local_lock_acquire(lock)					\
+@@ -116,22 +124,25 @@ do {								\
+ 	do {							\
+ 		preempt_disable();				\
+ 		__local_lock_acquire(lock);			\
++		__acquire(lock);				\
+ 	} while (0)
+ 
+ #define __local_lock_irq(lock)					\
+ 	do {							\
+ 		local_irq_disable();				\
+ 		__local_lock_acquire(lock);			\
++		__acquire(lock);				\
+ 	} while (0)
+ 
+ #define __local_lock_irqsave(lock, flags)			\
+ 	do {							\
+ 		local_irq_save(flags);				\
+ 		__local_lock_acquire(lock);			\
++		__acquire(lock);				\
+ 	} while (0)
+ 
+ #define __local_trylock(lock)					\
+-	({							\
++	__try_acquire_cap(lock, ({				\
+ 		local_trylock_t *tl;				\
+ 								\
+ 		preempt_disable();				\
+@@ -145,10 +156,10 @@ do {								\
+ 				(local_lock_t *)tl);		\
+ 		}						\
+ 		!!tl;						\
+-	})
++	}))
+ 
+ #define __local_trylock_irqsave(lock, flags)			\
+-	({							\
++	__try_acquire_cap(lock, ({				\
+ 		local_trylock_t *tl;				\
+ 								\
+ 		local_irq_save(flags);				\
+@@ -162,7 +173,7 @@ do {								\
+ 				(local_lock_t *)tl);		\
+ 		}						\
+ 		!!tl;						\
+-	})
++	}))
+ 
+ #define __local_lock_release(lock)					\
+ 	do {								\
+@@ -182,18 +193,21 @@ do {								\
+ 
+ #define __local_unlock(lock)					\
+ 	do {							\
++		__release(lock);				\
+ 		__local_lock_release(lock);			\
+ 		preempt_enable();				\
+ 	} while (0)
+ 
+ #define __local_unlock_irq(lock)				\
+ 	do {							\
++		__release(lock);				\
+ 		__local_lock_release(lock);			\
+ 		local_irq_enable();				\
+ 	} while (0)
+ 
+ #define __local_unlock_irqrestore(lock, flags)			\
+ 	do {							\
++		__release(lock);				\
+ 		__local_lock_release(lock);			\
+ 		local_irq_restore(flags);			\
+ 	} while (0)
+@@ -202,13 +216,19 @@ do {								\
+ 	do {							\
+ 		lockdep_assert_in_softirq();			\
+ 		local_lock_acquire((lock));			\
++		__acquire(lock);				\
+ 	} while (0)
+ 
+ #define __local_unlock_nested_bh(lock)				\
+-	local_lock_release((lock))
++	do {							\
++		__release(lock);				\
++		local_lock_release((lock));			\
++	} while (0)
+ 
+ #else /* !CONFIG_PREEMPT_RT */
+ 
++#include <linux/spinlock.h>
++
+ /*
+  * On PREEMPT_RT local_lock maps to a per CPU spinlock, which protects the
+  * critical section while staying preemptible.
+@@ -263,7 +283,7 @@ do {								\
+ } while (0)
+ 
+ #define __local_trylock(lock)					\
+-	({							\
++	__try_acquire_cap(lock, capability_unsafe(({		\
+ 		int __locked;					\
+ 								\
+ 		if (in_nmi() | in_hardirq()) {			\
+@@ -275,13 +295,36 @@ do {								\
+ 				migrate_enable();		\
+ 		}						\
+ 		__locked;					\
+-	})
++	})))
+ 
+ #define __local_trylock_irqsave(lock, flags)			\
+-	({							\
++	__try_acquire_cap(lock, ({				\
+ 		typecheck(unsigned long, flags);		\
+ 		flags = 0;					\
+ 		__local_trylock(lock);				\
+-	})
++	}))
++
++#endif /* CONFIG_PREEMPT_RT */
+ 
++#if defined(WARN_CAPABILITY_ANALYSIS)
++/*
++ * Because the compiler only knows about the base per-CPU variable, use this
++ * helper function to make the compiler think we lock/unlock the @base variable,
++ * and hide the fact we actually pass the per-CPU instance to lock/unlock
++ * functions.
++ */
++static __always_inline local_lock_t *__this_cpu_local_lock(local_lock_t __percpu *base)
++	__returns_cap(base) __attribute__((overloadable))
++{
++	return this_cpu_ptr(base);
++}
++#ifndef CONFIG_PREEMPT_RT
++static __always_inline local_trylock_t *__this_cpu_local_lock(local_trylock_t __percpu *base)
++	__returns_cap(base) __attribute__((overloadable))
++{
++	return this_cpu_ptr(base);
++}
+ #endif /* CONFIG_PREEMPT_RT */
++#else  /* WARN_CAPABILITY_ANALYSIS */
++#define __this_cpu_local_lock(base) this_cpu_ptr(base)
++#endif /* WARN_CAPABILITY_ANALYSIS */
+diff --git a/lib/test_capability-analysis.c b/lib/test_capability-analysis.c
+index 3c6dad0ba065..e506dadb3933 100644
+--- a/lib/test_capability-analysis.c
++++ b/lib/test_capability-analysis.c
+@@ -6,7 +6,9 @@
+ 
+ #include <linux/bit_spinlock.h>
+ #include <linux/build_bug.h>
++#include <linux/local_lock.h>
+ #include <linux/mutex.h>
++#include <linux/percpu.h>
+ #include <linux/rcupdate.h>
+ #include <linux/rwsem.h>
+ #include <linux/seqlock.h>
+@@ -450,3 +452,74 @@ static void __used test_srcu_guard(struct test_srcu_data *d)
+ 	guard(srcu)(&d->srcu);
+ 	(void)srcu_dereference(d->data, &d->srcu);
+ }
++
++struct test_local_lock_data {
++	local_lock_t lock;
++	int counter __guarded_by(&lock);
++};
++
++static DEFINE_PER_CPU(struct test_local_lock_data, test_local_lock_data) = {
++	.lock = INIT_LOCAL_LOCK(lock),
++};
++
++static void __used test_local_lock_init(struct test_local_lock_data *d)
++{
++	local_lock_init(&d->lock);
++	d->counter = 0;
++}
++
++static void __used test_local_lock(void)
++{
++	unsigned long flags;
++
++	local_lock(&test_local_lock_data.lock);
++	this_cpu_add(test_local_lock_data.counter, 1);
++	local_unlock(&test_local_lock_data.lock);
++
++	local_lock_irq(&test_local_lock_data.lock);
++	this_cpu_add(test_local_lock_data.counter, 1);
++	local_unlock_irq(&test_local_lock_data.lock);
++
++	local_lock_irqsave(&test_local_lock_data.lock, flags);
++	this_cpu_add(test_local_lock_data.counter, 1);
++	local_unlock_irqrestore(&test_local_lock_data.lock, flags);
++
++	local_lock_nested_bh(&test_local_lock_data.lock);
++	this_cpu_add(test_local_lock_data.counter, 1);
++	local_unlock_nested_bh(&test_local_lock_data.lock);
++}
++
++static void __used test_local_lock_guard(void)
++{
++	{ guard(local_lock)(&test_local_lock_data.lock); this_cpu_add(test_local_lock_data.counter, 1); }
++	{ guard(local_lock_irq)(&test_local_lock_data.lock); this_cpu_add(test_local_lock_data.counter, 1); }
++	{ guard(local_lock_irqsave)(&test_local_lock_data.lock); this_cpu_add(test_local_lock_data.counter, 1); }
++	{ guard(local_lock_nested_bh)(&test_local_lock_data.lock); this_cpu_add(test_local_lock_data.counter, 1); }
++}
++
++struct test_local_trylock_data {
++	local_trylock_t lock;
++	int counter __guarded_by(&lock);
++};
++
++static DEFINE_PER_CPU(struct test_local_trylock_data, test_local_trylock_data) = {
++	.lock = INIT_LOCAL_TRYLOCK(lock),
++};
++
++static void __used test_local_trylock_init(struct test_local_trylock_data *d)
++{
++	local_trylock_init(&d->lock);
++	d->counter = 0;
++}
++
++static void __used test_local_trylock(void)
++{
++	local_lock(&test_local_trylock_data.lock);
++	this_cpu_add(test_local_trylock_data.counter, 1);
++	local_unlock(&test_local_trylock_data.lock);
++
++	if (local_trylock(&test_local_trylock_data.lock)) {
++		this_cpu_add(test_local_trylock_data.counter, 1);
++		local_unlock(&test_local_trylock_data.lock);
++	}
++}
+-- 
 2.51.0.384.g4c02a37b29-goog
 
 
