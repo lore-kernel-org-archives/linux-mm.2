@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D46CFCAC59A
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 14:06:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43AD6CAC5A0
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 14:06:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 92C9B8E0139; Thu, 18 Sep 2025 10:06:46 -0400 (EDT)
+	id 2EA038E0112; Thu, 18 Sep 2025 10:06:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 88DD98E0112; Thu, 18 Sep 2025 10:06:46 -0400 (EDT)
+	id 272ED8E013A; Thu, 18 Sep 2025 10:06:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72F678E0139; Thu, 18 Sep 2025 10:06:46 -0400 (EDT)
+	id 169138E0112; Thu, 18 Sep 2025 10:06:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 596008E0112
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 10:06:46 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 317C2B6FFE
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 016308E0112
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 10:06:48 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C7694139C3D
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 14:06:48 +0000 (UTC)
+X-FDA: 83902546896.06.30D7325
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	by imf23.hostedemail.com (Postfix) with ESMTP id CA93D14000E
 	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 14:06:46 +0000 (UTC)
-X-FDA: 83902546812.19.3940772
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 2CAA412000B
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 14:06:43 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=HqGHSaGJ;
-	spf=pass (imf29.hostedemail.com: domain of 38hHMaAUKCJM18I1E3BB381.zB985AHK-997Ixz7.BE3@flex--elver.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=38hHMaAUKCJM18I1E3BB381.zB985AHK-997Ixz7.BE3@flex--elver.bounces.google.com;
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=pbrsfqPt;
+	spf=pass (imf23.hostedemail.com: domain of 39RHMaAUKCJY4BL4H6EE6B4.2ECB8DKN-CCAL02A.EH6@flex--elver.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=39RHMaAUKCJY4BL4H6EE6B4.2ECB8DKN-CCAL02A.EH6@flex--elver.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758204404;
+	s=arc-20220608; t=1758204406;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sL1ZnB6W2nYw8Er8y4+6suuUwE88jyGa8xAgZKu8urI=;
-	b=07+iWfmgWl/kgNVmvzbmyJWljAUB6MzC1HOZeMYpEWjWeTXHJ1Fn3dhV2/rmNwwFJkqy8J
-	z1Ll2ex1h6lpm/5yhg9Vh3oPP2tXCVaSdNprbhyixwcY2Y7WiBfwQWHCLCDwnHI4X/MIjy
-	vbBUbCXR83yyPn2EUQiL/6bNhzCbQto=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758204404; a=rsa-sha256;
-	cv=none;
-	b=iOD8kFnlCkWrqg8NwXJHefDtkFGEzLMQfDHD/fe38MTrw5PRNHgUcZEvSiqwcvrkIX/Wq9
-	FrZV1OIH4Il7y2G3NGB4gAw6IT/E5dI9ulXRoI9s8GnMnjyEnfb9zz0SYeJUvjL7702wjM
-	+cCxycjeDY6hg3EPYxkuoHPFYlfJokg=
+	bh=bAfkPofnq3bpowTJFISAR394BQXpDstNh3Kk+W2FONk=;
+	b=YXfg7d3ozA7LqMuM3OLDs83MVmhE6FrTPTqlkXaIGp7HPx0UKO1F8mRKrmu+Ma99aWRsea
+	xR5tR/lOYp2IBGUwsWKcrZkddqxZQBSFOxzZFUfGM6vg7MSke62+WDmZAaKDdYEWc8B29g
+	PSpbbMmR8QLMV9/4TfYzvDtTsu0ynS4=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=HqGHSaGJ;
-	spf=pass (imf29.hostedemail.com: domain of 38hHMaAUKCJM18I1E3BB381.zB985AHK-997Ixz7.BE3@flex--elver.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=38hHMaAUKCJM18I1E3BB381.zB985AHK-997Ixz7.BE3@flex--elver.bounces.google.com;
+	imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=pbrsfqPt;
+	spf=pass (imf23.hostedemail.com: domain of 39RHMaAUKCJY4BL4H6EE6B4.2ECB8DKN-CCAL02A.EH6@flex--elver.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=39RHMaAUKCJY4BL4H6EE6B4.2ECB8DKN-CCAL02A.EH6@flex--elver.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3ecdc9dbc5fso664878f8f.1
-        for <linux-mm@kvack.org>; Thu, 18 Sep 2025 07:06:43 -0700 (PDT)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758204406; a=rsa-sha256;
+	cv=none;
+	b=0vgv7clK+wldQPTfBj/VIPnRMQyl0QtHphmU1558oq0j25gaaGJ5yGc4DXP4TV+Hxc7wDK
+	wvar4kpegzoNDe7INwhGdaNEGLwB4yUDCo7cGmvbD4yPjHWLfNY/mF+/LRJ2GgoZCL5Y6V
+	Jx6e2tsKTT44sDDhJYkEGy3uQkU3Hbw=
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-45f2b0eba08so6023995e9.3
+        for <linux-mm@kvack.org>; Thu, 18 Sep 2025 07:06:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758204403; x=1758809203; darn=kvack.org;
+        d=google.com; s=20230601; t=1758204405; x=1758809205; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=sL1ZnB6W2nYw8Er8y4+6suuUwE88jyGa8xAgZKu8urI=;
-        b=HqGHSaGJG/8nEHLpxmvQbWwL6cbHYnu8EemQkK4Rm8n74seFPQuYVGzidcHHxE/h3R
-         0wABjWMNUDH2i3QEmm/mp6SDWsqyvc/2XYDk0NZIsirLSFQIBefkUOfa4p+A0+5veNZi
-         GUw9YSbfpDJPtlU7GNq4UjOyfc9ExMkLGIdbD+NyHRFWyY6Fg6EnJlUMZ/LlKFhi+Sel
-         0xtVsjQ9kpIupiSkk492p4mpC1yKE/3VaaQ2IwJ0JEWh6nN+VPXk4zlhLxyxryf8Qz7h
-         aMKBlnc2+MxbH97NKrzzwW1WxHndygOIpQD7fk2jzPIsCI58ZvK95onYtiPirhITZO6d
-         WX5A==
+        bh=bAfkPofnq3bpowTJFISAR394BQXpDstNh3Kk+W2FONk=;
+        b=pbrsfqPt1a2P7IjELbLC0Du6a97laKnNuxeVprJ1A9w9c4OMB51wjZOPnRhbK62D6y
+         31dWyg3zJLhe2f3p+0O/9M5bFaf+QV5Tl8ar/zybkIWxS88OW+L3U9Zfvn0Dbzn5VhUR
+         znVQhm4m7jxDoPPj73XfP9Rbub/avbXFAGBZcRi+VDg9V4fh9hftp5HfPfi//1lQ7Esd
+         55yh6iS9cVYa47FTjGxQWfj28m3WpBiGyrjIyPHOTT2moprGtfLEaGLTbWDWUDaiFBwH
+         gLVbyy+UVJ9TghIccD9VT6iVm2XIgt8XZ3F84COoPhTPsw9WmK84hNphksLSHE8DTe/g
+         20NQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758204403; x=1758809203;
+        d=1e100.net; s=20230601; t=1758204405; x=1758809205;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=sL1ZnB6W2nYw8Er8y4+6suuUwE88jyGa8xAgZKu8urI=;
-        b=xGYtztx7f49gq6/YERyHnRiWlGF7KtuwXBnSDwddceegoIABdpq37WYdDAFKBJIJgx
-         P8abT5sBxr2FTK43XOyxEqvLnMBZbk7gJPOY744jr20d8wCgLkLuVvdVszwz5VoN/TKl
-         z53u9w96IAlZdbN7Ia8dtOGjpmUICClynNNcuJ0o+a+lG3I9b6aR+jeipyFltUGSlemA
-         RQJtEzVR9EG3Z1qFP+IVIw8Td4c/aJU5OHpW0143FzU+nFKp1XTe9MmX5JPGVZ6t+MZc
-         x1MnE+1vBmk116kb/pM+wu8NrkScQ8/MD6TjUFjlqKyw2AbHBh4itmO8DcjhhqbDOwkw
-         OOIw==
-X-Forwarded-Encrypted: i=1; AJvYcCVQsYVz75rowrnLytvGehMnLXDFL/7ALReu3SSR00YD5cDQg44L5UeTLewVyLVduHIm2Pbsu2xtBg==@kvack.org
-X-Gm-Message-State: AOJu0Yzk7mfM5QNXTDpXhGzm4TZx+kssX53tBMfgctftmAQoZ4sYRRgp
-	xmCsJY9sYbT5UaC14rY3bmXNbme3nqg5usDcup3fAdbbGgydnUlQinswDNRjc8d7aG8UFr2sfkt
-	fZw==
-X-Google-Smtp-Source: AGHT+IFq6l1CqjXgiNcBcWNKL6xEs9xR+qatYFXvzs00KaeAWl/w3hKbHi7xezdlgvdVg1z76xYInw8SeQ==
-X-Received: from wmbec10.prod.google.com ([2002:a05:600c:610a:b0:45f:2d3b:d046])
- (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a5d:508f:0:b0:3ec:e226:d458
- with SMTP id ffacd0b85a97d-3ece226d48dmr3622785f8f.0.1758204402649; Thu, 18
- Sep 2025 07:06:42 -0700 (PDT)
-Date: Thu, 18 Sep 2025 15:59:39 +0200
+        bh=bAfkPofnq3bpowTJFISAR394BQXpDstNh3Kk+W2FONk=;
+        b=MLV+GLyXccjQhoX1+/hsZOdardcR+ZmBxikyGhHlUz4wsnvgguwEZg4v7yFzpMJZAP
+         meutxphuzaR+dIvHhe4m7uRN+vrjsn49f99VYfa26ETzEiG6jAbrLxCj3tiDIvZ9SCJO
+         RNUgJWrL+Ps0Fi2+2DRRvhK8RUyf7/sl6mJiKsPAFG74XcuS69TExa/Xc5ghTEQn2sIa
+         9KJofNmmkEO2q4a3GXbAM4O8i7kI/h/0mTIhH8CWYH8kX45EA7tuYDEulGxyJaxYOtZO
+         zZJGEG0Bd2M38SvS+1J8ifdpGF30tEOPGLCDvGnlaNqPNvz/9kRfljf8BRDf7ZcF7xrq
+         Awog==
+X-Forwarded-Encrypted: i=1; AJvYcCWb8R7L9Ib6YmbEF9AoXrirJtdZOQ5b70VdoewW3j/sl8k+Agweg6sgGyTxGXwwBJdxVEhIhtuMQg==@kvack.org
+X-Gm-Message-State: AOJu0YzIW0oRXO5VE7d61/YQYQsSAnFVmES4WnUQ6EV2QKaVRfMQmEvt
+	G5l1epUtz5N3qgSU0Ci/bJIg0U3rzU1Z6FjcaZY2nxqpCmQVHH27kcM64LEyRiwjAgJzZLz3Y+D
+	PCQ==
+X-Google-Smtp-Source: AGHT+IHCd+6pMztfopQyMqTVF5ILMdjFqjMumE3Akb/gsh5QUO16zCcVDRf5E/33xR5ffjMWNycUEXU4ag==
+X-Received: from wmbfp9.prod.google.com ([2002:a05:600c:6989:b0:45f:27a7:738d])
+ (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:4ed1:b0:45d:dae8:b137
+ with SMTP id 5b1f17b1804b1-46205cc86damr55535755e9.22.1758204405297; Thu, 18
+ Sep 2025 07:06:45 -0700 (PDT)
+Date: Thu, 18 Sep 2025 15:59:40 +0200
 In-Reply-To: <20250918140451.1289454-1-elver@google.com>
 Mime-Version: 1.0
 References: <20250918140451.1289454-1-elver@google.com>
 X-Mailer: git-send-email 2.51.0.384.g4c02a37b29-goog
-Message-ID: <20250918140451.1289454-29-elver@google.com>
-Subject: [PATCH v3 28/35] kcov: Enable capability analysis
+Message-ID: <20250918140451.1289454-30-elver@google.com>
+Subject: [PATCH v3 29/35] kcsan: Enable capability analysis
 From: Marco Elver <elver@google.com>
 To: elver@google.com, Peter Zijlstra <peterz@infradead.org>, 
 	Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>
@@ -113,14 +113,14 @@ Cc: "David S. Miller" <davem@davemloft.net>, Luc Van Oostenryck <luc.vanoostenry
 	linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org, 
 	llvm@lists.linux.dev, rcu@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: s4yodc3n4ki9ntca36x6ah9xrigsks61
-X-Rspamd-Queue-Id: 2CAA412000B
+X-Rspamd-Queue-Id: CA93D14000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1758204403-791100
-X-HE-Meta: U2FsdGVkX187rlnerI0XC8mHuX0tfb+T67l78h1UBexdTbDp+DPyYyWZb2LhuVlPuj1o20zQbOGJyayseu6AaTEWFw2eKFFqu4g5pM9rDRUWEasZSkzli6BYMOZsoXpo5tR9/hporSfvW02GWcgauKfoRLH7DfhwwhmN7ZIe5QNLRtzmDNqImNAId1TQ1I1koeJtDH0ZkbnXgnRv8JJpy3JaVq15UowWAr2NVUvLAzcEfkS1MRwXomHRlSn3pK/rrM2t+nZMD8rKTIrdtmnD3m089ICDF4fdtnouHkD0WN/vdh4MSGIQ87l3mcSb0XZBA+dUUxBetMtlN/K1Mq1dN2Uotr4oqcrmaG3jfJqwsCR5HhFW5vsfskG1k3tEhN5tAN5x8Tnryf8ojLgTXrMQjMSgWOfL/90dEy1Alw+iOUrmRxqV7z0gpeqJ7QXBbkfEGAr/IPIY7TLAYN6tFYXmWs2W1WEfk0TCYLfUbGMS4TbJrsvryBsT7MfNshSZyH2FjKzcZZZpLrAQp1u/aE8U8X8ms7y2nsbgC/XX4TM/cX5KKX9i36Eg7dho5tz11U+r6G86o44XmxuboMyPpHcJKXE3XCNX0Vg3HJMj5ZEv8k92Mg348KtYELVKXR0yN8tyI//MobmB5zlaxfwBi8EtH65UvN0IQDod24JiIkcat7ERVSC0LqPxU/WZLPvPWsN/dFsAym+7e9D3hn8Li2iQP3unWXR2C2wgTtdvAzI05e/i7K+DERkRlFIkVyb8jHldewmEFo1h9GHzHhVh7QiwVVrO7WKsNG/NEZmyMySbqJSw2y4ctuD9FuABPLEDw7PlUljhTIBskW2qI3uBax4nmnIstiCcDr8RTp/RkTnIhF38Nejg42dT7kZBFvKUXEW9jaA5m8zBxQ94Xn2kw5dHNHygkv8O2x6D7RmOU/KW3vHOCFR6lksD0rVQxEGg6Liu50yc2q/ElQlNgr6nLYs
- HU3+vnBW
- KaKFcchRw3uxkB4ZcuzlIQtCiEMq3rL1OevW4W72xFm3pyHOArWlozHJfeW2p1UWMU4dL8r7gPu0PcP+LBHKQ41vJ4Yw7jx8waYJQHlE5ESL9YgRE4M64zHMrO+wMkiZWp5HDQ645IkPtgMsUmwdnkwVr3Gp3iKPpJ28JEiJSKiOuklNMPicpP7MS0bRR+Xiu/KtEwP1bJekarEhkLTVPDm0usB/NVmY9XnRlqkqCWvbIJ3cI07c+2TfPZTq0k0/GQStNlS5pSDMW3lchOnabk0uDcPLE1M+rfDu7QXuidWzlcyswd9q0LtS82q6WMZsxzQ+ZISKwNIGCGokJtlpkIXRb0fvY7VUy93Sq7Ny7JN+qyk4ADyNuP+n1qmSiJq2xbHEmXsJmQRW1l+AShcHXDnYNJtCs5gpFcsKl5HbBeUaFFxKx4ekJjq8qxD8boWLaUPtUcqy+9YimcwxeCvkLRu6N4B6ejUqVoA91fn/yGj8k1299Civn+odfejvuanlRCRa28g2i9thCzoRnQXsAp6nEXDjtKUgKMbiHMlzUfe0TIWsxRmPOc/oPDJ9lXkDe0jy8vnlI/UyaSUTasW8pSI6DMAwCECEIjPxPSIpqT08kqSU=
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 7q3i3mzgxsw3wjtjhaakfiyu8bw1xopy
+X-HE-Tag: 1758204406-392932
+X-HE-Meta: U2FsdGVkX1+vfG+oULGwoQUNeTPG83PAZKlH1/SZ07xs9wf1RbEi4/v417IBjhJddebxtfuq3N/T+uIvMM64r10vXcebEzmwSmCYEXXhC/H4pcxIfRCpbIRXbqLCPIHXS7yJXj2LHkiGsPScwsO9TTEBUFaBIofejc1TZeOnwx7jHycY5wIFJ3yb1deX1Y63MIctC/+9A5CHco0mbIZyM0cry/Yj/hU2eX7bRJhSICjViYNUfrBVAHYzIlVzBBZlF1KhyC5awPy+EMXCtvnCIxZF3oHpi4iNkTxeh34JJNv78UpafQmoPbPRgYNLb4JZ7TchoGCzQIJVAQC+yCPIJyugGUNIBTCllvxA1HBiGMWl+76nyIjzlIWaGPtq22pkq4KtzXl4GViDygJJK9vN9ytXusN+CIxXLsCe4pPs1y2IbRvUGj4j/PRWnmA0kny+N+U3efvOIF/0HDT/8c955YraoYRlEBmRvI/geN7DkXh1QimDCBWjf4baikxwoYqi0vpeWJTCEYQxaxco6F9MfgKLvI6YyblqZQMLS9gyy87OfR8gO5zpcvEKga9X/wIQLkOE6tfOegwXxADU7nPOq+nHL7RtGAF/CgY6UCEc+gk7BF9L+F2YZeY/tEII7NQkC7C17lkELTy7Pk2b8ReJWjgzTepudIExoHsKpyKs7WFEvgFxVkLsAuiCaITY42R8K0bgTb/0UrwRY2E/V5sWjaad+zMYvVBGmfmJDej54W8YTZ19LtpWyvsDqkik9/osSPFJ1UgAhI7oCxY5Kj29Y0Jz/mo8mClkuRBR4zxfZknh8EKGnP1KokVpMXOWsEZBO21hMxw3aW/8Sw7n4Om3oFOLS7rKYd9uRsEKYdDhUEnvJkWCfFEmZl5cNGa91m4LLpg6+zNw3/fthsBsrxDUsazQJ+wQRcJ0vF5IJGfQIwI7MII5w1C2mDHuTA91pMsVxigkdDEBESOYlZReqXV
+ j1T0vnjm
+ oii8lc0eGmkoSFxejx+IBnzY1AJF1cTZVqMueupQCxWWZgq3e5YjkQrcx3ObVAEjebeS1SOPV8u6deyqjRhamOJVKgQ+gSzwsuybbQJx1X6JCBnf1U+JLdqUT/PUtLat1pfYEWHG9bqb3DvJHz1BrM4F4ALEuwg/1kaRYNI9m2pzdhFS86POd2gtvLtcj404k21V5qPIPbZgwT1auVtFOnRu6KG+RrOE73u6zen9lR6w3U+30HhtwIozwfFJxWEktHiWPK9T0Iq+Y1tA/jF3dYFv9dBuDuTgKgeHWHW8ckHJVZSTlTEuR+PO33AZPRfbDnpalvU5NyO3VQixXhG0n/GaGemYIbA76abqcwQllBFcd54cj0TI6T0sX0PbsnG6jGPE+W5htKmnFdBcae36BfNhydMn1O80JIQHFUqjKPI0uACD+GQd+bMTCZaAZrjUz09NmueI6bUrTxCtxect0C82g9FvIJ/SQetns/XMrzdoZam573e2/mWm1H3pnFVR8jfzHOAhTPIrZt4UWtTeWVV3DhmDfgmcbeSeADZTmJN7Yg6CjDryLtYRedh8Mo39tb3Tr
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,171 +129,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Enable capability analysis for the KCOV subsystem.
+Enable capability analysis for the KCSAN subsystem.
 
 Signed-off-by: Marco Elver <elver@google.com>
 ---
-v2:
-* Remove disable/enable_capability_analysis() around headers.
+v3:
+* New patch.
 ---
- kernel/Makefile |  2 ++
- kernel/kcov.c   | 36 +++++++++++++++++++++++++-----------
- 2 files changed, 27 insertions(+), 11 deletions(-)
+ kernel/kcsan/Makefile |  2 ++
+ kernel/kcsan/report.c | 11 ++++++++---
+ 2 files changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/Makefile b/kernel/Makefile
-index c60623448235..2a2a10c6a197 100644
---- a/kernel/Makefile
-+++ b/kernel/Makefile
-@@ -43,6 +43,8 @@ KASAN_SANITIZE_kcov.o := n
- KCSAN_SANITIZE_kcov.o := n
- UBSAN_SANITIZE_kcov.o := n
- KMSAN_SANITIZE_kcov.o := n
+diff --git a/kernel/kcsan/Makefile b/kernel/kcsan/Makefile
+index a45f3dfc8d14..b088aa01409f 100644
+--- a/kernel/kcsan/Makefile
++++ b/kernel/kcsan/Makefile
+@@ -1,4 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0
++CAPABILITY_ANALYSIS := y
 +
-+CAPABILITY_ANALYSIS_kcov.o := y
- CFLAGS_kcov.o := $(call cc-option, -fno-conserve-stack) -fno-stack-protector
- 
- obj-y += sched/
-diff --git a/kernel/kcov.c b/kernel/kcov.c
-index 1d85597057e1..1897c8ca6209 100644
---- a/kernel/kcov.c
-+++ b/kernel/kcov.c
-@@ -55,13 +55,13 @@ struct kcov {
- 	refcount_t		refcount;
- 	/* The lock protects mode, size, area and t. */
- 	spinlock_t		lock;
--	enum kcov_mode		mode;
-+	enum kcov_mode		mode __guarded_by(&lock);
- 	/* Size of arena (in long's). */
--	unsigned int		size;
-+	unsigned int		size __guarded_by(&lock);
- 	/* Coverage buffer shared with user space. */
--	void			*area;
-+	void			*area __guarded_by(&lock);
- 	/* Task for which we collect coverage, or NULL. */
--	struct task_struct	*t;
-+	struct task_struct	*t __guarded_by(&lock);
- 	/* Collecting coverage from remote (background) threads. */
- 	bool			remote;
- 	/* Size of remote area (in long's). */
-@@ -391,6 +391,7 @@ void kcov_task_init(struct task_struct *t)
- }
- 
- static void kcov_reset(struct kcov *kcov)
-+	__must_hold(&kcov->lock)
- {
- 	kcov->t = NULL;
- 	kcov->mode = KCOV_MODE_INIT;
-@@ -400,6 +401,7 @@ static void kcov_reset(struct kcov *kcov)
- }
- 
- static void kcov_remote_reset(struct kcov *kcov)
-+	__must_hold(&kcov->lock)
- {
- 	int bkt;
- 	struct kcov_remote *remote;
-@@ -419,6 +421,7 @@ static void kcov_remote_reset(struct kcov *kcov)
- }
- 
- static void kcov_disable(struct task_struct *t, struct kcov *kcov)
-+	__must_hold(&kcov->lock)
- {
- 	kcov_task_reset(t);
- 	if (kcov->remote)
-@@ -435,8 +438,11 @@ static void kcov_get(struct kcov *kcov)
- static void kcov_put(struct kcov *kcov)
- {
- 	if (refcount_dec_and_test(&kcov->refcount)) {
--		kcov_remote_reset(kcov);
--		vfree(kcov->area);
-+		/* Capability-safety: no references left, object being destroyed. */
-+		capability_unsafe(
-+			kcov_remote_reset(kcov);
-+			vfree(kcov->area);
-+		);
- 		kfree(kcov);
- 	}
- }
-@@ -491,6 +497,7 @@ static int kcov_mmap(struct file *filep, struct vm_area_struct *vma)
- 	unsigned long size, off;
- 	struct page *page;
- 	unsigned long flags;
-+	unsigned long *area;
- 
- 	spin_lock_irqsave(&kcov->lock, flags);
- 	size = kcov->size * sizeof(unsigned long);
-@@ -499,10 +506,11 @@ static int kcov_mmap(struct file *filep, struct vm_area_struct *vma)
- 		res = -EINVAL;
- 		goto exit;
- 	}
-+	area = kcov->area;
- 	spin_unlock_irqrestore(&kcov->lock, flags);
- 	vm_flags_set(vma, VM_DONTEXPAND);
- 	for (off = 0; off < size; off += PAGE_SIZE) {
--		page = vmalloc_to_page(kcov->area + off);
-+		page = vmalloc_to_page(area + off);
- 		res = vm_insert_page(vma, vma->vm_start + off, page);
- 		if (res) {
- 			pr_warn_once("kcov: vm_insert_page() failed\n");
-@@ -522,10 +530,10 @@ static int kcov_open(struct inode *inode, struct file *filep)
- 	kcov = kzalloc(sizeof(*kcov), GFP_KERNEL);
- 	if (!kcov)
- 		return -ENOMEM;
-+	spin_lock_init(&kcov->lock);
- 	kcov->mode = KCOV_MODE_DISABLED;
- 	kcov->sequence = 1;
- 	refcount_set(&kcov->refcount, 1);
--	spin_lock_init(&kcov->lock);
- 	filep->private_data = kcov;
- 	return nonseekable_open(inode, filep);
- }
-@@ -556,6 +564,7 @@ static int kcov_get_mode(unsigned long arg)
-  * vmalloc fault handling path is instrumented.
+ KCSAN_SANITIZE := n
+ KCOV_INSTRUMENT := n
+ UBSAN_SANITIZE := n
+diff --git a/kernel/kcsan/report.c b/kernel/kcsan/report.c
+index e95ce7d7a76e..11a48b78f8d1 100644
+--- a/kernel/kcsan/report.c
++++ b/kernel/kcsan/report.c
+@@ -116,6 +116,7 @@ static DEFINE_RAW_SPINLOCK(report_lock);
+  * been reported since (now - KCSAN_REPORT_ONCE_IN_MS).
   */
- static void kcov_fault_in_area(struct kcov *kcov)
-+	__must_hold(&kcov->lock)
+ static bool rate_limit_report(unsigned long frame1, unsigned long frame2)
++	__must_hold(&report_lock)
  {
- 	unsigned long stride = PAGE_SIZE / sizeof(unsigned long);
- 	unsigned long *area = kcov->area;
-@@ -584,6 +593,7 @@ static inline bool kcov_check_handle(u64 handle, bool common_valid,
+ 	struct report_time *use_entry = &report_times[0];
+ 	unsigned long invalid_before;
+@@ -366,6 +367,7 @@ static int sym_strcmp(void *addr1, void *addr2)
  
- static int kcov_ioctl_locked(struct kcov *kcov, unsigned int cmd,
- 			     unsigned long arg)
-+	__must_hold(&kcov->lock)
+ static void
+ print_stack_trace(unsigned long stack_entries[], int num_entries, unsigned long reordered_to)
++	__must_hold(&report_lock)
  {
- 	struct task_struct *t;
- 	unsigned long flags, unused;
-@@ -814,6 +824,7 @@ static inline bool kcov_mode_enabled(unsigned int mode)
+ 	stack_trace_print(stack_entries, num_entries, 0);
+ 	if (reordered_to)
+@@ -373,6 +375,7 @@ print_stack_trace(unsigned long stack_entries[], int num_entries, unsigned long
  }
  
- static void kcov_remote_softirq_start(struct task_struct *t)
-+	__must_hold(&kcov_percpu_data.lock)
+ static void print_verbose_info(struct task_struct *task)
++	__must_hold(&report_lock)
  {
- 	struct kcov_percpu_data *data = this_cpu_ptr(&kcov_percpu_data);
- 	unsigned int mode;
-@@ -831,6 +842,7 @@ static void kcov_remote_softirq_start(struct task_struct *t)
+ 	if (!task)
+ 		return;
+@@ -389,6 +392,7 @@ static void print_report(enum kcsan_value_change value_change,
+ 			 const struct access_info *ai,
+ 			 struct other_info *other_info,
+ 			 u64 old, u64 new, u64 mask)
++	__must_hold(&report_lock)
+ {
+ 	unsigned long reordered_to = 0;
+ 	unsigned long stack_entries[NUM_STACK_ENTRIES] = { 0 };
+@@ -496,6 +500,7 @@ static void print_report(enum kcsan_value_change value_change,
  }
  
- static void kcov_remote_softirq_stop(struct task_struct *t)
-+	__must_hold(&kcov_percpu_data.lock)
+ static void release_report(unsigned long *flags, struct other_info *other_info)
++	__releases(&report_lock)
  {
- 	struct kcov_percpu_data *data = this_cpu_ptr(&kcov_percpu_data);
- 
-@@ -896,10 +908,12 @@ void kcov_remote_start(u64 handle)
- 	/* Put in kcov_remote_stop(). */
- 	kcov_get(kcov);
  	/*
--	 * Read kcov fields before unlock to prevent races with
--	 * KCOV_DISABLE / kcov_remote_reset().
-+	 * Read kcov fields before unlocking kcov_remote_lock to prevent races
-+	 * with KCOV_DISABLE and kcov_remote_reset(); cannot acquire kcov->lock
-+	 * here, because it might lead to deadlock given kcov_remote_lock is
-+	 * acquired _after_ kcov->lock elsewhere.
- 	 */
--	mode = kcov->mode;
-+	mode = capability_unsafe(kcov->mode);
- 	sequence = kcov->sequence;
- 	if (in_task()) {
- 		size = kcov->remote_size;
+ 	 * Use size to denote valid/invalid, since KCSAN entirely ignores
+@@ -507,13 +512,11 @@ static void release_report(unsigned long *flags, struct other_info *other_info)
+ 
+ /*
+  * Sets @other_info->task and awaits consumption of @other_info.
+- *
+- * Precondition: report_lock is held.
+- * Postcondition: report_lock is held.
+  */
+ static void set_other_info_task_blocking(unsigned long *flags,
+ 					 const struct access_info *ai,
+ 					 struct other_info *other_info)
++	__must_hold(&report_lock)
+ {
+ 	/*
+ 	 * We may be instrumenting a code-path where current->state is already
+@@ -572,6 +575,7 @@ static void set_other_info_task_blocking(unsigned long *flags,
+ static void prepare_report_producer(unsigned long *flags,
+ 				    const struct access_info *ai,
+ 				    struct other_info *other_info)
++	__must_not_hold(&report_lock)
+ {
+ 	raw_spin_lock_irqsave(&report_lock, *flags);
+ 
+@@ -603,6 +607,7 @@ static void prepare_report_producer(unsigned long *flags,
+ static bool prepare_report_consumer(unsigned long *flags,
+ 				    const struct access_info *ai,
+ 				    struct other_info *other_info)
++	__cond_acquires(true, &report_lock)
+ {
+ 
+ 	raw_spin_lock_irqsave(&report_lock, *flags);
 -- 
 2.51.0.384.g4c02a37b29-goog
 
