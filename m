@@ -4,96 +4,153 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD22FCAC5A0
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 13:11:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4F1ACAC59A
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 13:13:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 12CC7280033; Thu, 18 Sep 2025 09:11:19 -0400 (EDT)
+	id 26C918E0109; Thu, 18 Sep 2025 09:13:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0DD9F8E0093; Thu, 18 Sep 2025 09:11:19 -0400 (EDT)
+	id 21C388E0093; Thu, 18 Sep 2025 09:13:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 01AA2280033; Thu, 18 Sep 2025 09:11:18 -0400 (EDT)
+	id 0E3F58E0109; Thu, 18 Sep 2025 09:13:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E68CA8E0093
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 09:11:18 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AE0041A01B4
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 13:11:18 +0000 (UTC)
-X-FDA: 83902407036.16.3FAF136
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf15.hostedemail.com (Postfix) with ESMTP id EB697A000D
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 13:11:16 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=none;
-	spf=pass (imf15.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EE6F88E0093
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 09:13:44 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1D94B1601C4
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 13:13:43 +0000 (UTC)
+X-FDA: 83902413126.01.A1CF5A4
+Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
+	by imf29.hostedemail.com (Postfix) with ESMTP id F36E3120008
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 13:13:40 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm1 header.b=1ak7ojNe;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="N 58W3tD";
+	spf=pass (imf29.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.156 as permitted sender) smtp.mailfrom=arnd@arndb.de;
+	dmarc=pass (policy=none) header.from=arndb.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758201077;
+	s=arc-20220608; t=1758201221;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DyvhVj8MyvPGIpi2WKd0Wnd6mVC3QRyMqTf61T/MPoc=;
-	b=IF0lEeQ8sYqc5zwsdT0t6NpTuhXW3/AYho/IqPaSUcwEr9GEzTF9Jg4vhkOVNfYGKhbZPm
-	3fuizPmH0IkBxTIQBS45Fol4jTJsXFEWBTjSeRGiY7qD3FO7ZcHFLuPhJ0j2gJBUpVbsTK
-	ULL6oQm+SD6uR31BbtfF6lhGHwFd7VE=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=pLSf0bVUw5MCqJYDkX+vxsx4UdqQkDXJOmyg/3GZX6I=;
+	b=8O4ZxY05R3pAY1eBscCVVbgsbE/K0uzCw5selCGRw78cE64gaRY71HGQVmu1M7qiyHQ+OL
+	yimqc7BHNANTE1oRvLK2L2ogQ05ZYduICCD76Yc7dsfcqV4vOpKSnfIEqiHqSmVG2zkMk5
+	RRBtilgopaPThMd7CSrTRKJ+SxLeS1I=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=none;
-	spf=pass (imf15.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758201077; a=rsa-sha256;
+	imf29.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm1 header.b=1ak7ojNe;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="N 58W3tD";
+	spf=pass (imf29.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.156 as permitted sender) smtp.mailfrom=arnd@arndb.de;
+	dmarc=pass (policy=none) header.from=arndb.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758201221; a=rsa-sha256;
 	cv=none;
-	b=FR7BI5iIKsldkBihtI8ij07igweqYbc3gBrWn5cKpuRTJN+Hqhn7vrvgxlaT9pnaDZjYg+
-	xmLX0CcN5BBNG4irVRALjhceXhX8nGyxl2M0JFbXzpNpRf37S58VuA48IA2svhPg3uw8mG
-	jgKYg8+fUTMqLBuQBvnYBDawVI8CFRY=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AA4531A25;
-	Thu, 18 Sep 2025 06:11:07 -0700 (PDT)
-Received: from [10.1.33.171] (XHFQ2J9959.cambridge.arm.com [10.1.33.171])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6ACD93F66E;
-	Thu, 18 Sep 2025 06:11:12 -0700 (PDT)
-Message-ID: <4bb35dc4-4c28-4e0e-a06f-70782264cc5c@arm.com>
-Date: Thu, 18 Sep 2025 14:11:10 +0100
+	b=NTaMqOiU6UygG8K4EEEgni01XBsQL0sWYNXeyslr9OWnZrcaRcTkMvmi+IkEcQlqVXMA1t
+	w2AKWeIKdWyQUrg2I70lShmowwdJglPy7omIogxUTx2ztcvjhZygbs8i0HsqVLQePy6PVW
+	VaEEbGTxA4WsrIVPCTYpz0v8oJRYzFU=
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 4D4921400123;
+	Thu, 18 Sep 2025 09:13:40 -0400 (EDT)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-05.internal (MEProxy); Thu, 18 Sep 2025 09:13:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1758201220;
+	 x=1758287620; bh=pLSf0bVUw5MCqJYDkX+vxsx4UdqQkDXJOmyg/3GZX6I=; b=
+	1ak7ojNef1e3g67ZCzGe8Cr86CQBJ+FtYUUdZ98wga8fH+3vuc+RwkTppRISmifj
+	TUQF2YYM9tYsbtzlw4/SjUUoGGdmMBn5Tx06zjVUjlInz+zUP3GqpAoEjzvsx869
+	wddDDt+HjXSiHs17uF5aM1hYdPjyFfy6k5SzRR6jWICdWQiEVv359WWJgj132jJJ
+	07v99j6h/aqeBEffHIyXve8yXE+JF2yzFo9WhjAf903RFRHGDj74a+pThncDZ43U
+	cChz0t8T2JlvSu/bhlxR1hPt7TnIjh7DK2BI84tuHaRAr5IdA5Jn/e/MNKeBZUvX
+	Ow885bcZSVPcmIgNRzukfQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1758201220; x=
+	1758287620; bh=pLSf0bVUw5MCqJYDkX+vxsx4UdqQkDXJOmyg/3GZX6I=; b=N
+	58W3tD5qawBw1eKsBN+kr6ZcUHb/ofQFbLKmLhZdv+qguzRhHYAyDLKSfwESXhrf
+	aIY6l97xj+oglomqiNtEG7VTMJ9wGTjdZMtSQXPvA0EL9TgggVm3rQC5HzIiRV2m
+	5xDJYwe8g7qsIUc9Kj38PQcYSOITY0LVGaKueq50doFP6bW244OFrN22sPeENXIY
+	jA1EycAhUpQLSIWjFRVFE+zrgWjqWlsWl40HCwEKhwWQaCWvW/njRnEmJDgdvYsK
+	zw0up4/m7eOD9/kuy1jxPa2+IOIk6ItpAJZUa8eKMXOtJiiJT+cAySSGyZ4hEycm
+	gElUUMqK3gL3+zK38/pmw==
+X-ME-Sender: <xms:ggXMaPqxmIxuS57jlyxuYXMmHn12czYQdlZwV1PqJq6k9KYeiwbKhQ>
+    <xme:ggXMaJp_WDMqihTWUxA0KZ9pJgwdVmKsCp-Vn1fdREcdFTwl75fs0leTwW73akmHR
+    JcpMICm3hi5jq9-VNY>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdegieegvdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhhnugcu
+    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
+    hnpefhtdfhvddtfeehudekteeggffghfejgeegteefgffgvedugeduveelvdekhfdvieen
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
+    esrghrnhgusgdruggvpdhnsggprhgtphhtthhopedvledpmhhouggvpehsmhhtphhouhht
+    pdhrtghpthhtoheptghhvghsthgvrhdrrgdruhhnrghlsegrrhhinhgtledrtghomhdprh
+    gtphhtthhopegthhhrihhsthhophhhvgdrlhgvrhhohiestghsghhrohhuphdrvghupdhr
+    tghpthhtoheprghnughrvggrshesghgrihhslhgvrhdrtghomhdprhgtphhtthhopehgvg
+    gvrhhtodhrvghnvghsrghssehglhhiuggvrhdrsggvpdhrtghpthhtoheprghlvgigrghn
+    uggvrhdrshhvvghrughlihhnsehgmhgrihhlrdgtohhmpdhrtghpthhtohepshgvrhhgih
+    hordhprghrrggtuhgvlhhlohhssehgmhgrihhlrdgtohhmpdhrtghpthhtohepshhurhgv
+    nhgssehgohhoghhlvgdrtghomhdprhgtphhtthhopeifihhllhihsehinhhfrhgruggvrg
+    gurdhorhhgpdhrtghpthhtohepihhrrgdrfigvihhnhiesihhnthgvlhdrtghomh
+X-ME-Proxy: <xmx:ggXMaPyueOXB7yEQObwBgenAb7JQTgJqnB9NOI6UKzHpBn4i9VSQEg>
+    <xmx:ggXMaOPqe_O8XUcPksli8MZC-GvW0FcpQCzBR-ts3xEmFaWKO-kRlw>
+    <xmx:ggXMaPyfz-9UNPjw4MTfZh2k7kwzHQF2IHlbqQH8wuFNANzoleY-xA>
+    <xmx:ggXMaICP5uqRm6gPGSMpHGW8PXzZmSwLVbGztYAkXSxcjxhxDrjnJw>
+    <xmx:hAXMaDehpAP39-4S3Q408oZS3Swdc4rSB0uIxx1VQvIAhJfZ8ILlFImQ>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 85F7270006B; Thu, 18 Sep 2025 09:13:38 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 2/2] arm64, tlbflush: don't TLBI broadcast if page
- reused in write fault
-Content-Language: en-GB
-To: "Huang, Ying" <ying.huang@linux.alibaba.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Yang Shi <yang@os.amperecomputing.com>,
- "Christoph Lameter (Ampere)" <cl@gentwo.org>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Anshuman Khandual
- <anshuman.khandual@arm.com>, Yicong Yang <yangyicong@hisilicon.com>,
- Kefeng Wang <wangkefeng.wang@huawei.com>,
- Kevin Brodsky <kevin.brodsky@arm.com>,
- Yin Fengwei <fengwei_yin@linux.alibaba.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-References: <20250915032946.33203-1-ying.huang@linux.alibaba.com>
- <20250915032946.33203-3-ying.huang@linux.alibaba.com>
- <46dcddec-88a9-4b22-920c-8a3edeb2f027@arm.com>
- <87o6r833li.fsf@DESKTOP-5N7EMDA>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <87o6r833li.fsf@DESKTOP-5N7EMDA>
-Content-Type: text/plain; charset=UTF-8
+X-ThreadId: AneuvEk2E7Kg
+Date: Thu, 18 Sep 2025 15:12:46 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Jason Gunthorpe" <jgg@nvidia.com>
+Cc: ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ linux-mips@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev,
+ "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+ "Richard Weinberger" <richard@nod.at>,
+ "Lucas Stach" <l.stach@pengutronix.de>,
+ "Linus Walleij" <linus.walleij@linaro.org>,
+ "Geert Uytterhoeven" <geert+renesas@glider.be>,
+ "Ankur Arora" <ankur.a.arora@oracle.com>,
+ "David Hildenbrand" <david@redhat.com>,
+ "Mike Rapoport" <rppt@kernel.org>,
+ "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
+ "Matthew Wilcox" <willy@infradead.org>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ "Vlastimil Babka" <vbabka@suse.cz>,
+ "Suren Baghdasaryan" <surenb@google.com>,
+ "Ira Weiny" <ira.weiny@intel.com>, "Nishanth Menon" <nm@ti.com>,
+ =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
+ "Alexander Sverdlin" <alexander.sverdlin@gmail.com>,
+ "Chester A. Unal" <chester.a.unal@arinc9.com>,
+ "Sergio Paracuellos" <sergio.paracuellos@gmail.com>,
+ "Andreas Larsson" <andreas@gaisler.com>
+Message-Id: <02b0f383-1c43-4eeb-a76f-830c2970b833@app.fastmail.com>
+In-Reply-To: <20250917125951.GA1390993@nvidia.com>
+References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
+ <20250917125951.GA1390993@nvidia.com>
+Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: EB697A000D
+X-Rspamd-Queue-Id: F36E3120008
+X-Stat-Signature: ifxdops6f9r6m6jb5u6sagrzxftfky4h
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: t35183yzzrt6jn45z7sjc4og6h4scb1w
-X-HE-Tag: 1758201076-348255
-X-HE-Meta: U2FsdGVkX1/U/koenNFAOhmEuE891kymVHUr9jjdWN2+TAWRZmKncxvaSfgAXIarT16MCaEG9TUL+isVPZncg/IuOduSuJbg4AAdfijK5dY4jzzIewZ2Yzi1T7zpZK8AIAlUl/2KwETGKmpccpwfcefxp66Hzvc8aXXKPOVcioqVy4KsRpeoHJv0UPKQJBHc+zrB+P3VMVHEOr3OJ9uHCxkmVaXDDV087L4RrMTiFtJA7pLMz5WcxCqCnd+0UfyMASIIoLggrrd0hL3QWXv6T6mB8Lc0cyzoYF/GdI1lJHLWy08sEBvXvSXDciZJBKw4rpurEzUbGGCG4cxzA5I8dCpLcOINJD/Eg7sipdh6OZHtNzd8WipV6acFxqw/9T7pTBDl0HWE6zeHNp/nztN9OSSVZhZ5NsJuoX6V0wnuzjSj9X4W6mO/lgnpd0CqvrPvZm5jJboqsMStYLaN2BGKQ9Al/Lf8os4gNGjGjE+WTILvzpmSC/NIPeLTUKgSyz6BkC4bo64XYj/4BDZFhWJWW7ny3Mh4TSodcSw7U7W+CbhcGeUNq8akNhrjBHLQ6XYkKlYCQJBo65GCsxWT1jKKE8Zjo1EjXF6JJAKr4W/gFlYdeSagb+iv5riZpDloLiRGPfg4nsj7yNt43mWXarZMMESIpjiFKyzOQPjWiBQL29IfOsTAV8OlzjMACTQamKgcQTOJe1D2SLgThFTypNP7RySapviRt937n6GsWF+0fhEC42zfVXeke9A9hJMDqyr7CKXIxyhX7ynKGLRkTmfkF3hDzmm5VA0QmZYpIz1mIr9r3D679g4LKLvLgCTRtxkJ5P3bTgRd6CQU41gz0SofargkMdujwhqEUA85dwFt3b1Sob18iM0ZtVXiT1q3CQ/heyVLWz5TpT+J4mGGNe+SgkfqaiU8b3zDLHzhwZX1d2yosvhaGWKE5+76TFjRqCE5sWHgd6WEihxhU+cFNDr
- soNXCrqR
- jEKIQ037+FxN8I05vDGm0sINS/SnVRurE51YyF7KSYNd/S8xyGX22W3Ed0+ZOlJaRFeRQpYkYHFrd1t5KzqTs28zBRacN9lYmYnfss0DvXuKE+nmENvtafpcMZUvNxd3M7TZRScqY22q2rTtTGGDh3EwNMMm97hvTP8CmBr8WRepO9clnRz6ple9eg7hy1/IYdaCjFeT6BYhZLfbUJMuQGcwRLl65bRkszOjfaQLrTSAZU3xNG26GNrgfpKnDzD0BzTu/wYIWWqyfjiRGX5vuJEBRHt5WULeVt1G4pmtS/yC0WZiH74TwFztSl4pE/ly7t73NDkP/ygrJ6mq5T+zUWRHC3w2KT9JDFGx9gYRiyPAyOOMkjoKNs/k4rxeqwCOpYpsGM+GKNJ/pbZlNrnDSXYZDllDgrARUKBK/LQaJrrjOnoXsY9v55SMNlT+hWLMFdyrKl/GUrVVxGq4z9IuUB3cxSVymhdaK5mpg7OafFTJt9nbV7BUOtvlhJS8Kzgwgbb9vydb1i195pU1ziVKdlEN0RStFXrOAKvWE/Ut3IXDJaPZkYGC5EE9jve1SOMZa3/ttlXfjVUUTl0DnKSQiSUJygxuySigjunTp7peWkL/gUjjQS7mAcQcwdVB9kgnn2PKaPbMoO7n5D7HQRb8smct11AP4z+ZS4f6sYXh/FZzoRIXLk+UdpVqwf2edf/SOpLvi
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1758201220-471279
+X-HE-Meta: U2FsdGVkX19DPlQjZhsCmDaXZ90ITTEP8h5kU7wNUfWJMlQIn8UE+/kZUwtw7O92D4fuL+wXvdkJbCEjt6clG4xqqs40XwLqGG8JUmymfS2nG2NUnHOYcO9UqdRrIm2VyU3NPYIgjIut+wmdrjSNfrgIe4vQqDqJpdR/wdMn/XflHQTVGIRE1idT1UrZZAbjLrf5IphCzo+6OdiNyW5tM4xJDEXGGE5fGFRSSCs5+WrqNK8x1XHBpMN5mI5Y36qhGGzSEoCErAW8Y6c5yFrQrIdmNcYZz6+qXP2Kp19hIPxazE/liiZL8MdO45eQgCl1BNLX3aXYYFVSLvD2byrZZKW2UI9k/w2EVVa1lWG89Zkpi0hX/n1qAzg0gDu1x4tMLzX+HyOvNyJ2oTQmHN5PheT3tH6a6TSWzeiIb8XtIKZPJjytdF8OWTNTM7ZcKwLP+9dbLCZzaY8/HmGmkFviyS0xU0K/x3lKxbBsVjvdeX9bf48rR6wmh8K5GoyRC3aM7pgYxVOYJUasfq6+uuNzxI6BxQ91/7RA07Kti5Zcytccq+6gPJsi7n0153lLCIy0yWPIXyx95fbF0JKyPwWpW1FCWB4do1za614ReJQPqYXoUvQ8asygNTYhDwPYIpn1S49MOtROpVm79H9QFikWogMAe7BNohtgQpbdS0iGWDyGlqpKNyE3UQhXZl9vgipE3JzPsLpaxobcLm1A9+Au5uaNHpnQXkGUeTV76FlguIkuy9uh0B0LDG86NdGRdqZhrazA6hZ4FzG0+wsThlOILcLusV97uJRkVbkVtDXOugbzTpgF//LmiUDbdf9YGZoKo86U90nKlhV7anZ7vqfRz8WDrCMy3I4soa+B7lb1QOB1lcrKIhZ+Yw5VC46lFTQRQN7QIDit/6QAWacbyC++63bto2JS9xT9442+7OJjIJkTKPRmkmGTf+takHYnr6RcDBxskRaApHJV5+n3bCI
+ VWFVvr2J
+ OddeCiR2D8DZ6gxA4CliElRUKspgMcBbWhDOOVi3Is07g0tYMhkuK2YvFu7kI3/o6mptdI75PXHOLtqEE5M6hS1SeGhxgUZGi1iOpHUlAa1ULkLiPiFtQihLDtkktpJlPDIQzvPi4ZGcc+WN9XOgMlKC9pOwZwhm0q5UYcfT+E1HJmY7bb6xGQwvk4kUL/YsisqIFO6hlOFwdJAA6lcc1IxdP38VcyVkljhzGcn6XlHrAaVxGdwf8D7eYRMgm1NU1PiCbeOaiypVjqT2vMfIGh1Sww9FG51jUXe9UqHQfdm87DArYPfM9mxj7xQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,256 +159,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 18/09/2025 03:18, Huang, Ying wrote:
-> Hi, Ryan,
-> 
-> Thanks for reivew!
-> 
-> Ryan Roberts <ryan.roberts@arm.com> writes:
-> 
->> On 15/09/2025 04:29, Huang Ying wrote:
->>> A multi-thread customer workload with large memory footprint uses
->>> fork()/exec() to run some external programs every tens seconds.  When
->>> running the workload on an arm64 server machine, it's observed that
->>> quite some CPU cycles are spent in the TLB flushing functions.  While
->>> running the workload on the x86_64 server machine, it's not.  This
->>> causes the performance on arm64 to be much worse than that on x86_64.
->>>
->>> During the workload running, after fork()/exec() write-protects all
->>> pages in the parent process, memory writing in the parent process
->>> will cause a write protection fault.  Then the page fault handler
->>> will make the PTE/PDE writable if the page can be reused, which is
->>> almost always true in the workload.  On arm64, to avoid the write
->>> protection fault on other CPUs, the page fault handler flushes the TLB
->>> globally with TLBI broadcast after changing the PTE/PDE.  However, this
->>> isn't always necessary.  Firstly, it's safe to leave some stall
->>> read-only TLB entries as long as they will be flushed finally.
->>> Secondly, it's quite possible that the original read-only PTE/PDEs
->>> aren't cached in remote TLB at all if the memory footprint is large.
->>> In fact, on x86_64, the page fault handler doesn't flush the remote
->>> TLB in this situation, which benefits the performance a lot.
->>>
->>> To improve the performance on arm64, make the write protection fault
->>> handler flush the TLB locally instead of globally via TLBI broadcast
->>> after making the PTE/PDE writable.  If there are stall read-only TLB
->>> entries in the remote CPUs, the page fault handler on these CPUs will
->>> regard the page fault as spurious and flush the stall TLB entries.
->>>
->>> To test the patchset, make the usemem.c from
->>> vm-scalability (https://git.kernel.org/pub/scm/linux/kernel/git/wfg/vm-scalability.git).
->>> support calling fork()/exec() periodically.  To mimic the behavior of
->>> the customer workload, run usemem with 4 threads, access 100GB memory,
->>> and call fork()/exec() every 40 seconds.  Test results show that with
->>> the patchset the score of usemem improves ~40.6%.  The cycles% of TLB
->>> flush functions reduces from ~50.5% to ~0.3% in perf profile.
->>
->> Overall, this looks like a simple and useful performance optimization - thanks!
->> I'm running this through our performance regression suite to see if it spots any
->> workloads where the change slows things down and will report once we have the
->> results.
-> 
-> Thanks!
-> 
->>> Signed-off-by: Huang Ying <ying.huang@linux.alibaba.com>
->>> Cc: Catalin Marinas <catalin.marinas@arm.com>
->>> Cc: Will Deacon <will@kernel.org>
->>> Cc: Andrew Morton <akpm@linux-foundation.org>
->>> Cc: David Hildenbrand <david@redhat.com>
->>> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
->>> Cc: Vlastimil Babka <vbabka@suse.cz>
->>> Cc: Zi Yan <ziy@nvidia.com>
->>> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
->>> Cc: Ryan Roberts <ryan.roberts@arm.com>
->>> Cc: Yang Shi <yang@os.amperecomputing.com>
->>> Cc: "Christoph Lameter (Ampere)" <cl@gentwo.org>
->>> Cc: Dev Jain <dev.jain@arm.com>
->>> Cc: Barry Song <baohua@kernel.org>
->>> Cc: Anshuman Khandual <anshuman.khandual@arm.com>
->>> Cc: Yicong Yang <yangyicong@hisilicon.com>
->>> Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
->>> Cc: Kevin Brodsky <kevin.brodsky@arm.com>
->>> Cc: Yin Fengwei <fengwei_yin@linux.alibaba.com>
->>> Cc: linux-arm-kernel@lists.infradead.org
->>> Cc: linux-kernel@vger.kernel.org
->>> Cc: linux-mm@kvack.org
->>> ---
->>>  arch/arm64/include/asm/pgtable.h  | 14 ++++++++-----
->>>  arch/arm64/include/asm/tlbflush.h | 33 +++++++++++++++++++++++++++++++
->>>  arch/arm64/mm/fault.c             |  2 +-
->>>  3 files changed, 43 insertions(+), 6 deletions(-)
->>>
->>> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
->>> index abd2dee416b3..a9ed8c9d2c33 100644
->>> --- a/arch/arm64/include/asm/pgtable.h
->>> +++ b/arch/arm64/include/asm/pgtable.h
->>> @@ -130,12 +130,16 @@ static inline void arch_leave_lazy_mmu_mode(void)
->>>  #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
->>>  
->>>  /*
->>> - * Outside of a few very special situations (e.g. hibernation), we always
->>> - * use broadcast TLB invalidation instructions, therefore a spurious page
->>> - * fault on one CPU which has been handled concurrently by another CPU
->>> - * does not need to perform additional invalidation.
->>> + * We use local TLB invalidation instruction when reusing page in
->>> + * write protection fault handler to avoid TLBI broadcast in the hot
->>> + * path.  This will cause spurious page faults if stall read-only TLB
->>> + * entries exist.
->>>   */
->>> -#define flush_tlb_fix_spurious_fault(vma, address, ptep) do { } while (0)
->>> +#define flush_tlb_fix_spurious_fault(vma, address, ptep)	\
->>> +	local_flush_tlb_page_nonotify(vma, address)
->>> +
->>> +#define flush_tlb_fix_spurious_fault_pmd(vma, address, pmdp)	\
->>> +	local_flush_tlb_page_nonotify(vma, address)
->>
->> It's not really clear to me how important doing local tlb flushes for pmds is
->> for the performance improvement? I'm guessing most of the win comes from the pte
->> level? I suspect you have only added spurious pmd fault handling because the
->> arm64 implementation of __ptep_set_access_flags() actually handles both pte and
->> pmd levels?
->>
->> Given the core kernel didn't previously have support for pmd spurious faults, I
->> wonder if it would be simpler to drop the first patch and rejig
->> __ptep_set_access_flags() so that it has a pgsize parameter and can
->> differentiate based on that? I'm on the fence...
->>
->> If you do end up taking this approach, there is a style I introduced for
->> hugetlb, where the function is suffixed with _anysz and it takes a pgsize param:
->>
->> int __ptep_set_access_flags_anysz(struct vm_area_struct *vma,
->> 				  unsigned long address, pte_t *ptep,
->> 				  pte_t entry, int dirty, unsigned long pgsize);
-> 
-> From the performance point of view, local TLB flushes don't improve
-> performance much.  At least in a test similar to the one above, we don't
-> find observable improvement.
-> 
-> From the design point of view, I personally prefer to use similar logic
-> between PMD and PTE unless it hurts performance.  IMHO, less different
-> logic means less mental overhead.  Do you agree?
+On Wed, Sep 17, 2025, at 14:59, Jason Gunthorpe wrote:
+> On Tue, Sep 09, 2025 at 11:23:37PM +0200, Arnd Bergmann wrote:
+>
+>> I'm still collecting information about which of the remaining highmem
+>> users plan to keep updating their kernels and for what reason. 
+>
+> On this topic of removing some parts of highmem, can we say goodbye to
+> kmap_high_get()? Only ARM uses it and only for
+> !cache_is_vipt_nonaliasing() systems.
 
-Yeah fair enough, that's a reasonable argument.
+Good idea. I think we are almost there, just need to verify that
+there is actually no impact for existing users. I already knew
+that there is very little highmem usage on ARMv6 and earlier, but
+I tried to recheck all platforms that might be affected:
 
-> 
->>>  
->>>  /*
->>>   * ZERO_PAGE is a global shared page that is always zero: used
->>> diff --git a/arch/arm64/include/asm/tlbflush.h b/arch/arm64/include/asm/tlbflush.h
->>> index 18a5dc0c9a54..607b67d8f61b 100644
->>> --- a/arch/arm64/include/asm/tlbflush.h
->>> +++ b/arch/arm64/include/asm/tlbflush.h
->>> @@ -282,6 +282,39 @@ static inline void flush_tlb_mm(struct mm_struct *mm)
->>>  	mmu_notifier_arch_invalidate_secondary_tlbs(mm, 0, -1UL);
->>>  }
->>>  
->>> +static inline void __local_flush_tlb_page_nonotify_nosync(
->>> +	struct mm_struct *mm, unsigned long uaddr)
->>> +{
->>> +	unsigned long addr;
->>> +
->>> +	dsb(nshst);
->>> +	addr = __TLBI_VADDR(uaddr, ASID(mm));
->>> +	__tlbi(vale1, addr);
->>> +	__tlbi_user(vale1, addr);
->>> +}
->>> +
->>> +static inline void local_flush_tlb_page_nonotify(
->>> +	struct vm_area_struct *vma, unsigned long uaddr)
->>> +{
->>> +	__local_flush_tlb_page_nonotify_nosync(vma->vm_mm, uaddr);
->>> +	dsb(nsh);
->>> +}
->>> +
->>> +static inline void __local_flush_tlb_page_nosync(
->>> +	struct mm_struct *mm, unsigned long uaddr)
->>> +{
->>> +	__local_flush_tlb_page_nonotify_nosync(mm, uaddr);
->>> +	mmu_notifier_arch_invalidate_secondary_tlbs(mm, uaddr & PAGE_MASK,
->>> +						(uaddr & PAGE_MASK) + PAGE_SIZE);
->>> +}
->>> +
->>> +static inline void local_flush_tlb_page(struct vm_area_struct *vma,
->>> +					unsigned long uaddr)
->>> +{
->>> +	__local_flush_tlb_page_nosync(vma->vm_mm, uaddr);
->>> +	dsb(nsh);
->>> +}
->>> +
->>
->> You're introducing more variants than you're actually using here. I think you
->> just need local_flush_tlb_page() and local_flush_tlb_page_nonotify(); you could
->> keep __local_flush_tlb_page_nonotify_nosync() and drop
->> __local_flush_tlb_page_nosync() since it's not really adding much?
-> 
-> Sure.
-> 
->> But I'm also wondering if we should tidy up this API in general; we have local
->> vs broadcast, sync vs nosync, notify vs nonotify. And page is really just a
->> special case of a range. So perhaps it is better to rework the range API to take
->> some flags and we can tidy up all of this. I know Will also posted an RFC to
->> convert a lot of this to c functions, which should also be included. Not a
->> blocker for this change, I don't think, but there should definitely be some
->> follow up work to tidy it up. (I'm happy to take it on).
-> 
-> This sounds goo to me.  Thanks for working on this!
+* As you say (and contrary to what the code comments suggest),
+  all ARMv7 and most ARMv6 systems have non-aliasing VIPT or
+  PIPT caches, so kmap_high_get() does nothing, and we could
+  just turn it off for those configurations.
 
-OK I'll put it on my todo list to have a go at this as follow up.
+* ARMv6 with aliasing VIPT caches exist but are fairly rare,
+  and I think there are no ARMv6 machines left that actually
+  use highmem. AST2500 is commonly used and has aliasing
+  caches, but I only see machines with 512MB or less, and
+  its aspeed_v5_defconfig enables CONFIG_SMP (for AST2600).
+  OMAP2 and realview are in the same category but less
+  important. imx3, s3c64xx and bcm2835 are non-aliasing
+  (and don't have highmem either).
 
-> 
->>>  static inline void __flush_tlb_page_nosync(struct mm_struct *mm,
->>>  					   unsigned long uaddr)
->>>  {
->>> diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
->>> index d816ff44faff..22f54f5afe3f 100644
->>> --- a/arch/arm64/mm/fault.c
->>> +++ b/arch/arm64/mm/fault.c
->>> @@ -235,7 +235,7 @@ int __ptep_set_access_flags(struct vm_area_struct *vma,
->>>  
->>>  	/* Invalidate a stale read-only entry */
->>>  	if (dirty)
->>> -		flush_tlb_page(vma, address);
->>> +		local_flush_tlb_page(vma, address);
->>
->> Given this is called for both pmds and ptes, it's a bit of an abuse to flush a
->> *page*. Yes it is architecturally safe, but it's not exactly self-documenting.
->> If we pass in the pgsize (as per above) it could be optimized given we know the
->> level and we only want to invalidate the last level. e.g. the local equivalent to:
->>
->> __flush_tlb_range(vma, address, address + PMD_SIZE, PMD_SIZE, true, 2);
->>
->> or
->>
->> __flush_tlb_range(vma, address, address + PAGE_SIZE, PAGE_SIZE, true, 3);
->>
->> Again though, perhaps that is part of some follow up tidying work?
-> 
-> This sounds good to me too.  And, Yes, I think this can be a follow up
-> tidying work.
+* VIVT caches are used on all ARMv5 and earlier, so removing
+  kmap_high_get() would effectively break highmem these.
+  Most ARMv5 use very small amounts of memory (<256M) in
+  a single physical address range, so they are unaffected,
+  we just have to go through the ones that are left.
 
-I'll include this in my follow up.
+* Intel IOP (armv5 xscale) certainly had highmem but was
+  removed a while ago.
 
-> 
->> contpte_ptep_set_access_flags() currently does a (broadcast) __flush_tlb_range()
->> on the (pte_write(orig_pte) == pte_write(entry)) path. I think that should be
->> changed to a local range invalidation to be consistent with this change.
-> 
-> Yes.  This should be changed too.  However, it means we need a local
-> variant of __flush_tlb_range() and flush_tlb_mm().  Is it OK to
-> introduce them first and tidy up later?
+* Marvell mv78xx0 and kirkwood (armv5 pj1) were fairly
+  powerful in 2008 and could support at least 1GB of RAM,
+  but I only found one machine (OpenBlocks A7) that does
+  this. It's unclear if anyone is still updating kernels
+  on this machine, but they could /probably/ use
+  VMSPLIT_3G_OPT if they do.
 
-I think do it as Catalin suggested for now. I'll then refactor as part of the
-tidy up.
+* Microchip SAM9x7 is the newest ARMv5 chip, clearly does
+  get kernel updates, and the only one I can think of with
+  DDR3 support, but seems to be limited to 256MB total memory.
 
-Thanks,
-Ryan
+* The Gemini (ARMv4) platform enabled highmem as part of
+  commit c12d7e9fe9af ("ARM: defconfig: Update Gemini defconfig"),
+  but I don't see why, as the machine cited there only has
+  128MB of RAM in a contiguous chunk.
 
-> 
->>>  	return 1;
->>>  }
->>>  
-> 
-> ---
-> Best Regards,
-> Huang, Ying
+* A few ARMv4/v5 machines (omap1, davinci, ep93xx, clps71xx,
+  sa1100, riscpc) used to select CONFIG_ARCH_HAS_HOLES_MEMORYMODEL
+  or SPARSEMEM, which would indicate that they might need
+  highmem even for <1GB configurations if their memory banks are
+  far apart in physical memory. I checked those and as far
+  as I can tell, they are always within 768MB or less.
 
+     Arnd
 
