@@ -4,107 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83C9ECAC59A
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 16:33:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FD86CAC59A
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 16:42:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DA5618E0130; Thu, 18 Sep 2025 12:33:01 -0400 (EDT)
+	id D1ED88E0107; Thu, 18 Sep 2025 12:42:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D7D0B8E00F6; Thu, 18 Sep 2025 12:33:01 -0400 (EDT)
+	id CF6C18E00F6; Thu, 18 Sep 2025 12:42:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB9A28E0130; Thu, 18 Sep 2025 12:33:01 -0400 (EDT)
+	id C0C198E0107; Thu, 18 Sep 2025 12:42:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B6BF98E00F6
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 12:33:01 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 60D8613A574
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 16:33:01 +0000 (UTC)
-X-FDA: 83902915362.12.020E4D1
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 53376180011
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 16:32:59 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=lunn.ch header.s=20171124 header.b=KoLiEW3a;
-	spf=pass (imf24.hostedemail.com: domain of andrew@lunn.ch designates 156.67.10.101 as permitted sender) smtp.mailfrom=andrew@lunn.ch;
-	dmarc=pass (policy=none) header.from=lunn.ch
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id AFF168E00F6
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 12:42:43 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5C9BD11953D
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 16:42:43 +0000 (UTC)
+X-FDA: 83902939806.13.D621C72
+Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 50F3040018
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 16:42:41 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b=Y6pdPutQ;
+	spf=pass (imf11.hostedemail.com: domain of "prvs=5356f0da48=clm@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=5356f0da48=clm@meta.com";
+	dmarc=pass (policy=reject) header.from=meta.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758213179;
+	s=arc-20220608; t=1758213761;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0ks/Dt/gG06zpcviyC2RmuMfALb4spkC/mj20Xhc7U4=;
-	b=1S2MYuhAFPuY+Jclz/AdC84U/oA/GGl4rUMWPSWnlPDY0aCAVxMMttyjwJOYvoQHUVmnrJ
-	jB1/yA+VfWlVf1CuhMTy67x5PhNIkO/hHGM64a6NeLdv6YbgB9dcukacwVKO0l4j105cix
-	iE0wcmchvb/0V6jmwYlf7fzQGs81zlw=
+	bh=MRSW9PRf260/9Gt/pZkcfX+wCWrRuC4hgtYNOmdFk6E=;
+	b=HiwIDaRlIidGTh1vgFAlfhQ17SSbb+B7xpPdTYOYiqzbnzTAwKUMxZqandFRPkSeERIio4
+	dYmNRUv9/qWGDOaj5Mj5hWxTmbZsYNxxX7/Vqe3Y9nCZCsn2ivLsaD8P1i0iZ7+G+OAora
+	EaBEbHvFbHPSkEWUu+Z6CFsCnCNc4mI=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=lunn.ch header.s=20171124 header.b=KoLiEW3a;
-	spf=pass (imf24.hostedemail.com: domain of andrew@lunn.ch designates 156.67.10.101 as permitted sender) smtp.mailfrom=andrew@lunn.ch;
-	dmarc=pass (policy=none) header.from=lunn.ch
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758213179; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b=Y6pdPutQ;
+	spf=pass (imf11.hostedemail.com: domain of "prvs=5356f0da48=clm@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=5356f0da48=clm@meta.com";
+	dmarc=pass (policy=reject) header.from=meta.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758213761; a=rsa-sha256;
 	cv=none;
-	b=UJTwXeM4s6vbSieZm51h2OOc0tNVMDK5TEULUUPVyNCS808Q3TB+FMyFVc3tk06FwG2gLK
-	w8aR810gMWFRnP3h24wYM0gFFYg/+QM8qI+buJ8ZUn1yF1FqdX1C5jtI4GaMY9L7NhlYZg
-	uZ12UEKcGdYwLUy790MGuskf1iPAvtM=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=0ks/Dt/gG06zpcviyC2RmuMfALb4spkC/mj20Xhc7U4=; b=KoLiEW3a+FctGMCYTji6G0piKX
-	6+2sXpnGjpyCiB9GZ1aJLpE4MPYaT4SHrv8fw7rBSREmCDqF4nuUIBFZIIYmv+i3ReGtxZ8MGrp+s
-	j+YRd0HmYRcGKfIR/k6IHWq3t+jxGCnOm+ADllcYsPkFk37j3Kv81W5EGdi5YRAO43vk=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1uzHYr-008qze-89; Thu, 18 Sep 2025 18:32:45 +0200
-Date: Thu, 18 Sep 2025 18:32:45 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: Jason Gunthorpe <jgg@nvidia.com>, ksummit@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
-	linux-mm@kvack.org, imx@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Richard Weinberger <richard@nod.at>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Ankur Arora <ankur.a.arora@oracle.com>,
-	David Hildenbrand <david@redhat.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Ira Weiny <ira.weiny@intel.com>, Nishanth Menon <nm@ti.com>,
-	Heiko =?iso-8859-1?Q?St=FCbner?= <heiko@sntech.de>,
-	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-	"Chester A. Unal" <chester.a.unal@arinc9.com>,
-	Sergio Paracuellos <sergio.paracuellos@gmail.com>,
-	Andreas Larsson <andreas@gaisler.com>
-Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
-Message-ID: <f4154621-be77-4c08-89d4-ab931ac3df30@lunn.ch>
-References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
- <20250917125951.GA1390993@nvidia.com>
- <02b0f383-1c43-4eeb-a76f-830c2970b833@app.fastmail.com>
- <ca6fc8dc-d1ee-41a8-a1c9-11ed2907207f@lunn.ch>
- <ea6562f4-ec8c-4e99-98ec-000c25c34a3e@app.fastmail.com>
+	b=iuv04xghnUCEyeVe9u5pNFGqnMBoCtEKUZgflwdblD2mQMK30b6pKmT2Qt1uKDfuDH0cUx
+	xtzGLfTEfUp8DG4EnGkYOGQg19VYezHZPIoI9ngmZkSGWcEUKKhePe9mUOPZvYIoA4yXNp
+	AG83oPxCnamW32/7VhlkmCxUzjhmj3c=
+Received: from pps.filterd (m0109331.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 58IFxXiI3010287;
+	Thu, 18 Sep 2025 09:42:32 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=MRSW9PRf260/9Gt/pZkcfX+wCWrRuC4hgtYNOmdFk6E=; b=Y6pdPutQNUYI
+	1C8YElettm7FxkgbNkPvwspxlu1INvT7ipj7MjnYKDKawHPwipzn8SJi+ILr3RqA
+	ziVqa8rd/B4uSE18DHIZGtd6/yhHh/dAHZ0dLKSWWvJ+3rIRGJGqJhptF9Hrvt8Q
+	SGYSM1BzpjgbrYtkm3E33uI1aBMvtMcvDx2e4Sz2dO7Vmm8kMqpoq66ZGYImaOhn
+	S9iSrSc6o/DWoKwmBYgrz8dzhRkTTV25jenhk3McaBh1y/ZjRDWB9eEDziX6Auxv
+	lTT6rDC0rATRyk4CUiKWpvhfmUKFfdlniLIkF+zI4juwb9sJPVRfH0arFTh9jOdY
+	QK+J6UraMg==
+Received: from maileast.thefacebook.com ([163.114.135.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 498dekbkmg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Thu, 18 Sep 2025 09:42:31 -0700 (PDT)
+Received: from devbig091.ldc1.facebook.com (2620:10d:c0a8:1c::11) by
+ mail.thefacebook.com (2620:10d:c0a9:6f::8fd4) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.20; Thu, 18 Sep 2025 16:42:30 +0000
+From: Chris Mason <clm@meta.com>
+To: Balbir Singh <balbirs@nvidia.com>
+CC: Chris Mason <clm@meta.com>, <linux-kernel@vger.kernel.org>,
+        <linux-mm@kvack.org>, <dri-devel@lists.freedesktop.org>,
+        Andrew Morton
+	<akpm@linux-foundation.org>,
+        David Hildenbrand <david@redhat.com>, Zi Yan
+	<ziy@nvidia.com>,
+        Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim
+	<rakie.kim@sk.com>,
+        Byungchul Park <byungchul@sk.com>, Gregory Price
+	<gourry@gourry.net>,
+        Ying Huang <ying.huang@linux.alibaba.com>,
+        "Alistair
+ Popple" <apopple@nvidia.com>,
+        Oscar Salvador <osalvador@suse.de>,
+        "Lorenzo
+ Stoakes" <lorenzo.stoakes@oracle.com>,
+        Baolin Wang
+	<baolin.wang@linux.alibaba.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+        Dev Jain
+	<dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+        Lyude Paul
+	<lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>,
+        David Airlie
+	<airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Ralph Campbell
+	<rcampbell@nvidia.com>,
+        =?UTF-8?q?Mika=20Penttil=C3=A4?=
+	<mpenttil@redhat.com>,
+        Matthew Brost <matthew.brost@intel.com>,
+        "Francois
+ Dugast" <francois.dugast@intel.com>
+Subject: Re: [v5 05/15] mm/migrate_device: handle partially mapped folios during collection
+Date: Thu, 18 Sep 2025 09:42:07 -0700
+Message-ID: <20250918164213.2866702-1-clm@meta.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20250908000448.180088-6-balbirs@nvidia.com>
+References:
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ea6562f4-ec8c-4e99-98ec-000c25c34a3e@app.fastmail.com>
-X-Rspamd-Queue-Id: 53376180011
-X-Stat-Signature: bnr4cjahjeqq99fp3qanu9tqzzffqt3n
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [2620:10d:c0a8:1c::11]
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE4MDE0NyBTYWx0ZWRfX09D5wzG1g1J0
+ lpfwp5tRS1QFIV82x7ZEba60J34+rUhvgAyuPxfE+SQGFk5ZpkE4naGPpkpKhLO+pKSOqnNhtb/
+ bQAsIfJD0XqLCzi5UHNKvl+lV2R+yonbyCdFwHNyrRK6Xt45aF6KiHJk6NYCBUOKMtsGOoX3U7x
+ O39VaDjR228rh2VFFL7p+/+cYPDdVXpe54Eg7lOumaeNnoqh/Yt4wrU1xxvMM0XxJftw5tvIxVY
+ QMIf6EJxoUgEs/twEE6S0A7t0Va1WRGzz3AJ70mC8f6hW0Uko16tgRmoObh8qaoP88F9elhu2p6
+ Vocsd85DnZ1VDmsBb2XjQWTeAqteJwUOYq5RLveh2FHDCO1cgjIN+SRBq0F/zY=
+X-Proofpoint-ORIG-GUID: j2nobX77OFnJOXWbfUlIfqTNJlMlS_Og
+X-Authority-Analysis: v=2.4 cv=Od6YDgTY c=1 sm=1 tr=0 ts=68cc3678 cx=c_pps
+ a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
+ a=yJojWOMRYYMA:10 a=Ikd4Dj_1AAAA:8 a=qDUe-vZ6ZZVRykDNhw8A:9
+X-Proofpoint-GUID: j2nobX77OFnJOXWbfUlIfqTNJlMlS_Og
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-18_01,2025-09-18_02,2025-03-28_01
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1758213179-211933
-X-HE-Meta: U2FsdGVkX1+jJbnKV4VCv8M1YyXZa/pWR/5MqgSsBpoXvtqGl1XbEhXla0Rr4uEJB1U2ubCLqqKM7uFpjwwXKtxalgMXggOc4TOsqbG3Vfxfu0W9QR4JyWuGnh9IN32IGQX/WSMjul09jifClPBXBNHYjmc1z3zhi4iLu3W6XHwcd1jq7nzislczsXIgUGN3D00t4Nhe/0M27rTSklXeMBqgCLzVpiUN68uYaJt2Eh4zmlRQryD6/6OCHqJd/rV0mptzuFoGmLHif3lQNB6McFzzqr7Mbyn4l1AMBU+wOrNh0egpZfT17KJ3dhX9uil7arjiPbJSaT11OXlDrOMkJWromfhomZ/vkTXSyL4FwWKUJTY7gfN0kykrolmmF1jrWC2dskHF4Itr2ipK5xXPibYL14iF+SVFxGsFfMB/tNS9xyS3r/IUUJDmgIk8uLkzdj9ikfNjUmqKg9Fbkr9WJrbFhjgqkTD8/ctg2TaefU5sGGFuq0VDGJtP0kg0B8e4tVsPpbuy/ZD0ZJhCwcD0Wk0rNSI4PFXX979Fo1a84u8LNxT0hXrnvflK49esLfaWs1KIwhGhe2wgf/5klG7czstYAQQC+yMiq553JyFwBR0BVdMB6NWhrLa4MEAq+reKGqCfw9zNFnyPyGcmJ+iABlHQgtwAszWeIWuNL6puWJnnezR6ewaqtHXqgC7QKLGR49Yo02e1Xx1M4HeitfSyrAZkUOcZXLscP53Aify+ZDtlP73+Aqypmwra3pGpS9l57pui+WVsz43mqsMDEFeN5pbB5xsbnxS5f2Se3mYLpe1g5bOLgJBkZrlTTKSrGQaZ/LjwKrKWtEfXT4tkoKHC0b7wcFOPUUb0S5jOJ4SCaT9c6Ss+d/ytO+dwsCXdRiBu99OaOily+qreG+fRg9C5S0HVnabELEnUIiw85WrcisCZKmtGuQOMKVomoy2n2TGG6fWEKCLDw0bv0LLXhfS
- RsJgXAwE
- SYkGr8hrIEblNp2TNoujABE6M7/YnvfmdeXErsssibQgJbxponfVvrGFnza+yK6cLPZiwC2CGwnamHa2C+usOSC9SL8if+jNyFOFAhcd7Cw/wyoF/wGM1OmN+MzTUcOh7sdXmkU7VjV4PMWyy/nDp7GcAseI2mwy01gjbRJie1bLTP/HpNNwt1kS1Pw87J+GD30h/hSQ17e/rfywvzEhqqLD+pZ1NZMEXQWvqkyUAqUQfCXvfTwtXpV6c2OOV61yORf7mupEZEzvWdukaFD9KHIu8vpFVYskwKt/qCBrHoUTBUZtaIzLYKEdW0IGI/9dgzf6ZBSjstft0Psg=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 50F3040018
+X-Stat-Signature: 99do5j1g7ci9ho9jk7rq586cy9wjxt8p
+X-HE-Tag: 1758213761-619765
+X-HE-Meta: U2FsdGVkX19QcQFUF8Z4XJDkzUhTkAWRW1TTT8FQbmcIoToHVxDaI6f+1k/ddqoQ0iDst/e0cX6Crif9eHObFi6sSBZD+eTwsEJr4qbw8iE1bYQln6ehjqk0PenQt6wk+yYVtoClN6nkAqcxynViEZdHtA5yE98WQiA4eZpvirHt3X/+tzX74Lsuj53l0HImuf+lcfgGg9uOyDuImbppClnOWh+J8zHZ1/jHzRcSczelrC9Jmx9q5dL4KDggJpmu7eLLzylhEEh5IByquEShcENpR8n8UzbrSXSFTKMJbEi6k7iIf31BEDDGTqWEMNXYm6P1Y674ZmmTDCMIrcvY/1WbrkBGV12BpKadkS0pkytgAVe7IooqH4i2QQfMBTn6gL4BniiEWEMCuXm8siXGdL04bD+eY9ZDmkTjXfKergR1txx0+ylo8QKCLKqYY/gb9ORm/ccFiyQNxi84FRIrGEXTOg0wqs+r9SvOkBUK2KW59xSyvWSF4l1mhQBwWzUa+9/xf8G0zU3mkylnYicq+9QUpnLcKbVQvQfNEuz5OShEUrO5nVfIuGpT/kkvvLHxsDgvtwyb9wKRCqmRyJpq3fGNMnm4WDWdQFo4xJLsjydSGog6DHNde9jvXmP3aKqK2jYZyO5emFSkllTsRSIn+GNNtcR/nTt9TBZvqjbeFG2ofphMnIm0YNLa+zIj5rHlVIDUoyiUW718UptuMo2u5EDMeG1cGSjNZv78w75swXSH/PHi2bdv0++lXF4P53n3hGt/dSwwz48dU0i2j8igPPHOFcDiNpDJITEwwkfkSpIWMu6/1BmtNJRndpgZ++y++RHd3nimj3Rl3vqyeC9htyAnN/++LcM6O1v07mx87OkzTBY57zTbFFWE/rnmW+9S/ky/heGUJ31MlGndJLtJPAVrXNAcZ41p5qrLMprHRgHyewLVNadVPz3xYOsptH/RoPTA8Aqd8EhU2Wscb5B
+ mDFgxpHP
+ Uj09xGpXeWFT3FSewbWX8ZAcGiQhhFHZUq4pfBj2jqTGCZroSJunaIn9oA9t8qcnu0kdC4Mv0JmBbWnMxRg2A4lMuZb6kQ9XzSt4UrNn2yeMhk8ODNum9yXZznyAzO82KpIPDcFt+KD0tReEwZ+bqBDCfXeqxLfp0PSJTWNI4q3jamJFsqi6uuyFgDGL6NMph9e6zDmxGOmy86CT8FV5BQ1wPcRtXZNK4Ufni6dhzt52Tu25UDWRv3W1JNZdpjAJ3WPP38WHCmjYn0Qxp/o7oPPamdlLqMR8O7hHZqZSZ0js/Qe5Z5YwzV1cD1RlTTH9dTK9hjiuiKRXi6sFRjLLGmAcFtZulMJOjNc8E3S66hUBHqWl/r59VeDm55GhncjJcT5HJ44VBPKBOK1lVcUCFGnZF76X0Kbw61sM1CssMJGOcbBxTdrJ/kirtkRoV/m04PdiosDPInMEzmykMvvmTbM1ZPTSm4mWEumJ2pY8lQdTZJ+3C1ZmIswBocfKXBEZMvVOgEtzvhYUzOhe3BET86/HwQPjdQTHddF8FzlMb2X6Re6U=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,10 +145,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Do you know of any kirkwood machines beside the OpenBlocks A7
-> that have more than 512MB of RAM?
+On Mon,  8 Sep 2025 10:04:38 +1000 Balbir Singh <balbirs@nvidia.com> wrote:
 
-No.
+> Extend migrate_vma_collect_pmd() to handle partially mapped large
+> folios that require splitting before migration can proceed.
+> 
+> During PTE walk in the collection phase, if a large folio is only
+> partially mapped in the migration range, it must be split to ensure
+> the folio is correctly migrated.
+> 
+> Signed-off-by: Balbir Singh <balbirs@nvidia.com>
+> ---
+>  mm/migrate_device.c | 94 +++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 94 insertions(+)
+> 
+> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+> index abd9f6850db6..f45ef182287d 100644
+> --- a/mm/migrate_device.c
+> +++ b/mm/migrate_device.c
+> @@ -54,6 +54,53 @@ static int migrate_vma_collect_hole(unsigned long start,
+>  	return 0;
+>  }
+>  
+> +/**
+> + * migrate_vma_split_folio() - Helper function to split a THP folio
+> + * @folio: the folio to split
+> + * @fault_page: struct page associated with the fault if any
+> + *
+> + * Returns 0 on success
+> + */
+> +static int migrate_vma_split_folio(struct folio *folio,
+> +				   struct page *fault_page)
+> +{
+> +	int ret;
+> +	struct folio *fault_folio = fault_page ? page_folio(fault_page) : NULL;
+> +	struct folio *new_fault_folio = NULL;
+> +
+> +	if (folio != fault_folio) {
+> +		folio_get(folio);
+> +		folio_lock(folio);
+> +	}
 
-	Andrew
+Can fault_folio ever be non-null and different from folio? Apologies for
+not knowing the lock ordering rules but this jumps out.
+
+> +
+> +	ret = split_folio(folio);
+> +	if (ret) {
+> +		if (folio != fault_folio) {
+> +			folio_unlock(folio);
+> +			folio_put(folio);
+> +		}
+> +		return ret;
+> +	}
+> +
+> +	new_fault_folio = fault_page ? page_folio(fault_page) : NULL;
+> +
+> +	/*
+> +	 * Ensure the lock is held on the correct
+> +	 * folio after the split
+> +	 */
+> +	if (!new_fault_folio) {
+> +		folio_unlock(folio);
+> +		folio_put(folio);
+> +	} else if (folio != new_fault_folio) {
+> +		folio_get(new_fault_folio);
+> +		folio_lock(new_fault_folio);
+> +		folio_unlock(folio);
+> +		folio_put(folio);
+> +	}
+
+Same question here, do we need trylocks?
+
+-chris
 
