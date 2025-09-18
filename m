@@ -4,157 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B276CA1013
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 16:18:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7706BCA1013
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 16:21:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 807048E00FB; Thu, 18 Sep 2025 12:18:58 -0400 (EDT)
+	id CA20F8E0107; Thu, 18 Sep 2025 12:21:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7DF108E00F6; Thu, 18 Sep 2025 12:18:58 -0400 (EDT)
+	id C52288E00F6; Thu, 18 Sep 2025 12:21:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6F4A18E00FB; Thu, 18 Sep 2025 12:18:58 -0400 (EDT)
+	id B19E38E0107; Thu, 18 Sep 2025 12:21:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5F68F8E00F6
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 12:18:58 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E65AF140290
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 16:18:57 +0000 (UTC)
-X-FDA: 83902879914.01.FC582F7
-Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 90DF6160003
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 16:18:55 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm1 header.b=hT3UzSYH;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="n arD2ch";
-	spf=pass (imf08.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.144 as permitted sender) smtp.mailfrom=arnd@arndb.de;
-	dmarc=pass (policy=none) header.from=arndb.de
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 963C78E00F6
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 12:21:54 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 435A785775
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 16:21:54 +0000 (UTC)
+X-FDA: 83902887348.05.8CE5530
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 6A07A2000B
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 16:21:52 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=hhsbR8oH;
+	spf=pass (imf03.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758212335;
+	s=arc-20220608; t=1758212512;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fm4R8b6atPDjgItmLn3c75WIBp5VlWzcsZH4FVIt7ag=;
-	b=dxioDEplhqtwcC29aeS295VvGmylFltVq0OJ+LHhs1wv9IjXtcBYgwA+JS33VGpOgewn2M
-	IWo+Kt03kSq8rguxkBkdwIjrQNCKhNkDCxmrqywWumXZBsmtjrJR+ELRrMPz1ZS0oHSZdM
-	Rrn8UoyUBcXLmUq+yWfS6VC8RvdHzfQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758212335; a=rsa-sha256;
+	bh=O4zq2dMyLLMrIgM/EJawiXhuYjkCVdkX9qWZewoQWDw=;
+	b=lhvu4z8grHNzeb4W6PMNBOznRnPx9gzY5aVBq7ljkQhQTcSaEJ+7BMGZkCsfxhuNCrKkLw
+	d0WzydDKDeq0M8ev5Pcw5u6t2KHz3PbHADFc1F+Yd0UKFyTvpDMosmbO3pYPRWsT1XkfLR
+	4hz1I7WFvDM34pEQWbw0sdE2wiiUMt4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758212512; a=rsa-sha256;
 	cv=none;
-	b=37yJT5eYCxd+yEnWDDvF6ogk4ZhpHbIIMgNTEXLRqQrov54TWbwmu/muvGab/EFxvuu/Kt
-	DiO3KN9WN5RrBBGTkB+JCSKEGSy0WKmnJrJS9yBCqH78pR/TvGRV/Xyo/GpjJNqHfO56m2
-	u/QgV7Ise0P+upWjM1xqDGeszH25n68=
+	b=xGqZFq7cL/fOvN10lEhHenFXmnK5TW3o270reThvVLv3Qsgz3dpvwektD7t1nn/3v0jwVC
+	VmuN0Ul1DgCokeKggplQS4ucTE9fAOxvUDpau7P/oWV1nRT0toegm9OGqIIZX4QooXv/Ak
+	70O3a/xvuDsHjq5A34Rj6Lwp2ZdWIbI=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm1 header.b=hT3UzSYH;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="n arD2ch";
-	spf=pass (imf08.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.144 as permitted sender) smtp.mailfrom=arnd@arndb.de;
-	dmarc=pass (policy=none) header.from=arndb.de
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.phl.internal (Postfix) with ESMTP id E9DB1EC030E;
-	Thu, 18 Sep 2025 12:18:54 -0400 (EDT)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-05.internal (MEProxy); Thu, 18 Sep 2025 12:18:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1758212334;
-	 x=1758298734; bh=fm4R8b6atPDjgItmLn3c75WIBp5VlWzcsZH4FVIt7ag=; b=
-	hT3UzSYHqECruml9nJYhLaF2PeApMfKPsa2Kchq0gCzfeBYX32RBViapVaUovlLI
-	Txe/jjqieezrzrzA7uJYsDtvqVjCXXnC1LoBBhdcmSoOMaSrN5Fqt+5RD4WlTS+u
-	BKhECFDp11UJ471uauSho7G4oGR/BvOy/5lMipcEoJKhdbXiTwla7TTe3MuQrnYQ
-	KueeBTCWfI8OcXJS2UG9kae6uVbtlAF7CcZVk2LQ2vS/xIuZHiD0Lp9ICyNHy82r
-	40M21sNMmpSgYWUZzCPqKroJovjjCGbk7bJ6mlDgjqwo5fwELH5lepoBABDtgS9L
-	scjCSBoybymPnkbUAktH5Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1758212334; x=
-	1758298734; bh=fm4R8b6atPDjgItmLn3c75WIBp5VlWzcsZH4FVIt7ag=; b=n
-	arD2chK72CMw+3XE4ZMyHoCXIAodtWOlFh+lygozTruGzTZh8h856redrTp47dRO
-	sXbFqPqDBwTwab9JjkqMOZqEpw8xcAx1CsSrhxGH9ZhJahklo+5B/YYA8F9qKGuK
-	wms91Otr8e2xctRFqgvVzfrtq2c8xTnxS+u/pW8oiV7Qo/b/JpZmiOHUmjZVqgw/
-	j7EXQHPtj5+QrGpRsg0kWk6VvAUAduP/2DL/i1mtAsRcQBIRbZU3Rh1twx82usbv
-	RgntitcMyx+XgxmuyvLSSVKNtRoybAgMqWlWzYvwXSnU7WaKl8QejTpIg2kBSi6W
-	CaYxaV9Q1r98Co569m6Gg==
-X-ME-Sender: <xms:7TDMaNodCGNeyIp-SBSrJ_TtgdGNi08_RHKQYU5GUMzQyGU2qL51sw>
-    <xme:7TDMaPqtNE5Wm9OwOTBTVsoBpq7nOqMcCYUvpQ-AcC442Pi0J8C_IlqeLqpTVtfET
-    Z4yar8_IO-zzD-k2lw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdegieejlecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhhnugcu
-    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
-    hnpeeggfejudejvdeijeeglefgtdfhudffieetfedugefhffekjeefhedtjeefjeetfeen
-    ucffohhmrghinhepghhithhhuhgsrdgtohhmnecuvehluhhsthgvrhfuihiivgeptdenuc
-    frrghrrghmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghp
-    thhtohepfedtpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegthhgvshhtvghrrd
-    grrdhunhgrlhesrghrihhntgelrdgtohhmpdhrtghpthhtoheptghhrhhishhtohhphhgv
-    rdhlvghrohihsegtshhgrhhouhhprdgvuhdprhgtphhtthhopegrnhgurhgvrghssehgrg
-    hishhlvghrrdgtohhmpdhrtghpthhtohepghgvvghrthdorhgvnhgvshgrshesghhlihgu
-    vghrrdgsvgdprhgtphhtthhopegrlhgvgigrnhguvghrrdhsvhgvrhgulhhinhesghhmrg
-    hilhdrtghomhdprhgtphhtthhopehsvghrghhiohdrphgrrhgrtghuvghllhhoshesghhm
-    rghilhdrtghomhdprhgtphhtthhopehsuhhrvghnsgesghhoohhglhgvrdgtohhmpdhrtg
-    hpthhtohepfihilhhlhiesihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehirhgr
-    rdifvghinhihsehinhhtvghlrdgtohhm
-X-ME-Proxy: <xmx:7TDMaPbKt2WoXqHMwpanytM6BOnhzj_CQNwGh1PFIqubtDAyu5jB5Q>
-    <xmx:7TDMaGKxNLlBIr_WiBflz4DJZ5ui2U4YOwVgSsgJGQrpphOVta5LLQ>
-    <xmx:7TDMaG8COQwGxvO3AW0IJmLokZHWS06CKK-GHPM5ep7McMCa1__b0A>
-    <xmx:7TDMaNp9nu7518TclPj1lZvDtvnU_ezCWZtqceFpg9Flbxum44e-lg>
-    <xmx:7jDMaKcwFz32-9rZOzFDRZfXWP5Uej9dboxG4Bi3HNtAfR6kH7cYV8fc>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 7D7F370006D; Thu, 18 Sep 2025 12:18:53 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=hhsbR8oH;
+	spf=pass (imf03.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-267c90c426dso255905ad.1
+        for <linux-mm@kvack.org>; Thu, 18 Sep 2025 09:21:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1758212511; x=1758817311; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=O4zq2dMyLLMrIgM/EJawiXhuYjkCVdkX9qWZewoQWDw=;
+        b=hhsbR8oH4rU+H3oB1oA24ef5tcx6xrnGu3F3OjCXfBshP3vh9096TyU7sIsyFTFxGK
+         AqHQTbC/uQqJshWlr5TOLkS5GNnxCsazzj4qJxfNiM0d+MBX6qB35yIykyKZ25YTKDaj
+         LlylFkzh0o85Nx0CIY2UnYxV0zGTbVC0q9dKYoDW+PKwCbWw7KrizSDVIMLAE+4FgfRS
+         Y2UYLPRomvEsiYUPp3IRk57iJ77/t+vtzLSfTG/OMv5aLeiIudNB4THuworKa+qHfp27
+         F9xYKa4bHsPy/2zih2719LpR37A9ll254E7oJFvo/FGlQstVa8pLVJo+awTOHzwzwbcz
+         HgNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758212511; x=1758817311;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=O4zq2dMyLLMrIgM/EJawiXhuYjkCVdkX9qWZewoQWDw=;
+        b=ac3IB14WsWHS3Lg3+HfCxOUKCX054qkHqh+fAfeDKnNO7DvPOLOyDqrWCVGBO60Rlz
+         stvQcH/IgJy2XIPnHQd7mbqOe4EWGJ/RAnvlN8LwWwpDec2RESA0DpgQKajyhobahAt1
+         nvaqC6MJtolKdrD/KVXKTT57qPtMFmJcO1GPa8zLSpWv0nEUoDhf+XuPwqisdhfBBbwj
+         Z2Rjag4Z4moSGFlcmxIZBxTcwLR5mc7HlPJq7zyjqjSKIDE47HXmvzdyvIKQVfMk6pVU
+         VuejGKEvoNpGYpicNsC7xJUPgfi8YPHd23GNMhBUn/MKO74udEJvr0tR1HyQmfj8DvpI
+         rmVQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVKArgcHwASE4VBo+HA9rMXJXxrOQfFhFjQKbBnd/pkrIckp2N9D52JTurPAp1C9/8gG48bKBwSqQ==@kvack.org
+X-Gm-Message-State: AOJu0YxZ8LJzKhRNGH2+29X9sM1UtFDbocS+KFYGpjSS2RPy+cnwSSLW
+	bfKekUc68ICU9MXxC9M1tfGQ0ObQ6SdXNn36621jHBOGSOWF/sXvTL90xgsRqZDESQs590/DjK9
+	Bnwjy3yV33wwT4jDkrRV8qVftfrwElQ9skXbwf4HO
+X-Gm-Gg: ASbGnctK2UoJ5PxpVtObacCDJKEDWBE3xd0YfoKpnT3hKn63izHinxst3FJEeen9KTC
+	nlt3435NAmurjXrpgNNWGkkszRDadNmFkXBsAqobwXM92HofOJlMxg4VjCQiotuTw76xtwN+kAA
+	RJCgGvNAXqCNgovR2gdPLE8PJYHEWV/uR1RefAZEAyFOnqv10MF7oX5Ov433PphdT95AZgnLMJb
+	iK+Dc+byw/942WMnrWjbMf7Co7En5ORG/UgOzaSdW86bTIEonjobnZNUwvcJyUOgmt3JvHQyA==
+X-Google-Smtp-Source: AGHT+IFlC6HK9lSCMyz3eoncLEZ6DknQiv6+TZj1j6OfBhBXkHIbDiGMqiVzGOHAcPzc8FPo2BNmxB8S1kYu1b9m2wI=
+X-Received: by 2002:a17:902:e550:b0:24c:f4b1:baaf with SMTP id
+ d9443c01a7336-26808a33cc5mr11201915ad.1.1758212510647; Thu, 18 Sep 2025
+ 09:21:50 -0700 (PDT)
 MIME-Version: 1.0
-X-ThreadId: AneuvEk2E7Kg
-Date: Thu, 18 Sep 2025 18:18:13 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Andrew Lunn" <andrew@lunn.ch>
-Cc: "Jason Gunthorpe" <jgg@nvidia.com>, ksummit@lists.linux.dev,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
- linux-mm@kvack.org, imx@lists.linux.dev,
- "Christophe Leroy" <christophe.leroy@csgroup.eu>,
- "Richard Weinberger" <richard@nod.at>,
- "Lucas Stach" <l.stach@pengutronix.de>,
- "Linus Walleij" <linus.walleij@linaro.org>,
- "Geert Uytterhoeven" <geert+renesas@glider.be>,
- "Ankur Arora" <ankur.a.arora@oracle.com>,
- "David Hildenbrand" <david@redhat.com>,
- "Mike Rapoport" <rppt@kernel.org>,
- "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
- "Matthew Wilcox" <willy@infradead.org>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- "Vlastimil Babka" <vbabka@suse.cz>,
- "Suren Baghdasaryan" <surenb@google.com>,
- "Ira Weiny" <ira.weiny@intel.com>, "Nishanth Menon" <nm@ti.com>,
- =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
- "Alexander Sverdlin" <alexander.sverdlin@gmail.com>,
- "Chester A. Unal" <chester.a.unal@arinc9.com>,
- "Sergio Paracuellos" <sergio.paracuellos@gmail.com>,
- "Andreas Larsson" <andreas@gaisler.com>
-Message-Id: <ea6562f4-ec8c-4e99-98ec-000c25c34a3e@app.fastmail.com>
-In-Reply-To: <ca6fc8dc-d1ee-41a8-a1c9-11ed2907207f@lunn.ch>
-References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
- <20250917125951.GA1390993@nvidia.com>
- <02b0f383-1c43-4eeb-a76f-830c2970b833@app.fastmail.com>
- <ca6fc8dc-d1ee-41a8-a1c9-11ed2907207f@lunn.ch>
-Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: c5aic5e5m9a6pc9guc6f6zeunizybrhr
-X-Rspamd-Queue-Id: 90DF6160003
+References: <20250915163838.631445-1-kaleshsingh@google.com>
+ <20250915163838.631445-3-kaleshsingh@google.com> <b9b949d4-279b-4894-a829-9649e5f3ea9a@lucifer.local>
+In-Reply-To: <b9b949d4-279b-4894-a829-9649e5f3ea9a@lucifer.local>
+From: Kalesh Singh <kaleshsingh@google.com>
+Date: Thu, 18 Sep 2025 09:21:38 -0700
+X-Gm-Features: AS18NWAYPdlcxekctlncfZ3d1WQ-3G8qwe2w-BXw3QK6BhXELyZM1noQBKTdurg
+Message-ID: <CAC_TJvf9wp+c1iE6SHLwKQm3JNeKKLUPe2yrhmu7Wvqxdf0aoQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/7] mm/selftests: add max_vma_count tests
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: akpm@linux-foundation.org, minchan@kernel.org, david@redhat.com, 
+	Liam.Howlett@oracle.com, rppt@kernel.org, pfalcato@suse.de, 
+	kernel-team@android.com, android-mm@google.com, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Kees Cook <kees@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
+	Dietmar Eggemann <dietmar.eggemann@arm.com>, Ben Segall <bsegall@google.com>, 
+	Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, Jann Horn <jannh@google.com>, 
+	Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-trace-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 6A07A2000B
+X-Stat-Signature: itchj9i87c8cfpghboj81qoq1osyrtye
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1758212335-557647
-X-HE-Meta: U2FsdGVkX1/rQPAHHAz9dWd+OuhO1fiYO0vB36QVvGKukE0n2E1pOn4bSP09+q/47yUSRaxICHWGA4ZKNJQXmYIvhbDporOgg/JFxWFPpkqKCklYx4tPkNl16YorhdLCliZEwJrF0UFEC433kxsBoc+iKFDpH+xMvowL4zCIsrPMi2kq92/hgAiaDOOxXRKPN+GJ4kv/CbZo5M2232aF8mHcZRy+kPc9523OPBnDJf0DgWW9tAoKIgDTGnGzTV/aboBTEAOe+HOm8Zqu4kouOOi07OiGn0UJi8Ff0d5JOYSSs98WkkiwXI3YbOXzT1ONzPPntIQFwziuufVTFvqQS0cTAP7fYA+6ygQJCUUDT7HocFEakgXBG7EboX0ZnAwWqbf4KaTfPzOJt2ZKjvbVulFWQvUZYBmK0e8zSHp4JbkBzuLYnPkhUS/3UKX1zio9YBw3WOw3S3gnRByb1YpJFsrbPgjinevPQHMv7RxriPyEMHhifTXhVElHp7QJIMzU0ecSFjzNL7RFm3lJLxXoTxpb48ZXeesKYGx1G0f7ioK1CgsKJKTQLl/+6KpNSX/txgKHpcF+Z+4wSPmnsyvbIm4RGhafgGYiByC53/s4NplX5F4RP5mFGgOFeQC3WqkwfYxMLXy4zqwQRUn5KDdv9Xora4dd/SLynYW19CjdpjxPtDufcdKg7bNQgXhl262wtnBhlVRry8TqpgOGh0dMDaAPWZaDwNatTFNfbeJeJXdODmAGeLA3U8wwasFwkrqjlVpaNYEeYs3g+w2mDvEFsdjml0HECQUq3jB8ii89TTsCr5OybaA89biVoABavn4jHmdd5qfuaCwDlslgvI9GVd4idlOsON0G8vEiYCB13rpSFol0ABAe6p+q/7Q7z3mVnv26PEydf7zBmtKhLVw4ON+z6VVN8cHolqZUjkqRILrMnvoqWmdHVXePb7dYD7JW4Lj+ZqwELwgfg2y1LpS
- FXetJvfi
- bYykT8xc2zNpghz/AJOAXQ/dWhTr5ld9PjvdqqNb9osFkkOpFlvnSYL+rdzPdi7xreQExCOBs0VG5HBKcNBoODGyW6NHL3qAs22H0Gx/LlG9xuCbmCPuxJhYx+KZewaIVfKnv3pIC5s1iUVLTRCkvVFa3dAypB8GgT6IsbpeZ9MdOs1VVG5CAGtEX9oRkqxbYJYdiRkD7xkKquqUfC9buT0968AF7/StCFsQ5rNkb0vYz7DHE3KrvOauL9HTWQ0+e/3sRlhJ0okH3/6QDMKrUzsXnj5Axenv3D1cAoyeVZiDrKFT1ppC+T7QYdWJ7cxssrkYeYrbCVYuz4KQKMukVKat4Yg==
+X-HE-Tag: 1758212512-872630
+X-HE-Meta: U2FsdGVkX1/2C076zpUqYLuO+/5e6tJH5Gz2TADoInbPzpT6CRhwlJw6BBQ/h61e1b96NbitkSwPncTjPXyOCMZqCnH+d+PiMLlvyeDvAJc+UazVT6iAkC5S6CEYlJN6CuejFZkiWi0qnIwd85Z93IyQ1axKAE2OX3DWUlPXorMiPULoAePqLYqS75kk0OdWc7Mh949XRUY21ZdGNv5okqqO0QMWmlY9HONRn3oU/09YmSj6S7w0nVKvhdscV/tofXxK7TSzBA2efGX4MmYOO6NL1gtcVxAtZAyxTkl1fVkSUULfDGKNE/pI6WYlursoOL9VxXN3PQhspUiwQAL667mAtxOW8o0qtTgZT8rtTCJoUsQDNl847z7SlrP/H2MqmFxgEAHs/SDm8CjdLFcEkg+C/nJdg37icVq5wNAukvhdoJiW0BWyXgFEEZ7VPE/R7xLYorCFWos015INtMkyCV6k9Nu1YFg6v7DKnCWCyskcC79+P4Vci2wGtZPiYLVDEcTBzzwkeOoyFoHkw3L8ryiytWycJSicQgbO6e7EWW0SQxNjdfYP5vjJvVaxMb8q5xKWibNVqfa4Bzs/jKj44LoM7VLLO+38I/relAhzOs2Cb1IUWKYZVYT8C1M2cnWfWfNbzfrop0Uy3+j5VsJgGt5uRnytTxXy+L40T5gowN8AiauItKhRNDxTqzdNRuAGKuy3vrjtKYQAmWd8U9eRWhoubaTobh60CvWVIffMAtYffYAYewrGIaWNjjoPkgTMdmF+pJSUQjdbEM7lQcSrLa+PdoqvWdCMBBP8QVCD14Igr28y/RxoaqfDG9Bu6UwCzTHnJVOcTrbYQCelRx8IGfi+omhCnWzKl3I7Z4ECWrYD8sntYQgIhfQQ/r/VzMGcDXKqRxhksqWe00fg+0xFgrUzieRN3Vn1xj8u3eszuHYaPNTkzy5nEdDs+B8oS05R873RanOV8Lo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -163,44 +127,958 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 18, 2025, at 15:34, Andrew Lunn wrote:
->> * Marvell mv78xx0 and kirkwood (armv5 pj1) were fairly
->>   powerful in 2008 and could support at least 1GB of RAM,
->>   but I only found one machine (OpenBlocks A7) that does
->>   this. It's unclear if anyone is still updating kernels
->>   on this machine, but they could /probably/ use
->>   VMSPLIT_3G_OPT if they do.
+On Thu, Sep 18, 2025 at 7:42=E2=80=AFAM Lorenzo Stoakes
+<lorenzo.stoakes@oracle.com> wrote:
 >
-> If i remember correctly, there was a design issue with the OpenBlocks
-> A7, and it would not run with its full amount of memory. To get a
-> stable system you had to limit the RAM. I don't remember if that was
-> just with the NULL series, and it was fixed for mass production
-> devices, or they are all broken.
+> On Mon, Sep 15, 2025 at 09:36:33AM -0700, Kalesh Singh wrote:
+> > Add a new selftest to verify that the max VMA count limit is correctly
+> > enforced.
+> >
+> > This test suite checks that various VMA operations (mmap, mprotect,
+> > munmap, mremap) succeed or fail as expected when the number of VMAs is
+> > close to the sysctl_max_map_count limit.
+> >
+> > The test works by first creating a large number of VMAs to bring the
+> > process close to the limit, and then performing various operations that
+> > may or may not create new VMAs. The test then verifies that the
+> > operations that would exceed the limit fail, and that the operations
+> > that do not exceed the limit succeed.
+> >
+> > NOTE: munmap is special as it's allowed to temporarily exceed the limit
+> > by one for splits as this will decrease back to the limit once the unma=
+p
+> > succeeds.
+> >
+> > Cc: Andrew Morton <akpm@linux-foundation.org>
+> > Cc: David Hildenbrand <david@redhat.com>
+> > Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+> > Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> > Cc: Mike Rapoport <rppt@kernel.org>
+> > Cc: Minchan Kim <minchan@kernel.org>
+> > Cc: Pedro Falcato <pfalcato@suse.de>
+> > Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
+> > ---
+> >
+> > Changes in v2:
+> >  - Add tests, per Liam (note that the do_brk_flags() path is not easily
+> >    tested from userspace, so it's not included here). Exceeding the lim=
+it there
+> >    should be uncommon.
+> >
+> >  tools/testing/selftests/mm/Makefile           |   1 +
+> >  .../selftests/mm/max_vma_count_tests.c        | 709 ++++++++++++++++++
+>
+> If you add a new file, update MAINTAINERS. Should put in MEMORY MAPPING s=
+ection.
+>
+> >  tools/testing/selftests/mm/run_vmtests.sh     |   5 +
+>
+> You're missing a .gitignore.
+>
+> >  3 files changed, 715 insertions(+)
+> >  create mode 100644 tools/testing/selftests/mm/max_vma_count_tests.c
+> >
+> > diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selfte=
+sts/mm/Makefile
+> > index d13b3cef2a2b..00a4b04eab06 100644
+> > --- a/tools/testing/selftests/mm/Makefile
+> > +++ b/tools/testing/selftests/mm/Makefile
+> > @@ -91,6 +91,7 @@ TEST_GEN_FILES +=3D transhuge-stress
+> >  TEST_GEN_FILES +=3D uffd-stress
+> >  TEST_GEN_FILES +=3D uffd-unit-tests
+> >  TEST_GEN_FILES +=3D uffd-wp-mremap
+> > +TEST_GEN_FILES +=3D max_vma_count_tests
+> >  TEST_GEN_FILES +=3D split_huge_page_test
+> >  TEST_GEN_FILES +=3D ksm_tests
+> >  TEST_GEN_FILES +=3D ksm_functional_tests
+> > diff --git a/tools/testing/selftests/mm/max_vma_count_tests.c b/tools/t=
+esting/selftests/mm/max_vma_count_tests.c
+> > new file mode 100644
+> > index 000000000000..c8401c03425c
+> > --- /dev/null
+> > +++ b/tools/testing/selftests/mm/max_vma_count_tests.c
+> > @@ -0,0 +1,709 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +/*
+> > + * Copyright 2025 Google LLC
+> > + */
+> > +#define _GNU_SOURCE
+> > +
+> > +#include <stdio.h>
+> > +#include <stdlib.h>
+> > +#include <string.h>
+> > +#include <sys/mman.h>
+> > +#include <unistd.h>
+> > +#include <errno.h>
+> > +#include <stdbool.h>
+> > +#include <linux/prctl.h>  /* Definition of PR_* constants */
+> > +#include <sys/prctl.h>
+> > +
+> > +#include "../kselftest.h"
+> > +
+> > +static int get_max_vma_count(void);
+> > +static bool set_max_vma_count(int val);
+> > +static int get_current_vma_count(void);
+> > +static bool is_current_vma_count(const char *msg, int expected);
+> > +static bool is_test_area_mapped(const char *msg);
+> > +static void print_surrounding_maps(const char *msg);
+> > +
+> > +/* Globals initialized in test_suite_setup() */
+> > +static int MAX_VMA_COUNT;
+> > +static int ORIGINAL_MAX_VMA_COUNT;
+> > +static int PAGE_SIZE;
+> > +static int GUARD_SIZE;
+> > +static int TEST_AREA_SIZE;
+> > +static int EXTRA_MAP_SIZE;
+> > +
+> > +static int MAX_VMA_COUNT;
+> > +
+> > +static int NR_EXTRA_MAPS;
+> > +
+> > +static char *TEST_AREA;
+> > +static char *EXTRA_MAPS;
+> > +
+> > +#define DEFAULT_MAX_MAP_COUNT        65530
+> > +#define TEST_AREA_NR_PAGES   3
+> > +/* 1 before test area + 1 after test area + 1 after extra mappings */
+> > +#define NR_GUARDS            3
+> > +#define TEST_AREA_PROT               (PROT_NONE)
+> > +#define EXTRA_MAP_PROT               (PROT_NONE)
+> > +
+> > +/**
+> > + * test_suite_setup - Set up the VMA layout for VMA count testing.
+> > + *
+> > + * Sets up the following VMA layout:
+> > + *
+> > + * +----- base_addr
+> > + * |
+> > + * V
+> > + * +--------------+----------------------+--------------+-------------=
+---+--------------+----------------+--------------+-----+----------------+-=
+-------------+
+> > + * |  Guard Page  |                      |  Guard Page  |  Extra Map 1=
+   | Unmapped Gap |  Extra Map 2   | Unmapped Gap | ... |  Extra Map N   | =
+Unmapped Gap |
+> > + * |  (unmapped)  |      TEST_AREA       |  (unmapped)  | (mapped page=
+)  |  (1 page)    | (mapped page)  |  (1 page)    | ... | (mapped page)  | =
+ (1 page)    |
+> > + * |   (1 page)   | (unmapped, 3 pages)  |   (1 page)   |    (1 page) =
+   |              |    (1 page)    |              |     |    (1 page)    | =
+             |
+> > + * +--------------+----------------------+--------------+-------------=
+---+--------------+----------------+--------------+-----+----------------+-=
+-------------+
+>
+> I have no idea what a 'guard page' is here. You're not using MADV_GUARD_I=
+NSTALL so it's presumably an arbitrary PROT_NONE page or something?
 
-It's possible that the bug is in the exact bit of code that
-Jason was suggesting to have removed, if this was the last
-ARMv5 machine that actually tried to use highmem.
+I've changed this to "hole" per David's earlier feedbac.
 
-> I doubt there are any mv78xx0 machines left, why where never very
-> popular, but there are still Kirkwood NAS boxes around.
+>
+> > + * ^              ^                      ^              ^             =
+                                                     ^
+> > + * |              |                      |              |             =
+                                                     |
+> > + * +--GUARD_SIZE--+                      |              +-- EXTRA_MAPS=
+ points here             Sufficient EXTRA_MAPS to ---+
+> > + *    (PAGE_SIZE) |                      |                            =
+                             reach MAX_VMA_COUNT
+> > + *                |                      |
+> > + *                +--- TEST_AREA_SIZE ---+
+> > + *                |   (3 * PAGE_SIZE)    |
+> > + *                ^
+> > + *                |
+> > + *                +-- TEST_AREA starts here
+>
+> Can we make this vertical, it's obv >80 chars and it's kind of hard to re=
+ad.
 
-https://github.com/1000001101000/Debian_on_Buffalo does support
-some variations of the Terastation Duo, and they were planning
-to do a DT conversion at some point, but I think there is not
-much hope of that ever happening now that Debian armel has had
-its last release, and I expect we can drop the entire platform
-soon.
+Will do.
 
-The reference system for mv78xx0 of course was the platform
-that Nico used for implementing highmem on, with a full 2GB
-of RAM. I think in the end this was around the same time
-as dove and then armada xp.
+>
+> Also isn't this hugely convoluted? Do we really need to set up such a
+> complicated set of VMAs for every test?
 
-> I keep mine up to date, put an LTS kernel on it once a year,
-> update to the latest debian sid.
+I thought about playing with max_map_count to achieve the needed
+conditions for each test. But since this is global lowering it too
+significantly will introduce issues in other system processes while
+running the test (if the new max count) is lower than the current of
+any process.
 
-Do you know of any kirkwood machines beside the OpenBlocks A7
-that have more than 512MB of RAM?
+We only set this up once for all the tests.
 
-    Arnd
+>
+> > + *
+> > + * Populates TEST_AREA and other globals required for the tests.
+> > + * If successful, the current VMA count will be MAX_VMA_COUNT - 1.
+> > + *
+> > + * Return: true on success, false on failure.
+> > + */
+> > +static bool test_suite_setup(void)
+> > +{
+> > +     int initial_vma_count;
+> > +     size_t reservation_size;
+> > +     void *base_addr =3D NULL;
+> > +     char *ptr =3D NULL;
+> > +
+> > +     ksft_print_msg("Setting up vma_max_count test suite...\n");
+> > +
+> > +     /* Initialize globals */
+> > +     PAGE_SIZE =3D sysconf(_SC_PAGESIZE);
+> > +     TEST_AREA_SIZE =3D TEST_AREA_NR_PAGES * PAGE_SIZE;
+> > +     GUARD_SIZE =3D PAGE_SIZE;
+> > +     EXTRA_MAP_SIZE =3D PAGE_SIZE;
+> > +     MAX_VMA_COUNT =3D get_max_vma_count();
+>
+> Dude we are not COBOL programmers :) What is it with these capitalised va=
+riable
+> names?
+>
+> This is really horrible, please don't do that. And why on earth are you u=
+sing
+> globals like this.
+
+My intention was to avoid passing a ton of parameters to each test. I
+guess I could have thread them through some struct as well :)
+
+>
+> (Again) use the self test harness please :)
+
+Let me rework it with the harness ...
+>
+> > +
+> > +     MAX_VMA_COUNT =3D get_max_vma_count();
+> > +     if (MAX_VMA_COUNT < 0) {
+> > +             ksft_print_msg("Failed to read /proc/sys/vm/max_map_count=
+\n");
+> > +             return false;
+> > +     }
+> > +
+> > +     /*
+> > +      * If the current limit is higher than the kernel default,
+> > +      * we attempt to lower it to the default to ensure the test
+> > +      * can run with a reliably known boundary.
+> > +      */
+> > +     ORIGINAL_MAX_VMA_COUNT =3D 0;
+> > +
+> > +     if (MAX_VMA_COUNT > DEFAULT_MAX_MAP_COUNT) {
+> > +             ORIGINAL_MAX_VMA_COUNT =3D MAX_VMA_COUNT;
+> > +
+> > +             ksft_print_msg("Max VMA count is %d, lowering to default =
+%d for test...\n",
+> > +                             MAX_VMA_COUNT, DEFAULT_MAX_MAP_COUNT);
+> > +
+> > +             if (!set_max_vma_count(DEFAULT_MAX_MAP_COUNT)) {
+> > +                     ksft_print_msg("WARNING: Failed to lower max_map_=
+count to %d (requires root)n",
+> > +                                     DEFAULT_MAX_MAP_COUNT);
+>
+> Probably partly a product of you not using the harness, but you're violat=
+ing the
+> max chars per line all over the place.
+>
+> checkpatch.pl kinda has a fit with this file, can we just try and keep it=
+ to ~80 chars please?
+>
+> > +                     ksft_print_msg("Skipping test. Please run as root=
+: limit needs adjustment\n");
+> > +
+> > +                     MAX_VMA_COUNT =3D ORIGINAL_MAX_VMA_COUNT;
+> > +
+> > +                     return false;
+> > +             }
+> > +
+> > +             /* Update MAX_VMA_COUNT for the test run */
+> > +             MAX_VMA_COUNT =3D DEFAULT_MAX_MAP_COUNT;
+> > +     }
+> > +
+> > +     initial_vma_count =3D get_current_vma_count();
+> > +     if (initial_vma_count < 0) {
+> > +             ksft_print_msg("Failed to read /proc/self/maps\n");
+> > +             return false;
+> > +     }
+> > +
+> > +     /*
+> > +      * Calculate how many extra mappings we need to create to reach
+> > +      * MAX_VMA_COUNT - 1 (excluding test area).
+> > +      */
+> > +     NR_EXTRA_MAPS =3D MAX_VMA_COUNT - 1 - initial_vma_count;
+> > +
+> > +     if (NR_EXTRA_MAPS < 1) {
+> > +             ksft_print_msg("Not enough available maps to run test\n")=
+;
+> > +             ksft_print_msg("max_vma_count=3D%d, current_vma_count=3D%=
+d\n",
+> > +                             MAX_VMA_COUNT, initial_vma_count);
+> > +             return false;
+> > +     }
+> > +
+> > +     /*
+> > +      * Reserve space for:
+> > +      * - Extra mappings with a 1-page gap after each (NR_EXTRA_MAPS *=
+ 2)
+> > +      * - The test area itself (TEST_AREA_NR_PAGES)
+> > +      * - The guard pages (NR_GUARDS)
+> > +      */
+> > +     reservation_size =3D ((NR_EXTRA_MAPS * 2) +
+> > +                             TEST_AREA_NR_PAGES + NR_GUARDS) * PAGE_SI=
+ZE;
+> > +
+> > +     base_addr =3D mmap(NULL, reservation_size, PROT_NONE,
+> > +                     MAP_PRIVATE|MAP_ANONYMOUS, -1, 0);
+> > +     if (base_addr =3D=3D MAP_FAILED) {
+> > +             ksft_print_msg("Failed tommap initial reservation\n");
+> > +             return false;
+> > +     }
+> > +
+> > +     if (munmap(base_addr, reservation_size) =3D=3D -1) {
+> > +             ksft_print_msg("Failed to munmap initial reservation\n");
+> > +             return false;
+> > +     }
+> > +
+> > +     /* Get the addr of the test area */
+> > +     TEST_AREA =3D (char *)base_addr + GUARD_SIZE;
+> > +
+> > +     /*
+> > +      * Get the addr of the region for extra mappings:
+> > +      *     test area + 1 guard.
+> > +      */
+> > +     EXTRA_MAPS =3D TEST_AREA + TEST_AREA_SIZE + GUARD_SIZE;
+> > +
+> > +     /* Create single-page mappings separated by unmapped pages */
+> > +     ptr =3D EXTRA_MAPS;
+> > +     for (int i =3D 0; i < NR_EXTRA_MAPS; ++i) {
+> > +             if (mmap(ptr, PAGE_SIZE, EXTRA_MAP_PROT,
+> > +                     MAP_PRIVATE|MAP_ANONYMOUS|MAP_FIXED_NOREPLACE,
+> > +                     -1, 0) =3D=3D MAP_FAILED) {
+> > +                     perror("mmap in fill loop");
+> > +                     ksft_print_msg("Failed on mapping #%d of %d\n", i=
+ + 1,
+> > +                                     NR_EXTRA_MAPS);
+> > +                     return false;
+> > +             }
+> > +
+> > +             /* Advance pointer by 2 to leave a gap */
+> > +             ptr +=3D (2 * EXTRA_MAP_SIZE);
+> > +     }
+> > +
+> > +     if (!is_current_vma_count("test_suite_setup", MAX_VMA_COUNT - 1))
+> > +             return false;
+> > +
+> > +     ksft_print_msg("vma_max_count test suite setup done.\n");
+> > +
+> > +     return true;
+> > +}
+>
+> I mean it'll be fixed by the test harness, but even in test code let's pl=
+ease
+> not write MASSIVE functions that do a million things. It's not really rea=
+dable.
+
+I'll try breaking this up in the next revision.
+
+>
+> > +
+> > +static void test_suite_teardown(void)
+> > +{
+> > +     if (ORIGINAL_MAX_VMA_COUNT && MAX_VMA_COUNT !=3D ORIGINAL_MAX_VMA=
+_COUNT) {
+> > +             if (!set_max_vma_count(ORIGINAL_MAX_VMA_COUNT))
+> > +                     ksft_print_msg("Failed to restore max_map_count t=
+o %d\n",
+> > +                                     ORIGINAL_MAX_VMA_COUNT);
+> > +     }
+> > +}
+> > +
+> > +/* --- Test Helper Functions --- */
+> > +static bool mmap_anon(void)
+> > +{
+> > +     void *addr =3D  mmap(NULL, PAGE_SIZE, PROT_READ,
+> > +                        MAP_PRIVATE|MAP_ANONYMOUS, -1, 0);
+> > +
+> > +     /*
+> > +      * Handle cleanup here as the runner doesn't track where this,
+> > +      *mapping is located.
+> > +      */
+> > +     if (addr !=3D MAP_FAILED)
+> > +             munmap(addr, PAGE_SIZE);
+> > +
+> > +     return addr !=3D MAP_FAILED;
+> > +}
+> > +
+> > +static inline bool __mprotect(char *addr, int size)
+> > +{
+> > +     int new_prot =3D ~TEST_AREA_PROT & (PROT_READ | PROT_WRITE | PROT=
+_EXEC);
+> > +
+> > +     return mprotect(addr, size, new_prot) =3D=3D 0;
+> > +}
+> > +
+> > +static bool mprotect_nosplit(void)
+> > +{
+> > +     return __mprotect(TEST_AREA, TEST_AREA_SIZE);
+> > +}
+> > +
+> > +static bool mprotect_2way_split(void)
+> > +{
+> > +     return __mprotect(TEST_AREA, TEST_AREA_SIZE - PAGE_SIZE);
+> > +}
+> > +
+> > +static bool mprotect_3way_split(void)
+> > +{
+> > +     return __mprotect(TEST_AREA + PAGE_SIZE, PAGE_SIZE);
+> > +}
+> > +
+> > +static inline bool __munmap(char *addr, int size)
+> > +{
+> > +     return munmap(addr, size) =3D=3D 0;
+> > +}
+> > +
+> > +static bool munmap_nosplit(void)
+> > +{
+> > +     return __munmap(TEST_AREA, TEST_AREA_SIZE);
+> > +}
+> > +
+> > +static bool munmap_2way_split(void)
+> > +{
+> > +     return __munmap(TEST_AREA, TEST_AREA_SIZE - PAGE_SIZE);
+> > +}
+> > +
+> > +static bool munmap_3way_split(void)
+> > +{
+> > +     return __munmap(TEST_AREA + PAGE_SIZE, PAGE_SIZE);
+> > +}
+> > +
+> > +/* mremap accounts for the worst case to fail early */
+> > +static const int MREMAP_REQUIRED_VMA_SLOTS =3D 6;
+> > +
+> > +static bool mremap_dontunmap(void)
+> > +{
+> > +     void *new_addr;
+> > +
+> > +     /*
+> > +      * Using MREMAP_DONTUNMAP will create a new mapping without
+> > +      * removing the old one, consuming one VMA slot.
+> > +      */
+> > +     new_addr =3D mremap(TEST_AREA, TEST_AREA_SIZE, TEST_AREA_SIZE,
+> > +                       MREMAP_MAYMOVE | MREMAP_DONTUNMAP, NULL);
+> > +
+> > +     if (new_addr !=3D MAP_FAILED)
+> > +             munmap(new_addr, TEST_AREA_SIZE);
+> > +
+> > +     return new_addr !=3D MAP_FAILED;
+> > +}
+> > +
+> > +struct test {
+> > +     const char *name;
+> > +     bool (*test)(void);
+> > +      /* How many VMA slots below the limit this test needs to start? =
+*/
+> > +     int vma_slots_needed;
+> > +     bool expect_success;
+> > +};
+> > +
+> > +/* --- Test Cases --- */
+> > +struct test tests[] =3D {
+> > +     {
+> > +             .name =3D "mmap_at_1_below_vma_count_limit",
+> > +             .test =3D mmap_anon,
+> > +             .vma_slots_needed =3D 1,
+> > +             .expect_success =3D true,
+> > +     },
+> > +     {
+> > +             .name =3D "mmap_at_vma_count_limit",
+> > +             .test =3D mmap_anon,
+> > +             .vma_slots_needed =3D 0,
+> > +             .expect_success =3D false,
+> > +     },
+> > +     {
+> > +             .name =3D "mprotect_nosplit_at_1_below_vma_count_limit",
+> > +             .test =3D mprotect_nosplit,
+> > +             .vma_slots_needed =3D 1,
+> > +             .expect_success =3D true,
+> > +     },
+> > +     {
+> > +             .name =3D "mprotect_nosplit_at_vma_count_limit",
+> > +             .test =3D mprotect_nosplit,
+> > +             .vma_slots_needed =3D 0,
+> > +             .expect_success =3D true,
+> > +     },
+> > +     {
+> > +             .name =3D "mprotect_2way_split_at_1_below_vma_count_limit=
+",
+> > +             .test =3D mprotect_2way_split,
+> > +             .vma_slots_needed =3D 1,
+> > +             .expect_success =3D true,
+> > +     },
+> > +     {
+> > +             .name =3D "mprotect_2way_split_at_vma_count_limit",
+> > +             .test =3D mprotect_2way_split,
+> > +             .vma_slots_needed =3D 0,
+> > +             .expect_success =3D false,
+> > +     },
+> > +     {
+> > +             .name =3D "mprotect_3way_split_at_2_below_vma_count_limit=
+",
+> > +             .test =3D mprotect_3way_split,
+> > +             .vma_slots_needed =3D 2,
+> > +             .expect_success =3D true,
+> > +     },
+> > +     {
+> > +             .name =3D "mprotect_3way_split_at_1_below_vma_count_limit=
+",
+> > +             .test =3D mprotect_3way_split,
+> > +             .vma_slots_needed =3D 1,
+> > +             .expect_success =3D false,
+> > +     },
+> > +     {
+> > +             .name =3D "mprotect_3way_split_at_vma_count_limit",
+> > +             .test =3D mprotect_3way_split,
+> > +             .vma_slots_needed =3D 0,
+> > +             .expect_success =3D false,
+> > +     },
+> > +     {
+> > +             .name =3D "munmap_nosplit_at_1_below_vma_count_limit",
+> > +             .test =3D munmap_nosplit,
+> > +             .vma_slots_needed =3D 1,
+> > +             .expect_success =3D true,
+> > +     },
+> > +     {
+> > +             .name =3D "munmap_nosplit_at_vma_count_limit",
+> > +             .test =3D munmap_nosplit,
+> > +             .vma_slots_needed =3D 0,
+> > +             .expect_success =3D true,
+> > +     },
+> > +     {
+> > +             .name =3D "munmap_2way_split_at_1_below_vma_count_limit",
+> > +             .test =3D munmap_2way_split,
+> > +             .vma_slots_needed =3D 1,
+> > +             .expect_success =3D true,
+> > +     },
+> > +     {
+> > +             .name =3D "munmap_2way_split_at_vma_count_limit",
+> > +             .test =3D munmap_2way_split,
+> > +             .vma_slots_needed =3D 0,
+> > +             .expect_success =3D true,
+> > +     },
+> > +     {
+> > +             .name =3D "munmap_3way_split_at_2_below_vma_count_limit",
+> > +             .test =3D munmap_3way_split,
+> > +             .vma_slots_needed =3D 2,
+> > +             .expect_success =3D true,
+> > +     },
+> > +     {
+> > +             .name =3D "munmap_3way_split_at_1_below_vma_count_limit",
+> > +             .test =3D munmap_3way_split,
+> > +             .vma_slots_needed =3D 1,
+> > +             .expect_success =3D true,
+> > +     },
+> > +     {
+> > +             .name =3D "munmap_3way_split_at_vma_count_limit",
+> > +             .test =3D munmap_3way_split,
+> > +             .vma_slots_needed =3D 0,
+> > +             .expect_success =3D false,
+> > +     },
+> > +     {
+> > +             .name =3D "mremap_dontunmap_at_required_vma_count_capcity=
+",
+> > +             .test =3D mremap_dontunmap,
+> > +             .vma_slots_needed =3D MREMAP_REQUIRED_VMA_SLOTS,
+> > +             .expect_success =3D true,
+> > +     },
+> > +     {
+> > +             .name =3D "mremap_dontunmap_at_1_below_required_vma_count=
+_capacity",
+> > +             .test =3D mremap_dontunmap,
+> > +             .vma_slots_needed =3D MREMAP_REQUIRED_VMA_SLOTS - 1,
+> > +             .expect_success =3D false,
+> > +     },
+>
+> This is horrible. We don't need to do it this way.
+>
+> Use the kselftest_harness please. See the guard_regions.c test for an exa=
+mple of
+> how to use it.
+
+Will do, thanks for the reference.
+
+>
+> > +};
+> > +
+> > +/* --- Test Runner --- */
+> > +int main(int argc, char **argv)
+> > +{
+> > +     int num_tests =3D ARRAY_SIZE(tests);
+> > +     int failed_tests =3D 0;
+> > +
+> > +     ksft_set_plan(num_tests);
+> > +
+> > +     if (!test_suite_setup() !=3D 0) {
+> > +             if (MAX_VMA_COUNT > DEFAULT_MAX_MAP_COUNT)
+> > +                     ksft_exit_skip("max_map_count too high and cannot=
+ be lowered\n"
+> > +                                     "Please rerun as root.\n");
+> > +             else
+> > +                     ksft_exit_fail_msg("Test suite setup failed. Abor=
+ting.\n");
+> > +
+> > +     }
+> > +
+> > +     for (int i =3D 0; i < num_tests; i++) {
+> > +             int maps_to_unmap =3D tests[i].vma_slots_needed;
+> > +             const char *name =3D tests[i].name;
+> > +             bool test_passed;
+> > +
+> > +             errno =3D 0;
+> > +
+> > +             /* 1. Setup: TEST_AREA mapping */
+> > +             if (mmap(TEST_AREA, TEST_AREA_SIZE, TEST_AREA_PROT,
+> > +                     MAP_PRIVATE|MAP_ANONYMOUS|MAP_FIXED, -1, 0)
+> > +                             =3D=3D MAP_FAILED) {
+> > +                     ksft_test_result_fail(
+> > +                             "%s: Test setup failed to map TEST_AREA\n=
+",
+> > +                             name);
+> > +                     maps_to_unmap =3D 0;
+> > +                     goto fail;
+> > +             }
+> > +
+> > +             /* Label TEST_AREA to ease debugging */
+> > +             if (prctl(PR_SET_VMA, PR_SET_VMA_ANON_NAME, TEST_AREA,
+> > +                     TEST_AREA_SIZE, "TEST_AREA")) {
+> > +                     ksft_print_msg("WARNING: [%s] prctl(PR_SET_VMA) f=
+ailed\n",
+> > +                                     name);
+> > +                     ksft_print_msg(
+> > +                             "Continuing without named TEST_AREA mappi=
+ng\n");
+> > +             }
+> > +
+> > +             /* 2. Setup: Adjust VMA count based on test requirements =
+*/
+> > +             if (maps_to_unmap > NR_EXTRA_MAPS) {
+> > +                     ksft_test_result_fail(
+> > +                             "%s: Test setup failed: Invalid VMA slots=
+ required %d\n",
+> > +                             name, tests[i].vma_slots_needed);
+> > +                     maps_to_unmap =3D 0;
+> > +                     goto fail;
+> > +             }
+> > +
+> > +             /* Unmap extra mappings, accounting for the 1-page gap */
+> > +             for (int j =3D 0; j < maps_to_unmap; j++)
+> > +                     munmap(EXTRA_MAPS + (j * 2 * EXTRA_MAP_SIZE),
+> > +                             EXTRA_MAP_SIZE);
+> > +
+> > +             /*
+> > +              * 3. Verify the preconditions.
+> > +              *
+> > +              *    Sometimes there isn't an easy way to determine the =
+cause
+> > +              *    of the test failure.
+> > +              *    e.g. an mprotect ENOMEM may be due to trying to pro=
+tect
+> > +              *         unmapped area or due to hitting MAX_VMA_COUNT =
+limit.
+> > +              *
+> > +              *    We verify the preconditions of the test to ensure a=
+ny
+> > +              *    expected failures are from the expected cause and n=
+ot
+> > +              *    coincidental.
+> > +              */
+> > +             if (!is_current_vma_count(name,
+> > +                     MAX_VMA_COUNT - tests[i].vma_slots_needed))
+> > +                     goto fail;
+> > +
+> > +             if (!is_test_area_mapped(name))
+> > +                     goto fail;
+> > +
+> > +             /* 4. Run the test */
+> > +             test_passed =3D (tests[i].test() =3D=3D tests[i].expect_s=
+uccess);
+> > +             if (test_passed) {
+> > +                     ksft_test_result_pass("%s\n", name);
+> > +             } else {
+> > +fail:
+> > +                     failed_tests++;
+> > +                     ksft_test_result_fail(
+> > +                             "%s: current_vma_count=3D%d,max_vma_count=
+=3D%d: errno: %d (%s)\n",
+> > +                             name, get_current_vma_count(), MAX_VMA_CO=
+UNT,
+> > +                             errno, strerror(errno));
+> > +                     print_surrounding_maps(name);
+> > +             }
+> > +
+> > +             /* 5. Teardown: Unmap TEST_AREA. */
+> > +             munmap(TEST_AREA, TEST_AREA_SIZE);
+> > +
+> > +             /* 6. Teardown: Restore extra mappings to test suite base=
+line */
+> > +             for (int j =3D 0; j < maps_to_unmap; j++) {
+> > +                     /* Remap extra mappings, accounting for the gap *=
+/
+> > +                     mmap(EXTRA_MAPS + (j * 2 * EXTRA_MAP_SIZE),
+> > +                             EXTRA_MAP_SIZE, EXTRA_MAP_PROT,
+> > +                             MAP_PRIVATE|MAP_ANONYMOUS|MAP_FIXED_NOREP=
+LACE,
+> > +                             -1, 0);
+> > +             }
+> > +     }
+> > +
+> > +     test_suite_teardown();
+> > +
+> > +     if (failed_tests > 0)
+> > +             ksft_exit_fail();
+> > +     else
+> > +             ksft_exit_pass();
+> > +}
+> > +
+> > +/* --- Utilities --- */
+> > +
+> > +static int get_max_vma_count(void)
+> > +{
+> > +     int max_count;
+> > +     FILE *f;
+> > +
+> > +     f =3D fopen("/proc/sys/vm/max_map_count", "r");
+> > +     if (!f)
+> > +             return -1;
+> > +
+> > +     if (fscanf(f, "%d", &max_count) !=3D 1)
+> > +             max_count =3D -1;
+> > +
+> > +
+> > +     fclose(f);
+> > +
+> > +     return max_count;
+> > +}
+> > +
+> > +static bool set_max_vma_count(int val)
+> > +{
+> > +     FILE *f;
+> > +     bool success =3D false;
+> > +
+> > +     f =3D fopen("/proc/sys/vm/max_map_count", "w");
+> > +     if (!f)
+> > +             return false;
+> > +
+> > +     if (fprintf(f, "%d", val) > 0)
+> > +             success =3D true;
+> > +
+> > +     fclose(f);
+> > +     return success;
+> > +}
+> > +
+> > +static int get_current_vma_count(void)
+> > +{
+> > +     char line[1024];
+> > +     int count =3D 0;
+> > +     FILE *f;
+> > +
+> > +     f =3D fopen("/proc/self/maps", "r");
+> > +     if (!f)
+> > +             return -1;
+> > +
+> > +     while (fgets(line, sizeof(line), f)) {
+> > +             if (!strstr(line, "[vsyscall]"))
+> > +                     count++;
+> > +     }
+> > +
+> > +     fclose(f);
+> > +
+> > +     return count;
+> > +}
+> > +
+> > +static bool is_current_vma_count(const char *msg, int expected)
+> > +{
+> > +     int current =3D get_current_vma_count();
+> > +
+> > +     if (current =3D=3D expected)
+> > +             return true;
+> > +
+> > +     ksft_print_msg("%s: vma count is %d, expected %d\n", msg, current=
+,
+> > +                     expected);
+> > +     return false;
+> > +}
+> > +
+> > +static bool is_test_area_mapped(const char *msg)
+> > +{
+> > +     unsigned long search_start =3D (unsigned long)TEST_AREA;
+> > +     unsigned long search_end =3D search_start + TEST_AREA_SIZE;
+> > +     bool found =3D false;
+> > +     char line[1024];
+> > +     FILE *f;
+> > +
+> > +     f =3D fopen("/proc/self/maps", "r");
+> > +     if (!f) {
+> > +             ksft_print_msg("failed to open /proc/self/maps\n");
+> > +             return false;
+> > +     }
+> > +
+> > +     while (fgets(line, sizeof(line), f)) {
+> > +             unsigned long start, end;
+> > +
+> > +             if (sscanf(line, "%lx-%lx", &start, &end) !=3D 2)
+> > +                     continue;
+> > +
+> > +             /* Check for an exact match of the range */
+> > +             if (start =3D=3D search_start && end =3D=3D search_end) {
+> > +                     found =3D true;
+> > +                     break;
+> > +             } else if (start > search_end) {
+> > +                     /*
+> > +                      *Since maps are sorted, if we've passed the end,=
+ we
+> > +                      * can stop searching.
+> > +                      */
+> > +                     break;
+> > +             }
+> > +     }
+> > +
+>
+> There's helpers for this kind of thing in vm_util.h, let's not duplicate
+> code. Also you can use the proc query ioctl thingy (also helpers for that=
+ in
+> vm_util.h) rather than having to spelunk /proc/$pid/maps.
+
+Thanks I'll use the helpers there instead.
+
+>
+> > +     fclose(f);
+> > +
+> > +     if (found)
+> > +             return true;
+> > +
+> > +     /* Not found */
+> > +     ksft_print_msg(
+> > +             "%s: TEST_AREA is not mapped as a single contiguous block=
+.\n",
+> > +             msg);
+> > +     print_surrounding_maps(msg);
+> > +
+> > +     return false;
+> > +}
+> > +
+> > +static void print_surrounding_maps(const char *msg)
+>
+> WHy are you printing a bunch of noise in a test?
+
+This is only printed in the failure case, it makes debugging much
+easier. I can update it to a TH_LOG() instead once it's moved to the
+test harness.
+
+Thanks,
+Kalesh
+>
+> > +{
+> > +     unsigned long search_start =3D (unsigned long)TEST_AREA;
+> > +     unsigned long search_end =3D search_start + TEST_AREA_SIZE;
+> > +     unsigned long start;
+> > +     unsigned long end;
+> > +     char line[1024] =3D {};
+> > +     int line_idx =3D 0;
+> > +     int first_match_idx =3D -1;
+> > +     int last_match_idx =3D -1;
+> > +     FILE *f;
+> > +
+> > +     f =3D fopen("/proc/self/maps", "r");
+> > +     if (!f)
+> > +             return;
+> > +
+> > +     if (msg)
+> > +             ksft_print_msg("%s\n", msg);
+> > +
+> > +     ksft_print_msg("--- Surrounding VMA entries for TEST_AREA (%p) --=
+-\n",
+> > +                     TEST_AREA);
+> > +
+> > +     /* First pass: Read all lines and find the range of matching entr=
+ies */
+> > +     fseek(f, 0, SEEK_SET); /* Rewind file */
+> > +     while (fgets(line, sizeof(line), f)) {
+> > +             if (sscanf(line, "%lx-%lx", &start, &end) !=3D 2) {
+> > +                     line_idx++;
+> > +                     continue;
+> > +             }
+> > +
+> > +             /* Check for any overlap */
+> > +             if (start < search_end && end > search_start) {
+> > +                     if (first_match_idx =3D=3D -1)
+> > +                             first_match_idx =3D line_idx;
+> > +                     last_match_idx =3D line_idx;
+> > +             } else if (start > search_end) {
+> > +                     /*
+> > +                      * Since maps are sorted, if we've passed the end=
+, we
+> > +                      * can stop searching.
+> > +                      */
+> > +                     break;
+> > +             }
+> > +
+> > +             line_idx++;
+> > +     }
+> > +
+> > +     if (first_match_idx =3D=3D -1) {
+> > +             ksft_print_msg("TEST_AREA (%p) is not currently mapped.\n=
+",
+> > +                             TEST_AREA);
+> > +     } else {
+> > +             /* Second pass: Print the relevant lines */
+> > +             fseek(f, 0, SEEK_SET); /* Rewind file */
+> > +             line_idx =3D 0;
+> > +             while (fgets(line, sizeof(line), f)) {
+> > +                     /* Print 2 lines before the first match */
+> > +                     if (line_idx >=3D first_match_idx - 2 &&
+> > +                             line_idx < first_match_idx)
+> > +                             ksft_print_msg("   %s", line);
+> > +
+> > +                     /* Print all matching TEST_AREA entries */
+> > +                     if (line_idx >=3D first_match_idx &&
+> > +                             line_idx <=3D last_match_idx)
+> > +                             ksft_print_msg(">> %s", line);
+> > +
+> > +                     /* Print 2 lines after the last match */
+> > +                     if (line_idx > last_match_idx &&
+> > +                             line_idx <=3D last_match_idx + 2)
+> > +                             ksft_print_msg("   %s", line);
+> > +
+> > +                     line_idx++;
+> > +             }
+> > +     }
+> > +
+> > +     ksft_print_msg("-------------------------------------------------=
+-\n");
+> > +
+> > +     fclose(f);
+> > +}
+> > diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/=
+selftests/mm/run_vmtests.sh
+> > index 471e539d82b8..3794b50ec280 100755
+> > --- a/tools/testing/selftests/mm/run_vmtests.sh
+> > +++ b/tools/testing/selftests/mm/run_vmtests.sh
+> > @@ -49,6 +49,8 @@ separated by spaces:
+> >       test madvise(2) MADV_GUARD_INSTALL and MADV_GUARD_REMOVE options
+> >  - madv_populate
+> >       test memadvise(2) MADV_POPULATE_{READ,WRITE} options
+> > +- max_vma_count
+> > +     tests for max vma_count
+> >  - memfd_secret
+> >       test memfd_secret(2)
+> >  - process_mrelease
+> > @@ -417,6 +419,9 @@ fi # VADDR64
+> >  # vmalloc stability smoke test
+> >  CATEGORY=3D"vmalloc" run_test bash ./test_vmalloc.sh smoke
+> >
+> > +# test operations against max vma count limit
+> > +CATEGORY=3D"max_vma_count" run_test ./max_vma_count_tests
+> > +
+> >  CATEGORY=3D"mremap" run_test ./mremap_dontunmap
+> >
+> >  CATEGORY=3D"hmm" run_test bash ./test_hmm.sh smoke
+> > --
+> > 2.51.0.384.g4c02a37b29-goog
+> >
 
