@@ -4,233 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 734EECAC59F
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 02:10:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64F0BCAC59A
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 02:19:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CED648E0099; Wed, 17 Sep 2025 22:10:08 -0400 (EDT)
+	id A1B71280004; Wed, 17 Sep 2025 22:18:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC4C48E006B; Wed, 17 Sep 2025 22:10:08 -0400 (EDT)
+	id 9CC368E006B; Wed, 17 Sep 2025 22:18:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB3938E0099; Wed, 17 Sep 2025 22:10:08 -0400 (EDT)
+	id 8BAFD280004; Wed, 17 Sep 2025 22:18:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A81AD8E006B
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 22:10:08 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3865F87500
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 02:10:08 +0000 (UTC)
-X-FDA: 83900740896.19.13D02A9
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf02.hostedemail.com (Postfix) with ESMTP id DE5E680003
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 02:10:04 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=GYzTZU2o;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=ZgTOdBdy;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf02.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758161405;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7545A8E006B
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 22:18:59 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id ECCB211ACD1
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 02:18:58 +0000 (UTC)
+X-FDA: 83900763156.10.BC23E04
+Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 712E64000D
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 02:18:56 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=rDrVJvy1;
+	spf=pass (imf01.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1758161937;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6/MjvYHgYLmAQgc80aUAL+t3IlU75iDgIwBDAx2oYCY=;
-	b=H882aGfefvIsv17PEQQsLbXyfG6XyDC/BcxZxSIZra9e4vBs3EV/icWVCAG4u8fD2lr1kI
-	xRZasjPVvxb/hCzoYOueMKeKD1qKyH/OZSKyQYtocgMttGDE6Yimt5dyYydtwnTRpqXglC
-	gvTSNaPNy0pWbxbCt/Z+ju+dhMXJv3A=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1758161405; a=rsa-sha256;
-	cv=pass;
-	b=je2WAj3jGePiWnjJ7Ggek4jtPcHyxTBqGdcARUZXXQdWCkqrPu/mL5wbyDDsVgGOmBBdRG
-	IupyQrSL5gi8nCYYPWqgX3tN31Z4uOcZ2dMn0/Zoi2UjrpM6oqbZGBTm1nMZviVhynvfA2
-	DkjHB0fb0Zvfuj7fNMX9q38LfXulQCs=
-ARC-Authentication-Results: i=2;
-	imf02.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=GYzTZU2o;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=ZgTOdBdy;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf02.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58HM59Gt001828;
-	Thu, 18 Sep 2025 02:09:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=6/MjvYHgYLmAQgc80a
-	UAL+t3IlU75iDgIwBDAx2oYCY=; b=GYzTZU2oVfoEgvUjRfQlBnnqqCs2iafiK7
-	bM3O0mBrMD4dLUJCA8pub+owOl3GYpC2IcwaIhg1PPjgohEOmCj1j4uBmAP3dbkh
-	rVGSpU/Oo3R/FhaY1MzUSfTThWQIMxumMv3Tg0xIvjyHqNN7nvNelve2L0FSMeSd
-	ALNqZOB3OmEprWiA/rdO5GitLQ1J/0b/OAqSZxE6RP2+YfeWTdOai+Eyzhmr4/cb
-	9L8vPT3WsJ2V/gRPQXBmNY09H2lyc5ZeWnvTZqGOEQ6FkmQRFHPKOtO1GG1BJJHI
-	HbGksY9rJ2CqeY5FCLfFoqRPyq0MV/HnUx516T34Rd8mXM8wWG5w==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 497fxd2ft3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 18 Sep 2025 02:09:39 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 58I0Ri2Z001461;
-	Thu, 18 Sep 2025 02:09:38 GMT
-Received: from byapr05cu005.outbound.protection.outlook.com (mail-westusazon11010025.outbound.protection.outlook.com [52.101.85.25])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 494y2eqtej-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 18 Sep 2025 02:09:38 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pcHkf8dXw1ChUjwosqWmcsqLscpKsaVLuresJorzbHIB8lS11fHTma3IGPwY4xaDlANbeVWoJsCygmXCqIAG/3qHDYnNZMhwnr030aE1EWtcLCyMtW3gu7I/XB3Y8rdea9Y6OI/MSkL+zkEW46Efzbtp2SVngRbvKqncjVoSRUe2gRwLly7n0f+qfb7dKljboxAi+vvH/lES0zte/3YCsthzRhnikFEwVfMH3phtLHsOk0zR0OHX/lZEvXeiOxgkSCQoJB1DYCDg10Cc6CxfepYXr48g+asfvMYj9IKstFFp1fTQhKNb8TNfoz2Ia5t9aA+baSeAl2R8UpXNIrUYOA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6/MjvYHgYLmAQgc80aUAL+t3IlU75iDgIwBDAx2oYCY=;
- b=nGRRvq0TfNTegEwBgRuMW+x0PG4SOXq7Lrur7q2SVj7IFY3TVKsavFwoRzhfI/o53H3S8JlSYP1p+7sjqFEPkDuLChJbpkFmgLKdNuq/O9Kg2HY0EKJNALlWiF6h+GYm42jYsXemvvn1fCkmAdPK6OXtB63M+B5w3wjGx62EAvN7rseOrgVcGW8t52VOq2+yWPgiG6RBdI29HGxR+2EeEGB9jpOYG3wIrjlhSNM/JD8DbTVgOYrgXrAfl6YmZqDGJPwcb45ftaK5TUJyhSXidb/DlFK3q8OSkGMqfwHzbsjuTla4wURP7wx83bwpisLdnqv1ynFkn+5I7RaNLDq9eg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6/MjvYHgYLmAQgc80aUAL+t3IlU75iDgIwBDAx2oYCY=;
- b=ZgTOdBdy0Migu+YqT7lmDw+kUZqVICVyR4AxeLMrPBTAE0PxwENP5sUUBBYp4ktOenREUXFxl8AkesrQiRyQPJJYNU2/Csk7J7epSTIqRW3XWqYC/iwbmK3YBa2C0hCbUwDry9y7IvvJ8HWFFbZuLuiFDnX3BUhQStaumaLc+Yo=
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
- by CH3PR10MB6882.namprd10.prod.outlook.com (2603:10b6:610:14e::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.13; Thu, 18 Sep
- 2025 02:09:36 +0000
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::f238:6143:104c:da23]) by CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::f238:6143:104c:da23%7]) with mapi id 15.20.9115.018; Thu, 18 Sep 2025
- 02:09:36 +0000
-Date: Thu, 18 Sep 2025 11:09:23 +0900
-From: Harry Yoo <harry.yoo@oracle.com>
-To: Jinliang Zheng <alexjlzheng@gmail.com>
-Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org,
-        alexjlzheng@tencent.com, arnd@arndb.de, bp@alien8.de,
-        dave.hansen@linux.intel.com, david@redhat.com, geert@linux-m68k.org,
-        hpa@zytor.com, joro@8bytes.org, jroedel@suse.de, kas@kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, linux@armlinux.org.uk, lorenzo.stoakes@oracle.com,
-        mhocko@suse.com, mingo@redhat.com, rppt@kernel.org, surenb@google.com,
-        tglx@linutronix.de, thuth@redhat.com, urezki@gmail.com, vbabka@suse.cz,
-        vincenzo.frascino@arm.com, x86@kernel.org
-Subject: Re: [PATCH] mm: introduce ARCH_PAGE_TABLE_SYNC_MASK_VMALLOC to sync
- kernel mapping conditionally
-Message-ID: <aMtp0-mV5_33AgYt@hyeyoo>
-References: <aMrkoBhIcP37YgyS@hyeyoo>
- <20250918013130.2425537-1-alexjlzheng@tencent.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250918013130.2425537-1-alexjlzheng@tencent.com>
-X-ClientProxiedBy: SE2P216CA0097.KORP216.PROD.OUTLOOK.COM
- (2603:1096:101:2c2::16) To CH3PR10MB7329.namprd10.prod.outlook.com
- (2603:10b6:610:12c::16)
+	bh=gxbRB5XWir6VmFp5xOaBmn7eG9P2Fj+zCnltu72Ma9U=;
+	b=Ut8lFZY3fP0Ilr0rEZJPtAxis42mstIiTnKcY6ZTdozkgeKYUUkBBw1reWUcYzvp3EBcM9
+	PqBu/ehRPvNnqJgNgCw7CjRtKjsQ713FDTMuWjoG7vrW3kEJ4oOGsxU/+l4ZqaYmQWYmGS
+	sEWjaFwawhy3phE0LJ6x2J2ZnREL8PA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758161937; a=rsa-sha256;
+	cv=none;
+	b=D6Qaodh43Ph9VTM4KgFGjYppWkOxugdFbsy7fEqlxbcZpJXqJU9Ob1qVeG7mZchdSOD316
+	wUzmMzstd4wDFUx2gACKpsFWNABRWBF6W9NURsXpjkQ9eoT1tLT2wdFuzRJp+XHtHfJVU1
+	GbfCkQIIjYRtQDGmzVkdQirBcjNDdc4=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=rDrVJvy1;
+	spf=pass (imf01.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1758161932; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=gxbRB5XWir6VmFp5xOaBmn7eG9P2Fj+zCnltu72Ma9U=;
+	b=rDrVJvy1/CZsUwZOKum15BxmnTYm+W2eNz65U/wKUtS/Aihc8ZloAg/5RpDB2WDyO6VbHKAXAaS2ko/E/yq8rIT+n5mV6mGcZ4UkvMESnYBgcCmxTG6nrHo7svAQ31i9F2us6rkQsRFBe7Fck7Lu2CjNFRJAw/Pd+2l5sGXqBHI=
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0WoE51RN_1758161930 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 18 Sep 2025 10:18:51 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,  Will Deacon
+ <will@kernel.org>,  Andrew Morton <akpm@linux-foundation.org>,  David
+ Hildenbrand <david@redhat.com>,  Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>,  Vlastimil Babka <vbabka@suse.cz>,  Zi Yan
+ <ziy@nvidia.com>,  Baolin Wang <baolin.wang@linux.alibaba.com>,  Yang Shi
+ <yang@os.amperecomputing.com>,  "Christoph Lameter (Ampere)"
+ <cl@gentwo.org>,  Dev Jain <dev.jain@arm.com>,  Barry Song
+ <baohua@kernel.org>,  Anshuman Khandual <anshuman.khandual@arm.com>,
+  Yicong Yang <yangyicong@hisilicon.com>,  Kefeng Wang
+ <wangkefeng.wang@huawei.com>,  Kevin Brodsky <kevin.brodsky@arm.com>,  Yin
+ Fengwei <fengwei_yin@linux.alibaba.com>,
+  linux-arm-kernel@lists.infradead.org,  linux-kernel@vger.kernel.org,
+  linux-mm@kvack.org
+Subject: Re: [RFC PATCH 2/2] arm64, tlbflush: don't TLBI broadcast if page
+ reused in write fault
+In-Reply-To: <46dcddec-88a9-4b22-920c-8a3edeb2f027@arm.com> (Ryan Roberts's
+	message of "Tue, 16 Sep 2025 09:24:45 +0100")
+References: <20250915032946.33203-1-ying.huang@linux.alibaba.com>
+	<20250915032946.33203-3-ying.huang@linux.alibaba.com>
+	<46dcddec-88a9-4b22-920c-8a3edeb2f027@arm.com>
+Date: Thu, 18 Sep 2025 10:18:49 +0800
+Message-ID: <87o6r833li.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|CH3PR10MB6882:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5f8a06c2-769e-43ae-b163-08ddf6586a4a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?UBRaFG+gd7j7MHZ7GcfuhUHUBur4kcjOcOFwpHyM6KfIr7dvdCM1fJvCtMIy?=
- =?us-ascii?Q?+T+Qvd8NVj+Q5dEjNOm1kJFUfJkcsYt3Fe8cCUmmkL7LU5XCTkRENpnkEUjN?=
- =?us-ascii?Q?KI5Pk+sUg6xCsMCeAi4JgnRfRPhwOei3cPpAIG1qjrQtKnnt5hpTrB3esBoz?=
- =?us-ascii?Q?jZATUIPawPC4N1TCzXYi51FQIJ8JqcCGmh5W+jDO0bxhJJNIpAukw135+O1G?=
- =?us-ascii?Q?HOrI8RNpux5ewylLPt+o/rAI79oBxH3YW+aSCy32tkezrCg+GFAX7zCpy9bW?=
- =?us-ascii?Q?C2RLsaGkwGn5ihCjI8lhg08LbEhCY9qu5AJiuVGKv3M4m4yPQUspBYx908BG?=
- =?us-ascii?Q?e/UlwQumAi2y9y3rhbn1x5DsVEWQl7DbWFM+v4RTFqzZwQgRLNF37JVpLy+U?=
- =?us-ascii?Q?pTlW9SHvYSw15e0FRq9r2hvC7ZMeOmH1WAjkVH2kTKKMNViC/vzass6kMSDO?=
- =?us-ascii?Q?8EZjJ54brE3gJxxSDwMJZdH0KSslHAgxZiJYdj77u2CoJFSsxrcyWGTJmxHg?=
- =?us-ascii?Q?nZOcO5ywO4G8iUxY5Hw3Mg8AJin+hfl0PIK/j2NILSwQ4aSuCG996ODZge9l?=
- =?us-ascii?Q?a+evmz5VvwsIW3L/+6FRXjF5vmqyPVvIAckxkO2KxttPjPui4iFrWXstoLHS?=
- =?us-ascii?Q?IGDN1iUq8Af9JCqnjTQWlzat8JIWr/A9R4Ldw1vDwHu+uqPPBLpvrLj+fBYg?=
- =?us-ascii?Q?qv3QQ2CIKjCvMjv1Ji8oPyW2LEi93UJFShB40mN+K5Gr31rBlHbcxke+wlfo?=
- =?us-ascii?Q?GSET2HCZNdwIN1k9r+EhcBl4JUYWdV1/5uEs54gvPr4FPQrQV14CMFqvhSF4?=
- =?us-ascii?Q?HXf6/f55gw34bUrwJcZMvfZjBAnZHw+YUYdFBN+ujbiJaPsW4n8eCI8Cpyqw?=
- =?us-ascii?Q?J38hsuBoce0nLZ03E2yJ1i4+tAQ6iqiANNXMitTDABuSXvxcwiqsUK7rFmZN?=
- =?us-ascii?Q?DmHa1sdKVO71iwwUqr9YKAyD52Zuf7aBzoGNFKjGKOxS1BPnY3ftAeZ/jyFL?=
- =?us-ascii?Q?C6AnyR/DaDCOlkvvDGkY17PDVwJoy9uiRR67TBwAdGi2B22hthTWkDnL+QEG?=
- =?us-ascii?Q?IF9YzxcaJE+Hbk2DIsOF5VSZrJKJoyx4OwsSoq9XWW37CM73b/2ALvgK7Fz3?=
- =?us-ascii?Q?LFQ60UnHyJqSXvnB1hDFObrKycmxo3qMYA1OFky1US9LWG6fR8Kqr6sF9lp9?=
- =?us-ascii?Q?aotKXBD7Lv2B7ztbeFZfgGHMJxAo/JftciEQegb2UHpYDO1cr8FghXuMI2ZP?=
- =?us-ascii?Q?n725UNfBXi1G1Xq65BJ0W6e+/VxPIJRybiHaaPDtq61dswZb1ExCZ6rc6SBF?=
- =?us-ascii?Q?y3+fB0ALzbzrm4+nVb26ZxHdaPac93yDCU66mJkKvYixYuKnLd6X3PgjxfXN?=
- =?us-ascii?Q?pUoDn3z3fVHAzFolu1I/ufW1j/zIRSdiWm1mnUyzUOxsC7g4cA=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?3TxNaD/14T2Q9VbylUiegHqzO3msmmpj/sDZfP3TIfDLOnDTGgaZyPUB/6yH?=
- =?us-ascii?Q?mBbw26u7/fmvcZy5tGM8LzcQO49SKgsdNpdqPma/l3QHcDBNvMWlEKIGe8/C?=
- =?us-ascii?Q?sC8a66lwCFNSTZpkjlBJ+TXvlfnIGDfC+zMk2FsFsnch3u4BMK+nyBrMMHzH?=
- =?us-ascii?Q?9gyhrFRFay1wr10bEBnesbS1FViFjE6F2X1eI0bdZAscRybdq/qas9JpAGg8?=
- =?us-ascii?Q?pOCrt+paQa4KdAOEk7cnuwIXjdqUcZl4153kN3H+ycvj8CirEUGDZWPHPcHG?=
- =?us-ascii?Q?lbjNktI89UrXxdh3rmEroJft6Hvu4Ac3MFJngQeTG9t3Vdk+M50sFNEVQFgd?=
- =?us-ascii?Q?uaWpWIFj0D2VZZEFVHziJYYLC9cOuAxiuf6BvW/Osr3c4FCLLTqnF71tjJ0N?=
- =?us-ascii?Q?DKBBe5j2g/9ryUivvG4YJJiB+DFA2Gn7Mrethnto7hUIKSsNy4YfMchWBxj5?=
- =?us-ascii?Q?SjZnD5NF9t6q1eos5Glqt/4Lm/3h45Td+gwKNLGZJ7+wk2CDqlK8GKRuowbw?=
- =?us-ascii?Q?qVgBYTi3gDJJLzw0TIPmLtuRUoYrZ8ao9CFnrlZSjhTyuuwkeK+X8MOVxKUo?=
- =?us-ascii?Q?K3Str7DKK+njfxrRTpqGoQGppDHKJ2d8wbeQ17cq33s3mpQ9WC5DxxRXqx3d?=
- =?us-ascii?Q?q9PiC/uL7f0I77pEmKC9XUd1fZuDpVj716xme5pALNPXcaA9Pb/nGtprCLjg?=
- =?us-ascii?Q?l/pU/hd5XDXwq7xEzgrtS6GZoowmmgT1vwxyrotEr2e55VCjURLz1Qvf8YH2?=
- =?us-ascii?Q?lYWBBeMMeaQOnuP84P1ICRLCBAWx+IK9Wm4zGnqnH3k6lTHlBJlL8EZVHw+B?=
- =?us-ascii?Q?bo7rj5e5sfUDP3QD0Om+RH0IZiS90Ltq8w8GfynEbHc8XmC0qUH+BFuIj75z?=
- =?us-ascii?Q?CXmY/EzJFeJs8ow0PYjYFXESWRcCoz62HEfcQp8cEahSgFMZhQSV9111i2nD?=
- =?us-ascii?Q?WEzDfrM6X/5ibp1P5AmsR4a93jQdFTR77XLxnBEseGTOKh4ZL+WSXonPr4OJ?=
- =?us-ascii?Q?jTrPwMxV1aoAL68d9XEdLMJCBMipuKLZVZxy26g/QZrQW/2d18n5OgAewCma?=
- =?us-ascii?Q?H+68uylKnDT7SacaNaEprsInOs3RkJejcjMuS11DqX4SYh0wq3qvgVYQkqxc?=
- =?us-ascii?Q?Tq0MU5oIbrEppIkUmjZW7xpjZbuWiZ7amfrqaCH1Hay5sFpCraQDQlbNA5TQ?=
- =?us-ascii?Q?HuvThTblaQ1cDvjaV2nca2GRYNZnw7NvCDI4d99/SIFTnSxE/JBpvT9QRrxq?=
- =?us-ascii?Q?s4/PoNAdo47FGA0bYtTwB/cgKw2XY+2HgyXQT/PmzQsxTXxLOKMDYeLvAQfe?=
- =?us-ascii?Q?HMXcbmkoGhNAOJqdatAS5GbYMYcB14C1IdvL0Xyk1CcrZqBdAmsCxnofTZuv?=
- =?us-ascii?Q?UJ/NMi/wqrmXJM1RMoqG3ZVhLcFdUpXO4Y/oUtNotrzfm5Hkjjy0paa+DTdt?=
- =?us-ascii?Q?3KZZvsxg1GJAHoRAdQespPIS+ynacMqGaUYGYPzrvf9ED6MqtraDuVKnDYKP?=
- =?us-ascii?Q?ONvOWnThNB9+5vQiEt0UD3puVU1+Cli/s7pAV43k25HsgzoL5vqz7cjXzqf9?=
- =?us-ascii?Q?sxtMmQgkFGGkbp8yJ2lZrHQTEEOXxiSnJ35AHNxS?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	QjR3pNs6uK0zcdF8lhQJSKjj6+nOBcntluf1jm3lo/jziyPwAaBHygdkb8zQqC545taL+z5xRvB8yC6FBxfY5pUHtRp2Szz44XdBgda+vwt6iQH4XGRP8NHyd07m4j+XCjXOaYJqsZOpEa8uDqh2DG66GNxtvm//PCAkzXr0xskVFdfW8Wo922g1LIskVQn5ddRvbgVR8T9jAI82NxSIkmCiS9keNXEk9ZAFfInPxI7V7s6mloTTUPTT3nu61DTT7XCDqY6vWxVpOxLymRjFfYpwC1PIGm4bcFUZRDtsk9DSpu2n/1YStz95Qub4QjI7GXTJlato0y9v731ZFVfQEEmDN+jcZqY7eQ68DDn2y0Q63/Fv2JGOgv589WRr+lJiSgilnYs8m19gNhVdyDHxC+KQOjBAeRWWmS0TbWNODLpZjw8jxRJFV0b6TdzqGET9xDkxEl8NFWfLS67qCc4sxAj0xXp8npYBdHFmNA6Mle6hH47rwrw9FA+tHNh+rNGn5iYmzOKiJNlTO/A8Z5GdmmifrUkyHE8C9M0l5lQbdhOaS/CAbX6beA2ccXAFggw2LBXiPLJBWzp3+e++6XBE6I6mubJWaMtfzpTckJa/pMI=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5f8a06c2-769e-43ae-b163-08ddf6586a4a
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Sep 2025 02:09:36.0700
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: BZA91+Z1dCPlRVMvdJB/GM2J0GQZ7s3q4WZwY4SlFP5lUPkLhe61jfCJkj04zpIikC0aE2SIUYaJOnFPXFpZkQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR10MB6882
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-17_01,2025-09-17_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 phishscore=0
- suspectscore=0 spamscore=0 mlxscore=0 adultscore=0 bulkscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2508110000 definitions=main-2509180017
-X-Proofpoint-GUID: iFZXDJ1861pb9jsbhu25wcau0XJwK1Yz
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE2MDIwMiBTYWx0ZWRfX+Bnsxginjdtb
- Exbd2ovSbkiK3k5NH07JsI1r6XRUi1AqUc71mxcIrdXegfpsa5z5hUURm4bFhOc4P+ltKlpDG0E
- umT5ofmgnfp7/Xvm/eLnh4b86jQpcTyxqOf2axzgvFcyM+s8yEeqeYLj/SBMbwpc2BIrA+yesbF
- 2hFTHjt9u7XYMWKqGN4qqSzCBBMXwx7pYGHr+ifWPHy6sb/1yZvU/y5Vp/9zDusfrcKyCxGCFP+
- NyqoUhkEJlChZDvG9LNx5ZUkuFPsj5PofrrRLxHTwyGMfcftNBvznOzrP73Vtb8Nq41YPLPkVkb
- klP04IYd0N+6Pb8AeQPZja5vJibCXQQ4c38NpW71sOJgXIP3N7/AEVbzsnvcmzqVv62d6o3C7QA
- yT0+ciK6
-X-Authority-Analysis: v=2.4 cv=cerSrmDM c=1 sm=1 tr=0 ts=68cb69e3 cx=c_pps
- a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=yJojWOMRYYMA:10 a=GoEa3M9JfhUA:10 a=yPCof4ZbAAAA:8 a=pGLkceISAAAA:8
- a=GvQkQWPkAAAA:8 a=hxcxAv-qyI0tpPchHNAA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: iFZXDJ1861pb9jsbhu25wcau0XJwK1Yz
+Content-Type: text/plain; charset=ascii
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: DE5E680003
-X-Stat-Signature: tik8puddqf7esdtynj4hcdfymh3ubg7z
+X-Rspamd-Queue-Id: 712E64000D
+X-Stat-Signature: ther7dft1gmhir9mmroasiwairc8sjue
 X-Rspam-User: 
-X-HE-Tag: 1758161404-948950
-X-HE-Meta: U2FsdGVkX1/7/R6xKRJyzrw6l2pP5cz4anrNCDnVZYzuf3M0N9wyYJrX1MsAwn9j+1cItsgY478Q9ceZ8fq86PdnPROZIB9WdrQpCBCHBX0NjojmylagQjI6/sbN6mRrMgflXY5ppymn0JKk7GeQkRd0G4m8nlQSFmc54ZQbU74r/CwEZsfPDKiaGkVK4BBstPvBtZoGU/G49rqjJ/VG/pX5IU5gA44/AWjrlA61QZBIAotwzRCihzJZB8LY9twAw2D0GRaOTs2orYkCOpKXt7p2GWsc9D5iReGeqafS7s4idwp43PdW9nX0EDoYeh8lST+RD2Wh3BxQi0QCdab/8zFI3sZTzgI0BLP1JTEpwEMzdrsGsZUAiioSCV4iH7yryn4suS2XJBS/fxrn+6PtTEBhlNOJgPS6kw2Wu3lYG6hIbt1sHL+VnUk2HdTxZESKBczZrr8ZUQPb7BkenHrFrmFwpwgP168J9ZtWrNeoXNTH2e+/i27uwnumQx8x5Xyp2+eS/6HEFF4NvJjdJI6vKha6Uio7OM2il/UD2DSFPSfFFsoeqex/ME+k36zke5MbeKBECPtZUrPCJM8/l8zN/D2erl4uvlvkqdWiuRNQOlrd4deEsD9ev3gCV1PhHZvGW2AcMfFOZkbwsTM1sbhgK3ObnJbHiMzbRWfMZOn5/IEB3CXweOiR6HUpgJRpD8ap+Yt68zGBWyd3WCM3IOALcGhJ3pquoShBMgN3yO9w7dW3GqpQiuP/HGkw86TzP6kIR8BNSfgs25jCTY1tdZgw9jpuTQMjKVEjgGAwRvhRW4kIape13bRLQFvWdfKH3t5Ap9h4cXoPnuD3CyrJ0ZTgEFSAlq9VCe+kigEuxVSUbmTd4S5Ky8VfQZ9jUP7to4YvVhI4r+LWrNHg8kcSCzgg6PHnhdOy+kLIsHe4UZ1h0ejXso3qtL+ujebftL3GvUCfxMapiAtpapxFZZORKct
- PIgUPo+o
- BfpJ6/2Wu+m0e3DZQRZn08JK2HroNrJFpIDvp9sXLFbCNdSgV9KbBRJgRalXfhOpAoiPPEPHg3e2N7n1u0QrV4F/N2HpQE0R3TRBQuX2stTrxd767ssOiZjCKKLKWssSX+HpLJMPl5HjCyYMRcTeWKD03DQ4k9+lzO+3+2ufTNKFTv0l/s9eAdJha0E4RguDz7vrqcKkQdV8QwIjGfkFSKNxWsjZaNZifg3uI8BqNSMxUC10/l5/kSX5OvnqkaFokkKq1cgjH46yavkln5RI0DYkFHtVFmiiDvYEMZcBd9pVIBVUZMK1Ct7oyta3HThMQsktvAToLtACElDmruCQ18jP0+pPKPnz4chfHQ5oUqV0RNh4BuSm3kz/vAXuPG/tyC4Xfym2HDDVf+9u85wGHiydkRd9sorDRrrbF8M0Zq62cv0k7KVtZIpjk8YUeSsq6xMIz2GvXaW2MVn6IRIdkOf+y+aBa9RMVhomJU8MeDDtE1lk78Eln+tbFMaPXywcCTCzMDIQteokIJVuGR6t0wmLBhJt6ZE/l8hkacTYKQCcCaIjYl7P8GG34OgZEqOPhemcHqzd3uEn5Dy5Rtp16smIPNTA501R8Kk6Ri3cIkXGUGyNvEJNnIW9g7PFWPlgZfmdHBxS12UwUbTL7SU761OB+GDI3V98FNZk/YMIBfnw84C1U5bgX3yIOqPw8P80cR7fbHMaVjolHyB0izcLPhAZgixmBOkOGQh0md8drxfPF+1U0nnGPU8abDqLQJlJiXZT82oZfjWYNylrl1imtX/ipTAMhL3KmcMzTbabgeJnDZI4=
+X-HE-Tag: 1758161936-120753
+X-HE-Meta: U2FsdGVkX1+gR7Uy/jURSdllTYsTEZtyn57xT2+hJA2Iw4icjW2HPuThA4mItAtfTs0LstKCqaBcogFPZMbmh3IU0ub5UjpQxFtZH28qVQT08cd/KoWqj5rmomaOitEiY/0qUN+uAje5spNSbGuhERrXGcQBKpPcbhKG2XGUvnYHTELDpyTdKc9pc71k+ZP7y3ErFhyMa34SpEL8AlP04Rkvn68KFmo/HMdqmq8wpWiOWb+SThTfXEoAHQP2fLypPCgGyxfhhuHWPbnbUT5ijzbhnrZj0fVxfbgd8bPDzGXaO0x1SVD7OIjX+igZGm7R6MsXEAahhgV8c3g+FeGq419+ozwG03DMzOGzJA7k79z+eN4Di21qyO4QkDFsSy6EZb8p13Q/Xxsgk90gr+t9kOvOtduM/l5B8YZbboIeGUlYOXSzh8IHU1VAdNqq2ImLsiozyH69Gduxd0tgFB5QQ39I67Lu6SYNA8Q1Qbz3o5UR+s516vs6VsaBIEdcRlGnSmO1ATaMB+QsX5VUpNIYHK3fO/VBpawMb8zGfM8T897rln6iwbSvZz2wI6Xf7dLUJw90gbIZw3wG28H0ctJQham5QV0ol0jhlJz7s9RX7Lgn7RqknO+qP991g6rxpyyD7px58SQ/Quhqi5GsGB+gdt2f0sbe4zPGTly1b0a8+gm7R4av1bRhkt7NNTqKz3B0YaPqZYHAhsHU+Yn8vonLAdOXintPoeWl4ONnAmWpyWKSzAx3UZR7ZjCP2kRuAQ/3tGCcQkaPSE41dpVNMTizQcSglJMeJxfVy1ftYq+I9ULVeOiLasjEV6fky73fJes1KGj7bLCmG3D5+GC2m6cpDeIboWMXSqJng8ABzNx+K9MsKW1Wzk80P4s3hjMH9krEkc0dHMX0zywRxG0r0yAZKJkaRKO2hoZeCYEkazzeKPtGVecSKK5JqLs4THUjHHhXDZTB8+JfjZ43SWKT3fv
+ JnOfLloZ
+ ke1uCLE00hy0DlBU0jt55iYySn5wetz886XTAykoXAFI61h3e1duoeD5H44HguIa0XbUzHU+TVfgAkJueyWTU+4f+4ACgnCfb8VzD0WfIqrLX59J2/cpW0+s3MnllNd+xRMKEpy84o4sFCRVQjc6mtQ69J9uiGlIhrj26tlSQFdILIgR5gLQuMOnX3Gz6n32t5FPXCUFMohHQOwh/I2vBSvg/quXyasu8XrFKiS+aElJTgONYs9PxwiFKuP5fsawd59Q9QwjZusW1Cnc+NpJf60mh9r8gknGmGLbxtrEwsNWGr98vDc3rdtcKUlr+1CrS/FwdPPmkoQjJo7OuogImLeUDlJ9b64DQPut1mKUKYL+clC6Vzl9qV+8IlLhVBtB6k7H9G57hxY4nNxg5Xi8cMXgZRzALPAGxanuJP0P5tqsy/8RQZfahr+fPgj4UxKk12bX88s325G730wUUNk1OVMwOOCvPWl8TBnvwIDthggDBsqfGhR/zVsRLK0KOMEEzXGmq0Ix3vV8+u2j+Cn6RGcGZmj9IqjsGWBdxUtQcKS1rCOqLg1j1/EnpwlI7yN3ZjSyF7Bk/WFrT8dGjsM/BWGndbFnQHN7+gqVDayvKv74AKoiSlKUQGaAa3IAiT0ms6g53rFe3y7G5f1iIFQxDU3Bqy/HDvxicZAIp1lRVVL99JUYLLqw2Z+Wn0xK/jcsRmczXgPMWl/skDU7xwYIE6St++cExJ0hUCzmNhyhrGs61aIQH1ifLbpNqxLvMLDTVBk8sJr7ZddLWMq9FzLVN+cBVfViC1Ao0UxGS
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -239,90 +99,238 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 18, 2025 at 09:31:30AM +0800, Jinliang Zheng wrote:
-> On Thu, 18 Sep 2025 01:41:04 +0900, harry.yoo@oracle.com wrote:
-> > On Wed, Sep 17, 2025 at 11:48:29PM +0800, alexjlzheng@gmail.com wrote:
-> > > From: Jinliang Zheng <alexjlzheng@tencent.com>
-> > > 
-> > > After commit 6eb82f994026 ("x86/mm: Pre-allocate P4D/PUD pages for
-> > > vmalloc area"), we don't need to synchronize kernel mappings in the
-> > > vmalloc area on x86_64.
-> > 
-> > Right.
-> > 
-> > > And commit 58a18fe95e83 ("x86/mm/64: Do not sync vmalloc/ioremap
-> > > mappings") actually does this.
-> > 
-> > Right.
-> > 
-> > > But commit 6659d0279980 ("x86/mm/64: define ARCH_PAGE_TABLE_SYNC_MASK
-> > > and arch_sync_kernel_mappings()") breaks this.
-> > 
-> > Good point.
-> > 
-> > > This patch introduces ARCH_PAGE_TABLE_SYNC_MASK_VMALLOC to avoid
-> > > unnecessary kernel mappings synchronization of the vmalloc area.
-> > > 
-> > > Fixes: 6659d0279980 ("x86/mm/64: define ARCH_PAGE_TABLE_SYNC_MASK and arch_sync_kernel_mappings()")
-> > 
-> > The commit is getting backported to -stable kernels.
-> > 
-> > Do you think this can cause a visible performance regression from
-> > user point of view, or it's just a nice optimization to have?
-> > (and any data to support?)
-> 
-> Haha, when I woke up in bed this morning, I suddenly realized that I
-> might have pushed a worthless patch and wasted everyone's precious time.
-> 
-> Sorry for that. :-(
+Hi, Ryan,
 
-It's okay!
+Thanks for reivew!
 
-> After commit 6eb82f994026 ("x86/mm: Pre-allocate P4D/PUD pages for vmalloc area"),
-> pgd_alloc_track()/p4d_alloc_track() in vmalloc() and apply_to_range() may should
-> always return a mask that does not contain PGTBL_PGD_MODIFIED (5 level pgtable)
-> or PGTBL_P4D_MODIFIED (4 level pgtable), thereby bypassing the call to
-> arch_sync_kernel_mappings(). Right?
+Ryan Roberts <ryan.roberts@arm.com> writes:
 
-Yeah, I was confused about it too ;)
+> On 15/09/2025 04:29, Huang Ying wrote:
+>> A multi-thread customer workload with large memory footprint uses
+>> fork()/exec() to run some external programs every tens seconds.  When
+>> running the workload on an arm64 server machine, it's observed that
+>> quite some CPU cycles are spent in the TLB flushing functions.  While
+>> running the workload on the x86_64 server machine, it's not.  This
+>> causes the performance on arm64 to be much worse than that on x86_64.
+>> 
+>> During the workload running, after fork()/exec() write-protects all
+>> pages in the parent process, memory writing in the parent process
+>> will cause a write protection fault.  Then the page fault handler
+>> will make the PTE/PDE writable if the page can be reused, which is
+>> almost always true in the workload.  On arm64, to avoid the write
+>> protection fault on other CPUs, the page fault handler flushes the TLB
+>> globally with TLBI broadcast after changing the PTE/PDE.  However, this
+>> isn't always necessary.  Firstly, it's safe to leave some stall
+>> read-only TLB entries as long as they will be flushed finally.
+>> Secondly, it's quite possible that the original read-only PTE/PDEs
+>> aren't cached in remote TLB at all if the memory footprint is large.
+>> In fact, on x86_64, the page fault handler doesn't flush the remote
+>> TLB in this situation, which benefits the performance a lot.
+>> 
+>> To improve the performance on arm64, make the write protection fault
+>> handler flush the TLB locally instead of globally via TLBI broadcast
+>> after making the PTE/PDE writable.  If there are stall read-only TLB
+>> entries in the remote CPUs, the page fault handler on these CPUs will
+>> regard the page fault as spurious and flush the stall TLB entries.
+>> 
+>> To test the patchset, make the usemem.c from
+>> vm-scalability (https://git.kernel.org/pub/scm/linux/kernel/git/wfg/vm-scalability.git).
+>> support calling fork()/exec() periodically.  To mimic the behavior of
+>> the customer workload, run usemem with 4 threads, access 100GB memory,
+>> and call fork()/exec() every 40 seconds.  Test results show that with
+>> the patchset the score of usemem improves ~40.6%.  The cycles% of TLB
+>> flush functions reduces from ~50.5% to ~0.3% in perf profile.
+>
+> Overall, this looks like a simple and useful performance optimization - thanks!
+> I'm running this through our performance regression suite to see if it spots any
+> workloads where the change slows things down and will report once we have the
+> results.
 
-I think you're right. because vmalloc area is already populated,
-p4d_alloc_track() / pud_alloc_track() won't return
-PGTBL_PGD_MODIFIED or PGTBL_P4D_MODIFIED.
+Thanks!
 
-> thanks,
-> Jinliang Zheng. :)
-> 
-> > 
-> > > Signed-off-by: Jinliang Zheng <alexjlzheng@tencent.com>
-> > > ---
-> > >  arch/arm/include/asm/page.h                 | 3 ++-
-> > >  arch/x86/include/asm/pgtable-2level_types.h | 3 ++-
-> > >  arch/x86/include/asm/pgtable-3level_types.h | 3 ++-
-> > >  include/linux/pgtable.h                     | 4 ++++
-> > >  mm/memory.c                                 | 2 +-
-> > >  mm/vmalloc.c                                | 6 +++---
-> > >  6 files changed, 14 insertions(+), 7 deletions(-)
-> > > 
-> > > diff --git a/mm/memory.c b/mm/memory.c
-> > > index 0ba4f6b71847..cd2488043f8f 100644
-> > > --- a/mm/memory.c
-> > > +++ b/mm/memory.c
-> > > @@ -3170,7 +3170,7 @@ static int __apply_to_page_range(struct mm_struct *mm, unsigned long addr,
-> > >  			break;
-> > >  	} while (pgd++, addr = next, addr != end);
-> > >  
-> > > -	if (mask & ARCH_PAGE_TABLE_SYNC_MASK)
-> > > +	if (mask & ARCH_PAGE_TABLE_SYNC_MASK_VMALLOC)
-> > >  		arch_sync_kernel_mappings(start, start + size);
-> > 
-> > But vmalloc is not the only user of apply_to_page_range()?
-> > 
-> > -- 
-> > Cheers,
-> > Harry / Hyeonggon
+>> Signed-off-by: Huang Ying <ying.huang@linux.alibaba.com>
+>> Cc: Catalin Marinas <catalin.marinas@arm.com>
+>> Cc: Will Deacon <will@kernel.org>
+>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>> Cc: David Hildenbrand <david@redhat.com>
+>> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>> Cc: Vlastimil Babka <vbabka@suse.cz>
+>> Cc: Zi Yan <ziy@nvidia.com>
+>> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+>> Cc: Ryan Roberts <ryan.roberts@arm.com>
+>> Cc: Yang Shi <yang@os.amperecomputing.com>
+>> Cc: "Christoph Lameter (Ampere)" <cl@gentwo.org>
+>> Cc: Dev Jain <dev.jain@arm.com>
+>> Cc: Barry Song <baohua@kernel.org>
+>> Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+>> Cc: Yicong Yang <yangyicong@hisilicon.com>
+>> Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+>> Cc: Kevin Brodsky <kevin.brodsky@arm.com>
+>> Cc: Yin Fengwei <fengwei_yin@linux.alibaba.com>
+>> Cc: linux-arm-kernel@lists.infradead.org
+>> Cc: linux-kernel@vger.kernel.org
+>> Cc: linux-mm@kvack.org
+>> ---
+>>  arch/arm64/include/asm/pgtable.h  | 14 ++++++++-----
+>>  arch/arm64/include/asm/tlbflush.h | 33 +++++++++++++++++++++++++++++++
+>>  arch/arm64/mm/fault.c             |  2 +-
+>>  3 files changed, 43 insertions(+), 6 deletions(-)
+>> 
+>> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+>> index abd2dee416b3..a9ed8c9d2c33 100644
+>> --- a/arch/arm64/include/asm/pgtable.h
+>> +++ b/arch/arm64/include/asm/pgtable.h
+>> @@ -130,12 +130,16 @@ static inline void arch_leave_lazy_mmu_mode(void)
+>>  #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
+>>  
+>>  /*
+>> - * Outside of a few very special situations (e.g. hibernation), we always
+>> - * use broadcast TLB invalidation instructions, therefore a spurious page
+>> - * fault on one CPU which has been handled concurrently by another CPU
+>> - * does not need to perform additional invalidation.
+>> + * We use local TLB invalidation instruction when reusing page in
+>> + * write protection fault handler to avoid TLBI broadcast in the hot
+>> + * path.  This will cause spurious page faults if stall read-only TLB
+>> + * entries exist.
+>>   */
+>> -#define flush_tlb_fix_spurious_fault(vma, address, ptep) do { } while (0)
+>> +#define flush_tlb_fix_spurious_fault(vma, address, ptep)	\
+>> +	local_flush_tlb_page_nonotify(vma, address)
+>> +
+>> +#define flush_tlb_fix_spurious_fault_pmd(vma, address, pmdp)	\
+>> +	local_flush_tlb_page_nonotify(vma, address)
+>
+> It's not really clear to me how important doing local tlb flushes for pmds is
+> for the performance improvement? I'm guessing most of the win comes from the pte
+> level? I suspect you have only added spurious pmd fault handling because the
+> arm64 implementation of __ptep_set_access_flags() actually handles both pte and
+> pmd levels?
+>
+> Given the core kernel didn't previously have support for pmd spurious faults, I
+> wonder if it would be simpler to drop the first patch and rejig
+> __ptep_set_access_flags() so that it has a pgsize parameter and can
+> differentiate based on that? I'm on the fence...
+>
+> If you do end up taking this approach, there is a style I introduced for
+> hugetlb, where the function is suffixed with _anysz and it takes a pgsize param:
+>
+> int __ptep_set_access_flags_anysz(struct vm_area_struct *vma,
+> 				  unsigned long address, pte_t *ptep,
+> 				  pte_t entry, int dirty, unsigned long pgsize);
 
--- 
-Cheers,
-Harry / Hyeonggon
+From the performance point of view, local TLB flushes don't improve
+performance much.  At least in a test similar to the one above, we don't
+find observable improvement.
+
+From the design point of view, I personally prefer to use similar logic
+between PMD and PTE unless it hurts performance.  IMHO, less different
+logic means less mental overhead.  Do you agree?
+
+>>  
+>>  /*
+>>   * ZERO_PAGE is a global shared page that is always zero: used
+>> diff --git a/arch/arm64/include/asm/tlbflush.h b/arch/arm64/include/asm/tlbflush.h
+>> index 18a5dc0c9a54..607b67d8f61b 100644
+>> --- a/arch/arm64/include/asm/tlbflush.h
+>> +++ b/arch/arm64/include/asm/tlbflush.h
+>> @@ -282,6 +282,39 @@ static inline void flush_tlb_mm(struct mm_struct *mm)
+>>  	mmu_notifier_arch_invalidate_secondary_tlbs(mm, 0, -1UL);
+>>  }
+>>  
+>> +static inline void __local_flush_tlb_page_nonotify_nosync(
+>> +	struct mm_struct *mm, unsigned long uaddr)
+>> +{
+>> +	unsigned long addr;
+>> +
+>> +	dsb(nshst);
+>> +	addr = __TLBI_VADDR(uaddr, ASID(mm));
+>> +	__tlbi(vale1, addr);
+>> +	__tlbi_user(vale1, addr);
+>> +}
+>> +
+>> +static inline void local_flush_tlb_page_nonotify(
+>> +	struct vm_area_struct *vma, unsigned long uaddr)
+>> +{
+>> +	__local_flush_tlb_page_nonotify_nosync(vma->vm_mm, uaddr);
+>> +	dsb(nsh);
+>> +}
+>> +
+>> +static inline void __local_flush_tlb_page_nosync(
+>> +	struct mm_struct *mm, unsigned long uaddr)
+>> +{
+>> +	__local_flush_tlb_page_nonotify_nosync(mm, uaddr);
+>> +	mmu_notifier_arch_invalidate_secondary_tlbs(mm, uaddr & PAGE_MASK,
+>> +						(uaddr & PAGE_MASK) + PAGE_SIZE);
+>> +}
+>> +
+>> +static inline void local_flush_tlb_page(struct vm_area_struct *vma,
+>> +					unsigned long uaddr)
+>> +{
+>> +	__local_flush_tlb_page_nosync(vma->vm_mm, uaddr);
+>> +	dsb(nsh);
+>> +}
+>> +
+>
+> You're introducing more variants than you're actually using here. I think you
+> just need local_flush_tlb_page() and local_flush_tlb_page_nonotify(); you could
+> keep __local_flush_tlb_page_nonotify_nosync() and drop
+> __local_flush_tlb_page_nosync() since it's not really adding much?
+
+Sure.
+
+> But I'm also wondering if we should tidy up this API in general; we have local
+> vs broadcast, sync vs nosync, notify vs nonotify. And page is really just a
+> special case of a range. So perhaps it is better to rework the range API to take
+> some flags and we can tidy up all of this. I know Will also posted an RFC to
+> convert a lot of this to c functions, which should also be included. Not a
+> blocker for this change, I don't think, but there should definitely be some
+> follow up work to tidy it up. (I'm happy to take it on).
+
+This sounds goo to me.  Thanks for working on this!
+
+>>  static inline void __flush_tlb_page_nosync(struct mm_struct *mm,
+>>  					   unsigned long uaddr)
+>>  {
+>> diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+>> index d816ff44faff..22f54f5afe3f 100644
+>> --- a/arch/arm64/mm/fault.c
+>> +++ b/arch/arm64/mm/fault.c
+>> @@ -235,7 +235,7 @@ int __ptep_set_access_flags(struct vm_area_struct *vma,
+>>  
+>>  	/* Invalidate a stale read-only entry */
+>>  	if (dirty)
+>> -		flush_tlb_page(vma, address);
+>> +		local_flush_tlb_page(vma, address);
+>
+> Given this is called for both pmds and ptes, it's a bit of an abuse to flush a
+> *page*. Yes it is architecturally safe, but it's not exactly self-documenting.
+> If we pass in the pgsize (as per above) it could be optimized given we know the
+> level and we only want to invalidate the last level. e.g. the local equivalent to:
+>
+> __flush_tlb_range(vma, address, address + PMD_SIZE, PMD_SIZE, true, 2);
+>
+> or
+>
+> __flush_tlb_range(vma, address, address + PAGE_SIZE, PAGE_SIZE, true, 3);
+>
+> Again though, perhaps that is part of some follow up tidying work?
+
+This sounds good to me too.  And, Yes, I think this can be a follow up
+tidying work.
+
+> contpte_ptep_set_access_flags() currently does a (broadcast) __flush_tlb_range()
+> on the (pte_write(orig_pte) == pte_write(entry)) path. I think that should be
+> changed to a local range invalidation to be consistent with this change.
+
+Yes.  This should be changed too.  However, it means we need a local
+variant of __flush_tlb_range() and flush_tlb_mm().  Is it OK to
+introduce them first and tidy up later?
+
+>>  	return 1;
+>>  }
+>>  
+
+---
+Best Regards,
+Huang, Ying
 
