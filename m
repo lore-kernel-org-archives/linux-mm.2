@@ -4,124 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE93CCA1013
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 15:55:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FD47CAC59A
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 15:57:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4C4868E0153; Thu, 18 Sep 2025 11:55:26 -0400 (EDT)
+	id 95D628E0154; Thu, 18 Sep 2025 11:57:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 476048E00F6; Thu, 18 Sep 2025 11:55:26 -0400 (EDT)
+	id 8EB828E00F6; Thu, 18 Sep 2025 11:57:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 363F98E0153; Thu, 18 Sep 2025 11:55:26 -0400 (EDT)
+	id 7D5A78E0154; Thu, 18 Sep 2025 11:57:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 204D68E00F6
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 11:55:26 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C3518B6FE2
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 15:55:25 +0000 (UTC)
-X-FDA: 83902820610.03.E1A0E0D
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	by imf09.hostedemail.com (Postfix) with ESMTP id C0812140006
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 15:55:23 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="Z90epSs/";
-	spf=pass (imf09.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 64A958E00F6
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 11:57:00 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 159C41DBF65
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 15:57:00 +0000 (UTC)
+X-FDA: 83902824600.11.65434DC
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	by imf11.hostedemail.com (Postfix) with ESMTP id CB97440018
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 15:56:57 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=ZZEHpD8F;
+	spf=pass (imf11.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.167.49 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758210923;
+	s=arc-20220608; t=1758211018;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fB56UEO0mNP2hRYBRO1UDnRhREYhvCPXWZ0EMOooGbY=;
-	b=u9Aw3MuI9ZGsHUuxMCHEbr7sf/wKTq/M42YLanTuoz/ScIKZHzSt580iPfiRhwChobACeh
-	XqjIODUoyS+LiAOhXeWJkdNTECaJgUen33EREoVfdknZ9xd3uEbm8K4a0mKD07us4wLdFG
-	oAPVkZIzws/j1zF52pwDesyeBreee2Y=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758210923; a=rsa-sha256;
-	cv=none;
-	b=Dmu/aB1+otOMZmrpl0TqwXgn/4TTViNB6teLqX1mrfehFSWK11ENEBpttXXAuSdt6sjONq
-	rjIHdUuhKkN5R7od67iRHItpTnKPdaKFz0AbM3Rsm/LcrJnWJ5A2L318kryZlETLPk/CU5
-	bfQzchNiWYk9SlaJpE2+YgPGVV3MlmQ=
+	bh=hpKO6CsQCuex3g+QZ22KGPC+ZgcKRmVKS1THDCqCkXc=;
+	b=g+FjNwXdIn9uPcSj7wOgCkDKKmtb2eUuRe50/Z/d2i6pSjStRWlISqSrCesS+JTlJbl/8n
+	wogajrQ543W7yoFCH40iIQGZFHWaHGP0JR0ZXVyAl+H0JmYTeQmSgxGJ6qC9r/8WiuCdg6
+	bAsljHa+LrHMAm4ZEjZjvmEORvlRtKg=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="Z90epSs/";
-	spf=pass (imf09.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2699ed6d473so141175ad.0
-        for <linux-mm@kvack.org>; Thu, 18 Sep 2025 08:55:23 -0700 (PDT)
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=ZZEHpD8F;
+	spf=pass (imf11.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.167.49 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758211018; a=rsa-sha256;
+	cv=none;
+	b=yhJL2dAimhtRVxVxgWlCxKhqfOnmxz+Uuw6IGAoAS8QJdffxB859LQhuZJWez7jrnlEkvO
+	6Mon4GjbgEpyY6TSYLX3sxlUNEZ1OevIfERM2u/spZr2CNYA4O+Xq3gZC0+0Ke4AfSOaOV
+	0owkEEMsBF21kiGyihRJGpOOKB2oou4=
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-55f720ffe34so1282888e87.1
+        for <linux-mm@kvack.org>; Thu, 18 Sep 2025 08:56:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758210923; x=1758815723; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fB56UEO0mNP2hRYBRO1UDnRhREYhvCPXWZ0EMOooGbY=;
-        b=Z90epSs/ulpCcMbt3nv0BOhFa7Op+BMAoVMVE4swozkY2bJhbSMfhMhU5OfXWD4QCR
-         M8Yo1P1ta4jazr0Ojh6rcSl/68U22gZQPVt650gkVOQKFOOugiJiFjpoVxtbr6W6iL2+
-         0qlsx7Mju1MB9T8dZiWLxml0HFtL8p3VL7hqUB3BDUi4hvt92j7idAKeljw+kb+tOEQk
-         xD93nMI9xExCfCNZeUJVl1S2bth5ZzATPN37NZc8YuMeDWvkeeFEhFO7r1tD1DKe91yt
-         ScEnPxJE5nqQlU4VKlSeYSh3jM/6vNkl2nA9b2/IpqIIYBF5zi6oVGzvL0xYTX/VLTah
-         11Rg==
+        d=linux-foundation.org; s=google; t=1758211016; x=1758815816; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=hpKO6CsQCuex3g+QZ22KGPC+ZgcKRmVKS1THDCqCkXc=;
+        b=ZZEHpD8FuPhUX8fkUtJUR2YCqoSaDJ5vXbxlWYDJr5rDWS38fJdSU4brGjKzAQIK1W
+         mnkduiAUszGF7Plm3AM0u8JaBLnmZm8QHQMicvpovBy03lsSdlJRDDnMwYg3XWXtlJzk
+         385bcxwJ6mXR3MPxYwMAXOXmZ+CGbGNyGS5Ho=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758210923; x=1758815723;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fB56UEO0mNP2hRYBRO1UDnRhREYhvCPXWZ0EMOooGbY=;
-        b=vXY3DlGleC3kFumJ/AUtoRbm6bmraOKMbULA4FbpdUsJ34pIOk38ZhK7E7RYYwHU5p
-         boOtWeMVG4M0jaw1otE9hYnXTWi42QCh0LX6IbsPqaAN7ZVfLsbZNHvq2qmybWsBHMRL
-         ePUhpHD3UtQe7JPKWbP9Qakax4fkXX0fPqWk829quRkhbD7uVg+elAj26rnGch670sg2
-         tj70hrJlW56VG3A+RTfbyEu1LfMkG28yUax0wdXbF04IiwDOH+heRPtitzjNXXy/LB8A
-         HJjpYGjhgLrrLd0W/j3ZnZh8XyEAI+wbGz46irDCzVBqIj12ywTxLTVMinE88vKEUj/3
-         91Og==
-X-Forwarded-Encrypted: i=1; AJvYcCXSMl050IHsT/S6TskhY8i94TmzUo5ztuXiStfRtixKtPK1zX3qtUJu37CWB98+DKSxolcBWJCzhg==@kvack.org
-X-Gm-Message-State: AOJu0YzH51SQ4MpQup/J4dpTM/iVXNMgCgM/e6J/Vywg9fNaTGLzURZE
-	1ic4aXrV7hLooJ98C5hqMUOQNNahZDe0J2H6TXjHoWgFlc2jqR1jVcJaXpFG/ShaR17+qHQzjpf
-	jX1UsRrEwJozl4nY/e1feg1WXpwSPCGiHcAzxxyMh
-X-Gm-Gg: ASbGncvuPlZkYfn2/LnU35hkUa4O4+xMYMglTe9khAnjXClnPcVr3aDNL8Qi9XojUzZ
-	d/sNAcMkZThMEckewY2jZbNZ0Nt1Dx1KYgrw0xCxaBRtC1HoAIJdYxpLXvB2bbxlZwYZVRnKWR1
-	VxEU481Tm9QtZYAAGI6g/onNWKVb/kMa9g/tKc1uHqL3ouHCpCrlWwMa6Rbgv3NWbE6nWvb4pfl
-	ea0FSdL9h4gpnMJ2TBNJMELM1QYwa0csrdjVirLfYe323EYsv5DtEfunzCh5MI=
-X-Google-Smtp-Source: AGHT+IHtle2Bol/8iJ1CI7SONgmRyw+7KDNF3rjHCoT0hB77tatWLPJOO/VLwsIgvGtPKBGy3m8lRqkiHkO7GeZDCgQ=
-X-Received: by 2002:a17:902:ea06:b0:265:cb5f:3a66 with SMTP id
- d9443c01a7336-26808aeb835mr11034625ad.13.1758210922376; Thu, 18 Sep 2025
- 08:55:22 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1758211016; x=1758815816;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hpKO6CsQCuex3g+QZ22KGPC+ZgcKRmVKS1THDCqCkXc=;
+        b=UTOufeSLWYOHtTjiNNjjZpWtfuDcO1xRRXzXOm8Ufj0c4XzxNJ3CUnhfxMlVh5rs58
+         5SGbVFSRIN/1LlqKp7zPxjYSwQGN4LyElEMv4Icp0pV/PBhLkCIolRsU9DeGjyREy4Qh
+         sN6mG+b1sRzxrMc0fU6uOT/gHa0IpjhN9cuwOEMuXmISc6MvkL43JM0gYK1r++Qpydsj
+         Pg1LIouImvuiccNKWrSZ9RBoOjwrmZyfcm2ySwXnXdlMoW3P0isIYyMVnDC0nnaYu7X4
+         G/DfYPtk24Q7Q6aRwEvGFVyEUXJn8xrUiLEHresCIRPD/UGL47JOnMUi5AeYQsNU+WSn
+         GHBQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWI8ifvSGkz0Zly9hzfhRoWgcuHj37FYL89k7w86tcCg53Tqb39MDa0xVo5dUZGI5l8Qoph+MW9nQ==@kvack.org
+X-Gm-Message-State: AOJu0YxhVBJnZEshQ3j3rpN4cJNlosuIzmuSaEeghsSUipQJNH2g5Fj+
+	7EQhDW1F1dZgwnDEHGTFMNZzOq2NsXZhxFnScFpl8r447S3I4EzpuM5ysyPwYyHTXZYhI/TGHGM
+	q16W6TzHPPw==
+X-Gm-Gg: ASbGncuJk7jK8krQXiIK7nk7fGoRMsMr82DMRXCJYbHAFByU3PUJJce1w/g1EkYXugo
+	qJCCbeWq5GvBHsGMJkg/HslC673CL6Tn6O8zEhXRyqV9zkx7FfFN8ckN8hXNhodmL8Lj/JwCH7d
+	E3xp6e/buG4OP3fXkvkusm5UUADNBjcPUUZzkk/d8u+n/OtjNL0pd7anHOkItRyNuMHyERpHil7
+	qS3XsEQ+ttYFDWiwiwm6hAzDtA7pvy9cDtjU4NlI32VrXHMBmQU92nLVkEImE7U8J7G0g404EaH
+	4QReTe6nFINH51WMseCYoNRcyqRssgJ7TLZJVmvKGWHdEy1GKHSq4lB4bI6VihguWRL8+fCUqPZ
+	6XDMi7uqhmXPntkawAVD5OC6XUWbF5BfkKGQg2GAhKP8z+fdMt/rl9kUehzhPkKu5TbOM6iJDav
+	jfMVPj5DXnzVxRWoVCcfc=
+X-Google-Smtp-Source: AGHT+IF+QYzMBUPuMkOOBWC3I9sEFnfsHsG2//ne8b37giWQlA5PYkBwX62n2hsHLRUUSJSirqEeeQ==
+X-Received: by 2002:ac2:5e38:0:b0:55f:3f57:a64 with SMTP id 2adb3069b0e04-5789586a27emr928341e87.18.1758211015380;
+        Thu, 18 Sep 2025 08:56:55 -0700 (PDT)
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com. [209.85.208.176])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-578a8fad8casm766799e87.92.2025.09.18.08.56.54
+        for <linux-mm@kvack.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 18 Sep 2025 08:56:55 -0700 (PDT)
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-3610cb77a2aso12201671fa.0
+        for <linux-mm@kvack.org>; Thu, 18 Sep 2025 08:56:54 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWouZV3WCqZ++N9p8kIi8aJnbqs/Rj4dOq9mZJQhOzycbNBxlAj4KhE0x3cD0Y9P9j1YyfH7ENaqQ==@kvack.org
+X-Received: by 2002:a17:907:9612:b0:b10:ecc6:5d8d with SMTP id
+ a640c23a62f3a-b1fac9c9b84mr417765966b.26.1758210601571; Thu, 18 Sep 2025
+ 08:50:01 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250915163838.631445-1-kaleshsingh@google.com>
- <20250915163838.631445-8-kaleshsingh@google.com> <385df771-961c-4fc1-971c-81314c231f5d@lucifer.local>
- <53ade9bf-5cdb-49b6-b8c9-1f653c861bde@lucifer.local>
-In-Reply-To: <53ade9bf-5cdb-49b6-b8c9-1f653c861bde@lucifer.local>
-From: Kalesh Singh <kaleshsingh@google.com>
-Date: Thu, 18 Sep 2025 08:55:10 -0700
-X-Gm-Features: AS18NWDy23QFicFxq7eonAAZapCtI7hAuF1vOI9oXz3unSnA7mgzsm9MtU96rN4
-Message-ID: <CAC_TJvdRf3xJg7FgTzAxa-ZrHkGA0G3dEDVWWWttg3ri2B-FNw@mail.gmail.com>
-Subject: Re: [PATCH v2 7/7] mm/tracing: introduce max_vma_count_exceeded trace event
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: akpm@linux-foundation.org, minchan@kernel.org, david@redhat.com, 
-	Liam.Howlett@oracle.com, rppt@kernel.org, pfalcato@suse.de, 
-	kernel-team@android.com, android-mm@google.com, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Kees Cook <kees@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
-	Dietmar Eggemann <dietmar.eggemann@arm.com>, Ben Segall <bsegall@google.com>, 
-	Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, Jann Horn <jannh@google.com>, 
-	Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-trace-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+References: <20250918140451.1289454-1-elver@google.com>
+In-Reply-To: <20250918140451.1289454-1-elver@google.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Thu, 18 Sep 2025 08:49:44 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wgd-Wcp0GpYaQnU7S9ci+FvFmaNw1gm75mzf0ZWdNLxvw@mail.gmail.com>
+X-Gm-Features: AS18NWBk4u9ObN57KesSGhJyt-aPlWZgKdxYhvzpAyoaxlNUF53WHe4dSKjzUBg
+Message-ID: <CAHk-=wgd-Wcp0GpYaQnU7S9ci+FvFmaNw1gm75mzf0ZWdNLxvw@mail.gmail.com>
+Subject: Re: [PATCH v3 00/35] Compiler-Based Capability- and Locking-Analysis
+To: Marco Elver <elver@google.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, Luc Van Oostenryck <luc.vanoostenryck@gmail.com>, 
+	"Paul E. McKenney" <paulmck@kernel.org>, Alexander Potapenko <glider@google.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Bart Van Assche <bvanassche@acm.org>, Bill Wendling <morbo@google.com>, Christoph Hellwig <hch@lst.de>, 
+	Dmitry Vyukov <dvyukov@google.com>, Eric Dumazet <edumazet@google.com>, 
+	Frederic Weisbecker <frederic@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Herbert Xu <herbert@gondor.apana.org.au>, Ian Rogers <irogers@google.com>, 
+	Jann Horn <jannh@google.com>, Joel Fernandes <joelagnelf@nvidia.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Josh Triplett <josh@joshtriplett.org>, 
+	Justin Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>, 
+	Kentaro Takeda <takedakn@nttdata.co.jp>, Lukas Bulwahn <lukas.bulwahn@gmail.com>, 
+	Mark Rutland <mark.rutland@arm.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>, Thomas Gleixner <tglx@linutronix.de>, 
+	Thomas Graf <tgraf@suug.ch>, Uladzislau Rezki <urezki@gmail.com>, Waiman Long <longman@redhat.com>, 
+	kasan-dev@googlegroups.com, linux-crypto@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org, 
+	llvm@lists.linux.dev, rcu@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: C0812140006
-X-Stat-Signature: 4fp5wrhsinfh8z7ojjx7sk4p3yep6fz6
+X-Rspamd-Queue-Id: CB97440018
 X-Rspam-User: 
-X-HE-Tag: 1758210923-449201
-X-HE-Meta: U2FsdGVkX19n1+n8h7EWD4cADxm+fZM3r2dcAz+1pSH0EKygFd3k24jP2dX4GbdIN/Z3b9sb0Z4z6d1I42cj/1+zsyjKQN6NumFS/XRgvuU11k3O31bYBiwmzcCo+e3W+7rNGLy1ITcOeksgj8lZ5y8yEshtHErPtYRkI+KklrL+MKH4zOAgetTymm8qs8ccWFvpnELokmreg61O2fO56JPRCMU6AtxE+cxlpBq7XEQbwysz6626IH6AQFbyVt7ug6o9o6+wvIOPuFdMeXoNFtFesNiTN+hfTVsdQvKfE5LVky1c+E5rPHhWHzBRQ6xkXnuro75TxkhxFlld0hAHI2reIX+pHS0VXr1EcVuAG43Oqx3ZfOXu/+fAfykuEDQZBWSWK9WSYy1/iBK04ijoGRaCOHcm/PBAnKaDJnfKydPRmlvbN5Qcxg9Lr3r3H44ty/ITwU8pzzy5vyAYEcW3AZafSwr3FV+J6lupxs15CdrGiyvPVkzdtESMxw51zRQMakshqQBsyWpHZz/sAi2l32UTIkbAtQQr+6iLTft8M/O4ee4dq8pKZt9xsM6Fyuc17noAfc2T9wabgFQvtNQN8Ikn+uGHkeoCRQ5FKC7Vdmgt/aKUF4Wtxk5+OjJBfehuHEXcGeykU8mPwV8a1DGn6ZgbvF0TRZueFRcA6h5Vfdh3ZHz9/1LIaoN761GzG/95Th6SKhuSvYGiYKXxCaGuUQ6hexx7ZBvDBTMkvGlKYFQ+VbnhrdTECZHOyqynkCSup/g+HCzCu7HZD5XASJn3XT99jRokuK8XvAfGXpSxRJ1ZqWxhuLpTsp3OdrzSAlXzwlNx8B6JkztMFFGHqLcoF5Lyb4XBFda4gjq4myM7vAvDOWsONbuRUbwoZEtIsGwv0cp+6QTrBh51wC5bBEy7AWKbnrAQ4TMm76M8BGqgSAVtxdMJrpS397eAs9qiFldDT10aNkM3FTgy5eitIZ4
- BtxV+EF2
- fsQoWKhM3Y2PQ/wYTwmZVCygrtbQZcShbXpet7N0XHOGYJQBHLFcY9plTJ3nO0gxS9ucg4in/EJWbfY/BzI2wLCDmJnqsotYSBXQy49N7tA9X0jjxYPpiO72xiXHrftU3scrCocD3mcZ6DUhvGsQybAtFUYBQF3F/Xngk/xa87t2eaOqfLnTsu36E/Q8A0ynjWQnKZyZ3tlOCkgzXwHrYvUInPkpcqROXxInMurnmRqiz1Uon9uFkqCU3Ip9/BFcTMbt5l1Ivvann2pEg1uIbbswejOM9R5jXxPCnVrnHct+t/uVIJpIQ1lpA/rptcRDH1iws1xVgez+bY1I8Tsmx2Q8UtCJHlbkFn4NfnEsydbCOvckuxgS277Hm2WON9rOzYBJCvxDRQcLuSg9plv8h/ihpsqZO2aoq2Ta+Ur6KFtceOFs=
+X-Rspamd-Server: rspam07
+X-Stat-Signature: p85eoj9i8a5p6htxmz8658c6egspxdej
+X-HE-Tag: 1758211017-966357
+X-HE-Meta: U2FsdGVkX1+vvXG/iisuTui5DMJWQB9YgOUA1bc6fhCVr9kJHwADOowGOHmkkaBubdxCAkBzfkRylzvxypZ9uJTfkzkg6TSnV076IuJmWcS39lFVv2PJH8nQTbpthUSdaD/IWOoJprxbC2+srNWxCjk40TvgxcRqOncKTgm2xuq6CIbHz+8nLoYRiEGCTQnmNy0EvZI0n7gIEfvgzZuCTiDJuCfblGU+8ReKkjDb72QAn7g8bgOeqn8fk72pbJorR9fnM4v5rFD1sp66Zzez1D23l0FJ42CVlOFFzljE4ruDoi52GmLPstb2TaH2BppUHeuHF+4THMl5MM7+MS1qk6ykHH/HXJxZvchC38QS3bCGB+EesRzoVdmIMXzEvdTlRq9kTc7Zbx0u0WRJd1xZZZTh4wodgNWkbUad/XOWBcagmrU9kbEnnUkTIr+kX2RVbNfYyXTC6AwX5A6L1ntC0+YDJ2kipYjIKm6uJuaIlD+1dkiooPps8xgF+FqYaV3Jo1Yq+mXQQYarQ9GFBrpMUzVRY1dC/vwdB9rLwUrYhbk9YJpU+CfSYY82UtOcDn0I/Tgmm8e+Rs+DNg9hmTfhCGhz5/8hI5v4ZVPWeWDh5brKsPX0xWVUKyB3IjWR7cdBuDxY8OoAwkWroOqXb5HTn8LPcfuNX8Soq89dnwBVJq3dwvAZXbAFdJqPEQ8dXGNXyM+8iFZrgBNLAy7JHY6yXttV9u65MQovMRqHfOJREg6Nula8/O8LWCtImVuhTdiDqPtv8PIA4b8NPsg8sCIu6VYrf1wbUPl7bbbUNqBc7Iq4F0YgSN9uP5PTWjeb8x/tdn5G/N8Kl/N5Ctza4OYkukm+GUOWmKWp/GNuTH3rPSZw1sd8glMQqllSErgMbTnNKq8AFQ/rETcec1YqU7+byJ+dsEr36hbGaLk6/qPUvuCFt6EgVZo7Ku/OiLxZaMJf2fn3xsbD18wCUtzqR5b
+ Ap550RtL
+ jKq7UGUTnutJ7tLzPhkAXZ+R4NWSi6zyC6MOC3D6uGZhHvRH26cK73NBcQejW5uza32GWM5+4enfCpIvkF/qeCQdjp31H42NwHKd+JfWEgPt7JG9JkkInptJ0CzD4KfkuhKtZcrurYvstgWpTbesf0UxkhE9G1NGU0LpMye2jy1+CzKUfVK8MDTkyMhYdL45FsDP92whHM1XvhTK4ib+1pZk120qCvNFcr1Pp9kC2NsvK4Fbnu/oXF2Tg/hgM5A1Fy0Q0LAE17kIurVrFY7+kfQkpOJVvaFnQ1vLpPEDR0JMdwrdC95ocvz8/6iOV6HOyk/WgSYl5Q3ozCUMfoKfqxwzhpMERsCSf9ykg/B8RN3daBrnRK4yYo4q7S5NPkMo/ScxGyEiAPUblBIWTKrq7m7R67b3PZys4HO4mhmNv9ezndWKTJusXd7FkuMohd+dVDMkql60WCUaTS3sAR27iFICSJapNGQlSucFNNGA+FDKKur/QTXRyc+/KJEFak00TUX8Nqvu4ufoYBKBSgryDSaDAkrHuovQkqdULicK8Qkm8/3YM8zleAm80ijKSN+McKJC4QeP32loqeYBfRG61mtWNjiJ7gYJiW1ej
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,123 +145,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 18, 2025 at 6:52=E2=80=AFAM Lorenzo Stoakes
-<lorenzo.stoakes@oracle.com> wrote:
+On Thu, 18 Sept 2025 at 07:05, Marco Elver <elver@google.com> wrote:
 >
+> Capability analysis is a C language extension, which enables statically
+> checking that user-definable "capabilities" are acquired and released where
+> required. An obvious application is lock-safety checking for the kernel's
+> various synchronization primitives (each of which represents a "capability"),
+> and checking that locking rules are not violated.
 >
-> On Thu, Sep 18, 2025 at 02:42:16PM +0100, Lorenzo Stoakes wrote:
-> > On Mon, Sep 15, 2025 at 09:36:38AM -0700, Kalesh Singh wrote:
-> > > Needed observability on in field devices can be collected with minima=
-l
-> > > overhead and can be toggled on and off. Event driven telemetry can be
-> > > done with tracepoint BPF programs.
-> > >
-> > > The process comm is provided for aggregation across devices and tgid =
-is
-> > > to enable per-process aggregation per device.
-> > >
-> > > This allows for observing the distribution of such problems in the
-> > > field, to deduce if there are legitimate bugs or if a bump to the lim=
-it is
-> > > warranted.
-> >
-> > It's not really a bug though is it? It's somebody running out of resour=
-ces.
-> >
-> > I'm not sure how useful this is really. But I'm open to being convinced=
-!
-> >
-> > I also wonder if this is better as a statistic? You'd figure out it was=
- a
-> > problem that way too right?
-> >
-> > >
-> > > Cc: Andrew Morton <akpm@linux-foundation.org>
-> > > Cc: David Hildenbrand <david@redhat.com>
-> > > Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-> > > Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> > > Cc: Mike Rapoport <rppt@kernel.org>
-> > > Cc: Minchan Kim <minchan@kernel.org>
-> > > Cc: Pedro Falcato <pfalcato@suse.de>
-> > > Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
-> >
-> > This breaks the VMA tests, please make sure to always check them:
-> >
-> > cc -I../shared -I. -I../../include -I../../arch/x86/include -I../../../=
-lib -g -Og -Wall -D_LGPL_SOURCE -fsanitize=3Daddress -fsanitize=3Dundefined=
-    -c -o vma.o vma.c
-> > In file included from vma.c:33:
-> > ../../../mm/vma.c:10:10: fatal error: trace/events/vma.h: No such file =
-or directory
-> >    10 | #include <trace/events/vma.h>
-> >       |          ^~~~~~~~~~~~~~~~~~~~
-> > compilation terminated.
-> > make: *** [<builtin>: vma.o] Error 1
->
-> Trivial build fix:
->
-> ----8<----
-> From fe4c30abbd302ccc628ec92381ac10cea31c6d85 Mon Sep 17 00:00:00 2001
-> From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Date: Thu, 18 Sep 2025 14:47:10 +0100
-> Subject: [PATCH] fix
->
-> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> ---
->  mm/vma.c                         | 2 --
->  mm/vma_internal.h                | 2 ++
->  tools/testing/vma/vma_internal.h | 4 ++++
->  3 files changed, 6 insertions(+), 2 deletions(-)
->
-> diff --git a/mm/vma.c b/mm/vma.c
-> index 26046b28cdda..a11d29a2ddc0 100644
-> --- a/mm/vma.c
-> +++ b/mm/vma.c
-> @@ -7,8 +7,6 @@
->  #include "vma_internal.h"
->  #include "vma.h"
->
-> -#include <trace/events/vma.h>
-> -
->  struct mmap_state {
->         struct mm_struct *mm;
->         struct vma_iterator *vmi;
-> diff --git a/mm/vma_internal.h b/mm/vma_internal.h
-> index 2f05735ff190..2f5ba679f43d 100644
-> --- a/mm/vma_internal.h
-> +++ b/mm/vma_internal.h
-> @@ -47,6 +47,8 @@
->  #include <linux/uprobes.h>
->  #include <linux/userfaultfd_k.h>
->
-> +#include <trace/events/vma.h>
-> +
->  #include <asm/current.h>
->  #include <asm/tlb.h>
->
-> diff --git a/tools/testing/vma/vma_internal.h b/tools/testing/vma/vma_int=
-ernal.h
-> index 07f4108c5e4c..c08c91861b9a 100644
-> --- a/tools/testing/vma/vma_internal.h
-> +++ b/tools/testing/vma/vma_internal.h
-> @@ -1661,4 +1661,8 @@ static inline void vma_count_dec(struct mm_struct *=
-mm)
->         vma_count_sub(mm, 1);
->  }
->
-> +static void trace_max_vma_count_exceeded(struct task_struct *task)
-> +{
-> +}
-> +
->  #endif /* __MM_VMA_INTERNAL_H */
+> Clang originally called the feature "Thread Safety Analysis" [1],
 
-I made a point to build and run your tests, seems I forgot to actually
-test it with this last patch.
+So this looks really interesting, but I absolutely *hate* the new
+"capability" name.
 
-Thanks for the fix.
+We have existing and traditional - and very very different - meaning
+of "capabilities" in the kernel, and having this thing called
+"capability" is just wrong. Particularly as it then talks about
+"acquiring capabilities" - which is *EXACTLY* what our lon-existing
+capabilities are all about, but are something entirely and totally
+different.
 
---Kalesh
+So please - call it something else. Even if clang then calls it
+'capability analysis", within the context of a kernel, please ignore
+that, and call it something that makes more sense (I don't think
+"capabilities" make sense even in the context of clang, but hey,
+that's _their_ choice - but we should not then take that bad choice
+and run with it).
 
-> --
-> 2.51.0
+Sparse called it "context analysis", and while the "analysis" part is
+debatable - sparse never did much anything clever enough to merit
+calling it analysis - at least the "context" part of the name is I
+think somewhat sane.
+
+Because it's about making decisions based on the context the code runs in.
+
+But I'm certainly not married to the "context" name either. I'd still
+claim it makes more sense than "capability", but the real problem with
+"capability" isn't that it doesn't make sense, it's that we already
+*HAVE* that as a concept, and old and traditional use is important.
+
+But we do use the word "context" in this context quite widely even
+outside of the sparse usage, ie that's what we say when we talk about
+things like locking and RCU (ie we talk about running in "process
+context", or about "interrupt context" etc). That's obviously where
+the sparse naming comes from - it's not like sparse made that up.
+
+So I'm really happy to see compilers start exposing these kinds of
+interfaces, and the patches look sane apart from the absolutely
+horrible and unacceptable name. Really - there is no way in hell we
+can call this "capability" in a kernel context.
+
+I'd suggest just doing a search-and-replace of 's/capability/context/'
+and it would already make things a ton better. But maybe there are
+better names for this still?
+
+I mean, even apart from the fact that we have an existing meaning for
+"capability", just look at the documentation patch, and read the first
+sentence:
+
+  Capability analysis is a C language extension, which enables statically
+  checking that user-definable "capabilities" are acquired and released where
+  required.
+
+and just from a plain English language standpoint, the word
+"capability" makes zero sense. I think you even realized that, in that
+you put that word in quotes, because it's _so_ nonsensical.
+
+And if not "context", maybe some other word? But really, absolutely
+*not* "capability". Because that's just crazy talk.
+
+Please? Because other than this naming issue, I think this really is a
+good idea.
+
+           Linus
 
