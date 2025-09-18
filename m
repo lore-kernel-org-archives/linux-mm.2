@@ -4,231 +4,193 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D6C3CAC5AA
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 11:57:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61710CAC59A
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 12:07:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C48CC8E00FD; Thu, 18 Sep 2025 07:57:53 -0400 (EDT)
+	id 9EC4C8E00FE; Thu, 18 Sep 2025 08:07:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF97B8E0093; Thu, 18 Sep 2025 07:57:53 -0400 (EDT)
+	id 9C4278E0093; Thu, 18 Sep 2025 08:07:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A724F8E00FD; Thu, 18 Sep 2025 07:57:53 -0400 (EDT)
+	id 8B2798E00FE; Thu, 18 Sep 2025 08:07:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 8CE3E8E0093
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 07:57:53 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 410C0117947
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 11:57:53 +0000 (UTC)
-X-FDA: 83902222026.06.0D9BECC
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf03.hostedemail.com (Postfix) with ESMTP id E1CC720010
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 11:57:49 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=Lo6SRfJj;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=IcMhDwWf;
-	spf=pass (imf03.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758196670;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 796248E0093
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 08:07:19 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 35ABD140121
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 12:07:19 +0000 (UTC)
+X-FDA: 83902245798.07.741FFD0
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf21.hostedemail.com (Postfix) with ESMTP id EB2D91C0008
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 12:07:16 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FBHcFR0s;
+	spf=pass (imf21.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1758197237;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2JpGTWy6AoOweanP6t+7YZwtbGrBCTui5TJchDuRBeE=;
-	b=eZggxHcSFmaW7Zsb6BAVbB8uFDta2LdJp8XvMGhG5NgdprwVhDQWktIkNRp4te/Y1RSj8i
-	V4HXYlsrpp+VMS9/CR71VPVTXNmdgb443fDe+hYmQFVt9ZW+weRp/aMtJ4XpNfkqlhmXdS
-	uuhyKloSvSVFzjuBl9sMEyYI+ykC6KQ=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1758196670; a=rsa-sha256;
-	cv=pass;
-	b=5UMFJUpgddF8zFc6HMr2BiCy+MK0tRO0rSyOZZS7dM3T/R7tWkffXbkB9WxRN6iN8H9/TY
-	rpgajrwFP9YpLFs4PwL6SSJW4amrma0XyiPkviMPrZZvdKm50qxmnUEHB9uylD1KVrPpmf
-	KjJCcI2B5fdHAW7w60ITYZCDKsDi2Os=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=Lo6SRfJj;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=IcMhDwWf;
-	spf=pass (imf03.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58I7fvJ8007030;
-	Thu, 18 Sep 2025 11:57:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=2JpGTWy6AoOweanP6t
-	+7YZwtbGrBCTui5TJchDuRBeE=; b=Lo6SRfJjj4tHm0SF9xhroasOnV7l0NI9ED
-	6O1xLkIkCxy2LqQQKJraNKnGbJ+v/3dJZRI8LgyXAIs53kbXaiZ/ocD6E0UdyFQt
-	C0Gd8yzmcFKkPeHxVfRpqYGPcmnxNZw9XAciSw2U1iiFJvzN6qCXfNiD4Fml2ZPV
-	vb4IUIkONFU+q5mcFHHmq3ZePrp6MMqns+ihGWtoiU3QdzBSEcKiWZY9sSu9uYp4
-	DopX4Zai+lucxqglXaUIDNXkZfqSYyrmbBP+RfT7iRUTJ/Av4KKZpPT/L9rCfDMs
-	ncTXs2FCltiZiSghID6V5md+z1iVCpJBZL/UKTIfPcIoMtsgV43w==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 497g0kbbfk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 18 Sep 2025 11:57:44 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 58IB1pn5027285;
-	Thu, 18 Sep 2025 11:57:43 GMT
-Received: from bl0pr03cu003.outbound.protection.outlook.com (mail-eastusazon11012051.outbound.protection.outlook.com [52.101.53.51])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 494y2n9vpu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 18 Sep 2025 11:57:42 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KBvwCmV0NBR/O9KzuDLv2v7uAhSjWrjGmzXUGTh3xsJ6mXBn7kGrcrFcEZ7vxS3Zj2j21/6UeOPMymMtX9bHZlQJV+wkAse9YwFg5LcrVw53kn/67y6Q+tDTpilIWucdqrR0OD2TH36svB1bDG4jYF9Viz8Qr8KjAgHdv8oeubMGZGU/QKkC+tyZZl4WxtJRg0kGFstOyEwtLUnRcmphxkI/LRl7prW29I4q2j4nb8BjoALAFWiq16iP2C783Wnj66IY9CkYJyW5KmPcLKxuSQjJGZS+0dT9wT+zsPgC0/pdnqFCkxUgwsVrCR+K2JLTXofk9V2UjgsGY3yUlUk0KA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2JpGTWy6AoOweanP6t+7YZwtbGrBCTui5TJchDuRBeE=;
- b=jNxCiRN18IJD7cSdAP7XvL7bIbEPgAiNxQV0FUvvHgJJddOY9i2XmC733ybt6Mt8bBdMSTiuGNR0YT9BW7AbkDm44QyOujkhEZvzBfo4nk+kSvT/l9wrQ2kdvmftTQNY4JwwgxHfFugqyD/0UIJqxRlslIv/UPs+LucLE0TG6qhVlUfSZ/lb9yNWoTVItnUjasKaXRzZXY6khDWdZYTVECiWqSWToytsYqLgg8ZvimhCs1NXz1EzxYbrYMJdxMwCAch7EEhaWsh/2sGLIxmUwTWbYs4VtRjoaDEDasbboWUnPBcodJwSrofP1xx2cErjw70zOPDabzyjZrFQPKWCdQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2JpGTWy6AoOweanP6t+7YZwtbGrBCTui5TJchDuRBeE=;
- b=IcMhDwWfnOSiWjoNa3AH2eCUKF1CYt81l0FUYZKjam5MN1kLc9xJbR1QYmYwueuTZlYtEhjkgmQSpw1Fzh43MShZQnv/Q7LhvuTdSqE00cqoSwBd4yny9RSEjOc8wr4VqW0ikkrR7O9jsO/3CVel+JgL6HowKZHfmfX9fFK3nE8=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by CY5PR10MB6239.namprd10.prod.outlook.com (2603:10b6:930:41::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.13; Thu, 18 Sep
- 2025 11:57:40 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%2]) with mapi id 15.20.9137.012; Thu, 18 Sep 2025
- 11:57:40 +0000
-Date: Thu, 18 Sep 2025 12:57:32 +0100
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Lokesh Gidra <lokeshgidra@google.com>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, kaleshsingh@google.com,
-        ngeoffray@google.com, jannh@google.com,
-        David Hildenbrand <david@redhat.com>, Harry Yoo <harry.yoo@oracle.com>,
-        Peter Xu <peterx@redhat.com>, Suren Baghdasaryan <surenb@google.com>,
-        Barry Song <baohua@kernel.org>, SeongJae Park <sj@kernel.org>
-Subject: Re: [PATCH 1/2] mm: always call rmap_walk() on locked folios
-Message-ID: <0ea92729-2403-4de8-9ddc-a1c7bb2121c3@lucifer.local>
-References: <20250918055135.2881413-1-lokeshgidra@google.com>
- <20250918055135.2881413-2-lokeshgidra@google.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250918055135.2881413-2-lokeshgidra@google.com>
-X-ClientProxiedBy: LO2P265CA0059.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:60::23) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
+	bh=2DOPYjdyI/uAYvwMzh9uSYuRR4ZAJRzMcD+yFLiyXXI=;
+	b=ZdtuwlVczpL+Syxq6p7S/Y8RA7P2E5y6U4Os3/UaF8bEmyrjrKyWHQ/cL2XQ5s0TeOiTII
+	+WURhMFUY5uu7ynDgHbGbudMrz6jlxSUmWkvU2a+dvtk37Tdm8oSMa94Amd6I6ziM7gDqu
+	2B0obSv/7bvUwRSLek09mjq6C+9m99A=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758197237; a=rsa-sha256;
+	cv=none;
+	b=YK1MlRElOKt8V3tulUhLyO/JtoTZXPgoBcbqSjNFoD3zpd7fCPmgFQkEJid/1J7Fp9WCk9
+	zuPB7fZp4uWKHwL1/oMtca1HfmpRkojNO8f+nLV1TQRqYK7GEjj2k5F0mwJG3Bl3N/zOUH
+	/PLbMkPjDfPFLayu7OSCio2fgGn2O/o=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FBHcFR0s;
+	spf=pass (imf21.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1758197236;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=2DOPYjdyI/uAYvwMzh9uSYuRR4ZAJRzMcD+yFLiyXXI=;
+	b=FBHcFR0sHYPDRTLkK29Xp55L4rA28SIS2Z0cR+ew6bY78KrGK8AjSU2RKG0rxo7Kwlnfyi
+	zap5wMxdJUxLdcgPTidddDVo/k8vYvazZgX7w2SA4cO4bRxKAw47EaLDSVsnqq7o95s0WV
+	oIeNfhfN7FXkOa03ABJSw/gjtnDXrJk=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-537-Je4CleABPLmrPFRmiPC-5A-1; Thu, 18 Sep 2025 08:07:13 -0400
+X-MC-Unique: Je4CleABPLmrPFRmiPC-5A-1
+X-Mimecast-MFC-AGG-ID: Je4CleABPLmrPFRmiPC-5A_1758197233
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3ee13e43dd9so234537f8f.1
+        for <linux-mm@kvack.org>; Thu, 18 Sep 2025 05:07:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758197232; x=1758802032;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2DOPYjdyI/uAYvwMzh9uSYuRR4ZAJRzMcD+yFLiyXXI=;
+        b=rRM10S4hyL3uoXRzH9fLxBBl/lflOuKhJK1XDCOG7TLNQJLtI0Nawj4LrICOEcLyqa
+         ymNEjn2UcYN8xBdLeesnA1YTfeevBJooQO3H/dfCqu0veFvyJb903c1v8N5NoLLib6aL
+         bTKzROEwvv6TM4hpIe8Ul9LmKFPJIrJwdg4+pgEV/sT8hDeEWYm+FtA2+f/OYcwwsWQM
+         5bNWt7eK5CKmg01cUb+Atsw2ttxRLPoqOrtw787cFDhVAz+6rgnHukZ97Bbgg2ymBMVp
+         roU7BN28pVOmzG86q4jL0BZgh7pDMlOiq7rwJrlFS2U//Jl33dIIODFYG7WNgZFVSrS1
+         TMMw==
+X-Forwarded-Encrypted: i=1; AJvYcCU+vJCzUFmyjDaqy2SbgZxKLsM8E+JetcOLxCGoT8lFtgNsmhvZ9myTjfYlGssB8GrbY2vBS9oLiQ==@kvack.org
+X-Gm-Message-State: AOJu0YyG6uWAcUeZqSC/ch6aQzivY2L/8YH5cvVMNuuj4G6y8wra+yMd
+	MnKDQyEpeYHHDZIQsSw+stjDBqSMlPhu4X13Tsc23v0jR5YnoQMFBWKzOLsh2OL0RzXXZi0+skK
+	wjdbEssAfvku5++LqL2AHQrfXJlS4ruWrV669y7wvBKkc2+qztlDw
+X-Gm-Gg: ASbGnctMCsMUiUvwLoXFhFo7sOdEjKaoFcoNKle/xe45wZLPdwYAophDPk464rexuR7
+	mPKx+eBFMveveiQNyaaSFX9sxASrrJ5xHNm3HSM07bmw7Ka/jkKybX66eBtlNibZ/uxfmvy9COv
+	DuQ1+OSEwH2BKTRHH/hOS2n3rVXQGILjW6amyEZc6mSJj9WB+4JuH/0CcJd5qfXaDcK7106ZoiA
+	av3LrycoF8qERiYgYdsf5t/teXRql03EK2phQkcDvNZPCYq3JP02DKUUgTel+M5e9k1s8DW0cGD
+	9hWWNk+c+CCiXWp1wjdZhklEJaBTFSc9oybEfM9Lo09zKe9KinfOMxkqprYKOMMyrYjlJMLqkR7
+	UV4kResRkxMTinIxrs28vIRZsM+hCi8EolpYeV6+Bt76bSEhVdStiU1t+MBzjdhjLvtrZ
+X-Received: by 2002:a5d:5d10:0:b0:3da:e7d7:f1e0 with SMTP id ffacd0b85a97d-3ecdf9e6289mr5689998f8f.27.1758197232580;
+        Thu, 18 Sep 2025 05:07:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEIyAUyV0RX8DkIW+uDkvTX0Rh9rKHG8DzLg3Q/ZTX8yNIVuNU0lPJSNOJoMqZHCKyGphxyiQ==
+X-Received: by 2002:a5d:5d10:0:b0:3da:e7d7:f1e0 with SMTP id ffacd0b85a97d-3ecdf9e6289mr5689931f8f.27.1758197231973;
+        Thu, 18 Sep 2025 05:07:11 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f07:dd00:ca9c:199e:d2b6:9099? (p200300d82f07dd00ca9c199ed2b69099.dip0.t-ipconnect.de. [2003:d8:2f07:dd00:ca9c:199e:d2b6:9099])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-464f64ad359sm45788935e9.22.2025.09.18.05.07.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 18 Sep 2025 05:07:11 -0700 (PDT)
+Message-ID: <0c068e35-0954-43fd-b3b3-20786a6a12fe@redhat.com>
+Date: Thu, 18 Sep 2025 14:07:09 +0200
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|CY5PR10MB6239:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3ad381b1-0971-474a-262d-08ddf6aa915d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?xdzlyMQbMkW8GsU0sY/S/0LRFRzFnDOGMtNTwze4MfyLmwz+SE+VrcOL/rkC?=
- =?us-ascii?Q?d4kKRfu8JhBm5peEvJfiRXV8bH3N4Eg1E8CnAPBKnh6dxh/VC7G99QGWa30H?=
- =?us-ascii?Q?IT65o/16FeU95EJEmjDrdnleyP5vqHQneXfYwLdxJJja8CxqELAq0/x+1fNV?=
- =?us-ascii?Q?sdItOw1k8AeChmtpatj2JDrg7icjBacbLG2mtwzg+KWQ1eQJ9ryGrc6v7Y6z?=
- =?us-ascii?Q?Hlx8AryLmeWZqkLbxqsQpcvvsT968oiTyHtxk6ap60k6h99UfuLUpiKuFPYO?=
- =?us-ascii?Q?T2uTPUy5QO3xF2+oQi/aYLigT0bAWZmu30i5UnsNMu0KbspFXP/hy0bWeJr0?=
- =?us-ascii?Q?b7kfSR0PGW08mzTOi0v3z0Dk6fjuvHavrRxrN1aeSZcgoIrRTu2Tyj2n0aS6?=
- =?us-ascii?Q?470bWkG957zBXZxtxHFZoz3+4CMoILM+3TEL7lx4wXGRTBgBwapxHUvQfDap?=
- =?us-ascii?Q?dirhdzt6CYXMZI9uj3TTXyMy+4GAJ8w1V+1lJfOaOc1fwGSkotYE4ppU3Pcp?=
- =?us-ascii?Q?HL9OxAG+mMDDK5oW4mi26d2wmps9LjuilEP53Jz1reo7yJgLiL3Bn4iZpMhL?=
- =?us-ascii?Q?oU3EIVO+QAaLQL8D9LxZhUuge7k5QIt9CiPYqRTad3o+va0RHFQMWInjPikn?=
- =?us-ascii?Q?dQby3MWLDsbXYwzjchSYc9LvdKEH2uvdmKCJSqJzYPmXxRBS39+TxoiA71Fz?=
- =?us-ascii?Q?SPkbXTa7wWOOjasdtU4kqToX7eGCZyF79JCiFvTgA+xcd40b8Ayxe89tfibN?=
- =?us-ascii?Q?XEBsnyJyFdlBY34oKRjlSNoyscBFPwhM0pzm35eU5GNIPMnJJtMyczPMZVEE?=
- =?us-ascii?Q?O+MCKnOuwOWg7fClDqmCVkJcqMkIgVmiN9WSzhMMXdlewtiHBAW00MFmH1fL?=
- =?us-ascii?Q?bbV1Wt11uafwBkJl31Wbt5cP6VjtDAnEgNuVZrEhDMZji6whae6Dn/gT/7jn?=
- =?us-ascii?Q?JpDVLDHse7k/MezlnKaD6AoDNUgXEEfSETk5pFuY31La6SX2kLbzMPCq9qRf?=
- =?us-ascii?Q?q2kzRPDgXYhvo1QHUtTQJ9Gh4PGzL7Tr/Mk+aa0OiliiqpAhaiceYdFBiJy6?=
- =?us-ascii?Q?xcCMU8yYtrsO+tAa6Ozsq+ekbWCBRCgBPM6vKJZMwW1xvM5aDlbEXHIlmoLp?=
- =?us-ascii?Q?+R9v/1fCmB/SIGQ1BeJrQ8+U43oAMes7YOfSOnWzUD8U0Ap4oKnYJZJfPqXn?=
- =?us-ascii?Q?tdnhkLoiYHpyuVqGODHp6T8kTgwXX4Q7NSypyYAshskzcH/+gyUpgEvRx7Dr?=
- =?us-ascii?Q?/r/lkyYfDdCNQqUt4tii9AUPGe6qSJw5k9B2oAcF3JvvFIf3lSc4sTahYbGZ?=
- =?us-ascii?Q?4bT0Oa5VrW9o0AGzVagIOMBqhwgbBFv+QGeDYYXDfEjlz4jh5ikCXDrzB5+s?=
- =?us-ascii?Q?v7oMrlw8DWfTb5pQumMy5+zoKIN1dyg2uTd4tqi5WBzIxIbAuoSzoBXdA8Zd?=
- =?us-ascii?Q?ODVKHjOXh5s=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ZiT7zCT3HzJL3oZkw2FN+eMZsNFPkqBrz/VI1WliUN6VfYRKR2kV0GWiurhj?=
- =?us-ascii?Q?idtm9AN1grB3JJoi0W47dJr8uPCJ0inGWnjuAyFaI+cJmyvsjLSU+AAOOsOT?=
- =?us-ascii?Q?Hm5BsuyPqLqqCQkiryPnYuYoY8QFR+Lm5S/uvHyzmGYfK9HbD1DGJZaHEtn1?=
- =?us-ascii?Q?LHm0Vowo77EHeBqj6mhhqoyZJcQWDv18x90Uq7yFDkfs7bYcYfHTRu0hi46q?=
- =?us-ascii?Q?Qdo00RIIkcSPRgs+49P4j9QYoDywKQM7JxiBgAIGrJXPjl2dv4hJ4GDTKnHn?=
- =?us-ascii?Q?lUJ67ZXBng4arlnrJMMcbcsnedoQPVaWsic+cg6l/Xl4VRdZfl5qoWb1LYdp?=
- =?us-ascii?Q?V9HBwVScsj1LWihAY2tgmgitBVU3JX+ucRpLL2sDCkVsu9X/AaqRkjLjGfI6?=
- =?us-ascii?Q?vY1Cm07oQ+NL1+IbQY+Lyy6K3fR9ZI8KpOcZfixyHR6gjzH9w0o6oDRnVgPt?=
- =?us-ascii?Q?djxDBqwht3R2JgcrE0fTuuwNlUqOwRNQUDlcTsQjKIQ24Clxgk6/LZEdn6zR?=
- =?us-ascii?Q?Y5m9W9UVFSENh8ER8u1/cksQff9o056ugIWqEsQxOU/yHKvTy+2f4nyu+ZcG?=
- =?us-ascii?Q?3zEW+9y1n4UnWi0QjgkxMLmp062wwOJRQcXuTosjSwj2MZMaaTJbJm/40XoY?=
- =?us-ascii?Q?HY9yaqNYG+g9P/Vk/Cp7RTzfb8je3WO66Y6Fh3wRiQ4/YcddUlRZ+VnTHGBh?=
- =?us-ascii?Q?PM8iI5jsel6kem/zV7q/daWJjtr6ZPrq1Z3358AcpqRCzvDmodP3BQV76asE?=
- =?us-ascii?Q?a4mAUvBaQur7YYhdAarmVl0B0KQepTriRKQ9mCpUnsye1KNmR8kDIwbaUTCo?=
- =?us-ascii?Q?N/BFFPiOo8hqWqqYL52YE7VvFABcBXGQCJayzmpYXmXcmlpGc70t8RKY+I4g?=
- =?us-ascii?Q?AmeJfXdaj6fEnxofqJAKCKpqyv/gWo3u+wlstjw0eX+Oy7C+HZ29aDh5JYrG?=
- =?us-ascii?Q?KNplGNt6UDZPb/4wx91eRkP+1lNJlRiiOJK2tzvDvTP8dst1AHKh78PTzfRu?=
- =?us-ascii?Q?tpBh/ORLKnBxkZZX+YIq5M/TmEeYDwAPfhfy8pRPRsl1LfvckcOZJVrTHA0s?=
- =?us-ascii?Q?RkcI0n/4debgOx9aqo9OQeQEYuhWFaQGLrGI9w5697a29StJJZhtQEfMGG4D?=
- =?us-ascii?Q?X+lkbHcXfy3ZK7pFYZoC/mvRy7gIniGA7xykN5UBMF7t1AjBcsiNRDas/cmn?=
- =?us-ascii?Q?CyZzbp0tYAx6g3GRHJXkuxcUY0ih8nO+kBOB/xnAMO32VrPxhNt3pMDVSdrG?=
- =?us-ascii?Q?vhOCxa68O6dqtRnDa9uTg/HVU6wR502M/9boWmjXvOMHOlRTQFRPjRokUNOv?=
- =?us-ascii?Q?8zInpwbH+eCRjkBAti+cRbCdHsWhPL8P9XJuBLGKSHDKMUhKoVyPjJeIqQMa?=
- =?us-ascii?Q?e5T+F1K3v8WG5V6qwiWRVRgjY2dAR9435eK9nXpNzvRvyPcZvMnozNM5s95r?=
- =?us-ascii?Q?Y0YeY75rPKcurKJDMo/8Y5sUqjjgUoV4hPqcvf+86WfyrcM0Nj/EieG+inK7?=
- =?us-ascii?Q?NYtL9wCbmstX2UxMDf7vPCLu4wuB3D839fstypVsJbIGWVaf0sybFVOeXayd?=
- =?us-ascii?Q?8m7xy74nF57H4uQfXJhwcqJnL+X6GQLSSRfNOdns656MaS4eP2LRd+45cQUV?=
- =?us-ascii?Q?uQ=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	YYoClksO+qVy/4H82vTA/PZbUp061AoU5mUw/dacw/t6d8R2RXX2IeESar/FRcY1C7k6V/PFJB5AQfjF6LcaTOAogiTa6UUIV4CzDtWLMwLrqvML+xur9phcCDyxiaKfHuqonPFZMuuAGZJ91NBA4xoEJdsBKy6Vs7SYhFvw8hABdmkwbiBC16jPaE4Jfo6yIw+B8c89rmNjRSVC+NHySny9WBPtVXLZJqloJxOhiyo20zAlWL4KjvBmGGu3DBB9E2cr4PCHPl23xh44SdS+UpvXKbqSd66AbDMVFNoZBx9oWnP8+IK9Y/ar/ztM6bgtQCFz4tq+pifUWXjuGDgsFttvlfN75grjEkzsd2N1uTAaJ5N0n83J6HT9BJhmSW6a6gjMomeDaUWowztd2Q56QmCtH5S7cwihy5S6Be1DlzfAZJLE/kjwuXNMgFc8UkNVkfqmr5fZSR5mYUjhxqXlSSJe9PuzkJJph1Nh9mMhxtKJja0kbqA91D+a2fVTM9riLViM+SbF7xjSetjuMQxOZHPc22LPZkTkqoa/SKIWnmKkY+MGvDMOx6KXKCCJq70kr8xoLc0jRPj/9ehwTUeiIVD8Q8JFaikEDsZ/tzKCKxw=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3ad381b1-0971-474a-262d-08ddf6aa915d
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Sep 2025 11:57:40.2007
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: rQKn6J0UqjOH1JLKSnK9fs6LKuRd8qcboCvvnqSPVg+BRx8++cIe335mDGugXgqCDAcOPXnnpTIZLChtjCZj/9YvF6T45En5EngxGOh/DK8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR10MB6239
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-17_01,2025-09-18_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 bulkscore=0
- mlxlogscore=999 suspectscore=0 malwarescore=0 spamscore=0 phishscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2508110000 definitions=main-2509180110
-X-Authority-Analysis: v=2.4 cv=b9Oy4sGx c=1 sm=1 tr=0 ts=68cbf3b8 b=1 cx=c_pps
- a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=yJojWOMRYYMA:10 a=GoEa3M9JfhUA:10 a=20KFwNOVAAAA:8 a=yPCof4ZbAAAA:8
- a=1XWaLZrsAAAA:8 a=VwQbUJbxAAAA:8 a=R0XzeT9y-8mepdCEVgQA:9 a=CjuIK1q_8ugA:10
- cc=ntf awl=host:12083
-X-Proofpoint-GUID: mNg646waSH3JevwXxqTMZQ1eq8D9Wecb
-X-Proofpoint-ORIG-GUID: mNg646waSH3JevwXxqTMZQ1eq8D9Wecb
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE2MDIwMyBTYWx0ZWRfX8UqnrvLrNnhi
- D2mHHtDtPEJtK7GDqkcgmrKC5Jn8qoK//OSyKHg1V6faVpylZx2YKu4yCJxGlhLa5208HjquA+h
- zHW+0l8jT5JNniwJyign9NQhclK5OpyMSKoVyOzIntN6916+3KnjkldBzit+TWnNidm1xsPU6LY
- /HXiuQrT4iScPfWFl4EwwRY15mu+CTGVzQnfrGRRCPIhRRIWEwXr4jNP36QElbpyjzWLe2Wff3R
- w42hyyC4qqwLtUDHy45+e1Vc4D5FhI+3etbh0fKqHp7Txss1oORghjPeURYopGfDciJv/Cvaxx8
- x+POlJ+m+x5rWoa+TZ1NTLCGm16alzdyenAwjazNDESkXqtGSYjM+4HYwvcVzrxTdnvZ+UKj6Fq
- Bb1r4fX4UAoRys33eKsj0KlK5AiUmA==
-X-Stat-Signature: gntoapm4mcf5n6q465xta8inbbq7ebzt
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/7] vma count: fixes, test and improvements
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Kalesh Singh <kaleshsingh@google.com>, minchan@kernel.org,
+ Liam.Howlett@oracle.com, rppt@kernel.org, pfalcato@suse.de,
+ kernel-team@android.com, android-mm@google.com,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Kees Cook <kees@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>, Ben Segall
+ <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+ Valentin Schneider <vschneid@redhat.com>, Jann Horn <jannh@google.com>,
+ Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-trace-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+References: <20250915163838.631445-1-kaleshsingh@google.com>
+ <20250915153401.61cbd5120871ee7a4e5b9cae@linux-foundation.org>
+ <aa95777a-8012-4d08-abcf-7175f9e2691c@lucifer.local>
+ <20250916191645.15aae276992acafe7f7e723e@linux-foundation.org>
+ <e85d0b14-28dd-418f-872e-57c0127ad572@lucifer.local>
+ <20250917163231.b5f7b8012367f033a91e6f9b@linux-foundation.org>
+ <cfabded7-442e-40d9-963a-597a42da581e@lucifer.local>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <cfabded7-442e-40d9-963a-597a42da581e@lucifer.local>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: C3eA0UzEeh7r91nSKWqV6nv21oRD4FNd0JbhBCs73NI_1758197233
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: EB2D91C0008
+X-Stat-Signature: zyx5w5a1ey961pdedygsw7sb4tduczja
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E1CC720010
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1758196669-588322
-X-HE-Meta: U2FsdGVkX18Qk4lkPhgoUqSwaiywRJ/0MwrqcPhiykP//hLT9rTyT0uHCrkMaSXOBMTfgOJ9eCORmAnaVGQB8gHch2zdtnubPWbRieJTWL6eSRzpylbYa3cjC/UmuuewkyGbvrH/9Swg25a/3dtGRLJ/iBwihlHF3okcxoOW/f1xQxRgdtfi7orqn/Etz4MK4mr1DE1Q/fmbtgyUWi2I7ijZwwkUrjhERB5YXJfM4q6mqfoV6XtENeVY1XnWZqUpKvKdpZn6dzhyjJ+pQ/p6J6Tz2/7IM35OgjjJpFWfJUw3UbvHLfRfoE5MsSbIizOCclV8+TDiDnIQLn4gsMrDhTuxlCSqrDxg9ACGKEc4TOSZpeO6rWMb79Qzgn/9aEoxOMlD+fCQCA3+cAvyestBSxYJ07e90+eo0zO6HWqXjy4JwVTKNCxXT6QAXcrNjjEpuQnjO+O3mCTSjWcFmyUNbUjzMNDzXateAV9LjmJZ7sBXK1cs2jMnstKZxrAbRSiouPp8oQUC6iQJh/qcltWDuzlcDRviFMSr2mz2D32X3uaMQ72+w3l8gzwyI+tXcqA1NV/FAkCtqZRnHrKPcjo3kn/dmH2OVQKdkzgnaj27Yhaaowx7i5huflyfIOxRjIsfroY6i1O7EDS1Hf5INhISJ1PI6Cf0cHUZnRQW7HuvATkuAbFScv07Wy8ZHay2EIbsgWv5JoFWqTU3UTc3AA72JlC9na2fEeai4L6BcmsDR4F9rR051sgorV9nUkQB/78xeSIqRAJ8bUGj4gmHzepJIPbUr9qv92j0DoopKXXTAOv6In0HdenMPuVk8i6zMJlIekx+bhWFOIdItGFpn9XDLP6SxmFBrOIPxkzrJ6r3aPg8Ede31Lxl0LZXkRqmSUF9ZaQ++MOnb/gRerBLlpEReJ2yoElKDWYCs3wLo4Q03Ar/uS7hPjteOMGh2zY/IxVKqYzxYlIse86gC5Unyl4
- vY46s3+J
- 3npA1os8rrOwChdwzaHkG+tnwPcOFwJfYUz2ywiJ7dEtXpAbyAjcBRjl45wBE4oaqaZy98NQT75ctSdP+9NcDLUjxAA==
+X-HE-Tag: 1758197236-651516
+X-HE-Meta: U2FsdGVkX1/X+VdMnWhAiX7JtD0RCkMFi2N/jGRM0L/kqZ9uVQJamX+3JZZJDlZd3CrwV8o2xfTa9A84kgvHNEtakHbLISzlP4d83GzP00X96J/jzYuBE/GKREHrDypIMJe6DFjdU+bOg5K/hum8iu6nQoJV6gA+rG8CTv1W/MpV8URxl6xCseB/jkp9rCJ5i+ybAZmr997pbOxAIGFsWq2ICfJRyxhq4Vk/79hwJDgOrvBvmtjai5Cy96AXEimYTEmqOteiTgWONX0zBBJavUUakAaolySKT3FZmYxKk74/GFOjTSaNPnzXG8O9AbAssUEMJoL+UkXX1VNfC5ra8JPus7iSKIpwLj3SDFL7/OCcJuZVfG/Jjic8ZgHl4xZBOz4vbb2DotEGkjslqK1jVJ20LPYviX0b+LvVLrD5Y7dXPbzIhcH62Sar04GxGb+MYAibKbfbe88vTLA6TUY+7u95wFxOu/EU2HYj56pxb9UMuTvCuzkIAXY9+HyUCa8TPp/ZahHTFJ/2TWCU+dyENPTl1oc2OT9K/EM0c14KDUkooQuNhqVtCHRXHwr0fehBGxs+5zznOEqpu1k3PC1cBZSSG/G8xZut4jGYl4am9dnzc0Kbx19nfxD0Bz5FtDc2NoUuh6WBnekeJl0k/gP4ieVzIgn9JFLZJr0pSB3cH3m7eHfcoimewy+1PCEYEd6QD8UyZn3g+GMFf8xca9Qnb67WVGCA8ALjjAoqtq4W4Ed9YSgtxbRz4Id9vwJasP0FIh4axF2dyUoZSqAssHRc8ZF4Q/dJqpMPXoUF7LXE8WUEbVQ5FlbiMxrBPqCLmg1lq2LCH6CuLCbxP3G0lL72uo05DO+97FieqyhanrOv5K50yi+fUoRLBdXRJjbB0VpwOJEs5E7SGnXWwGaudAf7p86gi0X9wBMJB4T/NAsgtDaY7Ip/TW519DazKv8yrWLtbDNzo+04XxEG1cD9Kyl
+ Am5t3GDd
+ tuNbi5Uv/QJ7qWl2oMuec0XrlvuTuUNXSp8cCG/kwmmL5CA0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -237,293 +199,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 17, 2025 at 10:51:34PM -0700, Lokesh Gidra wrote:
-> Guarantee that rmap_walk() is called on locked folios so that threads
-> changing folio->mapping and folio->index for non-KSM anon folios can
-> serialize on fine-grained folio lock rather than anon_vma lock. Other
-> folio types are already always locked before rmap_walk().
+On 18.09.25 12:29, Lorenzo Stoakes wrote:
+> On Wed, Sep 17, 2025 at 04:32:31PM -0700, Andrew Morton wrote:
+>> On Wed, 17 Sep 2025 06:36:34 +0100 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
+>>
+>>>>
+>>>>> Perhaps being less accepting of patches during merge window is one aspect,
+>>>>> as the merge window leading up to this cycle was almost the same review
+>>>>> load as when the cycle started.
+>>>>
+>>>> I'm having trouble understanding what you said here?
+>>>
+>>> Sorry, what I mean to say is that in mm we're pretty open to taking stuff in the
+>>> merge window, esp. now we have mm-new.
+>>>
+>>> And last merge window my review load felt similar to during a cycle, which
+>>> was kind of crazy.
+>>>
+>>> So I wonder if we should be less accommodating and simply say 'sorry it's
+>>> the merge window, no submissions accepted'?
+>>
+>> hm, I always have a lot of emails piled up by the time mm-stable gets
+>> merged upstream.  That ~1 week between "we merged" and "-rc1" is a nice
+>> time to go through that material and add it to mm-new.  I think it
+>> smooths things out.  I mean, this is peak time for people to be
+>> considering the new material?
+> 
+> I'm confused, why is the merge window a good time to consider new material?
+> 
+> People have the entirety of the cycle to submit new material, and they do
+> so.
 
-Be good to explain why you're doing certain things, like adding the folio
-lock to kill_procs_now().
+My view is that if you are sending a cleanup/feature during the merge 
+window you cannot expect a fast reply, and you should not keep sending 
+new versions in that timeframe expecting that all people you CCed that 
+should have a look actually did have a look.
 
-Also worth noting that you're going from _definitely_ locking non-KSM anon
-to _not necessarily_ locking it.
+-- 
+Cheers
 
-You should explain why you think this is fine (in general - rmap callers do
-some other check to see if what is expected to mapped did happen so it's
-fine, or otherwise treat things as best-effort).
+David / dhildenb
 
-You should probably also put some information about performance impact
-here, I think Barry provided some?
-
->
-> This is in preparation for removing anon_vma write-lock from
-> UFFDIO_MOVE.
-
-Thanks for mentioning this :)
-
->
-> CC: David Hildenbrand <david@redhat.com>
-> CC: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> CC: Harry Yoo <harry.yoo@oracle.com>
-> CC: Peter Xu <peterx@redhat.com>
-> CC: Suren Baghdasaryan <surenb@google.com>
-> CC: Barry Song <baohua@kernel.org>
-> CC: SeongJae Park <sj@kernel.org>
-> Signed-off-by: Lokesh Gidra <lokeshgidra@google.com>
-
-OK so you're making:
-
-folio_lock_anon_vma_read()
-folio_get_anon_vma()
-
-Require folio locks.
-
-folio_lock_anon_vma_read() is called from:
-
-connect_procs_anon() - changed to take folio lock.
-page_idle_clear_pte_refs() - changed to take folio lock.
-damon_folio_mkold() - changed to take folio lock.
-damon_folio_young() - changed to take folio lock.
-folio_referenced() - changed to take folio lock.
-try_to_unmap() - ???
-try_to_migrate() - ???
-
-9I note that we allow a TTU_RMAP_LOCKED walk in the above unmap, migrate
-cases too, wonder how these will interact?)
-
-folio_get_anon_vma() is called from:
-
-move_pages_huge_pmd() - already holds folio lock.
-__folio_split() - already holds folio lock.
-move_pages_ptes() [uffd] - already holds folio lock.
-migrate_folio_unmap() - already holds folio lock.
-unmap_and_move_huge_page() - already holds folio lock.
-
-Can you:
-
-a. Confirm the try_to_unmap() and try_to_migrate() cases take the folio
-   lock. Explicitly list the callers and how they acquire the folio lock.
-
-b. Update the commit message to include the above. You're making a _very_
-   sensitive locking change here, it's important to demonstrate that you've
-   considered all cases.
-
-Thanks!
-
-> ---
->  mm/damon/ops-common.c | 16 ++++------------
->  mm/memory-failure.c   |  3 +++
->  mm/page_idle.c        |  8 ++------
->  mm/rmap.c             | 42 ++++++++++++------------------------------
->  4 files changed, 21 insertions(+), 48 deletions(-)
->
-> diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
-> index 998c5180a603..f61d6dde13dc 100644
-> --- a/mm/damon/ops-common.c
-> +++ b/mm/damon/ops-common.c
-> @@ -162,21 +162,17 @@ void damon_folio_mkold(struct folio *folio)
->  		.rmap_one = damon_folio_mkold_one,
->  		.anon_lock = folio_lock_anon_vma_read,
->  	};
-> -	bool need_lock;
->
->  	if (!folio_mapped(folio) || !folio_raw_mapping(folio)) {
->  		folio_set_idle(folio);
->  		return;
->  	}
->
-> -	need_lock = !folio_test_anon(folio) || folio_test_ksm(folio);
-> -	if (need_lock && !folio_trylock(folio))
-> +	if (!folio_trylock(folio))
->  		return;
-
-This _seems_ to be best effort and not relying on anon always
-succeeding. So should be fine.
-
->
->  	rmap_walk(folio, &rwc);
-> -
-> -	if (need_lock)
-> -		folio_unlock(folio);
-> +	folio_unlock(folio);
->
->  }
->
-> @@ -228,7 +224,6 @@ bool damon_folio_young(struct folio *folio)
->  		.rmap_one = damon_folio_young_one,
->  		.anon_lock = folio_lock_anon_vma_read,
->  	};
-> -	bool need_lock;
->
->  	if (!folio_mapped(folio) || !folio_raw_mapping(folio)) {
->  		if (folio_test_idle(folio))
-> @@ -237,14 +232,11 @@ bool damon_folio_young(struct folio *folio)
->  			return true;
->  	}
->
-> -	need_lock = !folio_test_anon(folio) || folio_test_ksm(folio);
-> -	if (need_lock && !folio_trylock(folio))
-> +	if (!folio_trylock(folio))
->  		return false;
-
-Same as above here.
-
->
->  	rmap_walk(folio, &rwc);
-> -
-> -	if (need_lock)
-> -		folio_unlock(folio);
-> +	folio_unlock(folio);
->
->  	return accessed;
->  }
-> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> index a24806bb8e82..f698df156bf8 100644
-> --- a/mm/memory-failure.c
-> +++ b/mm/memory-failure.c
-> @@ -2143,7 +2143,10 @@ static void kill_procs_now(struct page *p, unsigned long pfn, int flags,
->  {
->  	LIST_HEAD(tokill);
->
-> +	folio_lock(folio);
->  	collect_procs(folio, p, &tokill, flags & MF_ACTION_REQUIRED);
-> +	folio_unlock(folio);
-> +
-
-Good. I hate how this works.
-
->  	kill_procs(&tokill, true, pfn, flags);
->  }
->
-> diff --git a/mm/page_idle.c b/mm/page_idle.c
-> index a82b340dc204..9bf573d22e87 100644
-> --- a/mm/page_idle.c
-> +++ b/mm/page_idle.c
-> @@ -101,19 +101,15 @@ static void page_idle_clear_pte_refs(struct folio *folio)
->  		.rmap_one = page_idle_clear_pte_refs_one,
->  		.anon_lock = folio_lock_anon_vma_read,
->  	};
-> -	bool need_lock;
->
->  	if (!folio_mapped(folio) || !folio_raw_mapping(folio))
->  		return;
->
-> -	need_lock = !folio_test_anon(folio) || folio_test_ksm(folio);
-> -	if (need_lock && !folio_trylock(folio))
-> +	if (!folio_trylock(folio))
->  		return;
-
-This checks folio idle bit after so that's fine for anon to not succeed due
-to contention.
-
->
->  	rmap_walk(folio, &rwc);
-> -
-> -	if (need_lock)
-> -		folio_unlock(folio);
-> +	folio_unlock(folio);
->  }
->
->  static ssize_t page_idle_bitmap_read(struct file *file, struct kobject *kobj,
-> diff --git a/mm/rmap.c b/mm/rmap.c
-> index 34333ae3bd80..90584f5da379 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -489,17 +489,15 @@ void __init anon_vma_init(void)
->   * if there is a mapcount, we can dereference the anon_vma after observing
->   * those.
->   *
-> - * NOTE: the caller should normally hold folio lock when calling this.  If
-> - * not, the caller needs to double check the anon_vma didn't change after
-> - * taking the anon_vma lock for either read or write (UFFDIO_MOVE can modify it
-> - * concurrently without folio lock protection). See folio_lock_anon_vma_read()
-> - * which has already covered that, and comment above remap_pages().
-> + * NOTE: the caller should hold folio lock when calling this.
->   */
->  struct anon_vma *folio_get_anon_vma(const struct folio *folio)
->  {
->  	struct anon_vma *anon_vma = NULL;
->  	unsigned long anon_mapping;
->
-> +	VM_WARN_ON_FOLIO(!folio_test_locked(folio), folio);
-> +
->  	rcu_read_lock();
->  	anon_mapping = (unsigned long)READ_ONCE(folio->mapping);
->  	if ((anon_mapping & FOLIO_MAPPING_FLAGS) != FOLIO_MAPPING_ANON)
-> @@ -546,7 +544,8 @@ struct anon_vma *folio_lock_anon_vma_read(const struct folio *folio,
->  	struct anon_vma *root_anon_vma;
->  	unsigned long anon_mapping;
->
-> -retry:
-> +	VM_WARN_ON_FOLIO(!folio_test_locked(folio), folio);
-> +
->  	rcu_read_lock();
->  	anon_mapping = (unsigned long)READ_ONCE(folio->mapping);
->  	if ((anon_mapping & FOLIO_MAPPING_FLAGS) != FOLIO_MAPPING_ANON)
-> @@ -557,17 +556,6 @@ struct anon_vma *folio_lock_anon_vma_read(const struct folio *folio,
->  	anon_vma = (struct anon_vma *) (anon_mapping - FOLIO_MAPPING_ANON);
->  	root_anon_vma = READ_ONCE(anon_vma->root);
->  	if (down_read_trylock(&root_anon_vma->rwsem)) {
-> -		/*
-> -		 * folio_move_anon_rmap() might have changed the anon_vma as we
-> -		 * might not hold the folio lock here.
-> -		 */
-> -		if (unlikely((unsigned long)READ_ONCE(folio->mapping) !=
-> -			     anon_mapping)) {
-> -			up_read(&root_anon_vma->rwsem);
-> -			rcu_read_unlock();
-> -			goto retry;
-> -		}
-> -
->  		/*
->  		 * If the folio is still mapped, then this anon_vma is still
->  		 * its anon_vma, and holding the mutex ensures that it will
-> @@ -602,18 +590,6 @@ struct anon_vma *folio_lock_anon_vma_read(const struct folio *folio,
->  	rcu_read_unlock();
->  	anon_vma_lock_read(anon_vma);
->
-> -	/*
-> -	 * folio_move_anon_rmap() might have changed the anon_vma as we might
-> -	 * not hold the folio lock here.
-> -	 */
-> -	if (unlikely((unsigned long)READ_ONCE(folio->mapping) !=
-> -		     anon_mapping)) {
-> -		anon_vma_unlock_read(anon_vma);
-> -		put_anon_vma(anon_vma);
-> -		anon_vma = NULL;
-> -		goto retry;
-> -	}
-> -
->  	if (atomic_dec_and_test(&anon_vma->refcount)) {
->  		/*
->  		 * Oops, we held the last refcount, release the lock
-> @@ -1005,7 +981,7 @@ int folio_referenced(struct folio *folio, int is_locked,
->  	if (!folio_raw_mapping(folio))
->  		return 0;
->
-> -	if (!is_locked && (!folio_test_anon(folio) || folio_test_ksm(folio))) {
-> +	if (!is_locked) {
->  		we_locked = folio_trylock(folio);
->  		if (!we_locked)
->  			return 1;
-> @@ -2815,6 +2791,12 @@ static void rmap_walk_anon(struct folio *folio,
->  	pgoff_t pgoff_start, pgoff_end;
->  	struct anon_vma_chain *avc;
->
-> +	/*
-> +	 * The folio lock ensures that folio->mapping can't be changed under us
-> +	 * to an anon_vma with different root.
-> +	 */
-> +	VM_WARN_ON_FOLIO(!folio_test_locked(folio), folio);
-> +
->  	if (locked) {
->  		anon_vma = folio_anon_vma(folio);
->  		/* anon_vma disappear under us? */
-> --
-> 2.51.0.384.g4c02a37b29-goog
->
->
-
-All of the above actual changes to the locking logic looks ok to me though.
 
