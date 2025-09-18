@@ -4,76 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AF1ECAC59A
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 09:35:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48816CAC59A
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 09:36:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B34F28002F; Thu, 18 Sep 2025 05:35:06 -0400 (EDT)
+	id 88FA5280030; Thu, 18 Sep 2025 05:36:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 864218E0093; Thu, 18 Sep 2025 05:35:06 -0400 (EDT)
+	id 867D88E0093; Thu, 18 Sep 2025 05:36:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 779C128002F; Thu, 18 Sep 2025 05:35:06 -0400 (EDT)
+	id 7AB43280030; Thu, 18 Sep 2025 05:36:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 665EA8E0093
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 05:35:06 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 246C116087C
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 09:35:06 +0000 (UTC)
-X-FDA: 83901862212.20.089A9AB
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 55A78A000C
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 09:35:04 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf15.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758188104; a=rsa-sha256;
-	cv=none;
-	b=imPz4Wk89YWmQmLZ6GmcHD5KRXft/I/i6WB/y+yTCzIOEYqjc6BzUmlEkEgu/TtneCMmMC
-	6AvKGPf1mc3iPH6W5Ky0dFfs27L8/UUNPstLxUc2CUcDm/4RnX9860Me1jn6XFnJUv2cao
-	AOoEtSMHQKJiaLQEwryBy5OiJHnxvjA=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf15.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 6A6AD8E0093
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 05:36:27 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2E2181407C8
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 09:36:27 +0000 (UTC)
+X-FDA: 83901865614.29.4ED085C
+Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
+	by imf30.hostedemail.com (Postfix) with ESMTP id A7BBF80009
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 09:36:23 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=bkXoodev;
+	spf=pass (imf30.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758188104;
+	s=arc-20220608; t=1758188185;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=XuKvxMREAmE0zwi1dHM3uq21ai2ZDSIgrGw9a7CmzLc=;
-	b=A8Pq+d5i+oql5gGdeVeriT40ewSw8/raB4LlgJ8EvAoUOZVnl9DtcvmAJmVS+3dEHCGSrV
-	uWL+zeaAOm2AjDzi+WQSQlD+dqbTrP7EPaUP90mJC0ZLoObajcyJ/dufCr5FErBAbLpENm
-	VVsGVfcHRxW3niBFhl8pC+pa9CJiI0g=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 25DEF1A32;
-	Thu, 18 Sep 2025 02:34:55 -0700 (PDT)
-Received: from MacBook-Pro.blr.arm.com (MacBook-Pro.blr.arm.com [10.164.18.52])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 2D2033F66E;
-	Thu, 18 Sep 2025 02:35:00 -0700 (PDT)
-From: Dev Jain <dev.jain@arm.com>
-To: akpm@linux-foundation.org
-Cc: rppt@kernel.org,
-	ryan.roberts@arm.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Dev Jain <dev.jain@arm.com>
-Subject: [PATCH] mm: Remove PMD alignment constraint in execmem_vmalloc()
-Date: Thu, 18 Sep 2025 15:04:53 +0530
-Message-Id: <20250918093453.75676-1-dev.jain@arm.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=2eKu4d+bqGlhpwBm/TMfdF3CJWkzepb71FsO4wW6V+8=;
+	b=yx3y4h8sH1qTVJOrhkTfCJaHeW47dj+RDm64cdqCfbfbqu7CCfkZJAQ5tFlYE6QA62cjkp
+	rZ1mv1faOn/IdxoTkExscuIxMLEI5ieXkdSzLI3jdHPs8pGPmqcQE7Ye7cTOs08/imkxpo
+	m/86mY3juEVG3BxR0fiPxDB0F8MyocI=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=bkXoodev;
+	spf=pass (imf30.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758188185; a=rsa-sha256;
+	cv=none;
+	b=4eEzu/VFEoYbWTfjiwgSCzQ9d6/Mz+Xaknwd4fZ7LRRQtr8bL3RKPJ0i8vdQ7c71h5+X0W
+	5jHbOgpMBBa1of794j3XD3tGUojvofIwIA/H+TnW7HTkD5Os3MGkoxNm2opUShk7H6H+kR
+	Ed4NXrzOtzwZe2nMwIG85V92IjM9APg=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1758188180; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=2eKu4d+bqGlhpwBm/TMfdF3CJWkzepb71FsO4wW6V+8=;
+	b=bkXoodev9mJNmwjJnn9a8ss56YCEbkZWRxv4ZpYD6Z9JXm22rgu+8+6EMoZLl10vikJyYcqIdBy+KHpdJ3fOJKSLeuZJfUI5DAU/Yp88p2JnAYuJ0t1D/4Ut40yD/2PJxM0DsF0eIZo93Rck5RnDQvTgFonPLzSY5vHiGxFVVYc=
+Received: from 30.74.144.125(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WoFZMIK_1758188178 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 18 Sep 2025 17:36:18 +0800
+Message-ID: <4e938fa1-c6ea-43fb-abbd-de514842a005@linux.alibaba.com>
+Date: Thu, 18 Sep 2025 17:36:17 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] mm: vmscan: remove folio_test_private() check in
+ pageout()
+To: David Hildenbrand <david@redhat.com>, akpm@linux-foundation.org,
+ hannes@cmpxchg.org
+Cc: mhocko@kernel.org, zhengqi.arch@bytedance.com, shakeel.butt@linux.dev,
+ lorenzo.stoakes@oracle.com, hughd@google.com, willy@infradead.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <cover.1758166683.git.baolin.wang@linux.alibaba.com>
+ <9ef0e560dc83650bc538eb5dcd1594e112c1369f.1758166683.git.baolin.wang@linux.alibaba.com>
+ <17d1b293-e393-4989-a357-7eea74b3c805@redhat.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <17d1b293-e393-4989-a357-7eea74b3c805@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 55A78A000C
-X-Stat-Signature: 9epd1i8gbzc1gr31mutbbpobtqsweocd
+X-Rspamd-Queue-Id: A7BBF80009
 X-Rspam-User: 
-X-HE-Tag: 1758188104-796391
-X-HE-Meta: U2FsdGVkX1+dFj0UoWl9Iqs4kK72PxuU+lu+e8hbYAh/mSmPfOaE89gREo4fkOGGkmZEHl0gtk0wRUqEPXqdYlWmNPNi244a3Gr439JRJ1pCP8OIM6r/34/FDESxsfnA1uFRDEECO6/XjYo5isAxxpBqQQC+ywAL9Z42Ri09YxZKUictcQWLasuRCH4pYlm80zDYx2Nf1RXSucLZCWApTboDELm/ZfbS7KpqSJT3O9MPE9poTja8xxlaNgfaLnGFcpKZKiiC1QLJkM34PQKWkRd7aCyIjOw/x9dLc/pwr4xxeLpAPbpl/85dkv4IrFZ6zybhhw+QRtN1zIbp7AlnhiFuK3JuwHqoWIkNYBhfx+85aNq1mC8fYo3s5zyxN+CnXalCNpZvOGnRKailYENPyxL+bU6ySqZ6obdZRBTumj9ia3gPOspBxVVg0KG2DTO47YJQI3++zdunVdtbeNAt1uQB41seOu3DC2TLxnuVjKQQi2/wT8ZVUORuj2kJEBZvGjjlwuAjW13jz3CM/rHneeBgsNiAWqgzRkACysah1y5J323NaD06BNexvHtpiMh3y8x7aqAzYmQ11A/tnc5/7wjfpeQLM7Ree9P6MH4z+KXXpb93cWosaSeKWMOyMMxNQOqBbSGzBUZB5QQNEvsYIDxSWrPKivLoOOVp0MYknVy53KcVMXtDsW3PUHYwrBqEU1vPKWOOAqmzu9Fc8DZ630Zdm+ur5jSzmn9NxGsIge0HjL4Gz+lQZ5Fq4bP4yFiKpvTLHVY15UzPOa4c9SY8CRfIjMRmU361xsu1dJUH5nUpK0O2H2jdWRA19jBV8eWQwtI8gli953ym5RERALKoG+R2AyebmucU7ybPmWUlHqFj+1hCeB+PVmoAwqZviNT3iJlOodFMxmpwvSrAC/Ou3gFMkj888Ewgz7c0mIBlvebxIimT+m27OMr6vXqYmhN+3blUurtSkBwcFhDcubS
- z20aCFk5
- cmpp9gUGrHxtf33yqKNPfvy/fNwuzN4SNsQRqg/OWTYFaSh1IrEFsJWXe4yVwhiGnU4gTyVu1flpCV+r6a0qiI51p8vnw5uJGO8UOqdlAeBn9Ja8zcSJgZMYZowe0Q3HeMG9Tffo6CAGE1ckweJEXOqPOJvs21+HSMoEO
+X-Rspamd-Server: rspam07
+X-Stat-Signature: bmg3rq4xd8ane1xod49nzgeis5trnxg4
+X-HE-Tag: 1758188183-552421
+X-HE-Meta: U2FsdGVkX19F9B7DV9WxqV5ERxrqgy7kvnDJPtRQZzyOwxYk+nZb8t8eTwy+E6TdD+Ov/HwqnzVmJJfM0IKBhLm4rtQnMlkHUxFe48ZMZEtcZvqOOC+cmLF3xSxgTxrWeztgcWDJ681/MyU28wUQaTwE3P4BpLallSgA3/UXukdliTUNXcdnbndRiN5OnF9RiRnluPZYBolYDZu0OXDTQn2oxgKkZVMLOiFt0GWgdA1rZIm9eL4cDSFbKZkoY3BBgPWAiWh9OBRLiiTAef00tLTJA/zSuTuLZNDORaEs9wQRhVagXE1KK2wVUy/97wQfTQvj3nl11SAL1B9WUnVo39tobiF3wOzqnmOrCfdyISsOf0YTn41q3oBRBEBqRuyvqFytcOTGldwfG/m7NQyJ2TjP/sYOV2zu09tTZHjav+79VE1qw3gojaBuNhSNPjTkuKMIkMnHdiVh+AHlw4zwxoTgtiKn7zqWPbIk+ypwYlokwggj8871k4Ywd5IMM49QBp0CvgMvKE2HhWagBTLr9G73CgsEzNWKaN+JNs+44+GPC/bI4YrWuXmfnihDsjSmg/NemZmUHL3EiNWzNGPLvfHE/it9fRK1oKdd2gvxtNsWlhMkKMvYkgg0BOTrEe7qotdE4WhlX4aEPotNjvWQiVA2QimuI7xtZOzL3q0kNn0fS2+plPMehO6b4T+SbI/OCB+6xhK5CtAnrlloaqwtX/PFFPXoxFDtUS71+I7J2bPnQ3lKva3Gp2P7bgefhBIJdTHHzKJ8oPxUmxrMFoDBjJ9UCihG924qf9m2o5/yaCPs4UrMOQ6oghZcbel6/+vq5wwg08mTgS48nFaZJM+ZUTOOg1HF5yk4X4okRgg8XKF4s+Pa2GxcAcmgvEqTp+KDlunZ1GA/XCT9c0MAelcbIJqTvCzKs+wHhrOHICkladaq1xaRCVu4s1P5LuSrwNdmmo386FDsJ5ZzM6jf9IF
+ k4VZbKSh
+ DC+fKLi9uN9gC670MUHBl2eroWPQ25Ux14Z/qofqC0UIThuIM9MQeUnY4et791dEBIh4wjjsWr2Qo3ArUwgSi5bGHlpEpbnd7i2aG+0heZehq4TrQuBrUdP1ZZ4ZPDRhPwevnkQGaWYjk0YOnNWs1qN6nK9ZFBLvWNZk7WOb/TP4bAju1MQ/BoVg8Ix6Se8VE2QJIo06VWgp77h3C85Z4PKXqtD9kCIUceypAgdFZ+VO8GIN+UAncjlOraq5pYVjLOROqeRWNvQGuz5/sDEQtPxQSCG0/+gKNrJ9winoO08GpBlvXYlPxliG+FH891LTgUGuM9LAD+OXGuQaMX7R85/93BFZBx1LSDkwjxjbA2KbfHV5NciiKTZSI9rXg2Ep7GLcNpADPfTD59meyiTdMI+PLLXLbJ0TE0YqX
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -82,40 +91,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When using vmalloc with VM_ALLOW_HUGE_VMAP flag, it will set the alignment
-to PMD_SIZE internally, if it deems huge mappings to be eligible.
-Therefore, setting the alignment in execmem_vmalloc is redundant. Apart
-from this, it also reduces the probability of allocation in case vmalloc
-fails to allocate hugepages - in the fallback case, vmalloc tries to use
-the original alignment and allocate basepages, which unfortunately will
-again be PMD_SIZE passed over from execmem_vmalloc, thus constraining
-the search for a free space in vmalloc region.
 
-Therefore, remove this constraint.
 
-Signed-off-by: Dev Jain <dev.jain@arm.com>
----
-mm-selftests pass, but I am not sure if they touch execmem code, and I
-have no experience with this code.
+On 2025/9/18 14:00, David Hildenbrand wrote:
+> On 18.09.25 05:46, Baolin Wang wrote:
+>> The folio_test_private() check in pageout() was introduced by commit
+>> ce91b575332b ("orphaned pagecache memleak fix") in 2005 (checked from
+>> a history tree[1]). As the commit message mentioned, it was to address
+>> the issue where reiserfs pagecache may be truncated while still pinned.
+>> To further explain, the truncation removes the page->mapping, but the
+>> page is still listed in the VM queues because it still has buffers.
+>>
+>> In 2008, commit a2b345642f530 ("Fix dirty page accounting leak with ext3
+>> data=journal") seems to be dealing with a similar issue, where the page
+>> becomes dirty after truncation, and it provides a very useful call stack:
+>> truncate_complete_page()
+>>        cancel_dirty_page() // PG_dirty cleared, decr. dirty pages
+>>        do_invalidatepage()
+>>          ext3_invalidatepage()
+>>            journal_invalidatepage()
+>>              journal_unmap_buffer()
+>>                __dispose_buffer()
+>>                  __journal_unfile_buffer()
+>>                    __journal_temp_unlink_buffer()
+>>                      mark_buffer_dirty(); // PG_dirty set, incr. dirty 
+>> pages
+>>
+>> In this commit a2b345642f530, we forcefully clear the page's dirty flag
+>> during truncation (in truncate_complete_page()).
+>>
+>> Now it seems this was just a peculiar usage specific to reiserfs. Maybe
+>> reiserfs had some extra refcount on these pages, which caused them to 
+>> pass
+>> the is_page_cache_freeable() check. With the fix provided by commit 
+>> a2b345642f530
+>> and reiserfs being removed in 2024 by commit fb6f20ecb121 ("reiserfs: The
+>> last commit"), such a case is unlikely to occur again. So let's remove 
+>> the
+>> redundant folio_test_private() checks and related buffer_head release 
+>> logic,
+>> and just leave a warning here to catch such a bug.
+>>
+>> [1] https://git.kernel.org/pub/scm/linux/kernel/git/tglx/history.git
+>> Acked-by: David Hildenbrand <david@redhat.com>
+>> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>> ---
+>>   mm/vmscan.c | 12 +++---------
+>>   1 file changed, 3 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/mm/vmscan.c b/mm/vmscan.c
+>> index f1fc36729ddd..930add6d90ab 100644
+>> --- a/mm/vmscan.c
+>> +++ b/mm/vmscan.c
+>> @@ -701,16 +701,10 @@ static pageout_t pageout(struct folio *folio, 
+>> struct address_space *mapping,
+>>           return PAGE_KEEP;
+>>       if (!mapping) {
+>>           /*
+>> -         * Some data journaling orphaned folios can have
+>> -         * folio->mapping == NULL while being dirty with clean buffers.
+>> +         * Is it still possible to have a dirty folio with
+>> +         * a NULL mapping? I think not.
+>>            */
+> 
+> I would rephrase slightly (removing the "I think not"):
+> 
+> /*
+>   * We should no longer have dirty folios with clean buffers and a NULL
+>   * mapping. However, let's be careful for now.
+>   */
 
- mm/execmem.c | 3 ---
- 1 file changed, 3 deletions(-)
+LGTM.
 
-diff --git a/mm/execmem.c b/mm/execmem.c
-index 0822305413ec..810a4ba9c924 100644
---- a/mm/execmem.c
-+++ b/mm/execmem.c
-@@ -38,9 +38,6 @@ static void *execmem_vmalloc(struct execmem_range *range, size_t size,
- 	if (kasan)
- 		vm_flags |= VM_DEFER_KMEMLEAK;
- 
--	if (vm_flags & VM_ALLOW_HUGE_VMAP)
--		align = PMD_SIZE;
--
- 	p = __vmalloc_node_range(size, align, start, end, gfp_flags,
- 				 pgprot, vm_flags, NUMA_NO_NODE,
- 				 __builtin_return_address(0));
--- 
-2.30.2
+Andrew, could you help squash these comments into this patch? Thanks.
+
+>> -        if (folio_test_private(folio)) {
+>> -            if (try_to_free_buffers(folio)) {
+>> -                folio_clear_dirty(folio);
+>> -                pr_info("%s: orphaned folio\n", __func__);
+>> -                return PAGE_CLEAN;
+>> -            }
+>> -        }
+>> +        VM_WARN_ON_FOLIO(true, folio);
+>>           return PAGE_KEEP;
+>>       }
+> 
+> 
 
 
