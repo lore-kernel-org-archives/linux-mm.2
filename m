@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08F7ECAC59A
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 14:06:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CE53CA1013
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 14:06:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5CE608E0131; Thu, 18 Sep 2025 10:06:25 -0400 (EDT)
+	id B9DB38E0132; Thu, 18 Sep 2025 10:06:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 557D38E0112; Thu, 18 Sep 2025 10:06:25 -0400 (EDT)
+	id B4B498E0112; Thu, 18 Sep 2025 10:06:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4483D8E0131; Thu, 18 Sep 2025 10:06:25 -0400 (EDT)
+	id A617E8E0132; Thu, 18 Sep 2025 10:06:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E3678E0112
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 10:06:25 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E53D7139AFF
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 14:06:24 +0000 (UTC)
-X-FDA: 83902545888.29.A393F5C
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	by imf03.hostedemail.com (Postfix) with ESMTP id C051220019
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 14:06:22 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=wP+UW0ki;
-	spf=pass (imf03.hostedemail.com: domain of 33RHMaAUKCH4gnxgtiqqing.eqonkpwz-oomxcem.qti@flex--elver.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=33RHMaAUKCH4gnxgtiqqing.eqonkpwz-oomxcem.qti@flex--elver.bounces.google.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 928628E0112
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 10:06:27 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 58B941A01BF
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 14:06:27 +0000 (UTC)
+X-FDA: 83902546014.12.FF092F1
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 73E4780010
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 14:06:25 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=xDb3yN7d;
+	spf=pass (imf02.hostedemail.com: domain of 33xHMaAUKCIAipzivksskpi.gsqpmry1-qqozego.svk@flex--elver.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=33xHMaAUKCIAipzivksskpi.gsqpmry1-qqozego.svk@flex--elver.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758204383;
+	s=arc-20220608; t=1758204385;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ELhsFQQQ03C4hLdoxnucw/8+AkmAKW9zLdfFvUdcDbU=;
-	b=lX2s8/FbgCI1dB7g1qJN0g6doT3zVNkRCbpqaj1i8g3J3cSOvAJrZeozvNJKeWP9qZOzOO
-	K03j5bHxQ+CFNrQndUDQ2WqAs1wmy/FCfxrxMZr5OBgC+L5P00DSaXOovlEmnhYAbkoL5y
-	IM8+yYUWelQgH2JnfJ63wbNOQHKF4Ac=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758204383; a=rsa-sha256;
-	cv=none;
-	b=KCTwz9ke2jewdt8Ofeyj1qyRNgEpOdr18ljbuPcPYPCFHSd4WeLjJBjJePBhlvgEFlR9QU
-	55resRTEjGZn5vVjqL3MSJFX9jxUsu0yggR0QsVh0Ivq1LaoD/MsZCDhqh0wZmCYMx1QAb
-	JfDp6MLAM0kPvpM28xcCG2u8Ymehr6E=
+	bh=Oanwb4AvefPzztLhk08gBpEPn5bxbhzZnwvICntunHw=;
+	b=cUd9c4Il3LTnKkFuC5U6b6H+KXCJOnxm66Yjan1gZmTgFUgNqegdBU5IACNAvuxJbEgjqV
+	ho9xTyykJ4CcIXAlpfjMqCWPdtG/OnEbEhvLB8mmD0KXI0x2RdwHO1QsjoKB68JYaFYN1i
+	g+1vvyhs73Moy3+EVspycQg077yLAzs=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=wP+UW0ki;
-	spf=pass (imf03.hostedemail.com: domain of 33RHMaAUKCH4gnxgtiqqing.eqonkpwz-oomxcem.qti@flex--elver.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=33RHMaAUKCH4gnxgtiqqing.eqonkpwz-oomxcem.qti@flex--elver.bounces.google.com;
+	imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=xDb3yN7d;
+	spf=pass (imf02.hostedemail.com: domain of 33xHMaAUKCIAipzivksskpi.gsqpmry1-qqozego.svk@flex--elver.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=33xHMaAUKCIAipzivksskpi.gsqpmry1-qqozego.svk@flex--elver.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-45f2c41c819so6664445e9.2
-        for <linux-mm@kvack.org>; Thu, 18 Sep 2025 07:06:22 -0700 (PDT)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758204385; a=rsa-sha256;
+	cv=none;
+	b=Y3TlCKxf4N9FbGhLk6mA6cQYgw3wdYbacFMhfyg4tEnVcOE9nDD89ecngB0zZHM7svSOYc
+	n3cL5S/aCm+yrog5hDZEAllicte/qgc61jQJRaVEULCNHhUX3XHcBNA6e6+HADHUcPiTc+
+	8vhQKcUgENKQlMn5hHLIoZ4akSR+zlE=
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3ece14b9231so561595f8f.0
+        for <linux-mm@kvack.org>; Thu, 18 Sep 2025 07:06:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758204381; x=1758809181; darn=kvack.org;
+        d=google.com; s=20230601; t=1758204384; x=1758809184; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ELhsFQQQ03C4hLdoxnucw/8+AkmAKW9zLdfFvUdcDbU=;
-        b=wP+UW0kidlaU3h8ywH1WiLugdI+AQLj5w/CxC+Rftdc+r+vRv7CSzKn0c59OMuMhUl
-         QXoGvC1I7/zGWub0zBJfB4VbhBaGiVsOeAgCBk53KTsrspXDGQznsGJnxCmbguJ4HQMQ
-         X6Iyxak9I428LkwWWNzdDVgOG26W5WPSaFZtMAd879BZOcgdv56kIFFzto36bTj9iaGX
-         kdnsokprvO0PLlF0JOqg3OO4uw4I7dEpa4rLwf1MQqy2QLrqGbmm4dC/ZhohhT2CboOZ
-         Q7GkmJVHxCKWtjRAhvMvMG6E/o7DSaCQuClxpdVxcI5P/OcZ4OTSBCLnqBNJ/MzqyBUH
-         zITg==
+        bh=Oanwb4AvefPzztLhk08gBpEPn5bxbhzZnwvICntunHw=;
+        b=xDb3yN7duW6NINdZaWuHuhkajRjjY702dE0xFe9/krJwDJAE7yXoYpfVHiDWr9eGUk
+         N8mKjaJcMa+MSX9PUgedJJZW3mBS7VvGZ5zmeri1JjvUOKxe6w+5+/DWci33z1INHk6n
+         t47Yh+vWmhqwdalEAWrqXD5wrTwPYYuKoHGANpkrpFc0/ygEqm5nvmXL8LQITv1QRz14
+         QsHjymb4n/HWxZJszDnteFXzDyCetM/WrPQH5TrF+ZWbBpCL1cheQo/uJTyNrsTPuHmj
+         rRDU1U7zSilDVC8soVZmnzRWQ73hiJL0ScDBlTnCk6551Mn7vgTaY3lv7InVggHXpbte
+         vZSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758204381; x=1758809181;
+        d=1e100.net; s=20230601; t=1758204384; x=1758809184;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ELhsFQQQ03C4hLdoxnucw/8+AkmAKW9zLdfFvUdcDbU=;
-        b=wBXpeagSGjzWAaImH5Ga99SjVqvDOxK9rt4ECZubC8nksuuwNoAT4VJARP5I5XtCEc
-         uhReIqK8kGM12eO2DPNzt5twwVJZW/X2Jyy2jILWtLHd6N1Lj0uk/gJ//ZkvEjtBiiMh
-         H5NohcuMukyNG9Rx5lu4FB9+CfNnAacdkO8d8/1uEjfALxjOLbpnqT1yU+Z4tbz7KNk6
-         gNJqbJQdgKX1mUundEgu7m0mEemxEKx6idQOJjy/eO98pARBdxPzlvzOYp9EhnUJ+M7D
-         t9+fMIR73kBratj9SNSo3UuoC/eYtLNCPgU4QnGENr6UzfWW2m7uTfMjc95ferK/MP6A
-         2ffw==
-X-Forwarded-Encrypted: i=1; AJvYcCVvb0qZBnrzzA8OD6HlGfnzidX+UJODInHYr2bGtsxQf3zh2SzZdGM7MfMKd8NrND36lcIVwFzslQ==@kvack.org
-X-Gm-Message-State: AOJu0YxF3v9Ds83JL76qqOi0AAaUshlKR81qVAvk+QOp7X3psXyUW6CY
-	kLBFErwkf/gCgVbmMr6XLVkrrD1YQWgVpYFonsOn049TwKMMRWlhDLbteWq+bu4McYqz8NMIJpV
-	ZPA==
-X-Google-Smtp-Source: AGHT+IHcd1Qh8kOAFxc/2t8MroiNimpccwG9uYdP8O4l5R/dxiF/pFNNICl8HtyF7NtKGjMQxkNUnXtHWQ==
-X-Received: from wmbbi7.prod.google.com ([2002:a05:600c:3d87:b0:45d:d522:48a9])
- (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:2a93:b0:462:cd41:c2f8
- with SMTP id 5b1f17b1804b1-464c6761397mr28424195e9.5.1758204381270; Thu, 18
- Sep 2025 07:06:21 -0700 (PDT)
-Date: Thu, 18 Sep 2025 15:59:31 +0200
+        bh=Oanwb4AvefPzztLhk08gBpEPn5bxbhzZnwvICntunHw=;
+        b=oWyfobnrqgEE6z60VFtOnt0H98z5wfIjtN80UjaRp7fIJ79l2pNwJnbFlQuKOTOAdM
+         wE/nU78utCZFk3mH+Fo5Tq2t0vWTIrcIYw1RDsxkC6kk6HEoaeE/q+Hje5B3XYY9zOG6
+         hedkWsDGaEOCQGIlj0nUngmUWueVGc3nIGHZlmIzc1B1976Vrtm5TJBBkjb+kPVUWorn
+         xpCqepddH62zLM6Ajr+gk+aIVgQ6wC4HUCpkqwMulrsQCNJOK/8Tckhf7xceaNJTr2UE
+         cTDJqmj3AsOGYDD07hW90Fel521OhJYMmQMOfjk/WbuLEzuFSJ0gHGQJ+bnjCe2MyiMU
+         RnuA==
+X-Forwarded-Encrypted: i=1; AJvYcCU3raL7gWhqUODnU1YHztOYBrU5HykefvA8MgNbDzJfCXNz25XWhxcEI9gcvpSX8Sa9zxAsoW8+zw==@kvack.org
+X-Gm-Message-State: AOJu0YxTAPZs4TooFFmyWT2/9Ti9P82WbRYaNxB6i30ooQML7HNKrU9F
+	my2fabw7jqgIp/9fhfh3wec0N77oHlPd+hhFS5EcCi1qcJlYQGS8Dd8DSw7K8oE38+JRIVDUwA5
+	wYg==
+X-Google-Smtp-Source: AGHT+IFkViOrkTd7Qf740HpWB1Y+zHZAT/ov2XdutlPI/XGCPUkCb5+91SEAW6LMPzEdlyQcI8JNeQaNOQ==
+X-Received: from wrbcc13.prod.google.com ([2002:a5d:5c0d:0:b0:3ec:df7a:666])
+ (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6000:438a:b0:3ec:db18:aa37
+ with SMTP id ffacd0b85a97d-3ecdfa4b7camr5826204f8f.60.1758204383884; Thu, 18
+ Sep 2025 07:06:23 -0700 (PDT)
+Date: Thu, 18 Sep 2025 15:59:32 +0200
 In-Reply-To: <20250918140451.1289454-1-elver@google.com>
 Mime-Version: 1.0
 References: <20250918140451.1289454-1-elver@google.com>
 X-Mailer: git-send-email 2.51.0.384.g4c02a37b29-goog
-Message-ID: <20250918140451.1289454-21-elver@google.com>
-Subject: [PATCH v3 20/35] locking/ww_mutex: Support Clang's capability analysis
+Message-ID: <20250918140451.1289454-22-elver@google.com>
+Subject: [PATCH v3 21/35] debugfs: Make debugfs_cancellation a capability struct
 From: Marco Elver <elver@google.com>
 To: elver@google.com, Peter Zijlstra <peterz@infradead.org>, 
 	Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>
@@ -113,14 +113,14 @@ Cc: "David S. Miller" <davem@davemloft.net>, Luc Van Oostenryck <luc.vanoostenry
 	linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org, 
 	llvm@lists.linux.dev, rcu@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: yib47igq3yhnz1m5id9fxu7niyejy77h
-X-Rspamd-Queue-Id: C051220019
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1758204382-404018
-X-HE-Meta: U2FsdGVkX19AAq9TnyScE70ctDVYn28GAzmxbbdnEokPjyLXJmnTYikxblgG1m01H+HYlkJlwjw6mmg/PuEc4YCqoNCxMFvNMTn40uJd15BhzorerC2GMl1SK9x0ZAyuL3mv52eSiVDNJ/xT/Tj1q0BRkyGHoX2vY0kA2YFTK9bYNwg+J+noYTeFkmScU8+7aB9xQegcCu7NIGL7Qr16yT8mmVIBL/O9p9ya3FRazeNcXtA3qR8wh9MMe+4BNolxXO7zQCRvM6ZwqatHRq3KVyTxyXG+Dpg5voLqMmkS0RLgB0pUTWZOt6i8aojCPNjyFJVvXGEM2NnlI/uHMMhJNWg7Xz7IOj/b5+OYCflhzvgLa33FhO4wJWx9bcqlDCWbCNLOPSMJuv2JLP0fEDr0vioBb4Nq7g8b+7hnfCRFEQFMGKa9Kxe8cmzWkVYSDsVRNWfDF6iqYBlTEB2wXWoWDGkGgUxXq82PcBmSSjG8VLVUdtHOaShCU3frI+Sy0vCN1KtggpEhoJV8bGHaERTv08ffTD6PzQtEK2R2KAaB4NKkc6FzZ3yasBrDYtpDAu3XJTELZNPaMw7GuSKKDyvoCjQTD8PVx7vgktcNUUBKU/+dS+8uHVxrHDPPlhwmG7qKKAvgiPSqWnfQtlF2MMJ3Kmd765DHhtUZ7kvCde4kWIm/Eyuj0Sstvn6EI7/0WDUUYTiHz8sPnPOGdFazfl56mG89egLS0Vzypb+XboSOtlA56tp3sEiXJmizZ08tQDwrg6oG40ZmcBvRXd01tSrHddgVipK8QWfpjgbIKikNtYm2HFqdCLvKaWxmoyte4KIORrujWI01nLlaNHwikBePSwI9lqhfmr0RvbQ52AVtB3IDPcVylkA2dqKPKj7Hamm2+dZvMf4X7gZsch6Usl3Ht8JKiAZuSPtI/veNzuuDPa9JVk+iLrtB6mCAwUDGehTheNr2wOkWXz3/8nod1jO
- JzMgrGl7
- WJ2fArPCVyrXFKClh0hhmuGbaoz5odqSOCVYFj0KVvGK1S4RPMzWTKmPIz1NYwCzh2urszDJv93alPN3IoKlQXM+47bwCgDVX+H/wBYr3rGjDytYDkifK0Fk8bMeLSK789O3Ik8y8oDMLBj856MScwCW81qbLB+0aGBoEAWnxxzKcAtsSXrRmQtGVbmG8Z8c048Xsypp8iThMxUubxA3WnmclAKiZssEWTyrp3gN+Oc99wLNT5vJg3jPx8aA1qcbkzFjCRSmpSahE3hUTiDngTLWL3T7uW8wpr8P6+Oh21PfSKrTgPcztyCpM/cxLBpoAoRvJmgSXFQFIv3HZZkbCE9T72riqvO0UjaWc+3rzoYZoFPx7FsxNpiw/ui4+rbdX9vGBBn0WkW/y9l84Lr+v5hlki/H/IsYj4n4whHkTM1MSbAZ3Wywp2ftrN6AvBUDjyygE7Xg2rqPh7WRWqOSDsZ9OfKynOZVQxRcY0HeMX4sFzOtWEhX2Wb/hODPUin3WVARpURpGB37fi8MWkQJ3uFUUv5k8NIYiv5Td5d4vEATg9UiA7nDc1mfmcWl1DTxcTa+ndPkCl5fDWEoSL9YNk2mAUUMkabFUgfUIIBfUfO9YAFvTytm9fpHOwzSIvHnSeP0356bvLP75AYnku615TthpcjTiRvmoLi196IU88w3nydTbpS3jF4/UC+g3bGholpUX
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 73E4780010
+X-Stat-Signature: mieq5w619x3igsb3mu7k3e1kim3cw5mq
+X-HE-Tag: 1758204385-193661
+X-HE-Meta: U2FsdGVkX1+7GT/Llen7Fut6tSGu0Eb1qZZMcsGoeSOzs6PjDz8KuGI5uul+NwNoQubti65LbGLopxm8dovYLEqQNYctvoCNh5qJv9CTCSn5raDBrY5XPx6bEYGvdzDFBMlpv6vnj5HScz/6o0qup6laltOMzHoHgdV4Wkhg6+13Op+IHZPcAaXikG+knr5EHXi9AeMhqt6wasUlz53yuw64cIHU2KV8KpmFUewroni1UCJGW+vOEGfViXzay+dvgfhet2nKTFW+AvWwCfxrcTfyT7z2tgnMXF/GDa7DSyBIM8oENICMCigVKLO007uabDVGrdKRZG2F3v7hGkVvKhivUConYBjDZYIRl1hOT/wQVJANq/K+HeZsgMGw5CFRIsckM+WZU59Xz0SGg8mPnwiCIKVuLwQsXMzddTNW3AwXmFDNBYlBGIoBPeQllFibBzXNVmUvT7x2+Ozlg5Jrz8o0WhpxkP62yDwvqITp53dLHfIrcOrT5pIS/UIFBlZ1INs7Tz51m7kRrsLbQQNGUO6HFwzfQHktM4j9OWWNZAApvsaZeQMObORhbmh7uz/8DLnrqRR8++szeVUE78jEycyMrOaPSz84thXT3MRnr1YBmAb76Tzs4ctm/BJw0qj5KYx1020SxqvMHGB7Rm0sbRY/J799uffOl1WECfKSmVDTdzKjPYqWF4aV+oeSv4eLCjw4PkwZsMcNUbFSrkkEMVpxss1Zw96Fl3mIM/19ESEAI96WB1BJDeW8ANW1LlCbPAH0Joma99x1n49r/tPSobE5ZGCS6hzgi0xN5LW2F1P0kjv2vM9ankHJZlh7WczeZ19A9M80N5XhXLGTn8TV0XDr/BSHrZM7tU8WbVLCJ6PBLpMzdOgkjObyz2Ri1hyIFORotLq07rH/nF87WlVAecbPEgWmGsf+Q0xlavm3LyC+0YJZEUXww0rCt+Vwo8C2IKa8st/ljDqPH6KxQDq
+ dM418VdY
+ oqDXSXlLfwb/nmF0IUgtLC+tUS12PIYBmikcfJ7dYW3KYRdftkescgtlIW+/YhaYRfn9z/c2Fyqtdz3Gbt4IwTcRi+TJILP+cXv3PAyJjDKRPPD1eKlwjXWD3sXBAb94EuzLyU+NocWzesN1u2ZM6fYaPFsWYgUdTPlLrn8zbgCyQrSC3W7UgoDbOrF76A5Ilbfcdekwaj+0kAZ3wYN+MFxxRAm/3XRbZTrAjBB+eFO8MVXgNqSGJoXKzfbpAaZrBDC5+ABO2mKRIe2u6mMpQ7nviCMdY0n8L2je2jitYuYPql0iCCp44V1HZMAskHVXeIR9p4FvU8DCBsFldwMmM4S4ezM5UQgO/I2BpdVOTtK8MYdonQsjUZs+acXzY2Gc6nJrZPYicfnwJtp0gNGtlMst7QoMf+r/jyAvtSgxK+VzN9SKmoKNKJ0Tu9JZI8d4PLMrmiEkR6EGKDgnCC6D2M++z3TBF931l6rroe2BykFYTiG8aDzBbGneNX75A0QMVFsrrHOLVPE+y42KbC08QvLcxkAiaeBapAfnt8W22scR/Ajm4SAKFuDx9fdJHFhK3AlZYiyESi8bk/Ag8fgJ/g97kygVVXzm09Qa1PZw9JZVhgdQ1BaP6FFSuMglY3RKWuwb/HVb3vkEYsRJcIUc7DJGfiPwVi/oJQ6Ij1QdOB8rN0bFHUhvgduKFWFSzs+siBnTL
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,236 +129,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add support for Clang's capability analysis for ww_mutex.
+When compiling include/linux/debugfs.h with CAPABILITY_ANALYSIS enabled,
+we can see this error:
 
-The programming model for ww_mutex is subtly more complex than other
-locking primitives when using ww_acquire_ctx. Encoding the respective
-pre-conditions for ww_mutex lock/unlock based on ww_acquire_ctx state
-using Clang's capability analysis makes incorrect use of the API harder.
+./include/linux/debugfs.h:239:17: error: use of undeclared identifier 'cancellation'
+  239 | void __acquires(cancellation)
+
+Move the __acquires(..) attribute after the declaration, so that the
+compiler can see the cancellation function argument, as well as making
+struct debugfs_cancellation a real capability to benefit from Clang's
+capability analysis.
 
 Signed-off-by: Marco Elver <elver@google.com>
 ---
-v3:
-* __assert -> __assume rename
+ include/linux/debugfs.h | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-v2:
-* New patch.
----
- .../dev-tools/capability-analysis.rst         |  3 +-
- include/linux/ww_mutex.h                      | 22 ++++--
- lib/test_capability-analysis.c                | 69 +++++++++++++++++++
- 3 files changed, 87 insertions(+), 7 deletions(-)
-
-diff --git a/Documentation/dev-tools/capability-analysis.rst b/Documentation/dev-tools/capability-analysis.rst
-index 9fb964e94920..2b89d346723b 100644
---- a/Documentation/dev-tools/capability-analysis.rst
-+++ b/Documentation/dev-tools/capability-analysis.rst
-@@ -82,7 +82,8 @@ Supported Kernel Primitives
- 
- Currently the following synchronization primitives are supported:
- `raw_spinlock_t`, `spinlock_t`, `rwlock_t`, `mutex`, `seqlock_t`,
--`bit_spinlock`, RCU, SRCU (`srcu_struct`), `rw_semaphore`, `local_lock_t`.
-+`bit_spinlock`, RCU, SRCU (`srcu_struct`), `rw_semaphore`, `local_lock_t`,
-+`ww_mutex`.
- 
- For capabilities with an initialization function (e.g., `spin_lock_init()`),
- calling this function on the capability instance before initializing any
-diff --git a/include/linux/ww_mutex.h b/include/linux/ww_mutex.h
-index 45ff6f7a872b..549d75aee76a 100644
---- a/include/linux/ww_mutex.h
-+++ b/include/linux/ww_mutex.h
-@@ -44,7 +44,7 @@ struct ww_class {
- 	unsigned int is_wait_die;
+diff --git a/include/linux/debugfs.h b/include/linux/debugfs.h
+index 7cecda29447e..4ee838cf4678 100644
+--- a/include/linux/debugfs.h
++++ b/include/linux/debugfs.h
+@@ -239,18 +239,16 @@ ssize_t debugfs_read_file_str(struct file *file, char __user *user_buf,
+  * @cancel: callback to call
+  * @cancel_data: extra data for the callback to call
+  */
+-struct debugfs_cancellation {
++struct_with_capability(debugfs_cancellation) {
+ 	struct list_head list;
+ 	void (*cancel)(struct dentry *, void *);
+ 	void *cancel_data;
  };
  
--struct ww_mutex {
-+struct_with_capability(ww_mutex) {
- 	struct WW_MUTEX_BASE base;
- 	struct ww_acquire_ctx *ctx;
- #ifdef DEBUG_WW_MUTEXES
-@@ -52,7 +52,7 @@ struct ww_mutex {
- #endif
- };
+-void __acquires(cancellation)
+-debugfs_enter_cancellation(struct file *file,
+-			   struct debugfs_cancellation *cancellation);
+-void __releases(cancellation)
+-debugfs_leave_cancellation(struct file *file,
+-			   struct debugfs_cancellation *cancellation);
++void debugfs_enter_cancellation(struct file *file,
++				struct debugfs_cancellation *cancellation) __acquires(cancellation);
++void debugfs_leave_cancellation(struct file *file,
++				struct debugfs_cancellation *cancellation) __releases(cancellation);
  
--struct ww_acquire_ctx {
-+struct_with_capability(ww_acquire_ctx) {
- 	struct task_struct *task;
- 	unsigned long stamp;
- 	unsigned int acquired;
-@@ -107,6 +107,7 @@ struct ww_acquire_ctx {
-  */
- static inline void ww_mutex_init(struct ww_mutex *lock,
- 				 struct ww_class *ww_class)
-+	__assumes_cap(lock)
- {
- 	ww_mutex_base_init(&lock->base, ww_class->mutex_name, &ww_class->mutex_key);
- 	lock->ctx = NULL;
-@@ -141,6 +142,7 @@ static inline void ww_mutex_init(struct ww_mutex *lock,
-  */
- static inline void ww_acquire_init(struct ww_acquire_ctx *ctx,
- 				   struct ww_class *ww_class)
-+	__acquires(ctx) __no_capability_analysis
- {
- 	ctx->task = current;
- 	ctx->stamp = atomic_long_inc_return_relaxed(&ww_class->stamp);
-@@ -179,6 +181,7 @@ static inline void ww_acquire_init(struct ww_acquire_ctx *ctx,
-  * data structures.
-  */
- static inline void ww_acquire_done(struct ww_acquire_ctx *ctx)
-+	__releases(ctx) __acquires_shared(ctx) __no_capability_analysis
- {
- #ifdef DEBUG_WW_MUTEXES
- 	lockdep_assert_held(ctx);
-@@ -196,6 +199,7 @@ static inline void ww_acquire_done(struct ww_acquire_ctx *ctx)
-  * mutexes have been released with ww_mutex_unlock.
-  */
- static inline void ww_acquire_fini(struct ww_acquire_ctx *ctx)
-+	__releases_shared(ctx) __no_capability_analysis
- {
- #ifdef CONFIG_DEBUG_LOCK_ALLOC
- 	mutex_release(&ctx->first_lock_dep_map, _THIS_IP_);
-@@ -245,7 +249,8 @@ static inline void ww_acquire_fini(struct ww_acquire_ctx *ctx)
-  *
-  * A mutex acquired with this function must be released with ww_mutex_unlock.
-  */
--extern int /* __must_check */ ww_mutex_lock(struct ww_mutex *lock, struct ww_acquire_ctx *ctx);
-+extern int /* __must_check */ ww_mutex_lock(struct ww_mutex *lock, struct ww_acquire_ctx *ctx)
-+	__cond_acquires(0, lock) __must_hold(ctx);
+ #else
  
- /**
-  * ww_mutex_lock_interruptible - acquire the w/w mutex, interruptible
-@@ -278,7 +283,8 @@ extern int /* __must_check */ ww_mutex_lock(struct ww_mutex *lock, struct ww_acq
-  * A mutex acquired with this function must be released with ww_mutex_unlock.
-  */
- extern int __must_check ww_mutex_lock_interruptible(struct ww_mutex *lock,
--						    struct ww_acquire_ctx *ctx);
-+						    struct ww_acquire_ctx *ctx)
-+	__cond_acquires(0, lock) __must_hold(ctx);
- 
- /**
-  * ww_mutex_lock_slow - slowpath acquiring of the w/w mutex
-@@ -305,6 +311,7 @@ extern int __must_check ww_mutex_lock_interruptible(struct ww_mutex *lock,
-  */
- static inline void
- ww_mutex_lock_slow(struct ww_mutex *lock, struct ww_acquire_ctx *ctx)
-+	__acquires(lock) __must_hold(ctx) __no_capability_analysis
- {
- 	int ret;
- #ifdef DEBUG_WW_MUTEXES
-@@ -342,6 +349,7 @@ ww_mutex_lock_slow(struct ww_mutex *lock, struct ww_acquire_ctx *ctx)
- static inline int __must_check
- ww_mutex_lock_slow_interruptible(struct ww_mutex *lock,
- 				 struct ww_acquire_ctx *ctx)
-+	__cond_acquires(0, lock) __must_hold(ctx)
- {
- #ifdef DEBUG_WW_MUTEXES
- 	DEBUG_LOCKS_WARN_ON(!ctx->contending_lock);
-@@ -349,10 +357,11 @@ ww_mutex_lock_slow_interruptible(struct ww_mutex *lock,
- 	return ww_mutex_lock_interruptible(lock, ctx);
- }
- 
--extern void ww_mutex_unlock(struct ww_mutex *lock);
-+extern void ww_mutex_unlock(struct ww_mutex *lock) __releases(lock);
- 
- extern int __must_check ww_mutex_trylock(struct ww_mutex *lock,
--					 struct ww_acquire_ctx *ctx);
-+					 struct ww_acquire_ctx *ctx)
-+	__cond_acquires(true, lock) __must_hold(ctx);
- 
- /***
-  * ww_mutex_destroy - mark a w/w mutex unusable
-@@ -363,6 +372,7 @@ extern int __must_check ww_mutex_trylock(struct ww_mutex *lock,
-  * this function is called.
-  */
- static inline void ww_mutex_destroy(struct ww_mutex *lock)
-+	__must_not_hold(lock)
- {
- #ifndef CONFIG_PREEMPT_RT
- 	mutex_destroy(&lock->base);
-diff --git a/lib/test_capability-analysis.c b/lib/test_capability-analysis.c
-index e506dadb3933..12fd9716f0a4 100644
---- a/lib/test_capability-analysis.c
-+++ b/lib/test_capability-analysis.c
-@@ -14,6 +14,7 @@
- #include <linux/seqlock.h>
- #include <linux/spinlock.h>
- #include <linux/srcu.h>
-+#include <linux/ww_mutex.h>
- 
- /*
-  * Test that helper macros work as expected.
-@@ -523,3 +524,71 @@ static void __used test_local_trylock(void)
- 		local_unlock(&test_local_trylock_data.lock);
- 	}
- }
-+
-+static DEFINE_WD_CLASS(ww_class);
-+
-+struct test_ww_mutex_data {
-+	struct ww_mutex mtx;
-+	int counter __guarded_by(&mtx);
-+};
-+
-+static void __used test_ww_mutex_init(struct test_ww_mutex_data *d)
-+{
-+	ww_mutex_init(&d->mtx, &ww_class);
-+	d->counter = 0;
-+}
-+
-+static void __used test_ww_mutex_lock_noctx(struct test_ww_mutex_data *d)
-+{
-+	if (!ww_mutex_lock(&d->mtx, NULL)) {
-+		d->counter++;
-+		ww_mutex_unlock(&d->mtx);
-+	}
-+
-+	if (!ww_mutex_lock_interruptible(&d->mtx, NULL)) {
-+		d->counter++;
-+		ww_mutex_unlock(&d->mtx);
-+	}
-+
-+	if (ww_mutex_trylock(&d->mtx, NULL)) {
-+		d->counter++;
-+		ww_mutex_unlock(&d->mtx);
-+	}
-+
-+	ww_mutex_lock_slow(&d->mtx, NULL);
-+	d->counter++;
-+	ww_mutex_unlock(&d->mtx);
-+
-+	ww_mutex_destroy(&d->mtx);
-+}
-+
-+static void __used test_ww_mutex_lock_ctx(struct test_ww_mutex_data *d)
-+{
-+	struct ww_acquire_ctx ctx;
-+
-+	ww_acquire_init(&ctx, &ww_class);
-+
-+	if (!ww_mutex_lock(&d->mtx, &ctx)) {
-+		d->counter++;
-+		ww_mutex_unlock(&d->mtx);
-+	}
-+
-+	if (!ww_mutex_lock_interruptible(&d->mtx, &ctx)) {
-+		d->counter++;
-+		ww_mutex_unlock(&d->mtx);
-+	}
-+
-+	if (ww_mutex_trylock(&d->mtx, &ctx)) {
-+		d->counter++;
-+		ww_mutex_unlock(&d->mtx);
-+	}
-+
-+	ww_mutex_lock_slow(&d->mtx, &ctx);
-+	d->counter++;
-+	ww_mutex_unlock(&d->mtx);
-+
-+	ww_acquire_done(&ctx);
-+	ww_acquire_fini(&ctx);
-+
-+	ww_mutex_destroy(&d->mtx);
-+}
 -- 
 2.51.0.384.g4c02a37b29-goog
 
