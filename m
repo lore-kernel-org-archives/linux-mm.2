@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BBADCA1013
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 14:05:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6474ECA1013
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 14:05:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C8B918E0123; Thu, 18 Sep 2025 10:05:46 -0400 (EDT)
+	id 61AFA8E0124; Thu, 18 Sep 2025 10:05:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B98DD8E0112; Thu, 18 Sep 2025 10:05:46 -0400 (EDT)
+	id 5CCD18E0112; Thu, 18 Sep 2025 10:05:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AAE658E0123; Thu, 18 Sep 2025 10:05:46 -0400 (EDT)
+	id 445808E0124; Thu, 18 Sep 2025 10:05:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 99FEC8E0112
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 10:05:46 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6A45A1401CC
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 30A968E0112
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 10:05:49 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E6090139BD0
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 14:05:48 +0000 (UTC)
+X-FDA: 83902544376.15.0B48E5D
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 202BE140008
 	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 14:05:46 +0000 (UTC)
-X-FDA: 83902544292.24.9F9AABD
-Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 82CFE140029
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 14:05:44 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=V8hcOi2i;
-	spf=pass (imf09.hostedemail.com: domain of 3thHMaAUKCFc3AK3G5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--elver.bounces.google.com designates 209.85.218.74 as permitted sender) smtp.mailfrom=3thHMaAUKCFc3AK3G5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--elver.bounces.google.com;
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=GRggl3K8;
+	spf=pass (imf23.hostedemail.com: domain of 3uRHMaAUKCFo6DN6J8GG8D6.4GEDAFMP-EECN24C.GJ8@flex--elver.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3uRHMaAUKCFo6DN6J8GG8D6.4GEDAFMP-EECN24C.GJ8@flex--elver.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758204344;
+	s=arc-20220608; t=1758204347;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UhQ+U9se/SSPfFCtaRf+8xWbg1y5S3svPblZWk1KYzo=;
-	b=wg9Xxx30kOIpTik8k7beLuOJndm+WMuUJ18OFf9ULemjm5LVuOndd+63PTjUvZYGdDRo5Y
-	kSvs2HvwoqOnbkPvkh4z9EK1TQjzebQ61DsLsU9CWopOc+4Yhnn2JcvZLu65iz0nAxdVbK
-	a0DdI5IXCsGb687dHgGPyqwXbBrzcdc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758204344; a=rsa-sha256;
+	bh=Y8a5df3Pjl9f6q04E+YVKjYiENmaUJ17VWF4NqYxrig=;
+	b=UL5K8SapQAGzzYj314CeM8V0AJ1osnBRC9O/P/WkfU+StfV7eNhY1vy1HOs4xfuuiWWC5u
+	/A6GaAYIC6dlWZGPsBohSuQy9hql/GDQhgvd5USWGT/MvQ0bq4pTgoH8pIGbS+lPZ825pX
+	QrMJpWsl/GaVP7Vps0MxNPwjqTJqRJM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758204347; a=rsa-sha256;
 	cv=none;
-	b=y3emjqP93ChmAGi1OGrwLGR94bwWmzycIiTp1nVtcWqGojlErTd41qKMFDN30viiSOggRJ
-	iDgHLxKj04uMuo81GFlMqu9z54Z6sOUOvaBexObw1f4FM8p7SAZW49pYWjc5hIx62bWARV
-	OmIiL7/kJ+wHWbsIhqKntv0bVbwUrSM=
+	b=yAccXuSGgzTm9PBmRP5kFWbI/8bkCG16BtC/C4zA22g4RkWR2lOezabMPGQ8EzByOACmCS
+	670Z1HJaAE/4lbCX53QRdkpoPOm/PGaF+KgnbQ6bgwxUK/yGaoFu3Iox2lSaYGy0CklaXu
+	gsJKbXEciZd0+N9i9RlR/VO8M8tkkMs=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=V8hcOi2i;
-	spf=pass (imf09.hostedemail.com: domain of 3thHMaAUKCFc3AK3G5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--elver.bounces.google.com designates 209.85.218.74 as permitted sender) smtp.mailfrom=3thHMaAUKCFc3AK3G5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--elver.bounces.google.com;
+	imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=GRggl3K8;
+	spf=pass (imf23.hostedemail.com: domain of 3uRHMaAUKCFo6DN6J8GG8D6.4GEDAFMP-EECN24C.GJ8@flex--elver.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3uRHMaAUKCFo6DN6J8GG8D6.4GEDAFMP-EECN24C.GJ8@flex--elver.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-aff0df4c4abso83804366b.1
-        for <linux-mm@kvack.org>; Thu, 18 Sep 2025 07:05:44 -0700 (PDT)
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-45dd5c1b67dso5227775e9.2
+        for <linux-mm@kvack.org>; Thu, 18 Sep 2025 07:05:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758204343; x=1758809143; darn=kvack.org;
+        d=google.com; s=20230601; t=1758204346; x=1758809146; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UhQ+U9se/SSPfFCtaRf+8xWbg1y5S3svPblZWk1KYzo=;
-        b=V8hcOi2iSVsHezYL7NJnZiggrkLXv9O6mXf4p9INNDPX0edq3GW7ojytHaOjk8QfHW
-         trY9P5XJKDgkM/OJVDanKq2J2alV6/qO5eLLNtB/ey1896nmPC+FNCBjJETdjz24vvN2
-         goMBHds0YtX4BPx+JeywXGoXLSuxmSmgQ1J9C9f83dYkEcuPHeYAh04JRiaDLnEu3YnP
-         TaTxX0yzM3QbjpPbZdYHCvhlc+pEMwNiAhMR8pdWc1anflLRuRVC5I0MoKN0KnRkgTYO
-         HfQnO+ePIgqMFwATKgxCtT1s6enASOuIdezFSZKH1swEhvlSsDxnEMJ6uutr4y7r4XEw
-         zdKQ==
+        bh=Y8a5df3Pjl9f6q04E+YVKjYiENmaUJ17VWF4NqYxrig=;
+        b=GRggl3K8lDli9wGCZC8u9hYbcaVKve6EgWH66JVBfabWS4IZJ2J2nn2zrcRIbfkXlw
+         XIJlW5fbbHLctgl0C7T6HG8GP1SUEtFpQgZQE1J8DQqZqFhcewT9zHy48nJs0Jo63h4A
+         U+sHyieptCf1YmRGReJHEYhP9hmpkD7F1F03IxKbVlHncTTWrCFmgxe36LHzcEQ1q/wq
+         A7NiG84Tn/8ToUH8g5B2w+27ZiFKuoKaxolo7wgdTPDTzZtnyknns1tJlfEH1O7WEaUZ
+         imMC6T3LXXmq3o0tfA2nWP6VVeIEFV20hPGW0pY3tjKd/crb3I+yDEHAGzwjMEmReahU
+         HAHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758204343; x=1758809143;
+        d=1e100.net; s=20230601; t=1758204346; x=1758809146;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UhQ+U9se/SSPfFCtaRf+8xWbg1y5S3svPblZWk1KYzo=;
-        b=lV3R7/M8pfqEc+/03Aw4MzJoJ9DffLXUvCxVzRI5CPyO93xnOSF4RX/+Lg8xBAdcOi
-         LT0Kx8TMxz0xX2mJlDe8gSR6l4/W28371B55yEGxcTveeGPSRm9omETfpqJLLgBPTOan
-         bXRINME+bBDMWMhJ29ZyWseMVcbGP2/dg4EclOh/JEjmhJpodUTiOAmeIki5w/Z2VxJw
-         5Xij7ygRnePWOL1Nh89d6Z4eRwdB8stmfeYf/5R/R5zqX01JrO7Ft9kxWFXlx1MF/oAO
-         Jwo76eGCxcM+dSM3TeN7iuZ4DDmuUGDPP7o+G0IH4CC4mZn4UlGRFEEDvN3ZIX/TKjR+
-         Ugww==
-X-Forwarded-Encrypted: i=1; AJvYcCXeCCid35jo+kEz1yiFqMYF3iXk2Py5hibDX0CZJOrF98pInEUWbtRQ/jm96MpK0Z306uyaw5cYxQ==@kvack.org
-X-Gm-Message-State: AOJu0Yyw//YbNaAxZlJ8Z20YD1xSeviBqZ6G2mRok7Equ0CkkJeG3xm4
-	/lV96bqR+gGvoopCBJ9ezaKMZS6XUUrgmpv1wI0bHXBSd7oDmoI73uGHEUvCLTKFwZkoF/2WZTf
-	+kQ==
-X-Google-Smtp-Source: AGHT+IHx20k8wpv+0CdEL8tKSP3AAmnqjSsLU77F74q4U9IVeOOTYh+6Sm2wrNtaQlemdoGnkvfY1U7RLg==
-X-Received: from ejcth16.prod.google.com ([2002:a17:907:8e10:b0:b07:e1ab:ac42])
- (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a17:907:86a0:b0:b07:dbf9:a002
- with SMTP id a640c23a62f3a-b1bba0036fcmr627925566b.47.1758204342817; Thu, 18
- Sep 2025 07:05:42 -0700 (PDT)
-Date: Thu, 18 Sep 2025 15:59:17 +0200
+        bh=Y8a5df3Pjl9f6q04E+YVKjYiENmaUJ17VWF4NqYxrig=;
+        b=CZ1LvJQ0BggeKLp+r2Uzy0VH2FglARU04B1SZo9mDj6TIHe3Kw9UrRbb/C2QExve74
+         HF4oxX8wGOm1S2sQdgNDSd+JmJ+N54hj7F6psJFdxvbw2pSqmbQz2Gh6q3sUzDE1N2Zs
+         gHWk2eFQWf3uBUU+Y9QtEwOvMbRpJC5Sc0q9cxiyt8UzU12V8WzjCoeTEGJNCpR3xymz
+         x4CbEUjJxjBMDT9WxGFiFWzo4bHdG5mbtmvUazAxh1bb7nTkGzhHGmiAgJA5cKP1ix9t
+         lIWnbNK2JnSrGhsnYEY7Lmz274+oYVfB+Q8oXcblGcvblf14HmkOngZaXdX7gHUC88wI
+         Cn6A==
+X-Forwarded-Encrypted: i=1; AJvYcCUtE3GwDNWIDNQw+UVfBADM5D1LzSqyo47DWEuwZa1hg4rNr8xRsnSr9ie53KrvJHx5rxQ3X2ig9w==@kvack.org
+X-Gm-Message-State: AOJu0Yw+RNtShD1C1C14/txbBhNpCXxTF3IETovdDpV8qOaaZDokfHK4
+	ZfIPVTNu/LHm8X9XyDbKvo14MOH2IqaqYmqQJ7nUTZXmAntNUzQdNrBZ6Dygat1MOkoFpiT1/wg
+	vtg==
+X-Google-Smtp-Source: AGHT+IFEiq4FEWWIzjiYKjnsdpYfxFd6yNadJ6YvqxXYjoCzs/skSdmVV05LRZuP59mbBWsmDTBBrQoRCA==
+X-Received: from wmbdv20.prod.google.com ([2002:a05:600c:6214:b0:458:bdde:5c9b])
+ (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:314e:b0:45d:f7e4:8969
+ with SMTP id 5b1f17b1804b1-46202bf788fmr56586255e9.4.1758204345502; Thu, 18
+ Sep 2025 07:05:45 -0700 (PDT)
+Date: Thu, 18 Sep 2025 15:59:18 +0200
 In-Reply-To: <20250918140451.1289454-1-elver@google.com>
 Mime-Version: 1.0
 References: <20250918140451.1289454-1-elver@google.com>
 X-Mailer: git-send-email 2.51.0.384.g4c02a37b29-goog
-Message-ID: <20250918140451.1289454-7-elver@google.com>
-Subject: [PATCH v3 06/35] cleanup: Basic compatibility with capability analysis
+Message-ID: <20250918140451.1289454-8-elver@google.com>
+Subject: [PATCH v3 07/35] lockdep: Annotate lockdep assertions for capability analysis
 From: Marco Elver <elver@google.com>
 To: elver@google.com, Peter Zijlstra <peterz@infradead.org>, 
 	Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>
@@ -114,13 +114,13 @@ Cc: "David S. Miller" <davem@davemloft.net>, Luc Van Oostenryck <luc.vanoostenry
 	llvm@lists.linux.dev, rcu@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 82CFE140029
-X-Stat-Signature: 7tk9gsutta1t3ecgdx8pija8twxqsc64
+X-Rspamd-Queue-Id: 202BE140008
+X-Stat-Signature: 54pqfj1u185zzqsinmfssaze1cc8jbfq
 X-Rspam-User: 
-X-HE-Tag: 1758204344-722259
-X-HE-Meta: U2FsdGVkX19b753GG/aP/fZbmnR2d4klWTA7cbKYrBwAfxCzsZ1RDUjsHDiOze/wUF2B+AtbUymrsK1mAn77Wr6aH2vw5hS0CT5jsGqjhxp4UaK3PREdNPsNgg/wYZOvlq4XBW+BhpcbvEx/8To5rtKzobwOZq4MCtYrb85/XSMtj0peV62MaJ6FD18xo4+B4r3aWliixCmxqGjEcUSadPGGrGIj1e4ekPSWxl7G33H5xZyjVSozIZB/+UI7j15IdjemEpyfuJe7ErvaGM8LLGYuq70pBq+H5TyjbnnLsK1IzS324h/GfU/70/7qcEZWzF6Se/C6Kox7LfvzHEzJE667oi3CmU4SwJ7IfoRGD0ENpOwojCusb17HBmlwiqtqDtVPOclaxdm7oSZiA6suGDpYdYGvb2xi5+8eLHTCkpWFJh6k9fvzCX5x596z5r0ZNvHQyGnBLkYZrHCaEr11X7dh/2TVNBrQ5NPFssq333IfI5PneGIRzCW6aB+lLEy4FTs2+9zpDPDLyeINt1YjiBl1lHg+mnVirbSOdLLlY01H2U6ujj54joNniLE0r7+5NsVf+T5vmJsIxQRTbqeUgVNFSxHjPXEp7ciUCM0yDR9MjGBXbNzhf6huZRzWamU2RN14LltUrPqUYr8RKbQqhzv5305zbzPvi9b1W9Gddzj8oYU3bZO8XoFyJyv2SIGbDOvF3pOjZgjgCuJZX5Vkn0C0Vr/N6ooBTKqOdsptq1wcbC7fNbTM7i6jj+vHbb4aOvu/shZSwuZ5Qw4e7uDKnE6ba83Uk1Ldqg1dEh262Vn2Q1WqufaHv7djxZPss/0RRiF4751ORE7jLLSauHPqYELIUuWLiW99+GBNsi3o3SYHoCNdEBBD8SdXdyV1U+cSVS3IdfZBhBUAmskFoe4klaWHDYLX9xZccayNUodS8dtQ8BNbcy2tlrzL6rocezPpk9P9V6ca02WJlYNE97Z
- 3iaeT13+
- 4JdiOIbN4jOdMZmbEdOLZ4aLggrUVfrQf5ExY0295elXwPeNEGNudxXNdWw5zDWjjDdJvSr/I7h7wNjdDh5dPVXBwYfjnAc2qnB7mdrDL5wfgjR2EDIWUkgppyYpKQsaDb4t74bCyqM7J/CQaKKXTlHf3fKziimnfuCdA//CwV6Qy8RF6j4M2f8kBKS9qU4F55Gqkk5+f1KK2TkrGkM503qnYIqmUBPyw50JcQvcY79FSnzoIKlLwlx+4CgwFogQxb6uT4HQSonzF8M4v+JmdP6vTPoZtzvqJ07AgdXmiJizHkYz1z1EsKRUKAbzhjkK/Xb95Xwf84oAcx6CLtzvZcNbU2tuwpp+/MjMshhRi7aC3DaQ7zxCeyamHGyXoRWIOgwqMWO+CSbfcnYlTpX/InYR5JKAn1ma/QDNA1nW4e3Iw/JPD4l73figZ5wxhXLsBd4B64gbfHkOKMx3QFcRHjViVZj+eFca59fFKSBblBeT6Y2pxNs24xPH18Udz/+LorzrU1NEILFD/RlgGqsBnE+XZbbe0km8zj9IuP0YB/gCr65S4J7yEQedp7GaqQdPop8w2Y0BdTuMcZQDoW+cuOrZ9NNBK2SrketQwcv4X60/ZX4c9guPyQ2V0hMdpb82n3n9fpm4WjXA/bW9jGnIeKhFnfLZgkyr/HEjpMjbjy7I01F/vrunp/dzOsQJ7PUL9/9mWe2fQcSTy9h+/8mLSo18MeW8ccHmTz798
+X-HE-Tag: 1758204346-867528
+X-HE-Meta: U2FsdGVkX1+0J4qpHfTYOCoKaAYfxh/mQb2PUVHboFzUxAz2qz33+NE8qknywzD4vsFAIISUFsw1dUSH6/4i53oNcn6xLtIIPQKyWTCYhAu1EQfYuAEy59rqEOWRi6fzJtB647lkV4TNDNKdNNwWG8oNdX0DdGDLFIgLY/p08ksJ2rgChAPQRg1yEW8Y9oi4l2ZEUFKHQEI+TbrdGg0pz0OXo0O1/yMI36OecmUSVKof+xtLj6r8MyvMdjz4smMRXr7nnyjlolhtZWrKhbnfQgrCqhNiEFlhKOo54cY3VPBf6cvswQg4gEzdl2ki52GdniysVgVUTtQA9JfVBGMu00j0fH+t7XnWDHe0Bht+yWM6yBMUkob/i0uwyqB3BVUZAr6IS9hXjr4GGqxetojDRNYo01rwcypNI+m4r/QyyOkw5zLm8vsIcjRJue2SedRHXduZAx0rkqBwANB9gy/4/UhNNZHREX3qYl+LX+0SFiKiijH1ErNXZzeQoxLFiwz0Ghp4BBiHQOaglefJ+AFYxcHlhHuoE7OqLj0xl/z16pihCZF6o9D1Bd/ChB7aESBuqZFC6HjH9i6EbjZjiXICGwJF6DPXtKEvnbRy17bc7yRcZhk2lDCnaYCXklke8Ak/65O/yDUF+xfXfH87+y+wUOn+2pbHCwRqNn1eIywslOIjPV4l3iRxW3ZKCePEL8o+QQ1ErRHS18X8egaTRp/CSCP3nKZSEW+4YPdJBI/yj1PIiN3yppVdgdDqmbB1wfIm2LW6YAsmvmhwfh5LTZD6qnd6mMU9cpTa5E8I4LW4dH4qMsdyoebw7Yf/8UCVCj6k3VYMhUHzXU98w+QZUxqCZXneMiJXGi9dAeo4CTYcwIcLe9aZmsYDu7rns1gMRK0pe4g67w5w1ANSN3709Rf6zYDmxgQ890i9hm0Qct6pQYselckdwR3LmMty37vUuFBIawQTY7tA0iePfAlD67z
+ vRKZlkUv
+ Q6KU3EQ01WGvv3BxGeD5TKvvC8YA+sOxRCtw1nVe12qDr9KlKLbWL0nFOGaQm8pZ9eEin2FTV4Cuci3+BfrS/Lln20tc2uWiO7z0ihXyErks8712U/jSEUhydFNcqDlEPAEPk+G7s/Oosekie9CJbFIfmvqLasKJg3+VI0UjwplVmYvQGLUEbipy01cb4tuExf7eu7EKPgdjzKr0tBwC2rcEIjYXtiXFr+wjwKNuBfYe1jYEDbVPviLJegdyx4M2cNp1i7Z1hgqzQKzIvfoyxHkYsFWwaxjqtnYZwfuy8Fm56bu/d9NlnXD8zb7fa8R9niPL6O+USREv130jqq8SsZnXQ9r9LGsnktI4LrVmY4HNxdbfNFmlyvseHc1FLFlTIILx7DuMs5M0Tu+p+ISaLeV23ffC3LmwO8ZYe3F6a7UtX9SbG9mH/AliKHxseOZNkFPlIdsrCTVsc23CBMkmvLoOcVX5CwrqbAI7mibidm9jzg7lOJHyEno/TjgnMEp92IzGmAJP2XXImAEw6eI8A89QKSjSqZgchVEcKiuEUN92H9dBORq8Gztw6jIQKA0fOFjp7UP+JzFAXShr7qZ9oyOpshf2WsvrKpPvhZmdY3WcLU9zlVTQq/4zVncCWYmytx1lKTVK2noVpkZY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,119 +129,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce basic compatibility with cleanup.h infrastructure: introduce
-DECLARE_LOCK_GUARD_*_ATTRS() helpers to add attributes to constructors
-and destructors respectively.
+Clang's capability analysis can be made aware of functions that assert
+that capabilities/locks are held.
 
-Note: Due to the scoped cleanup helpers used for lock guards wrapping
-acquire and release around their own constructors/destructors that store
-pointers to the passed locks in a separate struct, we currently cannot
-accurately annotate *destructors* which lock was released. While it's
-possible to annotate the constructor to say which lock was acquired,
-that alone would result in false positives claiming the lock was not
-released on function return.
-
-Instead, to avoid false positives, we can claim that the constructor
-"assumes" that the taken lock is held via __assumes_cap().
-
-This will ensure we can still benefit from the analysis where scoped
-guards are used to protect access to guarded variables, while avoiding
-false positives. The only downside are false negatives where we might
-accidentally lock the same lock again:
-
-	raw_spin_lock(&my_lock);
-	...
-	guard(raw_spinlock)(&my_lock);  // no warning
-
-Arguably, lockdep will immediately catch issues like this.
-
-While Clang's analysis supports scoped guards in C++ [1], there's no way
-to apply this to C right now. Better support for Linux's scoped guard
-design could be added in future if deemed critical.
-
-[1] https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#scoped-capability
+Presence of these annotations causes the analysis to assume the
+capability is held after calls to the annotated function, and avoid
+false positives with complex control-flow; for example, where not all
+control-flow paths in a function require a held lock, and therefore
+marking the function with __must_hold(..) is inappropriate.
 
 Signed-off-by: Marco Elver <elver@google.com>
 ---
 v3:
-* Add *_ATTRS helpers instead of implicit __assumes_cap (suggested by Peter)
 * __assert -> __assume rename
 ---
- include/linux/cleanup.h | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ include/linux/lockdep.h | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/include/linux/cleanup.h b/include/linux/cleanup.h
-index 2573585b7f06..54fc70d8da27 100644
---- a/include/linux/cleanup.h
-+++ b/include/linux/cleanup.h
-@@ -274,16 +274,21 @@ const volatile void * __must_check_fn(const volatile void *val)
+diff --git a/include/linux/lockdep.h b/include/linux/lockdep.h
+index 67964dc4db95..11b3d22555ff 100644
+--- a/include/linux/lockdep.h
++++ b/include/linux/lockdep.h
+@@ -282,16 +282,16 @@ extern void lock_unpin_lock(struct lockdep_map *lock, struct pin_cookie);
+ 	do { WARN_ON_ONCE(debug_locks && !(cond)); } while (0)
  
- #define DEFINE_CLASS(_name, _type, _exit, _init, _init_args...)		\
- typedef _type class_##_name##_t;					\
-+typedef _type lock_##_name##_t;						\
- static inline void class_##_name##_destructor(_type *p)			\
-+	__no_capability_analysis					\
- { _type _T = *p; _exit; }						\
- static inline _type class_##_name##_constructor(_init_args)		\
-+	__no_capability_analysis					\
- { _type t = _init; return t; }
+ #define lockdep_assert_held(l)		\
+-	lockdep_assert(lockdep_is_held(l) != LOCK_STATE_NOT_HELD)
++	do { lockdep_assert(lockdep_is_held(l) != LOCK_STATE_NOT_HELD); __assume_cap(l); } while (0)
  
- #define EXTEND_CLASS(_name, ext, _init, _init_args...)			\
-+typedef lock_##_name##_t lock_##_name##ext##_t;				\
- typedef class_##_name##_t class_##_name##ext##_t;			\
- static inline void class_##_name##ext##_destructor(class_##_name##_t *p)\
- { class_##_name##_destructor(p); }					\
- static inline class_##_name##_t class_##_name##ext##_constructor(_init_args) \
-+	__no_capability_analysis \
- { class_##_name##_t t = _init; return t; }
+ #define lockdep_assert_not_held(l)	\
+ 	lockdep_assert(lockdep_is_held(l) != LOCK_STATE_HELD)
  
- #define CLASS(_name, var)						\
-@@ -461,12 +466,14 @@ _label:									\
-  */
+ #define lockdep_assert_held_write(l)	\
+-	lockdep_assert(lockdep_is_held_type(l, 0))
++	do { lockdep_assert(lockdep_is_held_type(l, 0)); __assume_cap(l); } while (0)
  
- #define __DEFINE_UNLOCK_GUARD(_name, _type, _unlock, ...)		\
-+typedef _type lock_##_name##_t;						\
- typedef struct {							\
- 	_type *lock;							\
- 	__VA_ARGS__;							\
- } class_##_name##_t;							\
- 									\
- static inline void class_##_name##_destructor(class_##_name##_t *_T)	\
-+	__no_capability_analysis					\
- {									\
- 	if (!__GUARD_IS_ERR(_T->lock)) { _unlock; }			\
- }									\
-@@ -475,6 +482,7 @@ __DEFINE_GUARD_LOCK_PTR(_name, &_T->lock)
+ #define lockdep_assert_held_read(l)	\
+-	lockdep_assert(lockdep_is_held_type(l, 1))
++	do { lockdep_assert(lockdep_is_held_type(l, 1)); __assume_shared_cap(l); } while (0)
  
- #define __DEFINE_LOCK_GUARD_1(_name, _type, _lock)			\
- static inline class_##_name##_t class_##_name##_constructor(_type *l)	\
-+	__no_capability_analysis 					\
- {									\
- 	class_##_name##_t _t = { .lock = l }, *_T = &_t;		\
- 	_lock;								\
-@@ -483,6 +491,7 @@ static inline class_##_name##_t class_##_name##_constructor(_type *l)	\
+ #define lockdep_assert_held_once(l)		\
+ 	lockdep_assert_once(lockdep_is_held(l) != LOCK_STATE_NOT_HELD)
+@@ -389,10 +389,10 @@ extern int lockdep_is_held(const void *);
+ #define lockdep_assert(c)			do { } while (0)
+ #define lockdep_assert_once(c)			do { } while (0)
  
- #define __DEFINE_LOCK_GUARD_0(_name, _lock)				\
- static inline class_##_name##_t class_##_name##_constructor(void)	\
-+	__no_capability_analysis					\
- {									\
- 	class_##_name##_t _t = { .lock = (void*)1 },			\
- 			 *_T __maybe_unused = &_t;			\
-@@ -490,6 +499,14 @@ static inline class_##_name##_t class_##_name##_constructor(void)	\
- 	return _t;							\
- }
+-#define lockdep_assert_held(l)			do { (void)(l); } while (0)
++#define lockdep_assert_held(l)			__assume_cap(l)
+ #define lockdep_assert_not_held(l)		do { (void)(l); } while (0)
+-#define lockdep_assert_held_write(l)		do { (void)(l); } while (0)
+-#define lockdep_assert_held_read(l)		do { (void)(l); } while (0)
++#define lockdep_assert_held_write(l)		__assume_cap(l)
++#define lockdep_assert_held_read(l)		__assume_shared_cap(l)
+ #define lockdep_assert_held_once(l)		do { (void)(l); } while (0)
+ #define lockdep_assert_none_held_once()	do { } while (0)
  
-+#define DECLARE_LOCK_GUARD_0_ATTRS(_name, _lock, _unlock)		\
-+static inline class_##_name##_t class_##_name##_constructor(void) _lock;\
-+static inline void class_##_name##_destructor(class_##_name##_t *_T) _unlock;
-+
-+#define DECLARE_LOCK_GUARD_1_ATTRS(_name, _lock, _unlock)		\
-+static inline class_##_name##_t class_##_name##_constructor(lock_##_name##_t *_T) _lock;\
-+static inline void class_##_name##_destructor(class_##_name##_t *_T) _unlock;
-+
- #define DEFINE_LOCK_GUARD_1(_name, _type, _lock, _unlock, ...)		\
- __DEFINE_CLASS_IS_CONDITIONAL(_name, false);				\
- __DEFINE_UNLOCK_GUARD(_name, _type, _unlock, __VA_ARGS__)		\
 -- 
 2.51.0.384.g4c02a37b29-goog
 
