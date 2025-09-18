@@ -4,124 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D196CAC59F
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 08:59:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C196DCAC59A
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 09:01:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 97ED28E00E0; Thu, 18 Sep 2025 04:59:07 -0400 (EDT)
+	id 16C4A8E00E1; Thu, 18 Sep 2025 05:01:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9562A8E0093; Thu, 18 Sep 2025 04:59:07 -0400 (EDT)
+	id 11D678E0093; Thu, 18 Sep 2025 05:01:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 86C428E00E0; Thu, 18 Sep 2025 04:59:07 -0400 (EDT)
+	id 05A668E00E1; Thu, 18 Sep 2025 05:01:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 756318E0093
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 04:59:07 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 21EC6C0812
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 08:59:07 +0000 (UTC)
-X-FDA: 83901771534.30.5A489AA
-Received: from mail-vk1-f175.google.com (mail-vk1-f175.google.com [209.85.221.175])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 433E8C0008
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 08:59:05 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Bes1ymZB;
-	spf=pass (imf10.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.221.175 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E84848E0093
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 05:01:10 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id AF626BB913
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 09:01:10 +0000 (UTC)
+X-FDA: 83901776700.23.C5522C4
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	by imf17.hostedemail.com (Postfix) with ESMTP id A0A894000D
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 09:01:08 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="PqfpST/b";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf17.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758186069; a=rsa-sha256;
+	cv=none;
+	b=Miz4bb4Vnv8/fLq/vfIrzpu7+c827PTcv6mKuuzp0uGRk59m+UNWKOWIjuAfN/gU0MLlJx
+	+xIsI+mEF4cSBtRq/JV5fS3YBrKoSdXkQH0m+Hp9wrzm/Qu3PRShzYPIjqH1q87sOR0h7U
+	YZNLBi/UX3uYMzl/ze2wT843eIv0WPQ=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="PqfpST/b";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf17.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758185945;
+	s=arc-20220608; t=1758186068;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3YBijHHPgjAyl07nG2F+4O+IZKa9So+D2+79Hhyhtjs=;
-	b=bYe/J/mjSanP6869XDiNm21mwrIjNNdneAfNgS1Qsfg0oU2Z/iCfee1NMS8ZuE3dM3wKW6
-	BQfxfKfsKDVjmVy//BKQXTjwV/QzXi+Tqe4SfpWlqn/toJkcJwdUDhN6OxqkCYZa7CbUzG
-	0bO3L2+l8p7gdc26un+T2m2sYkLiTFU=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Bes1ymZB;
-	spf=pass (imf10.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.221.175 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758185945; a=rsa-sha256;
-	cv=none;
-	b=005ev7joCe2r2I1b3QJw5lX3kOh+Mty+e2bDquv9SQ9qKFIAs2YKlBH6hBre972dbOY7kD
-	1l051Yz9xqsaL6GZm7ITONsYDWog3K4PlG0a463MjkSlrW6u+AVomdofQO3Fsoi7eYrxPT
-	SqRcN9l749XFWr+AyYmc+xif7Gm0F+E=
-Received: by mail-vk1-f175.google.com with SMTP id 71dfb90a1353d-54a30c66258so188985e0c.2
-        for <linux-mm@kvack.org>; Thu, 18 Sep 2025 01:59:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758185944; x=1758790744; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3YBijHHPgjAyl07nG2F+4O+IZKa9So+D2+79Hhyhtjs=;
-        b=Bes1ymZB3Q7165Y7wuGby1C8IH6/LFpDIYTx1/skhv0PQCHN9WxLZIxF+h4rX/qg19
-         7Mp7ZkayFNHSiE1XNZv9hlMmAn2OIlQKuHAbwbSIRTmdAumSIl8prsNmWhAPSjHrx+I8
-         Sa+BvObeOiAVbc2mdg87bSuxIMcZOh7cYKN9pvzK5B60h7MaYf9Aw657vMH2zjARTBqq
-         HKFR8y6kE53ZNNXI+hnyJsFCOeEGLTTy0jmnkznl2U6n2Lz8356F7IlDuj/EbkxC30BM
-         0NyzUlqVegnc/Y7vwTQQsoaIvHTZKhIseR+LcPtnBY2PA8pHGFMLkc7e+5O88f656oAu
-         D97g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758185944; x=1758790744;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3YBijHHPgjAyl07nG2F+4O+IZKa9So+D2+79Hhyhtjs=;
-        b=oLly5KuwHAfe1mYKTTzjFi+6Bpywe5ZztFrACtqxCN+e1WCeLFGh2wyyLAMk7SkLfk
-         TNQFbGqDUT+k4Bx65QIhPb4HpeH32HKWmGIa0X8Dt5fIJ6lf4eiKRK17Nb2TDyf+dKRs
-         knI36dRIsbf+MGFinqcVwB/o7XhheiTQX/luRnWI9Sx/KsVZ0Zwl4UoEf+A2a/Yinzp4
-         bjOJVzURK/RDB+eJa+QtNTIKgpjih1O4XmsWWDBrBaUlOVcrTW/DPlwsx+7fSm6wmt33
-         30UuqJOIpaK3tl8FrCXQsVRv9QOYJ0pu7KDYxlPYLTg1e81ckUfqCe4Mh/3/HHCHRPYn
-         5U2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUnqqenPJQIEcXPxWANrtOtCqhU5wt/uc728q1mnbVNFexeCScaVXYk0aopGF9L6pW+1j0vWUBrsw==@kvack.org
-X-Gm-Message-State: AOJu0YyRYgQKPc3/M+2FEGeqB5jsfGAjtj+tbnv1wdVtX0+XrV+stZbY
-	Itm2CA27RRUWa280ERYqpzAUww017C2WXPTdq+zkSHBya5+Zp55VLph5/EqPOx99KgSMKqdRzyM
-	8JRGWRBRz8smKg6Laudc+lHm41PaUADs=
-X-Gm-Gg: ASbGncuKFxXp6CUccDsy698lvq/rSlrYOh9F03jxr+Cg1ZUfonJqScXvpQ9gXvBPJiW
-	Qo31HWIpLkGYBCrQHxVaw05jT0E59rVklM4vu9rLA1nU4hykCRUvlJYtxbJxJj1o71x9bXXjzSH
-	zJr5lzB2+LGwWLvoRCFUf2PkPxbGcIsLnXcs9gFiZ6QODlSrlO4kvWA4FWidGty+n0PAjq2Fl9l
-	YiVQ0So8Et36V/mCRC6uef/mbWDRk0RHWYmGtX032Aygw5/WT87F3vHQfAc
-X-Google-Smtp-Source: AGHT+IG9PAZlU5wX6CfCuIPG52y8YmCpl5qUjiXZykbS1/b+bgq6fwmzpG5T/XrmW/++davGQcBL0s5sdx3isOtSuHA=
-X-Received: by 2002:a05:6122:2a16:b0:54a:71f6:900f with SMTP id
- 71dfb90a1353d-54a71f6bfccmr745397e0c.0.1758185943888; Thu, 18 Sep 2025
- 01:59:03 -0700 (PDT)
+	bh=Y/wSaqH34v0KZoe6ggKel2oXiRC6toJfQY2vW/+tF20=;
+	b=71pxiiAb/8giG1ZLdJatShgA9Ncfu26Y1XkWZnqu1bvLtfyrnRoiL+pkHdlkZOYZMwE5Mw
+	fpKCt7eiTjR+HBOPR4xv3qKEqk8NedTV1j4KbBaYRUFfCPDjQCQ+YVPRWViLXQKd7U7TBq
+	o8Mx3JTW1dfzFFCdabupEkLc7LnSYmc=
+Message-ID: <b3e03ae3-36fb-455d-9f62-7e915e7bcd46@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1758186066;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Y/wSaqH34v0KZoe6ggKel2oXiRC6toJfQY2vW/+tF20=;
+	b=PqfpST/bvj8Jq1kdP13n/p+IjwVELtyooR80qm0u87t239/kMFNHZafJIH8I1yOSbZOxOa
+	+RwNlf9y9pCVPxVrrBlTvGxQLFH90J6YckJ0hVeXCjzyrfwKqIUFiEZkIz4jy1wGpByyCU
+	+8iuXunakmoihq9Hpnss7zGvGkd23Oc=
+Date: Thu, 18 Sep 2025 17:00:58 +0800
 MIME-Version: 1.0
-References: <20250916160100.31545-1-ryncsn@gmail.com> <20250916160100.31545-2-ryncsn@gmail.com>
- <CAGsJ_4w2GqGj8HZMfwndsWu7qkORqsnaw9WwhmQS=pW4gR7nEA@mail.gmail.com>
- <CAF8kJuNbUyDWcJ13ZLi-xsiYcbY30w7=cFs7wdxszkc7TC4K2Q@mail.gmail.com>
- <CAGsJ_4wKWem-STYAnh_0EgSFKzzs1M1c7wz6K82wLt6T6JEw9A@mail.gmail.com>
- <CACePvbU8cUs-wwPsXkZ24EWga5bXxxUGSCT18rKAWFYn5w9rpw@mail.gmail.com>
- <CAGsJ_4yhDU_WVfEybDhGE-WF5+w-fak1-F8jqbAQ-Qw1+qWkaw@mail.gmail.com>
- <CACePvbUabb+L6Z9Nb-41fLR-FMhj--cDWSbnXtCj3rpqXModiQ@mail.gmail.com>
- <CAGsJ_4y8yTX48ESHKgLNCvM1M1_gY9uGnD4qiz8n+gD47Zd1Hg@mail.gmail.com>
- <CANeU7QkZBWFO6SeVHtmm73oLu7r0zavePQEYmQfH8opKPH1QWw@mail.gmail.com> <CANeU7QmcC=-CTmJ7i8R77SQ_WArBvjP3VrmpLOy-b7QhCfMRYA@mail.gmail.com>
-In-Reply-To: <CANeU7QmcC=-CTmJ7i8R77SQ_WArBvjP3VrmpLOy-b7QhCfMRYA@mail.gmail.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Thu, 18 Sep 2025 16:58:52 +0800
-X-Gm-Features: AS18NWAo-ti9La1j-oEkjznzIVvUZ14li7XE3QDuXeP6to8aA2ac4MfnZt-xdbk
-Message-ID: <CAGsJ_4zmkibM_Ex7kGMsr2sni85H-cnxQvh0XwkWiALNQy+zAQ@mail.gmail.com>
-Subject: Re: [PATCH v4 01/15] docs/mm: add document for swap table
-To: Chris Li <chrisl@kernel.org>
-Cc: Kairui Song <ryncsn@gmail.com>, linux-mm@kvack.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, 
-	Hugh Dickins <hughd@google.com>, Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@redhat.com>, Yosry Ahmed <yosryahmed@google.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
-	linux-kernel@vger.kernel.org, Kairui Song <kasong@tencent.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] mm/vmstat: add header line to /proc/buddyinfo output
+To: Michal Hocko <mhocko@suse.com>, David Hildenbrand <david@redhat.com>
+Cc: David Hildenbrand <david@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Ye Liu <liuye@kylinos.cn>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20250918071741.526280-1-ye.liu@linux.dev>
+ <aMu01xIkj-3hgW88@tiehlicka> <1a9f44a1-855c-450e-9dc4-415a29b90011@linux.dev>
+ <780aa9d6-a85c-4050-820e-c0ca9f5bb658@redhat.com>
+ <6d6e2e33-c221-4ab8-a29b-3d14fb1a592c@linux.dev> <aMvHt7Z2PMuZaned@tiehlicka>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Ye Liu <ye.liu@linux.dev>
+In-Reply-To: <aMvHt7Z2PMuZaned@tiehlicka>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: A0A894000D
+X-Stat-Signature: h5u5wk96ktf6cxkh34iq8zudc4smdsz9
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 433E8C0008
-X-Stat-Signature: oq5eru5b9n4kkkrtraukfnn5itobik47
-X-HE-Tag: 1758185945-818619
-X-HE-Meta: U2FsdGVkX19D/mBLpoeDYkDZINUJvKN56NINZNJ8MgwJA9Rntd+RWv3Pu8pRh+gI6c0qLuAclplz4XkiA7pnfnh1slN40odQLgMh9GWz7H7Sc502Yj1iM6UIPenyqzjHnbaGF/ibPxHXKwRNnSp4s3EyxmjB5zEkqZAdpQ7Rc+jgx9VYGBEdi16ZqpKSGOhaLMIqt8p8AUurlfxtSUbic3foSRF7synQpYgmXvzuPSN37cWWTsoZzFY53G9MQr3Cp1txAVxLvFWxwFeOczgUrYcdo7SxGwAOQ2Ly66QSw6o0iMqcLIsE/ij5kjNpg0Z3pir5HZY+D1Czx/qKscYHnp4YylakarcaLG6j8CoBYsMJ+Fn3Hq8zHkI1gsrY7pyC+leuGS3lC4DAR4syVEAvZtABGW2E1CNoF2WqQdHVTDoM36ElQsiahT0aKLUReBnglgdXt7FPBzSh/DlCM7f0sDyll6CCzOFJ56do5BZHkPJtAOe4VSxB8p6/KzrjPgLpFmtOEbr603pKpXLi80M4vn20mjZEWtwILPT3w9RoFoEb1prUo/EJtrbxWnLMULr1LQVVHUJv5inavL/XegZT1OuhkyvSx5/X17z2CKwq6goFELo6j+AkFvIXeImUNKzNxfyMJeaM/YN/eR0WwT7dhRxOiMZHYeAGe+rV3jImIH0K01tL4TqEo39YXWyX0zFNsvC+z5Xpspm8bekINevVZ5WLT1z8K/uwf2UDhMAcEXzrF1VI7HZAb2b5gfdT58Wj7NLZfBbJm2Pfs9cRnCHR6S3nBSkRnbKklanWswlQE8r/INPUAcuGUFtIxr0melRm2hQTO5XJOZAETgWWwt6abqylOTZ2afj6u69/7YqJ9+q63P8H08IIwgsPLRWKYzVkOQz2TfviMB54De5dj0Ajwp2clWUaBaLR3igjDOVj0EfyYnrLU7GdEEq+axLoG25kjzoEnxs6vBpW74lhF7g
- 0uB7Agix
- ReXzcihOx4qlHm9HcXOLCoC9B5KLMu8Mq0aP1ZUVwS+WxZ5oCLYD2Zl4DaapK12BdGFn4jCrGPu/PSG7C/ximMeOpUbbLPbYNRykCOzk/ooE6DWYhgm8OO06GbE5+0It5xpjooal7SjeG6XkLEiz3vXbR1/4WtQA/0QDBXeSJnkXcPho9JYERRfz53NdPg6+00bxCBmVceV471ZKy5yg7xPexq7GILbxMvyOU7vL8JJUwfRuJEWKiviC8ZaIrHPd9Re+2KFdZiggCZshA4D36x7zjhk4G4083sIkVmjVeI+HuUHGeRfxdssCayHXcaP2NkfzlLjrg2VYcdjipWqX9Y7kJzvJW3HO8bOJ6F1PcxYUV1B9KRTYkDxfktUDv/HWeH6s1
+X-HE-Tag: 1758186068-322404
+X-HE-Meta: U2FsdGVkX18kzOH5lqZvu2CLTTBfffbzhq0tYkBVnD3WQoXXpsqzy5gZwIQD+tpjZnP0GCsO6WRFm7m/j/pyZZzIgCWucI2x1HBtrMLRYYK9DoUbaek1jlsVnc4qnn43ldQbjZH1VPlp59geFExCF/0qZd4MDJe6MLuPN05o7pQbHr4Gs+b0MtazVD8R7G9lF2osuWw4KUFKILuElC7aAXYSAbbzC6/sErFlRa8nMYiuH/+LRCjxCh+6QteTekpquqR5wjC/3CI6Sbn5Q9vONf5Zq6/j3qxNO5JAE0FXGvSxYzyWFCZ51P1LtLANa0MjkhrtBudJVHXocGYb7NiHXCO/dqeiiSC62Gx3OwbXWc/UnIMxZHQ6NhAMo2MnjSX1rrjLj5DZhJ7czSpyXsiu0okq8FvP+wjoKpiNmPki38KZVOFg9NlSuF6rwcSZvKHGa4eKKkAMLX4z8AIkpBNb800s+842dKobN50XXQ3169Z2NBnZXYgsTFWCpyCxAJUqQtmGDROnEqruiGXB8XHxkSxVEELVEcS0qTQiSFhUIbWc1bYvYw1hVA+hjUFLugq3KETqzDaFbmqDKMipmRUPlKikuJbGpopQ/UjRyCvS+Cpw65PFclvO/Pt8UJSStVWrUxld7Zaochhn946qve3GQXau7Ux5+VsKkM/L1lO4oJc/RXC1+Pli4Tq3ro9SmRBmVBV1ZZrVcE3z9hvJiaGY6pyyvHs9nE/g6b8RjoqnVEfdFX84CoUPBn0T/T0q+xdaLwWDJkZTYZgJaUKMi5bHTigzpdR12LBu/vpfhRYINe2a5CwWfyZ0g9C5S0kreIewK5fkoxMFc30fQOMYjWKn/9mlDhZ0z8lMCz6mhjPLXCyWFq/oGyOmzdgz8RsEsr4/wGZfV9GPX8PLtJ+YiFEv+VV5QFTLvqDCnNf2va+F6d5lo/6k7JLlmxBixg+gxVWrcm16zcGpG/A5u/FfJtY
+ UyWU+2JM
+ ZPP699UIfel+95HNeP3N5OmIy0UlQcp/2h0whDwAnOmiItMm2FSp6Nn0YPbODkpnrMr6gxMTx4qjh7SAr/H294GPGC9+TrQ+jwlKih5e4f7WKbRMcFpXzVqUKUF3h5g9VUW3QaMVm8Qrb5aTR3ThUSHcTQLP/oQGzuEEZoZv81i7tXtYEwxmPwHq9blKfPS/YoRvPQyWMrCxT4TEZQO4RfVSygnadwHPZfsQ1M0YeVj1pHmw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,37 +98,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 18, 2025 at 3:03=E2=80=AFPM Chris Li <chrisl@kernel.org> wrote:
->
-> Hi Barry,
->
-> How about this:
->
-> A swap table stores one cluster worth of swap cache values, which is
-> exactly one page table page on most morden 64 bit systems. This is not
-> coincidental because the cluster size is determined by the huge page size=
-.
 
-I=E2=80=99d phrase it as =E2=80=9CPMD huge page,=E2=80=9D since we also hav=
-e =E2=80=9CPUD huge page.=E2=80=9D
 
-> The swap table is holding an array of pointers, which have the same
-> size as the PTE. The size of the swap table should match the page table
-> page.
->
+在 2025/9/18 16:49, Michal Hocko 写道:
+> On Thu 18-09-25 16:31:22, Ye Liu wrote:
+>>
+>>
+>> 在 2025/9/18 16:16, David Hildenbrand 写道:
+>>> On 18.09.25 10:11, Ye Liu wrote:
+>>>>
+>>>>
+>>>> 在 2025/9/18 15:29, Michal Hocko 写道:
+>>>>> On Thu 18-09-25 15:17:40, Ye Liu wrote:
+>>>>>> From: Ye Liu <liuye@kylinos.cn>
+>>>>>>
+>>>>>> Add a header line to /proc/buddyinfo that shows the order numbers
+>>>>>> for better readability and clarity.
+>>>>>>
+>>>>>> Before:
+>>>>>> Node 0, zone      DMA      0      0      0      0      0      0      0 ...
+>>>>>> Node 0, zone    DMA32      5      8      6      6      7      5      8 ...
+>>>>>> Node 0, zone   Normal   1113    351    138     65     38     31     25 ...
+>>>>>>
+>>>>>> After:
+>>>>>> Free pages per order       0      1      2      3      4      5      6 ...
+>>>>>> Node 0, zone      DMA      0      0      0      0      0      0      0 ...
+>>>>>> Node 0, zone    DMA32      5      8      6      6      7      5      8 ...
+>>>>>> Node 0, zone   Normal   1113    351    138     65     38     31     25 ...
+>>>>>
+>>>>> Why is this needed? And have you considered tha this might break
+>>>>> existing parsers of the file?
+>>>>>
+>>>>
+>>>> Thanks for the review.
+>>>>
+>>>> The reason for this change is simply to make /proc/buddyinfo self-describing.
+>>>> Right now you have to know which column is which order; with a header it’s
+>>>> obvious. This is similar to what /proc/pagetypeinfo already does, e.g.:
+>>>>
+>>>>    Page block order: 9
+>>>>    Pages per block: 512
+>>>>
+>>>>    Free pages count per migrate type at order   0 1 2 3 ...
+>>>>    Node 0, zone DMA, type Unmovable             0 0 0 ...
+>>>>
+>>>> Regarding existing parsers: the patch does not change any of the existing
+>>>> “Node … zone …” lines, it only adds a single header line before them. Most
+>>>> parsers match “Node” lines and ignore everything else, so the risk should be
+>>>> low. If you know of any existing parser that this would break, please let
+>>>> me know so I can address it.
+>>>
+>>> What if there is a single one out there that has hardcoded to skip the first line only?
+>>
+>> I understand there may be no way to be fully compatible with all existing
+>> parsers. However, /proc/buddyinfo is essentially raw data intended for
+>> human and tool consumption, and parsers are expected to be robust against
+>> format changes.
+> 
+> I am pretty sure you can create a trivial wrapper to print that header,
+> right?
+> 
+>> Adding a '#' prefix to the header would allow most parsers to skip it,
+>> but it still changes the file output and cannot fully guarantee that no
+>> external tool will be affected.                                          
+> 
+> That still assumes that they expect something like that.
+> We are trying really hard to not break existing userspace even if it is
+> not written in a robust way. That is simply how Linux kernel handles all
+> the existing interfaces. There must be a very serious reason to add a
+> change that might _theoretically_ breaker existing userspace. What you
+> are proposing here is not such a reason as it is trivial to achieve what
+> you want from the userspace.
+> 
+> NAK to the change.
 
-I=E2=80=99m not entirely sure what you mean by =E2=80=9Cpage table page.=E2=
-=80=9D
-My understanding is that you=E2=80=99re saying:
-The swap table contains an array of pointers, each the same size as a PTE,
-so its total size typically matches a PTE page table=E2=80=94one page on mo=
-dern
-64-bit systems.
+I’ll drop this change.
 
-> If that sounds OK, I will send an incremental patch to Andrew.
->
-> Chris
+-- 
+Thanks,
+Ye Liu
 
-Thanks
-Barry
 
