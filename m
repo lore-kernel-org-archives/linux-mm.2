@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A962CAC59A
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 14:06:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F709CAC59A
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 14:06:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D960B8E012B; Thu, 18 Sep 2025 10:06:08 -0400 (EDT)
+	id BE8E98E012C; Thu, 18 Sep 2025 10:06:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D6E058E0112; Thu, 18 Sep 2025 10:06:08 -0400 (EDT)
+	id B99328E0112; Thu, 18 Sep 2025 10:06:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C84678E012B; Thu, 18 Sep 2025 10:06:08 -0400 (EDT)
+	id A3BE18E012C; Thu, 18 Sep 2025 10:06:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B4E5D8E0112
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 10:06:08 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7085556F6B
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 14:06:08 +0000 (UTC)
-X-FDA: 83902545216.30.B7B243A
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 79CB0180014
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 14:06:06 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="bP5DF7/1";
-	spf=pass (imf06.hostedemail.com: domain of 3zBHMaAUKCG0PWgPcRZZRWP.NZXWTYfi-XXVgLNV.ZcR@flex--elver.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3zBHMaAUKCG0PWgPcRZZRWP.NZXWTYfi-XXVgLNV.ZcR@flex--elver.bounces.google.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 884F18E0112
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 10:06:11 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 506A11A01F2
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 14:06:11 +0000 (UTC)
+X-FDA: 83902545342.24.C5AFC34
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 4D8E51C000C
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 14:06:09 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=oaZwOfpi;
+	spf=pass (imf20.hostedemail.com: domain of 3zxHMaAUKCHASZjSfUccUZS.QcaZWbil-aaYjOQY.cfU@flex--elver.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3zxHMaAUKCHASZjSfUccUZS.QcaZWbil-aaYjOQY.cfU@flex--elver.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758204366;
+	s=arc-20220608; t=1758204369;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mBolDvDOcn9D07EK9oOcgseWQJt3GEJTc9gsXdDIsBk=;
-	b=zEzNTWPWVWu3eFgTvvaBh2HPe1nBv6nsUC5wNT1JwlPuWhX4REo6p6nFjUg7gGR9CvIzEg
-	sGarRZmC+Gd7kaxfIDB62zOnCg+Qdm6pLY2NGZqXCFKTT7oX3do95C8G8Y5wieBfF7euIx
-	mZ8OkHGMhy0kox6yZbYB3oSv47sw070=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="bP5DF7/1";
-	spf=pass (imf06.hostedemail.com: domain of 3zBHMaAUKCG0PWgPcRZZRWP.NZXWTYfi-XXVgLNV.ZcR@flex--elver.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3zBHMaAUKCG0PWgPcRZZRWP.NZXWTYfi-XXVgLNV.ZcR@flex--elver.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758204366; a=rsa-sha256;
+	bh=uZC4ZOE8JE+M8LbYw3r+YcY7P7dk+Wk5ZJQlr/Vrksc=;
+	b=CIjk3dJkl7wuniFMoQp+zO3SLivd7Hu/oK5CnO8ll6GgFULDdLqy3GHfIHduYHgVJONehw
+	Tr+izeMSUThJLtCq0/Ah2Zskk31mmXm9e7Oab8kKN/UVAmGBgX/4h3BcqUB6aHEoRTEtP0
+	XWR777kxEdM+Jf91EkC1YMmlBpRuIGE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758204369; a=rsa-sha256;
 	cv=none;
-	b=tfdP1rAlCsXdNUCjp8CUz6fOVnqscfiuW+Z72bk8teJhrQHGiepOclDW3fudYsJU5uDFe6
-	MHvZcKMpYa3INivCUwVIcf9pI7fImiMhSwt4uDTyd9Bthyv5twG8IuKIxTZP978BLf26pm
-	CUyynw4Tq1IrhnamBcU9sFVm80P0MFM=
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-45f2b0eba08so6016405e9.3
-        for <linux-mm@kvack.org>; Thu, 18 Sep 2025 07:06:06 -0700 (PDT)
+	b=00KKiNVJwNadpjK41Jkha3t9IvXL9jOev6k2JoAd2GDjWGy1gcu3W5/XGQaEOZxKS0dvsQ
+	H2En3NG0fJ25MYYoxiE9ZvdP39QQ48QPreUf3t07izA+9DcrdmkuzARVaF0/wdTU6sLvoY
+	fxF4KcEUh0BQFXfwFVbJoliucZjmvI8=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=oaZwOfpi;
+	spf=pass (imf20.hostedemail.com: domain of 3zxHMaAUKCHASZjSfUccUZS.QcaZWbil-aaYjOQY.cfU@flex--elver.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3zxHMaAUKCHASZjSfUccUZS.QcaZWbil-aaYjOQY.cfU@flex--elver.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3ec7be07a24so363739f8f.1
+        for <linux-mm@kvack.org>; Thu, 18 Sep 2025 07:06:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758204365; x=1758809165; darn=kvack.org;
+        d=google.com; s=20230601; t=1758204368; x=1758809168; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mBolDvDOcn9D07EK9oOcgseWQJt3GEJTc9gsXdDIsBk=;
-        b=bP5DF7/1VqbsHVJMQsp5rGRgFuU9fWrONT23qz1Bl0veS7IXPxO0iabSMmjQUAtLJg
-         2AenbRUvwLIbhlCQ29/Aa34100dkaHx0QmoIstd7GUsIsrwJANQ4N5/nhfkz3TllGV0H
-         wpoNiUa3lFXwMND2+t+9QiqSf7xxMqqnGt+IzyNVzvZ104sPRVSmztyv21JZUjOPX7zE
-         o0lBsBuAoAEQOqscaPlywDE/cE85OSHUzB28vc1W+WBKGv7Yqqs7qwnjgACWXhlJbAdm
-         rB6kck7f32SwV9WMpxrcAgk6X1NMlcy79b/nyObwPEgrDHe2AodHihI+NiJn5GU0kQYY
-         B9BA==
+        bh=uZC4ZOE8JE+M8LbYw3r+YcY7P7dk+Wk5ZJQlr/Vrksc=;
+        b=oaZwOfpiCWQ9V0opueMvc32lDFUd2aJnGkZUNMIdZNz+3yRAB64xmmmZN6uCvWyoVs
+         OZRbJ1T4nKAJ/kMrLUUDJDQFRQfzksDz3I2BIfJAfelGAp77meWStm+R+dlckKu7hSBt
+         n9fUU9wvJnZogXwfwE+Dw0R3qJUysrpKzZLX5R6WcehZ3PNRXxImUPRd0ZMCj4wvyMcB
+         +Wi2mu37khs3aaC774Sd2IVyZeXcTUxMkhVz06FFPL+hjc2mHYQM8ztoZR8CXGhWtflM
+         RhSJ9UUmC8ctjxEaRfprs6YojT8UDvq7JkjJFUVMIepqhm2TAHK2AFa7kFGvc574lNM+
+         uFOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758204365; x=1758809165;
+        d=1e100.net; s=20230601; t=1758204368; x=1758809168;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mBolDvDOcn9D07EK9oOcgseWQJt3GEJTc9gsXdDIsBk=;
-        b=P5+SpIuFySS0Ram2u6XeoxG13CyoJKZ6rlCwrh8aWwzfesGVYRr3I/9NdeMon0tmza
-         CVRMQSsnhQti6PBk9J8f8svpJGt6pstmwyRMUaw+FGIjLbVDGId27bfbdWHqfEB+X2DG
-         jxKVAQCxpPvEuQH0t6XB29fXdNMK0gRW5KIKkc046tWz2kbdhXhyYXAqZrbjhzVXLW1Y
-         0WR5qdI9w5YChGupON601CCpn9ER0BIR4y7rc/HA2ivMR03FZoS4owrCx3J6ohn2S00a
-         A3wDOrgMq0/PDz7L1CYaSt2zjpD0yGl7ErZPzy/sVQy4Krso2N5kB4+2W7UyS0NB02Rf
-         CABQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX5ntN7r3fz/uKhpT4/SlV7DTRSSuGYhF5gY1Q5mjleWokBRNtRDAOcxlTlzr44Kb83gn+nhgWooA==@kvack.org
-X-Gm-Message-State: AOJu0YzmY9aR/gj3W4SrxAsVKQ8027W6wNmP/AkvNqV5KMYNnAgQl8px
-	bLdMlwQjK53I2s1jl94YdeAM9vo2a2F5agxFSmDKTfXuAt5kbqIPWKWjsef2RO9E9fymNTIYogV
-	fDA==
-X-Google-Smtp-Source: AGHT+IFb2AKQsrgy+9U0aOOe79o96Wy9WfjB+UClLxTo6d1GpGlGWiIQriIzMhIBe10f0b/UUl6OL3lZtg==
-X-Received: from wmbhh13.prod.google.com ([2002:a05:600c:530d:b0:45d:cf67:3908])
- (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:c87:b0:45d:d5c6:482
- with SMTP id 5b1f17b1804b1-46205cc836cmr63930155e9.18.1758204364942; Thu, 18
- Sep 2025 07:06:04 -0700 (PDT)
-Date: Thu, 18 Sep 2025 15:59:25 +0200
+        bh=uZC4ZOE8JE+M8LbYw3r+YcY7P7dk+Wk5ZJQlr/Vrksc=;
+        b=v8fZDDvXPlbOY9IZ5PaQUTdJTf0ZtCIcgyzf2S9YQrKYcXLZTj3RvqTFqPRrxWRB6F
+         UmXrakPCTyPxuThP9MuaEOWoxuzGC31DVMi5vffUMKKaBC0CPTLY5Wun+KCZxBLHx+Zz
+         FI98vF3JFZz03xjty8jgP64W/E2MrnKEAbGqA+AS6p+XrOdESxZWYz6WX8A04kOGglJJ
+         S0ItUsOTenkgYj5WJVP/VAlsqVPQTuO1YD/lAvFKVs2epj8fARojSIDv8wiHDQn+Zyrq
+         AgK5EC3HTjIN+32w8tiWD/0QbaPHiX8oFw8v1mFwWdCL2JDyrSAy8AlRmf/bpL/rlbgQ
+         WdjA==
+X-Forwarded-Encrypted: i=1; AJvYcCXCayJQp2YAqHTZB0obL25rDX59bmWt/76TjwAnK6Bvp2t/Hfh235jhVq3GZoszA32Ikkzl7y27Iw==@kvack.org
+X-Gm-Message-State: AOJu0Yyc0yTuxZecd28aKpa7Y1axYmJBoxJt6/mIt7UFL9ZgT0FHEBw5
+	CkEVxjSTVe6rBpXW4Sva4xJiA9uQxXIyi3cLQ0JFKqg7wEfbnWpjnrXIzM8oaAWEEf0CuPHzy1t
+	/mA==
+X-Google-Smtp-Source: AGHT+IErGnNUtVWtw5wt6ngF4KBlc2sTC7xdm7qy0xDdBV9Ewux4kyrKYgwxcj7jBTO4Xps49TpxyhLVvA==
+X-Received: from wrva2.prod.google.com ([2002:a5d:5702:0:b0:3ed:e1d6:f198])
+ (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6000:2601:b0:3e2:da00:44af
+ with SMTP id ffacd0b85a97d-3ecdfa1ebbfmr5132620f8f.36.1758204367579; Thu, 18
+ Sep 2025 07:06:07 -0700 (PDT)
+Date: Thu, 18 Sep 2025 15:59:26 +0200
 In-Reply-To: <20250918140451.1289454-1-elver@google.com>
 Mime-Version: 1.0
 References: <20250918140451.1289454-1-elver@google.com>
 X-Mailer: git-send-email 2.51.0.384.g4c02a37b29-goog
-Message-ID: <20250918140451.1289454-15-elver@google.com>
-Subject: [PATCH v3 14/35] rcu: Support Clang's capability analysis
+Message-ID: <20250918140451.1289454-16-elver@google.com>
+Subject: [PATCH v3 15/35] srcu: Support Clang's capability analysis
 From: Marco Elver <elver@google.com>
 To: elver@google.com, Peter Zijlstra <peterz@infradead.org>, 
 	Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>
@@ -113,14 +113,14 @@ Cc: "David S. Miller" <davem@davemloft.net>, Luc Van Oostenryck <luc.vanoostenry
 	linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org, 
 	llvm@lists.linux.dev, rcu@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: c1kuz6sjrohxyyebkko5afxxjp4jwqwq
+X-Stat-Signature: kz7b9ry9a5w494h9obwggrgiegackajp
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 79CB0180014
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1758204366-507383
-X-HE-Meta: U2FsdGVkX1/q4dM/SJv5xJVlouPQY5VfKbF240KlOUD2hIs/llxavHCjHRZIa5KnI0oZZ8rSHcFWiEFz6bOIdDaTAm6H7kyKSYqeNOHg/E1S3RpF6wCOh2/RLf3ZtJ+GRd1b09ZJYqLqr/CDxT7NeIhQFR7HIuiVK4xFS/AVt2JjUAnZVLqQen8nivEq9tsHH+4ZN/AdgZjkX1hiAvzril/u96xiTOGUV9liDVq4gaLgdp3pLaW+7/4NdDqhPL/w2pXkNUPKvfCVzrkRkeVBEzNB4FwWpQCFfIXmPhsSLWLbMlgK43F82OxH9F0FDDA/2iuokg4mHMZrMkxqIjLooel79wbI/rrKa9ELI1XbeaFuGNfHfHzToZZcYNPAgWSyT2FDi0NsdC4oYNxEu9U1Xjy4w2Zb12soCzYO1r9JOHj212RVfQ1dXqMG/L5rqEz4ANAXnRlESypEqQEXYUCw7ay7P/UyNdH9HXaNtbiEGeC7XI76KcrUP9hy+YiSQGD4Q07TP+d3NQfDoGPYctALpKKuEXtELWV0THgKyPaSiyFOhbqNoXE2Pmuah/c/unSZNG0PglN1D8idVfRuEPEl4hr0nKto8GjlC2L7aOW8K2LBSK6b07RhSuSH/HNgW0eKw2mr3RoIOsiO575qcxSctzgD51Slk0Nq4HxJILO/aWljO62SRUHOIKuB60eu+ZFsVZLd7zwEBgB+b2ZjdoFR/pPIxpz5jokLGZuN+nFpiRzhWxV5qOnJf64aTBSdGxLQv6O77dw30gDOgVfWz2JZ34ykVQWIGsIwW8R28p3yb8cz5Ga+S8SIwZPzt/OgkqdJNUNIHISiOpAK/lDCqmJ9JAuAL0+MxyDjknX6BjXSPoou/Qtd3McImK8u4IkVl1iI8gRKdp2AiXZD9G1gbLredjUegChT8NgRz1EpTcp/AaF9lDdt36ptszuBx/YWfMjKtqSq7FSX6zIm2a9FWhn
- 9+3F1XBr
- m96u832TN9U0W1jPK4jCBADYfgYS5coZPx4SjKje7t4wuV6aBD/7FGtiZFeEP4dMTqMYAxGPHjkY4xNJC1Od/N1gPGpYr6Reec6q1PwCY1ZhJEUu+uwmYe9Z4mvTBc0VlAc41a9dohAVScwWRPZAdkJ/baoRjQtYdQ+iYpQAWGOO6xPckTDB30Mfs+YUEhYJteusUTQ+qdx7b+vysvh/xCo/izSAGtw/GYJPGS3Dn+h5BMu5ILNwDoKZ8kKagCxnB6UKPbcghMXHdXokZKJ+oJc/TCztBdlV8F12LTV09Y+2AV3S1QGLq0af8ZyEsyj9aOqPsls8/Bmvu4HIb7kkXIc3nXiAW6AYFGNhgGMVP9GXRWHSQpynVoz3xQzU2/l3+ngMlYLzdQI8cF0OGIy6I3s2X7U3k0cwl0mVhEWEIvI68fAXnviq89PZNi+m3P1VmX2Qmlz0tClhlfGNFmh/4dM9b4dE3Brmhr0BlVyULsjdUJSiWTaL3p1S1zbKAOAK8rILco3e+jWz6DP/E+JszUXXTqgksIckKJSaDaw3Y3v2Yf+oB55+Ad6M707EgfHN/F8xx3T6Wlwr6vkCnFAuwQavmxdjHEy+gNcXKBOwIfN+Jv3Hy51UxvNbHixwCPVy2NkcT+mCiClGZqmI=
+X-Rspamd-Queue-Id: 4D8E51C000C
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1758204369-575138
+X-HE-Meta: U2FsdGVkX18a1qqsstmzx3wgCoVev2GjLK61f3tmD3laktsn+LbAVNhD8xPxfS224SOLY8TgVAC8qs2XgJhTIh+nWCgRnQPo5X68vjgqc5X8NHgj08VFnknt8+Hmk2CaOvhBVgpGMJXRbbO8CGeQsaDZ3EqM7E1Cj4tsbgf8QWKGg9VXH/E0CF3NFNurqWKvAVmbwtu4ounbOBKXur0zSUL49TyvG3BxFtglA7UPtL2dWd/Yu/uxAR8NsKW3gM+mKOQepKRsnH50tu8+qsLJ2ThmOVDTvGq7ctIUN4kQrUzPP+mTU90HQYQQ2VYTysi/xbiivDLe0+CZIP5riUswBIxAJSEv1FD7IYrZha59AFLz+bkY8kLX+dJSWTR4GzQ2eFk/54WjDe+4gfVjdilo1bhpp2xhnCqoPwQUtFYJcKHJTP96opQ4+Bq0bqjfgj6AzMMNfZR/tuHNt8zO2BrCkz9NtagRTaGSHQF3d0oT0JOQaewlraxPDf7Y54UuMjJja2e00vopr7754lIVtVZAx0lqD80cC8Rgryf845STLf7nKv72WUFchvv3pqYQDOOny0ddbAiVO4WwVGyyUVXPlcxtQuAoxvxg4C4T/0jbcYXmDIp95aqFg/Cf5VY6n4n/f8UwwujhRXHQukbsxO5eOZQ6a1dK6RjZHHcKZjqK04aqFf6hp7yWiKxoGvqLX9T1xs2Y41EA76YRxa+gIA9ssmEUx9wnbHxR19FWVvCj3o6HXk+It/wXBJsZzLJ2sq3+lmWcC2OC/TydK5BE+c0H8brWzx7PhgS/TLQzRYVOWiMCLjPrw3zteX+vaBoVvatRz2ZQVVPuR9FCBfrB/jnFKqJMHq89z8daVXxKiW0JGRhOqw0IEXZ8JJmoPXtgltYmT7VkGBCy1WYNoEq89rGXEQXr9RISCsOY4CswwZNxXXnKkx0fW4TqsanYfXDgUrafd55FXCduDZCIA40BPE6
+ HJbtVVnk
+ Smr2T0SzXzrfl6kpqPj4I2BJNqxq+AR88f+DaJ4cd71glAVpkOTRsi6WXbgyC8uczO2ybuflKnhYgFiQkH9XabWIHssJwV2IsJp0GvsRTq/LscwV+ZsbwkMtGOg6zVLMXhs5WFUtWHkvkb2ni1x/sFebglcaMi+Xf/REDoDoaIbiuCO/hVPckWGfBlpAHR8myHuXov8nde2yjyvIXxm9+iOwGEuiqS6kbXsKRowqk/VwvBnWFpgtO3a37O7z1vi14bCIZNT0K0+m9lAI75AYzYfE6kVI8/ZQlTJmTlTm7oWTuidLbGGqaKUz4zcVXcW/+tMciiEbV35cI2+aNZ/mQyCBVHmrovV842GUuIEHuJ3Rqzr20s4PXd7nv1rLSZ8orZ2RcSS6dnabZ02UfWL6KWBUXn2vGodBlJnVUtVebm/6BZv+82qedzSp2MiCvz90nQz9nogBPztH0CjZaY8WOS7WWdADOParJ2OTG+gn7VONsfeEzR8J5Cx3DKVnFNlujk1vPHPVDOXcN38gh8lYBnu3zekQBEjYSdvxShwzJj1OZWi3MxSj+vlD6jWVyQXiYzHBFNzRLg5YUGFei2oIHMpozoE0vHCXG3G+KbY2VvGP6jkM/T3OQ0qMG5tVw1hSGO5nCY+H1lqwhiPk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,392 +129,341 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Improve the existing annotations to properly support Clang's capability
-analysis.
-
-The old annotations distinguished between RCU, RCU_BH, and RCU_SCHED;
-however, to more easily be able to express that "hold the RCU read lock"
-without caring if the normal, _bh(), or _sched() variant was used we'd
-have to remove the distinction of the latter variants: change the _bh()
-and _sched() variants to also acquire "RCU".
-
-When (and if) we introduce capabilities to denote more generally that
-"IRQ", "BH", "PREEMPT" are disabled, it would make sense to acquire
-these capabilities instead of RCU_BH and RCU_SCHED respectively.
-
-The above change also simplified introducing __guarded_by support, where
-only the "RCU" capability needs to be held: introduce __rcu_guarded,
-where Clang's capability analysis warns if a pointer is dereferenced
-without any of the RCU locks held, or updated without the appropriate
-helpers.
-
-The primitives rcu_assign_pointer() and friends are wrapped with
-capability_unsafe(), which enforces using them to update RCU-protected
-pointers marked with __rcu_guarded.
+Add support for Clang's capability analysis for SRCU.
 
 Signed-off-by: Marco Elver <elver@google.com>
 ---
 v3:
-* Properly support reentrancy via new compiler support.
-
-v2:
-* Reword commit message and point out reentrancy caveat.
+* Switch to DECLARE_LOCK_GUARD_1_ATTRS() (suggested by Peter)
+* Support SRCU being reentrant.
 ---
  .../dev-tools/capability-analysis.rst         |  2 +-
- include/linux/rcupdate.h                      | 73 +++++++++++-----
- lib/test_capability-analysis.c                | 85 +++++++++++++++++++
- 3 files changed, 136 insertions(+), 24 deletions(-)
+ include/linux/srcu.h                          | 60 +++++++++++++------
+ include/linux/srcutiny.h                      |  4 ++
+ include/linux/srcutree.h                      |  6 +-
+ lib/test_capability-analysis.c                | 24 ++++++++
+ 5 files changed, 75 insertions(+), 21 deletions(-)
 
 diff --git a/Documentation/dev-tools/capability-analysis.rst b/Documentation/dev-tools/capability-analysis.rst
-index 56c6ba7205aa..fdacc7f73da8 100644
+index fdacc7f73da8..779ecb5ec17a 100644
 --- a/Documentation/dev-tools/capability-analysis.rst
 +++ b/Documentation/dev-tools/capability-analysis.rst
 @@ -82,7 +82,7 @@ Supported Kernel Primitives
  
  Currently the following synchronization primitives are supported:
  `raw_spinlock_t`, `spinlock_t`, `rwlock_t`, `mutex`, `seqlock_t`,
--`bit_spinlock`.
-+`bit_spinlock`, RCU.
+-`bit_spinlock`, RCU.
++`bit_spinlock`, RCU, SRCU (`srcu_struct`).
  
  For capabilities with an initialization function (e.g., `spin_lock_init()`),
  calling this function on the capability instance before initializing any
-diff --git a/include/linux/rcupdate.h b/include/linux/rcupdate.h
-index 120536f4c6eb..8eeece72492c 100644
---- a/include/linux/rcupdate.h
-+++ b/include/linux/rcupdate.h
-@@ -31,6 +31,16 @@
- #include <asm/processor.h>
- #include <linux/context_tracking_irq.h>
+diff --git a/include/linux/srcu.h b/include/linux/srcu.h
+index f179700fecaf..6cafaf6dde71 100644
+--- a/include/linux/srcu.h
++++ b/include/linux/srcu.h
+@@ -21,7 +21,7 @@
+ #include <linux/workqueue.h>
+ #include <linux/rcu_segcblist.h>
  
-+token_capability(RCU, __reentrant_cap);
-+token_capability_instance(RCU, RCU_SCHED);
-+token_capability_instance(RCU, RCU_BH);
-+
+-struct srcu_struct;
++struct_with_capability(srcu_struct, __reentrant_cap);
+ 
+ #ifdef CONFIG_DEBUG_LOCK_ALLOC
+ 
+@@ -53,7 +53,7 @@ int init_srcu_struct(struct srcu_struct *ssp);
+ #define SRCU_READ_FLAVOR_SLOWGP	SRCU_READ_FLAVOR_FAST
+ 						// Flavors requiring synchronize_rcu()
+ 						// instead of smp_mb().
+-void __srcu_read_unlock(struct srcu_struct *ssp, int idx) __releases(ssp);
++void __srcu_read_unlock(struct srcu_struct *ssp, int idx) __releases_shared(ssp);
+ 
+ #ifdef CONFIG_TINY_SRCU
+ #include <linux/srcutiny.h>
+@@ -107,14 +107,16 @@ static inline bool same_state_synchronize_srcu(unsigned long oldstate1, unsigned
+ }
+ 
+ #ifdef CONFIG_NEED_SRCU_NMI_SAFE
+-int __srcu_read_lock_nmisafe(struct srcu_struct *ssp) __acquires(ssp);
+-void __srcu_read_unlock_nmisafe(struct srcu_struct *ssp, int idx) __releases(ssp);
++int __srcu_read_lock_nmisafe(struct srcu_struct *ssp) __acquires_shared(ssp);
++void __srcu_read_unlock_nmisafe(struct srcu_struct *ssp, int idx) __releases_shared(ssp);
+ #else
+ static inline int __srcu_read_lock_nmisafe(struct srcu_struct *ssp)
++	__acquires_shared(ssp)
+ {
+ 	return __srcu_read_lock(ssp);
+ }
+ static inline void __srcu_read_unlock_nmisafe(struct srcu_struct *ssp, int idx)
++	__releases_shared(ssp)
+ {
+ 	__srcu_read_unlock(ssp, idx);
+ }
+@@ -186,6 +188,14 @@ static inline int srcu_read_lock_held(const struct srcu_struct *ssp)
+ 
+ #endif /* #else #ifdef CONFIG_DEBUG_LOCK_ALLOC */
+ 
 +/*
-+ * A convenience macro that can be used for RCU-protected globals or struct
-+ * members; adds type qualifier __rcu, and also enforces __guarded_by(RCU).
++ * No-op helper to denote that ssp must be held. Because SRCU-protected pointers
++ * should still be marked with __rcu_guarded, and we do not want to mark them
++ * with __guarded_by(ssp) as it would complicate annotations for writers, we
++ * choose the following strategy: srcu_dereference_check() calls this helper
++ * that checks that the passed ssp is held, and then fake-acquires 'RCU'.
 + */
-+#define __rcu_guarded __rcu __guarded_by(RCU)
-+
- #define ULONG_CMP_GE(a, b)	(ULONG_MAX / 2 >= (a) - (b))
- #define ULONG_CMP_LT(a, b)	(ULONG_MAX / 2 < (a) - (b))
- 
-@@ -425,7 +435,8 @@ static inline void rcu_preempt_sleep_check(void) { }
- 
- // See RCU_LOCKDEP_WARN() for an explanation of the double call to
- // debug_lockdep_rcu_enabled().
--static inline bool lockdep_assert_rcu_helper(bool c)
-+static inline bool lockdep_assert_rcu_helper(bool c, const struct __capability_RCU *cap)
-+	__assumes_shared_cap(RCU) __assumes_shared_cap(cap)
- {
- 	return debug_lockdep_rcu_enabled() &&
- 	       (c || !rcu_is_watching() || !rcu_lockdep_current_cpu_online()) &&
-@@ -438,7 +449,7 @@ static inline bool lockdep_assert_rcu_helper(bool c)
-  * Splats if lockdep is enabled and there is no rcu_read_lock() in effect.
-  */
- #define lockdep_assert_in_rcu_read_lock() \
--	WARN_ON_ONCE(lockdep_assert_rcu_helper(!lock_is_held(&rcu_lock_map)))
-+	WARN_ON_ONCE(lockdep_assert_rcu_helper(!lock_is_held(&rcu_lock_map), RCU))
++static inline void __srcu_read_lock_must_hold(const struct srcu_struct *ssp) __must_hold_shared(ssp) { }
  
  /**
-  * lockdep_assert_in_rcu_read_lock_bh - WARN if not protected by rcu_read_lock_bh()
-@@ -448,7 +459,7 @@ static inline bool lockdep_assert_rcu_helper(bool c)
-  * actual rcu_read_lock_bh() is required.
+  * srcu_dereference_check - fetch SRCU-protected pointer for later dereferencing
+@@ -199,9 +209,15 @@ static inline int srcu_read_lock_held(const struct srcu_struct *ssp)
+  * to 1.  The @c argument will normally be a logical expression containing
+  * lockdep_is_held() calls.
   */
- #define lockdep_assert_in_rcu_read_lock_bh() \
--	WARN_ON_ONCE(lockdep_assert_rcu_helper(!lock_is_held(&rcu_bh_lock_map)))
-+	WARN_ON_ONCE(lockdep_assert_rcu_helper(!lock_is_held(&rcu_bh_lock_map), RCU_BH))
+-#define srcu_dereference_check(p, ssp, c) \
+-	__rcu_dereference_check((p), __UNIQUE_ID(rcu), \
+-				(c) || srcu_read_lock_held(ssp), __rcu)
++#define srcu_dereference_check(p, ssp, c)					\
++({										\
++	__srcu_read_lock_must_hold(ssp);					\
++	__acquire_shared_cap(RCU);						\
++	__auto_type __v = __rcu_dereference_check((p), __UNIQUE_ID(rcu),	\
++				(c) || srcu_read_lock_held(ssp), __rcu);	\
++	__release_shared_cap(RCU);						\
++	__v;									\
++})
  
  /**
-  * lockdep_assert_in_rcu_read_lock_sched - WARN if not protected by rcu_read_lock_sched()
-@@ -458,7 +469,7 @@ static inline bool lockdep_assert_rcu_helper(bool c)
-  * instead an actual rcu_read_lock_sched() is required.
+  * srcu_dereference - fetch SRCU-protected pointer for later dereferencing
+@@ -244,7 +260,8 @@ static inline int srcu_read_lock_held(const struct srcu_struct *ssp)
+  * invoke srcu_read_unlock() from one task and the matching srcu_read_lock()
+  * from another.
   */
- #define lockdep_assert_in_rcu_read_lock_sched() \
--	WARN_ON_ONCE(lockdep_assert_rcu_helper(!lock_is_held(&rcu_sched_lock_map)))
-+	WARN_ON_ONCE(lockdep_assert_rcu_helper(!lock_is_held(&rcu_sched_lock_map), RCU_SCHED))
- 
- /**
-  * lockdep_assert_in_rcu_reader - WARN if not within some type of RCU reader
-@@ -476,17 +487,17 @@ static inline bool lockdep_assert_rcu_helper(bool c)
- 	WARN_ON_ONCE(lockdep_assert_rcu_helper(!lock_is_held(&rcu_lock_map) &&			\
- 					       !lock_is_held(&rcu_bh_lock_map) &&		\
- 					       !lock_is_held(&rcu_sched_lock_map) &&		\
--					       preemptible()))
-+					       preemptible(), RCU))
- 
- #else /* #ifdef CONFIG_PROVE_RCU */
- 
- #define RCU_LOCKDEP_WARN(c, s) do { } while (0 && (c))
- #define rcu_sleep_check() do { } while (0)
- 
--#define lockdep_assert_in_rcu_read_lock() do { } while (0)
--#define lockdep_assert_in_rcu_read_lock_bh() do { } while (0)
--#define lockdep_assert_in_rcu_read_lock_sched() do { } while (0)
--#define lockdep_assert_in_rcu_reader() do { } while (0)
-+#define lockdep_assert_in_rcu_read_lock() __assume_shared_cap(RCU)
-+#define lockdep_assert_in_rcu_read_lock_bh() __assume_shared_cap(RCU_BH)
-+#define lockdep_assert_in_rcu_read_lock_sched() __assume_shared_cap(RCU_SCHED)
-+#define lockdep_assert_in_rcu_reader() __assume_shared_cap(RCU)
- 
- #endif /* #else #ifdef CONFIG_PROVE_RCU */
- 
-@@ -506,11 +517,11 @@ static inline bool lockdep_assert_rcu_helper(bool c)
- #endif /* #else #ifdef __CHECKER__ */
- 
- #define __unrcu_pointer(p, local)					\
--({									\
-+capability_unsafe(							\
- 	typeof(*p) *local = (typeof(*p) *__force)(p);			\
- 	rcu_check_sparse(p, __rcu);					\
- 	((typeof(*p) __force __kernel *)(local)); 			\
--})
-+)
- /**
-  * unrcu_pointer - mark a pointer as not being RCU protected
-  * @p: pointer needing to lose its __rcu property
-@@ -586,7 +597,7 @@ static inline bool lockdep_assert_rcu_helper(bool c)
-  * other macros that it invokes.
-  */
- #define rcu_assign_pointer(p, v)					      \
--do {									      \
-+capability_unsafe(							      \
- 	uintptr_t _r_a_p__v = (uintptr_t)(v);				      \
- 	rcu_check_sparse(p, __rcu);					      \
- 									      \
-@@ -594,7 +605,7 @@ do {									      \
- 		WRITE_ONCE((p), (typeof(p))(_r_a_p__v));		      \
- 	else								      \
- 		smp_store_release(&p, RCU_INITIALIZER((typeof(p))_r_a_p__v)); \
--} while (0)
-+)
- 
- /**
-  * rcu_replace_pointer() - replace an RCU pointer, returning its old value
-@@ -835,9 +846,10 @@ do {									      \
-  * only when acquiring spinlocks that are subject to priority inheritance.
-  */
- static __always_inline void rcu_read_lock(void)
-+	__acquires_shared(RCU)
+-static inline int srcu_read_lock(struct srcu_struct *ssp) __acquires(ssp)
++static inline int srcu_read_lock(struct srcu_struct *ssp)
++	__acquires_shared(ssp)
  {
- 	__rcu_read_lock();
--	__acquire(RCU);
-+	__acquire_shared(RCU);
- 	rcu_lock_acquire(&rcu_lock_map);
- 	RCU_LOCKDEP_WARN(!rcu_is_watching(),
- 			 "rcu_read_lock() used illegally while idle");
-@@ -865,11 +877,12 @@ static __always_inline void rcu_read_lock(void)
-  * See rcu_read_lock() for more information.
-  */
- static inline void rcu_read_unlock(void)
-+	__releases_shared(RCU)
- {
- 	RCU_LOCKDEP_WARN(!rcu_is_watching(),
- 			 "rcu_read_unlock() used illegally while idle");
- 	rcu_lock_release(&rcu_lock_map); /* Keep acq info for rls diags. */
--	__release(RCU);
-+	__release_shared(RCU);
- 	__rcu_read_unlock();
- }
+ 	int retval;
  
-@@ -888,9 +901,11 @@ static inline void rcu_read_unlock(void)
-  * was invoked from some other task.
+@@ -271,7 +288,8 @@ static inline int srcu_read_lock(struct srcu_struct *ssp) __acquires(ssp)
+  * where RCU is watching, that is, from contexts where it would be legal
+  * to invoke rcu_read_lock().  Otherwise, lockdep will complain.
   */
- static inline void rcu_read_lock_bh(void)
-+	__acquires_shared(RCU) __acquires_shared(RCU_BH)
+-static inline struct srcu_ctr __percpu *srcu_read_lock_fast(struct srcu_struct *ssp) __acquires(ssp)
++static inline struct srcu_ctr __percpu *srcu_read_lock_fast(struct srcu_struct *ssp) __acquires_shared(ssp)
++	__acquires_shared(ssp)
  {
- 	local_bh_disable();
--	__acquire(RCU_BH);
-+	__acquire_shared(RCU);
-+	__acquire_shared(RCU_BH);
- 	rcu_lock_acquire(&rcu_bh_lock_map);
- 	RCU_LOCKDEP_WARN(!rcu_is_watching(),
- 			 "rcu_read_lock_bh() used illegally while idle");
-@@ -902,11 +917,13 @@ static inline void rcu_read_lock_bh(void)
-  * See rcu_read_lock_bh() for more information.
-  */
- static inline void rcu_read_unlock_bh(void)
-+	__releases_shared(RCU) __releases_shared(RCU_BH)
- {
- 	RCU_LOCKDEP_WARN(!rcu_is_watching(),
- 			 "rcu_read_unlock_bh() used illegally while idle");
- 	rcu_lock_release(&rcu_bh_lock_map);
--	__release(RCU_BH);
-+	__release_shared(RCU_BH);
-+	__release_shared(RCU);
- 	local_bh_enable();
- }
+ 	struct srcu_ctr __percpu *retval;
  
-@@ -926,9 +943,11 @@ static inline void rcu_read_unlock_bh(void)
-  * rcu_read_lock_sched() was invoked from an NMI handler.
+@@ -292,7 +310,7 @@ static inline struct srcu_ctr __percpu *srcu_read_lock_fast(struct srcu_struct *
+  * The same srcu_struct may be used concurrently by srcu_down_read_fast()
+  * and srcu_read_lock_fast().
   */
- static inline void rcu_read_lock_sched(void)
-+	__acquires_shared(RCU) __acquires_shared(RCU_SCHED)
+-static inline struct srcu_ctr __percpu *srcu_down_read_fast(struct srcu_struct *ssp) __acquires(ssp)
++static inline struct srcu_ctr __percpu *srcu_down_read_fast(struct srcu_struct *ssp) __acquires_shared(ssp)
  {
- 	preempt_disable();
--	__acquire(RCU_SCHED);
-+	__acquire_shared(RCU);
-+	__acquire_shared(RCU_SCHED);
- 	rcu_lock_acquire(&rcu_sched_lock_map);
- 	RCU_LOCKDEP_WARN(!rcu_is_watching(),
- 			 "rcu_read_lock_sched() used illegally while idle");
-@@ -936,9 +955,11 @@ static inline void rcu_read_lock_sched(void)
- 
- /* Used by lockdep and tracing: cannot be traced, cannot call lockdep. */
- static inline notrace void rcu_read_lock_sched_notrace(void)
-+	__acquires_shared(RCU) __acquires_shared(RCU_SCHED)
- {
- 	preempt_disable_notrace();
--	__acquire(RCU_SCHED);
-+	__acquire_shared(RCU);
-+	__acquire_shared(RCU_SCHED);
- }
- 
- /**
-@@ -947,18 +968,22 @@ static inline notrace void rcu_read_lock_sched_notrace(void)
-  * See rcu_read_lock_sched() for more information.
+ 	WARN_ON_ONCE(IS_ENABLED(CONFIG_PROVE_RCU) && in_nmi());
+ 	srcu_check_read_flavor_force(ssp, SRCU_READ_FLAVOR_FAST);
+@@ -310,7 +328,8 @@ static inline struct srcu_ctr __percpu *srcu_down_read_fast(struct srcu_struct *
+  * then none of the other flavors may be used, whether before, during,
+  * or after.
   */
- static inline void rcu_read_unlock_sched(void)
-+	__releases_shared(RCU) __releases_shared(RCU_SCHED)
+-static inline int srcu_read_lock_nmisafe(struct srcu_struct *ssp) __acquires(ssp)
++static inline int srcu_read_lock_nmisafe(struct srcu_struct *ssp)
++	__acquires_shared(ssp)
  {
- 	RCU_LOCKDEP_WARN(!rcu_is_watching(),
- 			 "rcu_read_unlock_sched() used illegally while idle");
- 	rcu_lock_release(&rcu_sched_lock_map);
--	__release(RCU_SCHED);
-+	__release_shared(RCU_SCHED);
-+	__release_shared(RCU);
+ 	int retval;
+ 
+@@ -322,7 +341,8 @@ static inline int srcu_read_lock_nmisafe(struct srcu_struct *ssp) __acquires(ssp
+ 
+ /* Used by tracing, cannot be traced and cannot invoke lockdep. */
+ static inline notrace int
+-srcu_read_lock_notrace(struct srcu_struct *ssp) __acquires(ssp)
++srcu_read_lock_notrace(struct srcu_struct *ssp)
++	__acquires_shared(ssp)
+ {
+ 	int retval;
+ 
+@@ -353,7 +373,8 @@ srcu_read_lock_notrace(struct srcu_struct *ssp) __acquires(ssp)
+  * which calls to down_read() may be nested.  The same srcu_struct may be
+  * used concurrently by srcu_down_read() and srcu_read_lock().
+  */
+-static inline int srcu_down_read(struct srcu_struct *ssp) __acquires(ssp)
++static inline int srcu_down_read(struct srcu_struct *ssp)
++	__acquires_shared(ssp)
+ {
+ 	WARN_ON_ONCE(in_nmi());
+ 	srcu_check_read_flavor(ssp, SRCU_READ_FLAVOR_NORMAL);
+@@ -368,7 +389,7 @@ static inline int srcu_down_read(struct srcu_struct *ssp) __acquires(ssp)
+  * Exit an SRCU read-side critical section.
+  */
+ static inline void srcu_read_unlock(struct srcu_struct *ssp, int idx)
+-	__releases(ssp)
++	__releases_shared(ssp)
+ {
+ 	WARN_ON_ONCE(idx & ~0x1);
+ 	srcu_check_read_flavor(ssp, SRCU_READ_FLAVOR_NORMAL);
+@@ -384,7 +405,7 @@ static inline void srcu_read_unlock(struct srcu_struct *ssp, int idx)
+  * Exit a light-weight SRCU read-side critical section.
+  */
+ static inline void srcu_read_unlock_fast(struct srcu_struct *ssp, struct srcu_ctr __percpu *scp)
+-	__releases(ssp)
++	__releases_shared(ssp)
+ {
+ 	srcu_check_read_flavor(ssp, SRCU_READ_FLAVOR_FAST);
+ 	srcu_lock_release(&ssp->dep_map);
+@@ -400,7 +421,7 @@ static inline void srcu_read_unlock_fast(struct srcu_struct *ssp, struct srcu_ct
+  * the same context as the maching srcu_down_read_fast().
+  */
+ static inline void srcu_up_read_fast(struct srcu_struct *ssp, struct srcu_ctr __percpu *scp)
+-	__releases(ssp)
++	__releases_shared(ssp)
+ {
+ 	WARN_ON_ONCE(IS_ENABLED(CONFIG_PROVE_RCU) && in_nmi());
+ 	srcu_check_read_flavor(ssp, SRCU_READ_FLAVOR_FAST);
+@@ -415,7 +436,7 @@ static inline void srcu_up_read_fast(struct srcu_struct *ssp, struct srcu_ctr __
+  * Exit an SRCU read-side critical section, but in an NMI-safe manner.
+  */
+ static inline void srcu_read_unlock_nmisafe(struct srcu_struct *ssp, int idx)
+-	__releases(ssp)
++	__releases_shared(ssp)
+ {
+ 	WARN_ON_ONCE(idx & ~0x1);
+ 	srcu_check_read_flavor(ssp, SRCU_READ_FLAVOR_NMI);
+@@ -425,7 +446,7 @@ static inline void srcu_read_unlock_nmisafe(struct srcu_struct *ssp, int idx)
+ 
+ /* Used by tracing, cannot be traced and cannot call lockdep. */
+ static inline notrace void
+-srcu_read_unlock_notrace(struct srcu_struct *ssp, int idx) __releases(ssp)
++srcu_read_unlock_notrace(struct srcu_struct *ssp, int idx) __releases_shared(ssp)
+ {
+ 	srcu_check_read_flavor(ssp, SRCU_READ_FLAVOR_NORMAL);
+ 	__srcu_read_unlock(ssp, idx);
+@@ -440,7 +461,7 @@ srcu_read_unlock_notrace(struct srcu_struct *ssp, int idx) __releases(ssp)
+  * the same context as the maching srcu_down_read().
+  */
+ static inline void srcu_up_read(struct srcu_struct *ssp, int idx)
+-	__releases(ssp)
++	__releases_shared(ssp)
+ {
+ 	WARN_ON_ONCE(idx & ~0x1);
+ 	WARN_ON_ONCE(in_nmi());
+@@ -480,6 +501,7 @@ DEFINE_LOCK_GUARD_1(srcu, struct srcu_struct,
+ 		    _T->idx = srcu_read_lock(_T->lock),
+ 		    srcu_read_unlock(_T->lock, _T->idx),
+ 		    int idx)
++DECLARE_LOCK_GUARD_1_ATTRS(srcu, __assumes_cap(_T), /* */)
+ 
+ DEFINE_LOCK_GUARD_1(srcu_fast, struct srcu_struct,
+ 		    _T->scp = srcu_read_lock_fast(_T->lock),
+diff --git a/include/linux/srcutiny.h b/include/linux/srcutiny.h
+index 51ce25f07930..c194b3c7c43b 100644
+--- a/include/linux/srcutiny.h
++++ b/include/linux/srcutiny.h
+@@ -61,6 +61,7 @@ void synchronize_srcu(struct srcu_struct *ssp);
+  * index that must be passed to the matching srcu_read_unlock().
+  */
+ static inline int __srcu_read_lock(struct srcu_struct *ssp)
++	__acquires_shared(ssp)
+ {
+ 	int idx;
+ 
+@@ -68,6 +69,7 @@ static inline int __srcu_read_lock(struct srcu_struct *ssp)
+ 	idx = ((READ_ONCE(ssp->srcu_idx) + 1) & 0x2) >> 1;
+ 	WRITE_ONCE(ssp->srcu_lock_nesting[idx], READ_ONCE(ssp->srcu_lock_nesting[idx]) + 1);
  	preempt_enable();
++	__acquire_shared(ssp);
+ 	return idx;
  }
  
- /* Used by lockdep and tracing: cannot be traced, cannot call lockdep. */
- static inline notrace void rcu_read_unlock_sched_notrace(void)
-+	__releases_shared(RCU) __releases_shared(RCU_SCHED)
+@@ -84,11 +86,13 @@ static inline struct srcu_ctr __percpu *__srcu_ctr_to_ptr(struct srcu_struct *ss
+ }
+ 
+ static inline struct srcu_ctr __percpu *__srcu_read_lock_fast(struct srcu_struct *ssp)
++	__acquires_shared(ssp)
  {
--	__release(RCU_SCHED);
-+	__release_shared(RCU_SCHED);
-+	__release_shared(RCU);
- 	preempt_enable_notrace();
+ 	return __srcu_ctr_to_ptr(ssp, __srcu_read_lock(ssp));
  }
  
-@@ -1001,10 +1026,10 @@ static inline notrace void rcu_read_unlock_sched_notrace(void)
-  * ordering guarantees for either the CPU or the compiler.
+ static inline void __srcu_read_unlock_fast(struct srcu_struct *ssp, struct srcu_ctr __percpu *scp)
++	__releases_shared(ssp)
+ {
+ 	__srcu_read_unlock(ssp, __srcu_ptr_to_ctr(ssp, scp));
+ }
+diff --git a/include/linux/srcutree.h b/include/linux/srcutree.h
+index bf44d8d1e69e..43754472e07a 100644
+--- a/include/linux/srcutree.h
++++ b/include/linux/srcutree.h
+@@ -207,7 +207,7 @@ struct srcu_struct {
+ #define DEFINE_SRCU(name)		__DEFINE_SRCU(name, /* not static */)
+ #define DEFINE_STATIC_SRCU(name)	__DEFINE_SRCU(name, static)
+ 
+-int __srcu_read_lock(struct srcu_struct *ssp) __acquires(ssp);
++int __srcu_read_lock(struct srcu_struct *ssp) __acquires_shared(ssp);
+ void synchronize_srcu_expedited(struct srcu_struct *ssp);
+ void srcu_barrier(struct srcu_struct *ssp);
+ void srcu_torture_stats_print(struct srcu_struct *ssp, char *tt, char *tf);
+@@ -241,6 +241,7 @@ static inline struct srcu_ctr __percpu *__srcu_ctr_to_ptr(struct srcu_struct *ss
+  * implementations of this_cpu_inc().
   */
- #define RCU_INIT_POINTER(p, v) \
--	do { \
-+	capability_unsafe( \
- 		rcu_check_sparse(p, __rcu); \
- 		WRITE_ONCE(p, RCU_INITIALIZER(v)); \
--	} while (0)
-+	)
+ static inline struct srcu_ctr __percpu *__srcu_read_lock_fast(struct srcu_struct *ssp)
++	__acquires_shared(ssp)
+ {
+ 	struct srcu_ctr __percpu *scp = READ_ONCE(ssp->srcu_ctrp);
  
- /**
-  * RCU_POINTER_INITIALIZER() - statically initialize an RCU protected pointer
-@@ -1166,4 +1191,6 @@ DEFINE_LOCK_GUARD_0(rcu,
- 	} while (0),
- 	rcu_read_unlock())
+@@ -250,6 +251,7 @@ static inline struct srcu_ctr __percpu *__srcu_read_lock_fast(struct srcu_struct
+ 	else
+ 		atomic_long_inc(raw_cpu_ptr(&scp->srcu_locks));  /* Z */
+ 	barrier(); /* Avoid leaking the critical section. */
++	__acquire_shared(ssp);
+ 	return scp;
+ }
  
-+DECLARE_LOCK_GUARD_0_ATTRS(rcu, __acquires_shared(RCU), __releases_shared(RCU))
-+
- #endif /* __LINUX_RCUPDATE_H */
+@@ -269,7 +271,9 @@ static inline struct srcu_ctr __percpu *__srcu_read_lock_fast(struct srcu_struct
+  * implementations of this_cpu_inc().
+  */
+ static inline void __srcu_read_unlock_fast(struct srcu_struct *ssp, struct srcu_ctr __percpu *scp)
++	__releases_shared(ssp)
+ {
++	__release_shared(ssp);
+ 	barrier();  /* Avoid leaking the critical section. */
+ 	if (!IS_ENABLED(CONFIG_NEED_SRCU_NMI_SAFE))
+ 		this_cpu_inc(scp->srcu_unlocks.counter);  /* Z */
 diff --git a/lib/test_capability-analysis.c b/lib/test_capability-analysis.c
-index ad362d5a7916..31c9bc1e2405 100644
+index 31c9bc1e2405..5b17fd94f31e 100644
 --- a/lib/test_capability-analysis.c
 +++ b/lib/test_capability-analysis.c
-@@ -7,6 +7,7 @@
- #include <linux/bit_spinlock.h>
- #include <linux/build_bug.h>
- #include <linux/mutex.h>
-+#include <linux/rcupdate.h>
+@@ -10,6 +10,7 @@
+ #include <linux/rcupdate.h>
  #include <linux/seqlock.h>
  #include <linux/spinlock.h>
++#include <linux/srcu.h>
  
-@@ -277,3 +278,87 @@ static void __used test_bit_spin_lock(struct test_bit_spinlock_data *d)
- 		bit_spin_unlock(3, &d->bits);
- 	}
+ /*
+  * Test that helper macros work as expected.
+@@ -362,3 +363,26 @@ static void __used test_rcu_assert_variants(void)
+ 	lockdep_assert_in_rcu_read_lock_sched();
+ 	wants_rcu_held_sched();
  }
 +
-+/*
-+ * Test that we can mark a variable guarded by RCU, and we can dereference and
-+ * write to the pointer with RCU's primitives.
-+ */
-+struct test_rcu_data {
++struct test_srcu_data {
++	struct srcu_struct srcu;
 +	long __rcu_guarded *data;
 +};
 +
-+static void __used test_rcu_guarded_reader(struct test_rcu_data *d)
++static void __used test_srcu(struct test_srcu_data *d)
 +{
-+	rcu_read_lock();
-+	(void)rcu_dereference(d->data);
-+	rcu_read_unlock();
++	init_srcu_struct(&d->srcu);
 +
-+	rcu_read_lock_bh();
-+	(void)rcu_dereference(d->data);
-+	rcu_read_unlock_bh();
++	int idx = srcu_read_lock(&d->srcu);
++	long *data = srcu_dereference(d->data, &d->srcu);
++	(void)data;
++	srcu_read_unlock(&d->srcu, idx);
 +
-+	rcu_read_lock_sched();
-+	(void)rcu_dereference(d->data);
-+	rcu_read_unlock_sched();
-+}
-+
-+static void __used test_rcu_guard(struct test_rcu_data *d)
-+{
-+	guard(rcu)();
-+	(void)rcu_dereference(d->data);
-+}
-+
-+static void __used test_rcu_guarded_updater(struct test_rcu_data *d)
-+{
 +	rcu_assign_pointer(d->data, NULL);
-+	RCU_INIT_POINTER(d->data, NULL);
-+	(void)unrcu_pointer(d->data);
 +}
 +
-+static void wants_rcu_held(void)	__must_hold_shared(RCU)       { }
-+static void wants_rcu_held_bh(void)	__must_hold_shared(RCU_BH)    { }
-+static void wants_rcu_held_sched(void)	__must_hold_shared(RCU_SCHED) { }
-+
-+static void __used test_rcu_lock_variants(void)
++static void __used test_srcu_guard(struct test_srcu_data *d)
 +{
-+	rcu_read_lock();
-+	wants_rcu_held();
-+	rcu_read_unlock();
-+
-+	rcu_read_lock_bh();
-+	wants_rcu_held_bh();
-+	rcu_read_unlock_bh();
-+
-+	rcu_read_lock_sched();
-+	wants_rcu_held_sched();
-+	rcu_read_unlock_sched();
-+}
-+
-+static void __used test_rcu_lock_reentrant(void)
-+{
-+	rcu_read_lock();
-+	rcu_read_lock();
-+	rcu_read_lock_bh();
-+	rcu_read_lock_bh();
-+	rcu_read_lock_sched();
-+	rcu_read_lock_sched();
-+
-+	rcu_read_unlock_sched();
-+	rcu_read_unlock_sched();
-+	rcu_read_unlock_bh();
-+	rcu_read_unlock_bh();
-+	rcu_read_unlock();
-+	rcu_read_unlock();
-+}
-+
-+static void __used test_rcu_assert_variants(void)
-+{
-+	lockdep_assert_in_rcu_read_lock();
-+	wants_rcu_held();
-+
-+	lockdep_assert_in_rcu_read_lock_bh();
-+	wants_rcu_held_bh();
-+
-+	lockdep_assert_in_rcu_read_lock_sched();
-+	wants_rcu_held_sched();
++	guard(srcu)(&d->srcu);
++	(void)srcu_dereference(d->data, &d->srcu);
 +}
 -- 
 2.51.0.384.g4c02a37b29-goog
