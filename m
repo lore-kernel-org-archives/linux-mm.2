@@ -4,109 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3B12CAC59F
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 03:19:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72458CAC59A
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 03:26:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 06E838E00A6; Wed, 17 Sep 2025 23:19:06 -0400 (EDT)
+	id 97F4B8E00A7; Wed, 17 Sep 2025 23:26:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 01F798E006B; Wed, 17 Sep 2025 23:19:05 -0400 (EDT)
+	id 92FF98E006B; Wed, 17 Sep 2025 23:26:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E77498E00A6; Wed, 17 Sep 2025 23:19:05 -0400 (EDT)
+	id 845D08E00A7; Wed, 17 Sep 2025 23:26:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D56568E006B
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 23:19:05 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6D10A1A0785
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 03:19:05 +0000 (UTC)
-X-FDA: 83900914650.21.0D2967F
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 98E24A0006
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 03:19:02 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=HT15zk2u;
-	spf=pass (imf15.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 732FE8E006B
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 23:26:11 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0E9905B3BC
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 03:26:11 +0000 (UTC)
+X-FDA: 83900932542.27.5EBB6F4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 3EE27180007
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 03:26:09 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=xVgzKPzE;
+	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758165543;
+	s=arc-20220608; t=1758165969;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dQg4VOw6/IdS7zCdlkkwiGHYivVni7H2YH1AE7eKIJ0=;
-	b=zXC9Q2E9F6dQ6Uavb1bB0gnGu63F8X1LqrOR4eR0zBOWj05VXQADXNEursLIaUmtggWLUq
-	Tm2NVWNka4q6yCFJtw+avRtG2JL9btiB/JHnQeiKMLN8Be/OVdhGCwzpDoaKYNF6hbsZQg
-	iWgC0YuiVimkvVeAyn7wNFHdaa1Sato=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758165543; a=rsa-sha256;
+	bh=vFT5cidG4X3yNhl8KIfIN6nKHt7y2A3Lj1WlLYzpHfA=;
+	b=Z6xv3szgQ69uSYA1Ga+0s+EAIwjHniz1/Vqv2CsKm5DmZLRT+AxX5n7z9sw0b3vf/zPuer
+	PXR9ntqqSav/Xwf06j8ChqkzqCHE98N9nGhD1Yx1bBIFNz61+lOMZ2S1eDA0dqIU1nFVhT
+	+Bysp3KJz0w9l2UrDA/LU0lgIf/AoEw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758165969; a=rsa-sha256;
 	cv=none;
-	b=zf++5BCXB1uVvv3AErA9cB9K37kWIUzuDt31hVlG19uK2sjIToY5MQJVnIZjFwlpga/HoJ
-	56OMZySfROmzPbgOMB6+oHmNPp4wVy34adPZeWu2F4gwjI68i0w/TEPfhDrDueRESCEP/J
-	gfB2Au3fof1Wdu6OUuloeMWu5jqFb2I=
+	b=2P7jmzbudk1bKhrB8Zcq1FXR3/BH7AvttxMbMmqjY7wonKUtDmHOovg7nPbY99q0YFY2o5
+	Bg6spYbLVtT+Q29kGSxBk6iZ+ZaRT90MKm6o4kkkKhXgbdoU5rCIAFpmnQK6IHk9npPO6t
+	VVOlltIUl4l7aZ3+G/8JXkuWrfE0ytI=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=HT15zk2u;
-	spf=pass (imf15.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758165542; x=1789701542;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=F5lh9XX2wr6nkkLJ+ixkgrNSuR5uHERQJKhZx7YZtOw=;
-  b=HT15zk2upXskmw0bS82X57RLKjEjuG5MrcU55wsVBmhzlUYtzsxhSBSP
-   BmqxoHHRpmBznmPxleUVcSa0h3gu0cDWNFbWJ+JjaWVpWLFVeLqGGZd2w
-   /H803woe0ZEHbvuwVxSbmAQGHf/XOroD5VKMcAA4hyOs0rKDHHqIHWZFM
-   UBfbJ/FRMc9pZJ58Sq3ZKHxfNw/WRGkZMBYQFzVzPlZdA1ideqBzNfhnw
-   wC/vlzf+YrvrISVVuV0wUzL6/BAKf26GRrZmWBD28HzQ8M8OHtlH3uBjE
-   Wm2uG6fucoG6TSA/qNyI+stb6Lx0DlhKevhbgtkzqflEaktOOk6PRf0/z
-   w==;
-X-CSE-ConnectionGUID: DueO4pCkTpeWHjRxk6hdkw==
-X-CSE-MsgGUID: 5y5wfjiZRXmO6TGp1Gzs3A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11556"; a="71166104"
-X-IronPort-AV: E=Sophos;i="6.18,273,1751266800"; 
-   d="scan'208";a="71166104"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2025 20:19:01 -0700
-X-CSE-ConnectionGUID: 3G2x57egTrGvbePk9Tt6tg==
-X-CSE-MsgGUID: VibjPdNIQKS4LH6sSyukmQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,273,1751266800"; 
-   d="scan'208";a="174709563"
-Received: from lkp-server01.sh.intel.com (HELO 84a20bd60769) ([10.239.97.150])
-  by orviesa010.jf.intel.com with ESMTP; 17 Sep 2025 20:18:55 -0700
-Received: from kbuild by 84a20bd60769 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uz5Aa-0002hL-0s;
-	Thu, 18 Sep 2025 03:18:52 +0000
-Date: Thu, 18 Sep 2025 11:17:59 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ethan Graham <ethan.w.s.graham@gmail.com>, ethangraham@google.com,
-	glider@google.com
-Cc: oe-kbuild-all@lists.linux.dev, andreyknvl@gmail.com, andy@kernel.org,
-	brauner@kernel.org, brendan.higgins@linux.dev, davem@davemloft.net,
-	davidgow@google.com, dhowells@redhat.com, dvyukov@google.com,
-	elver@google.com, herbert@gondor.apana.org.au, ignat@cloudflare.com,
-	jack@suse.cz, jannh@google.com, johannes@sipsolutions.net,
-	kasan-dev@googlegroups.com, kees@kernel.org,
-	kunit-dev@googlegroups.com, linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lukas@wunner.de,
-	rmoar@google.com, shuah@kernel.org, tarasmadan@google.com
-Subject: Re: [PATCH v1 06/10] kfuzztest: add KFuzzTest sample fuzz targets
-Message-ID: <202509181042.zCqqD9To-lkp@intel.com>
-References: <20250916090109.91132-7-ethan.w.s.graham@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250916090109.91132-7-ethan.w.s.graham@gmail.com>
-X-Stat-Signature: pzi3b1uzkn3wgcat15ycjn6nf5y4jmbd
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=xVgzKPzE;
+	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3D75760010;
+	Thu, 18 Sep 2025 03:26:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BB00C4CEE7;
+	Thu, 18 Sep 2025 03:26:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1758165967;
+	bh=FirTgoA8QKBiq40eS+mg/EDHgGtgRWtep9eREaFgiiA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=xVgzKPzEzthbiVN21aMkylYV6iPBCfv/X3+PoKtxmLcP6SqltCn1Mol99vLYS5tj4
+	 DsY7p6p+UbDxmgCZTr5k+pw957/Vl92YAz+sgkSM0ENnv1XYmURCjfQg33F/0Su6wS
+	 v3KynmH5fVpNewjzXG6gdlGFdT3UsCniUmZU7Rqg=
+Date: Wed, 17 Sep 2025 20:26:06 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Julian Sun <sunjunchao@bytedance.com>
+Cc: cgroups@vger.kernel.org, linux-mm@kvack.org, jack@suse.cz,
+ tj@kernel.org, muchun.song@linux.dev, venkat88@linux.ibm.com,
+ hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev,
+ shakeel.butt@linux.dev, Lance Yang <lance.yang@linux.dev>, Masami Hiramatsu
+ <mhiramat@kernel.org>
+Subject: Re: [External] Re: [PATCH v6] memcg: Don't wait writeback
+ completion when release memcg.
+Message-Id: <20250917202606.4fac2c6852abc5ba8894f8ee@linux-foundation.org>
+In-Reply-To: <CAHSKhtdt9n-K6KGXTwofpRPo-pH0-YoKFLtEe3Z4CszmNL0rCg@mail.gmail.com>
+References: <20250917212959.355656-1-sunjunchao@bytedance.com>
+	<20250917152155.5a8ddb3e4ff813289ea0b4c9@linux-foundation.org>
+	<CAHSKhtdt9n-K6KGXTwofpRPo-pH0-YoKFLtEe3Z4CszmNL0rCg@mail.gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ox8oxuo7s3fjsb93es6jcfa7bpktotaj
+X-Rspamd-Queue-Id: 3EE27180007
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 98E24A0006
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1758165542-115116
-X-HE-Meta: U2FsdGVkX19txScAC7EgzVGrn8F+BYaWLtT732U1GmPdDxxtlN2XmiKUnzpUACBLsTiOTyCCCy4+o0qWcSSdAKa+NzN+lofB1A2xv+2BTKjY7EjZnxqwFYZggsAj5t1jcdfKSzXcn3ufemvsl0kO0BLQOKVkews2KZgwIJljCgj+pAKaIrbYGkGsUJNWk+x2mipHTvYwHeK9MGBSVv670Bxku6vjiDNhvSAQkBZoXhS0dgLNnKmwWcz2Z1v+uMbBMhf62M9gqR7w3kvxTYFrSSXdwjkm9+esJwsQUU1+VCQSanaqrtv5sEnwBA3qs+FJ8ny0EONP69nmzmkwKINbEH0LwoMsR2z0awy81KVWKwES3sBIpR0Pk6XATJwnmjytMoMYqifBWcAOOY9/KSVCd0X/ekw2Bn8axhP7htW7jSKm8a9N0WyjBVFdLD9TRx6Pise3y97KFoz4A7lxcO2SQxGjtJjuQVQAdwyeXTDmLlJoaD2HD0IxUNZAEiA3Re8RXTIv1ndM8WpXPFCjZYDmyF/5TqNIv+wbd9Sg9uOiiGZiJ8Y9ZiFTXMbfqfPfgm2+4sv+prHkH2N0EpoWcVyTFtQXSjUtc/rEMMqLEkNzYU3cA73zk5dAFmUIG3221+UNEa6HauVBPxTGqH7Tf7DcXmPI3EjeuLVNxT72xUG8ePW2FAfAT5E/YdXpN/dV03fpvdIOnpBElkzcRVrdGH511WglU7NhSCDSn8MYx7ANWHgfdsd6WBb/Y5NwqFJxDdbn2zmjrY8OMyMs/mvhZ5kQDZUgJ6aSkFLa56+lIC37T//WhA9a8QP7taugrepYZxtPIOpzbKWUMc+7sx3tTrQA+Ggogdk7k9q/1MOfnl23d0TPKjY9ldeP1U6e94NpWErEyxcn1n05QgqQCVG+P5tF5JRPTaU+92/1bNMnBAAJM52YcrPWCx7NxJ27aw6R7Ip1fGLq6fk4Kzq/JjpadBe
- IhQ8UaYJ
- +iIPi5x6xnMvX6lf1kq0IPjBzLoAVFJZSaSASR97dP31iR384cyI5sf2OCwahoDZWF3XSKpuNV6rq4rU9tpaFzGV1q6GhSw9CmjuE+DsSLvDdHTG9YHGucQhOn6D5bkPysp6oj2JGQPYP5R0Ji/PpNQhHNM85MexOvKJI8iAE2lI/qS8XRen/n4IJxj1e/scwWccBrbocq/yaIDHqxlGqGhAAx1vyuGVksmOWOJ0d6q3/SBcZIhtfoJ8OBEACK6UEzUYB8DwQ0qOIXoyj5moVPJaZRrj+OA1Nic9CKJc2pXNz2EEimDYTX4HQpMXtWp0JYQJEJQ403xRVwn3HFKTFDA/vBaFQncico8gu01pfIItP1O3Mg+IbsnBqhB2hhsZOANrtm2NckLqWnAUEkyYcdb4pN2gxxL4CimOgdVd3JavdLx4I7/sGzyKOoRulkRIbVpsR
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1758165969-426537
+X-HE-Meta: U2FsdGVkX19OhsDr8rY3NDLHNxjmq2UGN6QwckNjdCJMMgCMXDJG2JMGoyJidsOFCmya3BvdUjxfhjTY+DrjhVal47TfqLg3dAAji8+mwCwLLtzGO3DrkEIZbAtldZb8IhavFHhD/sdWcD3FshNKQ1dcJP+fJ0sqURzF2BFiVTs7RY8APJgqGZbgHGWVkxFjd11tDlbFj9Fr/bxAuHXABDxxEB8QUlT3QHSngdnnq6cVloowrwUmO8W5Ar0kZ515Eeet52yldf+XKKh6kemETTnwOoyofH9Vp+VXxYW+S9A4bL2HMFNkWUqtP8UVHlr/egLHtzLSqOym/ELCpz2Vzepooz0qNwHKaRZhfhrPfNSTHzF7f6RIJKiYQdeu01h3Cn1Nlhx2H+tMP41rn3fXyf7S0UyE4UTJlMdrH3qsKEFK3+HilP7ZAseZIeKCQs4CbBtz4F3csi9oudVa+vAN+OYyHSmMS8kKenlShydrLzgoPrioyAaDrg/hv/XtAnHrCH6hDE5Y8THEA38v68I2ycMi9m6X90tCL7GimUSTwPCgJVw6Sj3f3JemN1KeGKqXeF0fzqjRTDJ28vezUQiCB3WXTA1MoFe2+fnLbtZvZz+JF2oqU382JUPnhkloEgzlQxK9apYdnebMJFtaRRMXFbAbSX/OON9mgXgQPJWqOeTUh8/SxsU3CR4xX4PRnuHK3WPCBGp1gMbQz42s/De5yYc49xlWzgAMFxwWAhJmv5K91QNktyW8HkEOVQqVWZh0KIHEJQr5MoW030p6q1VIo2QyJePFIbvZOL+juOWtt0Dt8XNEOOyrSiiyRnT88o8ZNWWcEqSvIgc7o40mAQsD0AlxIyaSfk+x2vtcKlpzVxwQOitf+iHZxa5T+XHchO5WHpFG7o9XqfOas70ps7cTlubrxJGZLkNEsTtFnKOPFVp7LemgK4kPVLrN6lUzj1pE+MsUMB9LkvUixTFEb5o
+ XDLvV64X
+ P+aXysCBAC/N4c6HCXq/gH5RuD6IDgyyWWmv110ERGLncnV6X2ASimQ6ae0K7FuX68lz81805MhYcfZWBVGRUyrT7NZRI5x2kHmC/RcGI7/JRT5gweh/DCVH+ft7zM4NCUVHIrito1CX+LJScELhv5OOpNVFZeQUgLmWz7jYAMxIlPlMOl14kbPfVB+0GSWCVx89exclsqH7LTK3sFPnuKpw0N5gwRkTu8XNkKcpHERCq34dQ3hT/9WbJqOyF20s/gdO/4slQC9cuqj5WxSecWiagDo41iTfHiLpcYidUZvAvgFKL34OmgpGqXNuuTgYkJEt894T/N3iI6GYTSSox8PQFLdG0AMzDLtVhu/WUf1T8ffs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,49 +96,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Ethan,
+On Thu, 18 Sep 2025 11:03:18 +0800 Julian Sun <sunjunchao@bytedance.com> wrote:
 
-kernel test robot noticed the following build warnings:
+> Hi,
+> Thanks for your review and comments.
+> 
+> On Thu, Sep 18, 2025 at 6:22 AM Andrew Morton <akpm@linux-foundation.org> wrote:
+> >
+> > On Thu, 18 Sep 2025 05:29:59 +0800 Julian Sun <sunjunchao@bytedance.com> wrote:
+> >
+> > > Recently, we encountered the following hung task:
+> > >
+> > > INFO: task kworker/4:1:1334558 blocked for more than 1720 seconds.
+> > > [Wed Jul 30 17:47:45 2025] Workqueue: cgroup_destroy css_free_rwork_fn
+> > >
+> > > ...
+> > >
+> > > The direct cause is that memcg spends a long time waiting for dirty page
+> > > writeback of foreign memcgs during release.
+> > >
+> > > The root causes are:
+> > >     a. The wb may have multiple writeback tasks, containing millions
+> > >        of dirty pages, as shown below:
+> > >
+> > > >>> for work in list_for_each_entry("struct wb_writeback_work", \
+> > >                                   wb.work_list.address_of_(), "list"):
+> > > ...     print(work.nr_pages, work.reason, hex(work))
+> > > ...
+> > > 900628  WB_REASON_FOREIGN_FLUSH 0xffff969e8d956b40
+> > > 1116521 WB_REASON_FOREIGN_FLUSH 0xffff9698332a9540
+> > >
+> > > ...
+> > >
+> >
+> > I don't think it's particularly harmful that a dedicated worker thread
+> > has to wait for a long time in this fashion.  It doesn't have anything
+> > else to do (does it?) and a blocked kernel thread is cheap.
+> 
+> It also delays the release of other resources and the update of
+> vmstats and vmevents statistics for the parent cgroup.
 
-[auto build test WARNING on akpm-mm/mm-nonmm-unstable]
-[also build test WARNING on herbert-cryptodev-2.6/master herbert-crypto-2.6/master linus/master v6.17-rc6 next-20250917]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+This is new - such considerations weren't described in the changelog. 
+How much of a problem are these things?
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Ethan-Graham/mm-kasan-implement-kasan_poison_range/20250916-210448
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-nonmm-unstable
-patch link:    https://lore.kernel.org/r/20250916090109.91132-7-ethan.w.s.graham%40gmail.com
-patch subject: [PATCH v1 06/10] kfuzztest: add KFuzzTest sample fuzz targets
-config: x86_64-randconfig-r112-20250918 (https://download.01.org/0day-ci/archive/20250918/202509181042.zCqqD9To-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250918/202509181042.zCqqD9To-lkp@intel.com/reproduce)
+> But we can put
+> the wb_wait_for_completion() after the release of these resources.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202509181042.zCqqD9To-lkp@intel.com/
+Can we move these actions into the writeback completion path which
+seems to be the most accurate way to do them?
 
-sparse warnings: (new ones prefixed by >>)
->> samples/kfuzztest/overflow_on_nested_buffer.c:63:1: sparse: sparse: symbol '__fuzz_test__test_overflow_on_nested_buffer' was not declared. Should it be static?
---
->> samples/kfuzztest/underflow_on_buffer.c:53:1: sparse: sparse: symbol '__fuzz_test__test_underflow_on_buffer' was not declared. Should it be static?
+> >
+> > > 3085016 WB_REASON_FOREIGN_FLUSH 0xffff969f0455e000
+> > > 3035712 WB_REASON_FOREIGN_FLUSH 0xffff969d9bbf4b00
+> > >
+> > >     b. The writeback might severely throttled by wbt, with a speed
+> > >        possibly less than 100kb/s, leading to a very long writeback time.
+> > >
+> > > ...
+> > >
+> > >  include/linux/memcontrol.h | 14 +++++++++-
+> > >  mm/memcontrol.c            | 57 ++++++++++++++++++++++++++++++++------
+> > >  2 files changed, 62 insertions(+), 9 deletions(-)
+> >
+> > Seems we're adding a bunch of tricky code to fix a non-problem which
+> > the hung-task detector undesirably reports.
+> 
+> Emm.. What is the definition of 'undesirably' here?
 
-vim +/__fuzz_test__test_overflow_on_nested_buffer +63 samples/kfuzztest/overflow_on_nested_buffer.c
+Seems the intent here is mainly to prevent the warning.  If that
+warning wasn't coming out, would we bother making these changes?  If
+no, just kill the warning.
 
-    53	
-    54	/**
-    55	 * The KFuzzTest input format specifies that struct nested buffers should
-    56	 * be expanded as:
-    57	 *
-    58	 * | a | b | pad[8] | *a | pad[8] | *b |
-    59	 *
-    60	 * where the padded regions are poisoned. We expect to trigger a KASAN report by
-    61	 * overflowing one byte into the `a` buffer.
-    62	 */
-  > 63	FUZZ_TEST(test_overflow_on_nested_buffer, struct nested_buffers)
+> >
+> > Would a better fix be to simply suppress the warning?
+> >
+> > I don't think we presently have a touch_hung_task_detector() (do we?)
+> > but it's presumably pretty simple.  And maybe
+> > touch_softlockup_watchdog) should be taught to call that
+> > touch_hung_task_dectector().
+> >
+> > Another approach might be to set some flag in the task_struct
+> > instructing the hung task detector to ignore this thread.
+> 
+> To me, this feels kind of like a workaround rather than a real fix.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+I don't see why.  It appears that the kworker's intended role is to
+wait for writeback completion then to finish things up.  Which it does
+just fine, except there's this pesky warning we get.  Therefore: kill
+the pesky warning,
+
+> And these approaches are beyond the scope of memcg,
+
+So expand the scope?  If hung-task doesn't have a way to suppress
+inappropriate warnings then add it and use it.
+
+> I'm not sure how
+> Tejun thinks about it since he mentioned before wanting to keep the
+> modifications inside the memcg. Given the fact we already have an
+> existing solution and code, and the scope of impact is confined to
+> memcg, I prefer to use the existing solution.
+
+mmm...  sunk cost fallacy!  Let's just opt for the best solution,
+regardless of cost.
+
 
