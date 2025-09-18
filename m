@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2CBFCAC5A0
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 13:20:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 160F5CAC5A0
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 13:20:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B35958E0110; Thu, 18 Sep 2025 09:20:42 -0400 (EDT)
+	id 256048E0111; Thu, 18 Sep 2025 09:20:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B06528E010E; Thu, 18 Sep 2025 09:20:42 -0400 (EDT)
+	id 198A88E010E; Thu, 18 Sep 2025 09:20:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A6638E0110; Thu, 18 Sep 2025 09:20:42 -0400 (EDT)
+	id E87DB8E0111; Thu, 18 Sep 2025 09:20:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 858518E010E
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 09:20:42 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4E4CC118069
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 13:20:42 +0000 (UTC)
-X-FDA: 83902430724.19.F27C435
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CD3248E010E
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 09:20:43 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7877B1401BF
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 13:20:43 +0000 (UTC)
+X-FDA: 83902430766.27.82C1EB2
 Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-	by imf24.hostedemail.com (Postfix) with ESMTP id F0819180019
+	by imf28.hostedemail.com (Postfix) with ESMTP id 4FD22C0017
 	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 13:20:39 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
+Authentication-Results: imf28.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf24.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.187 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
+	spf=pass (imf28.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.187 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758201640;
+	s=arc-20220608; t=1758201641;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=GJL0SyKzEA0r4IFf2wEXk9iAaLLpPCCyz/PY5cSiKyc=;
-	b=t/4i4ZXqSrFTtkA0E0stavOsvlMd7ku6pZeMNvO/lHUqiBki4BRvjiADV7p3sIVr+u6I+M
-	Vh0azua7E1mQW4ItWyNS+amP+UMBpLp7vx7qlkI5YegWfJgx1qQdJPFfzmU6wunmp+8d9u
-	YMUDlHscWl/Vce7Ko9USsMNH8IBoogk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758201640; a=rsa-sha256;
-	cv=none;
-	b=jCWt4Yizs36KwarbHpEn6yQpF96MiAtVUAkCiz072htENNujAu0hvWj7F7F3h9OgJYhOp3
-	0D/Ho6EMy/g6/ic4pY4bCC3UoWrdLWqqos47I6Pi4N94j255ZQrFnKQwJWZTC3eOWNUkQf
-	q0F2mgxiD9ZXU2WrbvksA0bAKCCq3k8=
+	bh=nJC8vY1OFWCveZ2p+oqcaOuTpPBxBRj+1SaC7ITRr8s=;
+	b=hrZWcpBL3q/wZ8I+L858ltt0C7UGFASjD4m5SyCH5Wy058Hb5oO4/BKtvzwuMFP42HIu9H
+	7VUpxHTgqm+lKwMzmOtjDQKxDOSaqINoDvEkK/yM2YmuLPwktydsTVOz9Vmhq4xMlp4t2T
+	HhD3cRIBN2KOdY+5FhJXP6F4woOO2Zw=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
+	imf28.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf24.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.187 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.105])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4cSGP43jkQz13Njx;
-	Thu, 18 Sep 2025 21:16:24 +0800 (CST)
+	spf=pass (imf28.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.187 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758201641; a=rsa-sha256;
+	cv=none;
+	b=Bl0x3jcOqHG+gTndPuhffzNtcXCFsHmW9jb1qOaTeWxqZQdKDy1Tn/IhdN7I62x6yg8NeA
+	jqxpvHVPFrnrCvnWDIUrfY+XNIQf5J4TWBzXghZSCXDCYR/v5CcEQ9wxb4ppFBUz6vghpU
+	6LV7xZuM6Shogl466Jf/w8l2xyWd5Rg=
+Received: from mail.maildlp.com (unknown [172.19.163.252])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4cSGTX3vwLz14McN;
+	Thu, 18 Sep 2025 21:20:16 +0800 (CST)
 Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id A3EB0140137;
-	Thu, 18 Sep 2025 21:20:35 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 79441180B63;
+	Thu, 18 Sep 2025 21:20:33 +0800 (CST)
 Received: from localhost.localdomain (10.175.112.125) by
  dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 18 Sep 2025 21:20:34 +0800
+ 15.2.1544.11; Thu, 18 Sep 2025 21:20:32 +0800
 From: Kefeng Wang <wangkefeng.wang@huawei.com>
 To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
 	<david@redhat.com>, Oscar Salvador <osalvador@suse.de>, Muchun Song
@@ -68,9 +68,9 @@ CC: <sidhartha.kumar@oracle.com>, <jane.chu@oracle.com>, Vlastimil Babka
 	<vbabka@suse.cz>, Brendan Jackman <jackmanb@google.com>, Johannes Weiner
 	<hannes@cmpxchg.org>, <linux-mm@kvack.org>, Kefeng Wang
 	<wangkefeng.wang@huawei.com>
-Subject: [PATCH v2 4/8] mm: page_alloc: add split_non_compound_page()
-Date: Thu, 18 Sep 2025 21:19:56 +0800
-Message-ID: <20250918132000.1951232-5-wangkefeng.wang@huawei.com>
+Subject: [PATCH v2 2/8] mm: hugetlb: optimize replace_free_hugepage_folios()
+Date: Thu, 18 Sep 2025 21:19:54 +0800
+Message-ID: <20250918132000.1951232-3-wangkefeng.wang@huawei.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20250918132000.1951232-1-wangkefeng.wang@huawei.com>
 References: <20250918132000.1951232-1-wangkefeng.wang@huawei.com>
@@ -80,14 +80,14 @@ Content-Type: text/plain
 X-Originating-IP: [10.175.112.125]
 X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
  dggpemf100008.china.huawei.com (7.185.36.138)
-X-Stat-Signature: afxo8kzk5nn47hbsz5snk4ysw4pjw7db
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F0819180019
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1758201639-523743
-X-HE-Meta: U2FsdGVkX1/pwkhR//t65hMzmclQ2lt8BnCFm3QETwb0FSc7fTUJEhbr8lukcCJMJP3q8Cpj2Irt9+PdtUzFG3Vhgmc+U38bokBULheKC+KXOsYL+2FKomGS9MoO+47EKJX20wTU6OkuR+S7UlTmyVskqXujHC1dePnGfLZoMvvOAC5/+3/Kcz1Nox+CzCRoROs42HqUVr1mOxzCdoRnStBcHHLhGZPCcJza/dsvsJivy4dAMmz1Lrt7LQ6ME6UD1r1Hk0Gj92cJ5vzmVzBdctrTIi1i/Q9HoFybAmDZkB7N3r1jrxdSlwX3QPcoaQE2abk/TeUIahx/pBkh8qM2NnXsse2NzoRMQpQxYFZ7O1jveUjdlfsCBBWIszxAWWNEKsRw7P40gwXWkOgn+iIZ0SihamIHSXNmuD0R6Cv9dfWqZwMweFGQ3DKj7X3C/ed+Zc063NPlwJmtDbDlmno2t6PgGcPJEXJMibZa7ZbmCWUenxykQFXR48YZ1VVt/fmWEedGnyVs3sPAdWbtJS6p5r/qozawcNhWx4dpg7cDGkMww2SNlhZ7DrxBonRFhnOe7dg+HWwfL1WXK9lGVo+oRy96y+2BxeC36zsJ4zBpqiEwIun7YsN6y1x4xZ/lq9ZVr3jICWn6fkswYi/w6qYjDqRK5q9hx0WQ0vErzBM9mUKWPCldgv+ZG7ghiOozkf0AwA/+osJ/F4VJOpwjvG62o1Uvzjt4dZinmX6yo1YYRyOlfcvKR7hXmUkQcXGo+eEAjTaAqey5rlNXyFRGkmdjtmm3LZSXdET0uYlgKrbw1B12SBS8OeN0i7caYbdB4UHeUhkuqbmAOanoTSpb9ds+zXkptdWcVYynIDO66x+6axWCfpw+tOUYoVsAi3fIz/5chbV2Hl4Kriqmvgw2XlqxItxFEyizpJ0d2rPln+YpfsY8b1T1Y/iiD7OeGmmhlhTSRpBxGta88bLphHMYuxc
- 6MU/cCLK
- triFSG3TCWcUOz72piXa8K718E/Xu3wO6GNVZTL+eYbngj3smdscURYsGxqYv6OOwcVLeBOXNp0roriQNCeSQaV8KzqmoGd5lWJ4T+uu947b6N0Q1bpCTj75CNcWIS0woQ5rq5nHgL/CzUwG87wYvLlStlLIustQ0sSfW6vcnhijvpC8kw0kZmKbUgjAy11aOTaEJhDM9hmFrgt2b+prB0nv3PhTskSDC7ycxiK/TZJXGok0ot13TOhut4Q==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 4FD22C0017
+X-Stat-Signature: 8h7nickad8p8j3mi13udybjtz5e34bhf
+X-HE-Tag: 1758201639-380498
+X-HE-Meta: U2FsdGVkX1+SG0u3mMpoOtrdypgTRdjIi8l+XZlwwElBjByFSoxnroZtvFHkGzXMX+urTgzMtyZScf/+kqzhsnixDdllnfpilXYxHYfh1pOye2bnUHkhPk4hIOExUN44l97TstDGi3S3qzQ1jYUcqnOlpEZP66I78d+yQoRhUUSRqhJE1ElgUc1NzkC2QLxY/yzWsAnqLgnGiJikDf/fmqLF9gefBr5tVjEaiLPdUFIpgclYLDXCa9n99TaVmEna1sd4NUNK7SSdsQXyBO4nmsU+Yy1bIceIctpnAnf3qYtj/wAb+AV/ltVQIGSJrDHdsTkMuNBPyAd52HYl5gGLJ8/BRtx5rKnOYLmHhjuNhrLTxQk+USUjqH+GXrYnFTQR2kX7HlonR6YlJHRrIWB+FY+fRUtC3qOUPhPb0hFdwP8IZC7HDw2PmddvYbyGgxMdMzIkzyif6GB9dTZ/x7PZOymLQnCl73hMOPLFsOqiYTxOU54llH9jzhLbhe3Ll14rZW9t+zA1M89+G4nYnlP0qlUpanU+tJ3bVFB0MpZNmxMnmxkl9/vOUzN3Cs7LGX8kk3/Hst9SvfuFm/oy8fpmEL6OWn9zRJgcQU7slAayEftvRMFLonfB77XpyMmB7OAS0ZPDS99CX8qLY4Zi5B8LIr91qU+r/+fs3vkDJR/0CjHmWpfrj3IN1PjMzcLTldSNXrWW+mg+wo+HPXHt43dlMITOegAlXbL684Eg4luNsLOeZT6N815zQolPop/rwPaZY93iPexeuQNbfddZPPN5iAGeJwa3g8rre3GI8K7wMD7p8EliXXq/XVaxMVB9ye0JcgBFiI07zqHPV6GbkyA10oJqQmi7akte7JWm9dCJfKbIGtZOEzBKkLE4k8zHTM2yLjAqvPJW3233GH9PlU+0gxfsWu4fdbIVjiXZb+Mwax7bWNQ1TeuAbeAsZHLqQByoCCnuahVSf68xbnagGuI
+ hH7/Y+hW
+ zqgiOhA9Cgwf4t70uN5+9vDJUSdO3cu/j5h1HCVGSxN5kcEc4uSfKjJ9B99oGIybPa7Xh23lV0AJDiMKNvkWhMl7LfISlu9slrEVKeXhiioghp2oWt+EmN6rTxf0wdqylfg0ILSJYT45cxZbyyAA9wUN5cMMLkehHR2pF4/7IvXDJfO/lxAoD2iwh9PRxJIkZAMV1pMV0Bhx0P2CJE0dc73BJcxq+ynqPohI/ik3SLq/pPFH+cdWNccVIkw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,61 +96,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add new split_non_compound_page() to simplify make_alloc_exact().
+No need to replace free hugepage folios if no free hugetlb folios,
+we don't replace gigantic folio, so use isolate_or_dissolve_huge_folio(),
+also skip some pfn iterations for compound pages such as THP and
+non-compound high order buddy to save time.
+
+A simple test on machine with 116G free memory, allocate 120 * 1G
+HugeTLB folios(107 successfully returned),
+
+  time echo 120 > /sys/kernel/mm/hugepages/hugepages-1048576kB/nr_hugepages
+
+Before: 0m0.602s
+After:  0m0.429s
 
 Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
 ---
- mm/page_alloc.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ mm/hugetlb.c | 49 +++++++++++++++++++++++++++++++++++++------------
+ 1 file changed, 37 insertions(+), 12 deletions(-)
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index b6eeae39f4d0..e1d229b75f27 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -3042,6 +3042,15 @@ void free_unref_folios(struct folio_batch *folios)
- 	folio_batch_reinit(folios);
- }
- 
-+static void split_non_compound_page(struct page *page, unsigned int order)
-+{
-+	VM_BUG_ON_PAGE(PageCompound(page), page);
-+
-+	split_page_owner(page, order, 0);
-+	pgalloc_tag_split(page_folio(page), order, 0);
-+	split_page_memcg(page, order);
-+}
-+
- /*
-  * split_page takes a non-compound higher-order page, and splits it into
-  * n (1<<order) sub-pages: page[0..n]
-@@ -3054,14 +3063,12 @@ void split_page(struct page *page, unsigned int order)
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 1806685ea326..bc88b659a88b 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -2890,26 +2890,51 @@ int isolate_or_dissolve_huge_folio(struct folio *folio, struct list_head *list)
+  */
+ int replace_free_hugepage_folios(unsigned long start_pfn, unsigned long end_pfn)
  {
- 	int i;
- 
--	VM_BUG_ON_PAGE(PageCompound(page), page);
- 	VM_BUG_ON_PAGE(!page_count(page), page);
- 
- 	for (i = 1; i < (1 << order); i++)
- 		set_page_refcounted(page + i);
--	split_page_owner(page, order, 0);
--	pgalloc_tag_split(page_folio(page), order, 0);
--	split_page_memcg(page, order);
+-	struct folio *folio;
+-	int ret = 0;
++	unsigned long nr = 0;
++	struct page *page;
++	struct hstate *h;
++	LIST_HEAD(list);
 +
-+	split_non_compound_page(page, order);
++	/* Avoid pfn iterations if no free non-gigantic huge pages */
++	for_each_hstate(h) {
++		if (!hstate_is_gigantic(h))
++			nr += h->free_huge_pages;
++	}
+ 
+-	LIST_HEAD(isolate_list);
++	if (!nr)
++		return 0;
+ 
+ 	while (start_pfn < end_pfn) {
+-		folio = pfn_folio(start_pfn);
++		page = pfn_to_page(start_pfn);
++		nr = 1;
+ 
+-		/* Not to disrupt normal path by vainly holding hugetlb_lock */
+-		if (folio_test_hugetlb(folio) && !folio_ref_count(folio)) {
+-			ret = alloc_and_dissolve_hugetlb_folio(folio, &isolate_list);
+-			if (ret)
+-				break;
++		if (PageHuge(page) || PageCompound(page)) {
++			struct folio *folio = page_folio(page);
++
++			nr = 1UL << compound_order(page);
+ 
+-			putback_movable_pages(&isolate_list);
++			if (folio_test_hugetlb(folio) && !folio_ref_count(folio)) {
++				if (isolate_or_dissolve_huge_folio(folio, &list))
++					return -ENOMEM;
++
++				putback_movable_pages(&list);
++			}
++		} else if (PageBuddy(page)) {
++			/*
++			 * Buddy order check without zone lock is unsafe and
++			 * the order is maybe invalid, but race should be
++			 * small, and the worst thing is skipping free hugetlb.
++			 */
++			const unsigned int order = buddy_order_unsafe(page);
++
++			if (order <= MAX_PAGE_ORDER)
++				nr = 1UL << order;
+ 		}
+-		start_pfn++;
++
++		start_pfn += nr;
+ 	}
+ 
+-	return ret;
++	return 0;
  }
- EXPORT_SYMBOL_GPL(split_page);
  
-@@ -5315,9 +5322,7 @@ static void *make_alloc_exact(unsigned long addr, unsigned int order,
- 		struct page *page = virt_to_page((void *)addr);
- 		struct page *last = page + nr;
- 
--		split_page_owner(page, order, 0);
--		pgalloc_tag_split(page_folio(page), order, 0);
--		split_page_memcg(page, order);
-+		split_non_compound_page(page, order);
- 		while (page < --last)
- 			set_page_refcounted(last);
- 
+ void wait_for_freed_hugetlb_folios(void)
 -- 
 2.27.0
 
