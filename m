@@ -4,121 +4,203 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65059CA1013
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 15:44:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02A0ECA1013
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 15:48:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B89A728003B; Thu, 18 Sep 2025 11:44:06 -0400 (EDT)
+	id 503A98E0146; Thu, 18 Sep 2025 11:48:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B39648E00F6; Thu, 18 Sep 2025 11:44:06 -0400 (EDT)
+	id 4DB168E00F6; Thu, 18 Sep 2025 11:48:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A4F5328003B; Thu, 18 Sep 2025 11:44:06 -0400 (EDT)
+	id 3CA208E0146; Thu, 18 Sep 2025 11:48:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 93B338E00F6
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 11:44:06 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5337A576E3
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 15:44:06 +0000 (UTC)
-X-FDA: 83902792092.11.4AB475C
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 56464140013
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 15:44:04 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=K+veIzIX;
-	spf=pass (imf23.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758210244;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2B0558E00F6
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 11:48:28 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D348D57991
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 15:48:27 +0000 (UTC)
+X-FDA: 83902803054.08.FBBF4A8
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11022076.outbound.protection.outlook.com [40.107.209.76])
+	by imf17.hostedemail.com (Postfix) with ESMTP id C849D40015
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 15:48:24 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=os.amperecomputing.com header.s=selector2 header.b=IogdLJAi;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf17.hostedemail.com: domain of yang@os.amperecomputing.com designates 40.107.209.76 as permitted sender) smtp.mailfrom=yang@os.amperecomputing.com;
+	dmarc=pass (policy=quarantine) header.from=amperecomputing.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1758210504;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o+D+JfJ/Jq0/jdAS21NjzfpdXlFqTr3y01BMsRdUEi8=;
-	b=xqhf/vy/sz+VZHXFsCwxapxhWJrhxqjgh9SwrRy3A5eG1O1D11eYrrYCTFF4g8XuBJOWjp
-	0um21oCgLqvlEonvD6e9+8kHgyZSXTHnltPHvRdvctDEdGg9QCFVYmYzwmiMvcWsmBLT5Z
-	V1/MmpX3aEy8dmzpPNmpvVARHCfUX+A=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=K+veIzIX;
-	spf=pass (imf23.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758210244; a=rsa-sha256;
-	cv=none;
-	b=3Ro9TI0j3OTSNWF3+wpfjdVGLoXmLmCBPmiGlUct3JuUBNqS5SuMH7yZwmkICR78Xrt+Zx
-	/S5fJjbBvl3LCKGyzZTAJ+IRzQ8Ib27VQ3m2y1u9IubiGtwJiu7PeznVNl79WM0qQ+XMzS
-	KiNL84ATzBrEGM7xfR8X/UTBh9+3I20=
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-45f2d21cbabso73555e9.1
-        for <linux-mm@kvack.org>; Thu, 18 Sep 2025 08:44:03 -0700 (PDT)
+	bh=dA2zLo8sxwFlgzSwbGsMxeEqLzFx55VlWNpDQlIzC64=;
+	b=5scvVhqSXS/okOutTkDb7OqYiWKMXabUc1eVJVQN8iuu1ke2JoRv+IimMX8nRwBBFsHTaG
+	hF93wz8IIErMAoXnu0jjcntFvf/6GNVpXYjJOEZE3zoYmUxSJayx3U+NoPbchgBk+tKSy+
+	S/+bSqdhzscmSeFR7j1LDNUWsxTxUj4=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1758210504; a=rsa-sha256;
+	cv=pass;
+	b=sQAaqSJnA6f1J+m5N64iWfLLTUIYn1xpSbrSfSD1wYIO1fZUf7pZZvSmBKN6jW1upaRvij
+	fHS+oiCl4r+/Oe1DdgRyG0vB+rK2NqwmiX/gRLhupT54+Y0HwcGU/BlWM82GoBTUaWONQx
+	4XRprrvymVPDK3KObhVVc39gpuFoN7Q=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	dkim=pass header.d=os.amperecomputing.com header.s=selector2 header.b=IogdLJAi;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf17.hostedemail.com: domain of yang@os.amperecomputing.com designates 40.107.209.76 as permitted sender) smtp.mailfrom=yang@os.amperecomputing.com;
+	dmarc=pass (policy=quarantine) header.from=amperecomputing.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Dad7/OoAlLeqGzP9C59xOLvOv/R+KOCZoKreAUN9MaEwKKLmV0BtyWiDrej6e3Udxw9RmmnlkTXaUfqGdTPIFqbV2Qs2VN9qucq3Sq6DDHn9zet0Uj28i9SouiM9A4cbHbvNAnPu4kWaMALHaHmOPiQrysLvsWcIa7hTT5YR+fuA325jroHQ1CYK5fdogDHYDWdwuj6CoK2fWd5t/fdSoLs4t+2/ZOAiZ3Kj6BtJYqADyhNjsbFpTJAgmjbJZQiiWrcR4JHEb6ZWU943l0Y6SLFlUVL4foFRIjduFR0yEwgXa8hhVt+OfYgam1mBWevp35/a/Wx5dtHvliB3VsPOQA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dA2zLo8sxwFlgzSwbGsMxeEqLzFx55VlWNpDQlIzC64=;
+ b=wYuI3h4uRLaGm9VITfaCTeNM/uOghqPTALZrD2l6HqW/iXuwjVBsJg5C21czXjK3gZTyyZdELJb5w6XLYzJdgVv6sGBNgo3i/Baa9wdKsUthtdm2TofH/dbaLH/J04o9i0reIDUKx+ndwVgj5ju48IpNlVnS/OUrGJdr6j/11JBcG+wiQatWh4VXEKB8OV185ZN2SIpEcr40Ig0HqGcOj1nLvWudQUn2FCnMNN6FA5D1bT1HXmHwoMYUM0UH7D9Ju20ngHDvfPRHxovXTn3Oa7WEOrO0COauGO+GREIXH0eNFXtaLgOaHEimQGt+GDor4oPssxpU+FvbrVl3dvZ3dg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
+ header.from=os.amperecomputing.com; dkim=pass
+ header.d=os.amperecomputing.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758210243; x=1758815043; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=o+D+JfJ/Jq0/jdAS21NjzfpdXlFqTr3y01BMsRdUEi8=;
-        b=K+veIzIXu2/22tDW2/TBvFcOPFfWmzr/90xQgh5r8+KItWGeI+oJ46b01JslrGFfBu
-         nhQSY1jGIFDgjLuUByBc4t9RL9wWhaZRSiHF9eWYAEaOwTWg3j8tAeMNRgxLWyOC2dYu
-         uPkdRCT12+XPoAb3fO5xkjnIKhson0hnhNqCxTFamCeJx9Iecxpivawx8OXRPwpkg26Y
-         unsZeESqxC8IGLRE/DDIzREJjs0880zIAv3dN7c177a6V4pYrHscyhjXWiek88nm82Om
-         1jUkHUMzpfulSbputD1WNKpLIjyM1+ThCPqJayONHvptcctetHcd9/TuEJmBz0e6k1q0
-         4dKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758210243; x=1758815043;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=o+D+JfJ/Jq0/jdAS21NjzfpdXlFqTr3y01BMsRdUEi8=;
-        b=Xk08O6WcJ99xLTDGkDb8Q4nwdo/ZOXtvFNhkytp4aM9n5MKB3Vr+3JTHjAnbteBvaj
-         TGj0xDDPs3d6vVVN0yckrRH9qTqRH7Gcb46+C8r7aLxqqU7aiWZq6KJYWNxvYtWs+Gjp
-         b99qtJDpWIejYfgf1xr3wc5baqximqFGyuT3sknLSjebE/UlBqE8v2axt9XDdTDK7B0A
-         S/+dDfn9Au7beaI4OS6mesSLEncppI66aMiHdNpMt2dPZ1kRkIO6bskbHoVCxEH0eOhk
-         enDV8BlrV67meWL7GaQAjtIXTRe6HkcWGLpeeQt6M/h9tge5zeTOOeYfgJSq8WGP9Oge
-         hA4A==
-X-Forwarded-Encrypted: i=1; AJvYcCWVmhvcI2mXsOYj0EsyLsLj7IazivDw0tj0uhJbzcwZAvLZWt8h28/QKJOw8VCDv4djBeWQ0lmiXw==@kvack.org
-X-Gm-Message-State: AOJu0Yx10n2VtquNn0+Tl7C+iqFNozm+tWKbZSoCqZNRXOpLKSE3QWS8
-	slgsermUX1Nsn6xh4YdzyAfn+MuM9smfX4r2vGwBJQa8bsNYWSuml6UsHivaoqCOK8jzKuftZLQ
-	DnyMmFolptMs6XXfAVA9KkHSEDHVBZsS5qVdoD4rq
-X-Gm-Gg: ASbGncv4cjDAKpirK/PiwVrohww82AVpbKFrJEJ4d/abezuS+kguMPsqiDkra7ufPPp
-	+y0STxRat4aHcNsC49oGRZZoMRjksKhB2GsXP+5movSb7ejC7uYVLHSjAsRTeNGII63DVUOsgA8
-	Zx57k2ylHIC/AduGGxGFUnD+hYA8L9egRWw/4bb0p/KikVANB0XbJxVX7Vd7dZWSSO4vNWZkSEk
-	wh9TOWpUBzwBDbYfaq/oygk8GuG14ckGxUNxi4990qmOUehdQV7dpAiQ++qfsNJhg==
-X-Google-Smtp-Source: AGHT+IGKDPhFW7QY2ThA23Eiqh7Jb4gB3IAedet7C/hbJyJis0arTM7d/07UQoRXJ2ALik0wfBJpwlDyK2X2eoThyyw=
-X-Received: by 2002:a05:600c:621a:b0:453:672b:5b64 with SMTP id
- 5b1f17b1804b1-4616dbbbb8fmr4089715e9.2.1758210242387; Thu, 18 Sep 2025
- 08:44:02 -0700 (PDT)
+ d=os.amperecomputing.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dA2zLo8sxwFlgzSwbGsMxeEqLzFx55VlWNpDQlIzC64=;
+ b=IogdLJAi5L0VM1rsdZ4O67TMOwsEzUnCeFnyIcW5HUkTCFF8KlZIMuCV05FitLU2waVDRME4KlE6Xk2/J81Xq+ThQAkIXQKbBDU4tzO3Bb4oLOryGlqITv3WnjtSLWbpnUEOtvxPxtEoDibgnr+rLbfJ9SAQ4vLy4Q66KyJjoGo=
+Received: from CH0PR01MB6873.prod.exchangelabs.com (2603:10b6:610:112::22) by
+ SJ2PR01MB7898.prod.exchangelabs.com (2603:10b6:a03:4ca::15) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9115.21; Thu, 18 Sep 2025 15:48:20 +0000
+Received: from CH0PR01MB6873.prod.exchangelabs.com
+ ([fe80::3850:9112:f3bf:6460]) by CH0PR01MB6873.prod.exchangelabs.com
+ ([fe80::3850:9112:f3bf:6460%3]) with mapi id 15.20.9137.012; Thu, 18 Sep 2025
+ 15:48:20 +0000
+Message-ID: <2fdbe2c3-dd31-41e3-93a5-e2995779602f@os.amperecomputing.com>
+Date: Thu, 18 Sep 2025 08:48:15 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 5/5] arm64: kprobes: call set_memory_rox() for kprobe
+ page
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: will@kernel.org, ryan.roberts@arm.com, akpm@linux-foundation.org,
+ david@redhat.com, lorenzo.stoakes@oracle.com, ardb@kernel.org,
+ dev.jain@arm.com, scott@os.amperecomputing.com, cl@gentwo.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20250917190323.3828347-1-yang@os.amperecomputing.com>
+ <20250917190323.3828347-6-yang@os.amperecomputing.com>
+ <aMv_nhEuCSHKp5J6@arm.com>
+ <22732cbe-20f8-4d1e-b086-e34d0f9bbb35@os.amperecomputing.com>
+ <aMwl9mujvFknSulA@arm.com>
+Content-Language: en-US
+From: Yang Shi <yang@os.amperecomputing.com>
+In-Reply-To: <aMwl9mujvFknSulA@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BY5PR17CA0020.namprd17.prod.outlook.com
+ (2603:10b6:a03:1b8::33) To CH0PR01MB6873.prod.exchangelabs.com
+ (2603:10b6:610:112::22)
 MIME-Version: 1.0
-References: <20250904155720.22149-1-tony.luck@intel.com> <brfqzhbipg35twgv22vnnotbv3t3grwh2dxugvtbgqduuhsvst@f7exibz7i7tk>
- <aLsHh70jI6BGHjaN@agluck-desk3> <bwu744g3qzbzylxvfgt7v4tnf2k2eosqbkg7alm6u5roa7j3bn@gmut2l5227kw>
- <aLspJ5Tpqp4qRDk2@agluck-desk3> <cf05bc8e-fc79-49e4-a90a-47e661b4ae69@oracle.com>
- <CACw3F538k+dshTs1_rxbpYoRdFyX3tLYzfaWj-_d7Lq5Dd2Jsg@mail.gmail.com>
- <aL8rIgSImDh7Nj7E@hpe.com> <7d3cc42c-f1ef-4f28-985e-3a5e4011c585@linux.alibaba.com>
-In-Reply-To: <7d3cc42c-f1ef-4f28-985e-3a5e4011c585@linux.alibaba.com>
-From: Jiaqi Yan <jiaqiyan@google.com>
-Date: Thu, 18 Sep 2025 08:43:51 -0700
-X-Gm-Features: AS18NWBE_Rh3aqLAP0Y0-SJP8rZCEq2FVPADSEjBbJ_MtsZw23_iRMOUp4qz4C8
-Message-ID: <CACw3F50hU3BCP=A++Dx_V=U8PKvsTvTa1=krULxfQdeK2kVBrw@mail.gmail.com>
-Subject: Re: PATCH v3 ACPI: APEI: GHES: Don't offline huge pages just because
- BIOS asked
-To: Shuai Xue <xueshuai@linux.alibaba.com>
-Cc: Kyle Meyer <kyle.meyer@hpe.com>, jane.chu@oracle.com, 
-	"Luck, Tony" <tony.luck@intel.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, surenb@google.com, 
-	"Anderson, Russ" <russ.anderson@hpe.com>, rppt@kernel.org, osalvador@suse.de, 
-	nao.horiguchi@gmail.com, mhocko@suse.com, lorenzo.stoakes@oracle.com, 
-	linmiaohe@huawei.com, david@redhat.com, bp@alien8.de, 
-	akpm@linux-foundation.org, linux-mm@kvack.org, vbabka@suse.cz, 
-	linux-acpi@vger.kernel.org, Shawn Fan <shawn.fan@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 56464140013
-X-Stat-Signature: 4wskycxqsbdfz9oqrw5apifjikypyotp
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH0PR01MB6873:EE_|SJ2PR01MB7898:EE_
+X-MS-Office365-Filtering-Correlation-Id: ce52b24e-1986-48d2-0702-08ddf6caca9c
+X-MS-Exchange-AtpMessageProperties: SA
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?bUpicmpkQXpxRlQrV1lpMHdtVUFNV1U1cm9NWDViOUp3OFdqVVhaRGFsVVBj?=
+ =?utf-8?B?aXNnV21BV1pCNkZteGQ2eVZxM1QzV3BmSytoOFhJcVVCd21KRUU0YnFiVlJ5?=
+ =?utf-8?B?a1Ayc1dOUmtKUiswUmZqYVREbkhTT3Aydkl3czNGaHR6M0VzQ1RTbzRwTkY1?=
+ =?utf-8?B?blp6S1djTHJYTGpqeHJNRERIckJQUlZSaFo4dHRPRFppNFZPT0FXRm1lbHpu?=
+ =?utf-8?B?ZEtpZzFFYU9OUGd1SUZKeG5WR3orbC9vaVNqc3R5QjRSS0tzVnNiejFnSzds?=
+ =?utf-8?B?cUVleVQ1THh1SWFvb3JKS1d1TXNjRGExa2hOeXdWeTVVcUJNS2lPTmdRRWZa?=
+ =?utf-8?B?MjV0c2xobjV0YzhYeDB2Ri8yeEcxOWVIb2JUMmdXRTIrak9oMThpSlBhTUts?=
+ =?utf-8?B?YjF1R2x3Zm9OZkZkT2poL0ZNSExEZjU4NEYrSkdzWlJuQVhWR29UTGJRMWRw?=
+ =?utf-8?B?TzdiS2xwbTZxK0o2Y3hvSjhLNkE5MVcwM3ZtYWlPTHV6Tmo1UmNTVXRGR2ht?=
+ =?utf-8?B?SWhJakhXSXdIRE80RmNUOStOMGFzVWxOZkcvTkovZ296YkpBR0owckQ3T1FV?=
+ =?utf-8?B?VU44Z3RKeEdGQ3RVbzd2dEhBVDJTb3cwdHlwa2lPUE56ZHpnOWQvTG5aZUVF?=
+ =?utf-8?B?R01UUFN3WktDK3l2RlNMaDNEK281cWhXZ2NlYW1IcVB2M0VDL3dHNThQMnpJ?=
+ =?utf-8?B?eUlqZXlQVWp0WkVFNCt2VlJqdmNPSHdBMGhCanhURkpwZkxVWXFybjNCWW1G?=
+ =?utf-8?B?N01ycGRlTmt3L0hYQzhQVlU4amtsb202cUo0MDQzNlJxNGxpL0tiQUE3NTgy?=
+ =?utf-8?B?RWlqQ05xcDBzbHpnRXRyYWFEcFZyQVNWU1hyS21mTTRlb3oyL3dCL0E4ajdk?=
+ =?utf-8?B?eW9OM284amY1OW0xQzRVNCs2Y0hIWStnUjNFVE5kbEJmdzVOQVJNUlFIU1Rt?=
+ =?utf-8?B?ZGhBOVZ4eDZpb2xHQkgxM1ZadERtS1FUSGxxeVd6VWIxR08xeFo4NTFYRStO?=
+ =?utf-8?B?VndSS0hMelZBc1BGQlVzSnR6T0VSbHd4aVJRWThFVGZNeExZaVVtZWtCR3lr?=
+ =?utf-8?B?aVpUWUlqdHNTVkk5a2NpdHRNU2dMNC9FSzRQbWlQQjlQZC9OK0xpdFRFRUpv?=
+ =?utf-8?B?RnV5TEhheGlwM0NOOTB3NmNpSFlmczBIU2RSR2p2Z3FZWjVVbzZjY2YwNTg0?=
+ =?utf-8?B?NFRpdEw0Z1NBNHQ0VTBBYUpDd0hnTDRVNEtBNjA2amkxV1hBOWZHV3liRFJM?=
+ =?utf-8?B?NWRjMEl3NHVhVFlLTVpvUklaZk5paDlxRUJpM2U0c2JRak5pbFdqZkNudDhn?=
+ =?utf-8?B?dVVXWnlyb2ZHMlBZUWhMbi9UL1JOcURwS3dUSC9hZEFoQko4T3ZIYlBlc3c3?=
+ =?utf-8?B?RW95UGRDankzaG5VcWI1NS9IY1NrWnVCYVhEbzZ3T0l0UER3L3ZIU0FvcWJs?=
+ =?utf-8?B?Y2RmUU51b21RdE9qbnp6NnA1UEJZMUV1VlFycUx5TXFLVUk2N2ZiN2RRY2hC?=
+ =?utf-8?B?anQ3RDNBOG5ISCtURXZTeWNXaElzSWRGcVhIcnJhNWdoU01hcEdqZHhEb1hx?=
+ =?utf-8?B?SHl0YmRLY3J5dm9qUFRHWTRWN1A0ajBzZXhsdTROQWYwS09FUWxYaU5UVXdI?=
+ =?utf-8?B?eDVBQkFiUWp4YlNXckFpdE81bXNwUVRyQ3ZVQnpPMUxEaHgvK2lUb3RwY0lp?=
+ =?utf-8?B?bWhqNzdYV3hWNEx6VWY1Qk0rbFFkby9lMUNSUC9DZnhUWTFHdUZ2cTFSdGdI?=
+ =?utf-8?B?NngydTRlMFkvVTY3MHZDVWN2NWJhWEFrU0ljeVR1K21Nb1dmOHRwczUrUmht?=
+ =?utf-8?B?Rm9tWmZFQ2pGNUNFWGNPQU9aUWVJMHcva1drN3ZqOUgybUlWOHpCc0NKVnps?=
+ =?utf-8?B?NHQ1RXFTUHU0L0RwSHJEanNTeEpmV0N2Sk5QNWMyUFNrMlB0ZDRpcWdLeW1V?=
+ =?utf-8?Q?+9g9GMN9yXg=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR01MB6873.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?cWp4dEZEZWVJSmRxZXFZTXVqSlp3Qktpdm9KUFkvR1lqK3V1UWdzTmN4Z0Mx?=
+ =?utf-8?B?OVRCOEEzbUswQ1RZbEpnNVlvZG1ONnZjaE9QNUNnbW5yTUxjOGxubEd2cGgy?=
+ =?utf-8?B?TWR5cWdMZWxqaXlwR0x2bXY1Vi9oeisvTU84ZjhEVy9HZmRxY3cxQVhFSjZq?=
+ =?utf-8?B?UmVqTS9kRk94c0huOG5GOWhDRGovVUNkdk5xQUFXdFlOQVZBUUc5RkZvMFl5?=
+ =?utf-8?B?c1hMWEZxQ1VFTm9KV0hSZys3TEVFaSthNzZHMGVBc0pPbHZDaUFDSWNqNkp5?=
+ =?utf-8?B?dEQyZkF5STZVQWhsMTQvcW1Nbm9IL1NiNS9LeVNSVHgreUthYkVpWmF0bXMv?=
+ =?utf-8?B?dkdSZWo3Z3lFVTU4RTN4eTN3NE05SzhneUZUek9KOFhsWWR2Y042ZXdNWm5Q?=
+ =?utf-8?B?SzVSc2ZJWUlDOStLNnhXb250RjdjbE9YUnFsZlN6cGJ4SUZ0UU0yMnRCYUlw?=
+ =?utf-8?B?T2NEdkRoZkZ4OVcwb2FZVzJONjBHYVRNRlo2ZW1uSW5iaXZlbHBwcDBBUjgz?=
+ =?utf-8?B?d1l6QXZJL29DZUk2NnVGU3BWV1FCcEtLNVFDaXBkZU5uTTlRVEl1ZTc0Rm9Y?=
+ =?utf-8?B?TkZIeVlRbHpqTnpxMHVpZFJKT1dIVzhhUE90QlhjdEpRTU5JZmgrdnQwZEUz?=
+ =?utf-8?B?NzViSnlHdDlmVFNmNFZDRHJVbUplYUtOS3h4VVVvditFcFRRSHJtUmZlNXNB?=
+ =?utf-8?B?bG9FVEZWMHlRbGtOK2M3eC84VDVJSUpWRFVqS1BFWDRScEErcjMwVXBOTUsy?=
+ =?utf-8?B?aXgxTWtzNFdJb3Jyc2ZQYkR5L0RSdGx6REx4V20raGdIS3pnRlNwb1NXZ1po?=
+ =?utf-8?B?RUpLK0t5R1dJMVJJZUs2QnZhb2N2M1crYUVsRTJ5NXNBZ0VLTXBuSjZXaXpB?=
+ =?utf-8?B?NU41Vk1BU0xQSnVsTCtVUzdoNExWUmtuY2I0RllOS1hWQUE4N2lLdWR6VVpS?=
+ =?utf-8?B?eHRWVmZqdVZ1Y2JpeDY5VVE3blZ6aGdIeTZFNTM1YWpoZDZFVDl3YXBXOG83?=
+ =?utf-8?B?dFcwU3FCODFEMU9iSjhsUTNZUjIyWElYcTdPSWpFcnMrdGg0aHZlUmx2OXc4?=
+ =?utf-8?B?eU9FNkp2MldnbC9HdndPT1N4eDR2NDRNTk81cnVsZmxYWWdxQWdZNnlCQnU4?=
+ =?utf-8?B?cUcxZHY0UUc2TjJHOVA4UnA4dDU5aHJSSlhuand3enAycHhROVhabVBPWDlw?=
+ =?utf-8?B?YnVoMkJ6SmNhcVdBYnhGYmVvNU5wQzI5ZlpEcE13UG1BQ3NtUFNVTTVJNHFi?=
+ =?utf-8?B?TXNLT0E1ZVltRzVNeWdtVlRaTitSSVQ2MnZlQ0RMMFJacFJrQnIrWkRrRHVI?=
+ =?utf-8?B?c1ZQYW8xTGZxd0pJKysvcytraEhFUHBLVC82K2k5UHhDcEJtNnFsU0Q3U3l2?=
+ =?utf-8?B?TVVsRlF4bzlQaU5JS0JtSnl6Ykk2SXYzREFreDlYNzZDeW04M3lONTJEUC8y?=
+ =?utf-8?B?UG1Uc09RRUk4OWJyUUVkQ3FCTzdrVElGREw0RGVMZGFrM04zNnE3RHJiNTNo?=
+ =?utf-8?B?ei9QSmd3RVI1U1JpdXVGSExCS0t3aTFwZDIwbHFtYmZyVHJ1WnB4Zis4Vkpy?=
+ =?utf-8?B?SWNnNzZabXJlSG1EUWxVaXBxM3Ixb2VDTmw2Z0VUZHB2a2xaMjkwWDVMUnpW?=
+ =?utf-8?B?R09jamMyTzYraWRRUHZ6aUJWYzN2OFZmT3M5azFrVVdzN2hPZys1VUZSS2Nv?=
+ =?utf-8?B?R2t5MWZDa2wrL2NNaU4xQkxCUCtTZWlIM1c3bi9teXYreEdvcFR2TVluWE4y?=
+ =?utf-8?B?emZFRWx3bFV2aDIzNDg5Y2lTQUF5TlFiRHdsZExSR0VDSnR0RmFMTHM3bVEr?=
+ =?utf-8?B?dytta3BaN2h5azNSbC82TkVteFV2S2xiWExnczRMKyt0SWtoa09UaHR2b2RP?=
+ =?utf-8?B?b2cvVzk2TzdVM1MzWm9RcFplb1dhSldJWmRIakEzMllWeFdRMXQxdExzNHhm?=
+ =?utf-8?B?d0ZlangveEdjd1Y1TDdPb1BDNElyQTEvcTRONmM2TThFTVNlQ1d2bWpERnBp?=
+ =?utf-8?B?VSt1REpWMm5lZGhVTFdTN2VxUmtTT09DVlJGR2ZRbzVYWTZRNmtZTWduYzJn?=
+ =?utf-8?B?ZStrdHZRaitweTBPMlphV3JCVDdzSXM1aitVWnlHK0s5MkE1blM4RW1LZTJX?=
+ =?utf-8?B?NTVaVXB3dERrSlR0UGN4KzVudVdOdW4rendQQnlxSzFhQ29QRXlaa0lrd1FZ?=
+ =?utf-8?Q?QQ3qIDKANuwxXLdbCrk1a74=3D?=
+X-OriginatorOrg: os.amperecomputing.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ce52b24e-1986-48d2-0702-08ddf6caca9c
+X-MS-Exchange-CrossTenant-AuthSource: CH0PR01MB6873.prod.exchangelabs.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Sep 2025 15:48:20.1773
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nReKveKcZaFBQdmjbCM7dAdIHjk0t/3O0aKzSfKyx3rHCeiNUtQ12yJzQCF0KMAzBc5UM3fcqziOf7BJc9DgW0dlzA2kM8AAb+ocU5/cYKs=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR01MB7898
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: C849D40015
+X-Stat-Signature: 9h1ehf1jii9z3cgbrgufpyzta7rudahr
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1758210244-601740
-X-HE-Meta: U2FsdGVkX19EPIzUAvqCgwenO7W0S2lk9BzPZ1Hda/Sgzt3H1+kWQ56/oVWyxJiCtAcruDTUoZ6SQnpjfw0eG4pWxL5H8urbg40X/4lXvHFSq47iHKzOjadjSXuJusxvBV9O8dLaJiTE4lFtoGsel+Nsp3CHzTtlIyBkSBAdkmbNk0AljI9zfHA8EUM4UKoypvVVs0DB8Y7M2usz1fymE9oENaqNH8FSNDdi4EMzVNM6c+a943XT2GmLyn3cx8PMAraQi6f32Cnc3u2pDFB58pzbpsMrJ32g0ks7jl5jlz6fYXVi7mk6gsK20pxu6oskmCMXOF68pRAbL2vjwIAbrSpCKG9bEEGuS8kG7hMls0ufft9s2+aBHamoBX8GsBra4W6N47SoLJBX78olUhu+ABYKD46GpvT1XPMezMoRGxNJR3USfTN4IbpJzvwxwuRcRZ8lMsGX9NmBDBeP5dLSW71S1q+u8qUsWYX02KsOvidfRjlexDcXGjXrCMigwBTeXeChO8kM3EBqXsjpFwbc1R+1uhLer8bH6wEUnuI+iOGiID1j3Q+s54R3d4rSEJqnbXM9TW785ebLShs12+ofv5hdDeQ/3Fe70pmkBQ5s+aPPkJB0yIrWtUDBpE4IqIMnfZhBGZC4R5/fRXh0K74d7YsBIxPtHCi6hMavkXCoKPblkYup317csjYU4l3fa9xhPsxDULV0owOAmyV+nXG1LZg6ayCG9j1YzmVLnFd9067AZxGY/ImGbSUQGL4oNu4zu49bkQFC2D/TF3zhzukU/njaOKVUC/VyjSpgpeXACB1WsxpWRBFq8HKv3EwoYdKfAeTFDIh4huvi3KjGOXCzwr0SoACan4S5IoyztaGfKzk3TWqAlrVz1ODLa8nCThHFqMqhGy5oqRMMT2L0Uqkt0DI5E4KeS4h6hAOwcvIVpXwc4i+OXvBvCuAlfD7tAnfYtpBX5XqWHDof6h7dolk
- oL9GUm5I
- urkFBArmcwrDmdg3ULNi8WMJ46bIaiKQdoYQlyck/X+gUtSkO7VaLgOIUR4x2uD7ukolxvJ3/tCq/JJ2vP5p7ChY3LGCi+M/J/JV/71v8yUYmuebHtrJNMptSHKffoctir1i9uWElrRUXOvyO7Y1CmFBzgnkS01GNoiA+NAAkjE/Fu1mb4KmPZdhMeHxftdCe/+iwz7icaF+M1bIetCSvyzdgisen+eHMfNxkx2Kn7HQa/jssxvZX/3dMztjOveDBS+OmrX4YoKn9udlkDjuxxE/QHFsGuSQ7xFj/mhBG2iZP0RfU02aB5OEXPpdfuuAcKUEnna70QazQU1VKuVu2PV2V1slI0auKkrfVQ6sspSfQgt1QYmvowoR6+9J+S+ZNMG4b
+X-HE-Tag: 1758210504-782190
+X-HE-Meta: U2FsdGVkX1+vz8tlmslh0GhbNiuUcqOUzNuM39uCjCl64ox7QD1o6ao9XAC+huycD++BRZNleWnvZ3Giab5i/aOyOcnSyB8hZRLOXMO2HuqhT43hJO0BUnUj3julnPedK3pamm82T8RFXJkLLKO7JICFvlELk9jL0tmSP5Zt2rf6Ukbavdl05SIOTgL0MFEqS7wwJwUroziatPtaW9S6GbhLawwlTGqJ6eQPxnwzpSZx3VPYDsOqidTCTTZ7LMdHnxaVaY8vQ//bIUR5BGXg62fKF/O03R1V6Ee+p59g7FXYbvOdrW5hDPHTd8ExKk3zouQip3Fb6kgYgf01VzkAQel9bKaqYeu4iaQdCVBHuuAs0TnGqTbmVKwiGeT0+HjB3DPbhTi3Ps7sIqdtzhYOdvubhnB1w8QiZPwvf/xa9Ken6Fcp1Au3OrjEcj/1E7CwGZiMrv/rTFzu3uEUwCu9it7W9nXzqI76yISzx6H1xQDJ8PuNTJHVw5AznzjdZaT3zy9Fz0vO0Zj0SLnrFAQLeqw/CdyKC9FWJ+EUyw9UX+ScNAFCr8txxRL1yOECcT771GECbkg/esYyIjGqnM5ugpCkBoOC5LCYpBRr3KkgErptNDdm0UftQgatdmP6fekpfmmlBjMT0ZliMNd+KNW6pzmMMosXnzEue8baRc8p9DO/4Fl2nZmeP00Zrcb9xrUKcQxrWaO4+pecvjNkdINNFAEXZuETOheoTEivdwvY0laJFgN/5ZNUeyJSOsN0agNtI4x8CibZ5qJ06dn2S8RelyvRvLVwLDA1yifFITbnqkZIBNI7SWxr9NqyWsbWsKGp1tk8w+XGKN79+CqY2jKN0/D9XHGWhQtTia7y+iDa2xH7Y+1n6Ug519Rj38vq8bYW0Af6fAoFfP24/5eP/uBzMSOTWWXdHET97rApAQzqYFWsSYMaHltLIaTnAfgO8pyeZVMZcrVNWHVTY6uQFj9
+ gqg4acV9
+ H39mLHvapGpXrRCCb8cGsE7NwDBRKXu+UBgZdfvv+VVnUrRSy5uQS0TeJTR+seWLLxnPFPvwK2ijvr4+UzDKnqSSI7RvzB2HEMj3pMzR7HHd+yw8YlWc0GGLH+qOAGgGcLhc2gIoEB/RM7O/oqykho8SqRFn2BBpEwaoGr+9y8Pf5ahDzkNVLt4MnWUKvu0Bjfl/SZF9rMztgqPIcNeYxgFWeYvh4oNa6pyRbdFVcOlkpMPXWyryKY/18lpwI1uYwUMNAY65RAnMogCsmX2apY4j6qfcIsMq1MvUQANNC/PKDJqXzjYxfhCMYIn3ktBSD/C0xJuXB3MqSK35hd9eoN6O+BayIngEKEolppk+CietTQUhGjBuCFjQZtbjqQ1kd3h1a6UVHXz1e3Fm+4wpq9iTZwTHl6ZtIDZ2ruvFZXiSpu/iZH9DZCpPhpA9horH73/Z98649nrpuCCtx9eT9pQPaFUTcRMUE4J4CNY6oTjoYPGopSnCMUHMx4wZkfF910X86MRzo74R2oI5wbKEvs0ZdZseLKl8F4s/9AwhyyDoWhlAtFbB349Cg4FoRUGD3C1YGZK4HWmL83dEV0qDx+yxHNC6WGWUmIsmHmFk/AhhGzXpL2CWHoEpAjOxab6mutpCmMtKYtWHMRwdDQbNc9X1mt1ddMRFfH8IVDHiNLlb9qGHbf668QtD2b3thIcqQif4n
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,201 +209,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 17, 2025 at 8:39=E2=80=AFPM Shuai Xue <xueshuai@linux.alibaba.c=
-om> wrote:
->
->
->
-> =E5=9C=A8 2025/9/9 03:14, Kyle Meyer =E5=86=99=E9=81=93:> On Fri, Sep 05,=
- 2025 at 12:59:00PM -0700, Jiaqi Yan wrote:
->  >> On Fri, Sep 5, 2025 at 12:39=E2=80=AFPM <jane.chu@oracle.com> wrote:
->  >>>
->  >>>
->  >>> On 9/5/2025 11:17 AM, Luck, Tony wrote:
->  >>>> BIOS can supply a GHES error record that reports that the corrected
->  >>>> error threshold has been exceeded. Linux will attempt to soft offli=
-ne
->  >>>> the page in response.
->  >>>>
->  >>>> But "exceeded threshold" has many interpretations. Some BIOS versio=
-ns
->  >>>> accumulate error counts per-rank, and then report threshold exceede=
-d
->  >>>> when the number of errors crosses a threshold for the rank. Taking
->  >>>> a page offline in this case is unlikely to solve any problems. But
->  >>>> losing a 4KB page will have little impact on the overall system.
->
-> Hi, Tony,
->
-> Thank you for your detailed explanation. I believe this is exactly the pr=
-oblem
-> we're encountering in our production environment.
->
-> As you mentioned, memory access is typically interleaved between channels=
-. When
-> the per-rank threshold is exceeded, soft-offlining the last accessed addr=
-ess
-> seems unreasonable - regardless of whether it's a 4KB page or a huge page=
-. The
-> error accumulation happens at the rank level, but the action is taken on =
-a
-> specific page that happened to trigger the threshold, which doesn't addre=
-ss the
-> underlying issue.
->
-> I'm curious about the intended use case for the CPER_SEC_ERROR_THRESHOLD_=
-EXCEEDED
-> flag. What scenario was Intel BIOS expecting the OS to handle when this f=
-lag is set?
-> Is there a specific interpretation of "threshold exceeded" that would mak=
-e
-> page-level offline action meaningful? If not, how about disabling soft of=
-fline from
-> GHES and leave that to userspace tools like rasdaemon (mcelog) ?
 
-The existing /proc/sys/vm/enable_soft_offline can already entirely
-disable soft offline. GHES may still ask for soft offline to
-memory-failure.c, but soft_offline_page will discard the ask as long
-as userspace sets 0 to /proc/sys/vm/enable_soft_offline.
+
+On 9/18/25 8:32 AM, Catalin Marinas wrote:
+> On Thu, Sep 18, 2025 at 08:05:55AM -0700, Yang Shi wrote:
+>> On 9/18/25 5:48 AM, Catalin Marinas wrote:
+>>> On Wed, Sep 17, 2025 at 12:02:11PM -0700, Yang Shi wrote:
+>>>> +	page = execmem_alloc(EXECMEM_KPROBES, PAGE_SIZE);
+>>>> +	if (!page)
+>>>> +		return NULL;
+>>>> +	set_memory_rox((unsigned long)page, 1);
+>>> It's unfortunate that we change the attributes of the ROX vmap first to
+>>> RO, then to back to ROX so that we get the linear map changed. Maybe
+>>> factor out some of the code in change_memory_common() to only change the
+>>> linear map.
+>> I want to make sure I understand you correctly, you meant set_memory_rox()
+>> should do:
+>>
+>> change linear map to RO (call a new helper, for example,
+>> set_direct_map_ro())
+>> change vmap to ROX (call change_memory_common())
+> set_memory_rox() is correct. What I meant is that in alloc_insn_page(),
+> execmem_alloc() already returns RX memory. Calling set_memory_rox() does
+> indeed change the linear map to RO but it also changes the vmap memory
+> to RO and then to RX. There's no need for the alloc_insn_page() to do
+> this but we shouldn't change set_memory_rox() for this, the latter is
+> correct. I was thinking of alloc_insn_page() calling a new function that
+> only changes the linear map.
+
+Aha, I see. If we have the new helper, it also allows us to refactor 
+set_memory_rox() to what I said.
 
 >
->  >>
->  >> Hi Tony,
->  >>
->  >> This is exactly the problem I encountered [1], and I agree with Jane
->  >> that disabling soft offline via /proc/sys/vm/enable_soft_offline
->  >> should work for your case.
->  >>
->  >> [1] https://lore.kernel.org/all/20240628205958.2845610-3-jiaqiyan@goo=
-gle.com/T/#me8ff6bc901037e853d61d85d96aa3642cbd93b86
->  >
->  > If that doesn't work for your case, I just want to mention that hugepa=
-ges might
->  > still be soft offlined with that check in ghes_handle_memory_failure()=
-.
->  >
->  >>>>
->  >>>> On the other hand, taking a huge page offline will have significant
->  >>>> impact (and still not solve any problems).
->  >>>>
->  >>>> Check if the GHES record refers to a huge page. Skip the offline
->  >>>> process if the page is huge.
->  >
->  > AFAICT, we're still notifying the MCE decoder chain and CEC will soft =
-offline
->  > the hugepage once the "action threshold" is reached.
->  >
->  > This could be moved to soft_offline_page(). That would prevent other s=
-ources
->  > (/sys/devices/system/memory/soft_offline_page, CEC, etc.) from being a=
-ble to
->  > soft offline hugepages, not just GHES.
->  >
->  >>>> Reported-by: Shawn Fan <shawn.fan@intel.com>
->  >>>> Signed-off-by: Tony Luck <tony.luck@intel.com>
->  >>>> ---
->  >>>>
->  >>>> Change since v2:
->  >>>>
->  >>>> Me: Add sanity check on the address (pfn) that BIOS provided. It mi=
-ght
->  >>>> be in some reserved area that doesn't have a "struct page" which wo=
-uld
->  >>>> likely result in an OOPs if fed to pfn_folio().
->  >>>>
->  >>>> The original code relied on sanity check of the pfn received from t=
-he
->  >>>> BIOS when this eventually feeds into memory_failure(). That used to
->  >>>> result in:
->  >>>>        pr_err("%#lx: memory outside kernel control\n", pfn);
->  >>>> which won't happen with this change, since memory_failure is not
->  >>>> called. Was that a useful message? A Google search mostly shows
->  >>>> references to the code. There are few instances of people reporting
->  >>>> they saw this message.
->  >>>>
->  >>>>
->  >>>>    drivers/acpi/apei/ghes.c | 13 +++++++++++--
->  >>>>    1 file changed, 11 insertions(+), 2 deletions(-)
->  >>>>
->  >>>> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
->  >>>> index a0d54993edb3..c2fc1196438c 100644
->  >>>> --- a/drivers/acpi/apei/ghes.c
->  >>>> +++ b/drivers/acpi/apei/ghes.c
->  >>>> @@ -540,8 +540,17 @@ static bool ghes_handle_memory_failure(struct =
-acpi_hest_generic_data *gdata,
->  >>>>
->  >>>>        /* iff following two events can be handled properly by now *=
-/
->  >>>>        if (sec_sev =3D=3D GHES_SEV_CORRECTED &&
->  >>>> -         (gdata->flags & CPER_SEC_ERROR_THRESHOLD_EXCEEDED))
->  >>>> -             flags =3D MF_SOFT_OFFLINE;
->  >>>> +         (gdata->flags & CPER_SEC_ERROR_THRESHOLD_EXCEEDED)) {
->  >>>> +             unsigned long pfn =3D PHYS_PFN(mem_err->physical_addr=
-);
->  >>>> +
->  >>>> +             if (pfn_valid(pfn)) {
->  >>>> +                     struct folio *folio =3D pfn_folio(pfn);
->  >>>> +
->  >>>> +                     /* Only try to offline non-huge pages */
->  >>>> +                     if (!folio_test_hugetlb(folio))
->  >>>> +                             flags =3D MF_SOFT_OFFLINE;
->  >>>> +             }
->  >>>> +     }
->  >>>>        if (sev =3D=3D GHES_SEV_RECOVERABLE && sec_sev =3D=3D GHES_S=
-EV_RECOVERABLE)
->  >>>>                flags =3D sync ? MF_ACTION_REQUIRED : 0;
->  >>>>
->  >>>
->  >>> So the issue is the result of inaccurate MCA record about per rank C=
-E
->  >>> threshold being crossed. If OS offline the indicted page, it might b=
-e
->  >>> signaled to offline another 4K page in the same rank upon access.
->  >>>
->  >>> Both MCA and offline-op are performance hitter, and as argued by thi=
-s
->  >>> patch, offline doesn't help except loosing a already corrected page.
->  >>>
->  >>> Here we choose to bypass hugetlb page simply because it's huge.  Is =
-it
->  >>> possible to argue that because the page is huge, it's less likely to=
- get
->  >>> another MCA on another page from the same rank?
->  >>>
->  >>> A while back this patch
->  >>> 56374430c5dfc mm/memory-failure: userspace controls soft-offlining p=
-ages
->  >>> has provided userspace control over whether to soft offline, could i=
-t be
->  >>> a more preferable option?
->  >
->  > Optionally, a 3rd setting could be added to /proc/sys/vm/enable_soft_o=
-ffline:
->  >
->  > 0: Soft offline is disabled.
->  > 1: Soft offline is enabled for normal pages (skip hugepages).
->  > 2: Soft offline is enabled for normal pages and hugepages.
->  >
->
-> I prefer having soft-offline fully controlled by userspace, especially
-> for DPDK-style applications. These applications use hugepage mappings and=
- maintain
-> their own VA-to-PA mappings. When the kernel migrates a hugepage to a new=
- physical
-> page during soft-offline, DPDK continues accessing the old physical addre=
-ss,
-> leading to data corruption or access errors.
+>> And I think we should have the cleanup patch separate from this bug fix
+>> patch because the bug fix patch should be applied to -stable release too.
+>> Keeping it simpler makes the backport easier.
+> Yes, for now you can leave it as is, that's not a critical path.
 
-Just curious, does the DPDK applications pin (pin_user_pages) the
-VA-to-PA mappings? If so I would expect both soft offline and hard
-offline will fail and become no-op.
+Sure.
 
 >
-> For such use cases, the application needs to be aware of and handle memor=
-y errors
-> itself. The kernel performing automatic page migration breaks the assumpt=
-ions these
-> applications make about stable physical addresses.
-> Thanks.
-> Shuai
+>> Shall I squash the cleanup patch into patch #1?
+> No, I'd leave it as a separate fix, especially if we want to backport
+> it.
+
+I meant the potential cleanup patch. Anyway it can be handled in a 
+separate patch at anytime.
+
+>
+> Anyway, for now, with the nitpick on the address variable name:
+>
+> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+
+Thank you. Ryan also suggested separate the fix from this series. I will 
+fix the variable name nit then post it separately instead of posting a 
+new series.
+
+Yang
+
+
 
