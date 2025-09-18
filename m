@@ -4,138 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2CA6CAC5A8
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 11:48:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C187CAC5A8
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 11:50:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 35A098E00FA; Thu, 18 Sep 2025 07:48:22 -0400 (EDT)
+	id 0511B8E00FB; Thu, 18 Sep 2025 07:50:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 338DC8E0093; Thu, 18 Sep 2025 07:48:22 -0400 (EDT)
+	id 029358E0093; Thu, 18 Sep 2025 07:50:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 247CE8E00FA; Thu, 18 Sep 2025 07:48:22 -0400 (EDT)
+	id E59CD8E00FB; Thu, 18 Sep 2025 07:50:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 15BD68E0093
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 07:48:22 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B4B71551B9
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 11:48:21 +0000 (UTC)
-X-FDA: 83902198002.16.1F49BBD
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 7F07640015
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 11:48:19 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=NsIOQ9dm;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ZggasU2L;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xkWzZFbk;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=fEARIWCP;
-	spf=pass (imf27.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D4EF58E0093
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 07:50:18 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 98EB7160159
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 11:50:18 +0000 (UTC)
+X-FDA: 83902202916.20.16E6C49
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 9C2ED20009
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 11:50:16 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=dNMN+wKl;
+	spf=pass (imf13.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.51 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758196099;
+	s=arc-20220608; t=1758196216;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UMOUNhsGvHhAUf+LAQd/OeevBQv2Y/jWS09GwOJd9iM=;
-	b=4JtUqcWO17v69+P4+9Q17kQ8mdM09+epFkKYw9cDtfrlvLUBt9fIUF3KZ8+g9yoEulddEM
-	oSjUw9Sk6bNSxO9p6BkEhijgqf5ogYfqADdpVkHSFgIFAJS5Msni16XPkEiftoiWLNmN/l
-	1lUxQcViSASEafmrrUHI4FP50mD2w68=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758196099; a=rsa-sha256;
-	cv=none;
-	b=LRnRJTv2/jiV7VFoMDHxO9GNr/zFFy4MDUEcqGi9wY5jqCAYOe3ME3akn8K+VUuu0LF1Bt
-	Dc0vIqLZV30vkOA0N3B/RH9O2S0BuZhk/hLd4t+HlH6170g8+J45o7xsypJVuvrIU5uPbU
-	bkz6/RHYM9JyvYTSybNIoHTBsVp4G+k=
+	bh=cinYAB168v/wb2VrppQflF57ZyFZxmkxcgnsCP7opUw=;
+	b=zS5shoWE+TOUESx17Yq7LYdtr8PHdXXbpB9prEBgXppQyYgKxnCv638RcqobVaXFj5U9Fr
+	mmODlFQWWLy/AcWs4PnIKahVL7jsmx2xFD6XdjHIH0vLbHwlE3UQiHiyaQwL5ONFxE2bDn
+	NA0RY7DtjP4glWTwXJp1S3LSqRdzq38=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=NsIOQ9dm;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ZggasU2L;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xkWzZFbk;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=fEARIWCP;
-	spf=pass (imf27.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id CBAD13370E;
-	Thu, 18 Sep 2025 11:48:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1758196098; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UMOUNhsGvHhAUf+LAQd/OeevBQv2Y/jWS09GwOJd9iM=;
-	b=NsIOQ9dmZFWlj08ASM+0tOMuI4uoRfRClAIqbSviXN95afpsSEv0/k6us7ReW9EDQbMATt
-	DO4pT8FNhprSDvzHqGokIQkpNkIDPwrCROySAxvUypdJUG7nowS6fJIKV+lI03hjePLg5h
-	my7YP9F1oR4x0Q3UTQm5r7xSSDr3pvE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1758196098;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UMOUNhsGvHhAUf+LAQd/OeevBQv2Y/jWS09GwOJd9iM=;
-	b=ZggasU2LVxHLbH3HTpFmVQH4zVMbSmnK3BQfjhGyz6PtB65oXsT7FG1Ol9eUat9Kty9Orn
-	gq92C7/av8p7a2DA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1758196096; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UMOUNhsGvHhAUf+LAQd/OeevBQv2Y/jWS09GwOJd9iM=;
-	b=xkWzZFbksNveYnTPRm0DcByD49XuDyxamylUpbKpu0inMYFysqgpyG0smmm6q9aoco6Rab
-	wa95agUh4EP5poYjiP1I1rkJocMxNwckXcYDriQaTYSVCg3KVQGhIRyXTxLKPeM9E3nvU4
-	nfsOdVzyH1/Ozc4zX+/MIS/3WekAXfs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1758196096;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UMOUNhsGvHhAUf+LAQd/OeevBQv2Y/jWS09GwOJd9iM=;
-	b=fEARIWCPoiFLAGz2DBjeHMdArIdFQp8TGO5mUnjbbvWOaPJ7mWYgBEbtYOGrZPzdR/byiS
-	tRVFCXVoMDw1ecDg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DB6D013A51;
-	Thu, 18 Sep 2025 11:48:14 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id sN1MMn7xy2joCgAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Thu, 18 Sep 2025 11:48:14 +0000
-Date: Thu, 18 Sep 2025 12:48:13 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: David Hildenbrand <david@redhat.com>
-Cc: Kalesh Singh <kaleshsingh@google.com>, akpm@linux-foundation.org, 
-	minchan@kernel.org, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, 
-	rppt@kernel.org, kernel-team@android.com, android-mm@google.com, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Kees Cook <kees@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Ingo Molnar <mingo@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
-	Valentin Schneider <vschneid@redhat.com>, Jann Horn <jannh@google.com>, Shuah Khan <shuah@kernel.org>, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-trace-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v2 6/7] mm: add assertion for VMA count limit
-Message-ID: <4n557wud5bb33jxgiale6quhnxqoqf2ykwqxv6yemmosz4uxjh@ommmu37yiuc5>
-References: <20250915163838.631445-1-kaleshsingh@google.com>
- <20250915163838.631445-7-kaleshsingh@google.com>
- <eb7820ed-3351-4cb5-8341-d6a48ed7746f@redhat.com>
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=dNMN+wKl;
+	spf=pass (imf13.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.51 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758196216; a=rsa-sha256;
+	cv=none;
+	b=ezMSZGJpGkfedJGD61Sp6C8/Voeag+fN33LVI8l2NFVT2KjNfq+SVEI6UCaJLDE5Ys+4+E
+	IrvsbuxbAvJghwGRqyWF48szG379kZHzcglabjeUOsdIlsNBO4RsW3pz6Sn5TyvSkhJrYL
+	Mj5kwUDsDf9binlWTvtXOQhntjnPQZo=
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-571a58b385aso1136557e87.2
+        for <linux-mm@kvack.org>; Thu, 18 Sep 2025 04:50:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758196215; x=1758801015; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:date:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=cinYAB168v/wb2VrppQflF57ZyFZxmkxcgnsCP7opUw=;
+        b=dNMN+wKlnVr5PjJ1XbFwV3+TKwGIYyI3pLCrqZF5odVEzoZpg1Zc/QT+wLcfbWzQEW
+         w+wKqw2L/RBAGAOamYlMJG8PN8H/h2Oc9ixr5Vr0ecWY3t+FDYhSkB/a5ldbXlk50Gcl
+         eicDivaxrYkxedNp1XSkXqMwd2nQhfAysYS0KgIYIaeMOafcl5b/4C44i6+LSweKwB24
+         WlczFNvPQ7QnhypkaokEiYdmHzZf0vjvsLM0o24L+l4+bKpH7pYB2+sg7D3/a+kAYl6t
+         DjGSKSiVLIdzkoGHjIc8UczvwjrNAvVLFjRvRPkxxu5gRQ4wuJD8fyN7j+Vd5VUdBEVU
+         XhXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758196215; x=1758801015;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:date:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=cinYAB168v/wb2VrppQflF57ZyFZxmkxcgnsCP7opUw=;
+        b=DdXgGMH6JuB1toVuFQEFbHkzCVWb9gbdgCyXpIC94ze31v+fH26RZpn/y8D1PONt/N
+         r0UJ4Lol4qIzcVoRw3PlolXBoiZ6/zra4f/iL6eHrHZ+ANLUUOloWLrzQQ5AJGyb6+jA
+         63y2nsPu8+GRm6UaaVy1mTsMhtWrscW94IMw/sVDnNLr3Ry/FuPtkpRyJotlEpoHcnux
+         CDge2tNP6UT2+7SXPuWlqDA3vlY6ZZ/F3E9PCRx1rKJm5zBq1z6jOkxkSC1i7R6enFyD
+         +Us2nsxJ9qYkR5ggAm0eFV8R2EdRbRVvwOLZNkTc4DBZ81NVEBJR0heHPOKIuov5YD2E
+         or2g==
+X-Forwarded-Encrypted: i=1; AJvYcCXSS5s2nKCHLyZt4HAHiEB6pDTSrl35GmKTOXpsby+lFaHS6m9yXyRZrXqktGpE8M3bik+15SparQ==@kvack.org
+X-Gm-Message-State: AOJu0YznfAiG068KixxTrGpx1OX/xXGcSerzF8vTZt+iAl1ESt4G+k9j
+	lph7H0j50Vg6cWgEdABey6BWZtdAkZev/bb9q+hhmvpaVmrqF5BaHGmu
+X-Gm-Gg: ASbGncuxD8TibdySGJBhwvSZIz9emDiD6ohJGXi2qAIPBLHnrYS7CuxiAbjHo83qdu1
+	HF5PqSIP4BVU5ggQINRhiVbtBtddBC/dAYVkbGbfMFYx6TThzMoZZELNZwmsJEANLXSnzCa/gWl
+	KscZHp1TsDojm7jADnfABNbBfpbF1JPFn3gUKVDSR/+upv0UBOW7l8kk/FjVbQcSVRyU5hrooJO
+	PlSg1FBRmsRAOX9GY8qN8pjfIAuOnHdzYmLWv25fheTdjUxYtJ2+2Psc3wLms5SFyxWamO0ICSe
+	1UVTDZsOsaobIZ+maYFVnw2IUR/F5vv7kwNVepJ8cetA/c5pZhZO31MowQyWX5Q9+Z6xPVTCn5Y
+	9qQSkB8P6
+X-Google-Smtp-Source: AGHT+IGPXawyjl1pf4A0JhR7iwy1/wI6/9VL3klvy4kLXlBQi62TAUdK1LlD/gQhEjPPojUrq+oGdA==
+X-Received: by 2002:a05:6512:3e08:b0:55f:572e:2417 with SMTP id 2adb3069b0e04-57799ea9e63mr1847687e87.56.1758196214358;
+        Thu, 18 Sep 2025 04:50:14 -0700 (PDT)
+Received: from milan ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-578a68e26d2sm618824e87.54.2025.09.18.04.50.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Sep 2025 04:50:13 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@milan>
+Date: Thu, 18 Sep 2025 13:50:12 +0200
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: Uladzislau Rezki <urezki@gmail.com>, Vlastimil Babka <vbabka@suse.cz>,
+	paulmck@kernel.org, Jan Engelhardt <ej@inai.de>,
+	Sudarsan Mahendran <sudarsanm@google.com>, Liam.Howlett@oracle.com,
+	cl@gentwo.org, harry.yoo@oracle.com, howlett@gmail.com,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	maple-tree@lists.infradead.org, rcu@vger.kernel.org,
+	rientjes@google.com, roman.gushchin@linux.dev
+Subject: Re: Benchmarking [PATCH v5 00/14] SLUB percpu sheaves
+Message-ID: <aMvx9GKgIWtrkZ_R@milan>
+References: <20250723-slub-percpu-caches-v5-0-b792cd830f5d@suse.cz>
+ <20250913000935.1021068-1-sudarsanm@google.com>
+ <qs3967pq-4nq7-67pq-2025-r7259o0s52p4@vanv.qr>
+ <f5792407-d2b9-42b3-bc85-ed14eac945ec@paulmck-laptop>
+ <d1ef1cbb-c18d-4da6-b56b-342e86dca525@suse.cz>
+ <CAJuCfpEQ=RUgcAvRzE5jRrhhFpkm8E2PpBK9e9GhK26ZaJQt=Q@mail.gmail.com>
+ <aMpE-oSjtlDU4TSl@pc636>
+ <CAJuCfpHQ_JedSRHKKoYXyVzaFOm=dDWzgFZwqerfEC1fn35j0w@mail.gmail.com>
+ <CAJuCfpE48n=QM0nY8yE3drqZU0wgC76=70EyftL1WZewEcykyA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <eb7820ed-3351-4cb5-8341-d6a48ed7746f@redhat.com>
-X-Stat-Signature: gibg66tkjdpxac4wr5q5gndgzm9okyux
-X-Rspamd-Queue-Id: 7F07640015
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJuCfpE48n=QM0nY8yE3drqZU0wgC76=70EyftL1WZewEcykyA@mail.gmail.com>
+X-Stat-Signature: 47wyspyxymydfz6h1rsdno8j7hofonzn
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1758196099-619027
-X-HE-Meta: U2FsdGVkX1/Psj74C0gQuspsKpASRbDr/TR3DAGaQ+jwUdN7q1jMLlFkm7jXGB23JiCIlWfDNeVzpC67Glq9KDEX9dVqrkyMPAOe4JfYax+PgwlyuerUI5l61PKvLgq5C8fBcIXj3TCpSNSettIB9U+m3X2MNp/PMvDaXNV90gNUHeJKPdjs9MIbPh3kXMLW1SXN+Xnb+WZW3qHU6G1Ol0xWFcg+MvAqA+/b6Aq+MvZWv6I0KjuF0hy3IHutRtRD+r/cOPRuFT0SCiXTzVWaUEPAPE9WvM6iajTy/hvZ+PW6Vy47PZBWc14djUzeu+3bsZBggM+YGFuobAvojKYud1+x9Y1ExasO5Ps3ZT5Sdqyz6+tIXoPWJAgxtGmLMgaHeh9i53KCnVQ5dwx0wTJV2bnHhMnhTrNuz7rsuao4ixZ5J8BhE3XatE7rGpmh1NhGZIUL177JCn+whOMWjyfFsl4Wk9DwU2652Wy0BlahPyJAHptFcW8njo68TMEvmOrkk1Kb+B810QavQATO2XNx9FoDC+kPRhNQJLDhIqXmMcvnU4QX4D2jQSQpWa9Mt2apCA05S4feez1q61WjyjM/NMyZACviGe5L9UsuAG+dg3i9egpIklvJCKZx4VwoQiB30cgk3V6hAliZp+aUDwYXGXQWLENtdo8bavRrJhi6UTGbgrVF1WIf0euRWoVzsQ5GCm0Kzn1nxUCAm56/j+qHnTAD99wbmTQmWiZbOJ8r6vM2UPWcP3/xLQWBjA2aZ606ppLiRsTBWp0aNDBQ8j1HaQ9lDyuDqa21NW/pTVZXjgfC88HFPlO4q/WGutSQgcG1ZwOuwwWy/ItNnCRXy+rKFqc5Xd2GYSRMuuEm7tlFrKrMs8nK7UkEzQUs7zhLb9ngkjIDsDfQgg6FZ77xHKGev10kVqyPC0ixxYapBF1YqQy7luTXOb50rL/qR006z8nuB8lRZXaaeOYQs274D2k
- Gh97jvd0
- aE9xfwqME1my7N9gsElWJjeOUboX7S8xYJJIOoY5oUFXDPFR5lSI3inNydR+my7tm1F3/Ctn6IoFEW3zwQP6OIax0Xtb/N9HziIIPN6aHsCh8p/IgV2sVE5LuuknECXN7v+sYGIY2zBZyawh47RZVDDUdVV2cfAxom4KlrltCAY3ihaU4S4+BgQFpKyhiX1y7HfLWnIumQ8CsJgq090OLDIDmVVM/ElvxjTNmQhDsDgCby3zPB/JcY2b1qhSNeM/5M25DKZuzuJLg11s9gujvthL2y7J9tOE17TwX2Gs2XTe1YXo70gV7nGva0xTMYuuu6D3+p48asXS0RQfds2+NYXmQ50V5V5V6CCxew5h+bFLLXXNBDqbG2r/qtj9jDS+zA6ry5xzSxSACDERFaxePPCIPofeMjz+3fyvoq/efXq17N4YZTFguTnMNMtVSnaOnNOhDlXeA/EI8xiGXm6rALYp/nOMaZFOJwzoadjsxzjE3kSc=
+X-Rspamd-Queue-Id: 9C2ED20009
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1758196216-269991
+X-HE-Meta: U2FsdGVkX1964XntD3LsaB2tU2GVC/O90vYsYZPhf/ckFrLlH/zc1RgT+JvlQOrClDC5UJsORjgQ2GQv9kh5sXPwyGrRAFPYc02B/riqQ2slVdvFz2+s1qgZrZ3haOBGlhkRsWp8lZsqmM+d8RazIq7QRL/p7HuVawdmKkswDrC1Lv+cSiZks9Q+WDZXY3du+5zRGA4p1EHy1gukJFlHtJEGLtUrKQ5beiLcnH7AYJFjo4fos0wYmMqbSxUDFr9f+ADTC2U3Vwc+P1ZE9hrJUsHuObjuLUG70CGd3M6Mp62vK5XF4FAN13mZAOZTNBs5G4vkftBya0AougAx1KDLNtqa5fyYyduEpkn0nGT0QGBq8gOgOtQGJAGnstAcpnBAjUZ0/mR0oIft51r8d0US7/67p/lvoTVYdcha2/9svG0wTPTCsuaKC4XXI5cL6wf0AaOP3GdeitIhjHmq0fIp/aD8INBCcqyzodIBy58hIV/kCPwdXXWGQYDu9N2M2xOviuSl2hDOPEsb/FMZa1XNVQtrB4YkCQIQ1UEogpALOgl7dSaW9Ku8/9J1OqcpnZxBbFKwUqagttK9MHV0S+Q0uficlAWmboHx56OlE0UCHPNpsAm895zbzHCERwxXwObgITXNB3KGRw3k5uJExT6vsnNpentAofoFuJl6JhJAGkHYmlyotblSd8Cb6nrB82m926U2fwmPtUtHjneonhePK37pFobc6LEu20nZASRImmq0FFcWwO04K/ble689SfoSgL6Ss7RcAjso1IW09bchqFS+bliUPd70aqFJFuMIVasBxXgMh79ULwhUM6lkMPlAMSjZ3DG5kxGy2p5F03Ujd1iRpLIH6HVZv0oyRBZzKBXFEx+YtkPcO3jJp5Dvz4S+p3OouiLJzP0M81/pw3CEtH9g3/RG4C/IOQCQg2DQ+MVq3ATZg0pJlq54lkljab6OUMm/zfXjriOYJK9Kh4o
+ 8S00gbsd
+ FJajdr5cWZ9DbG5WORqwspDI8uOW7ou3Q5Y/hGWWB+OIUUMJV5VerCvC9r3pA74kItMM125YpYQmR4LbO7uyAqtmtlYj064OP0Ki5CHtOPwlCTIWva5IGhfmM0InM06oSfasZfJVKYw7qwEa6yy2zgjfGztXNNqCI/hEYNWDHiQ5cRNqiv7iRlQHiEoSnc0/TuHK8oOrD6DkOrUzpgXvpL2te+hiLMFSpGmPguQEASmlKCq22B+kCkvdxIYVIwNoyNOzi3iYOEfzLDkNWctTUDj6o64ZAqDnZpGlfZNeD5MCE+6x+YZEGlwd3uboY+XPRrK1mbDp+0+rYULpQ/ZWE+e83CsUKCnc+qzb0yHSVlGSUVAQRnurxOipFHUsup+FNatCQlP+7+0bISmOGBYDf7KSndc9fGve+qCxSEgfr42a926uyN7n+21jIbLFaKOAIl/Pr4exJslBy2+eaeH2OquRvyhiVPjpwrlWZmzCE8BctpJvIQGesCTG3WDLzOgMDfszPmHtLUxeGQsE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,69 +134,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 17, 2025 at 03:44:27PM +0200, David Hildenbrand wrote:
-> On 15.09.25 18:36, Kalesh Singh wrote:
-> > Building on the vma_count helpers, add a VM_WARN_ON_ONCE() to detect
-> > cases where the VMA count exceeds the sysctl_max_map_count limit.
-> > 
-> > This check will help catch future bugs or regressions where
-> > the VMAs are allocated exceeding the limit.
-> > 
-> > The warning is placed in the main vma_count_*() helpers, while the
-> > internal *_nocheck variants bypass it. _nocheck helpers are used to
-> > ensure that the assertion does not trigger a false positive in
-> > the legitimate case of a temporary VMA increase past the limit
-> > by a VMA split in munmap().
-> > 
-> > Cc: Andrew Morton <akpm@linux-foundation.org>
-> > Cc: David Hildenbrand <david@redhat.com>
-> > Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-> > Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> > Cc: Mike Rapoport <rppt@kernel.org>
-> > Cc: Minchan Kim <minchan@kernel.org>
-> > Cc: Pedro Falcato <pfalcato@suse.de>
-> > Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
-> > ---
-> > 
-> > Changes in v2:
-> >    - Add assertions if exceeding max_vma_count limit, per Pedro
-> > 
-> >   include/linux/mm.h               | 12 ++++++--
-> >   mm/internal.h                    |  1 -
-> >   mm/vma.c                         | 49 +++++++++++++++++++++++++-------
-> >   tools/testing/vma/vma_internal.h |  7 ++++-
-> >   4 files changed, 55 insertions(+), 14 deletions(-)
-> > 
-> > diff --git a/include/linux/mm.h b/include/linux/mm.h
-> > index 8bad1454984c..3a3749d7015c 100644
-> > --- a/include/linux/mm.h
-> > +++ b/include/linux/mm.h
-> > @@ -4219,19 +4219,27 @@ static inline bool snapshot_page_is_faithful(const struct page_snapshot *ps)
-> >   void snapshot_page(struct page_snapshot *ps, const struct page *page);
-> > +int vma_count_remaining(const struct mm_struct *mm);
-> > +
-> >   static inline void vma_count_init(struct mm_struct *mm)
-> >   {
-> >   	ACCESS_PRIVATE(mm, __vma_count) = 0;
-> >   }
-> > -static inline void vma_count_add(struct mm_struct *mm, int nr_vmas)
-> > +static inline void __vma_count_add_nocheck(struct mm_struct *mm, int nr_vmas)
-> >   {
-> >   	ACCESS_PRIVATE(mm, __vma_count) += nr_vmas;
-> >   }
-> > +static inline void vma_count_add(struct mm_struct *mm, int nr_vmas)
-> > +{
-> > +	VM_WARN_ON_ONCE(!vma_count_remaining(mm));
+On Wed, Sep 17, 2025 at 04:59:41PM -0700, Suren Baghdasaryan wrote:
+> On Wed, Sep 17, 2025 at 9:14 AM Suren Baghdasaryan <surenb@google.com> wrote:
+> >
+> > On Tue, Sep 16, 2025 at 10:19 PM Uladzislau Rezki <urezki@gmail.com> wrote:
+> > >
+> > > On Tue, Sep 16, 2025 at 10:09:18AM -0700, Suren Baghdasaryan wrote:
+> > > > On Mon, Sep 15, 2025 at 8:22 AM Vlastimil Babka <vbabka@suse.cz> wrote:
+> > > > >
+> > > > > On 9/15/25 14:13, Paul E. McKenney wrote:
+> > > > > > On Mon, Sep 15, 2025 at 09:51:25AM +0200, Jan Engelhardt wrote:
+> > > > > >>
+> > > > > >> On Saturday 2025-09-13 02:09, Sudarsan Mahendran wrote:
+> > > > > >> >
+> > > > > >> >Summary of the results:
+> > > > >
+> > > > > In any case, thanks a lot for the results!
+> > > > >
+> > > > > >> >- Significant change (meaning >10% difference
+> > > > > >> >  between base and experiment) on will-it-scale
+> > > > > >> >  tests in AMD.
+> > > > > >> >
+> > > > > >> >Summary of AMD will-it-scale test changes:
+> > > > > >> >
+> > > > > >> >Number of runs : 15
+> > > > > >> >Direction      : + is good
+> > > > > >>
+> > > > > >> If STDDEV grows more than mean, there is more jitter,
+> > > > > >> which is not "good".
+> > > > > >
+> > > > > > This is true.  On the other hand, the mean grew way more in absolute
+> > > > > > terms than did STDDEV.  So might this be a reasonable tradeoff?
+> > > > >
+> > > > > Also I'd point out that MIN of TEST is better than MAX of BASE, which means
+> > > > > there's always an improvement for this config. So jitter here means it's
+> > > > > changing between better and more better :) and not between worse and (more)
+> > > > > better.
+> > > > >
+> > > > > The annoying part of course is that for other configs it's consistently the
+> > > > > opposite.
+> > > >
+> > > > Hi Vlastimil,
+> > > > I ran my mmap stress test that runs 20000 cycles of mmapping 50 VMAs,
+> > > > faulting them in then unmapping and timing only mmap and munmap calls.
+> > > > This is not a realistic scenario but works well for A/B comparison.
+> > > >
+> > > > The numbers are below with sheaves showing a clear improvement:
+> > > >
+> > > > Baseline
+> > > >             avg             stdev
+> > > > mmap        2.621073        0.2525161631
+> > > > munmap      2.292965        0.008831973052
+> > > > total       4.914038        0.2572620923
+> > > >
+> > > > Sheaves
+> > > >             avg            stdev           avg_diff        stdev_diff
+> > > > mmap        1.561220667    0.07748897037   -40.44%        -69.31%
+> > > > munmap      2.042071       0.03603083448   -10.94%        307.96%
+> > > > total       3.603291667    0.113209047     -26.67%        -55.99%
+> > > >
+> > > Could you run your test with dropping below patch?
+> >
+> > Sure, will try later today and report.
 > 
-> Can't that fire when changing the max count from user space at just the
-> wrong time?
+> Sheaves with [04/23] patch reverted:
 > 
-> I assume we'll have to tolerated that and might just want to drop this patch
-> from the series.
+>             avg             avg_diff
+> mmap     2.143948        -18.20%
+> munmap     2.343707        2.21%
+> total     4.487655        -8.68%
+> 
+With offloading over sheaves the mmap/munmap is faster, i assume it is
+because of same objects are reused from the sheaves after reclaim. Whereas we,
+kvfree_rcu() just free them.
+ 
+Thank you for your results.
 
-Ah yes, of course, userspace can dynamically change it. Good catch. I guess
-we'll need to kill the assertion idea then.
-
--- 
-Pedro
+--
+Uladzislau Rezki
 
