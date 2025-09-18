@@ -4,58 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02FABCAC597
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 03:47:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA36CCAC597
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 03:47:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 085E08E006B; Wed, 17 Sep 2025 23:47:09 -0400 (EDT)
+	id 4D21C8E00AB; Wed, 17 Sep 2025 23:47:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 043698E00AA; Wed, 17 Sep 2025 23:47:08 -0400 (EDT)
+	id 454EB8E00AA; Wed, 17 Sep 2025 23:47:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D55568E006B; Wed, 17 Sep 2025 23:47:08 -0400 (EDT)
+	id 36A9B8E00AB; Wed, 17 Sep 2025 23:47:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C0AAC8E00A9
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 23:47:08 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7F64C11AD05
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 03:47:08 +0000 (UTC)
-X-FDA: 83900985336.05.7E8B158
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 470C540003
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 03:47:05 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=G0v9Xvi7;
-	spf=pass (imf04.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 1BF478E00AA
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 23:47:12 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D28B287418
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 03:47:11 +0000 (UTC)
+X-FDA: 83900985462.04.A63586E
+Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
+	by imf27.hostedemail.com (Postfix) with ESMTP id DA3A940006
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 03:47:09 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=JvbQ3sPl;
+	spf=pass (imf27.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758167226;
+	s=arc-20220608; t=1758167230;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sYxzI8uxfIUVEucc9dtDZh68r/k0MKv1E3eAeGSpuhw=;
-	b=EwsAP0eN9pRzmciQ7rZcHinZWdMgZHpjbqoLsP72dFLWxfl8Jy1mzR+Ok1ql/p4j1gRfjo
-	pjlDxvdIVg0XVrjwErZK6t3i6O90ojpvf/yqFDpb5jp7BKpgUS63ydH18xe6OCkyNVfFQz
-	V5DP0nkqJClnBpfZ52bjid1w7GOO7I4=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=G0v9Xvi7;
-	spf=pass (imf04.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758167226; a=rsa-sha256;
+	bh=RTSPriXkykSZAqFc/d3pFWgXfbyl1hq/sl6Tq3Oc8Jo=;
+	b=z9In3ClsvHkW+uIKKceeAxOhKlXKH/CB2u2mzutdIEOtTY6L2A+9+TdEFtslKYYNhQIk3U
+	dOh/cRiG/IkW/aaOALqkxhQAbpi8jOm8/EnAGBltuo1eWuwh5m1ELozlwc+o/HWG+o7MIr
+	i359wdb5jD/XfwZHaL29B4B53DL2gkI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758167230; a=rsa-sha256;
 	cv=none;
-	b=Q9JR19ObNz5y7Dy6tleXe3D0CDnCgFwRZETHR5X1NBuJ57lvXzPwCs3e7siyv+XW4SJfx3
-	BHE2+gh9XuuwVr7mqt0Fs7o+SzXVcVJ0+VCt2OsJUo7dy6A7jDqeSHF2krx8aDVceadYQz
-	ygZwj4L5fqzR0IaFbujs5Hx3DjaYgPM=
+	b=sm3gwYQeDA3KTFIu18MTpyOek+kPSuXxfNONbuiGaCwJZDN8j87clsJ89htd8ejkfRG0v8
+	gy6l3nfUp8vL5r3vP/zACPKArVBkUBZcEi9zvOyi9jELcbmTb9E+KknE1LoKaspLK/nYkN
+	XATj/deO1cTBgJJI308zgqnOrV9Uf3A=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=JvbQ3sPl;
+	spf=pass (imf27.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1758167223; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=sYxzI8uxfIUVEucc9dtDZh68r/k0MKv1E3eAeGSpuhw=;
-	b=G0v9Xvi7KlyrbdMLnL6/s1VQEGSxTkwzY/YLuLJLndEvGGX5G5ooOzkUF04kpqBOX4+BUX+6OPYy6SpiP1egALp3ivDsFx7wvNlqU7Ga2bJ0BsqdITziTuZqTKOddkHFpjh2qPYq7lJbUpmEfaJVSQ3ePr+wha7EpOSL1qGzuuE=
-Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WoEU2v0_1758167221 cluster:ay36)
+	t=1758167225; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=RTSPriXkykSZAqFc/d3pFWgXfbyl1hq/sl6Tq3Oc8Jo=;
+	b=JvbQ3sPlT3HWknW0YBv4jXaEM1RWp8ghfhtGRjZnAOXKs/YX1SEoa84a3xzg1n3t7ybTyEqAhU6QwUWsh8SRa9g8VQ3mEx6SAYuFbijHFmPwRKBw0M6AYselvU0tWA6YKLNdiDf78XVb8v3zLIHemNvl2aJ15FeZSrkNjcP2oaE=
+Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WoEWeJK_1758167222 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Thu, 18 Sep 2025 11:47:02 +0800
+          Thu, 18 Sep 2025 11:47:03 +0800
 From: Baolin Wang <baolin.wang@linux.alibaba.com>
 To: akpm@linux-foundation.org,
 	hannes@cmpxchg.org
@@ -69,22 +69,22 @@ Cc: david@redhat.com,
 	baolin.wang@linux.alibaba.com,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 1/2] mm: vmscan: remove folio_test_private() check in pageout()
-Date: Thu, 18 Sep 2025 11:46:53 +0800
-Message-ID: <9ef0e560dc83650bc538eb5dcd1594e112c1369f.1758166683.git.baolin.wang@linux.alibaba.com>
+Subject: [PATCH v2 2/2] mm: vmscan: simplify the folio refcount check in pageout()
+Date: Thu, 18 Sep 2025 11:46:54 +0800
+Message-ID: <4cbbec5bb92397aa4597105f1f499aabf7a1901c.1758166683.git.baolin.wang@linux.alibaba.com>
 X-Mailer: git-send-email 2.43.7
 In-Reply-To: <cover.1758166683.git.baolin.wang@linux.alibaba.com>
 References: <cover.1758166683.git.baolin.wang@linux.alibaba.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 470C540003
-X-Rspamd-Server: rspam05
-X-Stat-Signature: pjr97dep37tu1xwjxqah5ckbbdocgsde
+X-Rspamd-Queue-Id: DA3A940006
+X-Stat-Signature: 3i3by84885uauaf61iz4xh3ijnbucdsq
 X-Rspam-User: 
-X-HE-Tag: 1758167225-51706
-X-HE-Meta: U2FsdGVkX1/SrvgXhLckvgY/kBMCw28J9ygyNI61+153fMx86+ZrgyLY9VXY3xET7/XcTtqzt0XEFOCtyyIREqyJHCSS5mf/N8RPXtVttPXZka8NQtXFDBqcTqKzeZwPTriz6PrOytdBcLZltgH6TbPgrTfVzlB96eNTNDhFBddlnNFlsA1op0zyzaAiIJeFtfkJA3VUHhSDijVldr6ZA+zRLlqzPGsnHAI6XVylGF/g0GRqjxmbWD8c/bwMQmzHDCTCu3hLbaaNxinV6Bs4coewCXA51nvk+DOELX4M+e9iVkEkt/4EjNcEmr4tDlqqp1Wzji2vUjdO+c82IBmVPI3qeun7ZajAq95F6FhWIFq/pPr/QNTjwCtDpydkSkDc2gXQ0Xb9/q9fSA4N3h+wVLHt9uvoCI36ZucI6AZ/xm1lZCW4etbf/V5P0rnZAeiftIR4jPmfm7cXJWNqSOHJBUdcPHzfFqUElKN4UoCSXmI0y5G86eGzAtAJpXTA7o+ivIj9rzuBCOLWtXIt69IfTAEweH6Ta7eD1cjtnSxeuvQ6nMrWVLsZRIySqrWDw2yqMH3z027YLGePjfOfFWjj1nIViVL2bTfz5VnoL8SNfpbn+Ji7/U8MIF/Hjw28kwfCci03TldyFdHJL0hImQgMXod2/iv/o/i5xntwjpUKz03IeAa1GKd6/jBGc5Fj4IQkYWsxKmppgKrpyOMPx8Kki4JH8oLwjMAfKQkHuufsd1hjEOu4C9a4cAqjXEv1IIodD2nHm/ou6/8X6HkhtTAFMmqs2JHASj+sjl1WjJSSkREUHmf8jLQ+Yv5gN+5bYKHd00EcP2yCPq7YGDEpgTuQpkc6I59MGrxw0ajQuTTYeHHHF8zTuW2/3eCiN6wd7+xNegOh1RjRjNpWjKLpmnWTERJHZ12YEIxW68r5vN4ALd7MFF4iBjG7T4BXckkp/6nZn+QeXN/ET/5261mNONU
- vbbpAHFj
- UZ0MjhAsWzfmIReKb/Vh0qHyyy/faYphSIznr6sJBnSB6iZbPLUPU26dtBqhPR6Y5RNX7DCO/LHUXFz1idsp5V8xLWNk1h7UjQVdjoGAujSdKihBHUUDnLY5TN4jhV3rWEZFanA1RS9C690IugSwGMYZuM/LBCOHFgu34wEIPBvfnVIbikMN99xfAJqNEzfBNqWIdm+7v6uclahVrHC6yefsdf09/yauG3NxVI8pxwI8yoez1Ivr6cYlrz2adLSLmqAiGKRWirxCKYVQ9JKA4+zndbYhlA9LMF5LQ37byauurcMjYt1443kPzuA==
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1758167229-180880
+X-HE-Meta: U2FsdGVkX1912LZYtc0KlvLO+VI1z1EVmoLVVFuiSoL5pn/yDkceEi6XjMYi4FteZ9pXmyc8OjXTVWigwoge1W04pOg9A/CcJr3STD9dF3qW4ZBwHyoJoCu+1wwTGV44Oor2Wm6hCKoOTjNsu/AJFwG3L7ysA4fXgI48ghDHdPIlFMrPPPdmaDSdXskpLnODeA9/ATP+tj+qsb+02FWsXBHi3dDSAS5FWAYu7TjxohNVZCdqnQqMorXvS+FGm5pgbXioeQJ4+qAza/5rCftNh7BhIdTmOq/B1NZ9ea+az+Xq95UE86P4wPAQ2mntCxQQUGheTXQ2A4QGPz8DKMAgTvFFXKUcDkBeM+yHgL1q4nJSyeQgkU3ioB+enFZZX98SKLJLDCdMeafv5hbbhMeav6Ws+eBNxVV8Yx5SPiVw0JCQbH8rY31EjvAzU1xoelno0AelOoCzVESBVGusabQumHzrErSS019WtxuRDY9TwfOqnxcyJCuChwVOrFnjbnbH3+TJml/D330H+Qu0UI3Q37014i4wOuktxdzKhGBmJO4Ov85E4xCb6FBkFbOBFC3cn4S9qhLtRwHFowifv3lmKfFH0GGFkClhPrEPTyJ3njVOIFdOhCjzcGjkI32NWNgSM0WjZOk4tGy9h5KtaADCVN7qe2i6B2wIeLRTIwUNaTasilpmk5FCP3l4J/+GrZL8eLJmOvpgDyvYzCuQzqut1QARY+13KNl8rDZMVKH9RHaZcNwYjgLTGMnLu2QFBoPZdJmeHII+MX6zpMXdounU0nrcgrINceIJPwg/88KAREYqwzm/M65QrixobEKUuwmRFumUJxhEWkf2h763yrBck56M2eTEa9LeYILTh8UtJ7Q2JDvbf/BnQpt3FLlgWd+Aoa2Lx+BZn7b5KVLk8nfDByeNlw3zlnLousD4Karertr1HSbKNthzsMuqc7Bg3NCx/e3l9DTfHBbGHpFhc5z
+ ZIah6ld8
+ fHRBwWsS5kWiAxUJ4aqhRV9TWa4oWJvteiv8T6mtbl9TFPNJZyay0hYIuiR+W+dywsUzepa5ucXV+ACHx834BK+aY9o/QmaieVEf8tNCDvkI418GUZFhb1rKVdJrFAT3E/me6EUV2pg8X0BGLMa8ri3twrEoeBSsWqEbQZZNU+SnRN9kAvanvQghX9QvEYjtPYq2IIjiuE0l3PKggCD2HeVUgQa1z+Ld6OKxrw2DZXhKQERCtO3ffPcNP3B1pbTZ+Lne8Y1y7ZRcZ9EYe712fIHzhIg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,70 +93,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The folio_test_private() check in pageout() was introduced by commit
-ce91b575332b ("orphaned pagecache memleak fix") in 2005 (checked from
-a history tree[1]). As the commit message mentioned, it was to address
-the issue where reiserfs pagecache may be truncated while still pinned.
-To further explain, the truncation removes the page->mapping, but the
-page is still listed in the VM queues because it still has buffers.
+Since we no longer attempt to write back filesystem folios in pageout()
+(they will be filtered out by the following check in pageout()), and only
+tmpfs/shmem folios and anonymous swapcache folios can be written back,
+we can remove the redundant folio_test_private() when checking the folio's
+refcount, as tmpfs/shmem and swapcache folios do not use the PG_private flag.
 
-In 2008, commit a2b345642f530 ("Fix dirty page accounting leak with ext3
-data=journal") seems to be dealing with a similar issue, where the page
-becomes dirty after truncation, and it provides a very useful call stack:
-truncate_complete_page()
-      cancel_dirty_page() // PG_dirty cleared, decr. dirty pages
-      do_invalidatepage()
-        ext3_invalidatepage()
-          journal_invalidatepage()
-            journal_unmap_buffer()
-              __dispose_buffer()
-                __journal_unfile_buffer()
-                  __journal_temp_unlink_buffer()
-                    mark_buffer_dirty(); // PG_dirty set, incr. dirty pages
+While we're at it, we can open-code the folio refcount check instead of
+adding a simple helper that has only one user.
 
-In this commit a2b345642f530, we forcefully clear the page's dirty flag
-during truncation (in truncate_complete_page()).
-
-Now it seems this was just a peculiar usage specific to reiserfs. Maybe
-reiserfs had some extra refcount on these pages, which caused them to pass
-the is_page_cache_freeable() check. With the fix provided by commit a2b345642f530
-and reiserfs being removed in 2024 by commit fb6f20ecb121 ("reiserfs: The
-last commit"), such a case is unlikely to occur again. So let's remove the
-redundant folio_test_private() checks and related buffer_head release logic,
-and just leave a warning here to catch such a bug.
-
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/tglx/history.git
 Acked-by: David Hildenbrand <david@redhat.com>
 Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 ---
- mm/vmscan.c | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ mm/vmscan.c | 16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
 
 diff --git a/mm/vmscan.c b/mm/vmscan.c
-index f1fc36729ddd..930add6d90ab 100644
+index 930add6d90ab..b3a57db6a445 100644
 --- a/mm/vmscan.c
 +++ b/mm/vmscan.c
-@@ -701,16 +701,10 @@ static pageout_t pageout(struct folio *folio, struct address_space *mapping,
+@@ -477,17 +477,6 @@ static int reclaimer_offset(struct scan_control *sc)
+ 	return PGSTEAL_DIRECT - PGSTEAL_KSWAPD;
+ }
+ 
+-static inline int is_page_cache_freeable(struct folio *folio)
+-{
+-	/*
+-	 * A freeable page cache folio is referenced only by the caller
+-	 * that isolated the folio, the page cache and optional filesystem
+-	 * private data at folio->private.
+-	 */
+-	return folio_ref_count(folio) - folio_test_private(folio) ==
+-		1 + folio_nr_pages(folio);
+-}
+-
+ /*
+  * We detected a synchronous write error writing a folio out.  Probably
+  * -ENOSPC.  We need to propagate that into the address_space for a subsequent
+@@ -696,8 +685,11 @@ static pageout_t pageout(struct folio *folio, struct address_space *mapping,
+ 	 * block, for some throttling. This happens by accident, because
+ 	 * swap_backing_dev_info is bust: it doesn't reflect the
+ 	 * congestion state of the swapdevs.  Easy to fix, if needed.
++	 *
++	 * A freeable shmem or swapcache folio is referenced only by the
++	 * caller that isolated the folio and the page cache.
+ 	 */
+-	if (!is_page_cache_freeable(folio))
++	if (folio_ref_count(folio) != 1 + folio_nr_pages(folio))
  		return PAGE_KEEP;
  	if (!mapping) {
  		/*
--		 * Some data journaling orphaned folios can have
--		 * folio->mapping == NULL while being dirty with clean buffers.
-+		 * Is it still possible to have a dirty folio with
-+		 * a NULL mapping? I think not.
- 		 */
--		if (folio_test_private(folio)) {
--			if (try_to_free_buffers(folio)) {
--				folio_clear_dirty(folio);
--				pr_info("%s: orphaned folio\n", __func__);
--				return PAGE_CLEAN;
--			}
--		}
-+		VM_WARN_ON_FOLIO(true, folio);
- 		return PAGE_KEEP;
- 	}
- 
 -- 
 2.43.7
 
