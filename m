@@ -4,113 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74AABCAC59F
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 03:03:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1EA8CAC59F
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 03:13:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C30D48E00A4; Wed, 17 Sep 2025 23:03:33 -0400 (EDT)
+	id 459AE8E00A5; Wed, 17 Sep 2025 23:13:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C08E88E006B; Wed, 17 Sep 2025 23:03:33 -0400 (EDT)
+	id 40A8B8E006B; Wed, 17 Sep 2025 23:13:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B45958E00A4; Wed, 17 Sep 2025 23:03:33 -0400 (EDT)
+	id 320568E00A5; Wed, 17 Sep 2025 23:13:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A543B8E006B
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 23:03:33 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3333F5B392
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 03:03:33 +0000 (UTC)
-X-FDA: 83900875506.19.DCCB560
-Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
-	by imf25.hostedemail.com (Postfix) with ESMTP id ABC1BA0002
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 03:03:30 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=C1WM8K+1;
-	spf=pass (imf25.hostedemail.com: domain of sunjunchao@bytedance.com designates 209.85.219.174 as permitted sender) smtp.mailfrom=sunjunchao@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1CDEA8E006B
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 23:13:46 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id AD51211AD33
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 03:13:45 +0000 (UTC)
+X-FDA: 83900901210.30.B270117
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 64369120003
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 03:13:42 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=none;
+	spf=pass (imf29.hostedemail.com: domain of zhengxinyu6@huawei.com designates 45.249.212.190 as permitted sender) smtp.mailfrom=zhengxinyu6@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758164611;
+	s=arc-20220608; t=1758165224;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eHpj6BbDwwIXPitsNuyHsVAF3LXrP5LSMuZFLRbzGzk=;
-	b=NkTXrL2eh9zI/M+KizV0XnLd+wu0yIty2V61nldRfwe+21t0dzfWmi5ONphlFxG8frBzHt
-	gs0jyi1dcs2SkVCMSofaM7+uR15GlafRiktn4XQebJhJt8TZobP7QQLZpwOM/h2tzE/G6k
-	nvf/khrjJ34xDX2vhdCJe9m9AcC+KxI=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=VQWc2C2S36HTAbRr9txLiDs6v/Av9wMOvu6wG/G/uEY=;
+	b=yR9DU+YIHYZKtDWqSuY32WrRPr5OQqHdidUiW5nKr2GxbhC3H2xDnjlFn/Lxx1DS7AnXMc
+	3+7gmhzObr1ehKNTApiIqYhFT7K2FPGsqRS2ZMlfhe305Bo5dwRGcTRqyStbjLj2LgCX/Y
+	sgWPLJqWjnIKVV1YFoypaZ12rqpZbiY=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=C1WM8K+1;
-	spf=pass (imf25.hostedemail.com: domain of sunjunchao@bytedance.com designates 209.85.219.174 as permitted sender) smtp.mailfrom=sunjunchao@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758164611; a=rsa-sha256;
+	imf29.hostedemail.com;
+	dkim=none;
+	spf=pass (imf29.hostedemail.com: domain of zhengxinyu6@huawei.com designates 45.249.212.190 as permitted sender) smtp.mailfrom=zhengxinyu6@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758165224; a=rsa-sha256;
 	cv=none;
-	b=C8ZQyJvqIa9YKR42JeBMPdxc4Hd5rDRS7gUfNEdt4hicmo4wjE2t7ltgti3AmvVwS41OGx
-	LvalT2VV9PeLJ8SuRQNIISQ6rSCuW8NTaFMnO3nYsyG82Ref0gmjN7LUEJbLVr3dCEzNFX
-	b8w/ZCW7ZCSn5OXCmeBdUMDiuxCA3v0=
-Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-ea5c77525c4so417320276.1
-        for <linux-mm@kvack.org>; Wed, 17 Sep 2025 20:03:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1758164609; x=1758769409; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eHpj6BbDwwIXPitsNuyHsVAF3LXrP5LSMuZFLRbzGzk=;
-        b=C1WM8K+1p6b6itYev/GGMssLMdvqLfn+JNfT20iL5EsZguJ0zYoChBJdC0ndIqxEGG
-         8Rh4UH3MOzNksgWU9jmfVlO2gRvZycWBzwWghYY+lLKigwMSoaMt1/yt19FKuA2FSSBt
-         3EPt35d8EGulM6OLvaO/gVWfrjOZb2AuF0KW3qpzt8r1CvqoNrL9HY//W8cFypIKaN9J
-         SiCPCyozlyt2ZR+y/2To4giYF+mSgI54Wd4+SYsMaI4A2q8XRwQM4VZn5QVInn5TnBk3
-         MyVbDh5obOyF3aWmsBwwB6Eg7qhVPXrnRkBtahUvDUc/lLCUvMrsdd6zO8XvXT2jrXTE
-         ezXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758164609; x=1758769409;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=eHpj6BbDwwIXPitsNuyHsVAF3LXrP5LSMuZFLRbzGzk=;
-        b=G7q76UAFYi+Nut75ebCu+gIyPWZB+coC9meC4Ra4ouBxT7rDF8ZHzim3yuy8zmeuLg
-         42pFWRBeGCfj9y5Eq1G/hgAOYo4ZEd3ljEFE5x1f+w+Czu6/U+O7xTQ2oTdN4fTrbn/z
-         0QqPECRfbq1xyvz176U5++8ZfJnSqJa9fFbsr+RKaEMZqXUtPXxT5UZRJuLv8JFmi5eA
-         9lJBTBHwOEWLKTsTcLFwzVmA9FBiMeKIYrUpWbP5QvYCdYxniWZNcZOayRWAV3HT3s9o
-         Y/eMQ5W3yFzus9AfiEFHePxhsOwI1Q+PBXwPiRPk45Ne4w2A7H+6D2EPcYsdAPWfxojB
-         h31A==
-X-Forwarded-Encrypted: i=1; AJvYcCVsDstzYGYBLJFXpHZoHO+K3Xbp8S0DWft5d+7r7jlKm8l0wgCG1fpSaTUMeK/B3TLBGmd5wXYYsw==@kvack.org
-X-Gm-Message-State: AOJu0Yx1/0c9susFNCYrR7Iq7+U//IE0f6otgsvlK7fYH6uvYvGjCeda
-	DhjJEi3EivtXavVO43rgXwmzp2aM568pvCaUG5FWvNchssAXpBFoI/CTRxvC5jdyeFKfBpg5qFy
-	TDewwvZU3KGJjPuhOfI6n6GJT6xKzLaS2ki82bbrJig==
-X-Gm-Gg: ASbGncuqqjXVLaDNrn8OpU7vTzCrlZRQ8YvHBYTBGKiDC6g4iFRD8mQo7oKS0lOKS/X
-	RoRIm07x92IbsPF85j20G9OIO3ovXN8mehsf5x9XPonDGjZKiWinX/3ziNV1t/9d4iw03EnUv71
-	IzeENZfIyoDW8j2IN32QBnKgfzr/qlDDTn74z1/DeKXSNk71YiAtH/sc4Lrt1JrWBzFT9hAFATd
-	gYLnYtWADuIWICmdAKaTsBMxzwX0thc0lctbOgE9Tl4MQ==
-X-Google-Smtp-Source: AGHT+IHCITpJmu2ecNbyMYkgBdyARFalcZTQ2c76f039ZpJlRRLWnUY1w7SMwkwh0HFxl5emiWnN3oHg/pKKMvzfi+s=
-X-Received: by 2002:a05:690c:4d89:b0:723:9d84:4e5a with SMTP id
- 00721157ae682-7389159bd76mr40982237b3.23.1758164609176; Wed, 17 Sep 2025
- 20:03:29 -0700 (PDT)
+	b=c2twYEa5bGrEzEulI0vaYvrfoklHWHXZANPVfmbu7yNQJso+LbafiqmNtwACGyTbEmrppc
+	GUJ1bHkRozaHS5c5Qgicx562DfZ9S6VKakR3Q1lyXIYH/z0AwiW26jA075pNWqPRO7xzls
+	gEVMjRvnNy/SmO+hdvo5spPJLMkOm3g=
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4cS0wG1NXGz2CgnL;
+	Thu, 18 Sep 2025 11:09:02 +0800 (CST)
+Received: from dggpemr200006.china.huawei.com (unknown [7.185.36.167])
+	by mail.maildlp.com (Postfix) with ESMTPS id DFD281400CB;
+	Thu, 18 Sep 2025 11:13:37 +0800 (CST)
+Received: from huawei.com (10.67.175.28) by dggpemr200006.china.huawei.com
+ (7.185.36.167) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 18 Sep
+ 2025 11:13:37 +0800
+From: Xinyu Zheng <zhengxinyu6@huawei.com>
+To: SeongJae Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+	"Paul E . McKenney" <paulmck@kernel.org>, Peter Zijlstra
+	<peterz@infradead.org>
+CC: <damon@lists.linux.dev>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, <zouyipeng@huawei.com>,
+	<zhengxinyu6@huawei.com>
+Subject: [BUG REPORT] mm/damon: softlockup when kdamond walk page with cpu hotplug
+Date: Thu, 18 Sep 2025 03:00:29 +0000
+Message-ID: <20250918030029.2652607-1-zhengxinyu6@huawei.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20250917212959.355656-1-sunjunchao@bytedance.com> <20250917152155.5a8ddb3e4ff813289ea0b4c9@linux-foundation.org>
-In-Reply-To: <20250917152155.5a8ddb3e4ff813289ea0b4c9@linux-foundation.org>
-From: Julian Sun <sunjunchao@bytedance.com>
-Date: Thu, 18 Sep 2025 11:03:18 +0800
-X-Gm-Features: AS18NWDNMpykuZ-ToHyptz7SoNhYLyL8Wo4PLyJsFMUV3bdV3cR6VduCnMFfMAQ
-Message-ID: <CAHSKhtdt9n-K6KGXTwofpRPo-pH0-YoKFLtEe3Z4CszmNL0rCg@mail.gmail.com>
-Subject: Re: [External] Re: [PATCH v6] memcg: Don't wait writeback completion
- when release memcg.
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: cgroups@vger.kernel.org, linux-mm@kvack.org, jack@suse.cz, tj@kernel.org, 
-	muchun.song@linux.dev, venkat88@linux.ibm.com, hannes@cmpxchg.org, 
-	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev, 
-	Lance Yang <lance.yang@linux.dev>, Masami Hiramatsu <mhiramat@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: fis41wq5qjj1hbx1tsy9sq8rhepuk8y6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.67.175.28]
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ dggpemr200006.china.huawei.com (7.185.36.167)
+X-Rspamd-Queue-Id: 64369120003
+X-Stat-Signature: kxh9c8j77ar3q4o41cg6fiydgbi1sto8
 X-Rspam-User: 
-X-Rspamd-Queue-Id: ABC1BA0002
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1758164610-161626
-X-HE-Meta: U2FsdGVkX19QjmPlMM+Nu7DA2B7L6iG9R+unea0KIg84eO5/1UL4UgLS3/eGYEfkGDKHu68570//XyrMKMV8l4u+lDA1/f6+wmemX4eoslrh/O83jZqOm6vodZB+Ck1zk6JgPbKdf/Sc2FqqHD/WkkpGGtj69OjV6GzJN/N6FlQ0VWDm39t5Egyckxjzp0r1CIKjmqtOGFm3bJ/raCF6XZ0s42CrGLg+X+xpD7kxxOlj5t7K4Rbqch4YvcRcUVnXiT1SJg9QQCKVC8zvNhTulLEJUI1VmGWHsUKu42NCGxIFhvG0GBhrTABGobF2Lc0kW1pA7vcKbvIX8r3IHt8esJIP4signiRKERPOhnXTfG+3G4GX3FatIoCsYIBhGwmi8YbMkj1Dw7ZC+AmAN0n7PfNdF1UVFrFTf7Y9xEdJRNiJD8bXBoWxAoCNqTGiPkjQoPvqATr/7T817tqdLUOYOwM6LYpK4Fw6PUKzI5Q8ohGimL+ngJKK9d+Wj5hW3BYOOJc6R26o8kguC46aYR5EIxW54Nd+BX7iprQ8a7cFi15duuzYxODpNlZhYvjLaH7FObN3kBjgcsFJh3IfQMonIgG6NL09o7WdAWLGOVLZ26gZuCNi4vT6EFZhzfOd/T3LaBr8lBV/WUSh49/IAwAxyjSaQFER+bXK0htFoq03Gtb73cCeTzBe2zX1JCSHlRtbW7JQUZpKQg93oVLlJ32R6b5BuAX0LUtzq+CiENYfnw1jreW8UoBq8om99GIfq5l8ZRWI+DB0nstxSQgJTPhxHlPWiBVdHJEQX0NunM6YTO0upQhjsznZ3NclWJ3uhpHBQ8uZSckdGlRO1d1cqM0LxwxBYG7XFmNRw37rnvhL4U1hMSG0yQwQedp9jsvyM3eXmCie0j+6NZju+tshtxdYYPlsJXHc7QK9zqodI2tSFvdUNAA58gHKe5u6XZ+lZchNo8u9FUT1T1QSZkJqM51
- WHKd2Gkf
- sRMBOzJCmfWI2MKAGgqhkPKc7sP5CKO6TnE+5O4qtEvd5FhtIWH/QUODkuPRnK7Eieg4XvVxP5wJ/EKyd8H4Xk5tyedBR8Rg5WHFDLQ8HP79mX7Yy3Z/NzTiZsiXx9QbvaE1YnpcKiPw74wTycpKOLGum2LgwTqUU7lXCKW05kqM/gZW9bch/y9vpZaGyis1E2ZhxvEaFT3RMbBNnusad3AKsmnsWLVeqdkrFaJWbpz7wAhqG1GENIn9nPZBmHnn+dREraMVycAdrH6r0L1rfJV08Yj9+k/RFdnx5
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1758165222-130515
+X-HE-Meta: U2FsdGVkX1/nf8OUWQhv+a1TD91BvjGym2WRF4CwqYBBX3pkSZEhGzQxEfqK1X/LAOEHveAFVmNzXcwUh1flgNQdQbYCApw7fByTRN8Yrq6WI7THeUZVcSnJqLTc4HecDEXvb16De01lKBDgm10sWFGqW52eDQS9gBXPEuG5xvwPWJfRNe+LhrtOFqT4qKEp8KvE2ozR0WWAmVVYHMqq+7SF8sfOSoV5eKXeie3kePsj1z7V1Tt+YQFetv6QD7qxm6R2k/uRbWxLcR75Rx434Gq7sBmIBsasolPDwTFNNIYwjCF1dI1nKxqbyLNJYS6mTPgqssIQDpPhCDuhyVHy88ZBgcshEfbRYdqYOoxV6AbFg8SCLOIUUVBTte3d6qlMqQgbTbC1Ak3cibw65WwT1X6z8VC4W1Mv1dM3zs3tgyfnIA4CzvMk9nxwqpBsWBXL/bI6qS+Rrd77o9Hj0z0cAcpyFMObav1TTJ3JJpgcyWgPajtA1G2vzT8sWXACB0aDII3nEBszxTJU7cHVjAxoIU6yNgkI63NS2+p43l7RXiHuhD4kLfwtnM0QvQVptFOBwZqE6+dWmfhBSOOhUfDdbw2lQyG/NuGH3rL9BmCs6MZp80g7btIGtGv7VaWdq/JJg+M+fpTkcbmSVEwcPbrhB66t7JPlO88clN+JlxuvHtK67CthZmHj0SqykjtDDGiGyJbMFb7L7etOE9UWH2OePL99Hz3YczR2BYDtDTTG7CDXsiOhRa3jUkUEz5DP8q0LhxOfCvBaCMEgHPlrAfEhV0EURdTX5c4uC5Ay0qk4+w8fgU4z/Dj8fVHHmBVQhqpYTlXci1i9FW6d2kl/dnxMF0d8NT9H+gdTrhFz7EJ9mhGVnf9w6N3urZDeQ2OeFcWdo4JlP+/MXv3w7DaPhfjrnNO+a1cWgKiWbezyGE3kkXq9IpB/ri/QdivCX+hNgSCEvDzUXx8/U2LAm9wIvKW
+ M43a5MWD
+ hjVUhK1XbEybh3Wad8/tGJBCACwrHpDj4fN+z1RXfxdSGE7/IzD4KGaOo8gqfXK5ReVYlMHdF7Kz4c227BFGsp478q9GNjTz6whAWxPxXS8rpqIDRulK+Jc/woN6aBvFqiVQLt7dJkq4bUkrngku6eakI/k0N8rkNp9Ld2TWYPmUV8zBgQM9DCldn+CDnO0Nx7j1pnIuzMEe/bTJ8IZOoOPbxQg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,86 +91,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
-Thanks for your review and comments.
+A softlockup issue was found with stress test:
 
-On Thu, Sep 18, 2025 at 6:22=E2=80=AFAM Andrew Morton <akpm@linux-foundatio=
-n.org> wrote:
->
-> On Thu, 18 Sep 2025 05:29:59 +0800 Julian Sun <sunjunchao@bytedance.com> =
-wrote:
->
-> > Recently, we encountered the following hung task:
-> >
-> > INFO: task kworker/4:1:1334558 blocked for more than 1720 seconds.
-> > [Wed Jul 30 17:47:45 2025] Workqueue: cgroup_destroy css_free_rwork_fn
-> >
-> > ...
-> >
-> > The direct cause is that memcg spends a long time waiting for dirty pag=
-e
-> > writeback of foreign memcgs during release.
-> >
-> > The root causes are:
-> >     a. The wb may have multiple writeback tasks, containing millions
-> >        of dirty pages, as shown below:
-> >
-> > >>> for work in list_for_each_entry("struct wb_writeback_work", \
-> >                                   wb.work_list.address_of_(), "list"):
-> > ...     print(work.nr_pages, work.reason, hex(work))
-> > ...
-> > 900628  WB_REASON_FOREIGN_FLUSH 0xffff969e8d956b40
-> > 1116521 WB_REASON_FOREIGN_FLUSH 0xffff9698332a9540
-> >
-> > ...
-> >
->
-> I don't think it's particularly harmful that a dedicated worker thread
-> has to wait for a long time in this fashion.  It doesn't have anything
-> else to do (does it?) and a blocked kernel thread is cheap.
+watchdog: BUG: soft lockup - CPU#0 stuck for 26s! [migration/0:957]
+CPU: 0 PID: 957 Comm: migration/0 Kdump: loaded Tainted:
+Stopper: multi_cpu_stop+0x0/0x1e8 <- __stop_cpus.constprop.0+0x5c/0xb0
+pstate: 61400009 (nZCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+pc : rcu_momentary_dyntick_idle+0x4c/0xa0
+lr : multi_cpu_stop+0x10c/0x1e8
+sp : ffff800086013d60
+x29: ffff800086013d60 x28: 0000000000000001 x27: 0000000000000000
+x26: 0000000000000000 x25: 00000000ffffffff x24: 0000000000000000
+x23: 0000000000000001 x22: ffffab8f02977e00 x21: ffff8000b44ebb84
+x20: ffff8000b44ebb60 x19: 0000000000000001 x18: 0000000000000000
+x17: 000000040044ffff x16: 004000b5b5503510 x15: 0000000000000800
+x14: ffff081003921440 x13: ffff5c907c75d000 x12: a34000013454d99d
+x11: 0000000000000000 x10: 0000000000000f90 x9 : ffffab8f01b657bc
+x8 : ffff081005e060f0 x7 : ffff081f7fd7b610 x6 : 0000009e0bb34c91
+x5 : 00000000480fd060 x4 : ffff081f7fd7b508 x3 : ffff5c907c75d000
+x2 : ffff800086013d60 x1 : 00000000b8ccb304 x0 : 00000000b8ccb30c
+Call trace:
+ rcu_momentary_dyntick_idle+0x4c/0xa0
+ multi_cpu_stop+0x10c/0x1e8
+ cpu_stopper_thread+0xdc/0x1c0
+ smpboot_thread_fn+0x140/0x190
+ kthread+0xec/0x100
+ ret_from_fork+0x10/0x20
 
-It also delays the release of other resources and the update of
-vmstats and vmevents statistics for the parent cgroup. But we can put
-the wb_wait_for_completion() after the release of these resources.
->
-> > 3085016 WB_REASON_FOREIGN_FLUSH 0xffff969f0455e000
-> > 3035712 WB_REASON_FOREIGN_FLUSH 0xffff969d9bbf4b00
-> >
-> >     b. The writeback might severely throttled by wbt, with a speed
-> >        possibly less than 100kb/s, leading to a very long writeback tim=
-e.
-> >
-> > ...
-> >
-> >  include/linux/memcontrol.h | 14 +++++++++-
-> >  mm/memcontrol.c            | 57 ++++++++++++++++++++++++++++++++------
-> >  2 files changed, 62 insertions(+), 9 deletions(-)
->
-> Seems we're adding a bunch of tricky code to fix a non-problem which
-> the hung-task detector undesirably reports.
+watchdog: BUG: soft lockup - CPU#18 stuck for 26s! [kdamond.0:408949]
+CPU: 18 PID: 408949 Comm: kdamond.0 Kdump: loaded Tainted:
+pstate: 61400009 (nZCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+pc : damon_mkold_pmd_entry+0x138/0x1d8
+lr : damon_mkold_pmd_entry+0x68/0x1d8
+sp : ffff8000c384bb00
+x29: ffff8000c384bb10 x28: 0000ffff6e2a4a9b x27: 0000ffff6e2a4a9b
+x26: ffff080090fdeb88 x25: 0000ffff6e2a4a9b x24: ffffab8f029a9020
+x23: ffff08013eb8dfe8 x22: 0000ffff6e2a4a9c x21: 0000ffff6e2a4a9b
+x20: ffff8000c384bd08 x19: 0000000000000000 x18: 0000000000000014
+x17: 00000000f90a2272 x16: 0000000004c87773 x15: 000000004524349f
+x14: 00000000ee10aa21 x13: 0000000000000000 x12: ffffab8f02af4818
+x11: 0000ffff7e7fffff x10: 0000ffff62700000 x9 : ffffab8f01d2f628
+x8 : ffff0800879fbc0c x7 : ffff0800879fbc00 x6 : ffff0800c41c7d88
+x5 : 0000000000000171 x4 : ffff08100aab0000 x3 : 00003081088800c0
+x2 : 0000000000000000 x1 : 0000000000000000 x0 : 0000000000000000
+Call trace:
+ damon_mkold_pmd_entry+0x138/0x1d8
+ walk_pmd_range.isra.0+0x1ac/0x3a8
+ walk_pud_range+0x120/0x190
+ walk_pgd_range+0x170/0x1b8
+ __walk_page_range+0x184/0x198
+ walk_page_range+0x124/0x1f0
+ damon_va_prepare_access_checks+0xb4/0x1b8
+ kdamond_fn+0x11c/0x690
+ kthread+0xec/0x100
+ ret_from_fork+0x10/0x20
 
-Emm.. What is the definition of 'undesirably' here?
->
-> Would a better fix be to simply suppress the warning?
->
-> I don't think we presently have a touch_hung_task_detector() (do we?)
-> but it's presumably pretty simple.  And maybe
-> touch_softlockup_watchdog) should be taught to call that
-> touch_hung_task_dectector().
->
-> Another approach might be to set some flag in the task_struct
-> instructing the hung task detector to ignore this thread.
+The stress test enable numa balance and kdamond, operation 
+involves CPU hotplug and page fault with migration.
 
-To me, this feels kind of like a workaround rather than a real fix.
-And these approaches are beyond the scope of memcg, I'm not sure how
-Tejun thinks about it since he mentioned before wanting to keep the
-modifications inside the memcg. Given the fact we already have an
-existing solution and code, and the scope of impact is confined to
-memcg, I prefer to use the existing solution.
->
->
+CPU0				 CPU18                      events
+===============================	 ======================     ===============
+page_fault(user task invoke)
+migrate_pages(pmd page migrate)
+__schedule
+				 kdamond_fn
+				 walk_pmd_range
+				 damon_mkold_pmd_entry      <= cpu hotplug
+stop_machine_cpuslocked	         // infinite loop
+queue_stop_cpus_work		 // waiting CPU 0 user task
+multi_cpu_stop(migration/0)	 // to be scheduled
+// infinite loop waiting for
+// cpu 18 ACK
 
-Thanks,
---=20
-Julian Sun <sunjunchao@bytedance.com>
+Detail explanation:
+1. When shutdown one cpu, a state machine in multi_cpu_stop() 
+will wait for other cpu's migration thread reach to same state. 
+In this case, all cpus are doing migration except cpu 18.
+2. A user task which is bind on cpu 0 is allocating page and 
+invoke page fault to migrate page. Kdamond is looping between 
+damon_mkold_pmd_entry () and walk_pmd_range(), since target page 
+is a migration entry. Kdamond can end the loop until user task is 
+scheduled on CPU 0. But CPU 0 is running migration/0.
+3. CONFIG_PREEMPT_NONE is enable. So all cpu are in a infinite loop.
+
+I found a similar softlockup issue which is also invoked by a memory 
+operation with cpu hotplug. To fix that issue, add a cond_resched() 
+to avoid block migration task.
+https://lore.kernel.org/all/20250211081819.33307-1-chenridong@huaweicloud.com/#t
+
+May I ask if there is any solution we can fix this issue? Such as add a 
+cond_sched() in kdamond process. Or is there any chance to do some yield 
+in stop machine process? Probably next time there is another different case 
+running with cpu hotplug can cause the same softlockup. 
+
+Xinyu Zheng
 
