@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DE66CA1013
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 14:06:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83298CAC59A
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 14:06:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 97AFD8E013B; Thu, 18 Sep 2025 10:06:51 -0400 (EDT)
+	id 61D7A8E013C; Thu, 18 Sep 2025 10:06:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8B6AC8E013A; Thu, 18 Sep 2025 10:06:51 -0400 (EDT)
+	id 5D05A8E013A; Thu, 18 Sep 2025 10:06:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 77BC98E013B; Thu, 18 Sep 2025 10:06:51 -0400 (EDT)
+	id 4BE7B8E013C; Thu, 18 Sep 2025 10:06:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 634158E013A
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 10:06:51 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 354AD118A4E
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 14:06:51 +0000 (UTC)
-X-FDA: 83902547022.15.9800D28
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 35EBC8E013A
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 10:06:54 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 01682C01D9
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 14:06:53 +0000 (UTC)
+X-FDA: 83902547148.30.B6A59C8
 Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 5492D4001C
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 14:06:49 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=lXtHuEor;
-	spf=pass (imf07.hostedemail.com: domain of 39xHMaAUKCJg6DN6J8GG8D6.4GEDAFMP-EECN24C.GJ8@flex--elver.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=39xHMaAUKCJg6DN6J8GG8D6.4GEDAFMP-EECN24C.GJ8@flex--elver.bounces.google.com;
+	by imf27.hostedemail.com (Postfix) with ESMTP id E497C40020
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 14:06:51 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="K2W/WMQX";
+	spf=pass (imf27.hostedemail.com: domain of 3-hHMaAUKCJs9GQ9MBJJBG9.7JHGDIPS-HHFQ57F.JMB@flex--elver.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3-hHMaAUKCJs9GQ9MBJJBG9.7JHGDIPS-HHFQ57F.JMB@flex--elver.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758204409;
+	s=arc-20220608; t=1758204412;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YhhK0C9j76pn7jOOIS0RXV1c5LB6TEMUuvpPm0VX42A=;
-	b=5qScU5DOItM2p3XUIdV8QEJSwpgmQosOaMnBF0SZ+vJyUMHZw4tlv0eHO27allxyoWHG9P
-	56Pemmdyv/vxvkJGG+7uiR/9kQIdbWNJOMBQhMzz3o6zWFpWiCnHRTKOXY5UFARR1zdI5s
-	5irSvGhZg4frGjHTdqKi4ipkZjEkXYs=
+	bh=uu2U7ivUVuh8UFOqD9X78NwxcdL3Tv7H02aP9D4eaJs=;
+	b=SwvxwE9pxOJERqOYxmFJslxmtHY2unYuBdmyt9NYIjx8lhUZZRUvgd2AW1mqvPzE9C+ct5
+	yWnD9+YDr/tpBoTYNGsqSKbIGpbiDrlAjT62mHuvF2WHm1msQhpoMwV2KOzP1IVnNr6wgW
+	MOssT0txFI3Ln/CBzULLCy14VhYi+9o=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=lXtHuEor;
-	spf=pass (imf07.hostedemail.com: domain of 39xHMaAUKCJg6DN6J8GG8D6.4GEDAFMP-EECN24C.GJ8@flex--elver.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=39xHMaAUKCJg6DN6J8GG8D6.4GEDAFMP-EECN24C.GJ8@flex--elver.bounces.google.com;
+	imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="K2W/WMQX";
+	spf=pass (imf27.hostedemail.com: domain of 3-hHMaAUKCJs9GQ9MBJJBG9.7JHGDIPS-HHFQ57F.JMB@flex--elver.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3-hHMaAUKCJs9GQ9MBJJBG9.7JHGDIPS-HHFQ57F.JMB@flex--elver.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758204409; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758204412; a=rsa-sha256;
 	cv=none;
-	b=f9PS1gpj18LbSgEefz+7KLec4J3b9IZcxSQvzcXc3gBEbA/B4o7FAW+weMmdKeALwvHrz6
-	URLCkv+gqaWNpdoey/SYDP5xorBGVinjPIGC05GUd9g0CdZzNo0MrSUpgqNlPp9dOCs8iH
-	NW6U3Apb3Cm6HKv7nWipSX9xBCnr3jg=
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-45f2b9b958aso9461005e9.3
-        for <linux-mm@kvack.org>; Thu, 18 Sep 2025 07:06:49 -0700 (PDT)
+	b=bwUTy3sshtB4a1dRITz5dVdpJMb6Cy1OkS0JjvDiHc4sDBvLqTPXGHu04QzEDAFXL8/HCU
+	6Il8URwt0d/On/bWkRBLaomylfKB4Hz4ZvhT75wm3ml9SGrekm1gQXBcEsr/mdYZiD7VTr
+	S+KTzPvDPcPAGh8kCg+ot0k+IhwHs4Y=
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-45df609b181so11137605e9.2
+        for <linux-mm@kvack.org>; Thu, 18 Sep 2025 07:06:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758204408; x=1758809208; darn=kvack.org;
+        d=google.com; s=20230601; t=1758204410; x=1758809210; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=YhhK0C9j76pn7jOOIS0RXV1c5LB6TEMUuvpPm0VX42A=;
-        b=lXtHuEorRZis1fq2nnjU+bHZafFdEXa+Xg1+muZFPZ/P7S/2DxX4FwpzT+FbwB/Abo
-         CK9BzhsWRfyH49EQW+hJXaIwVeEIkMoi1Lq0XNa5cDe+vx/yi8K2PAEgAS/I9NFxiIpX
-         KPtzDPPhPjSHgvtm+E2ZdDjjjhGqaEJqS3KW9sTt+RFKwEGSTasasTvNLwWr6daIZ2QC
-         LDRNJ0lqBM2IkdFw7UZaU1N6U18O3w3UVrRa1fV6B916OEeZIv8E4lVgrm2NanYtOzL2
-         gxHIkQbTQibjJIEo1oIXT9TuMogWYifMTy+aSCQH/ZN6h17SDxwfstIiy6su32iFB3zm
-         J2wg==
+        bh=uu2U7ivUVuh8UFOqD9X78NwxcdL3Tv7H02aP9D4eaJs=;
+        b=K2W/WMQXTcBcfpUoXBZ5oIgXvVp1sOsw1X4hvzAiSAsx0/cwVZazeU2LuiW4s+K0IH
+         7GGVjf6c5lZqmYPdsPyNY33c85YGvw+xdsvqbtu1BZajwt5y+81SKF/AMCZu1T0QlZjx
+         zSiynt3w0T0t5ye640ZNnJZly5xqYe5SCWnVfZxnvoFy22T87rsXlVYQIXncb4+vmU0N
+         ZsVhmsWj9NlNpXMrFLxb/p3Y2vM97S4TZBUGUKvd4M24cR1O9bsDdFb629+Ii0XuOouy
+         3+kInODdJmO03YCX972SDuqzfm1cx5JwikKGTkul0n8EcOGW4AxKrJaBvqgpAJjfjYJl
+         cE4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758204408; x=1758809208;
+        d=1e100.net; s=20230601; t=1758204410; x=1758809210;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YhhK0C9j76pn7jOOIS0RXV1c5LB6TEMUuvpPm0VX42A=;
-        b=sCL9nl4RP157hxyZvyVd5rITrcbJ6iNoy/Ti5gEq5QH/jNWO4CKys2YMXiPggl8iYG
-         4lHzHgUjXt2ZP9I1RaB1klLTZkW4tf08z2lMS+PZa0HdSZvO0aMx9XjmnIU1tPon77Qt
-         tIT6+GhqDScH+48mYMyxWKXs90Mk2/ZNKDp+kep9YJUFmVr49CSb8tgZSabWoymypQwG
-         eEpsjlN7TWk/92+bidc8l/yeCOzxx6tC+yiP3eWjnMPP6fGe1wJ7bn8lQTRTUgmUl6M4
-         8PXVUGWPlf6HQpgS/vaTAiRbbgX1xv0cIDLSp+EwCimP7T0UUsDWaQ1eqCqSoyfqpeQW
-         bL7w==
-X-Forwarded-Encrypted: i=1; AJvYcCXAnuLX0M9w4WKP5qUiiM8LTuvTh2mCY9EjXwCloUana6rYQ7ERbhRnG1FbXmBZjoZjYWA2SdkQJg==@kvack.org
-X-Gm-Message-State: AOJu0YzRSDnJG1ph6o3felMwPVmrkHMgzPGVXOKiv3Oqb3V7bo8JJO6D
-	AFsdCN7kjGEhw4rCROZqkCN7ZLhpKM2QU0GAf6pKhOSuWIZyuIEzfmc6HDmdATaA4fn42dl6xVN
-	cQw==
-X-Google-Smtp-Source: AGHT+IEIwJTlXzbBUbOWKrbjZe2OdxsG9tIePE0FaQDeIxlZs/NdL1maDEOLYHWLdPC4yoU0CtFjf9PRAw==
-X-Received: from wmpl42.prod.google.com ([2002:a05:600c:8aa:b0:45d:e45e:96aa])
- (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:444c:b0:45b:47e1:ef69
- with SMTP id 5b1f17b1804b1-46207897e75mr58816305e9.36.1758204407846; Thu, 18
- Sep 2025 07:06:47 -0700 (PDT)
-Date: Thu, 18 Sep 2025 15:59:41 +0200
+        bh=uu2U7ivUVuh8UFOqD9X78NwxcdL3Tv7H02aP9D4eaJs=;
+        b=gJ3jbn4pvbXB5OyRJMJDRe6jp2+gr5fuvGYO/k0Mqv7W+dNT81fIcJ9IxWtZa1v3P4
+         oHdVG7prlkXlhiIpXa35gjJCTiwz50p0ppGm6RAZHqZWjS+9u4VJB4+jCubUac6NqOcg
+         nq0/1WHA3IJlAvcIKDP8EJO57l/Z27KDLhegDQh6FmB4w2SA4ThcrCkz8FejUurcbk7s
+         Pc7u1Ys6dxzIcJuMVm3Bq8nb/lWxVKiGUIqE3oet20Tw5Og2SimboolbhFxfaNTRgHWf
+         W/8QStVxlxXZEnSZ6eVoD/crdKQMfaUr5MLCE90lMQidL0AXwHFAmjqBbfohi4bze83D
+         VHJg==
+X-Forwarded-Encrypted: i=1; AJvYcCWJOJVTFHxZZAwE89G0Ndr2nvmBA10vVWIYWTEIyajmskPWkbXZkQD04LWmI14bO+T3VYfVI2pVOw==@kvack.org
+X-Gm-Message-State: AOJu0YxV5TamM74O+LVParU5DRqTFEzg4W7BkdHlryTDo+bUGRLmKRB9
+	E/83NlqaI5UdmyoP8zmsju7lTO9Wp0ZJYliHuMw2/lR8tFvytiKPMxlaHEHq/p9OM6JnCvc1hWr
+	KtA==
+X-Google-Smtp-Source: AGHT+IHRfJ0sadoWjMsHalmLLwSIXcal7LoFUr3N/EwlXauwuYhWDu8KTQkhk5JA9sEvt9IyjDEeNyzsjA==
+X-Received: from wmkz6.prod.google.com ([2002:a7b:c7c6:0:b0:45b:79d1:abcb])
+ (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:1d1a:b0:45d:e326:96e7
+ with SMTP id 5b1f17b1804b1-46206b20d8bmr53761355e9.29.1758204410398; Thu, 18
+ Sep 2025 07:06:50 -0700 (PDT)
+Date: Thu, 18 Sep 2025 15:59:42 +0200
 In-Reply-To: <20250918140451.1289454-1-elver@google.com>
 Mime-Version: 1.0
 References: <20250918140451.1289454-1-elver@google.com>
 X-Mailer: git-send-email 2.51.0.384.g4c02a37b29-goog
-Message-ID: <20250918140451.1289454-31-elver@google.com>
-Subject: [PATCH v3 30/35] stackdepot: Enable capability analysis
+Message-ID: <20250918140451.1289454-32-elver@google.com>
+Subject: [PATCH v3 31/35] rhashtable: Enable capability analysis
 From: Marco Elver <elver@google.com>
 To: elver@google.com, Peter Zijlstra <peterz@infradead.org>, 
 	Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>
@@ -113,14 +113,14 @@ Cc: "David S. Miller" <davem@davemloft.net>, Luc Van Oostenryck <luc.vanoostenry
 	linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org, 
 	llvm@lists.linux.dev, rcu@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 5492D4001C
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 9iszc94qdrd9o5pwni75czkcpe7nbqs6
+X-Rspamd-Queue-Id: E497C40020
+X-Stat-Signature: s8nxtw7pnj81gizbhw3es1ucf576qtys
 X-Rspam-User: 
-X-HE-Tag: 1758204409-937337
-X-HE-Meta: U2FsdGVkX195V9sgfdpvjrq1gkTp2+dYHKo5q6vQIE0FyGWrHS2PkqQ3opDWZZQJBnuu42/jFSsTkcnzenUV2ovpvB5Nqkbn5FhwVyOnnX2YxAMFhVJ0P1zYu9XHG2a/O/6YryJfTgC67MFCYxHkj9x21HwhFscWTeug2ZdKTmWjtIgt/qFRmts1drEUKkvJbF4gYSxhJ6haD4TvncOm+Tt1bFcb1uTlnUKOy7EPm2ud1p5tsS/9LPf3r7SIFOi3OffDph1Vf7QlOh8mNjyXDgvswUfw0mOV21thLrQZJSA5Rq1bYVpYExqP/0RKzhE4sQu79UkGziAllv1R8kiVqoMJm907dG8AqzeJfChYzLyf1X1NQFWHijascGmjzbiao0xooJX2aN+wMdaIHZj/3Mo4sh88KrD21R1uXdZbYrQW91WOdoU9Jqd3uoul7IXNe36UFIrumewQQ6ULkLH9b5Um2dg5Glhf17FGlw7zosEJ2L271P6ywQAgwUESV9QQ2UPW/s3zJI+8kZtNlFIbjIb9ogz7rrrDlhHH/WO7J/XM8f03eB1HfZSssDnXB9AV7YR6yQb9e5ARsKQ9iWXOU/Yo8u+9ktDmW57Bn1MNOaE6/5ZzU7vwrCAXVFbcV06HnKalJUDRW5pSvOXwEVGNjB1DDvy2m2fAG2KZNogT26355vqo6IqIJEzZc2+U4cahRjkTIWxVxQlzfu55uF0/Mndx/ICp5zsaJmDE1OvuSVZiomUa/tz5bHbj0iXfyZXNjpr/WmdQfBTNpVkrpl26YctnCw8xtK6/BwwtthvN0t3RUYFZ4IIt08AC4aHBam3MVWlK8pMd00zY+WhTTH4Fk7oSAYMMqeNu0xhqBZbXQrojx27/WueNBDL1jYf3WLWsh/a5GugRicUDDgczL4xgBiMK+WK97nW0sJ6znaIiibBUnUIYILzWqvET5ctlR8e6VkiVjj5IHVb4g3Tp/XU
- t/trQ4Vh
- NdcvqTgYOkHFa/wFFWVoV3CP0F58v73wbWOqwETngLNigZuSxCmaI2of1lUnyOnouW0dKXnxnolljwxAowBryxs6b5rk+rdMV16ZEqcSYQbqcop6TGfNfaEWfkDWOuLF/2AD2ixwIQixTix5+z5UNXHFgs3o1BVQxfduzhuE2Bmjg5sIW2WIxET16iHbKOxQ3z/6pHAhKL/4OB60jKKXVJOG/KTwOqFfw24TZLpwz+QGrAlyx9Nd9cDBSCDLZfYAfQM2UR7ShH0FAVqehD9yKTkuMj55KS0b+rTaQm39S05/Ez6R62k2OSvdXDhKMSFX1sxJT/rQHsJYRQRPKbH28FH12tQiN28zeIjO9RlY72FX7/pmR4rPwQTkBsVn/RXtzULZMZr+CbKwajUBWWs1F/RPc/BppT0vmo5/xn5X7H7l4ltp1oZU/b+GlAvS7tp2B6c9z/vthd5MIRnvpEAZhA0GvUjoHzpowsjbthwYgGUt+mtEhx4E5tl0DM+xU9p05XJl0zO956MVBjNPPsLyvvcm8DVnZXAaoFVoabwF/9EziwRsE/vIY9o6a00SdYMZPeCgIFkrO/PSZp6qsdPWyzTthqRahfS4/l1uCd2YseNqbks0=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1758204411-22972
+X-HE-Meta: U2FsdGVkX19rshqbKXcxMdkAOqXsoncNtvedJ6bRc2+KL2odice65RaTnPi7Q6nm/RU4Q+7zD5yKSk88q9q3dTf4+Kmhx9Mzx3qRpxn7UCwqp28H0z4xfM3np9amtSIvMQ6HfTkWHliRAYJGdUlieyMddAm3NJzFKJqDT5b5K4sJDAvWM1OoZnk6VjG4biUNcc7umgV9Znj/uv64WlQT0FYzjhoHdRjsGYZ6GzBG2vwhP3Bax3/e6rSby+30WJN+WRYWTNEwqXag23zsAtbrPth4cjaiO8IeY8nyQEyfytKbSCOVYdR4hcfyhWsTv1raAD6RELQwsFSAMHp2ZgMjuHtTqN4MEUYte2Nn2HQnMyGzFnb3jLWCdiLkPSCyjK9RJdcnkQmP+D7XEWD75RMgNUfCr8u0qWq1utHU3/Khnr//GKxTznZdhxEslcoWtcoSRslBgsRVYymOnrQttWr2XmCF3HgEPGnX9WNYKcIxYbH2Kt0B+fo3aYjLmR99z4F1e67H/nlxEqeDOV7ok9uN1Un45n5zB8cXWu/7rdg2F/ZV5D2/4RUXXRIoZIoIM/6gn21mw3mBDrXndOkn6SeCOguKcd4cj0QATB6H/YizEIdE3ezH89FVxmBExX+Or5p9QZdJUTWUjdbgyGQFWSIO3yF1ckG+00IU9C84RPyq2j93AP1NB+1sX2iOyECbwKwr3BDy7JjOypOHvlQZkeaGxoWhA63e0Kc8Q+RIBdfHealrEXpseyEao0cE2hptgYVX2PoEqV/YgKas/NQQ/ACwmgjvgdfGwbgKWyJiwhD6NUbdX6LWC9oEPtU+9sGOtCa3ViGAePIF3ntSktQ0maz4Jb3WEI+pfcTBnCqLKlzDGCF8z6fFU9w9VDesVslmv7CiJFeXFv14UjDf99odmNXUteyiorDFNi1RH4HDM96Ve1bZPeMaSFyAgCGFKBQtg/InhovxIdexEHW9honTBhb
+ ZuroWBQ8
+ OVf3HZ6Qo0j9igX1JpUP4CRGcXkMhvR2QyBhj3TNXYuz/phshAH8SgIkcR8O7dTPPn5J4B1YTZoeIz8wN0FnYJBv8odrHPHwWRcrjswu/AgQtbz0duKzo0i3AT+pMgVUsh9wcJqe1aLXHadzXGRZ3vNtGheVhGjqrtARSVv9e4x9nUtnbO+bSFXzKfzJQtcmhpL45j9xUfzWVmORSNPw/NobdsyBl/TAeKSHfbTdfyuKbuagGL5UTajYbh8xjvMeO6w/ucE+bUndmYW2e2f59bNo+Pe2abfHr+1A6KtHPv9ONbHLZaVL+e+scp/Dvyz3UEpb+NHHH8gjj/ei1kw5WhnzanJNLc2bsE7/pfy1oFnqHPoP9ggp2kyWl309s7f/FgMth9J5nOvCxarqykUNx19ZZ/ir3aiX1m/kKQQu+7FrnZUlJSMgHgNu0r7ETraycUcMIftyxOehHy28ZvgTinXv/YGJ6lSNupZB0TSojgcWEbs7LSGvmyaZbjlbCh2duglU5kR4B2PooQdZLwrfC0AR3y9aRipCIL69PG47CzQmU/S2C27jvrKxbqB3fvXMHP7oaMfrqAE4cKaaxRhrcQRcQtZAkZ0hdXPbi0J+xhsSXw0qlzeh+0t5uva83uDfsfXW8Ya1QhlOxjREC+tW+SKA9BNyNmOijggt64gsSELH35C1rPVP5CPew03YLU4FOehq1LxR2/O6rw89SIGYvpP03Xgxqz4WXik5B
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,123 +129,163 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Enable capability analysis for stackdepot.
+Enable capability analysis for rhashtable, which was used as an initial
+test as it contains a combination of RCU, mutex, and bit_spinlock usage.
+
+Users of rhashtable now also benefit from annotations on the API, which
+will now warn if the RCU read lock is not held where required.
 
 Signed-off-by: Marco Elver <elver@google.com>
+Cc: Thomas Graf <tgraf@suug.ch>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: linux-crypto@vger.kernel.org
 ---
 v2:
 * Remove disable/enable_capability_analysis() around headers.
 ---
- lib/Makefile     |  1 +
- lib/stackdepot.c | 20 ++++++++++++++------
- 2 files changed, 15 insertions(+), 6 deletions(-)
+ include/linux/rhashtable.h | 14 +++++++++++---
+ lib/Makefile               |  2 ++
+ lib/rhashtable.c           |  5 +++--
+ 3 files changed, 16 insertions(+), 5 deletions(-)
 
-diff --git a/lib/Makefile b/lib/Makefile
-index e677cb5cc777..43b965046c2c 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -251,6 +251,7 @@ obj-$(CONFIG_POLYNOMIAL) += polynomial.o
- # Prevent the compiler from calling builtins like memcmp() or bcmp() from this
- # file.
- CFLAGS_stackdepot.o += -fno-builtin
-+CAPABILITY_ANALYSIS_stackdepot.o := y
- obj-$(CONFIG_STACKDEPOT) += stackdepot.o
- KASAN_SANITIZE_stackdepot.o := n
- # In particular, instrumenting stackdepot.c with KMSAN will result in infinite
-diff --git a/lib/stackdepot.c b/lib/stackdepot.c
-index de0b0025af2b..43122294f128 100644
---- a/lib/stackdepot.c
-+++ b/lib/stackdepot.c
-@@ -61,18 +61,18 @@ static unsigned int stack_bucket_number_order;
- /* Hash mask for indexing the table. */
- static unsigned int stack_hash_mask;
+diff --git a/include/linux/rhashtable.h b/include/linux/rhashtable.h
+index 6c85b28ea30b..347716b1ca37 100644
+--- a/include/linux/rhashtable.h
++++ b/include/linux/rhashtable.h
+@@ -245,16 +245,17 @@ void *rhashtable_insert_slow(struct rhashtable *ht, const void *key,
+ void rhashtable_walk_enter(struct rhashtable *ht,
+ 			   struct rhashtable_iter *iter);
+ void rhashtable_walk_exit(struct rhashtable_iter *iter);
+-int rhashtable_walk_start_check(struct rhashtable_iter *iter) __acquires(RCU);
++int rhashtable_walk_start_check(struct rhashtable_iter *iter) __acquires_shared(RCU);
  
-+/* The lock must be held when performing pool or freelist modifications. */
-+static DEFINE_RAW_SPINLOCK(pool_lock);
- /* Array of memory regions that store stack records. */
--static void **stack_pools;
-+static void **stack_pools __pt_guarded_by(&pool_lock);
- /* Newly allocated pool that is not yet added to stack_pools. */
- static void *new_pool;
- /* Number of pools in stack_pools. */
- static int pools_num;
- /* Offset to the unused space in the currently used pool. */
--static size_t pool_offset = DEPOT_POOL_SIZE;
-+static size_t pool_offset __guarded_by(&pool_lock) = DEPOT_POOL_SIZE;
- /* Freelist of stack records within stack_pools. */
--static LIST_HEAD(free_stacks);
--/* The lock must be held when performing pool or freelist modifications. */
--static DEFINE_RAW_SPINLOCK(pool_lock);
-+static __guarded_by(&pool_lock) LIST_HEAD(free_stacks);
- 
- /* Statistics counters for debugfs. */
- enum depot_counter_id {
-@@ -291,6 +291,7 @@ EXPORT_SYMBOL_GPL(stack_depot_init);
-  * Initializes new stack pool, and updates the list of pools.
-  */
- static bool depot_init_pool(void **prealloc)
-+	__must_hold(&pool_lock)
+ static inline void rhashtable_walk_start(struct rhashtable_iter *iter)
++	__acquires_shared(RCU)
  {
- 	lockdep_assert_held(&pool_lock);
- 
-@@ -338,6 +339,7 @@ static bool depot_init_pool(void **prealloc)
- 
- /* Keeps the preallocated memory to be used for a new stack depot pool. */
- static void depot_keep_new_pool(void **prealloc)
-+	__must_hold(&pool_lock)
- {
- 	lockdep_assert_held(&pool_lock);
- 
-@@ -357,6 +359,7 @@ static void depot_keep_new_pool(void **prealloc)
-  * the current pre-allocation.
-  */
- static struct stack_record *depot_pop_free_pool(void **prealloc, size_t size)
-+	__must_hold(&pool_lock)
- {
- 	struct stack_record *stack;
- 	void *current_pool;
-@@ -391,6 +394,7 @@ static struct stack_record *depot_pop_free_pool(void **prealloc, size_t size)
- 
- /* Try to find next free usable entry from the freelist. */
- static struct stack_record *depot_pop_free(void)
-+	__must_hold(&pool_lock)
- {
- 	struct stack_record *stack;
- 
-@@ -428,6 +432,7 @@ static inline size_t depot_stack_record_size(struct stack_record *s, unsigned in
- /* Allocates a new stack in a stack depot pool. */
- static struct stack_record *
- depot_alloc_stack(unsigned long *entries, unsigned int nr_entries, u32 hash, depot_flags_t flags, void **prealloc)
-+	__must_hold(&pool_lock)
- {
- 	struct stack_record *stack = NULL;
- 	size_t record_size;
-@@ -486,6 +491,7 @@ depot_alloc_stack(unsigned long *entries, unsigned int nr_entries, u32 hash, dep
+ 	(void)rhashtable_walk_start_check(iter);
  }
  
- static struct stack_record *depot_fetch_stack(depot_stack_handle_t handle)
-+	__must_not_hold(&pool_lock)
- {
- 	const int pools_num_cached = READ_ONCE(pools_num);
- 	union handle_parts parts = { .handle = handle };
-@@ -502,7 +508,8 @@ static struct stack_record *depot_fetch_stack(depot_stack_handle_t handle)
- 		return NULL;
- 	}
+ void *rhashtable_walk_next(struct rhashtable_iter *iter);
+ void *rhashtable_walk_peek(struct rhashtable_iter *iter);
+-void rhashtable_walk_stop(struct rhashtable_iter *iter) __releases(RCU);
++void rhashtable_walk_stop(struct rhashtable_iter *iter) __releases_shared(RCU);
  
--	pool = stack_pools[pool_index];
-+	/* @pool_index either valid, or user passed in corrupted value. */
-+	pool = capability_unsafe(stack_pools[pool_index]);
- 	if (WARN_ON(!pool))
- 		return NULL;
+ void rhashtable_free_and_destroy(struct rhashtable *ht,
+ 				 void (*free_fn)(void *ptr, void *arg),
+@@ -325,6 +326,7 @@ static inline struct rhash_lock_head __rcu **rht_bucket_insert(
  
-@@ -515,6 +522,7 @@ static struct stack_record *depot_fetch_stack(depot_stack_handle_t handle)
- 
- /* Links stack into the freelist. */
- static void depot_free_stack(struct stack_record *stack)
-+	__must_not_hold(&pool_lock)
+ static inline unsigned long rht_lock(struct bucket_table *tbl,
+ 				     struct rhash_lock_head __rcu **bkt)
++	__acquires(__bitlock(0, bkt))
  {
  	unsigned long flags;
  
+@@ -337,6 +339,7 @@ static inline unsigned long rht_lock(struct bucket_table *tbl,
+ static inline unsigned long rht_lock_nested(struct bucket_table *tbl,
+ 					struct rhash_lock_head __rcu **bucket,
+ 					unsigned int subclass)
++	__acquires(__bitlock(0, bucket))
+ {
+ 	unsigned long flags;
+ 
+@@ -349,6 +352,7 @@ static inline unsigned long rht_lock_nested(struct bucket_table *tbl,
+ static inline void rht_unlock(struct bucket_table *tbl,
+ 			      struct rhash_lock_head __rcu **bkt,
+ 			      unsigned long flags)
++	__releases(__bitlock(0, bkt))
+ {
+ 	lock_map_release(&tbl->dep_map);
+ 	bit_spin_unlock(0, (unsigned long *)bkt);
+@@ -402,13 +406,14 @@ static inline void rht_assign_unlock(struct bucket_table *tbl,
+ 				     struct rhash_lock_head __rcu **bkt,
+ 				     struct rhash_head *obj,
+ 				     unsigned long flags)
++	__releases(__bitlock(0, bkt))
+ {
+ 	if (rht_is_a_nulls(obj))
+ 		obj = NULL;
+ 	lock_map_release(&tbl->dep_map);
+ 	rcu_assign_pointer(*bkt, (void *)obj);
+ 	preempt_enable();
+-	__release(bitlock);
++	__release(__bitlock(0, bkt));
+ 	local_irq_restore(flags);
+ }
+ 
+@@ -589,6 +594,7 @@ static inline int rhashtable_compare(struct rhashtable_compare_arg *arg,
+ static inline struct rhash_head *__rhashtable_lookup(
+ 	struct rhashtable *ht, const void *key,
+ 	const struct rhashtable_params params)
++	__must_hold_shared(RCU)
+ {
+ 	struct rhashtable_compare_arg arg = {
+ 		.ht = ht,
+@@ -642,6 +648,7 @@ static inline struct rhash_head *__rhashtable_lookup(
+ static inline void *rhashtable_lookup(
+ 	struct rhashtable *ht, const void *key,
+ 	const struct rhashtable_params params)
++	__must_hold_shared(RCU)
+ {
+ 	struct rhash_head *he = __rhashtable_lookup(ht, key, params);
+ 
+@@ -692,6 +699,7 @@ static inline void *rhashtable_lookup_fast(
+ static inline struct rhlist_head *rhltable_lookup(
+ 	struct rhltable *hlt, const void *key,
+ 	const struct rhashtable_params params)
++	__must_hold_shared(RCU)
+ {
+ 	struct rhash_head *he = __rhashtable_lookup(&hlt->ht, key, params);
+ 
+diff --git a/lib/Makefile b/lib/Makefile
+index 43b965046c2c..85a9144b008a 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -50,6 +50,8 @@ lib-$(CONFIG_MIN_HEAP) += min_heap.o
+ lib-y	+= kobject.o klist.o
+ obj-y	+= lockref.o
+ 
++CAPABILITY_ANALYSIS_rhashtable.o := y
++
+ obj-y += bcd.o sort.o parser.o debug_locks.o random32.o \
+ 	 bust_spinlocks.o kasprintf.o bitmap.o scatterlist.o \
+ 	 list_sort.o uuid.o iov_iter.o clz_ctz.o \
+diff --git a/lib/rhashtable.c b/lib/rhashtable.c
+index 3e555d012ed6..fe8dd776837c 100644
+--- a/lib/rhashtable.c
++++ b/lib/rhashtable.c
+@@ -358,6 +358,7 @@ static int rhashtable_rehash_table(struct rhashtable *ht)
+ static int rhashtable_rehash_alloc(struct rhashtable *ht,
+ 				   struct bucket_table *old_tbl,
+ 				   unsigned int size)
++	__must_hold(&ht->mutex)
+ {
+ 	struct bucket_table *new_tbl;
+ 	int err;
+@@ -392,6 +393,7 @@ static int rhashtable_rehash_alloc(struct rhashtable *ht,
+  * bucket locks or concurrent RCU protected lookups and traversals.
+  */
+ static int rhashtable_shrink(struct rhashtable *ht)
++	__must_hold(&ht->mutex)
+ {
+ 	struct bucket_table *old_tbl = rht_dereference(ht->tbl, ht);
+ 	unsigned int nelems = atomic_read(&ht->nelems);
+@@ -724,7 +726,7 @@ EXPORT_SYMBOL_GPL(rhashtable_walk_exit);
+  * resize events and always continue.
+  */
+ int rhashtable_walk_start_check(struct rhashtable_iter *iter)
+-	__acquires(RCU)
++	__acquires_shared(RCU)
+ {
+ 	struct rhashtable *ht = iter->ht;
+ 	bool rhlist = ht->rhlist;
+@@ -940,7 +942,6 @@ EXPORT_SYMBOL_GPL(rhashtable_walk_peek);
+  * hash table.
+  */
+ void rhashtable_walk_stop(struct rhashtable_iter *iter)
+-	__releases(RCU)
+ {
+ 	struct rhashtable *ht;
+ 	struct bucket_table *tbl = iter->walker.tbl;
 -- 
 2.51.0.384.g4c02a37b29-goog
 
