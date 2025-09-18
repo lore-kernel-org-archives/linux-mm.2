@@ -4,90 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3DAB6CAC59A
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 08:31:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EA8BCAC5A8
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 08:34:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B44F8E00CE; Thu, 18 Sep 2025 04:31:34 -0400 (EDT)
+	id 638348E00CF; Thu, 18 Sep 2025 04:34:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9653A8E0093; Thu, 18 Sep 2025 04:31:34 -0400 (EDT)
+	id 60FDA8E0093; Thu, 18 Sep 2025 04:34:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 87ADE8E00CE; Thu, 18 Sep 2025 04:31:34 -0400 (EDT)
+	id 525B08E00CF; Thu, 18 Sep 2025 04:34:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 731738E0093
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 04:31:34 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1E25F1A0821
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 08:31:34 +0000 (UTC)
-X-FDA: 83901702108.20.C002D8B
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 283A31C0004
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 08:31:31 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=XOu0WkU+;
-	spf=pass (imf21.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 409778E0093
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 04:34:16 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C6D8787641
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 08:34:15 +0000 (UTC)
+X-FDA: 83901708870.15.3D23ACE
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+	by imf02.hostedemail.com (Postfix) with ESMTP id D8ABE80008
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 08:34:12 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=NAzFNn9G;
+	spf=pass (imf02.hostedemail.com: domain of xueshuai@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=xueshuai@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758184292;
+	s=arc-20220608; t=1758184453;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9jjiJUgOdqQcZN+L/ySOi1U0QoPVQrpVp8UxDsjbiI4=;
-	b=tqdWYkJpZiaga9yMg1bqcKxvjz8tFD7xutpBPSRnqUXlXE80PlxfAs3ypp4f5wMMmWIMPh
-	RccQMe0iduzYtv5LCI8aO+3Ryskner2hmW1/pWDyKN4hlXi3rVR1ri5O8oFBToBXICoMrm
-	eua3qgUHfwjpNEjGflQY1CgovIURhc0=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=XOu0WkU+;
-	spf=pass (imf21.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758184292; a=rsa-sha256;
+	bh=iHPyCqwaIE53kfvtOqEjL6h4xRme2WCE41tGRMbg4OA=;
+	b=4Uo+eaYJxoiDnu0yY2O2K3i/g8GqZgPcnsxVnqFTzI91RdA693JwLg5Ks6hwr6upwet+Vv
+	90Cd/N5K/SNMEtjS0u7oxwEypJaQ7PIfcuNYNObgJ12MjVX9xHz1zdF33jsXsE45wA31fJ
+	zRu/ocR2vEU949LTnh3dGDc0cYxwlpc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758184453; a=rsa-sha256;
 	cv=none;
-	b=XtR9QT3Ay9ve6cBgg5ZCPL9jisqV2ORheeqcuOADrB0yKqTci1QyuPPhvfJNkMQJFbyfJO
-	uD+I0rdKQS6XxROmMqA3eEOhLBcW8DS//3jthJoGs8K8K+l3aUiKs7gZkBmJ0DKiNSJnQh
-	Ck13F+gS6JuxFO0JpiyqRiRYwxpHZEI=
-Message-ID: <6d6e2e33-c221-4ab8-a29b-3d14fb1a592c@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1758184289;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9jjiJUgOdqQcZN+L/ySOi1U0QoPVQrpVp8UxDsjbiI4=;
-	b=XOu0WkU+plWpFLyGyEkqg6QdAh3SC7FRzxiMgrf5YnFsA+iV/iIlOIMbbXoED2aPkC8BPU
-	yUyGHOwGWN6G9P5TFwZYpTHzTxSlD8TdX83JZZdnJXfEQVGL/aQT0guiay/jy5aeOnSrH0
-	stYtr5IZdNnRCdVaUUDCWH1yMktmVE0=
-Date: Thu, 18 Sep 2025 16:31:22 +0800
+	b=bX4hl5C1wMaUCYFpCcyqCqwGPCjWh0jBWTncHTXtnnkOeAtiCiRPKjoE8n4ohxHr6whiPR
+	sRLBdIVDHoOheJcFD5A/Ay4hY0LKUyATW9y/Pf25P0IkdfWuOss8QLnpbH0KJPrGtsVai8
+	lRo+3sEmr639H/jwMxcybwFlj+P0uW8=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=NAzFNn9G;
+	spf=pass (imf02.hostedemail.com: domain of xueshuai@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=xueshuai@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1758184447; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=iHPyCqwaIE53kfvtOqEjL6h4xRme2WCE41tGRMbg4OA=;
+	b=NAzFNn9GOVJAkfAMVdrcB07/dc9Ms6BXy74/eleljuE18J5xeCe+MSNCWI7mIBMNSKnAqNLzjwLm6kSAz8lYe1mcIwN/wPqqqWp2scY/NlMqRt6OvyP2fdTyiQYDDC+xHtbgB7ivv075GdoONkKJHKPWItxHsyJUsKpC8Jrumlc=
+Received: from 30.246.178.33(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WoFHDqY_1758184444 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 18 Sep 2025 16:34:05 +0800
+Message-ID: <1211fd9a-93e6-4ebe-a80d-083601138b70@linux.alibaba.com>
+Date: Thu, 18 Sep 2025 16:34:03 +0800
 MIME-Version: 1.0
-Subject: Re: [PATCH] mm/vmstat: add header line to /proc/buddyinfo output
-To: David Hildenbrand <david@redhat.com>, Michal Hocko <mhocko@suse.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Ye Liu <liuye@kylinos.cn>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20250918071741.526280-1-ye.liu@linux.dev>
- <aMu01xIkj-3hgW88@tiehlicka> <1a9f44a1-855c-450e-9dc4-415a29b90011@linux.dev>
- <780aa9d6-a85c-4050-820e-c0ca9f5bb658@redhat.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Ye Liu <ye.liu@linux.dev>
-In-Reply-To: <780aa9d6-a85c-4050-820e-c0ca9f5bb658@redhat.com>
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/memory-failure: Support disabling soft offline for
+ HugeTLB pages
+To: Kyle Meyer <kyle.meyer@hpe.com>, "Fan, Shawn" <shawn.fan@intel.com>
+Cc: "Luck, Tony" <tony.luck@intel.com>,
+ Andrew Morton <akpm@linux-foundation.org>, "corbet@lwn.net"
+ <corbet@lwn.net>, "david@redhat.com" <david@redhat.com>,
+ "linmiaohe@huawei.com" <linmiaohe@huawei.com>,
+ "shuah@kernel.org" <shuah@kernel.org>,
+ "jane.chu@oracle.com" <jane.chu@oracle.com>,
+ "jiaqiyan@google.com" <jiaqiyan@google.com>,
+ "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
+ "bp@alien8.de" <bp@alien8.de>, "hannes@cmpxchg.org" <hannes@cmpxchg.org>,
+ "jack@suse.cz" <jack@suse.cz>,
+ "joel.granados@kernel.org" <joel.granados@kernel.org>,
+ "laoar.shao@gmail.com" <laoar.shao@gmail.com>,
+ "lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
+ "mclapinski@google.com" <mclapinski@google.com>,
+ "mhocko@suse.com" <mhocko@suse.com>,
+ "nao.horiguchi@gmail.com" <nao.horiguchi@gmail.com>,
+ "osalvador@suse.de" <osalvador@suse.de>,
+ "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
+ "rppt@kernel.org" <rppt@kernel.org>, "Anderson, Russ"
+ <russ.anderson@hpe.com>, "surenb@google.com" <surenb@google.com>,
+ "vbabka@suse.cz" <vbabka@suse.cz>,
+ "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+ "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>
+References: <aMiu_Uku6Y5ZbuhM@hpe.com>
+ <20250915201618.7d9d294a6b22e0f71540884b@linux-foundation.org>
+ <aMkOCmGBhZKhKPrI@hpe.com>
+ <SJ1PR11MB60831F028E2FEB6B5A3390D9FC14A@SJ1PR11MB6083.namprd11.prod.outlook.com>
+ <aMmlhPghbpnlCZ09@hpe.com>
+ <SJ1PR11MB60833884799B6AA2BC18ECE7FC14A@SJ1PR11MB6083.namprd11.prod.outlook.com>
+ <LV4PR11MB9513A6EFA88B082E554CB8D6EB17A@LV4PR11MB9513.namprd11.prod.outlook.com>
+ <aMsE9XjWKEYTIQyV@hpe.com>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+In-Reply-To: <aMsE9XjWKEYTIQyV@hpe.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 283A31C0004
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: D8ABE80008
+X-Stat-Signature: stu4wuzew6r6yjmxd8cwfwro577caqbc
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: wrkmd9y61nesuzkr6qggecwzogmpnddd
-X-HE-Tag: 1758184291-355667
-X-HE-Meta: U2FsdGVkX19a9sfLov9n8ORtIJSmOjJO/J6sgCQimT9DrhmM558+5KSe6Bgvz2Kl7hCo20VjKNIhdGnqosB6wRqdDpBVUrjcV++ruihQQs4kg9WFKO6IdqfmMxbul0g82zxmJVORXv6d7SJAmdpuJoDtB2wjOj+4l+Mq5hShNw4ctdrm6CAGve0rrYAJrlkIOqsvJq2hO6XmqwLyWKYxG3zrbd1fzZtJNvUhgpRf4B6+AvTcC4YpWQVYi0kZQNCCw/mewe/lPpdBvuVNYbtBXUo9a+A90yNXnN23eaicTQncGW3g+8s7y193rJoWPp+QR+yBQgjsgJuCz2gk2aT4jCZWa9k+w35wsZe8XlX+eEs1zDVJBXmkrqWxQUDHO0jj9la12mPTJKkQ1FO5N8/NY9DYr7HtZ0JUGSxszdGuX2fBWghEnSP02ZUO+JDiAkBgzwE+jRBEiwfnBvJeVTBGo2rHmr8Qc4LUJqOYoh1NxEQXpku7RxyUFfSdC2uD55TparFaZVNFq/WEqAloQLEObJ0OJZKmSN2B4/VqYswRYi4iIhR0H7JFEO3mQg9LPwhlCgKNyBZC3C/kEnaGbu5X1yqqZAE27nqcXrqZbWVNx8LCcWEE44xjRPoWbKZZqAmdIrvia/4pX19fLWswZ31clPYDCh7UjM8fAtJ7bYh6v21Ejaafb1qe7FSuAOJ2+DdM0+yskVvjZzXDv4UEQCcotWXe1n93F8ZeHsZoP6v/7A0PP3WXH2bzaFx6a9FVo3IVW4Q2yxRAlCHgUkdeUuUSh7WwWZ5xpBCeJzmRpvoy+iU9+qaI8qG2rGr1MXOI3GrHcRHyZRr6y0cEn6wJ2WIDM24Gb/zRk90HiaK3gt9aG1jDZ302Mf63R9WJRx5RMHtqas34vz5OaVy7vuOLQDvD17lC7hD64TzME7Qm8ytAEkZjn88wFQav21+0us0xPB14k4Z4NdfXfsxhZ5yd44m
- gA9bFijC
- ylL1qnZJ4toBirVpxwW1Bgd5Ap6KZYBKoNdV0iymZd0bfMqKZb0FzfOoEHeaj05rHtaMJREIvT+Q+twZ7BlZrxxdxkiAwa86uoHerBVBZngbt/6GdOFfsVemtJYU3R48fwy4bW4Feh2nlj6rX0QxNGhym49MAbsEL3u5Vqc5pghvMVIWZJkv5ZaKefWgaPyi/Sg1a+IyMdVl7bK0IQm4I/cxO0fLuc66ZrqRqJtjb7e94n5Y=
+X-HE-Tag: 1758184452-386045
+X-HE-Meta: U2FsdGVkX19kgI1iqn7tSGPgrE+yIpsYhkUD3V0UqKO0AjFkhvdikGhcUi1QlXMNNh8ooqJRKZ3Ttp9Gb5xzAwcrbFNMFZwYXpFmIUaubAfmmcgT136aQPbEnSpm+EHN/kC2VnkaqHcLo9H+ie4/OC3M4pTb9HMoVZJripzIjdYKFMvC79ZTn1wCGbx1A3w/62hqB4wyEF8z/MOTZ6veXwmQc/NLpTmtOwDk4Ur18sjDwwOxrt1osIWctb0+bs5zxFrXvsuh3h0C8j1FyoAVNxv0025UlB6Ex3BmHBHRXzh98a9HRDQawEn0bI6TOWtckeG4aBIdWg8zX01rCEyb/HZSkdOFqbsYnas2S6xOym6Rt9ip4qexlXXZAlvcub/fX2XmBwlSJHPT88KoYaAjd7JOIRUBHd1IDRg+Vl8uW5zE/K6FG0INw2WZuiAvzooqActbeRHC6N+gvT6FViJEi1jGjgxfbpqaVs5PPhXvmZjuKiv2yXAImvli+W8QcYkntqM/NGktcT85Mam2SYO327AGFe8PCYUFBPWMP0uFYap2vZYPFAjkvyxOoKBiGAz8YELmZfEWOwr6s7IEB5VHSbOJV37DCaREOX4dC/5LC86UJiBazi3ns++kb5eQw4s+BFJ0ebGPmaNr3yamFgaGFbPuR0hCyPiINU+n3ubyobQKxK3tbH00HDSSLURMMpBz8JJEtXyMZsXQJUIFMD8YkJ6GiUwlewpbPyvWqdtCZuw7i3ZL+7d06/gyc5oOy/2fhdMMzzvdSJGn6rPel3fOsf87UVql7Zss4skBx9hPQ1lcSqgEGR/XouzXJcWl51dCMJ65M7zaF+3aakyWJzhXRAC0EHRemb9N16hhKslYhnYApAhQa12l8QrB0oFpwbzX896voAnLmrVU848JUGL+wWT8Ru6lH3d3GJcEq5y7JXT3tWqGUxKjH945uGDEgPIx7Niw2rvWlrVkuoMLI9y
+ B1fA8nVl
+ 5AodeYH9MLMUbgjl37S+Z7cBgph8+8+VT7wm41vQaCeOKBLdV8oBpmx+juAjHZuQNNckuqwBmSAvwhkciuv4UpB3OF4WpEHScplTP+mKWH/SsF32cuk40YHxWGJH+51wrS0+i6nSDEI7QJ7HXKy8wLXXDegriG/jlY/7bfQKlYpEBQrKz+r2v4Szft8HFQwzUIH7YUXzZBs+vYT5BwlYUM/k9NAFTQPfC9QepoDvCsPqpR2th2JGswZ0/Gjg6sWc9dy+yzme4ayasRwVHIEo5gPIZMF8mGunnh1sSFVxGdx8r5ziHTiQQh+Hc9DgzIbPeavkqZxvSlqW6oD/78JSUI/WB02ld8jF/d3H6R5ssxYyWgoTRleFrxWpIR0LfNPWNudJ+FQXe8lSkw1cxkZFCD2pCzW8+HmXmcSgm2m8PflZ1KKHkAO12vxSehzbxy+sR7ZyW
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,66 +120,52 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-在 2025/9/18 16:16, David Hildenbrand 写道:
-> On 18.09.25 10:11, Ye Liu wrote:
->>
->>
->> 在 2025/9/18 15:29, Michal Hocko 写道:
->>> On Thu 18-09-25 15:17:40, Ye Liu wrote:
->>>> From: Ye Liu <liuye@kylinos.cn>
->>>>
->>>> Add a header line to /proc/buddyinfo that shows the order numbers
->>>> for better readability and clarity.
->>>>
->>>> Before:
->>>> Node 0, zone      DMA      0      0      0      0      0      0      0 ...
->>>> Node 0, zone    DMA32      5      8      6      6      7      5      8 ...
->>>> Node 0, zone   Normal   1113    351    138     65     38     31     25 ...
->>>>
->>>> After:
->>>> Free pages per order       0      1      2      3      4      5      6 ...
->>>> Node 0, zone      DMA      0      0      0      0      0      0      0 ...
->>>> Node 0, zone    DMA32      5      8      6      6      7      5      8 ...
->>>> Node 0, zone   Normal   1113    351    138     65     38     31     25 ...
+在 2025/9/18 02:59, Kyle Meyer 写道:
+> On Wed, Sep 17, 2025 at 06:35:14AM +0000, Fan, Shawn wrote:
+>>>> My original patch for this just skipped the GHES->offline process
+>>>> for huge pages. But I wasn't aware of the sysctl control. That provides
+>>>> a better solution.
 >>>
->>> Why is this needed? And have you considered tha this might break
->>> existing parsers of the file?
->>>
+>>> Tony, does that mean you're OK with using the existing sysctl interface? If
+>>> so, I'll just send a separate patch to update the sysfs-memory-page-offline
+>>> documentation and drop the rest.
 >>
->> Thanks for the review.
+>> Kyle,
 >>
->> The reason for this change is simply to make /proc/buddyinfo self-describing.
->> Right now you have to know which column is which order; with a header it’s
->> obvious. This is similar to what /proc/pagetypeinfo already does, e.g.:
+>> It depends on which camp the external customer that reported this
+>> falls into:
 >>
->>    Page block order: 9
->>    Pages per block: 512
+>> 1) "I'm OK disabling all soft offline requests".
 >>
->>    Free pages count per migrate type at order   0 1 2 3 ...
->>    Node 0, zone DMA, type Unmovable             0 0 0 ...
+>> or the:
 >>
->> Regarding existing parsers: the patch does not change any of the existing
->> “Node … zone …” lines, it only adds a single header line before them. Most
->> parsers match “Node” lines and ignore everything else, so the risk should be
->> low. If you know of any existing parser that this would break, please let
->> me know so I can address it.
+>> 2) "I'd like 4K pages to still go offline if the BIOS asks, just not any huge pages".
+>>
+>> Shawn: Can you please find out?
+>>
+>>
+>> -> Prefer the 2nd option,  "4K pages still go offline if the BIOS asks, just not any huge pages."
 > 
-> What if there is a single one out there that has hardcoded to skip the first line only?
-
-I understand there may be no way to be fully compatible with all existing
-parsers. However, /proc/buddyinfo is essentially raw data intended for
-human and tool consumption, and parsers are expected to be robust against
-format changes.
-
-Adding a '#' prefix to the header would allow most parsers to skip it,
-but it still changes the file output and cannot fully guarantee that no
-external tool will be affected.                                          
-
-
+> OK, thank you.
 > 
+> Does that mean they want to avoid offlining transparent huge pages as well?
+> 
+> Thanks,
+> Kyle Meyer
 
--- 
-Thanks,
-Ye Liu
 
+Hi, Shawn,
+
+As memory access is typically interleaved between channels. When the
+per-rank threshold is exceeded, soft-offlining the last accessed address
+seems unreasonable - regardless of whether it's a 4KB page or a huge
+page. The error accumulation happens at the rank level, but the action
+is taken on a specific page that happened to trigger the threshold,
+which doesn't address the underlying issue.
+
+I prefer the first option that disabling all soft offline requests from
+GHES driver.
+
+Thanks.
+Shuai
 
