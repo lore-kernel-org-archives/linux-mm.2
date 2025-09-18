@@ -4,113 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E251CA1013
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 14:20:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D52FACA1013
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 14:31:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AAB418E0144; Thu, 18 Sep 2025 10:20:08 -0400 (EDT)
+	id E21CF8E0146; Thu, 18 Sep 2025 10:31:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A5BDA8E013A; Thu, 18 Sep 2025 10:20:08 -0400 (EDT)
+	id DF9EB8E0145; Thu, 18 Sep 2025 10:31:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 94A778E0144; Thu, 18 Sep 2025 10:20:08 -0400 (EDT)
+	id D36188E0146; Thu, 18 Sep 2025 10:31:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 826128E013A
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 10:20:08 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4F26FB6FFB
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 14:20:08 +0000 (UTC)
-X-FDA: 83902580496.12.736FDEF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 1DE0D140002
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 14:20:05 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="AGZFAI/w";
-	spf=pass (imf26.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C3E0A8E0145
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 10:31:36 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 78BF01601DD
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 14:31:36 +0000 (UTC)
+X-FDA: 83902609392.04.B364BAB
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 8DAE2100014
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 14:31:34 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=eqsnGJA3;
+	spf=pass (imf14.hostedemail.com: domain of elver@google.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=elver@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758205206;
+	s=arc-20220608; t=1758205894;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OWZhryAvRQtDyjeStvoQhj1ITDFDPTCq/irqjRsFVR8=;
-	b=bNqp7G0Fj2b5gX2K+GiPd7xFW0TnRKNO18SXnzt28laFFwWGIBNH3OI+KMqKAzw8i9PoNn
-	hu/74++mQIdsZ5FvPTf1XL3xzvsg6s1ZmUsdjUHc+upwlUp6vyPHcK8As1fGKrQNNJOvhz
-	fGMBeRCqD8czgPCrWTisNuE4Cd4j0EM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758205206; a=rsa-sha256;
+	bh=x7wpgOqV2jwxbf7nUbBy2XlSiAc50BZhVeubzU1uvBU=;
+	b=Rw8jp8iEJ/HbvZ9U/tDiXztCUc3PbeR7pf6Q419XL1X7poL6aUD3cdOOVttcH2lniwwvHS
+	PvA9Gw/6zLDEnj3jYFkBFI+My5plFIWeZdhaMWe0r4CdTG0y6xcje8T8Ptu5ONPzXLp67g
+	L2cWQrNVozu3qjLxw/HhPN3cKwmeRKg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758205894; a=rsa-sha256;
 	cv=none;
-	b=R0uTM/pVE33k7NGoOtVVJv5Ebgj/wL4Usfe4BLzsmbHQWJvaPaPoCchQ5lsnt1d5j3J8oO
-	K4K8IIgle38Ofb/it8hUztteZ/P/WoVaDOTf2Zar56SgayoKvOSIyYHDuQEzERwq4u9Nip
-	dy6uSnocO5MXWCl7j+zjzgHP6fWB8bs=
+	b=cgkj9PoLuFrIFZ9InuZjdzZrpJYdac7I/dkZ0RO/rijH+Qbgq2SIqDDEVu95OvhmY0YEab
+	biH9J0bZEsycEqFvWbAIRNarbiW589KGOyAV//R3JIBu+F7vhSahP8yieJJxXCsL1B0kww
+	32N7/KVdEh/4MM9uTaYUexAu30ep9WU=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="AGZFAI/w";
-	spf=pass (imf26.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A06DA44CA3
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 14:20:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73688C19422
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 14:20:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758205204;
-	bh=OWZhryAvRQtDyjeStvoQhj1ITDFDPTCq/irqjRsFVR8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=AGZFAI/w3PnQAru63me4ay9jcaUlh2xe9SKRc+AnrbhbOSWIHnJULSpTHXF8mBdH2
-	 g1CCR4xfum6T5US/0VPAFJg9rWMbHWRhVxHwdWRD8/lTly0KGojQ7dCoAlHOa/FzxO
-	 gGAGahj1CzvbfPpzYutFt3Ll+KLdEaJ1U4/8WyjBgtsrtRQuzew+MswdAHxkqW91H0
-	 f+YEdfxz3vDTr8sBecc5GQN1oBiJPLbed4JAiRiI5tLUxpMzCguyaDqgi+1WU4RPR/
-	 wSamAdiZcSXghDtYJgSpz4sAY9J2XDizVueMNCzf8uasuTaiVDFzECHmYBGJQXg7Mc
-	 w9AU5drGotPPw==
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-71d71bcac45so7484637b3.0
-        for <linux-mm@kvack.org>; Thu, 18 Sep 2025 07:20:04 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUGBxSQGNw8vsGGX10wsOK3GPvZiX0r8uCKNpeltFnOXWH6Mkx+IypW57Dap9/w31CikV5+HpmVGA==@kvack.org
-X-Gm-Message-State: AOJu0YwNUN06HZKxfynMhxdDHEJNYtxGVIp6cKyWijyGuxou2cVxyiU3
-	tur2yss9/M5UYVpJPQRqr8sKX12I66vamEAJeMrZZ1Wv3W43SoA/EFnvCNgUCvCdtF6kPGZKnGE
-	fW0wwWMi3A7PGQ33Y2gOJoOjY1uMJlz6WC3TkVr8IzA==
-X-Google-Smtp-Source: AGHT+IHJ5VJ815IdenFpro8uYXEfzkWvkvnL+QTGV/q4zXxuxIvJR5FbvI/qS7bEiRnQ3lj33uFOCWbw2B2cpQMqPjE=
-X-Received: by 2002:a05:690c:18:b0:71f:e430:666b with SMTP id
- 00721157ae682-73892a49056mr46759697b3.32.1758205203651; Thu, 18 Sep 2025
- 07:20:03 -0700 (PDT)
+	imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=eqsnGJA3;
+	spf=pass (imf14.hostedemail.com: domain of elver@google.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=elver@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-33067909400so584065a91.2
+        for <linux-mm@kvack.org>; Thu, 18 Sep 2025 07:31:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1758205893; x=1758810693; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=x7wpgOqV2jwxbf7nUbBy2XlSiAc50BZhVeubzU1uvBU=;
+        b=eqsnGJA364q3Ab9oDtZrCFXbIRvPWKjXP5KGrho5audkiO3Br3FQhFuFvrr/pgmK5j
+         nPZf0x/eASrdV0CRFh7d9rLyZXogUKEOma2cUWQM69p8sUgEU/eTbHRmsYmJ7AEijfug
+         mHT7XddIn7aF9hNjii0H4xcQLTx1kbQbtRCcEMcx9+TM4kl1IucXRqj9niJokJPFv7lq
+         PKkYXGYu4dilYp6v4DDERZZlo3zoWAiC2HO1CFd9J4ZWr8zf0ZIatLlANaJAIU3Qzq0I
+         PE6zFCst+hhECeViTnEFTu0Ui2JXRHJsrE+I+hN8Htw4CxptGUu6atIRfJ7Jr75iI1zG
+         BJSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758205893; x=1758810693;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=x7wpgOqV2jwxbf7nUbBy2XlSiAc50BZhVeubzU1uvBU=;
+        b=hyQ5exDLgk2d11GXKKqMgx0VVJbj6t6XN4bRKQMdh+wjgy7py4DSwxlklw1SxYOMFR
+         gbLL7X7IEed7Uw+RSVfFfMvLk0UGYDjXeckQfsh3TLeXm0awY0xSxGZQ4jsDmbpXn2zG
+         lZNbuTubc6cH9E7rjq2OrvZnAytO4sSLW5MlxXNCPz1dbTPtbuzbK2O4BYNWrI3bNjJq
+         ZUrBoTRv2AAuWsCMwYoDY86IrHn2gkay6NcOXZDW+K02TMP7OqrrtgoqkvKIa9/iM57C
+         SAGXqH+Njogx51A/o89CZpcTN1ubh1P6ETDAaQmpOMoq0QTyR3wudClMubFDDEWayoEB
+         IPsg==
+X-Forwarded-Encrypted: i=1; AJvYcCW7S3Lt0Rr3iEZfc3QTwiImH8pNI12CkbypUR+1OOJfVSRgAa6YCjeEOxo5UuTkbNPpc54Meel0Mw==@kvack.org
+X-Gm-Message-State: AOJu0Ywa9f5+rIXSewaKKuO067+8rgL2i6hq73n8EHB7fP1DbvSUwehy
+	H6nxJlCjErrvGPMTf5NNG8lkkdHEIC6Y70ZLa2GdPCnlSGt6fsFww3THs2DYeqS2Uk3UnR2ronb
+	QoUi63HDoTvQERb5dpaZtRHoLuNz43Ft/fYfMb2eY
+X-Gm-Gg: ASbGncuNVPLytcn5nzA9NCr2UsFfL1eUAmQ0adpDEUkI00iZPa25i+WsvruSD6McHRJ
+	V7QMIv46bXqU5I6/RfbdBIS4hq6mDH30n7RzafP79GTGzdJBqMH7ByJKGwx0bzRrBymsMSWn2NH
+	LftpsjGdI0apdOJCIKSRsv2maKZfcDby0DBFd/XYSoWU21zuhrDeehzsrfDJQXCZaqMbFu6gnOn
+	CrcwAFDDwO2lO9EkX35J2yg2pWOCgBFlJG1Gti2m5rLHNB9TYV5psrmIwhSoA==
+X-Google-Smtp-Source: AGHT+IHYGUcixIR/dwWsgGEgFB1TOwlgrZ0O4FlqafV2iJGSlcEq1KnUzPyMPrhTBrvu1VqtuDJ2xHHxKwyBuVmjxY4=
+X-Received: by 2002:a17:90a:e184:b0:32e:b2f8:8dc1 with SMTP id
+ 98e67ed59e1d1-32ee3ee55c5mr7425841a91.10.1758205892532; Thu, 18 Sep 2025
+ 07:31:32 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250916160100.31545-1-ryncsn@gmail.com> <20250916160100.31545-2-ryncsn@gmail.com>
- <CAGsJ_4w2GqGj8HZMfwndsWu7qkORqsnaw9WwhmQS=pW4gR7nEA@mail.gmail.com>
- <CAF8kJuNbUyDWcJ13ZLi-xsiYcbY30w7=cFs7wdxszkc7TC4K2Q@mail.gmail.com>
- <CAGsJ_4wKWem-STYAnh_0EgSFKzzs1M1c7wz6K82wLt6T6JEw9A@mail.gmail.com>
- <CACePvbU8cUs-wwPsXkZ24EWga5bXxxUGSCT18rKAWFYn5w9rpw@mail.gmail.com>
- <CAGsJ_4yhDU_WVfEybDhGE-WF5+w-fak1-F8jqbAQ-Qw1+qWkaw@mail.gmail.com>
- <CACePvbUabb+L6Z9Nb-41fLR-FMhj--cDWSbnXtCj3rpqXModiQ@mail.gmail.com>
- <CAGsJ_4y8yTX48ESHKgLNCvM1M1_gY9uGnD4qiz8n+gD47Zd1Hg@mail.gmail.com>
- <CANeU7QkZBWFO6SeVHtmm73oLu7r0zavePQEYmQfH8opKPH1QWw@mail.gmail.com>
- <CANeU7QmcC=-CTmJ7i8R77SQ_WArBvjP3VrmpLOy-b7QhCfMRYA@mail.gmail.com> <CAGsJ_4zmkibM_Ex7kGMsr2sni85H-cnxQvh0XwkWiALNQy+zAQ@mail.gmail.com>
-In-Reply-To: <CAGsJ_4zmkibM_Ex7kGMsr2sni85H-cnxQvh0XwkWiALNQy+zAQ@mail.gmail.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Thu, 18 Sep 2025 07:19:52 -0700
-X-Gmail-Original-Message-ID: <CACePvbXae0zymE_BHydXtA_pjZ2NqabVyqxu1xKxLjLKmeYH9g@mail.gmail.com>
-X-Gm-Features: AS18NWAMcE25uboInmnLpD0pUJ78wF8y-VpV56txG6Fyry-vKnC2XHT05OGiLaE
-Message-ID: <CACePvbXae0zymE_BHydXtA_pjZ2NqabVyqxu1xKxLjLKmeYH9g@mail.gmail.com>
-Subject: Re: [PATCH v4 01/15] docs/mm: add document for swap table
-To: Barry Song <21cnbao@gmail.com>
-Cc: Kairui Song <ryncsn@gmail.com>, linux-mm@kvack.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, 
-	Hugh Dickins <hughd@google.com>, Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@redhat.com>, Yosry Ahmed <yosryahmed@google.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
-	linux-kernel@vger.kernel.org, Kairui Song <kasong@tencent.com>
+References: <20250918140451.1289454-1-elver@google.com> <20250918141511.GA30263@lst.de>
+In-Reply-To: <20250918141511.GA30263@lst.de>
+From: Marco Elver <elver@google.com>
+Date: Thu, 18 Sep 2025 16:30:55 +0200
+X-Gm-Features: AS18NWD0SUeFqGV9WlY2IdwTn_KEVlrUb6EWkUXQGUd586AZF2O57bI6Ojf1TCc
+Message-ID: <CANpmjNN8Vx5p+0xZAjHA4s6HaGaEdMf_u1c1jiOf=ZKqYYz9Nw@mail.gmail.com>
+Subject: Re: [PATCH v3 00/35] Compiler-Based Capability- and Locking-Analysis
+To: Christoph Hellwig <hch@lst.de>
+Cc: Peter Zijlstra <peterz@infradead.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, Luc Van Oostenryck <luc.vanoostenryck@gmail.com>, 
+	"Paul E. McKenney" <paulmck@kernel.org>, Alexander Potapenko <glider@google.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Bart Van Assche <bvanassche@acm.org>, Bill Wendling <morbo@google.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, Eric Dumazet <edumazet@google.com>, 
+	Frederic Weisbecker <frederic@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Herbert Xu <herbert@gondor.apana.org.au>, Ian Rogers <irogers@google.com>, 
+	Jann Horn <jannh@google.com>, Joel Fernandes <joelagnelf@nvidia.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Josh Triplett <josh@joshtriplett.org>, 
+	Justin Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>, 
+	Kentaro Takeda <takedakn@nttdata.co.jp>, Lukas Bulwahn <lukas.bulwahn@gmail.com>, 
+	Mark Rutland <mark.rutland@arm.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>, Thomas Gleixner <tglx@linutronix.de>, 
+	Thomas Graf <tgraf@suug.ch>, Uladzislau Rezki <urezki@gmail.com>, Waiman Long <longman@redhat.com>, 
+	kasan-dev@googlegroups.com, linux-crypto@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org, 
+	llvm@lists.linux.dev, rcu@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 1DE0D140002
-X-Stat-Signature: egykr57ymzkx6qj4ttyzn4981nuw38ho
+X-Stat-Signature: e6p917uzb9gdqcwcp1ogrkcztykjadyr
 X-Rspam-User: 
-X-HE-Tag: 1758205205-74101
-X-HE-Meta: U2FsdGVkX18+CzoIIOw7ovRB7625EjRaMiCNrW9fibJqk/Jhvsk3OsCnEC4+mYS8hUz5gmVdO6UoM4Cj2N2VtxSFN/1ZmcL95o8cxRK01kK5OlvUjjCsEWnTtzDbjwekZf2crzdns/XCcY1oCYflGeGdj/0ZYi6mIS3pOmEkaEym1PtZ4gDRGMgCX1HpjSPGnxea33KTlWaYhD9Wkw1coCfzNY1homwTIhaJ5pGyyR13wPSgSG8spXiXT7I8Ur/oic6LMzR7dY8H9zxyEBRWtJsPC+gJTfYpQ2JYSGERBvv1pxV8+NmCMWFEFSyJDgatIlGVy57JvXi0tUbxu/IL8r2v+8/wqXD9jdH18hoal8Cl8nN+2q2jdC9Zcx44dQCpxYUn8sra9H+beqOLUYYOLMgrPvqd1VW2L64LrLMOCxnMGGgpnM4uwVUz7x2g6RsSR7IzpVoHIGuh7xGEeyChDVZZujmBUCiVwZRnpCLG9dMo+fMZsmT3BMw80z1vOQCJT9DCFT60quzRUFB73jLVzG//e4BRzj37P2FanvdZm+bSOMyQNcWpzj6yxvEActbTGksnDUZ1GebpjEzZD7wEfNR9efV59892iWzP5/eFdXeveocbH7F5qF2s+3H/wXXKR5+bSB+uYGXBpveaVIM6MP+WsW5S9tXV5qtewFTLHTbe3Lf7md4QLGMzxVDr+B1V4rWFLwXLkQ6oCGz+PPw6b93y/ns9CBlTLr5pXHjPRso/7veXyS856YTZeS2sp7W3ea4JwTK6//CiwzyJ0vMs3Z67KzC1mnojXX7qmozBOCRpIViwxGU5UJUivsOokQuqqvZypj0KdSCmr8YNIKGA5LjLv7BipixTzL+49X4gS8LFednFQuEihdU3y5ft1uncIZbiUpRF/3BS0ufLh5X+chMYhjFs9g1e2kiFMBZfd65gV3f1ZU2PIiDC389hixmGNr/+OrFPWC8loYIZT6J
- 7jKEyX31
- kJkWsbTIci3DN/P9ry4gJaZYuyOZEjZXD++TwOS76iAPFtGm2JrGkgikPzj1OXcDOrSJQDcjw/oEtRpsccRAzuTuaB7oUdEiZ9EJ7WPrLogT1n1yJYJXVORsG23b6g+LWmX1yKis/JVi39f8/qaE32pl+VH9DFy9KR8PJ2J/m1oLF2lhJSu5PVfWTJKuLeOgAhPtLkKMbh2YBpbNuNRFwRUZ8H++3q1Cb39GwTGGHSiIKw9JTvMO3eG/F2SotnTWKSKk0JtGxAQsLWnv8Aly84T/Qb+Wsjabdk4Nlc848ief8tkzdSvnpadH7UBupi5GYZYOqOTafs41jLWQ=
+X-Rspamd-Queue-Id: 8DAE2100014
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1758205894-666509
+X-HE-Meta: U2FsdGVkX18qWHPCt7bWxdxm6gXM1jZ8sgInMrovZU+VqWIsols4xUzZVWUZfvHNNFURskTTxiShg/B7dJ1g5onRceIPtIHf1Cod2XH3w7oTTRxFP79Iemcm1PhEO0Nuuy8NqVRoQnM9w7x/xTPgPyK2U1xhqZJJn8jWeWMGl23qB1zD9OLjccywwhiAVRVTHeBSm8f70jYC2rNq1XYbIEUXNe3fKWZKbvul8AApOhEr5sgT+ysQ3xN7xGOCqk/gEg436EtxJD7GR01WdAVSg5NgsIRLI6zp7kqJwWQESXl9nmdG3Jnl+W0U50290zmbt6dmgt6PeUrA/mzW5+TykVQ+jxcagEb+4mDg9tO3QfANNa5ZIdnOcY7l4WXVVUHkaXT46yMIXqTInH243QOrRScMU0zLjUTSi6NjTgjSjFwnIxLPJ4DZUumR63/AMLiGU03eFsuLXRS7sg8qZfdbbLUsY+l42qhd5IvOBxqV3eVNchd8OMv95KzzgQhZ0I4BoG9iRKg4LmMBmOtIhgwefw1Sn98uCJqpweC8jWL5oUwt5TnhJnz4kYLZMzLSbHCjcEEbvqXNYnKQgioOi91r13BF+/u1aY9Qkl83UsHk0NR3h/Z8lPaU5juoUrVkvpmb1yH1PjkEckmwIH6HaEDd/OTAlhmi3MMXPkMWJgTwr0LOUGVxJ9MWCqEJCC51PL4okWeVOVgHY/nEATdn+DlnNxDpk0skicgtBU8llGYW9QPDZLHOXbD4pdygPVgioCA9a9lg/HunEnSdi03xWDIQJ5aFCo6Ywm/kmSYvJf1pykRLJhi+5Jn0J+dCbfFHsVXaZd5rmoMlslt3Jc4XvRliyLPAPaTylLcgh38FaG3SZO4Cba2rgMPKkvkOddTNXpYBhludozmD3JBIopBEIYRepwLQwuJPanBTzU8AY5cOUmm4e1w2l6AaiFu4kn7agta7cKSh8HgWgnITGBOJEPS
+ QfFlUwMQ
+ huaMH+zQiDJm4mhygTONDBprCeIPCLL5GVDsKdUTXHQNrImlm/JlWOlFDb0MfVBVjRdxW1qplMUbKFrRWF6d0yFHKPYDq+E9eHEuSS63BaUNnBpuXHztNiAwnY5MlxGc+BL+zD5rqOIS7j+5zmQcs1iBTJsUFCOCRAIISEndEyXmKxWILYS6WdJpwehZbYlXcV/BJebRIlBDm7BJpRBo3R0y9DPf9iY1U5cRcPbIFXqvMgjaJbKgpPVA31eC8wzVd40nhQgNJdHqIqLUMgIwuo5bKAXJmwjeIp/C2uUlbg+84ohw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,58 +134,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 18, 2025 at 1:59=E2=80=AFAM Barry Song <21cnbao@gmail.com> wrot=
-e:
+On Thu, 18 Sept 2025 at 16:15, Christoph Hellwig <hch@lst.de> wrote:
 >
-> On Thu, Sep 18, 2025 at 3:03=E2=80=AFPM Chris Li <chrisl@kernel.org> wrot=
-e:
+> On Thu, Sep 18, 2025 at 03:59:11PM +0200, Marco Elver wrote:
+> > A Clang version that supports `-Wthread-safety-pointer` and the new
+> > alias-analysis of capability pointers is required (from this version
+> > onwards):
 > >
-> > Hi Barry,
-> >
-> > How about this:
-> >
-> > A swap table stores one cluster worth of swap cache values, which is
-> > exactly one page table page on most morden 64 bit systems. This is not
-> > coincidental because the cluster size is determined by the huge page si=
-ze.
+> >       https://github.com/llvm/llvm-project/commit/b4c98fcbe1504841203e610c351a3227f36c92a4 [3]
 >
-> I=E2=80=99d phrase it as =E2=80=9CPMD huge page,=E2=80=9D since we also h=
-ave =E2=80=9CPUD huge page.=E2=80=9D
+> There's no chance to make say x86 pre-built binaries for that available?
 
-Good point. Will do.
-
->
-> > The swap table is holding an array of pointers, which have the same
-> > size as the PTE. The size of the swap table should match the page table
-> > page.
-> >
->
-> I=E2=80=99m not entirely sure what you mean by =E2=80=9Cpage table page.=
-=E2=80=9D
-
-The page that gets pointed by the page table, or the page that holds the PT=
-E.
-
-> My understanding is that you=E2=80=99re saying:
-> The swap table contains an array of pointers, each the same size as a PTE=
-,
-> so its total size typically matches a PTE page table=E2=80=94one page on =
-modern
-> 64-bit systems.
-
-That sounds good. Thanks for the suggestion.
-I take your suggestion with some small modifications, mostly to
-clarify the total size is the total size of one cluster of swap
-tables. The total size of all swap tables in a swap file is much
-bigger.
-
-How about this:
-
-A swap table is an array of pointers. Each pointer is the same size as a PT=
-E.
-The size of a swap table for one swap cluster typically matches a PTE
-page table,
-which is one page on modern 64-bit systems.
-
-Chris
+Not officially, but I can try to build something to share if you prefer.
+Or a script that automatically pulls and builds clang for you - I have
+this old script I just updated to the above commit:
+https://gist.github.com/melver/fe8a5fd9e43e21fab569ee24fc9c6072
+Does that help?
 
