@@ -4,105 +4,157 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 599F7CAC59A
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 16:13:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B276CA1013
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 16:18:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 95CB28E0149; Thu, 18 Sep 2025 12:13:27 -0400 (EDT)
+	id 807048E00FB; Thu, 18 Sep 2025 12:18:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 90B288E00F6; Thu, 18 Sep 2025 12:13:27 -0400 (EDT)
+	id 7DF108E00F6; Thu, 18 Sep 2025 12:18:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 847F28E0149; Thu, 18 Sep 2025 12:13:27 -0400 (EDT)
+	id 6F4A18E00FB; Thu, 18 Sep 2025 12:18:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 703E28E00F6
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 12:13:27 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1FCE2C0240
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 16:13:27 +0000 (UTC)
-X-FDA: 83902866054.21.0134C95
-Received: from relay.hostedemail.com (unirelay06 [10.200.18.69])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 3FDD1100012
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 16:13:25 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5F68F8E00F6
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 12:18:58 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E65AF140290
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 16:18:57 +0000 (UTC)
+X-FDA: 83902879914.01.FC582F7
+Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 90DF6160003
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 16:18:55 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm1 header.b=hT3UzSYH;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="n arD2ch";
+	spf=pass (imf08.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.144 as permitted sender) smtp.mailfrom=arnd@arndb.de;
+	dmarc=pass (policy=none) header.from=arndb.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758212005;
+	s=arc-20220608; t=1758212335;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QYza+B6UX/oNghkY805fNwVtOdXsgka//Us/2M2ST3g=;
-	b=tzs2AjyZRzFhiYmLtaZmHYcSh/al+evM7djqIDgPYdRqSGVwRU+uPSgq4q8NjxV1KdrVUD
-	4H2sFH6spfQE+Xie6wzUEJRzoGYV0vlMUB1x/mBJQu6p3L3ISGPzUUANgvV3me5ltDTuxg
-	BRU+FRLmrZoCyXzTubnht6No6RLv26s=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758212005; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=fm4R8b6atPDjgItmLn3c75WIBp5VlWzcsZH4FVIt7ag=;
+	b=dxioDEplhqtwcC29aeS295VvGmylFltVq0OJ+LHhs1wv9IjXtcBYgwA+JS33VGpOgewn2M
+	IWo+Kt03kSq8rguxkBkdwIjrQNCKhNkDCxmrqywWumXZBsmtjrJR+ELRrMPz1ZS0oHSZdM
+	Rrn8UoyUBcXLmUq+yWfS6VC8RvdHzfQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758212335; a=rsa-sha256;
 	cv=none;
-	b=ljdrs/RhMytaEGkjhfvz/Crna4rVbTKsDWjx8XmvXxRsh7twaql0ft8lVbYPfWpzrATf78
-	ZVtXq2oUpb7GOHP3pK8JXwHQ5lU7Hi0fapjMEflSUI4tGyC6oH1+itMi1XJ70YyRedW+U4
-	mzzDr2ZKLJRt+2yA8mEt2fhRGqOCKGU=
+	b=37yJT5eYCxd+yEnWDDvF6ogk4ZhpHbIIMgNTEXLRqQrov54TWbwmu/muvGab/EFxvuu/Kt
+	DiO3KN9WN5RrBBGTkB+JCSKEGSy0WKmnJrJS9yBCqH78pR/TvGRV/Xyo/GpjJNqHfO56m2
+	u/QgV7Ise0P+upWjM1xqDGeszH25n68=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	none
-Received: from omf15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0D508118E89;
-	Thu, 18 Sep 2025 16:13:21 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf15.hostedemail.com (Postfix) with ESMTPA id 2846618;
-	Thu, 18 Sep 2025 16:13:08 +0000 (UTC)
-Date: Thu, 18 Sep 2025 12:14:16 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Bart Van Assche <bvanassche@acm.org>
-Cc: Ian Rogers <irogers@google.com>, Marco Elver <elver@google.com>, Peter
- Zijlstra <peterz@infradead.org>, Boqun Feng <boqun.feng@gmail.com>, Ingo
- Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>, "David S. Miller"
- <davem@davemloft.net>, Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
- "Paul E. McKenney" <paulmck@kernel.org>, Alexander Potapenko
- <glider@google.com>, Arnd Bergmann <arnd@arndb.de>, Bill Wendling
- <morbo@google.com>, Christoph Hellwig <hch@lst.de>, Dmitry Vyukov
- <dvyukov@google.com>, Eric Dumazet <edumazet@google.com>, Frederic
- Weisbecker <frederic@kernel.org>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Herbert Xu <herbert@gondor.apana.org.au>,
- Jann Horn <jannh@google.com>, Joel Fernandes <joelagnelf@nvidia.com>,
- Jonathan Corbet <corbet@lwn.net>, Josh Triplett <josh@joshtriplett.org>,
- Justin Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>, Kentaro
- Takeda <takedakn@nttdata.co.jp>, Lukas Bulwahn <lukas.bulwahn@gmail.com>,
- Mark Rutland <mark.rutland@arm.com>, Mathieu Desnoyers
- <mathieu.desnoyers@efficios.com>, Miguel Ojeda <ojeda@kernel.org>, Nathan
- Chancellor <nathan@kernel.org>, Neeraj Upadhyay
- <neeraj.upadhyay@kernel.org>, Nick Desaulniers
- <nick.desaulniers+lkml@gmail.com>, Tetsuo Handa
- <penguin-kernel@i-love.sakura.ne.jp>, Thomas Gleixner <tglx@linutronix.de>,
- Thomas Graf <tgraf@suug.ch>, Uladzislau Rezki <urezki@gmail.com>, Waiman
- Long <longman@redhat.com>, kasan-dev@googlegroups.com,
- linux-crypto@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-security-module@vger.kernel.org,
- linux-sparse@vger.kernel.org, llvm@lists.linux.dev, rcu@vger.kernel.org
-Subject: Re: [PATCH v3 02/35] compiler-capability-analysis: Add
- infrastructure for Clang's capability analysis
-Message-ID: <20250918121416.19a8041e@gandalf.local.home>
-In-Reply-To: <1ca90ba0-7bdc-43d1-af12-bba73dd3234a@acm.org>
-References: <20250918140451.1289454-1-elver@google.com>
-	<20250918140451.1289454-3-elver@google.com>
-	<CAP-5=fUfbMAKrLC_z04o9r0kGZ02tpHfv8cOecQAQaYPx44awA@mail.gmail.com>
-	<1ca90ba0-7bdc-43d1-af12-bba73dd3234a@acm.org>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	imf08.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm1 header.b=hT3UzSYH;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="n arD2ch";
+	spf=pass (imf08.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.144 as permitted sender) smtp.mailfrom=arnd@arndb.de;
+	dmarc=pass (policy=none) header.from=arndb.de
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfout.phl.internal (Postfix) with ESMTP id E9DB1EC030E;
+	Thu, 18 Sep 2025 12:18:54 -0400 (EDT)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-05.internal (MEProxy); Thu, 18 Sep 2025 12:18:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1758212334;
+	 x=1758298734; bh=fm4R8b6atPDjgItmLn3c75WIBp5VlWzcsZH4FVIt7ag=; b=
+	hT3UzSYHqECruml9nJYhLaF2PeApMfKPsa2Kchq0gCzfeBYX32RBViapVaUovlLI
+	Txe/jjqieezrzrzA7uJYsDtvqVjCXXnC1LoBBhdcmSoOMaSrN5Fqt+5RD4WlTS+u
+	BKhECFDp11UJ471uauSho7G4oGR/BvOy/5lMipcEoJKhdbXiTwla7TTe3MuQrnYQ
+	KueeBTCWfI8OcXJS2UG9kae6uVbtlAF7CcZVk2LQ2vS/xIuZHiD0Lp9ICyNHy82r
+	40M21sNMmpSgYWUZzCPqKroJovjjCGbk7bJ6mlDgjqwo5fwELH5lepoBABDtgS9L
+	scjCSBoybymPnkbUAktH5Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1758212334; x=
+	1758298734; bh=fm4R8b6atPDjgItmLn3c75WIBp5VlWzcsZH4FVIt7ag=; b=n
+	arD2chK72CMw+3XE4ZMyHoCXIAodtWOlFh+lygozTruGzTZh8h856redrTp47dRO
+	sXbFqPqDBwTwab9JjkqMOZqEpw8xcAx1CsSrhxGH9ZhJahklo+5B/YYA8F9qKGuK
+	wms91Otr8e2xctRFqgvVzfrtq2c8xTnxS+u/pW8oiV7Qo/b/JpZmiOHUmjZVqgw/
+	j7EXQHPtj5+QrGpRsg0kWk6VvAUAduP/2DL/i1mtAsRcQBIRbZU3Rh1twx82usbv
+	RgntitcMyx+XgxmuyvLSSVKNtRoybAgMqWlWzYvwXSnU7WaKl8QejTpIg2kBSi6W
+	CaYxaV9Q1r98Co569m6Gg==
+X-ME-Sender: <xms:7TDMaNodCGNeyIp-SBSrJ_TtgdGNi08_RHKQYU5GUMzQyGU2qL51sw>
+    <xme:7TDMaPqtNE5Wm9OwOTBTVsoBpq7nOqMcCYUvpQ-AcC442Pi0J8C_IlqeLqpTVtfET
+    Z4yar8_IO-zzD-k2lw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdegieejlecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhhnugcu
+    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
+    hnpeeggfejudejvdeijeeglefgtdfhudffieetfedugefhffekjeefhedtjeefjeetfeen
+    ucffohhmrghinhepghhithhhuhgsrdgtohhmnecuvehluhhsthgvrhfuihiivgeptdenuc
+    frrghrrghmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghp
+    thhtohepfedtpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegthhgvshhtvghrrd
+    grrdhunhgrlhesrghrihhntgelrdgtohhmpdhrtghpthhtoheptghhrhhishhtohhphhgv
+    rdhlvghrohihsegtshhgrhhouhhprdgvuhdprhgtphhtthhopegrnhgurhgvrghssehgrg
+    hishhlvghrrdgtohhmpdhrtghpthhtohepghgvvghrthdorhgvnhgvshgrshesghhlihgu
+    vghrrdgsvgdprhgtphhtthhopegrlhgvgigrnhguvghrrdhsvhgvrhgulhhinhesghhmrg
+    hilhdrtghomhdprhgtphhtthhopehsvghrghhiohdrphgrrhgrtghuvghllhhoshesghhm
+    rghilhdrtghomhdprhgtphhtthhopehsuhhrvghnsgesghhoohhglhgvrdgtohhmpdhrtg
+    hpthhtohepfihilhhlhiesihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehirhgr
+    rdifvghinhihsehinhhtvghlrdgtohhm
+X-ME-Proxy: <xmx:7TDMaPbKt2WoXqHMwpanytM6BOnhzj_CQNwGh1PFIqubtDAyu5jB5Q>
+    <xmx:7TDMaGKxNLlBIr_WiBflz4DJZ5ui2U4YOwVgSsgJGQrpphOVta5LLQ>
+    <xmx:7TDMaG8COQwGxvO3AW0IJmLokZHWS06CKK-GHPM5ep7McMCa1__b0A>
+    <xmx:7TDMaNp9nu7518TclPj1lZvDtvnU_ezCWZtqceFpg9Flbxum44e-lg>
+    <xmx:7jDMaKcwFz32-9rZOzFDRZfXWP5Uej9dboxG4Bi3HNtAfR6kH7cYV8fc>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 7D7F370006D; Thu, 18 Sep 2025 12:18:53 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX187tFXsL5Le7f+OEdXPb8EfevPMdYJjxao=
-X-HE-Meta: U2FsdGVkX19m1tAn22PHk3kX2Wk2POBgAZFzgAQIMCx/TzKCFJHSRgy7lqGNU4t4JpUf2LxrofFc8Ml/SzvQUemqI2s/M2eVv2TcCTTofn0gFGf1qiKnggle2+rBi9jozqgLP+w5zmTzD8j5BYGNETdC7HYpSCmlxzgRl1HmUDgT6vBPRbNQKlew/GiSPntamWI4BN+3BQMlrQzHKrw2Hd44nH0TJbDzGUvq4EnHN5l77wWkx8yamYKm0wF/UonjU1auAq1+e+AHgLIMHgDBTy/q+l9/HvzB2gWDjclvwsnGTS+Jv2LDmjZbgWOiLNXP1sp9TafIX1LTwyRs55KIsTFDvD2gur62c5R5bpv6t02yJBvS9Pt6FACmEbxkfSaUp1nLcDU5Q19B7Ha8v33a91ClwZlXoj1UYYAtqvo6OkbX+GZwbhQ0RoFfAYIW3JVWEzxWKbCA0qFysRVjwJOtsFC2FqAYNCgDAkEhxNFg1LQ=
-X-Stat-Signature: oyrrhu7nbq6ifkoonpoonkjsywp67qgd
-X-HE-Tag-Orig: 1758211988-794253
-X-Rspamd-Queue-Id: 3FDD1100012
+X-ThreadId: AneuvEk2E7Kg
+Date: Thu, 18 Sep 2025 18:18:13 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Andrew Lunn" <andrew@lunn.ch>
+Cc: "Jason Gunthorpe" <jgg@nvidia.com>, ksummit@lists.linux.dev,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
+ linux-mm@kvack.org, imx@lists.linux.dev,
+ "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+ "Richard Weinberger" <richard@nod.at>,
+ "Lucas Stach" <l.stach@pengutronix.de>,
+ "Linus Walleij" <linus.walleij@linaro.org>,
+ "Geert Uytterhoeven" <geert+renesas@glider.be>,
+ "Ankur Arora" <ankur.a.arora@oracle.com>,
+ "David Hildenbrand" <david@redhat.com>,
+ "Mike Rapoport" <rppt@kernel.org>,
+ "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
+ "Matthew Wilcox" <willy@infradead.org>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ "Vlastimil Babka" <vbabka@suse.cz>,
+ "Suren Baghdasaryan" <surenb@google.com>,
+ "Ira Weiny" <ira.weiny@intel.com>, "Nishanth Menon" <nm@ti.com>,
+ =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
+ "Alexander Sverdlin" <alexander.sverdlin@gmail.com>,
+ "Chester A. Unal" <chester.a.unal@arinc9.com>,
+ "Sergio Paracuellos" <sergio.paracuellos@gmail.com>,
+ "Andreas Larsson" <andreas@gaisler.com>
+Message-Id: <ea6562f4-ec8c-4e99-98ec-000c25c34a3e@app.fastmail.com>
+In-Reply-To: <ca6fc8dc-d1ee-41a8-a1c9-11ed2907207f@lunn.ch>
+References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
+ <20250917125951.GA1390993@nvidia.com>
+ <02b0f383-1c43-4eeb-a76f-830c2970b833@app.fastmail.com>
+ <ca6fc8dc-d1ee-41a8-a1c9-11ed2907207f@lunn.ch>
+Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: c5aic5e5m9a6pc9guc6f6zeunizybrhr
+X-Rspamd-Queue-Id: 90DF6160003
 X-Rspam-User: 
 X-Rspamd-Server: rspam03
-X-HE-Tag: 1758212005-681569
-X-HE-Meta: U2FsdGVkX18cTc6DCiKYqdfbmVx+bdmePbED9M7h0dhK/xOVm3IXagul/nH4DjFJw9dZn2xOs+Z0wmR393o3LTxzS9/lXr9rnYv9xgD9IHoN2NWkdh43tejHQ9X+Xail6lvgQOejjYqTmRla7XQhv4wzwNFxeGesEK1fYUUpRJpKGe7+XMw7UAmqp9RbhHII04S+sLAQCcJ1jxMslivBM6tO5WPeUOo4oTZUu2S0OOBoTFNm96ZpJYfTL4g+/Qti5wZOTClMikdxAzzxTJcU6uYnD8UiXqLGIdf9r2HX4SN0cb8GNfMSVomtMN40kFLMHb43nXHki8jyv0W/T5ao4FmzNVqZ8iZtc9Kse92JszV/pIa3jgWF+jqXGdlP70vEqDmimUQ6+sb10ToAF9q9idkUsFcQ2yYkt30LjIZamJ7x3wumvD1IVU6bCHJPT5xIDlewiQxHijs6C/3iFp1Nt8hRf9safFgYihVSbDZIl24qE4Fzr/bAz5iGXfaPz68ANyW2EhnbJVE3zSxwJzn4gicFNQXRHILdliojptq3q7OeK0msMRAApcbJh4nnc/go8qCI8J3W05vYrLWDTgMRXvVO/CeWKyj3Exj6P2TNuEQvDFUKql4RI8WM/tusXB/IhrZOiE00INUa/2DEbliSSAyLDB/+SBWyKcoyKJxnV2wdJzG4u6jrCZ5ElpAVI2uwmR2JED78Fk6PlI/Ie7wTnaralQko98BbkQIal6gmXF8K+9fv6RBOaojLOHu2yWFxLr7I247rd5a/g/C4deaHOqAS4FzMFhzOp3qXmdAcEbpLEvQY8yAN4BJCcnunabKubczun+X6tVZ0OkVBoPL+PlwsKZn9StM+TM3+0qDTZ0EWMpXOv9MKmlE3XGKRDK6PZ0t4ZPsqgJcf/RVUOP+R8w/87o8bSADekdOhW1ZHtTRWD5+SnOOsqM7AeThKMYUsbdo26aQAnAf8rcHI/5T
- uMa2Al9N
- pxD2B3E6WIUXr13hn7zxL1MpgnqCJEpctkVgZAyrhueAvnDU7zktNMNABD1S8VxvSCNaB8IjX0Oi+d4cUC+aHKKTVMlQU9eY3ZeRyWhTIDG1nUqzGQMZN4amdQfZSiA7D4aUdM404Dd7N6wTZNNp1iUh6hbFnNcBMcyOfAYNNbm0gSI4=
+X-HE-Tag: 1758212335-557647
+X-HE-Meta: U2FsdGVkX1/rQPAHHAz9dWd+OuhO1fiYO0vB36QVvGKukE0n2E1pOn4bSP09+q/47yUSRaxICHWGA4ZKNJQXmYIvhbDporOgg/JFxWFPpkqKCklYx4tPkNl16YorhdLCliZEwJrF0UFEC433kxsBoc+iKFDpH+xMvowL4zCIsrPMi2kq92/hgAiaDOOxXRKPN+GJ4kv/CbZo5M2232aF8mHcZRy+kPc9523OPBnDJf0DgWW9tAoKIgDTGnGzTV/aboBTEAOe+HOm8Zqu4kouOOi07OiGn0UJi8Ff0d5JOYSSs98WkkiwXI3YbOXzT1ONzPPntIQFwziuufVTFvqQS0cTAP7fYA+6ygQJCUUDT7HocFEakgXBG7EboX0ZnAwWqbf4KaTfPzOJt2ZKjvbVulFWQvUZYBmK0e8zSHp4JbkBzuLYnPkhUS/3UKX1zio9YBw3WOw3S3gnRByb1YpJFsrbPgjinevPQHMv7RxriPyEMHhifTXhVElHp7QJIMzU0ecSFjzNL7RFm3lJLxXoTxpb48ZXeesKYGx1G0f7ioK1CgsKJKTQLl/+6KpNSX/txgKHpcF+Z+4wSPmnsyvbIm4RGhafgGYiByC53/s4NplX5F4RP5mFGgOFeQC3WqkwfYxMLXy4zqwQRUn5KDdv9Xora4dd/SLynYW19CjdpjxPtDufcdKg7bNQgXhl262wtnBhlVRry8TqpgOGh0dMDaAPWZaDwNatTFNfbeJeJXdODmAGeLA3U8wwasFwkrqjlVpaNYEeYs3g+w2mDvEFsdjml0HECQUq3jB8ii89TTsCr5OybaA89biVoABavn4jHmdd5qfuaCwDlslgvI9GVd4idlOsON0G8vEiYCB13rpSFol0ABAe6p+q/7Q7z3mVnv26PEydf7zBmtKhLVw4ON+z6VVN8cHolqZUjkqRILrMnvoqWmdHVXePb7dYD7JW4Lj+ZqwELwgfg2y1LpS
+ FXetJvfi
+ bYykT8xc2zNpghz/AJOAXQ/dWhTr5ld9PjvdqqNb9osFkkOpFlvnSYL+rdzPdi7xreQExCOBs0VG5HBKcNBoODGyW6NHL3qAs22H0Gx/LlG9xuCbmCPuxJhYx+KZewaIVfKnv3pIC5s1iUVLTRCkvVFa3dAypB8GgT6IsbpeZ9MdOs1VVG5CAGtEX9oRkqxbYJYdiRkD7xkKquqUfC9buT0968AF7/StCFsQ5rNkb0vYz7DHE3KrvOauL9HTWQ0+e/3sRlhJ0okH3/6QDMKrUzsXnj5Axenv3D1cAoyeVZiDrKFT1ppC+T7QYdWJ7cxssrkYeYrbCVYuz4KQKMukVKat4Yg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,44 +163,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 18 Sep 2025 09:03:17 -0700
-Bart Van Assche <bvanassche@acm.org> wrote:
+On Thu, Sep 18, 2025, at 15:34, Andrew Lunn wrote:
+>> * Marvell mv78xx0 and kirkwood (armv5 pj1) were fairly
+>>   powerful in 2008 and could support at least 1GB of RAM,
+>>   but I only found one machine (OpenBlocks A7) that does
+>>   this. It's unclear if anyone is still updating kernels
+>>   on this machine, but they could /probably/ use
+>>   VMSPLIT_3G_OPT if they do.
+>
+> If i remember correctly, there was a design issue with the OpenBlocks
+> A7, and it would not run with its full amount of memory. To get a
+> stable system you had to limit the RAM. I don't remember if that was
+> just with the NULL series, and it was fixed for mass production
+> devices, or they are all broken.
 
-> On 9/18/25 8:58 AM, Ian Rogers wrote:
-> > On Thu, Sep 18, 2025 at 7:05=E2=80=AFAM Marco Elver <elver@google.com> =
-wrote: =20
-> >> +config WARN_CAPABILITY_ANALYSIS
-> >> +       bool "Compiler capability-analysis warnings"
-> >> +       depends on CC_IS_CLANG && CLANG_VERSION >=3D 220000
-> >> +       # Branch profiling re-defines "if", which messes with the comp=
-iler's
-> >> +       # ability to analyze __cond_acquires(..), resulting in false p=
-ositives.
-> >> +       depends on !TRACE_BRANCH_PROFILING =20
-> >=20
-> > Err, wow! What and huh, and why? Crikes. I'm amazed you found such an
-> > option exists. I must be very naive to have never heard of it and now
-> > I wonder if it is needed and load bearing? =20
->=20
-> (+Steven)
->=20
-> This is an old option. I think this commit introduced it:
->=20
-> commit 52f232cb720a7babb752849cbc2cab2d24021209
-> Author: Steven Rostedt <rostedt@goodmis.org>
-> Date:   Wed Nov 12 00:14:40 2008 -0500
->=20
->      tracing: likely/unlikely branch annotation tracer
->=20
+It's possible that the bug is in the exact bit of code that
+Jason was suggesting to have removed, if this was the last
+ARMv5 machine that actually tried to use highmem.
 
-I still use it every year (enable it during December for a few weeks on my
-workstation and server) and post the results publicly. When I get time, I
-try to fix (add / remove) likely/unlikely statements. Unfortunately, I
-haven't had time to look deeper at them.
+> I doubt there are any mv78xx0 machines left, why where never very
+> popular, but there are still Kirkwood NAS boxes around.
 
- https://rostedt.org/branches/current/
+https://github.com/1000001101000/Debian_on_Buffalo does support
+some variations of the Terastation Duo, and they were planning
+to do a DT conversion at some point, but I think there is not
+much hope of that ever happening now that Debian armel has had
+its last release, and I expect we can drop the entire platform
+soon.
 
-This year I missed December and ended up running it in January instead.
+The reference system for mv78xx0 of course was the platform
+that Nico used for implementing highmem on, with a full 2GB
+of RAM. I think in the end this was around the same time
+as dove and then armada xp.
 
--- Steve
+> I keep mine up to date, put an LTS kernel on it once a year,
+> update to the latest debian sid.
+
+Do you know of any kirkwood machines beside the OpenBlocks A7
+that have more than 512MB of RAM?
+
+    Arnd
 
