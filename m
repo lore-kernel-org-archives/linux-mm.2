@@ -4,96 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13075CAC59A
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 14:16:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03401CAC59A
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 14:16:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6F7138E0142; Thu, 18 Sep 2025 10:16:04 -0400 (EDT)
+	id 60D048E0143; Thu, 18 Sep 2025 10:16:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6CED38E013A; Thu, 18 Sep 2025 10:16:04 -0400 (EDT)
+	id 5BF948E013A; Thu, 18 Sep 2025 10:16:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E4DF8E0142; Thu, 18 Sep 2025 10:16:04 -0400 (EDT)
+	id 4D4278E0143; Thu, 18 Sep 2025 10:16:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B2E28E013A
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 10:16:04 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id F39011401E8
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 14:16:03 +0000 (UTC)
-X-FDA: 83902570206.01.5FE8D24
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf05.hostedemail.com (Postfix) with ESMTP id BFC3210001E
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 14:16:01 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=none;
-	spf=pass (imf05.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 39A878E013A
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 10:16:08 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id F07C6C0217
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 14:16:07 +0000 (UTC)
+X-FDA: 83902570374.21.EB89F27
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+	by imf19.hostedemail.com (Postfix) with ESMTP id EFB051A0017
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 14:16:05 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=AjxJ9B6x;
+	spf=pass (imf19.hostedemail.com: domain of glider@google.com designates 209.85.219.41 as permitted sender) smtp.mailfrom=glider@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758204962;
+	s=arc-20220608; t=1758204966;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IDKOmDGdu4sjB+ajHbqv5oUDzo9Irz8OQyk6bFWkfJU=;
-	b=l9wlgdtQyXUz2Tlcu8iVteJ8HyPRKjWyrJFmse+WrjqivT/BSW1n5qQHdodJCGyD+rFuSC
-	V4aOxSXj7BIbs8Pj8F8ATJWVIUhHGIV60hYxXe0TmJ71Y7UafxxkwVSJzfANgwQfLsYpze
-	154iozJQyB1ceMAo2rBeu3lzNqiKio0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758204962; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=W1m9V0QnucGw1fYjnWnkHTlkfdmFSylGoU4nkl6jTtY=;
+	b=7UIuVNz08UQymiBR5H7qyWYcEoeYMpx2YUhNKzI6ZEI7Bm3myZR1H2db8KAnOLlVtVp+sg
+	WhtQB0cbZg1jIX4dnbVFkhI6Wzg6/uce0w5Isi2R6NXhLJYpkgkqV0wlYAGM0AavLB5y0V
+	vd9PCZsnLv77xrgMdIdu6LVyTjEyMZA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758204966; a=rsa-sha256;
 	cv=none;
-	b=oxgJmUnpvpyKVlG2097r3DXprTczEN+atolcLfMLF1ZtnXjdQ4nN9aXgNYkvnyxT/kMF32
-	6YYbPZBGdY4w2upmI76keJIa/PXx066GJ0Y5G5LP9tbNaAwOwlR3C/JcvxvI/Kw/70GEHs
-	y3aoluOLOEfMRdTFnTKAT/iWjJQdZ2k=
+	b=PV3qWnuHVJ4qEN3wDDg1hs0SxrWtRV6/r1GHoU5szdAhJjNNxZ95veFAh7ky+YwyBoDJLB
+	DXBblQRt90GoBWR5xsN8T58yokMYt6bVBEeTdFr7SrMtPAllGnYqJgjGirUwbVH8xdm8A2
+	yUIN8LCATTe4PaEEZrWzA9+PJ8qD82o=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=none;
-	spf=pass (imf05.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5A88C1A25;
-	Thu, 18 Sep 2025 07:15:52 -0700 (PDT)
-Received: from [10.57.71.56] (unknown [10.57.71.56])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D05013F673;
-	Thu, 18 Sep 2025 07:15:54 -0700 (PDT)
-Message-ID: <8f7b3f4e-bf56-4030-952f-962291e53ccc@arm.com>
-Date: Thu, 18 Sep 2025 16:15:52 +0200
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=AjxJ9B6x;
+	spf=pass (imf19.hostedemail.com: domain of glider@google.com designates 209.85.219.41 as permitted sender) smtp.mailfrom=glider@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-7957e2f6ba8so4781596d6.3
+        for <linux-mm@kvack.org>; Thu, 18 Sep 2025 07:16:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1758204965; x=1758809765; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=W1m9V0QnucGw1fYjnWnkHTlkfdmFSylGoU4nkl6jTtY=;
+        b=AjxJ9B6xLyI0HJIbiAnoUhVlPUHtmSMC0JNZtkf8ZXV9omiKpXjcmXr+H0SPEHkASS
+         rCh/kWiX0wOCHgb6ySug+ACsTy7RqoMtQzt5+M+Np/nMS9Em9tOGJTKVtBQOR49rbsp4
+         vfE7eeXbijNe0uYzTYQ40aqF7EvNEkiGSN4Wxw5s8VianO8El/uNMWHUSaHjErpcDBGZ
+         dGvrI0YNUDaCSbW8j2mZAggi8rwwwqM2pXjbTCNFli4OZucGSe+d1/qHE1FW5ZmjEAmN
+         wp4XphvKp1Yn/PV2cqIRQu7c92l0rygL1b3kWeMIzwGYCpi6n1yAnri3Vsu3zMXSwgY8
+         fcXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758204965; x=1758809765;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=W1m9V0QnucGw1fYjnWnkHTlkfdmFSylGoU4nkl6jTtY=;
+        b=Os+PAbBbMbAbdklzgF2R5qipEbRTk5hsMJkIrKQzm/xUhxLLzR1EkozO4Sj4bsG+Lu
+         yNRsBCNWBWeLrVMzw4sA9d92FzjkqO4g4d85sQK8KAq/oJhyhXcOyRFAl231WsMZW1Ob
+         82jefzrbwpkH/lmmo+/ARKklQi/od80F/VuN1QyW8Ptdo24YhKsVD491YNzNt058bX2e
+         H8/XNHfVSrS7Hk2Q1jBjt9BJ+utt1CxKCRkzoYbC+J5lFHUbyzHxN2oAvx76U2vpxVYx
+         ozNxGsMQfXf36z8+SpS/qHuC0N4Cj4BgvH4lpkC3BmefrK2h/A5ZP0tW8koyPfLQJTkP
+         DauA==
+X-Forwarded-Encrypted: i=1; AJvYcCV6tF8REeEwqnfiVDMq48ZF0IEFOZVoYyMAhvc5LiHcoSGBYGQ15Fw1wbNTHUQmOAQlmDgVV8H4yQ==@kvack.org
+X-Gm-Message-State: AOJu0YwJte3iJTEmXpAc2bKPEqKG8+t8DETjyomfygWmk3onED0sBUlB
+	6VT2/BlqJ0BNByeQSr/kdmhhKlsiCD/YBkt18vOq8C1oNmWZjDdyPUisK2+I60byx5Ey7dTQbPF
+	QmJExWR63blfoP5+11vhScK+/2Fr6Uliaz1YvopAf
+X-Gm-Gg: ASbGncuoX7KeOTcGRiJsvlgGlUxU5CSa5KORoEgUq9NrSWnAgxEUYnREGAHofLviqO8
+	ay/1qlZOgvXmQZc8dYlkaw45Fjpc8Avn64qtdFrPpfpI2ROrBwUxH3LBIya/7TioFokxPrGDh6V
+	HgBP8zE4hNXvQ9Ejxl3bdPWUM9e1XoF3Lsv8OCDJ9+06Dl/q1hUABVhEVQ/UGZY/WQMSlzpWfUV
+	AaaqtoonGoVJU4wqKdy05fCNYr/6bQECe1u5rHlvB9uDNVElVL123Gf6Sy6CVY=
+X-Google-Smtp-Source: AGHT+IFBpnDsj/3XitirZWPzOjid3pk9f5ycO+u5s3pMsQEUT+8NOpONrRLGkmiWyeP3kqXiHfhufSRzIIkcKBIaTRI=
+X-Received: by 2002:a05:6214:2aa5:b0:782:1086:f659 with SMTP id
+ 6a1803df08f44-78eccb0cae7mr65869736d6.26.1758204964157; Thu, 18 Sep 2025
+ 07:16:04 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v5 00/18] pkeys-based page table hardening
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-To: Yang Shi <yang@os.amperecomputing.com>, linux-hardening@vger.kernel.org,
- Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Andy Lutomirski <luto@kernel.org>, Catalin Marinas
- <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>,
- David Hildenbrand <david@redhat.com>, Ira Weiny <ira.weiny@intel.com>,
- Jann Horn <jannh@google.com>, Jeff Xu <jeffxu@chromium.org>,
- Joey Gouly <joey.gouly@arm.com>, Kees Cook <kees@kernel.org>,
- Linus Walleij <linus.walleij@linaro.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Marc Zyngier <maz@kernel.org>,
- Mark Brown <broonie@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- Maxwell Bland <mbland@motorola.com>, "Mike Rapoport (IBM)"
- <rppt@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Pierre Langlois <pierre.langlois@arm.com>,
- Quentin Perret <qperret@google.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
- Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org,
- linux-mm@kvack.org, x86@kernel.org
-References: <20250815085512.2182322-1-kevin.brodsky@arm.com>
- <98c9689f-157b-4fbb-b1b4-15e5a68e2d32@os.amperecomputing.com>
- <8e4e5648-9b70-4257-92c5-14c60928e240@arm.com>
-Content-Language: en-GB
-In-Reply-To: <8e4e5648-9b70-4257-92c5-14c60928e240@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: wsrdnpgmy3zwx38emw1sj7ryibdakxwr
-X-Rspamd-Queue-Id: BFC3210001E
+References: <20250916090109.91132-1-ethan.w.s.graham@gmail.com> <20250916090109.91132-8-ethan.w.s.graham@gmail.com>
+In-Reply-To: <20250916090109.91132-8-ethan.w.s.graham@gmail.com>
+From: Alexander Potapenko <glider@google.com>
+Date: Thu, 18 Sep 2025 16:15:27 +0200
+X-Gm-Features: AS18NWDFBwLJ1l73cBf4HqMXnx0YeCt1p-LK845oN4Qc3Ee7lXGT_Tt4s1Okcjk
+Message-ID: <CAG_fn=Xkig71cn1xCUP1t=OLAbk+YYLsec0HhciROuiTD6AELg@mail.gmail.com>
+Subject: Re: [PATCH v1 07/10] crypto: implement KFuzzTest targets for PKCS7
+ and RSA parsing
+To: Ethan Graham <ethan.w.s.graham@gmail.com>, ignat@cloudflare.com
+Cc: ethangraham@google.com, andreyknvl@gmail.com, andy@kernel.org, 
+	brauner@kernel.org, brendan.higgins@linux.dev, davem@davemloft.net, 
+	davidgow@google.com, dhowells@redhat.com, dvyukov@google.com, 
+	elver@google.com, herbert@gondor.apana.org.au, jack@suse.cz, jannh@google.com, 
+	johannes@sipsolutions.net, kasan-dev@googlegroups.com, kees@kernel.org, 
+	kunit-dev@googlegroups.com, linux-crypto@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lukas@wunner.de, 
+	rmoar@google.com, shuah@kernel.org, tarasmadan@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: u6siwdd6psnaw3b8q7enn5p44ds6ea6c
+X-Rspamd-Queue-Id: EFB051A0017
 X-Rspam-User: 
 X-Rspamd-Server: rspam03
-X-HE-Tag: 1758204961-251345
-X-HE-Meta: U2FsdGVkX18qKw1n6UrhAUm0QuKMBoWZPbF/Y92IxWE6sCSKsjbo3HStnKSf1tWIxpNYChHao2UTKSbRDIfT3xEIyfHdh/g/ParLSNCFuvb2CNfEa1uhR8W+YIiw3Nk3oD2h4N6HVMOa7Z1zd022OnclejY7aWOb8P4YIgME4aTq+CimfxZVLmeDCRvLaJqYHnQc8YDuED6WnVxEkN52SSSf+7SLwJcZglRApvGbr1wtxa/ai9NltYxSjPrb3Bt3mFsHZ9S1U47aVvMKKG38V9e4ldgmQfkC6Zczg50lx4+Q3FfJozRI10Iayh6TLldD1qIYFrXrIHcUdaBI2QRiBEm6ywb9vwH8pGr+a0QOdwyeeNgD0VRf0oi81dCgc3LANd883PmxAIo8NoBjpn+WxN2gHbTJmL32AitOSlL0mB6kXRc2Et+9yZHIe5+KHfQbznomigVo0/c+S0QCLkPqOEPOgM0SeI/hk9yKJn5inkFKyoLbk4Dmc/2BOAJHU0uANWlkTDTiC0OMOsdc6/Jv/xoiO1EaoE/ALxCbUjyYRjTggqC1iWx4hYWCm8IKFTsEa36Vh4dHooQX8olBZrIOJ6SKPMbu/7NS5CQrFwuMS33EOdc59ugt+DLPUvR9k2En8kGCLRdNkW0ugGcrkqqq2jlT7qv0QCCydBRefcMUj0kg/tBiy2BvvNxr+JV3meTos5cFgQrs5joqRMzlYOTMlcoF+kqKtEkvuA27OIBwfNLLoiCCiUDkf7/9hRiqfyx+Q2h4UbbislCTk9w9JRNqyLc9LT/dQeMIq3Jdgg4sVhgqDMovbfyrQH/d1fW692jlY33+ohMzqb8NCC6o7CBy0fyoimwynItjwS3hdcUfvW+LSPDVWn9ri71J5lzUOYMUdGBA/eZHJozTSYFPFO7bS5YU+WIpOjF7KXfxe9I1Hn5sjVv2IfnEvM1CMzERSLDVz17NWR05hKs3jWTBPW9
- JZ7NForN
- +5Sk3dSMlBLb8SFmGqgXJ+CVO6a7DyJBM3gtpidazrgVBBMiPzbujYRRnAyGwktm68NaYIOwYNYCJ8WnyKAbomGCsheg2T5GqbzfrC1M01UfPO7xnYmYFPhMEB3ghe3thOgS72U3TX9m5Qvr1yhpL5mgqv8r3NjxdJSGbc9wKxXBLjXBEUnC/fPxxWcNWzZlj8D0+W8UryHOW6bGvdULvI+Ambm43PVLbp+jOZYGZtYW6CG19wmelXwLxQg==
+X-HE-Tag: 1758204965-907694
+X-HE-Meta: U2FsdGVkX1+zPcYG1o/Hdvay9vek8iVLmEzjLIVBZST8hRz0122osePArVK1onhgJLGJ19rbLDNtcCis2ZmfeTHJTBnRUpI4M7Hrm0dkBkReRrGwBI4ZW2A+TPJTxc2IWryd2A/2AjkPU0tfWIfQh7epxjJUn+dZAy/t/jj17hghtHIj0LGvATvNM+POvew/jwxuxDQ9nsL1+bHgid1SybzdrHyGtGSPqUqm+kPpjFtal7AbvHuUQvapCroYFeWG5HenbZ+4qFYobK1dJWZbNlN/jtPvCOw22Hso+Fa6XOaAVYSfF0Z17inWv0kWVtsTfONa/atir+tryIhQ4D/UgsNK7sbS6NLYNugQR8WyMSF3umL2si3owKWc02n6r490EpAyK+MT0v42nyUys92vOtIRqZDmAQb/D7pDNgcSLBqTTJxuIXUr88NZcJnLxjGfhtTm/XoLO7Kls2QY6NynK09VFikAZ0zA9+2UfRDGigPa6sHNXADkwz6YBzgGZ9y8pMVN/oWthq4B9rt2NYECyKdBZVMdX7oLWxdik6S7MMwtf6hnZOiMNBXklv+jOH1s5sQzDWC8AQuKt9WRNI7Ga3pPT0cDGjcf/vfNEnXqS+61lb+Csd14kRLffAkpioR1droKyt6yvQvCrqVnAN8WH9hhJyUmm5w+OEmiNn5oDhzCOLHFNcWcCz7o82LT2DJEzC1n09ocbRD2BLPskLR4dlXYQx/8vmi43+abvoGgg9d8DN+9TVtJvkRocvrlfo0fkE10pU/zLnbVfvzpfxV6cIYve0Bwi3m63UBE5FTaOoqFg8ftgs/6DYC1/I0pEWBEVq2VwEjRZiJBnHKxg+iW+oKkqK/2D3GGbgvowYduu4yyf9ZGuVzSKqQvo57CyHc05U1rNmCUqSb07hOdadw2o93dq/gqFY2qB+0kpdWzz+4wJFAlPFpkbYUBRv3tixLWjLVJwXGhx+ClF02GTTS
+ KAvlZCoc
+ ui6/c3IEjgDSjIPg8QZaGZ53t/3nlp62XixkAl0Zu3IMQrIUWCr67wIKICUH9dbVsV8NxsX/IwgEXFrrEn+S4/GhL7amj9w4AQfiuj4bJndvbB88+V5+iST7Jcs0V9tjbTGsp562YUz7/9+sMhiJFD4X+ML5I0QImx3UrGxDasYEUuv8afBcujZpRUT7L+ly98+WNxKShOilbrZJZsZbFPsy4RKkHP/DCk8AkfM8UlbuQye22yMk4KezZOIiODpqOp1wFWzSRkfCv3e3CX5bcBnj+CA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,81 +123,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 25/08/2025 09:31, Kevin Brodsky wrote:
->>> Note: the performance impact of set_memory_pkey() is likely to be
->>> relatively low on arm64 because the linear mapping uses PTE-level
->>> descriptors only. This means that set_memory_pkey() simply changes the
->>> attributes of some PTE descriptors. However, some systems may be able to
->>> use higher-level descriptors in the future [5], meaning that
->>> set_memory_pkey() may have to split mappings. Allocating page tables
->> I'm supposed the page table hardening feature will be opt-in due to
->> its overhead? If so I think you can just keep kernel linear mapping
->> using PTE, just like debug page alloc.
-> Indeed, I don't expect it to be turned on by default (in defconfig). If
-> the overhead proves too large when block mappings are used, it seems
-> reasonable to force PTE mappings when kpkeys_hardened_pgtables is enabled.
+On Tue, Sep 16, 2025 at 11:01=E2=80=AFAM Ethan Graham
+<ethan.w.s.graham@gmail.com> wrote:
+>
+> From: Ethan Graham <ethangraham@google.com>
+>
+> Add KFuzzTest targets for pkcs7_parse_message, rsa_parse_pub_key, and
+> rsa_parse_priv_key to serve as real-world examples of how the framework
+> is used.
+>
+> These functions are ideal candidates for KFuzzTest as they perform
+> complex parsing of user-controlled data but are not directly exposed at
+> the syscall boundary. This makes them difficult to exercise with
+> traditional fuzzing tools and showcases the primary strength of the
+> KFuzzTest framework: providing an interface to fuzz internal functions.
+>
+> To validate the effectiveness of the framework on these new targets, we
+> injected two artificial bugs and let syzkaller fuzz the targets in an
+> attempt to catch them.
+>
+> The first of these was calling the asn1 decoder with an incorrect input
+> from pkcs7_parse_message, like so:
+>
+> - ret =3D asn1_ber_decoder(&pkcs7_decoder, ctx, data, datalen);
+> + ret =3D asn1_ber_decoder(&pkcs7_decoder, ctx, data, datalen + 1);
+>
+> The second was bug deeper inside of asn1_ber_decoder itself, like so:
+>
+> - for (len =3D 0; n > 0; n--)
+> + for (len =3D 0; n >=3D 0; n--)
+>
+> syzkaller was able to trigger these bugs, and the associated KASAN
+> slab-out-of-bounds reports, within seconds.
+>
+> The targets are defined within /lib/tests, alongside existing KUnit
+> tests.
+>
+> Signed-off-by: Ethan Graham <ethangraham@google.com>
+>
+> ---
+> v3:
+> - Change the fuzz target build to depend on CONFIG_KFUZZTEST=3Dy,
+>   eliminating the need for a separate config option for each individual
+>   file as suggested by Ignat Korchagin.
+> - Remove KFUZZTEST_EXPECT_LE on the length of the `key` field inside of
+>   the fuzz targets. A maximum length is now set inside of the core input
+>   parsing logic.
+> v2:
+> - Move KFuzzTest targets outside of the source files into dedicated
+>   _kfuzz.c files under /crypto/asymmetric_keys/tests/ as suggested by
+>   Ignat Korchagin and Eric Biggers.
+> ---
+> ---
+>  crypto/asymmetric_keys/Makefile               |  2 +
+>  crypto/asymmetric_keys/tests/Makefile         |  2 +
+>  crypto/asymmetric_keys/tests/pkcs7_kfuzz.c    | 22 +++++++++++
+>  .../asymmetric_keys/tests/rsa_helper_kfuzz.c  | 38 +++++++++++++++++++
+>  4 files changed, 64 insertions(+)
+>  create mode 100644 crypto/asymmetric_keys/tests/Makefile
+>  create mode 100644 crypto/asymmetric_keys/tests/pkcs7_kfuzz.c
+>  create mode 100644 crypto/asymmetric_keys/tests/rsa_helper_kfuzz.c
+>
+> diff --git a/crypto/asymmetric_keys/Makefile b/crypto/asymmetric_keys/Mak=
+efile
+> index bc65d3b98dcb..77b825aee6b2 100644
+> --- a/crypto/asymmetric_keys/Makefile
+> +++ b/crypto/asymmetric_keys/Makefile
+> @@ -67,6 +67,8 @@ obj-$(CONFIG_PKCS7_TEST_KEY) +=3D pkcs7_test_key.o
+>  pkcs7_test_key-y :=3D \
+>         pkcs7_key_type.o
+>
+> +obj-y +=3D tests/
+> +
+>  #
+>  # Signed PE binary-wrapped key handling
+>  #
+> diff --git a/crypto/asymmetric_keys/tests/Makefile b/crypto/asymmetric_ke=
+ys/tests/Makefile
+> new file mode 100644
+> index 000000000000..4ffe0bbe9530
+> --- /dev/null
+> +++ b/crypto/asymmetric_keys/tests/Makefile
+> @@ -0,0 +1,2 @@
+> +obj-$(CONFIG_KFUZZTEST) +=3D pkcs7_kfuzz.o
+> +obj-$(CONFIG_KFUZZTEST) +=3D rsa_helper_kfuzz.o
+> diff --git a/crypto/asymmetric_keys/tests/pkcs7_kfuzz.c b/crypto/asymmetr=
+ic_keys/tests/pkcs7_kfuzz.c
+> new file mode 100644
+> index 000000000000..37e02ba517d8
+> --- /dev/null
+> +++ b/crypto/asymmetric_keys/tests/pkcs7_kfuzz.c
+> @@ -0,0 +1,22 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/*
+> + * PKCS#7 parser KFuzzTest target
+> + *
+> + * Copyright 2025 Google LLC
+> + */
+> +#include <crypto/pkcs7.h>
+> +#include <linux/kfuzztest.h>
+> +
+> +struct pkcs7_parse_message_arg {
+> +       const void *data;
+> +       size_t datalen;
+> +};
+> +
+> +FUZZ_TEST(test_pkcs7_parse_message, struct pkcs7_parse_message_arg)
+> +{
+> +       KFUZZTEST_EXPECT_NOT_NULL(pkcs7_parse_message_arg, data);
+> +       KFUZZTEST_ANNOTATE_ARRAY(pkcs7_parse_message_arg, data);
+> +       KFUZZTEST_ANNOTATE_LEN(pkcs7_parse_message_arg, datalen, data);
+> +
+> +       pkcs7_parse_message(arg->data, arg->datalen);
 
-I had a closer look at what happens when the linear map uses block
-mappings, rebasing this series on top of [1]. Unfortunately, this is
-worse than I thought: it does not work at all as things stand.
+As far as I understand, this function creates an allocation, so the
+fuzz test will need to free it using pkcs7_free_message() to avoid
+leaking memory.
+What do you think, Ignat?
 
-The main issue is that calling set_memory_pkey() in pagetable_*_ctor()
-can cause the linear map to be split, which requires new PTP(s) to be
-allocated, which means more nested call(s) to set_memory_pkey(). This
-explodes as a non-recursive lock is taken on that path.
 
-More fundamentally, this cannot work unless we can explicitly allocate
-PTPs from either:
-1. A pool of PTE-mapped pages
-2. A pool of memory that is already mapped with the right pkey (at any
-level)
+> +       struct rsa_key out;
+> +       rsa_parse_pub_key(&out, arg->key, arg->key_len);
+> +}
 
-This is where I have to apologise to Rick for not having studied his
-series more thoroughly, as patch 17 [2] covers this issue very well in
-the commit message.
-
-It seems fair to say there is no ideal or simple solution, though.
-Rick's patch reserves enough (PTE-mapped) memory for fully splitting the
-linear map, which is relatively simple but not very pleasant. Chatting
-with Ryan Roberts, we figured another approach, improving on solution 1
-mentioned in [2]. It would rely on allocating all PTPs from a special
-pool (without using set_memory_pkey() in pagetable_*_ctor), along those
-lines:
-
-1. 2 pages are reserved at all times (with the appropriate pkey)
-2. Try to allocate a 2M block. If needed, use a reserved page as PMD to
-split a PUD. If successful, set its pkey - the entire block can now be
-used for PTPs. Replenish the reserve from the block if needed.
-3. If no block is available, make an order-2 allocation (4 pages). If
-needed, use 1-2 reserved pages to split PUD/PMD. Set the pkey of the 4
-pages, take 1-2 pages to replenish the reserve if needed.
-
-This ensures that we never run out of PTPs for splitting. We may get
-into an OOM situation more easily due to the order-2 requirement, but
-the risk remains low compared to requiring a 2M block. A bigger concern
-is concurrency - do we need a per-CPU cache? Reserving a 2M block per
-CPU could be very much overkill.
-
-No matter which solution is used, this clearly increases the complexity
-of kpkeys_hardened_pgtables. Mike Rapoport has posted a number of RFCs
-[3][4] that aim at addressing this problem more generally, but no
-consensus seems to have emerged and I'm not sure they would completely
-solve this specific problem either.
-
-For now, my plan is to stick to solution 3 from [2], i.e. force the
-linear map to be PTE-mapped. This is easily done on arm64 as it is the
-default, and is required for rodata=full, unless [1] is applied and the
-system supports BBML2_NOABORT. See [1] for the potential performance
-improvements we'd be missing out on (~5% ballpark). I'm not quite sure
-what the picture looks like on x86 - it may well be more significant as
-Rick suggested.
-
-- Kevin
-
-[1]
-https://lore.kernel.org/all/20250829115250.2395585-1-ryan.roberts@arm.com/
-[2]
-https://lore.kernel.org/all/20210830235927.6443-18-rick.p.edgecombe@intel.com/
-[3] https://lore.kernel.org/lkml/20210823132513.15836-1-rppt@kernel.org/
-[4] https://lore.kernel.org/all/20230308094106.227365-1-rppt@kernel.org/
+Do we need to deallocate anything here?
 
