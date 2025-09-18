@@ -4,133 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61710CAC59A
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 12:07:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E161FCAC5A0
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 12:16:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9EC4C8E00FE; Thu, 18 Sep 2025 08:07:19 -0400 (EDT)
+	id DA9838E00F9; Thu, 18 Sep 2025 08:16:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C4278E0093; Thu, 18 Sep 2025 08:07:19 -0400 (EDT)
+	id D81008E0093; Thu, 18 Sep 2025 08:16:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B2798E00FE; Thu, 18 Sep 2025 08:07:19 -0400 (EDT)
+	id C96728E00F9; Thu, 18 Sep 2025 08:16:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 796248E0093
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 08:07:19 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 35ABD140121
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 12:07:19 +0000 (UTC)
-X-FDA: 83902245798.07.741FFD0
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf21.hostedemail.com (Postfix) with ESMTP id EB2D91C0008
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 12:07:16 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FBHcFR0s;
-	spf=pass (imf21.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	by kanga.kvack.org (Postfix) with ESMTP id B76138E0093
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 08:16:04 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5FD3513902C
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 12:16:04 +0000 (UTC)
+X-FDA: 83902267848.01.3882CD0
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 01D1540014
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 12:16:01 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=cfv36FUR;
+	spf=pass (imf07.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758197237;
+	s=arc-20220608; t=1758197762;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2DOPYjdyI/uAYvwMzh9uSYuRR4ZAJRzMcD+yFLiyXXI=;
-	b=ZdtuwlVczpL+Syxq6p7S/Y8RA7P2E5y6U4Os3/UaF8bEmyrjrKyWHQ/cL2XQ5s0TeOiTII
-	+WURhMFUY5uu7ynDgHbGbudMrz6jlxSUmWkvU2a+dvtk37Tdm8oSMa94Amd6I6ziM7gDqu
-	2B0obSv/7bvUwRSLek09mjq6C+9m99A=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758197237; a=rsa-sha256;
+	bh=ulEJfMwUrht3OKAns1HWVRq6ag97yaiR6fr7dDvVVhY=;
+	b=ACsZj/PCZS4wPHsdErUXj8lhnTlpwaqTB5s+FxdLbfsiblRkKJUHwIyx+sEngN9eDok+gK
+	/vSPBSgZcOKuQTduMTpdPGWKx/YrSdBfKpQEJO0dazUpyblZZqdQYGktoqmBgw+DLf02hH
+	qXL6ZyANYRfGaYLjutOLQOqy29d3Tqs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758197762; a=rsa-sha256;
 	cv=none;
-	b=YK1MlRElOKt8V3tulUhLyO/JtoTZXPgoBcbqSjNFoD3zpd7fCPmgFQkEJid/1J7Fp9WCk9
-	zuPB7fZp4uWKHwL1/oMtca1HfmpRkojNO8f+nLV1TQRqYK7GEjj2k5F0mwJG3Bl3N/zOUH
-	/PLbMkPjDfPFLayu7OSCio2fgGn2O/o=
+	b=PQ1oN+8iBMJJ8vhZT5w7vjMucPNbSvAbMWog3rNCk1FHmE4QyBaNjC6UB1QaS7gK0c+dMg
+	2nbxCCVV6ALn54atAYvTPrVSDmy9mppyJMXzWKx6k9A9/13w7HGFaSp+zZe5p34MJSj7yd
+	6voBtLIC6a0hGq9IJ3S+2kk1D7kfUr4=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FBHcFR0s;
-	spf=pass (imf21.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=cfv36FUR;
+	spf=pass (imf07.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758197236;
+	s=mimecast20190719; t=1758197761;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=2DOPYjdyI/uAYvwMzh9uSYuRR4ZAJRzMcD+yFLiyXXI=;
-	b=FBHcFR0sHYPDRTLkK29Xp55L4rA28SIS2Z0cR+ew6bY78KrGK8AjSU2RKG0rxo7Kwlnfyi
-	zap5wMxdJUxLdcgPTidddDVo/k8vYvazZgX7w2SA4cO4bRxKAw47EaLDSVsnqq7o95s0WV
-	oIeNfhfN7FXkOa03ABJSw/gjtnDXrJk=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=ulEJfMwUrht3OKAns1HWVRq6ag97yaiR6fr7dDvVVhY=;
+	b=cfv36FURV645OZ9u+P1wRmO5+Ef0cstmydGzGhtpymO1WLdlFeVl9KI0AVQ34inu3AdIIt
+	9mvPBLoxtrQvDtVVpyTAU/CmwlpCX1Tpuz/PFRuPLtGp4lwXUmMo3hWj+gt9Pl23DphT+p
+	gb26uwDSVVPIRQZl/hUL+A91E4Fwqhs=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-537-Je4CleABPLmrPFRmiPC-5A-1; Thu, 18 Sep 2025 08:07:13 -0400
-X-MC-Unique: Je4CleABPLmrPFRmiPC-5A-1
-X-Mimecast-MFC-AGG-ID: Je4CleABPLmrPFRmiPC-5A_1758197233
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3ee13e43dd9so234537f8f.1
-        for <linux-mm@kvack.org>; Thu, 18 Sep 2025 05:07:13 -0700 (PDT)
+ us-mta-360-JwYKNSWHPIiSeBq3pvs1Zg-1; Thu, 18 Sep 2025 08:16:00 -0400
+X-MC-Unique: JwYKNSWHPIiSeBq3pvs1Zg-1
+X-Mimecast-MFC-AGG-ID: JwYKNSWHPIiSeBq3pvs1Zg_1758197759
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-45b990eb77cso7085135e9.0
+        for <linux-mm@kvack.org>; Thu, 18 Sep 2025 05:15:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758197232; x=1758802032;
+        d=1e100.net; s=20230601; t=1758197759; x=1758802559;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=2DOPYjdyI/uAYvwMzh9uSYuRR4ZAJRzMcD+yFLiyXXI=;
-        b=rRM10S4hyL3uoXRzH9fLxBBl/lflOuKhJK1XDCOG7TLNQJLtI0Nawj4LrICOEcLyqa
-         ymNEjn2UcYN8xBdLeesnA1YTfeevBJooQO3H/dfCqu0veFvyJb903c1v8N5NoLLib6aL
-         bTKzROEwvv6TM4hpIe8Ul9LmKFPJIrJwdg4+pgEV/sT8hDeEWYm+FtA2+f/OYcwwsWQM
-         5bNWt7eK5CKmg01cUb+Atsw2ttxRLPoqOrtw787cFDhVAz+6rgnHukZ97Bbgg2ymBMVp
-         roU7BN28pVOmzG86q4jL0BZgh7pDMlOiq7rwJrlFS2U//Jl33dIIODFYG7WNgZFVSrS1
-         TMMw==
-X-Forwarded-Encrypted: i=1; AJvYcCU+vJCzUFmyjDaqy2SbgZxKLsM8E+JetcOLxCGoT8lFtgNsmhvZ9myTjfYlGssB8GrbY2vBS9oLiQ==@kvack.org
-X-Gm-Message-State: AOJu0YyG6uWAcUeZqSC/ch6aQzivY2L/8YH5cvVMNuuj4G6y8wra+yMd
-	MnKDQyEpeYHHDZIQsSw+stjDBqSMlPhu4X13Tsc23v0jR5YnoQMFBWKzOLsh2OL0RzXXZi0+skK
-	wjdbEssAfvku5++LqL2AHQrfXJlS4ruWrV669y7wvBKkc2+qztlDw
-X-Gm-Gg: ASbGnctMCsMUiUvwLoXFhFo7sOdEjKaoFcoNKle/xe45wZLPdwYAophDPk464rexuR7
-	mPKx+eBFMveveiQNyaaSFX9sxASrrJ5xHNm3HSM07bmw7Ka/jkKybX66eBtlNibZ/uxfmvy9COv
-	DuQ1+OSEwH2BKTRHH/hOS2n3rVXQGILjW6amyEZc6mSJj9WB+4JuH/0CcJd5qfXaDcK7106ZoiA
-	av3LrycoF8qERiYgYdsf5t/teXRql03EK2phQkcDvNZPCYq3JP02DKUUgTel+M5e9k1s8DW0cGD
-	9hWWNk+c+CCiXWp1wjdZhklEJaBTFSc9oybEfM9Lo09zKe9KinfOMxkqprYKOMMyrYjlJMLqkR7
-	UV4kResRkxMTinIxrs28vIRZsM+hCi8EolpYeV6+Bt76bSEhVdStiU1t+MBzjdhjLvtrZ
-X-Received: by 2002:a5d:5d10:0:b0:3da:e7d7:f1e0 with SMTP id ffacd0b85a97d-3ecdf9e6289mr5689998f8f.27.1758197232580;
-        Thu, 18 Sep 2025 05:07:12 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEIyAUyV0RX8DkIW+uDkvTX0Rh9rKHG8DzLg3Q/ZTX8yNIVuNU0lPJSNOJoMqZHCKyGphxyiQ==
-X-Received: by 2002:a5d:5d10:0:b0:3da:e7d7:f1e0 with SMTP id ffacd0b85a97d-3ecdf9e6289mr5689931f8f.27.1758197231973;
-        Thu, 18 Sep 2025 05:07:11 -0700 (PDT)
+        bh=ulEJfMwUrht3OKAns1HWVRq6ag97yaiR6fr7dDvVVhY=;
+        b=iCHmAIeh2wW6f4Sev9s96PDWtEH4AK0y6x+7MkN3bXWGZ5UqW9YvjjK2z+QpzCtfKM
+         PZDOckEhInMogfcUB6Xviz5aEOzrk+85q7pCy0M2pmXz+jw3S77iLS+rIu9VjZJJd8fi
+         TgiF9utkQn3ACDF0yMX4WBy9D3MgnMSCAoQEt+w2PmP1UUUEsL/uoCyuujVoga1igeDN
+         Hk3PcXoxqZFyYvcgUGPIH8LV93DMEsRfa/9sAKjl3pBJz0db5MuPoESvFkaUgbVp+M4O
+         kp+Iwo85oOYlQo1vaNC2F6F8+/PDUObMxm9ss97JH6PFJMTtKlnoOI6Q0CmSiEjBa7x5
+         /viw==
+X-Gm-Message-State: AOJu0YzduWgQYgTZ17PgVY5rs/iS8UeY/pwKeKvLy2PkoUEFUuNIt2kC
+	vFdbKI3OvXztHvDqOm006LN8+az0fk0Agt0P+UOWSaCN9G4ugrhlCzBnM67ApCXWrU3t/Ab/K2e
+	zVsltDfGgMo3n2KBtZKFm6Ff1iHDDYLaQMdUIKL2ItPfAlhRuzIOw
+X-Gm-Gg: ASbGnct92khMr6cF6SzI+Nq0q7GDL1AtHldFzen1nA61bnUqzc52EQM0WyerOKe/E5u
+	SxQP6i/RNv8rGeMggA/liHVS7qn7UfkwJ9G5QKWVy6zKgPRWoMPUpAaD6dQQ+f4ln3YWBtA51EN
+	fhqOdBk1ZSFXnSUIhcHGHxyTynIcXXThUtMhUCurLhBsAlf+Kpp+lEVwqecIr1uiq1+I52Kasm+
+	kk8q3g11fd1UAtIQFcdsk0fszSbQUeZLXsuUX3G+i+OE/qDTecrJ7gkRHqcE304euKLtNcQtcF8
+	AKghw9r3PnRrwSSN+VeHkRSDA+47M094wUiEwQhFRN+ZQ1lRvbdKaABS0zOiNUfM14WjivLYdOA
+	hosoI42+k/LFJRhVS8GXvEqTpvN4aYdK781Cz7mcGJ3ASsZB24yhrqwtRfE2VaayZ+lim
+X-Received: by 2002:a05:600c:3421:b0:45d:e531:99df with SMTP id 5b1f17b1804b1-466aad51930mr9037265e9.3.1758197758701;
+        Thu, 18 Sep 2025 05:15:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGGuNqwEth+bH+YuZyF3qbKkugj3CbhLjQTnqczvHb+i+ExVsskte42EU4HUFvw5g/n82QcOg==
+X-Received: by 2002:a05:600c:3421:b0:45d:e531:99df with SMTP id 5b1f17b1804b1-466aad51930mr9036965e9.3.1758197758278;
+        Thu, 18 Sep 2025 05:15:58 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f07:dd00:ca9c:199e:d2b6:9099? (p200300d82f07dd00ca9c199ed2b69099.dip0.t-ipconnect.de. [2003:d8:2f07:dd00:ca9c:199e:d2b6:9099])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-464f64ad359sm45788935e9.22.2025.09.18.05.07.09
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4613dccb5e2sm78562505e9.17.2025.09.18.05.15.56
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 18 Sep 2025 05:07:11 -0700 (PDT)
-Message-ID: <0c068e35-0954-43fd-b3b3-20786a6a12fe@redhat.com>
-Date: Thu, 18 Sep 2025 14:07:09 +0200
+        Thu, 18 Sep 2025 05:15:57 -0700 (PDT)
+Message-ID: <2c9df5ee-6109-4fa5-b895-ad8e47d34bee@redhat.com>
+Date: Thu, 18 Sep 2025 14:15:55 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/7] vma count: fixes, test and improvements
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Kalesh Singh <kaleshsingh@google.com>, minchan@kernel.org,
- Liam.Howlett@oracle.com, rppt@kernel.org, pfalcato@suse.de,
- kernel-team@android.com, android-mm@google.com,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Kees Cook <kees@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>, Ben Segall
- <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
- Valentin Schneider <vschneid@redhat.com>, Jann Horn <jannh@google.com>,
- Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-References: <20250915163838.631445-1-kaleshsingh@google.com>
- <20250915153401.61cbd5120871ee7a4e5b9cae@linux-foundation.org>
- <aa95777a-8012-4d08-abcf-7175f9e2691c@lucifer.local>
- <20250916191645.15aae276992acafe7f7e723e@linux-foundation.org>
- <e85d0b14-28dd-418f-872e-57c0127ad572@lucifer.local>
- <20250917163231.b5f7b8012367f033a91e6f9b@linux-foundation.org>
- <cfabded7-442e-40d9-963a-597a42da581e@lucifer.local>
+Subject: Re: [PATCH 1/2] mm: always call rmap_walk() on locked folios
+To: Lokesh Gidra <lokeshgidra@google.com>, akpm@linux-foundation.org
+Cc: linux-mm@kvack.org, kaleshsingh@google.com, ngeoffray@google.com,
+ jannh@google.com, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Harry Yoo <harry.yoo@oracle.com>, Peter Xu <peterx@redhat.com>,
+ Suren Baghdasaryan <surenb@google.com>, Barry Song <baohua@kernel.org>,
+ SeongJae Park <sj@kernel.org>
+References: <20250918055135.2881413-1-lokeshgidra@google.com>
+ <20250918055135.2881413-2-lokeshgidra@google.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -176,21 +156,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <cfabded7-442e-40d9-963a-597a42da581e@lucifer.local>
+In-Reply-To: <20250918055135.2881413-2-lokeshgidra@google.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: C3eA0UzEeh7r91nSKWqV6nv21oRD4FNd0JbhBCs73NI_1758197233
+X-Mimecast-MFC-PROC-ID: -DTaz8AFDwLq5KeQnoOHe7b6WewiMr1HmI9kxkeqiCk_1758197759
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: EB2D91C0008
-X-Stat-Signature: zyx5w5a1ey961pdedygsw7sb4tduczja
+X-Stat-Signature: dzgwieyfdxf1h36s5t9593bcxae3umad
+X-Rspamd-Queue-Id: 01D1540014
 X-Rspam-User: 
-X-HE-Tag: 1758197236-651516
-X-HE-Meta: U2FsdGVkX1/X+VdMnWhAiX7JtD0RCkMFi2N/jGRM0L/kqZ9uVQJamX+3JZZJDlZd3CrwV8o2xfTa9A84kgvHNEtakHbLISzlP4d83GzP00X96J/jzYuBE/GKREHrDypIMJe6DFjdU+bOg5K/hum8iu6nQoJV6gA+rG8CTv1W/MpV8URxl6xCseB/jkp9rCJ5i+ybAZmr997pbOxAIGFsWq2ICfJRyxhq4Vk/79hwJDgOrvBvmtjai5Cy96AXEimYTEmqOteiTgWONX0zBBJavUUakAaolySKT3FZmYxKk74/GFOjTSaNPnzXG8O9AbAssUEMJoL+UkXX1VNfC5ra8JPus7iSKIpwLj3SDFL7/OCcJuZVfG/Jjic8ZgHl4xZBOz4vbb2DotEGkjslqK1jVJ20LPYviX0b+LvVLrD5Y7dXPbzIhcH62Sar04GxGb+MYAibKbfbe88vTLA6TUY+7u95wFxOu/EU2HYj56pxb9UMuTvCuzkIAXY9+HyUCa8TPp/ZahHTFJ/2TWCU+dyENPTl1oc2OT9K/EM0c14KDUkooQuNhqVtCHRXHwr0fehBGxs+5zznOEqpu1k3PC1cBZSSG/G8xZut4jGYl4am9dnzc0Kbx19nfxD0Bz5FtDc2NoUuh6WBnekeJl0k/gP4ieVzIgn9JFLZJr0pSB3cH3m7eHfcoimewy+1PCEYEd6QD8UyZn3g+GMFf8xca9Qnb67WVGCA8ALjjAoqtq4W4Ed9YSgtxbRz4Id9vwJasP0FIh4axF2dyUoZSqAssHRc8ZF4Q/dJqpMPXoUF7LXE8WUEbVQ5FlbiMxrBPqCLmg1lq2LCH6CuLCbxP3G0lL72uo05DO+97FieqyhanrOv5K50yi+fUoRLBdXRJjbB0VpwOJEs5E7SGnXWwGaudAf7p86gi0X9wBMJB4T/NAsgtDaY7Ip/TW519DazKv8yrWLtbDNzo+04XxEG1cD9Kyl
- Am5t3GDd
- tuNbi5Uv/QJ7qWl2oMuec0XrlvuTuUNXSp8cCG/kwmmL5CA0=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1758197761-597285
+X-HE-Meta: U2FsdGVkX19iO6/UxhEdqGCsWD7AlzF/WXe0p6DiAONxrRz+W+t4Is1zzMJrnUBzpOJA0EbKqil+7WaIkTVJBxFcPfyRTkX6BvyIIWGPTr+DsCrsWMNbJkc20Guk0z5H3BdK+w1XAwM+ysW7/B4B14HEbHTzRTjENbcpNhlmGvIv0EXay8j5OHyQroSUdUvCBPwVZ0j/J+8dEoFSoW5HL/trhje8SD/P6Y2Ok3GivzBTBnVhme77wIry8hwqjaxN4KpTWd1m71MsWg3S7cfPJye6zW4pV1nuteVE6GPsAVBFf4i3kIeUOkWtVfB+2GTu3nk5x3r+AxmkVTUa2TfiR0/+h00aAyXhQKCWCj420VLI6OiHrMCCy72FZTQ0NihFIxw2U1xdrf63ueSPIGLXbZxDT85YFkZGeAPCOcPeTEt+HcwX+6rvwhI2S+5zSxgcI4UXTguYcKVSeF00M+oYu6tterK3OmwwefE46vn264StRUKxgddZNa3KOMeSMQcWMYRbDvHKQ3x/czMHjOLuM+sSjm7pujUmYqny0mCpNvMSsk3+lbLirhfIkGZ6ddh+xhMtexY1OxchA1+2EVYgLs+PI0u6CgHWqi7AqmFJw0Ku33KldIGUh0TYsOneiMTaTQdV1U0fIKUQfNZP+b5l+M4pky6XQe/pG+3ek5x8VyONYCDvzxzLEyrRgD3s0zkq/dAVbG0tN10xHNTwh7fHIxXf8t9keFfLhpKrkv7SLIX0z5zVWcKvjXNnGB/pbnNy+OOhZ5OPNAn0gOdFXbYnb2kjIICbyIfYs9T82/DhOPxrXcq6BFio5P85ubdp0cZschQnEFr7D064gSj/Zd8Jx+IlIc63+9aRfolqJG7csU/WcXKghy3eP2suJsj1Ke0AdXCJo62wzNpKBOnYJHJDysuC/kPtYEBiBhdhh+lXvRxRD/5NqxnVH+66Ph96evBK8gu0vdaHb6YYYqvro4r
+ dt0/WYoa
+ LS6kUF0q5EIbI/+ZvXX/6SzpeeBq+NyveZndGG3NOAGJtIQlz+M67NNPXfrDXwKgq6m4nyFVXgZkn1W+v0uqUJHiNH4wopSFcX1GB93DCFLq4+1DXdV7O6LAASqO6kHqW9BdIuKYvXDomaluopknplyTP6szFqmwYMmWRwIEKKmW+3VkNH3smcwnHFhCsxU1Sz/401hZ5HpKIlwoCf+dPvb2ACewZSNEdXvHYKJ55THTTbgQe5cssoJjkixsbxppRR4vbtutKKgUbP3LuNBsMaIXeW0ozYTmj3rmO6AA3jIM1894/VEz17n5uLo4NgUTIsGROOEofWC2X4e3bdzDI87HlQrxhh3XKbL8qDCVuom7+2YYFRcXr25q5r0ZuK4K6/NA4KrQf7cRWplKdaGI/Cy94cN11gjrHUezZKfxn36KvQQHTAdWtdgTK8HbjRM9CljOAV5DkFH2yeAKKJLqYzUNZvPTiy1wwF0T8/TgGTFwnfTrByibg5g0JfUq5BqercfDD5LMF+fnMJQhoTKWnWNYAPw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -199,41 +179,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 18.09.25 12:29, Lorenzo Stoakes wrote:
-> On Wed, Sep 17, 2025 at 04:32:31PM -0700, Andrew Morton wrote:
->> On Wed, 17 Sep 2025 06:36:34 +0100 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
->>
->>>>
->>>>> Perhaps being less accepting of patches during merge window is one aspect,
->>>>> as the merge window leading up to this cycle was almost the same review
->>>>> load as when the cycle started.
->>>>
->>>> I'm having trouble understanding what you said here?
->>>
->>> Sorry, what I mean to say is that in mm we're pretty open to taking stuff in the
->>> merge window, esp. now we have mm-new.
->>>
->>> And last merge window my review load felt similar to during a cycle, which
->>> was kind of crazy.
->>>
->>> So I wonder if we should be less accommodating and simply say 'sorry it's
->>> the merge window, no submissions accepted'?
->>
->> hm, I always have a lot of emails piled up by the time mm-stable gets
->> merged upstream.  That ~1 week between "we merged" and "-rc1" is a nice
->> time to go through that material and add it to mm-new.  I think it
->> smooths things out.  I mean, this is peak time for people to be
->> considering the new material?
+On 18.09.25 07:51, Lokesh Gidra wrote:
+> Guarantee that rmap_walk() is called on locked folios so that threads
+> changing folio->mapping and folio->index for non-KSM anon folios can
+> serialize on fine-grained folio lock rather than anon_vma lock. Other
+> folio types are already always locked before rmap_walk().
 > 
-> I'm confused, why is the merge window a good time to consider new material?
-> 
-> People have the entirety of the cycle to submit new material, and they do
-> so.
+> This is in preparation for removing anon_vma write-lock from
+> UFFDIO_MOVE.
 
-My view is that if you are sending a cleanup/feature during the merge 
-window you cannot expect a fast reply, and you should not keep sending 
-new versions in that timeframe expecting that all people you CCed that 
-should have a look actually did have a look.
+I think quite a big bunch of the cover letter belongs into this patch 
+here. In essence, why is it okay, what could be problematic, history 
+etc, etc.
+
+> 
+> CC: David Hildenbrand <david@redhat.com>
+> CC: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> CC: Harry Yoo <harry.yoo@oracle.com>
+> CC: Peter Xu <peterx@redhat.com>
+> CC: Suren Baghdasaryan <surenb@google.com>
+> CC: Barry Song <baohua@kernel.org>
+> CC: SeongJae Park <sj@kernel.org>
+> Signed-off-by: Lokesh Gidra <lokeshgidra@google.com>
+> ---
+>   mm/damon/ops-common.c | 16 ++++------------
+>   mm/memory-failure.c   |  3 +++
+>   mm/page_idle.c        |  8 ++------
+>   mm/rmap.c             | 42 ++++++++++++------------------------------
+>   4 files changed, 21 insertions(+), 48 deletions(-)
+> 
+> diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
+> index 998c5180a603..f61d6dde13dc 100644
+> --- a/mm/damon/ops-common.c
+> +++ b/mm/damon/ops-common.c
+> @@ -162,21 +162,17 @@ void damon_folio_mkold(struct folio *folio)
+>   		.rmap_one = damon_folio_mkold_one,
+>   		.anon_lock = folio_lock_anon_vma_read,
+>   	};
+> -	bool need_lock;
+>   
+>   	if (!folio_mapped(folio) || !folio_raw_mapping(folio)) {
+>   		folio_set_idle(folio);
+>   		return;
+>   	}
+>   
+> -	need_lock = !folio_test_anon(folio) || folio_test_ksm(folio);
+> -	if (need_lock && !folio_trylock(folio))
+> +	if (!folio_trylock(folio))
+>   		return;
+>   
+>   	rmap_walk(folio, &rwc);
+> -
+> -	if (need_lock)
+> -		folio_unlock(folio);
+> +	folio_unlock(folio);
+>   
+>   }
+>   
+> @@ -228,7 +224,6 @@ bool damon_folio_young(struct folio *folio)
+>   		.rmap_one = damon_folio_young_one,
+>   		.anon_lock = folio_lock_anon_vma_read,
+>   	};
+> -	bool need_lock;
+>   
+>   	if (!folio_mapped(folio) || !folio_raw_mapping(folio)) {
+>   		if (folio_test_idle(folio))
+> @@ -237,14 +232,11 @@ bool damon_folio_young(struct folio *folio)
+>   			return true;
+>   	}
+>   
+> -	need_lock = !folio_test_anon(folio) || folio_test_ksm(folio);
+> -	if (need_lock && !folio_trylock(folio))
+> +	if (!folio_trylock(folio))
+>   		return false;
+>   
+>   	rmap_walk(folio, &rwc);
+> -
+> -	if (need_lock)
+> -		folio_unlock(folio);
+> +	folio_unlock(folio);
+>   
+>   	return accessed;
+>   }
+> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> index a24806bb8e82..f698df156bf8 100644
+> --- a/mm/memory-failure.c
+> +++ b/mm/memory-failure.c
+> @@ -2143,7 +2143,10 @@ static void kill_procs_now(struct page *p, unsigned long pfn, int flags,
+>   {
+>   	LIST_HEAD(tokill);
+>   
+> +	folio_lock(folio);
+>   	collect_procs(folio, p, &tokill, flags & MF_ACTION_REQUIRED);
+> +	folio_unlock(folio);
+> +
+>   	kill_procs(&tokill, true, pfn, flags);
+>   }
+
+Is mf_generic_kill_procs()->collect_procs() problematic?
+
+The dax_lock_folio/dax_unlock_folio part confuses me: I think it only 
+locks an entry in the page cache but not the actual folio ("Lock the DAX 
+entry corresponding to a folio")?
 
 -- 
 Cheers
