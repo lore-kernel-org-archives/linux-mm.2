@@ -4,132 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8541CAC59A
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 06:53:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57FF1CAC59A
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 07:03:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 416C88E00C1; Thu, 18 Sep 2025 02:53:46 -0400 (EDT)
+	id 873B78E00C2; Thu, 18 Sep 2025 03:03:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3EF3E8E0093; Thu, 18 Sep 2025 02:53:46 -0400 (EDT)
+	id 84B918E0093; Thu, 18 Sep 2025 03:03:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 305108E00C1; Thu, 18 Sep 2025 02:53:46 -0400 (EDT)
+	id 788608E00C2; Thu, 18 Sep 2025 03:03:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 1EFC38E0093
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 02:53:46 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6869B8E0093
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 03:03:38 -0400 (EDT)
 Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B2EBC5B691
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 06:53:45 +0000 (UTC)
-X-FDA: 83901455610.05.12152B5
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	by imf28.hostedemail.com (Postfix) with ESMTP id F0299C0002
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 06:53:43 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=LOzeWRUE;
-	spf=pass (imf28.hostedemail.com: domain of 3dqzLaAsKCEsnpxr4yrB60tt11tyr.p1zyv07A-zzx8npx.14t@flex--ackerleytng.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3dqzLaAsKCEsnpxr4yrB60tt11tyr.p1zyv07A-zzx8npx.14t@flex--ackerleytng.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0A8C359F17
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 07:03:38 +0000 (UTC)
+X-FDA: 83901480516.05.2E4C325
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id E84E1A000D
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 07:03:35 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="p/jPoKA6";
+	spf=pass (imf15.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758178424;
+	s=arc-20220608; t=1758179016;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kdY8CdA7D7v7QlqIXdHWhklcBLDBGklkP9F/ba8VEO0=;
-	b=ImgM+NOBLr4Cq6xMDiGzvBUS2MTegj5awyq5XOs82FekmFYiGMxybPOGFPJwTnyd8qSzfO
-	eHWzjiEElEceap1SXU5lxCH1+Pm4NiY7tjFFBLsYK+uZXpCe+yFDPhF1EjA9WVzi7aQ39n
-	MkMaPTdpubex1GYVVTqiPI4bQk06ahA=
+	bh=w+ErpBRL1l1AWMxlK8Kv80OYxkNODRdorjcQzFTx4Vw=;
+	b=lRFVu5Ipmdm0syXHD6OLJMb7eLNuqT0ibkkYn0pv3na4E0LqKOB8wmHR7bW1J3wPT4rReN
+	k2cqNHcT90xmuyKZ9MRUc/cUe8l5GCxk/Hi8pAWscX8vlxhtYkPDlGF86mlpkrvMz06y/E
+	fU66WJ+G19huTtkPNtsO+o0YnprdAvA=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=LOzeWRUE;
-	spf=pass (imf28.hostedemail.com: domain of 3dqzLaAsKCEsnpxr4yrB60tt11tyr.p1zyv07A-zzx8npx.14t@flex--ackerleytng.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3dqzLaAsKCEsnpxr4yrB60tt11tyr.p1zyv07A-zzx8npx.14t@flex--ackerleytng.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758178424; a=rsa-sha256;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="p/jPoKA6";
+	spf=pass (imf15.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758179016; a=rsa-sha256;
 	cv=none;
-	b=oFP9nQKCs89I1KyTOv+Vqa+GnE3OokmWHlJcHEJQ/HQ1gQjvsObJfrdEgPQo5q+UZiESo0
-	EutwFvPH56WB8TRCm/kZJkpglj9bmEEZle19lBziSzdIT0UCnSjtRVEoqD6ZjMuygZzYG+
-	jCQ5ynMly2K9Hq5m0LsElAcR5+oO/rE=
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-269880a7bd9so5672275ad.3
-        for <linux-mm@kvack.org>; Wed, 17 Sep 2025 23:53:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758178423; x=1758783223; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=kdY8CdA7D7v7QlqIXdHWhklcBLDBGklkP9F/ba8VEO0=;
-        b=LOzeWRUEEq94/QvhMkWlfLnaSgUpnhRU3IY0C8U5wmZ4Ve/V9dMJHvY40IoRbi4p+s
-         cwm9UnxbRjdtBnNX+BxpecFt18U7mBw2+6Y2ssv4+Khyjop8znKmlMJFk0CGIpJla1bd
-         A7iCWnBm5O20DGWUc26bzTIvYrWCbLU46gr3J05ETb+UouotGrXK6Lj8/6uqdqt7m42X
-         70YqKp7Fu1CuHC+Rm3w/CU5y+ftsmCnrKgAPiqE71Rxc8FQd7eur9N3XGQlJaQivhPWa
-         VxRa1JJhrXLg2Gjtlf9CUgASqnXyyw4CKhOanjnRya/tCs1VciALvCHu5tPo0tWMxcGl
-         v3Dw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758178423; x=1758783223;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kdY8CdA7D7v7QlqIXdHWhklcBLDBGklkP9F/ba8VEO0=;
-        b=XLGpr+K3+380yInjPFn31dejb70hmEtO94ciE34Swm/2zhsEqgbxZ4LfZ8AYxEx1Cv
-         Nlb6sHdNEEZuc5OUkTRWdQBb1F2MbiX1tfdl7byLJeZO5G5p0RH3Xppz+jleDSIk/vfu
-         ZcpTwzv5PERUDJyB47qeKtVxWkaZEHXNwXnvEPzeEbvaLcCv9ZsR7lriRQSbYc4ZEUKd
-         eegJdecUAQ+DYTuR2pWFeSfMpWCKWQKJKQDa87i23+QJFoaTXscpDzffm4Y+0ZOaHnsj
-         2e89pyh1VB1La7M5aVXQJ7rKCYYLdgIFVyHT1xqdfh6HQ3rjUdvZp5BAkmx5j4Zl37WO
-         7UeA==
-X-Forwarded-Encrypted: i=1; AJvYcCVyPka5Z9rukGZe9+xC2/HLWbuewfAtOUMCV90BYCTUkkjjJ+HkDbvGmtrzT09KZG+JtFPJNjkDEw==@kvack.org
-X-Gm-Message-State: AOJu0YxfH+2kkafcqw6gTlBbVSnoofRMUfyx8WMjcnaRnAJ9xd7LUHyB
-	6bdBq9XqcGjtIxn1s5aW3fXmHRcFEFSB57Uxe+Wo11e77MnjByLpPwgsQ681yJrr2Hl+tptZM+S
-	fBcPhJIsJr3GBlA1rfppmuxR1gQ==
-X-Google-Smtp-Source: AGHT+IH4/xFas5qH9WkGtquuXdWcMilu78LEjzqF2BsDWfyKCYslt2SGwsXQ1h75MU0H2eQyEYDJZApNSPXmxa7tZQ==
-X-Received: from pjff12.prod.google.com ([2002:a17:90b:562c:b0:32e:ddac:6ea5])
- (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:902:ef0f:b0:24c:965a:f97e with SMTP id d9443c01a7336-26811ba541dmr70869245ad.2.1758178422688;
- Wed, 17 Sep 2025 23:53:42 -0700 (PDT)
-Date: Thu, 18 Sep 2025 06:53:41 +0000
-In-Reply-To: <20250916222801.dlew6mq7kog2q5ni@amd.com>
-Mime-Version: 1.0
-References: <cover.1747264138.git.ackerleytng@google.com> <2ae41e0d80339da2b57011622ac2288fed65cd01.1747264138.git.ackerleytng@google.com>
- <20250916222801.dlew6mq7kog2q5ni@amd.com>
-Message-ID: <diqzh5x0p7yi.fsf@google.com>
-Subject: Re: [RFC PATCH v2 35/51] mm: guestmem_hugetlb: Add support for
- splitting and merging pages
-From: Ackerley Tng <ackerleytng@google.com>
-To: Michael Roth <michael.roth@amd.com>
-Cc: kvm@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	x86@kernel.org, linux-fsdevel@vger.kernel.org, aik@amd.com, 
-	ajones@ventanamicro.com, akpm@linux-foundation.org, amoorthy@google.com, 
-	anthony.yznaga@oracle.com, anup@brainfault.org, aou@eecs.berkeley.edu, 
-	bfoster@redhat.com, binbin.wu@linux.intel.com, brauner@kernel.org, 
-	catalin.marinas@arm.com, chao.p.peng@intel.com, chenhuacai@kernel.org, 
-	dave.hansen@intel.com, david@redhat.com, dmatlack@google.com, 
-	dwmw@amazon.co.uk, erdemaktas@google.com, fan.du@intel.com, fvdl@google.com, 
-	graf@amazon.com, haibo1.xu@intel.com, hch@infradead.org, hughd@google.com, 
-	ira.weiny@intel.com, isaku.yamahata@intel.com, jack@suse.cz, 
-	james.morse@arm.com, jarkko@kernel.org, jgg@ziepe.ca, jgowans@amazon.com, 
-	jhubbard@nvidia.com, jroedel@suse.de, jthoughton@google.com, 
-	jun.miao@intel.com, kai.huang@intel.com, keirf@google.com, 
-	kent.overstreet@linux.dev, kirill.shutemov@intel.com, liam.merwick@oracle.com, 
-	maciej.wieczor-retman@intel.com, mail@maciej.szmigiero.name, maz@kernel.org, 
-	mic@digikod.net, mpe@ellerman.id.au, muchun.song@linux.dev, nikunj@amd.com, 
-	nsaenz@amazon.es, oliver.upton@linux.dev, palmer@dabbelt.com, 
-	pankaj.gupta@amd.com, paul.walmsley@sifive.com, pbonzini@redhat.com, 
-	pdurrant@amazon.co.uk, peterx@redhat.com, pgonda@google.com, pvorel@suse.cz, 
-	qperret@google.com, quic_cvanscha@quicinc.com, quic_eberman@quicinc.com, 
-	quic_mnalajal@quicinc.com, quic_pderrin@quicinc.com, quic_pheragu@quicinc.com, 
-	quic_svaddagi@quicinc.com, quic_tsoni@quicinc.com, richard.weiyang@gmail.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, roypat@amazon.co.uk, 
-	rppt@kernel.org, seanjc@google.com, shuah@kernel.org, steven.price@arm.com, 
-	steven.sistare@oracle.com, suzuki.poulose@arm.com, tabba@google.com, 
-	thomas.lendacky@amd.com, usama.arif@bytedance.com, vannapurve@google.com, 
-	vbabka@suse.cz, viro@zeniv.linux.org.uk, vkuznets@redhat.com, 
-	wei.w.wang@intel.com, will@kernel.org, willy@infradead.org, 
-	xiaoyao.li@intel.com, yan.y.zhao@intel.com, yilun.xu@intel.com, 
-	yuzenghui@huawei.com, zhiquan1.li@intel.com
+	b=eu/RzmhGHvzLyhfp7DfKn2v9K/Peqgq3PoPOegpDRmr/GsEPpbd1o661NC6XwO9/YoOkj2
+	qC9EgMI6w+6ATEVOCdzIiiZyn/sagGZ/K0BGPuKc4xQhEhNeurTEirXPhEU6EgKOoZUauS
+	RrA7IbC5kJ3YS/ujUTYAU+Igsff73Ow=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 75593448A4
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 07:03:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5608BC4CEFB
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 07:03:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758179014;
+	bh=w+ErpBRL1l1AWMxlK8Kv80OYxkNODRdorjcQzFTx4Vw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=p/jPoKA6AhiIzCBP61Nuqy1q6G1Fl792+ptGL7xQCo7KrkYrD5FfEW/MQOWUz6cMD
+	 H4Yil1LNC3vThRtVziWcCCxN3OzaQuoL9Z32NE3S907ZmcOqRz0EotVjsr/T84qkN3
+	 WqH0sgW4yjmYKbageMFD3Am5BITisMQrCQw5xlTsAE9XQ/eEv1CR8N2CH/oU6w5TAu
+	 g7VKmnwg0Lhjv+Rjfxl/wKybdHc+0dgKRZczTtYRZIlvRgZK6bKUZLSqoQ0XKyvmSM
+	 KMIrkxEdiP6XV7M5e8WiZWVrg38ADigKta8ypu4iVxAiY9CQj5DJgEwEfoFDZ6scS+
+	 NJ1RK7r8TA/3g==
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5679dbcf9d8so628590e87.0
+        for <linux-mm@kvack.org>; Thu, 18 Sep 2025 00:03:34 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXQLe5QmZLYYL6t239x99REJzT/qauheIXQoDHu5HzHrS6TKu0M8/cBZZsVzDK7oRq8sESceQ/Lhw==@kvack.org
+X-Gm-Message-State: AOJu0YyEQQx0Wuc5fxbywXEMkFmHh+5YNtaQoTdXO4XQ2O7h3FwptSzL
+	ieuvgDTHNkMKLl4MVRM4/8DjkgCcjMwIVzq/svtZP3gqtoeyXazg5qBjsdhqH3oMk5MXKQGWu47
+	u25xGp1W5xN3gCscTsvrDftMJSGsL6A==
+X-Google-Smtp-Source: AGHT+IGJs/PcXCDxOEGAiTcDcrXuGdiFMqjgrLIi1+1jjccVhq9MjHPWG23k6+kfQ5dKqi7auT6HU1FGc+Nq4YAKaiY=
+X-Received: by 2002:a05:6512:3b2b:b0:55f:3faa:7c2b with SMTP id
+ 2adb3069b0e04-5779bdc6d10mr1368887e87.39.1758179012976; Thu, 18 Sep 2025
+ 00:03:32 -0700 (PDT)
+MIME-Version: 1.0
+References: <20250916160100.31545-1-ryncsn@gmail.com> <20250916160100.31545-2-ryncsn@gmail.com>
+ <CAGsJ_4w2GqGj8HZMfwndsWu7qkORqsnaw9WwhmQS=pW4gR7nEA@mail.gmail.com>
+ <CAF8kJuNbUyDWcJ13ZLi-xsiYcbY30w7=cFs7wdxszkc7TC4K2Q@mail.gmail.com>
+ <CAGsJ_4wKWem-STYAnh_0EgSFKzzs1M1c7wz6K82wLt6T6JEw9A@mail.gmail.com>
+ <CACePvbU8cUs-wwPsXkZ24EWga5bXxxUGSCT18rKAWFYn5w9rpw@mail.gmail.com>
+ <CAGsJ_4yhDU_WVfEybDhGE-WF5+w-fak1-F8jqbAQ-Qw1+qWkaw@mail.gmail.com>
+ <CACePvbUabb+L6Z9Nb-41fLR-FMhj--cDWSbnXtCj3rpqXModiQ@mail.gmail.com>
+ <CAGsJ_4y8yTX48ESHKgLNCvM1M1_gY9uGnD4qiz8n+gD47Zd1Hg@mail.gmail.com> <CANeU7QkZBWFO6SeVHtmm73oLu7r0zavePQEYmQfH8opKPH1QWw@mail.gmail.com>
+In-Reply-To: <CANeU7QkZBWFO6SeVHtmm73oLu7r0zavePQEYmQfH8opKPH1QWw@mail.gmail.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Thu, 18 Sep 2025 00:03:20 -0700
+X-Gmail-Original-Message-ID: <CANeU7QmcC=-CTmJ7i8R77SQ_WArBvjP3VrmpLOy-b7QhCfMRYA@mail.gmail.com>
+X-Gm-Features: AS18NWC9pu8B5pH4dlv8MuU8SxVN9kdKP9S1B5I9Sg97ymUY5ImXVEPfBbPThSs
+Message-ID: <CANeU7QmcC=-CTmJ7i8R77SQ_WArBvjP3VrmpLOy-b7QhCfMRYA@mail.gmail.com>
+Subject: Re: [PATCH v4 01/15] docs/mm: add document for swap table
+To: Barry Song <21cnbao@gmail.com>
+Cc: Kairui Song <ryncsn@gmail.com>, linux-mm@kvack.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, 
+	Hugh Dickins <hughd@google.com>, Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@redhat.com>, Yosry Ahmed <yosryahmed@google.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
+	linux-kernel@vger.kernel.org, Kairui Song <kasong@tencent.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: F0299C0002
-X-Stat-Signature: 3o6jnkjt615k35zr4pkogsixwzowajo3
-X-HE-Tag: 1758178423-870223
-X-HE-Meta: U2FsdGVkX1/E8Q7/0ndsCRXN8X7PI0yppO3v+GlX+lTBYxD98gvUl9ZBwOsk85CJ/LReyXkw49+Jb6TgW2LCKyyqOnqiChACAZ4jmUdFmcdFl0pS3vy8tDs/Gx9ypwjz5Cset5XDGrXw9UCEzMd4sM17eNjbl7MGMDT1yGlM3vBb+53S7TpfvzS2f15dMgSBjXt2q6MSkmbMqv0Itfo23T46y2H0xPE79gmfvSdSYpwfQ0zLXbsHjHm9zMQ76OnqWOIB6drz4SWhRwcHs5KqIJxEPAUFtmoMxLiJNNZiLlQt9t4xBuD1IBe1cAyEsG7+9JRkkE3rvnAYCCGsoqjv97lqjKPnDIvC8/wTKHEV9F5vBHjfCfF5HNo+YYG4ECUqjJ4elZFVKk3m1KgUHQ5okI2a4GAiqWsWTv/xry53QyHw+mYAi678+XbdoNi+ESdS3BCgQbaMrwFWxwd6U7nn97COTbi8RkW3uiqstZixfUONOPGwjatLhAoRJ8xfggtlElADd0JloNXMhUpmBablJ1xxWkzrf9qdWoK/2nrRXOyK4NXS9xiZ9hxcMNzigSgZVEpw1ULq+cN28PerDgugzWT4s9xuDOFIakv87h8UH20Zjip7TnwKJRUaWCncipRD/ZsqRmVMAAvPJxAtOQatRthVlWewbVXVhvFQp09uZdae+XXryeV1JOsaIP8Uhl7KN2ACqfCLNBOt9/+6r6+i9ZY2+ErOcOsXGftTFSZRcy2pdLFYJOjxpywB3hinws5tPzDHO+7q74/rPc+lY7SNsyueg9PENQ0fRLCcqDdJLy25Hig9rP9524zUg3nQRD08mXCIlhI/hK33PJT0YuQvUbx8deIBwQ7Zp7lu0XGCGxXvKGtIA+HO4PfKBbw7zFdTExsiJClIlL0zp5tYUnpHczxFFOuiRvqyA+WlocGVpU/it5bsbJF/CL7VnTr1PasCJEFABZ5H08qo32VNuBu
- KCNM7ZV3
- GFJjJCzu/FKn7QHcjmpb+ocleTMEDcbVNRmsbBkoSEU0hCaFjVjjxkFUGkogZIp5oyH20YE0S2LN57wSXwCr5x5sU0yM+29KHtwCQbD1rUP2XvpfvEPgyZveVUO2kR2NtFNdIe8TpO/pPEwF5HvbDLrS/Xt10+o/PJkA5Yck7Rl93s4eDNQGkUOYMpMVLzfLLdg/2kyD6SkwQLwlqxm9qU6C4vVKY9+K1KuI9VV6xr8hDxahLI5Oh6NjQSjpbO/wjgaxixE4duS8hC84dZlJUXgie6m0Xkc1v6XRVjqtUrc6zmiKScPBW/TwRJDEnNGvx8Er0uckDJV4AOOZukOaEix9aJcMx5YZGHVQhAf/rZjE1yo58E/cbrzH+GeD4k4OjnqEC6WBL9FRUIWOJXOC1nXoj1xi2nD64Uu42AmyUHUib8IO0YM+/+bO9wf9ve+sBK5vEN3Lw8m3k7jOlIo+rBkRQRdsBZBEojU2xFJTLAeDbgcFPUpZ+/q/3XSeA+YuvrHop7J+mqvKo9jz1xIP5xra8co4SMTFfzIfZ6iOZiFPXk+jWy3gutpTyyGvMfvA0ruhYg/6/DYeR6Qlx++ynTGJ9+VG09+m8Fv+9KpJ/30bWFS8DzE+eiGkLeeRYZcCos5anCk3hibkQuYwFaMy4vUI5RaW5tuoT+fPzjxq1VwkzKr7qdAV8kMKI7fA7Uz/rtaxV5XXg4kuKzvLOzKrwMhQP7NyJwGEE/dgyvRb9+1tRZpj+edXh3YL9UAo7NtwAB0TT1V5EvhBckRYtfKjaR3o2kEptjKyoFgbY
+X-Rspamd-Queue-Id: E84E1A000D
+X-Stat-Signature: wgfq8nuqdgsothrk3gi9be7wo3i96yt1
+X-HE-Tag: 1758179015-851091
+X-HE-Meta: U2FsdGVkX18+zEX6X0kVBoTT0uZM8bgr908wqqukyinVnt2rdbLhMF3SUkW7k5wElVoDKnnvSNYeTZ0fX5WQ6lu7JPBG9pEk9aJgeZizpV7ftuMBAIbvt5l+jrrQfc0oQSXS5HyxkazrMKuMuRaxGwv9tvDorO1JvSFn92h4cyH7lTWbpuOC9T34Jrb1vqINVzNNPSuCa2sQXgJe6GSjyz6dUL6kUD6kvtXeXTQqRqxhxn6e5FJZ5KPe7FMPuvp1bzYHg/anbX7TCgM1lszUPo1+0bewBGN5ycHRlrzq/O7lKJgAZycAgG7lBlcMFoQtwB//nmzGr/9uWGW1Y9XuwsZPRlKvv7mRaJ6Z/wnNQb1U+UyvOhRBytQlRQ6Sp6hvY1TJCUA8uLIRVhwCPNa8D2qQUYnb222/AEgM3h+jx6AOZPhiD3ixkhsIwLaUQVG0UqVmUNeWNn+tiQJOInuGJ/VwxfOSwRoKM1yv3WwS8NrPcYvocja3ECBoTGo4gdS+/QjvypJSitzEu35pnAvLt9RF1q8Gsb/k9hhxegs8PtwYLhZWuKXL6U7/wiKcJYuBUQlUVUcCrDkB6NZwoKWtLjSB4lz7078ipvJu0lIIg0Yw1zOggC8yxtU/sMCdv++e9+H8hvNNAWNDUqbRkzHqjmaL+RB7IoA1kXXeEr7bXQq/jraVMRADIC5ZSmiNxi3NrjL7/vwtLMikq3dOrTyemjTax6ftg6uoR6MQQQY2QhMGWwiOL5f+ETJHVIRcisJY92r0f4j0mpOocCI+Y0HbuLnOTTihVDGyv4ZC/IR+/J14iPoA4pZweN3w6oGah/APtz7vu07BYdUCjqJ2eWvgLfVC/rO/DxgXvlP9fEKKO7n+Fk3hf/wPFRnhSXoe8HJaTTTWMIOEFIIOrIgAdeX1iBaNtNoYs9exzoHHMxM4yspXc41a+E1sE7IlxoqYkfO1JveMOPtrEabd+pX1PkE
+ 7Asar6YB
+ 2c+l2zKoe4g17o2m8EcuIlEJt0+lqpQ0LEH4/AXOzQh4mqh0bTUDrL/ZkuBRJVDLlWoczrPzR9TjIfTkSyA6iWZ2MXhu/6n+1N9+Kmh2EHmhfyq9IZlKPydypthfUXGiUFqvR8XmkiwixybBde9Q2rk2Zo+wMy8uLBlOns0GRDXidv3zVE/ALRqDOzymV86kQiX0DZEDfaIABj6bU+GfX2aKFwEtzNifmDnuXc0cpzbqYk9qeQMtlIiu70nOLQSO0dE3uMTVmoAWQMBSDb/HZKtv3n4bRog5DIDAWZaaDNXvCI8HA9SY+8LxMSj+DrUBe8Zr/g3H4pqMJXlFJRcaa5R1IlEdJnz2I/DsDu+JIWx8VfrE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,48 +117,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Michael Roth <michael.roth@amd.com> writes:
+Hi Barry,
 
-> On Wed, May 14, 2025 at 04:42:14PM -0700, Ackerley Tng wrote:
->> 
->> [...snip...]
->> 
->
-> Hi Ackerley,
->
-> We've been doing some testing with this series on top of David's
-> guestmemfd-preview branch with some SNP enablement[1][2] to exercise
-> this code along with the NUMA support from Shivank (BTW, I know you
-> have v3 in the works so let me know if we can help with testing that
-> as well).
->
+How about this:
 
-Thank you for offering! I'm quite backed up now with some internal
-work. Will definitely appreciate all the help I can get once I manage to
-push out an RFCv3!
+A swap table stores one cluster worth of swap cache values, which is
+exactly one page table page on most morden 64 bit systems. This is not
+coincidental because the cluster size is determined by the huge page size.
+The swap table is holding an array of pointers, which have the same
+size as the PTE. The size of the swap table should match the page table
+page.
 
-> One issue we hit is if you do a split->merge sequence the unstash of the
-> private data will result in folio_test_hugetlb_vmemmap_optimized() reporting
-> true even though the hugetlb_vmemmap_optimize_folio() call hasn't been
-> performed yet, and when that does get called it will be skipped, so some HVO
-> optimization can be lost in this way.
->
-> More troublesome however is if you later split the folio again,
-> hugetlb_vmemmap_restore_folio() may cause a BUG_ON() since the flags are in a
-> state that's not consistent with the state of the folio/vmemmap.
->
-> The following patch seems to resolve the issue but I'm not sure what the
-> best approach would be:
->
->   https://github.com/AMDESE/linux/commit/b1f25956f18d32730b8d4ded6d77e980091eb4d3
->
+If that sounds OK, I will send an incremental patch to Andrew.
 
-I saw your reply on the other thread. Thanks for informing me :)
+Chris
 
-> Thanks,
+On Wed, Sep 17, 2025 at 10:03=E2=80=AFPM Chris Li <chrisl@kernel.org> wrote=
+:
 >
-> Mike
+> On Wed, Sep 17, 2025 at 4:38=E2=80=AFPM Barry Song <21cnbao@gmail.com> wr=
+ote:
+> >
+> > > > This approach still seems to work, so the 32-bit system appears to =
+be
+> > > > the only exception. However, I=E2=80=99m not entirely sure that you=
+r description
+> > > > of =E2=80=9Cthe second last level=E2=80=9D is correct. I believe it=
+ refers to the PTE,
+> > > > which corresponds to the last level, not the second-to-last.
+> > > > In other words, how do you define the second-to-last level page tab=
+le?
+> > >
+> > > The second-to-last level page table page holds the PMD. The last leve=
+l
+> > > page table holds PTE.
+> > > Cluster size is HPAGE_PMD_NR =3D 1<<HPAGE_PMD_ORDER
+> > > I was thinking of a PMD entry but the actual page table page it point=
+s
+> > > to is the last level.
+> > > That is a good catch. Let me see how to fix it.
+> > >
+> > > What I am trying to say is that, swap table size should match to the
+> > > PTE page table page size which determines the cluster size. An
+> > > alternative to understanding the swap table is that swap table is a
+> > > shadow PTE page table containing the shadow PTE matching to the page
+> > > that gets swapped out to the swapfile. It is arranged in the swapfile
+> > > swap offset order. The intuition is simple once you find the right
+> > > angle to view it. However it might be a mouthful to explain.
+> > >
+> > > I am fine with removing it, on the other hand it removes the only bit
+> > > of secret sauce which I try to give the reader a glimpse of my
+> > > intuition of the swap table.
+> >
+> > Perhaps you could describe the swap table as similar to a PTE page tabl=
+e
+> > representing the swap cache mapping.
 >
-> [1] https://github.com/AMDESE/linux/commits/snp-hugetlb-v2-wip0/
-> [2] https://github.com/AMDESE/qemu/tree/snp-hugetlb-dev-wip0
+> Hard to qualify what is "similar", in what way it is similar.
+> Different readers will have different interpretations of what similar
+> means to them.
+>
+> > That is correct for most 32-bit and 64-bit systems,
+> > but not for every machine.
+>
+> I think I will leave it as for most 64 bit systems, the swap table
+> size is exactly one page table page size and that is not coincidental.
+>
+> > The only exception is a 32-bit system with a 64-bit physical address
+> > (Large Physical Address Extension, LPAE), which uses a 4 KB PTE table
+> > but a 2 KB swap table because the pointer is 32 bit while each page
+> > table entry is 64 bit.
+>
+> I feel that is a very corner case. I will leave it out of the
+> document. I want to present a simplified abstracted view. There is
+> always more detail to distract the simple abstracted view. That is why
+> we have physics.
+>
+> > Maybe we can simply say that the number of entries in the swap table
+> > is the same as in a PTE page table?
+>
+> Yes, that is what I want to say, for most modern 64 bit systems.
+>
+> Chris
 
