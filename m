@@ -4,104 +4,174 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2D77CAC597
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 05:52:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0EA6CAC597
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 05:55:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0401C8E00B7; Thu, 18 Sep 2025 01:52:30 -0400 (EDT)
+	id 2426C8E00B8; Thu, 18 Sep 2025 01:55:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F32528E0093; Thu, 18 Sep 2025 01:52:29 -0400 (EDT)
+	id 1F30D8E0093; Thu, 18 Sep 2025 01:55:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E216D8E00B7; Thu, 18 Sep 2025 01:52:29 -0400 (EDT)
+	id 0BB138E00B8; Thu, 18 Sep 2025 01:55:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CB9428E0093
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 01:52:29 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7D8661DFBF4
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 05:52:29 +0000 (UTC)
-X-FDA: 83901301218.12.601F206
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	by imf13.hostedemail.com (Postfix) with ESMTP id C753320008
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 05:52:27 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=V2rXqPXC;
-	spf=pass (imf13.hostedemail.com: domain of 3Gp7LaAsKCNE8B71F4350Ex3BB381.zB985AHK-997Ixz7.BE3@flex--lokeshgidra.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3Gp7LaAsKCNE8B71F4350Ex3BB381.zB985AHK-997Ixz7.BE3@flex--lokeshgidra.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id ECD648E0093
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 01:55:18 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4B33D140792
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 05:55:18 +0000 (UTC)
+X-FDA: 83901308316.02.E2F1E57
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf29.hostedemail.com (Postfix) with ESMTP id B276A120007
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 05:55:15 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Guy9/b+K";
+	spf=pass (imf29.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758174747;
+	s=arc-20220608; t=1758174916;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UTE7lJIO/UOmjwb/mBSmuXLueEhoKKMY9pJxQCFV6J4=;
-	b=liWu7BwQfWR6s7SkIfdKe5VekE/jJscsi9VaHQT7mAAAF7zssym4KFGCcaaWqXvcEFZdaY
-	gvhof6NliAnkNlQJFLWQke3pOOCSTnrJIqieq392+MZV3kPqp2YIyUG81NZviitiA+39tq
-	eAyyfYWqYHHz+bPoeXetA4ZVtNvMV+s=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=V2rXqPXC;
-	spf=pass (imf13.hostedemail.com: domain of 3Gp7LaAsKCNE8B71F4350Ex3BB381.zB985AHK-997Ixz7.BE3@flex--lokeshgidra.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3Gp7LaAsKCNE8B71F4350Ex3BB381.zB985AHK-997Ixz7.BE3@flex--lokeshgidra.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758174747; a=rsa-sha256;
+	bh=NKrCYz9xpAzIyzftdIL3V/90piIa1hzvp5f1tzNxkW0=;
+	b=wnkrDP1W83a3Bh/yzFoKWfONN7aL+7HqDaOh+vDhDncCCEnwIm0CiCrV+r6hU3jA8qpgjk
+	hM5jMt5dQdQJ/IXxfL+j5INPgRxBjWin1rOFSlKnaRTZ5t9ARrNfQRX9I8Dbi2cRvS70H3
+	2O4V6g2qE3VytIvV7cro0lU+CS/LY1I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758174916; a=rsa-sha256;
 	cv=none;
-	b=xOcR6Cs78awaZ8wUAzbu/21SNOOcptGd5VZL+we5NTKujJxQygo2lGnM3B/nTXceln+v+X
-	dRSl/tfN4KYZaLuxB5rZCpBRALtIJG508RGCj+yujXYPdl9DRem19j0OZ/0Gm2YjCAnb+H
-	q81lC4eQJfq+/UqjIUYOxDCPscLQKw4=
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-b550514936fso293910a12.3
-        for <linux-mm@kvack.org>; Wed, 17 Sep 2025 22:52:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758174746; x=1758779546; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UTE7lJIO/UOmjwb/mBSmuXLueEhoKKMY9pJxQCFV6J4=;
-        b=V2rXqPXCKd1hQPZVPtO8Qcx8TDicYD30mEMN9DrX3YLYow8kGTW9S24rI/n0FsRKKL
-         cdTQUVIEBHlHWI0RMPSxwEG+udR66nTEm2HYhJ+wGF0aS8mm08oeX1rkvfkoI+PHSJNK
-         7i4vNwsn/WeaAIGzOt74IBXML0DiWk7+ckC/bMJTJTU1GlgNTCMlg+6b+jnf6iFrB4v4
-         qRjnU0BaSDtvlazoVQmsVrKgZk1iWPOS8Di60Jg2Av5z/5k1amH6vty46NFyQXpfXZX6
-         7ZNpaPkzkcPTGpee1fOP+1W5mzrftF2AzTVSv3n6eLtNwjQrOFzjDizb0y8DuAbbh5Ma
-         IPwQ==
+	b=FwCwUd2JvRg3W04/n+Tyu59KHdneOfcgwEQLluD2vXb3O2tX7+mjSnylWNRXWurwjduHL0
+	wra2EKAZYfmhIfkbTekB62JGLQCttF/WLQj87JqD8ioWapKMQOvQ8IsLQNAA87PjKYerlZ
+	swcroQOlIjRG+yAKHTA3F2Oeuq347Oo=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Guy9/b+K";
+	spf=pass (imf29.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1758174915;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=NKrCYz9xpAzIyzftdIL3V/90piIa1hzvp5f1tzNxkW0=;
+	b=Guy9/b+KNkNL1jB+7SGAh9adseiMVZxu2aL1SRBwv2UJ1TMWrovVCEC3qJhbZWtg2q1Qs1
+	ecS+7PR1XGg8b8xNdh2NKnt7Us9ZCaWYZKO/aJqt79c+wOUoWw20dSIPJca3mextrfgJOa
+	jjeOZIF5T6YowZmkqEDbCmKP27YMJMg=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-389-Eaqo6HteOWatqxJzD-HT2w-1; Thu, 18 Sep 2025 01:55:11 -0400
+X-MC-Unique: Eaqo6HteOWatqxJzD-HT2w-1
+X-Mimecast-MFC-AGG-ID: Eaqo6HteOWatqxJzD-HT2w_1758174910
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-45f2f1a650dso3182695e9.2
+        for <linux-mm@kvack.org>; Wed, 17 Sep 2025 22:55:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758174746; x=1758779546;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UTE7lJIO/UOmjwb/mBSmuXLueEhoKKMY9pJxQCFV6J4=;
-        b=KOzxmzuPcTEVLnACnlfh0Fs7+dVKJ2VpazrZODufhRTFBeXxXfC+1CW5qFWWJKcOxz
-         kZlZv0zwzMVx4PLCgvUU+0Qp0araEtBt4nCKVpV4w4qQzffGqti429eMPG1ige7sr5/c
-         2AaNlN/c+mRfLm4pXp6tJW+GoIwA/QaKr8C4vr6lzmZAYOR7mtblLhUUUVTQ78JA0w9n
-         E8CX0N744qyu9YB+5CXaRuyo0LjtpLykBrQuQwmlujOGtheU79jytQw1hathL769B+QV
-         k5TQhhnxgctFo9WtmFqCAGInYoPLUUZK4+3CFWI2dMwZklhATyEg/D9NUmN+2EH+M9Ln
-         xc5A==
-X-Gm-Message-State: AOJu0YysrEkvkHvVp/dQ7RdVT87LIrtECOCovlFzol35XXhuvsBwMAmX
-	j/cc/Fqe6GJeyJ/BZH5rKEx7n3D25v5I7bHfJ4Mafw1YPZB5fBdkCxTD85/Rbq44vlWQdzPy1jz
-	EXz8MTa9+bWgNWZP6RquOuURrVQ==
-X-Google-Smtp-Source: AGHT+IHtxSoI/YJwTDIb9+nDI28UNoAfsvFW3vGxQj4nAJJjQDWHiWC6TdfuxAfsaPXt7aCn6pD6zIsBpHrX4TMdgA==
-X-Received: from pluo8.prod.google.com ([2002:a17:903:4b08:b0:24c:b370:db43])
- (user=lokeshgidra job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:22c9:b0:265:bb0:cbc with SMTP id d9443c01a7336-26813be8919mr66822715ad.47.1758174746709;
- Wed, 17 Sep 2025 22:52:26 -0700 (PDT)
-Date: Wed, 17 Sep 2025 22:51:35 -0700
-In-Reply-To: <20250918055135.2881413-1-lokeshgidra@google.com>
-Mime-Version: 1.0
-References: <20250918055135.2881413-1-lokeshgidra@google.com>
-X-Mailer: git-send-email 2.51.0.384.g4c02a37b29-goog
-Message-ID: <20250918055135.2881413-3-lokeshgidra@google.com>
-Subject: [PATCH 2/2] mm/userfaultfd: don't lock anon_vma when performing UFFDIO_MOVE
-From: Lokesh Gidra <lokeshgidra@google.com>
-To: akpm@linux-foundation.org
-Cc: linux-mm@kvack.org, kaleshsingh@google.com, ngeoffray@google.com, 
-	jannh@google.com, Lokesh Gidra <lokeshgidra@google.com>, 
-	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Peter Xu <peterx@redhat.com>, Suren Baghdasaryan <surenb@google.com>, Barry Song <baohua@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: 3tjzr8s4uyeun7kfrehtz8qkoh531bms
+        d=1e100.net; s=20230601; t=1758174910; x=1758779710;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NKrCYz9xpAzIyzftdIL3V/90piIa1hzvp5f1tzNxkW0=;
+        b=Y52Sun4V8rE5piQymPewISN8I8um1oqW7hr3yCSfrVzyhuqsbYfXwpkXT5QvkX4pBg
+         QPwnGi7BftxoREj4GipkBnTqeh/UzBSnlMj/t5Z2azFKrMvKqNzo5qAbIeBkwW12Ssk9
+         z3XPSz2gb5LyshiPYi6f8NIXWIRVT09ESG6tN31LyLI3fMQBFS3BzNxxCjidrDUgyFRb
+         o3GFys9xSg+4nn/faSycAk2z1OXHmvr0AibBf5TcGbrIu1Uw4Xp/Q/UmDIkjtJIdVsez
+         HHELyVefEVMktOeBaugQuNFgfuXe456Tb7ehQ1aXOd+Ikq/czndDleP9byoFZggvH21f
+         UFsg==
+X-Forwarded-Encrypted: i=1; AJvYcCVqQxFJNcDaF7A7nhxI/y309FwK+0Xoj4Zkjn8C1HIbVf1I57up3oaqDaPLx0PIYjlZUwuT+S2OWA==@kvack.org
+X-Gm-Message-State: AOJu0YxYDyHuOWNHgEIHKnGhpipA7IlP8EtUtst5rl/vFoI2oHLRW2hH
+	CxGXX1elq7f9w8+xi0uB9jweVHzZsJvH/q/HWbCMF9y+l7MLYGPwINLCLppiJfW/Tda5XHMd9XL
+	ui6h6kso2JHSQ/F7RdBgO2Lzkb6xVEiHCx4vC4ejxwpt1c2X3ve3V
+X-Gm-Gg: ASbGncvQcaDlz/1bjXMdN6a3ZgfnqAGmIGD9R+0+vrzayRGq0PggKdCFAMJ5i03xWd1
+	0agcBNy9CHDccsHONrSwPcO7eUnZNFhu1V3dxz/0umeqYN5eXZC8RNipXvBnkQ5nnY3YGvi3n8o
+	jg0PHQx0qYJrALIUm5PqOSBwulZrMyM6d0OKggsGK4gfUltVfaZTYt47e9xstyB9QyTFfMPp71f
+	zDtw8rtEart3mOBKmNeSg5QTT9EqXZEqdmA9e8eS/LUSb2Lmk0B/0CsUmIZUgoM+DJGs7i23/sf
+	JtiUolB+gu2ApSmQIii4NV5JPPCQGtycE4eyI1SZA7xI9gEKrqI0M3fXkZDxJX2guV1l0LyhPiZ
+	te9n6s+UyefrXxG3TzVsjOOAJ+I/d2nkoCgTOgUn/iaFyuMzbHt0rEEIsO8FXAL4sAemq
+X-Received: by 2002:a05:600c:4452:b0:45c:b53f:ad9 with SMTP id 5b1f17b1804b1-462072d6ee3mr42901195e9.33.1758174910347;
+        Wed, 17 Sep 2025 22:55:10 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE+w/U1G077wqX5gf9L/drxt5mqXTgrB2KLVuNXmu3a1/ZafTB85mAnpV2PhRybFjEo929q4A==
+X-Received: by 2002:a05:600c:4452:b0:45c:b53f:ad9 with SMTP id 5b1f17b1804b1-462072d6ee3mr42900825e9.33.1758174909797;
+        Wed, 17 Sep 2025 22:55:09 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f07:dd00:ca9c:199e:d2b6:9099? (p200300d82f07dd00ca9c199ed2b69099.dip0.t-ipconnect.de. [2003:d8:2f07:dd00:ca9c:199e:d2b6:9099])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45f321032a1sm57041195e9.2.2025.09.17.22.55.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 17 Sep 2025 22:55:08 -0700 (PDT)
+Message-ID: <5512b1b6-31f8-4322-8a5f-add8d1e9b22f@redhat.com>
+Date: Thu, 18 Sep 2025 07:55:07 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drivers/base/node: Fix double free in register_one_node()
+To: Donet Tom <donettom@linux.ibm.com>, akpm@linux-foundation.org,
+ clm@meta.com
+Cc: Jonathan.Cameron@huawei.com, alison.schofield@intel.com, dakr@kernel.org,
+ dave.jiang@intel.com, gregkh@linuxfoundation.org,
+ kamezawa.hiroyu@jp.fujitsu.com, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, osalvador@suse.de, rafael@kernel.org,
+ ritesh.list@gmail.com, yury.norov@gmail.com, ziy@nvidia.com
+References: <20250918054144.58980-1-donettom@linux.ibm.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20250918054144.58980-1-donettom@linux.ibm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 3UkknWbq-SjOqHSY2dmzQKdmMUop0cg7BimXkQIhSpM_1758174910
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: B276A120007
+X-Stat-Signature: phy5gi7rgbc65ixquwrin7hh4hq6jped
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C753320008
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1758174747-885301
-X-HE-Meta: U2FsdGVkX18Mc9LGA/etmJYC7QqjjSHo1S31ZUovoCuNFvoweWuvgc8yjL5HwpjB/VYikBuvEq90VweikQWxYc5V0vgOw4/O9u7rJQwai7YhDtliR32Bbhjxsybt/Xwi+kc5ZoE+10r1NRNKvfA9+AbM2ecpC3CJJXr18WHl6a5X+Iv2c67myEI5YoRMJrqJvR9w9bOPKSoOYfpgjVI7I933a6CoX/W/b+PEXPXSlgILQHJHCg9D90UpSETzpsh4EysODmAdU3u3/kXLMnhsfKa+x2xZue3+yXRoYblxgmvSyILJ2i0C0DaBlJB+TiFjAz2DTPJTLG7l+UMVtk52ikc2bHSTk5MBrJieBLQsQZuEhfAy2zc1qQxoncgNUCt8S6kBX2Mxx8bMDlsT1vcYf9BTuxTIc7B1T5a4tbejZtK/okeMYYv6sh9q8DdU+Agn/zig5NolxvB5pUJDOWkEtiYrmlxvY/JT/PJnDSYvysElfaYHZCd+PI6zqaiWAbk06kY59tCPYiknTdKFLA3xS3dOPwUi9J0TDYKzGvQhNtKyM7VVOWXPwbByZmWwardFYywLg9EKUcWHnDzENdfDn+N3hOVlcXw85Bix7PW+9mzBkSosT7wIIfhuizsma+diwuVdD9eGI3wNdAalHU38fiEZ2mY34yFV9Fx+2s6dH/4VZTcBQzsnaqXZ9ARqPU0dWdHI8BvdS2tbAftavv+uLj9lDCRCKWon4a+nKJTKlOCfo/v9v5bWRbjpPYHA8puKL1b60fOxxRAK2zP9VtXywwXEBKRhEErFCm15gpOaUB73NR4LAuG3qzFZvKeDKbzQrGD8WMWRiwz+qcrLgQCeUJekABCJb7M9Syd0LE8XEbplDbM3Rk1YypJLRSTRC7TjKqxWKTvEl6rqtOxgkVcH9cIdV4edXBr8l2sknMl87mInSnuvDfjiZPfbglA4hJauuWWqRPl6hAY/2oiqc+A
- 9OPrACIJ
- ByHTSNdQtU4vXRdt5eTTmNzJJl3TIvU6VISw9Us8YshLdP1zExC3mkP6ka/mvdIN13lV2P8WPh8w99t7yRa64L8tR/bHXwrv7G90MqKIbBwTx9OVlNrsJ9rB4ft5GBvRmqaWL0PBawwLfGt+L1lJzByFDVotT5FznvTDztLdrJpvhPw9NU+fBIzJETwa3xkwBzUajilpyU2vpNvOzs9xI4QOg/zBolUQ/CfGpBtrRuKwm6gEdTXdhZ/Q2v0wgFJ9iWBe5sHrucuL23VuU+FZDqd4RIlxDmy74nb9ZwHLtMHjPkDtQc2iEHZjuOCDFT5aYimfM/6FpjSKgeRgVKvP+mK/Bny5VXQROW2y/83nhbSCaajiC5d8acnGNYOBbxLRnd7GHjChyYs3POUGLjoWRwA4yXxTEtYksapzWpG9ceIKVGDuZYG4EhLxmdZ/5Vnzy26jPPa0Yu5c5IEE0gg7ZvdcDTNVQV2XOuSgDemF34vGkGQoEQRW6FktibIvisxmKSvkez1xj6Arq9zhyz7wBRi7wDYk+SOgZyUoOmQZjXZG6QmOliVtJ2vRU1xZfat5Ykrda37vizHsL7T+c1jerYipeH/izpbbNOmk34A/15mCkESOIZrpJglMHbCw1eFPrJ68QIqnGz3kTE27iwzs5jOa2Z9wXWSfKf1z09dlzX5cisPgFzoLuklKDhJSMlp1U8xFN
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1758174915-901394
+X-HE-Meta: U2FsdGVkX1/JsY5lSqwZ/xytu/MMeS+ZdI/gjVAF16GDZWz5VcVkDP54xGJtXZgUrBtusOQ8iLIVIDxtecuJRbnVFCl3teK+eaCNYTsZG/skg1XofxXceRx4x4q9zg86s1ZMMu6DXNahT7DPxA/gRR88zcGGEc6QMBVev2sGyLP6VX5HqIuPr7fsazQCgtiRyD27+Ngw0Oc4u6h7LXA2gTwgwPgSbstZzE+IRiA3B14O5gldbie7vtIOkiM2vsBAkXL/lFEDlIV66Rxgc9pGnTRXsKt6wMwexU1LRPH79P1hI8DiT375pKZTDGMM98pQcO5VTYTS+BDiTrdb41V8QmGh9PjGaozvjkbzWDvlYjaWd3r3TeZZxdFCs+DsqNFGoQn3G7clRObTqROgmWPKV3mKMJLNS8sVhtjit5g32Zv1EH7X3JUENszN+46v96QwQVt9mPMTRzgXCzZoMzdVZ4HwNEfTAJMGdg/omspgEa4vLgVygM+zplXNwGRG+u4q+Qh8S8oBLUJ/YjMkwONTv8Ku3SlX0YvYc+ONP1XMyYOrSZ+NXtwqbHqTO9Zi/Tnyyn2Zvuxw0arjm6m1hW3BK1+LJh8S5cnb61TgUOSvEikfJkT9+oKKOxMzAuvyapxX9E0ZCCcoZLAcp4+1GcI5Zmhhnr13PY2zmGNhEJdBdiPzvjhMH1WI3Nw3/ejRktVOF8e2Fjb6koThDUL2iYzzKR5ZLFliCrJh2DRp8b6v14jwmxyxBaGvKeQhHsarHPiG+iSgHX8L6fO6KDhdckWFOTAIAq555HOmz56FBXzP+jml0ZM9nzmCfva+3Q+f8HnYw0QQ9zl9sAxFdJLIlcANWc8Chz9Kt6/jqti69YkYFZTJYbJ9Xb0W7W8NHI9CubS93opb+1H7aKV9SPE2kAbBbq7KwTOEo5HNsFLQ4bvWMe2d3ee2ngyn+JwRJpPyTq3bfY34mCwcNxSwS/l56uU
+ JtMmLWpG
+ ytQZQAsHIy5HEApvvtvv0E4OukQqkOJ35b8rXYsj03Zz3Xzs1AFhcDpPXPSMTRBmkr9Pt55kLMPNJamCG5GVIKhdW3L9BjGAVlOYdyY1g4C0arVmwXPzPICRmxZUU2/6JQ46RgxRQCpFsoZb5zz3S5mIGYOjzJ+LvlRqeO7yjmShuOHar0FC5h2FtECIqTAKpYBcnmAwnpy4EYTeze7p7OUgjK55InkmT6fhkq3b4W6GioTDhCuOGedTGnSsu8GJCRUjZ6leA359twH+1FJgfm0XbeNm16PSAiHZzhkl5XiFk2JOAnxYrIEXxbyWZtr7ehsq0Io62Yj9cbimAHh0NGpAx3HtIJdrRuWxlD+z62OsNM0pYAi42nDR3qgLZ+mRvtOXk4645GJFMTQWm0kVQEUfPj8VLaYob0lNloTjM2JJk/csLdvD+Kle9OXfwDGrml2LkoDA4VNW5HJXYu8drBRwEH1IoM9iuuhubouGSvd1WgiRSmZcGRn2AY0OM0J8YmJMBP7OHod6wNEhm7V+5b8gcgepZMvCYmzA6qnSShwmb9GVei8pRV8ucG6NRCMuTLFTt
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,235 +180,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Now that rmap_walk() is guaranteed to be called with the folio lock
-held, we can stop serializing on the src VMA anon_vma lock when moving
-an exclusive folio from a src VMA to a dst VMA in UFFDIO_MOVE ioctl.
+On 18.09.25 07:41, Donet Tom wrote:
+> When device_register() fails in register_node(), it calls
+> put_device(&node->dev). This triggers node_device_release(),
+> which calls kfree(to_node(dev)), thereby freeing the entire
+> node structure.
+> 
+> As a result, when register_node() returns an error, the node
+> memory has already been freed. Calling kfree(node) again in
+> register_one_node() leads to a double free.
+> 
+> This patch removes the redundant kfree(node) from
+> register_one_node() to prevent the double free.
+> 
+> Fixes: 786eb990cfb7 ("drivers/base/node: handle error properly in register_one_node()")
+> Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+> ---
+>   drivers/base/node.c | 1 -
+>   1 file changed, 1 deletion(-)
+> 
+> diff --git a/drivers/base/node.c b/drivers/base/node.c
+> index 1608816de67f..6b6e55a98b79 100644
+> --- a/drivers/base/node.c
+> +++ b/drivers/base/node.c
+> @@ -885,7 +885,6 @@ int register_one_node(int nid)
+>   	error = register_node(node_devices[nid], nid);
+>   	if (error) {
+>   		node_devices[nid] = NULL;
+> -		kfree(node);
+>   		return error;
+>   	}
+>   
 
-When moving a folio, we modify folio->mapping through
-folio_move_anon_rmap() and adjust folio->index accordingly. Doing that
-while we could have concurrent RMAP walks would be dangerous. Therefore,
-to avoid that, we had to acquire anon_vma of src VMA in write-mode. That
-meant that when multiple threads called UFFDIO_MOVE concurrently on
-distinct pages of the same src VMA, they would serialize on it, hurting
-scalability.
+Yes, that matches what other users (staring at mm/memory-tiers.c) do.
 
-In addition to avoiding the scalability bottleneck, this patch also
-simplifies the complicated lock dance that UFFDIO_MOVE has to go through
-between RCU, folio-lock, ptl, and anon_vma.
+I wonder if we should just inline register_node() into register_one_node().
 
-folio_move_anon_rmap() already enforces that the folio is locked. So
-when we have the folio locked we can no longer race with concurrent
-rmap_walk() as used by folio_referenced() and hence the anon_vma lock
-is no longer required.
+Then it's clearer that we perform a put_device() already in there.
 
-Note that this handling is now the same as for other
-folio_move_anon_rmap() users that also do not hold the anon_vma lock --
-namely COW reuse handling. These users never required the anon_vma lock
-as they are only moving the anon VMA closer to the anon_vma leaf of the
-VMA, for example, from an anon_vma root to a leaf of that root. rmap
-walks were always able to tolerate that scenario.
+On top of that, we could then just s/register_one_node/register_node/
 
-CC: David Hildenbrand <david@redhat.com>
-CC: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-CC: Peter Xu <peterx@redhat.com>
-CC: Suren Baghdasaryan <surenb@google.com>
-CC: Barry Song <baohua@kernel.org>
-Signed-off-by: Lokesh Gidra <lokeshgidra@google.com>
----
- mm/huge_memory.c | 22 +----------------
- mm/userfaultfd.c | 62 +++++++++---------------------------------------
- 2 files changed, 12 insertions(+), 72 deletions(-)
+And then we could do a similar cleanup for unregister_one_node / 
+unregister_node where I don't consider the split function really valuable.
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 5acca24bbabb..f444c142a8be 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -2533,7 +2533,6 @@ int move_pages_huge_pmd(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd, pm
- 	pmd_t _dst_pmd, src_pmdval;
- 	struct page *src_page;
- 	struct folio *src_folio;
--	struct anon_vma *src_anon_vma;
- 	spinlock_t *src_ptl, *dst_ptl;
- 	pgtable_t src_pgtable;
- 	struct mmu_notifier_range range;
-@@ -2582,23 +2581,9 @@ int move_pages_huge_pmd(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd, pm
- 				src_addr + HPAGE_PMD_SIZE);
- 	mmu_notifier_invalidate_range_start(&range);
- 
--	if (src_folio) {
-+	if (src_folio)
- 		folio_lock(src_folio);
- 
--		/*
--		 * split_huge_page walks the anon_vma chain without the page
--		 * lock. Serialize against it with the anon_vma lock, the page
--		 * lock is not enough.
--		 */
--		src_anon_vma = folio_get_anon_vma(src_folio);
--		if (!src_anon_vma) {
--			err = -EAGAIN;
--			goto unlock_folio;
--		}
--		anon_vma_lock_write(src_anon_vma);
--	} else
--		src_anon_vma = NULL;
--
- 	dst_ptl = pmd_lockptr(mm, dst_pmd);
- 	double_pt_lock(src_ptl, dst_ptl);
- 	if (unlikely(!pmd_same(*src_pmd, src_pmdval) ||
-@@ -2643,11 +2628,6 @@ int move_pages_huge_pmd(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd, pm
- 	pgtable_trans_huge_deposit(mm, dst_pmd, src_pgtable);
- unlock_ptls:
- 	double_pt_unlock(src_ptl, dst_ptl);
--	if (src_anon_vma) {
--		anon_vma_unlock_write(src_anon_vma);
--		put_anon_vma(src_anon_vma);
--	}
--unlock_folio:
- 	/* unblock rmap walks */
- 	if (src_folio)
- 		folio_unlock(src_folio);
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index af61b95c89e4..6be65089085e 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -1035,8 +1035,7 @@ static inline bool is_pte_pages_stable(pte_t *dst_pte, pte_t *src_pte,
-  */
- static struct folio *check_ptes_for_batched_move(struct vm_area_struct *src_vma,
- 						 unsigned long src_addr,
--						 pte_t *src_pte, pte_t *dst_pte,
--						 struct anon_vma *src_anon_vma)
-+						 pte_t *src_pte, pte_t *dst_pte)
- {
- 	pte_t orig_dst_pte, orig_src_pte;
- 	struct folio *folio;
-@@ -1052,8 +1051,7 @@ static struct folio *check_ptes_for_batched_move(struct vm_area_struct *src_vma,
- 	folio = vm_normal_folio(src_vma, src_addr, orig_src_pte);
- 	if (!folio || !folio_trylock(folio))
- 		return NULL;
--	if (!PageAnonExclusive(&folio->page) || folio_test_large(folio) ||
--	    folio_anon_vma(folio) != src_anon_vma) {
-+	if (!PageAnonExclusive(&folio->page) || folio_test_large(folio)) {
- 		folio_unlock(folio);
- 		return NULL;
- 	}
-@@ -1061,9 +1059,8 @@ static struct folio *check_ptes_for_batched_move(struct vm_area_struct *src_vma,
- }
- 
- /*
-- * Moves src folios to dst in a batch as long as they share the same
-- * anon_vma as the first folio, are not large, and can successfully
-- * take the lock via folio_trylock().
-+ * Moves src folios to dst in a batch as long as they are not large, and can
-+ * successfully take the lock via folio_trylock().
-  */
- static long move_present_ptes(struct mm_struct *mm,
- 			      struct vm_area_struct *dst_vma,
-@@ -1073,8 +1070,7 @@ static long move_present_ptes(struct mm_struct *mm,
- 			      pte_t orig_dst_pte, pte_t orig_src_pte,
- 			      pmd_t *dst_pmd, pmd_t dst_pmdval,
- 			      spinlock_t *dst_ptl, spinlock_t *src_ptl,
--			      struct folio **first_src_folio, unsigned long len,
--			      struct anon_vma *src_anon_vma)
-+			      struct folio **first_src_folio, unsigned long len)
- {
- 	int err = 0;
- 	struct folio *src_folio = *first_src_folio;
-@@ -1132,8 +1128,8 @@ static long move_present_ptes(struct mm_struct *mm,
- 		src_pte++;
- 
- 		folio_unlock(src_folio);
--		src_folio = check_ptes_for_batched_move(src_vma, src_addr, src_pte,
--							dst_pte, src_anon_vma);
-+		src_folio = check_ptes_for_batched_move(src_vma, src_addr,
-+							src_pte, dst_pte);
- 		if (!src_folio)
- 			break;
- 	}
-@@ -1263,7 +1259,6 @@ static long move_pages_ptes(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd
- 	pmd_t dummy_pmdval;
- 	pmd_t dst_pmdval;
- 	struct folio *src_folio = NULL;
--	struct anon_vma *src_anon_vma = NULL;
- 	struct mmu_notifier_range range;
- 	long ret = 0;
- 
-@@ -1347,9 +1342,9 @@ static long move_pages_ptes(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd
- 		}
- 
- 		/*
--		 * Pin and lock both source folio and anon_vma. Since we are in
--		 * RCU read section, we can't block, so on contention have to
--		 * unmap the ptes, obtain the lock and retry.
-+		 * Pin and lock source folio. Since we are in RCU read section,
-+		 * we can't block, so on contention have to unmap the ptes,
-+		 * obtain the lock and retry.
- 		 */
- 		if (!src_folio) {
- 			struct folio *folio;
-@@ -1423,33 +1418,11 @@ static long move_pages_ptes(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd
- 			goto retry;
- 		}
- 
--		if (!src_anon_vma) {
--			/*
--			 * folio_referenced walks the anon_vma chain
--			 * without the folio lock. Serialize against it with
--			 * the anon_vma lock, the folio lock is not enough.
--			 */
--			src_anon_vma = folio_get_anon_vma(src_folio);
--			if (!src_anon_vma) {
--				/* page was unmapped from under us */
--				ret = -EAGAIN;
--				goto out;
--			}
--			if (!anon_vma_trylock_write(src_anon_vma)) {
--				pte_unmap(src_pte);
--				pte_unmap(dst_pte);
--				src_pte = dst_pte = NULL;
--				/* now we can block and wait */
--				anon_vma_lock_write(src_anon_vma);
--				goto retry;
--			}
--		}
--
- 		ret = move_present_ptes(mm, dst_vma, src_vma,
- 					dst_addr, src_addr, dst_pte, src_pte,
- 					orig_dst_pte, orig_src_pte, dst_pmd,
- 					dst_pmdval, dst_ptl, src_ptl, &src_folio,
--					len, src_anon_vma);
-+					len);
- 	} else {
- 		struct folio *folio = NULL;
- 
-@@ -1515,10 +1488,6 @@ static long move_pages_ptes(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd
- 	}
- 
- out:
--	if (src_anon_vma) {
--		anon_vma_unlock_write(src_anon_vma);
--		put_anon_vma(src_anon_vma);
--	}
- 	if (src_folio) {
- 		folio_unlock(src_folio);
- 		folio_put(src_folio);
-@@ -1792,15 +1761,6 @@ static void uffd_move_unlock(struct vm_area_struct *dst_vma,
-  * virtual regions without knowing if there are transparent hugepage
-  * in the regions or not, but preventing the risk of having to split
-  * the hugepmd during the remap.
-- *
-- * If there's any rmap walk that is taking the anon_vma locks without
-- * first obtaining the folio lock (the only current instance is
-- * folio_referenced), they will have to verify if the folio->mapping
-- * has changed after taking the anon_vma lock. If it changed they
-- * should release the lock and retry obtaining a new anon_vma, because
-- * it means the anon_vma was changed by move_pages() before the lock
-- * could be obtained. This is the only additional complexity added to
-- * the rmap code to provide this anonymous page remapping functionality.
-  */
- ssize_t move_pages(struct userfaultfd_ctx *ctx, unsigned long dst_start,
- 		   unsigned long src_start, unsigned long len, __u64 mode)
 -- 
-2.51.0.384.g4c02a37b29-goog
+Cheers
+
+David / dhildenb
 
 
