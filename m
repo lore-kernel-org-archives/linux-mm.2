@@ -4,99 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83F43CAC59A
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 08:48:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CB1FCAC59F
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 08:50:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BFEE58E00D9; Thu, 18 Sep 2025 04:48:32 -0400 (EDT)
+	id EC3478E00DA; Thu, 18 Sep 2025 04:50:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD7138E0093; Thu, 18 Sep 2025 04:48:32 -0400 (EDT)
+	id E727A8E0093; Thu, 18 Sep 2025 04:50:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B13528E00D9; Thu, 18 Sep 2025 04:48:32 -0400 (EDT)
+	id DAF918E00DA; Thu, 18 Sep 2025 04:50:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id A42818E0093
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 04:48:32 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4B5B8C084D
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 08:48:32 +0000 (UTC)
-X-FDA: 83901744864.11.00FA0DA
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 9726A4000A
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 08:48:30 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=UMJvnw7t;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=rnUpVrH7;
-	spf=pass (imf27.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
+	by kanga.kvack.org (Postfix) with ESMTP id CA05D8E0093
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 04:50:04 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A20DF11AF14
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 08:50:04 +0000 (UTC)
+X-FDA: 83901748728.30.68793CC
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 8FE4E100005
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 08:50:02 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=VxxU5n2P;
+	spf=pass (imf05.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758185310;
+	s=arc-20220608; t=1758185402;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NovFkcDVYf3fWWfVdmD07cNejJYNvS+8SZukBGrwXpA=;
-	b=z/UPHDlFZ4xDGI+iA2RBFskcnToXdlLq1tTwGVaRM0MFHctouOAIKTmTc5KqI+U1OlQnTK
-	Ez4yLhe9XgWBBESpMJfbMQoVicpbJndVeuN8p7Aj7d5CEp7/f7fjxHwEz9/7fRf4cRI8uc
-	KwXNhH0aVLkr5hUnMUeQsRJ0iUT08Qs=
+	bh=hDS1lqd8rZbXZbUYB/FWM+UPwaXwxFfwGYspDhm+zY0=;
+	b=Wmyy0EMM0uk6hWwXFejaPQD5aa0jPbgR5Afmk+f71Gk2dBgpfucgeHrcTu7fRwR/CoIQqA
+	YcLiW/48I0cpRy+RwaQJFAt6piTbOWSRYqgrYrwrhEgwnZENpzchJMjRKhtLLIxqurl8Op
+	wPoVxNnCw8mWlt+D9L5KAgVxNAs12Ug=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=UMJvnw7t;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=rnUpVrH7;
-	spf=pass (imf27.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758185310; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=VxxU5n2P;
+	spf=pass (imf05.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758185402; a=rsa-sha256;
 	cv=none;
-	b=TpSn2NPDoR7xnxD2dqfGTQ9n4iFNx1QiQZZXNE3R7jMbObUE8zUAdHIcVLUsM6LJzuGgxU
-	F6kPyvHeNExYbqDhodUKy0zERVH509COUQsYhhDRlq8wFufo0WViZNdBrONHoSrOrYqcWs
-	gw4l0yvDW59QRF0M0j7u3D0XckDsz38=
-Date: Thu, 18 Sep 2025 10:48:27 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1758185308;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NovFkcDVYf3fWWfVdmD07cNejJYNvS+8SZukBGrwXpA=;
-	b=UMJvnw7tiZL+wh09yBToLHDtDL90kX13No0ExrtQl+3EY/ze8xgLAgMsERf4qS8jdOXkZ7
-	oxgp+16vwQNQ588n+AQOpNu/bvCaBpsHh2RrLRjqVvIDINfBe1ZrOi0oEgoa9r77kDtkN7
-	hdgbx6fAFRa9RwmYwrz+XLgewSHDKgjBj0VLc4puD5yGQMgZA2zeEvis492h3cOsYg+S3H
-	TZ//CW7P1vEa1qYJnBznmYll7XP9zBfA5ffYXF1EGvpl7FP2ZKvKkAplMxcyjYfh6U0+Vz
-	WV80UlDKKIheOU6PbJ0RpSc312vj49Xe+XTkwSLWVn9v2vvSpad8TmAUk0JdPQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1758185308;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NovFkcDVYf3fWWfVdmD07cNejJYNvS+8SZukBGrwXpA=;
-	b=rnUpVrH7VLqgqPHwqBZcw1/2erH1AKrwHgZd1huwdHAkcgbLyJnSRkZEPRrNCsbs46vuhb
-	OUG1H3/w667CjnAw==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: syzbot <syzbot+80cb3cc5c14fad191a10@syzkaller.appspotmail.com>,
-	Liam.Howlett@oracle.com, akpm@linux-foundation.org,
-	bsegall@google.com, david@redhat.com, dietmar.eggemann@arm.com,
-	juri.lelli@redhat.com, kees@kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	lorenzo.stoakes@oracle.com, mgorman@suse.de, mhocko@suse.com,
-	mingo@redhat.com, peterz@infradead.org, rostedt@goodmis.org,
-	rppt@kernel.org, surenb@google.com, syzkaller-bugs@googlegroups.com,
-	vincent.guittot@linaro.org, vschneid@redhat.com
-Subject: Re: [syzbot] [mm?] WARNING: bad unlock balance in copy_process
-Message-ID: <20250918084827.TWzT-hc4@linutronix.de>
-References: <68cb1cbd.050a0220.2ff435.0599.GAE@google.com>
- <867144d3-b05e-4ce2-8bb6-da01e10fbd73@suse.cz>
+	b=o9jsQZLc+feE9snusVtcLlHmxzvR76KdMFx3FzzxQef985mCp6fVfhGsEQFlf77HIhKhrO
+	PDpOUg+jfdjX6lU9zsCjYc8USjrs1cHFkMnC03D+XzhAl7aZASh1lez6AA/8/zWGLCJA4y
+	tRwIO3g5gH8xrutDaqwHsBcbd6o0vWs=
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b07c28f390eso122341366b.2
+        for <linux-mm@kvack.org>; Thu, 18 Sep 2025 01:50:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1758185401; x=1758790201; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=hDS1lqd8rZbXZbUYB/FWM+UPwaXwxFfwGYspDhm+zY0=;
+        b=VxxU5n2P0nOUp8oPFmMSOjtd/tubgRsu881V81YsbrMJEYSJjh7SwcfDksOXYKY5yZ
+         M+mpRESA+k99qrVMkEwZkfPFBTXlPrq+NWFv9mDwF0bfu+etGCFdIBo3vyOUGdXs8CDu
+         m7wXbpy14escoT8o9gaPPx6RqOUF1oOE6yFEFN92uMupMZnfTU9rTsWuGkumphgbuBC8
+         J+upp1QcCYA/sbBNiED9wOUBpMyezPaBkBlRxEkE8z7RCxitHPh4F/ogSARjvkwxHSqE
+         8WfGMQTlmY2j1CTzlRCYkXhZ0SzHvrb2XeQwsn1A45tJ1PA1ArwXnm+7XFEX8CKEwflG
+         Gxgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758185401; x=1758790201;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=hDS1lqd8rZbXZbUYB/FWM+UPwaXwxFfwGYspDhm+zY0=;
+        b=eVLj7fhBZmsqZWcb2NeO1Omk3D2xjWkyaiLbGVjVC9ZQRRLu0Q81THaIvyt7mbPRJ/
+         KQ5n9e0W7M6JM+F2bUPsJ2+2R1Vin2WF5QbmNMVD69Dsqv9IwqHoLwaAK7gqd2Y+CE0H
+         aBSHvrhTKrWmvbsgSRZ+NHDXrzwV8++KwV/6v8IBLTGw1r8djCit/VAaPOLtOcMnPCWL
+         E2mJDmsFkHqF3Icn40+GrYo53aIve8NN/zn1Rst5fWsM0MXDrIZby1ug1n4+j1nTfcY1
+         gzlPTttOKDLcas50Hk8KwPEh8IEPrSe+EtUzADaxSk9SYgMFTaaArnXSKlhkNtTYXHbH
+         /TUw==
+X-Forwarded-Encrypted: i=1; AJvYcCU8MRhlE6LNr7TgLSqAkkA+vJ8IzcW1YgKnhey6ZOWKN2N9Zg+7tgMpcGyPO8eM4boF65xRWNpu+Q==@kvack.org
+X-Gm-Message-State: AOJu0YxPkze2Fxu2yh4cjYzSXliW6dKaxjMi5c6DHv7AhPe8raTp2ss+
+	APe1Pwv18kbQOz6ji72LYW00QV7DAd1OiajNCk6bQc8bmwePZjETc12+Dfy5ghoswhQ=
+X-Gm-Gg: ASbGnctOpjw0rC8PXJAjOgz995Gk2gitVARoHCdME1hPHZzCbaxScrqB7GuIcv9MmE4
+	u13Mnlzb1S3J+7gS3Hfxb/oNfwsv7W4hz/s/1yiZxsooJWqTKt59btUwMxF8e98wdV07QPsXweA
+	pDs7gV7lruYp5y3bni7JJo/OKt4rGpjea6JeAW5ehh9Oz/AevjX2kdP2juEB18JVlh1pTnma+D/
+	UVJWQAc6wVSr4xOtoUe5RaOrV4WYg6JOe+KiivUroXDRybxPJH98tqAibyB167z3Gr1GRfLoTCf
+	BnWx6wL3h8YwP0bZYa5FrxoaydzLPxvAG7FV2uM5FDcSB+Bbr5mN7r3G01hqBH/KDJkvDYaVUwQ
+	QPJfzd+Nrcn5JyJvnCQ9cUssM4xizTuilVwnozrlDqJK5ILia07cs
+X-Google-Smtp-Source: AGHT+IHJ6xSlvwBJIDdm09ENnEV7apeA12zqjKVNjvrbj9aWgSqDk9GVscCBVpWo2sK3SG+bEj7tEg==
+X-Received: by 2002:a17:907:dac:b0:b04:4975:e648 with SMTP id a640c23a62f3a-b1bbd49ae49mr599268466b.35.1758185400841;
+        Thu, 18 Sep 2025 01:50:00 -0700 (PDT)
+Received: from localhost (109-81-31-43.rct.o2.cz. [109.81.31.43])
+        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b1fc73ba1e8sm148009566b.31.2025.09.18.01.50.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Sep 2025 01:50:00 -0700 (PDT)
+Date: Thu, 18 Sep 2025 10:49:59 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Ye Liu <ye.liu@linux.dev>
+Cc: David Hildenbrand <david@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ye Liu <liuye@kylinos.cn>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/vmstat: add header line to /proc/buddyinfo output
+Message-ID: <aMvHt7Z2PMuZaned@tiehlicka>
+References: <20250918071741.526280-1-ye.liu@linux.dev>
+ <aMu01xIkj-3hgW88@tiehlicka>
+ <1a9f44a1-855c-450e-9dc4-415a29b90011@linux.dev>
+ <780aa9d6-a85c-4050-820e-c0ca9f5bb658@redhat.com>
+ <6d6e2e33-c221-4ab8-a29b-3d14fb1a592c@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <867144d3-b05e-4ce2-8bb6-da01e10fbd73@suse.cz>
-X-Rspamd-Queue-Id: 9726A4000A
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 7aqzkz7wai7cbi4qu4fzppxfo6za3g7w
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <6d6e2e33-c221-4ab8-a29b-3d14fb1a592c@linux.dev>
+X-Rspamd-Queue-Id: 8FE4E100005
+X-Stat-Signature: kcnbxka9rctpatjqsnj3po4mbwteacfa
 X-Rspam-User: 
-X-HE-Tag: 1758185310-190205
-X-HE-Meta: U2FsdGVkX18IzaiPNzh3w2NJIV/zIypt/McbtV9q6jvnphqa5HqL7TVgHEojfbGaagsNMPQ4GBccwqItITfelRH9m0kbNpF/RS1DPAdR5XoiARgjcya0yqOyPwcUiS5TXpy3YuQxCNb2XkaKfrFU5AoySXu1Erd+yGoI8y2xzsKt6MZOLGGYYvmaWMrg/b68wliik/ZSPE8xJY1DMCW05j3hghLv/avbzBuO/E2HVEv3SypT7e3D0DhfBIV+W0tBhuvM79lK7fLzdlQW8JaBk9ph6zpXqyNdcw7ql8hBdnxc5q+RHRM+Pwi+cVkIFvgPfxil1jXNaOrmKrY9sOxdrlZ3QW9EIMdYrjSlCkPah763J36lPCP2ZbAHWlQWSG9qCu2awU13+7c0k6rQIVJfIv6xx/7ElXqsFi+WtkdE6f5qMvedS7NTUdfCdFuqrmdgy9z/vk3QXwMx4kaLWXqT4Kz9v/a34hkyrXpwdtyWTtoz+LegvuIg+fkvK5xx2gUyZ+i+H4VuWhFEZdSujsNFOhGIBudmz/yAQdfHE/qebnDD199EYPQbOSvxHEXmHsrZjIOE8zKijXCR9XI16OvcikFA2T3QKS1Dufsll/StLD0bILfT8RZMesrit/YDSa8GzxNx/ic7UhchPy0gPtI/LWlBlrvc5Pk5RiXT+wAV0c2q8oKt8AlLuIGPx1SiQzspQCK+PJn5s5CkTpLDHQ9KUHUFMXfOM+S7RPMqiW87IKOyyrX5Xd/Hus32LKSTDuwr/pZ8lODivafKKkOFrDx+Qn18FzX+ouBYKlDaLb0bYXjeQ35sngbVtRDIcKgzmMHu4//oaGUmQJVlc/8N5QelGCK+8oeAhi5FFDroiW9wLdyiFiZ0bzc8NKJjc2n7q63F0WsdTHMgNl5HAdkytUjK0+w8ZX2+BGmzz7v8wLKV/g/RmKC/coFpg/wN6WcymwZd5OuJzwdINoISvBQjTBV
- WkkqT5Ah
- F6iAdOagguSa1+2eW015qPLxP1KAzBcVj+f0tE24A6s6/yPq02Kr983waNVCGI/QmZEHznzcw8QA8ghZnRIKq137oMN/Bc5jh1yuqdB2VXZG8jBp5mgc1YNX0ET9FM38x4SoPoymaszh9YNHDFZOaaPugVFxxLtte+S/5RJGadQDYxdvJKGEB+fXsP8BDDNa4X2MMXVVlheoo2XpVfBLXDCRIQ/ElTvjIirI22YX/onxA9h+r3G39jdSroFT4T88weeUFUvfsI0+iPWaRcjWt+2iFIzjsqq+Ip27GmkTO/mEqnNcVqz/l+NruaLAFZ3BfR6unbNHj16RfQKEXAkLj2FbXn7m4p1H1VYXJdiV2mEXFaNwsYjMn14Q2u1jGrG0R5OhK035qDBNB4BUVfH/gtCQv9QnG23mdZpqfrAbH1yb6jfKNfHTVk3zWt9mE4fBXzYcelBKiu1rBdWG4WriHPcVzx2B5PWsaTGGhsC4B8H59UaM=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1758185402-621900
+X-HE-Meta: U2FsdGVkX1+rHTgXo2bmo3HhVYbsq9L4EL3Yvn5tF3CI22pWVojlfXr3FVUVU+FTrKLiZJvzJoWHeCGRaChaZytUS7lBw+czou4pxdpXVSvJBWtEcbhwza6LohX/oyXzJGQlIHMyFTHVgfcLdrlLcrKRrrMMRQZrRMfahPPvhZ4Lc99JzSqs4nTMBbrBuZqjUhxbmVc9YJuckt0QhIxDzEC5bSNfws+WHfKyhqgq2ROVMbOJ/kVHjkoSuluU+Dda0bt5OdWWGgQO8v6GIdix9uyz8tnkvu1sWuiUqo28Jo1HoLFANZHLV3huDdPSv/unDOQZyUUQKFN0V/0iCVwgaU1eiwhPM+pPqRPtcu/EV1GUpg3Fn9ekLlVGD0ED8mWDsmIBs7L+i7qtgi5w+Y6Pil5oSCnhOdyyKH5NUr+GTcApSNRJJgc+4X5SR44MpXf8I5ZyoJsQ9ZwWKpWMIAhKBHbhxfF2YOFyd9MFzzWLIho5BlwOgELPjEpN3uQoz5KzYgDWJ4c8oVD4TprA22jtImmGmowrifmxqNbWWrrk6rNQ/k1PTb6Wwn+n+6UHiIAY/rTGdxoQj/+pCLKZ8y+lHVUu0DA/Dkt30iwFnNeKwrJ5oAqfz3L3dpa/k2EKrBxQSfP9U5deZA7omJ84oVzOGybR/8ZLV/zq1XvIAio3XEK5nEjVDk2Nk7n/+84pCPWSOiyoBxND+Qpy69H+Yaxg87yQ8KwN9TrFkRGG4xJTMPO4tbqu5NGQ03I478b/53URjuQI3CNgzUyK7c1QD78+K+nQS8pwZ2WJey1cqFOnp4Oc92uQvtrS5e0ZrpOw+uwThDMW51JGdfrc/4c8GmxLG8zw9dzt3oKqr7YBdHSV0h+6MpJz6KjbZFC0+XsxO8JAI3UtmxzYmdT90/EATsZDP7q23RsedJOAMagLXiS0QwIvdVvBG3gj1pxybi0bxOXvLMCe+NdfoFuUywPGFj+
+ GBI+M3ev
+ JhPY5lxsQV5/0HPyTC2jtl9NAqT3uL30cmX1e3r78cK+oYGpmL2sJAvOIkq6YQtAJFz7pYzLHRVU6aAC776gMmWVzzwHMARedoABhDnP4I6yjWoU04WctjUEtg85a38+HQHMFfK2vjdLUy9J6MrzYK3RcJCDAiBGRiV3UOweIQot5keJ9mZJ9DDc6DGcGtULtN2DUEOMh+fJ5VzwQ6Cw+KBkdOY4jIwMu8fUvm8bLAm97PNXSJj9pFjA8iVSYRGyDcWsejhsu4QukHV0kJLc53eQ7JZPIQMNkECcyQ3SM8KyYLMKfa+w0v8rcRGge7xNDA+3QYuKXQ6N+Ze6HTxrw+5V1Rg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,44 +130,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025-09-18 10:35:24 [+0200], Vlastimil Babka wrote:
-> > IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> > Reported-by: syzbot+80cb3cc5c14fad191a10@syzkaller.appspotmail.com
+On Thu 18-09-25 16:31:22, Ye Liu wrote:
+> 
+> 
+> 在 2025/9/18 16:16, David Hildenbrand 写道:
+> > On 18.09.25 10:11, Ye Liu wrote:
+> >>
+> >>
+> >> 在 2025/9/18 15:29, Michal Hocko 写道:
+> >>> On Thu 18-09-25 15:17:40, Ye Liu wrote:
+> >>>> From: Ye Liu <liuye@kylinos.cn>
+> >>>>
+> >>>> Add a header line to /proc/buddyinfo that shows the order numbers
+> >>>> for better readability and clarity.
+> >>>>
+> >>>> Before:
+> >>>> Node 0, zone      DMA      0      0      0      0      0      0      0 ...
+> >>>> Node 0, zone    DMA32      5      8      6      6      7      5      8 ...
+> >>>> Node 0, zone   Normal   1113    351    138     65     38     31     25 ...
+> >>>>
+> >>>> After:
+> >>>> Free pages per order       0      1      2      3      4      5      6 ...
+> >>>> Node 0, zone      DMA      0      0      0      0      0      0      0 ...
+> >>>> Node 0, zone    DMA32      5      8      6      6      7      5      8 ...
+> >>>> Node 0, zone   Normal   1113    351    138     65     38     31     25 ...
+> >>>
+> >>> Why is this needed? And have you considered tha this might break
+> >>> existing parsers of the file?
+> >>>
+> >>
+> >> Thanks for the review.
+> >>
+> >> The reason for this change is simply to make /proc/buddyinfo self-describing.
+> >> Right now you have to know which column is which order; with a header it’s
+> >> obvious. This is similar to what /proc/pagetypeinfo already does, e.g.:
+> >>
+> >>    Page block order: 9
+> >>    Pages per block: 512
+> >>
+> >>    Free pages count per migrate type at order   0 1 2 3 ...
+> >>    Node 0, zone DMA, type Unmovable             0 0 0 ...
+> >>
+> >> Regarding existing parsers: the patch does not change any of the existing
+> >> “Node … zone …” lines, it only adds a single header line before them. Most
+> >> parsers match “Node” lines and ignore everything else, so the risk should be
+> >> low. If you know of any existing parser that this would break, please let
+> >> me know so I can address it.
 > > 
-> > =====================================
-> > WARNING: bad unlock balance detected!
-> > syzkaller #0 Not tainted
-> > -------------------------------------
-> > syz.1.48/6865 is trying to release lock (&sighand->siglock) at:
-> > [<ffff8000803b8634>] spin_unlock include/linux/spinlock.h:391 [inline]
-> > [<ffff8000803b8634>] copy_process+0x22d4/0x31ec kernel/fork.c:2432
+> > What if there is a single one out there that has hardcoded to skip the first line only?
 > 
-> bad_fork_core_free:
->         sched_core_free(p);
->         spin_unlock(&current->sighand->siglock); <- here
-> 
-> Sebastian, I think it's your 7c4f75a21f63 ("futex: Allow automatic
-> allocation of process wide futex hash") adding a "goto bad_fork_core_free;"
-> from a place that doesn't yet have current->sighand->siglock locked?
+> I understand there may be no way to be fully compatible with all existing
+> parsers. However, /proc/buddyinfo is essentially raw data intended for
+> human and tool consumption, and parsers are expected to be robust against
+> format changes.
 
-Yes. Judging from -rc6, if futex_hash_allocate_default() fails we hold
-neither siglock nor tasklist_lock. sched_core_free() looks also bad as
-the cookie was allocated later in sched_core_fork(). sched_cgroup_fork()
-does nothing special. So it should be
+I am pretty sure you can create a trivial wrapper to print that header,
+right?
 
-diff --git a/kernel/fork.c b/kernel/fork.c
-index c4ada32598bd5..6ca8689a83b5b 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -2295,7 +2295,7 @@ __latent_entropy struct task_struct *copy_process(
- 	if (need_futex_hash_allocate_default(clone_flags)) {
- 		retval = futex_hash_allocate_default();
- 		if (retval)
--			goto bad_fork_core_free;
-+			goto bad_fork_cancel_cgroup;
- 		/*
- 		 * If we fail beyond this point we don't free the allocated
- 		 * futex hash map. We assume that another thread will be created
+> Adding a '#' prefix to the header would allow most parsers to skip it,
+> but it still changes the file output and cannot fully guarantee that no
+> external tool will be affected.                                          
 
-Sebastian
+That still assumes that they expect something like that.
+We are trying really hard to not break existing userspace even if it is
+not written in a robust way. That is simply how Linux kernel handles all
+the existing interfaces. There must be a very serious reason to add a
+change that might _theoretically_ breaker existing userspace. What you
+are proposing here is not such a reason as it is trivial to achieve what
+you want from the userspace.
+
+NAK to the change.
+-- 
+Michal Hocko
+SUSE Labs
 
