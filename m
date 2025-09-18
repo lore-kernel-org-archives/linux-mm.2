@@ -4,142 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67798CA1013
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 15:52:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE93CCA1013
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 15:55:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C39648E0152; Thu, 18 Sep 2025 11:52:51 -0400 (EDT)
+	id 4C4868E0153; Thu, 18 Sep 2025 11:55:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C10198E00F6; Thu, 18 Sep 2025 11:52:51 -0400 (EDT)
+	id 476048E00F6; Thu, 18 Sep 2025 11:55:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B4D158E0152; Thu, 18 Sep 2025 11:52:51 -0400 (EDT)
+	id 363F98E0153; Thu, 18 Sep 2025 11:55:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A2BF48E00F6
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 11:52:51 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 07FA1C0260
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 15:52:51 +0000 (UTC)
-X-FDA: 83902814142.16.A3C2B69
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	by imf18.hostedemail.com (Postfix) with ESMTP id EEFC41C000F
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 15:52:48 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Ba84fYma;
-	spf=pass (imf18.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 204D68E00F6
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 11:55:26 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C3518B6FE2
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 15:55:25 +0000 (UTC)
+X-FDA: 83902820610.03.E1A0E0D
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	by imf09.hostedemail.com (Postfix) with ESMTP id C0812140006
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 15:55:23 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="Z90epSs/";
+	spf=pass (imf09.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758210769;
+	s=arc-20220608; t=1758210923;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b4tOEHafOTi5CrXOSO1m8dEnNyNggHvPpDClq9ufaB4=;
-	b=z7VSgdK9Bpp2ABzj2nJTWL6CLrcW00UPC4lMrD+fE01ULnKgzwU+jaSurcV82C4b9VbSIJ
-	b2SJzus2Z4qlZZWQfUO6j/qKzBstOsvrCseNx8TXCoAT2VVBvi2yozWrOtaM0HMat1Hem3
-	FCA2AXPBYODjWjnbwx3aZ+jNv5JH0ZU=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Ba84fYma;
-	spf=pass (imf18.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758210769; a=rsa-sha256;
+	bh=fB56UEO0mNP2hRYBRO1UDnRhREYhvCPXWZ0EMOooGbY=;
+	b=u9Aw3MuI9ZGsHUuxMCHEbr7sf/wKTq/M42YLanTuoz/ScIKZHzSt580iPfiRhwChobACeh
+	XqjIODUoyS+LiAOhXeWJkdNTECaJgUen33EREoVfdknZ9xd3uEbm8K4a0mKD07us4wLdFG
+	oAPVkZIzws/j1zF52pwDesyeBreee2Y=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758210923; a=rsa-sha256;
 	cv=none;
-	b=2RkPciBsVNarH01Y8FTlqxNFCMs5/g+3pSFtPZak1ZtTDLGVBK72uvR3jNiDIbb2vXRrU6
-	O0l5nBVF6NRZ0A6q28JYxyOaBZOFVEGEF++y4AKU+kibiBTO0giDezE77FsRf2m6ETQUAz
-	Cfzzj98tx4KMTtVDESPeO7RQdB+cusU=
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-46256e402fdso1837495e9.2
-        for <linux-mm@kvack.org>; Thu, 18 Sep 2025 08:52:48 -0700 (PDT)
+	b=Dmu/aB1+otOMZmrpl0TqwXgn/4TTViNB6teLqX1mrfehFSWK11ENEBpttXXAuSdt6sjONq
+	rjIHdUuhKkN5R7od67iRHItpTnKPdaKFz0AbM3Rsm/LcrJnWJ5A2L318kryZlETLPk/CU5
+	bfQzchNiWYk9SlaJpE2+YgPGVV3MlmQ=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="Z90epSs/";
+	spf=pass (imf09.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2699ed6d473so141175ad.0
+        for <linux-mm@kvack.org>; Thu, 18 Sep 2025 08:55:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758210767; x=1758815567; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=b4tOEHafOTi5CrXOSO1m8dEnNyNggHvPpDClq9ufaB4=;
-        b=Ba84fYmakR8VhGjcKAcBow6PJ4Q0B16Q5CfyGUvE805m+aUvRyT+fHF38CswTouzmb
-         +4JSsJ5dCHpmVsQMWONTwepPMRt+1qqMf4Tk1vZdTP4YcVcmwuNzysjw2OPPu+Q3Sy0k
-         HAOPttdoAvzpfaOYHOhcVNzKASzdVzsnayoijJ90x2puzhJDG10889hZHpm94nNmfYXa
-         /lQxtdSqGVbfZmzil8OB1MFzmOGxJ1bqGsUE7WgnDOhGDIGGlyahwvDizeyryZLvoapY
-         cl1+yZnacCOfqxJDVEfmQNfi84HWv0mDBRP3fIKL3loQh/2qbafobcKnseVhe7rRbLL0
-         jZRw==
+        d=google.com; s=20230601; t=1758210923; x=1758815723; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fB56UEO0mNP2hRYBRO1UDnRhREYhvCPXWZ0EMOooGbY=;
+        b=Z90epSs/ulpCcMbt3nv0BOhFa7Op+BMAoVMVE4swozkY2bJhbSMfhMhU5OfXWD4QCR
+         M8Yo1P1ta4jazr0Ojh6rcSl/68U22gZQPVt650gkVOQKFOOugiJiFjpoVxtbr6W6iL2+
+         0qlsx7Mju1MB9T8dZiWLxml0HFtL8p3VL7hqUB3BDUi4hvt92j7idAKeljw+kb+tOEQk
+         xD93nMI9xExCfCNZeUJVl1S2bth5ZzATPN37NZc8YuMeDWvkeeFEhFO7r1tD1DKe91yt
+         ScEnPxJE5nqQlU4VKlSeYSh3jM/6vNkl2nA9b2/IpqIIYBF5zi6oVGzvL0xYTX/VLTah
+         11Rg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758210767; x=1758815567;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=b4tOEHafOTi5CrXOSO1m8dEnNyNggHvPpDClq9ufaB4=;
-        b=vhBXILojX+WYdLS0BSXXWOtRXi/vBrnSGuxZaZYEaHRvCe/8h2Z2d5BaIkyAZRizdQ
-         KqiNRs/YvFdkXj1q0ECOU3kXpb9oKvvbVLgcGJdnyqA1PKsJ/6x3GBCd6/GjNBsfjrBy
-         QUrBXFnijYYpBdaoQi2c9TIOfnzDxpKIwo+OZXxLkFBDYwaqZB3IzALo6c/JV5V1N3fJ
-         E+tTxOwfSFTCoZNT8edRT4LBAPfIEK+6DYHDTMG5aLBQG6v5G4nAwaDAt4+JlVB3Rps/
-         I4kQTM5oIoFuCyeX1iqfZIpc4MEYyY4kURzUyA7JvpgzRkaTduQzr6+1+s1CjAXBYc8V
-         /Okg==
-X-Forwarded-Encrypted: i=1; AJvYcCWs46/xAw0SQNdNKHURIZWteZaviWK/NQof9GoPDNu40hHyfqnGC0njvA7CvFdF5XK3R7nEeJ8rvA==@kvack.org
-X-Gm-Message-State: AOJu0YyrBdQ8LGFV7GjONnUVP0D8A+vbkEuIEHzFurbfBnxhPjemahhw
-	b9QW8cMghIkpAqMN+K6SjWRtLWF7MOBhwRz4HkJKXP3AWRAIVvbmKeiN
-X-Gm-Gg: ASbGncsVYSn7/GJ5ucM115iJy4kFCnVh8dc1GSYOk4B4198s82YmqaQlLzUD8/zaBSZ
-	GsecaF5M4XBfD4xYhbiTnWfqT6S06FWWr9nfbhY2snRde42nSPx0XbanORf0yzTWmLwf14OleHL
-	U7pynJZ9JUtHlgCdNLUUrrkUG+LNv1wz+zH5ofX4NfSjp48P3gIAmYJwbIgpOaUM7K3kU9rTPjt
-	o9ktcIZ6ZrgNKVkdOWAsLNcyanbsCll65XDsa4kaFhQNULViGZBXKVTX8MHPxR752RsrMbnh/2Z
-	wX+qpw+ae9NFPp8rHqNBpK4MX1z3IjFJAoX4ypf+St1QmLBgwU6ZDdnZww1AKkmFUm7wS6Q19eo
-	+kMgkPBcyZbjI6sn+Z9L3i63XgEUasRm/+PujiA7700s/4gw=
-X-Google-Smtp-Source: AGHT+IG0MfbY3dY99xKFXmJfWWQhOAQTGGYXwxyEVK9fIcFhqDqMdo/IcROmJKmQtggm9VagY37U2w==
-X-Received: by 2002:a05:600c:6308:b0:45c:b6d8:d82a with SMTP id 5b1f17b1804b1-46206283dd3mr33695135e9.6.1758210767067;
-        Thu, 18 Sep 2025 08:52:47 -0700 (PDT)
-Received: from [10.214.98.247] ([80.93.240.68])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46138695223sm87677465e9.5.2025.09.18.08.52.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 18 Sep 2025 08:52:46 -0700 (PDT)
-Message-ID: <60b9d835-b164-4775-b9b4-64a523c98879@gmail.com>
-Date: Thu, 18 Sep 2025 17:52:39 +0200
+        d=1e100.net; s=20230601; t=1758210923; x=1758815723;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fB56UEO0mNP2hRYBRO1UDnRhREYhvCPXWZ0EMOooGbY=;
+        b=vXY3DlGleC3kFumJ/AUtoRbm6bmraOKMbULA4FbpdUsJ34pIOk38ZhK7E7RYYwHU5p
+         boOtWeMVG4M0jaw1otE9hYnXTWi42QCh0LX6IbsPqaAN7ZVfLsbZNHvq2qmybWsBHMRL
+         ePUhpHD3UtQe7JPKWbP9Qakax4fkXX0fPqWk829quRkhbD7uVg+elAj26rnGch670sg2
+         tj70hrJlW56VG3A+RTfbyEu1LfMkG28yUax0wdXbF04IiwDOH+heRPtitzjNXXy/LB8A
+         HJjpYGjhgLrrLd0W/j3ZnZh8XyEAI+wbGz46irDCzVBqIj12ywTxLTVMinE88vKEUj/3
+         91Og==
+X-Forwarded-Encrypted: i=1; AJvYcCXSMl050IHsT/S6TskhY8i94TmzUo5ztuXiStfRtixKtPK1zX3qtUJu37CWB98+DKSxolcBWJCzhg==@kvack.org
+X-Gm-Message-State: AOJu0YzH51SQ4MpQup/J4dpTM/iVXNMgCgM/e6J/Vywg9fNaTGLzURZE
+	1ic4aXrV7hLooJ98C5hqMUOQNNahZDe0J2H6TXjHoWgFlc2jqR1jVcJaXpFG/ShaR17+qHQzjpf
+	jX1UsRrEwJozl4nY/e1feg1WXpwSPCGiHcAzxxyMh
+X-Gm-Gg: ASbGncvuPlZkYfn2/LnU35hkUa4O4+xMYMglTe9khAnjXClnPcVr3aDNL8Qi9XojUzZ
+	d/sNAcMkZThMEckewY2jZbNZ0Nt1Dx1KYgrw0xCxaBRtC1HoAIJdYxpLXvB2bbxlZwYZVRnKWR1
+	VxEU481Tm9QtZYAAGI6g/onNWKVb/kMa9g/tKc1uHqL3ouHCpCrlWwMa6Rbgv3NWbE6nWvb4pfl
+	ea0FSdL9h4gpnMJ2TBNJMELM1QYwa0csrdjVirLfYe323EYsv5DtEfunzCh5MI=
+X-Google-Smtp-Source: AGHT+IHtle2Bol/8iJ1CI7SONgmRyw+7KDNF3rjHCoT0hB77tatWLPJOO/VLwsIgvGtPKBGy3m8lRqkiHkO7GeZDCgQ=
+X-Received: by 2002:a17:902:ea06:b0:265:cb5f:3a66 with SMTP id
+ d9443c01a7336-26808aeb835mr11034625ad.13.1758210922376; Thu, 18 Sep 2025
+ 08:55:22 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 04/19] x86: Add arch specific kasan functions
-To: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>,
- sohil.mehta@intel.com, baohua@kernel.org, david@redhat.com,
- kbingham@kernel.org, weixugc@google.com, Liam.Howlett@oracle.com,
- alexandre.chartre@oracle.com, kas@kernel.org, mark.rutland@arm.com,
- trintaeoitogc@gmail.com, axelrasmussen@google.com, yuanchu@google.com,
- joey.gouly@arm.com, samitolvanen@google.com, joel.granados@kernel.org,
- graf@amazon.com, vincenzo.frascino@arm.com, kees@kernel.org,
- ardb@kernel.org, thiago.bauermann@linaro.org, glider@google.com,
- thuth@redhat.com, kuan-ying.lee@canonical.com, pasha.tatashin@soleen.com,
- nick.desaulniers+lkml@gmail.com, vbabka@suse.cz, kaleshsingh@google.com,
- justinstitt@google.com, catalin.marinas@arm.com,
- alexander.shishkin@linux.intel.com, samuel.holland@sifive.com,
- dave.hansen@linux.intel.com, corbet@lwn.net, xin@zytor.com,
- dvyukov@google.com, tglx@linutronix.de, scott@os.amperecomputing.com,
- jason.andryuk@amd.com, morbo@google.com, nathan@kernel.org,
- lorenzo.stoakes@oracle.com, mingo@redhat.com, brgerst@gmail.com,
- kristina.martsenko@arm.com, bigeasy@linutronix.de, luto@kernel.org,
- jgross@suse.com, jpoimboe@kernel.org, urezki@gmail.com, mhocko@suse.com,
- ada.coupriediaz@arm.com, hpa@zytor.com, leitao@debian.org,
- peterz@infradead.org, wangkefeng.wang@huawei.com, surenb@google.com,
- ziy@nvidia.com, smostafa@google.com, ubizjak@gmail.com, jbohac@suse.cz,
- broonie@kernel.org, akpm@linux-foundation.org, guoweikang.kernel@gmail.com,
- rppt@kernel.org, pcc@google.com, jan.kiszka@siemens.com,
- nicolas.schier@linux.dev, will@kernel.org, andreyknvl@gmail.com,
- jhubbard@nvidia.com, bp@alien8.de
-Cc: x86@kernel.org, linux-doc@vger.kernel.org, linux-mm@kvack.org,
- llvm@lists.linux.dev, linux-kbuild@vger.kernel.org,
- kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
-References: <cover.1756151769.git.maciej.wieczor-retman@intel.com>
- <7cb9edae06aeaf8c69013a89f1fd13a9e1531d54.1756151769.git.maciej.wieczor-retman@intel.com>
-Content-Language: en-US
-From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-In-Reply-To: <7cb9edae06aeaf8c69013a89f1fd13a9e1531d54.1756151769.git.maciej.wieczor-retman@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EEFC41C000F
-X-Rspamd-Server: rspam05
-X-Stat-Signature: t9nck79574ufu36z46hgrm7xx65z91hw
+References: <20250915163838.631445-1-kaleshsingh@google.com>
+ <20250915163838.631445-8-kaleshsingh@google.com> <385df771-961c-4fc1-971c-81314c231f5d@lucifer.local>
+ <53ade9bf-5cdb-49b6-b8c9-1f653c861bde@lucifer.local>
+In-Reply-To: <53ade9bf-5cdb-49b6-b8c9-1f653c861bde@lucifer.local>
+From: Kalesh Singh <kaleshsingh@google.com>
+Date: Thu, 18 Sep 2025 08:55:10 -0700
+X-Gm-Features: AS18NWDy23QFicFxq7eonAAZapCtI7hAuF1vOI9oXz3unSnA7mgzsm9MtU96rN4
+Message-ID: <CAC_TJvdRf3xJg7FgTzAxa-ZrHkGA0G3dEDVWWWttg3ri2B-FNw@mail.gmail.com>
+Subject: Re: [PATCH v2 7/7] mm/tracing: introduce max_vma_count_exceeded trace event
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: akpm@linux-foundation.org, minchan@kernel.org, david@redhat.com, 
+	Liam.Howlett@oracle.com, rppt@kernel.org, pfalcato@suse.de, 
+	kernel-team@android.com, android-mm@google.com, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Kees Cook <kees@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
+	Dietmar Eggemann <dietmar.eggemann@arm.com>, Ben Segall <bsegall@google.com>, 
+	Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, Jann Horn <jannh@google.com>, 
+	Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-trace-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: C0812140006
+X-Stat-Signature: 4fp5wrhsinfh8z7ojjx7sk4p3yep6fz6
 X-Rspam-User: 
-X-HE-Tag: 1758210768-527319
-X-HE-Meta: U2FsdGVkX1+Z90MGNxWi/ciW8OTHGRCXBbS2NJFak97E0VvUqx+Abfxpl2rSWOFJfdNmcNNMInwUX9uTVCuy7lTwtXBgueADCxxmhZjZW0VGbGIyV+Juw+7BH4ODj+YsnNi5RhoXfP8dQtXATPeSzUPbSC0BuJYJp4dqDj9zl+62zk2Tj1ktTDezXs+J+ZEyt39Gfnye7jYhBy30OSoVpMgwecX/Hgco8XBuZWzILWMVsVFBZ2hW3wKFM3aNTg9j4yHo+XnjcXxK4IEbGd3A9XPbr6Mn7iK2YzSQQVEVZj+qURY5w1ZKwwBDBI9lA6a9dc69mJS6aPNvso9BIGW+H6cO0zZwJJIz61wgWGEXzDAVwXsKjxJMXBpOi2RyB8Z/BEQpoqXJvKa8iu6j4b0YhoFU7TIrT+oEtPTP8cLOkZshbJ4DF44Ly+EAutm2rK9PTUNr63pC83fjN7wNgxbizQUZvZzyYbNCJIg6VOf8ZIbqrIaJYCnOesNNa+xbnqUoye65vyHL9m36P/s+pP17ivI+4UZQPqQc99xOMkxPI68uPcZcD7LJ4FxzIqW53XehmydR45XagNzXcaOgYSUN0DWg5Irnyc2u5Gy4z1xx415u/OKvv6EPNTo25f9bntZ/f23cUQroHZd66ZhMisI6PSCaeigtAaGeIWHm65TaplShsyD6V6qRd/iWlImAtX88HyfMA0Ktg7Lix/fXTnXXbvplCT37kHMfIr45ZXkvWDghWx3YN024A+Sw9D0rw0+EyyABanumi3WFoDvvxXQOJmH1Mvi3RgSbJjrHbrwRnSG8sVlBMP7bdYqBD6dSnAkEQRVjwo+Y4rLO/AxlG5Mtm8HHNaqvExFzfDOANHtSsdp/QBLxxcNSvjLmskI81Sx4GLgfp19cCJcPRC0cLZywlYTySzh3hHcGg8X5ZqAXCSHkwwHcco4Da/Zekc/hPYpNh5aU41eFE5jplZhvIdN
- RTcooCC9
- wP47O9Jfx0ebxFzkc6V6qY/Uplc7zesVcM/8avdSvMUkOjWaOsbMRvKxUJu2JqlVIhLokm8FJk8WTF3TSUdLKqaPvi/uSVtfmdOdLUc7WfG7W+1Hs6uS2nxRTf7kko/9aN8igPSMiF/XNgC9GyKJduTIuYTdXjvQ/128/fNR3oY8H3iNn0lwoZnXbAh7CU9Sdbe6N5q+/76braQwKNTVKrQdRWDgTn85TtCrIzCvFXKHnqfpF5dSSuH/r0KQ7huYeyBTL5Ul8IhDKq/Zijjsfv6w9SLY7CXLxy9zzUKiOnzSZcbcG2gyphxM7gONK+vCj4YaATnItrHnO7PBa2Qt+faUQSBb7/SX/qdaISfewsfauNTABkBwdSFONigpH3p+wuyPHeNDJOIz7FcPKI8504Kln0/fTV5ZG2UG6yFDC6hZe6pM22+NJP9dfb9tSXk1L7hXqF1PyMMoYvHWWbe0feAV7Mr9aUBKrFCcKHpD+T175KwZBd3CnIah/NUw9D/Spzrt6A7/I6WzCOvmndOC+rOfjfdVICn5gNwFYn+l1q04Jdmm1Xqjj/OyZpCqqAa3/SNEQ
+X-HE-Tag: 1758210923-449201
+X-HE-Meta: U2FsdGVkX19n1+n8h7EWD4cADxm+fZM3r2dcAz+1pSH0EKygFd3k24jP2dX4GbdIN/Z3b9sb0Z4z6d1I42cj/1+zsyjKQN6NumFS/XRgvuU11k3O31bYBiwmzcCo+e3W+7rNGLy1ITcOeksgj8lZ5y8yEshtHErPtYRkI+KklrL+MKH4zOAgetTymm8qs8ccWFvpnELokmreg61O2fO56JPRCMU6AtxE+cxlpBq7XEQbwysz6626IH6AQFbyVt7ug6o9o6+wvIOPuFdMeXoNFtFesNiTN+hfTVsdQvKfE5LVky1c+E5rPHhWHzBRQ6xkXnuro75TxkhxFlld0hAHI2reIX+pHS0VXr1EcVuAG43Oqx3ZfOXu/+fAfykuEDQZBWSWK9WSYy1/iBK04ijoGRaCOHcm/PBAnKaDJnfKydPRmlvbN5Qcxg9Lr3r3H44ty/ITwU8pzzy5vyAYEcW3AZafSwr3FV+J6lupxs15CdrGiyvPVkzdtESMxw51zRQMakshqQBsyWpHZz/sAi2l32UTIkbAtQQr+6iLTft8M/O4ee4dq8pKZt9xsM6Fyuc17noAfc2T9wabgFQvtNQN8Ikn+uGHkeoCRQ5FKC7Vdmgt/aKUF4Wtxk5+OjJBfehuHEXcGeykU8mPwV8a1DGn6ZgbvF0TRZueFRcA6h5Vfdh3ZHz9/1LIaoN761GzG/95Th6SKhuSvYGiYKXxCaGuUQ6hexx7ZBvDBTMkvGlKYFQ+VbnhrdTECZHOyqynkCSup/g+HCzCu7HZD5XASJn3XT99jRokuK8XvAfGXpSxRJ1ZqWxhuLpTsp3OdrzSAlXzwlNx8B6JkztMFFGHqLcoF5Lyb4XBFda4gjq4myM7vAvDOWsONbuRUbwoZEtIsGwv0cp+6QTrBh51wC5bBEy7AWKbnrAQ4TMm76M8BGqgSAVtxdMJrpS397eAs9qiFldDT10aNkM3FTgy5eitIZ4
+ BtxV+EF2
+ fsQoWKhM3Y2PQ/wYTwmZVCygrtbQZcShbXpet7N0XHOGYJQBHLFcY9plTJ3nO0gxS9ucg4in/EJWbfY/BzI2wLCDmJnqsotYSBXQy49N7tA9X0jjxYPpiO72xiXHrftU3scrCocD3mcZ6DUhvGsQybAtFUYBQF3F/Xngk/xa87t2eaOqfLnTsu36E/Q8A0ynjWQnKZyZ3tlOCkgzXwHrYvUInPkpcqROXxInMurnmRqiz1Uon9uFkqCU3Ip9/BFcTMbt5l1Ivvann2pEg1uIbbswejOM9R5jXxPCnVrnHct+t/uVIJpIQ1lpA/rptcRDH1iws1xVgez+bY1I8Tsmx2Q8UtCJHlbkFn4NfnEsydbCOvckuxgS277Hm2WON9rOzYBJCvxDRQcLuSg9plv8h/ihpsqZO2aoq2Ta+Ur6KFtceOFs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -148,40 +130,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-On 8/25/25 10:24 PM, Maciej Wieczor-Retman wrote:
-
-> +static inline void *__tag_set(const void *__addr, u8 tag)
+On Thu, Sep 18, 2025 at 6:52=E2=80=AFAM Lorenzo Stoakes
+<lorenzo.stoakes@oracle.com> wrote:
+>
+>
+> On Thu, Sep 18, 2025 at 02:42:16PM +0100, Lorenzo Stoakes wrote:
+> > On Mon, Sep 15, 2025 at 09:36:38AM -0700, Kalesh Singh wrote:
+> > > Needed observability on in field devices can be collected with minima=
+l
+> > > overhead and can be toggled on and off. Event driven telemetry can be
+> > > done with tracepoint BPF programs.
+> > >
+> > > The process comm is provided for aggregation across devices and tgid =
+is
+> > > to enable per-process aggregation per device.
+> > >
+> > > This allows for observing the distribution of such problems in the
+> > > field, to deduce if there are legitimate bugs or if a bump to the lim=
+it is
+> > > warranted.
+> >
+> > It's not really a bug though is it? It's somebody running out of resour=
+ces.
+> >
+> > I'm not sure how useful this is really. But I'm open to being convinced=
+!
+> >
+> > I also wonder if this is better as a statistic? You'd figure out it was=
+ a
+> > problem that way too right?
+> >
+> > >
+> > > Cc: Andrew Morton <akpm@linux-foundation.org>
+> > > Cc: David Hildenbrand <david@redhat.com>
+> > > Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+> > > Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> > > Cc: Mike Rapoport <rppt@kernel.org>
+> > > Cc: Minchan Kim <minchan@kernel.org>
+> > > Cc: Pedro Falcato <pfalcato@suse.de>
+> > > Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
+> >
+> > This breaks the VMA tests, please make sure to always check them:
+> >
+> > cc -I../shared -I. -I../../include -I../../arch/x86/include -I../../../=
+lib -g -Og -Wall -D_LGPL_SOURCE -fsanitize=3Daddress -fsanitize=3Dundefined=
+    -c -o vma.o vma.c
+> > In file included from vma.c:33:
+> > ../../../mm/vma.c:10:10: fatal error: trace/events/vma.h: No such file =
+or directory
+> >    10 | #include <trace/events/vma.h>
+> >       |          ^~~~~~~~~~~~~~~~~~~~
+> > compilation terminated.
+> > make: *** [<builtin>: vma.o] Error 1
+>
+> Trivial build fix:
+>
+> ----8<----
+> From fe4c30abbd302ccc628ec92381ac10cea31c6d85 Mon Sep 17 00:00:00 2001
+> From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Date: Thu, 18 Sep 2025 14:47:10 +0100
+> Subject: [PATCH] fix
+>
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> ---
+>  mm/vma.c                         | 2 --
+>  mm/vma_internal.h                | 2 ++
+>  tools/testing/vma/vma_internal.h | 4 ++++
+>  3 files changed, 6 insertions(+), 2 deletions(-)
+>
+> diff --git a/mm/vma.c b/mm/vma.c
+> index 26046b28cdda..a11d29a2ddc0 100644
+> --- a/mm/vma.c
+> +++ b/mm/vma.c
+> @@ -7,8 +7,6 @@
+>  #include "vma_internal.h"
+>  #include "vma.h"
+>
+> -#include <trace/events/vma.h>
+> -
+>  struct mmap_state {
+>         struct mm_struct *mm;
+>         struct vma_iterator *vmi;
+> diff --git a/mm/vma_internal.h b/mm/vma_internal.h
+> index 2f05735ff190..2f5ba679f43d 100644
+> --- a/mm/vma_internal.h
+> +++ b/mm/vma_internal.h
+> @@ -47,6 +47,8 @@
+>  #include <linux/uprobes.h>
+>  #include <linux/userfaultfd_k.h>
+>
+> +#include <trace/events/vma.h>
+> +
+>  #include <asm/current.h>
+>  #include <asm/tlb.h>
+>
+> diff --git a/tools/testing/vma/vma_internal.h b/tools/testing/vma/vma_int=
+ernal.h
+> index 07f4108c5e4c..c08c91861b9a 100644
+> --- a/tools/testing/vma/vma_internal.h
+> +++ b/tools/testing/vma/vma_internal.h
+> @@ -1661,4 +1661,8 @@ static inline void vma_count_dec(struct mm_struct *=
+mm)
+>         vma_count_sub(mm, 1);
+>  }
+>
+> +static void trace_max_vma_count_exceeded(struct task_struct *task)
 > +{
-> +	u64 addr = (u64)__addr;
-> +
-> +	addr &= ~__tag_shifted(KASAN_TAG_MASK);
-> +	addr |= __tag_shifted(tag);
-> +
-> +	return (void *)addr;
 > +}
 > +
+>  #endif /* __MM_VMA_INTERNAL_H */
 
+I made a point to build and run your tests, seems I forgot to actually
+test it with this last patch.
 
-This requires some ifdef magic to avoid getting this into vdso32 image build process,
-otherwise we'll get this warning:
+Thanks for the fix.
 
-CC      arch/x86/entry/vdso/vdso32/vclock_gettime.o
-In file included from ../arch/x86/include/asm/page.h:10,
-                 from ../arch/x86/include/asm/processor.h:20,
-                 from ../arch/x86/include/asm/timex.h:5,
-                 from ../include/linux/timex.h:67,
-                 from ../include/linux/time32.h:13,
-                 from ../include/linux/time.h:60,
-                 from ../arch/x86/entry/vdso/vdso32/../vclock_gettime.c:11,
-                 from ../arch/x86/entry/vdso/vdso32/vclock_gettime.c:4:
-../arch/x86/include/asm/kasan.h: In function ‘__tag_set’:
-../arch/x86/include/asm/kasan.h:81:20: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
-   81 |         u64 addr = (u64)__addr;
-      |                    ^
-../arch/x86/include/asm/kasan.h:86:16: warning: cast to pointer from integer of different size [-Wint-to-pointer-cast]
-   86 |         return (void *)addr;
-      |                ^
+--Kalesh
 
-
+> --
+> 2.51.0
 
