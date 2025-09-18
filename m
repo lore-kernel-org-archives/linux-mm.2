@@ -4,85 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D9E5CAC59A
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 10:33:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EA73CAC597
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 10:34:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BADE88E00EB; Thu, 18 Sep 2025 06:33:42 -0400 (EDT)
+	id 71A7D8E00EC; Thu, 18 Sep 2025 06:34:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B85A18E0093; Thu, 18 Sep 2025 06:33:42 -0400 (EDT)
+	id 6F27F8E0093; Thu, 18 Sep 2025 06:34:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC28C8E00EB; Thu, 18 Sep 2025 06:33:42 -0400 (EDT)
+	id 62FA18E00EC; Thu, 18 Sep 2025 06:34:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E7368E0093
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 06:33:42 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5620D86930
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 10:33:42 +0000 (UTC)
-X-FDA: 83902009884.20.DA83F8E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id A8114C0008
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 10:33:40 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Qm9RBWiC;
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 53A348E0093
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 06:34:02 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1A43F5B8F5
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 10:34:02 +0000 (UTC)
+X-FDA: 83902010724.06.09B4437
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id AA14520009
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 10:34:00 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BNruJSl8;
+	spf=pass (imf03.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758191620;
+	s=arc-20220608; t=1758191640;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZzPcxYR7J16IPg8Wif4qihXzYFB0g9kUppaANUnIgAY=;
-	b=m710uZEu9uJwxGU5dyYAFbb2u2YR6g97/YMa+yn1jgamY3VpXb7HydCHZkV8wNjutQl50b
-	4cqbCosKgnvQbfcR60HGgE7xQP2igUfJhHhy9SB0cKgxTmvuQvVCXzojfFCKxSfF2Fr5gI
-	8aBlIqGWMyxtx/ibsgCV3mx3rNVU5u4=
+	bh=SP9Tkq781weXzJ71+Pgl2qUYzdvsA9gnTsj+eVn6UVU=;
+	b=1oRz9F3kngqcmeywWfJ/LQAc16Xnd9zUd+PwUWGKsa3brW1ErhsRcDUATxNqVQyGj9KreV
+	ZZKLyMYJeMeglmLx27JPTVLCeFT3M3MWrehlfmg+mjGv4rkHl7GY2Fco+gj91ttGURq42K
+	PSaTAFQ5pZAHMsUkkpqr6yLvzTwsEFU=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Qm9RBWiC;
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BNruJSl8;
+	spf=pass (imf03.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758191620; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758191640; a=rsa-sha256;
 	cv=none;
-	b=T2H1GYEAJSxLXs6s9cBcU3vpG6o8PsOzTAhf54RHy2AFJEp4/fxs2Y84BdHwAAXy1bkpqf
-	GNLI0kY7Mj7ME3GuK+58qP3U25BEhpXFg1a5mkaSi220QoGl0NwTt7K6osJK4TQjoNA/Sv
-	XMgQ6WywmS/D3atU+olTWjwQNlJukUQ=
+	b=JwWTKUUBV+tNYj5ZEKv6AqpIU2OqdWgPhwmeos2RTniHSv5CcfvBZjPA6r6oXlFQB5Klfs
+	H7oT3d7HpE/glqRZ6sKMaXCMxuJTzU0bPNOBFqXe0ZOZChrFQ5F/JP9OLYBh5iyeD7FmrH
+	dJqqi6umoK4wJJzZ7gvTbIwB1XiGHFA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8BCF944C18;
-	Thu, 18 Sep 2025 10:33:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E100C4CEE7;
-	Thu, 18 Sep 2025 10:33:37 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E790B60209;
+	Thu, 18 Sep 2025 10:33:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3183C4CEEB;
+	Thu, 18 Sep 2025 10:33:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758191619;
-	bh=TVVwkNO7iGB7t5rAzhUJHNIbjpPOZCjci5g14ssAF1Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Qm9RBWiCNRRPZwoAE/MGVvcH1Fb0Bq5Z4VYyttWdudvb2XA3c15rpA8dayNhJTmUa
-	 WNyM7eDlgDYa4S5PYFDRhR9bf89NkOoLmgy62i3y7aIpt3H2QeEXuEpwRX2w6ft4Ia
-	 mAy0zTswlIo2jcv1xq/37MZNbvndohUPQTV6gNGXj+zj/8zpI2s8EJU7Gz46n+4fKs
-	 +hIpY7IKelaY2ulXUQRL5H1nMWAFaIfYUb8xvZtt0cnXzP80i+SgENOLx4OsCPvxvI
-	 4oj3coRJv6+0ENBXpkuR0kBSE7Luhf587W4eu/ohVWswm934fBm/qIsHgCppYefjcS
-	 7RMb12iu8M4gA==
-Date: Thu, 18 Sep 2025 13:33:33 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Dev Jain <dev.jain@arm.com>
-Cc: akpm@linux-foundation.org, ryan.roberts@arm.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: Remove PMD alignment constraint in execmem_vmalloc()
-Message-ID: <aMvf_R4ttLibbnQ1@kernel.org>
-References: <20250918093453.75676-1-dev.jain@arm.com>
+	s=k20201202; t=1758191639;
+	bh=OD7Mw5ZrocAdW5s9yeVVSt6xbyWWtkvp2zc8JMWiBZU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=BNruJSl8/KBB4up6PyP7UWp7d2fZ5VU2Y7JJ1RtQGHBcbm77xK8Nfa5Lpq0oVgeZY
+	 wpAOm0qMeB4ZWzHGR2SFWAEPXE1VE2c3StJdhOyfwfKSs/dSinzWr9/4pyQYgp+8Jp
+	 inT9VKwXqiT20OdmMqpanrVonSLTSVvGE9c/QgevrkvFYrruo6hwR3F8j+9vkz3dvm
+	 y7M/lBBSlTGAPU7sg78PK8tjzGhik4XUg5NzFqMXb9sRa4eAQMncVyvgbPhUH6sVKn
+	 QQfiOzYZBOOG8LEYn0iBVCw7kH3ZFCC12NrIRjeg8RwNp56GSHhX26Xyrv235hMrBZ
+	 XDSxHqb8lOjnA==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,  Alexander Graf
+ <graf@amazon.com>,  Baoquan He <bhe@redhat.com>,  Changyuan Lyu
+ <changyuanl@google.com>,  Chris Li <chrisl@kernel.org>,  Jason Gunthorpe
+ <jgg@nvidia.com>,  Pasha Tatashin <pasha.tatashin@soleen.com>,  Pratyush
+ Yadav <pratyush@kernel.org>,  kexec@lists.infradead.org,
+  linux-mm@kvack.org,  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 3/4] kho: add support for preserving vmalloc allocations
+In-Reply-To: <20250917174033.3810435-4-rppt@kernel.org>
+References: <20250917174033.3810435-1-rppt@kernel.org>
+	<20250917174033.3810435-4-rppt@kernel.org>
+Date: Thu, 18 Sep 2025 12:33:56 +0200
+Message-ID: <mafs01po4gicr.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250918093453.75676-1-dev.jain@arm.com>
-X-Rspamd-Queue-Id: A8114C0008
+Content-Type: text/plain
+X-Stat-Signature: r4fdpckmjxcajew1zmsojrgtgoam6z1e
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: thekzz5zxoou7zh76b3pr599mgao5eei
-X-HE-Tag: 1758191620-962736
-X-HE-Meta: U2FsdGVkX1/UVKwihBwlD2Q5L5wWMaAa6Lb4uhE0tumS8tgY6nMQdIjW+1CBwakjSZLVSUA4WMtdXGxduiZgx6V0gEBGl4Td/x7F0DLcvsFWuCWJj4zpjjCNmy/+lYuo5E6bOw4M3dcqaJHdVs7W0q0kJEjZr84O1p4H7PvkTfKsDyGccSjZjUvp39IxFDeHxGuPW4gcvwTUaL1htFv2124mKuJHxd5d7EgkCO2ULit2O5avBcsZ/eYJIa+iROzMT9i95Nry3U77fZNqOepfd/C8uKopmWWo4nagLNMap/mQ8nfHsLY5EMkg9wXyn2P2nOiP2/MoewTtUccJw+64bmEekEpy9/EqHj2xfPf9NoB3zgiPNnlt7pi/1QsBhxQqO6+vbIrMPGaoWLz3Ztp3lx9Z9VZJgAJl2TTdpV3mjq2hUSHD+mHWHXlzXxOEYJbzKzT+uF20CyMP7i+rIPEWhupEmPlwa/eW7TBRgnz4el+LWmjVdzsNSiHe7vOOScZfx3g/lJEFK+lx+7oHh+5dp0kRyF2259ZyPeklC5X2V3OYZs6AnN2QZiiqdQXTPmmEag8hZEsVRo4g7Mz5oT3jTsxHYNXag4bP8c3opidD11mhMDc4qw+hLD4/lBmKDLd6oCl51WCY0hRsGIqpB9ePzH8ZPGZHsvGJOApFP+Ro0kjv+FcrzMqJXfvej1Hp8oynjiKVJRwGUUgrJQgR1nUZjHdA+AdAyQTdPhv3Sg+C6rfOKjKu1VKwAuFu1aUiaSq4nLgVNgaX5OgyKdEn/Joa7ExbhJ/FwvI+sM53UkhlGH3vE3qdVtJsUZhM0nHE4v/VFWB3xJhBwqt2Vs9XdBd3AFfZgbGI5XGD+atGy4231G1IAFWmURzXrUe7lfgO2+bu0ig6uBpIpT0SOlvLf4P97EM8CCqjGa6d7kgTN8dSzMfcEkfDJVInvIIOfCl4sqYSRrH/HVmxKTZDvSd0C/D
- rnBVmpPt
- M9qnEVr/FNzDHbjZqq+PCwhrBIfcY425JHvzAKq21P4r2RBGDuRCHnzFTW+cmIy5uDmh+qQeWfUbz5CJVnfu3b2vT4k4NO+pXhT0EGm4jUCracaf+nI9cGKuV6GFifRWeo0X//Q/Hf+OEtD4HaLbC6LJwCqiZ7ODNDTkfKVYx6HYD1UIqvNvb4LEn4jH0E4YtxuiJUyqD7MrQnINneYfG/wt1GJhUmxNPZDsSnSvr1uboa73ml7rpAosi6UTBM8QV4qe6CsV6KlmFWXDDScBzHdDyZjoEqGjn9coKIhPlUUjSchLbpi0b0HKujVegmLyr2eGG5BNH1afs2oFWUrmyXIAZd+bpmNqggKiGgeSP0tXB7++92ZRAfbFpXY4VM9p6U1Z3
+X-Rspamd-Queue-Id: AA14520009
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1758191640-589891
+X-HE-Meta: U2FsdGVkX1+vbDPcu4Xmmh1TI9LkH43VM46EPa58JW5Dj/dpkHqPXF79gJFYpD0YkaDSW4piCiYkEqXlvWx7QJX8qQCXrBQ7kvf1BLEpkmTGjXflPtfW7hIHTdpnMzi17jqOdsBH5SgC6Kzb/btUctHw27U4k+ldRjlIJ+YIJyf4vUPuJZhgT7d//zUPZn7jUibBSPmlWZGNb8Ia+PhR2WZjYkE9PQBKdOjx2HgjEd0nKY/SjA8PaABbZmkUJdjL661ZC1RRU9Wp9UEWmKqpRhvHWS3OPonUoWO+H40lRBpQutOPif60XuKDf0g8B7Yvtbdhs7M63roueXgekJmY3V3w8PF3VwGxqDf7+Zn7EA269ob/CtS7BuqsmsTQaTitbvsSb5skkrPbMTa9Hzkz77n1/fWBCMfoj7fh5U6LlgpOqomhmqb1T7RRhOcI0Z+9Ezs+1k5u4cWjhYvur1CiHYljSPGVVbUDdOaAR5E07Q+Ce17qJ/rJLVuE51q32HuOPYiNokeYZ18VSTR0XIuBA6XUm6zd5l+eq00zHevNELHkWT0EAAkxs1AgJKqZ4Nlr7EU/slBnIPmNfmAVP1xPWabINzYVMBsgONc2qtoY3S8tMXGD3TNIqO4l9KXs32mGhDlHPl8iFxeQAotCh4P7ICeoJk4uIxxi3BBVSb7kSbSZTAeC3FvUmSaAwSN2ZTxXBM4+cigGjfeFunaRj0QisspH+wGTWf/kFOH8Xpjc/9VNwjkVNoVyYQ3vWtBnH1+Ti65chB8azaH7P2wVJaxA0DUhT3tWWQUmoxAZHnC0oAs21S5EyynTdtakrrEqmrxxe0c8ZU4Fb7WZCE5MsR10m6e6VnkMUWXEbKUvfm5H2YKECsDmtimC1ngKPnqMl+9cNCkNqh3Kapk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,48 +94,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 18, 2025 at 03:04:53PM +0530, Dev Jain wrote:
-> When using vmalloc with VM_ALLOW_HUGE_VMAP flag, it will set the alignment
-> to PMD_SIZE internally, if it deems huge mappings to be eligible.
-> Therefore, setting the alignment in execmem_vmalloc is redundant. Apart
-> from this, it also reduces the probability of allocation in case vmalloc
-> fails to allocate hugepages - in the fallback case, vmalloc tries to use
-> the original alignment and allocate basepages, which unfortunately will
-> again be PMD_SIZE passed over from execmem_vmalloc, thus constraining
-> the search for a free space in vmalloc region.
-> 
-> Therefore, remove this constraint.
-> 
-> Signed-off-by: Dev Jain <dev.jain@arm.com>
+On Wed, Sep 17 2025, Mike Rapoport wrote:
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+>
+> A vmalloc allocation is preserved using binary structure similar to
+> global KHO memory tracker. It's a linked list of pages where each page
+> is an array of physical address of pages in vmalloc area.
+>
+> kho_preserve_vmalloc() hands out the physical address of the head page
+> to the caller. This address is used as the argument to
+> kho_vmalloc_restore() to restore the mapping in the vmalloc address
+> space and populate it with the preserved pages.
+>
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-> ---
-> mm-selftests pass, but I am not sure if they touch execmem code, and I
-> have no experience with this code.
-> 
->  mm/execmem.c | 3 ---
->  1 file changed, 3 deletions(-)
-> 
-> diff --git a/mm/execmem.c b/mm/execmem.c
-> index 0822305413ec..810a4ba9c924 100644
-> --- a/mm/execmem.c
-> +++ b/mm/execmem.c
-> @@ -38,9 +38,6 @@ static void *execmem_vmalloc(struct execmem_range *range, size_t size,
->  	if (kasan)
->  		vm_flags |= VM_DEFER_KMEMLEAK;
->  
-> -	if (vm_flags & VM_ALLOW_HUGE_VMAP)
-> -		align = PMD_SIZE;
-> -
->  	p = __vmalloc_node_range(size, align, start, end, gfp_flags,
->  				 pgprot, vm_flags, NUMA_NO_NODE,
->  				 __builtin_return_address(0));
-> -- 
-> 2.30.2
-> 
+Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+
+[...]
 
 -- 
-Sincerely yours,
-Mike.
+Regards,
+Pratyush Yadav
 
