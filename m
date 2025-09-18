@@ -4,108 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45BCACAC59A
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 01:21:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBD32CAC59F
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 01:31:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 46BF38E0095; Wed, 17 Sep 2025 21:21:54 -0400 (EDT)
+	id 2D3DA8E0096; Wed, 17 Sep 2025 21:31:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 41C768E006B; Wed, 17 Sep 2025 21:21:54 -0400 (EDT)
+	id 2AB5A8E006B; Wed, 17 Sep 2025 21:31:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 30B498E0095; Wed, 17 Sep 2025 21:21:54 -0400 (EDT)
+	id 1C1018E0096; Wed, 17 Sep 2025 21:31:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1BD358E006B
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 21:21:54 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A5DA813BAA5
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 01:21:53 +0000 (UTC)
-X-FDA: 83900619306.02.81DB3F7
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 0ABA3120003
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 01:21:50 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="g/qAJ+3t";
-	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0B5DD8E006B
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 21:31:37 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A78F587453
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 01:31:36 +0000 (UTC)
+X-FDA: 83900643792.13.E7263F4
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+	by imf09.hostedemail.com (Postfix) with ESMTP id AFF50140007
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 01:31:34 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=UEj3bqXQ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf09.hostedemail.com: domain of alexjlzheng@gmail.com designates 209.85.215.180 as permitted sender) smtp.mailfrom=alexjlzheng@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758159094; a=rsa-sha256;
+	cv=none;
+	b=TM6fEHYZKgvcFHs6OfB8Rv8ziZEPUsrxXmhF3DU2j79tKvTe6pv7axT+WiY/9WnwypZFW/
+	l7MyRbCRirLwjAv+jWUqDLw/rMo7md+4nuTRBVGCChP1g+735wmE87vrDesmnRsO/aLL/W
+	Tom9cLGvfea0Tq1BuGw63Ed4ZLDT2YA=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=UEj3bqXQ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf09.hostedemail.com: domain of alexjlzheng@gmail.com designates 209.85.215.180 as permitted sender) smtp.mailfrom=alexjlzheng@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758158511;
+	s=arc-20220608; t=1758159094;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JL/CRPWC31oUF+ur7V+pUmTe9mvvwo6vPYfeJjk6t5o=;
-	b=2hjy4OwCi7HrJNuQNjXwcm9yh20CftjfhQSzd2hOyCB1EvuvOSbqPQY8gtaetb0grWDpqm
-	GErk2tFnZ9Kz2UXX4yIwb7JQj2ZdCqVFCNupz3BKhXu8haDhYCZW4AM4Uh6oAZoofO9D76
-	gGnO/nOE+hzeQE9z9+2wmzsfVD7bVLY=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="g/qAJ+3t";
-	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758158511; a=rsa-sha256;
-	cv=none;
-	b=JReZc4M43j5Y05ht8r54bAyujFWyaK8LxXwGuon/4Td2c7UE4ogNVlLw9WrQ2Hj5RPi8hA
-	q0RezhpA0WyY+1zampoOot/Vktad/dJaVe2vrHffhxsrXT5128IXqqHMlnpyYab11oT8IE
-	pSn2pNvqLgNC1KziyBYhF+LncNs0Tew=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758158511; x=1789694511;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Vy8OK5kJzvHuwLBFfSz7rPqR5X9KlVDHhZG5vHMcUIs=;
-  b=g/qAJ+3thCP1NWep9visMhMbhcOOmzf4WiUCld4nZZtJYk3f3CvpBJT0
-   uLpMq1d2J18v0GC47E0QMN/Fj4+O/yCuxtInzdfwUGNkY46u9Dah9Td4w
-   juHfzSkINVFD0WO/sAN6monjFAeYbHqe3JCbcR1loupBi/1eToUWo63XT
-   xt3E4stBKE0GZ3sy7Au6lgdALx9idcb5WE1BFUO6TQx5EJiYcbXo8HkaH
-   H8ZK6OUfq2ep8BWkyJQh+gon1+ZGMkXef/MHoz0pG3EOPxQXXt0ComJS0
-   ze/xVhMXmuNY59umfuFhDEY1gDVPX6PHB1mDsoowdnwhJRB3fZhFcuYjz
-   A==;
-X-CSE-ConnectionGUID: Y30p2ugVS7quyVRCP5t9Qw==
-X-CSE-MsgGUID: 8hgn0JoeTM+TxY+k5B1SWQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11556"; a="60628010"
-X-IronPort-AV: E=Sophos;i="6.18,273,1751266800"; 
-   d="scan'208";a="60628010"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2025 18:21:49 -0700
-X-CSE-ConnectionGUID: 5pkUIZn2Q/6Mbe2PH99Gtw==
-X-CSE-MsgGUID: wGtr9egyR3ugRJzUk/HTmQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,273,1751266800"; 
-   d="scan'208";a="175477862"
-Received: from lkp-server01.sh.intel.com (HELO 84a20bd60769) ([10.239.97.150])
-  by orviesa008.jf.intel.com with ESMTP; 17 Sep 2025 18:21:43 -0700
-Received: from kbuild by 84a20bd60769 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uz3LA-0002cJ-1Y;
-	Thu, 18 Sep 2025 01:21:40 +0000
-Date: Thu, 18 Sep 2025 09:21:23 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ethan Graham <ethan.w.s.graham@gmail.com>, ethangraham@google.com,
-	glider@google.com
-Cc: oe-kbuild-all@lists.linux.dev, andreyknvl@gmail.com, andy@kernel.org,
-	brauner@kernel.org, brendan.higgins@linux.dev, davem@davemloft.net,
-	davidgow@google.com, dhowells@redhat.com, dvyukov@google.com,
-	elver@google.com, herbert@gondor.apana.org.au, ignat@cloudflare.com,
-	jack@suse.cz, jannh@google.com, johannes@sipsolutions.net,
-	kasan-dev@googlegroups.com, kees@kernel.org,
-	kunit-dev@googlegroups.com, linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lukas@wunner.de,
-	rmoar@google.com, shuah@kernel.org, tarasmadan@google.com
-Subject: Re: [PATCH v1 03/10] kfuzztest: implement core module and input
- processing
-Message-ID: <202509180855.TT6uHpiC-lkp@intel.com>
-References: <20250916090109.91132-4-ethan.w.s.graham@gmail.com>
+	bh=eGu6jUV2+RT3PgqHH5oCw8Nh03q6VX9mmcyZQjqvWaA=;
+	b=kXidlu0s5fzpuDsWbI+9Xry9R7myxsmG7ZeWUaBTbMFeC/LdSwNHDDqxFB9U/zHQxN8d6P
+	7QQmax8aNDNdVE4vQUhMtdPQ+iCGEpG0UNWdJWkvjq7guiiYWBsJSFyEq7hJoSXDv02xfw
+	rf7b04TpxVrFrovMWvsZBIvV1RJS3QY=
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-b54fa8a371fso255371a12.1
+        for <linux-mm@kvack.org>; Wed, 17 Sep 2025 18:31:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758159093; x=1758763893; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eGu6jUV2+RT3PgqHH5oCw8Nh03q6VX9mmcyZQjqvWaA=;
+        b=UEj3bqXQL5bs8Uwgv1xX7rESpPxJi5a7uqYxKrZV2yB/4o9uOAG1dxgEfU0eLPfFxu
+         FDvfm+sWBnOS9KAEsa0FXIv8l28n7UVCL7K2dzImLNCZc0RSxqFBSLi42oFlkQznYK20
+         XDJKjqz1MhTns0l/WexqB9YRY5ELuCVQl1FevLojpY9PypzYk+h99pFIu+sQuX9scXI+
+         J2N0ZxSgZz4rTEAa9iZsoQZayv4WOqGIyNQOXtJ4vk9a4sj64uWSTWVPNqAnrdSiajn9
+         qo3GWrF+C3OddKHqBPuMzIfIIxVRfzyP/IGWmhbIESSOOKEEGHxry3PHjM07ObJ8FZmQ
+         BZmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758159093; x=1758763893;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eGu6jUV2+RT3PgqHH5oCw8Nh03q6VX9mmcyZQjqvWaA=;
+        b=mFR1mewX5l3nOnzMnyEB4hQfvdPKUfGW6F552/wcx6PlqUzPXhVkLAI5Yx/+SDlBL3
+         F4TkqNtLQWiNL5dessoDvnCOMFJQLmu4jWNvYA99aJOWX7hC0r5CSGsFFsRA9odEep9G
+         dchqvxQzMbtnhtGiLpxb6nIzUbvbe8lTZp2JmsT0NMgC6tMSoysjPKERL5t/1W1KELVs
+         eUFabOGEMJUIlE/BaB43hYx63SD7Rq5gaN8B6p7UO5kjYtzmt5pzBiazDsUf0usqreuJ
+         WE4Y7InKs4gJIixnL93y02HjgsTD+lFH4ZT56rRgpGlAJPhmkv8n/kUxzWJZFJAMrBb+
+         3JNw==
+X-Forwarded-Encrypted: i=1; AJvYcCWQgstdHqX0NCRItAZNS6R7wtJf0p+BQOTB9yyfBEXO9kNVRqQbspPEEKkW786XZL25pThhsAfR6A==@kvack.org
+X-Gm-Message-State: AOJu0Ywm0XIwpTPQ8A+YaszuHAoieuIGW4UqVQsLrt5063TGYKTQ9QSf
+	cQRYb1viBnjA9pKJVCB0YdObdMkGH2GPVlVjsYADZbIE3Gs25RaqK0QE
+X-Gm-Gg: ASbGncvZTI2jIri/ZMQxbcyaNMPjospqHGj0DGfYek+Vahoc0RLNLPh0BNq5H6l7Bnc
+	MjEYtdeMgvbqvxoDvmOULM+DtSzwkdUPf8zaSLyMHREP/nr/VOgOF3E/Z/cjS1JNJ+bEBCEEhj3
+	BYYrDuSoAghiKgQd9iNuOhpqtoGqKP6JrLcUkieo9ROB39Rri2SJeAQ02+AF1G8OGpV5nO+AZ2A
+	6uRRCPWjgPkh3P3M9yQmEAYSWTAupvRSoH2KZNJaBEfCN0ov9W17G7gTkK/MVCVIe62jicTAo4g
+	oMB/O7QjIk79ImlbiWqOvvRzxC/9ixFwYQYlrMNUGVfaxAW7Ci/1yBeXCupQBWAWaBm5CFK+OcW
+	JEqVbe/AA1uSj99axvXyTwp0rxwpYdnnX+GPiD6KXDGN9ijqwjHhS8Se0f7PfOjQ=
+X-Google-Smtp-Source: AGHT+IGyol2ICo5LkwOJQM5YrI/z89CMfK7noN15fH9mKTb1oN4Xwj7kuK4ucc0oFR/zcNay6QAzWQ==
+X-Received: by 2002:a17:903:2307:b0:248:7018:c739 with SMTP id d9443c01a7336-268139031a0mr60323995ad.28.1758159093380;
+        Wed, 17 Sep 2025 18:31:33 -0700 (PDT)
+Received: from VM-16-24-fedora.. ([43.153.32.141])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-269803184d3sm7860915ad.116.2025.09.17.18.31.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Sep 2025 18:31:32 -0700 (PDT)
+From: Jinliang Zheng <alexjlzheng@gmail.com>
+X-Google-Original-From: Jinliang Zheng <alexjlzheng@tencent.com>
+To: harry.yoo@oracle.com
+Cc: Liam.Howlett@oracle.com,
+	akpm@linux-foundation.org,
+	alexjlzheng@gmail.com,
+	alexjlzheng@tencent.com,
+	arnd@arndb.de,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	david@redhat.com,
+	geert@linux-m68k.org,
+	hpa@zytor.com,
+	joro@8bytes.org,
+	jroedel@suse.de,
+	kas@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux@armlinux.org.uk,
+	lorenzo.stoakes@oracle.com,
+	mhocko@suse.com,
+	mingo@redhat.com,
+	rppt@kernel.org,
+	surenb@google.com,
+	tglx@linutronix.de,
+	thuth@redhat.com,
+	urezki@gmail.com,
+	vbabka@suse.cz,
+	vincenzo.frascino@arm.com,
+	x86@kernel.org
+Subject: Re: [PATCH] mm: introduce ARCH_PAGE_TABLE_SYNC_MASK_VMALLOC to sync kernel mapping conditionally
+Date: Thu, 18 Sep 2025 09:31:30 +0800
+Message-ID: <20250918013130.2425537-1-alexjlzheng@tencent.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <aMrkoBhIcP37YgyS@hyeyoo>
+References: <aMrkoBhIcP37YgyS@hyeyoo>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250916090109.91132-4-ethan.w.s.graham@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: AFF50140007
+X-Stat-Signature: sc7eydpetpunxjifn53if7jbhpjyqxji
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 0ABA3120003
-X-Stat-Signature: zmyy3fub49koxgjuersw6c7m4d48b88t
-X-HE-Tag: 1758158510-556230
-X-HE-Meta: U2FsdGVkX18WZD31KPP6tdCEOOc3IdlYJg5I5Pgl1Woa8X1DfSQFZkfDVqVQsoiboijrKQNDJW9rd4+lZTeDXdcalvKF5gXew2k5ZmSUdTZFhnbKPBNECJOaC4zGoI3WehKIcrBj2jJvoEM+WH8vlWCb8Z4KAwWfWsCf1deloby7SRPKPFTx35F7Y0lL66Dr2+kwLrkGOqrcY0dZnk/pWq7PV4100zHqoKE9TtIhdLrFG489S8hkiRVeqfp3B40PdD01Da0cNsOrtqGIkXrM5mH4xOkvhNMg7MvPqIBxocLnzq5BorrQbO9d99gL0Q8Q0s/8TUhChSNympXmjPZXiR4FQgIvaZEjMUJjd6GHuSPcWOK4wi06Ui8ZiwFzU0KBT7s48IzndkvqsINANvtw9KDQQOqfZW1wIcqH1wsQiP22ZBKFMragKaIDVDiaJqINR9yo4JENtdb4z9LNLdxHuVEiWTT977Mu+WBiOw5EJdlfHdoMkZcwbjrBjq1gZfIau3bVYNzNXXFNYrNaPUU58Ppef4sBXN81RtAirnZuDIjb/x8Gdq9kJftj2a5s0U6issuVfUMp+h4pJ50/pMoqpEEVZrsE8VmiLr5Czf8XDRSS8nN7KnYxoqywO8SDf3kdoQPXCq3oxvRNozmwwKHfeM217JeAeVmNir2cI9MjV/ft9Hpe1QGMEdey4abdbfsVa9OTB8E0UyrzJ6gx1+v3N/gDMZbsc8NaCHrt5fAR87Mrs+oRu1JdDuz7Pgp+vugDUJ/wtl7LSupQhRASCoLF6WntMRWqRrAKLErVkoACrhU9PQkcYEZQ7ky6OwyEBwfY28FJI5dwL4lbUZpHuktD4zqfPkOgMApFY20KR1S/OzN79qzYMlwOJY6kG08w9KzA275n4Gu2VH2qstzFVxyarb6YxjE6z8Q6Wm6dx96agFmOXdtoTHdKRhdBgqMi5QBr
+X-HE-Tag: 1758159094-397270
+X-HE-Meta: U2FsdGVkX1/jEocgQOeZhwTN6LeGcfXUCV3Jn++GQh2THUvUaw6dChLXN98b6lMYUt8hYU8mkAERwv9xzQJG6FXxFobIclQAGBDtweKSfIS4FXiqBJmCL33xBgAsgQHBaZOiOx+NePnl3oHJV8Nr+v2sR4YLJloK9/8VmxiotaQ8kp0zWzhULw/cOpLLBeL1IsmBriehpkE/d9MLpLnzpe3+ksrMUjMl340baJQN+LthqCO2duwLcD+qciQzWNXi4EKDYohxClQkPOQHtfpOaVmPW+M8wy8SSrng+YykceUQT0IzFPc6OtIXM7dyPfXONB6r9hNDRs4hVWVlorwGBvy1V5dgHKdAYhj+QNK+LZOShdz9pLzDxC0NjJxqeuupbTZmn3GotTMG8k2BNGSzg14jiMvloM9/agfVJ2UtDIRvfFtDTeBt0vwaqhH2PYQegvF7/C/cevm8EhQw0X4844cSBCAUptCTsi9vzpCASHLLDKUtaTDnYHedHTALIxs7osfy+to3ZRzV1ET8iGFI+7JJHMxT2wtLmkPhVF4uT1PKIUvd0rJIbIGKHKm8HaHGoCLsKgNXE2IAbWDL6lV37OrTyd5LmzjhdptopKlt/sY9h4pCAcbPxtNEWNUPYSI0MxJ+d/Svj6jOnEsQI33Q9FKc0Xl1Y527rokw1jmor17AtDKcqlXy6S1737q/zdujUdLrdkTO1y1heOQArRv360JjMquKsmKMxpqQa40dOfvh9qshUV5dedy5hVagAfgRv7IUVwOL+QTd1czDmjPnZDfidWPCZU0VUGfzzI1I/LhFqL4CkL8xR19BPB2+ukbQwzEKJ30Vkjw1HtCjOWc+ePlO5uyhvXPQfzajS+pXUUd7VRY+7ny+g3hVk0kxSTtAVmb0cNRWMSOmjTOTuSsjVJQk5pG7Pp0EGmneHquGn6WI7eKZboT4WZjvnNVgUZk1zrC5+5gvKWISatMpKZS
+ 9u4jvvP5
+ ib43jAILSiRPMpEId91ke7i0w3J5qKPj3C8ar4KJINiByi7wU1Dx6sJpVB67J+6lYL/tQOnW21Plijs8VGIK2cdf5ft+5FsGu/HPAgwQ9tW6PyqQpAkK4bg+PN0FvWNvzs8sjcpkg9Vcn+jt48LXnV8qntc98jg0PBkPtr1t4iE3lJrHl4vbW2obC1lM0YDEDEBGfaLqxYNQubaLcKbK8skG0/3tpNVwtzMTlwAs4YIHKXqTvqQn7ImeTzRDUoz8ATWTjkqt4pOHJIHWcVgrJY4qPrio65rz8pb85uJJc1ZKE6RzKSZdtrHuv1UA5JsEC5jgbSHEIU8bXxuiA527GSVcHpncLhSEUSUQmr0dwD7NRJu21KoYofLT8W60UIWTk/GgNS4RcTK04pLpE5bruwWwxR+R3TmrwiBbGThT8MBzjNvvbaAq7QbahGiiGJeXwMK/8/Bw7VqhI1z8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,41 +145,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Ethan,
+On Thu, 18 Sep 2025 01:41:04 +0900, harry.yoo@oracle.com wrote:
+> On Wed, Sep 17, 2025 at 11:48:29PM +0800, alexjlzheng@gmail.com wrote:
+> > From: Jinliang Zheng <alexjlzheng@tencent.com>
+> > 
+> > After commit 6eb82f994026 ("x86/mm: Pre-allocate P4D/PUD pages for
+> > vmalloc area"), we don't need to synchronize kernel mappings in the
+> > vmalloc area on x86_64.
+> 
+> Right.
+> 
+> > And commit 58a18fe95e83 ("x86/mm/64: Do not sync vmalloc/ioremap
+> > mappings") actually does this.
+> 
+> Right.
+> 
+> > But commit 6659d0279980 ("x86/mm/64: define ARCH_PAGE_TABLE_SYNC_MASK
+> > and arch_sync_kernel_mappings()") breaks this.
+> 
+> Good point.
+> 
+> > This patch introduces ARCH_PAGE_TABLE_SYNC_MASK_VMALLOC to avoid
+> > unnecessary kernel mappings synchronization of the vmalloc area.
+> > 
+> > Fixes: 6659d0279980 ("x86/mm/64: define ARCH_PAGE_TABLE_SYNC_MASK and arch_sync_kernel_mappings()")
+> 
+> The commit is getting backported to -stable kernels.
+> 
+> Do you think this can cause a visible performance regression from
+> user point of view, or it's just a nice optimization to have?
+> (and any data to support?)
 
-kernel test robot noticed the following build warnings:
+Haha, when I woke up in bed this morning, I suddenly realized that I
+might have pushed a worthless patch and wasted everyone's precious time.
 
-[auto build test WARNING on akpm-mm/mm-nonmm-unstable]
-[also build test WARNING on herbert-cryptodev-2.6/master herbert-crypto-2.6/master linus/master v6.17-rc6 next-20250917]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Sorry for that. :-(
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Ethan-Graham/mm-kasan-implement-kasan_poison_range/20250916-210448
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-nonmm-unstable
-patch link:    https://lore.kernel.org/r/20250916090109.91132-4-ethan.w.s.graham%40gmail.com
-patch subject: [PATCH v1 03/10] kfuzztest: implement core module and input processing
-config: x86_64-randconfig-r112-20250918 (https://download.01.org/0day-ci/archive/20250918/202509180855.TT6uHpiC-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250918/202509180855.TT6uHpiC-lkp@intel.com/reproduce)
+After commit 6eb82f994026 ("x86/mm: Pre-allocate P4D/PUD pages for vmalloc area"),
+pgd_alloc_track()/p4d_alloc_track() in vmalloc() and apply_to_range() may should
+always return a mask that does not contain PGTBL_PGD_MODIFIED (5 level pgtable)
+or PGTBL_P4D_MODIFIED (4 level pgtable), thereby bypassing the call to
+arch_sync_kernel_mappings(). Right?
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202509180855.TT6uHpiC-lkp@intel.com/
+thanks,
+Jinliang Zheng. :)
 
-sparse warnings: (new ones prefixed by >>)
->> lib/kfuzztest/main.c:65:15: sparse: sparse: symbol 'KFUZZTEST_INPUT_PERMS' was not declared. Should it be static?
->> lib/kfuzztest/main.c:66:15: sparse: sparse: symbol 'KFUZZTEST_MINALIGN_PERMS' was not declared. Should it be static?
-
-vim +/KFUZZTEST_INPUT_PERMS +65 lib/kfuzztest/main.c
-
-    64	
-  > 65	const umode_t KFUZZTEST_INPUT_PERMS = 0222;
-  > 66	const umode_t KFUZZTEST_MINALIGN_PERMS = 0444;
-    67	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> 
+> > Signed-off-by: Jinliang Zheng <alexjlzheng@tencent.com>
+> > ---
+> >  arch/arm/include/asm/page.h                 | 3 ++-
+> >  arch/x86/include/asm/pgtable-2level_types.h | 3 ++-
+> >  arch/x86/include/asm/pgtable-3level_types.h | 3 ++-
+> >  include/linux/pgtable.h                     | 4 ++++
+> >  mm/memory.c                                 | 2 +-
+> >  mm/vmalloc.c                                | 6 +++---
+> >  6 files changed, 14 insertions(+), 7 deletions(-)
+> > 
+> > diff --git a/mm/memory.c b/mm/memory.c
+> > index 0ba4f6b71847..cd2488043f8f 100644
+> > --- a/mm/memory.c
+> > +++ b/mm/memory.c
+> > @@ -3170,7 +3170,7 @@ static int __apply_to_page_range(struct mm_struct *mm, unsigned long addr,
+> >  			break;
+> >  	} while (pgd++, addr = next, addr != end);
+> >  
+> > -	if (mask & ARCH_PAGE_TABLE_SYNC_MASK)
+> > +	if (mask & ARCH_PAGE_TABLE_SYNC_MASK_VMALLOC)
+> >  		arch_sync_kernel_mappings(start, start + size);
+> 
+> But vmalloc is not the only user of apply_to_page_range()?
+> 
+> -- 
+> Cheers,
+> Harry / Hyeonggon
 
