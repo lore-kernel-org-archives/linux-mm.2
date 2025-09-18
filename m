@@ -4,79 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8FA8CAC59A
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 05:04:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1121CAC59A
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 05:04:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 21A3E8E00B0; Thu, 18 Sep 2025 01:04:42 -0400 (EDT)
+	id 2DEFB8E00B1; Thu, 18 Sep 2025 01:04:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1F1C68E0093; Thu, 18 Sep 2025 01:04:42 -0400 (EDT)
+	id 2B5598E0093; Thu, 18 Sep 2025 01:04:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 12F388E00B0; Thu, 18 Sep 2025 01:04:42 -0400 (EDT)
+	id 1CB7D8E00B1; Thu, 18 Sep 2025 01:04:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 01BE38E0093
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 01:04:41 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AC0281A07A9
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 05:04:41 +0000 (UTC)
-X-FDA: 83901180762.06.D4B6B3F
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	by imf16.hostedemail.com (Postfix) with ESMTP id D2BEE180007
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 05:04:39 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0DDC18E0093
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 01:04:49 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B270E1603F0
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 05:04:48 +0000 (UTC)
+X-FDA: 83901181056.19.E4FB15D
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	by imf19.hostedemail.com (Postfix) with ESMTP id DAC991A0002
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 05:04:46 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
 	dkim=none;
 	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none);
-	spf=pass (imf16.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=ioworker0@gmail.com
+	spf=pass (imf19.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=ioworker0@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758171880;
+	s=arc-20220608; t=1758171886;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=i69tc5LqSYutpnPuXybPetu7m39RGyNdoIoy0x78ep0=;
-	b=0leQAp1vbEty2NRVwVmfCfkhGq1OUWxUD5cUb2BiJkxSxlzWTiPhQIwFrJ4ktD3HCkjwmP
-	Cd9Pl1WN7eKw30Gw7bCEXNzXVboTwvsUwMncSczrqTf2aj3e+MYSZlpziDMdMTV3iHiVUP
-	nTI8d7bMpM+QgmJKfEk5dpAxhzP4N4k=
+	 in-reply-to:in-reply-to:references:references;
+	bh=aO4ZLiBPFlHh7Ygo8g3PnYlJq/wmpc5eSQsMTQaitaI=;
+	b=tsGBHIm12nCc20ws/M1QfiJInFWwDWrrAFvwN9kblF92bNiCxAmIYaDW6lISF6/7yKhCcv
+	FcrH7DvDpC3/2+pHHltBoXgNIbqpPJNa915qmqdEh0Fyrky/5M2zLeNXK0Q7xbov7ejM4B
+	CpLJDQcFv7wuxoNdppJ8BWyVAmFp6To=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
+	imf19.hostedemail.com;
 	dkim=none;
 	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none);
-	spf=pass (imf16.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=ioworker0@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758171880; a=rsa-sha256;
+	spf=pass (imf19.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=ioworker0@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758171887; a=rsa-sha256;
 	cv=none;
-	b=4ufUoGhFSLh3MxCyYTCnztCJGKLuuwUotaq3TjxyI9VYsaWKU+oWIb2qQ1TjzYsXjzVzqZ
-	yj5/ibLKfYXFotxw+atMSkhznkOSuSm61/eMKmvpW+jNIxTNYj7ED8SYXQgY/ZY/C2iOqW
-	68/yzyJvYxGTGLGkPP1RdviuIn+HbRM=
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3ecdf2b1751so217596f8f.0
-        for <linux-mm@kvack.org>; Wed, 17 Sep 2025 22:04:39 -0700 (PDT)
+	b=PvqkruNPhNPQidXU6WjioMvw9NkLprbMXhZ3DZwbLmD9Wvjc9R7BCI4f6LcMlbfnKHvu/0
+	N5sXp3WeTqxGuR7Ji/WjRXrf4VPPgFh0dNiGXbq5OJXqHDjtZJRgvn8a4L7MS6MeEAZo5K
+	mzhRDMc8KXjxQmQblaGanLG4IkqACcI=
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-3ec4d6ba0cdso328199f8f.2
+        for <linux-mm@kvack.org>; Wed, 17 Sep 2025 22:04:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758171878; x=1758776678;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=i69tc5LqSYutpnPuXybPetu7m39RGyNdoIoy0x78ep0=;
-        b=Zx9GQscos1TDm/vivhE0aauno/8JePF9UZz3jbV8VcaTRQqCDvu93XW0W02fYb3HeW
-         9JGICMz58VvdEjH6f/pQd89T3mAM0gfyGqrX1m7yv+UdGoDqZAmrbYjbzcQYJKOf6ISB
-         87TcO10t07zHYlUQeEs4MMEp5KgWzgVyXlTyvf4pC3vQUHPKGf8s0bWaIhgO8FGYM4Iu
-         l+0zS93CKpt8WCy0Va91ifnua32H7guQHg5365GbRBneeuKfTbb5zVrcYWHWtltqAhlp
-         88r6cCmjVslFg/IE8eK7ATR3gGkMpcKDwzN+iHbWXDRQqq3QHRqzesdWi79i6Jtn6UH1
-         6hqg==
-X-Forwarded-Encrypted: i=1; AJvYcCV1yX8KWHxbsiR31YYyH7G5TTTvCaG+q92AngUBbnIdvfny0Ojt492JflykA8C9rqHTmwiS1ZYYmA==@kvack.org
-X-Gm-Message-State: AOJu0Yz+fk0R013PBvSU+dxjli1nBlnk00jCYWSLcJqDFbyIUEdGYDwo
-	pW7y+EuvwEj7X08tQ/tZbeiOtEB7AGmpti0xk2xObKA/n5YbQqDRccqQ
-X-Gm-Gg: ASbGncsziZRpQMTaesNjdbgBabVt8BoeniaCkjhhUFnn/odoz4PLkm5i8a3+GzevZxR
-	xfvUJfmPuMN74vq1lWG3c5H6sfV3q/wGhZCd/TZAHSnU3bGlMtkEbHA745R8Ao1WZEZoEw5cY+9
-	P3yKYIqdIFI5cfQL1+2S0f/1yGYiUgJBojeCPPxC5tDrgUlG84rlhSvpbyyghElHc9axAGUJNdp
-	l4xpZm6ULM1kTc5iItLd2wMfX8dgATQi90ENtOJ1ceuVb1vryQJ+kSd8y4CTP4PSVSzKPNq5QVb
-	PecKl7rNN5Dp/kS4IGUBN8W5PfckNdGyQpg0r528O0Jf8jrB10N7jCTMesniKekdwWuPbCCTcZ8
-	qxOi86xYZQWhTSjU/2H3JL0No000=
-X-Google-Smtp-Source: AGHT+IEipy1WMSokuL4yZS5rUn1njehy5C0LCE/S735hhPYb3oucQvGSCGf8/4wxTRJ70cZWL/yrcg==
-X-Received: by 2002:a5d:5f91:0:b0:3dc:1473:18bd with SMTP id ffacd0b85a97d-3ecdf9be76fmr4130913f8f.3.1758171878179;
-        Wed, 17 Sep 2025 22:04:38 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1758171885; x=1758776685;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=aO4ZLiBPFlHh7Ygo8g3PnYlJq/wmpc5eSQsMTQaitaI=;
+        b=IeAhdel54jVXbXlJ8QI7L1P6oZtvhT7P+vkz17+EW96J03hZl2LFRjOftXmdAg5Eej
+         /F7/p7QmoSyazJVCnBC80s/ocmdNIKg0eO0GfrcZAzQ7KBW+u5E04HuY/eDIFEDny3Tj
+         jgb5QQu6Q6vu1WfPLkjMA5KVty7sQuqZ73ITeFyaZx8TXMeE+FxjJOnlC2cDdyZROYPA
+         Kqa6El+KabVMDVgn7CgzXBSel7kqaXSQtI7qrp+ZYjK5zigkw3YFPa6bKEwpeiFO5gAc
+         HBRpNRwLel1x4nU1OOJAbapgjoJlb1YTu2uVksAlZGtRc0WNQKLPfjR6LAC8h27KV4hO
+         pxGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUlzsPLpZTx11Dx4tviBUcYVszQP6qd4M8/8dAmI4uCZ/IPD2taUkLhjv+jKbGLaekirFTrbKVYvw==@kvack.org
+X-Gm-Message-State: AOJu0YxEGac/iZEjR66iIYxZLJLoURASxWxjb5bCHis4mks51t69OriW
+	/rWJu6jLjdACQwlU8S5JXgFnoRw7R+apzR4XeviBbbucMfPQVanvRYQI
+X-Gm-Gg: ASbGnctBXEfHLpwe3CH8Q/+5T/5hNtx6Q+vBZXxNfNRskDIihg2KAQNo4/zYPGlC107
+	FyXodALjOsnDveDDVTRHwL2VIofYuoKxr2pl7xhFSKXPHvYedhWNdT5BsMBnFn0BVbW74zFxMao
+	1hvTMjjJV+SNXyZqWlzB7MLPlNbBa6wQ/N+8/MRm4t1rHsFyR5Rt6/Ut5BNudhTVAXNJ0PhOThB
+	7LQ5CUkZlIj2i7fXvVVX89c/1HHSBPCZm1UEGH5jPuOMTKLRVTemyPUwxLvAMlzGYsvdo9flMTN
+	jeqAn940ZiVEflU2jS+zUyzccgjivVCjWi3CxwZbvad31KbQyQHTKq9wxbJzbPofuStrJbGdVhP
+	8rYpO7/FQ1mlYnlXkw0G65Ai1p6OkwdaSehjlyg==
+X-Google-Smtp-Source: AGHT+IFdC514onBUMagLeO2d/t3qyVfivw2gBfhVFamlNKWcdrfcQDzJVUxOlBsSi0KZGLvniYQVcw==
+X-Received: by 2002:a05:6000:26cf:b0:3e7:45c7:828e with SMTP id ffacd0b85a97d-3ecdfa079f7mr4188775f8f.33.1758171885260;
+        Wed, 17 Sep 2025 22:04:45 -0700 (PDT)
 Received: from EBJ9932692.tcent.cn ([2a09:0:1:2::3086])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3ee07407aebsm1994409f8f.14.2025.09.17.22.04.34
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3ee07407aebsm1994409f8f.14.2025.09.17.22.04.40
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 17 Sep 2025 22:04:37 -0700 (PDT)
+        Wed, 17 Sep 2025 22:04:45 -0700 (PDT)
 From: Lance Yang <lance.yang@linux.dev>
 To: akpm@linux-foundation.org,
 	david@redhat.com,
@@ -93,21 +94,25 @@ Cc: ziy@nvidia.com,
 	hughd@google.com,
 	mpenttil@redhat.com,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH mm-new v2 0/2] mm/khugepaged: optimize collapse candidate detection
-Date: Thu, 18 Sep 2025 13:04:29 +0800
-Message-ID: <20250918050431.36855-1-lance.yang@linux.dev>
+	linux-mm@kvack.org,
+	Kairui Song <kasong@tencent.com>,
+	Lance Yang <lance.yang@linux.dev>
+Subject: [PATCH mm-new v2 1/2] mm: make is_guard_pte_marker() available for hugepage collapse
+Date: Thu, 18 Sep 2025 13:04:30 +0800
+Message-ID: <20250918050431.36855-2-lance.yang@linux.dev>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250918050431.36855-1-lance.yang@linux.dev>
+References: <20250918050431.36855-1-lance.yang@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: z7y1aeehb169zp1ffgmz3f4pm5mna56m
+X-Stat-Signature: schh9ko4pokg8k1dd4k3ywdt9gp4ki8u
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D2BEE180007
+X-Rspamd-Queue-Id: DAC991A0002
 X-Rspamd-Server: rspam04
-X-HE-Tag: 1758171879-173527
-X-HE-Meta: U2FsdGVkX1+kM8UJE0fh7y6rOTNLZXxShvs4A/nUhYY/5pPGfzoug1YksqEUbDOxttYovdRtiTh2tqq7LPdmE/MblTPOWzt3dYhiDRMsBiSUwkCXBC9SPBtu51PIXS1HFP1XUeks6CkZvQnH9/xzNpDqB/My9iS23k73VIM4NZSwTrG0MlHJTOjCe1NjZICJufsee2LLInxhWswFt14ZcdgRcM/6nLL2QktKyA+TEwr7x5Y7/2V9FQk3QwPeBwPvFVsbu98BNH+trHhb6UsLpnhCd+Iu0Kg41dzAClgjqJBPiyn3T4zOFRiQ6LgJYrHQLdLj4zb3geCNwOuqudI1WGAnUeFNOfQCw5TCK6EDZ44rnalZWVUb0YBelBkmrBtkbyaTIXRrTUSju7hnqk7+QRHWaSOjDEzk3jD5KOwFEh7/otBRyEUCN1FCvdZ7o9TQVxc39TIsjSStrrh95wDhLsrKmNN67V/UnTy7T5Lt3GP0DKIvyoEqhpzhbDrbxZFT7QGS3Y3p9olfbQ5hRtNEEgg4YRJFGmxVrbtIWueQesAeitQwg67oP5dHf+uFtTt5rIRbsMheJnUmCPTIjoJnVfnAi4EdyidNShDdZn5lMdPQuEiGOvd0W2ZWp6xganvufBw89Tz+oYAzHzi9i8XxQSpzdnUC4TIXB/OJCjJaw8Jt8CcWA46iT2nHtjidLi4k60ekDouWqlCNj+M1u4c90fYwSRYa46Iay4vLtg/FAMTuJta6juWWKkm/a3mojmQaa1RgZTqSIF0KuMkZbuZSXHh53i4KmRGazp3RtlWLil/Rh3O4Tv5LypkcELNS7eSlZfa6xHjo7ruP+B99H1gvYJ4HLDvccxIxPiyZvY5ZIYqc923BVE/8W+V4r/lWNwlTbmMTlt1V+XLdQFqUBJ2btUMYgwXJlxAsNgfvV4v+FOUB8CeimwZjybvl7txRf1v9rLyAkkGAzsoCWBFG6uf
- Oi4XIbEW
- xcxWoYQTGdTTG6qsPNmrQQTUn+tWYmOx7zAtDhTu5Fbu0DAFDHoZXPIpHC74tH5bYKKw/Rx6FQ70hmdymP2DP3kI75wLkBWUU3Tyhq22FmAKHGrtfnJjYq6WT9NXhxWKJtVtjrQtm7z3DDv+jnN+T1FqjEvDXOlmPSgHMw/EJvJwhrFBjmfQUP58RLFPqXAnlXpk/QfZDczyV3w7UwPxWu3ZB9cLZqATbeiYFR7Pz8f/Ewj0gCrCpSwHiQuUdJkxbLibmAJKW538GvNgwzp8Tp+JjonT0QIGYP/0axMR1YAWlnmzb/oiAA3tA00y+EU5IFvnTja0AXyc2IS81miJC+TcURVGq4903SFX2VsEpObdt1KBw1OUrX/1qPk2PNBetgk8yUq3jem1+AfSdIAZiVk8ly7oHDXOnB4YP6UDU/HRWgytP+4auwpX4yZ+/WckJWckp1E+pZCIIP25MCJFha138gCYQrFY722vs945s/erc55YBwOHJRUfXjw==
+X-HE-Tag: 1758171886-263786
+X-HE-Meta: U2FsdGVkX18nxNYNt8L9qWSH4vKnN/tN8cXuINqU6IA6wD1W4x7TD2v9kkGPoDBiOg7YHKL1AjWBmQ0yeayHNTKOHGlcXwQ0icxWbYzZ9Tw+LpZ/n1dCoVbZig4vMz0haLXwmHjnyWdj/GbR4auPEHxMSoCjJW77d2bxC+CnUd1ECW/TAovM6GOQIurX1WnWBvsGa3ES2a0Mx4Mhq0YwjIhOkqGb6tuE57lDIItn/L07zCbjPW5zeVwKFQtvWEpsgnTmuAfuUzww2BKljsHt620KHKP4x33ZMy+B53hIl/EjaHO5WCzh8TWCka7jz1cjM1VwADJFEz4nHN/l39Ua1Ce2UZZS1s08z2H5YNrE+2egfIfcUs1SdYXcqVMICy9CQ4xKh5dbGCiyTGxGtUKv1x2FDityskX0MLPNJMvVqsRLaq8i6q6TOZkO/7oQtJdKyIpQKK7TuGmObqfH2jsU+suLHDaSgSPPdxfeD8ctTsDjfnKdtRT/0uMOQWBGoLH55+2KTT8aX9xITBycnQTlKXRcVMHoGV8JvEEM9b6W32o3989OpkeIx2on7Ndba138QW3lXYdZPakn3x/JA0f2KhcBAqscM9S39+Z45bPLc43hnRkPACTzXohsP2AQ9P6UL/bCNXLl3fvqDW2NJdKbohBz0g4ZdTmDViWPFg1ZllwI3wYnL2QDL/Jdf8CZVYxFdf/0yphQsRhXzBUKBnsi7RFHUvu0lv6Tqbj+luLDF4vUHp52JyJuq1du4JB4Zt8gJzWkIAp3Jz1ZsCcpzpyaBlLrUiNCtrba0yppNV63prAZJeej78jOowbQo/ZRUqsq4pWi3V3pTFGtzvwTVvk9SYov29RWMZ21RGRu356d2SptcJIDiMztcN7Snf9l5SqRCWjhx5lBOXMw48od0jrUbBuUiXYrC8wsPnkSIGDinUSNCJN8FeLeEXtdUazNN6Y9KSUuUZoxDIrqmWcMNUc
+ Or+6h59y
+ nXxZOh0zvKnj+EdP8rZqY6D64m7oxHAptC+MjAORruevhNJf0fpy/CQt8fx2ds/7FG2FcysVa0qSUyLJGB5xIfyth+d3QUaaEJyS3tje/vGzmdvIxlzgnDVq49sQnjkAjejw96hz7cC+4T63NThrnaj/x6je+Rsl7IfZigykfE9Vrs2o2SRV8Bo5h4zMWSkvsuYaEx8ut05oPuC2QYSBLYN2wTfmWOikDIOYbBODK4S63RW7HiuzdXNyqvZrwH/ZzGNsjbtno2w7xJcwXK3l2njukOMoYdCJTciXpWXbdVoQNbqf3qjB7r0kG7FoUj+FxLdkuQ9sUI9jpYW29Z5w7GUt168XTEtI56Ipkxl+NxJVbtwg9R1/J2QdTGxQy1YfM4vT6Gf40BVgyX2u0eC+Om30UlpYECJLAuxsJR3zfEGKHTFPZSkccweHH7sNm2Wn5DGGSY7kduyCep/xGwjY7Zi4NRgl17mZ+8yD2G6HrggSlAB5+knDV057OBjlsV6hQcpagDko4sfNi+ygP2MCw93HdQkDDNUisLfU2wcSM/Pmw5IZ//Lhqj3dqH1DdIQQgJZmqPfl/X0PoEL0YQ+Ism25sL3o1ElI/Dif/
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,34 +121,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi all,
+From: Lance Yang <lance.yang@linux.dev>
 
-This series improves the THP scanner by teaching it to detect unsuitable
-collapse candidates, such as guard PTEs, earlier in the scan to avoid
-wasted work.
+The hugepage collapsing code needs is_guard_pte_marker() to correctly
+handle PTE guard markers. Move the helper to a shared header and expose
+it.
 
-Thanks,
-Lance
+While at it, simplify the implementation. The current code is redundant
+as it effectively expands to:
 
+  is_swap_pte(pte) &&
+  is_pte_marker_entry(...) && // from is_pte_marker()
+  is_pte_marker_entry(...)    // from is_guard_swp_entry()
+
+While a modern compiler could likely optimize this away, let's have clean
+code and not rely on it.
+
+Cc: Kairui Song <kasong@tencent.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Signed-off-by: Lance Yang <lance.yang@linux.dev>
 ---
-v1 -> v2:
- - #01 Dropped patch that skipped mlocked VMAs from THP collapse, per
-       discussion. Thanks a lot to Hugh, Kiryl, Lorenzo, Dev and Mika!
- - #02 Pick RB from Lorenzo - thanks!
-       Update the changelog (per Lorenzo)
-       Pick AB from David - thanks!
- - #03 Reuse SCAN_PTE_NON_PRESENT for guard PTEs (per Lorenzo)
- - https://lore.kernel.org/linux-mm/20250914143547.27687-1-lance.yang@linux.dev
+ include/linux/swapops.h | 6 ++++++
+ mm/madvise.c            | 6 ------
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-Lance Yang (2):
-  mm: make is_guard_pte_marker() available for hugepage collapse
-  mm/khugepaged: abort collapse scan on guard PTEs
-
- include/linux/swapops.h |  6 ++++++
- mm/khugepaged.c         | 10 ++++++++++
- mm/madvise.c            |  6 ------
- 3 files changed, 16 insertions(+), 6 deletions(-)
-
+diff --git a/include/linux/swapops.h b/include/linux/swapops.h
+index 64ea151a7ae3..7475324c7757 100644
+--- a/include/linux/swapops.h
++++ b/include/linux/swapops.h
+@@ -469,6 +469,12 @@ static inline int is_guard_swp_entry(swp_entry_t entry)
+ 		(pte_marker_get(entry) & PTE_MARKER_GUARD);
+ }
+ 
++static inline bool is_guard_pte_marker(pte_t ptent)
++{
++	return is_swap_pte(ptent) &&
++	       is_guard_swp_entry(pte_to_swp_entry(ptent));
++}
++
+ /*
+  * This is a special version to check pte_none() just to cover the case when
+  * the pte is a pte marker.  It existed because in many cases the pte marker
+diff --git a/mm/madvise.c b/mm/madvise.c
+index 35ed4ab0d7c5..bd46e6788fac 100644
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -1069,12 +1069,6 @@ static bool is_valid_guard_vma(struct vm_area_struct *vma, bool allow_locked)
+ 	return !(vma->vm_flags & disallowed);
+ }
+ 
+-static bool is_guard_pte_marker(pte_t ptent)
+-{
+-	return is_pte_marker(ptent) &&
+-		is_guard_swp_entry(pte_to_swp_entry(ptent));
+-}
+-
+ static int guard_install_pud_entry(pud_t *pud, unsigned long addr,
+ 				   unsigned long next, struct mm_walk *walk)
+ {
 -- 
 2.49.0
 
