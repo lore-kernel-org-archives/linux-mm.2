@@ -4,132 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85CE2CAC597
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 06:38:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50801CAC59A
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 06:46:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D6EA528002E; Thu, 18 Sep 2025 02:38:20 -0400 (EDT)
+	id A716F8E00BF; Thu, 18 Sep 2025 02:46:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D1F878E0093; Thu, 18 Sep 2025 02:38:20 -0400 (EDT)
+	id A485B8E0093; Thu, 18 Sep 2025 02:46:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C0D9628002E; Thu, 18 Sep 2025 02:38:20 -0400 (EDT)
+	id 95DDE8E00BF; Thu, 18 Sep 2025 02:46:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A97858E0093
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 02:38:20 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5329513BB1D
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 06:38:20 +0000 (UTC)
-X-FDA: 83901416760.02.1E2906B
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	by imf08.hostedemail.com (Postfix) with ESMTP id B94A7160004
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 06:38:18 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=GH3piuzu;
-	spf=pass (imf08.hostedemail.com: domain of 32ajLaAsKCKYGIQKXRKeZTMMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--ackerleytng.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=32ajLaAsKCKYGIQKXRKeZTMMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--ackerleytng.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 81FBC8E0093
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 02:46:17 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3BA9F1A0779
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 06:46:17 +0000 (UTC)
+X-FDA: 83901436794.01.8F9FEC1
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf07.hostedemail.com (Postfix) with ESMTP id D6AF840009
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 06:46:14 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=Sf5cA2Tq;
+	spf=pass (imf07.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758177498;
+	s=arc-20220608; t=1758177975;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EhQgZCX3g/hqgKkVAO2ALoNMZAYeb5CdIihGIJQ0jtk=;
-	b=ggLR49w58oMq0ZJjYMjWm1vsJ9oyYDRxxy/owFQ9Hkxc5C/rxOh+5J+2UQcL6yf/LlIeOu
-	cZkuzCtq7RiyVMMIjcUeB4g7lC7thEO4zHkK1YZ9kEZNYyvwRyNrZflKv65EveStPCaRFQ
-	aN+EvciPutObUcy3Jw9056L4jWW6oTI=
+	bh=UmyeBES4QYQMD3WHm2ocxnsfboYzNZugX1gq0nt42Ro=;
+	b=Y+Hb3dM3BImgFkb2wIxZEbBfQUBpRnvBCGUfu8vgp5W2PF64r+FkWubi8kgvgCPI0c9Udq
+	OJWKvUKc5A4Pa4ItEv3AFEPnPXW6ml4XxFXlTaWqwXLQHiWu7AsshAzUFm1ZakaQ5lX5wz
+	q7Zr1+vpr9CNDtpNg5Cas7gaVlDaBKU=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=GH3piuzu;
-	spf=pass (imf08.hostedemail.com: domain of 32ajLaAsKCKYGIQKXRKeZTMMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--ackerleytng.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=32ajLaAsKCKYGIQKXRKeZTMMUUMRK.IUSROTad-SSQbGIQ.UXM@flex--ackerleytng.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758177498; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=Sf5cA2Tq;
+	spf=pass (imf07.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758177975; a=rsa-sha256;
 	cv=none;
-	b=hLWveyhu7urxjxDzoypPljWy/Gr5BM8rzXZ/daERf/g8qaup+XoBnqg//XHEBdRa+NOmCs
-	5sqZcvlMqFdoTNIL/V47Z5K8GE6SlGTK3WEdgrCDMRsAbYpjq4HO91BkluRvEwvQBH/+ws
-	EA8DXyoaXgnBXrOuU6FLXPXcKuJjy1s=
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-329c76f70cbso496845a91.0
-        for <linux-mm@kvack.org>; Wed, 17 Sep 2025 23:38:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758177497; x=1758782297; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=EhQgZCX3g/hqgKkVAO2ALoNMZAYeb5CdIihGIJQ0jtk=;
-        b=GH3piuzuOJVtGXzDNcwn3vYRMSkT4PhsQCmoi1Dfqxk8FROXmnq8DSbEIwYrvSYtLH
-         5XO/rytqiIqUQvN2fhcfBdSzY/JHsqbNE4BKSNpjV8noveRpDXle2EVj8eozpH/Q8H+t
-         VzL7Z7SzDEwY90VobCwCFlLQN1VuCdEOSnZyyPlf755wY07667aNwaouSe0dfjzo2gkh
-         CLJwbRvBneh95y/eWByGfpdfjLx747JA7FUxKxGzDOx9yicGVDdlz6bjweUi1eI4O5EB
-         BrZ7k0w0zOpWHGAwxRV4OM7anl1d10CpJjTzK6V3B3+catF6ijn6v/oiteARwf/UGiYN
-         390Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758177497; x=1758782297;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EhQgZCX3g/hqgKkVAO2ALoNMZAYeb5CdIihGIJQ0jtk=;
-        b=wXBdIhNLQyvEsvfdg9TuAWIHkO1VD3f+mEMIGfeBvfon2nc+4ibU14SQPdyu7g7BUL
-         nx2dMUUOCTPSkmQFnzjvwisjRgO8QAwy3L1Nwys+/pAjB1+XA28Szm5TsJoTgj7iGMoh
-         +IHEkW8sv9RvMWT6rvjaOuWvgbU7STI6g5mQpajgz5o9ZkzW3x/VoTxgOm+/sqLNyOpl
-         r/gG2Wrq87kq+JqTxvgGI8vng4ewbEYba/8gDskRe7ppgNHAWPJoxW0Bd83hMjwUGKMf
-         ldNkVdkYrLVwhZVqsqWfOYk3bRyMVNUOIGF4Fg5gelzfLu9sVNaSdewtlTykpZtsL7cZ
-         ia4w==
-X-Forwarded-Encrypted: i=1; AJvYcCVs6AeAow30sfxckDiUmoZ3oXD5cKUXmOXE4pVS/0kLmoG/WA0l83L63WxKOLRTzoAjLsy+4FrZGg==@kvack.org
-X-Gm-Message-State: AOJu0YyLdt6IVR6zlbHQt6XQVMEumt1aC054lxdIPDRHwl8aBDmThdQa
-	/3Iuac+6wjMC4bzLs9E8iyKd34ySs0Z8M8b7cXUPUBsuQhbhif4HpP+a+Gn2/CLgDfE2lzQF7F5
-	lSMGbLo+uGl4wC/yZrEp99g1DiQ==
-X-Google-Smtp-Source: AGHT+IHY8aUBQSPecvIOlTBaO7WQ/oRvPgoE9Oznnfm9prH3oA8ybxcIs1MwL4W0ClARcwmzZJztakkHVEY0YIHinA==
-X-Received: from pjbpw5.prod.google.com ([2002:a17:90b:2785:b0:330:7dd8:2dc2])
- (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:2c8c:b0:324:e96a:2ada with SMTP id 98e67ed59e1d1-32ee3f2ffefmr5352489a91.21.1758177497343;
- Wed, 17 Sep 2025 23:38:17 -0700 (PDT)
-Date: Thu, 18 Sep 2025 06:38:16 +0000
-In-Reply-To: <20250916225528.iycrfgf4nz6bcdce@amd.com>
-Mime-Version: 1.0
-References: <cover.1747264138.git.ackerleytng@google.com> <b3c2da681c5bf139e2eaf0ea82c7422f972f6288.1747264138.git.ackerleytng@google.com>
- <20250916225528.iycrfgf4nz6bcdce@amd.com>
-Message-ID: <diqzjz1wp8o7.fsf@google.com>
-Subject: Re: [RFC PATCH v2 29/51] mm: guestmem_hugetlb: Wrap HugeTLB as an
- allocator for guest_memfd
-From: Ackerley Tng <ackerleytng@google.com>
-To: Michael Roth <michael.roth@amd.com>
-Cc: kvm@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	x86@kernel.org, linux-fsdevel@vger.kernel.org, aik@amd.com, 
-	ajones@ventanamicro.com, akpm@linux-foundation.org, amoorthy@google.com, 
-	anthony.yznaga@oracle.com, anup@brainfault.org, aou@eecs.berkeley.edu, 
-	bfoster@redhat.com, binbin.wu@linux.intel.com, brauner@kernel.org, 
-	catalin.marinas@arm.com, chao.p.peng@intel.com, chenhuacai@kernel.org, 
-	dave.hansen@intel.com, david@redhat.com, dmatlack@google.com, 
-	dwmw@amazon.co.uk, erdemaktas@google.com, fan.du@intel.com, fvdl@google.com, 
-	graf@amazon.com, haibo1.xu@intel.com, hch@infradead.org, hughd@google.com, 
-	ira.weiny@intel.com, isaku.yamahata@intel.com, jack@suse.cz, 
-	james.morse@arm.com, jarkko@kernel.org, jgg@ziepe.ca, jgowans@amazon.com, 
-	jhubbard@nvidia.com, jroedel@suse.de, jthoughton@google.com, 
-	jun.miao@intel.com, kai.huang@intel.com, keirf@google.com, 
-	kent.overstreet@linux.dev, kirill.shutemov@intel.com, liam.merwick@oracle.com, 
-	maciej.wieczor-retman@intel.com, mail@maciej.szmigiero.name, maz@kernel.org, 
-	mic@digikod.net, mpe@ellerman.id.au, muchun.song@linux.dev, nikunj@amd.com, 
-	nsaenz@amazon.es, oliver.upton@linux.dev, palmer@dabbelt.com, 
-	pankaj.gupta@amd.com, paul.walmsley@sifive.com, pbonzini@redhat.com, 
-	pdurrant@amazon.co.uk, peterx@redhat.com, pgonda@google.com, pvorel@suse.cz, 
-	qperret@google.com, quic_cvanscha@quicinc.com, quic_eberman@quicinc.com, 
-	quic_mnalajal@quicinc.com, quic_pderrin@quicinc.com, quic_pheragu@quicinc.com, 
-	quic_svaddagi@quicinc.com, quic_tsoni@quicinc.com, richard.weiyang@gmail.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, roypat@amazon.co.uk, 
-	rppt@kernel.org, seanjc@google.com, shuah@kernel.org, steven.price@arm.com, 
-	steven.sistare@oracle.com, suzuki.poulose@arm.com, tabba@google.com, 
-	thomas.lendacky@amd.com, usama.arif@bytedance.com, vannapurve@google.com, 
-	vbabka@suse.cz, viro@zeniv.linux.org.uk, vkuznets@redhat.com, 
-	wei.w.wang@intel.com, will@kernel.org, willy@infradead.org, 
-	xiaoyao.li@intel.com, yan.y.zhao@intel.com, yilun.xu@intel.com, 
-	yuzenghui@huawei.com, zhiquan1.li@intel.com
-Content-Type: text/plain; charset="UTF-8"
+	b=uqLB9kjI40j351UV19BCyRlbh7FVG8ZU/CEZ781iciL1RY1tzi0MojP1HH9ITBCaF8i1aq
+	QHeqyWjia6v1/bq+mQIfWVpWOW5fgsIoKefEb0+seCpA43Vpsp1KQWnkSJha5Nz9qDp5rp
+	iPV15OO5CSftaE0UYsSI5C9c/A6mRZo=
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58HIalYU011054;
+	Thu, 18 Sep 2025 06:46:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=UmyeBE
+	S4QYQMD3WHm2ocxnsfboYzNZugX1gq0nt42Ro=; b=Sf5cA2Tqtu3t2jFLNJPZDy
+	qJTWKGOrMZ4SwISlXZWsMV0cdnk0nWB8srPg5nEvbXKlhNdhRsm8PrTyYRbx4sC+
+	H3xAU400yeF0BR6VPftq9gHLIR9rfjDogTc4yO5FyiNkJuKLWLj+38bjcVIde+Tg
+	UqK6fH0yL4x2KFybDy4agH+imLY9bGdQ2gqpt4vUiSF0uJVNMpJGWHRonpMFZKbu
+	QxwdOMI1stIu0N7InaU9mL1XK5UGtCS1XL0lRzun6LmYqSjq39eXMuawxJ5u8b3G
+	YkB//BXA2DJ/iRhOyfH+ON3ddtZm/2FKgeB11EwVVRrrZq4w0UBCkY4YdVoYTfCA
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 497g4ng2u6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 18 Sep 2025 06:46:02 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58I6W6il029922;
+	Thu, 18 Sep 2025 06:46:01 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 497g4ng2tv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 18 Sep 2025 06:46:01 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58I3FUH1009486;
+	Thu, 18 Sep 2025 06:46:00 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 495nn3n0au-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 18 Sep 2025 06:46:00 +0000
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 58I6k0VV33686028
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 18 Sep 2025 06:46:00 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1CCA158064;
+	Thu, 18 Sep 2025 06:46:00 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BA79E5805F;
+	Thu, 18 Sep 2025 06:45:54 +0000 (GMT)
+Received: from [9.109.215.183] (unknown [9.109.215.183])
+	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 18 Sep 2025 06:45:54 +0000 (GMT)
+Message-ID: <196c1592-3383-409a-8b4e-38ef1c215528@linux.ibm.com>
+Date: Thu, 18 Sep 2025 12:15:52 +0530
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drivers/base/node: Fix double free in register_one_node()
+To: David Hildenbrand <david@redhat.com>, akpm@linux-foundation.org,
+        clm@meta.com
+Cc: Jonathan.Cameron@huawei.com, alison.schofield@intel.com, dakr@kernel.org,
+        dave.jiang@intel.com, gregkh@linuxfoundation.org,
+        kamezawa.hiroyu@jp.fujitsu.com, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, osalvador@suse.de, rafael@kernel.org,
+        ritesh.list@gmail.com, yury.norov@gmail.com, ziy@nvidia.com
+References: <20250918054144.58980-1-donettom@linux.ibm.com>
+ <5512b1b6-31f8-4322-8a5f-add8d1e9b22f@redhat.com>
+Content-Language: en-US
+From: Donet Tom <donettom@linux.ibm.com>
+In-Reply-To: <5512b1b6-31f8-4322-8a5f-add8d1e9b22f@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=MN5gmNZl c=1 sm=1 tr=0 ts=68cbaaaa cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=imvTE1wgVU1FVdfX0jYA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: l04Thvrv5UYZLP7kR0BDhfQtkmNnzQK5
+X-Proofpoint-ORIG-GUID: n0PqdEgIoQTB6dCL5DnTqMuUmzVh3SsI
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE2MDIwNCBTYWx0ZWRfX7XZVJ46u9mjV
+ gtRw2U+xyN1qGj+1eBEz3J/cMjWfJ8BdWa5fAD2JloyEl6Id4q7F2XrH6juJhIpxXlzmTrsd/xY
+ 53ktt5M+9vjxOo8Fd/qdmu9+f2w948B1+VJ8UTgO74jA9U4Eykbv1DcEFgXYkeyaSpuvMnQib4n
+ EKndKxGxR7g2sQc4phhLaNtxUa+G/qrddKkt5/eNr4s1fgpCLQkBdnQoTGRqZz6QPmf1gqdpu+/
+ qoS93FEgGpyFg13oVagzYzgSdwiSnJzXTmEmUQ4YlY961toMET9+1+GEl0d+qHcYXPghWzW2aqF
+ ABNw03BvPCwUcER54uXvFKnkAxJ/DaHy1/fW0oiBLe4udlNWmrcMiQqFY9dNPIbNoqA5SuFq61B
+ 0BKIGG/K
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-17_01,2025-09-18_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 spamscore=0 priorityscore=1501 bulkscore=0 impostorscore=0
+ malwarescore=0 adultscore=0 phishscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509160204
+X-Rspamd-Queue-Id: D6AF840009
+X-Stat-Signature: tahequaj5y7eqswnow4fb7gk8xwjnt9n
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: B94A7160004
-X-Stat-Signature: 9ypxc99oabe5gegkobg3a3f69ygbc4j8
-X-HE-Tag: 1758177498-200372
-X-HE-Meta: U2FsdGVkX18goo1rkjRkERBGvybdnzRIt5Ru4IrwboKwZNVefeok1iYThiJjz0U618GvPoRxGDnDJ1jQfXCnZJs9FEZcbbckzHcYXNMJ4jtlZWcv4VtEbuJetqUWFd1m/yYY8GfXbreBqfdsFa3So5KjodgteutStvwIdh0/7Od+Y1rbMQGp4Ag4HRi1cZemxS5FBJ6O0//RS1NIIaFyLe10QpkFUNFqurKOj1eRweFCT40K7mveHQ+SvfPVKuMYnv0XVRmh5ioS3Qo0O9vEsxg9HOi2L+2I0WrdA3K5F8rCTmz9rR4UdvrVyMKowf4YvfWWdwHozdjK/AS1yp7EFog6WEkgRJkhZJonzJKhQ4cdO7jTtbiNVIR87Or1WnxT4T7Jj4FkLa17OeeUFnvC/w9UV255123XqJ9A4DKQyJ321CCRCdN/0DB6VK1Czz5+IB/wJ2TJ6orMJAMNrUYqfYMA4BJnHP2zor++gGbd5Yf+4RZayk4XOqrCA04vOyQXio4POEcsvt5Oa8FnSvp2DPYSszOzqJryTtMm3F2t3KVDXrX/SYFzZ+XlzO+4+2CHAGCwEMxv49AwpGTEtQG18NcashvcSIXnm1wZL1o9qmpI+PvMHPSRyTbRKsmKR2WvZr+G5yi1I+iN2yDcjp+snUvVVuaScVxjY5p4rTHOTPRod4NGWdJmQ3hL42+ziiyRAErscIF/CElPxOGvO0Z6W8yXdi1nam5TKFMxo/cVvdMkph2SGFoxLyqlypQ2buBJMKlIh9lvT/tTbULO8wzDyKa2wXn0bMqbr0oPeZoP/X07unhG0v0iyych0qkOx/rmOL8JqYxufWcmm6jO3HxZRovSmWse3yuJmJtGa/xlj69t2v6RXsZE5PlgGlstdhOVbysd9YDlNze719o41HKhEgcdNrdDq2+UB/wnfFSONv7N+pn+LMoWPb/1zzmLDeDmvOjiJvxMKKF4GWQ5KNj
- gn87QkJy
- jqMf/IGynqlydKr/vPJT/W35A58+XOulDa+ZM1O4L0jViaEBt2p3Yzbn34/qEr/4ZIJtnTRtIgIlYBkPoMrNaepM/4Gn5Orstc7fjD+nUG/FpBr+PX7PWvUS6l8FCLzuaFgNg/3KBg68Qd90GPzg6+VbX/6UkIs2n8co/muY2HSIIIfAwuaJl0vEZpQy3Dz3eX/+PsHuY7Zip1hOdXDeXf2MQg44qWmWQJpHW4LSnIKf2sgGTNWv0XHyQPqJg2G1gObljM4fA4NEdgEAVEHSTxxNF1tvERH4Pnp6FU5sSBdpeN+LK+3uobDM2iV2FZH4AcyzGfTLP6RCHcdiBZuLoHxtQ8zPMpyvr989g3xIUqeDhlSJH8OTfIPPkucgfsVv6v+wMrVCP2W0ehhMdQ9Sjd/SqtR3vUWIqAi3luN20T0ZOfaAkBoB0zfwtsmeG5Ll2jGbW
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1758177974-722403
+X-HE-Meta: U2FsdGVkX1+y5gR6198jM3yTNMQ+nunWk3FjWghPFt8rU7qTuTPk5sCgCRsFKDucDW4E6MkRRBWtSiGiu1VrNcifNbMOrTeM6i70hdWj4b+B3yEFqm9Xyz5Rx+O2/LDfvQm+076k8cgJSsSuBKCen3PLWEBxHv7TTbyOsWyZsHNnLF1oyYRfgrG/Ur/ILkW0ugTHRZLAoGL3mwI6PhGv97fpvgYeCzqo5MtGppfifM8gvriG/4pd50Z1A9fnkwGS3toP0V8ax0TsW9+o/8m/d4P/VpolGjosuzcl7e6slOD65Mhvmn1VDA8mO1Tm1WBBm6sN93HSdroyXv8OyZVhn0k7OZLNAPmxR6XaatXwxISnYom4v5CENOMA0L1Bb13e6ZhJFUmCyHOYd3w0qQ0DUCeKV4mGlAkfPrDlyFpky0eVRw61aOLEIgtdgJLRWE7xYgQxtOr3L6/7LcBydky4qzMgCI23OvT8M1uCDP0rKavu11TIUDCMfrokvJWG4TfH+trO0R1TKRgXr+yREon3xh6uA+YXnGz7wykqEP6ES76Wmr3gJzdCuoZ/0sKtjaeHO/spgBuAbtWU8uC4x7i29SYf7v7U4cavHGIBZ3nLoAfvYTmflyw8Y0i0uQvvyQEedZYdF4kF2am+IsG8Mas7fg+0Zu01E8oImaTzwDBEHhGn15+V979VpVJPXNfj/c5eE1O41vUJNXWAl6UMGAJkkGUbzD0gSSWxxGsqRugqUYM9aJFOOUY/UsyvjFwBGesfbC5Jdu42YnOqtkUgDFWY0vQZJYwCCuW4cc06W20ZU4Vvc00ugz4BiYcM0ARjpI6sNWIA7ZlwmJyF1jW1vZDBXcBg5A0nvMj7anwdluYqkydU4mFijOWfVzVQlwsjBiDhF0i1rshZnBCi3G4Oe0hss9AAJGzJtZtyXW48TQtj09QTtStVIp9xAFj8Im/ju5e4NagHRQXT6E94ii2RL6q
+ iwAovr4t
+ zAJWkdzIpx8XABtZ1TXkqGVhUUEyy6GmJ1/xLAdBybzEEqjQWLBdsHXXOiujMXruIhQUnStIYtqeQDXd2vL1/GqW3elOqsA5YscPesHMfw06sJ/k1Fz5HEJhnrq13DpbE4vgj34LmWrACzFGWliqzvYXRXKutf2oOig72OK9IQ2Fv8eWDkqxpES+coGIujRE8r0zycwxL0uKofEEqXD0/Z/ZOZtZLBOnhURvfCCIeypAJ15JxsblYcRn9irVHyvp7jBprpQOlq5utZUZz1r1envAqNsKwgn6uLsl1a/2D8sauiVz3FxkZ5G0ZVsVTt+/sOz3/ra9aI+RdIwdBtY8zBfCVRBzh8cQVt5/qpQn3xm8sKLnEOjX+vMAsYKNbinStyzH1avYvi7gZGOv8E++CEcGittiAgyxlNuhse8SpeWv7NV77alaAm5QSiQicHxyc+WAbzUdv9VGCbUAEtIf5q8icAuPu+bRNZBYWkhDAmCiN5uzgvyLXVC5fq35WriYNEgxVSXmMkWZh59c=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,95 +150,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Michael Roth <michael.roth@amd.com> writes:
 
-> On Wed, May 14, 2025 at 04:42:08PM -0700, Ackerley Tng wrote:
->> 
->> [...snip...]
->> 
->> +static void *guestmem_hugetlb_setup(size_t size, u64 flags)
->> +
->> +{
->> +	struct guestmem_hugetlb_private *private;
->> +	struct hugetlb_cgroup *h_cg_rsvd = NULL;
->> +	struct hugepage_subpool *spool;
->> +	unsigned long nr_pages;
->> +	int page_size_log;
->> +	struct hstate *h;
->> +	long hpages;
->> +	int idx;
->> +	int ret;
->> +
->> +	page_size_log = (flags >> GUESTMEM_HUGETLB_FLAG_SHIFT) &
->> +			GUESTMEM_HUGETLB_FLAG_MASK;
->> +	h = hstate_sizelog(page_size_log);
->> +	if (!h)
->> +		return ERR_PTR(-EINVAL);
->> +
->> +	/*
->> +	 * Check against h because page_size_log could be 0 to request default
->> +	 * HugeTLB page size.
->> +	 */
->> +	if (!IS_ALIGNED(size, huge_page_size(h)))
->> +		return ERR_PTR(-EINVAL);
+On 9/18/25 11:25 AM, David Hildenbrand wrote:
+> On 18.09.25 07:41, Donet Tom wrote:
+>> When device_register() fails in register_node(), it calls
+>> put_device(&node->dev). This triggers node_device_release(),
+>> which calls kfree(to_node(dev)), thereby freeing the entire
+>> node structure.
+>>
+>> As a result, when register_node() returns an error, the node
+>> memory has already been freed. Calling kfree(node) again in
+>> register_one_node() leads to a double free.
+>>
+>> This patch removes the redundant kfree(node) from
+>> register_one_node() to prevent the double free.
+>>
+>> Fixes: 786eb990cfb7 ("drivers/base/node: handle error properly in 
+>> register_one_node()")
+>> Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+>> ---
+>>   drivers/base/node.c | 1 -
+>>   1 file changed, 1 deletion(-)
+>>
+>> diff --git a/drivers/base/node.c b/drivers/base/node.c
+>> index 1608816de67f..6b6e55a98b79 100644
+>> --- a/drivers/base/node.c
+>> +++ b/drivers/base/node.c
+>> @@ -885,7 +885,6 @@ int register_one_node(int nid)
+>>       error = register_node(node_devices[nid], nid);
+>>       if (error) {
+>>           node_devices[nid] = NULL;
+>> -        kfree(node);
+>>           return error;
+>>       }
 >
-> For SNP testing we ended up needing to relax this to play along a little
-> easier with QEMU/etc. and instead just round the size up via:
+> Yes, that matches what other users (staring at mm/memory-tiers.c) do.
 >
->   size = round_up(size, huge_page_size(h));
+> I wonder if we should just inline register_node() into 
+> register_one_node().
 >
-> The thinking is that since, presumably, the size would span beyond what
-> we actually bind to any memslots, that KVM will simply map them as 4K
-> in nested page table, and userspace already causes 4K split and inode
-> size doesn't change as part of this adjustment so the extra pages would
-> remain inaccessible.
+> Then it's clearer that we perform a put_device() already in there.
 >
-> The accounting might get a little weird but it's probably fair to
-> document that non-hugepage-aligned gmemfd sizes can result in wasted memory
-> if userspace wants to fine tune around that.
+> On top of that, we could then just s/register_one_node/register_node/
+>
+> And then we could do a similar cleanup for unregister_one_node / 
+> unregister_node where I don't consider the split function really 
+> valuable.
 
-Is there a specific use case where the userspace VMM must allocate some
-guest_memfd file size that isn't huge_page_size(h) aligned?
 
-Rounding up silently feels like it would be hiding errors, and feels a
-little especially when we're doing so much work to save memory,
-retaining HVO, removing double allocation and all.
+Sure David, I will work on it and send it as a separate patch.
 
->
-> -Mike
->
->> +
->> +	private = kzalloc(sizeof(*private), GFP_KERNEL);
->> +	if (!private)
->> +		return ERR_PTR(-ENOMEM);
->> +
->> +	/* Creating a subpool makes reservations, hence charge for them now. */
->> +	idx = hstate_index(h);
->> +	nr_pages = size >> PAGE_SHIFT;
->> +	ret = hugetlb_cgroup_charge_cgroup_rsvd(idx, nr_pages, &h_cg_rsvd);
->> +	if (ret)
->> +		goto err_free;
->> +
->> +	hpages = size >> huge_page_shift(h);
->> +	spool = hugepage_new_subpool(h, hpages, hpages, false);
->> +	if (!spool)
->> +		goto err_uncharge;
->> +
->> +	private->h = h;
->> +	private->spool = spool;
->> +	private->h_cg_rsvd = h_cg_rsvd;
->> +
->> +	return private;
->> +
->> +err_uncharge:
->> +	ret = -ENOMEM;
->> +	hugetlb_cgroup_uncharge_cgroup_rsvd(idx, nr_pages, h_cg_rsvd);
->> +err_free:
->> +	kfree(private);
->> +	return ERR_PTR(ret);
->> +}
->> +
->> 
->> [...snip...]
->> 
+
 
