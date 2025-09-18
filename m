@@ -4,90 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABC17CAC59F
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 02:22:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C167DCAC59A
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 02:27:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D58488E009A; Wed, 17 Sep 2025 22:22:32 -0400 (EDT)
+	id 17CE38E009B; Wed, 17 Sep 2025 22:27:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D2FB38E006B; Wed, 17 Sep 2025 22:22:32 -0400 (EDT)
+	id 154A38E006B; Wed, 17 Sep 2025 22:27:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C6C718E009A; Wed, 17 Sep 2025 22:22:32 -0400 (EDT)
+	id 092058E009B; Wed, 17 Sep 2025 22:27:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B167C8E006B
-	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 22:22:32 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6D2EA1A076F
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 02:22:32 +0000 (UTC)
-X-FDA: 83900772144.14.9AC684D
-Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 401DD140007
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 02:22:29 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=FXmRR6vb;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf09.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758162150; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id E9ECD8E006B
+	for <linux-mm@kvack.org>; Wed, 17 Sep 2025 22:27:38 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7F33513BB17
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 02:27:38 +0000 (UTC)
+X-FDA: 83900784996.01.1CF3B2D
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+	by imf15.hostedemail.com (Postfix) with ESMTP id D504BA0006
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 02:27:35 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=Zhxh72wZ;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf15.hostedemail.com: domain of sunjunchao@bytedance.com designates 209.85.128.175 as permitted sender) smtp.mailfrom=sunjunchao@bytedance.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758162456; a=rsa-sha256;
 	cv=none;
-	b=kLsFa1/xZ6UluPH6y5Rhhdz4ynEkZp52KYZ7gkU54mWZgrxSkGdELz/LzIkxP0a22ugQ8Z
-	xFZdMjrfzmMt7PPelXcGRFv4Us2VbB6WgAlSJf+jQElDkxaOH1f35FMXcc4jmEx/ww3zqt
-	u01ISm0FHAGyYs7UOAkLkOs9JX9Zgls=
+	b=sQkPxpl/x0yBdGYogpDJ+iR/mDVC7veZl3KOFtGl7WVBSRZ7xqvDZMPxizWlWCietqevPl
+	qLSTHBuEfTGGvIV7Y1SUDyvZgQVVrQX1YWhJBUQG34jrg8in40w9QT5LEpzevqWbKE/4fH
+	YzOdCL0+rGP+wcwyBK8y2xIb7+16xQI=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=FXmRR6vb;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf09.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+	imf15.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=Zhxh72wZ;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf15.hostedemail.com: domain of sunjunchao@bytedance.com designates 209.85.128.175 as permitted sender) smtp.mailfrom=sunjunchao@bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758162150;
+	s=arc-20220608; t=1758162456;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AUgmNLpciY51XRiDAlwpEoWyC0Ozy4WSZRgjpXt9VkE=;
-	b=BIIeIquzgruVBmwEzN8o8m2nsNbjf84Fo1Hffiu8cPkj0kPscHZdjf4nfHNuARDDzeCR88
-	8xN2FaoYgGgnZg+k78GN1ixghyCPbdUP9gkNrAFAE2MctIBdqAIyayuTBnCr3KDTpqw0mf
-	JM4rkP4q4wc3P6Mt7GhkvxbRnXAvjMU=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1758162146; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=AUgmNLpciY51XRiDAlwpEoWyC0Ozy4WSZRgjpXt9VkE=;
-	b=FXmRR6vbzlUkOllk6lCB2RUWTDZGFKS2kzhNEx4GrBM+0Uqm2uvKXZ8pDqOJph2rZfdf+ayAYaX5osT8OtTu9Eu6nmXmzAEFuh+D5DVp+I8noRwPtZmcxD1LrObagSg8soX4JKGhuPaWmYCo3yGGBDgNNgHTKAZbnAtnmODutIw=
-Received: from 30.74.144.125(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WoEIrkb_1758162143 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 18 Sep 2025 10:22:24 +0800
-Message-ID: <122ec2b9-8f0f-4184-a15b-8f3ccbd336ea@linux.alibaba.com>
-Date: Thu, 18 Sep 2025 10:22:22 +0800
+	bh=QFrjr7oI44As9mOdavnrOAOtlOzT/S4ln2vJMFz/Qt0=;
+	b=6PfOcd0+opoqnKyOPC7DvnUV3Lfb7xRy2jSP4e8BDV4dWo0BgU445Y4uE71Cg6l5sbnF4H
+	0QfBkWk3sIpPA5xyQHSoOd0tzNOsXB3jDSG3PUBRPGFgTEkk2Fr/CkPVYkYk8W/qj8DlFl
+	k7NC4hgXQM+cs2eJmw+Tmdd3t4kxB5Q=
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-723bc91d7bbso5336077b3.3
+        for <linux-mm@kvack.org>; Wed, 17 Sep 2025 19:27:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1758162455; x=1758767255; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QFrjr7oI44As9mOdavnrOAOtlOzT/S4ln2vJMFz/Qt0=;
+        b=Zhxh72wZvC67Pvgp5UMwW56/BGOi8jzCP6+WO2xHNsuA/bpI1t3eV/3PzK4pM9HksP
+         cnnfDCEMaVoxbMElTISWTz5Rzc6NfQy3HEkwgP5DjtYmJeOy60/7kpvBl8Mg5Dtypvhb
+         HtYbe6LRwwlu54Y0iZGiQC6tPAa3CVkWU92uPT2rKbOlmqjqOH+8C+ns95xCDmzYnMYH
+         QvJXtyNpcI2VZKuykk0qKMvbsyjPVhRIuj2NAMwJPNY1OS106G3n27l+HIb9+CS1HvS0
+         z6ae/dCr6pX/rt41AyPzGAaKCMyV3ja/et2UhrqoCwWgkmYauUQllQWmunW5+K648BYQ
+         Ppaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758162455; x=1758767255;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QFrjr7oI44As9mOdavnrOAOtlOzT/S4ln2vJMFz/Qt0=;
+        b=hZMlax+HDRzG65wgbrijs+3Y76mc0vV8gVhLbHHgYtNH1Gcivw2V0SepMtQZrZiz6D
+         Nkx0f3pHKG2dQAwhqqnopUVjkqyMiNvLfyWOhSFDNfXv5BJBQDGaEEk8i2EBGB8FQLhy
+         ZnHgHl/F6AMTIckF6jilLnYn0+pyYrSNdRuaVBsGRJ+lNv1zGwoKfzH9D9bIxb0J/wqT
+         fXQ64ofwYQlnDCX4k5zaR3r1/DUI0Kl6q7fnoisigpwJ4bmCuXTVX4mzy07R9/PXQTeF
+         cf5ckMHFLzSFMnJa2IzBqZgW25zT2zTjhTwpZdJ1C39IkojLstjyrW23BnvwHpgmwx2z
+         6O8w==
+X-Forwarded-Encrypted: i=1; AJvYcCWGQOf/FniX0BXCqMI/A7wAxwjsdtsLDMKRppZNzI+og+PE3u0Hr6B0nae9y1NkGoT5Dzymbs8SkA==@kvack.org
+X-Gm-Message-State: AOJu0Yz9ycEYu2yYB+iKFPxaDV4spT5D8ir4hZULIhqhOX4KtxTDDqxW
+	hlp00GBZIFjDe5V3FIlkeLMV/4SB06qusZB7lU6ZWhssO9m5ZwW0MFO9cwfJIn78ReKdumTSzaT
+	Kp3BY/hW5jKfRVmeH3BqcA85lgnnn2jWMEA0YxFP2GA==
+X-Gm-Gg: ASbGncvek8hDLaLbu/kYA4Lucsr7buPOid9dazO0l7WVom+csWIaYVVpFsIf9lqD8PT
+	N5onkEwJHrv6j5KHnnmPdxJt0FRu1jbrolwHlRx0vqTVbAMDhYvg5OdOHoFOMbn8WO4CJ7oZ4xu
+	vDLdJ3EK3uunI2pJ7CnLfvx+kHcNgOuZDg5494UGfotHiq8WBMMVkpXUVgdug9p7sll/fJZ9384
+	P3+Bo9mUJXH/pMC1qMkyybe1C97wN1VuSxpht1BkcWPqA==
+X-Google-Smtp-Source: AGHT+IHr9JgnFjpeT/zNs9L7BOU9gS2fjyMz5QFUAEpR4RhWUaYl+0KPaeqk8mPlazZxDIMzmM/v0qD8tnH69VyiLAo=
+X-Received: by 2002:a05:690c:6f83:b0:72c:bb8e:3d70 with SMTP id
+ 00721157ae682-73892a45ec8mr44504117b3.47.1758162454739; Wed, 17 Sep 2025
+ 19:27:34 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm: vmscan: remove folio_test_private() check in
- pageout()
-To: Hugh Dickins <hughd@google.com>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>, akpm@linux-foundation.org,
- hannes@cmpxchg.org, david@redhat.com, mhocko@kernel.org,
- zhengqi.arch@bytedance.com, lorenzo.stoakes@oracle.com, willy@infradead.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <cover.1757648598.git.baolin.wang@linux.alibaba.com>
- <b8c0fe71982aa1cafafd59d8e71064efaac16007.1757648598.git.baolin.wang@linux.alibaba.com>
- <qe56xt2natnxnkht7wgknsb5nqjhinaaajomvvvgnfpwry2jih@hsj2w5zqj6wv>
- <02798d6c-1ad3-4109-be3a-e09feb5e4eda@linux.alibaba.com>
- <9b01a2cc-7cdb-e008-f5bc-ff9aa313621a@google.com>
- <6ebb5cd0-0897-4de7-9303-422d0caa18cb@linux.alibaba.com>
- <7eace9f6-e257-498d-ac10-ae86b5713e3a@linux.alibaba.com>
- <1111883c-974f-e4da-a38f-bb3d337185ad@google.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <1111883c-974f-e4da-a38f-bb3d337185ad@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20250917212959.355656-1-sunjunchao@bytedance.com> <aMstLw_ccoveLow-@slm.duckdns.org>
+In-Reply-To: <aMstLw_ccoveLow-@slm.duckdns.org>
+From: Julian Sun <sunjunchao@bytedance.com>
+Date: Thu, 18 Sep 2025 10:27:23 +0800
+X-Gm-Features: AS18NWB5MaYCMMqfKrJS9g29_klveZt2uzpxurqlqJahQN9eqVnilHG-fNbZMeI
+Message-ID: <CAHSKhtccroAB_MJ-Dz0KgKgZEOfMdqdtZZq428tULMBv2hU4=A@mail.gmail.com>
+Subject: Re: [External] Re: [PATCH v6] memcg: Don't wait writeback completion
+ when release memcg.
+To: Tejun Heo <tj@kernel.org>
+Cc: cgroups@vger.kernel.org, linux-mm@kvack.org, jack@suse.cz, 
+	muchun.song@linux.dev, venkat88@linux.ibm.com, hannes@cmpxchg.org, 
+	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev, 
+	akpm@linux-foundation.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 401DD140007
-X-Stat-Signature: wr8d7jjzanqfw784wbzhn7xqfcoqgfek
+X-Rspamd-Queue-Id: D504BA0006
+X-Stat-Signature: d6cn4x6h49byczep7fidenj9u81w9fid
 X-Rspam-User: 
-X-HE-Tag: 1758162149-143628
-X-HE-Meta: U2FsdGVkX189/LIxoawdip6NxOnPMgT3zkrWrVyupPvB+g/LCOsz17LiNbYHkSNuPrw7ALJGPOJtlQ3y5WQv7z19jCPjcTzs7Gz++62nhNG+Bu9+aBHBDs5U0MHXaLQSmLeHTN8IjpBXHgqaro0QrEavUufLhV5gSqsq6Y3qUe/FS4iN6DH398t/9rhE6ITf7IDkjxgmuwB6VkCcOIji/LXxxQ4GWlfARx3JDnFfg4UIQrNeEaEFZ/JOmRgIhzfpj8cw8KLPBhoNGFOzGevAYNlyY8CMPlpXV0t2qSR1Ff681Fae3+hRwm6HtedLUsXKXInPBCT7J34+7MGviFDGQR/6LcvnFgjdFFm/FQXmegO2L1RjSwikhCmNmBLF3S/fH6bZSmLP9MynHPW3h3r3YxU+yoB5y5qtH5qOrFjD5jMQyAli3Nd8Z9PqYAOTBZKimpRCQntEbIq/arI0gLFBLyVq4AmPhqzlgBBsEEum7gA5TavupOVDmJWTy3/aOomZi7icFU032sy2uUdLVG/YKVMeQnKDa7O1FuebwzKMPSugn1PEiozZxpVqihPHwHZC9lKUDc2wEAL3urAVMgwiqnsE/oR3Z9o6Libbta4iPRvINBX6TyB+7v3wY6d1YZfI1LF3ncEoeBk9vTfu2oeFji6LBKcqU/LUOwVXJr31jEz/LHgC29T5s/ODPzqtsGqDnFgGJ75WwV18f1xogzk/mmPFxBUv5PmwmeNBgIohByAZ0NtlDF4mtzGw4hz2cf2zNZA6Az0UqtNapcUmV5fTuYm4PQ2MpQKK/FXm+htEbPUJTr4ctgzqwc0p7f/GqkqdNTjq0wS5lpSu3z65uRzPkpT4ZzHHImJ4nGykhUVroR2M4ptigv9WZmvZj40iuRlx2Ze9RhMY7PUWGiVPS0J/K2m7TUiWFzc1rYx352yIxUNp1su2pJyEFamfgQlCIrEmRCYh+z0KL9cTW1uTVnm
- Q1PhAcpE
- 6ElQtQu6vTxxuYjLihaeZp8e8uBcbQqroxQXLrJVvkHoh3mdsR+HpvfjKr6WJE+h8wYgRk7b5L5bTZfJf9FV18Z2BED8N+o4ukMuALCv0ITLBcYdvLa160fzYlMMlgld8kKQhM7eVvkchl9kFCH2zrttB2SZqCeM+bOQYZow4Tu+Xrnre2dsgHCo1JvsOXLfrNaWN1ikPqNX4RjFviXN/vLkaNx+tEqlRfjV/vcrdl1VRUFFlWIP+4Cn5hHd447Gt6MQ5hv3WrHqbeKwRjkBPM++3pLN0FJW4LROm0dK1mGPD4Vrq7+uV6G4fo6aaYUA8u1DaI+gEoTc6niCQyx8/a8G8MWHKF/J6/dWCLkuoA+ClADDWO2w4OvDAOozWXOF6BRaxo7VuckmEhXaICvxsskuT69dyD8d/k+CKxf4oxNKE1gOJQ7sDWA6Knc0Jft77vq5WREKroX62UPE6AnJDzAOIWA==
+X-HE-Tag: 1758162455-928428
+X-HE-Meta: U2FsdGVkX1+8Dt2hUHlFfO1aapxYs2zXqiHCkKBuwWVETZFDm+ACbuK25xaPrTnEal33KsankkGplNEBzUShufEuIN0Bwp5PiQzjGjRgmT8VgTFI8YtaSRFQsGVWgcNz8FXC0a9B52bjYfeMGPDgG1k8xVn2aVHzX/w9gP6Z81vcPRvJ9l+WxMSomeWtM0made39rP4iS3FdMxwzC0LDgCoUi3WvQbcNoqxeBvYNW96XJ8VJzRlHzKI5FH4epmXLtCYBefbkdAbkvKBwoRnuY1u9L9FMnCP29t5UuTu3cwbLUVgtzT2qnAo7d8xQH3yt7vf/4yZwwyK+1bE4VSivCiGINUnrMf3cq3olFoZsWvHtiqosRWr4vLqxBwpnz/XiqOO7St6K60N2QYZAqLbLJm67+U5aWyz5E7m28/J/hv3tJ8ldRX96KFIZ/3znyRP+WEeeBL4q3TEBoTDfr3B9o5BW/0m8Qa3VtaIH85MLjREH1f+XK8DMZ/ISJBwxnf3YNYp3i0wQZusWErn5rfmXMyC5UxjQCSFlcRFzBe+7zp9o/PMqKjWX+74GKQRGpDkewIhRoZmQXXEi9yMzfsUb4KjBVPAqEUVNfRNuuC64facsMhHQ7cQVGjPrPuiNvpl18tLjq/GTBzcCqxB56EzvgU21twvxc8VP44aW+9bkFaUHU8kpwKe1BlfsEhA0ui66NAeYFOKLFQpACQo5hpIh1nZIOwcfoq6Ndrwkunp73wNLKWwycm5Eg04knLtRe4nN1s8ypS4L2hWSSSBFx1THsN+w1rgVM8m+WrI+5u0Zg9+cgRf8h8KgvbTl/tno69Dos57C+CJcKUPBsyTuvwlMvPdHB87H4XcESXCHW6TmJLWuBIY7pwHGlKdeNnMPXKkzbfpWu6xZ8KoiBtWZqbGcQGpF2QHM2jjBBEfp0xPFEhYL7QS71TsBQctK8X539/iJrR0k+AxKXBQhzNLZpDn
+ dKaeSxFW
+ QwBcNm6FnEUT+mfdWYrd6LqaD6wzmG5xbTFiOshFu/e+AfZYer8MvaYahlydUdydjEjeKg9aBod9jy1hOsYnmg3gkLjOSW+0VzawKdLc94TSJS7P1wDVeZ+2BGjBtuErT7Z88xYYhkLVnaqsybscg4I9a9MKH0jxAsl/AXV8sRXqdu5mD1iK63qmbGPERYUprVDuF+JKp1jxpJDQYsY9xKVOVcpkp5mCjXk1fZVXnIDXwXWgaN89iTmf74pKh/7uWTbwHa7Q4uTaqFQ3JBp9Zdn7kNw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,110 +119,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi,
 
-
-On 2025/9/17 15:49, Hugh Dickins wrote:
-> On Wed, 17 Sep 2025, Baolin Wang wrote:
->> On 2025/9/16 15:18, Baolin Wang wrote:
+On Thu, Sep 18, 2025 at 5:50=E2=80=AFAM Tejun Heo <tj@kernel.org> wrote:
+>
+> Hello,
+>
+> On Thu, Sep 18, 2025 at 05:29:59AM +0800, Julian Sun wrote:
 > ...
->>>
->>> Additionally, I'm still struggling to understand this case where a folio is
->>> dirty but has a NULL mapping, but I might understand that ext3 journaling
->>> might do this from the comments in truncate_cleanup_folio().
->>>
->>> But I still doubt whether this case exists because the refcount check in
->>> is_page_cache_freeable() considers the pagecache. This means if this dirty
->>> folio's mapping is NULL, the following check would return false. If it
->>> returns true, it means that even if we release the private data here, the
->>> orphaned folio's refcount still doesn't meet the requirements for being
->>> reclaimed. Please correct me if I missed anything.
->>>
->>> static inline int is_page_cache_freeable(struct folio *folio)
->>> {
->>>           /*
->>>            * A freeable page cache folio is referenced only by the caller
->>>            * that isolated the folio, the page cache and optional filesystem
->>>            * private data at folio->private.
->>>            */
->>>           return folio_ref_count(folio) - folio_test_private(folio) ==
->>>                   1 + folio_nr_pages(folio);
->>> }
->>>
-> 
-> Good point, yes, it's surprising that that such a folio could pass
-> that check and reach the code you're proposing to delete.
-> 
-> (Though a racing scanner of physical memory could raise the refcount
-> momentarily, causing the folio to look like a page cache freeable.)
-> 
->>
->> I continued to dig into the historical commits, where the private check was
->> introduced in 2005 by commit ce91b575332b ("orphaned pagecache memleak fix"),
->> as the commit message mentioned, it was to address the issue where reiserfs
->> pagecache may be truncated while still pinned:
-> 
-> Yes, I had been doing the same research, coming to that same 2.6.12 commit,
-> one of the last to go in before the birth of git.
-> 
->>
->> "
->> Chris found that with data journaling a reiserfs pagecache may be truncate
->> while still pinned.  The truncation removes the page->mapping, but the page is
->> still listed in the VM queues because it still has buffers.  Then during the
->> journaling process, a buffer is marked dirty and that sets the PG_dirty
->> bitflag as well (in mark_buffer_dirty). After that the page is leaked because
->> it's both dirty and without a mapping.
->>
->> So we must allow pages without mapping and dirty to reach the PagePrivate
->> check.  The page->mapping will be checked again right after the PagePrivate
->> check.
->> "
->>
->> In 2008, commit a2b345642f530 ("Fix dirty page accounting leak with ext3
->> data=journal") seems to be dealing with a similar issue, where the page
->> becomes dirty after truncation, and provides a very useful call stack:
->> truncate_complete_page()
->>        cancel_dirty_page() // PG_dirty cleared, decr. dirty pages
->>        do_invalidatepage()
->>          ext3_invalidatepage()
->>            journal_invalidatepage()
->>              journal_unmap_buffer()
->>                __dispose_buffer()
->>                  __journal_unfile_buffer()
->>                    __journal_temp_unlink_buffer()
->>                      mark_buffer_dirty(); // PG_dirty set, incr. dirty pages
->>
->> In this fix, we forcefully clear the page's dirty flag during truncation (in
->> truncate_complete_page()).
-> 
-> But missed that one.
-> 
->>
->> However, I am still unsure how the reiserfs case is checked through
->> is_page_cache_freeable() (if the pagecache is truncated, then the pagecache
->> refcount would be decreased). Fortunately, reiserfs was removed in 2024 by
->> commit fb6f20ecb121 ("reiserfs: The last commit").
-> 
-> I did find a single report of the "pageout: orphaned page" message
-> (where Andrew claims the message as his forgotten temporary debugging):
-> 
-> https://lore.kernel.org/all/20061002170353.GA26816@king.bitgnome.net/
-> 
->  From 2006 on 2.6.18: and indeed it was on reiserfs - maybe reiserfs
-> had some extra refcounting on these pages, which caused them to pass
-> the is_page_cache_freeable() check (but would they actually be freeable,
-> or leaked? TBH I haven't tried to work that out, nor care very much).
-> 
-> Where does this leave us?  I think it says that your deletion of that
-> block from pageout() is acceptable now, with reiserfs gone to history.
-> 
-> Though somehow I would prefer, like that ext3 fix, that we would just
-> clear dirty on such a folio (to avoid "Bad page state" later if it is
-> freeable), not go to pageout(), but proceed to the folio_needs_release()
-> block like for clean folios.
-> 
-> But whatever: you've persuaded me! I withdraw my objection to your patch.
+> > The wb_wait_for_completion() here is probably only used to prevent
+> > use-after-free. Therefore, we manage 'done' separately and automaticall=
+y
+> > free it.
+> >
+> > This allows us to remove wb_wait_for_completion() while preventing
+> > the use-after-free issue.
+> >
+> > Fixes: 97b27821b485 ("writeback, memcg: Implement foreign dirty flushin=
+g")
+> > Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+> > Signed-off-by: Julian Sun <sunjunchao@bytedance.com>
+>
+>   Acked-by: Tejun Heo <tj@kernel.org>
+>
+> Minor comments below:
+>
+> > +/*
+> > + * This structure exists to avoid waiting for writeback to finish on
+> > + * memcg release, which could lead to a hang task.
+>                                            ^
+>                                            hung
+>
+> > + * @done.cnt is always > 0 before a memcg is released, so @wq_entry.fu=
+nc
+> > + * may only be invoked by finish_writeback_work() after memcg is freed=
+.
+> > + * See mem_cgroup_css_free() for details.
+> > + */
+>
+> I'm not sure this gives enough of a picture of what's going on. It'd be
+> better to expand a bit - briefly describe what the whole mechanism is for
+> and how hung tasks can happen.
 
-Thanks for confirming. I will update the commit message based on our 
-discussion.
+Ah.. I think explaining how hungtask occurs is a bit too detailed and
+verbose. If readers want to learn about more detailed content and
+causes, I think the commit message would be a better choice...
+>
+> Thanks.
+>
+> --
+> tejun
+
+
+Thanks,
+--=20
+Julian Sun <sunjunchao@bytedance.com>
 
