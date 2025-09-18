@@ -4,109 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2B1CCAC59A
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 14:38:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E523CAC59A
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 14:38:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4459A8E0147; Thu, 18 Sep 2025 10:38:16 -0400 (EDT)
+	id E58FD8E0148; Thu, 18 Sep 2025 10:38:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F6C48E013A; Thu, 18 Sep 2025 10:38:16 -0400 (EDT)
+	id E30B88E013A; Thu, 18 Sep 2025 10:38:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E5798E0147; Thu, 18 Sep 2025 10:38:16 -0400 (EDT)
+	id D1FB88E0148; Thu, 18 Sep 2025 10:38:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 128358E013A
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 10:38:16 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B9673B6E43
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 14:38:15 +0000 (UTC)
-X-FDA: 83902626150.02.5FD62E7
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	by imf20.hostedemail.com (Postfix) with ESMTP id EF3B41C0018
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 14:38:12 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf20.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758206293; a=rsa-sha256;
-	cv=none;
-	b=tcfUNsc3PbWzV48GgGbWtnDFJXOIfLitY2c1H/Wte81J6E89IqxrsFmlvBMaB6urTGSDQC
-	V5fbWHMz0cCb4HJv2uyjUnGmxxWYFSDmx75M16XYTwi7n1S2xpyPPLwUJXcemEvYyt51um
-	N9fjvXCeSddbK8B0OI1D8l3T7+7K36E=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf20.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+	by kanga.kvack.org (Postfix) with ESMTP id BF6C88E013A
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 10:38:39 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 90F1F1DC277
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 14:38:39 +0000 (UTC)
+X-FDA: 83902627158.22.C19972F
+Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 433FE160002
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 14:38:37 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b=gTYraMVv;
+	spf=pass (imf08.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.44 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758206293;
+	s=arc-20220608; t=1758206317;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ErYq1TN2gNxHsdO/CoNyrv+xOAeKq1mQd5/OAeURC+w=;
-	b=gMPIyPnonOLk6TBCvBu1BR9PXy4t9+kqdFgf6L1jB5rPzHTSBGUmvPfhCDJEXoSHlPPDmK
-	+nPQDXNntMeupHdLCn2quAvyW2oxgecdF63aZaeMlXDeGfWzfiWc1M5x1i0856JNSmXe61
-	OprAkjMrJvO3d1r9trkBf9l1GpQio5s=
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 95E65227A88; Thu, 18 Sep 2025 16:38:05 +0200 (CEST)
-Date: Thu, 18 Sep 2025 16:38:05 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Marco Elver <elver@google.com>
-Cc: Christoph Hellwig <hch@lst.de>, Peter Zijlstra <peterz@infradead.org>,
-	Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Alexander Potapenko <glider@google.com>,
-	Arnd Bergmann <arnd@arndb.de>, Bart Van Assche <bvanassche@acm.org>,
-	Bill Wendling <morbo@google.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Ian Rogers <irogers@google.com>, Jann Horn <jannh@google.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Justin Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
-	Kentaro Takeda <takedakn@nttdata.co.jp>,
-	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-	Thomas Gleixner <tglx@linutronix.de>, Thomas Graf <tgraf@suug.ch>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Waiman Long <longman@redhat.com>, kasan-dev@googlegroups.com,
-	linux-crypto@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
-	linux-sparse@vger.kernel.org, llvm@lists.linux.dev,
-	rcu@vger.kernel.org
-Subject: Re: [PATCH v3 00/35] Compiler-Based Capability- and
- Locking-Analysis
-Message-ID: <20250918143805.GA31797@lst.de>
-References: <20250918140451.1289454-1-elver@google.com> <20250918141511.GA30263@lst.de> <CANpmjNN8Vx5p+0xZAjHA4s6HaGaEdMf_u1c1jiOf=ZKqYYz9Nw@mail.gmail.com>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=OXo7Z6a2sgLXno3+k/FlpZhS1UzmF3Oswcd7rfRRafg=;
+	b=q35DFhK11QGwG0+7t3fwl/44nP613sVpBu2B1X6XrvD4RNWTqlcFLl0HyBSWtDJOoTqDIn
+	3oeJ48wThMywOK+JYi45B+Dl1DXTmQVpQzRTKWSnpQRk28rse/oI/f7v8Nlj4RrlrG/phE
+	XGFJFXlC7n5ecfn515l78AA/Nbla4W8=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b=gTYraMVv;
+	spf=pass (imf08.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.44 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758206317; a=rsa-sha256;
+	cv=none;
+	b=k7zaZAPDO9j0uNCL4U7X28ASXjLVHLsiLbB1lOU810tc1gqLyA83nmD9subTxlErw5DeKO
+	NllAqgf51yfVBXShdyHJPQ4ibKxckIqEwy2pJyK/zyucka809pKOdxdwFczl5TwcgB9g/u
+	jbCpdFtdNV0rjm0zexhofTHSAs97VMM=
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-78ed682e9d3so9226186d6.0
+        for <linux-mm@kvack.org>; Thu, 18 Sep 2025 07:38:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg-org.20230601.gappssmtp.com; s=20230601; t=1758206316; x=1758811116; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=OXo7Z6a2sgLXno3+k/FlpZhS1UzmF3Oswcd7rfRRafg=;
+        b=gTYraMVv7zHKNXXzxjfskI04WzL8UwcYncinN5rYlMld0WUMwvJm9EtNWTl0JzE/59
+         SIwWK57I69AiUtec1fXsvNHplf3vSfgMF25Ch/rBbzGFEy9kDaWitw0NHFm3ISBcifkf
+         +0a48EVBZFRfysaftBx0j3Pt1r52sUby/nPrBRPnItV81Y+zRi5oRRh5b2tnXWaVwRUF
+         uU9wsBDE/R0rxu7QFkGAlZgK1lcX6orJBJdI2+tnEEBFaFsdaAA1MaQgOYvPlYJ37b1n
+         WD49GsKO1Ff65yIj6RSkBPqNHcnsn4muR0YAULWGgNoQhqHL6tbuGgtcMeWPcHKKyRHM
+         3JYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758206316; x=1758811116;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OXo7Z6a2sgLXno3+k/FlpZhS1UzmF3Oswcd7rfRRafg=;
+        b=QGGbYGlJ1Cd5wMRP3cYp/zpTcMh/skgCgc0iuopDHyy9y6+TdoXoK+E9L4W02B0dov
+         YZw0fyXc/HIYw3qD80ayA0gi8Kcee9SwJdt0UTNtZgV2fv4+eKCp7Euy44hYK93hZASl
+         Y5eJzWWgizcmaWMqWQkARiKaUGHWjUjHk0/CZyl1wEMgvT/H9JTloZXKpigdLATi3YWr
+         NI81tIofL/5URtYMqCd35opx47sCrFScwoHLgoro+z4kw0be0WhdimFoKo2y+vsgbnNI
+         4AnzM7CZKXsU9sJfoU4SM5mgpAtMfkjQWimJOig42bhnDMmYUNPt6iViJHuPgj9YDOxN
+         eEyw==
+X-Forwarded-Encrypted: i=1; AJvYcCX0q/FQFP0n56qMkkD41Qem43/o9W0JalrUX1qtevw+gFx3uLQS77/yhewj8kDezf8vWazuzCkFNA==@kvack.org
+X-Gm-Message-State: AOJu0YyrrfcWtYnlowkAB9h9cMRDxzc9mI+A9R+rIvZK/wESH5I28kaZ
+	QcFcS1bUIcYROT3hI1LWVw8UyHHEQl0LEAOaO/M1jgnZwAo0VLmBzfUV4B7wD7Ia9lc=
+X-Gm-Gg: ASbGncv4JrrUKXYumfzPzLeFTxNUl3BRSJEd5+PJyC08Vz5my5snQR9n44O/l+5tlUD
+	KL1oP7oQTnA/A/DROBvC2c5rO2QrQlaDh9DWMtSvmaxckiiWV98L3qUdu5C6Ri+6+aS3Calr/Hp
+	LZGb2utkTORSsPUShAwTYRJzxXI2jrjhuLVYBLam/4eJkOKIwbWM1+lsTlLJHCOLCHv7QEnEzRp
+	jmKeV1wmrsyXzwODjTTMmHa6gyHN+cdqaxIueEc9/bqDJBrs/SEYpqqQA5Lp8rryW1z1Wpe/PSb
+	zAv4YIkHxTBdYoL0QnvHY31Pqf1EpEOyCh1Rg/JH6rbKhTUDjB7PohV9fWwgJfBscj3MTWrtVCn
+	Mkgcf1BZnvTaV2Kw8XjuEhV/LYNHTVAOBFKBao7+Y
+X-Google-Smtp-Source: AGHT+IGfoackJcqv2FUQjy7cqufVkoDvxBHVcVbjZdSQNUMCoEqd8Yh5cnnk7r3+CbXlF520+mJIdQ==
+X-Received: by 2002:ad4:5e8a:0:b0:78e:49a0:2ba4 with SMTP id 6a1803df08f44-78ecf111245mr63140536d6.58.1758206316038;
+        Thu, 18 Sep 2025 07:38:36 -0700 (PDT)
+Received: from localhost ([2603:7000:c01:2716:929a:4aff:fe16:c778])
+        by smtp.gmail.com with UTF8SMTPSA id 6a1803df08f44-793548c6e02sm13732616d6.60.2025.09.18.07.38.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Sep 2025 07:38:35 -0700 (PDT)
+Date: Thu, 18 Sep 2025 10:38:33 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: kirill@shutemov.name
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Hugh Dickins <hughd@google.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Kiryl Shutsemau <kas@kernel.org>
+Subject: Re: [PATCH 2/2] mm/rmap: Improve mlock tracking for large folios
+Message-ID: <20250918143833.GD828739@cmpxchg.org>
+References: <20250918112157.410172-1-kirill@shutemov.name>
+ <20250918112157.410172-3-kirill@shutemov.name>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CANpmjNN8Vx5p+0xZAjHA4s6HaGaEdMf_u1c1jiOf=ZKqYYz9Nw@mail.gmail.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: EF3B41C0018
-X-Stat-Signature: nisyerm17hy99xadpggb4xmks1zjzjqy
+In-Reply-To: <20250918112157.410172-3-kirill@shutemov.name>
+X-Rspamd-Queue-Id: 433FE160002
+X-Stat-Signature: da9saofco4nt7pz7ipqxmjcbk539kwzp
 X-Rspam-User: 
-X-HE-Tag: 1758206292-90052
-X-HE-Meta: U2FsdGVkX19+yWZGV1jKGnjHOHXEFddT3nEamcMaXQ5P71egooDTn0XLk+onl3flz9DI5lrKX4T+41SKxdw6EwIVkEATqCLRU9206pK3rnRWTvwv/bmFX8wP4xdLYXo/Jk5XWidO/rJx3WSyJ6i+RQ0hRuhJxb7Ywvp8erS2bgKpPOBbCT/4NMJItGOEf9FK1jEnm3ccfZyNnKn8v4AaoyvTF7GlsYgZCoNNXQXK1AztqBrdmUOYlXao1ne/+Kvcve1HwQv4kQdG/DDejf0utYlfP9UmDC/DI2P2O9q3s0RRZCbTITqTSHcVc/Omn2C+7Wg8xP0Lnnr6VNQuHdeugFQNcdDbyKJep9bPD2Ymh+eVZo32I0YjVOW1IsdQ5YyDYlQA2rEMaiNYAzz4CbIpuIxaUJq4Gv5WYpQQq0Ek9QeBjNjqc/JZ9ASXH6gGBQLfSusJS5GW9NSSZCpKAUZkTFBqw7THRHsVmLCJvz7MVywmh80yNPSi5FFxaUdurALet6tid2k32CaPUBi8DYnl2mP6lFsu1cyg1dWKw4Wze8IIBN5+UNM3Agmr7YTk5huqzVPogyYFejlq+cDK1VNJ15G1KbJ5l5u1sjQ7cyKJ+PtCoFW0/gr6GL8e4kzDxVl37tjCoXEQrRnJpeAHWeU+6G1ORFq6+69umqEiy2xFcvxEcg90jiuj6FZ1h3Qtu1zRud9strs732LbITPKRHRBq6WfCbp1RFVdvwPgDY+vTxI3uc9ZKk20X6IZUy+ZOuIH+1qzu9nB7DU+y2LsgveqABqkblUTbswumnAmH1319QHx4Q6CDCg9WdEtCodJkV74wyvKd4MdXZ7GbpAZWlYVKFsOipbUF8CC0r6XiCZj7Xg+7nJfwFAFXh1ky+roSZr01D+sMRDY3NJq+oPmSwqedVNltwSdhg4J6mwNknWtKxuP+zcS7eqlvt50KSETCQPUu54T2n5ggsVTIe37oZ3
- EM2SFHfa
- x0627b7icRRvDRpLvmN/Kmogy8RCogoXyJzs7CHch3MwAnz/h/2DgcYP4ioSp2xQy0hgYazfXxiG1Cu7jTfXcYlfN4nsfae7ldkffN4ZPrbb+1IBAlXm1PtIDPnXIj1FQfSXZKYptuYFX+Lf5lCIR8z7pvj1lKBBLqYWEaXPHZLzoXoZQK77UdWEBtvJ3m6rQYTM50vFJXPSeJTAfFpI177AbPA==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1758206317-126144
+X-HE-Meta: U2FsdGVkX1+z+nCLCKKkzeRZkMGkGRrVO570UI1DO/fQnePGWuNsFCbvr0zoBozpWKr08vNI5MZGlJgtGxvxhByHYdmPp6FNddH0Vah6AMVH8v8PupEvbmTh4lPaIJAeRmuIilBVSU6zaNzJrY+ktnu9Vna6Y6/ygGFupQ8qcT3cquaQsvyfLxR4erYpkPQOOnoWiaJKb2W3w7XcEveJ7qsaaymtMrtuWCsKDsKLaK+odS3dbbq++CTFd+kIC4jX3owyYcwNUmtMPmfcwc5JL952U6wFbwnlPADKL7yryXkdVOBon9CrLb2KOS+yLlVZoTFrrz0A8oasnE+QsBDeR3U60qZKWYJvX32kbd+nBufem56rsoi07XnEId5FV6HpGhOS7FTsEOBS9kpTQxh1cKv65Bp0i0H4vMy2TLyuWI1gRUz83N8fxxFqFBekAtY2NnpUXNtmFzqPE///FgSAYawBs3ZzFhrg9iVH6alxCIZxzUBgEhxbBDKPGlN4+4MldFDs42DZp5BoPN+33iskgbn7gc1ZxrY4NRekEvZ7t/kTz8GNy5295sRKCuAHPvhw/iUtcHC8oQPWQjDUS5SdkrwbCH3WHYbxEHoiYktJZy4fN+rFciP+m7Yea6++qRHqXgS+qeUaadlppX2J0H9JPlXyRHJpKAPwGUxNQi7yPdFz8EoCbytrEOUo9Lrhyk2Jd1xgNVp8C/XAqWwfEFCmNqVVgzq39gFj181VwIgu4cvz3PtfgujcI5n3e68+slzKS+4kQX9v+aeUjwoRIeqT8F1h9Q9HATKwAjIRLXcGe5G0bEqlypG5aaTzThaC8LPPgiQUT2P6aq3OkX146sNr9+A9r8Qd9x1uApMeZG/rVzEy2JD29RFQznHwiHjDRhquFg2nPqdnTqXqfTvpsBou7pxA1iEC387dcMkCAq1hzgLWYHHCy3C3YfzI/g+eK6Td2KhX7kQfWtlroK6nfzt
+ Urokk+e1
+ AgAE56kx/B8cYv/K2UnD3W1vFKf0SzXrn5VP8FS19KVcND4uL8hvfSUFIiZktIc+zo88XYgEvV881tuRfEXQG+P5Nyohu2rsjBJ0D8qNQBOrcydSxZm/SYs2pFc0L1LCD2lugMc5dvF0qBVC1CWzuIA2peHb9tiB0jI+j9zkW3+8vAT2rEGANLCKuVum4Kzfaa7IEadiigp3PZ/RwfvihfKexqsNUuqQ9Za9jA/cDSBkHrsH7h77fE4OVC9rzMcUM15jsq2JuQ/DmwMS+oNvaU3JTMod0YgU8FcsZ6gScu/oCkLcJ3HVBdx0gsPxFKL9MeAUfQjMBJBBdPX/PZgh1zY2abLbolYpv8fav/y7so0XlH5kq0dAQcLAUu9pNZSQNK6XMsfn8YZGrpfBbEXBHnRj4LzGYLwh4G0in8lnL/+w48fLFVx01+8kawPLkGud7pUiOtQoZWNr0+W2VBxJ9sVtb7wVSzmnBqcxHHKLocXquB0dnamsxxLrnvPuZ8bPEeoA6TfVimP4A4dxdQcJBBiFGvV9hvQF70UGDWAej3orlluc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,15 +128,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 18, 2025 at 04:30:55PM +0200, Marco Elver wrote:
-> Not officially, but I can try to build something to share if you prefer.
-> Or a script that automatically pulls and builds clang for you - I have
-> this old script I just updated to the above commit:
-> https://gist.github.com/melver/fe8a5fd9e43e21fab569ee24fc9c6072
-> Does that help?
+On Thu, Sep 18, 2025 at 12:21:57PM +0100, kirill@shutemov.name wrote:
+> From: Kiryl Shutsemau <kas@kernel.org>
+> 
+> The kernel currently does not mlock large folios when adding them to
+> rmap, stating that it is difficult to confirm that the folio is fully
+> mapped and safe to mlock it. However, nowadays the caller passes a
+> number of pages of the folio that are getting mapped, making it easy to
+> check if the entire folio is mapped to the VMA.
+> 
+> mlock the folio on rmap if it is fully mapped to the VMA.
+> 
+> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
 
-Just kicked it off, I'll see how long this will take on my laptop.
-At least the error checking that tells me about dependencies and work
-that needs to be done before starting the build is nice so that I
-hopefully don't have to restart the build too often.
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+
+> ---
+>  mm/rmap.c | 13 ++++---------
+>  1 file changed, 4 insertions(+), 9 deletions(-)
+> 
+> diff --git a/mm/rmap.c b/mm/rmap.c
+> index 568198e9efc2..ca8d4ef42c2d 100644
+> --- a/mm/rmap.c
+> +++ b/mm/rmap.c
+> @@ -1478,13 +1478,8 @@ static __always_inline void __folio_add_anon_rmap(struct folio *folio,
+>  				 PageAnonExclusive(cur_page), folio);
+>  	}
+>  
+> -	/*
+> -	 * For large folio, only mlock it if it's fully mapped to VMA. It's
+> -	 * not easy to check whether the large folio is fully mapped to VMA
+> -	 * here. Only mlock normal 4K folio and leave page reclaim to handle
+> -	 * large folio.
+> -	 */
+> -	if (!folio_test_large(folio))
+> +	/* Only mlock it if the folio is fully mapped to the VMA */
+> +	if (folio_nr_pages(folio) == nr_pages)
+>  		mlock_vma_folio(folio, vma);
+
+Minor nit, but it might be useful to still mention in the comment that
+partially mapped folios are punted to reclaim.
 
