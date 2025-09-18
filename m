@@ -4,119 +4,191 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20788CAC597
-	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 22:26:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86EADCAC597
+	for <linux-mm@archiver.kernel.org>; Thu, 18 Sep 2025 23:14:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 80B088E0147; Thu, 18 Sep 2025 18:26:36 -0400 (EDT)
+	id A250928000F; Thu, 18 Sep 2025 19:14:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7DFCF8E013E; Thu, 18 Sep 2025 18:26:36 -0400 (EDT)
+	id 9FB0D8E0008; Thu, 18 Sep 2025 19:14:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6CE518E013E; Thu, 18 Sep 2025 18:26:36 -0400 (EDT)
+	id 8EA3328000F; Thu, 18 Sep 2025 19:14:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 536D78E013E
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 18:26:36 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1176E13A336
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 22:26:36 +0000 (UTC)
-X-FDA: 83903806392.28.807CAD7
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 2317440007
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 22:26:33 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=BscatIA2;
-	spf=pass (imf12.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758234394;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7E5308E0008
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 19:14:28 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E21481DEEAE
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 23:14:27 +0000 (UTC)
+X-FDA: 83903926974.05.DE8C7C8
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011067.outbound.protection.outlook.com [40.93.194.67])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 2BBAA1A0009
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 23:14:24 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=RCuZ3aek;
+	spf=pass (imf19.hostedemail.com: domain of jgg@nvidia.com designates 40.93.194.67 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1758237265;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BwRb7SzhfZg7neWGwUqJxva5Q/Tf1fgxJiUlDnCKY6o=;
-	b=8gutqZyuFR7vBAzx2lx/tRRNc3Z4pvw0fiyrMK3P0nfEazk1yDeYW/o9hx3ph2Ehyfn6b7
-	4Bnq9lKSRwm53R0MDdfOfZHK4K4ne1mWSx9tIGxQUj+s+YkLntQwiJOVuVRTh5Lyxf6pd7
-	Mp70MXWWZN+KDElb3ABkKHXBPWpZcDA=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=BscatIA2;
-	spf=pass (imf12.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758234394; a=rsa-sha256;
-	cv=none;
-	b=G6FL986YQK0VK8s5zv/q6hdsyG7YfJHBfgXNWsImmm60vSmIr4ilqmXjXMbCS5G3xPG/dS
-	GqAWNoJllg913LVGu/GpN+QJFEkNBi825qcXyCDtezi6Sw4UkwlYdQX4vm2HW7L/9kkwY6
-	wh9OFWWZi6iOdw/PF2NhlLF4hwKvufY=
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-7704f3c46ceso1436163b3a.2
-        for <linux-mm@kvack.org>; Thu, 18 Sep 2025 15:26:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758234393; x=1758839193; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BwRb7SzhfZg7neWGwUqJxva5Q/Tf1fgxJiUlDnCKY6o=;
-        b=BscatIA2pltjmXKAW/UUgI7q3WgYPCPxDAxfudAzvHYRtNBcP7SvpvWRql94k2lMfC
-         1urh8Y+T9d9mNTD8Q2Y53hHqucK8GMpIsutJrPSrs5o/XOn38+3/T/54/HhmcBvLYe4D
-         uufqMTRe7mb8jAm6LMOy+6iNhNxBs4iPkbabxITVgN26JRn68iw1nyE7iOnlmNA3OGEu
-         CCnN/rV62aIDX58k5g9Xe+Zc6Bv5TvNzszJdJ3YSPN9gaIbBegsULqP16C/5tPvZ/ouU
-         Zv5S5HrrvlXP5eGEZ3svQ0Ws7yVLpSNXVogWuEgs9PJo76Lmm3z+cMC/+4vzcqWVm1et
-         rNmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758234393; x=1758839193;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BwRb7SzhfZg7neWGwUqJxva5Q/Tf1fgxJiUlDnCKY6o=;
-        b=wLkd8VLHLf1BQS7EsvtPOopHJTUsyCjHsyoipXplde5e70dzVdKuoT0qBve+xRzKv+
-         VkUpAOqsPKUHqEaOR0sVxzqK2fcob8XN5PPw1QvL5oUNOWMp8p7Z75hFW//XqJ1SpC7H
-         asrxXWLcLSmbyLF1gBgMNh7CsEMaVUo2LciBJhB/dgmgJTbMRUpYkbeBeJ8gKH1ogoHB
-         /OelwQz3SCwm/Vrn5ysM6TtUB93V7bXxMnZlgNy+S//m26VaV1Av0/tHZd+2+0AuzXgu
-         nbw7wJKn1GBE3R0qaHR1dLSNQnj8nmcx32JhWOND4m+0q+69nZhdeYOjWom7UKdrOPzf
-         id3w==
-X-Forwarded-Encrypted: i=1; AJvYcCVONWEZ7r/S/JRjSeGhN4X87ihzcyfCLWvv/TmsAkXy+wdvHR/1pRM11VhnpZbAY6tuF1b8QXz4ow==@kvack.org
-X-Gm-Message-State: AOJu0YwBRL83pqmO6ubKGFnNVII/AvbeYoL/Fxu7b13bKLwHCEsDi81b
-	HaDkTQAtFKO2RbRs04R2wBNvrxRMEf96a87wmcwmXowOqZS/ZDHtCNJH
-X-Gm-Gg: ASbGnctuJ3m9s4CG+i1Lx6c9xkirYuBhW9C6cH+6H746pE8HAc74JW5OY5s/Bebt0Bd
-	KzkZQIn3fOOb/A8fg+cx3upkFNyuVaf8rKUd2mMa8ujKYXp/mBFnZS9W09ko+XtcUPT3u9jc2ev
-	W0H8O/5wYTWVCPLyHGJ2ZFojxopDNauLawFamtN7/+3hgIcAHlMkv6YL/ezTGyITAq/6+ydt1yi
-	dMB/mqccIIZy+f9CI9fI73DBwDmMf73vfv2h9kpvR6wk4ynXFrzm4GN6QgiGLp+F52nBVZjVIya
-	aqRfqbpLnpStiSs0lcL2nrIT8SUJIY551HAP5HUeQ4vc3KdQ/jK16eQCSvV2dpurjqkP7JRynLi
-	3kUZqAN6kjD2RH/lIJ70GfAeQgCJy6zwkMIkSkzP1/gNyMHk=
-X-Google-Smtp-Source: AGHT+IENSD4FSp5oCJNvN+B+S7Ehm9laSk+STvS8UEs+QD3NwWg6ip8ENfOjlvBCKPM94MRsd6BQ9g==
-X-Received: by 2002:a05:6a00:139a:b0:772:7ddd:3fe0 with SMTP id d2e1a72fcca58-77e4d03267emr1101959b3a.2.1758234392993;
-        Thu, 18 Sep 2025 15:26:32 -0700 (PDT)
-Received: from pop-os.. ([2601:647:6881:9060:c5c1:2e33:6cf2:beed])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-77e5fe6de75sm407542b3a.19.2025.09.18.15.26.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Sep 2025 15:26:32 -0700 (PDT)
-From: Cong Wang <xiyou.wangcong@gmail.com>
-To: linux-kernel@vger.kernel.org
-Cc: pasha.tatashin@soleen.com,
-	Cong Wang <cwang@multikernel.io>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <bhe@redhat.com>,
-	Alexander Graf <graf@amazon.com>,
-	Mike Rapoport <rppt@kernel.org>,
+	bh=Fxpnlvy5mnwoWkxk1JDR86chtNcnnXQv+EF7nSmUv+E=;
+	b=Qo//vpkVDnUlnpHnk94j36CsnAoQ/ul2S6TSBZ/qdvIUWJOn14qXFLUTTHmRDa/SL5X7Z6
+	VV/s/X5pIiSYSlEtenM0+qEz0+xmutLQLpB+hWrLKA5qgd7LIWeAFHgpY8YQx3x5C9Arkk
+	A1RvptlDKyOTxHnzkgeGnb4eZBlm4NY=
+ARC-Authentication-Results: i=2;
+	imf19.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=RCuZ3aek;
+	spf=pass (imf19.hostedemail.com: domain of jgg@nvidia.com designates 40.93.194.67 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1758237265; a=rsa-sha256;
+	cv=pass;
+	b=GQdiBV3s21Nl0pD2irZu2yXf7B48yIEKCqThqrzcZRLHJe3KQswonPGGp91D2dWQVVx8/a
+	k8KaroJQv5ReBijPV0qHMrvREHyyFCgtACmAmzCNT35nDwUUd2nNQbW6ROISIFa5PoObr1
+	TH5ZmnKhuo7ZGmxnTuONYtoDF5C6JIo=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=uYgu/koOq5bnVttslx6tMioWHwys38fCiYKNnJqdDh1jJzuiv2UA7cbk9RPSCQZZU/iDFyTVMma9ltMMTdg4licEfie9T1QUXjMnAE0ypkrc2AiddMLSdyjRdFNBdx5VNaNhvd8osyYqU4jzsgjw7oyytB7pKncorej1S9YcJBFrZ6ujmw2eih8JN1q+Tqi/uPDn0ngCa9fUoygsTBKDzQIbw0i650fmPSicx7/KJAe0ipIpwDU6avaQ68c7uxMUqEKqipifZG/UrG8OvCSqaBEsJzOcLE4eDzDlWX0azNwMiF0ff8IeiXBayQgwdfP3zBrlfBxRnXc8o0Go1gzrjQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Fxpnlvy5mnwoWkxk1JDR86chtNcnnXQv+EF7nSmUv+E=;
+ b=F4weQz9VJWJ9sJn8XjGgcdX5kJ39gMgP8Xz5a0nJaxpedB0MTTVZKeBRkdaMXclcRXoHFsJZyaYZ67uTZKtTH7gbKig0m6Y3ZbWfLhDPAFFz3yncLIzc4WCx9ilMlNjZzDWaYdLNpSk7vn1+Sa866WZ+537G2aMF8F0Vjq+OVl9ZglvumP93eugTbMQ1aMi+xx+LPzJbey4d143ArKjaE93z1VW2jPnxi1Acie+WDIjILnrMikVCBY8pm1R17Dj/9jKKXjJVTFYm6iKh5S9s2JK9MD0TJ3yjtACeu5dFec+/BvizZwiaE1YowedWmcDVAa62KdrxTeLIbwhraR5cTw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Fxpnlvy5mnwoWkxk1JDR86chtNcnnXQv+EF7nSmUv+E=;
+ b=RCuZ3aekRqwLuT/lRtz1H4dhZfW8oWDYzrt1izTZk/tMJT+1MT8CPupcl0SlwTQr7iq08kZPHh0YbI5IGfJplQ9+9iH1EwU87CsjvilutD+73BVnpZn0co4+3vxNBOR3KA+B1ecTXhqDfEs2wHH7XmKsCW4d9f9urSsAyfb4Hw9Fe6jKNIcfUWXYg7VCtwmp952gU9loUQM6y4wgUbtf8q7sd2AL68XvgYo0laObW8Qj51u52Idpsh1jgkcuU0PC4ul+pxUJxvKcyVcpucL8rdvu5zFXj4b2g9gqMngfGwJO0G08sQme/xWhORn/dlBxzAxaJvOpw4AAgBTxTJ9g9A==
+Received: from PH7PR12MB5757.namprd12.prod.outlook.com (2603:10b6:510:1d0::13)
+ by PH7PR12MB5975.namprd12.prod.outlook.com (2603:10b6:510:1da::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Thu, 18 Sep
+ 2025 23:14:20 +0000
+Received: from PH7PR12MB5757.namprd12.prod.outlook.com
+ ([fe80::f012:300c:6bf4:7632]) by PH7PR12MB5757.namprd12.prod.outlook.com
+ ([fe80::f012:300c:6bf4:7632%2]) with mapi id 15.20.9137.012; Thu, 18 Sep 2025
+ 23:14:20 +0000
+Date: Thu, 18 Sep 2025 20:14:19 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Andrey Ryabinin <arbn@yandex-team.com>, linux-kernel@vger.kernel.org,
+	Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>,
+	James Gowans <jgowans@amazon.com>,
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Baoquan He <bhe@redhat.com>,
+	kexec@lists.infradead.org, Pratyush Yadav <ptyadav@amazon.de>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	David Rientjes <rientjes@google.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
 	Changyuan Lyu <changyuanl@google.com>,
-	kexec@lists.infradead.org,
-	linux-mm@kvack.org
-Subject: [RFC Patch 7/7] kexec: Add /proc/multikernel interface for kimage tracking
-Date: Thu, 18 Sep 2025 15:26:06 -0700
-Message-Id: <20250918222607.186488-8-xiyou.wangcong@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250918222607.186488-1-xiyou.wangcong@gmail.com>
-References: <20250918222607.186488-1-xiyou.wangcong@gmail.com>
+	Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org,
+	Chris Li <chrisl@kernel.org>, Ashish.Kalra@amd.com,
+	William Tu <witu@nvidia.com>, David Matlack <dmatlack@google.com>
+Subject: Re: [PATCH v3 6/7] mm/memblock: Use KSTATE instead of kho to
+ preserve preserved_mem_table
+Message-ID: <20250918231419.GQ1391379@nvidia.com>
+References: <20250909201446.13138-1-arbn@yandex-team.com>
+ <20250909201446.13138-7-arbn@yandex-team.com>
+ <20250915114707.GB1024672@nvidia.com>
+ <893401bc-4754-4c67-a82a-0c49c8e7f447@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <893401bc-4754-4c67-a82a-0c49c8e7f447@gmail.com>
+X-ClientProxiedBy: BLAPR03CA0083.namprd03.prod.outlook.com
+ (2603:10b6:208:329::28) To PH7PR12MB5757.namprd12.prod.outlook.com
+ (2603:10b6:510:1d0::13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2317440007
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5757:EE_|PH7PR12MB5975:EE_
+X-MS-Office365-Filtering-Correlation-Id: 39175efd-73ad-42c6-ee58-08ddf709190e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?2sFaQ2uvlTIEM1Eje7tTCSNzb/+lGOOwqzm7eM4wMJ7MWSyqJ9XZlNeShHAu?=
+ =?us-ascii?Q?8PF5/6Qb5SE8gG5q062aydlnMiCKGc72aGjgcxgbmhjbYVT4fTlqFurZM5Pk?=
+ =?us-ascii?Q?APgqHO19cESaD6HuJ0rSxm69wVtKIFY0PP6PfwIK8Pjv/UZWqiWytbBGEJxz?=
+ =?us-ascii?Q?PRfp60Obzw4w9t0yN2+EVld7kzm42Lcr0PIqnVhZ7KCtIKUnSLp6gIQhP8gn?=
+ =?us-ascii?Q?vMbIfuynZcCbmbVor0EfggO3VSK9QlEezxDn620pFGjbjww8R7xsQYfJhswX?=
+ =?us-ascii?Q?2YTj6bgsKx/L8QD3dLoshapcEjcXvLeyXoSg++MsqDSIfEhuCQ5psfSEpXjb?=
+ =?us-ascii?Q?cOFXAndtj/fIEfes2+RwPJ1eRbSbon6xqHfMp/Yy8llzx63s7drSehImqaGN?=
+ =?us-ascii?Q?IsxwI7vc925uf3ab+v+dIxKcZNm4xwcZwJeoAI4WPQpYLgpeAaeKBRAJWP4y?=
+ =?us-ascii?Q?fh0+xzxZclHI/7Oc9G+gtRsuUk5x7zD1uV7E5iikyKRrMLH1i2m8sWWYO/Bo?=
+ =?us-ascii?Q?YzROrPj0Bpkny/Z8ryZ0yYVWP0wT7aPSArtlUw5ykdZRFujgD0qT+g0BOg5j?=
+ =?us-ascii?Q?wXOL9uJuQ41r/9j1awsTkIezPijRAzPEaI2r0fzIaTipKaO18CCOrHH9mAEy?=
+ =?us-ascii?Q?/YSgQzHYOKFHJPLglpaYj8Z1S+ydW/8+mwljy8klkYp/ebqpHrXySXIZAii5?=
+ =?us-ascii?Q?Ocoj2J8SFZnPc0hSaMquqFO9wt8ip2WyTBBJ97q1c6op4uL140Dfsc9q6ZG8?=
+ =?us-ascii?Q?uX48P9AsCeM2XI5TcsvmuRkyj+6PJ+Y0UlbUjg1kusC6mhXSwpDxDIPWoQVg?=
+ =?us-ascii?Q?4rABRWkVC8MmStNgAobL+SfXIDNTqmLnMEQK0s90eN8GTfAB4qmaM7yXuDQK?=
+ =?us-ascii?Q?m93BAMySShqbuLcdX+94S7osKirOPHFUP6bCgs5RqOXaPkJlPcrnApOnZziC?=
+ =?us-ascii?Q?04fJqvcP/n4LZ9yO6FFDIqHrKvvnwq9kea/u8kKygkcUZUGCMoiumwjTRjm0?=
+ =?us-ascii?Q?amUoM1OkwXk00Qd0Npx7TuF9GhCd68wwyiTSGNYrpSp7+Axnee6oEhJNqAvP?=
+ =?us-ascii?Q?rFqUdfvp3HxI/ViSjldLM5qV1+PrATTNAMuZc+le2prpBlANnY2aJFx+G6mK?=
+ =?us-ascii?Q?Ob0ZIxWwpOrQQtGPAuBWqMc2nhUqg7o3xizywXqK1AIB+ZzInuJiMd9ZR9vk?=
+ =?us-ascii?Q?goLHizW+WIr2w6iYFC7yEURPR6nsXPsycg/zlZItdu+jW5CEJ84zMKvS/++E?=
+ =?us-ascii?Q?PJhZWlaEzZU2LLrZGAE0MMBm1UBxJESHsj6C3CB/dSFIzcUTLdLMN6zrmr29?=
+ =?us-ascii?Q?C74NTSVim+EjBu9Mo+jvgbdiblKwRJpumbbI72uhG1LZ7QWWD+pyMzwixFjw?=
+ =?us-ascii?Q?1H/eoc77gR0v+Lgu519XLN87jNX1S/mMrbfnlPItFiEaYAsE2BYgCCQpYDmV?=
+ =?us-ascii?Q?TjIsxG9dCBU=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5757.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?dzou9WuhTbWbJQCGuya75rjNET8SHZKTN0UD/YE7l1rLfo82HIp4OdDS8bZI?=
+ =?us-ascii?Q?BOcgFGz5OFeQjWQjeC274re6U0zr+XxwD8bM0RHWrhwll27vdAiN3zhVO27F?=
+ =?us-ascii?Q?OV8gukxEi3ltQffC0waN+Hh5NVaKUEsM5vOLKGGKXSDq0AH6whusIa/LE4YA?=
+ =?us-ascii?Q?hRYsSIJdve+SyNCTBtJn7NHlDDL2adIrU80K9RF0bWGbMAgTuemCsQjRkwwf?=
+ =?us-ascii?Q?Ksaaa9g482MPxwZBcseAN40T/h3ufYwS3B2/GJtPwukn2Aiz4ODZvpS0WCxb?=
+ =?us-ascii?Q?NYzP/5zeXNpKIXCbjBltnSpkzHQjHfBi1+iZvfYrU+q8wYRe+Dj6l4MkU3hq?=
+ =?us-ascii?Q?pyq+Ue/bfZXzP6gIuNzTLdvWpXkbtdlM4NHF2JQroxRHAszwxseu+xy+4h+f?=
+ =?us-ascii?Q?PPD5sQRJM6ewc+8YuQ0dk8qxexnHxWIjMn4Xqctki8pCDUXYz+8cRu7rEl5l?=
+ =?us-ascii?Q?9g4Ot2rCgg6MZGzW8hF5KQYnNlmdmtN79YOHJbzn8GRd4Xjm5R6MBMg6+EMq?=
+ =?us-ascii?Q?brJX39oF+8bFNF1fHPtcsTb9wBjpsSqCmdKk45RABtlnKxwgl9Yjm9K60OAH?=
+ =?us-ascii?Q?ySlBZZjWaj3S6V30yPfUOebv2hGFbLFQZOlG4mFfieYtB0SgZz8HSQcvGvS3?=
+ =?us-ascii?Q?W0q7CL3tgYgMJzoy+GfmckUDIGBCcECS9vLyrYa2NzH9GXXzPYLpNlp0/syF?=
+ =?us-ascii?Q?WDhvVNHCIMQdx74O8kXXz+/YEq2I/xbMzfiZC7himgPJlCz4oIjSTuKhc1uR?=
+ =?us-ascii?Q?I/s5fS1/qCsBOM0v0GbJBnwdXIMY+uf6HhakWFRIcNx5DPAqXEv1QUmOqgI9?=
+ =?us-ascii?Q?2JIth04vUu87VlCTRy1VjXWXWyMp5dVA3ERy9mVxHyzMfo+R9c0L+s9FMdN8?=
+ =?us-ascii?Q?2xZv/ze3vfcGbPtRYzqfXiWJzgO1BxatK4wNCV8Teq1qEnBx3cltGuaLPk31?=
+ =?us-ascii?Q?xDLiKclAH2lY1krfVTlFwGgI41W+F16ntGISbu8Oi+eZQWaUkyjBb3X/BWSN?=
+ =?us-ascii?Q?70SuPweTsBIvsMrWFi/diqRXa523TJ73VyZYC02FQd/87pah/t0kVFB/hlms?=
+ =?us-ascii?Q?zdelrjzBJlSUziRDO94ycRBIpwLyMuQbx9mYJqVrsH30yom6oU6x9gVQqINC?=
+ =?us-ascii?Q?K5t9T1VCj0ikeinmlp8p81hHsP2CL6Q6uMGL7LyRI3DWLxe6nuqNLxSy1zWV?=
+ =?us-ascii?Q?uKlJd+XdlU4iHb60dNA0YCEBxXRFu/e1NQ8oQm5lz+Ziq7JM+FljFCdxxNeh?=
+ =?us-ascii?Q?nB5LC8xCyTGg9qs3IXeTw1DngPLymlJn+uYkXlhS2fSryVzKSQAP+Da5SdL7?=
+ =?us-ascii?Q?jGeoda7bq4ybl9njvlGO96sMuWb6vD+pVzJs1ehTyFodDLh6t+s4GIqt+9BT?=
+ =?us-ascii?Q?qffhLApEI+/zAqJW4VeDfX0pnDciKLchhYvpBoyXXMvC4nchfPyYHQAPsXKT?=
+ =?us-ascii?Q?rRKtSKvwzACnvuPPclcA48lCWVzS8H2HdoB+3yvx5Y9GtuEsa9CMKrqnZV0Q?=
+ =?us-ascii?Q?EKGxU0RaRUzpp9tfXHEtGZ3RVwvyxypoQOtcLe2dYpCUxG+IZijkfy4cmQwT?=
+ =?us-ascii?Q?u60wKYiNf2HM03NTYtDIRT1z796KuEhnFQWZ4Vy6?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 39175efd-73ad-42c6-ee58-08ddf709190e
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5757.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Sep 2025 23:14:20.5819
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: gJfg/8Wf2a5KpQ0/NleD3PUV0WffnnzFmfSzWSwHDccUbtWf/LLz1ZF6SWNnhtSf
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5975
+X-Rspamd-Queue-Id: 2BBAA1A0009
+X-Stat-Signature: ms7bfeoitf9wggscrh6oj6iorcntbcud
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: njf8jr35ok395zwseygmwe6qqf8d9huj
-X-HE-Tag: 1758234393-212488
-X-HE-Meta: U2FsdGVkX1+jkRU1Gu3nFLFR6aReQkIGGyqf7bqMIdF3ImpWII81Uk5XbVl+vPLhCxPEwe6CYTsZYZm/YigD16HSqmtNIg16ecdtLPg7wh2Rjce26nPlYTfXQzWe/si+mLfCJJqLKdXIB3WTqiz3IdlFqwIMgG4vpkXT2/FVp3853xKA+7FoJkz/+IZMUJ1qqvkeZGn6jbRnw+k66KMwvD3Ze2hMY6oZ05HEicfMbQiw1ncWbaKlg6ObbLZyvfFSBJ8BFq1Chs/TpP99BdOztQ79ZVUhDDAzkA1pyS0easHC5xCTO8InWPrAT9czgpIsVWUt5wxmuXkSb0xenbC1R+CxMF4W7d9gnke39pbvA98jFIAVvIO83c+fVzspbSsmW9iLuoEIwoVvF4YiMwahObiKLxf0/XiCGNbEs04KpYDbeKigYy8WsznTTVL5O9npwgPsexnB58WurEu9+z0pD9dNkXKdse72T+wv2e4wz/evnf4Of6lkNYhdT8e9C+T/q9IlNAD6UbnMx0SP5/QeKSyxxmflI36MfGXjcBvWG+bFfHKi3I/QDpJQtJXqpJ1ua1BVYOKRs3/Cn6kxLe0h+v9+yfv1KrhjkXm6N705PkEhfvKrd8exSinmY9aShSsuBWo67aN3PerHcnA55tsAyI3FPXCjbjs5XVU2j1ZI1E2qy2XZYMDnHGAX6iwmqCC7ZDZXCemm9LfG07vpPrpInDTjtI4xV8oizPAnEWfaFq6OUSEJaxDdp18ClNOsq/KeZpwl7EOEBVAJFhsibWENdY0wXofsv5af4xkALp5CGpvpHT2LYvhMndJmYWqvmEO+EmLngBE3SF4PO7Zz/mmFkNrK7u9yYRVly4d2Rr0QPP1Ubd/JTX7zlPBTIxZrlVDAa06+62PH/6IDh6lojTV2C3OdmCWLnGVl2FdfLxoLeZbatb5yPXjeGZH0UCwXGZhiwJvU/sw9Gh8cyT3yz5D
- OW/R1CVC
- 3SY2hwIhCSrqopQU0F8h5DH8R2IPvarSPBsNYjxMf/8xlAJAlm4NpsbUF3XOGh3hdxk7YXfHLQBwGNuk6bs2q73yWL3v5LmBU5rnKma8LZwMbumWfKxIEyZ8AsLGxmwm/qKV9tWTm6joiflCjoUXiaSfDZMrJh8M6kzb/HGtFMrdyx9QtzEGwDs8II1a7A8zMtxs0otHxNGSIoIog6urrZFQNrZf+ALd6hHMVM7N/HfJ1mTHf9Z+1cJjw8z74vJzJZqKytEbf0X83N9Mtant2suDxWQo5aoilLevQr0Lql9pN6G4vPdK+yUres5/XJKwCgx5wiTh8yXaJHOXbMICmPwc+n2Tt6hQQKb2bMorL5HzQtLj8HT7mARkC1AkW3SkiuSBJrKT8yH/bU4PV9MhRX+bZ42T6PoExLqL+Rh1js2kJ18LqozZoEC72zbq7KsqXzS9oB72iFo4TCScYE8V8fKRtiQcIQfwXEuv2vt5hoUtoTtHrx2REDKaKmQ==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1758237264-912873
+X-HE-Meta: U2FsdGVkX1+kmiAN4f8EMucBJL/lMj6IhdbQbfNvVBrjJ4aY+hlXGm19D9iTiImqTVktajOQ+kIKlNJZyVEp9tpKKpxq8JJZM9qmc4VVJdiDeVjIXLT9i3VqpuKJQ4+Sdqb3XGcJmDao+O8h2qiMCsHXfnpF0fUxhg/wP2Xya0ufUqoYw5JnzFlnEa7HwGlQMb99SP7v36VNgbTiB9eEGiYN1jEX59TaxilGgaD6CCB66tXB6ZrprP80oneN7glsikUez4JL5jVVQ3/wPbDgOcdovUOMi0ltHOHcNjDu92Jr4LdEYQo7poNuaXrzgxBm+jiEUq8V4vKdktulq64D1aX3nBBo/0GPkE4y41bX0iKjeKUhfQ4o7rAG1oRtxsoOGjYLDfrGn2qfqcR6+Nd4S3f93ChVZKuGdtbMj/o+bYlE+6TtJnXeANdY2bVtrPV4H9Fjxh9Hk/4DVqMhZ8KaGLMrbKYw7fF3jaI5JQ7TQsqm3S7IKtPiCCWYladUlZYxLRK0DpLCuCWaftPxtw3VgKumagoG6ysznJeBj0GumXe5pbHv4bgnyme/uv/zkk/KYWW1gjQe8TwvWatv8ypUIQoMjz+VC/pXsvE8KAmUZS/o9cudklwr6chU0LK5mYLJVJiASjhQ4QZj6RGr+YEjPm8zmvA7UjhLeTzIl/63PSBkzPVsjkj9X3x/fe+/+X6C1W77KlWa0mOKbpFNHk0v3+VdE6YPoXxXxKQvT/qzlU6WmaK+ZZH34huBKExYevuL1vC1vVfsm6xncmEVf7tgdf2q3lWXu76y8ZST16xj9GbZTzD2uJ6ejy9ae4FnW9dNgnk+4N/ENvPkYbbNBn48Sk4KeRts8YxueECziH9xIMkyJYocaakVTsLM0XTvE8lx6AnWtTLorDvoHLvpkAuJEH7XRgUJkPNrkWmvsXnkEeRgcncov7Mnh8rXC6Lxnji/YbQ2gULI9JJcbgWIqBZ
+ gXqNIRVb
+ yp42ivNnTLSF14UoDI3o/h+bkdOjiJklEEsJMQIZjUkz66VIosb1SYLwYvSmgrNF/oFyOvq3YlKpsTuhRlKsG7sBxut9SKAcKrjkm3hCsXV9ioU32mHZN7C7VN/JTsA+l1vg/d5eAm/HMBW/qvwv4DnNtB6mvtYoW/YjWtcLImYapUL/VcdHUNDF1ARl7+EmrgdAkFoaTKPv7Ib/aLo6tCfw+j6iOWFMACHemM1Vqm7yjWa7IEa0bszgHFash4jnq9zlOkofkVbBK15tuByQ7iUtluUvTUeI2FD3zdCMRCjb/gxQ44o7xlpPdwYOyTLVlMp6Wo4X5fBkmGF9St1FyPlaSOrp6mg1zpDcfSci7Gjflt0Wce/3ZvGwYfCLJjNPJiaMGT9UYLiW3LrMDB/B2BI+Ieo9gha8ksF3IOVury+PHCK3xKf8hB52zhLpdbk2dM8mSwhIvYOGV/r/1LACj5W35FPxz7JNYxIDRzxFrUfgYSXzZPZ8o44vGa5opdWe6Sm73tM6P/cXYxnQLUUxyOS1CMEdPBFsvRQanVwdFUvC9NGRAIqRvN9FSKuGBxd2cSzFEquuhoEHoBVYVHs9jcu03/Yvv047CCNx9pZJ1C33MoOE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,116 +197,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Cong Wang <cwang@multikernel.io>
+On Thu, Sep 18, 2025 at 09:00:31PM +0200, Andrey Ryabinin wrote:
 
-Add a dedicated /proc/multikernel file to provide read-only access to
-all loaded kernel images in the system.
+> By contrast, KSTATE centralizes this logic. It avoids duplicating code
+> and lets us express the preservation details declaratively instead
+> of re-implementing them per struct.
 
-The interface displays kernel images in a tabular format showing:
-- Type: kexec type (default, crash, multikernel)
-- Start Address: entry point in hexadecimal format
-- Segments: number of memory segments
+I didn't really see it centralize much of anything, it is just a long
+way to spell "memcpy" the way it is being shown here.
 
-A lot more information needs to be added here, for example a unique kernel
-ID allocated for each kimage. For now, let's focus on the design first.
+I'm all for consolidating, but please do actually show some
+consolidation..
 
-This interface is particularly useful for debugging multikernel setups,
-system monitoring, and verifying that kernel images are loaded correctly.
+> On the versioning side:
+> With this approach, introducing a new ABI version (say, abi_map_v1)
+> would require us to maintain restore logic for each supported version,
+> and carefully handle upgrades between them.
 
-Signed-off-by: Cong Wang <cwang@multikernel.io>
----
- kernel/kexec_core.c | 63 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 63 insertions(+)
-
-diff --git a/kernel/kexec_core.c b/kernel/kexec_core.c
-index 4e489a7031e6..8306c10fc337 100644
---- a/kernel/kexec_core.c
-+++ b/kernel/kexec_core.c
-@@ -13,6 +13,8 @@
- #include <linux/slab.h>
- #include <linux/fs.h>
- #include <linux/kexec.h>
-+#include <linux/proc_fs.h>
-+#include <linux/seq_file.h>
- #include <linux/mutex.h>
- #include <linux/list.h>
- #include <linux/highmem.h>
-@@ -1224,6 +1226,52 @@ struct kimage *kexec_image;
- struct kimage *kexec_crash_image;
- static int kexec_load_disabled;
+Yes, you MUST do this. It cannot be magically avoided.
  
-+/*
-+ * Proc interface for /proc/multikernel
-+ */
-+static int multikernel_proc_show(struct seq_file *m, void *v)
-+{
-+	struct kimage *image;
-+	const char *type_names[] = {
-+		[KEXEC_TYPE_DEFAULT] = "default",
-+		[KEXEC_TYPE_CRASH] = "crash",
-+		[KEXEC_TYPE_MULTIKERNEL] = "multikernel"
-+	};
-+
-+	seq_printf(m, "Type        Start Address   Segments\n");
-+	seq_printf(m, "----------  --------------  --------\n");
-+
-+	kimage_list_lock();
-+	if (list_empty(&kexec_image_list)) {
-+		seq_printf(m, "No kimages loaded\n");
-+	} else {
-+		list_for_each_entry(image, &kexec_image_list, list) {
-+			const char *type_name = "unknown";
-+
-+			if (image->type < ARRAY_SIZE(type_names) && type_names[image->type])
-+				type_name = type_names[image->type];
-+
-+			seq_printf(m, "%-10s  0x%012lx  %8lu\n",
-+				   type_name, image->start, image->nr_segments);
-+		}
-+	}
-+	kimage_list_unlock();
-+
-+	return 0;
-+}
-+
-+static int multikernel_proc_open(struct inode *inode, struct file *file)
-+{
-+	return single_open(file, multikernel_proc_show, NULL);
-+}
-+
-+static const struct proc_ops multikernel_proc_ops = {
-+	.proc_open	= multikernel_proc_open,
-+	.proc_read	= seq_read,
-+	.proc_lseek	= seq_lseek,
-+	.proc_release	= single_release,
-+};
-+
- #ifdef CONFIG_SYSCTL
- static int kexec_limit_handler(const struct ctl_table *table, int write,
- 			       void *buffer, size_t *lenp, loff_t *ppos)
-@@ -1295,6 +1343,21 @@ static int __init kexec_core_sysctl_init(void)
- late_initcall(kexec_core_sysctl_init);
- #endif
- 
-+static int __init multikernel_proc_init(void)
-+{
-+	struct proc_dir_entry *entry;
-+
-+	entry = proc_create("multikernel", 0444, NULL, &multikernel_proc_ops);
-+	if (!entry) {
-+		pr_err("Failed to create /proc/multikernel\n");
-+		return -ENOMEM;
-+	}
-+
-+	pr_debug("Created /proc/multikernel interface\n");
-+	return 0;
-+}
-+late_initcall(multikernel_proc_init);
-+
- bool kexec_load_permitted(int kexec_image_type)
- {
- 	struct kexec_load_limit *limit;
--- 
-2.34.1
+> With KSTATE, versioning is built in. For example, adding a new field can
+> simply be expressed as:
 
+No, it isn't. The code still has to process versions and still has to
+understand what to do when the unpacked struct didn't have its fields
+written.
+
+If anything it is making it more obfuscated and complicated to tell if
+the comparability is done correctly or not.
+
+Jason
 
