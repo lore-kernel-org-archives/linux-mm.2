@@ -4,121 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5F05CAC592
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 19:52:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DCD3CAC592
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 20:06:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 57CD28E000A; Fri, 19 Sep 2025 15:52:32 -0400 (EDT)
+	id 660278E0006; Fri, 19 Sep 2025 16:06:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 52D0B8E0001; Fri, 19 Sep 2025 15:52:32 -0400 (EDT)
+	id 610AD8E0001; Fri, 19 Sep 2025 16:06:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F5A48E000A; Fri, 19 Sep 2025 15:52:32 -0400 (EDT)
+	id 4FF8A8E0006; Fri, 19 Sep 2025 16:06:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 274068E0001
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 15:52:32 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E2D761A075E
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 19:52:31 +0000 (UTC)
-X-FDA: 83907046902.01.A5070B8
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 1714F140007
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 19:52:29 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=RK+7wzy8;
-	spf=pass (imf09.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 388588E0001
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 16:06:49 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D0BB61407E8
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 20:06:48 +0000 (UTC)
+X-FDA: 83907082896.28.95203CF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 1F296A0010
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 20:06:46 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=wchAFv1v;
+	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758311550;
+	s=arc-20220608; t=1758312407;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w5514hkUU6j/LpNp+jQR2Vw3xX4bDEVjgpb6NqfXeu0=;
-	b=LOFLUo/7VxT9zDJX97t7B7kScK/wg6cPLH9ACvbZDmDAGWug5v/E1z0uODndKTANY20XCb
-	6xUeuh4Hwt+FicrcVugFuAq7tfgX9YaEDvKKieemJjJjRBXkm2ogPASrpOVMxAydtef3Yf
-	7sul2itoUbCB7BpFcehG5o5HMduajPE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758311550; a=rsa-sha256;
-	cv=none;
-	b=nsVMupjEBCtMvu7Aj1VcUP9klGyXjiVTunc7URktR5I8IHfiJvJQw1oddmBU+JqzEm1WKN
-	fnKOJhYR1MLXetA6I3WLDAdBJKFxrVTowwCTZYv3obAbEjr2n5tCUA+lSgtUChM7CRGeo5
-	yggJlx0ujoTfVBxpil3grSVvSjj5GxI=
+	bh=oU6IPcrhdCatbty9M1JygZaaWUYhUxIhORgdHeVOnGI=;
+	b=LcnsA5izAO0iDxYEn4szuiRRqV4qa3/xKDFV11qpYhrAReNC887sHU3Ea84BNW0JxrhlWF
+	LgpPMu7GLvR9cbOfWJxy2tORI48y0a3+gKpW3WgNF/YJb+x7UsMSwthD1mzqpW7xs9YtHc
+	5B55pXJ0HaTP6uLgbjOH+KVZFALmnLs=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=RK+7wzy8;
-	spf=pass (imf09.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-723ad237d1eso24060087b3.1
-        for <linux-mm@kvack.org>; Fri, 19 Sep 2025 12:52:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758311549; x=1758916349; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=w5514hkUU6j/LpNp+jQR2Vw3xX4bDEVjgpb6NqfXeu0=;
-        b=RK+7wzy8U2WGj+powywnNyKFhFJwkYoBwioSatU/Get5VdeSVn/IeBDgf71AXtI8gk
-         wVZIgAZsWEIWBdA5GZD8S/cKeEZLXyjzQ1muh5Azdsfo1mikgY8OWqNColu8oXixko6V
-         7PQxsWOY2zpqJ8TqtUYcn2V5cKSfp1oDmwvTWDhCZzRkqfxo3Nt0CoaOxvFTFPjVSiaL
-         Jlk1l8peUS32TunlrJ+bCdF7gZS8vfLH1s+B3EsTWSld9wNqBbLM5JStCMyXGSysauLm
-         V/4lhPj297ydjfdzDxe3XjOf5crc+f8MdProToIQ06NZljpEgV8jbHzRWatNWdM98tq7
-         2TFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758311549; x=1758916349;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=w5514hkUU6j/LpNp+jQR2Vw3xX4bDEVjgpb6NqfXeu0=;
-        b=XfVvsSGKk8Rsl7UH03p+ykcY7zJdhUIdtxgpLBXU6uVR8t2tCYQh1t2C7Mg43xC9GP
-         NgKQcNBphERAEM+P8iOfqC9c7FxoJyJgLsUpmz19/SLhpQEyR520IcABZMVcpj+rbDl+
-         FIivXHPsmUZStGCMcJ0TK1bJN9ymSXNQAfZj4RaLu3vwF3GHy0tF/OlZjKuqXeA0PPkZ
-         xrRPtgfMIz0U0C5K+adacVi+CTdfFjHm8cJ6bvXopGJqlo2zzHU+bH1VYMXFhSr0fOve
-         nTzZ3Ujd9fubl21OyXbeACbXqMgl6uwbz3OFakdsj23ar5pQCYytH1x5pNBNgX+yOW44
-         xjPQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXYam6SQP2bYXVlsp2BVhckT7mvnJTLrmfy+P919mid3VSqxJ/LHjutnKP4gjFQOhwXVQ2ah8sIkA==@kvack.org
-X-Gm-Message-State: AOJu0Yw9rphMAkCooLdAbi3wi/AmbvcI0Lqhw/m0bpeAZjai9MArNbTs
-	TjzEs3OcNwr/mq5TdC1BNKRZL0M4hXLWnTyn+hPNWiA/OE9LfpmV8Yoo
-X-Gm-Gg: ASbGnctzBV6l+PwcKYzd82uHT6yZ9yGAPa4cDRtyIIaXCp/A4k3MsUHBjLrmgERDF3W
-	B4Tw37gC41+LBxhyU2CkbmqPzCUgmUB3ZdvqUZezlagtCHow04cNf1SJQXKkiSzKoITdSd05AGd
-	KElAhkySaklLjVRb2iwxsvPsJctmpV3GKwN8JUnlIMeakaYB0HpN8KzjvThad4+OVnKZe3iXEsm
-	sVZ8ZOxO3aY0MpNTNbMpRfzw4FqXDN6cHTRGzs0v0B3E3eR4pFbRva57blcws6GeD/i2K/TFnjH
-	E812VjvSsX7zfYM6BARbGBPTVKJXmutf3LIJkZf6BCv7hrOcaOKqTUS0LBKXnqXNjXCLiY/+ecG
-	w3vJHHAtSAjVAvqcv2kKA/fXbRY5/8h944FZLxtbfLDlsOu71I6er
-X-Google-Smtp-Source: AGHT+IEVBz0LvxtgrKD8uQV/kHRpMtKxa5IqUhA+Ja3x1EMKQQ8NgxEBIv4STTROBqXMAS7ua4+BRw==
-X-Received: by 2002:a05:690c:6812:b0:72f:d215:60c9 with SMTP id 00721157ae682-73d3c0162afmr46956397b3.26.1758311549074;
-        Fri, 19 Sep 2025 12:52:29 -0700 (PDT)
-Received: from localhost ([2a03:2880:25ff:e::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-739716caf81sm16662397b3.1.2025.09.19.12.52.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Sep 2025 12:52:28 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>
-Cc: Chris Mason <clm@fb.com>,
-	Kiryl Shutsemau <kirill@shutemov.name>,
-	Brendan Jackman <jackmanb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Zi Yan <ziy@nvidia.com>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	kernel-team@meta.com
-Subject: [PATCH 4/4] mm/page_alloc: Batch page freeing in free_frozen_page_commit
-Date: Fri, 19 Sep 2025 12:52:22 -0700
-Message-ID: <20250919195223.1560636-5-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.47.3
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=wchAFv1v;
+	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758312407; a=rsa-sha256;
+	cv=none;
+	b=TmZoQpb0BswPRN7KvPyH8oAT6COPGJ0bSeGHSOSnOYN5mVZMLsQXvv0fMUeCJzZOWQd3GP
+	l0R6N21XTJsbOosx9nQnO6veTAoNbXfRZG2Hd42O5D6+ShhjcQl3uner6d1N/vQO3d9H3M
+	2OPMVaKhRIgTtUSGaZDo/Eq8n5fCLYg=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1211B6013A;
+	Fri, 19 Sep 2025 20:06:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20FE7C4CEF0;
+	Fri, 19 Sep 2025 20:06:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1758312405;
+	bh=oU6IPcrhdCatbty9M1JygZaaWUYhUxIhORgdHeVOnGI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=wchAFv1vt+vhyzhItwupGq5aAmioJFZOe/0Zmxv1rki1kUWHXg5byUVLtajCkTXqV
+	 FFhvI35l7xkd5V0xk5e922SIgSo1jHmwwuZhp3BL9Kong4YYq5baiutPIMUcptEuri
+	 KJMdlDmGad89OkoV8v1l5RhnXnTm0OAki1Uh29ac=
+Date: Fri, 19 Sep 2025 13:06:44 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Chris Mason <clm@fb.com>, Kiryl
+ Shutsemau <kirill@shutemov.name>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Brendan Jackman <jackmanb@google.com>, David
+ Hildenbrand <david@redhat.com>, Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>, Michal Hocko <mhocko@suse.com>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Zi Yan <ziy@nvidia.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, kernel-team@meta.com
+Subject: Re: [PATCH 0/4] mm/page_alloc: Batch callers of free_pcppages_bulk
+Message-Id: <20250919130644.f3a4afdf0c2e51bbec59b6e0@linux-foundation.org>
 In-Reply-To: <20250919195223.1560636-1-joshua.hahnjy@gmail.com>
 References: <20250919195223.1560636-1-joshua.hahnjy@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1714F140007
-X-Stat-Signature: whd6p6ibz4fcrk9jzi8gntt65pr5x98w
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: sdyy9dk17haqexku6atihq9zsri8khts
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1758311549-782180
-X-HE-Meta: U2FsdGVkX18VB0ga7WyLncO/ZPGtM8LlN3gLO6LI1PsjacHqYDnGkOX3v++n4bbHcVvWy0r1t9bErViuSAfnNE2FYTdMDDX8QxirQ/kKZOBRU2E1Tw0WcxRHEY7QnL5qLRwFT2bUhDwUVmqdB9YrYVx8mAN9o5qZzABh2zuPTAttb5ld5cIUE4PeSROE7W4F7BAnUwymfGDjEF4FKmVDoqUQ+w0MyDNBWUJUGftrtTjBE7NhlJJR8+vm9gI+SsXXcrdKeJjnnm8aqXBtwUMWPH3hNQmtTc85GawnDANEGB4CDtT99mJ23NsLBKzTP3CbmDqbAf+0ozn17e8ga/wZO1uxgSJvNbrtkX9IoO87IkO00FBInaVRAE/kLYZEBO1iwqHx+KiFJEAARuU6zxw4YCxIQUgDV9fR1DkxxwMVwzlrbTDHs/wOXCrv4Ibz4p3QBEAz+PiE55gix9I/gWSDi2HHrE5M7DAINoVTPMplm5tT5uwZoqrOK4OxofI9oluMZXC3qhrMfea40QaCa7o7Rr/xZjf8/1bBZIjekEXlLJW3IlCr0V1T7/g1xu3Jo7WPZ16BklAHr5ZV9zk3+HqBVzIM3J7/kzt9FSEPty1iWhNXLUX0sl2T2be6uE93uGwW2E7JhSbb9P1XJwhC84Jtf5vXBuN7j4rOpLHU6oCpJJwdkBCq7X58Emqp6CrukHehmkjDXyM4Cv9Kd1ZmXTrO5eU3cBFDEBvT+WcnLijZgXLeZ/lQmFRqYZMN3aTAXwouRGvx7AKTJMbyDlaKtgoRDqzQ017jiLinBWK7XJ70g/TBs83nxkeGdDQLha8E4tC2/rS2lcTvpzv7dBybvvrnHNcnmiGXxglM/JJJeVZtnvJFX3x7ASy7zXdZvaf91r9zZABI8Ecu4n9qGrB1lDPJJuSkQfbZ7dq0XHQxQvomVcvk3H/R2o27rtKFoscoIqgG81N+WpbiZu4r/mod4ER
- ERoLewPo
- qTj32N45XjLYXyAKuiR2V+6d9A/e2w6VdgwhoQU/8S+fyFEOeuNd/OcpCRON1MWV9jni6Rf7AYvFn3hfH2A6x1B6xE1qxXOeod81y5RlppToxmOFh6YHip7RbSjDoeyLrisYlRuDNZLRv3WA/Yv87Qh5hK3l2Fe296mj0sf+XH/cXubckCaDH0Ir0kmWe449lW1jAI++iYKjGBwspbBQaASoB81dX7nRwFlrO8K3jSHq7VWqSMAJN8bVHiVytO1IaDK0Nrc7wPJA9j+jxjQgnrLsHegKjAecBfZY03gXN/qadOiVsbkF6NaEMtKgGgm/PZUj7dplGUK3pKtAaryjKXyinwXdXvVVnXaWQ5J22e+GL6Yqq7/21jTu7iCLkhoal7o5YNq2xf3LKcTCaq+87VckkliqGLwCeyrPB9kfVx0j7xCYk8nFjK+Xil4snqDGe81jwK62yg7Lc5zUClyzZPHZtcGbAlolLgVrFuk/qnrxRYK+0hkmlvg/8R1/1Arhveq8uLV0epid5akoZAMzk3jaZNXf3NFyqGPXbSBtqxstcXw7nhbrKCvdFQ5REoQvwcOfudEhxAqOf/Yn3CAbrBfwAD9CE0lbyzGUdmYRdXzIUGSkS0m4WKH49S9pfL6pgX/b/
+X-Rspamd-Queue-Id: 1F296A0010
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1758312406-344833
+X-HE-Meta: U2FsdGVkX18k/LeZKJePVrbwYPbnXBbWI8KuWHaQ3aTwHU6TdgRfOq3JWoxE+82e4GUX4nulTmP8MopCEBS00E1IAU//TAj4XIP3V+1xhJQ/M+pzAud9XqlSiL7tUq5cTgLOQwnriCiee0dO53mGdsXy/LVSvMLWk7YhHJcO22o16xeuzfEG3KJr45U8l/6clKD6hpMMS3abti4qYddvsq5elBoAJBVLaw4PEpq5nb5nSlo7BsBreTdEuUEpO3Jogrbimq5qI6RnIyh9ZnjmqQCbkbNC+hT1xvoCY7oQyVwTL3GElSBC72R195uRnDhJbUM/yac5Hpv2m4kDqehKjJxyN7IBVFTVmLj/ANxHGOiVwm2b8Dz2btadoOc7JcMxOpQnPVSiqX/J38maCS7EF+zmJEmKnkdGsxmHF3wezS1lUQQ/UUx5brcGoj+KXbJjYf1tuDs4OXU4nwQN6bgPc91M7N27ZlNJcO48Tbi+Hu8OtDXd7Bx7KRGFnnwrR4otI80oWnfJHVuZ/2EySkLBiuVqQarvk1BefT1nQjzAqCjZx41zVDLUVafns+2gMN6biyvUegeqBkqoMCVwYRvmslQTOiAT5v80r4CZPV4E/RWk/4ibSMSMW5d0a6m8XiEDGe5T8WJrTb1/dZWpaB4ROslppwpUObO5rQYURWm3gd6/XJC+eawEzK3XN42tsmghziBaGm7B3B04PE8bW6G7Z0DjF7I1pRh3DTblFHXCATEZlpyGQ/M9XwRHgineT8wp6RWdw9snCMWQkVMKqYIsot7w7EQ58gcZfYxTHmuyLlgRQN85UqhYSSa4yqVC3ujxVZrfqAUKHsHq68eqjFL9HV15ylPgaCUNmw9hfMHEYGIc13u3hFLC6tUOltGkjpy6hZg3Jt9xyubXtBrnrJy1yBVIjVZYBy+peQStcU4C1IRncUKeXGNdllh2xUlA7ovtwqaDNTxyBdDoZV6JLFA
+ WvSB47q2
+ M9wLB3eVJAXclKlemJgPKRb73IcIMGvd3wdxssmHX01TgUQUUADDlDS72u+SXj/1zN6UsK/DP3LerxKxCMLJ0apq7fzB2thoHCx1TSAIgIlwicgZ95bq6DHGK1Ay+rwb2dh1z16wn0nMqsU0EUMCTMmcNkCEEMbo872+xYDEKHqkea5ml89EeAvUR4Iyo2MtbfR9y96bSx/CUeJHzccc2eQe7fzAs0OWZPNgL1ha2k6oV6dHjQffYVxdLuCuNAmABjPj06TvCep2/pk1bx5xLjP29tq3k+HlbSPT2hayGu96LU4Z5X2l/cTnoWO4S57Z/GAi73PAsE70cZCdH0MD+XRMmumm3Y5tiq/kj
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,117 +96,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Before returning, free_frozen_page_commit calls free_pcppages_bulk using
-nr_pcp_free to determine how many pages can appropritately be freed,
-based on the tunable parameters stored in pcp. While this number is an
-accurate representation of how many pages should be freed in total, it
-is not an appropriate number of pages to free at once using
-free_pcppages_bulk, since we have seen the value consistently go above
-2000 in the Meta fleet on larger machines.
+On Fri, 19 Sep 2025 12:52:18 -0700 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
 
-As such, perform batched page freeing in free_pcppages_bulk by using
-pcp->batch member. In order to ensure that other processes are not
-starved of the pcp (and zone) lock, free the pcp lock.
+> While testing workloads with high sustained memory pressure on large machines
+> (1TB memory, 316 CPUs), we saw an unexpectedly high number of softlockups.
+> Further investigation showed that the lock in free_pcppages_bulk was being held
+> for a long time, even being held while 2k+ pages were being freed [1].
 
-Note that because free_frozen_page_commit now performs a spinlock inside the
-function (and can fail), the function may now return with a freed pcp.
-To handle this, return true if the pcp is locked on exit and false otherwise.
+What problems are caused by this, apart from a warning which can
+presumably be suppressed in some fashion?
 
-Suggested-by: Chris Mason <clm@fb.com>
-Co-developed-by: Johannes Weiner <hannes@cmpxchg.org>
-Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
----
- mm/page_alloc.c | 45 ++++++++++++++++++++++++++++++++++++---------
- 1 file changed, 36 insertions(+), 9 deletions(-)
+> This causes starvation in other processes for both the pcp and zone locks,
+> which can lead to softlockups that cause the system to stall [2].
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 467e524a99df..dc9412e295dc 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -2821,11 +2821,19 @@ static int nr_pcp_high(struct per_cpu_pages *pcp, struct zone *zone,
- 	return high;
- }
- 
--static void free_frozen_page_commit(struct zone *zone,
-+/*
-+ * Tune pcp alloc factor and adjust count & free_count. Free pages to bring the
-+ * pcp's watermarks below high.
-+ *
-+ * May return a freed pcp, if during page freeing the pcp spinlock cannot be
-+ * reacquired. Return true if pcp is locked, false otherwise.
-+ */
-+static bool free_frozen_page_commit(struct zone *zone,
- 		struct per_cpu_pages *pcp, struct page *page, int migratetype,
- 		unsigned int order, fpi_t fpi_flags)
- {
- 	int high, batch;
-+	int to_free, to_free_batched;
- 	int pindex;
- 	bool free_high = false;
- 
-@@ -2864,17 +2872,34 @@ static void free_frozen_page_commit(struct zone *zone,
- 		 * Do not attempt to take a zone lock. Let pcp->count get
- 		 * over high mark temporarily.
- 		 */
--		return;
-+		return true;
- 	}
- 	high = nr_pcp_high(pcp, zone, batch, free_high);
--	if (pcp->count >= high) {
--		free_pcppages_bulk(zone, nr_pcp_free(pcp, batch, high, free_high),
--				   pcp, pindex);
-+	to_free = nr_pcp_free(pcp, batch, high, free_high);
-+	while (to_free > 0 && pcp->count >= high) {
-+		to_free_batched = min(to_free, batch);
-+		free_pcppages_bulk(zone, to_free_batched, pcp, pindex);
- 		if (test_bit(ZONE_BELOW_HIGH, &zone->flags) &&
- 		    zone_watermark_ok(zone, 0, high_wmark_pages(zone),
- 				      ZONE_MOVABLE, 0))
- 			clear_bit(ZONE_BELOW_HIGH, &zone->flags);
-+
-+		high = nr_pcp_high(pcp, zone, batch, free_high);
-+		to_free -= to_free_batched;
-+		if (pcp->count >= high) {
-+			pcp_spin_unlock(pcp);
-+			pcp_trylock_finish(UP_flags);
-+
-+			pcp_trylock_prepare(UP_flags);
-+			pcp = pcp_spin_trylock(zone->per_cpu_pageset);
-+			if (!pcp) {
-+				pcp_trylock_finish(UP_flags);
-+				return false;
-+			}
-+		}
- 	}
-+
-+	return true;
- }
- 
- /*
-@@ -2922,8 +2947,9 @@ static void __free_frozen_pages(struct page *page, unsigned int order,
- 	pcp_trylock_prepare(UP_flags);
- 	pcp = pcp_spin_trylock(zone->per_cpu_pageset);
- 	if (pcp) {
--		free_frozen_page_commit(zone, pcp, page, migratetype, order, fpi_flags);
--		pcp_spin_unlock(pcp);
-+		if (free_frozen_page_commit(zone, pcp, page, migratetype, order,
-+					    fpi_flags))
-+			pcp_spin_unlock(pcp);
- 	} else {
- 		free_one_page(zone, page, pfn, order, fpi_flags);
- 	}
-@@ -3022,8 +3048,9 @@ void free_unref_folios(struct folio_batch *folios)
- 			migratetype = MIGRATE_MOVABLE;
- 
- 		trace_mm_page_free_batched(&folio->page);
--		free_frozen_page_commit(zone, pcp, &folio->page, migratetype,
--					order, FPI_NONE);
-+		if (!free_frozen_page_commit(zone, pcp, &folio->page,
-+					migratetype, order, FPI_NONE))
-+			pcp = NULL;
- 	}
- 
- 	if (pcp) {
--- 
-2.47.3
+[2] doesn't describe such stalls.
+
+>
+> ...
+>
+> In our fleet, we have seen that performing batched lock freeing has led to
+> significantly lower rates of softlockups, while incurring relatively small
+> regressions (relative to the workload and relative to the variation).
+
+"our" == Meta?
+
+
 
