@@ -4,239 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5D9ECAC592
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 12:12:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05134CAC592
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 12:19:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EFAAA8E00C3; Fri, 19 Sep 2025 08:12:10 -0400 (EDT)
+	id 4ACD08E0067; Fri, 19 Sep 2025 08:19:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E84EA8E0053; Fri, 19 Sep 2025 08:12:10 -0400 (EDT)
+	id 461AA8E0053; Fri, 19 Sep 2025 08:19:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CFE038E00C3; Fri, 19 Sep 2025 08:12:10 -0400 (EDT)
+	id 324FB8E0067; Fri, 19 Sep 2025 08:19:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B1E218E0053
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 08:12:10 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 53D4814065E
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 12:12:10 +0000 (UTC)
-X-FDA: 83905886820.13.0D4D376
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012006.outbound.protection.outlook.com [52.101.48.6])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 4BE36180004
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 12:12:07 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=OriFzY6k;
-	spf=pass (imf24.hostedemail.com: domain of Christian.Koenig@amd.com designates 52.101.48.6 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758283927;
+	by kanga.kvack.org (Postfix) with ESMTP id 1E4858E0053
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 08:19:40 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D07AC13B7E4
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 12:19:39 +0000 (UTC)
+X-FDA: 83905905678.27.1F380E5
+Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 9787A100004
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 12:19:37 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=M5wUJJhG;
+	spf=pass (imf14.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1758284378;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wbVXg5MyCk+7aXzf2aqtq5p3hcfcw9Z+3yObGYsYiy4=;
-	b=A+sgP8E681QuMhgQJzqv/kvKIbX5nS+vU8/VpxQ9hRKZMDc/K+eOiqRciQ1jgQZ8m2w/oR
-	QYFMS8+V1kopcsjt3nmdFrnpfyslHtv8clLki3npHGDMFCoj2ovxta7eAT7cQM7RhDcrsU
-	vy8MeVtm53lv+EngfozfEZiZAx35M8E=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1758283927; a=rsa-sha256;
-	cv=pass;
-	b=e3gPBPE7gV0vuN1pU2ztTREYpdJ3VItQjrtLTiRP0MGweL8yj2q3ZGulYCmcagYA/z2dyF
-	22rVeEEM4XeuAYrucHVRnqJeRtXQaVDYS9iO/vOocMcHB7BB+ug5zXIZuR6BWr9EjMa0W2
-	e01BB1e2Qbf6dtS73HUqUqVpcRawyAw=
-ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=OriFzY6k;
-	spf=pass (imf24.hostedemail.com: domain of Christian.Koenig@amd.com designates 52.101.48.6 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AD582V/BZa9pU6CwJjiIJjvvTNdjxLVrJcJAZ4wDujsYTxHicnibNdBX41+7L7y+xN/BjiNP3wu05eucjRsefxwjmXGoRSvN5bDsuYCHf1FdO5zNpemDct8D4JFME6tYEjWUXJbM0NWdt3/FXpESkq5/J2D5TnqxiRfLpctLAydiPByxMjj23yb6N31ZRMkpXPrKva7C3K/SuJqSsAo05pYR4uHCohh/dNLg6OunTCsArUWNpI2E/NsCF4AdM4EUIysrcXH1U9ariWL+M+4Z16WJNhZ/BJVvUz8+ONE+fuZAayA4it0YsxJnC/iPr53wcMJZ6m3IbmrpcxBYdvXQ/A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wbVXg5MyCk+7aXzf2aqtq5p3hcfcw9Z+3yObGYsYiy4=;
- b=GNl4eE/M18q6uF+7wngl9tt++sLmOH1dEo+DnV1hhGxl5/Ohp8Uxh3yHO4beFu2EcJqspIqDTelH4Xfo0NObFk9JSid2IK1p1mHuGsYQXZTPAAeEbHxc5qxJXekoFleMev6oYVwtzx3RtmaF6EzK/GryouQObi8gh62H/GsuwMsEhMAH0rbeNusNaFC2XrKdUJgPYVsZMLwXzsEW8gv5Lad9fkxNKdThqMC2SZN0+lr7hUZkQsLgRpFXxuPN4PcwotZ5TN7LChnXe/zOAlS7Gz3dP2Flj/qQGjYfqR5k2p9lumKbkPx6je21y0PiuD+T1Hqmeo8ddN4K0MfTv9l7vg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wbVXg5MyCk+7aXzf2aqtq5p3hcfcw9Z+3yObGYsYiy4=;
- b=OriFzY6kLBgfM9OYuTo2qAYjl8W3DOr9hzny7usAcNpA2yhXN4XLbl1PPLGljQs4l8TiFN6c6GpGfQ46OOVR3bFfybVROkAuOSq36fduPMjXuwR+YrNdURm6XOtsSnywI00zpv6iS+Jz5orH0S+VfpBsX/NROfk0y3DrBJCKz8c=
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by PH8PR12MB6699.namprd12.prod.outlook.com (2603:10b6:510:1ce::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9115.22; Fri, 19 Sep
- 2025 12:12:01 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::46fb:96f2:7667:7ca5]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::46fb:96f2:7667:7ca5%4]) with mapi id 15.20.9137.012; Fri, 19 Sep 2025
- 12:12:01 +0000
-Message-ID: <184ce83f-0063-43a0-a1c8-da23c5d03cf7@amd.com>
-Date: Fri, 19 Sep 2025 14:11:37 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/27 5.10.y] Backport minmax.h updates from v6.17-rc6
-To: Eliav Farber <farbere@amazon.com>, linux@armlinux.org.uk,
- jdike@addtoit.com, richard@nod.at, anton.ivanov@cambridgegreys.com,
- dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org,
- tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
- hpa@zytor.com, tony.luck@intel.com, qiuxu.zhuo@intel.com,
- mchehab@kernel.org, james.morse@arm.com, rric@kernel.org,
- harry.wentland@amd.com, sunpeng.li@amd.com, alexander.deucher@amd.com,
- airlied@linux.ie, daniel@ffwll.ch, evan.quan@amd.com,
- james.qian.wang@arm.com, liviu.dudau@arm.com, mihail.atanassov@arm.com,
- brian.starkey@arm.com, maarten.lankhorst@linux.intel.com,
- mripard@kernel.org, tzimmermann@suse.de, robdclark@gmail.com,
- sean@poorly.run, jdelvare@suse.com, linux@roeck-us.net, fery@cypress.com,
- dmitry.torokhov@gmail.com, agk@redhat.com, snitzer@redhat.com,
- dm-devel@redhat.com, rajur@chelsio.com, davem@davemloft.net,
- kuba@kernel.org, peppe.cavallaro@st.com, alexandre.torgue@st.com,
- joabreu@synopsys.com, mcoquelin.stm32@gmail.com, malattia@linux.it,
- hdegoede@redhat.com, mgross@linux.intel.com, intel-linux-scu@intel.com,
- artur.paszkiewicz@intel.com, jejb@linux.ibm.com, martin.petersen@oracle.com,
- sakari.ailus@linux.intel.com, gregkh@linuxfoundation.org, clm@fb.com,
- josef@toxicpanda.com, dsterba@suse.com, jack@suse.com, tytso@mit.edu,
- adilger.kernel@dilger.ca, dushistov@mail.ru, luc.vanoostenryck@gmail.com,
- rostedt@goodmis.org, pmladek@suse.com, sergey.senozhatsky@gmail.com,
- andriy.shevchenko@linux.intel.com, linux@rasmusvillemoes.dk,
- minchan@kernel.org, ngupta@vflare.org, akpm@linux-foundation.org,
- kuznet@ms2.inr.ac.ru, yoshfuji@linux-ipv6.org, pablo@netfilter.org,
- kadlec@netfilter.org, fw@strlen.de, jmaloy@redhat.com,
- ying.xue@windriver.com, willy@infradead.org, sashal@kernel.org,
- ruanjinjie@huawei.com, David.Laight@ACULAB.COM, herve.codina@bootlin.com,
- Jason@zx2c4.com, bvanassche@acm.org, keescook@chromium.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-um@lists.infradead.org, linux-edac@vger.kernel.org,
- amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
- linux-hwmon@vger.kernel.org, linux-input@vger.kernel.org,
- linux-media@vger.kernel.org, netdev@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- platform-driver-x86@vger.kernel.org, linux-scsi@vger.kernel.org,
- linux-staging@lists.linux.dev, linux-btrfs@vger.kernel.org,
- linux-ext4@vger.kernel.org, linux-sparse@vger.kernel.org,
- linux-mm@kvack.org, netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
- tipc-discussion@lists.sourceforge.net, stable@vger.kernel.org
-Cc: jonnyc@amazon.com
-References: <20250919101727.16152-1-farbere@amazon.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <20250919101727.16152-1-farbere@amazon.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR2P281CA0156.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:98::13) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+	bh=EiVKkL22YbljXIkdVcER9mqBNCLAbO3Otj7ELKVqmVE=;
+	b=NGbJFXGodFSL6lJ7CdsE5SNZrW2OtsYRoEHgxKOHeAiRhNsJsf65571sZ2GUXvhqC/JFPt
+	moAwBx5XLG/hkNH9Q5da7FqSjtWkJk4f5T41T85wjmTm+AmTXjfVg8BjrGpBHSrQYonPWY
+	b7uwqW0SCnOeJdPZrIwOGmapHu5SSFE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758284378; a=rsa-sha256;
+	cv=none;
+	b=hrJf2tfGRDMgBrdhm1HsAxtTCLuNE8R5UPRsD0a1oLbvAClzXK+iyJ1O47d1ngRlpPTb9t
+	3lgFogw9EAtdYTqrXovBLqbn/+fJWrPAMzoteWUEwGohkFsnVb/wJnX+RSGz420n6joJ7R
+	N2sVGeMoUzZdUGI6aOhrJVV+Izn999g=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=M5wUJJhG;
+	spf=pass (imf14.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <9395a9ca-d865-42d7-9ea1-8e693e4e38e0@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1758284374;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EiVKkL22YbljXIkdVcER9mqBNCLAbO3Otj7ELKVqmVE=;
+	b=M5wUJJhGOKGalv8K65cSpDEtiAkwo7VxeOJE3XDf7FsY3sXohsexAOis/J4GO681ypJuJ7
+	ZhDFcFD2GZhk7ws4vP0mQDNRFfEFOunPk2f12QPiFu5iraacdY/1DdY5A7jTeqrCyb5fxR
+	82ubdEbzh3Ym39f3zPHEqae0+2V302w=
+Date: Fri, 19 Sep 2025 20:19:25 +0800
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|PH8PR12MB6699:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6937c5b9-1962-44a7-1ee6-08ddf775bd22
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Y3hLRFVLeVExQmhYODR2ak01bWVFUXNoSXpVYi8rWDdaRzBDN0FpVnpuanZO?=
- =?utf-8?B?RytJRWgzNjErVi93RUtQdEZZUnRjL0ZFUUs0ZGx3NjN2M3NlWUMxRHVPbFdC?=
- =?utf-8?B?V1laRGlBSGlrU05RdFNpRWRUeEpnSmVreDVTOStaSUNSVkcwZlRXdEZXRUF4?=
- =?utf-8?B?Wlg1ZHA1cDNkSnhid3Ftc2lnaWE1YVV1dWxaeG9zbnppZkF5a3dOTlZWZHY3?=
- =?utf-8?B?bUNiWkJpRVMwa25nVCt0a2t1dUFmZEY3elYvQnc5WWdlRlBmNWRGZGJuZE81?=
- =?utf-8?B?cnlGRHF3Y0s2ZnZETXdudUdkK0tvSVZtMGVJMkFTWU4vMVJzVFg2Z05MWEZx?=
- =?utf-8?B?VlpJOStDMDY4YVd4eklyZjFpbGR2aGJnVS9SdjljSjExbkdtZlBoRmZ2dWhH?=
- =?utf-8?B?TFBadkdYQjROWXo2bUR3ODNRQXM0L1VrQVJMSlIrcDQ4c3drWGdqaEFBZEZV?=
- =?utf-8?B?cWVnQ09oSXZ3cVJvbUNyMzRJVE1rV2NyV2UvRGJ6ZStyaXRFbTltajdsL0dt?=
- =?utf-8?B?aElqS1VUc0JObnFucGNLeHp5YyszcWk0TTBmTUVValB0bnlIek0yM1ZyaCtp?=
- =?utf-8?B?QThGVmROY2kySm1BcW9jQ0JXNWFLajEzbkRkVkhLc082QkpPRjZ5ODE3Q2NW?=
- =?utf-8?B?a1hNcHNqWGNCdzlkODFUWHkrVVBpRmRIU0tKU21NbXVQOElZSG4vZTZoSFNt?=
- =?utf-8?B?Ui9qMnllTThYdWFDYWdVR2twcjA3NFNSWUpUT001MHp5Y1FvZ2h2d0d4Vytr?=
- =?utf-8?B?dUkwNHU2Y0IzUTVUTkp2QUZyS0VWQ0hWaEdpUytsQWF0dG00WGVtdjEzNGFT?=
- =?utf-8?B?UWR3MWd3K0RmL1ozeDRXbkJMQnQ4TEZPNUhuKytlZVh0UjhRNEkrMXBHeDMr?=
- =?utf-8?B?TFlGWHdTek8vb2ZDREVwNlFJMjJlQTY4cXhhZFhLWFFVMVU4RU5zKzFhMzNk?=
- =?utf-8?B?WnVRdlFabnhlUHQ0UzRIU29LYVlzbVRlelZ4NFZ6a1pkTVF1eWR4TjB6bHJk?=
- =?utf-8?B?ckJldXpDUGdOaFJlUW1janNkaGw3ZUJ2YnNmcmRrY1Bvajl0R2xCaERHYjU4?=
- =?utf-8?B?OEp0a1ppY0xDL1I1eFEzeGVyemNwWnNUUGhEOGJFeHFuQzVkcXhJMUU1Rjg4?=
- =?utf-8?B?Q0tBOG1QZFNoaThMTDhkemNkUDY1RUc1Rit5VHYxZWgyUW02cUVFWkxNdjVa?=
- =?utf-8?B?QmZiWXF0OHBPNnhnWVVMUGxxay9VSTJ3VThmVzBDQlpZcThVT2g1b09wYnRU?=
- =?utf-8?B?bjFMdi9xSVFubHlXa1ExRXFqTmZSdTl1NmlIa1lzSy9xM25oMUZqTUY3d25E?=
- =?utf-8?B?dWlXWFk3VjhCdis5dDNYYTdscGcxWDliN3gvR2xGV0F4SHhOcjB0NTh5WHlM?=
- =?utf-8?B?ZXRnMnlONEJMRWZucXlMUVNEaXFaNUppWnVTanUzZThuc0g1bSswcjRzdGxM?=
- =?utf-8?B?TGFDbERNcXpTcTY3LzhSbVgrUWZ5Q2RSa2xUd1BRSENDTTFiQ3piaFk5V2h0?=
- =?utf-8?B?RGJyR3ZhaCt4SkpSRG9CTTBCaUVaVy96NEJyUlFHRmV6RzNGWlFFTHVmSzRX?=
- =?utf-8?B?RHhnUXJxWi9POVE5TTltZEhJKzVtS25jQi9WV0pFQWZRZEpzUEV4cnhuSlVR?=
- =?utf-8?B?dDNQSENhSWtULzZpWWc2akZpcFhTUGxRK28ycldrWXkvenFnSXRZUHlTQjZp?=
- =?utf-8?B?emhyTXdjSk83NWhiM0FYalQwMSsyQjRrSkVlaHRJaGFpYkZVZmRmbVdON3h5?=
- =?utf-8?B?ZllielpZZTFxc0NESDNGSE5HZURaT29MR1F5N2h0elAxY2p5WjZ3SkpEd2lv?=
- =?utf-8?B?aXJVMHp5aFVTOThjblhiTC9LNCtFamxvOEhuNVRzSzhGenFsUlNtaGQyd0No?=
- =?utf-8?B?SkZzWFo2dUtkdndFUk9lMWJBR2xZVlZJRXBSL3JWM1RRMU9LTGFyR0VjNWFR?=
- =?utf-8?B?eWxZUFF2dEtyZFkvRnlYclRCZGcyWVlLT3BSS3JUZWdvWTlZcmV2UmVYbjZt?=
- =?utf-8?B?Tk1sNFV6U3lRPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?d0VydlR5bjl3RFBmQk1PSVJNR1VtNWJKcWRoWnM4VjRqNUtBSjJOVm5HU01a?=
- =?utf-8?B?N0IvZ2RVc3BxVDk1NXdMbjlFUWY2dE9ETlJlMlBaRG9IM2ZpU2lVcXdDZTRX?=
- =?utf-8?B?akhWL21pTkZXMzJDR1FJMk9WTDc3T1l3UndWMkZMQlZDcVcwbnRoc0NrUDMv?=
- =?utf-8?B?Y0hvVmpZczFkUlFCaVhJNkkxc00zZExZalBIdXo1eU81MmpPVlJUWmxaTTJS?=
- =?utf-8?B?QVVFWUtHN3dSOXRORTVrbk5EUUNCVHRlQXdSVUsreS9nSkFXckFOc3dqd0VI?=
- =?utf-8?B?eS9Nb0hrSW9TOVN3c1ZsSTBYYU9iYmlIMy9XRUE5cmRtaC9ZRTF6RXZYNVNJ?=
- =?utf-8?B?dkVua1pQV0F6NStCMHRyZ05wMmVSa1J1UFphY1UzVEdmYm5FVHQ3YVdSM003?=
- =?utf-8?B?YXVDVXpucUNvVk5reE5Ia0lqdWp2Q0w4aUhPQTVUZkdmVTR0T051TXl4V0U4?=
- =?utf-8?B?dkVQdWZJVHdGdGZqQmdQRXM1Q2tucFhpU3F2aTJvY2pmYU1MMVZieWJDSkJw?=
- =?utf-8?B?aUtlcHNONGh6bEZ5dkN0akRLUHVuUUE0c2hSQW51MGJ0eStNM2ZuNVNSL001?=
- =?utf-8?B?YUljbW5Zd0JjcU96Y0EyZm9vMzU2MTF3RENnTzFHazc3MVFxeXRYcll0RWl6?=
- =?utf-8?B?U2tQbzc0ak53QXJLam9tZkgvTC9xcG9WcENMMlYwUkQvbkdDc3JtMDduUzR6?=
- =?utf-8?B?RXZzamR6VG9jb0F5QkZkNWVmVDFFbXhRcTRYMUZoNllHOWhxME5ZaDhpZk1E?=
- =?utf-8?B?cnZCeUJtTEk3TkYwaW50bWxzc1hVY0o2dHkxZ3NZMUhxSi85UlhQNm01eGJ1?=
- =?utf-8?B?ZnJteTB3a0FXN3lxcTBCU3lFRk1WRWhQUG5sV2VlOFJaekp6MzE0Q1B2UXJK?=
- =?utf-8?B?elYxZ3ZFY0kzdFRkZnhHc3prOHY5QnEwZnhQY1ptbzl4QjZXQ0VlUk9zM2Fh?=
- =?utf-8?B?U3ZOTTNSekVJblVzOHNZZDdGYzc4YnkwellNQUw3S0FSQnArc003L21UelBD?=
- =?utf-8?B?dHYrUkhzbzBGQ1pFNXVEeWl6UWIzQkRjT0hod1pWN3J6T09KNHZldE1TWmJr?=
- =?utf-8?B?VURrSDl3QnVlcTJjdE0zdE5DbENiVGFzOFIyQUxhZUt1Qk0ySlgyS2RqR3Ex?=
- =?utf-8?B?ZmtLL2ViRkNML0NhSS94TDFQbWs5V2tMMkNqbE1HSVdHa052S2V0ZXdVeDlv?=
- =?utf-8?B?K01OMFFlNmFSU0ZqUFlwUlE4NmtJL3htUzU3RmdKQTRiVWY2dUZMdXVvUFA5?=
- =?utf-8?B?bDJCOWphTjhzZ1lSM2c5cWZXTnRnOUpHZm9jcEc1YVloRHZ5VTFKT0hEalpz?=
- =?utf-8?B?Zmc2a3hud1R2OE0zdStJZXlZS2gycktPRUdSUUVNZGo2dzZwODFvcEl6MXpo?=
- =?utf-8?B?ckhtbEdYb3dFZE5KMXNSNzd5M25HTlBLV3ZnL1MwanEreHBaZjdSRWJxN2Rq?=
- =?utf-8?B?MWZXNGhEZWxYYXFnK2FTN2czTW16K1dKUE1DSmIwQXlyZ0NMMVlBTEJ1V1cw?=
- =?utf-8?B?RVFUd0RvUGVpQzZIc0pJeUdTL1Q1MVhjS1p4VEcwaU4zNk1HbWJRb0hyOTdt?=
- =?utf-8?B?ODd3U2o5WTU4SFl5VFBqdzIyQ2RlSElUcVloYUZDNWV0V0FObHk4Z1AvWEFv?=
- =?utf-8?B?cG56NEZEOWpSK09ET1prbVFTVFlrMUdxQ3dURlRXbnIvbkJOaUZnRXFhYWFI?=
- =?utf-8?B?b21IRmkwYXJ4QkRxTlhPR01FTXRvRkNjcENnVmZ1OWtvVDkrcDhOK2xvaUZ1?=
- =?utf-8?B?WDlRS01oQkVmZGpsSFVzemtmQzZObkRrY2F2ZU51MHpYc0RtUDVRcE11emMr?=
- =?utf-8?B?SWQvRmxKQ2hUcnF6d3k2K3NteGphZHcwb2wxcGN4ZkhqMEQyMHh3cm83Snho?=
- =?utf-8?B?SC9XdHpSWU1tS0hWS3h0NFVyWTU1Z3dWT1ZOa0pMbmlIQkZpczEySEZoZmwx?=
- =?utf-8?B?Z3EwTVVacyt2dDZjV3dRTnhUR041TmZVS29LaUFOd01SL2NHbjlZUHZFcVVk?=
- =?utf-8?B?MFRRZFhrTmtzL1p2MDZENDlHLzRHMlRmOVA5bVdRSDdCUGJNbmgxTU5UeTlm?=
- =?utf-8?B?dGJHRHdOazVRRTg1RlQ3a1hDazZYYW1HUVhMejFaUmRvWGhpVDY2b24raTZY?=
- =?utf-8?Q?NKiCWZy6KpXV5wwLJmoYbWn+q?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6937c5b9-1962-44a7-1ee6-08ddf775bd22
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Sep 2025 12:12:01.6073
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: lV8yIqWmCjsKi+0mG6kRzonlCfsKYf5LVBwA839a0bMwoG/ldmSYNzTvdItV8cR7
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB6699
-X-Rspamd-Queue-Id: 4BE36180004
-X-Stat-Signature: 5rpu4txrjc7qide9t4gxqeacn5djcjt3
+Subject: Re: [PATCH v5 2/6] mm: remap unused subpages to shared zeropage when
+ splitting isolated thp
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+To: David Hildenbrand <david@redhat.com>
+Cc: =?UTF-8?B?UXVuLXdlaSBMaW4gKOael+e+pOW0tCk=?= <Qun-wei.Lin@mediatek.com>,
+ "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+ "usamaarif642@gmail.com" <usamaarif642@gmail.com>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "yuzhao@google.com" <yuzhao@google.com>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ "corbet@lwn.net" <corbet@lwn.net>,
+ =?UTF-8?B?QW5kcmV3IFlhbmcgKOaliuaZuuW8tyk=?= <Andrew.Yang@mediatek.com>,
+ "npache@redhat.com" <npache@redhat.com>, "rppt@kernel.org"
+ <rppt@kernel.org>, "willy@infradead.org" <willy@infradead.org>,
+ "kernel-team@meta.com" <kernel-team@meta.com>,
+ "roman.gushchin@linux.dev" <roman.gushchin@linux.dev>,
+ "hannes@cmpxchg.org" <hannes@cmpxchg.org>,
+ "cerasuolodomenico@gmail.com" <cerasuolodomenico@gmail.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "ryncsn@gmail.com" <ryncsn@gmail.com>, "surenb@google.com"
+ <surenb@google.com>, "riel@surriel.com" <riel@surriel.com>,
+ "shakeel.butt@linux.dev" <shakeel.butt@linux.dev>,
+ =?UTF-8?B?Q2hpbndlbiBDaGFuZyAo5by16Yym5paHKQ==?=
+ <chinwen.chang@mediatek.com>,
+ "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+ =?UTF-8?B?Q2FzcGVyIExpICjmnY7kuK3mpq4p?= <casper.li@mediatek.com>,
+ "ryan.roberts@arm.com" <ryan.roberts@arm.com>,
+ "linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>,
+ "baohua@kernel.org" <baohua@kernel.org>,
+ "kaleshsingh@google.com" <kaleshsingh@google.com>,
+ "zhais@google.com" <zhais@google.com>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+References: <20240830100438.3623486-1-usamaarif642@gmail.com>
+ <20240830100438.3623486-3-usamaarif642@gmail.com>
+ <a7944523fcc3634607691c35311a5d59d1a3f8d4.camel@mediatek.com>
+ <434c092b-0f19-47bf-a5fa-ea5b4b36c35e@redhat.com>
+ <CABzRoyYWQMFTGYgfC7N=cWMnL_+5Y05=jrMhFjBf1aKOGxzq5g@mail.gmail.com>
+ <ebedc478-7519-4e30-854e-f6616a7647b0@redhat.com>
+ <120445c8-7250-42e0-ad6a-978020c8fad3@linux.dev>
+ <9d2c3e3e-439d-4695-b7c9-21fa52f48ced@redhat.com>
+ <4cf41cd5-e93a-412b-b209-4180bd2d4015@linux.dev>
+ <dfb303b9-151b-49ec-b7ef-691c71bd5385@linux.dev>
+In-Reply-To: <dfb303b9-151b-49ec-b7ef-691c71bd5385@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9787A100004
+X-Stat-Signature: 9ah5pt9njzno77genp5kz4zsqjjqob1x
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1758283927-593536
-X-HE-Meta: U2FsdGVkX191OPKzpSZrM7v2iSbY+1KQ800XlHr3i6ythQ+CB9+9nhsa39l8oVgQ/bUd58xwiSFLamKM8gI2x8HoLesaljBzRO8agFH2L/GTu8iRgEGsHadEv3Hy9bVtkzAeZJnWO1k+xt24efHsPSxKM+2PjZand0iEoV6oveVz167fNb/gD8IHDgUG6voUGzNx3SXdrM3mY4Z4v9zxuM2D5MUkKZWMfsWQ4lcNRrkQxX7troZ8dg6j/4Hb0WikPYjXOY0nrN/JgsKj5TPwFvShe/ZtMhv2/i7FSsH21xRcxw5QREXsYWSfuVPwLZE+/KngfOwo18XVuXrilCSO8/aBrZOfC9OR3m0Gi2z3yuVpQIdq29gkQKSUTEkAiOSzhT9fm6HpG66i1zI70+k0mGIKoESLlcd2Oisqsz2qurKC/hHTtf7w0k+gm6TnXSsU+PgJCNjhXmX2+NkVqVTSstJm35S+ZtR0miCdPQfEP1LXHzjsYsMngljM9m7xhbOXjz2rbifsjBNGoTj+5+PXR+HoKFntI+K7cxpMbe7ayehCAFw6uEyKWh/kQ3YtWlZn2k+LORz2qfe7GKg7x1HyFdbuioOyDaOx7TBRB3XPxlNYKWafiL+Gw7tMKjahpph+I1az69aiWvJD7jtpF98pp1b7oCGE2EjFvAXcl4v2wpgiaXCG6hxQqz1oX0RC+Njnfsioq5o6ilojBFIge2O4mtlJ8xw7w11TdYSEaButvlVxbu8bUf5lkDNf1t9U7LTix8iljWZxIk+D0xoNR13IzKqsPJv8E2E3xnS6XTEVVP2957fAVdwmnkSXF9VaMglaP2feNBTaM1yqzPAS8d8GtmJNuSRcZyyQ9kfj/67phrX1v+TkZYSHxQ3wRz04TJFCXwA6a+I/AgakuAWbmi9n+jYJvF0KlU5T/P33Ky/wX536xB3Q1S6dCGxee+3jfDRd3rV2virhr0Yv4eTY0Eh
- FFOo+FIo
- C/51bqVgn1pC+dsYzJiRdXSXRUft6vr8Z5nLzQCGQJkJ/PHkWfbEaHCpXH7IXnvWIefn2GkYzyKei5tGyOOABA1eDGNU6Gks8yeFU3esjmc3dBxaAsXQXJXocbD3OkaSk+9uzYKg9Wveh3v12ZBs2kbkklDNeSHJlEnryRmEsmKeJVvKUMtLzESyCpyrmd9Gtf5kAT08Vq1A9TwGF1XqIiQQFBsmKdj4+nxJDeNUEw2NNCmg1lX7rrGBi/75EiI+pKvOXRQNpLDINc4hlO7UdjT5y8hSKWYZzEtscVhFFwRoNZBLEMZ8h8myjya5KIT+jNWF65ylB4sGYsQ6dvfPiGXdAQPtsnal5gCZiNx2tsbxmbcJaPvUWs0P7L3khp9IpWbjWOBeQ3HLT4b6rTzd2JOPqqjtEXZBwzc4/3o5AMcrznVzoDDLIdaA6mGALLa5ocE3a914q+J+KoLjpUv9N1aX4ywfOajtJyg5EOpSKTKG+zmTAeMKkA7alw0u0GUR2yPUkq0KG0g9aDFvrlLZM+WRZ8gngmnNlT7cpS0YPvb3KHKtoZdV+l+ZrkRCkhf4b9TMzY3q6uP+n1ow6jA06EX1oEBq3Wga0WXf+bI5rpm4y+dd/IaXItPHu9of2Uxd+tfaRAtL2Cwz4SB3AQl2fo6BKvNt+y8FoUPe75+24YbYBBwsZ/qhdrN80NSP8hEQPYquUXaIyPSqvKHH991XvfNSy+1OeQfVPdR7PspiPN23+JU1Trb32tGayjUnlLfRb0UnoS4eDO3klFNAXYvfVonOq3KKAHQAG0fPlUKRGOTIKcE4QWIb3bHPHzR22ErceJ7+0WcuZmVaDtT7hqorjL5+YPzgcYWogEcV2yiGi7K22kJAH6REnyDUuaq9qgEWR/H+4nO8gX6EtP3xSuBrudT6q9DlyZ4vHyTfPp0LAoKbJWONLrbRSUQrfOykrPrX506QL5eizRYrLQHRHVRi01gEsgOf2
- dKsRgvi3
- /t86KELQTJW7MgLQuEFobdY+b02uiZPLB78y7IPSKrYoQCqP8vcCKScdj6jnAxwPsfS18jEdpXuYUfIdSZYaDkBmYS6aEVnOXyd607C6Vf2Udk/CMa3txFWToHEG2kNoQe4iZk0E0PI/uEiWEtzG6aucbgRp4dldEzeHZ6Wwlb+1fdMCNlm1YFciriIzoLicZIrXueqd8HnxLcuGB78ckNcA1N1ViENYqUVcGkvdJzLHR6/3vtS3srUJLdlZ5S2KTLnX9tt7ht1FKnT4tIdfzt+WZaNh5BSbChtJJjKHfz7oXWiiA/R1GGSjhtnw4nVjGSktJi0D2Co1lX2w+bHYbiApCZ81g/6gjGr31O/Rvf14CGhlr2lGwXGF9jDM4sxa0QAQ5KRsuwIyKSu65Wl44ebkgtRPEfGt+g/qPHogWU2H9T0Nti+ElDgDsnBfMDmmlj3BbU3blr2JJaMqMSjNn0P8e8FW4375T/q7woDV8BDQPQY15/2LMhrdGBX9PyVr9yOQYNRkGY5/ueOt7C+0t0JHBjbBRNhdIrcpNZzpuji/Zu0Euc3yFzg4fYRIqZJrA9uUE5dFBts9BjbjRCI5pe8itNfy7Xm+mlBmzzXOfrraEud0aOCjE6NZad4p5ppNRklSyH+s1ODR1RvYSCeMNwsyl4av0n6Il4D6P04U7jvX0ZrKWLjO7gCrX1zKAOU7kKZLr6zkZQoEkMC0ujVZ/tIhjbmOc8/JcQ5TKNUMwipMUEZxdS/Vr1R/uiDrAnDIW9+eFufKf2SSMvWK2B6r1Lpoy0izWKW5ff64xmtrFYknOXdvs0DV4+nrL4JC9xe/XqdcXkP4Wmb9fFoyMTLZhuDoZMMNW1Cz9kLtavZ0lPIffzkbFVzaU/EmbfT4qUzucP1NVjmOqcUDGe7laiwVOKspAliEiv4s8q2x9YaMUZr7Qvj/9sb0Vpw6nntJjGICOQmejGR1Wmsu4/D8xPnV5uOePgTdM
- /DFMszdX
- YYAmIVjTK/4b81HZvhc/fconVJYkealjGm8rfx5ATdWm4SDM8abcXnwmvUIRAAbvp+tAD233m25gW6wKfv0IALMC4c07m8ZogLe9qvcg1x+Sg4rUjaxW0hOShcFshmIbZQGIQd1bcr9sboFJ48H1gugHjrZAw5KGr+zSe7xB/SOzVlOkqXU2btI7HYVYMkzIWD8Ne7+hl34BCDi/ipFfW8duCkAhXXe7FSLTxTnK68WkJz+DL4+BNfPG/k3v1RV8MB9hm1H7lx9WnC67KNitgVqwHztAR/dX4S2og/W+etxEEWniKPJDv/z2x3rivQAKkJm3tTzWLxO3iXvRBPxNsAIjAePNi8qlt9WeI18jfUkBjo/PrOQb7hn21d1PuV176GBNzcWHjA1dWl/+Cqysstdc3baI7AB2mJm1Tn+rPVPqw3chm684S+4WZZi+SdJ5a0VPhFanNMfYSpv9GymHFMVg1iXG9azu/o5Ak8zzLWifvFbvwfjJLg04cMPK2gAlBg+oDtrfe0JQEm47Q89f4T0Ospq4jNn5rgwv07vjB9kpefrbPKhFTmQTKy0g59wUXXWrT70QJ9aU+v4Qe7aeLrDIovkpkstEt9hU2s/tXZV8o8VEpQdZU6ug+ST7h2DSmhrVcPAbhsyPoOgHphfveu9j1rqUyO99Q4vb9cYrDx1rRwM12h0d4SZU3a+pXB+cwK5xwrm78Z3Trnc2C08M21DxNb7tSPkdanZONrcLIrTk1zQInHt5Kx8cjdahg/5zViMwq5wEPm5glGqwi5Vimts68gji46hjmM0B9gOQAe+WhEV5tiMxRCf0fswe5hPmGem5gbAvxDICvCvE1+8lsGB+nUIOWVU44hxgWBRbq8Wigwy06Kke7fHIqvmOsj8Prf1y+xukTWZ5OQjd3E36DKoQqo9ia/S09z3/MWvkWIyxPm2MrZb+Pyh+7gd3Dye70KcZtB3khVSXCDG8T6m7ax9u9Tim/
- hu9spbB3
- wBElFZf/PivSh4RwMCi/xZJjoYe/mhxlnu7KFHq8VjBH/jO24xEHR7O9XNRKJm/zuk0mt+9fLVequIG66tSgG8jzn6Zf0VZZ3BoP4IglmKyb5jdtP2G3rXovujket7ALocsDFAOMm9NrM+7hjydMs2N8XQeN20O83bK0GoL05VaE+s1O5i+HmOy6QLwo8VfnbTqcJt8YguWYedGR3nTQrcqPMIjSr8tELIKiH0X9aM1TCNccWwQEneOo3F8MnqharTxogbDZ63Jz2zsKArPwHxJ25Sy2Rq8S31b2tnU69/M7IlK3cTz8rsUhkSQGnQBG/44z/8khPbfYwqduboxy4v/QSsUaCRw+G6+hPXd7csBDArrCOEGLptQyucuFz6oHHujnBSyB76fziIubUORn+DR+slYUCyjfa6bner4ZGss6nReN58puBr2Q1Y6d5Hvs7FcB12JCje8LnajOtfoF29V1/wER96lgkA20YVB8YUE3R+8cL2GRbYw7wIV/CVogyMviQ3CAWNZgRL2TZ/DLNs/d5IsTvmGJ6HyKwPllmKC3idg555vFpHDDRiMY4Z4zOtC1/aX/qIAxu4O5BAb9ecrNEXzKxHKAMrxgLuQModoZToJKofVvep0EmaaJaeeaYnI2lUbc99rz5i6U1h4O/agYh2s94FvSR6rHwhX5eOPKnzM8YuJdp2wOj5S5FGbO7InP0xBANiD20TlKBd8WT/51qAZ52CeFg4PEde0vr2rsEK/mDCaTwDHVWN6EiHqCv+cYan2rE4ZKw+MbcBrXaEchUcwE9iLOWLM0oJnOIaoQJeb9m/gKN/
+X-HE-Tag: 1758284377-107911
+X-HE-Meta: U2FsdGVkX1+fPVTdT5bLp8P71DqZMaiI+x6pGDQrhj/zRr1oHTBO9RZ/rH/E/r/uSFnYG/jt7KNrPqgMxo345SnlQlO+Z19QyqssxdZ/baqypxnUyk1ho8MJhcSN3dGww9iL8nMBTLnm/5+FVDo+LFnzTGvdkZNOVl8IbB8HPCyDckWpN2u8z6InxgjWx/23JwpO9ZaC3tYyYdt//qat8OFDpJQKZlBNPOAaOzmkZx81rLGw7FDUA/XwuwwuXitMkOUtuZ8BRVzevk3IzufVbK+A7DJMBeQ+ueYnLbD0lBQl57CQaJwcDqOyuikpqMUyDejhaME5P3KhgBS6A4beTID99hhSY5GzHrTYBTBi6rb/mZvoKX+SWi3MovnxF/04d47a7E3haGLtdnSvS5H/3eRONz0DG2+qFaA45ao+y0CKGg7meRrFkwfpKE5SMn9RrPakmt/13upbWedYCgjoExmW6zjqijlb9ea7SonRWMs/g/P+eUzq404DLUOlAcmmKaLeOaGeox25wQvL4xmOVTxuw5PlmRcYqZBoa4npT40nCNLhB4OsS8ta1ag/XaBptEuT2Co46OfNljQlzd9wS4AC873i6WoCZHzqv42fxPBdJxhpC+s+/VpvGLknFxQiF5zqBSWtfLlo/o51cqHPO6U71OKv6uaTfojX5tKXU2gA1DarjM9Hgo2G08eutetC6jJahU8fUGHgnatRgQYM345QIxF6rGkpCUWTvhDSWGQeZZtyD+iNCQ0haA0hHeIUX/H4xIuiNTSOnH1SiwZ7KspG+zZlkmfwqFWVtjM5JbIbgwr6TSbetzXwn9TOneVfzLEa64vcs64BJDuvho2o5bY9MwmSqwt7HjA/XCeBc1138tWrfDNXpxdOFfsXrmnrsqyhcTSUt3h6G7IXyTEm3nX0SQxVWW8vNloZacbllu7hUl10nio5dQPta9QQC+2TU83ZTMMxlWEN3ybu/Km
+ E7zlihCi
+ lrrKblJrG839DYa2n5TvAkqqszLv3aIZoc9Z53ffAMJvZ/2jkDbGjA/dWOgVUzwXuha7YjLpFvEUFDQXn4y7bKb72W1+eR1jqiG2aCq4SuVEdKBoktSE/XqTmyyXFrDyMhLz5KWY1KgqfcHU8xUOHme1RSDJ34U+2l9hL2FHP5UtohIFFhaHa3xT+BVMC9WYU6Eq2dMj3stTel+9QKS77Q/Zp4ybMqQZNGB2fuCQ+SOAYEZ8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -245,171 +126,194 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 19.09.25 12:17, Eliav Farber wrote:
-> This series includes a total of 27 patches, to align minmax.h of
-> v5.15.y with v6.17-rc6.
-> 
-> The set consists of 24 commits that directly update minmax.h:
-> 1) 92d23c6e9415 ("overflow, tracing: Define the is_signed_type() macro
->    once")
-> 2) 5efcecd9a3b1 ("minmax: sanity check constant bounds when clamping")
-> 3) 2122e2a4efc2 ("minmax: clamp more efficiently by avoiding extra
->    comparison")
-> 4) f9bff0e31881 ("minmax: add in_range() macro")
-> 5) c952c748c7a9 ("minmax: Introduce {min,max}_array()")
-> 6) 5e57418a2031 ("minmax: deduplicate __unconst_integer_typeof()")
-> 7) f6e9d38f8eb0 ("minmax: fix header inclusions")
-> 8) d03eba99f5bf ("minmax: allow min()/max()/clamp() if the arguments
->    have the same signedness.")
-> 9) f4b84b2ff851 ("minmax: fix indentation of __cmp_once() and
->    __clamp_once()")
-> 10) 4ead534fba42 ("minmax: allow comparisons of 'int' against 'unsigned
->     char/short'")
-> 11) 867046cc7027 ("minmax: relax check to allow comparison between
->     unsigned arguments and signed constants")
-> 12) 3a7e02c040b1 ("minmax: avoid overly complicated constant
->     expressions in VM code")
-> 14) 017fa3e89187 ("minmax: simplify and clarify min_t()/max_t()
->     implementation")
-> 15) 1a251f52cfdc ("minmax: make generic MIN() and MAX() macros
->     available everywhere")
-> 18) dc1c8034e31b ("minmax: simplify min()/max()/clamp()
->     implementation")
-> 19) 22f546873149 ("minmax: improve macro expansion and type
->     checking")
-> 20) 21b136cc63d2 ("minmax: fix up min3() and max3() too")
-> 21) 71ee9b16251e ("minmax.h: add whitespace around operators and after
->     commas")
-> 22) 10666e992048 ("minmax.h: update some comments")
-> 23) b280bb27a9f7 ("minmax.h: reduce the #define expansion of min(),
->     max() and clamp()")
-> 24) a5743f32baec ("minmax.h: use BUILD_BUG_ON_MSG() for the lo < hi
->     test in clamp()")
-> 25) c3939872ee4a ("minmax.h: move all the clamp() definitions after the
->     min/max() ones")
-> 26) 495bba17cdf9 ("minmax.h: simplify the variants of clamp()")
-> 27) 2b97aaf74ed5 ("minmax.h: remove some #defines that are only
->     expanded once")
-> 
-> 2 prerequisite commits that adjust users of MIN and MAX macros (to
-> prevent compilation issues):
-> 13) 4477b39c32fd ("minmax: add a few more MIN_T/MAX_T users")
-> 17) cb04e8b1d2f2 ("minmax: don't use max() in situations that want a C
->     constant expression")
-> 
-> 1 additional commit introduced to resolve a build failures during the
-> backport:
-> 16) lib: zstd: drop local MIN/MAX macros in favor of generic ones
-> 
-> The primary motivation is to bring in commit (8).
-> In mainline, this change allows min()/max()/clamp() to accept mixed
-> argument types when both share the same signedness.
-> Backported patches to v5.10.y that use such forms trigger compiler
-> warnings, which in turn cause build failures when -Werror is enabled.
-> 
-> Originaly I aligned 5.10.y to 5.15.y, but David Laight commented that I
-> need to pick up the later changes (from Linus) as well.
-> 
-> Andy Shevchenko (2):
->   minmax: deduplicate __unconst_integer_typeof()
->   minmax: fix header inclusions
-> 
-> Bart Van Assche (1):
->   overflow, tracing: Define the is_signed_type() macro once
-> 
-> David Laight (11):
->   minmax: allow min()/max()/clamp() if the arguments have the same
->     signedness.
->   minmax: fix indentation of __cmp_once() and __clamp_once()
->   minmax: allow comparisons of 'int' against 'unsigned char/short'
->   minmax: relax check to allow comparison between unsigned arguments and
->     signed constants
->   minmax.h: add whitespace around operators and after commas
->   minmax.h: update some comments
->   minmax.h: reduce the #define expansion of min(), max() and clamp()
->   minmax.h: use BUILD_BUG_ON_MSG() for the lo < hi test in clamp()
->   minmax.h: move all the clamp() definitions after the min/max() ones
->   minmax.h: simplify the variants of clamp()
->   minmax.h: remove some #defines that are only expanded once
-> 
-> Eliav Farber (1):
->   lib: zstd: drop local MIN/MAX macros in favor of generic ones
-> 
-> Herve Codina (1):
->   minmax: Introduce {min,max}_array()
-> 
-> Jason A. Donenfeld (2):
->   minmax: sanity check constant bounds when clamping
->   minmax: clamp more efficiently by avoiding extra comparison
-> 
-> Linus Torvalds (8):
->   minmax: avoid overly complicated constant expressions in VM code
->   minmax: add a few more MIN_T/MAX_T users
->   minmax: simplify and clarify min_t()/max_t() implementation
->   minmax: make generic MIN() and MAX() macros available everywhere
->   minmax: don't use max() in situations that want a C constant
->     expression
->   minmax: simplify min()/max()/clamp() implementation
->   minmax: improve macro expansion and type checking
->   minmax: fix up min3() and max3() too
-> 
-> Matthew Wilcox (Oracle) (1):
->   minmax: add in_range() macro
-> 
->  arch/arm/mm/pageattr.c                        |   6 +-
->  arch/um/drivers/mconsole_user.c               |   2 +
->  arch/x86/mm/pgtable.c                         |   2 +-
+Hey David,
 
->  drivers/edac/sb_edac.c                        |   4 +-
->  drivers/edac/skx_common.h                     |   1 -
->  .../drm/amd/display/modules/hdcp/hdcp_ddc.c   |   2 +
->  .../drm/amd/pm/powerplay/hwmgr/ppevvmath.h    |  14 +-
->  .../drm/arm/display/include/malidp_utils.h    |   2 +-
->  .../display/komeda/komeda_pipeline_state.c    |  24 +-
->  drivers/gpu/drm/drm_color_mgmt.c              |   2 +-
->  drivers/gpu/drm/msm/adreno/a6xx_gmu.c         |   6 -
->  drivers/gpu/drm/radeon/evergreen_cs.c         |   2 +
->  drivers/hwmon/adt7475.c                       |  24 +-
->  drivers/input/touchscreen/cyttsp4_core.c      |   2 +-
->  drivers/md/dm-integrity.c                     |   2 +-
->  drivers/media/dvb-frontends/stv0367_priv.h    |   3 +
->  .../net/ethernet/chelsio/cxgb3/cxgb3_main.c   |  18 +-
->  .../net/ethernet/stmicro/stmmac/stmmac_main.c |   2 +-
->  drivers/net/fjes/fjes_main.c                  |   4 +-
->  drivers/nfc/pn544/i2c.c                       |   2 -
->  drivers/platform/x86/sony-laptop.c            |   1 -
->  drivers/scsi/isci/init.c                      |   6 +-
+I believe I've found the exact reason why KSM skips MTE-tagged pages ;p
 
-I do see the value to backport the infrastructure, but why are driver specific changes backported as well?
-
-I mean the changes are most likely correct but also not valuable in anyway as bug fix.
-
-Regards,
-Christian.
-
->  .../pci/hive_isp_css_include/math_support.h   |   5 -
->  fs/btrfs/misc.h                               |   2 -
->  fs/btrfs/tree-checker.c                       |   2 +-
->  fs/ext2/balloc.c                              |   2 -
->  fs/ext4/ext4.h                                |   2 -
->  fs/ufs/util.h                                 |   6 -
->  include/linux/compiler.h                      |  15 +
->  include/linux/minmax.h                        | 267 ++++++++++++++----
->  include/linux/overflow.h                      |   1 -
->  include/linux/trace_events.h                  |   2 -
->  kernel/trace/preemptirq_delay_test.c          |   2 -
->  lib/btree.c                                   |   1 -
->  lib/decompress_unlzma.c                       |   2 +
->  lib/logic_pio.c                               |   3 -
->  lib/vsprintf.c                                |   2 +-
->  lib/zstd/zstd_internal.h                      |   2 -
->  mm/zsmalloc.c                                 |   1 -
->  net/ipv4/proc.c                               |   2 +-
->  net/ipv6/proc.c                               |   2 +-
->  net/netfilter/nf_nat_core.c                   |   6 +-
->  net/tipc/core.h                               |   2 +-
->  net/tipc/link.c                               |  10 +-
->  44 files changed, 306 insertions(+), 164 deletions(-)
 > 
+> 
+> On 2025/9/19 16:14, Lance Yang wrote:
+>>
+>>
+>> On 2025/9/19 15:55, David Hildenbrand wrote:
+>>>>> I think where possible we really only want to identify problematic
+>>>>> (tagged) pages and skip them. And we should either look into fixing 
+>>>>> KSM
+>>>>> as well or finding out why KSM is not affected.
+>>>>
+>>>> Yeah. Seems like we could introduce a new helper,
+>>>> folio_test_mte_tagged(struct
+>>>> folio *folio). By default, it would return false, and architectures 
+>>>> like
+>>>> arm64
+>>>> can override it.
+>>>
+>>> If we add a new helper it should instead express the semantics that 
+>>> we cannot deduplicate.
+>>
+>> Agreed.
+>>
+>>>
+>>> For THP, I recall that only some pages might be tagged. So likely we 
+>>> want to check per page.
+>>
+>> Yes, a per-page check would be simpler.
+>>
+>>>
+>>>>
+>>>> Looking at the code, the PG_mte_tagged flag is not set for regular THP.
+>>>
+>>> I think it's supported for THP per page. Only for hugetlb we tag the 
+>>> whole thing through the head page instead of individual pages.
+>>
+>> Right. That's exactly what I meant.
+>>
+>>>
+>>>> The MTE
+>>>> status actually comes from the VM_MTE flag in the VMA that maps it.
+>>>>
+>>>
+>>> During the rmap walk we could check the VMA flag, but there would be 
+>>> no way to just stop the THP shrinker scanning this page early.
+>>>
+>>>> static inline bool folio_test_hugetlb_mte_tagged(struct folio *folio)
+>>>> {
+>>>>     bool ret = test_bit(PG_mte_tagged, &folio->flags.f);
+>>>>
+>>>>     VM_WARN_ON_ONCE(!folio_test_hugetlb(folio));
+>>>>
+>>>>     /*
+>>>>      * If the folio is tagged, ensure ordering with a likely subsequent
+>>>>      * read of the tags.
+>>>>      */
+>>>>     if (ret)
+>>>>         smp_rmb();
+>>>>     return ret;
+>>>> }
+>>>>
+>>>> static inline bool page_mte_tagged(struct page *page)
+>>>> {
+>>>>     bool ret = test_bit(PG_mte_tagged, &page->flags.f);
+>>>>
+>>>>     VM_WARN_ON_ONCE(folio_test_hugetlb(page_folio(page)));
+>>>>
+>>>>     /*
+>>>>      * If the page is tagged, ensure ordering with a likely subsequent
+>>>>      * read of the tags.
+>>>>      */
+>>>>     if (ret)
+>>>>         smp_rmb();
+>>>>     return ret;
+>>>> }
+>>>>
+>>>> contpte_set_ptes()
+>>>>     __set_ptes()
+>>>>         __set_ptes_anysz()
+>>>>             __sync_cache_and_tags()
+>>>>                 mte_sync_tags()
+>>>>                     set_page_mte_tagged()
+>>>>
+>>>> Then, having the THP shrinker skip any folios that are identified as
+>>>> MTE-tagged.
+>>>
+>>> Likely we should just do something like (maybe we want better naming)
+>>>
+>>> #ifndef page_is_mergable
+>>> #define page_is_mergable(page) (true)
+>>> #endif
+>>
+>>
+>> Maybe something like page_is_optimizable()? Just a thought ;p
+>>
+>>>
+>>> And for arm64 have it be
+>>>
+>>> #define page_is_mergable(page) (!page_mte_tagged(page))
+>>>
+>>>
+>>> And then do
+>>>
+>>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>>> index 1f0813b956436..1cac9093918d6 100644
+>>> --- a/mm/huge_memory.c
+>>> +++ b/mm/huge_memory.c
+>>> @@ -4251,7 +4251,8 @@ static bool thp_underused(struct folio *folio)
+>>>
+>>>          for (i = 0; i < folio_nr_pages(folio); i++) {
+>>>                  kaddr = kmap_local_folio(folio, i * PAGE_SIZE);
+>>> -               if (!memchr_inv(kaddr, 0, PAGE_SIZE)) {
+>>> +               if (page_is_mergable(folio_page(folio, i)) &&
+>>> +                   !memchr_inv(kaddr, 0, PAGE_SIZE)) {
+>>>                          num_zero_pages++;
+>>>                          if (num_zero_pages > 
+>>> khugepaged_max_ptes_none) {
+>>>                                  kunmap_local(kaddr);
+>>> diff --git a/mm/migrate.c b/mm/migrate.c
+>>> index 946253c398072..476a9a9091bd3 100644
+>>> --- a/mm/migrate.c
+>>> +++ b/mm/migrate.c
+>>> @@ -306,6 +306,8 @@ static bool try_to_map_unused_to_zeropage(struct 
+>>> page_vma_mapped_walk *pvmw,
+>>>
+>>>          if (PageCompound(page))
+>>>                  return false;
+>>> +       if (!page_is_mergable(page))
+>>> +               return false;
+>>>          VM_BUG_ON_PAGE(!PageAnon(page), page);
+>>>          VM_BUG_ON_PAGE(!PageLocked(page), page);
+>>>          VM_BUG_ON_PAGE(pte_present(ptep_get(pvmw->pte)), page);
+>>
+>> Looks good to me!
+>>
+>>>
+>>>
+>>> For KSM, similarly just bail out early. But still wondering if this 
+>>> is already checked
+>>> somehow for KSM.
+>>
+>> +1 I'm looking for a machine to test it on.
+> 
+> Interestingly, it seems KSM is already skipping MTE-tagged pages. My test,
+> running on a v6.8.0 kernel inside QEMU (with MTE enabled), shows no merging
+> activity for those pages ...
 
+KSM's call to pages_identical() ultimately leads to memcmp_pages(). The
+arm64 implementation of memcmp_pages() in arch/arm64/kernel/mte.c contains
+a specific check that prevents merging in this case.
+
+try_to_merge_one_page()
+	-> pages_identical()
+		-> !memcmp_pages() Fails!
+		-> replace_page()
+
+
+int memcmp_pages(struct page *page1, struct page *page2)
+{
+	char *addr1, *addr2;
+	int ret;
+
+	addr1 = page_address(page1);
+	addr2 = page_address(page2);
+	ret = memcmp(addr1, addr2, PAGE_SIZE);
+
+	if (!system_supports_mte() || ret)
+		return ret;
+
+	/*
+	 * If the page content is identical but at least one of the pages is
+	 * tagged, return non-zero to avoid KSM merging. If only one of the
+	 * pages is tagged, __set_ptes() may zero or change the tags of the
+	 * other page via mte_sync_tags().
+	 */
+	if (page_mte_tagged(page1) || page_mte_tagged(page2))
+		return addr1 != addr2;
+
+	return ret;
+}
+
+IIUC, if either page is MTE-tagged, memcmp_pages() intentionally returns
+a non-zero value, which in turn causes pages_identical() to return false.
+
+Cheers,
+Lance
 
