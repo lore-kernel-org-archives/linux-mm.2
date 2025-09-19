@@ -4,105 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3066CAC597
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 01:53:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C4D0CA1013
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 02:03:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 51C228E00E7; Thu, 18 Sep 2025 21:53:13 -0400 (EDT)
+	id B4CB08E0053; Thu, 18 Sep 2025 22:03:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F38C8E0008; Thu, 18 Sep 2025 21:53:13 -0400 (EDT)
+	id AFD748E0008; Thu, 18 Sep 2025 22:03:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 430708E00E7; Thu, 18 Sep 2025 21:53:13 -0400 (EDT)
+	id 9EC3A8E0053; Thu, 18 Sep 2025 22:03:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 319D38E0008
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 21:53:13 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CE662B9DE0
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 01:53:12 +0000 (UTC)
-X-FDA: 83904327024.08.D2D72B1
-Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 969D040004
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 01:53:10 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=MnXK3Qu7;
-	spf=pass (imf12.hostedemail.com: domain of xueshuai@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=xueshuai@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 89FC08E0008
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 22:03:31 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4A6591DF0D0
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 02:03:31 +0000 (UTC)
+X-FDA: 83904353022.23.3FE67E9
+Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 143941A0005
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 02:03:27 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf19.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.32 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758247409; a=rsa-sha256;
+	cv=none;
+	b=KcidjzCDKt06s4kcHXfsX67whCn9c/sBTFct6eQezzqaP+uXPSk6KJyTEvmBPsT9t2DqZd
+	PEm2MWzFwmhqA/oyQ/H8GBa0VynQouMH9K8+AERXHhMZXiFMPrYXS2w/LA2QLGEQ001CMe
+	Pl60BqBZoB5bZItKQBkZDLxjPzU6ps4=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf19.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.32 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758246791;
+	s=arc-20220608; t=1758247409;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LgbZj+hEehjjyVcd+jT3wqpfmb95ZNo+158s5pz+gIg=;
-	b=Gig+zOoHS+bczRgAwfh2eWXxQcokeZQi0PyHxErDEag0YjY8Es+6XFLP22Tivy3y/DGvjZ
-	AB1+m2YeWrgUjdbPYA5pQvDG1FZdk7HXo2SgkdJ5ZymBohX260mZkorW1UEi2+WPH5ooAE
-	UJnZBu56yNq/pphRwceRdTkrIBZLeWQ=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=MnXK3Qu7;
-	spf=pass (imf12.hostedemail.com: domain of xueshuai@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=xueshuai@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758246791; a=rsa-sha256;
-	cv=none;
-	b=ivk3KPyum99DyS/cjY3+t6AYGG0rVV2TTqlSRPr6LPWfvfWuwzkyM4X5L2bW4k+K+InCym
-	ri/pe08CN5XCgK/C2kb97t3GCdAPHGgVxWJcBnY4iv77qYZ8QDkwuf+9w1oNJb27S/osc5
-	KJ5usCS7s66jgsWkdvrmYd4mhF4VuV0=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1758246787; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=LgbZj+hEehjjyVcd+jT3wqpfmb95ZNo+158s5pz+gIg=;
-	b=MnXK3Qu73vyCgHQWy/BXxWnV2KrEpXsYDaxs/2NtZNdL6khtsVmTI5U78IbB1pi/2g6r3JW1NBGQTezjiGxG/020802PXyr128IpzOqF3stCdNoMZpdKK+6Jex52rnUX8MF415jamNnRGcPDFuGjFrNOIoaQAw7AqBJzEg4wQ4s=
-Received: from 30.246.178.33(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WoHtQMf_1758246785 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 19 Sep 2025 09:53:06 +0800
-Message-ID: <248f19dd-25e6-4e97-8169-96da1e860035@linux.alibaba.com>
-Date: Fri, 19 Sep 2025 09:53:04 +0800
+	 in-reply-to:in-reply-to:references:references;
+	bh=XoeJSQrtAl1iIuoT3/FWZLwf037Q6uW1o8LMF8a0kGw=;
+	b=HC05x0y3cuGeerjWaRwv0onSs0qkoVAEM3SWhNtZvvisGZckDU6uWFb0fUmKVryqx2T+FJ
+	GL3YuHZRrk7g/5MowZvPwJU6na2C8vOIhdjo06AeJkTz0GXIgyme5ZSTzcy3t3ZPRKTf+w
+	MPWVbTNY2cNjIxL2R0GQxISJPnhEJa8=
+Received: from mail.maildlp.com (unknown [172.19.88.234])
+	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4cSbRQ31Tgz27jTk;
+	Fri, 19 Sep 2025 10:04:34 +0800 (CST)
+Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
+	by mail.maildlp.com (Postfix) with ESMTPS id D1CF1140296;
+	Fri, 19 Sep 2025 10:03:23 +0800 (CST)
+Received: from [10.174.177.243] (10.174.177.243) by
+ dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 19 Sep 2025 10:03:22 +0800
+Message-ID: <229e5cd0-ed50-488c-88d1-c064b83de5a7@huawei.com>
+Date: Fri, 19 Sep 2025 10:03:21 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: PATCH v3 ACPI: APEI: GHES: Don't offline huge pages just because
- BIOS asked
-To: "Luck, Tony" <tony.luck@intel.com>, Jiaqi Yan <jiaqiyan@google.com>
-Cc: "Meyer, Kyle" <kyle.meyer@hpe.com>,
- "jane.chu@oracle.com" <jane.chu@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
- "surenb@google.com" <surenb@google.com>,
- "Anderson, Russ" <russ.anderson@hpe.com>, "rppt@kernel.org"
- <rppt@kernel.org>, "osalvador@suse.de" <osalvador@suse.de>,
- "nao.horiguchi@gmail.com" <nao.horiguchi@gmail.com>,
- "mhocko@suse.com" <mhocko@suse.com>,
- "lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
- "linmiaohe@huawei.com" <linmiaohe@huawei.com>,
- "david@redhat.com" <david@redhat.com>, "bp@alien8.de" <bp@alien8.de>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>, "vbabka@suse.cz"
- <vbabka@suse.cz>, "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
- "Fan, Shawn" <shawn.fan@intel.com>
-References: <20250904155720.22149-1-tony.luck@intel.com>
- <brfqzhbipg35twgv22vnnotbv3t3grwh2dxugvtbgqduuhsvst@f7exibz7i7tk>
- <aLsHh70jI6BGHjaN@agluck-desk3>
- <bwu744g3qzbzylxvfgt7v4tnf2k2eosqbkg7alm6u5roa7j3bn@gmut2l5227kw>
- <aLspJ5Tpqp4qRDk2@agluck-desk3>
- <cf05bc8e-fc79-49e4-a90a-47e661b4ae69@oracle.com>
- <CACw3F538k+dshTs1_rxbpYoRdFyX3tLYzfaWj-_d7Lq5Dd2Jsg@mail.gmail.com>
- <aL8rIgSImDh7Nj7E@hpe.com>
- <7d3cc42c-f1ef-4f28-985e-3a5e4011c585@linux.alibaba.com>
- <CACw3F50hU3BCP=A++Dx_V=U8PKvsTvTa1=krULxfQdeK2kVBrw@mail.gmail.com>
- <SJ1PR11MB6083B887B3EE4DBEB6438C2EFC16A@SJ1PR11MB6083.namprd11.prod.outlook.com>
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <SJ1PR11MB6083B887B3EE4DBEB6438C2EFC16A@SJ1PR11MB6083.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH v2 1/8] mm: page_alloc: optimize pfn_range_valid_contig()
+To: Zi Yan <ziy@nvidia.com>
+CC: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
+	<david@redhat.com>, Oscar Salvador <osalvador@suse.de>, Muchun Song
+	<muchun.song@linux.dev>, Matthew Wilcox <willy@infradead.org>,
+	<sidhartha.kumar@oracle.com>, <jane.chu@oracle.com>, Vlastimil Babka
+	<vbabka@suse.cz>, Brendan Jackman <jackmanb@google.com>, Johannes Weiner
+	<hannes@cmpxchg.org>, <linux-mm@kvack.org>
+References: <20250918132000.1951232-1-wangkefeng.wang@huawei.com>
+ <20250918132000.1951232-2-wangkefeng.wang@huawei.com>
+ <E25CD56A-2F37-45A3-8A38-190323ADB4DE@nvidia.com>
+Content-Language: en-US
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+In-Reply-To: <E25CD56A-2F37-45A3-8A38-190323ADB4DE@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.177.243]
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ dggpemf100008.china.huawei.com (7.185.36.138)
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 143941A0005
+X-Stat-Signature: hksx9r8maorkpowddfm7u71m9xakrnst
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 969D040004
-X-Stat-Signature: 733wxjodq1wrcp3cqmqq1xhhuk3krw9n
-X-HE-Tag: 1758246790-24324
-X-HE-Meta: U2FsdGVkX190htb9OVOS5L7LJbW+gc4yW9SrvDu4vqX4V/tsXMiXNMWOvXw4lR8lkebCsmWHIy6KGkD556EnaqvIc5BWoF95YEphU1GAeW7awfjizJgEOjWGbb51Yxsj0qT2RttmQ9DYMfodN7FX/5BFasNGkduKsQCdc2vHBWtpaOQypGPTrH/gvO+0Oeh4sOqUynVl7AVFE9bUGvdXEnAgIjSPNT/r4V+cyW1Fyb0uA25oe4B5NbjHWl4TwsrTHT2OqNz+xknVUi8h2ihEQp/ZMM5AEtZ3wy3nLxt0D50JNDguPiaeddcA4I4mY3yYOPe65X+6/TjAStCJvZv6P1OQDq++objChmGi32h94NXNl8K86WDhfq1XY7idRU0uBJM7gDKME4rb4/qm092hKDOH0yyU7FIUi3q8m/lIun41t6DXYmUcRdvw62/11BRLih+AUGwAsOsYhYifS99nEPI2A/Esf+CHoYVnjzQqJYoQ8VByljHt8HpLTJflr+3GE17Yk9pIBoaq3mnQGiKNgMOyr1Nd57d4ZNx4BxPmKI05Vsrxqj18N0BdWoN5AvTcIvO5H8PHPqlJZsGrXgeP8QNl8dw1MhwPwbro5IFbgRAJDA9sNmSyXr1/utQofmbkQgNOPK4gcnEvgfmpi5gS07dbufqcseZKK+lg/o3ypRtIztH3zvnTXiKmeXN5Vra8hkwshVDlRrir8AOyv86ShFKldgJPTLwmIBo1Rli4o2I/DmIIB264RJTu7H/oH1HV1DhW9xbsAKhdk9G7FTwnUMx5EBZVxNxuGNXWIFHR8dybjmeMwAMQN6eWT5DPkQhny2jNE/SjVqHZyoiypqFt9MbfwGgyU4W8XRFyUKpo5o0+I0qC7GNawJMTho2yKFffMgRbjkt5q3L2rMbU+tpcgMQuB3EqV+ZC/mXfPWHcQLABm4ZXRGENQ1FK9Jn4Yw93HN8FDuHqro2g4/TzDrR
- yrFZ7gRY
- cIVWQI6JIAdtoK2qzMoxEwXvvpPWU84rdid91Uj+7y8HwTOgVZ0JsAZ4seREOvTZsMQ4XNzJDChVewYF8g75OD2LAifmjLM5Ip8CWWltq50sh3HCG/CITUbrsyyKpazPx7ikIXBjT6QLS2YszbuNHcyAj/EvtrdMiXNO50EfIUA2A5SqALZbjBotWnOOtJxuLGKL+zCbJtgOnepcS7L1bJ7KGWiuDKVN6bQEbK2ylDxSpPd2GBORrvpLFqRb1jPjozgAov1mqPVQk1GBapWrYfnvDz3E4WnriECIvFwcYK11WxUBBXY7563JozyW72xkWhQK5gJNgqdYIWfNjosfjNWzew4q9msvUbubCCpUjDv8rR3DABKzTts6KtmlhDjUiDAO+fM/xxpm5QZE6P1tSqORCv0Zw6Q/SdcU9Ux9FpxS2VWeDn1oYKznuyAzh9BRVT5qJ
+X-HE-Tag: 1758247407-30800
+X-HE-Meta: U2FsdGVkX19epdrWKS0ze6/Kxet1UsFG9f/vfuV3JzsH0r3rHL/U/KmoOpcM3y9eNevqDknGVZ0USpbhs3Lae9DO4AjlvXTKUQHchBdq8tQ0Eugdq34ub2cKqgu5Iuj44Xjs3ySDhh8nhMTHCGXtP0DySoggwfnRZvJ7ZQ1itYkCrw7TLfy102TzQIyQElaohw9jWl9JloI5Z5JTT+oG1bdjiYKbla9NI9HdHAi5jyQ6h9ggH1ex6Hm3PaWfTnBUokJlUdM/L4Og7pS+guZuAsqRglY8AIVe4jBodw/R2Bvc5vNWlONVkCHC3iIikhk7K9au7rNU0IHBxjVwokMcCW9qVPFrgEa3jrz5Ir9rCpcyhhLD30XDIRC95U7S99w4jAwN1axQgpYsGTQoO7eKLmEdNjK9MJ5ZWhs0bjLEmXFJnTdLDYr9gsIyWLMr/CqhrBwefoHirZGvx0a3TETX7twMLnNaqh+IcDtH6IPYy0Dfx5ciFMhxCXKAE421RxOlp8EHrLo8EJF1giloVcZSoZgLi+hgJaZHqVMrVbE9fg7Qn7lpOnnG73Gchh6EimPWhkYq7bUy1od9NinxtnJoRdZadVVFEwsKTC0THtLWmNbM2RrSxXleOgRMx3P/Mz7gCsbn9oMmW6u+/7sjvfJuW0AeLNHMKyaSkooXW0vvwtVB4kyLzexywU6ZoEMotkbY3iKBQzU4RNo7ahn7TyOZ1GxmPeSl2EjXCBndfWxz0bIEX6fQbJ9WluxX0WKDvbEw2OCDs2/CnvdZObBtzo/JfpJoqzC7Mnc7vud/wzhTqjj9NLrsUbCJrdNJRv4t7/iua9qNB+NjjBndZMpMlzckpccanC02DQU/wQqlUJkoYr4YWNtA2GUFRImsffnMRDr83cClwhqmo5V3KDjQccfxzBwRqMNMxfq6zvCCRBlSBBbEt7P7DPe5sO5+bSrgYqZYgTW6Q/5nGQVA2dP6TXt
+ dHS5JKKR
+ 9r53JuJmP7KMY+EMiPHknRkbRMqxo565B4uc7o8hcCYKQkxvkRYU0cp1zGOkKvl2z4RIkXgiDKjkDVbLcTrN0PltBGLTY+OXt7nVfHpjoSfz6iCS64y/ue8Megcf760LG+2gz4CVh1KlQbxrBR8M3ZBPetmJSTwQcPRfuPlJykdajhpjwbdAEoFCNpo3IyEKAuSzo4qs33uudqN40u4MpmZClU41By0iwmK46tARVZK1BfZC+Cs+gb3PEJ3j4O10FwrY+eMN/fs9gXzs0PAFx+DwEADJChK4EhpUYYe35yu1V670AVRiEUg9elGDjTg361GbtWT7C5sJu6cc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,41 +100,104 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-在 2025/9/19 02:45, Luck, Tony 写道:
->> Thank you for your detailed explanation. I believe this is exactly the problem
->> we're encountering in our production environment.
+On 2025/9/18 23:49, Zi Yan wrote:
+> On 18 Sep 2025, at 9:19, Kefeng Wang wrote:
+> 
+>> The alloc_contig_pages() spends a lot of time in pfn_range_valid_contig(),
+>> we could check whether the page in this pfn range could be allocated
+>> before alloc_contig_range(), if the page can't be migrated, no further
+>> action is required, and also skip some unnecessary iterations for
+>> compound pages such as THP and non-compound high order buddy, which
+>> save times a lot too. The check is racy, but the only danger is skipping
+>> too much.
 >>
->> As you mentioned, memory access is typically interleaved between channels. When
->> the per-rank threshold is exceeded, soft-offlining the last accessed address
->> seems unreasonable - regardless of whether it's a 4KB page or a huge page. The
->> error accumulation happens at the rank level, but the action is taken on a
->> specific page that happened to trigger the threshold, which doesn't address the
->> underlying issue.
+>> A simple test on machine with 116G free memory, allocate 120 * 1G
+>> HugeTLB folios(107 successfully returned),
 >>
->> I'm curious about the intended use case for the CPER_SEC_ERROR_THRESHOLD_EXCEEDED
->> flag. What scenario was Intel BIOS expecting the OS to handle when this flag is set?
->> Is there a specific interpretation of "threshold exceeded" that would make
->> page-level offline action meaningful? If not, how about disabling soft offline from
->> GHES and leave that to userspace tools like rasdaemon (mcelog) ?
+>>    time echo 120 > /sys/kernel/mm/hugepages/hugepages-1048576kB/nr_hugepages
+>>
+>> Before: 0m2.124s
+>> After:  0m0.602s
+>>
+>> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+>> ---
+>>   mm/page_alloc.c | 20 ++++++++++++++++++--
+>>   1 file changed, 18 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+>> index 478beaf95f84..5b7d705e9710 100644
+>> --- a/mm/page_alloc.c
+>> +++ b/mm/page_alloc.c
+>> @@ -7012,6 +7012,7 @@ static bool pfn_range_valid_contig(struct zone *z, unsigned long start_pfn,
+>>   {
+>>   	unsigned long i, end_pfn = start_pfn + nr_pages;
+>>   	struct page *page;
+>> +	struct folio *folio;
+>>
+>>   	for (i = start_pfn; i < end_pfn; i++) {
+>>   		page = pfn_to_online_page(i);
+>> @@ -7021,11 +7022,26 @@ static bool pfn_range_valid_contig(struct zone *z, unsigned long start_pfn,
+>>   		if (page_zone(page) != z)
+>>   			return false;
+>>
+>> -		if (PageReserved(page))
+>> +		folio = page_folio(page);
+>> +		if (folio_test_reserved(folio))
+>>   			return false;
+>>
+>> -		if (PageHuge(page))
+>> +		if (folio_test_hugetlb(folio))
+>>   			return false;
+>> +
+>> +		/* The following type of folios aren't migrated */
 > 
-> The original use case was defined by IBM [1] (that division is now part of Lenovo).
-> IBM BIOS enabled a firmware first mode to handle errors, cutting the OS out of
-> the picture. But the challenge with this was how to handle a case where the BIOS
-> identified a recurring problem on a specific memory address. The solution proposed
-> was to use GHES notification using the CPER_SEC_ERROR_THRESHOLD_EXCEEDED
-> flag to let the OS know that this corrected error needs some action.
+> s/aren’t/cannot be/
+
+ACK.
+
 > 
-> -Tony
+>> +		if (folio_test_pgtable(folio) | folio_test_stack(folio))
+>> +			return false;
+
+should be "||", will fix.
+
 > 
-> [1] cf870c70a194 ("mce: acpi/apei: Soft-offline a page on firmware GHES notification")
+> Maybe worth explicitly stating these two types of pages in the commit log.
+> 
+OK, will update.
+
+>> +
+>> +		/*
+>> +		 * For compound pages such as THP and non-compound high
+>> +		 * order buddy pages, save potentially a lot of iterations
+>> +		 * if we can skip them at once.
+>> +		 */
+>> +		if (PageCompound(page))
+>> +			i += (1UL << compound_order(page)) - 1;
+> 
+> Just a note here, if page is tail, this just move i to the next page
+> instead of next folio.
+
+As no reference held，it is not too precise but we optimize for most
+scenarios.
+
+> 
+>> +		else if (PageBuddy(page))
+>> +			i += (1UL << buddy_order(page)) - 1;
+>>   	}
+>>   	return true;
+>>   }
+>> -- 
+>> 2.27.0
+> 
+> Otherwise, LGTM. Reviewed-by: Zi Yan <ziy@nvidia.com>
 > 
 > 
 
-Hi, Tony,
+Thanks.
 
-Thanks for the historical context. Understanding the IBM use case
-and the original design intent is very helpful.
+> Best Regards,
+> Yan, Zi
+> 
 
-Best regards,
-Shuai
 
