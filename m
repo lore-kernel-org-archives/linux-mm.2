@@ -4,92 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C4D0CA1013
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 02:03:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3DA70CA1013
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 02:12:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B4CB08E0053; Thu, 18 Sep 2025 22:03:31 -0400 (EDT)
+	id 657CB8E0053; Thu, 18 Sep 2025 22:12:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AFD748E0008; Thu, 18 Sep 2025 22:03:31 -0400 (EDT)
+	id 62EEA8E0008; Thu, 18 Sep 2025 22:12:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9EC3A8E0053; Thu, 18 Sep 2025 22:03:31 -0400 (EDT)
+	id 56BDC8E0053; Thu, 18 Sep 2025 22:12:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 89FC08E0008
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 22:03:31 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4A6591DF0D0
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 02:03:31 +0000 (UTC)
-X-FDA: 83904353022.23.3FE67E9
-Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 143941A0005
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 02:03:27 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 44B828E0008
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 22:12:34 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id AA51B160546
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 02:12:33 +0000 (UTC)
+X-FDA: 83904375786.20.B5762C5
+Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+	by imf19.hostedemail.com (Postfix) with ESMTP id A3F2A1A0002
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 02:12:29 +0000 (UTC)
 Authentication-Results: imf19.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf19.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.32 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758247409; a=rsa-sha256;
-	cv=none;
-	b=KcidjzCDKt06s4kcHXfsX67whCn9c/sBTFct6eQezzqaP+uXPSk6KJyTEvmBPsT9t2DqZd
-	PEm2MWzFwmhqA/oyQ/H8GBa0VynQouMH9K8+AERXHhMZXiFMPrYXS2w/LA2QLGEQ001CMe
-	Pl60BqBZoB5bZItKQBkZDLxjPzU6ps4=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf19.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.32 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=lQFeRzwm;
+	spf=pass (imf19.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758247409;
+	s=arc-20220608; t=1758247951;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XoeJSQrtAl1iIuoT3/FWZLwf037Q6uW1o8LMF8a0kGw=;
-	b=HC05x0y3cuGeerjWaRwv0onSs0qkoVAEM3SWhNtZvvisGZckDU6uWFb0fUmKVryqx2T+FJ
-	GL3YuHZRrk7g/5MowZvPwJU6na2C8vOIhdjo06AeJkTz0GXIgyme5ZSTzcy3t3ZPRKTf+w
-	MPWVbTNY2cNjIxL2R0GQxISJPnhEJa8=
-Received: from mail.maildlp.com (unknown [172.19.88.234])
-	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4cSbRQ31Tgz27jTk;
-	Fri, 19 Sep 2025 10:04:34 +0800 (CST)
-Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id D1CF1140296;
-	Fri, 19 Sep 2025 10:03:23 +0800 (CST)
-Received: from [10.174.177.243] (10.174.177.243) by
- dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 19 Sep 2025 10:03:22 +0800
-Message-ID: <229e5cd0-ed50-488c-88d1-c064b83de5a7@huawei.com>
-Date: Fri, 19 Sep 2025 10:03:21 +0800
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=m6BSTlEv4BxYzmuMdizgJCn5FFRfQjdUu4Ddm03+goQ=;
+	b=OLkj85uxmC+pRhamuvbNzmLuoL73BXP1HE666OhmvxRHBET8DPtBpWmRfQrWF50YD7ZTkZ
+	XhwcgOW7CjmF1FvwldWVxDiVtV4TqMH2uLO1FozZU0Jj7yZ7IG0SLU+QvBIDeIjvoEUg43
+	lTcuQZ3uT29i2zfx4udcSJPccYB2mD8=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=lQFeRzwm;
+	spf=pass (imf19.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758247951; a=rsa-sha256;
+	cv=none;
+	b=5VAqMZeA+4KOw8IzjxTSfsEUpvSQnoz/2ERdKldNuG3MhzZ4vvgWgOh39zHj4pG6P1pblE
+	6gjWABQZa0CXT9/GvKaN3lrDtJ2KxzbSYNDAyH+jzjEASLYU9pJ5/dsCHb7scG3qbyu5QS
+	3uZttmSYE7H8Twgyclqd58iBEiyZtaw=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1758247934; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=m6BSTlEv4BxYzmuMdizgJCn5FFRfQjdUu4Ddm03+goQ=;
+	b=lQFeRzwmQ8ZymA3Oz1BIxYmSAfGQQLbN4I6e09nvLAz/o6fAgBR9qHkh1icKLGMcDHtGtHm98GKEzBAu6xtY2hMJNuBi6VPMEfiRXzFHd3cOpcPCPewM5mwX/CAHSbrSdimoNWIBdmQdkpvIzmszq4/roHTq0eAPtv4DjAyJ8k0=
+Received: from 30.74.144.118(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WoHs.rR_1758247933 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 19 Sep 2025 10:12:14 +0800
+Message-ID: <787dc1a4-d0b7-4559-8160-55de987beac3@linux.alibaba.com>
+Date: Fri, 19 Sep 2025 10:12:13 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/8] mm: page_alloc: optimize pfn_range_valid_contig()
-To: Zi Yan <ziy@nvidia.com>
-CC: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
-	<david@redhat.com>, Oscar Salvador <osalvador@suse.de>, Muchun Song
-	<muchun.song@linux.dev>, Matthew Wilcox <willy@infradead.org>,
-	<sidhartha.kumar@oracle.com>, <jane.chu@oracle.com>, Vlastimil Babka
-	<vbabka@suse.cz>, Brendan Jackman <jackmanb@google.com>, Johannes Weiner
-	<hannes@cmpxchg.org>, <linux-mm@kvack.org>
-References: <20250918132000.1951232-1-wangkefeng.wang@huawei.com>
- <20250918132000.1951232-2-wangkefeng.wang@huawei.com>
- <E25CD56A-2F37-45A3-8A38-190323ADB4DE@nvidia.com>
-Content-Language: en-US
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <E25CD56A-2F37-45A3-8A38-190323ADB4DE@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Subject: Re: [PATCH v2 1/2] mm: vmscan: remove folio_test_private() check in
+ pageout()
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: David Hildenbrand <david@redhat.com>, akpm@linux-foundation.org,
+ hannes@cmpxchg.org, mhocko@kernel.org, zhengqi.arch@bytedance.com,
+ lorenzo.stoakes@oracle.com, hughd@google.com, willy@infradead.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <cover.1758166683.git.baolin.wang@linux.alibaba.com>
+ <9ef0e560dc83650bc538eb5dcd1594e112c1369f.1758166683.git.baolin.wang@linux.alibaba.com>
+ <17d1b293-e393-4989-a357-7eea74b3c805@redhat.com>
+ <4e938fa1-c6ea-43fb-abbd-de514842a005@linux.alibaba.com>
+ <tombfifwrhx2n4jnj2pgcdcpj42mdv7yizkpxrppnqrtsxd5fw@epnrjqgmmy6z>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <tombfifwrhx2n4jnj2pgcdcpj42mdv7yizkpxrppnqrtsxd5fw@epnrjqgmmy6z>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- dggpemf100008.china.huawei.com (7.185.36.138)
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 143941A0005
-X-Stat-Signature: hksx9r8maorkpowddfm7u71m9xakrnst
+X-Rspamd-Queue-Id: A3F2A1A0002
+X-Rspamd-Server: rspam05
+X-Stat-Signature: umr53zyrf5ef8cp9mjocf8f1jwf4c1hi
 X-Rspam-User: 
-X-HE-Tag: 1758247407-30800
-X-HE-Meta: U2FsdGVkX19epdrWKS0ze6/Kxet1UsFG9f/vfuV3JzsH0r3rHL/U/KmoOpcM3y9eNevqDknGVZ0USpbhs3Lae9DO4AjlvXTKUQHchBdq8tQ0Eugdq34ub2cKqgu5Iuj44Xjs3ySDhh8nhMTHCGXtP0DySoggwfnRZvJ7ZQ1itYkCrw7TLfy102TzQIyQElaohw9jWl9JloI5Z5JTT+oG1bdjiYKbla9NI9HdHAi5jyQ6h9ggH1ex6Hm3PaWfTnBUokJlUdM/L4Og7pS+guZuAsqRglY8AIVe4jBodw/R2Bvc5vNWlONVkCHC3iIikhk7K9au7rNU0IHBxjVwokMcCW9qVPFrgEa3jrz5Ir9rCpcyhhLD30XDIRC95U7S99w4jAwN1axQgpYsGTQoO7eKLmEdNjK9MJ5ZWhs0bjLEmXFJnTdLDYr9gsIyWLMr/CqhrBwefoHirZGvx0a3TETX7twMLnNaqh+IcDtH6IPYy0Dfx5ciFMhxCXKAE421RxOlp8EHrLo8EJF1giloVcZSoZgLi+hgJaZHqVMrVbE9fg7Qn7lpOnnG73Gchh6EimPWhkYq7bUy1od9NinxtnJoRdZadVVFEwsKTC0THtLWmNbM2RrSxXleOgRMx3P/Mz7gCsbn9oMmW6u+/7sjvfJuW0AeLNHMKyaSkooXW0vvwtVB4kyLzexywU6ZoEMotkbY3iKBQzU4RNo7ahn7TyOZ1GxmPeSl2EjXCBndfWxz0bIEX6fQbJ9WluxX0WKDvbEw2OCDs2/CnvdZObBtzo/JfpJoqzC7Mnc7vud/wzhTqjj9NLrsUbCJrdNJRv4t7/iua9qNB+NjjBndZMpMlzckpccanC02DQU/wQqlUJkoYr4YWNtA2GUFRImsffnMRDr83cClwhqmo5V3KDjQccfxzBwRqMNMxfq6zvCCRBlSBBbEt7P7DPe5sO5+bSrgYqZYgTW6Q/5nGQVA2dP6TXt
- dHS5JKKR
- 9r53JuJmP7KMY+EMiPHknRkbRMqxo565B4uc7o8hcCYKQkxvkRYU0cp1zGOkKvl2z4RIkXgiDKjkDVbLcTrN0PltBGLTY+OXt7nVfHpjoSfz6iCS64y/ue8Megcf760LG+2gz4CVh1KlQbxrBR8M3ZBPetmJSTwQcPRfuPlJykdajhpjwbdAEoFCNpo3IyEKAuSzo4qs33uudqN40u4MpmZClU41By0iwmK46tARVZK1BfZC+Cs+gb3PEJ3j4O10FwrY+eMN/fs9gXzs0PAFx+DwEADJChK4EhpUYYe35yu1V670AVRiEUg9elGDjTg361GbtWT7C5sJu6cc=
+X-HE-Tag: 1758247949-229044
+X-HE-Meta: U2FsdGVkX19pycLIn8VDjsNuEapGHAJVe5zGUKqeMCH03GM4KPLNJ4JoswwUc0MgoluLAZwNOKoKPob8luGJyCuvn9SsZHhGUdtY/YjqshHCgoDn/NhC/uYfEZAVHl+l1XIH95FyU0vitDhit6B5DkYTkBw3RnDt2fP9GBa2OMDR5dLPCGmegKdCmu/xLax1BN/du3Q55oDN67E85Lt87eH9jIZm4O9IDQ6MzLWIwi5v3dR3TEIbxJyLGUI6myZ+buS4TGKjtH4ci7Xc2Hs4eHNgdVkMGbwfflL30SFhD1KZLwxc/grSzF/3iyOrPZkQZDM0pCgtaa76I+WdxuW6maIch6oJQbtCexJ5BT0W9RtCrZF9T46m85YEKIi2BYoqj4/JTBnbFQQQWdkWOuG/o67GiJEGEV4mRbYTN4VH1VZ5kn2dV7eQ+5S4JhvHx5lnoMS/lHm+R8fP/xWAwTSm1dSqz7G2kWelU2D9dgujbke6MigT9XJ4LExtctziJCyj+ObyMU8fNgbxK5hmLFT+a5gVFbzJuUgGebHuze/lzZMvAa8oMwGzBfouK3I0YAd2gAehBnWw54gJK7rszcT0c8nwIym49KjVWnhzOF21SBcL8jcNjz08ibjpZM6mognhCnqbumwqDJnNiaxqKOyFgN2gL716V+XmwQ2g8NmRWqCl5M47cteHXR0eR6HM/TyVoh3qKx0l4qfba9qVLj56Wgwi7dGOaLciiEJ0agBXm9mpL8Czk4XGnhBNldpMr505qVL7lqneEvdu2pPb6eUroA4QSwp/qieHj1gFfr5WSUTz2NW0B6Zpo8LWLYTtrqLFA7Ug/OZMC6CZCYXDt6Uvf8FIt4mLa5Y9WpJpkKCefgd+ezfIZmkZUw3R8wQT2LNYgFxqSp3e7e1ZE/8KrymCPnsCbV2rJv4qGNIbtNWoyr2xbt2Hr/LxXsGFNKH+ZNI7EW1qldRDXNFk57u0HQ9
+ KOLrsSkc
+ znwbKnELiZXhMMfg6LBySWxSVRkZCl0BWeBTCB5SbG6stcmN5oGZwDkpBHCcHBenF2FjxXHLmNpYVONfpT+oQ71h6LKrUSp9YfKCSWFJ+JV4Te4miNwuyjLQQOj9CHGq2ywx0+wRDP9K+U/EBFoCDbkU3FBzT6XjgVimKbxvc6IrEctrLSPlQ/4wSn/ik0BVcf+PGl+ftyHKapczbkts2uE+/qYcJJD8txajJJbp9S691sQ+zcEFnA81Jj8jaogW0lQdSM67BuuPfGXNnEk+p0FOu2AHfiufWjtN68pnSjNnYZvryAlqruDKQYEunxEtZgFNHpanHB/DUG5HNmBRNubxLcXPIjUGeb+4s6FCdzYEkrxfHxWJMBZQZgbOhCzDjE+aR8lygg8j4M8IwrX3zrk69Ab19YhQKD4DD
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,104 +95,94 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2025/9/18 23:49, Zi Yan wrote:
-> On 18 Sep 2025, at 9:19, Kefeng Wang wrote:
-> 
->> The alloc_contig_pages() spends a lot of time in pfn_range_valid_contig(),
->> we could check whether the page in this pfn range could be allocated
->> before alloc_contig_range(), if the page can't be migrated, no further
->> action is required, and also skip some unnecessary iterations for
->> compound pages such as THP and non-compound high order buddy, which
->> save times a lot too. The check is racy, but the only danger is skipping
->> too much.
+On 2025/9/19 09:06, Shakeel Butt wrote:
+> On Thu, Sep 18, 2025 at 05:36:17PM +0800, Baolin Wang wrote:
 >>
->> A simple test on machine with 116G free memory, allocate 120 * 1G
->> HugeTLB folios(107 successfully returned),
 >>
->>    time echo 120 > /sys/kernel/mm/hugepages/hugepages-1048576kB/nr_hugepages
+>> On 2025/9/18 14:00, David Hildenbrand wrote:
+>>> On 18.09.25 05:46, Baolin Wang wrote:
+>>>> The folio_test_private() check in pageout() was introduced by commit
+>>>> ce91b575332b ("orphaned pagecache memleak fix") in 2005 (checked from
+>>>> a history tree[1]). As the commit message mentioned, it was to address
+>>>> the issue where reiserfs pagecache may be truncated while still pinned.
+>>>> To further explain, the truncation removes the page->mapping, but the
+>>>> page is still listed in the VM queues because it still has buffers.
+>>>>
+>>>> In 2008, commit a2b345642f530 ("Fix dirty page accounting leak with ext3
+>>>> data=journal") seems to be dealing with a similar issue, where the page
+>>>> becomes dirty after truncation, and it provides a very useful call stack:
+>>>> truncate_complete_page()
+>>>>         cancel_dirty_page() // PG_dirty cleared, decr. dirty pages
+>>>>         do_invalidatepage()
+>>>>           ext3_invalidatepage()
+>>>>             journal_invalidatepage()
+>>>>               journal_unmap_buffer()
+>>>>                 __dispose_buffer()
+>>>>                   __journal_unfile_buffer()
+>>>>                     __journal_temp_unlink_buffer()
+>>>>                       mark_buffer_dirty(); // PG_dirty set, incr.
+>>>> dirty pages
+>>>>
+>>>> In this commit a2b345642f530, we forcefully clear the page's dirty flag
+>>>> during truncation (in truncate_complete_page()).
+>>>>
+>>>> Now it seems this was just a peculiar usage specific to reiserfs. Maybe
+>>>> reiserfs had some extra refcount on these pages, which caused them
+>>>> to pass
+>>>> the is_page_cache_freeable() check. With the fix provided by commit
+>>>> a2b345642f530
+>>>> and reiserfs being removed in 2024 by commit fb6f20ecb121 ("reiserfs: The
+>>>> last commit"), such a case is unlikely to occur again. So let's
+>>>> remove the
+>>>> redundant folio_test_private() checks and related buffer_head
+>>>> release logic,
+>>>> and just leave a warning here to catch such a bug.
+>>>>
+>>>> [1] https://git.kernel.org/pub/scm/linux/kernel/git/tglx/history.git
+>>>> Acked-by: David Hildenbrand <david@redhat.com>
+>>>> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+>>>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>>>> ---
+>>>>    mm/vmscan.c | 12 +++---------
+>>>>    1 file changed, 3 insertions(+), 9 deletions(-)
+>>>>
+>>>> diff --git a/mm/vmscan.c b/mm/vmscan.c
+>>>> index f1fc36729ddd..930add6d90ab 100644
+>>>> --- a/mm/vmscan.c
+>>>> +++ b/mm/vmscan.c
+>>>> @@ -701,16 +701,10 @@ static pageout_t pageout(struct folio *folio,
+>>>> struct address_space *mapping,
+>>>>            return PAGE_KEEP;
+>>>>        if (!mapping) {
+>>>>            /*
+>>>> -         * Some data journaling orphaned folios can have
+>>>> -         * folio->mapping == NULL while being dirty with clean buffers.
+>>>> +         * Is it still possible to have a dirty folio with
+>>>> +         * a NULL mapping? I think not.
+>>>>             */
+>>>
+>>> I would rephrase slightly (removing the "I think not"):
+>>>
+>>> /*
+>>>    * We should no longer have dirty folios with clean buffers and a NULL
+>>>    * mapping. However, let's be careful for now.
+>>>    */
 >>
->> Before: 0m2.124s
->> After:  0m0.602s
+>> LGTM.
 >>
->> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
->> ---
->>   mm/page_alloc.c | 20 ++++++++++++++++++--
->>   1 file changed, 18 insertions(+), 2 deletions(-)
+>> Andrew, could you help squash these comments into this patch? Thanks.
 >>
->> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
->> index 478beaf95f84..5b7d705e9710 100644
->> --- a/mm/page_alloc.c
->> +++ b/mm/page_alloc.c
->> @@ -7012,6 +7012,7 @@ static bool pfn_range_valid_contig(struct zone *z, unsigned long start_pfn,
->>   {
->>   	unsigned long i, end_pfn = start_pfn + nr_pages;
->>   	struct page *page;
->> +	struct folio *folio;
->>
->>   	for (i = start_pfn; i < end_pfn; i++) {
->>   		page = pfn_to_online_page(i);
->> @@ -7021,11 +7022,26 @@ static bool pfn_range_valid_contig(struct zone *z, unsigned long start_pfn,
->>   		if (page_zone(page) != z)
->>   			return false;
->>
->> -		if (PageReserved(page))
->> +		folio = page_folio(page);
->> +		if (folio_test_reserved(folio))
->>   			return false;
->>
->> -		if (PageHuge(page))
->> +		if (folio_test_hugetlb(folio))
->>   			return false;
->> +
->> +		/* The following type of folios aren't migrated */
+>>>> -        if (folio_test_private(folio)) {
+>>>> -            if (try_to_free_buffers(folio)) {
+>>>> -                folio_clear_dirty(folio);
+>>>> -                pr_info("%s: orphaned folio\n", __func__);
+>>>> -                return PAGE_CLEAN;
+>>>> -            }
+>>>> -        }
+>>>> +        VM_WARN_ON_FOLIO(true, folio);
 > 
-> s/aren’t/cannot be/
+> Unexpected but better to use VM_WARN_ON_ONCE_FOLIO here.
 
-ACK.
-
-> 
->> +		if (folio_test_pgtable(folio) | folio_test_stack(folio))
->> +			return false;
-
-should be "||", will fix.
-
-> 
-> Maybe worth explicitly stating these two types of pages in the commit log.
-> 
-OK, will update.
-
->> +
->> +		/*
->> +		 * For compound pages such as THP and non-compound high
->> +		 * order buddy pages, save potentially a lot of iterations
->> +		 * if we can skip them at once.
->> +		 */
->> +		if (PageCompound(page))
->> +			i += (1UL << compound_order(page)) - 1;
-> 
-> Just a note here, if page is tail, this just move i to the next page
-> instead of next folio.
-
-As no reference held，it is not too precise but we optimize for most
-scenarios.
-
-> 
->> +		else if (PageBuddy(page))
->> +			i += (1UL << buddy_order(page)) - 1;
->>   	}
->>   	return true;
->>   }
->> -- 
->> 2.27.0
-> 
-> Otherwise, LGTM. Reviewed-by: Zi Yan <ziy@nvidia.com>
-> 
-> 
-
-Thanks.
-
-> Best Regards,
-> Yan, Zi
-> 
-
+Um, I don't think it makes much difference, because we should no longer 
+hit this.
 
