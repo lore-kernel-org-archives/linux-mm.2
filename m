@@ -4,100 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99C42CAC59A
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 10:37:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72751CAC59A
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 10:40:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 020AB8E014C; Fri, 19 Sep 2025 06:37:35 -0400 (EDT)
+	id CF88F8E014C; Fri, 19 Sep 2025 06:40:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3A898E0053; Fri, 19 Sep 2025 06:37:34 -0400 (EDT)
+	id CD0358E0053; Fri, 19 Sep 2025 06:40:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E50078E014C; Fri, 19 Sep 2025 06:37:34 -0400 (EDT)
+	id BE5B38E014C; Fri, 19 Sep 2025 06:40:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D05F48E0053
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 06:37:34 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 882221DFB17
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 10:37:34 +0000 (UTC)
-X-FDA: 83905648428.19.0BE8C81
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 9BF3C20009
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 10:37:32 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	spf=pass (imf13.hostedemail.com: domain of breno.debian@gmail.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=breno.debian@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id ABDA58E0053
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 06:40:42 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7007459E14
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 10:40:42 +0000 (UTC)
+X-FDA: 83905656324.18.DE81F32
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	by imf20.hostedemail.com (Postfix) with ESMTP id D00E81C0012
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 10:40:39 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=gzcDo2n5;
+	spf=pass (imf20.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758278252;
+	s=arc-20220608; t=1758278440;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=X9U9gZIYVtcJesnIs4Ndokeg4wnbvz5UlSNhlgDM20k=;
-	b=6sm1qUPyGJYsVoNIv2Khq2oDIl9PUDS2vupWhYyMSfZxgSszvCXTFsdshaxrUy0pSj6sOV
-	S3psygy2CoDDGdRr91NFTDGT8zZSJHYVfjLlaomBMedziXE7j0WkmIDlaItWw7F7AOYIbA
-	ggajhl/DAUk+XYPNLf6DQgCR/FOabvY=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf13.hostedemail.com: domain of breno.debian@gmail.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=breno.debian@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758278252; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=2Pk7UDyluMT9wTT16Dwfk065aUtC7WyLyoHzQain/Ig=;
+	b=uYSExcQ4k/olMfBZ6ZGmwY2UliD6NYXTjTsK+pDmye69+ed1b81zcIRrjdrjPRFwk1xFLc
+	WPQ1OPyx3bizAP0UDE5GAiCMG2BItBCT6I5yqST9eOAqrQBWNWTXR2TOyNNho5lqGrpP0m
+	Q4DOplHJKcPRZCJxcV6IEWz867ft6CQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758278440; a=rsa-sha256;
 	cv=none;
-	b=yz8gptZ/7IxSO1JgKCk3f+/MPfd05SfSmtgXCTxEkQnek+c7U5j6z5IGp+oD3NCm7ZL4qZ
-	zs0wldiHtX+KDapX5o4mHMsvbl0+/P5xAVymoI7zHcLVzo3CJbswrZwXQoPEpr6pCMGKz2
-	NdthYF3ILLWCyitTfGPZSCsOeb8KFro=
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b2381c58941so194522566b.1
-        for <linux-mm@kvack.org>; Fri, 19 Sep 2025 03:37:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758278251; x=1758883051;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=X9U9gZIYVtcJesnIs4Ndokeg4wnbvz5UlSNhlgDM20k=;
-        b=VjH/Xj+rCiCs0XfukchsfSUg1r1LVhLWfggYzTriqX77xUMZ1/ycRQ/dEnac83gUJz
-         jF0N2FRPCxF4I/+RoQsCzXpcHDN4EhymG8VqnWtD4umLINGhCcENYIEbP8dhOQ4e/EnU
-         8Mfy41enD6WrPvjvBJEf0nHVAMjGDn+fQFRWKgVFSA/JX2HaPgeU7IgxORLBVypc4+u6
-         P8SRgONfLDpY5q5sqQqwm3XwzbwbH6acQV9rt0WJotfhVUFRzAIfUy/JXGbPLmn0Ka4u
-         fUnTMgTkI5R28EuO7iq1fOChk0E6qzzUPZAwp7MFOocibqtWmGl55R4WB2H+W+tLSDiA
-         XPTA==
-X-Forwarded-Encrypted: i=1; AJvYcCXB7OpD8fYe+6t9IDcnEuJjSalT57gXeNG4O0DT6Yqb0J+2lu/mrgQnjqyKr8YBNuAxrMy1uJpttA==@kvack.org
-X-Gm-Message-State: AOJu0YzYe0yxRETXdcx3slGnd4lDmN6OYzfAMdU6ndjlI7XqnlFcN/No
-	A5inSV9JRwwj0C6qiIdIXI7R8HZZW2awoS0VqfSJFdlGemk7da5/RcPs
-X-Gm-Gg: ASbGncurGMHo0nTFE1azNjGAxBhHHnYs5pNCv/QvITz6lKlXjRl3P5rOzHynX3X+TdZ
-	5dN6g7TV1OV+qSUrkjAyKeMQV+NTvYQC4FkTr7clLGxsG1zVOuVHljsq/EAkKbuQPkW6531HdC2
-	Af12WP2izkOWQhfNoMaYCNxZauP0zjrZhQ/mBMwpe94+krIOTkkbHFSwLR6vzR9r+D1TEkKI+yF
-	lEZ9aQ+VGxnSU6tIukgcmBBgo49OPimC+VcUuXDn/VRU10ZgJ3rky8OkCj6+EBr447OpE9R5TFY
-	8z0oTI+CQBRLcfrAyiEVp2gJX/WL1Ke+L8qX2mSzZRHD5WyT3choGem+NKzZSYNE8APGiPFeuK3
-	9tVfKZRDZNDRjQg==
-X-Google-Smtp-Source: AGHT+IFglqUodAXwS+ScFaUf0u5cK7hW01o3j0jrGwN7eAFMAQqVtLyd+PtU4bJWyqZbJ2fZ6V8QnQ==
-X-Received: by 2002:a17:907:6eab:b0:b21:b4f6:d676 with SMTP id a640c23a62f3a-b24eedb9ee5mr318558466b.25.1758278250742;
-        Fri, 19 Sep 2025 03:37:30 -0700 (PDT)
-Received: from gmail.com ([2a03:2880:30ff:73::])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b1fc890c608sm408296566b.45.2025.09.19.03.37.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Sep 2025 03:37:30 -0700 (PDT)
-Date: Fri, 19 Sep 2025 03:37:27 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Gu Bowen <gubowen5@huawei.com>, catalin.marinas@arm.com
-Cc: Catalin Marinas <catalin.marinas@arm.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Waiman Long <llong@redhat.com>, stable@vger.kernel.org, linux-mm@kvack.org, 
-	John Ogness <john.ogness@linutronix.de>, Lu Jialin <lujialin4@huawei.com>
-Subject: Re: [PATCH v5] mm: Fix possible deadlock in kmemleak
-Message-ID: <5ohuscufoavyezhy6n5blotk4hovyd2e23pfqylrfwhpu45nby@jxwe6jmkwdzb>
-References: <20250822073541.1886469-1-gubowen5@huawei.com>
+	b=jnr/+HQylhc1tovxXis3oM0y4pxlbMLziOKIaD6Jkx9TzkVdp4rTycJxcZMSkTaeWQHG8c
+	G4vVBg4bx5eRfAkBmKSQ88RyDphPn0HF2nO3YC53JTgXp9u6fA4VoRxIvfpjI1ig+XettS
+	tgD0o0KoUmX3T23wwTy5JYwBpgcycL8=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=gzcDo2n5;
+	spf=pass (imf20.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 0A94340E019E;
+	Fri, 19 Sep 2025 10:40:36 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id II-tU-70Mx6R; Fri, 19 Sep 2025 10:40:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1758278432; bh=2Pk7UDyluMT9wTT16Dwfk065aUtC7WyLyoHzQain/Ig=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gzcDo2n5keM9vsYXKO5vELkDMk154mpEC9fwEXKYTPBqo12ub+t+dtWgqxtJzqeAz
+	 sSawPLMiU6BwbGmynYvs+TPRT1V2milcv9J5xqMlHoLYVfmZV9skrjGtBlMcObRNNc
+	 ppFkz+NUzya3Z6fT+2h4xKanjnxx4ajygLbLudqZY51QPCwVervOKuO+3yAxUNTC3i
+	 ZuEttHaJgURnpeEVy07nR1no0CoRrA76aHdiqO+3RWKWmu0dS7mJbkxdfpliKUlMjT
+	 6K9xIVDqN/LOwQuJ4jMzMAOYOm/E1TUoc3TayD5EF8LnyUdjGEjGTHUYrlfT9KdAf8
+	 xdHQX2DX0C/4av21DVQFZKDDDIWCIGr8hihz7ahrIdz6WWYe9mCFKEcTkjCO3y43Wv
+	 vIcx/a7XUDj2tVm+U8GCGHoMQ2KbsLRrMa5SaElf6EY3FQiV1kP9STmkupLULXEe1K
+	 6fBWHu4cP21+yeGNxd2fq4qNwawpUc6t3HIOBu08HDXceFu9J3uaGI+Ybet62mvVP/
+	 K999BVKFyTfNX08suL8A2Bl4NsJIkB7N/+x0Nj2245661f3QJOIUKFAFUerga9UiMT
+	 PZjcAAP6K4eupHsLO0MkHB4HCC4TzT2zdWIKH/QLMp6cV0SofOiGeDJtuLVdw84NJ5
+	 ZM1W3hL/NFSlwjFPr104jH40=
+Received: from zn.tnic (p5de8ed27.dip0.t-ipconnect.de [93.232.237.39])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 84FAE40E019F;
+	Fri, 19 Sep 2025 10:39:56 +0000 (UTC)
+Date: Fri, 19 Sep 2025 12:39:50 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: Shiju Jose <shiju.jose@huawei.com>,
+	"rafael@kernel.org" <rafael@kernel.org>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"rppt@kernel.org" <rppt@kernel.org>,
+	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
+	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"tony.luck@intel.com" <tony.luck@intel.com>,
+	"lenb@kernel.org" <lenb@kernel.org>,
+	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
+	"mchehab@kernel.org" <mchehab@kernel.org>,
+	Linuxarm <linuxarm@huawei.com>,
+	"rientjes@google.com" <rientjes@google.com>,
+	"jiaqiyan@google.com" <jiaqiyan@google.com>,
+	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>,
+	"james.morse@arm.com" <james.morse@arm.com>,
+	"jthoughton@google.com" <jthoughton@google.com>,
+	"somasundaram.a@hpe.com" <somasundaram.a@hpe.com>,
+	"erdemaktas@google.com" <erdemaktas@google.com>,
+	"pgonda@google.com" <pgonda@google.com>,
+	"duenwen@google.com" <duenwen@google.com>,
+	"gthelen@google.com" <gthelen@google.com>,
+	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
+	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
+	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
+	tanxiaofei <tanxiaofei@huawei.com>,
+	"Zengtao (B)" <prime.zeng@hisilicon.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	"kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>,
+	wanghuiqiang <wanghuiqiang@huawei.com>
+Subject: Re: [PATCH v12 1/2] ACPI:RAS2: Add ACPI RAS2 driver
+Message-ID: <20250919103950.GCaM0y9r6R6b5jfx8z@fat_crate.local>
+References: <20250902173043.1796-1-shiju.jose@huawei.com>
+ <20250902173043.1796-2-shiju.jose@huawei.com>
+ <20250910192707.GAaMHRCxWx37XitN3t@fat_crate.local>
+ <9dd5e9d8e9b04a93bd4d882ef5d8b63e@huawei.com>
+ <20250912141155.GAaMQqK4vS8zHd1z4_@fat_crate.local>
+ <9433067c142b45d583eb96587b929878@huawei.com>
+ <20250917162253.GCaMrgXYXq2T4hFI0w@fat_crate.local>
+ <20250917183608.000038c4@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250822073541.1886469-1-gubowen5@huawei.com>
-X-Stat-Signature: 5i88iys8pj8fmii6kyu4xuzba757shee
+In-Reply-To: <20250917183608.000038c4@huawei.com>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: D00E81C0012
+X-Stat-Signature: bs6siyate77bxau477nz1whftcb4ypc1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9BF3C20009
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1758278252-947927
-X-HE-Meta: U2FsdGVkX18JEulmtaZ1shtojM5gcNDVOIjsmLyfhmrXz1h9Uh+b9nU7bptjNLVv9tBKfchXYkrLi5sslUUxMXBXN0Yxs9oelyxsZh9JFtHOGckByvGIPEzDwROuXwATp8liYKGVCLItAdJr1mOhNjbbbLwXhUrS/BPJitWFjx7PVwBT+6L5q/Q5L4Um8ytQTej9hJAdmQ27lhxZvSJvi2GZ/s/IwJ6m5iHAg29+pevNiXQbLC4O6/hTnjKFNiZzYydXFGjh1pT1bKxuXvtB4GectG2eRGc4/kCjw/j6WNgZpeRT9wdEPoukJu/o6x/bB+leJoxIgLJlXN7oVZLYN0PHO1/rIvhCkl7/AI6J/UExCU/ED0YmxPBf7hnWyJPQ4zKJW5LUScfb4v1awC4bSMiiT4fLXjMg4dYJyZOGibmZLIbl28sXFxatgI9mZw9lBt9uAbzWOsNKTe5K8uLGAtDN0s9lzCp8KHRViMCDeJRzTO6+YA3luW0SPlk50YlWUIK4VrGEtMlao6i6x/yNk+A4jPI391ItauipNvCYBQCRgvxF6aPhxEjeSWJfHB3emcok4SNx+M9Ihs395u/dBtQbbi29C6yaBHZdXDnXUIECXjaM5fkLl77YOzobB6QWg0v14QVrfuqWYkhbYiiYq2KsomS1OxBJexmgTc3aAoJSmAmCPwRWjseg+o4Lou+tTpGrGnOoFi6xqbo3/pa20CMnQlGCS/0VjLBbyK03pLwfqAEMNaHfHIS0Vb+5ICOiibUgZsfwye3IF/a4ERw28409pvG43N0IJL+KTKcjIFsW2jBunfimJ45ZRlANPbRbaVhVhHu4PKeOEGljJn7jm1G02Y+qcVFbfGYinl/zt3fYDmHGU6VoUMpkPP0LftTd9xZDPo8Y9bAxCTLSVbL0cQabffUqbSASPVcBwOFGq9NGqN3H4G4fXX6dy+uQxYpGd8dT6/WQHWtGvoUGbeN
- T+gWqzzt
- uCe8fK6JuSFW6WlR3buj0Ky2SVV8SuzaAYj3mfOIQntG33YxlMKARIyavljgtiZbJ2CEu0fh52trxygkvzp4WCb1t/ytMUBls26purE05qooXr50Ze/c7T9zUeDxXlr0RLBlXRGI5yM0llO6tndFdlKGZz6SkNhR6ddOwEVkNKPr2Pp80jyOFz2hlZy9rercVFwSQrm2ymnrWAENyz7nLfDbpCVGFvTStZfdp8sQU9Ro0wGYVV+NyOa/GyhXHZdXZoBH+oFsOrWhtk7WiLeCC+AtVFxMocxA4Hx+SpPbDMCdYuysWtF3zgBfRvMsGkf0kc+vgEVW+fXvo/cr4Hr/QFdahntML3xNB6YPTdZFIOsHgfxC2qOYNmup8Lng6i5S1BEnL+SnJf2bIA5kvaURdy1imtg==
+X-HE-Tag: 1758278439-826709
+X-HE-Meta: U2FsdGVkX1/u6xZipvnxSx0xSN01tn6rozghtoUoSytFzGrGjhYHuAuqx8ceWip+nqBXst6GW/DP0KzyjTRPNP5d+ja9/sp0h0EyNNNyx/ntYbztWN0lC6WR3yAwsXb+G6SheWMvp5Dl3HL9GcsPxKR/+MbtJr8U7v39/fM4Ym2PmaqO96AAo8OMJXfJ3dXAA3RLIvEMsQoxqSG+WgKo3mxtK8bIowmKTjFBSy1B1jfnVbj826njimSiqT7T/oU+iNgtdkRuwxbjQUn9X05enDSHPGb2SiU9hrRM6PWczTBc8NM0pYuP4KUv0A4NUdgmlYfL8Oc6qiZ0LEpx3MU/KH+lXcvMmMgwfLPT/5viu2AZvyNW+lpEC5dME70qGiZqCrv+6EABPDm3QLIXC3mnlqiUOQNtIvFcKD6SQyamP3MBx/ZuhKWUJ6IaS5v3V50EuZHNnn21ymJXvy90fFCehZvlqC9r2NrceEb00efjY2e6G3fgniSfLrICmAfOO3FTeFdZA7r594TEd2w5M/mBu9MfgEw7EG38iYkH5Biy6LH1KxTXFwC/Fu1L4sQItOcjc4AYosKrLD2o2xerDjg3BbMbu60PM0H64zFAXz/kccxC+nuC0XoHHwHP2yVDL1i7jYfXlyeeOfrQGJ8S6tvb2XRHe3YdzUkyo36WBIRTqyXncaewE584jfX90pQd+VWgT4Md8d9V8u1kcgcrg2U2S5gr951IQicQGe/zuaqEcHlT1OSelsrQeQS0TeQzplt1hNpdI70lI0wIPtqhwNs7/rBSXWvdNKAY1fdjqlXGfIPO8uyylDff3mg6iV2GbvdKkcf12SntK/rp1rRyYv78rW70kJp3Z8WEqV5dE/bzlb8sthuVcK9DZdL0yZyxuv5guNCMl897Q4uZnCpc+hdOZrDzUK2V34CQwW391H91MlRAhdAUDDmGT3LA2XCXVNvADWWt5NulaMo5e6yYJzS
+ uN4F75Os
+ Tl6+MezQdo1YzjdobBntZ6BXZ8iwTUFWagaJ4I7G3U122p8+AWg/EorMK5jwPKPs+LUs1FiBXfDyspn8xHtqpruWKaNvQoQ6jUMm2fHzuNLkuAPf/RDgArmW4zutdRvXpxNofVCoMH9po/EPEdTrvlsaJldHT/cR8Xwy/19rg/Ehn2pNpCae9O+w+jzltvkw2sst2RNixb0EOIHJ8OfAhz8Sabl8hkLD8VE5P2/VoKi+Hjity/EzvMWzoEjoeWBs4v0zLFW4zSESEc/NN5GrDqPWDI+uivcw+MLq+zAOqPH0mPmCKc7O+2xnecmFuPo4lucLiEY+yKd9/AWNTrGluBxbV8g8jjBcXrJkJg/2l64XsgUV54PRgP6sdzozkzWOq5NM3O78gF5FI/1Y=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,32 +142,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 22, 2025 at 03:35:41PM +0800, Gu Bowen wrote:
-> To solve this problem, switch to printk_safe mode before printing warning
-> message, this will redirect all printk()-s to a special per-CPU buffer,
-> which will be flushed later from a safe context (irq work), and this
-> deadlock problem can be avoided.
+On Wed, Sep 17, 2025 at 06:36:08PM +0100, Jonathan Cameron wrote:
+> This 'first contiguous range' is an attempt to DTRT in a corner
+> case that is real but where there is not an obvious right thing due to spec limitations.
 
-I am still thinking about this problem, given I got another deadlock
-issue that I was not able to debug further given I do not have the
-crashdump.
+Thanks for taking the time to expand. The gist of this needs to be in a commit
+message for future reference.
 
-Should we have a wrapper around raw_spin_lock_irqsave(kmemleak_lock,
-flags), that would defer printk at all? 
+HOWEVER, I'm still not clear *why* we're jumping through hoops which we
+probably set up ourselves without even knowing why... at least it looks like
+this from where I'm standing.
 
-Then, we can simply replace the raw_spin_lock_irqsave() by the helper,
-avoiding spreading these printk_deferred_enter() in the kmemleak code.
+So why not start a scrub on the whole system? Why do we care?
 
-For instance, something as this completely untested code, just to show
-the idea.
+Scrub is "cheap" in the sense that it runs in the background and is the lowest
+priority and everything else overrides it.
 
-	void kmemleak_lock(unsigned long *flags) {
-		printk_deferred_enter();
-		raw_spin_lock_irqsave(&kmemleak_lock, flags);
-	}
+So why design an interface only when there's a need to design one and do the
+simplest thing now, for starters? Gather some experience and then imrpove it
+by actually designing an interface...
 
-	void kmemleak_lock(unsigned long flags) {
-		raw_spin_unlock_irqrestore(&kmemleak_lock, flags);
-		printk_deferred_exit();
-	}
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
