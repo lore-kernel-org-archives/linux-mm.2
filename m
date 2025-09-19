@@ -4,85 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B776CAC5A5
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 04:11:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AF76CAC5A5
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 04:21:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CDE3C8E0068; Fri, 19 Sep 2025 00:11:52 -0400 (EDT)
+	id A5BC68E00C3; Fri, 19 Sep 2025 00:21:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C8F4E8E0008; Fri, 19 Sep 2025 00:11:52 -0400 (EDT)
+	id A33E18E0008; Fri, 19 Sep 2025 00:21:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA4E78E0068; Fri, 19 Sep 2025 00:11:52 -0400 (EDT)
+	id 949638E00C3; Fri, 19 Sep 2025 00:21:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id AC30F8E0008
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 00:11:52 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2838658DD7
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 04:11:52 +0000 (UTC)
-X-FDA: 83904676464.06.261A1FE
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf21.hostedemail.com (Postfix) with ESMTP id E0DB91C0004
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 04:11:49 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=none;
-	spf=pass (imf21.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 833C58E0008
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 00:21:15 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2AE29160427
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 04:21:15 +0000 (UTC)
+X-FDA: 83904700110.17.F8301B6
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf20.hostedemail.com (Postfix) with ESMTP id DC3F01C0006
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 04:21:11 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=YWJX1e45
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758255110;
+	s=arc-20220608; t=1758255673;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=X06Wp3jLvuQDjv5/mV8WNoSywWzw6yXEpvzoyqeDOrU=;
-	b=SxPqdU7Fwlmo8yODoq5bDHa44u6PhXUvcEX0Voo18CWb+PHHVnOHuPSOvgVWLLvbcpahsZ
-	iAp9zMkCdeCo4mKS0xjUtw5lmLqtyQa8Iq3ZWAUGB7eykV2plo4rbB7j0tmyxgy4+3Teyk
-	/2ywJwc7+4zBgTqwpZDTNl1TUX42N6w=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=FB08AkPogpZ1CN2MlqSj5xJDBZIBAXihl92UEHxatuk=;
+	b=Kx+HvB4zQrVvyk95SzEAoMezp/kQNlqha+hlt59oU212S03u6ZghpBGKKmu9WauoUw3dwt
+	8AiUbMkURTVwX34m4gI6410wqvk292BxiBkl64l27BNyew6GI3kvxm5nZjOlg2lmF/U0HY
+	ZoxsEDg+V/YrXQDcnVhKIJR4HnlNqTU=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=none;
-	spf=pass (imf21.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758255110; a=rsa-sha256;
+	imf20.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=YWJX1e45;
+	spf=none (imf20.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758255673; a=rsa-sha256;
 	cv=none;
-	b=JJvAbx1KfZY8cc33D9hm8nHsX3e8CrSu3aB1gyGgYoQXmZ/DFsuBXVTPSb12vo0qBMMB0S
-	EMMDA++dUxtDAtcU8PGXVXL+yIHwGbWEZoXCHBhjBEj/LW/aWXR8jp6F3l7OvVUJawm3nc
-	MjJpHGdAhB57UNyk9ZiVo/CLraV04es=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9E5AF1758;
-	Thu, 18 Sep 2025 21:11:40 -0700 (PDT)
-Received: from [10.164.18.52] (MacBook-Pro.blr.arm.com [10.164.18.52])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5D1413F673;
-	Thu, 18 Sep 2025 21:11:38 -0700 (PDT)
-Message-ID: <6a6f03df-8dc4-44aa-ad25-40f51ad98266@arm.com>
-Date: Fri, 19 Sep 2025 09:41:35 +0530
+	b=3KDWwjsJQMNUelqFUSGDe0u7AL3JaopyHJYWwvgD/SwfbxCQsibYNR/k3ReoOR2j8IzPed
+	sfpqz+jW6SwRvsIP8tbdUwDGhCfwuQKLcY5hx69HDWCe4s8vLofqX2kX6Voum+ErCvfCqG
+	86WytJRchCEDZqYTrl9+dfowYXqYJg4=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=FB08AkPogpZ1CN2MlqSj5xJDBZIBAXihl92UEHxatuk=; b=YWJX1e45aZk9c0QoynCO28tYH5
+	76Yz7I0s8OL3PfQN8LzEOWKTWI/PTt/zNzfzd2LNvXT7j815SVBCEsp/Tcf2a1K8Ymg6wECq/x+Cg
+	Af7HcuRGfNw1V1RtM3JNfOglPDuadUxMCPr73NadCEnEhTYZ4oOmMXJ3yIk7FhOPqnoMEJ3RSuurC
+	CiLnNN09YwN8jRoMeRtfupRw9DVzI2mWX15sP5x1WQWtHdPkXj38A+KNTxFly8tSq0ZoROBdMrrzT
+	kLg/zDRcRKAomJlF7egMKhMILytUZ8dxI4UKj1wTeJSOWssa7MDNrm0daF3U3HS37wwCGlz8bRut3
+	mUyZh/cA==;
+Received: from [50.53.25.54] (helo=[192.168.254.17])
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uzScK-00000001nWD-1vvj;
+	Fri, 19 Sep 2025 04:21:04 +0000
+Message-ID: <4e76b94d-9c32-4ec1-b2ec-fc989f1a23ad@infradead.org>
+Date: Thu, 18 Sep 2025 21:20:58 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-new v2 2/2] mm/khugepaged: abort collapse scan on guard
- PTEs
-To: David Hildenbrand <david@redhat.com>, Lance Yang <lance.yang@linux.dev>,
- akpm@linux-foundation.org, lorenzo.stoakes@oracle.com
-Cc: ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
- npache@redhat.com, ryan.roberts@arm.com, baohua@kernel.org,
- ioworker0@gmail.com, kirill@shutemov.name, hughd@google.com,
- mpenttil@redhat.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20250918050431.36855-1-lance.yang@linux.dev>
- <20250918050431.36855-3-lance.yang@linux.dev>
- <a696c734-9f88-4d6f-a852-013071a2dd2a@redhat.com>
+Subject: Re: [PATCH 1/1] fixup: alloc_tag: mark inaccurate allocation counters
+ in /proc/allocinfo output
+To: Andrew Morton <akpm@linux-foundation.org>,
+ Usama Arif <usamaarif642@gmail.com>
+Cc: Suren Baghdasaryan <surenb@google.com>, kent.overstreet@linux.dev,
+ vbabka@suse.cz, hannes@cmpxchg.org, rientjes@google.com,
+ roman.gushchin@linux.dev, harry.yoo@oracle.com, shakeel.butt@linux.dev,
+ 00107082@163.com, pyyjason@gmail.com, pasha.tatashin@soleen.com,
+ souravpanda@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20250916160110.266190-1-surenb@google.com>
+ <4c4e97c1-7f93-4c09-a235-ab169a998ef0@gmail.com>
+ <20250916175639.2368772636d5e543faa5b13b@linux-foundation.org>
 Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <a696c734-9f88-4d6f-a852-013071a2dd2a@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E0DB91C0004
-X-Stat-Signature: tt4dbs4k9hqhzk175osbgitix8ib8mmr
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20250916175639.2368772636d5e543faa5b13b@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1758255109-924730
-X-HE-Meta: U2FsdGVkX18+lkeIk4UivokN/4Bf08vnpAONF7xB4QKX79hIyjdekRYkoNLfLjmvdjlTHvq6Zz66g5hoK+QZH2BiDhKQEYxKYWgYkplAvynCbAUwKSjGOXgSJB2a0omYFHKDFBk/U3komoa9drInhQFlbcn0hnC73DCIi89dmclg+aewYfbuYg3tj57PrbX9CV/mAL68QO60uZdv0ho85gyenh3SS/sxkhDtKlx96pg+Tpq4LrHvakRHTBK/Y/yFoTz8xQsY4lSy+U/qWPPVVsP08XkqXNoBphqbBXRZdM9sjvNP365IwmzqWs4VPLL3W5i4xLWxGTHC/XmATjPO4qtgydhr6T9SgyZLFlvg1rvM8cETqJM/szh+COPYBn7R8h1UKKTeKLvlwGXCIIrYodNVWtRBMTdhLrhnPk5nQsBs54DkEZaSeZafe1emrjAsgM3vc1EMr4Et4QDi2V3AkooCbjN62gJuhZKQKpY1oYbprNRtRakw0TAmGx6CFZU8CGjqc1VmV01019HIemevAfuWYlATTuL3WNZx2sJygJhCoPl5roUf5kTR1NI1EL4ns7tHidhXJn5tzLk2VezGLZe+9gpah4Y2oVzy7+M9m20Y1quRwO7nD3L/RUeEHFfPV4IMhwCzKujLDy9iieOQIdWtyso9xUkIDUHDapFx27ir0xBuRmkNJUR1kbZoQxdIi7eMqHOjA7PfuKkv9lPOCrtS2oFm4qGCYkphTUKXh2CyPK8f65+1Qd1OgjcipqOTq/rUav8x/rWMkjw8Q/eVa4KgQ9Zkw/Z3+tduvLjCYxZiL3VTGh71oIONNcOE84owe9DWstHGNoA+Bma3O7T6LBUbFBOIKgqJIJy8C0VZkjxPoXtBQvxuPkiSEW4KAOWooN1ywoYb1no58x4srncepjE/XxLzY2bhvSAnMJxpWY5N9YYzv0KBFxD9ndgw0Eqe8nBbGRCaeLKrbPydT7h
- 3nxTmBJR
- 9OGk+GcRhdgSMHTfHxRIRmddhQjV9mzTRacLbGJ9Ao4YfA4S/bsrpc2dKHx6VI3TiZC8HGkqU05xhiBPI/GsfVj/dy7CgWzeFwngcRTh7/bS6auj8TRqCgVm0PCH17CiiyDYMUH26sBBdQpsD0X0Bie9kds+DAaHlMgxXZJEu6TPVO+/bWepbVBJvJy9XkdQr2lLm9q9mmIGRqJYz9vt9w2LRp9DN6+PVz+KQgHQXQ3f6I6PXdHeR4qIgVdtt21gTNdmYjLK8Yq/zFL8=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: DC3F01C0006
+X-Stat-Signature: f3hm7xscqh3zpagkimkjaeoik6uqmchf
+X-HE-Tag: 1758255671-365631
+X-HE-Meta: U2FsdGVkX182sa0gZL5p29B41CQmWEwFVyXmbl3UF7PEcK9M5UAFBWsnofpL6T5tlhYDiCXMEAFUO4up2kgSpPI+GgWjgDDgmXV2VJq3qvu7+MfBkYjSWtyPSrbcE1OzJaXm/Xv12X2UvDl2dum5AZ7azvlXf3Uu7hWU/qnj8g6u311vRsotmRgozxwWioK5LtZ6+Pa6v6ecsJR2acjTIOdF1iu707FRwnJFa9vmC/eGMpwSwDW9z8RrYfE1AglWjWpIxrwuPR3S2TB5G/3v8N+r03OuFYjg1nx7J+DV3JlHcVb+x1gMF0y3BBvKeV/8id/0ah7e9C2QJlqg3hfayHTOe3ZrNNLVTSJRiG/lco7eE3teTHFJ83yHYf8BmxmwvNNQyJgsZSxTYL+DDbmWNd9LX7hrn+SRa1PekTUrwNvyGO/QjC8fT/QpDH6wsRTXFzCAyLlKbb7x2wmiP0czdRi/uBLC92VUNz0K2MrWR20m0A1wfuAWUk2YEqry5Xvfo7KLmOkM62sh16SR8KDTTtduQWL9z5T/jtQnueGN3xsIdlXnpq8P6pD1FjKwCmXypO8nJomcwgydI1vZc5AimfN4pse9ATIbLAP+UMyUpksfrpRCrnRxInu6XEVym4RJ9e6TvGFk0JaoLHWUjicmOgoozB4hJPXNVBWBMWVDzq6txztYfqMXrxIHht4hl3kh+95iKtpoz2MNXss32CDKy/bXg7+ivr4PyWVch5KkbCGGNtHbq+2Yshy3qqVJ62bKnhiHZ5n9JcdVsdi6flCiUyyV9p6cKFycWgdkIH0uQxxG8GHn2LuPzp6Op+c3BqPJHpqteMRh7pjgRvS2Fn+Hx8LffVkSMDFqh8U9XmS492xyEKsO+tWWGKG8uTvANkeatotS/tHCvdSNHEYEGvsu95MtBp7yu6pLnRApiclAevHqYDbNJY2cUclcAZDGKvncMFsULbuRkA94hGm89U+
+ +YiRdY4K
+ tWQHnGRR9asHQvFZQdCdAXBhJL6EJUiCmYEwq+wpEAh+MT3ByA4k/jFLwb7S2FHbPhyuB3g70S8j/Wny1ag9ZQHOhIfXVklej1O6BLhXxy1xwkFuESf+8WlOoAe3/KfWalEeEkKusIu+q3anuJdLU7yNqZ9YrJMT1a52jhxxWOrerUsLIuSvOW5rHrNLeY/QHqGJzxECX+R2X0d3aqYyBHJpZ9nacVm02dIp9dTgYzcshnsGkXEQVcpOVkDd0hGsBMYazf2RIp5cuGhbC9L+ACRE9keEnMKLEUrS+H3TBugRQM9kmmyRUBp9EW3/nljtFq5IGZRgeUve56/3SL+5QVj91p/JEU2FvEUiYwRwFwt3G4XNtQ0sqAylkrTuMHt3EBt7Ym1cUL6xdA+BXKq4PPhY/GCJWFev96Ifvmkr0aLjQyA9lkCiJ/e/w9Ad8oc5yq5j2isxmhpkmwAvY1fsVUTmdnUKpD0QoXtzWVBpKJf1IL1gUBuhP3MxJ9dYhSNK9naLfRA1sxpmI3Jk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,143 +98,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Andrew,
 
-On 19/09/25 12:17 am, David Hildenbrand wrote:
-> On 18.09.25 07:04, Lance Yang wrote:
->> From: Lance Yang <lance.yang@linux.dev>
+On 9/16/25 5:56 PM, Andrew Morton wrote:
+> On Tue, 16 Sep 2025 21:50:51 +0100 Usama Arif <usamaarif642@gmail.com> wrote:
+> 
 >>
->> Guard PTE markers are installed via MADV_GUARD_INSTALL to create
->> lightweight guard regions.
 >>
->> Currently, any collapse path (khugepaged or MADV_COLLAPSE) will fail 
->> when
->> encountering such a range.
+>> On 16/09/2025 17:01, Suren Baghdasaryan wrote:
+>>> Document new "accurate:no" marker.
+>>>
+>>> Fixes: 39d117e04d15 ("alloc_tag: mark inaccurate allocation counters in /proc/allocinfo output")
+>>> Suggested-by: Andrew Morton <akpm@linux-foundation.org>
+>>> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+>>> ---
+>>> Based on mm-new
+>>>
+>>>  Documentation/filesystems/proc.rst | 8 ++++++++
+>>>  1 file changed, 8 insertions(+)
+>>>
+>>> diff --git a/Documentation/filesystems/proc.rst b/Documentation/filesystems/proc.rst
+>>> index 1776a06571c2..17668f82ff1c 100644
+>>> --- a/Documentation/filesystems/proc.rst
+>>> +++ b/Documentation/filesystems/proc.rst
+>>> @@ -1014,6 +1014,14 @@ If file version is 2.0 or higher then each line may contain additional
+>>>  For example if the counters are not accurate, the line will be appended with
+>>>  "accurate:no" pair.
+>>>  
+>>> +Supported markers in v2:
+>>> +accurate:no
+>>> +              Absolute values of the counters in this line are not
 >>
->> MADV_COLLAPSE fails deep inside the collapse logic when trying to 
->> swap-in
->> the special marker in __collapse_huge_page_swapin().
+>> s/values/value/ maybe? :)
+> 
+> That's OK as-is.
+> 
+>> +              accurate because of the failure to allocate storage required
 >>
->> hpage_collapse_scan_pmd()
->>   `- collapse_huge_page()
->>       `- __collapse_huge_page_swapin() -> fails!
->>
->> khugepaged's behavior is slightly different due to its max_ptes_swap 
->> limit
->> (default 64). It won't fail as deep, but it will still needlessly 
->> scan up
->> to 64 swap entries before bailing out.
->>
->> IMHO, we can and should detect this much earlier.
->>
->> This patch adds a check directly inside the PTE scan loop. If a guard
->> marker is found, the scan is aborted immediately with 
->> SCAN_PTE_NON_PRESENT,
->> avoiding wasted work.
->>
->> Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
->> Signed-off-by: Lance Yang <lance.yang@linux.dev>
->> ---
->>   mm/khugepaged.c | 10 ++++++++++
->>   1 file changed, 10 insertions(+)
->>
->> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->> index 9ed1af2b5c38..70ebfc7c1f3e 100644
->> --- a/mm/khugepaged.c
->> +++ b/mm/khugepaged.c
->> @@ -1306,6 +1306,16 @@ static int hpage_collapse_scan_pmd(struct 
->> mm_struct *mm,
->>                       result = SCAN_PTE_UFFD_WP;
->>                       goto out_unmap;
->>                   }
->> +                /*
->> +                 * Guard PTE markers are installed by
->> +                 * MADV_GUARD_INSTALL. Any collapse path must
->> +                 * not touch them, so abort the scan immediately
->> +                 * if one is found.
->> +                 */
->> +                if (is_guard_pte_marker(pteval)) {
->> +                    result = SCAN_PTE_NON_PRESENT;
->> +                    goto out_unmap;
->> +                }
->
-> Thinking about it, this is interesting.
->
-> Essentially we track any non-swap swap entries towards 
-> khugepaged_max_ptes_swap, which is rather weird.
->
-> I think we might also run into migration entries here and hwpoison 
-> entries?
->
-> So what about just generalizing this:
->
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index af5f5c80fe4ed..28f1f4bf0e0a8 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -1293,7 +1293,24 @@ static int hpage_collapse_scan_pmd(struct 
-> mm_struct *mm,
->         for (_address = address, _pte = pte; _pte < pte + HPAGE_PMD_NR;
->              _pte++, _address += PAGE_SIZE) {
->                 pte_t pteval = ptep_get(_pte);
-> -               if (is_swap_pte(pteval)) {
-> +
-> +               if (pte_none(pteval) || is_zero_pfn(pte_pfn(pteval))) {
-> +                       ++none_or_zero;
-> +                       if (!userfaultfd_armed(vma) &&
-> +                           (!cc->is_khugepaged ||
-> +                            none_or_zero <= khugepaged_max_ptes_none)) {
-> +                               continue;
-> +                       } else {
-> +                               result = SCAN_EXCEED_NONE_PTE;
-> + count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
-> +                               goto out_unmap;
-> +                       }
-> +               } else if (!pte_present(pteval)) {
-> +                       if (non_swap_entry(pte_to_swp_entry(pteval))) {
-> +                               result = SCAN_PTE_NON_PRESENT;
-> +                               goto out_unmap;
-> +                       }
-> +
->                         ++unmapped;
->                         if (!cc->is_khugepaged ||
->                             unmapped <= khugepaged_max_ptes_swap) {
-> @@ -1313,18 +1330,7 @@ static int hpage_collapse_scan_pmd(struct 
-> mm_struct *mm,
->                                 goto out_unmap;
->                         }
->                 }
-> -               if (pte_none(pteval) || is_zero_pfn(pte_pfn(pteval))) {
-> -                       ++none_or_zero;
-> -                       if (!userfaultfd_armed(vma) &&
-> -                           (!cc->is_khugepaged ||
-> -                            none_or_zero <= khugepaged_max_ptes_none)) {
-> -                               continue;
-> -                       } else {
-> -                               result = SCAN_EXCEED_NONE_PTE;
-> - count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
-> -                               goto out_unmap;
-> -                       }
-> -               }
-> +
->                 if (pte_uffd_wp(pteval)) {
->                         /*
->                          * Don't collapse the page if any of the small
->
->
-> With that, the function flow looks more similar to 
-> __collapse_huge_page_isolate(),
-> except that we handle swap entries in there now.
+>> s/storage required/memory/
+> 
+> Sure.
+> 
+> 
+> From: Andrew Morton <akpm@linux-foundation.org>
+> Subject: alloc_tag-mark-inaccurate-allocation-counters-in-proc-allocinfo-output-fix-fix
+> Date: Tue Sep 16 05:53:33 PM PDT 2025
+> 
+> simplification per Usama, reflow text
+> 
+> Cc: David Rientjes <rientjes@google.com>
+> Cc: David Wang <00107082@163.com>
+> Cc: Johannes Weiner <hannes@cmpxchg.org>
+> Cc: Kent Overstreet <kent.overstreet@linux.dev>
+> Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
+> Cc: Roman Gushchin <roman.gushchin@linux.dev>
+> Cc: Shakeel Butt <shakeel.butt@linux.dev>
+> Cc: Sourav Panda <souravpanda@google.com>
+> Cc: Suren Baghdasaryan <surenb@google.com>
+> Cc: Usama Arif <usamaarif642@gmail.com>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> ---
+> 
+>  Documentation/filesystems/proc.rst |   10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+> --- a/Documentation/filesystems/proc.rst~alloc_tag-mark-inaccurate-allocation-counters-in-proc-allocinfo-output-fix-fix
+> +++ a/Documentation/filesystems/proc.rst
+> @@ -1016,11 +1016,11 @@ For example if the counters are not accu
+>  
+>  Supported markers in v2:
+>  accurate:no
 
-This looks good!
+Please insert a blank line here to prevent a docs warning:
 
+linux-next-20250918/Documentation/filesystems/proc.rst:998: ERROR: Unexpected indentation. [docutils]
 
->
->
-> And with that in place, couldn't we factor out a huge chunk of both 
-> scanning
-> functions into some helper (passing whether swap entries are allowed 
-> or not?).
->
-> Yes, I know, refactoring khugepaged, crazy idea.
->
+Thanks.
+
+> -              Absolute values of the counters in this line are not
+> -              accurate because of the failure to allocate storage required
+> -              to track some of the allocations made at this location.
+> -              Deltas in these counters are accurate, therefore counters
+> -              can be used to track allocation size and count changes.
+> +              Absolute values of the counters in this line are not accurate
+> +              because of the failure to allocate memory to track some of the
+> +              allocations made at this location.  Deltas in these counters are
+> +              accurate, therefore counters can be used to track allocation size
+> +              and count changes.
+>  
+>  Example output.
+>  
+> _
+
+-- 
+~Randy
+
 
