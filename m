@@ -4,97 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 000D1CAC592
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 15:06:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 403E3CAC59A
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 15:06:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 62370940007; Fri, 19 Sep 2025 11:06:13 -0400 (EDT)
+	id 9F473940008; Fri, 19 Sep 2025 11:06:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5FA618E0019; Fri, 19 Sep 2025 11:06:13 -0400 (EDT)
+	id 9CC3A8E0019; Fri, 19 Sep 2025 11:06:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5383F940007; Fri, 19 Sep 2025 11:06:13 -0400 (EDT)
+	id 90904940008; Fri, 19 Sep 2025 11:06:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 40CE98E0019
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 11:06:13 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id EBFE8160721
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 15:06:12 +0000 (UTC)
-X-FDA: 83906325384.21.33503B6
-Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 5033514000E
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 15:06:11 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Hh6Ypu2l;
-	spf=pass (imf23.hostedemail.com: domain of glider@google.com designates 209.85.219.44 as permitted sender) smtp.mailfrom=glider@google.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8066B8E0019
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 11:06:40 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 37DDBB8B46
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 15:06:40 +0000 (UTC)
+X-FDA: 83906326560.27.7CB4AC2
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 3FDFD18000C
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 15:06:38 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="r2V+/YKw";
+	spf=pass (imf16.hostedemail.com: domain of glider@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=glider@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758294371;
+	s=arc-20220608; t=1758294398;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X2StnNKxKVl/rGS0fAgoxWZPalUwZSRkr2jKpUk0esc=;
-	b=K6qtu/sOQYOFGnFqBHTFg70BQ5Nt8rZ2cQQu/kYoUB6tTcFYVEluBOZo1o7vdosshuhM7F
-	m58IiOfqQ5/x9JoBpmIC+ZFfwTn/8kg6UYbRt1IW8Cz4owfUOkoAZcqeXpBpuJn1WTOO+/
-	1DoOKt08M6UhAXNjaoaMm7icmZbrETs=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Hh6Ypu2l;
-	spf=pass (imf23.hostedemail.com: domain of glider@google.com designates 209.85.219.44 as permitted sender) smtp.mailfrom=glider@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758294371; a=rsa-sha256;
+	bh=wq2abhQipyX+QwuDbNp6dgczc/zpKuyCE998M/az7IY=;
+	b=yW0Ct9dZ71MBZAhPEFE3iWnvVU09SmLv/29JvTmRv1a29weqzQ3MSbiJA/NTO4tLr/Pg22
+	Q4NMiKoakuKYtXJ7Q80VV32dC/wfl4g2Hyp2p3RU0psv22f1OdU6l/RRu5LNlJObyFsJli
+	JGyT4KMtvjz+M1MINfj2ElG6O8hwmOQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758294398; a=rsa-sha256;
 	cv=none;
-	b=WIP7uVNovCI+M1BwwlaERAsII8rIw37KRaBRCUhBufrqVjfy1A/+IJbMlJXxeV40WjhNWX
-	qZ6nDYlQlWBzLpx+dARHBEo1cBxafA9/2dmKxH/fdaNIpYl/iA318WktEohmUKrb4CnnjA
-	CGMzldKTi510InFi89tAE3cTGPMrquc=
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-796fe71deecso14802946d6.1
-        for <linux-mm@kvack.org>; Fri, 19 Sep 2025 08:06:11 -0700 (PDT)
+	b=5wrAJug0poYAgSuem8nmgmnj8oYDbKoOPII4HHB/IInrSN4ZtYr1ghocfZVKMN7oTHJHug
+	PhUdoCLaC7hfOTiIEgHd7r9tl2BfSZbufgotSLhS9ZpH0SYEezTC1Zdqgx7OJc8dI923cN
+	D245nk0xPPjW6ATaQ060Ehy6cpXRgzE=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="r2V+/YKw";
+	spf=pass (imf16.hostedemail.com: domain of glider@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=glider@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4b5eee40cc0so22114301cf.0
+        for <linux-mm@kvack.org>; Fri, 19 Sep 2025 08:06:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758294370; x=1758899170; darn=kvack.org;
+        d=google.com; s=20230601; t=1758294397; x=1758899197; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=X2StnNKxKVl/rGS0fAgoxWZPalUwZSRkr2jKpUk0esc=;
-        b=Hh6Ypu2lba2SvsIdusyIAiaIIlMbwd0xeOtt6/0DBgu9ljdRqVE1o/4pajwvFGPZXy
-         eQ67TAX7wNbvIg1aBoKUL0XzwKxpw7qwfFNanbJpnnECL/4+qPWYzaCSA+p0dCiVczag
-         dDV3JQs0vEZomsc0r29vBGANeCKO/aGGFY6i9+m/W37JVCvN2dUb8oySICuhuzD9dPZb
-         9XbHLgwh+EygmzPRXtmkFutNSjUKrdRLjVHYwgvbXe/Chf4Xccc9Mk05AKb4BgTzLPir
-         9PcpbdJpCzKQ8oECSrFtwCZ2Or+EKecBLBq8LFTyTohwJthLvqdhmZFrJ/YzSc4Fqcme
-         iYkw==
+        bh=wq2abhQipyX+QwuDbNp6dgczc/zpKuyCE998M/az7IY=;
+        b=r2V+/YKw5MD5BoimM+nZqGuRzeKov2fK8MGYqKkg35VFRh/8ddx43IXxeVL2iTMEHE
+         GZOIhbBvzkuy1/hMj81C/bB2Wg69Lj5mTPYonp5KRrvVSHyaq4sktcTT1FsdS8wrxLV5
+         w9fUlcaloYCItJ/W5sX0NLKYA1StBHfrkHeRLkyGxwP7uFVBaZ8hvJca+iVsVoEyWnay
+         cyNBmPY+GREq5gsK+hfq2U9qF5cGesvU9kjv8uUqT7mD/ftlkx1MIamy6HeZrE7BHNpA
+         UMrO8Kfl4eSfKgpLT2I5zmWsHHu9B9j5xSFCBjjXdqNbnE8rxoOHEuhr2wiTfJVvPBzl
+         UM2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758294370; x=1758899170;
+        d=1e100.net; s=20230601; t=1758294397; x=1758899197;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=X2StnNKxKVl/rGS0fAgoxWZPalUwZSRkr2jKpUk0esc=;
-        b=qr0t/Cp1fycHZYCeAGoSDgR0Nq/Tuc6zfuoLaG9XBnWXGhhyP0X8AzJnYIUajixs70
-         fwRUpoe7KxAHEz6gR0njLAgq6/h/NWyB6hE7ancwFUTSUmigivo2dLWlW3zK9UlH+iDW
-         1ZsOQNDGConYKZQnL3gpmQmScgDXB4DvxPR3vM123/1au6NJKpCFu45cwXfIrbeAxYkJ
-         CxPoZn3ZCfBVQStxuhSJYj4JywoCtOaaDv1Eiy9GlJLYnCqwLLIPSlEbmlUsPIcxSEgE
-         a9YobsaCi1+C6pOx69Z7GmAc3uTXXDpbdGP/h+U1rIDhdDOPcHWXUYOStDpnfwiuSyzY
-         7sFQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXLJcE5q9q8VAEqVVYSa9QskxlhN6IcNJmMfo4oDRjBbwpqfnZxOjex7YWovfXEEmzbZHwaf6AlpQ==@kvack.org
-X-Gm-Message-State: AOJu0Yy9sPh5JhFEBfc/Y/lOXc45SdJxrq7EmKLmy362ka1VFGH4O2s6
-	cTHN63GqPRXNJy45OItiwwvpnU05kCHNC8pu090wF+WY6Mt4Ra4DCl8eWYpi55hP1kj1wxDXjE+
-	Smb++tTl5iD1g2SzmCk23kjezWrWV/DkEXl/2YlCO
-X-Gm-Gg: ASbGnctu/tCrq0QaYa3Nu4SjAJFmwL/NJ//mjusWD0gZsF7jh5yD1z7OfOWNtzYC+1D
-	WYR0NkjtKHgrUwViDiD55Y3un6mbLc+KEVwVWnq0wNu3gAP2tKCd8Kb5YYZUs2R5hgu7lRfrHgJ
-	ZOspOf/7KOUfNAYIHkKo7H3TmyGcJwIYc8TcQaiTntOYkS94qafhXLuV9RTcXRBUmy1egxRtDZ5
-	GQ3YioF3vLC1J+jFEp6kbJRdh2Mzpn5d/9NOw==
-X-Google-Smtp-Source: AGHT+IHfnOEj1gMhyVykBwx/odq4LWyP4tOsK2JQ1CQRm3BPJztFNuuL5zFmF2mdOG0LX/4UQZju33b9dOCcFbl89Gs=
-X-Received: by 2002:a05:6214:2aa6:b0:787:68a5:51f4 with SMTP id
- 6a1803df08f44-799139ccbe6mr37966906d6.26.1758294369549; Fri, 19 Sep 2025
- 08:06:09 -0700 (PDT)
+        bh=wq2abhQipyX+QwuDbNp6dgczc/zpKuyCE998M/az7IY=;
+        b=Vd5dmn9e8KNWBTilJuf38PGpIGWAA7vmcxn0Y9N27dwIkAt6qu8lwt3vVHuO3rKoMo
+         4uCuID8Ys/Y/fffcLJOrkzKw03u8BEg1pNf7BFZynhtvVzNR3skdeSiiz4+3tIzcWfgL
+         8zyYT0sSfajfl5Cf+XEXPhx3wJsLxsxvqHMYrRbHoD3MD2Jl8kH7C/WPKaQwdHIdRlvM
+         mjIYL41It1PwoQ4/frbYTCoSa13EKbaImdUTGXrBe1+5D4KbxkBhjx56NmHsbDyH8OEk
+         doVPD4q42x37gLLl8duHBBK9ZS4FD+Q/oEvTyDK9PwqDaVMWAUP03qCSgPA2FP5Pm8Cg
+         twkQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX72Ci0FIs5PPvDNoH83qVZ/tcBet0mqEUktsg9gENxGIm5maJNONWIda656YJRwModxs/AcHO+jg==@kvack.org
+X-Gm-Message-State: AOJu0YxMh+mf7ncwJAfg9Eagqu2lv2ve40eghB7TzzVwPGZ8GMymMfT4
+	DJPahUlMPvmMb9Yt2Et0FkSautQMO0GY8CCSt8s7Y6nSs4ENluNfVBKVQLubGRR7VHd9fm6Kr2O
+	9q17CAc8nEJCh4idCivM/Cnqg5myHWY1WRW+XajbV
+X-Gm-Gg: ASbGncsp++BpBj/6gP6Y7+quzhS0S+6daysztzA+eP5o+RVq2x7waLn5lT//uRfQr5i
+	Z8LEOkK0bA1+CHTMI24s54A+8z+1Elmz3aa7+877DeFt4e20tXDadGywbtrhKoSPdshAwLouCZe
+	3A0wY7B4iU6pJcEhNm0BvQWk37o7G4pX7+pBqr6UiUhtR6rxy0KB9PbBRAZjZAbC8Jv4uAAzBX7
+	m8cNciiL3hpXDzT3aS2G/HLYm7tnRuPc+u+3Q==
+X-Google-Smtp-Source: AGHT+IHAZGtVHgR/T5vgwj/kVG3d+Xvhn85HcOAqMoUr6UVAzkpi/OktlLCwoHTesoJWJTkkDQIa4OfoQDwjclHUNCg=
+X-Received: by 2002:a05:6214:212c:b0:798:acd7:2bb with SMTP id
+ 6a1803df08f44-7991d54f750mr32395906d6.51.1758294396642; Fri, 19 Sep 2025
+ 08:06:36 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250919145750.3448393-1-ethan.w.s.graham@gmail.com> <20250919145750.3448393-4-ethan.w.s.graham@gmail.com>
-In-Reply-To: <20250919145750.3448393-4-ethan.w.s.graham@gmail.com>
+References: <20250919145750.3448393-1-ethan.w.s.graham@gmail.com> <20250919145750.3448393-5-ethan.w.s.graham@gmail.com>
+In-Reply-To: <20250919145750.3448393-5-ethan.w.s.graham@gmail.com>
 From: Alexander Potapenko <glider@google.com>
-Date: Fri, 19 Sep 2025 17:05:32 +0200
-X-Gm-Features: AS18NWBlYb6i59Bt1eV3KacTLjZoCQjcTTUaAaIGM2IX6otsVz3ln6Zi77bGuIg
-Message-ID: <CAG_fn=Xd07FvCp-tU_kSyjeJS-4gruaO1x5iowrQQ7zkv2cLeQ@mail.gmail.com>
-Subject: Re: [PATCH v2 03/10] kfuzztest: implement core module and input processing
+Date: Fri, 19 Sep 2025 17:05:59 +0200
+X-Gm-Features: AS18NWA5Hk_dVmA1agOSIAGh1dzuifFPUnlHCTY8eojJWXc2mgupvfI9rEJhlqQ
+Message-ID: <CAG_fn=VXNBH-1QDAy+xR_ubUr0rZxmPBpFWov1y+7a65-mtGmA@mail.gmail.com>
+Subject: Re: [PATCH v2 04/10] tools: add kfuzztest-bridge utility
 To: Ethan Graham <ethan.w.s.graham@gmail.com>
 Cc: ethangraham@google.com, andreyknvl@gmail.com, andy@kernel.org, 
 	brauner@kernel.org, brendan.higgins@linux.dev, davem@davemloft.net, 
@@ -107,14 +107,14 @@ Cc: ethangraham@google.com, andreyknvl@gmail.com, andy@kernel.org,
 	sj@kernel.org, tarasmadan@google.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 3FDFD18000C
+X-Stat-Signature: y5t3q3c83ihiadqmqgfqeenbwa63f1gs
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 5033514000E
-X-Stat-Signature: jbrpx6xrziskjony84n3zugyczuxqpw1
-X-HE-Tag: 1758294371-491353
-X-HE-Meta: U2FsdGVkX1+yebVNaS3jbf0C3a+gmDRAy5QufWXRHsFAcRKIy1/B2oZVRKqZ2q8tf1QpiIFfsQOONpb+6qWItf5rxGNEXYUDHlSPSvx79O/ihaZ8CuQxxyMRHSvIyLcSyrq3JNHhl1Gcjmp3E4pMuu5yh+QRMQtQ8dAUETAHrfG2xLuPhkO7ph6bLaW/sypLShxjrR6Mb0zpTVTFI8dtAoHC/zMBRuLk5tVPuhCudUZbCqTXBIa/DNtJ8hL+TFv7X2uBDfpfsK//Tn2xzjo2qCcta9Raw5bfb4fXMUD3sfvrnpHwjChcBceb3zmZBvxNa9sWlrs/1uBow0nPn3Qtwt5WRXjS0ceVyPRTgNrsW3VrLKDB8JoTb0HGl5TEVPPZklciv2GsEjwbDDEp/MhodV2MQATmQb18Y4UMc9bVRU8+ucFdxRy2Ot/A1tSCFlQ7nupJ1gyhpFCgbXtgYFD1HZshJ1Ih1r0T+lhE/1sO51tKkgS4l6OUT5/8NmJBdPdpqgcEGXq56y+lUX6modMOLOzyDjBGfjU5dBzbYEYl+LnjZKr4/Z+Q74Si8LXXOr+s133RuwHk19EyFKb7HLOQURUZ81FV8i6OKVKU1gssQ4OjcRkleEy0l2eOnY3OySLC/gjyq+OJTzPR3+Fvj7Qq9hpJJ4BPbXF+Dtm8b0sd1pcEDyf6B9f3jQUaaSCY42JedbYdyVfPEX1oAkb4870aQiAlOOjsFsEft4Pzp1tcdiVIOu80vOJQ0jJPrdW4BU+CskgoDtEx/aUa2UPZO4AOvuk2Tamb21buDNqJ6vh3q79l0V0kyV2/gFryuQQAVkxD3boahlOPiSeIrloMsa5AwLy2U/K+IF3slrBbDlRVVeiMo5ahr9/Jyz2f+2KnHGtRZaSILVOfN11zB8zraUkvdfKH++kKSaPtpUvXp4PYp+3gr+uVBfShdftup2iC4o0FrUnF5dlMkXoSiyJKA10
- nPYErRPL
- JjNARX2wlQxvCMuo=
+X-HE-Tag: 1758294398-186415
+X-HE-Meta: U2FsdGVkX1/2u0c4aKlf/sTjAUa+GCLQts7/5WFKBnIA5E1maV2l9KOlXeFOtv6EF4cpo9pCN23g75YpQKK8VlwevrUTJZY7kH/yiUiFBgSNBKi3tFUlxUHn0Ucxpfj0M3En9+f+DXghAUGSv80WOjqv294LG7QN3/uSKL9JwbOmF7JXjUArZlD/IpuCtrVHoXeSTEh6jGMTSnVxApVgGXb8qktaOQdEdz6S3Vp8gZ/GEz/HX4l1Td10cFb6HlWfwngG+txbplSAZlgpD69AJhHL1KSxjPQglE/7iQu3T7d3ulJ5sFadeyK3cH4MozSAMy3oMtAR1V86wval8zU1P44/1F2gsgJlnXwHm4GlxS6pZb/q8HBXeKt3utTtmpwASim0f/LsITZm6hctKfoG3b9pzfsRyhoGYpgCJkON1rYiYHevnyIg3DYe2Drf4P1AF3OL3gKCq/NC9q6PaZ2GOQQFejN93yQsAzXktVl0Ikrqabpv/PcgP7nQKFJ3Ah0EkH4qZTFi3SgKxeVeQS1l9MUZY/HZAXFSLUWvNtRzn96GxEDaa53p/g14sC9uq+WQHPFyX4LmaVzKHhGBEKQnXSWNdFUJ/fUEeMGTKKaAie4WNQLV1uF6HtORe5NmAMiC71/GDrCzMZ+ZCqGLLh9Tfv4Q3RZjQfRxua53Eb2J2j+cObbHjgl5p6BrlhIuZ85G7T/GalVehpTLom4vrt3wyiz7EPfB9OBe4hilPvAMaZMISmrLueuwS7mMCu6iP6dx6KX5RNB+tbBPT2crcynaccg12Kc0Ay6KXbnGDjjsI50ef1l8AW3hjKDNNj3cuib9xY84bNeePH67MAvUI9TumWdcsgmvMKieQ61Y81xOS9PscILTRJ4OUFT3+/GEHed1cmLFFC9xtre4ul9t4Kbay9/y/sqHA9jR1pHr+e/enGg8b/6YyrlYX2vB+fn1tz/k60JFB3tw0pHPwJCw6iY
+ DnotFy9B
+ xOuDJfBBcgSPM+t1uQvIzt20bOrGMsj395STnCUlmT7q3LTHDFjHawsz6XYTxPX8k66+356YKoRlLNjhh8ij+qNcTIWZEJd5n/2o1ntezPobONLaqknKrFYz2jOmEl70HQa88IDnj9SyIFSafU12HHgiC92In7miIIo6RzfRR2EyLZA4aURts/uOcBoqffIK0mahdPygzVCxBgwaELBoTIW9uoiXu3khAU5ztW7dvgrxIQBYP9QZeE2umfAqtlKad4cMfTpH+UrLMlBqVbPCu2ScgHw0r0dR8NTvq9+a2UtK5+MegMi3+P5v5B5GG/cyuqEdb
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,21 +128,19 @@ l.com> wrote:
 >
 > From: Ethan Graham <ethangraham@google.com>
 >
-> Add the core runtime implementation for KFuzzTest. This includes the
-> module initialization, and the logic for receiving and processing
-> user-provided inputs through debugfs.
+> Introduce the kfuzztest-bridge tool, a userspace utility for sending
+> structured inputs to KFuzzTest harnesses via debugfs.
 >
-> On module load, the framework discovers all test targets by iterating
-> over the .kfuzztest_target section, creating a corresponding debugfs
-> directory with a write-only 'input' file for each of them.
+> The bridge takes a textual description of the expected input format, a
+> file containing random bytes, and the name of the target fuzz test. It
+> parses the description, encodes the random data into the binary format
+> expected by the kernel, and writes the result to the corresponding
+> debugfs entry.
 >
-> Writing to an 'input' file triggers the main fuzzing sequence:
-> 1. The serialized input is copied from userspace into a kernel buffer.
-> 2. The buffer is parsed to validate the region array and relocation
->    table.
-> 3. Pointers are patched based on the relocation entries, and in KASAN
->    builds the inter-region padding is poisoned.
-> 4. The resulting struct is passed to the user-defined test logic.
+> This allows for both simple manual testing and integration with
+> userspace fuzzing engines. For example, it can be used for smoke testing
+> by providing data from /dev/urandom, or act as a bridge for blob-based
+> fuzzers (e.g., AFL) to target KFuzzTest harnesses.
 >
 > Signed-off-by: Ethan Graham <ethangraham@google.com>
 Reviewed-by: Alexander Potapenko <glider@google.com>
