@@ -4,83 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 558CDCAC5A5
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 10:26:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4ECCFCAC592
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 10:26:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A404F8E012D; Fri, 19 Sep 2025 06:26:04 -0400 (EDT)
+	id AB77C8E012F; Fri, 19 Sep 2025 06:26:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F0FB8E006B; Fri, 19 Sep 2025 06:26:04 -0400 (EDT)
+	id A67668E006B; Fri, 19 Sep 2025 06:26:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B8848E012D; Fri, 19 Sep 2025 06:26:04 -0400 (EDT)
+	id 92F368E012F; Fri, 19 Sep 2025 06:26:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7276D8E006B
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 06:26:04 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 34D6A160441
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 10:26:04 +0000 (UTC)
-X-FDA: 83905619448.17.5D0EE07
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 74E768E006B
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 06:26:51 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0B3DA13B5ED
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 10:26:51 +0000 (UTC)
+X-FDA: 83905621422.09.8CAFDF4
 Received: from fra-out-013.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-013.esa.eu-central-1.outbound.mail-perimeter.amazon.com [63.178.132.221])
-	by imf07.hostedemail.com (Postfix) with ESMTP id E44EB40005
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 10:26:01 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=dTSW2+az;
-	spf=pass (imf07.hostedemail.com: domain of "prvs=35013cc75=farbere@amazon.com" designates 63.178.132.221 as permitted sender) smtp.mailfrom="prvs=35013cc75=farbere@amazon.com";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
+	by imf30.hostedemail.com (Postfix) with ESMTP id 9BA418000D
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 10:26:48 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=jBHlTIIl;
+	dmarc=pass (policy=quarantine) header.from=amazon.com;
+	spf=pass (imf30.hostedemail.com: domain of "prvs=35013cc75=farbere@amazon.com" designates 63.178.132.221 as permitted sender) smtp.mailfrom="prvs=35013cc75=farbere@amazon.com"
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758277609; a=rsa-sha256;
+	cv=none;
+	b=6yhs2VNT0G7S6I7RdPx99mQBD8wWAtq3HF9R/aQ8jcQPK6uYybguiI9vdLNFH0mwlRxzY0
+	PucLMsYf0q7adsy/Ox3BkisbMfqxbfhLBYv3+6w3NBvhBwyDfmd0Ea3Sr//tnOxKCsAcUq
+	Rof+AgUIcUghyY9DtpSZ73c0YyYCf2c=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=jBHlTIIl;
+	dmarc=pass (policy=quarantine) header.from=amazon.com;
+	spf=pass (imf30.hostedemail.com: domain of "prvs=35013cc75=farbere@amazon.com" designates 63.178.132.221 as permitted sender) smtp.mailfrom="prvs=35013cc75=farbere@amazon.com"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758277562;
+	s=arc-20220608; t=1758277609;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GIzXOOEvZKeS6UuNgkU2k1mesw4I+NOSJCqENQl3gzM=;
-	b=UE0cp4ZP5CtBT1r85hwZ+g9XU1rhyXMltQlMfmS39gsvdkk4wB8e//3wUT8UjF5VKqz+1Q
-	qdbqlW7V2lfo2voG3DB57F09kwSZ85ZGi3AQmCQb8f7mnyA/kSs+v9Oi45HO8zL/ndSX+3
-	RQ28PkmhSOc7A9rd3hw47IFOtlcb2pg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758277562; a=rsa-sha256;
-	cv=none;
-	b=zxJwKzja+cV7okJ0TikiJrBA0D78y1cdsdHQGtCfqXV/UCYWGjsfyeu5d/mcVjuNVYCwLW
-	TOLc1Zqp3H7dgX02klF7kfUydhP3xqTaFjKndhxJrzYg8U6OoIFgN5W+FwYkJI6gcpgYul
-	EVdjPTmXK2cF7IDl25+PsS0IdDHpVRo=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=dTSW2+az;
-	spf=pass (imf07.hostedemail.com: domain of "prvs=35013cc75=farbere@amazon.com" designates 63.178.132.221 as permitted sender) smtp.mailfrom="prvs=35013cc75=farbere@amazon.com";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
+	bh=o3tB3MVnb5Sy0ootiHUhWzPUwXkEpU95FPChw/pDapE=;
+	b=UZX8SWjIF2Dv3IdbDCQ8Rh0ovx4RFqUS0tQcOCzSI9h/KOksACfcVqTMjvsNRiiy5ykLhF
+	ea+T24Kce0ViJEqXDIpWmvuiiAAsOfahrOGcvKwvvw7Ktat8r154kDqZ9rNi7MJ0cuJxJ3
+	W24CGCBK7GkzPfD9Rbtg0PE7nxU5czg=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1758277562; x=1789813562;
+  t=1758277608; x=1789813608;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=GIzXOOEvZKeS6UuNgkU2k1mesw4I+NOSJCqENQl3gzM=;
-  b=dTSW2+azVKtkDe8atMGZl8SI7ZPWKVXluVH1aHZTKCWPcBsZmoGZo5W3
-   UDOfJyy/zNgai8SILqQqlt+6Ydk4JmN2He6p8rv4VKyrl1mFpvicz7yUt
-   hF/ZGMTk03iu9T3pwEKN1QThsHs6KzTGMktsiBVb2Ce6vTXhnsz48nEVN
-   FhftbCOAHZwfEanwW47idY5ssAy6SJWSFHXX5bHsY1qi2Vm1ELSr0FQvA
-   3yLWcQtOKzI7No+RVcaoWqvBNw4x95J488z34k0wU0C5mH3xV7Ynkbv24
-   A0R/24zw6UxfyZnSw4LfNCy1vqJTOJ375tY8T2OOkw3WzL43VLZNWAvRu
-   A==;
-X-CSE-ConnectionGUID: qNcQLpyOQc2AraTNrsl+eA==
-X-CSE-MsgGUID: dlKiNEf6TymZnD/i2VYzWg==
+  bh=o3tB3MVnb5Sy0ootiHUhWzPUwXkEpU95FPChw/pDapE=;
+  b=jBHlTIIlNMXrnA9EPqGFNV3tTgR0AOfGokEYQ0StUslRUR6GwKwScgYO
+   Lhr+XxIF6cCShcm2w8uq5dSVzNSaA1zElbXr+l0/62Aoa3+iX0UNqhm9M
+   42Fft5o6EXqJ4Bg8qqGVgxLoy4cPHFQbahcKYXTNYCRXdHDCaNOi8fg4C
+   g3EXmXESHHy6hOijCYgHgiZBJMNELhjlVZ0+F+i2RXFB2Xgpac5+70BTP
+   5rk+wnwwWBWPSjmtom7XRa9DAHdGDrRgbYl2TN6xii7TxNGu8e0vKH+UU
+   ouEfYgU/ZYsInib8y1ivpAFna5UURl6uzkxPrfOOYVwjuB0anb5xQPz/Y
+   w==;
+X-CSE-ConnectionGUID: 3NJ3iKzhQcqE1iv4wNCQKg==
+X-CSE-MsgGUID: MgfbvPMVSna+ZthcAskKCw==
 X-IronPort-AV: E=Sophos;i="6.18,277,1751241600"; 
-   d="scan'208";a="2264438"
-Received: from ip-10-6-11-83.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.11.83])
-  by internal-fra-out-013.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2025 10:26:00 +0000
-Received: from EX19MTAEUA001.ant.amazon.com [54.240.197.233:7660]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.47.2:2525] with esmtp (Farcaster)
- id a189cda0-c60b-47da-9f08-ff06b9cb4616; Fri, 19 Sep 2025 10:26:00 +0000 (UTC)
-X-Farcaster-Flow-ID: a189cda0-c60b-47da-9f08-ff06b9cb4616
+   d="scan'208";a="2264536"
+Received: from ip-10-6-3-216.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.3.216])
+  by internal-fra-out-013.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2025 10:26:47 +0000
+Received: from EX19MTAEUB002.ant.amazon.com [54.240.197.232:3862]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.21.238:2525] with esmtp (Farcaster)
+ id e16480e3-8a51-46ed-b80c-9e8f4a6d15fa; Fri, 19 Sep 2025 10:26:46 +0000 (UTC)
+X-Farcaster-Flow-ID: e16480e3-8a51-46ed-b80c-9e8f4a6d15fa
 Received: from EX19D018EUA004.ant.amazon.com (10.252.50.85) by
- EX19MTAEUA001.ant.amazon.com (10.252.50.192) with Microsoft SMTP Server
+ EX19MTAEUB002.ant.amazon.com (10.252.51.79) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Fri, 19 Sep 2025 10:25:59 +0000
+ Fri, 19 Sep 2025 10:26:46 +0000
 Received: from dev-dsk-farbere-1a-46ecabed.eu-west-1.amazon.com
  (172.19.116.181) by EX19D018EUA004.ant.amazon.com (10.252.50.85) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Fri, 19 Sep 2025
- 10:25:30 +0000
+ 10:26:17 +0000
 From: Eliav Farber <farbere@amazon.com>
 To: <linux@armlinux.org.uk>, <jdike@addtoit.com>, <richard@nod.at>,
 	<anton.ivanov@cambridgegreys.com>, <dave.hansen@linux.intel.com>,
@@ -130,9 +130,9 @@ To: <linux@armlinux.org.uk>, <jdike@addtoit.com>, <richard@nod.at>,
 CC: <jonnyc@amazon.com>, Linus Torvalds <torvalds@linux-foundation.org>,
 	"David Laight" <David.Laight@aculab.com>, Lorenzo Stoakes
 	<lorenzo.stoakes@oracle.com>
-Subject: [PATCH 14/27 5.10.y] minmax: simplify and clarify min_t()/max_t() implementation
-Date: Fri, 19 Sep 2025 10:17:14 +0000
-Message-ID: <20250919101727.16152-15-farbere@amazon.com>
+Subject: [PATCH 15/27 5.10.y] minmax: make generic MIN() and MAX() macros available everywhere
+Date: Fri, 19 Sep 2025 10:17:15 +0000
+Message-ID: <20250919101727.16152-16-farbere@amazon.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20250919101727.16152-1-farbere@amazon.com>
 References: <20250919101727.16152-1-farbere@amazon.com>
@@ -140,24 +140,24 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-Originating-IP: [172.19.116.181]
-X-ClientProxiedBy: EX19D035UWB004.ant.amazon.com (10.13.138.104) To
+X-ClientProxiedBy: EX19D042UWA003.ant.amazon.com (10.13.139.44) To
  EX19D018EUA004.ant.amazon.com (10.252.50.85)
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: E44EB40005
-X-Stat-Signature: tkwwxtb8d9o5nmwrja5okd5jrfat4nu9
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 9BA418000D
+X-Stat-Signature: 43q1qaac1d1k4sr5aguym7grsdmsqcwn
 X-Rspam-User: 
-X-HE-Tag: 1758277561-256310
-X-HE-Meta: U2FsdGVkX18fY2FtF+i/AxhVzM6PxBQxWEl7rSXqs7YOsTixvOjpnGAMeFThIZGUcCUOQwNvGUETd8OWwPga4zbeRa+zO7uKL6dn7YgpHg5IvTWxPbVW28mkdEA/6/o9t8Fe7JLj0Z/DLGuyPbWlkiR9J97Rq/axlTUL2lsDimrCtX6kSgQt5Bv1f+Mbw9MsXeLqAvZdWZNBuEZv1cdzHtR3flez0BodCdhSO7LrXJVZX9Jd2BTmpSJ2HWD3HxtVOg+VlTu8jDyoq0D4J8ocx75h4ciKMVXPFsZ7PHyFvQH2mPpv2aCXH2lOlRdSF31mUJndCq1BoRCU3DHMo232/VSpfV5xfHxWyWq54IoMrdh7RHfitzyLo0QhYUiet1Jts7lta1Y63l5PGxIM38ys1Epv5SmKoGGcDHAKNQcs2PVncLwzAxtKA7uR4XmQFfHVyP3U3c+peWqYPl23NoX6d4+RiMue8VtZoG37lwA7IFpOo5Ra9GpR5SktEE41C70ByFZa3k/44bUGq7anCw29Vk/NOyCraCb0cJRs87SxNiC+Sgv7spVEqZy/UYO4ZCC469Vku1qfSE5FEXX6pIjXInmLgAm9Nlzo0L5kuhSjtXBMSiAOIAlZCmeItbyBKkJ2neyXv6rPezxndkeaeL9YOLYnxSDR9VvJEJQQiDJ5oop1I+qpvDWLCmVghKQhAOzPzhtxw1hh6+ulHotI59R1xNRC7Y7m2X+rsXya1QJbVCz0WxGV1IuMcpsyHlmqKSiv67vm95IH99M3OAQ1ibIfoF3KBu8XaRx3KrRDTCj8CsZx8CODhytur9gZBDZMfJDuOSHOi/8b0DMGsIYtjbWHkIqUBuWWX4Ldh9Y0FZbqymEiIYOPfAfVZrGe9b+KavZ5y0LpReoOAS/CfVmtCamv2j8aIQ5cWQC5yfkkwI9aw7GuO2a6Znjgm8WkkPe+U8V+kog+HEY9i2ALTIl3pZd
- LdHdwRCR
- cSAGH+ueEdscoiiA7qx1AH724QYxB+2yh/7zPJrwAt7eToa6uqpcgxvkqe5HS7ef00ZZ5P0srEPcUM5hzJEIO5r93F4dB7sPLlHQH0C0y1SZR9DxjWtVxzjV8xSLIsT40ICBLX2XWQxrsYoE/QbOkWVd1jMCpb9k966EGb5tDoIJJJa71xl/tBASmBJOhs26feqpRY0VvjMinFuRvn2M4ApNpusR+LOUKxUJV/1IYF/NOWufXeNJtVrRIOk8AtxrhFqdCuInacnVk+uWPlC28qqAeGU6kQxYxot2jYlN+17BVrKfjwt2GPhcUNCjXeDi4O/wq4NMUZx20Pz0M4vtHB1m8KDK7wTOcRanYSHz3K2LpqAwjICKiOl6128+z2qak5Wy0nHtyIX/uLDfULhUrn2uUNPyo3xpj8OmghDRnPoOED4oGnrZgPzsJfr7WbZ3MppYKqPNw2RQ3GwPSXwDk3m5hQR1fjr6IslmocPCWIkt2s7o2n+hFA8n36eCMpS5AqlDiw+VmVeDBunPOeXCdkZTyvjYy9Tbzp8DvbrCaA1C9IzNxrfKUS8aEHNI/d0cHqjdXJDZs9BJYfRbcZ1Co+CAkxsHC/zzXwCgnIPxX58ydtuHT2I87jZwkHGuP2Z/zusFiS4dHr+Fq4vZXP+xTcirq1Pp/eqlCrOYmmRsJwuTZe4Jhx2P1YcY157KN4pdL73uDiD0a2lzrkzQ1NYBnTeYaKhI+GzIskvdX8LJDm4qWE3BFe/EroGHXdTlGLifO6jd34igHfK9dptHIxT/2Y7tZhnpZJOVEGzXIQ/G/+4h0UO8xWkHApWv5R/QUKQi8mERbmwnJrrfGRE5Y4LR1/9k0J1shmQM/sIgG8s7yfL0+h8d+pIaPxpDAtp7msKMnk1KsX0ydajz014HtS+SGykBMtxutt3owcdypb7IvIHAvO6HBqalv0kh4boyYghU/htu6JGPAzPdaG/e7628Udm+hgKA+
- gymyPytM
- sKtQeAUrCYVOMMPPXWaccUtQAsPzvIa0lmWiE1gKgD6JhMTsWuxMkVSDm0myNf6Akqqhheq2PJKH+3dk37sJPqQvawOEvqUXHcvKG+cT0ihzkhOcWJPsIyeB/UHNXYivJOIHHVHIEf0/uFvmhnvtoAub1+rRMqQZOAN5E6vpkhVr2N/NRaF4Zb0GnL7zlzY7ZKtKto9RJ1rlYI0DKP6DWZvguBxSWrNpa83YfeyohLSQJ/P9YybHMSHceGxk2I6XeyaVUk9DhC+Q2es5FsbyBpvBHuZZyI5kp4DHiafPSDg+RbA3wbQE0bye2Q0rIEtl2nkNUlo1mf8XGVENKuxkjNUJybdByjvJES/zGa5lV8gFQArJiE4kwEHgROt3XMYqKZ8FSQfXvnkrWqAdkDF8XE98HgRf38xTBzTdpwHHdZC0Go6Nw4yNWZ6uqLJZaiXgoa2taempDuuKY7nxVcAvONyLSIaeaGebuHlPVM+IwCC4YbNAA8LXUKmqaPfsImTQaFnZvuqDYLOwr/wN+KzCz7pBn4ZbGHMmXg/YIpG+CcqAen9MtE4Z+8Xc2fWnAAnTkMSzSUJfjIruaWwzUI8ZGcg2RJUm9GNCJISUJPWPeIYhAZ/VEpLMPWHK6UTihFqNMWfisb/9U8YLDBOXAT/9HQyqU1RE8/RVoRZ0eW0xRjZrm7Pe3aoMA+1SO8QqnMVo5hSxwWG2pQygAwWCAVkRKmTFlzJApk1QS+0iWqInEhnAVqXEvdNR1jw1ya/crDlSa9UrS0y2F5JoROrjcUgPxhVlON2Iynnd2th3kgXxc6eF0F/BtWfPORHKL2TsVjHkMeXvW1LiK2VOx03z0CoSGFqeagULblXi/bZhfYnTjR9gyhyQ9TAK0FZ0LI6HVAc8LOYV6QR7+L6MJwwCJgiXxm7hKrZZxRblXXa25jUVYWGhr2gE9bsmvD/Vghwk4qdaZg4ku7lVIjU18u96VIzod6LFU+/8T
- UMPKt+U6
- 9h3Bwh7QKUFd7H6Q8YJUhG6Ja5L++qT0RkmVt3QJM4xarMP1odVtjBCO9ySVahD9+6H3qZYGcxGsCCcXssCkFrEF51fGUk3e8kjUkrZU4YfxWzMy1mBWL9tDKHnX/s+2BpYAX2zseOKrHUOn4HBsnA0a1rQC6MXy329XcdIr05VHeI6un5uxP7gVtEPq70vxPDYBx7L13kz6GVriYUAHiCbqMQsQPBYeAc78b78yRgOG427RKj6VNnxEd6KDJdjYAZ/443wKYJAIFtZ6zMoDugmbNAOy48BphFujY3FLYCxC3pHMABJhjuw2ahR84wL/AWQV4bs2osESgVJft/5h2SWJ3VsWVz2dOWQCPUMJADabSiPA/UFZq/M/iN3qV/sgGhKNp/u9GBeou82kPuC5jZKMgF1D59kHw6j/a1qEPrS0eIWbFRY7/LwbWXs8rSdY7AqraJjBoXNBYukOqx3GLQgaFC/ZAu5qpX09VEUhKRG3gBI7JGTJtNqp8Dfa6J9wgW/7IqmU5cukvGr5jlSF8O0FtCp+6h4aDTaT4qJfez1jwNpWNxBx0KUnj3ccgt447lBBlpcU4oWDwBjH6K8dzJM7J5EBeMWUZuEsd8rP8xXZyAba93YvCpbJ+cGkxDyqFAYVZ2rAX6zDJmtepTZa158yg641x6AJ0F3HOCpwfTdpy5mrwyH+o3Ja0N3Gu9IYT95WCw47U29O7K9k47Eaqrrtkp1MlB+UZ/t5K9JWVb6/QkiYDqu2AP7+j3hBh6vAm1ZbN6GYg20NJFMJh6uKdZ48DPjtvxHkfrlibt2U10UxwKidOzU4kYvkogwVMLaD+oIneKNYCB5Drbf4+K+2LmU7d+WMb38xWgdBWyjqFY8KMCWyau61WNrmN8pYXqBbNQET62DA4UhffhtFzQEeeqM85XsWDUvyXSkklX6hTHYhgMkMUrddbJMtTb1BUV9dHE2NQjhFB6PLVHOXRFtJvT+q/uMh3
- NIAaDgw3
- OU8zg+j7TgGgfTLll6ZaEl3Alsa4EmQOxA8rZxenjQRmDc68VwsMOUqRJlZowMXE1aZ4IPRdxXhfrUnsXQLlgJYWASCgQSdb+Y7gNcKFAerj1jz9b0YAWe7lmB/ykYGuUjhgKyYNhLPDdsNrYJBCv2BuXRk20EnTIerqqNQhwMgtyicaL9iE5dQ7iumYYpWB/cX4KRtrqMPgQD8HQLaKGbQnvlpXx/39CFGc3Ox3YRXz47azHOgyDLJ6IY4nzhb3wlGzwCgLBzBQy0qnZX9Rn4vC/MC0rLtGshwsJoOx3bcPFI5JrpboQ/X9uCRWdcRC3vrMoK8PvoVVIzrMIgAsvzF6/tOE7k4VBT7Zz/sRsuPuZIb9gywj5kTY45njLydGowDHKg218uqV3k6xxCKLvQgBx45jr0aVzYAFv9vWmQjFMcGWAgC76P+EWNZPnkfdjQNrpmhbV8nEB+w9DFMCmAPtFb1OuLDQi0Elbohh3fKy0nze6UPSySNPoMLlhwEs1lNHzcA4LPnWIEuxoOau4GnUusqXt2xXAjE/HNeZ10P8Zo4kvEu+o9oW9b9zXapAijHt2SuqYa/fgFZUtElrgj+DpGqM7fW4DRohW9afKWrqJZfrqihlYWklg0zjECi8Jd8+zdYjOuyr2Odd+iN81Q9Ktpux3AKx16EhgAdDDhCy8sjpc8HQSba1d7C8Fn6qFj0MhxAwOuYkN1kmVGb8XHuiYQ13wVYg0CuS8OKvwB4Npp+NF/Sm++u1tY9PGJoilTZgIss6/oMRAY2gy9g9ouI54RkwMxISpDXqEJj20lF8FAP4gpXufMEnwAGnt1GGSo9SwJFaEh7BOEY6NobayhLb0tckVw0WgD9vB2YmJ+9afTtMLacuhONMC7yjZXylkF5RGt4+q2KxnVB0Xnqpesc61lu/ipUie3PjnXonTvo6OJgXAAkhv4Oo+5WKy/KYBKxP8yUo4JhDmkZKrnEkoJ5bslsan
- jWn//TRm
- 8B7DWHmsHZFRGev2/h/AjckZy59/8rTXTnNu9jnr6t8f7X6vtdSCgw0tKwalvIt7zVqxvZ+1V4bap+VSe7DuIPKR1kc/pD22nhwitd+JEV0afY3fj6XL7hdM7PJfZXXV0cth/FF6ZhNynosG3po4DapTfTkM2wsodgNNkCcvBe7R4QuO6u1wCV1clBm3sm00M/2e7pA==
+X-HE-Tag: 1758277608-99503
+X-HE-Meta: U2FsdGVkX1+dJ0voRzeAxJg10Y5AzhSAM5TxJMlY6G9gMvkPAs7g0/Ime8zfYGn+cBF7RaU94NKSpmivl7sliW8Y9wfPrdhXDwzH2VnTULoEA8/rjTw9iK9Wljft772aJIsr1kM/iK/CDSoXUHCRUi+WEXPOo4pYsA/KpGPnO28RCoDvOuoF6WPYQJj+i3qjvDZaHIlfLr71o68tr+Y04D8Un49G5VipsxeamwJFMCauulM6uwneDdCX//bllVkf4y33Wnze5c7YwP+lCby/HbO+3C/EYbMs3ISZaJS/VReJQwYG/f5sw4abbvupmgTvWu6yO/WdvhV4oIxG8kks1QhBcEAZiUU9APEgyAZfHYFdEQnZyLGJnr8p1NEIjjwq5qVjXbnzURfhkzvLT+iKYvDCaEqVe+38rkhwPEykwZN58rQ/mmPlzV7KcGbTYWKlr9BY8XFiftRBDBielhvLWQ4fdd8NG/QlN0J/VjjJuicFYU5clr13iGr2l7VMlML4+jV2+0zjLbRZB+QkSAzMEmsg8jb6jN5pFWIy6irhBXpegj1mL3GQ5OjJAwFiEvYfcqVsPcMkKfDXGvbaSuKXrjhqMGcCALVsNXcYro6wfkjeI2Bv1sIHP1cjEr8Kr980YI/twOtv9MfpWgAeTeO11xlSs/AcVhUSVpU6VhRRMG9DiEytlIDqLkqeqa1W9OEW5P8V491BBuixYzxELblik5WXPTT4xYrJR5gG+VYPGfFzI1NIwEoKhWqCmmvuAqyQ7iC0KLAkn+rIk5aVfR0nQr+BFV5B3OZ3pn7a6TDSJ+aV8Pfjrvgq5YEj4WlLzWn6lB4Udk+rNJEK23fHGsT4QeKQER62KF5rNSB6H/ZnnL70BkCo5qmOqM5mWlgkR68/iZHk+ECVeq1rONZD61ZGuuL5I9uM0pJ01F7XMum7DU12SgCwKdFIQifGfzPcswqaH40czCU34Y52wofTerQ
+ oJUtbn6P
+ V5g4sI8puELl6Z9v7lvMxY3xSxf8zkCO7YgiFXJvw6/BgU5YucZ+za1fFpWLAnzlYfsN+qOgM72bndle4LIYES/QaL8Pg6rHTxzpPwD3iS5P8D6P4qyaDvyqQgoNzJZPNErchVSfSVSpt4uZ5rikLDWT19gMj4J63vF/+p7OFFLQGvuSljzx35w1W/hGlpBlN0v2Jv8aMPc7RcwzkKLsiZK88749yJXmemb5nHT5CfwySM7BYzn7pxJ1e2FN/fbu/kkZRBwa7cOE95K7kG8fYsAvNLuzdHlxWc5IQ2G+l+k6gR3oOv+FfD8SgCWlEQ5vFS1xGzWyEBEudoM/vwdzI8NYSNWD/KfHuSucdkZHZv6lagAwV4Qeh/rOdoT2coBVZjKOo6zT0/JIGkITcEkwzFgC3l5qiMisiuGdY/sAyMU69cVquaxjfFswHGavwMtSOXRvNRTJU2oOg+62LjohrD87KlMUtFbyNaWe+hDMIGxj/wuNUn92rMAivat7xFrPPqTOCXXdZqQ3sXAR3q2OZYkKgnoLbdIONUHbBsp/bI9zQq7V5gYDMO7x+TapAxr6nEWMpktNkvmBOTuC9kf8IBvKezywIgFdm02i0iFdcnBjJE5AxXzxNnNykLcDhDh3tQATqgtZFusMkr2GOVvr0M3kRHmzaY2OgRWv4g0E4faLaQCYwpDMZ/NWS8mGjFm66ZMHERHXJNAJCv//QtbDf0xZ+yDNjzKKDj1AJGwYYVd3L6jGeoT4mqhkOnBPmDzCfrPEJ9ldW7VtR5uDcNZWc/CMxg5ANp1KYbVu0Il41zCLzJdlgAA1r84rF7XdwBGLURqLhrqWezQFxjk5jmXd72e8moNINHC5/rLJeJbsSjMsba4zfX9w+ZCspLNTnc7OeopzkchCFA7o014NJJOIzorSHtMfDQidQqMm/luzL2hrkZSMKnehH95ETrw+RMWePjdAWhVbmLH89yzX6znp6bmh8tQLK
+ VIdU6hY5
+ NYcpSWZW+1LcRur3MpQ4BhosEVVt3wxCASELTTQeeca3FtmQHWIxFNwLDl761E9qCMKeSflxn+91NpD+S34aPTdEdCOnSAnGv1NP8sHPAztXV4dP26Z8+QB9nrWpkguGIQ+yWpy4/O3+aEGQZSAwXM9Bu9IpJr+2NJhyxA6Bt/kJbBB0nGhqK75DecSw80xNOxawSQiV4GGtCd0LqIlYex0pVuvXsZqnvqmBNemiZv/Qgc9aCI8YO021WMld/57IdqDPkNE1ruTHWqscWTAj1v30Yzb+HLhGEu71mCTFibvuyIGl+RcwhKUY3BMea2y28k/BrZRyjVniHEDN93cmOHXSKrheOacw0v0kem/VJNknnpeXNAQ/uM73cfT+st1CLl6L4BIddA4OWmu/oIhnxzCYb7oXrb+Ba6g+vkwkhBX//54VeA78ejbfIBo02IQaackoHJDWwdOoPE6t3CWMoWBe74hiIudmjPN82PupLXdQZLva0IgYJdA4HnrrTEAmRN/kUHIK4Xl/BKxquSrW0klc8kaidpXf4kfcVdtpNX6YNS7YpVVFA+GY+q/F4ZI0Y65W4dpYk+3QmvlSukxWXCeHw5oFMbvp6fsIoFZRS/1JfnIT0S1kvFELP5MH7mj5jxpq4AxDdf8hNCe5L6bHeeqSfP7ROMgd1mkNbQl6/IxJCWxbrDTyxiKVpBMXiF9iD7/i/QY0Ahl4eu1kDJIYVJZ4ipKc8c4r4slZqwCzSccu4/9wRPgXyUvlxxt3esLXXBusXXmJN/lFcbhsAAMRVACVj7C+e/WzKKlORL/544rxBN6JbynEpTq4eCBZrhbQ5NddCX5bHtn2WqzFf8xz9oWBmSp6HvC+azJriX/3yE0ARqK7Runv7wM27F/ukyVAaTeF/i2I8h7PgwpqSVzNEY5z8UdrL+s1Dx1Fopb0lS2cjcz+XA4B25bkBAMN+gEW7b3ZdupQrZ90PTRrxS0ntbdvSgas2
+ ooaQGOKh
+ ErlMsFEpWYMjWWas4Qn684XlLh2uw39GJqoHRjSYwtXSGapgy+AyN/Qsfqnuw8F6jaRjLF02Z5+tNTSm9j8isfUhoxnfLo0ndPLtQM6y7KoiZjNU1rlrtXWf9ogo1UidfBlLUsLMpVA0SUg3riqaeUMx00i/uxorArJ6EsM+bn27O1K/L0EHgGPjKqqzuOp89E4NqpwcQPt2s/SoKY+F1B1uVCNhF0WGr7Oxx+Xgu2VTUzO20uXTqKhjLZ17L3zKm5l5ObPr0cTYqsToxkFAamv/9L9xAXu0nsq3Du8aLS1Zvw1YeOopcIHtlzbwaGEw/R0ZHzFQJzOv2XveZjs3xDH6Qh4lOJBO+RM6OcuganTq6rerqMoS24BOowM/xZYP9l0a2Iglz/iSfVF16fwL1AuYivHekGx8KXvuLOjoVBGUW9Nkje+TasZGms2Mlz9x36GwAPUwdpyhNR/+RAwIAUK+WckTf75qAXe8iHysGGBJJPyMIcWVeSd5il3HQ+MFNkEwsEiLFc9eqL/oUhjzVNNty+rgFZLtjIfiusqWowA9fZOYPbxxoeiVzTv9W0gxF/JKE7aqlaAPGGZ7d/Pt4pyToLjM/pdMcpl9tRBnKOs3wWP3HXJMn3GIlgKeczHPR8pLVQjk/CBhtZLoyy6dTrFG/xz5TNrVjxF/T6IdO7f4Q8B0N3dgWAvA0pn945YJ22oE0X35ZAUJeB3ZhUEXYiofMNs1OMoPerwcOb6nOvStwJyQ1zfjJpxmkji+ZenZVhxB2GMG9LXc2+P1E3jwCHHate3qERdKDbhR7ma+62/pjSahs2ixNyXzNd7gkmPQ8d1A7f4kNoa7fvS0P/B7AkvbU6x3eQesyAUjFhcYr9CQF10VCtqfafwUz49ACDd6evrV81riE1ob+DQhumBNtJ0inVZ9mCMu9AG86Hfn5c9NgbhHxxObY+D3ZcM/WZIfMG7OCeYiszTQUxh4vXKAz5/yCnZTn
+ 32TceOxx
+ LdEM3Z/FVbTG0UmR0LbFBX63Qj+jTnmx6YNXANrSthJj6xDd2v1DH6V75oiBYoS0MfeWh7Z7frkosH87r6g+VYIeMBb0XOdRdn4GhuPAY1yorpDK7UdF0pVEMwJkJe116F1SLZa5CfkLs5l7WUXNMLm7emyJrkqVLLpJxYqbW0+JBq/yZRZG7de4UAmrbDFnMn20H8cCwLRMLzW+KIS67DYYkR9FKxT6ppxXwY6avzpnc1I85INeWXAKwHIIYnfEa4ACE9tyXq9M1iZa8czdChJkgkFXNjiZFIJeEac8VQdSORkM8jutjHSAa0GIl0C5yfXHfRUoYEBpSulXbnEI9gOdlWflp1Nj4ncwROQzKcGPPlgYJrf+QrXkaoI3jjsOud9lRGTWIsGpIZO7LaeYEmEXsGMaU4VK3c7Dxe1N0kBJBrDsXEq/4+cc1QJ9IL12hXNDgD9ntbe+dRkPlqpKBd+5qA9MYwg2c0siD1bPVnPmShT9Ic31qqD18453o914wsbJurwUTg0uDeYnVE1lx9JNhvv3kq4EKshtMAg2oeJg7TZJix2FFgZP9DfbFzyDqzGEnbF6CD60SpcfKH9ioF6+nxdlB6az0zuGCN7W/qa32ySlEbmi/uSfqe2n6ROXAsEFThctEZMd937oyuBp5vcjUYe6JFjLbjTckN1fG18IyiPvLCCi3K5P7Mxkprm8y+v3rjV5vIR2GvTFehIZXIO6dPrWTjfirL4WKWKMaTl6soupiuq1pIPRF+JW/1d/qE5uOerC2XNYLxD+MxxnPfO7o4Mn4ORAnODJdK9eVTOAAFLMgXSeYe9Ns98h4LEJWVPW4lYtRqKOpNP9KY1s3zZq6Mnq3ZX+/4LWeTvU8bT/dtmCMmYgtnlJNEm92C0KOjCQ7Kxat55CY9KWt4RzDTBU9vL+22F/5w8hChpZ+pY/2wJR2IfGxuWQQziJJBvKSCPQb5fMHbLeD1W3/hGz5AlcJpemh
+ tCAy2yeI
+ tjTPOZ6fjhHsWIkZY7TYCyKXrN4OD5V5Kat4RUtrI3lyDrQ42CpmnOgRyP52bxLe8fr5o4BOORZdjluP1imoerktGT5TJ8ajUteZFuAiMCvh9085xmH4xbjXdpDnqeFaZbDYyu2NbzsVWVgTuPiqBsoIwcTo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -168,73 +168,359 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit 017fa3e89187848fd056af757769c9e66ac3e93d ]
+[ Upstream commit 1a251f52cfdc417c84411a056bc142cbd77baef4 ]
 
-This simplifies the min_t() and max_t() macros by no longer making them
-work in the context of a C constant expression.
+This just standardizes the use of MIN() and MAX() macros, with the very
+traditional semantics.  The goal is to use these for C constant
+expressions and for top-level / static initializers, and so be able to
+simplify the min()/max() macros.
 
-That means that you can no longer use them for static initializers or
-for array sizes in type definitions, but there were only a couple of
-such uses, and all of them were converted (famous last words) to use
-MIN_T/MAX_T instead.
+These macro names were used by various kernel code - they are very
+traditional, after all - and all such users have been fixed up, with a
+few different approaches:
+
+ - trivial duplicated macro definitions have been removed
+
+   Note that 'trivial' here means that it's obviously kernel code that
+   already included all the major kernel headers, and thus gets the new
+   generic MIN/MAX macros automatically.
+
+ - non-trivial duplicated macro definitions are guarded with #ifndef
+
+   This is the "yes, they define their own versions, but no, the include
+   situation is not entirely obvious, and maybe they don't get the
+   generic version automatically" case.
+
+ - strange use case #1
+
+   A couple of drivers decided that the way they want to describe their
+   versioning is with
+
+	#define MAJ 1
+	#define MIN 2
+	#define DRV_VERSION __stringify(MAJ) "." __stringify(MIN)
+
+   which adds zero value and I just did my Alexander the Great
+   impersonation, and rewrote that pointless Gordian knot as
+
+	#define DRV_VERSION "1.2"
+
+   instead.
+
+ - strange use case #2
+
+   A couple of drivers thought that it's a good idea to have a random
+   'MIN' or 'MAX' define for a value or index into a table, rather than
+   the traditional macro that takes arguments.
+
+   These values were re-written as C enum's instead. The new
+   function-line macros only expand when followed by an open
+   parenthesis, and thus don't clash with enum use.
+
+Happily, there weren't really all that many of these cases, and a lot of
+users already had the pattern of using '#ifndef' guarding (or in one
+case just using '#undef MIN') before defining their own private version
+that does the same thing. I left such cases alone.
 
 Cc: David Laight <David.Laight@aculab.com>
 Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Eliav Farber <farbere@amazon.com>
 ---
- include/linux/minmax.h | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ arch/um/drivers/mconsole_user.c               |  2 ++
+ drivers/edac/skx_common.h                     |  1 -
+ .../drm/amd/display/modules/hdcp/hdcp_ddc.c   |  2 ++
+ .../drm/amd/pm/powerplay/hwmgr/ppevvmath.h    | 14 +++++++----
+ drivers/gpu/drm/radeon/evergreen_cs.c         |  2 ++
+ drivers/hwmon/adt7475.c                       | 24 +++++++++----------
+ drivers/media/dvb-frontends/stv0367_priv.h    |  3 +++
+ drivers/net/fjes/fjes_main.c                  |  4 +---
+ drivers/nfc/pn544/i2c.c                       |  2 --
+ drivers/platform/x86/sony-laptop.c            |  1 -
+ drivers/scsi/isci/init.c                      |  6 +----
+ .../pci/hive_isp_css_include/math_support.h   |  5 ----
+ include/linux/minmax.h                        |  2 ++
+ kernel/trace/preemptirq_delay_test.c          |  2 --
+ lib/btree.c                                   |  1 -
+ lib/decompress_unlzma.c                       |  2 ++
+ mm/zsmalloc.c                                 |  1 -
+ 17 files changed, 37 insertions(+), 37 deletions(-)
 
+diff --git a/arch/um/drivers/mconsole_user.c b/arch/um/drivers/mconsole_user.c
+index e24298a734be..a04cd13c6315 100644
+--- a/arch/um/drivers/mconsole_user.c
++++ b/arch/um/drivers/mconsole_user.c
+@@ -71,7 +71,9 @@ static struct mconsole_command *mconsole_parse(struct mc_request *req)
+ 	return NULL;
+ }
+ 
++#ifndef MIN
+ #define MIN(a,b) ((a)<(b) ? (a):(b))
++#endif
+ 
+ #define STRINGX(x) #x
+ #define STRING(x) STRINGX(x)
+diff --git a/drivers/edac/skx_common.h b/drivers/edac/skx_common.h
+index b93c33ac8e60..5adba76c3f4d 100644
+--- a/drivers/edac/skx_common.h
++++ b/drivers/edac/skx_common.h
+@@ -36,7 +36,6 @@
+ #define I10NM_NUM_CHANNELS	2
+ #define I10NM_NUM_DIMMS		2
+ 
+-#define MAX(a, b)	((a) > (b) ? (a) : (b))
+ #define NUM_IMC		MAX(SKX_NUM_IMC, I10NM_NUM_IMC)
+ #define NUM_CHANNELS	MAX(SKX_NUM_CHANNELS, I10NM_NUM_CHANNELS)
+ #define NUM_DIMMS	MAX(SKX_NUM_DIMMS, I10NM_NUM_DIMMS)
+diff --git a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c
+index 1b2df97226a3..40286e8dd4e1 100644
+--- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c
++++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c
+@@ -25,7 +25,9 @@
+ 
+ #include "hdcp.h"
+ 
++#ifndef MIN
+ #define MIN(a, b) ((a) < (b) ? (a) : (b))
++#endif
+ #define HDCP_I2C_ADDR 0x3a	/* 0x74 >> 1*/
+ #define KSV_READ_SIZE 0xf	/* 0x6803b - 0x6802c */
+ #define HDCP_MAX_AUX_TRANSACTION_SIZE 16
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppevvmath.h b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppevvmath.h
+index 8f50a038396c..96b03a342f38 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppevvmath.h
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppevvmath.h
+@@ -22,12 +22,18 @@
+  */
+ #include <asm/div64.h>
+ 
+-#define SHIFT_AMOUNT 16 /* We multiply all original integers with 2^SHIFT_AMOUNT to get the fInt representation */
++enum ppevvmath_constants {
++	/* We multiply all original integers with 2^SHIFT_AMOUNT to get the fInt representation */
++	SHIFT_AMOUNT	= 16,
+ 
+-#define PRECISION 5 /* Change this value to change the number of decimal places in the final output - 5 is a good default */
++	/* Change this value to change the number of decimal places in the final output - 5 is a good default */
++	PRECISION	=  5,
+ 
+-#define SHIFTED_2 (2 << SHIFT_AMOUNT)
+-#define MAX (1 << (SHIFT_AMOUNT - 1)) - 1 /* 32767 - Might change in the future */
++	SHIFTED_2	= (2 << SHIFT_AMOUNT),
++
++	/* 32767 - Might change in the future */
++	MAX		= (1 << (SHIFT_AMOUNT - 1)) - 1,
++};
+ 
+ /* -------------------------------------------------------------------------------
+  * NEW TYPE - fINT
+diff --git a/drivers/gpu/drm/radeon/evergreen_cs.c b/drivers/gpu/drm/radeon/evergreen_cs.c
+index 468efa5ac8fc..3ce87e5f90f7 100644
+--- a/drivers/gpu/drm/radeon/evergreen_cs.c
++++ b/drivers/gpu/drm/radeon/evergreen_cs.c
+@@ -32,8 +32,10 @@
+ #include "evergreen_reg_safe.h"
+ #include "cayman_reg_safe.h"
+ 
++#ifndef MIN
+ #define MAX(a,b)                   (((a)>(b))?(a):(b))
+ #define MIN(a,b)                   (((a)<(b))?(a):(b))
++#endif
+ 
+ #define REG_SAFE_BM_SIZE ARRAY_SIZE(evergreen_reg_safe_bm)
+ 
+diff --git a/drivers/hwmon/adt7475.c b/drivers/hwmon/adt7475.c
+index b4c0f01f52c4..1e0678eb0077 100644
+--- a/drivers/hwmon/adt7475.c
++++ b/drivers/hwmon/adt7475.c
+@@ -23,23 +23,23 @@
+ #include <linux/util_macros.h>
+ 
+ /* Indexes for the sysfs hooks */
+-
+-#define INPUT		0
+-#define MIN		1
+-#define MAX		2
+-#define CONTROL		3
+-#define OFFSET		3
+-#define AUTOMIN		4
+-#define THERM		5
+-#define HYSTERSIS	6
+-
++enum adt_sysfs_id {
++	INPUT		= 0,
++	MIN		= 1,
++	MAX		= 2,
++	CONTROL		= 3,
++	OFFSET		= 3,	// Dup
++	AUTOMIN		= 4,
++	THERM		= 5,
++	HYSTERSIS	= 6,
+ /*
+  * These are unique identifiers for the sysfs functions - unlike the
+  * numbers above, these are not also indexes into an array
+  */
++	ALARM		= 9,
++	FAULT		= 10,
++};
+ 
+-#define ALARM		9
+-#define FAULT		10
+ 
+ /* 7475 Common Registers */
+ 
+diff --git a/drivers/media/dvb-frontends/stv0367_priv.h b/drivers/media/dvb-frontends/stv0367_priv.h
+index 617f605947b2..7f056d1cce82 100644
+--- a/drivers/media/dvb-frontends/stv0367_priv.h
++++ b/drivers/media/dvb-frontends/stv0367_priv.h
+@@ -25,8 +25,11 @@
+ #endif
+ 
+ /* MACRO definitions */
++#ifndef MIN
+ #define MAX(X, Y) ((X) >= (Y) ? (X) : (Y))
+ #define MIN(X, Y) ((X) <= (Y) ? (X) : (Y))
++#endif
++
+ #define INRANGE(X, Y, Z) \
+ 	((((X) <= (Y)) && ((Y) <= (Z))) || \
+ 	(((Z) <= (Y)) && ((Y) <= (X))) ? 1 : 0)
+diff --git a/drivers/net/fjes/fjes_main.c b/drivers/net/fjes/fjes_main.c
+index 2a569eea4ee8..9a9ca5a8918e 100644
+--- a/drivers/net/fjes/fjes_main.c
++++ b/drivers/net/fjes/fjes_main.c
+@@ -14,9 +14,7 @@
+ #include "fjes.h"
+ #include "fjes_trace.h"
+ 
+-#define MAJ 1
+-#define MIN 2
+-#define DRV_VERSION __stringify(MAJ) "." __stringify(MIN)
++#define DRV_VERSION "1.2"
+ #define DRV_NAME	"fjes"
+ char fjes_driver_name[] = DRV_NAME;
+ char fjes_driver_version[] = DRV_VERSION;
+diff --git a/drivers/nfc/pn544/i2c.c b/drivers/nfc/pn544/i2c.c
+index 4ac8cb262559..b9a58a424933 100644
+--- a/drivers/nfc/pn544/i2c.c
++++ b/drivers/nfc/pn544/i2c.c
+@@ -126,8 +126,6 @@ struct pn544_i2c_fw_secure_blob {
+ #define PN544_FW_CMD_RESULT_COMMAND_REJECTED 0xE0
+ #define PN544_FW_CMD_RESULT_CHUNK_ERROR 0xE6
+ 
+-#define MIN(X, Y) ((X) < (Y) ? (X) : (Y))
+-
+ #define PN544_FW_WRITE_BUFFER_MAX_LEN 0x9f7
+ #define PN544_FW_I2C_MAX_PAYLOAD PN544_HCI_I2C_LLC_MAX_SIZE
+ #define PN544_FW_I2C_WRITE_FRAME_HEADER_LEN 8
+diff --git a/drivers/platform/x86/sony-laptop.c b/drivers/platform/x86/sony-laptop.c
+index f070e4eb74f4..a66a2ee3a9ed 100644
+--- a/drivers/platform/x86/sony-laptop.c
++++ b/drivers/platform/x86/sony-laptop.c
+@@ -757,7 +757,6 @@ static union acpi_object *__call_snc_method(acpi_handle handle, char *method,
+ 	return result;
+ }
+ 
+-#define MIN(a, b)	(a > b ? b : a)
+ static int sony_nc_buffer_call(acpi_handle handle, char *name, u64 *value,
+ 		void *buffer, size_t buflen)
+ {
+diff --git a/drivers/scsi/isci/init.c b/drivers/scsi/isci/init.c
+index 9d7cc62ace2e..8c7594720ef3 100644
+--- a/drivers/scsi/isci/init.c
++++ b/drivers/scsi/isci/init.c
+@@ -65,11 +65,7 @@
+ #include "task.h"
+ #include "probe_roms.h"
+ 
+-#define MAJ 1
+-#define MIN 2
+-#define BUILD 0
+-#define DRV_VERSION __stringify(MAJ) "." __stringify(MIN) "." \
+-	__stringify(BUILD)
++#define DRV_VERSION "1.2.0"
+ 
+ MODULE_VERSION(DRV_VERSION);
+ 
+diff --git a/drivers/staging/media/atomisp/pci/hive_isp_css_include/math_support.h b/drivers/staging/media/atomisp/pci/hive_isp_css_include/math_support.h
+index a444ec14ff9d..1c17a87a8572 100644
+--- a/drivers/staging/media/atomisp/pci/hive_isp_css_include/math_support.h
++++ b/drivers/staging/media/atomisp/pci/hive_isp_css_include/math_support.h
+@@ -31,11 +31,6 @@
+ /* A => B */
+ #define IMPLIES(a, b)        (!(a) || (b))
+ 
+-/* for preprocessor and array sizing use MIN and MAX
+-   otherwise use min and max */
+-#define MAX(a, b)            (((a) > (b)) ? (a) : (b))
+-#define MIN(a, b)            (((a) < (b)) ? (a) : (b))
+-
+ #define ROUND_DIV(a, b)      (((b) != 0) ? ((a) + ((b) >> 1)) / (b) : 0)
+ #define CEIL_DIV(a, b)       (((b) != 0) ? ((a) + (b) - 1) / (b) : 0)
+ #define CEIL_MUL(a, b)       (CEIL_DIV(a, b) * (b))
 diff --git a/include/linux/minmax.h b/include/linux/minmax.h
-index a7ef65f78933..9c2848abc804 100644
+index 9c2848abc804..fc384714da45 100644
 --- a/include/linux/minmax.h
 +++ b/include/linux/minmax.h
-@@ -45,17 +45,20 @@
- 
- #define __cmp(op, x, y)	((x) __cmp_op_##op (y) ? (x) : (y))
- 
--#define __cmp_once(op, x, y, unique_x, unique_y) ({	\
--	typeof(x) unique_x = (x);			\
--	typeof(y) unique_y = (y);			\
-+#define __cmp_once_unique(op, type, x, y, ux, uy) \
-+	({ type ux = (x); type uy = (y); __cmp(op, ux, uy); })
-+
-+#define __cmp_once(op, type, x, y) \
-+	__cmp_once_unique(op, type, x, y, __UNIQUE_ID(x_), __UNIQUE_ID(y_))
-+
-+#define __careful_cmp_once(op, x, y) ({			\
- 	static_assert(__types_ok(x, y),			\
- 		#op "(" #x ", " #y ") signedness error, fix types or consider u" #op "() before " #op "_t()"); \
--	__cmp(op, unique_x, unique_y); })
-+	__cmp_once(op, __auto_type, x, y); })
- 
- #define __careful_cmp(op, x, y)					\
- 	__builtin_choose_expr(__is_constexpr((x) - (y)),	\
--		__cmp(op, x, y),				\
--		__cmp_once(op, x, y, __UNIQUE_ID(__x), __UNIQUE_ID(__y)))
-+		__cmp(op, x, y), __careful_cmp_once(op, x, y))
- 
- #define __clamp(val, lo, hi)	\
- 	((val) >= (hi) ? (hi) : ((val) <= (lo) ? (lo) : (val)))
-@@ -158,7 +161,7 @@
-  * @x: first value
-  * @y: second value
+@@ -277,6 +277,8 @@ static inline bool in_range32(u32 val, u32 start, u32 len)
+  * Use these carefully: no type checking, and uses the arguments
+  * multiple times. Use for obvious constants only.
   */
--#define min_t(type, x, y)	__careful_cmp(min, (type)(x), (type)(y))
-+#define min_t(type, x, y) __cmp_once(min, type, x, y)
++#define MIN(a,b) __cmp(min,a,b)
++#define MAX(a,b) __cmp(max,a,b)
+ #define MIN_T(type,a,b) __cmp(min,(type)(a),(type)(b))
+ #define MAX_T(type,a,b) __cmp(max,(type)(a),(type)(b))
  
- /**
-  * max_t - return maximum of two values, using the specified type
-@@ -166,7 +169,7 @@
-  * @x: first value
-  * @y: second value
-  */
--#define max_t(type, x, y)	__careful_cmp(max, (type)(x), (type)(y))
-+#define max_t(type, x, y) __cmp_once(max, type, x, y)
+diff --git a/kernel/trace/preemptirq_delay_test.c b/kernel/trace/preemptirq_delay_test.c
+index 1a4f2f424996..91a3f4006ae6 100644
+--- a/kernel/trace/preemptirq_delay_test.c
++++ b/kernel/trace/preemptirq_delay_test.c
+@@ -31,8 +31,6 @@ MODULE_PARM_DESC(burst_size, "The size of a burst (default 1)");
  
- /*
-  * Do not check the array parameter using __must_be_array().
+ static struct completion done;
+ 
+-#define MIN(x, y) ((x) < (y) ? (x) : (y))
+-
+ static void busy_wait(ulong time)
+ {
+ 	u64 start, end;
+diff --git a/lib/btree.c b/lib/btree.c
+index b4cf08a5c267..b12f99d4c45c 100644
+--- a/lib/btree.c
++++ b/lib/btree.c
+@@ -43,7 +43,6 @@
+ #include <linux/slab.h>
+ #include <linux/module.h>
+ 
+-#define MAX(a, b) ((a) > (b) ? (a) : (b))
+ #define NODESIZE MAX(L1_CACHE_BYTES, 128)
+ 
+ struct btree_geo {
+diff --git a/lib/decompress_unlzma.c b/lib/decompress_unlzma.c
+index 1cf409ef8d04..5b9c7a1bfaf4 100644
+--- a/lib/decompress_unlzma.c
++++ b/lib/decompress_unlzma.c
+@@ -37,7 +37,9 @@
+ 
+ #include <linux/decompress/mm.h>
+ 
++#ifndef MIN
+ #define	MIN(a, b) (((a) < (b)) ? (a) : (b))
++#endif
+ 
+ static long long INIT read_int(unsigned char *ptr, int size)
+ {
+diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
+index f5f80981ac98..bd66c28afb5c 100644
+--- a/mm/zsmalloc.c
++++ b/mm/zsmalloc.c
+@@ -126,7 +126,6 @@
+ #define ISOLATED_BITS	3
+ #define MAGIC_VAL_BITS	8
+ 
+-#define MAX(a, b) ((a) >= (b) ? (a) : (b))
+ /* ZS_MIN_ALLOC_SIZE must be multiple of ZS_ALIGN */
+ #define ZS_MIN_ALLOC_SIZE \
+ 	MAX(32, (ZS_MAX_PAGES_PER_ZSPAGE << PAGE_SHIFT >> OBJ_INDEX_BITS))
 -- 
 2.47.3
 
