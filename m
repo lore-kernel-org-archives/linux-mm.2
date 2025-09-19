@@ -4,211 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83B31CAC597
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 01:49:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3595CA1013
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 01:49:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E46C8E0053; Thu, 18 Sep 2025 21:49:35 -0400 (EDT)
+	id 3E3B28E006B; Thu, 18 Sep 2025 21:49:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8957A8E0008; Thu, 18 Sep 2025 21:49:35 -0400 (EDT)
+	id 3B3A28E0008; Thu, 18 Sep 2025 21:49:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 75DB38E0053; Thu, 18 Sep 2025 21:49:35 -0400 (EDT)
+	id 2F1018E006B; Thu, 18 Sep 2025 21:49:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 65F6C8E0008
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 21:49:35 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id F2580B9E60
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 01:49:34 +0000 (UTC)
-X-FDA: 83904317868.25.0710440
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010027.outbound.protection.outlook.com [52.101.56.27])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 23F33140012
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 01:49:31 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=hQw3IMoJ;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf23.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.56.27 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758246572;
+	by kanga.kvack.org (Postfix) with ESMTP id 1D8428E0008
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 21:49:53 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D8D011DEF47
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 01:49:52 +0000 (UTC)
+X-FDA: 83904318624.04.8170F9F
+Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 72E7840002
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 01:49:49 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=cWumoCAA;
+	spf=pass (imf27.hostedemail.com: domain of xueshuai@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=xueshuai@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1758246590;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=33BaAsCWK71xp5Ewce/weN1NbP8pGc5lsLiYK8p9CkI=;
-	b=ipAoAKPPly4WOsdQ95/qpBfS+xrahxQifnW8K6OQ8C4qpF13L5rIfYf+yxBsjzxzfCBTMQ
-	3qD/DNTtfmaNLjIi82W8EyjszXWJcNTBBDTdnCCejEZD8ijXhP7MimGjJtifWC/5vm+fCy
-	anguCBLvpCJpyDq/36k0oxH2KgmxsLk=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1758246572; a=rsa-sha256;
-	cv=pass;
-	b=unQt/FzgdyXIW8XJ3P83RnlGUhBezJtLTdemVZ2HA8X9WZaZquyQrkynEFU17ErH+hUSZc
-	nNpTR/mBihvd7DCP0OzlWTpjst914e7ocUeYAO+rIBcv5DleVC8cGlKhaD275oKk0lcubn
-	tgfN0QytVxkQIhk3Hzu2fs0S0OL8okk=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=hQw3IMoJ;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf23.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.56.27 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RLTv3XyYm5J+qkjMwqyfAwnXSzChfkeLAP16DXvlW4vZ0eDuZP6MVOIdtTc1LVp6q9JkIVjXONCnbupUR8iPyxAaztwANkcO89I/u93NBGa56QXnxc6yKprR+s8zOaBov8Yupf5idmDoUc/lcxDL2vyIMO8HZ5AUreU/t1UY7wHIBPJ7XoTO/9uSJ+wUOrmL7hd9U3GkFU62rxSGGnNDNQL2By4Fiafmk8IUbuFPXGWPfL+5od3xEHortYCEJygYZICf3/3lYbrkTdr3qHs3qzm396gSg0HuqzA03YO9GkCFxQCjRuaC4Lr/Gw1TiqZ4HLqmmr/l26QF9luiuGJMRQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=33BaAsCWK71xp5Ewce/weN1NbP8pGc5lsLiYK8p9CkI=;
- b=A91RECeNC5oirk8BWxOY0bgs1kyiNYCqPQ4z9LaIZBAC5hU1nBItDrb/vX0KeCF7GxRbAHgRF0UYXDSqy0kRosLk2lejCzW8tbQMRjNlcGuklkpwXDmtAvbTEG8nNRJJ4ga7QMZRu6hh4ETMqf+LpwkMiVuQx6NVWaYgCBZcNMBk8aUA4BSpmzPbifJr3j17xK4M4HSbPI0lFSdcPi4j1fxGoENPYpXA9lkfKgkVmGq6fEWYps6hxw0QwDGxV+rXxEEW7LqZ1c6TiipWKzVOL8pd2gz0oVPkf2FOU7DTycSdDMU98FHrR6MujIX8HwRz/SAbOh7Bgxjf/+C8K3tmyg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=33BaAsCWK71xp5Ewce/weN1NbP8pGc5lsLiYK8p9CkI=;
- b=hQw3IMoJ9iToY5NQOZXstf7oTxiHZ+PncGEHaOMyhR8MTNip0yomg0kFbl/Hgv44jgK3/b13uPrBUCxa5RaVaU1CcYuC7pwK0SEFuY0MDcylnFeCJzMpIY9/3U/7Ry8pNqRBU8OWhZxKxGU8WMshkVlHkLyUuVXzlbAw1hWdU+vgCywDKCO9kNzWzG+zzpsorfXXW2/IrIZqP1I5Brt4R0CwknTTca2Cq7G46vMqk2/wDr7MmwjC3Q/rqGhQgxHc5DCSzKXkduuCSZp3wBCBDIlESQCfSI0GUVn3l6wYlbGQVGD48fmLnH6UCfSTwZb9T9PsmS385aByWPuU5lKI/Q==
-Received: from PH8PR12MB7277.namprd12.prod.outlook.com (2603:10b6:510:223::13)
- by IA1PR12MB6625.namprd12.prod.outlook.com (2603:10b6:208:3a3::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.13; Fri, 19 Sep
- 2025 01:49:28 +0000
-Received: from PH8PR12MB7277.namprd12.prod.outlook.com
- ([fe80::3a4:70ea:ff05:1251]) by PH8PR12MB7277.namprd12.prod.outlook.com
- ([fe80::3a4:70ea:ff05:1251%7]) with mapi id 15.20.9137.012; Fri, 19 Sep 2025
- 01:49:28 +0000
-Message-ID: <ab236dfe-5680-4fa5-89e2-3a56cfe67ba5@nvidia.com>
-Date: Fri, 19 Sep 2025 11:49:20 +1000
-User-Agent: Mozilla Thunderbird
-Subject: Re: [v5 01/15] mm/zone_device: support large zone device private
- folios
-To: Chris Mason <clm@meta.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- dri-devel@lists.freedesktop.org, Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>, Zi Yan <ziy@nvidia.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Oscar Salvador <osalvador@suse.de>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lyude Paul <lyude@redhat.com>,
- Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Ralph Campbell <rcampbell@nvidia.com>,
- =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Francois Dugast <francois.dugast@intel.com>
-References: <20250918122813.1440093-1-clm@meta.com>
-Content-Language: en-US
-From: Balbir Singh <balbirs@nvidia.com>
-In-Reply-To: <20250918122813.1440093-1-clm@meta.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BY5PR17CA0045.namprd17.prod.outlook.com
- (2603:10b6:a03:167::22) To PH8PR12MB7277.namprd12.prod.outlook.com
- (2603:10b6:510:223::13)
+	bh=Fv0q4qA7eP0AR3sRC9OtS2AhAgZlyXcwAsWIEHWfVRE=;
+	b=6JegxwUTExG+mlTYjc0NTGUb3qc41ZbDA1+j7UDGAMn5vyHPhuh6696EGPY9tJ6C4i18aw
+	64axdLbi0RS6PeeVuI0URusGAsSQ4A+9zb4DiGtLim7LR6zOhEtNpRO+hqbYUlC7yGJBSm
+	Na/kDD9AotW1f5v32fDnDZbnL/MCJlc=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=cWumoCAA;
+	spf=pass (imf27.hostedemail.com: domain of xueshuai@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=xueshuai@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758246590; a=rsa-sha256;
+	cv=none;
+	b=k32QGz0AucL9XxVPBkPJq23MbSsIpcZFfNl9QgQa+65yx2Nx2L8LmdWpKDJ7pSK5HbrtIL
+	r3+gDFBR7jZymjlZqBBYTOaY3PXFTQ6+Wy1FUbTx9rlLVb0ZSbIYcelilytm78ScY+lI8l
+	TkEMROSymRh6mWpve3+BHyz4kJ8VFLA=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1758246586; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=Fv0q4qA7eP0AR3sRC9OtS2AhAgZlyXcwAsWIEHWfVRE=;
+	b=cWumoCAA8KHCFLCM8kx64UYS4cVvThdeP1JqggBuxBPBluurT1MsBYsl8XeNbMlcGXACIpjnR9QRNbQ24H6kgeIMTSK5OO3AOU3JQzNNkeoe6p6PIwmbdhXEhjG40MDZXqnKq4+36A5iNe7cyyq26A9jOYWMvbEtoPWcL/BO4wg=
+Received: from 30.246.178.33(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WoHtPDa_1758246583 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 19 Sep 2025 09:49:44 +0800
+Message-ID: <c06b1e71-2b9e-4863-a000-357010f4db64@linux.alibaba.com>
+Date: Fri, 19 Sep 2025 09:49:42 +0800
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR12MB7277:EE_|IA1PR12MB6625:EE_
-X-MS-Office365-Filtering-Correlation-Id: dee1e836-dcfa-44a9-89d0-08ddf71ec4cb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|10070799003|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?MU1HdEp2eGJRNnFRazJzNVFhMWNXVUg3aXlMYTdzYkRPVmpmRVpleGJPMVdS?=
- =?utf-8?B?cURGbTA4bXJZdVZMbjZEZFZBd3IyV2pHSUdjZkRmZ1VydEs2bTNsamovRkIv?=
- =?utf-8?B?SHBXRElqVjlNZWNlazE0Z0wzMERWUDk5YnJKUW1Gb3ZrNlkwV0lxT3RNdlR0?=
- =?utf-8?B?SFRocHdsRWdXOW9UdWNCV0VuZ3ppYUdnWDZObmVyUG5Mb0RpR05Xbks3dXRo?=
- =?utf-8?B?QXFRa0pxakRQNmFTOEtRcHlZbzFmM1drZGZySVhkRklrYUFGRk1zRWVaazVC?=
- =?utf-8?B?SWZ2WHVvTkJXemJCSkFweFg1Z3k2LzY1VmtpNDlFNjBvbVN6Nm95TGd6T24r?=
- =?utf-8?B?d0FvLzdrM01kaG14VlJ5bS9YbUxPUEJXb01SditYZzltWHVUM25RK296Y1ZZ?=
- =?utf-8?B?Sk9nM2ZhVWVrMzRQNzdWNUREZ0QvN2JBMXVWNWo4MTJOK0dXSVhEWk5BTFB6?=
- =?utf-8?B?R3NLVFNPZ2VnaTdybm91a3BEUlRUOVRJYXI1T2NsWk80NjZ2eWVLWk8yWm9h?=
- =?utf-8?B?NFBMOUVuckFvcXlEZGROcGc1SHE1OHZiMzhYbEdEMnFtRlM5Ull3L0pMdW5k?=
- =?utf-8?B?ajh5Q2NLLzVKSXFQY1ZzOVI0a3o3QXhsZHpuZjZaTXBxdXR1Y2NhdUZaSkp6?=
- =?utf-8?B?dGFkSDNYTEdRbGd2UE9YUE1mV1dUVUZtRm0xazdLY3MvWEp2ZnlqV0k4Z2xl?=
- =?utf-8?B?WERxaWNiNHlPUmRvVzlXY0d2RXYyRUNHV3ZGeDFTWlNkM2NvZXN5ZWdoaEsv?=
- =?utf-8?B?VUMrUkplenI1dzR5TVZPbHloOEFaQ0x4WHRoSmZrRktoUHVzcTYxL1liUWNW?=
- =?utf-8?B?enpqVW85QzZPbE9mU3ZGNTIxLzlIUDVtdllPL2xBWkc3ZFo2UThzQXQzcjds?=
- =?utf-8?B?WDcvUmk1VGYwUXFCaUE3a2pXN0FFcjRpM0toTFhqTFJWaWtBbndYUXIydFNO?=
- =?utf-8?B?dkR5bGtNQ2Y4QnQ2eFh6MVBwaFl6MmF4cUIzLy85TnAwQmNZK1VWcnQ2b3Ro?=
- =?utf-8?B?UlQvU3A5dGNWN3N3NHBhRngyd2hXaGJvZ2F5YVpiOG5ySCs3YzNrL29HT2FH?=
- =?utf-8?B?aGlmL3hIczVlbnA5U3dUQmZkNFY1T1dnd1I2NVJRT2pWcWkvdjlNUG1mN0N1?=
- =?utf-8?B?UURvMk92eEp5dUhXU3pSajUrRnpuSklIUUlLcUJVQXZQR2hnaUJKWW13Ymow?=
- =?utf-8?B?RjZLN1lTa2FaL3JqMzRZM3JFaEFHVUhQYmRXTHRjV09NVk9NVmhpeVF3UWtZ?=
- =?utf-8?B?TjRYUGRReDZmTUNtakZkSS9LNktqckRENWJLMVFvSzlaSlhIMVBYdEttK05v?=
- =?utf-8?B?MGpkaS9ML2t0OU5RUnI0YS9RKzg5L2NaakUxSDR2L2FDRVFuQ0g0VnBLVVpU?=
- =?utf-8?B?a21PL0JKeCtZL3NZMVFIQ1V1eGpKMzZBMjIzSDl3aFJ3dTVDWkNpNHZaVSts?=
- =?utf-8?B?cmlxN2oyRlVrckR3d05IMUFqS2xhYlAvbk5FMWt1UnN0M1lITSt6WmxON1NN?=
- =?utf-8?B?REtMWnVxSHRBMlZWTWdobUVaZHhCc3d0Z2ROek13dk0ybkFSNEEvb1JyaGJu?=
- =?utf-8?B?dzZ5NmQvUVhZS2Q5ZWhyaCtQYTRsNnNkc0FoaE13SHp0UlJNdXpQS1I3Y3dt?=
- =?utf-8?B?d2xZenRidHV4Vkc3dGhkWXNkUnFKWEJOWW9FcEFOVllTZ2hWdFBCaWFDQ0Jn?=
- =?utf-8?B?TG41OGMzK1hMZGROem1UQmVQbkpaZS9odUpzdWtQNCs1N08yaWRlcFpnR1Ev?=
- =?utf-8?B?bHRZSUp0V1VhblNxeko2TmhHZ3FLUlBiZks2dVZtMXRveEVSL1ZXaWhWZkhG?=
- =?utf-8?B?T0FyOENxajZvRk81eVg2aVZianNYSFhKaFlZQnc2KzJLMnRxM0o0akhaRHFE?=
- =?utf-8?B?NWhnZnBaKzhUY2JSdG84eGVaRGpJYlNzQUJtSU4xSTFwaTV6VkUyckc5Ui91?=
- =?utf-8?Q?bHIGOadIUns=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR12MB7277.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(10070799003)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SndYa3g3QVRoeVFOblRxNHJlK3FNWnlsWU1wa3FHMnpFR0x6SDBqN3daZDI0?=
- =?utf-8?B?SlZiaEYzRlZYcnF3VzVmSGFpTUg4LzFzc3FIdHI5U3RnWXlRWkR2Wjk4TVE5?=
- =?utf-8?B?Rnc3Z3V0ZFhCT1JqdFIwQjl1dTZMTjF2eVNEMjlrK1BmMlk4NTdlNTVpS0hP?=
- =?utf-8?B?TnlmUlFlZkUrL1FwS2dZTDRmd2gvYUxVbTQ3MzR6U2lRenQrNml6S1FidUJw?=
- =?utf-8?B?VjRwek1GUWtiOVp6KzU0UjluY01FS0gvYW9DU2lyem9BT2NkS2l0Q0ZNaGYz?=
- =?utf-8?B?ZzJVTkVkakZZenNrczZMMFNyR3llMlRMbUFjOVI2YWhaSnBvU1o5ak9qd2dG?=
- =?utf-8?B?eWEyZFdra2NSeFZsM0VKQS9hOCtXS2N6Q2w4czZEZmNIcUw5cWFxeVRLVktI?=
- =?utf-8?B?OFpkNXFSbktDUXg2OHJBSUR6bElZQ3E1SURuRjlZeW02cWdNUXkrWDhlajAv?=
- =?utf-8?B?WHVsVm1IbDY4VFhEdGF6anQ3VWdEN3NEek15emZLcFk3SFRONXZic0Y0aXZ4?=
- =?utf-8?B?MzF6a2V3SmhBU01GQXhUdXpzcmlNVHRlM0Iybjg5WUNHd1ZTSFJ6Q0JZYWZQ?=
- =?utf-8?B?c0pGRitvaFJvcm9uNzdBSUJ2RnA1TDVPNDAwOFpuNXRiT3k3WjJxVVd1d2or?=
- =?utf-8?B?MmRlS3dLcW5ET1luWUNoNUR6N0tzUHFNMndoQVkrZ0JLY3hrQlJMdDBiZkN5?=
- =?utf-8?B?aTgrc3c0OVBkR1lPUkNHbVl1QmV3OTAzRzVid3Fadzl5VWVpN1NPaUZzVk5o?=
- =?utf-8?B?bG1YOU9BOTZaUFJ2VUt2UlYyQ1puQ1RlSlhhYUEvcTJMSGMzMks1S1A1SnZC?=
- =?utf-8?B?N0V4aEYyUkVVSGowUitFQVhpQ1RtWXRXNVozVDkrd2Q4VjNMWHllRlhubEh4?=
- =?utf-8?B?MjVCTDM5UTVnTnJjMWxJaHRRWTVRaWFEeUsrZDR3Y0x5ZXFOZWE0bnNQVmdx?=
- =?utf-8?B?Mnp4WGtIc3dqWnR4NDg3V3NlME42WmZnYURzbVFJZWRKR1c4ZElrYlhtMDhS?=
- =?utf-8?B?YmlFWEFpUkFqMkQ0eXpsbVh5Zm85TWZnMHVQYi8zTGs2MWhsRmJ2YUJuS3Mx?=
- =?utf-8?B?SmUrU21KUm9IQVRTRi95MkxuZ29rS2t1YitUTzRHTmJlSEtFWSsxVjRXQzc2?=
- =?utf-8?B?aVBuUEs5SlVpZVJqcHdPVXo1MlZYbHlPSDBncDB6RUxSNG1MMXJrNFlKYWcz?=
- =?utf-8?B?cWxBakxUZkdJdVlLOFhkRXZOcjZ2SVVOZHNPOXNRRDY5MGZUM1FPZDNMOUNi?=
- =?utf-8?B?ekQ2UzF0eGxTK2UxUk1Cd0Q1NVZVZXF0RDNnNm0vREFLTmUxUFFwbUE5NUNO?=
- =?utf-8?B?WmRPZHJ5N3hERWppSzFPb0RDMXU1NFAvNkZaUVZld2tZa01NUWQ2TVc0R0lY?=
- =?utf-8?B?UHA1QjhkcmNKbzlzWVJIL25pMnBZdEswczlRWDcwNiszUWNiRU15MnVlNFZS?=
- =?utf-8?B?d3BWNFRkVWFtTXgreUo1SngyMVFJdXE3d2tkZFhvMlhxUTlQODR2dTM3UmY3?=
- =?utf-8?B?ZnFmSnlGVHZaVm9Ob2FpSllBVnVEZmVjVG5PejNVeE5jTk1PNHV3VGdCb1Uz?=
- =?utf-8?B?MUlIUVJhSm0rL0NtMlVUbVd5ZVoxQklSZ1dLdnlmdUhBWHhCUGUrVzlpM3Nm?=
- =?utf-8?B?QkZ4WEdlcFduQ2FDQmZ6ZnA3WTA4OWY2RmNmQUNjV2xFeDF2TXUvajFOenNh?=
- =?utf-8?B?TGYvdFd2YUorZUZ5UTNyOHdUbi9sNFNBQ242aWxWdG8xaVhLYWZzckc0amkw?=
- =?utf-8?B?RmV3Y0lqQmtvMDlaL0pnTElFY0dOQVEzV0RNaTYydnZOZVBkY0NXOXJTZHJ5?=
- =?utf-8?B?QnVTTFExc082dkdDMkczMUtPRFJ6YUd1SGhLMk9rT1lSVE5TTzdkRmpSbk5F?=
- =?utf-8?B?Mk1zQzIxRndBZE83cmY0bkhMNCtoYXVnNS9mdXBQdnJ0NysyNXVuRlhDQUhJ?=
- =?utf-8?B?VFUya0NhNGhPcG9ITWk0RHdEUFZ2K1BhemRMOXF3Mm9ubkRGRUxhT2R3TEEx?=
- =?utf-8?B?V0lFbCs5K2pQdGRMbjRETm9GU3A4TWJncnVMc0hOY3NGTHNpQnRVcmNIM0xS?=
- =?utf-8?B?VjRZdEdITWVEWEhYQ1F2ZUcxVmdKbTFjWXlmRlpBamIxUFdFNk96M0ZzZWVl?=
- =?utf-8?B?SWttTUl4QWFJdHpkZ09UOXJYMjNSYktzU0FFRmRXUlBrenE5VjVFTThtQ1gz?=
- =?utf-8?Q?8muIwbsGUUL8UO0ajcZzmBo1LSwfifEjrzVD30Ln+SK6?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dee1e836-dcfa-44a9-89d0-08ddf71ec4cb
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR12MB7277.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Sep 2025 01:49:28.0960
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: A84XLnvUVKboFa4lMxb2+BD3ziM/QETkuPICMJhokwvzrgDuOIr59JFDKJhkXj9Q0hBx4Y26r4CBPjK/A7mWdA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6625
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 23F33140012
-X-Stat-Signature: tcy9jwoki66sru9jyd9r8ucztdaa4p7g
+User-Agent: Mozilla Thunderbird
+Subject: Re: PATCH v3 ACPI: APEI: GHES: Don't offline huge pages just because
+ BIOS asked
+To: Jiaqi Yan <jiaqiyan@google.com>
+Cc: Kyle Meyer <kyle.meyer@hpe.com>, jane.chu@oracle.com,
+ "Luck, Tony" <tony.luck@intel.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+ surenb@google.com, "Anderson, Russ" <russ.anderson@hpe.com>,
+ rppt@kernel.org, osalvador@suse.de, nao.horiguchi@gmail.com,
+ mhocko@suse.com, lorenzo.stoakes@oracle.com, linmiaohe@huawei.com,
+ david@redhat.com, bp@alien8.de, akpm@linux-foundation.org,
+ linux-mm@kvack.org, vbabka@suse.cz, linux-acpi@vger.kernel.org,
+ Shawn Fan <shawn.fan@intel.com>
+References: <20250904155720.22149-1-tony.luck@intel.com>
+ <brfqzhbipg35twgv22vnnotbv3t3grwh2dxugvtbgqduuhsvst@f7exibz7i7tk>
+ <aLsHh70jI6BGHjaN@agluck-desk3>
+ <bwu744g3qzbzylxvfgt7v4tnf2k2eosqbkg7alm6u5roa7j3bn@gmut2l5227kw>
+ <aLspJ5Tpqp4qRDk2@agluck-desk3>
+ <cf05bc8e-fc79-49e4-a90a-47e661b4ae69@oracle.com>
+ <CACw3F538k+dshTs1_rxbpYoRdFyX3tLYzfaWj-_d7Lq5Dd2Jsg@mail.gmail.com>
+ <aL8rIgSImDh7Nj7E@hpe.com>
+ <7d3cc42c-f1ef-4f28-985e-3a5e4011c585@linux.alibaba.com>
+ <CACw3F50hU3BCP=A++Dx_V=U8PKvsTvTa1=krULxfQdeK2kVBrw@mail.gmail.com>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+In-Reply-To: <CACw3F50hU3BCP=A++Dx_V=U8PKvsTvTa1=krULxfQdeK2kVBrw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 72E7840002
+X-Rspamd-Server: rspam05
+X-Stat-Signature: to3zzqce1oo4qrnderqaa3t7aubxzex3
 X-Rspam-User: 
-X-HE-Tag: 1758246571-922347
-X-HE-Meta: U2FsdGVkX18UiXmKHToBhVO6j/X3XCzaaIa81yHUWjsu4I9uHd9xtTDKfrJmovn58LWXilNxZyLVAN8Kw/gUSGbQl0BstwdgyR2jUdqMhr+M5oGpyh2TFd6fd17J2dHbAWB4kqH0KymXqSQ9OMXtP1aMKW0nDm/75boehuo8ZRz+3hEdRoID9NfOIwtpEDeCqe5BSumVij/54GuwbnKPlQry9B09Gc6c93nXF3oALs2T/B8e4LXWk2UcTZ06PYzb0kUz5mH1vXe7gaZSTzYbuuPg14zseO76B0O6bfIYT+LeAzyWBIi6/699X71uqmC4w6CXWxolZpxd9PVQVBFI2ubs9f2e9z+hk/t4Anx6hMjikrh9zE6xYvQtGjjtRO46OdHSiARjXkx1WsfkADxRMfgLscy7wKz6RRxcojQNn8BobkrqzcQt1AlbBKRfFLMxas553dFGzhfPAhvmbOsAgrk1JZLGAkufYbzfaC5BeAWqsEeAzAJvC8KygyIDt5Q0mM3YanRkNsAxqyGXE3uE2cbg+ODGNcL14LTs9knPxe/9qr0IYsVgqY4HXpB1fKnn0gGwUpKiLpj8PC6brbAqtVkP5utsFsVpbzEVLr/RQjczpdDGV4TxUuyle20rbgJ3jVgmZoHA0h5kGWDL9p3gOnMVL6/ljejQ1ZzV7/E/2MEt5T3imCJy1PPqY899qeRWIRYwMOrZmwRPD1JW20ytTOHWIFLEv9arHnjWJPzwo2HFGHkmVYpOATUfNnwYZcaynU1FNYvPcOFD5Ur+hxm13fv5fmC86g9kPyIoElRHbYc6+oqULSWcb2MIRXzsGdlKqpkpKFJmIKwlw+M/r3oEE2kAoCgEemFDCoZBzCqpXqSDLA/6e2e6VW7nUxClki0IYWSTRWvlUHZ4Hb8wrtNHHmkIHUn5RJlQdOs4K+YDOj12g5TkDfK2dX6gs9ZOjBurcNe5W7uV/WWEHaZ0iJ4
- MHxrwxHL
- C9L5ng4JHSXeC0rzmvLfowjqyBGr2zzSprfVW0PbJvhMlAn8uCr3A7il9Cxmo3cF8jiwQQWBQ1loPErtd8qXPmzlO95Hf/dJXbOsvaQiATE04FyDFHPkUmpnqQQaly9JRUkmmwPAZnDj8taJGtG+GiYPHMbgwpgOqKLAvDiuMp2q8gLmJSSvqOCN/cRCd6BvtfvNNN8SiVa4WLimirwE+LqQAA7ehvHshNmnZxEKD3NoaKR1Ae03Rb7dP5efytC3JlnA9LQN5cWvbyh7ngFF56n10xhj6+cHL7JDUcEbVFK9yM8QSr+q+lJzExFnD9QEpdSR9MJ8IeGnlrjAYK8tmuauZUzmiRiYylYNpJmQ/6wiVrX/NOTS/QDNi0zLGF3KkfTcPM3kbNb4aZY2Xs0yA9A+0ryKwbCu5etB6Tk2DSHVeodNE/VBfZ+dBLrRc7+um5qY9p8kmvWxDSxY0KbcLkIyFi2KumcnAW8md8oufocWQ72+cEmyOXCUNYRE2PvbNr5RfAV69k07R4HVAdO6FYqb+ki7o67cuW7BPZuMmzB1NCsVeRne+mcnug961karUFilSsBK4gD7ZSmUgUFg3LYUORQZyKg1uVmp9+m2i1Eq0Rmwx9G6ocWfSaGKCG3adBt5DR0UiHagK6g8=
+X-HE-Tag: 1758246589-935238
+X-HE-Meta: U2FsdGVkX19TzzCEi6AmgMkQNYPjKWNK2C/ybJ+NIzObHkR/wN6Pc56DCCr8Q9ZwPZyVmRTPmCvF21c5r/kdJelSfygu/zoYYk/3f3iwQJ0WFEnzYQoOKWT5zf51XesKGTbcTYKKm1elK1zc4cxtFyK9wsa+DTXZSNYcieAkRSB06z/xXI8jkb/QteGvoCy6Zoom6yqzMpW0mjpUrP1L5XpvkDbnLM51uUnScNr2Vi5higmNj9UwK2YQ1U/JQGsDKML+DAdhzuohaZLIJs4nVSchluOJIF1sey9nxNv36J0BTajskZ6T8TekwgR3Q6/iYfezIPX9NGjLd1856avf0BwAU0lsx5yxAO76/47s0prWPkW2nCrNcbOXZRHYGrO44caPuS5Q3+oVwbXEqgOEEjSaNu0VWO9M1iZLPLI25F8gVtCp/kWHyEDMRjeEGjphEvwtGr5oy0Dw9BS5BVWcfwLiSATaRNabXRbB1hdKDMs59O8p70cQQx9Hngc9L7jshQ7BtIxgJKW441edfbkoXqiBt/7JwLmYY0LtQp9IPQZ7l/+jRBwh12AU7bfzHxswDuFtQ/NJvWaty2HirrsdxjeOtYeG6957bygPC+qh/S0q+TJi83z4BpVS2Aju0XTr48OPjAGv7tEbipMEMPlbtDdmA0zVfIPu9ZPgCcC1H/aosbJ+qSRKPROB7RXfl9U9HAUywAuzi+SyXZvsOmLJZdUhKaxRjpbGJHNh3Qu2Ui2BRFWC6HaoVYvydAtoZIYuRt+CGXTVnPkxUR8KTvVKsPbySf7PINTHJfJL1qYHCfC1CbozXyt8YI8DRPRkWlxzKORDOW4rfEYolqWgXumcnQzUocjv/jKMXx2VSDhfaq2bNNhwjEShUrT9dN6hs13rLHUYn8rYyMqoMTVlUZUlwqGAIbHu/3kykGQu+6GIGa1BYFCYY+8xJflIaKI8EQWIa+SGrlrZoZLtXM421Zq
+ Q7F10kXC
+ YkCbSajHL6WnFdyAxeyh49CG9wzfuWQxVBmbhxe0KAn4k2YazqAUYbkhk3jsUu0G43YHfSBkn/gvTgJT1vbA8JycmDJnEkS8J2+ckKYBUY9oDAcb4wfuPczOJZXfykMtwMISP5K5mcUYiVH/0NNOchZBeNYF6rhWStcvh1XWJ0qjGioutFd1IiumQMt6ORnsaQt8Ak+bzCxe+Am2unGoxKtJnjNvM+n2F5qIdwG4f09X2L+iwhi/WIbsOaEsBDaNRtLqnpoKWC0RnaxBuALiPt6MB7hDL6Kv/7CU5z8dCcTWKhqkspmOCnFYZAITol2af7yhlrFPiVQxKWgVRWvxU+lXaYASRkaLhp9EjHkJH9F+WhWuU7Izp7jANAhWBJ5bWn+ZGSxHF8L0p0TS+0ToUYW/TM6xKR9DlC7X4kmpzczfnHMvYfcXajc3a4oo0rMkzriN5IgIh2we/kAmrUo8q2HScLuXoFLNYbb7Mb09u7zJ+3rs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -217,92 +103,167 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/18/25 22:27, Chris Mason wrote:
-> 
-> [ apologies for resending this, debugging sendmail ]
-> 
-> Hi Balbir,
-> 
-> On Mon,  8 Sep 2025 10:04:34 +1000 Balbir Singh <balbirs@nvidia.com> wrote:
->> Add routines to support allocation of large order zone device folios
->> and helper functions for zone device folios, to check if a folio is
->> device private and helpers for setting zone device data.
+
+
+在 2025/9/18 23:43, Jiaqi Yan 写道:
+> On Wed, Sep 17, 2025 at 8:39 PM Shuai Xue <xueshuai@linux.alibaba.com> wrote:
 >>
->> When large folios are used, the existing page_free() callback in
->> pgmap is called when the folio is freed, this is true for both
->> PAGE_SIZE and higher order pages.
 >>
->> Zone device private large folios do not support deferred split and
->> scan like normal THP folios.
+>>
+>> 在 2025/9/9 03:14, Kyle Meyer 写道:> On Fri, Sep 05, 2025 at 12:59:00PM -0700, Jiaqi Yan wrote:
+>>   >> On Fri, Sep 5, 2025 at 12:39 PM <jane.chu@oracle.com> wrote:
+>>   >>>
+>>   >>>
+>>   >>> On 9/5/2025 11:17 AM, Luck, Tony wrote:
+>>   >>>> BIOS can supply a GHES error record that reports that the corrected
+>>   >>>> error threshold has been exceeded. Linux will attempt to soft offline
+>>   >>>> the page in response.
+>>   >>>>
+>>   >>>> But "exceeded threshold" has many interpretations. Some BIOS versions
+>>   >>>> accumulate error counts per-rank, and then report threshold exceeded
+>>   >>>> when the number of errors crosses a threshold for the rank. Taking
+>>   >>>> a page offline in this case is unlikely to solve any problems. But
+>>   >>>> losing a 4KB page will have little impact on the overall system.
+>>
+>> Hi, Tony,
+>>
+>> Thank you for your detailed explanation. I believe this is exactly the problem
+>> we're encountering in our production environment.
+>>
+>> As you mentioned, memory access is typically interleaved between channels. When
+>> the per-rank threshold is exceeded, soft-offlining the last accessed address
+>> seems unreasonable - regardless of whether it's a 4KB page or a huge page. The
+>> error accumulation happens at the rank level, but the action is taken on a
+>> specific page that happened to trigger the threshold, which doesn't address the
+>> underlying issue.
+>>
+>> I'm curious about the intended use case for the CPER_SEC_ERROR_THRESHOLD_EXCEEDED
+>> flag. What scenario was Intel BIOS expecting the OS to handle when this flag is set?
+>> Is there a specific interpretation of "threshold exceeded" that would make
+>> page-level offline action meaningful? If not, how about disabling soft offline from
+>> GHES and leave that to userspace tools like rasdaemon (mcelog) ?
 > 
-> [ ... ]
-> 
->> diff --git a/mm/memremap.c b/mm/memremap.c
->> index 46cb1b0b6f72..66f9186b5500 100644
->> --- a/mm/memremap.c
->> +++ b/mm/memremap.c
->> @@ -453,11 +452,15 @@ void free_zone_device_folio(struct folio *folio)
->>  
->>  	switch (pgmap->type) {
->>  	case MEMORY_DEVICE_PRIVATE:
->> +		percpu_ref_put_many(&folio->pgmap->ref, nr);
-> 
-> Here we're dropping nr refs
-> 
->> +		pgmap->ops->page_free(&folio->page);
->> +		folio->page.mapping = NULL;
->> +		break;
->>  	case MEMORY_DEVICE_COHERENT:
->>  		if (WARN_ON_ONCE(!pgmap->ops || !pgmap->ops->page_free))
->>  			break;
->> -		pgmap->ops->page_free(folio_page(folio, 0));
->> -		put_dev_pagemap(pgmap);
->> +		pgmap->ops->page_free(&folio->page);
->> +		percpu_ref_put(&folio->pgmap->ref);
-> 
-> Here we're dropping one ref?
-> 
->>  		break;
->>  
->>  	case MEMORY_DEVICE_GENERIC:
->> @@ -480,14 +483,23 @@ void free_zone_device_folio(struct folio *folio)
->>  	}
->>  }
->>  
->> -void zone_device_page_init(struct page *page)
->> +void zone_device_folio_init(struct folio *folio, unsigned int order)
->>  {
->> +	struct page *page = folio_page(folio, 0);
->> +
->> +	VM_WARN_ON_ONCE(order > MAX_ORDER_NR_PAGES);
->> +
->>  	/*
->>  	 * Drivers shouldn't be allocating pages after calling
->>  	 * memunmap_pages().
->>  	 */
->> -	WARN_ON_ONCE(!percpu_ref_tryget_live(&page_pgmap(page)->ref));
->> -	set_page_count(page, 1);
->> +	WARN_ON_ONCE(!percpu_ref_tryget_many(&page_pgmap(page)->ref, 1 << order));
-> 
-> Here we always bump by 1 << order
-> 
-> I hesitate to send this one because I don't know the code at all, but the
-> AI review prompts keep flagging this apparent refcount mismatch, and it looks
-> real to me.
-> 
-> Are the differences in refcount handling inside free_zone_device_folio()
-> intentional?
+> The existing /proc/sys/vm/enable_soft_offline can already entirely
+> disable soft offline. GHES may still ask for soft offline to
+> memory-failure.c, but soft_offline_page will discard the ask as long
+> as userspace sets 0 to /proc/sys/vm/enable_soft_offline.
 > 
 
-Thanks for the review! I've posted a v6, but in general
+I see. Thanks.
 
-1. Large folios for supported for device-private pages, hence the nr (from folio_order)
-2. The user of the folios specifies the order (for mTHP), a folio gets get created
-   with that order
-3. What you are seeing with the percpu_ref_put for two different cases
-   MEMORY_DEVICE_COHERENT and MEMORY_DEVICE_PRIVATE
+>>
+>>   >>
+>>   >> Hi Tony,
+>>   >>
+>>   >> This is exactly the problem I encountered [1], and I agree with Jane
+>>   >> that disabling soft offline via /proc/sys/vm/enable_soft_offline
+>>   >> should work for your case.
+>>   >>
+>>   >> [1] https://lore.kernel.org/all/20240628205958.2845610-3-jiaqiyan@google.com/T/#me8ff6bc901037e853d61d85d96aa3642cbd93b86
+>>   >
+>>   > If that doesn't work for your case, I just want to mention that hugepages might
+>>   > still be soft offlined with that check in ghes_handle_memory_failure().
+>>   >
+>>   >>>>
+>>   >>>> On the other hand, taking a huge page offline will have significant
+>>   >>>> impact (and still not solve any problems).
+>>   >>>>
+>>   >>>> Check if the GHES record refers to a huge page. Skip the offline
+>>   >>>> process if the page is huge.
+>>   >
+>>   > AFAICT, we're still notifying the MCE decoder chain and CEC will soft offline
+>>   > the hugepage once the "action threshold" is reached.
+>>   >
+>>   > This could be moved to soft_offline_page(). That would prevent other sources
+>>   > (/sys/devices/system/memory/soft_offline_page, CEC, etc.) from being able to
+>>   > soft offline hugepages, not just GHES.
+>>   >
+>>   >>>> Reported-by: Shawn Fan <shawn.fan@intel.com>
+>>   >>>> Signed-off-by: Tony Luck <tony.luck@intel.com>
+>>   >>>> ---
+>>   >>>>
+>>   >>>> Change since v2:
+>>   >>>>
+>>   >>>> Me: Add sanity check on the address (pfn) that BIOS provided. It might
+>>   >>>> be in some reserved area that doesn't have a "struct page" which would
+>>   >>>> likely result in an OOPs if fed to pfn_folio().
+>>   >>>>
+>>   >>>> The original code relied on sanity check of the pfn received from the
+>>   >>>> BIOS when this eventually feeds into memory_failure(). That used to
+>>   >>>> result in:
+>>   >>>>        pr_err("%#lx: memory outside kernel control\n", pfn);
+>>   >>>> which won't happen with this change, since memory_failure is not
+>>   >>>> called. Was that a useful message? A Google search mostly shows
+>>   >>>> references to the code. There are few instances of people reporting
+>>   >>>> they saw this message.
+>>   >>>>
+>>   >>>>
+>>   >>>>    drivers/acpi/apei/ghes.c | 13 +++++++++++--
+>>   >>>>    1 file changed, 11 insertions(+), 2 deletions(-)
+>>   >>>>
+>>   >>>> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+>>   >>>> index a0d54993edb3..c2fc1196438c 100644
+>>   >>>> --- a/drivers/acpi/apei/ghes.c
+>>   >>>> +++ b/drivers/acpi/apei/ghes.c
+>>   >>>> @@ -540,8 +540,17 @@ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
+>>   >>>>
+>>   >>>>        /* iff following two events can be handled properly by now */
+>>   >>>>        if (sec_sev == GHES_SEV_CORRECTED &&
+>>   >>>> -         (gdata->flags & CPER_SEC_ERROR_THRESHOLD_EXCEEDED))
+>>   >>>> -             flags = MF_SOFT_OFFLINE;
+>>   >>>> +         (gdata->flags & CPER_SEC_ERROR_THRESHOLD_EXCEEDED)) {
+>>   >>>> +             unsigned long pfn = PHYS_PFN(mem_err->physical_addr);
+>>   >>>> +
+>>   >>>> +             if (pfn_valid(pfn)) {
+>>   >>>> +                     struct folio *folio = pfn_folio(pfn);
+>>   >>>> +
+>>   >>>> +                     /* Only try to offline non-huge pages */
+>>   >>>> +                     if (!folio_test_hugetlb(folio))
+>>   >>>> +                             flags = MF_SOFT_OFFLINE;
+>>   >>>> +             }
+>>   >>>> +     }
+>>   >>>>        if (sev == GHES_SEV_RECOVERABLE && sec_sev == GHES_SEV_RECOVERABLE)
+>>   >>>>                flags = sync ? MF_ACTION_REQUIRED : 0;
+>>   >>>>
+>>   >>>
+>>   >>> So the issue is the result of inaccurate MCA record about per rank CE
+>>   >>> threshold being crossed. If OS offline the indicted page, it might be
+>>   >>> signaled to offline another 4K page in the same rank upon access.
+>>   >>>
+>>   >>> Both MCA and offline-op are performance hitter, and as argued by this
+>>   >>> patch, offline doesn't help except loosing a already corrected page.
+>>   >>>
+>>   >>> Here we choose to bypass hugetlb page simply because it's huge.  Is it
+>>   >>> possible to argue that because the page is huge, it's less likely to get
+>>   >>> another MCA on another page from the same rank?
+>>   >>>
+>>   >>> A while back this patch
+>>   >>> 56374430c5dfc mm/memory-failure: userspace controls soft-offlining pages
+>>   >>> has provided userspace control over whether to soft offline, could it be
+>>   >>> a more preferable option?
+>>   >
+>>   > Optionally, a 3rd setting could be added to /proc/sys/vm/enable_soft_offline:
+>>   >
+>>   > 0: Soft offline is disabled.
+>>   > 1: Soft offline is enabled for normal pages (skip hugepages).
+>>   > 2: Soft offline is enabled for normal pages and hugepages.
+>>   >
+>>
+>> I prefer having soft-offline fully controlled by userspace, especially
+>> for DPDK-style applications. These applications use hugepage mappings and maintain
+>> their own VA-to-PA mappings. When the kernel migrates a hugepage to a new physical
+>> page during soft-offline, DPDK continues accessing the old physical address,
+>> leading to data corruption or access errors.
+> 
+> Just curious, does the DPDK applications pin (pin_user_pages) the
+> VA-to-PA mappings? If so I would expect both soft offline and hard
+> offline will fail and become no-op.
+> 
 
-The reason I point you to v6, is that the diff is a little bit different there
+I think these does. We encountered this problem in older kernel
+versions. However, since it's application-specific behavior, I agree
+that using enable_soft_offline for userspace control is a good solution.
 
-Balbir
+Thanks.
+Shuai
 
