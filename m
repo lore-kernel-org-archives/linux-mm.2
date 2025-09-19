@@ -4,83 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BFBECAC59A
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 10:24:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71A74CAC592
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 10:24:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B9C548E00FB; Fri, 19 Sep 2025 06:24:04 -0400 (EDT)
+	id CFC5E8E0107; Fri, 19 Sep 2025 06:24:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B72EF8E006B; Fri, 19 Sep 2025 06:24:04 -0400 (EDT)
+	id CD2BF8E006B; Fri, 19 Sep 2025 06:24:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A88AB8E00FB; Fri, 19 Sep 2025 06:24:04 -0400 (EDT)
+	id BE8C28E0107; Fri, 19 Sep 2025 06:24:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 9913B8E006B
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 06:24:04 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4264B5990B
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 10:24:04 +0000 (UTC)
-X-FDA: 83905614408.13.540A4B4
-Received: from fra-out-004.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-004.esa.eu-central-1.outbound.mail-perimeter.amazon.com [3.74.81.189])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 105AD180003
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 10:24:01 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=MeQwI73A;
-	spf=pass (imf24.hostedemail.com: domain of "prvs=35013cc75=farbere@amazon.com" designates 3.74.81.189 as permitted sender) smtp.mailfrom="prvs=35013cc75=farbere@amazon.com";
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id AE3DE8E006B
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 06:24:26 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 60F7014063F
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 10:24:26 +0000 (UTC)
+X-FDA: 83905615332.10.02254B4
+Received: from fra-out-008.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-008.esa.eu-central-1.outbound.mail-perimeter.amazon.com [35.158.23.94])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 05318180006
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 10:24:23 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=VKyu1eSp;
+	spf=pass (imf16.hostedemail.com: domain of "prvs=35013cc75=farbere@amazon.com" designates 35.158.23.94 as permitted sender) smtp.mailfrom="prvs=35013cc75=farbere@amazon.com";
 	dmarc=pass (policy=quarantine) header.from=amazon.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758277442;
+	s=arc-20220608; t=1758277464;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M14+Hrw3+0xfvL7LtAKdftp5KA5xdtXGebEkX3FEMMU=;
-	b=axv/6iB5OKeVz78q0xt/blhcxQ4Ur8IuurHyygWUeiEinyhlhjfLvsKaFgO/Nkk2JyhxQ/
-	4mJV9c4nQloQQjgrVGAxpkxiYdkt8qY+viU7B6radiXM263Qqw1+t/McvvwXeQGwNxbyVM
-	qFgnwXS+phxezCW7ro+ajB5PGgiyy80=
+	bh=Up26bfkjgG7bBpXTUDNOne3Gaz9xL27H6G5Ic5zP1jo=;
+	b=YMcK+qxYMeHe35LEV0SPkVFyi0zv7Vc+35uvkczcpz7e2VhoZDK9hFyynnBkHxzPifjrCS
+	kZsOQq/kPSAkXRfQx0Ofof+qL3mUAnVNhDx6al6UVio6FPJ3K4JV+UkqPbYGngluhtd78g
+	M7vTnEnXYmQV/G9ZQ3d4X/HyNzzn2Ko=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=MeQwI73A;
-	spf=pass (imf24.hostedemail.com: domain of "prvs=35013cc75=farbere@amazon.com" designates 3.74.81.189 as permitted sender) smtp.mailfrom="prvs=35013cc75=farbere@amazon.com";
+	imf16.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=VKyu1eSp;
+	spf=pass (imf16.hostedemail.com: domain of "prvs=35013cc75=farbere@amazon.com" designates 35.158.23.94 as permitted sender) smtp.mailfrom="prvs=35013cc75=farbere@amazon.com";
 	dmarc=pass (policy=quarantine) header.from=amazon.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758277442; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758277464; a=rsa-sha256;
 	cv=none;
-	b=fGJ6Tud+JZVWbssT30dE07GYnz1HKZmhdN4NtmZhzes69C1KMnVzr5fwl7uK9k+mG2SmfS
-	KujP5CzfMTlTHLrzUuzQlxfW5w7jPisfLkQbPMAH8jvH6KOI1A59YXrpiTiYv1EAGvyDtS
-	5YWzQcKe2NguydFl4t9t10sjal8JZK8=
+	b=TqnKe5fHpW8Z2wQmBvEd6cE3g4cxvhrLgjSv7W98maq3WdeV+YHclX7f+m0J5ix/p1Y8s+
+	LdhJyBTniXGKmyCRfznEUVCz41UJjU2gykja/5Rnp2KI9EYNC9F4Xyy1uiUqtcqMqUhrLs
+	gGx+W+enylBBjQUrdwIGYo0vGoNfptg=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1758277442; x=1789813442;
+  t=1758277464; x=1789813464;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=M14+Hrw3+0xfvL7LtAKdftp5KA5xdtXGebEkX3FEMMU=;
-  b=MeQwI73AiOIbUvgGPa0ZqnvRfgCaXKZ2hoJ95v5u89hVBfU2510yUo7H
-   jahEBSTJo2kPtMxngOihFeN/E/lYLyNejefzlvDL0iRZ/2WEi6Fk1CvWA
-   iBcEllajMl/wJon87/nIwdu64Lxt0qefMT7iPKa87OOd0K2AoQbnsJeDU
-   b3RFZo//cQu76D7Fv7BEPAJIrcDqakGaqebrIpcCz/K4HqDfpM3C76Z9D
-   NUqS0aA6e7USHHS8KY/nXDGUkmtbbG8mYsbZ8fHrVAvWnq6OTWVGndrc6
-   pHNn1eXbIK2gxr9G/j2cVyOZjvaw55fec4ioAgXh/vlWuF86nS7LEPb67
-   g==;
-X-CSE-ConnectionGUID: gHgvYdjXRTax5TTgqwvVCA==
-X-CSE-MsgGUID: iesenUiQRpylNXhD7czqOA==
+  bh=Up26bfkjgG7bBpXTUDNOne3Gaz9xL27H6G5Ic5zP1jo=;
+  b=VKyu1eSp6PIFIEIDHbRkeA5t0A2XFC8OX8RJqkyc+J8NGunqxHT7WHru
+   bSRo3xtZUP3zO3LPS6DdIzV/2WSWilO+vaJhmcX3u+X5F4iiZ2AwojvMe
+   ZEFcD1OQ3xuSMgiNUCC3tVOQPz3vrRX0I4DWVT44JbNj/9F1/T0j+OY+L
+   r20wGkKxADNcNnBf6P5Os5epmbZXfKz5Y3fWPVKaCjuxSLIYcYo2EaTjz
+   pehK2MHY6+0aJO0+A6mgdQvsvQGm4fuiLLX8quGd7ZYBgFQdaIRG96g/b
+   xWogetWrZ+mntDuvxDCFv7cfBBkaKG8wsipthFg6ksMZD2hWw82c5RVCl
+   w==;
+X-CSE-ConnectionGUID: VfUMBUH0R+udyi3y5h9lpA==
+X-CSE-MsgGUID: fEXY14+oTR2Ji22+/AcC7g==
 X-IronPort-AV: E=Sophos;i="6.18,277,1751241600"; 
-   d="scan'208";a="2367500"
-Received: from ip-10-6-11-83.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.11.83])
-  by internal-fra-out-004.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2025 10:24:00 +0000
-Received: from EX19MTAEUC001.ant.amazon.com [54.240.197.225:14526]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.23.64:2525] with esmtp (Farcaster)
- id bc83dc44-d894-4589-a6a6-e547befad49a; Fri, 19 Sep 2025 10:24:00 +0000 (UTC)
-X-Farcaster-Flow-ID: bc83dc44-d894-4589-a6a6-e547befad49a
+   d="scan'208";a="2371767"
+Received: from ip-10-6-6-97.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.6.97])
+  by internal-fra-out-008.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2025 10:24:22 +0000
+Received: from EX19MTAEUA002.ant.amazon.com [54.240.197.232:21608]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.8.212:2525] with esmtp (Farcaster)
+ id 504dbbff-7d1b-49bf-9922-7914909fe636; Fri, 19 Sep 2025 10:24:22 +0000 (UTC)
+X-Farcaster-Flow-ID: 504dbbff-7d1b-49bf-9922-7914909fe636
 Received: from EX19D018EUA004.ant.amazon.com (10.252.50.85) by
- EX19MTAEUC001.ant.amazon.com (10.252.51.193) with Microsoft SMTP Server
+ EX19MTAEUA002.ant.amazon.com (10.252.50.126) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Fri, 19 Sep 2025 10:23:50 +0000
+ Fri, 19 Sep 2025 10:24:18 +0000
 Received: from dev-dsk-farbere-1a-46ecabed.eu-west-1.amazon.com
  (172.19.116.181) by EX19D018EUA004.ant.amazon.com (10.252.50.85) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Fri, 19 Sep 2025
- 10:23:22 +0000
+ 10:23:50 +0000
 From: Eliav Farber <farbere@amazon.com>
 To: <linux@armlinux.org.uk>, <jdike@addtoit.com>, <richard@nod.at>,
 	<anton.ivanov@cambridgegreys.com>, <dave.hansen@linux.intel.com>,
@@ -129,9 +129,9 @@ To: <linux@armlinux.org.uk>, <jdike@addtoit.com>, <richard@nod.at>,
 	<stable@vger.kernel.org>
 CC: <jonnyc@amazon.com>, Christoph Hellwig <hch@infradead.org>, Linus Torvalds
 	<torvalds@linux-foundation.org>
-Subject: [PATCH 10/27 5.10.y] minmax: allow comparisons of 'int' against 'unsigned char/short'
-Date: Fri, 19 Sep 2025 10:17:10 +0000
-Message-ID: <20250919101727.16152-11-farbere@amazon.com>
+Subject: [PATCH 11/27 5.10.y] minmax: relax check to allow comparison between unsigned arguments and signed constants
+Date: Fri, 19 Sep 2025 10:17:11 +0000
+Message-ID: <20250919101727.16152-12-farbere@amazon.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20250919101727.16152-1-farbere@amazon.com>
 References: <20250919101727.16152-1-farbere@amazon.com>
@@ -141,22 +141,22 @@ Content-Type: text/plain
 X-Originating-IP: [172.19.116.181]
 X-ClientProxiedBy: EX19D032UWA003.ant.amazon.com (10.13.139.37) To
  EX19D018EUA004.ant.amazon.com (10.252.50.85)
+X-Rspamd-Queue-Id: 05318180006
+X-Stat-Signature: jrksc879g6jwcdbq51yw7hfjn4twkmjn
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 105AD180003
-X-Stat-Signature: 71h8fxy3s7fj4eboiyfaqp47djtbmowm
-X-HE-Tag: 1758277441-124353
-X-HE-Meta: U2FsdGVkX1+ZiGyp6VpPbIU8XDf000KLXh+N0v0SlhuW8xIQKyj3FRT28yFw7Ee69UQk3IbcYMPtH1bC99FqpoHuDjuZJblMlxS4glqivaocmqaj/1io/uUz59oTueTKZTY5Iv3Z8aC7VQqeo3a5mKm8EceHcn+GovwB41h7HqDANybp1VH5qAv6r3MAp4JqusP7pWl/yI5KTbNayDF4uz/LxQQEM3pWf8e8XO7mmnDt4H/oTFXkZ4MCWz80i+kK4sjpfIrtztGbzr6DzkhBG93U7zpV0pYTmwewSm3WOqA/l8HtlNQ2++PqMQwiXHWjTHnKxu8vzfEkXtwLF6JQ0FJAdyk2SqrQeu2aL4LfgiuZCnqupY2IrrvvU1BVu8xZRTH+TfvyobYo2++cwLszrSmp/SI5v6ZFLOx+w1FohqPwPjKlP2xlv9RoCwK9+8K/4xNDkVD4FsIlVcp2ih526vwmV+umAISdc1ONNb3R0+8SI2CFlnwB3G2Z2iuJNjnzuzMeFwpIYE2I/Jx4hcsrU4w3VSztIJ7xmcSrd3AsGwF9W0JH3CADUR3JawvtHtDDxlyWZ3j/e6MqQU0umkqpxrSn6LRFMrhv1266x3Hz13xpf4XJbVhTKaA29r2WQ9bZVNMaLVilhtDXjkNyj9e9VJrmhax3SMpFBuCNKOu8vR6p4ZnIk78ENb04hJzGd0oEHx2GWzg2gLenLwfZzSwxV4xXOQIUEeWpVfjARK9WPJ2tkjJYh8s/Q2k4zytFxULEruW49My/nYnLV0iTfNIMn6mlNTAXX7rKA96oacFwWUxhYqZSKi745qyFJusgqNHBzC0RhlnKoE5X4jRu3i8Gab++2ipGJhpRUYB7sxLhi4uj2YFYeeAYcIjyMKzk5Zaz/Uppbm1nl/ZOxHsxTxR7YbtxtvDl1EAjrHGEVpirUlQyHba4QOyXoyR8tYv/n7ApbpSXlPBAM0otywgW603
- jCRv7Cy4
- zT9WWNiStsd8vH2wg88qg2S2pn9jEDaJKC7QSJJRaQW2K+Ns+gQWpyNEjoTy4TBUkXm+0IXU7vUuhc9sYSNSk3cSNteRcgGyq1UMP4oSk9sk/RWvq2p2DOTD718mtJ9S050YsauEUd/F8VAUNzJzgE4oxz8gsj9nzDpHFR1LHXWgjnWAcq6KMVu1HX5AX149+A0Azf/4iP1cpoQjZgtQsfJdpAeRreh+3zDIY75FgaGRdmX2AR/BVDXgTssKsEaHqCIUs9ChhBZujv3Bs0OziPQB3SqHAFMsRYvNhUopZlpdorS+4zH8jk0W7lcsVu85XyrfppbMTMrijxNuBPaExuuTTm4sx8VQ4FBrErr2bnaYuPt3bb/D3UldbhPtRv7rDRw37ksrwZaHze0R+pL4SBdz57duY2J+j1HQcNszWt08P/+mlokkV0getERjBhgW+djg/yZ+ZH/0yc2fErw6eG2fjVRY3gpNoRZ8lWHMMHI/YCB6sW6FXFSCkeAkAO5WLke/z0d0j5HZVR3wFKvwxC9HWDIAiJF5wY1ioaAqYqvh20yTefdqPMLduZEqJrK8llkO7id4hLM//vKUDd52Sqt490BUm6YLCdQX53B14cGi9f/arCtik+P0zZfDm4zejlzYuVzQpj1AD5YGOhNWM9tPigb7KZg3eK/COWNkQAf7fTxkJoj9RacDZEiCyKTYSGiXJlgo5k4Br6Xnp3B/0C9p/ACmm4Ww62vgyOE/6/4fsou9UDdzwEJ/JtQwQnPtLF9WXFwgnY2JnFXaski7dO6GBqcT0UduqjNmzUqwKkYh9qbmeAes4nqlEY3CNG8u7pmQkQImQJqIDCuWzXq7qkCgIe1LyGTEUCCI+v2HKY35vthiF+4h9AEmugit2LEbXmvpZ3iakSUnA1WRewyptZsnWRNYLCiY0mgVW1LVfnlEK7l7IqGKoQX6mYuhbQDmVjkCjtI94LIqhtmJb1CiFdDGWEN3C
- kv54J2MK
- F73vRQQZf9Tn2QhaLOIqIEqbIihS3LNVkUus4LGvz1vLyFgQJwSxPymE7EA4SqLLy5oO85nV9u0Vx+OfDbd+ixFzMsqwzsWncDDeoofrq6gG9C0qw+vbhAf1uNQ80w3aI1rVCMP/hXF0yiIrv1uwDMgbgujf4uEV5sHSyI+uI/inSGv2e4YcNVb8KLjr1MEwhkTFIzig4nrR19WpKlUiKulBA0Su4lesYhYkCIQUNklteUOaq05HzWjpEbsetR2YsvQ5jA6SztK7GiWbCILBKVFaVbrVSGf0UHsRwNIADZXKsgF0w6m1diDS5uipnJMPGC5n2zEawRqzalUIqJrDGMF5YajBegdGf+K86XPBEG7Nvzsyc4Z01tU6s2gkpyPP/x/Q8jqMk7HcGtoi3JRcCu9Y7y5SQGQlvdE26L5rdmrJF1Dg5yxBIAPIBuzdsIyaSGM0iC92Lf9nDzbN64dcjUmZpMwAZA3kDCTuUWCbqjAwVJyZP2fM5KfpNqzkZAAqS4liyNbAuwN7GfHkfLanvnq5H/mYE+qPN9+lhJi1+Asn3DSyBRxHbT3WRz2p06NfuJvRPfzcHhv852NkmjzrT72iVAJBKiSr8twzX3znSu5Jz/5/6xo6ameznH+2QfEfXa/i7Heg12CEYVkDwZJW25taUMzWiBz/BwCOZ3MHPEji7N++7YEIJtdXcSwkYhSzC9XClBbFlRHWzLRLRA8EX9+lX/b4sI0PR5S+z803itd7ka3vXA9icUhbdZmzy6/S6lr3NTn16JycQDmJwgH3TCTDO7R3FOD8GnYqaezn7iwEiLUDPFGPzFGHwW2u9DqrcpY0Z2XT2t8I5Fr+jq34wswSWbkHVrh7L8MeE3oYHA8iA1PbNSZ9E0AxvUpT34ippSkeGziEoW4JPjvUNGdbFTwtT2BIXZUZjHCHNo/wlo+PX3q/R9xqmlfvhMj5TW8RSK8yN7ln5vIEdqFCHW2w1nRWdjP1Z
- IWnnXk+Y
- D1eIbo0rNFteghZ+OtMSZ3PIygEo4Qz4PxVZgIXqw6y4qiOqi9o/Lqr0wgNBt8EHMR1NWZzzYjZWUtaY93QmNmteIDJNQaeJ2N5Ov6VlGMAlw03lbd14Y4DD4KFJDkREW95lZvmFmLgfFeiwY9yrI6Kj8EqXt6PT3vJUdrrMCGfSKV02UK6/FH+mWm6ieoNzCXVgX1OydYahNY1Cf9yNGujYnQjUau9PGNBc5luEwq1pLaZd10GanslqBZbWAZDibyBt7mxJGTUj57kIV6b1z//zuSjhK0n1kpyhWkVg2+kUIbvMteiBJdr6Fp3P/9z9g42KAlQ3B5s4Nmb8STeo1xnJ/UeknIlIwjNQSXx/HbfmsQy+r5IRqgpu8Yl4HicFqP2MDhOJC63O3ovmn5A0wxrYp5fzHzV/MbT+sICWOZnRMyqq4Am7eq4bSwu1zVGX9g54kb4tEHL4D9D9gIRI+lX1fAhHZavXKji2lblGUdg6M21vOtDE2trTFvROCjR06+AlBCNnX7cf24M6tW1okcx2LTG7vcyEf4V97k1Erfxb4e6g4mLATmgO5warBp4T6hDz3BsaYiYUtxhsmIhgDfr8xN+a3RpLoiZwIaoI6UBhIl1P7pMvbe0/DU9M7RAq0JCqWlj30dKq4VmMRj0F+FLe7EiPLmZmbuRw/uYW3TTnikWMqOyo2dosZPBHJNW7AusVGsFKydHpauUQ82OTkZIC5mB3//nSDnrEmqUYE4iPg6ijfNDKWhSndw8EVP3NGM9Um5qsVOdE44TYU4jYhA6zFXUt8d6a46r/I3+ahHJ11PHwIwnLX+WUJyP45Rjgke7k5aUYaQwqcVCFLYSxNRIEDLXuSyA8PoLr7Exuut10xmpn/9eRMgV99KlHJFVgaxUowNpF3VGxsO4Bck4e5Xf8PjIgg7Ki0w953i+xMatGZ22PUF9pGDMsyzqW7kxv/9mIfnvF177cBUBQXzeJtCuYioLkj
- nwwuAvWw
- tllXAFhhAukWgx4Kw6p1KS77FyNcGUT9jbd/+B7FwKWKKqE1EC5WRUzPdUpZMXyrq6I/GtBouun4jdLBwhqR/tB+9uKF2aKy9unqUV5v5TiHiyeh03Abq7+6Zi1XKSYsgISRZA+IWciXTNAbifB7NlpBLsghrYiq3AU3rAEFxxP/1KnSKXUtPSkx2Tk6KX+OjhKIxlk0zuujrmFwAHQFpExaQAgZ7PP/2ciguQNvR/9yFP1hh0xdwb913mEsdqtvipKB3cgaCbd3nXVrEYpxDBCIkzqRTQRKiJYQQwxsnN1yyfRCbHaKW0KWtrmeI9TvoO8M7qB1k4MihTva+rgnqpay/VGlvLMMl6s5/bvUqBisnAzYrztBuNXwBO5LJ4byWunoldqp0JubVrhVCa6csxEL2qLRJaukJ1Ngcpuo27Na5v9S7uS6rdr3l36UJzdavPa9dTcOFK82gGeoyOi79FM9gm9zEN8HJYtcJPMCV/IiP6ty26r1KR8wkEi+jkkew/SXM/d32lUzKI+00t5z3K6+C7tjQS+7DRd6sCt7KFUJoklg/iGYCGkOJAMcuZ0DQvziVzBSCXOS0OuRquvNacNmjOedB8y0Pom+ruV2jmjDvAPAHaTaLZ35ajQfFY28dIZSpeTN0CFbvlMhzgUG+dgU0zVXP/mCYIO59aPzXiXt1SuUWEiLpensP+Ox9JOIGk7OMOysdzp0DN8jzikrWvpizTWL4Jv1w4M93mC/qUnUFGRBOIo4ujncdF+FGWaN7beEF6HOjH0Z6vGp/OOKNNwN4zGMiqGPBnyPVD1lJPtgqHjyT7dNRRA+4BsPl6utJOdfeO5ekXqNh1Ug0VfYnsVFfi2v+UYehodSwt8Y9BltHTjCzIGI8a99vRYy6drJetk1QYMwGqCjNCNW0MJKLKe3CokQMp7Os/BZOsejlzmonAKt6zX+j+mA0iaWYfKKxHRSZCwV4oUoGHiu+M5nwCpbtbQzw
- 41bNN7gD
- Uf2WQ9jrOvPtaGAggdq2+LSWfa+2+YshJgZscfhQEt8t/KbMfVXDe2BZTVW2l98DGEN29z3KchmJaoBazgk1QEZFrBN0DswtbPc8m2LDf1gKfOGKbAT9aqF9TgofC1V4rKEIuLUPMiu0AkThmMzMgtY50kkC158GMRpBnCkzwsk31OuFvTds57nH5B75gBTvmkCSKvHtsIlWNMAiiQb3Da0duS0ctKpv6s1tHcTF5DhNZqnOfR1MM6AOGqMJNHr6/OaIEmq0gwI0plpstKomsjdG9FSSKlyzTyJ7B7w==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1758277463-55761
+X-HE-Meta: U2FsdGVkX18yrhIhBpSP+pSl1VS7szg9+O+b/9u9Vebr+tuUru2Irm4U9pvfd/48HMNFTcZZK421bdEADZt698XgebTVnTycn79Ud844PTMUw9DZFHbyg9s5TSRh66O64QHeTgSQ/LzA8Y0bQG7CH8g04DKE9z/H2bHFIyEfk/ADHY2Mkp75IUuaW8x/aBc2otTt8n8XcEFi3W85kzYgYHIQg5/5jx/TdMuRzT3V+6pXO9FB4d/OCzhe53dB5NP0uHny5LnOcYgreW7PWdW3VgDgwiISOm1OnIwKo+gxfjBXY4N6HOjiNI38J1V/VFHt2451LcmZIiBeT4g0vlGjwfOG2xrR9sBc3Jgf5kJJjHyb4bPfrYR3D8TY+Bh5GPCOlegeAsbC8h8K2kf2Up8CsJbu8OB/r+dOnFOabFRe6KK37rtr8g+MCR+GzkMloGTolwuFahxDDUnjoC1ivRaEzkl+ehWyGfeh5qffLxyXDCt3rJp7GwmuTbj8NyrrXAI+m3VNYciOMUfCdZYi3PrkGoyseyQOVkylYYgVs7S9ozgeM168hzw5n1K74S/dHNH1pwrP/tCp3hlIgy3npBVX0qOYBVN+GiAWWDCh+0xkmY47KTLCHafHodjfbftfOBr+4lmrfpSSW5exnPUbBXv+dQqaZX/LdOQYrX81sbzwS7qbisKJwWaiaLjpdrrLBCU3RqdVul8BuvSGlb5QNdzDg261do4UMj9fgLagQ6a0UG2RC1aeMmRgxsKPY5ibPIARV1gL5W0FczPhQatnw8NXpj4uN1FyZNm/msMzTexMmmxVghZ/4FLsQFW8pxISAPGBXg70wqAv4KcrLG8NYWUmzfmUHIFwZj41xcbhlPCRYNyfxwlD1x2lzCZ1dEA4fAuO2JXaQkZ7oV1plmblekldIl1vuoXT4a03n20Ex4Kpo6/dhPAiwHY4Fye6wXKq48bMBWSQVM7lb4AqzkqGg2h
+ Cw1pJesJ
+ 9gg9ABl6LtoAadLN6mbGoqBj6QxavvR8K073z49cpxMVQbTHWhj8tcXkuXKYyIQ7lohVwreXDEpJ9IAhSaxM+dqxZYTn/jcyk7ejtGLGYvhgd9Gvrqpxl2AMVs5k2eW9W2cBODKuFE+YD1ao+2pgV4gNTdtIcv3qkCTfl8n30Q1lV0qtDR+ko/kOtTueKESKTMZIyN583X4z8QflohXvszUv9zvrTbfmk53frT0sNhl8yzIZd1wIjfwmHagRwBu5QfAnKnZUylngh1oS6u+uzTe8wfTPBO6zMCtj7e1jHb4bNUpOZHZ0bX9f5GGJX3fn0/HAuiUMoSr4NrjtmqdTqY+9EQRpSKx0pu55OG5E9vwmfkdyG6Af6le2FGYiUrHKWhI8+YN2HgXP0WDHvAFwADexLYbupa2haP9V4vWRwv3F3tLiAyPvJ2Ro3II70PyP2Oefg7Ghs8yD30m9J+Ex96mZngDoEayJ0St+jAUCcV8r9o1KUakYn8SpRX7jeqI2vpKeK5lejaGbYo/GUlQ/Q1O4gda1C5MJBvC/l2envwPRn/+lX2SDFAvfWiuJOI+nhIkjJCrdk/s8k9kr8USKjG411WyGnlhywON+tVIWtnoi3AgMkkKalj0vTNtSS9WLbI4ILbIiGyw3lGl0gYr5Q0r43mahNuWrruJ/yEk0HeRz6DwoOOt5tE5J/51LBd0WjJvVdSrN4a3eTsyKa9DmA5FRNf2Lk4irjR0WfbJbCyA2D4UnZrtW66PBENMSrRPqsVuH+4zAMA2ytfKFAQIb/D4lMTef/eqbwmLEj7+151GgS4meAIzNktU5ebc/holsw7Di61KeWZj/aQ1mXSlqZ46e/kdQtJGNaMva2mSE+Z7ye5bOpH0zOyDlvnuFIh8t5nOTsH9VGEZGz2qGJjN4D8t8m7ZHRaHjrQ7akedUDkZVZFWOOEmZt/IPFIOSaMrMIplWTH58D5+zIJxXfVIUf1fj0LTH0
+ B2eVcRcc
+ 0+gMm+9fZVVjeh4l9loObORla5/Vx1b38NFtg2lUEKJy7sQdwyVVB9M6GLuC1KgzdS2raF95iS06KQXFkQzhKpJNDhDiyTJKM/ezPiy4jKFwK+as9B0614bECV/LHLUMIwETTw5hwRmosJJe03LL40KcysIn+CgH0kopTmKhIxpWxdLtKiN/meQOYQOZl0+ruySaTpq3UFjW8u+pMQx/q823VU6IIVuyWBtnPt3jqXDpjrIpsbJM4rawkU3+chdy3X+MH7T6M29q5wGbKrRIHFevM84gBrf+qnTrGpbb/J1IqVcAVW2f3GsAC9e0QMXDLBvRZXnLfC2dvtiKdq9+cvO1hwiKSxtYXWFegOebRGroOkRoMAIKcQKMCtw8iYHWAEGffd+eCxEKEpzbHV8mtpybGGdYT5gqoAUiwXYHkMJT4wErjqXi7eewE4oob8hKVpASyc6ROvTWuj62Rnkn/ZdLaIO+SjH262eYGSCcOHQ/mjMbKnGth/ceVz2epQg+nAeUXDZmgckppH4fFthQ+ADDpxezK65dM329O8n7sXKdgGoL/VF+c/I0crPt7+DoTICfXcpEBxXZPcH0/XyZoB42molGzd9U0T8FmDOPI88x7Q7ofD692ZuAHYCeAcHWtFQSARH3aNW/xTjjT7D5DITXqa6clUP3oCk/jdHqYTOBfs7j/ZLZtwFWW2hMWw1uvEfQ6eJyAHLca62l03IObD36Lw/BpaFUl9RIRCl6Ibuh+9XGNY4r2r9/5vX2cQ98RVMlt+b4t4bS5hmeYe2s/fj5rtMwyfQwmJqR4W0gx9l3BqkkaitVImVSPvXccEpv1u24c8P5Cf44B/iho5X4mFL5VTeI/AKT/0M02ocHnt9N86KHlicjOSo0DsDnJJ6wCQLDKWoaX2nFl2d4siiL8R/qvnqr9QYuxjWr3E805f+o4ZFUcUQMkY+4LPps3GBV2rmxW903kS72vb6HNIZkw7s9/HCgN
+ qvR1nTg1
+ 2YZ3LkqSNBylzr2emylIkT/UM0lNNNjbhs6rT7W4fxX2qtGOPNwfgKPc2sA/QZs3aTTdZSwULK+dxk4QoASzeQg6tjR+oTamT3hfyS2/jBIzlm98HyUEEC5PKBaXMK/CytSJyps13J9gTW43v3ww7DOoH+qzVIseVLEEiBP3j2CrDErI4olFsk0k6nUrkaf0GSXCYRgHd87vk3lLuPsvI33V2yxMFtxLTub2PL9YRQpKgkWNvPkDNDgHdOO4NcjnqAK8S8RZ6OiVFGtXyHEmiryh3lF2FXXBHMHyCKI1EovxniMnu+GRMCILNED8sgS8mhRv0lxeq7Ct70W+W150B4OOlyLwmSIAD6PYX+QEUYzozrn7BlGkjOyDR27VAdQ+jgwkrXuGsMGmHVBlAusUywRxRW0VCAeRRN+9GZKBFZlbLDB3mIA87o0LNpX4jJFIjul1Yqy7IqNRzcM0DpI9XLLVNwrZ+ZGYVFR4hbgEQco+elbsSd8Q6qvZy+EJwOxFJ9iW6R9WzAsJPiDTcniIgjWqaUHjQLVg0y3Gjqg5ZaTESjkqIvQKcPPgdhHeAI0uNTpP14RxSEXN/OXR1ExNtgZzrAxjPzuzhGBU6wTFbal1mB+6SQvgTs2RqamL1kgnuR9zaU+rBMLS+zJVVpOcMwCs9vqT6dB85sCNNxGdELfdaZKLvXBdmBxcobYUwjNv7YrtpqJ9Nj8eerMAOYc2U+wIz3GtHXZBvdukWZEAI7NhsuigWCd3KpBnT14XMAib0GMqdBShAbZe8zzS3fn/vulAPQkAt1Z54KjsLFAjTCzPCcVcrpvLqUilwisXxtPZhcKm4aS27qGjBvYIYUi7CeVRKHhdV/2yPbHGb93bZdkdfjfYsRQY27Mch7PNKOnLVFu97BIF5xzpoHVbXs/copwxr9RBsK7xvJ5QNMrCGhjxmkrVpX22WWLk7WTTmBRodlXKCsErxB4XqN24nbwy14yh6ExLB
+ TptOZbpY
+ 3rKGOl7Hy07JMi94noRyaxA34b2yCN/nIMQ8H5OqKJcYFGHCRnfKf/CAw/P6XHt6KLg2L57GQVNJ8o9OOV3jbppecSA6xCFhKVqMZr6gHsGhDvB6+fW6Dmhk1k4O+gSODlap3Ypm8b4IPJt8zjwJAeMXsTIyG+SkVDNaK/FrGnkkQ+a1bSZ1o/Iot4NiEQSMjeswPOBIJk4uh438Afp3yLkVIxxTq4v8wuMyXdhGASA9ZHEjepghqm5WnSZqB3qMk5opcs3XHoKR6k9DNB5Z03PQu61N9xdfGlsEdp90qBRAStMsKvFCvJsiyRi6H+4xVUntT19DDYJUfFArFBxlMd5I500ZqLcfyTi46xFYzrlUcb21cM+zF5AduW8ku7WSwVRPF2no+Y4DkeDq9nnNEgIBSaOQ7yXIMFIpxDdMHLyKBv7UbgQswPmolJpQzth6Zce8wBtzMW5SAZmFwRYQ7GW6LersZWomgRBVM6QzAohNCZKr9ChMKZ/7Ov3rA4by9tZwGykKZBqxYNV5aiIGD7hjakSzfynuJtjgBRd6SB2Y8cBmIpG5rs0LiUCxf42FWXyqKebPW+MeccPfGZv4vB5CXOwlL2xn1HM6k7A5zQolLlP4ZX69fy8tI/md6fjziPpC4xpsaruv515FJZeU4B/gYdeYh+gIoBP34naACA4yKyWEjgNUMw2qywgfV5KUs5ygUZgUtta6wHEgsjOO+MYKXzfHqYjHe3+vuMmRE/Wk+9L+0mvp5Z8TXQdBAnmI/8/jKNMADrxyvk1BvBSg0arwMB6OA1Z33b7kvurlU1MCc4IUdg1NMlmiph7VZ2IgABwM0V61rr3yktGgWwuNor6xZ6ai1YY5FKXGUD9YU204jpqYAohpCwGYAzMpVrlwSyDmYH3Ak2BvbKCRtp83Bl+AIf84NZ9OSIlIdFNXDh/ASXydefkWCQHrRIiTbuWlPeaX/O/0nJJugP+ODAgMshAR8qXD9
+ IAcILn2p
+ n753nZUo0RCrTp/mdVtqwYv96ygYQFYR0Y8bDtWmXvlyUThszcjFAURblSlRPCc/30bBDFHr7R/EA9qVSV2i+sT/L9egSBrsBBeAgqg3+B+sDI9q3l5C2DnCeyykbDhp3dk+wVmkH8qs8WbiQa+F0yx2no/dta2BWNtEaWJM5M/9WvYt/8gHOchmgqWv0CqaiXStqvdLlVUdCfFPb1MSrxh1NfycaJtf+ZgbBvxZCYQgzgwEmbMXFNrducWWQdP2c061hBhWQNiTkSxyZpbcDxzAsmoEjfxueE9udZw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -167,12 +167,16 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: David Laight <David.Laight@ACULAB.COM>
 
-[ Upstream commit 4ead534fba42fc4fd41163297528d2aa731cd121 ]
+[ Upstream commit 867046cc7027703f60a46339ffde91a1970f2901 ]
 
-Since 'unsigned char/short' get promoted to 'signed int' it is safe to
-compare them against an 'int' value.
+Allow (for example) min(unsigned_var, 20).
 
-Link: https://lkml.kernel.org/r/8732ef5f809c47c28a7be47c938b28d4@AcuMS.aculab.com
+The opposite min(signed_var, 20u) is still errored.
+
+Since a comparison between signed and unsigned never makes the unsigned
+value negative it is only necessary to adjust the __types_ok() test.
+
+Link: https://lkml.kernel.org/r/633b64e2f39e46bb8234809c5595b8c7@AcuMS.aculab.com
 Signed-off-by: David Laight <david.laight@aculab.com>
 Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc: Christoph Hellwig <hch@infradead.org>
@@ -182,22 +186,51 @@ Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Eliav Farber <farbere@amazon.com>
 ---
- include/linux/minmax.h | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ include/linux/minmax.h | 24 +++++++++++++++++-------
+ 1 file changed, 17 insertions(+), 7 deletions(-)
 
 diff --git a/include/linux/minmax.h b/include/linux/minmax.h
-index c0e738eacefa..842c1db62ffe 100644
+index 842c1db62ffe..2ec559284a9f 100644
 --- a/include/linux/minmax.h
 +++ b/include/linux/minmax.h
-@@ -26,8 +26,9 @@
+@@ -10,13 +10,18 @@
+ /*
+  * min()/max()/clamp() macros must accomplish three things:
+  *
+- * - avoid multiple evaluations of the arguments (so side-effects like
++ * - Avoid multiple evaluations of the arguments (so side-effects like
+  *   "x++" happen only once) when non-constant.
+- * - perform signed v unsigned type-checking (to generate compile
+- *   errors instead of nasty runtime surprises).
+- * - retain result as a constant expressions when called with only
++ * - Retain result as a constant expressions when called with only
+  *   constant expressions (to avoid tripping VLA warnings in stack
+  *   allocation usage).
++ * - Perform signed v unsigned type-checking (to generate compile
++ *   errors instead of nasty runtime surprises).
++ * - Unsigned char/short are always promoted to signed int and can be
++ *   compared against signed or unsigned arguments.
++ * - Unsigned arguments can be compared against non-negative signed constants.
++ * - Comparison of a signed argument against an unsigned constant fails
++ *   even if the constant is below __INT_MAX__ and could be cast to int.
+  */
+ #define __typecheck(x, y) \
+ 	(!!(sizeof((typeof(x) *)1 == (typeof(y) *)1)))
+@@ -26,9 +31,14 @@
  	__builtin_choose_expr(__is_constexpr(is_signed_type(typeof(x))),	\
  		is_signed_type(typeof(x)), 0)
  
--#define __types_ok(x, y) \
--	(__is_signed(x) == __is_signed(y))
-+#define __types_ok(x, y) 			\
-+	(__is_signed(x) == __is_signed(y) ||	\
-+		__is_signed((x) + 0) == __is_signed((y) + 0))
+-#define __types_ok(x, y) 			\
+-	(__is_signed(x) == __is_signed(y) ||	\
+-		__is_signed((x) + 0) == __is_signed((y) + 0))
++/* True for a non-negative signed int constant */
++#define __is_noneg_int(x)	\
++	(__builtin_choose_expr(__is_constexpr(x) && __is_signed(x), x, -1) >= 0)
++
++#define __types_ok(x, y) 					\
++	(__is_signed(x) == __is_signed(y) ||			\
++		__is_signed((x) + 0) == __is_signed((y) + 0) ||	\
++		__is_noneg_int(x) || __is_noneg_int(y))
  
  #define __cmp_op_min <
  #define __cmp_op_max >
