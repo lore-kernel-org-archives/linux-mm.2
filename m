@@ -4,90 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03F59CAC59A
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 21:19:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 890C6CAC59A
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 21:27:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3CE3B8E0006; Fri, 19 Sep 2025 17:19:10 -0400 (EDT)
+	id E41A18E000A; Fri, 19 Sep 2025 17:27:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3AD878E0001; Fri, 19 Sep 2025 17:19:10 -0400 (EDT)
+	id DF1CF8E0001; Fri, 19 Sep 2025 17:27:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E2F28E0006; Fri, 19 Sep 2025 17:19:10 -0400 (EDT)
+	id CE0288E000A; Fri, 19 Sep 2025 17:27:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 211E48E0001
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 17:19:10 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id BF8F013BCCE
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 21:19:09 +0000 (UTC)
-X-FDA: 83907265218.19.3270375
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
-	by imf18.hostedemail.com (Postfix) with ESMTP id D87091C0006
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 21:19:07 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nGJg7hTy;
-	spf=pass (imf18.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B69BD8E0001
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 17:27:02 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E538F877CA
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 21:27:01 +0000 (UTC)
+X-FDA: 83907285042.04.AE6CB60
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 37DE61C0009
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 21:27:00 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=OR7bCl9B;
+	spf=pass (imf21.hostedemail.com: domain of stefanha@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=stefanha@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758316748;
+	s=arc-20220608; t=1758317220;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p12cTL26ZHFVM4Qm9V+H+3b/qs9Q3cDSdyY4Ygtksps=;
-	b=hdn88hwKRE8HfQQpYW52M8VAGlpH/5e+vN7Cmyfv9oGqqoWxJeeHb/8TAb+c4Evv058r5N
-	0Vfb5GDMm0k49/tp6MyCic29p4Rp6M7ItGm8cotoWcOq2aX5sqnV306dodN2dNDdcV0HeC
-	qj1YoTISA8cxhhTW8QwmLUOAZORBYno=
+	bh=/kUNBbkgUP7UkdLkjt7gNAUDoEAUE2pfBTAUAT+0Q90=;
+	b=ykUs9meqNDmuLaJrG6QkN5kKN7PuF0cHjgibuXeA8tl4SpdBXtQ5NASSXtn6L3dgyarBRi
+	3vE+1iMCUEv90pfWSNWswHF/kRtqJTVcvGJmvRv2MKpVYyMPVukAYXrD4jdmCNApuhgRCq
+	XAnJkVxnoZIE0GT/PoSgzlTLJyWgghY=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nGJg7hTy;
-	spf=pass (imf18.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758316748; a=rsa-sha256;
+	imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=OR7bCl9B;
+	spf=pass (imf21.hostedemail.com: domain of stefanha@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=stefanha@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758317220; a=rsa-sha256;
 	cv=none;
-	b=GSd6zbtgOsc46xA0GITSXGpccEDkJa/ilvO+lWVnJKzrUlP4vXo9v/U1vngzaSb8kNNxM/
-	UQsh3ql+aGkdau8w7PCSuZHwNIKX2xtw5FivITpmtL2Mj3Cv1CXnHo3XKcwVEi4R+VEFfH
-	2NutiyIEjDbwn+UTCtcF+Udr+BYn3pc=
-Date: Fri, 19 Sep 2025 14:18:56 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1758316743;
+	b=MYPHqhaQ3q0fYbrJ1gmAc5froPsvjWme/LQUJ8VxMhzV/ebJ2fNbsSOttBfz4ZlKc2xruB
+	vbbZpvo77qDVMCy7CY705RC76h9GQtkqyv+kSWC9P+AR5niiE1H+hSvDTTcq8p1+7eegek
+	WZoIwgD1o4nhjd8fTtd3tmJM1sOBg8E=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1758317219;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=p12cTL26ZHFVM4Qm9V+H+3b/qs9Q3cDSdyY4Ygtksps=;
-	b=nGJg7hTyy/6oFsvUnre0j5HvVRBGA2A/LqgWlsORgFlczoEBROH9HQMg62fACPXS1A7Nwh
-	Gy1z3upufBIMiWNXB5t7yz4zdT7NdHcSq/AOuE9C0xGupOFO7BYLin6X2tiCp/zeiOEfL5
-	YccEWsq/XtqO8eeMHeYqFnY/GoJr8f4=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@redhat.com>, Hugh Dickins <hughd@google.com>, 
-	Matthew Wilcox <willy@infradead.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>, 
-	Harry Yoo <harry.yoo@oracle.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Kiryl Shutsemau <kas@kernel.org>
-Subject: Re: [PATCHv2 2/5] mm/rmap: Fix a mlock race condition in
- folio_referenced_one()
-Message-ID: <vc7lycvsvehisjr5drbng2lupytme3grubxbtgavvvjknkgzd6@axgctxng4424>
-References: <20250919124036.455709-1-kirill@shutemov.name>
- <20250919124036.455709-3-kirill@shutemov.name>
+	bh=/kUNBbkgUP7UkdLkjt7gNAUDoEAUE2pfBTAUAT+0Q90=;
+	b=OR7bCl9BxF27TcnWXm348zmnilEZJ2ifKBlJqApsbzHxD3ZUo2r3X3pERYfyr62Y8xby2+
+	hALphsx5WOfvSMZti4QG2wHxKHilZQc3mS1iabTZE+AafTC3NkFA2Pw6i1FZWT9I+okyLz
+	PEEwkgrEw4i6uMI/GC9HQJD10IJN21E=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-660-Z8c109b3MmeDkNukUh-YgA-1; Fri,
+ 19 Sep 2025 17:26:55 -0400
+X-MC-Unique: Z8c109b3MmeDkNukUh-YgA-1
+X-Mimecast-MFC-AGG-ID: Z8c109b3MmeDkNukUh-YgA_1758317214
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7256919560B5;
+	Fri, 19 Sep 2025 21:26:53 +0000 (UTC)
+Received: from localhost (unknown [10.2.16.43])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id DB9B7180035E;
+	Fri, 19 Sep 2025 21:26:51 +0000 (UTC)
+Date: Fri, 19 Sep 2025 17:26:50 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Cong Wang <xiyou.wangcong@gmail.com>
+Cc: linux-kernel@vger.kernel.org, pasha.tatashin@soleen.com,
+	Cong Wang <cwang@multikernel.io>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Baoquan He <bhe@redhat.com>, Alexander Graf <graf@amazon.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Changyuan Lyu <changyuanl@google.com>, kexec@lists.infradead.org,
+	linux-mm@kvack.org
+Subject: Re: [RFC Patch 0/7] kernel: Introduce multikernel architecture
+ support
+Message-ID: <20250919212650.GA275426@fedora>
+References: <20250918222607.186488-1-xiyou.wangcong@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="wJMNkTvE9gcHAHlx"
 Content-Disposition: inline
-In-Reply-To: <20250919124036.455709-3-kirill@shutemov.name>
-X-Migadu-Flow: FLOW_OUT
+In-Reply-To: <20250918222607.186488-1-xiyou.wangcong@gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: D87091C0006
-X-Stat-Signature: wef7ocoddd6rc18zubayena445o5cjyr
-X-HE-Tag: 1758316747-158612
-X-HE-Meta: U2FsdGVkX19f1RB46GeQJcvJNsapnCKC64PDVkzDSVKDmOEZe/3sfYJGTTEHsCLQUHEuiEcZ04wLG/4xRzSo0lS4NKr4ksbnUcyDs4D3TdNvT93Gy29dR7rbCotY2gHHwqyLeNAJHE92530U5hA1VpLZP9T7Fzzq0G+wlgwE83uDz8vMEZOgyZ3T9J5Qmel4EGGdgcO4oOTIuRV8TUatG5tS6TEHdbbq2SfAo3kxJVeOYi8WaBN8CndCzyqwc5pIrHJJ7LKRpWXl4Z3gCwO5jLaiULaZYN4qu/CKc26drtzV3SY2Sn3RAD2GbV8cnccZwCdxRydb4eDF6xtMNhb5+Xv+bwc9/jA7PgGHzWEwMnokukOZmyBgU5rj42He2GKpncUAZqrLBTLGhb/CX/P0wp2NL7VeIxeCcidmgFWt2MJOYHHn7ArQ7wsors19ca8fnHys215YHlUNbyYzS7coZVpFmdWbYvLLaHof92BlqlMeBPHB/ekcdhSQAixYdOhaKylvz+dPuot4U6ZV3D97R5eP/sfHRO1akytphZHSm+gGquU7uR/QPWQezby14o70YHO6IZ88eTqq+QbJvNMdHx24vIf4wi3185db27nG0dlB4x+T2oMEMBGFOHZ3aDnrb3E2qN1wHg6qthM5WKWMu1MiiD93lQLyFvNYYfKgcB984woC9/9p6N3lMj+Q7Sde7xGid68OmPrpt6U4yrA18GLzoo7aeFixUPmylg2b/H21iTUeAchZHnQ2L4KMmLtKRD6dvK6SQkGAn4EU16ORE/rOscwMTC7bSpNh68DwraKzY6YAvDuE4pPiXQsCOil+P+UFstPFojCMSqFt44JUXOuywQ/pnYfreKbk/NEVbN+WpTnNDxAj8TWv+D8HFQhwTqfuS+KXrNTnKf1h0E7rx9gA8FYOAgta52HtJWYuGg1CTyUkUXomhvV3nqwpudQo+NQjLHOyFB7dopxkEHa
- NvF5y8ta
- TGYeW10RD+NaItx7YbxbASU1Nf6SWDD4bhC266/v8SAq73b/zVqV0FvdOu8J2EyasLpmkUikf3Z22zAG8ERgQl2cCriEUBH0dW4qW1P8S6PmNzIBSdb/d46vua3hfj//WyrsgVjMIsU4dY8JYBmJk59T4T0hFf+gQKedCkt6abAABuHQAsBt7GEfipHnGj43PQx0UJ2/7FKvvEW6wEBRFluAJhL5Fi6Fvh+EM30YfpNopvEk3Td0WYmlk2gmCA3rI/aihlQjaC/8EiWDro+ZRaSpNQQ==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 37DE61C0009
+X-Stat-Signature: sft93enwyui569kmzunijuowf479xqj7
+X-HE-Tag: 1758317220-237606
+X-HE-Meta: U2FsdGVkX19vBKE/dED7E+3vbvUpGCfeyVt9KHMpCoNZqkc1A/+sb5Oajuw/cNmlwsmYraa/CQbaF+elKsuk+v02Ki+yeKuc75L1WXi3osGbg0wSVCvoMSX7yuDQvz3UJoJFm9YuLCzUrsRtwsdXeWH0Ekp60TjHKtpYFoa5l3iAZ1tPWd9hZeUVNQXqTB8+3Az4UW40RBnAUqx4fT94LQUbL1Y9z6mVCmbHFLeJogpYPEN4CyLRkmKsJCjzoXSZTjqnweHO3DxX4f+2nzHGfXKg9PV//CLw1FfNcKFsY2JLy+jAlvBAebcM70F5HOoxYejTy1XwS+5ldNqjwEDVXTbeAiOAWYZ8d4TxxOW/jlpOxmyRslrRXvLy4AImxl9N7OSPzLZIJbsHj3mxhN4Eir5IhgyS6oiqkLVy68sFot3RHufhTVN68e8MJeLrQ96UaurHt64uX99oBsoFu3jNXkPgKK0Vm4toJaXVOcy7jND1nApmBquffgIQppjGPp4FOZ/JzVyY+bMGXF6AmkxJms9qqlD6UzgilTEuIgx3gQzftJP6Gq8FaBAETO3XpN2rdFEFasL7vU2OI0gPxcH+BCj80Wn/DTgqmTjeDw2uErgmQi+iEm5mXP6ESBzmwkYdUn3+1Ta9cx8VzWPNrFQ9iVBhBY6y/mzfyBRh/+qZh+/emgU9h6pSIk2hHEnGmNZWRckox4jcKQ/A8511yKQvgqh1FBRN3KfeQo8VUyf/wmqbezs2uCNvIY014637otNf4Fai8/vs+6LPT1V+/53g+Ef1dyRKibfQrit58Nhlq2X7lPmwG9uA+vAIfuZvB97hgKkSDSiTjMlnyWmXxbnVNYVlrPZokCcrOF1SfKtbv+SV2/h/sGKXG1MydBrFTLP7La0Spkb8/a+BK5rCLXIkNIVUiR+b/iZhy22ATPXVTy713g4TdTv/DdqsCeiJR/lvqyiQcqczMjmIX6gIDMg
+ DKkPiuha
+ cOQ4ScXS1NO6vbpk3N5ARUR4ZN6z5sU9c5iUkAT4jiU3ulPzelORC5xwxwKhzpueTbUYCzdWyQ2YYLr1uPxRSuKMfby478fKhSDLYsiRsupnbO6DtrABOfXfS2mDIVuzYnTQ+JIqZmhaGpjfjzhZJN3CCxk2ckrwYemjXiSMPEdpCaQoeIFKiRRkr1QRUTIJoP3MOnfC9iL2uEI0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,23 +109,168 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 19, 2025 at 01:40:33PM +0100, Kiryl Shutsemau wrote:
-> From: Kiryl Shutsemau <kas@kernel.org>
-> 
-> The mlock_vma_folio() function requires the page table lock to be held
-> in order to safely mlock the folio. However, folio_referenced_one()
-> mlocks a large folios outside of the page_vma_mapped_walk() loop where
-> the page table lock has already been dropped.
-> 
-> Rework the mlock logic to use the same code path inside the loop for
-> both large and small folios.
-> 
-> Use PVMW_PGTABLE_CROSSED to detect when the folio is mapped across a
-> page table boundary.
-> 
-> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
 
-Nice, this simplifies the code.
+--wJMNkTvE9gcHAHlx
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
+On Thu, Sep 18, 2025 at 03:25:59PM -0700, Cong Wang wrote:
+> This patch series introduces multikernel architecture support, enabling
+> multiple independent kernel instances to coexist and communicate on a
+> single physical machine. Each kernel instance can run on dedicated CPU
+> cores while sharing the underlying hardware resources.
+>=20
+> The multikernel architecture provides several key benefits:
+> - Improved fault isolation between different workloads
+> - Enhanced security through kernel-level separation
+
+What level of isolation does this patch series provide? What stops
+kernel A from accessing kernel B's memory pages, sending interrupts to
+its CPUs, etc?
+
+> - Better resource utilization than traditional VM (KVM, Xen etc.)
+> - Potential zero-down kernel update with KHO (Kernel Hand Over)
+>=20
+> Architecture Overview:
+> The implementation leverages kexec infrastructure to load and manage
+> multiple kernel images, with each kernel instance assigned to specific
+> CPU cores. Inter-kernel communication is facilitated through a dedicated
+> IPI framework that allows kernels to coordinate and share information
+> when necessary.
+>=20
+> Key Components:
+> 1. Enhanced kexec subsystem with dynamic kimage tracking
+> 2. Generic IPI communication framework for inter-kernel messaging
+> 3. Architecture-specific CPU bootstrap mechanisms (only x86 so far)
+> 4. Proc interface for monitoring loaded kernel instances
+>=20
+> Patch Summary:
+>=20
+> Patch 1/7: Introduces basic multikernel support via kexec, allowing
+>            multiple kernel images to be loaded simultaneously.
+>=20
+> Patch 2/7: Adds x86-specific SMP INIT trampoline for bootstrapping
+>            CPUs with different kernel instances.
+>=20
+> Patch 3/7: Introduces dedicated MULTIKERNEL_VECTOR for x86 inter-kernel
+>            communication.
+>=20
+> Patch 4/7: Implements generic multikernel IPI communication framework
+>            for cross-kernel messaging and coordination.
+>=20
+> Patch 5/7: Adds arch_cpu_physical_id() function to obtain physical CPU
+>            identifiers for proper CPU management.
+>=20
+> Patch 6/7: Replaces static kimage globals with dynamic linked list
+>            infrastructure to support multiple kernel images.
+>=20
+> Patch 7/7: Adds /proc/multikernel interface for monitoring and debugging
+>            loaded kernel instances.
+>=20
+> The implementation maintains full backward compatibility with existing
+> kexec functionality while adding the new multikernel capabilities.
+>=20
+> IMPORTANT NOTES:
+>=20
+> 1) This is a Request for Comments (RFC) submission. While the core
+>    architecture is functional, there are numerous implementation details
+>    that need improvement. The primary goal is to gather feedback on the
+>    high-level design and overall approach rather than focus on specific
+>    coding details at this stage.
+>=20
+> 2) This patch series represents only the foundational framework for
+>    multikernel support. It establishes the basic infrastructure and
+>    communication mechanisms. We welcome the community to build upon
+>    this foundation and develop their own solutions based on this
+>    framework.
+>=20
+> 3) Testing has been limited to the author's development machine using
+>    hard-coded boot parameters and specific hardware configurations.
+>    Community testing across different hardware platforms, configurations,
+>    and use cases would be greatly appreciated to identify potential
+>    issues and improve robustness. Obviously, don't use this code beyond
+>    testing.
+>=20
+> This work enables new use cases such as running real-time kernels
+> alongside general-purpose kernels, isolating security-critical
+> applications, and providing dedicated kernel instances for specific
+> workloads etc..
+
+This reminds me of Jailhouse, a partitioning hypervisor for Linux.
+Jailhouse uses virtualization and other techniques to isolate CPUs,
+allowing real-time workloads to run alongside Linux:
+https://github.com/siemens/jailhouse
+
+It would be interesting to hear your thoughts about where you want to go
+with this series and how it compares with a partitioning hypervisor like
+Jailhouse.
+
+Thanks,
+Stefan
+
+>=20
+> Signed-off-by: Cong Wang <cwang@multikernel.io>
+>=20
+> ---
+>=20
+> Cong Wang (7):
+>   kexec: Introduce multikernel support via kexec
+>   x86: Introduce SMP INIT trampoline for multikernel CPU bootstrap
+>   x86: Introduce MULTIKERNEL_VECTOR for inter-kernel communication
+>   kernel: Introduce generic multikernel IPI communication framework
+>   x86: Introduce arch_cpu_physical_id() to obtain physical CPU ID
+>   kexec: Implement dynamic kimage tracking
+>   kexec: Add /proc/multikernel interface for kimage tracking
+>=20
+>  arch/powerpc/kexec/crash.c          |   8 +-
+>  arch/x86/include/asm/idtentry.h     |   1 +
+>  arch/x86/include/asm/irq_vectors.h  |   1 +
+>  arch/x86/include/asm/smp.h          |   7 +
+>  arch/x86/kernel/Makefile            |   1 +
+>  arch/x86/kernel/crash.c             |   4 +-
+>  arch/x86/kernel/head64.c            |   5 +
+>  arch/x86/kernel/idt.c               |   1 +
+>  arch/x86/kernel/setup.c             |   3 +
+>  arch/x86/kernel/smp.c               |  15 ++
+>  arch/x86/kernel/smpboot.c           | 161 +++++++++++++
+>  arch/x86/kernel/trampoline_64_bsp.S | 288 ++++++++++++++++++++++
+>  arch/x86/kernel/vmlinux.lds.S       |   6 +
+>  include/linux/kexec.h               |  22 +-
+>  include/linux/multikernel.h         |  81 +++++++
+>  include/uapi/linux/kexec.h          |   1 +
+>  include/uapi/linux/reboot.h         |   2 +-
+>  init/main.c                         |   2 +
+>  kernel/Makefile                     |   2 +-
+>  kernel/kexec.c                      | 103 +++++++-
+>  kernel/kexec_core.c                 | 359 ++++++++++++++++++++++++++++
+>  kernel/kexec_file.c                 |  33 ++-
+>  kernel/multikernel.c                | 314 ++++++++++++++++++++++++
+>  kernel/reboot.c                     |  10 +
+>  24 files changed, 1411 insertions(+), 19 deletions(-)
+>  create mode 100644 arch/x86/kernel/trampoline_64_bsp.S
+>  create mode 100644 include/linux/multikernel.h
+>  create mode 100644 kernel/multikernel.c
+>=20
+> --=20
+> 2.34.1
+>=20
+
+--wJMNkTvE9gcHAHlx
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmjNypoACgkQnKSrs4Gr
+c8jDiAgAg+cJ1RtnT6VtPZ4iFMdU8taG28VItTHeoGu8v+SDyVctvyYYKUHpmW1x
+YZGWILjIz9LhjSqbVktIdavzMa/cGZBkWz6oWEdeEu0+uIUarlX3xQnSxSaHP9Js
+anZypzajok9Byzw7uQBHs2piynVAUEo34cMwq0jEGFXj817RLsx5mObptUJEFpgE
+mo3h4uzt6Pn8ASWpYve3zdr1TgpafXg1ljHoYpSR3CXjaUWfD1ycpFFag/k9l9Qv
+XPpGN8iviPGt5BwMvIvlMRKlc3vVg+l7wFwiunZpJ8ehsVh+Sj23ji0HKVNS94X5
+0kD3uiFZX97QuMHLzUX6QlNNzFyQNQ==
+=3ZjT
+-----END PGP SIGNATURE-----
+
+--wJMNkTvE9gcHAHlx--
+
 
