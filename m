@@ -4,125 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D34B9CAC59A
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 21:06:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03F59CAC59A
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 21:19:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 29E728E0005; Fri, 19 Sep 2025 17:06:18 -0400 (EDT)
+	id 3CE3B8E0006; Fri, 19 Sep 2025 17:19:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 276848E0001; Fri, 19 Sep 2025 17:06:18 -0400 (EDT)
+	id 3AD878E0001; Fri, 19 Sep 2025 17:19:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 18C108E0005; Fri, 19 Sep 2025 17:06:18 -0400 (EDT)
+	id 2E2F28E0006; Fri, 19 Sep 2025 17:19:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 01EB68E0001
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 17:06:17 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9ED191DFF24
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 21:06:17 +0000 (UTC)
-X-FDA: 83907232794.13.45541D4
-Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
-	by imf13.hostedemail.com (Postfix) with ESMTP id C3DC020008
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 21:06:15 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=LqdzgI2J;
-	spf=pass (imf13.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.219.180 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 211E48E0001
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 17:19:10 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BF8F013BCCE
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 21:19:09 +0000 (UTC)
+X-FDA: 83907265218.19.3270375
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+	by imf18.hostedemail.com (Postfix) with ESMTP id D87091C0006
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 21:19:07 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=nGJg7hTy;
+	spf=pass (imf18.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758315975;
+	s=arc-20220608; t=1758316748;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iWPFq5XLiSe5P7Lh1OFm30F3HOSWuJ2B7iUyo634nUk=;
-	b=UIJf0n1ueSWXXCNvSPvtpOGFa4dMRGKRdRMRQkAyGUzHy+cdFKldnmry+zPkIT7Nu51bZG
-	jNKtCFdED4NMYUXDZtXwh8rzTu69QXRm0zCEEk6ZdUnIKjqH5MdKeaCEJVXhNFM3thd7/y
-	Owp2uwmA5hehkwKG14c7nWncX2+sehU=
+	bh=p12cTL26ZHFVM4Qm9V+H+3b/qs9Q3cDSdyY4Ygtksps=;
+	b=hdn88hwKRE8HfQQpYW52M8VAGlpH/5e+vN7Cmyfv9oGqqoWxJeeHb/8TAb+c4Evv058r5N
+	0Vfb5GDMm0k49/tp6MyCic29p4Rp6M7ItGm8cotoWcOq2aX5sqnV306dodN2dNDdcV0HeC
+	qj1YoTISA8cxhhTW8QwmLUOAZORBYno=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=LqdzgI2J;
-	spf=pass (imf13.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.219.180 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758315975; a=rsa-sha256;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=nGJg7hTy;
+	spf=pass (imf18.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758316748; a=rsa-sha256;
 	cv=none;
-	b=A/edbZc23DvzeC7NKz9JceYv0ulwtSrf9U4rctIqG7ZnVQNqQm5DL7FOgZ3B1gDocyclXD
-	mpFa10KmgIpe/1k4jJcFD4lJzdIZX7Psddfy3G0jEV+o6od1TzpzaB2r+3bovXQ3Kx00q0
-	wAdtWGU23QzczED2xzPNimFzdqsqYOA=
-Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-ea5d1270b56so2831207276.1
-        for <linux-mm@kvack.org>; Fri, 19 Sep 2025 14:06:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758315975; x=1758920775; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iWPFq5XLiSe5P7Lh1OFm30F3HOSWuJ2B7iUyo634nUk=;
-        b=LqdzgI2J42AQu4f4cxWFTWQWm5zCbbNZYyie9mgRhisJEOiSuGgpkaet5ldoRW/Lgq
-         ib1TL9AwZZKp1vBq7NdwdkDO6rfVeConnkKPx9IjvbA2uRuJy9ITml6FG6+iGZNHoFre
-         2zKNnkxzQlsPo5vTz2iZX8zCD2caF6MwxYQ5NsI5OgkV7J7eTCgxFH1XMRqXLNx0mQPe
-         XtsHa+CUY9uAGbXT69oeWyJBtkJtS5Xiflz6MlHIM5emaE+D6apA33XgDr/KMcrPA6wG
-         dgFp7Guue34r4cIOqVf2BlrauWIPNbvDG9EyBY3G+wVjx5nHsGQDhWA5sfyvmGPWMYHZ
-         hUNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758315975; x=1758920775;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=iWPFq5XLiSe5P7Lh1OFm30F3HOSWuJ2B7iUyo634nUk=;
-        b=F+uS6wVuVv0ZVAYWbl665rNCCayWDRVCYqf5/A8J/mjX8MHB0xAn47HT+pPIJNNi3R
-         jLOXZbS0hJSBBEx/CPHKZGh8TfqjZZWlcS6xAgTVAKhG8LlkCxF14y1yQG1CSPnyqy0V
-         0d8fj2AYmgl2ANRhEjz/BL8wnQEDJSMYIG6k83dLWGcrWJWp9wDS/MldGd9EWnmEM7YN
-         FwdDGO7S/7E+SndKytmRqfSc+weIqupQmh05Qjq28NSY2+/V7CbGyeAdXKIcTEZuNqIJ
-         3zthydYhbplJmd4YIn/a3D8Hm8sBhh7SwA6bYBipUpuRrhF8SgOgoy5jbCaVHPGA6Rf3
-         Qozw==
-X-Forwarded-Encrypted: i=1; AJvYcCUxURKLl/GzvmuvRQpGTX7z3n8jekr/I2rgmNwYkThUhhzp0a4eOHu+SCnBlkKwr/K4N8syoRJwAg==@kvack.org
-X-Gm-Message-State: AOJu0YwGpQHgH40cYdM5o9QijwFIL6cmanzuOi5OgLAbftMHQrf2WeqO
-	2quf7Rf8pUYMk2ZOzkDE9Y3BatU3HwoP5Pagu15uehBX8DQTnY5PaFlY
-X-Gm-Gg: ASbGnct2uKbkH9olfqx/Aebq+9GKiCf/mUNUE70KD1j8AZ+n8y9vy5GpLpM3o7tnSzk
-	FyTzZWzK08mERbTXeckFUYI/q1FYhiL0/EGPN873882aISPVTKhR0Q7rd//+GBkLwIBZcLFS+G7
-	fdr7Y5QCoSvjusHoQPKz4xkKmSA4Z70VSSTgLTqG2jq4hlJuTYGJS3k8AOaIlMloCzG2658rstA
-	oYK/7gqw9SIBhzC9Mcm700+7/KrkT8Wtxksa8byS1LeeCHNG8oIphUzI/6qoVEM+X6xESV+xDKY
-	Z/A5rlSw52Tv58mmMg78+2o75NxH7jaNnjfYm4Bx5iuZ7Ct9+al7I/3/6wDYRf5xvr3+k9VfVY0
-	xn+n2zW3UwnSe+xfjKH72jYAIaY1Squ0C/ySqS0PfJmqg6gjJVpoJ
-X-Google-Smtp-Source: AGHT+IGu/B19WQElReS4mpdnS2mhyC2RhfwEOQrFXpAd2AUmLIVgGNgyYw5nlRAj/98u6sCZST88wg==
-X-Received: by 2002:a05:690e:c8:b0:62a:83f3:a575 with SMTP id 956f58d0204a3-634779c2cf5mr2920693d50.8.1758315974624;
-        Fri, 19 Sep 2025 14:06:14 -0700 (PDT)
-Received: from localhost ([2a03:2880:25ff:b::])
-        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-ea5ce85481fsm2010344276.19.2025.09.19.14.06.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Sep 2025 14:06:14 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
-	Chris Mason <clm@fb.com>,
-	Kiryl Shutsemau <kirill@shutemov.name>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Zi Yan <ziy@nvidia.com>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH 0/4] mm/page_alloc: Batch callers of free_pcppages_bulk
-Date: Fri, 19 Sep 2025 14:06:11 -0700
-Message-ID: <20250919210612.1975459-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20250919130644.f3a4afdf0c2e51bbec59b6e0@linux-foundation.org>
-References: 
+	b=GSd6zbtgOsc46xA0GITSXGpccEDkJa/ilvO+lWVnJKzrUlP4vXo9v/U1vngzaSb8kNNxM/
+	UQsh3ql+aGkdau8w7PCSuZHwNIKX2xtw5FivITpmtL2Mj3Cv1CXnHo3XKcwVEi4R+VEFfH
+	2NutiyIEjDbwn+UTCtcF+Udr+BYn3pc=
+Date: Fri, 19 Sep 2025 14:18:56 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1758316743;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=p12cTL26ZHFVM4Qm9V+H+3b/qs9Q3cDSdyY4Ygtksps=;
+	b=nGJg7hTyy/6oFsvUnre0j5HvVRBGA2A/LqgWlsORgFlczoEBROH9HQMg62fACPXS1A7Nwh
+	Gy1z3upufBIMiWNXB5t7yz4zdT7NdHcSq/AOuE9C0xGupOFO7BYLin6X2tiCp/zeiOEfL5
+	YccEWsq/XtqO8eeMHeYqFnY/GoJr8f4=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@redhat.com>, Hugh Dickins <hughd@google.com>, 
+	Matthew Wilcox <willy@infradead.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>, 
+	Harry Yoo <harry.yoo@oracle.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Kiryl Shutsemau <kas@kernel.org>
+Subject: Re: [PATCHv2 2/5] mm/rmap: Fix a mlock race condition in
+ folio_referenced_one()
+Message-ID: <vc7lycvsvehisjr5drbng2lupytme3grubxbtgavvvjknkgzd6@axgctxng4424>
+References: <20250919124036.455709-1-kirill@shutemov.name>
+ <20250919124036.455709-3-kirill@shutemov.name>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250919124036.455709-3-kirill@shutemov.name>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C3DC020008
-X-Stat-Signature: o8aiyburdbbdsz9ztxgkscx7i7hd8p4i
-X-HE-Tag: 1758315975-29479
-X-HE-Meta: U2FsdGVkX1/OSfQAuCrW5VozFWb3jvA4WNh9G3IelIdHBU+EuOooopDmO2HdNlUjXqXzaZcSCRxiNW1bptTcrde9z9iuXFZaB5dTzqutPOtzFZEKADYVMj9y312lKN7EnHU0TTVstl0tdyk7Cc+z9qEcz5N6kh1+SZGAyvyc6qiRtrxoCHj/EgquM3NaUC31ZjnxwzY6fBnC/55e5UnwrqqwWbQAGXIhowL0OUatgp3wZlI3CfZWA20pfVGO48HfQ7cb+Bop7GUmy6snNY096MazGeEoh6D8zpqxzmXV90s/lmE9Ziq4Tbdyu3mRXOuoyUrF9t7T0HHNSsNd5AuyZzTzouORldXZz4Y4eUcW0sZeWkFH0G+Xy/Z4RcsDJAcasmi/eHhgrHXzzlTHu9Oeg0xI4CUX41JsfTLWK/Micy46HVTiH0dHVpop1ChujVMFV3lNpeyc+WupwiS4rAIhoM+Dec4Lbtn3Q6d6gEd/sLth0dQQVZDFUcGIIc1NHV3BrQ4ErPmIXi3FrBBicM+MiYbWvvgnigtcchaDlvZ3l8W2HqCpdkHZHG/NR4BpPI76vdh5HwwHHkM0VUzyE6LCAUdQruboROCHs7LvVcYFSLEbp5mZmgDIHoiDt+PqksuHUvYtISf5OkjSZK5lLNSVX3xh16DHfTJZaFJEeYgz25NSLPFg7LJR6n8G7CVZZM7iD5X4/4EK6FY09SbGAKgD/B/rAoEZj+IUZ1Kjazc2YNKinjmz7ukOaMZvoqMrC8ukhdgMsOodPw5DM2kCTq/iHR4Mko38Ou2/vPanF8tV6/olEF1q47Mes/MBYGJTsWAeONvb9W+o+bIohUf8OeSEXHwIzihM5utOseSxK5kYOPwGL1NBy3f34GpeFXWAB3o4UiKDHOHT9iomnPFeuCEa2e+MyrEof7ikpT3vLKGuXhLnXvh8itl63xJyb1VtSeFzb3pRNWz5iTxZ9C30bzz
- 2DSpmWZc
- bP5cEHvXB8XZ5iZzrbfS9hfWNodQeOXtk6X3TByTcO3qA7DRsN0RDKHzkhYtr3myEc+DZTZMlpP19h+ebK1/fetosWv7J9YHtS/ceon+MUan5nRCxD763nv+LFAG1/vlX0hg7aynR9Oo/Bt7jp+ux3Z2yWtZUraMb1olL7A9m9iadV6TFm0jY23WTCLnphiHToaaZa+x4cb3XQ2JAVKnG/jfVBuOzAoNQLwHmXZY/d+AhiJJYZqNWu3QhRFgzOKp0PCQdtXNCkArpbWC9+1gvJ9P4TSzJr3lVVYuB5+sG8SYGj4L7Ik68WecWDofmyuMBq0vGDG4+yQcW9UjvWzwAqkRDtybHP/y83CLCmHUap+ofWQH2MNFp+KqcV5HmSYbws8I2KFejgfIYFyR8hl/zCt5r3AmI8jzgpGSd2U1HTpkrWGUunbA31dt0OwDd+Nha6/XPghIqSCHUwe8Ioggc3asWGh5OQlG0DPtCr1nY4jDfIfhlYskl5C+Z15ah3wpMrnBH5M23dU+XqUG0WIahggsLWx2nRv72Bx7qDTBc4KWwXOS+KuKlEnEw4gLX6KeubuKr
+X-Rspamd-Queue-Id: D87091C0006
+X-Stat-Signature: wef7ocoddd6rc18zubayena445o5cjyr
+X-HE-Tag: 1758316747-158612
+X-HE-Meta: U2FsdGVkX19f1RB46GeQJcvJNsapnCKC64PDVkzDSVKDmOEZe/3sfYJGTTEHsCLQUHEuiEcZ04wLG/4xRzSo0lS4NKr4ksbnUcyDs4D3TdNvT93Gy29dR7rbCotY2gHHwqyLeNAJHE92530U5hA1VpLZP9T7Fzzq0G+wlgwE83uDz8vMEZOgyZ3T9J5Qmel4EGGdgcO4oOTIuRV8TUatG5tS6TEHdbbq2SfAo3kxJVeOYi8WaBN8CndCzyqwc5pIrHJJ7LKRpWXl4Z3gCwO5jLaiULaZYN4qu/CKc26drtzV3SY2Sn3RAD2GbV8cnccZwCdxRydb4eDF6xtMNhb5+Xv+bwc9/jA7PgGHzWEwMnokukOZmyBgU5rj42He2GKpncUAZqrLBTLGhb/CX/P0wp2NL7VeIxeCcidmgFWt2MJOYHHn7ArQ7wsors19ca8fnHys215YHlUNbyYzS7coZVpFmdWbYvLLaHof92BlqlMeBPHB/ekcdhSQAixYdOhaKylvz+dPuot4U6ZV3D97R5eP/sfHRO1akytphZHSm+gGquU7uR/QPWQezby14o70YHO6IZ88eTqq+QbJvNMdHx24vIf4wi3185db27nG0dlB4x+T2oMEMBGFOHZ3aDnrb3E2qN1wHg6qthM5WKWMu1MiiD93lQLyFvNYYfKgcB984woC9/9p6N3lMj+Q7Sde7xGid68OmPrpt6U4yrA18GLzoo7aeFixUPmylg2b/H21iTUeAchZHnQ2L4KMmLtKRD6dvK6SQkGAn4EU16ORE/rOscwMTC7bSpNh68DwraKzY6YAvDuE4pPiXQsCOil+P+UFstPFojCMSqFt44JUXOuywQ/pnYfreKbk/NEVbN+WpTnNDxAj8TWv+D8HFQhwTqfuS+KXrNTnKf1h0E7rx9gA8FYOAgta52HtJWYuGg1CTyUkUXomhvV3nqwpudQo+NQjLHOyFB7dopxkEHa
+ NvF5y8ta
+ TGYeW10RD+NaItx7YbxbASU1Nf6SWDD4bhC266/v8SAq73b/zVqV0FvdOu8J2EyasLpmkUikf3Z22zAG8ERgQl2cCriEUBH0dW4qW1P8S6PmNzIBSdb/d46vua3hfj//WyrsgVjMIsU4dY8JYBmJk59T4T0hFf+gQKedCkt6abAABuHQAsBt7GEfipHnGj43PQx0UJ2/7FKvvEW6wEBRFluAJhL5Fi6Fvh+EM30YfpNopvEk3Td0WYmlk2gmCA3rI/aihlQjaC/8EiWDro+ZRaSpNQQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,48 +96,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Andrew,
-
-Thank you for your review, as always!
-
-On Fri, 19 Sep 2025 13:06:44 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
-
-> On Fri, 19 Sep 2025 12:52:18 -0700 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
+On Fri, Sep 19, 2025 at 01:40:33PM +0100, Kiryl Shutsemau wrote:
+> From: Kiryl Shutsemau <kas@kernel.org>
 > 
-> > While testing workloads with high sustained memory pressure on large machines
-> > (1TB memory, 316 CPUs), we saw an unexpectedly high number of softlockups.
-> > Further investigation showed that the lock in free_pcppages_bulk was being held
-> > for a long time, even being held while 2k+ pages were being freed [1].
+> The mlock_vma_folio() function requires the page table lock to be held
+> in order to safely mlock the folio. However, folio_referenced_one()
+> mlocks a large folios outside of the page_vma_mapped_walk() loop where
+> the page table lock has already been dropped.
 > 
-> What problems are caused by this, apart from a warning which can
-> presumably be suppressed in some fashion?
-
-There are softlockup panics that we (Meta) saw in the fleet previously. For
-some reason I can't get it to reproduce again, but let me try to find a way
-to trigger these softlockups again. 
-
-> > This causes starvation in other processes for both the pcp and zone locks,
-> > which can lead to softlockups that cause the system to stall [2].
+> Rework the mlock logic to use the same code path inside the loop for
+> both large and small folios.
 > 
-> [2] doesn't describe such stalls.
-
-You're absolutely right -- I was revising this cover letter a bit and I was
-going to link the below message separately, but decided to put it in the
-message and fogot to remove the footnote. The message below isn't a softlockup,
-but let me try and get one to add to the cover letter in a reply to this.
-
-> >
-> > ...
-> >
-> > In our fleet, we have seen that performing batched lock freeing has led to
-> > significantly lower rates of softlockups, while incurring relatively small
-> > regressions (relative to the workload and relative to the variation).
+> Use PVMW_PGTABLE_CROSSED to detect when the folio is mapped across a
+> page table boundary.
 > 
-> "our" == Meta?
+> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
 
-Yes -- sorry, I think I made this same mistake in the original version as well.
-I'll be more careful about this!
+Nice, this simplifies the code.
 
-Thank you again for your feedback Andrew, I hope you have a great day!
-Joshua
+Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
 
