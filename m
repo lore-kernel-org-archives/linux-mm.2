@@ -4,115 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD007CAC59A
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 18:32:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 483B0CAC59A
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 18:34:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2EBA98E0002; Fri, 19 Sep 2025 14:32:15 -0400 (EDT)
+	id 9CD4B8E0003; Fri, 19 Sep 2025 14:34:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C27F8E0001; Fri, 19 Sep 2025 14:32:15 -0400 (EDT)
+	id 97E378E0001; Fri, 19 Sep 2025 14:34:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B11E8E0002; Fri, 19 Sep 2025 14:32:15 -0400 (EDT)
+	id 86CD08E0003; Fri, 19 Sep 2025 14:34:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 097378E0001
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 14:32:15 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A952213BA41
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 18:32:14 +0000 (UTC)
-X-FDA: 83906844588.15.79B85B2
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	by imf17.hostedemail.com (Postfix) with ESMTP id C042B40009
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 18:32:12 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=AjjGCkUZ;
-	spf=pass (imf17.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 745888E0001
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 14:34:17 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 16E0A5AC55
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 18:34:17 +0000 (UTC)
+X-FDA: 83906849754.12.03450AD
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 17049140012
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 18:34:14 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=yruqozsW;
+	spf=pass (imf09.hostedemail.com: domain of lokeshgidra@google.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=lokeshgidra@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758306732;
+	s=arc-20220608; t=1758306855;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NNz2rvWdWurkAjYnYhECzBshCI3+0s6yD1fA4kNT29Q=;
-	b=B37lnkyc6sod13vro/nhdya3pCfdzvevju7mTuo3oya1NPckBaY6zuKgevWaxmKdZvZ5Fa
-	MTGLbXDMw6L6EN8c/VOHDjh1RwLDuRHzME3p13wzUsaGZY/g/Ul2dVAr/8eed7xhua4cg4
-	vlrNS73MZagCyT8ejPRvSnHxXR2A2NY=
+	bh=QRfypbk3rW+djPiY0MN9TfRNAsvIt1JInVEAxBCh6KY=;
+	b=HAeMD2Tpv24xpVijTfFxk9TDwgMMARHRLw2QIV1BDwhz9RjUl6ez0q7R9X7jKKDGLlMYj/
+	2/N0r7xo5xrgImazuGwuly/iGfSWz9/2UbI2rcCG9psoFc3fbzfR1VvtpFbXLfxivhmH/A
+	w++q/kEvDkO68Q1vm2MxyZDA+Al3RiY=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=AjjGCkUZ;
-	spf=pass (imf17.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758306732; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=yruqozsW;
+	spf=pass (imf09.hostedemail.com: domain of lokeshgidra@google.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=lokeshgidra@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758306855; a=rsa-sha256;
 	cv=none;
-	b=d2D6KDL90FtcNZQIsUZ9pwu/AzT6ffFutH1Gu9NMcGNQd34KCGVaq5/9CHMqN8MvLoiRC2
-	RNOVy8xMyDvw2c9BMIUFYi4gLXlXqZS1CWi6icC+A34fsdITpH6dRHz3/TUsU0kiRh2HFI
-	wrpTcf15cbPqa+TOw3S0iP9Ji9cW3g4=
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3ee13baf2e1so1655176f8f.3
-        for <linux-mm@kvack.org>; Fri, 19 Sep 2025 11:32:12 -0700 (PDT)
+	b=Yz2ajIJ+kfb8ukCWF8WN3LyrrJgbH2UAHjFIwYKSwJuAt4VwvMB1MVbcOowcT6ZjI6CADV
+	eyzWnwC1b175QKbuFAQGrGVobr4Rqrjq2dtBUB/c17p4MVY/5rxyxQMUoRJk5bggpE0D8B
+	930/UR8UuOLvTA1bLq0LsK7eJKdA1pY=
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-62fa84c6916so993a12.0
+        for <linux-mm@kvack.org>; Fri, 19 Sep 2025 11:34:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758306731; x=1758911531; darn=kvack.org;
+        d=google.com; s=20230601; t=1758306853; x=1758911653; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=NNz2rvWdWurkAjYnYhECzBshCI3+0s6yD1fA4kNT29Q=;
-        b=AjjGCkUZC/wU/Pq/aBxIj9MogBKPz68IwBRrrLjob0LH/ed9ickNZ34BtX3vNTW56a
-         uzj5Mys5ryEdA3AEjnuUAei73WuQPV39OLYxjVBRijw7hjalMMej5j3VtnaD4KYsy3i8
-         TK74/OiYL3srQ3QSn4vhNM35I28sgawjny1lqlHe+G7VFvlUr27hynP7upeRi31xHrUT
-         m17I5nOjjp59Rw3Om65gi+5I4C/9AITBNp1M5lVmgnJKiR4L6lI1oSBId26zfgQV/rPc
-         2HdYSsHz2wNHPkaMAQhNrCcf2ZOAb7NLU2nRT2/7uXA3f2QgPMcKpBgfHaQyEGJb3ciL
-         ih8Q==
+        bh=QRfypbk3rW+djPiY0MN9TfRNAsvIt1JInVEAxBCh6KY=;
+        b=yruqozsWSBmqVQkoJaXFKa33JEPuF3Z+Tbsd15yywst+90nQcfPvOuh9v1ntdFAIac
+         FeEnpSj5Le6i+XVurNtsZBiGTqGHhqh4QwRrFs84r2t0owbgbJarH40auCoho9/AAs5K
+         yWXDNgSr9KzW4SN8MPpGB0w+20gLYt9hyjhLibydmA/wm7JiFozj4LYeZ+i9dCEcDnqo
+         fZDtRIHTyVxD/xv0jb9SPPsWFKis5JdAAgJI1poPh2VtMtQMs+z28OARrQH9rAfEr0fL
+         71b3lyg1U7ocOpGU2z5ikHaLKtmHui52hkba4vEjb4cC5y7FqsEPcnxTAe9jaSKuBg2Z
+         aMTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758306731; x=1758911531;
+        d=1e100.net; s=20230601; t=1758306853; x=1758911653;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=NNz2rvWdWurkAjYnYhECzBshCI3+0s6yD1fA4kNT29Q=;
-        b=C0aMH05KzkBBNt7WYK/Jrb6NN/wdSFBD6lyQE92GpyLwXpT2PpPGapxtPBDhXnqLaK
-         NZHDnJgXD+YFW+hlGF/PfOOc1sgy7dTpOb7pL864cf/8U0QaB5VRWIECQv0w2ABxVdPo
-         a2cVZYQk/sBcdEvqBDQGUwBlKOii2D9zty40yUGSCunktHUtRili2YGKIMnnF1ZCTW8a
-         BOsj3W5fEx/8FAmjPD13xPDEFvJ7GvXdjUP3bj8UqSZ1ABN7BT2JuPNrQs67Ixq3mcVq
-         H56MBJS0joQOG7dBytcbN8TAjhbSkXimsVXETs5sUEXLSUiOPbhVsyXDcu096oTzvWKu
-         SPIw==
-X-Forwarded-Encrypted: i=1; AJvYcCUUTdxPFYrvTPFiimc9tGyvxD8zGvXt+Rj21oSgR5hE+Dv0KDwbxnqZHgx8qerqJDDEt68tZwDZPg==@kvack.org
-X-Gm-Message-State: AOJu0Yzeq4yEClaCOCkufeA9LCzy9rncXyeuhiLAUhknjF9Qx65s6XSr
-	AWTPUCKaeMv0WtGu6lyyZT0UZW1rXNByJ7m/88AiNuia3rHHT6tHNLSBQMvW8nOmPsKVx92gwyN
-	njaf1IwdZYwkdFnMxqHlhqYCVwCR6acI=
-X-Gm-Gg: ASbGncv/KCqPNrGkZHAKLpahLELhpgczpuMLlJWsBk2Q1El2NMrzbeAQMBBy4Kf0GBN
-	3htHIrnAv9spm2hVA0cMg+0bYPNfbhg5IARthUCalp61ne31cJyf/hb68C1zwUrfGSjvtc+OY2k
-	jezLjsXZUzWXe+04JovVdjgerU/9H6nGMTcEq8l6XOsXb0nlhiq3gmWSr8cGPZwwIo1vOsQJ3ry
-	9MmWA3767mijvMEjbRh/rQ=
-X-Google-Smtp-Source: AGHT+IE1qLgPZ2JZjML9mfB4gOIrZqCWSfRd0LbOWc+PJ+zRKBIhXbuoNJMp3mTSX/to1tTNSiq+a5JIlxqbwS6zv+k=
-X-Received: by 2002:a05:6000:2486:b0:3ed:f690:a390 with SMTP id
- ffacd0b85a97d-3ee8481fdffmr3766244f8f.40.1758306730884; Fri, 19 Sep 2025
- 11:32:10 -0700 (PDT)
+        bh=QRfypbk3rW+djPiY0MN9TfRNAsvIt1JInVEAxBCh6KY=;
+        b=ujGY2aIrYp2IRdXNoUHAg74p4DOUSecvod3i1dZQ8FwVGtwBg7sARHu+ejR3/CnZJK
+         YhaqC5NOju/IazgRap4PpTnU7XQvuJA92dxIahhgacW6o526GunL3BrtT5WqC+3/FZMv
+         /XULlzCqs5kCOQqnB8aOTSFnG8t2DoMNhh6IaO+bBnLa7exRYe/t75kN2/yZ9oXaXosN
+         MGnDslpY1ScU6gFSEDrRNsepnwliXPtSDV2345DltHINCRPNvPH8QhVS3z9Qsxiv1/03
+         WyjlDL3tUbAat9L/lArEMfGeE5AN2vDRpQbIKwcX/Pb+0syHjXaqKybSKNgetbuLAP2P
+         c2dw==
+X-Forwarded-Encrypted: i=1; AJvYcCUZ8UcUz1zgVEmzIqF0ji6aqHdj/4Neb2NZENCdapv9IdPhHz0OLMiSiAbmfV6rkc6xTmVfu1Xx/w==@kvack.org
+X-Gm-Message-State: AOJu0YwMuWbZkg5R5blmsKY5/cG8JMa7KQZFkI3ptp56/tTsl7s3Qvp6
+	5yz2NNA9xMHFAY5sE15Ip7z+57vAog9kh5F/yGLvmo5YKgZ2dcUXMB/iieKPP+3TjeMRC/Dbd/e
+	T0Zv/r0v0F9LsqD2F34Qx75L6F1DOvkGi37ry/Qsg
+X-Gm-Gg: ASbGncsEYaLGa6iiY+aM3354uDxpckUsvWZpPFB0sG47fPEb008tUU1wFGM6OKB46jE
+	cq2HeYx8K5bAFUnqqMyIyMnEzCs58F2AiTEzQihoMMq4QDhC9kh5Rc+cS8Dl8nRP/7DAfpZWsbU
+	5izAuQrzASEgPMxJCCw6nXeMVmmQUe64ORUkg0uZF/HFRtwJBwmIjyVIlohcN4h7YfF1O7iSl5c
+	kJ8mxhL1LOve8iHZXRsRF1nU1OOta76QW2LFQ==
+X-Google-Smtp-Source: AGHT+IHX9xSXtA79S5eGRCC3SFmgSu/0rTqb3w9Jv9X+GHpZqs0QN8D3FBgaC1nwVtOoHH/Hmc/AggI002X5UFini68=
+X-Received: by 2002:a05:6402:4303:b0:62e:e7b4:a9a3 with SMTP id
+ 4fb4d7f45d1cf-62f7e10b0abmr249063a12.2.1758306853255; Fri, 19 Sep 2025
+ 11:34:13 -0700 (PDT)
 MIME-Version: 1.0
-References: <202509171214.912d5ac-lkp@intel.com> <b7d4cf85-5c81-41e0-9b22-baa9a7e5a0c4@suse.cz>
- <ead41e07-c476-4769-aeb6-5a9950737b98@suse.cz> <CAADnVQJYn9=GBZifobKzME-bJgrvbn=OtQJLbU+9xoyO69L8OA@mail.gmail.com>
- <ce3be467-4ff3-4165-a024-d6a3ed33ad0e@suse.cz> <CAJuCfpGLhJtO02V-Y+qmvzOqO2tH5+u7EzrCOA1K-57vPXhb+g@mail.gmail.com>
- <CAADnVQLPq=puz04wNCnUeSUeF2s1SwTUoQvzMWsHCVhjFcyBeg@mail.gmail.com> <CAJuCfpGA_YKuzHu0TM718LFHr92PyyKdD27yJVbtvfF=ZzNOfQ@mail.gmail.com>
-In-Reply-To: <CAJuCfpGA_YKuzHu0TM718LFHr92PyyKdD27yJVbtvfF=ZzNOfQ@mail.gmail.com>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Fri, 19 Sep 2025 11:31:57 -0700
-X-Gm-Features: AS18NWDr8VuH5ucHYn2ibLVBASY5zct8WHDo7Mc0mqgDvlFRZ593jDOgzN6t5y4
-Message-ID: <CAADnVQKt5YVKiVHmoB7fZsuMuD=1+bMYvCNcO0+P3+5rq9JXVw@mail.gmail.com>
-Subject: Re: [linux-next:master] [slab] db93cdd664: BUG:kernel_NULL_pointer_dereference,address
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>, kernel test robot <oliver.sang@intel.com>, 
-	Alexei Starovoitov <ast@kernel.org>, Harry Yoo <harry.yoo@oracle.com>, oe-lkp@lists.linux.dev, 
-	kbuild test robot <lkp@intel.com>, kasan-dev <kasan-dev@googlegroups.com>, 
-	"open list:CONTROL GROUP (CGROUP)" <cgroups@vger.kernel.org>, linux-mm <linux-mm@kvack.org>
+References: <20250918055135.2881413-1-lokeshgidra@google.com>
+ <20250918055135.2881413-3-lokeshgidra@google.com> <4e4bee5c-c2d9-4467-b7b8-d3586a5cd6e4@lucifer.local>
+ <CA+EESO6B04FQ9pxmf6n1Up+r-a4yGYO6N_HakiYj0hLVvhs2ig@mail.gmail.com> <e8fcbb82-9029-456f-a5c1-eb5cf4b05ba3@lucifer.local>
+In-Reply-To: <e8fcbb82-9029-456f-a5c1-eb5cf4b05ba3@lucifer.local>
+From: Lokesh Gidra <lokeshgidra@google.com>
+Date: Fri, 19 Sep 2025 11:34:01 -0700
+X-Gm-Features: AS18NWAfcSutEqupr05buJ6Nm2787057_jp_rKHHX2qiuq8lAQNCniHjw3qphVQ
+Message-ID: <CA+EESO7b0HvYCDTqPdhe5Oq5xo1YdGQjW=pCRzyX+8Yi0dfJGQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2] mm/userfaultfd: don't lock anon_vma when performing UFFDIO_MOVE
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, kaleshsingh@google.com, 
+	ngeoffray@google.com, jannh@google.com, David Hildenbrand <david@redhat.com>, 
+	Peter Xu <peterx@redhat.com>, Suren Baghdasaryan <surenb@google.com>, Barry Song <baohua@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: C042B40009
-X-Stat-Signature: 4me1eq75iqkyhsp459cmjr31hnr7tomz
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1758306732-573657
-X-HE-Meta: U2FsdGVkX18Qw88rXmfvBHWbkVwUdcQJhCTyZfTI3kv0L5UJmQBpwxcN3hFSnnJitZ/rVmVlfULQMq9+pXy5ndHqti8ZyTv6jbipZL50Z124417bnfuMvuH062FmBVJrsS8AEgeDwrN/dpZyiMJhVMVuE/LtyXMin5XlCpwDedIu7wiLXZGRAtim6R+J5wyJQBYo6t9jqLMExu7WTP/ZiZyV+wYmaTEzPqckPL89vTi6VQ8SlFnrz2c4fS3KAqxkxivZcBQBllBVTETe14bNDwpZWP48H9LgeXzRK0S6eHKq9dYS5CyFpjViTvYk8iubYuc9ovgxbTlAWs2I7Kaj5+jUm0cfNDzPnN+iMczvjf2Nj17frkx1ALjYXZcEECpikEsCzU7bbp/p0bzQmKoMQNhE+UNd7dlQGL1H8NfnSBxEaK9LPRPo03AgEmlp0jR9gx1dUi/C+4Ilbi9iIPF5f3QVYiFW02Mnx+KaRllMcrhy1tFz8LvkYpg0NGPgQCVSYzcuTmAmUllW3jMkWz2EB7AmMCP/cSTdibTOui+zgpqtS/KcuRnkTjWAGbbJTUCcJRemkwsIgKSURT55GqmpVZiJV9iyYbDVDWBUNakn66bC5QO6KjRCXTcILQXAAt+EhS8NfK8M4yCkQl5q5SvnpIqJSKQoFsipVLq3oFK9PHvIpx1eJvLXpRjV9gR08kNhPSDR2PmpVG9/JAPjcQVRBh9apIToG0VwzhrG0DaSMLeDApvnn58BXsCHwlNAo7C+dj+DS/beMnAEtq9CanHcujfDAhme/tXP0x9YHboPNbbvDXxfauJylSNcmzFFy5Tn+mG4izjxLSxNoqHdCc+1IiPQT8HDL6nJ7JmBK0WkgINxhcoTJItrHsGNa+Jn2D9qhtpR9v8wL/4dIRkLewUYHfIvI5AwOk67hLvIq+/JTGMkxmd56mEotp6HnM23I0WYPlfRtY3lQWSSZJCzPfw
- z4lchCqA
- /vx/Qjmf7+goEoQXG4WNI56IVAGkuuNHaWeup/Uht68/Six5mcpBjIHMviTKTAw/o14/pg0CaUEvLCkLcUTwsSsud4oTysnsjowTsx5eFR4/ZXysHa5Gy+U5XfdYUuATuN3NgoNn3skw1ryCkViir4WEBqIXQOhzECo1GolUZ5wjCCJs4kVAltXCeFODPqq2melXBFd9JzYo2egYI49dVpZwlvQ3cdAXKBTVjR7w3RxraWChzl4QlWIL4O7b+gFp1FcvY/AlhDKkOvKP69OC1E6tR3LzNjfgtnLInsFpWwvf4guYd4ernTmgFXWIz0Zh+lMEP+JQvfRuvAkHZl1l42cro+4YPR5Vvzh0oABpba02UHiZ0ZqzLtvr55rWM5T6DIZCAmuHCh3nWjgAyrkK9VvVgJYTpFBK8r6I4XLwg9PXtKGTygj2ObJTyBdi7lE3TZNPTFu/40ocypGujffBjcCNQdKpx5IGnOxH9w6EjAmCGmLY=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 17049140012
+X-Stat-Signature: 3fa8budcksuh3hf98efw7qonqah7aooo
+X-HE-Tag: 1758306854-635319
+X-HE-Meta: U2FsdGVkX1+fanjUzQy4bXlgDVc512dz1rpuyM1jsbHWBTROFKmxO/Hkm+mVIy9pejZVP+jr8FcfcDLhjKZ6bn/83kdCZVMiiA2ayJ26h2ooKR7+xgJ/qfzgCBrgDGUXQGx8KOOGGL8x3r584PT5liO++jtopK19dDSeB2eve2SCQ0CnckH3YkObsm0zjt7WV91/9Sq2cfO31vGW0OIMitJ+Z05JYi70Yamrj2s42aF4bl3mAbrqTjjYIE7zRsFCvcGlYB6E2LFwVHX+SWh4B8bo/JB/vTkcNRgAg3d+tm64ZnRzdZiGI4JbwLvWVfDdKeRfDEj/yt4Jpry2qo2KfrhXFPOHwwuKisCYsUotzy/XV6RHMN+b6P+48Cf+1cglf/WGGgbz2PTHmOh72bX7GszBY94L5Y/k63waRyoglUvH5LpAQbM8YgDiRhsOQrtGUSAb+ZR2OPWwtYHcBx9ZvPzGAR/izhzEFMxVWlbAVo8BKsoViNqB8bApWAJpScnxlSZJu3o41zhacebGFus1Sdv1ChCwJrlXHTxRKYRQZf3XYDZJl1fRQBjDmF0yenvZUuZGKehvhf6ZV2kKAfaffz5OeGHIFZQhmGvvBXJ5SrsfavFMmJCS7BhD0/4hRGW+ELqBBmzY3qEwDRMBENQHMFV9L2mr8j52rF9dXdaJ454CGhJ9BQDKI2D/8UiuZGSUhWhIWahkRIjv9hy7gD4obDFWMlqhCZJAFqTFuWEbJi9o1MIixbzD5BgAo5w/rgdBKqXSTTpaVKSbU9XgPkmGLtF7vG900KjM70+hbCyb28hN9wcfWvZ1YY6emgC+XQn2bq82QPoXdYsVmt0d3PmAznIqlBy5st+N8Xl+6Bwb/w2Z8rOj9RCE5TSGjNltIqCKlA7FyihXA9eD9KBXmYiA6GBTiu3SLf9AvxUoZRa6rb8C8MgaoHX6FH6eaz0RJH4OnzcENaZhaeLX1lkLZmc
+ y0Qt6Qp2
+ soYwaKOSNduoQEQZmgmErb2JGIqqXunc8HQXBhWH3XD+wxHQjv741ImCJDQkVeiMDDhdvZ8T3pcoSI4Xm91xSINJuOOfA2+C6/4n1v0cxLFgeJoxZ9Cz5pxKlKzPuSgevM07pRtM4MDosaemZ9ZBdJRFh/d8R/JJgOkwSgkXceGfybwRZD4d0AGBzSLs67D4gdh0viQazF85SAiaKMTecEU4JHnC72AnHxDRJNRXy/+E2Vv5Yv8Mk4+ihiAeoSUw2e9MGSfNbpd/WXu1PN+d6EcxZvg4QccrPQC0NodsYxsvejl3vqHBbkDNbAu8F9eTg0nZJ+nipEXnBiz4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,128 +119,152 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 19, 2025 at 8:01=E2=80=AFAM Suren Baghdasaryan <surenb@google.c=
-om> wrote:
+On Fri, Sep 19, 2025 at 2:58=E2=80=AFAM Lorenzo Stoakes
+<lorenzo.stoakes@oracle.com> wrote:
 >
-> On Thu, Sep 18, 2025 at 6:39=E2=80=AFPM Alexei Starovoitov
-> <alexei.starovoitov@gmail.com> wrote:
-> >
-> > On Thu, Sep 18, 2025 at 7:49=E2=80=AFAM Suren Baghdasaryan <surenb@goog=
-le.com> wrote:
+> On Thu, Sep 18, 2025 at 11:30:48PM -0700, Lokesh Gidra wrote:
+> > On Thu, Sep 18, 2025 at 5:38=E2=80=AFAM Lorenzo Stoakes
+> > <lorenzo.stoakes@oracle.com> wrote:
 > > >
-> > > On Thu, Sep 18, 2025 at 12:06=E2=80=AFAM Vlastimil Babka <vbabka@suse=
-.cz> wrote:
+> > > On Wed, Sep 17, 2025 at 10:51:35PM -0700, Lokesh Gidra wrote:
+> > > > Now that rmap_walk() is guaranteed to be called with the folio lock
+> > > > held, we can stop serializing on the src VMA anon_vma lock when mov=
+ing
+> > > > an exclusive folio from a src VMA to a dst VMA in UFFDIO_MOVE ioctl=
+.
 > > > >
-> > > > On 9/17/25 20:38, Alexei Starovoitov wrote:
-> > > > > On Wed, Sep 17, 2025 at 2:18=E2=80=AFAM Vlastimil Babka <vbabka@s=
-use.cz> wrote:
-> > > > >>
-> > > > >> Also I was curious to find out which path is triggered so I've p=
-ut a
-> > > > >> dump_stack() before the kmalloc_nolock call:
-> > > > >>
-> > > > >> [    0.731812][    T0] Call Trace:
-> > > > >> [    0.732406][    T0]  __dump_stack+0x18/0x30
-> > > > >> [    0.733200][    T0]  dump_stack_lvl+0x32/0x90
-> > > > >> [    0.734037][    T0]  dump_stack+0xd/0x20
-> > > > >> [    0.734780][    T0]  alloc_slab_obj_exts+0x181/0x1f0
-> > > > >> [    0.735862][    T0]  __alloc_tagging_slab_alloc_hook+0xd1/0x3=
-30
-> > > > >> [    0.736988][    T0]  ? __slab_alloc+0x4e/0x70
-> > > > >> [    0.737858][    T0]  ? __set_page_owner+0x167/0x280
-> > > > >> [    0.738774][    T0]  __kmalloc_cache_noprof+0x379/0x460
-> > > > >> [    0.739756][    T0]  ? depot_fetch_stack+0x164/0x180
-> > > > >> [    0.740687][    T0]  ? __set_page_owner+0x167/0x280
-> > > > >> [    0.741604][    T0]  __set_page_owner+0x167/0x280
-> > > > >> [    0.742503][    T0]  post_alloc_hook+0x17a/0x200
-> > > > >> [    0.743404][    T0]  get_page_from_freelist+0x13b3/0x16b0
-> > > > >> [    0.744427][    T0]  ? kvm_sched_clock_read+0xd/0x20
-> > > > >> [    0.745358][    T0]  ? kvm_sched_clock_read+0xd/0x20
-> > > > >> [    0.746290][    T0]  ? __next_zones_zonelist+0x26/0x60
-> > > > >> [    0.747265][    T0]  __alloc_frozen_pages_noprof+0x143/0x1080
-> > > > >> [    0.748358][    T0]  ? lock_acquire+0x8b/0x180
-> > > > >> [    0.749209][    T0]  ? pcpu_alloc_noprof+0x181/0x800
-> > > > >> [    0.750198][    T0]  ? sched_clock_noinstr+0x8/0x10
-> > > > >> [    0.751119][    T0]  ? local_clock_noinstr+0x137/0x140
-> > > > >> [    0.752089][    T0]  ? kvm_sched_clock_read+0xd/0x20
-> > > > >> [    0.753023][    T0]  alloc_slab_page+0xda/0x150
-> > > > >> [    0.753879][    T0]  new_slab+0xe1/0x500
-> > > > >> [    0.754615][    T0]  ? kvm_sched_clock_read+0xd/0x20
-> > > > >> [    0.755577][    T0]  ___slab_alloc+0xd79/0x1680
-> > > > >> [    0.756469][    T0]  ? pcpu_alloc_noprof+0x538/0x800
-> > > > >> [    0.757408][    T0]  ? __mutex_unlock_slowpath+0x195/0x3e0
-> > > > >> [    0.758446][    T0]  __slab_alloc+0x4e/0x70
-> > > > >> [    0.759237][    T0]  ? mm_alloc+0x38/0x80
-> > > > >> [    0.759993][    T0]  kmem_cache_alloc_noprof+0x1db/0x470
-> > > > >> [    0.760993][    T0]  ? mm_alloc+0x38/0x80
-> > > > >> [    0.761745][    T0]  ? mm_alloc+0x38/0x80
-> > > > >> [    0.762506][    T0]  mm_alloc+0x38/0x80
-> > > > >> [    0.763260][    T0]  poking_init+0xe/0x80
-> > > > >> [    0.764032][    T0]  start_kernel+0x16b/0x470
-> > > > >> [    0.764858][    T0]  i386_start_kernel+0xce/0xf0
-> > > > >> [    0.765723][    T0]  startup_32_smp+0x151/0x160
-> > > > >>
-> > > > >> And the reason is we still have restricted gfp_allowed_mask at t=
-his point:
-> > > > >> /* The GFP flags allowed during early boot */
-> > > > >> #define GFP_BOOT_MASK (__GFP_BITS_MASK & ~(__GFP_RECLAIM|__GFP_I=
-O|__GFP_FS))
-> > > > >>
-> > > > >> It's only lifted to a full allowed mask later in the boot.
-> > > > >
-> > > > > Ohh. That's interesting.
-> > > > >
-> > > > >> That means due to "kmalloc_nolock() is not supported on architec=
-tures that
-> > > > >> don't implement cmpxchg16b" such architectures will no longer ge=
-t objexts
-> > > > >> allocated in early boot. I guess that's not a big deal.
-> > > > >>
-> > > > >> Also any later allocation having its flags screwed for some reas=
-on to not
-> > > > >> have __GFP_RECLAIM will also lose its objexts. Hope that's also =
-acceptable.
-> > > > >> I don't know if we can distinguish a real kmalloc_nolock() scope=
- in
-> > > > >> alloc_slab_obj_exts() without inventing new gfp flags or passing=
- an extra
-> > > > >> argument through several layers of functions.
-> > > > >
-> > > > > I think it's ok-ish.
-> > > > > Can we add a check to alloc_slab_obj_exts() that sets allow_spin=
-=3Dtrue
-> > > > > if we're in the boot phase? Like:
-> > > > > if (gfp_allowed_mask !=3D __GFP_BITS_MASK)
-> > > > >    allow_spin =3D true;
-> > > > > or some cleaner way to detect boot time by checking slab_state ?
-> > > > > bpf is not active during the boot and nothing should be
-> > > > > calling kmalloc_nolock.
+> > > > When moving a folio, we modify folio->mapping through
+> > > > folio_move_anon_rmap() and adjust folio->index accordingly. Doing t=
+hat
+> > > > while we could have concurrent RMAP walks would be dangerous. There=
+fore,
+> > > > to avoid that, we had to acquire anon_vma of src VMA in write-mode.=
+ That
+> > > > meant that when multiple threads called UFFDIO_MOVE concurrently on
+> > > > distinct pages of the same src VMA, they would serialize on it, hur=
+ting
+> > > > scalability.
 > > > >
-> > > > Checking the gfp_allowed_mask should work. Slab state is already UP=
- so won't
-> > > > help, and this is not really about slab state anyway.
-> > > > But whether worth it... Suren what do you think?
+> > > > In addition to avoiding the scalability bottleneck, this patch also
+> > > > simplifies the complicated lock dance that UFFDIO_MOVE has to go th=
+rough
+> > > > between RCU, folio-lock, ptl, and anon_vma.
+> > > >
+> > > > folio_move_anon_rmap() already enforces that the folio is locked. S=
+o
+> > > > when we have the folio locked we can no longer race with concurrent
+> > > > rmap_walk() as used by folio_referenced() and hence the anon_vma lo=
+ck
 > > >
-> > > Vlastimil's fix is correct. We definitely need __GFP_NO_OBJ_EXT when
-> > > allocating an obj_exts vector, otherwise it will try to recursively
-> > > allocate an obj_exts vector for obj_exts allocation.
-> > >
-> > > For the additional __GFP_BITS_MASK check, that sounds good to me as
-> > > long as we add a comment on why that is there. Or maybe such a check
-> > > deserves to be placed in a separate function similar to
-> > > gfpflags_allow_{spinning | blocking}?
-> >
-> > I would not. I think adding 'boot or not' logic to these two
-> > will muddy the waters and will make the whole slab/page_alloc/memcg
-> > logic and dependencies between them much harder to follow.
-> > I'd either add a comment to alloc_slab_obj_exts() explaining
-> > what may happen or add 'boot or not' check only there.
-> > imo this is a niche, rare and special.
+> > > And other rmap callers right?
+> > Right. Will fix it in the next version.
 >
-> Ok, comment it is then.
-> Will you be sending a new version or Vlastimil will be including that
-> in his fixup?
+> Thanks!
+>
+> > >
+> > > > is no longer required.
+> > > >
+> > > > Note that this handling is now the same as for other
+> > > > folio_move_anon_rmap() users that also do not hold the anon_vma loc=
+k --
+> > > > namely COW reuse handling. These users never required the anon_vma =
+lock
+> > > > as they are only moving the anon VMA closer to the anon_vma leaf of=
+ the
+> > > > VMA, for example, from an anon_vma root to a leaf of that root. rma=
+p
+> > > > walks were always able to tolerate that scenario.
+> > >
+> > > Which users?
+> >
+> > The COW reusers, namely:
+> > do_wp_page()->wp_can_reuse_anon_folio()
+> > do_huge_pmd_wp_page()
+> > hugetlb_wp()
+>
+> Right let's put this in the commit message is what I mean :)
+>
+> >
+> > >
+> > > >
+> > > > CC: David Hildenbrand <david@redhat.com>
+> > > > CC: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> > > > CC: Peter Xu <peterx@redhat.com>
+> > > > CC: Suren Baghdasaryan <surenb@google.com>
+> > > > CC: Barry Song <baohua@kernel.org>
+> > > > Signed-off-by: Lokesh Gidra <lokeshgidra@google.com>
+> > > > ---
+> > > >  mm/huge_memory.c | 22 +----------------
+> > > >  mm/userfaultfd.c | 62 +++++++++-----------------------------------=
+----
+> > > >  2 files changed, 12 insertions(+), 72 deletions(-)
+> > > >
+> > > > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> > > > index 5acca24bbabb..f444c142a8be 100644
+> > > > --- a/mm/huge_memory.c
+> > > > +++ b/mm/huge_memory.c
+> > > > @@ -2533,7 +2533,6 @@ int move_pages_huge_pmd(struct mm_struct *mm,=
+ pmd_t *dst_pmd, pmd_t *src_pmd, pm
+> > > >       pmd_t _dst_pmd, src_pmdval;
+> > > >       struct page *src_page;
+> > > >       struct folio *src_folio;
+> > > > -     struct anon_vma *src_anon_vma;
+> > > >       spinlock_t *src_ptl, *dst_ptl;
+> > > >       pgtable_t src_pgtable;
+> > > >       struct mmu_notifier_range range;
+> > > > @@ -2582,23 +2581,9 @@ int move_pages_huge_pmd(struct mm_struct *mm=
+, pmd_t *dst_pmd, pmd_t *src_pmd, pm
+> > > >                               src_addr + HPAGE_PMD_SIZE);
+> > > >       mmu_notifier_invalidate_range_start(&range);
+> > > >
+> > > > -     if (src_folio) {
+> > > > +     if (src_folio)
+> > > >               folio_lock(src_folio);
+> > > >
+> > > > -             /*
+> > > > -              * split_huge_page walks the anon_vma chain without t=
+he page
+> > > > -              * lock. Serialize against it with the anon_vma lock,=
+ the page
+> > > > -              * lock is not enough.
+> > > > -              */
+> > > > -             src_anon_vma =3D folio_get_anon_vma(src_folio);
+> > > > -             if (!src_anon_vma) {
+> > > > -                     err =3D -EAGAIN;
+> > > > -                     goto unlock_folio;
+> > > > -             }
+> > > > -             anon_vma_lock_write(src_anon_vma);
+> > > > -     } else
+> > > > -             src_anon_vma =3D NULL;
+> > > > -
+> > >
+> > > Hmm this seems an odd thing to include in the uffd change. Why not ju=
+st include
+> > > it in the last commit or as a separate commit?
+>
+> You're changing move_pages_huge_pmd() here in a change that's about the u=
+ffd
+> change, seems unrelated no?
 
-Whichever way. I can, but so far Vlastimil phrasing of comments
-were much better than mine :) So I think he can fold what he prefers.
+This function is a part of UFFDIO_MOVE only :) It handles the
+huge-page case of UFFDIO_MOVE and there are no other callers. But let
+me know if you would like this in a separate patch.
+>
+> >
+> > I'm not sure I follow. What am I including here?
+> >
+> > BTW, IMHO, the comment is wrong here. folio split code already
+> > acquires folio lock. The anon_vma lock is required here for the same
+> > reason as non-large page case - to avoid concurrent rmap walks.
+>
+> This is called via split_huge_page() used by KMS and memory failure, not =
+the
+> usual folio split logic afaict.
+>
+> But those callers all take the folio look afaict :)
+Sorry, yes that's what I meant. The real issue here also is
+rmap_walk() because of which anon_vma lock was required and not what
+is mentioned in the comment.
+>
+> So yeah the comment is wrong it seems!
 
