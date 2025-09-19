@@ -4,119 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3182CAC592
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 06:49:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3647CCAC592
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 06:59:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 39A8994000D; Fri, 19 Sep 2025 02:49:22 -0400 (EDT)
+	id 8B9B494000E; Fri, 19 Sep 2025 02:59:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 371DD940009; Fri, 19 Sep 2025 02:49:22 -0400 (EDT)
+	id 86A6A940009; Fri, 19 Sep 2025 02:59:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2AF5794000D; Fri, 19 Sep 2025 02:49:22 -0400 (EDT)
+	id 758CC94000E; Fri, 19 Sep 2025 02:59:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1A1BE940009
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 02:49:22 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C0983C0585
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 06:49:21 +0000 (UTC)
-X-FDA: 83905073322.05.1EE5C53
-Received: from mail-vk1-f176.google.com (mail-vk1-f176.google.com [209.85.221.176])
-	by imf03.hostedemail.com (Postfix) with ESMTP id C45C520008
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 06:49:19 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=qGzgnZWW;
-	spf=pass (imf03.hostedemail.com: domain of jasonmiu@google.com designates 209.85.221.176 as permitted sender) smtp.mailfrom=jasonmiu@google.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 5D292940009
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 02:59:02 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2094B86D0F
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 06:59:02 +0000 (UTC)
+X-FDA: 83905097724.24.E28FD2B
+Received: from mail-vs1-f45.google.com (mail-vs1-f45.google.com [209.85.217.45])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 484DB1A0009
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 06:59:00 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=4WPsI92H;
+	spf=pass (imf19.hostedemail.com: domain of jasonmiu@google.com designates 209.85.217.45 as permitted sender) smtp.mailfrom=jasonmiu@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758264559;
+	s=arc-20220608; t=1758265140;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z8ChdVFL3VbJv1RwXe37ElFR0o5xJ4LIb9+Ne1LI908=;
-	b=ryd3OU2fZhEXSVzgDqwZj/eHZR16+YSY0cBgAsOmpoOXXGyLVINIUwqz4t4hakISQ7Ejmj
-	RCrWK0r8uxpbiLysBZhLsBuDthCRPGEUQ3iZ3Hfk2wyEEc3KfO+oB3KFCyIdVvxT7k7I6S
-	P68ujyKQoUZkZ57xlEGAweyrQbes+1o=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758264559; a=rsa-sha256;
-	cv=none;
-	b=Hl3f0etJ9y0iM/YkFvJopK5vgJdidUBC/Pgcnw7Ru3OPba+WjcuDiHSQ5iKsHGSAbJZmrc
-	+srvDsPDXxYpCjlV5aYDqvaq9pAV+kZ1xkW1HsyBky3Bp2wPDJQShZXBB7Of0jC1OgbSKx
-	LgwYx1NHy2FrefamONQhYu/eEu/DzFk=
+	bh=xtcgVCi+G898H3JycH7loc6tUgEzYyu4N3/qLFW16pM=;
+	b=NjYzqUKE34yyv5OtrOnQQbpjYcONWXtt9ShBwv1PGQSCvSgDuJDegr3NbYsyY9wOiPoZpI
+	KRRxTWoyzn7LNAsrKCTnS7EVMi7S9IKMbTbIdMgkvhz+6DtO+jRYu58K2Ojjt/GwPHgVXY
+	m+xbAYh8bLCYsd96gfKv3PAwro6bt8w=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=qGzgnZWW;
-	spf=pass (imf03.hostedemail.com: domain of jasonmiu@google.com designates 209.85.221.176 as permitted sender) smtp.mailfrom=jasonmiu@google.com;
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=4WPsI92H;
+	spf=pass (imf19.hostedemail.com: domain of jasonmiu@google.com designates 209.85.217.45 as permitted sender) smtp.mailfrom=jasonmiu@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-vk1-f176.google.com with SMTP id 71dfb90a1353d-544ad727e87so1351501e0c.2
-        for <linux-mm@kvack.org>; Thu, 18 Sep 2025 23:49:19 -0700 (PDT)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758265140; a=rsa-sha256;
+	cv=none;
+	b=jx12aYVkDEG8cXYCfvp8M6ALk1sBXUmbPuKr8237k+Se8KLfab2P9K4PGBgAHX8YXrr/b4
+	LV1OfgaDHfLM1MfaCrTLXI3+v9i3aCi+cGD1kNNBvjUPZwBk4iFHnsZkoZ9s6uaN+mJcE2
+	YrgkU1zV8dXfFqlLt3AsuY0ARixbHrI=
+Received: by mail-vs1-f45.google.com with SMTP id ada2fe7eead31-5570a77eabcso1122588137.1
+        for <linux-mm@kvack.org>; Thu, 18 Sep 2025 23:59:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758264559; x=1758869359; darn=kvack.org;
+        d=google.com; s=20230601; t=1758265139; x=1758869939; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Z8ChdVFL3VbJv1RwXe37ElFR0o5xJ4LIb9+Ne1LI908=;
-        b=qGzgnZWWLz/q8/tM5RvGkqis3HVvaEQLMxc4TB8/eT+BB+Quy/ul95zM0c4BnaXO6E
-         H+5mzzd56SqdINqUQA6WYCEr8zD5Ybgc++fhfdWQa2WNB/RWXhdoX++0GHJYy+vceze9
-         4nydFLwxqp6191uqOKR0L5pXTkd42wltlhAC90eHr3ysGaBUiZMz+7+gwVmBpp4ugr3p
-         9JBSRj6lD5t6XEbwWuHNE9GP9sZ19e1BNSqO/4gJiMWnHY0DZ+S6QPicJISNncKG7xju
-         RHjxrqeaQ25s+YchshYPwV7ML8eKhOtoNna6eLQiG2MoH0UkawptlSYDn1M0y3NLNxtv
-         YWUw==
+        bh=xtcgVCi+G898H3JycH7loc6tUgEzYyu4N3/qLFW16pM=;
+        b=4WPsI92HaPvVAUmiGSGparNjXlIXdBzJumvbE6OUJjXyFzP9tJVi9hIXMPYg67CfCA
+         IcASHov94yorI9M9mW9F2m4BbbTe70+GXHXTW971hVpUu53SOyA6aHe+vFewjXbMLvWP
+         dMia2QQDs76Z1WqvxgBpPQqF+aG9uSRcs/LspAWdJ+5vgxyjtEOSfZ5fesHBTFUC7g8A
+         uMM1+daQ1NbapS3GejCr7biSYtkc9CTN4KECf+jGs9a2liUcyu7zuE9hWG2MDylS2bUY
+         NKbJo7tBRDfwRZJIjvM6exnCG68M03b1qcSTqhW4UHmAvSIO+9qp+rnPhbI4z6Hmr4XS
+         gPfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758264559; x=1758869359;
+        d=1e100.net; s=20230601; t=1758265139; x=1758869939;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Z8ChdVFL3VbJv1RwXe37ElFR0o5xJ4LIb9+Ne1LI908=;
-        b=esykeYhuLH2xeHW8ElOJIEB4R98Qp47p/ZqkNAMp0AnonTm62MA2C6oJPAiwvSeexp
-         NYAww0kJWY9+TQBnZc/+b5p38KFBI//kn7ZrzrrduISy1PfAiDms04D8UcBAsWHDXb2T
-         3DxSqxX722Xjj7a6/f2LEmTWiyI87stOHVXHTDovjUcxYbKIP8/yG/h0EBoD/LlFRvGM
-         iLRM0C7sOD2VBg5osHJHgmJ4NSxl0Nq9I1bgBSVrdyjqLtL/yag50/qL9+TtkzjEaBco
-         61fDQHDTrVJsXL1wq/opm8Sn4TjHIJ/M9Ry7qpOM2TtnoTpcwtH9u6BkOlLQyIaOW6mt
-         /mng==
-X-Forwarded-Encrypted: i=1; AJvYcCXf/KRFwhxyi3SuDBP8WlZqhlCgwJl5qu98lB1IE/kHOCrujiSA3jXopA0cGCuFdqx+DjXS/maM7w==@kvack.org
-X-Gm-Message-State: AOJu0Yzwc7O2C4OveOFoxPEhp0Twj2En4Mv/7qJH0YOc9a34YPAdayrD
-	096ETsX8givdHDhIBS0ck+ZodoOEt/99c181lqTqaWYfiRR3aqd48lJFP7AeiXSTzSue7XpimuG
-	YOJyMHUG1yMGi8NcVwSx+85XtzZa6lfvfrHGhblQQ
-X-Gm-Gg: ASbGnctniXQ/KoIUdhl9ZFadNTO7U7VzMPci0mFrHMaG2meyYqib1YLrovZPCkTL13/
-	jS4twAc7Eyj+4KZAdmHuYWI6aZAvxYB/AuYnzSZ9B5ODRh2AcQRRSqfvxjKTL1KlGFiB4KeaY6j
-	KJ93IJO2lPp9zQO5v5bnXpJVyEAGhMJDv3AZ5zXWLs6zrOrBBPz1HBt5/hDTWg9CR7f8u9itdiT
-	qF3IvQhx4+qcbMCzW2cOHahC2wQHPbyV/OzKikffD6aJG2L
-X-Google-Smtp-Source: AGHT+IFVsk862c6jBLBQHlKlwevYkZVfUWmmFw+NQU42kXUhgZ2xtmh0tS9iCTXHJ7q0fDyvegsZslZdHcK2rLPpIvA=
-X-Received: by 2002:a05:6122:2a05:b0:530:5308:42ec with SMTP id
- 71dfb90a1353d-54a837e6887mr813853e0c.8.1758264558514; Thu, 18 Sep 2025
- 23:49:18 -0700 (PDT)
+        bh=xtcgVCi+G898H3JycH7loc6tUgEzYyu4N3/qLFW16pM=;
+        b=NaVjo3Ttn/k0qpSDCuL8/UKJpnDv6I8/guzt1irsmHTgwPRX7km4vnaKPi8uyM+nza
+         xkOX9LlzlPffPtEFAU0pHndcqaDbX+jZLnbON6boMAyPA/QBq/HHZSDLw+NBGUdsObwW
+         Wcpexpdk46xsuFNacfKx78AqJYDA/est4yPukeeNYJCFyY9QIrd0WJbY3GxlNC8IzJYK
+         NEAmMqjeCEBxQnGQIwdbSgQqnftDPq8CD3lr5o+d+ahQsX4WbCnDib1K9cmDyWam6I0w
+         1nXqCVYcXr2u24N7lKiy62Dbnesx44ASbA4Xwm0FVyqHfhIMlu7yjvJfgw2uRq6MTfJS
+         MSEA==
+X-Forwarded-Encrypted: i=1; AJvYcCWUH/qMQeDmLbl8up65ZgU0p8wbdqLuN3diQFWQs/yMOW/WONZsy+CZCsjXIt/wcAuoyUmO0hRkwA==@kvack.org
+X-Gm-Message-State: AOJu0Yy3emW8KVxGb0IbFWgL6IjqrEahA/P/iCv73/TGEXgPwwlrHdxZ
+	/8i4dB7ojiHiHxIWxury8cGkVeyAPZUjwukvXEnzNsoCxkY+zMQaYgJBd2mEL5v90uMyGx+IYVP
+	UmEDm8AJXWaS02ir6nNyWT1ZTO9tAq1aTBcGd89fO
+X-Gm-Gg: ASbGncuWDk4iCmx5deC+a/aLBhtPT++LwmIUUyjftF53Jhm3N/bt/UKU7dmPNPTXOks
+	LNS/K0OFKg02L4tVjAO5RJqpup05trtqeDwmJ5pB58tsmH0q+gjv729QTdwdN/We4ANpHQ+drPI
+	DzlHxcFndNeJciuxcG3T4USo93gWn88Xgut4Yt8e0qJ20AQGEv/0r8Q9M729tB6OQVH2akRFako
+	sblk9LwNFwqHhb5Ku+Mr155LRQsujRdczNsyw==
+X-Google-Smtp-Source: AGHT+IHk3HVC3jvHLLDRmh37Xu/EchCNrhbpXqT1eVIU2RepMDaci0Ybt3B7Crf5TYbbvxxQhcjhhhXUFlwv46zm7xc=
+X-Received: by 2002:a05:6102:3347:b0:529:4cf5:8aec with SMTP id
+ ada2fe7eead31-588ec1dd609mr784951137.16.1758265139130; Thu, 18 Sep 2025
+ 23:58:59 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250917025019.1585041-1-jasonmiu@google.com> <20250917025019.1585041-2-jasonmiu@google.com>
- <20250917122158.GC1086830@nvidia.com> <CA+CK2bBbSSyCDAAgThDSSwH0WdOeHz-eVgB-1bdiwsDtTSE5pg@mail.gmail.com>
- <20250917163200.GC1391379@nvidia.com>
-In-Reply-To: <20250917163200.GC1391379@nvidia.com>
+References: <20250917025019.1585041-1-jasonmiu@google.com> <20250917025019.1585041-3-jasonmiu@google.com>
+ <aMr1XAKmyfzM8RCc@kernel.org>
+In-Reply-To: <aMr1XAKmyfzM8RCc@kernel.org>
 From: Jason Miu <jasonmiu@google.com>
-Date: Thu, 18 Sep 2025 23:49:06 -0700
-X-Gm-Features: AS18NWCRC_XaURHfJJfME-M0Ey0ObAUOEvcdAIB2Bzvin5AUuRN7ltMM3UG48RQ
-Message-ID: <CAHN2nPK+Z5cvQ_waTWyPZiEoeSc9o7e3YnQLLjRzNzrb7VhAqQ@mail.gmail.com>
-Subject: Re: [RFC v1 1/4] kho: Introduce KHO page table data structures
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, Alexander Graf <graf@amazon.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>, 
-	Changyuan Lyu <changyuanl@google.com>, David Matlack <dmatlack@google.com>, 
-	David Rientjes <rientjes@google.com>, Joel Granados <joel.granados@kernel.org>, 
+Date: Thu, 18 Sep 2025 23:58:47 -0700
+X-Gm-Features: AS18NWA-W3pRg8J4Q0PVvMgsoADaqk7Awe1gJKAjZHyCKtolHE0_0MrSoYHTlwM
+Message-ID: <CAHN2nPL6SV_Y6Sxqy4o-mOPZoGYMoWow=KevUTX6=c8JkO_g8g@mail.gmail.com>
+Subject: Re: [RFC v1 2/4] kho: Adopt KHO page tables and remove serialization
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Alexander Graf <graf@amazon.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Baoquan He <bhe@redhat.com>, Changyuan Lyu <changyuanl@google.com>, 
+	David Matlack <dmatlack@google.com>, David Rientjes <rientjes@google.com>, 
+	Jason Gunthorpe <jgg@nvidia.com>, Joel Granados <joel.granados@kernel.org>, 
 	Marcos Paulo de Souza <mpdesouza@suse.com>, Mario Limonciello <mario.limonciello@amd.com>, 
-	Mike Rapoport <rppt@kernel.org>, Petr Mladek <pmladek@suse.com>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Petr Mladek <pmladek@suse.com>, 
 	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, Steven Chen <chenste@linux.microsoft.com>, 
 	Yan Zhao <yan.y.zhao@intel.com>, kexec@lists.infradead.org, 
 	linux-kernel@vger.kernel.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: zfsnh43fazt4txin1sc5tyixntajzcjb
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C45C520008
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1758264559-373082
-X-HE-Meta: U2FsdGVkX18Uy56qSz5MFuQmB4e9cWhrA/PeqmAxrlbGkQxVborXDK5nj586s9u6ozGWZuoRTEiDHI43kDMB40nuxw018kJlUfYcSiH3ZDhivqQONDbVM5DxzOHjid52YNQpKdqtWHpccFP6a+CQ362BfRrCAA8GMJpptmf/nFGZm5Ydv4nBI7YC3l2T4xhUPlExne9UAs+yVhyXQZoIfF29hRqvOEjO3Oc406YBWhRdvLHBCxwYVNw+rRFaThA9wMdnxhULrWQ9gCoZ85vHf5uzPGNfjCtI3J4/uEjZ3JAk3C8BRw2BOAIY6TJnay+ioX/WrMzzV+nQLYC/G7xLpZ59Kd6ja1QdjtTBwOt12JEx7Lzs25izy5FAk3aRJClrykP4qzA43txzG4B5NU07zaHUfVEK35YyFcgdA49K7eytrjMRGkZBs8itJqKG7Mk9z7MgHWZ9TchhLSw9qnzGvWcSKW33WtH0R9D8wX/cFj8BOdPe+q0C+oDHU6Me2OyFJpmhi2tWORl6d1XgTAyEutOUSnuojIENgyMHqzf48HggKY44nLTZIQuSNzyTEqSA/0a9WKIO9qOLWwWrLr7JinByw6M87ESv0nGIoVu22XkPKeledfxzMUuYOiuhYVFNPQXJrgxurWl8T7mCiPKCI1D660ES5qlXIrjyzegN8BYnrtwlFODbml1BMswWAS1Sp1ViMbxiMAMuTg9Wn6kkONPI4CBNKi7GO64OhzsqLTsp0JjIVIbjMQuqkJit/blKAoUpx+J3DXL3ZUVe8lLr6IhN1kK4kuA17UVIUqyJDWAzX+v3/wmnzBNktKIomgVvqYCiFw1ZnEI/BB/cx2HOb+cLPNxoxngxXOYqPLUYN0Du6LVvDtbfgA7Zjr38imBP6wU5oxggBWW9R7VoZEQY9q8y4cY4CwYrYWfrin7dNlUXQoUYjzu8VQTK4yR59lv5kmSQo4v28V980labfge
- 0VbBlXlD
- jTeAXDLTDCtxn/9HVmBQYgtPMPoW0qrw4/R9MqnirubcGoCnOW3HOrTr5wmgNnPo2dxL62mjK1uJlFUCMeOWL0sS+TkVqWqtikXbIKOjGRSUHV+WDGlxc9ABJIAC7CKHZQk3yUyMR2cl0fhH5tNjco4qCyVQq+I/BAOnjMusnwQrNNUm7uJOr1VqgGDe2jOMngZpnQJN+coO+SdC5u5ZpbspjGoZ/Stqy5J5q
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 484DB1A0009
+X-Stat-Signature: w9cbjo9hx1mzgrqzjc9hpadz38om3xqy
+X-HE-Tag: 1758265140-71570
+X-HE-Meta: U2FsdGVkX1+pLoL5KHMYMAUItO3C/ZwGjn5ATwjG0/6HKa6YWSEo+PfhTQ7iGBJD+Q9WLubDGRwFSsiNnGhqi5P+WGrCU116ZQYz+GFFc16U4I0/HFJegGXo6wYFkc9iCjY2WS9dpbgx+oJTTvyc6xe2UlS+KRRnuIz7nkzDTJ7oMipBRh4VZTzSzqNWGnIs6Myv5dYAiv79QaMbXguKtNgCr2PrBfDwrxbmFBeapB3k4QwlDz8eBdbIX8FdT3vMnadD80qd2gKocOUHmBjVgOWQ/DiM7RZ8rld72SqJym1YI+ZYmLSM1vmyd1XWMIyHV6Yk++xRN9BCivMUjy/Mo4P0iFjrbdcXE+HX+1sTxvNV4r2W98PStKyK1KF0ostU3MGfWOrb5woedgF6sQsOM8Ka+sh3z/ssS3ah12rFU6FBMecwrfmvLDS3wZJmvXOvLWYHdM7vQPaQMhiv6smI9cQldFn7tT3hc5Bd5q0vO7Ok2wJAtDmBBAr5QMJrXDpvgLJCBreL4gaVbBeEJDSVYwyukNV7Dsf9yXe2r0Els9e9yi5/oWAO2okofMBV9JVZs6ig7wnPa4W97n6U2+E14gnuQWTVyXltRjJNkV8IqvyYK4125NCKr39dz/AknJ4q2MKYVHTrS4ha4nR3M1nx/ne/WX/LsSCAm8Wyn64vDnwU/5MI92gw4hLKdw8Owmaq2A5tEhCUhfALuyEQlXAwO02ehpjXeVrkbsj1+wVdQ4XRPSwAKPQNulrpcv8+xEWWPHinMZGDeI7QcT2IDG07J7iP6WoxRdo2kT9cTEyAz3nAbbTRL/2gJESX9XB8f2B+3NFiVnozMJxd7m+P0aF+8HUUPQ1EymIk3E1eraxb3UtlslemZx3q/KwLTCt5cOrpOzKFK1GQ7kG/B+dv8o9Of6YCqsBCbsZI1Hwtmr1CB4xUWB7fWop77+SlfP7hURcllA6rk98eT1X7jjHEsbP
+ FEp9KWR5
+ CWZnvA5rWDd3jiwmFmJ6QrTx0+im8h7lkYWHTYq/psdkMelGgkwU585PJjmmTt63oMSBN6DBl35CHBtKq19YBubBQveDbggfN8cdpduORGJeU5/IEjgbah1lINOjpQwBaUqPbiwx+RWS2EueDS9OwqVpUTczh3QsPEhjHkV/UqLjQfL222NkuVN87SBG7npjwu8HTBPlQ9dMeTY7N9isQF0sK+ys3qMLDiB1d
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,73 +124,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Jason,
+Hi Mike,
 
-On Wed, Sep 17, 2025 at 9:32=E2=80=AFAM Jason Gunthorpe <jgg@nvidia.com> wr=
+Thank you very much for your comments!
+
+On Wed, Sep 17, 2025 at 10:52=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wr=
 ote:
+> > -/*
+> > - * TODO: __maybe_unused is added to the functions:
+> > - * kho_preserve_page_table()
+> > - * kho_walk_tables()
+> > - * kho_memblock_reserve()
+> > - * since they are not actually being called in this change.
+> > - * __maybe_unused will be removed in the next patch.
+> > - */
+> > -static __maybe_unused int kho_preserve_page_table(unsigned long pfn, i=
+nt order)
+> > +static int kho_preserve_page_table(unsigned long pfn, int order)
 >
-> On Wed, Sep 17, 2025 at 12:18:39PM -0400, Pasha Tatashin wrote:
-> > On Wed, Sep 17, 2025 at 8:22=E2=80=AFAM Jason Gunthorpe <jgg@nvidia.com=
-> wrote:
-> > >
-> > > On Tue, Sep 16, 2025 at 07:50:16PM -0700, Jason Miu wrote:
-> > > > + * kho_order_table
-> > > > + * +-------------------------------+--------------------+
-> > > > + * | 0 order| 1 order| 2 order ... | HUGETLB_PAGE_ORDER |
-> > > > + * ++------------------------------+--------------------+
-> > > > + *  |
-> > > > + *  |
-> > > > + *  v
-> > > > + * ++------+
-> > > > + * |  Lv6  | kho_page_table
-> > > > + * ++------+
-> > >
-> > > I seem to remember suggesting this could be simplified without the
-> > > special case 7h level table table for order.
-> > >
-> > > Encode the phys address as:
-> > >
-> > > (order << 51) | (phys >> (PAGE_SHIFT + order))
+> Just merge this and the previous patch so that the patch will replace the
+> current preservation mechanism with a new one.
+
+Sure I can do this.
+
+> > @@ -1023,12 +752,8 @@ int kho_preserve_folio(struct folio *folio)
+> >  {
+> >       const unsigned long pfn =3D folio_pfn(folio);
+> >       const unsigned int order =3D folio_order(folio);
+> > -     struct kho_mem_track *track =3D &kho_out.ser.track;
+> > -
+> > -     if (kho_out.finalized)
+> > -             return -EBUSY;
 > >
-> > Why 51 and not 52, this limits to 63bit address space, is it not?
+> > -     return __kho_preserve_order(track, pfn, order);
+> > +     return kho_preserve_page_table(pfn, order);
 >
-> Yeah, might have got the math off
+> I don't think we should "rename" __kho_preserve_order() to
+> kho_preserve_page_table(). __kho_preserve_order() could use the new data
+> structure, or call the new implementation, but I don't see a reason to
+> replace it.
 >
-> > I like the idea, but I'm trying to find the benefits compared to the
-> > current per-order tree approach.
->
-> It is probably about half the code compared to what I see here because
-> everything is agressively simplified.
 
-Thank you very much for providing feedback to me, and I think this is
-a very smart idea.
+Ok, I prefer calling the new implementation, so it will look like:
 
-> > 3. It slightly complicates the logic in the new kernel. Instead of
-> > simply iterating a known tree for a specific order, the boot-time
-> > walker would need to reconstruct the per-order subtrees, and walk
-> > them.
->
-> The core walker just runs over a range, it is easy to compute the
-> range.
+kho_preserve_folio() -> __kho_preserve_order() -> __kho_preserve_page_table=
+()
 
-I believe the "range" here refers to the specific portion of the tree
-relevant to the `target_order` being restored, while the
-`target_order` is the variable from 0 to MAX_PAGE_ORDER to be used in
-the tree walk in the new kernel.
-
-My current understanding of the walker for a given `target_order`:
-
-  1. Find the `start_level` from the `target_order`. (for example,
-target_order =3D 10, start_level =3D 4)
-  2. The path from the root down to the level above `start_level` is
-fixed (index 0 at each of these levels).
-  3. At `start_level`, the index is also fixed, by (1 << (63 -
-PAGE_SHIFT - order)) in a 9 bit slice.
-  4. Then, for all levels *below* `order_level`, the walker iterates
-through all 512 table entries, until the bitmap level.
-
-so the "range" is the subtrees under the start_level, is my
-understanding correct?
+ __kho_preserve_page_table() is the internal implementation of
+kho_preserve_page_table() and we can remove the
+kho_preserve_page_table().
 
 --
 Jason Miu
