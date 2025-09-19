@@ -4,132 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30646CAC592
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 07:06:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 726AACAC592
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 07:13:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 743B528000F; Fri, 19 Sep 2025 03:06:08 -0400 (EDT)
+	id BC03A940009; Fri, 19 Sep 2025 03:12:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 71B58940009; Fri, 19 Sep 2025 03:06:08 -0400 (EDT)
+	id B97DB8E0022; Fri, 19 Sep 2025 03:12:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 630E728000F; Fri, 19 Sep 2025 03:06:08 -0400 (EDT)
+	id AD4DE940009; Fri, 19 Sep 2025 03:12:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5024B940009
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 03:06:08 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 86F8FBA2E0
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 07:06:07 +0000 (UTC)
-X-FDA: 83905115574.28.9623287
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 8F7F3140006
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 07:06:05 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=kNTOTWJp;
-	spf=pass (imf26.hostedemail.com: domain of elver@google.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=elver@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 9C20D8E0022
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 03:12:59 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4632D1A055D
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 07:12:59 +0000 (UTC)
+X-FDA: 83905132878.21.08A3C65
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	by imf30.hostedemail.com (Postfix) with ESMTP id AE57280004
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 07:12:57 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="QV+O/HFQ";
+	spf=pass (imf30.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758265565;
+	s=arc-20220608; t=1758265977;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/Klo+L3KBBL4ssbFZ2YOqJt7BcxJ8M+dYCfYzeUYYBY=;
-	b=STcBYciDpnZQZxPKDXn5YBnpaUbVjeX0YaV0taeUA9tFxNPJUtMzR643K+vxL5sEEG7zp3
-	USSEBkgI0nZQn1N+lubqhFPWG0jXaDXqE0jIiV/xJlY7TNVicGhkl8rrhe0S5UlIhpbJ6H
-	THQ8rgMDOiJ4nfQtbKRK2bOUGcKVAyQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758265565; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=NLGozOOt1IVRUMb3crUj9Bxlg+CaYn2TCRgX+oQe2Wg=;
+	b=JElldpvcalmGsb0W8dyX0dGaZYhIaqLtGLjHkfAA/NM1hgQVa/q4vtsnfCp864cv6vBZzp
+	RvAhk2sWihx6k2yuXb0K9gtAZsusdIP5mzs5+dybYpCOXvC0EbdalGjdDn+2PHu32dTNXI
+	QWYgans0N4qt7zzMQiFbpCVJ6494NnI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758265977; a=rsa-sha256;
 	cv=none;
-	b=iQAFjxjkcmwWUNgj14vi3eszs7UsILY8vnc2TNW92TyF6DJ026+YCcSu4fy6Pabgvuvctc
-	WMGIdQm0N1JzyfkRWmz/8xYTTSPpIaRoIvqAWVKYB91VJROuuSaQ/wmXtqqR57IkyjZ/2C
-	lwk6SifcLBKvceVUcSY8lhJ2Mw9B4Uk=
+	b=AceIX12cbXui9/URrkNTrnZrpHA4DxRaNY+bQtBe4S+xfmunGeef+Flhsi7T1ErnwzlBFQ
+	VIwlw1/0h85UsJYutRJJ4b3aVOt+QL7GM+6xp85Pyju6w2HtIYyGQByBidmoOMGyytiKOp
+	KCNi6TAKKYJO7nSmus3p62enMz96kyc=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=kNTOTWJp;
-	spf=pass (imf26.hostedemail.com: domain of elver@google.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=elver@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3e9042021faso1259212f8f.3
-        for <linux-mm@kvack.org>; Fri, 19 Sep 2025 00:06:05 -0700 (PDT)
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="QV+O/HFQ";
+	spf=pass (imf30.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-b07883a5feeso332214466b.1
+        for <linux-mm@kvack.org>; Fri, 19 Sep 2025 00:12:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758265564; x=1758870364; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1758265976; x=1758870776; darn=kvack.org;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/Klo+L3KBBL4ssbFZ2YOqJt7BcxJ8M+dYCfYzeUYYBY=;
-        b=kNTOTWJpf/h8PCCK22ogquE40QummZVfUHolh2QlbuZFdknXhrO5tnYTJbRrz9B6iS
-         ysHR3PxX7CwOyVymtujiWnNBpvvRnj2uQrZ7FFIg/FKp0zejA5xKj6zZtTcdREbBrneI
-         v9LxxDAth/N9t/faopO0iw7q9z6KAd5Mfa/Rl+Gq1rQuQRGbtSZfiUlolg3qRxxrm+3Y
-         nYzUlbiPjhkW6zg7uWIjJN2vs9Ua17B6W7QZodVjaIYlo+Nl6Rqymyw/GYZEenqb20X2
-         6VdCj5jIeAbIz0MKPtv/L2ZDgB90vvqkEJD18L+3kNLLAIeQ8JM27205SAg0HX5P35iX
-         wNgA==
+        bh=NLGozOOt1IVRUMb3crUj9Bxlg+CaYn2TCRgX+oQe2Wg=;
+        b=QV+O/HFQ5dq0G9+fgwiS/+S2eFXOzVh7hneKDCGSqFeCqmpTQK45j1yadC+Ujgsspw
+         mJdvmvC4VnWekYetPxTyDelrTvNcXqCnwz8YTiTkpLlLF1RMMenj7XA8cQleBrkZ6fie
+         EN4etg5LTWOt5IyXx+M6nsrkjA2C0jXQ7axPWjS7Jq9QD3gS+BhAGqs0aIVygVThmLwa
+         u7IPtM3yHFuxcRBSu/m8QvYdHBqhlXlrtCC8QCD4uit9ymBORDtQPmIRktdmwxQpvpP1
+         PZ9uhv96YREp1+vgwOpEkem1DqKT2h8ERinrVTreBo7ZFlFxfkU9K2xrjLWE6MCJGD2q
+         SoXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758265564; x=1758870364;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1758265976; x=1758870776;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=/Klo+L3KBBL4ssbFZ2YOqJt7BcxJ8M+dYCfYzeUYYBY=;
-        b=SP1GCG5c4mdy6uLOO6UeT4We2QxniaufTC2OxUPR8Zmotlc2Fu6yfd/TRoWzhH9sQl
-         8UlL64HjOyOjCq0iWKNWlUwOEXxPjkgkTuZFTjQBnrbfqINhRFoUl6APAu4BJO1DTgPl
-         RnY1yql5wMvWRwBx8kf6q8/Nu6EaiX5CcklxpQhwk4q+PKNzBQwzR3+xzv1VeZxdEEts
-         6a7hJyulPwithUCknHNEa9FfFGRzr0JlrECgJpyUz+j+c4e4QWihCcoCRTHjT6auDekB
-         TpsUd3DTfuEqXhAxaSzDwUznn/JGfBtFtoELdlmndN9GiDsLsxAuFKRYtIWsGQ97nHvK
-         7pEg==
-X-Forwarded-Encrypted: i=1; AJvYcCUbXclpnX2dw+OZX62c4B2Ca4sR5nfsaZzdThtEj6EpNKeg2lNvVOLkBbFe5KSQzpmqEP4wJ+uAIg==@kvack.org
-X-Gm-Message-State: AOJu0YwW5OiP6eDa+P1QQqBgh8C5KIQGyU78KUHj0YowvsySQuUoEtO1
-	pDUD7cksnYYAXrLFT5NMzhEfnggq+xkkXpOZRKWx+1BmhfkSFtAn8l/wjBGtST4KqA==
-X-Gm-Gg: ASbGncvCBV5cKN+CKm0juULccRZ88gPz3dGZ5rzf7qF7bOzVNitq+BYPRUFWLDyeUEo
-	s6Brz4Nx511e+VoQWEqCyJwPyU+irAp7gXBot1zXND+CNN9/sbvQJ3I6OlE/u/lDqhVlBB3HwY0
-	u+zvhQg1r3oP//BtRKIHiu/G5BqJV4oSD69cmaMS4N3PiBocz+QVcfaaoImIeOsn91FaClTGQT4
-	gIMd7Czk5p9jSJQj1ccj7aycWV4qcKHGRwg4qBhpBwCfRiLlYr0DapRWHywTi7D7R3xEYGzpRXH
-	TsUW/RxANQY1qkZjf182ofDvCDR9pAO2zzjdI2qsg02Aj30yll6fsyuq+q3tO2TuCwVo/aQ5n6U
-	F38RVVsQsdNNBeHsKhr00RCOFnP7JzkN5bRTcaoLDSofB/Ic20WlH/q/Yeps=
-X-Google-Smtp-Source: AGHT+IHPi1pgPaxjy0qFYAQQyA+9c6RpQAFZf3vA/UzVRkHTrs+JR5MqjC9zARfGu5kWXbLyHGkoeg==
-X-Received: by 2002:a05:6000:2c0b:b0:3ea:6680:8fcd with SMTP id ffacd0b85a97d-3ee7c925245mr1570227f8f.13.1758265563176;
-        Fri, 19 Sep 2025 00:06:03 -0700 (PDT)
-Received: from elver.google.com ([2a00:79e0:2834:9:1f7a:8520:7568:dac6])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3ee0fbf1d35sm7200088f8f.55.2025.09.19.00.06.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Sep 2025 00:06:02 -0700 (PDT)
-Date: Fri, 19 Sep 2025 09:05:54 +0200
-From: Marco Elver <elver@google.com>
-To: syzbot ci <syzbot+ciac51bb7578ba7c59@syzkaller.appspotmail.com>
-Cc: arnd@arndb.de, boqun.feng@gmail.com, bvanassche@acm.org, corbet@lwn.net,
-	davem@davemloft.net, dvyukov@google.com, edumazet@google.com,
-	frederic@kernel.org, glider@google.com, gregkh@linuxfoundation.org,
-	hch@lst.de, herbert@gondor.apana.org.au, irogers@google.com,
-	jannh@google.com, joelagnelf@nvidia.com, josh@joshtriplett.org,
-	justinstitt@google.com, kasan-dev@googlegroups.com, kees@kernel.org,
-	linux-crypto@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
-	linux-sparse@vger.kernel.org, llvm@lists.linux.dev,
-	longman@redhat.com, luc.vanoostenryck@gmail.com,
-	lukas.bulwahn@gmail.com, mark.rutland@arm.com,
-	mathieu.desnoyers@efficios.com, mingo@kernel.org, mingo@redhat.com,
-	morbo@google.com, nathan@kernel.org, neeraj.upadhyay@kernel.org,
-	nick.desaulniers@gmail.com, ojeda@kernel.org, paulmck@kernel.org,
-	penguin-kernel@i-love.sakura.ne.jp, peterz@infradead.org,
-	rcu@vger.kernel.org, rostedt@goodmis.org, takedakn@nttdata.co.jp,
-	tglx@linutronix.de, tgraf@suug.ch, urezki@gmail.com,
-	will@kernel.org, syzbot@lists.linux.dev,
-	syzkaller-bugs@googlegroups.com
-Subject: Re: [syzbot ci] Re: Compiler-Based Capability- and Locking-Analysis
-Message-ID: <aM0A0p4-3lwLeAWF@elver.google.com>
-References: <20250918140451.1289454-1-elver@google.com>
- <68cc6067.a00a0220.37dadf.0003.GAE@google.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <68cc6067.a00a0220.37dadf.0003.GAE@google.com>
-User-Agent: Mutt/2.2.13 (2024-03-09)
-X-Stat-Signature: 8upw1jsxzrd1smejg6ec7hm9ci68xsgz
+        bh=NLGozOOt1IVRUMb3crUj9Bxlg+CaYn2TCRgX+oQe2Wg=;
+        b=HrV2iX+27R3jr9y6sjxs7By91f7rafcAnJwhxUWhrmrGdgd86OAo0cbbondAW5WJaW
+         ffalJgXSl2rs+eFOF2nV6Eeaq8kEBF83/HJ36YgZcWNUVIDgYlCVP6lGQXquTp8DKznA
+         nA7YWVKHky6bowYWJuhuAGvCBEieguyuFurypz6S+YvOYWSq1/n+VRPYscL8mZKkboA0
+         qzwSjrz7QYkh3+bZm4qZPq4qk+R1JA2ZaRtZtJ66LIVxgb13Cf03vd8zMP+Rtwnvgh2o
+         hbzDf0Vp1kjjMgX+/+nth7c9Cufijiel/4yK+kxSRVZpL2j8+uHlDKhPiCmLSD9M/Kmp
+         mrmw==
+X-Gm-Message-State: AOJu0YyGLkk2A0PxfUS7eC6EcKLGE7PNKjUdZF/ywQceN6lUYeWB7XLk
+	G7RXyejLTPn2sT6cY6rQJh8yslKl+U2rgOHkWGGrAxHQ2DgH4AEjHOCY
+X-Gm-Gg: ASbGnctDBLHdv0zc8SkvNFlZssgd7taVvOdMlxH7gmg2smeI0sXPLWPIe/Srg1dhbq+
+	wIpyvyOZ0Qx2asFiN2TwO6sBGZNWZyv6B2AiggXeb695+4D58zmrSvj1IqdfQ+yIhUeQ7rZ7Yzt
+	YQYCchtufsc9ZZfR4GWbc/CwJM9hd/JjAlL+JVLBW1qoYTDrFjzIcHZdEqxWUAhy+HKmez8A2U1
+	Uf7YFURK+gRrfFqsq+BQfhWjzvhCqal+erUxnSUE9FULtqJtA9LXQjhrFYstCSlIfPpZtjSHuTt
+	B01kqHtTfbNyJbPGHv8q6KgxvWulfraGE/neKXgps97l4xn2KA1HnoxnHZ2vucpBIk41xWw9NUO
+	pZ2SsO5uD6DnbTQrjJNM/7g==
+X-Google-Smtp-Source: AGHT+IGSaqod/w84tcNyXd0/cFXPoS8J3j/FLhYBBBphmU3OiIItx2EtIGdESvpO9zGxKEr/TRF5ww==
+X-Received: by 2002:a17:907:9811:b0:b24:6e6:7117 with SMTP id a640c23a62f3a-b24f3e5e097mr223295166b.32.1758265975714;
+        Fri, 19 Sep 2025 00:12:55 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b1fd2816769sm366753566b.106.2025.09.19.00.12.55
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 19 Sep 2025 00:12:55 -0700 (PDT)
+From: Wei Yang <richard.weiyang@gmail.com>
+To: akpm@linux-foundation.org,
+	david@redhat.com,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	xu.xin16@zte.com.cn
+Cc: linux-mm@kvack.org,
+	Wei Yang <richard.weiyang@gmail.com>
+Subject: [Patch v2 0/2] mm_slot: fix the usage of mm_slot_entry
+Date: Fri, 19 Sep 2025 07:12:42 +0000
+Message-Id: <20250919071244.17020-1-richard.weiyang@gmail.com>
+X-Mailer: git-send-email 2.11.0
+X-Stat-Signature: c3yps336tkh4s6ibiko8bm3jj8mzb6w1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8F7F3140006
+X-Rspamd-Queue-Id: AE57280004
 X-Rspamd-Server: rspam10
-X-HE-Tag: 1758265565-57090
-X-HE-Meta: U2FsdGVkX1+qZOnCDoW7PeLmrLGt8duX3oYA0Z1UWcN+cMQFDqWg3vV9ZxfSyVUogAb9vyBF4+6jRej06L9Ulvg1teM8UtxGME5PAGVqErdRbHmzJDv/zpIrNji62o2XEmTTf3pyPbaF2cyBGs7PtHubHBpM9sUrEwK/F/j0HZ9aJxH9SAtVZklycHUS27UpeHIqoZA6LIpce2baMJPzRlUSViBqz+OoznEezZSMn5OtLAh7Y9xsAvO2+Epf4fsGcbE478AE/Mc1VNHZ4ewNijCPulo4XHz3HpVNsnU9vveq1zs8rUumFfS5LRRPXxoYS9MINtAIcPMvk1iY1D28+uUSpBX7DnQwiHU3LbfiUwJN6Qq2cL2HsbxRvTwSuJkT8xVnypjCGnA6e5IPRkCl0NtHfVprFhAx6qldjJaTtU0TKBso6Epjo68g3b8QdoukVzwzB/IKECGofylRGvKwegCVLBwNKEmecceMaF3X1wkImsgYgvdA5mBqvs3qBB5LSOhUtUToTXC0WMIi5iFiUpZzAzSpo+D6vJNtjQHbdSbCgtgIQL59GQ+2XPoe+H3yeVkVmwz6sfACIek/0ayjs5ErCUYXVfwIEnuKFH2HAxTrq98ViCpQFUOWJJcAst9CReY1sZL+HYOV76lWLGU9uQ3xONsizVMF+Kw69RmkN82yjreJ1IXQ35HgyTZcnRKFgaSLM1zRBHHVf8KTtHQ+g1K82UyoKtJt8A+OZlNbf+J/0SpvkKqudVnhVNDnHvnu3O7sXIU0FrZJvQVcujXfjjxWljwGaYO65tGS62ZkP/JnavSZT6cxM9tofe32UUgi6I1EDcp3hhTP0/A5Q6cWwhOOvS+eTipyeNzZo8cT4sYFJcOdv/pz9yHWMy40eXFXDzeXR+/K19uQP8WF7WhjbmYpKrgoV0wA8+Xt/453QTAZKiGkI6RX8B2Ze+H69okHlvxjjD4HIVYPLIKvxgd
- 8IUOaSju
- apSMzBK8ueI4PIXMJx65+bJr/oaRneGgseT2KNzRB7ouBNkMR40SrJCvBYkzrMVyM3UVHB44ivXxsrYB15SOH00HOYxulPszZD3WyquEsblJbYxH9/jBKV0xZWjhAkmTl0lG/S4EUJumlXd+ryUxYbmVJQijyz979U/nYH2DIxrH629YNUA9SdbVwz7CDBPAWTwp+T5gYy9gUqNcNiwslS/jSZjRekCwKiJ+2DlMwfxSb/67C/eU4663ZVP5CHTZmkQ/+g+VNrmzjici/hgJgq4AXgm2xLZyebsWdOny8zQ4LJZSqwppkPMHOIrXz6Mn3iE1UtJQiAwIckSbxpH5SgoD7sfX/+EegN8s/N2d45QplKBCCs0TK2TIpaa/3StllFjYTttRA7FQnVdUnCWgO7H5W9grZrDqlDdRa8UDW5qfvvNYVKz+mX3+f78p8tWvJ0kXUaefIsSjR8ZyEEAWRNrEsTB7ekM/FXF1P0mmKH7CGikU=
+X-HE-Tag: 1758265977-178531
+X-HE-Meta: U2FsdGVkX19e7XwKdWqNF7v3j2AjnghYcYgFPnvCkWcJjlVYSJigGHKnUCsolgJltGGMXNqrHErKVNnkLzIqi9OQRlAmbeMGP9juxag05dIskvx/qEaKC4A/6CR5URrP6t6nRzds8otSRkd/m9089PFStLLSjq62bKe90d8eLzQQnDsJz8Zlc7up3cUrLapkmdouWzcwbIvPwTN34Sg2s5+AzTuyrroIIWjFvJaMhm0AmOlXs9M8QKcEh7xOThu6PIi9QDHlbtXxwWk/V3ZgLp7vTQZxWRvUr9XwmpdxGN58al9N+CJLETCG8u4fq6bh7rhW10LVmTgcB/a0ioFHGM9QhWu+A46cD4IWl06cgq6q6Ydljwi8iv9Zbyp5W8GCEczhAsD87BwGXgmQzcRlXR5+K05sF8uqP2h8bAj1Uy7MznWs2EdMwP60ILT6U+Z/H8s7h7X7O7rdom7Ht0SFBWXrzqHywxauI7KOYSRFQ0ixiNve1wHQXG/si+laTMUonTVODIuWhxG9/f9GdEh2K3Wk2bCGBI62/deSckr7UJaxb64YxhEtCeot2rO659EjsYcdgfnSnar+HnvumYUC2FzuJ2sX6OpXXfnbkgDQy39ERGNiOayJEM+37/5C1VHd3aC2UBNKPlv+59C2NpGUMP0qbYzbptl4N2T7PEj3v4A97Plf/fvOETNaPF3XQgT8YNWRNJEmjg/eQh5CnJl9okUTF6O44W8xUWMy8i+P3nRHNbZSe4PFfO2rPnEjlRpbIAfVTYiL5daiGr3OzBfsJ1pi0V0h4gw8Gun0psU3Jl0qwOTQNAO1EpawfRW7u3QKk/NnPzdAuRBs33ouitvrwhRKRw0hEQnAMQ9KgiDuw39dkQ9WGAHxtxdLL4s+Bf9wuPfhVk9TZfpzj/Zwq1kZ4kSpvAcyj2rkfYYIPk0ijfs3ln2humYyRYjwC+FR/p1xiK4I6tD3X1SC8gyWvN4
+ u52adp9j
+ ZCKz4qZI/NyPzrQHgDj6DEXPa3QjKpgbKvlUaQZ5LYJoxL2SBvVEu0mbDRCiVmoDeEQwYOOiD6em9TxEFeLToPF/+czlJ2Y5U0i7Y1BhIdCE1lHaz3zSYrCemGMELjKezezF+KyiWCF/Xwhr/2xbkyY6hAN84C1mgqF3T2zMcS46clV8Q3o8Aqzrq4lQl9SyNYpYfJL8cAL37tJG4Ne5wJVRZTQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,40 +121,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 18, 2025 at 12:41PM -0700, syzbot ci wrote:
-> syzbot ci has tested the following series
-> 
-> [v3] Compiler-Based Capability- and Locking-Analysis
-[...]
-> and found the following issue:
-> general protection fault in validate_page_before_insert
-> 
-> Full report is available here:
-> https://ci.syzbot.org/series/81182522-74c0-4494-bcf8-976133df7dc7
-> 
-> ***
-> 
-> general protection fault in validate_page_before_insert
+The usage of mm_slot_entry() in ksm/khugepaged is not correct. In case
+mm_slot_lookup() return a NULL slot, mm_slot_entry() should not be called.
 
-Thanks, syzbot ci!
+To fix this:
 
-I messed up the type when moving kcov->area access inside the critical
-section. This is the fix:
+Patch 1: check slot before continue in ksm.c
+Patch 2: remove the definition of khugepaged_mm_slot
 
+v2: 
+  fix the error in code instead guard by compiler
 
-    fixup! kcov: Enable capability analysis
+V1:
+  add a BUILD_BUG_ON_MSG() to make sure slot is the first element
 
-diff --git a/kernel/kcov.c b/kernel/kcov.c
-index 1897c8ca6209..e81e3c0d01c6 100644
---- a/kernel/kcov.c
-+++ b/kernel/kcov.c
-@@ -497,7 +497,7 @@ static int kcov_mmap(struct file *filep, struct vm_area_struct *vma)
- 	unsigned long size, off;
- 	struct page *page;
- 	unsigned long flags;
--	unsigned long *area;
-+	void *area;
- 
- 	spin_lock_irqsave(&kcov->lock, flags);
- 	size = kcov->size * sizeof(unsigned long);
+[1]: https://lkml.kernel.org/r/20250914000026.17986-1-richard.weiyang@gmail.com
+
+Wei Yang (2):
+  mm/ksm: get mm_slot by mm_slot_entry() when slot is !NULL
+  mm/khugepaged: remove definition of struct khugepaged_mm_slot
+
+ mm/khugepaged.c | 57 ++++++++++++++++++-------------------------------
+ mm/ksm.c        | 20 +++++++++--------
+ 2 files changed, 32 insertions(+), 45 deletions(-)
+
+-- 
+2.34.1
+
 
