@@ -4,113 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DB09CAC592
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 09:25:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04AFECAC592
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 09:45:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 56E91940009; Fri, 19 Sep 2025 05:25:39 -0400 (EDT)
+	id 3EE5C8E0053; Fri, 19 Sep 2025 05:45:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 51FA38E0008; Fri, 19 Sep 2025 05:25:39 -0400 (EDT)
+	id 3C62C8E0008; Fri, 19 Sep 2025 05:45:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 435D1940009; Fri, 19 Sep 2025 05:25:39 -0400 (EDT)
+	id 2DB978E0053; Fri, 19 Sep 2025 05:45:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 30A4C8E0008
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 05:25:39 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D5B9C1405E2
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 09:25:38 +0000 (UTC)
-X-FDA: 83905467156.10.042481F
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 8245DC000E
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 09:25:36 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=Y0bmY6ku;
-	spf=pass (imf28.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 19C3B8E0008
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 05:45:03 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D466C14060F
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 09:45:02 +0000 (UTC)
+X-FDA: 83905516044.27.7D44C4F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 561D9140002
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 09:45:01 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lhz40lt0;
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758273937;
+	s=arc-20220608; t=1758275101;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=oB0ZWPbK+ZLVMGEIgwgPI2hlWSIgxfz6oD2rkNKtFKE=;
-	b=KesyTxy/ixOXcSVdQMLbaWmorNh68lomfOb2MQ/BOc9zsOf1pWAxzWc5uqbfColcSLHmmo
-	3O5HL14Fes9h/k4JV8d1lI1cN8TwfVR6uaiB3gDnEhcIPGfzffJ6098UhsKsUbd3rGnZor
-	x5o3aGgAH+uZ0jtJkN7aw1uAklcL2Kw=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=Y0bmY6ku;
-	spf=pass (imf28.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758273937; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=utj8GPGe9xQrwlm+Dp8WOy90lEVmz2edyt0hCd7KAeg=;
+	b=kjZFaPmskb0aVeXmZw/uqy8kXor0TXzDCZ16pQFnP61AaqDM2A1fdGq8MBnirheyJePCpv
+	aNni3OM01PUiN0rG2izKaTGzLJqxjNdOsY0cecC0LN8wk0zHH/WQqy9xKoFOXaXD6GDcDu
+	cYX3qhnLTk3xJ6xyVaOnG7X0132lgM8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758275101; a=rsa-sha256;
 	cv=none;
-	b=TwPki8/mpqzPe6jE1jJhxV16GevhxqtZbWbn9xshpHNA44+7TYPcD6+QRSFUiiH+c7Gdrq
-	Sp9lsNmSxYDOpvkCv5qyjGO47I28LQI23lMH72U3EBjHqnejmLqLi9QDdaBNtMJw9dkA8V
-	kjd3JP7UWQM8VGfe0XuDuzNu25+BKHA=
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-329a41dc2ebso1483212a91.3
-        for <linux-mm@kvack.org>; Fri, 19 Sep 2025 02:25:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1758273935; x=1758878735; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=oB0ZWPbK+ZLVMGEIgwgPI2hlWSIgxfz6oD2rkNKtFKE=;
-        b=Y0bmY6kutKfQV9WYbhVwhY/+X2ml6qPzarLsuHelHjOrrxagq+NfW+n4SIyBUGVE/N
-         sVMKPVIdNp9BRnWuQqFvbPbpZf1Iqpx4tcNqkXmUrwC7uS/n5LIWYE0JSQkju3pxKbkt
-         kVvbE+K4qlA+BXEf8q0HvWjy+syKF/zRlB3SXdMqvtB67bmg4LChjjaHyhlgz0ZyE4tj
-         WHxchg/yo6oiC89tAbwhnHMwtB0r3+f1rvVSIURTDGiEmwgFfFqJFCsX8YFzd4txdGBR
-         G+BorbgwgfiT9oFWN98e1S0x0F4/KrOjIPgjD1x0oIYxCOkEV0o4qZq9Hy4roOqJ0WzW
-         i0fg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758273935; x=1758878735;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=oB0ZWPbK+ZLVMGEIgwgPI2hlWSIgxfz6oD2rkNKtFKE=;
-        b=GyS8aerhCB8bB1SKynrzLikPqjhJsXLQ4688I/X7S3c+NVFo+qmp7Rzoyf9XcbxQaR
-         lKXqQ5/VmheVzvsq4wFyDegQtYp9DR3XNWi5IMA93c4FNuHeOVknUOx/QuwanGmMUkAx
-         RMvcjo2Z1RCSsC27KwZoqNfysxd/kQCal4eVz30kY5KlVWZnPCYlDQ0hCpnwj3IKSQ1u
-         SQ1X8tAESHAdzj1cZlqrn9JF7pwOIjNeieuqdj+Sy/ZI++f/vl6AV+hG/SpHz3HzCwQr
-         L9EsLEzi1okrKu6V8b353ArMLLLaWkvJi0zd/YneD2TTz0yfxv4zmG0p49QL2kopZMaf
-         Z3Qg==
-X-Gm-Message-State: AOJu0YxJMXjLeP/+uo+HypQ4H8dWteYf60gXWcy0JqzfeX4gbt96lC2r
-	BvtnEZwHIHi7RoGm6L1CtNINzeNqEoUnn5mmohQP4bCeQbZPT7HR48IzvmM7CBVk6O4=
-X-Gm-Gg: ASbGncv1MSm+OsVZHUrqNo5TXGVn0GIWwKVZVuNbn4Fjfk+tNWltwMS3oj9XL+LE06A
-	5lyfZxg2SnTa9dtcaVkkUM9DPmVfsEY/CYfZJkVHKU6pWSUrVRQJUsfTet1TJ33rk8wc1lV97T/
-	e2n9ml4gSHNawjy8rPu55RxXxDpVFKXME4Q9XAlxr2rdpcDMcyecFZ3H/pRj6OheEZKAJLZ/r+g
-	B4k7u6wpFKCkxznTbO85wJfhlJZ5HwMeKfpSsmSNq5MV99NCuV/KDB2bBc8Jpn8E+9S0MSm+aUR
-	U4KSc0Y231i1VYxuYbnIF8psQCCsmq5P2vR0Aea8kEiKV6c/IKNVbYg+CvoIeRbJR4Nx95HN4nl
-	EH3SBoeyiIDijWsikFIdoyDQliAL7ac/QCm3WGsp4LQMLpUWV/w==
-X-Google-Smtp-Source: AGHT+IFddFvkF2BlBIc4LZkzrbMcxGq/6wzM3FTHdUvbu+vJro5USlOZqK6qwg7qJ92ZmKgdLsf5DA==
-X-Received: by 2002:a17:90a:ec83:b0:330:797a:f504 with SMTP id 98e67ed59e1d1-33097fce4c3mr3315076a91.3.1758273935039;
-        Fri, 19 Sep 2025 02:25:35 -0700 (PDT)
-Received: from localhost.localdomain ([203.208.189.11])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3306061925esm4958387a91.2.2025.09.19.02.25.31
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 19 Sep 2025 02:25:34 -0700 (PDT)
-From: lizhe.67@bytedance.com
-To: muchun.song@linux.dev,
-	osalvador@suse.de,
-	david@redhat.com,
-	akpm@linux-foundation.org
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	lizhe.67@bytedance.com
-Subject: [PATCH] hugetlb: increase number of reserving hugepages via cmdline
-Date: Fri, 19 Sep 2025 17:23:53 +0800
-Message-ID: <20250919092353.41671-1-lizhe.67@bytedance.com>
-X-Mailer: git-send-email 2.45.2
+	b=aNs4Hrq7CMbY8/0U8g8Vi0CWhh24xxdp66ohgxUaih11yMwYYP4Yuyc0UPcb5OarleZbwL
+	+RN4O5afuYajPpf4Ihbyjmok7Yso1XoMKWeh5cH9Wr7eIbhOaJ8HQCoiUTNaw7hslZz8HV
+	ly4m673PeB+ZaLjMFymuGXi+dEeTtv0=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lhz40lt0;
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id E7D1A442D8;
+	Fri, 19 Sep 2025 09:44:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ADABC4CEF1;
+	Fri, 19 Sep 2025 09:44:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758275099;
+	bh=GevPAgZnxPiABiyE8TgVYJoyrxKHZP9YdLV2GloJTu4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lhz40lt0SEu3HxgEYIqaeltRAt4aEBgazYuPF9b2ALx7MPrXRYZh7j4KBJAYjZ4Ab
+	 PhrajEYLtN+XhORv3jeUevqKHzRSuZHfsqfmH9EgBXtCpe2gtbQdOcrRd5UJsyc46b
+	 tFfY75K57McmOcZnLHImyV5Dv9LtW/GSpwXzxy2jZAovnc2lvPkPRezqGEDhD4l1sO
+	 Oh7o8eWuoZ5F6RLqO/4487IB1qBqFdXUKxmxATUT5sPDlCVokiHWmWYxV/1qF9/pD2
+	 ELNo7ibLVq3SzpiwEe2yb4CBGNo4N9NRP2IuIfBoXVJJE3/eIIGQXtNQv5jj26TxRe
+	 dkNeFxtNu9B6w==
+Date: Fri, 19 Sep 2025 12:44:52 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Alexander Graf <graf@amazon.com>, Changyuan Lyu <changyuanl@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Baoquan He <bhe@redhat.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Jason Gunthorpe <jgg@nvidia.com>, linux-kernel@vger.kernel.org,
+	kexec@lists.infradead.org, linux-mm@kvack.org
+Subject: Re: [PATCH] kho: only fill kimage if KHO is finalized
+Message-ID: <aM0mFDdoQ4r1f9Mo@kernel.org>
+References: <20250918170617.91413-1-pratyush@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8245DC000E
-X-Stat-Signature: nrry8qu4n6z81dtxzeogm7rco3nahqs3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250918170617.91413-1-pratyush@kernel.org>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 561D9140002
+X-Stat-Signature: et6rwhd5cr45than8ihqg7rcekukxaig
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1758273936-643676
-X-HE-Meta: U2FsdGVkX18hoeFUT/+2do7Z9lb4p1aU4n52Xr4Zap6vuVUuIgsYTaSTYkjekwJK/QmQNX2ocsMqL7b6uJwhIRMwkEGPHt1KMABKFATGSrjoXWe9aDQpdnzrQ8fRVCkC0y90c/DvgDM5O5A1prdaUmsafB7PR1ibwTVA1bG+kkqsteizW49bgSLl/N2Ss1Kt866Y0b2MLpA/ivGexQzRrzsWoEBSIoAqEX/WhMZTFkyGnXBhgywl0MH5oMapUf6FeLZm8rT4B8zmKUOiukGtBiZxEz9wXWi+QlT8D04NPLWWppV1xajMa7avlcd3X+OxotsaV2NPKYvb2SJgrAk8olmUlxflIzO6p6BllygLzRojPtkWK+m5QwiRb/rXi7SIIzYrVPUHR0fpE35MerRxT1fv9apagjpcywidpPRK9qa924YznIQihH+kk+aFLZQ2qICxCKYinM95MGKXzoFUP7P/9VJnPlJ0MhVBwnPTiU7O9+FLOWb4hDNlu+W3a1Jpf4CIyZvVpKK0A6VXZ9JLhN234J3KKztVv9floTkCXPGKUibMQRq4j7HkGk/JIyRZN0xJh3819/oeQAomafUaciAhdUoSaEjr9WPdF8LHpA9+CDymUCx7V2kIu/RH3Y4NK/7P0NG2LJdNqOk8ahGd/WYKeQ8Dmt9pC9drklpfjwfAx4c84evahw6BnSa8hew9nKb8EqX+54rHui4xs/aZhdibvGsXEd+5Xz60FwpGFTuENhjhWlR5Ipqy8l/8/ybiOb3BlvWAMXtcFUIVZ13Lk7SGElBJoz8FZdgmC292MMOIV/C7UcPmNMrRNc2NoiRuUnlYiO4o23A9AO51jULcmhYGca5moEyExu0SKAYfh7pfPmSbTonkDhCJNOrEpcMpH4cYqlc+lyw3djuSfofqepZOTCVAcUqKPq2eVRGmnU+UovfmAthmjqnCVzddpHJf8F8EO5KP4ngqekADD0c
- 4aYgs9S/
- hcWyTg8in/YW2swD9bU7hoxdqTGXjleMYzK3c1OlqgydvAXhb3em+dDUxfIvi91PZCaRXHjUCHuuj7gKgox8BBEQjj8g6088FXJPsUHD3T71/afQBBF6hJPI1up04aJa6oQ1032ppnzDeI3dUR0Yd2lXKBane8YWealTWpnTu6S/uKj7IsEmxF4OsDTobrneaV/IuiBX7fyQ+ZwlXSpByAzJiOploORmgMgMEKMwro2UGwbCGnQE8ZuKD/kvKY+LRKG0FwnlRP7/5Sfsre8kC+lwoMkcWqjXpsYQiW/l9LHVRLJX7dh56UV3u89UK8Zj4Kw8lSKsozjbjyoZeSqmliYtr3w==
+X-HE-Tag: 1758275101-891746
+X-HE-Meta: U2FsdGVkX1/KM+OABcHcwrzokwW283x5VrsZhYgnlvy8HoZiNbbuIvnEhmgxQ/vnzKRM/ec9xYWcfdB8f3y94m61GoLPxYxGAmj7HzJaslIdiUwmLn2joSCTiacpbgOXBp0FQJKkmFakZCAwNx7BiPID66QEZd13Re7PSdnBSQ9zD1+NCm93zcS7rSuhQ/xU57cIEXE76UelKlXVPYVe75NZorTdlTdiRGmWA/h6QjdCxlNV/OevKGwXm67ahAo1UsX6MogJciKA3IIJYfDOtZV8Wvo4GOBFtfABAv4ag0zfaQt4OjAGvzPQSFgeZ17LoahQm+cwHCkjDu82FHGM+Jbqhkw0U2oZzcxDsknjzP88jD2Ry043/76GtC/V1CiVXC2BD+FrIgAijSQLjltLO/2zStHx5clRfD14a6Pqq1NNVwrDH1FQyIL9QFDZuGrnIflb0cK0Iw26Z3GVnC4hUzl+1U2tkoflcxaLqtOTtOVxvuhBDc+81D6IznWDHDt6ch0dkGeRrGPGjk26Zd+dg/94f5ohzxdwDNfzLMM8jzh3gF13TqjrBGhyGeCoVLiHwu8W9pO8PdeUjYFPEZWsQk8TZ2p0dc94TKObCwVyw52dkp5mClrY3m7TSRzZ7DA5Ya1nSyPVAxrmRj3VornHm/Xfz/othxiPSjtxQ90RTm5CCarUTYdbTpwpYoJ56OwV2WlC7fQIsMcd4MzqXHi3SB57uzKcDlP0snWFN6k5R7jlQYrZ5joVtJP8sKIqZ/a4vDKIchseO00ZdFiqnRv0rwuSSnbTQVH40lbt/HmORi2Qc7zYt0nzbDw6QuEfR+SXsk5E6zxfuLb0IpnRh8KIdEfTPijjBWWc7afo60VY2QhXKE/XmJwZZSBumIGRY8FdrFKHrUgj/leWxoQxv1l5DfYBRPJGdYDKKzMxK6Kk0/seFJFFtX+s/Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,51 +93,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Li Zhe <lizhe.67@bytedance.com>
+On Thu, Sep 18, 2025 at 07:06:15PM +0200, Pratyush Yadav wrote:
+> kho_fill_kimage() only checks for KHO being enabled before filling in
+> the FDT to the image. KHO being enabled does not mean that the kernel
+> has data to hand over. That happens when KHO is finalized.
+> 
+> When a kexec is done with KHO enabled but not finalized, the FDT page is
+> allocated but not initialized. FDT initialization happens after
+> finalize. This means the KHO segment is filled in but the FDT contains
+> garbage data.
+> 
+> This leads to the below error messages in the next kernel:
+> 
+>     [    0.000000] KHO: setup: handover FDT (0x10116b000) is invalid: -9
+>     [    0.000000] KHO: disabling KHO revival: -22
+> 
+> There is no problem in practice, and the next kernel boots and works
+> fine. But this still leads to misleading error messages and garbage
+> being handed over.
+> 
+> Only fill in KHO segment when KHO is finalized. When KHO is not enabled,
+> the debugfs interface is not created and there is no way to finalize it
+> anyway. So the check for kho_enable is not needed, and kho_out.finalize
+> alone is enough.
+> 
+> Fixes: 3bdecc3c93f9f ("kexec: add KHO support to kexec file loads")
+> Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
 
-Commit 79359d6d24df ("hugetlb: perform vmemmap optimization on a list of
-pages") batches the submission of HugeTLB vmemmap optimization (HVO) during
-hugepage reservation. With HVO enabled, hugepages obtained from the buddy
-allocator are not submitted for optimization and their struct-page memory
-is therefore not released—until the entire reservation request has been
-satisfied. As a result, any struct-page memory freed in the course of the
-allocation cannot be reused for the ongoing reservation, artificially
-limiting the number of huge pages that can ultimately be provided.
+Nice catch!
 
-As commit b1222550fbf7 ("mm/hugetlb: do pre-HVO for bootmem allocated
-pages") already applies early HVO to bootmem-allocated huge pages, this
-patch extends the same benefit to non-bootmem pages by incrementally
-submitting them for HVO as they are allocated, thereby returning
-struct-page memory to the buddy allocator in real time. The change raises
-the maximum 2 MiB hugepage reservation from just under 376 GB to more than
-381 GB on a 384 GB x86 VM.
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
----
- mm/hugetlb.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+> ---
+>  kernel/kexec_handover.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/kernel/kexec_handover.c b/kernel/kexec_handover.c
+> index 8079fc4b9189..5ff959a90165 100644
+> --- a/kernel/kexec_handover.c
+> +++ b/kernel/kexec_handover.c
+> @@ -1242,7 +1242,7 @@ int kho_fill_kimage(struct kimage *image)
+>  	int err = 0;
+>  	struct kexec_buf scratch;
+>  
+> -	if (!kho_enable)
+> +	if (!kho_out.finalized)
+>  		return 0;
+>  
+>  	image->kho.fdt = page_to_phys(kho_out.ser.fdt);
+> -- 
+> 2.47.3
+> 
 
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index eed59cfb5d21..fd44690878a1 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -3554,7 +3554,14 @@ static void __init hugetlb_pages_alloc_boot_node(unsigned long start, unsigned l
- 	nodes_clear(node_alloc_noretry);
- 
- 	for (i = 0; i < num; ++i) {
--		struct folio *folio = alloc_pool_huge_folio(h, &node_states[N_MEMORY],
-+		struct folio *folio;
-+
-+		if (hugetlb_vmemmap_optimizable_size(h) &&
-+		    (si_mem_available() == 0) && !list_empty(&folio_list)) {
-+			prep_and_add_allocated_folios(h, &folio_list);
-+			INIT_LIST_HEAD(&folio_list);
-+		}
-+		folio = alloc_pool_huge_folio(h, &node_states[N_MEMORY],
- 						&node_alloc_noretry, &next_node);
- 		if (!folio)
- 			break;
 -- 
-2.20.1
-
+Sincerely yours,
+Mike.
 
