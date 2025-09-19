@@ -4,112 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71485CAC592
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 13:14:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62390CAC59A
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 13:24:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C7A358E000B; Fri, 19 Sep 2025 09:14:54 -0400 (EDT)
+	id A949D8E0012; Fri, 19 Sep 2025 09:24:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C29F98E0001; Fri, 19 Sep 2025 09:14:54 -0400 (EDT)
+	id A6CD38E0001; Fri, 19 Sep 2025 09:24:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B194F8E000B; Fri, 19 Sep 2025 09:14:54 -0400 (EDT)
+	id 95B498E0012; Fri, 19 Sep 2025 09:24:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B0C38E0001
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 09:14:54 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 137F21A0650
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 13:14:54 +0000 (UTC)
-X-FDA: 83906044908.04.79B9115
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 22F7114000F
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 13:14:51 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=JVeqk9Vi;
-	spf=pass (imf09.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 83A528E0001
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 09:24:50 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 38E76C02C2
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 13:24:50 +0000 (UTC)
+X-FDA: 83906069940.25.300CF46
+Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+	by imf11.hostedemail.com (Postfix) with ESMTP id EC1AC40014
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 13:24:47 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BIfFOlXN;
+	spf=pass (imf11.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758287692;
+	s=arc-20220608; t=1758288288;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4TO8ldCpCwaQtoLKPhvsFlsBIhB9gZdGySwv7zH4ykU=;
-	b=YPL51jkaeOuPoi6U6lGR9p/D39x+j8qUp8yZX4nTePdE4LplCVciAPobnF3Gs53+dYYHmx
-	5xfntpy87qYyngKTZT1WagDmpaQ4xsP6x3ib0+xzJiVCRokkGohrpx4ZYiW1Fvx9ow1jht
-	C8rI3qEjRfyjyY4HUpi9+mSBK3UqCZM=
+	bh=gOx1K9W6IpgjKGBYblzlfTeW/YPQKf2lOT+ygyeGOuE=;
+	b=mYvhBFvdPujl5uUoeBnH+tTRR4/L/3xPTX+o2prksP5hugeGmiaCcjsOE/IHl09QNg3idi
+	MrU5e7QhuBXTvtoQn/4Y/kUY2t5QwHAOixzQctN3CQKxSTQsFS0dpIWkP2m19tYiPXBYnQ
+	nm6wWQcxV1Ri4YkhOdlm2TnP1f+RkhI=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=JVeqk9Vi;
-	spf=pass (imf09.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758287692; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BIfFOlXN;
+	spf=pass (imf11.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758288288; a=rsa-sha256;
 	cv=none;
-	b=r5LVljquTFmGH0wv1RX2wq7ayh+9v2KLIfjZNnE/tDuxxH/TsHK2RdU1Iu5RuBnDweW96b
-	Ame3CK79lkMxOrw0PUMOG4aWgwi1a1mjst+7eHa7/r3XjtMZk1LUHH338xy7smtybrJJXw
-	zBfCY3prugeJkwrKhfO45MCGpqJsdRo=
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-4b61161c32eso31769121cf.3
-        for <linux-mm@kvack.org>; Fri, 19 Sep 2025 06:14:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1758287691; x=1758892491; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4TO8ldCpCwaQtoLKPhvsFlsBIhB9gZdGySwv7zH4ykU=;
-        b=JVeqk9ViNsn+THunXZqjXSsUOyySUcY2EY/nwbpSEyPficIvoQxC8MA5cSmxoB652c
-         hkWxkblzCWQZKeiX4e74lsMtvT3sVsYBP/Tt/K/DLtzGq5FBfWEmgyuKV4t6jtEoadQ3
-         /6YdODw9CgGzbH7Mtf4LqfS2mOaBTrm8GJpQA7cCr/NvQqM5csVztJluHjoeU3YaC/PP
-         Dp1lmsFOt5w1N4n9CfL2Y/SEkcapofna3q0vSMZ3d6hl3Rq5BMEb3MGD9JljZv1G0sEd
-         iGfmKpKLbN6Y841UhD9tjJxJiOHanncMXRrVLVRhOuDBWO6VdmGZkDBCFws422eXXpnV
-         GHCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758287691; x=1758892491;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4TO8ldCpCwaQtoLKPhvsFlsBIhB9gZdGySwv7zH4ykU=;
-        b=SFw6SDiiudE/7c4cWWHkcjK/+yrF66QBD2ZvbX6jtARByqNnzBLMOm9b5DH5tZu4qQ
-         CZWJeCv65rdXJaz+K2t9I8wm/G/ke+kftiQ3MWHBcTzNjM69Pw9gPQk6nLQZ1WQWrqK5
-         niYA3TLNjVlxuUlum0Tiqdc1Rw8TOrBzFjIsHcClh1Rdd2AWFzklR2E6K06q/42TP40B
-         63YD+Q6UyD9qE9Fl2T3B33SAZsLfvidD2rCpEnX3TZdTsTDHSJ5TKQ81/Ke30LGU0o3W
-         X3NXJEenhLGTysOf5xZwFumgxeN02ZD9sjCoU3oiYvgkK8IAg/RGR3dkH37mNJI0Y8xh
-         KGbQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWtK2u/7G6GPhSVaPCbXLBTlyfJEgf0esersMFsvmKWUCEMTOxy38uOGCynXXaoy37aCUUocTAOvg==@kvack.org
-X-Gm-Message-State: AOJu0Yxn84qVEHTSWwtNRxO0jngrib+5r80fU8UhzIi+C1CVdm2OaUYE
-	AOxWln23SyZCkrm4QKqnyZWW2/3Q+8uDcRQ2sIgNtKfp/mbq5bxGVlh3FgDGdOVTcJwmgqIC8Id
-	cmNB6NZi5C8a3LSks/iw+7VOynExv6/YmNr83YEY3xQ==
-X-Gm-Gg: ASbGncu8I1IoT3arqGk15oHT35YxwlAV/+UJZWFvsqeeFrkXHyyekMxsY/T3/ZqzMGm
-	xshG2YTuEwib1hYaEVeEr+sWLMWu7DKiXtPDA+24yk/MaK7SX8TCI2nexD6SY3vTGdYnAJJcgFE
-	lIF6+M2G4SdsLZFLi5qPnn9luDb9A+ikD7yB3UYvAB/CZ03mkM75zZGLRYScOxpFx1wVwQJEdD3
-	WO3
-X-Google-Smtp-Source: AGHT+IFP5OPPTxwZ8V54f9/k+r549Cc9+2zxQm2wZ1tAr4n+kgl+fwpljr133j453kMoly6d472Qfg2qfJWHUKMsWzY=
-X-Received: by 2002:a05:622a:1a02:b0:4b5:da5f:d9b7 with SMTP id
- d75a77b69052e-4c073ab0dd8mr34737991cf.78.1758287690916; Fri, 19 Sep 2025
- 06:14:50 -0700 (PDT)
+	b=wlF0xlUlHuajjWzINZX5ye4EnbGM5ebr2CevxU4AIKrEdueI9X9Xc5IMNl/L/0agw6RjX1
+	56YjtswRFR7vrYRyseWTDFa1wRztk5QoiqwJq7eJdPeuOoZ+mW8wipLsHPAuLKHilkFAVz
+	TYLyHQKgnJQ0kwCBGU7kQLv1HN9bHyw=
+Message-ID: <fd469dd5-8d4e-4169-ac7a-daeff9d2777f@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1758288285;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gOx1K9W6IpgjKGBYblzlfTeW/YPQKf2lOT+ygyeGOuE=;
+	b=BIfFOlXNLJKckdL/MG6thldIkbNraS46l3B1wrxX9pO5lr+lgmxeDsVMV/r4oPU6orzUyg
+	lVuVfQEJWkvw4DKh9yV56MjDDMCZHW0rEumT7WxTmpJMH5LWtTXmZRhxunwFPexvXv6VJe
+	hHKmrZJrdJbqW4qpWt+KyUmYUiWZzao=
+Date: Fri, 19 Sep 2025 21:24:35 +0800
 MIME-Version: 1.0
-References: <20250918222607.186488-1-xiyou.wangcong@gmail.com>
-In-Reply-To: <20250918222607.186488-1-xiyou.wangcong@gmail.com>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Fri, 19 Sep 2025 09:14:12 -0400
-X-Gm-Features: AS18NWCzyLEt0N2rB1CWsx_n5vr6VC5G7l3ExS6vuWkIq3v8_7YkqfncY9X_FkM
-Message-ID: <CA+CK2bD3D_XFu1E60qBYwdDzK0c7_bN0BkGBE7h6h_sxmmfvAQ@mail.gmail.com>
-Subject: Re: [RFC Patch 0/7] kernel: Introduce multikernel architecture support
-To: Cong Wang <xiyou.wangcong@gmail.com>
-Cc: linux-kernel@vger.kernel.org, Cong Wang <cwang@multikernel.io>, 
-	Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>, 
-	Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>, Changyuan Lyu <changyuanl@google.com>, 
-	kexec@lists.infradead.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 22F7114000F
-X-Stat-Signature: rbr1fho8mmnuhd7yo3d6zfcxx1q8dza3
+Subject: Re: [PATCH v5 2/6] mm: remap unused subpages to shared zeropage when
+ splitting isolated thp
+Content-Language: en-US
+To: David Hildenbrand <david@redhat.com>
+Cc: =?UTF-8?B?UXVuLXdlaSBMaW4gKOael+e+pOW0tCk=?= <Qun-wei.Lin@mediatek.com>,
+ "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+ "usamaarif642@gmail.com" <usamaarif642@gmail.com>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "yuzhao@google.com" <yuzhao@google.com>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ "corbet@lwn.net" <corbet@lwn.net>,
+ =?UTF-8?B?QW5kcmV3IFlhbmcgKOaliuaZuuW8tyk=?= <Andrew.Yang@mediatek.com>,
+ "npache@redhat.com" <npache@redhat.com>, "rppt@kernel.org"
+ <rppt@kernel.org>, "willy@infradead.org" <willy@infradead.org>,
+ "kernel-team@meta.com" <kernel-team@meta.com>,
+ "roman.gushchin@linux.dev" <roman.gushchin@linux.dev>,
+ "hannes@cmpxchg.org" <hannes@cmpxchg.org>,
+ "cerasuolodomenico@gmail.com" <cerasuolodomenico@gmail.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "ryncsn@gmail.com" <ryncsn@gmail.com>, "surenb@google.com"
+ <surenb@google.com>, "riel@surriel.com" <riel@surriel.com>,
+ "shakeel.butt@linux.dev" <shakeel.butt@linux.dev>,
+ =?UTF-8?B?Q2hpbndlbiBDaGFuZyAo5by16Yym5paHKQ==?=
+ <chinwen.chang@mediatek.com>,
+ "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+ =?UTF-8?B?Q2FzcGVyIExpICjmnY7kuK3mpq4p?= <casper.li@mediatek.com>,
+ "ryan.roberts@arm.com" <ryan.roberts@arm.com>,
+ "linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>,
+ "baohua@kernel.org" <baohua@kernel.org>,
+ "kaleshsingh@google.com" <kaleshsingh@google.com>,
+ "zhais@google.com" <zhais@google.com>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+References: <20240830100438.3623486-1-usamaarif642@gmail.com>
+ <20240830100438.3623486-3-usamaarif642@gmail.com>
+ <a7944523fcc3634607691c35311a5d59d1a3f8d4.camel@mediatek.com>
+ <434c092b-0f19-47bf-a5fa-ea5b4b36c35e@redhat.com>
+ <CABzRoyYWQMFTGYgfC7N=cWMnL_+5Y05=jrMhFjBf1aKOGxzq5g@mail.gmail.com>
+ <ebedc478-7519-4e30-854e-f6616a7647b0@redhat.com>
+ <120445c8-7250-42e0-ad6a-978020c8fad3@linux.dev>
+ <9d2c3e3e-439d-4695-b7c9-21fa52f48ced@redhat.com>
+ <4cf41cd5-e93a-412b-b209-4180bd2d4015@linux.dev>
+ <dfb303b9-151b-49ec-b7ef-691c71bd5385@linux.dev>
+ <9395a9ca-d865-42d7-9ea1-8e693e4e38e0@linux.dev>
+ <ca2106a3-4bb2-4457-81af-301fd99fbef4@redhat.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <ca2106a3-4bb2-4457-81af-301fd99fbef4@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: EC1AC40014
+X-Stat-Signature: sbwo5ogusxcz1gmn5z854orzhs5gnu4o
 X-Rspam-User: 
 X-Rspamd-Server: rspam01
-X-HE-Tag: 1758287691-922992
-X-HE-Meta: U2FsdGVkX1//YDZvDoJItnoiX/2KG7aS2TmxAJtbr2Uag+9mQQ1BpL+r1lh2t/9+dNxmmYVo+K3cgSOIV6Tu/nbS67vIFg0KbsbJDJ4fVcWFEE0zJhQ09Xz5RWLOPXa3l2llkSG+SqXcSnleppSNhMg1+kpD/vVRdXfNPMCG3xuQlOg5JL0YuuA6tWEddLhFfhdDWWNGDW2t8cgsaY8r5PxxeVA18vzPWNgaU07MQdUBtVoSj5zKO848OU4yukgjm7bgLdGeZUSFA0vx7emgLJLjFPDUnW63QhowdPJnS6zv0CbLI+o4uhPZCF3/D3jUCe9EJwzvKU/4nFCyKvIlIHwhWwM90R4SZeKrMpIDSLR+m9ccW+ACR78VJG5roUdW89mJIvZ+Liy/8HwfORCNPbn03My+JS38b/JaltvtytfBRBRuZDS6GQJSulblKP9lDCEXrvrKJpKEfWKTFCBl37rppiu2CMWM7b4RL+OL+pdLj2g7uempkmPBmADPg7cTdYs+QSPf6NV6HQDl0fYSvLeoTMHBrHaqDeqFuLMuAoaIiOmNJyeI6oBzOkIcraFdxOfELpwSp1iRZ3iEAH3hBwdHh2wKl8pSh74kg5n4uLBUS/8mJ5+5p5DMj5t+l2Pn6qqtKLqkib/9I4epxcuAmhM7lhNT9NOGKo6qs716scYyz83wFz2exfhj6aRbOwIF5MRY5U1fkuRV+USyxR+4hsIB2zI5By7RFHuz3kJA2OjEXMnuFMCayyWQvmn82i1obg/D5lCtOd1GGkgxtB7/69bkV742kXKrECQ1gLbPeUzXUVabqvPhnKgv8h1B0csky1FWX3s4vw6WlDWcCouSpXjTQ7kjzR16jEd4yBErXWXtK8Vv78OulkFuZne9i/1V9OXHxnQgkEtckWPVb25VKyI5209CP/OILtSTdf4RUiAycUQlRTiPxRsb9vc1gubqy2St5Vu5I0VuE/oCDH/
- uVtxQ6hQ
- NbHg7CYPMcZyQ07ZDRLsaK0dfd+L6bF7QYQBdn5yR+Xb0DYucBNW5bHoFH9Vsq6HUDWbcOGqlwGVepxzu9lrzxhU9hBBfCbHejrb5dcr+Ijvv929xS1xLpyQpdkxQNViVbKM/HGFi1lWUzCTGRyJeVD8KfwVx1bouk0RvQj4Vqgoh2XRmbApHvPjXuoBDO37bfJSU7r3r+u4HrRqttXzPI9yx3eFUcrjOwS2x6PJjTRHhtdBvPDwHh7U6KFhsQLF2VYO+yOJ22sNC2c2OxQr9gWt3WO5QS+3t8BXO
+X-HE-Tag: 1758288287-349526
+X-HE-Meta: U2FsdGVkX1/7g1HiqBY5USGaNebvR317Y79iKmk9GlLsiX3Odp/eWWb+LwWZFxF/rS7Dhn9LaHSZugCDP6dyLl398lMuDFMeoJGBhkhFdB9cSL/5ViTEqniizzKNt/EpUBa6IGLyZoaHPloYcV2rCTyWA883NuscRDlrjSSupfFJvdmxR7td4rkmIsH/OUul6YRfKld3IB/pujWVsH+mdyC9h7vyYIIo3f8ir8jUWkDuGPM2vtHq2jK/M262aIcvC/DxfA44oNI0zapwI+B4mKJpXYi15/2yyzFyxSWbCNJA1oPfgx5nkxpLWr/hMZ/HcAfoUGPlLbPeEnpq35A0CjdTWDN1mj1QBMroX7q0Hfvho6PVIciBi0dkajZKuAVgGYny+SYrdYzaLiL8GkZObNYIAaPeFY88R5NcIxkJVYKbyIB66MY4pLvAFCc/a1AtJkMZPt6Ir3F2whIaxl6133diLe9tFiFjewAxgPFdaVQFGe7TnP7/0+zBvlPtVs1joh3yaK9wJuYbTx7ltEL+hO8hphn2iq+kwYBXAi3FzrU13VGlXPNK6VmYqFlRhen/cPg/V7sVMweSAvP/YjqGUqqEstEhHhkp3TYUt2WaJK9nUC63dwF2jJ+gdiaIjer8vC8e1OUMNvxey9D0IiNNRowLO5uS6YCstOP1OXtL8d4G0calazs863X5zR9gJt1r4hD6v8peB3Zwbtgctdrfwt9/UyCB66vHMiEKPjRPpM/JPrx4P+qcj8P6JsNPGZBOVp5pIACoafsvVRMww2JIUCrnOWvER3qYMARCG+1Jjkso3xBqyCREOphR/GOzleYbOTJuiPTW/8LEAgcUF2gqDJXdUm71azh21axtm9WP5YfGm2sLxsOFL/XcA3N4fLIjv4TbTSFBWXg3A1TIgnoP51mLbfVok3xaZ6XzUMLppIbYw/A4d0wUv5lnmI/Dd2f5lQZkeAAvYolkuidey8X
+ Eitj7mDk
+ mkclWOm4WUJ3YVLKTjVdyx5/DOd26vXl9MA6G//bNI819D28jLKD88mLwnK+IPJ+Nmvi3ZwCKRP98Dp/Iw/k3jr8M5O7zm6kTn1eEK+kmYSfC4/6R0zjIFE+SERkXf8Lj49jK6xpEoHw1kOlD4tJYhBWfY8LdYZgL9iNJpv26E3WwsIZYilBALjXOZzJljxZ7RsEIGTn1Dkwc2Dss5VPIqCYJquhRNiy6pfpoCPjWFaNv5IE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,161 +128,210 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 18, 2025 at 6:26=E2=80=AFPM Cong Wang <xiyou.wangcong@gmail.com=
-> wrote:
->
-> This patch series introduces multikernel architecture support, enabling
-> multiple independent kernel instances to coexist and communicate on a
-> single physical machine. Each kernel instance can run on dedicated CPU
-> cores while sharing the underlying hardware resources.
->
-> The multikernel architecture provides several key benefits:
-> - Improved fault isolation between different workloads
-> - Enhanced security through kernel-level separation
-> - Better resource utilization than traditional VM (KVM, Xen etc.)
-> - Potential zero-down kernel update with KHO (Kernel Hand Over)
 
-Hi Cong,
 
-Thank you for submitting this; it is an exciting series.
+On 2025/9/19 21:09, David Hildenbrand wrote:
+> On 19.09.25 14:19, Lance Yang wrote:
+>> Hey David,
+>>
+>> I believe I've found the exact reason why KSM skips MTE-tagged pages ;p
+>>
+>>>
+>>>
+>>> On 2025/9/19 16:14, Lance Yang wrote:
+>>>>
+>>>>
+>>>> On 2025/9/19 15:55, David Hildenbrand wrote:
+>>>>>>> I think where possible we really only want to identify problematic
+>>>>>>> (tagged) pages and skip them. And we should either look into fixing
+>>>>>>> KSM
+>>>>>>> as well or finding out why KSM is not affected.
+>>>>>>
+>>>>>> Yeah. Seems like we could introduce a new helper,
+>>>>>> folio_test_mte_tagged(struct
+>>>>>> folio *folio). By default, it would return false, and architectures
+>>>>>> like
+>>>>>> arm64
+>>>>>> can override it.
+>>>>>
+>>>>> If we add a new helper it should instead express the semantics that
+>>>>> we cannot deduplicate.
+>>>>
+>>>> Agreed.
+>>>>
+>>>>>
+>>>>> For THP, I recall that only some pages might be tagged. So likely we
+>>>>> want to check per page.
+>>>>
+>>>> Yes, a per-page check would be simpler.
+>>>>
+>>>>>
+>>>>>>
+>>>>>> Looking at the code, the PG_mte_tagged flag is not set for regular 
+>>>>>> THP.
+>>>>>
+>>>>> I think it's supported for THP per page. Only for hugetlb we tag the
+>>>>> whole thing through the head page instead of individual pages.
+>>>>
+>>>> Right. That's exactly what I meant.
+>>>>
+>>>>>
+>>>>>> The MTE
+>>>>>> status actually comes from the VM_MTE flag in the VMA that maps it.
+>>>>>>
+>>>>>
+>>>>> During the rmap walk we could check the VMA flag, but there would be
+>>>>> no way to just stop the THP shrinker scanning this page early.
+>>>>>
+>>>>>> static inline bool folio_test_hugetlb_mte_tagged(struct folio *folio)
+>>>>>> {
+>>>>>>      bool ret = test_bit(PG_mte_tagged, &folio->flags.f);
+>>>>>>
+>>>>>>      VM_WARN_ON_ONCE(!folio_test_hugetlb(folio));
+>>>>>>
+>>>>>>      /*
+>>>>>>       * If the folio is tagged, ensure ordering with a likely 
+>>>>>> subsequent
+>>>>>>       * read of the tags.
+>>>>>>       */
+>>>>>>      if (ret)
+>>>>>>          smp_rmb();
+>>>>>>      return ret;
+>>>>>> }
+>>>>>>
+>>>>>> static inline bool page_mte_tagged(struct page *page)
+>>>>>> {
+>>>>>>      bool ret = test_bit(PG_mte_tagged, &page->flags.f);
+>>>>>>
+>>>>>>      VM_WARN_ON_ONCE(folio_test_hugetlb(page_folio(page)));
+>>>>>>
+>>>>>>      /*
+>>>>>>       * If the page is tagged, ensure ordering with a likely 
+>>>>>> subsequent
+>>>>>>       * read of the tags.
+>>>>>>       */
+>>>>>>      if (ret)
+>>>>>>          smp_rmb();
+>>>>>>      return ret;
+>>>>>> }
+>>>>>>
+>>>>>> contpte_set_ptes()
+>>>>>>      __set_ptes()
+>>>>>>          __set_ptes_anysz()
+>>>>>>              __sync_cache_and_tags()
+>>>>>>                  mte_sync_tags()
+>>>>>>                      set_page_mte_tagged()
+>>>>>>
+>>>>>> Then, having the THP shrinker skip any folios that are identified as
+>>>>>> MTE-tagged.
+>>>>>
+>>>>> Likely we should just do something like (maybe we want better naming)
+>>>>>
+>>>>> #ifndef page_is_mergable
+>>>>> #define page_is_mergable(page) (true)
+>>>>> #endif
+>>>>
+>>>>
+>>>> Maybe something like page_is_optimizable()? Just a thought ;p
+>>>>
+>>>>>
+>>>>> And for arm64 have it be
+>>>>>
+>>>>> #define page_is_mergable(page) (!page_mte_tagged(page))
+>>>>>
+>>>>>
+>>>>> And then do
+>>>>>
+>>>>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>>>>> index 1f0813b956436..1cac9093918d6 100644
+>>>>> --- a/mm/huge_memory.c
+>>>>> +++ b/mm/huge_memory.c
+>>>>> @@ -4251,7 +4251,8 @@ static bool thp_underused(struct folio *folio)
+>>>>>
+>>>>>           for (i = 0; i < folio_nr_pages(folio); i++) {
+>>>>>                   kaddr = kmap_local_folio(folio, i * PAGE_SIZE);
+>>>>> -               if (!memchr_inv(kaddr, 0, PAGE_SIZE)) {
+>>>>> +               if (page_is_mergable(folio_page(folio, i)) &&
+>>>>> +                   !memchr_inv(kaddr, 0, PAGE_SIZE)) {
+>>>>>                           num_zero_pages++;
+>>>>>                           if (num_zero_pages >
+>>>>> khugepaged_max_ptes_none) {
+>>>>>                                   kunmap_local(kaddr);
+>>>>> diff --git a/mm/migrate.c b/mm/migrate.c
+>>>>> index 946253c398072..476a9a9091bd3 100644
+>>>>> --- a/mm/migrate.c
+>>>>> +++ b/mm/migrate.c
+>>>>> @@ -306,6 +306,8 @@ static bool try_to_map_unused_to_zeropage(struct
+>>>>> page_vma_mapped_walk *pvmw,
+>>>>>
+>>>>>           if (PageCompound(page))
+>>>>>                   return false;
+>>>>> +       if (!page_is_mergable(page))
+>>>>> +               return false;
+>>>>>           VM_BUG_ON_PAGE(!PageAnon(page), page);
+>>>>>           VM_BUG_ON_PAGE(!PageLocked(page), page);
+>>>>>           VM_BUG_ON_PAGE(pte_present(ptep_get(pvmw->pte)), page);
+>>>>
+>>>> Looks good to me!
+>>>>
+>>>>>
+>>>>>
+>>>>> For KSM, similarly just bail out early. But still wondering if this
+>>>>> is already checked
+>>>>> somehow for KSM.
+>>>>
+>>>> +1 I'm looking for a machine to test it on.
+>>>
+>>> Interestingly, it seems KSM is already skipping MTE-tagged pages. My 
+>>> test,
+>>> running on a v6.8.0 kernel inside QEMU (with MTE enabled), shows no 
+>>> merging
+>>> activity for those pages ...
+>>
+>> KSM's call to pages_identical() ultimately leads to memcmp_pages(). The
+>> arm64 implementation of memcmp_pages() in arch/arm64/kernel/mte.c 
+>> contains
+>> a specific check that prevents merging in this case.
+>>
+>> try_to_merge_one_page()
+>>     -> pages_identical()
+>>         -> !memcmp_pages() Fails!
+>>         -> replace_page()
+>>
+>>
+>> int memcmp_pages(struct page *page1, struct page *page2)
+>> {
+>>     char *addr1, *addr2;
+>>     int ret;
+>>
+>>     addr1 = page_address(page1);
+>>     addr2 = page_address(page2);
+>>     ret = memcmp(addr1, addr2, PAGE_SIZE);
+>>
+>>     if (!system_supports_mte() || ret)
+>>         return ret;
+>>
+>>     /*
+>>      * If the page content is identical but at least one of the pages is
+>>      * tagged, return non-zero to avoid KSM merging. If only one of the
+>>      * pages is tagged, __set_ptes() may zero or change the tags of the
+>>      * other page via mte_sync_tags().
+>>      */
+>>     if (page_mte_tagged(page1) || page_mte_tagged(page2))
+>>         return addr1 != addr2;
+>>
+>>     return ret;
+>> }
+>>
+>> IIUC, if either page is MTE-tagged, memcmp_pages() intentionally returns
+>> a non-zero value, which in turn causes pages_identical() to return false.
+> 
+> Cool, so we should likely just use that then in the shrinker code. Can 
+> you send a fix?
 
-I experimented with this approach about five years ago for a Live
-Update scenario. It required surprisingly little work to get two OSes
-to boot simultaneously on the same x86 hardware. The procedure I
-followed looked like this:
+Certainly! I'll get on that ;p
 
-1. Create an immutable kernel image bundle: kernel + initramfs.
-2. The first kernel is booted with memmap parameters, setting aside
-the first 1G for its own operation, the second 1G for the next kernel
-(reserved), and the rest as PMEM for the VMs.
-3. In the first kernel, we offline one CPU and kexec the second kernel
-with parameters that specify to use only the offlined CPU as the boot
-CPU and to keep the other CPUs offline (i.e., smp_init does not start
-other CPUs). The memmap specify the first 1G reserved, and the 2nd 1G
-for its own operations, and the rest  is PMEM.
-4. Passing the VMs worked by suspending them in the old kernel.
-5. The other CPUs are onlined in the new kernel (thus killing the old kerne=
-l).
-6. The VMs are resumed in the new kernel.
+Cheers,
+Lance
 
-While this approach was easy to get to the experimental PoC, it has
-some fundamental problems that I am not sure can be solved in the long
-run, such as handling global machine states like interrupts. I think
-the Orphaned VM approach (i.e., keeping VCPUs running through the Live
-Update procedure) is more reliable and likely to succeed for
-zero-downtime kernel updates.
-
-Pasha
-
->
-> Architecture Overview:
-> The implementation leverages kexec infrastructure to load and manage
-> multiple kernel images, with each kernel instance assigned to specific
-> CPU cores. Inter-kernel communication is facilitated through a dedicated
-> IPI framework that allows kernels to coordinate and share information
-> when necessary.
->
-> Key Components:
-> 1. Enhanced kexec subsystem with dynamic kimage tracking
-> 2. Generic IPI communication framework for inter-kernel messaging
-> 3. Architecture-specific CPU bootstrap mechanisms (only x86 so far)
-> 4. Proc interface for monitoring loaded kernel instances
->
-> Patch Summary:
->
-> Patch 1/7: Introduces basic multikernel support via kexec, allowing
->            multiple kernel images to be loaded simultaneously.
->
-> Patch 2/7: Adds x86-specific SMP INIT trampoline for bootstrapping
->            CPUs with different kernel instances.
->
-> Patch 3/7: Introduces dedicated MULTIKERNEL_VECTOR for x86 inter-kernel
->            communication.
->
-> Patch 4/7: Implements generic multikernel IPI communication framework
->            for cross-kernel messaging and coordination.
->
-> Patch 5/7: Adds arch_cpu_physical_id() function to obtain physical CPU
->            identifiers for proper CPU management.
->
-> Patch 6/7: Replaces static kimage globals with dynamic linked list
->            infrastructure to support multiple kernel images.
->
-> Patch 7/7: Adds /proc/multikernel interface for monitoring and debugging
->            loaded kernel instances.
->
-> The implementation maintains full backward compatibility with existing
-> kexec functionality while adding the new multikernel capabilities.
->
-> IMPORTANT NOTES:
->
-> 1) This is a Request for Comments (RFC) submission. While the core
->    architecture is functional, there are numerous implementation details
->    that need improvement. The primary goal is to gather feedback on the
->    high-level design and overall approach rather than focus on specific
->    coding details at this stage.
->
-> 2) This patch series represents only the foundational framework for
->    multikernel support. It establishes the basic infrastructure and
->    communication mechanisms. We welcome the community to build upon
->    this foundation and develop their own solutions based on this
->    framework.
->
-> 3) Testing has been limited to the author's development machine using
->    hard-coded boot parameters and specific hardware configurations.
->    Community testing across different hardware platforms, configurations,
->    and use cases would be greatly appreciated to identify potential
->    issues and improve robustness. Obviously, don't use this code beyond
->    testing.
->
-> This work enables new use cases such as running real-time kernels
-> alongside general-purpose kernels, isolating security-critical
-> applications, and providing dedicated kernel instances for specific
-> workloads etc..
->
-> Signed-off-by: Cong Wang <cwang@multikernel.io>
->
-> ---
->
-> Cong Wang (7):
->   kexec: Introduce multikernel support via kexec
->   x86: Introduce SMP INIT trampoline for multikernel CPU bootstrap
->   x86: Introduce MULTIKERNEL_VECTOR for inter-kernel communication
->   kernel: Introduce generic multikernel IPI communication framework
->   x86: Introduce arch_cpu_physical_id() to obtain physical CPU ID
->   kexec: Implement dynamic kimage tracking
->   kexec: Add /proc/multikernel interface for kimage tracking
->
->  arch/powerpc/kexec/crash.c          |   8 +-
->  arch/x86/include/asm/idtentry.h     |   1 +
->  arch/x86/include/asm/irq_vectors.h  |   1 +
->  arch/x86/include/asm/smp.h          |   7 +
->  arch/x86/kernel/Makefile            |   1 +
->  arch/x86/kernel/crash.c             |   4 +-
->  arch/x86/kernel/head64.c            |   5 +
->  arch/x86/kernel/idt.c               |   1 +
->  arch/x86/kernel/setup.c             |   3 +
->  arch/x86/kernel/smp.c               |  15 ++
->  arch/x86/kernel/smpboot.c           | 161 +++++++++++++
->  arch/x86/kernel/trampoline_64_bsp.S | 288 ++++++++++++++++++++++
->  arch/x86/kernel/vmlinux.lds.S       |   6 +
->  include/linux/kexec.h               |  22 +-
->  include/linux/multikernel.h         |  81 +++++++
->  include/uapi/linux/kexec.h          |   1 +
->  include/uapi/linux/reboot.h         |   2 +-
->  init/main.c                         |   2 +
->  kernel/Makefile                     |   2 +-
->  kernel/kexec.c                      | 103 +++++++-
->  kernel/kexec_core.c                 | 359 ++++++++++++++++++++++++++++
->  kernel/kexec_file.c                 |  33 ++-
->  kernel/multikernel.c                | 314 ++++++++++++++++++++++++
->  kernel/reboot.c                     |  10 +
->  24 files changed, 1411 insertions(+), 19 deletions(-)
->  create mode 100644 arch/x86/kernel/trampoline_64_bsp.S
->  create mode 100644 include/linux/multikernel.h
->  create mode 100644 kernel/multikernel.c
->
-> --
-> 2.34.1
->
 
