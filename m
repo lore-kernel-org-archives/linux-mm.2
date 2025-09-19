@@ -4,118 +4,174 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 392C2CAC592
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 08:14:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74D26CAC59A
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 08:25:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0D5F5940009; Fri, 19 Sep 2025 04:14:30 -0400 (EDT)
+	id A64F18E0022; Fri, 19 Sep 2025 04:25:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0861B8E0022; Fri, 19 Sep 2025 04:14:30 -0400 (EDT)
+	id A3CD58E0008; Fri, 19 Sep 2025 04:25:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB75F940009; Fri, 19 Sep 2025 04:14:29 -0400 (EDT)
+	id 904498E0022; Fri, 19 Sep 2025 04:25:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C40EF8E0022
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 04:14:29 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 78A1B59A80
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 08:14:29 +0000 (UTC)
-X-FDA: 83905287858.05.AC37DC2
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 236634000C
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 08:14:26 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BmeGBByU;
-	spf=pass (imf04.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 707508E0008
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 04:25:51 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D864758407
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 08:25:50 +0000 (UTC)
+X-FDA: 83905316460.10.6F5247E
+Received: from fra-out-010.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-010.esa.eu-central-1.outbound.mail-perimeter.amazon.com [63.178.143.178])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 345B3140006
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 08:25:48 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=SJxANkA5;
+	spf=pass (imf26.hostedemail.com: domain of "prvs=35079eb1c=roypat@amazon.co.uk" designates 63.178.143.178 as permitted sender) smtp.mailfrom="prvs=35079eb1c=roypat@amazon.co.uk";
+	dmarc=pass (policy=quarantine) header.from=amazon.co.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758269667;
+	s=arc-20220608; t=1758270348;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Dc53JcOzdrcUIu2iVuDKY0KAeJ//x1/I8rOfO8TAJ0E=;
-	b=WOzlQ2hOH8IDLHakw5miln6Jc7b95+M6ac7TLiADXqv8UrvFMnuDUimuPboTYCip5dhoNS
-	uzV5wX23wc2DkVNpKTptVgicbu5Lxpso/SPX/Utde/toi7xBPH91aZ0WmwOL1HgCD5wiOD
-	I2xcJ4nSXBZrYV+OCktnsNqm2cebpNY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758269667; a=rsa-sha256;
-	cv=none;
-	b=F2/Cm4mvIhPDGH6UCYW9y3zmI3Cu3jMKwdjYAX2IwS0u8AOHHRVlXsYDcyDj0Pn/7j09j2
-	oneOEjizyfW8CTuwnyhA4EcHYnNrEXgD3Y3KjgHJgUsD6GNfgUiVLifxWE2eeq1VwpzEOq
-	sTl8NLnWUDxx5u5KBRDhR30kwTHu/bE=
+	bh=GFL7BzHqZtJ+hf0GoLUZhF6DxwKb7xJe9EgTIEodTbE=;
+	b=T8cQ7ur6/x1WWvkTdbMFjPIpOC0JdANJUEtbHsrUlDqVBLEXwBHy5R0FX0jwUQyh9p3FDO
+	q0pSBPLSzdGpNjMmuhxd7opzoXEZ2ySkJN19mKYpQ4MtK1l5wUOgUlsFNGWidsTDKHdM2W
+	Jv/nggl/c1IuogWW2CKe1NvIWyRBGaE=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BmeGBByU;
-	spf=pass (imf04.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <4cf41cd5-e93a-412b-b209-4180bd2d4015@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1758269664;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Dc53JcOzdrcUIu2iVuDKY0KAeJ//x1/I8rOfO8TAJ0E=;
-	b=BmeGBByUETlTGTM2SzKN9sT+aElM0iDnr9NVCQ0Y4S5LyZS5qVFjUY0/ZQhQcjxmkujkwF
-	lcqoAIrEgGu+qx5juQO8M0lGpLChTPtWmm4PXKC8zXPXthowkvLtjPKwUnGPeV4fEL7kE5
-	GoVQEabwufMTPdzDfKN5emTG80lC0C8=
-Date: Fri, 19 Sep 2025 16:14:11 +0800
-MIME-Version: 1.0
-Subject: Re: [PATCH v5 2/6] mm: remap unused subpages to shared zeropage when
- splitting isolated thp
+	imf26.hostedemail.com;
+	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=SJxANkA5;
+	spf=pass (imf26.hostedemail.com: domain of "prvs=35079eb1c=roypat@amazon.co.uk" designates 63.178.143.178 as permitted sender) smtp.mailfrom="prvs=35079eb1c=roypat@amazon.co.uk";
+	dmarc=pass (policy=quarantine) header.from=amazon.co.uk
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758270348; a=rsa-sha256;
+	cv=none;
+	b=PvNugpw59/a6vqkI2Dt9ZhpA8i/zLljaj3NeR5X44DN2Y0wpotLAAMApUHAj4XUCUcbs2S
+	jye25OmJXZTzHLtzt64fiCsmmhtxg6o3HcBCnXIP0CPk5ZN+cYI6dtl6gIT7m1XrSO5/mP
+	SXBa89cXH9Nb2loQR8d1OEXPbpsqbNU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
+  s=amazoncorp2; t=1758270348; x=1789806348;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=GFL7BzHqZtJ+hf0GoLUZhF6DxwKb7xJe9EgTIEodTbE=;
+  b=SJxANkA5QObE21KlTqwvi6zj7EHtaG4boW9jeDrtNbo8U5jamU3hpMcu
+   Cc326Pb3ubzsrlSwmF1ua4A04w108epHL1Q6n8GYF6YwYH8i770AUL/Mj
+   qQzUCHUvWuUaArdE9xW+929Ha/SzYZiBZoOMdv0Y1HvxLcZmuhfAHiksR
+   iBHq52tPsFd3Rb/ThK4ejP2wS5nmgeSHEaPnvjEpQwP8xOBCu03LBVNkC
+   jluSdXAIm/3lUP3rtRDW8U41f1orPX2IfNB5yjuEePb798MlLo+1NyLng
+   qK6wrXi1OvnhV0wKFqpWMz89pSJIJwDJ+aMIwjORIB/JYqej9AprUn7Pw
+   w==;
+X-CSE-ConnectionGUID: IsZxf8f8SjWiNUjgDVp6Og==
+X-CSE-MsgGUID: xwNyaF2SS7eyXLTiQsdIFQ==
+X-IronPort-AV: E=Sophos;i="6.18,277,1751241600"; 
+   d="scan'208";a="2255186"
+Received: from ip-10-6-6-97.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.6.97])
+  by internal-fra-out-010.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2025 08:25:37 +0000
+Received: from EX19MTAEUA001.ant.amazon.com [54.240.197.233:22673]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.0.240:2525] with esmtp (Farcaster)
+ id 99b608d7-c465-47ba-b3fb-c53cc7a3b236; Fri, 19 Sep 2025 08:25:37 +0000 (UTC)
+X-Farcaster-Flow-ID: 99b608d7-c465-47ba-b3fb-c53cc7a3b236
+Received: from EX19D015EUB003.ant.amazon.com (10.252.51.113) by
+ EX19MTAEUA001.ant.amazon.com (10.252.50.192) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Fri, 19 Sep 2025 08:25:36 +0000
+Received: from EX19D015EUB004.ant.amazon.com (10.252.51.13) by
+ EX19D015EUB003.ant.amazon.com (10.252.51.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Fri, 19 Sep 2025 08:25:36 +0000
+Received: from EX19D015EUB004.ant.amazon.com ([fe80::2dc9:7aa9:9cd3:fc8a]) by
+ EX19D015EUB004.ant.amazon.com ([fe80::2dc9:7aa9:9cd3:fc8a%3]) with mapi id
+ 15.02.2562.020; Fri, 19 Sep 2025 08:25:36 +0000
+From: "Roy, Patrick" <roypat@amazon.co.uk>
+To: "rppt@kernel.org" <rppt@kernel.org>
+CC: "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
+	"agordeev@linux.ibm.com" <agordeev@linux.ibm.com>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "alex@ghiti.fr"
+	<alex@ghiti.fr>, "andrii@kernel.org" <andrii@kernel.org>, "anna@kernel.org"
+	<anna@kernel.org>, "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>,
+	"ast@kernel.org" <ast@kernel.org>, "axelrasmussen@google.com"
+	<axelrasmussen@google.com>, "borntraeger@linux.ibm.com"
+	<borntraeger@linux.ibm.com>, "bp@alien8.de" <bp@alien8.de>,
+	"bpf@vger.kernel.org" <bpf@vger.kernel.org>, "brauner@kernel.org"
+	<brauner@kernel.org>, "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+	"chenhuacai@kernel.org" <chenhuacai@kernel.org>, "corbet@lwn.net"
+	<corbet@lwn.net>, "daniel@iogearbox.net" <daniel@iogearbox.net>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"david@redhat.com" <david@redhat.com>, "derekmn@amazon.co.uk"
+	<derekmn@amazon.co.uk>, "devel@lists.orangefs.org"
+	<devel@lists.orangefs.org>, "eddyz87@gmail.com" <eddyz87@gmail.com>,
+	"gerald.schaefer@linux.ibm.com" <gerald.schaefer@linux.ibm.com>,
+	"gor@linux.ibm.com" <gor@linux.ibm.com>, "hannes@cmpxchg.org"
+	<hannes@cmpxchg.org>, "haoluo@google.com" <haoluo@google.com>,
+	"hca@linux.ibm.com" <hca@linux.ibm.com>, "hpa@zytor.com" <hpa@zytor.com>,
+	"hubcap@omnibond.com" <hubcap@omnibond.com>, "jack@suse.cz" <jack@suse.cz>,
+	"Thomson, Jack" <jackabt@amazon.co.uk>, "jannh@google.com"
+	<jannh@google.com>, "jgg@ziepe.ca" <jgg@ziepe.ca>, "jhubbard@nvidia.com"
+	<jhubbard@nvidia.com>, "joey.gouly@arm.com" <joey.gouly@arm.com>,
+	"john.fastabend@gmail.com" <john.fastabend@gmail.com>, "jolsa@kernel.org"
+	<jolsa@kernel.org>, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
+	"kernel@xen0n.name" <kernel@xen0n.name>, "kpsingh@kernel.org"
+	<kpsingh@kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-doc@vger.kernel.org"
+	<linux-doc@vger.kernel.org>, "linux-fsdevel@vger.kernel.org"
+	<linux-fsdevel@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-kselftest@vger.kernel.org"
+	<linux-kselftest@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-nfs@vger.kernel.org" <linux-nfs@vger.kernel.org>,
+	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
+	"linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+	"loongarch@lists.linux.dev" <loongarch@lists.linux.dev>,
+	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>, "luto@kernel.org"
+	<luto@kernel.org>, "martin.lau@linux.dev" <martin.lau@linux.dev>,
+	"martin@omnibond.com" <martin@omnibond.com>, "maz@kernel.org"
+	<maz@kernel.org>, "mhocko@suse.com" <mhocko@suse.com>, "mingo@redhat.com"
+	<mingo@redhat.com>, "oliver.upton@linux.dev" <oliver.upton@linux.dev>,
+	"palmer@dabbelt.com" <palmer@dabbelt.com>, "paul.walmsley@sifive.com"
+	<paul.walmsley@sifive.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
+	"peterx@redhat.com" <peterx@redhat.com>, "peterz@infradead.org"
+	<peterz@infradead.org>, "pfalcato@suse.de" <pfalcato@suse.de>, "Roy, Patrick"
+	<roypat@amazon.co.uk>, "sdf@fomichev.me" <sdf@fomichev.me>,
+	"seanjc@google.com" <seanjc@google.com>, "shakeel.butt@linux.dev"
+	<shakeel.butt@linux.dev>, "shuah@kernel.org" <shuah@kernel.org>,
+	"song@kernel.org" <song@kernel.org>, "surenb@google.com" <surenb@google.com>,
+	"suzuki.poulose@arm.com" <suzuki.poulose@arm.com>, "svens@linux.ibm.com"
+	<svens@linux.ibm.com>, "tglx@linutronix.de" <tglx@linutronix.de>,
+	"trondmy@kernel.org" <trondmy@kernel.org>, "vbabka@suse.cz" <vbabka@suse.cz>,
+	"viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>, "weixugc@google.com"
+	<weixugc@google.com>, "will@kernel.org" <will@kernel.org>,
+	"willy@infradead.org" <willy@infradead.org>, "x86@kernel.org"
+	<x86@kernel.org>, "Cali, Marco" <xmarcalx@amazon.co.uk>,
+	"yonghong.song@linux.dev" <yonghong.song@linux.dev>, "yuanchu@google.com"
+	<yuanchu@google.com>, "yuzenghui@huawei.com" <yuzenghui@huawei.com>,
+	"zhengqi.arch@bytedance.com" <zhengqi.arch@bytedance.com>
+Subject: Re: [PATCH v6 05/11] KVM: guest_memfd: Add flag to remove from direct
+ map
+Thread-Topic: [PATCH v6 05/11] KVM: guest_memfd: Add flag to remove from
+ direct map
+Thread-Index: AQHcKT757eD2hLtXdESX+jHFR62e2Q==
+Date: Fri, 19 Sep 2025 08:25:36 +0000
+Message-ID: <20250919082534.17376-1-roypat@amazon.co.uk>
+References: <aMZyacbUEM7HErM1@kernel.org>
+In-Reply-To: <aMZyacbUEM7HErM1@kernel.org>
+Accept-Language: en-US
 Content-Language: en-US
-To: David Hildenbrand <david@redhat.com>
-Cc: =?UTF-8?B?UXVuLXdlaSBMaW4gKOael+e+pOW0tCk=?= <Qun-wei.Lin@mediatek.com>,
- "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
- "usamaarif642@gmail.com" <usamaarif642@gmail.com>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "yuzhao@google.com" <yuzhao@google.com>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "corbet@lwn.net" <corbet@lwn.net>,
- =?UTF-8?B?QW5kcmV3IFlhbmcgKOaliuaZuuW8tyk=?= <Andrew.Yang@mediatek.com>,
- "npache@redhat.com" <npache@redhat.com>, "rppt@kernel.org"
- <rppt@kernel.org>, "willy@infradead.org" <willy@infradead.org>,
- "kernel-team@meta.com" <kernel-team@meta.com>,
- "roman.gushchin@linux.dev" <roman.gushchin@linux.dev>,
- "hannes@cmpxchg.org" <hannes@cmpxchg.org>,
- "cerasuolodomenico@gmail.com" <cerasuolodomenico@gmail.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "ryncsn@gmail.com" <ryncsn@gmail.com>, "surenb@google.com"
- <surenb@google.com>, "riel@surriel.com" <riel@surriel.com>,
- "shakeel.butt@linux.dev" <shakeel.butt@linux.dev>,
- =?UTF-8?B?Q2hpbndlbiBDaGFuZyAo5by16Yym5paHKQ==?=
- <chinwen.chang@mediatek.com>,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- =?UTF-8?B?Q2FzcGVyIExpICjmnY7kuK3mpq4p?= <casper.li@mediatek.com>,
- "ryan.roberts@arm.com" <ryan.roberts@arm.com>,
- "linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>,
- "baohua@kernel.org" <baohua@kernel.org>,
- "kaleshsingh@google.com" <kaleshsingh@google.com>,
- "zhais@google.com" <zhais@google.com>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-References: <20240830100438.3623486-1-usamaarif642@gmail.com>
- <20240830100438.3623486-3-usamaarif642@gmail.com>
- <a7944523fcc3634607691c35311a5d59d1a3f8d4.camel@mediatek.com>
- <434c092b-0f19-47bf-a5fa-ea5b4b36c35e@redhat.com>
- <CABzRoyYWQMFTGYgfC7N=cWMnL_+5Y05=jrMhFjBf1aKOGxzq5g@mail.gmail.com>
- <ebedc478-7519-4e30-854e-f6616a7647b0@redhat.com>
- <120445c8-7250-42e0-ad6a-978020c8fad3@linux.dev>
- <9d2c3e3e-439d-4695-b7c9-21fa52f48ced@redhat.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <9d2c3e3e-439d-4695-b7c9-21fa52f48ced@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 236634000C
-X-Stat-Signature: hmq4a1as5sxkkbc4z8g5tooos8k8pqaa
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-originating-ip: [172.19.88.180]
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1758269666-759021
-X-HE-Meta: U2FsdGVkX18xeom0NaK5gCgzvdFUjGGq3dY2t4tHKXe9VakWnTcov5AZC2UV2miJbrzI66mD47ROCluQHeF8/hH4PMRdM13/gHKd0awjKQcNVbRQIDVe27/8gfUmUQm4n/LSQY4vCxfRt+iomnVaByIpRrr2B12aWAUUgieQh0Mg9YEiiTNMSRJazpwLd8b3lkF/cNrpvH3YadtbDOQ9QSkUGPWU6t7zSWzZFYbSJlYnxFh8gWJI+nM/JcbZdbkFkr+QHfbpLZrs7YqSyacIlR0Cpv3GI5cFnUIz5wsO3c29wpvOTg0f2ZSyf1U8jKGTsmAljOA6yAIxFPSlgdh8vXyKYSOiY9zff917Er7qDXfKe/22gTlM7Ig7QVSAWdj6XjCRvpqQjgvs76woXn9zFcjo++5MR2A7D09tvpdyNFydBeSeBs9YDs/8XNOrGqFRWuv230dHfqB6g/F3rXcrkgz4kmn9OV2bl0RC6V0SleEcTCJ3j7nex1+1BuS9Xnsat69M2HfwwxfLwPQFO6uWsw0Y+Kjsw7e6N2UzCZyTacb6zH5IHc7rZlli7CpdinTyw4xsJS7Rc0rC1QWsFQd7FmaYmL4/szffAnxFX6ph+KSfGHFDrrBXxe1ZFCOkrVpfAuE3R7E2VcxEJ+obXGxmU/fmW7CrA1AMXYMx4wKUw4wkLuCg28+2o2DJ5ZX/MvKgK3IKZqFnCmd/pp4+UO6DEuZoF6i9L1WWN5EYIEkgb4osIicc+HeC6ViBqfXwPGpyPhhHdCSV9hV/+oMWTbqhnja1EvvWmj/sk5ntl8b4B8iGfD77yRXqX/FZImAy0eBfA7nNVpHeRG6F+WlmNsAHNBpAkbBEaKRRndfbT0SML45D24OIZfYTiEtWJuMfls7LKoFpsmNgSfX4SkStk8lbJNtyAG1Cd8sItOhBH9Dfvdnu7WSUCdKBTLim77DESiBSgHYL/sC10PFheqMO1p6
- eaqYpcYo
- 4mIyIN4mT5kS+goN3iMcbEU2P2UDEcPGSdDApawpydP5QJvp5+xsvTyflq27b2+PP1nYwZYa4uJDpxLpqFHWDzkaE0YOn1jkgNHUU9W4pQi9QxOpstv15Oz88QHiNeH2szuN9FPKew2Erv53dmH7gXGzCyX0D+XVk8T+k9HwKm8L5ZlIizwNf/w/6s1eQ7gT1Nn6QfDfu576PZkFS0c1z5yvtW6RgIaE8BapP9OS4MK5zBUg=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 345B3140006
+X-Stat-Signature: kznu3uof7btccc7cssrfeaufizc9xfen
+X-HE-Tag: 1758270348-921321
+X-HE-Meta: U2FsdGVkX1/GpCzbZ8fWJlYrkrBTCQ8PUZH/tlt6MuuNMTjzcd5fXhY6YqqvCtAU2kggIQHIcNU3dPjAYQj5EjUGV364P3y2PrvwRLfSRhO3Y01LErEq4cQ8VEacAX1Z/deIjyxMNABrFg6/ab0gKs/m9NpTQ9wTRP7gwxM+Pf+2J29HusVx57BJLNrfUbHwevB8LcnohbQKSpbHyMgRkLZtqCut97eaiFKa6kxQt118KPCT6MUlxNDNqmt0Pm+2QAPJiGMYxSBmzwDedJH6aiBg8JzTY3GXU/Jrsj21Fm9eygESyydcdDxrRqsmWnHrbeTxI/eD7a94JJtyov10hUUpxWw0MpY5Iwb88kfyxhDpD/VJu0N4WeIGFVjTuKEB7VhhrCnP+g4lxzOXRFOp80clpXHRxfB/0fDZ6WsaMkRtU+cR9y6hQxPKDf+PAdZM9VGQjcR3YEXIsPMMybWBgEO3xWujUt/2nDPEECq46yQPA7L/wfizEjjxVbzLLJztt8elxH5trlAMs+hrfAfU6hizs6FTtvVo68KB5fYPi2QbuOrnMmHcGC2dHZDQ+YmhNUJx2AIITXapBKdozRrlQy/9p/PBWMUmNMRU3CMtYax7gVCzPRjGVHGto/hMP77vKtGGCV4zVC3+li6mYaRHYOf1/8kTrmOltAquCZmc8gq6JcMEgVYfhYZd2tmNUcUGJKYSFwuwrzRK4Ts2+C3HJB/+MSxiuct/TuIiX3gMBM0e9xgP08Ba3DwfjpFaLo8YixF03wczAcRBMH5PnKKaR/SizYebEpN1DGW8Ki/nvlTBbdCz6aQgXfhE2vbSQ7YF2192YxjBapA+JpsSRc7fvQIuT03cOuyAONtUtG56oa3vZtPxJVRanaLR2rlGHFiD+OWviTXFyMLizGQ2TaEJcEGlZSDo5hGZHMAdF3t97kiJpVEkq6Xxp+iVvMQKbVx5p3/H+ewns5wBiBPDzTh
+ rjZeJeWP
+ 00iotpQRUc3Ha8ndH+HLXvU4iG1QBNKdp9bXY8bSLJFgArNBN1g19HfK8LTfbtcTIDmpRngQloxt22hgLVlIChuM22nLPrhZ6lTn7JGUQik4AYLkxi3heDcIgb5sJ6bTbJpowq/CoPG6DkPZVItz1qjWGlrJlh8SzZcf+4RTSdkrIqXbI8T44t89U7k9uuvhnQSaiL/DumN9HG90o2bwCg7ntX4/AKRTey/Cmij8f6PvAJbqC19qd/777ybCrMjEJIhc37SAMsNdDrAV080awRwSUYqXLSrJX1bXiEz9tHBYJvvLKRYfXbdwV1MB03GHXqWAGMEOZnXdra7iao+snoXShz4jowz3UTHUkheUR/qksqXokAsBQyWw9xeFU/0maPVb4TF5oHAUAh6ODpnQ8jTjvYXSTHGFRO61FA9iHIsp/KVkGAleJxqUfFcjcX4sKsZmAp+n0VSwU7D7ihmeDIE13wNpL40fYqQIFuBAeYgYMqwQBSpoVKIK/Gj48MSX6jn+vvl8X7pOxtqlKizntM0hg+IsfoWO17IqSXlRz9lRMtyqLvW9iwGvAIviXV971u/MNil7pwiK3nvOXAiA9V/dtWhWSDXbZwvgRnGDeEmC9yBK6ybvvUBQHGqi9o6nf+L4krGI+voCrQYCwGy7k6QSaj3cJDWjWt/PvF7nJc4H57u5AE8iYs1+shBe18LIJgsMIIsYVK8T3QVij8BUMJSjSnVZ5dp26u0tau6KLfOK6W6w4NGBh3oprgriEKG8RvCX3DdXXkO6HdLYQDadvu0lBtg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,141 +180,250 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2025/9/19 15:55, David Hildenbrand wrote:
->>> I think where possible we really only want to identify problematic
->>> (tagged) pages and skip them. And we should either look into fixing KSM
->>> as well or finding out why KSM is not affected.
->>
->> Yeah. Seems like we could introduce a new helper,
->> folio_test_mte_tagged(struct
->> folio *folio). By default, it would return false, and architectures like
->> arm64
->> can override it.
-> 
-> If we add a new helper it should instead express the semantics that we 
-> cannot deduplicate.
-
-Agreed.
-
-> 
-> For THP, I recall that only some pages might be tagged. So likely we 
-> want to check per page.
-
-Yes, a per-page check would be simpler.
-
-> 
->>
->> Looking at the code, the PG_mte_tagged flag is not set for regular THP.
-> 
-> I think it's supported for THP per page. Only for hugetlb we tag the 
-> whole thing through the head page instead of individual pages.
-
-Right. That's exactly what I meant.
-
-> 
->> The MTE
->> status actually comes from the VM_MTE flag in the VMA that maps it.
->>
-> 
-> During the rmap walk we could check the VMA flag, but there would be no 
-> way to just stop the THP shrinker scanning this page early.
-> 
->> static inline bool folio_test_hugetlb_mte_tagged(struct folio *folio)
->> {
->>     bool ret = test_bit(PG_mte_tagged, &folio->flags.f);
->>
->>     VM_WARN_ON_ONCE(!folio_test_hugetlb(folio));
->>
->>     /*
->>      * If the folio is tagged, ensure ordering with a likely subsequent
->>      * read of the tags.
->>      */
->>     if (ret)
->>         smp_rmb();
->>     return ret;
->> }
->>
->> static inline bool page_mte_tagged(struct page *page)
->> {
->>     bool ret = test_bit(PG_mte_tagged, &page->flags.f);
->>
->>     VM_WARN_ON_ONCE(folio_test_hugetlb(page_folio(page)));
->>
->>     /*
->>      * If the page is tagged, ensure ordering with a likely subsequent
->>      * read of the tags.
->>      */
->>     if (ret)
->>         smp_rmb();
->>     return ret;
->> }
->>
->> contpte_set_ptes()
->>     __set_ptes()
->>         __set_ptes_anysz()
->>             __sync_cache_and_tags()
->>                 mte_sync_tags()
->>                     set_page_mte_tagged()
->>
->> Then, having the THP shrinker skip any folios that are identified as
->> MTE-tagged.
-> 
-> Likely we should just do something like (maybe we want better naming)
-> 
-> #ifndef page_is_mergable
-> #define page_is_mergable(page) (true)
-> #endif
-
-
-Maybe something like page_is_optimizable()? Just a thought ;p
-
-> 
-> And for arm64 have it be
-> 
-> #define page_is_mergable(page) (!page_mte_tagged(page))
-> 
-> 
-> And then do
-> 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 1f0813b956436..1cac9093918d6 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -4251,7 +4251,8 @@ static bool thp_underused(struct folio *folio)
-> 
->          for (i = 0; i < folio_nr_pages(folio); i++) {
->                  kaddr = kmap_local_folio(folio, i * PAGE_SIZE);
-> -               if (!memchr_inv(kaddr, 0, PAGE_SIZE)) {
-> +               if (page_is_mergable(folio_page(folio, i)) &&
-> +                   !memchr_inv(kaddr, 0, PAGE_SIZE)) {
->                          num_zero_pages++;
->                          if (num_zero_pages > khugepaged_max_ptes_none) {
->                                  kunmap_local(kaddr);
-> diff --git a/mm/migrate.c b/mm/migrate.c
-> index 946253c398072..476a9a9091bd3 100644
-> --- a/mm/migrate.c
-> +++ b/mm/migrate.c
-> @@ -306,6 +306,8 @@ static bool try_to_map_unused_to_zeropage(struct 
-> page_vma_mapped_walk *pvmw,
-> 
->          if (PageCompound(page))
->                  return false;
-> +       if (!page_is_mergable(page))
-> +               return false;
->          VM_BUG_ON_PAGE(!PageAnon(page), page);
->          VM_BUG_ON_PAGE(!PageLocked(page), page);
->          VM_BUG_ON_PAGE(pte_present(ptep_get(pvmw->pte)), page);
-
-Looks good to me!
-
-> 
-> 
-> For KSM, similarly just bail out early. But still wondering if this is 
-> already checked
-> somehow for KSM.
-
-+1 I'm looking for a machine to test it on.
-
+Hi Mike,=0A=
+=0A=
+...=0A=
+=0A=
+>> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/=
+kvm_host.h=0A=
+>> index 2f2394cce24e..0bfd8e5fd9de 100644=0A=
+>> --- a/arch/arm64/include/asm/kvm_host.h=0A=
+>> +++ b/arch/arm64/include/asm/kvm_host.h=0A=
+>> @@ -19,6 +19,7 @@=0A=
+>>  #include <linux/maple_tree.h>=0A=
+>>  #include <linux/percpu.h>=0A=
+>>  #include <linux/psci.h>=0A=
+>> +#include <linux/set_memory.h>=0A=
+>>  #include <asm/arch_gicv3.h>=0A=
+>>  #include <asm/barrier.h>=0A=
+>>  #include <asm/cpufeature.h>=0A=
+>> @@ -1706,5 +1707,16 @@ void compute_fgu(struct kvm *kvm, enum fgt_group_=
+id fgt);=0A=
+>>  void get_reg_fixed_bits(struct kvm *kvm, enum vcpu_sysreg reg, u64 *res=
+0, u64 *res1);=0A=
+>>  void check_feature_map(void);=0A=
+>>=0A=
+>> +#ifdef CONFIG_KVM_GUEST_MEMFD=0A=
+>> +static inline bool kvm_arch_gmem_supports_no_direct_map(void)=0A=
+>> +{=0A=
+>> +     /*=0A=
+>> +      * Without FWB, direct map access is needed in kvm_pgtable_stage2_=
+map(),=0A=
+>> +      * as it calls dcache_clean_inval_poc().=0A=
+>> +      */=0A=
+>> +     return can_set_direct_map() && cpus_have_final_cap(ARM64_HAS_STAGE=
+2_FWB);=0A=
+>> +}=0A=
+>> +#define kvm_arch_gmem_supports_no_direct_map kvm_arch_gmem_supports_no_=
+direct_map=0A=
+>> +#endif /* CONFIG_KVM_GUEST_MEMFD */=0A=
+>>=0A=
+>>  #endif /* __ARM64_KVM_HOST_H__ */=0A=
+>> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h=0A=
+>> index 1d0585616aa3..a9468bce55f2 100644=0A=
+>> --- a/include/linux/kvm_host.h=0A=
+>> +++ b/include/linux/kvm_host.h=0A=
+>> @@ -36,6 +36,7 @@=0A=
+>>  #include <linux/rbtree.h>=0A=
+>>  #include <linux/xarray.h>=0A=
+>>  #include <asm/signal.h>=0A=
+>> +#include <linux/set_memory.h>=0A=
+> =0A=
+> The set_memory APIs are not used in the header, no need to include it her=
+e.=0A=
+> =0A=
+=0A=
+Ack!=0A=
+=0A=
+>>  #include <linux/kvm.h>=0A=
+>>  #include <linux/kvm_para.h>=0A=
+>> @@ -731,6 +732,12 @@ static inline bool kvm_arch_has_private_mem(struct =
+kvm *kvm)=0A=
+>>  bool kvm_arch_supports_gmem_mmap(struct kvm *kvm);=0A=
+>>  #endif=0A=
+>>=0A=
+>> +#ifdef CONFIG_KVM_GUEST_MEMFD=0A=
+>> +#ifndef kvm_arch_gmem_supports_no_direct_map=0A=
+>> +#define kvm_arch_gmem_supports_no_direct_map can_set_direct_map=0A=
+>> +#endif=0A=
+>> +#endif /* CONFIG_KVM_GUEST_MEMFD */=0A=
+>> +=0A=
+>>  #ifndef kvm_arch_has_readonly_mem=0A=
+>>  static inline bool kvm_arch_has_readonly_mem(struct kvm *kvm)=0A=
+>>  {=0A=
+>> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h=0A=
+>> index 6efa98a57ec1..33c8e8946019 100644=0A=
+>> --- a/include/uapi/linux/kvm.h=0A=
+>> +++ b/include/uapi/linux/kvm.h=0A=
+>> @@ -963,6 +963,7 @@ struct kvm_enable_cap {=0A=
+>>  #define KVM_CAP_RISCV_MP_STATE_RESET 242=0A=
+>>  #define KVM_CAP_ARM_CACHEABLE_PFNMAP_SUPPORTED 243=0A=
+>>  #define KVM_CAP_GUEST_MEMFD_MMAP 244=0A=
+>> +#define KVM_CAP_GUEST_MEMFD_NO_DIRECT_MAP 245=0A=
+>>=0A=
+>>  struct kvm_irq_routing_irqchip {=0A=
+>>       __u32 irqchip;=0A=
+>> @@ -1600,6 +1601,7 @@ struct kvm_memory_attributes {=0A=
+>>=0A=
+>>  #define KVM_CREATE_GUEST_MEMFD       _IOWR(KVMIO,  0xd4, struct kvm_cre=
+ate_guest_memfd)=0A=
+>>  #define GUEST_MEMFD_FLAG_MMAP        (1ULL << 0)=0A=
+>> +#define GUEST_MEMFD_FLAG_NO_DIRECT_MAP (1ULL << 1)=0A=
+>>=0A=
+>>  struct kvm_create_guest_memfd {=0A=
+>>       __u64 size;=0A=
+>> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c=0A=
+>> index 81028984ff89..3c64099fc98a 100644=0A=
+>> --- a/virt/kvm/guest_memfd.c=0A=
+>> +++ b/virt/kvm/guest_memfd.c=0A=
+>> @@ -4,6 +4,7 @@=0A=
+>>  #include <linux/kvm_host.h>=0A=
+>>  #include <linux/pagemap.h>=0A=
+>>  #include <linux/anon_inodes.h>=0A=
+>> +#include <linux/set_memory.h>=0A=
+>>=0A=
+>>  #include "kvm_mm.h"=0A=
+>>=0A=
+>> @@ -42,9 +43,24 @@ static int __kvm_gmem_prepare_folio(struct kvm *kvm, =
+struct kvm_memory_slot *slo=0A=
+>>       return 0;=0A=
+>>  }=0A=
+>>=0A=
+>> -static inline void kvm_gmem_mark_prepared(struct folio *folio)=0A=
+>> +static bool kvm_gmem_test_no_direct_map(struct inode *inode)=0A=
+>>  {=0A=
+>> -     folio_mark_uptodate(folio);=0A=
+>> +     return ((unsigned long) inode->i_private) & GUEST_MEMFD_FLAG_NO_DI=
+RECT_MAP;=0A=
+>> +}=0A=
+>> +=0A=
+>> +static inline int kvm_gmem_mark_prepared(struct folio *folio)=0A=
+>> +{=0A=
+>> +     struct inode *inode =3D folio_inode(folio);=0A=
+>> +     int r =3D 0;=0A=
+>> +=0A=
+>> +     if (kvm_gmem_test_no_direct_map(inode))=0A=
+>> +             r =3D set_direct_map_valid_noflush(folio_page(folio, 0), f=
+olio_nr_pages(folio),=0A=
+>> +                                              false);=0A=
+>> +=0A=
+>> +     if (!r)=0A=
+>> +             folio_mark_uptodate(folio);=0A=
+>> +=0A=
+>> +     return r;=0A=
+>>  }=0A=
+>>=0A=
+>>  /*=0A=
+>> @@ -82,7 +98,7 @@ static int kvm_gmem_prepare_folio(struct kvm *kvm, str=
+uct kvm_memory_slot *slot,=0A=
+>>       index =3D ALIGN_DOWN(index, 1 << folio_order(folio));=0A=
+>>       r =3D __kvm_gmem_prepare_folio(kvm, slot, index, folio);=0A=
+>>       if (!r)=0A=
+>> -             kvm_gmem_mark_prepared(folio);=0A=
+>> +             r =3D kvm_gmem_mark_prepared(folio);=0A=
+> =0A=
+> If this fails, shouldn't we undo __kvm_gmem_prepare_folio()?=0A=
+>=0A=
+=0A=
+Yes, good point. I'm not sure if we can undo preparation (its only used=0A=
+by AMD-SEV right now, for passing off the page to the CoCo context). But=0A=
+not undoing it means that guest_memfd will consider the page unprepared,=0A=
+and zero it again the next time it's accesses, which will cause a=0A=
+machine check because the page has already been passed off to the=0A=
+confidential world.=0A=
+=0A=
+We talked about this in the guest_memfd upstream call yesterday, and=0A=
+decided that in addition to this problem, we want to separate=0A=
+preparedness tracking from direct map removal state tracking anyway (and=0A=
+move preparedness tracking outside of guest_memfd into the arch specific=0A=
+code). And if direct map state and preparedness are separate bits, then=0A=
+we can accurately record the state of "preparation worked but direct map=0A=
+removal failed".=0A=
+=0A=
+>>=0A=
+>>       return r;=0A=
+>>  }=0A=
+>> @@ -344,8 +360,15 @@ static vm_fault_t kvm_gmem_fault_user_mapping(struc=
+t vm_fault *vmf)=0A=
+>>       }=0A=
+>>=0A=
+>>       if (!folio_test_uptodate(folio)) {=0A=
+>> +             int err =3D 0;=0A=
+>> +=0A=
+>>               clear_highpage(folio_page(folio, 0));=0A=
+>> -             kvm_gmem_mark_prepared(folio);=0A=
+>> +             err =3D kvm_gmem_mark_prepared(folio);=0A=
+>> +=0A=
+>> +             if (err) {=0A=
+>> +                     ret =3D vmf_error(err);=0A=
+>> +                     goto out_folio;=0A=
+>> +             }=0A=
+>>       }=0A=
+>>=0A=
+>>       vmf->page =3D folio_file_page(folio, vmf->pgoff);=0A=
+>> @@ -436,6 +459,16 @@ static void kvm_gmem_free_folio(struct address_spac=
+e *mapping,=0A=
+>>       kvm_pfn_t pfn =3D page_to_pfn(page);=0A=
+>>       int order =3D folio_order(folio);=0A=
+>>=0A=
+>> +     /*=0A=
+>> +      * Direct map restoration cannot fail, as the only error condition=
+=0A=
+>> +      * for direct map manipulation is failure to allocate page tables=
+=0A=
+>> +      * when splitting huge pages, but this split would have already=0A=
+>> +      * happened in set_direct_map_invalid_noflush() in kvm_gmem_mark_p=
+repared().=0A=
+>> +      * Thus set_direct_map_valid_noflush() here only updates prot bits=
+.=0A=
+>> +      */=0A=
+>> +     if (kvm_gmem_test_no_direct_map(mapping->host))=0A=
+>> +             set_direct_map_valid_noflush(page, folio_nr_pages(folio), =
+true);=0A=
+>> +=0A=
+>>       kvm_arch_gmem_invalidate(pfn, pfn + (1ul << order));=0A=
+>>  }=0A=
+>>=0A=
+>> @@ -500,6 +533,9 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_t=
+ size, u64 flags)=0A=
+>>       /* Unmovable mappings are supposed to be marked unevictable as wel=
+l. */=0A=
+>>       WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));=0A=
+>>=0A=
+>> +     if (flags & GUEST_MEMFD_FLAG_NO_DIRECT_MAP)=0A=
+>> +             mapping_set_no_direct_map(inode->i_mapping);=0A=
+>> +=0A=
+>>       kvm_get_kvm(kvm);=0A=
+>>       gmem->kvm =3D kvm;=0A=
+>>       xa_init(&gmem->bindings);=0A=
+>> @@ -524,6 +560,9 @@ int kvm_gmem_create(struct kvm *kvm, struct kvm_crea=
+te_guest_memfd *args)=0A=
+>>       if (kvm_arch_supports_gmem_mmap(kvm))=0A=
+>>               valid_flags |=3D GUEST_MEMFD_FLAG_MMAP;=0A=
+>>=0A=
+>> +     if (kvm_arch_gmem_supports_no_direct_map())=0A=
+>> +             valid_flags |=3D GUEST_MEMFD_FLAG_NO_DIRECT_MAP;=0A=
+>> +=0A=
+>>       if (flags & ~valid_flags)=0A=
+>>               return -EINVAL;=0A=
+>>=0A=
+>> @@ -768,7 +807,7 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_=
+gfn, void __user *src, long=0A=
+>>               p =3D src ? src + i * PAGE_SIZE : NULL;=0A=
+>>               ret =3D post_populate(kvm, gfn, pfn, p, max_order, opaque)=
+;=0A=
+>>               if (!ret)=0A=
+>> -                     kvm_gmem_mark_prepared(folio);=0A=
+>> +                     ret =3D kvm_gmem_mark_prepared(folio);=0A=
+>>=0A=
+>>  put_folio_and_exit:=0A=
+>>               folio_put(folio);=0A=
+...=0A=
+=0A=
+>=0A=
+> Sincerely yours,=0A=
+> Mike.=0A=
+Best, =0A=
+Patrick=0A=
+=0A=
 
