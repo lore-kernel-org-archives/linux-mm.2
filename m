@@ -4,60 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D016CAC592
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 21:31:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62A65CAC592
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 21:33:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DADFA8E000D; Fri, 19 Sep 2025 17:30:59 -0400 (EDT)
+	id C05F78E000E; Fri, 19 Sep 2025 17:33:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D85A68E0001; Fri, 19 Sep 2025 17:30:59 -0400 (EDT)
+	id BDD638E0001; Fri, 19 Sep 2025 17:33:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C9B938E000D; Fri, 19 Sep 2025 17:30:59 -0400 (EDT)
+	id AF2E18E000E; Fri, 19 Sep 2025 17:33:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BA2D68E0001
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 17:30:59 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6E13D13BAA2
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 21:30:59 +0000 (UTC)
-X-FDA: 83907295038.03.DA13A61
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 76EA4100009
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 21:30:57 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JaUd4+A7;
-	spf=pass (imf05.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	by kanga.kvack.org (Postfix) with ESMTP id 9BC008E0001
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 17:33:18 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 687A611ACFE
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 21:33:18 +0000 (UTC)
+X-FDA: 83907300876.30.DA1E92E
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+	by imf13.hostedemail.com (Postfix) with ESMTP id BA85220010
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 21:33:16 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hF8zs77A;
+	spf=pass (imf13.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758317457;
+	s=arc-20220608; t=1758317596;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nePlvBxaX+05CB+7UEJ5zSphde1td/eCwPVeg6HHBdk=;
-	b=bheFIc6TIpa+skAbmcHgF5ANfyDapXHdDRdd8K5Si+z/wkhaKJnBwprT+gUw1z4kHxsfHw
-	s+bSpB8tvyEahuvJvhwW15dqCVohPizl3+RSUISTf2/SWnlanuMPU/59g/EauxlEv4XMhD
-	ZePMf5tJnqjlZ5qBfph5nQAjBFDuRVk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758317457; a=rsa-sha256;
-	cv=none;
-	b=0NAhWvZdQmH2Vj9Zz2ZLLD9liruKDU5ZmfQ1Ooe1d/nEl+7pdtkNtcUCOuqwWk1lLy/Jpm
-	lPXP8RR6ml3swx+y47EipW5IwLt8FsL8Yuv2hUUxxZ16CGzypF1rmnC7AtGJpqNOnFM10v
-	fp3MyvKNOM4aJTsqiKBct3wDV8+rD6I=
+	bh=Px33pcPC/3cjqyKF20QTwtd0R9MElM1aDgx8WhLopuE=;
+	b=da73ER4OwEw0sGWYmJq0LSGbFJaMGltWmNJokbtyl8B3iz79ebU033Tjyy3zBFdisCf8do
+	ENi1ePzM8IS6Q+TL83IOTSH6iPHHpLum9s4jwQFPop7/DDhZKCrqD6+O78ZtJuReqouvjv
+	Dl0j6foFcV8XTQLYdEo1/qxCnCl1fVU=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JaUd4+A7;
-	spf=pass (imf05.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hF8zs77A;
+	spf=pass (imf13.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-Date: Fri, 19 Sep 2025 14:30:49 -0700
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758317596; a=rsa-sha256;
+	cv=none;
+	b=dombB18bBiTZXd/WEpIPbrpA6XZi90YNOt5zb8KYTZ2r9IuiwgCtGWuWg/93STa4zmqLai
+	DZf2vDWlyDB9pPKcrVtyvJJG7G9w0t8woZijt5tIRou7B4scyDXBfU/Qjc8/9n01ZSDA92
+	hjrvuYkRHbztRaRO7TmGzPXHedwyfHQ=
+Date: Fri, 19 Sep 2025 14:33:08 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1758317455;
+	t=1758317594;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=nePlvBxaX+05CB+7UEJ5zSphde1td/eCwPVeg6HHBdk=;
-	b=JaUd4+A7i1eAbmEufsJ8+rltM7gxxF/Didf5CeXL6bRhg7LuWe1HFJjaSRQXnfhavpHCBx
-	whhbAzGBSW8dpzIRgPSdSc8iKHulo6kQOW8YpfRiLkauIBSrQNL5McNsJt6ttzCjxI40dx
-	h05Sr6BSAlLK5AbiMGXGTie6mKujuHs=
+	bh=Px33pcPC/3cjqyKF20QTwtd0R9MElM1aDgx8WhLopuE=;
+	b=hF8zs77AfTFqlzlADpfZ/I7F7naSbcZ69FSeZIbmveId4wYFEwCfzXnvB5Tjn0Gobf3UdO
+	hAdxcxsrW3C/Mg31+iUDWuwpH3FbvB/BbwVcwKoY6fvkgvd+00iOU5Gk4BYUEevJML37Wh
+	qIjX/uLm5bn1uKBDZXMUdk1dq4tbzTM=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Shakeel Butt <shakeel.butt@linux.dev>
 To: Qi Zheng <zhengqi.arch@bytedance.com>
@@ -66,26 +66,21 @@ Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
 	lorenzo.stoakes@oracle.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com, 
 	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
 	baohua@kernel.org, lance.yang@linux.dev, akpm@linux-foundation.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
-	Muchun Song <songmuchun@bytedance.com>
-Subject: Re: [PATCH 1/4] mm: thp: replace folio_memcg() with
- folio_memcg_charged()
-Message-ID: <yi5eghzjegjvu7tq5b3os6cxt6lcgfpu2xv7m3yiywppq2xcl6@lneq7zbtm6kl>
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+Subject: Re: [PATCH 0/4] reparent the THP split queue
+Message-ID: <svcphrpkfw66t6e4y5uso4zbt2qmgpplazeobnhikukopcz76l@ugqmwtplkbfj>
 References: <cover.1758253018.git.zhengqi.arch@bytedance.com>
- <35038de39456f827c88766b90a1cec93cf151ef2.1758253018.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <35038de39456f827c88766b90a1cec93cf151ef2.1758253018.git.zhengqi.arch@bytedance.com>
+In-Reply-To: <cover.1758253018.git.zhengqi.arch@bytedance.com>
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: xe5c5n5z53ezie5tf6wbjj6sh6gynzdc
-X-Rspamd-Queue-Id: 76EA4100009
+X-Rspamd-Queue-Id: BA85220010
+X-Stat-Signature: dq6tdy3zy9fumtc7kerco5eh1cw7b3aw
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1758317457-405571
-X-HE-Meta: U2FsdGVkX18p8Fvhw9MQMb9MzEJtOuql9NEnfG7WokqHOJrgoGkT8oYQBJ5zjxOAhvHyZFvrrbIYE55+KyTWT5PjUpnPtCzJd21HrFn4q0XTFwQwXXPggO1DsQqVBtO+qpsJN6xGurXadDOgUU2+8ixjvqUp2oKcIkLl4lSTVRKLy4FZiVAWKbQeZzNTCBZujtUoohUOwC0UqZS955THhy+KTkHIO9zmcLk7RCtv5bQtwcJQPiHUpwopz1Oo8ue7d+9PsAKVNTm/iWlGa+bHICMJiRWYemKit/PSNoTn56zFz0AWJQPCLBwAKyGljm0wRDa/S5CVczuTuxcW8u3XNMqjwo/YNbmvRXq3s3vHILzhoCxE7F/Ga6608fmdtB6zZEe1lN3Yvywh4VFOOsFmd5Bu2+XAXRG2L2t7OLj8qkcAUnNoqmsq2Utp/gzGgvilT207aDcY4pNxR9c8Ur9qQQgHmxGXyZJ8DaUfKaMmvo8VRfPhmZVOb8lqlNF3BME0xzfFW3ksEwE3W/i9hil2b86C28pS6bzEmLAhLMROAtgi4uu6NOvM3fthjQsl/pnQ9fkBQj3Yqn55uSn+61qtf5u6FiX8DMMQUUZYaesCL2hARJfT0xJfyLzzKGIRe9Ez45OPnOtV/ew3VHJDe/Y3nPMB7Z9Mi3TLBKTfOb6GGwtxal040nYvaoZNeQII/kfoNpJEpFEmC5rmaEy0XIUr53v3tPvZqFSD7Sd4yavcQxC1hWgyF2+JsP0UZP/W7+jcmnnun/Z2bfsN6f+e7hTdFwlsZB8mN0ixTOqLSRhXJDO5n87+F5zX1nv1caG4NZpLzKoA/WHMpZ4wbEY2rt25xjfRPUemoJuwPMpNTIMvarg5sxScAhVIsKeljGjmqPFgGXi1nwNRIH8e515VZ7aDbxUEwpjcTdhr584QeZweelAOXB34DadIgKmHIa4aKXqhwgCbmV9yFo7rwI+ATgj
- kG862Fj4
- l215+Myzgu5f8FLxLzOmsh3UqnkunYmxolO3EhrxtM3BMvzE7HoSzHOaIx6DSw5K6MTxmICMJrOHTJCaACPdM/UBYdC6+DXP6TC5Gl4RdIfp8PU3TlZaBWtz+nuqSLmEqFFbbtOb4UeB9ioFnJe4BgnS5vuBdKNb7ToiQfRgIyyz0RjfigOuy7qZuJmzRa7RhNKYCDzRxw8Z6+CxyxaBs6wS7YnG6Youqbt/21I/GFRsygZnWIb0+W0i++Ucs6/RXYIcVx6OllIK42Ru7rohqERyCDvWmyaW5kO1V2phEgc1o3MlRB/Npx9iFtmOydkRNpxQiesFvgkbsYCmL5oUT/HZkdg==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1758317596-49924
+X-HE-Meta: U2FsdGVkX1/SoQAB+2E7Q8p1gZHYdA8vVu7jMFsPuqjW1d7zUOdfpKkIHVvnSHCYcRPfmpuyFS+My0pdXreB/rXypdbYb85nPPb1lSuiRH0QR/08INfx50n3/P4+VKD8Whgf1nL/RqVP0Oc0k7Yr1vRKF8bJUGz/qrVQkJGYFaMVNLxE0ikJX50ml5NP+h40IT6xvX72WzdgVu+peKhM+TSA825eGhtnS+UoVCccEslN8SddxpGF441CC6jOizu1qGAqNgnhcJ7wTlZzucNoOXyV6LG+h9RfMeC3rz1y52DUsjiVfwr7Xn8p5/k8eiDXxvkeXESD2AIOSqi4docId+m5PEXkhaxRBVmvlDLhdwvvv2XVuENnJRRDkoXF8MI0UmG2Ekr3pUE2Q79sKGOuSdGfiM9JZyLaWNujJcJv88X3dNsY3Ho6b9iAWkz2CFPlF51vUDlX3jbMxGrQiITeK37yvHMVPyt3WnDps5mgmCjOyiGY5xsG1uxKl77xrDbpYAcaynqSkpNE4QwbhwGJ1YFtbep3f6H0OMox8ogeSfYt5P5rhRO27dCma8DRf2iakjklo/n+G1x6QA7oxdRRE2FE0eOyMwJvXQByU2aFNnHyqdstEc7DnRYs1xtAShR2NOky4W2HN94uL0CbK3TwIx81r2YnmtheL0a7UJTTdO2yw5+a3dChR5df5rUj8TxGJqHU9vfbRiHdVewpkz6tAE8twVg8JE0iSrBkehGjorUdZ2mTn8o0D5JTyNdRboKN/z5lwoZBFh08i7TLx1mxQLK4nlzzTdSrllD30b1nHGyZSM20p3VYSrTBq67W5n8V8EwPT5iGlCeAA1/R2aTEPrS5hIAnhZgJ5uFK1j0BCx0S1/tzr4nRQA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,17 +89,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 19, 2025 at 11:46:32AM +0800, Qi Zheng wrote:
-> From: Muchun Song <songmuchun@bytedance.com>
-> 
-> folio_memcg_charged() is intended for use when the user is unconcerned
-> about the returned memcg pointer. It is more efficient than folio_memcg().
-> Therefore, replace folio_memcg() with folio_memcg_charged().
-> 
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+Hi Qi,
 
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+On Fri, Sep 19, 2025 at 11:46:31AM +0800, Qi Zheng wrote:
+> Hi all,
+> 
+> In the future, we will reparent LRU folios during memcg offline to eliminate
+> dying memory cgroups,
 
+Will you be driving this reparent LRU effort or will Muchun be driving
+it? I think it is really important work and I would really like to get
+this upstreamed sooner than later.
+
+thanks,
+Shakeel
 
