@@ -4,117 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 403E3CAC59A
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 15:06:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1911DCAC59A
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 15:07:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9F473940008; Fri, 19 Sep 2025 11:06:40 -0400 (EDT)
+	id 78516940009; Fri, 19 Sep 2025 11:07:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9CC3A8E0019; Fri, 19 Sep 2025 11:06:40 -0400 (EDT)
+	id 75C3B8E0019; Fri, 19 Sep 2025 11:07:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 90904940008; Fri, 19 Sep 2025 11:06:40 -0400 (EDT)
+	id 671FF940009; Fri, 19 Sep 2025 11:07:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8066B8E0019
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 11:06:40 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 37DDBB8B46
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 15:06:40 +0000 (UTC)
-X-FDA: 83906326560.27.7CB4AC2
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 3FDFD18000C
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 15:06:38 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="r2V+/YKw";
-	spf=pass (imf16.hostedemail.com: domain of glider@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=glider@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 520758E0019
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 11:07:08 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1AF5758891
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 15:07:08 +0000 (UTC)
+X-FDA: 83906327736.21.AEC181F
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+	by imf12.hostedemail.com (Postfix) with ESMTP id F221040016
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 15:07:05 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=DS2233iK;
+	spf=pass (imf12.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758294398;
+	s=arc-20220608; t=1758294426;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wq2abhQipyX+QwuDbNp6dgczc/zpKuyCE998M/az7IY=;
-	b=yW0Ct9dZ71MBZAhPEFE3iWnvVU09SmLv/29JvTmRv1a29weqzQ3MSbiJA/NTO4tLr/Pg22
-	Q4NMiKoakuKYtXJ7Q80VV32dC/wfl4g2Hyp2p3RU0psv22f1OdU6l/RRu5LNlJObyFsJli
-	JGyT4KMtvjz+M1MINfj2ElG6O8hwmOQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758294398; a=rsa-sha256;
-	cv=none;
-	b=5wrAJug0poYAgSuem8nmgmnj8oYDbKoOPII4HHB/IInrSN4ZtYr1ghocfZVKMN7oTHJHug
-	PhUdoCLaC7hfOTiIEgHd7r9tl2BfSZbufgotSLhS9ZpH0SYEezTC1Zdqgx7OJc8dI923cN
-	D245nk0xPPjW6ATaQ060Ehy6cpXRgzE=
+	bh=0X7gv2ca1L0/lLvJb6ek6nlX9wHB+NyrwieWqFd2Ims=;
+	b=wbluLZoqjo4F+717I9TZPqxzXz5/QcDjzD8FKk6hiKB0/9ypQOAdlVSFv+NaUUDUzGqtjf
+	DRE8TTPJvIiAd4PWbrZhaTKomV70f+4mHDgjeXt+iX+YYE8eWImBZsofnZtjjCMSZq/VHW
+	ppk9ctBW1B5k8/m1DXMvimqgx/Nz2f0=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="r2V+/YKw";
-	spf=pass (imf16.hostedemail.com: domain of glider@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=glider@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4b5eee40cc0so22114301cf.0
-        for <linux-mm@kvack.org>; Fri, 19 Sep 2025 08:06:37 -0700 (PDT)
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=DS2233iK;
+	spf=pass (imf12.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758294426; a=rsa-sha256;
+	cv=none;
+	b=VwLiTzGqbaBVGqCupwoM59cWUCbsLHuu9CW3AtuKI/8Koo/kBfAtrUT2hnnCa3xAegG0+k
+	q82zhiW+k3g3vIuYjU/epUpiwyCUl4sj52yPDxU7eNZceyZrKuJvxxzMb9HQEw5dCp3u99
+	KlLrabOC+UHazfk93dNTAZe0Wav/C/c=
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-577dd4c1e84so2814295e87.0
+        for <linux-mm@kvack.org>; Fri, 19 Sep 2025 08:07:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758294397; x=1758899197; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wq2abhQipyX+QwuDbNp6dgczc/zpKuyCE998M/az7IY=;
-        b=r2V+/YKw5MD5BoimM+nZqGuRzeKov2fK8MGYqKkg35VFRh/8ddx43IXxeVL2iTMEHE
-         GZOIhbBvzkuy1/hMj81C/bB2Wg69Lj5mTPYonp5KRrvVSHyaq4sktcTT1FsdS8wrxLV5
-         w9fUlcaloYCItJ/W5sX0NLKYA1StBHfrkHeRLkyGxwP7uFVBaZ8hvJca+iVsVoEyWnay
-         cyNBmPY+GREq5gsK+hfq2U9qF5cGesvU9kjv8uUqT7mD/ftlkx1MIamy6HeZrE7BHNpA
-         UMrO8Kfl4eSfKgpLT2I5zmWsHHu9B9j5xSFCBjjXdqNbnE8rxoOHEuhr2wiTfJVvPBzl
-         UM2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758294397; x=1758899197;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=gmail.com; s=20230601; t=1758294424; x=1758899224; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:to:date:from:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=wq2abhQipyX+QwuDbNp6dgczc/zpKuyCE998M/az7IY=;
-        b=Vd5dmn9e8KNWBTilJuf38PGpIGWAA7vmcxn0Y9N27dwIkAt6qu8lwt3vVHuO3rKoMo
-         4uCuID8Ys/Y/fffcLJOrkzKw03u8BEg1pNf7BFZynhtvVzNR3skdeSiiz4+3tIzcWfgL
-         8zyYT0sSfajfl5Cf+XEXPhx3wJsLxsxvqHMYrRbHoD3MD2Jl8kH7C/WPKaQwdHIdRlvM
-         mjIYL41It1PwoQ4/frbYTCoSa13EKbaImdUTGXrBe1+5D4KbxkBhjx56NmHsbDyH8OEk
-         doVPD4q42x37gLLl8duHBBK9ZS4FD+Q/oEvTyDK9PwqDaVMWAUP03qCSgPA2FP5Pm8Cg
-         twkQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX72Ci0FIs5PPvDNoH83qVZ/tcBet0mqEUktsg9gENxGIm5maJNONWIda656YJRwModxs/AcHO+jg==@kvack.org
-X-Gm-Message-State: AOJu0YxMh+mf7ncwJAfg9Eagqu2lv2ve40eghB7TzzVwPGZ8GMymMfT4
-	DJPahUlMPvmMb9Yt2Et0FkSautQMO0GY8CCSt8s7Y6nSs4ENluNfVBKVQLubGRR7VHd9fm6Kr2O
-	9q17CAc8nEJCh4idCivM/Cnqg5myHWY1WRW+XajbV
-X-Gm-Gg: ASbGncsp++BpBj/6gP6Y7+quzhS0S+6daysztzA+eP5o+RVq2x7waLn5lT//uRfQr5i
-	Z8LEOkK0bA1+CHTMI24s54A+8z+1Elmz3aa7+877DeFt4e20tXDadGywbtrhKoSPdshAwLouCZe
-	3A0wY7B4iU6pJcEhNm0BvQWk37o7G4pX7+pBqr6UiUhtR6rxy0KB9PbBRAZjZAbC8Jv4uAAzBX7
-	m8cNciiL3hpXDzT3aS2G/HLYm7tnRuPc+u+3Q==
-X-Google-Smtp-Source: AGHT+IHAZGtVHgR/T5vgwj/kVG3d+Xvhn85HcOAqMoUr6UVAzkpi/OktlLCwoHTesoJWJTkkDQIa4OfoQDwjclHUNCg=
-X-Received: by 2002:a05:6214:212c:b0:798:acd7:2bb with SMTP id
- 6a1803df08f44-7991d54f750mr32395906d6.51.1758294396642; Fri, 19 Sep 2025
- 08:06:36 -0700 (PDT)
+        bh=0X7gv2ca1L0/lLvJb6ek6nlX9wHB+NyrwieWqFd2Ims=;
+        b=DS2233iKhMFI2d8ccL2YNPO8DSVprRomQRVo5oDV4GE/oU5/qy+ZxwjHHkabYyTIQt
+         Cs+/rSZxKWqZDh2Zv8u0UFieVFYPGVKtx/41HAKwpTJxfHDQTn5tlwRufPf7l6fpEo4r
+         IktO49+rCyPWpKEz0IIepyCVrY86Qbyy1rprjjdIzfzw08aOTOU7u1YbvDb+vF8IRoou
+         Y0DU9yLAVkbwvCr1N5cbDDiZKVQEZVa7p+u2d1HZGb7+rHYK4Tb+90K9QkR7Q5WP19Ay
+         C1iwr1gJL0HhfFE3G+AEou67oZVoSYjEJQI77l+ltZbUWFEPQHheMKfmKiSmkaXJBbry
+         tNvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758294424; x=1758899224;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:to:date:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0X7gv2ca1L0/lLvJb6ek6nlX9wHB+NyrwieWqFd2Ims=;
+        b=vvZw8oOJkFaXyHNWw8GVhxfI8N87t0PDn/5npW4HCqbhYtDLsUuEeMkbY8VzGwvbFk
+         OOjqtESudFtZ+TPLnp7XaIP/wYyjT+YBL5yf4rOJLfjqbBisKHYMrMLT/EX7KJ3TghXN
+         QTbF0LZtsPHUelkHvMslP2gMdJO6x+n0XzucBDaRBJq4CWqfLao8kzjXXAgodvQFNsFs
+         IarhTv4/Ag28YNxGQ7vjp4Y2vE3Y4ll4R5t2pPstaPyyo/8Aowqq8d+8wXXc/0Zct099
+         LGUh8kFcj6mcMgbc2/rSKvJhIA4TfLS+YpZ3XlVR6h6OW/3CR2SvHisNjs3jjWGpuYPT
+         C9WA==
+X-Forwarded-Encrypted: i=1; AJvYcCU/TUVT56bTpUjtpt8MhNJi/75ZuRJ00Md9OX7tw5iXxh8B7mOrFAurmDbNxeQXS3LFEwlEg+zSHw==@kvack.org
+X-Gm-Message-State: AOJu0Yz3TIP0o0O+LDOX40Uk5MTjZFJwLmrmBACsXdPj27E4JVlUohtO
+	WkowTkNrwfJSeVLUa2rKumeKXJju8l4vEaSo1EThzn/y9LrAYLB4FTQw
+X-Gm-Gg: ASbGncsrMHvK+TXhsUBGQXsLT9ph6AGk4wKxLe/3RAO32li8vgCmyZTH5s+i5eY5vD6
+	TmBYILOeotUrJwNJUmxPCY7boZyXxT0B2s0esFvgo+jSzyr89RWbOyO+c5kJBjjfjc9gh2barz4
+	a/enFP7CxXX//qqn21pCBOWbtuFO0NU65YX2oluEUhIF8IMTECZX5Rrylq9IONwQYwKkftUIZMg
+	UorcZqwf0uJXOwI6NyfwjYIddHpzTFUFhUcFLDr+zpitaPpZ7bBDCXtIMMspxxaanaMwSgxFzKa
+	kCrUznky3tPvWEGVOnMS/acsqOKKMz2SW0i2vPdIEgR75X84E3DPEgbpB+lu4AFn6d/7DAyrr6N
+	0
+X-Google-Smtp-Source: AGHT+IHlcfeC9Aa/jvbPtaam41unsEAYkZd0ZLBNWZtY3ZSGc+Og1wqJBQuKyUq6sNnJxk0X88wdvw==
+X-Received: by 2002:a05:6512:1598:b0:55f:4926:df1c with SMTP id 2adb3069b0e04-579e461b887mr1360111e87.46.1758294423504;
+        Fri, 19 Sep 2025 08:07:03 -0700 (PDT)
+Received: from milan ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-579a1bacef8sm878143e87.103.2025.09.19.08.07.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 19 Sep 2025 08:07:02 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@milan>
+Date: Fri, 19 Sep 2025 17:07:01 +0200
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>, paulmck@kernel.org,
+	Jan Engelhardt <ej@inai.de>,
+	Sudarsan Mahendran <sudarsanm@google.com>, cl@gentwo.org,
+	harry.yoo@oracle.com, howlett@gmail.com,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	maple-tree@lists.infradead.org, rcu@vger.kernel.org,
+	rientjes@google.com, roman.gushchin@linux.dev
+Subject: Re: Benchmarking [PATCH v5 00/14] SLUB percpu sheaves
+Message-ID: <aM1xlYbvp13rOs6r@milan>
+References: <20250913000935.1021068-1-sudarsanm@google.com>
+ <qs3967pq-4nq7-67pq-2025-r7259o0s52p4@vanv.qr>
+ <f5792407-d2b9-42b3-bc85-ed14eac945ec@paulmck-laptop>
+ <d1ef1cbb-c18d-4da6-b56b-342e86dca525@suse.cz>
+ <CAJuCfpEQ=RUgcAvRzE5jRrhhFpkm8E2PpBK9e9GhK26ZaJQt=Q@mail.gmail.com>
+ <aMpE-oSjtlDU4TSl@pc636>
+ <CAJuCfpHQ_JedSRHKKoYXyVzaFOm=dDWzgFZwqerfEC1fn35j0w@mail.gmail.com>
+ <CAJuCfpE48n=QM0nY8yE3drqZU0wgC76=70EyftL1WZewEcykyA@mail.gmail.com>
+ <aMvx9GKgIWtrkZ_R@milan>
+ <vhp6cqq6gx5xgs2ueo7az4wobs2rddjsucjwlxckx3us3p3pey@s62u2ruxkjw7>
 MIME-Version: 1.0
-References: <20250919145750.3448393-1-ethan.w.s.graham@gmail.com> <20250919145750.3448393-5-ethan.w.s.graham@gmail.com>
-In-Reply-To: <20250919145750.3448393-5-ethan.w.s.graham@gmail.com>
-From: Alexander Potapenko <glider@google.com>
-Date: Fri, 19 Sep 2025 17:05:59 +0200
-X-Gm-Features: AS18NWA5Hk_dVmA1agOSIAGh1dzuifFPUnlHCTY8eojJWXc2mgupvfI9rEJhlqQ
-Message-ID: <CAG_fn=VXNBH-1QDAy+xR_ubUr0rZxmPBpFWov1y+7a65-mtGmA@mail.gmail.com>
-Subject: Re: [PATCH v2 04/10] tools: add kfuzztest-bridge utility
-To: Ethan Graham <ethan.w.s.graham@gmail.com>
-Cc: ethangraham@google.com, andreyknvl@gmail.com, andy@kernel.org, 
-	brauner@kernel.org, brendan.higgins@linux.dev, davem@davemloft.net, 
-	davidgow@google.com, dhowells@redhat.com, dvyukov@google.com, 
-	elver@google.com, herbert@gondor.apana.org.au, ignat@cloudflare.com, 
-	jack@suse.cz, jannh@google.com, johannes@sipsolutions.net, 
-	kasan-dev@googlegroups.com, kees@kernel.org, kunit-dev@googlegroups.com, 
-	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, lukas@wunner.de, rmoar@google.com, shuah@kernel.org, 
-	sj@kernel.org, tarasmadan@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 3FDFD18000C
-X-Stat-Signature: y5t3q3c83ihiadqmqgfqeenbwa63f1gs
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <vhp6cqq6gx5xgs2ueo7az4wobs2rddjsucjwlxckx3us3p3pey@s62u2ruxkjw7>
 X-Rspam-User: 
-X-HE-Tag: 1758294398-186415
-X-HE-Meta: U2FsdGVkX1/2u0c4aKlf/sTjAUa+GCLQts7/5WFKBnIA5E1maV2l9KOlXeFOtv6EF4cpo9pCN23g75YpQKK8VlwevrUTJZY7kH/yiUiFBgSNBKi3tFUlxUHn0Ucxpfj0M3En9+f+DXghAUGSv80WOjqv294LG7QN3/uSKL9JwbOmF7JXjUArZlD/IpuCtrVHoXeSTEh6jGMTSnVxApVgGXb8qktaOQdEdz6S3Vp8gZ/GEz/HX4l1Td10cFb6HlWfwngG+txbplSAZlgpD69AJhHL1KSxjPQglE/7iQu3T7d3ulJ5sFadeyK3cH4MozSAMy3oMtAR1V86wval8zU1P44/1F2gsgJlnXwHm4GlxS6pZb/q8HBXeKt3utTtmpwASim0f/LsITZm6hctKfoG3b9pzfsRyhoGYpgCJkON1rYiYHevnyIg3DYe2Drf4P1AF3OL3gKCq/NC9q6PaZ2GOQQFejN93yQsAzXktVl0Ikrqabpv/PcgP7nQKFJ3Ah0EkH4qZTFi3SgKxeVeQS1l9MUZY/HZAXFSLUWvNtRzn96GxEDaa53p/g14sC9uq+WQHPFyX4LmaVzKHhGBEKQnXSWNdFUJ/fUEeMGTKKaAie4WNQLV1uF6HtORe5NmAMiC71/GDrCzMZ+ZCqGLLh9Tfv4Q3RZjQfRxua53Eb2J2j+cObbHjgl5p6BrlhIuZ85G7T/GalVehpTLom4vrt3wyiz7EPfB9OBe4hilPvAMaZMISmrLueuwS7mMCu6iP6dx6KX5RNB+tbBPT2crcynaccg12Kc0Ay6KXbnGDjjsI50ef1l8AW3hjKDNNj3cuib9xY84bNeePH67MAvUI9TumWdcsgmvMKieQ61Y81xOS9PscILTRJ4OUFT3+/GEHed1cmLFFC9xtre4ul9t4Kbay9/y/sqHA9jR1pHr+e/enGg8b/6YyrlYX2vB+fn1tz/k60JFB3tw0pHPwJCw6iY
- DnotFy9B
- xOuDJfBBcgSPM+t1uQvIzt20bOrGMsj395STnCUlmT7q3LTHDFjHawsz6XYTxPX8k66+356YKoRlLNjhh8ij+qNcTIWZEJd5n/2o1ntezPobONLaqknKrFYz2jOmEl70HQa88IDnj9SyIFSafU12HHgiC92In7miIIo6RzfRR2EyLZA4aURts/uOcBoqffIK0mahdPygzVCxBgwaELBoTIW9uoiXu3khAU5ztW7dvgrxIQBYP9QZeE2umfAqtlKad4cMfTpH+UrLMlBqVbPCu2ScgHw0r0dR8NTvq9+a2UtK5+MegMi3+P5v5B5GG/cyuqEdb
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: F221040016
+X-Stat-Signature: s9yzyn6pcpwti4fp3kzffp67eixzp131
+X-HE-Tag: 1758294425-263237
+X-HE-Meta: U2FsdGVkX19+3Fg60+0C09g8S/IBXUjGV7dsAYYiE97BaRqoaRGwxx5Z/CYUP/acyvY1hhvE78e/qY6ZKtlB3lsEmCYQvhltsts2Rv9lODIwKpLjUGTc/MSF0iNSiWqpTF3Cc24kSQg+NmC76NinAnMLPCZSmrrcLn/5bGSd04qRFVzilzy1+ppHteBiVpHrzV1wi3peHCQineatXVlIMVfujKp8PBmKvwsh7K7OSmiKabW4Q2TssZ8VsuiHVCcL4PsgpLTAZl5zdC2Rffi7FI6ZEaLqvNIuQM2NQTkmleMSqi18iVrMu+2N7lRWoTJKvG9OouRjsZ3PEVJ5PTNtAPm7D2OuI/HKoqFSCPqrnH8K2UJU1BO1DE+dVD7k/sleEx6rYGSOfjhbnw/WvuBgqt8Av3Ks0HSMdlGCbpajDDMriMzc3KJJqh3fIj+CLUgUP2uY9AhPKH8zA4F7i0ro8ROYnzMA4GmvbRDLDfuEvzD5qvsoo8wXQBPeX3EjRBu7J9uGJoFjgD07CFrSR3BJ70q4KGP4LXVKedKAkEKIxf4U4uP+WqgzFO/E+tuDOFMIRUWQ16rDXJam2Pv1y7lvtEF95Tu3WZ2EJu9tE7n/erpvyHS4ZGO1bA6gudlgbCw7Zck/IT7sK80UFsktSRjqsMBflfkkBy827Xg8YlG3IrfVzULZ7oTJlU7XTAaGxHoxeNAqxAjZ+ngtVDw5UoBXsu95leWd9c246HzB4Q/CYkZrzIvXr3zNu+aXZSnzwAADQ+Xix/QKB6CoJEmvnkZE3+1Q0K+2ANqq0YrOwJYVEN6x1qY5vRlj45qZT3cLZZNiY88Qm+ci7ei3jpUHf5ahuTKsTd5S1Yb/HwKTOwqWN4WVEJ5XfuC/vI5PKLeP8b260sMwzhqP6+QJYhdnGrFhS4GpcdzYjXj/cYtvixI9f2FzZcSnf+OQSKapdA09qP+vLk7zw51V5h4ftf/jo6d
+ 4nOS6dxd
+ +Ed8kOI+H0e0kodo31MQauEc+5CKVNLXdwda2LDuY3dSfFLKBFsJYlCA8epGaz1KGz1fJawb5ITngHXINXNVwwcJ0cfU0wPLEN7Rq/Y3gZAoJzV07dIY8NBwmzaD7MFlQvDYtp1/eCTPNr1KM3r/U5mUMhMgdTDz8wgZbCxbXvfqr+n1G/IJMr6FJw17Q8v9ZwqwQHzS8kTVxnLmiXd9AjhU24vBTRtH0qMWskCFXe7VwcqOXhtVCJ35PGfSykXqPEc1kONiqFBBwDRvAyJzjW3+EFbX15BAmMrNnMTDYWehVWXZA8sC6b5B+U73fitFzZXhaIxLnwk6WkM4qiXMoGf2nFlN4Kq/c1YsTYiiWb+/2ZIENmIHHnZVYbN2ELu0CT/5ZR0bp0dIq7mMZcJ9GxyN2VW1COPDRDDup2J5vPp26YuQIZwNBmJPf2taWjbSmx5cBux7IgHJp+mUlCsL2UEeZRwl+MgM+tBgkuSI/qw/uG+AoD5WAOuThaVvV9uLFABLvmfiBcubP1wE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,25 +137,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 19, 2025 at 4:58=E2=80=AFPM Ethan Graham <ethan.w.s.graham@gmai=
-l.com> wrote:
->
-> From: Ethan Graham <ethangraham@google.com>
->
-> Introduce the kfuzztest-bridge tool, a userspace utility for sending
-> structured inputs to KFuzzTest harnesses via debugfs.
->
-> The bridge takes a textual description of the expected input format, a
-> file containing random bytes, and the name of the target fuzz test. It
-> parses the description, encodes the random data into the binary format
-> expected by the kernel, and writes the result to the corresponding
-> debugfs entry.
->
-> This allows for both simple manual testing and integration with
-> userspace fuzzing engines. For example, it can be used for smoke testing
-> by providing data from /dev/urandom, or act as a bridge for blob-based
-> fuzzers (e.g., AFL) to target KFuzzTest harnesses.
->
-> Signed-off-by: Ethan Graham <ethangraham@google.com>
-Reviewed-by: Alexander Potapenko <glider@google.com>
+On Thu, Sep 18, 2025 at 11:29:14AM -0400, Liam R. Howlett wrote:
+> * Uladzislau Rezki <urezki@gmail.com> [250918 07:50]:
+> > On Wed, Sep 17, 2025 at 04:59:41PM -0700, Suren Baghdasaryan wrote:
+> > > On Wed, Sep 17, 2025 at 9:14 AM Suren Baghdasaryan <surenb@google.com> wrote:
+> > > >
+> > > > On Tue, Sep 16, 2025 at 10:19 PM Uladzislau Rezki <urezki@gmail.com> wrote:
+> > > > >
+> > > > > On Tue, Sep 16, 2025 at 10:09:18AM -0700, Suren Baghdasaryan wrote:
+> > > > > > On Mon, Sep 15, 2025 at 8:22 AM Vlastimil Babka <vbabka@suse.cz> wrote:
+> > > > > > >
+> > > > > > > On 9/15/25 14:13, Paul E. McKenney wrote:
+> > > > > > > > On Mon, Sep 15, 2025 at 09:51:25AM +0200, Jan Engelhardt wrote:
+> > > > > > > >>
+> > > > > > > >> On Saturday 2025-09-13 02:09, Sudarsan Mahendran wrote:
+> > > > > > > >> >
+> > > > > > > >> >Summary of the results:
+> > > > > > >
+> > > > > > > In any case, thanks a lot for the results!
+> > > > > > >
+> > > > > > > >> >- Significant change (meaning >10% difference
+> > > > > > > >> >  between base and experiment) on will-it-scale
+> > > > > > > >> >  tests in AMD.
+> > > > > > > >> >
+> > > > > > > >> >Summary of AMD will-it-scale test changes:
+> > > > > > > >> >
+> > > > > > > >> >Number of runs : 15
+> > > > > > > >> >Direction      : + is good
+> > > > > > > >>
+> > > > > > > >> If STDDEV grows more than mean, there is more jitter,
+> > > > > > > >> which is not "good".
+> > > > > > > >
+> > > > > > > > This is true.  On the other hand, the mean grew way more in absolute
+> > > > > > > > terms than did STDDEV.  So might this be a reasonable tradeoff?
+> > > > > > >
+> > > > > > > Also I'd point out that MIN of TEST is better than MAX of BASE, which means
+> > > > > > > there's always an improvement for this config. So jitter here means it's
+> > > > > > > changing between better and more better :) and not between worse and (more)
+> > > > > > > better.
+> > > > > > >
+> > > > > > > The annoying part of course is that for other configs it's consistently the
+> > > > > > > opposite.
+> > > > > >
+> > > > > > Hi Vlastimil,
+> > > > > > I ran my mmap stress test that runs 20000 cycles of mmapping 50 VMAs,
+> > > > > > faulting them in then unmapping and timing only mmap and munmap calls.
+> > > > > > This is not a realistic scenario but works well for A/B comparison.
+> > > > > >
+> > > > > > The numbers are below with sheaves showing a clear improvement:
+> > > > > >
+> > > > > > Baseline
+> > > > > >             avg             stdev
+> > > > > > mmap        2.621073        0.2525161631
+> > > > > > munmap      2.292965        0.008831973052
+> > > > > > total       4.914038        0.2572620923
+> > > > > >
+> > > > > > Sheaves
+> > > > > >             avg            stdev           avg_diff        stdev_diff
+> > > > > > mmap        1.561220667    0.07748897037   -40.44%        -69.31%
+> > > > > > munmap      2.042071       0.03603083448   -10.94%        307.96%
+> > > > > > total       3.603291667    0.113209047     -26.67%        -55.99%
+> > > > > >
+> > > > > Could you run your test with dropping below patch?
+> > > >
+> > > > Sure, will try later today and report.
+> > > 
+> > > Sheaves with [04/23] patch reverted:
+> > > 
+> > >             avg             avg_diff
+> > > mmap     2.143948        -18.20%
+> > > munmap     2.343707        2.21%
+> > > total     4.487655        -8.68%
+> > > 
+> > With offloading over sheaves the mmap/munmap is faster, i assume it is
+> > because of same objects are reused from the sheaves after reclaim. Whereas we,
+> > kvfree_rcu() just free them.
+> 
+> Sorry, I am having trouble following where you think the speed up is
+> coming from.
+> 
+> Can you clarify what you mean by offloading and reclaim in this context?
+> 
+[1] <Sheaves series>
+             avg            stdev           avg_diff        stdev_diff
+ mmap        1.561220667    0.07748897037   -40.44%        -69.31%
+ munmap      2.042071       0.03603083448   -10.94%        307.96%
+ total       3.603291667    0.113209047     -26.67%        -55.99%
+[1] <Sheaves series>
+
+[2] <Sheaves series but with [04/23] patch reverted>
+             avg             avg_diff
+ mmap     2.143948        -18.20%
+ munmap     2.343707        2.21%
+ total     4.487655        -8.68%
+[2] <Sheaves series but with [04/23] patch reverted>
+
+I meant those two data results. It is comparison of freeing over
+or to "sheaves" and without it in the kvfree_rcu() path.
+
+--
+Uladzislau Rezki
 
