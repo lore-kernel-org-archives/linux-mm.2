@@ -4,96 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8AC70CAC59A
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 19:52:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5F05CAC592
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 19:52:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 862828E0008; Fri, 19 Sep 2025 15:52:31 -0400 (EDT)
+	id 57CD28E000A; Fri, 19 Sep 2025 15:52:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 81B048E0001; Fri, 19 Sep 2025 15:52:31 -0400 (EDT)
+	id 52D0B8E0001; Fri, 19 Sep 2025 15:52:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6DBA98E0008; Fri, 19 Sep 2025 15:52:31 -0400 (EDT)
+	id 3F5A48E000A; Fri, 19 Sep 2025 15:52:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 577968E0001
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 15:52:31 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E69E71407A8
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 19:52:30 +0000 (UTC)
-X-FDA: 83907046860.24.C5DE225
-Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 02FCDA000F
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 19:52:28 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=k1SxUHdQ;
-	spf=pass (imf25.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.219.170 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 274068E0001
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 15:52:32 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E2D761A075E
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 19:52:31 +0000 (UTC)
+X-FDA: 83907046902.01.A5070B8
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 1714F140007
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 19:52:29 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=RK+7wzy8;
+	spf=pass (imf09.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758311549;
+	s=arc-20220608; t=1758311550;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QeFP7YZ+0ipT42W2voI8x5bVWJQwIjHVnEimGCqA+fo=;
-	b=dM/AFDwuBP2fbhm3ksdBh1jmRgYUUcmIVVyEmFZUFy0MWAxMOTrr3WrHIE4y2+PYlsDcPE
-	3g0B5iyLi0/pZDp9sKyhW5x0MQEBm0y3O3H9Bv22wRCEwei51qJHygxK07Kpkh7f30tAbb
-	lwaqTFUIX/VDY35L0W1+d3hIXFmuet4=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=k1SxUHdQ;
-	spf=pass (imf25.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.219.170 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758311549; a=rsa-sha256;
+	bh=w5514hkUU6j/LpNp+jQR2Vw3xX4bDEVjgpb6NqfXeu0=;
+	b=LOFLUo/7VxT9zDJX97t7B7kScK/wg6cPLH9ACvbZDmDAGWug5v/E1z0uODndKTANY20XCb
+	6xUeuh4Hwt+FicrcVugFuAq7tfgX9YaEDvKKieemJjJjRBXkm2ogPASrpOVMxAydtef3Yf
+	7sul2itoUbCB7BpFcehG5o5HMduajPE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758311550; a=rsa-sha256;
 	cv=none;
-	b=cx0EerptjZ39B8vPKu5DeKvVikIZ8acYtM319Qr1lpItvVRM/uGc4SKAoyJovz8VOD7g8i
-	Oaw5sM8UEPaljSg0MqRSGawMpQvV8U18x4+yXgAsFqneYATZf8O7s3iS7on3Scf1RLaoC9
-	4tUX0F/dMs+vwhKRhAmMhXwmZPmA3e4=
-Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-ea3dbcc5410so1856971276.2
-        for <linux-mm@kvack.org>; Fri, 19 Sep 2025 12:52:28 -0700 (PDT)
+	b=nsVMupjEBCtMvu7Aj1VcUP9klGyXjiVTunc7URktR5I8IHfiJvJQw1oddmBU+JqzEm1WKN
+	fnKOJhYR1MLXetA6I3WLDAdBJKFxrVTowwCTZYv3obAbEjr2n5tCUA+lSgtUChM7CRGeo5
+	yggJlx0ujoTfVBxpil3grSVvSjj5GxI=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=RK+7wzy8;
+	spf=pass (imf09.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-723ad237d1eso24060087b3.1
+        for <linux-mm@kvack.org>; Fri, 19 Sep 2025 12:52:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758311548; x=1758916348; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1758311549; x=1758916349; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=QeFP7YZ+0ipT42W2voI8x5bVWJQwIjHVnEimGCqA+fo=;
-        b=k1SxUHdQggJHTw4SlJBuXtcDorMR25PEo+mxNzi7BeXLqJpootKXjyBWhdg2M7xv+c
-         hTFJpcoz0IrgIleQkabWTOqWjXCAjdsR9t+h1QRU78ROiHsaBFJApRvCmPi1dCNc1hcr
-         0LYsQ2zrZx+ItEkLYh9zlh7WXdxFBVo/2uzNxy9CApgZ9cgzBuUjVRe08qkZvFOlFcC0
-         dESmp9iTrmqJXc5fB86pKK82Rb/KjaJuXn+jLswj+ww/lUHhbsRypLz/EJDmHOOC0nrt
-         48I7RJEIgQAv59umDVfnHYs8r4nroLqz9xHoyHiFKLC7mFcyHljNMRF7wvVGOaANMiO1
-         oiCA==
+        bh=w5514hkUU6j/LpNp+jQR2Vw3xX4bDEVjgpb6NqfXeu0=;
+        b=RK+7wzy8U2WGj+powywnNyKFhFJwkYoBwioSatU/Get5VdeSVn/IeBDgf71AXtI8gk
+         wVZIgAZsWEIWBdA5GZD8S/cKeEZLXyjzQ1muh5Azdsfo1mikgY8OWqNColu8oXixko6V
+         7PQxsWOY2zpqJ8TqtUYcn2V5cKSfp1oDmwvTWDhCZzRkqfxo3Nt0CoaOxvFTFPjVSiaL
+         Jlk1l8peUS32TunlrJ+bCdF7gZS8vfLH1s+B3EsTWSld9wNqBbLM5JStCMyXGSysauLm
+         V/4lhPj297ydjfdzDxe3XjOf5crc+f8MdProToIQ06NZljpEgV8jbHzRWatNWdM98tq7
+         2TFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758311548; x=1758916348;
+        d=1e100.net; s=20230601; t=1758311549; x=1758916349;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=QeFP7YZ+0ipT42W2voI8x5bVWJQwIjHVnEimGCqA+fo=;
-        b=stbWOQZJd3MFOibulhDaA9dlcDQ5KbYrQ+fr1sjcG9r1JJgaR7iVWE9aFdQacx4FM7
-         Ictsu3qh+4Z9p/6UxYh+REMe3d+XWi2Tj59YAvP5jXtVtewKl525FVcMPEHmRfek1Hqo
-         ERN+pTA5WgtGpvDlz5PEoY7+rJN87cv+eIYo6RF8KWaT2qXOc8e9P7/pagfkPbt4aXZJ
-         nqFhHgsZxrt7xug8UjnOglZrUaJK+vrlwB/djERURUb797bTuFd8nUTs+kxfsWeU4aBr
-         Ut8TApz9Jj6cras+SnlB9Rmz9l+4mDfUvvXnJK+3siXXXMZ2OAqrCcor6tK2ui0+Eqj9
-         Fd2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCW6C9paZqa6zRpo9FTMzbMbNyK3w5D7qgrUdmEv/je2FfRr+cyIZAntc1JHVvdDwV4mRYYs+wg1kg==@kvack.org
-X-Gm-Message-State: AOJu0YxluHrFGXJ/9HWba97M0FZEaQQI8oHnrDvAqM3BHWccM0ncFyMq
-	pAvW06r36pyHvB0kVcE1UoF+aXbIfHj3aR6jkESR1O61JG6/rDNrrHON
-X-Gm-Gg: ASbGncuY5q7deweWgv+n0QERjm5rylSk8B+lbh4rSmOkSpSl+Pqtq2eSIvz8Ek/Wwvw
-	Trh28tWaTSEkZwRPQnKp9gYmdJS+Pf4oNItO0zhZ7QlO8e5ccdkIF0kpE1IOOesiKsRFfn2/p0R
-	+t4+lvlGGDzSsKofHAZ3WGmESHKLArTrXHggImxDM49+Cndq6qB4Nww/jpSB/1bEGj6mjT5V2i1
-	z+LKjhvr92RWvZ/rnSsRarrb4odkQVBPoumggoIlznwCdLK9PXLrdJqsrBB2GM8Y2Hih2CSGD64
-	0fbQwQObgFdfiKWgGyEyloItSro8G1uhCiStqyj0rHjNCDV7P9oIJgJlmp2YEGJ6hxfTCXQ4NVs
-	ftKssmO3H5rUDKW8ROSLG5KY4wMK36wiWQ00r5HizhF/lo5FaWM9nDQ==
-X-Google-Smtp-Source: AGHT+IEsrmhTSR/Ouh5RyIoB6jxstfFRsj47OaTQJsuUNGkSTK4pmk8eUUNqdr9I9Afg7H4rSVdbiQ==
-X-Received: by 2002:a05:6902:70f:b0:ead:1e1c:2754 with SMTP id 3f1490d57ef6-ead1e2b7e0fmr137258276.42.1758311548027;
-        Fri, 19 Sep 2025 12:52:28 -0700 (PDT)
-Received: from localhost ([2a03:2880:25ff:5c::])
-        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-ea5ce974386sm1950713276.28.2025.09.19.12.52.27
+        bh=w5514hkUU6j/LpNp+jQR2Vw3xX4bDEVjgpb6NqfXeu0=;
+        b=XfVvsSGKk8Rsl7UH03p+ykcY7zJdhUIdtxgpLBXU6uVR8t2tCYQh1t2C7Mg43xC9GP
+         NgKQcNBphERAEM+P8iOfqC9c7FxoJyJgLsUpmz19/SLhpQEyR520IcABZMVcpj+rbDl+
+         FIivXHPsmUZStGCMcJ0TK1bJN9ymSXNQAfZj4RaLu3vwF3GHy0tF/OlZjKuqXeA0PPkZ
+         xrRPtgfMIz0U0C5K+adacVi+CTdfFjHm8cJ6bvXopGJqlo2zzHU+bH1VYMXFhSr0fOve
+         nTzZ3Ujd9fubl21OyXbeACbXqMgl6uwbz3OFakdsj23ar5pQCYytH1x5pNBNgX+yOW44
+         xjPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXYam6SQP2bYXVlsp2BVhckT7mvnJTLrmfy+P919mid3VSqxJ/LHjutnKP4gjFQOhwXVQ2ah8sIkA==@kvack.org
+X-Gm-Message-State: AOJu0Yw9rphMAkCooLdAbi3wi/AmbvcI0Lqhw/m0bpeAZjai9MArNbTs
+	TjzEs3OcNwr/mq5TdC1BNKRZL0M4hXLWnTyn+hPNWiA/OE9LfpmV8Yoo
+X-Gm-Gg: ASbGnctzBV6l+PwcKYzd82uHT6yZ9yGAPa4cDRtyIIaXCp/A4k3MsUHBjLrmgERDF3W
+	B4Tw37gC41+LBxhyU2CkbmqPzCUgmUB3ZdvqUZezlagtCHow04cNf1SJQXKkiSzKoITdSd05AGd
+	KElAhkySaklLjVRb2iwxsvPsJctmpV3GKwN8JUnlIMeakaYB0HpN8KzjvThad4+OVnKZe3iXEsm
+	sVZ8ZOxO3aY0MpNTNbMpRfzw4FqXDN6cHTRGzs0v0B3E3eR4pFbRva57blcws6GeD/i2K/TFnjH
+	E812VjvSsX7zfYM6BARbGBPTVKJXmutf3LIJkZf6BCv7hrOcaOKqTUS0LBKXnqXNjXCLiY/+ecG
+	w3vJHHAtSAjVAvqcv2kKA/fXbRY5/8h944FZLxtbfLDlsOu71I6er
+X-Google-Smtp-Source: AGHT+IEVBz0LvxtgrKD8uQV/kHRpMtKxa5IqUhA+Ja3x1EMKQQ8NgxEBIv4STTROBqXMAS7ua4+BRw==
+X-Received: by 2002:a05:690c:6812:b0:72f:d215:60c9 with SMTP id 00721157ae682-73d3c0162afmr46956397b3.26.1758311549074;
+        Fri, 19 Sep 2025 12:52:29 -0700 (PDT)
+Received: from localhost ([2a03:2880:25ff:e::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-739716caf81sm16662397b3.1.2025.09.19.12.52.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Sep 2025 12:52:27 -0700 (PDT)
+        Fri, 19 Sep 2025 12:52:28 -0700 (PDT)
 From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
-	Chris Mason <clm@fb.com>,
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>
+Cc: Chris Mason <clm@fb.com>,
 	Kiryl Shutsemau <kirill@shutemov.name>,
 	Brendan Jackman <jackmanb@google.com>,
 	Michal Hocko <mhocko@suse.com>,
@@ -103,22 +103,22 @@ Cc: Johannes Weiner <hannes@cmpxchg.org>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	kernel-team@meta.com
-Subject: [PATCH 3/4] mm/page_alloc: Batch page freeing in decay_pcp_high
-Date: Fri, 19 Sep 2025 12:52:21 -0700
-Message-ID: <20250919195223.1560636-4-joshua.hahnjy@gmail.com>
+Subject: [PATCH 4/4] mm/page_alloc: Batch page freeing in free_frozen_page_commit
+Date: Fri, 19 Sep 2025 12:52:22 -0700
+Message-ID: <20250919195223.1560636-5-joshua.hahnjy@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20250919195223.1560636-1-joshua.hahnjy@gmail.com>
 References: <20250919195223.1560636-1-joshua.hahnjy@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 02FCDA000F
-X-Stat-Signature: 6xsxzn37k6xutatjd39t9ukx37iakuxg
+X-Rspamd-Queue-Id: 1714F140007
+X-Stat-Signature: whd6p6ibz4fcrk9jzi8gntt65pr5x98w
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1758311548-717837
-X-HE-Meta: U2FsdGVkX19d6tgt9mzMVPcOPj+HTlRZCPtDCqAoQA7dKeFAjjPyTXSFD+hzWx3yC7WMU68E8Cp0wLOBY6f6BkUR+lZewBuURv4zVnDmf0EtAJWEi0H5FVvLdv76nwiy8hYzTV9Vjufd5JX0z/Hx4Y2adQ5pOxLT7n0vF4nN6Mu9gNmHORnXxrYxhrUTeKDCTXM4/kwAeHCXl0ZkKnGF+DWkHAuDX5RUcKNYNtMyMtL8K7eyA9/GJou0CbSUcF9ytHjlCcV2cxNbYQfwf6sewSwB+4R6p/Dk9h6lhuWQDRx6FA7yG+3CcCApDfse9tnGSFaql4PGqBGp72Rc8R+jzqmJRdT9Cthi8j09uGEAtcgfz+NRnYzvZ8M/NYpS8moxOWR//+EBcz9M40+UbmtXBu1aXLcNkGmEndIsQlV5gOcRBBPzXGOoNOJH6RrO1E8wmRdt/OwFLErBGYaq0wpD6Yluvq57dI5dNKtwLus8LFhK143E/3SYN3DO+8mPEXnJQ4zAAuyegL/XKJ1zOlX5y+tnVTl/VB68W9iV1ffMDVvdqQwopGzs4NpNYpDHnyKHmSCEak/WJia7F6KTJru4wdrd7ah3NghNM13XmBinE+QVSUm4qRgWf5qCnLjEH3KDZGK5To57pExzypQPQf6u8LknNz4Ki04oN8sbvmAyxzGUxQWEH1+Uha7zIWHROfPiEpGLKE0zF6lDZ7Jop/mEVzXQqIpt2vH4VGsHG4VIw5yiyjElokX9Ng1BDaC7rPfmdTVTNFQWmFPEQhfUn2l5R6EUM1cuo8c8qw5SzQhO+0WQRUqAZQhbhGycrMJLNEomGlJ4uCPcmDpg4G7rNAxBWgPj9LLHStjAGFfo1M5jD+QluHGYAmOkr9AzsdIox87Hx0ngoGmDj6PGt05Ew84D8xwu6Qz1uOuUGq26IlnJZ7kSYNn78RIPgLxu6dP4M8BALTmae2ntqMKeFjgn+E5
- TuiUXmxC
- e3yU4cKKNYK7FDOGO4usBy0U1E/EsQJYUIEQHF9dUrs018DZLz8kBL7sdbwAaLUeg3YlE2ugd6ssY32aOLGwCWn5dBCqhJW9kDe0rL563ESHdiqWg+rrJhD0fz8J5ICz7IvodCdvXjX7yz5sOY3tJWIYgJ1aTBx3LeLXctXrn/SuSjejakuvLOnQdlNY8kNxfHewoLPwmYagBRhd30Jn7sdqNl2hIgoaE4mkGogStQL+dN6hFT/K0r/5ZiKcww94SF5asJvnNFW3n/y7rc6ERVgPvFz407+jLU7ZGGO6yj28qozg7SxF8p2+CEq2UbZ0D5p7d7FQ06dE6p6p9Tykf5eTiOrF7/TfFMbhFbxeTbHkjA2XCvoad3hLUtewODV/zoGem0a/ZbI3RypErvIzbyb1ayiEI1s5rxlOTNIkiX5IaK5xGmI/JXJyRHiMGvdgjeKRAZWcjFuNJORpbJ+YMHOogesfj6SwqdXQ/08cKF9jUwEeOxCOknz2OQzCgdQ0fe53hQiv/Xz4G6G+R+Zx6+24LqWNh7v6JkwHdH9isvY/NYMm8JV5iwicHfSXe1PGZ8/ZD4aaftDmY0WQI/bFmJZf6ZlKgEuNY7Y5FFKdCljhuohwVw7YVnLZqSyCItyYx8t0R1fqokXSGIQ6Pr8sv0ftcpQ5kdXWOVscaudYLUR3pvwcoAflgEuqHZg==
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1758311549-782180
+X-HE-Meta: U2FsdGVkX18VB0ga7WyLncO/ZPGtM8LlN3gLO6LI1PsjacHqYDnGkOX3v++n4bbHcVvWy0r1t9bErViuSAfnNE2FYTdMDDX8QxirQ/kKZOBRU2E1Tw0WcxRHEY7QnL5qLRwFT2bUhDwUVmqdB9YrYVx8mAN9o5qZzABh2zuPTAttb5ld5cIUE4PeSROE7W4F7BAnUwymfGDjEF4FKmVDoqUQ+w0MyDNBWUJUGftrtTjBE7NhlJJR8+vm9gI+SsXXcrdKeJjnnm8aqXBtwUMWPH3hNQmtTc85GawnDANEGB4CDtT99mJ23NsLBKzTP3CbmDqbAf+0ozn17e8ga/wZO1uxgSJvNbrtkX9IoO87IkO00FBInaVRAE/kLYZEBO1iwqHx+KiFJEAARuU6zxw4YCxIQUgDV9fR1DkxxwMVwzlrbTDHs/wOXCrv4Ibz4p3QBEAz+PiE55gix9I/gWSDi2HHrE5M7DAINoVTPMplm5tT5uwZoqrOK4OxofI9oluMZXC3qhrMfea40QaCa7o7Rr/xZjf8/1bBZIjekEXlLJW3IlCr0V1T7/g1xu3Jo7WPZ16BklAHr5ZV9zk3+HqBVzIM3J7/kzt9FSEPty1iWhNXLUX0sl2T2be6uE93uGwW2E7JhSbb9P1XJwhC84Jtf5vXBuN7j4rOpLHU6oCpJJwdkBCq7X58Emqp6CrukHehmkjDXyM4Cv9Kd1ZmXTrO5eU3cBFDEBvT+WcnLijZgXLeZ/lQmFRqYZMN3aTAXwouRGvx7AKTJMbyDlaKtgoRDqzQ017jiLinBWK7XJ70g/TBs83nxkeGdDQLha8E4tC2/rS2lcTvpzv7dBybvvrnHNcnmiGXxglM/JJJeVZtnvJFX3x7ASy7zXdZvaf91r9zZABI8Ecu4n9qGrB1lDPJJuSkQfbZ7dq0XHQxQvomVcvk3H/R2o27rtKFoscoIqgG81N+WpbiZu4r/mod4ER
+ ERoLewPo
+ qTj32N45XjLYXyAKuiR2V+6d9A/e2w6VdgwhoQU/8S+fyFEOeuNd/OcpCRON1MWV9jni6Rf7AYvFn3hfH2A6x1B6xE1qxXOeod81y5RlppToxmOFh6YHip7RbSjDoeyLrisYlRuDNZLRv3WA/Yv87Qh5hK3l2Fe296mj0sf+XH/cXubckCaDH0Ir0kmWe449lW1jAI++iYKjGBwspbBQaASoB81dX7nRwFlrO8K3jSHq7VWqSMAJN8bVHiVytO1IaDK0Nrc7wPJA9j+jxjQgnrLsHegKjAecBfZY03gXN/qadOiVsbkF6NaEMtKgGgm/PZUj7dplGUK3pKtAaryjKXyinwXdXvVVnXaWQ5J22e+GL6Yqq7/21jTu7iCLkhoal7o5YNq2xf3LKcTCaq+87VckkliqGLwCeyrPB9kfVx0j7xCYk8nFjK+Xil4snqDGe81jwK62yg7Lc5zUClyzZPHZtcGbAlolLgVrFuk/qnrxRYK+0hkmlvg/8R1/1Arhveq8uLV0epid5akoZAMzk3jaZNXf3NFyqGPXbSBtqxstcXw7nhbrKCvdFQ5REoQvwcOfudEhxAqOf/Yn3CAbrBfwAD9CE0lbyzGUdmYRdXzIUGSkS0m4WKH49S9pfL6pgX/b/
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,53 +127,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-It is possible for pcp->count - pcp->high to be greatly over pcp->batch.
-When this happens, we should perform batching to ensure that
-free_pcppages_bulk isn't called with too many pages to free at once, and
-starve out other threads that need the pcp lock.
+Before returning, free_frozen_page_commit calls free_pcppages_bulk using
+nr_pcp_free to determine how many pages can appropritately be freed,
+based on the tunable parameters stored in pcp. While this number is an
+accurate representation of how many pages should be freed in total, it
+is not an appropriate number of pages to free at once using
+free_pcppages_bulk, since we have seen the value consistently go above
+2000 in the Meta fleet on larger machines.
 
-Since we are still only freeing the difference between the initial
-pcp->count and pcp->high values, there should be no change to how many
-pages are freed.
+As such, perform batched page freeing in free_pcppages_bulk by using
+pcp->batch member. In order to ensure that other processes are not
+starved of the pcp (and zone) lock, free the pcp lock.
+
+Note that because free_frozen_page_commit now performs a spinlock inside the
+function (and can fail), the function may now return with a freed pcp.
+To handle this, return true if the pcp is locked on exit and false otherwise.
 
 Suggested-by: Chris Mason <clm@fb.com>
-Suggested-by: Andrew Morton <akpm@linux-foundation.org>
 Co-developed-by: Johannes Weiner <hannes@cmpxchg.org>
 Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
 ---
- mm/page_alloc.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ mm/page_alloc.c | 45 ++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 36 insertions(+), 9 deletions(-)
 
 diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index b861b647f184..467e524a99df 100644
+index 467e524a99df..dc9412e295dc 100644
 --- a/mm/page_alloc.c
 +++ b/mm/page_alloc.c
-@@ -2563,7 +2563,7 @@ static int rmqueue_bulk(struct zone *zone, unsigned int order,
-  */
- bool decay_pcp_high(struct zone *zone, struct per_cpu_pages *pcp)
+@@ -2821,11 +2821,19 @@ static int nr_pcp_high(struct per_cpu_pages *pcp, struct zone *zone,
+ 	return high;
+ }
+ 
+-static void free_frozen_page_commit(struct zone *zone,
++/*
++ * Tune pcp alloc factor and adjust count & free_count. Free pages to bring the
++ * pcp's watermarks below high.
++ *
++ * May return a freed pcp, if during page freeing the pcp spinlock cannot be
++ * reacquired. Return true if pcp is locked, false otherwise.
++ */
++static bool free_frozen_page_commit(struct zone *zone,
+ 		struct per_cpu_pages *pcp, struct page *page, int migratetype,
+ 		unsigned int order, fpi_t fpi_flags)
  {
--	int high_min, to_drain, batch;
-+	int high_min, to_drain, to_drain_batched, batch;
- 	bool todo;
+ 	int high, batch;
++	int to_free, to_free_batched;
+ 	int pindex;
+ 	bool free_high = false;
  
- 	high_min = READ_ONCE(pcp->high_min);
-@@ -2581,11 +2581,14 @@ bool decay_pcp_high(struct zone *zone, struct per_cpu_pages *pcp)
+@@ -2864,17 +2872,34 @@ static void free_frozen_page_commit(struct zone *zone,
+ 		 * Do not attempt to take a zone lock. Let pcp->count get
+ 		 * over high mark temporarily.
+ 		 */
+-		return;
++		return true;
  	}
- 
- 	to_drain = pcp->count - pcp->high;
--	if (to_drain > 0) {
-+	while (to_drain > 0) {
-+		to_drain_batched = min(to_drain, batch);
- 		spin_lock(&pcp->lock);
--		free_pcppages_bulk(zone, to_drain, pcp, 0);
-+		free_pcppages_bulk(zone, to_drain_batched, pcp, 0);
- 		spin_unlock(&pcp->lock);
- 		todo = true;
+ 	high = nr_pcp_high(pcp, zone, batch, free_high);
+-	if (pcp->count >= high) {
+-		free_pcppages_bulk(zone, nr_pcp_free(pcp, batch, high, free_high),
+-				   pcp, pindex);
++	to_free = nr_pcp_free(pcp, batch, high, free_high);
++	while (to_free > 0 && pcp->count >= high) {
++		to_free_batched = min(to_free, batch);
++		free_pcppages_bulk(zone, to_free_batched, pcp, pindex);
+ 		if (test_bit(ZONE_BELOW_HIGH, &zone->flags) &&
+ 		    zone_watermark_ok(zone, 0, high_wmark_pages(zone),
+ 				      ZONE_MOVABLE, 0))
+ 			clear_bit(ZONE_BELOW_HIGH, &zone->flags);
 +
-+		to_drain -= to_drain_batched;
++		high = nr_pcp_high(pcp, zone, batch, free_high);
++		to_free -= to_free_batched;
++		if (pcp->count >= high) {
++			pcp_spin_unlock(pcp);
++			pcp_trylock_finish(UP_flags);
++
++			pcp_trylock_prepare(UP_flags);
++			pcp = pcp_spin_trylock(zone->per_cpu_pageset);
++			if (!pcp) {
++				pcp_trylock_finish(UP_flags);
++				return false;
++			}
++		}
+ 	}
++
++	return true;
+ }
+ 
+ /*
+@@ -2922,8 +2947,9 @@ static void __free_frozen_pages(struct page *page, unsigned int order,
+ 	pcp_trylock_prepare(UP_flags);
+ 	pcp = pcp_spin_trylock(zone->per_cpu_pageset);
+ 	if (pcp) {
+-		free_frozen_page_commit(zone, pcp, page, migratetype, order, fpi_flags);
+-		pcp_spin_unlock(pcp);
++		if (free_frozen_page_commit(zone, pcp, page, migratetype, order,
++					    fpi_flags))
++			pcp_spin_unlock(pcp);
+ 	} else {
+ 		free_one_page(zone, page, pfn, order, fpi_flags);
+ 	}
+@@ -3022,8 +3048,9 @@ void free_unref_folios(struct folio_batch *folios)
+ 			migratetype = MIGRATE_MOVABLE;
+ 
+ 		trace_mm_page_free_batched(&folio->page);
+-		free_frozen_page_commit(zone, pcp, &folio->page, migratetype,
+-					order, FPI_NONE);
++		if (!free_frozen_page_commit(zone, pcp, &folio->page,
++					migratetype, order, FPI_NONE))
++			pcp = NULL;
  	}
  
- 	return todo;
+ 	if (pcp) {
 -- 
 2.47.3
 
