@@ -4,98 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8658ACAC59A
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 18:29:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD007CAC59A
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 18:32:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 729698E0002; Fri, 19 Sep 2025 14:29:24 -0400 (EDT)
+	id 2EBA98E0002; Fri, 19 Sep 2025 14:32:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6DA438E0001; Fri, 19 Sep 2025 14:29:24 -0400 (EDT)
+	id 2C27F8E0001; Fri, 19 Sep 2025 14:32:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5EFE28E0002; Fri, 19 Sep 2025 14:29:24 -0400 (EDT)
+	id 1B11E8E0002; Fri, 19 Sep 2025 14:32:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B6288E0001
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 14:29:24 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DE49116077B
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 18:29:23 +0000 (UTC)
-X-FDA: 83906837406.23.17DF36B
-Received: from smtp110.iad3a.emailsrvr.com (smtp110.iad3a.emailsrvr.com [173.203.187.110])
-	by imf15.hostedemail.com (Postfix) with ESMTP id E9C8AA0006
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 18:29:21 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=deepplum.com;
-	spf=pass (imf15.hostedemail.com: domain of dpreed@deepplum.com designates 173.203.187.110 as permitted sender) smtp.mailfrom=dpreed@deepplum.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758306562; a=rsa-sha256;
-	cv=none;
-	b=nkzFPWTbnp1Tj99h2q7Z7hLO0nDOwVVn3f/CDY/WTRr+cSnnCcthTWtCBqJSkr9mp5qFUu
-	spQBXb7H82BBb/K7aJlGOZcjd/DxVgdO0cs4cvZHB1j/LJgpTmI2ptIDe/a9fjG/FvnoMk
-	4ztuhP4KaLXcbXraYScTCFUBti6SBjY=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=deepplum.com;
-	spf=pass (imf15.hostedemail.com: domain of dpreed@deepplum.com designates 173.203.187.110 as permitted sender) smtp.mailfrom=dpreed@deepplum.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 097378E0001
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 14:32:15 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A952213BA41
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 18:32:14 +0000 (UTC)
+X-FDA: 83906844588.15.79B85B2
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	by imf17.hostedemail.com (Postfix) with ESMTP id C042B40009
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 18:32:12 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=AjjGCkUZ;
+	spf=pass (imf17.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758306562;
+	s=arc-20220608; t=1758306732;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fQDkxoMn7cyCD+zg76aoQLFgIj2qe2OocLFn3Emlf3Y=;
-	b=W3LWdiXVkaISua1+G38TBj6gnO6gyoRH71k5mG7EwnbCNAho0GEpo3M9ZgvehmbJv2adCF
-	I6JWjCTRdpfcf5KUswkhNzsD3QdV2rYKZ6HfiF2cEpYdr7+yMvjbqzBNUGLntnjPqkxKhq
-	s1iT6EoWEvhqCpRyMldZQPTe9tJiGGI=
-Received: from app38.wa-webapps.iad3a (relay-webapps.rsapps.net [172.27.255.140])
-	by smtp30.relay.iad3a.emailsrvr.com (SMTP Server) with ESMTP id 10C155A59;
-	Fri, 19 Sep 2025 14:29:21 -0400 (EDT)
-Received: from deepplum.com (localhost.localdomain [127.0.0.1])
-	by app38.wa-webapps.iad3a (Postfix) with ESMTP id EC4CCE1C4E;
-	Fri, 19 Sep 2025 14:29:20 -0400 (EDT)
-Received: by apps.rackspace.com
-    (Authenticated sender: dpreed@deepplum.com, from: dpreed@deepplum.com) 
-    with HTTP; Fri, 19 Sep 2025 14:29:20 -0400 (EDT)
-X-Auth-ID: dpreed@deepplum.com
-Date: Fri, 19 Sep 2025 14:29:20 -0400 (EDT)
-Subject: =?utf-8?Q?Re=3A_PROBLEM=3A_userfaultfd_REGISTER_minor_mode_on_MAP=5FPRIVA?=
- =?utf-8?Q?TE_range_fails?=
-From: "David P. Reed" <dpreed@deepplum.com>
-To: "Axel Rasmussen" <axelrasmussen@google.com>
-Cc: "Peter Xu" <peterx@redhat.com>,
- "James Houghton" <jthoughton@google.com>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- linux-mm@kvack.org
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=NNz2rvWdWurkAjYnYhECzBshCI3+0s6yD1fA4kNT29Q=;
+	b=B37lnkyc6sod13vro/nhdya3pCfdzvevju7mTuo3oya1NPckBaY6zuKgevWaxmKdZvZ5Fa
+	MTGLbXDMw6L6EN8c/VOHDjh1RwLDuRHzME3p13wzUsaGZY/g/Ul2dVAr/8eed7xhua4cg4
+	vlrNS73MZagCyT8ejPRvSnHxXR2A2NY=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=AjjGCkUZ;
+	spf=pass (imf17.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758306732; a=rsa-sha256;
+	cv=none;
+	b=d2D6KDL90FtcNZQIsUZ9pwu/AzT6ffFutH1Gu9NMcGNQd34KCGVaq5/9CHMqN8MvLoiRC2
+	RNOVy8xMyDvw2c9BMIUFYi4gLXlXqZS1CWi6icC+A34fsdITpH6dRHz3/TUsU0kiRh2HFI
+	wrpTcf15cbPqa+TOw3S0iP9Ji9cW3g4=
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3ee13baf2e1so1655176f8f.3
+        for <linux-mm@kvack.org>; Fri, 19 Sep 2025 11:32:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758306731; x=1758911531; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NNz2rvWdWurkAjYnYhECzBshCI3+0s6yD1fA4kNT29Q=;
+        b=AjjGCkUZC/wU/Pq/aBxIj9MogBKPz68IwBRrrLjob0LH/ed9ickNZ34BtX3vNTW56a
+         uzj5Mys5ryEdA3AEjnuUAei73WuQPV39OLYxjVBRijw7hjalMMej5j3VtnaD4KYsy3i8
+         TK74/OiYL3srQ3QSn4vhNM35I28sgawjny1lqlHe+G7VFvlUr27hynP7upeRi31xHrUT
+         m17I5nOjjp59Rw3Om65gi+5I4C/9AITBNp1M5lVmgnJKiR4L6lI1oSBId26zfgQV/rPc
+         2HdYSsHz2wNHPkaMAQhNrCcf2ZOAb7NLU2nRT2/7uXA3f2QgPMcKpBgfHaQyEGJb3ciL
+         ih8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758306731; x=1758911531;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NNz2rvWdWurkAjYnYhECzBshCI3+0s6yD1fA4kNT29Q=;
+        b=C0aMH05KzkBBNt7WYK/Jrb6NN/wdSFBD6lyQE92GpyLwXpT2PpPGapxtPBDhXnqLaK
+         NZHDnJgXD+YFW+hlGF/PfOOc1sgy7dTpOb7pL864cf/8U0QaB5VRWIECQv0w2ABxVdPo
+         a2cVZYQk/sBcdEvqBDQGUwBlKOii2D9zty40yUGSCunktHUtRili2YGKIMnnF1ZCTW8a
+         BOsj3W5fEx/8FAmjPD13xPDEFvJ7GvXdjUP3bj8UqSZ1ABN7BT2JuPNrQs67Ixq3mcVq
+         H56MBJS0joQOG7dBytcbN8TAjhbSkXimsVXETs5sUEXLSUiOPbhVsyXDcu096oTzvWKu
+         SPIw==
+X-Forwarded-Encrypted: i=1; AJvYcCUUTdxPFYrvTPFiimc9tGyvxD8zGvXt+Rj21oSgR5hE+Dv0KDwbxnqZHgx8qerqJDDEt68tZwDZPg==@kvack.org
+X-Gm-Message-State: AOJu0Yzeq4yEClaCOCkufeA9LCzy9rncXyeuhiLAUhknjF9Qx65s6XSr
+	AWTPUCKaeMv0WtGu6lyyZT0UZW1rXNByJ7m/88AiNuia3rHHT6tHNLSBQMvW8nOmPsKVx92gwyN
+	njaf1IwdZYwkdFnMxqHlhqYCVwCR6acI=
+X-Gm-Gg: ASbGncv/KCqPNrGkZHAKLpahLELhpgczpuMLlJWsBk2Q1El2NMrzbeAQMBBy4Kf0GBN
+	3htHIrnAv9spm2hVA0cMg+0bYPNfbhg5IARthUCalp61ne31cJyf/hb68C1zwUrfGSjvtc+OY2k
+	jezLjsXZUzWXe+04JovVdjgerU/9H6nGMTcEq8l6XOsXb0nlhiq3gmWSr8cGPZwwIo1vOsQJ3ry
+	9MmWA3767mijvMEjbRh/rQ=
+X-Google-Smtp-Source: AGHT+IE1qLgPZ2JZjML9mfB4gOIrZqCWSfRd0LbOWc+PJ+zRKBIhXbuoNJMp3mTSX/to1tTNSiq+a5JIlxqbwS6zv+k=
+X-Received: by 2002:a05:6000:2486:b0:3ed:f690:a390 with SMTP id
+ ffacd0b85a97d-3ee8481fdffmr3766244f8f.40.1758306730884; Fri, 19 Sep 2025
+ 11:32:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain;charset=UTF-8
+References: <202509171214.912d5ac-lkp@intel.com> <b7d4cf85-5c81-41e0-9b22-baa9a7e5a0c4@suse.cz>
+ <ead41e07-c476-4769-aeb6-5a9950737b98@suse.cz> <CAADnVQJYn9=GBZifobKzME-bJgrvbn=OtQJLbU+9xoyO69L8OA@mail.gmail.com>
+ <ce3be467-4ff3-4165-a024-d6a3ed33ad0e@suse.cz> <CAJuCfpGLhJtO02V-Y+qmvzOqO2tH5+u7EzrCOA1K-57vPXhb+g@mail.gmail.com>
+ <CAADnVQLPq=puz04wNCnUeSUeF2s1SwTUoQvzMWsHCVhjFcyBeg@mail.gmail.com> <CAJuCfpGA_YKuzHu0TM718LFHr92PyyKdD27yJVbtvfF=ZzNOfQ@mail.gmail.com>
+In-Reply-To: <CAJuCfpGA_YKuzHu0TM718LFHr92PyyKdD27yJVbtvfF=ZzNOfQ@mail.gmail.com>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Fri, 19 Sep 2025 11:31:57 -0700
+X-Gm-Features: AS18NWDr8VuH5ucHYn2ibLVBASY5zct8WHDo7Mc0mqgDvlFRZ593jDOgzN6t5y4
+Message-ID: <CAADnVQKt5YVKiVHmoB7fZsuMuD=1+bMYvCNcO0+P3+5rq9JXVw@mail.gmail.com>
+Subject: Re: [linux-next:master] [slab] db93cdd664: BUG:kernel_NULL_pointer_dereference,address
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>, kernel test robot <oliver.sang@intel.com>, 
+	Alexei Starovoitov <ast@kernel.org>, Harry Yoo <harry.yoo@oracle.com>, oe-lkp@lists.linux.dev, 
+	kbuild test robot <lkp@intel.com>, kasan-dev <kasan-dev@googlegroups.com>, 
+	"open list:CONTROL GROUP (CGROUP)" <cgroups@vger.kernel.org>, linux-mm <linux-mm@kvack.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Importance: Normal
-X-Priority: 3 (Normal)
-X-Type: plain
-In-Reply-To: <CAJHvVchHKxiVKFjUz4ir4PVDvUihLhiSRMBWqpMEZfwLdereuA@mail.gmail.com>
-References: <1757967196.153116687@apps.rackspace.com> 
- <CADrL8HWGcj1oANGY=qAzpYi_-E-Xbi=L28Bmyyf8H7auVix=QQ@mail.gmail.com> 
- <1757977128.137610687@apps.rackspace.com> 
- <CADrL8HX78-oh0k2qAgqPvNVAhi4ESYvjRsScPGR2P2Dts13Bfw@mail.gmail.com> 
- <aMl4qLyNovWHhty9@x1.local> <1758037938.96199037@apps.rackspace.com> 
- <aMmMnfU-Koopc9mL@x1.local> <1758043654.112619688@apps.rackspace.com> 
- <CAJHvVciL-6OLMPDGQjZ=VGDwvwKJznq0BL49uSj+DSq63LOUYQ@mail.gmail.com> 
- <1758052343.971831541@apps.rackspace.com> 
- <CAJHvVchHKxiVKFjUz4ir4PVDvUihLhiSRMBWqpMEZfwLdereuA@mail.gmail.com>
-X-Client-IP: 209.6.168.128
-Message-ID: <1758306560.96630670@apps.rackspace.com>
-X-Mailer: webmail/19.0.28-RC
-X-Classification-ID: 118587ba-484c-4b63-97bc-182a01fe2f1c-1-1
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E9C8AA0006
-X-Stat-Signature: nanipobnud96uwfuq4uuoxg7gedf9g7k
+X-Rspamd-Queue-Id: C042B40009
+X-Stat-Signature: 4me1eq75iqkyhsp459cmjr31hnr7tomz
 X-Rspam-User: 
-X-HE-Tag: 1758306561-300212
-X-HE-Meta: U2FsdGVkX18dE6P1VFm8sxTQ/7uBFiIMT7W047/tAeli6g74nrlPvM2RQNP/OjcPtKVG6a9rXtAPhyQoR6R6Dg9k0vjVs74BvGO57HzCUonE1714mcNun/5Ot0NaSZaFVajjfU/yaZw/0oTasMxCzgA8KiN+l8Rp3aFGVhojCrCNG10kR+8PNDOKJPhdbf1neKSua46j7Y4FIqFp+uicwp4LLxv6lYvHOEOrSd7AJZtazbP2BWYZMDcjEUjm0jfacfxFvkJaneOqiJNYOxstzoejqXJ1e2YQnes4leqNEBDMKA5UUWPzQ8UYVGqvfQRWONRco1KNBqOu8PopqcXYUoGJKmZ61GoWQsuVvqaWyggoopVcErpJjBFUuhSBQ8cZkxKrljScXvpCYWEmg1ipngjvkVph6vvXZ8Dd57+S/zfV8HIl9bnehjjm0Y4o4mwzwgGOBNnSO4m2ZjCeO2Vy9OvykutkCpLq/YsPJ0E3axCJYDOBrkICfYvFXZ4/JQEkZndVCFN3wRxXoa/5R1M6VtJKHkQo1nfFCcfey+Ya7cbSg/UtQjQuXkzTfaFSuhtbk3Xpbq/UrQqBRNjJEOTB6Csk/HB2QMVv0YWBZNY3lKllcQddED5++9cDezqLy8oKqK1+mORWE5wyqri9Ra/cH1sUB5jHFXjUIbx7E4eBL6rkuXLjnXk1M6gLdWBXlh0knGT7xjikFZNjwe3G7IWTyOtjULjV5bFntJf+vv8MN8gv/fAWkqPeboFW5S5DfONxdLr+7BWhpBsJ3/7TKU47u3ihKdT6xKL/3O2z7XkAXqU0uGsxA2XkQh7b/SFCD+8eQ9qlSqOFjbM3XRPK3zsACUoyFLvr1vHevFaBgn2I55D9aN/Ecy8vSeP+IZ9WodZgxkQdni6JZl6MbElgVNvHTEum/ZvSsHfVsC4xsdVUiohP9dYVAgaNOVoaSZTpDtTQqMsNJoH+bFEq+p6ab91
- 78grGjDv
- nkNtF+eN7tNhGHFObjCPtpRf8rSr+sePtQgy9hFP1tCdsHL+wKFK/Pm/TRJsVCHdcT1JyCUS0D7eAo7cukMKAPMKwu94B+qls63bgWuF+n0KPC69LKzvZwjfp+WljhA5FSuLvXhB7aRaDDQ2BdJ91tBE2nbw16s6nnwHvAYEThy/iTLfAmNBlEKsNiJqaNtl7W4KHLHwzeWgf4+CEmNT2ZKHzHQBs+8nSl7hUQCLNzzZPwUkF8ABxBFQdMg==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1758306732-573657
+X-HE-Meta: U2FsdGVkX18Qw88rXmfvBHWbkVwUdcQJhCTyZfTI3kv0L5UJmQBpwxcN3hFSnnJitZ/rVmVlfULQMq9+pXy5ndHqti8ZyTv6jbipZL50Z124417bnfuMvuH062FmBVJrsS8AEgeDwrN/dpZyiMJhVMVuE/LtyXMin5XlCpwDedIu7wiLXZGRAtim6R+J5wyJQBYo6t9jqLMExu7WTP/ZiZyV+wYmaTEzPqckPL89vTi6VQ8SlFnrz2c4fS3KAqxkxivZcBQBllBVTETe14bNDwpZWP48H9LgeXzRK0S6eHKq9dYS5CyFpjViTvYk8iubYuc9ovgxbTlAWs2I7Kaj5+jUm0cfNDzPnN+iMczvjf2Nj17frkx1ALjYXZcEECpikEsCzU7bbp/p0bzQmKoMQNhE+UNd7dlQGL1H8NfnSBxEaK9LPRPo03AgEmlp0jR9gx1dUi/C+4Ilbi9iIPF5f3QVYiFW02Mnx+KaRllMcrhy1tFz8LvkYpg0NGPgQCVSYzcuTmAmUllW3jMkWz2EB7AmMCP/cSTdibTOui+zgpqtS/KcuRnkTjWAGbbJTUCcJRemkwsIgKSURT55GqmpVZiJV9iyYbDVDWBUNakn66bC5QO6KjRCXTcILQXAAt+EhS8NfK8M4yCkQl5q5SvnpIqJSKQoFsipVLq3oFK9PHvIpx1eJvLXpRjV9gR08kNhPSDR2PmpVG9/JAPjcQVRBh9apIToG0VwzhrG0DaSMLeDApvnn58BXsCHwlNAo7C+dj+DS/beMnAEtq9CanHcujfDAhme/tXP0x9YHboPNbbvDXxfauJylSNcmzFFy5Tn+mG4izjxLSxNoqHdCc+1IiPQT8HDL6nJ7JmBK0WkgINxhcoTJItrHsGNa+Jn2D9qhtpR9v8wL/4dIRkLewUYHfIvI5AwOk67hLvIq+/JTGMkxmd56mEotp6HnM23I0WYPlfRtY3lQWSSZJCzPfw
+ z4lchCqA
+ /vx/Qjmf7+goEoQXG4WNI56IVAGkuuNHaWeup/Uht68/Six5mcpBjIHMviTKTAw/o14/pg0CaUEvLCkLcUTwsSsud4oTysnsjowTsx5eFR4/ZXysHa5Gy+U5XfdYUuATuN3NgoNn3skw1ryCkViir4WEBqIXQOhzECo1GolUZ5wjCCJs4kVAltXCeFODPqq2melXBFd9JzYo2egYI49dVpZwlvQ3cdAXKBTVjR7w3RxraWChzl4QlWIL4O7b+gFp1FcvY/AlhDKkOvKP69OC1E6tR3LzNjfgtnLInsFpWwvf4guYd4ernTmgFXWIz0Zh+lMEP+JQvfRuvAkHZl1l42cro+4YPR5Vvzh0oABpba02UHiZ0ZqzLtvr55rWM5T6DIZCAmuHCh3nWjgAyrkK9VvVgJYTpFBK8r6I4XLwg9PXtKGTygj2ObJTyBdi7lE3TZNPTFu/40ocypGujffBjcCNQdKpx5IGnOxH9w6EjAmCGmLY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,84 +121,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-=0A=0AOn Wednesday, September 17, 2025 12:13, "Axel Rasmussen" <axelrasmuss=
-en@google.com> said:=0A=0A> On Tue, Sep 16, 2025 at 12:52=E2=80=AFPM David =
-P. Reed <dpreed@deepplum.com> wrote:=0A>>=0A>>=0A>>=0A>> On Tuesday, Septem=
-ber 16, 2025 14:35, "Axel Rasmussen" <axelrasmussen@google.com>=0A>> said:=
-=0A>>=0A>> > On Tue, Sep 16, 2025 at 10:27=E2=80=AFAM David P. Reed <dpreed=
-@deepplum.com>=0A>> wrote:=0A>> >=0A>> >> Than -=0A>> >>=0A>> >> Just to cl=
-arify -=0A>> >> Looking at the man page for UFFDIO_API, there are two "feat=
-ure bits" that=0A>> >> indicate cases where "minor" handling is now support=
-ed, and can be enabled.=0A>> >> UFFD_FEATURE_MINOR_HUGETLBFS and UFFD_FEATU=
-RE_MINOR_SHMEM=0A>> >> In my reading of the documents, these seem to imply =
-that before they were=0A>> >> added as new features, that MAP_PRIVATE|MAP_A=
-NONYMOUS mappings were=0A>> >> supported, and that the "new" additions to t=
-he MINOR mode were just for=0A>> >> HUGETLBFS and MAP_SHARED cases.=0A>> >>=
-=0A>> >=0A>> > Actually minor fault support didn't exist at all before thos=
-e two features=0A>> > were added. :)=0A>>=0A>> Thanks for commenting. I'm n=
-ot sure that's exactly true. Why is SNMEM=0A>> (MAP_SHARED) supported, but =
-not ordinary pages? I wasn't party to the evolution=0A>> here, but so far n=
-o one has explained why there's a special difference between=0A>> SHMEM and=
- ordinary VMAs.=0A> =0A> I promise it's true, I wrote the UFFD minor fault =
-handling feature. :)=0AOK, but I am still confused as to SHMEM VMAs are sup=
-ported and non-SHMEM are not, in the case of an anonymous mapped range.=0A=
-=0A> =0A> As for why... Like I said above, UFFD calls it a "minor" fault if=
- the=0A> PTE doesn't exist, but the page already exists in the page cache. =
-If=0A> the PTE does exist, you won't get either a minor *or* a missing faul=
-t.=0A> If the page does not already existing the page cache, you'll get a=
-=0A> missing fault, not a minor fault.=0AI'm assuming that you understand t=
-here is a profound difference between the "page cache" and the "swap cache"=
- in Linux. I am referring to what happens when a page is in the swap cache,=
- (which is primarily about anaonymous pages, but a weird corner case is tha=
-t "tmpfs" is backed by the swap cache and the swap system, not by the page =
-cache).=0A=0AThe "historical reasons" for the swap cache not being the page=
- cache weirdly difficult to decode - I've spent a chunk of months trying to=
- do historical reasearch on how this came about, but more importantly, why.=
- No luck on the why. (And the main reason seems to be that, if I were to gu=
-ess, that the folks who built it wanted to avoid using "inodes", which are =
-required by the whole page cache meechanism, perhaps because they thought i=
-nodes were "expensive").=0A=0AAnyway, I'm now understanding that UFFD's cho=
-sen a variant meaning of "minor page fault" that seems tied to pages that a=
-re file backed or SHMEM.=0A=0AA "swapped" page is anonymous by definition o=
-f what "swap" means in Linux. In Unix and other systems, swapping was a gen=
-eric term that included file-backed paging as well as non-file-backed pages=
-.=0A=0AAnyway, I'm quite puzzled why I can't seem to monitor MAP_PRIVATE|MA=
-P_ANONYMOUS page faults with userfaultfd.  The reason I focus on CoW is tha=
-t CoW and fork() behavior is basically the only user visible difference bet=
-ween MAP_PRIVATE and MAP_SHARED. And if you read random examples of how to =
-use mmap(), quite often MAP_PRIVATE is suggested as if it were the "normal"=
- usage (despite what happens on fork()).=0A=0A> =0A> So "ordinary" VMAs are=
- not supported because I don't think there is=0A> any way to create that co=
-ndition with them? If you just=0A> mmap(MAP_ANON|MAP_PRIVATE), those pages =
-will never be in the page=0A> cache, right? How would you go about doing so=
-? You don't have an fd,=0A> you can't fallocate it. If you specified MAP_PO=
-PULATE, the PTEs would=0A> also be installed, so you just wouldn't get user=
-faults at all. If you=0A> create the mapping, then fork, then write to it i=
-n the child, I think=0A> the pages just get CoWed, I don't think userfaults=
- are generated for=0A> that, because the PTE was already there (albeit, wit=
-h RO permissions).=0A> =0A> I guess maybe a way to make progress here is, c=
-an you list out what=0A> sequence of steps you believe should result in a U=
-FFD minor fault?=0A> Like (for example):=0A> =0A> fd =3D memfd_create()=0A>=
- fallocate(fd, 0, 0, size)=0A> mmap(fd, MAP_PRIVATE)=0A> /* register mappin=
-g for UFFD minor faults */=0A> /* read or write to mapping */=0A> =0A> Now =
-we get a minor fault.=0A> =0A> =0A> =0A>>=0A>> >=0A>> > You are right that =
-userfaultfd's use of "minor fault" is (unfortunately)=0A>> > slightly diffe=
-rent from the meaning in other contexts. I think the more=0A>> > normal mea=
-ning is, faults which do not incur I/O (i.e., swap faults and=0A>> > file f=
-aults [i.e., faults on non-swap-backed pages] are major, other faults=0A>> =
-> are minor).=0A>> >=0A>> > For userfaultfd, a minor fault is a fault where=
- the page already exists in=0A>> > the page cache, but the page table entry=
- wasn't setup. I don't think that=0A>> > scenario can ever happen for anony=
-mous, private mappings, so it doesn't=0A>> > really make sense to be able t=
-o register such mappings in this mode. If you=0A>> > create a mapping with =
-mmap(MAP_ANON|MAP_PRIVATE) and then access it (read=0A>> > or write), that =
-fault requires allocation of a new page, so userfaultfd=0A>> > does not con=
-sider that a "minor fault". My recollection though is if you=0A>> > make a =
-file on tmpfs or hugetlbfs, fallocate() it or whatever, and you=0A>> > MAP_=
-PRIVATE that file, *that* registration will work.=0A>> >=0A>> >=0A>> >>=0A>=
-> >> It seems odd that anonymous page faults and COW would not be handled,=
-=0A>> >> given that context.=0A>> >>=0A>> >> Anyway, that's unclear in any =
-of the documentation. This just adds to my=0A>> >> last response where I ex=
-plain my use case.=0A>> >>=0A>> >>=0A>> >>=0A>> >=0A>>=0A>>=0A> =0A
+On Fri, Sep 19, 2025 at 8:01=E2=80=AFAM Suren Baghdasaryan <surenb@google.c=
+om> wrote:
+>
+> On Thu, Sep 18, 2025 at 6:39=E2=80=AFPM Alexei Starovoitov
+> <alexei.starovoitov@gmail.com> wrote:
+> >
+> > On Thu, Sep 18, 2025 at 7:49=E2=80=AFAM Suren Baghdasaryan <surenb@goog=
+le.com> wrote:
+> > >
+> > > On Thu, Sep 18, 2025 at 12:06=E2=80=AFAM Vlastimil Babka <vbabka@suse=
+.cz> wrote:
+> > > >
+> > > > On 9/17/25 20:38, Alexei Starovoitov wrote:
+> > > > > On Wed, Sep 17, 2025 at 2:18=E2=80=AFAM Vlastimil Babka <vbabka@s=
+use.cz> wrote:
+> > > > >>
+> > > > >> Also I was curious to find out which path is triggered so I've p=
+ut a
+> > > > >> dump_stack() before the kmalloc_nolock call:
+> > > > >>
+> > > > >> [    0.731812][    T0] Call Trace:
+> > > > >> [    0.732406][    T0]  __dump_stack+0x18/0x30
+> > > > >> [    0.733200][    T0]  dump_stack_lvl+0x32/0x90
+> > > > >> [    0.734037][    T0]  dump_stack+0xd/0x20
+> > > > >> [    0.734780][    T0]  alloc_slab_obj_exts+0x181/0x1f0
+> > > > >> [    0.735862][    T0]  __alloc_tagging_slab_alloc_hook+0xd1/0x3=
+30
+> > > > >> [    0.736988][    T0]  ? __slab_alloc+0x4e/0x70
+> > > > >> [    0.737858][    T0]  ? __set_page_owner+0x167/0x280
+> > > > >> [    0.738774][    T0]  __kmalloc_cache_noprof+0x379/0x460
+> > > > >> [    0.739756][    T0]  ? depot_fetch_stack+0x164/0x180
+> > > > >> [    0.740687][    T0]  ? __set_page_owner+0x167/0x280
+> > > > >> [    0.741604][    T0]  __set_page_owner+0x167/0x280
+> > > > >> [    0.742503][    T0]  post_alloc_hook+0x17a/0x200
+> > > > >> [    0.743404][    T0]  get_page_from_freelist+0x13b3/0x16b0
+> > > > >> [    0.744427][    T0]  ? kvm_sched_clock_read+0xd/0x20
+> > > > >> [    0.745358][    T0]  ? kvm_sched_clock_read+0xd/0x20
+> > > > >> [    0.746290][    T0]  ? __next_zones_zonelist+0x26/0x60
+> > > > >> [    0.747265][    T0]  __alloc_frozen_pages_noprof+0x143/0x1080
+> > > > >> [    0.748358][    T0]  ? lock_acquire+0x8b/0x180
+> > > > >> [    0.749209][    T0]  ? pcpu_alloc_noprof+0x181/0x800
+> > > > >> [    0.750198][    T0]  ? sched_clock_noinstr+0x8/0x10
+> > > > >> [    0.751119][    T0]  ? local_clock_noinstr+0x137/0x140
+> > > > >> [    0.752089][    T0]  ? kvm_sched_clock_read+0xd/0x20
+> > > > >> [    0.753023][    T0]  alloc_slab_page+0xda/0x150
+> > > > >> [    0.753879][    T0]  new_slab+0xe1/0x500
+> > > > >> [    0.754615][    T0]  ? kvm_sched_clock_read+0xd/0x20
+> > > > >> [    0.755577][    T0]  ___slab_alloc+0xd79/0x1680
+> > > > >> [    0.756469][    T0]  ? pcpu_alloc_noprof+0x538/0x800
+> > > > >> [    0.757408][    T0]  ? __mutex_unlock_slowpath+0x195/0x3e0
+> > > > >> [    0.758446][    T0]  __slab_alloc+0x4e/0x70
+> > > > >> [    0.759237][    T0]  ? mm_alloc+0x38/0x80
+> > > > >> [    0.759993][    T0]  kmem_cache_alloc_noprof+0x1db/0x470
+> > > > >> [    0.760993][    T0]  ? mm_alloc+0x38/0x80
+> > > > >> [    0.761745][    T0]  ? mm_alloc+0x38/0x80
+> > > > >> [    0.762506][    T0]  mm_alloc+0x38/0x80
+> > > > >> [    0.763260][    T0]  poking_init+0xe/0x80
+> > > > >> [    0.764032][    T0]  start_kernel+0x16b/0x470
+> > > > >> [    0.764858][    T0]  i386_start_kernel+0xce/0xf0
+> > > > >> [    0.765723][    T0]  startup_32_smp+0x151/0x160
+> > > > >>
+> > > > >> And the reason is we still have restricted gfp_allowed_mask at t=
+his point:
+> > > > >> /* The GFP flags allowed during early boot */
+> > > > >> #define GFP_BOOT_MASK (__GFP_BITS_MASK & ~(__GFP_RECLAIM|__GFP_I=
+O|__GFP_FS))
+> > > > >>
+> > > > >> It's only lifted to a full allowed mask later in the boot.
+> > > > >
+> > > > > Ohh. That's interesting.
+> > > > >
+> > > > >> That means due to "kmalloc_nolock() is not supported on architec=
+tures that
+> > > > >> don't implement cmpxchg16b" such architectures will no longer ge=
+t objexts
+> > > > >> allocated in early boot. I guess that's not a big deal.
+> > > > >>
+> > > > >> Also any later allocation having its flags screwed for some reas=
+on to not
+> > > > >> have __GFP_RECLAIM will also lose its objexts. Hope that's also =
+acceptable.
+> > > > >> I don't know if we can distinguish a real kmalloc_nolock() scope=
+ in
+> > > > >> alloc_slab_obj_exts() without inventing new gfp flags or passing=
+ an extra
+> > > > >> argument through several layers of functions.
+> > > > >
+> > > > > I think it's ok-ish.
+> > > > > Can we add a check to alloc_slab_obj_exts() that sets allow_spin=
+=3Dtrue
+> > > > > if we're in the boot phase? Like:
+> > > > > if (gfp_allowed_mask !=3D __GFP_BITS_MASK)
+> > > > >    allow_spin =3D true;
+> > > > > or some cleaner way to detect boot time by checking slab_state ?
+> > > > > bpf is not active during the boot and nothing should be
+> > > > > calling kmalloc_nolock.
+> > > >
+> > > > Checking the gfp_allowed_mask should work. Slab state is already UP=
+ so won't
+> > > > help, and this is not really about slab state anyway.
+> > > > But whether worth it... Suren what do you think?
+> > >
+> > > Vlastimil's fix is correct. We definitely need __GFP_NO_OBJ_EXT when
+> > > allocating an obj_exts vector, otherwise it will try to recursively
+> > > allocate an obj_exts vector for obj_exts allocation.
+> > >
+> > > For the additional __GFP_BITS_MASK check, that sounds good to me as
+> > > long as we add a comment on why that is there. Or maybe such a check
+> > > deserves to be placed in a separate function similar to
+> > > gfpflags_allow_{spinning | blocking}?
+> >
+> > I would not. I think adding 'boot or not' logic to these two
+> > will muddy the waters and will make the whole slab/page_alloc/memcg
+> > logic and dependencies between them much harder to follow.
+> > I'd either add a comment to alloc_slab_obj_exts() explaining
+> > what may happen or add 'boot or not' check only there.
+> > imo this is a niche, rare and special.
+>
+> Ok, comment it is then.
+> Will you be sending a new version or Vlastimil will be including that
+> in his fixup?
 
+Whichever way. I can, but so far Vlastimil phrasing of comments
+were much better than mine :) So I think he can fold what he prefers.
 
