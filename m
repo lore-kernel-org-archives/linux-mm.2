@@ -4,87 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3DA70CA1013
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 02:12:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F10ECAC597
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 02:37:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 657CB8E0053; Thu, 18 Sep 2025 22:12:34 -0400 (EDT)
+	id 814F38E00C3; Thu, 18 Sep 2025 22:37:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 62EEA8E0008; Thu, 18 Sep 2025 22:12:34 -0400 (EDT)
+	id 7C5358E0008; Thu, 18 Sep 2025 22:37:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 56BDC8E0053; Thu, 18 Sep 2025 22:12:34 -0400 (EDT)
+	id 6B4048E00C3; Thu, 18 Sep 2025 22:37:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 44B828E0008
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 22:12:34 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id AA51B160546
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 02:12:33 +0000 (UTC)
-X-FDA: 83904375786.20.B5762C5
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
-	by imf19.hostedemail.com (Postfix) with ESMTP id A3F2A1A0002
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 02:12:29 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 55FDD8E0008
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 22:37:40 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1D065160555
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 02:37:40 +0000 (UTC)
+X-FDA: 83904439080.13.B69028E
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 4803B1A0007
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 02:37:37 +0000 (UTC)
 Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=lQFeRzwm;
-	spf=pass (imf19.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	dkim=pass header.d=intel.com header.s=Intel header.b=Pc16PK7N;
+	spf=pass (imf19.hostedemail.com: domain of lkp@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758247951;
+	s=arc-20220608; t=1758249458;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m6BSTlEv4BxYzmuMdizgJCn5FFRfQjdUu4Ddm03+goQ=;
-	b=OLkj85uxmC+pRhamuvbNzmLuoL73BXP1HE666OhmvxRHBET8DPtBpWmRfQrWF50YD7ZTkZ
-	XhwcgOW7CjmF1FvwldWVxDiVtV4TqMH2uLO1FozZU0Jj7yZ7IG0SLU+QvBIDeIjvoEUg43
-	lTcuQZ3uT29i2zfx4udcSJPccYB2mD8=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=4OmscKP7caG1hctrOxPpLqadzGXFXMsf9gd/ZcKG/0Y=;
+	b=TXickoF11ZnjFxmXYTQtsm+ef556hc3o1CbtbZ2dlqd4XjeALUeEwA2AkhCbOmVXzbupx4
+	0oVY33rf94NgQ/G67XwPxc7Mn4gVQfjasXZIlnpo7TxoPRgTLqD5Ak24g66vXHcx0Bk0NF
+	uzMmSXMSI8Ba0mglcpAhWxdsQnUGUGI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758249458; a=rsa-sha256;
+	cv=none;
+	b=7KTb/wxZ043hU0FeOtY8sTS3Ree/oEp1gU9Bgry/W0+FKMjIE1EVHXdHcq5dQ3BAmVSuu5
+	CGWVRjzrYWHBowtToB8O7Kfp2+LCPSRHTPTr1zQ9FkeNEr7aRmW5U0IM6cyoyei/VEf4YC
+	wZUyV467+Hh6R2dMwuROfRy7s/ER7ZA=
 ARC-Authentication-Results: i=1;
 	imf19.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=lQFeRzwm;
-	spf=pass (imf19.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758247951; a=rsa-sha256;
-	cv=none;
-	b=5VAqMZeA+4KOw8IzjxTSfsEUpvSQnoz/2ERdKldNuG3MhzZ4vvgWgOh39zHj4pG6P1pblE
-	6gjWABQZa0CXT9/GvKaN3lrDtJ2KxzbSYNDAyH+jzjEASLYU9pJ5/dsCHb7scG3qbyu5QS
-	3uZttmSYE7H8Twgyclqd58iBEiyZtaw=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1758247934; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=m6BSTlEv4BxYzmuMdizgJCn5FFRfQjdUu4Ddm03+goQ=;
-	b=lQFeRzwmQ8ZymA3Oz1BIxYmSAfGQQLbN4I6e09nvLAz/o6fAgBR9qHkh1icKLGMcDHtGtHm98GKEzBAu6xtY2hMJNuBi6VPMEfiRXzFHd3cOpcPCPewM5mwX/CAHSbrSdimoNWIBdmQdkpvIzmszq4/roHTq0eAPtv4DjAyJ8k0=
-Received: from 30.74.144.118(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WoHs.rR_1758247933 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 19 Sep 2025 10:12:14 +0800
-Message-ID: <787dc1a4-d0b7-4559-8160-55de987beac3@linux.alibaba.com>
-Date: Fri, 19 Sep 2025 10:12:13 +0800
+	dkim=pass header.d=intel.com header.s=Intel header.b=Pc16PK7N;
+	spf=pass (imf19.hostedemail.com: domain of lkp@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1758249457; x=1789785457;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=h5TvndhgvzWQ0fKI5pe8nKg8uL509Wn5hzYwPG8DYIQ=;
+  b=Pc16PK7NiVlYnR2owpTo8yUbWmBRYcfFY6e4o2dJguyAx2z16imyPNDZ
+   4x+2r/zwbvLtESzvJLC/M8MsKW7pk/GT5LuTMRmWj/aHQWbchURzdQo6y
+   FXlfMygygoOuWloO9J7xAKZVjO7V68BK0HRYl8fsVfAg9xQg4PiKUQyyC
+   6yBOcH1AXMFethgCUXaIElcxMuVTUBA7qGR0ctuGG7sQjGCPcnZWQA+ix
+   3ApS+/EaFpfTgGEE7kcttinXFGUMvEwNWM7Bq7sV6+HetCdyvQYCTGh7d
+   9rlMts1YDKcFyMAEqyWz5aKcJKo0ONLSEB0FokXdbxHjytflFCPKCtGnv
+   Q==;
+X-CSE-ConnectionGUID: 1Opi4gL/SdG0BApJ7V5P9w==
+X-CSE-MsgGUID: kXmdi1/1Rb66sDAi78I03Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11557"; a="78197323"
+X-IronPort-AV: E=Sophos;i="6.18,276,1751266800"; 
+   d="scan'208";a="78197323"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2025 19:37:36 -0700
+X-CSE-ConnectionGUID: IZLqUNwjR7it8w3kD8lxdg==
+X-CSE-MsgGUID: JF9OfBR1RL6vnkxS2ZwomQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,276,1751266800"; 
+   d="scan'208";a="176522880"
+Received: from lkp-server01.sh.intel.com (HELO 84a20bd60769) ([10.239.97.150])
+  by fmviesa010.fm.intel.com with ESMTP; 18 Sep 2025 19:37:34 -0700
+Received: from kbuild by 84a20bd60769 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uzR07-0003vP-2G;
+	Fri, 19 Sep 2025 02:37:31 +0000
+Date: Fri, 19 Sep 2025 10:37:27 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>
+Subject: [akpm-mm:mm-everything 254/254] kernel/kexec_handover.c:970:50:
+ error: passing argument 1 of 'kho_restore_page' makes integer from pointer
+ without a cast
+Message-ID: <202509191034.SM82Oaij-lkp@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] mm: vmscan: remove folio_test_private() check in
- pageout()
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: David Hildenbrand <david@redhat.com>, akpm@linux-foundation.org,
- hannes@cmpxchg.org, mhocko@kernel.org, zhengqi.arch@bytedance.com,
- lorenzo.stoakes@oracle.com, hughd@google.com, willy@infradead.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <cover.1758166683.git.baolin.wang@linux.alibaba.com>
- <9ef0e560dc83650bc538eb5dcd1594e112c1369f.1758166683.git.baolin.wang@linux.alibaba.com>
- <17d1b293-e393-4989-a357-7eea74b3c805@redhat.com>
- <4e938fa1-c6ea-43fb-abbd-de514842a005@linux.alibaba.com>
- <tombfifwrhx2n4jnj2pgcdcpj42mdv7yizkpxrppnqrtsxd5fw@epnrjqgmmy6z>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <tombfifwrhx2n4jnj2pgcdcpj42mdv7yizkpxrppnqrtsxd5fw@epnrjqgmmy6z>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A3F2A1A0002
-X-Rspamd-Server: rspam05
-X-Stat-Signature: umr53zyrf5ef8cp9mjocf8f1jwf4c1hi
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Stat-Signature: w6dzmrkpt37kuqzkwu1r8m86mdfbjxtc
 X-Rspam-User: 
-X-HE-Tag: 1758247949-229044
-X-HE-Meta: U2FsdGVkX19pycLIn8VDjsNuEapGHAJVe5zGUKqeMCH03GM4KPLNJ4JoswwUc0MgoluLAZwNOKoKPob8luGJyCuvn9SsZHhGUdtY/YjqshHCgoDn/NhC/uYfEZAVHl+l1XIH95FyU0vitDhit6B5DkYTkBw3RnDt2fP9GBa2OMDR5dLPCGmegKdCmu/xLax1BN/du3Q55oDN67E85Lt87eH9jIZm4O9IDQ6MzLWIwi5v3dR3TEIbxJyLGUI6myZ+buS4TGKjtH4ci7Xc2Hs4eHNgdVkMGbwfflL30SFhD1KZLwxc/grSzF/3iyOrPZkQZDM0pCgtaa76I+WdxuW6maIch6oJQbtCexJ5BT0W9RtCrZF9T46m85YEKIi2BYoqj4/JTBnbFQQQWdkWOuG/o67GiJEGEV4mRbYTN4VH1VZ5kn2dV7eQ+5S4JhvHx5lnoMS/lHm+R8fP/xWAwTSm1dSqz7G2kWelU2D9dgujbke6MigT9XJ4LExtctziJCyj+ObyMU8fNgbxK5hmLFT+a5gVFbzJuUgGebHuze/lzZMvAa8oMwGzBfouK3I0YAd2gAehBnWw54gJK7rszcT0c8nwIym49KjVWnhzOF21SBcL8jcNjz08ibjpZM6mognhCnqbumwqDJnNiaxqKOyFgN2gL716V+XmwQ2g8NmRWqCl5M47cteHXR0eR6HM/TyVoh3qKx0l4qfba9qVLj56Wgwi7dGOaLciiEJ0agBXm9mpL8Czk4XGnhBNldpMr505qVL7lqneEvdu2pPb6eUroA4QSwp/qieHj1gFfr5WSUTz2NW0B6Zpo8LWLYTtrqLFA7Ug/OZMC6CZCYXDt6Uvf8FIt4mLa5Y9WpJpkKCefgd+ezfIZmkZUw3R8wQT2LNYgFxqSp3e7e1ZE/8KrymCPnsCbV2rJv4qGNIbtNWoyr2xbt2Hr/LxXsGFNKH+ZNI7EW1qldRDXNFk57u0HQ9
- KOLrsSkc
- znwbKnELiZXhMMfg6LBySWxSVRkZCl0BWeBTCB5SbG6stcmN5oGZwDkpBHCcHBenF2FjxXHLmNpYVONfpT+oQ71h6LKrUSp9YfKCSWFJ+JV4Te4miNwuyjLQQOj9CHGq2ywx0+wRDP9K+U/EBFoCDbkU3FBzT6XjgVimKbxvc6IrEctrLSPlQ/4wSn/ik0BVcf+PGl+ftyHKapczbkts2uE+/qYcJJD8txajJJbp9S691sQ+zcEFnA81Jj8jaogW0lQdSM67BuuPfGXNnEk+p0FOu2AHfiufWjtN68pnSjNnYZvryAlqruDKQYEunxEtZgFNHpanHB/DUG5HNmBRNubxLcXPIjUGeb+4s6FCdzYEkrxfHxWJMBZQZgbOhCzDjE+aR8lygg8j4M8IwrX3zrk69Ab19YhQKD4DD
+X-Rspamd-Queue-Id: 4803B1A0007
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1758249457-243145
+X-HE-Meta: U2FsdGVkX19yT/Pb2RADpBzzdxwIWMR2ROvXlgQFAtt5limIfH0wRSGt2Vtf9Rm48vKmIpGY2l9Ww8zhHcEzap/uGD2PkyGIBRWILnjF5j4UCTq6GKFPo0cVSBfxXgOJyUxgVlpvkQ7DwS1ITgg1ahsJen5uwrgdaep3L2C4UY14vhWYyrTosVGmq41rHoyKDCboGBZ7+PzpOQw/EfcPUJleEbU+h24iUof7V+Xeo5G02OMusuwWSuoPLCXJBYSgTuscOTPrvXXqeI/sQvSO46ZHCRkqe39LULGNr8kcNGvqItEx6Vj+43FMalav1Qse9BC+UNw8P3SmK/gvMVnQcdQZDxLtSDsyUv2LzskrgL9pyo2lAKxLQOMBfac9POh1Kwlf+YBKN9dN4UVgXMKIQEcCZZGB3+6A/mrNtISZSISZwmx4CWCKsAikmlSj81qzXHViD90R5F8VdVDCU4Lm1cxo+6yBYOmoER+f00ftaZfOb+/1KnKiluY2ZF+g2+dQ170ld4y9upgxMRAQAVu6BbUWN+1bVDKlHHVDAI7tVwzfNUYRnrxMeqo709XSCQ8wVztjLCUToiQZARMM4dge9ld5wsdPa8SfByVTcHahJBLnNMlB6RGqGwQ7S+neP+sj3rJz/kZw3RNs0hKWiIVeEiMYKnKXszSbHuhiTuqAWYLh+YQCof5DybiRXB/Zk/QMRaX+mp3y/ZuFE4jupp4QYHIiJpNSTV7j6L3BY7PehiGWtm0oQ2RJLPcEoveUGJySz1A8Fw1GHuQbNg0FzQzAzbcUDtccffkk16pwEu4aZ0FguFEna1UqhXAHIEokoubfrK/0L6gkrxOtqYdhjvmAp5xsJzs6fzQypUaEc7HhJ5uXAgzqSx8PDVbSZnckBnr3lxT+KpYGjBtHGWRTlG3PdgxASnggi7whaHgHp+1SvAdolBzpKJQ5fuOi3KoJz5Q4fV8iIgCTPBqPAjpKauZ
+ Y+LtnOsQ
+ /3WpJMUIhR189P96Ub4vb5PAyrVF5vnqaaSGRXsIIkoGUrSp55DfwPT1eUqzrW1td9ma/pP4bihDAjPO/b6mL2fQiNAW/KALGSmHOeHlGhCelG+4/YD0WoGBOUclNaAbWaJl2pt9nhiWi/l3jjvmvJUMS3CrKaidYTYYzeZzrkkSWYvshRX65x9nlvFipsWF8Mc3eYwomavENRZ8sql08u3BMDhC0s66qFlZXvNxUc+Z0V6PJkkNkcsP25YVzejBTI0Ri+bqeeDR17DsZcoCAmfHXelh9RsmujY/IiZ1Aa69EZyERruTaxmPXlHxKt7/zCi2pvQ48oAlyjXRki9HCYtqDxkQ78/ac7Yabmo0zRPlWHU636rmWoUPlscWPsJBFC/EqpHnLfrgJj9WPcEIwNPFqH9ClAf6vO1f4K+OesZQLTFbUnbeM1EoCdw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,96 +105,145 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+head:   46735c0743fed990d0ed8722a131ef54006c45a3
+commit: 5369505b204b3fc65f839f7558640b6ecd675461 [254/254] foo
+config: x86_64-randconfig-071-20250919 (https://download.01.org/0day-ci/archive/20250919/202509191034.SM82Oaij-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250919/202509191034.SM82Oaij-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202509191034.SM82Oaij-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   kernel/kexec_handover.c: In function 'kho_restore_vmalloc':
+>> kernel/kexec_handover.c:970:50: error: passing argument 1 of 'kho_restore_page' makes integer from pointer without a cast [-Wint-conversion]
+     970 |                                 kho_restore_page(page, 0);
+         |                                                  ^~~~
+         |                                                  |
+         |                                                  struct page *
+   kernel/kexec_handover.c:229:50: note: expected 'phys_addr_t' {aka 'long long unsigned int'} but argument is of type 'struct page *'
+     229 | static struct page *kho_restore_page(phys_addr_t phys)
+         |                                      ~~~~~~~~~~~~^~~~
+>> kernel/kexec_handover.c:970:33: error: too many arguments to function 'kho_restore_page'
+     970 |                                 kho_restore_page(page, 0);
+         |                                 ^~~~~~~~~~~~~~~~
+   kernel/kexec_handover.c:229:21: note: declared here
+     229 | static struct page *kho_restore_page(phys_addr_t phys)
+         |                     ^~~~~~~~~~~~~~~~
+   kernel/kexec_handover.c:978:34: error: passing argument 1 of 'kho_restore_page' makes integer from pointer without a cast [-Wint-conversion]
+     978 |                 kho_restore_page(page, 0);
+         |                                  ^~~~
+         |                                  |
+         |                                  struct page *
+   kernel/kexec_handover.c:229:50: note: expected 'phys_addr_t' {aka 'long long unsigned int'} but argument is of type 'struct page *'
+     229 | static struct page *kho_restore_page(phys_addr_t phys)
+         |                                      ~~~~~~~~~~~~^~~~
+   kernel/kexec_handover.c:978:17: error: too many arguments to function 'kho_restore_page'
+     978 |                 kho_restore_page(page, 0);
+         |                 ^~~~~~~~~~~~~~~~
+   kernel/kexec_handover.c:229:21: note: declared here
+     229 | static struct page *kho_restore_page(phys_addr_t phys)
+         |                     ^~~~~~~~~~~~~~~~
 
 
-On 2025/9/19 09:06, Shakeel Butt wrote:
-> On Thu, Sep 18, 2025 at 05:36:17PM +0800, Baolin Wang wrote:
->>
->>
->> On 2025/9/18 14:00, David Hildenbrand wrote:
->>> On 18.09.25 05:46, Baolin Wang wrote:
->>>> The folio_test_private() check in pageout() was introduced by commit
->>>> ce91b575332b ("orphaned pagecache memleak fix") in 2005 (checked from
->>>> a history tree[1]). As the commit message mentioned, it was to address
->>>> the issue where reiserfs pagecache may be truncated while still pinned.
->>>> To further explain, the truncation removes the page->mapping, but the
->>>> page is still listed in the VM queues because it still has buffers.
->>>>
->>>> In 2008, commit a2b345642f530 ("Fix dirty page accounting leak with ext3
->>>> data=journal") seems to be dealing with a similar issue, where the page
->>>> becomes dirty after truncation, and it provides a very useful call stack:
->>>> truncate_complete_page()
->>>>         cancel_dirty_page() // PG_dirty cleared, decr. dirty pages
->>>>         do_invalidatepage()
->>>>           ext3_invalidatepage()
->>>>             journal_invalidatepage()
->>>>               journal_unmap_buffer()
->>>>                 __dispose_buffer()
->>>>                   __journal_unfile_buffer()
->>>>                     __journal_temp_unlink_buffer()
->>>>                       mark_buffer_dirty(); // PG_dirty set, incr.
->>>> dirty pages
->>>>
->>>> In this commit a2b345642f530, we forcefully clear the page's dirty flag
->>>> during truncation (in truncate_complete_page()).
->>>>
->>>> Now it seems this was just a peculiar usage specific to reiserfs. Maybe
->>>> reiserfs had some extra refcount on these pages, which caused them
->>>> to pass
->>>> the is_page_cache_freeable() check. With the fix provided by commit
->>>> a2b345642f530
->>>> and reiserfs being removed in 2024 by commit fb6f20ecb121 ("reiserfs: The
->>>> last commit"), such a case is unlikely to occur again. So let's
->>>> remove the
->>>> redundant folio_test_private() checks and related buffer_head
->>>> release logic,
->>>> and just leave a warning here to catch such a bug.
->>>>
->>>> [1] https://git.kernel.org/pub/scm/linux/kernel/git/tglx/history.git
->>>> Acked-by: David Hildenbrand <david@redhat.com>
->>>> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
->>>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->>>> ---
->>>>    mm/vmscan.c | 12 +++---------
->>>>    1 file changed, 3 insertions(+), 9 deletions(-)
->>>>
->>>> diff --git a/mm/vmscan.c b/mm/vmscan.c
->>>> index f1fc36729ddd..930add6d90ab 100644
->>>> --- a/mm/vmscan.c
->>>> +++ b/mm/vmscan.c
->>>> @@ -701,16 +701,10 @@ static pageout_t pageout(struct folio *folio,
->>>> struct address_space *mapping,
->>>>            return PAGE_KEEP;
->>>>        if (!mapping) {
->>>>            /*
->>>> -         * Some data journaling orphaned folios can have
->>>> -         * folio->mapping == NULL while being dirty with clean buffers.
->>>> +         * Is it still possible to have a dirty folio with
->>>> +         * a NULL mapping? I think not.
->>>>             */
->>>
->>> I would rephrase slightly (removing the "I think not"):
->>>
->>> /*
->>>    * We should no longer have dirty folios with clean buffers and a NULL
->>>    * mapping. However, let's be careful for now.
->>>    */
->>
->> LGTM.
->>
->> Andrew, could you help squash these comments into this patch? Thanks.
->>
->>>> -        if (folio_test_private(folio)) {
->>>> -            if (try_to_free_buffers(folio)) {
->>>> -                folio_clear_dirty(folio);
->>>> -                pr_info("%s: orphaned folio\n", __func__);
->>>> -                return PAGE_CLEAN;
->>>> -            }
->>>> -        }
->>>> +        VM_WARN_ON_FOLIO(true, folio);
-> 
-> Unexpected but better to use VM_WARN_ON_ONCE_FOLIO here.
+vim +/kho_restore_page +970 kernel/kexec_handover.c
 
-Um, I don't think it makes much difference, because we should no longer 
-hit this.
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   926) 
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   927) /**
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   928)  * kho_restore_vmalloc - recreates and populates an area in vmalloc address
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   929)  * space from the preserved memory.
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   930)  * @preservation: preservation metadata.
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   931)  *
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   932)  * Recreates an area in vmalloc address space and populates it with memory that
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   933)  * was preserved using kho_preserve_vmalloc().
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   934)  *
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   935)  * Return: pointer to the area in the vmalloc address space, NULL on failure.
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   936)  */
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   937) void *kho_restore_vmalloc(const struct kho_vmalloc *preservation)
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   938) {
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   939) 	struct kho_vmalloc_chunk *chunk = KHOSER_LOAD_PTR(preservation->first);
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   940) 	unsigned int align, order, shift, vm_flags;
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   941) 	unsigned int idx = 0, nr;
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   942) 	unsigned long addr, size;
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   943) 	struct vm_struct *area;
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   944) 	struct page **pages;
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   945) 	int err;
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   946) 
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   947) 	vm_flags = kho_flags_to_vmalloc(preservation->flags);
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   948) 	if (vm_flags & ~KHO_VMALLOC_SUPPORTED_FLAGS)
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   949) 		return NULL;
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   950) 
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   951) 	nr = preservation->total_pages;
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   952) 	pages = kvmalloc_array(nr, sizeof(*pages), GFP_KERNEL);
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   953) 	if (!pages)
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   954) 		return NULL;
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   955) 	order = preservation->order;
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   956) 	shift = PAGE_SHIFT + order;
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   957) 	align = 1 << shift;
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   958) 
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   959) 	while (chunk) {
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   960) 		struct page *page;
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   961) 
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   962) 		for (int i = 0; chunk->phys[i]; i++) {
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   963) 			phys_addr_t phys = chunk->phys[i];
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   964) 
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   965) 			if (idx + (1 << order) > nr)
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   966) 				goto err_free_pages_array;
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   967) 
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   968) 			for (int j = 0; j < (1 << order); j++) {
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   969) 				page = phys_to_page(phys);
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17  @970) 				kho_restore_page(page, 0);
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   971) 				pages[idx++] = page;
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   972) 				phys += PAGE_SIZE;
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   973) 			}
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   974) 		}
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   975) 
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   976) 		page = virt_to_page(chunk);
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   977) 		chunk = KHOSER_LOAD_PTR(chunk->hdr.next);
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   978) 		kho_restore_page(page, 0);
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   979) 		__free_page(page);
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   980) 	}
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   981) 
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   982) 	if (idx != nr)
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   983) 		goto err_free_pages_array;
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   984) 
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   985) 	area = __get_vm_area_node(nr * PAGE_SIZE, align, shift, vm_flags,
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   986) 				  VMALLOC_START, VMALLOC_END, NUMA_NO_NODE,
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   987) 				  GFP_KERNEL, __builtin_return_address(0));
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   988) 	if (!area)
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   989) 		goto err_free_pages_array;
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   990) 
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   991) 	addr = (unsigned long)area->addr;
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   992) 	size = get_vm_area_size(area);
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   993) 	err = vmap_pages_range(addr, addr + size, PAGE_KERNEL, pages, shift);
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   994) 	if (err)
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   995) 		goto err_free_vm_area;
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   996) 
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   997) 	area->pages = pages;
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   998) 	area->nr_pages = nr;
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17   999) 
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17  1000) 	return area->addr;
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17  1001) 
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17  1002) err_free_vm_area:
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17  1003) 	free_vm_area(area);
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17  1004) err_free_pages_array:
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17  1005) 	kvfree(pages);
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17  1006) 	return NULL;
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17  1007) }
+1e0bdd5d414970 Mike Rapoport (Microsoft  2025-09-17  1008) EXPORT_SYMBOL_GPL(kho_restore_vmalloc);
+fc33e4b44b2717 Mike Rapoport (Microsoft  2025-05-09  1009) 
+
+:::::: The code at line 970 was first introduced by commit
+:::::: 1e0bdd5d4149706f75f7f3bcc952bc963f352e2b kho: add support for preserving vmalloc allocations
+
+:::::: TO: Mike Rapoport (Microsoft) <rppt@kernel.org>
+:::::: CC: Andrew Morton <akpm@linux-foundation.org>
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
