@@ -4,113 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5092CCAC59A
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 16:08:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E159BCAC592
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 16:18:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8875F8E0005; Fri, 19 Sep 2025 12:08:28 -0400 (EDT)
+	id 2104C8E0005; Fri, 19 Sep 2025 12:18:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 85F1F8E0002; Fri, 19 Sep 2025 12:08:28 -0400 (EDT)
+	id 1C0468E0002; Fri, 19 Sep 2025 12:18:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 79BDB8E0005; Fri, 19 Sep 2025 12:08:28 -0400 (EDT)
+	id 088768E0005; Fri, 19 Sep 2025 12:18:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 665B88E0002
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 12:08:28 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 08A541DF24F
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 16:08:28 +0000 (UTC)
-X-FDA: 83906482296.29.9C3ED78
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 61794A0011
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 16:08:26 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gxcwNWOd;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of kbusch@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kbusch@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758298106; a=rsa-sha256;
-	cv=none;
-	b=Tj5YiPdnRZbKX/quET1ejqMErONR4HagQmGpUcF1GBKloXLFddO3XusacQX3U4h+W3h5AA
-	eYeeXwk0nio4VmeM1Dc5zMXVIM+/TA/bLliW+c39OftREe6fXMXkRIPu8gt2lTMUvIoJ4k
-	omQIUQb5ox8eWKSUcndguRNrCRxK7n4=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gxcwNWOd;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of kbusch@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kbusch@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E77BF8E0002
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 12:18:32 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 97DF558334
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 16:18:32 +0000 (UTC)
+X-FDA: 83906507664.15.5E4FAB7
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	by imf29.hostedemail.com (Postfix) with ESMTP id B5D67120006
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 16:18:30 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="N5iU/uMV";
+	spf=pass (imf29.hostedemail.com: domain of manish1588@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=manish1588@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758298106;
+	s=arc-20220608; t=1758298710;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=93+iChQy8k9w2vSLxjsMF2tpsbL6StUGENS3z0mFMo0=;
-	b=1+XcpLG3Eek8zjBserPTu5Fegngg44xbJxi04bxC5J9U6Qi2rUPJt5KzUqJ9MERTItZDA+
-	y75cpxmkY7xxi6RQkS1PExyPi1pDhT5TIJ43G1YhSMjk9dQRkDq7/7dk3DJzunkHdBQyCC
-	ttc5yOoBCsfUmu3vXSwIn+rhUDrM+SA=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 581BF60140;
-	Fri, 19 Sep 2025 16:08:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76C8EC4CEF0;
-	Fri, 19 Sep 2025 16:08:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758298105;
-	bh=KR7+2nE82F6C0RiPmuqmiCYxfBNwhzjUQ6Re6K7PmkQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gxcwNWOdwyYYCt/Mr4IoNw/QjfiG4fCy9ykIixLtIZgzxpvEaTh0ZrsRzbEkVlnG2
-	 m8b1wOyRgj64SHlplGanM4IqWdr6Ywznq35IYlrDTPSiuH1HbSJA9OSV6F3cLQ0fmv
-	 gIfqZUpL6QTaZY7lchfgfbbV/HzPQ9GlWuIYB09YAq8LPsugW8lRkDPp3pD3pmqfjH
-	 MMDTa/BarqpIPeeM6zxgfbm5MTp42dkz6/ahu8QcAFUE+eO/S+U7a/1bN3BopMvk86
-	 +JRB492i+MxOTtI0yVlp8MJ781GY30PjuvtN+/6jEMPcnyQy8X2xhocLeJS5gf/FQl
-	 TeUW9JwC+yaOg==
-Date: Fri, 19 Sep 2025 10:08:21 -0600
-From: Keith Busch <kbusch@kernel.org>
-To: Leon Romanovsky <leon@kernel.org>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
-	David Hildenbrand <david@redhat.com>, iommu@lists.linux.dev,
-	Jason Wang <jasowang@redhat.com>, Jens Axboe <axboe@kernel.dk>,
-	Joerg Roedel <joro@8bytes.org>, Jonathan Corbet <corbet@lwn.net>,
-	Juergen Gross <jgross@suse.com>, kasan-dev@googlegroups.com,
-	linux-block@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-nvme@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	linux-trace-kernel@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
-	xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v6 00/16] dma-mapping: migrate to physical address-based
- API
-Message-ID: <aM1_9cS_LGl4GFC5@kbusch-mbp>
-References: <CGME20250909132821eucas1p1051ce9e0270ddbf520e105c913fa8db6@eucas1p1.samsung.com>
- <cover.1757423202.git.leonro@nvidia.com>
- <0db9bce5-40df-4cf5-85ab-f032c67d5c71@samsung.com>
- <20250912090327.GU341237@unreal>
+	bh=AU9+sjlQnuFs0nPpSU+fnul/Or/YGJPFrybJE0rZA7Y=;
+	b=pM6SGDbeJGCcbnBM3rXBdxJwHt4cG0mCcOe30ZLqDUSB5RsOPCex6CGTWup68YGFcYSSWX
+	h073vYDUUN5T8mzPLi8nJDfvlztpRhAtSHcNFR2tg9lHgZ5lY+9lO3/SEaU15xoaldXEDv
+	bI4ZTYsTSE0gnQOWZ985K8HDWCJM3RE=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="N5iU/uMV";
+	spf=pass (imf29.hostedemail.com: domain of manish1588@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=manish1588@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758298710; a=rsa-sha256;
+	cv=none;
+	b=sho0oE2DN6CTw5Wn8yk7SMqGXWHp/vQt2a20uc7eRBELS18n1B/MNXXcPOa/Lyz63gXsVU
+	fHrkFz7S+qNoth3Lzo0jzFzF92kU+aNDxN8SXX2jYgh1U9vP/loAFlsdcf3kFwEeqdUww+
+	5LZ4EBFIDEw2BlnVOnQYNNU7mZENshQ=
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3f0ae439b56so615505f8f.3
+        for <linux-mm@kvack.org>; Fri, 19 Sep 2025 09:18:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758298709; x=1758903509; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=AU9+sjlQnuFs0nPpSU+fnul/Or/YGJPFrybJE0rZA7Y=;
+        b=N5iU/uMVKIh3PHGJBoiWjezI3ovbWRFxnrk8Zr1ghQudM1qZ0+LQX1qqH1Xsp8xkwO
+         LU/XnsrtMK6R7iS9gHSS4kRkp2WA2wlulrRJwUaSao1mQp/+xTWB0QfOk1Eb5qA8+4ad
+         AInniYdBfI62T/oEUHQQTicxqXoIefJhD3H2e+aCbB6R4MJKnFEz/ZgpEJfYeZMBQyD5
+         mJJojEPFUsXa/JoPdtqHxI/pAcZ+zOnH5oJextIJf9wZfbywsCgjJU9ba8l0p5T+bBYb
+         LO1Bb0fHrB/3WxZckDEf9x3f0czbC20L6MFWkJjb3hs15xCbL/32msDsNp0Qi/2NvfHf
+         u/4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758298709; x=1758903509;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=AU9+sjlQnuFs0nPpSU+fnul/Or/YGJPFrybJE0rZA7Y=;
+        b=EQjkpUYNeZwhoFA5e9lmfnc4glts91XPYxXts9mtgf6aVQ0HzFwszCC121mFEioUKi
+         LPE6MkuXYReKygnFzqdWI7kiYRY0RSX5LrLHutiYwUlbg4v1ldjo49aFCDokTOLhnnY9
+         xmmRvGNqlzhTOQmG2k53tQttm7IeLQIJxmeJ4ruA7j8hfZBnKgi1dc9H8BKrE0q4cePf
+         UWjtgT1n5Ni12oYPPqWDhW2zP5DPRaJ4KLkAJBiDCWwdYeQqRTng753Xm/Mi5saY4uR5
+         AQSakL68p60d7BLzk5v5N+hmu5LcJb93+4M3vmPRELsbWdqiwloI0yO2KRl6toE4H30G
+         qTLw==
+X-Forwarded-Encrypted: i=1; AJvYcCXqiLDWtsmB8F8NH3mSoSMOBrUy5IZfhvOc2PJ7hXmtj66VBZLOJfVEkOhhF3+VLfoIOwEF5dYfaw==@kvack.org
+X-Gm-Message-State: AOJu0Ywhb379LO+mrg6h21/PBpDo/0LZ0nSvIZnqH6LQBl6jgJms+7qG
+	rIcjDLFNE0+LQIVQYsU5FvZiGzCu1jbYC6u39Q8iVO8hOW5OEYUUwkiZIoepE2GZiQDs5g9Coui
+	q3xK8pSjCpHHAu4QZLsEJgnRWbc1Rg6o=
+X-Gm-Gg: ASbGncsC6aga7sDndhAjkT1Y7Yw/rKp+n/ZOybx5HpO0uHmbDa+ghzSXaTVZFOKADJM
+	I+9mrduu/qs4GEx00ylzCvzucff+uu1k7IY1HuTgxhl1hC+wBqthV1LXBnllcngaQ9bSibBFdkD
+	+JFSjPfFi0zEAWmuWVVUoAsCSofSN+rO9A1GC6ckT2vU1Y2jYp9TRSMpO1E5wwctm7j9WzW8NhE
+	gOJBPrQk9iT1NNM7rrEioZYeOQv3UrsljGCYTkXcQ==
+X-Google-Smtp-Source: AGHT+IEKwbGqYGVaN2f+8UKTxziV3Lv2awnR5IV0gS/s1CIQ3SFtvsIUW9uJYOV+/W3smsBILrrJ9eu1PbMNqwT225w=
+X-Received: by 2002:a05:6000:4014:b0:3e2:4a3e:d3cf with SMTP id
+ ffacd0b85a97d-3ee7bad10e6mr3754555f8f.5.1758298708936; Fri, 19 Sep 2025
+ 09:18:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250912090327.GU341237@unreal>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 61794A0011
-X-Stat-Signature: noncr1dujjjugtdsyfn3m9jw1uqonexe
+References: <20250918181403.93812-1-manish1588@gmail.com> <e8121724-a436-47d5-af3a-a16f81cd0649@suse.cz>
+In-Reply-To: <e8121724-a436-47d5-af3a-a16f81cd0649@suse.cz>
+From: Manish Kumar <manish1588@gmail.com>
+Date: Fri, 19 Sep 2025 21:48:17 +0530
+X-Gm-Features: AS18NWApCTMAbAQfo55xwI9TbNJwXXqKc2HE_4kqa77Sp5qNNhHJijxjLqrcaHs
+Message-ID: <CAAoxDjeUyKs2xN4oBRWnZBWvGLoi4v+nT7ioYVQtB9B2hRj5yw@mail.gmail.com>
+Subject: Re: [PATCH] mm/show_mem: update printk/pr_info messages and replace
+ legacy printk(KERN_CONT ...) with pr_cont()
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: akpm@linux-foundation.org, surenb@google.com, mhocko@suse.com, 
+	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: multipart/alternative; boundary="000000000000f48e7c063f29d10b"
+X-Rspamd-Queue-Id: B5D67120006
 X-Rspam-User: 
-X-HE-Tag: 1758298106-666242
-X-HE-Meta: U2FsdGVkX1+Gz+74U/ds0AypI9BQ/JB8AnNeHL/+fOCrVXGWABrDxrPGYtqWTwEFKp00mrXEdxjbRznZQeJp33JhZuCZSA4eULv6uppWPCP3Uu/kMN7DYmqx21eNemag4TV8gekuFeCwOT44a2XEaZVFLKeutz4qDjIEBpF/X9JQkuvzpNQUdi/mo5UfKHUwFKmT4Bc5d9wOErOKgImEZpqT68xYb7m+ELqU2DD6yv1i73l+2vwz2Zc9TZI+nUIxx9L0YhdFQNnG/zWqVV08EGvbq4pUFjQqdG2o5N9g86uL3D0CkC8+92mdHtJj4dZOFRQtAW9JLs5qutDg6sCQ+tHpfTo0MHxF7MngkzNlvCgF13C1DRgcxWVCRyjbYJ6HWIta/1KOBgM3JCAXkFVrq/rwoYBSHQHNa6pS1I0i15nMLWkFHiDxs75WchBaMYkQX6pZzUDvEmWQm6A1y6yr8rIAb9U3CSqEWQqfAZ0e7kt2gE3hbvoatDKLuNfeqUQePmveR/pqH0ohMGFLjbYIlwHPWrTtaQalF2pVIlYeotcUZkvo6yD6WpFP/ua2ZF2NmPI82lvQkbqKlG+hDPzGhhM9R/KVNek+vNUHNtr7Iz1F5QXjI7o6MsvcFb71fzMLLk8UWe2PZnr1Q94c+kGfvDCwlNqlzrK+EJJ22FIEM+875wepdKjNK9wUNeYYr9AOGdHHJlA6WMKB4AenspHihPAsSx0f3UeuPG9LpnFK79ykcP6QorxKXrR+UWbPtwqTd9t0WZz3FDGYfwyoZY3xVxcowdTXXRUCmTZzXdhN0IBtE2956UAU6jt6SGekGs41+JjD955jm5/G/qb2YGLtyCp3WaMY+ycqexhrbUzeaSTyV1/TGa6dnqUl4MePQRP4F3incm0e9eTeurrGjfRIb3ovLZbrzrMNbefLAoZR6bCjR5RMmNakCBEy5J+qEpbfq3j0DudWnqYdopXJs/B
- XpbA9Mkg
- PRSplJ1VTkV0APKBQnIVDI4FK+nOmyN1paZ5svQ1qa0S5S9MvSsDZ+eWNK6RrOm4AL+lxowtlYMe7OFOWz/qWhQoSyefvAf5xTuFkpMsYPi3OP3oQXuo0tUGfTfvYHl0J3n6We8i9EDi13xXkOwBPkMZGbT8yp7hvPtfvzCP8kP7gIa+yuHRXNZ+pNBPqM0qMpnDQP2D9UxGZrrJ9FSmr9rRIrvxHUc7CwvvceBIRbAuiwNF4AUNPtIwdWVQTw2DojjFtzIKbIYr0Rbv3HZQbEzjRWtEhIb1rn/K2v+g+KrKIaWZOM2z2AItOl+zWOIODbaFL
+X-Rspamd-Server: rspam07
+X-Stat-Signature: nxjdjtaynerft6nmwd1gk3enczof6ube
+X-HE-Tag: 1758298710-431173
+X-HE-Meta: U2FsdGVkX19LzM43z3Alf7g9psePLwr+b0B+CCo7r9+0vO0VnA2x/o/q8TE7dbxeS4vtfZY7MC9AIjWO0ORbEjg8VGoN22pe2RyKufi/fWuV9nrQhBbDsMOBXlMViiTJ2SOBiKVToY6kFw45oCzZ8Dvp5pyEtJNg9W8Pv8Zlfx8SJUZVpJl5r7UIE4gUjtU9w5uIS3bNNLuTaPp3YIKhmHnApq/MXLlE7WufAKbYNodAPNnY7hJ6KdBZdDer15zHfZ9kvo9vAgGc2BpXceY1B9XVmY0G02d4xeGC53G7Hm3FYG2XutFg+ifSum2CEvndMDzzR1XgXqFUcBWELRGBpNqeeG8IprWbBaQNRWQq5p+h49WjBygmiMdbPH8i04d32mbLDnSCjx4mDeNyD6nimOXmYF6flu63hK1WLpxRY/MsnEZa/AEGd5Xp0M0CP+qROuMoNMZt7TRN0ZV48E0758Cjb8NShyhNSmaEplzeTuslPiQIrjmOg7LR97L/52Q5IUV+UuFvAxUioQoNMbk9/TaRIq9iyX6XMgWMipJZHUjrX6qnMkeLzYdXoe3nKLGyW5OvZIz6kxKiQKp5Lg58+sbcDrFSy6bYOV6frEvV9+iwdAd9BWcyMQaOfn3Z7gaFj5ypUtKGfTAnS1mxADGf95yDORTOzokfmBg6cnlFEGI4JerGgbDXjwifE1cqfzF6YOgm9xAD7Jnne1LeVrJj4rB/N7x/C507ObeSvvenoP0dqdBkNIeo7mMdKrVl9pEvqpcqjXPjlce9OQqW7N+vA0aDaxaRrcEnPmyQ+oBNbRQInVZ9KmH113IdOG6jMomJkvTbR2xz8G5+GupqFaEQDimlZ+z1rbkjsl0p7iFqYaT44naEs9FKard8fIs6yvfDnFJjVa2tuOmltxwoG2Th28CBrpRxW+0oEwfGo6h5VTx61oQRKrBs8LBVD20QEpK8rZvahSge4BGBlQSRIIR
+ s6YlxakZ
+ FVZjrYSLsGtFi2nkEUqPi0x3R9747u31Q2Jai/vCajrKQsnQ+9G1NGLTpmq37WJZLFfeHdF8oL9QDNgnFVmvqHljcabIO9Yh7rb0zV+tO/46CGEBRL/Ii+kuYTAVk5rEy24KjivpnkaUiXRTATefRkYjJe6dj7hOhRMyXdliYFrKb53njmGYaFUqyyf+9ou2u25jm5EsvX7Rv4AUruLm8XP2ugQt+8v5s1N6W4kefDrqK/T65FD6TT1dXMFbQJzMtJeKd8QfTlUexecTDOlaS+S6MjKmjTFXLiEbY8osjwNKO55eoht8wAmlaHAB2w0vuDUN3BymYQmu39F0UtjCHKoxShUY9ipnR9aTi0iqglsjzvUkb/QLRZ+aE23MOZA7M/DSJcTCI2R75xhAwNeGAhVD80Z89lsyXym2DCiSsHRhnui5cgUPfkDvru470zen1VkMnC8EwZe1IDbWBpO6nVhQMsgDcHuY4C4Kgmcwl0HdzjiZI3naDGtKaTuRh0c6S9b4BnXToan4tnMxJGO6Yz2Ee4g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,69 +115,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 12, 2025 at 12:03:27PM +0300, Leon Romanovsky wrote:
-> On Fri, Sep 12, 2025 at 12:25:38AM +0200, Marek Szyprowski wrote:
-> > >
-> > > This series does the core code and modern flows. A followup series
-> > > will give the same treatment to the legacy dma_ops implementation.
-> > 
-> > Applied patches 1-13 into dma-mapping-for-next branch. Let's check if it 
-> > works fine in linux-next.
-> 
-> Thanks a lot.
+--000000000000f48e7c063f29d10b
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Just fyi, when dma debug is enabled, we're seeing this new warning
-below. I have not had a chance to look into it yet, so I'm just
-reporting the observation.
+Hi,
 
- DMA-API: nvme 0006:01:00.0: cacheline tracking EEXIST, overlapping mappings aren't supported
- WARNING: kernel/dma/debug.c:598 at add_dma_entry+0x26c/0x328, CPU#1: (udev-worker)/773
- Modules linked in: acpi_power_meter(E) loop(E) efivarfs(E) autofs4(E)
- CPU: 1 UID: 0 PID: 773 Comm: (udev-worker) Tainted: G            E    N  6.17.0-rc6-next-20250918-debug #6 PREEMPT(none)
- Tainted: [E]=UNSIGNED_MODULE, [N]=TEST
- pstate: 63400009 (nZCv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
- pc : add_dma_entry+0x26c/0x328
- lr : add_dma_entry+0x26c/0x328
- sp : ffff80009fe0f460
- x29: ffff80009fe0f470 x28: 0000000000000001 x27: 0000000000000001
- x26: ffff8000835d7f38 x25: ffff8000835d7000 x24: ffff8000835d7e60
- x23: 0000000000000000 x22: 0000000006e2cc00 x21: 0000000000000000
- x20: ffff800082e8f218 x19: ffff0000a908ff80 x18: 00000000ffffffff
- x17: ffff8000801972a0 x16: ffff800080197054 x15: 0000000000000000
- x14: 0000000000000000 x13: 0000000000000004 x12: 0000000000020006
- x11: 0000000030e4ef9f x10: ffff800083443358 x9 : ffff80008019499c
- x8 : 00000000fffeffff x7 : ffff800083443358 x6 : 0000000000000000
- x5 : 00000000000bfff4 x4 : 0000000000000000 x3 : ffff0000bb005ac0
- x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0000bb005ac0
- Call trace:
-  add_dma_entry+0x26c/0x328 (P)
-  debug_dma_map_phys+0xc4/0xf0
-  dma_map_phys+0xe0/0x410
-  dma_map_page_attrs+0x94/0xf8
-  blk_dma_map_direct.isra.0+0x64/0xb8
-  blk_rq_dma_map_iter_next+0x6c/0xc8
-  nvme_prep_rq+0x894/0xa98
-  nvme_queue_rqs+0xb0/0x1a0
-  blk_mq_dispatch_queue_requests+0x268/0x3b8
-  blk_mq_flush_plug_list+0x90/0x188
-  __blk_flush_plug+0x104/0x170
-  blk_finish_plug+0x38/0x50
-  read_pages+0x1a4/0x3b8
-  page_cache_ra_unbounded+0x1a0/0x400
-  force_page_cache_ra+0xa8/0xd8
-  page_cache_sync_ra+0xa0/0x3f8
-  filemap_get_pages+0x104/0x950
-  filemap_read+0xf4/0x498
-  blkdev_read_iter+0x88/0x180
-  vfs_read+0x214/0x310
-  ksys_read+0x70/0x110
-  __arm64_sys_read+0x20/0x30
-  invoke_syscall+0x4c/0x118
-  el0_svc_common.constprop.0+0xc4/0xf0
-  do_el0_svc+0x24/0x38
-  el0_svc+0x1a0/0x340
-  el0t_64_sync_handler+0x98/0xe0
-  el0t_64_sync+0x17c/0x180
- ---[ end trace 0000000000000000 ]---
+Thanks for the feedback. I understand now that printk=E2=86=92pr_* cleanups=
+ are not
+accepted as standalone cosmetic patches. I will drop this patch and focus
+on patches with real fixes.
 
+Best regards,
+Manish Kumar
+
+On Fri, Sep 19, 2025 at 12:16=E2=80=AFPM Vlastimil Babka <vbabka@suse.cz> w=
+rote:
+
+> Changelog should not be empty even for trivial patches.
+>
+> On 9/18/25 20:14, Manish Kumar wrote:
+> > Signed-off-by: Manish Kumar <manish1588@gmail.com>
+>
+> This changes 2 of X in the file. Why only these 2? And no, I'm not
+> encouraging to resend with a full file changes. We do these modernization=
+s
+> to new APIs only while changing the code for other reasons, not separatel=
+y,
+> if there's nothing wrong otherwise with the legacy api. The churn isn't
+> worth it.
+>
+> > ---
+> >  mm/show_mem.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/mm/show_mem.c b/mm/show_mem.c
+> > index 0cf8bf5d832d..798949d10ce1 100644
+> > --- a/mm/show_mem.c
+> > +++ b/mm/show_mem.c
+> > @@ -26,7 +26,7 @@ unsigned long totalcma_pages __read_mostly;
+> >  static inline void show_node(struct zone *zone)
+> >  {
+> >       if (IS_ENABLED(CONFIG_NUMA))
+> > -             printk("Node %d ", zone_to_nid(zone));
+> > +             pr_info("Node %d ", zone_to_nid(zone));
+> >  }
+> >
+> >  long si_mem_available(void)
+> > @@ -156,7 +156,7 @@ static void show_migration_types(unsigned char type=
+)
+> >       }
+> >
+> >       *p =3D '\0';
+> > -     printk(KERN_CONT "(%s) ", tmp);
+> > +     pr_cont("(%s) ", tmp);
+> >  }
+> >
+> >  static bool node_has_managed_zones(pg_data_t *pgdat, int max_zone_idx)
+>
+>
+
+--000000000000f48e7c063f29d10b
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Hi,<br><br>Thanks for the feedback. I understand now that =
+printk=E2=86=92pr_* cleanups are not<br>accepted as standalone cosmetic pat=
+ches. I will drop this patch and focus<br>on patches with real fixes.<br><b=
+r>Best regards,<br>Manish Kumar</div><br><div class=3D"gmail_quote gmail_qu=
+ote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Fri, Sep 19, 2025 a=
+t 12:16=E2=80=AFPM Vlastimil Babka &lt;<a href=3D"mailto:vbabka@suse.cz">vb=
+abka@suse.cz</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" styl=
+e=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);paddin=
+g-left:1ex">Changelog should not be empty even for trivial patches.<br>
+<br>
+On 9/18/25 20:14, Manish Kumar wrote:<br>
+&gt; Signed-off-by: Manish Kumar &lt;<a href=3D"mailto:manish1588@gmail.com=
+" target=3D"_blank">manish1588@gmail.com</a>&gt;<br>
+<br>
+This changes 2 of X in the file. Why only these 2? And no, I&#39;m not<br>
+encouraging to resend with a full file changes. We do these modernizations<=
+br>
+to new APIs only while changing the code for other reasons, not separately,=
+<br>
+if there&#39;s nothing wrong otherwise with the legacy api. The churn isn&#=
+39;t<br>
+worth it.<br>
+<br>
+&gt; ---<br>
+&gt;=C2=A0 mm/show_mem.c | 4 ++--<br>
+&gt;=C2=A0 1 file changed, 2 insertions(+), 2 deletions(-)<br>
+&gt; <br>
+&gt; diff --git a/mm/show_mem.c b/mm/show_mem.c<br>
+&gt; index 0cf8bf5d832d..798949d10ce1 100644<br>
+&gt; --- a/mm/show_mem.c<br>
+&gt; +++ b/mm/show_mem.c<br>
+&gt; @@ -26,7 +26,7 @@ unsigned long totalcma_pages __read_mostly;<br>
+&gt;=C2=A0 static inline void show_node(struct zone *zone)<br>
+&gt;=C2=A0 {<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0if (IS_ENABLED(CONFIG_NUMA))<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0printk(&quot;Node %d =
+&quot;, zone_to_nid(zone));<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0pr_info(&quot;Node %d=
+ &quot;, zone_to_nid(zone));<br>
+&gt;=C2=A0 }<br>
+&gt;=C2=A0 <br>
+&gt;=C2=A0 long si_mem_available(void)<br>
+&gt; @@ -156,7 +156,7 @@ static void show_migration_types(unsigned char typ=
+e)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
+&gt;=C2=A0 <br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0*p =3D &#39;\0&#39;;<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0printk(KERN_CONT &quot;(%s) &quot;, tmp);<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0pr_cont(&quot;(%s) &quot;, tmp);<br>
+&gt;=C2=A0 }<br>
+&gt;=C2=A0 <br>
+&gt;=C2=A0 static bool node_has_managed_zones(pg_data_t *pgdat, int max_zon=
+e_idx)<br>
+<br>
+</blockquote></div>
+
+--000000000000f48e7c063f29d10b--
 
