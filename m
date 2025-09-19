@@ -4,109 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E159BCAC592
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 16:18:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A92ACAC592
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 16:21:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2104C8E0005; Fri, 19 Sep 2025 12:18:33 -0400 (EDT)
+	id BDB808E0008; Fri, 19 Sep 2025 12:21:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1C0468E0002; Fri, 19 Sep 2025 12:18:33 -0400 (EDT)
+	id B8BAC8E0002; Fri, 19 Sep 2025 12:21:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 088768E0005; Fri, 19 Sep 2025 12:18:33 -0400 (EDT)
+	id A54268E0008; Fri, 19 Sep 2025 12:21:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E77BF8E0002
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 12:18:32 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 97DF558334
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 16:18:32 +0000 (UTC)
-X-FDA: 83906507664.15.5E4FAB7
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	by imf29.hostedemail.com (Postfix) with ESMTP id B5D67120006
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 16:18:30 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="N5iU/uMV";
-	spf=pass (imf29.hostedemail.com: domain of manish1588@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=manish1588@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8F7798E0002
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 12:21:48 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 38874BAF1A
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 16:21:48 +0000 (UTC)
+X-FDA: 83906515896.20.9BD38B4
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 2C63620011
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 16:21:46 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b=w+iztjwr;
+	spf=pass (imf13.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.52 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758298710;
+	s=arc-20220608; t=1758298906;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AU9+sjlQnuFs0nPpSU+fnul/Or/YGJPFrybJE0rZA7Y=;
-	b=pM6SGDbeJGCcbnBM3rXBdxJwHt4cG0mCcOe30ZLqDUSB5RsOPCex6CGTWup68YGFcYSSWX
-	h073vYDUUN5T8mzPLi8nJDfvlztpRhAtSHcNFR2tg9lHgZ5lY+9lO3/SEaU15xoaldXEDv
-	bI4ZTYsTSE0gnQOWZ985K8HDWCJM3RE=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=KU0e54WZ9xSy3fCSUGF390H8SijTBET/vQ6EcFimkXE=;
+	b=ODU4TJeVHtEUkcZc2ko34y6lDImIkiQv9YfIFoAKwHakEyUMSrPcqoJbiQ18jcPFqr8ofd
+	tFiEJGk6hZlvM6nhhIkh0u9HutY3NI2kcaORhZaQeH6jh2uhGU8AxMH13Hjr7XMV5DUgj7
+	LYs1eYhjWjHSJE0KzrF/UZitBqsmTus=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="N5iU/uMV";
-	spf=pass (imf29.hostedemail.com: domain of manish1588@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=manish1588@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758298710; a=rsa-sha256;
+	imf13.hostedemail.com;
+	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b=w+iztjwr;
+	spf=pass (imf13.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.52 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758298906; a=rsa-sha256;
 	cv=none;
-	b=sho0oE2DN6CTw5Wn8yk7SMqGXWHp/vQt2a20uc7eRBELS18n1B/MNXXcPOa/Lyz63gXsVU
-	fHrkFz7S+qNoth3Lzo0jzFzF92kU+aNDxN8SXX2jYgh1U9vP/loAFlsdcf3kFwEeqdUww+
-	5LZ4EBFIDEw2BlnVOnQYNNU7mZENshQ=
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3f0ae439b56so615505f8f.3
-        for <linux-mm@kvack.org>; Fri, 19 Sep 2025 09:18:30 -0700 (PDT)
+	b=Bk/2dyFwjTsSUMWuE6tRD7RpVZl21nhfSPC41tyoiT5igK+RbmAODo79dyktEn5LLa4pEO
+	YYnTolZNd4Bx+jrbgx/y6LAPGYKAk+nd24s/h4KDzSWW3owhm/XoLJgfqLxtGmKoZ3SB2i
+	GZ/sCcaoBGU19dP4g+jwjDA+11V1PDo=
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-7960d69f14bso11232196d6.2
+        for <linux-mm@kvack.org>; Fri, 19 Sep 2025 09:21:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758298709; x=1758903509; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=AU9+sjlQnuFs0nPpSU+fnul/Or/YGJPFrybJE0rZA7Y=;
-        b=N5iU/uMVKIh3PHGJBoiWjezI3ovbWRFxnrk8Zr1ghQudM1qZ0+LQX1qqH1Xsp8xkwO
-         LU/XnsrtMK6R7iS9gHSS4kRkp2WA2wlulrRJwUaSao1mQp/+xTWB0QfOk1Eb5qA8+4ad
-         AInniYdBfI62T/oEUHQQTicxqXoIefJhD3H2e+aCbB6R4MJKnFEz/ZgpEJfYeZMBQyD5
-         mJJojEPFUsXa/JoPdtqHxI/pAcZ+zOnH5oJextIJf9wZfbywsCgjJU9ba8l0p5T+bBYb
-         LO1Bb0fHrB/3WxZckDEf9x3f0czbC20L6MFWkJjb3hs15xCbL/32msDsNp0Qi/2NvfHf
-         u/4A==
+        d=cmpxchg-org.20230601.gappssmtp.com; s=20230601; t=1758298905; x=1758903705; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=KU0e54WZ9xSy3fCSUGF390H8SijTBET/vQ6EcFimkXE=;
+        b=w+iztjwrTRiIQgWhuZUTch7jMPqjSwUm5+FD0SIgc1EUsvpLma6HQqNkdVwhOGajlc
+         XJ4Oq4dmqO8jD5GEKIvXsk+w1HEkB1wfh7sXhSYMWxqh0MBmIoS+yn+XcHHuUuBh3t2R
+         AVKZXMZpTxk+Muuiv1OmSRsGVLviuUOkhJd9Vh37V+JETxnk4LpizliDgYCOvRY7WIpb
+         ruCGnYirPlOou48CY2W5Sbf1zwtiXzvlG7El18OSWdCm3RZ6zfo5sIugCJc7Sa8gl24B
+         obtgSWqNW7wU34iGrq70z6EPOL7pxGwm+lwCmtjokKBBTkUowZG1Y+NkAHxZsGMrNYcz
+         LjvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758298709; x=1758903509;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1758298905; x=1758903705;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=AU9+sjlQnuFs0nPpSU+fnul/Or/YGJPFrybJE0rZA7Y=;
-        b=EQjkpUYNeZwhoFA5e9lmfnc4glts91XPYxXts9mtgf6aVQ0HzFwszCC121mFEioUKi
-         LPE6MkuXYReKygnFzqdWI7kiYRY0RSX5LrLHutiYwUlbg4v1ldjo49aFCDokTOLhnnY9
-         xmmRvGNqlzhTOQmG2k53tQttm7IeLQIJxmeJ4ruA7j8hfZBnKgi1dc9H8BKrE0q4cePf
-         UWjtgT1n5Ni12oYPPqWDhW2zP5DPRaJ4KLkAJBiDCWwdYeQqRTng753Xm/Mi5saY4uR5
-         AQSakL68p60d7BLzk5v5N+hmu5LcJb93+4M3vmPRELsbWdqiwloI0yO2KRl6toE4H30G
-         qTLw==
-X-Forwarded-Encrypted: i=1; AJvYcCXqiLDWtsmB8F8NH3mSoSMOBrUy5IZfhvOc2PJ7hXmtj66VBZLOJfVEkOhhF3+VLfoIOwEF5dYfaw==@kvack.org
-X-Gm-Message-State: AOJu0Ywhb379LO+mrg6h21/PBpDo/0LZ0nSvIZnqH6LQBl6jgJms+7qG
-	rIcjDLFNE0+LQIVQYsU5FvZiGzCu1jbYC6u39Q8iVO8hOW5OEYUUwkiZIoepE2GZiQDs5g9Coui
-	q3xK8pSjCpHHAu4QZLsEJgnRWbc1Rg6o=
-X-Gm-Gg: ASbGncsC6aga7sDndhAjkT1Y7Yw/rKp+n/ZOybx5HpO0uHmbDa+ghzSXaTVZFOKADJM
-	I+9mrduu/qs4GEx00ylzCvzucff+uu1k7IY1HuTgxhl1hC+wBqthV1LXBnllcngaQ9bSibBFdkD
-	+JFSjPfFi0zEAWmuWVVUoAsCSofSN+rO9A1GC6ckT2vU1Y2jYp9TRSMpO1E5wwctm7j9WzW8NhE
-	gOJBPrQk9iT1NNM7rrEioZYeOQv3UrsljGCYTkXcQ==
-X-Google-Smtp-Source: AGHT+IEKwbGqYGVaN2f+8UKTxziV3Lv2awnR5IV0gS/s1CIQ3SFtvsIUW9uJYOV+/W3smsBILrrJ9eu1PbMNqwT225w=
-X-Received: by 2002:a05:6000:4014:b0:3e2:4a3e:d3cf with SMTP id
- ffacd0b85a97d-3ee7bad10e6mr3754555f8f.5.1758298708936; Fri, 19 Sep 2025
- 09:18:28 -0700 (PDT)
+        bh=KU0e54WZ9xSy3fCSUGF390H8SijTBET/vQ6EcFimkXE=;
+        b=FF+4CsNHgwTjqvFQX2WlXDSiOEYj9xnKH+HAbbOrJm/mChiHM+y7Q5jSRcyBh/52k2
+         XkzjDdBKKy6oMpMac1GU7vrACvhzj4cIoUbp/ymYe6UcCTImX3aZjBHJsQBijIbHZLBk
+         GwMtTTJN7bRAV3x/MrpLqYPhqd1txvlMqfhqDar1Je68NC7mmQkqvGyLucrqljRkjWWQ
+         zvyS9e9axyhGe7bJSYxKN37ZzEo7XSgFtpjfmyXkbtoU59t2q8OIXaxljKtmYq2BEwrf
+         g72puenv3b8MX9oj64h27S0CdMcscyfzCRZ4kgMYYnuRyayqB3xnzm7cOgc0d6PbtfnE
+         YwuQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXWL938/43uWSFcQF+80zqBfSVli/fYu7nnruaHwkTA+QHouKEOOwp0vBGs+SiOBVX3aC8Fyxl4HA==@kvack.org
+X-Gm-Message-State: AOJu0YxbiYOWupKOFm4preTlEFayWzQbAoRssGbaTsuKHvmaS37hWbog
+	ddRmGDVJEcO9HDy78T5Ohhws9QeQcZkaKZUqUFXPs6yM7ySsrP86tRJZPNjSEhkxxyM=
+X-Gm-Gg: ASbGncsG2xSBg2g/6KHHEw+3QyFAMR/n7f94wPR/flJ+EeDtTKj/6FY0Ys+3PEQ05Eo
+	pgq31yWCfiIMoGZB59Huc3tF+2k6GTpTyRM7HM0rClDl6y0/uepqxp0ETudvyK0HdZDBaQCPMvY
+	8aoDXO6TXa1IPmd7NSRhgcQpLPxBUat3ZLDJIOO84bJgFZHcsG3FJrNw/vS7H036f1B8djI2j9Q
+	tcLrtwD+t9JgsI176uy0jq+TuTIGU/Bz4vx2igqCtBlSAJV34HBg9dtdOfkHOVIn16i6/sZ3MQh
+	2Mnr5hrS/F2a6GkRJ/3+H4gPlUp3O0w6QGbMQD6VXcgJxADHgWXaRrJL8mhN++ajY+bTc8np+Y6
+	CuWtN1Aj8nm9cqLZt8d1PBw==
+X-Google-Smtp-Source: AGHT+IF3YqXL+DiZ1cpJVimdnZ2j3EsIyc7usMA8XFckTWUwfy3Lewpe/MvFwizF8tQB4kpD355gAQ==
+X-Received: by 2002:a05:6214:268b:b0:78f:1a9e:2590 with SMTP id 6a1803df08f44-7991c124a4amr47454426d6.34.1758298904870;
+        Fri, 19 Sep 2025 09:21:44 -0700 (PDT)
+Received: from localhost ([2603:7000:c01:2716:929a:4aff:fe16:c778])
+        by smtp.gmail.com with UTF8SMTPSA id 6a1803df08f44-796d68804e4sm22102636d6.67.2025.09.19.09.21.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 19 Sep 2025 09:21:43 -0700 (PDT)
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Vlastimil Babka <vbabka@suse.cz>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Zi Yan <ziy@nvidia.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Gregory Price <gourry@gourry.net>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>
+Subject: [PATCH] mm: page_alloc: avoid kswapd thrashing due to NUMA restrictions
+Date: Fri, 19 Sep 2025 12:21:34 -0400
+Message-ID: <20250919162134.1098208-1-hannes@cmpxchg.org>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-References: <20250918181403.93812-1-manish1588@gmail.com> <e8121724-a436-47d5-af3a-a16f81cd0649@suse.cz>
-In-Reply-To: <e8121724-a436-47d5-af3a-a16f81cd0649@suse.cz>
-From: Manish Kumar <manish1588@gmail.com>
-Date: Fri, 19 Sep 2025 21:48:17 +0530
-X-Gm-Features: AS18NWApCTMAbAQfo55xwI9TbNJwXXqKc2HE_4kqa77Sp5qNNhHJijxjLqrcaHs
-Message-ID: <CAAoxDjeUyKs2xN4oBRWnZBWvGLoi4v+nT7ioYVQtB9B2hRj5yw@mail.gmail.com>
-Subject: Re: [PATCH] mm/show_mem: update printk/pr_info messages and replace
- legacy printk(KERN_CONT ...) with pr_cont()
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: akpm@linux-foundation.org, surenb@google.com, mhocko@suse.com, 
-	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: multipart/alternative; boundary="000000000000f48e7c063f29d10b"
-X-Rspamd-Queue-Id: B5D67120006
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: nxjdjtaynerft6nmwd1gk3enczof6ube
-X-HE-Tag: 1758298710-431173
-X-HE-Meta: U2FsdGVkX19LzM43z3Alf7g9psePLwr+b0B+CCo7r9+0vO0VnA2x/o/q8TE7dbxeS4vtfZY7MC9AIjWO0ORbEjg8VGoN22pe2RyKufi/fWuV9nrQhBbDsMOBXlMViiTJ2SOBiKVToY6kFw45oCzZ8Dvp5pyEtJNg9W8Pv8Zlfx8SJUZVpJl5r7UIE4gUjtU9w5uIS3bNNLuTaPp3YIKhmHnApq/MXLlE7WufAKbYNodAPNnY7hJ6KdBZdDer15zHfZ9kvo9vAgGc2BpXceY1B9XVmY0G02d4xeGC53G7Hm3FYG2XutFg+ifSum2CEvndMDzzR1XgXqFUcBWELRGBpNqeeG8IprWbBaQNRWQq5p+h49WjBygmiMdbPH8i04d32mbLDnSCjx4mDeNyD6nimOXmYF6flu63hK1WLpxRY/MsnEZa/AEGd5Xp0M0CP+qROuMoNMZt7TRN0ZV48E0758Cjb8NShyhNSmaEplzeTuslPiQIrjmOg7LR97L/52Q5IUV+UuFvAxUioQoNMbk9/TaRIq9iyX6XMgWMipJZHUjrX6qnMkeLzYdXoe3nKLGyW5OvZIz6kxKiQKp5Lg58+sbcDrFSy6bYOV6frEvV9+iwdAd9BWcyMQaOfn3Z7gaFj5ypUtKGfTAnS1mxADGf95yDORTOzokfmBg6cnlFEGI4JerGgbDXjwifE1cqfzF6YOgm9xAD7Jnne1LeVrJj4rB/N7x/C507ObeSvvenoP0dqdBkNIeo7mMdKrVl9pEvqpcqjXPjlce9OQqW7N+vA0aDaxaRrcEnPmyQ+oBNbRQInVZ9KmH113IdOG6jMomJkvTbR2xz8G5+GupqFaEQDimlZ+z1rbkjsl0p7iFqYaT44naEs9FKard8fIs6yvfDnFJjVa2tuOmltxwoG2Th28CBrpRxW+0oEwfGo6h5VTx61oQRKrBs8LBVD20QEpK8rZvahSge4BGBlQSRIIR
- s6YlxakZ
- FVZjrYSLsGtFi2nkEUqPi0x3R9747u31Q2Jai/vCajrKQsnQ+9G1NGLTpmq37WJZLFfeHdF8oL9QDNgnFVmvqHljcabIO9Yh7rb0zV+tO/46CGEBRL/Ii+kuYTAVk5rEy24KjivpnkaUiXRTATefRkYjJe6dj7hOhRMyXdliYFrKb53njmGYaFUqyyf+9ou2u25jm5EsvX7Rv4AUruLm8XP2ugQt+8v5s1N6W4kefDrqK/T65FD6TT1dXMFbQJzMtJeKd8QfTlUexecTDOlaS+S6MjKmjTFXLiEbY8osjwNKO55eoht8wAmlaHAB2w0vuDUN3BymYQmu39F0UtjCHKoxShUY9ipnR9aTi0iqglsjzvUkb/QLRZ+aE23MOZA7M/DSJcTCI2R75xhAwNeGAhVD80Z89lsyXym2DCiSsHRhnui5cgUPfkDvru470zen1VkMnC8EwZe1IDbWBpO6nVhQMsgDcHuY4C4Kgmcwl0HdzjiZI3naDGtKaTuRh0c6S9b4BnXToan4tnMxJGO6Yz2Ee4g==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 2C63620011
+X-Stat-Signature: czrq8x8rn4ddmkd7am5j8akwgnpgg3q8
+X-HE-Tag: 1758298906-758733
+X-HE-Meta: U2FsdGVkX1+uAhksyy7aWod57exkcHc9Eo0WMzf6rWuAlUOgRsNMPcyRZ/AyH3jaPV0SeG+ZyD8TXgJUk3gD5auFLwjHpyYaszj9rKyZnmZcMzm1nBMVjrQZiRL3FqHrXyVf1kq2m2OsS7SVR1sHJVpGUNSck029T7NRP01f/qtSSFq4uBBOCpN+aT+DvQkQKQ39TYDXez4t3ejc8tFnZR0MYGyw6ykpOdSCqiPO0PTvSB//1OflgPkpeIQW0CCrk1SzZd9OjDvF6J3gCao2MrdoRpEPQyU8xa/zzuhaKP6qPtzzXexwAdJwPrnjgcTCW0wGl262weHrb7LkVKRbQHrCr/8kbuynMjMNFdoYKDgRff7uUwYqpeDVjp+zNx+wC8TfQ1pOxiD3dWHfED5lGbEFAWRSYl9OVervQ1l9G9Ok5h1xQRGHdQ1t/0yIhfbeMaUXA3tMv1KxYHo6TlwoORL3cMDN3TKYv8kncao3byIXajzs0EVhBktvFmvtK1I9eVt53uN1OMG8VV+XBZB9lX2t7HhfwZx9WMdT8RkE1ztPeLbXhEP/wnrEfAAzA7tozyYC1r5giefG0SLWbf+4KMlLYrd4vrKThwmtUoYdA2Y6bwa+s74WscAgMQsLguW7HUTCz/0Cnihck1E4DoEjfo0hqO3L11ItlOYwNIeGkZSVDl8+DcuEyVOVmTuDtpOxAXFdTDTVx9uU/8ZniWszWnfAPMn05f/630lgWlJeNcTHiD4n7yL0aOqAJbV1d+YnZOzCnqHYz0O/Br3GbZRU2U0nmei3eU1btUpEmjq1DVWaQwLO/GiDX+vKg6aE2f5wXpjePa5jDpMZ0IGm5Ngi74tN/DOSTFGIDpznoy3OLQ1cLgiKiIkk/SeM2uxsbBGD5NXEz8QVhDLREByAsDDldZ6lrq5OfX4F8XmDPvzDkJ9Bwi5Qpfam0dMiTTj1qPRYWoql+lpFC5rjwGmeHn3
+ tYUGqu9Y
+ hQPKOu2NQzodPdvDOjFu+Fths9l04hpDD8su3QmlImkCclq/mAYHKYMsYucV9yOysKw0piFc9TwewY43l1GeskfwQGM1GvAzxmr7nezq6mLzVwPFfaJkIwhcm9FFB8YMtSgnxwEcIw4UlfNPTBRriuzefBV8agBK/qD72O7+P7Y/ffEMgA7VLMERwEQDc/JytHNEFR6KASdXoR3o3ZrhUu9fCLto23H7Z8JeMAwytmgIlRFpCZ0SKIG3Y7FZlt7oHUOK0QhvclKaU8pHfEDpYN7xY0/VnXXfQeESpydHzGDsZzDz2BgeYR3O2EOR+CriLCNJ6RZP7ntPYQMDC2IQP1SlI1CGtgKA6GWuEvSmJEpX+jbasiMDeSXWwTSzqCwTbvfObv6MoQjsjPobC5qDLkL2xxLOvigHG5YlwI4nl/y/x+9gNPqaBzEIHQcsMxOfgVsfz8JzJZW8YOw9NzFsRm3YnuKubi+9o7eiwcrLOpUpPxX7ANauSWBjmM91Bc+WIFHOr2I/a1voTaolJWKGRZ8Rt8VruEj4/mTDkOT6hcCpGcipPp3pUJQ0Y2LIVyQuuHP1NIVmH3NIltIQXKRYhi2LP95X/6h6hwrTi8bnJ68zBxm6DeN7SF7SdeZm01Cr/cD+mvL7FU9oaDu8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,125 +122,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---000000000000f48e7c063f29d10b
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On NUMA systems without bindings, allocations check all nodes for free
+space, then wake up the kswapds on all nodes and retry. This ensures
+all available space is evenly used before reclaim begins. However,
+when one process or certain allocations have node restrictions, they
+can cause kswapds on only a subset of nodes to be woken up.
 
-Hi,
+Since kswapd hysteresis targets watermarks that are *higher* than
+needed for allocation, even *unrestricted* allocations can now get
+suckered onto such nodes that are already pressured. This ends up
+concentrating all allocations on them, even when there are idle nodes
+available for the unrestricted requests.
 
-Thanks for the feedback. I understand now that printk=E2=86=92pr_* cleanups=
- are not
-accepted as standalone cosmetic patches. I will drop this patch and focus
-on patches with real fixes.
+This was observed with two numa nodes, where node0 is normal and node1
+is ZONE_MOVABLE to facilitate hotplugging: a kernel allocation wakes
+kswapd on node0 only (since node1 is not eligible); once kswapd0 is
+active, the watermarks hover between low and high, and then even the
+movable allocations end up on node0, only to be kicked out again;
+meanwhile node1 is empty and idle.
 
-Best regards,
-Manish Kumar
+Similar behavior is possible when a process with NUMA bindings is
+causing selective kswapd wakeups.
 
-On Fri, Sep 19, 2025 at 12:16=E2=80=AFPM Vlastimil Babka <vbabka@suse.cz> w=
-rote:
+To fix this, on NUMA systems augment the (misleading) watermark test
+with a check for whether kswapd is already active during the first
+iteration through the zonelist. If this fails to place the request,
+kswapd must be running everywhere already, and the watermark test is
+good enough to decide placement.
 
-> Changelog should not be empty even for trivial patches.
->
-> On 9/18/25 20:14, Manish Kumar wrote:
-> > Signed-off-by: Manish Kumar <manish1588@gmail.com>
->
-> This changes 2 of X in the file. Why only these 2? And no, I'm not
-> encouraging to resend with a full file changes. We do these modernization=
-s
-> to new APIs only while changing the code for other reasons, not separatel=
-y,
-> if there's nothing wrong otherwise with the legacy api. The churn isn't
-> worth it.
->
-> > ---
-> >  mm/show_mem.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/mm/show_mem.c b/mm/show_mem.c
-> > index 0cf8bf5d832d..798949d10ce1 100644
-> > --- a/mm/show_mem.c
-> > +++ b/mm/show_mem.c
-> > @@ -26,7 +26,7 @@ unsigned long totalcma_pages __read_mostly;
-> >  static inline void show_node(struct zone *zone)
-> >  {
-> >       if (IS_ENABLED(CONFIG_NUMA))
-> > -             printk("Node %d ", zone_to_nid(zone));
-> > +             pr_info("Node %d ", zone_to_nid(zone));
-> >  }
-> >
-> >  long si_mem_available(void)
-> > @@ -156,7 +156,7 @@ static void show_migration_types(unsigned char type=
-)
-> >       }
-> >
-> >       *p =3D '\0';
-> > -     printk(KERN_CONT "(%s) ", tmp);
-> > +     pr_cont("(%s) ", tmp);
-> >  }
-> >
-> >  static bool node_has_managed_zones(pg_data_t *pgdat, int max_zone_idx)
->
->
+With this patch, unrestricted requests successfully make use of node1,
+even while kswapd is reclaiming node0 for restricted allocations.
 
---000000000000f48e7c063f29d10b
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+[gourry@gourry.net: don't retry if no kswapds were active]
+Signed-off-by: Gregory Price <gourry@gourry.net>
+Tested-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+---
+ mm/page_alloc.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-<div dir=3D"ltr">Hi,<br><br>Thanks for the feedback. I understand now that =
-printk=E2=86=92pr_* cleanups are not<br>accepted as standalone cosmetic pat=
-ches. I will drop this patch and focus<br>on patches with real fixes.<br><b=
-r>Best regards,<br>Manish Kumar</div><br><div class=3D"gmail_quote gmail_qu=
-ote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Fri, Sep 19, 2025 a=
-t 12:16=E2=80=AFPM Vlastimil Babka &lt;<a href=3D"mailto:vbabka@suse.cz">vb=
-abka@suse.cz</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" styl=
-e=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);paddin=
-g-left:1ex">Changelog should not be empty even for trivial patches.<br>
-<br>
-On 9/18/25 20:14, Manish Kumar wrote:<br>
-&gt; Signed-off-by: Manish Kumar &lt;<a href=3D"mailto:manish1588@gmail.com=
-" target=3D"_blank">manish1588@gmail.com</a>&gt;<br>
-<br>
-This changes 2 of X in the file. Why only these 2? And no, I&#39;m not<br>
-encouraging to resend with a full file changes. We do these modernizations<=
-br>
-to new APIs only while changing the code for other reasons, not separately,=
-<br>
-if there&#39;s nothing wrong otherwise with the legacy api. The churn isn&#=
-39;t<br>
-worth it.<br>
-<br>
-&gt; ---<br>
-&gt;=C2=A0 mm/show_mem.c | 4 ++--<br>
-&gt;=C2=A0 1 file changed, 2 insertions(+), 2 deletions(-)<br>
-&gt; <br>
-&gt; diff --git a/mm/show_mem.c b/mm/show_mem.c<br>
-&gt; index 0cf8bf5d832d..798949d10ce1 100644<br>
-&gt; --- a/mm/show_mem.c<br>
-&gt; +++ b/mm/show_mem.c<br>
-&gt; @@ -26,7 +26,7 @@ unsigned long totalcma_pages __read_mostly;<br>
-&gt;=C2=A0 static inline void show_node(struct zone *zone)<br>
-&gt;=C2=A0 {<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0if (IS_ENABLED(CONFIG_NUMA))<br>
-&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0printk(&quot;Node %d =
-&quot;, zone_to_nid(zone));<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0pr_info(&quot;Node %d=
- &quot;, zone_to_nid(zone));<br>
-&gt;=C2=A0 }<br>
-&gt;=C2=A0 <br>
-&gt;=C2=A0 long si_mem_available(void)<br>
-&gt; @@ -156,7 +156,7 @@ static void show_migration_types(unsigned char typ=
-e)<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
-&gt;=C2=A0 <br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0*p =3D &#39;\0&#39;;<br>
-&gt; -=C2=A0 =C2=A0 =C2=A0printk(KERN_CONT &quot;(%s) &quot;, tmp);<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0pr_cont(&quot;(%s) &quot;, tmp);<br>
-&gt;=C2=A0 }<br>
-&gt;=C2=A0 <br>
-&gt;=C2=A0 static bool node_has_managed_zones(pg_data_t *pgdat, int max_zon=
-e_idx)<br>
-<br>
-</blockquote></div>
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index cf38d499e045..ffdaf5e30b58 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -3735,6 +3735,8 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
+ 	struct pglist_data *last_pgdat = NULL;
+ 	bool last_pgdat_dirty_ok = false;
+ 	bool no_fallback;
++	bool skip_kswapd_nodes = nr_online_nodes > 1;
++	bool skipped_kswapd_nodes = false;
+ 
+ retry:
+ 	/*
+@@ -3797,6 +3799,19 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
+ 			}
+ 		}
+ 
++		/*
++		 * If kswapd is already active on a node, keep looking
++		 * for other nodes that might be idle. This can happen
++		 * if another process has NUMA bindings and is causing
++		 * kswapd wakeups on only some nodes. Avoid accidental
++		 * "node_reclaim_mode"-like behavior in this case.
++		 */
++		if (skip_kswapd_nodes &&
++		    !waitqueue_active(&zone->zone_pgdat->kswapd_wait)) {
++			skipped_kswapd_nodes = true;
++			continue;
++		}
++
+ 		cond_accept_memory(zone, order, alloc_flags);
+ 
+ 		/*
+@@ -3888,6 +3903,15 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
+ 		}
+ 	}
+ 
++	/*
++	 * If we skipped over nodes with active kswapds and found no
++	 * idle nodes, retry and place anywhere the watermarks permit.
++	 */
++	if (skip_kswapd_nodes && skipped_kswapd_nodes) {
++		skip_kswapd_nodes = false;
++		goto retry;
++	}
++
+ 	/*
+ 	 * It's possible on a UMA machine to get through all zones that are
+ 	 * fragmented. If avoiding fragmentation, reset and try again.
+-- 
+2.51.0
 
---000000000000f48e7c063f29d10b--
 
