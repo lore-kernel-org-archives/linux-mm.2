@@ -4,129 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B742CA1013
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 03:50:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B776CAC5A5
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 04:11:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 051448E0122; Thu, 18 Sep 2025 23:50:13 -0400 (EDT)
+	id CDE3C8E0068; Fri, 19 Sep 2025 00:11:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 001538E0008; Thu, 18 Sep 2025 23:50:12 -0400 (EDT)
+	id C8F4E8E0008; Fri, 19 Sep 2025 00:11:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E0C358E0122; Thu, 18 Sep 2025 23:50:12 -0400 (EDT)
+	id BA4E78E0068; Fri, 19 Sep 2025 00:11:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C92088E0008
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 23:50:12 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8967F1A050D
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 03:50:12 +0000 (UTC)
-X-FDA: 83904621864.18.6A41C99
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
-	by imf14.hostedemail.com (Postfix) with ESMTP id CE9A3100002
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 03:50:10 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=ZCNT3glG;
-	spf=pass (imf14.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.85.215.180 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id AC30F8E0008
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 00:11:52 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2838658DD7
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 04:11:52 +0000 (UTC)
+X-FDA: 83904676464.06.261A1FE
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf21.hostedemail.com (Postfix) with ESMTP id E0DB91C0004
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 04:11:49 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=none;
+	spf=pass (imf21.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758253810;
+	s=arc-20220608; t=1758255110;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Dh3BXMCVe/uDP+wP9LS7p/Pcrlb4d1sLNbOVo2rnZMs=;
-	b=tVlAFh9kLK7ktgG+Qze0eS7W4uuTrwREFd/uHLDpqlaYZKUDksCg1qgLS8d95t5ZPDQpFD
-	2WDq2PJoeOvhvAfdMymIKYOsUiFV5ybprDsk3d9+A2Kbvr9p2ZU8OuZe62DSB5+Mor4s9m
-	KCeo0PW2a+K5rHXP7Bkzc58oxSOKT4g=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758253810; a=rsa-sha256;
-	cv=none;
-	b=jthsV5tVVd1uLRdk0LIuVothVTADISFYVAW4kXdqPSO+pU5bKyRGHK0RPyfm9iitXZ45xh
-	GlXIAB16e038DqQm1cXuYtxRvM65SlZCJ7/8T++K+SnIaLluGOMG/FlYE0t4V5t4scZgrK
-	KYDISba01x/HdVunwTgqVQHJbLSZxXQ=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=X06Wp3jLvuQDjv5/mV8WNoSywWzw6yXEpvzoyqeDOrU=;
+	b=SxPqdU7Fwlmo8yODoq5bDHa44u6PhXUvcEX0Voo18CWb+PHHVnOHuPSOvgVWLLvbcpahsZ
+	iAp9zMkCdeCo4mKS0xjUtw5lmLqtyQa8Iq3ZWAUGB7eykV2plo4rbB7j0tmyxgy4+3Teyk
+	/2ywJwc7+4zBgTqwpZDTNl1TUX42N6w=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=ZCNT3glG;
-	spf=pass (imf14.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.85.215.180 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-b4f9d61e7deso1105573a12.2
-        for <linux-mm@kvack.org>; Thu, 18 Sep 2025 20:50:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1758253810; x=1758858610; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Dh3BXMCVe/uDP+wP9LS7p/Pcrlb4d1sLNbOVo2rnZMs=;
-        b=ZCNT3glG8bmw0WLxXTgEyMSCBtU5fTdVjK5gnDTkzlLIs9DV/cUvZdKYHJcgUqcoZj
-         q85fM5YrEYtFh2mkyI+rv1QJZT7uwj8rUgabNRaWVY4tVrL98sHdEopvEd9vjR4cFAV6
-         QkO/IZee6d3KIfw3GwpeiwrWCOlgnLYIewa9MEiTzhsK8yv+OXjY1tX3RGcT/irmEpRf
-         GR/U97Q+E4AaC7RyvAg4bZ3VAtFlX3W2IPDA3l8nl5SFuccdKRTr4fDnQqsdGKMt5X4g
-         U+Xikx2BiuPONQCtebbNK8qOYLn08KOb2tYVrM6jHhukccNf+5nDc8McIFCggA1zT3lh
-         Lpvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758253810; x=1758858610;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Dh3BXMCVe/uDP+wP9LS7p/Pcrlb4d1sLNbOVo2rnZMs=;
-        b=dTMXPdVEHO5QPPxGCGmitRR6SGGZgb56ZkF2wl5VKYtS7ethxBkBm7O4UCkS27AS5z
-         fORyTTQwTTbswCTQ3tuTkAm/Bzok+hligt/bGGzpYmpf27ipaTXZg45LqURzJhAdtCS9
-         gtKa3urlzhLqLnX/6XdvTqYLmdpb7kYjaHEB20e+F06HUsVIk1AxI2zgeVLndeBXlHNt
-         /tSiGLUuyC3U/Qy0rH3UXFcJgkG6t5x+0KnrUJKe+D0WBFectr0iOumA9axiePU4nrx0
-         C/Z3YuvEuCefYW5wj8sr6ANw5TNY8BiVjv111fgyyqbCA2rBmA3xJZIMwfh5YSuezYLY
-         NnTQ==
-X-Gm-Message-State: AOJu0YwKllvb/yinDbAvWqWtG22GCR9H3xrD1O8MHYGZk/weHORb2h2P
-	Ow7H+lhHjFGyq54tH+AfOgGz+GueuYPKo5YTenLkKXtC92fE2e5LwVqkyl9BBHlj1Yo=
-X-Gm-Gg: ASbGncvwG70YpCA9FshhMbUOir2DBrO00DNBirbi4LlloEpcnl6lhCdJ3u7ErrOBmdC
-	ng+nIOsb43kEsyYURi+h5lqRumGMyR26JomywqvL7QjyEOCQGMwADBCLdK3y2qoYzUVR72mBc6j
-	38rMXPAkjoL1ihD4tKvgNQCdgnuGjEDBgy+ECb6Ezw77AiIVvW3lnLFqpHvQN1JNmVoWDDZuS5m
-	cKsgtP6sRIj118zqlIXNW84QbBTDnQX4QfGOShOPHgTzeuTPAIZ0Yt+yK+jsGl8GN6YfP3fgu4L
-	OwTFiAarH8AylHz5Nm2539Ey7+FVcIiO08qrxk8USZMXVDZvl9x60Sup5Epoyftw8knbFDNCVSI
-	W1TUGiPi/JxIJYDnrtFralDx4mBULkpfPqqIvewfEUp5icfzuqTa3Vrw+q1Cdfu6EmG5etoQ=
-X-Google-Smtp-Source: AGHT+IHXW8cvX8V+aWHxCFgC0rEAHufiYcxbAIJngIiMTSD/3JE4z6oIJUCUUjulr4OnA4Onw52AMw==
-X-Received: by 2002:a17:903:6c3:b0:262:661d:eb1d with SMTP id d9443c01a7336-269ba3c2c39mr19727495ad.1.1758253809733;
-        Thu, 18 Sep 2025 20:50:09 -0700 (PDT)
-Received: from G7HT0H2MK4.bytedance.net ([63.216.146.178])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-269802de5e9sm39629235ad.72.2025.09.18.20.50.02
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 18 Sep 2025 20:50:08 -0700 (PDT)
-From: Qi Zheng <zhengqi.arch@bytedance.com>
-To: hannes@cmpxchg.org,
-	hughd@google.com,
-	mhocko@suse.com,
-	roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev,
-	muchun.song@linux.dev,
-	david@redhat.com,
-	lorenzo.stoakes@oracle.com,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	Liam.Howlett@oracle.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	akpm@linux-foundation.org
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	cgroups@vger.kernel.org,
-	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: [PATCH 4/4] mm: thp: reparent the split queue during memcg offline
-Date: Fri, 19 Sep 2025 11:46:35 +0800
-Message-ID: <bbe3bf8bfce081fdf0815481b2a0c83b89b095b8.1758253018.git.zhengqi.arch@bytedance.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <cover.1758253018.git.zhengqi.arch@bytedance.com>
-References: <cover.1758253018.git.zhengqi.arch@bytedance.com>
+	imf21.hostedemail.com;
+	dkim=none;
+	spf=pass (imf21.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758255110; a=rsa-sha256;
+	cv=none;
+	b=JJvAbx1KfZY8cc33D9hm8nHsX3e8CrSu3aB1gyGgYoQXmZ/DFsuBXVTPSb12vo0qBMMB0S
+	EMMDA++dUxtDAtcU8PGXVXL+yIHwGbWEZoXCHBhjBEj/LW/aWXR8jp6F3l7OvVUJawm3nc
+	MjJpHGdAhB57UNyk9ZiVo/CLraV04es=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9E5AF1758;
+	Thu, 18 Sep 2025 21:11:40 -0700 (PDT)
+Received: from [10.164.18.52] (MacBook-Pro.blr.arm.com [10.164.18.52])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5D1413F673;
+	Thu, 18 Sep 2025 21:11:38 -0700 (PDT)
+Message-ID: <6a6f03df-8dc4-44aa-ad25-40f51ad98266@arm.com>
+Date: Fri, 19 Sep 2025 09:41:35 +0530
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH mm-new v2 2/2] mm/khugepaged: abort collapse scan on guard
+ PTEs
+To: David Hildenbrand <david@redhat.com>, Lance Yang <lance.yang@linux.dev>,
+ akpm@linux-foundation.org, lorenzo.stoakes@oracle.com
+Cc: ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+ npache@redhat.com, ryan.roberts@arm.com, baohua@kernel.org,
+ ioworker0@gmail.com, kirill@shutemov.name, hughd@google.com,
+ mpenttil@redhat.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20250918050431.36855-1-lance.yang@linux.dev>
+ <20250918050431.36855-3-lance.yang@linux.dev>
+ <a696c734-9f88-4d6f-a852-013071a2dd2a@redhat.com>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <a696c734-9f88-4d6f-a852-013071a2dd2a@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: CE9A3100002
-X-Stat-Signature: mnq8e3bteqzmtqg79cjxmcek7rfh919b
+X-Rspamd-Queue-Id: E0DB91C0004
+X-Stat-Signature: tt4dbs4k9hqhzk175osbgitix8ib8mmr
 X-Rspam-User: 
-X-HE-Tag: 1758253810-783331
-X-HE-Meta: U2FsdGVkX19ZJ0SgLi8B4eTDhy1wjmrKtqoONsy1E7POEaN8b6MyMGQEhd3Zq9x05l2SvEYFBerdFbXxiDhHfZUVWXhNqi2xruOztAZs/JkvkKO4Ydk0PqT+yyGXJoXrqNSmoH8G50ibXF1RuzPxq7j4yyJmXL356TjwNJVrl9oyLvtkQqv438hWK8DfYK3Gw/5eWdBt2ExYACV/6fBQsZIELNvkd69FcVmK6r1K2yB0DpDvY7J+kmaHq9NK8I1yWGKnyKe4P3NxC0ecNId/cQo/JISvK9FvQq6ppQA6aWLoBn+szHPE7X9w9vjNudY+18LIEAw6KTaHwPN5YHVC3XCCKaL8+W0jPmOyjFs8rVEJ7egJVhSvLEuPixwUpwmxnMaowXRPnkSRXOqTpijrqNezAmY9LkvJlNllClHDFh9v8lrMyvRqKgYaq9EyIazb/nJkAKTnEaF99/L+NpDSlTXG18zNVoVAVRSgErpS/ta6htLDNyrbbfdAEJJFaBBRqtu1xBNmDpYySq7fJax74lzmedlrzR19Zv/pS9y+0y5R++ZiaveCHE3qQ+wJkfZrHMxmSjk6Njr8Dw6TVE7/ustsEhVzBv9NW/fnoBA/6QhcTOqEJTAjtNkJLqWAWPiZ7DKK6GjgExhPQRWnKsa/s1kmOnZlCpxTUa1dN9FH5CkN7+fPC5Qulh3eUCaFvFsCfVgrQRaegsA7luOIRutK5DnPFfUElg8nIsOsJo3VAGo6uCRZy5b968KA/XRSwIL50AWhaBLBWWhq5Dx5cOZb1M33exSt7lyRWIIYtfKBBKFupFI6fCeZCBSPosEgvmEw3W1RqjV26ZzNSprgXwgjC6KZjTP5vaMyFsvj+M+47ofOjJL0TqO7i1Vvsj0INFrsMtWLb/0jOnIl5yP2LKEtNn9RWCLAszKR7+7ypxm0hWf4Z3CuMjuTsULsrRb+bPOPHs83a2ysGgzh12hmzhp
- ycnWmx2I
- C2PUr4lx2h4kHRHrwDm5Fe1iGbjvUBJO5wcnfGzDGM32ECc3vxMQc5Mg3xzqVy5W2X9+ap4UPbPEvcOA=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1758255109-924730
+X-HE-Meta: U2FsdGVkX18+lkeIk4UivokN/4Bf08vnpAONF7xB4QKX79hIyjdekRYkoNLfLjmvdjlTHvq6Zz66g5hoK+QZH2BiDhKQEYxKYWgYkplAvynCbAUwKSjGOXgSJB2a0omYFHKDFBk/U3komoa9drInhQFlbcn0hnC73DCIi89dmclg+aewYfbuYg3tj57PrbX9CV/mAL68QO60uZdv0ho85gyenh3SS/sxkhDtKlx96pg+Tpq4LrHvakRHTBK/Y/yFoTz8xQsY4lSy+U/qWPPVVsP08XkqXNoBphqbBXRZdM9sjvNP365IwmzqWs4VPLL3W5i4xLWxGTHC/XmATjPO4qtgydhr6T9SgyZLFlvg1rvM8cETqJM/szh+COPYBn7R8h1UKKTeKLvlwGXCIIrYodNVWtRBMTdhLrhnPk5nQsBs54DkEZaSeZafe1emrjAsgM3vc1EMr4Et4QDi2V3AkooCbjN62gJuhZKQKpY1oYbprNRtRakw0TAmGx6CFZU8CGjqc1VmV01019HIemevAfuWYlATTuL3WNZx2sJygJhCoPl5roUf5kTR1NI1EL4ns7tHidhXJn5tzLk2VezGLZe+9gpah4Y2oVzy7+M9m20Y1quRwO7nD3L/RUeEHFfPV4IMhwCzKujLDy9iieOQIdWtyso9xUkIDUHDapFx27ir0xBuRmkNJUR1kbZoQxdIi7eMqHOjA7PfuKkv9lPOCrtS2oFm4qGCYkphTUKXh2CyPK8f65+1Qd1OgjcipqOTq/rUav8x/rWMkjw8Q/eVa4KgQ9Zkw/Z3+tduvLjCYxZiL3VTGh71oIONNcOE84owe9DWstHGNoA+Bma3O7T6LBUbFBOIKgqJIJy8C0VZkjxPoXtBQvxuPkiSEW4KAOWooN1ywoYb1no58x4srncepjE/XxLzY2bhvSAnMJxpWY5N9YYzv0KBFxD9ndgw0Eqe8nBbGRCaeLKrbPydT7h
+ 3nxTmBJR
+ 9OGk+GcRhdgSMHTfHxRIRmddhQjV9mzTRacLbGJ9Ao4YfA4S/bsrpc2dKHx6VI3TiZC8HGkqU05xhiBPI/GsfVj/dy7CgWzeFwngcRTh7/bS6auj8TRqCgVm0PCH17CiiyDYMUH26sBBdQpsD0X0Bie9kds+DAaHlMgxXZJEu6TPVO+/bWepbVBJvJy9XkdQr2lLm9q9mmIGRqJYz9vt9w2LRp9DN6+PVz+KQgHQXQ3f6I6PXdHeR4qIgVdtt21gTNdmYjLK8Yq/zFL8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -135,143 +91,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In the future, we will reparent LRU folios during memcg offline to
-eliminate dying memory cgroups, which requires reparenting the split queue
-to its parent.
 
-Similar to list_lru, the split queue is relatively independent and does
-not need to be reparented along with objcg and LRU folios (holding
-objcg lock and lru lock). So let's apply the same mechanism as list_lru
-to reparent the split queue separately when memcg is offine.
+On 19/09/25 12:17 am, David Hildenbrand wrote:
+> On 18.09.25 07:04, Lance Yang wrote:
+>> From: Lance Yang <lance.yang@linux.dev>
+>>
+>> Guard PTE markers are installed via MADV_GUARD_INSTALL to create
+>> lightweight guard regions.
+>>
+>> Currently, any collapse path (khugepaged or MADV_COLLAPSE) will fail 
+>> when
+>> encountering such a range.
+>>
+>> MADV_COLLAPSE fails deep inside the collapse logic when trying to 
+>> swap-in
+>> the special marker in __collapse_huge_page_swapin().
+>>
+>> hpage_collapse_scan_pmd()
+>>   `- collapse_huge_page()
+>>       `- __collapse_huge_page_swapin() -> fails!
+>>
+>> khugepaged's behavior is slightly different due to its max_ptes_swap 
+>> limit
+>> (default 64). It won't fail as deep, but it will still needlessly 
+>> scan up
+>> to 64 swap entries before bailing out.
+>>
+>> IMHO, we can and should detect this much earlier.
+>>
+>> This patch adds a check directly inside the PTE scan loop. If a guard
+>> marker is found, the scan is aborted immediately with 
+>> SCAN_PTE_NON_PRESENT,
+>> avoiding wasted work.
+>>
+>> Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+>> ---
+>>   mm/khugepaged.c | 10 ++++++++++
+>>   1 file changed, 10 insertions(+)
+>>
+>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>> index 9ed1af2b5c38..70ebfc7c1f3e 100644
+>> --- a/mm/khugepaged.c
+>> +++ b/mm/khugepaged.c
+>> @@ -1306,6 +1306,16 @@ static int hpage_collapse_scan_pmd(struct 
+>> mm_struct *mm,
+>>                       result = SCAN_PTE_UFFD_WP;
+>>                       goto out_unmap;
+>>                   }
+>> +                /*
+>> +                 * Guard PTE markers are installed by
+>> +                 * MADV_GUARD_INSTALL. Any collapse path must
+>> +                 * not touch them, so abort the scan immediately
+>> +                 * if one is found.
+>> +                 */
+>> +                if (is_guard_pte_marker(pteval)) {
+>> +                    result = SCAN_PTE_NON_PRESENT;
+>> +                    goto out_unmap;
+>> +                }
+>
+> Thinking about it, this is interesting.
+>
+> Essentially we track any non-swap swap entries towards 
+> khugepaged_max_ptes_swap, which is rather weird.
+>
+> I think we might also run into migration entries here and hwpoison 
+> entries?
+>
+> So what about just generalizing this:
+>
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index af5f5c80fe4ed..28f1f4bf0e0a8 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -1293,7 +1293,24 @@ static int hpage_collapse_scan_pmd(struct 
+> mm_struct *mm,
+>         for (_address = address, _pte = pte; _pte < pte + HPAGE_PMD_NR;
+>              _pte++, _address += PAGE_SIZE) {
+>                 pte_t pteval = ptep_get(_pte);
+> -               if (is_swap_pte(pteval)) {
+> +
+> +               if (pte_none(pteval) || is_zero_pfn(pte_pfn(pteval))) {
+> +                       ++none_or_zero;
+> +                       if (!userfaultfd_armed(vma) &&
+> +                           (!cc->is_khugepaged ||
+> +                            none_or_zero <= khugepaged_max_ptes_none)) {
+> +                               continue;
+> +                       } else {
+> +                               result = SCAN_EXCEED_NONE_PTE;
+> + count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
+> +                               goto out_unmap;
+> +                       }
+> +               } else if (!pte_present(pteval)) {
+> +                       if (non_swap_entry(pte_to_swp_entry(pteval))) {
+> +                               result = SCAN_PTE_NON_PRESENT;
+> +                               goto out_unmap;
+> +                       }
+> +
+>                         ++unmapped;
+>                         if (!cc->is_khugepaged ||
+>                             unmapped <= khugepaged_max_ptes_swap) {
+> @@ -1313,18 +1330,7 @@ static int hpage_collapse_scan_pmd(struct 
+> mm_struct *mm,
+>                                 goto out_unmap;
+>                         }
+>                 }
+> -               if (pte_none(pteval) || is_zero_pfn(pte_pfn(pteval))) {
+> -                       ++none_or_zero;
+> -                       if (!userfaultfd_armed(vma) &&
+> -                           (!cc->is_khugepaged ||
+> -                            none_or_zero <= khugepaged_max_ptes_none)) {
+> -                               continue;
+> -                       } else {
+> -                               result = SCAN_EXCEED_NONE_PTE;
+> - count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
+> -                               goto out_unmap;
+> -                       }
+> -               }
+> +
+>                 if (pte_uffd_wp(pteval)) {
+>                         /*
+>                          * Don't collapse the page if any of the small
+>
+>
+> With that, the function flow looks more similar to 
+> __collapse_huge_page_isolate(),
+> except that we handle swap entries in there now.
 
-Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
----
- include/linux/huge_mm.h |  1 +
- include/linux/mmzone.h  |  1 +
- mm/huge_memory.c        | 39 +++++++++++++++++++++++++++++++++++++++
- mm/memcontrol.c         |  1 +
- mm/mm_init.c            |  1 +
- 5 files changed, 43 insertions(+)
+This looks good!
 
-diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-index f327d62fc9852..3215a35a20411 100644
---- a/include/linux/huge_mm.h
-+++ b/include/linux/huge_mm.h
-@@ -417,6 +417,7 @@ static inline int split_huge_page(struct page *page)
- 	return split_huge_page_to_list_to_order(page, NULL, ret);
- }
- void deferred_split_folio(struct folio *folio, bool partially_mapped);
-+void reparent_deferred_split_queue(struct mem_cgroup *memcg);
- 
- void __split_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
- 		unsigned long address, bool freeze);
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index 7fb7331c57250..f3eb81fee056a 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -1346,6 +1346,7 @@ struct deferred_split {
- 	spinlock_t split_queue_lock;
- 	struct list_head split_queue;
- 	unsigned long split_queue_len;
-+	bool is_dying;
- };
- #endif
- 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index ab16da21c94e0..72e78d22ec4b2 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -1102,9 +1102,15 @@ static struct deferred_split *folio_split_queue_lock(struct folio *folio)
- 	struct deferred_split *queue;
- 
- 	memcg = folio_memcg(folio);
-+retry:
- 	queue = memcg ? &memcg->deferred_split_queue :
- 			&NODE_DATA(folio_nid(folio))->deferred_split_queue;
- 	spin_lock(&queue->split_queue_lock);
-+	if (unlikely(queue->is_dying == true)) {
-+		spin_unlock(&queue->split_queue_lock);
-+		memcg = parent_mem_cgroup(memcg);
-+		goto retry;
-+	}
- 
- 	return queue;
- }
-@@ -1116,9 +1122,15 @@ folio_split_queue_lock_irqsave(struct folio *folio, unsigned long *flags)
- 	struct deferred_split *queue;
- 
- 	memcg = folio_memcg(folio);
-+retry:
- 	queue = memcg ? &memcg->deferred_split_queue :
- 			&NODE_DATA(folio_nid(folio))->deferred_split_queue;
- 	spin_lock_irqsave(&queue->split_queue_lock, *flags);
-+	if (unlikely(queue->is_dying == true)) {
-+		spin_unlock_irqrestore(&queue->split_queue_lock, *flags);
-+		memcg = parent_mem_cgroup(memcg);
-+		goto retry;
-+	}
- 
- 	return queue;
- }
-@@ -4267,6 +4279,33 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
- 	return split;
- }
- 
-+void reparent_deferred_split_queue(struct mem_cgroup *memcg)
-+{
-+	struct mem_cgroup *parent = parent_mem_cgroup(memcg);
-+	struct deferred_split *ds_queue = &memcg->deferred_split_queue;
-+	struct deferred_split *parent_ds_queue = &parent->deferred_split_queue;
-+	int nid;
-+
-+	spin_lock_irq(&ds_queue->split_queue_lock);
-+	spin_lock_nested(&parent_ds_queue->split_queue_lock, SINGLE_DEPTH_NESTING);
-+
-+	if (!ds_queue->split_queue_len)
-+		goto unlock;
-+
-+	list_splice_tail_init(&ds_queue->split_queue, &parent_ds_queue->split_queue);
-+	parent_ds_queue->split_queue_len += ds_queue->split_queue_len;
-+	ds_queue->split_queue_len = 0;
-+	/* Mark the ds_queue dead */
-+	ds_queue->is_dying = true;
-+
-+	for_each_node(nid)
-+		set_shrinker_bit(parent, nid, shrinker_id(deferred_split_shrinker));
-+
-+unlock:
-+	spin_unlock(&parent_ds_queue->split_queue_lock);
-+	spin_unlock_irq(&ds_queue->split_queue_lock);
-+}
-+
- #ifdef CONFIG_DEBUG_FS
- static void split_huge_pages_all(void)
- {
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index e090f29eb03bd..d03da72e7585d 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -3887,6 +3887,7 @@ static void mem_cgroup_css_offline(struct cgroup_subsys_state *css)
- 	zswap_memcg_offline_cleanup(memcg);
- 
- 	memcg_offline_kmem(memcg);
-+	reparent_deferred_split_queue(memcg);
- 	reparent_shrinker_deferred(memcg);
- 	wb_memcg_offline(memcg);
- 	lru_gen_offline_memcg(memcg);
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index 3db2dea7db4c5..cbda5c2ee3241 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -1387,6 +1387,7 @@ static void pgdat_init_split_queue(struct pglist_data *pgdat)
- 	spin_lock_init(&ds_queue->split_queue_lock);
- 	INIT_LIST_HEAD(&ds_queue->split_queue);
- 	ds_queue->split_queue_len = 0;
-+	ds_queue->is_dying = false;
- }
- #else
- static void pgdat_init_split_queue(struct pglist_data *pgdat) {}
--- 
-2.20.1
 
+>
+>
+> And with that in place, couldn't we factor out a huge chunk of both 
+> scanning
+> functions into some helper (passing whether swap entries are allowed 
+> or not?).
+>
+> Yes, I know, refactoring khugepaged, crazy idea.
+>
 
