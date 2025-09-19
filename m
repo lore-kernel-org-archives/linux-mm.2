@@ -4,96 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18ECDCAC59A
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 18:44:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8FF1CAC59A
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 19:19:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 79B798E0008; Fri, 19 Sep 2025 14:44:28 -0400 (EDT)
+	id D95168E0002; Fri, 19 Sep 2025 15:19:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 773268E0001; Fri, 19 Sep 2025 14:44:28 -0400 (EDT)
+	id D6C338E0001; Fri, 19 Sep 2025 15:19:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B0808E0008; Fri, 19 Sep 2025 14:44:28 -0400 (EDT)
+	id C5B0F8E0002; Fri, 19 Sep 2025 15:19:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5A13E8E0001
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 14:44:28 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 070D7591EB
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 18:44:28 +0000 (UTC)
-X-FDA: 83906875416.30.BE2883A
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B0D748E0001
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 15:19:46 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 45972870B4
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 19:19:46 +0000 (UTC)
+X-FDA: 83906964372.25.9F1C1CB
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 5E24AC0004
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 18:44:26 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=P3cUVJEJ;
-	spf=pass (imf22.hostedemail.com: domain of will@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=will@kernel.org;
+	by imf14.hostedemail.com (Postfix) with ESMTP id 7E651100008
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 19:19:44 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=i2GtAhd8;
+	spf=pass (imf14.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758307466;
+	s=arc-20220608; t=1758309584;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cxT6TPuVr6VNfT0qVSTFqMoTa3oTyrVPwrAlb7CQBJA=;
-	b=d42ytvmCZIyOCan+cAhpkglMfdu3GQDQchPATWH0RmclgtcBHRkafCiujXCPmTtLQSyIAy
-	iBRqEWBDZ506+XtA3fVuXjBbxwIlEJIuL6wse5lJ6QVeNGZfRmSF5V0wQxA9/IvOgzAqh9
-	9n2Q5Bb4OxBG4D1rK/cf3cdH/eFiifE=
+	bh=8yV55nY0fvSS+z77AKpGU5Td15J+ZOm7wtKdU5Fyu44=;
+	b=eZWJg87N6jbpqKzEDKC+L6LUJTUHaeOaAT7vqBWk6OoqngnfBMK0pLw1lxU3myXCMp7PSz
+	6gC+JHWEB8uPfQkGj8tfA8VOTyP1+GOGtgPeSobgU1TsUHZxKgXx5NZX5Eb3Lk51FkXo95
+	qrwmLiRYWkYPN8ENi68g+KKuqscrPBI=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=P3cUVJEJ;
-	spf=pass (imf22.hostedemail.com: domain of will@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=will@kernel.org;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=i2GtAhd8;
+	spf=pass (imf14.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758307466; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758309584; a=rsa-sha256;
 	cv=none;
-	b=e9VGWWDaaunhEKH3MajRRRtrnCci08cbWQEy/4A9EY8YAsY0B5CnlBvbS28c7wJkSqG76S
-	cr0IGSraCOk4TeafnwS8z2VoTJiygdaJ3R0IjTEDsZiJTCUiQqFHwylSGQNdSkfzXwK6IC
-	tMIrI2zJuTqKUR50bDc5Uhn6xBxtxX8=
+	b=MqDqjvA5Aedjs8akcWCsoDV5KtmOfnT1qqJkPbDt7YzGKw0fCPs4yO+9VgF5F56muDw6H6
+	mgSXA9xIlqDRC6ZadpGhaM3p8GADQFhEMhSIJUbI3MH4DlPsW324vA3m+UHfISn3VK1Gy1
+	eaJYx9Axk9/Dw28Fa8vQF2uHktvUExI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id F0B3944175;
-	Fri, 19 Sep 2025 18:44:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44870C4CEF9;
-	Fri, 19 Sep 2025 18:44:22 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3288743CED;
+	Fri, 19 Sep 2025 19:19:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 083E6C4CEF0;
+	Fri, 19 Sep 2025 19:19:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758307464;
-	bh=TvNct0puZkUduc5sUbES816mFOXImptqyANagH2X/rg=;
+	s=k20201202; t=1758309583;
+	bh=RIu4F7qAgYmGH6tNvm+4CzefUV0zH2vjCBJ8h0ToUAo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=P3cUVJEJqWFBU7ww0WmUJbD83nfjVDNdDRJtPJeu4fS51UMblHAO+y1IiOgLm2w/t
-	 TUbpudm+KVhuUZBN44nNp+D8YU57QIok0SMUNjlWzyovX6d8n7Fv4r5utvbTcFzm80
-	 wsREd6wbVor91Lf68a/PZROm7ttTQdnfeGEjXJ3POhix1+nAinVdjzdkxQC+oRli2s
-	 VhBqmPEGC1qZJkDMLyBb2Z8h32wupJupI0gO+bMuua+R2hebikzvZwbHAWb/jmc24+
-	 3yf3+/nPuXtNraKM+5mpi0YKhXJ3duaJ7nikdVjjcFh09+FOmsu5zGh8YRQrhL79kt
-	 5Dw3rKMVLZaBA==
-Date: Fri, 19 Sep 2025 19:44:19 +0100
-From: Will Deacon <will@kernel.org>
-To: Ryan Roberts <ryan.roberts@arm.com>
-Cc: catalin.marinas@arm.com, akpm@linux-foundation.org, david@redhat.com,
-	lorenzo.stoakes@oracle.com, ardb@kernel.org, dev.jain@arm.com,
-	scott@os.amperecomputing.com, cl@gentwo.org,
-	Yang Shi <yang@os.amperecomputing.com>, kernel-team@android.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH v8 0/5] arm64: support FEAT_BBM level 2 and large block
- mapping when rodata=full
-Message-ID: <aM2kg49jBia4VKYr@willie-the-truck>
-References: <20250917190323.3828347-1-yang@os.amperecomputing.com>
- <175822779944.710258.10028837182267037801.b4-ty@kernel.org>
- <fc43aa07-d4ad-47d5-8381-61d4a9b8c467@arm.com>
- <aM0-FQlepoxxGkRd@willie-the-truck>
- <ceaf604f-8ad7-4e19-812e-7eeace10d835@arm.com>
- <aM1E34lRjKg7nlRu@willie-the-truck>
- <38fa4717-9105-4bca-a2cd-914afc109570@arm.com>
+	b=i2GtAhd8bUf2jG0nPz6QS+Fnc1JDbjL0PYpNDaajz77TqZvhRvhLX375Esu4LPoIX
+	 Zic8Xef1180RGF6uIFCGGIBllcoVDHNazkwmTXJj4H+EJY6pce8JBGtyF16UFy4p1p
+	 dLJVg5VGwtDQyOaMXxRLBLjj4cPHxQfG6v42OKABqtovOAYnhm1nSGR2G6YmQm/w60
+	 on+yLOj2bqnr/s4CLiAKCfaPDP9nLLXlJfhAD51wCvIGpC8GhNNQlYm4uT7Q0F/7An
+	 VT+NF2S7AL9sj63auOqbZ1DET9Bq3OB+Hf2NyaclfqbTydCsXoTef/O7uHV5+bwSRO
+	 F6oKvMERskMBw==
+Date: Fri, 19 Sep 2025 12:19:42 -0700
+From: Kees Cook <kees@kernel.org>
+To: Ethan Graham <ethan.w.s.graham@gmail.com>
+Cc: ethangraham@google.com, glider@google.com, andreyknvl@gmail.com,
+	andy@kernel.org, brauner@kernel.org, brendan.higgins@linux.dev,
+	davem@davemloft.net, davidgow@google.com, dhowells@redhat.com,
+	dvyukov@google.com, elver@google.com, herbert@gondor.apana.org.au,
+	ignat@cloudflare.com, jack@suse.cz, jannh@google.com,
+	johannes@sipsolutions.net, kasan-dev@googlegroups.com,
+	kunit-dev@googlegroups.com, linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lukas@wunner.de,
+	rmoar@google.com, shuah@kernel.org, sj@kernel.org,
+	tarasmadan@google.com
+Subject: Re: [PATCH v2 09/10] fs/binfmt_script: add KFuzzTest target for
+ load_script
+Message-ID: <202509191208.D2BCFD366F@keescook>
+References: <20250919145750.3448393-1-ethan.w.s.graham@gmail.com>
+ <20250919145750.3448393-10-ethan.w.s.graham@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <38fa4717-9105-4bca-a2cd-914afc109570@arm.com>
-X-Rspamd-Queue-Id: 5E24AC0004
+In-Reply-To: <20250919145750.3448393-10-ethan.w.s.graham@gmail.com>
+X-Stat-Signature: 4xhjt5dw99jtrx1gcy4jjtwyehxp57eo
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: dubhtyaj6xjjoca8nja56pokyxuh1knz
-X-HE-Tag: 1758307466-281910
-X-HE-Meta: U2FsdGVkX1+bTbUx02YeGf/SPxAB25ouq6Wec4SaM71szBCgehc8Vb/1IR/ok6vGbrJcrNz9YmI56xi2eUtKN9pBwEA5/u53e2Iw3CEOmyubhRnImN7ROjiIWeNsatfZfaHBJkPlNQ0Mh9VanhnZVkVthjJyjSwnF5S4c8uBqE2rvLZFYlCQzc0OuSZDgUjHxCWPmjH+1LYbXvCX95UGYVraJSOJdOju6UhNRr2p6UEtlUjBiwj3fEYtt0TIqkc1MgPQ8bwcybcNVX4SuVocWkmpO8tNdmPxfkEDNHIeASXtyUeGSyc1co/b0r+OJHw/O7C+YyxGMmjWW4oPsEdAAF+03O8t0oMULtqQ1fQDBFFkUJwTu8FTGkVc4sTfJ3W0UnYXw9RbSA1s8Nb/g0QIAHqn7Agoyc+IthZFADDI7Fag1+99xhOlytza999tjajlGN1ze9A0qtLfM48imLHPWffwc00DfzYBJVll9Cm0Z3nGt3paFeCArUMqwpsmT7PERzs429GNhHk0BiAY8sqceYBlEaY0Hn2FzZrAi5K14b+Nfu79Zje3ftrevMqcw/Ag/wnHdDWicTVO1ym8Ba52M7YK4hQfLnbbvHF7oBfYp+5zgwgZX/J+KGisPN6W9CvuG5uqVo4tI8cCNeZA6VGAOxlIB6pOnM+K2UrZILiwtqobbM52jo7pO6AXMZgtyAw8hIvu+zL5sSEMHvMtTVTqDuWNIoYTluZ0BrRxmd0SD/+KbMwG2XMIa2VNp04TDnNxWJEs0jcu2lW8x0CdDheYUdBX1S+drLTVWK9CF+g5nZQCFYm13J5PwTw3rNoDSr3cXBRNcblqXpcS4din0AqxAlMPjLWJcIhD21BZgqt6WQXvorFMV/lSoJyzvLUEEiNR0J12AJFgPyS0LZTO7IGBAH9NDQfFqTUKFpv7ygicm313/g0b+bMq+tG8c5fX3kERRkFd0wJI3fRKc3iJjp3
- UoXwgIIE
- juHpjrgqISDr7D+/+efDQj4uh48b/8+V5sQRGZFnhIsQEiZaRIvSNdfjx9bgjTnFMyEOPmmDy9UwpSCBbycFwCCsXwMnc2O9GM5DM7uY3pQmy6kpgi1gsfYdL0hvpSs1xMVBflz+ROkfheagzpe/zW4CsNMsXdwJ94YZSFyQa43wEm2jwQVl/zxMKP3d30+XvL7TXMICh2xBizwxiXzo9hCS0g+g32WKXX4N8p+gaCOG9lrFu0XbFI+F5LlYh5DNuDOcpA4EEzPhLsnelE2xJ+0/k7QxaW++b0xMhwULlOggvx08=
+X-Rspamd-Queue-Id: 7E651100008
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1758309584-996361
+X-HE-Meta: U2FsdGVkX18uQ6exZSc7wLrwuL0duHnZbjV5tsIe+y6ApnMrkFAgCTSOQHNOFgZLg7s/xDYAEMn72E33bLMM9Pz6wYsO5oqqdf1skMBeiPAF0a65Zy/F9y7M2cFRw5s2/bhAaPo/siyRnVeK/TeUC11meBx0Ljcer2pFYajZVPlCdOPcHrIAUx+kUGEdtTkXxBah7QgNvkuof1vhQmX0j3AbTHbUdKZ3sCOqUUiF9vofoSURZn5JeNED5JfzZesvZZbAO54LtxZ6Sw8FEgSphsR6v5Wi/QTZwU5G4uRlmnUvAGKZzAnQvQQhFJmIin7p4e4O+tkQ5D6MlI2lSZjxhRvf7EES2dY04Z7/mkrsMtCpGj9C5F4k7p7x1rToLrxkaYk8AnzZnkJwmd2xC8nWSHXkcC0DmgKqQ//AyUgOOkt33xP+UhQf02XHd4UxTXuf64X+x43qHShOBKCHPpJT/318K1ezKqczoYv+w3oL8+zdZ3et+p16SNqoA7t+YE8/frI3KMaqXFv8cfFXjpDH12mmOLfxWRygkoNCasO1+zfXZg2WisMelJC3TPCAqx3cHwb1pKduZXxrF0/9Ibmp8ioWxdOFpwRiez4KWLUr6qwNgN8uTZTjAj+bQKMWDQGUd2EkBriSLGuRYv9a2UNBMmn/FeoOWA6a4Yw6j0inF9huDjd1UriqQp2+riTinntICWkyNSNV7EC72fZDNZey4eKpNs1RtLSvi7kN4WORHC8q0ZfRxI6/0n4o67yv7l3fT3Mn605E3XpsCoDD6LeR9TqocnoYctLvumWx2iJ40NEG2UDSAaklRXLeC45jpwWCq73UJ/SiMI11U/ZzI/5KqBNplXogZe0HKVp9o4p12vYVX8H0wXNwdc6GpbsKkkfUvCLVEn8UYiOE+rxMnxDGg/DQX0Xbak8h75Tw/jutAuQrAADp3U453N7YX5qCf2qQwGN9RXcAFA4Bpj7JFC9
+ cWquabxT
+ 97KKtmsBDt8/GAOp5rJCbSqsIUgIoo4m7PHH1082FBgn23NWK46mbTtY0r4BrpW6N7wkh+XtFifKCTCk3GedcmZ12OHEqXReg1ahzIk7gBYwOwxKex42MY8UQZlnPhKMuEwON0Ce4bXHCnyqILIBE1q4yEP+nH8w2AFnlq0gCfCj3uzhPiq7u31Pds/RYapJJRaApGUx+wbLAvmw10e9gU9Cbe1PPjmiGdWZ8DP83Hyt8+w1lElyVr5z+TEMmGQd24T6khB8EvR8SEzjT5kj4zHdmQ54pNDPLyaDgv4krEBv56dW8WDp/JACGl7Gzc/5+FXn15SsyGzZYq0mVfesE0R5at0wvkeG9u7Cv0nyMoYQZOt75kT/PBOR44dAPOKly7dRVaxi+KWZCgna6je5BgzBlvRhxDP0m7Nuw6uyiXULfxvAIOKVUwEVmLnzQs22R7SAm1UUJOR0rh1xDYtOvRuNgbQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,23 +101,147 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 19, 2025 at 01:00:49PM +0100, Ryan Roberts wrote:
-> On 19/09/2025 12:56, Will Deacon wrote:
-> > So how about we:
-> > 
-> >   - Remove X4 from the list
-> >   - I try harder to apply your patch for secondary CPUs...
-> >   - ... if I fail, we can apply it next time around
-> > 
-> > Sound reasonable?
+On Fri, Sep 19, 2025 at 02:57:49PM +0000, Ethan Graham wrote:
+> From: Ethan Graham <ethangraham@google.com>
 > 
-> Yeah that works for me. Cheers!
+> Add a KFuzzTest target for the load_script function to serve as a
+> real-world example of the framework's usage.
+> 
+> The load_script function is responsible for parsing the shebang line
+> (`#!`) of script files. This makes it an excellent candidate for
+> KFuzzTest, as it involves parsing user-controlled data within the
+> binary loading path, which is not directly exposed as a system call.
+> 
+> The provided fuzz target in fs/tests/binfmt_script_kfuzz.c illustrates
+> how to fuzz a function that requires more involved setup - here, we only
+> let the fuzzer generate input for the `buf` field of struct linux_bprm,
+> and manually set the other fields with sensible values inside of the
+> FUZZ_TEST body.
+> 
+> To demonstrate the effectiveness of the fuzz target, a buffer overflow
+> bug was injected in the load_script function like so:
+> 
+> - buf_end = bprm->buf + sizeof(bprm->buf) - 1;
+> + buf_end = bprm->buf + sizeof(bprm->buf) + 1;
+> 
+> Which was caught in around 40 seconds by syzkaller simultaneously
+> fuzzing four other targets, a realistic use case where targets are
+> continuously fuzzed. It also requires that the fuzzer be smart enough to
+> generate an input starting with `#!`.
+> 
+> While this bug is shallow, the fact that the bug is caught quickly and
+> with minimal additional code can potentially be a source of confidence
+> when modifying existing implementations or writing new functions.
+> 
+> Signed-off-by: Ethan Graham <ethangraham@google.com>
+> 
+> ---
+> PR v2:
+> - Introduce cleanup logic in the load_script fuzz target.
+> ---
+> ---
+>  fs/binfmt_script.c             |  8 +++++
+>  fs/tests/binfmt_script_kfuzz.c | 58 ++++++++++++++++++++++++++++++++++
+>  2 files changed, 66 insertions(+)
+>  create mode 100644 fs/tests/binfmt_script_kfuzz.c
+> 
+> diff --git a/fs/binfmt_script.c b/fs/binfmt_script.c
+> index 637daf6e4d45..c09f224d6d7e 100644
+> --- a/fs/binfmt_script.c
+> +++ b/fs/binfmt_script.c
+> @@ -157,3 +157,11 @@ core_initcall(init_script_binfmt);
+>  module_exit(exit_script_binfmt);
+>  MODULE_DESCRIPTION("Kernel support for scripts starting with #!");
+>  MODULE_LICENSE("GPL");
+> +
+> +/*
+> + * When CONFIG_KFUZZTEST is enabled, we include this _kfuzz.c file to ensure
+> + * that KFuzzTest targets are built.
+> + */
+> +#ifdef CONFIG_KFUZZTEST
+> +#include "tests/binfmt_script_kfuzz.c"
+> +#endif /* CONFIG_KFUZZTEST */
+> diff --git a/fs/tests/binfmt_script_kfuzz.c b/fs/tests/binfmt_script_kfuzz.c
+> new file mode 100644
+> index 000000000000..26397a465270
+> --- /dev/null
+> +++ b/fs/tests/binfmt_script_kfuzz.c
+> @@ -0,0 +1,58 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/*
+> + * binfmt_script loader KFuzzTest target
+> + *
+> + * Copyright 2025 Google LLC
+> + */
+> +#include <linux/binfmts.h>
+> +#include <linux/kfuzztest.h>
+> +#include <linux/slab.h>
+> +#include <linux/sched/mm.h>
+> +
+> +struct load_script_arg {
+> +	char buf[BINPRM_BUF_SIZE];
+> +};
+> +
+> +FUZZ_TEST(test_load_script, struct load_script_arg)
+> +{
+> +	struct linux_binprm bprm = {};
+> +	char *arg_page;
+> +
+> +	arg_page = (char *)get_zeroed_page(GFP_KERNEL);
+> +	if (!arg_page)
+> +		return;
+> +
+> +	memcpy(bprm.buf, arg->buf, sizeof(bprm.buf));
+> +	/*
+> +	 * `load_script` calls remove_arg_zero, which expects argc != 0. A
+> +	 * static value of 1 is sufficient for fuzzing.
+> +	 */
+> +	bprm.argc = 1;
+> +	bprm.p = (unsigned long)arg_page + PAGE_SIZE;
+> +	bprm.filename = kstrdup("fuzz_script", GFP_KERNEL);
+> +	if (!bprm.filename)
+> +		goto cleanup;
+> +	bprm.interp = kstrdup(bprm.filename, GFP_KERNEL);
+> +	if (!bprm.interp)
+> +		goto cleanup;
+> +
+> +	bprm.mm = mm_alloc();
+> +	if (!bprm.mm)
+> +		goto cleanup;
+> +
+> +	/*
+> +	 * Call the target function. We expect it to fail and return an error
+> +	 * (e.g., at open_exec), which is fine. The goal is to survive the
+> +	 * initial parsing logic without crashing.
+> +	 */
+> +	load_script(&bprm);
+> +
+> +cleanup:
+> +	if (bprm.mm)
+> +		mmput(bprm.mm);
+> +	if (bprm.interp)
+> +		kfree(bprm.interp);
+> +	if (bprm.filename)
+> +		kfree(bprm.filename);
+> +	free_page((unsigned long)arg_page);
+> +}
 
-So after all that, the conflict was straightforward once I sat down and
-looked at it properly.
+Yay fuzzing hooks! I'm excited about this series overall, but I'm not
+a fan of this "manual" init/clean up of bprm.
 
-Please can you check for-next/core? I forcefully triggered the
-repainting path in qemu and it booted without any problems.
+If you're going to set up a bprm that passes through load_script(), it
+needs to be both prepared correctly (alloc_bprm) and cleaned up correctly
+(free_bprm). Otherwise, you may be fuzzing impossible states created by
+the fuzztest setup. And having a second init/cleanup path in here makes
+future refactoring work more of a burden/fragile.
 
-Will
+But this is also kind of not a great example of fuzztest utility because
+load_script _is_ actually directly accessible from syscalls: it is trivial
+to externally fuzz load_script by just writing the buffer to a file and
+execve'ing it. :)
+
+-Kees
+
+-- 
+Kees Cook
 
