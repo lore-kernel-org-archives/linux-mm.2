@@ -4,83 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB243CAC59A
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 10:25:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67FAACAC5A5
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 10:25:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 228898E0122; Fri, 19 Sep 2025 06:25:07 -0400 (EDT)
+	id BED8C8E012A; Fri, 19 Sep 2025 06:25:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1B1278E006B; Fri, 19 Sep 2025 06:25:07 -0400 (EDT)
+	id B75978E006B; Fri, 19 Sep 2025 06:25:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 051A38E0122; Fri, 19 Sep 2025 06:25:06 -0400 (EDT)
+	id A16818E012A; Fri, 19 Sep 2025 06:25:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E285D8E006B
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 06:25:06 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 883AC8E006B
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 06:25:36 -0400 (EDT)
 Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B65AD599E7
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 10:25:06 +0000 (UTC)
-X-FDA: 83905617012.15.33AEBAB
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 39548BA7AC
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 10:25:36 +0000 (UTC)
+X-FDA: 83905618272.15.B62D09D
 Received: from fra-out-005.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-005.esa.eu-central-1.outbound.mail-perimeter.amazon.com [63.176.194.123])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 69FAF1A000D
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 10:25:04 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=dfmUzvAc;
-	spf=pass (imf19.hostedemail.com: domain of "prvs=35013cc75=farbere@amazon.com" designates 63.176.194.123 as permitted sender) smtp.mailfrom="prvs=35013cc75=farbere@amazon.com";
+	by imf14.hostedemail.com (Postfix) with ESMTP id E4849100002
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 10:25:33 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=MweV+9Zf;
+	spf=pass (imf14.hostedemail.com: domain of "prvs=35013cc75=farbere@amazon.com" designates 63.176.194.123 as permitted sender) smtp.mailfrom="prvs=35013cc75=farbere@amazon.com";
 	dmarc=pass (policy=quarantine) header.from=amazon.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758277504;
+	s=arc-20220608; t=1758277534;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jvk2RBzXwrA99Hwxay/jSQlk3gLjsVti9lJHvH/pTPQ=;
-	b=upKqkKyrrn58JY0sdJt0jdCUkIb9VVmddANW6NiAepA/WHG7S8DCLeTXTNmpObtg5RV+2m
-	du/zQM4kpdluqBTx2NK1/ahfoqTb+J9VpKq//mtz/uuZHcjSl5yZtxhXxHSOGK1CB2Rj8Q
-	SiztXjc/AZ7vFyAkdXdGV9IsGtTgVvM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758277504; a=rsa-sha256;
+	bh=JKrzZxxwAGrrsDAYTdb2CFyqRRiBdvlMoDbZLm/oNpo=;
+	b=b3CGDZ+57HzxdS/jSJ5cVYuRGGyofbkRoEF3FDnukTqRmVI2RXz5IwolisEcVXKpXXXhff
+	JDEepO6o1yKATiFl9Wm2M1znpR5XRDyrmq1cOKv0Z5VQaL/V37NAQpW5fQlc7mIbKlH8IF
+	aHhweufZq+ubFetJcRQN+skLn2kkTM4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758277534; a=rsa-sha256;
 	cv=none;
-	b=0OOAHeC/ygRlaOiBJfke1GpKyzVw+v9G+typ4S594V9SPVat8c6w4V6237nAjUQoXLpkyQ
-	bxeTGaXpjCxGdttY6yV3F4onOhrsgj10mT4RaF9rTZPbEt4/AZegThleStOFNbZt8BD34A
-	JKuQkyVqcGwos8jl3dl8vxgPHRlTWWk=
+	b=5QX+hYHG/8Dci3TKbjLFT1vqAUEKL03tAEvh/JCANNbdAW5ZFnRXI117ScS9eXH202HB1M
+	E7/Rx5hjoizUlqKnEiOy0Ljwg29aX+cLiVlRw1GAMTvr8m0DxzTKi/YVvamI6qS6rpNz5F
+	pZryi0xBdoqXLIDDJb/7MeKlm/Z7fl0=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=dfmUzvAc;
-	spf=pass (imf19.hostedemail.com: domain of "prvs=35013cc75=farbere@amazon.com" designates 63.176.194.123 as permitted sender) smtp.mailfrom="prvs=35013cc75=farbere@amazon.com";
+	imf14.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=MweV+9Zf;
+	spf=pass (imf14.hostedemail.com: domain of "prvs=35013cc75=farbere@amazon.com" designates 63.176.194.123 as permitted sender) smtp.mailfrom="prvs=35013cc75=farbere@amazon.com";
 	dmarc=pass (policy=quarantine) header.from=amazon.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1758277504; x=1789813504;
+  t=1758277534; x=1789813534;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=jvk2RBzXwrA99Hwxay/jSQlk3gLjsVti9lJHvH/pTPQ=;
-  b=dfmUzvAcDJzv0R6BIgqB5qQLBVIs9iomSXUvB9yJcmdqdt+MLyPQjJ68
-   fWcf3KVYNmrvgQArTxZRpFwqqo45Id9lVARa70EiEW7DN0zZcNkfI2xSt
-   rdYsx5vdEtta7EjEmqx+PffkUvd5hpPKv8yjSr1MsAgQFnC1qKG2M+nSm
-   eNfavR64W6epcY+mA1r6EYdwYbJQBWlS0jMRqSLvYJLENwFM4sh0W8fj+
-   0inXJV8FXmLl3EMam5RlrVDv1O8Y8TP+3/hxLGKiBotKjVlcfiblIhPK0
-   UOSxNhEjvnckzlQhZdkO2uXB0+hasdRjMI7r0cmayy/VdqoXoPIFCwalk
+  bh=JKrzZxxwAGrrsDAYTdb2CFyqRRiBdvlMoDbZLm/oNpo=;
+  b=MweV+9ZfU01ZtTpQdgwIFJQV262P2fbFbMISLOD9v/l5o7ENt+MtkBEu
+   YhNelQxvg7UotNSh9vweabDuRnt9ivezdJSueL7rrd3GBAgZ7FSRINr21
+   c/tdqc2o8modrpgS39q7UkWkFp/jvdMLolQCn6xGRFJ8JUzFWIyxdR1x7
+   M5iousziF6rBixl928YBWT87BPI15kEDy6KlKbCuwtMlHMT27XjjArlRR
+   yEtjWGCFax/mJQeJPk8ic968K9wRJBB89e1a1HUefaI2zEEhnfiBOzDjj
+   8RC8HNsLndBZRFS0GfZ4VTS+z0eCVhO/8c++pE2fy8M/Ag1y0Z9YCHg3R
    g==;
-X-CSE-ConnectionGUID: KANou9z1RuCe6Vq68KMQTw==
-X-CSE-MsgGUID: TbLofDk1S/CNyVlnEY1GAw==
+X-CSE-ConnectionGUID: /KJzP37LQf6k38ZLxFASQg==
+X-CSE-MsgGUID: 3wkYSDRFQsGnu3n2SgcG1A==
 X-IronPort-AV: E=Sophos;i="6.18,277,1751241600"; 
-   d="scan'208";a="2369395"
+   d="scan'208";a="2369417"
 Received: from ip-10-6-6-97.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.6.97])
-  by internal-fra-out-005.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2025 10:25:03 +0000
-Received: from EX19MTAEUA001.ant.amazon.com [54.240.197.233:30717]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.30.197:2525] with esmtp (Farcaster)
- id 083ec295-c61b-4097-9a92-62dae0cb35b4; Fri, 19 Sep 2025 10:25:02 +0000 (UTC)
-X-Farcaster-Flow-ID: 083ec295-c61b-4097-9a92-62dae0cb35b4
+  by internal-fra-out-005.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2025 10:25:32 +0000
+Received: from EX19MTAEUB001.ant.amazon.com [54.240.197.234:26532]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.0.240:2525] with esmtp (Farcaster)
+ id 70cb6f1b-6138-4159-8845-ca7822e18c61; Fri, 19 Sep 2025 10:25:32 +0000 (UTC)
+X-Farcaster-Flow-ID: 70cb6f1b-6138-4159-8845-ca7822e18c61
 Received: from EX19D018EUA004.ant.amazon.com (10.252.50.85) by
- EX19MTAEUA001.ant.amazon.com (10.252.50.192) with Microsoft SMTP Server
+ EX19MTAEUB001.ant.amazon.com (10.252.51.28) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Fri, 19 Sep 2025 10:25:02 +0000
+ Fri, 19 Sep 2025 10:25:30 +0000
 Received: from dev-dsk-farbere-1a-46ecabed.eu-west-1.amazon.com
  (172.19.116.181) by EX19D018EUA004.ant.amazon.com (10.252.50.85) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Fri, 19 Sep 2025
- 10:24:33 +0000
+ 10:25:01 +0000
 From: Eliav Farber <farbere@amazon.com>
 To: <linux@armlinux.org.uk>, <jdike@addtoit.com>, <richard@nod.at>,
 	<anton.ivanov@cambridgegreys.com>, <dave.hansen@linux.intel.com>,
@@ -128,11 +128,11 @@ To: <linux@armlinux.org.uk>, <jdike@addtoit.com>, <richard@nod.at>,
 	<coreteam@netfilter.org>, <tipc-discussion@lists.sourceforge.net>,
 	<stable@vger.kernel.org>
 CC: <jonnyc@amazon.com>, Linus Torvalds <torvalds@linux-foundation.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, David Laight
-	<David.Laight@aculab.com>
-Subject: [PATCH 12/27 5.10.y] minmax: avoid overly complicated constant expressions in VM code
-Date: Fri, 19 Sep 2025 10:17:12 +0000
-Message-ID: <20250919101727.16152-13-farbere@amazon.com>
+	"David Laight" <David.Laight@aculab.com>, Lorenzo Stoakes
+	<lorenzo.stoakes@oracle.com>
+Subject: [PATCH 13/27 5.10.y] minmax: add a few more MIN_T/MAX_T users
+Date: Fri, 19 Sep 2025 10:17:13 +0000
+Message-ID: <20250919101727.16152-14-farbere@amazon.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20250919101727.16152-1-farbere@amazon.com>
 References: <20250919101727.16152-1-farbere@amazon.com>
@@ -142,22 +142,22 @@ Content-Type: text/plain
 X-Originating-IP: [172.19.116.181]
 X-ClientProxiedBy: EX19D035UWB004.ant.amazon.com (10.13.138.104) To
  EX19D018EUA004.ant.amazon.com (10.252.50.85)
-X-Stat-Signature: 8equ8rdk83it9kd5fhr5pk1jy8au7fg4
-X-Rspamd-Queue-Id: 69FAF1A000D
+X-Stat-Signature: a5s97bj4w9imheu1g6nqwuzkc7pmcwr7
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1758277504-40254
-X-HE-Meta: U2FsdGVkX1/ZdI9JZwz9t6RDVJKrNH4lu0QWNJpd6SxA/usbnqZCKVzr3WvHcgAK0tcYvuygLsiyGUAEc5/A3KnPt8hSJzjK/GPasJQYTzoQu39Zl1fWuCI1Srg6paRgD9Scfc2bgageXap2XFnZvfKF+tP9VMSyqq7wJmr0eUClw46K5854Rz+xngt3ikBMxbJ4aczXByJ2qbFgosnf5L9r22omfMcR7oOrobW6M0zXPP0jsMs13WghjX4zkwl2C9tgrDUs3UwAxKUYG5h0bEQI1PIqer2x4H4Ly+W5elkkuIPLvstZ+LLH77vStPYCionO53IjxSDK5qKa3vcHUzTuciWz3ddifvr0q8H8sFASNYXTOnWT/dfkp+MUcw6GvE+UeIxLZUc9GXcJ75+CzNWRQ+l49RDTb1GI2IHCEkU03pwMn/hiWApNQZmHIJJgldAIYt+8PRtk3SuLxDx8uI2GgW3J22bMF4quf+LTSgzv30jhitoZcXvvLUBlOZwC/fxJNlrXk9aZci5WBqGSX5I2qn0CuQe9jVeQWEtaCtesjAYHWmBbPhedK50r82NXkirSKrKWLst/qtxINK/umSxVbX+eZxThelw1CzbqPdROwQIiSUd7s6D33Tk/uhwUUDdaejGZyXbT5HskQORVheCVx5CDprQG6gPxtYoFG8EqRYJIjqwjHqdofjSyCa5b9arGS7YN8bIIKsvvjiPtnM1uemI2ZbiXspasu1x5L1wTIb3WjppmvWMuP4FtNXygEnTp15wZn98Y0X0Tcqa2EmbVUMARPFJu8sXfeaN3MXNzO8R33w2bHLUARGUJ/jm+/5wniFLC6YD9aS+2ILy08XDbina0Q5yybxYp9nUOhLnF2Tiv7z42It78l8BkmRqEwhoO0h0MeLFSlTbT1/ZZGqTWmWc9b4Xpo2kcVUagLfY98XQOqlaDrn6md70rKovVMflevyzdB12NxYkWWVu
- +e9fQqW9
- pFl2jR9jkjmFAZUApyFv2skefB5mMlhzqDxrOV7mOcbJ0QRfAfKEGx8xFxXgmxM7+bpZUISDIYuYqIWvbSAIMsn1xri2CtWcszwit2A960Wa/ks2EdhZ7th0rCipKw01OitYtwHgpl8yql1Ycgm1hh1CXR7K/cHcUaFlZJWbEOSJY1BEHLs918cWbayJnE4Sj9K2T+4i6PmjwQ0PDlBQVQZc1eeD9zJ3jdDQiFhJGy1pfpoSBzGxv2Kyo3lgyLdU/CqNTdIYxZOzGzzp5qwPnZfmlrNYA2jt59sg8VePxnZEYgxR0xusJZFR0dVAmBWVbH5qyoVL2TxnqpiUhW6ia9g5lOSrvwo5aDNwPgIKXdY46+4Zeox8A5BpwyOOHiYqSK4lKN2KzXK/3jqRs+5le3YSxaBCg695krHNl6fy/j4kXqoiLFJO3PXaQbg12VwRmeuaQe+Tx5JbgYcm9WA9gclsh8dQEYyjmugZVnaOUVcY9uSLAsg7Dm/GZOnxk1+GD/K9uhvldVbIE/zNEdjft9l6hDl08q7DW9mDa7GUYBw1eaqk0Qy4ILgeeI3ZLwXU74W636J3C2O0SZDsRkFxLz05AvJYcX2wBgZKbPnuKj+BKPtFL1MA2NkPiVqyJv6Q8B6KDlLYIFLpFCP/UrPzH0Zdf1tFzkngNXFcTwlBkN0kxfIbioL3umgDHvxOXQM/i5gBQYEPv6abSxCNo1DoTXxGY9UJNlRyLO7+D9H53cDOSC8CekHkmSX9L1PCPoOdjHPJDEt/ecMCyFeD2lDeHkh4mkc/tOelRKLC7PY8LbLwd7zxG0fJRcsdwprOz3qPz4MUl6Bbll+Mxmvyk+tMgSlR18Uz7oL9ipFDiKotHOQGLXgGDvO6JcJX7tgaGYhuzPyYQ7Bk/Xplh/PCOMMQ7/FhrMdP77rxByl8eejlwNh0OlqqG4+/zVUfHAAOG1CV+UAq0y1zMCTy4SzQLRCJatP7XxGSY
- ZdOc2vwN
- rE8z7C9Y6tXePKam+s8jUzxCD43xw8tSeSx0sOGQFwfgyjgpcR7mP4h82z9v5K//5P5eTFxmO0dRNEOk7/Bd5LFBmdKNa2coTH3dQsygTzHkGmDHXwg4e+pQpbRELKbHmSWZe1/phjMZBNMySwl98/8yRQcYtkfdyJimM9G/AgRmBd7V80lW+HeTaWolgGi6CblZ/j4fYC8Vq2YkqQ5RgadqHPHMC3TK7sn86WazuGaY2dtLQ7z4qy+Eaw1LWXKpw6PGYnLKS1L3zgBYn9XV8jgk8XzPGEYWmQePDBFd28Nb+eR00ZxVWR+Dpm597iRiEH9/c1ybWe3o076ZLgrIKbLmlkjdN84Sjq1pA9eR+Ak49eDPj/v2qsegCGSyc4BSkLayzL7u8jncTB7z9QsTIBBgSUhJt2mDFy1CzK34wnaYMD1L4y/chPvvjCeNvzXqJ/UKsDzHZS6eSk8PWemH3VCiM2jYlzyuRMYpxQNDvClCdZH37zygDkMLaKWiKRN+Z9y7kGAImkp9D1shdkH6kDFOaElEZpYf1ro5Ch5QPMolGx2KX2AwKfhxQ28rizi0R/XcxAVWWLBAf5ZgNCtdZxYb3x9BcDL6xIh6KPV+JU5VrvPgIXpdKb98iP9Aal4Na6IKfuVRMSxR0pDJH5PO95cfwgQtbffSxsFqNgHFPD7B8q8UwdZTkkOJGpci9d4laUBsja3h0evARl0LYAqfVjViplr1Y6vdlvYggU5njln5NbEiMcCj+RBhlJKokpMTVWTnSyrAJ6shRuipRwPOKglr7z7TIRTuxAc+Fos/aiZAyDghsj6vLoViWGknkzEU+oNeQ3posi0KOOjEmDcGxM9C6dMAfRL0kPg/2z6LtGPDyZgDCsyQcPF1lCMMscdbAgGj6KvYMr9HUZrgylFUfYGV/YteULyiLwwQp9A5HA/AJ0yDrpnZyp9C/L3chpLUcMskiTNddkP0zMutxEPKCfJ7Vq7qV
- 0OgUOdqB
- lnyV/WT5RjYpBXuu6U7sEQEm+aiNWOQOIONf3RxBFlK2Y0/Q+uylqVungzwy+eIJ3qb/q9+Nabm9S+tiw3EXadVpG28cvJDeB0x/hijEJZOPbNDWzjga4iH0mFZPPhdwl/axYWxxQMKpAJ2ribSDgjYEfAMp445p4VWo6FhFjh3tXG0UTuzhmS7SFksmi+9sWddj+EDGFQenEQO+VzJPT5PFesVpuZPqiuK6BSZC+A9W6tCJbbeQW9PcXFAHIGwi8RPRDleP+dIuUD1F4gFJUMpGgXRsfx3qeSpoXOdY1C3GSAEiJmNKb2UPOM06yxlfcapU64+Nk8pTgQtzl1bpZv9y/MISGxpydJSVHcI6esJNICEvLiMPAh8pfjtcXiuvWZ2WyCdNvVsgZhROBnZhuqQ+xtvcwE97xJBfTSoUWnA7lJ07rVJmXLxloTZqR7B7Hxi5sP9Y5uqSfZS0EXDoFIhMFQDjYcX0p5m4aZ0jC4Rmdttp74rqWMlwJcJ9d48uMqCLncdTBKQYE84/ySF9M7As++hy43uEInbH2qq37PTrWlJIAlIishR371gq8OI4+NLGt+f6Su7S4cNAFhrtuTj0tDQNRPCgjSbaKxlHdxzOntQtCLg+ujSOg7DR5nR5WDPO0Hsx/1pQSLo590V+5uo3EDNtdZ+sM3raPz9Nw/PbIXEQYbFUZR9bc18lV+5goIsoivaTL+CWKaHofGIOR1N05/bBy9FjGTuhXs05J58Mi9k6/d+OUPj16AkQ82q3ho4HbSUgvUqCjOGVov1pE4zLY5WHNzaWo6F+hAL6RIzqwB5EzI1rLg6eoZwJ9pxoM6A9eiA0f8Z6dR2plNnxHf94EU4xWWo/04Dh5gotJuEwCVLBoLCx2HC+cyleON0ahSdfbetgae3ogrB4DfhEk/Is12+H19OrYVUS92cu0Cm6dNP93Q5Qid/rut53eKq9E7LLsOdP0oJ2UdQ2kdLBgUQjekTii
- 7m1KtWDz
- Yrec9/1a/FGSEyGk56gQKZq2Ki40RL9R18eyJCcL8HaEuvTbKE6bPczTRstBH6wLCEpdz8QZaQM+J9xdDgSnfs8ShekxC/gR3paEUvw8GxqwN7o1AbvX3DBGXzi4dCzugG3Aopl2ABTdCiH/laIK0UnefBrrRJtFDEOXRT5ew+EDXmIvaf8YF4poPIdslG/Cp+ySvfmE8GZ4VHH7f3v4HTqDpjeN0yUHd03NOhmFpymNAst8ZfWmRl/2hg3GFIZic7p7p//ayhzTDPVGPLCZuk3ovTCfwibVEYKQnlgO4qGXKikrv5BaQPf8mnwvKMmE8RPLejF4g88wBD+XA2C3PFAQEPr07DENnyhca173AqPbaPvR0JaZOeYtWT9D+RSTqFF2qhv8pOClnp+NmX3qCa3SND23qJ42IXrHG0gCE0LO/g+Z4fqhqJWJOlUT1ucaksoa6lfl/eRiV75dNd+vBMvw0G2SmWfXIzM2svZjK+pjSGx6QLm+gmJHOfOjl/5qwd+KLBWE5F24f3f8sPfNMJrzOai0CW0sR/WwLxfB1MOkK9TFC2DJP20dD6WvOOK2naWHmhgaxnyTnI74GIFx9LDHnLhJ3A+RcEIqAWcODdEe+kI+TOTQwm2x0i133LblM8W68iu5us7NYIuwIi/HRoGCRUFfMU9cpMxP6bfuXQwWSXxIX0u5WBWljBk9yKrBFjNbERqpXe67raMFkx0ECyxNH5vU7srMXI5cRlDgyKU1m2VugmWR2S1QUiuDRqFW/JnKZ5ajZfMrqFWhB3KkhtPNAM/ogVRG3h8freCqhZRqMLwhdIL1/yZp6j6Go/dICnlSzF+Hbi4+9OdBKHFhxTenZRfYIAfDmqv4xDkjSiI3aw0MqRXyaNkF80g1V5Xe1hc1+jHrUR8exgw+Dt1PHkz+RbwElgJP+UNHPMJG4A5N6SA4lJbYscctTSXyXPTBkO5SgTZ/18oQ4ekehUVmiXsMudMXs
- 4RItVkRV
- 9H/t/rOGV7zaAYB2aIIz8HlQ+5XUSoN6OpYa1XYZpVsdC1LlL39b05ZXROd1P5GzaUUYbWXhQpjhnc8/g+PhISx/TgAavyYmc4CXqP1Ofw9BiYBU4I5eebn5ngMV444e3pBEhkh9sRE4s6ixv4YAXaUlgk6bIZ1IKm+gFqjYmxFatZ1bL
+X-Rspamd-Queue-Id: E4849100002
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1758277533-154254
+X-HE-Meta: U2FsdGVkX1/npOalfo/tKcgTR0dtQBlAtiASXlCu7ghmM09NuNP1irqlRyk2nPwZNXaZM1Y8vVXwpORQNrw+f2lKt8yzRDet4Fngu2GCgRcBrWFgdsyc0XXCr87SuOgkizL9UgP6rBePWFfID1XLmMBfd4rICmPar1bYYIE11dq6CRmSsDoZlNz3oXHH1wHzUzhZyiXnvCIlWjFyt0ZHEvbqVaxwYpws+4rvJu226zxt2guyvuPAVg8BAvtrUvvBznA+0Co4FgTngddp2MzbXOkGmrxxFiOpjcl0bs9howL+xbq+uPDp9tZpnGP9IIO2RlTt2N2KMtsgr9vURUElhs6O1Y/SoEi+LztU1rkDE/Oh6/x0unfoM9YapwN9YokU6xjuakNvFI2RWfBcNro4yo8jNkFR1tm59/mPNMwNRt2/THw5vfLn2EMEueew90dRw+Fs262zCcIs7NA5/S7qSyRZ2ul+yU8G5HM5wgr4K51CB8S14V5w2y4HKjLs3pxAA3pulUHzFrCGZIT9Dl92IPqvbbYtji4e4ZjgXZZe8NWAU1aCF8p0uFFghWwQHXlVt1CvPK/ZY9CtmJXAOZ3USxESYHFjMPVr51hNbf896Gg+Myzw+JPhXvX7/yqAq+tpCx3FcdMZ3oifwo1ev3gzo1ZP+nMboH2M6FS25OIvjJIF6Di57UmCF/xT9nZcUKMilEC9rBhevoaOwd50zzRYv7HXZTy70atFzGXQ0rRx0xgIHkjbm17qUQkW5zrjgxihiKXSxpTveXZBTwp3rAA0tT+p91grFARHy70QqjeLm72hdQ2VWy3rKrCz348SlRdYqi79vxNB3kKi+n/THt/Sn4TUPpsf/y6N2Vs4V5C8Qp5mUhYPvvOlJQllfsKKMnoKfJRatcSP4MCBEgIMW18Zq81cDm0+Xuy68tQXykYPRYqjglSDx5lcGbxevW4WVCq6zL5ud8aFTpLaIopiAB2
+ nIpD5e+O
+ waTqaTwHIm1wmaz6HgEfpAPYdcAHo34LTquDt4rnIjwrgDaNcr90qcEJ9LNgg6D3IhDrrj5sPEv5BUhwd58PUJMOUukvXh5aWJ9nGmCBheIezeFs78vxnPORw3sTlVkd8TqUd3aoiBxTYgqV6QiP1plplxmvewJqKmLzuNSI+wa7MJPR0JcOdmOvJd96CoFyPl5LUkTCK41RW8Y0XdD5UOxBerDn0SwNhPY9MnsAAcgu9Dx0azPoq6axinJHRD0sfUigDE/OZQFhwRM0A2en2CZio0zNso9pZqCPoMJf40XE6NGBliWyAd0+VkDanqbvAutsM4+4iwHrcohAXq//ixVKxig3hCUjfgibfNHrpw1Wgr6do7TrLPqnKWNchlKN5hz3s2lAt4J+7oPf8Y2+voxhqk5cOZ7BinfEVQORvmT6khAKgGdCOXUPBOqKoVgu7a1eMNlmSVLmW2d0LeA33ty1+drdScx8aIDBF3hSLrYEKcqCg/GDEo4WC6psqG8RRoTyYdywUFf3ERHr4+OjZNkD/DdMfL3oAfR1uraPuqQFOLhqtkR/+PVAq2J7vsM+afInQBILTcUkCVO8R3m4LGYC7e0sINkLPvdCFcqChjr2eD4RqFuYihbUNPwW2xD16UvEiMLiY11in5rwtJhEd+bezDIzYIMdkTCqetL3T8q6NcKMLrFsXIE4Nd5fgrlA5vW32IsNy5ewgnxAq4XTokkZ0C3UTa72WTVKtwWLIz/NYLHDZuXizsPmtbY000wu6Gw95eAzif7KHt/o+RdJ4dDJzVyeAxAhd35zG7A01e5OdPMvlmcW8Ht+U028c5eiz96FuthC+/SLBhbRrrEosy5QaGNECeRNH8jHz0BOskATJspV+cExgdifo/pg03XmHZFSl+jMEeDKPD0Kgkf0dgYtWppRKFDCJ/3hfweD1TwSRMzt/IfgZtRsrCtzUjqPo1RAdTmCKZy1BHUTjwv3tlon0czAQ
+ CNxV0CKC
+ 2tdPefeBY4Nz6nzHH1LXrAyNGh2oCwQoakY8ZdzMIOx/geulMqq5gutyWXysvhk6gmR0RXNJLnKvSigUKs/KlyNdrn4rsXQrmMwtfDk2X2Khor0wsmlMcdq+tZiEPV1L2ZFHyttq7pDKtPAEXTO88FHyIODP1prBUpw+Er1T4iRVKGTQc07h8w6dgGrjE9H0e44OtvNALScWPOWRx230TZJidputJagoa3LXLdZJDEHY3Uml5Z4K63CTaKt19L94GZu9n0o4JwxRPW6kKxuRsUcZfLPLmcpfYEf7Tnfqk0wR87pH5INMSspBCCD7mhHrq+dIkuOF/ZSDXjKIldhW2qOUFm11tz4ABPjPvdJUa0IxOXR3Sabj+8uVLPrR8/4JYTq7DH3EtI9+2aS8sizDgkbL7rlc94ljvsyyDixGfOGJPWiHWe/UOo50qDPwsOR6Yqv2d4pMcYZVlbEOjE81ZUVDbz1GdIdnY+YD6GObtW1hd5PEWZr88gfmJ1GI8lj4xhGwOyu6+edrCli9HMFhHfylbxNLrvccqwklBGNhVVVad1r5jPSWF5giV+W9p/9j0Xx9KPRiDm6Z1OZfydO/8D7fR5XDcasBZClcU5KannL9wF+jb7XUvCuKsZhh4y/i0L8XONQPn9KjiDLhJgq9AGuDDpPsDi5kBXDEesbZInVVUFW3EYkViUew+2r0hG8V6FStvTG1hEeI0hZVs9PCHAGiJQkSYyIIw8mOBwDXnW08f3yRcxY6iQtznmryxsvl6RiRUzFd7KQ6mg44k1IOpfb+m/ChiZ8rxUNcdy7Ewwi/Jt5wpqWkT96fbflYo0CkWkGSdUSpyjIxS4n4wDxBEjqk+/91+Uy+p5VJyJA6/+CfRClrQUX6wPycrNdEiIAuu7i3Vz8fbt6yjbychAn5EyKW8GhwC+E8pebX9Ywc+rtp3dhwBh2SLNsEL72JaviHhlvnNY4ucBA7L579iPK3FyUIHF+Ln
+ D5EjBAi1
+ hCvBOrPsdK8VAznEodI4iMZjwBoAQofvphD2duEobmyNZw93Wd11SmOftc7Uw2o9j7dznH90+eyEz5bczjl7tdW/A/e8M/aR4Rv3TqoAqEFXIIuBKhQ/jaCyElKrMHns0Canao4iSS3H9g9frsIzwqBDSS58LFfyepCwgHPDyIkG74sIOWBoaoNNIEXGJIuup6wMyAsr8Dpv4aOQMnWreQeVcpcpoZgV06pIBV8AvU8NeoeG2c+O7RYR2Fk2qBgR0MCtTjlrRkhk04uCD2f7RXK3NjZI8kB/YEqlJHvetzPECXg8emNcwA6Ix0OH3KV4voPt6GNyIsAFJNqTq2S+gm32SLfBYqNAQVFZFqV9TsvZU2/LKMMPj6rcU4Ir+RXNxNcIlL+LVPv1ReCT4F2MA+UE0G4I35kqc1oI9XCRHus52JtbYkxPb9xpIzrZ7nw72NaZZh66V31DArJ+wvzl6Apr7v2oj2dH6UHf3U/7xpABn24CspgQvaRUeAwyICM28rBDvhlWLNdcWd8vYREyQDBxAU23p+PfFqjzt9keUZL4mNxEANYFxz3TAZUiTEg2+qaFEyy5USrbevXX1N+9Spy4M/L5AFdcJBKrTHmkFKjVr9IidDoJUUpxXES741jaTGy+flhVjQmeKV8QG1bWgDk9HiFzALi7DNAcbWoDDWR3X/qK6YDUXlUB8i2iwdHBGs0m9CGazuuXtPDAg2nYpwCd612bxWFOsu1fL4KHlzdiiyN6uy/zEUu0ISGsp0obzf3uSfpn5nifxVH0IbepnKPBctCaq4UU+Sdk0NhQzjffhrtf8afuOak1xixomldOUlky+GPykU9lcMf+7SZ4B6zZsFu+wbUzrdVgRuTn+/d04TI7snJd7Qw68fskyNddzXgW97oIm2c65XcSNMIgINsnZ8QPsMJQx0grw5FUbS0QmSRpZikqqUv3um6rMqSsIf+ZiBn3+WkvLIurB8fzYC6lg57S+
+ I5ArfnvY
+ upZdHy4pANPQcYA5aTmIFdncy7YYkCoPKeV/Djlm1l5oGDyhIHjClY9v1dqCNsOMzPQcAp8hV0x4JM/gchF7aFxAsR0PC7hTHHCdnXQ+LXbrHda1hlxbT5tFroL3UB9AlL4Ei/OzvT3hbaTaZtimuDGAHNzXVr1J94V5knUErh6nC/YhZmco6e19WuWeMpcTKTKGJdUDNVsXkvKpiGaVhduVayB/VdM5yaTSsOXzdS1+0ewm7hXgXlXQTlfGe56nrkyHiy8ejaquhrB8uURoggfXgXBNuXE19dg33VfySuhG3S0Q5D7l/Kym+VCzvAqs8LQBoqGTidLIbkEzuYnDj9dtDDJuh6BLCVbrGnor62/2LYfWAJhlgROi1QGTOAXWp587tD07hWpYevudtoNEn86RXjr5eMtTDIufkf6K4lr4VXxaw5ixU5MKqMMyPN1VZEaTe8AnGKZlu4wajHIllmYRj4Wn1aM1nN02c2rhcBYuGo4Xc0XiAHaPk4Gzu1BiYhAnFbQ0DkFEG8a7PFO2cjq+MsWFSbR3+KNwFvl2G/LsuxZB3odi0n2RdQRXtPlAqJqzSQdWCnOz+XGRecq3dOOKgeuYZp9LjwM2Clzwwv1tbK8FHe4AUi0GbF9AZH1s8Ed6XMU/4utT6QaWue06BXhsnAXbwUWOKG/s2fOUeo7i+AWo6xOLCTwL65JE/vGEukImWRSSanouPpyZEkNzGwTeT0XRbXCPM0cS2dxfzxoepMU9f28kOyzJPQBgzu7jCXwwQv1mWbuRdZ2S4F61+HHb+DB00hlRmmcIeU9SRz0ywrLeNd6aNXvu0EhzmELpjNetysOQ0TojAXij8LS/VQ8xUQOhMb9Mm5H9OT+9jnsDW9zee4rde7nZRxk2a9KQvapqU4CPaWW+Sqwav5sYW1WDVmLnwHQ2/1+VbA9rfHBY1LRl8vPRU0Ny6/0HGe4RCol4eQO1qTaPoedQp9ozj3RGG8466
+ ecHgWPtY
+ xzs8I2QOVdbnOsWFV8GUy0oHTZPtz5Cq3ghLKupJfQcIspfkWA70QdYnMU6ow2OBM0rrDnoW/p+5VNnlcPRV297+Q2qJ7NQshvmC5F9Gf5M1gHmQ4FnPBEP3Mr9u8pAaPs967SpsxfFy5lGhGk4wBpRwRZw1slF3lfkX+i8okm3NBtIDd0U8V7/SxpKks02l2gs8ts+wbO7fOj36Y549qQNyrnUk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -168,63 +168,151 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit 3a7e02c040b130b5545e4b115aada7bacd80a2b6 ]
+[ Upstream commit 4477b39c32fdc03363affef4b11d48391e6dc9ff ]
 
-The minmax infrastructure is overkill for simple constants, and can
-cause huge expansions because those simple constants are then used by
-other things.
+Commit 3a7e02c040b1 ("minmax: avoid overly complicated constant
+expressions in VM code") added the simpler MIN_T/MAX_T macros in order
+to avoid some excessive expansion from the rather complicated regular
+min/max macros.
 
-For example, 'pageblock_order' is a core VM constant, but because it was
-implemented using 'min_t()' and all the type-checking that involves, it
-actually expanded to something like 2.5kB of preprocessor noise.
+The complexity of those macros stems from two issues:
 
-And when that simple constant was then used inside other expansions:
+ (a) trying to use them in situations that require a C constant
+     expression (in static initializers and for array sizes)
 
-  #define pageblock_nr_pages      (1UL << pageblock_order)
-  #define pageblock_start_pfn(pfn)  ALIGN_DOWN((pfn), pageblock_nr_pages)
+ (b) the type sanity checking
 
-and we then use that inside a 'max()' macro:
+and MIN_T/MAX_T avoids both of these issues.
 
-	case ISOLATE_SUCCESS:
-		update_cached = false;
-		last_migrated_pfn = max(cc->zone->zone_start_pfn,
-			pageblock_start_pfn(cc->migrate_pfn - 1));
+Now, in the whole (long) discussion about all this, it was pointed out
+that the whole type sanity checking is entirely unnecessary for
+min_t/max_t which get a fixed type that the comparison is done in.
 
-the end result was that one statement expanding to 253kB in size.
+But that still leaves min_t/max_t unnecessarily complicated due to
+worries about the C constant expression case.
 
-There are probably other cases of this, but this one case certainly
-stood out.
+However, it turns out that there really aren't very many cases that use
+min_t/max_t for this, and we can just force-convert those.
 
-I've added 'MIN_T()' and 'MAX_T()' macros for this kind of "core simple
-constant with specific type" use.  These macros skip the type checking,
-and as such need to be very sparingly used only for obvious cases that
-have active issues like this.
+This does exactly that.
 
-Reported-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Link: https://lore.kernel.org/all/36aa2cad-1db1-4abf-8dd2-fb20484aabc3@lucifer.local/
+Which in turn will then allow for much simpler implementations of
+min_t()/max_t().  All the usual "macros in all upper case will evaluate
+the arguments multiple times" rules apply.
+
+We should do all the same things for the regular min/max() vs MIN/MAX()
+cases, but that has the added complexity of various drivers defining
+their own local versions of MIN/MAX, so that needs another level of
+fixes first.
+
+Link: https://lore.kernel.org/all/b47fad1d0cf8449886ad148f8c013dae@AcuMS.aculab.com/
 Cc: David Laight <David.Laight@aculab.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Eliav Farber <farbere@amazon.com>
 ---
- include/linux/minmax.h | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/x86/mm/pgtable.c                             | 2 +-
+ drivers/edac/sb_edac.c                            | 4 ++--
+ drivers/gpu/drm/drm_color_mgmt.c                  | 2 +-
+ drivers/md/dm-integrity.c                         | 2 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 2 +-
+ net/ipv4/proc.c                                   | 2 +-
+ net/ipv6/proc.c                                   | 2 +-
+ 7 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/include/linux/minmax.h b/include/linux/minmax.h
-index 2ec559284a9f..a7ef65f78933 100644
---- a/include/linux/minmax.h
-+++ b/include/linux/minmax.h
-@@ -270,4 +270,11 @@ static inline bool in_range32(u32 val, u32 start, u32 len)
- #define swap(a, b) \
- 	do { typeof(a) __tmp = (a); (a) = (b); (b) = __tmp; } while (0)
+diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
+index 204b25ee26f0..27e8e3d6be48 100644
+--- a/arch/x86/mm/pgtable.c
++++ b/arch/x86/mm/pgtable.c
+@@ -107,7 +107,7 @@ static inline void pgd_list_del(pgd_t *pgd)
+ #define UNSHARED_PTRS_PER_PGD				\
+ 	(SHARED_KERNEL_PMD ? KERNEL_PGD_BOUNDARY : PTRS_PER_PGD)
+ #define MAX_UNSHARED_PTRS_PER_PGD			\
+-	max_t(size_t, KERNEL_PGD_BOUNDARY, PTRS_PER_PGD)
++	MAX_T(size_t, KERNEL_PGD_BOUNDARY, PTRS_PER_PGD)
  
-+/*
-+ * Use these carefully: no type checking, and uses the arguments
-+ * multiple times. Use for obvious constants only.
-+ */
-+#define MIN_T(type,a,b) __cmp(min,(type)(a),(type)(b))
-+#define MAX_T(type,a,b) __cmp(max,(type)(a),(type)(b))
-+
- #endif	/* _LINUX_MINMAX_H */
+ 
+ static void pgd_set_mm(pgd_t *pgd, struct mm_struct *mm)
+diff --git a/drivers/edac/sb_edac.c b/drivers/edac/sb_edac.c
+index 1522d4aa2ca6..714020e7405a 100644
+--- a/drivers/edac/sb_edac.c
++++ b/drivers/edac/sb_edac.c
+@@ -109,8 +109,8 @@ static const u32 knl_interleave_list[] = {
+ 	0x104, 0x10c, 0x114, 0x11c,   /* 20-23 */
+ };
+ #define MAX_INTERLEAVE							\
+-	(max_t(unsigned int, ARRAY_SIZE(sbridge_interleave_list),	\
+-	       max_t(unsigned int, ARRAY_SIZE(ibridge_interleave_list),	\
++	(MAX_T(unsigned int, ARRAY_SIZE(sbridge_interleave_list),	\
++	       MAX_T(unsigned int, ARRAY_SIZE(ibridge_interleave_list),	\
+ 		     ARRAY_SIZE(knl_interleave_list))))
+ 
+ struct interleave_pkg {
+diff --git a/drivers/gpu/drm/drm_color_mgmt.c b/drivers/gpu/drm/drm_color_mgmt.c
+index 138ff34b31db..4bc671484c05 100644
+--- a/drivers/gpu/drm/drm_color_mgmt.c
++++ b/drivers/gpu/drm/drm_color_mgmt.c
+@@ -421,7 +421,7 @@ int drm_plane_create_color_properties(struct drm_plane *plane,
+ {
+ 	struct drm_device *dev = plane->dev;
+ 	struct drm_property *prop;
+-	struct drm_prop_enum_list enum_list[max_t(int, DRM_COLOR_ENCODING_MAX,
++	struct drm_prop_enum_list enum_list[MAX_T(int, DRM_COLOR_ENCODING_MAX,
+ 						       DRM_COLOR_RANGE_MAX)];
+ 	int i, len;
+ 
+diff --git a/drivers/md/dm-integrity.c b/drivers/md/dm-integrity.c
+index 07a7b4e51f0e..7fa3bf74747d 100644
+--- a/drivers/md/dm-integrity.c
++++ b/drivers/md/dm-integrity.c
+@@ -2431,7 +2431,7 @@ static void do_journal_write(struct dm_integrity_c *ic, unsigned write_start,
+ 				    unlikely(from_replay) &&
+ #endif
+ 				    ic->internal_hash) {
+-					char test_tag[max_t(size_t, HASH_MAX_DIGESTSIZE, MAX_TAG_SIZE)];
++					char test_tag[MAX_T(size_t, HASH_MAX_DIGESTSIZE, MAX_TAG_SIZE)];
+ 
+ 					integrity_sector_checksum(ic, sec + ((l - j) << ic->sb->log2_sectors_per_block),
+ 								  (char *)access_journal_data(ic, i, l), test_tag);
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index b8581a711514..e6fa2782d28f 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -2267,7 +2267,7 @@ static void stmmac_dma_interrupt(struct stmmac_priv *priv)
+ 	u32 channels_to_check = tx_channel_count > rx_channel_count ?
+ 				tx_channel_count : rx_channel_count;
+ 	u32 chan;
+-	int status[max_t(u32, MTL_MAX_TX_QUEUES, MTL_MAX_RX_QUEUES)];
++	int status[MAX_T(u32, MTL_MAX_TX_QUEUES, MTL_MAX_RX_QUEUES)];
+ 
+ 	/* Make sure we never check beyond our status buffer. */
+ 	if (WARN_ON_ONCE(channels_to_check > ARRAY_SIZE(status)))
+diff --git a/net/ipv4/proc.c b/net/ipv4/proc.c
+index 80d13d8f982d..94fbba052b49 100644
+--- a/net/ipv4/proc.c
++++ b/net/ipv4/proc.c
+@@ -43,7 +43,7 @@
+ #include <net/sock.h>
+ #include <net/raw.h>
+ 
+-#define TCPUDP_MIB_MAX max_t(u32, UDP_MIB_MAX, TCP_MIB_MAX)
++#define TCPUDP_MIB_MAX MAX_T(u32, UDP_MIB_MAX, TCP_MIB_MAX)
+ 
+ /*
+  *	Report socket allocation statistics [mea@utu.fi]
+diff --git a/net/ipv6/proc.c b/net/ipv6/proc.c
+index bbff3e02e302..929981a8fe98 100644
+--- a/net/ipv6/proc.c
++++ b/net/ipv6/proc.c
+@@ -27,7 +27,7 @@
+ #include <net/ipv6.h>
+ 
+ #define MAX4(a, b, c, d) \
+-	max_t(u32, max_t(u32, a, b), max_t(u32, c, d))
++	MAX_T(u32, MAX_T(u32, a, b), MAX_T(u32, c, d))
+ #define SNMP_MIB_MAX MAX4(UDP_MIB_MAX, TCP_MIB_MAX, \
+ 			IPSTATS_MIB_MAX, ICMP_MIB_MAX)
+ 
 -- 
 2.47.3
 
