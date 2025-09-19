@@ -4,85 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FA20CAC59A
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 12:40:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 937C6CAC592
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 12:40:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 99AE48E0007; Fri, 19 Sep 2025 08:40:54 -0400 (EDT)
+	id 246E18E000A; Fri, 19 Sep 2025 08:40:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8FE4C8E0001; Fri, 19 Sep 2025 08:40:54 -0400 (EDT)
+	id 182AD8E0001; Fri, 19 Sep 2025 08:40:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 777918E0007; Fri, 19 Sep 2025 08:40:54 -0400 (EDT)
+	id F17508E000A; Fri, 19 Sep 2025 08:40:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C8468E0001
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 08:40:54 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EB4DE11AB17
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id DBE8B8E0001
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 08:40:55 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 96BA986501
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 12:40:55 +0000 (UTC)
+X-FDA: 83905959270.29.915140D
+Received: from fhigh-a4-smtp.messagingengine.com (fhigh-a4-smtp.messagingengine.com [103.168.172.155])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 9550C4000A
 	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 12:40:53 +0000 (UTC)
-X-FDA: 83905959186.06.3CF9669
-Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
-	by imf10.hostedemail.com (Postfix) with ESMTP id EBA85C0005
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 12:40:51 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="g YaoqNU";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=oBRMyPX6;
-	spf=pass (imf10.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.148 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="N msJzCb";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=R1+Sr7MG;
+	dmarc=none;
+	spf=pass (imf11.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.155 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758285653; a=rsa-sha256;
+	cv=none;
+	b=eZPNGW5HT6iBYwBplqarWJZRT2avx4euIG1uSdNxDKUDQHbN5U7DkFOoW5EapsOTyzyf14
+	V4dtM65TwbT/IJyFybupmovpRYHsh2BmowAs0bvlAvTUGtNUfEZor0iHRXqkyHxXq+1ko5
+	8OslRjpxzo3wg+jDMEGCGEu9eez/XmA=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="N msJzCb";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=R1+Sr7MG;
+	dmarc=none;
+	spf=pass (imf11.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.155 as permitted sender) smtp.mailfrom=kirill@shutemov.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758285652;
+	s=arc-20220608; t=1758285653;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TC0qa4dJ8ZfxpD8eOHAvcq6Kh4/gpC+GYroIRc1A+zs=;
-	b=oateDWh7/07v15qskNoEA4+BUfqEdaHTTs5FjR9/61lMXRWL+TE8cZD+qlr1dWNQrss9tk
-	lBGMlAl3SDEyBopoBtp177ZFF6A03hBzASKB4+6KYefs9aeJPYXMHMKhTT4KtNcxReWhya
-	WTmGtxllLjF+0dDXJRczMsSXvfeBWok=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758285652; a=rsa-sha256;
-	cv=none;
-	b=pe+LVztcnOWFP4j1wO+nJmyC6qwUs2t1feLX2wmZucwNZDfI/8NJvdqkcbG2uuleHkkSbR
-	ZJ5kY7tGYBn+nCHx0PujqnUxRzvytvRsxptoZ8zZ0y2wXjbcUSnLwZ1RHGbkTZc4SuSRN5
-	pnr9GlabhKwupO+t+LeBgUWYNhOxMAc=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="g YaoqNU";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=oBRMyPX6;
-	spf=pass (imf10.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.148 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+	bh=mxh0csfVOqXEIeJ0PDZRZ2dOl352C/UceF+juPeU56o=;
+	b=k3fyQD02QLx6HTNMXuFoYfdKvnkv0xNuuoXHQKr5Pl41XdGju5dwbEC850yP73vRJ4XfDA
+	PT+dHcDIWpZ01f5gzq4e20747uDnANZji49Av2qTxnMFpIQQo0D4txWAfta/YbFY+175p9
+	jTocGmOBgkiFRfdill1SiPh5MSetoYY=
 Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfout.phl.internal (Postfix) with ESMTP id 63487EC02D6;
-	Fri, 19 Sep 2025 08:40:51 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Fri, 19 Sep 2025 08:40:51 -0400
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 10F171400189;
+	Fri, 19 Sep 2025 08:40:53 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Fri, 19 Sep 2025 08:40:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
 	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
 	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1758285651; x=
-	1758372051; bh=TC0qa4dJ8ZfxpD8eOHAvcq6Kh4/gpC+GYroIRc1A+zs=; b=g
-	YaoqNUWaKHhvv3Ed4xHBXRktxSLULfs/iAAuYrd7j55EZwLmi18d89+j4kySwA12
-	5SyZ2uYXjdwz3FmJ82Kk4p3w2wCOYWDmriHFwCmlw88SQYiMNg73I3OUH5FsYGKo
-	4qxeC+AqeN71HV3IX9QR7a0wyomCVQhvXau8Gu5fldftzhhA6CetYZelZH8BPMGq
-	EBIYmWRo7FDIkuy8YcbteuqPik/hKtWxRdlsqyYUQ5fNRkfn6uW2wB8K4RWowICL
-	9WJTQUpVnMwtHUz71tcKCab4m/huYVrtpsMV8gX9HISY15uJj+C+rfv0sCire3yv
-	oiZy9DUWJOjm7E8AwETOQ==
+	:reply-to:subject:subject:to:to; s=fm3; t=1758285653; x=
+	1758372053; bh=mxh0csfVOqXEIeJ0PDZRZ2dOl352C/UceF+juPeU56o=; b=N
+	msJzCb7eLd2gI0Zfaco0EvDRWDj7CmihiaDFfishQMh/f1pRAkQMAUxmv1ls4dsZ
+	GflJFsnfiRczd++qW8n0M52k5xF9grKIXYfTrf0j2yxEUPgEBpdOSXMVIp1ChtHf
+	fxz7lfWg2UW3pBEs71cnG5hziGfPpxUWojvr+zot2Kg7/Yon95XhXYG9xa7CfNi+
+	x6Okgvi1Yg0wigzpXuS2cULBwUUpFMEA5by++n8RtpBewT6QEL/vVJ16qofk0n+r
+	ASwx1YG8QCZGKzvAQjOGO27VlkJ8OlLFPePXzqitCAL69ADBs4/o19P5rE837aFi
+	dF3WXnvd87b0/hTeZIMRA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm1; t=1758285651; x=1758372051; bh=T
-	C0qa4dJ8ZfxpD8eOHAvcq6Kh4/gpC+GYroIRc1A+zs=; b=oBRMyPX6XhIiUnMzG
-	jhA/GKeWruN58gwnj9eQuLD1ahHUAjCToZnr7lsMkryuiYuOpTuc9m1Fq+WwJa66
-	W2cj6gXLpeu7xZofG855foOYmB0A6U8K8JfoAycT77K2kRM6Go1BJtF3nF7BwbNb
-	VKGPFVhKqORsZS2Q9HVK6JTfeH8ahXLvp5vR3WDi7YDdAKruMYWLUC4M/8EWt/2m
-	/c8bJZkh2BeKd3FwPtK+ox3Vd2Qg6rDhK23e3j29qceVo3pvPArS9yEljfsqnW7F
-	Hmx/b5TA/PrQPyLNmizITnISEmUhEcTrCaodCVpfFnx8oiUscKm8DZ2/ORunpIFc
-	kTCKQ==
-X-ME-Sender: <xms:Uk_NaLx12g527lLRr8ab-q6rf-lKXdZuTxxXWpfNE8yPF5UW2YMfKA>
-    <xme:Uk_NaEyl_Oy6W_x6mvM0J1N73IRP2w7r3qUeXqsQaqGjZiytZj_B76Vz_IqMQHLuv
-    Gxk60CB3zfLDyDMLSg>
-X-ME-Received: <xmr:Uk_NaC-CylDn64zzxcQxRKKQdlEkIt3fdkL46R-qcdfIhZoKbryy27MuFoJ86A>
+	:x-me-sender:x-sasl-enc; s=fm1; t=1758285653; x=1758372053; bh=m
+	xh0csfVOqXEIeJ0PDZRZ2dOl352C/UceF+juPeU56o=; b=R1+Sr7MGq+aSYY4wH
+	kOsTx/2EOwo1JplaQY3c6bXdLkWm352tdLHHJzoBUxpYDTWOW5ryoCBtXWkv9k7O
+	zLgcqiTWtu4Vc3dDcJdeheOWhuQnHXWjFn2JEmxGxPUwg7G4Fea2JWBolCU3Lnld
+	tsHctCtcYdVGie1CJQkNs57ZGtff+u9FcyU8bCGA5OwLzodMNw0nvrv70VXI/svG
+	hU/cse3OmFEgYp1obWTMH0JDGRdvHicpCV0KEuc8HXGpyg7k+d+S3Y/htGnFDpcw
+	fTC7zOqH7oSYtARBG1kpUklkQMuLOL32e6hcN1h6ctEdbATFMWUK+wi17oBMfIFE
+	tPS7g==
+X-ME-Sender: <xms:VE_NaPjba1MBPCTYbx0TAZaLkPJGs5ujl4V68d6TmEqxa6N46OwsPQ>
+    <xme:VE_NaNgUDwjhfsa-D5cjLt04_orxOfzgzvUz7bcddWReeEUCIeh8FPh4-LTtw9v0-
+    -UFbr9jY_VxW55Fh4g>
+X-ME-Received: <xmr:VE_NaMvI66RrkR06KiA8GNu1anMpaFCDbW14KbatjGSUocnXOSGOVKiTCq8slQ>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdegledvfecutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
     ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
@@ -99,14 +99,14 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdegledvfecutefuodetgg
     esohhrrggtlhgvrdgtohhmpdhrtghpthhtohepvhgsrggskhgrsehsuhhsvgdrtgiipdhr
     tghpthhtoheprhhpphhtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsuhhrvghnsg
     esghhoohhglhgvrdgtohhm
-X-ME-Proxy: <xmx:Uk_NaM9aQynDmY3IwdeGcxb53N8zxhLiirYpR6A7lyklttLAT8VDOw>
-    <xmx:Uk_NaNc_QOusRX8iTHqFu5nOg3grSXPV-BxstZC-g7kNgPMDWlHE7Q>
-    <xmx:Uk_NaAt4iXraghTT5OqP1wQbj7wIJJN16LGeS8VbH_FQwu4cwCuUAg>
-    <xmx:Uk_NaO2VoEST3kgdDy3gJLyoDqyy8mThO4_NNydG4kpeJreF4L8-OA>
-    <xmx:U0_NaA4E8_qKm_qZyNl8qUs8iUVmPJ9bPMLHUl2T310RpggJiqjCgrIZ>
+X-ME-Proxy: <xmx:VE_NaDuTrkARgMiI_JyIa9QOhf6m_vdjp-9paw6zpUx_29TPkF1S3Q>
+    <xmx:VE_NaNNNKORfVFQhVCobk2UtXn9WgQJGi0Q4y_AM27czdpSNphGBFA>
+    <xmx:VE_NaFfUN16EFA3pJWLVE2Uw_g6SRbpC5wv1MKv9gLd3By5l6u_msA>
+    <xmx:VE_NaEkq2tpUtT7xKf8rBXGwacTHNgbkj3gR0900nxpcfsaPY_W0WA>
+    <xmx:VU_NaIrpBwudk1qRhkHwkbHukUm9TJO0LRz2tm9iAg-gwd_BYF2EtpYF>
 Feedback-ID: ie3994620:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 19 Sep 2025 08:40:50 -0400 (EDT)
+ 19 Sep 2025 08:40:52 -0400 (EDT)
 From: Kiryl Shutsemau <kirill@shutemov.name>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@redhat.com>,
@@ -126,22 +126,22 @@ Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Kiryl Shutsemau <kas@kernel.org>
-Subject: [PATCHv2 4/5] mm/fault: Try to map the entire file folio in finish_fault()
-Date: Fri, 19 Sep 2025 13:40:35 +0100
-Message-ID: <20250919124036.455709-5-kirill@shutemov.name>
+Subject: [PATCHv2 5/5] mm/rmap: Improve mlock tracking for large folios
+Date: Fri, 19 Sep 2025 13:40:36 +0100
+Message-ID: <20250919124036.455709-6-kirill@shutemov.name>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250919124036.455709-1-kirill@shutemov.name>
 References: <20250919124036.455709-1-kirill@shutemov.name>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: EBA85C0005
-X-Stat-Signature: 7tfw3uht139jg1ztjythccn1f9u9mqnk
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 9550C4000A
+X-Stat-Signature: 6dkippspcyaydw8bw5m6gtgsc1j5sd9w
 X-Rspam-User: 
-X-HE-Tag: 1758285651-109492
-X-HE-Meta: U2FsdGVkX19UIS/DldsjK7g0XZbdtBWAWykzuqOFS6X70cUZqW4sJL8S0VBXTqaqaVHI5GkvbR2RTN3+MlPaFQ8C2RsNrpzwykTsfUrebfNVD/dBn7dXBEIvARA+j9r6sGooaiRhZdE6R/IomNVkxdKTQ2+xtK5J1tb+Vk1lS2qrc6RE7HLbCn8PGSCMu5xhXfeEFzHcSBoXdgrBtc1PzhfHeLxRobl6u6kAR1bzknarfHpypoLCP+9eZ+Jb9yLR1HFXG6ggaagqMNIQj9mYFK0wnIcx9wc/JWKRuJg39ufc/T5RZtgjhSw/96gr+fBWt5ycStxz47w5paAXD7R8KFC3430l6QoQfwTm2Picvyd0leKiA3QY7cvGdi6+CK8Ui3uFM8dLHjdia73WxQDQbAHR5b0XLTelea8hepMZJyIkfKcPiUwBpDOK49V0LapHbqRxd4PMQQLNCDuDh2OBPaYHf4+//pCF440xeQzMg/soe1C37XYv+XW7LemxFEbewoSkmXi+eqU3CDYnytCHVjdCV5Ly0Puob9K2anT6J7yc+mDzK1/5uyFYqlh66MTNwsVpaLxS3voUakeeBR5H0731VXMVOOd6yrnLCkVPJoF3aFdsT0gBEV5JJOhk+yx1giHOsDkBXkZLbFFCFx0bm1f8n/nHtTiBW/KLgXtPwz+tOyzRk0DA9mmxLbCbsBxWzULyFRgLIpepfSkA0xoP69vK915nUS7HgtIQy3TewwJJKSigGp++bAzhH0+jQizNtO/yY3oz06bjSJB6fs/yz7VDVO2rl8J1KNctLn/9KbZbxLslVcAoviw2DM0JABJ9KgwXk6co/8fpJYoTHifgOG1eMGqtuzFUafUUDwDmUMM1Dyq8c9fAKR/JbTWinNyr047TF+6cGdhyaIqc8F9KNHrUB6XDpENvLlwqo4TYv7WRZ3iW7Q255RoepsepDto23KVwYxOhndjti0sIYsd
- LiH9llur
- 10mQBNa/fQjuURXhm1SKntBQI4EuzWYH31GCPpppoWcfqnR+seOKULW5w1OAXvqu2kD4mJmxPstBNDsVMQsDtlksnRQfEwPlIxNUhESNtQ4FPwt7qmM/A25+zepGvpiJcRhfmQ5M5QP0Kc+7udJ4LWcV/Uz38/fG6dBl2oWJfO7WalLxlYyNtBy9Z2DL0lb8YoAFO2fn3jtrlwTQtBhg48GU5U+vKwlUgF3jMwslzRArvx/T+7PkWJ15PShs+EIMy2pS15zX5GUFZm81Ud54075orfXLySdNoMlW1RIN5rLjVEtp15rGM0X5IDGaRSMwFygReLC83DxDtLukwI3pLlT/zfAfULDAj5G9a+FO/shZ+LyYYW2gkWnXcz8EagbQslWONJK34KCizSiujs+7raszLj7dCf6R2emyQ
+X-HE-Tag: 1758285653-981779
+X-HE-Meta: U2FsdGVkX19hgxGe/lv6p9qmsR6hv5QuyaBg3yVidMDMvzOGbsnMuN5vj4w9DvcaOQ3BC9PzSDMtGY6pkqhTLXoJh7XaeVT7nt9b5xcoKuI4f6MV3U/i0XxbMJ3/9/7ub0XtXzvMgPgPeGZfMR06HbIrdVqysXJoc6VokLpNne8YRjPrtd+L6+mqQOJUX1epeWFDFAq686BqaNAac3FCpyY/wr67Z/EyprJoGbsflstTCdukOzuH88hd4rqfVPnPibygrD7Dzzzx5j4KcL4bYDcIrwlWTzJuw+8/rtFr8cvBVFV98vuYXnV656woeYIHDvtzHudIQjj3wQHfD/Yc8yYcGjGdK+f4LDQjT6SA3Tp/A2fTxfqxQMGeXLcy+PkvJooMM8vYNhVutf19Lp8rzuq0Tk4TjMicnCzi0qHu4fsPMt4uUpoqZ4r7k+UOVZiW3m+LCEOTMdzPJKjZLxMAE15s1TwB7zUV5y7pp3v3P+eWvTy4zymB5c37H4E5CnNGYpbwH9W14xC7OzU2E7dWNp/DOUwspQNuq1tjaKY4b18aT5GAdch0SfegSKTZ19MCx4A0+vwT17iL4H/FcpW6ONh0iCYj+fOT7fqyA5yvEgi5CkUWSXN2iaYqIu+AxQMD4IXDbqRsOwmgV2+SFZP7OohOsO8s6N616J9tpuDjpTtvzKnUUDJqabaDRlMGzwPFE9feqvJ5mzF3bJY4D1+vsWONjJnH3GxaafCzB1m6Zm7dNRTLwyrKjvtWUbo4rJV1qnxBtOyQ0yB/FwzxwzydQVvyglrrqvyNBEXyLwJCeKwZtPw/BGJBuyri4GUZo4+FA+y1zx8adzVrjkVTTFUPAfYDMebswDPaddFErvjs1MC0mI+ac5O6YVyZjGIdNMA8y0bDy8EU9zmN4WKdnqB4ZkPOQo4f32GwDd5xQ1/7ogUDXwWZ5kkCvSNZkvyaoYMtNF68Ii3yrjhzFwHAtAc
+ ewfv98/g
+ Ci1u3JTlgN9vOKGIb/HvLLoEZ2XmNp2Q+7dEY4rlGcoYp4UlnBZUX+soJPJk2BX/H1+NO5nEODlM8/ByfBFvXibe4zsHUr93X92xotMiOEsXffdw5EanyhixEN0mWfsOCM4lPch203EargJD4EKc60vgDdb+Ik/qvueQukpfWP12Iq9LO73OCERYlU9NGBdUhtCn9IJVpjrm9mZ9sBaMBTeWXrqDmMCF7uiAEVRsP2S69BIGaTbDlPUMIwHB9J1jTLBujHTH51/9eiQrvm7xuwrDDZYLLpKKxpaGLDfarHtgdUZILLYYL0/KoiPSR+D9JPOpA2VG/etzM1fqWAtxOmxf4INCYoxohVgoV+GQa0rKI5yklhUo+iu9Z8GFL5dO7zhgvjNGT6HaGQAbDhROyMjlfBd2avfIdVcivSMctGFUbknide/qK7hEeURCkJcHmmJ8p
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -152,47 +152,70 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Kiryl Shutsemau <kas@kernel.org>
 
-The finish_fault() function uses per-page fault for file folios. This
-only occurs for file folios smaller than PMD_SIZE.
+The kernel currently does not mlock large folios when adding them to
+rmap, stating that it is difficult to confirm that the folio is fully
+mapped and safe to mlock it.
 
-The comment suggests that this approach prevents RSS inflation.
-However, it only prevents RSS accounting. The folio is still mapped to
-the process, and the fact that it is mapped by a single PTE does not
-affect memory pressure. Additionally, the kernel's ability to map
-large folios as PMD if they are large enough does not support this
-argument.
+This leads to a significant undercount of Mlocked in /proc/meminfo,
+causing problems in production where the stat was used to estimate
+system utilization and determine if load shedding is required.
 
-When possible, map large folios in one shot. This reduces the number of
-minor page faults and allows for TLB coalescing.
+However, nowadays the caller passes a number of pages of the folio that
+are getting mapped, making it easy to check if the entire folio is
+mapped to the VMA.
 
-Mapping large folios at once will allow the rmap code to mlock it on
-add, as it will recognize that it is fully mapped and mlocking is safe.
+mlock the folio on rmap if it is fully mapped to the VMA.
+
+Mlocked in /proc/meminfo can still undercount, but the value is closer
+the truth and is useful for userspace.
 
 Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 ---
- mm/memory.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ mm/rmap.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/mm/memory.c b/mm/memory.c
-index 0ba4f6b71847..812a7d9f6531 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -5386,13 +5386,8 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
+diff --git a/mm/rmap.c b/mm/rmap.c
+index 482e6504fa88..6e09956670f4 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -1462,12 +1462,12 @@ static __always_inline void __folio_add_anon_rmap(struct folio *folio,
+ 	}
  
- 	nr_pages = folio_nr_pages(folio);
+ 	/*
+-	 * For large folio, only mlock it if it's fully mapped to VMA. It's
+-	 * not easy to check whether the large folio is fully mapped to VMA
+-	 * here. Only mlock normal 4K folio and leave page reclaim to handle
+-	 * large folio.
++	 * Only mlock it if the folio is fully mapped to the VMA.
++	 *
++	 * Partially mapped folios can be split on reclaim and part outside
++	 * of mlocked VMA can be evicted or freed.
+ 	 */
+-	if (!folio_test_large(folio))
++	if (folio_nr_pages(folio) == nr_pages)
+ 		mlock_vma_folio(folio, vma);
+ }
  
--	/*
--	 * Using per-page fault to maintain the uffd semantics, and same
--	 * approach also applies to non shmem/tmpfs faults to avoid
--	 * inflating the RSS of the process.
--	 */
--	if (!vma_is_shmem(vma) || unlikely(userfaultfd_armed(vma)) ||
--	    unlikely(needs_fallback)) {
-+	/* Using per-page fault to maintain the uffd semantics */
-+	if (unlikely(userfaultfd_armed(vma)) || unlikely(needs_fallback)) {
- 		nr_pages = 1;
- 	} else if (nr_pages > 1) {
- 		pgoff_t idx = folio_page_idx(folio, page);
+@@ -1603,8 +1603,13 @@ static __always_inline void __folio_add_file_rmap(struct folio *folio,
+ 	nr = __folio_add_rmap(folio, page, nr_pages, vma, level, &nr_pmdmapped);
+ 	__folio_mod_stat(folio, nr, nr_pmdmapped);
+ 
+-	/* See comments in folio_add_anon_rmap_*() */
+-	if (!folio_test_large(folio))
++	/*
++	 * Only mlock it if the folio is fully mapped to the VMA.
++	 *
++	 * Partially mapped folios can be split on reclaim and part outside
++	 * of mlocked VMA can be evicted or freed.
++	 */
++	if (folio_nr_pages(folio) == nr_pages)
+ 		mlock_vma_folio(folio, vma);
+ }
+ 
 -- 
 2.50.1
 
