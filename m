@@ -4,82 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EC22CAC59A
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 10:18:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6024CAC59A
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 10:18:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6AC6C8E0030; Fri, 19 Sep 2025 06:18:16 -0400 (EDT)
+	id 12F788E0062; Fri, 19 Sep 2025 06:18:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 683B88E0008; Fri, 19 Sep 2025 06:18:16 -0400 (EDT)
+	id 107288E0008; Fri, 19 Sep 2025 06:18:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 599578E0030; Fri, 19 Sep 2025 06:18:16 -0400 (EDT)
+	id 01CE48E0062; Fri, 19 Sep 2025 06:18:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E0638E0008
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 06:18:16 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D8D8659C91
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 10:18:15 +0000 (UTC)
-X-FDA: 83905599750.24.1D9BDCB
-Received: from fra-out-004.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-004.esa.eu-central-1.outbound.mail-perimeter.amazon.com [3.74.81.189])
-	by imf13.hostedemail.com (Postfix) with ESMTP id B773520003
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 10:18:13 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=ifs04hOC;
-	dmarc=pass (policy=quarantine) header.from=amazon.com;
-	spf=pass (imf13.hostedemail.com: domain of "prvs=35013cc75=farbere@amazon.com" designates 3.74.81.189 as permitted sender) smtp.mailfrom="prvs=35013cc75=farbere@amazon.com"
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758277094; a=rsa-sha256;
-	cv=none;
-	b=D7qqcZDG8qOSDQ1Y1Pv5Pe+jwwcoTQaLH+gUQzbJgBKgjGpAhO1HS9l6fY8S7ssufyacN5
-	JSohfc2Y208vZdsT/6EmcWFOpvQRg/C/gbUDdYtbZnTz2AvD5qaxahhibP5Zgop2T++tI/
-	8qTlgBbaYd+kY0vlavp6n8KocIGrSA4=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=ifs04hOC;
-	dmarc=pass (policy=quarantine) header.from=amazon.com;
-	spf=pass (imf13.hostedemail.com: domain of "prvs=35013cc75=farbere@amazon.com" designates 3.74.81.189 as permitted sender) smtp.mailfrom="prvs=35013cc75=farbere@amazon.com"
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E102B8E0008
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 06:18:50 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 89FBBC05DE
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 10:18:50 +0000 (UTC)
+X-FDA: 83905601220.02.CD49ABE
+Received: from fra-out-001.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-001.esa.eu-central-1.outbound.mail-perimeter.amazon.com [18.156.205.64])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 45406C0002
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 10:18:48 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=UO01m2YI;
+	spf=pass (imf10.hostedemail.com: domain of "prvs=35013cc75=farbere@amazon.com" designates 18.156.205.64 as permitted sender) smtp.mailfrom="prvs=35013cc75=farbere@amazon.com";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758277094;
+	s=arc-20220608; t=1758277128;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=BxXd7aLvDai7evuJPWIvJpLyCQkjko3tn6jQCrrWhJk=;
-	b=R2yMi9yvBYYnkvMu/ho5wt+bC0LzTHXJl7co65GUJkEg8ZHorYk/F9m9OFUvr74eo2gx31
-	G1R3Es2xcMzqrXipiMO4CMpz2Q2g0FrQZLEJCzF4l169nkt8BVwkcEp0lhQ5xi/11WxMFP
-	lQOBQK2pBmdP6qCiSa5afpV3iBk0FEY=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=dClZpnB1PEMO1e9oEgVIbE6SUTXtf3TPYMR6goef6rc=;
+	b=5vsglSHfZAFJn3+ztlH/Xj++q0larYCNBxkQl7qb71slO5go93dbhMOECe0lOsNV2KPQjj
+	9yI3r1c5K0pGFJ3LxHL0KgWs6l/SJQleUI65P/3+1DEPv1Dxr+EonSZXcJBbgYtPrv7XG8
+	lIu/qBEih0a98innhLhAiqqFWIWBNZM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758277128; a=rsa-sha256;
+	cv=none;
+	b=lvXsE9Jj5pJ6ngyM98UjIQkNjiKzks22gQzEREfI8MryNECQDizVYnFDnTWpo08I14Tv6m
+	/WK6BgBSDFuEBzUdc3w2x+ip706W0abedj31eDnDI/hU/TLzONDpF8Dzlx0F/Rz+rILB/N
+	EYb/eNhUKpKDb5UlspDd0GHNDHtq+mg=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=UO01m2YI;
+	spf=pass (imf10.hostedemail.com: domain of "prvs=35013cc75=farbere@amazon.com" designates 18.156.205.64 as permitted sender) smtp.mailfrom="prvs=35013cc75=farbere@amazon.com";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1758277093; x=1789813093;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=BxXd7aLvDai7evuJPWIvJpLyCQkjko3tn6jQCrrWhJk=;
-  b=ifs04hOCFTDYSHs/LVVlvmnfUCejDeSTZGO/sM637yffX3prYNZd2nit
-   RlTSV87FA4Z7zwg2U0VFI6PlbqRC3NvgJCU3YJYx67tMhunvKw8ZnQ5f2
-   Mf4Udai5vJaVUoMJwgKS/+Vir3ln1dYLIf38uMyKqmVeZn+yC9VZ/ao1G
-   MmwAmE9Dh1aowpLPyhbDOVFmF/XulEITk4UnlOG6qJWiOVhxdhwrF83jp
-   6wlQJT4ZZf0HEgdcn48TK6DX0T0VjVD0McpJDf/W0ipn1CsGRUtrvTB4x
-   sg/PHn/JM3H2MTlQ5sWWZ32Rj4quZbgxQiMeUZZu45eJnBxbatMnS+g2r
-   Q==;
-X-CSE-ConnectionGUID: jIqyC7qOQMmU/YsQW+R8ug==
-X-CSE-MsgGUID: YteI4yn4Q++iTijrRm1r6A==
+  t=1758277128; x=1789813128;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=dClZpnB1PEMO1e9oEgVIbE6SUTXtf3TPYMR6goef6rc=;
+  b=UO01m2YINBp0hiTBJFjPoDmzUHkfsWggcMHDvE8l85Jsu/Cw2LfEix/U
+   9EM+GgxEhZbNQJv+zt0Ow4LWpvBNtcWjQu13JJmSsEKoG7kYXkCrdxtod
+   Rabb7KBnwp9VRKKYDXt0H+hAdsCl4oYCbZK9frijdcf3/eTfoKhc8Poth
+   UpSUzKT33PstorqB1DJOFB81SbT4R9CQ/qX885ZiuNmNj69ZQLhR1s0Uh
+   mC+Fgqv40wyuHlurY31phNXbBbgVofiR2cOhNfHIuzM4G/DHEHFDt3qtv
+   dVEckejSrHrp+oId9mybn8EeMEZSwEJN0vjE7os2pjasUBBckgcGPKxt1
+   g==;
+X-CSE-ConnectionGUID: 1U4uivwMQ+qfOicgIHY5uw==
+X-CSE-MsgGUID: miXeaWb0R5qy139vgnHFaQ==
 X-IronPort-AV: E=Sophos;i="6.18,277,1751241600"; 
-   d="scan'208";a="2367150"
-Received: from ip-10-6-6-97.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.6.97])
-  by internal-fra-out-004.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2025 10:18:03 +0000
-Received: from EX19MTAEUA001.ant.amazon.com [54.240.197.233:23074]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.8.212:2525] with esmtp (Farcaster)
- id 74144341-cb99-482b-a66c-2682d68c7588; Fri, 19 Sep 2025 10:18:03 +0000 (UTC)
-X-Farcaster-Flow-ID: 74144341-cb99-482b-a66c-2682d68c7588
+   d="scan'208";a="2368193"
+Received: from ip-10-6-3-216.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.3.216])
+  by internal-fra-out-001.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2025 10:18:38 +0000
+Received: from EX19MTAEUA002.ant.amazon.com [54.240.197.232:11040]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.23.64:2525] with esmtp (Farcaster)
+ id 656dee14-f997-4a69-b551-7fa05fbc8427; Fri, 19 Sep 2025 10:18:37 +0000 (UTC)
+X-Farcaster-Flow-ID: 656dee14-f997-4a69-b551-7fa05fbc8427
 Received: from EX19D018EUA004.ant.amazon.com (10.252.50.85) by
- EX19MTAEUA001.ant.amazon.com (10.252.50.192) with Microsoft SMTP Server
+ EX19MTAEUA002.ant.amazon.com (10.252.50.124) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Fri, 19 Sep 2025 10:18:02 +0000
+ Fri, 19 Sep 2025 10:18:33 +0000
 Received: from dev-dsk-farbere-1a-46ecabed.eu-west-1.amazon.com
  (172.19.116.181) by EX19D018EUA004.ant.amazon.com (10.252.50.85) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Fri, 19 Sep 2025
- 10:17:34 +0000
+ 10:18:02 +0000
 From: Eliav Farber <farbere@amazon.com>
 To: <linux@armlinux.org.uk>, <jdike@addtoit.com>, <richard@nod.at>,
 	<anton.ivanov@cambridgegreys.com>, <dave.hansen@linux.intel.com>,
@@ -126,31 +127,40 @@ To: <linux@armlinux.org.uk>, <jdike@addtoit.com>, <richard@nod.at>,
 	<linux-mm@kvack.org>, <netfilter-devel@vger.kernel.org>,
 	<coreteam@netfilter.org>, <tipc-discussion@lists.sourceforge.net>,
 	<stable@vger.kernel.org>
-CC: <jonnyc@amazon.com>
-Subject: [PATCH 00/27 5.10.y] Backport minmax.h updates from v6.17-rc6
-Date: Fri, 19 Sep 2025 10:17:00 +0000
-Message-ID: <20250919101727.16152-1-farbere@amazon.com>
+CC: <jonnyc@amazon.com>, Arnd Bergmann <arnd@arndb.de>, Dan Williams
+	<dan.j.williams@intel.com>, Eric Dumazet <edumazet@google.com>, "Isabella
+ Basso" <isabbasso@riseup.net>, Josh Poimboeuf <jpoimboe@kernel.org>, "Masami
+ Hiramatsu" <mhiramat@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
+	Sander Vanheule <sander@svanheule.net>, Vlastimil Babka <vbabka@suse.cz>,
+	Yury Norov <yury.norov@gmail.com>
+Subject: [PATCH 01/27 5.10.y] overflow, tracing: Define the is_signed_type() macro once
+Date: Fri, 19 Sep 2025 10:17:01 +0000
+Message-ID: <20250919101727.16152-2-farbere@amazon.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20250919101727.16152-1-farbere@amazon.com>
+References: <20250919101727.16152-1-farbere@amazon.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-Originating-IP: [172.19.116.181]
 X-ClientProxiedBy: EX19D043UWC001.ant.amazon.com (10.13.139.202) To
  EX19D018EUA004.ant.amazon.com (10.252.50.85)
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B773520003
-X-Stat-Signature: urmu7h5uxtan6jn8araytuxdijif9h4f
+X-Rspamd-Queue-Id: 45406C0002
+X-Stat-Signature: y3g91nb1jmsa65dbmaj7hhxhamabxn17
 X-Rspam-User: 
-X-HE-Tag: 1758277093-291763
-X-HE-Meta: U2FsdGVkX1/SZaRuNu/Bck5ui2PhtsvI5Cpt7uUNc8JAoc3+4cJ9UXSjOVF9V1mRcAFNrfeH0QtqlcxgGP0RfhYVwTQOr9oc8QoWa7+KxQey5BZhcRDedMb0fnjygNnpbOYX3z7R7NUfKiFYKWY/VUsBCirpvdUDnNC8jVUHTWjibgSj9PoK85DuMHyJFbY8Bcx9e74kyDmvyWXsjj+Sw0EYkifYbMcW3Zz5T+tBX76OSwgGSrr8qc/DURJ3jTMTGT2VSCXIUMgSZJyVSnE1KPfarhaBrBLUVAWR3a2PQrGVWcNkDe/LwM/aPdpN5BnfpNoXLoYPx82IrRXVualEBLcwzQAwdWLp59IqaAnXbLqte78hlLEOzYoqMQZ0ulsCHE5LfBNvtPZOaMCa/qUNrV+Ko9alzlplaZAayc1jcTIS4wdb+CuG9C1Lg44pTRJsbZ1VWj8yWxylrA/cpXwfeBbRq8pwrz3mE0vrdQKc+9ntUbzSU/1/rKnsMWWRl6S5xhTqCA3sMcmMBlOmKPr4UH9c4VTkOSd8KrQI7OIYEia4nFm8bkBQUsCwhgai0RdkNIOeszGRx/4LB32EdVSLGsyZXf6kV6gt4rrAihpVOuswVlVC9zy37qdghC82+aBp22AHNRdF/cDK+P6KzXqz1SvZPykcGohUNrAyOh93iFqMBfc6HxsvljT+m6tt8OSmlhxCFoo1Hf3QCezbzkijAkPZmO+sG/t8ZcMNbvH1OABiMIPuus5oXBSkLKVGE6M/skTBzrTzLW5h99NZMI+r+gnWf64xZAib2cpXABC2byonhiQvQV7VymkKpwXZmkVKdczcqyeFnvKm2UZr+rNChWjFF5WaiZyQEmIoydEWQ5DeewOozL67q/1EUw6t36OTjnCth8Wy3gXLGTDwsTxKWgDawEH1x7ldPXmubakyhOKWBOOJ40pFxsnUFUduPwW7y2uz8oYwCAazLfEu4g4
- OpBC98m5
- lk2sYQppb+/hlfo3c2UNl7OZ61UJZURgr9+Z58FVQzR/WSWHZFLjlQwxs/WTP5xQjO66EXlJPHusdG9zeNvCOnQrBNCf2GRoX8mlnGuvG0GoVV+73AhdbLOzbxMEmDNfRufyAkVnG97Vv4/K3BgkuIdOVMy5DCG8uLIZSlsooWFZP4ersFVMtLyd74R52FHdW9JdSOVoZ7wIobrGrHXOpNdHmFtPrbXUAM0y6P93myqSs6ngyEFaQFAA99fMPy3mRC2yrJFapcXqoGPJ+eknyM4nLVaw6QgCpX2D74SiuwFozCEM6/JwJhtxS3M7ydOgTVT8g+xUhMf+yEuyI1lLutx/Yj/1bFkIm6+RpoIRvWkz9rWBsiSm1iBOwutQZEI9PB+MU1YN+R5+uPXglKbDcqAJmXEncTlHzUsyvb3z348kd4urvHRdMDX0L9WbKR5x0x2JuhDlF8VPCkvyHXZnt9xd9jGuBtXnQ+/qN0BE2AFk6QJERmTs1fOwdlJ5cloDMY1trziE/nTxYYg48d+yIhk/NnNQZAx4pRof/J4KNBaTtHlWr8rDVGDqoBAXKp4ADPxv8P6CjAgO8BaospkviWrWiPvnwYQMtkuUOZxxKrhkTmtfLjjIhlqMxswdhtVTCKEA1qwPRKDaY22E0/J+S63O/fjd9FiAvTDvbkRfAUp3X4EYiNak2m8dQ58BDCiMIw5GsoyCgX7sS7Bcne0oByhOP7k2Pi4c1STGOan0VbhxACZ5vyhtvcHbcW9tcsMiI8OJZ2qb0tMKU5lRM1O6TA2wIjwWI2XVnCAiJRjdIL6zXjt1uWNQjuMdV5gecE2EbEF8tBLSnMcal3n75oev2YL8zw8S2vjLy9RYK9ztgac/vetPkV6Hl0y4xsKQwf3I46yT4FOh9HbXKxkKO10MKHlDNf1ivo5ULSeZTC7/0USRciSVH96OaMMAjITD+QMgWAaKiiiIJm271Flk+pJCeAiZkqVW+
- SUOv5B4n
- wGZOcXw3u3D6GmS98a0FzOZDkxBJ0zC4Vm9tIfRo7xUhqN/eM55CxmtZrInr3s9bI36c+gmv9yIPcXBkysiSjL28NASGinLK1mVoYqZcn6nol8s2ZQZosNSOFLtUjQg1byOuEfzwObELOkv6jzVvO2Md5eT5J1DO0fjhXrmZyDc24l+FidM9p0090wDRfUjD577nQPcRmY6kvBMsl9SF9EDa3cQvFKtnVHbZ9POa6pMHkhf+Hp0wFjyqWAZShE6viBdrazSnKVHdkcFUnBeC/wIFT1nDZH3f30eklpeQY/MR2OwCYDJW6cJrMJXNvJhDpr8CsWWQ/2dZxKnDiFj+BXjKBtpeWbKix57UNOjLdlxSfPb68t3I3bg4PBJq/jR6h6mAUlLKnoaBE1I2JBgdaM989aS0UdSvspvWkwrpeRfJaj6H2a+IglPJQhtBH+pXJFjoNA/2po89Jd1SVnZACjhcIETgSuPlywCUcqBd3B+qdPUIXh+1LywsSOD/a396oPFwOzIhFU8bZqJr8uT4lLbFCm/hACQ1Im0yDFop4/uGEeaZ2xDwHEoDbCVVjVt/NodS5i60AIxmeNrcgkhUQXw3QFRpuQD1NJPk+yN1Kikhj/Y5rl47wjxFJgXi4D0CHPeKfaT0uAedExG4DSr3JV0jHm8PWoU+KEa2ek9xI7lAGobZKbPLle4d7ZDIOqaZjpaLWvD8l8y3vX3XnqIrIRWwwNMdzix6vIp72VUTw/KjhL/SeFzEgtHcfEU4x2jmxE1Rm/qyW43q85B1KoewLjs0ee9jlfswE3kwXpuDaLfvEM3MhyWGdWgQuyiP8nIGx2LYOn4XHJ62k0+38i09pDvJ9VoEot1Q/AnzzOjHLB5+jaIwG4M+KDEn29TZMAxdoXaz16Bd1Y3dsYH2sVkCMkD1gczn894xjF/LuxHOxc1vyS39fE0UqCYVmmXCUq4PrEn1FZneZ8bTFij4LhUGuPvoMQ5kL
- ZjjwuNLT
- IouU0723oXY7zuKnTLuv3kA8kKKQCKVWkm3poYcPVIL+DfAWyImos8QgB47Sycg141uf9YOIhbJXIZUQcU0YNnoyvZcH9ltPiZUh+fXvoqX8uEipEsfzR7ZHdNDtsGUF1GHEPWJOdvvyVctEAoL1gqjpBm/kBqTMzs4Ar4b0QLuCkQafXaVxfMseAQsaWmW7NMbCZtyXERKeeEY1Fygm7676HqjFSVTgStInjAjsD59BJR0pzZeN/wIxxiu5wMOSHgCRBCvyP3q9J/xve9pyHS6oVRcf01ObEoj1Ht9jOnTjKL008znZirLU3K61msnZKQ4BqSwFWVlnED5N44V8q6ZkgheiqiNisUpUlGh2XYMWMqB1iUfJc7S2AvAGeVuW21Z+sEzS6t2PH9qL5xC5R/wJsjacXSabB2fbkaPD4apK5+IUbq5cfSdrTRWHUVHwu+R6KlAjVcqDNye3UUXcEF1biJ2/285T3/+9/NH7OsSWQb/k/ooqOq9FvzuyqN6vRXrquGoR013wmkAuugHW1v/DKbWmY1CqobhRpB70ygp9Dex+7UIN0U3fePkInF1dsU2KlumU7xUaes/j4XAPDJrnKK99sEXtZIUNYeLLvJUGhuQ8FOy4CMK+eXggZjJMSbLiuL2dt7GlqpmKIPjI34wHPReloo5MJORCDJOoplcG5Aw8VZytp8mYNGNg3sHAHsfpetxZm+EeiiqRODx+YD7xVv5+yYx772SHEWnddkPshSt4BrTZgtel1Ygd9qKuaRfmX3o5wJxdYiU7v+GJ4KdkghiC7b2FpJXWjIgMNYKS/5jui9nb4s43Up9TGmyGNLcNI8MWAKQlhd3FM1cZxDoPnoM3/xDvNYknmGpDW99kJT+8ntX5pm+ZR27X2WHFbR+/UaR0wvVEjd6OJgwbDAAdau/uxslSoXlBNmhxSPQaABrN7k3iVUbZU0Ki9mDNLnAXk1c4AgHSZP/8bPplOF5mUKFWh
- 3UCCzxYE
- zNlK5ny7qQgieRoft1E3Wny0fQPy0MN9fy9Y0elcdZ4YDFuKB2ZHQfz/yzixZHouPTnds+FuCxSNUzlPH/WOHGQCtMADtKeLBd70yW+ZmVZreLzgwmWMeTvQQKlfJO5cOYPdNGA+iPlP3igQ0/6cUgKNdC+YsAvpYh1o1m/lVIUR5Zp4nedynkg27HUTqJB1mQF5WQmG1XGN8BI5u4XhRjLe7iaTUPAs88UoIgWLlDDQ1++xmE7SHWEIXLXzPbeAQQquXnuTLgvmmshBHTzEOU1qqLTjhzc3IhpHkJl+8X8pO3M3AeVySphftsSZKvz14+feyx4YK03dBtxckxTDWVe5xW9MWsDyAiCwJjCeowQi2/dgcu26vIX8W9o8+fh9JF/Sb2haMOvH9uYYDoePuXz3t6K+qPjs+ukUNhpoTdB7MTsQcYRJnAoxK1a/gZ6vIcAlJtrIcL0uL7WF52W/Aln1VDfV+bnNLdauqIpPHm5NdALymPnegM3uNqO95bvJMfo4GSUqeZZLnLo3eGQlbWRvjiY+DhkEiQ1ObqeTDetAEvJuk4llMYOdoZLqRj3h4WWQcESLiXURxhPrJL7SB2mJaIq33Ab4yHpByjKsWDPOH8MujQWDLjqdBPgmKvrEYLeO3cN6tWZBOifEAwSy6gGfcIJmIYoYT3jnjBRMeormBd7IO9DNxoqUgAnh6Obhrn0l7+IczpgYrkW9CzH5Ra/sK2BO6CTVGsc7yi+bJElVKrB79MUxGZgPVPzqSKVeppYHjT1XtckeXyogOvLiwBKBhloULYPQJnZgk3QWmnv0KT4J2CnseXBNhAIG+JR6xzwVzKHnh6XR1XLwIkLr59aPzQZHRc0iKtAVFf+18PVc38A0oNV3ar0ITN9/m2G/SvHqKmqePUVI5/uA3rG4SDZIYZfP4lxZi7Xa1fFFoPAiMI4ig9NRWUg6tAuFGlwkbJTelGUepfFw==
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1758277128-516728
+X-HE-Meta: U2FsdGVkX1+FFzx8tlEikWS8roPMjaaVpovhqU0bb9AXgg06CwEKKy20hIMui+LGrZ8vuRM8QuxVolrmQ1oBMbBWrMbAn+zM7VOtxLuTcKbTi1XL8nUQjecgbHSVr0qQML+VkjarAmEulR6CA7/WB3poGX1Gpc4D+74i6dkbS6DjL1H9Vl1R2cuKmWSZjaEemiJQymtdFKUiPr19kZR0sFLCPcVqO4k4shG3XkjnN6uC6fF1A70Ht9KNvDJdcUP5zcT7B1EjP8MtKHcOjoJHaMZGKlejOgzeJxufAsVAxr/q275A67spHnrDPYrsAT18jkg1CouwyXohjbyozgUOTMHOhE5BMdOptJn/Q8XjjOXBQ2e3OGYoE1W1oZlKnTpT2QwD6B96jT5elxx+MdmmdMmyb9UuT5b7ZOpzhWMlVsI/2zpDUh/0jncYKc0rzezMvRAyJ2Wj+IKQszAoCa6VFKamQVYZz06UtaKk889xFqeIoOUFy3xnPwDKI/mKfOHAgzG8JBjcBMHyMVlYPp7/MNmQJCZActONBgBrG3p2rXquaIiZ3l3gGs10AXEKNFNPRgd+dZwSjOvf38jbz2KxZdiZ3nQ7KUhY7LsSCaxh8SQtvCu/69tiZ+7AoBppyqhkBc//7e9gnA/SiA8FpNWMKYzpUrGwh/I7lYXI3G4d42X+nmhWHn+S1GhvchoiqrIVO4O98BvGGLxloGPTliysQwDQ60fnWX3Fp6wTT8N9+X+rFrFKTr3dEmShcVAR/vpvabfeW0sDRWV6oxT1u5V2hrUsjK4m1o7Fe4fxlADoD6pwFLBrTQxY1JjmoblKQwpDqrpbQBEYThSgynFBxVD3AptPw/xoGQUz5rz/BklRbTlaAjnkc6j0o85aBhERhzAu0NPWtqkb+FaRrfmak5ZBwC+qxHj3b8cOEbiTgg2vEJPDg2mylSBVBqtYH3N8QTqM+ECXjdPuoEnptIt21MS
+ /WxIVGMK
+ cnepXLyXvmt9rQVTVkCdrKSurd7pYzvNyV6q4SEnjp/spSG04xDVqw7p2Vb0fxjMbWX18nbTuePQJt+b9TT5ZwBBz3K1Py22hoUH+UDeY1qok07bXjw9yzbDzfNKPiTw/nDTgob0LyMg1dRF8L7yPYKEUpFStZ4cC76y+hLXbbTXqHW6ZhBu72hb9cKY+6A4uFAWJ+SUwyKZo0MR59RkKlFYHQcoYSmdWp8vAERkueYQFRl8xy72AhP5dc23sh35E9rPnYyGtFdVHutBNR1IHiOtgItMeehMNmGV2kDzChL8YVOmMe+MESeycvl72u7BX0vGLwIL/xBN53pKf7dZrr2wes3sqxGxb8hXaLWa/l7gQkrwNzqyZRp/NM1u25XJMxgTH3shNCHq993LYXJhc1/zxTR4Y2tzkiK1Dg4Rnu8AzvkhiMiDf7NHYD7VjHXWw+wzmHSU3/CHE5EiLiPv1V17wVN4iacyjTmWxBrEEzFkEsj5nEuudYAEKVDCgaJI8pKEHB4hHiY2XLe0l0R2nhJFnYbTO6RlaZJU7CXklbD6RClUlmZ/N2BWpm7Jth+nH/RqIPGtrGs7IzbdcnVEqKuXIkH5hQzXeMVTv3Uz4Zq41eLtiZhJjDQwqCbNGzc9fftwaBFThK8TcvVP453ePBl4MM4x4N3WgKtayEz+M4B+Xty0erze+eYpnSsIcvl7dpvHRAb1S2QX4Irxv5zK6XcmrTGtYA8tEJAKDRjF4xeiOCk6SB+ge7zuGTwsmhVU/Wnfc19kIaiU7/OTgKR97K/k6HaW5oqYfZHWogE9ODxvnJ+LLjwhtbXNJH1jzzN/+bjqEe+b+FWOtCvBiWIcXBKs65E0//coN6ayIhWXh1hSIJ898MnkALwuHo8FMFbqiiOOWLhAMcxFIh0LMaNUu9FKhOGr9OV0JjgHCpn1s4YQ5MTdF6DjNthQToiXCxo3wdwB01vGYhTTv40Q9R1t8Ksw0n5KE
+ 7yFdo35i
+ SBd3c73I8CxzDdc3whAAllK9TKUIBxt3dt/H8eP5ZsI4nzWtb5Pa2N5oQbc0gJIQLg6C2P2EGDW2H6eX7AXG64IsdRKDU6QEpvamyyMClGk5FXxO/iI1xHQ6uAOZs/8Q+0AIfVbelFBHI74pQbmwJl1vHOPXQbSF0QWmmQ5Gvr7YR2BDR5+pkX9FgQ8BJoeSsM37JdAzZoNj9r6soMODg12WwAjALCX74PjFKy3E+9PbLVysVuCYxDsI6QrYsthdIa3NOQ1OnfyblpSefMgpexBQ5n2iv630Hyw5HXUAuq7IgbXanJFnFKw0WgmcXbzOhP6pSTdGyjCFhSqF5LvsA16Y6OzjYTPhHjDm/IQpbJbXfJ54CUkCppr3Nj3fx28Sb1+jQM7v0YMfr1tIGqMuik9m29mDc50QHbO3SXncbhGVBbKG02SlVsDC00lhZ5RotTsBjapFIdrJ0S6llw3fF9Q5Fh7PpOtXuJ9OhBfo06b9/fpEthx5idsps3ilkrU1I0bKZKoOlAeTcxfftVUaIOPr+YUd7DsK/EMh3R0TCASK/THnQZ158hifreKEk/9dfNFB40akTuS/G3owIGDo2fu7ZldUEEXsrD8h1z+6Rd0bvaTC9r2lQquHz3BA5ZTuQ3MLAYttvu6/g9Zx/WhFbvzW665Ol1yCrjHLuj1tZTU+VeG1HnY8qmPGUzoCuiGzRTm0PXbvMlSXjaADFKHvpuEcJypXspEXmyOn8+DJiNeBJXS+PFO11fFDmBx3i+hEbdE+rrDO0C1r9Go/YWx9x/VDrn4vz309hlW3EKvsTvHKCSgrHSbnxHHKkZZVRZ11arzLGIrlRQ56+aj9dG5vZn4rNv6IvI2I0AcaYOcmWMNDNH9WRJkYRW1yZ0NAO00EYf7vW/4MXeRZGtW081dCeloXgqi69DVyffyLUXX3fX9cq/bCSepOjjQ7YDknDcdau9IJEvORG08yPYhQ9DmFvCMM847aj
+ 4KEWViRs
+ q1d6WvgImRCIIPbrETPeCcISZysxJaKBEYC5o1P+veCDLEtwNAm2Kmgba9Cz2ukXsth/9cR66CaaIrkcNdMiC1+BDzg0ULabtb/WRO4943ojMbHcwhaPxzRxj+l5Kt4WvBFb5mg9ONWhP0OAXwzs2c2N0jf/WkM0VcksSm6b2S078ma4agDaTyv1KPrn5XkTQjUKPfAI4b5R7GekH/n9PNydE79YPZh89YFKNIf9J+mWK1imYdJum20CiYdnkb3TQ0ag1AuwPRuh1xGxXg4rPMbOi6omaPGB62UVEErYW07OGcA1NI+2lRxdVr3Ax0BRspOSHyW3mqud6Y+f0FhAw+dLTU4QR5oe8hR4AVZIZZqfYRwlJ0+h+i30YIxV2O4GAuFOt3XnCjT6jtuS51JOlpJkD0aWyR+GRgomMH791R83/Vk9xdzvs7XQp2u4jbcVuvLplm/wWRNkoKXywdsRRjv0wP0QbhQVB72zxp8pXp201Srn7qA5wBuc8QkGCz1Rx/nfOjNP45+dfema3KXDGq37fbOj25DrE+2Gfdl577g2Jg+lrP2OFspug0NTr/QyYoYU1CPy75whab9Jh3dNDXQJK3K/2mRTuebhBPXvS3WlAWlc8BtgOdxoODEZRaDQBk/rmHaM7WvTEC50K4v5/BoyA2KjM2tGIKx4aVY5U5KfGU05lQTkTgDqSYEo7CQ+HFiGuVHjxp+MP6EmFTC9SyO+hqPcdDlzGxAbTX3sdqksJ/n9iYp/PZxusU9Lr0O65kIKHjXeOK7CBalwuP8RXrBQzYFueDeqeZrg9KDyH8/UdJGLGmEkkLlPNYfCRmjntKFfaVyhcJ5G4m3TswjDhw9O93LJIXJZgmfaO/zS8BUoBkMseGjCndfQfRd088RFxACDPn30llpwJhmufWO9M/egb/grH0+IVzh2ZuRO+TjbZv1DNaLlhWQHm7pkpaGhug6Wg7LRIoBxytf5eiPdk9utOiqDb
+ VQcnqX0D
+ 24dFXmQroLCgmtcpzG4X8Xr3Aaci73+o1aIyel8OlNCD5/KIf4FdGmLcavlAm+1hnkP7/XVm87XymxeSXjg61DUvwuHjIIXZkKF7Uz1QCgExxIKyKeY6B2cT46tW4pJJhxZxLa+kwdb0xXctxK7VISb9c1HWajzaXF5tM1GsfCnf8SXlJ6X2sydLFq6R+UXl60q8jPr/wy6GsvPkbgTdaFp7opTf1gRse2iGoHqh6ce1KV7eJq13PhikWUkH05Aem9YiiqrRSk9oV4QIq1OmQYFeP0GePALtSRMRPXvBloHyckz5hoS/6AyJeuaGoudTTbIR+4iizPu6DOy7fNDxrpeOMP221uiCif1+6+ZfVVnBB2iWvN9Kjt+qK935YGIYvvsyBPdKLlFN95yTQzckwcaLalhsmDr+2uBy3VYnXCgntxzpn1TjAqofKxKVTC2mPT6XHpi9uOsrT9FzCqdz3I2vzK0exYdpWm3PmByZKCQ5H7368lAaiU7eTkqG3PZPVm2rTxS0XpyB5Frf7TK3iSsYV8OogB86fRG566oPrFD2Md5bt2WLX3Q4VzI+ey9qHMs0rh/njFKj+uDFf0ZxDGSx1bcKkTf+lJsVCTSvSfYikpgnHdKqDt0MBFAgEr3OtA7BFJBpZ5QLHqgOqlCg6EKN7IZSBJHRvxzydfh3Ped9FNnkQntnevLsFigx2fomko8Ue5b3/9wgu6RoDLpA7XGRRzWsefIxnasEUAW4xTmE5EeuYFS+J19lLjOl3z+QTJxTfEcFwYTLQNvYTbXUgvw9qZ0Wj/E+HdGj8241tliH0hXVkGS9A6QPXZvjSwiXRN1KSwbUi+2Kwqn6sVnDhc5P5+tj3wKb7Tyq+Rxllg8VRzFpBqhYUlDtAFC+IYy673T0BCKlBFnH28dYU4zN0id7cEfJw3KM2RKaxpeSz7v1LTL+qDVv1aiMY/7BOlrJvoc2XnLgIJeQLWc8JOp1ZPLWHUYJb
+ koI5R+Yh
+ WU/dUpnxyoMOpqUxk2FKv/Nr+QRIFeOJzgvSCK3dI67cNaT7f1EFhzkyQEXn8ryYjzDRNRP++Tz57ncnpc2Zt8sPzElXahFHfdRY+QE/hbus4MvouaApAd4AlF7/Qd8+wfYrVLohUX10AYHOVftN7+vKOHkh0TEJwSz1IHu04UhECbC+nHM+7X20dFOg6THElc3r1kd/6iERc2TAZ2r+UiMLIyw0xxgWfdlGUPaEQVpfnTrdue4uIJnKm5+CQzAFZDE/y9gggwjycoO2JgaC349ttTAENUxLZzXw0WKevHD5kzyph9t+zWgEPZcFhKULs99YaCkMzFHe4uUvhGyHwiAfSvCHJmClL93UlNthDDwReVpmgrxms8wNrzdJWXOTUK9FzSsdxz5L9vn2fKELTSe/kb0ieKuSQGO3nEo+3vUltllZm6TQ5g5k3ssfHz3mm5WravXuHc5yrUAfbFyRxG7knWyarRMyNdz0uLzD+XDA/I7FUnu2EvqWtDh3dTy+Im6gHwwOyNVKc4pp8t5lwm+r5K/6szJPYaWh1o/k4OuZ0zcEXh0N8HU6DoY0acvbRYOkhWyXcfP4MXe0B2HoPZTR2TsFNkJCewLEqShGftfehutiQfyTXaM1/LRHnfXvW/3UoS4FK0l94j+idfSrNlY/Y9Oc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -159,162 +169,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This series includes a total of 27 patches, to align minmax.h of
-v5.15.y with v6.17-rc6.
+From: Bart Van Assche <bvanassche@acm.org>
 
-The set consists of 24 commits that directly update minmax.h:
-1) 92d23c6e9415 ("overflow, tracing: Define the is_signed_type() macro
-   once")
-2) 5efcecd9a3b1 ("minmax: sanity check constant bounds when clamping")
-3) 2122e2a4efc2 ("minmax: clamp more efficiently by avoiding extra
-   comparison")
-4) f9bff0e31881 ("minmax: add in_range() macro")
-5) c952c748c7a9 ("minmax: Introduce {min,max}_array()")
-6) 5e57418a2031 ("minmax: deduplicate __unconst_integer_typeof()")
-7) f6e9d38f8eb0 ("minmax: fix header inclusions")
-8) d03eba99f5bf ("minmax: allow min()/max()/clamp() if the arguments
-   have the same signedness.")
-9) f4b84b2ff851 ("minmax: fix indentation of __cmp_once() and
-   __clamp_once()")
-10) 4ead534fba42 ("minmax: allow comparisons of 'int' against 'unsigned
-    char/short'")
-11) 867046cc7027 ("minmax: relax check to allow comparison between
-    unsigned arguments and signed constants")
-12) 3a7e02c040b1 ("minmax: avoid overly complicated constant
-    expressions in VM code")
-14) 017fa3e89187 ("minmax: simplify and clarify min_t()/max_t()
-    implementation")
-15) 1a251f52cfdc ("minmax: make generic MIN() and MAX() macros
-    available everywhere")
-18) dc1c8034e31b ("minmax: simplify min()/max()/clamp()
-    implementation")
-19) 22f546873149 ("minmax: improve macro expansion and type
-    checking")
-20) 21b136cc63d2 ("minmax: fix up min3() and max3() too")
-21) 71ee9b16251e ("minmax.h: add whitespace around operators and after
-    commas")
-22) 10666e992048 ("minmax.h: update some comments")
-23) b280bb27a9f7 ("minmax.h: reduce the #define expansion of min(),
-    max() and clamp()")
-24) a5743f32baec ("minmax.h: use BUILD_BUG_ON_MSG() for the lo < hi
-    test in clamp()")
-25) c3939872ee4a ("minmax.h: move all the clamp() definitions after the
-    min/max() ones")
-26) 495bba17cdf9 ("minmax.h: simplify the variants of clamp()")
-27) 2b97aaf74ed5 ("minmax.h: remove some #defines that are only
-    expanded once")
+[ Upstream commit 92d23c6e94157739b997cacce151586a0d07bb8a ]
 
-2 prerequisite commits that adjust users of MIN and MAX macros (to
-prevent compilation issues):
-13) 4477b39c32fd ("minmax: add a few more MIN_T/MAX_T users")
-17) cb04e8b1d2f2 ("minmax: don't use max() in situations that want a C
-    constant expression")
+There are two definitions of the is_signed_type() macro: one in
+<linux/overflow.h> and a second definition in <linux/trace_events.h>.
 
-1 additional commit introduced to resolve a build failures during the
-backport:
-16) lib: zstd: drop local MIN/MAX macros in favor of generic ones
+As suggested by Linus Torvalds, move the definition of the
+is_signed_type() macro into the <linux/compiler.h> header file. Change
+the definition of the is_signed_type() macro to make sure that it does
+not trigger any sparse warnings with future versions of sparse for
+bitwise types. See also:
+https://lore.kernel.org/all/CAHk-=whjH6p+qzwUdx5SOVVHjS3WvzJQr6mDUwhEyTf6pJWzaQ@mail.gmail.com/
+https://lore.kernel.org/all/CAHk-=wjQGnVfb4jehFR0XyZikdQvCZouE96xR_nnf5kqaM5qqQ@mail.gmail.com/
 
-The primary motivation is to bring in commit (8).
-In mainline, this change allows min()/max()/clamp() to accept mixed
-argument types when both share the same signedness.
-Backported patches to v5.10.y that use such forms trigger compiler
-warnings, which in turn cause build failures when -Werror is enabled.
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Isabella Basso <isabbasso@riseup.net>
+Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: Luc Van Oostenryck <luc.vanoostenryck@gmail.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Cc: Sander Vanheule <sander@svanheule.net>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Yury Norov <yury.norov@gmail.com>
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Link: https://lore.kernel.org/r/20220826162116.1050972-3-bvanassche@acm.org
+Signed-off-by: Eliav Farber <farbere@amazon.com>
+---
+ include/linux/compiler.h     | 6 ++++++
+ include/linux/overflow.h     | 1 -
+ include/linux/trace_events.h | 2 --
+ 3 files changed, 6 insertions(+), 3 deletions(-)
 
-Originaly I aligned 5.10.y to 5.15.y, but David Laight commented that I
-need to pick up the later changes (from Linus) as well.
-
-Andy Shevchenko (2):
-  minmax: deduplicate __unconst_integer_typeof()
-  minmax: fix header inclusions
-
-Bart Van Assche (1):
-  overflow, tracing: Define the is_signed_type() macro once
-
-David Laight (11):
-  minmax: allow min()/max()/clamp() if the arguments have the same
-    signedness.
-  minmax: fix indentation of __cmp_once() and __clamp_once()
-  minmax: allow comparisons of 'int' against 'unsigned char/short'
-  minmax: relax check to allow comparison between unsigned arguments and
-    signed constants
-  minmax.h: add whitespace around operators and after commas
-  minmax.h: update some comments
-  minmax.h: reduce the #define expansion of min(), max() and clamp()
-  minmax.h: use BUILD_BUG_ON_MSG() for the lo < hi test in clamp()
-  minmax.h: move all the clamp() definitions after the min/max() ones
-  minmax.h: simplify the variants of clamp()
-  minmax.h: remove some #defines that are only expanded once
-
-Eliav Farber (1):
-  lib: zstd: drop local MIN/MAX macros in favor of generic ones
-
-Herve Codina (1):
-  minmax: Introduce {min,max}_array()
-
-Jason A. Donenfeld (2):
-  minmax: sanity check constant bounds when clamping
-  minmax: clamp more efficiently by avoiding extra comparison
-
-Linus Torvalds (8):
-  minmax: avoid overly complicated constant expressions in VM code
-  minmax: add a few more MIN_T/MAX_T users
-  minmax: simplify and clarify min_t()/max_t() implementation
-  minmax: make generic MIN() and MAX() macros available everywhere
-  minmax: don't use max() in situations that want a C constant
-    expression
-  minmax: simplify min()/max()/clamp() implementation
-  minmax: improve macro expansion and type checking
-  minmax: fix up min3() and max3() too
-
-Matthew Wilcox (Oracle) (1):
-  minmax: add in_range() macro
-
- arch/arm/mm/pageattr.c                        |   6 +-
- arch/um/drivers/mconsole_user.c               |   2 +
- arch/x86/mm/pgtable.c                         |   2 +-
- drivers/edac/sb_edac.c                        |   4 +-
- drivers/edac/skx_common.h                     |   1 -
- .../drm/amd/display/modules/hdcp/hdcp_ddc.c   |   2 +
- .../drm/amd/pm/powerplay/hwmgr/ppevvmath.h    |  14 +-
- .../drm/arm/display/include/malidp_utils.h    |   2 +-
- .../display/komeda/komeda_pipeline_state.c    |  24 +-
- drivers/gpu/drm/drm_color_mgmt.c              |   2 +-
- drivers/gpu/drm/msm/adreno/a6xx_gmu.c         |   6 -
- drivers/gpu/drm/radeon/evergreen_cs.c         |   2 +
- drivers/hwmon/adt7475.c                       |  24 +-
- drivers/input/touchscreen/cyttsp4_core.c      |   2 +-
- drivers/md/dm-integrity.c                     |   2 +-
- drivers/media/dvb-frontends/stv0367_priv.h    |   3 +
- .../net/ethernet/chelsio/cxgb3/cxgb3_main.c   |  18 +-
- .../net/ethernet/stmicro/stmmac/stmmac_main.c |   2 +-
- drivers/net/fjes/fjes_main.c                  |   4 +-
- drivers/nfc/pn544/i2c.c                       |   2 -
- drivers/platform/x86/sony-laptop.c            |   1 -
- drivers/scsi/isci/init.c                      |   6 +-
- .../pci/hive_isp_css_include/math_support.h   |   5 -
- fs/btrfs/misc.h                               |   2 -
- fs/btrfs/tree-checker.c                       |   2 +-
- fs/ext2/balloc.c                              |   2 -
- fs/ext4/ext4.h                                |   2 -
- fs/ufs/util.h                                 |   6 -
- include/linux/compiler.h                      |  15 +
- include/linux/minmax.h                        | 267 ++++++++++++++----
- include/linux/overflow.h                      |   1 -
- include/linux/trace_events.h                  |   2 -
- kernel/trace/preemptirq_delay_test.c          |   2 -
- lib/btree.c                                   |   1 -
- lib/decompress_unlzma.c                       |   2 +
- lib/logic_pio.c                               |   3 -
- lib/vsprintf.c                                |   2 +-
- lib/zstd/zstd_internal.h                      |   2 -
- mm/zsmalloc.c                                 |   1 -
- net/ipv4/proc.c                               |   2 +-
- net/ipv6/proc.c                               |   2 +-
- net/netfilter/nf_nat_core.c                   |   6 +-
- net/tipc/core.h                               |   2 +-
- net/tipc/link.c                               |  10 +-
- 44 files changed, 306 insertions(+), 164 deletions(-)
-
+diff --git a/include/linux/compiler.h b/include/linux/compiler.h
+index bbd74420fa21..004a030d5ad2 100644
+--- a/include/linux/compiler.h
++++ b/include/linux/compiler.h
+@@ -245,6 +245,12 @@ static inline void *offset_to_ptr(const int *off)
+ /* &a[0] degrades to a pointer: a different type from an array */
+ #define __must_be_array(a)	BUILD_BUG_ON_ZERO(__same_type((a), &(a)[0]))
+ 
++/*
++ * Whether 'type' is a signed type or an unsigned type. Supports scalar types,
++ * bool and also pointer types.
++ */
++#define is_signed_type(type) (((type)(-1)) < (__force type)1)
++
+ /*
+  * This is needed in functions which generate the stack canary, see
+  * arch/x86/kernel/smpboot.c::start_secondary() for an example.
+diff --git a/include/linux/overflow.h b/include/linux/overflow.h
+index 35af574d006f..66dd311ad8eb 100644
+--- a/include/linux/overflow.h
++++ b/include/linux/overflow.h
+@@ -32,7 +32,6 @@
+  * https://mail-index.netbsd.org/tech-misc/2007/02/05/0000.html -
+  * credit to Christian Biere.
+  */
+-#define is_signed_type(type)       (((type)(-1)) < (type)1)
+ #define __type_half_max(type) ((type)1 << (8*sizeof(type) - 1 - is_signed_type(type)))
+ #define type_max(T) ((T)((__type_half_max(T) - 1) + __type_half_max(T)))
+ #define type_min(T) ((T)((T)-type_max(T)-(T)1))
+diff --git a/include/linux/trace_events.h b/include/linux/trace_events.h
+index 5af2acb9fb7d..0c8c3cf36f96 100644
+--- a/include/linux/trace_events.h
++++ b/include/linux/trace_events.h
+@@ -700,8 +700,6 @@ extern int trace_add_event_call(struct trace_event_call *call);
+ extern int trace_remove_event_call(struct trace_event_call *call);
+ extern int trace_event_get_offsets(struct trace_event_call *call);
+ 
+-#define is_signed_type(type)	(((type)(-1)) < (type)1)
+-
+ int ftrace_set_clr_event(struct trace_array *tr, char *buf, int set);
+ int trace_set_clr_event(const char *system, const char *event, int set);
+ int trace_array_set_clr_event(struct trace_array *tr, const char *system,
 -- 
 2.47.3
 
