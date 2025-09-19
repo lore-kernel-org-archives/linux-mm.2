@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D12DCAC59A
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 14:08:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7056DCAC59A
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 14:10:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 441068E0002; Fri, 19 Sep 2025 10:08:14 -0400 (EDT)
+	id AD5598E0003; Fri, 19 Sep 2025 10:10:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F1B58E0001; Fri, 19 Sep 2025 10:08:14 -0400 (EDT)
+	id AACDF8E0001; Fri, 19 Sep 2025 10:10:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 307F18E0002; Fri, 19 Sep 2025 10:08:14 -0400 (EDT)
+	id 9E9678E0003; Fri, 19 Sep 2025 10:10:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1BB7B8E0001
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 10:08:14 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id BC83013B924
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 14:08:13 +0000 (UTC)
-X-FDA: 83906179266.19.F830377
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 8CDC68E0001
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 10:10:04 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2D30D13A1E0
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 14:10:04 +0000 (UTC)
+X-FDA: 83906183928.29.BAF7AB1
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 9FB32180006
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 14:08:11 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
+	by imf07.hostedemail.com (Postfix) with ESMTP id 6F29540012
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 14:10:02 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
 	dkim=none;
-	spf=pass (imf06.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
-	dmarc=pass (policy=none) header.from=lst.de
+	dmarc=pass (policy=none) header.from=lst.de;
+	spf=pass (imf07.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758290892;
+	s=arc-20220608; t=1758291002;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=uw1h0zqyCJ+MrI70fVNHHLekDspDIQEV+NKvDauH29Q=;
-	b=SrN8Gd7NROkjwXj3ntNetxLCf1KiKFgHG/VJwC7c53wDqF33TRr60NdhkmBIR0FDKxejCs
-	LTlJ4bBTSNx5u4Bd2nEhI4iFEiHshDEZyueCqWNRQezEh5fINDkpdVwfpu5WcdzRCDiiL6
-	1ZaAV9ZgXCByz23QBUWN2qpr2XK9kFI=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=none;
-	spf=pass (imf06.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
-	dmarc=pass (policy=none) header.from=lst.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758290892; a=rsa-sha256;
+	bh=/+B9KGJ885tcqcRdpYW7pcueEG9ta0QWlanF7bRjaUs=;
+	b=hIeRae8Iz/W24TMlSIeqDWM/92GuVoYgOTmuqU27J5qe6BKYSmXuZ8Zx7/JS7umlZbSIc0
+	jW4zL8Rkm2Bk0oTo8we0X3HFT5n2XiKsjoL/e8WrXK0paR+aHRq0FdPzICK8lVVuqgWFNX
+	XpjIXKG+j6bHXcoi4+ZC1qqawif9tEA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758291002; a=rsa-sha256;
 	cv=none;
-	b=7wtvmtATAG7ItkIk144WFMd1eYiMN2YlWi4B0YLouP//7sD7spRz3L/S89sKnBB9sUXXiw
-	NyCa6goJUvF8kZyq0n1t/r6GDiXdkSN7fFl5xx+P2nguJ3yTafoXoBXHXnFEbr9ZElox+m
-	RgtkDssggghy4lhKrX8vpul9mpyVq0M=
+	b=zQw2URD8BB7O7DZ3YBA2ftoo8/SgEP7Qk1dh6SStOLYK1SGu6CqZlMlvKxoaiFAHLdtQOW
+	5FBcFx8XNsUR2DO5DXTJ+evuW+g8kVobMXIdrX8om8Ngwb42u2lfTWihFfB7J+T9vdVk7h
+	Q57sXxhDhtzfD5BWS5q7PP2HqXNao1M=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lst.de;
+	spf=pass (imf07.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
 Received: by verein.lst.de (Postfix, from userid 2407)
-	id BBAB368AA6; Fri, 19 Sep 2025 16:08:03 +0200 (CEST)
-Date: Fri, 19 Sep 2025 16:08:03 +0200
+	id 990AB68AA6; Fri, 19 Sep 2025 16:09:54 +0200 (CEST)
+Date: Fri, 19 Sep 2025 16:09:54 +0200
 From: Christoph Hellwig <hch@lst.de>
 To: Nathan Chancellor <nathan@kernel.org>
 Cc: Christoph Hellwig <hch@lst.de>, Marco Elver <elver@google.com>,
@@ -92,21 +92,21 @@ Cc: Christoph Hellwig <hch@lst.de>, Marco Elver <elver@google.com>,
 	rcu@vger.kernel.org
 Subject: Re: [PATCH v3 00/35] Compiler-Based Capability- and
  Locking-Analysis
-Message-ID: <20250919140803.GA23745@lst.de>
-References: <20250918140451.1289454-1-elver@google.com> <20250918141511.GA30263@lst.de> <20250918174555.GA3366400@ax162>
+Message-ID: <20250919140954.GA24160@lst.de>
+References: <20250918140451.1289454-1-elver@google.com> <20250918141511.GA30263@lst.de> <20250918174555.GA3366400@ax162> <20250919140803.GA23745@lst.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250918174555.GA3366400@ax162>
+In-Reply-To: <20250919140803.GA23745@lst.de>
 User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Rspamd-Queue-Id: 9FB32180006
-X-Stat-Signature: yikepc8euujt56rbyzrd4wd964ncdfej
+X-Stat-Signature: m4igam8xkr6untr7edogstcrpu5657aa
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1758290891-849781
-X-HE-Meta: U2FsdGVkX1/oiR79HIR1uRgWmcczH4Cg6K/TfJoQmTwrYiK4fogqufCJVb09Jc1Ol9a6C/x56lu159emw9gSq1b81V6Ol7s2tnbFoff7n2pHe6cvc9zWARu0FqBOXt3IFZrlIeT64Le8D+yE8LAuCUlQ6MZbOzZ102Xtw2Nb8pxGSy21f+gbtcQQaM68iuQZJEZvKniWnCirQuB5BHnH5npKduWvBkep3cGdNTpILW/3hX8TXuJH1/hTb9etxFOi0jFMN1WysukhFENk6ot49jkUwmrggKztEECv3mY7maqgzG3yybz9EoPBeOTqK3cbvdB2chobqSbakUcLlAVjQoqFJ20JVpSkuC959H31OJdQTDDcTfoL2FdeoCnom0eOz5sj0aXcnkjk+0BPyerm59Rufl7odvq0XvfPfuDkpceJFVvYNFUb6tggkDtg0pks3ZSVZFrDskLKbAVw4rdRVnQje44bZk1tNI77n/uGp/27q69xAFq+tWIobKd7Kw02b9TCLPwMX2X2TSZVGreXaIKUtcrbaEDJmR6uYuOkJi55kGWpa0VkeuJ7eBP6FPQ0V0xHxOFAK2ttv2lp6XWFDZhhXxmKlkjNiWoXrxgU/9KcpAhf7swNa8s+Zawqsl04M/snIMdJkOEkN+nbBzWdWK6g7GiTjbDXRfjsDC8imx9jiWV1B7OBa3N6nTPf0DWTs8G4uc4QEYB9i0UEExKptryL6uCbbqqLt4IcxTNblByE88aTKskXKak4oyFP0g48tbNSYEAhDqdqCI0eyFk6QLmkcQ+MRnZw0Oy5v6qhFQwzAF4B3FJ3lVP0Z7Ol21PiHHtlYuyjmZOHZVCswi8nHzk9Oa1HlLkRJ42xpXrJbZu77N9TmcUnAI9FtJEhKU4z3jCirG58RA3wmlbuferzv0lKvtXtgf4DtdF3jmjWe0fpTQM1vDZC04/ue8E9Ys006GMM1lhtnd95SZ0Li2P
- JQI0GwKn
- V5Ag8P/yBnwi+xTtGFeiyzBE7NgVYnmgk6pUT1JO68qirIfZEEmWLG1s/tWQh/+YLeBBOUjJDjkURbppV4VMcPvyltA508srxhsChvhchekDReYdTCRrq0q4qiCep2f0uPzBuBC7x2x4/XKxLVuupgQlNYREIZGR+NuoEqO575W6G85KdQAlPNcO8Pw==
+X-Rspamd-Queue-Id: 6F29540012
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1758291002-206149
+X-HE-Meta: U2FsdGVkX1+ZMEh3ztHlcZ2wXPSSg9Anpg0Qn9THM2njT4hZ4lc694h0adRJX7/zyNXOo3OiI5jzuiiKQbmjnYdga6ylOz5fGJr1DCXSmWGwCrjzMP/XbZN5FJJyPJb87pgFwzKyKNP8wCly/25mh+jK/Kqq6W8t5N25Hlbla8pv3nVMpOdZONou0GH4dr7pUWPxZtziNDjOebnR7WjnTv63K+0isrIc96NQRDbRP2B2zYo+m1vvlna9ZTPyvt+1nUBF5TGxRXkvccJOjFdI+TeRQC0ykCmSgvJki33lyVBda1vM0cFPEq2fjJjyRO417HOtxrylmeGHbiOBJgzUwgV35XyBk2TYk8VEaN9QW3tbcfmBRzORnbJXGZr86shYNbzxJVE/c9ubr/u37LGMeMYwp0ifYOauGNbPD7CQqHfTv0vJrRIHLpZJbEVe8P/striya/uQDJyIOk9/ajOj48+QEZA0tYvtQRgeIyhc0G8OGFZqtsukIlK4FTlGw0IEILdpMF0mA8v/d6xCuANh51k1Aj5PK2DIdJdncpQq1igqc1yj11HuZLojdeqgQlVARWA24o1hTcRD2xdMzRKe3ZWLwGNFnCq2I/RAlG63Yaa0EJVZ7iZGDk6f1QNSgPeVX2Ew6lK6CWKdLXROtc3iq/sbRMTPhMde/ZZxkM9BZ5KMm3BqZRYNHSTxVg1peilQLInsTF7dRQVUHxPddRjpn5ZZiD9MGUW/p81UHswa/o+WDeH5tdQvypdz+Ax/nf9QBAaH773nD6Bvoz6FCpy4fmsJnCYymyWrxrqWcAXCSXDnI+i9aovS4ntIAE79qcPua7UoALr66GEvb/2Yq0em6oPmZ9e+mK5lq2cTwPalX2csaKMO+Y/EDnj5Y8Ho4ydSTsoAQPxMt1h3eXtUsS5YBy9rCUYNDH3vWp36fwXi3ah0pt5sWX4h1LqNvEV2Lrz1j73BR/IrYOgmigLm3o+
+ zxqSfIP9
+ vHV9TsgW0zDLoHx2ZOAr4ePamh0vyUCN8VSqlG5J2EgRv4qEwNxoQquHh6KP+LR/KQpY1Te+8AzYIt6SZJXlECkdr3rs0vdA1hTihBo+hsze9isvKzo3L06ggoEh3/1aZ3+8Pakve8NKuBXxp6DUUoZsTMvsH6rFKQQtCk/FSlky6WrDXw8+OlpRxdpyA+JRHZ5LaPXY2mVpDrzlkrxjG9M91UnBt5Ik3TtAA
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,53 +115,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 18, 2025 at 10:45:55AM -0700, Nathan Chancellor wrote:
-> On Thu, Sep 18, 2025 at 04:15:11PM +0200, Christoph Hellwig wrote:
-> > On Thu, Sep 18, 2025 at 03:59:11PM +0200, Marco Elver wrote:
-> > > A Clang version that supports `-Wthread-safety-pointer` and the new
-> > > alias-analysis of capability pointers is required (from this version
-> > > onwards):
-> > > 
-> > > 	https://github.com/llvm/llvm-project/commit/b4c98fcbe1504841203e610c351a3227f36c92a4 [3]
-> > 
-> > There's no chance to make say x86 pre-built binaries for that available?
+On Fri, Sep 19, 2025 at 04:08:03PM +0200, Christoph Hellwig wrote:
+> I started to play around with that.  For the nvme code adding the
+> annotations was very simply, and I also started adding trivial
+> __guarded_by which instantly found issues.
 > 
-> I can use my existing kernel.org LLVM [1] build infrastructure to
-> generate prebuilt x86 binaries. Just give me a bit to build and upload
-> them. You may not be the only developer or maintainer who may want to
-> play with this.
+> For XFS it was a lot more work and I still see tons of compiler
+> warnings, which I'm not entirely sure how to address.  Right now I
+> see three major classes:
 
-That did work, thanks.
+And in case anyone cares, here are my patches for that:
 
-I started to play around with that.  For the nvme code adding the
-annotations was very simply, and I also started adding trivial
-__guarded_by which instantly found issues.
+https://git.infradead.org/?p=users/hch/misc.git;a=shortlog;h=refs/heads/cap-analysis
 
-For XFS it was a lot more work and I still see tons of compiler
-warnings, which I'm not entirely sure how to address.  Right now I
-see three major classes:
-
-1) locks held over loop iterations like:
-
-fs/xfs/xfs_extent_busy.c:573:26: warning: expecting spinlock 'xfs_group_hold(busyp->group)..xg_busy_extents->eb_lock' to be held at start of each loop [-Wthread-safety-analysis]
-  573 |                 struct xfs_group        *xg = xfs_group_hold(busyp->group);
-      |                                               ^
-fs/xfs/xfs_extent_busy.c:577:3: note: spinlock acquired here
-  577 |                 spin_lock(&eb->eb_lock);
-      |                 ^
-
-This is perfectly find code and needs some annotations, but I can't find
-any good example.
-
-2) Locks on returned objects, which can be NULL.  I.e., something
-like crossover of __acquire_ret and __cond_acquires
-
-3) Wrappers that take multiple locks conditionally
-
-We have helpers that take different locks in the same object based on the
-arguments like xfs_ilock() or those that take the same lock and a variable
-number of objects like xfs_dqlockn based on input and sorting.  The
-first are just historic and we might want to kill them, but the
-sorting of objects to acquire locks in order thing is a pattern in
-various places including the VFS, so we'll need some way to annotate it.
+git://git.infradead.org/users/hch/misc.git cap-analysis
 
