@@ -4,88 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC387CAC597
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 02:45:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32BE3CA1013
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 02:49:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB55B28000F; Thu, 18 Sep 2025 22:45:26 -0400 (EDT)
+	id 6F5BA280028; Thu, 18 Sep 2025 22:49:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E8D658E0008; Thu, 18 Sep 2025 22:45:26 -0400 (EDT)
+	id 6CC7D8E0008; Thu, 18 Sep 2025 22:49:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DC9B528000F; Thu, 18 Sep 2025 22:45:26 -0400 (EDT)
+	id 6095C280028; Thu, 18 Sep 2025 22:49:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C9FFF8E0008
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 22:45:26 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 92EA51401C0
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 02:45:26 +0000 (UTC)
-X-FDA: 83904458652.01.421DEAA
-Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
-	by imf06.hostedemail.com (Postfix) with ESMTP id D0822180007
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 02:45:24 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kkZnUCqS;
-	spf=pass (imf06.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 501098E0008
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 22:49:13 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B7B4113B222
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 02:49:12 +0000 (UTC)
+X-FDA: 83904468144.19.65427B5
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+	by imf11.hostedemail.com (Postfix) with ESMTP id E52554000E
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 02:49:10 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=eYMR3My2;
+	spf=pass (imf11.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758249925;
+	s=arc-20220608; t=1758250151;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pEd4CRxp0Qy3iytKkYSUgyoNAPH5uPPdhfTDAiqFt+Q=;
-	b=4bxqlw/uVSWoNWP1z6+OTFPqGnvJfICaaPJEHw0NJAdR4RxdcSY7ocGE0me7GmLD1iEPR7
-	pss//+Q/GmpS2NRxFzg3n427ZzH8Hw6T97kBXdZ+I9lUubW6+3Vs9AbXp3GY7XDegUNrZi
-	BlcseL46R4aso4nTJyWOlJpIXl6FWJo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758249925; a=rsa-sha256;
+	bh=QqZyQZcoeHlrOOiTQqItbAzvsXWRLXScDq7yxQ6zIhg=;
+	b=dj7dlEN548R4UW6jlAqnb350uBXtoGfVwSGY/48ziSN2CE7+61o/YUb5/uFtfWYOymCNMQ
+	KO2oHNsAOWKALZqnIemb3hVw0U1dRn7sJBQWWEtp8proCyQXUeZDLFs4bMIXJrj7sDW71l
+	xepZ61LgN4nojdathuNRdMgWXAGIYbs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758250151; a=rsa-sha256;
 	cv=none;
-	b=7kujdij60DcK+IryFDiI77FYUMXBuE/6yEM1yb2/ndSIyOUCssAaP8WzlWrJeDxNC1ljDy
-	QqHNUsQIIZvSyp04FWM2m7XaDNJbS6X5rQCvdoS2azOrozu4cw/GOUmcerVaiyu5tIkTZD
-	gJ/0E6y6toCnh7TjWz5alcBMkVSL95c=
+	b=cZYo2wwcDmMGj+qkRcrtSIy+eEeNEVq/JsnU8XRZWbu/hTdhMo7tUZu1diarppI2GSr24G
+	l8rkRsrLJ8E9/cbzFJtsN2UOXhdg2q8foBBPa30/VJaijP78EWZGt5SgK9dFAcP8lgfp7y
+	2th/PGu3wSDl7Spt19HKID3n9hMj3CA=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kkZnUCqS;
-	spf=pass (imf06.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=eYMR3My2;
+	spf=pass (imf11.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <20e0fb73-3476-4b1c-959e-c1af38f8e1a0@linux.dev>
+Date: Thu, 18 Sep 2025 19:49:01 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1758249922;
+	t=1758250147;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=pEd4CRxp0Qy3iytKkYSUgyoNAPH5uPPdhfTDAiqFt+Q=;
-	b=kkZnUCqSVKS2D7eOJzEGuV3v+zGK9iIe7bTiuC/CxNG5peUXCkMg8QwHhrIUCzAA3fPGtj
-	H5dS3iVmdASVXo6qgjNsHY2nKaNPMk5MXf8dk4yu9aiRvB+36+Nq6NC4YvSuED6HU0WwFj
-	/DE5F2zJxguD24b6ukaUVsKcEQQp55k=
-Date: Fri, 19 Sep 2025 10:44:26 +0800
-MIME-Version: 1.0
-Subject: Re: [PATCH mm-new v2 2/2] mm/khugepaged: abort collapse scan on guard
- PTEs
-Content-Language: en-US
-To: Zi Yan <ziy@nvidia.com>
-Cc: akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com,
- baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- ioworker0@gmail.com, kirill@shutemov.name, hughd@google.com,
- mpenttil@redhat.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20250918050431.36855-1-lance.yang@linux.dev>
- <20250918050431.36855-3-lance.yang@linux.dev>
- <6BAE5498-D0AB-40F5-85F8-B92A05CA72AD@nvidia.com>
+	bh=QqZyQZcoeHlrOOiTQqItbAzvsXWRLXScDq7yxQ6zIhg=;
+	b=eYMR3My2q96I0w45HjiMc5eI+Tbb/qiY3f/qo5BwzEzCQO5RiSnBpuHfyj7mt61J+J3bY3
+	PWXDdbCGHKao6O98bht2HJa0iu4W8ploFpkw0O6vbWMpeGFcdtG1FziqynjrtUwpaaBeQy
+	mU2yaeddKDsJyFN2Isg5hUKU4R/IHi8=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <6BAE5498-D0AB-40F5-85F8-B92A05CA72AD@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, Alexei Starovoitov <ast@kernel.org>, 
+	Peilin Ye <yepeilin@google.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, bpf@vger.kernel.org, 
+	linux-mm@kvack.org, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Meta kernel team <kernel-team@meta.com>
+Subject: Re: [PATCH] memcg: skip cgroup_file_notify if spinning is not allowed
+Message-ID: <5qi2llyzf7gklncflo6gxoozljbm4h3tpnuv4u4ej4ztysvi6f@x44v7nz2wdzd>
+References: <20250905201606.66198-1-shakeel.butt@linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250905201606.66198-1-shakeel.butt@linux.dev>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: D0822180007
-X-Stat-Signature: sze8smrthnzy1hk8474bksbho83ioyu5
+X-Rspamd-Queue-Id: E52554000E
+X-Stat-Signature: wp3ax6mkxck4zxienxtxys1txtbsy1cw
 X-Rspam-User: 
-X-HE-Tag: 1758249924-147518
-X-HE-Meta: U2FsdGVkX197QevHkR7l9TLF452D2QPKPVzn1OIfscyAWVkAF3Ymz/so8CEWNllG4iv2LEy22fnGr6puBfpcXtIb1Af3PTMbI+0hpSC8IY5eUlrFR4nK7AYk46wojA77ZxiRw1RjlPYFeGGXenUqkM7JOwfeuwIaK9OQMYxmY3bEwfCAMwdCu57yO08KiNYAfSuTYt4KxqwR9obWej3ntU8DHxZiujilb243Nsnq3XBW6r9iz7wBYmcoNvSWrsOSOrTtWhj7lIIfemhva7tWALASb/h27+2Ub+Tl9vs5xhknCccmZVdQ9NjQmybrJ9KOzgRsvm/F8DmrwVgpUNyIRlts2sKXtvDCzRjzLlUmy7j9fy/Y37STYVP7XcDJhUSIeUxcA/ujWRopS5URycVr3yHuQ3wxyuehfFTZJfkKGDYzKlnm6H4Di0HleJ5k7Tv66IpjG66i63CFjiJEofComChfoXaagXQTSh4LgX3qiQnBP4OllB3WwUc3gurXw/oNiRn+S6E/gM5pSLGo4GZpAryJHXQu7hqNjefwDpotkFvUCe4JEFG/4Csh/JpIcM1ntHLbWb0HQIrUqZOIkFttg+M3vLFUAJjJFRc6W4UBeOxmiSUc7imyB7bT+xg7yzfh+x5iutguJZD3Eb95VXxJolg1ILt+uFUHsS+twfuxM+kB4n/yiL48XyODumx78y1J4e4viIEL8YU6Oh77EBrJyPYHsYZVeVKiYy5Mlh/xFd6rzJpv6fxtlRbFjRlrjTLDVb+ZtaJLryboIjl9gy0R7JrH0VpaYc8SA9KFzMIMXIs0rnSc1rd3eTRgSd1hXoOcYxA1v6MG6mqvzWzzrwLTitd2GhSmOdkB0+WyO/lRWBt+SqJKxY2nNg==
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1758250150-267952
+X-HE-Meta: U2FsdGVkX1+z81+46oaA9HZ5xI7VOxtM7wcUjBq30cGs2Ugko7li1xCo+ZhbNtVDHqDM/3BFaOwQAigWYOMs7SglI4FuxhblJ2jWJP0Cl0d2RTVxxETAwTX0pJAWH307kFSkthcU4oQVH7xtNJmOVLqgZYPaTYk4kQn2HS379GN+/nUoZ9edmoAx5LYnvlPybz+LX7v5AESWUKqqnDLjXOcPHMg0iFuFthzUVFdpLlLBkQOHk7MNkFciQAxxaID7dzCB4EcTRlyFbXvHSYntAfL2kO2fQwLfN/k1YYpLMj0v1g3Hsw29gwBATgK7RyuRSDdJL59TjyX4IE2kLsp1IBF5pOx/g6G6swbGXqdyjipX0kYwTNP+cazbciAzxtWWApzlPfTRMK7sPiMMGMcXg6bFowU7czaFejhOzVEZukMvUFTJxju/HX5J0XGFcry4YF8I/pAgygRRvqWbCEUM259RS9dz54kBDKzif2ZHiZKU0A9KnLoPz7GCTfzNIla4zKCg4t5DCAQyiEqaKQijWSugNk/9iksmFUKXZjewuHMf7MeBV7xvKqsHzBm8FikRa2ubMe69598xXXE9FT7JZNbvPDtCBWBmKEA/HYvpmB+4xubCCfrD8BHZFdAqYEMrbzGyP6N+uyUIh0XXNGU5JyGCp2y53RElz+JtWwUbieg36cN9VbMIjf6D1yVmlZbBrZIQ5KKYPMI9GW4jRxVMk8AK7Sc8nrRZcC4qEZ8ubOYkXG6mM4jrr/83Hzz658O7X6/C0KkU0oWZ3/d60GVUVArVQT5+MojhBmIEvSm0bj9Pm384mqdnGqyKQQ9iD6N3K6W42Bc/YMeuigklWLsHKaDKhYPf2/wXBQIo3tsTmVx/wRWRHwBXpu9cepKDbl0Am5dIbfK4YkFRmSOjCJxDsFc8/0y7DQgqm9qj/3cBGUi6GUTYfE5+S+XKbeEMRtIzh8vHgC2fsK0EkJ57ssy
+ d5SNHIeJ
+ jOL+3KI4JJjrj9dx/uCH1Sf1AzA63OFayS+HKy+/gC0I+klYEk39+Iv7XPQejxRyK812z3/bD0xSKebCaQvrfwQ2ckstEW3D9Z8sPNiu8Qtku7Hr/ifr+sOYXJgeY03+NqFb5L/6l8fkpR91F1iu3H0U4BwgnAsf0dKzBEYL1n+3PJZLMpQnXdUEpR8KPuklyYR57Efi9QdsxMIIS9UQuXJUj4Tk8DEtQBh47ZllKmchzTUmvQDqw2Rd8/nBybNPs1DRE
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,78 +91,216 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, Sep 05, 2025 at 01:16:06PM -0700, Shakeel Butt wrote:
+> Generally memcg charging is allowed from all the contexts including NMI
+> where even spinning on spinlock can cause locking issues. However one
+> call chain was missed during the addition of memcg charging from any
+> context support. That is try_charge_memcg() -> memcg_memory_event() ->
+> cgroup_file_notify().
+> 
+> The possible function call tree under cgroup_file_notify() can acquire
+> many different spin locks in spinning mode. Some of them are
+> cgroup_file_kn_lock, kernfs_notify_lock, pool_workqeue's lock. So, let's
+> just skip cgroup_file_notify() from memcg charging if the context does
+> not allow spinning.
+> 
+> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+
+Here I am just pasting the irq_work based prototype which is build
+tested only for now and sharing it early to show how it looks. Overall I
+think it is adding too much complexity which is not worth it. We have to
+add per-cpu irq_work and then for each memcg we have to add per-cpu
+lockless node to queue the deferred event update. Also more reasoning is
+needed to make sure the updates are not missed by the deferred work.
+
+Anyways, this is the early prototype. Unless there are comments on how
+to make it better, I will ask Andrew to just pick the previous patch I
+sent.
 
 
-On 2025/9/19 03:12, Zi Yan wrote:
-> On 18 Sep 2025, at 1:04, Lance Yang wrote:
-> 
->> From: Lance Yang <lance.yang@linux.dev>
->>
->> Guard PTE markers are installed via MADV_GUARD_INSTALL to create
->> lightweight guard regions.
->>
->> Currently, any collapse path (khugepaged or MADV_COLLAPSE) will fail when
->> encountering such a range.
->>
->> MADV_COLLAPSE fails deep inside the collapse logic when trying to swap-in
->> the special marker in __collapse_huge_page_swapin().
->>
->> hpage_collapse_scan_pmd()
->>   `- collapse_huge_page()
->>       `- __collapse_huge_page_swapin() -> fails!
->>
->> khugepaged's behavior is slightly different due to its max_ptes_swap limit
->> (default 64). It won't fail as deep, but it will still needlessly scan up
->> to 64 swap entries before bailing out.
->>
->> IMHO, we can and should detect this much earlier.
->>
->> This patch adds a check directly inside the PTE scan loop. If a guard
->> marker is found, the scan is aborted immediately with SCAN_PTE_NON_PRESENT,
->> avoiding wasted work.
->>
->> Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
->> Signed-off-by: Lance Yang <lance.yang@linux.dev>
->> ---
->>   mm/khugepaged.c | 10 ++++++++++
->>   1 file changed, 10 insertions(+)
->>
->> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->> index 9ed1af2b5c38..70ebfc7c1f3e 100644
->> --- a/mm/khugepaged.c
->> +++ b/mm/khugepaged.c
->> @@ -1306,6 +1306,16 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
->>   					result = SCAN_PTE_UFFD_WP;
->>   					goto out_unmap;
->>   				}
->> +				/*
->> +				 * Guard PTE markers are installed by
->> +				 * MADV_GUARD_INSTALL. Any collapse path must
->> +				 * not touch them, so abort the scan immediately
->> +				 * if one is found.
->> +				 */
->> +				if (is_guard_pte_marker(pteval)) {
-> 
-> pteval is already is_swap_pte(), would is_guard_swp_entry() be a better
-> choice here? Save one is_swap_pte() call.
+From d58d772f306454f0dffa94bfb32195496c450892 Mon Sep 17 00:00:00 2001
+From: Shakeel Butt <shakeel.butt@linux.dev>
+Date: Thu, 18 Sep 2025 19:25:37 -0700
+Subject: [PATCH] memcg: add support for deferred max memcg event
 
-Yeah. Good spot! Will do ;)
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+---
+ include/linux/memcontrol.h |  3 ++
+ mm/memcontrol.c            | 85 ++++++++++++++++++++++++++++++++++++--
+ 2 files changed, 84 insertions(+), 4 deletions(-)
 
-Thanks,
-Lance
-
-> 
->> +					result = SCAN_PTE_NON_PRESENT;
->> +					goto out_unmap;
->> +				}
->>   				continue;
->>   			} else {
->>   				result = SCAN_EXCEED_SWAP_PTE;
->> -- 
->> 2.49.0
-> 
-> 
-> Best Regards,
-> Yan, Zi
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index 16fe0306e50e..3f803957e05d 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -69,6 +69,7 @@ struct mem_cgroup_id {
+ 	refcount_t ref;
+ };
+ 
++struct deferred_events_percpu;
+ struct memcg_vmstats_percpu;
+ struct memcg1_events_percpu;
+ struct memcg_vmstats;
+@@ -268,6 +269,8 @@ struct mem_cgroup {
+ 
+ 	struct memcg_vmstats_percpu __percpu *vmstats_percpu;
+ 
++	struct deferred_events_percpu __percpu *deferred_events;
++
+ #ifdef CONFIG_CGROUP_WRITEBACK
+ 	struct list_head cgwb_list;
+ 	struct wb_domain cgwb_domain;
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index e090f29eb03b..a34cb728c5c6 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -132,6 +132,63 @@ bool mem_cgroup_kmem_disabled(void)
+ 	return cgroup_memory_nokmem;
+ }
+ 
++struct deferred_events_percpu {
++	atomic_t max_events;
++	struct mem_cgroup *memcg_owner;
++	struct llist_node lnode;
++};
++
++struct defer_memcg_events {
++	struct llist_head memcg_llist;
++	struct irq_work work;
++};
++
++static void process_deferred_events(struct irq_work *work)
++{
++	struct defer_memcg_events *events = container_of(work,
++						struct defer_memcg_events, work);
++	struct llist_node *lnode;
++
++	while (lnode = llist_del_first_init(&events->memcg_llist)) {
++		int i, num;
++		struct deferred_events_percpu *eventsc;
++
++		eventsc = container_of(lnode, struct deferred_events_percpu, lnode);
++
++		if (!atomic_read(&eventsc->max_events))
++			continue;
++		num = atomic_xchg(&eventsc->max_events, 0);
++		if (!num)
++			continue;
++		for (i = 0; i < num; i++)
++			memcg_memory_event(eventsc->memcg_owner, MEMCG_MAX);
++	}
++}
++
++static DEFINE_PER_CPU(struct defer_memcg_events, postpone_events) = {
++	.memcg_llist = LLIST_HEAD_INIT(memcg_llist),
++	.work = IRQ_WORK_INIT(process_deferred_events),
++};
++
++static void memcg_memory_max_event_queue(struct mem_cgroup *memcg)
++{
++	int cpu;
++	struct defer_memcg_events *devents;
++	struct deferred_events_percpu *dmemcg_events;
++
++	cpu = get_cpu();
++	devents = per_cpu_ptr(&postpone_events, cpu);
++	dmemcg_events = per_cpu_ptr(memcg->deferred_events, cpu);
++
++	atomic_inc(&dmemcg_events->max_events);
++	// barrier here to make sure that if following llist_add returns false,
++	// the corresponding llist_del_first_init will see our increment.
++	if (llist_add(&dmemcg_events->lnode, &devents->memcg_llist))
++		irq_work_queue(&devents->work);
++
++	put_cpu();
++}
++
+ static void memcg_uncharge(struct mem_cgroup *memcg, unsigned int nr_pages);
+ 
+ static void obj_cgroup_release(struct percpu_ref *ref)
+@@ -2307,12 +2364,13 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+ 	bool drained = false;
+ 	bool raised_max_event = false;
+ 	unsigned long pflags;
++	bool allow_spinning = gfpflags_allow_spinning(gfp_mask);
+ 
+ retry:
+ 	if (consume_stock(memcg, nr_pages))
+ 		return 0;
+ 
+-	if (!gfpflags_allow_spinning(gfp_mask))
++	if (!allow_spinning)
+ 		/* Avoid the refill and flush of the older stock */
+ 		batch = nr_pages;
+ 
+@@ -2348,7 +2406,10 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+ 	if (!gfpflags_allow_blocking(gfp_mask))
+ 		goto nomem;
+ 
+-	memcg_memory_event(mem_over_limit, MEMCG_MAX);
++	if (allow_spinning)
++		memcg_memory_event(mem_over_limit, MEMCG_MAX);
++	else
++		memcg_memory_max_event_queue(mem_over_limit);
+ 	raised_max_event = true;
+ 
+ 	psi_memstall_enter(&pflags);
+@@ -2414,8 +2475,12 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+ 	 * If the allocation has to be enforced, don't forget to raise
+ 	 * a MEMCG_MAX event.
+ 	 */
+-	if (!raised_max_event)
+-		memcg_memory_event(mem_over_limit, MEMCG_MAX);
++	if (!raised_max_event) {
++		if (allow_spinning)
++			memcg_memory_event(mem_over_limit, MEMCG_MAX);
++		else
++			memcg_memory_max_event_queue(mem_over_limit);
++	}
+ 
+ 	/*
+ 	 * The allocation either can't fail or will lead to more memory
+@@ -3689,6 +3754,7 @@ static void __mem_cgroup_free(struct mem_cgroup *memcg)
+ 		free_mem_cgroup_per_node_info(memcg->nodeinfo[node]);
+ 	memcg1_free_events(memcg);
+ 	kfree(memcg->vmstats);
++	free_percpu(memcg->deferred_events);
+ 	free_percpu(memcg->vmstats_percpu);
+ 	kfree(memcg);
+ }
+@@ -3704,6 +3770,7 @@ static struct mem_cgroup *mem_cgroup_alloc(struct mem_cgroup *parent)
+ {
+ 	struct memcg_vmstats_percpu *statc;
+ 	struct memcg_vmstats_percpu __percpu *pstatc_pcpu;
++	struct deferred_events_percpu *devents;
+ 	struct mem_cgroup *memcg;
+ 	int node, cpu;
+ 	int __maybe_unused i;
+@@ -3729,6 +3796,11 @@ static struct mem_cgroup *mem_cgroup_alloc(struct mem_cgroup *parent)
+ 	if (!memcg->vmstats_percpu)
+ 		goto fail;
+ 
++	memcg->deferred_events = alloc_percpu_gfp(struct deferred_events_percpu,
++						  GFP_KERNEL_ACCOUNT);
++	if (!memcg->deferred_events)
++		goto fail;
++
+ 	if (!memcg1_alloc_events(memcg))
+ 		goto fail;
+ 
+@@ -3738,6 +3810,11 @@ static struct mem_cgroup *mem_cgroup_alloc(struct mem_cgroup *parent)
+ 		statc = per_cpu_ptr(memcg->vmstats_percpu, cpu);
+ 		statc->parent_pcpu = parent ? pstatc_pcpu : NULL;
+ 		statc->vmstats = memcg->vmstats;
++
++		devents = per_cpu_ptr(memcg->deferred_events, cpu);
++		atomic_set(&devents->max_events, 0);
++		devents->memcg_owner = memcg;
++		init_llist_node(&devents->lnode);
+ 	}
+ 
+ 	for_each_node(node)
+-- 
+2.47.3
 
 
