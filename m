@@ -4,87 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C311CAC592
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 21:04:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D34B9CAC59A
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 21:06:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9290C8E0002; Fri, 19 Sep 2025 17:04:23 -0400 (EDT)
+	id 29E728E0005; Fri, 19 Sep 2025 17:06:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8DA548E0001; Fri, 19 Sep 2025 17:04:23 -0400 (EDT)
+	id 276848E0001; Fri, 19 Sep 2025 17:06:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F0098E0002; Fri, 19 Sep 2025 17:04:23 -0400 (EDT)
+	id 18C108E0005; Fri, 19 Sep 2025 17:06:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D1D38E0001
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 17:04:23 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 16DAC1603A0
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 21:04:23 +0000 (UTC)
-X-FDA: 83907228006.20.6ABAC99
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 655ADC000D
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 21:04:21 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="ig+49G/2";
-	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758315861; a=rsa-sha256;
-	cv=none;
-	b=3FDxdgPHVCh3u/sh5h7RAlRylP/21GquOPK4ZcNCqwLN3RyewF1vvFq3eo2j8uLFBZa5In
-	cBxZ3E842+vzeGrkAgVUAGVeLW8aT77h7m96BnzLytYvAtfVh4wP5Kfp3lF6kkWODtCwtn
-	fyRKfFRyXCJQB/ffI1peBYeOQrnO9XY=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="ig+49G/2";
-	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 01EB68E0001
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 17:06:17 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9ED191DFF24
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 21:06:17 +0000 (UTC)
+X-FDA: 83907232794.13.45541D4
+Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
+	by imf13.hostedemail.com (Postfix) with ESMTP id C3DC020008
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 21:06:15 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=LqdzgI2J;
+	spf=pass (imf13.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.219.180 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758315861;
+	s=arc-20220608; t=1758315975;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qlMt9MKmwF5yNav4ME+Mam5yJ7pa9kcM0iaFRbPE9sI=;
-	b=PH+E0KxAvcVaufZzyke0aL5lUBzrd5D5foLBnwVG7PSmlmt7HfNgm/Ig73lqbKt4J6bnEF
-	SkEVagQO87qvh9MiaYJnl699f/QnQaicvPZBJJhuKF+tIs5xNYkkYK4lHwul4yTnyASIGH
-	+S3Yi5OUx0R/yYf3maLz61l23vpz3RY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C0D2C6013A;
-	Fri, 19 Sep 2025 21:04:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B2CBC4CEF0;
-	Fri, 19 Sep 2025 21:04:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1758315860;
-	bh=EU8zNicQ8eJr5UVkTiOVy8XXNkvx4SqxeyVDnW7wBjs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ig+49G/2yD2qUw19e4LfDCEoMIfKV9Ihzm3yO4WEMdWU9WuivIGAAXNKY9mLRW2b1
-	 SxeW+GV4unTN6WxFWVXvzGnETQBqjbxrcuT5nTq0zHYYGTAHDROHMk6SsHpc7E1epB
-	 W6GojnyZ0vlmbilrYbJoUlWKMmSWKKUvp5ddLL1o=
-Date: Fri, 19 Sep 2025 14:04:19 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: kernel test robot <lkp@intel.com>
-Cc: oe-kbuild-all@lists.linux.dev, Linux Memory Management List
- <linux-mm@kvack.org>, Mike Rapoport (Microsoft) <rppt@kernel.org>, Pratyush
- Yadav <pratyush@kernel.org>
-Subject: Re: [akpm-mm:mm-everything 254/254] kernel/kexec_handover.c:970:50:
- error: passing argument 1 of 'kho_restore_page' makes integer from pointer
- without a cast
-Message-Id: <20250919140419.211ec45cae8a479d1e347453@linux-foundation.org>
-In-Reply-To: <202509191034.SM82Oaij-lkp@intel.com>
-References: <202509191034.SM82Oaij-lkp@intel.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 655ADC000D
-X-Stat-Signature: nyi5xxz3is7owa51i5mhjxb9e1kq8kuc
+	bh=iWPFq5XLiSe5P7Lh1OFm30F3HOSWuJ2B7iUyo634nUk=;
+	b=UIJf0n1ueSWXXCNvSPvtpOGFa4dMRGKRdRMRQkAyGUzHy+cdFKldnmry+zPkIT7Nu51bZG
+	jNKtCFdED4NMYUXDZtXwh8rzTu69QXRm0zCEEk6ZdUnIKjqH5MdKeaCEJVXhNFM3thd7/y
+	Owp2uwmA5hehkwKG14c7nWncX2+sehU=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=LqdzgI2J;
+	spf=pass (imf13.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.219.180 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758315975; a=rsa-sha256;
+	cv=none;
+	b=A/edbZc23DvzeC7NKz9JceYv0ulwtSrf9U4rctIqG7ZnVQNqQm5DL7FOgZ3B1gDocyclXD
+	mpFa10KmgIpe/1k4jJcFD4lJzdIZX7Psddfy3G0jEV+o6od1TzpzaB2r+3bovXQ3Kx00q0
+	wAdtWGU23QzczED2xzPNimFzdqsqYOA=
+Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-ea5d1270b56so2831207276.1
+        for <linux-mm@kvack.org>; Fri, 19 Sep 2025 14:06:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758315975; x=1758920775; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iWPFq5XLiSe5P7Lh1OFm30F3HOSWuJ2B7iUyo634nUk=;
+        b=LqdzgI2J42AQu4f4cxWFTWQWm5zCbbNZYyie9mgRhisJEOiSuGgpkaet5ldoRW/Lgq
+         ib1TL9AwZZKp1vBq7NdwdkDO6rfVeConnkKPx9IjvbA2uRuJy9ITml6FG6+iGZNHoFre
+         2zKNnkxzQlsPo5vTz2iZX8zCD2caF6MwxYQ5NsI5OgkV7J7eTCgxFH1XMRqXLNx0mQPe
+         XtsHa+CUY9uAGbXT69oeWyJBtkJtS5Xiflz6MlHIM5emaE+D6apA33XgDr/KMcrPA6wG
+         dgFp7Guue34r4cIOqVf2BlrauWIPNbvDG9EyBY3G+wVjx5nHsGQDhWA5sfyvmGPWMYHZ
+         hUNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758315975; x=1758920775;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iWPFq5XLiSe5P7Lh1OFm30F3HOSWuJ2B7iUyo634nUk=;
+        b=F+uS6wVuVv0ZVAYWbl665rNCCayWDRVCYqf5/A8J/mjX8MHB0xAn47HT+pPIJNNi3R
+         jLOXZbS0hJSBBEx/CPHKZGh8TfqjZZWlcS6xAgTVAKhG8LlkCxF14y1yQG1CSPnyqy0V
+         0d8fj2AYmgl2ANRhEjz/BL8wnQEDJSMYIG6k83dLWGcrWJWp9wDS/MldGd9EWnmEM7YN
+         FwdDGO7S/7E+SndKytmRqfSc+weIqupQmh05Qjq28NSY2+/V7CbGyeAdXKIcTEZuNqIJ
+         3zthydYhbplJmd4YIn/a3D8Hm8sBhh7SwA6bYBipUpuRrhF8SgOgoy5jbCaVHPGA6Rf3
+         Qozw==
+X-Forwarded-Encrypted: i=1; AJvYcCUxURKLl/GzvmuvRQpGTX7z3n8jekr/I2rgmNwYkThUhhzp0a4eOHu+SCnBlkKwr/K4N8syoRJwAg==@kvack.org
+X-Gm-Message-State: AOJu0YwGpQHgH40cYdM5o9QijwFIL6cmanzuOi5OgLAbftMHQrf2WeqO
+	2quf7Rf8pUYMk2ZOzkDE9Y3BatU3HwoP5Pagu15uehBX8DQTnY5PaFlY
+X-Gm-Gg: ASbGnct2uKbkH9olfqx/Aebq+9GKiCf/mUNUE70KD1j8AZ+n8y9vy5GpLpM3o7tnSzk
+	FyTzZWzK08mERbTXeckFUYI/q1FYhiL0/EGPN873882aISPVTKhR0Q7rd//+GBkLwIBZcLFS+G7
+	fdr7Y5QCoSvjusHoQPKz4xkKmSA4Z70VSSTgLTqG2jq4hlJuTYGJS3k8AOaIlMloCzG2658rstA
+	oYK/7gqw9SIBhzC9Mcm700+7/KrkT8Wtxksa8byS1LeeCHNG8oIphUzI/6qoVEM+X6xESV+xDKY
+	Z/A5rlSw52Tv58mmMg78+2o75NxH7jaNnjfYm4Bx5iuZ7Ct9+al7I/3/6wDYRf5xvr3+k9VfVY0
+	xn+n2zW3UwnSe+xfjKH72jYAIaY1Squ0C/ySqS0PfJmqg6gjJVpoJ
+X-Google-Smtp-Source: AGHT+IGu/B19WQElReS4mpdnS2mhyC2RhfwEOQrFXpAd2AUmLIVgGNgyYw5nlRAj/98u6sCZST88wg==
+X-Received: by 2002:a05:690e:c8:b0:62a:83f3:a575 with SMTP id 956f58d0204a3-634779c2cf5mr2920693d50.8.1758315974624;
+        Fri, 19 Sep 2025 14:06:14 -0700 (PDT)
+Received: from localhost ([2a03:2880:25ff:b::])
+        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-ea5ce85481fsm2010344276.19.2025.09.19.14.06.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 19 Sep 2025 14:06:14 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
+	Chris Mason <clm@fb.com>,
+	Kiryl Shutsemau <kirill@shutemov.name>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Zi Yan <ziy@nvidia.com>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH 0/4] mm/page_alloc: Batch callers of free_pcppages_bulk
+Date: Fri, 19 Sep 2025 14:06:11 -0700
+Message-ID: <20250919210612.1975459-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20250919130644.f3a4afdf0c2e51bbec59b6e0@linux-foundation.org>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1758315861-817087
-X-HE-Meta: U2FsdGVkX1/RPTg8bgfGj/eihp/S3Wbnyhig/J1/bvX41rZV8ASEP8qSwv9AwZowtL1HDJp3tY+ywVtAcDNkbFudnjR5CkceCVxKnhIHV63UDzGcVVUn3vhISNguxI4x7a4MLf1fdSZqz7NDJV88oOl0n+n42qinWUZpVM2GLvg84NdW8nJX5KzYJeDayWqPSlJdiEybtF812qMbTEkXsgZ9jOPTqIT9kYQyx/M9xTKpttYV7wJPeYWGtAPn/UnlvXiIG6AoKvVhcmRl8epoVMVLja2kGLlw9VD8Y8H/a/QzPgtoOypMjSZlU0G0NRo8RAy3fZyH4OvuTE9uC/tPQ1tzBGZsm84li49yj7ah2D8nGXbX7XZNw6q4IO2KJiQiKONRGkDBa80qjgqMb02sUtlccCvhkX9tiS38mp1NTQ0/6UK5zidf4wPdYaBSfDTixftXJy/xsBi1vc+u6/uMSLcfZfXUm3/HXqHXuHfy+hH7AGVf7B1KDHYXlyKqO/6WsqUy5I2rogbUK4/A9oUzUAamuqd1dTBFDw+U0SCRWXVp8txAkUNqfrwX6P/DBA2LmxzhtM55vdf2qKpygWIJBsQFO7djxzMbCqcZnL+Oqzlf7nQNTPXe4AnkfHrODdpkIQg2Fy/h9qni3JRbU6jwENpgg4AuIzJd/zzVS3UR83Fr/OIe5itVbhAVl3IoIFz2WEBNxiA/9VSLJcf0tdxhFsnZ+0NHkqNv7wj4S8VnhRX1Rbf4y3nZOGRjDxbZ3ulodAKQf5MjW4KuRkD8JoAuNIUsHIJxgTnue0KhzKNlPMpUU8TSV1qzsbogSBux6rdsKaIEjxQnjBwZMUYG3t011Fhc7ePqrVSAsaF50bQEwT2HG2brHWyqmLMrmlDFn9LJL+ESUhC0Fmf9tkVEV5pkrbd66uv/wZPaYxHuR6yvvez0zhz9v9dqdtGcw8tv2azmGsASSqQnecVgY9NZNf+
- kKtFPWth
- Y53jr9X7UDJn51ofqxVtfiH4ZEdCrV9eis4illWnTsOuUX6n1x/LeuTM5pJT7cLcCBenwlKNiKCR4v7C1F/YaZNaEh1y84XAB0miJb4xUUjiQ0hZIRYo9hIwJFaMPljqiLRhOzCV/G6g3n/7DDheGYQeZX9DL0/35RBR7yKrtmndns4B7S/RKy7esPeZczOWO1IxxNOA35w/Dj7BvQ+mwOFzFr9N3WuXNOQqsoMCrlwYZk40TJZD9/IyTegwpaRXFvB2lxMD35y0aRpo3bUyeuVxNn4hVk9EDrb7pAezlDzof9yZQwvlngujdQJKop5lT2RKO+NvYdwegiCypDBj7x6DxdvKfDDceBTE8EjUL17uqkhX6scBjNs/zbY4IEFGI6Lqd/xGhLaN6Gx5EBAYCuqJtxw==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C3DC020008
+X-Stat-Signature: o8aiyburdbbdsz9ztxgkscx7i7hd8p4i
+X-HE-Tag: 1758315975-29479
+X-HE-Meta: U2FsdGVkX1/OSfQAuCrW5VozFWb3jvA4WNh9G3IelIdHBU+EuOooopDmO2HdNlUjXqXzaZcSCRxiNW1bptTcrde9z9iuXFZaB5dTzqutPOtzFZEKADYVMj9y312lKN7EnHU0TTVstl0tdyk7Cc+z9qEcz5N6kh1+SZGAyvyc6qiRtrxoCHj/EgquM3NaUC31ZjnxwzY6fBnC/55e5UnwrqqwWbQAGXIhowL0OUatgp3wZlI3CfZWA20pfVGO48HfQ7cb+Bop7GUmy6snNY096MazGeEoh6D8zpqxzmXV90s/lmE9Ziq4Tbdyu3mRXOuoyUrF9t7T0HHNSsNd5AuyZzTzouORldXZz4Y4eUcW0sZeWkFH0G+Xy/Z4RcsDJAcasmi/eHhgrHXzzlTHu9Oeg0xI4CUX41JsfTLWK/Micy46HVTiH0dHVpop1ChujVMFV3lNpeyc+WupwiS4rAIhoM+Dec4Lbtn3Q6d6gEd/sLth0dQQVZDFUcGIIc1NHV3BrQ4ErPmIXi3FrBBicM+MiYbWvvgnigtcchaDlvZ3l8W2HqCpdkHZHG/NR4BpPI76vdh5HwwHHkM0VUzyE6LCAUdQruboROCHs7LvVcYFSLEbp5mZmgDIHoiDt+PqksuHUvYtISf5OkjSZK5lLNSVX3xh16DHfTJZaFJEeYgz25NSLPFg7LJR6n8G7CVZZM7iD5X4/4EK6FY09SbGAKgD/B/rAoEZj+IUZ1Kjazc2YNKinjmz7ukOaMZvoqMrC8ukhdgMsOodPw5DM2kCTq/iHR4Mko38Ou2/vPanF8tV6/olEF1q47Mes/MBYGJTsWAeONvb9W+o+bIohUf8OeSEXHwIzihM5utOseSxK5kYOPwGL1NBy3f34GpeFXWAB3o4UiKDHOHT9iomnPFeuCEa2e+MyrEof7ikpT3vLKGuXhLnXvh8itl63xJyb1VtSeFzb3pRNWz5iTxZ9C30bzz
+ 2DSpmWZc
+ bP5cEHvXB8XZ5iZzrbfS9hfWNodQeOXtk6X3TByTcO3qA7DRsN0RDKHzkhYtr3myEc+DZTZMlpP19h+ebK1/fetosWv7J9YHtS/ceon+MUan5nRCxD763nv+LFAG1/vlX0hg7aynR9Oo/Bt7jp+ux3Z2yWtZUraMb1olL7A9m9iadV6TFm0jY23WTCLnphiHToaaZa+x4cb3XQ2JAVKnG/jfVBuOzAoNQLwHmXZY/d+AhiJJYZqNWu3QhRFgzOKp0PCQdtXNCkArpbWC9+1gvJ9P4TSzJr3lVVYuB5+sG8SYGj4L7Ik68WecWDofmyuMBq0vGDG4+yQcW9UjvWzwAqkRDtybHP/y83CLCmHUap+ofWQH2MNFp+KqcV5HmSYbws8I2KFejgfIYFyR8hl/zCt5r3AmI8jzgpGSd2U1HTpkrWGUunbA31dt0OwDd+Nha6/XPghIqSCHUwe8Ioggc3asWGh5OQlG0DPtCr1nY4jDfIfhlYskl5C+Z15ah3wpMrnBH5M23dU+XqUG0WIahggsLWx2nRv72Bx7qDTBc4KWwXOS+KuKlEnEw4gLX6KeubuKr
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,56 +131,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 19 Sep 2025 10:37:27 +0800 kernel test robot <lkp@intel.com> wrote:
+Hello Andrew,
 
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-> head:   46735c0743fed990d0ed8722a131ef54006c45a3
-> commit: 5369505b204b3fc65f839f7558640b6ecd675461 [254/254] foo
-> config: x86_64-randconfig-071-20250919 (https://download.01.org/0day-ci/archive/20250919/202509191034.SM82Oaij-lkp@intel.com/config)
-> compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250919/202509191034.SM82Oaij-lkp@intel.com/reproduce)
+Thank you for your review, as always!
+
+On Fri, 19 Sep 2025 13:06:44 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
+
+> On Fri, 19 Sep 2025 12:52:18 -0700 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
 > 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202509191034.SM82Oaij-lkp@intel.com/
+> > While testing workloads with high sustained memory pressure on large machines
+> > (1TB memory, 316 CPUs), we saw an unexpectedly high number of softlockups.
+> > Further investigation showed that the lock in free_pcppages_bulk was being held
+> > for a long time, even being held while 2k+ pages were being freed [1].
 > 
-> All errors (new ones prefixed by >>):
+> What problems are caused by this, apart from a warning which can
+> presumably be suppressed in some fashion?
+
+There are softlockup panics that we (Meta) saw in the fleet previously. For
+some reason I can't get it to reproduce again, but let me try to find a way
+to trigger these softlockups again. 
+
+> > This causes starvation in other processes for both the pcp and zone locks,
+> > which can lead to softlockups that cause the system to stall [2].
 > 
->    kernel/kexec_handover.c: In function 'kho_restore_vmalloc':
-> >> kernel/kexec_handover.c:970:50: error: passing argument 1 of 'kho_restore_page' makes integer from pointer without a cast [-Wint-conversion]
->      970 |                                 kho_restore_page(page, 0);
->          |                                                  ^~~~
->          |                                                  |
->          |                                                  struct page *
->    kernel/kexec_handover.c:229:50: note: expected 'phys_addr_t' {aka 'long long unsigned int'} but argument is of type 'struct page *'
+> [2] doesn't describe such stalls.
 
-Added by "kho: add support for preserving vmalloc allocations".
+You're absolutely right -- I was revising this cover letter a bit and I was
+going to link the below message separately, but decided to put it in the
+message and fogot to remove the footnote. The message below isn't a softlockup,
+but let me try and get one to add to the cover letter in a reply to this.
 
-I wonder how this happened - was the correct version sent out?
+> >
+> > ...
+> >
+> > In our fleet, we have seen that performing batched lock freeing has led to
+> > significantly lower rates of softlockups, while incurring relatively small
+> > regressions (relative to the workload and relative to the variation).
+> 
+> "our" == Meta?
 
-How about this?
+Yes -- sorry, I think I made this same mistake in the original version as well.
+I'll be more careful about this!
 
---- a/kernel/kexec_handover.c~kho-add-support-for-preserving-vmalloc-allocations-fix
-+++ a/kernel/kexec_handover.c
-@@ -967,7 +967,7 @@ void *kho_restore_vmalloc(const struct k
- 
- 			for (int j = 0; j < (1 << order); j++) {
- 				page = phys_to_page(phys);
--				kho_restore_page(page, 0);
-+				kho_restore_page(phys);
- 				pages[idx++] = page;
- 				phys += PAGE_SIZE;
- 			}
-@@ -975,7 +975,7 @@ void *kho_restore_vmalloc(const struct k
- 
- 		page = virt_to_page(chunk);
- 		chunk = KHOSER_LOAD_PTR(chunk->hdr.next);
--		kho_restore_page(page, 0);
-+		kho_restore_page(page_to_phys(page));
- 		__free_page(page);
- 	}
- 
-_
-
+Thank you again for your feedback Andrew, I hope you have a great day!
+Joshua
 
