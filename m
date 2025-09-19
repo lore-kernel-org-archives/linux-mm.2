@@ -4,107 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6891CCAC59A
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 11:33:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4359ECAC59A
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 11:49:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B2A118E00C3; Fri, 19 Sep 2025 07:33:35 -0400 (EDT)
+	id 88C838E005E; Fri, 19 Sep 2025 07:49:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD91C8E0053; Fri, 19 Sep 2025 07:33:35 -0400 (EDT)
+	id 863E28E0053; Fri, 19 Sep 2025 07:49:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A16078E00C3; Fri, 19 Sep 2025 07:33:35 -0400 (EDT)
+	id 7A08C8E005E; Fri, 19 Sep 2025 07:49:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C9B68E0053
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 07:33:35 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 40BE6160660
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 11:33:35 +0000 (UTC)
-X-FDA: 83905789590.25.A747342
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 8DA8AA000A
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 11:33:32 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=CKkJ6omF;
-	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 67C9C8E0053
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 07:49:30 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 13907140657
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 11:49:30 +0000 (UTC)
+X-FDA: 83905829700.04.3A80B67
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 486C480006
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 11:49:28 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf02.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758282568; a=rsa-sha256;
+	cv=none;
+	b=rAkSPXxWW9V6W/OI2j/PMrFXTEYfsf3cNXCr57iRSEW79l6tYHK8nzHWGcfTjuSHthJbPD
+	9JnNoJ6eXFw1RHZ51bnoGBjSW/X/yP49JoL7BrbLK+scEr8SOT4BdRTMBVI2Ozmwcn2bk/
+	yt3p9liRvzZQKGdWs0udigOBuaaG794=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf02.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758281613;
+	s=arc-20220608; t=1758282568;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PZUSPluAfOnwZSybIP1KqjVBMpEYlW95glA97BjTRhk=;
-	b=X8RmT9rVEZxlNPuNS4HV0tTB0aiVuK4exiXqJ+Xc1FMR8eBzXJS+Te+Z6Q5ido+OS5wjnR
-	kjC1cSo1ZyUy3pfGEHg/SElJfsEFb/ZTRR56DRXZ6fjSBSkY4PfldbCnW5+ZJ+yHYqJDE+
-	CWkb/rDP0r8nEd663fFM8snzXVGtrjw=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=CKkJ6omF;
-	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758281613; a=rsa-sha256;
-	cv=none;
-	b=t0f3K5o176dJpJ6fHeTwpaD9FR6tmEPpK5whNSV9lyUSIIVP5j550T2qVrNHQoonoWhoPS
-	f1pSerVjWUs4RSNO9fgwcyCS92GRG89e0L1TjNA61XMCIB0YFds4LteCi5ZYvTpIzYsbsr
-	pg1VxvaowvUB5rxmdvLuh7qR2YCngUw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758281613; x=1789817613;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=QKhnnAL6BDX+xxQOeAiqNh0DHBoO9yCBDNo5Ke7f/P4=;
-  b=CKkJ6omFD7gSVCluQA5S93e6WlqAIYI/xXyyMTu0T9rZBA1fBuen4TxF
-   9xMCrpDCnQRQJPe6KjAS70A8AZIjiuo+q5cSyzL9O2EpZclLdYUFmfvYd
-   EQYhlxKxB+hVl09Ii6+yOaNQ+jtjc7HPHbgVHYvR8U7WgBaE/Id7HkD91
-   Q6vkU0/aVCZuYlFcBUXJFYmDNnMWJt0oYaxJmj370hHG3m5ehV1aBJyeS
-   Bg/FgRjBIzsDifHohEsiuwyY3yqZUuDy9XcavKHbHaIFqYTQewVzJ6fwS
-   j95ZZAIz9r+g41ty5VFRbFDowRzwd+Y1AUd/cLgwIvxDv5P3w7uUUo4Uc
-   g==;
-X-CSE-ConnectionGUID: iAtiZgTQQPaSUfYErjY13g==
-X-CSE-MsgGUID: W5PpvrKwTSyQiTvDTNBdWw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11557"; a="83229924"
-X-IronPort-AV: E=Sophos;i="6.18,277,1751266800"; 
-   d="scan'208";a="83229924"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2025 04:33:31 -0700
-X-CSE-ConnectionGUID: dXqTEXXpQJiNyfzl15ufyQ==
-X-CSE-MsgGUID: 2qrvnKEFQ2SVC6rfZhfn4Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,277,1751266800"; 
-   d="scan'208";a="175372303"
-Received: from lkp-server01.sh.intel.com (HELO 84a20bd60769) ([10.239.97.150])
-  by orviesa009.jf.intel.com with ESMTP; 19 Sep 2025 04:33:26 -0700
-Received: from kbuild by 84a20bd60769 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uzZMh-0004Fv-1w;
-	Fri, 19 Sep 2025 11:33:23 +0000
-Date: Fri, 19 Sep 2025 19:33:12 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ankur Arora <ankur.a.arora@oracle.com>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, x86@kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, akpm@linux-foundation.org,
-	david@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	hpa@zytor.com, mingo@redhat.com, mjguzik@gmail.com, luto@kernel.org,
-	peterz@infradead.org, acme@kernel.org, namhyung@kernel.org,
-	tglx@linutronix.de, willy@infradead.org, raghavendra.kt@amd.com,
-	boris.ostrovsky@oracle.com, konrad.wilk@oracle.com,
-	ankur.a.arora@oracle.com
-Subject: Re: [PATCH v7 13/16] mm: memory: support clearing page ranges
-Message-ID: <202509191916.a0oRRfua-lkp@intel.com>
-References: <20250917152418.4077386-14-ankur.a.arora@oracle.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UeCv59JB3G6AoNIDuRn03RdiRvm7Zc9pTM71DO+CB/w=;
+	b=5GXxkuqwTlh1HX32Vd5LysTMsRN+9P9+uVGPFTooN4N2vMRoR82SfZZSE136RGS330RMd4
+	bw4zcSGNGnzGUVanmvVGJdCBQ/cLv5WkAO3DfCxYYcUKNrShf6hGVsguHzaBDVyA2fJ1ie
+	knycOjL0NIlbF2wOk7bO2t9hBh6zNsg=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 18CB71691;
+	Fri, 19 Sep 2025 04:49:19 -0700 (PDT)
+Received: from [10.57.95.38] (unknown [10.57.95.38])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C34EB3F66E;
+	Fri, 19 Sep 2025 04:49:24 -0700 (PDT)
+Message-ID: <ceaf604f-8ad7-4e19-812e-7eeace10d835@arm.com>
+Date: Fri, 19 Sep 2025 12:49:22 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250917152418.4077386-14-ankur.a.arora@oracle.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 0/5] arm64: support FEAT_BBM level 2 and large block
+ mapping when rodata=full
+Content-Language: en-GB
+To: Will Deacon <will@kernel.org>
+Cc: catalin.marinas@arm.com, akpm@linux-foundation.org, david@redhat.com,
+ lorenzo.stoakes@oracle.com, ardb@kernel.org, dev.jain@arm.com,
+ scott@os.amperecomputing.com, cl@gentwo.org,
+ Yang Shi <yang@os.amperecomputing.com>, kernel-team@android.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20250917190323.3828347-1-yang@os.amperecomputing.com>
+ <175822779944.710258.10028837182267037801.b4-ty@kernel.org>
+ <fc43aa07-d4ad-47d5-8381-61d4a9b8c467@arm.com>
+ <aM0-FQlepoxxGkRd@willie-the-truck>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <aM0-FQlepoxxGkRd@willie-the-truck>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 486C480006
+X-Stat-Signature: 9yexo1n5iy4rupc9jz5sdcik6nu83th9
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 8DA8AA000A
-X-Stat-Signature: r4dddrm9xzd9tiqebos9tmhcr4ryxnif
-X-HE-Tag: 1758281612-208492
-X-HE-Meta: U2FsdGVkX1/PSNPeTxT+ZGwD/YWvjcmsARatuHREjQZxcjmVX7pJGWF65ArXdfZvZVzU49rwLjAI8gHm3aHWBEdy/tAo79m7m8RNzXQBzkQ2y/1iyjf4TAg6tZomylx7AuumTufwirKd95w9eHmDCxlesEBY/V4NPyp4WqQz1e3III0UFV46+Qo4hrKhNL1vjXSy4BRUaZss/yKMk1kYweLtUa7nz8xNkYF0F3VSUWKgXGTfWPCIBDpy2uo2pXdgxdfgzVn9Sq4jmW51p1qZYyy/m/jCXomiJMhpAVSDEh0J2C7p9F7dGfbS5hc60x+DSoxUgn4tyvSkYIt9z+Ok7cBwCIt5x+2XF40QBB6S7JuWqGMkyNSEoVIY1T3Kx561/0CnEPCYTFqpkpgZ60MtO2hcRoD84BfLmMieYz4n/Kd0B6DudH68zEZkAjgJaNBzStMtYpWJR73hpTtPK17KFSpAg1xSwVqe8lyZuyB8A6DYckWQZKpqKTrk+2Ofjto1yA+P6Ycp46PtZjqgTTznVbatt2ixxRux5ecn33tXQYxCVWg5ItyzMi1K1wmd0SE9g9MsY1dujT9sFB8heqexs3qt3fEO+AYqRyi9O1VH+7bLGhw4a/umaUMYgyef1q/EQgagvhL88h/5fwrCJX/fJ9sw/z0QXN1nQyv+Ib20y2If/fdqGHI5KZPWFci2IVAE66g4heEawmyAe/oIXcAb4ZSUNEnbybtAOJJs6nUPCnTfiSwackjMI2vjc5MJSm9WAsnVxf1JDdAqF0sz42lTsJCf7QflK3zQOYoBFotLYfT+NzG6GAz60BQpR9WR2ARLHuQ2+TqZw9pTlwg70DgvHiBZLWcVrPMoJWSUi30zAsTVFFvV30HJp0VS98sCpu3nnMjuTwQoo3Zj91Z7y1OSV3HL0IecXGONjqJuC97w16ym+S5VagwT9Nz2aBjm1N8Y6EJxpix9EkmwILJYAK3
- SW9rWPyf
- EZHezjhZOLEbHtIJMse5fPKhdA2OkVPbI5ct7lU40eVotTGGNJVXOk6V3SyqZff5cskU5/8kg0FGFoVpoXYdPjPHjywKp0EtiepDVxMoZWsDG0TLxi9up9BOq4aFi4Bc7CBQnXxaLhI0VKeBLZ1ggaXzLkmFSaTgwiqaVVBiUjM2eZNDzXk1LGEv1+mrkmqcgOFxXXgQtSdsbQRXixv7MOtixHVXUsUXEqebzDmdMjglDBmbH+Dhwd5l9DpxhCUs1ygI2EnSXeKSDHDLNsM2dplY6Woqd7j2Y/pqOg00fl3vZchRnuofuK9vaICFZCavR9495FSOfFKzamPMPgLl6vink30C1uJuxI95k
+X-HE-Tag: 1758282568-22508
+X-HE-Meta: U2FsdGVkX19a+pYodO665bK1NvtuyD6ZeVc4GZ5D4CmxS8SdZcRTU0QwnR47MBCOndOJ8xICFISBeq8biyijxBcYfC3ZdTh5/THEYt3PtbtiKqCgCNOaoJ9y4UL5n8nBeTiDHo5sTB+8lLQPRVWVqJzM94vCblH8RE1wRKXClkjvG9hmmRt6YVfuh+C43MZvkcftNN8QeD18Yp08M3eWknZiKwXXmdFB2brYkBHpPR+n+PL+jasyoIfZyjuxRSr9XvBV2LbDvvv7mUMdAOKarWwDt8RKMx0QUFD+2yqTk9oIJFk7zI30lIkeH4fEa9qj4CEEHWziHvyhwSEx5KSe7UiG6lEeJvVoJI07SCD/B4med6VkjGaKMqUiDKEvndYCGiH+E/nCBdQk8OW7U/KNo0W+Rj3t34zu8rTlGPJGmVOYp7f0eQGtES8ZSvdVePHjF+8DcDADyIKCUFuIkD5wYg9PODdOVqbhjDoWhLgUGj2pyXDt974Rb3tZWij9KY9JBIsdyhGUDRokTWFUOa7XRZqO3KyzILsggyg6F9APWl1jH+xBAuB/NemOmSzQxYElmhWOltScWnCVStS9ckWFV3p3x92f6VmEBP4hOwNV7t2fKq1zfTa1Vrb59WXpow5NYHnLHh8+uz+7NVDdZnMgPnBUVApBQypamLfj8m4RGlF8j2QRScUNGXMkMMF9PUOkKNvxTYcSjnFt5DqpwqHOBZTG0OyAvyPTzRC99ZxxsWX++QFDtBu2Pgzy4i3xADlLShEowUVAAh23fQUp6OmDhZBCbjM+i6yL7DF92+QOGaixN6snyyGeEtn/L5gbzsHk/dgV/FXBcaPH3pjMgBgN5Ur7P//GKHMct5Wwg1SXxZWApZipjfAMB25GxK2Ho5lMq05Bb6BVnEIw+CkFjW8isP43rAIteGHIxpQQnU6kT38+SwHJm3tiC74iyu006wU6mn7r/3Fsn9qNtOyDqrV
+ Lrs2W3Zc
+ GMPHaZyweXvk/1DEhRywfSb4vtWKIus8P4V5WfR/rTp97lI+H3l2T7iz2kB1Eky0UeC/+b70V6rvxWDkA6A6y28w1xhT/qHpSrnrD6NpngpaLEujKHUjTUiqkR9+9g4hjWWdCq3M1eOBYb/SDcI5zcsqWG0B+8FS5fl8Y2SXTk8O6KQtvK6Z8KwfZIfSa48WkriZfd1gFuZdta57ayMH9drBBgg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,105 +93,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Ankur,
+On 19/09/2025 12:27, Will Deacon wrote:
+> On Fri, Sep 19, 2025 at 11:08:47AM +0100, Ryan Roberts wrote:
+>> On 18/09/2025 22:10, Will Deacon wrote:
+>>> On Wed, 17 Sep 2025 12:02:06 -0700, Yang Shi wrote:
+>>>> On systems with BBML2_NOABORT support, it causes the linear map to be mapped
+>>>> with large blocks, even when rodata=full, and leads to some nice performance
+>>>> improvements.
+>>>>
+>>>> Ryan tested v7 on an AmpereOne system (a VM with 12G RAM) in all 3 possible
+>>>> modes by hacking the BBML2 feature detection code:
+>>>>
+>>>> [...]
+>>>
+>>> Applied patches 1 and 3 to arm64 (for-next/mm), thanks!
+>>>
+>>> [1/5] arm64: Enable permission change on arm64 kernel block mappings
+>>>       https://git.kernel.org/arm64/c/a660194dd101
+>>> [3/5] arm64: mm: support large block mapping when rodata=full
+>>>       https://git.kernel.org/arm64/c/a166563e7ec3
+>>>
+>>> I also picked up the BBML allow-list addition (second patch) on
+>>> for-next/cpufeature.
+>>>
+>>> The fourth patch ("arm64: mm: split linear mapping if BBML2 unsupported
+>>> on secondary CPUs") has some really horrible conflicts. These are partly
+>>> due to some of the type cleanups on for-next/mm but I think mainly due
+>>> to Kevin's kpti rework that landed after -rc1.
+>>
+>> Thanks Will, although I'm nervous that without this patch, some platforms might
+>> not boot; Wikipedia tells me that there are some Google, Mediatek and Qualcomm
+>> SoCs that pair X4 CPUs (which is on the BBML2_NOABORT allow list) with A720
+>> and/or A520 (which are not). See previous mail at [1].
+> 
+> I'd be surprised if these SoCs are booting on the X4 but who knows.
 
-kernel test robot noticed the following build errors:
+Ahh. You can probably tell I'm a bit naive to some of this system level stuff...
+I had assumed they would want to boot on the big CPU to reduce boot time.
 
-[auto build test ERROR on akpm-mm/mm-everything]
+> 
+> Lemme have another look at applying the patch with fresh eyes, but I do
+> wonder whether having X4 on the allow list really makes any sense. Are
+> there any SoCs out there that _don't_ pair it with CPUs that aren't on
+> the allow list? (apologies for the double negative).
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Ankur-Arora/perf-bench-mem-Remove-repetition-around-time-measurement/20250917-233045
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20250917152418.4077386-14-ankur.a.arora%40oracle.com
-patch subject: [PATCH v7 13/16] mm: memory: support clearing page ranges
-config: arm-randconfig-001-20250919 (https://download.01.org/0day-ci/archive/20250919/202509191916.a0oRRfua-lkp@intel.com/config)
-compiler: arm-linux-gnueabi-gcc (GCC) 12.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250919/202509191916.a0oRRfua-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202509191916.a0oRRfua-lkp@intel.com/
-
-All error/warnings (new ones prefixed by >>):
-
-   In file included from arch/arm/include/asm/thread_info.h:14,
-                    from include/linux/thread_info.h:60,
-                    from include/asm-generic/preempt.h:5,
-                    from ./arch/arm/include/generated/asm/preempt.h:1,
-                    from include/linux/preempt.h:79,
-                    from include/linux/smp.h:116,
-                    from include/linux/kernel_stat.h:5,
-                    from mm/memory.c:42:
-   mm/memory.c: In function 'clear_contig_highpages':
-   mm/memory.c:7199:38: error: implicit declaration of function 'nth_page'; did you mean 'pte_page'? [-Werror=implicit-function-declaration]
-    7199 |                 clear_user_highpages(nth_page(page, i),
-         |                                      ^~~~~~~~
-   arch/arm/include/asm/page.h:152:36: note: in definition of macro 'clear_user_highpage'
-     152 |          __cpu_clear_user_highpage(page, vaddr)
-         |                                    ^~~~
-   mm/memory.c:7199:17: note: in expansion of macro 'clear_user_highpages'
-    7199 |                 clear_user_highpages(nth_page(page, i),
-         |                 ^~~~~~~~~~~~~~~~~~~~
->> mm/memory.c:7199:38: warning: passing argument 1 of 'cpu_user.cpu_clear_user_highpage' makes pointer from integer without a cast [-Wint-conversion]
-    7199 |                 clear_user_highpages(nth_page(page, i),
-         |                                      ^~~~~~~~~~~~~~~~~
-         |                                      |
-         |                                      int
-   arch/arm/include/asm/page.h:152:36: note: in definition of macro 'clear_user_highpage'
-     152 |          __cpu_clear_user_highpage(page, vaddr)
-         |                                    ^~~~
-   mm/memory.c:7199:17: note: in expansion of macro 'clear_user_highpages'
-    7199 |                 clear_user_highpages(nth_page(page, i),
-         |                 ^~~~~~~~~~~~~~~~~~~~
-   mm/memory.c:7199:38: note: expected 'struct page *' but argument is of type 'int'
-    7199 |                 clear_user_highpages(nth_page(page, i),
-         |                                      ^~~~~~~~~~~~~~~~~
-   arch/arm/include/asm/page.h:152:36: note: in definition of macro 'clear_user_highpage'
-     152 |          __cpu_clear_user_highpage(page, vaddr)
-         |                                    ^~~~
-   mm/memory.c:7199:17: note: in expansion of macro 'clear_user_highpages'
-    7199 |                 clear_user_highpages(nth_page(page, i),
-         |                 ^~~~~~~~~~~~~~~~~~~~
->> arch/arm/include/asm/page.h:157:15: error: lvalue required as left operand of assignment
-     157 |         vaddr += PAGE_SIZE;                             \
-         |               ^~
-   mm/memory.c:7199:17: note: in expansion of macro 'clear_user_highpages'
-    7199 |                 clear_user_highpages(nth_page(page, i),
-         |                 ^~~~~~~~~~~~~~~~~~~~
->> arch/arm/include/asm/page.h:158:13: error: lvalue required as increment operand
-     158 |         page++;                                         \
-         |             ^~
-   mm/memory.c:7199:17: note: in expansion of macro 'clear_user_highpages'
-    7199 |                 clear_user_highpages(nth_page(page, i),
-         |                 ^~~~~~~~~~~~~~~~~~~~
-   cc1: some warnings being treated as errors
+Hmm, that's a fair question. I'm not aware of any. So I guess the simplest
+solution is to remove X4 from the allow list and ditch fourth patch.
 
 
-vim +7199 mm/memory.c
+> 
+> Will
 
-  7185	
-  7186	/*
-  7187	 * Clear contiguous pages chunking them up when running under
-  7188	 * non-preemptible models.
-  7189	 */
-  7190	static void clear_contig_highpages(struct page *page, unsigned long addr,
-  7191					   unsigned int npages)
-  7192	{
-  7193		unsigned int i, count, unit;
-  7194	
-  7195		unit = preempt_model_preemptible() ? npages : PAGE_CONTIG_NR;
-  7196	
-  7197		for (i = 0; i < npages; ) {
-  7198			count = min(unit, npages - i);
-> 7199			clear_user_highpages(nth_page(page, i),
-  7200					     addr + i * PAGE_SIZE, count);
-  7201			i += count;
-  7202			cond_resched();
-  7203		}
-  7204	}
-  7205	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
