@@ -4,114 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3816ECA1013
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 01:40:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C566DCAC597
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 01:40:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 155B48E00A6; Thu, 18 Sep 2025 21:39:59 -0400 (EDT)
+	id E27E98E00E7; Thu, 18 Sep 2025 21:40:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 12D6F8E0008; Thu, 18 Sep 2025 21:39:59 -0400 (EDT)
+	id DD91A8E0008; Thu, 18 Sep 2025 21:40:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 01BD18E00A6; Thu, 18 Sep 2025 21:39:58 -0400 (EDT)
+	id CEEBE8E00E7; Thu, 18 Sep 2025 21:40:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E07B68E0008
-	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 21:39:58 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 72AAC14052E
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 01:39:58 +0000 (UTC)
-X-FDA: 83904293676.19.9363474
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 741351A0002
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 01:39:56 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=gJVX14b8;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf19.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758245996; a=rsa-sha256;
-	cv=none;
-	b=PXZ2zNnPJO6DdVzG3fJ5nLM8r2DAQ5JDp3AH3lRpwL705amxPnetaazPPSLzmFtMMGNLK8
-	PsNSs9fSbY8/KFbxRWQzcyJfASuEABg5+Hf+3GPSYiw/4oseeoQ23ETITAO5kNY4Q8PzNA
-	O/idPXscJDfUD+O3zSxDSG9eA5IG/yc=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=gJVX14b8;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf19.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BA59C8E0008
+	for <linux-mm@kvack.org>; Thu, 18 Sep 2025 21:40:35 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 76D1311A5B3
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 01:40:35 +0000 (UTC)
+X-FDA: 83904295230.28.4461418
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	by imf02.hostedemail.com (Postfix) with ESMTP id D744480002
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 01:40:32 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=hm7fikyD;
+	spf=pass (imf02.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758245996;
+	s=arc-20220608; t=1758246033;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TLWwqggp3K/TaMuP/qh+3dUHM74KL5ZFGLTQM4YRlUo=;
-	b=RN1nQ9IdqVerKxR+HPjWvYMq9xO1i9Gd7T6tsiEBhIrcmp/rV5m3CgmZ4ze6lIjdtMcO95
-	nNMR5AppuCPigTlKWmTFyFd1x+Ef4C8VrF4/AACdz6gEHECk7cIxjcQNHsw17PzQGaoslP
-	Z++smktTEJbauafkbFnOiqaDycKE/nU=
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-46897c60e38so332175e9.0
-        for <linux-mm@kvack.org>; Thu, 18 Sep 2025 18:39:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758245995; x=1758850795; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TLWwqggp3K/TaMuP/qh+3dUHM74KL5ZFGLTQM4YRlUo=;
-        b=gJVX14b8AFp+ciBzsX03sSBggUn9r2dAcIbtWV1DkmdPJBLJ9/TVBy30ssxZ20xOjw
-         8eMRcIYi2ZPGqYCeIXK3l2RoiycFty+w8Z5/KiWOkvI53ic0OSCfj809dVgYnnGyy1QX
-         CQHxPgHg2570yOn4K3OTtT6erMUsPiAxPMa9ridDDVklEaPzgRPiWpJjkyHkcGRtRkVb
-         yzQqVgpc86rUN1H2PqGaXpRmN94+asdwYpEuhDaT3PrlyVEL6QQ4mYO9dASNMaJFlSgX
-         2NyQ8UghWJPzm4KYEHqPAYtjEkwDG9jfpWelRwmg/3qdzObAX9WmIKUWCr/FlFIH0yIg
-         R82w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758245995; x=1758850795;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TLWwqggp3K/TaMuP/qh+3dUHM74KL5ZFGLTQM4YRlUo=;
-        b=FTmgHGalwBNKtmoKzED4LIJsQvqmIisQzX0yT76dBeHncbcAX3eOuHK0R2cY7ZaAuP
-         HmF7Hk8Z58EQqJUD7FtKbNUa9aUeAH1w5Y0Js3u5pcLYS+6bPBi1ytBWxa438d41Lk8h
-         uz0qzAKItdaUmXHM+WCgHWoraYe3IUNq/Fw56sjf01XLlZkHYdqwCZ8TuZqfPXHX/znh
-         9Wjx3MiX2BcCwmLZXjPZq346gYNpNtZI+RFn3DX96UG0TfTHZZKsPVWMwlit8UgLVhCC
-         Era9UKZWcifTDVyTXkbpzFhgTuZAvio0i/T/ywu5qedc8RY8+FaTkXf7ZAiOKdlwRFLp
-         EDkg==
-X-Forwarded-Encrypted: i=1; AJvYcCXVBknGR6Ro0x54bFd9YlqALQGom2rjespgSwQglMJOG1o0WY0kNCajqDyOFDEKnAgBmAINJqGbPw==@kvack.org
-X-Gm-Message-State: AOJu0Yy/uS8pXT2Od8gdrC/ID6lLN2NeIwu1CkLRkAxxGjOY4h+slkpE
-	w4WDE7hZClH9OiTEd8w1bRP7zbHsEN0ZgGjBVE6WLKd5hPrdFetsHPAqhFofbLMm4PpSMJvnYY/
-	kK8IZqoZTvMgud21s4v1iPmDMZ5PLMwM=
-X-Gm-Gg: ASbGncsFbineSSMDqdEDWyzdIFTGuMknwIuwZ6vmE1aMnEVRhNJ8R6A8mNzHf6Uj8it
-	DPXEePThUobKRUf+y1rAmiK6sfVE0+4ydau9kTqNEAzqQDOtvR/4PsCZmnNbhtpTdqzUnYSKclb
-	H2jJZ4Xt0llxBOw1iKjvLyn6fC6URF5dm4OEL2hvZSNQfyE9POLsp8qAL4Cxq5RLn/eQDRwK3Ii
-	nq/WjwAMCIO44ubBYjsMhx3QVamwJQP40E+
-X-Google-Smtp-Source: AGHT+IGLUHNvVeU7x3xV9/sHYbwwni9HCE8NZCidCtCfno9QqZD0/k8AaMlh+DMF0H+c7wtm4oRSBiysUcySWCH78RQ=
-X-Received: by 2002:a05:600c:4fc3:b0:45d:ddc6:74a9 with SMTP id
- 5b1f17b1804b1-467eed8f915mr8129025e9.12.1758245994492; Thu, 18 Sep 2025
- 18:39:54 -0700 (PDT)
+	bh=unHU10lm1KrLzncLPxG4RlMWeF4+BBle0WhdeoN7Z8o=;
+	b=rKGZYMJyNFHnoP9j9QZwIKQcVXjoV4dBE2TRLm/BsWQYrccgR48w+dbka0YmKh8GFVmsh0
+	vCzAgyXHkKSeqC0yJd6QE6D0zUWWM5dljR4SIg2tsTtvdUr/UhRlnUv7YU0zENHBqVgIQ4
+	P7lhz3oLy4XrK3zeGWPs6E4eXkXkulc=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=hm7fikyD;
+	spf=pass (imf02.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758246033; a=rsa-sha256;
+	cv=none;
+	b=SYmY1M3HjE4DRBEgXyrYVR0wOh49G2X9arf5It2G9QSViFh+flH7yip97LmIrphNMtmitf
+	lIiMcRxly9M4MaGACEEisZVg0EXLmQKVdTvMCYyg/7ID5jdLITh4b4oHc5FhpETP8dS2zS
+	6+jza4n0n1AtISSiQQWtJnGuq1HiSGI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1758246033; x=1789782033;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=itbhvlGa/67NE/x0tLhEoVen0fCwr+8EnXPRMpPCprc=;
+  b=hm7fikyDE2ARUCTyegcMoTtyVLzEkUEij4XDXww2mWzRA83Bu+zPzdIs
+   9YrIwY6GOcfPOlKHuCJzf/TPOClLw6acThzW1S/j7fQqbahGMEcn/zfWo
+   DnIS3wEXzXcyLVdmpRWRBNe7DnoCtSZSAVRTEMHARfsoX8AYdFGN5DWy5
+   shU3vQo7DgjT2Z/fwLd14qnw21vij1Q94P2zz1gn6isSi5naAHIRUTfad
+   FPlNNBS5YB3PnCDNwmTCj/q9YwZ29toiDVm60YE4laztSZeSDA3aj6JXq
+   67xirtjeMwGkpnfv54zxHHrys0TCpWWr9ndeKVI6oNUQPGqlGqK6QP8ja
+   w==;
+X-CSE-ConnectionGUID: ryN5aykqTKeH9pv9xfLxPg==
+X-CSE-MsgGUID: sCbw1m3zTYSELg+o83HRIQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11557"; a="64410831"
+X-IronPort-AV: E=Sophos;i="6.18,276,1751266800"; 
+   d="scan'208";a="64410831"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2025 18:40:31 -0700
+X-CSE-ConnectionGUID: 0XL0fEMrSzW+woQKr4uqsg==
+X-CSE-MsgGUID: d5JDo9e8QVGzdgMYHpuebQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,276,1751266800"; 
+   d="scan'208";a="175624749"
+Received: from lkp-server01.sh.intel.com (HELO 84a20bd60769) ([10.239.97.150])
+  by fmviesa006.fm.intel.com with ESMTP; 18 Sep 2025 18:40:27 -0700
+Received: from kbuild by 84a20bd60769 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uzQ6r-0003t5-0z;
+	Fri, 19 Sep 2025 01:40:25 +0000
+Date: Fri, 19 Sep 2025 09:40:20 +0800
+From: kernel test robot <lkp@intel.com>
+To: Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Muchun Song <muchun.song@linux.dev>, Zi Yan <ziy@nvidia.com>,
+	Matthew Wilcox <willy@infradead.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	sidhartha.kumar@oracle.com, jane.chu@oracle.com,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>
+Subject: Re: [PATCH v2 1/8] mm: page_alloc: optimize pfn_range_valid_contig()
+Message-ID: <202509190917.wgDdVYHL-lkp@intel.com>
+References: <20250918132000.1951232-2-wangkefeng.wang@huawei.com>
 MIME-Version: 1.0
-References: <202509171214.912d5ac-lkp@intel.com> <b7d4cf85-5c81-41e0-9b22-baa9a7e5a0c4@suse.cz>
- <ead41e07-c476-4769-aeb6-5a9950737b98@suse.cz> <CAADnVQJYn9=GBZifobKzME-bJgrvbn=OtQJLbU+9xoyO69L8OA@mail.gmail.com>
- <ce3be467-4ff3-4165-a024-d6a3ed33ad0e@suse.cz> <CAJuCfpGLhJtO02V-Y+qmvzOqO2tH5+u7EzrCOA1K-57vPXhb+g@mail.gmail.com>
-In-Reply-To: <CAJuCfpGLhJtO02V-Y+qmvzOqO2tH5+u7EzrCOA1K-57vPXhb+g@mail.gmail.com>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Thu, 18 Sep 2025 18:39:43 -0700
-X-Gm-Features: AS18NWBlUth1kJvWS5JXtLwteu2b8Preo5gOd_kEK4OqVju9jJmrGXsODrzjcRM
-Message-ID: <CAADnVQLPq=puz04wNCnUeSUeF2s1SwTUoQvzMWsHCVhjFcyBeg@mail.gmail.com>
-Subject: Re: [linux-next:master] [slab] db93cdd664: BUG:kernel_NULL_pointer_dereference,address
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>, kernel test robot <oliver.sang@intel.com>, 
-	Alexei Starovoitov <ast@kernel.org>, Harry Yoo <harry.yoo@oracle.com>, oe-lkp@lists.linux.dev, 
-	kbuild test robot <lkp@intel.com>, kasan-dev <kasan-dev@googlegroups.com>, 
-	"open list:CONTROL GROUP (CGROUP)" <cgroups@vger.kernel.org>, linux-mm <linux-mm@kvack.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 741351A0002
-X-Stat-Signature: tf5riye5f9w4eryedbt1fsrx3y84bkeu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250918132000.1951232-2-wangkefeng.wang@huawei.com>
+X-Stat-Signature: kd3gfoo3nbdndum78fygcnbasdeb1sen
 X-Rspam-User: 
-X-HE-Tag: 1758245996-841655
-X-HE-Meta: U2FsdGVkX1+HE8lRDqGJFNdO/nIuZQfhhdKXy6wSPsIazGHOpSpNktqD28gXepqeUxh8gC+Y/vn5EC9EQeQfgfeYlNeS93BF6TXrNtPa8GVhLyemzk44QJ2ol8NPpSiOE3orjzc8W+TmB0FXoVlCGxtW1RGaACdEuWmh0DvHWPE1FtrTXfSldNYrCxgp2sU35S6jyB9A1HBjM0OqJHUuxB9oEWupx0rlh4a+OkJjJgeIdjW12p+B0fer6kOQCe6TBmWQKTAlyZzXETMI1bYnC1fRdpo6Zq0v2NsN5nH/I/XI/bgK4hSgeX0ZVwyyPG2eBujpaN4ZpJH2wxeHbgBAYEXblUf344ho7HLotJmMtGex4ShLC5j//YnHOrIfIjPRewVfyEFbXDNU1DtoH8aG2UzHpz2wXY6A4znsggs1uZ9liyFE3YnSm8bjfIjSvRH9cO+taDt2fTm0b4J8MGjyEaNucgM3Ud73NuJVlRY2zB4FWspoT2u/ffYABpub5kbgOc25aJvZWxt35cohmkXOc66ogTj8dzlVKNZmPubfCyKiu3OOq6T07b2IX/uq+vmY6DXaKCZLlIzvWfKiCmQAsgiGqCuY/qlevvDTj7QpFdwl0kA1EptwGqKcHJQsYyfBdMDfcRtF5Ar4WTgq7Fdui30wCXW9krEAnMwsm/lh4xGcxGVusuYAKGFvBr3df0+yN5DiRGTUumOQueOmhrnGqZIPhARS1pQraDqVhwJQ9YT1ZaiV+N8hJ2OHuapEFE678+Dkml6zyFKAlBRtgsu4ZPChSHglLnIKd1z0ZXeJF9hAhbtDRdNwYSpOYoWZItWCmtf4IqfZYz/oByzXLmHTRKyvRjYbfjzbLVjZaxMgEqVGxLCEJqmFok4z04//9eUXYkUxAhT/aEq97JRj8DP+xj7Jz5KktXv+5oYXRAFrYTsX/RyrbYYOWm5sbbDsq8Y046yyufk6a1irf0PsWXd
- jT/EP5ou
- veistAHS/o8kq+8rAMaBuqb+6KCABYK6ZV7yPEd+3pRxwaV4pHAEwaFqLDolyRSOKnnYktq6NKs+U/m/sem2cA6SmIVbFlqbzFnj9h6uSeb1dZU8msGJa2cTR4KJHAw+UiWBkFS2VFuVaSFgi2cpml8kFyT4/mGGHSOmELVB8g5GzlpCh2sUH+5N0DpFYCqDOumT1CUVFSknu1Y37ytnZcapzISslK9WP+qk9V08LoOf4Lah17vfyL9lNX4aV2hKUXcQWbIw+mGyRJkBLE2lMvBd4FGuSBgM95O/A8nnzyQGWoK0mhXdmO9C82C2t0hy1HDjftVJ4ViTcKhDuVo7z79cvo5dkldhqEmTzGHppqez7Z7eKaABwieGpUJ3YLE6dgzIr0mtAR27xdCTYf9lUtUQcuSH/omJleF4sF0VWjjqrpzrOWIRQD8+yyYam55myhbuQ/jzbwtTVLb8=
+X-Rspamd-Queue-Id: D744480002
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1758246032-98097
+X-HE-Meta: U2FsdGVkX1+kXvhU4d/RoAhKPeQgnPCezEG9X/Y81wZohlz2c7+3EuOL9jyJwm4BmNXR1ISCuaR0Bp94I+BSUCvM7xAyLe3h1mr6P8sE/jpdsvg8xWPituFZoNhXm8vVHlkS8JMdAilFHttxBvzMXzBYcHO5iFyMLyi43ZuuvMOQjMsvsEhwG8XyO7nZtECfaa3Xx8mg9gaPyhgWV6lB1AULSLCg8pei1BGKh2d+/asIOh7UzP6OBTIFhCPhJZNf8pI3P32FHZaiJIPkSJcTzuwxkXYHXv18XsMimujxLi1CK/sKENRIPaEIF3BctBE/Zd4IamexG8lKyp3dElLbRUBgNYmQAP2sfd0EnDIyIRWC76TgZHk9C5HdL6Vnnk4jX0jxg7PU9xbjO9G/DdirXVMBQCfGHwG0bgSexJ5BflfEFgiQzBITGj1gCxDJZcS20Cx/1Ch1I8dpWeJP7HjfBA/ue1bELwn2aT2xaKUGQowd52Os6VMkcpX9ka9yrOGS8LSs/E7D9LkPFYfX1Z4pPkKj9fbjHyXGD0/3qLiIVIxqLttKLpJYuylI6SQdeM9RDVM83hi8GlYzuhAOgky0v/GSEHP3/AB4CrTeeEHzRivP97GSl+zMkXA6qOgacvtQO6JcEjb6Tt1Vcxlc2XcxeI8bTrZj2U1IGPcVy9TaGNitRiZ8zdbyn5POHZh2q8PgBR9TGcorsxjZqdqthMr+fThR2AY/2GK8smk88ozHnaXrGrbSf0LBSGoOOEwdEEqiEXmG6wvVuq3X3tOax31WoJCLh7hqnrTx+7tS58BHOM2yJZUuUN1ICy8UbTV1cWQMhiaQ9hdOtO+qYqLX8MOvVigXNJYgCEBTtFUf3ik6y9ppmDT4+Tx86wlIkKRTFKYIxS/6WK/AHRrlRxH1/IbOs+JKZ0amp59WeBL2mnN/FTDzdFuT6gF8cRVrjXeLTfWmsiqOHhhSKu4952g1LJh
+ 8rsv27ua
+ ESNNw5r540h7VwOIzXLM/g+GhzvKNdoPC6bnE6SGZAG9eSQDEbT8PHCKOf3x2pUp1PoaiIRyUmoh2pjhrmoN4O2DBVYBMvRdEfIhxVHKvIzsn/VYg7Kewcey0O3AqxOuD5TEbAsaIbSbqxQVcE2IiMpdreuAQEP7G6JwXz/jXyezueRUipQL/Pj3akMONK3mv3LVTpehYD8ZOzr+8zGKKo4T+nkGC9ZqgryQFKeKv/3E0I4UlM7jGR4ljXzLRTkZJythElD2fOna9w2kbuDNtBltWaIom07i4+etO0ZldYQ1kCDlyGscv+Xs7ixf69Wwa6nWxsDSzRTgRdV3Z3kuVMci6BAfgov0otcjPl5S5BygMFyVszcaasVFy4z4Rnm6kTIiz0zRy1iHuYh1f3Sv9VVNA/A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,112 +117,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 18, 2025 at 7:49=E2=80=AFAM Suren Baghdasaryan <surenb@google.c=
-om> wrote:
->
-> On Thu, Sep 18, 2025 at 12:06=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz>=
- wrote:
-> >
-> > On 9/17/25 20:38, Alexei Starovoitov wrote:
-> > > On Wed, Sep 17, 2025 at 2:18=E2=80=AFAM Vlastimil Babka <vbabka@suse.=
-cz> wrote:
-> > >>
-> > >> Also I was curious to find out which path is triggered so I've put a
-> > >> dump_stack() before the kmalloc_nolock call:
-> > >>
-> > >> [    0.731812][    T0] Call Trace:
-> > >> [    0.732406][    T0]  __dump_stack+0x18/0x30
-> > >> [    0.733200][    T0]  dump_stack_lvl+0x32/0x90
-> > >> [    0.734037][    T0]  dump_stack+0xd/0x20
-> > >> [    0.734780][    T0]  alloc_slab_obj_exts+0x181/0x1f0
-> > >> [    0.735862][    T0]  __alloc_tagging_slab_alloc_hook+0xd1/0x330
-> > >> [    0.736988][    T0]  ? __slab_alloc+0x4e/0x70
-> > >> [    0.737858][    T0]  ? __set_page_owner+0x167/0x280
-> > >> [    0.738774][    T0]  __kmalloc_cache_noprof+0x379/0x460
-> > >> [    0.739756][    T0]  ? depot_fetch_stack+0x164/0x180
-> > >> [    0.740687][    T0]  ? __set_page_owner+0x167/0x280
-> > >> [    0.741604][    T0]  __set_page_owner+0x167/0x280
-> > >> [    0.742503][    T0]  post_alloc_hook+0x17a/0x200
-> > >> [    0.743404][    T0]  get_page_from_freelist+0x13b3/0x16b0
-> > >> [    0.744427][    T0]  ? kvm_sched_clock_read+0xd/0x20
-> > >> [    0.745358][    T0]  ? kvm_sched_clock_read+0xd/0x20
-> > >> [    0.746290][    T0]  ? __next_zones_zonelist+0x26/0x60
-> > >> [    0.747265][    T0]  __alloc_frozen_pages_noprof+0x143/0x1080
-> > >> [    0.748358][    T0]  ? lock_acquire+0x8b/0x180
-> > >> [    0.749209][    T0]  ? pcpu_alloc_noprof+0x181/0x800
-> > >> [    0.750198][    T0]  ? sched_clock_noinstr+0x8/0x10
-> > >> [    0.751119][    T0]  ? local_clock_noinstr+0x137/0x140
-> > >> [    0.752089][    T0]  ? kvm_sched_clock_read+0xd/0x20
-> > >> [    0.753023][    T0]  alloc_slab_page+0xda/0x150
-> > >> [    0.753879][    T0]  new_slab+0xe1/0x500
-> > >> [    0.754615][    T0]  ? kvm_sched_clock_read+0xd/0x20
-> > >> [    0.755577][    T0]  ___slab_alloc+0xd79/0x1680
-> > >> [    0.756469][    T0]  ? pcpu_alloc_noprof+0x538/0x800
-> > >> [    0.757408][    T0]  ? __mutex_unlock_slowpath+0x195/0x3e0
-> > >> [    0.758446][    T0]  __slab_alloc+0x4e/0x70
-> > >> [    0.759237][    T0]  ? mm_alloc+0x38/0x80
-> > >> [    0.759993][    T0]  kmem_cache_alloc_noprof+0x1db/0x470
-> > >> [    0.760993][    T0]  ? mm_alloc+0x38/0x80
-> > >> [    0.761745][    T0]  ? mm_alloc+0x38/0x80
-> > >> [    0.762506][    T0]  mm_alloc+0x38/0x80
-> > >> [    0.763260][    T0]  poking_init+0xe/0x80
-> > >> [    0.764032][    T0]  start_kernel+0x16b/0x470
-> > >> [    0.764858][    T0]  i386_start_kernel+0xce/0xf0
-> > >> [    0.765723][    T0]  startup_32_smp+0x151/0x160
-> > >>
-> > >> And the reason is we still have restricted gfp_allowed_mask at this =
-point:
-> > >> /* The GFP flags allowed during early boot */
-> > >> #define GFP_BOOT_MASK (__GFP_BITS_MASK & ~(__GFP_RECLAIM|__GFP_IO|__=
-GFP_FS))
-> > >>
-> > >> It's only lifted to a full allowed mask later in the boot.
-> > >
-> > > Ohh. That's interesting.
-> > >
-> > >> That means due to "kmalloc_nolock() is not supported on architecture=
-s that
-> > >> don't implement cmpxchg16b" such architectures will no longer get ob=
-jexts
-> > >> allocated in early boot. I guess that's not a big deal.
-> > >>
-> > >> Also any later allocation having its flags screwed for some reason t=
-o not
-> > >> have __GFP_RECLAIM will also lose its objexts. Hope that's also acce=
-ptable.
-> > >> I don't know if we can distinguish a real kmalloc_nolock() scope in
-> > >> alloc_slab_obj_exts() without inventing new gfp flags or passing an =
-extra
-> > >> argument through several layers of functions.
-> > >
-> > > I think it's ok-ish.
-> > > Can we add a check to alloc_slab_obj_exts() that sets allow_spin=3Dtr=
-ue
-> > > if we're in the boot phase? Like:
-> > > if (gfp_allowed_mask !=3D __GFP_BITS_MASK)
-> > >    allow_spin =3D true;
-> > > or some cleaner way to detect boot time by checking slab_state ?
-> > > bpf is not active during the boot and nothing should be
-> > > calling kmalloc_nolock.
-> >
-> > Checking the gfp_allowed_mask should work. Slab state is already UP so =
-won't
-> > help, and this is not really about slab state anyway.
-> > But whether worth it... Suren what do you think?
->
-> Vlastimil's fix is correct. We definitely need __GFP_NO_OBJ_EXT when
-> allocating an obj_exts vector, otherwise it will try to recursively
-> allocate an obj_exts vector for obj_exts allocation.
->
-> For the additional __GFP_BITS_MASK check, that sounds good to me as
-> long as we add a comment on why that is there. Or maybe such a check
-> deserves to be placed in a separate function similar to
-> gfpflags_allow_{spinning | blocking}?
+Hi Kefeng,
 
-I would not. I think adding 'boot or not' logic to these two
-will muddy the waters and will make the whole slab/page_alloc/memcg
-logic and dependencies between them much harder to follow.
-I'd either add a comment to alloc_slab_obj_exts() explaining
-what may happen or add 'boot or not' check only there.
-imo this is a niche, rare and special.
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on akpm-mm/mm-everything]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Kefeng-Wang/mm-page_alloc-optimize-pfn_range_valid_contig/20250918-212431
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20250918132000.1951232-2-wangkefeng.wang%40huawei.com
+patch subject: [PATCH v2 1/8] mm: page_alloc: optimize pfn_range_valid_contig()
+config: x86_64-kexec (https://download.01.org/0day-ci/archive/20250919/202509190917.wgDdVYHL-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250919/202509190917.wgDdVYHL-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202509190917.wgDdVYHL-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> mm/page_alloc.c:7033:7: warning: use of bitwise '|' with boolean operands [-Wbitwise-instead-of-logical]
+    7033 |                 if (folio_test_pgtable(folio) | folio_test_stack(folio))
+         |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+         |                                               ||
+   mm/page_alloc.c:7033:7: note: cast one or both operands to int to silence this warning
+   1 warning generated.
+
+
+vim +7033 mm/page_alloc.c
+
+  7009	
+  7010	static bool pfn_range_valid_contig(struct zone *z, unsigned long start_pfn,
+  7011					   unsigned long nr_pages)
+  7012	{
+  7013		unsigned long i, end_pfn = start_pfn + nr_pages;
+  7014		struct page *page;
+  7015		struct folio *folio;
+  7016	
+  7017		for (i = start_pfn; i < end_pfn; i++) {
+  7018			page = pfn_to_online_page(i);
+  7019			if (!page)
+  7020				return false;
+  7021	
+  7022			if (page_zone(page) != z)
+  7023				return false;
+  7024	
+  7025			folio = page_folio(page);
+  7026			if (folio_test_reserved(folio))
+  7027				return false;
+  7028	
+  7029			if (folio_test_hugetlb(folio))
+  7030				return false;
+  7031	
+  7032			/* The following type of folios aren't migrated */
+> 7033			if (folio_test_pgtable(folio) | folio_test_stack(folio))
+  7034				return false;
+  7035	
+  7036			/*
+  7037			 * For compound pages such as THP and non-compound high
+  7038			 * order buddy pages, save potentially a lot of iterations
+  7039			 * if we can skip them at once.
+  7040			 */
+  7041			if (PageCompound(page))
+  7042				i += (1UL << compound_order(page)) - 1;
+  7043			else if (PageBuddy(page))
+  7044				i += (1UL << buddy_order(page)) - 1;
+  7045		}
+  7046		return true;
+  7047	}
+  7048	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
