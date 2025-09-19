@@ -4,144 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 937C6CAC592
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 12:40:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5537CCAC5A8
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 12:44:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 246E18E000A; Fri, 19 Sep 2025 08:40:56 -0400 (EDT)
+	id AB3338E000B; Fri, 19 Sep 2025 08:44:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 182AD8E0001; Fri, 19 Sep 2025 08:40:56 -0400 (EDT)
+	id A63028E0001; Fri, 19 Sep 2025 08:44:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F17508E000A; Fri, 19 Sep 2025 08:40:55 -0400 (EDT)
+	id 92AD08E000B; Fri, 19 Sep 2025 08:44:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DBE8B8E0001
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 08:40:55 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 96BA986501
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 12:40:55 +0000 (UTC)
-X-FDA: 83905959270.29.915140D
-Received: from fhigh-a4-smtp.messagingengine.com (fhigh-a4-smtp.messagingengine.com [103.168.172.155])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 9550C4000A
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 12:40:53 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="N msJzCb";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=R1+Sr7MG;
-	dmarc=none;
-	spf=pass (imf11.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.155 as permitted sender) smtp.mailfrom=kirill@shutemov.name
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758285653; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A1C88E0001
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 08:44:32 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 50822160677
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 12:44:32 +0000 (UTC)
+X-FDA: 83905968384.03.B6E479B
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+	by imf30.hostedemail.com (Postfix) with ESMTP id D64548000E
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 12:44:28 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="idiqMF/F";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf30.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758285870; a=rsa-sha256;
 	cv=none;
-	b=eZPNGW5HT6iBYwBplqarWJZRT2avx4euIG1uSdNxDKUDQHbN5U7DkFOoW5EapsOTyzyf14
-	V4dtM65TwbT/IJyFybupmovpRYHsh2BmowAs0bvlAvTUGtNUfEZor0iHRXqkyHxXq+1ko5
-	8OslRjpxzo3wg+jDMEGCGEu9eez/XmA=
+	b=WM+xFksENv82k9uxovOwtZ4+S85M5BGceaamwAAtpQU6PQHNuW/rCT/PzExdaOht6JVcnA
+	72oHcon8MIxTJSbNZh4oKTxhhokYEvJaYx84VfEJM578exxrg8bSB2/uj2Qmzxi6vwZfEI
+	wMw7/TCIxtyH53tQDZ8EWKJGpaS3Rro=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="N msJzCb";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=R1+Sr7MG;
-	dmarc=none;
-	spf=pass (imf11.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.155 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="idiqMF/F";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf30.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758285653;
+	s=arc-20220608; t=1758285870;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mxh0csfVOqXEIeJ0PDZRZ2dOl352C/UceF+juPeU56o=;
-	b=k3fyQD02QLx6HTNMXuFoYfdKvnkv0xNuuoXHQKr5Pl41XdGju5dwbEC850yP73vRJ4XfDA
-	PT+dHcDIWpZ01f5gzq4e20747uDnANZji49Av2qTxnMFpIQQo0D4txWAfta/YbFY+175p9
-	jTocGmOBgkiFRfdill1SiPh5MSetoYY=
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 10F171400189;
-	Fri, 19 Sep 2025 08:40:53 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Fri, 19 Sep 2025 08:40:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
-	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1758285653; x=
-	1758372053; bh=mxh0csfVOqXEIeJ0PDZRZ2dOl352C/UceF+juPeU56o=; b=N
-	msJzCb7eLd2gI0Zfaco0EvDRWDj7CmihiaDFfishQMh/f1pRAkQMAUxmv1ls4dsZ
-	GflJFsnfiRczd++qW8n0M52k5xF9grKIXYfTrf0j2yxEUPgEBpdOSXMVIp1ChtHf
-	fxz7lfWg2UW3pBEs71cnG5hziGfPpxUWojvr+zot2Kg7/Yon95XhXYG9xa7CfNi+
-	x6Okgvi1Yg0wigzpXuS2cULBwUUpFMEA5by++n8RtpBewT6QEL/vVJ16qofk0n+r
-	ASwx1YG8QCZGKzvAQjOGO27VlkJ8OlLFPePXzqitCAL69ADBs4/o19P5rE837aFi
-	dF3WXnvd87b0/hTeZIMRA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm1; t=1758285653; x=1758372053; bh=m
-	xh0csfVOqXEIeJ0PDZRZ2dOl352C/UceF+juPeU56o=; b=R1+Sr7MGq+aSYY4wH
-	kOsTx/2EOwo1JplaQY3c6bXdLkWm352tdLHHJzoBUxpYDTWOW5ryoCBtXWkv9k7O
-	zLgcqiTWtu4Vc3dDcJdeheOWhuQnHXWjFn2JEmxGxPUwg7G4Fea2JWBolCU3Lnld
-	tsHctCtcYdVGie1CJQkNs57ZGtff+u9FcyU8bCGA5OwLzodMNw0nvrv70VXI/svG
-	hU/cse3OmFEgYp1obWTMH0JDGRdvHicpCV0KEuc8HXGpyg7k+d+S3Y/htGnFDpcw
-	fTC7zOqH7oSYtARBG1kpUklkQMuLOL32e6hcN1h6ctEdbATFMWUK+wi17oBMfIFE
-	tPS7g==
-X-ME-Sender: <xms:VE_NaPjba1MBPCTYbx0TAZaLkPJGs5ujl4V68d6TmEqxa6N46OwsPQ>
-    <xme:VE_NaNgUDwjhfsa-D5cjLt04_orxOfzgzvUz7bcddWReeEUCIeh8FPh4-LTtw9v0-
-    -UFbr9jY_VxW55Fh4g>
-X-ME-Received: <xmr:VE_NaMvI66RrkR06KiA8GNu1anMpaFCDbW14KbatjGSUocnXOSGOVKiTCq8slQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdegledvfecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpefmihhrhihlucfu
-    hhhuthhsvghmrghuuceokhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvqeenucggtf
-    frrghtthgvrhhnpeegveehtdfgvdfhudegffeuuddvgeevjefhveevgefhvdevieevteei
-    vdehjefhjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhroh
-    hmpehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgdpnhgspghrtghpthhtohepudek
-    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouh
-    hnuggrthhiohhnrdhorhhgpdhrtghpthhtohepuggrvhhiugesrhgvughhrghtrdgtohhm
-    pdhrtghpthhtohephhhughhhugesghhoohhglhgvrdgtohhmpdhrtghpthhtohepfihilh
-    hlhiesihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehlohhrvghniihordhsthho
-    rghkvghssehorhgrtghlvgdrtghomhdprhgtphhtthhopehlihgrmhdrhhhofihlvghtth
-    esohhrrggtlhgvrdgtohhmpdhrtghpthhtohepvhgsrggskhgrsehsuhhsvgdrtgiipdhr
-    tghpthhtoheprhhpphhtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsuhhrvghnsg
-    esghhoohhglhgvrdgtohhm
-X-ME-Proxy: <xmx:VE_NaDuTrkARgMiI_JyIa9QOhf6m_vdjp-9paw6zpUx_29TPkF1S3Q>
-    <xmx:VE_NaNNNKORfVFQhVCobk2UtXn9WgQJGi0Q4y_AM27czdpSNphGBFA>
-    <xmx:VE_NaFfUN16EFA3pJWLVE2Uw_g6SRbpC5wv1MKv9gLd3By5l6u_msA>
-    <xmx:VE_NaEkq2tpUtT7xKf8rBXGwacTHNgbkj3gR0900nxpcfsaPY_W0WA>
-    <xmx:VU_NaIrpBwudk1qRhkHwkbHukUm9TJO0LRz2tm9iAg-gwd_BYF2EtpYF>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 19 Sep 2025 08:40:52 -0400 (EDT)
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	Hugh Dickins <hughd@google.com>,
-	Matthew Wilcox <willy@infradead.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Rik van Riel <riel@surriel.com>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Kiryl Shutsemau <kas@kernel.org>
-Subject: [PATCHv2 5/5] mm/rmap: Improve mlock tracking for large folios
-Date: Fri, 19 Sep 2025 13:40:36 +0100
-Message-ID: <20250919124036.455709-6-kirill@shutemov.name>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250919124036.455709-1-kirill@shutemov.name>
-References: <20250919124036.455709-1-kirill@shutemov.name>
+	bh=K1FLwkYOUVkwrrVHc9TlgJl3FE5qVq/cdte4SWXZgzE=;
+	b=1HY4ZhmMCDozFRM74rLjNrqzu+sQ7sDwdZ/Nt6rrbqPisL/EUapfdDPkP3pLWtlG/U3uxy
+	3Ipkbjv6HX3CNuIIKcP9biBjBMiEUmhlidPM2lpT/wpwsTbW2XTlOhfMv79YxAovwpzS6i
+	CLaocmQz3+eR4h2E6OZ6V/w4SqPBkxA=
+Message-ID: <4a67a5d5-6043-4ba4-b1ca-2b0a800aafb9@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1758285864;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=K1FLwkYOUVkwrrVHc9TlgJl3FE5qVq/cdte4SWXZgzE=;
+	b=idiqMF/F2cFWSTzPsNc74ZZn7KDQsa3YohzP4Jr+GT0ZYco72PslC9P64P6ffs4UyHiL5R
+	cPdWj06/LPQlVQ58Bra+5toAm06sdHVL169F5MrpE1e1ELcoUy0DJelJsqoT/eE5OLhmX2
+	Cr554tR1sW2TjiYYyApiVxIMGu06lps=
+Date: Fri, 19 Sep 2025 20:44:14 +0800
 MIME-Version: 1.0
+Subject: Re: [PATCH v5 2/6] mm: remap unused subpages to shared zeropage when
+ splitting isolated thp
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+To: David Hildenbrand <david@redhat.com>
+Cc: =?UTF-8?B?UXVuLXdlaSBMaW4gKOael+e+pOW0tCk=?= <Qun-wei.Lin@mediatek.com>,
+ "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+ "usamaarif642@gmail.com" <usamaarif642@gmail.com>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "yuzhao@google.com" <yuzhao@google.com>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ "corbet@lwn.net" <corbet@lwn.net>,
+ =?UTF-8?B?QW5kcmV3IFlhbmcgKOaliuaZuuW8tyk=?= <Andrew.Yang@mediatek.com>,
+ "npache@redhat.com" <npache@redhat.com>, "rppt@kernel.org"
+ <rppt@kernel.org>, "willy@infradead.org" <willy@infradead.org>,
+ "kernel-team@meta.com" <kernel-team@meta.com>,
+ "roman.gushchin@linux.dev" <roman.gushchin@linux.dev>,
+ "hannes@cmpxchg.org" <hannes@cmpxchg.org>,
+ "cerasuolodomenico@gmail.com" <cerasuolodomenico@gmail.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "ryncsn@gmail.com" <ryncsn@gmail.com>, "surenb@google.com"
+ <surenb@google.com>, "riel@surriel.com" <riel@surriel.com>,
+ "shakeel.butt@linux.dev" <shakeel.butt@linux.dev>,
+ =?UTF-8?B?Q2hpbndlbiBDaGFuZyAo5by16Yym5paHKQ==?=
+ <chinwen.chang@mediatek.com>,
+ "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+ =?UTF-8?B?Q2FzcGVyIExpICjmnY7kuK3mpq4p?= <casper.li@mediatek.com>,
+ "ryan.roberts@arm.com" <ryan.roberts@arm.com>,
+ "linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>,
+ "baohua@kernel.org" <baohua@kernel.org>,
+ "kaleshsingh@google.com" <kaleshsingh@google.com>,
+ "zhais@google.com" <zhais@google.com>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+References: <20240830100438.3623486-1-usamaarif642@gmail.com>
+ <20240830100438.3623486-3-usamaarif642@gmail.com>
+ <a7944523fcc3634607691c35311a5d59d1a3f8d4.camel@mediatek.com>
+ <434c092b-0f19-47bf-a5fa-ea5b4b36c35e@redhat.com>
+ <CABzRoyYWQMFTGYgfC7N=cWMnL_+5Y05=jrMhFjBf1aKOGxzq5g@mail.gmail.com>
+ <ebedc478-7519-4e30-854e-f6616a7647b0@redhat.com>
+ <120445c8-7250-42e0-ad6a-978020c8fad3@linux.dev>
+ <9d2c3e3e-439d-4695-b7c9-21fa52f48ced@redhat.com>
+ <4cf41cd5-e93a-412b-b209-4180bd2d4015@linux.dev>
+ <dfb303b9-151b-49ec-b7ef-691c71bd5385@linux.dev>
+ <9395a9ca-d865-42d7-9ea1-8e693e4e38e0@linux.dev>
+In-Reply-To: <9395a9ca-d865-42d7-9ea1-8e693e4e38e0@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 9550C4000A
-X-Stat-Signature: 6dkippspcyaydw8bw5m6gtgsc1j5sd9w
+X-Rspamd-Queue-Id: D64548000E
+X-Stat-Signature: sprsxmn5c19ou7yuuuwpr44j95wtr9fb
 X-Rspam-User: 
-X-HE-Tag: 1758285653-981779
-X-HE-Meta: U2FsdGVkX19hgxGe/lv6p9qmsR6hv5QuyaBg3yVidMDMvzOGbsnMuN5vj4w9DvcaOQ3BC9PzSDMtGY6pkqhTLXoJh7XaeVT7nt9b5xcoKuI4f6MV3U/i0XxbMJ3/9/7ub0XtXzvMgPgPeGZfMR06HbIrdVqysXJoc6VokLpNne8YRjPrtd+L6+mqQOJUX1epeWFDFAq686BqaNAac3FCpyY/wr67Z/EyprJoGbsflstTCdukOzuH88hd4rqfVPnPibygrD7Dzzzx5j4KcL4bYDcIrwlWTzJuw+8/rtFr8cvBVFV98vuYXnV656woeYIHDvtzHudIQjj3wQHfD/Yc8yYcGjGdK+f4LDQjT6SA3Tp/A2fTxfqxQMGeXLcy+PkvJooMM8vYNhVutf19Lp8rzuq0Tk4TjMicnCzi0qHu4fsPMt4uUpoqZ4r7k+UOVZiW3m+LCEOTMdzPJKjZLxMAE15s1TwB7zUV5y7pp3v3P+eWvTy4zymB5c37H4E5CnNGYpbwH9W14xC7OzU2E7dWNp/DOUwspQNuq1tjaKY4b18aT5GAdch0SfegSKTZ19MCx4A0+vwT17iL4H/FcpW6ONh0iCYj+fOT7fqyA5yvEgi5CkUWSXN2iaYqIu+AxQMD4IXDbqRsOwmgV2+SFZP7OohOsO8s6N616J9tpuDjpTtvzKnUUDJqabaDRlMGzwPFE9feqvJ5mzF3bJY4D1+vsWONjJnH3GxaafCzB1m6Zm7dNRTLwyrKjvtWUbo4rJV1qnxBtOyQ0yB/FwzxwzydQVvyglrrqvyNBEXyLwJCeKwZtPw/BGJBuyri4GUZo4+FA+y1zx8adzVrjkVTTFUPAfYDMebswDPaddFErvjs1MC0mI+ac5O6YVyZjGIdNMA8y0bDy8EU9zmN4WKdnqB4ZkPOQo4f32GwDd5xQ1/7ogUDXwWZ5kkCvSNZkvyaoYMtNF68Ii3yrjhzFwHAtAc
- ewfv98/g
- Ci1u3JTlgN9vOKGIb/HvLLoEZ2XmNp2Q+7dEY4rlGcoYp4UlnBZUX+soJPJk2BX/H1+NO5nEODlM8/ByfBFvXibe4zsHUr93X92xotMiOEsXffdw5EanyhixEN0mWfsOCM4lPch203EargJD4EKc60vgDdb+Ik/qvueQukpfWP12Iq9LO73OCERYlU9NGBdUhtCn9IJVpjrm9mZ9sBaMBTeWXrqDmMCF7uiAEVRsP2S69BIGaTbDlPUMIwHB9J1jTLBujHTH51/9eiQrvm7xuwrDDZYLLpKKxpaGLDfarHtgdUZILLYYL0/KoiPSR+D9JPOpA2VG/etzM1fqWAtxOmxf4INCYoxohVgoV+GQa0rKI5yklhUo+iu9Z8GFL5dO7zhgvjNGT6HaGQAbDhROyMjlfBd2avfIdVcivSMctGFUbknide/qK7hEeURCkJcHmmJ8p
+X-HE-Tag: 1758285868-958206
+X-HE-Meta: U2FsdGVkX18221PlHt6XP9TUKPwVxFCT0mALyRcVoXPMuvTvAb8wzQCfeykTE1qmX73/y1Hgeuo6vq+etyaz9rNlP9fbd4qtiV9K81p7Q1HMxEl7q1SQBvVvu9r0T1lhVx8fkCyWjhYVZbF1gzMYMNmJxOc7F5b0QJzpXNvIGdJgttZKiuO2m3HdvzdyYGueVH/4VwJimfqEvG2s/aw8l1pJXS640cMbdOXW8ulQ3aYFWNiwbNBrBPKzlMrlvYSWfYjYfgY0RKdUzWPh4QhZyBABE41zv5UoW2lKZlN/hZaq/HAbfC50jby09ADTfHctFxXPEwYYgO4aK0CJGNtFCraTkRCTor/TXpJdyxHc7ZCoaEVc+tAXe003hIyGrE+PSyr03MPvxeZ+Y6k/OwIc+xS5lEoFFBpB90YY6pxloANyvaVInh6lie/sBvR+MFnurOoh/k7g5/QQ+PwVVZqfR1+hYuTZaK4vwE7f9qeAkH35b6pUJ1aZnz2h3cvxg3+9zLpWqgGeR0/jURIh0q9gzk2eiPGG6pRGX0LUVSIaDTGezyuAfJ310LsmaicvHCYtpLiFaImEtdUBkeXiBCqF+ZhkT4UDsQIjWODAU24LllikUHv0UJqffOeD7QpmMkgjH+SuPft2k5RXRhMcF0V7TQHViBmh2+LbuzRqHBOxSLCVAjig5eWcA12Mnp+tUmv+QjMfiJEbb/UKhSgTEuSrWS0RSgnUg74TcVqYDP6I5C4toJWXbAJ81tlULhZsK409laCM8ulXpl/+mzgeKb7N4hDPPviKdy2yPHfAbdYKvOMq8hi+J8BWAirsqzfq6NzIf+Vb978VRgBWCTKKOc2qpAOKykccYPwSUQmIUMjxkE6Ib2tzdX81HVZrL6hDCh3NHLya1Ib7b9yteZkxyqRyrzkHjTV7JJe+xpbA1Dgh9b65HAT9xbfxx6xOpwenz0hXazHIHm1fAVcJK6QxEia
+ 3az0KLA8
+ OR1kfP3BIlmLjbwZy9/92i6SwAJVEDvFP5IBIZ0p95e18vrALoh8Yy5Zq8XEE0tridZT7QEkcsvql1gMx/qj00Pt0CA3IKjo5T4e2kFbsJT6fNoAaoukMTPgXIV8vfI6AWiw01jfEAxWEZZnQVMY0NwI7T/UfM8m6nKgVxHwo5WT8WtLP4VJapk+QrsEM2LJc4QkZpY2gcAQQdydV7VEFnQQ4TNhHo2bDZJb/ENwisdgf5To=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -150,73 +127,210 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Kiryl Shutsemau <kas@kernel.org>
 
-The kernel currently does not mlock large folios when adding them to
-rmap, stating that it is difficult to confirm that the folio is fully
-mapped and safe to mlock it.
 
-This leads to a significant undercount of Mlocked in /proc/meminfo,
-causing problems in production where the stat was used to estimate
-system utilization and determine if load shedding is required.
+On 2025/9/19 20:19, Lance Yang wrote:
+> Hey David,
+> 
+> I believe I've found the exact reason why KSM skips MTE-tagged pages ;p
+> 
+>>
+>>
+>> On 2025/9/19 16:14, Lance Yang wrote:
+>>>
+>>>
+>>> On 2025/9/19 15:55, David Hildenbrand wrote:
+>>>>>> I think where possible we really only want to identify problematic
+>>>>>> (tagged) pages and skip them. And we should either look into 
+>>>>>> fixing KSM
+>>>>>> as well or finding out why KSM is not affected.
+>>>>>
+>>>>> Yeah. Seems like we could introduce a new helper,
+>>>>> folio_test_mte_tagged(struct
+>>>>> folio *folio). By default, it would return false, and architectures 
+>>>>> like
+>>>>> arm64
+>>>>> can override it.
+>>>>
+>>>> If we add a new helper it should instead express the semantics that 
+>>>> we cannot deduplicate.
+>>>
+>>> Agreed.
+>>>
+>>>>
+>>>> For THP, I recall that only some pages might be tagged. So likely we 
+>>>> want to check per page.
+>>>
+>>> Yes, a per-page check would be simpler.
+>>>
+>>>>
+>>>>>
+>>>>> Looking at the code, the PG_mte_tagged flag is not set for regular 
+>>>>> THP.
+>>>>
+>>>> I think it's supported for THP per page. Only for hugetlb we tag the 
+>>>> whole thing through the head page instead of individual pages.
+>>>
+>>> Right. That's exactly what I meant.
+>>>
+>>>>
+>>>>> The MTE
+>>>>> status actually comes from the VM_MTE flag in the VMA that maps it.
+>>>>>
+>>>>
+>>>> During the rmap walk we could check the VMA flag, but there would be 
+>>>> no way to just stop the THP shrinker scanning this page early.
+>>>>
+>>>>> static inline bool folio_test_hugetlb_mte_tagged(struct folio *folio)
+>>>>> {
+>>>>>     bool ret = test_bit(PG_mte_tagged, &folio->flags.f);
+>>>>>
+>>>>>     VM_WARN_ON_ONCE(!folio_test_hugetlb(folio));
+>>>>>
+>>>>>     /*
+>>>>>      * If the folio is tagged, ensure ordering with a likely 
+>>>>> subsequent
+>>>>>      * read of the tags.
+>>>>>      */
+>>>>>     if (ret)
+>>>>>         smp_rmb();
+>>>>>     return ret;
+>>>>> }
+>>>>>
+>>>>> static inline bool page_mte_tagged(struct page *page)
+>>>>> {
+>>>>>     bool ret = test_bit(PG_mte_tagged, &page->flags.f);
+>>>>>
+>>>>>     VM_WARN_ON_ONCE(folio_test_hugetlb(page_folio(page)));
+>>>>>
+>>>>>     /*
+>>>>>      * If the page is tagged, ensure ordering with a likely subsequent
+>>>>>      * read of the tags.
+>>>>>      */
+>>>>>     if (ret)
+>>>>>         smp_rmb();
+>>>>>     return ret;
+>>>>> }
+>>>>>
+>>>>> contpte_set_ptes()
+>>>>>     __set_ptes()
+>>>>>         __set_ptes_anysz()
+>>>>>             __sync_cache_and_tags()
+>>>>>                 mte_sync_tags()
+>>>>>                     set_page_mte_tagged()
+>>>>>
+>>>>> Then, having the THP shrinker skip any folios that are identified as
+>>>>> MTE-tagged.
+>>>>
+>>>> Likely we should just do something like (maybe we want better naming)
+>>>>
+>>>> #ifndef page_is_mergable
+>>>> #define page_is_mergable(page) (true)
+>>>> #endif
+>>>
+>>>
+>>> Maybe something like page_is_optimizable()? Just a thought ;p
+>>>
+>>>>
+>>>> And for arm64 have it be
+>>>>
+>>>> #define page_is_mergable(page) (!page_mte_tagged(page))
+>>>>
+>>>>
+>>>> And then do
+>>>>
+>>>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>>>> index 1f0813b956436..1cac9093918d6 100644
+>>>> --- a/mm/huge_memory.c
+>>>> +++ b/mm/huge_memory.c
+>>>> @@ -4251,7 +4251,8 @@ static bool thp_underused(struct folio *folio)
+>>>>
+>>>>          for (i = 0; i < folio_nr_pages(folio); i++) {
+>>>>                  kaddr = kmap_local_folio(folio, i * PAGE_SIZE);
+>>>> -               if (!memchr_inv(kaddr, 0, PAGE_SIZE)) {
+>>>> +               if (page_is_mergable(folio_page(folio, i)) &&
+>>>> +                   !memchr_inv(kaddr, 0, PAGE_SIZE)) {
+>>>>                          num_zero_pages++;
+>>>>                          if (num_zero_pages > 
+>>>> khugepaged_max_ptes_none) {
+>>>>                                  kunmap_local(kaddr);
+>>>> diff --git a/mm/migrate.c b/mm/migrate.c
+>>>> index 946253c398072..476a9a9091bd3 100644
+>>>> --- a/mm/migrate.c
+>>>> +++ b/mm/migrate.c
+>>>> @@ -306,6 +306,8 @@ static bool try_to_map_unused_to_zeropage(struct 
+>>>> page_vma_mapped_walk *pvmw,
+>>>>
+>>>>          if (PageCompound(page))
+>>>>                  return false;
+>>>> +       if (!page_is_mergable(page))
+>>>> +               return false;
+>>>>          VM_BUG_ON_PAGE(!PageAnon(page), page);
+>>>>          VM_BUG_ON_PAGE(!PageLocked(page), page);
+>>>>          VM_BUG_ON_PAGE(pte_present(ptep_get(pvmw->pte)), page);
+>>>
+>>> Looks good to me!
+>>>
+>>>>
+>>>>
+>>>> For KSM, similarly just bail out early. But still wondering if this 
+>>>> is already checked
+>>>> somehow for KSM.
+>>>
+>>> +1 I'm looking for a machine to test it on.
+>>
+>> Interestingly, it seems KSM is already skipping MTE-tagged pages. My 
+>> test,
+>> running on a v6.8.0 kernel inside QEMU (with MTE enabled), shows no 
+>> merging
+>> activity for those pages ...
+> 
+> KSM's call to pages_identical() ultimately leads to memcmp_pages(). The
+> arm64 implementation of memcmp_pages() in arch/arm64/kernel/mte.c contains
+> a specific check that prevents merging in this case.
+> 
+> try_to_merge_one_page()
+>      -> pages_identical()
+>          -> !memcmp_pages() Fails!
+>          -> replace_page()
 
-However, nowadays the caller passes a number of pages of the folio that
-are getting mapped, making it easy to check if the entire folio is
-mapped to the VMA.
+Forgot to add:
 
-mlock the folio on rmap if it is fully mapped to the VMA.
+memcmp_pages() is also called in other KSM paths, such as
+stable_tree_search(), stable_tree_insert(), and
+unstable_tree_search_insert(), effectively blocking MTE-tagged
+pages from entering either of KSM's trees.
 
-Mlocked in /proc/meminfo can still undercount, but the value is closer
-the truth and is useful for userspace.
-
-Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
----
- mm/rmap.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
-
-diff --git a/mm/rmap.c b/mm/rmap.c
-index 482e6504fa88..6e09956670f4 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -1462,12 +1462,12 @@ static __always_inline void __folio_add_anon_rmap(struct folio *folio,
- 	}
- 
- 	/*
--	 * For large folio, only mlock it if it's fully mapped to VMA. It's
--	 * not easy to check whether the large folio is fully mapped to VMA
--	 * here. Only mlock normal 4K folio and leave page reclaim to handle
--	 * large folio.
-+	 * Only mlock it if the folio is fully mapped to the VMA.
-+	 *
-+	 * Partially mapped folios can be split on reclaim and part outside
-+	 * of mlocked VMA can be evicted or freed.
- 	 */
--	if (!folio_test_large(folio))
-+	if (folio_nr_pages(folio) == nr_pages)
- 		mlock_vma_folio(folio, vma);
- }
- 
-@@ -1603,8 +1603,13 @@ static __always_inline void __folio_add_file_rmap(struct folio *folio,
- 	nr = __folio_add_rmap(folio, page, nr_pages, vma, level, &nr_pmdmapped);
- 	__folio_mod_stat(folio, nr, nr_pmdmapped);
- 
--	/* See comments in folio_add_anon_rmap_*() */
--	if (!folio_test_large(folio))
-+	/*
-+	 * Only mlock it if the folio is fully mapped to the VMA.
-+	 *
-+	 * Partially mapped folios can be split on reclaim and part outside
-+	 * of mlocked VMA can be evicted or freed.
-+	 */
-+	if (folio_nr_pages(folio) == nr_pages)
- 		mlock_vma_folio(folio, vma);
- }
- 
--- 
-2.50.1
+> 
+> 
+> int memcmp_pages(struct page *page1, struct page *page2)
+> {
+>      char *addr1, *addr2;
+>      int ret;
+> 
+>      addr1 = page_address(page1);
+>      addr2 = page_address(page2);
+>      ret = memcmp(addr1, addr2, PAGE_SIZE);
+> 
+>      if (!system_supports_mte() || ret)
+>          return ret;
+> 
+>      /*
+>       * If the page content is identical but at least one of the pages is
+>       * tagged, return non-zero to avoid KSM merging. If only one of the
+>       * pages is tagged, __set_ptes() may zero or change the tags of the
+>       * other page via mte_sync_tags().
+>       */
+>      if (page_mte_tagged(page1) || page_mte_tagged(page2))
+>          return addr1 != addr2;
+> 
+>      return ret;
+> }
+> 
+> IIUC, if either page is MTE-tagged, memcmp_pages() intentionally returns
+> a non-zero value, which in turn causes pages_identical() to return false.
+> 
+> Cheers,
+> Lance
 
 
