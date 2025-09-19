@@ -4,252 +4,253 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDD94CAC592
-	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 09:58:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B201CAC592
+	for <linux-mm@archiver.kernel.org>; Fri, 19 Sep 2025 09:59:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 19C6B8E0030; Fri, 19 Sep 2025 05:58:29 -0400 (EDT)
+	id E786E8E0062; Fri, 19 Sep 2025 05:59:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 14D7B8E0008; Fri, 19 Sep 2025 05:58:29 -0400 (EDT)
+	id E21608E0008; Fri, 19 Sep 2025 05:59:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE1A78E0030; Fri, 19 Sep 2025 05:58:28 -0400 (EDT)
+	id C74388E0062; Fri, 19 Sep 2025 05:59:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CE7B88E0008
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 05:58:28 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 43F5558EB9
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 09:58:28 +0000 (UTC)
-X-FDA: 83905549896.24.5744D9C
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A84DF8E0008
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 05:59:47 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 57B5B1DEC09
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 09:59:47 +0000 (UTC)
+X-FDA: 83905553214.11.ED48EF5
 Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf05.hostedemail.com (Postfix) with ESMTP id B2A1C10000E
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 09:58:24 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=JsDFSuWF;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=b+rkQ3Sb;
-	spf=pass (imf05.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	by imf26.hostedemail.com (Postfix) with ESMTP id D026C140007
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 09:59:43 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=RYKrORRd;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=0CRcqRwa;
+	spf=pass (imf26.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1");
 	dmarc=pass (policy=reject) header.from=oracle.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758275905;
+	s=arc-20220608; t=1758275984;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1PzqHuSk5F0hV8v8UN/3HT3HChjDNfCo5KnpiiDSsC8=;
-	b=faOgEChLztqlP4EGnbNAn/HAN07UkTNGSyPqdY1WLFaQTDfn7WycfdoAs4CR8dFDHBJzIB
-	kAO34cPoPt8KRnEXNqAeaVLK0z6vZAbDkHCRNv5GfATTx5S5+1L6wNWPAYNviN68DN3zGI
-	o49rDjcUknLALiWJRdXxRXXIbRfGr/0=
+	bh=lByjmZqpZFthYYHMJu2AeqRuR4sjv1zhiOSY6Bw5ZUQ=;
+	b=pHOUJyg2RnXvP18JzTN4PwXqKB9G85L0TDzUZEsZ/aXeWUlYE6Nen5tjyRye88JM4a/7Oa
+	6zpOcr2m6x46Umh1ovr/sshhd0xvLubvNozfhvtyiF1WMeetluOuZQ0WKd/I8py4kwS/33
+	//960oJbY1XOtJv2hFs4Sl++pJQAweY=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1758275984; a=rsa-sha256;
+	cv=pass;
+	b=uJOGnYgj6MLS81CjvlcSVS2QUr9vVtMp5m+kuf2GLSAUnhBHDJowOveE8obZ1+tfdMd5m3
+	Pe2MyekMveqnWXkeW95QXrmChxerfaBuJSoAexcD/RC00x4yEMnQjZ6/nAOLM4FcvaRAvY
+	WD7byFABJPKuAFTIFv8mRI8gp+/rF/c=
 ARC-Authentication-Results: i=2;
-	imf05.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=JsDFSuWF;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=b+rkQ3Sb;
-	spf=pass (imf05.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	imf26.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=RYKrORRd;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=0CRcqRwa;
+	spf=pass (imf26.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1");
 	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1758275905; a=rsa-sha256;
-	cv=pass;
-	b=eROZb+Ht2mAt48ehiwZ5gYLjiSLDsxueBb3THI0YPK0g3ad3XCy4edNBScBKJgCY8rUc2z
-	z7fbHjX5MREBYsHATi1tecegdqJBEIIgUJ+d3bN0AwcqrqiRlun3Oz8rb5zfYzqSFCMjtr
-	IQvt6BXjvVQ58II6tCP5Tf6n7mH7S3E=
 Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58J7g69s008771;
-	Fri, 19 Sep 2025 09:58:19 GMT
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58J7gBbX008846;
+	Fri, 19 Sep 2025 09:59:38 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=1PzqHuSk5F0hV8v8UN/3HT3HChjDNfCo5KnpiiDSsC8=; b=
-	JsDFSuWF7icv+vpLv3NFWk/ccTVgI9jc491Ku9swD+KKdOMzcGNxtQmmnFJs1yX5
-	C6StcEX3Ze+2O2XI4KGNrMFB6v9O3btwwbzgJsHE/dwwnFKspCe42y7paIISSISw
-	0fsvftpC5qnRYiPxUr8D5MO6MlKaERiGcMEkZvOH6vgmwKF5P94xRyHaR0O6VK66
-	O3RCWK4lrc22NzDNTyaymbVDGHErhH9K2U4TVZ0CK89eN01GgM2vMLYj0VKwQiUT
-	I62iRWgI/QDQiUmf8u3nrU5OosI25/+UuJw0ZXVpcCqdtjiBANscoN3hWd4jl0cl
-	pbTfCtuPDecZQb+thFMEnQ==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 497fxbw914-1
+	corp-2025-04-25; bh=lByjmZqpZFthYYHMJu2AeqRuR4sjv1zhiOSY6Bw5ZUQ=; b=
+	RYKrORRdf7+q4RgLjQ9Q09j0CMUHpg2GdwgiGQhK8jMgWPg+oKpzkoDCf36FcY53
+	Y5ASPyAvxxJl9gdkWRC4rIInaaYKb72fXaxQ9hBuFHeTuLkFo9kMpbf1X5cSnNjc
+	WC4aqwJ+fiGhPMCis+XE0wTSly2aG97e8drsqGjfDlv2R8x3m1no0G9V/Ualxt+O
+	dJDS7m6kVJy0ErnJfh1cyTtnAGEUO5Gsf8ewD0jFlz2Wd509z+RDnpJub0kau9a5
+	wQvtuwhiGmNgKLfng0FqN2zh9C0Et+ss0hiO2+pIWfYOAjY3FBcJ388rf+NisirI
+	Smk/MgpDyHI0QQFEhSgU9g==
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 497fxbw93g-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 19 Sep 2025 09:58:18 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 58J9IJd5028785;
-	Fri, 19 Sep 2025 09:58:18 GMT
-Received: from ph8pr06cu001.outbound.protection.outlook.com (mail-westus3azon11012031.outbound.protection.outlook.com [40.107.209.31])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 494y2gbdn4-1
+	Fri, 19 Sep 2025 09:59:37 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 58J7fNOE036766;
+	Fri, 19 Sep 2025 09:59:36 GMT
+Received: from ch5pr02cu005.outbound.protection.outlook.com (mail-northcentralusazon11012024.outbound.protection.outlook.com [40.107.200.24])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 494y2gau0y-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 19 Sep 2025 09:58:18 +0000
+	Fri, 19 Sep 2025 09:59:36 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=w3D6CwhiEl4qaQEZMhXMAE5eFGZOlRyfmfYe44FzMn/96l1h2nZhnSJLXXMvT0gI6pu6BgrKpj6T6uOH3XhTctQ5HSWZ98oBvPAvjMOxYKXpLQwA3zrMi+7qnR9mEbQssr/JCojC6ttey0q4tAIWkVzDCjtZD+47xL//dAL6r6o/brpnJF47YD7VC4y3WO7eB9a/EAAinzaKCqBDbGvgQs3MohcWm2Pc9sZTCLjStpp7OZTU4vg6B5ENxjm28RGNipK/mSDg1Qzb5t2JJjJDl/nVmBH4LsYOkD4Fh4UFeXBWX3YFOqbgaKshuhlaTXvUxO8+XL3ARbqUg5tpAkDJgA==
+ b=SpEx8TFGu1Fo1prkx10vm1C0Ui5Vez92L445WgtNmv1lMn2uwwtTPkvRxz8F9N/IjYcN++RlkNEVuAS1WAJ+BRLEWHG9wLtlMirTmiStVUT1dX13zcoQYLZV4BQWkFkdiZaNdaOEkyfXDSwLLpyxlUSX3g27MhkminSpvTnzLiON5Lwtdj1YvSzpxmCB3QjWEzjDzXL7iagYvmwqYYxVLJcHq8yOti2S+V2cB2buDDCsoAWYZbv23Yym77Psb7g6JJvFoKWMAccIDRXq4GvUBK11FahZC0zXDF4u2Ae+U0SkS5O4+moQRuggc1LrjX0pf/KVL2FTwgVgdqOXj23j8Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1PzqHuSk5F0hV8v8UN/3HT3HChjDNfCo5KnpiiDSsC8=;
- b=gVq8S2pmQjUnn1clMcqbnTG7Iauz7V/AQt25WKDwbfylrknheSXXEvY9ApnpQownwEmmAw8wzK2psWTt0axF/ZHhF7j9GPPdXaYp4UB0YiIVld4NaE68L6k7V8kYLixuvX86HX+yBJsrd12hJhx83KXUFXT8Y6G7GIBl3Pcw5jQwZ4gOqVXwc08aFA400VE02x8mPLuzHCkYAfimh/6dPv72vcn+vbZYoE6Dbsx3votdWIgbdwnutznCO+leZDXh5BWCfrUK2ZwAkrrLsXV7PUXpvvJ2Ko34lXNcFeK1gtWve7Vzp/lqH6yRjU/EzFy/fy4c5tRWLqZSDp6zljYdvw==
+ bh=lByjmZqpZFthYYHMJu2AeqRuR4sjv1zhiOSY6Bw5ZUQ=;
+ b=RvAhj+ubqAoWX7ZQM0LLFMQ+8PgwFLZtFN2+Hguo8H5j3SRZvQjWWdai1sQ7TEgU0WVDYpWxYcYrBBmS6ieRxyJDbvFKN1g5Po908or73vorXjOQu0Zw9GU4c9Bu6g4XUmYrkXVUED4Qic+e3wa8jpiVf7lAZNXH7g3GBv+LXZ0PtFFhsuWXDtxpe2oZt58jTwduSSckkMjbPb6eb4QHAEzfjYz1trSZ2PGWZKcMu4DWOVHIRs2Jx43JacBLbPelBK2dmLK0cmUhha5U4YeT/Co94C79m7zriWCuAHWjZPZlg+1+OjKAut1GL/0wXxrNipI/oATU1LYMRRssOrpiew==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
  dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1PzqHuSk5F0hV8v8UN/3HT3HChjDNfCo5KnpiiDSsC8=;
- b=b+rkQ3SbrcaXlaVDb9QqT1tPnJJ2mwSlWVuAbvduSonGz66sz+icmb0VsN+oYrK0Wk6igiescecX+2ibcMsb0f5fSp+v8T9RHvXNbIxBj165Te7CNCCd1p41HkUoaS5jnrRFxrI10n1UHwhmXJAl1vjC7Ace5+0oOzeElP6KpYc=
+ bh=lByjmZqpZFthYYHMJu2AeqRuR4sjv1zhiOSY6Bw5ZUQ=;
+ b=0CRcqRwaKHgvwEFgvrMy/STjhNVI/RvKphpmkJXyB0QBuNqBkQ4v33jrJbeeL4mOYTiSpPO1GzkbU0ETBZWaRBO87kuhN9wC9AWi86fuspvhfQV0mTfRNxKzTyF+6QUd+2Suh3GTt3iVKLqSkIScVbVJvZMy89YwODbKSYxW/ck=
 Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
  by SJ0PR10MB4493.namprd10.prod.outlook.com (2603:10b6:a03:2dd::21) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.14; Fri, 19 Sep
- 2025 09:57:52 +0000
+ 2025 09:59:33 +0000
 Received: from DM4PR10MB8218.namprd10.prod.outlook.com
  ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
  ([fe80::2650:55cf:2816:5f2%2]) with mapi id 15.20.9137.012; Fri, 19 Sep 2025
- 09:57:52 +0000
-Date: Fri, 19 Sep 2025 10:57:49 +0100
+ 09:59:33 +0000
+Date: Fri, 19 Sep 2025 10:59:31 +0100
 From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 To: Lokesh Gidra <lokeshgidra@google.com>
 Cc: akpm@linux-foundation.org, linux-mm@kvack.org, kaleshsingh@google.com,
         ngeoffray@google.com, jannh@google.com,
-        David Hildenbrand <david@redhat.com>, Peter Xu <peterx@redhat.com>,
-        Suren Baghdasaryan <surenb@google.com>, Barry Song <baohua@kernel.org>
-Subject: Re: [PATCH 2/2] mm/userfaultfd: don't lock anon_vma when performing
- UFFDIO_MOVE
-Message-ID: <e8fcbb82-9029-456f-a5c1-eb5cf4b05ba3@lucifer.local>
+        David Hildenbrand <david@redhat.com>, Harry Yoo <harry.yoo@oracle.com>,
+        Peter Xu <peterx@redhat.com>, Suren Baghdasaryan <surenb@google.com>,
+        Barry Song <baohua@kernel.org>, SeongJae Park <sj@kernel.org>
+Subject: Re: [PATCH 1/2] mm: always call rmap_walk() on locked folios
+Message-ID: <67875b3a-69b0-4fe6-8e37-6289568e7921@lucifer.local>
 References: <20250918055135.2881413-1-lokeshgidra@google.com>
- <20250918055135.2881413-3-lokeshgidra@google.com>
- <4e4bee5c-c2d9-4467-b7b8-d3586a5cd6e4@lucifer.local>
- <CA+EESO6B04FQ9pxmf6n1Up+r-a4yGYO6N_HakiYj0hLVvhs2ig@mail.gmail.com>
+ <20250918055135.2881413-2-lokeshgidra@google.com>
+ <0ea92729-2403-4de8-9ddc-a1c7bb2121c3@lucifer.local>
+ <CA+EESO7yyhNH6TYza+j7h9JZb1_1eHdd1x3ASmuNga2yYng4JQ@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+EESO6B04FQ9pxmf6n1Up+r-a4yGYO6N_HakiYj0hLVvhs2ig@mail.gmail.com>
-X-ClientProxiedBy: LO4P265CA0294.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:38f::7) To DM4PR10MB8218.namprd10.prod.outlook.com
+In-Reply-To: <CA+EESO7yyhNH6TYza+j7h9JZb1_1eHdd1x3ASmuNga2yYng4JQ@mail.gmail.com>
+X-ClientProxiedBy: LO2P265CA0493.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:13a::18) To DM4PR10MB8218.namprd10.prod.outlook.com
  (2603:10b6:8:1cc::16)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|SJ0PR10MB4493:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6e46e1d1-0366-431d-7f14-08ddf762ff7c
+X-MS-Office365-Filtering-Correlation-Id: d0dba299-c6b1-4cd0-9ecb-08ddf7633be4
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?eU1iM2kyMWJ2aFZ4SVhaUHJtbklVU2VxUGpCbXN0UFIyNkloUmJYY0dXQkxI?=
- =?utf-8?B?VzB6U3NRSllEQnN0L0c2K1VkL25xOUlVQmRESGlCSUdpVXhqQSt1SllQRnlv?=
- =?utf-8?B?UzJZR3NKOWQwSCtra1lFSmYxblJpdFBaQlFQMHh1L2RCbGlNbGc5dDhwcVBY?=
- =?utf-8?B?T3duZFNoaXduMitsOXcwWFhoWHk3TmxGTjZlcE12UC83NWU4R2lhNmdFd0d1?=
- =?utf-8?B?QzE2L1pIVVZXLzBJeTR0SHdickpvbWtTZ3NkeHVDTHk1aHJBVCtCRUhNdmlO?=
- =?utf-8?B?SnAydkdML3ltOUZGN3B5K2JNa0hBMElTemVJdmUwNGlPN0N6TFlRUjc2eno4?=
- =?utf-8?B?WWM4MnF2NW4vb0MyZHBmU1cxeE8vQWsvdmVzcS9IdTVxaUN4R3A3enJhWE96?=
- =?utf-8?B?ZkN4ME9MTWJXRGx3SHRkL0lLK2Jvb0lWYVM2QnZvT01xZjNTeG5PRXZnRDBX?=
- =?utf-8?B?Rkc4WW91dDNhQnZQZUNFb20xdDRxbFJMaFJVRDVFQXVWLzdHTCtueU9wc3cw?=
- =?utf-8?B?dnIwRlFxZVo3Z3NwNXpGVDhXMElrUk9yVlozZEtsaERycG82NGdZYzRwam04?=
- =?utf-8?B?V3FvNFpROXdwSVNLVHI1WFpZZlp2Rkt3UUxBUlZzRUV5RnFBVFROM25oYzh0?=
- =?utf-8?B?dE9yazdWZnJIYjc1WEJJOEs2aktySmJacng3QVIvbVM2OHYrYlJwblZHQS85?=
- =?utf-8?B?UzhlekRwSGFsT3IyZGVJR1N3NFJmOEtIS3FNK3V5S0dPWWtieTU1djU1MDhB?=
- =?utf-8?B?ejJUYkxSUmFrQjJQS1c5NjJkdlhIcXloeWgrTlROc0hTUFZVYjJlZnZ1czBK?=
- =?utf-8?B?R3pxbXRQWXczRW1TOVNYcllPeHY4TDViQlF5TzZhNktoZHVHeTR3WWthVy9j?=
- =?utf-8?B?Q21SZGcrOFV5SzQ0RTZrUFMxMm5uMTJBSXBFSTJpVHV5dDhKd1BFRmVDMUtG?=
- =?utf-8?B?akZmYVpnTHNuc1BZcWk2bFExbURuY1VpRUlaZnVkcW9GWFV1ek44V1JodXZ0?=
- =?utf-8?B?eFF0Tm1nY0czL2pNV0tzUXdBejRKUEdONDFFZmVuTUhXbHF0UVlUU05Ic0pT?=
- =?utf-8?B?eU83Q0drUWNkK08zTkpSSVliaWdvbXBVdHdWMHhmLyt6WDk0djNEKzMxYlZk?=
- =?utf-8?B?ZDNUTHd4N2JZakk1V1JHMVRvc1lISTJjdlRzVVQ3WkRJbEFTWnQvcTR1SXVV?=
- =?utf-8?B?c0tKYUhxY095eUc0dXJEc1IreU1CSzl0VVBqbmNxdEk2d3BIVmwwMjBDNzgr?=
- =?utf-8?B?Y3NlSjBBRzlZN3owcjhuenVlWHhmT21qNXVZald4UWhVQlR3U1lrVTVzem5I?=
- =?utf-8?B?cnNSTlZxb0p4aGZEUXRldHJuSVJnajBzTWRBQTlvbzM0eEFUQnBSUUFqZXJM?=
- =?utf-8?B?eVJIQU9IOWExbytMWmliUkNZN0cvUDBFMWJla3RSdktvQXZPeU55R1Bra1Ir?=
- =?utf-8?B?TGV1VnZXWitiRFkraktGWFlKVWkrUTdRTExUYUlhekdaM1g3NEh2OWNzYzA2?=
- =?utf-8?B?dUFWU2pVYnduYlF6K2psM3lKYTBSci9SS2FVVWt1MmF3bndvSVQwM3owMXdS?=
- =?utf-8?B?cVF0eVBReGVQcXA5cGVsbE5VdTV1SVRTV2thNlhqeVROV1NZWjZjZUpPZy9l?=
- =?utf-8?B?ZjBVUTA3NUloTHJpV1RHOE5MTFRla1M0VjlMVmkzamRLM1BCN2wyWlI2c2o4?=
- =?utf-8?B?SitKVUREa1BwWkJJRncvd3I0SVJobVpRd05icVBFa043VEJKaWNPRjY1bG5h?=
- =?utf-8?B?RTBSeHNoc0pxWGtCWm9EMXlsVzQ0cmlGejJsSVViYmltMmw1R0ZRRWZLK3pD?=
- =?utf-8?B?bThaSjVTMG9QQUp5WU8vSjg4T2E5MW13dHFBUExYY2lBaVFVUWtZejR3Tjcv?=
- =?utf-8?B?cUgxbmlyd1hmanZNYnIxVUZhQ3k5UDZFWjdscXVQVWZqWWphY00zYXY2aTZK?=
- =?utf-8?Q?qCrsuuJ1h4k=3D?=
+	=?utf-8?B?WjNMNkx0S0xncEhsRHArMzN4TkVzVWl4cWV5dlpCN01nd2xaL2ZwTFc5WWEr?=
+ =?utf-8?B?cW5sNjUrZFNGUUNWQmJPUkx1RUI5STBCVThJbm10N0RWRmVqbDlZQUZFWTc4?=
+ =?utf-8?B?UXNDU0hxUUxWZU9sY0tGS0tmYm9qdFo5V0Y3QzdXcjR2VTN5Q3JYUG1yYzcy?=
+ =?utf-8?B?cTFkL3J4aXhKeUgwRkM3aDVEWXFia0tvbGVJMDhyS2VkM2Y1SnlhVzlSNnp1?=
+ =?utf-8?B?UjR0OVBGeDF6ck5aeThxdGh2ZXBOajR2SjhBM1dDWXNQeWxHeVZJRlpOVThv?=
+ =?utf-8?B?OGtERnl2UkkzQ0JkTGlCR1cwZ0RBeVZrZmhWb3B6UjI2SDcwWlBWbU9BYW4r?=
+ =?utf-8?B?NDhxaE9QNmJYbmpDNFhwRzc5SUVqbDR3N0R6cTVJZVlsS0dEdXN1dm9IMi9x?=
+ =?utf-8?B?OWRzSDFCSDZ5TUR0QWJPRG9SYXR6aDJNQ2xHNktTd1lkNGlyODZURklMVUZ4?=
+ =?utf-8?B?QTdqcllxV0Nhc0doTlAxZWxtTnZVbXJ6cFRidEtPNFVsZEZuODlmZWRueldI?=
+ =?utf-8?B?dE03T2pzYk42Y0ZORE90WXJxNVRKellkcm9BMVV6dEt6UUZyYTJhL1gvb1ov?=
+ =?utf-8?B?ZjFLM09zdEFKMUp5YldCS2pYTTMrd1RXekhUTk5ncm40YmFRMFhZWUNyRVBp?=
+ =?utf-8?B?bEdteWhHclBwUzZPNkRnNDZKN1JsRnpETkJQNldsemlDUlBxaitCQjFqK2sz?=
+ =?utf-8?B?UkhSa29BWkRqKytZV09hL21pUkZnQTc4QzJZVmo4UDhnYlpiUHA1RU55ZnI0?=
+ =?utf-8?B?SUtaUUozZklwejQ4NUFlR3dGNjNxQ3R0SGlFRGVRaDFNcnljTXRmaHZNYlVL?=
+ =?utf-8?B?SGdjUWI4eWdMY25EYVNHZEZYZWIzMG03N0JxNElNZjdxUktVbERnT3ZQU2ZL?=
+ =?utf-8?B?WnFKUHlUeUdmU1VsQ1lvSnRIVmkwZUdQQmJ3ZnJHTzlNQW52NjRVUzAyRVhQ?=
+ =?utf-8?B?REdHL3QzK2F3UitqY1p3UWdKc2dxZWJFZW15SU5LSXVncnlBOXJUb1VlWVB0?=
+ =?utf-8?B?T0RYSnBTZEY3dDNnZEMrOEdDV1R3MVdPc2FobUVzN2NjVlp2NEJHWEtjNVR4?=
+ =?utf-8?B?OERxMGdzazdSZEdoU08zc1pma2s1YVFBRkoyRWpZSUJuMDJLajk0bHJvdTFI?=
+ =?utf-8?B?UDNmeUk5ak8zSXlsZk9VWThCN0FQZXZkZE82aE5WZVRhRlN1cmxVMFlyVEov?=
+ =?utf-8?B?LzhNN1RYSWxCUW5OM1RLdm1JTDFvTmZUbTc2QTUxOWtubEZrR1dMMG5LRW1w?=
+ =?utf-8?B?YXpmaTNERVNIRzllVzFxWnlvYVZGQTBlelZ1M0ZKdzhrd2hYZzRjSjhPK2JD?=
+ =?utf-8?B?L3RsNjdHSVczeFdhZXNySlhQMzlKK1ZhVXNjODRlL1Zqcm1UOHFCSDZCb3Bt?=
+ =?utf-8?B?TzVhZStDQnpMOGFDeW8zR0x0Z3c3clRXU3AydzliY1FsaDRHZ2Q1aGVjVXBx?=
+ =?utf-8?B?Yzk5eUJTeUpHMlJnWGYvV2VaemQ2TTNtRVVZRVhWQU5INGorQkkySmc3aEpr?=
+ =?utf-8?B?eEd4T3drNW5zcmczL2l6VzhnZTAwWHdDb0ZPNEtNcEtCeVhlckhXdHl6aDRG?=
+ =?utf-8?B?cDFEd3JpU3BGcU1TUllOcUlEMDN2MWdrVHZxY2NFcjhLbytEYUJHc295VE05?=
+ =?utf-8?B?dzZ1Mmh6Nko3QWN3L0pEb0xVZXBZdTFYOStHSllCSENtTmh6OExwdGVudUZt?=
+ =?utf-8?B?dDJYNjhzNjRkSjlBMUtQUzZRUzB5bmxGWi9ZY1hGbUI2c0poNEZ0MXFrTnV0?=
+ =?utf-8?B?SmJhWG90SjFLOTBoUUlVSGpacDgxZHhqdWxMRmxSTzdIc2ZCNG01RmtoVEx0?=
+ =?utf-8?B?cWpoaFlkMnVkTmM0YVphOFhyaHJCdG1DU0YwT2ZucFBHd2JrbGlQSmNWUDF1?=
+ =?utf-8?B?SVM5RDRtYUVwODlXYUM4SUJNd3RmUDhRemFmYTNMRVVJT0QxYk9pWENqOXQ1?=
+ =?utf-8?Q?2aIU+5/sKBw=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(7053199007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dERoRlRiUDN5YU5LV0FhYnJObWdMcytWRWJBSWdxaFZ3blVvYkkvM2sxdjJH?=
- =?utf-8?B?OVlPeTAzWlFQR0Fudm1WTkxxWEJ1dU9lL3AzZStDMnhueVZNOWhPVDRBQ2VU?=
- =?utf-8?B?R3d1WUI3b2RONmQwWEpZb3FiMm1jZEpINElSQU14eDFRS1JkQ1d3RTJaWTBi?=
- =?utf-8?B?ODkrckFHaTIzcGRRVFhleXVLb2NlQnh6MDMxNzl4TXBPSU5PL0w3RFJTTm4z?=
- =?utf-8?B?MjNKdDdlK2JLZVV5OXdsSjFFOU83QnV5cFJ6SzU4c2NtcHNIdmZXYWVlcXJl?=
- =?utf-8?B?eVpUb2lWaVNNVU1vUTZNTUxsOVdWMmcza1RHV3NvTjR5Wk0vSnpUcnA1aVhZ?=
- =?utf-8?B?VThoTEg1ZGJjczRHVUs0ektZek5xK1MvdWx0Ui94YjFTdWtuZjVmb01UeG1a?=
- =?utf-8?B?ZXQxYVVQOEpxTnVUL2tkZ1czUTU1cVhiS0YwTW8zNXAwRk1neHE1SmxGYW5o?=
- =?utf-8?B?YnNQeXVheGxsb1I0UFlmSDhOWStHV3lYQ3hqYU5OWWFVT0hkZ3hoK2Rtd0hT?=
- =?utf-8?B?T1BBbjZwbW5PMkxxTzRzLzNMQW15cWxiRWlsdWIzS2NwNmlSOEdyNGk0VnEx?=
- =?utf-8?B?RFpwRTBKZ2xMUmVVVUYxSFQ5YmlkMjgyMm5HanA4RXkvYmFRMVJjcmp2aXNL?=
- =?utf-8?B?dyt2TnNNd0I2TjA0OUYzNDhuRFFQSEZnTkpmQnJ3bk9RbmZrdUJkQVVYdDFx?=
- =?utf-8?B?bjQ2ZTdibWR4SU9zUExYRGtnQ0RFdnlYWUJtcmZRU0ZZSERTTEFjOXRvVHZt?=
- =?utf-8?B?dzFsWnV0ajNFSCt0SGhmY0prUEh5cUdKVHpVa2YwaWgrb3lwb0VwZTJwd3pp?=
- =?utf-8?B?NWYxck5JYi9iN3hHeVFseCtsMm40cy80MEtUcDIrVkUxTUlMT3ErdHIyU1Vy?=
- =?utf-8?B?eTRmRTVLbk5sVFp3N29nMzRZejRXRGNGclVjcEFjblRMM3F0ZmJJdFF4MVdX?=
- =?utf-8?B?UndWZzJDdEsxMVBrbk5jMFdkS2xQZWU2amQ3VTdFUTMxbnBKK0pvLzRacjlt?=
- =?utf-8?B?WDUrc2prZjY3RVc4Q0I3WkhnMVlISVM3NElUaThKREZqcnRlaUQyUEUyelBp?=
- =?utf-8?B?Q1BEYTNVYlVnQitpamRZcDNTVHZrWXZ3clQwYTZSQjBabEZYcitDTlZBODNT?=
- =?utf-8?B?aWtUOVBVRGRta0x3d2k4UVdCQkxqdHpaL0JqVEx5NCszWWVvY3hYOXZZMXJX?=
- =?utf-8?B?bVp5bWNnMGxwV1RRa2RuRGFTMHFQM3FFc0VYN1g4Y1RqMXRpVlJHcG9zeVdI?=
- =?utf-8?B?eFJvb0ZIL3Q1a3ZsOHV0Mjl1SEhEVmZYdkFQMWIvLzl5WXo3NWpudEpRRi9R?=
- =?utf-8?B?TXV1a0E0Zzlkc2JkcG1Tb1BSMzNpUitZYXBLSExPQUpvQk91aDlIUktpMFVP?=
- =?utf-8?B?L1FLdlU0MEZSbEZ4S1RmQnl4Y1J6KzhqakdLUHg5MUdBTkFIR1NJQTRsNFZU?=
- =?utf-8?B?UGxoOUxUSmoxR01sVzNEOStrZmRqWmNUK2ptLzhsY0RmNGlySHFPajFBZ1Zo?=
- =?utf-8?B?ZmZvU28rUTlwM3YyTkhMMEo5SW9Pb2F2d2ROQng5R2dhQjFjY3hVMnZJYStP?=
- =?utf-8?B?bTJ6cVJRZnkxbDZMbmtiQXgwcy85S2NkR0RJZXJpQjFiTzBhanFNR1NObEVN?=
- =?utf-8?B?WWpmODNSYTZ6a0pySkVzWGhjenQvN3M1SUhRL05hRTJGbHU5Y0hxb1FDNjZ3?=
- =?utf-8?B?ZEZBYUFQa0VBaXFOUWJBS2Y5YWx5aXYzVVEyUWlaQWVvNzh6Y0ZQTkNvVGZ4?=
- =?utf-8?B?S1lkYW9rZ09PV21tSXErZXRXNVJ5cFZnQU53NUMxWGhjeStlaUZKMndHb3ZF?=
- =?utf-8?B?WS9EejRtWlp3b3BuV2dsSXBSaFZlYVNBN3JQZ0hnQU5Xa25TbGpKR0RuQnNX?=
- =?utf-8?B?NW5WN1E2L0lQdnR3K3BybGNrYlltaDlyZldFVmNMdGJIWk1rRnJHd3NNMlRY?=
- =?utf-8?B?TWFqeXdiVVpLQTBieTV2RWd4RHl1bG1sQXRWQ0lGT1Z4MjYvTU15YTBGditt?=
- =?utf-8?B?UXBHU0pVQ3ozZnZoR2VyVWVPQ2ZaMHphS3ErQmd6RG56K1R1alVLZVFnMWor?=
- =?utf-8?B?akZuSG1KZDJaOTc2TlIrN0xUaXl2Q3M4Nzd5ODFwZmZCOXJmRGM5cTNySmNY?=
- =?utf-8?B?TWM1clNrV01tSDdTNjRNaVRZemZENGtBT3JWQ085WE54a1lmdGpXM2xTeW1s?=
- =?utf-8?B?YXc9PQ==?=
+	=?utf-8?B?Vy9Yd0NJYVh2YU5MbitxK3BHTmpNNDAxUlRtbWY4bkZ2NGdJaHlZUXFDS1Yv?=
+ =?utf-8?B?NUUwOU1RYkkyQ29XaCt6UFV0TUVscENGMGJsNzRVYm1qRld0djBYMmxjT1ZI?=
+ =?utf-8?B?c3h6VDhNY1J5TGpJUVI5UTdlSVlraDY1UWpaVElCV2RhOFR4R0g5eTlHdFk5?=
+ =?utf-8?B?OEVUYUZsR0ZMUzA4VDhvZTEybGIzVlNoeXpEZ1dIMVVrK3E5c2dHR1VjeWRE?=
+ =?utf-8?B?dm42bnFwdlBNRHBqazhqSnQ0VDdlN1JhajdXVTVkcWZpRnZuSWJUKzVlejBV?=
+ =?utf-8?B?cDAwSnFLeHVVaVNHVFRScVIwN0FhZWJEQTVxQklpZC82ZVVVZ3J4OXliVDNm?=
+ =?utf-8?B?bjJTYmJiQjh4UDdpeTNuTm9hY2V5OU1TTzVUYTJScHpWVU1UcFBUSEJxOUF5?=
+ =?utf-8?B?a1UrU2NSMzd2N05RVXg4SVI0d1d5WlU4Skp3WE1YRStzUktJRHNJSjhNQkRB?=
+ =?utf-8?B?MW1mU2F3QWJPaWVJZWdXRkVHZE8vR25BMk02bjZxVURlOHBPWUFZQWUxS21G?=
+ =?utf-8?B?K1Ixc09JUExQVzdNS2NGQVVYZ3RBQ1lqbUREUUx3cGxheGFObVdhd3k0a0s3?=
+ =?utf-8?B?ek9MWnlrcEpldENRamFoTnZnZTRRRjhaLzhhaHlabXZsZVFQWEFtNnN3NWJQ?=
+ =?utf-8?B?QW95RW1kZ3BHdmpOUzB4V1hFN1A0WVAwcm5IVGVCQ2dkVURVeWVYWkQ3Tmh0?=
+ =?utf-8?B?Q0oxR0J0bEZYTUdEb250RkZacnV4ZmtkSnhMdHp2bUZwaTFlYzFFWDVNNnBs?=
+ =?utf-8?B?UmI1TWVFam56ajdGQ1dwcTBzUzY4RmN2WTVEbTJyekRyYnBleFJORUJpYXBM?=
+ =?utf-8?B?QjFuU1dLaWNBMk5EbkEvNUIvNXliTm5LRlRqV1dnUFRDMU8zbHJaOGF6c1Z6?=
+ =?utf-8?B?cG1ndWtTVkd0Q1VTck9HV1dzbzllMEZDYUlZcHdpVm43aHgzYjlVajBnWG51?=
+ =?utf-8?B?MERJWjdVcFBTUXNkNjVjMjQ2bkRHbHNyT2NDL1RiTFBwQmZjOURLWXFlY2N4?=
+ =?utf-8?B?VGJCOTJsajlDSDNHVUlleEVhQ214VlpTckZtVFhWODdodk4xQk1Cc3VxRVhx?=
+ =?utf-8?B?UURoS1phSFpEejVzbktFOW1zblp6VkpLNkpIZU4xdnllRDlFd0Q4cFdkRTNX?=
+ =?utf-8?B?YlNoNVdFdUZPYjlVcmFGNWtMN3BBcERxSEpldTRnaFlSN1B1RXRsd3FmYjgw?=
+ =?utf-8?B?Z3hEUjhZMFNOR040ZUU1RXJEcnV5UUtLWG9OZnFJKzIzcU00RVBRM3ZSTUI4?=
+ =?utf-8?B?TnVIQmZaOFVuTGZCNWJPd1JNUlRYZnZLRWRSK29qRnhiSkhSRFJxSEJuY2lD?=
+ =?utf-8?B?WVZ1QzlUNW5wWVlySHFNcWdDM1RCZWRkeTFKV3ovRG1pV3F0QS9ycjArYzQ4?=
+ =?utf-8?B?YWRJb1VDcDRqdUo5cVdUaTYvaDZxRGo3d3VnbTJCTHB3UGxXTEh3SmJ6SC9H?=
+ =?utf-8?B?eGdMU1RieXlkM0wwR0pOSVd5QTU0UHc0RTd4TSt0ZE9VNU9jeUF2VmdiSEI1?=
+ =?utf-8?B?dWQrOStyWFM3QUNuNVdKWWlReWE4Tkg5NDNQYWZSTVpQKzlQNVErS2lzbXoy?=
+ =?utf-8?B?alBjQlNURXhudkRoVGx0d25ZMzluSnh4TXFJSnNPYm5taU1PQmFlcU5mRngr?=
+ =?utf-8?B?ZGJoRVgvc1hSUDdxS3FaRFdJWHRmdldEeWo1amhuSFlCNnFhTXI0ZGVSMmlC?=
+ =?utf-8?B?bFB1VWJJZUJ6TG80Zm9XZVdUcnZBQ1dIY0ttaS8xNFlvUWczZG5aU0pZTXB3?=
+ =?utf-8?B?Q1B3bEg1ZmNnYks1Mk1ueWwrWms4ZW1yc21HTDg0c3dBbGxoY0pCZVRLRm5j?=
+ =?utf-8?B?OHQ3Rk94VGs4bzNuUVdyVjlvQmJKSC9mRlZRQXZXOVFwKzZJekE0TUpmTng4?=
+ =?utf-8?B?VzJNZm9TMk1OSmFOZlJxcFRhVHF2d0t5eXhHb09nTkRKTmk4aWxaelZQV1lD?=
+ =?utf-8?B?MEtSeEs2M0RFUWxXdXJCcVVJRWlqc3ZpMUxtZFZYWWVFa0hGQ1lsOXQya0V4?=
+ =?utf-8?B?NHRqZ2Nuc2pxVkRnYzh4blVGRWxXK29hQTd5VnlOT1c4Y1ZhNUlYQUJRMUhv?=
+ =?utf-8?B?eFhYR09PLzZuY3hIQS94V2JDdzFsV3M3ZzlaYTRUNkV6WmRGUlhRS0JZeG5W?=
+ =?utf-8?B?ako2R3hEZUhMY1h4dExGcVlkTmorOVNIdWxIK3k1dFVraVFGQ21hTS9MSlQx?=
+ =?utf-8?B?TUE9PQ==?=
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	TLmAc7PU4tM05XDAhNTtnrxPTbVHpBpr3DmPvVZIO4rF11TSLJte4DT/iVz+UWir7Ff2Nvp1VhOODqh3HnG+cO/9326QDq3n4TfXym3p8UVBlpEij4NmnqWa/ZCIzGX7s3gHVKe7lRKq2EdiyM7fS6leAizURvjLIVcJ26UiCjnEeD80xk+iJTfV3uXEbK9ULHKJ4W62nOFSQngyYHPgUyYbIs5S8pzHHTYOuwLHfWLQtnyq+CfyOjhzgpRgfQdumlVBkZMYgqANBEjV9aopTNHYaHtU7i3lGeAUoJHsxBmMO+tNpNgPhyYFfirSCO5+6nCdbpL75AY+KRr7Wj1LeQrH47rpYZpexTMxiaUiC6AAkqionmCKfUQlFN+L62+66zk03fa7PO2vPuLUVXZ1RxQitLmeS13Cp2FoOfzyGLgAy/n+mdreL6Zjx6dMj2i5KVMbf/UYQpZZVKL9Fm6JT03Zzbp/sC9G96jpICQBLC0EbyfAct12tkVHkXR+QSluc2AFEXpFAYgC57rDhXNW1noyPUn4gmfy7UmqVTR1KLqloPoWJ5/7rL39ZTNCj2jbqXh/CwoIX9/qxYaxJ0kE/vGfDEKtoP9xxL8SEY2fDv8=
+	wRHdk0MRwVwn41xRklEIy4Ztw3V6FEXkUKOCQbHq0qkdIdS75jIhUMGuYbGsfenV0/yq4rc3GS+RfU+WmG4a1KzFgLia3mR0wrK/ApY91jmWZ+leGiYTjlFdeXdbr8+z1lAouFogW0Q8XiKuLNWfvcBPifb2G6HibKE+2XzVD+Xqt8k0xkBR0HhXbZ4xGxpuvTmmzVIYQhMR/7amcyP2rhBMrw8fKaUqqbqksSjDcM1oW6upnBS8pUHQrge/LiTQzbYYf4yWacTSlDmQLJyVfU0z8lf/KKrBWlebxDYZ2yGwO4E4zC5WpHpIboPGNhtCR6PwU1hsMf2QMDf2aP1wMve71Ya7F22nqk3zU66g9yHnZGuVsOIqRrKdI3u2UOAk2ZC8bYzXaLCOC8a0XDqo0fBHWueEJiKllwFglWQJVG2CTubBOUFsPmQfgTQwIryE4lgT9M1ttdjk3GY93cGPVIFKOgfTi5b8BwtK1rTPykLapWB/UVPpA3olD7GvRBoUqx64ZDPdPm71Ag24lNz3Mnojj1hScAzyhPpctWwFAJZAkWuI3uxwSLYb8ET93tmr2vSBw/5hRfSWdOTiSd43ZG3GUz7PXmPpo6yKfYU+lV0=
 X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6e46e1d1-0366-431d-7f14-08ddf762ff7c
+X-MS-Exchange-CrossTenant-Network-Message-Id: d0dba299-c6b1-4cd0-9ecb-08ddf7633be4
 X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Sep 2025 09:57:52.3511
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Sep 2025 09:59:33.6772
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qXXgzt6ippwUkIDvWyIfwLI/pQfF+qEJwruAWLFJMTb9DKE0f0LZx4MeVDIQQ1OCPsat6uXr7tYeaaX3Ebw10/CrHJrjIr0ZLx/fdRUY86s=
+X-MS-Exchange-CrossTenant-UserPrincipalName: CNSGH73j0xJqBwwbDdphWuB4+o9EHLJc9hR0o/KdfC7KNtk+NALQqKgXQB0ajgyRJhUkNAp1KUX7N4k1GyeGQiGwqQJP+JsV0k/8NuEjpds=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR10MB4493
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-09-18_03,2025-09-19_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 spamscore=0 phishscore=0
- bulkscore=0 mlxscore=0 suspectscore=0 mlxlogscore=999 adultscore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxscore=0 spamscore=0
+ adultscore=0 suspectscore=0 malwarescore=0 mlxlogscore=999 phishscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2508110000
  definitions=main-2509190091
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE2MDIwMiBTYWx0ZWRfX8aCPUbNh5Qtt
- 8znkD60Ig8UAWQrSnLmZ8a7zB+Np2OVF+R1CweOFQF9bULn/rIuUJqab7HFfZ//3UgCaVJc3ALG
- t8z4IQi5YAWGTMFnzZE3e6uc6Vw4FvSCwFuZW9E8awRHlwMFlTQNmTeHMpTxsjgP6qHsQ1GJZ4L
- rgq7xAB9UH4Cq24y/5SBd0WYwL6QRmwIgdufMCD8xSRM8Y09OE7E7e4ED76J6mdyf1HEF1MLrT7
- BeIZ26ZaHrq+b8Vh2p4VWK/wrQ1IEuy/o0DWICt2dni+mZTODV8CEQh8uEgxyEhzuys9mdIBORv
- JY4a4JqCEJsUkfukWdbqpDUG4JuVMZCpkBcQy11OYHAxHrNyCJ4M7xuHegqYaI5vDpUeF4l4R32
- oV87a9cO
-X-Authority-Analysis: v=2.4 cv=X5RSKHTe c=1 sm=1 tr=0 ts=68cd293a cx=c_pps
- a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE2MDIwMiBTYWx0ZWRfX3ySW50MGivVf
+ JhjG3aEETs0GXMOpnM0pZ5ioEILI9uGtycgVnvugLvlQfujlJwFA9aq4Z0bXIvQmxg4lMysnvtD
+ KQ36Xg+sfPNdcQ3vPOCWjmS7aoM8QclslvM2S+K4+AaarGndWDq13DTXxtq4kMx9NylpLrNsu9I
+ 9pK1P8kN7WVibYhFrJNYsnurCXwIRByyXGrCL6gHkH2a0rRe00XnjpcWSV9fLRDSpZ73C8JNRx1
+ zMtnzv12nc3T2yS2T5AbIbRgFFQzTMY304ptNJobi3IF8H6u+x6z/uVdV1JdoUbaCBqDUZCII7V
+ bPVOLM9N2aw6TTP8Cx0tLI3erFEr+O84vSNOw25r+ort0Cij+W85g2gw0wNODxc1yv95ptsUc02
+ IEPvfQE3zX7Z4hvvQKUEc1SsAyxP/A==
+X-Authority-Analysis: v=2.4 cv=X5RSKHTe c=1 sm=1 tr=0 ts=68cd2989 b=1 cx=c_pps
+ a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
  a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
  a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
  a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
  a=yJojWOMRYYMA:10 a=GoEa3M9JfhUA:10 a=yPCof4ZbAAAA:8 a=20KFwNOVAAAA:8
- a=1XWaLZrsAAAA:8 a=VwQbUJbxAAAA:8 a=RywbgLTvnNoXxDrbBs8A:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: jRxZSmINZ8pLk5QuHvAL9im17ciU1M6R
-X-Proofpoint-ORIG-GUID: jRxZSmINZ8pLk5QuHvAL9im17ciU1M6R
+ a=1XWaLZrsAAAA:8 a=VwQbUJbxAAAA:8 a=cjhZezTOG5YI60u3oh4A:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 cc=ntf awl=host:12084
+X-Proofpoint-GUID: CDFa9EcGjdREnJz6Y0cpnMRedVcU94sR
+X-Proofpoint-ORIG-GUID: CDFa9EcGjdREnJz6Y0cpnMRedVcU94sR
+X-Rspamd-Queue-Id: D026C140007
+X-Stat-Signature: zfzjjnis8a9fk498o3xgbaro9q7okci8
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: B2A1C10000E
-X-Stat-Signature: ps4389opoaoxkx9sed4oq6jz3u1irh4h
-X-HE-Tag: 1758275904-42418
-X-HE-Meta: U2FsdGVkX18DYkXc9j4ORw5dM+VIA4wxXuonBRpEZnr3xfCjZmKG+sGt01Gt789iIvbEv6Edkroop1N0immM7DsO8SYCOhu0wEWClAdQyXDEulg9Hmoq7ifQLS5WnDT+R/ewbD1Ivi7cl5zqE8NuY3rWOrwWtHZX+dkHuH/zFYKyWrTYJRtLHJQmygLIfWI2XspGSlVt1Qx/mMMHI4Az8ivmqz0exapyDqJd+6OtsCY/Ns1qikEtdVY2ZkxSBFRQRp5Cxa8lODVWgPBubKHTtljJVXh0V4q4Ka2hJ+SaYevyxHLBWB7eejT9jNw+WwHYaQRKlYcuuQ5F3egTT9V9W/ue3tmExyEH5fmZx3WweZ0rol/dgL6298a/jWepvz+ULQ0Qr70s6ZCAC+wkRE4EK6uk7V9KaW3IkTMgUy40mAjREf3s1bpU3h8Gn3eFuLkTdohyfG8ywU5q46H4FlPevFdmm2SvtkuWi1VYAG0hT5AGy4t+XPjAUtSL1l2xIgX271xsfD3TnGvmey2CKsa++ez4g59M+UHGs6Xj6IVdXY9aFHCYamNeR4fAFd02fzh/PhsQV187EQA+kTY+vrdeZhp7d44iexo8QduMs/Fy6sGkKJHAeDfwF+/Iff7w5NYkqFNAAyDoZITsnNYd3DutXZEfH47ThkNBnot+CteK5cn77o5mYY05kqvwHjs8oa1md/SxzZ7LgrBq3U4esijJlTqMrwWWrrJcyT3C11+9T8N1bTXzZJFmC+6rb56ZUtuBikF9XIz0RlyXqv69EeO7cGqf0hUaQJUUMuinAg9SlEwhAeYgkoZrYpNOquplx/p+izKrLRX0kZSVJIajdQtxkF2Lu+dnbqdUo8edJ1ZbCl2d8R7mBLocD96N4h/uionsPHVQLVC0Xqysd3cMdT+07QMiQdQr2GGYzpKXmWnOqL9Z+aQCjY0LiA1XmPaCcE9zLXxTQYOQnG48OkWAO7W
- Tu4W7yot
- 4ro71R/Sx/rxlWeXAW3QB3t5vjCMldxUISRhdz3bTvNslvmULq4polXmeXjUsgtn06uiXEyKYxsYmdjCwP4ETAIfM4B2HeeC3U07nu0iLeRP+q1FwGazxiTq/btwYnAk1LxGoKB5g/yp7+O4/EMG5h/7+0Y2xeaT8PlxC2toEdS0Rkm1IZgDPH7JivT4khH1oX8ZiLdbQyRqDaftdSuphzzdJ7eComuAmUV5+614AKQpT/CyIcs8wT63PdH6bYuIY/29kyEz9xwqWNmV3THg7uleUY7KUo7Q46iN3WOIweOk4E1j+RDMMyCLZpdhO0FAGa4rrL56l6ovUI2BrkVVNfa7uqzReSqb7bV7tOlqlpob0tEr60sAXAOY0Gdr7qOSW+mBHlZbDN/hgCSGASzSdT0k1o6UN6te3CY2lPdeC2YVFu21Cb5atkcpwiMq7UciUjPjGdwsVAOS2L/V2W/D2clcLZfcqp8ZSHPVd1U2BCp4aGMwFbrZfgGf3R3R1UogC9TPaOuog4OLYbJwNjkQRJdDzHwO4X+h1QcwDBodXHu5WSU3bSK49Gb7nm0DuWbGI47DU2eL93qXRcmO8xtX5ZsE8/uc8i9ESNAg1OG4B8S+3D/X2SV2wexBLaAOSKFZIO+cvDHlI6MTz8jAx5lL2YDxhXQwrEYl06CwFD3ROdKQbTlFUk6cJOqhG5QEd6MQjY/sECRW0THdzP3sm993v/4aImYKQIXDTsn0u4g8NW2ow8uwUd92hwHs+aKjRlKhqXYAZ/GkplxTvBJS2hYGW/okrTzysvXtdgEMnMt+sRC+nSl2ymVbWpYyru9W6fKs8rIMvAdiecysN946LE3DECRcKBQ==
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1758275983-288647
+X-HE-Meta: U2FsdGVkX195QSsDtr2C3dCw5OuD7W9GJs8I/LaYMhAQLwFPFOcF2vW773JsxYL0Y1C1raDnaHo+kupedfG3/WQwEhOj6uT3a8lv9byqSDqKCiXctfUn5M69kluZJva+k97Lnr+XeVMdTg3Lmvqi5wqEhnZ00Egw5LXom+BA39FvhzJqn59+tqyL6HQFxzMk+cMVHPFsbV2aHg03DYf6USGwDxj/Z2zR06lS2A0m4D5yTHsAKYcXCm/gpxBjhjBgHXcDzQ18vrnbVrTZJ6EZFbi52tozVhrKhdv/ySmGSUnjk3Yq5BrLTCaNnSvaoqCG2/qFwnN/HjhZoUfEvcGOGC4Ctm8JIThhlR+aSo9dSR8+CxQ2E1oeVOefxkRGbJYtUIhzTcXLUAvf4OFUXbyo1lts0vBJXkOJMOFJl/u9FFnoHOstS3SaZF/KoUDezFSULFN9w/YYzYCzRPlavmZmk1Kou/28cE6YSM988EQJb5vdf698KPKWvf0pwPOrD1/G+JZJQhrmQaP7WnpI5MPEZTb9w38/nfZNRl3hy4V3E7QwoS8kDOT6jCWGYx+XA5XPb1u9pfycj+pytYnD1YkwSKyvnRh0DHdnDgcbe1zme4Ap4iv6DBKYtnQvfmn80/R3+fuX2J3tkUZNWBVQN12MuqsezM/bPjg5uMRG3iaMk2bPccL7KfM381OajfWfPRJ0U1WHI21FXs0mm++T8GQlABUQjUZ0v3l9kBAqUv8qZYQ+mBVw49iN58FB49Ct7Yd4FKkrBgmabYeYZLe8Bllprrffyj9Kfs5pWXxFJW6H+h8M/uFYEQegRnGVFlamRIi8sTfFejRbegCKC43FW3AvtBtPkwUZ0o4i1RpL7RbtfBvNl4AtfeSVE+eODKNnDWBZnFpbDh+B3CTBx3WBh8e5Gw6O29t2JQQCC068bzdZdVRxogZ6oeiX9kxOkcHKTDXpDv5Es4KPEAEjd76M044
+ 0Sf2TtSQ
+ alnCWbBE36hcI6YABJJbHW48nFQA1ylMBwiEZGTZlTe+0sANQ2CCWWkuMUijaaY9ngNNzNvDx1FpnMJh/rebVYnRaz2Jlil2lx4fPJBjWkWWMx+7SeX5vekeQl3MUqp4DX11y1f9zSIAW5RKqIiLv6qH7VIH+ZT0Nn5TLgkKqA6SASTGZQe9KRH8wT63LcXZDw94aNPGAH04MhdYATrqLngSnt/3kqfRrgyTbuJ+TaSSp2SGmY9TsrDMKLxoY58VYxE6TnX8fiUnWTNV+qlWixNfTrJjtly9R6KGPU0qCmq5irERZ7X9KEMY9E7PN9+3Io4s0SWK84JYGwpawJhWOvpA1WrjUn8GQM2KPb0NKKrmtmX0v5Ac4Ri3D6YHxjq1epODVus8k7CR7mQM9o0j5zvrMK8WDmK5jCFPsAe8EBdz+9zegDoFKI0VDZHVhy9PCreJuWvq3CAhcOd0vJFMWChcDwW6Db8Dg+saE+9IL/GCAbYTSbHnyIR2Y+DeCvWBME+sgEkjroEFEuHYaUTjwCnP0H1vBgne/IbSc5h8ZFSeh3t9+XeuAlF25wbAGiPVJlofXI10sXUeN+68LARqP5mhiHl6ALhVmaDq5WkC9Mb5n3jL02stWfTb2ihap4xt1EKFoKrZetWn3F3Krx722EHfpgik6VIvRktDns/bJhfE7zzPRtOjrdOXq+G41Qtwz4vyT/k1pd1uwVIqYiHskjgPbBnXRMI/xM1j+ZjWBPxArFumQDGsPn8xGhIP0GjxVO0/FgFD+jBHZ4jPvoNwt+CV3ZO/edfJ+NgJ9p3Kv+Mg0nFedHvMlzc0poUi0xFCh+em1pzw7GB6PYPgyFf7z2JN0MDrwQbnmP8MlnpeFBhp5Titcy+3e5cx+Rf+gmDU/IOnz
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -258,121 +259,362 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 18, 2025 at 11:30:48PM -0700, Lokesh Gidra wrote:
-> On Thu, Sep 18, 2025 at 5:38 AM Lorenzo Stoakes
+On Thu, Sep 18, 2025 at 10:45:21PM -0700, Lokesh Gidra wrote:
+> On Thu, Sep 18, 2025 at 4:57 AM Lorenzo Stoakes
 > <lorenzo.stoakes@oracle.com> wrote:
 > >
-> > On Wed, Sep 17, 2025 at 10:51:35PM -0700, Lokesh Gidra wrote:
-> > > Now that rmap_walk() is guaranteed to be called with the folio lock
-> > > held, we can stop serializing on the src VMA anon_vma lock when moving
-> > > an exclusive folio from a src VMA to a dst VMA in UFFDIO_MOVE ioctl.
-> > >
-> > > When moving a folio, we modify folio->mapping through
-> > > folio_move_anon_rmap() and adjust folio->index accordingly. Doing that
-> > > while we could have concurrent RMAP walks would be dangerous. Therefore,
-> > > to avoid that, we had to acquire anon_vma of src VMA in write-mode. That
-> > > meant that when multiple threads called UFFDIO_MOVE concurrently on
-> > > distinct pages of the same src VMA, they would serialize on it, hurting
-> > > scalability.
-> > >
-> > > In addition to avoiding the scalability bottleneck, this patch also
-> > > simplifies the complicated lock dance that UFFDIO_MOVE has to go through
-> > > between RCU, folio-lock, ptl, and anon_vma.
-> > >
-> > > folio_move_anon_rmap() already enforces that the folio is locked. So
-> > > when we have the folio locked we can no longer race with concurrent
-> > > rmap_walk() as used by folio_referenced() and hence the anon_vma lock
+> > On Wed, Sep 17, 2025 at 10:51:34PM -0700, Lokesh Gidra wrote:
+> > > Guarantee that rmap_walk() is called on locked folios so that threads
+> > > changing folio->mapping and folio->index for non-KSM anon folios can
+> > > serialize on fine-grained folio lock rather than anon_vma lock. Other
+> > > folio types are already always locked before rmap_walk().
 > >
-> > And other rmap callers right?
-> Right. Will fix it in the next version.
+> > Be good to explain why you're doing certain things, like adding the folio
+> > lock to kill_procs_now().
+>
+> Agreed! I'll add in the next version.
+
+Great, thanks! :)
+
+> >
+> > Also worth noting that you're going from _definitely_ locking non-KSM anon
+> > to _not necessarily_ locking it.
+>
+> Will do. But, just to be clear, you mean the opposite right?
+> >
+> > You should explain why you think this is fine (in general - rmap callers do
+> > some other check to see if what is expected to mapped did happen so it's
+> > fine, or otherwise treat things as best-effort).
+>
+> Sure thing.
 
 Thanks!
 
 > >
-> > > is no longer required.
+> > You should probably also put some information about performance impact
+> > here, I think Barry provided some?
+> >
+> I added that in the cover letter. Basically the impact of trylocking
+> non-KSM anon folios (in folio_referenced()) on active_shrink_list().
+> I'll move it here.
 > > >
-> > > Note that this handling is now the same as for other
-> > > folio_move_anon_rmap() users that also do not hold the anon_vma lock --
-> > > namely COW reuse handling. These users never required the anon_vma lock
-> > > as they are only moving the anon VMA closer to the anon_vma leaf of the
-> > > VMA, for example, from an anon_vma root to a leaf of that root. rmap
-> > > walks were always able to tolerate that scenario.
+> > > This is in preparation for removing anon_vma write-lock from
+> > > UFFDIO_MOVE.
 > >
-> > Which users?
->
-> The COW reusers, namely:
-> do_wp_page()->wp_can_reuse_anon_folio()
-> do_huge_pmd_wp_page()
-> hugetlb_wp()
-
-Right let's put this in the commit message is what I mean :)
-
->
+> > Thanks for mentioning this :)
 > >
+> I got your message loud and clear the last time :)
 > > >
 > > > CC: David Hildenbrand <david@redhat.com>
 > > > CC: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> > > CC: Harry Yoo <harry.yoo@oracle.com>
 > > > CC: Peter Xu <peterx@redhat.com>
 > > > CC: Suren Baghdasaryan <surenb@google.com>
 > > > CC: Barry Song <baohua@kernel.org>
+> > > CC: SeongJae Park <sj@kernel.org>
 > > > Signed-off-by: Lokesh Gidra <lokeshgidra@google.com>
-> > > ---
-> > >  mm/huge_memory.c | 22 +----------------
-> > >  mm/userfaultfd.c | 62 +++++++++---------------------------------------
-> > >  2 files changed, 12 insertions(+), 72 deletions(-)
-> > >
-> > > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> > > index 5acca24bbabb..f444c142a8be 100644
-> > > --- a/mm/huge_memory.c
-> > > +++ b/mm/huge_memory.c
-> > > @@ -2533,7 +2533,6 @@ int move_pages_huge_pmd(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd, pm
-> > >       pmd_t _dst_pmd, src_pmdval;
-> > >       struct page *src_page;
-> > >       struct folio *src_folio;
-> > > -     struct anon_vma *src_anon_vma;
-> > >       spinlock_t *src_ptl, *dst_ptl;
-> > >       pgtable_t src_pgtable;
-> > >       struct mmu_notifier_range range;
-> > > @@ -2582,23 +2581,9 @@ int move_pages_huge_pmd(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd, pm
-> > >                               src_addr + HPAGE_PMD_SIZE);
-> > >       mmu_notifier_invalidate_range_start(&range);
-> > >
-> > > -     if (src_folio) {
-> > > +     if (src_folio)
-> > >               folio_lock(src_folio);
-> > >
-> > > -             /*
-> > > -              * split_huge_page walks the anon_vma chain without the page
-> > > -              * lock. Serialize against it with the anon_vma lock, the page
-> > > -              * lock is not enough.
-> > > -              */
-> > > -             src_anon_vma = folio_get_anon_vma(src_folio);
-> > > -             if (!src_anon_vma) {
-> > > -                     err = -EAGAIN;
-> > > -                     goto unlock_folio;
-> > > -             }
-> > > -             anon_vma_lock_write(src_anon_vma);
-> > > -     } else
-> > > -             src_anon_vma = NULL;
-> > > -
 > >
-> > Hmm this seems an odd thing to include in the uffd change. Why not just include
-> > it in the last commit or as a separate commit?
+> > OK so you're making:
+> >
+> > folio_lock_anon_vma_read()
+> > folio_get_anon_vma()
+> >
+> > Require folio locks.
+> >
+> > folio_lock_anon_vma_read() is called from:
+> >
+> > connect_procs_anon() - changed to take folio lock.
+> > page_idle_clear_pte_refs() - changed to take folio lock.
+> > damon_folio_mkold() - changed to take folio lock.
+> > damon_folio_young() - changed to take folio lock.
+> > folio_referenced() - changed to take folio lock.
+> > try_to_unmap() - ???
+> > try_to_migrate() - ???
+> >
+> > 9I note that we allow a TTU_RMAP_LOCKED walk in the above unmap, migrate
+> > cases too, wonder how these will interact?)
+> >
+> > folio_get_anon_vma() is called from:
+> >
+> > move_pages_huge_pmd() - already holds folio lock.
+> > __folio_split() - already holds folio lock.
+> > move_pages_ptes() [uffd] - already holds folio lock.
+> > migrate_folio_unmap() - already holds folio lock.
+> > unmap_and_move_huge_page() - already holds folio lock.
+> >
+> > Can you:
+> >
+> > a. Confirm the try_to_unmap() and try_to_migrate() cases take the folio
+> >    lock. Explicitly list the callers and how they acquire the folio lock.
+> >
+> Description comments of both try_to_migrate() and try_to_unmap() say
+> that the caller must hold folio lock. But just to be safe, I went
+> through all the callers, and all of them are holding the folio lock:
+>
+> try_to_unmap() is called from:
+> unmap_folio()
+> collapse_file()
+> shrink_folio_list()
+> shink_folio_list()->unmap_poisoned_folio()
+> do_migrate_range()->unmap_poisoned_folio()
+> try_memory_failure_hugetlb()->hwpoison_user_mappings()->unmap_poisoned_folio()
+> memory_failure()->hwpoison_user_mappings()->unmap_poisoned_folio()
+>
+> try_to_migrate() is called from:
+> unmap_folio()
+> unmap_and_move_huge_page()
+> migrate_folio_unmap()
+> migrate_vma_collect()->migrate_vma_collect_pmd() acquires in case of
+> migrate_vma_setup()->migrate_vma_unmap()->migrate_device_unmap()
+> migrate_device_pfn_lock() acquires folio locks in the following cases:
+> migrate_device_range()->migrate_device_unmap()
+> migrate_device_pfns()->migrate_device_unmap()
+>
+> All the callers of rmap_walk()/rmap_walk_locked() are already covered
+> in the folio_lock_anon_vma_read() list that you added, except
+> remove_migration_ptes(), which is called from:
+> __folio_split()->remap_page()
+> migrate_device_unmap()
+> __migrate_device_finalize()
+> unmap_and_move_huge_page()
+> migrate_folio_unmap() locks the folio for the following two in
+> migrate_pages_batch():
+> migrate_folio_move()
+> migrate_folio_undo_src()
 
-You're changing move_pages_huge_pmd() here in a change that's about the uffd
-change, seems unrelated no?
+Awesome thanks for checking that! I did think it was probably fine, but
+it's important to be as thorough as we can be.
 
 >
-> I'm not sure I follow. What am I including here?
+> > b. Update the commit message to include the above. You're making a _very_
+> >    sensitive locking change here, it's important to demonstrate that you've
+> >    considered all cases.
+> Certainly, will do.
+> >
+> > Thanks!
+> >
+> > > ---
+> > >  mm/damon/ops-common.c | 16 ++++------------
+> > >  mm/memory-failure.c   |  3 +++
+> > >  mm/page_idle.c        |  8 ++------
+> > >  mm/rmap.c             | 42 ++++++++++++------------------------------
+> > >  4 files changed, 21 insertions(+), 48 deletions(-)
+> > >
+> > > diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
+> > > index 998c5180a603..f61d6dde13dc 100644
+> > > --- a/mm/damon/ops-common.c
+> > > +++ b/mm/damon/ops-common.c
+> > > @@ -162,21 +162,17 @@ void damon_folio_mkold(struct folio *folio)
+> > >               .rmap_one = damon_folio_mkold_one,
+> > >               .anon_lock = folio_lock_anon_vma_read,
+> > >       };
+> > > -     bool need_lock;
+> > >
+> > >       if (!folio_mapped(folio) || !folio_raw_mapping(folio)) {
+> > >               folio_set_idle(folio);
+> > >               return;
+> > >       }
+> > >
+> > > -     need_lock = !folio_test_anon(folio) || folio_test_ksm(folio);
+> > > -     if (need_lock && !folio_trylock(folio))
+> > > +     if (!folio_trylock(folio))
+> > >               return;
+> >
+> > This _seems_ to be best effort and not relying on anon always
+> > succeeding. So should be fine.
+> >
+> > >
+> > >       rmap_walk(folio, &rwc);
+> > > -
+> > > -     if (need_lock)
+> > > -             folio_unlock(folio);
+> > > +     folio_unlock(folio);
+> > >
+> > >  }
+> > >
+> > > @@ -228,7 +224,6 @@ bool damon_folio_young(struct folio *folio)
+> > >               .rmap_one = damon_folio_young_one,
+> > >               .anon_lock = folio_lock_anon_vma_read,
+> > >       };
+> > > -     bool need_lock;
+> > >
+> > >       if (!folio_mapped(folio) || !folio_raw_mapping(folio)) {
+> > >               if (folio_test_idle(folio))
+> > > @@ -237,14 +232,11 @@ bool damon_folio_young(struct folio *folio)
+> > >                       return true;
+> > >       }
+> > >
+> > > -     need_lock = !folio_test_anon(folio) || folio_test_ksm(folio);
+> > > -     if (need_lock && !folio_trylock(folio))
+> > > +     if (!folio_trylock(folio))
+> > >               return false;
+> >
+> > Same as above here.
+> >
+> > >
+> > >       rmap_walk(folio, &rwc);
+> > > -
+> > > -     if (need_lock)
+> > > -             folio_unlock(folio);
+> > > +     folio_unlock(folio);
+> > >
+> > >       return accessed;
+> > >  }
+> > > diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> > > index a24806bb8e82..f698df156bf8 100644
+> > > --- a/mm/memory-failure.c
+> > > +++ b/mm/memory-failure.c
+> > > @@ -2143,7 +2143,10 @@ static void kill_procs_now(struct page *p, unsigned long pfn, int flags,
+> > >  {
+> > >       LIST_HEAD(tokill);
+> > >
+> > > +     folio_lock(folio);
+> > >       collect_procs(folio, p, &tokill, flags & MF_ACTION_REQUIRED);
+> > > +     folio_unlock(folio);
+> > > +
+> >
+> > Good. I hate how this works.
+> >
+> > >       kill_procs(&tokill, true, pfn, flags);
+> > >  }
+> > >
+> > > diff --git a/mm/page_idle.c b/mm/page_idle.c
+> > > index a82b340dc204..9bf573d22e87 100644
+> > > --- a/mm/page_idle.c
+> > > +++ b/mm/page_idle.c
+> > > @@ -101,19 +101,15 @@ static void page_idle_clear_pte_refs(struct folio *folio)
+> > >               .rmap_one = page_idle_clear_pte_refs_one,
+> > >               .anon_lock = folio_lock_anon_vma_read,
+> > >       };
+> > > -     bool need_lock;
+> > >
+> > >       if (!folio_mapped(folio) || !folio_raw_mapping(folio))
+> > >               return;
+> > >
+> > > -     need_lock = !folio_test_anon(folio) || folio_test_ksm(folio);
+> > > -     if (need_lock && !folio_trylock(folio))
+> > > +     if (!folio_trylock(folio))
+> > >               return;
+> >
+> > This checks folio idle bit after so that's fine for anon to not succeed due
+> > to contention.
+> >
+> > >
+> > >       rmap_walk(folio, &rwc);
+> > > -
+> > > -     if (need_lock)
+> > > -             folio_unlock(folio);
+> > > +     folio_unlock(folio);
+> > >  }
+> > >
+> > >  static ssize_t page_idle_bitmap_read(struct file *file, struct kobject *kobj,
+> > > diff --git a/mm/rmap.c b/mm/rmap.c
+> > > index 34333ae3bd80..90584f5da379 100644
+> > > --- a/mm/rmap.c
+> > > +++ b/mm/rmap.c
+> > > @@ -489,17 +489,15 @@ void __init anon_vma_init(void)
+> > >   * if there is a mapcount, we can dereference the anon_vma after observing
+> > >   * those.
+> > >   *
+> > > - * NOTE: the caller should normally hold folio lock when calling this.  If
+> > > - * not, the caller needs to double check the anon_vma didn't change after
+> > > - * taking the anon_vma lock for either read or write (UFFDIO_MOVE can modify it
+> > > - * concurrently without folio lock protection). See folio_lock_anon_vma_read()
+> > > - * which has already covered that, and comment above remap_pages().
+> > > + * NOTE: the caller should hold folio lock when calling this.
+> > >   */
+> > >  struct anon_vma *folio_get_anon_vma(const struct folio *folio)
+> > >  {
+> > >       struct anon_vma *anon_vma = NULL;
+> > >       unsigned long anon_mapping;
+> > >
+> > > +     VM_WARN_ON_FOLIO(!folio_test_locked(folio), folio);
+> > > +
+> > >       rcu_read_lock();
+> > >       anon_mapping = (unsigned long)READ_ONCE(folio->mapping);
+> > >       if ((anon_mapping & FOLIO_MAPPING_FLAGS) != FOLIO_MAPPING_ANON)
+> > > @@ -546,7 +544,8 @@ struct anon_vma *folio_lock_anon_vma_read(const struct folio *folio,
+> > >       struct anon_vma *root_anon_vma;
+> > >       unsigned long anon_mapping;
+> > >
+> > > -retry:
+> > > +     VM_WARN_ON_FOLIO(!folio_test_locked(folio), folio);
+> > > +
+> > >       rcu_read_lock();
+> > >       anon_mapping = (unsigned long)READ_ONCE(folio->mapping);
+> > >       if ((anon_mapping & FOLIO_MAPPING_FLAGS) != FOLIO_MAPPING_ANON)
+> > > @@ -557,17 +556,6 @@ struct anon_vma *folio_lock_anon_vma_read(const struct folio *folio,
+> > >       anon_vma = (struct anon_vma *) (anon_mapping - FOLIO_MAPPING_ANON);
+> > >       root_anon_vma = READ_ONCE(anon_vma->root);
+> > >       if (down_read_trylock(&root_anon_vma->rwsem)) {
+> > > -             /*
+> > > -              * folio_move_anon_rmap() might have changed the anon_vma as we
+> > > -              * might not hold the folio lock here.
+> > > -              */
+> > > -             if (unlikely((unsigned long)READ_ONCE(folio->mapping) !=
+> > > -                          anon_mapping)) {
+> > > -                     up_read(&root_anon_vma->rwsem);
+> > > -                     rcu_read_unlock();
+> > > -                     goto retry;
+> > > -             }
+> > > -
+> > >               /*
+> > >                * If the folio is still mapped, then this anon_vma is still
+> > >                * its anon_vma, and holding the mutex ensures that it will
+> > > @@ -602,18 +590,6 @@ struct anon_vma *folio_lock_anon_vma_read(const struct folio *folio,
+> > >       rcu_read_unlock();
+> > >       anon_vma_lock_read(anon_vma);
+> > >
+> > > -     /*
+> > > -      * folio_move_anon_rmap() might have changed the anon_vma as we might
+> > > -      * not hold the folio lock here.
+> > > -      */
+> > > -     if (unlikely((unsigned long)READ_ONCE(folio->mapping) !=
+> > > -                  anon_mapping)) {
+> > > -             anon_vma_unlock_read(anon_vma);
+> > > -             put_anon_vma(anon_vma);
+> > > -             anon_vma = NULL;
+> > > -             goto retry;
+> > > -     }
+> > > -
+> > >       if (atomic_dec_and_test(&anon_vma->refcount)) {
+> > >               /*
+> > >                * Oops, we held the last refcount, release the lock
+> > > @@ -1005,7 +981,7 @@ int folio_referenced(struct folio *folio, int is_locked,
+> > >       if (!folio_raw_mapping(folio))
+> > >               return 0;
+> > >
+> > > -     if (!is_locked && (!folio_test_anon(folio) || folio_test_ksm(folio))) {
+> > > +     if (!is_locked) {
+> > >               we_locked = folio_trylock(folio);
+> > >               if (!we_locked)
+> > >                       return 1;
+> > > @@ -2815,6 +2791,12 @@ static void rmap_walk_anon(struct folio *folio,
+> > >       pgoff_t pgoff_start, pgoff_end;
+> > >       struct anon_vma_chain *avc;
+> > >
+> > > +     /*
+> > > +      * The folio lock ensures that folio->mapping can't be changed under us
+> > > +      * to an anon_vma with different root.
+> > > +      */
+> > > +     VM_WARN_ON_FOLIO(!folio_test_locked(folio), folio);
+> > > +
+> > >       if (locked) {
+> > >               anon_vma = folio_anon_vma(folio);
+> > >               /* anon_vma disappear under us? */
+> > > --
+> > > 2.51.0.384.g4c02a37b29-goog
+> > >
+> > >
+> >
+> > All of the above actual changes to the locking logic looks ok to me though.
+> Awesome! :)
 >
-> BTW, IMHO, the comment is wrong here. folio split code already
-> acquires folio lock. The anon_vma lock is required here for the same
-> reason as non-large page case - to avoid concurrent rmap walks.
 
-This is called via split_huge_page() used by KMS and memory failure, not the
-usual folio split logic afaict.
+:) we're nearly there on this... now you, David and I have gone through
+this in detail I'm confident this is actually a really quite nice
+improvement in general and by unravelling some of the locking hell we might
+actually get some other benefits out of this (as referenced by Barry) :)
 
-But those callers all take the folio look afaict :)
-
-So yeah the comment is wrong it seems!
+Cheers, Lorenzo
 
