@@ -4,91 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5771CAC5A0
-	for <linux-mm@archiver.kernel.org>; Sat, 20 Sep 2025 04:31:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65D40CAC5A0
+	for <linux-mm@archiver.kernel.org>; Sat, 20 Sep 2025 04:52:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0BC678E0005; Sat, 20 Sep 2025 00:31:51 -0400 (EDT)
+	id AA7F98E0006; Sat, 20 Sep 2025 00:52:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 066738E0001; Sat, 20 Sep 2025 00:31:51 -0400 (EDT)
+	id A58BD8E0001; Sat, 20 Sep 2025 00:52:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EBE8A8E0005; Sat, 20 Sep 2025 00:31:50 -0400 (EDT)
+	id 995DE8E0006; Sat, 20 Sep 2025 00:52:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D77A98E0001
-	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 00:31:50 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8C6221A089F
-	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 04:31:50 +0000 (UTC)
-X-FDA: 83908355580.18.38B251D
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
-	by imf04.hostedemail.com (Postfix) with ESMTP id B07C340006
-	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 04:31:48 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=I8NnZzbJ;
-	spf=pass (imf04.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A3348E0001
+	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 00:52:07 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 17A561DFCD7
+	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 04:52:07 +0000 (UTC)
+X-FDA: 83908406694.04.447C31C
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf27.hostedemail.com (Postfix) with ESMTP id BEB9D40005
+	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 04:52:04 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf27.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758342708;
+	s=arc-20220608; t=1758343925;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=U7Oqwm27EVC3hegeL8o9rPQpBwMcTLBc733/TDvrqNg=;
-	b=61Kk2l04O0nRaMYYKn3S4mr/lnd55pny/hxpx30Uec72V6lPrfmqoiNsYOxxeACfTkeLod
-	OLuHnaa4b+WJF1G+wpFdZUsHiTAy+9XaOckTXLb3Iny1W9FE4s0qbUDZfdpNjNGUxXdvxw
-	4jZ6+a7DN53XL2oB/fNbOKG7epSZ+Fk=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=I8NnZzbJ;
-	spf=pass (imf04.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758342708; a=rsa-sha256;
-	cv=none;
-	b=xknZlQdzjVv7LePZxNCX51CWL25bQYcjVhX4lvhuH5y5jWHseRwL2eChs0azPgduhGIbag
-	MXiaZjGLlWOllMSymXvlF1ybfX0msMKNPCiWlhWpGOVG+S5Cw19lMrvYKzuMOmcH2YZ5CA
-	1LyH9kXOr/oXEn0wXFKnX2pkxvyLm8k=
-Date: Fri, 19 Sep 2025 21:31:30 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1758342706;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=U7Oqwm27EVC3hegeL8o9rPQpBwMcTLBc733/TDvrqNg=;
-	b=I8NnZzbJ2dD4btg1IUawDHxKrOqJfngGHi+zHOtn3M+Avc93+yeIKyVifm0k7Ituth24jD
-	v1ABEIEgPqY2t9LKb+wsRUs39CNi7xQP/MQvDA4PocieQPmN4G9lhK+3tnxWs7fjokgrf8
-	yWMAjK2Ngj4kBM79bYSfryXJBtZbTVY=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Tejun Heo <tj@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Alexei Starovoitov <ast@kernel.org>, Peilin Ye <yepeilin@google.com>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, bpf <bpf@vger.kernel.org>, linux-mm <linux-mm@kvack.org>, 
-	"open list:CONTROL GROUP (CGROUP)" <cgroups@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
-	Meta kernel team <kernel-team@meta.com>
-Subject: Re: [PATCH] memcg: skip cgroup_file_notify if spinning is not allowed
-Message-ID: <eba3aiglp2hmj65sd4vsmav26o45orrlog2ifexd44yovygcdg@43wfk6dbgqda>
-References: <20250905201606.66198-1-shakeel.butt@linux.dev>
- <5qi2llyzf7gklncflo6gxoozljbm4h3tpnuv4u4ej4ztysvi6f@x44v7nz2wdzd>
- <CAADnVQK_wvu-KBgF6dNq=F5qNk-ons-w3UenJNaew6h9qTBpGw@mail.gmail.com>
+	bh=jcuGk6JLs/vKNVABa4HL+wPHu7Dn7CNSVTOhIaNCUsU=;
+	b=LZ7DK137PGVas1ohLQOR7sxH20sWMiv+PU0zfiNqRpVH4c9++kh2un1o6u4x4ggqx/o+J3
+	u0MZyUeViMTWSdOmZTu1Wgr0gzEO4n9a0Hxhrh/GRyqfz1AN5RthldkBglkr0hBilKcR7n
+	2EHHR2dDELcBRRsHISc0y6sjUTc+rFk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758343925; a=rsa-sha256;
+	cv=none;
+	b=LhLb6PtZMYBBJ7MRjKhRzVisAyV83U4DKaO8ttsfEwDKnFeJ6BWtz5izuVFIA7b2YRJqFQ
+	+nY6g5MeQKvlTnNDZ8KybrobOJVt+/vBXFYn44Cf3HV922eGRpWBjsVrxEZUowmi3ZLcf/
+	16CUAURvgMokYUARgnCn6Eusk8c6eDk=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf27.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 81D951688;
+	Fri, 19 Sep 2025 21:51:55 -0700 (PDT)
+Received: from [10.163.75.121] (unknown [10.163.75.121])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 83E833F673;
+	Fri, 19 Sep 2025 21:51:59 -0700 (PDT)
+Message-ID: <4fb37530-3826-4ff5-ad7a-dc9dac4937de@arm.com>
+Date: Sat, 20 Sep 2025 10:21:56 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAADnVQK_wvu-KBgF6dNq=F5qNk-ons-w3UenJNaew6h9qTBpGw@mail.gmail.com>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: B07C340006
-X-Stat-Signature: n6o1mjge3ep6rq686j4wodxotn95y71e
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/khugepaged: use [pmd|pte]_addr for better reading
+To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+ david@redhat.com, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
+ ryan.roberts@arm.com, baohua@kernel.org, lance.yang@linux.dev
+Cc: linux-mm@kvack.org
+References: <20250920005416.5865-1-richard.weiyang@gmail.com>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20250920005416.5865-1-richard.weiyang@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 68zr659h6h6j3ehf35dcrdw4ayk3n3id
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1758342708-932470
-X-HE-Meta: U2FsdGVkX19gPnXfr1eqRlZXG1MqZU7rtj8QSPutneVs2+zGHXuFpb2KPOAa2ur2YOPtQfDLzZ3inNRHVUm7DbLG0wxOfqF/N0rB0FR+JZUMtZ4nQ08D+7ojn/37V82OLN03m7cjumK6E//3F+iH3bCt14ydzKAp+ezgAxuVPGIS8K10rywDfFbEOuRPpJw51unZ07jkNQie72TNPBBCPJEoc5laR1EF2Nrvvtg+doalPK4uXE2ET5PwmDMuyPSXUb5wltTH7y8BioCpAmqxThydIyBda6aNftBZ9nFmaj0IQGzq5G13qmawL/1rQihI86gmXz4OzZUhqSSdXsk2bPTElfuyxajb2pOVEEDbYV2ZIhyimJnCRGN/sf+V8voQq6yv/vImwnioc8W/eD4ozJQxhz6XIIorWtwm1N5zh6KdkssqK4awCf9jCjjeJGurH4I1ONkJV2vySE6RQXvYBKERZqiRsvGBz2nD+/qrntMVy1qkLELseZ1ToHZRY1qFpVTXvZPEk+uR58lOMoB3MuSUfWOM1c97YyBYqIL2f6IX4xmsC7b1N+GWW5asPiez6cCGjNav/TW0DYnvlZX/rc/28eJp96SglsvkCqMrWNF/fgWQjh2JWhcLw7g5y4gGrHAtt/rIYCnBECh+eZaA/9cOCF0IJq4k2nsQVU57qAFfxpPtnNjQ/OMBiIfMSri37qXJRT474tewhwKPWAo0zWBj4aiTjCMOndAtfl6GbkkAC9vQynu/8M2QBTn+gPAAthHMKJb+8qHMEwpWtcvO1X8gEqjgemrdijzxbcZ3fM2LLpvlQV+MTpPJM11xzCv10FtOc0ILdaC+p7pH4fzWKwbBqDEF1WrtImZbV+moWAQMfhHZcZdDo8vzN7HpyyPVBQBucx9hP1qBpssYeXGQmfi+CDn+7IDOGbY6/DDTUppyqMSUaCrWPlUYWo+oehiw10JwaiYU07vxvQZ8BNf
- j0adNY4o
- sS1ZEfxNL8bVbACNfW6cjsAwPa1dpTbl72IcG5UVNfCi7TfAUgB68y0XSWSSAPlXiT+nWENmM8ZPZzktFH5YqVHDcVkVeSnHPdcI5bRQFiEF/2QS2JMD9rreWBrRJ5pQ/kPQkezX9XciPMhUh7mcUDBi6G9yz3JMApZ729yiywtLrKalhOqSXuEbRRuMHHpGlHlqo1Fm88pFn5Dpo4GrfAqXichdKeul5SWeU+51PhX6o0Ttz6V7hIrF5XxAxqhLTCNX3z3oSOorN+L6DzZB6xXwncXpWht7NebUJP6RlhvU5gEixaue/X7LobQ==
+X-Rspamd-Queue-Id: BEB9D40005
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1758343924-852851
+X-HE-Meta: U2FsdGVkX1/lmdzu9hpF9UCN9yuFjlXEcf2iFmi2MUlcu6TAv0PdnVn61julOBGL2BCeUAzS/GD4ALYAsLL5tirIzHJ0NZvoWtpqiheI9vpYq3rbE5lZ0s2ztQpj+33IjM6SjqHGpuEY1IVMWm94CsJkaonA9CAclOM/bCQtqe0oV1rIBbiglvcDMpNBYdq171q57x6K+s/2xLBFSwXT/HNVHdbtT8+BLMo4SVIPCfI586TifjSyL/gW2GMv4nZ1yVAszySV2p5d/tSWwX7X1RE0tNs3ZWZOTrqCYiXz4Pcv+mrZ5DslP5oYku4apip68rrgy+v+yiJ3el0Pz7SWOiCX6DIC1d4Zm8eJ5l3N9b05OcIXQScIh2UtUmkhxsVX+9nHHYz4RVNFsrTORkRaHBxPNExiEWO2VdLJQjpurPDJL6MC++AvMSI4pqeUzklzy+4HQsjcpZ9YgZNhx0FsXp6eRavHkshJZMkHdW6cdK8elI3yJgb5u+OShl6v4FCX59AHoJRIfsj7y0I7rD8sbirZoGJ9royBqDBGEG61HPOJdO9vBpwuO7eT5k4OsSC1K+nltOzhlV+B6LjImXNdddIrv9wMiuipewc0ZgU7d5DgowE7OKNXY6a9IclDkOZiW7fD8MlkrkLP6VmI+vuL5BolNEIaFNa5h3Fo99VJY1eBMGVGIsNDk5fPuMuU+7ptC8B6Cq8okXvj4N1xruDpKyOmeHB5gH9VfQ26O9HAZSUPzMYUrjT2IxNEjUxhNpLgi9cE1VDOe1N55fBUBr5gvFOWjyMmF2JCMjRsoW/Z2MUn+kpQcARsFX/nfCoe69ZxIoeNYCXPxe1NnLgdnQj5ZyeqaP0tcxjAlXHxZX+noTBnr0orZNrqP3sW1Gd7CnQUeUCfv0bYRO0fy9ZUOFub02Awompx5KK+ANqTJbtu535PFBkpmm0KRflKKMH9+AMjM0UM7JethhETz7DqeNt
+ pxhT4jG6
+ Se0z8GE/vkVX1sM7pwedxPzTJY0PunXwYuypeT0mHmIoO6u9wx22wk7TF3Fzf4w7CgPCjJvGgLXbacpICmmgSkBL4755E60+n7yjzCEGG4w95GJiTjDBMFNNiD044PiUDydF0z6pfYzanA1ekI2Q7Fh4aU3+KY0ID8CdPCwLfSBD8c0+EcetAZzN8q46x8hR0C9A7ipxLl3FVVh/TUVC8thXf/Ir9B08oGSL3anZU9Tkn7s4K8b1vKvYDclwtHDvV0weZXfnIjIhAKLQpoLgRbZslKGko2fw1OHdOBbOIzVsKEB4b61sdZzaqSBswm+rWrzr7l+8HNhZGJ7K3LgnIJutcpA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,28 +87,159 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 19, 2025 at 07:47:57PM -0700, Alexei Starovoitov wrote:
-> On Thu, Sep 18, 2025 at 7:49 PM Shakeel Butt <shakeel.butt@linux.dev> wrote:
-> >
-[...]
-> > +
-> > +static DEFINE_PER_CPU(struct defer_memcg_events, postpone_events) = {
-> > +       .memcg_llist = LLIST_HEAD_INIT(memcg_llist),
-> > +       .work = IRQ_WORK_INIT(process_deferred_events),
-> > +};
-> 
-> Why all these per cpu stuff ? I don't understand what it helps with.
-> To have max_events per-cpu?
-> Just one global llist and irq_work will do just fine.
-> and global max_events too.
 
-Right, global llist and irq_work will work but max_events has to be
-per-memcg. In addition we will need llist_node per-memcg and I think we
-will need to do a similar cmpxchg trick I did in css_rstat_updated() to
-eliminate the potential race of llist_node of a given memcg i.e.
-multiple CPUs trying to add llist_node of a memcg to the global llist.
+On 20/09/25 6:24 am, Wei Yang wrote:
+> When collapse a pmd, there are two address in use:
+>
+>    * address points to the start of pmd
+>    * address points to each individual page
+>
+> Current naming is not easy to distinguish these two and error prone.
+>
+> Name the first one to pmd_addr and second one to pte_addr.
+>
+> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+> Suggested-by: David Hildenbrand <david@redhat.com>
+> ---
+>   mm/khugepaged.c | 43 ++++++++++++++++++++++---------------------
+>   1 file changed, 22 insertions(+), 21 deletions(-)
+>
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 4c957ce788d1..6d03072c1a92 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -537,18 +537,19 @@ static void release_pte_pages(pte_t *pte, pte_t *_pte,
+>   }
+>   
+>   static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
+> -					unsigned long address,
+> +					unsigned long pmd_addr,
+>   					pte_t *pte,
+>   					struct collapse_control *cc,
+>   					struct list_head *compound_pagelist)
+>   {
+>   	struct page *page = NULL;
+>   	struct folio *folio = NULL;
+> +	unsigned long pte_addr = pmd_addr;
+>   	pte_t *_pte;
+>   	int none_or_zero = 0, shared = 0, result = SCAN_FAIL, referenced = 0;
+>   
+>   	for (_pte = pte; _pte < pte + HPAGE_PMD_NR;
+> -	     _pte++, address += PAGE_SIZE) {
+> +	     _pte++, pte_addr += PAGE_SIZE) {
+>   		pte_t pteval = ptep_get(_pte);
+>   		if (pte_none(pteval) || is_zero_pfn(pte_pfn(pteval))) {
+>   			++none_or_zero;
+> @@ -570,7 +571,7 @@ static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
+>   			result = SCAN_PTE_UFFD_WP;
+>   			goto out;
+>   		}
+> -		page = vm_normal_page(vma, address, pteval);
+> +		page = vm_normal_page(vma, pte_addr, pteval);
+>   		if (unlikely(!page) || unlikely(is_zone_device_page(page))) {
+>   			result = SCAN_PAGE_NULL;
+>   			goto out;
+> @@ -655,8 +656,8 @@ static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
+>   		 */
+>   		if (cc->is_khugepaged &&
+>   		    (pte_young(pteval) || folio_test_young(folio) ||
+> -		     folio_test_referenced(folio) || mmu_notifier_test_young(vma->vm_mm,
+> -								     address)))
+> +		     folio_test_referenced(folio) ||
+> +		     mmu_notifier_test_young(vma->vm_mm, pte_addr)))
+>   			referenced++;
+>   	}
+>   
+> @@ -985,21 +986,21 @@ static int check_pmd_still_valid(struct mm_struct *mm,
+>    */
+>   static int __collapse_huge_page_swapin(struct mm_struct *mm,
+>   				       struct vm_area_struct *vma,
+> -				       unsigned long haddr, pmd_t *pmd,
+> +				       unsigned long pmd_addr, pmd_t *pmd,
+>   				       int referenced)
 
-This can work but I am still debating if this additional complexity is
-worth it as compared to the original patch where we skip
-cgroup_file_notify() for !allow_spinning condition.
+Will this be a problem when mTHP collapse is in? You may have the starting
+address lying in the PTE table.
+
+Personally "haddr" is pretty clear to me - I read it as "huge-aligned addr".
+I will vote for naming the starting addresses everywhere as "haddr", and use
+addr as the loop iterator. This is a short name and haddr will imply that it
+is aligned to the huge order we are collapsing for.
+
+>   			if (!pte) {
+>   				mmap_read_unlock(mm);
+>   				result = SCAN_PMD_NULL;
+> @@ -1252,7 +1253,7 @@ static int collapse_huge_page(struct mm_struct *mm, unsigned long address,
+>   
+>   static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+>   				   struct vm_area_struct *vma,
+> -				   unsigned long address, bool *mmap_locked,
+> +				   unsigned long pmd_addr, bool *mmap_locked,
+>   				   struct collapse_control *cc)
+>   {
+>   	pmd_t *pmd;
+> @@ -1261,26 +1262,26 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+>   	int none_or_zero = 0, shared = 0;
+>   	struct page *page = NULL;
+>   	struct folio *folio = NULL;
+> -	unsigned long _address;
+> +	unsigned long pte_addr;
+
+Here we can change the address parameter of hpage_collapse_scan_pmd to
+haddr and _address to addr. And so on.
+
+>   	spinlock_t *ptl;
+>   	int node = NUMA_NO_NODE, unmapped = 0;
+>   
+> -	VM_BUG_ON(address & ~HPAGE_PMD_MASK);
+> +	VM_BUG_ON(pmd_addr & ~HPAGE_PMD_MASK);
+>   
+> -	result = find_pmd_or_thp_or_none(mm, address, &pmd);
+> +	result = find_pmd_or_thp_or_none(mm, pmd_addr, &pmd);
+>   	if (result != SCAN_SUCCEED)
+>   		goto out;
+>   
+>   	memset(cc->node_load, 0, sizeof(cc->node_load));
+>   	nodes_clear(cc->alloc_nmask);
+> -	pte = pte_offset_map_lock(mm, pmd, address, &ptl);
+> +	pte = pte_offset_map_lock(mm, pmd, pmd_addr, &ptl);
+>   	if (!pte) {
+>   		result = SCAN_PMD_NULL;
+>   		goto out;
+>   	}
+>   
+> -	for (_address = address, _pte = pte; _pte < pte + HPAGE_PMD_NR;
+> -	     _pte++, _address += PAGE_SIZE) {
+> +	for (pte_addr = pmd_addr, _pte = pte; _pte < pte + HPAGE_PMD_NR;
+> +	     _pte++, pte_addr += PAGE_SIZE) {
+>   		pte_t pteval = ptep_get(_pte);
+>   		if (is_swap_pte(pteval)) {
+>   			++unmapped;
+> @@ -1328,7 +1329,7 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+>   			goto out_unmap;
+>   		}
+>   
+> -		page = vm_normal_page(vma, _address, pteval);
+> +		page = vm_normal_page(vma, pte_addr, pteval);
+>   		if (unlikely(!page) || unlikely(is_zone_device_page(page))) {
+>   			result = SCAN_PAGE_NULL;
+>   			goto out_unmap;
+> @@ -1397,7 +1398,7 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+>   		if (cc->is_khugepaged &&
+>   		    (pte_young(pteval) || folio_test_young(folio) ||
+>   		     folio_test_referenced(folio) ||
+> -		     mmu_notifier_test_young(vma->vm_mm, _address)))
+> +		     mmu_notifier_test_young(vma->vm_mm, pte_addr)))
+>   			referenced++;
+>   	}
+>   	if (cc->is_khugepaged &&
+> @@ -1410,7 +1411,7 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+>   out_unmap:
+>   	pte_unmap_unlock(pte, ptl);
+>   	if (result == SCAN_SUCCEED) {
+> -		result = collapse_huge_page(mm, address, referenced,
+> +		result = collapse_huge_page(mm, pmd_addr, referenced,
+>   					    unmapped, cc);
+>   		/* collapse_huge_page will return with the mmap_lock released */
+>   		*mmap_locked = false;
 
