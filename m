@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F370CAC597
-	for <linux-mm@archiver.kernel.org>; Sat, 20 Sep 2025 07:48:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CB11CAC5A0
+	for <linux-mm@archiver.kernel.org>; Sat, 20 Sep 2025 07:48:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1DC8E8E000D; Sat, 20 Sep 2025 03:48:09 -0400 (EDT)
+	id 670FF8E000A; Sat, 20 Sep 2025 03:48:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 13D658E0016; Sat, 20 Sep 2025 03:48:08 -0400 (EDT)
+	id 5CD808E0001; Sat, 20 Sep 2025 03:48:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8675B8E0016; Sat, 20 Sep 2025 03:48:08 -0400 (EDT)
+	id A69FF8E000D; Sat, 20 Sep 2025 03:48:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2EA3B8E000D
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C9808E000C
 	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 03:48:08 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id EDF6E140957
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id F35B411B102
 	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 07:48:07 +0000 (UTC)
-X-FDA: 83908850214.08.3856600
+X-FDA: 83908850214.06.BE6E261
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 54D764000C
+	by imf19.hostedemail.com (Postfix) with ESMTP id 5751F1A000C
 	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 07:48:06 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=VPFh5Puu;
-	spf=none (imf01.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=vtuBnJp1;
+	spf=none (imf19.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
 	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1758354486;
@@ -34,33 +34,33 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o9BTpDV5VmWnukcbyFgJ+P2WXRi71atTyZvcwK8Zv7c=;
-	b=AX5RxGKq7l9/VxuIPqlI7utyFO8GBeUTFUwem36MD1aD6XvOEiJ9mklJT6GWHNZx2Utsxf
-	vZLuuLwVenqK/nraC636BHAERI9W3fbFNaVm+H2STTRf/Ge/RHqJiXO3mLdIio1ImMKgn2
-	FiQunTfuJ7M22C/6Mhf6bRXQ64MsRMM=
+	bh=JiG9nHcsxcwZpHb/L0Tx41DaV7imD29tLb/ai1sU578=;
+	b=oB5GCHJ+UJu8LVL15Y4F9mEsC19gUDlhlV56Am/I5HQ5RzYtg+8Z1gPxDlTjmJtBqx2GZ6
+	BCGuDQVP52nj58wg+4n0cpekpCmPkC4a9+nJ/HL+3A7o/Ih+j12oqrs89lMOgp1A8T6Exl
+	GsihSwxoLG/6v9noW+t6zBWi0mA7ceM=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758354486; a=rsa-sha256;
 	cv=none;
-	b=FqqIMfjMaVPj0fIhgUU+51r5SRxfbVQKo38ZWorHmCMGICKUKfujZhrs85o61oOUXoHICb
-	WllqBIw+B4olbA1KwdHkKcOlbY3o6fCzlwrd0VsAYQ03sd12zUCwYBNS0MHQzGpWIkF6jx
-	c01tAXVMy/3/uv1qcnTIu9aJ5y0R7+M=
+	b=0MF5ZURnN0pg3SMogNKiqIWekL1pIfI13BzUYX2BFqCJQVEIuw4leSX9YKK8vQ6PXxEAM3
+	GwsIMIg/Zk3gIvc54xUAG7eOgNwXA/suvoLJTd5bMvsalEJyAnSBpdvfLgin9xgXau2KeY
+	jLv9Jbo5UaAzOx8KjSoSvLyUVKv1qOg=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=VPFh5Puu;
-	spf=none (imf01.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=vtuBnJp1;
+	spf=none (imf19.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
 	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=o9BTpDV5VmWnukcbyFgJ+P2WXRi71atTyZvcwK8Zv7c=; b=VPFh5PuuaMKxBR9c/9xK9PyU+I
-	l76/TxnbuYUnnilAzgMGQ1YnsTfp8GJp7DbrlcsfjcAZtgnC9SUxWBJthCRDQYqaEB71fGBBz+nF5
-	ELSGR3cuXetxT9KKlNjspGjtTVs45vUd6RrKquZcSizGH2ATXf/KrsLPHyfGy6hW6nu04mF7veP5u
-	27RpfqzNmMLl7ODNZL166avZaqKsSZXVXsOv1/bUThsnYcUulH+9WX502lHTqdFzXMFICa1MMciLi
-	DeJmUu6nOjRqzGMVLQG61vb7SIzEr55IEyW5E5z3GVO3hB0SzU4jr9bfFd9ZxPvqR30yEBe3f/Ych
-	myzgouKg==;
+	bh=JiG9nHcsxcwZpHb/L0Tx41DaV7imD29tLb/ai1sU578=; b=vtuBnJp1FKdRJaUi9wf6dBa+cw
+	yFyba5mUeAFRsUmJroWbhRl2eUzKZlVVNqj5veAhvT6EC9M+C9P1/Y8zGdTeqZE/bI1HCme8sHdO9
+	GcPjmOj3eT9y485+3rjAUNq69uFkp69CbzOdiVe81V46rzs0RvAuwHALDxEHK9F+mtRy7IyEHwrkQ
+	W48r8UtFZtMv4LD8awybcvRGhiXenr5wHvuktQ8hFQb+XjdjbkZfFpItsbQfdQktAwp+/VAEU1+5f
+	6XYhchXPqQgz+DLx4WbjOi5xYPuroCrhW+UL2w1nNz90dt4otfrX1DERefvNIrWozjB1cTQ8oHCXr
+	q1esPHew==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uzsK7-0000000ExBd-3kjG;
-	Sat, 20 Sep 2025 07:48:00 +0000
+	id 1uzsK9-0000000ExD1-2NQ8;
+	Sat, 20 Sep 2025 07:48:01 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: linux-fsdevel@vger.kernel.org
 Cc: torvalds@linux-foundation.org,
@@ -80,22 +80,23 @@ Cc: torvalds@linux-foundation.org,
 	casey@schaufler-ca.com,
 	linuxppc-dev@lists.ozlabs.org,
 	borntraeger@linux.ibm.com
-Subject: [PATCH 01/39] new helper: simple_remove_by_name()
-Date: Sat, 20 Sep 2025 08:47:20 +0100
-Message-ID: <20250920074759.3564072-1-viro@zeniv.linux.org.uk>
+Subject: [PATCH 12/39] convert mqueue
+Date: Sat, 20 Sep 2025 08:47:31 +0100
+Message-ID: <20250920074759.3564072-12-viro@zeniv.linux.org.uk>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250920074156.GK39973@ZenIV>
+In-Reply-To: <20250920074759.3564072-1-viro@zeniv.linux.org.uk>
 References: <20250920074156.GK39973@ZenIV>
+ <20250920074759.3564072-1-viro@zeniv.linux.org.uk>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ibssb1teaojktpon5mgeefihpkwzyzsc
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 5751F1A000C
+X-Stat-Signature: ecyydox5r6rubsnwfp44xpnoumq9eftx
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 54D764000C
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1758354486-744605
-X-HE-Meta: U2FsdGVkX1+rl4DcumJK1vDpVn0JcYsJYzkvguU6VEWy6X8bQBukMfripJ7NflvBB6TYrWCm4Y9vosLKJl4Onnbtm7L5DPWle35DjlFztVq/1wLH7NfRT4ffo1HwKzqoFYje/+S0d7O/0Tfo2oTB6HuuviUzCDv2BY+XZnHoQ5sWyx8SgPdUQkt7dZXx5wYSoSZfqtQyRCpt+hVmu1xp3dkIiN7jGIAJ1GiECbNIlp+MbYmngxhDLo7oxHDCFao95tvRiEISGvdyzNNPNGdSNqFcCpxtuRxrGKNlJd2PbtvgNMo2wvJl34Z7b9ZKdMxmnApDpGqxob+0DBtgRsLGsHPQ3E7ETs/G5o9SnfOPuLvtGQPxMFeKyCK2YiG2Rks4sEz1+zGnSkKV7g+/xTLbXhc1dWmHiss/VU+v+iB66eN3D33RNqRMYT5GW16t/b9r6Sm7v8PFF1MPoBsNzBlLNj5Ibva17LCUeXqXs4Au9bsV5IlLXT6gj4wyK1TlHJmNxTzb159HoglzGkqkdez68kqoJDTBOnh7d+TUIOcnyUjBRwOhD+cbVH6qGQSHs8eSPRS8bnzDKGn6reULeP08kgKTzY6KeRzEExZCoKcHZReY9abr7+SUfX2I+W2or9/s5FrI5IG6DRzv2vc2dribREbkEjCLpN98KGHEViuuyNZEypZMYxQhltkdqAsrzmM5RAud/iyanXoFvQj2vQbKdbFqmb99sj33+31VpUFYfFDvCPpdKgDor6dCxQVTU69hKzjm57UTQlRLZ8nuEPFbkfG63aRfqNB6uMFxGD1Ft77SK2vzEP8D+SGztNlxSa+dCe2a/1vOSWf5hNSzqweBoRLQC6t9Rb1r2UT+jInGqlbCxwZFb0BI2wgDeRgF8pPdWcA/Jd86otw6Y4631hs5q5diZPFsKaLSg+Z+pfkKGEn65DHTEMdMqX4exbpxiIPcp5o+/SeLs6t7gZHKFqf
- cwN0vWtF
- tHphs2kVtVyo2ISP7NACUFDUOxXWJmmQq2Rl3vZTTrpPoTt3PYrio6pGcaN7VcR+caoqd5Qh/KqzHIT4X3108Ii3ssD6epvdlV1441U1dAWc2n1E4sXIRYeQwzPBwjgplAvxnUPue/N6x92Z8PnqWd6LvWJ9P6Xmj8yobimbKqwnVHBLv7Cefcfmxxk7gy7iBcxSbJbf/2nBUv/cFeGmj5H74nkD9TpJcB5Y9SfZ2C338PDvJlTLdxMqm325Zvu0auGu98xAkA51mO21RyyQKvLvpp6Qf0FKToivKXWHL+iNQqqg/4eJ5JxDP0T3/qdXWKdIw8lBW4dM5nKEdZipp9FW2FfomK0vcJZUrStekuIgvTkRPIEkzuzN/2K7L58ikswnv53N4MFD8q2xX6pUCe3Qyqq1EPi5hPC2yxyDr4UIhqNZHnA8K4p6xWsYf0NpGD+i7AClMsJ4quzNFm7GPyQVvN9hTqm0evhSeiVPmjEJLwZnNMCWck8IBmg==
+X-HE-Tag: 1758354486-892026
+X-HE-Meta: U2FsdGVkX19aPLleVz0iV+xbcrwjuAkEFYGYiODo2Sn4w6YAJ3b21FVl5YjeUfg+O4Q7oD4ADCOSqQeQNb6+FhK7/sD3oQ5K9gq9HsBDdpagnrZnev015GV2RN6qfruL3XQy3MxExxYnbEMQeWLHoHbeEeRxmhFWOJL2j4cAI/x+RCvu5V8sv1Okmy9bYcpqoBvbtxcSrK2iczmJ3y/zYF/4HD22f+OeMM8xz7U3KCVbCzKg9PG70db2vO5x1x7nSTEk16KE1W5WCiXx25Qs0ojjYjStmLzUd7KEkElDn+YxhI+OsJ93nWx6xqGFfII9a1yZf/1WOaGYRFAywhi8oddhBfAfmKlXS90ns0h3LIxAhLaSwDSwTXbhOJGjcRmRyFa/4j0u2qSTytvyqyK0k2z0QVw6n/0rnN/ZlDsaK4Vo0/2pmD04WffoYJqxp/iTunAu9eprtozLwI0DlwnVBH1jWkLFDyiWK6OEaOnWzQW9dNPb8rmjrn5vttv0J7dbcEtT5aq5n9Kua69fIA0XUnFOH9kA49Kr8osFGT1iQferkuOpSR0nLd/2qZBuwtrvKYtKe3ozffTG10JEwln+px0bZoJEDM/DeqXLHl9DUjz5h7BbsHiHJxg8ekLeAL8HP7Ayh23R849nGJH/ZPy1WesIeuc+WreA3b5BS5qyWuIGRcEMdqUVjaeqnmRUmI9gBpQtXQgbdINITYUdxDCx+/EltJvjXUY2jGm18y8/5MdcNCtXesCWF2sRpslo9ehWefvd82V9PXDl1+bXxqrjFmkEwRk6fRIBvhON4WsOrn1RiV9/Q7UJegPdRLQBAvLVg+1kgy5xFijiQefT61IptfX0QP1GHzKnYD7aL+8c55UpEfufvLxkTfoWF8fQ/yjxjvWkP5ITrehUQaCG91j1vl5voFT/B+SZ49agCAl8NIjIM6o+qvWVy9dXlqVXa6IY2Ihfxg8NZ9VCVN35QbZ
+ 1nF25OCX
+ Q362bgOZvPLD3fY3QnssZ1LihB0yoMxuvoNjMlb8HB9VPgo/f538J9Y/eFEbd/6VSZVyJ6p02hqjB54t2VQOeppc0UFuqMQs7rnX+omK+NrOrK7ZuwaLEi1tHuViuHwGun0a8fU911p4ex2ON9BLq6eMyJQsHm2oVtLvCJmWjdgiGd69zb8s/xI/eJDvx7DGA7nAZP2yrE5s1jYphNdM6TSmnjxOKa6bt1ravUTGCR2B8oPql2ASPsEOEH3QotL8ueFWQgNPIb+9vEL7H5LQ1GWo7PAAxs+iggTWvnZrCReCnwkHN4kz24C4H/cL4G0AQS82FwTG5eVzH3BoP+zc6dse/VEkfc5BnojhxciQZTJFqSLUSsJFPsROvkfExJpPt77psl6asU7Kut60mEntaUiTnzVF/ZPl+jWJ6
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,81 +105,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-simple_recursive_removal(), but instead of victim dentry it takes
-parent + name.
+All modifications via normal VFS codepaths; just take care of making
+persistent in in mqueue_create_attr() and discardable in mqueue_unlink()
+and it doesn't need kill_litter_super() at all.
 
-Used to be open-coded in fs/fuse/control.c, but there's no need to expose
-the guts of that thing there and there are other potential users, so
-let's lift it into libfs...
+mqueue_unlink() side is best handled by having it call simple_unlink()
+rather than duplicating its guts...
 
 Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 ---
- fs/fuse/control.c  |  7 +------
- fs/libfs.c         | 13 +++++++++++++
- include/linux/fs.h |  2 ++
- 3 files changed, 16 insertions(+), 6 deletions(-)
+ ipc/mqueue.c | 12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
 
-diff --git a/fs/fuse/control.c b/fs/fuse/control.c
-index bb407705603c..31fa816d0189 100644
---- a/fs/fuse/control.c
-+++ b/fs/fuse/control.c
-@@ -289,18 +289,13 @@ static void remove_one(struct dentry *dentry)
-  */
- void fuse_ctl_remove_conn(struct fuse_conn *fc)
+diff --git a/ipc/mqueue.c b/ipc/mqueue.c
+index 093551fe66a7..5737130137bf 100644
+--- a/ipc/mqueue.c
++++ b/ipc/mqueue.c
+@@ -599,8 +599,7 @@ static int mqueue_create_attr(struct dentry *dentry, umode_t mode, void *arg)
+ 	dir->i_size += DIRENT_SIZE;
+ 	simple_inode_init_ts(dir);
+ 
+-	d_instantiate(dentry, inode);
+-	dget(dentry);
++	d_make_persistent(dentry, inode);
+ 	return 0;
+ out_unlock:
+ 	spin_unlock(&mq_lock);
+@@ -617,13 +616,8 @@ static int mqueue_create(struct mnt_idmap *idmap, struct inode *dir,
+ 
+ static int mqueue_unlink(struct inode *dir, struct dentry *dentry)
  {
--	struct dentry *dentry;
- 	char name[32];
- 
- 	if (!fuse_control_sb || fc->no_control)
- 		return;
- 
- 	sprintf(name, "%u", fc->dev);
--	dentry = lookup_noperm_positive_unlocked(&QSTR(name), fuse_control_sb->s_root);
--	if (!IS_ERR(dentry)) {
--		simple_recursive_removal(dentry, remove_one);
--		dput(dentry);	// paired with lookup_noperm_positive_unlocked()
--	}
-+	simple_remove_by_name(fuse_control_sb->s_root, name, remove_one);
+-	struct inode *inode = d_inode(dentry);
+-
+-	simple_inode_init_ts(dir);
+ 	dir->i_size -= DIRENT_SIZE;
+-	drop_nlink(inode);
+-	dput(dentry);
+-	return 0;
++	return simple_unlink(dir, dentry);
  }
  
- static int fuse_ctl_fill_super(struct super_block *sb, struct fs_context *fsc)
-diff --git a/fs/libfs.c b/fs/libfs.c
-index ce8c496a6940..d029aff41f66 100644
---- a/fs/libfs.c
-+++ b/fs/libfs.c
-@@ -655,6 +655,19 @@ void simple_recursive_removal(struct dentry *dentry,
- }
- EXPORT_SYMBOL(simple_recursive_removal);
+ /*
+@@ -1638,7 +1632,7 @@ static const struct fs_context_operations mqueue_fs_context_ops = {
+ static struct file_system_type mqueue_fs_type = {
+ 	.name			= "mqueue",
+ 	.init_fs_context	= mqueue_init_fs_context,
+-	.kill_sb		= kill_litter_super,
++	.kill_sb		= kill_anon_super,
+ 	.fs_flags		= FS_USERNS_MOUNT,
+ };
  
-+void simple_remove_by_name(struct dentry *parent, const char *name,
-+                           void (*callback)(struct dentry *))
-+{
-+	struct dentry *dentry;
-+
-+	dentry = lookup_noperm_positive_unlocked(&QSTR(name), parent);
-+	if (!IS_ERR(dentry)) {
-+		simple_recursive_removal(dentry, callback);
-+		dput(dentry);	// paired with lookup_noperm_positive_unlocked()
-+	}
-+}
-+EXPORT_SYMBOL(simple_remove_by_name);
-+
- /* caller holds parent directory with I_MUTEX_PARENT */
- void locked_recursive_removal(struct dentry *dentry,
-                               void (*callback)(struct dentry *))
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index d7ab4f96d705..3a33c68249e2 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -3628,6 +3628,8 @@ extern int simple_rename(struct mnt_idmap *, struct inode *,
- 			 unsigned int);
- extern void simple_recursive_removal(struct dentry *,
-                               void (*callback)(struct dentry *));
-+extern void simple_remove_by_name(struct dentry *, const char *,
-+                              void (*callback)(struct dentry *));
- extern void locked_recursive_removal(struct dentry *,
-                               void (*callback)(struct dentry *));
- extern int noop_fsync(struct file *, loff_t, loff_t, int);
 -- 
 2.47.3
 
