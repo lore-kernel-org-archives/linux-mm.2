@@ -4,92 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67C69CAC5A5
-	for <linux-mm@archiver.kernel.org>; Sat, 20 Sep 2025 12:47:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51D74CAC5A5
+	for <linux-mm@archiver.kernel.org>; Sat, 20 Sep 2025 13:41:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BFEAB8E0007; Sat, 20 Sep 2025 08:47:45 -0400 (EDT)
+	id 4EE3C8E0005; Sat, 20 Sep 2025 09:41:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD5ED8E0001; Sat, 20 Sep 2025 08:47:45 -0400 (EDT)
+	id 49ED98E0001; Sat, 20 Sep 2025 09:41:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B12998E0007; Sat, 20 Sep 2025 08:47:45 -0400 (EDT)
+	id 3B45B8E0005; Sat, 20 Sep 2025 09:41:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F3378E0001
-	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 08:47:45 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7A07682E4F
-	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 12:47:45 +0000 (UTC)
-X-FDA: 83909605290.13.3AC6E3C
-Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [176.9.242.62])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 7D0BF40011
-	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 12:47:43 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=none (imf12.hostedemail.com: domain of foo00@h08.hostsharing.net has no SPF policy when checking 176.9.242.62) smtp.mailfrom=foo00@h08.hostsharing.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758372464; a=rsa-sha256;
-	cv=none;
-	b=eqKPv3/9MPy9STAzwCjC273klhpbAoOxe7djNwAqAaOj95SoWKHvbFpNDMyZzf4mTLm/Py
-	I4wbSthp/wLKmz0Dz8YHjH/tncQhlPm0sBOd8m4ZbkWgXlBHlu4qRd0Q2IuqZGaFLe061c
-	B0YQBsHVZ8zmUMHdl5FuSeaXcYLykng=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=none (imf12.hostedemail.com: domain of foo00@h08.hostsharing.net has no SPF policy when checking 176.9.242.62) smtp.mailfrom=foo00@h08.hostsharing.net
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2A7AB8E0001
+	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 09:41:35 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B5DCE55B1C
+	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 13:41:34 +0000 (UTC)
+X-FDA: 83909740908.30.64D61A1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 29C83140012
+	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 13:41:33 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="qwL/7fDQ";
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758372464;
+	s=arc-20220608; t=1758375693;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kiYTmNJx4zbudQh5xlMJaraNXMJ3Jnc7uOOKRWV/Mrg=;
-	b=iDQV22AxVxUO/cBn01u9BqBkB6dEiTWphPufnzgQW9C8NWNSiVHqumiuZHBayfVZtDAVv6
-	uZwK/TUzwMH/m9nBtjSN0DR2iVjft8S2JAV+l0q9K9wt/Pna4BirudarzM6TXRNDUTJPl3
-	AVqEvGt+pHoaD7Bd3dDtMLY4yWt/kQM=
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout3.hostsharing.net (Postfix) with ESMTPS id 08EC22C051DD;
-	Sat, 20 Sep 2025 14:47:41 +0200 (CEST)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id C3C4E5D31C; Sat, 20 Sep 2025 14:47:40 +0200 (CEST)
-Date: Sat, 20 Sep 2025 14:47:40 +0200
-From: Lukas Wunner <lukas@wunner.de>
-To: Alexander Potapenko <glider@google.com>
-Cc: Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Ethan Graham <ethan.w.s.graham@gmail.com>, ethangraham@google.com,
-	andreyknvl@gmail.com, andy@kernel.org, brauner@kernel.org,
-	brendan.higgins@linux.dev, davem@davemloft.net, davidgow@google.com,
-	dhowells@redhat.com, dvyukov@google.com, elver@google.com,
-	herbert@gondor.apana.org.au, ignat@cloudflare.com, jack@suse.cz,
-	jannh@google.com, johannes@sipsolutions.net,
-	kasan-dev@googlegroups.com, kees@kernel.org,
-	kunit-dev@googlegroups.com, linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, rmoar@google.com,
-	shuah@kernel.org, sj@kernel.org, tarasmadan@google.com
-Subject: Re: [PATCH v2 08/10] drivers/auxdisplay: add a KFuzzTest for
- parse_xy()
-Message-ID: <aM6ibO75IidHOO3m@wunner.de>
-References: <20250919145750.3448393-1-ethan.w.s.graham@gmail.com>
- <20250919145750.3448393-9-ethan.w.s.graham@gmail.com>
- <CAHp75VdyZudJkskL0E9DEzYXgFeUwCBEwXEVUMuKSx0R9NUxmQ@mail.gmail.com>
- <CAG_fn=XTcPrsgxg+MpFqnj9t2OoYa=SF1ts8odHFaMqD+YpZ_w@mail.gmail.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=iyyGW7jA8BZTpeffO3akr8JtG9wvwEYdRYV0WoOwfZ4=;
+	b=gACgQvuCDKCahjIbdmW+cd8xRsnrXHIopV+yqygGtDDsTcYtf/CbT+WlZJowcvdxuCuLy1
+	sa1PIHSMMcuQlmp5E1R7RwL+Y4jG/GsXtKdbY3wOR/eGXrYj+d+tFILkAnYkUfivvaEIP9
+	3kzOBDRTgVcwJ0fTMDf+RkBtfgB5yLg=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="qwL/7fDQ";
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758375693; a=rsa-sha256;
+	cv=none;
+	b=Hzn4Iva5+7FIAbZuvFTWh3cKGcRViXUumoHJs97xjO11vPLBZ/jSCFfTH7cM5zxj5lNpYv
+	8aI7CoU5yaVZLhti/NEpbJzWjIimy9OGY5lvG4xYDJqvjamWqw36jcYhBnnhu8t+UIM5D4
+	6D4M4UEHsrehUrzI01jw0Mu/9pFkuus=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3662A60195;
+	Sat, 20 Sep 2025 13:41:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B807DC4CEEB;
+	Sat, 20 Sep 2025 13:41:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758375691;
+	bh=RDJAEtZ/32oyV42TKebCielH8wuyWaMhvvfTGQP3mK0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=qwL/7fDQeWrz5y/TUE+9vIi+MFL1G7OIkBoGGnwd6AWApsB/FNthMANluTL/vvBnB
+	 dVXL8dw04UmHs0P0xWW6zF1ViM7clnQI3WW8GBzhhRse7VsESi3YhOxq3U+eqvTIKf
+	 mZzF1OayOxRwORTdoUOACpn7keuKBrnXn0ERvzfhyuzZLh0KIP/CNas72X4+13k6jp
+	 J0ZU/Srs86bnHMIkGz7yNWAm0MLsbjtkstUSKmrvWu/J2iLAic1w2aBeG00Xcq+Pg4
+	 DSR78rQ0wdMyWHx1Wc01TfTgijxFV7vxVB4oR8bs6PTi18zG5gfQmxoStaWVgAXzE3
+	 3wvFipC+0194w==
+From: SeongJae Park <sj@kernel.org>
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	david@redhat.com,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	xu.xin16@zte.com.cn,
+	linux-mm@kvack.org,
+	Kiryl Shutsemau <kirill@shutemov.name>
+Subject: Re: [Patch v2 2/2] mm/khugepaged: remove definition of struct khugepaged_mm_slot
+Date: Sat, 20 Sep 2025 06:41:30 -0700
+Message-Id: <20250920134130.84541-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250920122958.nf6vcm6iyl2wz3bj@master>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAG_fn=XTcPrsgxg+MpFqnj9t2OoYa=SF1ts8odHFaMqD+YpZ_w@mail.gmail.com>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 7D0BF40011
-X-Stat-Signature: kxek8fx9br3nuz7e143zyiz4zg3mpycz
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 29C83140012
+X-Rspamd-Server: rspam05
+X-Stat-Signature: bw7e1up6ikyamjrfnb8pzhax31e3yrsn
 X-Rspam-User: 
-X-HE-Tag: 1758372463-667899
-X-HE-Meta: U2FsdGVkX19XB7p5RJC9ibmZFuc08ylYsZcJ1kRwSNBbMEYZbiMTBOYQ8sZ7l/S8bwQMi5hV1pZCTzMtCgyg8GdiFHmKG5l3o55MvH2+XW67Alhyuaj38/5r+qFXkdAux/R2NivLFSQdUlT8YB8gnT1jvqN/ReBJb0SgSaqkyrcM2ltD0UemFKGIN0d0Jkf932OaNt5XrlZ3ebtUUly/njb6QUqKH+CBdbl1SZuWLSqGwgRTIOjIdCw/Thm6rgDD30hwbBFzIWPw2GNkpVwQGJOmIy0HO8QP4in5W8eIrPtNueKqxfs3GgDlIVnJ6Dnrp4mczGIEi9kfozaglq0xFt8XX4R5tM0pelYstlQKIUEthuTBS1N2Ik7kI1p+uTRQ09VGnAH7+6wO92eINmzfMf1GOXxdFTrGgiZAhTeIzM/JUrP7+1J64+HK0e0JW6tFuWwsBDCiZpqeJdR5jHEWDyrmRaiFQ7zt64eIv/u/+QJQ1k0wiWJefydnE2/eEkOrl6OkdNMhtNaUKxe/GhCcyYwAfAJI52Y5C1rkk9luc2THtsa9eY/H3YV5QSnxlJU7xY5k1HE9ALScEJyHWmupyWae20D6j0X0xP6NqXN/qGeWMowzS2dRWtxvemSeAsc+cmVL1I7exNcYUbcwAMUuY721naA2W0rUgBSkxQzId9jJsP5KV5eiPR1/akejBrWzp6KkFjet+m/xJCkX0vIuazi1RT1BU/8RqVSUdTO7tpTnRDbAmmimKA2JcRX9ICrV/QiJdj+rN7uWtuAvkZtMKgNUrtJ1x9LJnNweFcZlOEcQJCP+LzsttoaucLmCIr0TuTqBBshua7767nNLSO8pZFBRJQeG/Kjb3l6kFqwwvpPLpHwe8YXpWsHYCN+58VuJo74pUc0tUvFcz7aTg5B7Sq8uWomP+xuUWMwKcAfbB+QZj3LNjrej7Q2F81kKUWkat6erz8LdEveEuE2dMzk
- TEte6q0Y
- K2lkNzpRPlpwtKqgIdN4O4GZc1mTHZ8RKp3P8GcpQDn95QfXBPOIJ67i5PHUXdcYpWF7o29o2AONFtrUFTXLKErz204WtthnBkkVWPMa3f6H+utSXa9rkAfDhUr4mPLv0fs5PxtXX99IHzMbVYRhQ78GfatW1qXtlg1GoKUan78W11uzSlDUWW1L63GTmmSpNwjbby9RbybLZtg5q4sFukbSqc3b3ubcqDefS74rErAl9ipotkJSAd2ap/qalRGJjW1A2pLsMPHRtXYauXxwWbG48MHq4CiLGvWFumbaHxJeXmhlEgCquYdFRPEZluRBWU/9hgBxq8wRDmzQktOCXkvVeSLaj6h5JwGNNcY5Mn9obrhkmS4JeYb8l3VLv5WC2qmEfhIevknkB7ETLYVnzVeFwHW14iGdFz64MH5xbreYh1US9y7ZkYXXZh0oduFZ5HN3tG86Rg8HH429Taw74C+x5WzfYlWDPLxwF
+X-HE-Tag: 1758375693-485623
+X-HE-Meta: U2FsdGVkX1/tq+so2ncfZt1ijEsyZntVZ17cdmJwEoxI7t13N1X1r9DIwBgW1l0FTgWNxhDjte+6wMokrFcX5qqGQ4lG+4rJsJQNZ8qw6YzjQ6dJB8L52fi2zZSqrqLM69nhNxcKXGTTrwtPf5zD35oXUj0bMwXJMv9ElisIRuId7HtyO9K8nBie/4YiGNaZNZUefyBGc2rUR2KTKB4NObScqCrDF9BWyjBfm/fdKgXjDmNZHdpG4H453eCnkaNbYua6p3t64dMzOp8hR45Tdsi2+B5AlwKu5NPaa/pU/c75RSCpcuxebuEK5YoNyBd5bIurqFtSQB4TBBdlaUmL/wi9aFLZzNadu3i05svXztTI2P8ydpw0jkBhaNp4Fiv8dBW+GL5WxuJz2HpshOkvaw8ocIku2+wW+9rky8KCC6xcyP6FOR/1HBbrmDrxCewlQ+Qe1TdtBbVK1sPLCMa2rJ1W5BGr5mKAyM70tKOVwCRC1y3bZ/+qdzjRHmLCPf1Q19weClF2qBUuTqK+V3AfSsOS4Ukd2Ibc29wKuBgThikDFH8YWPJF7ziXNcgNtpitZe95++13rvtgBjVCK271VYNrYQ/FwV+O6j8l5nU25oDUmJe1ZB6Xa5Ps/FS3py9xm5mlfN6/wxoB80LRaHfQWT5FVg5Wlp7qXZHEkdNcoUtNWaHj4srHsill08r0K0HJby2IBsA+LRlAIHLER+YyuJJWzs4bnW4H196mJTS2vgXu9/9vUlXxiFMBgsZ8DqCQvRSygbqzdbp0RuhYpSCAmDgVKx/syy1y/RNGZzsWi+Gscuzo9sBxY7BIUI4o8l608xgu3CbS5ooA80WYnJ4o/klhHPe8fKYO9YAlFzC4N99uYmLfNp3FB8i67FHtUc/ZhNsNlNdfqaCY/yTKJCVSeYgRmYb7n10rFIEBv5HAVENDeRWJNabSMrpGKMk5++AKDxkhJK0GGvCtuj+9/9l
+ FF1+G5g8
+ Ov8G0Adwzlei9KjeZelHw0jkEsQHms1hmJfSUdr9Krp7CBVqdt7ThyeuiK4yoo/ctcfCGtxD3waDVtDGYUahA18LxytNZJYFkJShkYgkoMXN74Di3ZOYR9FHWJsgdfbFN7MRqoVjR+hAeFdz9pe0yw19dXGOcox9XU+fjEEGsuI1Dck/4QW63AJjAvMN8Qn0Y5yZ8UPOrMLx9Hf8ZH+A6aD9Mr9is/6UmdxuclMjiy3Ac/kFe1GSN4qCB2l/2JmvAGjFBSsv7zPMmTBYifH3c6+IsIa1L5boVMhb6XCT9AziZTKl68Ux60z0EvLchSSNAaG5VGzzsQDrYTkl2MdHnD/qJF1FUw3rJxl4X
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,48 +104,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Sep 20, 2025 at 02:08:01PM +0200, Alexander Potapenko wrote:
-> On Sat, Sep 20, 2025 at 12:54 PM Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-> > On Fri, Sep 19, 2025 at 5:58 PM Ethan Graham <ethan.w.s.graham@gmail.com> wrote:
-> > > +++ b/drivers/auxdisplay/charlcd.c
-> > > @@ -682,3 +682,11 @@ EXPORT_SYMBOL_GPL(charlcd_unregister);
-> > >
-> > >  MODULE_DESCRIPTION("Character LCD core support");
-> > >  MODULE_LICENSE("GPL");
-> > > +
-> > > +/*
-> > > + * When CONFIG_KFUZZTEST is enabled, we include this _kfuzz.c file to ensure
-> > > + * that KFuzzTest targets are built.
-> > > + */
-> > > +#ifdef CONFIG_KFUZZTEST
-> > > +#include "tests/charlcd_kfuzz.c"
-> > > +#endif /* CONFIG_KFUZZTEST */
+On Sat, 20 Sep 2025 12:29:58 +0000 Wei Yang <richard.weiyang@gmail.com> wrote:
+
+> On Sat, Sep 20, 2025 at 04:52:33AM -0700, SeongJae Park wrote:
+> [...]
 > >
-> > No, NAK. We don't want to see these in each and every module. Please,
-> > make sure that nothing, except maybe Kconfig, is modified in this
-> > folder (yet, you may add a _separate_ test module, as you already have
-> > done in this patch).
+> >On latest mm-new tree, I am getting below error while building UML mode kernel
+> >for kunit.  And 'git bisect' points me this patch.  I'm not familiar with this
+> >code and have no time to dive deep for now, so reporting first.
 > 
-> This is one of the cases in which we can't go without changing the
-> original code, because parse_xy() is a static function.
-> Including the test into the source is not the only option, we could as
-> well make the function visible unconditionally, or introduce a macro
-> similar to VISIBLE_IF_KUNIT.
-> Do you prefer any of those?
+> Thanks for reporting.
 
-Just add something like this to drivers/auxdisplay/Makefile:
+Thank you for fast reply!
 
-ifeq ($(CONFIG_KFUZZTEST),y)
-CFLAGS_charlcd.o := -include $(src)/tests/charlcd_kfuzz.c
-endif
+> 
+> >
+> >Oops: general protection fault, probably for non-canonical adI
+> >[  356.456907] CPU: 34 UID: 0 PID: 309 Comm: khugepaged Not tainted 6.17.0-rc4+ #370 PREEMPT(voluntary)
+> >[  356.457702] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-4.el9 04/01/2014
+> >[  356.458484] RIP: 0010:collect_mm_slot (mm/khugepaged.c:1427)
+> 
+> If my understanding is correct, the error happens in following code flow:
+> 
+>   khugepaged_scan_mm_slot()
+>     mm = slot->mm;                (1)
+>     collect_mm_slot()
+>       mm = slot->mm;              (2)
+> 
+> Looks the reason is slot is NULL at (2), but we have already accessed it at (1).
+> 
+> Not find the cause yet.
+> 
+> Would you mind sharing your UML config and test step? So that I can reproduce
+> it.
 
-Alternatively, if the file in tests/ always has the same name
-as the source file but with "_kfuzz.c" suffix, consider amending
-scripts/Makefile.build to always include the "_kfuzz.c" file
-if it exists and CONFIG_KFUZZTEST=y, thus avoiding the need
-to amend all the individual Makefiles in the tree.
+To reproduce the issue, I do below:
+
+    $ ./tools/testing/kunit/kunit.py run --kunitconfig mm/damon/tests
+
+Then the OOPs happens a few seconds aftr the kunit run, or during the
+kunit-purpose UML build.  The issue sometimes doesn't happen or take time more
+than seconds.  Since the code is related with khugepaged, apparently there are
+some timing factors.  But I was able to reproduce about 3/4 times.
+
+It was also reproducible when I build and install kernel on my QEMU machine
+using 'make install'.
+
 
 Thanks,
+SJ
 
-Lukas
+[...]
 
