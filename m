@@ -4,114 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79235CAC5A7
-	for <linux-mm@archiver.kernel.org>; Sat, 20 Sep 2025 15:54:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5122CAC5A5
+	for <linux-mm@archiver.kernel.org>; Sat, 20 Sep 2025 15:54:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4BECD8E0002; Sat, 20 Sep 2025 11:54:00 -0400 (EDT)
+	id ED2998E0005; Sat, 20 Sep 2025 11:54:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 496888E0001; Sat, 20 Sep 2025 11:54:00 -0400 (EDT)
+	id EAAC88E0001; Sat, 20 Sep 2025 11:54:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3ACC88E0002; Sat, 20 Sep 2025 11:54:00 -0400 (EDT)
+	id DE8598E0005; Sat, 20 Sep 2025 11:54:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2CC318E0001
-	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 11:54:00 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 052D516019F
-	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 15:53:59 +0000 (UTC)
-X-FDA: 83910074640.07.2256CC5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 5D57F180011
-	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 15:53:58 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qbW+7cTt;
-	spf=pass (imf24.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CE0638E0001
+	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 11:54:49 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 720D2140142
+	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 15:54:49 +0000 (UTC)
+X-FDA: 83910076698.26.E797C68
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 9009E80004
+	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 15:54:47 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=NBzPkJUw;
+	spf=pass (imf30.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758383638;
+	s=arc-20220608; t=1758383687;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=06Hpa/1OvoT0TpifdUKNOv9vBuePkD3RG427WbWRUJY=;
-	b=8OnLz5iKHNQfQWWlSLaH8y4PCIej14pPUxgFQ9BdGPJBi2SAQrj99Te4Nas9QS4BU6olhn
-	2Cya9C6tYF9oSPQ5TMaNQq8dKyJRua5b9EXH6S+7ZrUc0nkjuTzDguAl/T0QT3dfrgdTn8
-	pGsMcZ8c+pCRzlNsm2IlROGOYFjN/sA=
+	bh=OmL4fKaZHfu9Rove6sJqAWTVy87f5w83yGb6oPzqQsA=;
+	b=tptUNLggx3TIpBOj7w7O5h7R4tIhszV0UscF+001NH24sSVYzZOuKmP/D6kqujuN7yG10a
+	2qJaYJ9TkutTg7cx3NQ02aWSJ5WdEqTZDVPVKaFSWLz/nuuY0M1Ko85HXJsYtyKQb7aEZw
+	COMsEYJP5fcuUzjg07Bh/hACIhEgqBw=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qbW+7cTt;
-	spf=pass (imf24.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758383638; a=rsa-sha256;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=NBzPkJUw;
+	spf=pass (imf30.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758383687; a=rsa-sha256;
 	cv=none;
-	b=FU0PZaLAB93QI0MbYaxj/CmMHPfjOCR7iKXbAy1vWkhIWKXC2a96rUaBsbZ5/kpHV1uqs7
-	kcXtdP0QlGZ3+3fnB8TPsMzyeAGZoW7lqp0nWSAkCUcPops1iTBoCrh+lNlvBse4PeBoOD
-	5EmaUUbw4oHh3ZlqqZSi/949ScuuCpM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 48CFD6014D;
-	Sat, 20 Sep 2025 15:53:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60277C4CEEB;
-	Sat, 20 Sep 2025 15:53:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758383637;
-	bh=74lAPVg94TJI1UJYgpgsOH2UQdl5PvTbgBIsxqD4zKU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qbW+7cTtf3ZC80yzIDcC6P8YiS7RGpwlDTYrGzG6j13dnssuecjvDInjgO1NGXAWT
-	 hwAQh0KbTGofBujeWDAzo8uyHyjnB4klpbdUcdr3KuR2vqLH1ociavVauQR6s6LM4C
-	 wtVOvrFkt2iXYZs5fqCArx+bz0wZR2AOL0I2MwUCesz5LxbYvHr8I0E7tiQwcKX2mh
-	 /6u8BUT9rHwxjmbaoEZQ7oL93zaaJmT1SbIoB4zqQPQjKbmP8WBwznCmHZDgor62TB
-	 Nrccq2E0zXdIiG+Jydr5UoWaXp7Rok6i3H1DFwLNWMk9eGO4TL+3lE8Pzt1MNtveO6
-	 UwT9ZhNinKNOQ==
-Date: Sat, 20 Sep 2025 18:53:52 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Keith Busch <kbusch@kernel.org>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
-	David Hildenbrand <david@redhat.com>, iommu@lists.linux.dev,
-	Jason Wang <jasowang@redhat.com>, Jens Axboe <axboe@kernel.dk>,
-	Joerg Roedel <joro@8bytes.org>, Jonathan Corbet <corbet@lwn.net>,
-	Juergen Gross <jgross@suse.com>, kasan-dev@googlegroups.com,
-	linux-block@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-nvme@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	linux-trace-kernel@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
-	xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v6 00/16] dma-mapping: migrate to physical address-based
- API
-Message-ID: <20250920155352.GH10800@unreal>
-References: <CGME20250909132821eucas1p1051ce9e0270ddbf520e105c913fa8db6@eucas1p1.samsung.com>
- <cover.1757423202.git.leonro@nvidia.com>
- <0db9bce5-40df-4cf5-85ab-f032c67d5c71@samsung.com>
- <20250912090327.GU341237@unreal>
- <aM1_9cS_LGl4GFC5@kbusch-mbp>
+	b=v3uXyKHshlESIIjRuIRcv4ZUgMk1yFXzxK6qKPkLUercMquugYkaA/wLAHpYzTARPqdy2N
+	vQfDpBQaFRjWDK1FPvBfFVcjG1qOWesDYYbvVgyheYe4eqc1YZyO8PHQsZbMINT8A3/6ln
+	tdDBzkJejU96Yrwm29XZ4lQw+xJB4AY=
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3f0ae439b56so1128380f8f.3
+        for <linux-mm@kvack.org>; Sat, 20 Sep 2025 08:54:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758383686; x=1758988486; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OmL4fKaZHfu9Rove6sJqAWTVy87f5w83yGb6oPzqQsA=;
+        b=NBzPkJUw+VAfICbKWVnTcwLGkIJtQfV084/Nwv5VtC4A60J8uQ4V7jkIWolTHLDtg+
+         732eU9OTVnktHuAuq7hfkEm72K/xki6yrpSekYfrVG73YpvHbRYMx0X5wKhxcJ+mFjx6
+         ZboUFBnchREqV0QGpCFc3A4OVfuqIOqu5JrFIuU4pLy2TbB5NM3xXb3yqcveoSUc31hs
+         vQI9+MlwSQYY4/B+TwRVpNBzGyhi9K+cmdYE46BWBaNoTUU10LF5sj0hCdoyR34Vha2V
+         GJsxLofG7UV0LKX5Vv67bLQ+D0n/VPOkRpO9zemDdr6SDDhVzMGhIe4X4velRZUz0Sev
+         +3Dg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758383686; x=1758988486;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=OmL4fKaZHfu9Rove6sJqAWTVy87f5w83yGb6oPzqQsA=;
+        b=NUX5HjjGI69lkUM9aqgtGwfGYnHsL2v4fcGSX+TVJJjEtPHT6a67dXHgdHUtIW8+88
+         pq8BaM/ftsr5ECmny44wsythmoZ7xYUmCdlax1/l+9ROEtjg6oe70W4FpYO3xl/OtAwW
+         e4EJ4tCetQi7f8891mYnHmL499hZGWuSmSiYamrBn5Y8LkApRbTRaMnVY0q2JZPpWcnh
+         cNgK5v4oSQSAeyEBBSrdhtdJCOgCzbP7MCVWF0i3s7vSGkH+zFqSIYFBaaLjotLB3ibi
+         6al3crseD7B2NciYJeN4OEgfi3z7rx8rfnHsbJtg3JsS0LI9+zjddEMiOXH6F0Ulex3T
+         Gn9A==
+X-Forwarded-Encrypted: i=1; AJvYcCUuy0n9CpYnv1xwxdE9xlgUp9SrxSN5M+TDpSN83uARNJ0uVIebzPa3VqL4/VvEbHEyJs1y/Q8YlA==@kvack.org
+X-Gm-Message-State: AOJu0YzbRe8p+gaSe7dKwEgt7VP3bqIKOlo47TluDimj2QjO+OlKgmrf
+	ypQCbmfmjNKxTEkQ3Qu80THXbh+WSmHLqnE/ppCyQ5yNwU6KWmSH7faLezVYqOXqLuQWqfUzIDn
+	vDZbVjxviBOV1ltvQ5jb4GHt+COzOUHQ=
+X-Gm-Gg: ASbGncuLsUxd18FBbZ9hcrUQlbj+RQJBibVLEhP+XUfQ9GPowO2Fyx6TuUEnaOJmQgL
+	u9JgQ034Uv7uqVgG0s109tAa+iPlwB7+4dBQjzB1Ez7zMGBcxgFXCLtG0qzYMiUKktRTYXu721s
+	YW8Vm1G7TnlDOzQ5nlgQaVeRsgVWCJcS5WaIn9AgR8s9W/yp7oozbjaDitg6XXRD2lVoksGXXox
+	ZTPO9GjE3h9cHfb7coIb63pKMaE4U3xqpP3
+X-Google-Smtp-Source: AGHT+IGfSRPp5unU0ikqgKe6L71mc7gqY7OrcTaOXCxInbx+GrRtbs1vqbP9ZDrhOUBg5/YKgmUImu9rrpRpu5dArLE=
+X-Received: by 2002:a05:6000:1789:b0:3ee:154e:4f9 with SMTP id
+ ffacd0b85a97d-3ee7d0c8af1mr7055134f8f.20.1758383685795; Sat, 20 Sep 2025
+ 08:54:45 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aM1_9cS_LGl4GFC5@kbusch-mbp>
-X-Stat-Signature: 1mbz9rnnohiae4bugu7goxw16c4a4q5n
+References: <20250905201606.66198-1-shakeel.butt@linux.dev>
+ <5qi2llyzf7gklncflo6gxoozljbm4h3tpnuv4u4ej4ztysvi6f@x44v7nz2wdzd>
+ <CAADnVQK_wvu-KBgF6dNq=F5qNk-ons-w3UenJNaew6h9qTBpGw@mail.gmail.com> <eba3aiglp2hmj65sd4vsmav26o45orrlog2ifexd44yovygcdg@43wfk6dbgqda>
+In-Reply-To: <eba3aiglp2hmj65sd4vsmav26o45orrlog2ifexd44yovygcdg@43wfk6dbgqda>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Sat, 20 Sep 2025 08:54:34 -0700
+X-Gm-Features: AS18NWC4-3QCvE4i9hUGZd-7Pyusy_D5tB_ZRka07Www2wvdZZcy7N-fgfJJ47M
+Message-ID: <CAADnVQJF-JodmrfqJzwfpaK1wjmo6-4_R-cdUfu9ZFN52zxEsA@mail.gmail.com>
+Subject: Re: [PATCH] memcg: skip cgroup_file_notify if spinning is not allowed
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Tejun Heo <tj@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Alexei Starovoitov <ast@kernel.org>, Peilin Ye <yepeilin@google.com>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, bpf <bpf@vger.kernel.org>, linux-mm <linux-mm@kvack.org>, 
+	"open list:CONTROL GROUP (CGROUP)" <cgroups@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
+	Meta kernel team <kernel-team@meta.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 9009E80004
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5D57F180011
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1758383638-407763
-X-HE-Meta: U2FsdGVkX1+qGBrl73h0xDpF9f6bMJnEv2ybzJ+M4afMahBYCK28ToOkqIPvKj6U14UBCgWnVzHkxkM5QKle4Uu9bkw90HatLWC9i1X5MIBabsXezRQZMOsho4k6LSwrZzayk5qGrX558Wzske2WYbP54PCkVfGkCiyVnXBqxn5zwtCsfk/r2w78vC5N6F9Lbdq1DewaSdYF7uYW2R/5smMlp/OncW002UhC99ztLKrYrzQEhaLjy8jPs5mR601rqwTG+i0yfuLy/rfTea/BEbOsZh7Ldb17c02Sj1qfLOAOiqBzxenpTODcdGgEVSU+dYES9UhwGJq3jLCXJEVoCdSFvv0CXJoUZLTLo7+3ASP0NDkz+jLEF2bq4wQfxKqUdcXiOIU67BDQsKVp0GlCzUhSao91MMNXfBZ+6n8+FJkPFtf9eP+qIeUBh5EIF9e/yJLxJ9YBqeDxqRWhK0da9q6nFtTX3sNBMo8RqksMycxhfnlLaiAi83KkmWhEDUnhPA13NVVFtWUJiORE0b+IKfKl5z2sgiyedXqX9hu4We8wuR2PZi8T5FS4YbMHjBm68BcMcQD2fhiTxJJ/ueMAjOfR7h4iOkQeUPgD1d/ZfqabVcUanRSAN1ezp/nkGrmuvHBJO7NXrEwdbO7UC1XlzoaWc7s1/y8gkNulFpiiR5byWRULiI515IG+pmpPi8lmrtHMqcURPHDSWTM1VV0HWzKDogb8oTrhcXS/BxfE06uS+8eoWad68R2GTKVPxhMtmBBvRVkgtantQoon1UKXf4Jf14h3j0mM7sMgBuY9TbwjjY5cNYBeOzVBKHyOYTFU28ucg+/+INX7JtTX6TZqtsEcrWWz86o11ZfwW0k59GpCwiM13wZmYuHmD/JtRjjodZeKkDdaIQql/f2hfL2lOT/RfGmS+AKuShaeKDFQ7OEoDkQeJ09e2m4tqgW7wvY/n6MZdJLT546c1mh4F/3
- y3gC/M1V
- 7m8OY4E6QFJGsuohXH0IT84asdQ9IIV2qd4zku5wVNUCxaUKujKDOtgwVLUsCJ+VF1vITNe+uhnYVPkAbdYZ/MRH/89l9OGM47Rd3VxQZeAmIBOrTDmSTfsmaCowiLS4eDZ9XNzVq/aHBF7GpHHciAcF75sdBVU6xn4OIyOQRuqC2ziwbZR1H0ot3phS5G/zzIYh7231oP+DB2ooBCLmQ0Bw0GZCAx8aJGYmeuauAlSRlT45uMCy4YlCd+5RDFbUfe7rmiEzQ3llD6zWM+T4RtkDox2RGSWgf8Dvw3Ppa019MDqYnBOHXS2B9bFnQbeKvupBy
+X-Rspamd-Server: rspam07
+X-Stat-Signature: u9i8oucbie49kak7ia8x61muyqhb8ehf
+X-HE-Tag: 1758383687-892077
+X-HE-Meta: U2FsdGVkX1/c6lncGKj9Zhvry42RscLcRZSHg6f+my8TILc7w8ko9fOHrsroOzkhL1GeQFdhhzBlibUHoj3BtjY7sosW2RM45gZpzbDK9+Kk+hrl7OW/yG3atRy5xfenTTQBcvO0q0qM7ZmF3WjGdB0FqeMyKLRoGCh7tY838XswZdtHeG3PFfZPzSKOhKQn3KB6Ra11zNOMUZ2qZ6kucelhB6ayuOYIET3OuyQdx+eFMHyyeyhMf9LqomNVd9+0Bh+zAoI+JtGR4LQ2lfVOaXgHuRJq1KCybrZPfHcjK2FCVxv0w4xkOe3ZQP5P4FND3fFRIOIPmVjvYcD1JxR20ZIkieIVOxKafGlsDB60trn4cLkqZ7pnB0RaCTLoRc/03zUTtmsnN/RO07RMvRA7QeKAulSxXBW2cLwqBrEdpwvNLWhB3blRZ3EMSn+wIpQWx+1HgxetK9gOKGD+Q53w5fRL9JbM/JBR10Ym7hCNFk6gDZ70xyPUSCgUUbZg0tTajm1j6/PF1FWkBUCJzbpOrTP9dh9iiKpxleM7EnkDs7Co5De2JOwZLVFzQIZ008zlJOlQrDuhth88aVNfu2DtXUgrFbnrBX9DwaAtVQVFQJSuiJwJYHlbcpx1KB2ZNgQ9wr4PNg/EjTy2PnGDVbrqpI5sn6Yl7anwhg+amPpFzFCd0nYXLwoMurxRUJ3iVUFGSYPlendHbpryL/JDUcbLk4EEku6I/JlIcRvcW1kifJrHLJeNTnWUdtc317pq4mkAUsQwocv61Z2XCiNUamcKL8GMw0r2osUBISNTDhbys7sAtsyo566010shIuq1rYxnxTCwKLprZHN8ZfZmFAtA/g2O7McSmDO5vM3DYN4cWJ4CmXJxDZBY0Bl9UmvhQVG8Xru7r6SEsyb7PUc7fscyd0hBT1nDHwZwCt+Cj+1KL3ciASxDvf9BsT7Al/sae8EQxKYqhVEAMjhKcTHg8P8
+ 9nantZ99
+ 4AJefB0gHRSMxL4QMj3wL8+ZhNNZ6D/7NFQWKUO0yVelo4J5P/QWANXFEs/wWmpBHGnBFp5y+8ZcycFVP+N9VftgKFz8TZlQcajkceWDqSLTE2QeZkDPvTps1ybx/hNK5aqf6M4U1zOB4G4i2sE/k/C7BTST0Hd4oVTIoInMVbkYKqrUWU3A+W1NiNX8UaNdNlYyAESZgvUuozWSboxtN9DqsRjHrFaM/taEQMym04U5711Bgj2Fcd7oW3ytShTGmurA28WjEe+q6S3ob5UwwoHPb+OpXwFQHHuDXU5+5+dCStOFP3sJ0gYoiRqOrifWFpF3mu5gUbdNkMFoklptdPI7dPpqRNoNDH4RUAzI58F2vn6BOmK1C9+3CVE7uYGIXWjWLbcDea/DBSGXx7oVPbknnWdtiuMyCT0TzzXqlTH2m7lG9gB40HiJhOg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,77 +123,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 19, 2025 at 10:08:21AM -0600, Keith Busch wrote:
-> On Fri, Sep 12, 2025 at 12:03:27PM +0300, Leon Romanovsky wrote:
-> > On Fri, Sep 12, 2025 at 12:25:38AM +0200, Marek Szyprowski wrote:
-> > > >
-> > > > This series does the core code and modern flows. A followup series
-> > > > will give the same treatment to the legacy dma_ops implementation.
-> > > 
-> > > Applied patches 1-13 into dma-mapping-for-next branch. Let's check if it 
-> > > works fine in linux-next.
-> > 
-> > Thanks a lot.
-> 
-> Just fyi, when dma debug is enabled, we're seeing this new warning
-> below. I have not had a chance to look into it yet, so I'm just
-> reporting the observation.
+On Fri, Sep 19, 2025 at 9:31=E2=80=AFPM Shakeel Butt <shakeel.butt@linux.de=
+v> wrote:
+>
+> On Fri, Sep 19, 2025 at 07:47:57PM -0700, Alexei Starovoitov wrote:
+> > On Thu, Sep 18, 2025 at 7:49=E2=80=AFPM Shakeel Butt <shakeel.butt@linu=
+x.dev> wrote:
+> > >
+> [...]
+> > > +
+> > > +static DEFINE_PER_CPU(struct defer_memcg_events, postpone_events) =
+=3D {
+> > > +       .memcg_llist =3D LLIST_HEAD_INIT(memcg_llist),
+> > > +       .work =3D IRQ_WORK_INIT(process_deferred_events),
+> > > +};
+> >
+> > Why all these per cpu stuff ? I don't understand what it helps with.
+> > To have max_events per-cpu?
+> > Just one global llist and irq_work will do just fine.
+> > and global max_events too.
+>
+> Right, global llist and irq_work will work but max_events has to be
+> per-memcg. In addition we will need llist_node per-memcg and I think we
+> will need to do a similar cmpxchg trick I did in css_rstat_updated() to
+> eliminate the potential race of llist_node of a given memcg i.e.
+> multiple CPUs trying to add llist_node of a memcg to the global llist.
 
-Did you apply all patches or only Marek's branch?
-I don't get this warning when I run my NVMe tests on current dmabuf-vfio branch.
+ohh. that cmpxchg is quite unusual. Never seen anything like that.
+I'm not convinced it's correct either.
+I would replace that with traditional:
+if (!atomic_xchg(&c->enqueued, 1))
+   if (llist_add(&c->llnode, &global_llist))
+     irq_work_queue(&global_irq_work);
 
-Thanks
+and use traditional dequeue:
 
-> 
->  DMA-API: nvme 0006:01:00.0: cacheline tracking EEXIST, overlapping mappings aren't supported
->  WARNING: kernel/dma/debug.c:598 at add_dma_entry+0x26c/0x328, CPU#1: (udev-worker)/773
->  Modules linked in: acpi_power_meter(E) loop(E) efivarfs(E) autofs4(E)
->  CPU: 1 UID: 0 PID: 773 Comm: (udev-worker) Tainted: G            E    N  6.17.0-rc6-next-20250918-debug #6 PREEMPT(none)
->  Tainted: [E]=UNSIGNED_MODULE, [N]=TEST
->  pstate: 63400009 (nZCv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
->  pc : add_dma_entry+0x26c/0x328
->  lr : add_dma_entry+0x26c/0x328
->  sp : ffff80009fe0f460
->  x29: ffff80009fe0f470 x28: 0000000000000001 x27: 0000000000000001
->  x26: ffff8000835d7f38 x25: ffff8000835d7000 x24: ffff8000835d7e60
->  x23: 0000000000000000 x22: 0000000006e2cc00 x21: 0000000000000000
->  x20: ffff800082e8f218 x19: ffff0000a908ff80 x18: 00000000ffffffff
->  x17: ffff8000801972a0 x16: ffff800080197054 x15: 0000000000000000
->  x14: 0000000000000000 x13: 0000000000000004 x12: 0000000000020006
->  x11: 0000000030e4ef9f x10: ffff800083443358 x9 : ffff80008019499c
->  x8 : 00000000fffeffff x7 : ffff800083443358 x6 : 0000000000000000
->  x5 : 00000000000bfff4 x4 : 0000000000000000 x3 : ffff0000bb005ac0
->  x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0000bb005ac0
->  Call trace:
->   add_dma_entry+0x26c/0x328 (P)
->   debug_dma_map_phys+0xc4/0xf0
->   dma_map_phys+0xe0/0x410
->   dma_map_page_attrs+0x94/0xf8
->   blk_dma_map_direct.isra.0+0x64/0xb8
->   blk_rq_dma_map_iter_next+0x6c/0xc8
->   nvme_prep_rq+0x894/0xa98
->   nvme_queue_rqs+0xb0/0x1a0
->   blk_mq_dispatch_queue_requests+0x268/0x3b8
->   blk_mq_flush_plug_list+0x90/0x188
->   __blk_flush_plug+0x104/0x170
->   blk_finish_plug+0x38/0x50
->   read_pages+0x1a4/0x3b8
->   page_cache_ra_unbounded+0x1a0/0x400
->   force_page_cache_ra+0xa8/0xd8
->   page_cache_sync_ra+0xa0/0x3f8
->   filemap_get_pages+0x104/0x950
->   filemap_read+0xf4/0x498
->   blkdev_read_iter+0x88/0x180
->   vfs_read+0x214/0x310
->   ksys_read+0x70/0x110
->   __arm64_sys_read+0x20/0x30
->   invoke_syscall+0x4c/0x118
->   el0_svc_common.constprop.0+0xc4/0xf0
->   do_el0_svc+0x24/0x38
->   el0_svc+0x1a0/0x340
->   el0t_64_sync_handler+0x98/0xe0
->   el0t_64_sync+0x17c/0x180
->  ---[ end trace 0000000000000000 ]---
-> 
-> 
+nodes =3D llist_del_all(&global_llist);
+for_each(nodes) {
+  memcg_memory_event(c, MEMCG_MAX);
+  atomic_set(&c->enqueued, 0);
+}
+
+since llist_del_first_init() is slower.
+
+max_events still looks unnecessary to me.
+
+> This can work but I am still debating if this additional complexity is
+> worth it as compared to the original patch where we skip
+> cgroup_file_notify() for !allow_spinning condition.
+
+I would skip it too. deferral doesn't seem necessary.
 
