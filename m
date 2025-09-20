@@ -4,91 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44AAACAC59A
-	for <linux-mm@archiver.kernel.org>; Sat, 20 Sep 2025 00:14:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2D5ECAC59A
+	for <linux-mm@archiver.kernel.org>; Sat, 20 Sep 2025 00:50:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 303C08E0002; Fri, 19 Sep 2025 20:14:44 -0400 (EDT)
+	id 839728E0002; Fri, 19 Sep 2025 20:50:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2DBAD8E0001; Fri, 19 Sep 2025 20:14:44 -0400 (EDT)
+	id 7EA688E0001; Fri, 19 Sep 2025 20:50:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 217518E0002; Fri, 19 Sep 2025 20:14:44 -0400 (EDT)
+	id 6FFB78E0002; Fri, 19 Sep 2025 20:50:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0E3008E0001
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 20:14:44 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6355459B63
-	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 00:14:43 +0000 (UTC)
-X-FDA: 83907707646.25.A723F72
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id A3D7F8000A
-	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 00:14:41 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L3hzw6hs;
-	spf=pass (imf02.hostedemail.com: domain of pjw@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pjw@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5F5EA8E0001
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 20:50:00 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id F34E687729
+	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 00:49:59 +0000 (UTC)
+X-FDA: 83907796518.10.656AC40
+Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
+	by imf03.hostedemail.com (Postfix) with ESMTP id D8FE420008
+	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 00:49:57 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=f1j61Dzj;
+	spf=pass (imf03.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758327281;
+	s=arc-20220608; t=1758329398;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Xrat+1ehp3aNhtXJsdSFFasDy/c5q7k1BfU1KQsUgQo=;
-	b=pAOPaFHG0AtQVJxHJZ/pxaD7YRTm23t87iUcIPIU3pjCkry1RFkIkxQv+IehrBxCoHjlzA
-	upraEoOQxdvZHrZAhQV4BhDhBGAzHlcG4GRyrLTuDdmk4KTzs+Ig0XxhqxXT5QLaYGNXFz
-	76e4uX/AExJWBfrsh82RpQc+ETqVCzE=
+	bh=hEihim8vKtht5JHRfmYVIiOJByu0+5c7d4P7gZnX9z0=;
+	b=QXxqmdIgLsqJP8EMs3I9GIANKnf+yGRPUkFMZbwKhAKJbrOrHxgJHWpYWSAKQWvZIT7NHJ
+	RfKTOatXAyL1BeBFo6PL6p3neyKcsnI9XqwQOsKik0O0QbzvmP36MJFDlbDMbhLWyxS2VQ
+	bnEU0KeS0C6abbZ9CBHw4u/M18DepDc=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L3hzw6hs;
-	spf=pass (imf02.hostedemail.com: domain of pjw@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pjw@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758327281; a=rsa-sha256;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=f1j61Dzj;
+	spf=pass (imf03.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758329398; a=rsa-sha256;
 	cv=none;
-	b=rFc7Rtiz+bitnthjpYsJNgUbPAJ5Oys8X9JqVu6NpNbl0iRV1va+xEfcC6hR/vEgjCvHQJ
-	KCiNyAY3x3+aW1xBla7DTU0TLlci/INfqzrWeP1LmygsIbK7226B12HxuVSWeUJYDAJaQr
-	Lo7RGlsvwdY3wCpiM9dlNOOk6AAZ8yE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6DEB844961;
-	Sat, 20 Sep 2025 00:14:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F96FC4CEF0;
-	Sat, 20 Sep 2025 00:14:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758327280;
-	bh=O0bDy6Ix2CSa2N0Q4JTxtP6HuLT6aOmOzysAyCGa/JQ=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=L3hzw6hsVszuDiJHPBCY82Amym8WdjwMr0g4coY501cIx1Z/cbkmYyw7MErPFCgVY
-	 9zOiRwZwy5zm841JL2MsK2jzXeQ3zuoERdnS/L8wMExSvv1T0o7mYbdFrsEWlA4SkK
-	 3svAd1LFwZ7z30kKWvM0DWesAGVpKsw7bZJco19Lm5M47zZgjVJZtlKLQMBsZ7yYaA
-	 FJfwNW5bTkOWmd9ZQMsw1BtXtJxClMXZcosYuHHq5MUc0nBPwOIMN0/MJI58CzbCdH
-	 z1MYamA/HTdmcm+e+/bELj1O9aqgYTVQyFTPfnXkV3EothiEolqhY+/B6Fha//O50S
-	 IdN4mLe8ZgdZQ==
-Date: Fri, 19 Sep 2025 18:14:34 -0600 (MDT)
-From: Paul Walmsley <pjw@kernel.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-cc: Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org, 
-    Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-    linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-    linux-riscv@lists.infradead.org, Catalin Marinas <catalin.marinas@arm.com>, 
-    Will Deacon <will@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, 
-    Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-    Alexandre Ghiti <alex@ghiti.fr>, Peter Xu <peterx@redhat.com>, 
-    Oscar Salvador <osalvador@suse.de>, 
-    Alexandre Ghiti <alexghiti@rivosinc.com>
-Subject: Re: [PATCH v2] asm-generic: Remove pud_user() from pgtable-nopmd.h
-In-Reply-To: <c2c9fc69871a7caaa205e237ff73557f19f5e176.1755509286.git.christophe.leroy@csgroup.eu>
-Message-ID: <d9f45fdb-4ecd-23b0-6c98-846be24976aa@kernel.org>
-References: <c2c9fc69871a7caaa205e237ff73557f19f5e176.1755509286.git.christophe.leroy@csgroup.eu>
+	b=Tyz60TDFI8idQM2xpjVz7yEieh+JpAa+LYWo5BJMV1chVcWS9rIaoBx4abXZZ6LpgGhxMq
+	vGQdYWBoTdjt11HRqLJQjuY+fCpDYPT0B0SeMu+6gKXcMDaxZa7lf3xKTJTJttwYHdHnj5
+	qa+neJ1aKjfPHcczRiwVdgt2vpcv7bM=
+Date: Fri, 19 Sep 2025 17:49:48 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1758329394;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hEihim8vKtht5JHRfmYVIiOJByu0+5c7d4P7gZnX9z0=;
+	b=f1j61DzjTjqsHJ1I+apAfiQAh+xjjjo7Ma1Z9O1gZoZy6hKt0YxvcGoBVQN8F0KjS1zUV+
+	uQ//pI48JWJLaHz+4gPPOBmvMpxPEndCwFmhquFD7xkXk8sOCXBJjicbDXBId/zu/wToGR
+	TpMnO96YyBFTp2XbJdr/fjdxnp8DwIk=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com, 
+	roman.gushchin@linux.dev, muchun.song@linux.dev, david@redhat.com, 
+	lorenzo.stoakes@oracle.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com, 
+	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
+	baohua@kernel.org, lance.yang@linux.dev, akpm@linux-foundation.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
+	Muchun Song <songmuchun@bytedance.com>
+Subject: Re: [PATCH 2/4] mm: thp: introduce folio_split_queue_lock and its
+ variants
+Message-ID: <v7xskholk2cdoofuv247lbk3l643jovxqheuq7hu32wj2ncz64@irs7qwsbaiqz>
+References: <cover.1758253018.git.zhengqi.arch@bytedance.com>
+ <eb072e71cc39a0ea915347f39f2af29d2e82897f.1758253018.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Rspamd-Queue-Id: A3D7F8000A
-X-Stat-Signature: oihwczbj3rh9zpg6s6ts9psaya7cddq3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <eb072e71cc39a0ea915347f39f2af29d2e82897f.1758253018.git.zhengqi.arch@bytedance.com>
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: kps61sd7bug6k89dob8jj8mrjh9gx35w
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1758327281-141952
-X-HE-Meta: U2FsdGVkX1+hrD/BbXcpy+IMG/489YglvcaJBVOTOnjEo0ZV/7Q/YQczEaBwYVXB+DSyaE2YZWKosKU9j30n61OPxLTKPJa0DOQzkDP9GOweE2BI2a764jrzSywNlhkJe6ApRU2vvDCofCCj3eJSr/6CEdgXBDQ6nJmsuyoqHrNM/QzcXSNRKejnjxKeGV3ObhhS/UDBhlAAl9ren8o4gP58EAjdOpredESCciAovp9OJWfdikFg9SMcB2/rrIv268vNtfmkg7oKJXBZkBvPJmewCZD0tnkLNSrqVHtuZKyatlrC0oFBEEexbiA+TlEOxCFxGhAxkb//zVIX5BP2GdPecM7TfYbkTUuelXA+fW2RwLuhVdUnee28FQ8yeiN7L4O1dmnrHip8pUr4/InOThw/F0K+Ns6yfX/GQv8BMQD3yyQ4BwqmX0dJyJpPahs09nXjLVGF+VpH3oij6FRfVeKKc/GlZD5jquccIPMfPTN1CrVXQY332hAp3tQUVAaa4QoJQXdb0bOibAzEF9bC3+zfmkvrKP63dPDpwjK+56XyCChqj5gMviz9LyjIwdImeDNIGxrH2Z8S8Ua2icoOH1CWcLq2xAZBooS7jnkpXjcf9xn2SxgR5s/EbdFIN2sKYo/XsIsIxMdxxVrO6jayPYq4lUkFiWzDZuKudydktSYc8RnPQ37KacuzjwgqwxwlO8XA3p8DlV/OeqsjVIaXv5yIJP4xNf2agbJpAm7lFH8wNaeo5qhcUT+Yp/uL6y74IPJFkF/02yH6YMpHOyYstNdvdIDhaHAB3XxtKDD97QU3Ch5qn0Z132/+/3SSgx4XGcjoaiUTbDZhjhgXSCoFRj8u5IXVHrCnl+qBUuO9Y+5xmJGngKgz/1wY7EgyohfRWo5f9A3MSX8Zm5q495DuFS3soY/9KGLL0IW19oeXs8PxFYKssbGAIhFkj4xy+xEiBSB+du7HrWC4Qy69OTB
- VZvruxVm
- 6n+kxEe6bwFgXcR1mjJU/GULSUhHp0itl7+I2Snj8NJtg4Hz6ov7AlWS1OHqUtcQONN03qs7GZWQpPJKxeuyD2FTgxrTGHVhToDfOP0o/2I4NxYtbwMS8iuu6qgWOy2yNFPF7llJqkYy6+wBjENJ34KoQPFq8Yauj8YEVQlakCIRHz4+ebqq/aBqCJnSZ/FoeDQB6RvjUTaTj7uUKIMC7qnSZQpBbCh418CcpclBqZ58AxW8gskdt1GzH/1ASiHVRLWF1xFsap3v1H43HpD/+k+qtT81gfu5tSfl6kra5l9SpzQkJTgdplsi+exHlapiJQyOZjvVpdeT0VsNmbVERhucaMh8VA1OiRS8+IKewiOmyd0+CFend9yV6+TQex9QLXzPTmenz62HAuT62khRe1MalyFrLUFxT518D8nBQJskVMZbtsrhVeceGMx0O+Eed7lKBu4rGp6kYgKX2nugY3u2LcPPb2oWUjnfd9mxmJZBarE+YNNP+k68UkPqxmM7cNf2tcklwHH2ra8USEzzAg+wLTw==
+X-Rspamd-Queue-Id: D8FE420008
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1758329397-220491
+X-HE-Meta: U2FsdGVkX1+ov9/P5mT8ARmIHoBTm1jcJboeumVPNM46obZvyw84QPQDBEjCfkPsUuu3xgBrvNK2aIY6onQkmff6tROimxHE55FfhIdP7T1Jj2TKmPZ27MDGA8fllVWiKXWDcDeHIVfB9wxUk5JirMmCUmqZ9e6envQTGucQhT1dAr6hL1qieQpMG7Jhdr6dvEl3n6/n79SEOta5m7Ib7BX9mO7uGTAei4JHxdI8+eXDyey1psdlyMQzNYevlsrmr2rJth14Lqx5i0vv/RkzOGT6n2+ExZriECB5SRoHLBlranSPEpknCk3JJkUELXctFfRtc2stuz3kkt1ue54cr2rQYnGI+qCwmI5znOdRu4oknRMhypbFf2XldggjwV6ErwEbjLgOuuAvrdZI9fhH9YNnIT7VS/wy1ql/1hoK5x2j0JfJT7N12TeNRCVLSr5E1FdV5gjPTXfok/Fc5UyR4hlPY/n2J20VfEXY5eztqWHV2zKJK6TidCZ2hgZT690JhBOVXjci8smAryyieWnULoBv1Tza67VefvKSt+G3SRW9nnvUSSgfQZdV8u0O4Kfmd4q8fxkiPnGUTIzj58k6v/6nd+5llk4RosRW579cMD+rAoiBThqGHfXEaMYSVZqVJv8MN8rE4tjui0bfatm4fW8LllOEyHgGRCsz+25GxEpy964/mwZ3iw4O48zQ1QQGWlen8dSOK6BGFKgV3eYZhEv2bNy/Dh3pzMp/e5X9gInh8Y48UVON0YC5uV6GezoIekfFFnVHWDXI/x5QnRzFGngPQ63zav7JZ7Oxp1tHfLZCD69YAIBzBkeCX1P3gPwrEisxo5X+5NprrAd6WeX2kzGgxcob/rmwN9gwZZLk38bhtUV00/DJrgweqBPcXeqo1xCQwEeFahqi5sZ6jfVQGiJIoThaOq4IgQykQyYjAKijqACcUg1+a4nSeVVqu8QGbQx0CfwBjN/LZeYxk1n
+ e5SKKebB
+ oqj9Hox2AnP22b+bm/dayp3rMgyRJFy3BMqyGvHugV5/AIGLlgaVFr+yWDLi89oYgWHtSegR5NFyWmAKbyjr5nspfIygjf665UIqegNVV+4sv3dUj5OemPSL6P7lSGZ1PwIOu4d82GppokRb9rn4mG6br0y6sG2szZHSjppegxwNGqjmpFEnGABb+VxfZq4JBBMKHh9+ck5U4io1xIKe+Q84MrDrdpN7mOfFhPobqc3/fmnQ5bbkgouzINAga+w6hdeebej9JSvKJx+TqS3S1oakkqyCt85CR9nr0vOsS/Y+FBH+FAgEHr4mMu1JkqAArVct3xiLBtFRoBFKZVqOOet/kvQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,29 +94,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 18 Aug 2025, Christophe Leroy wrote:
-
-> Commit 2c8a81dc0cc5 ("riscv/mm: fix two page table check related
-> issues") added pud_user() in include/asm-generic/pgtable-nopmd.h
+On Fri, Sep 19, 2025 at 11:46:33AM +0800, Qi Zheng wrote:
+> From: Muchun Song <songmuchun@bytedance.com>
 > 
-> But pud_user() only exists on ARM64 and RISCV and is not expected
-> by any part of MM.
+> In future memcg removal, the binding between a folio and a memcg may
+> change, making the split lock within the memcg unstable when held.
 > 
-> Add the missing definition in arch/riscv/include/asm/pgtable-32.h
-> and remove it from asm-generic/pgtable-nopmd.h
+> A new approach is required to reparent the split queue to its parent. This
+> patch starts introducing a unified way to acquire the split lock for
+> future work.
 > 
-> A stub pud_user() is also required for ARM64 after
-> commit ed928a3402d8 ("arm64/mm: fix page table check compile
-> error for CONFIG_PGTABLE_LEVELS=2")
+> It's a code-only refactoring with no functional changes.
 > 
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Reviewed-by: Peter Xu <peterx@redhat.com>
-> Reviewed-by: Oscar Salvador <osalvador@suse.de>
-> Acked-by: Alexandre Ghiti <alexghiti@rivosinc.com> # riscv
-> Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
 
-Acked-by: Paul Walmsley <pjw@kernel.org> # riscv
-
-
-- Paul
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 
