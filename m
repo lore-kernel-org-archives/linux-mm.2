@@ -4,117 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5122CAC5A5
-	for <linux-mm@archiver.kernel.org>; Sat, 20 Sep 2025 15:54:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40DC9CAC5A7
+	for <linux-mm@archiver.kernel.org>; Sat, 20 Sep 2025 16:26:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED2998E0005; Sat, 20 Sep 2025 11:54:49 -0400 (EDT)
+	id 668D18E0002; Sat, 20 Sep 2025 12:26:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EAAC88E0001; Sat, 20 Sep 2025 11:54:49 -0400 (EDT)
+	id 5F2018E0001; Sat, 20 Sep 2025 12:26:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE8598E0005; Sat, 20 Sep 2025 11:54:49 -0400 (EDT)
+	id 4BA4C8E0002; Sat, 20 Sep 2025 12:26:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CE0638E0001
-	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 11:54:49 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 720D2140142
-	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 15:54:49 +0000 (UTC)
-X-FDA: 83910076698.26.E797C68
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 9009E80004
-	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 15:54:47 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=NBzPkJUw;
-	spf=pass (imf30.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 343A38E0001
+	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 12:26:52 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BD29283E86
+	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 16:26:51 +0000 (UTC)
+X-FDA: 83910157422.22.BC273C3
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 884B440009
+	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 16:26:49 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=dNdAWDYo;
+	spf=pass (imf17.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.42 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758383687;
+	s=arc-20220608; t=1758385609;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OmL4fKaZHfu9Rove6sJqAWTVy87f5w83yGb6oPzqQsA=;
-	b=tptUNLggx3TIpBOj7w7O5h7R4tIhszV0UscF+001NH24sSVYzZOuKmP/D6kqujuN7yG10a
-	2qJaYJ9TkutTg7cx3NQ02aWSJ5WdEqTZDVPVKaFSWLz/nuuY0M1Ko85HXJsYtyKQb7aEZw
-	COMsEYJP5fcuUzjg07Bh/hACIhEgqBw=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=NBzPkJUw;
-	spf=pass (imf30.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758383687; a=rsa-sha256;
+	bh=GvLRCncIiqRrC6qT6Y0+vbtoZaqXeTLbbsZoYra2n2s=;
+	b=L1NKJh0rDBgqzg5nK0lHMuvL9dvSUUKlOX/VeEbPpdEr4Y1uMqZ4hp2CazlvRZ8olQX/rm
+	t2sHjpQpwmjks0GHRCNle53tSBKgNvSe1GsY7Kfd8+FwNguGflVfrshk5eO0Nh55l6lYXG
+	iA5mIxjeg9cL4sdBTWBf/qwXuYviPK4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758385609; a=rsa-sha256;
 	cv=none;
-	b=v3uXyKHshlESIIjRuIRcv4ZUgMk1yFXzxK6qKPkLUercMquugYkaA/wLAHpYzTARPqdy2N
-	vQfDpBQaFRjWDK1FPvBfFVcjG1qOWesDYYbvVgyheYe4eqc1YZyO8PHQsZbMINT8A3/6ln
-	tdDBzkJejU96Yrwm29XZ4lQw+xJB4AY=
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3f0ae439b56so1128380f8f.3
-        for <linux-mm@kvack.org>; Sat, 20 Sep 2025 08:54:47 -0700 (PDT)
+	b=KwjZqtdklsngilMQq1UBAkhcBZs4Hh4323HrpeXCme3YLXU7f1NNHC9UK037DMNdcUMh2g
+	sSomMyJXihjtiy2AZnXUCDAq6NUqQ491XQTj9FMoM1v53+jaATMw6vMmetY2e3iPJGFcLh
+	GX0LFgL1gJQUBRmSB6kVno/waBHPP04=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=dNdAWDYo;
+	spf=pass (imf17.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.42 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+	dmarc=none
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b2350899a40so402026466b.3
+        for <linux-mm@kvack.org>; Sat, 20 Sep 2025 09:26:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758383686; x=1758988486; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OmL4fKaZHfu9Rove6sJqAWTVy87f5w83yGb6oPzqQsA=;
-        b=NBzPkJUw+VAfICbKWVnTcwLGkIJtQfV084/Nwv5VtC4A60J8uQ4V7jkIWolTHLDtg+
-         732eU9OTVnktHuAuq7hfkEm72K/xki6yrpSekYfrVG73YpvHbRYMx0X5wKhxcJ+mFjx6
-         ZboUFBnchREqV0QGpCFc3A4OVfuqIOqu5JrFIuU4pLy2TbB5NM3xXb3yqcveoSUc31hs
-         vQI9+MlwSQYY4/B+TwRVpNBzGyhi9K+cmdYE46BWBaNoTUU10LF5sj0hCdoyR34Vha2V
-         GJsxLofG7UV0LKX5Vv67bLQ+D0n/VPOkRpO9zemDdr6SDDhVzMGhIe4X4velRZUz0Sev
-         +3Dg==
+        d=linux-foundation.org; s=google; t=1758385607; x=1758990407; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=GvLRCncIiqRrC6qT6Y0+vbtoZaqXeTLbbsZoYra2n2s=;
+        b=dNdAWDYoeqCVSRQHXNmpG0IdoZJOX80RrqE1Ea0GbthYRnrES3j1yz4kxBFIB/EQDi
+         CU7Hj4PRyag9UBsaVEshwKr90tSLYzg0yiMLacYrACbbkkMBBuw8bpQyprEeqhH5cj4y
+         OGucgveOLLmbA/OGBlc8xgbp/yMYJW9j7f+IQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758383686; x=1758988486;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OmL4fKaZHfu9Rove6sJqAWTVy87f5w83yGb6oPzqQsA=;
-        b=NUX5HjjGI69lkUM9aqgtGwfGYnHsL2v4fcGSX+TVJJjEtPHT6a67dXHgdHUtIW8+88
-         pq8BaM/ftsr5ECmny44wsythmoZ7xYUmCdlax1/l+9ROEtjg6oe70W4FpYO3xl/OtAwW
-         e4EJ4tCetQi7f8891mYnHmL499hZGWuSmSiYamrBn5Y8LkApRbTRaMnVY0q2JZPpWcnh
-         cNgK5v4oSQSAeyEBBSrdhtdJCOgCzbP7MCVWF0i3s7vSGkH+zFqSIYFBaaLjotLB3ibi
-         6al3crseD7B2NciYJeN4OEgfi3z7rx8rfnHsbJtg3JsS0LI9+zjddEMiOXH6F0Ulex3T
-         Gn9A==
-X-Forwarded-Encrypted: i=1; AJvYcCUuy0n9CpYnv1xwxdE9xlgUp9SrxSN5M+TDpSN83uARNJ0uVIebzPa3VqL4/VvEbHEyJs1y/Q8YlA==@kvack.org
-X-Gm-Message-State: AOJu0YzbRe8p+gaSe7dKwEgt7VP3bqIKOlo47TluDimj2QjO+OlKgmrf
-	ypQCbmfmjNKxTEkQ3Qu80THXbh+WSmHLqnE/ppCyQ5yNwU6KWmSH7faLezVYqOXqLuQWqfUzIDn
-	vDZbVjxviBOV1ltvQ5jb4GHt+COzOUHQ=
-X-Gm-Gg: ASbGncuLsUxd18FBbZ9hcrUQlbj+RQJBibVLEhP+XUfQ9GPowO2Fyx6TuUEnaOJmQgL
-	u9JgQ034Uv7uqVgG0s109tAa+iPlwB7+4dBQjzB1Ez7zMGBcxgFXCLtG0qzYMiUKktRTYXu721s
-	YW8Vm1G7TnlDOzQ5nlgQaVeRsgVWCJcS5WaIn9AgR8s9W/yp7oozbjaDitg6XXRD2lVoksGXXox
-	ZTPO9GjE3h9cHfb7coIb63pKMaE4U3xqpP3
-X-Google-Smtp-Source: AGHT+IGfSRPp5unU0ikqgKe6L71mc7gqY7OrcTaOXCxInbx+GrRtbs1vqbP9ZDrhOUBg5/YKgmUImu9rrpRpu5dArLE=
-X-Received: by 2002:a05:6000:1789:b0:3ee:154e:4f9 with SMTP id
- ffacd0b85a97d-3ee7d0c8af1mr7055134f8f.20.1758383685795; Sat, 20 Sep 2025
- 08:54:45 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1758385607; x=1758990407;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GvLRCncIiqRrC6qT6Y0+vbtoZaqXeTLbbsZoYra2n2s=;
+        b=NFgWUb55LjFnBoaH23VCT5dhE0S6e9M2Nuafnufl68yRpa/ZGaIuI86F96ItG2/BiW
+         0MiFlddsgz7Z3unvPpJ8jGNmPsjCQsTpaxf1GOSLtCNuEP/9SCdySu/CDUSqQr/ucZNS
+         WT22X6G/JS5NfuI5ODtIWy9zbT5X0vVU8a80xqdL93CYt/AxiROvFLz3UF930poCZa75
+         MxvApZ0v1P/GyVmqH+EnzgkWTjgzXBjjXHsENKp+aRvJYu4C6wWhZsuxtPyxomAuJZ+A
+         9GWFnlyN99R6lNrV8KDAtxcf6lQ/d/Vcp/J8IRJZmLhIvA2l9Cs4ZKSww6WP6UvDp20S
+         hycA==
+X-Forwarded-Encrypted: i=1; AJvYcCVGtsTeFoOLPdvQYsz3lSRaNgs9CFMNrw12FX+nINMr59iyTZv/q4400qdAs1sP6OvGqolc7SUA1A==@kvack.org
+X-Gm-Message-State: AOJu0Yy6ibbj/lIaXOVKxC7hK8HHaBXD/ipmSkAx/AAjpCQFcybCwaIB
+	ugoYhL4CCmqXGc3+EstmvdjephxvvsdPe4PQpv2Po33x4arEhZGXGiRxQhZ02X4oet3sGlGe7NZ
+	zbyee5zQ=
+X-Gm-Gg: ASbGncv8nWb35mdyeEjTOuyxnLCnrKhmWPcSLWlNMncI3ziWcO+LcWlSxi53TPWUezt
+	uxd6msJwFAk2Z2rnFlcIjpvCF9ePR7rrFnyO6pg/fanVxv7DLhok+DAjn6gVuKc3foonJd+2oq8
+	kg0aWn4hp/d1gg/P8LxxRk8l+cyimvdQ6MKO7tmm2azQMHIXBVsSFgCDHnazYnlEsd7ZGlKl6HL
+	GhUGfmhXWzo1hPPThOVRKuoVY4UQLDBdCHsJdTzucvLtA3UW6h9EmB/WloZY3BAlS5lLqW1JJ1P
+	RGsfaZvhsPr/x1N0Z2GiR6PEpx+pbMcpDJoV/jUeJ/8CZlPIBcWrqwQ3vZLPkcFqy2lT6dZuF1k
+	UlZg8jGe6++DfN38BK3+UB35qCTEQrVBELPIoscVEDBAgneNR4V6BIGChCkr7TpSpMOcwyRZT
+X-Google-Smtp-Source: AGHT+IHd0PWpJ4JwLIV+8FTpvKfLgxoyLrI4UbCAsKFa/ufwGLSHBqa+wDXtpPg2eXmTCpw3AtiHkQ==
+X-Received: by 2002:a17:906:d181:b0:b28:9c6b:3487 with SMTP id a640c23a62f3a-b289c6b439cmr180935366b.34.1758385607552;
+        Sat, 20 Sep 2025 09:26:47 -0700 (PDT)
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com. [209.85.218.46])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b1fd2816769sm671408366b.106.2025.09.20.09.26.44
+        for <linux-mm@kvack.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 20 Sep 2025 09:26:44 -0700 (PDT)
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b07c081660aso556203066b.0
+        for <linux-mm@kvack.org>; Sat, 20 Sep 2025 09:26:44 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWIz2023w17K+t6nVkUUcPYZ5cORBsa/uQLNdbg6hTbdppcs/eRz+Id8mAMIelv6KtGE3/CNEU8+A==@kvack.org
+X-Received: by 2002:a17:907:1c89:b0:b1d:285d:155c with SMTP id
+ a640c23a62f3a-b24ed88702cmr706169166b.7.1758385604052; Sat, 20 Sep 2025
+ 09:26:44 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250905201606.66198-1-shakeel.butt@linux.dev>
- <5qi2llyzf7gklncflo6gxoozljbm4h3tpnuv4u4ej4ztysvi6f@x44v7nz2wdzd>
- <CAADnVQK_wvu-KBgF6dNq=F5qNk-ons-w3UenJNaew6h9qTBpGw@mail.gmail.com> <eba3aiglp2hmj65sd4vsmav26o45orrlog2ifexd44yovygcdg@43wfk6dbgqda>
-In-Reply-To: <eba3aiglp2hmj65sd4vsmav26o45orrlog2ifexd44yovygcdg@43wfk6dbgqda>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Sat, 20 Sep 2025 08:54:34 -0700
-X-Gm-Features: AS18NWC4-3QCvE4i9hUGZd-7Pyusy_D5tB_ZRka07Www2wvdZZcy7N-fgfJJ47M
-Message-ID: <CAADnVQJF-JodmrfqJzwfpaK1wjmo6-4_R-cdUfu9ZFN52zxEsA@mail.gmail.com>
-Subject: Re: [PATCH] memcg: skip cgroup_file_notify if spinning is not allowed
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Tejun Heo <tj@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Alexei Starovoitov <ast@kernel.org>, Peilin Ye <yepeilin@google.com>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, bpf <bpf@vger.kernel.org>, linux-mm <linux-mm@kvack.org>, 
-	"open list:CONTROL GROUP (CGROUP)" <cgroups@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
-	Meta kernel team <kernel-team@meta.com>
+References: <20250920074156.GK39973@ZenIV>
+In-Reply-To: <20250920074156.GK39973@ZenIV>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Sat, 20 Sep 2025 09:26:27 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wiXPnY9vWFC87sHudSDYY+wpfTrs-uxd7DBypeE+15Y0g@mail.gmail.com>
+X-Gm-Features: AS18NWCBuRxfjxFE7tKBAQqhhkva7pQWM9EJwSLVmis6atYjgiGA5eqHrxKhjLE
+Message-ID: <CAHk-=wiXPnY9vWFC87sHudSDYY+wpfTrs-uxd7DBypeE+15Y0g@mail.gmail.com>
+Subject: Re: [PATCHES][RFC] the meat of tree-in-dcache series
+To: Al Viro <viro@zeniv.linux.org.uk>
+Cc: linux-fsdevel@vger.kernel.org, Christian Brauner <brauner@kernel.org>, 
+	Jan Kara <jack@suse.cz>, Ian Kent <raven@themaw.net>, Miklos Szeredi <miklos@szeredi.hu>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, linux-mm@kvack.org, linux-efi@vger.kernel.org, 
+	ocfs2-devel@lists.linux.dev, Kees Cook <kees@kernel.org>, 
+	Steven Rostedt <rostedt@goodmis.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	linux-usb@vger.kernel.org, Paul Moore <paul@paul-moore.com>, 
+	Casey Schaufler <casey@schaufler-ca.com>, linuxppc-dev@lists.ozlabs.org, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 9009E80004
+X-Stat-Signature: yd9wdga65wfpb1wz9skomtqr9nrot3s1
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: u9i8oucbie49kak7ia8x61muyqhb8ehf
-X-HE-Tag: 1758383687-892077
-X-HE-Meta: U2FsdGVkX1/c6lncGKj9Zhvry42RscLcRZSHg6f+my8TILc7w8ko9fOHrsroOzkhL1GeQFdhhzBlibUHoj3BtjY7sosW2RM45gZpzbDK9+Kk+hrl7OW/yG3atRy5xfenTTQBcvO0q0qM7ZmF3WjGdB0FqeMyKLRoGCh7tY838XswZdtHeG3PFfZPzSKOhKQn3KB6Ra11zNOMUZ2qZ6kucelhB6ayuOYIET3OuyQdx+eFMHyyeyhMf9LqomNVd9+0Bh+zAoI+JtGR4LQ2lfVOaXgHuRJq1KCybrZPfHcjK2FCVxv0w4xkOe3ZQP5P4FND3fFRIOIPmVjvYcD1JxR20ZIkieIVOxKafGlsDB60trn4cLkqZ7pnB0RaCTLoRc/03zUTtmsnN/RO07RMvRA7QeKAulSxXBW2cLwqBrEdpwvNLWhB3blRZ3EMSn+wIpQWx+1HgxetK9gOKGD+Q53w5fRL9JbM/JBR10Ym7hCNFk6gDZ70xyPUSCgUUbZg0tTajm1j6/PF1FWkBUCJzbpOrTP9dh9iiKpxleM7EnkDs7Co5De2JOwZLVFzQIZ008zlJOlQrDuhth88aVNfu2DtXUgrFbnrBX9DwaAtVQVFQJSuiJwJYHlbcpx1KB2ZNgQ9wr4PNg/EjTy2PnGDVbrqpI5sn6Yl7anwhg+amPpFzFCd0nYXLwoMurxRUJ3iVUFGSYPlendHbpryL/JDUcbLk4EEku6I/JlIcRvcW1kifJrHLJeNTnWUdtc317pq4mkAUsQwocv61Z2XCiNUamcKL8GMw0r2osUBISNTDhbys7sAtsyo566010shIuq1rYxnxTCwKLprZHN8ZfZmFAtA/g2O7McSmDO5vM3DYN4cWJ4CmXJxDZBY0Bl9UmvhQVG8Xru7r6SEsyb7PUc7fscyd0hBT1nDHwZwCt+Cj+1KL3ciASxDvf9BsT7Al/sae8EQxKYqhVEAMjhKcTHg8P8
- 9nantZ99
- 4AJefB0gHRSMxL4QMj3wL8+ZhNNZ6D/7NFQWKUO0yVelo4J5P/QWANXFEs/wWmpBHGnBFp5y+8ZcycFVP+N9VftgKFz8TZlQcajkceWDqSLTE2QeZkDPvTps1ybx/hNK5aqf6M4U1zOB4G4i2sE/k/C7BTST0Hd4oVTIoInMVbkYKqrUWU3A+W1NiNX8UaNdNlYyAESZgvUuozWSboxtN9DqsRjHrFaM/taEQMym04U5711Bgj2Fcd7oW3ytShTGmurA28WjEe+q6S3ob5UwwoHPb+OpXwFQHHuDXU5+5+dCStOFP3sJ0gYoiRqOrifWFpF3mu5gUbdNkMFoklptdPI7dPpqRNoNDH4RUAzI58F2vn6BOmK1C9+3CVE7uYGIXWjWLbcDea/DBSGXx7oVPbknnWdtiuMyCT0TzzXqlTH2m7lG9gB40HiJhOg==
+X-Rspamd-Queue-Id: 884B440009
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1758385609-698923
+X-HE-Meta: U2FsdGVkX1/67iQcoX5DKw9HQ2C3rkmKX8Q71VtOqmej8PcccJAz06ZGma95yectFhZwJPQpqcSKnzTMXR28fXREMWXdPFbq1lKMxMcrHDrkdRYyUCaDxjqQ0yYVmFSVUHcJiguH8nhW55gdITX75f2f9kcS6pMCXnoGefCJwYivlDgEnn/gDKuwod0OzppYsv8B2+FHcRK8avRnIYPDDSWNv2ZbBBR9UeWyIcd7/CZmphZFPogDu7WwjjDtvcB3eMruFF71eJ93MwsOJi59r/4K+0wWH4l7a+fRWO5j0mQie/lIgsZtdVGAp2tdgbTHWckjcfnejOKP8Uljxbnr6R4UE0QiQvNrGy1XTIwotkJ9JoLIGCU5KmPZG7CGV58t5tN7Bm3xGDp2ppwDvrIThoKDP0xcoAPsBODohAFE0TKrbj0/J3mmtQ0Ik7WfV6770+77vzJ3vtETc6i7fjfRJMYcddZDUgzScRY31wPP1t9XrPlzlnDgOgbFq+bJQHfJylYdtboC1IFq7KEoboCYb67Gf7OvtwdHdb7SDJlJXA8G4C7ji1zaOXFVVAEXnr41JLm3BX1+Bi0wr8i0qoAPRkrB//alzbsQjlWkdHOrRNix4cC3oJBkNrDphno8ZEfwbWiKquwFIojCjQ34ZOMvXntIWeo/vOG7WZ5hpYrE0lloA4LYjYT+Ikhf10fvVJp4zvsUXGzbdUNc4tZVCx7zDE8lSvHFQXIP7RoYCRYkkQb8LkhZpp2OFG4tCBkdswZcKdY3OKXWPl0cGKeeoUEMGHTKn54K9kpXB0CTA89lewmfI/sxWLOaoqXA7doFCFOl8ERyTgyZVvtyubvXbwiTnndSDdJGcb+RhatzAbi/KL+8RrzgXYfNF0N67MFPRK8FR6NCLa5t0y0MlyxGE2hLLkFfy+a3GCnB2NbGAtkxNMHsetwygOal5WZo0FXybHNn90yrtyL30MYKpaLAxVN
+ NV2sHnr2
+ dbvy3RzP2xo9clkBBeUOqC5rVkgSG17huo8FafretaDyQCEErL7pcg0M/fHJ/c18TO4KjbFcMDj9kn980niJVHQfIMwlBdNoYLRhdDL/jLtOkdFDIuhS8Y+vcjnbaj5u8zpjXh+OsEohbGQ6S3edVxM7XdUhKkMRPeRrWk0qoQ4I6t3x04ZvEF94oEx5Zcudusw1ZXOUvYnBS6damdstTVOCI3G5GX6KAzJUCX4/58GM8JPJCZiLldATZfXzSq5S5xAmUyMd/NCBszbtE97yf03ftUCk1/si6klRSWJuHQGs3F6gLBVFGHFOsMv0ScwD8Ny/IcetDdgssuG2j7Z0kOFH1Q6xvO920Yu/2nBFCqDDr9tCxBmGu4lEOnNTxFLt/HYbCWzIyw1DsLKxb3N8rZiXq7V3rUDISSC6pRlpq6eWuodx1+DVRA42WHxl+U8Iwnw/hIQAclxrmL/IRJOHx+w++CyblphxLszrmot7vOK5jD1Ml9YrOpAhBghR36BKZO0NUWP/m48GGay09WfNPhxLk8b3k3Xhu2WehQmdqyYlYvvGaiqNd7i8Lljaq0brgqydRrLSj6P0Q5MwQuvnf0QODZg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,54 +129,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 19, 2025 at 9:31=E2=80=AFPM Shakeel Butt <shakeel.butt@linux.de=
-v> wrote:
+On Sat, 20 Sept 2025 at 00:42, Al Viro <viro@zeniv.linux.org.uk> wrote:
 >
-> On Fri, Sep 19, 2025 at 07:47:57PM -0700, Alexei Starovoitov wrote:
-> > On Thu, Sep 18, 2025 at 7:49=E2=80=AFPM Shakeel Butt <shakeel.butt@linu=
-x.dev> wrote:
-> > >
-> [...]
-> > > +
-> > > +static DEFINE_PER_CPU(struct defer_memcg_events, postpone_events) =
-=3D {
-> > > +       .memcg_llist =3D LLIST_HEAD_INIT(memcg_llist),
-> > > +       .work =3D IRQ_WORK_INIT(process_deferred_events),
-> > > +};
-> >
-> > Why all these per cpu stuff ? I don't understand what it helps with.
-> > To have max_events per-cpu?
-> > Just one global llist and irq_work will do just fine.
-> > and global max_events too.
->
-> Right, global llist and irq_work will work but max_events has to be
-> per-memcg. In addition we will need llist_node per-memcg and I think we
-> will need to do a similar cmpxchg trick I did in css_rstat_updated() to
-> eliminate the potential race of llist_node of a given memcg i.e.
-> multiple CPUs trying to add llist_node of a memcg to the global llist.
+> The branch is -rc5-based; it lives in
+> git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs.git #work.persistency
 
-ohh. that cmpxchg is quite unusual. Never seen anything like that.
-I'm not convinced it's correct either.
-I would replace that with traditional:
-if (!atomic_xchg(&c->enqueued, 1))
-   if (llist_add(&c->llnode, &global_llist))
-     irq_work_queue(&global_irq_work);
+I reacted to the "d_make_persistent() + dput()" pattern, and wondered
+if it should just use the refcount that the caller has, but it does
+look like that alternate approach would just result in a
+"d_make_persistent(dget()))" pattern instead.
 
-and use traditional dequeue:
+And I guess you already get the lock for d_make_persistent(), so it's
+better to do the dget while having it - but arguably that is also true
+for the dput().
 
-nodes =3D llist_del_all(&global_llist);
-for_each(nodes) {
-  memcg_memory_event(c, MEMCG_MAX);
-  atomic_set(&c->enqueued, 0);
-}
+I think you did pick the right model, with d_make_persistent() taking
+a ref, and d_make_discardable() releasing it, but this series did make
+me think that the refcounting on the caller side is a bit odd.
 
-since llist_del_first_init() is slower.
+Because some places would clearly want a "d_make_persistent_and_put()"
+function. But probably not worth the extra interface.
 
-max_events still looks unnecessary to me.
+Anyway, apart from that I only had one reaction: I think
+d_make_discardable() should have a
 
-> This can work but I am still debating if this additional complexity is
-> worth it as compared to the original patch where we skip
-> cgroup_file_notify() for !allow_spinning condition.
+        WARN_ON(!(dentry->d_flags & DCACHE_PERSISTENT))
 
-I would skip it too. deferral doesn't seem necessary.
+because without that I think it can mistakenly be used as some kind of
+"dput that always takes the dentry lock", which seems bad.
+
+Or was that intentional for some reason?
+
+Talking about WARN_ON() - please don't add new BUG_ON() cases. I
+realize that those will never trigger, but *if* they were to trigger,
+some of them would do so during early boot and be a pain for people to
+ever even report to us.
+
+BUG_ON() really should be shunned. I think it makes sense to you and
+for automated testing, but it really is absolutely *horrendously* bad
+for the case where the code hits actual users.
+
+                 Linus
 
