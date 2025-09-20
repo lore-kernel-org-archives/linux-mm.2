@@ -4,128 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51C9ECAC5A5
-	for <linux-mm@archiver.kernel.org>; Sat, 20 Sep 2025 12:45:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67C69CAC5A5
+	for <linux-mm@archiver.kernel.org>; Sat, 20 Sep 2025 12:47:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A99388E0006; Sat, 20 Sep 2025 08:45:32 -0400 (EDT)
+	id BFEAB8E0007; Sat, 20 Sep 2025 08:47:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A70A38E0001; Sat, 20 Sep 2025 08:45:32 -0400 (EDT)
+	id BD5ED8E0001; Sat, 20 Sep 2025 08:47:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 986F98E0006; Sat, 20 Sep 2025 08:45:32 -0400 (EDT)
+	id B12998E0007; Sat, 20 Sep 2025 08:47:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8924D8E0001
-	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 08:45:32 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 30BBA1A00E8
-	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 12:45:32 +0000 (UTC)
-X-FDA: 83909599704.05.61F525C
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 440FD1C0009
-	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 12:45:30 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=DEMXBDTW;
-	spf=pass (imf21.hostedemail.com: domain of elver@google.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=elver@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 9F3378E0001
+	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 08:47:45 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7A07682E4F
+	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 12:47:45 +0000 (UTC)
+X-FDA: 83909605290.13.3AC6E3C
+Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [176.9.242.62])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 7D0BF40011
+	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 12:47:43 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=none (imf12.hostedemail.com: domain of foo00@h08.hostsharing.net has no SPF policy when checking 176.9.242.62) smtp.mailfrom=foo00@h08.hostsharing.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758372464; a=rsa-sha256;
+	cv=none;
+	b=eqKPv3/9MPy9STAzwCjC273klhpbAoOxe7djNwAqAaOj95SoWKHvbFpNDMyZzf4mTLm/Py
+	I4wbSthp/wLKmz0Dz8YHjH/tncQhlPm0sBOd8m4ZbkWgXlBHlu4qRd0Q2IuqZGaFLe061c
+	B0YQBsHVZ8zmUMHdl5FuSeaXcYLykng=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=none (imf12.hostedemail.com: domain of foo00@h08.hostsharing.net has no SPF policy when checking 176.9.242.62) smtp.mailfrom=foo00@h08.hostsharing.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758372330;
+	s=arc-20220608; t=1758372464;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P2Xt5dxImFQDNB+zIOSzEq8xo9rsZmb+jmetH2dJjzs=;
-	b=TJoDv903tU9cCan2vzyOYpLRKDc7zm87iWwD7pKDtpRpA++M7fJ4AXiU8OURu8eF1l62UC
-	a0obtNrpWT1Cgf3T7tyTNYNcO862Cnh2XATbdTGBVgPYfciGfafk9qHvhAu9rWZhRwshwj
-	InHy7osfqfuGjiP0kb7Ji1uEBZxZYlI=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=DEMXBDTW;
-	spf=pass (imf21.hostedemail.com: domain of elver@google.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=elver@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758372330; a=rsa-sha256;
-	cv=none;
-	b=cmWB26TldFxpIC58F4GvNDxEZAR2WB+dOZmKBhGKZ46ZXrKqkz8EvuZvhFOPClAWuGTAQA
-	lp3JiW6oO/WXCY1gn7nhbAWkfBwA4yQeT3dqHqESaDIMt9zqQ4n1XpTKKsj3iA25CpM8Rt
-	Wd5M+Ii1AWDQ3779e229NCe99pyFdGI=
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2681660d604so27805755ad.0
-        for <linux-mm@kvack.org>; Sat, 20 Sep 2025 05:45:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758372329; x=1758977129; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=P2Xt5dxImFQDNB+zIOSzEq8xo9rsZmb+jmetH2dJjzs=;
-        b=DEMXBDTWjbhaLgUy1b79UIWoPGrCqOiS3USs68rXuiKq/Aq8MIwn/9fb+GdSdzyqz4
-         ULbwIwjmPTTn8YHnvrfEep4oBOOTbVAlwv7JbJf/R2D9bcC0jhDqXuqFZflwJaSDG0ig
-         Bfe0xDLHkv4X7McQzBNdRgGCqwOxVBB688rlMpdoQwKzfgfWK1m49au8o0fgC1W2mP6l
-         MxBE2UOSszTuIjSMxa4Bb8z28hOXkGo8aoqeL7Ybz7yaqBjm56kxNLS/ioLX2jW+x/QC
-         ymVKZbtryuO5cdPlbVK5QmxuP4WVn6m1UxHvz7KEbxZHF7RMPOyuLqosck6DyVYuNjwB
-         u/bw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758372329; x=1758977129;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=P2Xt5dxImFQDNB+zIOSzEq8xo9rsZmb+jmetH2dJjzs=;
-        b=jRa72C+yVByjwQR6Ko68V1PZ61CKv1tV1v6dFyDTjzawjvkWwQy3/FEV4lMaa2rGcP
-         P0m1+udH3fdFQr6q7m1GcJVw1Pf7DSnltVBpOKyAK6XXb3khcd7VzIh03bxYU4fQI2xr
-         VtvleKg9jxvt86sed3j/RZfwd7jpDglVagi52FpE74EHZH9hKO7lRv4AmFQsJWNkErIl
-         o9Si/+UGKOZcroyVS5vY1D/JoF3M9xyLtr5iDE6EYs0m6pN0sMyHDBseOA28m02bJkuz
-         nQhHATKcLSciuZd8ioHUk8vDC0YVEonzt8DhPn8FvJFKZ++v0ZABGNAqlROxFB8aLit2
-         DUXw==
-X-Forwarded-Encrypted: i=1; AJvYcCWh7HdUkOJ4/MiG7Tts37QW33Pt4Hs8I56qjmPnjYaGCCX2d3jaGXbIy4fMsvd4UqbwegriuVFm6A==@kvack.org
-X-Gm-Message-State: AOJu0YwgL0KViQ0Myu5WueMuFDQutX6tYWaora13um3DModgZwVMeol2
-	Lb5yM7h39jk/Nv9ubO3BN+xnzbQSyL5olkmVqiEc4tq0VXYWE6nNCnDMadHRlGlVyE6QrK92G4L
-	wpsUFBjOOqmTbArSPN5a9mAPwG9uLFn8A4TNcKlT9
-X-Gm-Gg: ASbGncvDJIdq6hOkxJIDtvXNJFR6v6PlOMhbKbCXdn6hcNoKobbXK1g+D4zR1Km/1a7
-	aOV81Hg9ZsR+DNYP9RcddFS6X0VVyfDaW93T5aVgIEzFduC76yv0n2MpdoWf5OPcqyqNrPxAXn8
-	jKoXDwD/z3xr1Hdfj9hFDEyADMHkgDRkDmtYszUAVgpvZix7L8KZ3xAaBR/yFhDI3ACbWPvLPPI
-	yJzmKVPnUC2krjXzct572hjHGyi+rGOAqiDgUffuJPizr2c
-X-Google-Smtp-Source: AGHT+IGp/N/ayplQqKKBxnGs6WOfyKUH/iITNGJNC3m56lH0ddprjnIe5eKw57ece8B9TDbj2UEYyt+VdKNzNYtu5ro=
-X-Received: by 2002:a17:902:ccc9:b0:267:b2fc:8a2 with SMTP id
- d9443c01a7336-269ba46f141mr83309515ad.23.1758372328847; Sat, 20 Sep 2025
- 05:45:28 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references;
+	bh=kiYTmNJx4zbudQh5xlMJaraNXMJ3Jnc7uOOKRWV/Mrg=;
+	b=iDQV22AxVxUO/cBn01u9BqBkB6dEiTWphPufnzgQW9C8NWNSiVHqumiuZHBayfVZtDAVv6
+	uZwK/TUzwMH/m9nBtjSN0DR2iVjft8S2JAV+l0q9K9wt/Pna4BirudarzM6TXRNDUTJPl3
+	AVqEvGt+pHoaD7Bd3dDtMLY4yWt/kQM=
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout3.hostsharing.net (Postfix) with ESMTPS id 08EC22C051DD;
+	Sat, 20 Sep 2025 14:47:41 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id C3C4E5D31C; Sat, 20 Sep 2025 14:47:40 +0200 (CEST)
+Date: Sat, 20 Sep 2025 14:47:40 +0200
+From: Lukas Wunner <lukas@wunner.de>
+To: Alexander Potapenko <glider@google.com>
+Cc: Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Ethan Graham <ethan.w.s.graham@gmail.com>, ethangraham@google.com,
+	andreyknvl@gmail.com, andy@kernel.org, brauner@kernel.org,
+	brendan.higgins@linux.dev, davem@davemloft.net, davidgow@google.com,
+	dhowells@redhat.com, dvyukov@google.com, elver@google.com,
+	herbert@gondor.apana.org.au, ignat@cloudflare.com, jack@suse.cz,
+	jannh@google.com, johannes@sipsolutions.net,
+	kasan-dev@googlegroups.com, kees@kernel.org,
+	kunit-dev@googlegroups.com, linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, rmoar@google.com,
+	shuah@kernel.org, sj@kernel.org, tarasmadan@google.com
+Subject: Re: [PATCH v2 08/10] drivers/auxdisplay: add a KFuzzTest for
+ parse_xy()
+Message-ID: <aM6ibO75IidHOO3m@wunner.de>
+References: <20250919145750.3448393-1-ethan.w.s.graham@gmail.com>
+ <20250919145750.3448393-9-ethan.w.s.graham@gmail.com>
+ <CAHp75VdyZudJkskL0E9DEzYXgFeUwCBEwXEVUMuKSx0R9NUxmQ@mail.gmail.com>
+ <CAG_fn=XTcPrsgxg+MpFqnj9t2OoYa=SF1ts8odHFaMqD+YpZ_w@mail.gmail.com>
 MIME-Version: 1.0
-References: <20250918140451.1289454-1-elver@google.com> <20250918141511.GA30263@lst.de>
- <20250918174555.GA3366400@ax162> <20250919140803.GA23745@lst.de> <CANpmjNO2b_3Q56kFLN3fAwxj0=pQo0K4CjwMJ9_gHj4c3bVVsg@mail.gmail.com>
-In-Reply-To: <CANpmjNO2b_3Q56kFLN3fAwxj0=pQo0K4CjwMJ9_gHj4c3bVVsg@mail.gmail.com>
-From: Marco Elver <elver@google.com>
-Date: Sat, 20 Sep 2025 14:44:52 +0200
-X-Gm-Features: AS18NWBli1y9TeOySCtz0PRORw8H0Rr8apw4LW7wblD60qoNXqS9BvtJEM0Stlo
-Message-ID: <CANpmjNNkRQmt1Ea-EsSOVcA94kPqH_WntdT-NGnTjRocT25tFA@mail.gmail.com>
-Subject: Re: [PATCH v3 00/35] Compiler-Based Capability- and Locking-Analysis
-To: Christoph Hellwig <hch@lst.de>
-Cc: Nathan Chancellor <nathan@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>, 
-	"David S. Miller" <davem@davemloft.net>, Luc Van Oostenryck <luc.vanoostenryck@gmail.com>, 
-	"Paul E. McKenney" <paulmck@kernel.org>, Alexander Potapenko <glider@google.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Bart Van Assche <bvanassche@acm.org>, Bill Wendling <morbo@google.com>, 
-	Dmitry Vyukov <dvyukov@google.com>, Eric Dumazet <edumazet@google.com>, 
-	Frederic Weisbecker <frederic@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, Ian Rogers <irogers@google.com>, 
-	Jann Horn <jannh@google.com>, Joel Fernandes <joelagnelf@nvidia.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Josh Triplett <josh@joshtriplett.org>, 
-	Justin Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>, 
-	Kentaro Takeda <takedakn@nttdata.co.jp>, Lukas Bulwahn <lukas.bulwahn@gmail.com>, 
-	Mark Rutland <mark.rutland@arm.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>, Thomas Gleixner <tglx@linutronix.de>, 
-	Thomas Graf <tgraf@suug.ch>, Uladzislau Rezki <urezki@gmail.com>, Waiman Long <longman@redhat.com>, 
-	kasan-dev@googlegroups.com, linux-crypto@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-security-module@vger.kernel.org, linux-sparse@vger.kernel.org, 
-	llvm@lists.linux.dev, rcu@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 440FD1C0009
-X-Stat-Signature: hprdxpad3bm39169mqh8xyn3gr4c3aum
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAG_fn=XTcPrsgxg+MpFqnj9t2OoYa=SF1ts8odHFaMqD+YpZ_w@mail.gmail.com>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 7D0BF40011
+X-Stat-Signature: kxek8fx9br3nuz7e143zyiz4zg3mpycz
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1758372330-703478
-X-HE-Meta: U2FsdGVkX1+hTb9hEfpn7D+vgv8fB6Fqds1f/Z5v9q2RjbxNQzT+oWQ++i3u1mEJ9N+xD0jkmRFWyUT9WVnZgLX4QwKBb/YJoatLAmiU+JKrvqbcVcbzoWLNqwQY+iYGEsoRbupwUNQlt6xUqg2n1BgX+CeBAWvkoyswVlnJzktDfOQFMUsslpA+2zUHGQODbg5iDmt0I4HfKIDzuSght9bnrpBub/T7VHvedNX4bXZt5ZNzmTSTN86jz+myQNU41Eo9+xNmBBLBFt0MU0KVSyAtG9fXzmDrsNbToVvAdC3PAh9OvqgwoF9c/Wg5malaeGt8BrNbaU8fNF4PxRXkBpGeDj0A5WC3UV+JCnbq10detV7+8O4CLChZXruZXj9G+YWyCBbUrT3XGO6u5WvLZe8ZiXbs2E7pp6bN8Kb+JemyDk7VnCUm61WxsBPI6BLmxEW6C7CMScqrUT28dL9N6H56EAJrJlCIyxuRBLsfMj+s9hssmr/VmU8PB3ZkdiHz5WLgnZa9OZMCRrzNt+cZfUWhNjkO1AlFuOgzXSNg5bGqnSA9NlpbpXsv848IZ9jXKn+wha5O+PNu7Kr2mGqhmyVQfEe0/Tv46aMr9nsxpAIOZ17KI6ZPIvC669m/dsczNnCxh87rU6T71aV9IDZQasZQIinhOOtC8aYEh39ceHAoaF9K1RPG+MARPVR1aSi5qp0rOKDoli0KidIFjMErvwX+Bks6wHX2fZdSoY+M98cqviVt1au6S3lqCxNh78A06YsJeP8KW1ubipTztKxjJtXm1+zdbwf7pSJSaVyisWUAJo9urxYrHRxQYVImlAXZwAikItd5GMMYPSHPKqjvTuJY1/4eQLwJlT+3K0MjgZ54FJp35NomvNH7tIjlUn48TebZZbsYZIKKYcSmrZrhV5y/LQJ14z2gSD7ScoH+1/DHcJAUTlDrAaROUoykySVYS7lhhFjGhCLFCDtVI0j
- 6yuFLx5B
- HdRCOWnJojsHwdBZE+J5YLsfKw36wEz6v6N65PAOqbUsf6oPMTxwi+25YWHbnoL/FPcrN4qTWjx/Mvknkta+i/3T32Y7ePUniY0vnCS0M48FtMnXp2vOF8XTTfhRNsk7LZW5mHRCrLh/RBGBk7XyXwyOadofN/s1mAo+ef4dxAo/KPOC8caDkpAV0V1ODMLzR6y88O5iCGoPWpCp/20CUc2DkxurTnqb57TnODIcXojgkCfXDUzQVUw1wmADreRwHa6SYiQg8N7/vOiID7PJPKVoK2pyNC/JVeCrhXBCkc4/rJPc=
+X-HE-Tag: 1758372463-667899
+X-HE-Meta: U2FsdGVkX19XB7p5RJC9ibmZFuc08ylYsZcJ1kRwSNBbMEYZbiMTBOYQ8sZ7l/S8bwQMi5hV1pZCTzMtCgyg8GdiFHmKG5l3o55MvH2+XW67Alhyuaj38/5r+qFXkdAux/R2NivLFSQdUlT8YB8gnT1jvqN/ReBJb0SgSaqkyrcM2ltD0UemFKGIN0d0Jkf932OaNt5XrlZ3ebtUUly/njb6QUqKH+CBdbl1SZuWLSqGwgRTIOjIdCw/Thm6rgDD30hwbBFzIWPw2GNkpVwQGJOmIy0HO8QP4in5W8eIrPtNueKqxfs3GgDlIVnJ6Dnrp4mczGIEi9kfozaglq0xFt8XX4R5tM0pelYstlQKIUEthuTBS1N2Ik7kI1p+uTRQ09VGnAH7+6wO92eINmzfMf1GOXxdFTrGgiZAhTeIzM/JUrP7+1J64+HK0e0JW6tFuWwsBDCiZpqeJdR5jHEWDyrmRaiFQ7zt64eIv/u/+QJQ1k0wiWJefydnE2/eEkOrl6OkdNMhtNaUKxe/GhCcyYwAfAJI52Y5C1rkk9luc2THtsa9eY/H3YV5QSnxlJU7xY5k1HE9ALScEJyHWmupyWae20D6j0X0xP6NqXN/qGeWMowzS2dRWtxvemSeAsc+cmVL1I7exNcYUbcwAMUuY721naA2W0rUgBSkxQzId9jJsP5KV5eiPR1/akejBrWzp6KkFjet+m/xJCkX0vIuazi1RT1BU/8RqVSUdTO7tpTnRDbAmmimKA2JcRX9ICrV/QiJdj+rN7uWtuAvkZtMKgNUrtJ1x9LJnNweFcZlOEcQJCP+LzsttoaucLmCIr0TuTqBBshua7767nNLSO8pZFBRJQeG/Kjb3l6kFqwwvpPLpHwe8YXpWsHYCN+58VuJo74pUc0tUvFcz7aTg5B7Sq8uWomP+xuUWMwKcAfbB+QZj3LNjrej7Q2F81kKUWkat6erz8LdEveEuE2dMzk
+ TEte6q0Y
+ K2lkNzpRPlpwtKqgIdN4O4GZc1mTHZ8RKp3P8GcpQDn95QfXBPOIJ67i5PHUXdcYpWF7o29o2AONFtrUFTXLKErz204WtthnBkkVWPMa3f6H+utSXa9rkAfDhUr4mPLv0fs5PxtXX99IHzMbVYRhQ78GfatW1qXtlg1GoKUan78W11uzSlDUWW1L63GTmmSpNwjbby9RbybLZtg5q4sFukbSqc3b3ubcqDefS74rErAl9ipotkJSAd2ap/qalRGJjW1A2pLsMPHRtXYauXxwWbG48MHq4CiLGvWFumbaHxJeXmhlEgCquYdFRPEZluRBWU/9hgBxq8wRDmzQktOCXkvVeSLaj6h5JwGNNcY5Mn9obrhkmS4JeYb8l3VLv5WC2qmEfhIevknkB7ETLYVnzVeFwHW14iGdFz64MH5xbreYh1US9y7ZkYXXZh0oduFZ5HN3tG86Rg8HH429Taw74C+x5WzfYlWDPLxwF
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,54 +98,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 20 Sept 2025 at 12:23, Marco Elver <elver@google.com> wrote:
->
-> On Fri, 19 Sept 2025 at 16:08, Christoph Hellwig <hch@lst.de> wrote:
-> >
-> > On Thu, Sep 18, 2025 at 10:45:55AM -0700, Nathan Chancellor wrote:
-> > > On Thu, Sep 18, 2025 at 04:15:11PM +0200, Christoph Hellwig wrote:
-> > > > On Thu, Sep 18, 2025 at 03:59:11PM +0200, Marco Elver wrote:
-> > > > > A Clang version that supports `-Wthread-safety-pointer` and the new
-> > > > > alias-analysis of capability pointers is required (from this version
-> > > > > onwards):
-> > > > >
-> > > > >   https://github.com/llvm/llvm-project/commit/b4c98fcbe1504841203e610c351a3227f36c92a4 [3]
-> > > >
-> > > > There's no chance to make say x86 pre-built binaries for that available?
+On Sat, Sep 20, 2025 at 02:08:01PM +0200, Alexander Potapenko wrote:
+> On Sat, Sep 20, 2025 at 12:54 PM Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+> > On Fri, Sep 19, 2025 at 5:58 PM Ethan Graham <ethan.w.s.graham@gmail.com> wrote:
+> > > +++ b/drivers/auxdisplay/charlcd.c
+> > > @@ -682,3 +682,11 @@ EXPORT_SYMBOL_GPL(charlcd_unregister);
 > > >
-> > > I can use my existing kernel.org LLVM [1] build infrastructure to
-> > > generate prebuilt x86 binaries. Just give me a bit to build and upload
-> > > them. You may not be the only developer or maintainer who may want to
-> > > play with this.
+> > >  MODULE_DESCRIPTION("Character LCD core support");
+> > >  MODULE_LICENSE("GPL");
+> > > +
+> > > +/*
+> > > + * When CONFIG_KFUZZTEST is enabled, we include this _kfuzz.c file to ensure
+> > > + * that KFuzzTest targets are built.
+> > > + */
+> > > +#ifdef CONFIG_KFUZZTEST
+> > > +#include "tests/charlcd_kfuzz.c"
+> > > +#endif /* CONFIG_KFUZZTEST */
 > >
-> > That did work, thanks.
-> >
-> > I started to play around with that.  For the nvme code adding the
-> > annotations was very simply, and I also started adding trivial
-> > __guarded_by which instantly found issues.
-> >
-> > For XFS it was a lot more work and I still see tons of compiler
-> > warnings, which I'm not entirely sure how to address.  Right now I
-> > see three major classes:
-> >
-> > 1) locks held over loop iterations like:
-> >
-> > fs/xfs/xfs_extent_busy.c:573:26: warning: expecting spinlock 'xfs_group_hold(busyp->group)..xg_busy_extents->eb_lock' to be held at start of each loop [-Wthread-safety-analysis]
-> >   573 |                 struct xfs_group        *xg = xfs_group_hold(busyp->group);
-> >       |                                               ^
-> > fs/xfs/xfs_extent_busy.c:577:3: note: spinlock acquired here
-> >   577 |                 spin_lock(&eb->eb_lock);
-> >       |                 ^
-> >
-> > This is perfectly find code and needs some annotations, but I can't find
-> > any good example.
->
-> This is an interesting one, and might be a bug in the alias analysis I
-> recently implemented in Clang. I'll try to figure out a fix.
+> > No, NAK. We don't want to see these in each and every module. Please,
+> > make sure that nothing, except maybe Kconfig, is modified in this
+> > folder (yet, you may add a _separate_ test module, as you already have
+> > done in this patch).
+> 
+> This is one of the cases in which we can't go without changing the
+> original code, because parse_xy() is a static function.
+> Including the test into the source is not the only option, we could as
+> well make the function visible unconditionally, or introduce a macro
+> similar to VISIBLE_IF_KUNIT.
+> Do you prefer any of those?
 
-This fixes the problem: https://github.com/llvm/llvm-project/pull/159921
+Just add something like this to drivers/auxdisplay/Makefile:
 
-I guess I have to update the base Clang commit hash for v4 again. :-)
+ifeq ($(CONFIG_KFUZZTEST),y)
+CFLAGS_charlcd.o := -include $(src)/tests/charlcd_kfuzz.c
+endif
 
-And thanks for testing!
+Alternatively, if the file in tests/ always has the same name
+as the source file but with "_kfuzz.c" suffix, consider amending
+scripts/Makefile.build to always include the "_kfuzz.c" file
+if it exists and CONFIG_KFUZZTEST=y, thus avoiding the need
+to amend all the individual Makefiles in the tree.
+
+Thanks,
+
+Lukas
 
