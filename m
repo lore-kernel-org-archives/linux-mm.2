@@ -4,88 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2D5ECAC59A
-	for <linux-mm@archiver.kernel.org>; Sat, 20 Sep 2025 00:50:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CEAFCAC59A
+	for <linux-mm@archiver.kernel.org>; Sat, 20 Sep 2025 00:54:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 839728E0002; Fri, 19 Sep 2025 20:50:00 -0400 (EDT)
+	id 55D688E0002; Fri, 19 Sep 2025 20:54:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7EA688E0001; Fri, 19 Sep 2025 20:50:00 -0400 (EDT)
+	id 535978E0001; Fri, 19 Sep 2025 20:54:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6FFB78E0002; Fri, 19 Sep 2025 20:50:00 -0400 (EDT)
+	id 471FA8E0002; Fri, 19 Sep 2025 20:54:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5F5EA8E0001
-	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 20:50:00 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id F34E687729
-	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 00:49:59 +0000 (UTC)
-X-FDA: 83907796518.10.656AC40
-Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
-	by imf03.hostedemail.com (Postfix) with ESMTP id D8FE420008
-	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 00:49:57 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=f1j61Dzj;
-	spf=pass (imf03.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758329398;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hEihim8vKtht5JHRfmYVIiOJByu0+5c7d4P7gZnX9z0=;
-	b=QXxqmdIgLsqJP8EMs3I9GIANKnf+yGRPUkFMZbwKhAKJbrOrHxgJHWpYWSAKQWvZIT7NHJ
-	RfKTOatXAyL1BeBFo6PL6p3neyKcsnI9XqwQOsKik0O0QbzvmP36MJFDlbDMbhLWyxS2VQ
-	bnEU0KeS0C6abbZ9CBHw4u/M18DepDc=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=f1j61Dzj;
-	spf=pass (imf03.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758329398; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 378D98E0001
+	for <linux-mm@kvack.org>; Fri, 19 Sep 2025 20:54:24 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CF6D95B2A9
+	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 00:54:23 +0000 (UTC)
+X-FDA: 83907807606.02.D1B75BB
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 1DC8740005
+	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 00:54:21 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Uh2YkfSj;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf04.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758329662; a=rsa-sha256;
 	cv=none;
-	b=Tyz60TDFI8idQM2xpjVz7yEieh+JpAa+LYWo5BJMV1chVcWS9rIaoBx4abXZZ6LpgGhxMq
-	vGQdYWBoTdjt11HRqLJQjuY+fCpDYPT0B0SeMu+6gKXcMDaxZa7lf3xKTJTJttwYHdHnj5
-	qa+neJ1aKjfPHcczRiwVdgt2vpcv7bM=
-Date: Fri, 19 Sep 2025 17:49:48 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1758329394;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hEihim8vKtht5JHRfmYVIiOJByu0+5c7d4P7gZnX9z0=;
-	b=f1j61DzjTjqsHJ1I+apAfiQAh+xjjjo7Ma1Z9O1gZoZy6hKt0YxvcGoBVQN8F0KjS1zUV+
-	uQ//pI48JWJLaHz+4gPPOBmvMpxPEndCwFmhquFD7xkXk8sOCXBJjicbDXBId/zu/wToGR
-	TpMnO96YyBFTp2XbJdr/fjdxnp8DwIk=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com, 
-	roman.gushchin@linux.dev, muchun.song@linux.dev, david@redhat.com, 
-	lorenzo.stoakes@oracle.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com, 
-	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
-	baohua@kernel.org, lance.yang@linux.dev, akpm@linux-foundation.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
-	Muchun Song <songmuchun@bytedance.com>
-Subject: Re: [PATCH 2/4] mm: thp: introduce folio_split_queue_lock and its
- variants
-Message-ID: <v7xskholk2cdoofuv247lbk3l643jovxqheuq7hu32wj2ncz64@irs7qwsbaiqz>
-References: <cover.1758253018.git.zhengqi.arch@bytedance.com>
- <eb072e71cc39a0ea915347f39f2af29d2e82897f.1758253018.git.zhengqi.arch@bytedance.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <eb072e71cc39a0ea915347f39f2af29d2e82897f.1758253018.git.zhengqi.arch@bytedance.com>
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: kps61sd7bug6k89dob8jj8mrjh9gx35w
+	b=oCYKZRxmMqYuk+++JDjuoL8SQz6sUfTkept5IT+KZYpYf5DEfDzegR+31em6XaU5Tt2E0t
+	3OGwoTEsPWIl6l7te5Y0RibODF/TzyjcTH/FzWAbSgzcucubJQ5FF5R9QkkNQ4JOWb2zc5
+	b+qqvG65zH9SWHDaU6NL+3eRl7dWuow=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Uh2YkfSj;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf04.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1758329662;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=G8cNMOZczNOgsjexjwKCE71dZObLTWjAOqAKuGQRCD8=;
+	b=FBoKsJn/pWPZUfVC6yywB7016e1hgDQWANBzVbmS5Ky+a0pIQsJ8TVlaZpz1yGqkpNeSPk
+	ohcSGz0s5JYrQ157rEtSnGRH3iHk2EA/DOCsEXNDzQZYMCrTsr+JjvBvTAkN3yDjDffVwv
+	RORflkSndxuthwUafmk4sUfPS4JvPPg=
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-b07c28f390eso480675566b.2
+        for <linux-mm@kvack.org>; Fri, 19 Sep 2025 17:54:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758329660; x=1758934460; darn=kvack.org;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=G8cNMOZczNOgsjexjwKCE71dZObLTWjAOqAKuGQRCD8=;
+        b=Uh2YkfSjwSH9/Asmtj4BZgjSBw+DrUG3fOdDB3+2m8FDuXjn6H6FMofNFX6FL6ejer
+         XdLZxwDNkauCeEqWSlQ98SOXyDfuMaf9lL73uA5SHGlnw5L6S+YJT7FVKK0MhIWaYTYg
+         xfXjsa8ASFILdFTiIy+SJzJ7zyw0WtVtsBT3rcU/Zu6eqkkibEVCF6hXXay/GYh0nO1Q
+         pXstxQNLBk33xLL04tu6LU5C/LWuRvs46fdAnoYtuaY9mAPtdmTxlP65p934sEq+bNRg
+         fv8eti0Mnx6oyjeopinmjH3CVI+MSWrKhFN54KudWn3cVM6dPByF0fFBynGavQ9TegO1
+         3iCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758329660; x=1758934460;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=G8cNMOZczNOgsjexjwKCE71dZObLTWjAOqAKuGQRCD8=;
+        b=WSLChGvcIM70kpa1eeyZXwZkEMiihkHF79V1BTBCefRjnltR4oT9VadxJ9IkdDbPhm
+         zF3yYtLyjqcVFvvqz5UXe8td1voZEUZ5wFG4UjlWMV+oQgeVx8Gutwd/LSiFYU/vxUFK
+         l5BrLgtcmU+0Ds3Qu4w3bzb6VqLrDjef2mFx3PB3SlKhd61aUCV2RZiw0SefJkaPveS3
+         HpwJap0jWf8phExdL7UDoYSYLD92aXgzeolcU3kZpgqaJrIYe/zx7v6TvC8XEBkEvLFc
+         td66LQWCdIx7EjespR35h+mhJ0eMyfxySOZ3p5Cze7CuShZoJb9qL0Cb7WG0ji1b6zsG
+         9JCQ==
+X-Gm-Message-State: AOJu0YxcPCLOJmahBu59+bp9rlEMhUCA3At+2jjBgUPUNYV87APhtpi2
+	6EhbM1XxW1ii5Iw1CG8kJwogfax17anFi4JMCmzpZ3b4kD2sH7amqp7s
+X-Gm-Gg: ASbGncteTZKGg4XqSkeSvacbbiXt30eWqeiMu/p+iar2OuSYGwc4DFyQIL5rrq6DYBl
+	XAiftvaymrBStu0S4ugdADC5QkASNS4p6GVTNazukOEILwnCYPmfia1KF3T8apcYqqGT4Rl2e6f
+	RHy6NV6ZbYG+crAtZzenDMl/RgYorUmY9J91Ls7sCkzcFYfM+z1qwV+qHQqrh712osjvzd0ND+g
+	UGqWPbFBxIY9K/fVXbpEREsCGs/HWlm8eg1SMzz+TLBu7P6UidgJxljpZo3iCDSGTcNUAQQ1PBv
+	U8H73stRYfbvDzJLvqOsz3BsF/FVqn27dFRF24ahLBFwndOpyGk0caHKwsjMIFGzGI3yPZQ5SQo
+	AJ4FciwBwFQAcjNUxfpUj0Q==
+X-Google-Smtp-Source: AGHT+IHBlYAPa1hT+fBP7Usd3Oo0gbiEobXnQrEMpSFsvc+pSNfKox5WvrjKVEw+N69Vq30kDjb8OA==
+X-Received: by 2002:a17:907:724b:b0:b0c:b51b:821e with SMTP id a640c23a62f3a-b24ed886dfbmr664108566b.9.1758329660069;
+        Fri, 19 Sep 2025 17:54:20 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b1fd016e8d7sm547034666b.62.2025.09.19.17.54.19
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 19 Sep 2025 17:54:19 -0700 (PDT)
+From: Wei Yang <richard.weiyang@gmail.com>
+To: akpm@linux-foundation.org,
+	david@redhat.com,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev
+Cc: linux-mm@kvack.org,
+	Wei Yang <richard.weiyang@gmail.com>
+Subject: [PATCH] mm/khugepaged: use [pmd|pte]_addr for better reading
+Date: Sat, 20 Sep 2025 00:54:16 +0000
+Message-Id: <20250920005416.5865-1-richard.weiyang@gmail.com>
+X-Mailer: git-send-email 2.11.0
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 1DC8740005
+X-Stat-Signature: hnrof3i73oqtbuebej54mrhfmngsc4wa
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D8FE420008
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1758329397-220491
-X-HE-Meta: U2FsdGVkX1+ov9/P5mT8ARmIHoBTm1jcJboeumVPNM46obZvyw84QPQDBEjCfkPsUuu3xgBrvNK2aIY6onQkmff6tROimxHE55FfhIdP7T1Jj2TKmPZ27MDGA8fllVWiKXWDcDeHIVfB9wxUk5JirMmCUmqZ9e6envQTGucQhT1dAr6hL1qieQpMG7Jhdr6dvEl3n6/n79SEOta5m7Ib7BX9mO7uGTAei4JHxdI8+eXDyey1psdlyMQzNYevlsrmr2rJth14Lqx5i0vv/RkzOGT6n2+ExZriECB5SRoHLBlranSPEpknCk3JJkUELXctFfRtc2stuz3kkt1ue54cr2rQYnGI+qCwmI5znOdRu4oknRMhypbFf2XldggjwV6ErwEbjLgOuuAvrdZI9fhH9YNnIT7VS/wy1ql/1hoK5x2j0JfJT7N12TeNRCVLSr5E1FdV5gjPTXfok/Fc5UyR4hlPY/n2J20VfEXY5eztqWHV2zKJK6TidCZ2hgZT690JhBOVXjci8smAryyieWnULoBv1Tza67VefvKSt+G3SRW9nnvUSSgfQZdV8u0O4Kfmd4q8fxkiPnGUTIzj58k6v/6nd+5llk4RosRW579cMD+rAoiBThqGHfXEaMYSVZqVJv8MN8rE4tjui0bfatm4fW8LllOEyHgGRCsz+25GxEpy964/mwZ3iw4O48zQ1QQGWlen8dSOK6BGFKgV3eYZhEv2bNy/Dh3pzMp/e5X9gInh8Y48UVON0YC5uV6GezoIekfFFnVHWDXI/x5QnRzFGngPQ63zav7JZ7Oxp1tHfLZCD69YAIBzBkeCX1P3gPwrEisxo5X+5NprrAd6WeX2kzGgxcob/rmwN9gwZZLk38bhtUV00/DJrgweqBPcXeqo1xCQwEeFahqi5sZ6jfVQGiJIoThaOq4IgQykQyYjAKijqACcUg1+a4nSeVVqu8QGbQx0CfwBjN/LZeYxk1n
- e5SKKebB
- oqj9Hox2AnP22b+bm/dayp3rMgyRJFy3BMqyGvHugV5/AIGLlgaVFr+yWDLi89oYgWHtSegR5NFyWmAKbyjr5nspfIygjf665UIqegNVV+4sv3dUj5OemPSL6P7lSGZ1PwIOu4d82GppokRb9rn4mG6br0y6sG2szZHSjppegxwNGqjmpFEnGABb+VxfZq4JBBMKHh9+ck5U4io1xIKe+Q84MrDrdpN7mOfFhPobqc3/fmnQ5bbkgouzINAga+w6hdeebej9JSvKJx+TqS3S1oakkqyCt85CR9nr0vOsS/Y+FBH+FAgEHr4mMu1JkqAArVct3xiLBtFRoBFKZVqOOet/kvQ==
+X-HE-Tag: 1758329661-676540
+X-HE-Meta: U2FsdGVkX1+xHUldjOyNEKUnbJuB3XtP+GkQ75qxhhW9Ngm75lBEkunyIp+O5By0ncv4ldTGXwq/46b7RmCYtcJVcBbAFF5GV2/PZfniCscU9lf0UE8b9JS3pz5JaqKhXRGbbAaxet+XqrkrZa6qpyLCC0kS85nqcTDobFFtXsBpRFA1ZnodmtlDvJw9S3sqytgyrJgVxl9vBYGPgMJ0XLxR5cIGiro8AcW30YRBHiqFgxrCyHX7YxcpJq0uJl2wAq5CgRI6yXe2vxEVaQh/YiSjkN+Iq1mCjua3BDxUcATNTxQvOrqN9Cyoj8MlRHovZEmzUXHAyb4UD5df3rNoS7xg8LR4kedCq+mfQ6rZtOxSi7ojyfT4LJb6F2uRe58ag3JHBTaFjeeqynq9vjzbniMYP8fT6fCvkHSlte9OJeVcb9S6oX0NOoKBZBq7GUVNKeuZfXu/2PqnestsQ8/hdTixsrHgD/LGYBcjvviOXovJG36IfqRwrh3IHY1wXgJIVNkgEIz1X+JCV/yZjme8LV5IQ/Ip1JYbdt7AtlIbTa57D75MzxhRfdYgovVJoEtQz0DeNLH6v5znx/XAO3rd4vTDkOeLb+i+E70xOx/cIUNExlIb6dkOZNXsm4P0HJoKeW4KOfqEb45e+6P1ijJFTiaVD77vLWbEkTXeVgPegP0QRAK9lvVT3aNTTbP36OwhlZg3Cy3Qog1/Tb4VrY1lU8Kw93pKe2vEd9Rpbq3qZtCx5wTb/DDAvQRPvrth4a7tk589gJ2jGV/F854p5TPDGPQxbBeyP1bYVUFaDr0wyRFqELDSUYm0Aze+SXp9SqIHrDiqWqG4XJRzFIs3IY12lzAocUQWKvK4WDExSZ4bx6+/cf7yJMMJ+5vsEWZLgv7vlRaR1EbP0lI4EV6XsrXEabff/net9E7kTyHlNPUZu/E1xFDLUsnclwdF/OXhrevKPjyGMMkPSBWfs0XNwuB
+ zo4O2XEv
+ yiAp0giCZmYrUKWl4IiUsuPL3w+2fAHbD0shJic29hx+AEQeSLb2LzzrK2vfBy8MrhXN+m2mjNrvWdK8QAN0KYYotRJxzytP5HfRAmj1AQ1hhRHWuW2rRWO9f/2i3xlj+vdael2VP6r6O7rqVpvri3liMfsDFgYCrqlWINR9KhcXIe5ceC2SoSN8otou3hiPhrOhtlS4EmNM5b7UziBEaQ4tzy7joegnGaDAxVT7EcYMfVng5wdgVwAYJcb3T2jfFME/pdKK12md0WNmPNx68erTk0XwP4OK1lGT/k+H7j8sK3r4Mk6Ut0L4iD0MKMzABWni+2/xhO648qHluFykp+J/XQrRT94GL1MpdN2VM3hF83ryULV2Flx+vJfy+Rvo81lCzTq++BRjZ3U4I9j9wfTjLaI52jNvqZsanlRboTKwMLyFP5HfmTGVKtvnSC5tbahF8Oa63jMynykCB2hRlmgHj55gkdSVPi9pDCsZXlYExtaXR04ywbktn77DPZsvoiCxWsaoAaJ3/zZGVXY2i07ybkkYLtk2Mlx2PyKPy1hugtaKH3upfv2CP12ZwTxDgFFwwBV382MAh1HknzraCnUWQxq3zeg6s/Ds8SBVgkpZNdzIUsmJmkPvzGFl22C0be5YN
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,21 +120,173 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 19, 2025 at 11:46:33AM +0800, Qi Zheng wrote:
-> From: Muchun Song <songmuchun@bytedance.com>
-> 
-> In future memcg removal, the binding between a folio and a memcg may
-> change, making the split lock within the memcg unstable when held.
-> 
-> A new approach is required to reparent the split queue to its parent. This
-> patch starts introducing a unified way to acquire the split lock for
-> future work.
-> 
-> It's a code-only refactoring with no functional changes.
-> 
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+When collapse a pmd, there are two address in use:
 
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+  * address points to the start of pmd
+  * address points to each individual page
+
+Current naming is not easy to distinguish these two and error prone.
+
+Name the first one to pmd_addr and second one to pte_addr.
+
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+Suggested-by: David Hildenbrand <david@redhat.com>
+---
+ mm/khugepaged.c | 43 ++++++++++++++++++++++---------------------
+ 1 file changed, 22 insertions(+), 21 deletions(-)
+
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 4c957ce788d1..6d03072c1a92 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -537,18 +537,19 @@ static void release_pte_pages(pte_t *pte, pte_t *_pte,
+ }
+ 
+ static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
+-					unsigned long address,
++					unsigned long pmd_addr,
+ 					pte_t *pte,
+ 					struct collapse_control *cc,
+ 					struct list_head *compound_pagelist)
+ {
+ 	struct page *page = NULL;
+ 	struct folio *folio = NULL;
++	unsigned long pte_addr = pmd_addr;
+ 	pte_t *_pte;
+ 	int none_or_zero = 0, shared = 0, result = SCAN_FAIL, referenced = 0;
+ 
+ 	for (_pte = pte; _pte < pte + HPAGE_PMD_NR;
+-	     _pte++, address += PAGE_SIZE) {
++	     _pte++, pte_addr += PAGE_SIZE) {
+ 		pte_t pteval = ptep_get(_pte);
+ 		if (pte_none(pteval) || is_zero_pfn(pte_pfn(pteval))) {
+ 			++none_or_zero;
+@@ -570,7 +571,7 @@ static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
+ 			result = SCAN_PTE_UFFD_WP;
+ 			goto out;
+ 		}
+-		page = vm_normal_page(vma, address, pteval);
++		page = vm_normal_page(vma, pte_addr, pteval);
+ 		if (unlikely(!page) || unlikely(is_zone_device_page(page))) {
+ 			result = SCAN_PAGE_NULL;
+ 			goto out;
+@@ -655,8 +656,8 @@ static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
+ 		 */
+ 		if (cc->is_khugepaged &&
+ 		    (pte_young(pteval) || folio_test_young(folio) ||
+-		     folio_test_referenced(folio) || mmu_notifier_test_young(vma->vm_mm,
+-								     address)))
++		     folio_test_referenced(folio) ||
++		     mmu_notifier_test_young(vma->vm_mm, pte_addr)))
+ 			referenced++;
+ 	}
+ 
+@@ -985,21 +986,21 @@ static int check_pmd_still_valid(struct mm_struct *mm,
+  */
+ static int __collapse_huge_page_swapin(struct mm_struct *mm,
+ 				       struct vm_area_struct *vma,
+-				       unsigned long haddr, pmd_t *pmd,
++				       unsigned long pmd_addr, pmd_t *pmd,
+ 				       int referenced)
+ {
+ 	int swapped_in = 0;
+ 	vm_fault_t ret = 0;
+-	unsigned long address, end = haddr + (HPAGE_PMD_NR * PAGE_SIZE);
++	unsigned long pte_addr, end = pmd_addr + (HPAGE_PMD_NR * PAGE_SIZE);
+ 	int result;
+ 	pte_t *pte = NULL;
+ 	spinlock_t *ptl;
+ 
+-	for (address = haddr; address < end; address += PAGE_SIZE) {
++	for (pte_addr = pmd_addr; pte_addr < end; pte_addr += PAGE_SIZE) {
+ 		struct vm_fault vmf = {
+ 			.vma = vma,
+-			.address = address,
+-			.pgoff = linear_page_index(vma, address),
++			.address = pte_addr,
++			.pgoff = linear_page_index(vma, pte_addr),
+ 			.flags = FAULT_FLAG_ALLOW_RETRY,
+ 			.pmd = pmd,
+ 		};
+@@ -1009,7 +1010,7 @@ static int __collapse_huge_page_swapin(struct mm_struct *mm,
+ 			 * Here the ptl is only used to check pte_same() in
+ 			 * do_swap_page(), so readonly version is enough.
+ 			 */
+-			pte = pte_offset_map_ro_nolock(mm, pmd, address, &ptl);
++			pte = pte_offset_map_ro_nolock(mm, pmd, pte_addr, &ptl);
+ 			if (!pte) {
+ 				mmap_read_unlock(mm);
+ 				result = SCAN_PMD_NULL;
+@@ -1252,7 +1253,7 @@ static int collapse_huge_page(struct mm_struct *mm, unsigned long address,
+ 
+ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+ 				   struct vm_area_struct *vma,
+-				   unsigned long address, bool *mmap_locked,
++				   unsigned long pmd_addr, bool *mmap_locked,
+ 				   struct collapse_control *cc)
+ {
+ 	pmd_t *pmd;
+@@ -1261,26 +1262,26 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+ 	int none_or_zero = 0, shared = 0;
+ 	struct page *page = NULL;
+ 	struct folio *folio = NULL;
+-	unsigned long _address;
++	unsigned long pte_addr;
+ 	spinlock_t *ptl;
+ 	int node = NUMA_NO_NODE, unmapped = 0;
+ 
+-	VM_BUG_ON(address & ~HPAGE_PMD_MASK);
++	VM_BUG_ON(pmd_addr & ~HPAGE_PMD_MASK);
+ 
+-	result = find_pmd_or_thp_or_none(mm, address, &pmd);
++	result = find_pmd_or_thp_or_none(mm, pmd_addr, &pmd);
+ 	if (result != SCAN_SUCCEED)
+ 		goto out;
+ 
+ 	memset(cc->node_load, 0, sizeof(cc->node_load));
+ 	nodes_clear(cc->alloc_nmask);
+-	pte = pte_offset_map_lock(mm, pmd, address, &ptl);
++	pte = pte_offset_map_lock(mm, pmd, pmd_addr, &ptl);
+ 	if (!pte) {
+ 		result = SCAN_PMD_NULL;
+ 		goto out;
+ 	}
+ 
+-	for (_address = address, _pte = pte; _pte < pte + HPAGE_PMD_NR;
+-	     _pte++, _address += PAGE_SIZE) {
++	for (pte_addr = pmd_addr, _pte = pte; _pte < pte + HPAGE_PMD_NR;
++	     _pte++, pte_addr += PAGE_SIZE) {
+ 		pte_t pteval = ptep_get(_pte);
+ 		if (is_swap_pte(pteval)) {
+ 			++unmapped;
+@@ -1328,7 +1329,7 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+ 			goto out_unmap;
+ 		}
+ 
+-		page = vm_normal_page(vma, _address, pteval);
++		page = vm_normal_page(vma, pte_addr, pteval);
+ 		if (unlikely(!page) || unlikely(is_zone_device_page(page))) {
+ 			result = SCAN_PAGE_NULL;
+ 			goto out_unmap;
+@@ -1397,7 +1398,7 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+ 		if (cc->is_khugepaged &&
+ 		    (pte_young(pteval) || folio_test_young(folio) ||
+ 		     folio_test_referenced(folio) ||
+-		     mmu_notifier_test_young(vma->vm_mm, _address)))
++		     mmu_notifier_test_young(vma->vm_mm, pte_addr)))
+ 			referenced++;
+ 	}
+ 	if (cc->is_khugepaged &&
+@@ -1410,7 +1411,7 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+ out_unmap:
+ 	pte_unmap_unlock(pte, ptl);
+ 	if (result == SCAN_SUCCEED) {
+-		result = collapse_huge_page(mm, address, referenced,
++		result = collapse_huge_page(mm, pmd_addr, referenced,
+ 					    unmapped, cc);
+ 		/* collapse_huge_page will return with the mmap_lock released */
+ 		*mmap_locked = false;
+-- 
+2.34.1
+
 
