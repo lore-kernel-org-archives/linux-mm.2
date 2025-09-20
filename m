@@ -4,83 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40315CAC5A5
-	for <linux-mm@archiver.kernel.org>; Sat, 20 Sep 2025 12:32:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38E39CAC5A7
+	for <linux-mm@archiver.kernel.org>; Sat, 20 Sep 2025 12:43:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7BAB88E0005; Sat, 20 Sep 2025 08:32:11 -0400 (EDT)
+	id 90BFE8E0005; Sat, 20 Sep 2025 08:43:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 76B908E0001; Sat, 20 Sep 2025 08:32:11 -0400 (EDT)
+	id 8BD868E0001; Sat, 20 Sep 2025 08:43:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 671B38E0005; Sat, 20 Sep 2025 08:32:11 -0400 (EDT)
+	id 7D3868E0005; Sat, 20 Sep 2025 08:43:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 51F268E0001
-	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 08:32:11 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E01E4514DB
-	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 12:32:10 +0000 (UTC)
-X-FDA: 83909566020.03.4434FDF
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf30.hostedemail.com (Postfix) with ESMTP id CEDD180004
-	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 12:32:08 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 6D0228E0001
+	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 08:43:03 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 25A171D8DA9
+	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 12:43:03 +0000 (UTC)
+X-FDA: 83909593446.09.FD32F69
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
+	by imf30.hostedemail.com (Postfix) with ESMTP id E4A3580011
+	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 12:43:00 +0000 (UTC)
 Authentication-Results: imf30.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf30.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+	dkim=pass header.d=linux.dev header.s=key1 header.b=IKg7aAFg;
+	spf=pass (imf30.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758371529;
+	s=arc-20220608; t=1758372181;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=E67EhJc11NAqZq0YXhDXh54+CObuM/iIVSAG/ORjN6o=;
-	b=EnbHjquR/PwOARQli2KTNFb220RRjdaSxJTcSG5qbtSEMYNWAMocz+MrREAiwcxEUB1hkB
-	72MkJfJyECxxah8l4Tw8LQFQCTiw1CB2qxl8yNjkhFLW0CqIxsaIKM2wAVPPTELDAWlCSs
-	PDt+cWXZgBl05+7GR4bUb2RufDwea9I=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758371529; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=HwT6WLsca0cExAFMnQuLDNi7G4kZxd7/STjhVcD78V4=;
+	b=7u/dixIEdKSGbCkttlqTQmoSpdO2C+qJyy5QuWCwVu8Gp03v3nYYr1gD7ld4LlN/qbJt1L
+	xOePa5GB2sP0HM/iUnOyFKyHrP/kofXqCD4+ZHzkUeNC8CgfIw4RlwkP1JpuVeftLWAwTf
+	uTAREEGfDbaWDjOSsbR6EiOuJT4Ntl8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758372181; a=rsa-sha256;
 	cv=none;
-	b=1e1yrH3RDmGdp55YJ257+kHUtuEgN4MK0JBrTEc0NcW+RTd0zKSn7IMEpn+uvliPJQZVvu
-	PUlIig9hLo8YQuOwT9v9kKzu4NAXVyGWFrqeLFXiFQ9MEgeEhZB1jaQo3DGk2qmWWJhY4i
-	xApAy7MhUT2BqT1rWhsrVLy8Jvrr9JY=
+	b=6MbraBTbFKin9P099N0Nxlz689IUkchff2EPzroW3p9FQ1ok+iRViQPyO+RszgTMZS0VJw
+	MCj0uemQ0FUalGxxYPKhs1cBjmeN9tKLDeaJJ85tqI7tfshDwTrIHDaKJ7W0NilLir9B0L
+	4tNds5gy8gJvRU566M2OlE34JROE3hw=
 ARC-Authentication-Results: i=1;
 	imf30.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf30.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 83C9B1688;
-	Sat, 20 Sep 2025 05:31:59 -0700 (PDT)
-Received: from [10.163.75.160] (unknown [10.163.75.160])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 834F43F673;
-	Sat, 20 Sep 2025 05:32:03 -0700 (PDT)
-Message-ID: <93095f34-d7ac-40c7-87c7-60d2c64d4800@arm.com>
-Date: Sat, 20 Sep 2025 18:01:59 +0530
+	dkim=pass header.d=linux.dev header.s=key1 header.b=IKg7aAFg;
+	spf=pass (imf30.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <05363b2b-f6f2-4743-9620-7f906ec16138@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1758372178;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HwT6WLsca0cExAFMnQuLDNi7G4kZxd7/STjhVcD78V4=;
+	b=IKg7aAFghezFuw7KeSxCIg6yZO+Q1G33y4WDFweN6wBd+B5n8ZcJwfkHJNqT68INrw5fW5
+	UX2s9a2wlgJ5Yl7XgMBSA5C1yz49F8i3jhugjfeDF6buVUmuAw4UxMn85Vcqqak8Tc0xYL
+	yyRTa1/LuQyLyS4KHxAxgXTduyrw9c0=
+Date: Sat, 20 Sep 2025 20:42:52 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] mm/khugepaged: use [pmd|pte]_addr for better reading
-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com,
- ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
- npache@redhat.com, ryan.roberts@arm.com, baohua@kernel.org,
- lance.yang@linux.dev, linux-mm@kvack.org
-References: <20250920005416.5865-1-richard.weiyang@gmail.com>
- <4fb37530-3826-4ff5-ad7a-dc9dac4937de@arm.com>
- <20250920090228.lovkrpwj23bqdamj@master>
 Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20250920090228.lovkrpwj23bqdamj@master>
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: linux-mm@kvack.org, lorenzo.stoakes@oracle.com, baohua@kernel.org,
+ ryan.roberts@arm.com, Liam.Howlett@oracle.com, dev.jain@arm.com,
+ david@redhat.com, npache@redhat.com, ziy@nvidia.com,
+ akpm@linux-foundation.org, baolin.wang@linux.alibaba.com
+References: <20250920005416.5865-1-richard.weiyang@gmail.com>
+ <b1a8925b-8bb6-43b2-81e8-abb377905d48@linux.dev>
+ <20250920090023.52b4mupfa6dkhtnz@master>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <20250920090023.52b4mupfa6dkhtnz@master>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: atddkus7xq83gxzbtc469y1tftqgd7kt
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: E4A3580011
+X-Stat-Signature: 1pnx3ouwt83w1en7cethbk4ienzie9om
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CEDD180004
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1758371528-985928
-X-HE-Meta: U2FsdGVkX1/fk1CQ2DIhk10pLO7h0d0tu5WL8sjuh76/2WDt1Buy6vDmI0T7FqdjpiLPBanUldC03V5+zfGSXbYKexfOz1qOO3upYeqEr8aAHFdj7jEVFdkiryWBk0Pi+m5XEMJKiy04svjlQXAVEfUH2niy6rbk7OVcD0tErJcTEQ8qYtESLYig0fBktxZ8d9Q2nnoHKSysQsbs+tvaJNMPNJgGqSaDwhuXoVk0EUH6PRESoWJQT36PGytSpesAJNMOcq8fd2pk+l3J7kMPSHQNsURMd5oKjwYqD9oySnKGgwbWXdWJ33Sqsl6TD/3ffmb6BaP4SvKfvWAhYrIDxxzP6A+534AITZDpe3nFgMdPnCK1Uuir6v/+pt20+EfQJdk1LZu2nm1yzyRx1jAwjZyUjkVA+OWEGVfBrKpx/tbAnVhRNJZ5S6Jyz94OM/tI3UwMthCMW3d3yG32X6TRaP1yzzlUfKllWfyucIx+ivpvKXa0+0YJvN2Ad78Rao6AfFgiH8i08GSRlbS5o/yZSWg0xNzjqPDwBOitVeW5fsGfPVxQsRatomO7mItHzfkkbuv01g2P6vZEQA12MYPuV8viVU5x14vC9ajgRIa13+vX22KWiW3vxWG6to39LyZXHoG/qYDBDkN4oHelIMpTIIrTwgWhG1jYxRl4icdN3CjR17BBxAflg2dBQ6+H3yiRT88BcvErKr4e4aLafc8FOHUpCTHIyVaa2vNubzC5I5rmu5OnZtkoPsFcJ9Pclrivumq9He0Nl/RcWIrNpebCXp4Pmzsy8PBygECG2wCpAgs66MAVzaJ/FopcNF7qSw8cXYA1GpJD7tVNzSqKFUOEuG9gR9C9p2756A4tKKw7hm5KuHpgwLGcAy/gLNoafJ7+C83SzR8/y9ArB6kJ0Y6ASi9rWpSDabCkeydTi8rkkeNyUEImv9HMLqSJTYQbBGFBYNXmfgRvwfycygRSFTt
- d5NiPdmy
- 0cxuJSFyYA1v/uK5rdC1Ll2S9DQ==
+X-HE-Tag: 1758372180-672724
+X-HE-Meta: U2FsdGVkX19mlsDyIcOOA88Qns26tMYrDQirxNKDJoRDAj0TmnQcvgUAafCQvS3RCHWZkj9Y4UHtwcfnHcYHKFvQpcFIzXXN1nj6I195cYtrLhfxxO9liUXb1eKXI+4tnC1V2sjGM4gxUHmtjZHiHGSbgUClV+Sx+N3xDja+42jliPn53kiMXvwYCJOWC2nO0jy7iJcBEB9teYyOeYqBiloFFu3JeUlxnHc+9gQAd2vilSzo16rl4lQn5SAao+dPbI+XEHmQRe4ck2KRxYIGmULSv6z8FJy+KNx1nCJvIuXLIN2d5p3ghw9MIpCf/6y2RRYQeXceZCJoxng1Al84dQSEB1PjAWTaPU/mtVLY0zGLL/jk4r/KFwWf+ixDcavP4cz0U6gxueJAuOttM9VmuMCB4t7XS5QCh2DyVgJPoTNGYMVBfogyQlS4Ks3+eVTvIWWnEEURHkotNOR9CVGF0JM2cBE+bCZi2X1H5QSiAwX1nIcXIsp6ND6ThL5gyt+Yvpx1CNK/XnjxLF/qtdl6I1akaPxOIKmrozcwCf2Hc+qQewxU9L7psHeF6sXN1eC7trQae5jEbdHIVSIUBMBzAgOY1Ru64vrrsSoC+NxNnyLYGLHjTezfhp07IboFJ208PlfPN2xSGHqcIycUO2GlJ1QlDVipUri7Vqr3vqZW8igy38cYbGDSHE1OLaQnQU+XQln//PGe+AO1Mn26T3+uEXl7udSb52Hi8/nfddaeEDHrZUXHyeqrhG4a/El+vT/cDpVYJOMKt1GOwPaK8OqovjiXbkxn70GxJ0FAi1Ijs6FdVzTXNziAjjlfBJ21Nr9aYHX0GHrOP9UtAC6NlMCuYRznPCzJroThlMYkD0/4oK8OxWLi+rgmaPydYyxOssZzZoC/1TBds4wjjHol+qgfuYZ6g9EBfI/BaKkzfKkDluwe14UWEpor67uNS9ZZw3AQvHM84qp2RBCuIAJvtsY
+ +Vavq/X0
+ n9n/f29X+l2S54Z3htCC61L0/oPnqKOJq2pUcpUYcb07aWWLmjoE3TbI7wv+G57Xzx87f+Glj9cSap0G6XWeFwd58uN/M3DgOae6bKS66hygTJ0lTv3D2XzxuFzUzmuTWfealwtDOiYHRqp8vOjn6ZzzzSJsWj976RWtCrhE8ytgUtS6AGAXFub91SESEkU+fN9DKXUyyE2kHj0U68xC8RO3vstfjTJZoF6+ZHu3JTctkmp3VeIcrC0sD+kgImhaKHnpmF8CZvEFmpb6cwq26omfFGdi7bv5G5nMNfvaar2GFwd3xBIR3QdbxZ4Bero8WEkJRtqD1O0grQU6UAlGHI21mDpSzj3xb2n8a5mdhN61hkY74Av0B8sxXVg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,9 +95,11 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-On 20/09/25 2:32 pm, Wei Yang wrote:
-> On Sat, Sep 20, 2025 at 10:21:56AM +0530, Dev Jain wrote:
->> On 20/09/25 6:24 am, Wei Yang wrote:
+
+On 2025/9/20 17:00, Wei Yang wrote:
+> On Sat, Sep 20, 2025 at 12:30:52PM +0800, Lance Yang wrote:
+>>
+>> On 2025/9/20 08:54, Wei Yang wrote:
 >>> When collapse a pmd, there are two address in use:
 >>>
 >>>     * address points to the start of pmd
@@ -104,6 +111,12 @@ On 20/09/25 2:32 pm, Wei Yang wrote:
 >>>
 >>> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
 >>> Suggested-by: David Hildenbrand <david@redhat.com>
+>>
+>> This renaming makes the code much easier to follow, but just
+>> some minor style nits below :)
+>>
+>> Acked-by: Lance Yang <lance.yang@linux.dev>
+>>
 >>> ---
 >>>    mm/khugepaged.c | 43 ++++++++++++++++++++++---------------------
 >>>    1 file changed, 22 insertions(+), 21 deletions(-)
@@ -126,56 +139,25 @@ On 20/09/25 2:32 pm, Wei Yang wrote:
 >>> +	unsigned long pte_addr = pmd_addr;
 >>>    	pte_t *_pte;
 >>>    	int none_or_zero = 0, shared = 0, result = SCAN_FAIL, referenced = 0;
->>>    	for (_pte = pte; _pte < pte + HPAGE_PMD_NR;
->>> -	     _pte++, address += PAGE_SIZE) {
->>> +	     _pte++, pte_addr += PAGE_SIZE) {
->>>    		pte_t pteval = ptep_get(_pte);
->>>    		if (pte_none(pteval) || is_zero_pfn(pte_pfn(pteval))) {
->>>    			++none_or_zero;
->>> @@ -570,7 +571,7 @@ static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
->>>    			result = SCAN_PTE_UFFD_WP;
->>>    			goto out;
->>>    		}
->>> -		page = vm_normal_page(vma, address, pteval);
->>> +		page = vm_normal_page(vma, pte_addr, pteval);
->>>    		if (unlikely(!page) || unlikely(is_zone_device_page(page))) {
->>>    			result = SCAN_PAGE_NULL;
->>>    			goto out;
->>> @@ -655,8 +656,8 @@ static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
->>>    		 */
->>>    		if (cc->is_khugepaged &&
->>>    		    (pte_young(pteval) || folio_test_young(folio) ||
->>> -		     folio_test_referenced(folio) || mmu_notifier_test_young(vma->vm_mm,
->>> -								     address)))
->>> +		     folio_test_referenced(folio) ||
->>> +		     mmu_notifier_test_young(vma->vm_mm, pte_addr)))
->>>    			referenced++;
->>>    	}
->>> @@ -985,21 +986,21 @@ static int check_pmd_still_valid(struct mm_struct *mm,
->>>     */
->>>    static int __collapse_huge_page_swapin(struct mm_struct *mm,
->>>    				       struct vm_area_struct *vma,
->>> -				       unsigned long haddr, pmd_t *pmd,
->>> +				       unsigned long pmd_addr, pmd_t *pmd,
->>>    				       int referenced)
->> Will this be a problem when mTHP collapse is in? You may have the starting
->> address lying in the PTE table.
 >>
->> Personally "haddr" is pretty clear to me - I read it as "huge-aligned addr".
->> I will vote for naming the starting addresses everywhere as "haddr", and use
->> addr as the loop iterator. This is a short name and haddr will imply that it
->> is aligned to the huge order we are collapsing for.
+>> Nit: could we refactor this block into the "reverse christmas tree" style?
 >>
-> So your suggestion is
->
->      pmd_addr -> haddr
->      pte_addr -> address
+> 
+> You mean sth like this?
+> 
+>     	int none_or_zero = 0, shared = 0, result = SCAN_FAIL, referenced = 0;
+>     	struct page *page = NULL;
+>     	struct folio *folio = NULL;
+>    	unsigned long pte_addr = pmd_addr;
+>     	pte_t *_pte;
 
-pmd_addr -> haddr
-pte_addr -> addr
+That's getting closer. The formatting would be something like this:
 
+	int none_or_zero = 0, shared = 0, result = SCAN_FAIL, referenced = 0;
+	unsigned long pte_addr = pmd_addr;
+	struct folio *folio = NULL;
+	struct page *page = NULL;
+	pte_t *_pte;
 
->
-> right?
->
+Feel free to change it :)
 
