@@ -4,110 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D156CCAC5A0
-	for <linux-mm@archiver.kernel.org>; Sat, 20 Sep 2025 08:27:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9FFFCAC597
+	for <linux-mm@archiver.kernel.org>; Sat, 20 Sep 2025 08:31:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 31EF08E0003; Sat, 20 Sep 2025 04:27:42 -0400 (EDT)
+	id 1EF4C8E0005; Sat, 20 Sep 2025 04:31:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2816A8E0002; Sat, 20 Sep 2025 04:27:42 -0400 (EDT)
+	id 179D68E0002; Sat, 20 Sep 2025 04:31:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 149A78E0003; Sat, 20 Sep 2025 04:27:42 -0400 (EDT)
+	id 041058E0005; Sat, 20 Sep 2025 04:31:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F191C8E0002
-	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 04:27:41 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9A129C07AD
-	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 08:27:41 +0000 (UTC)
-X-FDA: 83908949922.07.594203B
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	by imf12.hostedemail.com (Postfix) with ESMTP id DFFEC40006
-	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 08:27:38 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=cjauWAFF;
-	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E14B18E0002
+	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 04:31:32 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8E09A5BCBD
+	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 08:31:32 +0000 (UTC)
+X-FDA: 83908959624.03.9E8E51F
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+	by imf13.hostedemail.com (Postfix) with ESMTP id E7F992000B
+	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 08:31:30 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=t9UrvmM5;
+	spf=none (imf13.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758356859;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1758357091;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IXfNXXk9A113iJPug0O5pITpBB+4A8mAdSqBrRY7WIs=;
-	b=SrLfVlOGEYU6VhNhPQeQGon8Rxe7bHi+ad4HYz75PkP9PM090QBioGYymdCRDjONda56wa
-	LdqEwj6Qp68iarJCfU6Da5E42//URwkVZVjTzhLo8Z8p2qwPiaQPxqo6hMQ78R4Yi85dCM
-	waLpnngFxWZUIQNVIqqSXSKu5MI2Zts=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=cjauWAFF;
-	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758356859; a=rsa-sha256;
+	bh=4GckmVne9aZbxHVaiffTEmOK19oV0Ap0iZoO6zIdeCU=;
+	b=KhpxeW/eAO4F7T6kP22bsG9DArSCF65NoXsiogbVX+iJ6x/yN3GHwVMpOZmMtlUspsJiSF
+	ABydsLKBJhGIntNAgddXo8jkqIsiS6viKOpNDL/p41Xdb0ayukoOAjQY+yssayEQY0xZF3
+	z6UuOD/ByEeeXolDtTHdpHRRyKcDZe8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758357091; a=rsa-sha256;
 	cv=none;
-	b=iBZ3mrGOeaWgRmfM8acF1j+ZQ6oHVjiNUpEmS2arnxMGQ9/VY+VHoQlhtuHb9hUhGAlpPg
-	OYXkwFoXMZ27uk8se8XI7JmvwgIg2IYwu4GhY5ZzGeE3EW+9si2piLRAvl6tTD7ah7PYUG
-	wc8HRKUp6br3hQriFMlUBeUddfc904k=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758356859; x=1789892859;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=fLmBxl6wqNnu65VPgOguy4Rp6FEVvwYxsWhMiq/CrPM=;
-  b=cjauWAFFzaQIpwTQ7MNExML3ri8u3zTKMoWzFGeO3NknHG7eC1N2BGqF
-   AkLz4hjHpyy880u4xXGD1z8qrysaOGfW5LyfFvh85SxERwbjl3VwWnsjj
-   aE0TKG+ya6n7C7c7EIXwNRASj+Yeac7WKHbpWFgKwITvmZCl8odbl8kkT
-   TQvsM2RhPgXZ2YoFKi2v/BpML5t5+qMkrmWJmg7dUg/J0jblnGdGbrs4E
-   fzswf5Wl8Oo7xbYlcgbpPhVH5d+rcvGgdALM+SgHW9fhiTBNGDMGMGIAW
-   LhD+SZlyigJNx4ocQXm+VRhWNAlEXi5haAek/Pclx5OQLEG4I3EBJzKVS
-   w==;
-X-CSE-ConnectionGUID: XDuRUhxUR6iYY8Ajw88EqQ==
-X-CSE-MsgGUID: V+gX5w4GQC+TEU+kzeD0pQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11558"; a="86131660"
-X-IronPort-AV: E=Sophos;i="6.18,280,1751266800"; 
-   d="scan'208";a="86131660"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Sep 2025 01:27:37 -0700
-X-CSE-ConnectionGUID: jgr/78pSTnW+eQNFl3ttBQ==
-X-CSE-MsgGUID: nAsLMnuUTEG0Inx+PrPHOw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,280,1751266800"; 
-   d="scan'208";a="181284823"
-Received: from lkp-server01.sh.intel.com (HELO 84a20bd60769) ([10.239.97.150])
-  by fmviesa004.fm.intel.com with ESMTP; 20 Sep 2025 01:27:32 -0700
-Received: from kbuild by 84a20bd60769 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uzswM-0005Al-0T;
-	Sat, 20 Sep 2025 08:27:30 +0000
-Date: Sat, 20 Sep 2025 16:27:10 +0800
-From: kernel test robot <lkp@intel.com>
-To: Qi Zheng <zhengqi.arch@bytedance.com>, hannes@cmpxchg.org,
-	hughd@google.com, mhocko@suse.com, roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev, muchun.song@linux.dev, david@redhat.com,
-	lorenzo.stoakes@oracle.com, ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
-	baohua@kernel.org, lance.yang@linux.dev, akpm@linux-foundation.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
-	Muchun Song <songmuchun@bytedance.com>,
-	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH 2/4] mm: thp: introduce folio_split_queue_lock and its
- variants
-Message-ID: <202509201640.ikJun7XS-lkp@intel.com>
-References: <eb072e71cc39a0ea915347f39f2af29d2e82897f.1758253018.git.zhengqi.arch@bytedance.com>
+	b=ZSJyCni95/lE6Sc2hwe9Fjyjl3UIcq/STzV5Q+twUjgUuD+HJMcBgHznqvWBehJITIVqKI
+	sqwLH5T3XDZbxBvTbq/iv5/NJc4lhV1RhS07d7kE6hGH+Nld1tZEgdYyFzKfmPt+Niz6li
+	O7QHidOXbt0XQYlRmnyfgbpC1JvxUSE=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=t9UrvmM5;
+	spf=none (imf13.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=4GckmVne9aZbxHVaiffTEmOK19oV0Ap0iZoO6zIdeCU=; b=t9UrvmM5OQYc7vCwJTy5PEGD1w
+	+awUfFUgSon14MdW6tOTa/rhGWa25zM5Hn+6VH4wQba64aQj6KKJrnFmJ++OVTlx3P2goKG4EuiJl
+	cGk3Gk9ZNT7z7lVdTVgv54XlFDXS/qxKTYgRq2cTYtw8wh0ljsNeLSSQndW42cXEJ2FtV5Ti2vXXk
+	C8/t+gbvnHlceS+y5Ov58sDEc40NB84G2TlhtoMZ5m9SiVzwe/BsUoLyqd4kf+mqh/hOGkKGb9gWP
+	BhzBVMXzPDO3WcVMFM9Db8xjakJKm1+HRtA+eMRqSfy3zaK9i5mweZWeRkOnIq1e7WDMrNSaP3tWa
+	I0eE3Zuw==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uzsKB-0000000ExG0-4AXO;
+	Sat, 20 Sep 2025 07:48:04 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: linux-fsdevel@vger.kernel.org
+Cc: torvalds@linux-foundation.org,
+	brauner@kernel.org,
+	jack@suse.cz,
+	raven@themaw.net,
+	miklos@szeredi.hu,
+	a.hindborg@kernel.org,
+	linux-mm@kvack.org,
+	linux-efi@vger.kernel.org,
+	ocfs2-devel@lists.linux.dev,
+	kees@kernel.org,
+	rostedt@goodmis.org,
+	gregkh@linuxfoundation.org,
+	linux-usb@vger.kernel.org,
+	paul@paul-moore.com,
+	casey@schaufler-ca.com,
+	linuxppc-dev@lists.ozlabs.org,
+	borntraeger@linux.ibm.com
+Subject: [PATCH 23/39] ibmasmfs: get rid of ibmasmfs_dir_ops
+Date: Sat, 20 Sep 2025 08:47:42 +0100
+Message-ID: <20250920074759.3564072-23-viro@zeniv.linux.org.uk>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250920074759.3564072-1-viro@zeniv.linux.org.uk>
+References: <20250920074156.GK39973@ZenIV>
+ <20250920074759.3564072-1-viro@zeniv.linux.org.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <eb072e71cc39a0ea915347f39f2af29d2e82897f.1758253018.git.zhengqi.arch@bytedance.com>
-X-Rspamd-Queue-Id: DFFEC40006
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: E7F992000B
+X-Stat-Signature: e6rhd3bmu6ku5ky44611yf1gjz7w7a5g
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: dz7kprh58sfrzrsofjwde1npgwhitwei
-X-HE-Tag: 1758356858-255784
-X-HE-Meta: U2FsdGVkX18XUsgkVeAqHGGi9rjzbXwphU6NDBBwpEHERwf7AiqPcsvU7RZZK/3aMC/OTEb0B3Q9WgOaUpub5cTqBH1ni21mVOk7nWsgwUUXJLN/nxL7Q1r+Hi7hD4UMwwIeTik9RfM7ZULU38EcuNALGb/1lBkMP8/d9PxWIHut0gjmU4ZsSvFii9jLzyFKK3wrnSb9Co7Z/65HLzNX8SgaKWF/UCwpm7YKDPAvG2EtTk6GqwzAI5RTmjbkLoZajIHRNMxi1NQ52yS6TUiI153p04cFFBb/n5TSAzP+ZmPkFLbT6s1s2jzFbjYtLeXpKXHdKpdd8jMuV+FYGcH3SjeAUipWXjLyYWUimV3BBabAN2s7RbSuGosE+CqvludfZ8dKPK5bN1jtYWfYFE1RXQ2ILaC2LuvqjwQaEqFuVrHCgYJE9kLb4SEWXAuA2cf49b2WI+nxxgza2vykZKpNJp9mKhRBYD/DVSOD+T+inE37oVugE11HSO0IWTpP4VamVGYjIA5ehL+O0Qm6Jsz3+CpfyJag1aOkzRhlBXV9FYpTGoJNeGoWQM7dVtLxKaEKezYNbrZR1M/RlJXTl37GDkeSrxygC9qy++915g+Yy1WeVoCgSj6AtP3yfxi4jSES+bWwHTL+7sjb7n1liLfVXeMZ7UtU0P9wY7YjATlal2Zzr6R8eXszChePpCr4AkHdz6Gmd5OX/65N+gUuEOg43JEf9AQOdbpw1fxOSJgi6P8zA5By9Ccyk0/OeSGzgPGlKDFKo/HtHg/2WsV0yd4Lj3j2faZpcY3MorB9Xa/mJkFPiTn9ASYoHSdgH7xV3bqfKZ1n/0NETU1Vluh9QGoqqReQOmxxZ49fJo//K9XATsPO/CnJCh2PqK7dSM4cmFm2GyScwWictUsOKYCOtdbfITSU0MoxL/3Bx74qf7cLtTXFZNtHHD0SgcFIZuf9+KPAw670cmFHBllSjs6Tehy
- 4b8ei2Ky
- LNrSTn5zenPRi7f4egX+D/8p+rQHRMeCO8gwLlXtEz9f2Zpq36aF/CUQ+8E2uEWASysnEZDWD2AJSLFrpNQFBWp1T/E+UeKDF1JMiFOZgoudPf8H1BpjO6P7mutnpqXOJR7QV7zJ9XPSxc00k4XNW6C1KMBPgkBlvSXJiTab47xAjbiBoZ4b5E+8XrZeSFTsIIH1PM443RWNGnCtQReg4Pze8g1QY6wfUudJimQi88PVbEhaNgjfnCvQC83sZK4FG1fIuC4RkEWQT/jE/BIVKkikHUE2/30eltgvnpOuvhN6Qk250HImgp/Dlx/8e3i6NS/8rFu9GtRYeCVNS1lPmI8wzBlwXRzi+nu/VztiORx461EHMpA/WK7H1HdhUY1sL6eGOr41lpPctjoennpUpNF2jW9l/j+oNKStGsH6RGP7OHP4=
+X-HE-Tag: 1758357090-838874
+X-HE-Meta: U2FsdGVkX19xqKusnNTi0oEWyKH753NkzSIoWzczdH5XbCPZnbTZHdGtmdtp1aEbRl1G7gRl81S6XCXH3zMfYvrOtn4e3E0b2z4rmgFUiIedArgtSmfIlMLoTnK6fXbLoCdC5EWEGKV3rarBLuLvrQ7W9ZDLdr1WA21QM8EH6bKNYq7pFBauJoas9U6iwUkXbs38UAAzpPuFUKnk564b83enTvTRxhzo4pBnDxvK39ccaEzIMONjN5Y4PoxzvzbB57VPkk7RnEo5P/tpUxsyXnd+W3YheNYutUwI9S1xpopAe5FeItxeyH0ZlyWJMNdH0PivF/e84Gq/eJozT+g1rS66jReNXudd5Kv7/ZLvXJX0hT8gVBEm9Ec/43STQCp8ypgonbeS2SOUF+W/tfBTQ5CjOij2TeUdW4E5de+KcYTS/a3ucaIG4HUYGsD8gaQJC70Pm0gsND6eI85u2YeiR91uR8DCOOj9yib6xSACMtyEupm6dnje2heaoplZ9S8RvD/lmPvs7/o719oO2zNlK1jHdpcZM/CYBWHOqTDOD6e0aN4r0s0bOgGpVc7F90c0DZSDqV1U03yrwIvsQqcds/pkZVSSKvv+h9tSouV932q28up+16mKyDsJNvAvBp4hrAzTCR8D+Ca6xqorrhWEzKQ+VJmT8RfkWyB3l3dahCJ8V4Tf1I0veBzsNslWHLbETsve3Jov9PwjNxHedIKdEWA1DXMEH02LAwKGhUwTPICWQNbv9EkQLbnLBuGHV1bC39STKSoXNSf5p+xvfOf1kgzpfbs7cAzXC5QU6TdO+jkNPKS/n2iTX8Hb7hHqGFyZpATMCH4xOZtmaJsIKzhZQ1EfqLFxLjz7wEKPhf5HNXkXZSjjh4ApyP3XVt65LYisBslrkP0PNKLrNF9pUUqzlnXzOWcYK0TdK8Bn9yeAp+snQGZ4f7CHhI1BCKPL6/j7bMi92ciieqe5TdTtpKt
+ v/KZWNj/
+ 2cH9cEnSOlG4DtvNGk7izBAUBPXrvIgzcbeiIAMnYKwl4kgjmeJXbkj/aUZnhSkw+1pnHE7nJmSrvVAj++x7pkKOrCQ+06/QIrAbIpeg2EqmWKQHt3ExsMdSBBl4shhD1lIHeOHmPHeFeTVkSoNKpoeKZEpT2/gwuSoY0R72YBq5OUNhVgcgpaWNJI23OPaShqX8JVl+F50MNa1nSIYVBwurrdRTOd3bvdgRiS9lEFPGdmpHMj+2dmoNHfbL6L4b3bVmdY+0SRjc0yvxm4yfdoRzxvh5xjtAtzNJJWbm3tQgA83/d0AE1e/OVnxgR8mkNe+OquZsZ2tDvmdHjlFEg+tjaYVYpg1Ow9hcSqsZu18lDWIX/y/mjAhM4DwqMW07QBKN0dUyHCstpjc2aF1152k/ivWBQhkbZoCV48mLl7PpO67Udz4HzeJiWgeBxySU5xGS0kmeSmZsskUBn2EEJR7Zc4w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,65 +105,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Qi,
+it is always equal (and always had been equal) to &simple_dir_operations
 
-kernel test robot noticed the following build errors:
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+---
+ drivers/misc/ibmasm/ibmasmfs.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-[auto build test ERROR on next-20250918]
-[also build test ERROR on v6.17-rc6]
-[cannot apply to akpm-mm/mm-everything rppt-memblock/for-next rppt-memblock/fixes linus/master v6.17-rc6 v6.17-rc5 v6.17-rc4]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Qi-Zheng/mm-thp-replace-folio_memcg-with-folio_memcg_charged/20250919-115219
-base:   next-20250918
-patch link:    https://lore.kernel.org/r/eb072e71cc39a0ea915347f39f2af29d2e82897f.1758253018.git.zhengqi.arch%40bytedance.com
-patch subject: [PATCH 2/4] mm: thp: introduce folio_split_queue_lock and its variants
-config: x86_64-buildonly-randconfig-001-20250920 (https://download.01.org/0day-ci/archive/20250920/202509201640.ikJun7XS-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250920/202509201640.ikJun7XS-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202509201640.ikJun7XS-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> mm/huge_memory.c:1105:24: error: incomplete definition of type 'struct mem_cgroup'
-    1105 |         queue = memcg ? &memcg->deferred_split_queue :
-         |                          ~~~~~^
-   include/linux/mm_types.h:35:8: note: forward declaration of 'struct mem_cgroup'
-      35 | struct mem_cgroup;
-         |        ^
-   mm/huge_memory.c:1119:24: error: incomplete definition of type 'struct mem_cgroup'
-    1119 |         queue = memcg ? &memcg->deferred_split_queue :
-         |                          ~~~~~^
-   include/linux/mm_types.h:35:8: note: forward declaration of 'struct mem_cgroup'
-      35 | struct mem_cgroup;
-         |        ^
-   2 errors generated.
-
-
-vim +1105 mm/huge_memory.c
-
-  1098	
-  1099	static struct deferred_split *folio_split_queue_lock(struct folio *folio)
-  1100	{
-  1101		struct mem_cgroup *memcg;
-  1102		struct deferred_split *queue;
-  1103	
-  1104		memcg = folio_memcg(folio);
-> 1105		queue = memcg ? &memcg->deferred_split_queue :
-  1106				&NODE_DATA(folio_nid(folio))->deferred_split_queue;
-  1107		spin_lock(&queue->split_queue_lock);
-  1108	
-  1109		return queue;
-  1110	}
-  1111	
-
+diff --git a/drivers/misc/ibmasm/ibmasmfs.c b/drivers/misc/ibmasm/ibmasmfs.c
+index 785ce294f4b9..7427adff2a62 100644
+--- a/drivers/misc/ibmasm/ibmasmfs.c
++++ b/drivers/misc/ibmasm/ibmasmfs.c
+@@ -97,8 +97,6 @@ static const struct super_operations ibmasmfs_s_ops = {
+ 	.drop_inode	= generic_delete_inode,
+ };
+ 
+-static const struct file_operations *ibmasmfs_dir_ops = &simple_dir_operations;
+-
+ static struct file_system_type ibmasmfs_type = {
+ 	.owner          = THIS_MODULE,
+ 	.name           = "ibmasmfs",
+@@ -122,7 +120,7 @@ static int ibmasmfs_fill_super(struct super_block *sb, struct fs_context *fc)
+ 		return -ENOMEM;
+ 
+ 	root->i_op = &simple_dir_inode_operations;
+-	root->i_fop = ibmasmfs_dir_ops;
++	root->i_fop = &simple_dir_operations;
+ 
+ 	sb->s_root = d_make_root(root);
+ 	if (!sb->s_root)
+@@ -188,7 +186,7 @@ static struct dentry *ibmasmfs_create_dir(struct dentry *parent,
+ 	}
+ 
+ 	inode->i_op = &simple_dir_inode_operations;
+-	inode->i_fop = ibmasmfs_dir_ops;
++	inode->i_fop = &simple_dir_operations;
+ 
+ 	d_make_persistent(dentry, inode);
+ 	dput(dentry);
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.47.3
+
 
