@@ -4,90 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B86BCAC597
-	for <linux-mm@archiver.kernel.org>; Sat, 20 Sep 2025 07:42:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BDCCCAC597
+	for <linux-mm@archiver.kernel.org>; Sat, 20 Sep 2025 07:43:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7BEB08E0005; Sat, 20 Sep 2025 03:42:09 -0400 (EDT)
+	id 997088E0002; Sat, 20 Sep 2025 03:43:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7963E8E0001; Sat, 20 Sep 2025 03:42:09 -0400 (EDT)
+	id 96DF88E0001; Sat, 20 Sep 2025 03:43:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6D2AD8E0005; Sat, 20 Sep 2025 03:42:09 -0400 (EDT)
+	id 884978E0002; Sat, 20 Sep 2025 03:43:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 551298E0001
-	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 03:42:09 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D83115BC94
-	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 07:42:08 +0000 (UTC)
-X-FDA: 83908835136.30.203E96C
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf29.hostedemail.com (Postfix) with ESMTP id ECC34120008
-	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 07:42:06 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=VdNrb6s7;
-	spf=none (imf29.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 764668E0001
+	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 03:43:37 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 156035BC7F
+	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 07:43:37 +0000 (UTC)
+X-FDA: 83908838874.26.DA18F65
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	by imf07.hostedemail.com (Postfix) with ESMTP id C047740002
+	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 07:43:33 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=IlPScb61;
+	spf=pass (imf07.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758354127;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1758354215;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=oOCcbpCsT+zvuGsYMYIhlU7EGFEAzg77GcV6TXrg+wI=;
-	b=F3JFuN66AU3OT6nrgM0R1hATsNpQRQnNzUk5D1v/DWkrHn/htcGgVdfGQC93DdCA3hq7ne
-	qj/toDhdSEayEOhrcju+eJhmvi9/sudV3qtXKqVb1DmSBs0vovMAfZJwhiJft51lfwuFYJ
-	pmf9rKDmsyFFT1He0Pv6U0jgmTOIZzU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758354127; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=kBObrCn4XZx1/P0m1jdTJfM2Yl13rGR4Nq+3JtF4MAg=;
+	b=BbPaYvEusvu5iX5GVraezbGGtOaKr8m+hhVfoEpoRoQfe3fhvboDqgec9CfT/MOB1lp6Cz
+	VWN1y6Rl85mmmoOM3xKh9eFVYfWjmCsL9ywcjkeuy+z+78+Z0tugitf2uPS4q14+pUISOH
+	aCf+Af4zJ8BEpKG+Fc4xEqdpGW2GOWM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758354215; a=rsa-sha256;
 	cv=none;
-	b=w3c8Qz7ks/rtYIRdSkKvizaKJeo4Bgn5M3KOC0AMY3+ibPdufMjhvFRriWZYkluWv8rXr/
-	LhTdkr/wdRZ4/O26S2psG56GYSGdb4KC2PAsh2CGq1TAt6Yw9fOEZM8zVOIbKW6vyF2Sr4
-	v2QP0wR63RZoZxt1RvgyYKQOkT9vqmw=
+	b=KNfWlbYPNGYxmkTBvUjBLphkMxLo/wxQKE+iGjuCaV5vD5FF44tTgXvDgfGKje4nK8PCq/
+	W38U86iKbvlCGJGuafwr/WnJoQmWMMV+6dq/h28j6SIFRpDFGWSYtFFv+sDVUKAdOSAVsy
+	YaktNpYV2n71VlQJsFaDOYThUghFGzg=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=VdNrb6s7;
-	spf=none (imf29.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Description:Content-Type:
-	MIME-Version:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:In-Reply-To:References;
-	bh=oOCcbpCsT+zvuGsYMYIhlU7EGFEAzg77GcV6TXrg+wI=; b=VdNrb6s7Ppzquet+fhlCfW7h+O
-	U02VJRZD01jqmmWq8luID9ZxhvGVspUTY4nW/p8P6sydj6Fh/zdOxwlaySXBB2o8ahurxu8m3/ZBq
-	bg/bnm5KYL9Pe7gXJDeBPNWwS6t00mVZfB9upTq6q1l9AAEuvMS/3se6NUNTC2v1b96pRaz32ogAB
-	IZjAmCZrj2r2JFuJznwECCDmp7ubClVul7WeFcbIJOo983wNLuGkwdTeAIPXqQWnQwLvqtlx4O/sb
-	AVqVl+vJtVbzTxrgkAWWDpl7EQYGAK9TNIGABimVcXzMRVynmmmX5N9Gzbv0/5Y1DH2CzzML2Cfvk
-	fzPQ7s5A==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uzsEG-0000000Euuv-3pwa;
-	Sat, 20 Sep 2025 07:41:57 +0000
-Date: Sat, 20 Sep 2025 08:41:56 +0100
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: linux-fsdevel@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Ian Kent <raven@themaw.net>, Miklos Szeredi <miklos@szeredi.hu>,
-	Andreas Hindborg <a.hindborg@kernel.org>, linux-mm@kvack.org,
-	linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev,
-	Kees Cook <kees@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-usb@vger.kernel.org, Paul Moore <paul@paul-moore.com>,
-	Casey Schaufler <casey@schaufler-ca.com>,
-	linuxppc-dev@lists.ozlabs.org,
-	Christian Borntraeger <borntraeger@linux.ibm.com>
-Subject: [PATCHES][RFC] the meat of tree-in-dcache series
-Message-ID: <20250920074156.GK39973@ZenIV>
+	imf07.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=IlPScb61;
+	spf=pass (imf07.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1758354214; x=1789890214;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=kEwh/ekCl/otnpe61Q+7M++Qui9Q62NvcImp583uS/s=;
+  b=IlPScb619/2aJVxApqringmc70KsGi8z/2TIqY57A1+Vil/qCXJ+K0Lt
+   7AXX5HHEMou3RzzFLb41pja0ACJPLOiuK6e8Ds0sm3UXzCjf17PtolqvU
+   kSPG0SzYCD12wh+mISDc39SNMa5ln0JCeidQaa4svhr/ZhlKPJiRgXNuQ
+   b/iFeVssdsOj6txABc5vEnF6Eujau0P7vqprEEE/H5IHEIQEbrXHZ4MhI
+   2FgQilo5rnjmEBOntazY8/vYbJi42TVmJoloY+wlF81VhMPAaA39WfZfc
+   oaTQitaZi8Zor1j8y+QGG0MlIRmKfNf3dEU9g50n3xaeCnaLJ5m9OXwEQ
+   w==;
+X-CSE-ConnectionGUID: H+eV5hg2SguSvlNaztTvoQ==
+X-CSE-MsgGUID: Rv8kNLUHQl+Iher5VUVTTw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11558"; a="71798365"
+X-IronPort-AV: E=Sophos;i="6.18,280,1751266800"; 
+   d="scan'208";a="71798365"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Sep 2025 00:43:33 -0700
+X-CSE-ConnectionGUID: XhG2d+HRTmeSVCMqd9nXog==
+X-CSE-MsgGUID: YTridhCOTma5012IF8a9Lw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,280,1751266800"; 
+   d="scan'208";a="206968748"
+Received: from lkp-server01.sh.intel.com (HELO 84a20bd60769) ([10.239.97.150])
+  by fmviesa001.fm.intel.com with ESMTP; 20 Sep 2025 00:43:27 -0700
+Received: from kbuild by 84a20bd60769 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uzsFh-00058h-0d;
+	Sat, 20 Sep 2025 07:43:25 +0000
+Date: Sat, 20 Sep 2025 15:43:18 +0800
+From: kernel test robot <lkp@intel.com>
+To: Qi Zheng <zhengqi.arch@bytedance.com>, hannes@cmpxchg.org,
+	hughd@google.com, mhocko@suse.com, roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev, muchun.song@linux.dev, david@redhat.com,
+	lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+	baohua@kernel.org, lance.yang@linux.dev, akpm@linux-foundation.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: Re: [PATCH 4/4] mm: thp: reparent the split queue during memcg
+ offline
+Message-ID: <202509201556.QAvYX4v3-lkp@intel.com>
+References: <bbe3bf8bfce081fdf0815481b2a0c83b89b095b8.1758253018.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Description: reas Hindborg <a.hindborg@kernel.org>, linux-mm@kvack.org, linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev, Kees Cook <kees@
 Content-Disposition: inline
-X-Stat-Signature: qxz38h456ozzua5ry7ze4yfg9xqwiu8o
+In-Reply-To: <bbe3bf8bfce081fdf0815481b2a0c83b89b095b8.1758253018.git.zhengqi.arch@bytedance.com>
+X-Rspamd-Queue-Id: C047740002
+X-Stat-Signature: zd4naywj5r18x6qd3hiez7me6xo5cpn6
 X-Rspam-User: 
-X-Rspamd-Queue-Id: ECC34120008
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1758354126-206015
-X-HE-Meta: U2FsdGVkX1+7qbeZ80yE/sKcp5/gzHPDiKT6Qv03DxkAAzuq7JXzJWQybgWDgS4UWQlK6qR/Snjr+vsGuGhFAmsvXNdu4jia/V5FXO3UYMQTCNJMa0Bn7p9V2BE/2B8b4w3vry/yQnlIBJiFwdRJMBapG25fxSYIgBigvl/gnh+DhQFltkmxq606dMN9NrdoVcJxnGdtDnSNGzgzqSidPsXL1lwkJtUEdw6tygSS3Xwp+Q6nTYwT+DiIiOlRJB5wYL9xm+gMho5IoUlvJbMR0kGnD0IZYdfaKP53fOGlE9zaFqSBACg7B+U7fCYDqT07a4QoWrUgXHWTULTKlquFOzSlqrw3S84e8knXSqlcoqwlZWdorgWi4xXKVx7Xgxp0zjyZo7Ss0el93N/rKJcbpk/0SAmoSRnRBKMRmLMPtf8KtD8c4Ht/wLcwCtAs8n0boEWg7uPiOCLUpm37Ce9XPjalZ3EwaxouuUPCXlXyk439RNMGQEG7LFQuEp8JfwIXVDSUDLdbNprmh3yoa4GMZU6y7oH7U8r1uE+jdyJANnG/DNb2JQF+kzda7lz0j/BUvmoHH05TnMHrxXZ2qXP47vaKbp872lQnVFVVwxHpUdi39hbwPHShF5B9vOA8XkoHjdwEsvLJbztwG7rGn6rcr0htiXM7zninLCDrzCVQWSj8x9FLQsfuKpoiPmTsivM3NXD9n3iPrqgMe/rLGYNM+20tyA7H6lpmp8Dmcf1p8NxYmgV5euRQnccT0lUdMY7ycaLCSa6v1w1IWL31aKQDuzPURGCB2ZNSl4b+BHtzxYvbNmTJxivUetOttCb4TGxJwKcpshWH/uTqVj0ScroveD+L2jGJr9G2EL2WwnNDJkEuD/JnXAmcqgBOJrjHVYPaRjgaqsxepU1HgRZwD7wWglyp6lbWqz/ihlLN3TK67XeaRNA/+vV9CvDza9jCqGgOc+PpIoXEtYq5xbf/xnm
- lfsFLYhy
- ZglCXrQ0rnruxSz5joIG5QKAGJb6yTXLDGNJEexeI0BV9YngfrxRW+baMXnAll0j5+lVwvJLWwXjEs2zWbtHOto0epSaor6BU+lRqAKuwmM0ITlXknM5t8+TGdUf8jyMQh89YbUh9UEUt0v54IrMiokXBUe5SUNjXjPccBXKc0kf3hS9hXCarZAjfDgq984d+u6HN8AFwfALB4unnodEwNw6ASDLZtUUrTJvXMuu4Xj8UWsCcKwRuVRySJ4+5xku7QnOdDYR9vjMVyXCngOZy628ov/DtnxOInFLJgdBdNYIV2G9UXs3WTNCsb917uR91bXq+KeLPeR/I4ohihrtKRTvXoaHrvMFXlfYbd0YCza3M3qoV90trYU6xdubevSVcnH0Ip5pcUStYraZqbLvl2UdtQUOxXZwnvBdnO+81391WxTkqoIapdceMVuRSIR1uwrmMtpe7MiDlnqw=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1758354213-381001
+X-HE-Meta: U2FsdGVkX1/KcqBkxHFQLhKeASZF+An6zeTbKbyY6SgdljjELGtLppFXouYJEg6CHZgz/6UYmRqKq6ThENxSCH/UuuDJ6oHPY1ux8RdON1dyDPxeXIOArgFMDKuW37i7GuwFvSqBaGz86RvkarLhdusSZWg62u7WxKw0GOP45sjQj9hkDjb4bLkFfpdEpcQezjMA0W6Ho02cEk/ZY23X4HyEOyxYfs0+LOLyHqcmN7i9rkcMRj8Xk88jq3Yd8IJphuwgFDRmRA+ItJbVBw5hVyqLNuVIK+09IefuG/Lej2mv1xM33SgDxz5f0C0790SuvPofEnAXfksFs+piIITkoX9yoZX1L1lvYiyCEzsHNpGuy0v1u2yQCm7YqpnAMa9nCzmhOc7djO86qM3Fy0TG6EXS0pPrdeLnYO4AvQwRdQIqjVDAKo4wE/VhwP1xTTOLTJc7GX22oBfmn4D/f17sbBZHAreOj6OfxkxBevy+Jk3FBcUsE5h3VXuRxA3UXU7v8iRmOoSspdUZ+BeAKJw7lrv93C/KKxyHGZtGyAyw+B7AbwONDL8jvSD/92Exo1oux2PszruwKAxNFhlvlVbpBIXTX+gwlHEMnP5VNWL8tjj3r0jI8Hv06HRu0chFN3TNcWvZXXgWYgK+bZvyQL51/VbwokwUg39s9vZpP36VxZNUgiqAOYnc11wZxUmp17lIrDxE5QQ+H8EvKwHl//eRI0C0ZTLtKK7w5VshwhTKA9Bd0QC5sJv7zhDbabsQ78qi5VCOqu3P3JZKVG2pb8zLmyKBs80VXsO0MY8Uv2UeqtdyP1dUomqRgb7++o2eyXTRH0swDeUU4grXLn+yc8Sr/JvuUCmFTc2wVraIGyradkIowPDjA68MbSnLFcNseTQifwWaIO+093zlh17swO0rfUcFZE7Qv0TH/8dGWHoUc9tN0QfZPfQA4IYowwG7BhJpXVCwWL4PL2N0Ei90kXT
+ ToEz+kdW
+ DODEWgkmzM8hbb1qEtCKbAZrQhEqioyo/S/tXd2+Nw2DAzRPMVdViUJI/A5wDtchpF1Z/MeCSX5z9kFK4PEly3USsaoM2fuxHARAklusUNzTK4lc2WHkF4WDn8mJAWYIAwgKNs1u1/X3bTl4lMGuOm0WSyFVjegGor51rAj+uAarmh2fbikUhrdYNja9gNyeEhlY1sXe2igt8iPSje8MKjGsy/V8pRaghBsbJP2PrNknyuMEudHng1jwPPWvZYZ7Y1CCMmMorYkrF2LkmBLT7t4R22Hz39GX7aMYZbKFjhdDD1fI1nvxuzzJgkA6MdIAEEnLdauB6FF7N1Nm/uzHcbc3G4V3HfQEGzrfpbkZivUsAAJ9FYS1Kbey30wdVMYqCfgMw
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,140 +115,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-[my apologies for the size of patchbomb and the size of Cc; this series
-really affects a lot of places, if lightly]
+Hi Qi,
 
-Some filesystems use a kinda-sorta controlled dentry refcount leak to pin
-dentries of created objects in dcache (and undo it when removing those).
-Reference is grabbed and not released, but it's not actually _stored_
-anywhere.  That works, but it's hard to follow and verify; among other
-things, we have no way to tell _which_ of the increments is intended
-to be an unpaired one.  Worse, on removal we need to decide whether
-the reference had already been dropped, which can be non-trivial if
-that removal is on umount and we need to figure out if this dentry is
-pinned due to e.g. unlink() not done.  Usually that is handled by using
-kill_litter_super() as ->kill_sb(), but there are open-coded special
-cases of the same (consider e.g. /proc/self).
+kernel test robot noticed the following build errors:
 
-Things get simpler if we introduce a new dentry flag (DCACHE_PERSISTENT)
-marking those "leaked" dentries.  Having it set claims responsibility
-for +1 in refcount.
+[auto build test ERROR on next-20250918]
+[also build test ERROR on v6.17-rc6]
+[cannot apply to akpm-mm/mm-everything rppt-memblock/for-next rppt-memblock/fixes linus/master v6.17-rc6 v6.17-rc5 v6.17-rc4]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-The end result this series is aiming for:
+url:    https://github.com/intel-lab-lkp/linux/commits/Qi-Zheng/mm-thp-replace-folio_memcg-with-folio_memcg_charged/20250919-115219
+base:   next-20250918
+patch link:    https://lore.kernel.org/r/bbe3bf8bfce081fdf0815481b2a0c83b89b095b8.1758253018.git.zhengqi.arch%40bytedance.com
+patch subject: [PATCH 4/4] mm: thp: reparent the split queue during memcg offline
+config: x86_64-randconfig-004-20250920 (https://download.01.org/0day-ci/archive/20250920/202509201556.QAvYX4v3-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250920/202509201556.QAvYX4v3-lkp@intel.com/reproduce)
 
-* get these unbalanced dget() and dput() replaced with new primitives that
-  would, in addition to adjusting refcount, set and clear persistency flag.
-* instead of having kill_litter_super() mess with removing the remaining
-  "leaked" references (e.g. for all tmpfs files that hadn't been removed
-  prior to umount), have the regular shrink_dcache_for_umount() strip
-  DCACHE_PERSISTENT of all dentries, dropping the corresponding
-  reference if it had been set.  After that kill_litter_super() becomes
-  an equivalent of kill_anon_super().
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202509201556.QAvYX4v3-lkp@intel.com/
 
-Doing that in a single step is not feasible - it would affect too many places
-in too many filesystems.  It has to be split into a series.
+All errors (new ones prefixed by >>):
 
-This work has really started early in 2024; quite a few preliminary pieces
-have already gone into mainline.  This chunk is finally getting to the
-meat of that stuff - infrastructure and most of the conversions to it.
+>> mm/memcontrol.c:3890:2: error: call to undeclared function 'reparent_deferred_split_queue'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+    3890 |         reparent_deferred_split_queue(memcg);
+         |         ^
+   1 error generated.
 
-Some pieces are still sitting in the local branches, but the bulk of
-that stuff is here.
 
-The branch is -rc5-based; it lives in
-git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs.git #work.persistency
-individual patches in followups.
+vim +/reparent_deferred_split_queue +3890 mm/memcontrol.c
 
-Please, help with review and testing; it does appear to survive the local beating,
-but extra eyes on it would be very welcome.
+  3877	
+  3878	static void mem_cgroup_css_offline(struct cgroup_subsys_state *css)
+  3879	{
+  3880		struct mem_cgroup *memcg = mem_cgroup_from_css(css);
+  3881	
+  3882		memcg1_css_offline(memcg);
+  3883	
+  3884		page_counter_set_min(&memcg->memory, 0);
+  3885		page_counter_set_low(&memcg->memory, 0);
+  3886	
+  3887		zswap_memcg_offline_cleanup(memcg);
+  3888	
+  3889		memcg_offline_kmem(memcg);
+> 3890		reparent_deferred_split_queue(memcg);
+  3891		reparent_shrinker_deferred(memcg);
+  3892		wb_memcg_offline(memcg);
+  3893		lru_gen_offline_memcg(memcg);
+  3894	
+  3895		drain_all_stock(memcg);
+  3896	
+  3897		mem_cgroup_id_put(memcg);
+  3898	}
+  3899	
 
-First two commits add a couple of useful helpers, the next three add the
-infrastructure and the rest consists of per-filesystem conversions.
-
-Shortlog:
-      new helper: simple_remove_by_name()
-      new helper: simple_done_creating()
-      introduce a flag for explicitly marking persistently pinned dentries
-      primitives for maintaining persisitency
-      convert simple_{link,unlink,rmdir,rename,fill_super}() to new primitives
-      convert ramfs and tmpfs
-      procfs: make /self and /thread_self dentries persistent
-      configfs, securityfs: kill_litter_super() not needed
-      convert xenfs
-      convert smackfs
-      convert hugetlbfs
-      convert mqueue
-      convert bpf
-      convert dlmfs
-      convert fuse_ctl
-      convert pstore
-      convert tracefs
-      convert debugfs
-      debugfs: remove duplicate checks in callers of start_creating()
-      convert efivarfs
-      convert spufs
-      convert ibmasmfs
-      ibmasmfs: get rid of ibmasmfs_dir_ops
-      convert devpts
-      binderfs: use simple_start_creating()
-      binderfs_binder_ctl_create(): kill a bogus check
-      convert binderfs
-      autofs_{rmdir,unlink}: dentry->d_fsdata->dentry == dentry there
-      convert autofs
-      convert binfmt_misc
-      convert selinuxfs
-      functionfs: switch to simple_remove_by_name()
-      convert functionfs
-      gadgetfs: switch to simple_remove_by_name()
-      convert gadgetfs
-      hypfs: don't pin dentries twice
-      hypfs: switch hypfs_create_str() to returning int
-      hypfs: swich hypfs_create_u64() to returning int
-      convert hypfs
-
-Diffstat:
- arch/powerpc/platforms/cell/spufs/inode.c | 15 ++---
- arch/s390/hypfs/hypfs.h                   |  6 +-
- arch/s390/hypfs/hypfs_diag_fs.c           | 60 +++++++-------------
- arch/s390/hypfs/hypfs_vm_fs.c             | 21 +++----
- arch/s390/hypfs/inode.c                   | 82 +++++++++------------------
- drivers/android/binderfs.c                | 82 +++++++--------------------
- drivers/base/devtmpfs.c                   |  2 +-
- drivers/misc/ibmasm/ibmasmfs.c            | 24 ++++----
- drivers/usb/gadget/function/f_fs.c        | 54 ++++++++----------
- drivers/usb/gadget/legacy/inode.c         | 49 ++++++++--------
- drivers/xen/xenfs/super.c                 |  2 +-
- fs/autofs/inode.c                         |  2 +-
- fs/autofs/root.c                          | 11 ++--
- fs/binfmt_misc.c                          | 69 +++++++++++------------
- fs/configfs/mount.c                       |  2 +-
- fs/dcache.c                               | 93 ++++++++++++++++++++++++-------
- fs/debugfs/inode.c                        | 32 +++--------
- fs/devpts/inode.c                         | 57 +++++++------------
- fs/efivarfs/inode.c                       |  7 +--
- fs/efivarfs/super.c                       |  5 +-
- fs/fuse/control.c                         | 19 ++++---
- fs/hugetlbfs/inode.c                      | 12 ++--
- fs/libfs.c                                | 31 +++++++++--
- fs/ocfs2/dlmfs/dlmfs.c                    |  8 +--
- fs/proc/base.c                            |  6 +-
- fs/proc/internal.h                        |  1 +
- fs/proc/root.c                            | 14 ++---
- fs/proc/self.c                            | 10 +---
- fs/proc/thread_self.c                     | 11 +---
- fs/pstore/inode.c                         |  7 ++-
- fs/ramfs/inode.c                          |  8 +--
- fs/tracefs/event_inode.c                  |  4 +-
- fs/tracefs/inode.c                        | 13 ++---
- include/linux/dcache.h                    |  3 +
- include/linux/fs.h                        |  3 +
- include/linux/proc_fs.h                   |  2 -
- init/do_mounts.c                          |  2 +-
- ipc/mqueue.c                              | 12 +---
- kernel/bpf/inode.c                        | 15 ++---
- mm/shmem.c                                | 23 ++------
- security/inode.c                          |  2 +-
- security/selinux/selinuxfs.c              | 52 +++++++++--------
- security/smack/smackfs.c                  |  2 +-
- 43 files changed, 412 insertions(+), 523 deletions(-)
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
