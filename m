@@ -4,123 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40DC9CAC5A7
-	for <linux-mm@archiver.kernel.org>; Sat, 20 Sep 2025 16:26:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37C34CAC5A7
+	for <linux-mm@archiver.kernel.org>; Sat, 20 Sep 2025 17:13:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 668D18E0002; Sat, 20 Sep 2025 12:26:52 -0400 (EDT)
+	id 266058E0003; Sat, 20 Sep 2025 13:13:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5F2018E0001; Sat, 20 Sep 2025 12:26:52 -0400 (EDT)
+	id 217108E0001; Sat, 20 Sep 2025 13:13:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4BA4C8E0002; Sat, 20 Sep 2025 12:26:52 -0400 (EDT)
+	id 12D0F8E0003; Sat, 20 Sep 2025 13:13:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 343A38E0001
-	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 12:26:52 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BD29283E86
-	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 16:26:51 +0000 (UTC)
-X-FDA: 83910157422.22.BC273C3
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 884B440009
-	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 16:26:49 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 004BF8E0001
+	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 13:13:34 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 645561D95D5
+	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 17:13:34 +0000 (UTC)
+X-FDA: 83910275148.26.3B0DC06
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 3492740005
+	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 17:13:30 +0000 (UTC)
 Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b=dNdAWDYo;
-	spf=pass (imf17.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.42 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=none
+	dkim=pass header.d=intel.com header.s=Intel header.b=RfQJ5kx4;
+	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758385609;
+	s=arc-20220608; t=1758388412;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GvLRCncIiqRrC6qT6Y0+vbtoZaqXeTLbbsZoYra2n2s=;
-	b=L1NKJh0rDBgqzg5nK0lHMuvL9dvSUUKlOX/VeEbPpdEr4Y1uMqZ4hp2CazlvRZ8olQX/rm
-	t2sHjpQpwmjks0GHRCNle53tSBKgNvSe1GsY7Kfd8+FwNguGflVfrshk5eO0Nh55l6lYXG
-	iA5mIxjeg9cL4sdBTWBf/qwXuYviPK4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758385609; a=rsa-sha256;
-	cv=none;
-	b=KwjZqtdklsngilMQq1UBAkhcBZs4Hh4323HrpeXCme3YLXU7f1NNHC9UK037DMNdcUMh2g
-	sSomMyJXihjtiy2AZnXUCDAq6NUqQ491XQTj9FMoM1v53+jaATMw6vMmetY2e3iPJGFcLh
-	GX0LFgL1gJQUBRmSB6kVno/waBHPP04=
+	bh=DwF+afxYayecVmfkK3GwI3w8G+HuJM/es7t0fR/vouk=;
+	b=rvSt9rnYx3UwzWER0LdpY2slemQ4woFPYT8YbBCyhy6aGF2StA8d9xCcNGGM1YHMd4AusJ
+	WCosPPgc9QxjFZ71vvostW/GgqiGG66Q9CJ5BQwE3oqiMglAtCixOG/XrdzSpHeEx9OPVd
+	83QMdljTyAY0iYWNYfxCbPsN1lGmot0=
 ARC-Authentication-Results: i=1;
 	imf17.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b=dNdAWDYo;
-	spf=pass (imf17.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.42 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=none
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b2350899a40so402026466b.3
-        for <linux-mm@kvack.org>; Sat, 20 Sep 2025 09:26:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1758385607; x=1758990407; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=GvLRCncIiqRrC6qT6Y0+vbtoZaqXeTLbbsZoYra2n2s=;
-        b=dNdAWDYoeqCVSRQHXNmpG0IdoZJOX80RrqE1Ea0GbthYRnrES3j1yz4kxBFIB/EQDi
-         CU7Hj4PRyag9UBsaVEshwKr90tSLYzg0yiMLacYrACbbkkMBBuw8bpQyprEeqhH5cj4y
-         OGucgveOLLmbA/OGBlc8xgbp/yMYJW9j7f+IQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758385607; x=1758990407;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=GvLRCncIiqRrC6qT6Y0+vbtoZaqXeTLbbsZoYra2n2s=;
-        b=NFgWUb55LjFnBoaH23VCT5dhE0S6e9M2Nuafnufl68yRpa/ZGaIuI86F96ItG2/BiW
-         0MiFlddsgz7Z3unvPpJ8jGNmPsjCQsTpaxf1GOSLtCNuEP/9SCdySu/CDUSqQr/ucZNS
-         WT22X6G/JS5NfuI5ODtIWy9zbT5X0vVU8a80xqdL93CYt/AxiROvFLz3UF930poCZa75
-         MxvApZ0v1P/GyVmqH+EnzgkWTjgzXBjjXHsENKp+aRvJYu4C6wWhZsuxtPyxomAuJZ+A
-         9GWFnlyN99R6lNrV8KDAtxcf6lQ/d/Vcp/J8IRJZmLhIvA2l9Cs4ZKSww6WP6UvDp20S
-         hycA==
-X-Forwarded-Encrypted: i=1; AJvYcCVGtsTeFoOLPdvQYsz3lSRaNgs9CFMNrw12FX+nINMr59iyTZv/q4400qdAs1sP6OvGqolc7SUA1A==@kvack.org
-X-Gm-Message-State: AOJu0Yy6ibbj/lIaXOVKxC7hK8HHaBXD/ipmSkAx/AAjpCQFcybCwaIB
-	ugoYhL4CCmqXGc3+EstmvdjephxvvsdPe4PQpv2Po33x4arEhZGXGiRxQhZ02X4oet3sGlGe7NZ
-	zbyee5zQ=
-X-Gm-Gg: ASbGncv8nWb35mdyeEjTOuyxnLCnrKhmWPcSLWlNMncI3ziWcO+LcWlSxi53TPWUezt
-	uxd6msJwFAk2Z2rnFlcIjpvCF9ePR7rrFnyO6pg/fanVxv7DLhok+DAjn6gVuKc3foonJd+2oq8
-	kg0aWn4hp/d1gg/P8LxxRk8l+cyimvdQ6MKO7tmm2azQMHIXBVsSFgCDHnazYnlEsd7ZGlKl6HL
-	GhUGfmhXWzo1hPPThOVRKuoVY4UQLDBdCHsJdTzucvLtA3UW6h9EmB/WloZY3BAlS5lLqW1JJ1P
-	RGsfaZvhsPr/x1N0Z2GiR6PEpx+pbMcpDJoV/jUeJ/8CZlPIBcWrqwQ3vZLPkcFqy2lT6dZuF1k
-	UlZg8jGe6++DfN38BK3+UB35qCTEQrVBELPIoscVEDBAgneNR4V6BIGChCkr7TpSpMOcwyRZT
-X-Google-Smtp-Source: AGHT+IHd0PWpJ4JwLIV+8FTpvKfLgxoyLrI4UbCAsKFa/ufwGLSHBqa+wDXtpPg2eXmTCpw3AtiHkQ==
-X-Received: by 2002:a17:906:d181:b0:b28:9c6b:3487 with SMTP id a640c23a62f3a-b289c6b439cmr180935366b.34.1758385607552;
-        Sat, 20 Sep 2025 09:26:47 -0700 (PDT)
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com. [209.85.218.46])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b1fd2816769sm671408366b.106.2025.09.20.09.26.44
-        for <linux-mm@kvack.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 20 Sep 2025 09:26:44 -0700 (PDT)
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b07c081660aso556203066b.0
-        for <linux-mm@kvack.org>; Sat, 20 Sep 2025 09:26:44 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWIz2023w17K+t6nVkUUcPYZ5cORBsa/uQLNdbg6hTbdppcs/eRz+Id8mAMIelv6KtGE3/CNEU8+A==@kvack.org
-X-Received: by 2002:a17:907:1c89:b0:b1d:285d:155c with SMTP id
- a640c23a62f3a-b24ed88702cmr706169166b.7.1758385604052; Sat, 20 Sep 2025
- 09:26:44 -0700 (PDT)
+	dkim=pass header.d=intel.com header.s=Intel header.b=RfQJ5kx4;
+	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758388412; a=rsa-sha256;
+	cv=none;
+	b=mRbF9jLQ3CgPqohPWpTob51cj4iBw+0ymo/EikQbVHBaHCEEc2cohbsrMG2X0KM5T2ykzi
+	AQdYuy+ODz96mAPC4B2Bste15xMov/nb+DC7ps9WY3eboivcFgdfTM6EF9AYmA8XKdjYil
+	9uVA1YU3GKkkUBdT7OVdr1VMWXDv92Q=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1758388411; x=1789924411;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=5KG+OxVz1Flw/L7SwCG/sFt5K/1TtnEjpf6fe8kLhYo=;
+  b=RfQJ5kx4Y4Ldk094fnfPPjpgAZDcBydC6hQSLSntvN5gFVXlRpicNIRq
+   5MW1ivc78CNtKA3vaDOplhL6CpDhnRtF2H8OCbtb7wJU8qZ/24fXsAmHN
+   ZZw65NIuxVzquzDyr4bYYYusuIrrQKYJoWLJLQ4WCuCF/Y66WFXYLjdU8
+   YJFlyrLZSXt00L7PkTUFTuRJ1v8N3vT6caiuyivAkTsTICJea2yqQzobo
+   toXvN08D5pK8Hx8bcHiJQkZSBGMqeISqxiaBjWH0XrC7axdhQmBee0Mqv
+   mezKmN9YAQXMVwBq9e0YcErPJsTDedfOuZYIQUyeAnYY9XUkcf7xhsCYR
+   A==;
+X-CSE-ConnectionGUID: QkA6yIKMTimPzOj2zxIezQ==
+X-CSE-MsgGUID: 3fypj1QkQOezUMXxA5sifw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11559"; a="48288953"
+X-IronPort-AV: E=Sophos;i="6.18,281,1751266800"; 
+   d="scan'208";a="48288953"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Sep 2025 10:13:29 -0700
+X-CSE-ConnectionGUID: aGJub6TJSfuXNhh7mgYHgw==
+X-CSE-MsgGUID: oZexoa1VTM62gdDAzDVxGw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,281,1751266800"; 
+   d="scan'208";a="207054036"
+Received: from lkp-server01.sh.intel.com (HELO 84a20bd60769) ([10.239.97.150])
+  by fmviesa001.fm.intel.com with ESMTP; 20 Sep 2025 10:13:25 -0700
+Received: from kbuild by 84a20bd60769 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1v019H-0005Zf-0c;
+	Sat, 20 Sep 2025 17:13:23 +0000
+Date: Sun, 21 Sep 2025 01:12:24 +0800
+From: kernel test robot <lkp@intel.com>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Chris Mason <chris.mason@fusionio.com>,
+	Kiryl Shutsemau <kirill@shutemov.name>,
+	Brendan Jackman <jackmanb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Zi Yan <ziy@nvidia.com>,
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH 4/4] mm/page_alloc: Batch page freeing in
+ free_frozen_page_commit
+Message-ID: <202509210003.8eaSRC0k-lkp@intel.com>
+References: <20250919195223.1560636-5-joshua.hahnjy@gmail.com>
 MIME-Version: 1.0
-References: <20250920074156.GK39973@ZenIV>
-In-Reply-To: <20250920074156.GK39973@ZenIV>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Sat, 20 Sep 2025 09:26:27 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wiXPnY9vWFC87sHudSDYY+wpfTrs-uxd7DBypeE+15Y0g@mail.gmail.com>
-X-Gm-Features: AS18NWCBuRxfjxFE7tKBAQqhhkva7pQWM9EJwSLVmis6atYjgiGA5eqHrxKhjLE
-Message-ID: <CAHk-=wiXPnY9vWFC87sHudSDYY+wpfTrs-uxd7DBypeE+15Y0g@mail.gmail.com>
-Subject: Re: [PATCHES][RFC] the meat of tree-in-dcache series
-To: Al Viro <viro@zeniv.linux.org.uk>
-Cc: linux-fsdevel@vger.kernel.org, Christian Brauner <brauner@kernel.org>, 
-	Jan Kara <jack@suse.cz>, Ian Kent <raven@themaw.net>, Miklos Szeredi <miklos@szeredi.hu>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, linux-mm@kvack.org, linux-efi@vger.kernel.org, 
-	ocfs2-devel@lists.linux.dev, Kees Cook <kees@kernel.org>, 
-	Steven Rostedt <rostedt@goodmis.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	linux-usb@vger.kernel.org, Paul Moore <paul@paul-moore.com>, 
-	Casey Schaufler <casey@schaufler-ca.com>, linuxppc-dev@lists.ozlabs.org, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: yd9wdga65wfpb1wz9skomtqr9nrot3s1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250919195223.1560636-5-joshua.hahnjy@gmail.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 884B440009
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1758385609-698923
-X-HE-Meta: U2FsdGVkX1/67iQcoX5DKw9HQ2C3rkmKX8Q71VtOqmej8PcccJAz06ZGma95yectFhZwJPQpqcSKnzTMXR28fXREMWXdPFbq1lKMxMcrHDrkdRYyUCaDxjqQ0yYVmFSVUHcJiguH8nhW55gdITX75f2f9kcS6pMCXnoGefCJwYivlDgEnn/gDKuwod0OzppYsv8B2+FHcRK8avRnIYPDDSWNv2ZbBBR9UeWyIcd7/CZmphZFPogDu7WwjjDtvcB3eMruFF71eJ93MwsOJi59r/4K+0wWH4l7a+fRWO5j0mQie/lIgsZtdVGAp2tdgbTHWckjcfnejOKP8Uljxbnr6R4UE0QiQvNrGy1XTIwotkJ9JoLIGCU5KmPZG7CGV58t5tN7Bm3xGDp2ppwDvrIThoKDP0xcoAPsBODohAFE0TKrbj0/J3mmtQ0Ik7WfV6770+77vzJ3vtETc6i7fjfRJMYcddZDUgzScRY31wPP1t9XrPlzlnDgOgbFq+bJQHfJylYdtboC1IFq7KEoboCYb67Gf7OvtwdHdb7SDJlJXA8G4C7ji1zaOXFVVAEXnr41JLm3BX1+Bi0wr8i0qoAPRkrB//alzbsQjlWkdHOrRNix4cC3oJBkNrDphno8ZEfwbWiKquwFIojCjQ34ZOMvXntIWeo/vOG7WZ5hpYrE0lloA4LYjYT+Ikhf10fvVJp4zvsUXGzbdUNc4tZVCx7zDE8lSvHFQXIP7RoYCRYkkQb8LkhZpp2OFG4tCBkdswZcKdY3OKXWPl0cGKeeoUEMGHTKn54K9kpXB0CTA89lewmfI/sxWLOaoqXA7doFCFOl8ERyTgyZVvtyubvXbwiTnndSDdJGcb+RhatzAbi/KL+8RrzgXYfNF0N67MFPRK8FR6NCLa5t0y0MlyxGE2hLLkFfy+a3GCnB2NbGAtkxNMHsetwygOal5WZo0FXybHNn90yrtyL30MYKpaLAxVN
- NV2sHnr2
- dbvy3RzP2xo9clkBBeUOqC5rVkgSG17huo8FafretaDyQCEErL7pcg0M/fHJ/c18TO4KjbFcMDj9kn980niJVHQfIMwlBdNoYLRhdDL/jLtOkdFDIuhS8Y+vcjnbaj5u8zpjXh+OsEohbGQ6S3edVxM7XdUhKkMRPeRrWk0qoQ4I6t3x04ZvEF94oEx5Zcudusw1ZXOUvYnBS6damdstTVOCI3G5GX6KAzJUCX4/58GM8JPJCZiLldATZfXzSq5S5xAmUyMd/NCBszbtE97yf03ftUCk1/si6klRSWJuHQGs3F6gLBVFGHFOsMv0ScwD8Ny/IcetDdgssuG2j7Z0kOFH1Q6xvO920Yu/2nBFCqDDr9tCxBmGu4lEOnNTxFLt/HYbCWzIyw1DsLKxb3N8rZiXq7V3rUDISSC6pRlpq6eWuodx1+DVRA42WHxl+U8Iwnw/hIQAclxrmL/IRJOHx+w++CyblphxLszrmot7vOK5jD1Ml9YrOpAhBghR36BKZO0NUWP/m48GGay09WfNPhxLk8b3k3Xhu2WehQmdqyYlYvvGaiqNd7i8Lljaq0brgqydRrLSj6P0Q5MwQuvnf0QODZg==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 3492740005
+X-Stat-Signature: mimoxz51ix3ujm9n5sekgmijrj8ya85p
+X-HE-Tag: 1758388410-10833
+X-HE-Meta: U2FsdGVkX19EhnReTjub3QgDwS+cKpv981d+ut9a8orSks5JWfW44x0Oz2qHLJjpW3FNbQzyFy0Mb9+yzteDJ+fBrMB46Ovc268pTztxMV2rFjhQyekP1EhbjbHMW/kVGToSajRLgzS46+f01ci13Dudf7rzlJdhgTSJv2EYoDSiTh8hdK8gyD+4CPRgVZRL0EnrgBxhHbhTEqGJICth5q3hTsgSxSJ6YoQgMNaJMqaUgFunuGmOVc0qKxeys8EowBgfbiEoWvF5072VXOoMVLYsfaYffP8M3QsQ27ukqmCm7QaeyUh8mGkGGrf2OHGsJieBeu1iVqNtYIWT8JKN82OwwE12kiYxKsmWHrivSeEH6sk7bGVVxbZ5pEG8fCVWw6EtO5acwkA75Ov2D8XYqnsl1/yVHGnpYKT6QBF0NNJtQJUtVx5A2ge9Chpc5p5omi8rPXe7RGY1QYxKCI2XoqFPfdp88SfY69fQivZuyqqFviAqaiD0HDK/Mip7GNjkxRVmG4I6NgBLcLc4pNoPXHtKfmpGAxjpulcZQlPSEWRIesh7AJGgGplBgapJP2Ox3uAExh6eLH5Ur0zlIkKKqagxMCPQzgRdvOzygTZAw8fw1POoq4YmbxS8/uxCFwoJwM2ny6xOnUu4Z6eMsLPqkBjLKO59cFmS/lqqOpxs0LvpVAtbcemdy6sxrWfa61eS+0lfOVDqgzLtcBZS1XhXB2+D9agU5YisauAzsNmxTU9OIGJ8VGt7hKRSGgcb+d3sJjnPLrACOCo1qROQ9jASGelszIvpGo8eAC0QkYvESeKlTfqhUwj+AXL+ipEobJCpI09EH4VoJbRfRzU+hePsvX2I+ZWP51SlHwDfX5SgpLmG5SivGIoTbOo67mVOvxYPYyhoJnDYx+pjNX5qi8oek3TP3L/3YksvZS2fHzKH+lFeaRCPgV6Pa+JWSlun9mi83yfZDyHwBimHWbfoE8P
+ tjRapSvf
+ Z4hkrbKgXAvzAzO2rqmrRAX/q4v9Uii2m/XAmeJkuSxjsGwtCHHGVg3wI9O6gwvYyaQ5kP5rwW3Zklb07C5/50qVcQrRCOpQEj4C81+346XtOTZt7czPt7xwwTOip/GpTt4nBnWVLyosBKAY7qVf0Y1ySspYBnnJV95g5TINB0DzJPBrnS/RFcM1fcDqY0hHU4VxP505sZb8IAQ/ywzUlNiI1HXVWyw5tveLoXw++ygVGw+N3XD6zput4xJj/gTl1tARvlyo5xq12OaYKWaAzYW3ZgfJYqPMn8N2XJk+gIz6OXLb2JPJ7UXNHI5ImRDBDWQMnFOSXh4/bu1f3mWFBns2SAg785V/UOi/fKFwzeRtaTEkkc/74R3SUrxCVNnwAQC9+OsUenpbqrhtXkPH/t59dvtgK2aCrogap2QV5E2XR3ZkAGmH37JMfSgOboON5e0di3QTYY40B4dI5iud6r7JYsw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,45 +117,235 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 20 Sept 2025 at 00:42, Al Viro <viro@zeniv.linux.org.uk> wrote:
->
-> The branch is -rc5-based; it lives in
-> git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs.git #work.persistency
+Hi Joshua,
 
-I reacted to the "d_make_persistent() + dput()" pattern, and wondered
-if it should just use the refcount that the caller has, but it does
-look like that alternate approach would just result in a
-"d_make_persistent(dget()))" pattern instead.
+kernel test robot noticed the following build warnings:
 
-And I guess you already get the lock for d_make_persistent(), so it's
-better to do the dget while having it - but arguably that is also true
-for the dput().
+[auto build test WARNING on 097a6c336d0080725c626fda118ecfec448acd0f]
 
-I think you did pick the right model, with d_make_persistent() taking
-a ref, and d_make_discardable() releasing it, but this series did make
-me think that the refcounting on the caller side is a bit odd.
+url:    https://github.com/intel-lab-lkp/linux/commits/Joshua-Hahn/mm-page_alloc-vmstat-Simplify-refresh_cpu_vm_stats-change-detection/20250920-035357
+base:   097a6c336d0080725c626fda118ecfec448acd0f
+patch link:    https://lore.kernel.org/r/20250919195223.1560636-5-joshua.hahnjy%40gmail.com
+patch subject: [PATCH 4/4] mm/page_alloc: Batch page freeing in free_frozen_page_commit
+config: powerpc-taishan_defconfig (https://download.01.org/0day-ci/archive/20250921/202509210003.8eaSRC0k-lkp@intel.com/config)
+compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250921/202509210003.8eaSRC0k-lkp@intel.com/reproduce)
 
-Because some places would clearly want a "d_make_persistent_and_put()"
-function. But probably not worth the extra interface.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202509210003.8eaSRC0k-lkp@intel.com/
 
-Anyway, apart from that I only had one reaction: I think
-d_make_discardable() should have a
+All warnings (new ones prefixed by >>):
 
-        WARN_ON(!(dentry->d_flags & DCACHE_PERSISTENT))
+   mm/page_alloc.c:2891:23: error: use of undeclared identifier 'UP_flags'; did you mean 'fpi_flags'?
+    2891 |                         pcp_trylock_finish(UP_flags);
+         |                                            ^~~~~~~~
+         |                                            fpi_flags
+   mm/page_alloc.c:109:53: note: expanded from macro 'pcp_trylock_finish'
+     109 | #define pcp_trylock_finish(flags)       local_irq_restore(flags)
+         |                                                           ^
+   include/linux/irqflags.h:240:61: note: expanded from macro 'local_irq_restore'
+     240 | #define local_irq_restore(flags) do { raw_local_irq_restore(flags); } while (0)
+         |                                                             ^
+   include/linux/irqflags.h:177:28: note: expanded from macro 'raw_local_irq_restore'
+     177 |                 typecheck(unsigned long, flags);        \
+         |                                          ^
+   include/linux/typecheck.h:11:9: note: expanded from macro 'typecheck'
+      11 |         typeof(x) __dummy2; \
+         |                ^
+   mm/page_alloc.c:2833:29: note: 'fpi_flags' declared here
+    2833 |                 unsigned int order, fpi_t fpi_flags)
+         |                                           ^
+>> mm/page_alloc.c:2891:4: warning: comparison of distinct pointer types ('unsigned long *' and 'typeof (fpi_flags) *' (aka 'int *')) [-Wcompare-distinct-pointer-types]
+    2891 |                         pcp_trylock_finish(UP_flags);
+         |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   mm/page_alloc.c:109:35: note: expanded from macro 'pcp_trylock_finish'
+     109 | #define pcp_trylock_finish(flags)       local_irq_restore(flags)
+         |                                         ^~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/irqflags.h:240:39: note: expanded from macro 'local_irq_restore'
+     240 | #define local_irq_restore(flags) do { raw_local_irq_restore(flags); } while (0)
+         |                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/irqflags.h:177:3: note: expanded from macro 'raw_local_irq_restore'
+     177 |                 typecheck(unsigned long, flags);        \
+         |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/typecheck.h:12:18: note: expanded from macro 'typecheck'
+      12 |         (void)(&__dummy == &__dummy2); \
+         |                ~~~~~~~~ ^  ~~~~~~~~~
+   mm/page_alloc.c:2891:23: error: use of undeclared identifier 'UP_flags'; did you mean 'fpi_flags'?
+    2891 |                         pcp_trylock_finish(UP_flags);
+         |                                            ^~~~~~~~
+         |                                            fpi_flags
+   mm/page_alloc.c:109:53: note: expanded from macro 'pcp_trylock_finish'
+     109 | #define pcp_trylock_finish(flags)       local_irq_restore(flags)
+         |                                                           ^
+   include/linux/irqflags.h:240:61: note: expanded from macro 'local_irq_restore'
+     240 | #define local_irq_restore(flags) do { raw_local_irq_restore(flags); } while (0)
+         |                                                             ^
+   include/linux/irqflags.h:179:26: note: expanded from macro 'raw_local_irq_restore'
+     179 |                 arch_local_irq_restore(flags);          \
+         |                                        ^
+   mm/page_alloc.c:2833:29: note: 'fpi_flags' declared here
+    2833 |                 unsigned int order, fpi_t fpi_flags)
+         |                                           ^
+   mm/page_alloc.c:2893:24: error: use of undeclared identifier 'UP_flags'; did you mean 'fpi_flags'?
+    2893 |                         pcp_trylock_prepare(UP_flags);
+         |                                             ^~~~~~~~
+         |                                             fpi_flags
+   mm/page_alloc.c:108:51: note: expanded from macro 'pcp_trylock_prepare'
+     108 | #define pcp_trylock_prepare(flags)      local_irq_save(flags)
+         |                                                        ^
+   include/linux/irqflags.h:239:55: note: expanded from macro 'local_irq_save'
+     239 | #define local_irq_save(flags)   do { raw_local_irq_save(flags); } while (0)
+         |                                                         ^
+   include/linux/irqflags.h:172:28: note: expanded from macro 'raw_local_irq_save'
+     172 |                 typecheck(unsigned long, flags);        \
+         |                                          ^
+   include/linux/typecheck.h:11:9: note: expanded from macro 'typecheck'
+      11 |         typeof(x) __dummy2; \
+         |                ^
+   mm/page_alloc.c:2833:29: note: 'fpi_flags' declared here
+    2833 |                 unsigned int order, fpi_t fpi_flags)
+         |                                           ^
+   mm/page_alloc.c:2893:4: warning: comparison of distinct pointer types ('unsigned long *' and 'typeof (fpi_flags) *' (aka 'int *')) [-Wcompare-distinct-pointer-types]
+    2893 |                         pcp_trylock_prepare(UP_flags);
+         |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   mm/page_alloc.c:108:36: note: expanded from macro 'pcp_trylock_prepare'
+     108 | #define pcp_trylock_prepare(flags)      local_irq_save(flags)
+         |                                         ^~~~~~~~~~~~~~~~~~~~~
+   include/linux/irqflags.h:239:36: note: expanded from macro 'local_irq_save'
+     239 | #define local_irq_save(flags)   do { raw_local_irq_save(flags); } while (0)
+         |                                      ^~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/irqflags.h:172:3: note: expanded from macro 'raw_local_irq_save'
+     172 |                 typecheck(unsigned long, flags);        \
+         |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/typecheck.h:12:18: note: expanded from macro 'typecheck'
+      12 |         (void)(&__dummy == &__dummy2); \
+         |                ~~~~~~~~ ^  ~~~~~~~~~
+   mm/page_alloc.c:2893:24: error: use of undeclared identifier 'UP_flags'
+    2893 |                         pcp_trylock_prepare(UP_flags);
+         |                                             ^
+   mm/page_alloc.c:2896:24: error: use of undeclared identifier 'UP_flags'; did you mean 'fpi_flags'?
+    2896 |                                 pcp_trylock_finish(UP_flags);
+         |                                                    ^~~~~~~~
+         |                                                    fpi_flags
+   mm/page_alloc.c:109:53: note: expanded from macro 'pcp_trylock_finish'
+     109 | #define pcp_trylock_finish(flags)       local_irq_restore(flags)
+         |                                                           ^
+   include/linux/irqflags.h:240:61: note: expanded from macro 'local_irq_restore'
+     240 | #define local_irq_restore(flags) do { raw_local_irq_restore(flags); } while (0)
+         |                                                             ^
+   include/linux/irqflags.h:177:28: note: expanded from macro 'raw_local_irq_restore'
+     177 |                 typecheck(unsigned long, flags);        \
+         |                                          ^
+   include/linux/typecheck.h:11:9: note: expanded from macro 'typecheck'
+      11 |         typeof(x) __dummy2; \
+         |                ^
+   mm/page_alloc.c:2833:29: note: 'fpi_flags' declared here
+    2833 |                 unsigned int order, fpi_t fpi_flags)
+         |                                           ^
+   mm/page_alloc.c:2896:5: warning: comparison of distinct pointer types ('unsigned long *' and 'typeof (fpi_flags) *' (aka 'int *')) [-Wcompare-distinct-pointer-types]
+    2896 |                                 pcp_trylock_finish(UP_flags);
+         |                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   mm/page_alloc.c:109:35: note: expanded from macro 'pcp_trylock_finish'
+     109 | #define pcp_trylock_finish(flags)       local_irq_restore(flags)
+         |                                         ^~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/irqflags.h:240:39: note: expanded from macro 'local_irq_restore'
+     240 | #define local_irq_restore(flags) do { raw_local_irq_restore(flags); } while (0)
+         |                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/irqflags.h:177:3: note: expanded from macro 'raw_local_irq_restore'
+     177 |                 typecheck(unsigned long, flags);        \
+         |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/typecheck.h:12:18: note: expanded from macro 'typecheck'
+      12 |         (void)(&__dummy == &__dummy2); \
 
-because without that I think it can mistakenly be used as some kind of
-"dput that always takes the dentry lock", which seems bad.
 
-Or was that intentional for some reason?
+vim +2891 mm/page_alloc.c
 
-Talking about WARN_ON() - please don't add new BUG_ON() cases. I
-realize that those will never trigger, but *if* they were to trigger,
-some of them would do so during early boot and be a pain for people to
-ever even report to us.
+  2823	
+  2824	/*
+  2825	 * Tune pcp alloc factor and adjust count & free_count. Free pages to bring the
+  2826	 * pcp's watermarks below high.
+  2827	 *
+  2828	 * May return a freed pcp, if during page freeing the pcp spinlock cannot be
+  2829	 * reacquired. Return true if pcp is locked, false otherwise.
+  2830	 */
+  2831	static bool free_frozen_page_commit(struct zone *zone,
+  2832			struct per_cpu_pages *pcp, struct page *page, int migratetype,
+  2833			unsigned int order, fpi_t fpi_flags)
+  2834	{
+  2835		int high, batch;
+  2836		int to_free, to_free_batched;
+  2837		int pindex;
+  2838		bool free_high = false;
+  2839	
+  2840		/*
+  2841		 * On freeing, reduce the number of pages that are batch allocated.
+  2842		 * See nr_pcp_alloc() where alloc_factor is increased for subsequent
+  2843		 * allocations.
+  2844		 */
+  2845		pcp->alloc_factor >>= 1;
+  2846		__count_vm_events(PGFREE, 1 << order);
+  2847		pindex = order_to_pindex(migratetype, order);
+  2848		list_add(&page->pcp_list, &pcp->lists[pindex]);
+  2849		pcp->count += 1 << order;
+  2850	
+  2851		batch = READ_ONCE(pcp->batch);
+  2852		/*
+  2853		 * As high-order pages other than THP's stored on PCP can contribute
+  2854		 * to fragmentation, limit the number stored when PCP is heavily
+  2855		 * freeing without allocation. The remainder after bulk freeing
+  2856		 * stops will be drained from vmstat refresh context.
+  2857		 */
+  2858		if (order && order <= PAGE_ALLOC_COSTLY_ORDER) {
+  2859			free_high = (pcp->free_count >= (batch + pcp->high_min / 2) &&
+  2860				     (pcp->flags & PCPF_PREV_FREE_HIGH_ORDER) &&
+  2861				     (!(pcp->flags & PCPF_FREE_HIGH_BATCH) ||
+  2862				      pcp->count >= batch));
+  2863			pcp->flags |= PCPF_PREV_FREE_HIGH_ORDER;
+  2864		} else if (pcp->flags & PCPF_PREV_FREE_HIGH_ORDER) {
+  2865			pcp->flags &= ~PCPF_PREV_FREE_HIGH_ORDER;
+  2866		}
+  2867		if (pcp->free_count < (batch << CONFIG_PCP_BATCH_SCALE_MAX))
+  2868			pcp->free_count += (1 << order);
+  2869	
+  2870		if (unlikely(fpi_flags & FPI_TRYLOCK)) {
+  2871			/*
+  2872			 * Do not attempt to take a zone lock. Let pcp->count get
+  2873			 * over high mark temporarily.
+  2874			 */
+  2875			return true;
+  2876		}
+  2877		high = nr_pcp_high(pcp, zone, batch, free_high);
+  2878		to_free = nr_pcp_free(pcp, batch, high, free_high);
+  2879		while (to_free > 0 && pcp->count >= high) {
+  2880			to_free_batched = min(to_free, batch);
+  2881			free_pcppages_bulk(zone, to_free_batched, pcp, pindex);
+  2882			if (test_bit(ZONE_BELOW_HIGH, &zone->flags) &&
+  2883			    zone_watermark_ok(zone, 0, high_wmark_pages(zone),
+  2884					      ZONE_MOVABLE, 0))
+  2885				clear_bit(ZONE_BELOW_HIGH, &zone->flags);
+  2886	
+  2887			high = nr_pcp_high(pcp, zone, batch, free_high);
+  2888			to_free -= to_free_batched;
+  2889			if (pcp->count >= high) {
+  2890				pcp_spin_unlock(pcp);
+> 2891				pcp_trylock_finish(UP_flags);
+  2892	
+  2893				pcp_trylock_prepare(UP_flags);
+  2894				pcp = pcp_spin_trylock(zone->per_cpu_pageset);
+  2895				if (!pcp) {
+  2896					pcp_trylock_finish(UP_flags);
+  2897					return false;
+  2898				}
+  2899			}
+  2900		}
+  2901	
+  2902		return true;
+  2903	}
+  2904	
 
-BUG_ON() really should be shunned. I think it makes sense to you and
-for automated testing, but it really is absolutely *horrendously* bad
-for the case where the code hits actual users.
-
-                 Linus
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
