@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CADF1CAC597
-	for <linux-mm@archiver.kernel.org>; Sat, 20 Sep 2025 07:49:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 048C1CAC5A0
+	for <linux-mm@archiver.kernel.org>; Sat, 20 Sep 2025 07:51:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5F8BC8E0021; Sat, 20 Sep 2025 03:48:15 -0400 (EDT)
+	id 7F9168E001E; Sat, 20 Sep 2025 03:48:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5CF798E001E; Sat, 20 Sep 2025 03:48:15 -0400 (EDT)
+	id 789628E0023; Sat, 20 Sep 2025 03:48:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3113C8E0021; Sat, 20 Sep 2025 03:48:15 -0400 (EDT)
+	id 5AF118E0022; Sat, 20 Sep 2025 03:48:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 180A98E001E
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 3D13D8E001E
 	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 03:48:15 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E02B211B0F9
-	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 07:48:14 +0000 (UTC)
-X-FDA: 83908850508.11.EAF2368
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0E0B113BEE0
+	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 07:48:15 +0000 (UTC)
+X-FDA: 83908850550.09.AF13EE7
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 7D08780004
+	by imf26.hostedemail.com (Postfix) with ESMTP id 62BE7140007
 	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 07:48:13 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b="K4/e3Rie";
-	spf=none (imf30.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b="Ies4AD/s";
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
+	spf=none (imf26.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758354493; a=rsa-sha256;
+	cv=none;
+	b=M+nQ7Nfb+QTT2WU5WnmfLbPnm6KeIZx46mlu0z2vwVlqTTxB4QYtrSdd815h8ryUKWH0GW
+	TqEGTYMdbHyijBp68x36LUHTbGxoREYa8XTjzDHsrf+XeIaor2siGmJO7QVljbztTewO4U
+	Eux/hIOFgfgpyiBsiUVkde0KeVhAYfM=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b="Ies4AD/s";
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
+	spf=none (imf26.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1758354493;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NrCfZqIGx2QtH4dFK91zKO0X/du0eTzDDHu7mpHeJ3A=;
-	b=EbyNgkj/XErJrieuz835KKy877obXGasU6IuZ4CYxA4kxYWv8D36DGmmEzQUYZGv964A4P
-	86sspKfowcN8nLYs+V1yEssc13cfnTq2GwYAu4gWWb2j98SELCSvEHjmWv0WvAN1aSGukc
-	jdsF23ifnHy5XUJ3Xg1nu9dKSrW4LEg=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b="K4/e3Rie";
-	spf=none (imf30.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758354493; a=rsa-sha256;
-	cv=none;
-	b=8kDxlxAiGHBNhtKNUmPsMc/GJon+wsFqM4dr/5h794W7nPjgjidsB52IMRltgUUXv+V2JP
-	HddoaFr3Z4+/lgtVjt6cO5Dg5TJgwA4r3Dkpi91QSw9W+qRf4i5/AjFa80iyesKiEvsjzA
-	o6IOWco1N19WgYXHPZ9rkInv4sQqwfo=
+	bh=AxXF+ZX7o2qevQIhaj7GgHO9nhvHZfJFLXJ69dxgaxo=;
+	b=3IeGUXWZgNagmqr6gNTmzQPNIaI0WB5/Adr1/kneX1r/q3CisahFBzClR3GeKH0NahOj4p
+	elWzr19QmiHpe21JiPUhVxiqpdDUSrWxFicA0uApah4z6SmglUdZJVz0lCbQQoGla65/ai
+	FH9/B/MbWR6DdZdI4ZWT23luWRq0Gvc=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=NrCfZqIGx2QtH4dFK91zKO0X/du0eTzDDHu7mpHeJ3A=; b=K4/e3RieUOijjjl/ehkEvHcQ4Z
-	QBK1iY+AOPVRofXOu8+4mdeNcLH4uPJC3gWxWin8DVhGiQ/Mh1Xc8Y+gjCxG2Z4j9osEOGr8cbX3w
-	KbrPFmdelDdm+qPmBqPLxdXCucPd78tb8EP+clrbWeNVzNKeGNsD7fLfqX9in/P6X+oiuHGNOLS/P
-	ue3YPE2fdcGHviQKX+a6c4NsUbT0eAp0uppImgmQEhuXE7ZvK7x4GwofAE5JTMhW3fSytOSnCTKYm
-	l3IswgfSvtxEffSKr6izyp6D9vQE3mvuustvWOj2DDGGWg1Dv/G0DlzJ8W+tnLxN7cJgHMkJ7r3Oq
-	jS0fXF2A==;
+	bh=AxXF+ZX7o2qevQIhaj7GgHO9nhvHZfJFLXJ69dxgaxo=; b=Ies4AD/sXBzLiIMnl/ZdC7Ibm2
+	W2zIpILtpZKpaSMaPC3m/lcGPJwcT/lgcaPI8Wq88cjONY+ioQ0RVXzan5eukyU+dz2VWKHsevmsq
+	FQA8QbUwpVZOqZNx0f8J8g6ACDW7td+o+0um73FBSFXdqeDWCg/p4qAzvQMjgouuUVEqUNNvqg4jj
+	EYLRbcSUgaVdmj293jx4PQqTvZH9+WYM7dJHG70LulPeirJnDb1I617r5HBvwF5GzgVKNjgxW3o5w
+	U4HrwT9VGp9SZuzokv290LBLe83wLWCw5zltOGXTEzB0gLL96JYIRyaymqy+Q7s6ul5EsE3SYVNiB
+	wDxN6HUw==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uzsKI-0000000ExNS-04OY;
-	Sat, 20 Sep 2025 07:48:10 +0000
+	id 1uzsKH-0000000ExN3-2cBU;
+	Sat, 20 Sep 2025 07:48:09 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: linux-fsdevel@vger.kernel.org
 Cc: torvalds@linux-foundation.org,
@@ -80,23 +80,23 @@ Cc: torvalds@linux-foundation.org,
 	casey@schaufler-ca.com,
 	linuxppc-dev@lists.ozlabs.org,
 	borntraeger@linux.ibm.com
-Subject: [PATCH 37/39] hypfs: switch hypfs_create_str() to returning int
-Date: Sat, 20 Sep 2025 08:47:56 +0100
-Message-ID: <20250920074759.3564072-37-viro@zeniv.linux.org.uk>
+Subject: [PATCH 36/39] hypfs: don't pin dentries twice
+Date: Sat, 20 Sep 2025 08:47:55 +0100
+Message-ID: <20250920074759.3564072-36-viro@zeniv.linux.org.uk>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250920074759.3564072-1-viro@zeniv.linux.org.uk>
 References: <20250920074156.GK39973@ZenIV>
  <20250920074759.3564072-1-viro@zeniv.linux.org.uk>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 62BE7140007
+X-Stat-Signature: jiu5qi5abwzff1b7n5igfx8ukckoyag8
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 7D08780004
-X-Stat-Signature: 1ehpggiymzrqt7jfujoy5un3jxmyoc59
-X-HE-Tag: 1758354493-459565
-X-HE-Meta: U2FsdGVkX1/rHXbMVUrJNMuSPDm3Aem/4RGR0lAlM0xKcmYC+7YCUPINn+oFdQqP4K7A5WUo96stf3izbGe8gOO5ovPsGjOqUcbqgBZ/dmD54tTVnKI4FEYlplrjTAb0IM77QbWNLoSJvABaHjrJ5DbQwMzGip0nDPPBimaJthZJe6E/xoj3YL0IQgEnF+e52hKP4AZFfnUr4Wr/GR8sNK0ULqV+pJ/80CV4KutZLm63zO5SCABY3JF2LhpKEJCnUk8VdyNCoRnSx5uiUqPm1xmFBjl+F9YVel1qld8wkcwHWh0mjdU/FgpU/iGmokZAzbo0Fif3q3s5IfykMYsROmjlFg6SqZ3a3jvwNopAfpDeZd5mKe6qHln7j9k8FTdTWzIA4yQja/gCwO+77jQcEtd5IjpyYUtIhUbuzNSH1BF/brX1ThBmMSjL/OdqyNtd8VYpNd8IsiIqG/1Njn94FvigdHgYJmOwtOyQci4wVW/Y60dOTn91snujZHlPmi5vTowp1r68C+7kddQTmAY9vuBH2/3zbBt3HZRHJBSTy5JlcWi7YmX6Bwkw6j4ga/rUPzxAHf7es+yRrUo1m8OUdoOQrR6iKL0MBIWGibmusjaTyw8OBB61KVLQ6O04T8uiDGGREXRXBTtqfhQIj6RePGOQlkIXdm02tKLsNVaYI9duJNChokdU1nHks7uOVjcBd09cJuSG1G2/+i/EwFUpZ/471XJk47GjZd2XX2LdF9BXiX7EG9OSfATTeqzFKWuYdjDG19YmaRFs1ktQLyKDyuzL/EGMDGXYi6Fq+r9xzJRBxLMJzyAcgxZ1byhxJqiVgZpNTYWbLVcC5KSNKzNZYh0TEtwHQzw5R879tfo2jk+3nq64+3FX7oOLjgjnaBAWuUFlFB2qgnfKwlyNgKr3Zjl+6+Vhd+TU4KQl8ugODBhLz3bqnHzTh8HbYOM+nxiqwF2VH4frNBSJi9h09Bo
- 9IChdKK0
- WklrtrFjOePFBIX0zYcjVLfY0J31dVnKQyRnPfFJsXbiFHRBg5j6buxKJWiM7usg/O4JSpcm1Q6F5ukpeXD/s5yKgF1oXmGxyG7GKi/z6lFyfAuBZ+H8S/D7+Ic+9Gvo3emcNshc3B2FJa05U1WPcNXHns2qp7i3Y+yeC
+X-HE-Tag: 1758354493-929359
+X-HE-Meta: U2FsdGVkX1+1A8M0FcTwvmP5fQqvp+HrCdGy5TVll27Zn0+lEB2kBkI3IA7EC5OvrgjR53ktRllgGZ7vwlkgodzJEeAfo1pGKs5vBKMiT7TI0+aoiNFutg6pK9EKScCZunO2fC6qUN3ZXARwwcXhsFIPmRj2FWyGR1JtQWdh+BN0ABmxn3HCVS6rXK+HZw0rOMeE1DIKa/bqyrKhW1yvtK3TqsacYOG0R9QhTp+u8LTQvMPYDXxsmTD4CzBmmsKOJaFVCym7iNDOf5ZnpMU9tw6rWbrNa4trY7/JBxDsFIbiUQXC2789o82N4e6Z7PthWAC1pIXZQL9tfJsFshmoA8elit3xN0xIFi7DnAdC0AoG3TCdGpYTJZkzQbdwLv7jJBd+gFZZwYSc7rm6iFBeSIOceTji3OEd12XKMubqvFJjcInaTfEuyur7n+PFHv4/c1kIMB6GIY8dmjhdqYDiXeNGu54Tn0Fv5yzmmLWlj+3hminHrFopZJEk9o/qzdkDw/qWR8ZcjzYnIZ7ijkKxpeusSrJFOzF7zwEl75n0KQvU+ZTJw33K2i887UKVA8CO4amXNclLw4PmOw5S3mIzaK8AhQ95BPK389mIv+2obR+QwHZCDHaT5hRNpL1dQyXhladU6SLQar9bJhUXUHxL6o6RGN5m0clhe8QrRHxXbpoZLCCTFOyOyI1WXSje6WdF+J71uwrSiU0VN/pVA7yeyfD67plNtgMxNuvUVhv4Mpk0UmoLM1ShtnO4QKZNaWkYWOEKrIjHW69N/4Vc8wtyJm04vSkPuPGXJb8ZLCdDvQQCsXpiHoULbe25+RcLftTjJZVstnCgRHpvTTBqve+Ct42xPbJocU518an2j/mrKqlKbevGOM2wBZXTmK5FrWrbMVPCxjU5IeWF2EBxfsfpVvbnzSlnB8OvuFB8W8m31YVfAkIV26mEp72OZSmd5FpGN+c+Rc0zxl1tPAkHLA0
+ aGn0Ifk5
+ ltAbJJf6OGKaQTsWVp0+t56ntJeYvH68G/XL4x7R+tMbKoA9I1R54DOUuH4tiD66MD2KXTCaPvwOIZrWWi9wtQh8KAJQo5iZ32kfdPv1Uj0HJssizFYTdii4QeZuV7lx4CilmZ8Y59nVVU7RPgdP9w2khwjqXktzr7203F1IQo1yULACK73zzVgK2IMn2SJKcXpnyKCKgt9YbuEX+8nkjZSxsqPVJ4vlN7hwCpzgfpSMeJgU5NGyLe2d9B4UmGMmdqMJSBSZwYK8xmE0ocoNzXTvk6DGez6vdyl4Act3pvmpejJv7HfvoJn/uJdVU3EI+IfkfyCJqq51HRKnng8Hs6kFBPio3luXEUGQfTU0E1N+NFR/mqc3J8/mrcuHGMgrM39qOucKtmD0EKbz2XNgWGFESTJF5uwRS4P5N
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,156 +105,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Every single caller only cares about PTR_ERR_OR_ZERO() of return value...
+hypfs dentries end up with refcount 2 when they are not busy.
+Refcount 1 is enough to keep them pinned, and going that way
+allows to simplify things nicely:
+	* don't need to drop an extra reference before the
+call of kill_litter_super() in ->kill_sb(); all we need
+there is to reset the cleanup list - everything on it will
+be taken out automatically.
+	* we can make use of simple_recursive_removal() on
+tree rebuilds; just make sure that only children of root
+end up in the cleanup list and hypfs_delete_tree() becomes
+much simpler
 
 Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 ---
- arch/s390/hypfs/hypfs.h         |  3 +--
- arch/s390/hypfs/hypfs_diag_fs.c | 40 +++++++++------------------------
- arch/s390/hypfs/hypfs_vm_fs.c   |  6 ++---
- arch/s390/hypfs/inode.c         |  9 ++++----
- 4 files changed, 18 insertions(+), 40 deletions(-)
+ arch/s390/hypfs/inode.c | 41 ++++++++++-------------------------------
+ 1 file changed, 10 insertions(+), 31 deletions(-)
 
-diff --git a/arch/s390/hypfs/hypfs.h b/arch/s390/hypfs/hypfs.h
-index 4dc2e068e0ff..0d109d956015 100644
---- a/arch/s390/hypfs/hypfs.h
-+++ b/arch/s390/hypfs/hypfs.h
-@@ -25,8 +25,7 @@ extern struct dentry *hypfs_mkdir(struct dentry *parent, const char *name);
- extern struct dentry *hypfs_create_u64(struct dentry *dir, const char *name,
- 				       __u64 value);
- 
--extern struct dentry *hypfs_create_str(struct dentry *dir, const char *name,
--				       char *string);
-+extern int hypfs_create_str(struct dentry *dir, const char *name, char *string);
- 
- /* LPAR Hypervisor */
- extern int hypfs_diag_init(void);
-diff --git a/arch/s390/hypfs/hypfs_diag_fs.c b/arch/s390/hypfs/hypfs_diag_fs.c
-index ede951dc0085..2178e6060a5d 100644
---- a/arch/s390/hypfs/hypfs_diag_fs.c
-+++ b/arch/s390/hypfs/hypfs_diag_fs.c
-@@ -228,8 +228,7 @@ static int hypfs_create_cpu_files(struct dentry *cpus_dir, void *cpu_info)
- 			return PTR_ERR(rc);
- 	}
- 	diag224_idx2name(cpu_info__ctidx(diag204_get_info_type(), cpu_info), buffer);
--	rc = hypfs_create_str(cpu_dir, "type", buffer);
--	return PTR_ERR_OR_ZERO(rc);
-+	return hypfs_create_str(cpu_dir, "type", buffer);
- }
- 
- static void *hypfs_create_lpar_files(struct dentry *systems_dir, void *part_hdr)
-@@ -276,8 +275,7 @@ static int hypfs_create_phys_cpu_files(struct dentry *cpus_dir, void *cpu_info)
- 	if (IS_ERR(rc))
- 		return PTR_ERR(rc);
- 	diag224_idx2name(phys_cpu__ctidx(diag204_get_info_type(), cpu_info), buffer);
--	rc = hypfs_create_str(cpu_dir, "type", buffer);
--	return PTR_ERR_OR_ZERO(rc);
-+	return hypfs_create_str(cpu_dir, "type", buffer);
- }
- 
- static void *hypfs_create_phys_files(struct dentry *parent_dir, void *phys_hdr)
-@@ -316,41 +314,25 @@ int hypfs_diag_create_files(struct dentry *root)
- 		return rc;
- 
- 	systems_dir = hypfs_mkdir(root, "systems");
--	if (IS_ERR(systems_dir)) {
--		rc = PTR_ERR(systems_dir);
--		goto err_out;
--	}
-+	if (IS_ERR(systems_dir))
-+		return PTR_ERR(systems_dir);
- 	time_hdr = (struct x_info_blk_hdr *)buffer;
- 	part_hdr = time_hdr + info_blk_hdr__size(diag204_get_info_type());
- 	for (i = 0; i < info_blk_hdr__npar(diag204_get_info_type(), time_hdr); i++) {
- 		part_hdr = hypfs_create_lpar_files(systems_dir, part_hdr);
--		if (IS_ERR(part_hdr)) {
--			rc = PTR_ERR(part_hdr);
--			goto err_out;
--		}
-+		if (IS_ERR(part_hdr))
-+			return PTR_ERR(part_hdr);
- 	}
- 	if (info_blk_hdr__flags(diag204_get_info_type(), time_hdr) &
- 	    DIAG204_LPAR_PHYS_FLG) {
- 		ptr = hypfs_create_phys_files(root, part_hdr);
--		if (IS_ERR(ptr)) {
--			rc = PTR_ERR(ptr);
--			goto err_out;
--		}
-+		if (IS_ERR(ptr))
-+			return PTR_ERR(ptr);
- 	}
- 	hyp_dir = hypfs_mkdir(root, "hyp");
--	if (IS_ERR(hyp_dir)) {
--		rc = PTR_ERR(hyp_dir);
--		goto err_out;
--	}
--	ptr = hypfs_create_str(hyp_dir, "type", "LPAR Hypervisor");
--	if (IS_ERR(ptr)) {
--		rc = PTR_ERR(ptr);
--		goto err_out;
--	}
--	rc = 0;
--
--err_out:
--	return rc;
-+	if (IS_ERR(hyp_dir))
-+		return PTR_ERR(hyp_dir);
-+	return hypfs_create_str(hyp_dir, "type", "LPAR Hypervisor");
- }
- 
- /* Diagnose 224 functions */
-diff --git a/arch/s390/hypfs/hypfs_vm_fs.c b/arch/s390/hypfs/hypfs_vm_fs.c
-index 6011289afa8c..e8a32d66062b 100644
---- a/arch/s390/hypfs/hypfs_vm_fs.c
-+++ b/arch/s390/hypfs/hypfs_vm_fs.c
-@@ -100,11 +100,9 @@ int hypfs_vm_create_files(struct dentry *root)
- 		rc = PTR_ERR(dir);
- 		goto failed;
- 	}
--	file = hypfs_create_str(dir, "type", "z/VM Hypervisor");
--	if (IS_ERR(file)) {
--		rc = PTR_ERR(file);
-+	rc = hypfs_create_str(dir, "type", "z/VM Hypervisor");
-+	if (rc)
- 		goto failed;
--	}
- 
- 	/* physical cpus */
- 	dir = hypfs_mkdir(root, "cpus");
 diff --git a/arch/s390/hypfs/inode.c b/arch/s390/hypfs/inode.c
-index a4dc8e13d999..c5e2d8932b88 100644
+index 96409573c75d..a4dc8e13d999 100644
 --- a/arch/s390/hypfs/inode.c
 +++ b/arch/s390/hypfs/inode.c
-@@ -398,24 +398,23 @@ struct dentry *hypfs_create_u64(struct dentry *dir,
- 	return dentry;
- }
+@@ -61,33 +61,17 @@ static void hypfs_update_update(struct super_block *sb)
  
--struct dentry *hypfs_create_str(struct dentry *dir,
--				const char *name, char *string)
-+int hypfs_create_str(struct dentry *dir, const char *name, char *string)
+ static void hypfs_add_dentry(struct dentry *dentry)
  {
- 	char *buffer;
- 	struct dentry *dentry;
- 
- 	buffer = kmalloc(strlen(string) + 2, GFP_KERNEL);
- 	if (!buffer)
--		return ERR_PTR(-ENOMEM);
-+		return -ENOMEM;
- 	sprintf(buffer, "%s\n", string);
- 	dentry =
- 	    hypfs_create_file(dir, name, buffer, S_IFREG | REG_FILE_MODE);
- 	if (IS_ERR(dentry)) {
- 		kfree(buffer);
--		return ERR_PTR(-ENOMEM);
-+		return -ENOMEM;
+-	dentry->d_fsdata = hypfs_last_dentry;
+-	hypfs_last_dentry = dentry;
+-}
+-
+-static void hypfs_remove(struct dentry *dentry)
+-{
+-	struct dentry *parent;
+-
+-	parent = dentry->d_parent;
+-	inode_lock(d_inode(parent));
+-	if (simple_positive(dentry)) {
+-		if (d_is_dir(dentry))
+-			simple_rmdir(d_inode(parent), dentry);
+-		else
+-			simple_unlink(d_inode(parent), dentry);
++	if (IS_ROOT(dentry->d_parent)) {
++		dentry->d_fsdata = hypfs_last_dentry;
++		hypfs_last_dentry = dentry;
  	}
- 	hypfs_add_dentry(dentry);
--	return dentry;
-+	return 0;
+-	d_drop(dentry);
+-	dput(dentry);
+-	inode_unlock(d_inode(parent));
  }
  
- static const struct file_operations hypfs_file_ops = {
+-static void hypfs_delete_tree(struct dentry *root)
++static void hypfs_delete_tree(void)
+ {
+ 	while (hypfs_last_dentry) {
+-		struct dentry *next_dentry;
+-		next_dentry = hypfs_last_dentry->d_fsdata;
+-		hypfs_remove(hypfs_last_dentry);
++		struct dentry *next_dentry = hypfs_last_dentry->d_fsdata;
++		simple_recursive_removal(hypfs_last_dentry, NULL);
+ 		hypfs_last_dentry = next_dentry;
+ 	}
+ }
+@@ -184,14 +168,14 @@ static ssize_t hypfs_write_iter(struct kiocb *iocb, struct iov_iter *from)
+ 		rc = -EBUSY;
+ 		goto out;
+ 	}
+-	hypfs_delete_tree(sb->s_root);
++	hypfs_delete_tree();
+ 	if (machine_is_vm())
+ 		rc = hypfs_vm_create_files(sb->s_root);
+ 	else
+ 		rc = hypfs_diag_create_files(sb->s_root);
+ 	if (rc) {
+ 		pr_err("Updating the hypfs tree failed\n");
+-		hypfs_delete_tree(sb->s_root);
++		hypfs_delete_tree();
+ 		goto out;
+ 	}
+ 	hypfs_update_update(sb);
+@@ -326,13 +310,9 @@ static void hypfs_kill_super(struct super_block *sb)
+ {
+ 	struct hypfs_sb_info *sb_info = sb->s_fs_info;
+ 
+-	if (sb->s_root)
+-		hypfs_delete_tree(sb->s_root);
+-	if (sb_info && sb_info->update_file)
+-		hypfs_remove(sb_info->update_file);
+-	kfree(sb->s_fs_info);
+-	sb->s_fs_info = NULL;
++	hypfs_last_dentry = NULL;
+ 	kill_litter_super(sb);
++	kfree(sb_info);
+ }
+ 
+ static struct dentry *hypfs_create_file(struct dentry *parent, const char *name,
+@@ -367,7 +347,6 @@ static struct dentry *hypfs_create_file(struct dentry *parent, const char *name,
+ 		BUG();
+ 	inode->i_private = data;
+ 	d_instantiate(dentry, inode);
+-	dget(dentry);
+ fail:
+ 	inode_unlock(d_inode(parent));
+ 	return dentry;
 -- 
 2.47.3
 
