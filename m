@@ -4,112 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB0A0CAC5A5
-	for <linux-mm@archiver.kernel.org>; Sat, 20 Sep 2025 21:40:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 589E1CAC5A7
+	for <linux-mm@archiver.kernel.org>; Sun, 21 Sep 2025 00:11:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C8A08E0003; Sat, 20 Sep 2025 17:40:33 -0400 (EDT)
+	id 463298E0002; Sat, 20 Sep 2025 20:11:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 079C58E0001; Sat, 20 Sep 2025 17:40:33 -0400 (EDT)
+	id 414178E0001; Sat, 20 Sep 2025 20:11:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED11B8E0003; Sat, 20 Sep 2025 17:40:32 -0400 (EDT)
+	id 329DE8E0002; Sat, 20 Sep 2025 20:11:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DE4B98E0001
-	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 17:40:32 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 889A41188B1
-	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 21:40:32 +0000 (UTC)
-X-FDA: 83910947904.22.DD30CAC
-Received: from mail-vs1-f43.google.com (mail-vs1-f43.google.com [209.85.217.43])
-	by imf03.hostedemail.com (Postfix) with ESMTP id A6AB120010
-	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 21:40:30 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Tip2mwta;
-	spf=pass (imf03.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 209.85.217.43 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E76D8E0001
+	for <linux-mm@kvack.org>; Sat, 20 Sep 2025 20:11:19 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B5BEDC0209
+	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 00:11:18 +0000 (UTC)
+X-FDA: 83911327836.08.6E8B25B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id DB079140007
+	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 00:11:16 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bzaRfxuC;
+	spf=pass (imf23.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758404430;
+	s=arc-20220608; t=1758413476;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8q2wF8NyUMzUdcB4wo27NEUbPU4EJ5KlqSNJI4hsQkI=;
-	b=iZtOmQ+Jl8qW64HJWU+azwEYevjfPaOFPAkAUO7E1z4A8JrSFpxjNYpsmX5OVjxJKLKqIu
-	kAkSb0d7+E/JA8G525ki9vo1zcJuwtQVzYBVEgKX/+zRXc7vnFdpO+0FDmtMaERfhgjKyB
-	CxHWIDueC67BhnlrTKc7Av3fBqD2So4=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Tip2mwta;
-	spf=pass (imf03.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 209.85.217.43 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758404430; a=rsa-sha256;
+	bh=R3Qpm/GWhzLMzQkm4AMYh06VVRSnR1DGp7gr4uBLP0c=;
+	b=Cb+glSna+k8FkVh5TEJhzJrDQ5uV/1WH48QmUXdElZ4pq86PFhuzN3UBYAo890y/av2me9
+	T0R6znhb1GLVNALl0DOzseDfALFFb8TvQhj5reJHiWHddad/h0jfnM7Mw4lA/TfMAjk7Wm
+	svybnoPDJ1vaAk8G5T1s1PBlc/QkRTQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758413476; a=rsa-sha256;
 	cv=none;
-	b=pwnisaHxQBDovJeTDlPLz+gT7eNliWXO+HRptpHiJ5VigfaKGt0Po2WuAuBDoZ0wvQEc7G
-	XLncjakBV8BB+kXbYC6+3KVT6t5WBlW4wzMkPz/mJK/+JdFDj2jRdvM2inRnP4nLQEyYDC
-	NbUntzJWkxVlT26BWxdmoiETVwy9QYE=
-Received: by mail-vs1-f43.google.com with SMTP id ada2fe7eead31-5300b29615cso2718708137.0
-        for <linux-mm@kvack.org>; Sat, 20 Sep 2025 14:40:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758404430; x=1759009230; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8q2wF8NyUMzUdcB4wo27NEUbPU4EJ5KlqSNJI4hsQkI=;
-        b=Tip2mwtaOgorPO5aijxy6J+7o2mNrnF4/611p+BcUMhTyOCFgo++6qeqNkdAwhMyOU
-         rfEByIC9PxP+8VXvSbJ41Cptbt/g0tZJV8cRt+H/3HK+M2AeL1zD1vKAdBcGheJJ4Dku
-         68/LIetAoQ20vgnV1R9hGVyIMPOLODWURW5Ih0S7EN5FFA2CuWdeo/1Nt7zRrFKhIimW
-         exjXxstmr+djk0dILUWVRhLyRCBEFyF/0XEDGLXucm38DjVd/IEQxPuZnzAHCPudUGfM
-         ujhGrmKkX8AF50U1KUeTcyF6MkINge79V+Oow7ZJn+0FkgKNbAHRfhEDtWwCgvVHmrjk
-         eEcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758404430; x=1759009230;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8q2wF8NyUMzUdcB4wo27NEUbPU4EJ5KlqSNJI4hsQkI=;
-        b=pGWzqjdVFZd9SaeccOzwZMjbJOVLDkZHZI/XMgGmDXoshq/EB4VpkzDYn40J9X3+CV
-         255DDIjzgJ2jhPW7J1PLOhve7/LxH19X85H2n4gOr8aJH0e+nwxzirVv7zTqwH3kZMDe
-         QbrCKjpj4k6X8a03Aj3pJu1FnF3pgerVn7n0+f4H76IsiH+8kYSU5PNETTtjfkUiE09V
-         uS9e5fOQQLK2V23NydaefUBdHoDbrC1lCMasGRlN0V6kCKKl6nljOM0By2DLXsr1ls2G
-         o1lH7w2RE30UgZws/+ZsYZn3FyQzePJ0yo2AaSX9CDiIrUcQIpvwpO9d0ddY1+us1myL
-         xaIg==
-X-Forwarded-Encrypted: i=1; AJvYcCX4iEddvptq9Y5T9hj5i0anFiYoQcMaldNLnbTqB1spzwDSvydX30e4i3YWqiT5sqCLXlIVmf48yw==@kvack.org
-X-Gm-Message-State: AOJu0YzOJ1gWE7JGwfFN+BBKH7OrtdhrXKBbcbl3mFNhKxOScR27ccGT
-	BcvtSD+RwNNzA8nY5qtVLprR7cJWroCcGhWxP6csEM5cNtUEHc+RvtwoENkTaVKsElRrBXRKfjc
-	siXDxTtzEqTWwLLj+gfXV49tbi1ra/04=
-X-Gm-Gg: ASbGncvSBcZrFmXUTe6Z1K8htCclnmkyZpXBHCtRzumVOZ6Cn1j+SGQi1cqzkA9HCF/
-	5wFpaRQ0ZDKz3e8a3yBEaGIt1cx8ntIb2NcdOOU2XDQyQe5/ixnVSXNUBSt+pIBU/dxcHTV3aYw
-	wo7wgkcgFY81DueN/8dka8ZJv7CdC6uRAF4noGHtdPYXZOaS3ACe4vITgNqgaMhaJRyCYfWoEJ3
-	OKN+I1LSM+5CUyGzC51DWk8Y5W3Z7ch8FQD7wM=
-X-Google-Smtp-Source: AGHT+IHqnAFDkW9PsCMR9JtuaTJ8E+X1B8qYgA1fXLCBophwWpFMTYWf4IrHqUGDtieqxBjWDIPn4UeSEn1c9B0z+lQ=
-X-Received: by 2002:a05:6102:c0b:b0:4fa:25a2:5804 with SMTP id
- ada2fe7eead31-588dada35dfmr2845718137.10.1758404429683; Sat, 20 Sep 2025
- 14:40:29 -0700 (PDT)
+	b=y3pwyo4ILrHHhYjBJ92hBYeGhy9050m+Sht/BL23xUokzQkrEyCOHdsIa5+zLxixM4hw5N
+	eQ00Wl6zw38IA1BHZVcGb7s1HYByoozRwAfg38OcZwAA3SB/m6XLbs7xKUx6nTyBwBaD5G
+	v02F49GBXzUMVKiWAwxa92yQVpxRTIY=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bzaRfxuC;
+	spf=pass (imf23.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0203E601B2
+	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 00:11:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E869C116B1
+	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 00:11:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758413475;
+	bh=YCAV/eRRMv3+e9YBfBNCTfFLSqZziYMTKzfRyPJvnhY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=bzaRfxuChG9erP0M/5V5VjuwKA5lP7/v7SeUNMQryKO4sZJxatCHbZ4BV8LINpNo9
+	 RpiYALZ+BqTzQZT/JBwMEtRu78cQQlTrl1boGuHqQbCo01wI01W+5GtoHqwQZijgzA
+	 heonexHP0+y9UQXTuJ20FWVdyVi63tL/HZ5FiJNuvx+TGjHqcjqWTdFE2jBtMpG3lh
+	 POj6oqvaG9TQy9Ob5OlkBfmYR1UFIYRjwISHwEnzKuSKRaQPqijen49fEJNjUw07zV
+	 m/+4Lh3+1iwHj+2l1G+GceQG/435ty5yc69/hlpiZnYkb4OksCQLyB9hCq55LkkmkX
+	 ORR91RYRx3pPw==
+Received: by mail-yb1-f182.google.com with SMTP id 3f1490d57ef6-ea5c8833b15so2595473276.1
+        for <linux-mm@kvack.org>; Sat, 20 Sep 2025 17:11:15 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVvpEcRi2Kr5PVPU0gIxUKQxxLnGdBko1fyPVye83jIAdgcsQguhootrtgYo1mwMW0ldcKbRuADyw==@kvack.org
+X-Gm-Message-State: AOJu0YyprpsP4qtmTpY4mvnBLZRI5dAdByvcgG3y9z/iT7fxlDTKcb3R
+	TVsVZU4OPuskZFR0he2Ik/0kb05DFlo0GFubzMj/9slR4C3E+78cin1RSWkfx05lRlEavK06mZD
+	0LbwW89JpMUjZDGvAX6Iq2Vuem1SoHuYSUvO7kXMl3A==
+X-Google-Smtp-Source: AGHT+IHXtvuVXAiUDShss5VFJajPEEBCzBrR6o6+Cqq1R7MOJ8XoKi+vBUF/UQKficxFre52whFezjyJrfMuSBW7J64=
+X-Received: by 2002:a05:690e:1449:b0:62d:66fb:d4b8 with SMTP id
+ 956f58d0204a3-6347f5967b9mr6604050d50.28.1758413474690; Sat, 20 Sep 2025
+ 17:11:14 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250918222607.186488-1-xiyou.wangcong@gmail.com> <20250919212650.GA275426@fedora>
-In-Reply-To: <20250919212650.GA275426@fedora>
-From: Cong Wang <xiyou.wangcong@gmail.com>
-Date: Sat, 20 Sep 2025 14:40:18 -0700
-X-Gm-Features: AS18NWCv9lp8HiEvE89FhMeXwqiYRCfEXvgC7JXXJLUd4dVtbVWEBLn_j1OZgfI
-Message-ID: <CAM_iQpXnHr7WC6VN3WB-+=CZGF5pyfo9y9D4MCc_Wwgp29hBrw@mail.gmail.com>
-Subject: Re: [RFC Patch 0/7] kernel: Introduce multikernel architecture support
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: linux-kernel@vger.kernel.org, pasha.tatashin@soleen.com, 
-	Cong Wang <cwang@multikernel.io>, Andrew Morton <akpm@linux-foundation.org>, 
-	Baoquan He <bhe@redhat.com>, Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>, 
-	Changyuan Lyu <changyuanl@google.com>, kexec@lists.infradead.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: A6AB120010
-X-Rspamd-Server: rspam05
-X-Stat-Signature: ha981ax78y3rqjj5rofzb1kfrnzsr69j
+References: <20250916160100.31545-1-ryncsn@gmail.com> <20250916160100.31545-2-ryncsn@gmail.com>
+ <CAGsJ_4w2GqGj8HZMfwndsWu7qkORqsnaw9WwhmQS=pW4gR7nEA@mail.gmail.com>
+ <CAF8kJuNbUyDWcJ13ZLi-xsiYcbY30w7=cFs7wdxszkc7TC4K2Q@mail.gmail.com>
+ <CAGsJ_4wKWem-STYAnh_0EgSFKzzs1M1c7wz6K82wLt6T6JEw9A@mail.gmail.com>
+ <CACePvbU8cUs-wwPsXkZ24EWga5bXxxUGSCT18rKAWFYn5w9rpw@mail.gmail.com>
+ <CAGsJ_4yhDU_WVfEybDhGE-WF5+w-fak1-F8jqbAQ-Qw1+qWkaw@mail.gmail.com>
+ <CACePvbUabb+L6Z9Nb-41fLR-FMhj--cDWSbnXtCj3rpqXModiQ@mail.gmail.com>
+ <CAGsJ_4y8yTX48ESHKgLNCvM1M1_gY9uGnD4qiz8n+gD47Zd1Hg@mail.gmail.com>
+ <CANeU7QkZBWFO6SeVHtmm73oLu7r0zavePQEYmQfH8opKPH1QWw@mail.gmail.com>
+ <CANeU7QmcC=-CTmJ7i8R77SQ_WArBvjP3VrmpLOy-b7QhCfMRYA@mail.gmail.com>
+ <CAGsJ_4zmkibM_Ex7kGMsr2sni85H-cnxQvh0XwkWiALNQy+zAQ@mail.gmail.com>
+ <CACePvbXae0zymE_BHydXtA_pjZ2NqabVyqxu1xKxLjLKmeYH9g@mail.gmail.com> <CAGsJ_4zB4ygGCN4JTx+AW+XAUm8WtFVLVesStuDHc8S-HT0ihQ@mail.gmail.com>
+In-Reply-To: <CAGsJ_4zB4ygGCN4JTx+AW+XAUm8WtFVLVesStuDHc8S-HT0ihQ@mail.gmail.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Sat, 20 Sep 2025 17:11:03 -0700
+X-Gmail-Original-Message-ID: <CACePvbXjaUyzB_9RSSSgR6BNvz+L9anvn0vcNf_J0jD7-4Yy6Q@mail.gmail.com>
+X-Gm-Features: AS18NWAKXR1mWgOvJl586I0OOCDajvkVTayDD7oSIGKEBFrYYvnY9Dj1CZ4VGD8
+Message-ID: <CACePvbXjaUyzB_9RSSSgR6BNvz+L9anvn0vcNf_J0jD7-4Yy6Q@mail.gmail.com>
+Subject: Re: [PATCH v4 01/15] docs/mm: add document for swap table
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Kairui Song <ryncsn@gmail.com>, linux-mm@kvack.org, 
+	Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>, Baoquan He <bhe@redhat.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@redhat.com>, 
+	Yosry Ahmed <yosryahmed@google.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Zi Yan <ziy@nvidia.com>, linux-kernel@vger.kernel.org, 
+	Kairui Song <kasong@tencent.com>, Barry Song <21cnbao@gmail.com>
+Content-Type: multipart/mixed; boundary="0000000000008740b7063f448a13"
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: DB079140007
+X-Stat-Signature: poho4698d19dye7zw4itbskfiqapgk77
 X-Rspam-User: 
-X-HE-Tag: 1758404430-871215
-X-HE-Meta: U2FsdGVkX1+kEGQF7knAjDQPHQbsQVz/e+3e4o/mR+o4DcuxKGDiEMVhAH5YyTYPuITs1wZrEdyUNw8b5PM+xCylf5rZlNfa9ml0wSUF+OesE4GCmcXrVhXJaqYCxKsVleonLNh8xTQQc4qAjHdM5EA37Za5dSFNWdA6IfNIqBwMZDHM5O4WdnMEd6vZTGOZS6P17Gs+yknhSjv9Ikz2CENqfjNPHjzAwksrNqtSxvGFYCitTWwRRQwDDlmFJ5F+PQBh9j1/cBmaduEy3U/Gkt7aJnuJuX5BS6DBIW7EpjrWtChHRJGKfmj0xMVkbksqgvOCq4trlCzymZfyCUbuzRhgDksffN2Ss3xYcGLFmGcV4L+dH8mxNIOWBRnjabgKIucnI2ed6k4saMVRdiqvkizHfZw1itN9t/hRRtxHmTLIgUw+IiqjRCIy39Yh/1atRV6wXXE0slFPkFzMXrKHgJaoiKTxm2Q4kKWo7sSfDXJKDlWCJKgsTvMzhxtPZ/b4usvGqm57abaq82yQUzq6bwUsE6QtZhU2XI/cbNi7I/e1u/fq1U96bXPcIO9NL712wjo0c9cu/cO6d+1fY0bAVZ/rBoP1KmtsoO2pPzfH1nMtk9XW7r+oTZ3CDsL3I9sUnSd6Sh0rDwIIBrvCWwtl38ks99KCQv9GVOg60tisp23OP9ebZh5yMm4H+vDRVCAbdswww08GRCEi6F0tgO9Th71b3b4E4oZz/Kc8BpBxKFQkrgAVATm1AiWWjMyRV5vAIspEMXD4N+oOPyysPRO5NQjD4tUdmxYDY0S7RqPgxPTFyEZftzVz0m+aFp9RKkrWSyeM/9GREpFkEv+SJCzmBr/3150Y0+uI0kGudwO/agf7GTBCohsSIr9PYJEY+zGeK835r+ad6d9dYSTyeaj6jkUYgM+ASaGYdfeD0bHhD4KQXQJsSEeIpkzfuI7ikxMExhMyVnlIpFVM6eyzc2P
- lq2f8bwl
- 7jcrmqtrph9uyI1JFFCDwxis079g7LmWy161qx6XLOINaxqYJP0eioR3dWRpbTHy+EOM5PubPFIsBmR8fo+MNCkooZC/5398CKBuuqNWjq6gw2350r/LQa/txSwjhPKf0i/552chjO5QK+6Mpf/zg+vG63gCoWyMUZSy7NnhcPAkMyVH4hjFwHLQTxCahA43Jz0zj2XagUzPOPHBEERM8m5C7FkhUmqBdYOXzWOcKHkly1UjYmv8wvn8UbfnU5s8uquU+HD6quDNtZLHeOOt5U89kM1Xo2X1Wu4/PKfe5cnU8U/jgoD5Po5a/OfGr5BT9x4drrIlrCZBEM+MfNsJMimlCeTQUZldPpm8urobFQWbMqL6mQqlfnV6rDo/wfjwo1a9U+/9yHB3WGiswLbsuEJlCs1pzXmTiBh3wp0hk2qYsquMT5kiGCkghHw==
+X-HE-Tag: 1758413476-746887
+X-HE-Meta: U2FsdGVkX18E3BSf4GUQwnxlmkWKvndkwJw9lLxBUq3PBrJPG7ySGWM1ZxHETC2PdpqAtOyxb2PQugrft4/dGPjnayYEHBV3k587n9HKXKrFJoyqapmdfy4YfoC1iGZlqGYOdGIG3va1u2eSxNAnPK0ZPO/ifRgoyu3AQNliGIYYAUkqk4a//b3VyZUDC9yC50JYPY15x+E9nu+7+u9LotlXPnr2mfgOawqS+pIc8Miuke/bzCLZ4E4gE5EZcoxyoczQ2CgUi9eCuswoMpv/knlDUPujuB9dXQyeVkLSHHA9LD+NylGVCCVMJvfpWWkfqfIHPrEaZ0AgG3dbHdbtum0X5dLdBrVXh8C/ljZy+vRhsz+B55+YPlCEci5prxorC1qacmW0RBXT7i1rIVjrCMHG5SNhd1EE/UGpYlTs0HQOG3rdEv72ssylZJQ00HAoiPjecoYOFnA5LPaRx1IXM1tP8ylJmnN+29TdIZJQBObykf2fopLNeXmnhuh0BhUayQbswV7Kj9VQ4NvPgEhQcV6M0y0y1LbVRzIV3LOC1D57XViWndsAK10ThXP+xRkBogHPSzVf9bZcCsPh+fBkN9T+mPcRW/g57pzjiMRJLgHV/xnCjDj4e6bH6Wn5M+t6cXZJd5HGIjaR3bocdn4sreROhkkIjKgxGEwkZL7e9NxD0COgk7IAsxbkHnNE6f/EUEaqr16t041wMEV3e79LZeztVMm8UzA43U4rFd69IxqZcfCEAQSk0Lj2Iu3NMvT86YNFKnRC5Rvd70fPQQ60v86Ejnk8AUzwh/z5Kja2jVLCXwnU9/lYQhB97d4ml0vTqrsWBTmsbBkEK1UXoAtkNQZTDzOTUMGmOSxI86/f4KAuL3tivaPs13ZNIa5aMLEWjzjJuv5WOcS8Dubzj6sIxE5WFf/Oj4f7+1gVVk4dDoNeRFNuxMMaKBpAeIW0TTNv0wrpg+St3+zrxNrH1Kg
+ 9eonZnmu
+ /KuGwrDlsm3NmgL4mj9vBOZ+yElXBz+tdgPEDZ/beJ1Pnv5q03mPeIDHl51kr95Mqc+0opf2ovAJwixjVEOq/aCEk3AFh3MEzDaRg3+xi/ET6dZW9qYlGsdRgMcPFy1Rp1gaLWCTAIwXTn1W/KcO+KPImylsEhAkr4iVR4YDPmOnrQcmVLM1vv/czBKejz5uyiaTH4RGoGAYkuwormmqpksEYUiCJTn6gKyTvTIpZQYCY5fFD22H52vEWk1IwdGt2aOYKph5zNwn7eHJS9CK1gREuu4PyHCAiNN/uJS0B0qJHjVniUialXFquFN7+QDJZQDAYyOABthy24BkFni1MMPhJq0aRPYXiRhYxaanuS07J72PF9vgStRotOiPiOMc8RDG+VxlGQ9kT3GmLm21E3QO7KYV4aXy5k2BAAFCJSpLZ2qRHuyLPvsA0qKiPF4BiuFL9lVCLy10UBV3+reIg8CdvuXdzenkqpPNdkEYrlrrn6W5JVupOZLtEpDErWi7NbYim7yhRjjpAQch3X8saSwT9dlnSN20dkj9AH4UtLdRd6x83QfPM5yjhHQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,129 +119,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 19, 2025 at 2:27=E2=80=AFPM Stefan Hajnoczi <stefanha@redhat.co=
-m> wrote:
+--0000000000008740b7063f448a13
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Hi Andrew,
+
+Can you please apply this incremental fix up commit on the document
+patch of the swap table series?
+Just folding it into the original patch is fine.
+
+Here is the change log:
+- Move the swap table document to the mm main section. [SeongJae Park]
+- Rewrite the swap table size sentence for easier to understand. [ Barry]
+
+Thanks
+
+Chris
+
+On Thu, Sep 18, 2025 at 2:35=E2=80=AFPM Barry Song <21cnbao@gmail.com> wrot=
+e:
 >
-> On Thu, Sep 18, 2025 at 03:25:59PM -0700, Cong Wang wrote:
-> > This patch series introduces multikernel architecture support, enabling
-> > multiple independent kernel instances to coexist and communicate on a
-> > single physical machine. Each kernel instance can run on dedicated CPU
-> > cores while sharing the underlying hardware resources.
+> > > I=E2=80=99m not entirely sure what you mean by =E2=80=9Cpage table pa=
+ge.=E2=80=9D
 > >
-> > The multikernel architecture provides several key benefits:
-> > - Improved fault isolation between different workloads
-> > - Enhanced security through kernel-level separation
+> > The page that gets pointed by the page table, or the page that holds th=
+e PTE.
+> >
+> > > My understanding is that you=E2=80=99re saying:
+> > > The swap table contains an array of pointers, each the same size as a=
+ PTE,
+> > > so its total size typically matches a PTE page table=E2=80=94one page=
+ on modern
+> > > 64-bit systems.
+> >
+> > That sounds good. Thanks for the suggestion.
+> > I take your suggestion with some small modifications, mostly to
+> > clarify the total size is the total size of one cluster of swap
+> > tables. The total size of all swap tables in a swap file is much
+> > bigger.
+> >
+> > How about this:
+> >
+> > A swap table is an array of pointers. Each pointer is the same size as =
+a PTE.
+> > The size of a swap table for one swap cluster typically matches a PTE
+> > page table,
+> > which is one page on modern 64-bit systems.
 >
-> What level of isolation does this patch series provide? What stops
-> kernel A from accessing kernel B's memory pages, sending interrupts to
-> its CPUs, etc?
-
-It is kernel-enforced isolation, therefore, the trust model here is still
-based on kernel. Hence, a malicious kernel would be able to disrupt,
-as you described. With memory encryption and IPI filtering, I think
-that is solvable.
-
+> Acked.
 >
-> > - Better resource utilization than traditional VM (KVM, Xen etc.)
-> > - Potential zero-down kernel update with KHO (Kernel Hand Over)
 > >
-> > Architecture Overview:
-> > The implementation leverages kexec infrastructure to load and manage
-> > multiple kernel images, with each kernel instance assigned to specific
-> > CPU cores. Inter-kernel communication is facilitated through a dedicate=
-d
-> > IPI framework that allows kernels to coordinate and share information
-> > when necessary.
-> >
-> > Key Components:
-> > 1. Enhanced kexec subsystem with dynamic kimage tracking
-> > 2. Generic IPI communication framework for inter-kernel messaging
-> > 3. Architecture-specific CPU bootstrap mechanisms (only x86 so far)
-> > 4. Proc interface for monitoring loaded kernel instances
-> >
-> > Patch Summary:
-> >
-> > Patch 1/7: Introduces basic multikernel support via kexec, allowing
-> >            multiple kernel images to be loaded simultaneously.
-> >
-> > Patch 2/7: Adds x86-specific SMP INIT trampoline for bootstrapping
-> >            CPUs with different kernel instances.
-> >
-> > Patch 3/7: Introduces dedicated MULTIKERNEL_VECTOR for x86 inter-kernel
-> >            communication.
-> >
-> > Patch 4/7: Implements generic multikernel IPI communication framework
-> >            for cross-kernel messaging and coordination.
-> >
-> > Patch 5/7: Adds arch_cpu_physical_id() function to obtain physical CPU
-> >            identifiers for proper CPU management.
-> >
-> > Patch 6/7: Replaces static kimage globals with dynamic linked list
-> >            infrastructure to support multiple kernel images.
-> >
-> > Patch 7/7: Adds /proc/multikernel interface for monitoring and debuggin=
-g
-> >            loaded kernel instances.
-> >
-> > The implementation maintains full backward compatibility with existing
-> > kexec functionality while adding the new multikernel capabilities.
-> >
-> > IMPORTANT NOTES:
-> >
-> > 1) This is a Request for Comments (RFC) submission. While the core
-> >    architecture is functional, there are numerous implementation detail=
-s
-> >    that need improvement. The primary goal is to gather feedback on the
-> >    high-level design and overall approach rather than focus on specific
-> >    coding details at this stage.
-> >
-> > 2) This patch series represents only the foundational framework for
-> >    multikernel support. It establishes the basic infrastructure and
-> >    communication mechanisms. We welcome the community to build upon
-> >    this foundation and develop their own solutions based on this
-> >    framework.
-> >
-> > 3) Testing has been limited to the author's development machine using
-> >    hard-coded boot parameters and specific hardware configurations.
-> >    Community testing across different hardware platforms, configuration=
-s,
-> >    and use cases would be greatly appreciated to identify potential
-> >    issues and improve robustness. Obviously, don't use this code beyond
-> >    testing.
-> >
-> > This work enables new use cases such as running real-time kernels
-> > alongside general-purpose kernels, isolating security-critical
-> > applications, and providing dedicated kernel instances for specific
-> > workloads etc..
+> > Chris
 >
-> This reminds me of Jailhouse, a partitioning hypervisor for Linux.
-> Jailhouse uses virtualization and other techniques to isolate CPUs,
-> allowing real-time workloads to run alongside Linux:
-> https://github.com/siemens/jailhouse
->
-> It would be interesting to hear your thoughts about where you want to go
-> with this series and how it compares with a partitioning hypervisor like
-> Jailhouse.
+> Thanks
+> Barry
 
-Good question. A few people pointed me to Jailhouse before. If I understand
-correctly, it is still based on hardware virtualization like IOMMU and VMX.
-The goal of multikernel is to completely avoid hw virtualization
-and without a hypervisor. Of course, this also depends on how we define
-hypervisor here: If it is a user-space one like Qemu, this is exactly what
-multikernel tries to avoid; or if it is just a broadly "supervisor",
-it still exists
-in the kernel (unlike Qemu).
+--0000000000008740b7063f448a13
+Content-Type: text/x-patch; charset="US-ASCII"; 
+	name="0001-SQUASH-docs-fix-up-for-the-swap-table-document.patch"
+Content-Disposition: attachment; 
+	filename="0001-SQUASH-docs-fix-up-for-the-swap-table-document.patch"
+Content-Transfer-Encoding: base64
+Content-ID: <f_mfsxxs120>
+X-Attachment-Id: f_mfsxxs120
 
-This is why I tend to use "host kernel" and "spawned kernel" to distinguish
-them, instead of using "hypervisor" and "guest", which easily confuse
-people with  virtualization.
-
-Speaking of virtualization, there are some other technologies like
-DirectVisor or De-virt. In my humble opinion, they are going the wrong
-way as apparently virt + de-virt =3D no virt. Why even bother virt? ;-p
-
-I hope this answers your questions,
-
-Regards,
-Cong
+RnJvbSBiMDNhOWI1M2RmY2IxNTU4ZmViMDExODhmNjU3MzQwYmMzNDE0YTIyIE1vbiBTZXAgMTcg
+MDA6MDA6MDAgMjAwMQpGcm9tOiBDaHJpcyBMaSA8Y2hyaXNsQGtlcm5lbC5vcmc+CkRhdGU6IEZy
+aSwgMTkgU2VwIDIwMjUgMTg6MTI6MDQgLTA3MDAKU3ViamVjdDogW1BBVENIXSBTUVVBU0g6IGRv
+Y3M6IGZpeCB1cCBmb3IgdGhlIHN3YXAgdGFibGUgZG9jdW1lbnQKCk1ha2Ugc3dhcCB0YWJsZSBp
+bnRvIHRoZSBtYWluIHNlY3Rpb24uCgpBZGp1c3Qgd29yZGluZyBvbiB0aGUgc3dhcCB0YWJsZSBz
+aXplIHZzIFBURSBwYWdlIHRhYmxlIHNpemUuCgpTaWduZWQtb2ZmLWJ5OiBDaHJpcyBMaSA8Y2hy
+aXNsQGtlcm5lbC5vcmc+Ci0tLQogRG9jdW1lbnRhdGlvbi9tbS9pbmRleC5yc3QgICAgICB8IDIg
+Ky0KIERvY3VtZW50YXRpb24vbW0vc3dhcC10YWJsZS5yc3QgfCA5ICsrKy0tLS0tLQogMiBmaWxl
+cyBjaGFuZ2VkLCA0IGluc2VydGlvbnMoKyksIDcgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEv
+RG9jdW1lbnRhdGlvbi9tbS9pbmRleC5yc3QgYi9Eb2N1bWVudGF0aW9uL21tL2luZGV4LnJzdApp
+bmRleCA4MjhhZDliMDE5YjMuLmJhNmE4ODcyODQ5YiAxMDA2NDQKLS0tIGEvRG9jdW1lbnRhdGlv
+bi9tbS9pbmRleC5yc3QKKysrIGIvRG9jdW1lbnRhdGlvbi9tbS9pbmRleC5yc3QKQEAgLTIwLDYg
+KzIwLDcgQEAgc2VlIHRoZSA6ZG9jOmBhZG1pbiBndWlkZSA8Li4vYWRtaW4tZ3VpZGUvbW0vaW5k
+ZXg+YC4KICAgIGhpZ2htZW0KICAgIHBhZ2VfcmVjbGFpbQogICAgc3dhcAorICAgc3dhcC10YWJs
+ZQogICAgcGFnZV9jYWNoZQogICAgc2htZnMKICAgIG9vbQpAQCAtNTcsNyArNTgsNiBAQCBkb2N1
+bWVudGF0aW9uLCBvciBkZWxldGVkIGlmIGl0IGhhcyBzZXJ2ZWQgaXRzIHB1cnBvc2UuCiAgICBw
+YWdlX3RhYmxlX2NoZWNrCiAgICByZW1hcF9maWxlX3BhZ2VzCiAgICBzcGxpdF9wYWdlX3RhYmxl
+X2xvY2sKLSAgIHN3YXAtdGFibGUKICAgIHRyYW5zaHVnZQogICAgdW5ldmljdGFibGUtbHJ1CiAg
+ICB2bWFsbG9jZWQta2VybmVsLXN0YWNrcwpkaWZmIC0tZ2l0IGEvRG9jdW1lbnRhdGlvbi9tbS9z
+d2FwLXRhYmxlLnJzdCBiL0RvY3VtZW50YXRpb24vbW0vc3dhcC10YWJsZS5yc3QKaW5kZXggYWNh
+ZTZjZWI0ZjdiLi5kYTEwYmI3YTBkYzMgMTAwNjQ0Ci0tLSBhL0RvY3VtZW50YXRpb24vbW0vc3dh
+cC10YWJsZS5yc3QKKysrIGIvRG9jdW1lbnRhdGlvbi9tbS9zd2FwLXRhYmxlLnJzdApAQCAtNTAs
+MTIgKzUwLDkgQEAgU3dhcCBjYWNoZSBsb29rdXAgd2l0aGluIHRoZSBjbHVzdGVyIGNhbiBiZSBh
+IHZlcnkgc2ltcGxlIGFycmF5IGxvb2t1cC4KIAogV2UgZ2l2ZSBzdWNoIGEgcGVyLWNsdXN0ZXIg
+c3dhcCBjYWNoZSB2YWx1ZSBhcnJheSBhIG5hbWU6IHRoZSBzd2FwIHRhYmxlLgogCi1FYWNoIHN3
+YXAgY2x1c3RlciBjb250YWlucyA1MTIgZW50cmllcywgc28gYSBzd2FwIHRhYmxlIHN0b3JlcyBv
+bmUgY2x1c3Rlcgotd29ydGggb2Ygc3dhcCBjYWNoZSB2YWx1ZXMsIHdoaWNoIGlzIGV4YWN0bHkg
+b25lIHBhZ2UuIFRoaXMgaXMgbm90Ci1jb2luY2lkZW50YWwgYmVjYXVzZSB0aGUgY2x1c3RlciBz
+aXplIGlzIGRldGVybWluZWQgYnkgdGhlIGh1Z2UgcGFnZSBzaXplLgotVGhlIHN3YXAgdGFibGUg
+aXMgaG9sZGluZyBhbiBhcnJheSBvZiBwb2ludGVycy4gVGhlIHBvaW50ZXIgaGFzIHRoZSBzYW1l
+Ci1zaXplIGFzIHRoZSBQVEUuIFRoZSBzaXplIG9mIHRoZSBzd2FwIHRhYmxlIHNob3VsZCBtYXRj
+aCB0byB0aGUgc2Vjb25kCi1sYXN0IGxldmVsIG9mIHRoZSBwYWdlIHRhYmxlIHBhZ2UsIGV4YWN0
+bHkgb25lIHBhZ2UuCitBIHN3YXAgdGFibGUgaXMgYW4gYXJyYXkgb2YgcG9pbnRlcnMuIEVhY2gg
+cG9pbnRlciBpcyB0aGUgc2FtZSBzaXplIGFzIGEKK1BURS4gVGhlIHNpemUgb2YgYSBzd2FwIHRh
+YmxlIGZvciBvbmUgc3dhcCBjbHVzdGVyIHR5cGljYWxseSBtYXRjaGVzIGEgUFRFCitwYWdlIHRh
+YmxlLCB3aGljaCBpcyBvbmUgcGFnZSBvbiBtb2Rlcm4gNjQtYml0IHN5c3RlbXMuCiAKIFdpdGgg
+c3dhcCB0YWJsZSwgc3dhcCBjYWNoZSBsb29rdXAgY2FuIGFjaGlldmUgZ3JlYXQgbG9jYWxpdHks
+IHNpbXBsZXIsCiBhbmQgZmFzdGVyLgotLSAKMi41MS4wLjQ3MC5nYTdkYzcyNmMyMS1nb29nCgo=
+--0000000000008740b7063f448a13--
 
