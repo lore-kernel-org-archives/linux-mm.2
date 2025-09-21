@@ -4,117 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7ED68CAC5A7
-	for <linux-mm@archiver.kernel.org>; Sun, 21 Sep 2025 09:28:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62774CAC59A
+	for <linux-mm@archiver.kernel.org>; Sun, 21 Sep 2025 11:25:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6CEA58E0003; Sun, 21 Sep 2025 05:28:10 -0400 (EDT)
+	id 512E48E0002; Sun, 21 Sep 2025 07:25:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 67D838E0001; Sun, 21 Sep 2025 05:28:10 -0400 (EDT)
+	id 4C3648E0001; Sun, 21 Sep 2025 07:25:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5934D8E0003; Sun, 21 Sep 2025 05:28:10 -0400 (EDT)
+	id 3D8F38E0002; Sun, 21 Sep 2025 07:25:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 36BA58E0001
-	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 05:28:10 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9A8C41402B5
-	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 09:28:09 +0000 (UTC)
-X-FDA: 83912731098.04.448CE20
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	by imf05.hostedemail.com (Postfix) with ESMTP id BB75B100005
-	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 09:28:07 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=UAIygT7W;
-	spf=pass (imf05.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 200CD8E0001
+	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 07:25:31 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C973F13AA8A
+	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 11:25:29 +0000 (UTC)
+X-FDA: 83913026778.19.CABE63E
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 902F240006
+	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 11:25:27 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=none;
+	spf=pass (imf12.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758446887;
+	s=arc-20220608; t=1758453928;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EtvX6spi3ViWv5XUhchmyhouze8VNd54v4OZj5G0rRs=;
-	b=HKvjmJ+LgqnZs85RGlFPnTL2DNjWItrjYPkeN8LWE4wzIGUnzy4Ieyw6SER3R67s5+Yizo
-	pwkt6qm0WRkVbWfKyI8CoDbKDiGlE3Erw0YNH+ehX/2S2AB67iIkOamlmYkZRsVH3dAUx+
-	HRv/o07Fk7gn2OVVBxz8A96eThwGGrE=
+	 in-reply-to:in-reply-to:references:references;
+	bh=leZ44DLXYJ62OrzyT+JDWN/vH5mCj1fVH7dMAOjXHe4=;
+	b=q7sAq26FT2v7R8FB8Y9b1eRY2gHdUwDA5dNY1HMlAtA9xEBbZ8XGlJ0SgeyznHmDUR9u0R
+	51XzCUdL1+rgcS50CI6Fu26herjwzpTfO56pKLW/NyR7cLVDd0kdsW3M4zNp+TBOvoicTV
+	gKI+MLLeOPUEkSR2kWzlMi9MVU2MP+A=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=UAIygT7W;
-	spf=pass (imf05.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758446887; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=none;
+	spf=pass (imf12.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758453928; a=rsa-sha256;
 	cv=none;
-	b=clSLg+BTW59fg3Vt7xKUyBnbfyvLIrOXQPB24dAfz993y+MQCMLiFsArS3pgvE3Uci1fpV
-	KLx7JaDibk99gw9E57FJkCLOXWCEAcih8QbXWMGYcJzo4LH0KJYgUP7LpllnINT1R1+pn3
-	+Bja5LxOAbmDR7tQkCIgGZ4swqbARrc=
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-267fa729a63so6468225ad.3
-        for <linux-mm@kvack.org>; Sun, 21 Sep 2025 02:28:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758446886; x=1759051686; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EtvX6spi3ViWv5XUhchmyhouze8VNd54v4OZj5G0rRs=;
-        b=UAIygT7WabmaVUz7SP+p1Zdxk/a4MIQIxtmq4Lba7Vn8FiK3YAQEYEmP1M5RsV+mq2
-         NIhv3NGkakMD48TxHFHzx0bDrYxowou64jYajFJ8+dA8ErnAW1Qv/avf6ahHUyhNseN+
-         gDR+j8VVS2nLGeml2fLLMTb0ZXZTB08VECoT2ktn/TuyEGyApZCuDIBwVXmMvrY1GNQm
-         JyTSdteD4KNGcXSfgIIfXxlxJp6FY9IOgZji2KgVKOZ+JWX3CB+MowLoWhGGxsEkBtAd
-         1PgXhT7e8aQzLfeRpQ9u7L9WrweE8SLZmAgUUIwN3A5fSRxQenshWAY2ANtgmvH1iiKp
-         DXIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758446886; x=1759051686;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EtvX6spi3ViWv5XUhchmyhouze8VNd54v4OZj5G0rRs=;
-        b=YkrgmgiUf8303Xn2r9AA4M6p0pF5reMpIGQuHXIiDARXhjIdIx1dau92skWGZQcPYd
-         s5aUAPyim9XvrM3jfPGoyOSK1a6y5fYCND1Sd/GAxso7gP3JBcKiDwbxRsNkPcTE9gIE
-         hFRAX3DdiVE9bI1ErYygwYlADxlVD6nGEhrlLvXTeRv2jEEPAOLBDn7cv2TPt2mEXt/i
-         k5tjfjXZCF1IzC/I7IhQLvFKkgq9Ku4fuXRjVYzmb3COVUEbMiNC2VMrCfZ+/ZbAO1FH
-         6TrA75O/K++u2nIqXa9Lk42gPAvmN2OJ7n0Z1iECCJ9xqWjQknM6AftryZwJCmFqaoQt
-         fC8A==
-X-Forwarded-Encrypted: i=1; AJvYcCUtnmFKO+4xs/rUTG3vZkjnxImHc2pOzQNw/JoLgLVT+5eoqFqdxj1uL/qmtqj7RFCK+2YXKWdMVA==@kvack.org
-X-Gm-Message-State: AOJu0YzHeaz2k7SvVh4VdyVSdAcos2RJdyLFyfZOFIGDvCX9v4ZT/MuI
-	I+/nHKritLjuUjpH/OML37wVhAc7N4tasQGTamOQy+KDgRu48g7Tyu/tEO1SnJ1oGJnfnI8iu+U
-	v+6AcKpE4obnqbEUxXLW37IHspdBHqQg=
-X-Gm-Gg: ASbGncs+C8p2JO+LaAp5Y04R6lTiTUdSLPNL7Q4w4tRlpzoIR19rGIzvOkss9txbuZf
-	S7jH2m95IPkNpdqfaRBg5LZdXz5Miw0yaMc6S7eUao7e5HWke0i+roBfgcg/D8JLIHb8NygKZek
-	kLRVahlVl9Ow1ABlmC7AUKJ8X9Z/ZmhASX+IBTNqrO3B8mCJW2LddEMvqpdfO6r3DVyNlCtafka
-	vS/bUu8a/kStHMPorgUjD6wEF3R1hr5tC2zFLYGSegBqP4fbiF9IufOvN7iQAw+RXc8boHsBcb5
-	xyJrf6cvyzob14O22p9XztjR5w==
-X-Google-Smtp-Source: AGHT+IF+Dy0mlMIwczvjkrGSGBlKSHADOTMAlhPepZLysPmcUI5cC7xm/X9KEYN0oiR+8lSYpv07g4tim48igZ6n/UI=
-X-Received: by 2002:a17:903:60f:b0:269:af66:5e70 with SMTP id
- d9443c01a7336-269ba53ab71mr45154625ad.9.1758446886509; Sun, 21 Sep 2025
- 02:28:06 -0700 (PDT)
+	b=Hj3fhtTI5zqZQ4bTB0pgsWFVj5Eb205pswvSz157P9RMn37F0eJ+qDc+UTAoVj9iqrAe3a
+	Ht5K7OqH7GkFpeSLHDRWOR00WIczRHbGdWwAWh/fVBuSF2v9Dp7W2VXdlrHpGHYm6JPOAI
+	ukAstxuILPSNAtRY62W0AK26NAch6fs=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 311F21516;
+	Sun, 21 Sep 2025 04:25:18 -0700 (PDT)
+Received: from [10.163.39.139] (unknown [10.163.39.139])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D5DF23F673;
+	Sun, 21 Sep 2025 04:25:17 -0700 (PDT)
+Message-ID: <49731a4e-d00f-4f84-aaac-87405d6eadbf@arm.com>
+Date: Sun, 21 Sep 2025 16:55:14 +0530
 MIME-Version: 1.0
-References: <20250910140212.997771-1-ojeda@kernel.org>
-In-Reply-To: <20250910140212.997771-1-ojeda@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 21 Sep 2025 11:27:52 +0200
-X-Gm-Features: AS18NWAoOU3I-I-O4oc7FCAYxbAppgw72ctHtbKu_NpY6kqn7EZ9tMfGQmUs_fs
-Message-ID: <CANiq72kB5hCC9A9bXEx489E+SMMFcFMiJB68NHA7megz2aG5HA@mail.gmail.com>
-Subject: Re: [PATCH] rust: maple_tree: fix intra-doc link
-To: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-Cc: "Liam R . Howlett" <Liam.Howlett@oracle.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Andrew Ballance <andrewjballance@gmail.com>, 
-	maple-tree@lists.infradead.org, linux-mm@kvack.org, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/memory-failure: Support disabling soft offline for
+ HugeTLB pages
+To: David Hildenbrand <david@redhat.com>, Kyle Meyer <kyle.meyer@hpe.com>
+Cc: akpm@linux-foundation.org, corbet@lwn.net, linmiaohe@huawei.com,
+ shuah@kernel.org, tony.luck@intel.com, jane.chu@oracle.com,
+ jiaqiyan@google.com, Liam.Howlett@oracle.com, bp@alien8.de,
+ hannes@cmpxchg.org, jack@suse.cz, joel.granados@kernel.org,
+ laoar.shao@gmail.com, lorenzo.stoakes@oracle.com, mclapinski@google.com,
+ mhocko@suse.com, nao.horiguchi@gmail.com, osalvador@suse.de,
+ rafael.j.wysocki@intel.com, rppt@kernel.org, russ.anderson@hpe.com,
+ shawn.fan@intel.com, surenb@google.com, vbabka@suse.cz,
+ linux-acpi@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mm@kvack.org
+References: <aMiu_Uku6Y5ZbuhM@hpe.com>
+ <a99eb11f-a7ac-48a3-a671-c5f0f6b5b491@arm.com>
+ <8c3188da-7078-4099-973a-1d0d74db2720@redhat.com> <aMsDJ3EU1zVJ00cX@hpe.com>
+ <cd71fac2-bb9d-4e84-a074-2b695654e655@redhat.com>
+Content-Language: en-US
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <cd71fac2-bb9d-4e84-a074-2b695654e655@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 902F240006
+X-Stat-Signature: h6wiipao9gy54gaxazizi1datso4f5z7
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: BB75B100005
-X-Stat-Signature: og1matohsoja9ghbfg4fdk7giqw4rz6j
-X-HE-Tag: 1758446887-588035
-X-HE-Meta: U2FsdGVkX1+vsBllbi9chq6Gbl29JpINq97xBfNDHEBxHRNl28aNo4WGohuGKeQvGqIx4/bIv8eXBrpoC5gHnPmL7eJq9+VbhByDVJwATXIP+jSLKNwUDXeiILHk53AqiIf4RIBzw9/dyq755aqd+yk74fFW754dzVxUo4gc7sLuV75gkR3ugoo8q24ntNvUWlQZ97UujIFunskCZUo7XzX+ayvalDtUCOxrKkH9arUeBrwe4U0M8ppCczmNcebBwCzxQLRQXkHb5ZFlT+81RzlUpjYAUjB7urPm+7eaKaG3C+9YBErbgVJSikHz3giBdTnbz3rsdhMraPilbvgC6HMMcBiAp30O+RPPKjHHIGYKvWFdRheSf3lzQNuC4PJqLvxvFCXiqtvoKeYUGlWsJNFawPkWaenncU/uFlKHualn2ZQfrpfo73HHE5eR4P9o+s//8n2MNSb2WwtQhO/zO9pYxTfIEGapR9e/1N5ntQv8b306B8eTSf2rJroc+5/AslEh3n/5qpRJKuV8kEyeEIcqJo7FOHAGioUMVeO+A3/a0woFguUkSIeE7tY4ugZVT4rsRKafRdHoVXZB2B7Gm/IhPvXWAdjPz7GwvxhO/tHyIFAjNgfCgTcrnsmzUpzktGfryJ+BYZE0BNAAme6X7J88OHv93cmVvdPLwIghyzm/UKBaW3KsJjCrAB+Ve+MFAHGK6AatYGBQvOQoGnzWab6L72MN0bISK3hyA0Ek1FuoJl3hLEKU7i6wv7CpZlm3oDWu4aJzUQ5PV/q+DhwD7QB3clfWjAmn/bMj8ygzNybUqdFEbYayu3tb97XMfWvCnpfcfn5yYFhOVSIGycSF4DzxBM8Oh5tW91JEGUtdJfV73dAe3nWjJ6yMovzHc0phzSR6IQi4TVNVgigW6zJBSa8KbFoR/nbpokUdiU+KGEvQZykolcg21SwzDO1AqrrIakb0O1xAs4ibB89uhJJ
- ouTzMIVs
- Xn+t0qpHRACw+T3jQdhH/Bnea0Z+issICWUmt0Xj2cEkH58q3UGkF2Xl5aSOIhkfkuJz5NqmvV4amoo/48pRraATFpvamAOn2lhiI5fLHZOumPj5Wt3fz7G8UzOQ82zjyctsMDFinF9lE8jIuaTI2hsE1KTRnVTIEfPDiEhQZQB+5+d8qo672tuefEwsFV7mdx/7KoN7QoeYQI+Gsy7sHACuG3nC951P0Cv2oJ3wdqcSnGchWEco++eS4voJ0zBqP60G9qbBfa8LGshgj/rfVqxrAArnARKUd/+m/Qj/jHTlH7xOlA0Uza6I4GzT2igEH4zO9uivw0LjVUi7xkQ5Z6l33QUPi+PI1zErkERAvzjCgCESkUQHoawzImk8LtZjVQY1ON7LN7Ii5QRTUn4RYSYkHxHkqblmmfqquuUQH/mmww5N45mBuEC8kGng1tcHphwZKGJ25iQbW3dRlFlHlx3JvnODRdvaebqdnPKplF9T7GwSPfYTE+V2lGEvJty4dpoJX93VpvNyPnCNy5jkEosU4sw==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1758453927-396718
+X-HE-Meta: U2FsdGVkX1+dmmEDlDa4Ifz+SAZl8lUcRpotN7gdXmdJ+QuE5rw2xnpbcNuPrt3b9OZglNk2j2JHB24cKMhlUe8x5zDK9Tw3HDzlgmzvAcsDm9OGb4yjQ+EYu2ddrkA4+lhlkVLPQvzCdyKfshCLS5IkaF7rNjKL9yOH7lWmwIcdQLYXmHi7bBP4CTVMEn531lxMp3teew31s5QL+L22tLl+FH08HrfRYcRNerkXqnhAzibCYsFprj7+Lu9KO18tXBcnhAZZV3q6H0MT3joQwq8VgAyD+Fu1uyGJH8ggQJN8UbHbif42jxBk8WPwedDPWcEpriO+7lHMhZ0E+NZ+RG50Rd1ZvEVcTct9eMTI3YKGt/Nql7JodAcMdDuHFOdcsHtnS3hBm8b2nsIJfjZiZqwe8B8vCgMRwI/ZF7sb1RvoQitwomVKdWRRqAox9OsY7o/vDSrFbOgYlaAFDK1tZBAdwjcyDAJly3elH3lV+9muJqC/lgKFMkzrDZ+lVNw7jMScrtPu+K0QryR/j+x235/VLfprzvKvzDZRgsIElSfuzsOLAv+iWEYd83lHR2axWlXenGx3hi5KAaP/gZAEQlSwaGsGtAyyBIbb+m4tsqrIy7vM8dQXRNFQxvndLio9frYJxPRsqwWKvea2RiCKQtjwhLHDgx09n791Nuz3uK+UHg1tTTbtbFSPXuFMBe9CPExJZ68nSO6oqNUaQ0tTdzCFVCv2Uv3oTVTWBO34YtJZ/5tFbvLUEjl6bQJuWYjdWV8Gm2XaPZyHyfra+q32R9NG9hKwglcKs19MdyXrshyiiaAie6CqHePXfSQtTv4tmNUwWpJ23j/4LOmVe5qA5tpwe1ndQx0UOwV8ciL8sL6YkwvLCvEU37wWaYrd0+86eXHmtyu46wsIgembz7hAzpSfWUCh6txFT15ufhx903YinYmUSpfsE4a/cabQeiFyqVjJO/8c3L4+lwAyKUW
+ y8RPKkmy
+ s3K9UU0WaUUbpx51y25R0HLHPrbf1RyWokaVqNr4PRF6tyx1vpVr/Pe6bKYpZnm9J7NMjLK633XBZ2Xhoy4L3nGm38aS1BxdRgXh/tdkaV/UpksgS1h6lX48RCC0WbBiC57DaDIIpIM3k8UHOTxndrjIVpLMy2gxrgvfBqOtpICIclfEGNnW2LWUdYtdG/3MfWH8g2HZJU7L9JknBEa5FPDTsOEKnWK1VihQEYYxFiOO7Uqo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,21 +98,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 10, 2025 at 4:02=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
->
-> Andrew: as usual, please feel free to rebase if that is what you
-> normally do, of course. This was in next-20250910. Thanks!
 
-(Somehow I didn't Cc akpm -- doing it now.)
 
-Could this be picked up? It blocks generation of docs for linux-next. Thank=
-s!
+On 18/09/25 12:35 AM, David Hildenbrand wrote:
+> On 17.09.25 20:51, Kyle Meyer wrote:
+>> On Wed, Sep 17, 2025 at 09:02:55AM +0200, David Hildenbrand wrote:
+>>>
+>>>>> +
+>>>>> +    0 - Enable soft offline
+>>>>> +    1 - Disable soft offline for HugeTLB pages
+>>>>> +
+>>>>> +Supported values::
+>>>>> +
+>>>>> +    0 - Soft offline is disabled
+>>>>> +    1 - Soft offline is enabled
+>>>>> +    3 - Soft offline is enabled (disabled for HugeTLB pages)
+>>>>
+>>>> This looks very adhoc even though existing behavior is preserved.
+>>>>
+>>>> - Are HugeTLB pages the only page types to be considered ?
+>>>> - How the remaining bits here are going to be used later ?
+>>>>
+>>>
+>>> What I proposed (that could be better documented here) is that all other
+>>> bits except the first one will be a disable mask when bit 0 is set.
+>>>
+>>> 2 - ... but yet disabled for hugetlb
+>>> 4 - ... but yet disabled for $WHATEVER
+>>> 8 - ... but yet disabled for $WHATEVERELSE
+>>>
+>>>> Also without a bit-wise usage roadmap, is not changing a procfs
+>>>> interface (ABI) bit problematic ?
+>>>
+>>> For now we failed setting it to values that are neither 0 or 1, IIUC
+>>> set_enable_soft_offline() correctly?
+>>
+>> Yes, -EINVAL will be returned.
+>>
+>>> So there should not be any problem, or which scenario do you have in mind?
+>>
+>> Here's an alternative approach.
+>>
+>> Do not modify the existing sysctl parameter:
+>>
+>> /proc/sys/vm/enable_soft_offline
+>>
+>> 0 - Soft offline is disabled
+>> 1 - Soft offline is enabled
+>>
+>> Instead, introduce a new sysctl parameter:
+>>
+>> /proc/sys/vm/enable_soft_offline_hugetlb
+>>
+>> 0 - Soft offline is disabled for HugeTLB pages
+>> 1 - Soft offline is enabled for HugeTLB pages
+>>
+>> and note in documentation that this setting only takes effect if
+>> enable_soft_offline is enabled.
+>>
+>> Anshuman (and David), would you prefer this?
+> 
+> Hmm, at least I don't particularly like that. For each new exception we would create a new file, and the file has weird semantics such that it has no meaning when enable_soft_offline=0.
 
-By the way, there was a rebase -- the tag should now be:
-
-Fixes: 6a25c101c7a2 ("rust: maple_tree: add MapleTree")
-
-Cheers,
-Miguel
+Agree with David here. Adding a new procfs file for a particular page
+type's soft offline disable scenario does not really make sense. This
+will extend the ABI unnecessarily without adding much benefit.
 
