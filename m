@@ -4,87 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11E2DCAC59A
-	for <linux-mm@archiver.kernel.org>; Sun, 21 Sep 2025 07:39:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7ED68CAC5A7
+	for <linux-mm@archiver.kernel.org>; Sun, 21 Sep 2025 09:28:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 05FE38E0003; Sun, 21 Sep 2025 03:39:55 -0400 (EDT)
+	id 6CEA58E0003; Sun, 21 Sep 2025 05:28:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 010448E0001; Sun, 21 Sep 2025 03:39:54 -0400 (EDT)
+	id 67D838E0001; Sun, 21 Sep 2025 05:28:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E68998E0003; Sun, 21 Sep 2025 03:39:54 -0400 (EDT)
+	id 5934D8E0003; Sun, 21 Sep 2025 05:28:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D56288E0001
-	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 03:39:54 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5D0518608E
-	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 07:39:54 +0000 (UTC)
-X-FDA: 83912458308.03.4883C15
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id CF0E780009
-	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 07:39:52 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Jg+I5mIS;
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 36BA58E0001
+	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 05:28:10 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9A8C41402B5
+	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 09:28:09 +0000 (UTC)
+X-FDA: 83912731098.04.448CE20
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	by imf05.hostedemail.com (Postfix) with ESMTP id BB75B100005
+	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 09:28:07 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=UAIygT7W;
+	spf=pass (imf05.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758440392;
+	s=arc-20220608; t=1758446887;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8/5rWeuzmNLpEF8jpC0tA5WOirM9K5bDidp+4wYygw8=;
-	b=z3qTueYzIH/Hu9a7TPrnLRDmqsb9AUcnwLQkVgkmhrby6+B+k3Q59lfNifXN7zgYilmZkY
-	DRPP30SQpwwNrzqvDz3u3B5X4sNBv96TZ4EycnboEecq8FZ+yKDiNxrC4PkHUcIVWuE7EX
-	TzNrr4F7ICm7qAf2wkD4xiNMEJ15P1c=
+	bh=EtvX6spi3ViWv5XUhchmyhouze8VNd54v4OZj5G0rRs=;
+	b=HKvjmJ+LgqnZs85RGlFPnTL2DNjWItrjYPkeN8LWE4wzIGUnzy4Ieyw6SER3R67s5+Yizo
+	pwkt6qm0WRkVbWfKyI8CoDbKDiGlE3Erw0YNH+ehX/2S2AB67iIkOamlmYkZRsVH3dAUx+
+	HRv/o07Fk7gn2OVVBxz8A96eThwGGrE=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Jg+I5mIS;
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758440392; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=UAIygT7W;
+	spf=pass (imf05.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758446887; a=rsa-sha256;
 	cv=none;
-	b=QxJKKHJGNR2QcrWukfc30nF/EUGAgtKoDjTqtA4jVGTW6GGFemwtmKpECrpvsOeaug+Ju+
-	LjrUyzk5cEi+SOZFyxpzwIf5XD4Kp3/WPn7/abJC55L0zeOU6/XzyCCTK1hLAS5IVrIjDC
-	dRj0s90v1SkUvL6gYkSAzieLbNsIo2Y=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E163D600AC;
-	Sun, 21 Sep 2025 07:39:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CF0CC4CEE7;
-	Sun, 21 Sep 2025 07:39:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758440391;
-	bh=YeDyQS3+mMpnmNaLa0DMpyp/Ge24svjN6e7TseL5PlY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Jg+I5mISszxOM6vxuJLUP7StToWz2ZhNXOYlCHpWWucv2FOMahAAyW9olJkCHsamN
-	 rptxT2zcVb5KRr7njgD83lT1mW0XXICmlWbWIlDs9w8Kq3KCrno3ezVryu+wXrD5Ut
-	 cMyPy+D+JD+TZIebBf999+FwAyKy2KNsit1+aaVs4qnz7B7dbCUeTmHf1yM3nEiyp7
-	 IOOSC4jJ8ECjGy9cGQ/b3k32jrQ3Lyxc1WOE1/LaesVDBbA2qf6h5NOzHxkL1C0aVD
-	 Eu7l0e46W6X6qyeLMYzsCNbNmUMng0duQKijN+C1f9MyeLyCyMSXb9nAoGUrF0bUIa
-	 ZvTVD+X7Gz3qw==
-Date: Sun, 21 Sep 2025 10:39:45 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: Remove PMD alignment constraint in execmem_vmalloc()
-Message-ID: <aM-rwfvR32xmbCXj@kernel.org>
-References: <20250918093453.75676-1-dev.jain@arm.com>
- <aMvf_R4ttLibbnQ1@kernel.org>
- <d4019be7-e24c-4715-a42a-4f1fc39a9bd4@arm.com>
+	b=clSLg+BTW59fg3Vt7xKUyBnbfyvLIrOXQPB24dAfz993y+MQCMLiFsArS3pgvE3Uci1fpV
+	KLx7JaDibk99gw9E57FJkCLOXWCEAcih8QbXWMGYcJzo4LH0KJYgUP7LpllnINT1R1+pn3
+	+Bja5LxOAbmDR7tQkCIgGZ4swqbARrc=
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-267fa729a63so6468225ad.3
+        for <linux-mm@kvack.org>; Sun, 21 Sep 2025 02:28:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758446886; x=1759051686; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EtvX6spi3ViWv5XUhchmyhouze8VNd54v4OZj5G0rRs=;
+        b=UAIygT7WabmaVUz7SP+p1Zdxk/a4MIQIxtmq4Lba7Vn8FiK3YAQEYEmP1M5RsV+mq2
+         NIhv3NGkakMD48TxHFHzx0bDrYxowou64jYajFJ8+dA8ErnAW1Qv/avf6ahHUyhNseN+
+         gDR+j8VVS2nLGeml2fLLMTb0ZXZTB08VECoT2ktn/TuyEGyApZCuDIBwVXmMvrY1GNQm
+         JyTSdteD4KNGcXSfgIIfXxlxJp6FY9IOgZji2KgVKOZ+JWX3CB+MowLoWhGGxsEkBtAd
+         1PgXhT7e8aQzLfeRpQ9u7L9WrweE8SLZmAgUUIwN3A5fSRxQenshWAY2ANtgmvH1iiKp
+         DXIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758446886; x=1759051686;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EtvX6spi3ViWv5XUhchmyhouze8VNd54v4OZj5G0rRs=;
+        b=YkrgmgiUf8303Xn2r9AA4M6p0pF5reMpIGQuHXIiDARXhjIdIx1dau92skWGZQcPYd
+         s5aUAPyim9XvrM3jfPGoyOSK1a6y5fYCND1Sd/GAxso7gP3JBcKiDwbxRsNkPcTE9gIE
+         hFRAX3DdiVE9bI1ErYygwYlADxlVD6nGEhrlLvXTeRv2jEEPAOLBDn7cv2TPt2mEXt/i
+         k5tjfjXZCF1IzC/I7IhQLvFKkgq9Ku4fuXRjVYzmb3COVUEbMiNC2VMrCfZ+/ZbAO1FH
+         6TrA75O/K++u2nIqXa9Lk42gPAvmN2OJ7n0Z1iECCJ9xqWjQknM6AftryZwJCmFqaoQt
+         fC8A==
+X-Forwarded-Encrypted: i=1; AJvYcCUtnmFKO+4xs/rUTG3vZkjnxImHc2pOzQNw/JoLgLVT+5eoqFqdxj1uL/qmtqj7RFCK+2YXKWdMVA==@kvack.org
+X-Gm-Message-State: AOJu0YzHeaz2k7SvVh4VdyVSdAcos2RJdyLFyfZOFIGDvCX9v4ZT/MuI
+	I+/nHKritLjuUjpH/OML37wVhAc7N4tasQGTamOQy+KDgRu48g7Tyu/tEO1SnJ1oGJnfnI8iu+U
+	v+6AcKpE4obnqbEUxXLW37IHspdBHqQg=
+X-Gm-Gg: ASbGncs+C8p2JO+LaAp5Y04R6lTiTUdSLPNL7Q4w4tRlpzoIR19rGIzvOkss9txbuZf
+	S7jH2m95IPkNpdqfaRBg5LZdXz5Miw0yaMc6S7eUao7e5HWke0i+roBfgcg/D8JLIHb8NygKZek
+	kLRVahlVl9Ow1ABlmC7AUKJ8X9Z/ZmhASX+IBTNqrO3B8mCJW2LddEMvqpdfO6r3DVyNlCtafka
+	vS/bUu8a/kStHMPorgUjD6wEF3R1hr5tC2zFLYGSegBqP4fbiF9IufOvN7iQAw+RXc8boHsBcb5
+	xyJrf6cvyzob14O22p9XztjR5w==
+X-Google-Smtp-Source: AGHT+IF+Dy0mlMIwczvjkrGSGBlKSHADOTMAlhPepZLysPmcUI5cC7xm/X9KEYN0oiR+8lSYpv07g4tim48igZ6n/UI=
+X-Received: by 2002:a17:903:60f:b0:269:af66:5e70 with SMTP id
+ d9443c01a7336-269ba53ab71mr45154625ad.9.1758446886509; Sun, 21 Sep 2025
+ 02:28:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d4019be7-e24c-4715-a42a-4f1fc39a9bd4@arm.com>
+References: <20250910140212.997771-1-ojeda@kernel.org>
+In-Reply-To: <20250910140212.997771-1-ojeda@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 21 Sep 2025 11:27:52 +0200
+X-Gm-Features: AS18NWAoOU3I-I-O4oc7FCAYxbAppgw72ctHtbKu_NpY6kqn7EZ9tMfGQmUs_fs
+Message-ID: <CANiq72kB5hCC9A9bXEx489E+SMMFcFMiJB68NHA7megz2aG5HA@mail.gmail.com>
+Subject: Re: [PATCH] rust: maple_tree: fix intra-doc link
+To: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: "Liam R . Howlett" <Liam.Howlett@oracle.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Andrew Ballance <andrewjballance@gmail.com>, 
+	maple-tree@lists.infradead.org, linux-mm@kvack.org, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: CF0E780009
-X-Stat-Signature: og8wz4rjj3qmr7fu8egucf4ys4xh844h
-X-HE-Tag: 1758440392-26468
-X-HE-Meta: U2FsdGVkX18/N1nJZMNUqKNGDE0VrESX++LV0/bOX9Um5/Kg+q9amhYk4UlpT9SiujQgqpDyx64QwTrvHvrQPrR5siOyFz6AegYpAQ0V0Zrzq4xnMzGXMciNiCiGDtQotbzNZewra+KlICxcBP9lCRPH25099zDcrl8ZiZzvUx1VVQzcMlo+Rsh1F/HiRdtR4+WIjQ16PvtMv5jEE+FICx6QJ7DV2IJRmd4/9+UYjO0LafgESKrBK4rhJ6jbwPrF7CDKKS0znqOd+EKs1T+vtS/MplHHItGV3hptJqhtPbXuD++fsZC8zj9Ecr495Fwx4u9JEK+m81rmcgHfGH2iZfOua5zUuvhHsYKTGWfZQ5Bp82TA0skFW1m6DoaoFIlla1B4BY4FMMADCBAl7H11RoJ7JJGcQV7UNoZjRq5VdifH2LnbjEiwJpQqO0F++mKzg+RewrpCrMb8uDPKFnjKIQLR8PX1nxfhrk9Hz2rFSn/zvQR2uscxCMXkQKJLgZymJkFvhrOPDZNlNabpwP1ZdO4+o8MUxTx9SRUvWln3MAFj3PWxCrLVdetSAQQouzCeioIg1BCsAGpGCYVdSFUFGdLyorWhanVzUJaUKEbl8vunpwzuo55f/DtsXRguJYDHDKUym6c6qeMPxwxVgB8Rv0QYN3PbGXQfDF7mQTdrpea0Qq2fD8/1Y6X2NeYFppUyplx+hA9XXuNa4DqkB5q/Yvy7Q2gmBGis7OTsHVi1prgtOEr7RWcDROniaXjn1PzkD/LoTCc4GkaIU7ZkSPTfVqJBzhS2kPk9BbdNZUjNa6xJY6Vg/EKB8tAbpP+Bx8J8fQUPnTW/5f7Xth4O6KN6IWq7A91V9Q1o/hbfrmt0r5Ol4f6NdfJ7QDMjf/WUbNdVFmkNyNOO5FYYYN713IzBvgsGLO180Wlg/KddrmZ8Ykm9773VlLIINk3juf4+UxWq8M84VpWBmjw/1R+8MRz
- U/F+pD2+
- 0Bzb4bAF7CfKXQ0wA2SarwbbiTTCVL+/VVmd9FRa6wgAqmEuvpsYE0l7M5bueIoFL/NhM62SiSm1cEHEc6BkitIExVmqKIjZffKRxiHt/t9gh+jf0AGNCOZCsQzKFwALBfsc5T3M/o/P7+snes1XF7rs34oqkc0FqqvQov1+p2m11TdWJkQ/0i7+HGbFJPP7TlkE45fvRQHxA7G3NEzWu+hER9qmtqcjU6Gi0jxJXA3chM9IyktPCu7EcoL5si7QC+kgDYELXdByy4vybfi6VwK6lksIGgvZCpqBJotf2WcTa8xoOP9lxl0CtRdibvDtpAUpKsmEV83kLjsMt1n1xuItizLwtgPKMXtJ4K68oqDcHziHdX0EFZiEmXhXiX9YSd2oY
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: BB75B100005
+X-Stat-Signature: og1matohsoja9ghbfg4fdk7giqw4rz6j
+X-HE-Tag: 1758446887-588035
+X-HE-Meta: U2FsdGVkX1+vsBllbi9chq6Gbl29JpINq97xBfNDHEBxHRNl28aNo4WGohuGKeQvGqIx4/bIv8eXBrpoC5gHnPmL7eJq9+VbhByDVJwATXIP+jSLKNwUDXeiILHk53AqiIf4RIBzw9/dyq755aqd+yk74fFW754dzVxUo4gc7sLuV75gkR3ugoo8q24ntNvUWlQZ97UujIFunskCZUo7XzX+ayvalDtUCOxrKkH9arUeBrwe4U0M8ppCczmNcebBwCzxQLRQXkHb5ZFlT+81RzlUpjYAUjB7urPm+7eaKaG3C+9YBErbgVJSikHz3giBdTnbz3rsdhMraPilbvgC6HMMcBiAp30O+RPPKjHHIGYKvWFdRheSf3lzQNuC4PJqLvxvFCXiqtvoKeYUGlWsJNFawPkWaenncU/uFlKHualn2ZQfrpfo73HHE5eR4P9o+s//8n2MNSb2WwtQhO/zO9pYxTfIEGapR9e/1N5ntQv8b306B8eTSf2rJroc+5/AslEh3n/5qpRJKuV8kEyeEIcqJo7FOHAGioUMVeO+A3/a0woFguUkSIeE7tY4ugZVT4rsRKafRdHoVXZB2B7Gm/IhPvXWAdjPz7GwvxhO/tHyIFAjNgfCgTcrnsmzUpzktGfryJ+BYZE0BNAAme6X7J88OHv93cmVvdPLwIghyzm/UKBaW3KsJjCrAB+Ve+MFAHGK6AatYGBQvOQoGnzWab6L72MN0bISK3hyA0Ek1FuoJl3hLEKU7i6wv7CpZlm3oDWu4aJzUQ5PV/q+DhwD7QB3clfWjAmn/bMj8ygzNybUqdFEbYayu3tb97XMfWvCnpfcfn5yYFhOVSIGycSF4DzxBM8Oh5tW91JEGUtdJfV73dAe3nWjJ6yMovzHc0phzSR6IQi4TVNVgigW6zJBSa8KbFoR/nbpokUdiU+KGEvQZykolcg21SwzDO1AqrrIakb0O1xAs4ibB89uhJJ
+ ouTzMIVs
+ Xn+t0qpHRACw+T3jQdhH/Bnea0Z+issICWUmt0Xj2cEkH58q3UGkF2Xl5aSOIhkfkuJz5NqmvV4amoo/48pRraATFpvamAOn2lhiI5fLHZOumPj5Wt3fz7G8UzOQ82zjyctsMDFinF9lE8jIuaTI2hsE1KTRnVTIEfPDiEhQZQB+5+d8qo672tuefEwsFV7mdx/7KoN7QoeYQI+Gsy7sHACuG3nC951P0Cv2oJ3wdqcSnGchWEco++eS4voJ0zBqP60G9qbBfa8LGshgj/rfVqxrAArnARKUd/+m/Qj/jHTlH7xOlA0Uza6I4GzT2igEH4zO9uivw0LjVUi7xkQ5Z6l33QUPi+PI1zErkERAvzjCgCESkUQHoawzImk8LtZjVQY1ON7LN7Ii5QRTUn4RYSYkHxHkqblmmfqquuUQH/mmww5N45mBuEC8kGng1tcHphwZKGJ25iQbW3dRlFlHlx3JvnODRdvaebqdnPKplF9T7GwSPfYTE+V2lGEvJty4dpoJX93VpvNyPnCNy5jkEosU4sw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,33 +123,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Ryan,
+On Wed, Sep 10, 2025 at 4:02=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
+te:
+>
+> Andrew: as usual, please feel free to rebase if that is what you
+> normally do, of course. This was in next-20250910. Thanks!
 
-On Thu, Sep 18, 2025 at 02:06:25PM +0100, Ryan Roberts wrote:
-> On 18/09/2025 11:33, Mike Rapoport wrote:
-> > On Thu, Sep 18, 2025 at 03:04:53PM +0530, Dev Jain wrote:
-> >> When using vmalloc with VM_ALLOW_HUGE_VMAP flag, it will set the alignment
-> >> to PMD_SIZE internally, if it deems huge mappings to be eligible.
-> >> Therefore, setting the alignment in execmem_vmalloc is redundant. Apart
-> >> from this, it also reduces the probability of allocation in case vmalloc
-> >> fails to allocate hugepages - in the fallback case, vmalloc tries to use
-> >> the original alignment and allocate basepages, which unfortunately will
-> >> again be PMD_SIZE passed over from execmem_vmalloc, thus constraining
-> >> the search for a free space in vmalloc region.
-> >>
-> >> Therefore, remove this constraint.
-> >>
-> >> Signed-off-by: Dev Jain <dev.jain@arm.com>
-> > 
-> > Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> 
-> Hijacking this thread to ask Mike a related question, which I noticed during
-> code review...
+(Somehow I didn't Cc akpm -- doing it now.)
 
-Replied on the related thread :)
-https://lore.kernel.org/all/aM-rDD-TRqmtr6Nb@kernel.org/
+Could this be picked up? It blocks generation of docs for linux-next. Thank=
+s!
 
--- 
-Sincerely yours,
-Mike.
+By the way, there was a rebase -- the tag should now be:
+
+Fixes: 6a25c101c7a2 ("rust: maple_tree: add MapleTree")
+
+Cheers,
+Miguel
 
