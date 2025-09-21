@@ -4,94 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF369CAC5A7
-	for <linux-mm@archiver.kernel.org>; Sun, 21 Sep 2025 11:36:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22261CAC59A
+	for <linux-mm@archiver.kernel.org>; Sun, 21 Sep 2025 15:07:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E57518E0002; Sun, 21 Sep 2025 07:36:46 -0400 (EDT)
+	id 0FA218E0002; Sun, 21 Sep 2025 11:07:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E08378E0001; Sun, 21 Sep 2025 07:36:46 -0400 (EDT)
+	id 0AB2A8E0001; Sun, 21 Sep 2025 11:07:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1DCE8E0002; Sun, 21 Sep 2025 07:36:46 -0400 (EDT)
+	id F02D88E0002; Sun, 21 Sep 2025 11:07:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id BB2F48E0001
-	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 07:36:46 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 44CFB119466
-	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 11:36:46 +0000 (UTC)
-X-FDA: 83913055212.25.01D31AC
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 75D7E40006
-	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 11:36:44 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D5CB18E0001
+	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 11:07:37 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 569AA1403A6
+	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 15:07:37 +0000 (UTC)
+X-FDA: 83913586554.18.5EA1753
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 6F6E44000A
+	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 15:07:34 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
 	dkim=none;
-	spf=pass (imf27.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	spf=pass (imf11.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
+	dmarc=pass (policy=none) header.from=zte.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758454604;
+	s=arc-20220608; t=1758467255;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pG+3Bn5Bmy6Le8Y0IArYxJC5aZl8d85HoBB8fZW6Nws=;
-	b=Xb7exexWDU5TLRUbqzznbQ+uvSI+rJFM9WAjpcvLqn736nLoSRetCwpep+XV3277TBHKlb
-	isF4xH7gwhnX1rtuhURhmsWKfA1VdtSq15wppC+vg0CgbQhLMTgtZ3cZv+pWQ4kssWfjbo
-	EzNKXW90vTf/WCV05f02qSlGFRMZh3k=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=none;
-	spf=pass (imf27.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758454604; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=IHBtu94qFv3HdMM7VTfYM32UmEicSbtOW2nqrqSI61g=;
+	b=G+yfTdv9AsDTFOxUHuzY3Q5947KFhPayNgpFkgCRx11ZWlh7vRFAwtq6B9OU29E+8Nr8oE
+	Hdscf7xMb6wpmrE5kTdIDPizrsAvRtICqejUAhjPicyRXQnuY63+T7tUkhrDp8sn17T+VB
+	PYQ0MZGmkBs8sJOzQXaGCJKfpZTsIoQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758467255; a=rsa-sha256;
 	cv=none;
-	b=v9L3XesR0s8Tsr3XucO2MfeY+RlE+rLgAzXFh9Z1DVO2DkDt+2cgCNXJrS+VE1ZKpkDahY
-	Qt4xat9wXgS7NJG5CZlWYypcu4Kr0XWJwFjPY5SnBwDYcruueKbzZkHXY7UGmssmQDblR0
-	ke0LsNgmvJ9RqOK92l4nMFH46qSJavw=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2E54B1516;
-	Sun, 21 Sep 2025 04:36:35 -0700 (PDT)
-Received: from [10.163.39.139] (unknown [10.163.39.139])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A8DCA3F673;
-	Sun, 21 Sep 2025 04:36:34 -0700 (PDT)
-Message-ID: <4d2e8686-8810-4901-8483-9b5eb040d489@arm.com>
-Date: Sun, 21 Sep 2025 17:06:31 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/memory-failure: Support disabling soft offline for
- HugeTLB pages
-To: "Luck, Tony" <tony.luck@intel.com>, Jiaqi Yan <jiaqiyan@google.com>
-Cc: David Hildenbrand <david@redhat.com>, Kyle Meyer <kyle.meyer@hpe.com>,
- akpm@linux-foundation.org, corbet@lwn.net, linmiaohe@huawei.com,
- shuah@kernel.org, jane.chu@oracle.com, Liam.Howlett@oracle.com,
- bp@alien8.de, hannes@cmpxchg.org, jack@suse.cz, joel.granados@kernel.org,
- laoar.shao@gmail.com, lorenzo.stoakes@oracle.com, mclapinski@google.com,
- mhocko@suse.com, nao.horiguchi@gmail.com, osalvador@suse.de,
- rafael.j.wysocki@intel.com, rppt@kernel.org, russ.anderson@hpe.com,
- shawn.fan@intel.com, surenb@google.com, vbabka@suse.cz,
- linux-acpi@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mm@kvack.org
-References: <aMiu_Uku6Y5ZbuhM@hpe.com>
- <a99eb11f-a7ac-48a3-a671-c5f0f6b5b491@arm.com>
- <8c3188da-7078-4099-973a-1d0d74db2720@redhat.com> <aMsDJ3EU1zVJ00cX@hpe.com>
- <cd71fac2-bb9d-4e84-a074-2b695654e655@redhat.com>
- <CACw3F52p45t3iSZPjx_Lq9kBn1ZGTDZsxk+iQ-xFA1zdvdqqrw@mail.gmail.com>
- <aMsR4Tr9ov1pfucC@agluck-desk3>
-Content-Language: en-US
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <aMsR4Tr9ov1pfucC@agluck-desk3>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 75D7E40006
-X-Stat-Signature: ax8yjuhr4ngaitzkpryxhga1djzffzuf
+	b=IhqGh3te3pZiKSSjVj2YX5KiFAcSRgUli3Sc5uGJs1w80nJ5R5NmV1582v2J3e1da5/I0y
+	jwFd2hdHzR8xoTA3bZdksCsgm9iiPvvxiPIaN0U30RVsD8ZNGDILsxTBC6sBAYJIUqtY/S
+	3nYgcvoquLV8NJf0dnln+j6u/d1KahU=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=none;
+	spf=pass (imf11.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
+	dmarc=pass (policy=none) header.from=zte.com.cn
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4cV8jr3Cy5z8Xs76;
+	Sun, 21 Sep 2025 23:07:28 +0800 (CST)
+Received: from xaxapp04.zte.com.cn ([10.99.98.157])
+	by mse-fl1.zte.com.cn with SMTP id 58LF7NMP070585;
+	Sun, 21 Sep 2025 23:07:23 +0800 (+08)
+	(envelope-from xu.xin16@zte.com.cn)
+Received: from mapi (xaxapp01[null])
+	by mapi (Zmail) with MAPI id mid32;
+	Sun, 21 Sep 2025 23:07:26 +0800 (CST)
+Date: Sun, 21 Sep 2025 23:07:26 +0800 (CST)
+X-Zmail-TransId: 2af968d014ae464-25fd9
+X-Mailer: Zmail v1.0
+Message-ID: <20250921230726978agBBWNsPLi2hCp9Sxed1Y@zte.com.cn>
+Mime-Version: 1.0
+From: <xu.xin16@zte.com.cn>
+To: <akpm@linux-foundation.org>, <shakeel.butt@linux.dev>,
+        <hannes@cmpxchg.org>, <mhocko@kernel.org>, <roman.gushchin@linux.dev>
+Cc: <david@redhat.com>, <chengming.zhou@linux.dev>, <xu.xin16@zte.com.cn>,
+        <muchun.song@linux.dev>, <linux-kernel@vger.kernel.org>,
+        <linux-mm@kvack.org>, <cgroups@vger.kernel.org>
+Subject: =?UTF-8?B?W1BBVENIIGxpbnV4LW5leHQgdjMgMC82XSBtZW1jZzogU3VwcG9ydCBwZXItbWVtY2cgS1NNIG1ldHJpY3M=?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl1.zte.com.cn 58LF7NMP070585
+X-TLS: YES
+X-SPF-DOMAIN: zte.com.cn
+X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
+X-SPF: None
+X-SOURCE-IP: 10.5.228.132 unknown Sun, 21 Sep 2025 23:07:28 +0800
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 68D014B0.000/4cV8jr3Cy5z8Xs76
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 6F6E44000A
+X-Stat-Signature: 5wpger5fesd7ri45micmfxsr68r8196m
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1758454604-687475
-X-HE-Meta: U2FsdGVkX1+xgzjO+CEh5r7aBJbrzNXcHJm+ckU1kLdLO5sT6UYAuQnPgOb3lKv4q/jmvMNxgfaWgkRjSa09Eaj1rkDXwLz9lDjblg9k4o6J0EGGya1S4Pf9Tia/h/pTnyMdwIgaNwb5mUqzmnX+ikCJ3Ey9y4MTGf+EccFTJqY7uf36DNshNJoiGAN4aUfmwZYFqvEs2+qTaS2AaSK1uAgrev2/VOxwqUfe+Jzp32DQKYC6kk+tV40U4npEtSxEK6kzAHzquUSc34EuAsGOOl4+Aj6MYkEPzpXIs36WDHqccS/c1MfoGMEkPY71K/nkY49qTPptFOq2YMtCtgPFSyUI5km1dg89hpDZbejgnb4vy0fDk5OY+d5/BIufT5WC3ZVi7Roicu4p/jy5DkirlCuCtSUeVVDz8MFO7nLYkVx36KnFmH7vK3+DbdKHkRCHwZkLTmiCb8J6MM841QJnkNYZ5y8SshONXEBzg2dwz1phTHj5nkeKVW7SdRqRQHatrm8E19evQY+Ze/xZuqFB4UdZ1J2kMC4DlcgXTp9obK/3rKrRXsUnYRhniNkneIJ9G+VukqusM5aHhnpCdu8gApGtcjfAtA8Zp95GyMnYJ3lnkubHgnz4FaCgtauR59oXMOGxLzc89N8/EAr5nBGMeIAX15KQi7ji8MUJHDC/DwV57usb+DF0GkGU/68boqD3YToFKkLp0pKm6NNJ5FetY0ZY/kCbm0niCtK+Ke5Dtj7XZSG2PXLvA3F9J3c9d5kMR8eiX2XuVgvHcUFmt6UMfjOlV1fg4AdXZ0Njd/XtbO6/REU3b/BWxO9N3LhTqFDR0QwOwk7rJCnwUbX3PTOlDDGVvkNcVT30w57ZvygWws/062fwkuKMkXWWF+omoe/faAq/d9N1ZT54P4wyIXSoYtM4oG3pVbbk/AJ4Sjo4/tzMGKqPXf5sOD3F/i4tNNGiqbRzjjUGElPzCNLXG1l
- EgPYhqY7
- rjfIx2kF8tVhzT1GyUJ2FUyp1AcCWMc595RDA4L7VCLVnfR4BnPZ02x7R9A3nR2wC9ARrAF8Ij7qpUrz24R5KRMSpNY38y6CmHJFpw/0dewJIHe9SJQAUpYtdU88/5JdCCf8URXHfeSencWtjYx6xh+bygwE5+HWDS5y+pVlpyxJxm25ZAeiXEt4a9z9dbtnSLnE4cjWLWnT63SeRxx8d2iu3Iw==
+X-HE-Tag: 1758467254-995472
+X-HE-Meta: U2FsdGVkX1+JkZLa/u7K2ZuM1FRij0CAJahR0cDcCbgs5UByfpdnA1RfZ1oVSaeHf2msuIRNcJA+dkzJAiCnrd+dNzzD2yotTY4aXN02d/fyfEn+NOBs7YZudZkxe/tUkbl1RJ7edRLDbrAVM9cbJPhY0fpWG8JoFsqpmSfsLi7gQnQ6Ndzb/1ZbAweJua92SfCCHXKBw+XfqDuJ9f7WBskPwlKa2fPtWanutT664Xr+K6JIfJ7MDhN7YHIxd+Yj+OLYkXL8ibQhHkmVNvL++wSFrnvwskAg8UfM0wTMAG6yharguGYUO5tD2112lYm4IV1NX5rs9VVaI5s7pibuka3QFslsf+nx75owey5kVC8biXN761VIIeuFvVnMrp+xOWnc0ElJIrMq81Ao2eMTII1/OiZPeXFwinIBTBqosh3jsRdNmKHQRNPc7bjdPXBA8l7SWHhADVCfUS1sqZShQIG8vfBjVgjujaUV5N8U1TSxbxig8lU26WGCb6++E4+P4xGKoqLnpGuSPriz3XHDb4r4Pk69fY+Ue4Wg/7fUpQRD5pRApjVEHa6Riamxy+l4CmdiTeJ4ZT174D3lP4alNWaXyvrMSajQDEQmXT9YxwNDOmIcfWcBGvNOh7/Tvf5Ox8J3RkUTAYd5EORBudWMNDcL0Rdg4N3S6x8b2uINlUSkFyTjDGxRBdCz/nwMf5KiSjuMZrpeQp0MUwi09fd9KQM1yHfcwSFK9J7JYGACoBf+3JimhkEPqxV5+d2YoR1CUyQ4m2w7c34x+musYVCHUMbUH3eli7SuYkDIT2NJbJ6vKjDofFsFM6Gnvb48pQQArizSYdw0B6pp37sIotTyN/ezZvgt/hd55Or2KJQmCvRDR/8jsxfVhCmXsptS3EQ+hFT4eZZSzyQz2wvi3qGW4LoTwbqdUt4TGb12xv94bgDaoSiY4alviwiuWhTapmpWXyzcSaiS1eJLwEt7i+y
+ GgEjZq/9
+ oVo7zggPhLiZ3BOxUJ8rB/qS22yqowhNbbGkQ2bGCMIQU6+z2myhA/YO8hMu3SBw0pd8ZOfn8xGBXVs/FjvsoGZn7nHGQQ1BzLp2WiG+U6wF60yjbHRyibkp4b39NdfNJger4pzXlRlpyb1NLK6b+qPzNH6j7xfCd1s0bvmTrGM23YilFUE3ySszLA1tSl9v+ISxzEKEkkwK/HO/qmENExZhEO1om1zaSjFH3BXRUW4OrKlGD69SU+Xd3Agqpc15/PxiuU3Cj9GwQI3A=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,35 +98,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+From: xu xin <xu.xin16@zte.com.cn>
 
+v2->v3:
+------
+Some fixes of compilation error due to missed inclusion of header or missed
+function definition on some kernel config.
+https://lore.kernel.org/all/202509142147.WQI0impC-lkp@intel.com/
+https://lore.kernel.org/all/202509142046.QatEaTQV-lkp@intel.com/
 
-On 18/09/25 1:24 AM, Luck, Tony wrote:
-> On Wed, Sep 17, 2025 at 12:32:47PM -0700, Jiaqi Yan wrote:
->> +1. Given /proc/sys/vm/enable_soft_offline is extensible, I would
->> prefer a compact userspace API.
->>
->>> would create a new file, and the file has weird semantics such that it
->>> has no meaning when enable_soft_offline=0.
-> 
-> So the expand the bitmask idea from earlier in this thread?
-> 
-> Bit0	0 = soft offline disabled. 1 = Enabled (but see other bits)
-> Bit1	0 = allow offline of 4K pages, 1 = suppress 4K offline
-> Bit2	0 = allow offline of hugetlb, 1 = suppress hugetlb offline
-> Bit3	0 = allow breakup of transparent huge pages to just offline 4K, 1 = suppress transparent breakup
-> Bit4+	Reserved for suppressing other page types we invent in the future
-> 
-> Values 0 and 1 keep their original meaning.
-> 
-> Value 5 means: offline 4K, keep hugetlb, breakup transparent huge pages.
+v1->v2:
+------
+According to Shakeel's suggestion, expose these metric item into memory.stat
+instead of a new interface.
+https://lore.kernel.org/all/ir2s6sqi6hrbz7ghmfngbif6fbgmswhqdljlntesurfl2xvmmv@yp3w2lqyipb5/
 
-This disable bitmask (but when generally enabled via bit[0] = 1) method
-seems much better. But I am not sure about page size being a valid page
-type classification though. Just to start with, defining first two bits
-in this bitmask should be good enough, which will atleast help document
-and validate this new interface properly.
+Background
+==========
 
-Bit1	0 = allow offline of hugetlb, 1 = suppress hugetlb offline
-Bit2	0 = allow breakup of transparent huge pages to just offline base pages, 1 = suppress transparent breakup
-Bit3+	Reserved for suppressing other page types we invent in the future
+With the enablement of container-level KSM (e.g., via prctl [1]), there is
+a growing demand for container-level observability of KSM behavior. However,
+current cgroup implementations lack support for exposing KSM-related metrics.
+
+So add the counter in the existing memory.stat without adding a new interface.
+To diaplay per-memcg KSM statistic counters,  we traverse all processes of a
+memcg and summing the processes' ksm_rmap_items counters instead of adding enum
+item in memcg_stat_item or node_stat_item and updating the corresponding enum
+counter when ksmd manipulate pages.
+
+Now Linux users can look up all per-memcg KSM counters by:
+
+# cat /sys/fs/cgroup/xuxin/memory.stat | grep ksm
+ksm_rmap_items 0
+ksm_zero_pages 0
+ksm_merging_pages 0
+ksm_profit 0
+
+Q&A
+====
+why don't I add enum item in memcg_stat_item or node_stat_item like
+other items in memory.stat ?
+
+I tried the way of adding enum item in memcg_stat_item and updating them when
+ksmd manipulate pages, but it failed with error statistic ksm counters of
+memcg. This is because of the following reasons:
+
+1) The KSM counter of memcgroup can be correctly incremented, but cannot be
+properly decremented. E,g,, when ksmd scans pages of a process, it can use
+the mm_struct of the struct ksm_rmap_item to reverse-lookup the memcg
+and then increase the value via mod_memcg_state(memcg, MEMCG_KSM_COUNT, 1).
+However, when the process exits abruptly, since ksmd asynchronously scans
+the mmslot list in the background, it is no longer able to correctly locate
+the original memcg through mm_struct by get_mem_cgroup_from_mm(), as the
+task_struct has already been freed.
+
+2) The first issue could potentially be addressed by adding a memcg
+pointer directly into the ksm_rmap_item structure. However, this
+increases memory overhead, especially when there are a large
+number of ksm_rmap_items in the system (due to a high volume of
+pages being scanned by ksmd). Moreover, this approach does not
+resolve the same problem for ksm_zero_pages, because updates to
+ksm_zero_pages are not performed through ksm_rmap_item, but
+rather directly during unmap or page table entry (pte) faults
+based on the mm_struct. At that point, if the process has
+already exited, the corresponding memcg can no longer be
+accurately identified.
+
+xu xin (6):
+  memcg: add per-memcg ksm_rmap_items stat
+  memcg: show ksm_zero_pages count in memory.stat
+  memcg: show ksm_merging_pages in memory.stat
+  ksm: make ksm_process_profit available on CONFIG_PROCFS=n
+  memcg: add per-memcg ksm_profit
+  Documentation: add KSM statistic counters description in cgroup-v2.rst
+
+ Documentation/admin-guide/cgroup-v2.rst | 17 ++++++
+ include/linux/ksm.h                     |  1 +
+ mm/ksm.c                                | 70 ++++++++++++++++++++++---
+ mm/memcontrol.c                         |  5 ++
+ 4 files changed, 85 insertions(+), 8 deletions(-)
+
+-- 
+2.25.1
 
