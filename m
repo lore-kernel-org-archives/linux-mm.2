@@ -4,114 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1AAF6CAC5A7
-	for <linux-mm@archiver.kernel.org>; Sun, 21 Sep 2025 18:31:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3840CCAC5A7
+	for <linux-mm@archiver.kernel.org>; Sun, 21 Sep 2025 20:44:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 368198E0007; Sun, 21 Sep 2025 14:31:53 -0400 (EDT)
+	id 3A12D8E0002; Sun, 21 Sep 2025 16:44:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 319AA8E0001; Sun, 21 Sep 2025 14:31:53 -0400 (EDT)
+	id 352298E0001; Sun, 21 Sep 2025 16:44:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 207DE8E0007; Sun, 21 Sep 2025 14:31:53 -0400 (EDT)
+	id 240338E0002; Sun, 21 Sep 2025 16:44:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 0868E8E0001
-	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 14:31:53 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8C05D119467
-	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 18:31:52 +0000 (UTC)
-X-FDA: 83914101264.02.7857AEF
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 5E103160004
-	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 18:31:50 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=paul-moore.com header.s=google header.b=ElSln1Wv;
-	spf=pass (imf08.hostedemail.com: domain of paul@paul-moore.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=paul@paul-moore.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A9868E0001
+	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 16:44:44 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9F9E2119E84
+	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 20:44:43 +0000 (UTC)
+X-FDA: 83914436046.09.F32546C
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 5DF39120004
+	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 20:44:41 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=paul-moore.com header.s=google header.b=ABDASk4L;
+	spf=pass (imf29.hostedemail.com: domain of paul@paul-moore.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=paul@paul-moore.com;
 	dmarc=pass (policy=none) header.from=paul-moore.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758479510;
+	s=arc-20220608; t=1758487481;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t5bmmxR03oGGFi4aRvD/c+yECGqZ+0Eg8A/9OXcVnoA=;
-	b=4RSXBtUO/FKsum/404XeXrQd3w81OXiTTco5I9AWLsNFm0jhIQf+zfmx/J0eOUTB5uFYgU
-	b8rqOYWS3oov7TVkxeNi8WL2d0SvTOoVZlhO03c5jRvRu/ldDu37/2KHzxNtwSjZyo6gz0
-	g3ni9xTdhlq3QULGCxpxSDbyYGPbvDg=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=paul-moore.com header.s=google header.b=ElSln1Wv;
-	spf=pass (imf08.hostedemail.com: domain of paul@paul-moore.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=paul@paul-moore.com;
-	dmarc=pass (policy=none) header.from=paul-moore.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758479510; a=rsa-sha256;
+	bh=lrp1vYn8+/NUY8DL+Z+wSSTE0867IgQjPinmMLmeavI=;
+	b=N9v8qUYDRHfiILsyuL+smPbZFwI2GGDSKPG7MWy3TG+vqk/ErBL4stk9a0fVs46RuVVTPc
+	ZMgsSlh4mWZyQJn50G9dWci+REEILPW5Fiw1s6o5mcmCTKniLVdWCVJB0sTXIwbmfAaWtN
+	vY7qyzBptKbPkm8n9g1tAxaFgBXIhzY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758487481; a=rsa-sha256;
 	cv=none;
-	b=SjE8udXEWWqOv5wocenw1Gjkn5n0nS3QlBz3u/QICmpF9hTt4t40eBCoJEIFNdQpahvPRV
-	TPzCEF3OpY91nrDTqI1TM39wlp+eDsRlQjOkqZCvTBGUekmfa0c0PG+F8+gyj/z8TfLSQX
-	IMyqgLJJfXIxpas7IPVdmsUoV2lKPew=
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2445806df50so28416175ad.1
-        for <linux-mm@kvack.org>; Sun, 21 Sep 2025 11:31:49 -0700 (PDT)
+	b=zD7tm0Ednys7i7kzTWECvnTy4kSSis+ntShgmpGGE7tACsCNDmNJSexo9y22h9tWn612+C
+	JLdHKj6anCNAXoQHlK0U/QEtfQZcYOzdelbyPE0Zy5Qc4M7KXazw22fc4szbtOskM0/P46
+	uUlsLvmrO+echKh53hhegPBXDyD4gOU=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=paul-moore.com header.s=google header.b=ABDASk4L;
+	spf=pass (imf29.hostedemail.com: domain of paul@paul-moore.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=paul@paul-moore.com;
+	dmarc=pass (policy=none) header.from=paul-moore.com
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-32df5cae0b1so4072127a91.2
+        for <linux-mm@kvack.org>; Sun, 21 Sep 2025 13:44:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1758479509; x=1759084309; darn=kvack.org;
+        d=paul-moore.com; s=google; t=1758487480; x=1759092280; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=t5bmmxR03oGGFi4aRvD/c+yECGqZ+0Eg8A/9OXcVnoA=;
-        b=ElSln1WvsEG4kjrQsYUDIlW1+ash/gOXyN/TLLugYtd0N5E7D4eOZRYinikSX/Jbjk
-         gusOxFgyh81E6RR+VszQYOxUhPn4QDPy8YmkDyOozgPJaWB8epDwp3/LEWr1cpXrLAds
-         ss+FjdOSFGQHhcXViw7chYv561+1mswDJWDYxIlXkUW66NJr+xevPefoTLsC4hg0p18C
-         n46rEXv0IcVKWWKdnEu66GGOLo8FM2KfBIdiVw+JqIGSDk331At1cf5Am2r0GvRqyKpY
-         PbDlxGZ4lC16JFRHHLWi3NYks8HQNv7d7jAs+b8TrOufOinoP4GMvQgV5j355XvcQWeC
-         G64A==
+        bh=lrp1vYn8+/NUY8DL+Z+wSSTE0867IgQjPinmMLmeavI=;
+        b=ABDASk4LWaFAucoC3RNgKlz9m/S2S7XkV5mJbBd0fn+Xosd1KhQSyJFUz7A7Gexxsd
+         Cpf4Kib94Zzbx7WkECm+LFgOe/zqwAelQwOcqiOTFJJ3zuEz1dX5zMWEa7TBICqUs0Ui
+         yTfXKOthzaZM3Axx7a34y33zBasGxD5djxQAyGnHqa53h2WGlUz2eg+cZsqC293aHhcK
+         d4W1tc/fDKKBVuVsCwYvmt0Q7hSkN3kotjas/HSOz1tYNzRvHAXlWLvbc2y2VoSzW0NV
+         mPDpNoBHJdmD9AI6H8ZCmsVi7UaSNR+VeChhENC4VmzJA/CWb/LZ6PKlEEgwUHlzyjE+
+         dYFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758479509; x=1759084309;
+        d=1e100.net; s=20230601; t=1758487480; x=1759092280;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=t5bmmxR03oGGFi4aRvD/c+yECGqZ+0Eg8A/9OXcVnoA=;
-        b=tM8US1lo73cxAEdp1KxpSHDf8rly6f8crxYJtT2ppouaTqxoEjG/zuwnbGoDVMQuRA
-         IQNK51ZrcC7M49axsTalzopvh46oDivUYaMdoPOX8+N6xMLlSuJwyERZ5iWlXsPi3IX8
-         K1QPHgO7vYu4hvJahVWe5SCtHpUXRgdSHhBsDPHi3yKDZ91VGjeC9S+6L0ZSFZtiYQlS
-         S41mvoOCxHESv/bxQZk1/Iln3JrIKcllPOIdHEnAnUnuqeWDOmVwBnJDpimiG6Vi4w/8
-         T+ZWmuwLr9B4lKhIGo5Nc+lk97y2gcmLO8grDV7Xb90Yx3RpSNn6mNr7CTywkb6EcyrR
-         jKAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV9AXQsAlGzrN5ZVHdzsRAB4WvA9Va4rXog4QLBncshtAkJB99t6GAtk2mlYq6Ozj+wyi1vs3AfYw==@kvack.org
-X-Gm-Message-State: AOJu0YyA82rEHJOt+pTMtD/AAYD+l3NR+NXjY36enQjgawBKqipU2AZj
-	+2vBezGH17cn1BarhgDuaeW0aNDA1taUD+jwL7VDLM9jN7Eu9TtRIxHknK10quIRcXU2GUCkDU+
-	LpbsuWG3BE80qvc57tDLBU2MxMU5AB2z2Zrs2pDQA
-X-Gm-Gg: ASbGncv3jwqrjcuG6YmvRLVagi7y4FX25+zPr8i4jipfRd+9yneL8taZ7MxQRAfqoRn
-	DJU4GO9WkG5OJAxOenRypsKMHSfJkm389YOe5NgBJl1bbB6dgUQGY/2sOrprX3sisTrXq88TrYc
-	JD4usu40fIO7ey+UMOnC6XftFIp99de+11EAxsL0YMnIaX12fH4qruNjC9RIX22rFbabYxGYLIy
-	UwVmko=
-X-Google-Smtp-Source: AGHT+IEQBYu1bXA+JJzXZBhAMlECigDvK1kHg7kQq+Sl7o9CyFR7oQw+sV4XJfWKh2n/RmInuKKGYYsvyveVxhjLkuk=
-X-Received: by 2002:a17:902:ccd2:b0:252:50ad:4e6f with SMTP id
- d9443c01a7336-269ba566603mr149763755ad.54.1758479509058; Sun, 21 Sep 2025
- 11:31:49 -0700 (PDT)
+        bh=lrp1vYn8+/NUY8DL+Z+wSSTE0867IgQjPinmMLmeavI=;
+        b=nvH2b8h9MvnJyQxNlxcsZLeegD/LZaaoDXsuc/RqkOsra1EulLa5Nja9GqoYIpC9ZV
+         76xp078SlbmG86e6mXTlEVmFfhbe+zt9oYdoo1U59eJ52my5yKDWN0MxjoDkgYITsYaj
+         tGfUtvjEZPgbYm3ZHt0R/Pq6nxCPIEmnXJmPl4jmJ7hdO9HTfF3aqXk5nTARCEVgJ+Tm
+         eE2thNocNqwHYWS+q+yNELg8wze47w16aigPm07xStCkbUSdtHb97RxwugsZ8x4drQgm
+         5w5JN9VWJ/C8wmyxRNLWTVitP7Z+LiH4EFmyFbl/r4XwiaPvFWMlhsy5jrwHWkN0quMn
+         VDQw==
+X-Forwarded-Encrypted: i=1; AJvYcCXaMdRjmrQB8co3sB1iir6/lkf6flY7E3AXlROZBHfqwcr/cy+m1z3H7qdOKCZWXelXyhQQji/KdA==@kvack.org
+X-Gm-Message-State: AOJu0YwRxgF3PtZfyTbHski0vXFvhQNkM4TUvo5I3QjATmXsYx85N9BN
+	L5r692hs/XUhgt//ulRYtholNR1LdCtx08Osz0q3hXO34y7e8B+Q9I/VEsvd9e6WCC7B0enzGTn
+	w179r3eZQ2niQ8jeLo5WhZoodFgsdGiPTDcilq4Sq
+X-Gm-Gg: ASbGncuT28zUXW8TSYF0cYxqxDd8WabVLRo3Rokx8A3DjSMi+IWPOC8InbgsPijLKWy
+	y32QP5AzZjPlJ8KPwtdjVipaFq7N10xSkIFlVmCE7Tv7FZJ4xQCuIk0Mwb4ZE0kFNQakRjrYYTv
+	LyTZdR3fL/pjTqaygbnCyw9r4ZT699O8kmswFbGZDwid5fiEaYyha+OLlfpMXodxCDj0zjdwCdC
+	TNPKsg=
+X-Google-Smtp-Source: AGHT+IHAbyCRLo/SSuvdFEQRy5JpOpl0NDRXzF/3drghYuhCInE4K6vDNKt06XHhxx3gZXaSMmGzjnpjA/kIMwyAfV0=
+X-Received: by 2002:a17:90b:3c06:b0:32d:17ce:49d5 with SMTP id
+ 98e67ed59e1d1-33098245d63mr11380894a91.23.1758487480037; Sun, 21 Sep 2025
+ 13:44:40 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250918020434.1612137-1-tweek@google.com>
-In-Reply-To: <20250918020434.1612137-1-tweek@google.com>
+References: <20250920074156.GK39973@ZenIV> <20250920074759.3564072-1-viro@zeniv.linux.org.uk>
+ <20250920074759.3564072-31-viro@zeniv.linux.org.uk>
+In-Reply-To: <20250920074759.3564072-31-viro@zeniv.linux.org.uk>
 From: Paul Moore <paul@paul-moore.com>
-Date: Sun, 21 Sep 2025 14:31:37 -0400
-X-Gm-Features: AS18NWBRwEs0bbBucktCB8_dtchuI7OGkjeA7WSI3M2q-Aj3yGux_-_Cr5q3Pns
-Message-ID: <CAHC9VhSbWJ-8tj5BxSTxznGO8zraKRSE31a+tqdfMHB53ef-MQ@mail.gmail.com>
-Subject: Re: [PATCH v3] memfd,selinux: call security_inode_init_security_anon
-To: =?UTF-8?Q?Thi=C3=A9baud_Weksteen?= <tweek@google.com>, 
-	Hugh Dickins <hughd@google.com>
-Cc: James Morris <jmorris@namei.org>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
-	Jeff Vander Stoep <jeffv@google.com>, Nick Kralevich <nnk@google.com>, Jeff Xu <jeffxu@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Isaac Manjarres <isaacmanjarres@google.com>, 
-	linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	selinux@vger.kernel.org, linux-mm@kvack.org
+Date: Sun, 21 Sep 2025 16:44:28 -0400
+X-Gm-Features: AS18NWAIN9lhY1WlDGBZGFYNywlyC9vJx6yZK1w_BS23ADZS6YvZADa5RlquZNs
+Message-ID: <CAHC9VhTRsQtncKx4bkbkSqVXpZyQLHbvKkcaVO-ss21Fq36r+Q@mail.gmail.com>
+Subject: Re: [PATCH 31/39] convert selinuxfs
+To: Al Viro <viro@zeniv.linux.org.uk>
+Cc: linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org, 
+	brauner@kernel.org, jack@suse.cz, raven@themaw.net, miklos@szeredi.hu, 
+	a.hindborg@kernel.org, linux-mm@kvack.org, linux-efi@vger.kernel.org, 
+	ocfs2-devel@lists.linux.dev, kees@kernel.org, rostedt@goodmis.org, 
+	gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, casey@schaufler-ca.com, 
+	linuxppc-dev@lists.ozlabs.org, borntraeger@linux.ibm.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 5DF39120004
+X-Stat-Signature: qkgrn9uuwx1f17t3yxsa8qx6yqh444un
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 5E103160004
-X-Stat-Signature: 4sdgoodsrtgoht6bjstmcqfp6yyikp8m
-X-HE-Tag: 1758479510-920183
-X-HE-Meta: U2FsdGVkX18pM+tMBGkenJ6lmRqKo3AzQbzN8oKAVG/5TfGnnROlVri+ZuyeS7IEoZntgOjuunXUWbme5UtGn/rpV3euFW95oFK07l+/+NMR2ZNLjKUbLemtTal1hxkLLq7QxQxKX+HfWMXev9Le8MPew6i0+Grh+R6nTt2yz6MXQk03NGDW2rbY6hthn9bKnbvUDMr7L0crfPuGQ/oGQN1Kx07ENGJ76hh4rWApZ/eKxkTnarYEkvKxyvw63DDJJBR7CpYCR+kDHpA6ZRR1DNFWbDamWwlwnkJafGJcxTF5zTmBgbk0Coa7AGRGq83vWbVtgiSgRWP5aX6dzveq8qKZk6Z0bn1Rl0He2ioh4WU4VIjgf8T0y9e98icQhrCwbF8rfTiSTdsMaCINHWFnY/O18bJhT3CyGOqmOpcPtx0i9F+25T2333og/ESLectw1ZxZg9foqAuLZSaLs7BUfNEJ/f6NAwQ6hgyJZQWZXGQgJnzxzs49kvSZAvz5P8Y/KWOTjckIciO9M669prEh6MQ+BGPy//6rPEpglSukAB3RBBNxrWkBg7IGtx3K4oXjlxJ0Mqrwwo39RDjzFUbrb2jTP8RLmD80it/S3beP/3VBRlTzGQCFXioWI8xU42KU+ARnzYFow9t8rWjXA4uAaOu7/1cjv5ra4cCF7colvYEjHhOg9yVJIX+N1S3oxGjVejU0k26W1w18cxgC+iAjPB+s7VnATwJUGjFB6DJHcsRNhICHxeXiEIJCv2N2BG7Pmh9L4Ny9QLLipDrMSmpNUGvXpGR3EynyrKK3Gwj9BZQYd4L8AOPb0k/4+72oJG4NGrgWSNNTpHprHRGBgdJwi66Ot/sD8W1xKuJpHUY86+I0DyHbe7Si1wOW76Um6IyXTIHKMn4B6i1FPWztiyoATXO04NNe45+lCqSFIOWU1FI6IdDw0SV295KG1vLZrPuxdkFevVlVOatoIFhZGo4
- bpAE2JcA
- xAF/k4ORUveYlmgM32SW6PINE32vGdMj2PuLQhqHE0JU7mDa1Ec6wF+i/WRNmnlC9MjBQKqqsRaTzOoco48+SEJMAw7jO0y7OFbIFZ3NNoWRnT52DT8CvQUMRQ193meCjaairECjv6GP9lCV3NzGzcfHi4rxG6+i/PkriMDVa8nAWOgVfst3fd6BsKdcjfeupWFNasV/XFTTbNOLrbD28zhW5lC/tPvkSsf6Y/Fs4ADSBQm6iJlrxoFxUzyCDeS9nxdjJavLN9vEJvVznwsVhG+Mi5HDUCido+si+lqZDZapfjTXRJiPj2WrkNP54BJz6Lyjbq5fYCKQk5k/DvTz4RXFsvNo3/V9qzQq4NYcmDMneklbub9w3J5EeqXi4iW45OFmaGMiBJQGPqQwFhFhkKQ4PnILlaO6P9Q3p/55kAycZgXrtyaU4Dgfbv7yVecniBMeBkK2XS2JN4IAzjmmQBqHsHgCTDVMQ9czmmCl3mEGcfRQ=
+X-HE-Tag: 1758487481-317057
+X-HE-Meta: U2FsdGVkX1/hCouEUPMQSjcsjdlJkvtVbvpLBDl430dakrT6XirzQGBqaVhI2vxEh2UaO7WVpnpFyCrd74KHOLo9q/4to592UiFxg27G9ENoBOE+PIamM22Hk7X71rLgC5hGwhddL4rE2nAtEoPlRXgC+FSmFvoUSSJH9l4cMu0KBfV0iagQRW1GJYfj9EncYK/HWvBtkSAO8vlrudGW2mc1xzdWIRCIPVS6WBME296MYoGhAp9vCLBjXws8y5qgLDiUYcWMLPiWeKga+GdcMQp3k9dChMdLaVkzJCNPCkAc3PekM3g4QCqiMDgYbPzB/En5ia9JnjIRMIeVonSj0JIoo4FV+1glH/0aSgvYxPm0dnhWsAXpkM7AAYKbh8O3DVnHPVhnFuALkAUTx8c7tOMkHGWNN+IdeYm9VClpKrt+lt/F/2PSnwS69Yk+Klzg4GeDuMSmXnP6eJ0obmu1MaUNFWYoFAFArEHFQRelBNBaygtPAU+441Pb86Ezo4VAHDi2F/8RObCxrTDaOLc53uR0ESXg3tBRNyxT/ipo/4Eg/K0v5EuBDZ/saJI6vtNiFukg8X2ZT88O3KTLoUJWUE4ordvxKWNA0Am8fIxfolBFoMQjrIxoO/IG0Ayq/5PLB735fMQA/LONcPVxsz0xxt9eSI7WUz6QV8eT6RRVIYTqbnAShdiQ/p3j8TNImpfMBp0h2X+fENNRPTiioKIMus0+U/2evNobZaFXtfmjXCMJ2pVi6NUwzAYz0t61ugmfn1kcCwO9VOSe6EExM/8KZjadlh+KQJd/yq+JwrnfN5/0UJBuKn1e5ZkOacNAa+zUJoh3GoN4udBBGkm/3eCie6Cwm7lYA/80G58ZqzeS9tqq0GeUIM/TUHCo5/HiP7xzHlrWYxDXkx3kN1Lko4M8JHpKCnRDjLLNuTspssiAzUBA/9HamOhsrGo7vIhK0cFuP5tSd9HLcub2kJngFCX
+ DftEiK6Y
+ JZVPsAaXmBjIHdflUyrSuQSIdsWlyfILN/FQnrGzCgBHVt5+jmjst0p5TEuXj9nBxVzb/OrxFqkGNZRDmcPLysDL/tkHT+MekuZjII4P5Zq5ooytgal13qCTBqnRTTLsFEEhFCWbN/vr68jJZignwOqQIoE5AL02uFwGF9h9X7wo7nUtAnHNbVkAXnmQEwh46AIv6Y5svM25usNRfJqdWxJP+NGDKYNS/WrE/d0LkVdosGklaowtzPPOOnRpoMK9YpiwhzG30e+ZIty8BpiuSK+gzEETHTUZP1xWM
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,74 +121,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 17, 2025 at 10:04=E2=80=AFPM Thi=C3=A9baud Weksteen <tweek@goog=
-le.com> wrote:
+On Sat, Sep 20, 2025 at 3:48=E2=80=AFAM Al Viro <viro@zeniv.linux.org.uk> w=
+rote:
 >
-> Prior to this change, no security hooks were called at the creation of a
-> memfd file. It means that, for SELinux as an example, it will receive
-> the default type of the filesystem that backs the in-memory inode. In
-> most cases, that would be tmpfs, but if MFD_HUGETLB is passed, it will
-> be hugetlbfs. Both can be considered implementation details of memfd.
+> Tree has invariant part + two subtrees that get replaced upon each
+> policy load.  Invariant parts stay for the lifetime of filesystem,
+> these two subdirs - from policy load to policy load (serialized
+> on lock_rename(root, ...)).
 >
-> It also means that it is not possible to differentiate between a file
-> coming from memfd_create and a file coming from a standard tmpfs mount
-> point.
+> All object creations are via d_alloc_name()+d_add() inside selinuxfs,
+> all removals are via simple_recursive_removal().
 >
-> Additionally, no permission is validated at creation, which differs from
-> the similar memfd_secret syscall.
->
-> Call security_inode_init_security_anon during creation. This ensures
-> that the file is setup similarly to other anonymous inodes. On SELinux,
-> it means that the file will receive the security context of its task.
->
-> The ability to limit fexecve on memfd has been of interest to avoid
-> potential pitfalls where /proc/self/exe or similar would be executed
-> [1][2]. Reuse the "execute_no_trans" and "entrypoint" access vectors,
-> similarly to the file class. These access vectors may not make sense for
-> the existing "anon_inode" class. Therefore, define and assign a new
-> class "memfd_file" to support such access vectors.
->
-> Guard these changes behind a new policy capability named "memfd_class".
->
-> [1] https://crbug.com/1305267
-> [2] https://lore.kernel.org/lkml/20221215001205.51969-1-jeffxu@google.com=
-/
->
-> Signed-off-by: Thi=C3=A9baud Weksteen <tweek@google.com>
+> Turn those d_add() into d_make_persistent()+dput() and that's mostly it.
+> Don't bother to store the dentry of /policy_capabilities - it belongs
+> to invariant part of tree and we only use it to populate that directory,
+> so there's no reason to keep it around afterwards.
+
+Minor comment on that below, as well as a comment style nitpick, but
+overall no major concerns from me.
+
+Acked-by: Paul Moore <paul@paul-moore.com>
+
+> Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 > ---
-> Changes since v2:
-> - Add WARN_ON when using unexpected class. Return -EACCES instead
->   of -EPERM
-> - Remove extra new line
-> - Rebase on selinux/dev
+>  security/selinux/selinuxfs.c | 52 +++++++++++++++++++++---------------
+>  1 file changed, 30 insertions(+), 22 deletions(-)
+
+...
+
+> diff --git a/security/selinux/selinuxfs.c b/security/selinux/selinuxfs.c
+> index 9aa1d03ab612..dc1bb49664f2 100644
+> --- a/security/selinux/selinuxfs.c
+> +++ b/security/selinux/selinuxfs.c
+> @@ -1966,10 +1973,11 @@ static struct dentry *sel_make_swapover_dir(struc=
+t super_block *sb,
+>         /* directory inodes start off with i_nlink =3D=3D 2 (for "." entr=
+y) */
+>         inc_nlink(inode);
+>         inode_lock(sb->s_root->d_inode);
+> -       d_add(dentry, inode);
+> +       d_make_persistent(dentry, inode);
+>         inc_nlink(sb->s_root->d_inode);
+>         inode_unlock(sb->s_root->d_inode);
+> -       return dentry;
+> +       dput(dentry);
+> +       return dentry;  // borrowed
+>  }
+
+Prefer C style comments on their own line:
+
+  dput(dentry);
+  /* borrowed dentry */
+  return dentry;
+
+> @@ -2079,15 +2088,14 @@ static int sel_fill_super(struct super_block *sb,=
+ struct fs_context *fc)
+>                 goto err;
+>         }
 >
-> Changes since v1:
-> - Move test of class earlier in selinux_bprm_creds_for_exec
-> - Remove duplicate call to security_transition_sid
+> -       fsi->policycap_dir =3D sel_make_dir(sb->s_root, POLICYCAP_DIR_NAM=
+E,
+> +       dentry =3D sel_make_dir(sb->s_root, POLICYCAP_DIR_NAME,
+>                                           &fsi->last_ino);
+
+I'd probably keep fsi->policycap_dir in this patch simply to limit the
+scope of this patch to just the DCACHE_PERSISTENT related changes, but
+I'm not going to make a big fuss about that.
+
+> -       if (IS_ERR(fsi->policycap_dir)) {
+> -               ret =3D PTR_ERR(fsi->policycap_dir);
+> -               fsi->policycap_dir =3D NULL;
+> +       if (IS_ERR(dentry)) {
+> +               ret =3D PTR_ERR(dentry);
+>                 goto err;
+>         }
 >
-> Changes since RFC:
-> - Remove enum argument, simply compare the anon inode name
-> - Introduce a policy capability for compatility
-> - Add validation of class in selinux_bprm_creds_for_exec
->  include/linux/memfd.h                      |  2 ++
->  mm/memfd.c                                 | 14 ++++++++++--
->  security/selinux/hooks.c                   | 26 +++++++++++++++++-----
->  security/selinux/include/classmap.h        |  2 ++
->  security/selinux/include/policycap.h       |  1 +
->  security/selinux/include/policycap_names.h |  1 +
->  security/selinux/include/security.h        |  5 +++++
->  7 files changed, 44 insertions(+), 7 deletions(-)
-
-Thanks Thi=C3=A9baud, I'm going to merge this into selinux/dev-staging now
-with the plan to move it over to selinux/dev after the upcoming merge
-window closes.
-
-Hugh, since the changes between this patch and the v2 you ACK'd are
-minimal and limited to the SELinux error handling code (see diff
-below), I'm going to carry over your ACK, but if you have any concerns
-or objections please let us know.
-
-Thanks everyone!
+> -       ret =3D sel_make_policycap(fsi);
+> +       ret =3D sel_make_policycap(fsi, dentry);
+>         if (ret) {
+>                 pr_err("SELinux: failed to load policy capabilities\n");
+>                 goto err;
 
 --=20
 paul-moore.com
