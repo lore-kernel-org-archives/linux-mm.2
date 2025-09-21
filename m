@@ -4,92 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22261CAC59A
-	for <linux-mm@archiver.kernel.org>; Sun, 21 Sep 2025 15:07:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B672CAC5A7
+	for <linux-mm@archiver.kernel.org>; Sun, 21 Sep 2025 15:08:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0FA218E0002; Sun, 21 Sep 2025 11:07:38 -0400 (EDT)
+	id A9A018E0003; Sun, 21 Sep 2025 11:08:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0AB2A8E0001; Sun, 21 Sep 2025 11:07:38 -0400 (EDT)
+	id A70DE8E0001; Sun, 21 Sep 2025 11:08:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F02D88E0002; Sun, 21 Sep 2025 11:07:37 -0400 (EDT)
+	id 987638E0003; Sun, 21 Sep 2025 11:08:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D5CB18E0001
-	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 11:07:37 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 569AA1403A6
-	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 15:07:37 +0000 (UTC)
-X-FDA: 83913586554.18.5EA1753
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 6F6E44000A
-	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 15:07:34 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7FF648E0001
+	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 11:08:35 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1A41B119AEA
+	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 15:08:35 +0000 (UTC)
+X-FDA: 83913588990.15.CBF2633
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 0035D180002
+	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 15:08:32 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=DyX3ttBu;
+	spf=pass (imf06.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758467255;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1758467313;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=IHBtu94qFv3HdMM7VTfYM32UmEicSbtOW2nqrqSI61g=;
-	b=G+yfTdv9AsDTFOxUHuzY3Q5947KFhPayNgpFkgCRx11ZWlh7vRFAwtq6B9OU29E+8Nr8oE
-	Hdscf7xMb6wpmrE5kTdIDPizrsAvRtICqejUAhjPicyRXQnuY63+T7tUkhrDp8sn17T+VB
-	PYQ0MZGmkBs8sJOzQXaGCJKfpZTsIoQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758467255; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=VQ5Rl+x/PE+WH8c0FsTmxn4J3gmnwc4CrD1BWHgi+RY=;
+	b=HJpU4++yloq46kBV7aC/4NiOxnNwXkVivyd1ea26+iLzpD9Iexne60JOF99qUvzREElu6x
+	ajvgxLcIHOHGLFJybAKyVWSKk9bRw9ZCoZrJEli6TtpqPvNLJByBc8PJRvZBamHhD9ACaP
+	2Af+oqNES9q1uAQtpc6D1t9j3nm7JmA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758467313; a=rsa-sha256;
 	cv=none;
-	b=IhqGh3te3pZiKSSjVj2YX5KiFAcSRgUli3Sc5uGJs1w80nJ5R5NmV1582v2J3e1da5/I0y
-	jwFd2hdHzR8xoTA3bZdksCsgm9iiPvvxiPIaN0U30RVsD8ZNGDILsxTBC6sBAYJIUqtY/S
-	3nYgcvoquLV8NJf0dnln+j6u/d1KahU=
+	b=RRqs8z1RQvjQ7sTDDodXEcZ121V3G+6cLktDkLw8scwNyNo9x5fUhbcbXQTDtEZSyNVfTt
+	LtZoqVDSv/hPXyt0cK7DNCnGMTh6VNHQ0a2NesUh0HY7jpGOqyBDGYGYRyBkaZl32RUzH1
+	9xm3Ox0J11lWwzwzeqpHb6svrMaTnF4=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4cV8jr3Cy5z8Xs76;
-	Sun, 21 Sep 2025 23:07:28 +0800 (CST)
-Received: from xaxapp04.zte.com.cn ([10.99.98.157])
-	by mse-fl1.zte.com.cn with SMTP id 58LF7NMP070585;
-	Sun, 21 Sep 2025 23:07:23 +0800 (+08)
-	(envelope-from xu.xin16@zte.com.cn)
-Received: from mapi (xaxapp01[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Sun, 21 Sep 2025 23:07:26 +0800 (CST)
-Date: Sun, 21 Sep 2025 23:07:26 +0800 (CST)
-X-Zmail-TransId: 2af968d014ae464-25fd9
-X-Mailer: Zmail v1.0
-Message-ID: <20250921230726978agBBWNsPLi2hCp9Sxed1Y@zte.com.cn>
-Mime-Version: 1.0
-From: <xu.xin16@zte.com.cn>
-To: <akpm@linux-foundation.org>, <shakeel.butt@linux.dev>,
-        <hannes@cmpxchg.org>, <mhocko@kernel.org>, <roman.gushchin@linux.dev>
-Cc: <david@redhat.com>, <chengming.zhou@linux.dev>, <xu.xin16@zte.com.cn>,
-        <muchun.song@linux.dev>, <linux-kernel@vger.kernel.org>,
-        <linux-mm@kvack.org>, <cgroups@vger.kernel.org>
-Subject: =?UTF-8?B?W1BBVENIIGxpbnV4LW5leHQgdjMgMC82XSBtZW1jZzogU3VwcG9ydCBwZXItbWVtY2cgS1NNIG1ldHJpY3M=?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl1.zte.com.cn 58LF7NMP070585
-X-TLS: YES
-X-SPF-DOMAIN: zte.com.cn
-X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
-X-SPF: None
-X-SOURCE-IP: 10.5.228.132 unknown Sun, 21 Sep 2025 23:07:28 +0800
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 68D014B0.000/4cV8jr3Cy5z8Xs76
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 6F6E44000A
-X-Stat-Signature: 5wpger5fesd7ri45micmfxsr68r8196m
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=DyX3ttBu;
+	spf=pass (imf06.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-62fbfeb0870so3267808a12.2
+        for <linux-mm@kvack.org>; Sun, 21 Sep 2025 08:08:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758467311; x=1759072111; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VQ5Rl+x/PE+WH8c0FsTmxn4J3gmnwc4CrD1BWHgi+RY=;
+        b=DyX3ttBuYUnClwoPVHkxech91gkk9s7SZdzHOZA8uLKtZeM5y3V7at16m4hiHIWYFg
+         llbJXwwyvAUAPbQUhVPXciSMKz6tYz4MpjGt7Z5T50dZCU76JQWGP2s8rVMdqEeHkiNo
+         iYeBxtDvu7lmR95S+7UCjm1Ki/+Yo1A3fHnajKKK0WAn5fIwiM0dkkx06hFxBq9jN4Qj
+         3eMKhj5kkNhNmRByP5MCsIqm4q6yzII/dKTIv0t8eDQ9nsdP0hkj34dy52j05eRphqNR
+         O9XByBvmHpEkSUhK0ASk3+OBGHZj3MmkKlrhjgFvbsY+FZEQIzdYeNNVSNPvquu5Vp4R
+         ciiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758467311; x=1759072111;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=VQ5Rl+x/PE+WH8c0FsTmxn4J3gmnwc4CrD1BWHgi+RY=;
+        b=BUdNnhb0XzJiV2+MNFSZTGZd1mm0zR6NXevVZCC6mDIXkcVSrVVMyLzGzt1LA2nw3i
+         ZSFY1m2S657RTtzW23TtOKC9I7YY+egmKBLYJqU6quo7qqysekzuk8JDuz3552kgRU4S
+         nzzT/YeOBHROAhpd0esCkHIPw8aPPCNPujWxGSXfWMtFYjwjR/DJ1TodYBvMkvRAz5Kv
+         DPkFdWSwGBFgd0n6ZcMPnV9Tir8kJN8WP1do5YMlpz1eza+A6bLzqj9syF5FeUza6OSt
+         aEMzrd6+Sx7msf73a2Tx72XtQR7B3b+U8BOHqhquAfsML768/e0gVx48Te41XE3myq/X
+         s4/A==
+X-Forwarded-Encrypted: i=1; AJvYcCUw14q21rbBkbQyfMXjbjE8RnzeYCz53DJJuxo6l+lgnCejxXp4albJJJ8sszb15CcrTiBcjGPRdQ==@kvack.org
+X-Gm-Message-State: AOJu0YwLyoCo5alNSfMQPnE/EonBENJlzxlAYrCcYRqUVJahL+jRStd1
+	Fpri9Fd8XjhhBCfAMN+JdPptPsmPkRQ2wE52vXsNTdiRGp5m1Fm2fpTH
+X-Gm-Gg: ASbGncvqaHp91hVBPb4qkNqEMFMKVTL8XfTQaym+V6UODLS1p1iNTkbw8Po0B2Cb6p7
+	E9GnZBpGOcpgZMeKZeqBjkrfrY716kOXzGQ4JcwhPptM+c3HdymH73hOT7IgedKGRfEy1yZeZoS
+	isKVjuX4d5zDLCdY9DqgkMb5nKHboxL41XlKu3+69ahq39Pp6AcxRogL+c/v9MyR3ZoSaAt1gvn
+	iYncUiOnFHB3iMMdmEbJa4P/xZsitTBN1+oPbaeJUgd6HuTycXLcZsThA8XhvFKyTBPsI1clF2P
+	s9I9hoGaZw0/7grgF1Kio8tGH45ba2edPpfowGhPLfqb6iX/H3lXmPcLEYcfOlqVj/OuRwUnBvv
+	EhMZkmXaO4h8FZFCtiGI+0Q==
+X-Google-Smtp-Source: AGHT+IFVXPsQOi7XpKUWlqx+j+o/p5nBExkNinSkO7HNDpXBS270I9E9VO/QVVuJoBzzzJhwMUvwPQ==
+X-Received: by 2002:a05:6402:358c:b0:633:4726:a077 with SMTP id 4fb4d7f45d1cf-6334726a7c7mr1226688a12.15.1758467311085;
+        Sun, 21 Sep 2025 08:08:31 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6313323f85csm3322918a12.41.2025.09.21.08.08.30
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Sun, 21 Sep 2025 08:08:30 -0700 (PDT)
+Date: Sun, 21 Sep 2025 15:08:30 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: SeongJae Park <sj@kernel.org>
+Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+	david@redhat.com, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+	baohua@kernel.org, lance.yang@linux.dev, xu.xin16@zte.com.cn,
+	linux-mm@kvack.org, Kiryl Shutsemau <kirill@shutemov.name>
+Subject: Re: [Patch v2 2/2] mm/khugepaged: remove definition of struct
+ khugepaged_mm_slot
+Message-ID: <20250921150830.buufaqnc7x2zpdvo@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20250920122958.nf6vcm6iyl2wz3bj@master>
+ <20250920134130.84541-1-sj@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250920134130.84541-1-sj@kernel.org>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Stat-Signature: bncinirsbxo5axy1mtejs5bmng66kd9k
+X-Rspamd-Queue-Id: 0035D180002
 X-Rspam-User: 
-X-HE-Tag: 1758467254-995472
-X-HE-Meta: U2FsdGVkX1+JkZLa/u7K2ZuM1FRij0CAJahR0cDcCbgs5UByfpdnA1RfZ1oVSaeHf2msuIRNcJA+dkzJAiCnrd+dNzzD2yotTY4aXN02d/fyfEn+NOBs7YZudZkxe/tUkbl1RJ7edRLDbrAVM9cbJPhY0fpWG8JoFsqpmSfsLi7gQnQ6Ndzb/1ZbAweJua92SfCCHXKBw+XfqDuJ9f7WBskPwlKa2fPtWanutT664Xr+K6JIfJ7MDhN7YHIxd+Yj+OLYkXL8ibQhHkmVNvL++wSFrnvwskAg8UfM0wTMAG6yharguGYUO5tD2112lYm4IV1NX5rs9VVaI5s7pibuka3QFslsf+nx75owey5kVC8biXN761VIIeuFvVnMrp+xOWnc0ElJIrMq81Ao2eMTII1/OiZPeXFwinIBTBqosh3jsRdNmKHQRNPc7bjdPXBA8l7SWHhADVCfUS1sqZShQIG8vfBjVgjujaUV5N8U1TSxbxig8lU26WGCb6++E4+P4xGKoqLnpGuSPriz3XHDb4r4Pk69fY+Ue4Wg/7fUpQRD5pRApjVEHa6Riamxy+l4CmdiTeJ4ZT174D3lP4alNWaXyvrMSajQDEQmXT9YxwNDOmIcfWcBGvNOh7/Tvf5Ox8J3RkUTAYd5EORBudWMNDcL0Rdg4N3S6x8b2uINlUSkFyTjDGxRBdCz/nwMf5KiSjuMZrpeQp0MUwi09fd9KQM1yHfcwSFK9J7JYGACoBf+3JimhkEPqxV5+d2YoR1CUyQ4m2w7c34x+musYVCHUMbUH3eli7SuYkDIT2NJbJ6vKjDofFsFM6Gnvb48pQQArizSYdw0B6pp37sIotTyN/ezZvgt/hd55Or2KJQmCvRDR/8jsxfVhCmXsptS3EQ+hFT4eZZSzyQz2wvi3qGW4LoTwbqdUt4TGb12xv94bgDaoSiY4alviwiuWhTapmpWXyzcSaiS1eJLwEt7i+y
- GgEjZq/9
- oVo7zggPhLiZ3BOxUJ8rB/qS22yqowhNbbGkQ2bGCMIQU6+z2myhA/YO8hMu3SBw0pd8ZOfn8xGBXVs/FjvsoGZn7nHGQQ1BzLp2WiG+U6wF60yjbHRyibkp4b39NdfNJger4pzXlRlpyb1NLK6b+qPzNH6j7xfCd1s0bvmTrGM23YilFUE3ySszLA1tSl9v+ISxzEKEkkwK/HO/qmENExZhEO1om1zaSjFH3BXRUW4OrKlGD69SU+Xd3Agqpc15/PxiuU3Cj9GwQI3A=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1758467312-928255
+X-HE-Meta: U2FsdGVkX1+0PeX3syHNzCJXkVNRPFmp5JKzlo/vxXJflTGQKPNarzW5xYl8e/p0fG3czBceAtkUHBhhGG3mWSJd/T39aZ3HQD7878CodhQ7elVv4ge0yYXFLEh4OqtHnY0qE82WoHjYoJ+Hy1gZNBFKNPYerrQEK5SNBL60FiNp5tddO/QCXREgSUsFMWmixni1JtCgb9E4VCpZa+wtJY/qQ8vC6j8qeXy0GHeDInXyAoanJExOjuu0DRNqSkl9laT30uDNHYeQKIpzGyxaLjIk1OO788e1qPK5FmPH7+53Ayw9qeRTinVdcvj28zpmPLKswMXtN3oYSlFrmVcMCe1XhGehR+dK0w+hzV5Y+Ku6n1XuRF4Q8IZt9qopn8KYDZEI9LR1c2Ab30DCcVOQH9nOuWlVvNRyL2QjFu8qZaXExzRwHD5ay9fHEMWSeaEmVAK58nu5vJ4d3/2NrXVeiX1dyh/wDL2OGnsFukFS0dMbtAYGYbeoX6bU4UfOLquhomNzVp+Uu8TCVWFeyqxoNx0QGTd9/2Ivki0eCbQ3PGdYNZkKzNwNvRhqro3NueFMmduwYkbUoYnV/5BLT4voX1A/zyWGxBWDTre+U1Uiaas02BN6dfiYKLDWBuZ/K7lcmk5ybyokHjq2bvUbzdx0UCq4oGHI/8FMgizO2R3JAWCpcFbCzfUF8Nd/jVbmvrqSd0RK21Aj5aO3W1176OapPTvMSJCfZ/hIFDMmg407JRP70dBdtZeH8DdBBg+fLRCaFCc8IabnxSuAa9Kww72Dom1CqXtLqYdfW90MX4qFB8EueNbiFeuLsDfHAhkqp/AHwu2xBH7wL7C/aARZKcPHoMTXNMp6qVA5tm6qsS1R+FSoPbNgm+fy3uC+6zA1P4b2FwJot6yQS6acLBm8naB2ynNaJuw3iAgKLDgWis81Tsfmnt/mVEk9hRgsu+RzsBeVHz3s/aEvTfCHN0YuJLe
+ 89z0IsVI
+ v5e8ZpoD4OYd5jAw8c5CLHDy2kel8HrfjMFSXYOiQgR0NPiA2A7mHhk6fa7/3iF/FL9mrLkOnrqOKW9vvjZ2dDUjf4XJz30ibiGcw+FsOAMzilPiIgpXk5fMPrUiltgBejjV/WDkhvfhxLbBIfMhL+tmkuc7ehXdQyZy26y4M6JOENA77FcXy3oRpDfItB1LqO/1f3XFl3KjFk2XUV8d9WOtzhL7V3Bsd9z3LsEvvm8LEnRVMolNM8QI6i2474+vK3uLjs3E3uwQ/J/NwYWsn5BDkUtteMPmaxgQw3QICvGnzYdzFOgvGrFojOMR7XwhssViJOYOT1dD7YcZIJ2ogY8vKj0Sx4SeQTel9D4bjnHUYGZKCOfc0pkhFC7dHfD8xYrotDTnJeEMiTJfeLLT9QHOwK3Ftfw04lBxC48/lTLgGRB+A1Jt54uUxAm3/oPrm9v8ICinvGuwyambzHD/nMk7bmPuBSa6KblrGJaoDf95fFPE9MOXwX/XcMtYZAk/RrtzfiixjfDa3y7g/HgdBehR2CE3fEuBLfvFbvKjRnD8+4lcUObLGg3qPHQoGQ+EiB14i5lzTCz5t/yVc5RtCrW/mz1SKIiDNdiElYk75cVAmVt4i/FUP6oaouC4+FS5RulyijddpUcUUbgdgnj4VS6N94vPIbyLBufPqgEKGXouK5dtHybwQ1egrNqKe3c8jUrwWV1VpneMPDTAr/KtEGEfoxlsedIoUry0VtoE2fyXQvAlb3ft0ioneDfsCAolT0heETcpcuWIRGH84UF0SgWwy/Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,86 +126,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: xu xin <xu.xin16@zte.com.cn>
+On Sat, Sep 20, 2025 at 06:41:30AM -0700, SeongJae Park wrote:
+>On Sat, 20 Sep 2025 12:29:58 +0000 Wei Yang <richard.weiyang@gmail.com> wrote:
+>
+>> On Sat, Sep 20, 2025 at 04:52:33AM -0700, SeongJae Park wrote:
+>> [...]
+>> >
+>> >On latest mm-new tree, I am getting below error while building UML mode kernel
+>> >for kunit.  And 'git bisect' points me this patch.  I'm not familiar with this
+>> >code and have no time to dive deep for now, so reporting first.
+>> 
+>> Thanks for reporting.
+>
+>Thank you for fast reply!
+>
+>> 
+>> >
+>> >Oops: general protection fault, probably for non-canonical adI
+>> >[  356.456907] CPU: 34 UID: 0 PID: 309 Comm: khugepaged Not tainted 6.17.0-rc4+ #370 PREEMPT(voluntary)
+>> >[  356.457702] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-4.el9 04/01/2014
+>> >[  356.458484] RIP: 0010:collect_mm_slot (mm/khugepaged.c:1427)
+>> 
+>> If my understanding is correct, the error happens in following code flow:
+>> 
+>>   khugepaged_scan_mm_slot()
+>>     mm = slot->mm;                (1)
+>>     collect_mm_slot()
+>>       mm = slot->mm;              (2)
+>> 
+>> Looks the reason is slot is NULL at (2), but we have already accessed it at (1).
+>> 
+>> Not find the cause yet.
+>> 
+>> Would you mind sharing your UML config and test step? So that I can reproduce
+>> it.
+>
+>To reproduce the issue, I do below:
+>
+>    $ ./tools/testing/kunit/kunit.py run --kunitconfig mm/damon/tests
+>
+>Then the OOPs happens a few seconds aftr the kunit run, or during the
+>kunit-purpose UML build.  The issue sometimes doesn't happen or take time more
+>than seconds.  Since the code is related with khugepaged, apparently there are
+>some timing factors.  But I was able to reproduce about 3/4 times.
 
-v2->v3:
-------
-Some fixes of compilation error due to missed inclusion of header or missed
-function definition on some kernel config.
-https://lore.kernel.org/all/202509142147.WQI0impC-lkp@intel.com/
-https://lore.kernel.org/all/202509142046.QatEaTQV-lkp@intel.com/
+I run Qemu with kernel built from mm-new base commit b8086c280108
+"drivers/base: move memory_block_add_nid() into the caller". Then run the
+kunit command above.
 
-v1->v2:
-------
-According to Shakeel's suggestion, expose these metric item into memory.stat
-instead of a new interface.
-https://lore.kernel.org/all/ir2s6sqi6hrbz7ghmfngbif6fbgmswhqdljlntesurfl2xvmmv@yp3w2lqyipb5/
+Not see error for around 20 times of the test.
 
-Background
-==========
+Is my step correct?
 
-With the enablement of container-level KSM (e.g., via prctl [1]), there is
-a growing demand for container-level observability of KSM behavior. However,
-current cgroup implementations lack support for exposing KSM-related metrics.
+>
+>It was also reproducible when I build and install kernel on my QEMU machine
+>using 'make install'.
+>
 
-So add the counter in the existing memory.stat without adding a new interface.
-To diaplay per-memcg KSM statistic counters,  we traverse all processes of a
-memcg and summing the processes' ksm_rmap_items counters instead of adding enum
-item in memcg_stat_item or node_stat_item and updating the corresponding enum
-counter when ksmd manipulate pages.
+Run qemu with the same kernel and do "make clean && make all" several times.
 
-Now Linux users can look up all per-memcg KSM counters by:
+Not spot errors yet.
 
-# cat /sys/fs/cgroup/xuxin/memory.stat | grep ksm
-ksm_rmap_items 0
-ksm_zero_pages 0
-ksm_merging_pages 0
-ksm_profit 0
+kselftests/mm/khugepaged pass with this kernel.
 
-Q&A
-====
-why don't I add enum item in memcg_stat_item or node_stat_item like
-other items in memory.stat ?
+Will do kernel build for more time to see the effect.
 
-I tried the way of adding enum item in memcg_stat_item and updating them when
-ksmd manipulate pages, but it failed with error statistic ksm counters of
-memcg. This is because of the following reasons:
+If my step is not correct, please let me know.
 
-1) The KSM counter of memcgroup can be correctly incremented, but cannot be
-properly decremented. E,g,, when ksmd scans pages of a process, it can use
-the mm_struct of the struct ksm_rmap_item to reverse-lookup the memcg
-and then increase the value via mod_memcg_state(memcg, MEMCG_KSM_COUNT, 1).
-However, when the process exits abruptly, since ksmd asynchronously scans
-the mmslot list in the background, it is no longer able to correctly locate
-the original memcg through mm_struct by get_mem_cgroup_from_mm(), as the
-task_struct has already been freed.
-
-2) The first issue could potentially be addressed by adding a memcg
-pointer directly into the ksm_rmap_item structure. However, this
-increases memory overhead, especially when there are a large
-number of ksm_rmap_items in the system (due to a high volume of
-pages being scanned by ksmd). Moreover, this approach does not
-resolve the same problem for ksm_zero_pages, because updates to
-ksm_zero_pages are not performed through ksm_rmap_item, but
-rather directly during unmap or page table entry (pte) faults
-based on the mm_struct. At that point, if the process has
-already exited, the corresponding memcg can no longer be
-accurately identified.
-
-xu xin (6):
-  memcg: add per-memcg ksm_rmap_items stat
-  memcg: show ksm_zero_pages count in memory.stat
-  memcg: show ksm_merging_pages in memory.stat
-  ksm: make ksm_process_profit available on CONFIG_PROCFS=n
-  memcg: add per-memcg ksm_profit
-  Documentation: add KSM statistic counters description in cgroup-v2.rst
-
- Documentation/admin-guide/cgroup-v2.rst | 17 ++++++
- include/linux/ksm.h                     |  1 +
- mm/ksm.c                                | 70 ++++++++++++++++++++++---
- mm/memcontrol.c                         |  5 ++
- 4 files changed, 85 insertions(+), 8 deletions(-)
+>
+>Thanks,
+>SJ
+>
+>[...]
 
 -- 
-2.25.1
+Wei Yang
+Help you, Help me
 
