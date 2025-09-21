@@ -4,93 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 183B8CAC5A7
-	for <linux-mm@archiver.kernel.org>; Sun, 21 Sep 2025 22:26:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDFA9CAC59A
+	for <linux-mm@archiver.kernel.org>; Sun, 21 Sep 2025 23:07:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 743208E0006; Sun, 21 Sep 2025 18:26:29 -0400 (EDT)
+	id 0735E8E0003; Sun, 21 Sep 2025 19:07:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6CBBB8E0001; Sun, 21 Sep 2025 18:26:29 -0400 (EDT)
+	id 024468E0001; Sun, 21 Sep 2025 19:07:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5BABA8E0006; Sun, 21 Sep 2025 18:26:29 -0400 (EDT)
+	id E7C138E0003; Sun, 21 Sep 2025 19:07:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 483468E0001
-	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 18:26:29 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0DC3986D74
-	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 22:26:29 +0000 (UTC)
-X-FDA: 83914692498.12.8C3EA0F
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 1A0B1100005
-	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 22:26:26 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=usSSiHDQ;
-	spf=none (imf05.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D4F8E8E0001
+	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 19:07:40 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7F26E16041E
+	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 23:07:40 +0000 (UTC)
+X-FDA: 83914796280.23.B483F7A
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 9B0BB180002
+	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 23:07:38 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=kxZurglJ;
+	spf=pass (imf06.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758493587;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1758496058;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vlILJqwe+hl8iDH5chyH6rCDu8EauUbPjDhI89Nes6o=;
-	b=cwZKg23tIK4Y7RDWjxcRmv57oSz5cdH4IFxIL7iqd4qG0QjdaOETRLPb3E3sWJNojjjLyF
-	swr+czPLPaEx0SGX+vTD5xY59cSEUQZithV51IcnM447t/MYHVbJcwV10YFPumtC0EUcI+
-	hISSVO/+d/Fd/6cs/Jk8QOKqPnWN7lE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758493587; a=rsa-sha256;
-	cv=none;
-	b=uIB40irSo2VIo1TIfhhArnhAf1pkl1AYmLQ6jeU1EYD8ncJSKrRSU/WIE7Asmhtb5gma8+
-	DvdHW1FgnkuFCS17l7TE6catfPAMCxqIr/wkMVhldqNPoCICKXjQdDN080BFfF3ME5cRS1
-	n+sizwcBnJxIYLy8nZub/IV/b4qUS48=
+	bh=lLMc7S+BvGFbDaO/gJECxMl9cCHViKZI7SeUZwZSwFM=;
+	b=5P5D11+06ltpqwVkKtbzD9P8o2Yj5hJr8M+Ho6fnSGdfBbc2UK60nXSxZiTqnx9y/2AVH6
+	bru24/P0IOkvahl8r/PXRKhHPENos0j0xZ64HyMmAbu6jJIisrYw9IHYQlExUrJJNlDHpg
+	r61RBV1XhqteYzmLorqzDrguccmmmwU=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=usSSiHDQ;
-	spf=none (imf05.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description;
-	bh=vlILJqwe+hl8iDH5chyH6rCDu8EauUbPjDhI89Nes6o=; b=usSSiHDQ2Qbq/moPc13PFOUsWD
-	OZvJvj3RMtsst8Itt4LV6ByI/pzdDEGYN59hMSjI9D0WKjMpT8umQJlX0udr+u4Z6EjToaCR2MjnL
-	JebpsLsLxysXhYvgIRefuiFMxaAfazcku591eCGxw6/Bs7jzvr5ECie8rG4QZaTP+dCdYplQgGebB
-	YeDuAM/mp6sz+txh4iD92ykjvSJ0E6qNuH5HhVaoO7funuh+WDy1Dw1yHMep3uwkJGBdVEjnzoTwA
-	wjFjO1cvVgjL6w9gvL00vzdQ4iPjYVLDWXrxzvViNv4wuO++/Zm/0MKeyjfWXJDfNuQ+w27Vk9XKP
-	fM2DzG5w==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v0SVf-00000003poQ-2RiS;
-	Sun, 21 Sep 2025 22:26:19 +0000
-Date: Sun, 21 Sep 2025 23:26:19 +0100
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Paul Moore <paul@paul-moore.com>
-Cc: linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org,
-	brauner@kernel.org, jack@suse.cz, raven@themaw.net,
-	miklos@szeredi.hu, a.hindborg@kernel.org, linux-mm@kvack.org,
-	linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev,
-	kees@kernel.org, rostedt@goodmis.org, gregkh@linuxfoundation.org,
-	linux-usb@vger.kernel.org, casey@schaufler-ca.com,
-	linuxppc-dev@lists.ozlabs.org, borntraeger@linux.ibm.com
-Subject: Re: [PATCH 31/39] convert selinuxfs
-Message-ID: <20250921222619.GO39973@ZenIV>
-References: <20250920074156.GK39973@ZenIV>
- <20250920074759.3564072-1-viro@zeniv.linux.org.uk>
- <20250920074759.3564072-31-viro@zeniv.linux.org.uk>
- <CAHC9VhTRsQtncKx4bkbkSqVXpZyQLHbvKkcaVO-ss21Fq36r+Q@mail.gmail.com>
+	imf06.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=kxZurglJ;
+	spf=pass (imf06.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758496058; a=rsa-sha256;
+	cv=none;
+	b=mOP21CVfeq9mk5KTePHtVwO4GcL+0dV/mLVqjgVFBxI4kBRM/lXzRYZXrwK79Q0yQAF78/
+	TobsQ/aik6SSR0KLx5bcuL6QItRgP1v/gcNj6gBKpuModrBrf3S0pojLDKU5z/rFbLWBs5
+	bf28pkLdA+gf/7bIokGZ2xx8xl44cjI=
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4b5d5b1bfa3so35250381cf.1
+        for <linux-mm@kvack.org>; Sun, 21 Sep 2025 16:07:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1758496058; x=1759100858; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lLMc7S+BvGFbDaO/gJECxMl9cCHViKZI7SeUZwZSwFM=;
+        b=kxZurglJwjV2Ie2Q+MxtKcd7IBbbDQ8oy4lYFv/b0zjBiJPekJMsejIziDWw9NgBqm
+         ujpkGiyDan62qyOiwMyD6VIAh5xxsNl96RRaYtxRSoIAkzh0VKJAcZrrS8sB762JXzeF
+         6tph6fLmlvHx0zzoLpU0fJAlA0AIaZSnO/NawBX/0G5jMVi4sutCHgwFOe7atdYoln4V
+         dht8FOCAS6yZnU51SopcDAF6EcJ6ktykSdgFZqvys3Pza2nk0rMkZR25eKE7e1UniUeX
+         ZwsAkte4CWvOL/W2SgJnN0Inx0eY799oFhfoW4QYa67mgBlJYWpEK4zfRsuoOv9a6CpY
+         m5DQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758496058; x=1759100858;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lLMc7S+BvGFbDaO/gJECxMl9cCHViKZI7SeUZwZSwFM=;
+        b=uIVTT2xbldL6KI/3CFPwsgQDf79I2uXJwkSlECZz8IraAYKRLuRD2BXeiR5rBC+rUA
+         FOUj9HCu59pGhJHer2eaRvsJn9aaIEDiEmn95xGBzKcMUWbN7YMygeptcPFHqvOHiGix
+         nYCLTjL6RccN9dB0sgz/gvWOGe8z2mTkqBoaIhz/R5yZpR3V5O01qn/3BTAAeA12Nq89
+         b3DqDzMWeYGp7NKuXYJGG8KMW3vs0vvhqSQHhLmstNhGuT3A84qjGDZxzBM3mAePLvlB
+         7K84qQwqa9uePUoABSKeXsk9ZYwRMdZUlBs0dYfkUKe1DcMzSTpWKBSpdnH1nRISad3A
+         dOug==
+X-Forwarded-Encrypted: i=1; AJvYcCWtOc3F6Xa9SDBwu4StqTY8AP+2qZbvyk9MNb0BeIdyMjc1fq95glMtXbMQADIjw1EZNmb5SEBQPQ==@kvack.org
+X-Gm-Message-State: AOJu0Yy0Qqn0GZ7f2mhSLVhCWmaHE9Yxqd0ljNAPK0PNymYyOZymuHz1
+	wQBKOch8TabPxC/rDlXN/iMOArDE8K/5J82FumAMZ7WvWp3PlSgE3K8ULwDegcLNrizzpqiRYXG
+	S6ntjVW2znOKMq+DgQafbOWx0lGuJmcbG9Y7bui2w3A==
+X-Gm-Gg: ASbGnctHQiT/2adLSc4hS0nK0YhSffYGyt1xbpAxyq/s0Ex0rax8BrUf/IdBjXZ3vDv
+	ZPIsXtckesY0SW8eelAfIyArc7mEhQuAXu9LRIFRQGh61G0Ne4wzOQa/kwsoKCaiu5d+MXPZ0PF
+	1eZX/w9XUIyAPKHQZMPhLFwb+j4b+cTGyrLuILoGORXbzarsAd6iOZnkMBIQIdkyD4rCwyLgy97
+	ec5
+X-Google-Smtp-Source: AGHT+IHmze5kshtpkjcVDTa3fEK5IBVKNtBZKjp0RsV9bU4OnWjNfFA7pSzx83Z/cbIj8bRK8EXOYxNjbrN+FqGjSUM=
+X-Received: by 2002:a05:622a:198b:b0:4b5:e807:75bc with SMTP id
+ d75a77b69052e-4c07623261amr138764581cf.80.1758496057664; Sun, 21 Sep 2025
+ 16:07:37 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHC9VhTRsQtncKx4bkbkSqVXpZyQLHbvKkcaVO-ss21Fq36r+Q@mail.gmail.com>
-X-Rspamd-Queue-Id: 1A0B1100005
-X-Stat-Signature: 8cmisfrcnxtyt9g1y4undpjymbymkwi5
+References: <20250917025019.1585041-1-jasonmiu@google.com> <20250917113609.GB1086830@nvidia.com>
+ <aNB7fTesaVCXHB0E@casper.infradead.org>
+In-Reply-To: <aNB7fTesaVCXHB0E@casper.infradead.org>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Sun, 21 Sep 2025 19:07:01 -0400
+X-Gm-Features: AS18NWARkb_6dtXKYB99s3afrmUWcnRiCwC7xnI9uhoqJ6HmAQbNH9XqJVlHJgw
+Message-ID: <CA+CK2bDBU4Bb83tUyzdiTa+kjhKK7fvObzpqH1gOPwKqoOnO8Q@mail.gmail.com>
+Subject: Re: [RFC v1 0/4] Make KHO Stateless
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Jason Gunthorpe <jgg@nvidia.com>, Jason Miu <jasonmiu@google.com>, 
+	Alexander Graf <graf@amazon.com>, Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>, 
+	Changyuan Lyu <changyuanl@google.com>, David Matlack <dmatlack@google.com>, 
+	David Rientjes <rientjes@google.com>, Joel Granados <joel.granados@kernel.org>, 
+	Marcos Paulo de Souza <mpdesouza@suse.com>, Mario Limonciello <mario.limonciello@amd.com>, 
+	Mike Rapoport <rppt@kernel.org>, Petr Mladek <pmladek@suse.com>, 
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, Steven Chen <chenste@linux.microsoft.com>, 
+	Yan Zhao <yan.y.zhao@intel.com>, kexec@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 6ytn9cxxkyyxfijb3aw6mkemrkrnm5gb
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1758493586-540591
-X-HE-Meta: U2FsdGVkX18HnC2Oa9yUF3Zq0TepE/LbsISHWbwGTFHTFC5p4mksKuXcTpYYEZBYNuS8HKcYl3x7rCfYHCLc5qxFTT6UXAjDyJrySS3TNGk6Gch7cNRRxRFgHCtjZZnF8pxNH4nqXWfMpLGiJsYHHmyRjI0RxBveGr9m4zcXV2crv/AMKJDAgMSmfA9rJK33AE9c7ctBlv4QnMoJBdQmvwJAyxuA/nH6PKGsG6ekKtH82IO9DF2kXAr3PI0Z+G/9U6/OlJ822kNaCW1Mr42Hfc2rlJaHUjz6e3+KkQmcwUDIXhG3Tk6qlbZ9kxoT1lY63Rww61qvne3aQGKV5giR19+JXXfp0KuXPz5tTPkaTNvJrcqXYF/kkwmcr5wVvrvfjtHlUgtnAXKbboQiWrdxrU7u7Y7a9FndU83m7lsq2i8iaQg4i/kiLodRU/FPXTWCZrVDratiJhGy1FZeC0AomDk/orK79k8kbjTb73DUIJQpwoGcxu7IaxvbHdfeWepQCtDyR//BD+8zFsN6NCA3X7zDXmbm1uyZF3Clhvehtud5FW6FL0sn4a4pLyLynadMK5kUSt55WU3fjDqjBlrV7eVP9nKKImR9xx8t4koYq6YIg6t3/KqrksGBRW/LBMD3xvt8nHYVLIRKmnt4OsxXARRLS7Bs5Nzt4lv8rgfQ0INx3JJw/V7KlZrzSBZ4tVZCOpH5pb1sS1ZWQtUCNQPrKixIdFCklW8aXdnGhFHgywQQPKoGfo+PlJfb4j9ZmT+QvwZ8OSqFnenIps3NKaBqjkJ2xE3q2MRbiJEL7ZVryZ4EvqfSGrwZfGvmUeZUV00UqZ1g7MCH8SZbzXSxqsb0C6xq2Q+IzyMBKIT9HamXe6v9aEGDlM0HrnBgFs4XKLPejjVvznRsIXpgPefi7LWEEe+PXKOOEskEUt/L/kwqPM7lsUxgHDTtV5aaffaVQKo/thUaqfWiHX/RCjlvAB1
- ht1m1e26
- ACKsJYOGa48Xb0DbnHiNcEaCjUWUTYffY6WqTptIvxCelvDam1HzFz7hsvAE7YXwzEhhcN+6lPRkNsQEc6oZd5lRKaTjBo78Ilo1OPa4/4UbgVL8c6CY4SbJ6DxiTdbLmRVW4qD4kCwrDt+ChbvEW4UbL2hKzXOncbbRwTdXeHWnsvRrXQGnkEHkE93pY2OczbovSFy8aV/+NYVWVQI+FsAoM7OfRXC8mWOpFjaKx7EEwYyN20fHOjteBEnDhgpknYugI5Plbm9iGVhAtaQ+38AeAsypBiCVJR1BFC5YCw3t18kwvgGrfsMPqLmN4uZmuyPjX11qCtP4MlDmVuMmryy62W+/DPI0ST0D2XBmgfSzGX5cK7q6JJ3MTk/thqIci4uMc6yOpvONd3NAaPQ5Cl4TeDucZhFLDui8rO9TMapfr4Rxpxhb0aDnFoLH/bho1SVqChhj8HMjZSERxZPCPZII5/WpOLULr+6cosVVu27vP8134Ipjoi5fb+sJ+EK+T2Rs9kSxzB8lSeoo4WtF/+Z9+pA==
+X-Rspamd-Queue-Id: 9B0BB180002
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1758496058-149743
+X-HE-Meta: U2FsdGVkX19n52uW4HRvThtD6WQU1iWJHZrG1uHC5x6/UoSNLreE6WDGL+exmVJ0YKqyXnNKk4t/FET49Sz11mFybEihhyd+ISYzGxl0g7oHcIRdkMsCvH62b2JKM9uf5OJamyIIky+crF3Igfh7cDmZVf4azzGoO2sfRebipY0QBagUK0CIaDYTwOML8iRyRkMOZQg/63Q8wc990bkfQWUfdxg0p2e304j1GorVnGO/ieWcXq/toNzetOx1vcsBE8D1e8usYrmlZ2idQDD5k7qCC4xZMcFWKEszsUP+IOeM1X2bOMOczwdMMvaNBomiUAC4rEQQakx9P4x8f1BWvDNBsHs1fYq4mp5pEqNKNE1MTYuWdADO4EPgWdoZpJwAE+XQIECwXhNXDATWc5EvCQ5tYQWqWIuLc0bHveSyRYlVUGRsQQYyCrZETOhtWKTqXK9dTz3Ai2nS5wz8OuHnorLrYEpsrsfRwAD9X0VkfrvHiiNVTKIu8m0RCu5M7YbeOlGWayGZQW4fA8D7pjBEHtFLvsRw/iSzAJcalKvJtezirbX2a3BUkdQGzNZwt9711YjNml/ht4C06MNFtrdRkY+zYe2/0suQVKGP9SlO9HBi1+oVIbwLewdvUs7cvHh7pvp68pyP7HXgR1FfepXt/DKPbRXyyLZUPRISjDbUP/5O3NIZGr3n+zANl6t43CiVd1LINw/sQyjFtQSv6LvrMBGqzX1zwSkwHgBzIEcG8er2KcNKlVLYGe6dTq0vFGhtOrOYPhTNdu94XW1W6C/RzI9IervHWzFqLWqIEgNjZ79GdBxmo1K2oya6N6BDiZv8taPiUtVBqfmCmJoVBG37ZMO4wzAqhlLNObaD7fiif4cwsbcBtDi2bvkpnSC6j68Zfn6/4i99N/CFC6gNHbM4fOduD4jtqmRy5+eWTtdkbUrOxz1OFuUpXR0K0dEbpVy4GqEjEM6rE5S2oI0RLDu
+ 1gW8wNiF
+ j0fKZ1zyjvEUPBGP64t25uild1mk5RtN1HIoyzqgY9u3ebKlBJNz2c56U8kiBT1iuguRYiY4mhrntzIlHgXPWevUds4MsoIx/K2sMk7Wixn6TDJHT6x6ETlZ8uzKh55K0GHrqZvGtkQkKO9/ENTisCMD7UFvqc4OkQgNNuBobsyIgzdv7qqwVFqwhqedaRMmeiK+D5/TfhYx5jf6QeBW17okiRw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,111 +124,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Sep 21, 2025 at 04:44:28PM -0400, Paul Moore wrote:
-> On Sat, Sep 20, 2025 at 3:48 AM Al Viro <viro@zeniv.linux.org.uk> wrote:
+On Sun, Sep 21, 2025 at 6:26=E2=80=AFPM Matthew Wilcox <willy@infradead.org=
+> wrote:
+>
+> On Wed, Sep 17, 2025 at 08:36:09AM -0300, Jason Gunthorpe wrote:
+> > On Tue, Sep 16, 2025 at 07:50:15PM -0700, Jason Miu wrote:
+> > > This series transitions KHO from an xarray-based metadata tracking
+> > > system with serialization to using page table like data structures
+> > > that can be passed directly to the next kernel.
+> > >
+> > > The key motivations for this change are to:
+> > > - Eliminate the need for data serialization before kexec.
+> > > - Remove the former KHO state machine by deprecating the finalize
+> > >   and abort states.
+> > > - Pass preservation metadata more directly to the next kernel via the=
+ FDT.
+> > >
+> > > The new approach uses a per-order page table structure (kho_order_tab=
+le,
+> > > kho_page_table, kho_bitmap_table) to mark preserved pages. The physic=
+al
+> > > address of the root `kho_order_table` is passed in the FDT, allowing =
+the
+> > > next kernel to reconstruct the preserved memory map.
 > >
-> > Tree has invariant part + two subtrees that get replaced upon each
-> > policy load.  Invariant parts stay for the lifetime of filesystem,
-> > these two subdirs - from policy load to policy load (serialized
-> > on lock_rename(root, ...)).
-> >
-> > All object creations are via d_alloc_name()+d_add() inside selinuxfs,
-> > all removals are via simple_recursive_removal().
-> >
-> > Turn those d_add() into d_make_persistent()+dput() and that's mostly it.
-> > Don't bother to store the dentry of /policy_capabilities - it belongs
-> > to invariant part of tree and we only use it to populate that directory,
-> > so there's no reason to keep it around afterwards.
-> 
-> Minor comment on that below, as well as a comment style nitpick, but
-> overall no major concerns from me.
+> > It is not a "page table" structure, it is just a radix tree with bits
+> > as the leaf.
+>
+> Sounds like the IDA data structure.  Maybe that API needs to be enhanced
+> for this use case, but surely using the same data structure would be a
+> good thing?
 
-FWIW, how's this for the preparatory part?
-
-commit 17f3b70a28233078dd3dae3cf773b68fcd899950
-Author: Al Viro <viro@zeniv.linux.org.uk>
-Date:   Sun Sep 21 18:09:48 2025 -0400
-
-    selinuxfs: don't stash the dentry of /policy_capabilities
-    
-    Don't bother to store the dentry of /policy_capabilities - it belongs
-    to invariant part of tree and we only use it to populate that directory,
-    so there's no reason to keep it around afterwards.
-    
-    Same situation as with /avc, /ss, etc.  There are two directories that
-    get replaced on policy load - /class and /booleans.  These we need to
-    stash (and update the pointers on policy reload); /policy_capabilities
-    is not in the same boat.
-    
-    Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-
-diff --git a/security/selinux/selinuxfs.c b/security/selinux/selinuxfs.c
-index 9aa1d03ab612..482a2cac9640 100644
---- a/security/selinux/selinuxfs.c
-+++ b/security/selinux/selinuxfs.c
-@@ -75,7 +75,6 @@ struct selinux_fs_info {
- 	struct dentry *class_dir;
- 	unsigned long last_class_ino;
- 	bool policy_opened;
--	struct dentry *policycap_dir;
- 	unsigned long last_ino;
- 	struct super_block *sb;
- };
-@@ -117,7 +116,6 @@ static void selinux_fs_info_free(struct super_block *sb)
- 
- #define BOOL_DIR_NAME "booleans"
- #define CLASS_DIR_NAME "class"
--#define POLICYCAP_DIR_NAME "policy_capabilities"
- 
- #define TMPBUFLEN	12
- static ssize_t sel_read_enforce(struct file *filp, char __user *buf,
-@@ -1879,23 +1877,24 @@ static int sel_make_classes(struct selinux_policy *newpolicy,
- 	return rc;
- }
- 
--static int sel_make_policycap(struct selinux_fs_info *fsi)
-+static int sel_make_policycap(struct dentry *dir)
- {
-+	struct super_block *sb = dir->d_sb;
- 	unsigned int iter;
- 	struct dentry *dentry = NULL;
- 	struct inode *inode = NULL;
- 
- 	for (iter = 0; iter <= POLICYDB_CAP_MAX; iter++) {
- 		if (iter < ARRAY_SIZE(selinux_policycap_names))
--			dentry = d_alloc_name(fsi->policycap_dir,
-+			dentry = d_alloc_name(dir,
- 					      selinux_policycap_names[iter]);
- 		else
--			dentry = d_alloc_name(fsi->policycap_dir, "unknown");
-+			dentry = d_alloc_name(dir, "unknown");
- 
- 		if (dentry == NULL)
- 			return -ENOMEM;
- 
--		inode = sel_make_inode(fsi->sb, S_IFREG | 0444);
-+		inode = sel_make_inode(sb, S_IFREG | 0444);
- 		if (inode == NULL) {
- 			dput(dentry);
- 			return -ENOMEM;
-@@ -2079,15 +2078,13 @@ static int sel_fill_super(struct super_block *sb, struct fs_context *fc)
- 		goto err;
- 	}
- 
--	fsi->policycap_dir = sel_make_dir(sb->s_root, POLICYCAP_DIR_NAME,
--					  &fsi->last_ino);
--	if (IS_ERR(fsi->policycap_dir)) {
--		ret = PTR_ERR(fsi->policycap_dir);
--		fsi->policycap_dir = NULL;
-+	dentry = sel_make_dir(sb->s_root, "policy_capabilities", &fsi->last_ino);
-+	if (IS_ERR(dentry)) {
-+		ret = PTR_ERR(dentry);
- 		goto err;
- 	}
- 
--	ret = sel_make_policycap(fsi);
-+	ret = sel_make_policycap(dentry);
- 	if (ret) {
- 		pr_err("SELinux: failed to load policy capabilities\n");
- 		goto err;
+Normally, I would agree, but in this case, this has to be a simple
+data structure that, in the long run, is going to be stable between
+different kernel versions: the old and the next kernel must understand
+it. Therefore, relying on any external data structure would require
+the maintainers and other developers to be aware of this rather
+unusual kernel requirement. So, I think it is much better to keep this
+implementation private to KHO, whose only responsibility is reliably
+passing memory pages from the old kernel to the next kernel.
 
