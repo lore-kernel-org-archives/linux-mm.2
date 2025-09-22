@@ -4,94 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5DFFCAC5A7
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 03:31:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8296FCAC592
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 03:36:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 16B5C8E000A; Sun, 21 Sep 2025 23:31:22 -0400 (EDT)
+	id CE8A08E0002; Sun, 21 Sep 2025 23:36:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 143128E0001; Sun, 21 Sep 2025 23:31:22 -0400 (EDT)
+	id CC0368E0001; Sun, 21 Sep 2025 23:36:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0589B8E000A; Sun, 21 Sep 2025 23:31:22 -0400 (EDT)
+	id BFC798E0002; Sun, 21 Sep 2025 23:36:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E64678E0001
-	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 23:31:21 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7525C86FC6
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 03:31:21 +0000 (UTC)
-X-FDA: 83915460762.22.143B62A
-Received: from SHSQR01.spreadtrum.com (mx1.unisoc.com [222.66.158.135])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 71B84140008
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 03:31:18 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=unisoc.com header.s=default header.b=SjR8O3W0;
-	spf=pass (imf23.hostedemail.com: domain of zhaoyang.huang@unisoc.com designates 222.66.158.135 as permitted sender) smtp.mailfrom=zhaoyang.huang@unisoc.com;
-	dmarc=pass (policy=quarantine) header.from=unisoc.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id AE6328E0001
+	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 23:36:43 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4FA1187018
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 03:36:43 +0000 (UTC)
+X-FDA: 83915474286.06.6545C35
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 2C16B1C0004
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 03:36:40 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=dYeIGHtX;
+	spf=pass (imf18.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758511879;
+	s=arc-20220608; t=1758512201;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=naUubTQs4cvxZpd+FKA4m3TL3kOY3UI3T0jr+Hxcg5I=;
-	b=wq2cZuUGfFYIbHnDdA07jHYr2/NJy/3D5cVB+5KM6GMA6HGezwttnvs/hx9bckgxdTTJd2
-	vEQZ1KduV9OlYrQyBPPVOL3/LIWXijbXR80rJMNXgCZatOxuHh2PRsaY3tGB+kmKjYA/nt
-	/krFSm/2bxpehsNj3muzYyEuV/25VcQ=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=unisoc.com header.s=default header.b=SjR8O3W0;
-	spf=pass (imf23.hostedemail.com: domain of zhaoyang.huang@unisoc.com designates 222.66.158.135 as permitted sender) smtp.mailfrom=zhaoyang.huang@unisoc.com;
-	dmarc=pass (policy=quarantine) header.from=unisoc.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758511879; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=9/pAYjt1PTM1WTwOEAJ1ryShiXtBMZp1571RlbpsQfQ=;
+	b=gcguf24Yzt1TDZSumFeW+h+0U4JxVuZ6lWH3eU10X7XJpWmmExcocmIRem31HE9hVQKSn7
+	qMwv2g0fH4lfMMHh8K00yTY3Vk6ctpdfNKRdKEq/n4twYm5ZGbbWwal2yKxI9f9i26Ezov
+	IlxVIa4B9EwCaV35ngMWe4W0VieVTcY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758512201; a=rsa-sha256;
 	cv=none;
-	b=tq9rANjTM0Ufd+5MS9+skraPOaPqgqLqiq+Zc4B1y1E/7q61QqOmJ3hFfnD42sSyyrgwj8
-	vc+vi6wyyNGrkUdpn9JswgII0OIaeJjg7I6InlFJXt3k7FPwXcnlRo6Om3JscANEscrnoj
-	aPv5PHqvJgcRc7pzV5SnwB/S/Xt3rPE=
-Received: from dlp.unisoc.com ([10.29.3.86])
-	by SHSQR01.spreadtrum.com with ESMTP id 58M3TPM1052899;
-	Mon, 22 Sep 2025 11:29:25 +0800 (+08)
-	(envelope-from zhaoyang.huang@unisoc.com)
-Received: from SHDLP.spreadtrum.com (BJMBX01.spreadtrum.com [10.0.64.7])
-	by dlp.unisoc.com (SkyGuard) with ESMTPS id 4cVT843LdHz2K5NS5;
-	Mon, 22 Sep 2025 11:27:48 +0800 (CST)
-Received: from bj03382pcu03.spreadtrum.com (10.0.73.40) by
- BJMBX01.spreadtrum.com (10.0.64.7) with Microsoft SMTP Server (TLS) id
- 15.0.1497.48; Mon, 22 Sep 2025 11:29:22 +0800
-From: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>
-To: Jens Axboe <axboe@kernel.dk>, Ming Lei <ming.lei@redhat.com>,
-        <linux-mm@kvack.org>, <linux-block@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        Zhaoyang Huang <huangzhaoyang@gmail.com>, <steve.kang@unisoc.com>
-Subject: [RFC PATCH] driver: loop: introduce synchronized read for loop driver
-Date: Mon, 22 Sep 2025 11:29:15 +0800
-Message-ID: <20250922032915.3924368-1-zhaoyang.huang@unisoc.com>
-X-Mailer: git-send-email 2.25.1
+	b=c9o4wRRXSqpeNDiGu6CF1A4EK7q7nOmGy3eYbbhu6APAPAviIvKbRlPJZeb+l6BZ4hZLN7
+	glbAEMXEIk1cziTBAhCnXapTPtET+NmwQSy7vdFgXjfN9UAFCWVdWT2upeIsQShNRMIIae
+	l7t2UG1VUa23VykI/9YwMvhPfNH9EdM=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=dYeIGHtX;
+	spf=pass (imf18.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <e4e82695-c03f-4105-bddd-9778d7e368d4@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1758512191;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9/pAYjt1PTM1WTwOEAJ1ryShiXtBMZp1571RlbpsQfQ=;
+	b=dYeIGHtXEhwqRe5dY2kuaOhbMvjIC5LBJnI4MTLAavEHM28MO5fC1RBYYw1JQSenqd1Od+
+	ppNvqg9coKtIPXFQHgGtx3lExQK15m1zekX1RHO6FWDHA+ZXFNiB8BTagglJX3zuepxRoC
+	P2383CbGkK919uOabMZSgfcRGK4vAQ8=
+Date: Mon, 22 Sep 2025 11:36:11 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.0.73.40]
-X-ClientProxiedBy: SHCAS03.spreadtrum.com (10.0.1.207) To
- BJMBX01.spreadtrum.com (10.0.64.7)
-X-MAIL:SHSQR01.spreadtrum.com 58M3TPM1052899
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unisoc.com;
-	s=default; t=1758511777;
-	bh=naUubTQs4cvxZpd+FKA4m3TL3kOY3UI3T0jr+Hxcg5I=;
-	h=From:To:Subject:Date;
-	b=SjR8O3W0D4m5YndAEf7zM3GPQVmmpYj21lEwZrJZ7XACQ+Y31SzAZDa0e+B/0orgs
-	 729F8t91BdmliWox18tjrRJsRpUuyEDiEWVSTAwKmLnq8c9huZNxPXBRsAyUlToH2O
-	 hkPGPS5hPBUfw9+x0DJIxEsMjFjduiq+cMW/hcOk+WA+XPp1ZIk1RQRUf83XCArroa
-	 8u5zlu4vi2FcjjR6uiU1d8F0lhKBq7uzFDgLt+MBENgkweYUKJaB8/qveMdln6ARAg
-	 luOwbYA1X3eWo8MFF+2e6tAzAv1XP/2GKuxZVqfDJ+oSJH5+GM54whnUz+JMa8uH4V
-	 uh2wC5Rn/oUoA==
-X-Rspamd-Queue-Id: 71B84140008
-X-Rspamd-Server: rspam05
-X-Stat-Signature: f59a7o8zga7nfmrdrnrm3j7ze76fzq1a
+Subject: Re: [PATCH 1/1] mm/thp: fix MTE tag mismatch when replacing
+ zero-filled subpages
+Content-Language: en-US
+To: Zi Yan <ziy@nvidia.com>
+Cc: akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com,
+ usamaarif642@gmail.com, yuzhao@google.com, baolin.wang@linux.alibaba.com,
+ baohua@kernel.org, voidice@gmail.com, Liam.Howlett@oracle.com,
+ catalin.marinas@arm.com, cerasuolodomenico@gmail.com, hannes@cmpxchg.org,
+ kaleshsingh@google.com, npache@redhat.com, riel@surriel.com,
+ roman.gushchin@linux.dev, rppt@kernel.org, ryan.roberts@arm.com,
+ dev.jain@arm.com, ryncsn@gmail.com, shakeel.butt@linux.dev,
+ surenb@google.com, hughd@google.com, willy@infradead.org,
+ matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
+ byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
+ apopple@nvidia.com, qun-wei.lin@mediatek.com, Andrew.Yang@mediatek.com,
+ casper.li@mediatek.com, chinwen.chang@mediatek.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-mediatek@lists.infradead.org, linux-mm@kvack.org, ioworker0@gmail.com,
+ stable@vger.kernel.org, linux-riscv@lists.infradead.org,
+ palmer@rivosinc.com, samuel.holland@sifive.com, charlie@rivosinc.com
+References: <20250922021458.68123-1-lance.yang@linux.dev>
+ <3DD2EF5E-3E6A-40B0-AFCC-8FB38F0763DB@nvidia.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <3DD2EF5E-3E6A-40B0-AFCC-8FB38F0763DB@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: dyz8fbmiydoa7an8kmbqby5nyczbnpwr
+X-Rspamd-Queue-Id: 2C16B1C0004
 X-Rspam-User: 
-X-HE-Tag: 1758511878-790535
-X-HE-Meta: U2FsdGVkX1/9r0dX5h3ga7JvfkePur5ZULVALgBCKYUfphifRyZ2bi5d4iaNEcoFPRMIPBCrEZJ+mUzr1HcoZd7q96s+b+rcMTtM126ih7Qd6ITh6cIM/ZmhuzpJ3X1Q20WL1ixu8+qvj9H28oW7ir9sfAIX1/pQ/WvQ5nugay1da2hjJ9LmtsdOwLkuTUUPD0PWvxtBP/j5R221y6cuc5X8U5d00UTJhFXrsCH1yIKwO6GYKdwM26OOSL/bdsn9X/bL1e9cdFmXDi6uRO4afFGGj3iZQBktVyFMI6Np21A8TYihRYlO0IhiIC+qLKPPChH1UNACrytx9GXB6vgHxAO74bENdNb0FDCJcUVy5AdlJroD2YUh8UjVBs+r+99Zkp2BeE1a6FEmX885hm6lWbsjAPqIGOZYXdCLgB0JUZYeMFlgMk8sd6zeDZG0LoIsLADl3sQUqEzdW7Tqvk9dX+aDdlyWknsBbanWjbg1S0ZRIK9P1WnwLNoH4EVQwFzq6F6m+4BiAGSkou/Ix3e/SVOFfyBmNXuR4ovRs4tY2L7+5WSLdIiFbPvxKWki4Qv50s56hs2rHY3raTqybaFlLNUUI5wd0I8YMD/Mjp5Db3KpnGeGrpteds53CVFEYhGny+1F35K2sNt8enDSrImrO1sfAzqidMUcuo8moga1yWC1Q1MB1Vj8cxl6InzVdrvXmEg6gjB6A6Af0DZY9h7q81+p0kGjXoUgINR+vjPO8BUuJ4CkqQY8xUarMIuwhEBXOoHDgmPWwJO2022bEvg27gFMgF82iEric1432OYfM6l5EF6S4//jwxb/oExBXsC5H5M/18BgR1RDARGTjFtqVh3YkcZhBp1A2ffuXA+xyl35TknaD6B7ztZv+7+hLTOEZ/H0G+L+PgP3P36NdyXjN4Np6ZKgoh4dIXUr8frT/QThdW2jkBjwfdRaY2KcIlONPnIp4Lz8tkugUvxEUt/
- VAoS/n8y
- tlkrgWOgqm6a9Vt8CTW49Rfscv8wx0p9wx7uo/n/pt08f0LAsH7fntUqZlCr4DjEEfaKDlS2+ZBVCRzv3B7zqTR7wE0i2YpHi0t4HTReMx0pIT0Ta6GsdFPPpWXsBZyEwgyMkr1bI7hfg7+F9rnqbKtAKZrQuBObY0Q+S2CD6G4V51X00KsR6mFrMndbZv0skydYCiwlnVifwWXYqD/zHVGhYwh8JxzFmFOlZTCvY6N9yXWR0LVSUAMoAmyDir2r54iixcttbR0OrtxnDvLonfor7c8S1ZVlgPrptSk+lS9IN4Rv210LHKVRV4q3Q14naYPfZ
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1758512200-826840
+X-HE-Meta: U2FsdGVkX19056mTsMcAPC2aj1HrYO1Qjw+D/1uY/yQEU2iNsXG5LTi8a5wikLFsHgo8jGbX6akqe+O9TwEwvrAmvf36Y+q7mWIXSB9dkUgUoAKFf/gFB3utJGkugFIr9vdqaQ8sVz4JGU/xCHylzZ7TRqfTvefjNlUWzQOguaH3UI17vKS+1cuacDIr/5+5NeM2c5nLwOwnX4gsAHySP8attmUgOMOCO2wNZrbH/PTWqvgVF4tKipC255w/J4uRCoF+hr5zGZyB0jCn6WZNYY3HBZarXSnFI42xDWDhUp7iOX8RdiFVt2uUvhHLJ/1rVMqpJdqvzz6c36w6fF+wDPadZtYxU2tHruyqYEtLa5BFIDdnE39bbm670pmCL9vbuu/DGuulesyYMN1eWNK//+oMErH39iAziHarjQyLE/TtumPM9rwltkdzMQditd4URj2/ssUodRU8vJk53YqRdu/kA+jAJJxUyvv9GhzgL/oh09zfbShKEnTTWpStef6ryI+fpHqWhOdoIhxbzW/T0TkuTojgHfKYfWgNmqWY5+SnsSfVr0T4rbr49Nh9SzMQdt1lskxrcm9GsktlrFssurHllChILbGr7XDytD81rFxaXK2ald5BaW9aXucfDqrPDR4M0bLXYUmuvSvNKSnAxkt6jqaS04CyfhQAK4zxeJcEy4Ak9bMCMjnZc/U2o4QvK0Sm5P7KcdFr4fuEmNoHCHt8YoO6B+Lq8EBtWlo2IRJkqCkmsFMK0A5b3XBq/Etxw94xkZKH7vE4I+c+uQr1oLZbMFU/OFlX66ID5tF2l+kKbVQ9/VC4q5hM0hOa1IRHAkBoNskIGwl+V9vv/QzVm2xVbgF6f5zzepGZUt+YaBtz/XApEkE1RE7KDh2SGxDMFlM/gQB61HrOD8cSPhml3BzZ6bkMtOznANwheazO6DMtXKDkGVB9YkS6DEpnPRlQeur5eUeMqNcQljBIGO3
+ TriUUZMn
+ gyx4v0CBGdVFSk2Np3/2KxgSblOeIdXwRteUTEvAH40ZoADPh1Ks35zRxFMIq4BEsZ11X4nSroyUdn/lZ5P7LjzJB9BZRZ+gCBsk5S8HX3Pf01l+vjNMPegGrZSMN8aeIfP/8ZSubwzzNJ6SqNHd8ie0PN1eXFmobdozNPFDGbtyBHLvj04EAZUVC3IkYx1umCiGifPjMbp0GnDHxpPPTMlGJY1DyZ9k7o05+tR1FJiOZ6HfDxD1Y8x/OZmN7uOJaTKFicpqAYJtDnKJT3rQAY9owF+pCul/WP3iI69P80KSeIoO7FEMf6XBPNIoSYxmg8vlQZRWaypqIfTKztcqUmo/xrw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,76 +106,156 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+Cc: RISC-V folks
 
-For now, my android system with per pid memcgv2 setup are suffering
-high block_rq_issue to block_rq_complete latency which is actually
-introduced by schedule latency of too many kworker threads. By further
-investigation, we found that the EAS scheduler which will pack small
-load tasks into one CPU core will make this scenario worse. This commit
-would like to introduce a way of synchronized read to be helpful on
-this scenario. The I2C of loop device's request reduced from 14ms to
-2.1ms under fio test.
+On 2025/9/22 10:36, Zi Yan wrote:
+> On 21 Sep 2025, at 22:14, Lance Yang wrote:
+> 
+>> From: Lance Yang <lance.yang@linux.dev>
+>>
+>> When both THP and MTE are enabled, splitting a THP and replacing its
+>> zero-filled subpages with the shared zeropage can cause MTE tag mismatch
+>> faults in userspace.
+>>
+>> Remapping zero-filled subpages to the shared zeropage is unsafe, as the
+>> zeropage has a fixed tag of zero, which may not match the tag expected by
+>> the userspace pointer.
+>>
+>> KSM already avoids this problem by using memcmp_pages(), which on arm64
+>> intentionally reports MTE-tagged pages as non-identical to prevent unsafe
+>> merging.
+>>
+>> As suggested by David[1], this patch adopts the same pattern, replacing the
+>> memchr_inv() byte-level check with a call to pages_identical(). This
+>> leverages existing architecture-specific logic to determine if a page is
+>> truly identical to the shared zeropage.
+>>
+>> Having both the THP shrinker and KSM rely on pages_identical() makes the
+>> design more future-proof, IMO. Instead of handling quirks in generic code,
+>> we just let the architecture decide what makes two pages identical.
+>>
+>> [1] https://lore.kernel.org/all/ca2106a3-4bb2-4457-81af-301fd99fbef4@redhat.com
+>>
+>> Cc: <stable@vger.kernel.org>
+>> Reported-by: Qun-wei Lin <Qun-wei.Lin@mediatek.com>
+>> Closes: https://lore.kernel.org/all/a7944523fcc3634607691c35311a5d59d1a3f8d4.camel@mediatek.com
+>> Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when splitting isolated thp")
+>> Suggested-by: David Hildenbrand <david@redhat.com>
+>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+>> ---
+>> Tested on x86_64 and on QEMU for arm64 (with and without MTE support),
+>> and the fix works as expected.
+> 
+>  From [1], I see you mentioned RISC-V also has the address masking feature.
+> Is it affected by this? And memcmp_pages() is only implemented by ARM64
+> for MTE. Should any arch with address masking always implement it to avoid
+> the same issue?
 
-Signed-off-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
----
- drivers/block/Kconfig | 10 ++++++++++
- drivers/block/loop.c  | 22 +++++++++++++++++++++-
- 2 files changed, 31 insertions(+), 1 deletion(-)
+Yeah, I'm new to RISC-V, seems like RISC-V has a similar feature as
+described in Documentation/arch/riscv/uabi.rst, which is the Supm
+(Supervisor-mode Pointer Masking) extension.
 
-diff --git a/drivers/block/Kconfig b/drivers/block/Kconfig
-index df38fb364904..a30d6c5f466e 100644
---- a/drivers/block/Kconfig
-+++ b/drivers/block/Kconfig
-@@ -383,4 +383,14 @@ config BLK_DEV_ZONED_LOOP
- 
- 	  If unsure, say N.
- 
-+config LOOP_SYNC_READ
-+	bool "enable synchronized read for loop device"
-+	default n
-+	help
-+	  provide a way of synchronized read for loop device which could be
-+	  helpful when you are concerned with the schedule latency affection
-+	  over the requests of loop device especially when plenty of blkcgs
-+	  setup within the system. The loop device should be configured as
-+	  LO_FLAGS_DIRECT_IO when applying this config.
-+
- endif # BLK_DEV
-diff --git a/drivers/block/loop.c b/drivers/block/loop.c
-index 053a086d547e..1e18abe48d2b 100644
---- a/drivers/block/loop.c
-+++ b/drivers/block/loop.c
-@@ -1884,7 +1884,27 @@ static blk_status_t loop_queue_rq(struct blk_mq_hw_ctx *hctx,
- #endif
- 	}
- #endif
--	loop_queue_work(lo, cmd);
-+#ifdef CONFIG_LOOP_SYNC_READ
-+	if (req_op(rq) == REQ_OP_READ && cmd->use_aio && current->plug) {
-+		struct blk_plug *plug = current->plug;
-+
-+		current->plug = NULL;
-+		/* iterate through the plug->mq_list and launch the requests to real device */
-+		while (rq) {
-+			loff_t pos;
-+
-+			cmd = blk_mq_rq_to_pdu(rq);
-+			pos = ((loff_t) blk_rq_pos(rq) << 9) + lo->lo_offset;
-+			lo_rw_aio(lo, cmd, pos, ITER_DEST);
-+			rq = rq_list_pop(&plug->mq_list);
-+		}
-+		plug->rq_count = 0;
-+		current->plug = plug;
-+	} else
-+		loop_queue_work(lo, cmd);
-+#else
-+		loop_queue_work(lo, cmd);
-+#endif
- 
- 	return BLK_STS_OK;
- }
--- 
-2.25.1
+```
+Pointer masking
+---------------
+
+Support for pointer masking in userspace (the Supm extension) is 
+provided via
+the ``PR_SET_TAGGED_ADDR_CTRL`` and ``PR_GET_TAGGED_ADDR_CTRL`` ``prctl()``
+operations. Pointer masking is disabled by default. To enable it, userspace
+must call ``PR_SET_TAGGED_ADDR_CTRL`` with the ``PR_PMLEN`` field set to the
+number of mask/tag bits needed by the application. ``PR_PMLEN`` is 
+interpreted
+as a lower bound; if the kernel is unable to satisfy the request, the
+``PR_SET_TAGGED_ADDR_CTRL`` operation will fail. The actual number of 
+tag bits
+is returned in ``PR_PMLEN`` by the ``PR_GET_TAGGED_ADDR_CTRL`` operation.
+```
+
+But, IIUC, Supm by itself only ensures that the upper bits are ignored on
+memory access :)
+
+So, RISC-V today would likely not be affected. However, once it implements
+full hardware tag checking, it will face the exact same zero-page problem.
+
+Anyway, any architecture with a feature like MTE in the future will need
+its own memcmp_pages() to prevent unsafe merges ;)
+
+> 
+>>
+>>   mm/huge_memory.c | 15 +++------------
+>>   mm/migrate.c     |  8 +-------
+>>   2 files changed, 4 insertions(+), 19 deletions(-)
+>>
+>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>> index 32e0ec2dde36..28d4b02a1aa5 100644
+>> --- a/mm/huge_memory.c
+>> +++ b/mm/huge_memory.c
+>> @@ -4104,29 +4104,20 @@ static unsigned long deferred_split_count(struct shrinker *shrink,
+>>   static bool thp_underused(struct folio *folio)
+>>   {
+>>   	int num_zero_pages = 0, num_filled_pages = 0;
+>> -	void *kaddr;
+>>   	int i;
+>>
+>>   	for (i = 0; i < folio_nr_pages(folio); i++) {
+>> -		kaddr = kmap_local_folio(folio, i * PAGE_SIZE);
+>> -		if (!memchr_inv(kaddr, 0, PAGE_SIZE)) {
+>> -			num_zero_pages++;
+>> -			if (num_zero_pages > khugepaged_max_ptes_none) {
+>> -				kunmap_local(kaddr);
+>> +		if (pages_identical(folio_page(folio, i), ZERO_PAGE(0))) {
+>> +			if (++num_zero_pages > khugepaged_max_ptes_none)
+>>   				return true;
+>> -			}
+>>   		} else {
+>>   			/*
+>>   			 * Another path for early exit once the number
+>>   			 * of non-zero filled pages exceeds threshold.
+>>   			 */
+>> -			num_filled_pages++;
+>> -			if (num_filled_pages >= HPAGE_PMD_NR - khugepaged_max_ptes_none) {
+>> -				kunmap_local(kaddr);
+>> +			if (++num_filled_pages >= HPAGE_PMD_NR - khugepaged_max_ptes_none)
+>>   				return false;
+>> -			}
+>>   		}
+>> -		kunmap_local(kaddr);
+>>   	}
+>>   	return false;
+>>   }
+>> diff --git a/mm/migrate.c b/mm/migrate.c
+>> index aee61a980374..ce83c2c3c287 100644
+>> --- a/mm/migrate.c
+>> +++ b/mm/migrate.c
+>> @@ -300,9 +300,7 @@ static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
+>>   					  unsigned long idx)
+>>   {
+>>   	struct page *page = folio_page(folio, idx);
+>> -	bool contains_data;
+>>   	pte_t newpte;
+>> -	void *addr;
+>>
+>>   	if (PageCompound(page))
+>>   		return false;
+>> @@ -319,11 +317,7 @@ static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
+>>   	 * this subpage has been non present. If the subpage is only zero-filled
+>>   	 * then map it to the shared zeropage.
+>>   	 */
+>> -	addr = kmap_local_page(page);
+>> -	contains_data = memchr_inv(addr, 0, PAGE_SIZE);
+>> -	kunmap_local(addr);
+>> -
+>> -	if (contains_data)
+>> +	if (!pages_identical(page, ZERO_PAGE(0)))
+>>   		return false;
+>>
+>>   	newpte = pte_mkspecial(pfn_pte(my_zero_pfn(pvmw->address),
+>> -- 
+>> 2.49.0
+> 
+> The changes look good to me. Thanks. Acked-by: Zi Yan <ziy@nvidia.com>
+
+Cheers!
 
 
