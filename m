@@ -4,130 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36E66CAC5A8
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 14:14:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E46DCAC5A8
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 14:18:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 902DB8E0008; Mon, 22 Sep 2025 10:14:05 -0400 (EDT)
+	id 7B4888E000B; Mon, 22 Sep 2025 10:18:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8DA5A8E0001; Mon, 22 Sep 2025 10:14:05 -0400 (EDT)
+	id 75E1B8E0001; Mon, 22 Sep 2025 10:18:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F05B8E0008; Mon, 22 Sep 2025 10:14:05 -0400 (EDT)
+	id 64C628E000B; Mon, 22 Sep 2025 10:18:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6DEF98E0001
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 10:14:05 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3C7E413A1C7
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 14:14:05 +0000 (UTC)
-X-FDA: 83917080450.29.B9BC3AD
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf21.hostedemail.com (Postfix) with ESMTP id E4A081C0009
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 14:14:02 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="1Y/8OmdF";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Yv+buhMB;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="1Y/8OmdF";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Yv+buhMB;
-	spf=pass (imf21.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C0058E0001
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 10:18:37 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D5743BAA41
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 14:18:36 +0000 (UTC)
+X-FDA: 83917091832.24.C2E8154
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	by imf25.hostedemail.com (Postfix) with ESMTP id C6FEDA000F
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 14:18:34 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=AQE+8QDj;
+	spf=pass (imf25.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758550443;
+	s=arc-20220608; t=1758550714;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nqze0B+Wfhv4khPHkPPqKTRdC9H6pPOcQqJgG67yCPs=;
-	b=t9AuMnhkxsMgN3ytMOtfyyNp3rKzzVVjkku/uaVPpyVDB3nTuyIcseMSajRyIU4rlt0ANE
-	/LFP6fE1KGc9M6YAeXkXk2npPoHTQZEZAC5xBuxbRnhhbKm8iIfgaPl1ovbVFax+1uFYXu
-	utwzP1im+WhqgSMUTMehi2mu3sBzjxo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758550443; a=rsa-sha256;
-	cv=none;
-	b=wjLGAvlBcy4tgPheKZTlpeALwsGUb1rmobOebJ+Xuh34JDTbirOxhDEcpbynvwhKfTQRxc
-	Z5Z9pEZk63EGz3VnXKbMFeskw64bP9iuV7bfRsOlyMzGjtlOk+J6B2WWg/DTkKL9eFWcqa
-	sM5RciZIQPqwdHashUdo4OJ4qnb+xdA=
+	bh=3SOuRg8CAw4qdC6TljMIQSoNCuXerOjdSHs4nx/il8o=;
+	b=NsoSOnTXTeeT6gHLzuI5CXhj0Bjh2vaG4C8uDBMKZcUCWegzZ4ngUkvofZb2ZwS6afjcjZ
+	SryWSxosEF1++fOzGddZ+a8FNmMfvyO/idn/BFkeLHRDkxHZORcChWQ5WcUcUK/g2r7O4g
+	ReBxyvjL52zXt5OVQFStHBqyFO4iuFw=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="1Y/8OmdF";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Yv+buhMB;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="1Y/8OmdF";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Yv+buhMB;
-	spf=pass (imf21.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 3932333693;
-	Mon, 22 Sep 2025 14:14:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1758550441; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nqze0B+Wfhv4khPHkPPqKTRdC9H6pPOcQqJgG67yCPs=;
-	b=1Y/8OmdFV9o10Zv3dUTSbAACmzVx3AUH6zIFA7zvBm6SxobixO2EAsdAcISnFeyyOz3ffS
-	W4Z7jWhTQCmUtcM3myfJ+n5bjLukoMfCJO2vvYNG/8AhG+KtkfLD4Yvh633EEdl5fVQC1V
-	98fLMhwtSNwP9WZFJsu1EMnRgTXjnIs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1758550441;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nqze0B+Wfhv4khPHkPPqKTRdC9H6pPOcQqJgG67yCPs=;
-	b=Yv+buhMBsc96onlwWVevmMcaySXurmRXG2h3faLdSwitoBZiIb003bnV4SrWs2Ab79woMN
-	uTsAjef4iXsd7dDQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1758550441; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nqze0B+Wfhv4khPHkPPqKTRdC9H6pPOcQqJgG67yCPs=;
-	b=1Y/8OmdFV9o10Zv3dUTSbAACmzVx3AUH6zIFA7zvBm6SxobixO2EAsdAcISnFeyyOz3ffS
-	W4Z7jWhTQCmUtcM3myfJ+n5bjLukoMfCJO2vvYNG/8AhG+KtkfLD4Yvh633EEdl5fVQC1V
-	98fLMhwtSNwP9WZFJsu1EMnRgTXjnIs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1758550441;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nqze0B+Wfhv4khPHkPPqKTRdC9H6pPOcQqJgG67yCPs=;
-	b=Yv+buhMBsc96onlwWVevmMcaySXurmRXG2h3faLdSwitoBZiIb003bnV4SrWs2Ab79woMN
-	uTsAjef4iXsd7dDQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D861813A63;
-	Mon, 22 Sep 2025 14:13:54 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id C4YsOKJZ0Wg3CwAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Mon, 22 Sep 2025 14:13:54 +0000
-Date: Mon, 22 Sep 2025 15:13:45 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: David Hildenbrand <david@redhat.com>
-Cc: "wuyifeng (C)" <wuyifeng10@huawei.com>, akpm@linux-foundation.org, 
-	linux-mm@kvack.org
-Subject: Re: [RFC] mm: MAP_POPULATE on writable anonymous mappings marks pte
- dirty is necessarily?
-Message-ID: <o5f47zn6wamjfuda67acm27aonhtmm2gbbwztgqvskkzjjn2d7@s4etlkckypuy>
-References: <17ad24e5-9ee0-4d94-be5f-3c28bd57460a@huawei.com>
- <oypwdcx6j726iffszfayd66xizaw5tfv2lnkk7bx7ibzn37x3m@ulkgb6x6geef>
- <adab9c31-c281-4bf7-93ae-89ed9f303d7b@redhat.com>
- <hgbxlsaxe3p6npj3tyrd6u64qel6monttjaadzcnzpcpgi7arp@ztzuvbq55vuz>
- <8e8b4aa4-18b7-4928-a9f0-cd47a59258fc@redhat.com>
+	imf25.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=AQE+8QDj;
+	spf=pass (imf25.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758550714; a=rsa-sha256;
+	cv=none;
+	b=LMTq7FFGR/jpY2tEATmVdG4VNyIidRmPLiBteFHB3vO8lo7uGfw9Ep8wOKZGpSIbVvQ19g
+	tDtaRim8QqnjvS71XsM3sarJQJjr2dT+9Tfko8VO6ixY+kEpi1MJomy/zvBy9cEoTTctxD
+	Zysbh6tk5kh04jub9mtqNGrsBrMiqAY=
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-4d1c5c3f77eso1951491cf.0
+        for <linux-mm@kvack.org>; Mon, 22 Sep 2025 07:18:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1758550714; x=1759155514; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3SOuRg8CAw4qdC6TljMIQSoNCuXerOjdSHs4nx/il8o=;
+        b=AQE+8QDj/heeQiNGoIdKBE8AdeDSATwedTBIGf9IIFjC/uNTohzHvC1+2ErJ2UuQ5K
+         hrF9FfYPuamH04/kRUnPNHJr9xbjCV8Vsc/XFWLFo/jFYHTAYxvpE84p3V5cjOL9weri
+         jIB/deiSaUgon4v6M54q5rIB/RS16+UZkoDMCF8P5JJS9ge466zxDAOhYlC3BlUPGEis
+         BS94gJWLmWO5vaBUmFws9DpLsLVcHUHoiKpeXmeHld475PWnd8va6ehA4zjCMCcFKZsA
+         6K11qOhZU0hhS1QizQCPyDL3+4Ft423Sg8PWUxwMVe3oxFBFuKiedy22vp/mR6iHKMd/
+         OBOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758550714; x=1759155514;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3SOuRg8CAw4qdC6TljMIQSoNCuXerOjdSHs4nx/il8o=;
+        b=j8MRUJ+gLIGAnvqDxR1A4/PL5r4onjiRkerLOSc8eF9SB7I/bwuxLQ7T3oN90kZ+0v
+         Z1gfXZrxVoAIpN0sDN4JEG7DyNzNxByR9m+BY6Np843IG4KXqCTxzgkhd6PsaKoYPvls
+         4uKK+im9PhSZ1vRPIaEkH7bfcEREyx1bVB81TbmIhab4hMYYuGfOGXhRM6N9PNmA4XBH
+         lB5S2BEg/El5Y7dz0Y2bSZfhXMmXzwRS/kwebvO8PaKQoXJxN/huFdx/L/T3UcvUSRcv
+         ZY6VJTVfupb/fhgLrtYMFBZ03dw6p+xwC3QZXE9EhXWa1muC2SFrUl4Dq6p0vzBomOVm
+         gxpQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWTUs35DlM9qoIOU4m2RxgZzpJWA8nmAHzjR/MO3jsERXOTtmDFrJcIn8+huuIGjiXtGJgT1OheEQ==@kvack.org
+X-Gm-Message-State: AOJu0Yzd1pwsdKiCzQJf755Ny1kSr760rRZePpDtwFGY4z3x/vQJkGaK
+	EcgagiYoprQppZJ4R6XNZ3HEOYsFVXvRDbya/zj16GKDBk1YsWqXg3g1PUIB3KqcmCr/DTdr1bR
+	sRqcVNHotQhFsV+C5/lpS9dT96hCnB+LADYOKHs6JJg==
+X-Gm-Gg: ASbGncttkbwSJWZG8JQRaHXq7LskycFAUROmHpMr1/XObi+aa4Wd1fKyDjXO/+T4+1b
+	d34R9bj2unbeJ4fX/oLZjjDTPPn/UEyurx/zFrmdJdnONKc3Bu6RD6YDozK/jz+z0wyA6c54GCg
+	xbIY2tzUbB6cch0XEyrc8Xxx9si3VuhZOC2bSFDTx/Z1Q7CFCxWY6WZmKFHv9uQaqZfWuIzJaCc
+	y6y
+X-Google-Smtp-Source: AGHT+IFhqTMUJ5QI5mJ54JxXg7+gUal2FzXiUL3S25XlFP+lq4CAYaIEkRLtdSJ+1NpX7UxhDL1AdOxDY9fOvqLaP/U=
+X-Received: by 2002:a05:622a:989:b0:4b3:4e8e:9e32 with SMTP id
+ d75a77b69052e-4c03c195262mr170546171cf.3.1758550713588; Mon, 22 Sep 2025
+ 07:18:33 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8e8b4aa4-18b7-4928-a9f0-cd47a59258fc@redhat.com>
-X-Rspamd-Action: no action
-X-Stat-Signature: mjeeto9a8xow1ja6e794ea8eqxu5jt1q
-X-Rspamd-Queue-Id: E4A081C0009
+References: <20250921054458.4043761-1-rppt@kernel.org> <20250921054458.4043761-4-rppt@kernel.org>
+In-Reply-To: <20250921054458.4043761-4-rppt@kernel.org>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Mon, 22 Sep 2025 10:17:56 -0400
+X-Gm-Features: AS18NWAGcHoTlig1ssHPBFP_C5vSdMZBQ76Hlsz-uZcoUPzzkP0cpDwB-jS3KKo
+Message-ID: <CA+CK2bDFScwAwyKA2NNkQhvhrj5OsmHm4eTshw2B9e2muqBcvg@mail.gmail.com>
+Subject: Re: [PATCH v5 3/4] kho: add support for preserving vmalloc allocations
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Alexander Graf <graf@amazon.com>, 
+	Baoquan He <bhe@redhat.com>, Changyuan Lyu <changyuanl@google.com>, Chris Li <chrisl@kernel.org>, 
+	Jason Gunthorpe <jgg@nvidia.com>, Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: C6FEDA000F
+X-Stat-Signature: 8rsrgc74ow87okt4a9kqpyrggoptn4st
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1758550442-968158
-X-HE-Meta: U2FsdGVkX1/PujLcoqqGdp9tY/GRwGsvWx9hQyJ5CkTjnoQeLbDDPbj4B3qC1fjAMjhqTq5zyZ5GWUy3k7U9yznNBZD4uQYj5oo2zgz+kXH+DUdEJ3s4NkNC2JdE2nl25v62HRJq9gUJseKz5BSWQ0ZpqTz8qD87Z2rzP2hlK1Zf4K26MR1Nn11pCWikZfZQOQGtBS1/HMKytidOFrPanPtFDyYvBzmXpFQO0w0+ffmYiqBkzTVcexkWtJOl5hZN4HpdcdD7315bWwEMbYFHcf/5JwjFtHi+etWGiM+AaBtSrPghhatL/60C1lmV9MhfFXoU+inesJYUWHXZCMK2IZNUAJNa1eGImMM4vUNavTbrF+CZU87v4+vDsTB4RpPPztspCywsYFD6jPhhQv35nxbouf9WL2sXgycmM9K2KcEbk6qQaa+z4Ma2hNcHRVep/kuXTpU3x9Jv58W4IpLIKDbP9EOCqCUkVMvlJaInmPH0e6Seh3JPDcxqcEW0308SuBbeTRpn4KKzUYqPool+NSqlwDZMWam/DbrX3lJ9atNWun2DsOglycrTI74Reuw6mUTmLRYmJGd6Akb4hlSJJhs8FZyfOlt4b0BQ2Go2Cw5sb19B9TFEpxCz7fVqEdFOdV0gxnUlJAI2Y5bHHG5SHxm5GpqXCXmCI0rr5Tq3XsJfXOIQ53em+AqiYVMIVHhmJt1QuAr2i9+YtMYNk4VmxVfEm0x2HembN4D7GI1o00tXh0oVroHrSkpGmABedMABvpG4lQWV3iAJoRKoxXrhgxYi3y3zdZ0DrMnohcMuHOSXfKgKjPpsTlVvHhRqherc2SCMiG6Zd5p6tgQCgxR4NZARHeVIkrYYeAl9aEVVDaB8M32QspEueJVkNPMzTW8+HMoUuunE8uwX+IOPZztqlwPK+q2bQWFBroRoMtsguVOzCuLuhj6+Mokvwl88EAMv67jvu+yRQOIrhrUI66G
- ALqnwUNm
- 38Gz2a2nIx0cYvwFL72yndlL1Oq772+MSX4ndcYGJcgDr6nwFu/LXFHlaT7FbIVg2yxNBcUzLA8lgqb6DdC3WtSc4cTyDtVfhIY56jneVq4p5eH0/FBB0KNUQ4gHelmRAP2Y22yBxQWJsiNSYXGqe0JTqzJpn4rvrV9P/GRFclrc3MWqn32vbrC1n52euKfH0ta2i2vVYUNDmVcKVTOXUcbpu7B8pdF0BxOxfDAXrcpzp0AZ2hPQ1OW48a1E9H0Tf+85On7ysTNGSZocuCo7uMgXA2FOtTq7zHHWuNPWshBIHF+8P1kfBgEcs37RVChTM7KhFPnAW5D3U6wBnalH+EoZ+nzhvSb8Vb9ykS3gvQORZpswxAmBxbUBiki7TryHNopk0dfaoSu8RaIE=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1758550714-832370
+X-HE-Meta: U2FsdGVkX19vyaS2wru24KRX8n3euBBAQhyUSMZa0MJgeYHG/0qBTbnMLZ4J2NIN0wUYnhm9tk0QnwJtQ5FKBW+fdROtopAatFS7WNslFBZlIs5pi8mUTF57oE09DE29ikiQwEY0WEXsm8zp0xyCkBtYd+LChCO+yYe6Y8BvFwWjAYLF5nufGbIwhwfvfb7Eprj8AHy3U9vtb7jxqYzd5EmegqvNuRpV4ZYlIC2O8PYvaGE9kkvqE2Yq7nptvAeQuDTEH7jNnEhtingSbcAMMgU4u2OY4lM7/DYNsOyBch5aAOINDOtQrOCsq/vmTldf+MsXDKYf5NOBkTBO+RWaqzwIkGcGuJG5psNXwyX2aXwzPsURtbCKp26jdFrU5BHlxlBGUNsbVkqGMEvsHX0eZsZBFKkiu1IBaJKnsPuyjwTaBEWBVrEpSTUhAv/KaoR3aLk3vy1SsJKQgJOR7ZB/9aWjlM0PibBjSRHlwa+XculIbS8mBDNyFUAkVHLiE4pPvYzaUVnhA3UsykfNtIqlJjJe99DlD/s7LIlu5Cz6CnIRqGHF7ozLZqjFY5HHkLMVHUNwvc3hfR1jNOHvTQcT6Z485snsv3TRaJWKGKmupuvAG2tqdmyIGn8ko5Uo5c3fVc0Vok6vbJBmrY44/CLoliPWP82qVR7pbiWiVnO8DExgyqJ4gLjx18RiMmJDZkAUY2XjXZtP41ZRTQX+BnJdQKldTMaM0cFeAcc3FwE0sZks6XTRf1HtRndu8saZWRnSIE9fg6oZSFbEEHt8cPFQwPM8I70KpqAqXvD8bjE0vVnOoVtELGMSsMxx39LgpaqO6085O8ulcdd86v2n/7MZEx4yFc9gamY/a47+ZeNsCfWYZbokNnnUeKf1r5c5FwYwT34YYmMP+3VxykfMNie+Vem6zaRjcZeZiWf3CO/Bg9M2hI01agOMBMI+SvRTFBsZOkxzBcWulhw0ZYymrU7
+ K0rz9bVc
+ zAfODGZbjOeJTfsfRMgh0GQX7GnpsJ3eVVIReMncD/DgHAOcxX3BViWHABXXHRKCdsFJ1GkSYSwEf8dVt0rxs6J+8WzmE5yTOggAjtkXvFhowcvLJpC+OznugPNh5bLS/MsbEk6G5lza/NNPeziRzlu/3gnkJ5cOZBobuluPM2hsEqw2CVfT3PlvXN3anItYuWXi43lEUKlKyB/kKwGZvewAycZ7u11mfdBjRHJxl0i8EZsWOlJxCkmpgmA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,55 +118,420 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 22, 2025 at 02:46:44PM +0200, David Hildenbrand wrote:
-> On 22.09.25 11:37, Pedro Falcato wrote:
-snip
-> > 
-> > > What happens on architectures where the HW doesn't support setting the dirty
-> > > bit is that performing a pte_mkwrite() checks whether the pte is dirty. If
-> > > it's not dirty the HW write bit will not be set and instead the next
-> > > pte_mkdirty() will set the actual HW write bit.
-> > > 
-> > > See pte_mkwrite() handling in arch/sparc/include/asm/pgtable_64.h or
-> > > arch/s390/include/asm/pgtable.h
-> > > 
-> > > Of course, setting the dirty bit either way on later access comes with a
-> > > price.
-> > 
-> > Ah, yes, the details were a little fuzzy in my head, thanks.
-> > I'm trying to swap in (ha!) the details again. We still proactively mark anon
-> > folios dirty anyway for $reasons, so optimizing it might be difficult? Not sure
-> > if it is _worth_ optimizing for anyway.
-> 
-> I remembered the same thing (proactively mark anon folios dirty) but I
-> didn't easily spot it in the code. Did you spot it?
-> 
-> I only found the folio_mark_dirty() calls when unmapping anon pages and we
-> stumble over a dirty pte.
-> 
+On Sun, Sep 21, 2025 at 1:45=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wro=
+te:
+>
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+>
+> A vmalloc allocation is preserved using binary structure similar to
+> global KHO memory tracker. It's a linked list of pages where each page
+> is an array of physical address of pages in vmalloc area.
+>
+> kho_preserve_vmalloc() hands out the physical address of the head page
+> to the caller. This address is used as the argument to
+> kho_vmalloc_restore() to restore the mapping in the vmalloc address
+> space and populate it with the preserved pages.
+>
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+> ---
+>  include/linux/kexec_handover.h |  28 ++++
+>  kernel/kexec_handover.c        | 281 +++++++++++++++++++++++++++++++++
+>  2 files changed, 309 insertions(+)
+>
+> diff --git a/include/linux/kexec_handover.h b/include/linux/kexec_handove=
+r.h
+> index cc5c49b0612b..49e36d4ae5dc 100644
+> --- a/include/linux/kexec_handover.h
+> +++ b/include/linux/kexec_handover.h
+> @@ -39,12 +39,23 @@ struct page;
+>
+>  struct kho_serialization;
+>
+> +struct kho_vmalloc_chunk;
+> +struct kho_vmalloc {
+> +        DECLARE_KHOSER_PTR(first, struct kho_vmalloc_chunk *);
+> +        unsigned int total_pages;
+> +        unsigned short flags;
+> +        unsigned short order;
+> +};
+> +
+>  #ifdef CONFIG_KEXEC_HANDOVER
+>  bool kho_is_enabled(void);
+>
+>  int kho_preserve_folio(struct folio *folio);
+>  int kho_preserve_pages(struct page *page, unsigned int nr_pages);
+> +int kho_preserve_vmalloc(void *ptr, struct kho_vmalloc *preservation);
+>  struct folio *kho_restore_folio(phys_addr_t phys);
+> +struct page *kho_restore_pages(phys_addr_t phys, unsigned int nr_pages);
+> +void *kho_restore_vmalloc(const struct kho_vmalloc *preservation);
+>  int kho_add_subtree(struct kho_serialization *ser, const char *name, voi=
+d *fdt);
+>  int kho_retrieve_subtree(const char *name, phys_addr_t *phys);
+>
+> @@ -71,11 +82,28 @@ static inline int kho_preserve_pages(struct page *pag=
+e, unsigned int nr_pages)
+>         return -EOPNOTSUPP;
+>  }
+>
+> +static inline int kho_preserve_vmalloc(void *ptr,
+> +                                      struct kho_vmalloc *preservation)
+> +{
+> +       return -EOPNOTSUPP;
+> +}
+> +
+>  static inline struct folio *kho_restore_folio(phys_addr_t phys)
+>  {
+>         return NULL;
+>  }
+>
+> +static inline struct page *kho_restore_pages(phys_addr_t phys,
+> +                                            unsigned int nr_pages)
+> +{
+> +       return NULL;
+> +}
+> +
+> +static inline void *kho_restore_vmalloc(const struct kho_vmalloc *preser=
+vation)
+> +{
+> +       return NULL;
+> +}
+> +
+>  static inline int kho_add_subtree(struct kho_serialization *ser,
+>                                   const char *name, void *fdt)
+>  {
+> diff --git a/kernel/kexec_handover.c b/kernel/kexec_handover.c
+> index fd80be3b12fd..e6380d8dce57 100644
+> --- a/kernel/kexec_handover.c
+> +++ b/kernel/kexec_handover.c
+> @@ -18,6 +18,7 @@
+>  #include <linux/memblock.h>
+>  #include <linux/notifier.h>
+>  #include <linux/page-isolation.h>
+> +#include <linux/vmalloc.h>
+>
+>  #include <asm/early_ioremap.h>
+>
+> @@ -274,6 +275,37 @@ struct folio *kho_restore_folio(phys_addr_t phys)
+>  }
+>  EXPORT_SYMBOL_GPL(kho_restore_folio);
+>
+> +/**
+> + * kho_restore_pages - restore list of contiguous order 0 pages.
+> + * @phys: physical address of the first page.
+> + * @nr_pages: number of pages.
+> + *
+> + * Restore a contiguous list of order 0 pages that was preserved with
+> + * kho_preserve_pages().
+> + *
+> + * Return: 0 on success, error code on failure
+> + */
+> +struct page *kho_restore_pages(phys_addr_t phys, unsigned int nr_pages)
+> +{
+> +       const unsigned long start_pfn =3D PHYS_PFN(phys);
+> +       const unsigned long end_pfn =3D start_pfn + nr_pages;
+> +       unsigned long pfn =3D start_pfn;
+> +
+> +       while (pfn < end_pfn) {
+> +               const unsigned int order =3D
+> +                       min(count_trailing_zeros(pfn), ilog2(end_pfn - pf=
+n));
+> +               struct page *page =3D kho_restore_page(PFN_PHYS(pfn));
 
-In shrink_folio_list():
-		if (folio_test_anon(folio) && folio_test_swapbacked(folio)) {
-			if (!folio_test_swapcache(folio)) {
-			/* ... */
-				/*
-				 * Normally the folio will be dirtied in unmap because its
-				 * pte should be dirty. A special case is MADV_FREE page. The
-				 * page's pte could have dirty bit cleared but the folio's
-				 * SwapBacked flag is still set because clearing the dirty bit
-				 * and SwapBacked flag has no lock protected. For such folio,
-				 * unmap will not set dirty bit for it, so folio reclaim will
-				 * not write the folio out. This can cause data corruption when
-				 * the folio is swapped in later. Always setting the dirty flag
-				 * for the folio solves the problem.
-				*/
-				folio_mark_dirty(folio);
-			}
-		}
+This line breaks linux-next build because, kho_restore_page has a prototype=
+:
+void kho_restore_page(struct page *page, unsigned int order).
 
-So we assume the folio is dirty due to races with MADV_FREE. Seems like a
-somewhat heavy handed solution, but I guess it works nicely for 99.9% of cases.
-
--- 
-Pedro
+> +
+> +               if (!page)
+> +                       return NULL;
+> +               split_page(page, order);
+> +               pfn +=3D 1 << order;
+> +       }
+> +
+> +       return pfn_to_page(start_pfn);
+> +}
+> +EXPORT_SYMBOL_GPL(kho_restore_pages);
+> +
+>  /* Serialize and deserialize struct kho_mem_phys across kexec
+>   *
+>   * Record all the bitmaps in a linked list of pages for the next kernel =
+to
+> @@ -763,6 +795,255 @@ int kho_preserve_pages(struct page *page, unsigned =
+int nr_pages)
+>  }
+>  EXPORT_SYMBOL_GPL(kho_preserve_pages);
+>
+> +struct kho_vmalloc_hdr {
+> +       DECLARE_KHOSER_PTR(next, struct kho_vmalloc_chunk *);
+> +};
+> +
+> +#define KHO_VMALLOC_SIZE                               \
+> +       ((PAGE_SIZE - sizeof(struct kho_vmalloc_hdr)) / \
+> +        sizeof(phys_addr_t))
+> +
+> +struct kho_vmalloc_chunk {
+> +       struct kho_vmalloc_hdr hdr;
+> +       phys_addr_t phys[KHO_VMALLOC_SIZE];
+> +};
+> +
+> +static_assert(sizeof(struct kho_vmalloc_chunk) =3D=3D PAGE_SIZE);
+> +
+> +/* vmalloc flags KHO supports */
+> +#define KHO_VMALLOC_SUPPORTED_FLAGS    (VM_ALLOC | VM_ALLOW_HUGE_VMAP)
+> +
+> +/* KHO internal flags for vmalloc preservations */
+> +#define KHO_VMALLOC_ALLOC      0x0001
+> +#define KHO_VMALLOC_HUGE_VMAP  0x0002
+> +
+> +static unsigned short vmalloc_flags_to_kho(unsigned int vm_flags)
+> +{
+> +       unsigned short kho_flags =3D 0;
+> +
+> +       if (vm_flags & VM_ALLOC)
+> +               kho_flags |=3D KHO_VMALLOC_ALLOC;
+> +       if (vm_flags & VM_ALLOW_HUGE_VMAP)
+> +               kho_flags |=3D KHO_VMALLOC_HUGE_VMAP;
+> +
+> +       return kho_flags;
+> +}
+> +
+> +static unsigned int kho_flags_to_vmalloc(unsigned short kho_flags)
+> +{
+> +       unsigned int vm_flags =3D 0;
+> +
+> +       if (kho_flags & KHO_VMALLOC_ALLOC)
+> +               vm_flags |=3D VM_ALLOC;
+> +       if (kho_flags & KHO_VMALLOC_HUGE_VMAP)
+> +               vm_flags |=3D VM_ALLOW_HUGE_VMAP;
+> +
+> +       return vm_flags;
+> +}
+> +
+> +static struct kho_vmalloc_chunk *new_vmalloc_chunk(struct kho_vmalloc_ch=
+unk *cur)
+> +{
+> +       struct kho_vmalloc_chunk *chunk;
+> +       int err;
+> +
+> +       chunk =3D (struct kho_vmalloc_chunk *)get_zeroed_page(GFP_KERNEL)=
+;
+> +       if (!chunk)
+> +               return NULL;
+> +
+> +       err =3D kho_preserve_pages(virt_to_page(chunk), 1);
+> +       if (err)
+> +               goto err_free;
+> +       if (cur)
+> +               KHOSER_STORE_PTR(cur->hdr.next, chunk);
+> +       return chunk;
+> +
+> +err_free:
+> +       free_page((unsigned long)chunk);
+> +       return NULL;
+> +}
+> +
+> +static void kho_vmalloc_unpreserve_chunk(struct kho_vmalloc_chunk *chunk=
+)
+> +{
+> +       struct kho_mem_track *track =3D &kho_out.ser.track;
+> +       unsigned long pfn =3D PHYS_PFN(virt_to_phys(chunk));
+> +
+> +       __kho_unpreserve(track, pfn, pfn + 1);
+> +
+> +       for (int i =3D 0; chunk->phys[i]; i++) {
+> +               pfn =3D PHYS_PFN(chunk->phys[i]);
+> +               __kho_unpreserve(track, pfn, pfn + 1);
+> +       }
+> +}
+> +
+> +static void kho_vmalloc_free_chunks(struct kho_vmalloc *kho_vmalloc)
+> +{
+> +       struct kho_vmalloc_chunk *chunk =3D KHOSER_LOAD_PTR(kho_vmalloc->=
+first);
+> +
+> +       while (chunk) {
+> +               struct kho_vmalloc_chunk *tmp =3D chunk;
+> +
+> +               kho_vmalloc_unpreserve_chunk(chunk);
+> +
+> +               chunk =3D KHOSER_LOAD_PTR(chunk->hdr.next);
+> +               kfree(tmp);
+> +       }
+> +}
+> +
+> +/**
+> + * kho_preserve_vmalloc - preserve memory allocated with vmalloc() acros=
+s kexec
+> + * @ptr: pointer to the area in vmalloc address space
+> + * @preservation: placeholder for preservation metadata
+> + *
+> + * Instructs KHO to preserve the area in vmalloc address space at @ptr. =
+The
+> + * physical pages mapped at @ptr will be preserved and on successful ret=
+urn
+> + * @preservation will hold the physical address of a structure that desc=
+ribes
+> + * the preservation.
+> + *
+> + * NOTE: The memory allocated with vmalloc_node() variants cannot be rel=
+iably
+> + * restored on the same node
+> + *
+> + * Return: 0 on success, error code on failure
+> + */
+> +int kho_preserve_vmalloc(void *ptr, struct kho_vmalloc *preservation)
+> +{
+> +       struct kho_vmalloc_chunk *chunk;
+> +       struct vm_struct *vm =3D find_vm_area(ptr);
+> +       unsigned int order, flags, nr_contig_pages;
+> +       unsigned int idx =3D 0;
+> +       int err;
+> +
+> +       if (!vm)
+> +               return -EINVAL;
+> +
+> +       if (vm->flags & ~KHO_VMALLOC_SUPPORTED_FLAGS)
+> +               return -EOPNOTSUPP;
+> +
+> +       flags =3D vmalloc_flags_to_kho(vm->flags);
+> +       order =3D get_vm_area_page_order(vm);
+> +
+> +       chunk =3D new_vmalloc_chunk(NULL);
+> +       if (!chunk)
+> +               return -ENOMEM;
+> +       KHOSER_STORE_PTR(preservation->first, chunk);
+> +
+> +       nr_contig_pages =3D (1 << order);
+> +       for (int i =3D 0; i < vm->nr_pages; i +=3D nr_contig_pages) {
+> +               phys_addr_t phys =3D page_to_phys(vm->pages[i]);
+> +
+> +               err =3D kho_preserve_pages(vm->pages[i], nr_contig_pages)=
+;
+> +               if (err)
+> +                       goto err_free;
+> +
+> +               chunk->phys[idx++] =3D phys;
+> +               if (idx =3D=3D ARRAY_SIZE(chunk->phys)) {
+> +                       chunk =3D new_vmalloc_chunk(chunk);
+> +                       if (!chunk)
+> +                               goto err_free;
+> +                       idx =3D 0;
+> +               }
+> +       }
+> +
+> +       preservation->total_pages =3D vm->nr_pages;
+> +       preservation->flags =3D flags;
+> +       preservation->order =3D order;
+> +
+> +       return 0;
+> +
+> +err_free:
+> +       kho_vmalloc_free_chunks(preservation);
+> +       return err;
+> +}
+> +EXPORT_SYMBOL_GPL(kho_preserve_vmalloc);
+> +
+> +/**
+> + * kho_restore_vmalloc - recreates and populates an area in vmalloc addr=
+ess
+> + * space from the preserved memory.
+> + * @preservation: preservation metadata.
+> + *
+> + * Recreates an area in vmalloc address space and populates it with memo=
+ry that
+> + * was preserved using kho_preserve_vmalloc().
+> + *
+> + * Return: pointer to the area in the vmalloc address space, NULL on fai=
+lure.
+> + */
+> +void *kho_restore_vmalloc(const struct kho_vmalloc *preservation)
+> +{
+> +       struct kho_vmalloc_chunk *chunk =3D KHOSER_LOAD_PTR(preservation-=
+>first);
+> +       unsigned int align, order, shift, vm_flags;
+> +       unsigned long total_pages, contig_pages;
+> +       unsigned long addr, size;
+> +       struct vm_struct *area;
+> +       struct page **pages;
+> +       unsigned int idx =3D 0;
+> +       int err;
+> +
+> +       vm_flags =3D kho_flags_to_vmalloc(preservation->flags);
+> +       if (vm_flags & ~KHO_VMALLOC_SUPPORTED_FLAGS)
+> +               return NULL;
+> +
+> +       total_pages =3D preservation->total_pages;
+> +       pages =3D kvmalloc_array(total_pages, sizeof(*pages), GFP_KERNEL)=
+;
+> +       if (!pages)
+> +               return NULL;
+> +       order =3D preservation->order;
+> +       contig_pages =3D (1 << order);
+> +       shift =3D PAGE_SHIFT + order;
+> +       align =3D 1 << shift;
+> +
+> +       while (chunk) {
+> +               struct page *page;
+> +
+> +               for (int i =3D 0; chunk->phys[i]; i++) {
+> +                       phys_addr_t phys =3D chunk->phys[i];
+> +
+> +                       if (idx + contig_pages > total_pages)
+> +                               goto err_free_pages_array;
+> +
+> +                       page =3D kho_restore_pages(phys, contig_pages);
+> +                       if (!page)
+> +                               goto err_free_pages_array;
+> +
+> +                       for (int j =3D 0; j < contig_pages; j++)
+> +                               pages[idx++] =3D page;
+> +
+> +                       phys +=3D contig_pages * PAGE_SIZE;
+> +               }
+> +
+> +               page =3D kho_restore_pages(virt_to_phys(chunk), 1);
+> +               if (!page)
+> +                       goto err_free_pages_array;
+> +               chunk =3D KHOSER_LOAD_PTR(chunk->hdr.next);
+> +               __free_page(page);
+> +       }
+> +
+> +       if (idx !=3D total_pages)
+> +               goto err_free_pages_array;
+> +
+> +       area =3D __get_vm_area_node(total_pages * PAGE_SIZE, align, shift=
+,
+> +                                 vm_flags, VMALLOC_START, VMALLOC_END,
+> +                                 NUMA_NO_NODE, GFP_KERNEL,
+> +                                 __builtin_return_address(0));
+> +       if (!area)
+> +               goto err_free_pages_array;
+> +
+> +       addr =3D (unsigned long)area->addr;
+> +       size =3D get_vm_area_size(area);
+> +       err =3D vmap_pages_range(addr, addr + size, PAGE_KERNEL, pages, s=
+hift);
+> +       if (err)
+> +               goto err_free_vm_area;
+> +
+> +       area->nr_pages =3D total_pages;
+> +       area->pages =3D pages;
+> +
+> +       return area->addr;
+> +
+> +err_free_vm_area:
+> +       free_vm_area(area);
+> +err_free_pages_array:
+> +       kvfree(pages);
+> +       return NULL;
+> +}
+> +EXPORT_SYMBOL_GPL(kho_restore_vmalloc);
+> +
+>  /* Handling for debug/kho/out */
+>
+>  static struct dentry *debugfs_root;
+> --
+> 2.50.1
+>
 
