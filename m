@@ -4,89 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04E0ACAC5A7
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 03:48:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 376E9CAC592
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 03:52:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4E9368E0002; Sun, 21 Sep 2025 23:48:42 -0400 (EDT)
+	id 712C68E0005; Sun, 21 Sep 2025 23:52:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C0478E0001; Sun, 21 Sep 2025 23:48:42 -0400 (EDT)
+	id 6EA588E0001; Sun, 21 Sep 2025 23:52:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3FD7C8E0002; Sun, 21 Sep 2025 23:48:42 -0400 (EDT)
+	id 5D8528E0005; Sun, 21 Sep 2025 23:52:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C3948E0001
-	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 23:48:42 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9E15BB9A9A
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 03:48:41 +0000 (UTC)
-X-FDA: 83915504442.17.21D62BD
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 37507100005
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 03:48:37 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf05.hostedemail.com: domain of zhengxinyu6@huawei.com designates 45.249.212.187 as permitted sender) smtp.mailfrom=zhengxinyu6@huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758512919; a=rsa-sha256;
-	cv=none;
-	b=roOhBfNf3qoOGvi5n8CbB3y7+ms4n1avGIzj9BhoO+WLu+LtooZSfakC4wYT0DC04XL9e+
-	oyeDw6SfQKOyQaOhWB81VEWbQRAwxtMUNM0zYQQMYMTGNVyFZWBN6eaFXYmwHNDLPUp3+L
-	rOlRY3yonxGFmq9u8a7XaIPknqaXCzo=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf05.hostedemail.com: domain of zhengxinyu6@huawei.com designates 45.249.212.187 as permitted sender) smtp.mailfrom=zhengxinyu6@huawei.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3FF448E0001
+	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 23:52:30 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id BC38C1604A7
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 03:52:29 +0000 (UTC)
+X-FDA: 83915514018.30.39993C4
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+	by imf13.hostedemail.com (Postfix) with ESMTP id DB39820005
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 03:52:27 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=HRIQZ+mv;
+	spf=none (imf13.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758512919;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1758513148;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OGh1a6NvuF+v0HjEcEfaH5Bs3yxOtrRUC1Uy6ai8wZw=;
-	b=wfqggPG+dq8sZDmZDNyBrQ6cCziAl+Mu8ehXnJ5446MRkrik/IcKjsXuXThGpeio0yr9ww
-	kLOuLzXH6Dw+krvYDSepoH/LYoAfgtNyv2mVTGeac+hlRFKUj3xjaKEZCCylphJ/nez55e
-	1Y+P2nK3+lsp/wT8A2xHtmm5MelW48Y=
-Received: from mail.maildlp.com (unknown [172.19.162.254])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4cVTbf65n2z14MTN;
-	Mon, 22 Sep 2025 11:48:14 +0800 (CST)
-Received: from dggpemr200006.china.huawei.com (unknown [7.185.36.167])
-	by mail.maildlp.com (Postfix) with ESMTPS id 6C6D1180486;
-	Mon, 22 Sep 2025 11:48:33 +0800 (CST)
-Received: from [10.67.110.83] (10.67.110.83) by dggpemr200006.china.huawei.com
- (7.185.36.167) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 22 Sep
- 2025 11:48:32 +0800
-Message-ID: <d7f78b73-6bb4-4ccd-b604-5bfa6473fd2a@huawei.com>
-Date: Mon, 22 Sep 2025 11:48:32 +0800
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=uvOBcE6UQrpI6WGthIQ2mhhrrb+ib1iPppy0esW2pF8=;
+	b=EOtKWfKKN4Ct91jELAaStZhHi0saYzvfNJczPiqg8AWacbmMrwDEhjnyjepWfkNMTYoB2s
+	mxNtnecnWSnXj3syIKSMA0uRfT3MWztXCeT36Fs5eaTtfAE2SYQ0LmXfDv3SkoVdTYp81A
+	K5613YVUASjlE7oloMPJ0OL1scrnDP8=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=HRIQZ+mv;
+	spf=none (imf13.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758513148; a=rsa-sha256;
+	cv=none;
+	b=WEzP+U2iyg+1bkuYjE3Jg5Gn8xpIjmhNermc8lSqzqRSa+72Vzyhng6TDQxsBt7hcIw/3u
+	VkGOuzuCIkRsCTu8KYAx0rUpelWRyBjTlioZa9muflrVl/w+STt4ESjUT/9comfFgjcE41
+	BIUJSRUsxKXPawwWWFfLMEZ4tlv4MpY=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=uvOBcE6UQrpI6WGthIQ2mhhrrb+ib1iPppy0esW2pF8=; b=HRIQZ+mv3XjEr5HE95zUXo4+a6
+	NSRxPd0KrHJeiO55wmL8zxyLexKaYOtukTqYDUk4P7Wms504VRDpnu79qCxm9LPPLIvXhPbJDCS9J
+	YRDvUR+wf4nDqbVfzd55z89ZBt+992gTBdYH/kADhegMyk3HdwQFQNcaBQPMTq94apRnfURggWfW/
+	JHqnvLMVP0BaRB8Hc5glF+yhqEgLGpQ51cjWLVzIBoXc/Te8IX6AprfxOgc+nyojcMBMgjxAohGXS
+	cfa+R9tgKpxmrTagksJYExY1jTrB11KyU7eGcwAdbKgV4ytOY8lJPggIhRGBTZNeJw+hKdXevicaO
+	50y2/Udw==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1v0Xb8-00000007I6X-2KnX;
+	Mon, 22 Sep 2025 03:52:18 +0000
+Date: Mon, 22 Sep 2025 04:52:18 +0100
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Paul Moore <paul@paul-moore.com>
+Cc: linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org,
+	brauner@kernel.org, jack@suse.cz, raven@themaw.net,
+	miklos@szeredi.hu, a.hindborg@kernel.org, linux-mm@kvack.org,
+	linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev,
+	kees@kernel.org, rostedt@goodmis.org, gregkh@linuxfoundation.org,
+	linux-usb@vger.kernel.org, casey@schaufler-ca.com,
+	linuxppc-dev@lists.ozlabs.org, borntraeger@linux.ibm.com
+Subject: Re: [PATCH 31/39] convert selinuxfs
+Message-ID: <20250922035218.GP39973@ZenIV>
+References: <20250920074156.GK39973@ZenIV>
+ <20250920074759.3564072-1-viro@zeniv.linux.org.uk>
+ <20250920074759.3564072-31-viro@zeniv.linux.org.uk>
+ <CAHC9VhTRsQtncKx4bkbkSqVXpZyQLHbvKkcaVO-ss21Fq36r+Q@mail.gmail.com>
+ <20250921222619.GO39973@ZenIV>
+ <CAHC9VhTy2j+hkT24hM1J2GH+12wp63DArRo6BGTvTwGX2k4CnA@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [BUG REPORT] mm/damon: softlockup when kdamond walk page with cpu
- hotplug
-To: SeongJae Park <sj@kernel.org>, Hugh Dickins <hughd@google.com>
-CC: Andrew Morton <akpm@linux-foundation.org>, "Paul E . McKenney"
-	<paulmck@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
-	<damon@lists.linux.dev>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <zouyipeng@huawei.com>
-References: <20250920104220.1399-1-sj@kernel.org>
-Content-Language: en-US
-From: Xinyu Zheng <zhengxinyu6@huawei.com>
-In-Reply-To: <20250920104220.1399-1-sj@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.67.110.83]
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- dggpemr200006.china.huawei.com (7.185.36.167)
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 37507100005
-X-Stat-Signature: akdh4pdc8irzde6iy71ijqcn66e7ewu9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHC9VhTy2j+hkT24hM1J2GH+12wp63DArRo6BGTvTwGX2k4CnA@mail.gmail.com>
+X-Rspamd-Queue-Id: DB39820005
+X-Rspamd-Server: rspam05
+X-Stat-Signature: dbmwgcp4gf7z9jus4dn1ob6uaftti6sd
 X-Rspam-User: 
-X-HE-Tag: 1758512917-132168
-X-HE-Meta: U2FsdGVkX1/4I3YHzH8cdzxUfXMvFEzQdkBQv9uIImqC5aYGYOEzrcyWtAKBEmd6xHiFCTZi1GKMk3FbeTHT0tm5cZ4CkJyFxK5XGg+LWcYQdacJQIcocRHuz5ATgvH+Fg81tixrKVBl4bXAT3fnG34nVP6G980VL06ONqvIj1VvJ/MmCzVTDqc009Mj1q3HiCMLphOFVtgCnMAEM9PLdPYaqECFMIRGt7wgVV5vcDwlBBNdjhnJxI4AxC2Spt9vRztc1NMpoZYWRQ/cfH56Sp0hiVoBYow7ZP7IZb46IaCgUrEaG/KPlGr4wMVKX1aUCVBXyhG0lPTAyf9Wh4n1clKyC7+ODDPGFLVp6icjcY53mYaFMHuJTg7rPFcMB1YvwiLomgfecCwvLa6HimqgagfANTyrHKShn6A/0Ou9uUUwxcLOQ+lXWPpKAQS1yKH7B+pNP4EmcL1ldhBvOO6UJnMu3wLZ5YIKI3O14KSh8BBA8Y9em9G0Fe9x5WD+lewPtthO0kzhIGm81GMF99Rg11EfLnSunk923vM2YeH+LnEiRe5Uc57tGAbMPsBS+zpHVOAzrrkG7aDkxUNlc/YmJEoGJ/HAnccTGe/sw5blg6itRu3eW+iotcxgVYlvbkMd3oupLH6Y6r22SZ3C+XLqnHaxrgnj7J9mqGp33qpLtIV4dsOdlIgVPH7EelWgzh3VXGSvrYWGJ4rfC1QbeKERwnmR7fOQ2VsoDmBj0NteJ+eLIyV5M8LHHMvSLLASulKUpGfWQ2J9/shqsIfruHzdepLZd7Zhpx8E5DDWIrMfcattgp0eOdViL4cm0RntZTUcp3jJ/6Uq75yh82f9jvqGnKbU2AtpVWKpXBDx4MMo8hNsq4iEYgsVlh+HB6D3X3n2hQS7QOafPOv/r8rrXC23gYA9Ykq/hb9GSeCF+Ay2tySR+HepWetCBssTgMuZvBgdDkp1IdBfZcz9XB+PyLQ
- b+V4yjJ1
- GWvjUVgUmmRJ2RjaWbSCZhMzJIUwZDOok67TvnPIvcKlj756PQgZwzuzpuyCuZK/djblGylHUqmniL5Tn26Uw1gbKDfAXLBEjMr5mr8nQVz1PHd9c4DVZKvS07Eqqxk5fCt/E43twzEzmvMdFQwuVQVgzsUQNI+2VoliUi2BHA8tu+0OH/ncLM+dP/Avv5eU201Q+Ssb+El87+cgTQun4hWFk9VQBt8tr6rUboktXFddVuRGc5YJPKQV7ADBNmoqltp6cVG5WEH9LlZDdwpS7xA3e0rrb8b1Ptm3+
+X-HE-Tag: 1758513147-928916
+X-HE-Meta: U2FsdGVkX19EcipbHrxYBU7HAII1kW+hRdyH16NR/wtProPLSKkn+Y/T/NTorR08kBeCQePeRLNFrzsVhmfCcA3mEhcN6gZjqrVH3YEAzHt7NUkmzDsad7D2aVI9Wvy8s7pOkGSpOzpigK+dQ6Y8+/XRFbx4oO7tnptsQxLU+olBzIoBQC89wDYNVZ2JaKcgnP1rgheralqy1af3WOJnZ2WE/zmgvkxU3nMTGQvrDV5KPxxl1rpdzdsNOPdlzN1LlcYtcdJ/uM2RQNSn97XEPaa7u+KHTcsYsh/H+CV/rB1aLUAZyaKkz5sbsqplV1K6XxFkTU/XB1SX3Z4fmVw2gzY7xMXDy5nc6OefA2LSngvxS5doHhGPoI+Xd0rr1TgUu7sUNjdpWiVBPtCbte2Sq75M4QHDxrFx7krs0AaC5GzblCFAaQ9RM6a0ZnyCtdQXQWLUGOwYdVL55Rtlz4w2Bypqoivq2cW2HEeBZuWucftTg7EBQODSLf1KRSqTB736fFl9W9q6ogTgUFLk3HPOEpvPkbfrRiEEGFDts233JmhYlsnp+LUbMfukPzMiIONPLBwy9RR5eKU9T7OYTz8KknMZbWR2gdInRKf/gq0m98rUBNWVRQ+RDuuk8zu7q+VTZOHhzz53bu68hj+beygqWOve8mBPibx1e7CXxhScnZSiCPpdb6wuq9MDa8uWpr3I0rAM1IPqMUzigJyNAdiLPklpWIIIDlQ+vWcQqMYF6yUdVVd3tG91EIMNVAA9tTOIvSY01KcyGWIUFdpoMItofVnp5p5rHct5OzXbzdZy5ASZwCLYOP/hlAkG7nWgbf5fyHPQbzYQPTuIj0HC8/OL/QVi1YNKosoNyXS6QAcY9CzKDrjJGVSO5GFF/nRyw6M1FQPfR9XcYVt2eNrPgGiY2353j5avEACPuJubXMAXkV3hmyzcN6MwEojfmp3I+vAA2B2cGugYPPcL2O36BZy
+ /xo5PWHo
+ YyHPYP8dvdu7SUjgebH/Pt8VLCl2T6JaojbntCnGsdIuMcHAqGmoItb/J6ll8INjhC/Xdlsj1uTelTxx+wEXPGq046c/NK+evrCAeOYx36NImcwrbrIWYF18+0jb4n1HWjHR6L9cm91FhpSy5jAdw/tE9wxs/Hilwk1lgg55YLZqZxMXMqKyfTiARIr7w8MId0sTFvxeWNFKGZoiZSl/WD8GXSoZBuTTJJA6AOX9uW2HAuwgX/PgeQH/UW78AvycJm7Uog5mlMHjKtswn3oogfrv/U19m1/ohfPN0pGRPP0W9oJ1XEF0iKFDjXRTvrtVRMk/DhT4oOhAa3lNRP9V4hkIzwfDd9btqNCYXW9nOffaIPUrtevHta6abgb33RN5xa7hvIT1NS0fwGKv0vbMG/3tWZDYZHzTaeffU0YVqGghuZ+phpLVORpGj0spbv6a2Hdi1
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,150 +99,375 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Sun, Sep 21, 2025 at 10:50:02PM -0400, Paul Moore wrote:
 
+> Looks good to me, ACK below.  For me personally, it's a bit late to
+> take non-bugfix stuff for the upcoming merge window so I would defer
+> this for a few weeks, but if you want to take it now that's your call.
+> Also your call if you would prefer this to go in with the rest of the
+> patchset you've working on, or if you want me to take it via the
+> SELinux tree.  Let me know.
 
-On 9/20/2025 6:42 PM, SeongJae Park wrote:
-> On Fri, 19 Sep 2025 20:56:56 -0700 (PDT) Hugh Dickins <hughd@google.com> wrote:
-> 
->> On Thu, 18 Sep 2025, SeongJae Park wrote:
->>
->>> Hello,
->>>
->>> On Thu, 18 Sep 2025 03:00:29 +0000 Xinyu Zheng <zhengxinyu6@huawei.com> wrote:
->>>
->>>> A softlockup issue was found with stress test:
-> [...]
->> This had me worried for a while: thought we might be needing to change
->> lots of other places, and scatter cond_resched()s here and there.
->>
->> But no: no need for cond_resched()'s, this is all just a confusion about
->> where pmd migration entries are handled: a pmd migration entry is accepted
->> by pmd_trans_huge_lock(), but is not accepted by pmd_trans_huge().
->>
->> See fs/proc/task_mmu.c for mm_walk examples of trying pmd_trans_huge_lock(),
->> then pte_offset_map_lock() if it failed, or ACTION_AGAIN if that failed too.
->>
->> When I ACTION_AGAINed damon_mkold_pmd_entry() and damon_young_pmd_entry()
->> in 6.5, I didn't realize that the pmd migration entries were reaching the
->> pte_offset_map_lock(), with corrupt results (or did pmd_bad() filter them
->> out? I didn't think so, but it'll take me too long now to work out whether
->> a pmd migration entry counts as pmd_bad or not); but knew that the new
->> pte_offset_map_lock() filtered them out safely if there was a race.
->>
->> But they've been reaching it without any race, so yes the ACTION_AGAIN
->> would send the mm_walk back again and again for as long as the pmd
->> migration entry remained there: not good, and Xinyu finds a lockup
->> when hotplugging CPU without preemption.
-> 
-> Thank you for your detailed and kind explanation, Hugh!
-> 
->>
->> My suggested patch below (please take it over SJ, and do with it what
->> you will), converting damon_mkold_pmd_entry() and damon_young_pmd_entry()
->> to use pmd_trans_huge_lock() as I'd been expecting, so handling the
->> pmd migration entry up in that block.  (Side note: patch against 6.17-rc,
->> but I see mm.git adds also a damos_va_stat_pmd_entry(), which would
->> better be converted to the same pmd_trans_huge_lock() pattern -
->> though I notice you're not setting ACTION_AGAIN in that one.)
->>
->> But I have to admit, there's very little gained by using ACTION_AGAIN
->> in these functions: it helps not to miss the range when racing against
->> THP collapse or split, but you're already content to miss the extent
->> if it has a pmd migration entry, and there can still be an instant when
->> the range which used to have a page table does not yet show the THP.
->>
->> So if you prefer a smaller fix (but a larger source file!), just
->> dropping the walk->action = ACTION_AGAIN lines should be good enough.
+Seeing that it's already a 41-commit patchset (rpc_pipe conversion pulled
+in, now +1 from this split) with several more in the pipeline (securityfs
+conversion, for starters) and it's -rc7...
 
-Hi, Hugh. Thank you for your patient explanation and solution!
+I think I'll post v2 in the middle of the week, but aim for the next
+cycle.  Rebase to -rc1 as soon as it comes, post v3 for review and testing,
+then shove it into -next.
 
-> 
-> I agree all your points.
-> 
-> I'd prefer the smaller source file following your suggested change below (using
-> pmd_trans_huge_lock()) in long term.  But, for a short term, I'd prefer the
-> smaller fix (dropping walk->action = ACTION_AGAIN) since it should also be
-> merged into stable@, up to 6.5.y.
-> 
-> So, I'd like to suggest as following.  Let's drop the
-> 'walk->action = ACTION_AGAIN' like the below attached one, for now.  After it
-> is confirmed to fix the issue and merged into relevant trees including stable
-> trees, let's revisit the code to cleanup following pmd_trans_huge_lock()
-> pattern.
-> 
-> Please let me know if I'm missing something, or you have other opinions.
-> 
-> Xinyu, could you please test if the below attached patch fixes your issue and
-> let us know the result?
+Especially since #work.nfsctl is in -next, so hopefully by -rc1 there won't
+be any need to put merges in the middle of the series, with conversion of
+nfsctl included into the series, bringing with it removal of kill_litter_super()
+and (hopefully) "give configfs and apparmorfs private copies of simple_unlink()
+and simple_rmdir() doing dput() instead of d_make_discardable(), then make
+d_make_discardable() complain about being called on non-persistent dentries".
 
-Thanks for all the reply and suggestion, SJ! I am trying to reproduce 
-the scenario now and will send the result back very soon!
+Speaking of additional patches into that series: AFAICS there's no reason
+for selinuxfs to allocate dentry before the inode.  Doing it the other way
+round simplifies the things quite a bit, IMO.  Something like this (as followup
+to the previous patch):
 
-> 
-> If Xinyu confirms the validity of the fix and no one objects to the above plan,
-> I will post the fix as a formal one with a better commit message.
-> 
-> 
-> Thanks,
-> SJ
-> 
-
-> [...]
-> 
-> ==== >8 ====
->  From 743cafda8982624229541741dbfe5ff252328ac0 Mon Sep 17 00:00:00 2001
-> From: SeongJae Park <sj@kernel.org>
-> Date: Sat, 20 Sep 2025 03:35:34 -0700
-> Subject: [PATCH] mm/damon/vaddr: do not try page table walk again
-> 
-> For a quick fix of a softlockup issue:
-> https://lore.kernel.org/20250918030029.2652607-1-zhengxinyu6@huawei.com
-> 
-> Signed-off-by: SeongJae Park <sj@kernel.org>
-> ---
->  From 743cafda8982624229541741dbfe5ff252328ac0 Mon Sep 17 00:00:00 2001
-> From: SeongJae Park <sj@kernel.org>
-> Date: Sat, 20 Sep 2025 03:35:34 -0700
-> Subject: [PATCH] mm/damon/vaddr: do not try page table walk again
-> 
-> For a quick fix of a softlockup issue:
-> https://lore.kernel.org/20250918030029.2652607-1-zhengxinyu6@huawei.com
-> 
-> Signed-off-by: SeongJae Park <sj@kernel.org>
-> ---
->   mm/damon/vaddr.c | 8 ++------
->   1 file changed, 2 insertions(+), 6 deletions(-)
-> 
-> diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
-> index 8c048f9b129e..7e834467b2d8 100644
-> --- a/mm/damon/vaddr.c
-> +++ b/mm/damon/vaddr.c
-> @@ -328,10 +328,8 @@ static int damon_mkold_pmd_entry(pmd_t *pmd, unsigned long addr,
->   	}
->   
->   	pte = pte_offset_map_lock(walk->mm, pmd, addr, &ptl);
-> -	if (!pte) {
-> -		walk->action = ACTION_AGAIN;
-> +	if (!pte)
->   		return 0;
-> -	}
->   	if (!pte_present(ptep_get(pte)))
->   		goto out;
->   	damon_ptep_mkold(pte, walk->vma, addr);
-> @@ -481,10 +479,8 @@ static int damon_young_pmd_entry(pmd_t *pmd, unsigned long addr,
->   #endif	/* CONFIG_TRANSPARENT_HUGEPAGE */
->   
->   	pte = pte_offset_map_lock(walk->mm, pmd, addr, &ptl);
-> -	if (!pte) {
-> -		walk->action = ACTION_AGAIN;
-> +	if (!pte)
->   		return 0;
-> -	}
->   	ptent = ptep_get(pte);
->   	if (!pte_present(ptent))
->   		goto out;
-
--- 
-Xinyu Zheng
-
+diff --git a/security/selinux/selinuxfs.c b/security/selinux/selinuxfs.c
+index 482a2cac9640..7bee2d8bdec5 100644
+--- a/security/selinux/selinuxfs.c
++++ b/security/selinux/selinuxfs.c
+@@ -1197,6 +1197,25 @@ static struct inode *sel_make_inode(struct super_block *sb, umode_t mode)
+ 	return ret;
+ }
+ 
++static struct dentry *sel_attach(struct dentry *parent, const char *name,
++				 struct inode *inode)
++{
++	struct dentry *dentry = d_alloc_name(parent, name);
++	if (unlikely(!dentry)) {
++		iput(inode);
++		return ERR_PTR(-ENOMEM);
++	}
++	d_add(dentry, inode);
++	return dentry;
++}
++
++static int sel_attach_file(struct dentry *parent, const char *name,
++			   struct inode *inode)
++{
++	struct dentry *dentry = sel_attach(parent, name, inode);
++	return PTR_ERR_OR_ZERO(dentry);
++}
++
+ static ssize_t sel_read_bool(struct file *filep, char __user *buf,
+ 			     size_t count, loff_t *ppos)
+ {
+@@ -1364,8 +1383,7 @@ static int sel_make_bools(struct selinux_policy *newpolicy, struct dentry *bool_
+ 	*bool_num = num;
+ 	*bool_pending_names = names;
+ 
+-	for (i = 0; i < num; i++) {
+-		struct dentry *dentry;
++	for (i = 0; !ret && i < num; i++) {
+ 		struct inode *inode;
+ 		struct inode_security_struct *isec;
+ 		ssize_t len;
+@@ -1376,15 +1394,9 @@ static int sel_make_bools(struct selinux_policy *newpolicy, struct dentry *bool_
+ 			ret = -ENAMETOOLONG;
+ 			break;
+ 		}
+-		dentry = d_alloc_name(bool_dir, names[i]);
+-		if (!dentry) {
+-			ret = -ENOMEM;
+-			break;
+-		}
+ 
+ 		inode = sel_make_inode(bool_dir->d_sb, S_IFREG | S_IRUGO | S_IWUSR);
+ 		if (!inode) {
+-			dput(dentry);
+ 			ret = -ENOMEM;
+ 			break;
+ 		}
+@@ -1402,7 +1414,8 @@ static int sel_make_bools(struct selinux_policy *newpolicy, struct dentry *bool_
+ 		isec->initialized = LABEL_INITIALIZED;
+ 		inode->i_fop = &sel_bool_ops;
+ 		inode->i_ino = i|SEL_BOOL_INO_OFFSET;
+-		d_add(dentry, inode);
++
++		ret = sel_attach_file(bool_dir, names[i], inode);
+ 	}
+ out:
+ 	free_page((unsigned long)page);
+@@ -1587,6 +1600,7 @@ static int sel_make_avc_files(struct dentry *dir)
+ 	struct super_block *sb = dir->d_sb;
+ 	struct selinux_fs_info *fsi = sb->s_fs_info;
+ 	unsigned int i;
++	int err = 0;
+ 	static const struct tree_descr files[] = {
+ 		{ "cache_threshold",
+ 		  &sel_avc_cache_threshold_ops, S_IRUGO|S_IWUSR },
+@@ -1596,26 +1610,20 @@ static int sel_make_avc_files(struct dentry *dir)
+ #endif
+ 	};
+ 
+-	for (i = 0; i < ARRAY_SIZE(files); i++) {
++	for (i = 0; !err && i < ARRAY_SIZE(files); i++) {
+ 		struct inode *inode;
+-		struct dentry *dentry;
+-
+-		dentry = d_alloc_name(dir, files[i].name);
+-		if (!dentry)
+-			return -ENOMEM;
+ 
+ 		inode = sel_make_inode(dir->d_sb, S_IFREG|files[i].mode);
+-		if (!inode) {
+-			dput(dentry);
++		if (!inode)
+ 			return -ENOMEM;
+-		}
+ 
+ 		inode->i_fop = files[i].ops;
+ 		inode->i_ino = ++fsi->last_ino;
+-		d_add(dentry, inode);
++
++		err = sel_attach_file(dir, files[i].name, inode);
+ 	}
+ 
+-	return 0;
++	return err;
+ }
+ 
+ static int sel_make_ss_files(struct dentry *dir)
+@@ -1623,30 +1631,25 @@ static int sel_make_ss_files(struct dentry *dir)
+ 	struct super_block *sb = dir->d_sb;
+ 	struct selinux_fs_info *fsi = sb->s_fs_info;
+ 	unsigned int i;
++	int err = 0;
+ 	static const struct tree_descr files[] = {
+ 		{ "sidtab_hash_stats", &sel_sidtab_hash_stats_ops, S_IRUGO },
+ 	};
+ 
+-	for (i = 0; i < ARRAY_SIZE(files); i++) {
++	for (i = 0; !err && i < ARRAY_SIZE(files); i++) {
+ 		struct inode *inode;
+-		struct dentry *dentry;
+-
+-		dentry = d_alloc_name(dir, files[i].name);
+-		if (!dentry)
+-			return -ENOMEM;
+ 
+ 		inode = sel_make_inode(dir->d_sb, S_IFREG|files[i].mode);
+-		if (!inode) {
+-			dput(dentry);
++		if (!inode)
+ 			return -ENOMEM;
+-		}
+ 
+ 		inode->i_fop = files[i].ops;
+ 		inode->i_ino = ++fsi->last_ino;
+-		d_add(dentry, inode);
++
++		err = sel_attach_file(dir, files[i].name, inode);
+ 	}
+ 
+-	return 0;
++	return err;
+ }
+ 
+ static ssize_t sel_read_initcon(struct file *file, char __user *buf,
+@@ -1674,30 +1677,25 @@ static const struct file_operations sel_initcon_ops = {
+ static int sel_make_initcon_files(struct dentry *dir)
+ {
+ 	unsigned int i;
++	int err = 0;
+ 
+-	for (i = 1; i <= SECINITSID_NUM; i++) {
+-		struct inode *inode;
+-		struct dentry *dentry;
++	for (i = 1; !err && i <= SECINITSID_NUM; i++) {
+ 		const char *s = security_get_initial_sid_context(i);
++		struct inode *inode;
+ 
+ 		if (!s)
+ 			continue;
+-		dentry = d_alloc_name(dir, s);
+-		if (!dentry)
+-			return -ENOMEM;
+ 
+ 		inode = sel_make_inode(dir->d_sb, S_IFREG|S_IRUGO);
+-		if (!inode) {
+-			dput(dentry);
++		if (!inode)
+ 			return -ENOMEM;
+-		}
+ 
+ 		inode->i_fop = &sel_initcon_ops;
+ 		inode->i_ino = i|SEL_INITCON_INO_OFFSET;
+-		d_add(dentry, inode);
++		err = sel_attach_file(dir, s, inode);
+ 	}
+ 
+-	return 0;
++	return err;
+ }
+ 
+ static inline unsigned long sel_class_to_ino(u16 class)
+@@ -1779,29 +1777,21 @@ static int sel_make_perm_files(struct selinux_policy *newpolicy,
+ 	if (rc)
+ 		return rc;
+ 
+-	for (i = 0; i < nperms; i++) {
++	for (i = 0; !rc && i < nperms; i++) {
+ 		struct inode *inode;
+-		struct dentry *dentry;
+ 
+-		rc = -ENOMEM;
+-		dentry = d_alloc_name(dir, perms[i]);
+-		if (!dentry)
+-			goto out;
+-
+-		rc = -ENOMEM;
+ 		inode = sel_make_inode(dir->d_sb, S_IFREG|S_IRUGO);
+ 		if (!inode) {
+-			dput(dentry);
+-			goto out;
++			rc = -ENOMEM;
++			break;
+ 		}
+ 
+ 		inode->i_fop = &sel_perm_ops;
+ 		/* i+1 since perm values are 1-indexed */
+ 		inode->i_ino = sel_perm_to_ino(classvalue, i + 1);
+-		d_add(dentry, inode);
++
++		rc = sel_attach_file(dir, perms[i], inode);
+ 	}
+-	rc = 0;
+-out:
+ 	for (i = 0; i < nperms; i++)
+ 		kfree(perms[i]);
+ 	kfree(perms);
+@@ -1816,20 +1806,18 @@ static int sel_make_class_dir_entries(struct selinux_policy *newpolicy,
+ 	struct selinux_fs_info *fsi = sb->s_fs_info;
+ 	struct dentry *dentry = NULL;
+ 	struct inode *inode = NULL;
+-
+-	dentry = d_alloc_name(dir, "index");
+-	if (!dentry)
+-		return -ENOMEM;
++	int err;
+ 
+ 	inode = sel_make_inode(dir->d_sb, S_IFREG|S_IRUGO);
+-	if (!inode) {
+-		dput(dentry);
++	if (!inode)
+ 		return -ENOMEM;
+-	}
+ 
+ 	inode->i_fop = &sel_class_ops;
+ 	inode->i_ino = sel_class_to_ino(index);
+-	d_add(dentry, inode);
++
++	err = sel_attach_file(dir, "index", inode);
++	if (err)
++		return err;
+ 
+ 	dentry = sel_make_dir(dir, "perms", &fsi->last_class_ino);
+ 	if (IS_ERR(dentry))
+@@ -1881,58 +1869,47 @@ static int sel_make_policycap(struct dentry *dir)
+ {
+ 	struct super_block *sb = dir->d_sb;
+ 	unsigned int iter;
+-	struct dentry *dentry = NULL;
+ 	struct inode *inode = NULL;
++	int err = 0;
++
++	for (iter = 0; !err && iter <= POLICYDB_CAP_MAX; iter++) {
++		const char *name;
+ 
+-	for (iter = 0; iter <= POLICYDB_CAP_MAX; iter++) {
+ 		if (iter < ARRAY_SIZE(selinux_policycap_names))
+-			dentry = d_alloc_name(dir,
+-					      selinux_policycap_names[iter]);
++			name = selinux_policycap_names[iter];
+ 		else
+-			dentry = d_alloc_name(dir, "unknown");
+-
+-		if (dentry == NULL)
+-			return -ENOMEM;
++			name = "unknown";
+ 
+ 		inode = sel_make_inode(sb, S_IFREG | 0444);
+-		if (inode == NULL) {
+-			dput(dentry);
++		if (!inode)
+ 			return -ENOMEM;
+-		}
+ 
+ 		inode->i_fop = &sel_policycap_ops;
+ 		inode->i_ino = iter | SEL_POLICYCAP_INO_OFFSET;
+-		d_add(dentry, inode);
++		err = sel_attach_file(dir, name, inode);
+ 	}
+ 
+-	return 0;
++	return err;
+ }
+ 
+ static struct dentry *sel_make_dir(struct dentry *dir, const char *name,
+ 			unsigned long *ino)
+ {
+-	struct dentry *dentry = d_alloc_name(dir, name);
+ 	struct inode *inode;
+ 
+-	if (!dentry)
+-		return ERR_PTR(-ENOMEM);
+-
+ 	inode = sel_make_inode(dir->d_sb, S_IFDIR | S_IRUGO | S_IXUGO);
+-	if (!inode) {
+-		dput(dentry);
++	if (!inode)
+ 		return ERR_PTR(-ENOMEM);
+-	}
+ 
+ 	inode->i_op = &simple_dir_inode_operations;
+ 	inode->i_fop = &simple_dir_operations;
+ 	inode->i_ino = ++(*ino);
+ 	/* directory inodes start off with i_nlink == 2 (for "." entry) */
+ 	inc_nlink(inode);
+-	d_add(dentry, inode);
+ 	/* bump link count on parent directory, too */
+ 	inc_nlink(d_inode(dir));
+ 
+-	return dentry;
++	return sel_attach(dir, name, inode);
+ }
+ 
+ static int reject_all(struct mnt_idmap *idmap, struct inode *inode, int mask)
+@@ -2020,17 +1997,10 @@ static int sel_fill_super(struct super_block *sb, struct fs_context *fc)
+ 		goto err;
+ 	}
+ 
+-	ret = -ENOMEM;
+-	dentry = d_alloc_name(sb->s_root, NULL_FILE_NAME);
+-	if (!dentry)
+-		goto err;
+-
+ 	ret = -ENOMEM;
+ 	inode = sel_make_inode(sb, S_IFCHR | S_IRUGO | S_IWUGO);
+-	if (!inode) {
+-		dput(dentry);
++	if (!inode)
+ 		goto err;
+-	}
+ 
+ 	inode->i_ino = ++fsi->last_ino;
+ 	isec = selinux_inode(inode);
+@@ -2039,7 +2009,9 @@ static int sel_fill_super(struct super_block *sb, struct fs_context *fc)
+ 	isec->initialized = LABEL_INITIALIZED;
+ 
+ 	init_special_inode(inode, S_IFCHR | S_IRUGO | S_IWUGO, MKDEV(MEM_MAJOR, 3));
+-	d_add(dentry, inode);
++	ret = sel_attach_file(sb->s_root, NULL_FILE_NAME, inode);
++	if (ret)
++		goto err;
+ 
+ 	dentry = sel_make_dir(sb->s_root, "avc", &fsi->last_ino);
+ 	if (IS_ERR(dentry)) {
 
