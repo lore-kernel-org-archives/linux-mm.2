@@ -4,86 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF501CAC5A7
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 03:10:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2510ACAC59A
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 03:19:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0ED238E0005; Sun, 21 Sep 2025 23:10:02 -0400 (EDT)
+	id 45D478E0006; Sun, 21 Sep 2025 23:19:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C54B8E0001; Sun, 21 Sep 2025 23:10:02 -0400 (EDT)
+	id 435288E0001; Sun, 21 Sep 2025 23:19:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 001AC8E0005; Sun, 21 Sep 2025 23:10:01 -0400 (EDT)
+	id 34AAF8E0006; Sun, 21 Sep 2025 23:19:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E428A8E0001
-	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 23:10:01 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1DD8A8E0001
+	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 23:19:13 -0400 (EDT)
 Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 94BE658F52
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 03:10:01 +0000 (UTC)
-X-FDA: 83915407002.20.3ED6709
-Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
-	by imf04.hostedemail.com (Postfix) with ESMTP id B68B140005
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 03:09:58 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="V+p+8mK/";
-	spf=pass (imf04.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A66CE1A043D
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 03:19:12 +0000 (UTC)
+X-FDA: 83915430144.20.8507574
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
+	by imf19.hostedemail.com (Postfix) with ESMTP id DE6A41A0005
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 03:19:09 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=JWXFAQpM;
+	spf=pass (imf19.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758510600;
+	s=arc-20220608; t=1758511151;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aZ2gdkX08ci0+g9mdPNAJE+ZbpX5mtgiwL2vmxSQH40=;
-	b=1jVchcNeKiT7At7xBK8/NKYmflse2oQNG0lxiKWpA9WdfjduKfH0jUKc4d2Alw6/kl8CR4
-	ZaWzM5Acg9Wd/ZuG2Aq+DXCPnUJwKx9nAsKjxU/AF+pqpgy8fr2B/JWD0gElgE9pH4718w
-	kDT63YtjtWpFIpN5Oe4i32LTId+Omb4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758510600; a=rsa-sha256;
+	bh=z1xv7n2dNrf1sQprqQNalsEEZ9e1L86/2wWKLGMKTYE=;
+	b=35IOQt1UMk5f2SAtGRM3n1wzqpA6lElfKOBwbMZ5bn+p1Mspq/w8QHbQcrxocLZUSsV87r
+	2x8G+Oomot+BP3HLPiFkYU9SllyOSHgfe9lUhAfAesOQWgD6rBWX/dxKXqKzESwuiRX+L2
+	WzkcbIJgFoIiUmiojSSsTjj1N15ObXk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758511151; a=rsa-sha256;
 	cv=none;
-	b=yy67c8lBMMtir5rVeAkez3F+QDFDErIDOwmY3GibkVvIS8c1DFYty1RvFwx45eK6+Sem9e
-	doZsVVa4dmaCqE9jU7br0F1fRRsWl2MJQcq2Rf6MzKH0St8z147J7GtmzIP20BLtsPlN37
-	7ndTJRVClxXarBmFgSEtTYs4HUV8JuE=
+	b=Qlb9f96lUTcpKPyB2bMWQSy9LIuR7sPuRcA2795YO8KSVLqNGezee2Etd8QQ9jiRuvSaWt
+	2/GCtT2cooj3Fb7bj2e11ScZx67V7R3r/lt4OYHzUfFKTLd/rVOk5tAKXKcixMSqrWQ3Dy
+	YujccKBLaO5zeOfxWML4KpPAdDnRMhg=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="V+p+8mK/";
-	spf=pass (imf04.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=JWXFAQpM;
+	spf=pass (imf19.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1758510596; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=aZ2gdkX08ci0+g9mdPNAJE+ZbpX5mtgiwL2vmxSQH40=;
-	b=V+p+8mK/j8LPRpxJtgVLrkZrcRX8y+wKubpCF1EcU0wEGKQUeqDZtYKPQBSqZhCYmmm7eT1RsKK0Nh9rdWdv1dkiVlczSnH9q9BYA1mqri5HSxtiHe8ayw5tj0TQGwYvbhz23mBYM03pYT1H9JkMPf/xd1REJV8bJzYXGi/1sfU=
-Received: from 30.74.144.144(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WoR-W6p_1758510594 cluster:ay36)
+	t=1758511147; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=z1xv7n2dNrf1sQprqQNalsEEZ9e1L86/2wWKLGMKTYE=;
+	b=JWXFAQpMC2t9tmtlU7NDsydDhHNdpI9NN9o7YQRmU2EiyCzcNLnDMnm1gxKRkO75SSeOXfE3UV7cBdfD6o8Qvs4qAkqo4ulpKj3EC3661Zr6CW1cBB9DO6kJZcUv0I5hK4hkqZR8yrHT/wv+mLIZq4dTipoq5LZXFhHvPKk1IEg=
+Received: from 30.74.144.144(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WoR4wP2_1758511144 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Mon, 22 Sep 2025 11:09:54 +0800
-Message-ID: <58895de6-58e5-4cb5-b2b3-4a66283908a8@linux.alibaba.com>
-Date: Mon, 22 Sep 2025 11:09:53 +0800
+          Mon, 22 Sep 2025 11:19:05 +0800
+Message-ID: <ddb7a9f8-5516-4bf2-8bd7-3761f133bc6b@linux.alibaba.com>
+Date: Mon, 22 Sep 2025 11:19:03 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: shmem: fix too little space for tmpfs only fallback
- 4KB
-To: Vernon Yang <vernon2gm@gmail.com>
-Cc: hughd@google.com, akpm@linux-foundation.org, da.gomez@samsung.com,
+Subject: Re: [PATCHv2 4/5] mm/fault: Try to map the entire file folio in
+ finish_fault()
+To: Kiryl Shutsemau <kirill@shutemov.name>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@redhat.com>, Hugh Dickins <hughd@google.com>,
+ Matthew Wilcox <willy@infradead.org>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Shakeel Butt <shakeel.butt@linux.dev>,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Vernon Yang <yanglincheng@kylinos.cn>
-References: <20250908123128.900254-1-vernon2gm@gmail.com>
- <c245dbb5-2e2b-4308-a296-f711b74002eb@linux.alibaba.com>
- <3349E5A6-BCDC-47B9-956B-CB0D0BC02D84@gmail.com>
- <fd0664f4-2ee7-420c-a63c-b4b1c923e1c2@linux.alibaba.com>
- <kh5nq3ycj5neufhmiqetl5vtosictiflk73xyb2fdl2p4txmu3@4ndr7cw4b2j6>
+ Kiryl Shutsemau <kas@kernel.org>
+References: <20250919124036.455709-1-kirill@shutemov.name>
+ <20250919124036.455709-5-kirill@shutemov.name>
 From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <kh5nq3ycj5neufhmiqetl5vtosictiflk73xyb2fdl2p4txmu3@4ndr7cw4b2j6>
+In-Reply-To: <20250919124036.455709-5-kirill@shutemov.name>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: B68B140005
-X-Stat-Signature: pbi3ibcqgwsj3i9cznec5cap69cduyus
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: DE6A41A0005
+X-Stat-Signature: o4p4ohp5k3jwp6urxuks3h5b9g7r1xzn
 X-Rspam-User: 
-X-HE-Tag: 1758510598-932704
-X-HE-Meta: U2FsdGVkX1+Pt8XkxBwvxhyZSKKKQVXd9ubt92w6hIunHyawuTfQ7h8TVj3PicYytwhJHFJd9SC1Mw/xXLlmWrRyEVp9R0oAgv8OdWj+9dzNfRlPBpKfupjqgFaq7B91eTHKJyYy+wlwFjR7mKNazVcGMmHH82FcsJIqwZrrcMMwCrbgoV+4LgFteKdHOuUgcoqYbrZJ5n++MWHKm3LggEoF1pCbSpsWZMEDu911L5dPDwTM6XFwWtOjeIzuAFwuqKM5ddw5SeY2CISvV034+RXqCVRPp8FRHmgjUxU4FeWbIIA5RbiRov3M7oZSYLUXMG4LbBRlJTxSU/hAV/JxpCzoTWXgaN0rsvLQunIvXGCZlcgpZvgZ4VKAqDizh0aOGtIFnR5Yy2E4ymdtcOrQ8/q8ERlruRlYVDYDNpVOgKLHjd1kMPtDD3dY6F0xFxirwJLqjxiKuhYyCcIVfyZLRjh9BqE3smkdQglgl80E/ApTcndLnBIrRMcfXDXIh0eJh9e+SLKef2sOATzyGIg/dXM/LQjELfxnjpBGLSz21kT36WSS24WBNeT0VohS03KpyUbAe10yWn52Z1nWqHG6jdMbgSjhg4r1Rn5QIJ4ULYYpNzAoeWFL9aM661MzrQClRpJOEuJGqhFbRdfLJGVKS+NY2wISJMGs1MEgYDmI1ZyRfYhS8X1JQvnVnDCuerAgvaBLJMsh30WtBjIxcy2saKQrfwLOGgf0VSClXd2Dp7vs1jmPbdfiFgN37DJbK7f0Gb8XiBVd21h7+Bc/FcVF4iYWEJK8dQs+34tfJAiJ/OjinTe2yo6lkL5vLb9z1BhCu9E2tGPB7yrOROJbAkuVE5+U4X5gymRQqiKfnY0wMA6dHZ/74VLhqEYuyLv8sYwutD1doPr+ZfiRNDM3Omedvl0+JXtbB/gwChudjTkDoCs3wkDqlKJjCSSQ98TTA2MDxH+tRSNZ7o81CWFwRTD
- 0vp7utE7
- cb/ZzFPp20y1ErdCDACD5yfKYIrjJccCvku8wG1auzLwgAkutiJ025j1KzbHpw16i+ys2iN66F1JRFN5sYDXs29nDcv5j6HsC9P/d7mbP2mi/1kxpXA8z+LjGrqdHkr350V/20q0LNkU5aPLYcwgLvD6LDl4YhbGc+vHUnwODvNwokJTdM0UBNsnWZtUgKXnyLSy0ZxLowJRETHTBjHOYIjlrBrGH9mncmKXAOhMEp3pJTTq5t78+HUPG7YZGEvGjqrswtNVmtTBNbiJUE/lzvjFO50vj+UXEy7KumDo7Oa4Y+SwNuDLKU+hzhKpbGbDLL/K4HKtT8KjwNKDPlmvbK/ZYdA==
+X-HE-Tag: 1758511149-882101
+X-HE-Meta: U2FsdGVkX199WbENRTUabl6AP0kdnB8UP6K6+McpaH1pPw63v4QvMzr3scx2lBrBMG0Xo8yd2KsHpqKe4iU+GUs7rDHywON2dFbi+v2Q8sNtdsGPN1bFFtIXDqAteo69rahPr0mjXQBWyVB/+dBh7radiOsOvgNoXCG56JMgQFYPzyDUceXTH34UX5WWY/83vonsyhBom4vBFCmkD4BJyCQKY/xLFjIURqZrWnHgAvKHZri1FgS8Dsyl7HGlc3Jaqz59DHCihwApTxePL/usUiobXFrivj2Y67Fx2yq8IULDROr8YXkbkTYiB/Sgi5uq3FEMMGQrC/f334K7xNY/q+csZO/Ts0/njDGAJE+TvHxH8tTx545BYwFXHd77EU9xZuZ6gPJoRbJivpMVBll/9YL6TZ030dz+ax9oDjWMNYb4fgmgTvRaooAGyO2J031vQctyTyx8QhaLVwnVUPjaOqbz18M1RO/AtSIjcIEvEoRpSx5RpeCLROmILdsfIDFqFlu+vmOGzf/fkBkZLwWcq2KU00puJsnvH1l2VhD1Rm2sTXfssrwzf53bY4LY/Vnw6bTHOShPVvyZYFFAmvJkntuQZb9v5tmx92+QEZhWs6OO5u/KXR8B5K8n5uab7VTfUStFd9GIKDsQV9joOA/qBVb27oQC331A9P53M7qgSTeirle2yqN6o27gxLbwg7FGMqRGaVXiEwfFcn2AA+YtiPpkchn5g3yqSapdJ+KEkMEYxcBmL6MaIqtY9KWQOYBNnXU6203OiNQmHKjwZXO0UflKjKzpgfEkym9rjFJPKp3t7fG/JucGHDHU/Se0pe7S7IBtNczuCXqABJPopd7euDbaVNsp7oX1tFG7l3KW8Y53xLux5rqvlgUccrc96DE0tV7d7xYg3sNZwjOLhFvnr+HJxblA1j/tx7NJoQeYQzjr1P8njMAZvyhfM2sTtQQOUg04pnfnxUo+AhKA0fx
+ gkBU3LLF
+ l/4OUFnyH0Lo1cARFGvrkbO8radKQ6LvD7GJtuGbp7d1cID/gPBeqR+mPNzsELiP3FGWUpXI1N9wrG8wo+m323i+Ut2zFsbdZawZUecm/6srJONGICFgm3hvsI98w+PwG5m42ev+xFz/zqqt64eDyIwd9rh75M/Yz1spcmmrgQSzCEiD8ORfFM3FQoLjFQEvRjMzn9OhSIW5GisXy3G/hkV6XHBywj345vqMmdE1/UdDANMTycBuVhgmvhLd0wqq/cF0836BxvSnDfNwgjfvXn2xuJKQP4p3ZspkC7n5NpszvmN+IuoZelqzxbw5buuUYF2ic6EL1Ak+2orOYd3cBQfeJFH8rVzI/EJscJWq/V4aA2YZEnMn+mgyorg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,79 +99,53 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2025/9/22 10:51, Vernon Yang wrote:
-> On Mon, Sep 22, 2025 at 09:46:53AM +0800, Baolin Wang wrote:
->>
->>
->> On 2025/9/9 20:29, Vernon Yang wrote:
->>>
->>>
->>>> On Sep 9, 2025, at 13:58, Baolin Wang <baolin.wang@linux.alibaba.com> wrote:
->>>>
->>>>
->>>>
->>>> On 2025/9/8 20:31, Vernon Yang wrote:
->>>>> From: Vernon Yang <yanglincheng@kylinos.cn>
->>>>> When the system memory is sufficient, allocating memory is always
->>>>> successful, but when tmpfs size is low (e.g. 1MB), it falls back
->>>>> directly from 2MB to 4KB, and other small granularity (8KB ~ 1024KB)
->>>>> will not be tried.
->>>>> Therefore add check whether the remaining space of tmpfs is sufficient
->>>>> for allocation. If there is too little space left, try smaller large
->>>>> folio.
->>>>
->>>> I don't think so.
->>>>
->>>> For a tmpfs mount with 'huge=within_size' and 'size=1M', if you try to write 1M data, it will allocate an order 8 large folio and will not fallback to order 0.
->>>>
->>>> For a tmpfs mount with 'huge=always' and 'size=1M', if you try to write 1M data, it will not completely fallback to order 0 either, instead, it will still allocate some order 1 to order 7 large folios.
->>>>
->>>> I'm not sure if this is your actual user scenario. If your files are small and you are concerned about not getting large folio allocations, I recommend using the 'huge=within_size' mount option.
->>>>
->>>
->>> No, this is not my user scenario.
->>>
->>> Based on your previous patch [1], this scenario can be easily reproduced as
->>> follows.
->>>
->>> $ mount -t tmpfs -o size=1024K,huge=always tmpfs /xxx/test
->>> $ echo hello > /xxx/test/README
->>> $ df -h
->>> tmpfs            1.0M  4.0K 1020K   1% /xxx/test
->>>
->>> The code logic is as follows:
->>>
->>> shmem_get_folio_gfp()
->>>       orders = shmem_allowable_huge_orders()
->>>       shmem_alloc_and_add_folio(orders) return -ENOSPC;
->>>           shmem_alloc_folio() alloc 2MB
->>>           shmem_inode_acct_blocks()
->>>               percpu_counter_limited_add() goto unacct;
->>>           filemap_remove_folio()
->>>       shmem_alloc_and_add_folio(order = 0)
->>>
->>>
->>> As long as the tmpfs remaining space is too little and the system can allocate
->>> memory 2MB, the above path will be triggered.
->>
->> In your scenario, wouldn't allocating 4K be more reasonable? Using a 1M
->> large folio would waste memory. Moreover, if you want to use a large folio,
->> I think you could increase the 'size' mount option. To me, this doesn't seem
->> like a real-world usage scenario, instead it looks more like a contrived
->> test case for a specific situation.
+On 2025/9/19 20:40, Kiryl Shutsemau wrote:
+> From: Kiryl Shutsemau <kas@kernel.org>
 > 
-> The previous example is just an easy demo to reproduce, and if someone
-> uses this example in the real world, of course the best method is to
-> increase the 'size'.
+> The finish_fault() function uses per-page fault for file folios. This
+> only occurs for file folios smaller than PMD_SIZE.
 > 
-> But the scenario I want to express here is that when the tmpfs space is
-> *consumed* to less than 2MB, only 4KB will be allocated, you can imagine
-> that when a tmpfs is constantly consumed, but someone is reclaiming or
-> freeing memory, causing often tmpfs space to remain in the range of
-> [0~2MB), then tmpfs will always only allocate 4KB.
+> The comment suggests that this approach prevents RSS inflation.
+> However, it only prevents RSS accounting. The folio is still mapped to
+> the process, and the fact that it is mapped by a single PTE does not
+> affect memory pressure. Additionally, the kernel's ability to map
+> large folios as PMD if they are large enough does not support this
+> argument.
+> 
+> When possible, map large folios in one shot. This reduces the number of
+> minor page faults and allows for TLB coalescing.
+> 
+> Mapping large folios at once will allow the rmap code to mlock it on
+> add, as it will recognize that it is fully mapped and mlocking is safe.
+> 
+> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> ---
 
-Please increase your 'size' mount option for testing. I don't see why we 
-need to add more such logic without a solid reason.
+LGTM. Thanks.
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
-Andrew, please drop this patch.
+>   mm/memory.c | 9 ++-------
+>   1 file changed, 2 insertions(+), 7 deletions(-)
+> 
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 0ba4f6b71847..812a7d9f6531 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -5386,13 +5386,8 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
+>   
+>   	nr_pages = folio_nr_pages(folio);
+>   
+> -	/*
+> -	 * Using per-page fault to maintain the uffd semantics, and same
+> -	 * approach also applies to non shmem/tmpfs faults to avoid
+> -	 * inflating the RSS of the process.
+> -	 */
+> -	if (!vma_is_shmem(vma) || unlikely(userfaultfd_armed(vma)) ||
+> -	    unlikely(needs_fallback)) {
+> +	/* Using per-page fault to maintain the uffd semantics */
+> +	if (unlikely(userfaultfd_armed(vma)) || unlikely(needs_fallback)) {
+>   		nr_pages = 1;
+>   	} else if (nr_pages > 1) {
+>   		pgoff_t idx = folio_page_idx(folio, page);
+
 
