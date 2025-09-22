@@ -4,96 +4,152 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5113CAC592
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 09:33:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 629AACAC5A7
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 09:33:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 17EEB8E0006; Mon, 22 Sep 2025 05:33:21 -0400 (EDT)
+	id 995488E0007; Mon, 22 Sep 2025 05:33:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 156318E0001; Mon, 22 Sep 2025 05:33:21 -0400 (EDT)
+	id 96CF38E0001; Mon, 22 Sep 2025 05:33:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 093048E0006; Mon, 22 Sep 2025 05:33:21 -0400 (EDT)
+	id 8831D8E0007; Mon, 22 Sep 2025 05:33:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E98F48E0001
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 05:33:20 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 98F6F1605A6
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 09:33:20 +0000 (UTC)
-X-FDA: 83916372960.05.246451F
-Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
-	by imf13.hostedemail.com (Postfix) with ESMTP id DBDAD2000B
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 09:33:17 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=none;
-	spf=pass (imf13.hostedemail.com: domain of xu.xin16@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
+	by kanga.kvack.org (Postfix) with ESMTP id 720DD8E0001
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 05:33:36 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3C943C02F3
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 09:33:36 +0000 (UTC)
+X-FDA: 83916373632.18.D4B825F
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 40AD940005
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 09:33:34 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=ROz0DKns;
+	spf=pass (imf07.hostedemail.com: domain of elver@google.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=elver@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758533598;
+	s=arc-20220608; t=1758533614;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ddHiekMPfP+Dj5SGMmG5jsJGTgq1nWKHn66vR3E7oFc=;
-	b=0lR0wz2jOCNAPRKwpFq/eufD1LNh+fnU9QEp8FAg5KuicAViZN22J6Rk/V/NuRmwbl0DCF
-	cZhbcCCHEpDr9lpzmGy0Y2V9RiH0VkZzryniAE6tqV78xwm/BRLHTU1HsWrNpt5tKspncE
-	nhnCC4qdb4Rbh8l7RBHZYZJmpDUsvcU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758533598; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=89qPC2dMk40SQhoKG37yGCiQt/NY420sGfty0Meng0w=;
+	b=WltfOGxS2QnmhVsQWEVUZjEj74T+yN0MkuYmhI2pjR7vMUtlSnw7nYQfgNFxQshYZgYz5u
+	tYDGpWW6jwYcAFQN1QiW9ueAyNLikWseWPZsZ/KuEnYtDhxGVXw/dEeV0vvJgWDwtyr6xm
+	u7NnDsBrcR3h+b3LW1STTl13C26WAV8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758533614; a=rsa-sha256;
 	cv=none;
-	b=v3ab9q1M4+8oSu2OejTcBlYEKVKh9xEU5TFeAuAmlKD66p9c4BxiRoZVDiQrOmC19Qc7GT
-	hQtouMdfAc8pGKG+MHF1vJTAf7MR4iSYhgsIY/psnotPcdE0P8/OhurqIR+WfNzrXecnSh
-	lEr4uWd0YRfveg9CspiHjDjgYyRg9Ek=
+	b=c0rkR/FhY0jToeYZVUCqmiao8tjW0vmmKSlPKWgOX6IDYC2AZMXj/KCDF2HfqV+TIonTEX
+	37aMEfNa/hhPWy8Owuu3dofH0YbgWMwtQMEusEQSC3WVypHb581aSDd7mr43Avxsx0lWDF
+	41aA7yaGlt/eIKmCmCjJHDTU6HqISgY=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=none;
-	spf=pass (imf13.hostedemail.com: domain of xu.xin16@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxct.zte.com.cn (FangMail) with ESMTPS id 4cVdFf3Vtkz501bS;
-	Mon, 22 Sep 2025 17:33:10 +0800 (CST)
-Received: from xaxapp05.zte.com.cn ([10.99.98.109])
-	by mse-fl1.zte.com.cn with SMTP id 58M9Vu75080767;
-	Mon, 22 Sep 2025 17:31:56 +0800 (+08)
-	(envelope-from xu.xin16@zte.com.cn)
-Received: from mapi (xaxapp01[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Mon, 22 Sep 2025 17:31:58 +0800 (CST)
-Date: Mon, 22 Sep 2025 17:31:58 +0800 (CST)
-X-Zmail-TransId: 2af968d1178e17d-217fb
-X-Mailer: Zmail v1.0
-Message-ID: <20250922173158997VPIUgFcs8UoazWb_JQIc9@zte.com.cn>
-In-Reply-To: <aNEG5W0qLPKKflQA@tiehlicka>
-References: 20250921230726978agBBWNsPLi2hCp9Sxed1Y@zte.com.cn,aNEG5W0qLPKKflQA@tiehlicka
-Mime-Version: 1.0
-From: <xu.xin16@zte.com.cn>
-To: <mhocko@suse.com>
-Cc: <akpm@linux-foundation.org>, <shakeel.butt@linux.dev>,
-        <hannes@cmpxchg.org>, <roman.gushchin@linux.dev>, <david@redhat.com>,
-        <chengming.zhou@linux.dev>, <muchun.song@linux.dev>,
-        <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-        <cgroups@vger.kernel.org>
-Subject: =?UTF-8?B?562U5aSNOiBbUEFUQ0ggbGludXgtbmV4dCB2MyAwLzZdIG1lbWNnOiBTdXBwb3J0IHBlci1tZW1jZyBLU00gbWV0cmljcw==?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl1.zte.com.cn 58M9Vu75080767
-X-TLS: YES
-X-SPF-DOMAIN: zte.com.cn
-X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
-X-SPF: None
-X-SOURCE-IP: 10.5.228.132 unknown Mon, 22 Sep 2025 17:33:10 +0800
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 68D117D6.003/4cVdFf3Vtkz501bS
-X-Stat-Signature: r4hmzeuhgwkobn79bf64squzpeaah957
-X-Rspamd-Queue-Id: DBDAD2000B
+	imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=ROz0DKns;
+	spf=pass (imf07.hostedemail.com: domain of elver@google.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=elver@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-45df0cde41bso26945055e9.3
+        for <linux-mm@kvack.org>; Mon, 22 Sep 2025 02:33:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1758533612; x=1759138412; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=89qPC2dMk40SQhoKG37yGCiQt/NY420sGfty0Meng0w=;
+        b=ROz0DKnsVCoYexFWXUuMgYFHT0yiUQTbjVNNKptiDyFFOLIiBckr/J8kqpiI2gRtn7
+         XB5eVSkWT39mejeII1TgxnUNrvJ9vV40kZWCF10XHlZ08CEibivtVI7TQTwRlpmQfzis
+         Zx5Bih2c29FVgm4bp/2dhIC+WLoEpaxFNTkFrXEJrxKVZlCa0M9TmzHHBwMspHrDYYwI
+         +sz89IN7kvIhn7j7t7SVmMe2GxX61zPaKUIY3DUVFCCd5//Qv8Pdm1vWst1prXwklhXu
+         knml91mXiwtlGxl71hUx2+038eLpkvZ8PlRRLETFiN04/PEeGhokdwQWqy5Lqbv7eqW/
+         zBUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758533612; x=1759138412;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=89qPC2dMk40SQhoKG37yGCiQt/NY420sGfty0Meng0w=;
+        b=bh57LCACEXKSem/ftn08yLj4L+QX2QubYl8w6pvrXQTHXi5SnGRTWdfCygrlIDUB/F
+         9u8JyoJ20oi3CxX8bjqmmNJNV+MX++t9zTre7UIM955K+w4rrbzOLMjQhh4hnfR0ibnR
+         C50TRPSucYZue+Ugw1cu3o8/7sCbSTTRuf2RRKUH4tC+Ixx/JXk+99uHW5lUKhU3b3yK
+         Sg4zMucp6S95hS0QzhMeyzb3EJYFUF+vwQFZTvv6dQNCJ4GLj4eMXDoAWe9glzbUZDcw
+         tQGQHFNKjmYDZ403Mzh6dBvyjJx1g9y2byLFKO5bfTspsIaqhcsD7PDGPZORneH72B3T
+         /1jw==
+X-Forwarded-Encrypted: i=1; AJvYcCVP4KgBw/mkJlXYjws00CPmv8Mmj7nsQh0H4zhar6IUgp1NAOf+S8NYeBkzJMWFdAv7tcxsSLW1MA==@kvack.org
+X-Gm-Message-State: AOJu0YyyNrc+kveh3GRzJsNFO2+EJo4vMp5CGUWwLrreyrAZ1mPSQ82n
+	k6yCQxlKCIKS/seBSJCv3ofE8/yL3L0Bx7BGF5OrFkvr1allAmvZ8wY+CSkPQWE2ZA==
+X-Gm-Gg: ASbGnctVDnGz0aWFdBTDNPz1fUKPN7nKlEtH7X/ApE6dHP9LFu5HjaOhHmzW61mUZZ7
+	gfHbhvNZl3dDOUwE2pLsUFGAdBZN/+WBb19Y/oqCkYBBEdbzR9d1I8joDWGuRbaXZw3ly/EMigs
+	dQI2k6lPdKvLdpZdYzyLYJnexFLaMYZ6w6Rt3DkPnH3xwYZDtPAVJFrh21BGAqgr44WxwGMyW3f
+	ZChHDgbm3M1zG7UYnE1nFMLNTtcNWp7xSKlx77DKj86LQEal4eccbMOzrQ7xWyYR/JrHfiWd66R
+	3P2NaSlp4nerIhJVCkcWcK5Qo/SUPHqIfTsL0EzWxvaFUIsn36phPEubuztls88P+pmZJgmqiTh
+	fpZZ2xkeliwmJyvApbo0KWUhP5s4yvMXG5IyMl5pwzj+AAO+vCvpbu2LRbGM=
+X-Google-Smtp-Source: AGHT+IEkoU9ognY1IS2/WNXTQHBehT3iG6jr+rUMfSA5BLARxzu2twytBIMtwJpeHRGrTnG81Cn1IQ==
+X-Received: by 2002:a05:600c:46c6:b0:45b:804a:a65e with SMTP id 5b1f17b1804b1-467ebbbff33mr123610355e9.28.1758533612329;
+        Mon, 22 Sep 2025 02:33:32 -0700 (PDT)
+Received: from elver.google.com ([2a00:79e0:2834:9:8fed:21ad:ce77:2e15])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46d1f3e1b03sm39713145e9.23.2025.09.22.02.33.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Sep 2025 02:33:31 -0700 (PDT)
+Date: Mon, 22 Sep 2025 11:33:23 +0200
+From: Marco Elver <elver@google.com>
+To: Christoph Hellwig <hch@lst.de>
+Cc: Nathan Chancellor <nathan@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Alexander Potapenko <glider@google.com>,
+	Arnd Bergmann <arnd@arndb.de>, Bart Van Assche <bvanassche@acm.org>,
+	Bill Wendling <morbo@google.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Ian Rogers <irogers@google.com>, Jann Horn <jannh@google.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Justin Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
+	Kentaro Takeda <takedakn@nttdata.co.jp>,
+	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+	Thomas Gleixner <tglx@linutronix.de>, Thomas Graf <tgraf@suug.ch>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Waiman Long <longman@redhat.com>, kasan-dev@googlegroups.com,
+	linux-crypto@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-security-module@vger.kernel.org,
+	linux-sparse@vger.kernel.org, llvm@lists.linux.dev,
+	rcu@vger.kernel.org
+Subject: Re: [PATCH v3 00/35] Compiler-Based Capability- and Locking-Analysis
+Message-ID: <aNEX46WJh2IWhVUc@elver.google.com>
+References: <20250918140451.1289454-1-elver@google.com>
+ <20250918141511.GA30263@lst.de>
+ <20250918174555.GA3366400@ax162>
+ <20250919140803.GA23745@lst.de>
+ <20250919140954.GA24160@lst.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250919140954.GA24160@lst.de>
+User-Agent: Mutt/2.2.13 (2024-03-09)
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 40AD940005
+X-Stat-Signature: xyi8au8bjz9nj51wr6m9cmtbw5kkzj36
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1758533597-172557
-X-HE-Meta: U2FsdGVkX18WGuqh0G7P6Y0tZlPdms5jbj2qKWYy41Z4hxmLm59ohEV4pf3T90LbDcaO1n65r7rIoVUW3DlQvzPxteSdN49fmU615lX7CttvwctaKIhCOb8xYjFtStIw5/oSxT5I5DqxDZJEy+lRBuyBYkT5lpbHxRsctrQp1R8B70utSveJehs/fq0uQ5Zn3xEmzR+kZ0eU+IuwcECi0bo30rIaIfuUrzy4UCBZUjAOT8+zf3Wf01/0wbHR7LozjjWIO07N4UJS7BDXt/PHXIAHBNMJrEdPyq1n9iro+pp/PuvcA123ghnK1SYHRMewysRtLHU0+xIv4hdQROm5/TpLfmdrhanrzhvQPPjbK7lYDoAtwZWClrmk3eHDzsuYRX8WcfYd2L0AL7SNfjqelCHzInE2XRJxzWfRyoeswnBT3Y+SU/Owr0/tcFTZVum1hee62dINErAzBKdDB6nRR5OvdR2coR1hL2e6EMmi/h7Ae4UGUbh9PArFpGx/GQ63CGmqLbifMiIX9AuQoLqJkTa0Sz5Wrbb5yaXdIlZ58v6zhk0ivVr6coqi4GPKA0ObW8KmMgY0ZVEwDRYO2qrw3QdCAT4+ydhZTbaCOZMLMDXbU+ytxZgLFXlxRtgZ4DdsxBFzkByrk9sUKZ8o8Woo3dydzy5ZxjAWH+MaDCeFrcy6Kp3uL9ClUEXdEm+UsYyQZS7iZx04dmL1R4ieemidnrLLxwEKOA/+sDu9/ec0euE5LTmwMOaBDaTyOT6LPvAZJlfIShfbfruZQxszFmHlkgVMR3Z0NQsM2bUECb+UhPoiR7xpuevSmHNc9/pWinXoS7fDz4Qf6rwRcEAjcJQSnVKAi9j+QXspGHjUmTsjc4M+sNCMoPfxpSwiPfvMtuZo1qvfDKQXbcMxY5STKFxkYQyPDAWgRBeSwcN8Q6xFmki1CxxNnTXaZpdGzbURRcuNt4JVsiRPbX5/oZIclHQ
- E/0gF2dX
- m7w6KHfZedZ5CBFuLrflR++c2esfd2tAiqHG7zIB1wNq2N0sNZ09yLBeEI7zqg8JiHr3SADCMo0mDNig62dq7v8tYx3N6jxCkSKB/2WFt8Opw3TS5YkEMHSPk80pwj18FJlzgJ71EhhGfK3VWNnRHOaIIkTbMlqYSuYcHYBOro6QLfUhik4G88NldXGvppY/yB71NNfNmf+/bsX55S7uUhyDsOuapdlfCa3dWz4mpNBi2kdhf3aILyeE09cD+mTfh4aE1AzhkvOdnc8uVqSLdJzNU7PqtVw/XPJewbrm0dhPXS6A=
+X-HE-Tag: 1758533614-293463
+X-HE-Meta: U2FsdGVkX19NGJfdf5RD89KOwJTD6xFai/tgo4coJGAqFg35EQAoJU+pg3EzVeXKsLXfx04FT8/MVjYRDKAC79wmeJ6rfBhbewlLIKPv3nAaM99sZeF5f3LVCryjIktt9ttii8OMvyPm16wr1oY3pKiFk2kNnFNRkSA/JASDIJSG2a9falSVd61OhOqvITTk6ipTufNgQCKpQh0H2ugtPj/bK3jSlvuSoJVL9quMhjH/04CeTiNNaO377N4oL8w+YYgso+q5AJM0uzyLQAvbquXML53irouPh8agT01pRf9EUyajjYpjTn+4K/1d1kIo2mbcJxmGloGbOAPdq+bu2Fenj0btoC2MDdx8zc6s91MpzMpj49BTC/+JQkWKRhIn6OTEDzQ01ZJDaVt58UZ61STN3kFbzxgbWTUtkU3dmOR5yOnYsmmX1Julltb6l7ZknQf5Qx3upSzwgH2nC5JxsjbHrV/kldCNhhluRhxjS/5dwCf0DSokAV2bSebR+v7NPU6myHQJ5XsP9vVruzY+ENLCUkD741pVljCsfNIl2nyJgEAkgdGaARa431J8OQqkcqeuscNZJKEoUnUvjhRcHM7ZmOnAm9jJOq3TvnCHapUHx07SNQpv1ogkjoGf0SVS0V0KnZqqsGSv542UscdbJUhut8a0rjCrzk08QwVEmqa5fqGOASGCN0n1zw2QbQrS4epVPUT/a3nqFiKR/Jkh5iiioTNYAlxYEeUd6a5E+J1R1z8j3UR80RznCQuCgHkEuKMttGkXNXUiSNmY1207eLghKzMdk9h/a/WPtN9FrOBmy52L1w4Ym1aJ9tEIo19fKJKiUX/G9LJpNx2WCtPGIEVdb/0WDubp2oF9rw9B/+k4lnp0jPuSlPchkJSEQg3Nv+ZmOkoo5fkbJ70MK36vQxkYCU9hkLbm4v7fApimMu9wBV9iQzexoBEOi2l/FhGO42uexin8UUJtXfivw8c
+ bRz0sGOg
+ u7DSEXrvYizzjEi11muFDin+/O4KwsZi7tY4kpyjEAKpxuyLCNLBKZMfuHbKGUrAxrSDbmRS4O1emVcYmTSvk/V6y6GcuUN8C8U9s2Gk84om33KWpjvh5M9HKn2w6t/Wi5RKZMleLWCwy5zSBujWRIo1ypxyt7314ypP41sYqquWWy8Ru48G2x1ymc4E7s+gRIoOuH14Luj59Rli6IiWkGFjXnEGrtUBnxy6tknbbYINmvfs4euAl3F+OEqXFaejaxbMY1hW+kJI4lLHi2wm2AHST5Xz6WB0mDkj+6Fvn1aikHtCX4KHX1/QvCoZdd1yZyR36SJTp1O1n3DyUhStGvrJQLtn8XVLSzD6elZBCIdHGOXTerjaGu144rGeATOpTZkyT704oOADXb1sK05Su1AtunoLmZVM3HkHvvPdQF3FDrbyvOwFEMrVTOt6H1jGawkf9DqvKwEgLd+4RW8T9nhS55O+hyXFsz48nw11eXjNVAdn1ZneqW5smkQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,45 +158,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > From: xu xin <xu.xin16@zte.com.cn>
+On Fri, Sep 19, 2025 at 04:09PM +0200, Christoph Hellwig wrote:
+> On Fri, Sep 19, 2025 at 04:08:03PM +0200, Christoph Hellwig wrote:
+> > I started to play around with that.  For the nvme code adding the
+> > annotations was very simply, and I also started adding trivial
+> > __guarded_by which instantly found issues.
 > > 
-> > v2->v3:
-> > ------
-> > Some fixes of compilation error due to missed inclusion of header or missed
-> > function definition on some kernel config.
-> > https://lore.kernel.org/all/202509142147.WQI0impC-lkp@intel.com/
-> > https://lore.kernel.org/all/202509142046.QatEaTQV-lkp@intel.com/
-> > 
-> > v1->v2:
-> > ------
-> > According to Shakeel's suggestion, expose these metric item into memory.stat
-> > instead of a new interface.
-> > https://lore.kernel.org/all/ir2s6sqi6hrbz7ghmfngbif6fbgmswhqdljlntesurfl2xvmmv@yp3w2lqyipb5/
-> > 
-> > Background
-> > ==========
-> > 
-> > With the enablement of container-level KSM (e.g., via prctl [1]), there is
-> > a growing demand for container-level observability of KSM behavior. However,
-> > current cgroup implementations lack support for exposing KSM-related metrics.
+> > For XFS it was a lot more work and I still see tons of compiler
+> > warnings, which I'm not entirely sure how to address.  Right now I
+> > see three major classes:
 > 
-> Could you be more specific why this is needed and what it will be used
-> for?
+> And in case anyone cares, here are my patches for that:
+> 
+> https://git.infradead.org/?p=users/hch/misc.git;a=shortlog;h=refs/heads/cap-analysis
+> 
+> git://git.infradead.org/users/hch/misc.git cap-analysis
 
-Yes. Some Linux application developers or vendors are eager to deploy container-level
-KSM feature in containers (docker, containerd or runc and so on). They have found
-significant memory savings without needing to modify application source code as
-before—for example, by adding prctl to enable KSM in the container’s startup
-program. Processes within the container can inherit KSM attributes via fork,
-allowing the entire container to have KSM enabled.  
+I gave this a try, and with the below patch and the Clang fix [1],
+fs/xfs compiles cleanly. I think the fundamental limitation are the
+conditional locking wrappers. I suspect it's possible to do better than
+disabling the analysis here, by overapproximating the lock set taken
+(like you did elsewhere), so that at least the callers are checked, but
+when I tried it showed lots of callers need annotating as well, so I
+gave up at that point. Still, it might be better than no checking at
+all.
 
-However, in practice, not all containers benefit from KSM’s memory savings. Some
-containers may have few identical pages but incur additional memory overhead due
-to excessive ksm_rmap_items generation from KSM scanning. Therefore, we need to
-provide a container-level KSM monitoring method, enabling users to adjust their
-strategies based on actual KSM merging performance.
+[1] https://github.com/llvm/llvm-project/pull/159921
 
-> -- 
-> Michal Hocko
-> SUSE Labs
+Thanks,
+ -- Marco
+
+
+diff --git a/fs/xfs/xfs_inode.c b/fs/xfs/xfs_inode.c
+index 9c39251961a3..f371a08e5d44 100644
+--- a/fs/xfs/xfs_inode.c
++++ b/fs/xfs/xfs_inode.c
+@@ -140,6 +140,7 @@ void
+ xfs_ilock(
+ 	xfs_inode_t		*ip,
+ 	uint			lock_flags)
++	__capability_unsafe(/* conditional locking */)
+ {
+ 	trace_xfs_ilock(ip, lock_flags, _RET_IP_);
+ 
+@@ -183,6 +184,7 @@ int
+ xfs_ilock_nowait(
+ 	xfs_inode_t		*ip,
+ 	uint			lock_flags)
++	__capability_unsafe(/* conditional locking */)
+ {
+ 	trace_xfs_ilock_nowait(ip, lock_flags, _RET_IP_);
+ 
+@@ -243,6 +245,7 @@ void
+ xfs_iunlock(
+ 	xfs_inode_t		*ip,
+ 	uint			lock_flags)
++	__capability_unsafe(/* conditional locking */)
+ {
+ 	xfs_lock_flags_assert(lock_flags);
+ 
+@@ -272,6 +275,7 @@ void
+ xfs_ilock_demote(
+ 	xfs_inode_t		*ip,
+ 	uint			lock_flags)
++	__capability_unsafe(/* conditional locking */)
+ {
+ 	ASSERT(lock_flags & (XFS_IOLOCK_EXCL|XFS_MMAPLOCK_EXCL|XFS_ILOCK_EXCL));
+ 	ASSERT((lock_flags &
+diff --git a/fs/xfs/xfs_log.c b/fs/xfs/xfs_log.c
+index d9ac9521c203..9c4ec3aa8bf9 100644
+--- a/fs/xfs/xfs_log.c
++++ b/fs/xfs/xfs_log.c
+@@ -472,6 +472,7 @@ xfs_log_reserve(
+ static void
+ xlog_state_shutdown_callbacks(
+ 	struct xlog		*log)
++	__must_hold(&log->l_icloglock)
+ {
+ 	struct xlog_in_core	*iclog;
+ 	LIST_HEAD(cb_list);
 
