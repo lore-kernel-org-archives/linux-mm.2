@@ -4,128 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3122DCAC592
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 13:32:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF50ECAC592
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 13:50:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 59F248E000B; Mon, 22 Sep 2025 09:32:58 -0400 (EDT)
+	id 047FA8E0002; Mon, 22 Sep 2025 09:50:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 576C38E0001; Mon, 22 Sep 2025 09:32:58 -0400 (EDT)
+	id F3A698E0001; Mon, 22 Sep 2025 09:50:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 491FB8E000B; Mon, 22 Sep 2025 09:32:58 -0400 (EDT)
+	id E29908E0002; Mon, 22 Sep 2025 09:50:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 33C438E0001
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 09:32:58 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EB7801A060D
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 13:32:57 +0000 (UTC)
-X-FDA: 83916976794.23.4876FE8
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	by imf08.hostedemail.com (Postfix) with ESMTP id D6414160003
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 13:32:55 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=WV6jwD7R;
-	spf=pass (imf08.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id CBA348E0001
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 09:50:18 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 82D421A05CA
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 13:50:18 +0000 (UTC)
+X-FDA: 83917020516.10.77DE0D7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id BAE851A000F
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 13:50:16 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=a0gkXo+7;
+	spf=pass (imf19.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758547975;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1758549016;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3sl3Yw2Q3HDduef+tk1qVxwA5GH5zx0yxRQke8Gzd8I=;
-	b=SsIh6tvpi42Q7d0+xHPOJjPVCqBenXKBfG1nywFbwu/V4DHii5pRV5AaxMuI7esmUJOWtz
-	dFAaGI6KqjYYwRMBx9aQPFTL0VjmlyIPhpklpK9/UXbDCbtvPdvKp5ichn20xuIQQcVuKT
-	vv7YD0t0M8ctCXFyZllmg6tbFr4AiHw=
+	bh=CGnFKhP56ksvTbt87RMDe3QMyAKJwKabBNpwTSWZp1Q=;
+	b=zmsV2a2EZXc5JKy/4gJoY82FEvw/hBFJpz/8y4ZurSuAf3SrShiYwJaYa0VhZ++FcdX3fr
+	VSRsa8CW31jbGbKuweBAE801AFNy1HY+/lxj78Yu9r4p9TCAmRaw5JTSU+iFqaNKBx3x78
+	URxPRRTbS+sGVNaVvgPV8JZEWzJkb6k=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=WV6jwD7R;
-	spf=pass (imf08.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758547975; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=a0gkXo+7;
+	spf=pass (imf19.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758549016; a=rsa-sha256;
 	cv=none;
-	b=lTDucHMlSERN36nlmgZ27tLYR7j9qto60ML/sEG2gTTr6UMDnwTx9djlj5mKimNk1XTP2S
-	BLohoxCoi3KId1YH87wE9MNtroPs9DEm/RF+g0CJHMRJXQuZH4JoL1ANpQWfNu2EmkQtTx
-	+eh0BfzatxZdU6cJGM7ApB2LeBQyz5g=
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-afcb78ead12so664477166b.1
-        for <linux-mm@kvack.org>; Mon, 22 Sep 2025 06:32:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758547974; x=1759152774; darn=kvack.org;
-        h=user-agent:in-reply-to:content-transfer-encoding
-         :content-disposition:mime-version:references:reply-to:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3sl3Yw2Q3HDduef+tk1qVxwA5GH5zx0yxRQke8Gzd8I=;
-        b=WV6jwD7Rbe5YLE7oOH+v8cg4bhHkZTXhNibQ5MH96TpGz+OVbDROYNb8A7cyADh4CA
-         rw7IoDbKKtQoPTJL/16i8Anl77DjEaoHicac6Cd6Qw4ohJGK8jZQlPJDhxtrSM3uk/u5
-         RLqhvmnszraD1lrAwWI2nS1xr8SsvRclR6/HtSpXfeZzhWEJAzdmyChEjW/sRbziYTa1
-         G36p9P0mONeXWvY92mTixadBwu7tR8YjxMVogZRbKUrvDKGm1TVr/DEZI2HTdUhWgKwt
-         aX9T8M5mlRYxEEKIiU0ysb2yWcubgPN0i2eBYqHarNHiEhnyV8YHVfc2NmnYDdNRapob
-         j2vA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758547974; x=1759152774;
-        h=user-agent:in-reply-to:content-transfer-encoding
-         :content-disposition:mime-version:references:reply-to:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3sl3Yw2Q3HDduef+tk1qVxwA5GH5zx0yxRQke8Gzd8I=;
-        b=f5qzfCHIAKYZkXaQy+ZNH6KBcykIDlTiSiAUWRyhrJaojKbm6a+SR2dppWT0UCWDBL
-         4+67/fdZ8jkef1AVvna0GarcJRn8uPkgm2ZD/uXxzN3wYDemC4VFlWxbNLi94cz1k41/
-         +Dgfyk9EZ3CL/Q2S8YiGRPKSLF4evaXggpIejy5exMNn9inegN1evrHtO3JdE+F92ODf
-         KYlaObZS0hOlS8NgC2EZ626nXDImAAbvMdBqw3SceCxVJr2XvBR0JKIp6ZTdvIQ6bTbA
-         9Huhir/SpzarkHeR7EoQ7VSUVz0pnErZvs/Yhewj3FWTBZoEvRrpho1qQ08RLC//kPAH
-         HCTg==
-X-Forwarded-Encrypted: i=1; AJvYcCVf7iu6L+9z3x0ihXtFXa7YRXo2IoJd1h6KC/gl/KEMwQTvVHx9ShXCyYMVy7ppzFoBb2fEUjjcSA==@kvack.org
-X-Gm-Message-State: AOJu0Yy9x00gx5ac7YPbtiL6ZMyPZQpFldaP+zjD5QzZ0bCkdz4Nmevh
-	2qnVrGXHv6OsmWbrEwXWEVp6x67Am6rdamZrx4V+Zy20Ih9wcj8EHmZB
-X-Gm-Gg: ASbGncsIh9ADF8Cr1Gte48MUfwflS340vnNjc4TUHNBkbjgkUYL/YCiDqsEvQa6sMAX
-	gvnrRjyh+bwq86omv1j7orHVDP6Pu6MZYKWnjVcHpxIHnDK96nICaC2JB0XfCnnp7ivRQRwxG2J
-	gYxPis5yOOkxAyU/9pEBomMo8Or32qRtaitBP5CaZnE3NEFVK++fnP3LYoyTfXKVuoyOp7Mv1Y6
-	0297Epf19nh743PNYUcGQls0WD+/U7HToDg3OOoQwhCQwvjg/m7E7iznP4q94hZhtmJ/5h1JI+T
-	9Mf3DD27fmVJGeT8z+5pz2QnFcphMCY0oNEyjEG8mpwhN5nz52zzabh/FUq8Z5zribHaIAuuBLz
-	nTBzCs6ynFvtb/7tGBWjUiA==
-X-Google-Smtp-Source: AGHT+IFjWkQfKemDLorz2GKLo5D+iVZnWYyb/UbDlzrEM/OpufPvw7ZoS/JmMl7mJnSGginZCGg0uw==
-X-Received: by 2002:a17:907:d8b:b0:b2e:4504:2cee with SMTP id a640c23a62f3a-b2e45042f2bmr149899366b.41.1758547973958;
-        Mon, 22 Sep 2025 06:32:53 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b2c56c2389fsm265118566b.79.2025.09.22.06.32.53
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 22 Sep 2025 06:32:53 -0700 (PDT)
-Date: Mon, 22 Sep 2025 13:32:53 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>, Dev Jain <dev.jain@arm.com>,
-	akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
-	ziy@nvidia.com, baolin.wang@linux.alibaba.com,
-	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
-	baohua@kernel.org, lance.yang@linux.dev, linux-mm@kvack.org
-Subject: Re: [PATCH] mm/khugepaged: use [pmd|pte]_addr for better reading
-Message-ID: <20250922133253.ajnffmcupzknzl4d@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20250920005416.5865-1-richard.weiyang@gmail.com>
- <4fb37530-3826-4ff5-ad7a-dc9dac4937de@arm.com>
- <20250920090228.lovkrpwj23bqdamj@master>
- <93095f34-d7ac-40c7-87c7-60d2c64d4800@arm.com>
- <20250922081226.hsglokm74lh2eng6@master>
- <89afa6d6-0a02-4825-8923-3752397b38dc@redhat.com>
- <433cba08-e33f-43ba-bccc-a2b1f2b1cd50@arm.com>
- <20250922130255.lbrrbrr54iwso42i@master>
- <fb5bbaae-15bd-43c7-afbe-84a951f97044@redhat.com>
+	b=NlKV6Pjf6i/iVv9g34Sd5BGdlWj7Gb+NJrma187HbqzT8zsSVJHpIICfQ6sTXIdXsLHoY6
+	cEgQid5vQKnc84TH9H65c8KdhNtjRgzLuwo66FOtTJ5pU5OY18SfCXGyirbfZ4QA+NOo+l
+	9MYy6VpFizqk8NEnzKcKTx8e5T4KD2s=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 67C3F44283;
+	Mon, 22 Sep 2025 13:50:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51F0AC4CEF0;
+	Mon, 22 Sep 2025 13:50:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758549015;
+	bh=KUdvoa11waaL9VuET18T94f4qWSxyLfuRY+uFrUSlbc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=a0gkXo+7nkOQjnfZoRnPryocuqfZjQyryU+hLaAMYZUqw6iC1azA7St+vnNuoVRTh
+	 nNkh68Ro9p2RrHDyKGqPnT73vcBHi+RqgC+3AKVPNaQve8wgwDMUFVQP6i0bkwuyR7
+	 N9dWi040fV2IjhU7VJw2lW7933JwoNscuXyevLoGxbgWMi5OaBVieTstCKHqaj9Cji
+	 kL84/+J0ryNnwsfKSYoFZqW3DYPyLLWM2S8UY8W4aVKacDIN3c9zwcAHElgdPNmfHw
+	 IDWLQQcOEjB88Apb8ReEL/jIX60v8tlUChs4T64rSXK5TqNuYDwtTgXtkZgA2arBtb
+	 jYvB4xyJi6a6A==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,  Alexander Graf
+ <graf@amazon.com>,  Baoquan He <bhe@redhat.com>,  Changyuan Lyu
+ <changyuanl@google.com>,  Chris Li <chrisl@kernel.org>,  Jason Gunthorpe
+ <jgg@nvidia.com>,  Pasha Tatashin <pasha.tatashin@soleen.com>,  Pratyush
+ Yadav <pratyush@kernel.org>,  kexec@lists.infradead.org,
+  linux-mm@kvack.org,  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 2/4] kho: replace kho_preserve_phys() with
+ kho_preserve_pages()
+In-Reply-To: <20250921054458.4043761-3-rppt@kernel.org>
+References: <20250921054458.4043761-1-rppt@kernel.org>
+	<20250921054458.4043761-3-rppt@kernel.org>
+Date: Mon, 22 Sep 2025 15:50:12 +0200
+Message-ID: <mafs0y0q6fvfv.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <fb5bbaae-15bd-43c7-afbe-84a951f97044@redhat.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Queue-Id: D6414160003
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 1oshak381feip9sgbky7jdnseo9ff7cg
+Content-Type: text/plain
 X-Rspam-User: 
-X-HE-Tag: 1758547975-71445
-X-HE-Meta: U2FsdGVkX1/KJ9gk/gqtvEehsytdAAzLPd/YYMfFNk72igolONIxnmhjZPFlmZ1u2ncZpiry+VvtNRjDCn4yGzfdsW51iWfYSmyp2xxZgX+fvXGXw73iwI+su1UpeaDDGmSW9GheFFQlIiVoY03DwmAEw/mlF+qzmT9yczBl24j+TFCRhW9Gy22wWojWVFuza+7gfZxz3a/+8WchVrbA7ehqp1wShUlJOI6hVlnYNF4pgBVvubYAOS0TKx4M4WhItSvY7Lc004Z+6pImA/PJn3I/YfLb/e/BS/IM/yzttx5DuoAvnbb7H1xH0kWFBkR/fe5TmLk2ITI5ppTYHZSCG2eL//X0nWCz6d8tUXHk0WwfxIQqZu3CO+3BSZFvYmFqDKyncRKtg8mJsuNXjZimf3qEHD7LjpQOvN4RwPpGGam2vPSAF6v+jfCMoGmE2S8Yy1ddU/VKBYk1JmwgyDs0EtUcuojofcEukP1ZuioIXugzz5wYN6RrV25Yzs6F1YfDon+gGHTEmOfiT9D0gva947ETIuX8/IyT+Gou7c8TJJBifDa0hoivnNp/GK6DoegNfpVia0u8g/FeHLmVYZW3lXWwynwA64wI4db5Seb0BP5dScnIjhORZrzMjmKToa4iY/UEeNmMM1dq4wwmCFy+Y1ZQyuKUOlqWSxZenpD0eTEspRcTF4Xypr3hN2gW5CbEC63YN+oOkktoGzDJwKo7pZazA6WctaJ8KFvfIK6Xq3p3AmmEZUCCTW22KcTiDMz/ycoAcmpDcDhVW06w4CyJjsX2SDc+10f5UCWQH0yFBGeC4iX/TJ2gV3aHl66/s/fC0DTGL3hqlJW3KtYQWZV9OYpHFpVDHvVYmryd13Iub1YQ7BLGLqu/O8a5R4G6hPCBNneLGTHRefoxG6kNt2KwKiH6z3IznjN5VHsufAShnwdxhLEO/9heV3F37tf50u+686rpWLSTO7IqLtgIYrP
- OQvFukDk
- WwhjMNTl1TvQGNhU26dwqVGJSAG+BjQynZrf3KQQ4UMcsAvvLba708NpfIn7sQSpUHandX2OmarfdNQhJX1vBaPf4QUR6SJTB4g/eezonbXz62z6BRlUQOQMvlWyrfO0mJ1e2KCNbgJOkEcemqNkQVrueUqb8cQrO0vQq1mJ4YxSHLxvbUwpVd9lnfc+phqdRCIyKaD2+bjahyhe3TpCX2If8DBmvWC1R2l550NIhQYg5oGGqLormFL6kxN/XW5dyh8hBRmsegxhzEPta+kSV8omcPtsbu/blTzCJaxFMKxKwfbJtnQ9tKTgTOGXI747IVLcOoCNLeHjQaMcuq+7P1rrqmnKyo9m5XDjSmNB2eD9JQBhkSKO24WXRIO+2JASWUEOjz8Xsoi4zK0d8Nb+NHczS1ddioWcKE7/V27yU5cXKUqrcWONxyBvrlkY9UavFYXXA6mj86QTtYIrA5BUqitoszXK60WLcTTCFxdaiiOJjuow7u/3FA2AHNo6UmlaEmeCQWKan66ls0ZqWbK9dOTqpgY0c9u8ltTzGWC42oWldjEtm++qde4xSucRveg9RSOEVcMFue3DKGppdKmLjnZpiFQt/t4equs1PhfZElHmcKbL1I13O8XY1ZybJT7y38wv+jdzIOD18EvBo8PY+ROA9y5lfGtt/IRnRvFGTH3Lzw8DIh3uR8qkx0kgZMfm5WU5oI+TsiM5z8plEPYGK1q1RFFnidtmWlWphLFf6KvgkOrznKdy0LGEhBzhbcEh0UlubJ1z3tMeYy0eSd0B6Y6JzzA==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: BAE851A000F
+X-Stat-Signature: tfihrnspzqi85zmbyf4z8kyy6wj6twgt
+X-HE-Tag: 1758549016-478842
+X-HE-Meta: U2FsdGVkX1/3Zy8JNwRUVr857gpM0qJTYO4zJBJL+zzJzsV8aQ1pX/dBdYAI1HAZnB4RCdZ9BY7y40JdC09JKqfz2BYfVdYgLSQbv2mqmrkjHYY95uCtYB3wkfGnIby9QoCzimhxaKcY9E1CCMeQJq/O5WF4fujaAt4kall/MlAav63KHI8kTdzdVaxXMLxn2G4IgmBSyj3IyuQ+f8MyN1eIWLR026UNP+iQe3CbA9RtJFLDyypHvP5B+aU27uvSScqr7vGqZXItFP1IPPWeqLkd4VnutrqFGdUETHfFxp4VOYzLIyR7DlyzZqzoXVi2d/2nqMFYrW/OUwZNPQ38LHR/0460kv4HBVHcIETX8gZb5HxREE+9cC9N6sz7L9xkpvMcfdb4JyZav3iy1FbL07j31H/DVDnAVQI8k13whPsYbMBphozYKqLhnBu4u/CpY19/PSBODoEWlsDYqsQKpskUmyYunhjLENWjJXOZaXkH09Un1F294xDUmLSoYmtDIsHefODGFP5xjV7CA2vuUVidnSDw/axzNXkQNEmLRKLP6jkz08A18lSLNeDi8UF4RJsfYj3VFM1kLS29lt1YBzl22HEifHAGpK5v1NX/uBxTaQUZAq2q94pywo8Mfr3Ow7E0ZGzlhoy1pGc+KDkSntzFq/zs9SbO0KaV81p4EKq3x1+ubO8X1cMd7gdF6aGUP4TRhsPo5KgZKFvnulAOCtAIO0sb58hGX3Sjzz0O6+VOGvJtkQIOFn9MOqfwC4SPlgv203X0isA9QsT4Ey/Mkv8RgUHEkw7oEfgYQxTp3wsfHoMjETiRDYePvuSF4IenkfXzDOyZ/zkARNVVdcRS0x6Gi7dnTUj2Dp7vTgi1+Assdiy9waJRzMH5S5nfJkcVVCeyj5T/fhxZJVrFaAiygYLykcPs4a9usU/sPoP191r31S/jPzZh4cCeAcngNwHuC0wduDixYR2bdeS1mKi
+ THGQp8B6
+ K7WgEIUYjCJ25lYx/N0RFosIWEe3fXC4CoiPkMzPiOAiYTDtjbf9plW6L1tgodFpuEjR0UxiHyTNRv2HnqYVly5KmpSGDnw0q8TurOia5Cc3Wnvj8Q1ZLI3RlKnkNKiZhWLtSqLX75AR7wTj8mCcUcWV/jYCIOo4Yc7Hfyy9doYKcwu5rjQSbttyP/cYZbn7f60s3IZVH+3BqP9OK0GZOSmj0nhXbJlHbq3J0vT35ebkviQLCtwNIIHLYzg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,48 +97,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 22, 2025 at 03:28:32PM +0200, David Hildenbrand wrote:
->On 22.09.25 15:02, Wei Yang wrote:
->> On Mon, Sep 22, 2025 at 01:56:54PM +0530, Dev Jain wrote:
->> [...]
->> > > > > 
->> > > > 
->> > > > Take another look into the code.
->> > > > 
->> > > > The change touch three functions:
->> > > > 
->> > > >     __collapse_huge_page_isolate()
->> > > >     __collapse_huge_page_swapin()
->> > > >     hpage_collapse_scan_pmd()
->> > > > 
->> > > > Use pmd_addr/pte_addr look reasonable for hpage_collapse_scan_pmd().
->> > > > And haddr/addr would be suitable for the other two.
->> > > 
->> > > haddr vs. addr is just nasty.
->> > > 
->> > > Can we call the aligned one "aligned_addr" or something like that?
->> > 
->> > This works. Let us use aligned_addr/addr everywhere then.
->> > 
->> 
->> Including hpage_collapse_scan_pmd()?
->
->Yes. Anything is better than what we have right now :)
->
->If we just want to express "this is the start of the new THP", simply
->"start_addr" might also do?
->
+On Sun, Sep 21 2025, Mike Rapoport wrote:
 
-OK, start_addr/addr looks good to me.
-
-Thanks
-
->-- 
->Cheers
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 >
->David / dhildenb
+> to make it clear that KHO operates on pages rather than on a random
+> physical address.
+>
+> The kho_preserve_pages() will be also used in upcoming support for
+> vmalloc preservation.
+>
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+
+Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+
+[...]
 
 -- 
-Wei Yang
-Help you, Help me
+Regards,
+Pratyush Yadav
 
