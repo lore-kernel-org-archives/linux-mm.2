@@ -4,105 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3C22CAC592
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 14:28:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C1D6CAC5A8
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 14:36:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B22208E0005; Mon, 22 Sep 2025 10:28:44 -0400 (EDT)
+	id 0ACE18E0002; Mon, 22 Sep 2025 10:36:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF90F8E0001; Mon, 22 Sep 2025 10:28:44 -0400 (EDT)
+	id 05DBE8E0001; Mon, 22 Sep 2025 10:36:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A0E9F8E0005; Mon, 22 Sep 2025 10:28:44 -0400 (EDT)
+	id EDC858E0002; Mon, 22 Sep 2025 10:36:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F2288E0001
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 10:28:44 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 411FB160111
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 14:28:44 +0000 (UTC)
-X-FDA: 83917117368.17.C12108C
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 61BD440012
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 14:28:42 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="HVm/pR4c";
-	spf=pass (imf12.hostedemail.com: domain of stefanha@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=stefanha@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DC3A68E0001
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 10:36:37 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8A3321359CC
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 14:36:37 +0000 (UTC)
+X-FDA: 83917137234.02.88A1293
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 85146140004
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 14:36:33 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=none;
+	spf=pass (imf26.hostedemail.com: domain of xieyuanbin1@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758551322;
+	s=arc-20220608; t=1758551795;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mZHzOWV+oYS7NM+O/EnxL1NZMPrx+NYmi9n1hVl/0UI=;
-	b=xCtX5X1ApjAJiLpTSZcptwe34NKrnyaL3D3p+/1C8/r6IjZHPlyNkqha4EOBzz2SryRry0
-	yp+ZoQaI2KkXmjYd5DHFfYirL2DRPt4tsYEX9zXuelcGb62Ld9uPCjUORcie0MRpEj0bWH
-	gWpxcDXmMGas/uoFdbesGe5qBp7qJ8M=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=xZCqhKaof1t6liZb6zP9jcprtmeHICqXfgWoWpn/bW8=;
+	b=DVY/mzzmwnVm35hXGh+MkX3SmeOPCqzrQS4it7/iIatNUr9oF9uLoN9yD2IKO1HVGemuPg
+	OX4YDAM4Fug/i+5Q4Ya7BcDjC1G1lerQ8fVHGHCn7YaLwyhKitm+FMPaNfEo+l1PvPNpFl
+	L0vZu4piuWuFfxjKW618ab3OnZ6FVSU=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="HVm/pR4c";
-	spf=pass (imf12.hostedemail.com: domain of stefanha@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=stefanha@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758551322; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=none;
+	spf=pass (imf26.hostedemail.com: domain of xieyuanbin1@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758551795; a=rsa-sha256;
 	cv=none;
-	b=7ki9wsMhAk5O48mZaM7wCH7OZu4oaON9pZlLFUT+/4s78H46v/63b1gnj0ofY662yiij1q
-	+ij88l7uhIZ841gF+HYPO2ATs/Di4QS1JHsqyyPA+gl6T+2a3bCHkBTjM3Nmu+wVGpy/qA
-	vo50vj5F8SIE1HRO03BiSg/o5Y//Msw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758551321;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mZHzOWV+oYS7NM+O/EnxL1NZMPrx+NYmi9n1hVl/0UI=;
-	b=HVm/pR4c2B573amK/2EFz80VYHYOzVgKn88p4dt9namuswYJ/ca0COmPXPjci54go973Kg
-	Fg4tclbSLtdCZnlgT9ycag2tbd3nTLANl0cefJlHZUZ1U1C1FgY+Gv87Wsgp1RErpfkAr8
-	BdluSzmWXtuEamwp32HWN9vOCy8O7TU=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-92-0ss1WCFdPea5agxgnXoSyA-1; Mon,
- 22 Sep 2025 10:28:35 -0400
-X-MC-Unique: 0ss1WCFdPea5agxgnXoSyA-1
-X-Mimecast-MFC-AGG-ID: 0ss1WCFdPea5agxgnXoSyA_1758551314
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AE8121956055;
-	Mon, 22 Sep 2025 14:28:33 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.34])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A7F791800446;
-	Mon, 22 Sep 2025 14:28:32 +0000 (UTC)
-Date: Mon, 22 Sep 2025 10:28:31 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Cong Wang <xiyou.wangcong@gmail.com>
-Cc: linux-kernel@vger.kernel.org, pasha.tatashin@soleen.com,
-	Cong Wang <cwang@multikernel.io>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <bhe@redhat.com>, Alexander Graf <graf@amazon.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Changyuan Lyu <changyuanl@google.com>, kexec@lists.infradead.org,
-	linux-mm@kvack.org
-Subject: Re: [RFC Patch 0/7] kernel: Introduce multikernel architecture
- support
-Message-ID: <20250922142831.GA351870@fedora>
-References: <20250918222607.186488-1-xiyou.wangcong@gmail.com>
- <20250919212650.GA275426@fedora>
- <CAM_iQpXnHr7WC6VN3WB-+=CZGF5pyfo9y9D4MCc_Wwgp29hBrw@mail.gmail.com>
+	b=zjKX14I6HDzxF9MVp3zpt2G6Yrnh2Ho7UHHowuOlMRXZGPuyT+QI3RoJt9P3BkNzIAl0Bn
+	cfG25YKOQ9s8RAv1hxuj+Koy+B3PBJROmBpsUzuTcbXevLjFlXbPbqpGfOfDAnWcZ41QH/
+	vhgnpdiGJF7tPuYijVrhOsM6TdKOYbE=
+Received: from mail.maildlp.com (unknown [172.19.88.163])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4cVlvv1gfCz1R9SW;
+	Mon, 22 Sep 2025 22:33:15 +0800 (CST)
+Received: from kwepemj100009.china.huawei.com (unknown [7.202.194.3])
+	by mail.maildlp.com (Postfix) with ESMTPS id 4B2911800B2;
+	Mon, 22 Sep 2025 22:36:23 +0800 (CST)
+Received: from DESKTOP-A37P9LK.huawei.com (10.67.108.232) by
+ kwepemj100009.china.huawei.com (7.202.194.3) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 22 Sep 2025 22:36:22 +0800
+From: Xie Yuanbin <xieyuanbin1@huawei.com>
+To: <linmiaohe@huawei.com>, <nao.horiguchi@gmail.com>,
+	<akpm@linux-foundation.org>, <david@redhat.com>,
+	<lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>,
+	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>
+CC: <will@kernel.org>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH] mm/memory-failure: not select MEMORY_ISOLATION
+Date: Mon, 22 Sep 2025 22:36:18 +0800
+Message-ID: <20250922143618.48640-1-xieyuanbin1@huawei.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Bw/30tv/Tia50C1o"
-Content-Disposition: inline
-In-Reply-To: <CAM_iQpXnHr7WC6VN3WB-+=CZGF5pyfo9y9D4MCc_Wwgp29hBrw@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Rspamd-Queue-Id: 61BD440012
-X-Stat-Signature: jiaxfs4xcbb5scuseukxugwbwkc4jbry
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.67.108.232]
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemj100009.china.huawei.com (7.202.194.3)
+X-Rspamd-Queue-Id: 85146140004
+X-Stat-Signature: 1wcdqixa5qzfgui5wttu5s4jq9dbx14g
 X-Rspam-User: 
 X-Rspamd-Server: rspam01
-X-HE-Tag: 1758551322-74484
-X-HE-Meta: U2FsdGVkX18Hq+JVI2SCrGFbJA3Wh+2gJWUM2/5EcufjA0L8JwI3Rk0wJTHSdvULKeiOK52HlpuHrAlxxFJpRdl/uOHByTwpawlcNTXNdUWVXoFk0NlZRMTmeO6IpoWnucEWtMK+ZT4ev6ZnF+Jzg0vp4nL7W7n/ggxmJOVLH8NTTt9EEDiXqSEyogBxhCZGZKdr8Fs9B9V4prFcfllWmzFRtcZUg+uVjN6gBM4uhe/YxtZtlJW6gpm+h6C5a2gFV1lCo+1yKfN6SIqHfe6ehVKwP+7OKrNR98g5mdz0pxrf3U7zRxRqD3e7Sxmh3uQYSzvCZuYlecQ5pdj+/ssKKajhyVAQ1MAphtLphulFJ7bhZ4yh4mte24sPiMbodKakrLxdj0Guit4/ttrLxtlvMOEmhr4WIj0njwHV65RFIC5yUPQsvthUTX9HyvKvpCPxtFwwAZJWq/fPnjAuw3eF/2yfT5rH+6AqwdMNrPWj3e13FbnvnVdBn8eF0tArOI7a3bfx44St3Dbw4qMGCp66XY4ZtRTycVp2uq9oh7L5lY83rdI3W/pbKsRRPk+KYufhdDOnTtra/fE4VRDWBxoK8ejXjfgH7kdrsx3K4EroucxuxnsJ0I/lEI64jHhiTwkjrXQrxcaNZ7iEuFNOkV5zWMINlqUgdPfUsRd9PFDFbaU0ATnl0ByV/914ixTFNprtWinOPwOPcLj3IS7pCs2gZv7gB6q4bh/nNCzfpbhHx9jkTPDQ6BuN/hjsia0qbPAg9pGsqZBm/toazoVoiK1ZcfW5JgiG8mjQGZhyCi+767cN0S9o7/LuEvjMXDyFm4ZgydAw6ixL/ktRPpdzfXIUJ5W6fg0Bkf/lnn/wG8XWiJlX/fU8ZZY1VtyYwPRCH84ShrihIbXbVcT+O+H2tpJPWnQ78kV82Wbjg6U8fmFScOUZcBmMce/jUo0QQRPYgxmiwuYdBUDT8s6fiCEIKQ6
- KyfUdC/p
- jiAxWBUnqHXyOXGDFaw9Uy+fFeF3jS1Y92eyM2I3iB9FJZbOWRRD7CqlmkyXBRx2waAQE0oIKleSekxsuTiqttzvp+HLH2Ty2Iz6I2f5bZ6z7ijQvwUBTEne2ROD3PmquhsFVpu9YM248oluZRt2cREtaKhizfucYx1kH9eVmnJoMh1U0bevWHQ5PycVjBNDBGaTo9n8PhAwierncn2LYGpjRuD/pwlFnYiwLCFCeqPiHMFHpkJFfpkQgRXYZh+6I4gCT52A5ltvGY7OnZrnlOEzm7yzbBe/LjYuss3fk4C5PR2h/oUIzkR+D6Cln+RUYSbLrJp8/YphvMGk2SKf4QP5jAGcYSl8ZC5mnyK7mtvzR59Sh4ZxnsoSFmwjBaUlvwZSJ7YGdIm+d8dtEnlvj62vbsTIYHlPa19a96wTaX+f9oC5aUtMNKXsIA07GXAkL1VuMgpiiZY26Z/Cwk4hmIBTfd1pLvy7dRQkO0suv70EjoXVv7OZwtqhvkIYrVlY5TzWHLsJui56QbVtJA9TnR/3KMA==
+X-HE-Tag: 1758551793-681580
+X-HE-Meta: U2FsdGVkX1+QuAGkcbLia1MCuiH/igwItMHJXEikaikvCWodQmPno38+RExODKgpGVQotVpKEGfIlTodlaXV5F5zWEKJPIfqumO+Fm5mxSWMvB6zlEhgo1uZIfT0Rdr3fmBvfZvy7cDmsJXcdACOHyCEzPVE5YBeJ8+juml7nqCiM9rbwDNQ+r3xNCfwPmiHM2cnq/6lxgl7Y9GQtPo7bnkwC1RX3WMu9lO/0FFrAn9NNik2M1N173wIJN1g60CbwFVWZnYnN67EuXxgR3WXZBCMC3xtX6U6CK51rXpfK9mGLB4ABz3EwWiCFUixKf5yc1JTcWZ186Z6T0U3BjCPK4kINQwFoFX8wGraPk92A66hmZMaUksK002rwnNrLay5LVYI53CmseBMTZDK+M6f2Ch8ihNtKv4oXh1gmT8PUV7pcYUOOrS05Au/ElUAY0rI0lJaDh3/teIHl897F1zmtGYPfXMgE0Bfi+MYoOei9amRu8ENoiGIB0jfpBikwSTMsGZAppI7hmwWEfFB4Dq6PlbWRvNL4yCTYebNm3PISexqZ2o4qTKqChAgqdIGtxeF8G0weqGAc+RA1i7q3aFE1U4bFWen4g4VE2EMRFBCUF3/p2CNZFwim7VGt5JuxJ/jzzOYtW3Dc7ef48NRRxI6tKf1oE5XyQ3dHoPz4dv/DNXTzcnCZYJdSepSrn3i5t9Mw3OW+dSpmqMgcmv6SllIYSwb+MpgUeZCXG0sw5xEZV73//iXksGX9vLd/ZouD6lh8NX1kblPGm7pGOPxscd+5OXT2QjqD0wmUc3LTZjBHXe6b3yZtj6cYdNorRx8OcId/EzWViPaF1ZKAAG2qOIsqbMjY2EqrlXSTQLL0vMPgjlUG7mGNM2nBMOCNSw7t5d6qYcriBpHgWTLKpyLEotwHWwFi6MqqREJOfCeKZ1C8agy1osw8JDi7FiARvK+rKkJic4CbtCXew6aUP3bRoZ
+ tY8XOUtd
+ lccm5K/MKRzyjPsKJH9WwWexJQWP952CUVncak7+wHMhcqHQc0ySCe26WfYnDhoS47OQ4B7lKnc/ghsjXhfT+VRz+E7kitnFz5ur/dr4dFBPh3V1ySAgZFOsRaylwHKIM+kuB/f2MYdWG+DEJcW71wAf1IAsWDw24vDhj8pgqP3fGvN/MA9coz0nz6mZhggsIGN0KDzJfptz33A3A+VA6URiwoXwTykbZ/twPNreI8o18ePGzAgDa//O0WhFgcih9VjMTjS3M9m3cYEkhXFcKSZ/hn2/KkAKTX5TVX91Vk5NSwPSlUx0XcrilmEl3rAmbGaORgBKszdZxU1A=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,72 +90,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+We added that "select MEMORY_ISOLATION" in commit ee6f509c3274 ("mm:
+factor out memory isolate functions").
+However, in commit add05cecef80 ("mm: soft-offline: don't free target
+page in successful page migration") we remove the need for it,
+where we removed the calls to set_migratetype_isolate() etc.
 
---Bw/30tv/Tia50C1o
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+What CONFIG_MEMORY_FAILURE soft-offline support wants is migrate_pages()
+support. But that comes with CONFIG_MIGRATION.
+And isolate_folio_to_list() has nothing to do with CONFIG_MEMORY_ISOLATION.
 
-On Sat, Sep 20, 2025 at 02:40:18PM -0700, Cong Wang wrote:
-> On Fri, Sep 19, 2025 at 2:27=E2=80=AFPM Stefan Hajnoczi <stefanha@redhat.=
-com> wrote:
-> >
-> > On Thu, Sep 18, 2025 at 03:25:59PM -0700, Cong Wang wrote:
-> > > This patch series introduces multikernel architecture support, enabli=
-ng
-> > > multiple independent kernel instances to coexist and communicate on a
-> > > single physical machine. Each kernel instance can run on dedicated CPU
-> > > cores while sharing the underlying hardware resources.
-> > >
-> > > The multikernel architecture provides several key benefits:
-> > > - Improved fault isolation between different workloads
-> > > - Enhanced security through kernel-level separation
-> >
-> > What level of isolation does this patch series provide? What stops
-> > kernel A from accessing kernel B's memory pages, sending interrupts to
-> > its CPUs, etc?
->=20
-> It is kernel-enforced isolation, therefore, the trust model here is still
-> based on kernel. Hence, a malicious kernel would be able to disrupt,
-> as you described. With memory encryption and IPI filtering, I think
-> that is solvable.
+Therefore, we can remove "select MEMORY_ISOLATION" of MEMORY_FAILURE.
 
-I think solving this is key to the architecture, at least if fault
-isolation and security are goals. A cooperative architecture where
-nothing prevents kernels from interfering with each other simply doesn't
-offer fault isolation or security.
+Acked-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Xie Yuanbin <xieyuanbin1@huawei.com>
+---
+ mm/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
-On CPU architectures that offer additional privilege modes it may be
-possible to run a supervisor on every CPU to restrict access to
-resources in the spawned kernel. Kernels would need to be modified to
-call into the supervisor instead of accessing certain resources
-directly.
-
-IOMMU and interrupt remapping control would need to be performed by the
-supervisor to prevent spawned kernels from affecting each other.
-
-This seems to be the price of fault isolation and security. It ends up
-looking similar to a hypervisor, but maybe it wouldn't need to use
-virtualization extensions, depending on the capabilities of the CPU
-architecture.
-
-Stefan
-
---Bw/30tv/Tia50C1o
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmjRXQ8ACgkQnKSrs4Gr
-c8iFTggAnVrECy2HUHacKiUoa/0O6N7WnJASVkoIOOM6+CKjlG2uzF8tSvls85dZ
-ybO6yoTpnuEGFQXEAyA7aB3vc3RK5xxhtowcXnQpV6tzpGRKgEdLyCqvwq0DnOiu
-aQZwB7XPmWVeROXSZgHpfEF6CYIthQBDpbTMBjQyGxCzD2VQf+GL9Je/3Dd7HQe6
-LdVemRZrJqRh3HxHH0JwDAIBDeP4VKZWOme7qPE0si/8DUPx+2DPECH/HesiPm2t
-/J5O8u71QN+D1X3M0V90uWC3udRQcTXSqgQUHSLPvV5V3bfRxFHi/nvRNGLElRzj
-kKmT/NrKeONOTt+0Q0iKH5mcW6XvAQ==
-=On8H
------END PGP SIGNATURE-----
-
---Bw/30tv/Tia50C1o--
+diff --git a/mm/Kconfig b/mm/Kconfig
+index 034a1662d8c1..0e26f4fc8717 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -742,21 +742,20 @@ config DEFAULT_MMAP_MIN_ADDR
+ 	  This value can be changed after boot using the
+ 	  /proc/sys/vm/mmap_min_addr tunable.
+ 
+ config ARCH_SUPPORTS_MEMORY_FAILURE
+ 	bool
+ 
+ config MEMORY_FAILURE
+ 	depends on MMU
+ 	depends on ARCH_SUPPORTS_MEMORY_FAILURE
+ 	bool "Enable recovery from hardware memory errors"
+-	select MEMORY_ISOLATION
+ 	select RAS
+ 	help
+ 	  Enables code to recover from some memory failures on systems
+ 	  with MCA recovery. This allows a system to continue running
+ 	  even when some of its memory has uncorrected errors. This requires
+ 	  special hardware support and typically ECC memory.
+ 
+ config HWPOISON_INJECT
+ 	tristate "HWPoison pages injector"
+ 	depends on MEMORY_FAILURE && DEBUG_KERNEL && PROC_FS
+-- 
+2.48.1
 
 
