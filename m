@@ -4,82 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5BCCCAC5A7
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 10:33:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2E5DCAC592
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 10:33:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F08528E0007; Mon, 22 Sep 2025 06:33:18 -0400 (EDT)
+	id 4F6908E000A; Mon, 22 Sep 2025 06:33:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EDF488E0001; Mon, 22 Sep 2025 06:33:18 -0400 (EDT)
+	id 4CE438E0001; Mon, 22 Sep 2025 06:33:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF5B88E0007; Mon, 22 Sep 2025 06:33:18 -0400 (EDT)
+	id 3BDAA8E000A; Mon, 22 Sep 2025 06:33:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CBD268E0001
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 06:33:18 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7FFD51A058D
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 10:33:18 +0000 (UTC)
-X-FDA: 83916524076.29.F2B1AA6
-Received: from fra-out-008.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-008.esa.eu-central-1.outbound.mail-perimeter.amazon.com [35.158.23.94])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 574B4180009
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 10:33:16 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=kovy5iRK;
-	dmarc=pass (policy=quarantine) header.from=amazon.com;
-	spf=pass (imf06.hostedemail.com: domain of "prvs=353d6d59a=farbere@amazon.com" designates 35.158.23.94 as permitted sender) smtp.mailfrom="prvs=353d6d59a=farbere@amazon.com"
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758537196; a=rsa-sha256;
-	cv=none;
-	b=sSRnSRCwyPDsvRB1HtYRonrZafLQ538kgo76ThQlbvWCQWvRrT2ggc+kR1P1jFYsbXmdG0
-	m4u7NVHhRBnrqT3+jEmOz9zuzxB9PpUS6k+O8C1zhAp9+4SrV7uiMLMtJRzx94p8Hjwyet
-	dVQ4oLWcTTWDssXuAnuipvDOqeaqgbc=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=kovy5iRK;
-	dmarc=pass (policy=quarantine) header.from=amazon.com;
-	spf=pass (imf06.hostedemail.com: domain of "prvs=353d6d59a=farbere@amazon.com" designates 35.158.23.94 as permitted sender) smtp.mailfrom="prvs=353d6d59a=farbere@amazon.com"
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 283338E0001
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 06:33:52 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C9BE38743B
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 10:33:51 +0000 (UTC)
+X-FDA: 83916525462.27.D5FA80F
+Received: from fra-out-005.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-005.esa.eu-central-1.outbound.mail-perimeter.amazon.com [63.176.194.123])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 7DD2AC000B
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 10:33:49 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=YhS7L9H3;
+	spf=pass (imf22.hostedemail.com: domain of "prvs=353d6d59a=farbere@amazon.com" designates 63.176.194.123 as permitted sender) smtp.mailfrom="prvs=353d6d59a=farbere@amazon.com";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758537196;
+	s=arc-20220608; t=1758537229;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=zVSnvTXkXiuh+OW/uVNUL4x1ADt15TY9E6leiyfAL50=;
-	b=vdswTCovFl5frkfchd+reUv6EuZ9nWe3xGvCom8oEEAEtobBwTxDR7zVZEZbV/SQQddJkd
-	1pJPxBLtBbKaJtfw17fx3FXOhyIm53106Fdt7cqQVdWP5vXeN+co3t9v3wA0eoE2wpq+Ut
-	Kfpr0kD++cF/PO7CHVGEQDfmOmI1efg=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ripGF9rqnm7tHR7M3YpLJcXn9QY6D+OUp0N8RCNiC7M=;
+	b=MCkfk8UiTeZPFnNrKzx1dfuKWArZHHla3U9jMHPpxGs+Lxl06BPGal4r+B/zQk2SAXlTzl
+	CPBdS96MlFkhNl9nnDOQzfy1f/163nAybLNgCZn6gZ3h3gnUMZTW11qOuG5zTc268bgMEi
+	gY4pJhvth+roUYp7cUrTOazoH89pv9s=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=YhS7L9H3;
+	spf=pass (imf22.hostedemail.com: domain of "prvs=353d6d59a=farbere@amazon.com" designates 63.176.194.123 as permitted sender) smtp.mailfrom="prvs=353d6d59a=farbere@amazon.com";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758537229; a=rsa-sha256;
+	cv=none;
+	b=N0h+v8bij56CsVylsnxbOOaPg5gLm5pbgenomz+Q/kcEGzkRRZqKfRiU/pXMQSksqs18Dd
+	YMm4iQ18EWfiMv+iMBnrvd5t1zCuUsaiH3OhIB7+ID/2H8/4RROiAk34g7UcnRdFwf8lrf
+	OUv7rUvh7/7cir05MKuNfM7ILxVOkYI=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1758537196; x=1790073196;
-  h=from:to:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=zVSnvTXkXiuh+OW/uVNUL4x1ADt15TY9E6leiyfAL50=;
-  b=kovy5iRKK4xF4Qw1axLc2YTf3rwuzDa5RIDzIr+nzW/e9Z2DQxPtXkdj
-   iSb11DNa+gpxMQc86JKUQTHJeiFGC6RdLvDp7AFH4IFyF5DU2okdSOGtT
-   Yn+WYnWt1qvTKRsNKop3SmyiFrXPg0xZnZ1Lwzmn5OtPWnVAFLtX57NVK
-   TTq6m3BQHWFy417AX32hKSMf1QpFaXyNnGEK0xhYa3z6NqpOGqr1DxoWn
-   gh5XcBKKMAjRza1MR3+/yWodsk5JilLNetFAltAD7SLGh2MA9vHTiL036
-   VbIbkcT0Jvwp02Do1hxE6/Rx8aMov7unRsFkkw4RDnp0BtwtfqvgUKOkq
-   A==;
-X-CSE-ConnectionGUID: SA7Bpc9VQgG1HmOijFiFuw==
-X-CSE-MsgGUID: 7eapTz9/SuG/x2ufntC2mg==
+  t=1758537229; x=1790073229;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=ripGF9rqnm7tHR7M3YpLJcXn9QY6D+OUp0N8RCNiC7M=;
+  b=YhS7L9H3cFbVSgvINONUz2kUHhbyBzZ93h7L9+2CNhozuqA08tjJ8aTj
+   rK0DKw5yg8UwpSrgSWSMBTYM+KAeYnu07u+XFX7y+xLbZX/dCsZCcE0u2
+   2AAPoF6RAp+fDONhot2U6QHYpTCTVmGxk2SX0CyBPTf1mJ1FVZ8qQOe2A
+   GfCPetnSFJv+BFOTfpkUmG+5oEja+UkWTxDYjR1e2sDuP5KEDaggTAFK7
+   RldN7WpqKmzUiUYWXahWTViDHeqPp7AnU3x+Jd87q+8hk3c4IVarwO1dE
+   1fqP2Th34+rjkoTpge3bIAr6196wqv0B6n6qZZUIOZ7IWUga1MLx+fXJD
+   w==;
+X-CSE-ConnectionGUID: EfS0ySD4QuiodgYBvLgJ0Q==
+X-CSE-MsgGUID: iJ0xXlIjTmGXhiqi3oxuFw==
 X-IronPort-AV: E=Sophos;i="6.18,284,1751241600"; 
-   d="scan'208";a="2478632"
-Received: from ip-10-6-6-97.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.6.97])
-  by internal-fra-out-008.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2025 10:33:14 +0000
-Received: from EX19MTAEUA002.ant.amazon.com [54.240.197.232:4640]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.10.226:2525] with esmtp (Farcaster)
- id c0c65c16-13cf-4fa2-a5a8-1f23642ff95a; Mon, 22 Sep 2025 10:33:14 +0000 (UTC)
-X-Farcaster-Flow-ID: c0c65c16-13cf-4fa2-a5a8-1f23642ff95a
+   d="scan'208";a="2475964"
+Received: from ip-10-6-3-216.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.3.216])
+  by internal-fra-out-005.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2025 10:33:39 +0000
+Received: from EX19MTAEUC002.ant.amazon.com [54.240.197.228:14817]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.23.64:2525] with esmtp (Farcaster)
+ id 574fc1fc-5740-4523-a02e-399120b77f10; Mon, 22 Sep 2025 10:33:39 +0000 (UTC)
+X-Farcaster-Flow-ID: 574fc1fc-5740-4523-a02e-399120b77f10
 Received: from EX19D018EUA004.ant.amazon.com (10.252.50.85) by
- EX19MTAEUA002.ant.amazon.com (10.252.50.126) with Microsoft SMTP Server
+ EX19MTAEUC002.ant.amazon.com (10.252.51.245) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Mon, 22 Sep 2025 10:33:13 +0000
+ Mon, 22 Sep 2025 10:33:39 +0000
 Received: from dev-dsk-farbere-1a-46ecabed.eu-west-1.amazon.com
  (172.19.116.181) by EX19D018EUA004.ant.amazon.com (10.252.50.85) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Mon, 22 Sep 2025
- 10:32:49 +0000
+ 10:33:13 +0000
 From: Eliav Farber <farbere@amazon.com>
 To: <richard@nod.at>, <anton.ivanov@cambridgegreys.com>,
 	<johannes@sipsolutions.net>, <dave.hansen@linux.intel.com>,
@@ -122,24 +123,28 @@ To: <richard@nod.at>, <anton.ivanov@cambridgegreys.com>,
 	<linux-sparse@vger.kernel.org>, <linux-trace-kernel@vger.kernel.org>,
 	<linux-mm@kvack.org>, <linux-kselftest@vger.kernel.org>,
 	<bpf@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: [PATCH 00/15 v6.6.y] Backport minmax.h updates from v6.17-rc7
-Date: Mon, 22 Sep 2025 10:32:26 +0000
-Message-ID: <20250922103241.16213-1-farbere@amazon.com>
+CC: Linus Torvalds <torvalds@linux-foundation.org>, Lorenzo Stoakes
+	<lorenzo.stoakes@oracle.com>, David Laight <David.Laight@aculab.com>
+Subject: [PATCH 01/15 6.6.y] minmax: avoid overly complicated constant expressions in VM code
+Date: Mon, 22 Sep 2025 10:32:27 +0000
+Message-ID: <20250922103241.16213-2-farbere@amazon.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20250922103241.16213-1-farbere@amazon.com>
+References: <20250922103241.16213-1-farbere@amazon.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-Originating-IP: [172.19.116.181]
 X-ClientProxiedBy: EX19D039UWB002.ant.amazon.com (10.13.138.79) To
  EX19D018EUA004.ant.amazon.com (10.252.50.85)
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 574B4180009
-X-Stat-Signature: 36jurf6cr1amzqod1953qpf6mstg5od6
 X-Rspam-User: 
-X-HE-Tag: 1758537196-510983
-X-HE-Meta: U2FsdGVkX18QBtF9LVOA2OOuaFMKzSMhbmkPRkd1/KJ+XiZ6eTBHN2is7eBL/LVFaNDD0l+wOhV+9ENBCcX/bDIlWxxeYL7HNPLSojrv+9N6pc1USVwCZV1Eyd25MOBJcyhAn34fE6dcZlb0P03D5/kZ5ZfMwthiY2Bb7YkoevdNEAD3nQUvpIbOZY12uVt4XwvTD6lloYsh26Fnkt/SbH+e207mbe4Erh4Mbr6uD+SfSd0lfy/Vs1Gtt8vYGp1QMn8yAuxrsZlruif+t/gt1V2CxuPrFq7R+xbMNT6yFXT/UsODh4P5NDVn8HVpE2Dqza2sc7qCVKqq/zsECt0foEBJuSG7nWbev0NblHRwrTMwoi15KXOpT9JZlA/t5+kziIoJaW5DQ/85aDrlfj+Dp8wlai1au9vI2c4Vs0EDflwJH0NmTAGK1xMIELJtulpFDxrU+njb8Hre/dCFlzBcve1wTjgj4jIL3EnoA3ZBXPX2OXlCgf5kpAKDv0GCdowGqCGWl4wHxnKsVs+6OBQIuFUXAHFQhPXeA+t+Y05Dgvo1ZjdPW2FG4PiaXWx2jFW1fV4WyVIIxTcgWfRdBxCJ59noHJWUT5nBmIDdQqhjw+7q/LYE6ssypMAZ6BYvzjhw/ofo3mKNdvuQ92nQqCKXV5Qp0W1d9/Zva6axOZ25iHG5Yj4H1Igt5tbjXltSGZrG0vE/AIni6QTNsjW/b+7xmuR7eECnztlT78osBqJAI0djBzgeW4o839y7qrQrFW8q6ITowaGYNV5ZdPq9nD/PN8Us1mQ30VltXqM5lAsTwJw59WcfAiRSTfAaPL4ttJzg9pLuHL7yvjqslV1sOcKWBtL+dtt5HgJXV60UlmhSuCJNyErRafJjduWFSsOkOJcASzhYfFLLXJB0wgg0Naod7gt+v5/14RruBixwVeYPo1sfEzstEyeQt6Dtm/MtiV3DV54MZQ19HeynY2O3gXk
- ktUFFwzb
- z0PwKn7FshLJDEW2EgYQRlCVjcWbl57Ldz4dCKWuNV9Ih3zAvXrnb1AnOjRT6NRV7aPRj8NAAbCUklxhrTJE4UZOhApVdUbW+rYCrThg6ZIKjDXryEJugmfFQfdeY2ZHU5hs/rFX+Checdr0x0DVfXjEmh8RE/e5C+3GL5ocKWkZok1DDsRcxqWKOmP4U6D00DM7c/t6dr1y4t+kVVGy2/BsQsaxEpXz6BcBSrlOA+AvAhBnrrUwBhRYhET/kFmXz9ivV8NqqjSnPjZRfbrXTmmnNg+41fMf2bcranax1Xe4ZtqGHZO99WDsf/NTCjbYD8JlzdH7KYN1QIll3CouiLybiNM+RSAXAOC0zKNC3ic21yIz6Iv2CG71WRkZ5C8iMaRzw0M8Ol/rWhjyTKnYL91zcVCmrR1BphjAMaGtS6QrWYRmUJrutZ+MCZaEk2xNVqrwB03xfbsgrCjk9qEJiXzy6J1sf4sNqYeZZtIdczKdhg0sfSgZzZ6+89Fz78rT5ALQhLftb+nBfGIJviieGnTKL+yYDokMGeYNvfqveE2F/IzKDS/lUwQL8CHHn/hZ8+zmzJFkPk4lS6rrJCZhufMRj8HIBbpJsm6LknxuatBXKf2ELQGJ7L+Tdj6ej/nib3SCcoChENZRAPSbcfTnWYV8txry0USqbBLUgYzcUVfVNbUpp38hpuD2QcLBoeevSGc5THcT0pe9XfPtCPM3wJpafiDQaIwTWZwjBkk/6Kha7uyfe6e/PBgGn5g==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 7DD2AC000B
+X-Stat-Signature: n8my6az51kwi6riybkrk8d8ibcy467kq
+X-HE-Tag: 1758537229-688314
+X-HE-Meta: U2FsdGVkX1+fKoYR1sFU8Z6uPsmcWbLuneil0Glw5tdGg/zYDQGxC12Lv5VRk4Qo++o0WhF/ZzLE1CFr0z63YxgyS9PXYks/6ziGsftCdz9Z9MrwE8myUiyYLtJ9KthUqHaRksWHRiZ2VwW3/7toyBeyxwDH71ojqcSsnN3ZzcJ0yx4HBkpzIH1gKAwLgMCKu1ZAmG4qwPKXnKdBII2gUjUL7CpSqsolnCrcxGhkDjryGk+dbrozaOCpQ4cdNdQbmqDlibCGbUzBQGU4KYwXdULIlVyvgevDrSHk1aJoxgvy/9TkNzNEsqfoYK17DWjkl5vwdWblSg3Twmcvhq9ZiOJ4jLSq73R3l3QJuicVGxRZTRomP411EXJ5Z+VcI9wgeVS5fp/hV7vjYUJd5l4UoErYxCykmsOgj8P8N6E/TZFKQsuhtQAKyBlM4ILsx1N4fi1GmdrOZb+Im3JY1P3lHL1aZ0nJre2BjpDI7UgVXepfSIhcRwxSPycQNdt/2vLxJgrHO9U9VPczd+oW1hsxKZOkw2pwlcWR9FyvPr/8a/v5LxN/lAgqGbWUyJD4qeTmFmNEx4eKfJnnmwl3zEETPC0q6naNe6oTdz8EG80sgoPWdcDGdD8qIqiKxYbi9sunt8qGmVlSTgp+2bHk/PSXBuBLzubXeIeQu1XNlJUrwF5V7Nhxo+RZk5WBvgEb9PD03uzkrx3/AKPg7YrjQv25NAC6hmmTM3vBGd0vMVD2xs8e4yyn/Tza6HGgPGRS4zI0DLDJl9YjwR9Zsdc4ipT7Cr0/AJd91YkMitxYuJHjmjz3f7b9w8/CCtOAjhFWk1eEDCuoIONl8XYo2hc25mBQvkyhHC0ICOf75f5napZCu/SjpWrYayKofjdaNcJx90XyDQjuF4y+7P0RACwch1o4+m8c9s62ivG09nIUencTJhkoA0z3qGd4QoaJDuprfSl+WqqfLL3Lf2b96ht/obo
+ UnVQiMIy
+ Jjfa5hazodtaVMTMZdsQjaxo/FJN+BIHhr2FpgI1mW29TE9HwWpFK46Qbm0N7uIp5Nw94zgqcR62fdGvEkumvVZ/8fzLSeaBcqanw5CdWx5RkQr4dYc0+xIMpHyYPEMxrjEy4eYgpa3+mmwPhvS1Ee9b1FhR4bE8jeLTmVvYDB9q+NcbDqx7brgHEUNI+t3UxmR2axTZEu/B89j1eUCa/z5H7zMiuUAVaQEbWM9qC1BSBah11iwneiy2E9dYbAEQ5/ZtMay3wNP11KI7jEYhZn85aPygjMU6wV+9Vy3GNj+9dd2pjbRoI9jrmFiOq/SfeSfL0qa/S5APpGIW0Y83GndlkRHyndifjGTLBx3XdBf/4pvSKOCvhPb8sTMnhPOsAfP8ePmR1ZKYjGIo6PSgqfKEjGw5Utn7j8yHP44wP3u9p/wc7SJ7zyIovzRotNmGYl2inPSOl/VCkSRz1dpJuh3pBZk1/9JIq6bIUnxlOaIIL6n6aP2o6MsdV3IqM7XzFeJxUAQ+YBbFtESlDKbwc+dykcFU4bbK7Ge5LW5UZ8sCDI1Crg0uHgiQzTHL5D6yZgB+IHafpb6Zbu+AJmkBhpIQrN3xZINCqNqlnzuYfpR0PuWgFmWy7U1GqDfrMVDsf85wj1qF8uPPcdhw12T1FVbdePne6cPKBv6cSw0cvyRcZhIJ94f5mxr8ol/8t3RSxfWcICNnMYYTdzkwD4nKwTkjm+TzIOmIz49ZSN0IH2ILOecO7NQ4pv85HjMQXjNUQCaELxPVu4+7Bgtr6rDh55nSY4///yLLaX5Ujs7SDY6Qk1ifMImfQHaEjwuH6qNJiPkXegtErUIJxPS5bRV0LictRt2lAmrB2AK1ZEN/nhnN8oF7TI6lcs89SnfqstK2Lc4MzOG2cJzDYAd4eCOO3Cbtk5fVjccO451cZYQ/WMjBfYj/biO+9saXWQw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -148,77 +153,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This series backports 15 patches to update minmax.h in the 6.6.y branch,
-aligning it with v6.17-rc7.
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-The ultimate goal is to synchronize all longterm branches so that they
-include the full set of minmax.h changes.
+[ Upstream commit 3a7e02c040b130b5545e4b115aada7bacd80a2b6 ]
 
-The key motivation is to bring in commit d03eba99f5bf ("minmax: allow
-min()/max()/clamp() if the arguments have the same signedness"), which
-is missing in older kernels.
+The minmax infrastructure is overkill for simple constants, and can
+cause huge expansions because those simple constants are then used by
+other things.
 
-In mainline, this change enables min()/max()/clamp() to accept mixed
-argument types, provided both have the same signedness. Without it,
-backported patches that use these forms may trigger compiler warnings,
-which escalate to build failures when -Werror is enabled.
+For example, 'pageblock_order' is a core VM constant, but because it was
+implemented using 'min_t()' and all the type-checking that involves, it
+actually expanded to something like 2.5kB of preprocessor noise.
 
-David Laight (7):
-  minmax.h: add whitespace around operators and after commas
-  minmax.h: update some comments
-  minmax.h: reduce the #define expansion of min(), max() and clamp()
-  minmax.h: use BUILD_BUG_ON_MSG() for the lo < hi test in clamp()
-  minmax.h: move all the clamp() definitions after the min/max() ones
-  minmax.h: simplify the variants of clamp()
-  minmax.h: remove some #defines that are only expanded once
+And when that simple constant was then used inside other expansions:
 
-Linus Torvalds (8):
-  minmax: avoid overly complicated constant expressions in VM code
-  minmax: simplify and clarify min_t()/max_t() implementation
-  minmax: add a few more MIN_T/MAX_T users
-  minmax: make generic MIN() and MAX() macros available everywhere
-  minmax: simplify min()/max()/clamp() implementation
-  minmax: don't use max() in situations that want a C constant
-    expression
-  minmax: improve macro expansion and type checking
-  minmax: fix up min3() and max3() too
+  #define pageblock_nr_pages      (1UL << pageblock_order)
+  #define pageblock_start_pfn(pfn)  ALIGN_DOWN((pfn), pageblock_nr_pages)
 
- arch/um/drivers/mconsole_user.c               |   2 +
- arch/x86/mm/pgtable.c                         |   2 +-
- drivers/edac/sb_edac.c                        |   4 +-
- drivers/edac/skx_common.h                     |   1 -
- .../drm/amd/display/modules/hdcp/hdcp_ddc.c   |   2 +
- .../drm/amd/pm/powerplay/hwmgr/ppevvmath.h    |  14 +-
- drivers/gpu/drm/amd/pm/swsmu/smu_cmn.c        |   2 +-
- drivers/gpu/drm/drm_color_mgmt.c              |   2 +-
- drivers/gpu/drm/radeon/evergreen_cs.c         |   2 +
- drivers/hwmon/adt7475.c                       |  24 +-
- drivers/input/touchscreen/cyttsp4_core.c      |   2 +-
- drivers/irqchip/irq-sun6i-r.c                 |   2 +-
- drivers/md/dm-integrity.c                     |   6 +-
- drivers/media/dvb-frontends/stv0367_priv.h    |   3 +
- .../net/can/usb/etas_es58x/es58x_devlink.c    |   2 +-
- .../net/ethernet/stmicro/stmmac/stmmac_main.c |   2 +-
- drivers/net/fjes/fjes_main.c                  |   4 +-
- drivers/nfc/pn544/i2c.c                       |   2 -
- drivers/platform/x86/sony-laptop.c            |   1 -
- drivers/scsi/isci/init.c                      |   6 +-
- .../pci/hive_isp_css_include/math_support.h   |   5 -
- fs/btrfs/tree-checker.c                       |   2 +-
- include/linux/compiler.h                      |   9 +
- include/linux/minmax.h                        | 228 +++++++++++-------
- include/linux/pageblock-flags.h               |   2 +-
- kernel/trace/preemptirq_delay_test.c          |   2 -
- lib/btree.c                                   |   1 -
- lib/decompress_unlzma.c                       |   2 +
- lib/vsprintf.c                                |   2 +-
- mm/zsmalloc.c                                 |   2 -
- net/ipv4/proc.c                               |   2 +-
- net/ipv6/proc.c                               |   2 +-
- tools/testing/selftests/mm/mremap_test.c      |   2 +
- tools/testing/selftests/seccomp/seccomp_bpf.c |   2 +
- 34 files changed, 202 insertions(+), 146 deletions(-)
+and we then use that inside a 'max()' macro:
 
+	case ISOLATE_SUCCESS:
+		update_cached = false;
+		last_migrated_pfn = max(cc->zone->zone_start_pfn,
+			pageblock_start_pfn(cc->migrate_pfn - 1));
+
+the end result was that one statement expanding to 253kB in size.
+
+There are probably other cases of this, but this one case certainly
+stood out.
+
+I've added 'MIN_T()' and 'MAX_T()' macros for this kind of "core simple
+constant with specific type" use.  These macros skip the type checking,
+and as such need to be very sparingly used only for obvious cases that
+have active issues like this.
+
+Reported-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Link: https://lore.kernel.org/all/36aa2cad-1db1-4abf-8dd2-fb20484aabc3@lucifer.local/
+Cc: David Laight <David.Laight@aculab.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Eliav Farber <farbere@amazon.com>
+---
+ include/linux/minmax.h          | 7 +++++++
+ include/linux/pageblock-flags.h | 2 +-
+ 2 files changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/include/linux/minmax.h b/include/linux/minmax.h
+index 2ec559284a9f..a7ef65f78933 100644
+--- a/include/linux/minmax.h
++++ b/include/linux/minmax.h
+@@ -270,4 +270,11 @@ static inline bool in_range32(u32 val, u32 start, u32 len)
+ #define swap(a, b) \
+ 	do { typeof(a) __tmp = (a); (a) = (b); (b) = __tmp; } while (0)
+ 
++/*
++ * Use these carefully: no type checking, and uses the arguments
++ * multiple times. Use for obvious constants only.
++ */
++#define MIN_T(type,a,b) __cmp(min,(type)(a),(type)(b))
++#define MAX_T(type,a,b) __cmp(max,(type)(a),(type)(b))
++
+ #endif	/* _LINUX_MINMAX_H */
+diff --git a/include/linux/pageblock-flags.h b/include/linux/pageblock-flags.h
+index e83c4c095041..a4bf7f0989b2 100644
+--- a/include/linux/pageblock-flags.h
++++ b/include/linux/pageblock-flags.h
+@@ -41,7 +41,7 @@ extern unsigned int pageblock_order;
+  * Huge pages are a constant size, but don't exceed the maximum allocation
+  * granularity.
+  */
+-#define pageblock_order		min_t(unsigned int, HUGETLB_PAGE_ORDER, MAX_ORDER)
++#define pageblock_order		MIN_T(unsigned int, HUGETLB_PAGE_ORDER, MAX_ORDER)
+ 
+ #endif /* CONFIG_HUGETLB_PAGE_SIZE_VARIABLE */
+ 
 -- 
 2.47.3
 
