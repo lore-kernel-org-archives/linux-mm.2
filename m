@@ -4,86 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C10DCAC5AC
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 09:45:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD206CAC5A7
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 09:49:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D74C8E0006; Mon, 22 Sep 2025 05:45:23 -0400 (EDT)
+	id D3CD88E000D; Mon, 22 Sep 2025 05:49:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 988278E0001; Mon, 22 Sep 2025 05:45:23 -0400 (EDT)
+	id CEDC98E0001; Mon, 22 Sep 2025 05:49:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 89E468E0006; Mon, 22 Sep 2025 05:45:23 -0400 (EDT)
+	id C29D78E000D; Mon, 22 Sep 2025 05:49:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 76C348E0001
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 05:45:23 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EB8E21199EE
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 09:45:22 +0000 (UTC)
-X-FDA: 83916403284.06.8525B21
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 5CA7C140010
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 09:45:21 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TDEa3ciO;
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B298C8E0001
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 05:49:28 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4CF301605A3
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 09:49:28 +0000 (UTC)
+X-FDA: 83916413616.09.9980E4F
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 42EBA16000C
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 09:49:24 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=none;
+	spf=pass (imf08.hostedemail.com: domain of wuyifeng10@huawei.com designates 45.249.212.188 as permitted sender) smtp.mailfrom=wuyifeng10@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758534321;
+	s=arc-20220608; t=1758534566;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I6kGXerqfd0vSg53QavRXmh6XHC8JG3TW/ZkICij4qM=;
-	b=npN+3meYZ42ibSH9hKDeWF/Z0aeBOPWLxFqxTInwJrABeUkM/0Gr3kqsVT5G3gkD/bHxZX
-	KognrW/U7vYpGSwEkVEi457fOVzF0oCO8h64f5uL286FL0+GQqsaHuWOiUpxDStu+pkxGX
-	xaBvowTlNSvglre6omZYIYWoa51jLxA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758534321; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/DEmlys2IL8144Nk5e1AHB3aF+0Bgsu5dPkNz54Ua/U=;
+	b=2uVT3OH4jb17EJXZ4pX4+GTq4GdiswR+n66YnET1BkeJFxORj2brx+slV6ejJ01JL/dIsR
+	UM3ZVPHTxQUusQbSh94SzRMy0dYz6CCQ9YNGCVFXnGkWh9olFXMXB7WU6fWf1rgbxOWeNI
+	a4e9KNvX5M352pT5uG/JYWCIl3oKbI0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758534566; a=rsa-sha256;
 	cv=none;
-	b=i3O8ovoOv9CsKY9B+MCFMFSKa71ugvHl/AGy5yWrKt7DvTfyeO28od99DQCR5XTNoq7Lm9
-	X9mZWeA0z+m+rQTx1Zs2pOULXhhfolQq/fgWA/AiYA3lzbGmRUWPpvkufBsdkwEDWJq21D
-	Sp/YMdNejdJ5a1Miz3kEYuwtrIJGHv0=
+	b=b7UgBs5MhQTo4TY41Ib44prvGYckUOo/aRVmqixQhM65lEyGFL822mDoLgOL9OI4hHfUh1
+	S3oj+bfeTkJF7NxDbCPK+mIvIMifC1CH9PLjlC6o3pleQnFkFXAVSK+L5mT+rJPu3aMbYZ
+	Yy9f8LQ6ZaA5sxxz3MeSNRPv1+UF5Es=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TDEa3ciO;
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B5B39601FD;
-	Mon, 22 Sep 2025 09:45:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EADBC4CEF0;
-	Mon, 22 Sep 2025 09:45:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758534320;
-	bh=hdfRT2uy44XDHp2YpNE/KGcCQuuBYA4VB2AZtgCJD4A=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TDEa3ciO/uGMbDaO5Ar6pxZcGSvMnhdw7agtbXBLDKnkmkrf0bgw1MDOz+TSJX6I7
-	 Vmmd9aTinZqOQYdsjJkNALe5NhemddYM1ubWJfygFFxgEyaATwZtwjFwkn/TgKUlgj
-	 yfBCM3qPHtE6bmTUpdvsVM8axCuRANP1jlwdKKv4gTGbff3BUBVFtMLUKfsPkUp6qE
-	 nNnZ8UVOP/q+0Wo7Xqt+lSZz+6RalvqD3cDUqEp12vqrZLkx+ILil7aZo8PoIbnkPw
-	 KrQ2hi0MGo0vIhiIDJ4xi5tf/tzbnVwZGfeJIYm9bP6KVOkqjkwwTQI5c/ytny3BAY
-	 MjnbjTP/JUaEA==
-From: SeongJae Park <sj@kernel.org>
-To: "Kumar, Kaushlendra" <kaushlendra.kumar@intel.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>
-Subject: RE: [PATCH] tools/mm/slabinfo: fix buffer overflows in fread operations
-Date: Mon, 22 Sep 2025 02:45:17 -0700
-Message-Id: <20250922094517.58153-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <LV3PR11MB8768BC4A1DF99E07DE49FAD8F512A@LV3PR11MB8768.namprd11.prod.outlook.com>
-References: 
+	imf08.hostedemail.com;
+	dkim=none;
+	spf=pass (imf08.hostedemail.com: domain of wuyifeng10@huawei.com designates 45.249.212.188 as permitted sender) smtp.mailfrom=wuyifeng10@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.48])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4cVdVy5wjWzQlPY;
+	Mon, 22 Sep 2025 17:44:42 +0800 (CST)
+Received: from kwepemr200005.china.huawei.com (unknown [7.202.195.182])
+	by mail.maildlp.com (Postfix) with ESMTPS id 1417B180064;
+	Mon, 22 Sep 2025 17:49:21 +0800 (CST)
+Received: from [10.174.184.156] (10.174.184.156) by
+ kwepemr200005.china.huawei.com (7.202.195.182) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 22 Sep 2025 17:49:20 +0800
+Message-ID: <b045a2cf-4199-4fcc-be48-caa4f812f147@huawei.com>
+Date: Mon, 22 Sep 2025 17:49:19 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC] mm: MAP_POPULATE on writable anonymous mappings marks pte
+ dirty is necessarily?
+To: Pedro Falcato <pfalcato@suse.de>, David Hildenbrand <david@redhat.com>
+CC: <akpm@linux-foundation.org>, <linux-mm@kvack.org>
+References: <17ad24e5-9ee0-4d94-be5f-3c28bd57460a@huawei.com>
+ <oypwdcx6j726iffszfayd66xizaw5tfv2lnkk7bx7ibzn37x3m@ulkgb6x6geef>
+ <adab9c31-c281-4bf7-93ae-89ed9f303d7b@redhat.com>
+ <hgbxlsaxe3p6npj3tyrd6u64qel6monttjaadzcnzpcpgi7arp@ztzuvbq55vuz>
+From: "wuyifeng (C)" <wuyifeng10@huawei.com>
+In-Reply-To: <hgbxlsaxe3p6npj3tyrd6u64qel6monttjaadzcnzpcpgi7arp@ztzuvbq55vuz>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 5CA7C140010
-X-Stat-Signature: japj7dfbrraxh7oiw3t856fqrcqm84oq
+X-Originating-IP: [10.174.184.156]
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ kwepemr200005.china.huawei.com (7.202.195.182)
+X-Stat-Signature: cgd1esfa9a6cmehc7793oa1ana1gxuot
+X-Rspamd-Queue-Id: 42EBA16000C
 X-Rspam-User: 
-X-HE-Tag: 1758534321-340100
-X-HE-Meta: U2FsdGVkX19vBgYcfxIfvQWLcN4ZGb0ECnNjadABw9PLm6iUm7YTOBUsVssKAlbqmiO2xb8Q+4MidSZcJUczDIg+oefiCVJx7t9fftvibW9fMx8WESgLioaxVkRf850tGXrO3OUyoN0ki1qXzWUtFypX6tUkmTGURAIR4Km2tGJv54jJuLwCHjTyJ9p+ZFErgMTh1yMg0n0HBjZwby5HjhoYf/Z8gv/DURBv4MQYOuzU1clYKVMawkmL75YvgyZ43ZZD7Bds2/s3PDsyPiJ+P14VWmPz2gsXXSi43Ncn/w73plKiO9u1RQmxDz9StKqTk0BEIhGsQuRRCdMkV2Jmcgn2CLItZtAu/uii2ESkOIEiAMj34VIK1iER/w+VwexKgXO5jNfSb/rewpKCnxQOiz4ecYNIrw6P/XeKrf5ey9OcUWJxHgfMDWhfWSx8u2z2imlys1TfNyVTEBgAYMI4AOq+FGxtpuiy/qIxeqcv10tDEj7zDHbfyfIotolHJQ0POuIw0p1DDGjDqFL6hfT2ZvsTD3e1pKTgBIaQLhYpjBN17PVca2Ms4EM9XaerBSZNM4bOYaeazkSpD/7/mQsrB9PNprg7Fw5RzY3IgtYcmzMw7vl6UPREM6aY+kXJUwJ3ztraN/qKzTVerWz9GVAvu9kVJLYA4BoJgl15dc4mPPBo3uYKMnj29YfAO1OVZHGaLC52HBxo6yRoabLSLguvQridYKM7hZgC0FFsKViRN2k3J2UqCQoFhe0cojwFe8tHkTzafb9BBz+Y/Q4qGk88UmpEfeT6QVLulAf1QMecme87w2ieymdAl3occ6pZbOssWYdSpfFLDSCo0t1kie4ITHpko3ICm5ECiKc+z+QQ6O3S7WHQ2x9M6R1F00QEd0gOdGo+V4+S3rl9lcjbv4ew+zoIJWoAGbdm8Iwo7KYg1T8J/SV+yJswB0lKQvt6InCx5NpOnBXh7DfACzKCF98
- DpkFLDCr
- HopyLR7xI1+IygJI6+KLq0yHOwkELdHdTAlylAEnZY/XKmom/ZQ4f8Ee9n087Wa7K9bxAfk0v4h4WwEqedeXYDuIGARPb2weDQEEGtyFXLY4JqBmU8AQg79j1BSaNkgrB6IaMldvJFGfHbD6vgqDtUYs+LUfEqhiwa2sZaaUDj6Dn2I/ikbsS3SoVRHneQLKRHIB112RcmF8jY4O1NnhoBUUI7ZiS+YGNLtkY+TpI3MHgjcAUv4qfEjH8Iw9vFfnIh4w2HtQcrjuuJaxOcHGAcAVYOL9kNnu69QYm/NOck+eZ5cI=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1758534564-60947
+X-HE-Meta: U2FsdGVkX19hcG6FTVOcnSZwmTOcrOQSmyAURhMHewqM7FybIaSRd3p2uR+g0P/PR3UYz2JhCMEp5uMUJRq7GL4KCNdOvVbxOMHFRaLA1k8jkDfVfYpjfPEzZGA/DkWEuxdNwSZ5tI97u+vMftZeaOXJdZe0Dys5ruq5znp4wT5ZJyxAIpB0X+vkQ+fMpJo1Qax5G4My4ZlXkJtLyL9ritPZzbd9mJIetcA6B3EDprcGu8biCP2Suv+d+0XKRh2NO0TJzuaWUL2myKDKI0u1vhnGFOCYt30uD/uDKFF2GfNKTVNGqF7cfw5GBwVKBRyCnWI6ljzB9Pb0l9wGsbOjYU0FoZh5/9O0zsig4SSst4Kr4CNcBZVpI7XStm+CRcph9vkQNgfezD/Pccs4MqTlxODlI1+1EagRTVuKsLgY+ykmbfOB+I30jA28lIZjcuTANJE1lDcMIIJuIsxEefINZFdx8FXwMzrPiLXC8EeNdF3tdl6i9TMrhFLi8jDIDoTmxs0v7f9pQK4ZP7D1M12EosLIbQLHpz+Ydtceue5/Re4lrKqpZJJp9xBfkcctzfvIkqktvtJUlnkIg33myQQPAEGpJWyEzyKjuLjuH1O0bv36aZnLzuPf4yTg6LWqPoSAr9JE1+4szvLa1y9rlxpu7Msbh3mGarlQwLROVNaPSeMGgKIN/10B+OVbeOi8a7VA7wWA4iddOHF601T9DCf19SwT8yucBsZg0Qb4Wz9F5RPrxSfFQpuZqgN2vdvrUgwjUW2dcsIqefitI3+oHo2pSZFkWgJf8YjxG+r1a3d25P7Qj42tAasX2PjhggHgpOAxMtdWkPyvPDALywP7k8SGoxtkzvDxVV5uI9lYrevAl0HBFYbPWXMSSpYPf+1Qenp0efa4FIaeMOFXJbW8TzEWs2V7ywF0G+a7yYpOC61pNra9AO1YRGJXEVXlgRHI12m9a4OsGbx8xmhkNQ7J59C
+ ZYTLNnd1
+ urjDQgrqZ9OIGF6X+Ip2DSuzLemwVL3aETR3abf+pmJwUnfZDY7BIOYizgmRIizct1RD60aiLypMf/RIqjosvmGfOEBUpDtmNwN2MqAudOFCx7TIUdYJSUkbQ8m5WhkH7dPxofrAZTHQKGCYyeAEIIeDI6q/x59oVEYjJPQRp8FSix6/1/Y2YiAlm35QZasSCQW/OJB4kFyf1EGwWZzCRH5Zoz4LebZ8H/T0AzelXr01fUk8+h9hI4yvouIRSw8EdrugER2aiEm7N+6dz68DwxUHnVRIJY5m8BFKnwDDGR3TUYvLovuHQ/YCqoMktfFqMBZo3eh+bTZXCuSw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,46 +94,132 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 22 Sep 2025 02:40:11 +0000 "Kumar, Kaushlendra" <kaushlendra.kumar@intel.com> wrote:
+I only noticed this behavior while reading the code and haven’t actually
+encountered any performance issues caused by swap. I hadn’t initially considered
+that marking pages dirty again would incur extra overhead (even with hardware support).
 
-> On Fri, 29 Aug 2025, SeongJae Park wrote:
-> > On Fri, 29 Aug 2025 15:29:47 +0530 Kaushlendra Kumar <kaushlendra.kumar@intel.com> wrote:
-> > 
-> > > The fread() calls in read_slab_obj() and read_debug_slab_obj() can 
-> > > read up to sizeof(buffer) bytes, but then unconditionally write a null 
-> > > terminator at buffer[l]. If fread() returns sizeof(buffer), this 
-> > > writes beyond the allocated buffer boundaries.
-> > > 
-> > > Fix by limiting reads to sizeof(buffer) - 1 bytes in both functions, 
-> > > ensuring space is always reserved for null termination. This prevents 
-> > > buffer overflows while maintaining proper string handling.
-> > > 
-> > > Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
-> > 
-> > Acked-by: SeongJae Park <sj@kernel.org>
-> > 
-> > 
-> > Thanks,
-> > SJ
+From this perspective, it’s clear that the current design provides a net benefit in the
+vast majority of scenarios.
+
+Thank you very much for your explanation!
+
+在 2025/9/22 17:37, Pedro Falcato 写道:
+> On Mon, Sep 22, 2025 at 11:07:43AM +0200, David Hildenbrand wrote:
+>> On 22.09.25 10:45, Pedro Falcato wrote:
+>>> On Mon, Sep 22, 2025 at 02:19:51PM +0800, wuyifeng (C) wrote:
+>>>> Hi all, While reviewing the memory management code, I noticed a
+>>>> potential inefficiency related to MAP_POPULATE used on writable
+>>>> anonymous mappings.I verified the behavior on the mainline kernel
+>>>> and wanted to share it for discussion.
+>>>>
+>>>> Test Environment:
+>>>> Kernel version: 6.17.0-rc4-00083-gb9a10f876409
+>>>> Architecture: aarch64
+>>>>
+>>>> Background:
+>>>> For anonymous mappings with PROT_WRITE | PROT_READ, using MAP_POPULATE
+>>>> is intended to pre-fault pages, so that subsequent accesses do not
+>>>> trigger page faults. However,I observed that when MAP_POPULATE is used
+>>>> on writable anonymous mappings, all pre-faulted pages are immediately
+>>>> marked as dirty, even though the user program has not written to them.
+>>>>
+>>>> Minimal Reproduction:
+>>>>
+>>>> #define _GNU_SOURCE
+>>>> #include <sys/mman.h>
+>>>> #include <unistd.h>
+>>>> #include <stdio.h>
+>>>>
+>>>> int main() {
+>>>>      size_t len = 100*1024*1024; // 100MB
+>>>>      void *p = mmap(NULL, len, PROT_READ | PROT_WRITE,
+>>>>                     MAP_PRIVATE | MAP_ANONYMOUS | MAP_POPULATE, -1, 0);
+>>>>      if (p == MAP_FAILED) {
+>>>>          perror("mmap");
+>>>>          return 1;
+>>>>      }
+>>>>      pause();
+>>>>      return 0;
+>>>> }
+>>>>
+>>>> Observed Output (/proc/<pid>/smaps):
+>>>> ffff7a600000-ffff80a00000 rw-p 00000000 00:00 0
+>>>> Size:             102400 kB
+>>>> KernelPageSize:        4 kB
+>>>> MMUPageSize:           4 kB
+>>>> Rss:              102400 kB
+>>>> Pss:              102400 kB
+>>>> Pss_Dirty:        102400 kB
+>>>> Shared_Clean:          0 kB
+>>>> Shared_Dirty:          0 kB
+>>>> Private_Clean:         0 kB
+>>>> Private_Dirty:    102400 kB
+>>>> Referenced:       102400 kB
+>>>> Anonymous:        102400 kB
+>>>> KSM:                   0 kB
+>>>> LazyFree:              0 kB
+>>>> AnonHugePages:    102400 kB
+>>>> ShmemPmdMapped:        0 kB
+>>>> FilePmdMapped:         0 kB
+>>>> Shared_Hugetlb:        0 kB
+>>>> Private_Hugetlb:       0 kB
+>>>> Swap:                  0 kB
+>>>> SwapPss:               0 kB
+>>>> Locked:                0 kB
+>>>> THPeligible:           1
+>>>> VmFlags: rd wr mr mw me ac
+>>>>
+>>>> Code Path Analysis:
+>>>> The behavior can be traced through the following kernel code path:
+>>>> populate_vma_page_range() is invoked to pre-fault pages for the VMA.
+>>>> Inside it:
+>>>>
+>>>> if ((vma->vm_flags & (VM_WRITE | VM_SHARED)) == VM_WRITE)
+>>>>          gup_flags |= FOLL_WRITE;
+>>>>
+>>>> This sets FOLL_WRITE for writable anonymous VMAs.
+>>>>
+>>>> Later, in faultin_page():
+>>>>
+>>>> if (*flags & FOLL_WRITE)
+>>>>          fault_flags |= FAULT_FLAG_WRITE;
+>>>>
+>>>> This effectively marks the page fault as a write.
+>>>> Finally, in do_anonymous_page():
+>>>>
+>>>> if (vma->vm_flags & VM_WRITE)
+>>>>          entry = pte_mkwrite(pte_mkdirty(entry), vma);
+>>>>
+>>>> Here, the PTE is updated to writable and immediately marked dirty.
+>>>> As a result, all pre-faulted pages are marked dirty, even though the
+>>>> user program has not performed any writes.
+>>>> For large anonymous mappings, this can trigger unnecessary swap-out
+>>>> writebacks, generating avoidable I/O.
+>>>>
+>>>> Discussion:
+>>>> Would it be possible to optimize this behavior: for example, by
+>>>> populate pte as writable, but deferring the dirty bit until the user
+>>>> actually writes to the page?
+>>>
+>>> How would we know if the user wrote to the page, since we marked it writeable?
+>>
+>> On access, either HW sets the dirty bit if it supports it, or we get another
+>> fault and set the dirty bit manually.
+>>
+>> What happens on architectures where the HW doesn't support setting the dirty
+>> bit is that performing a pte_mkwrite() checks whether the pte is dirty. If
+>> it's not dirty the HW write bit will not be set and instead the next
+>> pte_mkdirty() will set the actual HW write bit.
+>>
+>> See pte_mkwrite() handling in arch/sparc/include/asm/pgtable_64.h or
+>> arch/s390/include/asm/pgtable.h
+>>
+>> Of course, setting the dirty bit either way on later access comes with a
+>> price.
 > 
-> Hi SeongJae,
+> Ah, yes, the details were a little fuzzy in my head, thanks.
+> I'm trying to swap in (ha!) the details again. We still proactively mark anon
+> folios dirty anyway for $reasons, so optimizing it might be difficult? Not sure
+> if it is _worth_ optimizing for anyway.
 > 
-> Thank you for the Acked-by! 
-> 
-> Since this patch has received your acknowledgment, are we going to merge this 
-> patch? Should I expect it to be picked up for the next kernel release, or 
-> are there any additional steps needed from my side?
-
-I'm not a maintainer or a reviewr of slabinfo, so my Acked-by: doesn't mean
-many things.  I think the next steps and decisions are up to Andrew.
-
-And I think Andrew should be busy for the preparation of the next merge window.
-I'd suggest pinging Andrew again, after the next MM pull requests for 6.18-rc1
-are done.
-
-
-Thanks,
-SJ
-
-[...]
 
