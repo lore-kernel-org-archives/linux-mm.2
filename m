@@ -4,174 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECE6BCAC592
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 12:46:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0F7ACAC592
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 12:54:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2C3E08E000A; Mon, 22 Sep 2025 08:46:54 -0400 (EDT)
+	id 19DC98E000A; Mon, 22 Sep 2025 08:54:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 29ACE8E0001; Mon, 22 Sep 2025 08:46:54 -0400 (EDT)
+	id 175708E0001; Mon, 22 Sep 2025 08:54:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 162448E000A; Mon, 22 Sep 2025 08:46:54 -0400 (EDT)
+	id 08B668E000A; Mon, 22 Sep 2025 08:54:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 031C78E0001
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 08:46:54 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B2D5113B8E8
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 12:46:53 +0000 (UTC)
-X-FDA: 83916860706.24.2D99D83
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 42F1E120007
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 12:46:51 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Q6imtOKD;
-	spf=pass (imf29.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id ED52F8E0001
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 08:54:58 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 94AC711A9A3
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 12:54:58 +0000 (UTC)
+X-FDA: 83916881076.05.BDA42F4
+Received: from flow-a8-smtp.messagingengine.com (flow-a8-smtp.messagingengine.com [103.168.172.143])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 6F62A20009
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 12:54:56 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm1 header.b=Byx+4gU0;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="H 0IPFaD";
+	spf=pass (imf03.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.143 as permitted sender) smtp.mailfrom=arnd@arndb.de;
+	dmarc=pass (policy=none) header.from=arndb.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758545211;
+	s=arc-20220608; t=1758545696;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Mv13huhT0gqfkBDZT0hXlMvGHFMtcIbajQQZdQ6vz48=;
-	b=1SBwVHYDfA39qheIB7YURtxx8vG0LW7dHZVt5KNhl71RMFPVFpUaluptErRahO8LGdEvHv
-	AQP4Q/7xNJlYCyusiuLini5PsM36/WUAFo0c2TqR5DD/1fraG1izx1bcdrSjLJ1bbD5ank
-	xKncT0tyVBs00stutirvEuzmImH53LI=
+	bh=t36qDepR8M2DCIZbR0pCgjLUAnazHFDPHVI50t3UlR0=;
+	b=4EEAM+o58AdvzTDq0LN495os0BZ4SBsiDLk2guoTiLde2SC06mAaoOxATuFNHSNrLOd1B2
+	u00nFupQIJf2AJeLA56rc32xMf0LKXPrrhcOhag3Rmsnydy4VGVjgWJmwDUeLxIxGTtqR2
+	tmt4HALe02Q4iij9xpNCEh9ei22kpvw=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Q6imtOKD;
-	spf=pass (imf29.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758545211; a=rsa-sha256;
+	imf03.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm1 header.b=Byx+4gU0;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="H 0IPFaD";
+	spf=pass (imf03.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.143 as permitted sender) smtp.mailfrom=arnd@arndb.de;
+	dmarc=pass (policy=none) header.from=arndb.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758545696; a=rsa-sha256;
 	cv=none;
-	b=U1DgBOh3OPpLhOzHoFDW62YRPW6MrPhYBNby0fDJUvIA5DUVvYhB0NQgtMyZL5QvctBmNp
-	YWoaTeuGDhrEJ8esaMrrpNxJmfYi7bc6Z4LYDfOYamaZSgF/VfMZr01mQ/MDM/MBtYO7H8
-	mcO2uVy1o41beU/c/iahKgeUMZNfHgs=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758545210;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Mv13huhT0gqfkBDZT0hXlMvGHFMtcIbajQQZdQ6vz48=;
-	b=Q6imtOKDA1DfG7h+4nT6VPYILwyNIn75Ve58ttwb36xxllHEliRcE1RWzZuNwxw3ggDJC2
-	QvX8IHQiK3LplPWeawaLk228jsm4G7JEfvoAr5kSYw3wHYIZT3DB6cQ3FlK/TfmqhZaaM0
-	Rw5Gn4wzXQ+2DUR23ZmwSlEoNBfE1qg=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-231-oPzE3nhAOT6Tndqv-ggAqA-1; Mon, 22 Sep 2025 08:46:47 -0400
-X-MC-Unique: oPzE3nhAOT6Tndqv-ggAqA-1
-X-Mimecast-MFC-AGG-ID: oPzE3nhAOT6Tndqv-ggAqA_1758545206
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-46d46692831so4802995e9.3
-        for <linux-mm@kvack.org>; Mon, 22 Sep 2025 05:46:47 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758545206; x=1759150006;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Mv13huhT0gqfkBDZT0hXlMvGHFMtcIbajQQZdQ6vz48=;
-        b=M6GEVY/AWBwzNvNjsJmnLODSpFDQ6xbNJmRQ/VGi8X9jPIqKpvBlwR+w6+jWBB7asX
-         nTWpE+2AVqsDDZzUhAGf1egzhlpoSenKGprXyLJtzamEp1CDUEpQpUCWq7JV0grP9Oxc
-         V+k22KaX5h0GO7qLdyRbLYlpnP4LgzHW3WwfeyEMtfuPJaCzTfN4FAHk2pOmu+5+5lDH
-         AhaVkhPXkOXd/KoW1NnqILTzLQyqdRzyUpIsma89wBa0CrERV+QJyAA7pWOx0DvcIoaL
-         w25ANIeOTRBml1uhmt064w3poA9yURB78MqgCDrcs5ZMHEp1UjZHHd3EKP8jNegWGCBh
-         YHJA==
-X-Forwarded-Encrypted: i=1; AJvYcCXWj3XaC6FBToaxXKvGz6UtbQuMEHdICNNoWndf6a35hJ7xwr6/P89IKoPjdKIHKvpEl3rQMIA0vw==@kvack.org
-X-Gm-Message-State: AOJu0YzvL0YoxnYWi+0i/yXuY68dOAkMRAXBneVSux6FuITScRGLYEra
-	cSOLealFTPSt4RN5fSH8E79GIp8dbchocXA3aDPI3WB7RgzNZ42LOs3cPq9YI5UBCRPm0sA6oVr
-	GCQorIkcmdUXW2V0SKThSevY9wiOuh2iZj9i3LkSibFVi0S12qoLN
-X-Gm-Gg: ASbGncuYXd0wWGvOS1zn/ZNHecySGk8/CLnW+efaIrYY4VKltOa853o03S3sOn5dZqL
-	HCO099thgZvxiQHf0lR+JFUFa75UQGRF5Clbb9yW/t63ZvVD2SqTNVnVaI4ORA6fP7a74Li8IDO
-	NTF4/7XCmjVlGhImoSNlS70byA3XJcnr0s9hOLhE6CtjjMMU+YXL7u0eWEjoLW7+JS2T1bhqLUE
-	HYZpQjQ8Mp60FRCrT/3Zcppr/ZGxHVt/C3MiC1Aer+Zd/eQB/gdttACEbRGulx2VuhHSTuVKia2
-	vMZlc+qbhsXmpuIn72r8VTJHXFh96Rrb5dqM7U37ee4AKHt+IjDN3Fjrcg8Q1aLnNjTO3SGXimV
-	Ikd5sJNZ4AEhtgcPQLJUbvxlyqrqnGePzoOY+06sEClkPOoVnyaVRzrdknvc4IWA=
-X-Received: by 2002:a05:600c:1d1b:b0:46d:996b:828c with SMTP id 5b1f17b1804b1-46d996b8a1cmr27602085e9.10.1758545206006;
-        Mon, 22 Sep 2025 05:46:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGxdA8IYtBgItRbRxudMnIH8eEFMOAJ7pRm6IRhcDJcEGS3N2hn+i06fgbwEoEqPhQRHhAN3w==
-X-Received: by 2002:a05:600c:1d1b:b0:46d:996b:828c with SMTP id 5b1f17b1804b1-46d996b8a1cmr27601765e9.10.1758545205552;
-        Mon, 22 Sep 2025 05:46:45 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f2a:e200:f98f:8d71:83f:f88? (p200300d82f2ae200f98f8d71083f0f88.dip0.t-ipconnect.de. [2003:d8:2f2a:e200:f98f:8d71:83f:f88])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46da6900832sm14460365e9.0.2025.09.22.05.46.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Sep 2025 05:46:45 -0700 (PDT)
-Message-ID: <8e8b4aa4-18b7-4928-a9f0-cd47a59258fc@redhat.com>
-Date: Mon, 22 Sep 2025 14:46:44 +0200
+	b=rWCNHo3wCrklZ33FacKiNrVY1wO06eQHW1NuPejPC9r/FX6h+gR8bxKJSj8lOh98fFFLqv
+	8pafVVFJRzzq0NfGbi9NHVMmraOuTOa5rav6qKckNpGZCPLxIH8doq/zpkOyASQIlaB0UG
+	sM92tCaju/dDbDSiL5GDXxszChJLiNo=
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailflow.phl.internal (Postfix) with ESMTP id B4DF41380189;
+	Mon, 22 Sep 2025 08:54:55 -0400 (EDT)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-05.internal (MEProxy); Mon, 22 Sep 2025 08:54:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1758545695;
+	 x=1758552895; bh=t36qDepR8M2DCIZbR0pCgjLUAnazHFDPHVI50t3UlR0=; b=
+	Byx+4gU0eym5kWVlcDXwUEDI2l9mrErWD5C903u60dnEyaLum9cP1ZuS5KIp+xgV
+	ZPhoSR2eD/GkgL674LQAABX9NWS2vtfKwaGvmIMh7dn5zMpqei4YDaKF6Sg1lPqM
+	/QYUc0VveyM9znhOFNe0I0Peulxx/MpOzCUQKlSEgPHlsEhuUOD2y6mRk3lDEj02
+	VonOHqKY3rqz628mNujxcDBLfdikoS4DkYJFuSM7iVjrVgPyCF1G4xzwHAbC28ak
+	vvUqx1uImSJZ0/2d1CaWpImUIRc3GyUcfQGlUAGQNOWn2gPJHn5TvlH9sflGdsBd
+	Q080PKF/+Wx2IOzfgFAq3g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1758545695; x=
+	1758552895; bh=t36qDepR8M2DCIZbR0pCgjLUAnazHFDPHVI50t3UlR0=; b=H
+	0IPFaD0Bba71iIapHDtSV1s5vKNTmSWg76ZWGgJDWMeMe2uVZv93YLpC6F+3M7WS
+	7WR8RZqD6IX9RfHdr78aWjw7DCVCJJDQQAyQV579FYFi5N053564JuPCiuOaoK7E
+	jCNWhlk6xzOLMU//k4yHk7ANSniWbtRW6bN+QjnKeFTwCD651tkhjiL2UZK6FT4a
+	N+e/Yd+67opM9BzKp4zMCF1uEB2IdBcU4BDnt7dF2IYQtXXKkU2s8zbUPCs7FRgT
+	esVXVJWVpb7ki7wYLCkfM9rz4wm7rTHNen16vLJGDFL/xHUUzNYiuVSL2AtqWUoo
+	LzUsfYTN6qltg5PEeMddw==
+X-ME-Sender: <xms:HkfRaIhwl2BmHC6VY4isyWFya-k04jD6ylI2zmgaqD6hV2yhCcrcAw>
+    <xme:HkfRaBA26ySSRAPgSQvT1XYEaaJYts20E0XhpKyqZSIXJCR2OE9jzNtNSAFz8UVQR
+    HSJ4LKxnkBuSkZFk1c>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdehjeeltdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhhnugcu
+    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
+    hnpefhtdfhvddtfeehudekteeggffghfejgeegteefgffgvedugeduveelvdekhfdvieen
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
+    esrghrnhgusgdruggvpdhnsggprhgtphhtthhopedviedpmhhouggvpehsmhhtphhouhht
+    pdhrtghpthhtoheplhhinhhugiesrghrmhhlihhnuhigrdhorhhgrdhukhdprhgtphhtth
+    hopehrmhhkodhkvghrnhgvlhesrghrmhhlihhnuhigrdhorhhgrdhukhdprhgtphhtthho
+    pehnrghordhhohhrihhguhgthhhisehgmhgrihhlrdgtohhmpdhrtghpthhtoheprhhosh
+    htvgguthesghhoohgumhhishdrohhrghdprhgtphhtthhopehsuhhrvghnsgesghhoohhg
+    lhgvrdgtohhmpdhrtghpthhtoheplhhirghohhhurgegsehhuhgrfigvihdrtghomhdprh
+    gtphhtthhopehlihhlihhnjhhivgeksehhuhgrfigvihdrtghomhdprhgtphhtthhopehl
+    ihhnmhhirghohhgvsehhuhgrfigvihdrtghomhdprhgtphhtthhopeigihgvhihurghnsg
+    hinhdusehhuhgrfigvihdrtghomh
+X-ME-Proxy: <xmx:HkfRaCigs8Fbeh9nddaAG96q7IyZQvw3aeIYEeOmKg-CRsa1QbL_6Q>
+    <xmx:HkfRaCv2xmbmRFslevLLrkDTmmKL1-lKBkFUSXaessp7GPqBHtniAg>
+    <xmx:HkfRaE64XxBzr53OG3J0xus2BYuY6_ti3fdW9pt59OdOalF9khdfew>
+    <xmx:HkfRaNtIkKJV0zAg5uDGA1LBG8hBH_va0vo4RVrbVfhnUgCeeDvgOQ>
+    <xmx:H0fRaKVMmb-oKkRydhvIG9b_njKCBCZyzUrTrxLNyaHqA221GeTlQIFn>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 3037D700065; Mon, 22 Sep 2025 08:54:54 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] mm: MAP_POPULATE on writable anonymous mappings marks pte
- dirty is necessarily?
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: "wuyifeng (C)" <wuyifeng10@huawei.com>, akpm@linux-foundation.org,
- linux-mm@kvack.org
-References: <17ad24e5-9ee0-4d94-be5f-3c28bd57460a@huawei.com>
- <oypwdcx6j726iffszfayd66xizaw5tfv2lnkk7bx7ibzn37x3m@ulkgb6x6geef>
- <adab9c31-c281-4bf7-93ae-89ed9f303d7b@redhat.com>
- <hgbxlsaxe3p6npj3tyrd6u64qel6monttjaadzcnzpcpgi7arp@ztzuvbq55vuz>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <hgbxlsaxe3p6npj3tyrd6u64qel6monttjaadzcnzpcpgi7arp@ztzuvbq55vuz>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: iUmqd1EiBNKli4JD1UI5onODJsa6bEqGAh8BqeZWiDY_1758545206
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
+X-ThreadId: AFFCV0QGVXfF
+Date: Mon, 22 Sep 2025 14:51:59 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Xie Yuanbin" <xieyuanbin1@huawei.com>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Ard Biesheuvel" <ardb@kernel.org>, "Dave Vasilevsky" <dave@vasilevsky.ca>,
+ "David Hildenbrand" <david@redhat.com>, "Eric Biggers" <ebiggers@kernel.org>,
+ "Kees Cook" <kees@kernel.org>, liaohua4@huawei.com, lilinjie8@huawei.com,
+ linmiaohe@huawei.com, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ "Russell King" <linux@armlinux.org.uk>,
+ "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
+ "Michal Hocko" <mhocko@suse.com>, nao.horiguchi@gmail.com,
+ "Nathan Chancellor" <nathan@kernel.org>,
+ "Peter Zijlstra" <peterz@infradead.org>,
+ "Russell King" <rmk+kernel@armlinux.org.uk>,
+ "Steven Rostedt" <rostedt@goodmis.org>, "Mike Rapoport" <rppt@kernel.org>,
+ "Suren Baghdasaryan" <surenb@google.com>, "Vlastimil Babka" <vbabka@suse.cz>,
+ "Will Deacon" <will@kernel.org>
+Message-Id: <9c0cd24c-559b-4550-9fc8-5dc4bcc20bf7@app.fastmail.com>
+In-Reply-To: <20250922082843.26722-1-xieyuanbin1@huawei.com>
+References: <727caa4f-5be5-4b59-a10e-8dc9bbc384bf@app.fastmail.com>
+ <20250922082843.26722-1-xieyuanbin1@huawei.com>
+Subject: Re: [RFC PATCH 1/2] ARM: mm: support memory-failure
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 42F1E120007
+X-Rspamd-Queue-Id: 6F62A20009
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 51edcqu8x8a4zc37jik76m9y1qxpe8de
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: qgmwdyj3754rowge1ccz9mp3qgn1cjfe
-X-HE-Tag: 1758545211-936992
-X-HE-Meta: U2FsdGVkX1/nLRrPZLWT6qLFj6UD5iB3CZDcihrR4nfEr7RWkLT9Vkw5LhoN88XDa/OnBEL3AbtyoYNTQ3FNbb+EyPisj+NTvJXnkHhOsw7+7RqE2C6cw5v2n0PT6Nzu6u01NfiXaYxSTBG9ZFb4DYmswYtlun2xyHNHq2FCHmunjbKvUZ/F/WoSzuh06eDwEoeaAfUw7FW4B0H6i1RCaKqQGOBiF3U0H2iHSACzVszDzLeQdaiOQ7lHfVoDdvXS66ykQltkDqYHkPqcVU/ctIzFLnkdcO+RpCe/slK1FGS2EcaeX1aMJifVrVLRidj/iIKq4I88T0ITP20GJxZxMJNfW7kO59SkTdOug7D2+LCU+JYPbOwsfblgLumosBLOLbgq3xVMsL29NAlZl2zhCaw5AHiBvxQqLdV6ssvNY6hQn1g94G4F05nnwSDGwYizZFA55bPgzSNW94C8Dxd/Nnrc3zdS6DIAuHmuFwnTZeriA9XozDHdLI/JVz0M5VVInQ/oNWN9/nwfERsoRMZRDmg+xEMcqOsa1SnNvkVOg9CajSGt2yDMof57m7BOiX2ePuXxXI1z44ShQx5n3udAqT97SRs06LO4gvWP52nq6vMHixta/LnPkvV6K/44mrqTzLKKtYfrVDv8A5mbTKLDjtpNTNZJ5PgajPTvtDph6gXukJZZbc45eKSoBxiA5l132FLBvp9LIh669dJDDAY9K3AXXQtDK8SD2975rFDlyspdCJCYL+yxmQJPMssvoMC/i6++Z8IrxDw2lmngGgOKeLrVaZKjZEq9e0YK0av2dbXKypNqNNW1T+91rBIg2q+YKFUMOnqthm3dSLnKoXXX5E5XVL44f+vT48+vVBydaVODP5XG7ZDm/p1aFezqF0L16ProxVHD8Er9wqjMJuesOmJ5DfJjOx0+HsCSoWPo5D7OhdI/lJTMNwdZmjhE//D33ei41UwK+GHmDGJ6oz4
- 69SI5U3E
- iQXXt8RHwHNWvGRvO2IafwxP9EbvmSQSt4ANFBNlacScBD5a4kD6cTn/6MUtVogSiLCg4+KGhhrwXCAWIFYkyqzNsp4yx4R/MseMlIiU+eaTdj78CTKIpyXw/gpb21ESIZ/ppnH0HIcI2yLlUsohCyMhUJnnp38vxy73SE8jfylDf5fkLH4PkToW4R3YBCOFMaCAUjCC6pG304h0BK1PYPYzSgXmfDP6XAS7pOZy1zVMTXHbGTAjJQW//MBLQfv8lnpl0rLb0bZJfOsUUKCzyFfJAE01ZT/1qVKC6sUE5WQrT8tJGJ4SRMo48YhbtDQbbfZzd8rjhIAOF1W/smeroWjbcaG635KzRPVlIGYM3iVl5kwQ2AHPUHhpshJhZhswizzXbnWJ0E+q9LL99fpHTqk82E6LhJ5O85u6WWe3YiSZLEwzauw2+K9cp04U1gis0L0uq50Ts/R1MAtch3TOgS7Zooste43Hdk5csNxYESAwEHVcYjMsabo5L++eARIeBn+YluqQnfFavJUY=
+X-HE-Tag: 1758545696-46317
+X-HE-Meta: U2FsdGVkX1+LOpiU54SSBY9TXMEjdjTaQqEQJklDmzhi1OMRmzzH1T+b54DFTlkvyQOKvyGi5PbThTFRv5WesurrcQAqlQhJy4ZwhLB2LjljtOgcIk9eAIF7Ye6zR61Yl5XCBRTxVKA9WMEPtpmGoQQuGVOZRiI1waB867pKv4NRRZhX5XzoTHwCj3FzF8bJsgmcWT61en5sgtjgqlN79wm5omHLuP2MezqPgSdQoSM1q2p30VNg/NaSUcwolQJAR6UMGzPDvs4umoL0yRjBnYVxDDVk+L5LYq4ytzVputKIKFrGLZCpelxdVZ/Ynarz6t4aa95yUuf6D7J/p+1Ql+iaUkhJzol2ooym0G21X0y+N5sH0FlUUukJszzKQtVSad0syFLX8v91IkhpjKyDXViSBOSw95JDBC5Lvga5o0hrNxy41VLZrCc7e9KopOvycnbuge3XE+1sfm8nQGOLjFeb7oLWk375hLaD5SKaoY1vJggKkz9310ojZa/i7EIcAYWRrFUhzDYd822GX4rWl55ykFTY3MmYKJLFpYJ23B5quCGnH9CDAZj0KcHdqrsd9wAoIUuW6yHRD25MqnK0HDhzZFl39HqqIKrAF8Dtmm9K+6JqhdpClt1OqeyOXUMnWjBUXcj6U8esvS9YJY+qtL0U2blCdX5I7VTIWPWyP8+aFKQeijevaqc/fnYxQOUIIp+Pu2Md8/HOEVpv9YSH1DraPJOMQZ92klUg6pFYfa+ibNSQBYyjgbisTXlV+1dnETa0UzrCypzkkb3moZZTEYrtp8RMV3v2h54HJHAaLVWnJN/mPdSGfFWVHrICpekj8kpC6wYqnumr+tfovzv2gY5ajO7eenOy3jBohqX8kc3nu2PwSD05a49xWjnL1k3VFroWqL7ebexhUkOqnxpXSwU2j2GkJSuT0DcOZd2qzJDuzhMEl/aVDzbJI3TPlqC7dnq6Npf42cck0DWWLny
+ U3tUyMBv
+ 96OZ/zlZ7jEj7zkmWutD6aMA4Yk7Wn2KpPlndPRjn2w6svlzzyyTPTOUCR2w7O8XxBsf9Z32WlIzRktIDJdmPmT/5odOaIBH//P1D2h4GIK1xZ9Ccr8rs672+OSbdZFuQiBWNlqTDxjdFFNrt8JGqMflC14orliQXRD1ZVt2Bm1y1FApDr/eCCYpkF8G7BS0NuLjcCpI22vUxtYB+lj6CAehBmqdlZMg0/Ml69HrYoPxV76/M3a4RO6NOCd7wQLnsXD3a
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -180,134 +152,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 22.09.25 11:37, Pedro Falcato wrote:
-> On Mon, Sep 22, 2025 at 11:07:43AM +0200, David Hildenbrand wrote:
->> On 22.09.25 10:45, Pedro Falcato wrote:
->>> On Mon, Sep 22, 2025 at 02:19:51PM +0800, wuyifeng (C) wrote:
->>>> Hi all, While reviewing the memory management code, I noticed a
->>>> potential inefficiency related to MAP_POPULATE used on writable
->>>> anonymous mappings.I verified the behavior on the mainline kernel
->>>> and wanted to share it for discussion.
->>>>
->>>> Test Environment:
->>>> Kernel version: 6.17.0-rc4-00083-gb9a10f876409
->>>> Architecture: aarch64
->>>>
->>>> Background:
->>>> For anonymous mappings with PROT_WRITE | PROT_READ, using MAP_POPULATE
->>>> is intended to pre-fault pages, so that subsequent accesses do not
->>>> trigger page faults. However,I observed that when MAP_POPULATE is used
->>>> on writable anonymous mappings, all pre-faulted pages are immediately
->>>> marked as dirty, even though the user program has not written to them.
->>>>
->>>> Minimal Reproduction:
->>>>
->>>> #define _GNU_SOURCE
->>>> #include <sys/mman.h>
->>>> #include <unistd.h>
->>>> #include <stdio.h>
->>>>
->>>> int main() {
->>>>       size_t len = 100*1024*1024; // 100MB
->>>>       void *p = mmap(NULL, len, PROT_READ | PROT_WRITE,
->>>>                      MAP_PRIVATE | MAP_ANONYMOUS | MAP_POPULATE, -1, 0);
->>>>       if (p == MAP_FAILED) {
->>>>           perror("mmap");
->>>>           return 1;
->>>>       }
->>>>       pause();
->>>>       return 0;
->>>> }
->>>>
->>>> Observed Output (/proc/<pid>/smaps):
->>>> ffff7a600000-ffff80a00000 rw-p 00000000 00:00 0
->>>> Size:             102400 kB
->>>> KernelPageSize:        4 kB
->>>> MMUPageSize:           4 kB
->>>> Rss:              102400 kB
->>>> Pss:              102400 kB
->>>> Pss_Dirty:        102400 kB
->>>> Shared_Clean:          0 kB
->>>> Shared_Dirty:          0 kB
->>>> Private_Clean:         0 kB
->>>> Private_Dirty:    102400 kB
->>>> Referenced:       102400 kB
->>>> Anonymous:        102400 kB
->>>> KSM:                   0 kB
->>>> LazyFree:              0 kB
->>>> AnonHugePages:    102400 kB
->>>> ShmemPmdMapped:        0 kB
->>>> FilePmdMapped:         0 kB
->>>> Shared_Hugetlb:        0 kB
->>>> Private_Hugetlb:       0 kB
->>>> Swap:                  0 kB
->>>> SwapPss:               0 kB
->>>> Locked:                0 kB
->>>> THPeligible:           1
->>>> VmFlags: rd wr mr mw me ac
->>>>
->>>> Code Path Analysis:
->>>> The behavior can be traced through the following kernel code path:
->>>> populate_vma_page_range() is invoked to pre-fault pages for the VMA.
->>>> Inside it:
->>>>
->>>> if ((vma->vm_flags & (VM_WRITE | VM_SHARED)) == VM_WRITE)
->>>>           gup_flags |= FOLL_WRITE;
->>>>
->>>> This sets FOLL_WRITE for writable anonymous VMAs.
->>>>
->>>> Later, in faultin_page():
->>>>
->>>> if (*flags & FOLL_WRITE)
->>>>           fault_flags |= FAULT_FLAG_WRITE;
->>>>
->>>> This effectively marks the page fault as a write.
->>>> Finally, in do_anonymous_page():
->>>>
->>>> if (vma->vm_flags & VM_WRITE)
->>>>           entry = pte_mkwrite(pte_mkdirty(entry), vma);
->>>>
->>>> Here, the PTE is updated to writable and immediately marked dirty.
->>>> As a result, all pre-faulted pages are marked dirty, even though the
->>>> user program has not performed any writes.
->>>> For large anonymous mappings, this can trigger unnecessary swap-out
->>>> writebacks, generating avoidable I/O.
->>>>
->>>> Discussion:
->>>> Would it be possible to optimize this behavior: for example, by
->>>> populate pte as writable, but deferring the dirty bit until the user
->>>> actually writes to the page?
->>>
->>> How would we know if the user wrote to the page, since we marked it writeable?
->>
->> On access, either HW sets the dirty bit if it supports it, or we get another
->> fault and set the dirty bit manually.
->>
->> What happens on architectures where the HW doesn't support setting the dirty
->> bit is that performing a pte_mkwrite() checks whether the pte is dirty. If
->> it's not dirty the HW write bit will not be set and instead the next
->> pte_mkdirty() will set the actual HW write bit.
->>
->> See pte_mkwrite() handling in arch/sparc/include/asm/pgtable_64.h or
->> arch/s390/include/asm/pgtable.h
->>
->> Of course, setting the dirty bit either way on later access comes with a
->> price.
-> 
-> Ah, yes, the details were a little fuzzy in my head, thanks.
-> I'm trying to swap in (ha!) the details again. We still proactively mark anon
-> folios dirty anyway for $reasons, so optimizing it might be difficult? Not sure
-> if it is _worth_ optimizing for anyway.
+On Mon, Sep 22, 2025, at 10:28, Xie Yuanbin wrote:
+>> It would be helpful to be more specific about what you
+>> want to do with this.
+>> 
+>> Are you working on a driver that would actually make use of
+>> the exported interface?
+>
+> Thanks for your reply.
+>
+> Yes, In fact, we have developed a hardware component to detect DDR bit
+> transitions (software does not sense the detection behavior). Once a bit
+> transition is detected, an interrupt is reported to the CPU.
+>
+> On the software side, we have developed a driver module ko to register
+> the interrupt callback to perform soft page offline to the corresponding
+> physical pages.
+>
+> In fact, we will export `soft_offline_page` for ko to use (we can ensure
+> that it is not called in the interrupt context), but I have looked at the
+> code and found that `memory_failure_queue` and `memory_failure` can also
+> be used, which are already exported.
 
-I remembered the same thing (proactively mark anon folios dirty) but I 
-didn't easily spot it in the code. Did you spot it?
+Ok
 
-I only found the folio_mark_dirty() calls when unmapping anon pages and 
-we stumble over a dirty pte.
+>> I see only a very small number of
+>> drivers that call memory_failure(), and none of them are
+>> usable on Arm.
+>
+> I think that not all drivers are in the open source kernel code.
+> As far as I know, there should be similar third-party drivers in other
+> architectures that use memory-failure functions, like x86 or arm64.
+> I am not a specialist in drivers, so if I have made any mistakes,
+> please correct me.
 
--- 
-Cheers
+I'm not familiar with the memory-failure support, but this sounds
+like something that is usually done with a drivers/edac/ driver.
+There are many SoC specific drivers, including for 32-bit Arm
+SoCs.
 
-David / dhildenb
+Have you considered adding an EDAC driver first? I don't know
+how the other platforms that have EDAC drivers handle failures,
+but I would assume that either that subsystem already contains
+functionality for taking pages offline, or this is something
+that should be done in a way that works for all of them without
+requiring an extra driver.
 
+      Arnd
 
