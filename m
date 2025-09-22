@@ -4,83 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 758A0CAC5A7
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 10:35:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9258ACAC592
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 10:36:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BB2168E0010; Mon, 22 Sep 2025 06:35:43 -0400 (EDT)
+	id EC0758E0011; Mon, 22 Sep 2025 06:36:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B89558E0001; Mon, 22 Sep 2025 06:35:43 -0400 (EDT)
+	id E97818E0001; Mon, 22 Sep 2025 06:36:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A9FC28E0010; Mon, 22 Sep 2025 06:35:43 -0400 (EDT)
+	id DAE538E0011; Mon, 22 Sep 2025 06:36:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 975928E0001
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 06:35:43 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 674951605DE
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 10:35:43 +0000 (UTC)
-X-FDA: 83916530166.03.705CB55
-Received: from fra-out-013.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-013.esa.eu-central-1.outbound.mail-perimeter.amazon.com [63.178.132.221])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 11BC7C000C
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 10:35:40 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b="fjhyEl/k";
-	spf=pass (imf10.hostedemail.com: domain of "prvs=353d6d59a=farbere@amazon.com" designates 63.178.132.221 as permitted sender) smtp.mailfrom="prvs=353d6d59a=farbere@amazon.com";
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C83578E0001
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 06:36:09 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 95CFD13B76A
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 10:36:09 +0000 (UTC)
+X-FDA: 83916531258.19.FAC3FF0
+Received: from fra-out-010.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-010.esa.eu-central-1.outbound.mail-perimeter.amazon.com [63.178.143.178])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 54074A0014
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 10:36:07 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=hCTNz7hl;
+	spf=pass (imf25.hostedemail.com: domain of "prvs=353d6d59a=farbere@amazon.com" designates 63.178.143.178 as permitted sender) smtp.mailfrom="prvs=353d6d59a=farbere@amazon.com";
 	dmarc=pass (policy=quarantine) header.from=amazon.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758537341;
+	s=arc-20220608; t=1758537367;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xkEPvUKyQPfYOtTnd+JXsEAKoNLEM/0U49oHM5nqIDU=;
-	b=K3YjZNIm/qlaTiRlpHInUz4u8yeg1fx5f/AfwtKeJJrJn9uVlNOFHvVDF6QIznQQiqWyHg
-	xNLygRh0khLKKu56GUGb+g2FD1dtH6NFW3sVW4J2LddVnJCu2hNhT2lV8BoEUBKKW8hV6I
-	q8RTbwrztVunBB4SiDQ7+73Gg1seD0I=
+	bh=TDV161r/7qFlBicXIybWhTsXZSPWT6ddjPuQfDuVP8k=;
+	b=FdijQJQ4MG0e/s13Cskc41peKKXn5okby9IW7AUDUR0BIhBGs6yRjwfwl2HmJAB/cbjkpi
+	ARZk4NboZXIJaDUe4N/KsRsDAYbIXyvj8RHvosfwajO4KHDWgyYII7RuTS2m4b+LsVvRsY
+	lD3Nam5jBS3J89t/j5hEoPRHmCrQDFE=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b="fjhyEl/k";
-	spf=pass (imf10.hostedemail.com: domain of "prvs=353d6d59a=farbere@amazon.com" designates 63.178.132.221 as permitted sender) smtp.mailfrom="prvs=353d6d59a=farbere@amazon.com";
+	imf25.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=hCTNz7hl;
+	spf=pass (imf25.hostedemail.com: domain of "prvs=353d6d59a=farbere@amazon.com" designates 63.178.143.178 as permitted sender) smtp.mailfrom="prvs=353d6d59a=farbere@amazon.com";
 	dmarc=pass (policy=quarantine) header.from=amazon.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758537341; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758537367; a=rsa-sha256;
 	cv=none;
-	b=Z7uk6t7ZqGg5SgYGu9iefPcRQbn54WaZMIDqE+3s5Ud55cYsY4sz+SWR9UFEwnavi2nMF1
-	4HL5WiKkBk+FBatkzwR9IwMnJIKS38hBTbcqLccr4WIlqtVWkmqhlQ22qN6tANOWYtln5f
-	cQqDPuu5cfQqU2i6AoT1nvxSixGLVBA=
+	b=53SJr371gfrYOVqwEaZqa4aL/IFPyGFarKrUIfxb+FtMUhEXpZs1oUNg5no3zrne4KGDbv
+	jdkNEoYtRYtYxBfhwvWnlBzT0tyzPsz36pshyZOzosMazghwCdbrQCMwlRYIX+qYRrmjB4
+	a/70Yb/tg2ZWAAO1yGgLTRq0P6UcfNA=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1758537341; x=1790073341;
+  t=1758537367; x=1790073367;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=xkEPvUKyQPfYOtTnd+JXsEAKoNLEM/0U49oHM5nqIDU=;
-  b=fjhyEl/kWv8xQ6b1RL8fGHIWh3nxHUwgnKbzfCEm956xTb0bla7nBDMB
-   /TGEEQQ1JhAojnJrMUhbYsqmNVyisgZpRvBwzp1tcP500JsapYPCp3iV3
-   QDL9mtRjCyEE8KrQNr5VCdXh9cjRByGYkHKjYf5EBSl1k2C3veKRi0rsZ
-   NrqnLD4RV3UoB27anNWyj3XZKQEyZq4MyEqAc7SzGRIjk/TTICf9XaGJx
-   hQFnDYGAHewHg9kcmu3rVUSQOAwofNYYQJ6aWzj4rekhCa33aPBQx7y7i
-   CH4psThfB1bk4C2GL4Owvp47CHMCnSvQ90R4ADN+wAF+bTbFcUmuWo4M2
+  bh=TDV161r/7qFlBicXIybWhTsXZSPWT6ddjPuQfDuVP8k=;
+  b=hCTNz7hlPlQZZX1WFGMHUfznxnmZzU2K0JnSqYaa9sZLiqOqFdooylwA
+   klgAS6mjjL4HR6+RY1egR4iZYE0tICOz84zPXH9hSsReHzM8OkM4l5B8C
+   79mBigXYKObgPk0f0ZhZ+Pj3Vb1ERuqS/CM4VCPvIxJD+kQb12/r/wIiY
+   +LOQk3hpYh3TMf15ghI2gqFqw21iEojIJl363H2knQmzpWoei6ANF+fTa
+   Oxl1gbtIFwmmN95dHO6Un3R6vgXDLbBn+sfFU6twfIRgvF2ff0xAZXX3m
+   KBVbUpqRaLyVVBl2C5E4E2OMLpZ6yIDhBmTBELWc35WoOUr78dzMm8p4G
    Q==;
-X-CSE-ConnectionGUID: dc34Dpv1ST64k8pKCIcm6g==
-X-CSE-MsgGUID: Y30gA8RjTCGlmKhbLkashg==
+X-CSE-ConnectionGUID: pka/5WaEQHaBLHh8hs/KKQ==
+X-CSE-MsgGUID: muTRddmbTZqiICwUN3a3Bg==
 X-IronPort-AV: E=Sophos;i="6.18,284,1751241600"; 
-   d="scan'208";a="2371970"
-Received: from ip-10-6-11-83.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.11.83])
-  by internal-fra-out-013.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2025 10:35:39 +0000
-Received: from EX19MTAEUA001.ant.amazon.com [54.240.197.233:28986]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.1.3:2525] with esmtp (Farcaster)
- id 8fbdb317-0ce5-4877-b268-6c650f776def; Mon, 22 Sep 2025 10:35:39 +0000 (UTC)
-X-Farcaster-Flow-ID: 8fbdb317-0ce5-4877-b268-6c650f776def
+   d="scan'208";a="2370558"
+Received: from ip-10-6-3-216.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.3.216])
+  by internal-fra-out-010.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2025 10:36:05 +0000
+Received: from EX19MTAEUA002.ant.amazon.com [54.240.197.232:11459]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.21.238:2525] with esmtp (Farcaster)
+ id e0f65cd7-e62a-4c83-8445-bc01acfd1bb4; Mon, 22 Sep 2025 10:36:05 +0000 (UTC)
+X-Farcaster-Flow-ID: e0f65cd7-e62a-4c83-8445-bc01acfd1bb4
 Received: from EX19D018EUA004.ant.amazon.com (10.252.50.85) by
- EX19MTAEUA001.ant.amazon.com (10.252.50.192) with Microsoft SMTP Server
+ EX19MTAEUA002.ant.amazon.com (10.252.50.126) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Mon, 22 Sep 2025 10:35:38 +0000
+ Mon, 22 Sep 2025 10:36:04 +0000
 Received: from dev-dsk-farbere-1a-46ecabed.eu-west-1.amazon.com
  (172.19.116.181) by EX19D018EUA004.ant.amazon.com (10.252.50.85) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Mon, 22 Sep 2025
- 10:35:13 +0000
+ 10:35:38 +0000
 From: Eliav Farber <farbere@amazon.com>
 To: <richard@nod.at>, <anton.ivanov@cambridgegreys.com>,
 	<johannes@sipsolutions.net>, <dave.hansen@linux.intel.com>,
@@ -125,9 +125,9 @@ To: <richard@nod.at>, <anton.ivanov@cambridgegreys.com>,
 	<bpf@vger.kernel.org>, <stable@vger.kernel.org>
 CC: Linus Torvalds <torvalds@linux-foundation.org>, David Laight
 	<David.Laight@aculab.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Subject: [PATCH 05/15 6.6.y] minmax: simplify min()/max()/clamp() implementation
-Date: Mon, 22 Sep 2025 10:32:31 +0000
-Message-ID: <20250922103241.16213-6-farbere@amazon.com>
+Subject: [PATCH 06/15 6.6.y] minmax: don't use max() in situations that want a C constant expression
+Date: Mon, 22 Sep 2025 10:32:32 +0000
+Message-ID: <20250922103241.16213-7-farbere@amazon.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20250922103241.16213-1-farbere@amazon.com>
 References: <20250922103241.16213-1-farbere@amazon.com>
@@ -137,16 +137,14 @@ Content-Type: text/plain
 X-Originating-IP: [172.19.116.181]
 X-ClientProxiedBy: EX19D033UWA001.ant.amazon.com (10.13.139.103) To
  EX19D018EUA004.ant.amazon.com (10.252.50.85)
-X-Rspamd-Queue-Id: 11BC7C000C
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 1ommjajyoa8f6bqhiyuqwngbhaxhmxx1
+X-Rspamd-Queue-Id: 54074A0014
 X-Rspam-User: 
-X-HE-Tag: 1758537340-318635
-X-HE-Meta: U2FsdGVkX18U+OJW5Ze9JrtqnMJp4Vx35MZWNx3hC1ztaeIeKwSRyPZraQFhx63np5A6lsBgbj86KSfsaE8GrkG3e4hpQPiKE1pF27AgnKanOT3MXssRazaT4kA/RECvlfNZ/YgmOW29JWMm9nz0UbDz2mG4aAqWyzm56oCM1g0nWQ7v/Nj0XaMTU8+1VMHRJ2ssnPMl8mdnye0GBt7ktawum/rX2PKp+pGvQIuiaPS38FCex2y1vBdKeMDRufBAnJpiytk/sf7xMhMMJWKsyVjyyWV/SJHOTQ8Q0D7tvRws5olFdMWLFtoHsDylqpYOihnMnrDB1nVuMIoVePJV/YPqjg7jDfPS6qKuJGs1l5Gq4oOSTtHwJKzg1c10NSu6affes73Hl6cU6nklreC410aQ4BRui421TGKq7HVDzYCwJI1hvDUMQxlDpZguEeq3MC+2ezdqAUKVm9ZHSTVKzJbf0HhE6DCbl8XUjZM4+wkd58ixnuGLBOlZc5G9r1YkYowp1uco8wdC15jWdaWpPq26QDWu32A7bu8oe1bQXfPYcidnGKMdq6aFrc3Uw62n3zIqDLmhC6qbjFoCNcpLnq3+xTLDzc3GPCt2wsZdd/XSQJSohbgZgzN2+31m7NPp+BBVzeolggCbU6A3P2xMZgzFsJ7AHhxL6/r0bkrPn9q4aZr70mCRAGJhHcHJEb15d2T51yMQmgmpOBXr175h9frTsd9Dx/oIj/OxDi4Zski+cscoPeINa/7qvw3OJw4ArvdOSqlPxS8Crr/LCSRZLaBpRm6VDZrsogjHRk1B7TAZ3P0fmKEl6jUNPuH83UenPrlQorvjfffngvG4mmcmSdyi1Vb/pHT1xBMwDm3GF6K1hAWt1KWu2sTz1SIHnRWyQ5jli92n500crZRI2xJO1cgQPkRHAQjs9r7l5imgMD3wuvmPVm0B96K0VVGw5x/MfispFhx5ynQ+YgYRYjO
- pU6kMWGo
- Y4jWWi+sG5qZ9hKGChRVl+UVAK6qGuFZYAjBzaEvoVRXgFUjF86kYoQOKDOsHIs1NAJBmgC33kbk4H6n0B2MyGFbBEGaCyPGZeuTbOMBj73Ol6fsJmVGC3Iv4TSkEcFWuWkZFyYzpN/Iyx2RYFCHc8tuSNqZ0zd3oJapZDf9avx5eK05DDHojIdeYvhe6K+8wjsRH0phmJBynC5yj76TQd9wx/MRx78ecPfuXcGRRQ05haHB0TBhtGUnD8yViPFXBrNFp/k9ouyV/IrLpfA0emnq1L3Sp55mGq3vfHVSyoBA9ZgQyc44FD8A7L23hs+YXKDfXCiWmMgqSCbIRIr+ndgWLVWjght8v1IrGDoykEu/81DONsQ2BZLTUlvx/1PApq9xl0hTwMLhoj6su9OPvBfCu2aJoss+Ih7MAOpW/BzF5dbln0ZnyODGv6CrPsE5UXVVba//XQ4XPCnWTYN00e9FUDrLfQ/9HvtunZDW1yvjhpRFAwJRbSHjmWgNuh3/W2i80jYbkA+NQQZgzNBds+bBTuQQ1oM079sAz/lp6XVUySy1SyP8HJ505gOLjqe7ZHJl1qsR+mur2oHCVK9tPTBqflvYaF5tZxrt+Jsac94/SXBwg4+1C//dnOrYrVxDOnWI/kjZrGit2U0LIpCiUiMVrpsDyCYvp3enicf7sPt2IgTNTKHP/lJUP1o9RDZJnR//qxKMSK6cPjMRsuXbP1aI2Cz0CN4lKQIyKBZHltYNB5L+YmJ6egvrHW8SgAyFpSoEJWV3w6DpVfGmqGWU3INisMhTZMRJS6ETZXx1MVXjJC1lE5kQoSS9Mzq8OV9TrLASclfCPn+Btu0asfXK/URaw4O2pfyZQQ2U2H5/9hlM6s+Mg7kw45GmxUj7I0DXTu/nS4slgY9MtXkT772NOHl9evIFd+8imW21PRRQesJTJKTaD8pvT94h/a+gsx/Wkihoj74t96tyD8T318oBYoZnaZASJ
- d3Gc2KBf
- Sth8TkyrhfAazg6CdfVQ92S7T71XyjnGsD14bS0v3Xluh6Qi+YOn/Sf7Sy951/Z3
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 3yff54j7g4556k881dkikkzzttqnztjb
+X-HE-Tag: 1758537367-517394
+X-HE-Meta: U2FsdGVkX1+Yh2sTKDTHrkx4cNxcikWUHogYLsPRr8QDlXospTtSFfQa3wA37I/0jh3R6mfKs45FEvOYUjAJ/Ao1yqugsS45yRVmJ68HbhQh4y6bpeLmrem6Waksp8sCvoqOEfAWF5QYzfC8UQbl8iKT4c+9jXM2kYp7ifdpSEA4Y+o5fWSLm4Tv7LP8TWf7jScqVYrBB9X5AAZhyrnBoJIdOQa9D9jG7J7mn5zO+05ljIEjPEwZxrqxTY4LtTd+6JVp9vYtiU8T7Tb4/fzkevPeC4iHbr62LwXhuATXZIJQuGB6Bm9WK0ct0UjI0AKo1M+QK9su5rwOOG3qLe+wNqb6klIIu5GPaJjZgioREd9p7U/nPCemGVZ1JwqI57eJ7VNZteWoOHY2fCjjReFWdfKdoWDOMr6HReOJxRtYWgcCimCdO2roWu+gedxtZI61pPNA5L/2ZFSAKF1o8FVswmqPuhhoeWVi2mpB6XLTcuYoqU88L9eLmT2kD8hfTffP01QhBjHxJZJnPEbl4qhA0i5ewnl06IpS0OuJ4NFw+7Naxdj+59+pKJVB9y4tVB+O9fktZks3/v5MwjxBy2A8iK3kwZqOpAzqIKCgX6U65WCMJCbKz8lxmb5aniGBaAXKrgR0caKpzciqlhRcWQmVmw5I/BlsLaninBdEtrlO8QzYo7jxRR4eHH+KrQBoKNiNYZvB3O/kXxZnlye/Qfcegs687cEAvGdUs/9d786KwsveWMe8tvB8lMRcML/KSsyORXX8PJu9NIkDK3LUR2FaC5sIEmdl9/dK6CEKCyUxfQhfw7HMZRHlegoaHTEwym7rdy2bWkKi51FSNSEzTPxLuTDkI6Vd8jvrQVFULLseZKCM997VhY8JK0s+3TEf+vIkH4dAt07Gn8E8TMYyqyEJPC7XZ/jMo1bEvierxzk/lCZfahMP72uUql3SlTz9VOpkzZhj42xAbPOew7kP+fr
+ FKgyePfk
+ pg0YyadVVi670WXZ6X41p7v8FCRHN4Pp6xVRXsiJX/FznRK8wi7w0+x7WUnQ1fXL49calVVlQAqidFp3V+6FlxSpjBsx/0oJq4eFhsd4d4QKARy+daIZRp6UENXPQ5lNzOiPZ3xsWGdx0vOG5ELjkVD08DAP8HrwMCs81bTycTcncC6CyJ/k3sQnEEP0EWoi1n2ZAG4g0O1SD2F4TbE5/W9j1izs5kef8F+VkflfRWQzlKiO5p1k77tCX57cP6LSt+BD8hnDnTVQ6cAA5qLgmhhtJ70sI3ERm0oU6Uc0Fw4De53f+wHnNAPN8l0tIlu0hzwOgi+Gf9pV7rGANhJABG49x58PV1bQqBIIGbHafQv6w4l0pyMQkuucrsG/LQVkY9DwjbRaBU/ASrsEkLGlNyHoFcCXqb2z+LUqO3wbnDBhMwqtyATuY1/19SUF7/5UmcwQKw57nsKBSa6HU9KNOYmRTGZKHMPbAT5J8zQHHLg4cKXrxIp6jlVM6JAz0UL3v+MmWvHR3wDRgcqNROXm8bPeg80nISZxS1jelDx7enLEvPYq33QWzVwnuUQiGA2r6Cdp0Y7RGqaruXxBmf/IvFnMb99UJzOyP2DlGphbQf7i9iRxh4PFV4WaWPMF3byMeb94gNl7jTcmC70E6e9NkLZPy7JM3oiTbT5jLv4AULHyrrLHYdHWi9VxxE8rZseiJnAyFqFImQL5jZhmoHYxnkpP3jcx5DUzLe+8B0rwv9uTbx6/TSYO/Lil+0YxpgppRERTeRLgTvMH3qirTuvioGZxLJJgEIGb2Q/efPYPLCSvQjt1dCMdFJfpxX+jZpoLYASR/WR6K+uTcYemQbv9uY5/6nuc/0a04qmd6pUnHBGxvzdUjwyAK/fWx4OGLQCTzuo/82qQU65vElpA4CKcuwvwwz4STbK0gxfVXhEMUEveguqBi+VLJeAxqVKG2IS9cyKmU
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -157,137 +155,106 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit dc1c8034e31b14a2e5e212104ec508aec44ce1b9 ]
+[ Upstream commit cb04e8b1d2f24c4c2c92f7b7529031fc35a16fed ]
 
-Now that we no longer have any C constant expression contexts (ie array
-size declarations or static initializers) that use min() or max(), we
-can simpify the implementation by not having to worry about the result
-staying as a C constant expression.
+We only had a couple of array[] declarations, and changing them to just
+use 'MAX()' instead of 'max()' fixes the issue.
 
-So now we can unconditionally just use temporary variables of the right
-type, and get rid of the excessive expansion that used to come from the
-use of
-
-   __builtin_choose_expr(__is_constexpr(...), ..
-
-to pick the specialized code for constant expressions.
-
-Another expansion simplification is to pass the temporary variables (in
-addition to the original expression) to our __types_ok() macro.  That
-may superficially look like it complicates the macro, but when we only
-want the type of the expression, expanding the temporary variable names
-is much simpler and smaller than expanding the potentially complicated
-original expression.
-
-As a result, on my machine, doing a
-
-  $ time make drivers/staging/media/atomisp/pci/isp/kernels/ynr/ynr_1.0/ia_css_ynr.host.i
-
-goes from
-
-	real	0m16.621s
-	user	0m15.360s
-	sys	0m1.221s
-
-to
-
-	real	0m2.532s
-	user	0m2.091s
-	sys	0m0.452s
-
-because the token expansion goes down dramatically.
-
-In particular, the longest line expansion (which was line 71 of that
-'ia_css_ynr.host.c' file) shrinks from 23,338kB (yes, 23MB for one
-single line) to "just" 1,444kB (now "only" 1.4MB).
-
-And yes, that line is still the line from hell, because it's doing
-multiple levels of "min()/max()" expansion thanks to some of them being
-hidden inside the uDIGIT_FITTING() macro.
-
-Lorenzo has a nice cleanup patch that makes that driver use inline
-functions instead of macros for sDIGIT_FITTING() and uDIGIT_FITTING(),
-which will fix that line once and for all, but the 16-fold reduction in
-this case does show why we need to simplify these helpers.
+This will allow us to simplify our min/max macros enormously, since they
+can now unconditionally use temporary variables to avoid using the
+argument values multiple times.
 
 Cc: David Laight <David.Laight@aculab.com>
 Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Eliav Farber <farbere@amazon.com>
 ---
- include/linux/minmax.h | 43 ++++++++++++++++++++----------------------
- 1 file changed, 20 insertions(+), 23 deletions(-)
+ drivers/gpu/drm/amd/pm/swsmu/smu_cmn.c         | 2 +-
+ drivers/input/touchscreen/cyttsp4_core.c       | 2 +-
+ drivers/irqchip/irq-sun6i-r.c                  | 2 +-
+ drivers/net/can/usb/etas_es58x/es58x_devlink.c | 2 +-
+ fs/btrfs/tree-checker.c                        | 2 +-
+ lib/vsprintf.c                                 | 2 +-
+ 6 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/include/linux/minmax.h b/include/linux/minmax.h
-index fc384714da45..e3e4353df983 100644
---- a/include/linux/minmax.h
-+++ b/include/linux/minmax.h
-@@ -35,10 +35,10 @@
- #define __is_noneg_int(x)	\
- 	(__builtin_choose_expr(__is_constexpr(x) && __is_signed(x), x, -1) >= 0)
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu_cmn.c b/drivers/gpu/drm/amd/pm/swsmu/smu_cmn.c
+index 12618a583e97..c1962f1974c6 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu_cmn.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu_cmn.c
+@@ -708,7 +708,7 @@ static const char *smu_get_feature_name(struct smu_context *smu,
+ size_t smu_cmn_get_pp_feature_mask(struct smu_context *smu,
+ 				   char *buf)
+ {
+-	int8_t sort_feature[max(SMU_FEATURE_COUNT, SMU_FEATURE_MAX)];
++	int8_t sort_feature[MAX(SMU_FEATURE_COUNT, SMU_FEATURE_MAX)];
+ 	uint64_t feature_mask;
+ 	int i, feature_index;
+ 	uint32_t count = 0;
+diff --git a/drivers/input/touchscreen/cyttsp4_core.c b/drivers/input/touchscreen/cyttsp4_core.c
+index 7cb26929dc73..9dc25eb2be44 100644
+--- a/drivers/input/touchscreen/cyttsp4_core.c
++++ b/drivers/input/touchscreen/cyttsp4_core.c
+@@ -871,7 +871,7 @@ static void cyttsp4_get_mt_touches(struct cyttsp4_mt_data *md, int num_cur_tch)
+ 	struct cyttsp4_touch tch;
+ 	int sig;
+ 	int i, j, t = 0;
+-	int ids[max(CY_TMA1036_MAX_TCH, CY_TMA4XX_MAX_TCH)];
++	int ids[MAX(CY_TMA1036_MAX_TCH, CY_TMA4XX_MAX_TCH)];
  
--#define __types_ok(x, y) 					\
--	(__is_signed(x) == __is_signed(y) ||			\
--		__is_signed((x) + 0) == __is_signed((y) + 0) ||	\
--		__is_noneg_int(x) || __is_noneg_int(y))
-+#define __types_ok(x, y, ux, uy) 				\
-+	(__is_signed(ux) == __is_signed(uy) ||			\
-+	 __is_signed((ux) + 0) == __is_signed((uy) + 0) ||	\
-+	 __is_noneg_int(x) || __is_noneg_int(y))
+ 	memset(ids, 0, si->si_ofs.tch_abs[CY_TCH_T].max * sizeof(int));
+ 	for (i = 0; i < num_cur_tch; i++) {
+diff --git a/drivers/irqchip/irq-sun6i-r.c b/drivers/irqchip/irq-sun6i-r.c
+index a01e44049415..99958d470d62 100644
+--- a/drivers/irqchip/irq-sun6i-r.c
++++ b/drivers/irqchip/irq-sun6i-r.c
+@@ -270,7 +270,7 @@ static const struct irq_domain_ops sun6i_r_intc_domain_ops = {
  
- #define __cmp_op_min <
- #define __cmp_op_max >
-@@ -51,34 +51,31 @@
- #define __cmp_once(op, type, x, y) \
- 	__cmp_once_unique(op, type, x, y, __UNIQUE_ID(x_), __UNIQUE_ID(y_))
+ static int sun6i_r_intc_suspend(void)
+ {
+-	u32 buf[BITS_TO_U32(max(SUN6I_NR_TOP_LEVEL_IRQS, SUN6I_NR_MUX_BITS))];
++	u32 buf[BITS_TO_U32(MAX(SUN6I_NR_TOP_LEVEL_IRQS, SUN6I_NR_MUX_BITS))];
+ 	int i;
  
--#define __careful_cmp_once(op, x, y) ({			\
--	static_assert(__types_ok(x, y),			\
-+#define __careful_cmp_once(op, x, y, ux, uy) ({		\
-+	__auto_type ux = (x); __auto_type uy = (y);	\
-+	static_assert(__types_ok(x, y, ux, uy),		\
- 		#op "(" #x ", " #y ") signedness error, fix types or consider u" #op "() before " #op "_t()"); \
--	__cmp_once(op, __auto_type, x, y); })
-+	__cmp(op, ux, uy); })
+ 	/* Wake IRQs are enabled during system sleep and shutdown. */
+diff --git a/drivers/net/can/usb/etas_es58x/es58x_devlink.c b/drivers/net/can/usb/etas_es58x/es58x_devlink.c
+index e763a9904bed..0d155eb1b9e9 100644
+--- a/drivers/net/can/usb/etas_es58x/es58x_devlink.c
++++ b/drivers/net/can/usb/etas_es58x/es58x_devlink.c
+@@ -215,7 +215,7 @@ static int es58x_devlink_info_get(struct devlink *devlink,
+ 	struct es58x_sw_version *fw_ver = &es58x_dev->firmware_version;
+ 	struct es58x_sw_version *bl_ver = &es58x_dev->bootloader_version;
+ 	struct es58x_hw_revision *hw_rev = &es58x_dev->hardware_revision;
+-	char buf[max(sizeof("xx.xx.xx"), sizeof("axxx/xxx"))];
++	char buf[MAX(sizeof("xx.xx.xx"), sizeof("axxx/xxx"))];
+ 	int ret = 0;
  
--#define __careful_cmp(op, x, y)					\
--	__builtin_choose_expr(__is_constexpr((x) - (y)),	\
--		__cmp(op, x, y), __careful_cmp_once(op, x, y))
-+#define __careful_cmp(op, x, y) \
-+	__careful_cmp_once(op, x, y, __UNIQUE_ID(x_), __UNIQUE_ID(y_))
+ 	if (es58x_sw_version_is_valid(fw_ver)) {
+diff --git a/fs/btrfs/tree-checker.c b/fs/btrfs/tree-checker.c
+index 6d16506bbdc0..6f4c42e66519 100644
+--- a/fs/btrfs/tree-checker.c
++++ b/fs/btrfs/tree-checker.c
+@@ -614,7 +614,7 @@ static int check_dir_item(struct extent_buffer *leaf,
+ 		 */
+ 		if (key->type == BTRFS_DIR_ITEM_KEY ||
+ 		    key->type == BTRFS_XATTR_ITEM_KEY) {
+-			char namebuf[max(BTRFS_NAME_LEN, XATTR_NAME_MAX)];
++			char namebuf[MAX(BTRFS_NAME_LEN, XATTR_NAME_MAX)];
  
- #define __clamp(val, lo, hi)	\
- 	((val) >= (hi) ? (hi) : ((val) <= (lo) ? (lo) : (val)))
+ 			read_extent_buffer(leaf, namebuf,
+ 					(unsigned long)(di + 1), name_len);
+diff --git a/lib/vsprintf.c b/lib/vsprintf.c
+index 2aa408441cd3..f4ab2750cfc1 100644
+--- a/lib/vsprintf.c
++++ b/lib/vsprintf.c
+@@ -1079,7 +1079,7 @@ char *resource_string(char *buf, char *end, struct resource *res,
+ #define FLAG_BUF_SIZE		(2 * sizeof(res->flags))
+ #define DECODED_BUF_SIZE	sizeof("[mem - 64bit pref window disabled]")
+ #define RAW_BUF_SIZE		sizeof("[mem - flags 0x]")
+-	char sym[max(2*RSRC_BUF_SIZE + DECODED_BUF_SIZE,
++	char sym[MAX(2*RSRC_BUF_SIZE + DECODED_BUF_SIZE,
+ 		     2*RSRC_BUF_SIZE + FLAG_BUF_SIZE + RAW_BUF_SIZE)];
  
--#define __clamp_once(val, lo, hi, unique_val, unique_lo, unique_hi) ({		\
--	typeof(val) unique_val = (val);						\
--	typeof(lo) unique_lo = (lo);						\
--	typeof(hi) unique_hi = (hi);						\
-+#define __clamp_once(val, lo, hi, uval, ulo, uhi) ({				\
-+	__auto_type uval = (val);						\
-+	__auto_type ulo = (lo);							\
-+	__auto_type uhi = (hi);							\
- 	static_assert(__builtin_choose_expr(__is_constexpr((lo) > (hi)), 	\
- 			(lo) <= (hi), true),					\
- 		"clamp() low limit " #lo " greater than high limit " #hi);	\
--	static_assert(__types_ok(val, lo), "clamp() 'lo' signedness error");	\
--	static_assert(__types_ok(val, hi), "clamp() 'hi' signedness error");	\
--	__clamp(unique_val, unique_lo, unique_hi); })
--
--#define __careful_clamp(val, lo, hi) ({					\
--	__builtin_choose_expr(__is_constexpr((val) - (lo) + (hi)),	\
--		__clamp(val, lo, hi),					\
--		__clamp_once(val, lo, hi, __UNIQUE_ID(__val),		\
--			     __UNIQUE_ID(__lo), __UNIQUE_ID(__hi))); })
-+	static_assert(__types_ok(uval, lo, uval, ulo), "clamp() 'lo' signedness error");	\
-+	static_assert(__types_ok(uval, hi, uval, uhi), "clamp() 'hi' signedness error");	\
-+	__clamp(uval, ulo, uhi); })
-+
-+#define __careful_clamp(val, lo, hi) \
-+	__clamp_once(val, lo, hi, __UNIQUE_ID(v_), __UNIQUE_ID(l_), __UNIQUE_ID(h_))
- 
- /**
-  * min - return minimum of two values of the same or compatible types
+ 	char *p = sym, *pend = sym + sizeof(sym);
 -- 
 2.47.3
 
