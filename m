@@ -4,120 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 394FFCAC5A7
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 07:52:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B882CAC592
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 07:56:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 736CC8E000A; Mon, 22 Sep 2025 03:52:00 -0400 (EDT)
+	id 804708E0006; Mon, 22 Sep 2025 03:56:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E76E8E0001; Mon, 22 Sep 2025 03:52:00 -0400 (EDT)
+	id 7DB908E0001; Mon, 22 Sep 2025 03:56:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5FD0E8E000A; Mon, 22 Sep 2025 03:52:00 -0400 (EDT)
+	id 6F0FB8E0006; Mon, 22 Sep 2025 03:56:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C6DD8E0001
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 03:52:00 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E0EFF11A5DE
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 07:51:59 +0000 (UTC)
-X-FDA: 83916117558.04.5580910
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 483E014000A
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 07:51:57 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=lttz7FnV;
-	spf=pass (imf09.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C5098E0001
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 03:56:13 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id EC70F86B66
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 07:56:12 +0000 (UTC)
+X-FDA: 83916128184.05.802CF66
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 037DD8000C
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 07:56:10 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=E208M1RQ;
+	spf=pass (imf30.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758527518;
+	s=arc-20220608; t=1758527771;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UDel7pcF11Oq6yCh9tIpX43vHF5ddtSDLUzVljmeUyU=;
-	b=ga+nPyxLY1a+A9Y43Xvin1Gj2ANaHiyfNvdUSD4GpTFYRTTuPKN9+Z/rJcphDeHYPsyQx1
-	tLIUyqpew5bPyjGlx1ioo+uvEGh3NzEexN8MIJYPszU1CntiZ4Li0SQ8Qyci5LeyU75VgZ
-	7Cy20zhyqXZtO1gZKxec1ZCKwJm+8yI=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=lttz7FnV;
-	spf=pass (imf09.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758527518; a=rsa-sha256;
+	bh=fOLEn6wbExiWX7ZHkvEGaEspEQHvpxYxacH64/69EaI=;
+	b=34zqJM0LcIA2QiRjyytE36Sp8wgk/pOJZjV1Aik6KbDzJ8/eMpu8ZEdcNcyhYD/U4ziVE+
+	MUcz9UE0Wgg87gQa2ZvTbcf3TjUxnbAvWfQaX16wn0pKfmiNAymJjDd4CP8xoITdvOwXz1
+	4tU6y3pUUOOi9DIcNVqTVFhDzzk4bGk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758527771; a=rsa-sha256;
 	cv=none;
-	b=GIljXpAE7wCWoG/zSyFQxqrVFITfeprJs/FbnXju1trp6VXeNhn0rDAgEvvpQmRnau3cRR
-	PpHetUUnJZwcS+/fifJMUDfOkErZGI2y85xkCpS6ySSB4TiFDdb49u1FuyFUt7xb5C998D
-	ljOFRlYu+18I8LOAu9QF5TU0jllOmGE=
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-7761578340dso4817003b3a.3
-        for <linux-mm@kvack.org>; Mon, 22 Sep 2025 00:51:56 -0700 (PDT)
+	b=0EaaVx0+UQcC4ZMxh4T2s+37IU0s3rjgbzKQhJaCiisqV1ziRhHxiWjofXV8EQsLZciJKa
+	GqctcQUBayIrjmY0IxXG9kk/MmPUT2fLkdbqCMP6bdPJ6rxDxhT1jmJ+UJKw8Mm5ucXDxm
+	GGbFRM8Gt5YyunNrLNBRVUmulLBvPzA=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=E208M1RQ;
+	spf=pass (imf30.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-77ee6e252e5so2212048b3a.2
+        for <linux-mm@kvack.org>; Mon, 22 Sep 2025 00:56:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1758527516; x=1759132316; darn=kvack.org;
+        d=bytedance.com; s=google; t=1758527770; x=1759132570; darn=kvack.org;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
          :user-agent:mime-version:date:message-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=UDel7pcF11Oq6yCh9tIpX43vHF5ddtSDLUzVljmeUyU=;
-        b=lttz7FnVxk2wgmwBFn3IMVKRyi5u3c1tL0iOgYQ6TEZt4umzzcYCdzEIOhNRv9V9r+
-         wOT7DrJh3HZL6zFD5JMBDJ6DqdlTfsCqaV3RQVyYGW5eblKEXDBHh/W7p2Um/Vz5uhDu
-         lS2qs2tYLEEl4kZW5ZQfCA3p/0YwTpm5gcekyfcAprqDDzjbpyxoPVlXzlCSnijPNRqu
-         8IFnLcBN5FmPagJ83M9gXhY6k7dQjPmTan0itRJhYe3tBFjLTWQNXkHUC3qaYRijLjxb
-         qZ9Hz7506bJLrTrAFloqH0f8bcSn+rGSbTk8AT4bTcKt4AwalsLua7wZXO0PwvRjr+H5
-         UoLA==
+        bh=fOLEn6wbExiWX7ZHkvEGaEspEQHvpxYxacH64/69EaI=;
+        b=E208M1RQO7z8asgmXmh7SnfGIfwwgJf+b2lCk8JsCK+3qZc41yeaMELd3If4fELIdo
+         ylDS6LI5/D0sdZPaYoTi6Hf7vCg7sPizESnABHGKEflkhGxUlrwwqgbjF8bcJrJmE5g7
+         l1UpyQ2cLC68lSIOWU6Ys2JXWldNZdLwxUdDfLlHD4qV/sayldM/L55u2J89G2q+dp6s
+         pe6NfGHWOtYwQEiidz4YYMUhHLM53fP3hGU1gcfGiroP59ntOavsOBjYFtURh2H1PU/O
+         ueWUbhnHwg0e9gjpMYaYnvsdpRxddS3k0yKLhNgfVDCmUvjKLL2jzYexae5Byb5toJtY
+         1rNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758527516; x=1759132316;
+        d=1e100.net; s=20230601; t=1758527770; x=1759132570;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
          :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=UDel7pcF11Oq6yCh9tIpX43vHF5ddtSDLUzVljmeUyU=;
-        b=wj7Jg85q3wtHCqMjC//gwcY7tua68+vOtJzbeRHSoqsDnVAAF8+cxXqytk2cWqSZW2
-         bcJLMOHryCsFvuTrzeBJOS8YgTk9oTGPW/O+iM8DYxblmVODX4KTN5MeO5jCgZ7HsfGg
-         lvyVJE1eKZSLLEa6Jq1mTzquLRSM1f82UTiNGCOxRCwcGVG0theFx42YvzjODnZTymC7
-         IvrcpB+G7eTvOkxbjJDBe9GUAHVjEdCKBleNwsOiJzBnblZdb/HhILbdmCkV5uzDN4Cu
-         iWUow+G6jfyhpn44Z2v+w8ViM+5k8MyweJ30Vz+mMvWYC8VKrq92dAHEGzUys3EW/fty
-         GAfA==
-X-Forwarded-Encrypted: i=1; AJvYcCXHUZVIeawY0HU8fO9PNbkAi1kwjCAO8vv1j/HCt0FNjINbg5O35Y6rXH17CdqLOdpcTcXlu+91Sw==@kvack.org
-X-Gm-Message-State: AOJu0YzDInwgqnXyIX9EzoU/DujmN2RJXefZmuybeJObtAFybMtQaXJE
-	zAg7E8nxra4ib8jaw2+lmFeRDk+tBDeQI/aHYVesNGSmuP0an4ZsA7V/w05lDGZ5M0M=
-X-Gm-Gg: ASbGncuIpFOs8Mrm3dHQn9LMmNjQOivbKeWi+FQ09eo5gdcUXuslITyPMEt7qRDAjPf
-	XdDjDeGmnG/uEk3qQkhEmkHbHN/g0lfcR2rgc0pQDqdoQ6pAxCT0tex92Wo2/3a2cIqPsRTYLD6
-	MbE/CywNdRRSgyUdgKh7AZL8QajYiwa7G6TtKrVwaAkZZDxrUG1h3YJGavE2sP++JT99IxE0uWG
-	ajRvlQjbnUsq6KubXM6RMk9FTN5dwQYxcsqSpf3UUFjFhlBgn95iIzBebdOx8Eds6Nr90kP8hbe
-	XE805F55GA+J35qEV8X466O42i4gvoz3TyUJ77V2m23f7h+FEWXjrp0joSCRAIW6bMXZfjdaeqy
-	1z6BBdN7GfsSuIamIgffqdg9ikQT5eJRTKnVh5ZSP2XEGR7nMvVk=
-X-Google-Smtp-Source: AGHT+IFvNwMFCIWEKmfCSKTgy3OoaxHXYVww5vD36PPLuuFVpvLur2RM9yIrNxaf8MVuw+PgrnqE8Q==
-X-Received: by 2002:a05:6a00:114e:b0:771:ead8:dcdb with SMTP id d2e1a72fcca58-77e4d31e124mr13772451b3a.8.1758527516015;
-        Mon, 22 Sep 2025 00:51:56 -0700 (PDT)
+        bh=fOLEn6wbExiWX7ZHkvEGaEspEQHvpxYxacH64/69EaI=;
+        b=aOs0wNIjMQGM1rHvzLPyLJyb40ovvlycP4BJ9sZk5ycFmBr/p5SebGZG7w2gZ3iUkT
+         SimJRAiQ64F96ZBLS3iMa9s2LQJwiMdloGNDFKdOVTvx7IrISJofxgub8c6DVz4aqWIO
+         dYdEdB6bq4Jxu/WosdNgy8FfNO+bDaB+c658NYAYve7nRB74qNkg8iCADqSeeil3lqCa
+         eNwazhTcIoxtH23QLWZEXmdA1fhStuCxzAELaP/PT5I1vO4DJf87xZaH+qDj4elIHzLJ
+         KaR4rY9zXk/clq3JZygz00h4aW5EW5MEQmq45G0LWgPTm7ObKTaYSbtlSYBCwtg8OKlQ
+         MfxQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWXtZ0J2iagLPA6vktdLdPB9OoVNsXEdYaKV2AK9eh3zLcrrHHbWjr2OfU3KnPuUUjb0h+GyvIZJA==@kvack.org
+X-Gm-Message-State: AOJu0YyNRvoGBJUqk9z9t7oPoxEjoYlf73nLLgf9YcT4scdIdXCCUoxD
+	wOF2GQYKEZy0qXjAx1Nc5JcD6U+a0qO/Hk3ZoS9hVeAUgY9BGDDDL56IvQ3NNkUljSE=
+X-Gm-Gg: ASbGncuLs47j42jv4ztcSda8SVNU2OOr5jD2r/DJUphpfcSJCIHO80ep1qy2zobYG2B
+	opS25LJ7pexElM7LS1Q+S8pT9QQc8xcCqP04zMHyE1ZH8O7wcXSfYbTKK2MEVpKn+2wRFFLPJed
+	eUG7XCFG/W9Eqo6EhurlmaSP66dFgrg3qvI3SFkaVxJBlAIatguB7ur5ubAygpLmC3z2DGC8it/
+	SwQk0jZJN3P1f0BuwAvJEmBX4M/t6oZingnGlnV6mDOj4hWk77diGJv0lyPPtpzY1MwtoeHlNkR
+	cKA0TmMlBMO9gRv3VGLJ6gK41mJWpETeKaD7H6drA5U/GYbmv/uQcvRwC5hnN0JDSAcr8U6lDng
+	Q/2WFZ3mf0LW1waq08U6G/1RxqRpXDcEiSnOiOcAYtAk0WxKVWwE=
+X-Google-Smtp-Source: AGHT+IEWHzTu8qZR9GiLSVFONI5X3EclZtypFRTqQ5ScW2UO6ECeFRJ94ii2oT0N3yQZaQcdiH589Q==
+X-Received: by 2002:a05:6a21:6d9d:b0:266:1f27:a01e with SMTP id adf61e73a8af0-2926f79d201mr16735986637.39.1758527769805;
+        Mon, 22 Sep 2025 00:56:09 -0700 (PDT)
 Received: from [100.82.90.25] ([63.216.146.178])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-77f315029c0sm3020093b3a.47.2025.09.22.00.51.48
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-77e5f867d30sm9103152b3a.38.2025.09.22.00.56.02
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Sep 2025 00:51:55 -0700 (PDT)
-Message-ID: <7d76e5ce-22c7-4b9c-bb23-d0ccbe22b745@bytedance.com>
-Date: Mon, 22 Sep 2025 15:51:46 +0800
+        Mon, 22 Sep 2025 00:56:09 -0700 (PDT)
+Message-ID: <28f36249-f064-4d32-9d8a-ba03db5b491c@bytedance.com>
+Date: Mon, 22 Sep 2025 15:56:00 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/4] reparent the THP split queue
-To: Shakeel Butt <shakeel.butt@linux.dev>
+Subject: Re: [PATCH 2/4] mm: thp: introduce folio_split_queue_lock and its
+ variants
+To: Zi Yan <ziy@nvidia.com>
 Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
- roman.gushchin@linux.dev, muchun.song@linux.dev, david@redhat.com,
- lorenzo.stoakes@oracle.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+ roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
+ david@redhat.com, lorenzo.stoakes@oracle.com, baolin.wang@linux.alibaba.com,
  Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
  dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
  akpm@linux-foundation.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org, Harry Yoo <harry.yoo@oracle.com>
+ cgroups@vger.kernel.org, Muchun Song <songmuchun@bytedance.com>
 References: <cover.1758253018.git.zhengqi.arch@bytedance.com>
- <svcphrpkfw66t6e4y5uso4zbt2qmgpplazeobnhikukopcz76l@ugqmwtplkbfj>
+ <eb072e71cc39a0ea915347f39f2af29d2e82897f.1758253018.git.zhengqi.arch@bytedance.com>
+ <E62A91B2-4221-43B2-9C17-1E48AA5D5544@nvidia.com>
 From: Qi Zheng <zhengqi.arch@bytedance.com>
-In-Reply-To: <svcphrpkfw66t6e4y5uso4zbt2qmgpplazeobnhikukopcz76l@ugqmwtplkbfj>
+In-Reply-To: <E62A91B2-4221-43B2-9C17-1E48AA5D5544@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 483E014000A
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 3skd79f4qn5ot1iek8ywnberbkjips3w
+X-Rspamd-Queue-Id: 037DD8000C
+X-Stat-Signature: wiisfyry9oeceoo5tuj7mga8qruygaqj
 X-Rspam-User: 
-X-HE-Tag: 1758527517-649138
-X-HE-Meta: U2FsdGVkX1+YbB3MciBkJ7MyAOLeHmUes1dPVamejd1FvjbG6iXXq4Qj5stCPQgjKoFMclewXzp+DeZqtZfsLf+PiUMlFnvig8xEYKG/LNLBLZO8XP/ztPDnHGyrLXPwnTEHpRv6MNibiYcZVwsb8Pdtb2Wcuco7Nx18bfhr/5iQ0YF2DymEjJa4+i7BdDmdMgpilANsqEgujMydMzm2kfiP9b7gS6sjGdR8EDGNgipRTx4OFmCuAcEDJw+LNcigY027aXupPNgRuEaIBfcgMeKBVOvkw3BnM+V3h9voOv8ssDXo3tbyMs5PVDfQpi+lxtmFUcFDvrD1/038aP0bibQl373zFKM50p67x2NOefEn1tF40lZJTzgX3XxBjS3DQLJtuy1r1ZV0XvR1LF6W0KZRSm8ASOfZ+KEsbINUfeHbFJ/525cZSkMNe/GUynEw0B4bAUoV+bt0p/OxttSsPgFppTA1EKFoTioxOXv+yZiJ2EnH27U9A4OuYzu/mspjW2b9j9gTkXUrrFnnP7vT/jOqKzwaqOpaX0yePFwkgKo8pQU9YC74VMQ2aggUZmW/RD4q2+DylEX0GH7dVyvdQgywF34dcbV8Kt5he2lp6bzryLy3MUc7fZkp2uk/7/DCPSGVcGp5qZbOKiCBXz1W79TnfGVEG6nuKe6W4nRnYNcEXSRG5bci6wVTbBfnbeUb8WWOmTXP+BZM1AkLK9whVET+lMWqHjnmerBWZ8UbIE1mrpZdJ4oRuuURczPHoK34tCCXLJv8NiiWHN0TSYJgbb7poPvU1rJ5wGHJ9SWI6TFl+rJfN+PP8zUwI/ITV6ovaCtJOyvuuD7NSrRhCbrpkk5gkIXpbWCx+P9N34pFgN6NtcykXgtw31bLaoF2eua8sQaM6ezxeB+n//roL5VV57whLl8mjGFKqPCa1iK0prWQ/vg2RGwpq8XWNqrb62agI40QGOjzeFk1EZ/D7d9
- g1b7tlnz
- UaVAEu2/2Vd1pfQtW3xsiLL/lbULHu9Hg+dBWI8pY/8AcXd1mSybwjsk5wpiXNLIbWCw074ViP0XPB3eJV0Ff9lcDgZxvQMzqUpgaxtIifqvJ2ZSPiYDaJyIn+dNDx97aQy4jDkIDG8oCpDq1lBj9goz+94Qq0cZHx8y0VQwnGfMTsyq59dVC9hSjckygs4dzLZrJeIxuQmOYGQ2tzczcJcKFIHy/i/MyhhbPVT9C92xjryaBAcHjpy0vhoMcPCLrhxdHq6EhvRTAjhWB7RZqHJMS1MkB+9s0JB5YzuMUsYk2tIjBeDgcigdcRFJR1nWPBl5vlIvG7IPffwnOWWpPGbcPxw==
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1758527770-664396
+X-HE-Meta: U2FsdGVkX1/E/VcmkUv5z1NxvrdZKhhHV9panUwREehS7oSLM11oDtmF7Tdjtet27xjIwquC604zcsibT9gS8wB+fSsiE2V3dMgCXe/bSlgWk2ns81YtLfNQUAt3D1eglVodc+4cr+vn/w8KSRQfUpM5kLdIYIVMIDHdqVfhhS/jjFWB1xTYZTdrkVAMN+t2xVFJq1UusLut3FVKIswLc2xk0Q/U/ZfAnBiSE/Rd7wfzqboS7HUDg+43PW7CESkYhwl+AOwqzcjrkWwl3OPGDt7GxRxZZ5xtfUDvWY7g6D6Y/gsEPeBeFfCoH69ep7XREGi7W4qmPz9xCz0FfjeY7lEXiaRNhupewZ37gHEGOgojQVVKUkAww1geWR9XddqXa7Av6A11QcZ8rQo62xHT0h94E6JzIU9ic8abAiP9DVrDCx8TNZoYjEzfNfrZVTxF0DgNQ8EpUJXrowzXg7RhG/dTMJFPAqxVpxYx7ijweMGi7VzNSQ6K+q/X5hXLLOcFfp2kObIeyq3vUiCPq/Zfh9vrSXW9o9MnHavDb5Yfnnvb2rijGwhlTl+ZbpeflkHBdZtalQ9S8+AlZvRv1006ScL1pSGuf/wGykSJZg5Lgo2UbZk1Hu3f78ZqiszJ6vu9iHG+CUcgM9yCGdDh+osCbq84GpmUk4Bh8XAP8JFdkItdDenfQzxr4PTPWyIbTyvCcpVvK+ksJQdFQOSDUsSm5Em7Ydl9RFunDsf08sNKKE5B6sAVVI2xuYFVo0xDwdHIsXQi9opW2It/9fmfAIPj2rx5LdGZH+Zofm6/VlrnJHtOF00+HyYaCub6d8CvXfYLkRFYknPh/RxFIKANEXU7obfRlSND06fC/JYMRCcBI32HFA00AYeb3Id/o+lQBcelDMawoAmTAc9fwz1/UsITGiTR1O6sJ778OJDOk2wor1uElWi43rY87jGfIaEsA2VQkMrv1ouahzqW7p1RjH5
+ Nf3NqXfv
+ J05y7NqKlYb31Nr/5y8+5i9MBazlTHYRCELltM+azypws6r00dqt4/Ceo6LMDkRu5tk9/T/4TbnKkVaGAHDmZSEFApJIbFU7TgMfiOW4qTgVPpiNxk8SpF7zI3wr9wb0NhBgzsGZlwyf8nC611+SVHAsTaGWzTTyTvqwXueQ532x4fYJUcACbhuUI0yMjrNZ1YZWSqMhZfO5CNrdArtlcFsZeeMQ3F3IJ0V3McchrWdV/lEPLjmmbRS4PeFGBSlOpC2s/By3I9doVqY0Plc9RyfF/zVK1fVyGxDT8ueWNxhgRxdXRjzkudDNru+21NwMU6bw2h/zq7muNa1vlt+4Q7UnzGy4KFdR71TXStEVncJaNWnMihLZJ4IQukppkpU2z89/LvGmWWu6jHt0zBNWsBn6MheD3tTkcFQdctgoCkB5X9AjSQiUmynmYizDt4UbZvH0Ius9klV1ttYY7Jstpv5L1PYP2p/vVZwjEgtQsd+zHbMc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,33 +128,137 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Shakeel,
+Hi Zi,
 
-On 9/20/25 5:33 AM, Shakeel Butt wrote:
-> Hi Qi,
+On 9/19/25 11:39 PM, Zi Yan wrote:
+> On 18 Sep 2025, at 23:46, Qi Zheng wrote:
 > 
-> On Fri, Sep 19, 2025 at 11:46:31AM +0800, Qi Zheng wrote:
->> Hi all,
+>> From: Muchun Song <songmuchun@bytedance.com>
 >>
->> In the future, we will reparent LRU folios during memcg offline to eliminate
->> dying memory cgroups,
+>> In future memcg removal, the binding between a folio and a memcg may
+>> change, making the split lock within the memcg unstable when held.
+>>
+>> A new approach is required to reparent the split queue to its parent. This
+>> patch starts introducing a unified way to acquire the split lock for
+>> future work.
+>>
+>> It's a code-only refactoring with no functional changes.
+>>
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+>> ---
+>>   include/linux/memcontrol.h | 10 +++++
+>>   mm/huge_memory.c           | 89 ++++++++++++++++++++++++++------------
+>>   2 files changed, 71 insertions(+), 28 deletions(-)
+>>
+>> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+>> index 16fe0306e50ea..99876af13c315 100644
+>> --- a/include/linux/memcontrol.h
+>> +++ b/include/linux/memcontrol.h
+>> @@ -1662,6 +1662,11 @@ int alloc_shrinker_info(struct mem_cgroup *memcg);
+>>   void free_shrinker_info(struct mem_cgroup *memcg);
+>>   void set_shrinker_bit(struct mem_cgroup *memcg, int nid, int shrinker_id);
+>>   void reparent_shrinker_deferred(struct mem_cgroup *memcg);
+>> +
+>> +static inline int shrinker_id(struct shrinker *shrinker)
+>> +{
+>> +	return shrinker->id;
+>> +}
+>>   #else
+>>   #define mem_cgroup_sockets_enabled 0
+>>
+>> @@ -1693,6 +1698,11 @@ static inline void set_shrinker_bit(struct mem_cgroup *memcg,
+>>   				    int nid, int shrinker_id)
+>>   {
+>>   }
+>> +
+>> +static inline int shrinker_id(struct shrinker *shrinker)
+>> +{
+>> +	return -1;
+>> +}
+>>   #endif
+>>
+>>   #ifdef CONFIG_MEMCG
+>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>> index 582628ddf3f33..d34516a22f5bb 100644
+>> --- a/mm/huge_memory.c
+>> +++ b/mm/huge_memory.c
+>> @@ -1078,26 +1078,62 @@ pmd_t maybe_pmd_mkwrite(pmd_t pmd, struct vm_area_struct *vma)
+>>
+>>   #ifdef CONFIG_MEMCG
+>>   static inline
+>> -struct deferred_split *get_deferred_split_queue(struct folio *folio)
+>> +struct mem_cgroup *folio_split_queue_memcg(struct folio *folio,
+>> +					   struct deferred_split *queue)
+>>   {
+>> -	struct mem_cgroup *memcg = folio_memcg(folio);
+>> -	struct pglist_data *pgdat = NODE_DATA(folio_nid(folio));
+>> -
+>> -	if (memcg)
+>> -		return &memcg->deferred_split_queue;
+>> -	else
+>> -		return &pgdat->deferred_split_queue;
+>> +	if (mem_cgroup_disabled())
+>> +		return NULL;
+>> +	if (&NODE_DATA(folio_nid(folio))->deferred_split_queue == queue)
+>> +		return NULL;
+>> +	return container_of(queue, struct mem_cgroup, deferred_split_queue);
+>>   }
+>>   #else
+>>   static inline
+>> -struct deferred_split *get_deferred_split_queue(struct folio *folio)
+>> +struct mem_cgroup *folio_split_queue_memcg(struct folio *folio,
+>> +					   struct deferred_split *queue)
+>>   {
+>> -	struct pglist_data *pgdat = NODE_DATA(folio_nid(folio));
+>> -
+>> -	return &pgdat->deferred_split_queue;
+>> +	return NULL;
+>>   }
+>>   #endif
+>>
+>> +static struct deferred_split *folio_split_queue_lock(struct folio *folio)
+>> +{
+>> +	struct mem_cgroup *memcg;
+>> +	struct deferred_split *queue;
+>> +
+>> +	memcg = folio_memcg(folio);
+>> +	queue = memcg ? &memcg->deferred_split_queue :
+>> +			&NODE_DATA(folio_nid(folio))->deferred_split_queue;
+>> +	spin_lock(&queue->split_queue_lock);
+>> +
+>> +	return queue;
+>> +}
+>> +
+>> +static struct deferred_split *
+>> +folio_split_queue_lock_irqsave(struct folio *folio, unsigned long *flags)
+>> +{
+>> +	struct mem_cgroup *memcg;
+>> +	struct deferred_split *queue;
+>> +
+>> +	memcg = folio_memcg(folio);
+>> +	queue = memcg ? &memcg->deferred_split_queue :
+>> +			&NODE_DATA(folio_nid(folio))->deferred_split_queue;
+>> +	spin_lock_irqsave(&queue->split_queue_lock, *flags);
+>> +
+>> +	return queue;
+>> +}
 > 
-> Will you be driving this reparent LRU effort or will Muchun be driving
-> it? I think it is really important work and I would really like to get
-> this upstreamed sooner than later.
+> A helper function to get queue from a folio would get rid of duplicated
+> code in the two functions above. Hmm, that is the deleted
+> get_deferred_split_queue(). So probably retain it.
 
-I will work with Muchun to drive it. And we are also discussing some
-solutions for adapting MGLRU with Harry Yoo (private email).
-
-Oh, I forgot to cc Harry in this series.
-
-+cc Harry Yoo.
-
-Thanks,
-Qi
+After PATCH #4, we may retry after getting parent memcg in the above
+functions. so we may not need to retrieve get_deferred_split_queue().
 
 > 
-> thanks,
-> Shakeel
+> Otherwise, LGTM. Reviewed-by: Zi Yan <ziy@nvidia.com>
+
+Thanks!
+
+> 
+> Best Regards,
+> Yan, Zi
 
 
