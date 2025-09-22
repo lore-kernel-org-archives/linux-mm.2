@@ -4,84 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53813CAC5A7
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 01:47:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 258C5CAC5A7
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 02:15:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 44CAB8E0002; Sun, 21 Sep 2025 21:47:03 -0400 (EDT)
+	id 5C4F28E0005; Sun, 21 Sep 2025 22:15:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3FD518E0001; Sun, 21 Sep 2025 21:47:03 -0400 (EDT)
+	id 59BF68E0001; Sun, 21 Sep 2025 22:15:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 312F98E0002; Sun, 21 Sep 2025 21:47:03 -0400 (EDT)
+	id 4D8D08E0005; Sun, 21 Sep 2025 22:15:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E2488E0001
-	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 21:47:03 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5965FC044D
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 01:47:02 +0000 (UTC)
-X-FDA: 83915197884.03.E850273
-Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 97235180004
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 01:46:59 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=De2fNVpo;
-	spf=pass (imf24.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 39DDC8E0001
+	for <linux-mm@kvack.org>; Sun, 21 Sep 2025 22:15:08 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CB38C86E7A
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 02:15:07 +0000 (UTC)
+X-FDA: 83915268654.30.561C255
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+	by imf02.hostedemail.com (Postfix) with ESMTP id CB32E80003
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 02:15:04 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=none;
+	spf=pass (imf02.hostedemail.com: domain of xieyuanbin1@huawei.com designates 45.249.212.190 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758505620;
+	s=arc-20220608; t=1758507306;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cgkNfxubkOkMe9n8007VJuLr8Wdji9ZPpfGJmaOsbjU=;
-	b=zdHTNWfVjnGvwN5tOvMF98s7ohu5iYEGwVOl/TM1wYyBD6+CXlZ/v90MVXPT0I8rsBtcXV
-	s35k2aKg8ZSyKhcaxEUIa2agdxVdHvfwfMrCJWLJmTI2snQuollNAnYc61tS9s8xT/oVcx
-	IA9nEqsJKw3KBNrx8sWipse6DhzOeNY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758505620; a=rsa-sha256;
-	cv=none;
-	b=iUHGDxY8gZdyX9mz6LRyvLtrD9kzBxsjLfYAxxb02SGP29YkGDvXTRr8UrXK18rTafZji0
-	S+8XgeVfRUWiHnp7YVHgzP6VRBTAWZfterZEjrkbfLrgQ5NNIBzRAQRLCjjFFmEr0K3GbW
-	BXqqFY7v+EbfaUUJGrFqRskwZnpgxxs=
+	 in-reply-to:in-reply-to:references:references;
+	bh=1/UDRl9BMLfs0CKENJ0GOFGKfYZDsP8slcWL7SSEwds=;
+	b=G7xCeztq5q7v+bRRmjXt0BE/e9ruNGpZMHC6zrYtu98+znsgqXh2YKl5q0aSFubguWViOu
+	cunob1o7n5wkJX81IESloojwJ+VgMrNXxa129Y4xxb+zHrzLxUEhXP5+utvpXRo6dtfQ89
+	CCuI4QEy+EsgOnk9tvKHUeSXtXrnhho=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=De2fNVpo;
-	spf=pass (imf24.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1758505616; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=cgkNfxubkOkMe9n8007VJuLr8Wdji9ZPpfGJmaOsbjU=;
-	b=De2fNVpoVJPUGrKN5aepRyBV58mVGmUr7v2st7wqOOWDhYwUMAUzy+Le8FOmQlhrBDhwBS9oqwEEA2B0TadWk9BzdgNURcpUBH4AsWgwyI1/j5S/lvAjxBvj7NzmteCbebYxgTjV5XlWQBj3N3Uworam14i389KNAE1xtkXMqtc=
-Received: from 30.74.144.144(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WoQWijC_1758505613 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 22 Sep 2025 09:46:54 +0800
-Message-ID: <fd0664f4-2ee7-420c-a63c-b4b1c923e1c2@linux.alibaba.com>
-Date: Mon, 22 Sep 2025 09:46:53 +0800
+	imf02.hostedemail.com;
+	dkim=none;
+	spf=pass (imf02.hostedemail.com: domain of xieyuanbin1@huawei.com designates 45.249.212.190 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758507306; a=rsa-sha256;
+	cv=none;
+	b=sqkXkKPoXNG83U90OtmVTE4JtiPfzXrh+wwypBClDRN4yGGaRGGA6pAC/6Wo9idIpRjJpx
+	w1lV4EZoZ0dCVsBCXPFnFkgrl0f2TEx57I3Mm3FcIstd0eqT9dcfDBIulPOh82pMlGZys7
+	miu8tp+oAsMrIFRXHuAupXWjmor6a/M=
+Received: from mail.maildlp.com (unknown [172.19.88.163])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4cVRQk377Jz2CgD2;
+	Mon, 22 Sep 2025 10:10:22 +0800 (CST)
+Received: from kwepemj100009.china.huawei.com (unknown [7.202.194.3])
+	by mail.maildlp.com (Postfix) with ESMTPS id E560118001B;
+	Mon, 22 Sep 2025 10:14:59 +0800 (CST)
+Received: from DESKTOP-A37P9LK.huawei.com (10.67.108.232) by
+ kwepemj100009.china.huawei.com (7.202.194.3) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 22 Sep 2025 10:14:59 +0800
+From: Xie Yuanbin <xieyuanbin1@huawei.com>
+To: <linux@armlinux.org.uk>, <akpm@linux-foundation.org>, <david@redhat.com>,
+	<lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>,
+	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
+	<linmiaohe@huawei.com>, <nao.horiguchi@gmail.com>,
+	<rmk+kernel@armlinux.org.uk>, <ardb@kernel.org>, <nathan@kernel.org>,
+	<ebiggers@kernel.org>, <arnd@arndb.de>, <rostedt@goodmis.org>,
+	<kees@kernel.org>, <dave@vasilevsky.ca>, <peterz@infradead.org>
+CC: <will@kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, <liaohua4@huawei.com>,
+	<lilinjie8@huawei.com>, <xieyuanbin1@huawei.com>
+Subject: [RFC PATCH 2/2] ARM: memory-failure: not select RAS and MEMORY_ISOLATION
+Date: Mon, 22 Sep 2025 10:14:53 +0800
+Message-ID: <20250922021453.3939-2-xieyuanbin1@huawei.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250922021453.3939-1-xieyuanbin1@huawei.com>
+References: <20250922021453.3939-1-xieyuanbin1@huawei.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: shmem: fix too little space for tmpfs only fallback
- 4KB
-To: Vernon Yang <vernon2gm@gmail.com>
-Cc: hughd@google.com, akpm@linux-foundation.org, da.gomez@samsung.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Vernon Yang <yanglincheng@kylinos.cn>
-References: <20250908123128.900254-1-vernon2gm@gmail.com>
- <c245dbb5-2e2b-4308-a296-f711b74002eb@linux.alibaba.com>
- <3349E5A6-BCDC-47B9-956B-CB0D0BC02D84@gmail.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <3349E5A6-BCDC-47B9-956B-CB0D0BC02D84@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 97235180004
-X-Stat-Signature: p5a7boufnast46srpqmz4h9iff8fwjk7
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.67.108.232]
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ kwepemj100009.china.huawei.com (7.202.194.3)
+X-Rspamd-Queue-Id: CB32E80003
+X-Stat-Signature: 7fb1x455w6gu8xhmd3mffjjhy14urafp
 X-Rspam-User: 
-X-HE-Tag: 1758505619-644291
-X-HE-Meta: U2FsdGVkX191IjTAn2QJ0sBHDZe7sd0TL12a7N4Hp20Ou2El5zu2sQopBBI7syRH6Bsn3BPV5mjkiTG343zV27vDC/R4PddCvZhB6v739pXyujI+kJ5ROpEQfxDER/gG50dTO2w8EF1p4oL2TK4vc/54/UJSSomsnPipfVceDY59R9t4ZFBmSRP1GF9CG9fbEMxlZ3yBSEi1Qazi74NeAW0ZgpBSOVkehF958f49SDvaDrzxSU2utaZc6dHD3pJuWA7F/QWdY0SpC4cEoqBrdusKmn21KGJKZ8bmZts035mghf98Edi+ldNH8KKztZPo8lRQCoNR9o+ZxUhTFm+Zb3tIfwcOBVVOEoh9yph3Dm6qACaQib/nIUnd+w6mkj/PKMDtq6xur/n0PcPo1qGsmY3dlwYxywG7NTIgdq7a2ll5y53XKnwkje1WcNEjHgmflus/v7nnG/NYiUY386kSdhY6fHwMlbxvYi/vQixbgLlWT4j0gjI+7trj4pcvKERnAbkRwEw51aH+02shVpkeK6Bus3MtD7J1Am2YP4SWU0kxsvpKHWUT4/GuPCpAgAJ8860jovSSVmXXuHLYmrZL9fP0sPgWmDRSX1uDA1AHMWDjFDZ0A8Oleg6aNRKR8uofQxNKjf0JHU3WIoiseR5IftGL9XN8Gva1cCKkgogEy27b+xYRN/Grebe0VJHoMoP2IbS6pi3o5MvdsLeo3fbyDRwudepFf8dr4DOjWWVgaUcTgj1vODXBNUUBfWgMKuasR43iGmklup8QOKVU80IEg9M8Tow92LNySFHcmM/uduTBdaOais0gWVNRrHQzGk6HUKyk5SJYw2XJDQ1ILQV1v6tU+C0El7cmEIb0LvYXxRTfkWQZNPa+3KC74+gFF0DpXynqjggslM9f5js4bkqEW5xRg48VdcwetYdmzV3LGHo9QR+fOstOByz0NbjHe0JC/0/cNjJf0lbgZB3QzNW
- 02FNtX35
- siLcZ/2kri02RoQzYRtIHAoRUXTJsiKTZ1IAXtcwYsrpSj+JC6Hcr59lHuDlyWiFbcHj6xOvZkaLodnHQPfM0pONaTr4kZqiwD85NPsA7exzDAALQb2Dj9/50CFV7xbWDBORWIJcriYH2PnFNgMkeDASZoNFpydMJQ30yVgM7TwvXE3n8NLDdwor/7X7l0i51QZKFkIcMqPQgtgsbf9RRry/KzEjb1ilErZxGCP+IFQxfddfKF+34BK6rypPA76GPr3M87KjDZsk1PWOKcfEKDBY3T6uMvS5mP4B6JrXSbCazaUo=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1758507304-938214
+X-HE-Meta: U2FsdGVkX1/70S6EP/VtG9M/jJrGX824juMplHUSwGL5M2hWZhTvsvij4dn3j79E/WsaY4Dqk1O0CT6zI80sgdnnCeT6HZ0At3OoZkMA046Rg9d0RoggKhBXGcVb6cJgcMd7p+BHMLPAvi9ut7ifqU7AOQ5BTbnGEzAVSnZ1N94ZEs4AthfnKkLtUW77Y8YYZgag7Pifk3xZ6diNTmWVgjVUX3LjpTp05m2TIbml6ttMU0zE02PPzM6wib9JMxqOJdF28JBI0lOAgCni6jPi7CS57YgshVTwFiwiKnVzmD2MurxYcwLgCqRoPWo5CQ5iEGBB9dbHiq8WNo/4ksvKVy3rhZ1ksuv7clrs0JYvJe+OIrZAKq79qJai1gp8f+K9qsvsGsDdCKjBAXCwr0+Vw0azVv8oMyt4eQd0TBI6ji6PKjhQn7w822UlhwMxkjbuT/FKvwYHKDRdcMqbTS2nirNHD2Emv4LS0Qf3IVe11Bo1yL0eBSxP5o6WaySy/vSaVjHA4+85f1UUWAr/k1ScgKinmc1ka9DDuFA1k7txBg/JCwKEw+iCduYBXd+3mc2OtwueZDtJQnKzr80k9zFOu9kdfSK42V1PLv8RPZXIEbhvb5lAMV6iZoiVkwVwCgCf1Al/9kmU65ru3Ul6SoMY1QA6LgaQmPRVWK0b4KxPfc5XjbwZB/r6Rwcp0l1u2vrVcb5sj2COyIJi6XgvNXY7Hh97M+4u3xZlg0iarDCxAsV0vS7pJ3d2VjdRkG8IPqStgOUS1KCR4erKvBlmkCHdMmHOSdYwuOGXvcSyMk60WlV8uPgBv1/U3gkMQctF0BEInvA/pQrTThjgpR61HrRpPrVQiMODrJSGQIti1Q/TdrVvzoDWFQ+N7RqOQ2HRjynIvCxBio5SIOvxTgmwKBwBEGc2gounueYexmOGuPWrgth/LXGjuRMxieq40n4QjpPnCOjbP21FXcioIJWJVCg
+ Le1umC4q
+ udanm+QGtygcxD0jJM7m74J1ZBhRv/pcE9JfDlZ7QhNH969rcniBk+KZfeWNfg2nodTcX1OfG/i8AFs38DrI0D2se/+ugL8o91LlG9GBVZkbBXoxH6L35znwHOEOAFA6gq3fBcriDjP4DgXy8Beu8TaBYigsjkV5veF158Zt4F/wGXGskrK4rbFxouv+Ag699Jf2mOT+d42osjBaLQl+yw6Pz2ddJIjMS07gNHAz1a6Xy6hfCkQ3ExiFahmn4GrkVYPWocyCWEFzO4WL7LeUW72GJ9pwzY721VUOUzlkpR7ABAPATL+8pdYXZS0rFn21aSp7cn9Pt+L84PdU7okhDvUL7GCsopKE3Ns0B241ZNcPGsIk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,64 +98,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+For memory-failure on ARM, these features do not seem necessary.
 
+Signed-off-by: Xie Yuanbin <xieyuanbin1@huawei.com>
+---
+ mm/Kconfig          | 4 ++--
+ mm/memory-failure.c | 2 ++
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-On 2025/9/9 20:29, Vernon Yang wrote:
-> 
-> 
->> On Sep 9, 2025, at 13:58, Baolin Wang <baolin.wang@linux.alibaba.com> wrote:
->>
->>
->>
->> On 2025/9/8 20:31, Vernon Yang wrote:
->>> From: Vernon Yang <yanglincheng@kylinos.cn>
->>> When the system memory is sufficient, allocating memory is always
->>> successful, but when tmpfs size is low (e.g. 1MB), it falls back
->>> directly from 2MB to 4KB, and other small granularity (8KB ~ 1024KB)
->>> will not be tried.
->>> Therefore add check whether the remaining space of tmpfs is sufficient
->>> for allocation. If there is too little space left, try smaller large
->>> folio.
->>
->> I don't think so.
->>
->> For a tmpfs mount with 'huge=within_size' and 'size=1M', if you try to write 1M data, it will allocate an order 8 large folio and will not fallback to order 0.
->>
->> For a tmpfs mount with 'huge=always' and 'size=1M', if you try to write 1M data, it will not completely fallback to order 0 either, instead, it will still allocate some order 1 to order 7 large folios.
->>
->> I'm not sure if this is your actual user scenario. If your files are small and you are concerned about not getting large folio allocations, I recommend using the 'huge=within_size' mount option.
->>
-> 
-> No, this is not my user scenario.
-> 
-> Based on your previous patch [1], this scenario can be easily reproduced as
-> follows.
-> 
-> $ mount -t tmpfs -o size=1024K,huge=always tmpfs /xxx/test
-> $ echo hello > /xxx/test/README
-> $ df -h
-> tmpfs            1.0M  4.0K 1020K   1% /xxx/test
-> 
-> The code logic is as follows:
-> 
-> shmem_get_folio_gfp()
->      orders = shmem_allowable_huge_orders()
->      shmem_alloc_and_add_folio(orders) return -ENOSPC;
->          shmem_alloc_folio() alloc 2MB
->          shmem_inode_acct_blocks()
->              percpu_counter_limited_add() goto unacct;
->          filemap_remove_folio()
->      shmem_alloc_and_add_folio(order = 0)
-> 
-> 
-> As long as the tmpfs remaining space is too little and the system can allocate
-> memory 2MB, the above path will be triggered.
+diff --git a/mm/Kconfig b/mm/Kconfig
+index 034a1662d8c1..22eefc4747d5 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -742,22 +742,22 @@ config DEFAULT_MMAP_MIN_ADDR
+ 	  This value can be changed after boot using the
+ 	  /proc/sys/vm/mmap_min_addr tunable.
+ 
+ config ARCH_SUPPORTS_MEMORY_FAILURE
+ 	bool
+ 
+ config MEMORY_FAILURE
+ 	depends on MMU
+ 	depends on ARCH_SUPPORTS_MEMORY_FAILURE
+ 	bool "Enable recovery from hardware memory errors"
+-	select MEMORY_ISOLATION
+-	select RAS
++	select MEMORY_ISOLATION if !ARM
++	select RAS if !ARM
+ 	help
+ 	  Enables code to recover from some memory failures on systems
+ 	  with MCA recovery. This allows a system to continue running
+ 	  even when some of its memory has uncorrected errors. This requires
+ 	  special hardware support and typically ECC memory.
+ 
+ config HWPOISON_INJECT
+ 	tristate "HWPoison pages injector"
+ 	depends on MEMORY_FAILURE && DEBUG_KERNEL && PROC_FS
+ 	select PROC_PAGE_MONITOR
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index a24806bb8e82..83b77caf41a1 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -1271,21 +1271,23 @@ static void update_per_node_mf_stats(unsigned long pfn,
+ 	++mf_stats->total;
+ }
+ 
+ /*
+  * "Dirty/Clean" indication is not 100% accurate due to the possibility of
+  * setting PG_dirty outside page lock. See also comment above set_page_dirty().
+  */
+ static int action_result(unsigned long pfn, enum mf_action_page_type type,
+ 			 enum mf_result result)
+ {
++#ifdef CONFIG_RAS
+ 	trace_memory_failure_event(pfn, type, result);
++#endif
+ 
+ 	if (type != MF_MSG_ALREADY_POISONED) {
+ 		num_poisoned_pages_inc(pfn);
+ 		update_per_node_mf_stats(pfn, result);
+ 	}
+ 
+ 	pr_err("%#lx: recovery action for %s: %s\n",
+ 		pfn, action_page_types[type], action_name[result]);
+ 
+ 	return (result == MF_RECOVERED || result == MF_DELAYED) ? 0 : -EBUSY;
+-- 
+2.48.1
 
-In your scenario, wouldn't allocating 4K be more reasonable? Using a 1M 
-large folio would waste memory. Moreover, if you want to use a large 
-folio, I think you could increase the 'size' mount option. To me, this 
-doesn't seem like a real-world usage scenario, instead it looks more 
-like a contrived test case for a specific situation.
-
-Sorry, this still doesn't convince me.
 
