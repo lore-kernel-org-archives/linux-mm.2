@@ -4,122 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B882CAC592
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 07:56:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F6F3CAC5A7
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 08:12:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 804708E0006; Mon, 22 Sep 2025 03:56:13 -0400 (EDT)
+	id A9E268E000A; Mon, 22 Sep 2025 04:12:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7DB908E0001; Mon, 22 Sep 2025 03:56:13 -0400 (EDT)
+	id A71DC8E0001; Mon, 22 Sep 2025 04:12:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6F0FB8E0006; Mon, 22 Sep 2025 03:56:13 -0400 (EDT)
+	id 9880D8E000A; Mon, 22 Sep 2025 04:12:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C5098E0001
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 03:56:13 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id EC70F86B66
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 07:56:12 +0000 (UTC)
-X-FDA: 83916128184.05.802CF66
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 037DD8000C
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 07:56:10 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=E208M1RQ;
-	spf=pass (imf30.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 709918E0001
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 04:12:31 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1008786DE8
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 08:12:31 +0000 (UTC)
+X-FDA: 83916169302.30.C6B55C3
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 05F981C000F
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 08:12:28 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=bucqfkIS;
+	spf=pass (imf20.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758527771;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1758528749;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fOLEn6wbExiWX7ZHkvEGaEspEQHvpxYxacH64/69EaI=;
-	b=34zqJM0LcIA2QiRjyytE36Sp8wgk/pOJZjV1Aik6KbDzJ8/eMpu8ZEdcNcyhYD/U4ziVE+
-	MUcz9UE0Wgg87gQa2ZvTbcf3TjUxnbAvWfQaX16wn0pKfmiNAymJjDd4CP8xoITdvOwXz1
-	4tU6y3pUUOOi9DIcNVqTVFhDzzk4bGk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758527771; a=rsa-sha256;
-	cv=none;
-	b=0EaaVx0+UQcC4ZMxh4T2s+37IU0s3rjgbzKQhJaCiisqV1ziRhHxiWjofXV8EQsLZciJKa
-	GqctcQUBayIrjmY0IxXG9kk/MmPUT2fLkdbqCMP6bdPJ6rxDxhT1jmJ+UJKw8Mm5ucXDxm
-	GGbFRM8Gt5YyunNrLNBRVUmulLBvPzA=
+	bh=UNmDvRMaSkcvZG7ST5TBgZ5i6Q9pv+qPhkMttelgFNc=;
+	b=3XLbvAqpDwdcABzGB6kdRLgN9Wrn+/vviw6lQgpf5JAr4QXTJp437y1JPzpwI4MWEOrnyR
+	/IbFkUGXEYwcK2hsQJ3xg8ag0hCnyW/i+dXoS14Gm0HbsjTZHAnmsa/nSj2tQH1n1NQe4A
+	2zXEpBsqBwr8FD1TSzr7k9hJJiNK71M=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=E208M1RQ;
-	spf=pass (imf30.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-77ee6e252e5so2212048b3a.2
-        for <linux-mm@kvack.org>; Mon, 22 Sep 2025 00:56:10 -0700 (PDT)
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=bucqfkIS;
+	spf=pass (imf20.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758528749; a=rsa-sha256;
+	cv=none;
+	b=z/nzXGa6Ult2ClyW6o1qDbG5BElc6uwkcjHvqymwTv/apQGOxBo1OlaFf+tASQI+Of9szR
+	Pya9M6T6e8JOreq1+dMROUH/z+e7AhvzY3yvpdAWKDNJeqkSyqNlbJ68uHOHr8XPmhobmT
+	FOtvZvfAjF/86SpiQrFlCPXbxPl0r8M=
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b07d4d24d09so685361166b.2
+        for <linux-mm@kvack.org>; Mon, 22 Sep 2025 01:12:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1758527770; x=1759132570; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1758528747; x=1759133547; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fOLEn6wbExiWX7ZHkvEGaEspEQHvpxYxacH64/69EaI=;
-        b=E208M1RQO7z8asgmXmh7SnfGIfwwgJf+b2lCk8JsCK+3qZc41yeaMELd3If4fELIdo
-         ylDS6LI5/D0sdZPaYoTi6Hf7vCg7sPizESnABHGKEflkhGxUlrwwqgbjF8bcJrJmE5g7
-         l1UpyQ2cLC68lSIOWU6Ys2JXWldNZdLwxUdDfLlHD4qV/sayldM/L55u2J89G2q+dp6s
-         pe6NfGHWOtYwQEiidz4YYMUhHLM53fP3hGU1gcfGiroP59ntOavsOBjYFtURh2H1PU/O
-         ueWUbhnHwg0e9gjpMYaYnvsdpRxddS3k0yKLhNgfVDCmUvjKLL2jzYexae5Byb5toJtY
-         1rNA==
+        bh=UNmDvRMaSkcvZG7ST5TBgZ5i6Q9pv+qPhkMttelgFNc=;
+        b=bucqfkISWQP0SRZ9Kp/9JS5Q8vMY5QbLqoNijmr1Y+3F3Pfbce9a8hFlmpEtdgpD1Y
+         jYjcD/M33vpddUmPg26PrfNRb0mf0ifEUvEL3g4IBr3d0XRyRelyuPrMUN5zNPGNn67+
+         7PPEpENOxteI0HpGiBsQd52jx6OD1FR66KgVMIYYxLtE9ajDMyac1uMask8yM7Y0iMLO
+         Bdckz7g/DwDdX4mDrp2BzNSdkr1ppY6L1sgs08ii2MzjY6gE6SClcz3+kR1tJX1gr2MA
+         K8Fb1fMItRs0JTRed0qEGpYu2JqX7vIdcI+ZySo/VHIHMq3I8XkqLilflgJD5OBxtmhF
+         Jjzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758527770; x=1759132570;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=fOLEn6wbExiWX7ZHkvEGaEspEQHvpxYxacH64/69EaI=;
-        b=aOs0wNIjMQGM1rHvzLPyLJyb40ovvlycP4BJ9sZk5ycFmBr/p5SebGZG7w2gZ3iUkT
-         SimJRAiQ64F96ZBLS3iMa9s2LQJwiMdloGNDFKdOVTvx7IrISJofxgub8c6DVz4aqWIO
-         dYdEdB6bq4Jxu/WosdNgy8FfNO+bDaB+c658NYAYve7nRB74qNkg8iCADqSeeil3lqCa
-         eNwazhTcIoxtH23QLWZEXmdA1fhStuCxzAELaP/PT5I1vO4DJf87xZaH+qDj4elIHzLJ
-         KaR4rY9zXk/clq3JZygz00h4aW5EW5MEQmq45G0LWgPTm7ObKTaYSbtlSYBCwtg8OKlQ
-         MfxQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWXtZ0J2iagLPA6vktdLdPB9OoVNsXEdYaKV2AK9eh3zLcrrHHbWjr2OfU3KnPuUUjb0h+GyvIZJA==@kvack.org
-X-Gm-Message-State: AOJu0YyNRvoGBJUqk9z9t7oPoxEjoYlf73nLLgf9YcT4scdIdXCCUoxD
-	wOF2GQYKEZy0qXjAx1Nc5JcD6U+a0qO/Hk3ZoS9hVeAUgY9BGDDDL56IvQ3NNkUljSE=
-X-Gm-Gg: ASbGncuLs47j42jv4ztcSda8SVNU2OOr5jD2r/DJUphpfcSJCIHO80ep1qy2zobYG2B
-	opS25LJ7pexElM7LS1Q+S8pT9QQc8xcCqP04zMHyE1ZH8O7wcXSfYbTKK2MEVpKn+2wRFFLPJed
-	eUG7XCFG/W9Eqo6EhurlmaSP66dFgrg3qvI3SFkaVxJBlAIatguB7ur5ubAygpLmC3z2DGC8it/
-	SwQk0jZJN3P1f0BuwAvJEmBX4M/t6oZingnGlnV6mDOj4hWk77diGJv0lyPPtpzY1MwtoeHlNkR
-	cKA0TmMlBMO9gRv3VGLJ6gK41mJWpETeKaD7H6drA5U/GYbmv/uQcvRwC5hnN0JDSAcr8U6lDng
-	Q/2WFZ3mf0LW1waq08U6G/1RxqRpXDcEiSnOiOcAYtAk0WxKVWwE=
-X-Google-Smtp-Source: AGHT+IEWHzTu8qZR9GiLSVFONI5X3EclZtypFRTqQ5ScW2UO6ECeFRJ94ii2oT0N3yQZaQcdiH589Q==
-X-Received: by 2002:a05:6a21:6d9d:b0:266:1f27:a01e with SMTP id adf61e73a8af0-2926f79d201mr16735986637.39.1758527769805;
-        Mon, 22 Sep 2025 00:56:09 -0700 (PDT)
-Received: from [100.82.90.25] ([63.216.146.178])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-77e5f867d30sm9103152b3a.38.2025.09.22.00.56.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Sep 2025 00:56:09 -0700 (PDT)
-Message-ID: <28f36249-f064-4d32-9d8a-ba03db5b491c@bytedance.com>
-Date: Mon, 22 Sep 2025 15:56:00 +0800
+        d=1e100.net; s=20230601; t=1758528747; x=1759133547;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=UNmDvRMaSkcvZG7ST5TBgZ5i6Q9pv+qPhkMttelgFNc=;
+        b=mUmBuL6SAzfvGfdovbA+cMOjTa7WAv5450JXAjqrIghFqavF7p8/v6PiO/+AyNXoBk
+         dkS4/CYLPjV2/ferFl6I6RWVstknP9xTtmFjk4oqh+hGJAgs05VaRdiSg69t8ikjcPEm
+         8+nE0oeB4H35cPJvKq3Mfym75Jdevk+RrFquOpRsLV4ac/kJfpKSC8idUsnzrrEf9ZaE
+         srt0HZ7fJpgh7jDDfQMA8Gd8jFyqV4t0PfqV0/SNPf/Uls+9rLc5CRhCXcyacySSjfz3
+         Y+tLvo9lELqU9UL+nTQNrcL/3I1x3Rwv3sFn0BUA7lNdSGf0+pWIRP6hU0yRpNu4UvRz
+         pupw==
+X-Forwarded-Encrypted: i=1; AJvYcCXHgs95pyTnbv721Tkd5CoSou8k5HkuCU4arwwwjJuFgxaBvhKPoX510HSja023JbMbjRPz74phaQ==@kvack.org
+X-Gm-Message-State: AOJu0YzTYK5V+A+YMoHfliB5HwkQHcd1Hcljx4fn57NFLi0UDbDZ4Uy2
+	XKbzHZDeSbdwgmZyE2L6W9lhCStlmzzp+e9t3ZIOT7fukxj02a2S0r6p
+X-Gm-Gg: ASbGncsWWhK0828WVnes2Qfqqv0E2qe6Kin0C0rdXLJOGGwznO0pW/+U0Fs/2hfA5W6
+	PZOwZbzRuysyoPm4gkNMqBnkUtVXltstI8uyUOSoi40yR7vMBWvSgNWfwCnFNz1sixThdROsQtP
+	xsKYWkPYFDzTvMjo/QUavE56HGSHGBFd9TanCmkY65KMstmTwg2qbaRM1pWRuxbjFW/ZmGU0L4T
+	xcCHujyHVCQ3dYNrkfCXnCu5V1CVjBWX6Qa7kUvFGHMS475nXJGiqOnWklQhdZaa1uz1UO1Curt
+	qGNQ3Hfq3PehdRZJb73m8kPHypfpMWhv/gszyxdjKQCdyirAe4R3d8vI+yU4uxUQ1a45+qdCeyD
+	tDLiw77xT2TUANn7P/ByO/BbTfQoYodIB
+X-Google-Smtp-Source: AGHT+IHSaseFS5jlA28txuPozOKp9ulmfO6fq7wQNDvdaL2AS5cR+Yqp9TgNqu46LTwEVLB7qOxcRg==
+X-Received: by 2002:a17:906:c155:b0:b24:3412:7cfe with SMTP id a640c23a62f3a-b24f5b59e7dmr1193447566b.63.1758528747129;
+        Mon, 22 Sep 2025 01:12:27 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b29b80eaec6sm425023666b.87.2025.09.22.01.12.26
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 22 Sep 2025 01:12:26 -0700 (PDT)
+Date: Mon, 22 Sep 2025 08:12:26 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Dev Jain <dev.jain@arm.com>
+Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+	david@redhat.com, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+	npache@redhat.com, ryan.roberts@arm.com, baohua@kernel.org,
+	lance.yang@linux.dev, linux-mm@kvack.org
+Subject: Re: [PATCH] mm/khugepaged: use [pmd|pte]_addr for better reading
+Message-ID: <20250922081226.hsglokm74lh2eng6@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20250920005416.5865-1-richard.weiyang@gmail.com>
+ <4fb37530-3826-4ff5-ad7a-dc9dac4937de@arm.com>
+ <20250920090228.lovkrpwj23bqdamj@master>
+ <93095f34-d7ac-40c7-87c7-60d2c64d4800@arm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] mm: thp: introduce folio_split_queue_lock and its
- variants
-To: Zi Yan <ziy@nvidia.com>
-Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
- roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
- david@redhat.com, lorenzo.stoakes@oracle.com, baolin.wang@linux.alibaba.com,
- Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
- dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
- akpm@linux-foundation.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org, Muchun Song <songmuchun@bytedance.com>
-References: <cover.1758253018.git.zhengqi.arch@bytedance.com>
- <eb072e71cc39a0ea915347f39f2af29d2e82897f.1758253018.git.zhengqi.arch@bytedance.com>
- <E62A91B2-4221-43B2-9C17-1E48AA5D5544@nvidia.com>
-From: Qi Zheng <zhengqi.arch@bytedance.com>
-In-Reply-To: <E62A91B2-4221-43B2-9C17-1E48AA5D5544@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 037DD8000C
-X-Stat-Signature: wiisfyry9oeceoo5tuj7mga8qruygaqj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <93095f34-d7ac-40c7-87c7-60d2c64d4800@arm.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Rspamd-Queue-Id: 05F981C000F
+X-Stat-Signature: co95d9k1hpjjxnmfimx98k5au74iz6gs
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1758527770-664396
-X-HE-Meta: U2FsdGVkX1/E/VcmkUv5z1NxvrdZKhhHV9panUwREehS7oSLM11oDtmF7Tdjtet27xjIwquC604zcsibT9gS8wB+fSsiE2V3dMgCXe/bSlgWk2ns81YtLfNQUAt3D1eglVodc+4cr+vn/w8KSRQfUpM5kLdIYIVMIDHdqVfhhS/jjFWB1xTYZTdrkVAMN+t2xVFJq1UusLut3FVKIswLc2xk0Q/U/ZfAnBiSE/Rd7wfzqboS7HUDg+43PW7CESkYhwl+AOwqzcjrkWwl3OPGDt7GxRxZZ5xtfUDvWY7g6D6Y/gsEPeBeFfCoH69ep7XREGi7W4qmPz9xCz0FfjeY7lEXiaRNhupewZ37gHEGOgojQVVKUkAww1geWR9XddqXa7Av6A11QcZ8rQo62xHT0h94E6JzIU9ic8abAiP9DVrDCx8TNZoYjEzfNfrZVTxF0DgNQ8EpUJXrowzXg7RhG/dTMJFPAqxVpxYx7ijweMGi7VzNSQ6K+q/X5hXLLOcFfp2kObIeyq3vUiCPq/Zfh9vrSXW9o9MnHavDb5Yfnnvb2rijGwhlTl+ZbpeflkHBdZtalQ9S8+AlZvRv1006ScL1pSGuf/wGykSJZg5Lgo2UbZk1Hu3f78ZqiszJ6vu9iHG+CUcgM9yCGdDh+osCbq84GpmUk4Bh8XAP8JFdkItdDenfQzxr4PTPWyIbTyvCcpVvK+ksJQdFQOSDUsSm5Em7Ydl9RFunDsf08sNKKE5B6sAVVI2xuYFVo0xDwdHIsXQi9opW2It/9fmfAIPj2rx5LdGZH+Zofm6/VlrnJHtOF00+HyYaCub6d8CvXfYLkRFYknPh/RxFIKANEXU7obfRlSND06fC/JYMRCcBI32HFA00AYeb3Id/o+lQBcelDMawoAmTAc9fwz1/UsITGiTR1O6sJ778OJDOk2wor1uElWi43rY87jGfIaEsA2VQkMrv1ouahzqW7p1RjH5
- Nf3NqXfv
- J05y7NqKlYb31Nr/5y8+5i9MBazlTHYRCELltM+azypws6r00dqt4/Ceo6LMDkRu5tk9/T/4TbnKkVaGAHDmZSEFApJIbFU7TgMfiOW4qTgVPpiNxk8SpF7zI3wr9wb0NhBgzsGZlwyf8nC611+SVHAsTaGWzTTyTvqwXueQ532x4fYJUcACbhuUI0yMjrNZ1YZWSqMhZfO5CNrdArtlcFsZeeMQ3F3IJ0V3McchrWdV/lEPLjmmbRS4PeFGBSlOpC2s/By3I9doVqY0Plc9RyfF/zVK1fVyGxDT8ueWNxhgRxdXRjzkudDNru+21NwMU6bw2h/zq7muNa1vlt+4Q7UnzGy4KFdR71TXStEVncJaNWnMihLZJ4IQukppkpU2z89/LvGmWWu6jHt0zBNWsBn6MheD3tTkcFQdctgoCkB5X9AjSQiUmynmYizDt4UbZvH0Ius9klV1ttYY7Jstpv5L1PYP2p/vVZwjEgtQsd+zHbMc=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1758528748-855775
+X-HE-Meta: U2FsdGVkX1+BUjXrcWTFaH+BOI1BUnhwH75sF00mNHb1FAJdw8UODfeJwab83A/ObV/ea4U3r8M2CdBTSxsOwUZdfiLK6NwVEVqN8PaeTTK496+/amu8smLHKZMbFIuW6gaj+sTDy3iPs+LqqCqXu40oY8mE/h3cIufGnR9yUT/UvBozb1hUSSquYgV/ZFENCjubxXB99l5S/XoC38WhmDDQGH1/pMVvO9inuNn+ghpAnQUL4LbI6lnRUveSCqLo8dGHdKE0MwGvzLomIVfTa23gNbIpaDHMT6NL5Vm9ifBhxGAomBfHRDrQ/V3xdzJrnygZNhBy9TsE+hsKMagqnxvWCPmReSje+QvPEQAVrw5Iu3BUzSlY6JQatjjNw0Aa8KIvjpuSY2vDX9ipjIayfVYqnm2yG23SaCuVONwfUMg81dh4hbZ9UyENZJmRYJSWHN2wwyy6siZPhM+nV5FXa1NTgNUM7Mj35kOc9X8FGHrWFHLpYboqiZmYC+QnR5ETfX/5H7ikm6v/G62XUExkxZjOcUTg6ToIzfMPLmroJcMP3f0m1cxmX+DduUaubNAHxV6o479TehQdkORmvTZj/r0SzFoIveuks6KY8xk3R+Dg5pDEg9BiaG5LeD43y+FgkrCnUFcXjJtUpzTWVb7+6ZMhd8EnQ8Rm02vhooIvi9beP6kKAQmuuHDt5vZzHV2IYmpqZbNMKJYV9C8N2pP9ZTdBMWiBmp4OwAOfTfcH4/7tN7bE30zgyLSDqs5ISEGKK+jyJ2HiYRNj1kXWIGxnugv1ECGGGqSIE2/vQintztPvCN3SBpIJDHgC7pEmuBjeO4SGAuA5/MhbT/phPGUas3cjTQDijQjvLFCUQSWA+7G+NUfSuHjHpP14GVqh2iDY1JQvMlruy9PBGEn96zpUGsl/P4t+jizEzWIxvXm03tMURkk+eBexbW4hhyeeJunImFN+4gpbsmCDx+le1u1
+ aQDVlT33
+ VSrMRPJo6VL+xNTVNYBzMB6fELGeEsMEyHouRNlKkUonz3oSJK4RpPSPRhP1ZoH5QU56nWdbFkRdclwDvfKw6lrxl0PMvgTvFi1JRmuzY77dlp6t6Ilh+sKR5fTCN3j65cdgOiU+guM1pji4AF1by51ql8S8+s3X2l5pg5q4a+TrfiCiAJy6ZQu9Mm5lHnYCH0erysabd/laOgS2AWek9JDOBDIG4jJuyRmh2G0HRId96WWlk0FAGtS/M4kiIcVbw9uc78IZIs74RF+yuSTUnPjcKc6aVtsgtJD/OLcLtr6rrOcuOCYjHcd4HOMV4aRhIoGQZYePNNaE/K2nOlm9VwgEn2z50owCYAwoS2yc8Pm5PPbmcdZUFkG/GkWGY5bml4HoC2rOgmXJpjwOVWNNP2t9hxf8NvldfJoOEN9lQ8efXfacVfr3nYeJdbyDnJUm2yJw2vNYdqaWouTQMyFqT+y125i5RbmhCtvF2JSRS6atzKmYVvdkP1bCvHvP9lvaqcPCQxQnfOgEWgRYrtxhE7juep8PHLizFbpjU8gq+5nU4NAaDvbdKIoXMYJaKN5GLlHxYA9M6lDu48koA0Y+xFANyqN8yjS/jbcScO4nKlVJTd11D4cNA6elWNLs6vGxXdcMA2NHba1UFG2ZcCOFi8KQf2gsUOQTczeD0bopgqPMCvC6i0yYw/b0rz6DQv4WlcKxV6t5hin64WEAs21dm08xOSYQZuWXDWH2Z5GW6dSXkIebY7xqnT9ns88oOlSGLWY6vDgwz+Qt3fAfrPDftQG0M7B3wh048YnwjpHimwk6CS1WBd3arx7AymDIc8PwWFG5R9lCCQlno80Q=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,137 +126,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Zi,
+On Sat, Sep 20, 2025 at 06:01:59PM +0530, Dev Jain wrote:
+>
+>On 20/09/25 2:32 pm, Wei Yang wrote:
+>> On Sat, Sep 20, 2025 at 10:21:56AM +0530, Dev Jain wrote:
+>> > On 20/09/25 6:24 am, Wei Yang wrote:
+>> > > When collapse a pmd, there are two address in use:
+>> > > 
+>> > >     * address points to the start of pmd
+>> > >     * address points to each individual page
+>> > > 
+>> > > Current naming is not easy to distinguish these two and error prone.
+>> > > 
+>> > > Name the first one to pmd_addr and second one to pte_addr.
+>> > > 
+>> > > Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+>> > > Suggested-by: David Hildenbrand <david@redhat.com>
+>> > > ---
+>> > >    mm/khugepaged.c | 43 ++++++++++++++++++++++---------------------
+>> > >    1 file changed, 22 insertions(+), 21 deletions(-)
+>> > > 
+>> > > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>> > > index 4c957ce788d1..6d03072c1a92 100644
+>> > > --- a/mm/khugepaged.c
+>> > > +++ b/mm/khugepaged.c
+>> > > @@ -537,18 +537,19 @@ static void release_pte_pages(pte_t *pte, pte_t *_pte,
+>> > >    }
+>> > >    static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
+>> > > -					unsigned long address,
+>> > > +					unsigned long pmd_addr,
+>> > >    					pte_t *pte,
+>> > >    					struct collapse_control *cc,
+>> > >    					struct list_head *compound_pagelist)
+>> > >    {
+>> > >    	struct page *page = NULL;
+>> > >    	struct folio *folio = NULL;
+>> > > +	unsigned long pte_addr = pmd_addr;
+>> > >    	pte_t *_pte;
+>> > >    	int none_or_zero = 0, shared = 0, result = SCAN_FAIL, referenced = 0;
+>> > >    	for (_pte = pte; _pte < pte + HPAGE_PMD_NR;
+>> > > -	     _pte++, address += PAGE_SIZE) {
+>> > > +	     _pte++, pte_addr += PAGE_SIZE) {
+>> > >    		pte_t pteval = ptep_get(_pte);
+>> > >    		if (pte_none(pteval) || is_zero_pfn(pte_pfn(pteval))) {
+>> > >    			++none_or_zero;
+>> > > @@ -570,7 +571,7 @@ static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
+>> > >    			result = SCAN_PTE_UFFD_WP;
+>> > >    			goto out;
+>> > >    		}
+>> > > -		page = vm_normal_page(vma, address, pteval);
+>> > > +		page = vm_normal_page(vma, pte_addr, pteval);
+>> > >    		if (unlikely(!page) || unlikely(is_zone_device_page(page))) {
+>> > >    			result = SCAN_PAGE_NULL;
+>> > >    			goto out;
+>> > > @@ -655,8 +656,8 @@ static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
+>> > >    		 */
+>> > >    		if (cc->is_khugepaged &&
+>> > >    		    (pte_young(pteval) || folio_test_young(folio) ||
+>> > > -		     folio_test_referenced(folio) || mmu_notifier_test_young(vma->vm_mm,
+>> > > -								     address)))
+>> > > +		     folio_test_referenced(folio) ||
+>> > > +		     mmu_notifier_test_young(vma->vm_mm, pte_addr)))
+>> > >    			referenced++;
+>> > >    	}
+>> > > @@ -985,21 +986,21 @@ static int check_pmd_still_valid(struct mm_struct *mm,
+>> > >     */
+>> > >    static int __collapse_huge_page_swapin(struct mm_struct *mm,
+>> > >    				       struct vm_area_struct *vma,
+>> > > -				       unsigned long haddr, pmd_t *pmd,
+>> > > +				       unsigned long pmd_addr, pmd_t *pmd,
+>> > >    				       int referenced)
+>> > Will this be a problem when mTHP collapse is in? You may have the starting
+>> > address lying in the PTE table.
+>> > 
+>> > Personally "haddr" is pretty clear to me - I read it as "huge-aligned addr".
+>> > I will vote for naming the starting addresses everywhere as "haddr", and use
+>> > addr as the loop iterator. This is a short name and haddr will imply that it
+>> > is aligned to the huge order we are collapsing for.
+>> > 
+>> So your suggestion is
+>> 
+>>      pmd_addr -> haddr
+>>      pte_addr -> address
+>
+>pmd_addr -> haddr
+>pte_addr -> addr
+>
 
-On 9/19/25 11:39 PM, Zi Yan wrote:
-> On 18 Sep 2025, at 23:46, Qi Zheng wrote:
-> 
->> From: Muchun Song <songmuchun@bytedance.com>
->>
->> In future memcg removal, the binding between a folio and a memcg may
->> change, making the split lock within the memcg unstable when held.
->>
->> A new approach is required to reparent the split queue to its parent. This
->> patch starts introducing a unified way to acquire the split lock for
->> future work.
->>
->> It's a code-only refactoring with no functional changes.
->>
->> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
->> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
->> ---
->>   include/linux/memcontrol.h | 10 +++++
->>   mm/huge_memory.c           | 89 ++++++++++++++++++++++++++------------
->>   2 files changed, 71 insertions(+), 28 deletions(-)
->>
->> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
->> index 16fe0306e50ea..99876af13c315 100644
->> --- a/include/linux/memcontrol.h
->> +++ b/include/linux/memcontrol.h
->> @@ -1662,6 +1662,11 @@ int alloc_shrinker_info(struct mem_cgroup *memcg);
->>   void free_shrinker_info(struct mem_cgroup *memcg);
->>   void set_shrinker_bit(struct mem_cgroup *memcg, int nid, int shrinker_id);
->>   void reparent_shrinker_deferred(struct mem_cgroup *memcg);
->> +
->> +static inline int shrinker_id(struct shrinker *shrinker)
->> +{
->> +	return shrinker->id;
->> +}
->>   #else
->>   #define mem_cgroup_sockets_enabled 0
->>
->> @@ -1693,6 +1698,11 @@ static inline void set_shrinker_bit(struct mem_cgroup *memcg,
->>   				    int nid, int shrinker_id)
->>   {
->>   }
->> +
->> +static inline int shrinker_id(struct shrinker *shrinker)
->> +{
->> +	return -1;
->> +}
->>   #endif
->>
->>   #ifdef CONFIG_MEMCG
->> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> index 582628ddf3f33..d34516a22f5bb 100644
->> --- a/mm/huge_memory.c
->> +++ b/mm/huge_memory.c
->> @@ -1078,26 +1078,62 @@ pmd_t maybe_pmd_mkwrite(pmd_t pmd, struct vm_area_struct *vma)
->>
->>   #ifdef CONFIG_MEMCG
->>   static inline
->> -struct deferred_split *get_deferred_split_queue(struct folio *folio)
->> +struct mem_cgroup *folio_split_queue_memcg(struct folio *folio,
->> +					   struct deferred_split *queue)
->>   {
->> -	struct mem_cgroup *memcg = folio_memcg(folio);
->> -	struct pglist_data *pgdat = NODE_DATA(folio_nid(folio));
->> -
->> -	if (memcg)
->> -		return &memcg->deferred_split_queue;
->> -	else
->> -		return &pgdat->deferred_split_queue;
->> +	if (mem_cgroup_disabled())
->> +		return NULL;
->> +	if (&NODE_DATA(folio_nid(folio))->deferred_split_queue == queue)
->> +		return NULL;
->> +	return container_of(queue, struct mem_cgroup, deferred_split_queue);
->>   }
->>   #else
->>   static inline
->> -struct deferred_split *get_deferred_split_queue(struct folio *folio)
->> +struct mem_cgroup *folio_split_queue_memcg(struct folio *folio,
->> +					   struct deferred_split *queue)
->>   {
->> -	struct pglist_data *pgdat = NODE_DATA(folio_nid(folio));
->> -
->> -	return &pgdat->deferred_split_queue;
->> +	return NULL;
->>   }
->>   #endif
->>
->> +static struct deferred_split *folio_split_queue_lock(struct folio *folio)
->> +{
->> +	struct mem_cgroup *memcg;
->> +	struct deferred_split *queue;
->> +
->> +	memcg = folio_memcg(folio);
->> +	queue = memcg ? &memcg->deferred_split_queue :
->> +			&NODE_DATA(folio_nid(folio))->deferred_split_queue;
->> +	spin_lock(&queue->split_queue_lock);
->> +
->> +	return queue;
->> +}
->> +
->> +static struct deferred_split *
->> +folio_split_queue_lock_irqsave(struct folio *folio, unsigned long *flags)
->> +{
->> +	struct mem_cgroup *memcg;
->> +	struct deferred_split *queue;
->> +
->> +	memcg = folio_memcg(folio);
->> +	queue = memcg ? &memcg->deferred_split_queue :
->> +			&NODE_DATA(folio_nid(folio))->deferred_split_queue;
->> +	spin_lock_irqsave(&queue->split_queue_lock, *flags);
->> +
->> +	return queue;
->> +}
-> 
-> A helper function to get queue from a folio would get rid of duplicated
-> code in the two functions above. Hmm, that is the deleted
-> get_deferred_split_queue(). So probably retain it.
+Take another look into the code.
 
-After PATCH #4, we may retry after getting parent memcg in the above
-functions. so we may not need to retrieve get_deferred_split_queue().
+The change touch three functions:
 
-> 
-> Otherwise, LGTM. Reviewed-by: Zi Yan <ziy@nvidia.com>
+  __collapse_huge_page_isolate()
+  __collapse_huge_page_swapin()
+  hpage_collapse_scan_pmd()
 
-Thanks!
+Use pmd_addr/pte_addr look reasonable for hpage_collapse_scan_pmd().
+And haddr/addr would be suitable for the other two.
 
-> 
-> Best Regards,
-> Yan, Zi
+Is this ok for you?
 
+-- 
+Wei Yang
+Help you, Help me
 
