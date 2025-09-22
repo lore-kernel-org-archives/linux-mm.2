@@ -4,85 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72CD0CAC5A7
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 11:16:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3615CAC5A7
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 11:36:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A113D8E0005; Mon, 22 Sep 2025 07:16:39 -0400 (EDT)
+	id 0E4F58E0005; Mon, 22 Sep 2025 07:36:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C1E68E0001; Mon, 22 Sep 2025 07:16:39 -0400 (EDT)
+	id 0BD388E0001; Mon, 22 Sep 2025 07:36:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8FE848E0005; Mon, 22 Sep 2025 07:16:39 -0400 (EDT)
+	id F3BC48E0005; Mon, 22 Sep 2025 07:36:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 788D48E0001
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 07:16:39 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0F3321DFC74
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 11:16:39 +0000 (UTC)
-X-FDA: 83916633318.13.C87F09D
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 00F4B20015
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 11:16:35 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
-	spf=pass (imf03.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E2AC18E0001
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 07:36:22 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5A336C05DF
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 11:36:22 +0000 (UTC)
+X-FDA: 83916683004.27.BBC0177
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	by imf23.hostedemail.com (Postfix) with ESMTP id E48F814000D
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 11:36:19 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=HBDVlNuH;
+	spf=pass (imf23.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758539797;
+	s=arc-20220608; t=1758540980;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Yf3tS8LjcHTUB7DhIdCOq0tJ8N8WtIUZUbJp93AzpxU=;
-	b=3F6zDQKEMmouPvEzgJOsWwPvMj2pAK6uRISijaF+Ean/SZmc9gCf9yynTMt6WlTpiAETog
-	3LK3YPTQG4mhHQJSBH9KCRCLlkQYWXHMSm8k1izF6SLdL1/DigvRn+nTDUR2gjeftnNJK9
-	aOYExviL1AQCvt8KtiB5rt71bXJAnnc=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
-	spf=pass (imf03.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758539797; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=X0u+YpSV/wxdA6FA5LVbjzCi32nJBgZrsJFyY0iW11c=;
+	b=wzI+lxH25u9PynBw9ytaQI4eVtQ7rOV699cIzX+3C+fwCPDGmvj3WnYwkM8FRDOlL+y83P
+	hoY0D/dBtftjgiRlWtPn7PW22W/M7cHHQ/UoVQtw1MkR++V434XU8hlq5QwLSFFGgfCSHc
+	uuZeYDNgU6AD6lhGUfKF9EmWzVldHQY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758540980; a=rsa-sha256;
 	cv=none;
-	b=7A0P/gujT5yQuRCm+f3gBWhAHZu+9/WvoIbC294SW2VO1b5FWmmJD59E2pe6DzUYyMTuUl
-	buNPdH1V+7oLHsobE6inW35xU9IQHpoQqQGtJZmYMdK/g0pVVc+EaFJheWl6mmvO8R51xi
-	HFRVwEZd6RcnCjOOt+8dfr2bzuG34sU=
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cVgRN4FnTz6L5wF;
-	Mon, 22 Sep 2025 19:11:44 +0800 (CST)
-Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
-	by mail.maildlp.com (Postfix) with ESMTPS id 5BE2A140432;
-	Mon, 22 Sep 2025 19:16:32 +0800 (CST)
-Received: from [10.123.123.154] (10.123.123.154) by
- mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 22 Sep 2025 14:16:31 +0300
-Message-ID: <5a9dd164-8dca-4852-a6ab-bab752a37810@huawei-partners.com>
-Date: Mon, 22 Sep 2025 14:16:31 +0300
+	b=xg2lmDwec9orNUN/s+rrzzsUwILYBPr1uyU/DLusRMmbFDpJr9NQ5GiEHfpRV+HSL0vR1+
+	fhRa9JDtuDlFZdEA8u/Yb7v0wpk6UH4Smo74Crzg4h3BlL+Qce9fdIedDiZGhz0KMnYFXM
+	RdRnZlAAXwLYLwk6MZ0ZmEIW5OZs3og=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=HBDVlNuH;
+	spf=pass (imf23.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-3327f8ed081so715458a91.1
+        for <linux-mm@kvack.org>; Mon, 22 Sep 2025 04:36:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1758540978; x=1759145778; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=X0u+YpSV/wxdA6FA5LVbjzCi32nJBgZrsJFyY0iW11c=;
+        b=HBDVlNuHn8gxIDSfBC/Oa6RTUdvI5eDbuCO35my+waALAjf9TEx+f8bzJDcwzKKbEq
+         HZ/nVHZuMElBI/q/5RNST11Z1JJ/mVhdOpKS8HEFCfgDgc1R7AznEIvp//wNfYN6hQrp
+         e4HzC6NWvr2YIHwOjIBqAL32ZSkru+ZzYHUTFkNZc1n8udmuoPNPsfhVpjdmcqgVC0RA
+         8Jg7H9M23bH3MapsBW7u1InA5/ZoCihzCjO9SsCJlKxXnbQwzgJdpBVymH+D/DZz0PbH
+         GGy8CFBdE5sbfToqgn9YL5WDR25i+wOKkS5NjJ8xc7M7UZmYSbbOUymY/iSsnUrCXkLf
+         0Cww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758540978; x=1759145778;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=X0u+YpSV/wxdA6FA5LVbjzCi32nJBgZrsJFyY0iW11c=;
+        b=AK5G1RRPi2SRpZe+vtIe13lpESCSqPvHg4D1/MymT7HKg4hmmAk0eZv4lHMuXWzaLL
+         Wg39/UipXGj6x2w511H+CvgIgbZrmvnoyy61iYYcNeBwRhxp8s0NUS9SRy7xvdhOWaG1
+         vzYgonxMt2CCISOvDdaynAZmTIdYicic5h8H/4iSCOEIugrJBOwp08gUVQoMqjxbUcyz
+         3D5SgkMJhkOmPVJeAO7vfvxnkguHexrQ+3Zsz6bJzwy3HvdDIIrgff10fJhrDgano3Fq
+         vfLlvN9Ue11jUWpOQwtyG0BUP+WfxyO7GRheRL5kqSOtB7UeeKPLNL6iSa9P7eDP5qKP
+         UWYA==
+X-Gm-Message-State: AOJu0YzB2AmCUdLj9Oofvgsi70d/n/JgPQtGjiPRFS6yxJEMoWP/TVTl
+	CX9T3gnPIHfCqybBRprCvyw2FABSpCIxNX+GhF5kQiYfzQOsjWey6JcOMJV1OP3sxoo=
+X-Gm-Gg: ASbGncuryuwUnG/cMaHoDKSUS/HX1QOiDwnsVQaH4bYv1a8aQPDr1gJo3B3UnwGKSxM
+	kmAGOrnO6x7Hr+2YO/uOLVN52bAexdkj6vIC3dBf/nYWdpBT/TyLxTwWkE79Z/6BHZyliHcONMO
+	zPTSFqWcHuARUCUARivFiKl3sxGcEchRi0xAou+9rpaFxtsqb+DoKBSWQP/aLomOuEOGOqd5Y+d
+	FUtkQM+aDAb84OHOe3/9SF3Rwtr0IlIutKqSxjJuAOcBZSHl+GJkws5TLFXdTyhhsjLfmlU6QAc
+	+qdQkX3KM+TcRsZ8y8a892MIDa3WRkvhfqzw5mH6yqgbJx1sr66vrUfl8xvlS+6Ed+EAME2XtpY
+	DMr1y9PN/neK+uy7lgpRvmdrAkhJX5nZZJ7n7+Q68WzT07pfrVETgIe82d1YPcg==
+X-Google-Smtp-Source: AGHT+IFu8eiVI48iUvVgVKbcFTq4WvOFa2+0AYyjYOZYbm0gMsPD46CwjI8fpjFeWEGqYdUgtuMPzA==
+X-Received: by 2002:a17:90b:2788:b0:32b:94a2:b0d5 with SMTP id 98e67ed59e1d1-3309838dff7mr15360958a91.37.1758540978490;
+        Mon, 22 Sep 2025 04:36:18 -0700 (PDT)
+Received: from [100.82.90.25] ([63.216.146.178])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-32ea0852a82sm10802765a91.0.2025.09.22.04.36.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 22 Sep 2025 04:36:17 -0700 (PDT)
+Message-ID: <65b6c32a-7eb4-4023-94c0-968735b784f6@bytedance.com>
+Date: Mon, 22 Sep 2025 19:36:08 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 1/2] mm/damon/core: introduce priority concept for
- DAMON
-To: Enze Li <lienze@kylinos.cn>, <sj@kernel.org>, <akpm@linux-foundation.org>
-CC: <damon@lists.linux.dev>, <linux-mm@kvack.org>, <enze.li@gmx.com>
-References: <20250922101022.362822-1-lienze@kylinos.cn>
- <20250922101022.362822-2-lienze@kylinos.cn>
-Content-Language: en-US
-From: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
-In-Reply-To: <20250922101022.362822-2-lienze@kylinos.cn>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH 3/4] mm: thp: use folio_batch to handle THP splitting in
+ deferred_split_scan()
+To: David Hildenbrand <david@redhat.com>, hannes@cmpxchg.org,
+ hughd@google.com, mhocko@suse.com, roman.gushchin@linux.dev,
+ shakeel.butt@linux.dev, muchun.song@linux.dev, lorenzo.stoakes@oracle.com,
+ ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+ npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+ baohua@kernel.org, lance.yang@linux.dev, akpm@linux-foundation.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ cgroups@vger.kernel.org, Muchun Song <songmuchun@bytedance.com>
+References: <cover.1758253018.git.zhengqi.arch@bytedance.com>
+ <3db5da29d767162a006a562963eb52df9ce45a51.1758253018.git.zhengqi.arch@bytedance.com>
+ <40772b34-30c8-4f16-833c-34fdd7c69176@redhat.com>
+From: Qi Zheng <zhengqi.arch@bytedance.com>
+In-Reply-To: <40772b34-30c8-4f16-833c-34fdd7c69176@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.123.123.154]
-X-ClientProxiedBy: mscpeml500004.china.huawei.com (7.188.26.250) To
- mscpeml500003.china.huawei.com (7.188.49.51)
-X-Stat-Signature: y8j83w65srqz7xpfjrg5w4cqd7qcpu88
+X-Rspamd-Queue-Id: E48F814000D
+X-Stat-Signature: gngbknhjuaojs7s6zcmegogasofjobjp
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 00F4B20015
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1758539795-609486
-X-HE-Meta: U2FsdGVkX1/8/D5Hu0ywa8kjcqceSRt2wc/0PGRRRveY+24mE7q6ad7TDZbZCR93/1LKNLwqWmwRJmKiqwcVqLb/jaV+qMs85u1APMa0C5EWF0/DCU5KQ9tMjGKHPd5IrN0y0vjlZaA7RkbSYlXmLGDR11Wy78TvTIUpO8GO6KVsDc0tLqnQ+yVKUOVuq/o5eyLyUg44KsPlEiW35WQQDJ/Gyfh3b/CdpSMvU7NdqUpDxw5wzIv3Z7VZgEZh+rCcrKiba+D1wWRkIBKO3xd4tvnAI0rzitbw3l5a3p/SRRhO0LI6cbEn79wJekkjBcJZzkojGsLKvK7mokIZjZI3j8c8npbhvJk0k0USBxx79ha89hHzv6qfXQnIUw4RUI9yVoT8k05x0XZ0XuzCzquaMZzt3ynA0/fvo0qKa2CiyvJMw1cSDpkSpyhczTbQwzUA5MS/z5SnCZIZn5+kkrrfNSzQHYDkbAIPs6eDjWi6uEoeXId7o8QfELdmQMEeyZG49hhZa8qaUUfujam9/kxXH9DVY4ctqSrh+3yXMWz+XrD+HYvsCxbI18+OI5t3pL5RBnXxN3r9lE6FQHlT9pmsXaYupUNga7qAeg5BzOudDbyKEEZqVFODPmdFl6Izth2uG/ktOjQ3sYglZbB+JLasiMiwktBHCHDRCEADt1/fhDEuJf6eEn5efYcUDg90XF/p0glw8i1Z/hEz8A4Mo/3nhmDxHFCFVknY/GriSQ9q0WoIAC5EuaZBUL8sDg747ZF1nWM4XflASsxnSGUG8Vt8ymCEPdAmUEBS6ZvCYMbt3Ypw8f4tTFEpouHcR8nMr7JG5d4yWeBBrpTwf8AInCVVNwg0Y0p1mWLuvs6K1j8Yr/ZQFgGgNNosvFWhYbcQHcK/GzpC4Y3eYik=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1758540979-671258
+X-HE-Meta: U2FsdGVkX19QnxLS3Osko8Bp3SeMCM1mXF+NVGMC9ixkjH1fukwflmXqNsqK8d9xlzAIdMkOkbrVYMsH8rIfa7ECtrmSgZn/uFPi7s3NKIEapjfK50LwBwU/URZuuzgBP9/sU1/4j3CxlZ+NhCHfy+W76cFCifuALmBAuVr0dw4WEFBk5XafY8A1ktzRVUPDZBQqq+BtIDjWsx5wDcFcElzWUhO6/ahtjGNtG3a1ON/Kz6gPNVf8ktR2W9GQX4xdLcrTuclBl/uL2JFtzSIwpMaJdp58Yl4RY+6/m90z1Tz7m9sHfOb4xk+acLSwvHlEX27iY8USnYCb/5zhe59lvm+jT6/VVXa8B3GoEPq4dfEFtfmxH5X86AZnuLAZaV3JaSsNRPyrVzAdcNPJjNRuK34mDumSRykrBfJWWgeqdCTySi6udNfRFj5eeXwerOFIAprPz/gcJhVcbRqmXt1r3c7vt5A8sppiVjktVgi5DMsqZ9j+98f3x5uH3zju7lcjCDgbayE38d/4uY0tOf05v/GnhhQPnoP32y6vozPJcnmiZrpbQjTDNW/Pazgd5FeIYTJMjII00Iza26z4f6w7+nqkcZ6gfqcUsk35PxNw/Z0PRRDfuQQOaVroP/2R/BSlhQji8hbcmHS6pFcVbMXCQqx3VjKvbJgEm2rAuxkRe2o8bR3VrVzDTwnkt/vdDcBDUVcWuZm3CeJh/pNyNUwllHSYtqNFxcy7/N0vyxfPYUBF0W9pVL2R+SbZXxaPJZfgepOCSQbQJYUZEJ3WpPC/dluPjUxrnWyCwXOucEI97jRrYDbJGVfmi2Dj9PS5r2NzonLX2N0aQbc1G4KX7NcURC8AmyQPxgwQsiKwWZUbrC/RTsrWFaTHtfC2xb9SvIK5NbH6uOf04vrpBlqwMym3Nyi5pe4fu4sLAhlH4X4l3gOB/73VM4LudnKUDAib7gStsNqzNU/esekpHKBWbL4
+ vOSjrl+y
+ +TT00AailXWV6zye9IKl/Lz0eFD+EF0e7AM9KCyjx3Zyr8HjEJIgFhVKP5YLH0UH9rqvfhWwdwyEsF36H0e0O6je/88BJ7+l7ndiaW3EwYhxsxNEdvu/3oy0lDhCJT8ALk/bESI//aUCKlh64vxasKAvXXj1RVIi/gROvIyT5+65Izn6CXjMIgycru9OLxAlXFixZ5JCx/9RuV+lxMIgOjCRkg2h1CnUnYK4QNw3KDgZaLOLqqS8PT8YPVvWAHPUzv3nH+E3oCJYaMW3U8IK3votL4vWSOdVFTQihtmWUhf633bXrSzz1UiR85Gs9i/xIX7rgRAo0GUbhRJXOoYmJ0CPY9uSYr1il2LjWEN9lpFG9lt7scweB4xW1cHYMx16BP1nxEKErJ/pcu51m8XtfKEQ2QAgEuvHJlgkJx5DzaeEGktA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,205 +127,169 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+Hi David,
 
-On 9/22/2025 1:10 PM, Enze Li wrote:
-> This patch introduces a priority-based scheme application mechanism to
-> DAMON, enhancing its ability to prioritize memory management operations
-> for specific processes.  Currently, DAMON applies schemes uniformly
-> across all monitored processes without regard to their relative
-> importance.  This change allows users to assign a priority value to each
-> target process, influencing the frequency with which schemes are applied.
+On 9/22/25 4:43 PM, David Hildenbrand wrote:
+> On 19.09.25 05:46, Qi Zheng wrote:
+>> From: Muchun Song <songmuchun@bytedance.com>
+>>
+>> The maintenance of the folio->_deferred_list is intricate because it's
+>> reused in a local list.
+>>
+>> Here are some peculiarities:
+>>
+>>     1) When a folio is removed from its split queue and added to a local
+>>        on-stack list in deferred_split_scan(), the ->split_queue_len 
+>> isn't
+>>        updated, leading to an inconsistency between it and the actual
+>>        number of folios in the split queue.
 > 
-> The core implementation modifies kdamond_apply_schemes to track and apply
-> schemes according to user-defined priorities.  For instance, if process A
-> has priority 50 and process B has priority 30, damon_do_apply_schemes
-> will be called 50 times on A for every 30 times on B.  This ratio
-> ensures that higher-priority processes receive more frequent attention
-> from DAMON's operations, which can be critical for performance-sensitive
-> workloads or prioritized tasks.
+> deferred_split_count() will now return "0" even though there might be 
+> concurrent scanning going on. I assume that's okay because we are not 
+> returning SHRINK_EMPTY (which is a difference).
 > 
-> The change maintains the overall fairness and non-starvation properties
-> by cycling through targets proportionally.  Existing behavior is
-> preserved for targets without a priority assigned, ensuring backward
-> compatibility.  This provides system administrators with finer control
-> over how DAMON’s memory optimizations are distributed, making the
-> subsystem more adaptable to varied use cases and performance
-> requirements.
+>>
+>>     2) When the folio is split via split_folio() later, it's removed from
+>>        the local list while holding the split queue lock. At this time,
+>>        this lock protects the local list, not the split queue.
+>>
+>>     3) To handle the race condition with a third-party freeing or 
+>> migrating
+>>        the preceding folio, we must ensure there's always one safe (with
+>>        raised refcount) folio before by delaying its folio_put(). More
+>>        details can be found in commit e66f3185fa04 ("mm/thp: fix deferred
+>>        split queue not partially_mapped"). It's rather tricky.
+>>
+>> We can use the folio_batch infrastructure to handle this clearly. In this
+>> case, ->split_queue_len will be consistent with the real number of folios
+>> in the split queue. If list_empty(&folio->_deferred_list) returns false,
+>> it's clear the folio must be in its split queue (not in a local list
+>> anymore).
+>>
+>> In the future, we will reparent LRU folios during memcg offline to
+>> eliminate dying memory cgroups, which requires reparenting the split 
+>> queue
+>> to its parent first. So this patch prepares for using
+>> folio_split_queue_lock_irqsave() as the memcg may change then.
+>>
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+>> ---
+>>   mm/huge_memory.c | 88 +++++++++++++++++++++++-------------------------
+>>   1 file changed, 42 insertions(+), 46 deletions(-)
+>>
+>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>> index d34516a22f5bb..ab16da21c94e0 100644
+>> --- a/mm/huge_memory.c
+>> +++ b/mm/huge_memory.c
+>> @@ -3760,21 +3760,22 @@ static int __folio_split(struct folio *folio, 
+>> unsigned int new_order,
+>>           struct lruvec *lruvec;
+>>           int expected_refs;
+>> -        if (folio_order(folio) > 1 &&
+>> -            !list_empty(&folio->_deferred_list)) {
+>> -            ds_queue->split_queue_len--;
+>> +        if (folio_order(folio) > 1) {
+>> +            if (!list_empty(&folio->_deferred_list)) {
+>> +                ds_queue->split_queue_len--;
+>> +                /*
+>> +                 * Reinitialize page_deferred_list after removing the
+>> +                 * page from the split_queue, otherwise a subsequent
+>> +                 * split will see list corruption when checking the
+>> +                 * page_deferred_list.
+>> +                 */
+>> +                list_del_init(&folio->_deferred_list);
+>> +            }
+>>               if (folio_test_partially_mapped(folio)) {
+>>                   folio_clear_partially_mapped(folio);
+>>                   mod_mthp_stat(folio_order(folio),
+>>                             MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
+>>               }
+>> -            /*
+>> -             * Reinitialize page_deferred_list after removing the
+>> -             * page from the split_queue, otherwise a subsequent
+>> -             * split will see list corruption when checking the
+>> -             * page_deferred_list.
+>> -             */
+>> -            list_del_init(&folio->_deferred_list);
+>>           }
 > 
-> Signed-off-by: Enze Li <lienze@kylinos.cn>
-> ---
->  include/linux/damon.h |  2 +
->  mm/damon/core.c       | 91 ++++++++++++++++++++++++++++++++++++++++++-
->  2 files changed, 91 insertions(+), 2 deletions(-)
+> BTW I am not sure about holding the split_queue_lock before freezing the 
+> refcount (comment above the freeze):
 > 
-> diff --git a/include/linux/damon.h b/include/linux/damon.h
-> index f13664c62ddd..a6d3ce186fdc 100644
-> --- a/include/linux/damon.h
-> +++ b/include/linux/damon.h
-> @@ -102,6 +102,8 @@ struct damon_target {
->  	unsigned int nr_regions;
->  	struct list_head regions_list;
->  	struct list_head list;
-> +	unsigned int priority;
-> +	struct list_head pr_list;
->  };
->  
->  /**
-> diff --git a/mm/damon/core.c b/mm/damon/core.c
-> index 106ee8b0f2d5..c336914d03cc 100644
-> --- a/mm/damon/core.c
-> +++ b/mm/damon/core.c
-> @@ -15,6 +15,7 @@
->  #include <linux/slab.h>
->  #include <linux/string.h>
->  #include <linux/string_choices.h>
-> +#include <linux/list_sort.h>
->  
->  #define CREATE_TRACE_POINTS
->  #include <trace/events/damon.h>
-> @@ -28,6 +29,11 @@ static DEFINE_MUTEX(damon_lock);
->  static int nr_running_ctxs;
->  static bool running_exclusive_ctxs;
->  
-> +static LIST_HEAD(priority_list);
-> +static bool init_priority_list;
-> +static int priority_level;
-> +static int priority_tick;
+> freezing should properly sync against the folio_try_get(): one of them 
+> would fail.
+> 
+> So not sure if that is still required. But I recall something nasty 
+> regarding that :)
 
-What would happen if you have 2 kdamond threads running at the same time? 
-I guess that you will end up a data race in priority_tick.
+I'm not sure either, need some investigation.
 
-> +
->  static DEFINE_MUTEX(damon_ops_lock);
->  static struct damon_operations damon_registered_ops[NR_DAMON_OPS];
->  
-> @@ -474,6 +480,7 @@ struct damon_target *damon_new_target(void)
->  	t->nr_regions = 0;
->  	INIT_LIST_HEAD(&t->regions_list);
->  	INIT_LIST_HEAD(&t->list);
-> +	t->priority = 0;
->  
->  	return t;
->  }
-> @@ -2154,6 +2161,72 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
->  	quota->min_score = score;
->  }
->  
-> +static int damon_priority_head(void)
-> +{
-> +	struct damon_target *t = list_first_entry_or_null(&priority_list,
-> +						struct damon_target, pr_list);
+> 
+> 
+>>           split_queue_unlock(ds_queue);
+>>           if (mapping) {
+>> @@ -4173,40 +4174,48 @@ static unsigned long 
+>> deferred_split_scan(struct shrinker *shrink,
+>>       struct pglist_data *pgdata = NODE_DATA(sc->nid);
+>>       struct deferred_split *ds_queue = &pgdata->deferred_split_queue;
+>>       unsigned long flags;
+>> -    LIST_HEAD(list);
+>> -    struct folio *folio, *next, *prev = NULL;
+>> -    int split = 0, removed = 0;
+>> +    struct folio *folio, *next;
+>> +    int split = 0, i;
+>> +    struct folio_batch fbatch;
+>> +    bool done;
+> 
+> Is "done" really required? Can't we just use sc->nr_to_scan tos ee if 
+> there is work remaining to be done so we retry?
 
-Don't we need to check for a null pointer here?
+I think you are right, will do in the next version.
 
-> +
-> +	return t->priority;
-> +}
-> +
-> +static int damon_priority_find_next(void)
-> +{
-> +	struct damon_target *t;
-> +
-> +	list_for_each_entry(t, &priority_list, pr_list)
-> +		if (priority_level > t->priority) {
-> +			priority_level = t->priority;
-> +			return t->priority;
-> +		}
-> +	return damon_priority_head();
-> +}
-> +
-> +static bool kdamond_targets_priority_enabled(struct damon_ctx *c)
-> +{
-> +	struct damon_target *t;
-> +
-> +	damon_for_each_target(t, c)
-> +		if (t->priority > 0)
-> +			return true;
-> +	return false;
-> +}
-> +
-> +static int damon_priority_cmp(void *priv, const struct list_head *a,
-> +			      const struct list_head *b)
-> +{
-> +	struct damon_target *ta = container_of(a, struct damon_target, pr_list);
-> +	struct damon_target *tb = container_of(b, struct damon_target, pr_list);
-> +
-> +	if (ta->priority < tb->priority)
-> +		return 1;
-> +	else
-> +		return 0;
-> +}
-> +
-> +static bool kdamond_targets_priority_init(struct damon_ctx *c)
-> +{
-> +	struct damon_target *t;
-> +
-> +	damon_for_each_target(t, c)
-> +		list_add_tail(&t->pr_list, &priority_list);
-> +
-> +	list_for_each_entry(t, &priority_list, pr_list)
-> +		pr_debug("damon target priority %d %p\n", t->priority, t->pid);
-> +
-> +	list_sort(NULL, &priority_list, damon_priority_cmp);
-> +
-> +	list_for_each_entry(t, &priority_list, pr_list)
-> +		pr_debug("damon target priority after sort %d %p\n",
-> +			 t->priority, t->pid);
-> +
-> +	init_priority_list = true;
-> +	priority_level = damon_priority_head();
-> +	priority_tick = priority_level;
-> +	pr_debug("damon target priority init level=%d tick=%d\n",
-> +		 priority_level, priority_tick);
-> +	return true;
-> +}
-> +
->  static void kdamond_apply_schemes(struct damon_ctx *c)
->  {
->  	struct damon_target *t;
-> @@ -2162,6 +2235,7 @@ static void kdamond_apply_schemes(struct damon_ctx *c)
->  	unsigned long sample_interval = c->attrs.sample_interval ?
->  		c->attrs.sample_interval : 1;
->  	bool has_schemes_to_apply = false;
-> +	bool priority_enabled = false;
->  
->  	damon_for_each_scheme(s, c) {
->  		if (c->passed_sample_intervals < s->next_apply_sis)
-> @@ -2178,10 +2252,23 @@ static void kdamond_apply_schemes(struct damon_ctx *c)
->  	if (!has_schemes_to_apply)
->  		return;
->  
-> +	priority_enabled = kdamond_targets_priority_enabled(c);
-> +	if (priority_enabled && !init_priority_list)
-> +		kdamond_targets_priority_init(c);
+> 
+>>   #ifdef CONFIG_MEMCG
+>>       if (sc->memcg)
+>>           ds_queue = &sc->memcg->deferred_split_queue;
+>>   #endif
+>> +    folio_batch_init(&fbatch);
+>> +retry:
+>> +    done = true;
+>>       spin_lock_irqsave(&ds_queue->split_queue_lock, flags);
+>>       /* Take pin on all head pages to avoid freeing them under us */
+>>       list_for_each_entry_safe(folio, next, &ds_queue->split_queue,
+>>                               _deferred_list) {
+>>           if (folio_try_get(folio)) {
+>> -            list_move(&folio->_deferred_list, &list);
+>> -        } else {
+>> +            folio_batch_add(&fbatch, folio);
+>> +        } else if (folio_test_partially_mapped(folio)) {
+>>               /* We lost race with folio_put() */
+>> -            if (folio_test_partially_mapped(folio)) {
+>> -                folio_clear_partially_mapped(folio);
+>> -                mod_mthp_stat(folio_order(folio),
+>> -                          MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
+>> -            }
+>> -            list_del_init(&folio->_deferred_list);
+>> -            ds_queue->split_queue_len--;
+>> +            folio_clear_partially_mapped(folio);
+>> +            mod_mthp_stat(folio_order(folio),
+>> +                      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
+>>           }
+>> +        list_del_init(&folio->_deferred_list);
+>> +        ds_queue->split_queue_len--;
+>>           if (!--sc->nr_to_scan)
+>>               break;
+>> +        if (folio_batch_space(&fbatch) == 0) {
+> 
+> Nit: if (!folio_batch_space(&fbatch)) {
 
-What happens if you later add a new target? priority_list is already
-initialized, which means that list sorting will not take place and it will 
-break your logic.
+OK, will do.
 
-> +
->  	mutex_lock(&c->walk_control_lock);
->  	damon_for_each_target(t, c) {
-> -		damon_for_each_region_safe(r, next_r, t)
-> -			damon_do_apply_schemes(c, t, r);
-> +		if (priority_enabled == false ||
-> +		    (priority_enabled == true && t->priority == priority_level &&
-> +		     priority_tick-- > 0)) {
-> +			if (priority_enabled == true && priority_tick <= 0) {
-> +				priority_level = damon_priority_find_next();
-> +				priority_tick = priority_level;
-> +			}
-> +			pr_debug("tick() %d(%d)\n", priority_level, priority_tick);
-> +			damon_for_each_region_safe(r, next_r, t)
-> +				damon_do_apply_schemes(c, t, r);
-> +		}
->  	}
->  
->  	damon_for_each_scheme(s, c) {
+Thanks,
+Qi
 
--- 
-Asier Gutierrez
-Huawei
+> 
+> 
 
 
