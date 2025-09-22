@@ -4,90 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74C39CA100F
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 21:34:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5881FCAC592
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 21:36:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BAFC08E0008; Mon, 22 Sep 2025 17:34:12 -0400 (EDT)
+	id B3EA98E0010; Mon, 22 Sep 2025 17:36:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B85F88E0001; Mon, 22 Sep 2025 17:34:12 -0400 (EDT)
+	id AEED28E0001; Mon, 22 Sep 2025 17:36:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC2A48E0008; Mon, 22 Sep 2025 17:34:12 -0400 (EDT)
+	id A04798E0010; Mon, 22 Sep 2025 17:36:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A6E48E0001
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 17:34:12 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id F1C3C160248
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 21:34:11 +0000 (UTC)
-X-FDA: 83918189502.11.A5F9A52
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 33489180003
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 21:34:10 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=lD0HyuGA;
-	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8FA8C8E0001
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 17:36:30 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 38BDD139D88
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 21:36:30 +0000 (UTC)
+X-FDA: 83918195340.10.B4FDDA4
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 2085820005
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 21:36:26 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="YCZr8/+X"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758576850;
+	s=arc-20220608; t=1758576988;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fkzqONRP1JWZh8Hm3tY3m8ycHxfaI2bDYd+djXSxcQk=;
-	b=yETZBWo0PgoMwJZBurUFEQpODZ8vIjlV8gInB57n/dQpMa/GbGsyZvlr+Vd2kJLsMIQe1S
-	X5VcDkSz8cen0r3o9WjI6Ka3lPe7fRhXv8l+x4x1aCv6R1HhHt+ssJi19Zh/WWYQoiG97D
-	cweZ8BfsF8aR9HR4lluOHZR5mTg+kT4=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=lD0HyuGA;
-	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758576850; a=rsa-sha256;
+	bh=3pT42O3ALLdCjivxUa4nPm2rNjCok+zUCphhUS9RBqQ=;
+	b=XRZmMLdVvCXb1WFWcR2XlJRe0qp4kywxz6WrK5LKW9aEnQNX4+2LWHYipdAHpwZqIm68Yi
+	n9xvQK/SE/TGTSpJGsX1W4Ul5buvIbmuTXTvvdSrbg1NE+zQgveDZKhLs9boU00ieHODfk
+	P7LpOm8ijr51miNEMwUEr2oUMVRf3mE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758576988; a=rsa-sha256;
 	cv=none;
-	b=RJeFh17N3IeRPK57V9qPewW9wqgmaSVunn6UbzLqAPAEANdHCipn6tAuUEDhOfRjBO3NXL
-	6JUeEDI+PUidjoSC5JdJoHCiJnEQuVvjIkJhUKjd+WNY1qtVXXWBRq+GpjxnqykKJPZels
-	XMHzF27PXAwTUhihG488j0lwfpLARVo=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B058A403B5;
-	Mon, 22 Sep 2025 21:34:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B04BC4CEF0;
-	Mon, 22 Sep 2025 21:34:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1758576848;
-	bh=eJ5VtR70eO4BCYnBNWbIL5V8RzRuhAmch8nOpB/p+w4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=lD0HyuGAiwZT045i1LqSR7lGe85sOzhllEa5mANNVoQBlmcrWKihlL7PNnRI5ITQm
-	 ayJAf7l5W/qL0Mm0zBsJHAHIQZuwhkR4wlQd9eerZM5G/5d0MWVyS+Uddor24T/2My
-	 hOoSI+h02LD/otpDWssYUFft6+oM/zRtvMMahYv0=
-Date: Mon, 22 Sep 2025 14:34:07 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>,
- Baoquan He <bhe@redhat.com>, Changyuan Lyu <changyuanl@google.com>, Chris
- Li <chrisl@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>,
- Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 3/4] kho: add support for preserving vmalloc
- allocations
-Message-Id: <20250922143407.93e171f8b7c09eb21159a33e@linux-foundation.org>
-In-Reply-To: <20250922131948.GX1391379@nvidia.com>
-References: <20250921054458.4043761-1-rppt@kernel.org>
-	<20250921054458.4043761-4-rppt@kernel.org>
-	<20250922131948.GX1391379@nvidia.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 33489180003
-X-Stat-Signature: ohrngkwbfww35ygdxexun74rdpasgt57
+	b=ptEvlxFwUZ1Ahtmu4SLYgph2ieZ8jPlgKxYWNY5AtpVCu601RQ+O8tBCUcwCbeQ9cruXPZ
+	LNDi3+Xym5RoeBWDgoxbxMwQNeydrMOnuc/3btEj4OKu97R6x5BweuqYiKUs6WIqGY7IW5
+	0WDby5x9VIlOnxRnDdGQl7kVwbSb7HM=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="YCZr8/+X";
+	spf=none (imf13.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=none
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=3pT42O3ALLdCjivxUa4nPm2rNjCok+zUCphhUS9RBqQ=; b=YCZr8/+X7HAem/+HkyusW68aIw
+	GThVTee7I05x7xYEZ+8T+9h92OBw0gw2qrO4B7izQTysTBYiO7My9gCoLFM82EcdKPX2LlVHZq66P
+	o8X7muui3AprZT4818FRc8VXpDvzPmnG+CGbq8qywbjUYaiL7lz4S7VAB6RVNDDdCBoGq2bUFjLZB
+	ywyHkKeE4Uzfu2kMKYSWo2DXAyCLpUMG9jHOqNZM42Hbde8hK47YsBKEtar21GCZVhw++V5DZ7TU8
+	n2lDtit5ChDWlhKxVHIe71XLonsKstOHsFTAE2YbmtlZk+PmLT1ZESug+wpMVEnDj3S6v42QvUAdg
+	2pCJJS2Q==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1v0oCm-0000000FUDX-1i4C;
+	Mon, 22 Sep 2025 21:36:16 +0000
+Date: Mon, 22 Sep 2025 22:36:16 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: I Viswanath <viswanathiyyappan@gmail.com>
+Cc: vbabka@suse.cz, akpm@linux-foundation.org, cl@gentwo.org,
+	rientjes@google.com, roman.gushchin@linux.dev, harry.yoo@oracle.com,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	skhan@linuxfoundation.org, david.hunter.linux@gmail.com,
+	linux-kernel-mentees@lists.linux.dev,
+	syzbot+94d20db923b9f51be0df@syzkaller.appspotmail.com
+Subject: Re: [RFC PATCH] mm/slab: Add size validation in kmalloc_array_*
+ functions
+Message-ID: <aNHBUJxAs-vomIF3@casper.infradead.org>
+References: <20250922170357.148588-1-viswanathiyyappan@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250922170357.148588-1-viswanathiyyappan@gmail.com>
+X-Stat-Signature: wya51g35hx77jfjtua76eo3g9opf4ywm
+X-Rspamd-Queue-Id: 2085820005
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1758576850-265408
-X-HE-Meta: U2FsdGVkX18Ry7q9lke7y47Z2pCrLdbmlR7MlKZnnctbwznQZoie5JyMhMjCO2InsHeNRir97rZnr+t0+icm1nMPr/8SzlxrDWSn3dNcFjgbpdM+/V4e3OsH9gWeAY6W6nanyOQzcbBQiDLkpPR+kctZBxD2NdG1F+U9gsCOnHmLXUFewnqJNjEiSjws/PvoFmiY3S/MkIk/ymvQbanyrJRbyXjNbAXwyqZI0ISsAHGfQruC/sP6LuKvzZgJXkQbMoH8Y2fY7AtBV6kTwrM8UG/VQHj3TvQR5FsJBA1oPZHfNWcZpTeT3ifAX5ZVX8jnQOSPc3HgrKT1jl5vmOyUiMa2ebCZZ1C4ScDX0/cIakYNXZo940KoOJX0hC/OJ3CN5EgSvQXKxDA9ZJ+NjDFq8nrqF0JwyuD9uQ4EvJJCtzIqVnCTauFdLKhCDW6BhHFldjrMqtMmFx3VEih6oicdXnDOmwyzVLzFB3o92UbPCRS5xM4I6OhK//OvEe55+eT9MtGId5pn80a8s3in33mpECwLVduXE5dkrgRtkclVewUqFmIjdZ2L8aOrywdvII7nhQzRPe8RnxcZRLDsoRNbbnn/+TnXTqd63kA6hLXedfd+fMAPA2kMmFRIU5aqBJ5z2pdUh9YiJZqIJxsCxOUvGLX9mJfms0hfnRi59L1I5wZR4A+U2EDI5lJjvYzZoeztlkGQxRiSZ+z87Tk0VdlZPAXm5JERdX0jQNsmBs0uaa+K1OeTj0LZppeXqxnfOa2+ysb/svwT8CcEVqKMs3ND9BJaKzTe/KLHMsZNQSTlJG6jI8FMupl65P4liqo62g0nst7/w0NnZKDx0rUESlNSWItr+A92iqJwCaJs8x/U+XvZytBhaL90XG+vuZD92P9CqIrBEs/Ugj+Zd9O+6CGXp00gCOKVE3EZPjaScQLPLs8VcjYA/jCpc9QyTLIeRHvB3cwueyXzpUEbHQYSu8X
- Jyq9uASw
- rQQpOUjZKSMcvrYxxTAzTspPM9JCCwUa5EbcuscxcWV5K0r3T7cIcuzNRdA2Ac3kZCO9f/BrbQo3pOyCemyBEACf6S2dGbIo3FYOhJAa11huFhSavrhfkM7QPgb40fk/B0jEvFK8M2SpzCXSJT1B8rHLhlcwib1QURmxT7FdinnyswfguC4n5bRf+9tme99lz8H0K1ifRzWDt+2ND+DGXYnEEpBNUJ7rQuXxZ3YLiOYAv7cbonugye5djeZaAEs7VcFyz2i49hEywIsf1ZePJX5j4yg==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1758576986-357911
+X-HE-Meta: U2FsdGVkX1/pIHLxZofHeu8gHrHhmrTlztoJfwAjWDcboNG5/T4ENiHUB/MxGcXw3WTTyv955ded6l1J7G32OSqfGl3jBJFV8uWtPZJWksKRIDxiTQMTvFkgkD7O9wA0OdqERYPFzL7pPtY3wSDk0nDm8mUfCNc+7+LI6eaMncN1CVrks8aEEY5auLoRjLiJdp5E5AxE7f4LOXgMGPgNxIIRH8J0EszABgc/4x8onwxaI1kjF/s4EqJBpTHDn07iopIdKccRGk+2vVnmVX/b6USH5fPZzYEmQ9NzSpVBnofSR2adsuJbSPw+KV8/zB3e4XlVTJn/B4N6gxGXVStZXgsajRp3jA3Q4TVefbyXaPCbjWKel3BZ1OjF9ImceQ6TGWKfSvOTxtt32FTzdArs/FbeSox37S7/DPnT/TtdT6RTd7lSLeGlQ7qlRmYflOLRx6UpMQwENA5qBu/qrEotszz1UhcPxvL70OcpBU+C4QY0JH14RS2TBry9+CnMU37hnth6rIz+Qf40fUoWKNv7E4xIi31NpAtdD0Jdycy9ILjJKenIj6biBX3kpawU34BgRppuRDZwSYjdU0x+r4noqkiKLJAY0SgGl94JpiCepIQNgFn6NM8O8R1gFFPPka/4ewnox9gyQl9P4s78SRuktzJ2tAukub0SgXT3jhToN6xw+kQ+7AeuKbz3RN18YGW3CqP879yYGiac5JKy9M0dijtE+2XblkRAAH+4UA2Qy42uee64yZ+g4x0u3qPmaf7HSndKKnskx6BAsc0KlIhV1dzv3pNJ5dfZkoDarzErwcEgIfEF0JFVBdLjVS95PwDuS6UX3rVXuC9a0B3ppt09Pdt86hFIhG0IWQOKxzN2v/v/W71QY96b65/dRmjDtScODuMP8SX3m5REXCYQIafRONZ5KdGstQyVJIH7HlkeqbTinjjRfKREj6kHCklGT7/+S/J+fRDQp8ZRK/rYLhP
+ /++lNm7+
+ k/1llKo2cjd6g8Hf8i1qT2BWM8JlkgY7WWsc5SnF+KNN9a8y9jUdezHF2xw7sg3hV5nE52wFKgDPoG9Z0M0iMfXgfyELMYLILrGacFzRLMDYIfHM6swGNoGOySCHJUkU6Hu7unDtxcv8NbWn/mgorI1JJqnRJs4FcgA+37Jzx3ZRWsW5HVj7+FmFEVrRfEySOJ/7KGZyl29DmdEYPMNFcM90vews+0W9mwLMZZNACkfHI4onOXImRJ0NM7ifNBONc/EyummwlFG1ydTjM058Bcvq43n89EacYXGXADTksHP8f6eGLbL587+H1Zt351/LOpO44
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,26 +92,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 22 Sep 2025 10:19:48 -0300 Jason Gunthorpe <jgg@nvidia.com> wrote:
+On Mon, Sep 22, 2025 at 10:33:57PM +0530, I Viswanath wrote:
+> This occurs when the size argument fits into a u32 but is too large 
+> to allocate, i.e., when it's between KMALLOC_MAX_SIZE + 1 
+> and UINT_MAX (both limits included)
 
-> > +static void kho_vmalloc_free_chunks(struct kho_vmalloc *kho_vmalloc)
-> > +{
-> > +	struct kho_vmalloc_chunk *chunk = KHOSER_LOAD_PTR(kho_vmalloc->first);
-> > +
-> > +	while (chunk) {
-> > +		struct kho_vmalloc_chunk *tmp = chunk;
-> > +
-> > +		kho_vmalloc_unpreserve_chunk(chunk);
-> > +
-> > +		chunk = KHOSER_LOAD_PTR(chunk->hdr.next);
-> > +		kfree(tmp);
-> 
-> Shouldn't this be free_page()?
+Is it really a good idea to support 2^28 vclocks?  Surely there's a
+limit that makes sense to the PTP driver.
 
-Or vfree()?
-
-Not sure why this code works - I'll suspend the series from linux-next
-for now.
-
-
+Beyond that, this should probably be using kvmalloc_array rather than
+kcalloc_array().
 
