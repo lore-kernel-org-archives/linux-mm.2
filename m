@@ -4,115 +4,207 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86803CA100F
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 19:30:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA82CCAC5AA
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 20:14:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7FE168E000A; Mon, 22 Sep 2025 15:30:23 -0400 (EDT)
+	id C34DE8E000A; Mon, 22 Sep 2025 16:14:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D6058E0001; Mon, 22 Sep 2025 15:30:23 -0400 (EDT)
+	id C0C618E0001; Mon, 22 Sep 2025 16:14:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 713168E000A; Mon, 22 Sep 2025 15:30:23 -0400 (EDT)
+	id AFADC8E000A; Mon, 22 Sep 2025 16:14:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6250D8E0001
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 15:30:23 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CAE9FA6194
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 19:30:22 +0000 (UTC)
-X-FDA: 83917877484.11.B75AFD4
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 7B3B3100014
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 19:30:20 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=paul-moore.com header.s=google header.b=f6rCTjjr;
-	spf=pass (imf05.hostedemail.com: domain of paul@paul-moore.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=paul@paul-moore.com;
-	dmarc=pass (policy=none) header.from=paul-moore.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758569420;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 94DC38E0001
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 16:14:01 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2A499B73C7
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 20:14:01 +0000 (UTC)
+X-FDA: 83917987482.20.F755948
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011060.outbound.protection.outlook.com [52.101.52.60])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 44E9D80009
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 20:13:57 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="Jt3AB43/";
+	spf=pass (imf02.hostedemail.com: domain of ziy@nvidia.com designates 52.101.52.60 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1758572038;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cvdWOntfA4A2sQxeMILs61f9nOsNLek7agJHp14BnZw=;
-	b=YtA0izIXdDXS2N8T6IyE3onwpzfWZqa8HqFzNM/2U1spZyt9Nqx4sa9wprOhNv3EoaYspj
-	oEt8lJbSbHpg+RJteKxI78v2CsNZeNgQzV2kID00CvTzGqYDTwRHcrqX+5qgrBu+DcGNmi
-	rjQxvWr7ZE8hEoyRPnEhnNojcWWZDqU=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=paul-moore.com header.s=google header.b=f6rCTjjr;
-	spf=pass (imf05.hostedemail.com: domain of paul@paul-moore.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=paul@paul-moore.com;
-	dmarc=pass (policy=none) header.from=paul-moore.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758569420; a=rsa-sha256;
-	cv=none;
-	b=26tyca5ymp/NiG/VesTXJDCGpDGWXA4UP35yZ1w2HhAP2hv+cSsYvEVtija6e81YKdIzIf
-	geLL+Ub/I1atPe19T/hPFnoaDesWNhqMgUhtt6uq/HiHtbwh2q2cugjVtMdMxc4PrXeutq
-	4NFFsSj1ecVjDtcsdCTLr/z4sD7B5gk=
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-61feb87fe26so6110073a12.1
-        for <linux-mm@kvack.org>; Mon, 22 Sep 2025 12:30:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1758569419; x=1759174219; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cvdWOntfA4A2sQxeMILs61f9nOsNLek7agJHp14BnZw=;
-        b=f6rCTjjr8ZDR4B7Vheej9XcxfNvIuzqokiVw4TA9ItWT/IVLaQ3H7kvWXWS226nWMS
-         rnzEcWNfjIOUxT9mTn1Sbl4lLpZJMxMR9EOeKL8V0SJLb3CGLgk4XgQHDNO2HaYUoL/R
-         V1ZeUlbo9YwEQr06GWWPhn2dsUs19OQ9nSUsDF7mRPmBj2OtGv+zyXkVwOSWfNAn89sA
-         SIOveR7J6XQCtY1EAGsARGRmwf/0LXbjpdKWi/wz3sr82XcBOw4LLRv4GM17dtFG8hy+
-         WwqdK6silVVC4/u+A0K+qAkHQRwMUmxBCzdUJix3lM8cE+morqLp/nUyfJ5R2V1fCxrI
-         tJZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758569419; x=1759174219;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cvdWOntfA4A2sQxeMILs61f9nOsNLek7agJHp14BnZw=;
-        b=V9xzj3Lseofa4ltHCjs5tMxdy1XlI/nCEJ0a/W0SxPPMQd6SuUp26pZFbI53njUFru
-         PS889tupPndKj3NGonpUkI/zZrdkmDwCTlhf+Z5E+u5Zq/oXOEmWSEnzsOXeQWH30nIe
-         pGg1n0sJab7oQXtJm8UTsf++0UPHAEEBAjmCCtwEtw8dBhp1vCdVUR6A4GiUdrbvBYyO
-         tgBAk9KeSW6fQj0g0IrZRp4tazwQlCvmkgI2+y+c9g/e+zC+SqDMN/B/5S2DfJIkZ8Wt
-         RNMoWmgRnJcqs7x5pCHN7tv28+Pz34avDJiB8imSUz3vaTMiO/wKSZEaZWy1WLYeEP4D
-         5hfg==
-X-Forwarded-Encrypted: i=1; AJvYcCUfon1sWiw0zo3QjPqTwt3z7Y0lpnmWj3ZVz1OOOlFKJbwDGe0U46R2S5rzI5gTTNpEaPQmgfvdTg==@kvack.org
-X-Gm-Message-State: AOJu0Ywte4Ut6kEodgLIxTpEeORKCAbYnkto67niJlgLqATaIutKe5yf
-	8wq8sjgOp4HB8wjCmWG53k+FH6B+eVRDUCyG9pTbKqPBBp8l9ULrtRvBoHSlXMqe+/JM1Ba+nrJ
-	0wHcy7O9Is7Kqj9Qy0XtB1OhRgKWQyO7+3uBD8aNH
-X-Gm-Gg: ASbGnctCh/vs/3G8piaXGs6Zp8AfPJIlhtSTxflGItYD1ctKVM/Pa4izU5EmAavc8pv
-	uW3jZ/vh18oLqiMH+8UhIbJmTuaBixL2Z2LbhYolpLRjH1IhI6NSfGLErqx+jQ5WboCXDpiqcxI
-	VSAwoVYMWjBGAF99p0i8pDG4zoiH5UGZ4dtfxJ21DPb6167FuUs1kTL6WG7n1eV3Pp3O2sHGJRl
-	cdu87g=
-X-Google-Smtp-Source: AGHT+IEiBDSh+6Em5c+U4LmqyUVPf4J6sg4KEYshuli5NnK7h8jqw5N22Ih+dxfjqxwcfWjX8MHUInxueYuNHXzg6tw=
-X-Received: by 2002:a05:6402:5201:b0:633:7b1e:9aa3 with SMTP id
- 4fb4d7f45d1cf-6337b1ea02fmr4563672a12.34.1758569418235; Mon, 22 Sep 2025
- 12:30:18 -0700 (PDT)
-MIME-Version: 1.0
-References: <20250918020434.1612137-1-tweek@google.com> <CAHC9VhSbWJ-8tj5BxSTxznGO8zraKRSE31a+tqdfMHB53ef-MQ@mail.gmail.com>
- <CAEjxPJ5GidA9oT_fbKRe_nH1J3mER0ggM-dBW=Nuo765JDuQKg@mail.gmail.com>
-In-Reply-To: <CAEjxPJ5GidA9oT_fbKRe_nH1J3mER0ggM-dBW=Nuo765JDuQKg@mail.gmail.com>
-From: Paul Moore <paul@paul-moore.com>
-Date: Mon, 22 Sep 2025 15:30:04 -0400
-X-Gm-Features: AS18NWA9HrHmx3YP496OglRtxh1AdycMtaqbc5LSlhUEUhu_PxKTgISVOm7uHlk
-Message-ID: <CAHC9VhS2TU2GWgfUOHerbfjyxb5QZMSMqLdQirjSdkUohR7opg@mail.gmail.com>
-Subject: Re: [PATCH v3] memfd,selinux: call security_inode_init_security_anon
-To: Stephen Smalley <stephen.smalley.work@gmail.com>
-Cc: =?UTF-8?Q?Thi=C3=A9baud_Weksteen?= <tweek@google.com>, 
-	Hugh Dickins <hughd@google.com>, James Morris <jmorris@namei.org>, 
-	Jeff Vander Stoep <jeffv@google.com>, Nick Kralevich <nnk@google.com>, Jeff Xu <jeffxu@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Isaac Manjarres <isaacmanjarres@google.com>, 
-	linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	selinux@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
+	bh=Qil7eAMHq91jMhq+dsuahGcHPT2WhjrqXtU33f9pM+w=;
+	b=XDlqV3y2OiIKq5J8ZB6RGsV8XmFLHqaqeq1qYlNcp5PrlkEfAcGVZhKMGhelyuDDgqMChf
+	ssPJL9VDYUZ/FIU9DYRStYU+j7IcgDuKKuiQ6Ukx00QMVidwtSkl8QafutX7yq1u+aPlXh
+	q2PNH+WmXSNiLGgpJ5KvwEOda01TGrk=
+ARC-Authentication-Results: i=2;
+	imf02.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="Jt3AB43/";
+	spf=pass (imf02.hostedemail.com: domain of ziy@nvidia.com designates 52.101.52.60 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1758572038; a=rsa-sha256;
+	cv=pass;
+	b=j/9wo89Gc2/czKz3403/oSwmoR+Iu5PtKridakwyhvWU7nFsQjy0Wq4PsQ8Jse3vl0f2y2
+	juu7Il8gBLgmPmepdxXJ9VKtg6Gyod+dzddPfwuN4Y+0VN3LXvAX6UJgpiaJeX7hDPb8iR
+	kW4Q8/PxbcNb2DdL9VrFwNcUSPOldqs=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YDBkeobDDS4YTo28gon47vmmvfKWClF/tt65QwcEzhn8QXsumciDG93e6hgNtD0BoHUkY6aG6zHJC1uQSiSSLTqGtOmhu9D4IWJktOXcYFFB1EwkGvrHSib+Chw+IiioVYeeK+Tn9uk1TGC3FHB1UMjNR5wgrksH7BCEWrUWX7YM/fZYRdViMxzPyKe5DV6WdoqAlLRNf1Opa7KlbdbwSO0VFzGcUSuEAvbHzZTLoPfqczRWJWUH8wvp6VUrRI6jRhZXR3dg7YNvPItoinU3e5i7+s4+Xq2JAqVpTYYIEDQ+04JNzR81h4V9S7x55nY/UdJmDT171JSGwurfs8ZjUQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Qil7eAMHq91jMhq+dsuahGcHPT2WhjrqXtU33f9pM+w=;
+ b=NZ+sxWOttmWk8p36ClaOIB0OaQ9JIGJYnw6RBxZxltk8toZLE+1UEqBlQt023sIOzgC4KvFfLv72IXrmltQ+SFA41k+XKFzsl8BiFDC67GG/dym1vgEyHSF29v510HFMQ4FEf1TP+riwH5jBmoyUsPA1AriTtH+HsRwMpCtnENfMMlLcK1Kc5KjeJsPBVkwC4OyWRMTe7/qw8+r17ENDYj8Gx7BWAhaOE8MC9LpAAZ96dQ/pNpsHXb2/MyLORe00v1jF9vYsh4Vt5EddhS/K/H7FOWt0tvksjDEAoBA5k0Z4fG79P/NeC9/pJSKol/nQm9/rLiT1QWn9+v29MPodjw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Qil7eAMHq91jMhq+dsuahGcHPT2WhjrqXtU33f9pM+w=;
+ b=Jt3AB43//pWfti7dy9qVS21ynzOlGpuWALbNx3dMYqXiLu5xOcenj5n4sY3TN0nqHzYFAunRB3+c3GxpGZeVHhKlJ+wkyHDghWFG7d80UAjzze8NkxqpP7yFhIAExsOKAhU+0q90ogASeZuCkAHuJG7nUmjIAqVQWqs6+1iVNI4+ky/EjjivqOK9+dUVJeeqqXCPBxM1L+v8lfRk9UXCO1ZO0wbMo/jyIjGN2sATTZpvnqQoQbJ9Vf06wf6jirCv0safCpPzUQSKDBcy/3T8KJ4HgGPK6PPTQXFE651cZLZ1XgE9H5+hUlCUIRtMqeLk58UiBPy9g8cR3OoirUDsvQ==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ CY8PR12MB7657.namprd12.prod.outlook.com (2603:10b6:930:9d::14) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9137.19; Mon, 22 Sep 2025 20:13:53 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a%6]) with mapi id 15.20.9137.018; Mon, 22 Sep 2025
+ 20:13:53 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Balbir Singh <balbirs@nvidia.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, damon@lists.linux.dev,
+ dri-devel@lists.freedesktop.org, SeongJae Park <sj@kernel.org>,
+ David Hildenbrand <david@redhat.com>, Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>,
+ Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, Oscar Salvador <osalvador@suse.de>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lyude Paul <lyude@redhat.com>,
+ Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Ralph Campbell <rcampbell@nvidia.com>,
+ =?utf-8?q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Francois Dugast <francois.dugast@intel.com>
+Subject: Re: [v6 03/15] mm/rmap: extend rmap and migration support
+ device-private entries
+Date: Mon, 22 Sep 2025 16:13:47 -0400
+X-Mailer: MailMate (2.0r6272)
+Message-ID: <D4440A30-118E-40DF-99BD-6F58B708E597@nvidia.com>
+In-Reply-To: <20250916122128.2098535-4-balbirs@nvidia.com>
+References: <20250916122128.2098535-1-balbirs@nvidia.com>
+ <20250916122128.2098535-4-balbirs@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 7B3B3100014
-X-Stat-Signature: sounugd396iq7kyeoqmgj8wr6ja68iyf
+X-ClientProxiedBy: BN9PR03CA0612.namprd03.prod.outlook.com
+ (2603:10b6:408:106::17) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|CY8PR12MB7657:EE_
+X-MS-Office365-Filtering-Correlation-Id: 50796d16-ca4d-4bbc-080a-08ddfa148d44
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?NG9ROFlSSEZMeUNmUXUwellrd0RYSEVkZ20zd3lmSTkvR0R1VGRoRTM1VjR0?=
+ =?utf-8?B?V1lwcElVeDUvdEZ2Nm1EWU9leHJIZDYrUitXTzJueWpyTS9jVVhNSzEvaUxW?=
+ =?utf-8?B?ZmNGNVFPOHp1VzZLR3N2a2M3eUMvSVJTc25FaEw3WTlkSTgyYStabTdmNHdG?=
+ =?utf-8?B?eksvcVBRSFNLUE85SkpjaUxEZHRXZzV4MHlLSVBlemNyRHZEQWpzOUxLMklm?=
+ =?utf-8?B?bXVnb28wLzBFNG9EamxyMmJLSll3UHU5b3JQbTdJR25xc1U0SlQ0VDVFcG5Q?=
+ =?utf-8?B?bDM1T1orVmx0SjVkTXJJMVpxSzBwY0lGK3ExOUcwbjJ0RUovemtBcGhVZXhk?=
+ =?utf-8?B?ejIyc1lqZi9UU3hoMlM0d2lHTGVBQ1RSSHZhUDAvWHRxOVBlUTVBR0dvQXlR?=
+ =?utf-8?B?QmlTNG1JcXh3UVExUGd2cDkwY3V5Rzg5ZjNGcGRENzRKRXNRT1FZRW1xYUMz?=
+ =?utf-8?B?YkNKdjJpUFFLVFZRaW1oSUd4cGcrQXNDeU9GYkFGUTVDWGw5V1dPTUxUVmVX?=
+ =?utf-8?B?d0dIcVNCNmtONUpoeE9Bb0JkSEprZ3BualQ5eVpiUlRVMjVBMnNiZ21yVTNr?=
+ =?utf-8?B?dHI3QlJMTk5uU0w4dVk2YWRsaWxKR0F5S210bEt2Z25mQXBxTXgxMXZFTjEz?=
+ =?utf-8?B?b2JiZ2xFVHpady92NnFXQ2p1Q3ZET0dlM241aUxnN0wvanluS0NRNVF4aHA2?=
+ =?utf-8?B?ZE9tblVQbjhEZEV2NlBMeXJuT0hZTVdGajlIZ2h6eFlna3VtVlZKZjB6WVpz?=
+ =?utf-8?B?Q01JSHhVRmlxREtqaTM2NHRCRitCVnJzNlZBL1lOQTdybFJ0K0hnMkpMcjQy?=
+ =?utf-8?B?c2VZeW1nc3o3YVErWGU5OHRkZzNLTVpwUXFkNGgxek0zUHFWdVhVM2JMUWx6?=
+ =?utf-8?B?djltUWdWdFVyS3pzYmp6SjE0aXUzTmFGYWdNZUV1QmpwcUphazY2SGNyY3A5?=
+ =?utf-8?B?a2Y3c29PTkhWT0psZkphVFZaUmFTQ0srbmVqSjV0bk1BcWpCTFR3N1lZREth?=
+ =?utf-8?B?OWlQNkxhTWxnYWVCcWcxYUl5VDhQeXJwNGRRaWF3TjV6STVmYkpzNTk0OStS?=
+ =?utf-8?B?N2pQWS9tQzJZdFdhSERiYnI2VkVVa2pneWtjZWF0ZkEzWXVnNm5jUkFyaUpi?=
+ =?utf-8?B?QnhVMWxhVi8zaGZuTnBRdy80cm95UDM5dXJOU0dJdWppTmZreVlOQTBURkFM?=
+ =?utf-8?B?MXg0emRVMFMzc1FmejZuQm1FZE93OEhodjVrYkl0OXpybkNDa3V6ejZsa0h0?=
+ =?utf-8?B?M3ZIamJJVEtOSDZOOXdhSERUM0RJdm11VDFEVzgvTEQvU1prYkw5WUNVZ1BF?=
+ =?utf-8?B?NHZlNXptVUdqNkRKcmd1WTQ0d1NQMCtuVjVmUHR3TDB0cmJJR1FuRGxXV21J?=
+ =?utf-8?B?RDhtaVJ4ckI1cnNDV293VG8weC9kZTlLSDd0QjRlaEgxa3FXc1RDMTBzaGt5?=
+ =?utf-8?B?ZWthVjFLTWxzcEdCcm9zRVdtRVIyZ3lvUEQyWFBnZUFDZkFQd3BiSzJrRzlO?=
+ =?utf-8?B?bXZDTXZCZG5kQ1VwYTFlaGQ5cGtVangvZmtiRU12SElaajNWTlMxR1RuaFBK?=
+ =?utf-8?B?aEFVeDd5RlFsRWNyTzd4Z050NUppTm9aSlVNMGtnNGUreGkyVzJFNk5PZEpR?=
+ =?utf-8?B?SjFNaFNTcWIyZWdDaEdQNmw5bTlJWEM4OVY4Z05rR0o2STFMWGN4OEFKSUtM?=
+ =?utf-8?B?ak4vRk9HSkE0ZkRkSnlCRkV2czZ0TVl5Y2JiQVdGL2tsWEVXNElIOEdBVkFX?=
+ =?utf-8?B?R0N3ZHVNREp6OTdUUHJwWHliYWI1OVFFdnpNVysreHQ1bU9TQzJMOVRhb0Fy?=
+ =?utf-8?B?K1ZjWkNXYVBwR1dVaXB1TkJ2dGJsQ1ZXNFBnd1d5V3ZNYlkvTGhQMlVNUldk?=
+ =?utf-8?B?bVhpMVM1SjhqVTUxV01uMUhWQzZXT0xLc2F2VndyRE05TU5zRW5DWVYvRSt1?=
+ =?utf-8?Q?OtQ5Nmv5r9E=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZjUvbC9FTWpPRE1rWGE5SE1XUHFFZzI1a2VhYkNlWWVNN2ZBSUU0UUQxTEl4?=
+ =?utf-8?B?MkNjdGUxMXNpMUk0S3Rqak52TkhxTi94UUZPUThxcWZEeStvK3h2ems5cS8r?=
+ =?utf-8?B?UlFtajJBTFBjTHdjaGlMRE5HaUNJMnFjcU00K3EvbVFnQWxJSERuTTdQcUha?=
+ =?utf-8?B?b2x0Y1JBU3FHRnRpLy9CS3daMFlaSlpmYk5vN2hPb2FOYkxPMlFiRThPeW5G?=
+ =?utf-8?B?eDJXL2NJeGI3SFJGR3d2dzM4enlYYWttdjY5NzgzUkdCMVM1Rkh3bDBLY0lG?=
+ =?utf-8?B?U0U3cE9BRTJjVFNLcmtzdElaZmdheUQ0T2xRQ1pIa2hHaGV4TCtGZG1nK251?=
+ =?utf-8?B?NDF5QVpVazFGYWxSS25ZNDloa2hWZk9ydWwwMWt2aDF2YVd6ditDdlJmaVl4?=
+ =?utf-8?B?QVhxYmwxME5adXF5M0ZZdnB6dm4xclRkazBBTkVkb0RpL0YxMUJETWlnWElz?=
+ =?utf-8?B?UWtGWXl1QVR2QmdkVVY1VEtKVWpodVlVY3VneWJGL1BCT01WbGpZcWYwNjQr?=
+ =?utf-8?B?aWFIZ1h6eldUYlFMbHZKd2lqMWVLaHp2R3YycmFublZ5ZGVLWmxaRkNjOTVD?=
+ =?utf-8?B?eTluNkZtdldESUM0VUptYzZ1NSttdjVIK1dETmdCYlZZcGZPU3Y1clkxVitw?=
+ =?utf-8?B?UDMrUFFjeGhvY09xSllzVTU5QllyYVRJVnBUTTN3Y2VVREpidGl3N25ydFdE?=
+ =?utf-8?B?RzFsZnBxa2RQNkxLcFppMnF2Sks3YzZpWEFsUnBJUFZDdER1YTF0VTYxbElJ?=
+ =?utf-8?B?dUZWK1ljRzRjVUpFbEtPbWl4OUZlVWZDZnNGQ0VyMFdPTjBXTWtUZTJXdVk1?=
+ =?utf-8?B?Ym9BMEw1OW52OWdQeFJKL0poZDNTSXhhMlpNQTA4SklRaFRaanR5U29GaDRR?=
+ =?utf-8?B?aGwwUi9YY3lRWWtQekFEZjRWR2RNYS83cjRXY2dwWU43c2xpNGxLSDBScmtZ?=
+ =?utf-8?B?Wkh3QXlSUXBuTk1yN1ZlSGFvOVVueWhtTlVZUjNJOGtZQ3VqeGc4alpOb2Jq?=
+ =?utf-8?B?T1FoTVhlR3B0VWszYnZJWUNiblBMbUJPaFRVQ285bFJVRnlzdGl4MElTSHh0?=
+ =?utf-8?B?OUwyMEtNVGYwVDVudk51dlAwcEgxS2phbUMwa1k4aDdVNVQ1b080SXhkb2VV?=
+ =?utf-8?B?bjhuTUdua0oyaTJHSnd2NUZVQ0xNTm41bFJBT01TcGRtakZRRi9RTW11a25Z?=
+ =?utf-8?B?dWx5TGpLdG90ckUrNWNZckdUZnpFbmhkcmd1MXozTTFJVFovWnY4MTZYN2Rm?=
+ =?utf-8?B?MnJrVCt1TWk2anlnaVNyc0ZISDlIZEZZbEx1NVFuUmhaUUJ2SnI0MGN6RFF2?=
+ =?utf-8?B?WGpnWlpOL3lDdTQwelRkRmlvWDRESmYzQVR3bkRHNDY3c1I5c21UdTVuQTNF?=
+ =?utf-8?B?N2ZlWm1laXRLOFJ2eDB3MUc5VldEZm55NisyYzhPQ3hveGhaM3pENVpCTDZG?=
+ =?utf-8?B?ak8xN0txNHM1dHhIcWQwaVBKdlVlR1k1Ykh4Um92dURGL0FDNUJKeW9ZUEt0?=
+ =?utf-8?B?Z2pEWTYzT2VHTjJLYk9xVStyUTRiUlY5M09lT25CdUZpZDMyZFYraks4VlJm?=
+ =?utf-8?B?NUw3UUZpb1RDMkpUcXhFTlROenhZRDNSNHQ0aFJyVVdZai9YN2t6a0FiRHhM?=
+ =?utf-8?B?clAzdDhBSHpBNjlQRXNRZ3BBQi9WTml6cUQ0UFovcjVhWDFpSmgxRk50VXBV?=
+ =?utf-8?B?T3RNU2R0UDRkbGFDU2xoTnh5RlNOT0xlNVI0bjB0TWx5cWRwNmlZc1RxeTBp?=
+ =?utf-8?B?YlZYcUc4ZnE0L1JPeXpGd2JqcWh0cmIvZFg5SE0zYkYzbUt3SzVTRmUrMDFm?=
+ =?utf-8?B?aUtTcnNnTk9seXJJSTRGK2g4YzFTMnF2KzFQMzNtTjBack5wb0d1VE1QcE9v?=
+ =?utf-8?B?VFhpYzRKMG9HeTZ1a3U5R1ZMNExSbDdLVjV5eUk4RkZTS21veHQ5ekxvWnpj?=
+ =?utf-8?B?VGd5TVdxck9PNFJHQS9ybFFRNkpoOGo2eTY4T014LzdVYTB4L2Z2R09kdm5v?=
+ =?utf-8?B?d1YyZEc3T3IwbGJiZ25FaXZ2NERUZnNDSmkycHgvbVB2NGVMUmkxSkZUcTNn?=
+ =?utf-8?B?a1VZMEE3VXBPWmczWFdTOHV4eFZHTEtMTGp2aXlCd1ZFYVpndWFRV0dZUHBp?=
+ =?utf-8?Q?bfhOuI1rw4ThGPMMARSivrZc4?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 50796d16-ca4d-4bbc-080a-08ddfa148d44
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2025 20:13:53.4439
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /39lH557pGqSZ/T1//eKwiEGgNToSGV1/aSSEiXor77EPyLEkiZjGAvkxKEtNee6
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7657
+X-Rspamd-Queue-Id: 44E9D80009
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1758569420-521010
-X-HE-Meta: U2FsdGVkX1+h240ns5KeS05loqFOZVGUIlBb8n8gCV5VJrhq2fy1B3DMnBqpuC09xUqvqicTqiKT1xq/8URUxdB2ndcxNhiWcY/7mIOZvw0z3+8+RqbrgdsgY0JcN5EivYEu4PzJUpUQZmzilBVBN6ZMmcNbmSGMZLV9ilZP7/aUhu6oXgduc0sJY3VnT5uHxCg/PwjpX9PvJsd9jwfgb6L/Uenp73czKLfZ7YLhW5MOX6VmUVdmFIz0DGfNsCyPvz2oqm5zaFw2pY/9mKC4GwL9B7Na0SHJect5TawDDXacMYxpZS/PoS1V7tA/UmyYIhJV0a9LKoJ33l2Js7iUbKEPPtvXmTWwn5KNmicDqLSsJ8FhCaZdIpYAZdorH3kVntMWo9A3OAKf2rzQ3Wt+uNIMYCBdq6Hvf+lggvcdyBbUgqeFf2Z9ydEhGWyw2etF4Vs0UOVZSPztKsOJgVK4QL/G/LfyIiP+0D4JBrudWrasXou/0L17bzCY8wGjTpXhTTS2vKvwydjDIFAYEL8TlMH9h6HKotD1HE0kXgdFY881TgYOR0teNz3Gd54xIVw6e94bJLSIRnWQ55GlJu5mA+VtWyyreY1Qr/SNxcGhsqkMPyG312pVQqDJ6mFefUovnmkT0B59FhwQ6prftAd7+jqpQzpKyqmeGM8SXZZBZ9or5GyjvZQ3tZ2pUPZRI6jpROG0a7xHSZv/1Bcgd1lvM6iYkXDgfQ1vWZWU0YaAHdBU6yStBmh9gtJeRi6EsW/kGUeUPCzevpTRXeFHxmQ28LnF9CDSuibI1vTSt7cJbrAmjTEQGQ7h06v9yP0f7KzQL2uan7lfi2ejHNybKT0UvcnbiSQCQV6rBeUyO4FSTRv9Ye3wBHIf/C6trHXOir/A7ygkABbWQkVTgDqQUixSwr/RggJJmacaRcWCZ8Yxnvi9ws0Z6v7JkY9whDAUAd0KiwUZ2S9f/dydJ/7B83i
- LfY3zPQP
- EfzDWAYqDvTA5GmHGZAsOJMzFbgnXX7KP9eS6/NcHLd0IE2WAzNYVrT6SeelOO2QfLcrgaia78UOaMRw44FA5V7UtqV7JBCOajJvMEGV0v6XEQ3IZlJvSFKTj30o0OLf/Nx/0TBKzUu1fcQ6YuybPFUCNOxbyeK+TlW7e0IVc1jgUIhyCIUIVs0DZhOz4YNdQUQLVHRJa/mGQbkLkevXfrOrBhj2URX0I4oVBVHKZtlO5MEcT3BH/j+bG/jVdme3mFsHBuQ5qEyafNQBQL5+rgq99pTHK/yt4pm0Lku3wwTLJCQUrICGpZablfRYk/UpZ1/7QpRTS2ch4QM0jxcz8+if40I8cG8roulmdGRtXbVyJ0BOnExmWqCe+MgzYAHCbJNdJ4xQ0X6jBPin1ck123Z9CXr1ZSnMvP25G4zVMVpj5dhs=
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 8dcxgkc66ogehea194e5i88nkiuksx8r
+X-HE-Tag: 1758572037-248215
+X-HE-Meta: U2FsdGVkX1+CBtDzRD0NWooVPaKNkHROR0ADEpRCVv/moq0acryYLpq0VBGRP267n2mIdNkB3sy6+ZgrAn74wAMUbEcXOx79QZq8Wkb2gf6W4ggjylMapUqgDUQr7eL7XCGuqROlMnzTHsFlftEp2vAkySPWhHcBduS7gd37WB4X9+3YCuaja8ubrNuX+3jwC7Sz8h6GBx416bVJ38vRX8VDUv9SNm2+JhnRpdRoQSADbZ3+srlv7d+//cq//+nk+bgBhBoWUdS8e2lO6hT2Ul77Xn4phJrcWOH17OAG9qipv1Prut5xyDajrbup/gWofm0Zx9VJptikTp4p/65CrO2SeFV7r1WLBMfyzdqzX2hWappgozp5iMa1nvxiRDW0CwxyeshNg0nD93xLMVKYgL5Z61n4VXN6x8N/wV52+EHwfDQ2QT/NZhyZ98GUnZrKNg86TZDER60YbrNaTYxeXSFnjfdjA73/vBszazQF+/Hz7TOMuTxY4B3e9rMCHU2lrELRO0xf2kXuPIkI3FbfQphyfXyqu7bnoJH0r436raB7bv5fVWQa489aiDpGt59Ved8T/6hHMewcjVG6PX7ARR4B5KZzZblnCL+DuFrokGxhuVyBLk9rJuFDxTUXRT/h7M6dbsIlI5xABZhQqYjI2MsYLlZKeEUjcAG8yY563qQyIBt3dtri4YWUlrs/999/lnBvPuRs+3dkjY3iSYbcPv0FSHelvPEXS6yDu4Iv82ddyoyhdcBmmgvGpwddCAKwd1igDH5U955WiHYb5BK6ZPZb/S0MXhILvEsghCohIlVhfp/czHQy+FQ7pXcH0VILjz3AYqbiX7+JrW5tSk5h57mK7O21HOdR1nZ3k1uEIgm+UU1ixd7IuKvF96PpaOIMKCOBl7CZJW72Sw5yP6a40zd1zbWpGYIWsXCuE8P3t7oe06lHPajB+fMVg1UdYIWH3pmXTVKT9YXMNamP0Rk
+ k9+2Dyot
+ OtCNLbh89qNokDnFO6zlN3IfwzpfRyTYNqiuFzvuvmo9ALyU5Gm0umFL4HN/EkvemF8SN4OrQ5UhpuZDJ5dfVIQaI8jLvq44f46ScBkHEKHpGoVwInq9gR23rSPXoS9vp5Mnw3p5L/IWFRtWya1d4/TWaVo+z9rSbVd9/PRQ5OLcqDDuk0wR4RAiCFp2/a/1mZkrbv2WyPr6Zpoyg8xbQp3iMyywtWc2Nf1WxIq+JdIhgN21KepDwaL68SkICQ42Y8AL55NOSb4ySCmqv4N+Lw97xlgRotY89dLhl01WFynU9s+D931OryvIbAuVMj7JP4AQBl92is02RrAFRirCNo4ReMRracUZOnyB8qO2VEG5KNgw69NfUEghyEMzvVsC02qYkp8e0hKoel+zzQ9+W3aFVmG2KcIAH6Kl9mH2dTdqpoVmcVVKP667V4Fp3jXcq3u704bGib7sDXUnWy/VT0Dsx+rpOfKVRHxuBLVUjLxtOSX/Kwz0pUqTBsftvgPjrJJ41Xx96esWk9EyWkJPHFaVnR8MJXeDEEGnha+yQ844TPwxrDm02Y8Wm9ZmZ39g0CaHnWsQTKlFV9vUvqVO1zFS41u3bLJejgzmABYWb5FUWqG5EYBHBQ/1Z+WQPrNxKJAA7M0Mua4ybl2k5xpgwSWgdPGXsMvSUcoCwbNn1750EHOhKufH2PSiKhgRK8pV5KgM6y0QQTZOXTdao61V12DfVRQa7wx0gE3bdo1utq1dRzWtflQo1s8ou9O0xZSr66RXz1Xkr8umcGWddYW1Dye3BvM9vxarhEMtHzMjXw7CLlAErb5p8dxR0FafqCm30wTAlXiqQU4Ust/oFhSnAQQiFadPZCORK0ba3Iwafvv3fUQFvGGvXEGK6nw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,30 +213,253 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 22, 2025 at 9:12=E2=80=AFAM Stephen Smalley
-<stephen.smalley.work@gmail.com> wrote:
+On 16 Sep 2025, at 8:21, Balbir Singh wrote:
+
+> Add device-private THP support to reverse mapping infrastructure, enablin=
+g
+> proper handling during migration and walk operations.
 >
-> When would you recommend that I re-apply the corresponding userspace
-> patch to reserve this policy capability number for memfd_class?
-> After it is moved to selinux/dev? Understand that it isn't truly
-> reserved until it lands in a kernel.org kernel but would prefer to
-> reapply it sooner than that since there may be other policy capability
-> requests queueing up (e.g. bpf token) that should be done relative to
-> it. Can always revert it again if necessary, at least until another
-> userspace release is made (not sure on timeline for that).
+> The key changes are:
+> - add_migration_pmd()/remove_migration_pmd(): Handle device-private
+>   entries during folio migration and splitting
+> - page_vma_mapped_walk(): Recognize device-private THP entries during
+>   VMA traversal operations
+>
+> This change supports folio splitting and migration operations on
+> device-private entries.
+>
+> Signed-off-by: Balbir Singh <balbirs@nvidia.com>
+> Reviewed-by: SeongJae Park <sj@kernel.org>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Zi Yan <ziy@nvidia.com>
+> Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+> Cc: Rakie Kim <rakie.kim@sk.com>
+> Cc: Byungchul Park <byungchul@sk.com>
+> Cc: Gregory Price <gourry@gourry.net>
+> Cc: Ying Huang <ying.huang@linux.alibaba.com>
+> Cc: Alistair Popple <apopple@nvidia.com>
+> Cc: Oscar Salvador <osalvador@suse.de>
+> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+> Cc: Nico Pache <npache@redhat.com>
+> Cc: Ryan Roberts <ryan.roberts@arm.com>
+> Cc: Dev Jain <dev.jain@arm.com>
+> Cc: Barry Song <baohua@kernel.org>
+> Cc: Lyude Paul <lyude@redhat.com>
+> Cc: Danilo Krummrich <dakr@kernel.org>
+> Cc: David Airlie <airlied@gmail.com>
+> Cc: Simona Vetter <simona@ffwll.ch>
+> Cc: Ralph Campbell <rcampbell@nvidia.com>
+> Cc: Mika Penttil=C3=A4 <mpenttil@redhat.com>
+> Cc: Matthew Brost <matthew.brost@intel.com>
+> Cc: Francois Dugast <francois.dugast@intel.com>
+> ---
+>  mm/damon/ops-common.c | 20 +++++++++++++++++---
+>  mm/huge_memory.c      | 16 +++++++++++++++-
+>  mm/page_idle.c        |  7 +++++--
+>  mm/page_vma_mapped.c  |  7 +++++++
+>  mm/rmap.c             | 21 +++++++++++++++++----
+>  5 files changed, 61 insertions(+), 10 deletions(-)
+>
+> diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
+> index 998c5180a603..eda4de553611 100644
+> --- a/mm/damon/ops-common.c
+> +++ b/mm/damon/ops-common.c
+> @@ -75,12 +75,24 @@ void damon_ptep_mkold(pte_t *pte, struct vm_area_stru=
+ct *vma, unsigned long addr
+>  void damon_pmdp_mkold(pmd_t *pmd, struct vm_area_struct *vma, unsigned l=
+ong addr)
+>  {
+>  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> -	struct folio *folio =3D damon_get_folio(pmd_pfn(pmdp_get(pmd)));
+> +	pmd_t pmdval =3D pmdp_get(pmd);
+> +	struct folio *folio;
+> +	bool young =3D false;
+> +	unsigned long pfn;
+> +
+> +	if (likely(pmd_present(pmdval)))
+> +		pfn =3D pmd_pfn(pmdval);
+> +	else
+> +		pfn =3D swp_offset_pfn(pmd_to_swp_entry(pmdval));
+>
+> +	folio =3D damon_get_folio(pfn);
+>  	if (!folio)
+>  		return;
+>
+> -	if (pmdp_clear_young_notify(vma, addr, pmd))
+> +	if (likely(pmd_present(pmdval)))
+> +		young |=3D pmdp_clear_young_notify(vma, addr, pmd);
+> +	young |=3D mmu_notifier_clear_young(vma->vm_mm, addr, addr + PAGE_SIZE)=
+;
 
-When it comes to API issues like this, my standard answer is "tagged
-release from Linus" as it is the safest option, but you know that
-already.
+This should be HPAGE_PMD_SIZE (it is guarded in CONFIG_TRANSPARENT_HUGEPAGE=
+,
+so HPAGE_PMD_SIZE will not trigger a build bug like the one below).
 
-The fuzzier answer is that unless something crazy happens, I'm likely
-going to move the patches, in order, from selinux/dev-staging into
-selinux/dev when the merge window closes.  This means that any
-policycap API additions for the next cycle are going to start with the
-memfd_class policycap, so it *should* be fairly safe to merge the
-userspace bits now, I just wouldn't do a userspace release with that
-API change until we see a tagged release from Linus.
+> +	if (young)
+>  		folio_set_young(folio);
+>
+>  	folio_set_idle(folio);
+> @@ -203,7 +215,9 @@ static bool damon_folio_young_one(struct folio *folio=
+,
+>  				mmu_notifier_test_young(vma->vm_mm, addr);
+>  		} else {
+>  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> -			*accessed =3D pmd_young(pmdp_get(pvmw.pmd)) ||
+> +			pmd_t pmd =3D pmdp_get(pvmw.pmd);
+> +
+> +			*accessed =3D (pmd_present(pmd) && pmd_young(pmd)) ||
+>  				!folio_test_idle(folio) ||
+>  				mmu_notifier_test_young(vma->vm_mm, addr);
+>  #else
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index a5e4c2aef191..78166db72f4d 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -4637,7 +4637,10 @@ int set_pmd_migration_entry(struct page_vma_mapped=
+_walk *pvmw,
+>  		return 0;
+>
+>  	flush_cache_range(vma, address, address + HPAGE_PMD_SIZE);
+> -	pmdval =3D pmdp_invalidate(vma, address, pvmw->pmd);
+> +	if (unlikely(!pmd_present(*pvmw->pmd)))
+> +		pmdval =3D pmdp_huge_get_and_clear(vma->vm_mm, address, pvmw->pmd);
+> +	else
+> +		pmdval =3D pmdp_invalidate(vma, address, pvmw->pmd);
+>
+>  	/* See folio_try_share_anon_rmap_pmd(): invalidate PMD first. */
+>  	anon_exclusive =3D folio_test_anon(folio) && PageAnonExclusive(page);
+> @@ -4687,6 +4690,17 @@ void remove_migration_pmd(struct page_vma_mapped_w=
+alk *pvmw, struct page *new)
+>  	entry =3D pmd_to_swp_entry(*pvmw->pmd);
+>  	folio_get(folio);
+>  	pmde =3D folio_mk_pmd(folio, READ_ONCE(vma->vm_page_prot));
+> +
+> +	if (folio_is_device_private(folio)) {
+> +		if (pmd_write(pmde))
+> +			entry =3D make_writable_device_private_entry(
+> +							page_to_pfn(new));
+> +		else
+> +			entry =3D make_readable_device_private_entry(
+> +							page_to_pfn(new));
+> +		pmde =3D swp_entry_to_pmd(entry);
+> +	}
+> +
+>  	if (pmd_swp_soft_dirty(*pvmw->pmd))
+>  		pmde =3D pmd_mksoft_dirty(pmde);
+>  	if (is_writable_migration_entry(entry))
+> diff --git a/mm/page_idle.c b/mm/page_idle.c
+> index a82b340dc204..3bf0fbe05cc2 100644
+> --- a/mm/page_idle.c
+> +++ b/mm/page_idle.c
+> @@ -71,8 +71,11 @@ static bool page_idle_clear_pte_refs_one(struct folio =
+*folio,
+>  				referenced |=3D ptep_test_and_clear_young(vma, addr, pvmw.pte);
+>  			referenced |=3D mmu_notifier_clear_young(vma->vm_mm, addr, addr + PAG=
+E_SIZE);
+>  		} else if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)) {
+> -			if (pmdp_clear_young_notify(vma, addr, pvmw.pmd))
+> -				referenced =3D true;
+> +			pmd_t pmdval =3D pmdp_get(pvmw.pmd);
+> +
+> +			if (likely(pmd_present(pmdval)))
+> +				referenced |=3D pmdp_clear_young_notify(vma, addr, pvmw.pmd);
+> +			referenced |=3D mmu_notifier_clear_young(vma->vm_mm, addr, addr + PAG=
+E_SIZE);
 
---=20
-paul-moore.com
+This should be HPAGE_PMD_SIZE (or PMD_SIZE, since the code is not compiled
+out when CONFIG_TRANSPARENT_HUGEPAGE is not selected and HPAGE_PMD_SIZE
+will cause a build bug when CONFIG_PGTABLE_HAS_HUGE_LEAVES is not selected)=
+.
+
+>  		} else {
+>  			/* unexpected pmd-mapped page? */
+>  			WARN_ON_ONCE(1);
+> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+> index e981a1a292d2..159953c590cc 100644
+> --- a/mm/page_vma_mapped.c
+> +++ b/mm/page_vma_mapped.c
+> @@ -277,6 +277,13 @@ bool page_vma_mapped_walk(struct page_vma_mapped_wal=
+k *pvmw)
+>  			 * cannot return prematurely, while zap_huge_pmd() has
+>  			 * cleared *pmd but not decremented compound_mapcount().
+>  			 */
+> +			swp_entry_t entry =3D pmd_to_swp_entry(pmde);
+> +
+> +			if (is_device_private_entry(entry)) {
+> +				pvmw->ptl =3D pmd_lock(mm, pvmw->pmd);
+> +				return true;
+> +			}
+> +
+>  			if ((pvmw->flags & PVMW_SYNC) &&
+>  			    thp_vma_suitable_order(vma, pvmw->address,
+>  						   PMD_ORDER) &&
+> diff --git a/mm/rmap.c b/mm/rmap.c
+> index 9a2aabfaea6f..080fc4048431 100644
+> --- a/mm/rmap.c
+> +++ b/mm/rmap.c
+> @@ -1063,9 +1063,11 @@ static int page_vma_mkclean_one(struct page_vma_ma=
+pped_walk *pvmw)
+>  		} else {
+>  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>  			pmd_t *pmd =3D pvmw->pmd;
+> -			pmd_t entry;
+> +			pmd_t entry =3D pmdp_get(pmd);
+>
+> -			if (!pmd_dirty(*pmd) && !pmd_write(*pmd))
+
+It is better to add a similar comment as the one above !pte_present().
+Something like:
+PFN swap PMDs, such as ...
+
+
+> +			if (!pmd_present(entry))
+> +				continue;
+> +			if (!pmd_dirty(entry) && !pmd_write(entry))
+>  				continue;
+>
+>  			flush_cache_range(vma, address,
+> @@ -2330,6 +2332,11 @@ static bool try_to_migrate_one(struct folio *folio=
+, struct vm_area_struct *vma,
+>  	while (page_vma_mapped_walk(&pvmw)) {
+>  		/* PMD-mapped THP migration entry */
+>  		if (!pvmw.pte) {
+> +#ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
+> +			unsigned long pfn;
+> +			pmd_t pmdval;
+> +#endif
+> +
+
+This looks ugly. IIRC, we now can put variable definition in the middle.
+Maybe for this case, these two can be moved to the below ifdef region.
+
+>  			if (flags & TTU_SPLIT_HUGE_PMD) {
+>  				split_huge_pmd_locked(vma, pvmw.address,
+>  						      pvmw.pmd, true);
+> @@ -2338,8 +2345,14 @@ static bool try_to_migrate_one(struct folio *folio=
+, struct vm_area_struct *vma,
+>  				break;
+>  			}
+>  #ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
+> -			subpage =3D folio_page(folio,
+> -				pmd_pfn(*pvmw.pmd) - folio_pfn(folio));
+> +			pmdval =3D pmdp_get(pvmw.pmd);
+> +			if (likely(pmd_present(pmdval)))
+> +				pfn =3D pmd_pfn(pmdval);
+> +			else
+> +				pfn =3D swp_offset_pfn(pmd_to_swp_entry(pmdval));
+> +
+> +			subpage =3D folio_page(folio, pfn - folio_pfn(folio));
+> +
+>  			VM_BUG_ON_FOLIO(folio_test_hugetlb(folio) ||
+>  					!folio_test_pmd_mappable(folio), folio);
+>
+> --=20
+> 2.50.1
+
+Otherwise, LGTM. Acked-by: Zi Yan <ziy@nvidia.com>
+
+Best Regards,
+Yan, Zi
 
