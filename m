@@ -4,99 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2993CCA100F
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 21:29:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74C39CA100F
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 21:34:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C2048E0010; Mon, 22 Sep 2025 17:29:19 -0400 (EDT)
+	id BAFC08E0008; Mon, 22 Sep 2025 17:34:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 671D48E0001; Mon, 22 Sep 2025 17:29:19 -0400 (EDT)
+	id B85F88E0001; Mon, 22 Sep 2025 17:34:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5AE7A8E0010; Mon, 22 Sep 2025 17:29:19 -0400 (EDT)
+	id AC2A48E0008; Mon, 22 Sep 2025 17:34:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 47A4A8E0001
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 17:29:19 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EBE471A0253
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 21:29:18 +0000 (UTC)
-X-FDA: 83918177196.06.EF9936B
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 745C2A0006
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 21:29:16 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=ZWqd3e1c;
-	spf=pass (imf15.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9A6E48E0001
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 17:34:12 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id F1C3C160248
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 21:34:11 +0000 (UTC)
+X-FDA: 83918189502.11.A5F9A52
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 33489180003
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 21:34:10 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=lD0HyuGA;
+	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758576557;
+	s=arc-20220608; t=1758576850;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=s4YVHEevhU5usN+Lp213UcR591msZTm8EaYqPL9udNs=;
-	b=aPoLAa3ewGGOfguzArqKbacq4JzJOEetEifmkhjSenLJ1mmeZ/DYnmJ/abTJXYfjlIOL8X
-	7H55Vml4v8OSDObDoVvqgHy6GT86zQKBkQU/VL3+JS7EaCQOp+XHs+xUio7fJlImS+juMU
-	JLAQEmkYO9YziqXGvoB8+kas2ebW3VU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758576557; a=rsa-sha256;
-	cv=none;
-	b=R6pr7fauwCW00nDCNDyqnTbX9Y2iOuX8ceeY1uRkuvHwiCvsSBBCM1eQ5O8PORcH7ZDgaa
-	TddIXP/wkjNhQc/WnGJDBfW2N5v06nGOhk8ImaH2dGzwRUa5FJHUBGqMdWlFM5KhaDuanF
-	IHLEN+U5BEt+aZREiBtmgTWy26n444M=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=fkzqONRP1JWZh8Hm3tY3m8ycHxfaI2bDYd+djXSxcQk=;
+	b=yETZBWo0PgoMwJZBurUFEQpODZ8vIjlV8gInB57n/dQpMa/GbGsyZvlr+Vd2kJLsMIQe1S
+	X5VcDkSz8cen0r3o9WjI6Ka3lPe7fRhXv8l+x4x1aCv6R1HhHt+ssJi19Zh/WWYQoiG97D
+	cweZ8BfsF8aR9HR4lluOHZR5mTg+kT4=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=ZWqd3e1c;
-	spf=pass (imf15.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758576556; x=1790112556;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=iyd13/Fud5LSon0kal2rF7LlOuf0qFyvWUpHWjYkR0s=;
-  b=ZWqd3e1czX26ttru2l1R0Yc0fBwv3JMIIs5qKd5zEZcz067QA6LkY13x
-   URRKBP2bBpvV8IcfVo81Gvv0Fnau/ioIw3/JeYE5r8+ahHPSwqrmLWRmf
-   yegop8rKQZKOPVx606xskXgoxcbjN0isHQx4PiPTHqceDShwdbfuF8DNK
-   oy10vYd1/E3Byh6/uSdAdCAlE0PTxbQNxUH0irLes88dhPMi6Z2DenFyo
-   aYcCCQph/qW6qIDz/8A3yUF917ZS4q6CTvbElOgCNRKVHR68/K6axyxCu
-   o+jNCaiIl54DrBEZM81MQM8qqGGdDFfkiHp2y+c0ZhYWmkM+v8LntVBno
-   w==;
-X-CSE-ConnectionGUID: fEJQf8XiSU2ISEf6EnFKHA==
-X-CSE-MsgGUID: BmmWI835RI6yHd931Uik4Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11561"; a="71524011"
-X-IronPort-AV: E=Sophos;i="6.18,286,1751266800"; 
-   d="scan'208";a="71524011"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2025 14:29:15 -0700
-X-CSE-ConnectionGUID: /K0XKW2zTJ2hyap/hLEESw==
-X-CSE-MsgGUID: TJwjT1FhSCGSvetm5HCcDg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,286,1751266800"; 
-   d="scan'208";a="176188631"
-Received: from lkp-server02.sh.intel.com (HELO 84c55410ccf6) ([10.239.97.151])
-  by fmviesa007.fm.intel.com with ESMTP; 22 Sep 2025 14:29:13 -0700
-Received: from kbuild by 84c55410ccf6 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1v0o5u-0002Uf-1E;
-	Mon, 22 Sep 2025 21:29:10 +0000
-Date: Tue, 23 Sep 2025 05:28:57 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Pratyush Yadav <pratyush@kernel.org>
-Subject: [linux-next:master 11234/11516] include/linux/pfn.h:12:43: error:
- passing argument 1 of 'kho_restore_page' makes pointer from integer without
- a cast
-Message-ID: <202509230547.orS14pYx-lkp@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 745C2A0006
-X-Stat-Signature: wngykbg6cqtmdhisqxb84ixra1cbg9cq
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=lD0HyuGA;
+	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758576850; a=rsa-sha256;
+	cv=none;
+	b=RJeFh17N3IeRPK57V9qPewW9wqgmaSVunn6UbzLqAPAEANdHCipn6tAuUEDhOfRjBO3NXL
+	6JUeEDI+PUidjoSC5JdJoHCiJnEQuVvjIkJhUKjd+WNY1qtVXXWBRq+GpjxnqykKJPZels
+	XMHzF27PXAwTUhihG488j0lwfpLARVo=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id B058A403B5;
+	Mon, 22 Sep 2025 21:34:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B04BC4CEF0;
+	Mon, 22 Sep 2025 21:34:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1758576848;
+	bh=eJ5VtR70eO4BCYnBNWbIL5V8RzRuhAmch8nOpB/p+w4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=lD0HyuGAiwZT045i1LqSR7lGe85sOzhllEa5mANNVoQBlmcrWKihlL7PNnRI5ITQm
+	 ayJAf7l5W/qL0Mm0zBsJHAHIQZuwhkR4wlQd9eerZM5G/5d0MWVyS+Uddor24T/2My
+	 hOoSI+h02LD/otpDWssYUFft6+oM/zRtvMMahYv0=
+Date: Mon, 22 Sep 2025 14:34:07 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>,
+ Baoquan He <bhe@redhat.com>, Changyuan Lyu <changyuanl@google.com>, Chris
+ Li <chrisl@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 3/4] kho: add support for preserving vmalloc
+ allocations
+Message-Id: <20250922143407.93e171f8b7c09eb21159a33e@linux-foundation.org>
+In-Reply-To: <20250922131948.GX1391379@nvidia.com>
+References: <20250921054458.4043761-1-rppt@kernel.org>
+	<20250921054458.4043761-4-rppt@kernel.org>
+	<20250922131948.GX1391379@nvidia.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 33489180003
+X-Stat-Signature: ohrngkwbfww35ygdxexun74rdpasgt57
 X-Rspam-User: 
-X-HE-Tag: 1758576556-614845
-X-HE-Meta: U2FsdGVkX1961c38axbv9jzC2F8tVIr5CgQOepm5cBw0dmQBwpTsbMWMT/z3IURAYJ696gNnt3yPk4JH2or9VhIhLozErPj/abWEO0jMDl8NToBn1TliUXaaKOUcj9vSVK+2UCnExHmYpZsLRmYAv5Oi4Jr3bLccg5K3/eaVZb9q9ODo3TtVtmGyY2aPJtItRelziA5c+fAeKQtOqkJnX48TN+c19pvyqWYISrZ8QkYlQsEuFl6lec/5Lg4Gihi9G1gfMogLLBt9iN8YSS0j5GLCi0KfbXdnJtgHZzOV3+WHjRdN6v6p75fZebAP4LjciVyVF1SloFeZ9YxH5OsTOz+zdyORKQhc+c6Q3FyjBt9qg8iFJ/9AXg6cur2PtoNejSReUsZqliDEGz6GhlZTwW7wiuuYpMSN4bej1SCfuJ7103gnUXc6ysBzClyEVeYT6cgkN52bY3b6PjyMYNl2PUd5uHnj7p+Ih7tuyqXSoUutA6VCzWEx+UgLISG2xP3qgsg/T0LYY4zibAisqqhYi60gZ7lbomrlz6ZNcytNs91maUjOAS7rUd5OrKjcotvFDgFwhlc34jJMA4Xncz9MgX8eZja4chVxdnzcB2R2+QO+MlwfJLCqXzbuw660jtB8auGGgs6oIcyA/9NTYUoOMLF7XmlBFc5gAKitQpIo9hCNcJjlD9B+znj83z77pFAGz3Ryx+dSdslPrq9i9oLaG1N60bPCEikOqs1nDd5wPkaGnb3sBD1wbVy2Qalgn4XJBck3RHn60V+U2BYZSpq/0WYmIwP9PGFTCXjuMu5BGJvRXbLeQiyxepeEpocR48ZPyc7rp5Q+O10UTEdSRW8zSf45Xhx+B74Z7lG5ShhX8oOi6Vh1tJZOdGjM65vTno6uD+puAGUKa0p63bAtez4UasSAA5lMRnJxzFTB4bMEcpmA8qdMox6YuGhRSQ06OGf0gPXAF4MJHdU=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1758576850-265408
+X-HE-Meta: U2FsdGVkX18Ry7q9lke7y47Z2pCrLdbmlR7MlKZnnctbwznQZoie5JyMhMjCO2InsHeNRir97rZnr+t0+icm1nMPr/8SzlxrDWSn3dNcFjgbpdM+/V4e3OsH9gWeAY6W6nanyOQzcbBQiDLkpPR+kctZBxD2NdG1F+U9gsCOnHmLXUFewnqJNjEiSjws/PvoFmiY3S/MkIk/ymvQbanyrJRbyXjNbAXwyqZI0ISsAHGfQruC/sP6LuKvzZgJXkQbMoH8Y2fY7AtBV6kTwrM8UG/VQHj3TvQR5FsJBA1oPZHfNWcZpTeT3ifAX5ZVX8jnQOSPc3HgrKT1jl5vmOyUiMa2ebCZZ1C4ScDX0/cIakYNXZo940KoOJX0hC/OJ3CN5EgSvQXKxDA9ZJ+NjDFq8nrqF0JwyuD9uQ4EvJJCtzIqVnCTauFdLKhCDW6BhHFldjrMqtMmFx3VEih6oicdXnDOmwyzVLzFB3o92UbPCRS5xM4I6OhK//OvEe55+eT9MtGId5pn80a8s3in33mpECwLVduXE5dkrgRtkclVewUqFmIjdZ2L8aOrywdvII7nhQzRPe8RnxcZRLDsoRNbbnn/+TnXTqd63kA6hLXedfd+fMAPA2kMmFRIU5aqBJ5z2pdUh9YiJZqIJxsCxOUvGLX9mJfms0hfnRi59L1I5wZR4A+U2EDI5lJjvYzZoeztlkGQxRiSZ+z87Tk0VdlZPAXm5JERdX0jQNsmBs0uaa+K1OeTj0LZppeXqxnfOa2+ysb/svwT8CcEVqKMs3ND9BJaKzTe/KLHMsZNQSTlJG6jI8FMupl65P4liqo62g0nst7/w0NnZKDx0rUESlNSWItr+A92iqJwCaJs8x/U+XvZytBhaL90XG+vuZD92P9CqIrBEs/Ugj+Zd9O+6CGXp00gCOKVE3EZPjaScQLPLs8VcjYA/jCpc9QyTLIeRHvB3cwueyXzpUEbHQYSu8X
+ Jyq9uASw
+ rQQpOUjZKSMcvrYxxTAzTspPM9JCCwUa5EbcuscxcWV5K0r3T7cIcuzNRdA2Ac3kZCO9f/BrbQo3pOyCemyBEACf6S2dGbIo3FYOhJAa11huFhSavrhfkM7QPgb40fk/B0jEvFK8M2SpzCXSJT1B8rHLhlcwib1QURmxT7FdinnyswfguC4n5bRf+9tme99lz8H0K1ifRzWDt+2ND+DGXYnEEpBNUJ7rQuXxZ3YLiOYAv7cbonugye5djeZaAEs7VcFyz2i49hEywIsf1ZePJX5j4yg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,67 +96,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-head:   bf2602a3cb2381fb1a04bf1c39a290518d2538d1
-commit: faccf4f8536bbd064a1d25fde98da1c5a25474a2 [11234/11516] kho: add support for preserving vmalloc allocations
-config: x86_64-randconfig-004-20250922 (https://download.01.org/0day-ci/archive/20250923/202509230547.orS14pYx-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250923/202509230547.orS14pYx-lkp@intel.com/reproduce)
+On Mon, 22 Sep 2025 10:19:48 -0300 Jason Gunthorpe <jgg@nvidia.com> wrote:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202509230547.orS14pYx-lkp@intel.com/
+> > +static void kho_vmalloc_free_chunks(struct kho_vmalloc *kho_vmalloc)
+> > +{
+> > +	struct kho_vmalloc_chunk *chunk = KHOSER_LOAD_PTR(kho_vmalloc->first);
+> > +
+> > +	while (chunk) {
+> > +		struct kho_vmalloc_chunk *tmp = chunk;
+> > +
+> > +		kho_vmalloc_unpreserve_chunk(chunk);
+> > +
+> > +		chunk = KHOSER_LOAD_PTR(chunk->hdr.next);
+> > +		kfree(tmp);
+> 
+> Shouldn't this be free_page()?
 
-All errors (new ones prefixed by >>):
+Or vfree()?
 
-   In file included from include/asm-generic/memory_model.h:5,
-                    from arch/x86/include/asm/page.h:89,
-                    from arch/x86/include/asm/thread_info.h:12,
-                    from include/linux/thread_info.h:60,
-                    from include/linux/spinlock.h:60,
-                    from include/linux/wait.h:9,
-                    from include/linux/wait_bit.h:8,
-                    from include/linux/fs.h:7,
-                    from include/linux/debugfs.h:15,
-                    from kernel/kexec_handover.c:13:
-   kernel/kexec_handover.c: In function 'kho_restore_pages':
->> include/linux/pfn.h:12:43: error: passing argument 1 of 'kho_restore_page' makes pointer from integer without a cast [-Wint-conversion]
-      12 | #define PFN_PHYS(x)     ((phys_addr_t)(x) << PAGE_SHIFT)
-         |                         ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~
-         |                                           |
-         |                                           long long unsigned int
-   kernel/kexec_handover.c:273:54: note: in expansion of macro 'PFN_PHYS'
-     273 |                 struct page *page = kho_restore_page(PFN_PHYS(pfn));
-         |                                                      ^~~~~~~~
-   kernel/kexec_handover.c:214:43: note: expected 'struct page *' but argument is of type 'long long unsigned int'
-     214 | static void kho_restore_page(struct page *page, unsigned int order)
-         |                              ~~~~~~~~~~~~~^~~~
-   kernel/kexec_handover.c:273:37: error: too few arguments to function 'kho_restore_page'
-     273 |                 struct page *page = kho_restore_page(PFN_PHYS(pfn));
-         |                                     ^~~~~~~~~~~~~~~~
-   kernel/kexec_handover.c:214:13: note: declared here
-     214 | static void kho_restore_page(struct page *page, unsigned int order)
-         |             ^~~~~~~~~~~~~~~~
+Not sure why this code works - I'll suspend the series from linux-next
+for now.
 
 
-vim +/kho_restore_page +12 include/linux/pfn.h
-
-947d0496cf3e12 Jeremy Fitzhardinge 2008-09-11   8  
-22a9835c350782 Dave Hansen         2006-03-27   9  #define PFN_ALIGN(x)	(((unsigned long)(x) + (PAGE_SIZE - 1)) & PAGE_MASK)
-22a9835c350782 Dave Hansen         2006-03-27  10  #define PFN_UP(x)	(((x) + PAGE_SIZE-1) >> PAGE_SHIFT)
-22a9835c350782 Dave Hansen         2006-03-27  11  #define PFN_DOWN(x)	((x) >> PAGE_SHIFT)
-947d0496cf3e12 Jeremy Fitzhardinge 2008-09-11 @12  #define PFN_PHYS(x)	((phys_addr_t)(x) << PAGE_SHIFT)
-8f235d1a3eb719 Chen Gang           2016-01-14  13  #define PHYS_PFN(x)	((unsigned long)((x) >> PAGE_SHIFT))
-22a9835c350782 Dave Hansen         2006-03-27  14  
-
-:::::: The code at line 12 was first introduced by commit
-:::::: 947d0496cf3e12ebfa70b3eaf561c25403247ce9 generic: make PFN_PHYS explicitly return phys_addr_t
-
-:::::: TO: Jeremy Fitzhardinge <jeremy@goop.org>
-:::::: CC: Ingo Molnar <mingo@elte.hu>
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
