@@ -4,91 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25DE9CA100F
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 17:24:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B413ACA100F
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 17:50:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F68E8E0005; Mon, 22 Sep 2025 13:24:46 -0400 (EDT)
+	id 067388E0005; Mon, 22 Sep 2025 13:50:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A7428E0001; Mon, 22 Sep 2025 13:24:46 -0400 (EDT)
+	id 017D28E0001; Mon, 22 Sep 2025 13:50:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6BD0E8E0005; Mon, 22 Sep 2025 13:24:46 -0400 (EDT)
+	id E6F898E0005; Mon, 22 Sep 2025 13:50:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5726E8E0001
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 13:24:46 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DF85184BB4
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 17:24:45 +0000 (UTC)
-X-FDA: 83917560930.06.CFB4C77
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 28CE31C0006
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 17:24:43 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=none;
-	spf=pass (imf20.hostedemail.com: domain of cmarinas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cmarinas@kernel.org;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D5DE28E0001
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 13:50:06 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9866E1DC54C
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 17:50:06 +0000 (UTC)
+X-FDA: 83917624812.07.BEF1594
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+	by imf16.hostedemail.com (Postfix) with ESMTP id C5AE518000A
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 17:50:04 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=YmPDBXrX;
+	spf=pass (imf16.hostedemail.com: domain of belindagodpaster1@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=belindagodpaster1@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758561884;
+	s=arc-20220608; t=1758563404;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KjlkSDWeLfgzt2hJTSF/yA75QuafGIPlx3UP9Kck4kU=;
-	b=nzv7gnTt1dmUt81N9DfXTgovgdgyp59r8OyE0mqcXqdXT45jbEaxr0cYsn6+rxVR7ZSS0Q
-	Jbg/zP4H0O7taATMermLaRS8wSzzb6Z4h7/xvl3GSG981PD7pvmh9YVDMA/RwqkBFzd6IN
-	3Dx3VKzNq1to1Ymh95G1EFoIu3Jc2Sc=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=none;
-	spf=pass (imf20.hostedemail.com: domain of cmarinas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cmarinas@kernel.org;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758561884; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=FHtFa8h/QzHYrBs2YBbpVMAf21spJGC7Hur8tbJI0fc=;
+	b=ZvLF4FkxcUWdZ8rnBvP9CawM+AhhoO0OgYrl+s7b7VZ+fvU7MEMgp8AuFTVpTuxl+vPtoH
+	5uZVJWn3Hp6LLDhcjpErgKkaXB1q/pMR71pOkz/fCeoe+VuYOnXoXn8LTUQH9qO8fH3/on
+	DVSSPe8k7+7QYaKjfFYeCfCNt4lsJIs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758563404; a=rsa-sha256;
 	cv=none;
-	b=D7C1ulRq+FFv0mAQr9GBDH9yHZtm1dqfU1xD+AwJYiodvvr7mcTBL4te1+DSD/a3gG1mpN
-	P3c51mu9ZMMljSN1cWaUlbVYU/Njsi01LsqNPXdwgfQaI6N2EZvyU+UguZxORv4d2gHo/w
-	T1BGQy7Kch1B1W9Sy42WAfHrZSMPr9o=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 52522601AA;
-	Mon, 22 Sep 2025 17:24:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68AACC4CEF0;
-	Mon, 22 Sep 2025 17:24:36 +0000 (UTC)
-Date: Mon, 22 Sep 2025 18:24:33 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com,
-	usamaarif642@gmail.com, yuzhao@google.com, ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com, baohua@kernel.org, voidice@gmail.com,
-	Liam.Howlett@oracle.com, cerasuolodomenico@gmail.com,
-	hannes@cmpxchg.org, kaleshsingh@google.com, npache@redhat.com,
-	riel@surriel.com, roman.gushchin@linux.dev, rppt@kernel.org,
-	ryan.roberts@arm.com, dev.jain@arm.com, ryncsn@gmail.com,
-	shakeel.butt@linux.dev, surenb@google.com, hughd@google.com,
-	willy@infradead.org, matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
-	gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com,
-	qun-wei.lin@mediatek.com, Andrew.Yang@mediatek.com,
-	casper.li@mediatek.com, chinwen.chang@mediatek.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-mediatek@lists.infradead.org, linux-mm@kvack.org,
-	ioworker0@gmail.com, stable@vger.kernel.org
-Subject: Re: [PATCH 1/1] mm/thp: fix MTE tag mismatch when replacing
- zero-filled subpages
-Message-ID: <aNGGUXLCn_bWlne5@arm.com>
-References: <20250922021458.68123-1-lance.yang@linux.dev>
+	b=Pq2l3ar83S2Vl/dDcWkwfCxCo0/6QmPMR2ImcPc2lixYLRHWc+snDA6afz2ccdPpeQjsqa
+	8fQ9VVZynJJ2gEXMLHu7G4jW8Greu9T7yQWmrtYRem5R0va82B+nHqvRI/P4VFJuhQ5+j1
+	bFYvPay1t3dzyCsDMjEm0FuMYVYvKhc=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=YmPDBXrX;
+	spf=pass (imf16.hostedemail.com: domain of belindagodpaster1@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=belindagodpaster1@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-b5229007f31so3445754a12.2
+        for <linux-mm@kvack.org>; Mon, 22 Sep 2025 10:50:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758563404; x=1759168204; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=FHtFa8h/QzHYrBs2YBbpVMAf21spJGC7Hur8tbJI0fc=;
+        b=YmPDBXrXRY5GbBUuSr9XwD9cI542YoZhScm+iQuIruou9uB2JuyzYMQM2NHQFGY5KS
+         xpc5dqZVOWNFf9quLTMiDEVg3HiErKiuryMvB3IUvgLtNFsJsHUqRuBy3HczPmrPhXUC
+         PzvAkKoatX/13JVQrdx4MpEGHnBSEauFPtzp9OPCPCer2uWcbziQce3Smm6WTF5ELhLY
+         TY8toF6YYWRYqmnkSOAcESlNcTLCxx8oorZMAgSdZP9cYxlsUEfNRIDK1Jb03IxNiTOV
+         UGM9eOfoNQVhzrJ1bG15GmXHPNVNS1gbPK+mjjfcrZVxazajeOVYGplfDytjkx5jHDdx
+         zSkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758563404; x=1759168204;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=FHtFa8h/QzHYrBs2YBbpVMAf21spJGC7Hur8tbJI0fc=;
+        b=o9hNVot4s5GKyhEYiB75oXFtYsWu6OF8F3IbofZBERsChi17/LyPuvhE+c3R7t3zCQ
+         f6JV2/xL52FUFOmQj7O/773xNF3W3uJQGR2EplagNGJTu6GCctRlMr6VHxJJ5LbX+Foj
+         0YE2NonVtMtBdkIclqlcyb3nXqtymWl6OmxwPsDKLAAhBBuy0jeq0pWP75NKL8/EBZTK
+         MtbnnQ+V3oFFhZxTNtOf1JrGsBMzm9K5GlG+Wgu8I4pqnicjV7Gsxee8dWa1ugQ7ZL9D
+         pbxfzKLM4HdK/unAIJhKcAl8me0R1SSTl2YgCISpXqJRGyQYML7m2m9m9uV+Im6i74P5
+         4Nyw==
+X-Forwarded-Encrypted: i=1; AJvYcCVAmDUWLVTEbQZvaB5AuYSkl+23BHRQlOkRcuHjgueRFRtt14pS32TAuxSIXcHnJ66k0EQ8+YhpJQ==@kvack.org
+X-Gm-Message-State: AOJu0YxQT2b0kZjIOz6FB2wtkPB/OMgRWNToDnLedsyY5kqvTDPiz9nD
+	yZmacumeq6QLz32u2whpQMoN/v7oTfNRTO54CqxuSm+sD+n/dD6XoDRdnHFdfAPQUCjFbionfNr
+	aznleeFJfnwVX+qmke7cskEjxPnkD02E=
+X-Gm-Gg: ASbGncsVbCtvD8LJW0wvquEB+W8vg8hdqKKabwI+0NUvlqtdDU5NulGBAHBkG32Moov
+	/92VX229a7JLdTGCGJz7f8ypIzikeGK5m8O7cjFEd9vSig/JmL7oEjorwV7DsxeppJ6cETgpEyR
+	X5sT4kheieP3bGVtHw34XunpwKcQbHqTXwXDC1FRQyi90PLqAg+qkjkDpnGebsm2IbdmhO6/ab2
+	izPPNCFk+nEj0yhaoX0F7AzoQ0VR20JjFkzyNJHtg==
+X-Google-Smtp-Source: AGHT+IH+kfInlKRP6BzwmW5CJLzBjlaEh9IOKdTwH7Bg4hb0Fx3dW8iPSuOa6KpfO+ji21LPcCpIsYS4sH+RQTME7k8=
+X-Received: by 2002:a17:902:d50c:b0:26e:49e3:55f0 with SMTP id
+ d9443c01a7336-26e49e38a46mr148739385ad.16.1758563403518; Mon, 22 Sep 2025
+ 10:50:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250922021458.68123-1-lance.yang@linux.dev>
+From: Belinda R Goodpaster <belindagodpaster1@gmail.com>
+Date: Mon, 22 Sep 2025 13:49:48 -0400
+X-Gm-Features: AS18NWCj_l0AGoJdmCj76H-a4myay1NHIHmfBneHHJEPfuqmL1lcwKJOIpqc3w8
+Message-ID: <CAK8NWP4Cr=VQGm4=Td5spuhmeVh3oJSJzD1y-6-Cg1aShASgzw@mail.gmail.com>
+Subject: Re: [LSF/MM/BPF TOPIC] Cloud storage optimizations
+To: willy@infradead.org
+Cc: linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, lsf-pc@lists.linux-foundation.org, tytso@mit.edu
+Content-Type: multipart/alternative; boundary="000000000000fb5a35063f6772af"
+X-Rspamd-Queue-Id: C5AE518000A
+X-Stat-Signature: 4kp1b5zb1u8zzbubkf4magwbmhtj9qfk
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 28CE31C0006
-X-Stat-Signature: hhsumioz5w9nx4i4pz44wmy4rh3pxxbn
-X-HE-Tag: 1758561883-317800
-X-HE-Meta: U2FsdGVkX1+v73bRjc7EWd/nmUOsZISCrNPPpHvpJUVeZ4JYIsc7NM7GKQ+3L3ddAbxx+B6plD7a72VIYQh3UJtsmSU3vBHMc1E6RR+C4vreJvE/u8tWPMHrxtRpPH3O5Y8MU5pZX86494gdOFMx0dY5Kn9xfZGZ04LZGqXtRAZTPM2OQ9W43xxCvDFa6x4XdXpUX4MosTuQb6u5+PuDGiEj1wNIKzQ3mccLWmGUn2hjDQx4EfKxyEsXU2nkWPRn3e1yt50dH0NE3kfEDOP0azayKld5dfEAIG2thSeEPUqNxYMyQnHSMasAZIq0Lix8+tNZ1tr1Rpn1IneM4jLFRu9y7Oy6RQEZQdvyHN3enUzuuGtYfB6At3w/P6EV/xueleMOe550duhX52pd08jvh3xesRPzafGW+xi6kfx1xDp6FePofeDbDqdgxP7RWtV6WACNvm4MoM/CTeRmfydz7XjFD3pIkmxSimnhuyA4rOFHu0PMHhMqsj68v27kPi1PnOJPwp17s8zriLSzYXP7XonSgPMI2Gkr94hc9kmWGcnOBIis4k5dmz4/pT5KV2xxKDjoDQ4vkJw42tSSBNVEyTS7BCj5bZVUn7Vu65jsoxkC4cbFVdzUNo2ovWV636rAWq7+MadkOOAF/Dj4FbADiC7DhmEN3Tvw4oc5zMwC75TZAc28jUpWpaUlTTQbG0qEao6xve1qiYuLe7hC7bS/0Vx5fuOOBq9FlilORMh2zMIuO/eQFYEIMx0KH2lMmRTS2lgZL5eCcRWJxyBI+h4seY9vHMUgXkSFjiSjIkrPXBd4clgG/ACANUn6HPJ9iELOT1otz/2SLB22mEzmYh2IWZFqO7qbWkmrb9EE8mL4fmxyXdD6ArwjbCOUqUUiDIeH3Iu04LSWeNBeTNyMdhzH/v/pnPXnjLYsAtkV/VJyhiJ6qb8hF8Tkn5gOu6fnmJZ2GCnCmVjLCdp/CGKMSAb
- iYUg4Z+Z
- rhSsJci/TiizGaE3j1GJfs3kizXNMHdYp7KU9drP6XaR06WQlBPE1t8bBWD8I8x5AzO5SslxinTX9JkcILelcJChNMrCXMxZF+KxYXcmd3QzfCERn+DNg2+AAomD6u/Dg0u/Kt4JEjANGyU6CeP6DE20/tHRPDPXigWwhbofkN32xwLm1+0fnNEM5cVcKm7epl9TOIa2W2nccpCOFLocoFFJcqM73Zb8Uoh6pQcIMQabUM1PdjIuf2LIgP2ZE36IpQm9CLfxb2WPyaYK6+Ma+Udql1Ux0KndtYdItpt1eabX2JRsO1oukDIrYR8DKqTdosgbiPkbvwr24HjOUMLRDdmuxnWOF/FDQ9ek69vjeR8plzOVpQ/ew/cUtq+2HJwNbX8QCcjHyte/yOJTOOr0WoYWldP28UEmIWf/y71h1CRrzAQaaebRsPlCCAyuflOB24rh5gqwu/SMd+TPzYn/3uspx38AOS+ChWvvvsS6GjHJziSG9Kc3JQO420LHEQoiD0G+7sFEjq5MFKYzDe5OGWVif7nqzBFgeWDs6
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1758563404-957285
+X-HE-Meta: U2FsdGVkX1+mJgeF5kuQYXhszAkroEdMl2wtBO36F5GF0NHtmz3tbdb1IoDwS8zmwOkBxP0BUuRyOogq1ZYmsVR0Q6zoVQvTrx1v4p3XiYJVTd8byuuka65OOpJDFDfJ/AJHjVz6CsOwERkts3+U3uL0vCVqSp3SXZGsZUxbBAjyEnxdKUup2IOpSLpJj0sWhzBKuL2LkbMcrQro7s1wIn6Dq6kaf//YGv6yitLSevkQ1poITvEiop/EJgIUcdT6HqCix0tErmzJXTcllu7aT/gPrBpr2iNRYXDWtdotJedGPhpBM4GN7Qkd5ElyH/8luyN+VtJUMPiw7YWmI1dOfpnD/y67yfGXJgyG9CeQXvwx5XcasbZBU2Ty2MW75QO1wwHYeEd048SNUwNzY7g2BQ5neVikfH7bFyWv7/dPIFIOoMZEQndhsjK+qG8JSHP0UrUYJfNMXAMgV3wqyqvT1ivjBPtJG0flazanbLOMcvVwOtZolQMGBpjCV1/MQFHsHc46zQ1dIGfcyJVMdP0Gx2ax0D3z9k/odOt3IUAZqIMkp5XPLq6oTsyUXB9P2mQqk3yCGeqZFy7sWQ/F/3dIIE3pFxK1kgGOr1isGnZ3zz5QAL5B0KloVokPa8Ku5HCnKxq90o0B51HtLTw+1rBqYz3VaH0cqtDcxGL7T2LXCbtAFVK7TNwZLc9wDojOYMqrixyUjqnEMAPhfa0JWq5GyxWudnxELzDY8Zvnm9fJYWcLKLJldFizeOwGYfjRHWZF0U0cDN55/k+I7sFZ8Jnrc67KWLwS+sbcNTMXGSGq1SwdJ1dLVo0JflD8rLQYK9xAQu8NfD2V2tUs97DCuPBh8uVzRzh7fM077Ipyk7AEv8n4slQXZlXT+ikJsp2UwCY0KtrUsYG4mtAIIUKJlLiBl/+SvUrnClAl3oyEfnGQginW/y/P28+eapjAaPWTaAL8YTAYmdqvAQCooyWhL2h
+ qg13VUbR
+ biQfC/Xa++/P87sL83De5AdBBhMwolI3xsZLuCA9HPXpg8Ugd89ZU+oSX+8ExxxW+FfT1fn4wbFXL8DqqiTekKp4oTMqwusOkIbFdiCNT2yZOKzDsyBk0JwSaVS1wKl2UmMkQCwNvASj676K9IYRwsIH80mRdCkx8weYtNprRhENNc5jeUQcKtQ/+9NKxT+DtN00ck+2gkEB3Rvvoy4v6XTFjCnPlBd1wAuAaNl12yoQkSzwkZG8/cg3dDKarAkmviVAcJG3tXQzc6hkqO1oXZzVUxsiUXUwZWsKQbUw2/NgPtvLgh5QenolYtgQOBziljHSGlQtfpG0hA4wbibThRYfMHuaCCgFAT1dDnjr3ItC/FBrKUi/prxKeGhINMPmO3ZCvMQY/oo9aiK9/9UuiAICxfbO0DWprfXNVXCcckBr26jpRhKcdnIVjj2+a110BZNziROfjDiFZOM+uoPhbD9y9S17CVANvbYPj
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000001, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,71 +109,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 22, 2025 at 10:14:58AM +0800, Lance Yang wrote:
-> From: Lance Yang <lance.yang@linux.dev>
-> 
-> When both THP and MTE are enabled, splitting a THP and replacing its
-> zero-filled subpages with the shared zeropage can cause MTE tag mismatch
-> faults in userspace.
-> 
-> Remapping zero-filled subpages to the shared zeropage is unsafe, as the
-> zeropage has a fixed tag of zero, which may not match the tag expected by
-> the userspace pointer.
-> 
-> KSM already avoids this problem by using memcmp_pages(), which on arm64
-> intentionally reports MTE-tagged pages as non-identical to prevent unsafe
-> merging.
-> 
-> As suggested by David[1], this patch adopts the same pattern, replacing the
-> memchr_inv() byte-level check with a call to pages_identical(). This
-> leverages existing architecture-specific logic to determine if a page is
-> truly identical to the shared zeropage.
-> 
-> Having both the THP shrinker and KSM rely on pages_identical() makes the
-> design more future-proof, IMO. Instead of handling quirks in generic code,
-> we just let the architecture decide what makes two pages identical.
-> 
-> [1] https://lore.kernel.org/all/ca2106a3-4bb2-4457-81af-301fd99fbef4@redhat.com
-> 
-> Cc: <stable@vger.kernel.org>
-> Reported-by: Qun-wei Lin <Qun-wei.Lin@mediatek.com>
-> Closes: https://lore.kernel.org/all/a7944523fcc3634607691c35311a5d59d1a3f8d4.camel@mediatek.com
-> Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when splitting isolated thp")
-> Suggested-by: David Hildenbrand <david@redhat.com>
-> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+--000000000000fb5a35063f6772af
+Content-Type: text/plain; charset="UTF-8"
 
-Functionally, the patch looks fine, both with and without MTE.
+kricketB
 
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+--000000000000fb5a35063f6772af
+Content-Type: text/html; charset="UTF-8"
 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 32e0ec2dde36..28d4b02a1aa5 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -4104,29 +4104,20 @@ static unsigned long deferred_split_count(struct shrinker *shrink,
->  static bool thp_underused(struct folio *folio)
->  {
->  	int num_zero_pages = 0, num_filled_pages = 0;
-> -	void *kaddr;
->  	int i;
->  
->  	for (i = 0; i < folio_nr_pages(folio); i++) {
-> -		kaddr = kmap_local_folio(folio, i * PAGE_SIZE);
-> -		if (!memchr_inv(kaddr, 0, PAGE_SIZE)) {
-> -			num_zero_pages++;
-> -			if (num_zero_pages > khugepaged_max_ptes_none) {
-> -				kunmap_local(kaddr);
-> +		if (pages_identical(folio_page(folio, i), ZERO_PAGE(0))) {
-> +			if (++num_zero_pages > khugepaged_max_ptes_none)
->  				return true;
+<div dir="auto"><div><br></div><div><br></div><div data-smartmail="gmail_signature">kricketB</div></div>
 
-I wonder what the overhead of doing a memcmp() vs memchr_inv() is. The
-former will need to read from two places. If it's noticeable, it would
-affect architectures that don't have an MTE equivalent.
-
-Alternatively we could introduce something like folio_has_metadata()
-which on arm64 simply checks PG_mte_tagged.
-
--- 
-Catalin
+--000000000000fb5a35063f6772af--
 
