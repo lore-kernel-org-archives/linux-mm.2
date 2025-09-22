@@ -4,56 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1357BCAC592
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 17:11:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56622CAC592
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Sep 2025 17:12:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 58EF38E0005; Mon, 22 Sep 2025 13:11:48 -0400 (EDT)
+	id B5C778E000D; Mon, 22 Sep 2025 13:12:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 566B38E0001; Mon, 22 Sep 2025 13:11:48 -0400 (EDT)
+	id B34538E0001; Mon, 22 Sep 2025 13:12:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A2CA8E0005; Mon, 22 Sep 2025 13:11:48 -0400 (EDT)
+	id A71838E000D; Mon, 22 Sep 2025 13:12:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3578E8E0001
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 13:11:48 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C03205678B
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 17:11:47 +0000 (UTC)
-X-FDA: 83917528254.23.9A11148
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 97A488E0001
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 13:12:33 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 41288B6722
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 17:12:33 +0000 (UTC)
+X-FDA: 83917530186.11.9014D93
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	by imf01.hostedemail.com (Postfix) with ESMTP id AFB034000E
-	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 17:11:45 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
+	by imf22.hostedemail.com (Postfix) with ESMTP id 87F72C000F
+	for <linux-mm@kvack.org>; Mon, 22 Sep 2025 17:12:31 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf01.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758561106; a=rsa-sha256;
-	cv=none;
-	b=Lbz/TUVABp7xXS9Zfk9vNjdb7CsP0pXrkw1UhiTo3I4IGnjjABoH91kJkjdeQuPmCZhlQR
-	WNyxFscpAf1DrdppF9AOyiDSe5/MsJ9fdGtd0DXorFP4IdefccfNCG8j/5mdjjsiVfargf
-	hyC2YDcOaV9wJ69Z799jj/+F9jXLavA=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf01.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+	spf=pass (imf22.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
+	dmarc=pass (policy=none) header.from=lst.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1758561106;
+	s=arc-20220608; t=1758561151;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=AzW1D6cu4bgVFbuNUR4Gt+p4oEdRJ1ELKVbXdnqrKQk=;
-	b=mknTzX8BiNoRawZGbQIpuoBxESrCc0VeBY4I/TcI5/q5HuWIlIgGibkVQznheHuLTcb8Ry
-	r68TLXJvMEJv0gA51908LfyIh82ErDzMiXqoYIikyosRPFgEIJDPURwS79qXS11tOXykkf
-	dXjhfNtWz29KjT9/I7ME/6US/6gws3w=
+	bh=hVd5FYeaOOqCS05QvLLgASbT7Tr3N+hlXgG8BG8Sjtg=;
+	b=UOTpNegmvbt5mnNafl5AZ7pn5TrdzSTYWkMfp4q1HPLPPBGsoPp4qBQ+skzt9dJn7qhL8F
+	YqSp5xsdlPqhHBEL1H3x17c0gCJI/90GiJITsGX3ynAA8IDN4ztBGglR0nQhrV+LlpOUwI
+	WbJLmOAuxGxwVeQ3R9PRG36mHOfkPlE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1758561151; a=rsa-sha256;
+	cv=none;
+	b=6Ms9H1nnZh7v/Dq6CTZMFJjJQ0JCXxu+8dBZ2Tb+LTehsEopJEYLXOGoqzaSwHf8HbsjNF
+	wKPdE/mSzbJzDRN0kfEXKwFKgpPqFCg7QhCA3tsXeLLVu6+YSw3UeB31i3TbPTtCbx2n/N
+	8Nf1TNUc5Gpcg/Hdj2uHgGldTLMD0vs=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=none;
+	spf=pass (imf22.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
+	dmarc=pass (policy=none) header.from=lst.de
 Received: by verein.lst.de (Postfix, from userid 2407)
-	id 11211227AAF; Mon, 22 Sep 2025 19:11:37 +0200 (CEST)
-Date: Mon, 22 Sep 2025 19:11:36 +0200
+	id 6B6BB227AAF; Mon, 22 Sep 2025 19:12:27 +0200 (CEST)
+Date: Mon, 22 Sep 2025 19:12:27 +0200
 From: Christoph Hellwig <hch@lst.de>
-To: Marco Elver <elver@google.com>
+To: Bart Van Assche <bvanassche@acm.org>
 Cc: Christoph Hellwig <hch@lst.de>, Nathan Chancellor <nathan@kernel.org>,
+	Marco Elver <elver@google.com>,
 	Peter Zijlstra <peterz@infradead.org>,
 	Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
 	Will Deacon <will@kernel.org>,
@@ -61,8 +62,7 @@ Cc: Christoph Hellwig <hch@lst.de>, Nathan Chancellor <nathan@kernel.org>,
 	Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
 	"Paul E. McKenney" <paulmck@kernel.org>,
 	Alexander Potapenko <glider@google.com>,
-	Arnd Bergmann <arnd@arndb.de>, Bart Van Assche <bvanassche@acm.org>,
-	Bill Wendling <morbo@google.com>,
+	Arnd Bergmann <arnd@arndb.de>, Bill Wendling <morbo@google.com>,
 	Dmitry Vyukov <dvyukov@google.com>,
 	Eric Dumazet <edumazet@google.com>,
 	Frederic Weisbecker <frederic@kernel.org>,
@@ -92,21 +92,21 @@ Cc: Christoph Hellwig <hch@lst.de>, Nathan Chancellor <nathan@kernel.org>,
 	rcu@vger.kernel.org
 Subject: Re: [PATCH v3 00/35] Compiler-Based Capability- and
  Locking-Analysis
-Message-ID: <20250922171136.GA12668@lst.de>
-References: <20250918140451.1289454-1-elver@google.com> <20250918141511.GA30263@lst.de> <20250918174555.GA3366400@ax162> <20250919140803.GA23745@lst.de> <20250919140954.GA24160@lst.de> <aNEX46WJh2IWhVUc@elver.google.com>
+Message-ID: <20250922171227.GB12668@lst.de>
+References: <20250918140451.1289454-1-elver@google.com> <20250918141511.GA30263@lst.de> <20250918174555.GA3366400@ax162> <20250919140803.GA23745@lst.de> <a75f7b70-2b72-4bb0-a940-52835f290502@acm.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aNEX46WJh2IWhVUc@elver.google.com>
+In-Reply-To: <a75f7b70-2b72-4bb0-a940-52835f290502@acm.org>
 User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: AFB034000E
-X-Stat-Signature: e8fpe6taoqzpzqy54fycxhxmt3sczs95
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 87F72C000F
+X-Stat-Signature: g7en5uw53qkf6uan7g4dc15gadpfcpmw
 X-Rspam-User: 
-X-HE-Tag: 1758561105-134040
-X-HE-Meta: U2FsdGVkX1+QVazGfq/kSe9/Eb7uIP2VL8RF+k1c+CFF450HSarmEtQE+bhEh2ntW5tWgoB+1O1hN3xtr+ZNiap4w/3FFnh2NAMIeuKljaIY/3Ed+vB+g3ghuJiLyDswYtBp1C4PyGFHtBSkkf+uTJWC7CBEQ7j16SGU4prqOqClJJtfgcyWr8oLgdEeaDZXmbuM41Vz6HFtSGgc9lLo9VZh3h0WrzG15yqXSPzQ2wDIjKlBO3VwfY6DRrOtagvbl3/Bnamji4qAoBIexOlquAflaLyJ5udDERk8ooa0gWC8Xx3kRB2pK3r7bSz/UvqqKBAi9CIM17RdNxioF/Ve6C3ipvt3IM0hFXhKD9qgZY6lnOvoqeeE4I+oMY3ZNwSankebEI6Q0TlIvDQGrl7oUfWtck+9VJtuuJ/X+kCTpy34MzrdYea6OWCowwcu5DmHSvx4LL6dFJpeLR5PMJhFXd98sO4xiKS495/CHVK8Ng5difQDQCw8I1ThaIkUjZSxIStEQ1e076UlIIS0pHeL92yAR2jVkvIs3wYkNCBFH9yM5+JPOeGu4DEK+7FMPcfFJGBMf+puNgbTE6YnSKhdCRMaZGqci7qJ814U6+qelVkMi29SvhRwUv7+WsGNskmIYBYpJ+tEr27wkiEYcG1sH19FRdXZpEKduE5BVZ7W6cj7RzIbg0l2PrBiqSWTI14Bx/qYS61IPoqbs4h4m3mi0MYOZDLQIX80N4VrijKHnbBCeWPwSIQgjghq9i9jQCGEwCq78zRiHDB/AgVKpD5xYrHDg3TeCZFjafsAukFaqzMb1F5013g3u+UncMVqr3poCblCqQ+zmeHaworQrY9oQ98f4MkxbJYlIFpphld9na5QPJLwt6kblAK7ac4gbERYy0lM+b+WYYO0CdI7Hvq4X2NYxXed2pq3bo4+z+t+dqIhvJH8e2VEKaGsnAzvJKZ4rxt/C1hP4NZ7aua9kgR
- b6g4ZnnC
- tZL0ONpU760Y1xTADxmdcGcvMRNDIf9QI23C3RCM6P9tXe0eYAuYtHzG09Mxrs1UnRrGVr+7oMy3v1YsN5tB9yqSavlYnqxuFsRn5MUuFIEw+sxLh6XR5ERpEsRfpItceHaRgfw5Cfx6TPtpsWn7CS076Tfv64dMpXK41FvQbw76zQG6E4od9fyOPfqj3qi5BV9e8
+X-HE-Tag: 1758561151-688864
+X-HE-Meta: U2FsdGVkX1/2IiFLgCJwb1DdkY1D0mflqGSM+It0k3VQ0/pxFmaGlenyayQG/voMwS+X7IV0g30NzsdlLyO0dSgFsYRtOfa/er2KhkChi4bNW89v0RPyEaVaiyK/bZF7eREfc0Cl0l6oMlB6Pi3E58EPG9zck06iaFX7dggq1oqRyup8+BzWM+m5M5twV4x0sCc9PkF6eu4mTvDEh8Lj1Kex7KYKAjW3Nq2E59dmo4ZgrKxN2c5wAMZwb25PdvrC954lkuGbpmEJt2VEOtR77UwDi0EUPR9n1S9UHoKIJdaW2nhDOPa5TFWx7eIEQ6iDXYcCyAUHZcqqxqJuR9rR/YXNkQmtsjw88aZRrTu7T0qBKR9cncldp70dWQUWw7PJBixdmVRc7XZPxyWKJE7oWQUT2/B0ppNoeFHko/IrhwJXVI24Yx20emFCxQDDnpcJ+nOCK+x6lnDrC81IidegviwTlbcyWGMBZImJYunULp8xv5ui1Er8KOyPQHSPxfZJrOyMVqXH7Of0OQDV8nxdfmPO9H5vzHeHQcPO4H0dOOGzibYMZnAFT9vkAT/VyUtnbWq6501wEIM4H9RY+qPSf2t0AFJvPFRAVzAGYkAJWbMv7d4CG3Fuh2cQXX8C+5PQwnaPpaqqF1oYvsj1SbsScgSLMr6yP7pGPFPfqditFyKHqq5PqDfPaD8vt7w7IzqG53mwAxXaX+h+Vx/i2JxjIbAdVQ6kGlGE0VaIJt1qhHGgn65h/VJ7MlF+qJkw/nyK4N1+PcIWDVzH9jt7K5bmW11SbunyAGLTzoIZVtCSYBc0wRhscAGFIMSYxvXJQIlKt+jZQWcx8VOdPIlbR1ulyn933p+Yyxcc3JShC4LGR2AHgQYOjRDks3ncUMDQ9c3Ob7vSwS3T4Ban9GoDyOs2RiYwNyQDQ7FS1IGssejMfhtTh0dgDC6/ZCFuJwFA7QVaWOd4QIdgerYHOW3mhDA
+ GxIb+Jpu
+ KpvZ/khRYdlPvKmen5rh0Eb5pg2dKDLBvacZI9GM0/MTqdvo23MOFIabqKDVVjqx1Kc6DVYkMK853twek7Hvjttwq07F8z07qC2vzjNcw4VQ2r7IduCQ03XYhjsf/q/3xfMqFWz0oP+Scv2o5GoQDV6RUdrdQULfh440ZRWxfcEoWcsg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,30 +115,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 22, 2025 at 11:33:23AM +0200, Marco Elver wrote:
-> I gave this a try, and with the below patch and the Clang fix [1],
-> fs/xfs compiles cleanly. I think the fundamental limitation are the
-> conditional locking wrappers. I suspect it's possible to do better than
-> disabling the analysis here, by overapproximating the lock set taken
-> (like you did elsewhere), so that at least the callers are checked, but
-> when I tried it showed lots of callers need annotating as well, so I
-> gave up at that point. Still, it might be better than no checking at
-> all.
+On Fri, Sep 19, 2025 at 10:20:37AM -0700, Bart Van Assche wrote:
+> locking annotations to kernel code. I ended up annotating multiple XFS
+> functions with NO_THREAD_SAFETY_ANALYSIS. Maybe the locking patterns in
+> XFS are too complex for compile-time analysis?
 
-I guess this at least allows us to work with the analysis, even if it 
-drops coverage for one of the most important locks.  I guess you also
-have CONFIG_XFS_QUOTA disabled as that would lead to similar warnings,
-and also currently has the lock the object on return if it's not a
-NULL return case?  I now have a local series to remove that instance,
-but I've seen that pattern elsewhere in the kernel code.
-
-Besides the conditional locking these two also do another thing that
-is nasty to the analysis, the locked state can be attached to a
-transaction and unlocked at transaction commit.  Not sure how to best
-model that.
-
-> [1] https://github.com/llvm/llvm-project/pull/159921
-
-Thanks for all the work!
+If our locking patterns are too complex for analysis, either the code or
+the analysis has problems that need addressing.  Potentially both.
 
 
